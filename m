@@ -1,684 +1,822 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57E934D38B;
-	Sat,  8 Nov 2025 06:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EFE2DE71C;
+	Sat,  8 Nov 2025 06:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762583372; cv=none; b=BP0Dej1rqF9ibCLnMXgKTuhuokAAktJILH5V4poFyRJo3vOqaGVZbsuob9NsQlLDNxVlzV5Zw0Tlr+OT3JiWY92YqATOUiJan3zOLFIBPU+qnHn3AW+Ji0BcIkDD3zX3dcmAlFLdYwEh1wMLb02ywI9PrxYUCFYaR3J6hLCVEHY=
+	t=1762584119; cv=none; b=sLlx2Jvpv1w6hT15Y94V5+Mi174zoYRZBigYyG6ugGpokGuQhE+9vzgRbsKtIMdMHhU/lJLyXkBhve3P4GWenfKzUWyJzUYp1M5OhqsfdJVZngskAmfjrWjY2yiqfP6Bk3DCkwXOvMk/qhZzmIV2zgPqo72PKWB+1aFzenIVLqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762583372; c=relaxed/simple;
-	bh=r6ek+4TgfGUawu1TcCsOgXYcpdqPartmkRTpwZRlHmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SCe7xpUOyOuHrmkysL5HxNnKyDliMAL4l1m7YccWqElsHYuHT9rgU0SxrdCUUzthTksuHcPYRetyyHpr/JHMcY58x8eV+S/REBqXAYjiOeHcYNVI2W/h9Mom+Rjh/I97hd5BgriJVnOcFL2qdieKkdq+fBtK3SHvwpiRAcvLRwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5uTs/yv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762584119; c=relaxed/simple;
+	bh=FHHuqy9WjZLKOLUB5exgCufasDt+9y26PVhubOifZXE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qlcBYb94ZXZDykH88uGHfAOmtjHlsdDTATf40655WPJHQRig369OEIyXqPHPEegYL2IKk1kevoTGU9El5V0Ra0LFtr8SbtLxO1wfyezfyo8a7X9ja8s4hCjTOYEeWCY+X1n7hqISBOpydex+vgugUDcar86nfYauNm8KicytQ5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=i06CmaIi; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5uTs/yv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08707C4CEFB;
-	Sat,  8 Nov 2025 06:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762583371;
-	bh=r6ek+4TgfGUawu1TcCsOgXYcpdqPartmkRTpwZRlHmk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t5uTs/yvvAd+eMIBKWo8HsY43K5rfZpHm0ip++OLOFwNeqkMuDZjRepB0/tj62t3L
-	 QV23PvPdQbu7GbwtN81+GWcCSggCIh2jGwXWIlZVuyU7/5BiVU5+udUvfZ4nxI0AdL
-	 L9WNGT3pN1p/BlWKVznRz5NLdQ08//mS7u1L5kqJNhSwQGR6X3s/9Cx+jKNUF8Ze1q
-	 7ZS3yPjIl0WePNzCvtyaxDJ0vLJmaDZEyMISNEUK7AXz/iMRe6bUSxC+pYn2AxQ4pH
-	 HOAX5v/3VfUpnRJwiP03QnRdjVc02dq0fKf8mdOnBVSA0atQ40zzyuHYxemv9CrFz+
-	 BG/yvtxyaEvIQ==
-Date: Fri, 7 Nov 2025 22:29:24 -0800
-From: Saeed Mahameed <saeed@kernel.org>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>, hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/2] devlink: pass extack through to
- devlink_param::get()
-Message-ID: <aQ7jRAoCxDbgef88@x130>
-References: <20251107204347.4060542-1-daniel.zahka@gmail.com>
- <20251107204347.4060542-2-daniel.zahka@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="i06CmaIi"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wLylq4B6qHYRe7TDeTV7c0qQI3/ooCCgh2F5y9Q1TOQ=;
+	b=i06CmaIizXiGepZxSgb1t/mCPGi3+f3KsJcVFlwNwtFesQUKy/nbzPCH6zdHSL28z9bcqhWBY
+	2hBSeJSAsy1DfhWjvlOUhOCkf0SH/UdC+kCV+Iwgw6JYLuJxroYkJBM7Z6HTIkhYSH9lGZ28kXW
+	jaGG25HOTOUibhoohnUAqxA=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4d3RBR6NPzz1prKK;
+	Sat,  8 Nov 2025 14:40:15 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 71D6118048E;
+	Sat,  8 Nov 2025 14:41:53 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 8 Nov 2025 14:41:52 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
+	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Markus Elfring <Markus.Elfring@web.de>, Pavan Chebbi
+	<pavan.chebbi@broadcom.com>, ALOK TIWARI <alok.a.tiwari@oracle.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Shen Chenyang
+	<shenchenyang1@hisilicon.com>, Zhou Shuai <zhoushuai28@huawei.com>, Wu Like
+	<wulike1@huawei.com>, Shi Jing <shijing34@huawei.com>, Luo Yang
+	<luoyang82@h-partners.com>, Meny Yossefi <meny.yossefi@huawei.com>, Gur Stavi
+	<gur.stavi@huawei.com>
+Subject: [PATCH net-next v06 2/5] hinic3: Add PF management interfaces
+Date: Sat, 8 Nov 2025 14:41:37 +0800
+Message-ID: <c344db0c471b6b1321994958727df1c005a65daa.1762581665.git.zhuyikai1@h-partners.com>
+X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <cover.1762581665.git.zhuyikai1@h-partners.com>
+References: <cover.1762581665.git.zhuyikai1@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251107204347.4060542-2-daniel.zahka@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-On 07 Nov 12:43, Daniel Zahka wrote:
->Allow devlink_param::get() handlers to report error messages via
->extack. This function is called in a few different contexts, but not
->all of them will have an valid extack to use.
->
->When devlink_param::get() is called from param_get_doit or
->param_get_dumpit contexts, pass the extack through so that drivers can
->report errors when retrieving param values. devlink_param::get() is
->called from the context of devlink_param_notify(), pass NULL in for
->the extack.
->
->Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
->---
->
->Notes:
->    v3:
->    - fix warnings about undocumented param in intel ice driver
->
-> .../marvell/octeontx2/otx2_cpt_devlink.c      |  6 ++++--
-> drivers/net/ethernet/amd/pds_core/core.h      |  3 ++-
-> drivers/net/ethernet/amd/pds_core/devlink.c   |  3 ++-
-> .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |  6 ++++--
-> .../net/ethernet/intel/ice/devlink/devlink.c  | 14 ++++++++++----
-> .../marvell/octeontx2/af/rvu_devlink.c        | 15 ++++++++++-----
-> .../marvell/octeontx2/nic/otx2_devlink.c      |  6 ++++--
-> drivers/net/ethernet/mellanox/mlx4/main.c     |  6 ++++--
-> .../net/ethernet/mellanox/mlx5/core/eswitch.c |  3 ++-
-> .../mellanox/mlx5/core/eswitch_offloads.c     |  3 ++-
-> .../net/ethernet/mellanox/mlx5/core/fs_core.c |  3 ++-
-> .../ethernet/mellanox/mlx5/core/fw_reset.c    |  3 ++-
-> .../mellanox/mlx5/core/lib/nv_param.c         |  9 ++++++---
-> .../mellanox/mlxsw/spectrum_acl_tcam.c        |  3 ++-
-> .../ethernet/netronome/nfp/devlink_param.c    |  3 ++-
-> drivers/net/ethernet/qlogic/qed/qed_devlink.c |  3 ++-
-> .../net/ethernet/stmicro/stmmac/stmmac_main.c |  3 ++-
-> drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  3 ++-
-> drivers/net/ethernet/ti/cpsw_new.c            |  6 ++++--
-> drivers/net/wwan/iosm/iosm_ipc_devlink.c      |  3 ++-
-> include/net/devlink.h                         |  3 ++-
-> include/net/dsa.h                             |  3 ++-
-> net/devlink/param.c                           | 19 +++++++++++--------
-> net/dsa/devlink.c                             |  3 ++-
-> 24 files changed, 87 insertions(+), 45 deletions(-)
->
->diff --git a/drivers/crypto/marvell/octeontx2/otx2_cpt_devlink.c b/drivers/crypto/marvell/octeontx2/otx2_cpt_devlink.c
->index 215a1a8ba7e9..07a74f702c3a 100644
->--- a/drivers/crypto/marvell/octeontx2/otx2_cpt_devlink.c
->+++ b/drivers/crypto/marvell/octeontx2/otx2_cpt_devlink.c
->@@ -24,7 +24,8 @@ static int otx2_cpt_dl_egrp_delete(struct devlink *dl, u32 id,
-> }
->
-> static int otx2_cpt_dl_uc_info(struct devlink *dl, u32 id,
->-			       struct devlink_param_gset_ctx *ctx)
->+			       struct devlink_param_gset_ctx *ctx,
->+			       struct netlink_ext_ack *extack)
-> {
-> 	ctx->val.vstr[0] = '\0';
->
->@@ -32,7 +33,8 @@ static int otx2_cpt_dl_uc_info(struct devlink *dl, u32 id,
-> }
->
-> static int otx2_cpt_dl_t106_mode_get(struct devlink *dl, u32 id,
->-				     struct devlink_param_gset_ctx *ctx)
->+				     struct devlink_param_gset_ctx *ctx,
->+				     struct netlink_ext_ack *extack)
-> {
-> 	struct otx2_cpt_devlink *cpt_dl = devlink_priv(dl);
-> 	struct otx2_cptpf_dev *cptpf = cpt_dl->cptpf;
->diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
->index 0b53a1fab46d..4a6b35c84dab 100644
->--- a/drivers/net/ethernet/amd/pds_core/core.h
->+++ b/drivers/net/ethernet/amd/pds_core/core.h
->@@ -255,7 +255,8 @@ int pdsc_dl_flash_update(struct devlink *dl,
-> 			 struct devlink_flash_update_params *params,
-> 			 struct netlink_ext_ack *extack);
-> int pdsc_dl_enable_get(struct devlink *dl, u32 id,
->-		       struct devlink_param_gset_ctx *ctx);
->+		       struct devlink_param_gset_ctx *ctx,
->+		       struct netlink_ext_ack *extack);
-> int pdsc_dl_enable_set(struct devlink *dl, u32 id,
-> 		       struct devlink_param_gset_ctx *ctx,
-> 		       struct netlink_ext_ack *extack);
->diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
->index d8dc39da4161..b576be626a29 100644
->--- a/drivers/net/ethernet/amd/pds_core/devlink.c
->+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
->@@ -22,7 +22,8 @@ pdsc_viftype *pdsc_dl_find_viftype_by_id(struct pdsc *pdsc,
-> }
->
-> int pdsc_dl_enable_get(struct devlink *dl, u32 id,
->-		       struct devlink_param_gset_ctx *ctx)
->+		       struct devlink_param_gset_ctx *ctx,
->+		       struct netlink_ext_ack *extack)
-> {
-> 	struct pdsc *pdsc = devlink_priv(dl);
-> 	struct pdsc_viftype *vt_entry;
->diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
->index 67ca02d84c97..15de802bbac4 100644
->--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
->+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
->@@ -1086,7 +1086,8 @@ static int bnxt_hwrm_nvm_req(struct bnxt *bp, u32 param_id, void *msg,
-> }
->
-> static int bnxt_dl_nvm_param_get(struct devlink *dl, u32 id,
->-				 struct devlink_param_gset_ctx *ctx)
->+				 struct devlink_param_gset_ctx *ctx,
->+				 struct netlink_ext_ack *extack)
-> {
-> 	struct bnxt *bp = bnxt_get_bp_from_dl(dl);
-> 	struct hwrm_nvm_get_variable_input *req;
->@@ -1168,7 +1169,8 @@ static int bnxt_dl_msix_validate(struct devlink *dl, u32 id,
-> }
->
-> static int bnxt_remote_dev_reset_get(struct devlink *dl, u32 id,
->-				     struct devlink_param_gset_ctx *ctx)
->+				     struct devlink_param_gset_ctx *ctx,
->+				     struct netlink_ext_ack *extack)
-> {
-> 	struct bnxt *bp = bnxt_get_bp_from_dl(dl);
->
->diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
->index 938914abbe06..d88b7f3fd1f9 100644
->--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
->+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
->@@ -610,11 +610,13 @@ static int ice_update_tx_topo_user_sel(struct ice_pf *pf, int layers)
->  * @devlink: pointer to the devlink instance
->  * @id: the parameter ID to set
->  * @ctx: context to store the parameter value
->+ * @extack: netlink extended ACK structure
->  *
->  * Return: zero on success and negative value on failure.
->  */
-> static int ice_devlink_tx_sched_layers_get(struct devlink *devlink, u32 id,
->-					   struct devlink_param_gset_ctx *ctx)
->+					   struct devlink_param_gset_ctx *ctx,
->+					   struct netlink_ext_ack *extack)
-> {
-> 	struct ice_pf *pf = devlink_priv(devlink);
-> 	int err;
->@@ -1349,7 +1351,8 @@ static const struct devlink_ops ice_sf_devlink_ops;
->
-> static int
-> ice_devlink_enable_roce_get(struct devlink *devlink, u32 id,
->-			    struct devlink_param_gset_ctx *ctx)
->+			    struct devlink_param_gset_ctx *ctx,
->+			    struct netlink_ext_ack *extack)
-> {
-> 	struct ice_pf *pf = devlink_priv(devlink);
-> 	struct iidc_rdma_core_dev_info *cdev;
->@@ -1415,7 +1418,8 @@ ice_devlink_enable_roce_validate(struct devlink *devlink, u32 id,
->
-> static int
-> ice_devlink_enable_iw_get(struct devlink *devlink, u32 id,
->-			  struct devlink_param_gset_ctx *ctx)
->+			  struct devlink_param_gset_ctx *ctx,
->+			  struct netlink_ext_ack *extack)
-> {
-> 	struct ice_pf *pf = devlink_priv(devlink);
-> 	struct iidc_rdma_core_dev_info *cdev;
->@@ -1522,11 +1526,13 @@ static int ice_devlink_local_fwd_str_to_mode(const char *mode_str)
->  * @devlink: Pointer to the devlink instance.
->  * @id: The parameter ID to set.
->  * @ctx: Context to store the parameter value.
->+ * @extack: netlink extended ACK structure
->  *
->  * Return: Zero.
->  */
-> static int ice_devlink_local_fwd_get(struct devlink *devlink, u32 id,
->-				     struct devlink_param_gset_ctx *ctx)
->+				     struct devlink_param_gset_ctx *ctx,
->+				     struct netlink_ext_ack *extack)
-> {
-> 	struct ice_pf *pf = devlink_priv(devlink);
-> 	struct ice_port_info *pi;
->diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
->index 3735372539bd..0f9953eaf1b0 100644
->--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
->+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
->@@ -1233,7 +1233,8 @@ static int rvu_af_dl_dwrr_mtu_set(struct devlink *devlink, u32 id,
-> }
->
-> static int rvu_af_dl_dwrr_mtu_get(struct devlink *devlink, u32 id,
->-				  struct devlink_param_gset_ctx *ctx)
->+				  struct devlink_param_gset_ctx *ctx,
->+				  struct netlink_ext_ack *extack)
-> {
-> 	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-> 	struct rvu *rvu = rvu_dl->rvu;
->@@ -1259,7 +1260,8 @@ enum rvu_af_dl_param_id {
-> };
->
-> static int rvu_af_npc_exact_feature_get(struct devlink *devlink, u32 id,
->-					struct devlink_param_gset_ctx *ctx)
->+					struct devlink_param_gset_ctx *ctx,
->+					struct netlink_ext_ack *extack)
-> {
-> 	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-> 	struct rvu *rvu = rvu_dl->rvu;
->@@ -1314,7 +1316,8 @@ static int rvu_af_npc_exact_feature_validate(struct devlink *devlink, u32 id,
-> }
->
-> static int rvu_af_dl_npc_mcam_high_zone_percent_get(struct devlink *devlink, u32 id,
->-						    struct devlink_param_gset_ctx *ctx)
->+						    struct devlink_param_gset_ctx *ctx,
->+						    struct netlink_ext_ack *extack)
-> {
-> 	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-> 	struct rvu *rvu = rvu_dl->rvu;
->@@ -1376,7 +1379,8 @@ static int rvu_af_dl_npc_mcam_high_zone_percent_validate(struct devlink *devlink
-> }
->
-> static int rvu_af_dl_npc_def_rule_cntr_get(struct devlink *devlink, u32 id,
->-					   struct devlink_param_gset_ctx *ctx)
->+					   struct devlink_param_gset_ctx *ctx,
->+					   struct netlink_ext_ack *extack)
-> {
-> 	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-> 	struct rvu *rvu = rvu_dl->rvu;
->@@ -1402,7 +1406,8 @@ static int rvu_af_dl_npc_def_rule_cntr_set(struct devlink *devlink, u32 id,
-> }
->
-> static int rvu_af_dl_nix_maxlf_get(struct devlink *devlink, u32 id,
->-				   struct devlink_param_gset_ctx *ctx)
->+				   struct devlink_param_gset_ctx *ctx,
->+				   struct netlink_ext_ack *extack)
-> {
-> 	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-> 	struct rvu *rvu = rvu_dl->rvu;
->diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
->index e13ae5484c19..a72694219df4 100644
->--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
->+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
->@@ -48,7 +48,8 @@ static int otx2_dl_mcam_count_set(struct devlink *devlink, u32 id,
-> }
->
-> static int otx2_dl_mcam_count_get(struct devlink *devlink, u32 id,
->-				  struct devlink_param_gset_ctx *ctx)
->+				  struct devlink_param_gset_ctx *ctx,
->+				  struct netlink_ext_ack *extack)
-> {
-> 	struct otx2_devlink *otx2_dl = devlink_priv(devlink);
-> 	struct otx2_nic *pfvf = otx2_dl->pfvf;
->@@ -84,7 +85,8 @@ static int otx2_dl_ucast_flt_cnt_set(struct devlink *devlink, u32 id,
-> }
->
-> static int otx2_dl_ucast_flt_cnt_get(struct devlink *devlink, u32 id,
->-				     struct devlink_param_gset_ctx *ctx)
->+				     struct devlink_param_gset_ctx *ctx,
->+				     struct netlink_ext_ack *extack)
-> {
-> 	struct otx2_devlink *otx2_dl = devlink_priv(devlink);
-> 	struct otx2_nic *pfvf = otx2_dl->pfvf;
->diff --git a/drivers/net/ethernet/mellanox/mlx4/main.c b/drivers/net/ethernet/mellanox/mlx4/main.c
->index 03d2fc7d9b09..2de226951e19 100644
->--- a/drivers/net/ethernet/mellanox/mlx4/main.c
->+++ b/drivers/net/ethernet/mellanox/mlx4/main.c
->@@ -174,7 +174,8 @@ MODULE_PARM_DESC(port_type_array, "Array of port types: HW_DEFAULT (0) is defaul
-> static atomic_t pf_loading = ATOMIC_INIT(0);
->
-> static int mlx4_devlink_ierr_reset_get(struct devlink *devlink, u32 id,
->-				       struct devlink_param_gset_ctx *ctx)
->+				       struct devlink_param_gset_ctx *ctx,
->+				       struct netlink_ext_ack *extack)
-> {
-> 	ctx->val.vbool = !!mlx4_internal_err_reset;
-> 	return 0;
->@@ -189,7 +190,8 @@ static int mlx4_devlink_ierr_reset_set(struct devlink *devlink, u32 id,
-> }
->
-> static int mlx4_devlink_crdump_snapshot_get(struct devlink *devlink, u32 id,
->-					    struct devlink_param_gset_ctx *ctx)
->+					    struct devlink_param_gset_ctx *ctx,
->+					    struct netlink_ext_ack *extack)
-> {
-> 	struct mlx4_priv *priv = devlink_priv(devlink);
-> 	struct mlx4_dev *dev = &priv->dev;
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
->index e2ffb87b94cb..308429175bb2 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
->@@ -1978,7 +1978,8 @@ static int mlx5_devlink_esw_multiport_set(struct devlink *devlink, u32 id,
-> }
->
-> static int mlx5_devlink_esw_multiport_get(struct devlink *devlink, u32 id,
->-					  struct devlink_param_gset_ctx *ctx)
->+					  struct devlink_param_gset_ctx *ctx,
->+					  struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
->
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
->index 4092ea29c630..a4dd1239514f 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
->@@ -2492,7 +2492,8 @@ static int esw_port_metadata_set(struct devlink *devlink, u32 id,
-> }
->
-> static int esw_port_metadata_get(struct devlink *devlink, u32 id,
->-				 struct devlink_param_gset_ctx *ctx)
->+				 struct devlink_param_gset_ctx *ctx,
->+				 struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
->
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
->index 2db3ffb0a2b2..88dc2023fca5 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
->@@ -3774,7 +3774,8 @@ static int mlx5_fs_mode_set(struct devlink *devlink, u32 id,
-> }
->
-> static int mlx5_fs_mode_get(struct devlink *devlink, u32 id,
->-			    struct devlink_param_gset_ctx *ctx)
->+			    struct devlink_param_gset_ctx *ctx,
->+			    struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
->
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
->index 89e399606877..2bceb42c98cc 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
->@@ -73,7 +73,8 @@ static int mlx5_fw_reset_enable_remote_dev_reset_set(struct devlink *devlink, u3
-> }
->
-> static int mlx5_fw_reset_enable_remote_dev_reset_get(struct devlink *devlink, u32 id,
->-						     struct devlink_param_gset_ctx *ctx)
->+						     struct devlink_param_gset_ctx *ctx,
->+						     struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> 	struct mlx5_fw_reset *fw_reset;
->diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->index f0ab5ef95fc2..3d2195338d39 100644
->--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
->@@ -200,7 +200,8 @@ static const char *const
->
-> static int
-> mlx5_nv_param_devlink_cqe_compress_get(struct devlink *devlink, u32 id,
->-				       struct devlink_param_gset_ctx *ctx)
->+				       struct devlink_param_gset_ctx *ctx,
->+				       struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> 	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
->@@ -302,7 +303,8 @@ static int mlx5_nv_param_read_per_host_pf_conf(struct mlx5_core_dev *dev,
-> }
->
-> static int mlx5_devlink_enable_sriov_get(struct devlink *devlink, u32 id,
->-					 struct devlink_param_gset_ctx *ctx)
->+					 struct devlink_param_gset_ctx *ctx,
->+					 struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> 	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
->@@ -413,7 +415,8 @@ static int mlx5_devlink_enable_sriov_set(struct devlink *devlink, u32 id,
-> }
->
-> static int mlx5_devlink_total_vfs_get(struct devlink *devlink, u32 id,
->-				      struct devlink_param_gset_ctx *ctx)
->+				      struct devlink_param_gset_ctx *ctx,
->+				      struct netlink_ext_ack *extack)
-> {
-> 	struct mlx5_core_dev *dev = devlink_priv(devlink);
-> 	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
->diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
->index b1d08e958bf9..69f9da9fb305 100644
->--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
->+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
->@@ -1489,7 +1489,8 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
->
-> static int
-> mlxsw_sp_acl_tcam_region_rehash_intrvl_get(struct devlink *devlink, u32 id,
->-					   struct devlink_param_gset_ctx *ctx)
->+					   struct devlink_param_gset_ctx *ctx,
->+					   struct netlink_ext_ack *extack)
-> {
-> 	struct mlxsw_core *mlxsw_core = devlink_priv(devlink);
-> 	struct mlxsw_sp_acl_tcam *tcam;
->diff --git a/drivers/net/ethernet/netronome/nfp/devlink_param.c b/drivers/net/ethernet/netronome/nfp/devlink_param.c
->index 0e1a3800f371..85e3b19e6165 100644
->--- a/drivers/net/ethernet/netronome/nfp/devlink_param.c
->+++ b/drivers/net/ethernet/netronome/nfp/devlink_param.c
->@@ -81,7 +81,8 @@ static const struct nfp_devlink_param_u8_arg nfp_devlink_u8_args[] = {
->
-> static int
-> nfp_devlink_param_u8_get(struct devlink *devlink, u32 id,
->-			 struct devlink_param_gset_ctx *ctx)
->+			 struct devlink_param_gset_ctx *ctx,
->+			 struct netlink_ext_ack *extack)
-> {
-> 	const struct nfp_devlink_param_u8_arg *arg;
-> 	struct nfp_pf *pf = devlink_priv(devlink);
->diff --git a/drivers/net/ethernet/qlogic/qed/qed_devlink.c b/drivers/net/ethernet/qlogic/qed/qed_devlink.c
->index 94c5689b5abd..0c5278c0598c 100644
->--- a/drivers/net/ethernet/qlogic/qed/qed_devlink.c
->+++ b/drivers/net/ethernet/qlogic/qed/qed_devlink.c
->@@ -121,7 +121,8 @@ void qed_fw_reporters_destroy(struct devlink *devlink)
-> }
->
-> static int qed_dl_param_get(struct devlink *dl, u32 id,
->-			    struct devlink_param_gset_ctx *ctx)
->+			    struct devlink_param_gset_ctx *ctx,
->+			    struct netlink_ext_ack *extack)
-> {
-> 	struct qed_devlink *qed_dl = devlink_priv(dl);
-> 	struct qed_dev *cdev;
->diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->index ccf383b355e7..e46d443b9da1 100644
->--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->@@ -7488,7 +7488,8 @@ static int stmmac_dl_ts_coarse_set(struct devlink *dl, u32 id,
-> }
->
-> static int stmmac_dl_ts_coarse_get(struct devlink *dl, u32 id,
->-				   struct devlink_param_gset_ctx *ctx)
->+				   struct devlink_param_gset_ctx *ctx,
->+				   struct netlink_ext_ack *extack)
-> {
-> 	struct stmmac_devlink_priv *dl_priv = devlink_priv(dl);
-> 	struct stmmac_priv *priv = dl_priv->stmmac_priv;
->diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
->index d5f358ec9820..5924db6be3fe 100644
->--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
->+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
->@@ -3068,7 +3068,8 @@ static void am65_cpsw_init_host_port_emac(struct am65_cpsw_common *common)
-> }
->
-> static int am65_cpsw_dl_switch_mode_get(struct devlink *dl, u32 id,
->-					struct devlink_param_gset_ctx *ctx)
->+					struct devlink_param_gset_ctx *ctx,
->+					struct netlink_ext_ack *extack)
-> {
-> 	struct am65_cpsw_devlink *dl_priv = devlink_priv(dl);
-> 	struct am65_cpsw_common *common = dl_priv->common;
->diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
->index 8b9e2078c602..ab88d4c02cbd 100644
->--- a/drivers/net/ethernet/ti/cpsw_new.c
->+++ b/drivers/net/ethernet/ti/cpsw_new.c
->@@ -1618,7 +1618,8 @@ static const struct devlink_ops cpsw_devlink_ops = {
-> };
->
-> static int cpsw_dl_switch_mode_get(struct devlink *dl, u32 id,
->-				   struct devlink_param_gset_ctx *ctx)
->+				   struct devlink_param_gset_ctx *ctx,
->+				   struct netlink_ext_ack *extack)
-> {
-> 	struct cpsw_devlink *dl_priv = devlink_priv(dl);
-> 	struct cpsw_common *cpsw = dl_priv->cpsw;
->@@ -1753,7 +1754,8 @@ static int cpsw_dl_switch_mode_set(struct devlink *dl, u32 id,
-> }
->
-> static int cpsw_dl_ale_ctrl_get(struct devlink *dl, u32 id,
->-				struct devlink_param_gset_ctx *ctx)
->+				struct devlink_param_gset_ctx *ctx,
->+				struct netlink_ext_ack *extack)
-> {
-> 	struct cpsw_devlink *dl_priv = devlink_priv(dl);
-> 	struct cpsw_common *cpsw = dl_priv->cpsw;
->diff --git a/drivers/net/wwan/iosm/iosm_ipc_devlink.c b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
->index 33d6342124bc..301a9d294d30 100644
->--- a/drivers/net/wwan/iosm/iosm_ipc_devlink.c
->+++ b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
->@@ -21,7 +21,8 @@ static struct iosm_coredump_file_info list[IOSM_NOF_CD_REGION] = {
->
-> /* Get the param values for the specific param ID's */
-> static int ipc_devlink_get_param(struct devlink *dl, u32 id,
->-				 struct devlink_param_gset_ctx *ctx)
->+				 struct devlink_param_gset_ctx *ctx,
->+				 struct netlink_ext_ack *extack)
-> {
-> 	struct iosm_devlink *ipc_devlink = devlink_priv(dl);
->
->diff --git a/include/net/devlink.h b/include/net/devlink.h
->index 9e824f61e40f..6d942597d07d 100644
->--- a/include/net/devlink.h
->+++ b/include/net/devlink.h
->@@ -490,7 +490,8 @@ struct devlink_param {
-> 	enum devlink_param_type type;
-> 	unsigned long supported_cmodes;
-> 	int (*get)(struct devlink *devlink, u32 id,
->-		   struct devlink_param_gset_ctx *ctx);
->+		   struct devlink_param_gset_ctx *ctx,
->+		   struct netlink_ext_ack *extack);
-> 	int (*set)(struct devlink *devlink, u32 id,
-> 		   struct devlink_param_gset_ctx *ctx,
-> 		   struct netlink_ext_ack *extack);
->diff --git a/include/net/dsa.h b/include/net/dsa.h
->index 2df2e2ead9a8..85c1b938f2c4 100644
->--- a/include/net/dsa.h
->+++ b/include/net/dsa.h
->@@ -1251,7 +1251,8 @@ struct dsa_switch_ops {
-> 			     dsa_devlink_param_get, dsa_devlink_param_set, NULL)
->
-> int dsa_devlink_param_get(struct devlink *dl, u32 id,
->-			  struct devlink_param_gset_ctx *ctx);
->+			  struct devlink_param_gset_ctx *ctx,
->+			  struct netlink_ext_ack *extack);
-> int dsa_devlink_param_set(struct devlink *dl, u32 id,
-> 			  struct devlink_param_gset_ctx *ctx,
-> 			  struct netlink_ext_ack *extack);
->diff --git a/net/devlink/param.c b/net/devlink/param.c
->index 70e69523412c..8bae3f733bde 100644
->--- a/net/devlink/param.c
->+++ b/net/devlink/param.c
->@@ -169,11 +169,12 @@ devlink_param_cmode_is_supported(const struct devlink_param *param,
->
-> static int devlink_param_get(struct devlink *devlink,
-> 			     const struct devlink_param *param,
->-			     struct devlink_param_gset_ctx *ctx)
->+			     struct devlink_param_gset_ctx *ctx,
->+			     struct netlink_ext_ack *extack)
-> {
-> 	if (!param->get)
-> 		return -EOPNOTSUPP;
->-	return param->get(devlink, param->id, ctx);
->+	return param->get(devlink, param->id, ctx, extack);
-> }
->
-> static int devlink_param_set(struct devlink *devlink,
->@@ -245,7 +246,8 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
-> 				 unsigned int port_index,
-> 				 struct devlink_param_item *param_item,
-> 				 enum devlink_command cmd,
->-				 u32 portid, u32 seq, int flags)
->+				 u32 portid, u32 seq, int flags,
->+				 struct netlink_ext_ack *extack)
+Add management and communication pathways between PF and HW.
 
-Too many params, I miss David Miller, I think he said once "if you write a function with more
-than 5 parameters, you are not my friend".
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../ethernet/huawei/hinic3/hinic3_hw_intf.h   |   2 +
+ .../net/ethernet/huawei/hinic3/hinic3_hwdev.c |  51 ++-
+ .../net/ethernet/huawei/hinic3/hinic3_hwdev.h |   1 +
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |   2 +
+ .../net/ethernet/huawei/hinic3/hinic3_mbox.c  |  13 +
+ .../net/ethernet/huawei/hinic3/hinic3_mbox.h  |   2 +
+ .../net/ethernet/huawei/hinic3/hinic3_mgmt.c  | 311 +++++++++++++++++-
+ .../net/ethernet/huawei/hinic3/hinic3_mgmt.h  |  53 +++
+ .../huawei/hinic3/hinic3_mgmt_interface.h     |   1 +
+ .../huawei/hinic3/hinic3_netdev_ops.c         |  35 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  28 ++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   |  18 +
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   2 +
+ 13 files changed, 517 insertions(+), 2 deletions(-)
 
-Anyway I can't think of a creative way to solve this, so LGTM overall.
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+index a0422ec0500f..329a9c464ff9 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+@@ -39,6 +39,8 @@ enum mgmt_mod_type {
+ 	/* Configuration module */
+ 	MGMT_MOD_CFGM   = 7,
+ 	MGMT_MOD_HILINK = 14,
++	/* hardware max module id */
++	MGMT_MOD_HW_MAX = 20,
+ };
+ 
+ static inline void mgmt_msg_params_init_default(struct mgmt_msg_params *msg_params,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+index 2b1f1036620e..25e375b20174 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+@@ -211,6 +211,36 @@ static int init_ceqs_msix_attr(struct hinic3_hwdev *hwdev)
+ 	return 0;
+ }
+ 
++static int hinic3_comm_pf_to_mgmt_init(struct hinic3_hwdev *hwdev)
++{
++	int err;
++
++	if (HINIC3_IS_VF(hwdev))
++		return 0;
++
++	err = hinic3_pf_to_mgmt_init(hwdev);
++	if (err)
++		return err;
++
++	set_bit(HINIC3_HWDEV_MGMT_INITED, &hwdev->func_state);
++
++	return 0;
++}
++
++static void hinic3_comm_pf_to_mgmt_free(struct hinic3_hwdev *hwdev)
++{
++	if (HINIC3_IS_VF(hwdev))
++		return;
++
++	spin_lock_bh(&hwdev->channel_lock);
++	clear_bit(HINIC3_HWDEV_MGMT_INITED, &hwdev->func_state);
++	spin_unlock_bh(&hwdev->channel_lock);
++
++	hinic3_aeq_unregister_cb(hwdev, HINIC3_MSG_FROM_FW);
++
++	hinic3_pf_to_mgmt_free(hwdev);
++}
++
+ static int init_basic_mgmt_channel(struct hinic3_hwdev *hwdev)
+ {
+ 	int err;
+@@ -412,10 +442,14 @@ static int hinic3_init_comm_ch(struct hinic3_hwdev *hwdev)
+ 	if (err)
+ 		return err;
+ 
+-	err = init_basic_attributes(hwdev);
++	err = hinic3_comm_pf_to_mgmt_init(hwdev);
+ 	if (err)
+ 		goto err_free_basic_mgmt_ch;
+ 
++	err = init_basic_attributes(hwdev);
++	if (err)
++		goto err_free_comm_pf_to_mgmt;
++
+ 	err = init_cmdqs_channel(hwdev);
+ 	if (err) {
+ 		dev_err(hwdev->dev, "Failed to init cmdq channel\n");
+@@ -428,6 +462,8 @@ static int hinic3_init_comm_ch(struct hinic3_hwdev *hwdev)
+ 
+ err_clear_func_svc_used_state:
+ 	hinic3_set_func_svc_used_state(hwdev, COMM_FUNC_SVC_T_COMM, 0);
++err_free_comm_pf_to_mgmt:
++	hinic3_comm_pf_to_mgmt_free(hwdev);
+ err_free_basic_mgmt_ch:
+ 	free_base_mgmt_channel(hwdev);
+ 
+@@ -439,6 +475,7 @@ static void hinic3_uninit_comm_ch(struct hinic3_hwdev *hwdev)
+ 	hinic3_set_pf_status(hwdev->hwif, HINIC3_PF_STATUS_INIT);
+ 	hinic3_free_cmdqs_channel(hwdev);
+ 	hinic3_set_func_svc_used_state(hwdev, COMM_FUNC_SVC_T_COMM, 0);
++	hinic3_comm_pf_to_mgmt_free(hwdev);
+ 	free_base_mgmt_channel(hwdev);
+ }
+ 
+@@ -581,9 +618,21 @@ void hinic3_free_hwdev(struct hinic3_hwdev *hwdev)
+ 
+ void hinic3_set_api_stop(struct hinic3_hwdev *hwdev)
+ {
++	struct hinic3_recv_msg *recv_resp_msg;
+ 	struct hinic3_mbox *mbox;
+ 
+ 	spin_lock_bh(&hwdev->channel_lock);
++	if (HINIC3_IS_PF(hwdev) &&
++	    test_bit(HINIC3_HWDEV_MGMT_INITED, &hwdev->func_state)) {
++		recv_resp_msg = &hwdev->pf_to_mgmt->recv_resp_msg_from_mgmt;
++		spin_lock_bh(&hwdev->pf_to_mgmt->sync_event_lock);
++		if (hwdev->pf_to_mgmt->event_flag == COMM_SEND_EVENT_START) {
++			complete(&recv_resp_msg->recv_done);
++			hwdev->pf_to_mgmt->event_flag = COMM_SEND_EVENT_TIMEOUT;
++		}
++		spin_unlock_bh(&hwdev->pf_to_mgmt->sync_event_lock);
++	}
++
+ 	if (test_bit(HINIC3_HWDEV_MBOX_INITED, &hwdev->func_state)) {
+ 		mbox = hwdev->mbox;
+ 		spin_lock(&mbox->mbox_lock);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
+index 78cface6ddd7..3c15f22973fe 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
+@@ -51,6 +51,7 @@ struct hinic3_hwdev {
+ 	struct hinic3_cmdqs         *cmdqs;
+ 	struct delayed_work         sync_time_task;
+ 	struct workqueue_struct     *workq;
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt;
+ 	/* protect channel init and uninit */
+ 	spinlock_t                  channel_lock;
+ 	u64                         features[COMM_MAX_FEATURE_QWORD];
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+index 9249dd588feb..5570a3e6b6ad 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+@@ -133,6 +133,8 @@ static int hinic3_sw_init(struct net_device *netdev)
+ 	u8 mac_addr[ETH_ALEN];
+ 	int err;
+ 
++	sema_init(&nic_dev->port_state_sem, 1);
++
+ 	nic_dev->q_params.sq_depth = HINIC3_SQ_DEPTH;
+ 	nic_dev->q_params.rq_depth = HINIC3_RQ_DEPTH;
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
+index 1cb0d88911a2..90e704107e7e 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
+@@ -858,6 +858,19 @@ int hinic3_send_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
+ 	return err;
+ }
+ 
++void hinic3_response_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
++				  const void *buf_in, u32 in_size, u16 msg_id)
++{
++	struct mbox_msg_info msg_info;
++
++	msg_info.msg_id = (u8)msg_id;
++	msg_info.status = 0;
++
++	send_mbox_msg(hwdev->mbox, mod, cmd, buf_in, in_size,
++		      MBOX_MGMT_FUNC_ID, MBOX_MSG_RESP,
++		      MBOX_MSG_NO_ACK, &msg_info);
++}
++
+ int hinic3_send_mbox_to_mgmt_no_ack(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
+ 				    const struct mgmt_msg_params *msg_params)
+ {
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.h
+index e71629e95086..e26f22d1d564 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.h
+@@ -135,6 +135,8 @@ void hinic3_free_mbox(struct hinic3_hwdev *hwdev);
+ 
+ int hinic3_send_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
+ 			     const struct mgmt_msg_params *msg_params);
++void hinic3_response_mbox_to_mgmt(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
++				  const void *buf_in, u32 in_size, u16 msg_id);
+ int hinic3_send_mbox_to_mgmt_no_ack(struct hinic3_hwdev *hwdev, u8 mod, u16 cmd,
+ 				    const struct mgmt_msg_params *msg_params);
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c
+index c38d10cd7fac..e1d2a4444663 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c
+@@ -3,19 +3,328 @@
+ 
+ #include "hinic3_eqs.h"
+ #include "hinic3_hwdev.h"
++#include "hinic3_hwif.h"
+ #include "hinic3_mbox.h"
+ #include "hinic3_mgmt.h"
+ 
++#define HINIC3_MSG_TO_MGMT_MAX_LEN  2016
++
++#define MGMT_MAX_PF_BUF_SIZE        2048UL
++#define MGMT_SEG_LEN_MAX            48
++#define MGMT_ASYNC_MSG_FLAG         0x8
++
++#define HINIC3_MGMT_WQ_NAME         "hinic3_mgmt"
++
++/* Bogus sequence ID to prevent accidental match following partial message */
++#define MGMT_BOGUS_SEQ_ID  \
++	(MGMT_MAX_PF_BUF_SIZE / MGMT_SEG_LEN_MAX + 1)
++
++static void
++hinic3_mgmt_resp_msg_handler(struct hinic3_msg_pf_to_mgmt *pf_to_mgmt,
++			     struct hinic3_recv_msg *recv_msg)
++{
++	struct device *dev = pf_to_mgmt->hwdev->dev;
++
++	/* Ignore async msg */
++	if (recv_msg->msg_id & MGMT_ASYNC_MSG_FLAG)
++		return;
++
++	spin_lock(&pf_to_mgmt->sync_event_lock);
++	if (recv_msg->msg_id != pf_to_mgmt->sync_msg_id) {
++		dev_err(dev, "msg id mismatch, send msg id: 0x%x, recv msg id: 0x%x, event state: %d\n",
++			pf_to_mgmt->sync_msg_id, recv_msg->msg_id,
++			pf_to_mgmt->event_flag);
++	} else if (pf_to_mgmt->event_flag == COMM_SEND_EVENT_START) {
++		pf_to_mgmt->event_flag = COMM_SEND_EVENT_SUCCESS;
++		complete(&recv_msg->recv_done);
++	} else {
++		dev_err(dev, "Wait timeout, send msg id: 0x%x, recv msg id: 0x%x, event state: %d\n",
++			pf_to_mgmt->sync_msg_id, recv_msg->msg_id,
++			pf_to_mgmt->event_flag);
++	}
++	spin_unlock(&pf_to_mgmt->sync_event_lock);
++}
++
++static void hinic3_recv_mgmt_msg_work_handler(struct work_struct *work)
++{
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt;
++	struct mgmt_msg_handle_work *mgmt_work;
++	struct mgmt_msg_head *ack_cmd;
++
++	mgmt_work = container_of(work, struct mgmt_msg_handle_work, work);
++
++	/* At the moment, we do not expect any meaningful messages but if the
++	 * sender expects an ACK we still need to provide one with "unsupported"
++	 * status.
++	 */
++	if (mgmt_work->async_mgmt_to_pf)
++		goto out;
++
++	pf_to_mgmt = mgmt_work->pf_to_mgmt;
++	ack_cmd = pf_to_mgmt->mgmt_ack_buf;
++	memset(ack_cmd, 0, sizeof(*ack_cmd));
++	ack_cmd->status = MGMT_STATUS_CMD_UNSUPPORTED;
++
++	hinic3_response_mbox_to_mgmt(pf_to_mgmt->hwdev, mgmt_work->mod,
++				     mgmt_work->cmd, ack_cmd, sizeof(*ack_cmd),
++				     mgmt_work->msg_id);
++
++out:
++	kfree(mgmt_work->msg);
++	kfree(mgmt_work);
++}
++
++static int hinic3_recv_msg_add_seg(struct hinic3_recv_msg *recv_msg,
++				   __le64 msg_header, const void *seg_data,
++				   bool *is_complete)
++{
++	u8 seq_id, msg_id, seg_len, is_last;
++	char *msg_buff;
++	u32 offset;
++
++	seg_len = MBOX_MSG_HEADER_GET(msg_header, SEG_LEN);
++	is_last = MBOX_MSG_HEADER_GET(msg_header, LAST);
++	seq_id  = MBOX_MSG_HEADER_GET(msg_header, SEQID);
++	msg_id = MBOX_MSG_HEADER_GET(msg_header, MSG_ID);
++
++	if (seg_len > MGMT_SEG_LEN_MAX)
++		return -EINVAL;
++
++	/* All segments but last must be of maximal size */
++	if (seg_len != MGMT_SEG_LEN_MAX && !is_last)
++		return -EINVAL;
++
++	if (seq_id == 0) {
++		recv_msg->seq_id = seq_id;
++		recv_msg->msg_id = msg_id;
++	} else if (seq_id != recv_msg->seq_id + 1 ||
++		   msg_id != recv_msg->msg_id) {
++		return -EINVAL;
++	}
++
++	offset = seq_id * MGMT_SEG_LEN_MAX;
++	if (offset + seg_len > MGMT_MAX_PF_BUF_SIZE)
++		return -EINVAL;
++
++	msg_buff = recv_msg->msg;
++	memcpy(msg_buff + offset, seg_data, seg_len);
++	recv_msg->msg_len = offset + seg_len;
++	recv_msg->seq_id = seq_id;
++	*is_complete = !!is_last;
++
++	return 0;
++}
++
++static void hinic3_init_mgmt_msg_work(struct hinic3_msg_pf_to_mgmt *pf_to_mgmt,
++				      struct hinic3_recv_msg *recv_msg)
++{
++	struct mgmt_msg_handle_work *mgmt_work;
++
++	mgmt_work = kmalloc(sizeof(*mgmt_work), GFP_KERNEL);
++	if (!mgmt_work)
++		return;
++
++	if (recv_msg->msg_len) {
++		mgmt_work->msg = kmalloc(recv_msg->msg_len, GFP_KERNEL);
++		if (!mgmt_work->msg) {
++			kfree(mgmt_work);
++			return;
++		}
++	}
++
++	mgmt_work->pf_to_mgmt = pf_to_mgmt;
++	mgmt_work->msg_len = recv_msg->msg_len;
++	memcpy(mgmt_work->msg, recv_msg->msg, recv_msg->msg_len);
++	mgmt_work->msg_id = recv_msg->msg_id;
++	mgmt_work->mod = recv_msg->mod;
++	mgmt_work->cmd = recv_msg->cmd;
++	mgmt_work->async_mgmt_to_pf = recv_msg->async_mgmt_to_pf;
++
++	INIT_WORK(&mgmt_work->work, hinic3_recv_mgmt_msg_work_handler);
++	queue_work(pf_to_mgmt->workq, &mgmt_work->work);
++}
++
++static void
++hinic3_recv_mgmt_msg_handler(struct hinic3_msg_pf_to_mgmt *pf_to_mgmt,
++			     const u8 *header,
++			     struct hinic3_recv_msg *recv_msg)
++{
++	struct hinic3_hwdev *hwdev = pf_to_mgmt->hwdev;
++	const void *seg_data;
++	__le64 msg_header;
++	bool is_complete;
++	u8 dir, msg_id;
++	int err;
++
++	msg_header = *(__force __le64 *)header;
++	dir = MBOX_MSG_HEADER_GET(msg_header, DIRECTION);
++	msg_id = MBOX_MSG_HEADER_GET(msg_header, MSG_ID);
++	/* Don't need to get anything from hw when cmd is async */
++	if (dir == MBOX_MSG_RESP && (msg_id & MGMT_ASYNC_MSG_FLAG))
++		return;
++
++	seg_data = header + sizeof(msg_header);
++	err = hinic3_recv_msg_add_seg(recv_msg, msg_header,
++				      seg_data, &is_complete);
++	if (err) {
++		dev_err(hwdev->dev, "invalid receive segment\n");
++		/* set seq_id to invalid seq_id */
++		recv_msg->seq_id = MGMT_BOGUS_SEQ_ID;
++
++		return;
++	}
++
++	if (!is_complete)
++		return;
++
++	recv_msg->cmd = MBOX_MSG_HEADER_GET(msg_header, CMD);
++	recv_msg->mod = MBOX_MSG_HEADER_GET(msg_header, MODULE);
++	recv_msg->async_mgmt_to_pf = MBOX_MSG_HEADER_GET(msg_header, NO_ACK);
++	recv_msg->seq_id = MGMT_BOGUS_SEQ_ID;
++
++	if (dir == MBOX_MSG_RESP)
++		hinic3_mgmt_resp_msg_handler(pf_to_mgmt, recv_msg);
++	else
++		hinic3_init_mgmt_msg_work(pf_to_mgmt, recv_msg);
++}
++
++static int alloc_recv_msg(struct hinic3_recv_msg *recv_msg)
++{
++	recv_msg->seq_id = MGMT_BOGUS_SEQ_ID;
++
++	recv_msg->msg = kzalloc(MGMT_MAX_PF_BUF_SIZE, GFP_KERNEL);
++	if (!recv_msg->msg)
++		return -ENOMEM;
++
++	return 0;
++}
++
++static void free_recv_msg(struct hinic3_recv_msg *recv_msg)
++{
++	kfree(recv_msg->msg);
++}
++
++static int alloc_msg_buf(struct hinic3_msg_pf_to_mgmt *pf_to_mgmt)
++{
++	struct device *dev = pf_to_mgmt->hwdev->dev;
++	int err;
++
++	err = alloc_recv_msg(&pf_to_mgmt->recv_msg_from_mgmt);
++	if (err) {
++		dev_err(dev, "Failed to allocate recv msg\n");
++		return err;
++	}
++
++	err = alloc_recv_msg(&pf_to_mgmt->recv_resp_msg_from_mgmt);
++	if (err) {
++		dev_err(dev, "Failed to allocate resp recv msg\n");
++		goto err_free_msg_from_mgmt;
++	}
++
++	pf_to_mgmt->mgmt_ack_buf = kzalloc(MGMT_MAX_PF_BUF_SIZE, GFP_KERNEL);
++	if (!pf_to_mgmt->mgmt_ack_buf) {
++		err = -ENOMEM;
++		goto err_free_resp_msg_from_mgmt;
++	}
++
++	return 0;
++
++err_free_resp_msg_from_mgmt:
++	free_recv_msg(&pf_to_mgmt->recv_resp_msg_from_mgmt);
++err_free_msg_from_mgmt:
++	free_recv_msg(&pf_to_mgmt->recv_msg_from_mgmt);
++
++	return err;
++}
++
++static void free_msg_buf(struct hinic3_msg_pf_to_mgmt *pf_to_mgmt)
++{
++	kfree(pf_to_mgmt->mgmt_ack_buf);
++
++	free_recv_msg(&pf_to_mgmt->recv_resp_msg_from_mgmt);
++	free_recv_msg(&pf_to_mgmt->recv_msg_from_mgmt);
++}
++
++int hinic3_pf_to_mgmt_init(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt;
++	int err;
++
++	pf_to_mgmt = kzalloc(sizeof(*pf_to_mgmt), GFP_KERNEL);
++	if (!pf_to_mgmt)
++		return -ENOMEM;
++
++	hwdev->pf_to_mgmt = pf_to_mgmt;
++	pf_to_mgmt->hwdev = hwdev;
++	spin_lock_init(&pf_to_mgmt->sync_event_lock);
++	pf_to_mgmt->workq = create_singlethread_workqueue(HINIC3_MGMT_WQ_NAME);
++	if (!pf_to_mgmt->workq) {
++		dev_err(hwdev->dev, "Failed to initialize MGMT workqueue\n");
++		err = -ENOMEM;
++		goto err_free_pf_to_mgmt;
++	}
++
++	err = alloc_msg_buf(pf_to_mgmt);
++	if (err) {
++		dev_err(hwdev->dev, "Failed to allocate msg buffers\n");
++		goto err_destroy_workqueue;
++	}
++
++	return 0;
++
++err_destroy_workqueue:
++	destroy_workqueue(pf_to_mgmt->workq);
++err_free_pf_to_mgmt:
++	kfree(pf_to_mgmt);
++
++	return err;
++}
++
++void hinic3_pf_to_mgmt_free(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt = hwdev->pf_to_mgmt;
++
++	/* destroy workqueue before free related pf_to_mgmt resources in case of
++	 * illegal resource access
++	 */
++	destroy_workqueue(pf_to_mgmt->workq);
++
++	free_msg_buf(pf_to_mgmt);
++	kfree(pf_to_mgmt);
++}
++
+ void hinic3_flush_mgmt_workq(struct hinic3_hwdev *hwdev)
+ {
+ 	if (hwdev->aeqs)
+ 		flush_workqueue(hwdev->aeqs->workq);
++
++	if (HINIC3_IS_PF(hwdev) && hwdev->pf_to_mgmt)
++		flush_workqueue(hwdev->pf_to_mgmt->workq);
+ }
+ 
+ void hinic3_mgmt_msg_aeqe_handler(struct hinic3_hwdev *hwdev, u8 *header,
+ 				  u8 size)
+ {
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt;
++	struct hinic3_recv_msg *recv_msg;
++	__le64 msg_header;
++	bool is_send_dir;
++
+ 	if (MBOX_MSG_HEADER_GET(*(__force __le64 *)header, SOURCE) ==
+-				MBOX_MSG_FROM_MBOX)
++	    MBOX_MSG_FROM_MBOX) {
+ 		hinic3_mbox_func_aeqe_handler(hwdev, header, size);
++
++		return;
++	}
++
++	pf_to_mgmt = hwdev->pf_to_mgmt;
++	msg_header = *(__force __le64 *)header;
++
++	is_send_dir = (MBOX_MSG_HEADER_GET(msg_header, DIRECTION) ==
++		       MBOX_MSG_SEND) ? true : false;
++
++	recv_msg = is_send_dir ? &pf_to_mgmt->recv_msg_from_mgmt :
++		   &pf_to_mgmt->recv_resp_msg_from_mgmt;
++
++	hinic3_recv_mgmt_msg_handler(pf_to_mgmt, header, recv_msg);
+ }
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.h
+index bbef3b32a6ec..56f48d5442bc 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.h
+@@ -6,8 +6,61 @@
+ 
+ #include <linux/types.h>
+ 
++#include "hinic3_mbox.h"
++#include "hinic3_hw_intf.h"
++
+ struct hinic3_hwdev;
+ 
++struct hinic3_recv_msg {
++	/* Preallocated buffer of size MAX_PF_MGMT_BUF_SIZE that accumulates
++	 * receive message, segment-by-segment.
++	 */
++	void                 *msg;
++	/* Message id for which segments are accumulated. */
++	u8                   msg_id;
++	/* Sequence id of last received segment of current message. */
++	u8                   seq_id;
++	u16                  msg_len;
++	int                  async_mgmt_to_pf;
++	enum mgmt_mod_type   mod;
++	u16                  cmd;
++	struct completion    recv_done;
++};
++
++enum comm_pf_to_mgmt_event_state {
++	COMM_SEND_EVENT_UNINIT,
++	COMM_SEND_EVENT_START,
++	COMM_SEND_EVENT_SUCCESS,
++	COMM_SEND_EVENT_TIMEOUT,
++};
++
++struct hinic3_msg_pf_to_mgmt {
++	struct hinic3_hwdev              *hwdev;
++	struct workqueue_struct          *workq;
++	void                             *mgmt_ack_buf;
++	struct hinic3_recv_msg           recv_msg_from_mgmt;
++	struct hinic3_recv_msg           recv_resp_msg_from_mgmt;
++	u16                              async_msg_id;
++	u16                              sync_msg_id;
++	void                             *async_msg_cb_data[MGMT_MOD_HW_MAX];
++	/* synchronizes message send with message receives via event queue */
++	spinlock_t                       sync_event_lock;
++	enum comm_pf_to_mgmt_event_state event_flag;
++};
++
++struct mgmt_msg_handle_work {
++	struct work_struct           work;
++	struct hinic3_msg_pf_to_mgmt *pf_to_mgmt;
++	void                         *msg;
++	u16                          msg_len;
++	enum mgmt_mod_type           mod;
++	u16                          cmd;
++	u16                          msg_id;
++	int                          async_mgmt_to_pf;
++};
++
++int hinic3_pf_to_mgmt_init(struct hinic3_hwdev *hwdev);
++void hinic3_pf_to_mgmt_free(struct hinic3_hwdev *hwdev);
+ void hinic3_flush_mgmt_workq(struct hinic3_hwdev *hwdev);
+ void hinic3_mgmt_msg_aeqe_handler(struct hinic3_hwdev *hwdev,
+ 				  u8 *header, u8 size);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+index f9a3222b1b46..3a6d3ee534d0 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+@@ -190,6 +190,7 @@ enum l2nic_ucode_cmd {
+ 
+ /* hilink mac group command */
+ enum mag_cmd {
++	MAG_CMD_SET_PORT_ENABLE = 6,
+ 	MAG_CMD_GET_LINK_STATUS = 7,
+ };
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+index 0fa3c7900225..bf199f4ce847 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+@@ -327,6 +327,31 @@ static void hinic3_close_channel(struct net_device *netdev)
+ 	hinic3_free_qp_ctxts(nic_dev);
+ }
+ 
++static int hinic3_maybe_set_port_state(struct net_device *netdev, bool enable)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	int err;
++
++	down(&nic_dev->port_state_sem);
++	err = hinic3_set_port_enable(nic_dev->hwdev, enable);
++	up(&nic_dev->port_state_sem);
++
++	return err;
++}
++
++static void hinic3_print_link_message(struct net_device *netdev,
++				      bool link_status_up)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	if (nic_dev->link_status_up == link_status_up)
++		return;
++
++	nic_dev->link_status_up = link_status_up;
++
++	netdev_dbg(netdev, "Link is %s\n", str_up_down(link_status_up));
++}
++
+ static int hinic3_vport_up(struct net_device *netdev)
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+@@ -341,6 +366,12 @@ static int hinic3_vport_up(struct net_device *netdev)
+ 		goto err_flush_qps_res;
+ 	}
+ 
++	err = hinic3_maybe_set_port_state(netdev, true);
++	if (err) {
++		netdev_err(netdev, "Failed to enable port\n");
++		goto err_disable_vport;
++	}
++
+ 	err = netif_set_real_num_queues(netdev, nic_dev->q_params.num_qps,
+ 					nic_dev->q_params.num_qps);
+ 	if (err) {
+@@ -353,8 +384,12 @@ static int hinic3_vport_up(struct net_device *netdev)
+ 	if (!err && link_status_up)
+ 		netif_carrier_on(netdev);
+ 
++	hinic3_print_link_message(netdev, link_status_up);
++
+ 	return 0;
+ 
++err_disable_vport:
++	hinic3_set_vport_enable(nic_dev->hwdev, glb_func_id, false);
+ err_flush_qps_res:
+ 	hinic3_flush_qps_res(nic_dev->hwdev);
+ 	/* wait to guarantee that no packets will be sent to host */
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+index e784f1b04a41..7fec13bbe60e 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+@@ -366,6 +366,34 @@ int hinic3_force_drop_tx_pkt(struct hinic3_hwdev *hwdev)
+ 	return pkt_drop.msg_head.status;
+ }
+ 
++int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable)
++{
++	struct mag_cmd_set_port_enable en_state = {};
++	struct mgmt_msg_params msg_params = {};
++	int err;
++
++	if (HINIC3_IS_VF(hwdev))
++		return 0;
++
++	en_state.function_id = hinic3_global_func_id(hwdev);
++	en_state.state = enable ? MAG_CMD_TX_ENABLE | MAG_CMD_RX_ENABLE :
++				MAG_CMD_PORT_DISABLE;
++
++	mgmt_msg_params_init_default(&msg_params, &en_state,
++				     sizeof(en_state));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_HILINK,
++				       MAG_CMD_SET_PORT_ENABLE, &msg_params);
++
++	if (err || en_state.head.status) {
++		dev_err(hwdev->dev, "Failed to set port state, err: %d, status: 0x%x\n",
++			err, en_state.head.status);
++		return -EFAULT;
++	}
++
++	return 0;
++}
++
+ int hinic3_sync_dcb_state(struct hinic3_hwdev *hwdev, u8 op_code, u8 state)
+ {
+ 	struct l2nic_cmd_set_dcb_state dcb_state = {};
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
+index 08bf14679bf8..d4326937db48 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
+@@ -34,6 +34,23 @@ struct hinic3_sq_attr {
+ 	u64 ci_dma_base;
+ };
+ 
++#define MAG_CMD_PORT_DISABLE    0x0
++#define MAG_CMD_TX_ENABLE       0x1
++#define MAG_CMD_RX_ENABLE       0x2
++/* the physical port is disabled only when all pf of the port are set to down,
++ * if any pf is enabled, the port is enabled
++ */
++struct mag_cmd_set_port_enable {
++	struct mgmt_msg_head head;
++
++	u16                  function_id;
++	u16                  rsvd0;
++
++	/* bitmap bit0:tx_en bit1:rx_en */
++	u8                   state;
++	u8                   rsvd1[3];
++};
++
+ int hinic3_get_nic_feature_from_hw(struct hinic3_nic_dev *nic_dev);
+ int hinic3_set_nic_feature_to_hw(struct hinic3_nic_dev *nic_dev);
+ bool hinic3_test_support(struct hinic3_nic_dev *nic_dev,
+@@ -57,6 +74,7 @@ int hinic3_flush_qps_res(struct hinic3_hwdev *hwdev);
+ int hinic3_force_drop_tx_pkt(struct hinic3_hwdev *hwdev);
+ 
+ int hinic3_sync_dcb_state(struct hinic3_hwdev *hwdev, u8 op_code, u8 state);
++int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable);
+ int hinic3_get_link_status(struct hinic3_hwdev *hwdev, bool *link_status_up);
+ int hinic3_set_vport_enable(struct hinic3_hwdev *hwdev, u16 func_id,
+ 			    bool enable);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+index 5ba83261616c..3a9f3ccdb684 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+@@ -83,6 +83,8 @@ struct hinic3_nic_dev {
+ 
+ 	struct hinic3_intr_coal_info    *intr_coalesce;
+ 
++	struct semaphore                port_state_sem;
++
+ 	bool                            link_status_up;
+ };
+ 
+-- 
+2.43.0
 
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-
-> {
-> 	union devlink_param_value param_value[DEVLINK_PARAM_CMODE_MAX + 1];
-> 	bool param_value_set[DEVLINK_PARAM_CMODE_MAX + 1] = {};
->@@ -270,7 +272,7 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
-> 				return -EOPNOTSUPP;
-> 		} else {
-> 			ctx.cmode = i;
->-			err = devlink_param_get(devlink, param, &ctx);
->+			err = devlink_param_get(devlink, param, &ctx, extack);
-> 			if (err)
-> 				return err;
-> 			param_value[i] = ctx.val;
->@@ -352,7 +354,7 @@ static void devlink_param_notify(struct devlink *devlink,
-> 	if (!msg)
-> 		return;
-> 	err = devlink_nl_param_fill(msg, devlink, port_index, param_item, cmd,
->-				    0, 0, 0);
->+				    0, 0, 0, NULL);
-> 	if (err) {
-> 		nlmsg_free(msg);
-> 		return;
->@@ -395,7 +397,8 @@ static int devlink_nl_param_get_dump_one(struct sk_buff *msg,
-> 		err = devlink_nl_param_fill(msg, devlink, 0, param_item,
-> 					    DEVLINK_CMD_PARAM_GET,
-> 					    NETLINK_CB(cb->skb).portid,
->-					    cb->nlh->nlmsg_seq, flags);
->+					    cb->nlh->nlmsg_seq, flags,
->+					    cb->extack);
-> 		if (err == -EOPNOTSUPP) {
-> 			err = 0;
-> 		} else if (err) {
->@@ -504,8 +507,8 @@ int devlink_nl_param_get_doit(struct sk_buff *skb,
-> 		return -ENOMEM;
->
-> 	err = devlink_nl_param_fill(msg, devlink, 0, param_item,
->-				    DEVLINK_CMD_PARAM_GET,
->-				    info->snd_portid, info->snd_seq, 0);
->+				    DEVLINK_CMD_PARAM_GET, info->snd_portid,
->+				    info->snd_seq, 0, info->extack);
-> 	if (err) {
-> 		nlmsg_free(msg);
-> 		return err;
->diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
->index f41f9fc2194e..ed342f345692 100644
->--- a/net/dsa/devlink.c
->+++ b/net/dsa/devlink.c
->@@ -182,7 +182,8 @@ static const struct devlink_ops dsa_devlink_ops = {
-> };
->
-> int dsa_devlink_param_get(struct devlink *dl, u32 id,
->-			  struct devlink_param_gset_ctx *ctx)
->+			  struct devlink_param_gset_ctx *ctx,
->+			  struct netlink_ext_ack *extack)
-> {
-> 	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
->
->-- 
->2.47.3
->
->
