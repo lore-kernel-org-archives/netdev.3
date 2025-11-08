@@ -1,157 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E8E19DF62;
-	Sat,  8 Nov 2025 05:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7A1800;
+	Sat,  8 Nov 2025 06:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762580314; cv=none; b=N8/g90y+PQPgViOrQT166Eg+mUukt9D87THnn8McP6zmV6YoimxCEdlbUBPqPGsd8IJEJt6x/cgG7Cen3Jn//5yINquLJC5nNHXpOH9OGjl5p20YkXyrf68u3EDVR3lkt2a24AwJ08ENgVC2yP0noO29WNXzPTYifI7xlcADVfE=
+	t=1762581820; cv=none; b=rcm5gyBTB4VE1fDbQ6z9fzqYOGTCeOAoOeWJLofQ0wxBpWfF75ntsIcDfgucU4qHWV47908eGeKhn8WicX64NqC2Pph5UTOStoRIOVc8XGyshdm4yFmxBCquW0e/unNofEt5nTw10CYjNLf9dXfNzPWjyYWBootH33BXXBFFiA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762580314; c=relaxed/simple;
-	bh=w6GXV8F8qq8Ivlsip/h/QX7gHcMdkkyqZQffmsH93Go=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oGo0f2+Ys6FOeruPJqU1Lku63wnfEHbwk7+hTV94xHRXOj5Sr9NXyVUS3suQWg3xDsV1sxHqeEQrxCYDdslbmrn1l1AsAtDKYYiYiodfxBC5FpTVDc2bJxj+ifiV+VoWlaRq5qUMck/ElPlU23wjfaya0I3tX77nmsf9M6lDzxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6rzkZ9a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762581820; c=relaxed/simple;
+	bh=E1zMOuHLo5HrFCo02ewf2DH9+Lyh+E7j8NuZaDLVyfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=G5OWR89us2NptbdbI1YgZm1zYNxz8dP+dCYWE8PRgfppsA+3eB4cO+LMFPwXbERsy4ImoQXRm7XRMF10QwXs/4fBy/q7104LeTkHJIj3plFT7mVEBVjqUPC7Tr3Jlo49vorgTkCECTuRimFq4YZJmH5HciqbxZvXK/mZAQr2tx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=OpF2M3Dh; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6rzkZ9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC516C19422;
-	Sat,  8 Nov 2025 05:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762580313;
-	bh=w6GXV8F8qq8Ivlsip/h/QX7gHcMdkkyqZQffmsH93Go=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R6rzkZ9aOnGt/EQ9R93dim8mBYYjOjakJehQ5+rN7x3rvkrZwgPe3DNMNBLOS6Sh4
-	 mImZKwWN8OxH6gjwHfbPpky8S4xfaMEw4jAyYKPEkT3ztoZqWXNpmZBCg3s9GW11DH
-	 ubqLYGlFVZD9/bwsgi4HUeIL+tGoVZRpcmwSzbCHe4/tKN/YY1WJFNFfWmJhYpQvYq
-	 aLmPydUhP1j4nb/QPh4Bpfzi2TidyWlqi7OIYoBoMGpHxUbV0BbBU/eCT9rJf0d0LI
-	 UGX4tJ2pBMvLkxAGG5WdK5NuaGVKDGXY0wPCPhO3ZVQAVKzkoatva84A/KHH/1yljJ
-	 uT5/heaaQlZPQ==
-Date: Fri, 7 Nov 2025 21:38:32 -0800
-From: Saeed Mahameed <saeed@kernel.org>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>, hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net/mlx5: implement swp_l4_csum_mode via
- devlink params
-Message-ID: <aQ7XWOI68rVDRewR@x130>
-References: <20251103194554.3203178-1-daniel.zahka@gmail.com>
- <20251103194554.3203178-3-daniel.zahka@gmail.com>
- <mhm4hkz52gmqok56iuiukdcz2kaowvppbqrfi3zxuq67p3otit@5fhpgu2axab2>
- <db5c46b4-cc66-48bb-aafb-40d83dd3620c@gmail.com>
- <6aa2f011-3ba5-4614-950d-d8f0ec62222b@gmail.com>
- <p3pj3mu4mabgninwowqikegeotxgzhc4yptf7qrfhns37bnkoz@ugkbgvlkxqxb>
- <78db1fab-e482-4ebc-82ce-ba84b3f561e2@gmail.com>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="OpF2M3Dh"
+Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 28d8d2699;
+	Sat, 8 Nov 2025 12:47:52 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: horms@kernel.org
+Cc: chuck.lever@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	jianhao.xu@seu.edu.cn,
+	kernel-tls-handshake@lists.linux.dev,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH] net/handshake: Fix memory leak in tls_handshake_accept()
+Date: Sat,  8 Nov 2025 04:47:51 +0000
+Message-Id: <20251108044751.1229123-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aQ3HJRwkz6j512o7@horms.kernel.org>
+References: <aQ3HJRwkz6j512o7@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <78db1fab-e482-4ebc-82ce-ba84b3f561e2@gmail.com>
+X-HM-Tid: 0a9a61cace6603a1kunm693c2da794dfac
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSUweVh5MTUxIGB9JSU8YT1YeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUJNS0pVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=OpF2M3Dh7/LUc8wzAlflSGi0kjjzPfctdVZjmbvTTkCPhdHF6bhwSGCVvVLijrWqlUIbYSQiKFJ628T0zTNtNuuRNDFA6lxgXrGASpVnoXMMEGTUT9HiGH51L1zrr2uv5UlaDcP/6Q1zjoBCcn6nTT+paM3VOoI5Os/qsAEwIlo=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=TAQmMO31HLgMDtOVSeqgq4qykOpghHX0B3OEYJv781A=;
+	h=date:mime-version:subject:message-id:from;
 
-On 04 Nov 09:48, Daniel Zahka wrote:
+On Fri, Nov 07, 2025 at 10:17:09AM +0000, Simon Horman wrote:
+> On Thu, Nov 06, 2025 at 02:45:11PM +0000, Zilin Guan wrote:
+> > In tls_handshake_accept(), a netlink message is allocated using
+> > genlmsg_new(). In the error handling path, genlmsg_cancel() is called
+> > to cancel the message construction, but the message itself is not freed.
+> > This leads to a memory leak.
+> > 
+> > Fix this by calling nlmsg_free() in the error path after genlmsg_cancel()
+> > to release the allocated memory.
+> > 
+> > Fixes: 2fd5532044a89 ("net/handshake: Add a kernel API for requesting a TLSv1.3 handshake")
+> > Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> > ---
+> >  net/handshake/tlshd.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+> > index 081093dfd553..8f9532a15f43 100644
+> > --- a/net/handshake/tlshd.c
+> > +++ b/net/handshake/tlshd.c
+> > @@ -259,6 +259,7 @@ static int tls_handshake_accept(struct handshake_req *req,
+> >  
+> >  out_cancel:
+> >  	genlmsg_cancel(msg, hdr);
+> 
+> Hi Zilin Guan,
+> 
+> I don't think genlmsg_cancel() is necessary if msg is freed on the next line.
+> If so, I suggest removing it, and renaming out_cancel accordingly.
 >
->
->On 11/4/25 9:39 AM, Jiri Pirko wrote:
->>Tue, Nov 04, 2025 at 01:51:16PM +0100, daniel.zahka@gmail.com wrote:
->>>
->>>On 11/4/25 6:38 AM, Daniel Zahka wrote:
->>>>
->>>>On 11/4/25 5:14 AM, Jiri Pirko wrote:
->>>>>I did some research. 0/DEVICE_DEFAULT should not be ever reported back
->>>>>from FW. It's purpose is for user to reset to default FW configuration.
->>>>>What's the usecase for that? I think you could just avoid
->>>>>0/DEVICE_DEFAULT entirely, for both get and set.
->>>>I find that 0/DEVICE_DEFAULT is reported back on my device. I have
->>>>observed this same behavior when using the mstconfig tool for setting the
->>>>parameter too.
->>>e.g.
->>>$ dmesg | grep -i mlx | grep -i firmware
->>>[   10.165767] mlx5_core 0000:01:00.0: firmware version: 28.46.1006
->>>
->>>$ ./mstconfig -d 01:00.0 -b ./mlxconfig_host.db query SWP_L4_CHECKSUM_MODE
->>>
->>>Device #1:
->>>----------
->>>
->>>Device type:        ConnectX7
->>>Name:               CX71143DMC-CDAE_FB_Ax
->>>Description:        ConnectX-7 Ethernet adapter card; 100 GbE OCP3.0;
->>>Single-port QSFP; Multi Host; 2 Host; PCIe 4.0 x16; Crypto and Secure Boot
->>>Device:             01:00.0
->>>
->>>Configurations:                                          Next Boot
->>>         SWP_L4_CHECKSUM_MODE DEVICE_DEFAULT(0)
->>This is next-boot value. You should query current (--enable_verbosity)
->>to show in param get.
->
->I am still seeing that DEVICE_DEFAULT(0) is read back:
->
->$ ./mstconfig --enable_verbosity -d 01:00.0 -b ./mlxconfig_host.db 
->query SWP_L4_CHECKSUM_MODE
->
->Device #1:
->----------
->
->Device type:        ConnectX7
->Name:               CX71143DMC-CDAE_FB_Ax
->Description:        ConnectX-7 Ethernet adapter card; 100 GbE OCP3.0; 
->Single-port QSFP; Multi Host; 2 Host; PCIe 4.0 x16; Crypto and Secure 
->Boot
->Device:             01:00.0
->
->Configurations:                  Default             Current       Next Boot
->        SWP_L4_CHECKSUM_MODE DEVICE_DEFAULT(0) DEVICE_DEFAULT(0)    
->DEVICE_DEFAULT(0)
->
+> > +	nlmsg_free(msg);
+> >  out:
+> >  	return ret;
+> >  }
+> > -- 
+> > 2.34.1
+> > 
 
-When default value of nvconfig is managed by FW, 0 will always mean
-DEVICE_DEFAULT, and it is a way for the driver to reset back to default on
-write, but on read FW should never return it, so this is a FW bug.
+Hi Simon,
 
-But this shouldn't block this series so just return 'default', from the 
-driver perspective we should return 'default' when we know 0 means that.
+Thanks for your review.
 
+I followed the pattern I observed in other parts of the kernel, for example,
+in cifs_swn_send_register_message() in fs/smb/client/cifs_swn.c, where
+genlmsg_cancel() is also called before nlmsg_free() in the error path.
+
+My understanding is that this is the proper way to unwind the message
+construction before freeing it.
+
+If you still believe it's unnecessary, I am happy to send a v2 patch
+to remove it.
+
+Best regards,
+Zilin Guan
