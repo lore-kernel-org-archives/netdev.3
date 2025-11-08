@@ -1,119 +1,172 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68C24A07;
-	Sat,  8 Nov 2025 07:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BE12E8881
+	for <netdev@vger.kernel.org>; Sat,  8 Nov 2025 09:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762588722; cv=none; b=X0XEdnH9X2jriM+JF811bdsFhD6rwINPx7h8YsH0/PXexhtvbXfh6ZlfalRKQt7PQsWpW9GiRRFq+mkgjaIPGFwcvwfDCY6DukVazLNlxZi5HdrsXg4RaijnVGfq0lgfEX55n1B/hP4MhzPq21V+UbnbJkQxP9Z0otMu9jdJZ3E=
+	t=1762593084; cv=none; b=KT/JUxp1LJC/vycNfwkdeonb8wvxWJ2okYNoQray1HakZinczD6xisuJHTxyofunZIJWssQWFlAUUIfZgxnSC84lA4LPGxmOuJrSDOmYBj8p0sJbWRutEFDqj7dqu1PwMrK2Epe4wQZa31WvxTYHVjOwDd0wgYSAHuGdDJY2Xok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762588722; c=relaxed/simple;
-	bh=ZXBkkkwvzKwb/Ha1NZvhSVCO6KAj+CY5jBPvpesBOwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ASxRmxQyYhJIqRiKwzIkNAHRnlk57J5U7lFjGFE0Nv0MUfF3NQ+Ni+necWFwbDgyKjS6tf+kONond9s/HbB0bPQ16sQsZSMYmhe6Jzz9ctUfz4VgUH7NrJgCmNg314EVVenDW/+Y2Q+KStMow1DA9W+Xw81XVeqja+iDzqdN340=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Rv2wxtoh; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1762593084; c=relaxed/simple;
+	bh=zulggbQ9C+sfhABO3XdhEKdaWpkBF7JTTQpkPFyR3sQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MDiIC7+m7qfB2ItJWxRZ9pM2YaFxoohdIjGc1GyGnVA+L6zYvXb44edSVAZ5O89wUtU0AuUlmp0BLMl6v2qv9vFkXaQ04UCaI1JFYkMckH+ooJM2MTcVEuruam+x8eef2FC4AJuPpyijW7bNEkQDB3rys09SnNeyLcuIQtc0ZBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VEXqEaiH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dsnGCQtj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VEXqEaiH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dsnGCQtj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Rv2wxtoh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=13csuvQtsJof1dOcx8aG6Jr6ZCLtdjpsnRWnJo51I84=; b=Rv2wxtohwqYJPfuCefjstYazhS
-	J7sVL69bsh133ujRSUUL9rrB0a/kzxTXGGikUf2yKLeg7SmIMIT8UuJNoKhzCvfyGAAWz5Pe+EeEm
-	h2Q3xUXo+zHXfnRbj7Qyw+yNd1OHpPxkgHGUi0HVF6jlGu4p8MUsSzzkzdi1BfcZ8nJ49iFCq6/se
-	ZFmURo5WkmDkDgxbjYGaHpgr5UnQva3gNUyY8WgIrCVrLxhKy+ZdWv2qrhTCFKDvav2VUb6zLH+VB
-	pr2JJLW3b4SiifkY32GzQxiS7P334PO84sQOHxisN0vvi52hhb/G8h9REWWVIxAKPkvD8a139wNRt
-	Mb4K10Ng==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41096)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vHdq8-000000007Vz-3J1j;
-	Sat, 08 Nov 2025 07:58:28 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vHdpz-000000008Nb-48sV;
-	Sat, 08 Nov 2025 07:58:20 +0000
-Date: Sat, 8 Nov 2025 07:58:19 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 16/16] net: stmmac: visconti: use
- stmmac_get_phy_intf_sel()
-Message-ID: <aQ74G_WqoAusC2wd@shell.armlinux.org.uk>
-References: <aQ4ByErmsnAPSHIL@shell.armlinux.org.uk>
- <E1vHNSq-0000000DkTN-3RoV@rmk-PC.armlinux.org.uk>
- <14f80863-5766-437a-8e38-8991a1a725f9@bootlin.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VEXqEaiH";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dsnGCQtj";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VEXqEaiH";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dsnGCQtj"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CA96C1FF8F;
+	Sat,  8 Nov 2025 09:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762593080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iyPEC34QD5BJvwLcoZhQkmhqMSp26TfjdL7fKVEwOg4=;
+	b=VEXqEaiH+M8wBuf6L8At9YVraFTRw7fkZTAZCTDKqOrVxSYjiWsCUVnnPPbUgDhjdT66VS
+	b1o+9A+f96E8an02iQYmzIQbQ2cNyRJugwtind6jadPdteboq3dyRLEHqoA/PylFPXZbDv
+	RTdCXWFgymBB1bt5X1s2GpWC3S0Ul/o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762593080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iyPEC34QD5BJvwLcoZhQkmhqMSp26TfjdL7fKVEwOg4=;
+	b=dsnGCQtj31jQosQNPui7DGi2tdwv+nsOOxgFDEi/PJ4BALRn4SYQsjDxBELw1l6DaxYYyD
+	zZ5RjmcLexyrePCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762593080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iyPEC34QD5BJvwLcoZhQkmhqMSp26TfjdL7fKVEwOg4=;
+	b=VEXqEaiH+M8wBuf6L8At9YVraFTRw7fkZTAZCTDKqOrVxSYjiWsCUVnnPPbUgDhjdT66VS
+	b1o+9A+f96E8an02iQYmzIQbQ2cNyRJugwtind6jadPdteboq3dyRLEHqoA/PylFPXZbDv
+	RTdCXWFgymBB1bt5X1s2GpWC3S0Ul/o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762593080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iyPEC34QD5BJvwLcoZhQkmhqMSp26TfjdL7fKVEwOg4=;
+	b=dsnGCQtj31jQosQNPui7DGi2tdwv+nsOOxgFDEi/PJ4BALRn4SYQsjDxBELw1l6DaxYYyD
+	zZ5RjmcLexyrePCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B856132DD;
+	Sat,  8 Nov 2025 09:11:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jVyiFDgJD2liNwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sat, 08 Nov 2025 09:11:20 +0000
+Date: Sat, 08 Nov 2025 10:11:19 +0100
+Message-ID: <877bw0rirs.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	linux-kernel@vger.kernel.org,
+	pmladek@suse.com,
+	rostedt@goodmis.org,
+	andriy.shevchenko@linux.intel.com,
+	tiwai@suse.com,
+	perex@perex.cz,
+	linux-sound@vger.kernel.org,
+	mchehab@kernel.org,
+	awalls@md.metrocast.net,
+	linux-media@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/4] lib/sprintf: add scnprintf_append() helper function
+In-Reply-To: <20251107161130.4418562992d2477c4accc6ef@linux-foundation.org>
+References: <20251107051616.21606-1-moonafterrain@outlook.com>
+	<SYBPR01MB788110A77D7F0F7A27F0974FAFC3A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+	<20251106213833.546c8eaba8aec6aa6a5e30b6@linux-foundation.org>
+	<20251107091246.4e5900f4@pumpkin>
+	<20251107161130.4418562992d2477c4accc6ef@linux-foundation.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14f80863-5766-437a-8e38-8991a1a725f9@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,outlook.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,outlook.com,vger.kernel.org,suse.com,goodmis.org,linux.intel.com,perex.cz,kernel.org,md.metrocast.net,davemloft.net,google.com,redhat.com];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -1.80
 
-On Fri, Nov 07, 2025 at 07:23:26PM +0100, Maxime Chevallier wrote:
-> Hi Russell,
+On Sat, 08 Nov 2025 01:11:30 +0100,
+Andrew Morton wrote:
 > 
-> On 07/11/2025 15:29, Russell King (Oracle) wrote:
-> > -	switch (plat_dat->phy_interface) {
-> > -	case PHY_INTERFACE_MODE_RGMII:
-> > -	case PHY_INTERFACE_MODE_RGMII_ID:
-> > -	case PHY_INTERFACE_MODE_RGMII_RXID:
-> > -	case PHY_INTERFACE_MODE_RGMII_TXID:
-> > -		phy_intf_sel = ETHER_CONFIG_INTF_RGMII;
-> > -		break;
-> > -	case PHY_INTERFACE_MODE_MII:
-> > -		phy_intf_sel = ETHER_CONFIG_INTF_MII;
-> > -		break;
-> > -	case PHY_INTERFACE_MODE_RMII:
-> > -		phy_intf_sel = ETHER_CONFIG_INTF_RMII;
-> > -		break;
-> > -	default:
-> > +	int phy_intf_sel;
-> > +
-> > +	phy_intf_sel = stmmac_get_phy_intf_sel(plat_dat->phy_interface);
-> > +	if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
-> > +	    phy_intf_sel != PHY_INTF_SEL_RGMII &&
-> > +	    phy_intf_sel != PHY_INTF_SEL_RMII) {
-> >  		dev_err(&pdev->dev, "Unsupported phy-mode (%d)\n", plat_dat->phy_interface);
-> >  		return -EOPNOTSUPP;
-> >  	}
+> On Fri, 7 Nov 2025 09:12:46 +0000 David Laight <david.laight.linux@gmail.com> wrote:
 > 
-> Probably not too big of a deal, but don't we now incorrectly accept the
-> "gmii" mode ?
+> > > I wonder if we should instead implement a kasprintf() version of this
+> > > which reallocs each time and then switch all the callers over to that.
+> > 
+> > That adds the cost of a malloc, and I, like kasprintf() probably ends up
+> > doing all the work of snprintf twice.
+> 
+> There is no need at all to optimize the performance of scruffy once-off
+> string pasting functions.  For these it's better to optimize for
+> readability, reliability.  maintainability.
 
-We will accept GMII mode, but (a) does that matter, and (b) shouldn't
-the DT binding be checking the phy-mode (we have some bindings that do.)
+Actually this scnprintf_append() helper was my suggestion in another
+threads:
+  https://lore.kernel.org/ME2PR01MB3156CEC4F31F253C9B540FB7AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com
+  https://lore.kernel.org/SYBPR01MB7881987D79C62D8122B655FEAFC6A@SYBPR01MB7881.ausprd01.prod.outlook.com
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Basically its use is for filling a substring with s*printf() inside a
+fixed string such as a field in a struct.  Through a quick grep, there
+are many kernel code doing it without bounce checks, and it's for
+helping those.  So it's a bit different from what you assumed with the
+re-allocatable buffers.
+
+The most merit of this API is that it can just be a kind of drop-in
+replacement without extra variable to keep the offset, as found in
+this patch series.
+
+Though, it won't change too much to introduce an offset variable as
+the API David suggested, which looks nice, so I myself don't mind
+either way (it's a bike-shed topic, after all :)
+
+
+thanks,
+
+Takashi
