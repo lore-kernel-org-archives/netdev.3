@@ -1,83 +1,84 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013037.outbound.protection.outlook.com [40.107.201.37])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012045.outbound.protection.outlook.com [52.101.43.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281AA2D73B1;
-	Sun,  9 Nov 2025 09:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C1F2D94BB;
+	Sun,  9 Nov 2025 09:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762681175; cv=fail; b=eDu1gCFOrzxoMuPJYPeHCtHUTRJfJOsE/YJrqCFQexPLRKvwI/EaKcuUxSMiqbf+ldKxicrch9LNnbY7R43TN569C+kXREoAESkeAopMsi+QRUMH9cYtAA7n2Xml6wHgwVotkoIA03eu0+bfFo/DRoXYi7SApA5xjhU2w2nMdEo=
+	t=1762681791; cv=fail; b=N9E6eYJALL2XKzZ9k6W51mkCp0V+deRdETzTCqKMcF2GPzOGiFqR9IGF2Ye+gIUj1MFhQ6fbyVYIzxyH0289k6kuWDIxs4EniJIgnFfPVwLVwod0o5Heb2aaZaRgygVG1B5c3bS3EtOKvS8Gyaj5T9X1/S4F/0qaz0c4OzXl+IM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762681175; c=relaxed/simple;
-	bh=F2YBi0oVxOtv0Gt1hvkHDCpUBPwrAwobwGCwVzm0tyw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fj31wbtX8gC2viFBpelYvP/efik06j4RmEvBCVMETXYy/2KWNTxV4PhNMtuTH8J19hf1MU23JTAJlK19CuEKvTMasb2EksJTSDuj6L5tI1k2XN+9Sa/2V81M/vnmqNYUdydcjz0He6cKvPbaQ/KxWonCnGriWXlLvl7UCUAtmSY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SLACFqeX; arc=fail smtp.client-ip=40.107.201.37
+	s=arc-20240116; t=1762681791; c=relaxed/simple;
+	bh=yOQlo/BjDB4li6i0Vs0ljMLmQdlo/nLkV2aAUCCyZBY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nmolchd/r/qQmW68vdFxkOXTnmR09hxivlWRO1QbMTfR5KjJ2a/F59Vst8VinwyuyTWHSvSNfkBas2LlKWfpCTghJ3kgB6Wj1vamGC3sUNDsBHsVo0doUoIun+SX1Tw5z8Ur2zNwpNGSXPNqjstjZ1DTeTOdniiTMQeMNgkF56E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=S8BneHqc; arc=fail smtp.client-ip=52.101.43.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SLACFqeX"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="S8BneHqc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kzEQhM9KxcrCbpeawhT5yQ/wEl6l7G5Vx9hd1BTkZ/YmU4XnbK1WglcCcuP3diivpax51d9ldrYUu6g/4MrnAOWk4HtjDkLaGb5rlupiD+46TtFJEQ0CITz4GgV45qpsOrSgiyyNHvn63RgmYFU3N7D16YOMcbK3TVjOdh+BrcSJHj36cxkr0B5F7RawEIFLP0HHmz9jfPrugDwyBIrbcicqUByZYsTU+X26p78lcegB7SD+lvNKYyG98zYd77SESGT0V9lqlRbOykvoFZD0QG02jBC9IuQPVq34wDBYoS2zGCpRX4AYUB7X1KpKeJzJ/02QSAc/pbsCPy6/dnnuxQ==
+ b=uQL1NV8FJ+WzTwBxPj3HEBN4/Un/TQpi066/uRpGE2aJcM1vZGfROHpBr6FANkkp7GGGBkyXODxtU66bjO4iipEN5v+P4hixAzmH/UyErWvgY3pk+nzp75RgvkOGiH3RZIJHtZ/jg8hmi5wFMiL4ZMJhvOt/Owe1slalUwMxKwRgjjZg1tI+VH2ZI3S2aaSCArmz4tCewsVsFlHKpA7F0cWfkhSxrfmJaALN3NNHjbovsb0ZfvKz2vajmTcOgv5cirCFD3J4JXWclCaUsrv72d1r/pkiflVJ4s/aw8yzI+LJmDxTuJT8Lh2lm7ePoWNgwPkEOun34kouso2ahFd+2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S+GgU5WOvCId56ebE6AW88FHdxGveUwY2sMvHw0Ut/4=;
- b=B98MtoH3YV9ShMHiTuPLVzykcbGtU0K0NCdsylhCCcDEW2nOaifbYmv14HcApAZAXidNS7ZWPkkn7KG3jvIwo5mUUoy+1ygLMbasqp10SEcVrmPW6hRtmUvRoI9QIrBpHenJMj07BL3WhSBuaA6jo1c0ArCuBE6+mGlxm+wOem/tJNkKsgjAWcJPEXVj0uTNj5Q7rW4avmFcFVXwBSt8V4ZeEPco7v1eda2nVPDZ+LA8wYlZ19QSqNkcM878WqNatfGUn4IZGFc8PWZF3jc3AjbzJbffaOOEJvfbOzur2Z37Y5kXI3UnlHUyYTNXb/TdKNLbIw8AwWkynfO4VZitzg==
+ bh=80AOg1iBgSL9LwgosPVpQZJ6fvxKjwvkAEmtY+iaSRY=;
+ b=i98SntCoGxXT9ziWO5vKf9il/ZiZgctPs+UEgvXKUJvnVsY3IJezveOcJnT86fDeRgDq8x++Q+zBAmUmVzfSyW9+399O8BWeP4a5pXVo+B/kGd0j6K3xRkavfHI/yE8zGDmQFbzVkfXaZ9ePRE7u33MlzAmZgoTYrcBXjCRCCkHSuNVHEOia18GTDIqzRMcFAXLP7lxJX3TPrHGojkZNiDlaUxdACzbxjWNxURjCeBVvBZC1ZsKcNdhi3Ac40NAqjfVBzJE4zCt3fAYRmVogQy7zFo6KrUrvSqRSnLUzc3qx0UP7OUTKKOUXx04v5IBUi3B6NpYySSOk3C3TNH2F3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S+GgU5WOvCId56ebE6AW88FHdxGveUwY2sMvHw0Ut/4=;
- b=SLACFqeXJ9Th2g79NlRRGR1GQM1HUZ4BKaHKOAV/+RZH4JRozrpTHKa5majUfL7pmV82SF9RA+r53uDnJ4rTHfffbZGIETelo/6WF3rMgwPziKfzGU/LB0+BFQuFJ4bSU/uFnbdVvfLXr8q3H95ihMLCqd5t/Eu/hWRiiwOdaoxXStj5tSQ+iMcHGL1CTAfXIw07PC4EUrvumrTbs6TRBdizQqQxhzgf5lPagQQ5rbpF/VH88Q/xSTQ8zbX87e+YP6M8NiElOKOnV6GfjPJyMABwqwZ9y+qHBYgOHYVXCT6yoFlQzs5xR+8Go2vF0/Ez9GChIW44Wyej5qhMA/++Cw==
-Received: from BYAPR05CA0088.namprd05.prod.outlook.com (2603:10b6:a03:e0::29)
- by IA4PR12MB9812.namprd12.prod.outlook.com (2603:10b6:208:55b::7) with
+ bh=80AOg1iBgSL9LwgosPVpQZJ6fvxKjwvkAEmtY+iaSRY=;
+ b=S8BneHqcV5Bk9S1Vvyk624pcusRhYqzTVrr++KBHmlpHW4n4DMYFPN6FbxvcPm57jXb41eNWi8XErrQY4D70wVak5B9oMjz4PApaoA0iO06ophca4TXW/+2IWUtGbKCNHy918bthSVpKDhvUvWSMtYNwPfb3js9bHErpcNbzj3nyo7aoZuFikMyzwXbK8a+k1CjB2t/Ybjj4wjKxfHhqitRE7VmpzPcZP6ui8iptSrlz6lX/gZNlyIl1uOoCA/06e4SwnDA0/x42oQTkg5fZCf/H0WUwVDv7M8e1efiS3YQqbQB8iZ4fMScSMXkY3Efg4d1lKdXS+uHRioUoJWCQkA==
+Received: from CH0PR03CA0356.namprd03.prod.outlook.com (2603:10b6:610:11a::34)
+ by SA5PPFE494AA682.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Sun, 9 Nov
- 2025 09:39:07 +0000
-Received: from MWH0EPF000989E8.namprd02.prod.outlook.com
- (2603:10b6:a03:e0:cafe::e4) by BYAPR05CA0088.outlook.office365.com
- (2603:10b6:a03:e0::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.11 via Frontend Transport; Sun,
- 9 Nov 2025 09:39:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2025 09:49:44 +0000
+Received: from DS2PEPF0000343D.namprd02.prod.outlook.com
+ (2603:10b6:610:11a:cafe::82) by CH0PR03CA0356.outlook.office365.com
+ (2603:10b6:610:11a::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.16 via Frontend Transport; Sun,
+ 9 Nov 2025 09:49:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MWH0EPF000989E8.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DS2PEPF0000343D.mail.protection.outlook.com (10.167.18.40) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Sun, 9 Nov 2025 09:39:06 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9320.13 via Frontend Transport; Sun, 9 Nov 2025 09:49:43 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 9 Nov
- 2025 01:38:55 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 9 Nov
- 2025 01:38:55 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Sun, 9 Nov
- 2025 01:38:51 -0800
+ 2025 01:49:41 -0800
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Sun, 9 Nov 2025 01:49:40 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Sun, 9 Nov 2025 01:49:35 -0800
 From: Tariq Toukan <tariqt@nvidia.com>
 To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
  S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Cosmin Ratiu
-	<cratiu@nvidia.com>
-Subject: [PATCH net 2/5] net/mlx5e: Trim the length of the num_doorbell error
-Date: Sun, 9 Nov 2025 11:37:50 +0200
-Message-ID: <1762681073-1084058-3-git-send-email-tariqt@nvidia.com>
+CC: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	<linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <virtualization@lists.linux.dev>, Gal Pressman
+	<gal@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Akiva Goldberger
+	<agoldberger@nvidia.com>
+Subject: [PATCH net] mlx5: Fix default values in create CQ
+Date: Sun, 9 Nov 2025 11:49:03 +0200
+Message-ID: <1762681743-1084694-1-git-send-email-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1762681073-1084058-1-git-send-email-tariqt@nvidia.com>
-References: <1762681073-1084058-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,84 +89,345 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989E8:EE_|IA4PR12MB9812:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52f4c4c6-e488-4d46-7a3e-08de1f73d3d3
+X-MS-TrafficTypeDiagnostic: DS2PEPF0000343D:EE_|SA5PPFE494AA682:EE_
+X-MS-Office365-Filtering-Correlation-Id: dce17594-8af9-43ea-c39c-08de1f754f6b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jiZeSfu3s7p14lcjQkg83E69MmAkO4tOs9gjv3YXySpf3Pfxaj2zNXO1YqPu?=
- =?us-ascii?Q?kvMKjbw1Cp9DYGgSyOC+FuX7IOqykfNPGEwjLTX4/hAUSiyh7njGRXsbdXS6?=
- =?us-ascii?Q?HrmLxNDsU425AKZTJMXzd8pQB0mj67f/kmMd1f6z2oleS7dohrbEgQp8Jebg?=
- =?us-ascii?Q?bjMvFuFxV9wXS9HvSRYKe6U0XDPALV+cRvcC3V6cJHoy4Esbi+mMXhtOPjRG?=
- =?us-ascii?Q?Xlzexn50BtTkNfiXK7hQEHwGyJhuIONJ+lbdsR22wnshqcMttNHpZWBkTTq3?=
- =?us-ascii?Q?UuBdgKVHSOj6y25kh0dMTG2ppYMkuWi4QBPNz61m8uxRuTEleqoW1vPSWWtk?=
- =?us-ascii?Q?Paa8PKdQu4Fxa16aByhEZcb08ld+VXvYNsnmNW0IPVyAQ+H84z8P4iV1ZoPc?=
- =?us-ascii?Q?tN3HCXd/Vq8GS7+apT0cayVr8HMU/aYlaV99pla6vBGWBFFyVpA6JS1o1I09?=
- =?us-ascii?Q?QgCJHH9utIXWK9dlF7/5awyN+s5qDtig0d+SAWmIq+ApHRSUynzYVqfxw/+X?=
- =?us-ascii?Q?Q8hlfXcP17hLO0dvC0s+pD4fePgZjDOlMNlVWISoiq0UmOrPaLCx88EGmIDc?=
- =?us-ascii?Q?DipMyPA8HOZ7kkVohOzZk4Jv1r76HqeqFZQlbmsKYgVAAtXQy4DqrxnD6QgH?=
- =?us-ascii?Q?zK/PpMsZYTGYAc0IG95k1ez+nOUF1UU6tq3Su91PQsAMwj3qwceBQtA1bJzX?=
- =?us-ascii?Q?7/sp31Fi1GwmTIHh4y/7ZZ9IZ8RIYUU1fZZFUfNglOa08G6l/i/ViTRMZcGV?=
- =?us-ascii?Q?zjCKQ+PJSaGgNHmebkTDi8KLowL5kDGbVky+6/Cd2cghhZdT0fPO/4OQKuOu?=
- =?us-ascii?Q?OYrOGttmmFJIZ9uefNvIQH+MQzsCHce69JjzeNhHpvLiU2rV1VxaaSxvjqxY?=
- =?us-ascii?Q?y8dxmq9u9t0dWXK3cRl2DBXr/O7QWQ3cthtbd44+F4xrSPkUrox3kP0Q2S0K?=
- =?us-ascii?Q?WXaeQnV8KTzGfa4aH9lyOre0fkwukcjIZTbF95Dx+N4XLyh22ZbAxis0KHxk?=
- =?us-ascii?Q?qWmzhVmNQ1hSVzY+CYCST24G2QUJDHWGlbFRCr4EuK5nrqmJqwuGa3eZHOgi?=
- =?us-ascii?Q?fcsnersZTgQR8waCHFDkDCikhLjAKMZwelJ0HyVz/HKvS9g4ch0XRVa2YcEW?=
- =?us-ascii?Q?6zL1GHGYYzYbPCqj5Y6Ui1JJF2k8cO/8BExiaYY9OZ7HnvomBSU6YNvH6skV?=
- =?us-ascii?Q?LhqOnyuSs3iKte54ZTjSV4v3OhSBT3lGWeelBZVeiRqZLjcDR755SSy1UNr9?=
- =?us-ascii?Q?G+pWjE1RzhP7WCzTlu8AQl2NYO6xzEfgqnSvWuavutO42ceMekqYxY7McA5m?=
- =?us-ascii?Q?L0k/A4z0b0AAXgtr4Mjko7VGDeHbX527rLz4Q6ZKp+0uYVIrNXOS5kpMZYy6?=
- =?us-ascii?Q?HGqKZK60AgG0jvMFPIkce40/OMu4TAOnz7GrRxtAZjw7XE8v6RINlpZhwGz3?=
- =?us-ascii?Q?dZK/xITEMXxdrNll8Nz7iUYxr6ImgKTI5aHZip8vmXkyO5NtxEdE27X5cZFK?=
- =?us-ascii?Q?JWxpGW2jnFnZU93zh+1xHDcWCltRcPLpRxBB1Egp9DxmbMvcAMhvdeIygy6b?=
- =?us-ascii?Q?j7Vzotk+rsWlQ+YoUpk=3D?=
+	=?us-ascii?Q?m1cEZQaKMaulNaDvwCzPRw7suL4ueafSUVqffwISX+rWwZ7xlRUOhXqcRCEo?=
+ =?us-ascii?Q?izEJyFuj6lRtOcdNqVY27ApZIKbl/mB9R4U/pGRyNrKgGaH0E0BrTcK/UU1C?=
+ =?us-ascii?Q?FVKg18LE0ZpMUHiSn6Q+8Q1g3oc5Su3FMivZnYhK3taPRqFRuv/sqNU9/Pj4?=
+ =?us-ascii?Q?rV6oFlqxXzvlb0LJpx24dMU6ZTuEopMo7VstGNjViyiK/FxxzzqKRkQMHnk/?=
+ =?us-ascii?Q?w3SoAa6cC0FDUlbrH3tEwol6QGl8pACbct1XL/McCRRviHn69sf4LZDDCU+o?=
+ =?us-ascii?Q?d4Xy3ttwH+sEH8iEFXuAVT2wFj9HMO2JsDbPmo8iDQD0icjycK7hWVdBfjNt?=
+ =?us-ascii?Q?5rAyLvLThZ9IYbWzRdHE+5EBGClpLJQikFP36JFyjZc3cP7H03D+hwCsX1am?=
+ =?us-ascii?Q?sdmB67PmbxnzPnDfwUKUTmV9caAnd0SApjy6ymvVRQ6LvI3HTy9hSd62P4fa?=
+ =?us-ascii?Q?7vqXTaHujZNi9yUaR95qwUeLBlpmgRyokYf7gohkGw5B1wMxQ6CmqtCxMS9l?=
+ =?us-ascii?Q?A0i37cE36KxITmfm3WMbBzNm+pBIB4IgjBkF2Z+vPZQdJxflIgUYiA/fXko4?=
+ =?us-ascii?Q?QCLCtzx+HxabZ5lHzdbp09HpdgSXh+757QqcsJK6rEs/7D2wAIO0zuNGW4uL?=
+ =?us-ascii?Q?s3YjoN28B7ZLh4llGqD+93ZqV0tQkcjiI/B2Lc63RJOGji801QbuRqIEzWnQ?=
+ =?us-ascii?Q?JWo/4oIvMXEa5kQtCKnf0DPmOt8RP8G9aOu6Ya0/SMZQcZPu1N+Ved8DmB4N?=
+ =?us-ascii?Q?JQPs041ZQNIXzuuUxFSCcdDLrqyOGSBeYx/+P883n8Fk+ls5PIsPVe4spOwx?=
+ =?us-ascii?Q?Sz7gw8As4TE8Hcy7VN1Nae4fUk/ws4n+nybIa4VEPvRRpsBGYcOqD/BS+Vib?=
+ =?us-ascii?Q?R1geE7/pSIa0+C6qS46jUwQrEUlRvLT0lSxfa3vCEGQQ9amgTvlkIcD223oU?=
+ =?us-ascii?Q?yT/zBC/G9EQOYcPXk75X0b+kwaHd8AhHUvLYeYtb5fWbF6XhAdbybC/5DgJ2?=
+ =?us-ascii?Q?ep2lEw7rxSPc/yi1M+w9d07dOzXUBscaqU1q0fc1FzBtj5oYibcq3Hq/HYIY?=
+ =?us-ascii?Q?yXJIhHWJk9KoF5fcB4BGSeZQyMb/EA5oGH7aBeDm9+zDrbLUbZzf+5DK1ydv?=
+ =?us-ascii?Q?PBCOP6WXOr6jwsA3GE7uX63401uuBHnnTF3ZJ1zZkn25d8H7UIvkHgABEHf9?=
+ =?us-ascii?Q?TfbFdgfVv4/1ObBPwidm1GfCfftbdncR8F1eXtR0loAHWPm/fRLGNMh57Xpb?=
+ =?us-ascii?Q?PE0IUT39dyeOgih6dHj+rHvK6P4nSfvdhtNf6Pw+JSRoAy6l0ONmi2pwKEv7?=
+ =?us-ascii?Q?M5I9+3EVxPuw8PVebPeZa9pxFQWgwcJ/xpWP+ZHdvRuZVAu7wB6YJ2VMRdv5?=
+ =?us-ascii?Q?MYfetNfYLTkEvoAga4NQx/1CL+ZnkDVqdVYE81+AAhG05AErR6CwvtSEjG54?=
+ =?us-ascii?Q?ATL8pnnlNPkd60nDjzUAI7BzftEL3eu9j11O7rRPG3oz3RHqXgisiGhBfOUm?=
+ =?us-ascii?Q?GajMOO/w/FjqFXF0G+JcjawzeSA8nlUQorWgOfiWd84R1j501ebFWqZANqtZ?=
+ =?us-ascii?Q?uvw/8lFx770Z3efBtrQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2025 09:39:06.7730
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2025 09:49:43.6022
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52f4c4c6-e488-4d46-7a3e-08de1f73d3d3
+X-MS-Exchange-CrossTenant-Network-Message-Id: dce17594-8af9-43ea-c39c-08de1f754f6b
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000989E8.namprd02.prod.outlook.com
+	DS2PEPF0000343D.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9812
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFE494AA682
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Akiva Goldberger <agoldberger@nvidia.com>
 
-When trying to set num_doorbells to a value greater than the max number
-of channels, the error message was going over the netlink limit of 80
-chars, truncating the most important part of the message, the number of
-channels.
+Currently, CQs without a completion function are assigned the
+mlx5_add_cq_to_tasklet function by default. This is problematic since
+only user CQs created through the mlx5_ib driver are intended to use
+this function.
 
-Fix that by trimming the length a bit.
+Additionally, all CQs that will use doorbells instead of polling for
+completions must call mlx5_cq_arm. However, the default CQ creation flow
+leaves a valid value in the CQ's arm_db field, allowing FW to send
+interrupts to polling-only CQs in certain corner cases.
 
-Fixes: 11bbcfb7668c ("net/mlx5e: Use the 'num_doorbells' devlink param")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+These two factors would allow a polling-only kernel CQ to be triggered
+by an EQ interrupt and call a completion function intended only for user
+CQs, causing a null pointer exception.
+
+Some areas in the driver have prevented this issue with one-off fixes
+but did not address the root cause.
+
+This patch fixes the described issue by adding defaults to the create CQ
+flow. It adds a default dummy completion function to protect against
+null pointer exceptions, and it sets an invalid command sequence number
+by default in kernel CQs to prevent the FW from sending an interrupt to
+the CQ until it is armed. User CQs are responsible for their own
+initialization values.
+
+Callers of mlx5_core_create_cq are responsible for changing the
+completion function and arming the CQ per their needs.
+
+Fixes: cdd04f4d4d71 ("net/mlx5: Add support to create SQ and CQ for ASO")
+Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/cq.c               | 11 +++++---
+ drivers/net/ethernet/mellanox/mlx5/core/cq.c  | 23 +++++++++++++--
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  1 -
+ .../ethernet/mellanox/mlx5/core/fpga/conn.c   | 15 +++++-----
+ .../mellanox/mlx5/core/steering/hws/send.c    |  7 -----
+ .../mellanox/mlx5/core/steering/sws/dr_send.c | 28 +++++--------------
+ drivers/vdpa/mlx5/net/mlx5_vnet.c             |  6 ++--
+ include/linux/mlx5/cq.h                       |  1 +
+ 8 files changed, 44 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index fceea83abbd7..887adf4807d1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -541,7 +541,7 @@ static int mlx5_devlink_num_doorbells_validate(struct devlink *devlink, u32 id,
- 	max_num_channels = mlx5e_get_max_num_channels(mdev);
- 	if (val32 > max_num_channels) {
- 		NL_SET_ERR_MSG_FMT_MOD(extack,
--				       "Requested num_doorbells (%u) exceeds maximum number of channels (%u)",
-+				       "Requested num_doorbells (%u) exceeds max number of channels (%u)",
- 				       val32, max_num_channels);
- 		return -EINVAL;
+diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
+index a23b364e24ff..651d76bca114 100644
+--- a/drivers/infiniband/hw/mlx5/cq.c
++++ b/drivers/infiniband/hw/mlx5/cq.c
+@@ -1020,15 +1020,18 @@ int mlx5_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+ 	if (cq->create_flags & IB_UVERBS_CQ_FLAGS_IGNORE_OVERRUN)
+ 		MLX5_SET(cqc, cqc, oi, 1);
+ 
++	if (udata) {
++		cq->mcq.comp = mlx5_add_cq_to_tasklet;
++		cq->mcq.tasklet_ctx.comp = mlx5_ib_cq_comp;
++	} else {
++		cq->mcq.comp  = mlx5_ib_cq_comp;
++	}
++
+ 	err = mlx5_core_create_cq(dev->mdev, &cq->mcq, cqb, inlen, out, sizeof(out));
+ 	if (err)
+ 		goto err_cqb;
+ 
+ 	mlx5_ib_dbg(dev, "cqn 0x%x\n", cq->mcq.cqn);
+-	if (udata)
+-		cq->mcq.tasklet_ctx.comp = mlx5_ib_cq_comp;
+-	else
+-		cq->mcq.comp  = mlx5_ib_cq_comp;
+ 	cq->mcq.event = mlx5_ib_cq_event;
+ 
+ 	INIT_LIST_HEAD(&cq->wc_list);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cq.c b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
+index e9f319a9bdd6..60f7ab1d72e7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cq.c
+@@ -66,8 +66,8 @@ void mlx5_cq_tasklet_cb(struct tasklet_struct *t)
+ 		tasklet_schedule(&ctx->task);
+ }
+ 
+-static void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
+-				   struct mlx5_eqe *eqe)
++void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
++			    struct mlx5_eqe *eqe)
+ {
+ 	unsigned long flags;
+ 	struct mlx5_eq_tasklet *tasklet_ctx = cq->tasklet_ctx.priv;
+@@ -95,7 +95,15 @@ static void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq,
+ 	if (schedule_tasklet)
+ 		tasklet_schedule(&tasklet_ctx->task);
+ }
++EXPORT_SYMBOL(mlx5_add_cq_to_tasklet);
+ 
++static void mlx5_core_cq_dummy_cb(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe)
++{
++	mlx5_core_err(cq->eq->core.dev,
++		      "CQ default completion callback, CQ #%u\n", cq->cqn);
++}
++
++#define MLX5_CQ_INIT_CMD_SN cpu_to_be32(2 << 28)
+ /* Callers must verify outbox status in case of err */
+ int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
+ 		   u32 *in, int inlen, u32 *out, int outlen)
+@@ -121,10 +129,19 @@ int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
+ 	cq->arm_sn     = 0;
+ 	cq->eq         = eq;
+ 	cq->uid = MLX5_GET(create_cq_in, in, uid);
++
++	/* Kernel CQs must set the arm_db address prior to calling
++	 * this function, allowing for the proper value to be
++	 * initialized. User CQs are responsible for their own
++	 * initialization since they do not use the arm_db field.
++	 */
++	if (cq->arm_db)
++		*cq->arm_db = MLX5_CQ_INIT_CMD_SN;
++
+ 	refcount_set(&cq->refcount, 1);
+ 	init_completion(&cq->free);
+ 	if (!cq->comp)
+-		cq->comp = mlx5_add_cq_to_tasklet;
++		cq->comp = mlx5_core_cq_dummy_cb;
+ 	/* assuming CQ will be deleted before the EQ */
+ 	cq->tasklet_ctx.priv = &eq->tasklet_ctx;
+ 	INIT_LIST_HEAD(&cq->tasklet_ctx.list);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 6023bbbf3f39..5e17eae81f4b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -2219,7 +2219,6 @@ static int mlx5e_alloc_cq_common(struct mlx5_core_dev *mdev,
+ 	mcq->set_ci_db  = cq->wq_ctrl.db.db;
+ 	mcq->arm_db     = cq->wq_ctrl.db.db + 1;
+ 	*mcq->set_ci_db = 0;
+-	*mcq->arm_db    = 0;
+ 	mcq->vector     = param->eq_ix;
+ 	mcq->comp       = mlx5e_completion_event;
+ 	mcq->event      = mlx5e_cq_error_event;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
+index cb1319974f83..ccef64fb40b6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
+@@ -421,6 +421,13 @@ static int mlx5_fpga_conn_create_cq(struct mlx5_fpga_conn *conn, int cq_size)
+ 	__be64 *pas;
+ 	u32 i;
+ 
++	conn->cq.mcq.cqe_sz     = 64;
++	conn->cq.mcq.set_ci_db  = conn->cq.wq_ctrl.db.db;
++	conn->cq.mcq.arm_db     = conn->cq.wq_ctrl.db.db + 1;
++	*conn->cq.mcq.set_ci_db = 0;
++	conn->cq.mcq.vector     = 0;
++	conn->cq.mcq.comp       = mlx5_fpga_conn_cq_complete;
++
+ 	cq_size = roundup_pow_of_two(cq_size);
+ 	MLX5_SET(cqc, temp_cqc, log_cq_size, ilog2(cq_size));
+ 
+@@ -468,15 +475,7 @@ static int mlx5_fpga_conn_create_cq(struct mlx5_fpga_conn *conn, int cq_size)
+ 	if (err)
+ 		goto err_cqwq;
+ 
+-	conn->cq.mcq.cqe_sz     = 64;
+-	conn->cq.mcq.set_ci_db  = conn->cq.wq_ctrl.db.db;
+-	conn->cq.mcq.arm_db     = conn->cq.wq_ctrl.db.db + 1;
+-	*conn->cq.mcq.set_ci_db = 0;
+-	*conn->cq.mcq.arm_db    = 0;
+-	conn->cq.mcq.vector     = 0;
+-	conn->cq.mcq.comp       = mlx5_fpga_conn_cq_complete;
+ 	tasklet_setup(&conn->cq.tasklet, mlx5_fpga_conn_cq_tasklet);
+-
+ 	mlx5_fpga_dbg(fdev, "Created CQ #0x%x\n", conn->cq.mcq.cqn);
+ 
+ 	goto out;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+index 24ef7d66fa8a..7510c46e58a5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+@@ -873,12 +873,6 @@ static int hws_send_ring_open_sq(struct mlx5hws_context *ctx,
+ 	return err;
+ }
+ 
+-static void hws_cq_complete(struct mlx5_core_cq *mcq,
+-			    struct mlx5_eqe *eqe)
+-{
+-	pr_err("CQ completion CQ: #%u\n", mcq->cqn);
+-}
+-
+ static int hws_send_ring_alloc_cq(struct mlx5_core_dev *mdev,
+ 				  int numa_node,
+ 				  struct mlx5hws_send_engine *queue,
+@@ -901,7 +895,6 @@ static int hws_send_ring_alloc_cq(struct mlx5_core_dev *mdev,
+ 	mcq->cqe_sz = 64;
+ 	mcq->set_ci_db = cq->wq_ctrl.db.db;
+ 	mcq->arm_db = cq->wq_ctrl.db.db + 1;
+-	mcq->comp = hws_cq_complete;
+ 
+ 	for (i = 0; i < mlx5_cqwq_get_size(&cq->wq); i++) {
+ 		cqe = mlx5_cqwq_get_wqe(&cq->wq, i);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
+index 077a77fde670..d034372fa047 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/sws/dr_send.c
+@@ -1049,12 +1049,6 @@ static int dr_prepare_qp_to_rts(struct mlx5dr_domain *dmn)
+ 	return 0;
+ }
+ 
+-static void dr_cq_complete(struct mlx5_core_cq *mcq,
+-			   struct mlx5_eqe *eqe)
+-{
+-	pr_err("CQ completion CQ: #%u\n", mcq->cqn);
+-}
+-
+ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
+ 				      struct mlx5_uars_page *uar,
+ 				      size_t ncqe)
+@@ -1089,6 +1083,13 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
+ 		cqe->op_own = MLX5_CQE_INVALID << 4 | MLX5_CQE_OWNER_MASK;
  	}
+ 
++	cq->mcq.cqe_sz = 64;
++	cq->mcq.set_ci_db = cq->wq_ctrl.db.db;
++	cq->mcq.arm_db = cq->wq_ctrl.db.db + 1;
++	*cq->mcq.set_ci_db = 0;
++	cq->mcq.vector = 0;
++	cq->mdev = mdev;
++
+ 	inlen = MLX5_ST_SZ_BYTES(create_cq_in) +
+ 		sizeof(u64) * cq->wq_ctrl.buf.npages;
+ 	in = kvzalloc(inlen, GFP_KERNEL);
+@@ -1112,27 +1113,12 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
+ 	pas = (__be64 *)MLX5_ADDR_OF(create_cq_in, in, pas);
+ 	mlx5_fill_page_frag_array(&cq->wq_ctrl.buf, pas);
+ 
+-	cq->mcq.comp  = dr_cq_complete;
+-
+ 	err = mlx5_core_create_cq(mdev, &cq->mcq, in, inlen, out, sizeof(out));
+ 	kvfree(in);
+ 
+ 	if (err)
+ 		goto err_cqwq;
+ 
+-	cq->mcq.cqe_sz = 64;
+-	cq->mcq.set_ci_db = cq->wq_ctrl.db.db;
+-	cq->mcq.arm_db = cq->wq_ctrl.db.db + 1;
+-	*cq->mcq.set_ci_db = 0;
+-
+-	/* set no-zero value, in order to avoid the HW to run db-recovery on
+-	 * CQ that used in polling mode.
+-	 */
+-	*cq->mcq.arm_db = cpu_to_be32(2 << 28);
+-
+-	cq->mcq.vector = 0;
+-	cq->mdev = mdev;
+-
+ 	return cq;
+ 
+ err_cqwq:
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index 82034efb74fc..a7936bd1aabe 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -573,6 +573,8 @@ static int cq_create(struct mlx5_vdpa_net *ndev, u16 idx, u32 num_ent)
+ 	vcq->mcq.set_ci_db = vcq->db.db;
+ 	vcq->mcq.arm_db = vcq->db.db + 1;
+ 	vcq->mcq.cqe_sz = 64;
++	vcq->mcq.comp = mlx5_vdpa_cq_comp;
++	vcq->cqe = num_ent;
+ 
+ 	err = cq_frag_buf_alloc(ndev, &vcq->buf, num_ent);
+ 	if (err)
+@@ -612,10 +614,6 @@ static int cq_create(struct mlx5_vdpa_net *ndev, u16 idx, u32 num_ent)
+ 	if (err)
+ 		goto err_vec;
+ 
+-	vcq->mcq.comp = mlx5_vdpa_cq_comp;
+-	vcq->cqe = num_ent;
+-	vcq->mcq.set_ci_db = vcq->db.db;
+-	vcq->mcq.arm_db = vcq->db.db + 1;
+ 	mlx5_cq_arm(&mvq->cq.mcq, MLX5_CQ_DB_REQ_NOT, uar_page, mvq->cq.mcq.cons_index);
+ 	kfree(in);
+ 	return 0;
+diff --git a/include/linux/mlx5/cq.h b/include/linux/mlx5/cq.h
+index 7ef2c7c7d803..9d47cdc727ad 100644
+--- a/include/linux/mlx5/cq.h
++++ b/include/linux/mlx5/cq.h
+@@ -183,6 +183,7 @@ static inline void mlx5_cq_put(struct mlx5_core_cq *cq)
+ 		complete(&cq->free);
+ }
+ 
++void mlx5_add_cq_to_tasklet(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe);
+ int mlx5_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
+ 		   u32 *in, int inlen, u32 *out, int outlen);
+ int mlx5_core_create_cq(struct mlx5_core_dev *dev, struct mlx5_core_cq *cq,
+
+base-commit: 96a9178a29a6b84bb632ebeb4e84cf61191c73d5
 -- 
 2.31.1
 
