@@ -1,144 +1,120 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FB111CA9
-	for <netdev@vger.kernel.org>; Sun,  9 Nov 2025 10:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A768222B5AC
+	for <netdev@vger.kernel.org>; Sun,  9 Nov 2025 11:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762685501; cv=none; b=fQnWQZQQ03mmquLlNsDi0qlutrfROgzJWzuegUtJe8LXKs1WL9ZLGH9EJSHW95AoqAQH5c1BQjCM87Dd1XSS5f4V4iQu7x7C8soh4gOqc41onti6/IfUn+nrBaNgy/6QFTnO39sZNoH54wQ06Yc7xgywk+kTvkmiUb8GKgHeMkc=
+	t=1762686379; cv=none; b=jzIIQ0Qt7TQgePOjgzD/rAqJ/rkyBZ3VKbDwe2eO+tZoJzycpmr07ICUjI4pExt8w0cOMVWaJWNKI9qAn6L9QycQ/8KwwcfO31cB2u3WzZ//RnpOoWr/I87hAoXJWxn4odpIevBUPZPZonfd4lmc+LO7Gwk4+RhOlqN3SG16PO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762685501; c=relaxed/simple;
-	bh=TA5oNwLliGp/HMOpeu1wOIh5Y4qZznufK3ZNPcsqfLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpMB0/2PBi7ARuJ+wy9UsN334ODzH0m/u6IFAlhq0sIYTyKLRVqNkyGQkn/xxw6XsSkt9lfGz6H3PXsfM/Nig7NfQVcCq9KBRFYGbcEkEB3q49+btBmsji2rmWAKVResWPI/ApGYLPxwBg0DWTANqhwrzxc/PaTuRboKXqWEabs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=aM5fnHb4; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1762686379; c=relaxed/simple;
+	bh=0a6Z9vm59vHUX3M3EDlQdpNuJbepNNHLaFpEBjgVj1o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tAPCGoFFMcsiR9zd56oTK6/B0FeG0GOezEq/vf9kBDidUo7j6eoY4fcTT27Repmw/NsASLQm4SS2KmjYVIfGDgpLIB93VT0rZTlx+JYNQdvupF9CUC9aLjfdXd7oYm64a+XA6W3N800JQ9Qd984PvOJcr9swwL1PY77DRdHcOv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSqDLK7q; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="aM5fnHb4"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-640f4b6836bso3827257a12.3
-        for <netdev@vger.kernel.org>; Sun, 09 Nov 2025 02:51:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PSqDLK7q"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42b38693c4dso89776f8f.3
+        for <netdev@vger.kernel.org>; Sun, 09 Nov 2025 03:06:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1762685498; x=1763290298; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdxH3vWlvBSciiZ0JpGiEzoOerU5KoOZeSvSp889gLk=;
-        b=aM5fnHb4p12ea4U2tICbciotFL61jV9f7QDPomttxHSTadOooMRPfuhDc0wQvy77p0
-         /qbcxTHtOEjsKqwlN6RdUhDZ/dQfdjxP6qb3ai1eH+Ad1TawwCmV/5UUTyIB5vOhiZ5o
-         6GVhJmPFBeSnfl0WxZdUaW5k0EtASwSU5uK22Aikna/GjH2U+LPqqOiO7hDPGoV/a2ut
-         sMcNAgKTOiNu/pkPANLrgGEOhzwVNRiPUe5tEJpX+UtV7pX6W6sTflQ4Cbz/5592jbkO
-         P1pJGyZ24DkzatW+dGKc6zVt+vrNcNM8DgW5v3qhcB+2xlU+yPulR6JDa6J0JTP/C+wz
-         YHHQ==
+        d=gmail.com; s=20230601; t=1762686376; x=1763291176; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UMuZ/D7eDR+K5SfJd8pIttc4xM0fYqKI56Vw1YxCazE=;
+        b=PSqDLK7q+7+x9cpznSyDTJYm/t3Yj7KXUS4bZcNOwy1Z9zFvLA6GgVQynuuveJrA8I
+         8viCBBc9foVP7X4unSNMkfnnvKdwq8EfGv2P3HANFP+UffL5knxtRgkoZdbFykK3KK9b
+         zFIIUjkdIgwCdgr7n5PXqs7TZn6ZxS0X5SOhQZ8eB5YfUkmj7Sv+jK27/1kH9ltqPRfM
+         d88jd1laeyzm5CeXpfSU1sX+fUbg14UpE8zl1hRABqbP0llFUdhakHIOPxwq6QbLcSOQ
+         dElBK4fdGwJAix8+ohmIurRoOSaF37ZAFS5reVyrfy6Zr46t5oQ8peozu/0fTeCeAKs/
+         Y38Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762685498; x=1763290298;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gdxH3vWlvBSciiZ0JpGiEzoOerU5KoOZeSvSp889gLk=;
-        b=vgQ2U//Fiki6WLrUdJXZyQrpWT0sphfv2rPFIKc644mnJ35aQJPRS3YiMTlAgXrFYI
-         uyfCzkdgrJoAwm26cdXfN03FrhgLLl5xclE1KUaByXRuSp4g/1FaKHmViTQ1w7R17T/Y
-         2CigBUNW4nqfFj4K3zEBVF/yH3i+Ol3c9TVi1bY/oBTAclGwo/e57FEsL3aRyGlBOWuo
-         l357mleggrFmHUhtoZM+waf29IHjKc1yiEQG55MoTgogmlzZ5kpeKvJ1Ng7oOFw0iAkU
-         eI5KawwnXdeP199d3eczFqzlf9OFhB1SKAUD49Y82+rwsfiCv7yosM09maH10Gkk+mjh
-         rI3A==
-X-Gm-Message-State: AOJu0YxxRE62+Adx+PB5LlvCFr+QfiKIoKVvdYdW+Db0ablqDAPhmU5k
-	eVvJ/ggMiIzXXkWGPtAfU3GAWUlFGPsMk89ICT6bCUGq8W0+6y4rewg3d7DVB8lNSuxtFIR23+B
-	ybeWD
-X-Gm-Gg: ASbGncu76SO0w5OgbaadOxFzW0C4+d6B0uvZMz39gIBnVLRaytNx/qI0XbqSpyuuFTv
-	gEyVcMeXetTX9jZSo23DE8i0qIlnLSwx6BjDfJcHlkitewdPctVICA4JXHR9CBcptQs4O0n1NmZ
-	4s4CHzcp44ZlTfgeztv4JE8hEn+C8Af+xd7eH9Zf0N5S2Bb+0JwnrLwNQkHXkHl3rSqkEKNRTqq
-	p5SQlylVocz7EeJ0mPUA26KeDdAFPZXi9NVWiGMheQ7vv2KpI/1mql35nuwV9xiF/ac+sV4kZTL
-	KiQ4yN9GubL12mqhLOrJlYCskpGmSGtS0MxoG03+2lgb8FxVxH35mP4rH7HO7tj2jeVcWWEDWq/
-	4Ktxqq9Mh7ALLbji2r6jfg8BKgUsg6KwdBK0c4fbWC/O20/5cMK4QeODz3dfTrvMFvPOn4zfZgk
-	+CQSjLjg==
-X-Google-Smtp-Source: AGHT+IFkV8pGT2E9pRwvxi98FUwmNjxqOo2MMzsEhYrsfz6WWzi5yO0twttP+TSwTXUg8RJEtb4RCg==
-X-Received: by 2002:a05:6402:3058:20b0:640:f994:b887 with SMTP id 4fb4d7f45d1cf-6415e8312d3mr3031894a12.38.1762685497822;
-        Sun, 09 Nov 2025 02:51:37 -0800 (PST)
-Received: from jiri-mlt ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f713a68sm8644490a12.2.2025.11.09.02.51.36
+        d=1e100.net; s=20230601; t=1762686376; x=1763291176;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UMuZ/D7eDR+K5SfJd8pIttc4xM0fYqKI56Vw1YxCazE=;
+        b=fmsvgkTkbDdHjAWSvU/Yw122IRTb3jjOGCSBTFnGFMPfor+ky0wqCgZrb7DRuvVrmm
+         iOKx7GNP5ecV4OtNke/l32lBrWJHENoLPMBYIru7QVOipj/tek3BP8YUlAxMt55GEs4N
+         Gg9kZeO0GeENbC+yse7MJ08jHdBZHxxoaLuXOvqfSlxzWkAX+fKq6nDc566li0WIYpBM
+         e+0bvDSQ5sVeoFSswo3URzk4HhFW1W6/A26MnJJvxZnOUBVbHr6wM+yZOJd14fy+xD3J
+         TW56PemrspSSmhb3q2tZE5c51SX4fF3Yh/wO5xCqJX+CUHrsryQEdzCXu0DD6cU/tMsh
+         Mpmg==
+X-Gm-Message-State: AOJu0YyvjDIWeWOBH6ayhwm44SYObHGKAyvMP33c92b8sUMckPZiuPEn
+	n5zjLgnAltKgMJdtPyzvYN6GJti1o5mOgRww+u4rJx1b6wfcPzM+wTIyoLgXNw+g
+X-Gm-Gg: ASbGncsfHHTU7yFURK5OSL88C93uNkQg5eSAtY31OM5o8P7Ey0ZmCGQoLu+LTR5d73q
+	AX9qCtVqoo2130vqpbnMpImHP5tP1CQsDu0Rl7klGTGoUm7O98RQaWce4Gof5teX9GEHe/KAD3I
+	ZeVWiCyUEANVw39JgkJ6aM54dffi1Gt23WNfWD886OhToPKXKGZddv6QYN44XvVPg2VR8Hn3sZM
+	RCAXtBprcEyqj65bDyxkAs0Ef+eqXU6kh7f9rKAMDZlymOMudKAYUp86mFX05AwO6tN70obhVBU
+	aiIGe/pzgaU3MOXnGqCJlxpk1/kQFe5/1JHriYWMDn+6r3LjqKS8Yd++DJ9ES3L1qa2lRLipOFE
+	F78P9Fhy5LholO2fta2RlQCzoEl4Ex6gNm23UslWmdeS9YE7qHayhpBC0dpDJyYz5Ca6r6A5tUB
+	gbHRrPBt5xRGZnR9A=
+X-Google-Smtp-Source: AGHT+IHFhjADorg/ZR5107ihIL53sgAhlpAdhqkAU05FL/iFU41EOoPQsS82Rvhk2qa66vEBuFTWSA==
+X-Received: by 2002:a05:6000:2f86:b0:42b:2a41:f2e with SMTP id ffacd0b85a97d-42b2dbefcfcmr3776049f8f.23.1762686375742;
+        Sun, 09 Nov 2025 03:06:15 -0800 (PST)
+Received: from [192.168.1.243] ([143.58.192.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b316775f2sm6354925f8f.16.2025.11.09.03.06.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Nov 2025 02:51:37 -0800 (PST)
-Date: Sun, 9 Nov 2025 11:51:36 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Petr Oros <poros@redhat.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, stephen@networkplumber.org, 
-	Ivan Vecera <ivecera@redhat.com>
-Subject: Re: [PATCH iproute2-next v2] dpll: Add dpll command
-Message-ID: <4pl7njahgvk4rfl7lamjjpg3ycoqghd4urdbzg7p6qo6my27kl@ugke7xximgtp>
-References: <20251107173116.96622-1-poros@redhat.com>
+        Sun, 09 Nov 2025 03:06:15 -0800 (PST)
+From: Andre Carvalho <asantostc@gmail.com>
+Date: Sun, 09 Nov 2025 11:05:51 +0000
+Subject: [PATCH net-next v3 1/6] netconsole: add target_state enum
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107173116.96622-1-poros@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251109-netcons-retrigger-v3-1-1654c280bbe6@gmail.com>
+References: <20251109-netcons-retrigger-v3-0-1654c280bbe6@gmail.com>
+In-Reply-To: <20251109-netcons-retrigger-v3-0-1654c280bbe6@gmail.com>
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Andre Carvalho <asantostc@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762686373; l=748;
+ i=asantostc@gmail.com; s=20250807; h=from:subject:message-id;
+ bh=Po4s941eMErBwuDFYeqR/VDMArYoBzjcjN8/MMT+h9s=;
+ b=Dob/xrKXJfj0d4xZnl+MCY/sthJswm5B+vonAmQ2jJUC40wOI+WQMq9EY9UZP0OdSo/OqAzvi
+ sGBHZfFAmgpACXKkgVcqacoh5HiO2KkyE2FaVqEAiOjeUmhl2PYJVn7
+X-Developer-Key: i=asantostc@gmail.com; a=ed25519;
+ pk=eWre+RwFHCxkiaQrZLsjC67mZ/pZnzSM/f7/+yFXY4Q=
 
-Fri, Nov 07, 2025 at 06:31:16PM +0100, poros@redhat.com wrote:
->Add a new userspace tool for managing and monitoring DPLL devices via the
->Linux kernel DPLL subsystem. The tool uses libmnl for netlink communication
->and provides a complete interface for device and pin configuration.
->
->The tool supports:
->
->- Device management: enumerate devices, query capabilities (lock status,
->  temperature, supported modes, clock quality levels), configure phase-offset
->  monitoring and averaging
->
->- Pin management: enumerate pins with hierarchical relationships, configure
->  frequencies (including esync), phase adjustments, priorities, states, and
->  directions
->
->- Complex topologies: handle parent-device and parent-pin relationships,
->  reference synchronization tracking, multi-attribute queries (frequency
->  ranges, capabilities)
->
->- ID resolution: query device/pin IDs by various attributes (module-name,
->  clock-id, board-label, type)
->
->- Monitoring: real-time display of device and pin state changes via netlink
->  multicast notifications
->
->- Output formats: both human-readable and JSON output (with pretty-print
->  support)
->
->The tool belongs in iproute2 as DPLL devices are tightly integrated with
->network interfaces - modern NICs provide hardware clock synchronization
->support. The DPLL subsystem uses the same netlink infrastructure as other
->networking subsystems, and the tool follows established iproute2 patterns
->for command structure, output formatting, and error handling.
->
->Example usage:
->
->  # dpll device show
->  # dpll device id-get module-name ice
->  # dpll device set id 0 phase-offset-monitor enable
->  # dpll pin show
->  # dpll pin set id 0 frequency 10000000
->  # dpll pin set id 13 parent-device 0 state connected prio 10
->  # dpll pin set id 0 reference-sync 1 state connected
->  # dpll monitor
->  # dpll -j -p device show
->
->Testing notes:
->
->Tested on real hardware with ice and zl3073x drivers. All commands work
->(device show/set/id-get, pin show/set/id-get, monitor). JSON output was
->carefully compared with cli.py - the tools are interchangeable.
->
->v2:
->- Added testing notes
->- Added MAINTAINERS entry
->- Removed unused -n parameter from man page
->
->Co-developed-by: Ivan Vecera <ivecera@redhat.com>
->Signed-off-by: Petr Oros <poros@redhat.com>
->Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-Looks good to me.
-FWIW
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Introduces a enum to track netconsole target state which is going to
+replace the enabled boolean.
 
-Thanks!
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Andre Carvalho <asantostc@gmail.com>
+---
+ drivers/net/netconsole.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index bb6e03a92956..7a7eba041e23 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -117,6 +117,11 @@ enum sysdata_feature {
+ 	SYSDATA_MSGID = BIT(3),
+ };
+ 
++enum target_state {
++	STATE_DISABLED,
++	STATE_ENABLED,
++};
++
+ /**
+  * struct netconsole_target - Represents a configured netconsole target.
+  * @list:	Links this target into the target_list.
+
+-- 
+2.51.2
+
