@@ -1,326 +1,630 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012020.outbound.protection.outlook.com [52.101.53.20])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E08191;
-	Mon, 10 Nov 2025 11:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775204; cv=fail; b=nX8+HeYnbqAY5gy11RZn202kJiwim+gfWT/rOWfIhcHbTtBOFezXB/AddKwAvPiB0lfyc7wFgAbvgz1qvXkFVx70IvA3lu//r+HmrPRee6TQ+DaeVlhUM65RTcsify5j9nPwIqMjMsQYWczpoAEuBGyn+L6DYz2ffwnG+wRALDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775204; c=relaxed/simple;
-	bh=rAm24Yhf5OnnxFDGHhcn+A85Km0ga6hHKGdXmH0a37A=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=h977U5wNL3K68p7P1RNbWDammk3LPCcai4GlC5hks+2XmNbK2i3EZdukV2OVSbgfb4eRx5K6B7a+MzS5/kH7upaBTYUILCwbJu2Tr2QeMbREhJnb3O7FH8eG+LV2zPnUPDM3yr05S/nfgkGAYqDI4Q4qRcLWETl9/6bmIaRVNUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zhHwvZe6; arc=fail smtp.client-ip=52.101.53.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27781A317D
+	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 11:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762775218; cv=none; b=DV44qxg3TB0bsO59QKxw2Z8Bim6ui1SlBcu1mxoKfJtzXjahviNfTalxODHBCFeotzXtiVSaU2MJv9CCDAg6vEVaRX5ro2b9/bBU8p0Rmbf+kEhMJxDBL5KynmEIny7MAvR4jxzk7/aa8RnwbOTaxzzWppkHuSp5r0VL2o4ZDeU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762775218; c=relaxed/simple;
+	bh=T5+r84ifWX5J/CLorRksq8ufsHxP2/xEzPslUInK9xA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IazIaGws0fGsfwO0YgnYx7if71wt+4DD2G2Ruo5LdvgIDRAfLFjq18I9fK8Foc4s2Rf23Oh/P2aeVqjCiDnAaK4DZfsOCJ6TdSz52MQW7k2m9IO7YLjnbkHEk5e0vW2Uk0G6xL14DYaEdCcNNVCYGNk0xka4PJ6BeHZquP64E2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=oDuPYEcx; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zhHwvZe6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lu1+8hfHFjJwylAHYyvMGlPH08zCkKyy5nIUV94CC+qh9KyIrkLIHGg8poFpQaixL1bRK6DaiTmpKuBnal0UvcoKzK6GxyZ5sv97ziW+Bcy8EgOmOfP52Utbfn24tYP3MuLAF7mPaFcPGVnlzPxgwW9JqRMp6ORBpyeiN0UGKhVHn99w78oWCjdNM2d9TCZ7immVfq6rzg6MoaSkbwJbSnFW/XeNlx/rotTqRcud1di5sh5ea2U8Kw8Sg7SpQdWVjkvB3tNB1zvJrnNpdDHjbu5n0cC6iEdgVM3BvYC0c+A2MVhQmdBWF72OG1YNr9tt4vhddRnicIxpfcfpbFEWsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0WtW4Y11VhpcqcBSCL8qVZ1BgCquIMwC2J2lwqAeJaU=;
- b=VEsZ4al91h42o/6rUg5BKSbZ0sDrdUZQFZ5cNs7HGe4WviZmvzhheCtslgsGwOkA7eGL1hTsL/zYww8kLUyngaM/qjBYWlxlocGyDGsgASlQaqj/FTQC+3ig/WjKoU9sTD6vsDBuT2ovlrYJ1oSb4/zYR5ucpTd/9cBZSEXii7eiLezbsoytHhV33tJVLPXkQNKhnyPXQ+kBElKs0ldyIRVC/cb4ysn+mX0BFgLSygGwPEJF4QkX1vClGE2qtA8kYcByIMRT0xAr+3avWhjy+r19uhITlZ5VjWKNPxeB7VPWjLORl42UVRlqsRZdB7H292pVwPOH/pUbWs5mEWd1RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0WtW4Y11VhpcqcBSCL8qVZ1BgCquIMwC2J2lwqAeJaU=;
- b=zhHwvZe6rrxNqG1yV0HYAd+QAWBWhsA50XUAiggI9PbSHrgMtXijSvlPdIqp0hkmYU9E2mecPM5moiEpG64Dj61DyOHGfSG9ujjr/WklJnY87Or2Wf5bH2G5UyJRuIgwsrwgx989y/IB0uQlOLHGGtocLZrNHYnkOJflt9YdLZE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
- by LV0PR12MB999091.namprd12.prod.outlook.com (2603:10b6:408:32c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 11:46:40 +0000
-Received: from DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
- ([fe80::f943:600c:2558:af79%5]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 11:46:40 +0000
-Message-ID: <bac55f2b-64ba-4001-b8cf-a6716c417d38@amd.com>
-Date: Mon, 10 Nov 2025 11:46:35 +0000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 11/22] cxl: Define a driver interface for HPA free
- space enumeration
-Content-Language: en-US
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
- alejandro.lucero-palau@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
- dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
-References: <20251006100130.2623388-1-alejandro.lucero-palau@amd.com>
- <20251006100130.2623388-12-alejandro.lucero-palau@amd.com>
- <20251007144321.0000778a@huawei.com>
-From: Alejandro Lucero Palau <alucerop@amd.com>
-In-Reply-To: <20251007144321.0000778a@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0108.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c3::10) To DM6PR12MB4202.namprd12.prod.outlook.com
- (2603:10b6:5:219::22)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="oDuPYEcx"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762775212; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=seEvPXKAD0ebczG3un5bkoi+Jz3Vvl0o6IEvRxFr5JQ=;
+	b=oDuPYEcxXliVFqxIVyQ7r+gqBbjTDF2/ojClD7ixFJfbu6R8Z3X5d4393Zpn3TvAylR1PS0MPhipHsxRXKtYUrsRCx4K/2KpDAyGHLBwwvRd/p/rWDkEoylnCXUAA/5XXnJyvc1Dhdqe9SROA+xZ549oa+RoP33Pe6rV1KoVhX4=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Ws2RVue_1762775210 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 10 Nov 2025 19:46:50 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v13 1/5] eea: introduce PCI framework
+Date: Mon, 10 Nov 2025 19:46:44 +0800
+Message-Id: <20251110114648.8972-2-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20251110114648.8972-1-xuanzhuo@linux.alibaba.com>
+References: <20251110114648.8972-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|LV0PR12MB999091:EE_
-X-MS-Office365-Filtering-Correlation-Id: a043e02f-e3e1-4991-5768-08de204ecfc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QURidTVDNzFjN3ZEc2VRU25hQjgvczNyOVFCWTRjcFFjVHVlVEc1MUppb0l0?=
- =?utf-8?B?Y3RZaG1hTHlEaEQ0Y3p1czFkMlVkdCtoTElMdkMvendmVXVkdXp0RkNDaEhV?=
- =?utf-8?B?Z3dVSVpzUEc0dUkyNjhBUEU5ZXYzamZBenNzNmtVQStucGFkUGRHa3NHM2VH?=
- =?utf-8?B?M2RyaEtoRzJYb3RaNFVXbmxGUmx6alB5bDdyNGd4U09uVktjam83ejVvaWVu?=
- =?utf-8?B?MmR5Z1lwaGxMd2V0WmFUMWVra0VQMVhlOC9vOWk1TXN0bDJYQlVETHUrZnM0?=
- =?utf-8?B?bzhNdEZsQ0QvVHFLQm9jdUUweWVVS1hwTFpqMDQvWmtsQ2gyV1Fka1BwUCtz?=
- =?utf-8?B?ZjhGRm9RQTkxUTJUeUpHdjh3SmdqUkx5S3pPMGVyTzdmN0MzNXVxN25aM3o0?=
- =?utf-8?B?ZnJSRG5wQk5BZDk4VUlTeXcwQm5WemloQmZtV2JLcUlBYzJRcWlPaFNxc3pa?=
- =?utf-8?B?dmxXQ1dIdDh1ZDJpRHBrdDBUejF5a2R2UXo5WXhjUjdGYU10VSs5T3F3RENG?=
- =?utf-8?B?ejdVZHJCd0NFN1RLY1dsdWpRZDNZL1k0MEkrT1hBVXdoTlJPKzdsZmg3WCtU?=
- =?utf-8?B?QkNXV1JzRkM2MWxsRkxLS0xNSU5saW9xcFJnZ2pLNG1kZlJ3YSt3dUdsdlZV?=
- =?utf-8?B?YXRMdkdod3ovZWpScHU2b2FJTXpEcnpZVFZkVENoUkw3WnoxcFhMQWxrdTJs?=
- =?utf-8?B?djBwTFYwUGhXbjA1eFlyaW5keTZGRDRiRFRnSjY0bWN1NTg4SkFEdERSWitO?=
- =?utf-8?B?YzAwdW1TVGpKY1k0NkNiZ1ZpaFBSYXhRWGtvN3BaSHpOeThWc2o1T2ZqTGJx?=
- =?utf-8?B?UzJNWTdNQ2g1V2dPZzdsYlR2REZadmhFT2EzdjVHbHNlTjBYSTUwaXJMRVBZ?=
- =?utf-8?B?TW54bmV1ay9GaWcyc01aQU1iQkpVd1h0L2NHaVlmQ1dtaDRLV01FN1ZCM3FN?=
- =?utf-8?B?RkhBOXEzREltdXY0SitPQ2JGSTRUU3g1ckhhc2VBVkdodnoxczNON05QVWVK?=
- =?utf-8?B?TDcwUzVUbUk5dFV5YU1TdVFwODJTMlNEKzNYVXFSc2VtelBjcmZhY29kb1pC?=
- =?utf-8?B?SjJuYmVEMWJ0QWdqV0VGdHVMUFpUSkFVTjkxOCtTb3BYZGQxVWRVbDdmZnJ5?=
- =?utf-8?B?RnMxb2lGZEx3QVlnem9XZW1rRzNkUU9qaWtVcUxVRkFzRUNmTkZuZUZ3ZDdL?=
- =?utf-8?B?ZE96Q04ybWJzcE5aU0tRUEVQd2ZwQURMcnphYUFGSURQRkh1Q3dFdm00WjRo?=
- =?utf-8?B?U3VIQlhTNUcwWUl3M2o3aTRsR2VXclNOUWJsc04yb1liNTJzdEtxS0hvR1Yy?=
- =?utf-8?B?WHdBQS9VN0M3eWY3REJrMmcya2hOWWI3Z2FMSkxFWEVVai9rRGZhZVpqUXhZ?=
- =?utf-8?B?MXQzQmtIdy9CK2NDbFZEdzhPcnJxWjdKRTlaY2hyUDZqa2QxUi9aeGxkRXUr?=
- =?utf-8?B?ZVJBZWhWYzIyUGx6MXMrOU9YZytZR0xDeElkQzFScUFBcjAzMFJacGQwdW5t?=
- =?utf-8?B?VzlWM0ltQVRGc3Vmb2J6NjdueldieGN6d0U0MWE5a0tZNWkwVG1UOGZsWEU4?=
- =?utf-8?B?NEtMTk0wZUROL3dMRmdTUUVJTWdVSVg2NW1zQWVFUUpiVXlITW5zWFpJdGRv?=
- =?utf-8?B?WERPMDdZSjlKTERKazJ4U1pybWk5TjdDdHB3dUxDQk54endFNm9BZmVTTzY1?=
- =?utf-8?B?WWhXODdxUGtRNWFsRzZZUmgwQzI4OFY3SHpjNC9wVml1cFFiZUVGTmJkczli?=
- =?utf-8?B?RTFpck9PY0FRdmcxTlZYWVZUSk04bEdudTl4RndCc2R3QnBPbEptc0p6Zk41?=
- =?utf-8?B?REJoU0hhT0MzMzlCWlJJQmFtQVZmblBwYWRQeTh0MmFZUW5sVTBzVGlVeUF5?=
- =?utf-8?B?YlZUTjVreEJBN1BVTFgyZ3pKWVFPVnZjMTNqeXBGMENycVhyc3k3UU5Lc2du?=
- =?utf-8?B?QlN4Ujk2Q1BzRlVyaVhlWCtXam9COFlqNmhVd2Nrd3hLZUxFKzlyZmpMSFd6?=
- =?utf-8?B?U2lJMjdPcEtRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUVZWDdsa2Y5S0dIUCtsbktDYzljTUFsWWVZNEVPU1o2RlkyQkZWWmNUTnRL?=
- =?utf-8?B?VUF3aExMVjFPdjRQanB4MnA4YU1oVWpKaDBKNGlrYTZxTVBrNEFjMXhHbjBn?=
- =?utf-8?B?VUpJQ3RkOG5VRWFvREpSanNSeG9SYTNmL0dLTndldWVrRlRkamo0OCtldXEw?=
- =?utf-8?B?dGFZSjlFRytaY1ZBN3E3OEsyQWgyem40akdPK0svbXJVMFk4OVljbUFLd3hT?=
- =?utf-8?B?R3ZTK003elF3WjRXVUQwT09iZ0h4Y3k1UnB1T1RCeDQyN1E5bktsWTMzTjZC?=
- =?utf-8?B?Mkt3RXRhWEgxNFF0VzZZNXlKQnJVdmV1cUMzcTY2Yy9xeG9zYW5QUThaNk1z?=
- =?utf-8?B?QkdUNjRyNVZwNHo4Y3UxR1hwbWpaa1N0MUFyZzd2elVlNi9MQU94dHRhYVE3?=
- =?utf-8?B?VlcvNG1mdkFTOTNkQUhvNkFZcURZck02alBqTVBFeGo1LzRtU2F2WDNPVWFz?=
- =?utf-8?B?UVJ4ZmNNL1hIZFF4bTgvblRvWnZZOU4xeXhQTlQyeFkwclhUamw2NzhPVC95?=
- =?utf-8?B?dlNvbzdZT2o3R2w4ZElYZ2NzdTFmaTJZaHNQWU92Tks3SEwraXEvb2RLNzZk?=
- =?utf-8?B?TGxXdnR2VjAxQkFER2VpZ1FWZVpPN1VmRDNiM0dOY0tUUTZ1cE9DZXZSMWcx?=
- =?utf-8?B?amNuR2VuQUNaaVQvUktWM3dpU2d6eXJoRDBDMlBLVU9wRHVzVmVlVTdJV2Fu?=
- =?utf-8?B?MTFkTzd0VGc1cFVRODR1R3JVYzBFTlcrVVFVRElpUXRoYkFXbHdtSXBwdEls?=
- =?utf-8?B?d2h5dVg0TW54MHhUSXpFQjhSbE5mRm5jWmxlazNtYkZ3Mmx3QnhIbjZOdGZm?=
- =?utf-8?B?d1IwaG5kWHNXUWdCNzZBV1ZkTWlYZ2dweEh4aU9XeTkxV24vOGRzWGNVcko0?=
- =?utf-8?B?YWZyZlpJUW8vS2paWSswTm5MbGJ2VkVxUWliZTZJdnVUOGFia2dpcTdaaGYw?=
- =?utf-8?B?ck1jblZNbVFaNWJPc1JsNTREOWc5VnZLNHcyUXJYcVc2UEdWeHNJTjdZMkhx?=
- =?utf-8?B?RFZrYnYrTjEwc2gzWUhUa2h5L2xxcFlpcnlkZ2s2c2x5S0ZBOWxMOG0rVzVM?=
- =?utf-8?B?NEZIbGU3Mmd2ZTZIVDRCdWRvOVhUcHdIOHFEK0dYZUQ2bnNVWTh2VDZhUlZs?=
- =?utf-8?B?bWJuckVpb2tRTWVRNDBWNmg5QW1FYzV6d00yVW10NzBKb2JJZlE5Z1RFbU12?=
- =?utf-8?B?WFArRkFpTkdmc1lBNk92WU1pS1NFTnNIVjV6OTdlQ2V2aWovdHVOMTVMSFZ5?=
- =?utf-8?B?M1pNSnFpazRBY0U5bGl0eGNzbXJsMWFWVmtOeW9reDdnSklpQzU1WjhnbW4r?=
- =?utf-8?B?RTk2MDRNVW5HaWxXdFZSTTl0NVJjREx1bEtOUG90RThSSWdCRCtEbnBrL3ZX?=
- =?utf-8?B?NU8zNFhHY1NabXBLc3A5eldPa0ZmVkhiYWlmOVRBTTFDZWU3eHgyaHBSODRo?=
- =?utf-8?B?Zm5PM0phTll3Ym5oZFQzZXBQaVdYVFNWTDd1dzU3MDJjckVRaGJEZ096OFJy?=
- =?utf-8?B?Q0lsVmsvL2NVODZWTURRM2xTN3BacGRKVExJM1B6UXFCWlRESEZ1WDhQWmVY?=
- =?utf-8?B?QVdFMzhZeGxOM1hJd3hCdVEvbnpjaDlDZDRLaTJzV1BDb2RPaUV6ay9TVmlE?=
- =?utf-8?B?U0laOWYzQWtXazk2Tkg0Y3dWeGd0UUQ1QWVQMmx0WGczYzJuWjNSUnlzckpr?=
- =?utf-8?B?VjFmbEhOajdUVHcvQk5VRW1KdGp1Tmw1TkVQU3c2elIvRVlSc2loUU83bFIz?=
- =?utf-8?B?dlQ1RzN0RTJIQjFySGtBekl4VmRyWTZJTUltbVExSjNHRXFGaFcwR0h2NGR6?=
- =?utf-8?B?VlJUU0FUejJJenBYMDlxdVpycnlBeGJtaC96bFVITUlqR3VlWURYbTFLT2s2?=
- =?utf-8?B?ZEdiOVpwQVJTampvRzdzUkVjSVJ3eDRCYklWYU1waTR3cmJWV1p6eGpKZ21p?=
- =?utf-8?B?RjJjdWNYa1crdGE0REJvTUFZbkNZbStYRHdxU1I3TUF5OU5vNmhaZnBwOGQv?=
- =?utf-8?B?ekVpZy9VVGtWemlmUW9YWnVLUzRrdzRIZURlczdRelJGNE5pYk4xTXpJR0pX?=
- =?utf-8?B?VGd2VEJPWDliM2VPYlNDYnBjMU15K2lXaHBZT3JFcG16eDU2WHVtZU5mUnhr?=
- =?utf-8?Q?n0Tm85udS6/2SS1KGVTK8v2I4?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a043e02f-e3e1-4991-5768-08de204ecfc6
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 11:46:40.1014
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /4OkaZ0iYEkyu2uyES4DL5CqlypWSXisPn2LLD1our2Uggg19lcGjNwr8McciBPhOlhXEVf4ZXyTpWLWbE8NMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR12MB999091
+X-Git-Hash: c37913a6d456
+Content-Transfer-Encoding: 8bit
 
+Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
 
-On 10/7/25 14:43, Jonathan Cameron wrote:
-> On Mon, 6 Oct 2025 11:01:19 +0100
-> alejandro.lucero-palau@amd.com wrote:
->
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> CXL region creation involves allocating capacity from Device Physical Address
->> (DPA) and assigning it to decode a given Host Physical Address (HPA). Before
->> determining how much DPA to allocate the amount of available HPA must be
->> determined. Also, not all HPA is created equal, some HPA targets RAM, some
->> targets PMEM, some is prepared for device-memory flows like HDM-D and HDM-DB,
->> and some is HDM-H (host-only).
->>
->> In order to support Type2 CXL devices, wrap all of those concerns into
->> an API that retrieves a root decoder (platform CXL window) that fits the
->> specified constraints and the capacity available for a new region.
->>
->> Add a complementary function for releasing the reference to such root
->> decoder.
->>
->> Based on https://lore.kernel.org/linux-cxl/168592159290.1948938.13522227102445462976.stgit@dwillia2-xfh.jf.intel.com/
->>
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> One thing I noticed on a fresh read through...
->
->> ---
->>   drivers/cxl/core/region.c | 162 ++++++++++++++++++++++++++++++++++++++
->>   drivers/cxl/cxl.h         |   3 +
->>   include/cxl/cxl.h         |   6 ++
->>   3 files changed, 171 insertions(+)
->>
->> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
->> index e9bf42d91689..c5b66204ecde 100644
->> --- a/drivers/cxl/core/region.c
->> +++ b/drivers/cxl/core/region.c
->> @@ -703,6 +703,168 @@ static int free_hpa(struct cxl_region *cxlr)
->>   	return 0;
->>   }
->>   
->> +struct cxlrd_max_context {
->> +	struct device * const *host_bridges;
->> +	int interleave_ways;
->> +	unsigned long flags;
->> +	resource_size_t max_hpa;
->> +	struct cxl_root_decoder *cxlrd;
->> +};
->> +
->> +static int find_max_hpa(struct device *dev, void *data)
->> +{
->> +	struct cxlrd_max_context *ctx = data;
->> +	struct cxl_switch_decoder *cxlsd;
->> +	struct cxl_root_decoder *cxlrd;
->> +	struct resource *res, *prev;
->> +	struct cxl_decoder *cxld;
->> +	resource_size_t max;
->> +	int found = 0;
->> +
->> +	if (!is_root_decoder(dev))
->> +		return 0;
->> +
->> +	cxlrd = to_cxl_root_decoder(dev);
->> +	cxlsd = &cxlrd->cxlsd;
->> +	cxld = &cxlsd->cxld;
->> +
->> +	if ((cxld->flags & ctx->flags) != ctx->flags) {
->> +		dev_dbg(dev, "flags not matching: %08lx vs %08lx\n",
->> +			cxld->flags, ctx->flags);
->> +		return 0;
->> +	}
->> +
->> +	for (int i = 0; i < ctx->interleave_ways; i++) {
-> I think ctx->interleave_ways == 0 as it's never set, so found is never
-> set, but then the check below succeeds as found == 0 and ctx->interleave_ways == 0
->
-> Definitely doesn't feel intentional!
+This commit implements the EEA PCI probe functionality.
 
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ MAINTAINERS                                |   8 +
+ drivers/net/ethernet/Kconfig               |   1 +
+ drivers/net/ethernet/Makefile              |   1 +
+ drivers/net/ethernet/alibaba/Kconfig       |  29 ++
+ drivers/net/ethernet/alibaba/Makefile      |   5 +
+ drivers/net/ethernet/alibaba/eea/Makefile  |   3 +
+ drivers/net/ethernet/alibaba/eea/eea_pci.c | 385 +++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.h |  50 +++
+ 8 files changed, 482 insertions(+)
+ create mode 100644 drivers/net/ethernet/alibaba/Kconfig
+ create mode 100644 drivers/net/ethernet/alibaba/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
 
-Yes, that is the consequence of the other thing you spotted later.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 03d748e8e768..2a1b667c31a9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -789,6 +789,14 @@ S:	Maintained
+ F:	Documentation/i2c/busses/i2c-ali1563.rst
+ F:	drivers/i2c/busses/i2c-ali1563.c
+ 
++ALIBABA ELASTIC ETHERNET ADAPTER DRIVER
++M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
++M:	Wen Gu <guwen@linux.alibaba.com>
++R:	Philo Lu <lulie@linux.alibaba.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/ethernet/alibaba/eea
++
+ ALIBABA ELASTIC RDMA DRIVER
+ M:	Cheng Xu <chengyou@linux.alibaba.com>
+ M:	Kai Shen <kaishen@linux.alibaba.com>
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index aead145dd91d..307c68a4fd53 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -22,6 +22,7 @@ source "drivers/net/ethernet/aeroflex/Kconfig"
+ source "drivers/net/ethernet/agere/Kconfig"
+ source "drivers/net/ethernet/airoha/Kconfig"
+ source "drivers/net/ethernet/alacritech/Kconfig"
++source "drivers/net/ethernet/alibaba/Kconfig"
+ source "drivers/net/ethernet/allwinner/Kconfig"
+ source "drivers/net/ethernet/alteon/Kconfig"
+ source "drivers/net/ethernet/altera/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 998dd628b202..358d88613cf4 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_NET_VENDOR_ADI) += adi/
+ obj-$(CONFIG_NET_VENDOR_AGERE) += agere/
+ obj-$(CONFIG_NET_VENDOR_AIROHA) += airoha/
+ obj-$(CONFIG_NET_VENDOR_ALACRITECH) += alacritech/
++obj-$(CONFIG_NET_VENDOR_ALIBABA) += alibaba/
+ obj-$(CONFIG_NET_VENDOR_ALLWINNER) += allwinner/
+ obj-$(CONFIG_NET_VENDOR_ALTEON) += alteon/
+ obj-$(CONFIG_ALTERA_TSE) += altera/
+diff --git a/drivers/net/ethernet/alibaba/Kconfig b/drivers/net/ethernet/alibaba/Kconfig
+new file mode 100644
+index 000000000000..820a9a7aa1f1
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/Kconfig
+@@ -0,0 +1,29 @@
++#
++# Alibaba network device configuration
++#
++
++config NET_VENDOR_ALIBABA
++	bool "Alibaba Devices"
++	default y
++	help
++	  If you have a network (Ethernet) device belonging to this class, say Y.
++
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about Alibaba devices. If you say Y, you will be asked
++	  for your specific device in the following questions.
++
++if NET_VENDOR_ALIBABA
++
++config EEA
++	tristate "Alibaba Elastic Ethernet Adapter support"
++	depends on PCI_MSI
++	depends on 64BIT
++	select PAGE_POOL
++	default m
++	help
++	  This driver supports Alibaba Elastic Ethernet Adapter"
++
++	  To compile this driver as a module, choose M here.
++
++endif #NET_VENDOR_ALIBABA
+diff --git a/drivers/net/ethernet/alibaba/Makefile b/drivers/net/ethernet/alibaba/Makefile
+new file mode 100644
+index 000000000000..7980525cb086
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for the Alibaba network device drivers.
++#
++
++obj-$(CONFIG_EEA) += eea/
+diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
+new file mode 100644
+index 000000000000..cf2acf1733fd
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/Makefile
+@@ -0,0 +1,3 @@
++
++obj-$(CONFIG_EEA) += eea.o
++eea-y := eea_pci.o
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.c b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+new file mode 100644
+index 000000000000..5785d9b3fd30
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+@@ -0,0 +1,385 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/iopoll.h>
++
++#include "eea_pci.h"
++
++#define EEA_PCI_DB_OFFSET 4096
++
++struct eea_pci_cfg {
++	__le32 reserve0;
++	__le32 reserve1;
++	__le32 drv_f_idx;
++	__le32 drv_f;
++
++#define EEA_S_OK           BIT(2)
++#define EEA_S_FEATURE_DONE BIT(3)
++#define EEA_S_FAILED       BIT(7)
++	u8   device_status;
++	u8   reserved[7];
++
++	__le32 rx_num_max;
++	__le32 tx_num_max;
++	__le32 db_blk_size;
++
++	/* admin queue cfg */
++	__le16 aq_size;
++	__le16 aq_msix_vector;
++	__le32 aq_db_off;
++
++	__le32 aq_sq_addr;
++	__le32 aq_sq_addr_hi;
++	__le32 aq_cq_addr;
++	__le32 aq_cq_addr_hi;
++
++	__le64 hw_ts;
++};
++
++struct eea_pci_device {
++	struct eea_device edev;
++	struct pci_dev *pci_dev;
++
++	u32 msix_vec_n;
++
++	void __iomem *reg;
++	void __iomem *db_base;
++
++	char ha_irq_name[32];
++	u8 reset_pos;
++};
++
++#define cfg_pointer(reg, item) \
++	((void __iomem *)((reg) + offsetof(struct eea_pci_cfg, item)))
++
++#define cfg_write8(reg, item, val) iowrite8(val, cfg_pointer(reg, item))
++#define cfg_write32(reg, item, val) iowrite32(val, cfg_pointer(reg, item))
++
++#define cfg_read8(reg, item) ioread8(cfg_pointer(reg, item))
++#define cfg_read32(reg, item) ioread32(cfg_pointer(reg, item))
++#define cfg_readq(reg, item) readq(cfg_pointer(reg, item))
++
++const char *eea_pci_name(struct eea_device *edev)
++{
++	return pci_name(edev->ep_dev->pci_dev);
++}
++
++int eea_pci_domain_nr(struct eea_device *edev)
++{
++	return pci_domain_nr(edev->ep_dev->pci_dev->bus);
++}
++
++u16 eea_pci_dev_id(struct eea_device *edev)
++{
++	return pci_dev_id(edev->ep_dev->pci_dev);
++}
++
++static void eea_pci_io_set_status(struct eea_device *edev, u8 status)
++{
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++
++	cfg_write8(ep_dev->reg, device_status, status);
++}
++
++static u8 eea_pci_io_get_status(struct eea_device *edev)
++{
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++
++	return cfg_read8(ep_dev->reg, device_status);
++}
++
++static void eea_add_status(struct eea_device *dev, u32 status)
++{
++	eea_pci_io_set_status(dev, eea_pci_io_get_status(dev) | status);
++}
++
++#define EEA_RESET_TIMEOUT_US (1000 * 1000 * 1000)
++
++int eea_device_reset(struct eea_device *edev)
++{
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++	int i, err;
++	u8 val;
++
++	eea_pci_io_set_status(edev, 0);
++
++	err = read_poll_timeout(cfg_read8, val, !val, 20, EEA_RESET_TIMEOUT_US,
++				false, ep_dev->reg, device_status);
++	if (err)
++		return -EBUSY;
++
++	for (i = 0; i < ep_dev->msix_vec_n; ++i)
++		synchronize_irq(pci_irq_vector(ep_dev->pci_dev, i));
++
++	return 0;
++}
++
++void eea_device_ready(struct eea_device *dev)
++{
++	u8 status = eea_pci_io_get_status(dev);
++
++	WARN_ON(status & EEA_S_OK);
++
++	eea_pci_io_set_status(dev, status | EEA_S_OK);
++}
++
++static int eea_negotiate(struct eea_device *edev)
++{
++	struct eea_pci_device *ep_dev;
++	u32 status;
++
++	ep_dev = edev->ep_dev;
++
++	edev->features = 0;
++
++	cfg_write32(ep_dev->reg, drv_f_idx, 0);
++	cfg_write32(ep_dev->reg, drv_f, (u32)edev->features);
++	cfg_write32(ep_dev->reg, drv_f_idx, 1);
++	cfg_write32(ep_dev->reg, drv_f, edev->features >> 32);
++
++	eea_add_status(edev, EEA_S_FEATURE_DONE);
++	status = eea_pci_io_get_status(edev);
++	if (!(status & EEA_S_FEATURE_DONE))
++		return -ENODEV;
++
++	return 0;
++}
++
++static void eea_pci_release_resource(struct eea_pci_device *ep_dev)
++{
++	struct pci_dev *pci_dev = ep_dev->pci_dev;
++
++	if (ep_dev->reg) {
++		pci_iounmap(pci_dev, ep_dev->reg);
++		ep_dev->reg = NULL;
++	}
++
++	if (ep_dev->msix_vec_n) {
++		ep_dev->msix_vec_n = 0;
++		pci_free_irq_vectors(ep_dev->pci_dev);
++	}
++
++	pci_release_regions(pci_dev);
++	pci_disable_device(pci_dev);
++}
++
++static int eea_pci_setup(struct pci_dev *pci_dev, struct eea_pci_device *ep_dev)
++{
++	int err, n;
++
++	ep_dev->pci_dev = pci_dev;
++
++	err = pci_enable_device(pci_dev);
++	if (err)
++		return err;
++
++	err = pci_request_regions(pci_dev, "EEA");
++	if (err)
++		goto err_disable_dev;
++
++	pci_set_master(pci_dev);
++
++	err = dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(64));
++	if (err) {
++		dev_warn(&pci_dev->dev, "Failed to enable 64-bit DMA.\n");
++		goto err_release_regions;
++	}
++
++	ep_dev->reg = pci_iomap(pci_dev, 0, 0);
++	if (!ep_dev->reg) {
++		dev_err(&pci_dev->dev, "Failed to map pci bar!\n");
++		err = -ENOMEM;
++		goto err_release_regions;
++	}
++
++	ep_dev->edev.rx_num = cfg_read32(ep_dev->reg, rx_num_max);
++	ep_dev->edev.tx_num = cfg_read32(ep_dev->reg, tx_num_max);
++
++	/* 2: adminq, error handle*/
++	n = ep_dev->edev.rx_num + ep_dev->edev.tx_num + 2;
++	err = pci_alloc_irq_vectors(ep_dev->pci_dev, n, n, PCI_IRQ_MSIX);
++	if (err < 0)
++		goto err_unmap_reg;
++
++	ep_dev->msix_vec_n = n;
++
++	ep_dev->db_base = ep_dev->reg + EEA_PCI_DB_OFFSET;
++	ep_dev->edev.db_blk_size = cfg_read32(ep_dev->reg, db_blk_size);
++
++	return 0;
++
++err_unmap_reg:
++	pci_iounmap(pci_dev, ep_dev->reg);
++	ep_dev->reg = NULL;
++
++err_release_regions:
++	pci_release_regions(pci_dev);
++
++err_disable_dev:
++	pci_disable_device(pci_dev);
++
++	return err;
++}
++
++void __iomem *eea_pci_db_addr(struct eea_device *edev, u32 off)
++{
++	return edev->ep_dev->db_base + off;
++}
++
++u64 eea_pci_device_ts(struct eea_device *edev)
++{
++	struct eea_pci_device *ep_dev = edev->ep_dev;
++
++	return cfg_readq(ep_dev->reg, hw_ts);
++}
++
++static int eea_init_device(struct eea_device *edev)
++{
++	int err;
++
++	err = eea_device_reset(edev);
++	if (err)
++		return err;
++
++	eea_pci_io_set_status(edev, BIT(0) | BIT(1));
++
++	err = eea_negotiate(edev);
++	if (err)
++		goto err;
++
++	/* do net device probe ... */
++
++	return 0;
++err:
++	eea_add_status(edev, EEA_S_FAILED);
++	return err;
++}
++
++static int __eea_pci_probe(struct pci_dev *pci_dev,
++			   struct eea_pci_device *ep_dev)
++{
++	int err;
++
++	pci_set_drvdata(pci_dev, ep_dev);
++
++	err = eea_pci_setup(pci_dev, ep_dev);
++	if (err)
++		return err;
++
++	err = eea_init_device(&ep_dev->edev);
++	if (err)
++		goto err_pci_rel;
++
++	return 0;
++
++err_pci_rel:
++	eea_pci_release_resource(ep_dev);
++	return err;
++}
++
++static void __eea_pci_remove(struct pci_dev *pci_dev, bool flush_ha_work)
++{
++	struct eea_pci_device *ep_dev = pci_get_drvdata(pci_dev);
++	struct device *dev = get_device(&ep_dev->pci_dev->dev);
++
++	pci_disable_sriov(pci_dev);
++
++	eea_pci_release_resource(ep_dev);
++
++	put_device(dev);
++}
++
++static int eea_pci_probe(struct pci_dev *pci_dev,
++			 const struct pci_device_id *id)
++{
++	struct eea_pci_device *ep_dev;
++	struct eea_device *edev;
++	int err;
++
++	ep_dev = kzalloc(sizeof(*ep_dev), GFP_KERNEL);
++	if (!ep_dev)
++		return -ENOMEM;
++
++	edev = &ep_dev->edev;
++
++	edev->ep_dev = ep_dev;
++	edev->dma_dev = &pci_dev->dev;
++
++	ep_dev->pci_dev = pci_dev;
++
++	err = __eea_pci_probe(pci_dev, ep_dev);
++	if (err)
++		kfree(ep_dev);
++
++	return err;
++}
++
++static void eea_pci_remove(struct pci_dev *pci_dev)
++{
++	struct eea_pci_device *ep_dev = pci_get_drvdata(pci_dev);
++
++	__eea_pci_remove(pci_dev, true);
++
++	kfree(ep_dev);
++}
++
++static int eea_pci_sriov_configure(struct pci_dev *pci_dev, int num_vfs)
++{
++	struct eea_pci_device *ep_dev = pci_get_drvdata(pci_dev);
++	struct eea_device *edev = &ep_dev->edev;
++	int ret;
++
++	if (!(eea_pci_io_get_status(edev) & EEA_S_OK))
++		return -EBUSY;
++
++	if (pci_vfs_assigned(pci_dev))
++		return -EPERM;
++
++	if (num_vfs == 0) {
++		pci_disable_sriov(pci_dev);
++		return 0;
++	}
++
++	ret = pci_enable_sriov(pci_dev, num_vfs);
++	if (ret < 0)
++		return ret;
++
++	return num_vfs;
++}
++
++static const struct pci_device_id eea_pci_id_table[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_ALIBABA, 0x500B) },
++	{ 0 }
++};
++
++MODULE_DEVICE_TABLE(pci, eea_pci_id_table);
++
++static struct pci_driver eea_pci_driver = {
++	.name            = "eea",
++	.id_table        = eea_pci_id_table,
++	.probe           = eea_pci_probe,
++	.remove          = eea_pci_remove,
++	.sriov_configure = eea_pci_sriov_configure,
++};
++
++static __init int eea_pci_init(void)
++{
++	return pci_register_driver(&eea_pci_driver);
++}
++
++static __exit void eea_pci_exit(void)
++{
++	pci_unregister_driver(&eea_pci_driver);
++}
++
++module_init(eea_pci_init);
++module_exit(eea_pci_exit);
++
++MODULE_DESCRIPTION("Driver for Alibaba Elastic Ethernet Adapter");
++MODULE_AUTHOR("Xuan Zhuo <xuanzhuo@linux.alibaba.com>");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.h b/drivers/net/ethernet/alibaba/eea/eea_pci.h
+new file mode 100644
+index 000000000000..126704a207d5
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_pci.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#ifndef __EEA_PCI_H__
++#define __EEA_PCI_H__
++
++#include <linux/pci.h>
++
++struct eea_pci_cap {
++	__u8 cap_vndr;
++	__u8 cap_next;
++	__u8 cap_len;
++	__u8 cfg_type;
++};
++
++struct eea_pci_reset_reg {
++	struct eea_pci_cap cap;
++	__le16 driver;
++	__le16 device;
++};
++
++struct eea_pci_device;
++
++struct eea_device {
++	struct eea_pci_device *ep_dev;
++	struct device         *dma_dev;
++	struct eea_net        *enet;
++
++	u64 features;
++
++	u32 rx_num;
++	u32 tx_num;
++	u32 db_blk_size;
++};
++
++const char *eea_pci_name(struct eea_device *edev);
++int eea_pci_domain_nr(struct eea_device *edev);
++u16 eea_pci_dev_id(struct eea_device *edev);
++
++int eea_device_reset(struct eea_device *dev);
++void eea_device_ready(struct eea_device *dev);
++
++u64 eea_pci_device_ts(struct eea_device *edev);
++
++void __iomem *eea_pci_db_addr(struct eea_device *edev, u32 off);
++#endif
+-- 
+2.32.0.3.g01195cf9f
 
-
->
->> +		for (int j = 0; j < ctx->interleave_ways; j++) {
->> +			if (ctx->host_bridges[i] == cxlsd->target[j]->dport_dev) {
->> +				found++;
->> +				break;
->> +			}
->> +		}
->> +	}
->> +
->> +	if (found != ctx->interleave_ways) {
->> +		dev_dbg(dev,
->> +			"Not enough host bridges. Found %d for %d interleave ways requested\n",
->> +			found, ctx->interleave_ways);
->> +		return 0;
->> +	}
->> +}
->> +
->> +/**
->> + * cxl_get_hpa_freespace - find a root decoder with free capacity per constraints
->> + * @cxlmd: the mem device requiring the HPA
->> + * @interleave_ways: number of entries in @host_bridges
->> + * @flags: CXL_DECODER_F flags for selecting RAM vs PMEM, and Type2 device
->> + * @max_avail_contig: output parameter of max contiguous bytes available in the
->> + *		      returned decoder
->> + *
->> + * Returns a pointer to a struct cxl_root_decoder
->> + *
->> + * The return tuple of a 'struct cxl_root_decoder' and 'bytes available given
->> + * in (@max_avail_contig))' is a point in time snapshot. If by the time the
->> + * caller goes to use this decoder and its capacity is reduced then caller needs
->> + * to loop and retry.
->> + *
->> + * The returned root decoder has an elevated reference count that needs to be
->> + * put with cxl_put_root_decoder(cxlrd).
->> + */
->> +struct cxl_root_decoder *cxl_get_hpa_freespace(struct cxl_memdev *cxlmd,
->> +					       int interleave_ways,
-> Currently unused.  I think you mean to set the field in ctx
-
-
-Right. Refactoring went wrong.
-
-I'll fix it.
-
-Thanks!
-
-
->
->> +					       unsigned long flags,
->> +					       resource_size_t *max_avail_contig)
->> +{
->> +	struct cxl_port *endpoint = cxlmd->endpoint;
->> +	struct cxlrd_max_context ctx = {
->> +		.flags = flags,
->> +	};
->> +	struct cxl_port *root_port;
->> +
->> +	if (!endpoint) {
->> +		dev_dbg(&cxlmd->dev, "endpoint not linked to memdev\n");
->> +		return ERR_PTR(-ENXIO);
->> +	}
->> +
->> +	ctx.host_bridges = &endpoint->host_bridge;
->> +
->> +	struct cxl_root *root __free(put_cxl_root) = find_cxl_root(endpoint);
->> +	if (!root) {
->> +		dev_dbg(&endpoint->dev, "endpoint is not related to a root port\n");
->> +		return ERR_PTR(-ENXIO);
->> +	}
->> +
->> +	root_port = &root->port;
->> +	scoped_guard(rwsem_read, &cxl_rwsem.region)
->> +		device_for_each_child(&root_port->dev, &ctx, find_max_hpa);
->> +
->> +	if (!ctx.cxlrd)
->> +		return ERR_PTR(-ENOMEM);
->> +
->> +	*max_avail_contig = ctx.max_hpa;
->> +	return ctx.cxlrd;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_get_hpa_freespace, "CXL");
