@@ -1,339 +1,152 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C75C326D51
-	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 18:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E663532863B
+	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 18:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762798525; cv=none; b=HBHUidsazqWAgWae0tS+nSZhki0x9Ak7h4YdN5/aXB++0utS9aVh2QtLiESgBtdH7OlajAfbeWsFuwY/rpUSyNy2nGALMqjFjvnsng7LYjGfhfhZfJo5DS2qMfWqwG9Fws/RgbW7zuHjeixsXBkZoZuzKrxw3nAnX36n1RSDJ6c=
+	t=1762798773; cv=none; b=SwzMjPJDvkAtBgWOSmrSvrwIiMfi+L7KyOBEe7UKLeDyrmaN1qdDx4c+PwuPIOkaQnLIUHyBadGlpPcvb2XCmXDxbq6pt4PUs4xQSKKkKx7NKBqD6kiJsm4JL87UKuWtogy6vKILsTcnYWCQnNhqjuR/397levP64Ui1ZWGdHWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762798525; c=relaxed/simple;
-	bh=ccDgPIXtDZAGe3wemz67Es/VeqXOMYWAoP2Of/rct2I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=nffdUSTvX/ioCbHFb3LLIfbhCdWVTqa6w5Whcshkr32CRHw80uq8UMi86sWuLh3pQkBx9khSKJ6XBzDbR1UqWKB8cix2YOBbcFNnJ3jwxD49fyhdHPAbqp3BChArONyq3d0tCodNfSZlYX9ZSxFFvX1P0CcNW4u5/R1v0yiWLXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fqdTuBTO; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fqdTuBTO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762798523; x=1794334523;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=ccDgPIXtDZAGe3wemz67Es/VeqXOMYWAoP2Of/rct2I=;
-  b=fqdTuBTO38kAeyAtXwzJhj01br3e0IUzr7H6d+dDCS8KrmQ0lCkzrugo
-   EwljWTW2cP/yWJy/Es6ozXVJ2ZkeT+L6iqndOcc1PLLx5xVJn+jmjHd//
-   +oVzZSQwhHXh/Yy1wUatqSW/zKlieNA0z5nebb+bDvq1ED4n5LrZ/LrsZ
-   Acjdhk7HFAks4dIu2ur/D64WQpqbVjpfPatWN/47ykmogfV2BAWK09906
-   jGA3trI3tSdbyWYfJf3nal7JLJv8CjXqVJCBxgc1Y1pYVgHEPlnuGLo5V
-   brPsOALYCkjanGBVlGesxKHtjX2rSiOK+k3oUPEPXvuuOgu+a38wVzp3b
-   w==;
-X-CSE-ConnectionGUID: iL31XAKNSgS4Q2BH61khYQ==
-X-CSE-MsgGUID: Y2ZUPM3/RGmgGBNAEhBsiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="87485210"
-X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
-   d="scan'208";a="87485210"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 10:15:21 -0800
-X-CSE-ConnectionGUID: iVmMviOZQdG0ntsmm+Teig==
-X-CSE-MsgGUID: 2Id0NZEvQb63oOyn1t6tQA==
-X-ExtLoop1: 1
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by fmviesa003.fm.intel.com with ESMTP; 10 Nov 2025 10:15:20 -0800
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Aleksandr.Loktionov@intel.com,
-	przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	decot@google.com,
-	willemb@google.com,
-	joshua.a.hay@intel.com,
-	madhu.chittim@intel.com,
-	aleksander.lobakin@intel.com,
-	larysa.zaremba@intel.com,
-	iamvivekkumar@google.com
-Subject: [PATCH iwl-net 2/4] idpf: detach and close netdevs while handling a reset
-Date: Mon, 10 Nov 2025 10:08:21 -0800
-Message-Id: <20251110180823.18008-3-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20251110180823.18008-1-emil.s.tantilov@intel.com>
-References: <20251110180823.18008-1-emil.s.tantilov@intel.com>
+	s=arc-20240116; t=1762798773; c=relaxed/simple;
+	bh=olKFaO/OI2/liOcPRH5LB4YfTWeqsev/dMmMcseUwUg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UAE9IIM8xoeHmhGyHfsyAGXtJR/ovbG7gN/cAP6Oqi0uxrJXF3GtKIUgdHhd2Ra90j3GbYGSa6Vk4p9/5GnXmthMHXjf12gZHMfLvS4rwkCcnalQQphqN+INRAlgqRPqIdeEuXoLAEF89Hj6cv0uFOQeNivkaJxsMTv/yI2oNfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-9489bf08bcfso163707139f.3
+        for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 10:19:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762798771; x=1763403571;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jmE3j6LxMOU0XTkDOfjLYMmbajGt/pVI8XUPpcWT/4g=;
+        b=M4Bo2FEbhmhW1CUD33YeypqD2/l+JaSnfLRSvj5eQgiFsv6YVTM8szEIfg+ZlnS9P1
+         trvVegPL0dBZdpechqwi0afzge/ZQSCZmjiHDnriM/nlasemJh7lW1UGm3bDavUsmrNZ
+         ZFzN/K392qlt/VMeET+IaHQRGLi7pof3A4Is7w+6QpLlpElRqjP/Wk6kvmUM2pTo1bvx
+         4OwtSZ6qI71srEGfIDTsOnPhqNG4BFJhKxi8XSipEN7WLb6QE2D+P/mVE8/h6gZi/tpH
+         TKNf7pqmQgXn3x9Tox9fstQKWcbc8d1n7kaeq0finZQ5AbOrxt9dQEHbOkikOx+sD+xz
+         Dzng==
+X-Forwarded-Encrypted: i=1; AJvYcCV3XUbx/xxSZDE+e6hTggTFaVIot465RCPYS1r9MSaW9spgkbB22LyI55klf5CcSubvThembuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy07QrLL00+ubM6fsiNKi6wv1RINURPOn4ZmiK/FbebNBiqOmWM
+	U3vS2GhUWwBxzPjD4oXmW/FQvQ6/I/iNbKTF9dzKz77iY0P0WQo3E9D3ZUr3BmsqXOEBaxRw+ed
+	xNuGSOSIt8tBxrtliRDugegxZ1UPrIibS/6DMNofYKnd+ScApncnG3MYXD6s=
+X-Google-Smtp-Source: AGHT+IFwiJZ+Y0/N7OFBA8xydfNiDpVXBtb1ugetPqR0xN9WqGYlLs3Ju1g/vrlLJiU8dybpDGIc9JS1FMpgm4giDu5GF42keP1I
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:178c:b0:433:4f6b:4ca with SMTP id
+ e9e14a558f8ab-43367e487cdmr103026575ab.24.1762798771097; Mon, 10 Nov 2025
+ 10:19:31 -0800 (PST)
+Date: Mon, 10 Nov 2025 10:19:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69122cb3.a70a0220.22f260.00ff.GAE@google.com>
+Subject: [syzbot] [perf?] WARNING in perf_event_throttle_group
+From: syzbot <syzbot+a945e9d15c8a49a7a7f0@syzkaller.appspotmail.com>
+To: acme@kernel.org, adrian.hunter@intel.com, 
+	alexander.shishkin@linux.intel.com, irogers@google.com, jolsa@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org, 
+	netdev@vger.kernel.org, peterz@infradead.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Protect the reset path from callbacks by setting the netdevs to detached
-state and close any netdevs in UP state until the reset handling has
-completed. During a reset, the driver will de-allocate resources for the
-vport, and there is no guarantee that those will recover, which is why the
-existing vport_ctrl_lock does not provide sufficient protection.
+Hello,
 
-idpf_detach_and_close() is called right before reset handling. If the
-reset handling succeeds, the netdevs state is recovered via call to
-idpf_attach_and_open(). If the reset handling fails the netdevs remain
-down. The detach/down calls are protected with RTNL lock to avoid racing
-with callbacks. On the recovery side the attach can be done without
-holding the RTNL lock as there are no callbacks expected at that point,
-due to detach/close always being done first in that flow.
+syzbot found the following issue on:
 
-The previous logic restoring the netdevs state based on the
-IDPF_VPORT_UP_REQUESTED flag in the init task is not needed anymore, hence
-the removal of idpf_set_vport_state(). The IDPF_VPORT_UP_REQUESTED is
-still being used to restore the state of the netdevs following the reset,
-but has no use outside of the reset handling flow.
+HEAD commit:    e427054ae7bc Merge branch 'x86-fgraph-bpf-fix-orc-stack-un..
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=11f2cb42580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e46b8a1c645465a9
+dashboard link: https://syzkaller.appspot.com/bug?extid=a945e9d15c8a49a7a7f0
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=128bea92580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13b5a412580000
 
-idpf_init_hard_reset() is converted to void, since it was used as such and
-there is no error handling being done based on its return value.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c1ac942fc5fb/disk-e427054a.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/be05ef12ba31/vmlinux-e427054a.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c75604292a15/bzImage-e427054a.xz
 
-Before this change, invoking hard and soft resets simultaneously will
-cause the driver to lose the vport state:
-ip -br a
-<inf>	UP
-echo 1 > /sys/class/net/ens801f0/device/reset& \
-ethtool -L ens801f0 combined 8
-ip -br a
-<inf>	DOWN
-ip link set <inf> up
-ip -br a
-<inf>	DOWN
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a945e9d15c8a49a7a7f0@syzkaller.appspotmail.com
 
-Also in case of a failure in the reset path, the netdev is left
-exposed to external callbacks, while vport resources are not
-initialized, leading to a crash on subsequent ifup/down:
-[408471.398966] idpf 0000:83:00.0: HW reset detected
-[408471.411744] idpf 0000:83:00.0: Device HW Reset initiated
-[408472.277901] idpf 0000:83:00.0: The driver was unable to contact the device's firmware. Check that the FW is running. Driver state= 0x2
-[408508.125551] BUG: kernel NULL pointer dereference, address: 0000000000000078
-[408508.126112] #PF: supervisor read access in kernel mode
-[408508.126687] #PF: error_code(0x0000) - not-present page
-[408508.127256] PGD 2aae2f067 P4D 0
-[408508.127824] Oops: Oops: 0000 [#1] SMP NOPTI
-...
-[408508.130871] RIP: 0010:idpf_stop+0x39/0x70 [idpf]
-...
-[408508.139193] Call Trace:
-[408508.139637]  <TASK>
-[408508.140077]  __dev_close_many+0xbb/0x260
-[408508.140533]  __dev_change_flags+0x1cf/0x280
-[408508.140987]  netif_change_flags+0x26/0x70
-[408508.141434]  dev_change_flags+0x3d/0xb0
-[408508.141878]  devinet_ioctl+0x460/0x890
-[408508.142321]  inet_ioctl+0x18e/0x1d0
-[408508.142762]  ? _copy_to_user+0x22/0x70
-[408508.143207]  sock_do_ioctl+0x3d/0xe0
-[408508.143652]  sock_ioctl+0x10e/0x330
-[408508.144091]  ? find_held_lock+0x2b/0x80
-[408508.144537]  __x64_sys_ioctl+0x96/0xe0
-[408508.144979]  do_syscall_64+0x79/0x3d0
-[408508.145415]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[408508.145860] RIP: 0033:0x7f3e0bb4caff
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 7448 at kernel/events/core.c:2703 perf_event_throttle_group+0x375/0x3d0 kernel/events/core.c:2703
+Modules linked in:
+CPU: 1 UID: 0 PID: 7448 Comm: syz.0.1231 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+RIP: 0010:perf_event_throttle_group+0x375/0x3d0 kernel/events/core.c:2703
+Code: 8a 32 00 e9 ec fe ff ff e8 38 d5 cc ff eb 05 e8 31 d5 cc ff 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 1c d5 cc ff 90 <0f> 0b 90 e9 54 fe ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c c9
+RSP: 0018:ffffc9000ca07490 EFLAGS: 00010293
+RAX: ffffffff81f34174 RBX: ffff88806fddf6c0 RCX: ffff888026e3bc80
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 0000000000000000 R08: ffffc9000ca07137 R09: 0000000000000000
+R10: ffffc9000ca07120 R11: fffff52001940e27 R12: ffff88806fddf8d8
+R13: dffffc0000000000 R14: ffff88806fddf8f8 R15: ffffffff8dff1598
+FS:  0000555573ca6500(0000) GS:ffff88812623d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000040 CR3: 0000000028a98000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __perf_event_account_interrupt+0x23c/0x250 kernel/events/core.c:10180
+ __perf_event_overflow+0x105/0xe40 kernel/events/core.c:10327
+ perf_swevent_overflow kernel/events/core.c:10467 [inline]
+ perf_swevent_event+0x530/0x5e0 kernel/events/core.c:10505
+ perf_tp_event+0x4f6/0x1380 kernel/events/core.c:11012
+ perf_trace_run_bpf_submit+0xee/0x170 kernel/events/core.c:10936
+ do_perf_trace_lock_acquire include/trace/events/lock.h:24 [inline]
+ perf_trace_lock_acquire+0x335/0x410 include/trace/events/lock.h:24
+ __do_trace_lock_acquire include/trace/events/lock.h:24 [inline]
+ trace_lock_acquire include/trace/events/lock.h:24 [inline]
+ lock_acquire+0x311/0x360 kernel/locking/lockdep.c:5831
+ rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ rcu_read_lock include/linux/rcupdate.h:867 [inline]
+ class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
+ futex_hash+0x5d/0x2d0 kernel/futex/core.c:308
+ class_hb_constructor kernel/futex/futex.h:240 [inline]
+ futex_wake+0x161/0x560 kernel/futex/waitwake.c:172
+ do_futex+0x395/0x420 kernel/futex/syscalls.c:135
+ __do_sys_futex kernel/futex/syscalls.c:207 [inline]
+ __se_sys_futex+0x36f/0x400 kernel/futex/syscalls.c:188
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdfcf98f6c9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe276dac28 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: ffffffffffffffda RBX: 00007fdfcfbe5fa8 RCX: 00007fdfcf98f6c9
+RDX: 00000000000f4240 RSI: 0000000000000081 RDI: 00007fdfcfbe5fac
+RBP: 0000000000000000 R08: 3fffffffffffffff R09: 0000000a276daf1f
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fdfcfbe5fac
+R13: 00007fdfcfbe5fa0 R14: 0000000000000843 R15: 0000000000000003
+ </TASK>
 
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 120 ++++++++++++---------
- 1 file changed, 71 insertions(+), 49 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 2a53f3d504d2..8c7c3e6bccc7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -752,6 +752,65 @@ static int idpf_init_mac_addr(struct idpf_vport *vport,
- 	return 0;
- }
- 
-+static void idpf_detach_and_close(struct idpf_adapter *adapter)
-+{
-+	int max_vports = adapter->max_vports;
-+
-+	for (int i = 0; i < max_vports; i++) {
-+		struct net_device *netdev = adapter->netdevs[i];
-+
-+		/* If the interface is in detached state, that means the
-+		 * previous reset was not handled successfully for this
-+		 * vport.
-+		 */
-+		if (!netif_device_present(netdev))
-+			continue;
-+
-+		/* Hold RTNL to protect racing with callbacks */
-+		rtnl_lock();
-+		netif_device_detach(netdev);
-+		if (netif_running(netdev)) {
-+			set_bit(IDPF_VPORT_UP_REQUESTED,
-+				adapter->vport_config[i]->flags);
-+			dev_close(netdev);
-+		}
-+		rtnl_unlock();
-+	}
-+}
-+
-+static void idpf_attach_and_open(struct idpf_adapter *adapter)
-+{
-+	int max_vports = adapter->max_vports;
-+
-+	for (int i = 0; i < max_vports; i++) {
-+		struct net_device *netdev = adapter->netdevs[i];
-+		struct idpf_vport_config *vport_config;
-+		struct idpf_vport *vport;
-+
-+		/* In case of a critical error in the init task, the vport
-+		 * will be freed. Only continue to restore the netdevs
-+		 * if vport is not NULL.
-+		 */
-+		vport = idpf_netdev_to_vport(netdev);
-+		if (!vport)
-+			continue;
-+
-+		/* No need for RTNL on attach as this function is called
-+		 * following detach and dev_close(). We do take RTNL for
-+		 * dev_open() below as it can race with external callbacks
-+		 * following the call to netif_device_attach().
-+		 */
-+		netif_device_attach(netdev);
-+		vport_config = adapter->vport_config[vport->idx];
-+		if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED,
-+				       vport_config->flags)) {
-+			rtnl_lock();
-+			dev_open(netdev, NULL);
-+			rtnl_unlock();
-+		}
-+	}
-+}
-+
- /**
-  * idpf_cfg_netdev - Allocate, configure and register a netdev
-  * @vport: main vport structure
-@@ -1064,10 +1123,11 @@ static void idpf_vport_dealloc(struct idpf_vport *vport)
- 	idpf_idc_deinit_vport_aux_device(vport->vdev_info);
- 
- 	idpf_deinit_mac_addr(vport);
--	idpf_vport_stop(vport, true);
- 
--	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags))
-+	if (!test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags)) {
-+		idpf_vport_stop(vport, true);
- 		idpf_decfg_netdev(vport);
-+	}
- 	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags)) {
- 		idpf_del_all_mac_filters(vport);
- 		idpf_del_all_flow_steer_filters(vport);
-@@ -1569,7 +1629,6 @@ void idpf_init_task(struct work_struct *work)
- 	struct idpf_vport_config *vport_config;
- 	struct idpf_vport_max_q max_q;
- 	struct idpf_adapter *adapter;
--	struct idpf_netdev_priv *np;
- 	struct idpf_vport *vport;
- 	u16 num_default_vports;
- 	struct pci_dev *pdev;
-@@ -1626,12 +1685,6 @@ void idpf_init_task(struct work_struct *work)
- 	if (idpf_cfg_netdev(vport))
- 		goto unwind_vports;
- 
--	/* Once state is put into DOWN, driver is ready for dev_open */
--	np = netdev_priv(vport->netdev);
--	np->state = __IDPF_VPORT_DOWN;
--	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
--		idpf_vport_open(vport, true);
--
- 	/* Spawn and return 'idpf_init_task' work queue until all the
- 	 * default vports are created
- 	 */
-@@ -1807,27 +1860,6 @@ static int idpf_check_reset_complete(struct idpf_hw *hw,
- 	return -EBUSY;
- }
- 
--/**
-- * idpf_set_vport_state - Set the vport state to be after the reset
-- * @adapter: Driver specific private structure
-- */
--static void idpf_set_vport_state(struct idpf_adapter *adapter)
--{
--	u16 i;
--
--	for (i = 0; i < adapter->max_vports; i++) {
--		struct idpf_netdev_priv *np;
--
--		if (!adapter->netdevs[i])
--			continue;
--
--		np = netdev_priv(adapter->netdevs[i]);
--		if (np->state == __IDPF_VPORT_UP)
--			set_bit(IDPF_VPORT_UP_REQUESTED,
--				adapter->vport_config[i]->flags);
--	}
--}
--
- /**
-  * idpf_init_hard_reset - Initiate a hardware reset
-  * @adapter: Driver specific private structure
-@@ -1836,28 +1868,17 @@ static void idpf_set_vport_state(struct idpf_adapter *adapter)
-  * reallocate. Also reinitialize the mailbox. Return 0 on success,
-  * negative on failure.
-  */
--static int idpf_init_hard_reset(struct idpf_adapter *adapter)
-+static void idpf_init_hard_reset(struct idpf_adapter *adapter)
- {
- 	struct idpf_reg_ops *reg_ops = &adapter->dev_ops.reg_ops;
- 	struct device *dev = &adapter->pdev->dev;
--	struct net_device *netdev;
- 	int err;
--	u16 i;
- 
-+	idpf_detach_and_close(adapter);
- 	mutex_lock(&adapter->vport_ctrl_lock);
- 
- 	dev_info(dev, "Device HW Reset initiated\n");
- 
--	/* Avoid TX hangs on reset */
--	for (i = 0; i < adapter->max_vports; i++) {
--		netdev = adapter->netdevs[i];
--		if (!netdev)
--			continue;
--
--		netif_carrier_off(netdev);
--		netif_tx_disable(netdev);
--	}
--
- 	/* Prepare for reset */
- 	if (test_and_clear_bit(IDPF_HR_DRV_LOAD, adapter->flags)) {
- 		reg_ops->trigger_reset(adapter, IDPF_HR_DRV_LOAD);
-@@ -1866,7 +1887,6 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
- 
- 		idpf_idc_issue_reset_event(adapter->cdev_info);
- 
--		idpf_set_vport_state(adapter);
- 		idpf_vc_core_deinit(adapter);
- 		if (!is_reset)
- 			reg_ops->trigger_reset(adapter, IDPF_HR_FUNC_RESET);
-@@ -1913,11 +1933,13 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
- unlock_mutex:
- 	mutex_unlock(&adapter->vport_ctrl_lock);
- 
--	/* Wait until all vports are created to init RDMA CORE AUX */
--	if (!err)
--		err = idpf_idc_init(adapter);
--
--	return err;
-+	/* Restore netdevs state and initialize RDMA CORE AUX device, provided
-+	 * vport resources are allocated successfully.
-+	 */
-+	if (!err) {
-+		idpf_attach_and_open(adapter);
-+		idpf_idc_init(adapter);
-+	}
- }
- 
- /**
--- 
-2.37.3
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
