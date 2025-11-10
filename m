@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CF530F931
-	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 17:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F172303A23
+	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 17:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762797522; cv=none; b=B/XP+BDqJ6dcUsWnhkfgChnZhvPwSfiDQUN+YUc0yzskfwmT/1r5XFBKo/UFW9DgYHS61eOzE78F2z70nGuOib1arGfZdOVF4dZEoQUrojS2MKMuDpizTJJ1LdJfKnXqKTNNrllwV/Ea7Qq0aR0AXAUgj1nKkIPTW0RSP+Kz348=
+	t=1762797532; cv=none; b=pW5mCY3UY/aCVtVIvCmc86JzAEvrYJcav7yUD/HSnHGNxnoXUOrrgQMGZCN7Pf5cvQF6KDIi0wBbRRmUu4fRg0BQ9iXD+vp07uqEftKiBDlCRqv0ZtSd+aTn1kaMtwxbVgnWNIA0ey2GL3b+y00aJkynAm678CrXVfQeiKXRswk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762797522; c=relaxed/simple;
-	bh=IyUQSPoiodAUWeO9LrD9n3MO2aotwgeJ12TmWdwjp+U=;
+	s=arc-20240116; t=1762797532; c=relaxed/simple;
+	bh=WGl8DP/e/+VnYn8C3uYrsdOuYr6SojLzWShAwr+tv6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0m4ektF6a8ojdlSOLkN9SQB8QmWd4AjpwTRIV50p076HbrYzAorDTnlyXUO78iHtR7HOP4fiVu8Utd+RqshWnEr/cf2KCE54dhvhtZS2OfrGPOqcOpNnCBeTq8vbOCvk8+a7jGVZshUfVNPSmSOp57WRrmyddSdQxLcQ41xRHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f8GYfzQQ; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=TQ9D50sIBbBplC81DeIHBJGGo01SvZsTSG5K4CzN7CFjkFoNoK2JD0ufNmPJAHy2c2jF8mXWSdMCykwsYxtOv0/F6BGefTWYAIPwbjJwDR8ifmtO5ehVD5p6H9vjazIEtNl9iPqsH87DdZ6mIKzTwFck2zy0W8hIW2Me4u+5QqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a21IpJTp; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f8GYfzQQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a21IpJTp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762797519;
+	s=mimecast20190719; t=1762797530;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5mYpZyLN6+HJ4ymte9NwL58cRT7XWIMAkoG8XCIL4b4=;
-	b=f8GYfzQQZhip7KhPOUUBKwjjFoQI1VYdNZf4+eiRQk9VEXHUyiygPPGYRNjNKc0ZbAgpHE
-	YrmjD/lDP7g9bE+gBDGXbCdG0iphIwIxOR8RUZm18bKYvrU2zaIUi5o/tzO6dVGXJyz1If
-	OOu59IH1a+8CsUBLeNGl6t1ErepQRXU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=mKzPhPd7GeQ9w5/pssxPxDnXDnFFtiQ8qQ0W7dttM3g=;
+	b=a21IpJTpWQxXrFNKiQSIgzt9GonO46jBzjFCRyJWtKTKgw4lF8TR/IRH0QBfXEdUKiEkwO
+	rmwLaJlNiwWeBICI9565Li/HouHWurgM285HAvgOrNJKtDJrdOi2nGBAk/KiWaEyzVBeGV
+	fupC0hpiUkbmiidwfcEdIvN5bCaq1f8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-ziQuLoITMKqnUSEfWvfA0A-1; Mon,
- 10 Nov 2025 12:58:38 -0500
-X-MC-Unique: ziQuLoITMKqnUSEfWvfA0A-1
-X-Mimecast-MFC-AGG-ID: ziQuLoITMKqnUSEfWvfA0A_1762797517
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-mz8aEsrXO2yFozxKi_58aQ-1; Mon,
+ 10 Nov 2025 12:58:45 -0500
+X-MC-Unique: mz8aEsrXO2yFozxKi_58aQ-1
+X-Mimecast-MFC-AGG-ID: mz8aEsrXO2yFozxKi_58aQ_1762797523
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EDB8D180034D;
-	Mon, 10 Nov 2025 17:58:36 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63123180048E;
+	Mon, 10 Nov 2025 17:58:43 +0000 (UTC)
 Received: from p16v.luc.cera.cz (unknown [10.45.224.193])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2BF8B180057B;
-	Mon, 10 Nov 2025 17:58:33 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A1CB91800367;
+	Mon, 10 Nov 2025 17:58:40 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -51,9 +51,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Jiri Pirko <jiri@resnulli.us>,
 	Michal Schmidt <mschmidt@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 4/6] dpll: zl3073x: Cache all reference properties in zl3073x_ref
-Date: Mon, 10 Nov 2025 18:58:16 +0100
-Message-ID: <20251110175818.1571610-5-ivecera@redhat.com>
+Subject: [PATCH net-next 6/6] dpll: zl3073x: Remove unused dev wrappers
+Date: Mon, 10 Nov 2025 18:58:18 +0100
+Message-ID: <20251110175818.1571610-7-ivecera@redhat.com>
 In-Reply-To: <20251110175818.1571610-1-ivecera@redhat.com>
 References: <20251110175818.1571610-1-ivecera@redhat.com>
 Precedence: bulk
@@ -65,742 +65,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Expand the zl3073x_ref structure to cache all reference-related
-hardware registers, including frequency components, embedded-sync
-settings  and phase compensation. Previously, these registers were
-read on-demand from various functions in dpll.c leading to frequent
-mailbox operations.
+Remove several zl3073x_dev_... inline wrapper functions from core.h
+as they are no longer used by any callers.
 
-Modify zl3073x_ref_state_fetch() to read and populate all these new
-fields at once. Refactor all "getter" functions in dpll.c to read
-from this new cached state instead of performing direct register
-access.
+Removed functions:
+* zl3073x_dev_ref_ffo_get
+* zl3073x_dev_ref_is_enabled
+* zl3073x_dev_synth_dpll_get
+* zl3073x_dev_synth_is_enabled
+* zl3073x_dev_out_signal_format_get
 
-Remove the standalone zl3073x_dpll_input_ref_frequency_get() helper,
-as its functionality is now replaced by zl3073x_ref_freq_get() which
-operates on the cached state and add a corresponding zl3073x_dev_...
-wrapper.
-
-Introduce a new function, zl3073x_ref_state_set(), to handle
-writing changes back to the hardware. This function compares the
-provided state with the current cached state and writes *only* the
-modified register values to the device via a single mailbox sequence
-before updating the local cache.
-
-Refactor all dpll "setter" functions to modify a local copy of the
-ref state and then call zl3073x_ref_state_set() to commit the changes.
-
-As a cleanup, update callers in dpll.c that already have
-a struct zl3073x_ref * to use the direct helpers instead of the
-zl3073x_dev_... wrappers.
-
-This change centralizes all reference-related register I/O into ref.c,
-significantly reduces bus traffic, and simplifies the logic in dpll.c.
+This is a cleanup after recent refactoring, as the remaining callers
+now fetch the state object and use the base helpers directly.
 
 Reviewed-by: Petr Oros <poros@redhat.com>
 Tested-by: Prathosh Satish <Prathosh.Satish@microchip.com>
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- drivers/dpll/zl3073x/core.h |  15 ++
- drivers/dpll/zl3073x/dpll.c | 309 +++++++++---------------------------
- drivers/dpll/zl3073x/ref.c  |  88 ++++++++++
- drivers/dpll/zl3073x/ref.h  |  47 ++++++
- 4 files changed, 229 insertions(+), 230 deletions(-)
+ drivers/dpll/zl3073x/core.h | 77 -------------------------------------
+ 1 file changed, 77 deletions(-)
 
 diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
-index 4148580d1f343..fe8b70e25d3cc 100644
+index fe8b70e25d3cc..09bca2d0926d5 100644
 --- a/drivers/dpll/zl3073x/core.h
 +++ b/drivers/dpll/zl3073x/core.h
-@@ -197,6 +197,21 @@ zl3073x_dev_ref_ffo_get(struct zl3073x_dev *zldev, u8 index)
- 	return zl3073x_ref_ffo_get(ref);
- }
- 
-+/**
-+ * zl3073x_dev_ref_freq_get - get input reference frequency
-+ * @zldev: pointer to zl3073x device
-+ * @index: input reference index
-+ *
-+ * Return: frequency of given input reference
-+ */
-+static inline u32
-+zl3073x_dev_ref_freq_get(struct zl3073x_dev *zldev, u8 index)
-+{
-+	const struct zl3073x_ref *ref = zl3073x_ref_state_get(zldev, index);
-+
-+	return zl3073x_ref_freq_get(ref);
-+}
-+
- /**
-  * zl3073x_dev_ref_is_diff - check if the given input reference is differential
-  * @zldev: pointer to zl3073x device
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 20c921d6f42cb..516092997aba0 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -100,60 +100,6 @@ zl3073x_dpll_pin_direction_get(const struct dpll_pin *dpll_pin, void *pin_priv,
- 	return 0;
+@@ -182,21 +182,6 @@ zl3073x_output_pin_out_get(u8 id)
+ 	return id / 2;
  }
  
 -/**
-- * zl3073x_dpll_input_ref_frequency_get - get input reference frequency
-- * @zldpll: pointer to zl3073x_dpll
-- * @ref_id: reference id
-- * @frequency: pointer to variable to store frequency
+- * zl3073x_dev_ref_ffo_get - get current fractional frequency offset
+- * @zldev: pointer to zl3073x device
+- * @index: input reference index
 - *
-- * Reads frequency of given input reference.
-- *
-- * Return: 0 on success, <0 on error
+- * Return: the latest measured fractional frequency offset
 - */
--static int
--zl3073x_dpll_input_ref_frequency_get(struct zl3073x_dpll *zldpll, u8 ref_id,
--				     u32 *frequency)
+-static inline s64
+-zl3073x_dev_ref_ffo_get(struct zl3073x_dev *zldev, u8 index)
 -{
--	struct zl3073x_dev *zldev = zldpll->dev;
--	u16 base, mult, num, denom;
--	int rc;
+-	const struct zl3073x_ref *ref = zl3073x_ref_state_get(zldev, index);
 -
--	guard(mutex)(&zldev->multiop_lock);
--
--	/* Read reference configuration */
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref_id));
--	if (rc)
--		return rc;
--
--	/* Read registers to compute resulting frequency */
--	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_BASE, &base);
--	if (rc)
--		return rc;
--	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_MULT, &mult);
--	if (rc)
--		return rc;
--	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_M, &num);
--	if (rc)
--		return rc;
--	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_N, &denom);
--	if (rc)
--		return rc;
--
--	/* Sanity check that HW has not returned zero denominator */
--	if (!denom) {
--		dev_err(zldev->dev,
--			"Zero divisor for ref %u frequency got from device\n",
--			ref_id);
--		return -EINVAL;
--	}
--
--	/* Compute the frequency */
--	*frequency = mul_u64_u32_div(base * mult, num, denom);
--
--	return rc;
+-	return zl3073x_ref_ffo_get(ref);
 -}
 -
- static int
- zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
- 				 void *pin_priv,
-@@ -165,39 +111,15 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u8 ref, ref_sync_ctrl, sync_mode;
--	u32 esync_div, ref_freq;
--	int rc;
--
--	/* Get reference frequency */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_dpll_input_ref_frequency_get(zldpll, pin->id, &ref_freq);
--	if (rc)
--		return rc;
-+	const struct zl3073x_ref *ref;
-+	u8 ref_id;
- 
--	guard(mutex)(&zldev->multiop_lock);
--
--	/* Read reference configuration into mailbox */
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref));
--	if (rc)
--		return rc;
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
- 
--	/* Get ref sync mode */
--	rc = zl3073x_read_u8(zldev, ZL_REG_REF_SYNC_CTRL, &ref_sync_ctrl);
--	if (rc)
--		return rc;
--
--	/* Get esync divisor */
--	rc = zl3073x_read_u32(zldev, ZL_REG_REF_ESYNC_DIV, &esync_div);
--	if (rc)
--		return rc;
--
--	sync_mode = FIELD_GET(ZL_REF_SYNC_CTRL_MODE, ref_sync_ctrl);
--
--	switch (sync_mode) {
-+	switch (FIELD_GET(ZL_REF_SYNC_CTRL_MODE, ref->sync_ctrl)) {
- 	case ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75:
--		esync->freq = (esync_div == ZL_REF_ESYNC_DIV_1HZ) ? 1 : 0;
-+		esync->freq = ref->esync_n_div == ZL_REF_ESYNC_DIV_1HZ ? 1 : 0;
- 		esync->pulse = 25;
- 		break;
- 	default:
-@@ -209,7 +131,7 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
- 	/* If the pin supports esync control expose its range but only
- 	 * if the current reference frequency is > 1 Hz.
- 	 */
--	if (pin->esync_control && ref_freq > 1) {
-+	if (pin->esync_control && zl3073x_ref_freq_get(ref) > 1) {
- 		esync->range = esync_freq_ranges;
- 		esync->range_num = ARRAY_SIZE(esync_freq_ranges);
- 	} else {
-@@ -217,7 +139,7 @@ zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
- 		esync->range_num = 0;
- 	}
- 
--	return rc;
-+	return 0;
- }
- 
- static int
-@@ -230,22 +152,11 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u8 ref, ref_sync_ctrl, sync_mode;
--	int rc;
-+	struct zl3073x_ref ref;
-+	u8 ref_id, sync_mode;
- 
--	guard(mutex)(&zldev->multiop_lock);
--
--	/* Read reference configuration into mailbox */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref));
--	if (rc)
--		return rc;
--
--	/* Get ref sync mode */
--	rc = zl3073x_read_u8(zldev, ZL_REG_REF_SYNC_CTRL, &ref_sync_ctrl);
--	if (rc)
--		return rc;
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = *zl3073x_ref_state_get(zldev, ref_id);
- 
- 	/* Use freq == 0 to disable esync */
- 	if (!freq)
-@@ -253,25 +164,16 @@ zl3073x_dpll_input_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	else
- 		sync_mode = ZL_REF_SYNC_CTRL_MODE_50_50_ESYNC_25_75;
- 
--	ref_sync_ctrl &= ~ZL_REF_SYNC_CTRL_MODE;
--	ref_sync_ctrl |= FIELD_PREP(ZL_REF_SYNC_CTRL_MODE, sync_mode);
--
--	/* Update ref sync control register */
--	rc = zl3073x_write_u8(zldev, ZL_REG_REF_SYNC_CTRL, ref_sync_ctrl);
--	if (rc)
--		return rc;
-+	ref.sync_ctrl &= ~ZL_REF_SYNC_CTRL_MODE;
-+	ref.sync_ctrl |= FIELD_PREP(ZL_REF_SYNC_CTRL_MODE, sync_mode);
- 
- 	if (freq) {
--		/* 1 Hz is only supported frequnecy currently */
--		rc = zl3073x_write_u32(zldev, ZL_REG_REF_ESYNC_DIV,
--				       ZL_REF_ESYNC_DIV_1HZ);
--		if (rc)
--			return rc;
-+		/* 1 Hz is only supported frequency now */
-+		ref.esync_n_div = ZL_REF_ESYNC_DIV_1HZ;
- 	}
- 
--	/* Commit reference configuration */
--	return zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_WR,
--			     ZL_REG_REF_MB_MASK, BIT(ref));
-+	/* Update reference configuration */
-+	return zl3073x_ref_state_set(zldev, ref_id, &ref);
- }
- 
- static int
-@@ -295,17 +197,12 @@ zl3073x_dpll_input_pin_frequency_get(const struct dpll_pin *dpll_pin,
- {
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u32 ref_freq;
--	u8 ref;
--	int rc;
-+	u8 ref_id;
- 
--	/* Read and return ref frequency */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_dpll_input_ref_frequency_get(zldpll, ref, &ref_freq);
--	if (!rc)
--		*frequency = ref_freq;
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	*frequency = zl3073x_dev_ref_freq_get(zldpll->dev, ref_id);
- 
--	return rc;
-+	return 0;
- }
- 
- static int
-@@ -318,39 +215,18 @@ zl3073x_dpll_input_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u16 base, mult;
--	u8 ref;
--	int rc;
--
--	/* Get base frequency and multiplier for the requested frequency */
--	rc = zl3073x_ref_freq_factorize(frequency, &base, &mult);
--	if (rc)
--		return rc;
-+	struct zl3073x_ref ref;
-+	u8 ref_id;
- 
--	guard(mutex)(&zldev->multiop_lock);
-+	/* Get reference state */
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = *zl3073x_ref_state_get(zldev, ref_id);
- 
--	/* Load reference configuration */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref));
-+	/* Update frequency */
-+	zl3073x_ref_freq_set(&ref, frequency);
- 
--	/* Update base frequency, multiplier, numerator & denominator */
--	rc = zl3073x_write_u16(zldev, ZL_REG_REF_FREQ_BASE, base);
--	if (rc)
--		return rc;
--	rc = zl3073x_write_u16(zldev, ZL_REG_REF_FREQ_MULT, mult);
--	if (rc)
--		return rc;
--	rc = zl3073x_write_u16(zldev, ZL_REG_REF_RATIO_M, 1);
--	if (rc)
--		return rc;
--	rc = zl3073x_write_u16(zldev, ZL_REG_REF_RATIO_N, 1);
--	if (rc)
--		return rc;
--
--	/* Commit reference configuration */
--	return zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_WR,
--			     ZL_REG_REF_MB_MASK, BIT(ref));
-+	/* Commit reference state */
-+	return zl3073x_ref_state_set(zldev, ref_id, &ref);
- }
- 
  /**
-@@ -515,21 +391,24 @@ zl3073x_dpll_input_pin_phase_offset_get(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u8 conn_ref, ref;
-+	const struct zl3073x_ref *ref;
-+	u8 conn_id, ref_id;
- 	s64 ref_phase;
- 	int rc;
- 
- 	/* Get currently connected reference */
--	rc = zl3073x_dpll_connected_ref_get(zldpll, &conn_ref);
-+	rc = zl3073x_dpll_connected_ref_get(zldpll, &conn_id);
- 	if (rc)
- 		return rc;
- 
- 	/* Report phase offset only for currently connected pin if the phase
--	 * monitor feature is disabled.
-+	 * monitor feature is disabled and only if the input pin signal is
-+	 * present.
- 	 */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	if ((!zldpll->phase_monitor && ref != conn_ref) ||
--	    !zl3073x_dev_ref_is_status_ok(zldev, ref)) {
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
-+	if ((!zldpll->phase_monitor && ref_id != conn_id) ||
-+	    !zl3073x_ref_is_status_ok(ref)) {
- 		*phase_offset = 0;
- 		return 0;
- 	}
-@@ -540,20 +419,12 @@ zl3073x_dpll_input_pin_phase_offset_get(const struct dpll_pin *dpll_pin,
- 	 * the phase offset is modded to the period of the signal
- 	 * the dpll is locked to.
- 	 */
--	if (ZL3073X_DPLL_REF_IS_VALID(conn_ref) && conn_ref != ref) {
-+	if (ZL3073X_DPLL_REF_IS_VALID(conn_id) && conn_id != ref_id) {
- 		u32 conn_freq, ref_freq;
- 
--		/* Get frequency of connected ref */
--		rc = zl3073x_dpll_input_ref_frequency_get(zldpll, conn_ref,
--							  &conn_freq);
--		if (rc)
--			return rc;
--
--		/* Get frequency of given ref */
--		rc = zl3073x_dpll_input_ref_frequency_get(zldpll, ref,
--							  &ref_freq);
--		if (rc)
--			return rc;
-+		/* Get frequency of connected and given ref */
-+		conn_freq = zl3073x_dev_ref_freq_get(zldev, conn_id);
-+		ref_freq = zl3073x_ref_freq_get(ref);
- 
- 		if (conn_freq > ref_freq) {
- 			s64 conn_period, div_factor;
-@@ -580,33 +451,23 @@ zl3073x_dpll_input_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	const struct zl3073x_ref *ref;
- 	s64 phase_comp;
--	u8 ref;
--	int rc;
--
--	guard(mutex)(&zldev->multiop_lock);
-+	u8 ref_id;
- 
- 	/* Read reference configuration */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref));
--	if (rc)
--		return rc;
--
--	/* Read current phase offset compensation */
--	rc = zl3073x_read_u48(zldev, ZL_REG_REF_PHASE_OFFSET_COMP, &phase_comp);
--	if (rc)
--		return rc;
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
- 
- 	/* Perform sign extension for 48bit signed value */
--	phase_comp = sign_extend64(phase_comp, 47);
-+	phase_comp = sign_extend64(ref->phase_comp, 47);
- 
- 	/* Reverse two's complement negation applied during set and convert
- 	 * to 32bit signed int
- 	 */
- 	*phase_adjust = (s32)-phase_comp;
- 
--	return rc;
-+	return 0;
+  * zl3073x_dev_ref_freq_get - get input reference frequency
+  * @zldev: pointer to zl3073x device
+@@ -227,21 +212,6 @@ zl3073x_dev_ref_is_diff(struct zl3073x_dev *zldev, u8 index)
+ 	return zl3073x_ref_is_diff(ref);
  }
  
- static int
-@@ -620,32 +481,20 @@ zl3073x_dpll_input_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	s64 phase_comp;
--	u8 ref;
--	int rc;
-+	struct zl3073x_ref ref;
-+	u8 ref_id;
-+
-+	/* Read reference configuration */
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = *zl3073x_ref_state_get(zldev, ref_id);
- 
- 	/* The value in the register is stored as two's complement negation
- 	 * of requested value.
- 	 */
--	phase_comp = -phase_adjust;
+-/**
+- * zl3073x_dev_ref_is_enabled - check if the given input reference is enabled
+- * @zldev: pointer to zl3073x device
+- * @index: input reference index
+- *
+- * Return: true if input refernce is enabled, false otherwise
+- */
+-static inline bool
+-zl3073x_dev_ref_is_enabled(struct zl3073x_dev *zldev, u8 index)
+-{
+-	const struct zl3073x_ref *ref = zl3073x_ref_state_get(zldev, index);
 -
--	guard(mutex)(&zldev->multiop_lock);
-+	ref.phase_comp = -phase_adjust;
- 
--	/* Read reference configuration */
--	ref = zl3073x_input_pin_ref_get(pin->id);
--	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
--			   ZL_REG_REF_MB_MASK, BIT(ref));
--	if (rc)
--		return rc;
+-	return zl3073x_ref_is_enabled(ref);
+-}
 -
--	/* Write the requested value into the compensation register */
--	rc = zl3073x_write_u48(zldev, ZL_REG_REF_PHASE_OFFSET_COMP, phase_comp);
--	if (rc)
--		return rc;
--
--	/* Commit reference configuration */
--	return zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_WR,
--			     ZL_REG_REF_MB_MASK, BIT(ref));
-+	/* Update reference configuration */
-+	return zl3073x_ref_state_set(zldev, ref_id, &ref);
+ /*
+  * zl3073x_dev_ref_is_status_ok - check the given input reference status
+  * @zldev: pointer to zl3073x device
+@@ -257,22 +227,6 @@ zl3073x_dev_ref_is_status_ok(struct zl3073x_dev *zldev, u8 index)
+ 	return zl3073x_ref_is_status_ok(ref);
  }
  
+-/**
+- * zl3073x_dev_synth_dpll_get - get DPLL ID the synth is driven by
+- * @zldev: pointer to zl3073x device
+- * @index: synth index
+- *
+- * Return: ID of DPLL the given synthetizer is driven by
+- */
+-static inline u8
+-zl3073x_dev_synth_dpll_get(struct zl3073x_dev *zldev, u8 index)
+-{
+-	const struct zl3073x_synth *synth;
+-
+-	synth = zl3073x_synth_state_get(zldev, index);
+-	return zl3073x_synth_dpll_get(synth);
+-}
+-
  /**
-@@ -1816,16 +1665,17 @@ zl3073x_dpll_pin_is_registrable(struct zl3073x_dpll *zldpll,
- 	const char *name;
- 
- 	if (dir == DPLL_PIN_DIRECTION_INPUT) {
--		u8 ref = zl3073x_input_pin_ref_get(index);
--
--		name = "REF";
-+		u8 ref_id = zl3073x_input_pin_ref_get(index);
-+		const struct zl3073x_ref *ref;
- 
- 		/* Skip the pin if the DPLL is running in NCO mode */
- 		if (zldpll->refsel_mode == ZL_DPLL_MODE_REFSEL_MODE_NCO)
- 			return false;
- 
--		is_diff = zl3073x_dev_ref_is_diff(zldev, ref);
--		is_enabled = zl3073x_dev_ref_is_enabled(zldev, ref);
-+		name = "REF";
-+		ref = zl3073x_ref_state_get(zldev, ref_id);
-+		is_diff = zl3073x_ref_is_diff(ref);
-+		is_enabled = zl3073x_ref_is_enabled(ref);
- 	} else {
- 		/* Output P&N pair shares single HW output */
- 		u8 out = zl3073x_output_pin_out_get(index);
-@@ -1997,15 +1847,17 @@ zl3073x_dpll_pin_phase_offset_check(struct zl3073x_dpll_pin *pin)
- {
- 	struct zl3073x_dpll *zldpll = pin->dpll;
- 	struct zl3073x_dev *zldev = zldpll->dev;
-+	const struct zl3073x_ref *ref;
- 	unsigned int reg;
- 	s64 phase_offset;
--	u8 ref;
-+	u8 ref_id;
- 	int rc;
- 
--	ref = zl3073x_input_pin_ref_get(pin->id);
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
- 
- 	/* No phase offset if the ref monitor reports signal errors */
--	if (!zl3073x_dev_ref_is_status_ok(zldev, ref))
-+	if (!zl3073x_dev_ref_is_status_ok(zldev, ref_id))
- 		return false;
- 
- 	/* Select register to read phase offset value depending on pin and
-@@ -2017,9 +1869,8 @@ zl3073x_dpll_pin_phase_offset_check(struct zl3073x_dpll_pin *pin)
- 	if (pin->pin_state == DPLL_PIN_STATE_CONNECTED)
- 		reg = ZL_REG_DPLL_PHASE_ERR_DATA(zldpll->id);
- 	else if (zldpll->phase_monitor)
--		reg = ZL_REG_REF_PHASE(ref);
-+		reg = ZL_REG_REF_PHASE(ref_id);
- 	else
--		/* The pin is not connected or phase monitor disabled */
- 		return false;
- 
- 	/* Read measured phase offset value */
-@@ -2059,24 +1910,22 @@ zl3073x_dpll_pin_ffo_check(struct zl3073x_dpll_pin *pin)
- {
- 	struct zl3073x_dpll *zldpll = pin->dpll;
- 	struct zl3073x_dev *zldev = zldpll->dev;
--	s64 ffo;
--	u8 ref;
-+	const struct zl3073x_ref *ref;
-+	u8 ref_id;
- 
- 	/* Get reference monitor status */
--	ref = zl3073x_input_pin_ref_get(pin->id);
-+	ref_id = zl3073x_input_pin_ref_get(pin->id);
-+	ref = zl3073x_ref_state_get(zldev, ref_id);
- 
- 	/* Do not report ffo changes if the reference monitor report errors */
--	if (!zl3073x_dev_ref_is_status_ok(zldev, ref))
-+	if (!zl3073x_ref_is_status_ok(ref))
- 		return false;
- 
--	/* Get the latest measured ref's ffo */
--	ffo = zl3073x_dev_ref_ffo_get(zldev, ref);
--
- 	/* Compare with previous value */
--	if (pin->freq_offset != ffo) {
-+	if (pin->freq_offset != ref->ffo) {
- 		dev_dbg(zldev->dev, "%s freq offset changed: %lld -> %lld\n",
--			pin->label, pin->freq_offset, ffo);
--		pin->freq_offset = ffo;
-+			pin->label, pin->freq_offset, ref->ffo);
-+		pin->freq_offset = ref->ffo;
- 
- 		return true;
- 	}
-diff --git a/drivers/dpll/zl3073x/ref.c b/drivers/dpll/zl3073x/ref.c
-index 75652d9892af2..3a8ce44c199ca 100644
---- a/drivers/dpll/zl3073x/ref.c
-+++ b/drivers/dpll/zl3073x/ref.c
-@@ -88,6 +88,34 @@ int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
- 	if (rc)
- 		return rc;
- 
-+	/* Read frequency related registers */
-+	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_BASE, &ref->freq_base);
-+	if (rc)
-+		return rc;
-+	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_MULT, &ref->freq_mult);
-+	if (rc)
-+		return rc;
-+	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_M, &ref->freq_ratio_m);
-+	if (rc)
-+		return rc;
-+	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_N, &ref->freq_ratio_n);
-+	if (rc)
-+		return rc;
-+
-+	/* Read eSync and N-div rated registers */
-+	rc = zl3073x_read_u32(zldev, ZL_REG_REF_ESYNC_DIV, &ref->esync_n_div);
-+	if (rc)
-+		return rc;
-+	rc = zl3073x_read_u8(zldev, ZL_REG_REF_SYNC_CTRL, &ref->sync_ctrl);
-+	if (rc)
-+		return rc;
-+
-+	/* Read phase compensation register */
-+	rc = zl3073x_read_u48(zldev, ZL_REG_REF_PHASE_OFFSET_COMP,
-+			      &ref->phase_comp);
-+	if (rc)
-+		return rc;
-+
- 	dev_dbg(zldev->dev, "REF%u is %s and configured as %s\n", index,
- 		str_enabled_disabled(zl3073x_ref_is_enabled(ref)),
- 		zl3073x_ref_is_diff(ref) ? "differential" : "single-ended");
-@@ -107,3 +135,63 @@ zl3073x_ref_state_get(struct zl3073x_dev *zldev, u8 index)
- {
- 	return &zldev->ref[index];
- }
-+
-+#define ZL3073X_REF_SYNC_ONE(_zldev, _dref, _sref, _type, _field, _reg)	\
-+	((_dref)->_field != (_sref)->_field ?				\
-+	 zl3073x_write_##_type(_zldev, _reg, (_sref)->_field) : 0)
-+
-+int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
-+			  const struct zl3073x_ref *ref)
-+{
-+	struct zl3073x_ref *dref = &zldev->ref[index];
-+	int rc;
-+
-+	guard(mutex)(&zldev->multiop_lock);
-+
-+	/* Read reference configuration into mailbox */
-+	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
-+			   ZL_REG_REF_MB_MASK, BIT(index));
-+	if (rc)
-+		return rc;
-+
-+	/* Update mailbox with changed values */
-+	rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u16, freq_base,
-+				  ZL_REG_REF_FREQ_BASE);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u16, freq_mult,
-+					  ZL_REG_REF_FREQ_MULT);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u16, freq_ratio_m,
-+					  ZL_REG_REF_RATIO_M);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u16, freq_ratio_n,
-+					  ZL_REG_REF_RATIO_N);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u32, esync_n_div,
-+					  ZL_REG_REF_ESYNC_DIV);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u8, sync_ctrl,
-+					  ZL_REG_REF_SYNC_CTRL);
-+	if (!rc)
-+		rc = ZL3073X_REF_SYNC_ONE(zldev, dref, ref, u48, phase_comp,
-+					  ZL_REG_REF_PHASE_OFFSET_COMP);
-+	if (rc)
-+		return rc;
-+
-+	/* Commit reference configuration */
-+	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_WR,
-+			   ZL_REG_REF_MB_MASK, BIT(index));
-+	if (rc)
-+		return rc;
-+
-+	/* After successful commit store new state */
-+	dref->freq_base = ref->freq_base;
-+	dref->freq_mult = ref->freq_mult;
-+	dref->freq_ratio_m = ref->freq_ratio_m;
-+	dref->freq_ratio_n = ref->freq_ratio_n;
-+	dref->esync_n_div = ref->esync_n_div;
-+	dref->sync_ctrl = ref->sync_ctrl;
-+	dref->phase_comp = ref->phase_comp;
-+
-+	return 0;
-+}
-diff --git a/drivers/dpll/zl3073x/ref.h b/drivers/dpll/zl3073x/ref.h
-index 7cd44c377f51f..4e714b4ff638e 100644
---- a/drivers/dpll/zl3073x/ref.h
-+++ b/drivers/dpll/zl3073x/ref.h
-@@ -4,6 +4,7 @@
- #define _ZL3073X_REF_H
- 
- #include <linux/bitfield.h>
-+#include <linux/math64.h>
- #include <linux/types.h>
- 
- #include "regs.h"
-@@ -17,7 +18,14 @@ struct zl3073x_dev;
-  */
- struct zl3073x_ref {
- 	s64	ffo;
-+	u64	phase_comp;
-+	u32	esync_n_div;
-+	u16	freq_base;
-+	u16	freq_mult;
-+	u16	freq_ratio_m;
-+	u16	freq_ratio_n;
- 	u8	config;
-+	u8	sync_ctrl;
- 	u8	mon_status;
- };
- 
-@@ -26,6 +34,9 @@ int zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index);
- const struct zl3073x_ref *zl3073x_ref_state_get(struct zl3073x_dev *zldev,
- 						u8 index);
- 
-+int zl3073x_ref_state_set(struct zl3073x_dev *zldev, u8 index,
-+			  const struct zl3073x_ref *ref);
-+
- int zl3073x_ref_freq_factorize(u32 freq, u16 *base, u16 *mult);
- 
- /**
-@@ -40,6 +51,42 @@ zl3073x_ref_ffo_get(const struct zl3073x_ref *ref)
- 	return ref->ffo;
+  * zl3073x_dev_synth_freq_get - get synth current freq
+  * @zldev: pointer to zl3073x device
+@@ -289,22 +243,6 @@ zl3073x_dev_synth_freq_get(struct zl3073x_dev *zldev, u8 index)
+ 	return zl3073x_synth_freq_get(synth);
  }
  
-+/**
-+ * zl3073x_ref_freq_get - get given input reference frequency
-+ * @ref: pointer to ref state
-+ *
-+ * Return: frequency of the given input reference
-+ */
-+static inline u32
-+zl3073x_ref_freq_get(const struct zl3073x_ref *ref)
-+{
-+	return mul_u64_u32_div(ref->freq_base * ref->freq_mult,
-+			       ref->freq_ratio_m, ref->freq_ratio_n);
-+}
-+
-+/**
-+ * zl3073x_ref_freq_set - set given input reference frequency
-+ * @ref: pointer to ref state
-+ * @freq: frequency to be set
-+ *
-+ * Return: 0 on success, <0 when frequency cannot be factorized
-+ */
-+static inline int
-+zl3073x_ref_freq_set(struct zl3073x_ref *ref, u32 freq)
-+{
-+	u16 base, mult;
-+	int rc;
-+
-+	rc = zl3073x_ref_freq_factorize(freq, &base, &mult);
-+	if (rc)
-+		return rc;
-+
-+	ref->freq_base = base;
-+	ref->freq_mult = mult;
-+
-+	return 0;
-+}
-+
+-/**
+- * zl3073x_dev_synth_is_enabled - check if the given synth is enabled
+- * @zldev: pointer to zl3073x device
+- * @index: synth index
+- *
+- * Return: true if synth is enabled, false otherwise
+- */
+-static inline bool
+-zl3073x_dev_synth_is_enabled(struct zl3073x_dev *zldev, u8 index)
+-{
+-	const struct zl3073x_synth *synth;
+-
+-	synth = zl3073x_synth_state_get(zldev, index);
+-	return zl3073x_synth_is_enabled(synth);
+-}
+-
  /**
-  * zl3073x_ref_is_diff - check if the given input reference is differential
-  * @ref: pointer to ref state
+  * zl3073x_dev_out_synth_get - get synth connected to given output
+  * @zldev: pointer to zl3073x device
+@@ -341,21 +279,6 @@ zl3073x_dev_out_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ 	return zl3073x_synth_is_enabled(synth) && zl3073x_out_is_enabled(out);
+ }
+ 
+-/**
+- * zl3073x_dev_out_signal_format_get - get output signal format
+- * @zldev: pointer to zl3073x device
+- * @index: output index
+- *
+- * Return: signal format of given output
+- */
+-static inline u8
+-zl3073x_dev_out_signal_format_get(struct zl3073x_dev *zldev, u8 index)
+-{
+-	const struct zl3073x_out *out = zl3073x_out_state_get(zldev, index);
+-
+-	return zl3073x_out_signal_format_get(out);
+-}
+-
+ /**
+  * zl3073x_dev_out_dpll_get - get DPLL ID the output is driven by
+  * @zldev: pointer to zl3073x device
 -- 
 2.51.0
 
