@@ -1,29 +1,29 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4F0221282
-	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 11:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8CD26C39B
+	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 11:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775220; cv=none; b=GirTYNIfjYro2WBlrFm6d9VAeCBV0sswcTvokHfi3j1KHVUpr+3YTSgtEQStLCYlUSJGBxFr7oURV/TwLgVNJKSN+2dnHpOBFABljP/jZqAS82sCQ5p10TRNVjHBaZiE6I3uftySw4DlKdrF1yRT0flOu6tGTaadQUYPFcUdxWQ=
+	t=1762775220; cv=none; b=JSj55yczzj1MHDsKM1e56bWsDfDWkr3lMhIfFzawJLAzaLTzz1VgooIAO3Jrr3Wq1okxVMu7lqGeNytqtB4xwOKPWRu/Dn6hscrIeEO5Su+kVB8kpVhICzkDJafR6ydnTcD4OYpnYeGGsNIr9xCbosBi6/Bclr4cEeh/sVphfW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762775220; c=relaxed/simple;
-	bh=ssOMmfACjLqYXLfChv925Mj3dGH5taBjUzNjapns9mU=;
+	bh=+A6azEFDuQWTx86ITxq8fhpahULiLh/J+efgopPHuJs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=vDgu428z09sYJV5W77NksEp1aDJi88h2Hd11fGTMd7VHHiIQowYDyW0vOxGAbnmnBdKF/Qc1HbjL/aUgKsG1FDUT/Xiv8/l9nM90durJEq86dDT2HXYOhwYGtmcKm+zNfLxqZf860SqUU3CmIwB+GlrSeUydugk7+v+83lTsQgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=UKSY4f0F; arc=none smtp.client-ip=115.124.30.98
+	 MIME-Version; b=AtW/e9hRkdfzD5OH7Gnvonqf8GBEHdzLdwFNwlg/Iuv64p8AArPVV6zu1xCVsSDcRDcvHjj12m2eZ97UrtxW7FDuACU/aS1GgKnuG+WLnGVIeS3zmLIcw0RewfVqTkWfCzkesKHPqK/eE0k8WPPP+gjRzVYNbUoAM08/ScYhFdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bRhsZZb7; arc=none smtp.client-ip=115.124.30.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="UKSY4f0F"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bRhsZZb7"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1762775212; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=eo0tmBVQlyk+I3Iya5UoKt5JmbMg0BYXF+baLg2SwAs=;
-	b=UKSY4f0FggbDAu+IKInCFblHNBUV3NmJcz1M2ejcZNfZta8IBBuSMYN6qeOYrWaqjJnpOEyCzvhbYkyqwuCzAABSO6E9gF5r7QHvRP4JUvf+dnU4+oSQvYMpjDlZxcQEQiefJMKDtsIGezpZ531YKIdUZ3I30rlhY2X3Rz5qzBY=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Ws3guUz_1762775210 cluster:ay36)
+	t=1762775215; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=nQ/enn1P6PovsnP6vdSADV8ABjxOQN9dlGqmt2S0vcs=;
+	b=bRhsZZb7mQ2FMVO/GAse5DoP/qiz9Dh9X22vwrr/wFdhaYAxhu5jJW8pdwrjpGew6SinbotgKEujaAJGTV31l//aj5UjCXTFnv+12dQwDrLCxM68xKKZ9wS2V4jeLZF9vnPhlR0MD9eDVue5wvcsspJbCl46DI2fITiNm2KN6Mk=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Ws3ADyV_1762775213 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 10 Nov 2025 19:46:51 +0800
+          Mon, 10 Nov 2025 19:46:53 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -40,10 +40,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Vivian Wang <wangruikang@iscas.ac.cn>,
 	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Dust Li <dust.li@linux.alibaba.com>
-Subject: [PATCH net-next v13 2/5] eea: introduce ring and descriptor structures
-Date: Mon, 10 Nov 2025 19:46:45 +0800
-Message-Id: <20251110114648.8972-3-xuanzhuo@linux.alibaba.com>
+	Dust Li <dust.li@linux.alibaba.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH net-next v13 5/5] eea: introduce ethtool support
+Date: Mon, 10 Nov 2025 19:46:48 +0800
+Message-Id: <20251110114648.8972-6-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20251110114648.8972-1-xuanzhuo@linux.alibaba.com>
 References: <20251110114648.8972-1-xuanzhuo@linux.alibaba.com>
@@ -58,202 +59,42 @@ Content-Transfer-Encoding: 8bit
 
 Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
 
-This commit introduces the ring and descriptor implementations.
+This commit introduces ethtool support.
 
-These structures and ring APIs are used by the RX, TX, and admin queues.
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
 Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
 Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
 Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 ---
- drivers/net/ethernet/alibaba/eea/Makefile   |   3 +-
- drivers/net/ethernet/alibaba/eea/eea_desc.h | 156 ++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.c | 260 ++++++++++++++++++++
- drivers/net/ethernet/alibaba/eea/eea_ring.h |  91 +++++++
- 4 files changed, 509 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
- create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
+ drivers/net/ethernet/alibaba/eea/Makefile     |   1 +
+ .../net/ethernet/alibaba/eea/eea_ethtool.c    | 276 ++++++++++++++++++
+ .../net/ethernet/alibaba/eea/eea_ethtool.h    |  50 ++++
+ drivers/net/ethernet/alibaba/eea/eea_net.c    |   2 +
+ drivers/net/ethernet/alibaba/eea/eea_net.h    |   5 +
+ drivers/net/ethernet/alibaba/eea/eea_rx.c     |  29 +-
+ drivers/net/ethernet/alibaba/eea/eea_tx.c     |  24 +-
+ 7 files changed, 383 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
 
 diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
-index cf2acf1733fd..e5e4007810a6 100644
+index fa34a005fa01..8f8fbb8d2d9a 100644
 --- a/drivers/net/ethernet/alibaba/eea/Makefile
 +++ b/drivers/net/ethernet/alibaba/eea/Makefile
-@@ -1,3 +1,4 @@
- 
- obj-$(CONFIG_EEA) += eea.o
--eea-y := eea_pci.o
-+eea-y :=  eea_ring.o \
-+	eea_pci.o
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_desc.h b/drivers/net/ethernet/alibaba/eea/eea_desc.h
+@@ -4,5 +4,6 @@ eea-y := eea_ring.o \
+ 	eea_net.o \
+ 	eea_pci.o \
+ 	eea_adminq.o \
++	eea_ethtool.o \
+ 	eea_tx.o \
+ 	eea_rx.o
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ethtool.c b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
 new file mode 100644
-index 000000000000..541346a03375
+index 000000000000..16621c1bec2d
 --- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_desc.h
-@@ -0,0 +1,156 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Driver for Alibaba Elastic Ethernet Adapter.
-+ *
-+ * Copyright (C) 2025 Alibaba Inc.
-+ */
-+
-+#ifndef __EEA_DESC_H__
-+#define __EEA_DESC_H__
-+
-+#define EEA_DESC_TS_MASK GENMASK(47, 0)
-+#define EEA_DESC_TS(desc) (le64_to_cpu((desc)->ts) & EEA_DESC_TS_MASK)
-+
-+struct eea_aq_desc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 reserved;
-+	u8 classid;
-+	u8 command;
-+	__le64 data_addr;
-+	__le64 reply_addr;
-+	__le32 data_len;
-+	__le32 reply_len;
-+};
-+
-+struct eea_aq_cdesc {
-+	__le16 flags;
-+	__le16 id;
-+#define EEA_OK     0
-+#define EEA_ERR    0xffffffff
-+	__le32 status;
-+	__le32 reply_len;
-+	__le32 reserved1;
-+
-+	__le64 reserved2;
-+	__le64 reserved3;
-+};
-+
-+struct eea_rx_desc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
-+
-+	__le64 addr;
-+
-+	__le64 hdr_addr;
-+	__le32 reserved2;
-+	__le32 reserved3;
-+};
-+
-+#define EEA_RX_CDESC_HDR_LEN_MASK GENMASK(9, 0)
-+
-+struct eea_rx_cdesc {
-+#define EEA_DESC_F_DATA_VALID	BIT(6)
-+#define EEA_DESC_F_SPLIT_HDR	BIT(5)
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+#define EEA_NET_PT_NONE      0
-+#define EEA_NET_PT_IPv4      1
-+#define EEA_NET_PT_TCPv4     2
-+#define EEA_NET_PT_UDPv4     3
-+#define EEA_NET_PT_IPv6      4
-+#define EEA_NET_PT_TCPv6     5
-+#define EEA_NET_PT_UDPv6     6
-+#define EEA_NET_PT_IPv6_EX   7
-+#define EEA_NET_PT_TCPv6_EX  8
-+#define EEA_NET_PT_UDPv6_EX  9
-+	/* [9:0] is packet type. */
-+	__le16 type;
-+
-+	/* hw timestamp [0:47]: ts */
-+	__le64 ts;
-+
-+	__le32 hash;
-+
-+	/* 0-9: hdr_len  split header
-+	 * 10-15: reserved1
-+	 */
-+	__le16 len_ex;
-+	__le16 reserved2;
-+
-+	__le32 reserved3;
-+	__le32 reserved4;
-+};
-+
-+#define EEA_TX_GSO_NONE   0
-+#define EEA_TX_GSO_TCPV4  1
-+#define EEA_TX_GSO_TCPV6  4
-+#define EEA_TX_GSO_UDP_L4 5
-+#define EEA_TX_GSO_ECN    0x80
-+
-+struct eea_tx_desc {
-+#define EEA_DESC_F_DO_CSUM	BIT(6)
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
-+
-+	__le64 addr;
-+
-+	__le16 csum_start;
-+	__le16 csum_offset;
-+	u8 gso_type;
-+	u8 reserved2;
-+	__le16 gso_size;
-+	__le64 reserved3;
-+};
-+
-+struct eea_tx_cdesc {
-+	__le16 flags;
-+	__le16 id;
-+	__le16 len;
-+	__le16 reserved1;
-+
-+	/* hw timestamp [0:47]: ts */
-+	__le64 ts;
-+	__le64 reserved2;
-+	__le64 reserved3;
-+};
-+
-+struct eea_db {
-+#define EEA_IDX_PRESENT   BIT(0)
-+#define EEA_IRQ_MASK      BIT(1)
-+#define EEA_IRQ_UNMASK    BIT(2)
-+#define EEA_DIRECT_INLINE BIT(3)
-+#define EEA_DIRECT_DESC   BIT(4)
-+	u8 kick_flags;
-+	u8 reserved;
-+	__le16 idx;
-+
-+	__le16 tx_cq_head;
-+	__le16 rx_cq_head;
-+};
-+
-+struct eea_db_direct {
-+	u8 kick_flags;
-+	u8 reserved;
-+	__le16 idx;
-+
-+	__le16 tx_cq_head;
-+	__le16 rx_cq_head;
-+
-+	u8 desc[24];
-+};
-+
-+static_assert(sizeof(struct eea_rx_desc) == 32, "rx desc size does not match");
-+static_assert(sizeof(struct eea_rx_cdesc) == 32,
-+	      "rx cdesc size does not match");
-+static_assert(sizeof(struct eea_tx_desc) == 32, "tx desc size does not match");
-+static_assert(sizeof(struct eea_tx_cdesc) == 32,
-+	      "tx cdesc size does not match");
-+static_assert(sizeof(struct eea_db_direct) == 32,
-+	      "db direct size does not match");
-+#endif
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.c b/drivers/net/ethernet/alibaba/eea/eea_ring.c
-new file mode 100644
-index 000000000000..f05745474ecf
---- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ring.c
-@@ -0,0 +1,260 @@
++++ b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+@@ -0,0 +1,276 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
 + * Driver for Alibaba Elastic Ethernet Adapter.
@@ -261,265 +102,281 @@ index 000000000000..f05745474ecf
 + * Copyright (C) 2025 Alibaba Inc.
 + */
 +
-+#include "eea_pci.h"
-+#include "eea_ring.h"
++#include <linux/ethtool.h>
++#include <linux/ethtool_netlink.h>
 +
-+void ering_irq_unactive(struct eea_ring *ering)
++#include "eea_adminq.h"
++
++struct eea_stat_desc {
++	char desc[ETH_GSTRING_LEN];
++	size_t offset;
++};
++
++#define EEA_TX_STAT(m)	{#m, offsetof(struct eea_tx_stats, m)}
++#define EEA_RX_STAT(m)	{#m, offsetof(struct eea_rx_stats, m)}
++
++static const struct eea_stat_desc eea_rx_stats_desc[] = {
++	EEA_RX_STAT(descs),
++	EEA_RX_STAT(kicks),
++};
++
++static const struct eea_stat_desc eea_tx_stats_desc[] = {
++	EEA_TX_STAT(descs),
++	EEA_TX_STAT(kicks),
++};
++
++#define EEA_TX_STATS_LEN	ARRAY_SIZE(eea_tx_stats_desc)
++#define EEA_RX_STATS_LEN	ARRAY_SIZE(eea_rx_stats_desc)
++
++static void eea_get_drvinfo(struct net_device *netdev,
++			    struct ethtool_drvinfo *info)
 +{
-+	union {
-+		u64 data;
-+		struct eea_db db;
-+	} val;
++	struct eea_net *enet = netdev_priv(netdev);
++	struct eea_device *edev = enet->edev;
 +
-+	if (ering->mask == EEA_IRQ_MASK)
++	strscpy(info->driver,   KBUILD_MODNAME,     sizeof(info->driver));
++	strscpy(info->bus_info, eea_pci_name(edev), sizeof(info->bus_info));
++}
++
++static void eea_get_ringparam(struct net_device *netdev,
++			      struct ethtool_ringparam *ring,
++			      struct kernel_ethtool_ringparam *kernel_ring,
++			      struct netlink_ext_ack *extack)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++
++	ring->rx_max_pending = enet->cfg_hw.rx_ring_depth;
++	ring->tx_max_pending = enet->cfg_hw.tx_ring_depth;
++	ring->rx_pending = enet->cfg.rx_ring_depth;
++	ring->tx_pending = enet->cfg.tx_ring_depth;
++
++	kernel_ring->tcp_data_split = enet->cfg.split_hdr ?
++				      ETHTOOL_TCP_DATA_SPLIT_ENABLED :
++				      ETHTOOL_TCP_DATA_SPLIT_DISABLED;
++}
++
++static int eea_set_ringparam(struct net_device *netdev,
++			     struct ethtool_ringparam *ring,
++			     struct kernel_ethtool_ringparam *kernel_ring,
++			     struct netlink_ext_ack *extack)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	struct eea_net_init_ctx ctx;
++	bool need_update = false;
++	struct eea_net_cfg *cfg;
++	bool sh;
++
++	enet_init_ctx(enet, &ctx);
++
++	cfg = &ctx.cfg;
++
++	if (ring->rx_pending != cfg->rx_ring_depth)
++		need_update = true;
++
++	if (ring->tx_pending != cfg->tx_ring_depth)
++		need_update = true;
++
++	sh = kernel_ring->tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED;
++	if (sh != !!(cfg->split_hdr))
++		need_update = true;
++
++	if (!need_update)
++		return 0;
++
++	cfg->rx_ring_depth = ring->rx_pending;
++	cfg->tx_ring_depth = ring->tx_pending;
++
++	cfg->split_hdr = sh ? enet->cfg_hw.split_hdr : 0;
++
++	return eea_reset_hw_resources(enet, &ctx);
++}
++
++static int eea_set_channels(struct net_device *netdev,
++			    struct ethtool_channels *channels)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	u16 queue_pairs = channels->combined_count;
++	struct eea_net_init_ctx ctx;
++	struct eea_net_cfg *cfg;
++
++	enet_init_ctx(enet, &ctx);
++
++	cfg = &ctx.cfg;
++
++	cfg->rx_ring_num = queue_pairs;
++	cfg->tx_ring_num = queue_pairs;
++
++	return eea_reset_hw_resources(enet, &ctx);
++}
++
++static void eea_get_channels(struct net_device *netdev,
++			     struct ethtool_channels *channels)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++
++	channels->combined_count = enet->cfg.rx_ring_num;
++	channels->max_combined   = enet->cfg_hw.rx_ring_num;
++}
++
++static void eea_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	u8 *p = data;
++	u32 i, j;
++
++	if (stringset != ETH_SS_STATS)
 +		return;
 +
-+	ering->mask = EEA_IRQ_MASK;
-+
-+	val.db.kick_flags = EEA_IRQ_MASK;
-+
-+	writeq(val.data, (void __iomem *)ering->db);
-+}
-+
-+void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering)
-+{
-+	union {
-+		u64 data;
-+		struct eea_db db;
-+	} val;
-+
-+	if (ering->mask == EEA_IRQ_UNMASK)
-+		return;
-+
-+	ering->mask = EEA_IRQ_UNMASK;
-+
-+	val.db.kick_flags = EEA_IRQ_UNMASK;
-+
-+	val.db.tx_cq_head = cpu_to_le16(tx_ering->cq.hw_idx);
-+	val.db.rx_cq_head = cpu_to_le16(ering->cq.hw_idx);
-+
-+	writeq(val.data, ering->db);
-+}
-+
-+void *ering_cq_get_desc(const struct eea_ring *ering)
-+{
-+	u8 phase;
-+	u8 *desc;
-+
-+	desc = ering->cq.desc + (ering->cq.head << ering->cq.desc_size_shift);
-+
-+	phase = *(u8 *)(desc + ering->cq.desc_size - 1);
-+
-+	if ((phase & EEA_RING_DESC_F_CQ_PHASE) == ering->cq.phase) {
-+		dma_rmb();
-+		return desc;
++	for (i = 0; i < enet->cfg.rx_ring_num; i++) {
++		for (j = 0; j < EEA_RX_STATS_LEN; j++)
++			ethtool_sprintf(&p, "rx%u_%s", i,
++					eea_rx_stats_desc[j].desc);
 +	}
 +
-+	return NULL;
++	for (i = 0; i < enet->cfg.tx_ring_num; i++) {
++		for (j = 0; j < EEA_TX_STATS_LEN; j++)
++			ethtool_sprintf(&p, "tx%u_%s", i,
++					eea_tx_stats_desc[j].desc);
++	}
 +}
 +
-+/* sq api */
-+void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id, bool is_last,
-+			  u16 flags)
++static int eea_get_sset_count(struct net_device *netdev, int sset)
 +{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	struct eea_common_desc *desc;
++	struct eea_net *enet = netdev_priv(netdev);
 +
-+	if (!sq->shadow_num) {
-+		sq->shadow_idx = sq->head;
-+		sq->shadow_id = cpu_to_le16(id);
++	if (sset != ETH_SS_STATS)
++		return -EOPNOTSUPP;
++
++	return enet->cfg.rx_ring_num * EEA_RX_STATS_LEN +
++		enet->cfg.tx_ring_num * EEA_TX_STATS_LEN;
++}
++
++static void eea_stats_fill_for_q(struct u64_stats_sync *syncp, u32 num,
++				 const struct eea_stat_desc *desc,
++				 u64 *data, u32 idx)
++{
++	void *stats_base = syncp;
++	u32 start, i;
++
++	do {
++		start = u64_stats_fetch_begin(syncp);
++		for (i = 0; i < num; i++)
++			data[idx + i] =
++				u64_stats_read(stats_base + desc[i].offset);
++
++	} while (u64_stats_fetch_retry(syncp, start));
++}
++
++static void eea_get_ethtool_stats(struct net_device *netdev,
++				  struct ethtool_stats *stats, u64 *data)
++{
++	struct eea_net *enet = netdev_priv(netdev);
++	u32 i, idx = 0;
++
++	for (i = 0; i < enet->cfg.rx_ring_num; i++) {
++		struct eea_net_rx *rx = enet->rx[i];
++
++		eea_stats_fill_for_q(&rx->stats.syncp, EEA_RX_STATS_LEN,
++				     eea_rx_stats_desc, data, idx);
++
++		idx += EEA_RX_STATS_LEN;
 +	}
 +
-+	if (!is_last)
-+		flags |= EEA_RING_DESC_F_MORE;
++	for (i = 0; i < enet->cfg.tx_ring_num; i++) {
++		struct eea_net_tx *tx = &enet->tx[i];
 +
-+	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
++		eea_stats_fill_for_q(&tx->stats.syncp, EEA_TX_STATS_LEN,
++				     eea_tx_stats_desc, data, idx);
 +
-+	desc->flags = cpu_to_le16(flags);
-+	desc->id = sq->shadow_id;
-+
-+	if (unlikely(++sq->shadow_idx >= ering->num))
-+		sq->shadow_idx = 0;
-+
-+	++sq->shadow_num;
-+
-+	return desc;
++		idx += EEA_TX_STATS_LEN;
++	}
 +}
 +
-+/* alloc desc for adminq */
-+void *ering_aq_alloc_desc(struct eea_ring *ering)
++void eea_update_rx_stats(struct eea_rx_stats *rx_stats,
++			 struct eea_rx_ctx_stats *stats)
 +{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	struct eea_common_desc *desc;
-+
-+	sq->shadow_idx = sq->head;
-+
-+	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
-+
-+	if (unlikely(++sq->shadow_idx >= ering->num))
-+		sq->shadow_idx = 0;
-+
-+	++sq->shadow_num;
-+
-+	return desc;
++	u64_stats_update_begin(&rx_stats->syncp);
++	u64_stats_add(&rx_stats->descs,             stats->descs);
++	u64_stats_add(&rx_stats->packets,           stats->packets);
++	u64_stats_add(&rx_stats->bytes,             stats->bytes);
++	u64_stats_add(&rx_stats->drops,             stats->drops);
++	u64_stats_add(&rx_stats->split_hdr_bytes,   stats->split_hdr_bytes);
++	u64_stats_add(&rx_stats->split_hdr_packets, stats->split_hdr_packets);
++	u64_stats_add(&rx_stats->length_errors,     stats->length_errors);
++	u64_stats_update_end(&rx_stats->syncp);
 +}
 +
-+void ering_sq_commit_desc(struct eea_ring *ering)
++void eea_stats(struct net_device *netdev, struct rtnl_link_stats64 *tot)
 +{
-+	struct eea_ring_sq *sq = &ering->sq;
-+	int num;
++	struct eea_net *enet = netdev_priv(netdev);
++	u64 packets, bytes;
++	u32 start;
++	int i;
 +
-+	num = sq->shadow_num;
++	if (enet->rx) {
++		for (i = 0; i < enet->cfg.rx_ring_num; i++) {
++			struct eea_net_rx *rx = enet->rx[i];
 +
-+	ering->num_free -= num;
++			do {
++				start = u64_stats_fetch_begin(&rx->stats.syncp);
++				packets = u64_stats_read(&rx->stats.packets);
++				bytes = u64_stats_read(&rx->stats.bytes);
++			} while (u64_stats_fetch_retry(&rx->stats.syncp,
++						       start));
 +
-+	sq->head       = sq->shadow_idx;
-+	sq->hw_idx     += num;
-+	sq->shadow_num = 0;
-+}
-+
-+void ering_sq_cancel(struct eea_ring *ering)
-+{
-+	ering->sq.shadow_num = 0;
-+}
-+
-+/* cq api */
-+void ering_cq_ack_desc(struct eea_ring *ering, u32 num)
-+{
-+	struct eea_ring_cq *cq = &ering->cq;
-+
-+	cq->head += num;
-+	cq->hw_idx += num;
-+
-+	if (unlikely(cq->head >= ering->num)) {
-+		cq->head -= ering->num;
-+		cq->phase ^= EEA_RING_DESC_F_CQ_PHASE;
++			tot->rx_packets += packets;
++			tot->rx_bytes   += bytes;
++		}
 +	}
 +
-+	ering->num_free += num;
++	if (enet->tx) {
++		for (i = 0; i < enet->cfg.tx_ring_num; i++) {
++			struct eea_net_tx *tx = &enet->tx[i];
++
++			do {
++				start = u64_stats_fetch_begin(&tx->stats.syncp);
++				packets = u64_stats_read(&tx->stats.packets);
++				bytes = u64_stats_read(&tx->stats.bytes);
++			} while (u64_stats_fetch_retry(&tx->stats.syncp,
++						       start));
++
++			tot->tx_packets += packets;
++			tot->tx_bytes   += bytes;
++		}
++	}
 +}
 +
-+/* notify */
-+bool ering_kick(struct eea_ring *ering)
++static int eea_get_link_ksettings(struct net_device *netdev,
++				  struct ethtool_link_ksettings *cmd)
 +{
-+	union {
-+		struct eea_db db;
-+		u64 data;
-+	} val;
++	struct eea_net *enet = netdev_priv(netdev);
 +
-+	val.db.kick_flags = EEA_IDX_PRESENT;
-+	val.db.idx = cpu_to_le16(ering->sq.hw_idx);
-+
-+	writeq(val.data, ering->db);
-+
-+	return true;
-+}
-+
-+/* ering alloc/free */
-+static void ering_free_queue(struct eea_device *edev, size_t size,
-+			     void *queue, dma_addr_t dma_handle)
-+{
-+	dma_free_coherent(edev->dma_dev, size, queue, dma_handle);
-+}
-+
-+static void *ering_alloc_queue(struct eea_device *edev, size_t size,
-+			       dma_addr_t *dma_handle)
-+{
-+	gfp_t flags = GFP_KERNEL | __GFP_NOWARN;
-+
-+	return dma_alloc_coherent(edev->dma_dev, size, dma_handle, flags);
-+}
-+
-+static int ering_alloc_queues(struct eea_ring *ering, struct eea_device *edev,
-+			      u32 num, u8 sq_desc_size, u8 cq_desc_size)
-+{
-+	dma_addr_t addr;
-+	size_t size;
-+	void *ring;
-+
-+	size = num * sq_desc_size;
-+
-+	ring = ering_alloc_queue(edev, size, &addr);
-+	if (!ring)
-+		return -ENOMEM;
-+
-+	ering->sq.desc     = ring;
-+	ering->sq.dma_addr = addr;
-+	ering->sq.dma_size = size;
-+	ering->sq.desc_size = sq_desc_size;
-+	ering->sq.desc_size_shift = fls(sq_desc_size) - 1;
-+
-+	size = num * cq_desc_size;
-+
-+	ring = ering_alloc_queue(edev, size, &addr);
-+	if (!ring)
-+		goto err_free_sq;
-+
-+	ering->cq.desc     = ring;
-+	ering->cq.dma_addr = addr;
-+	ering->cq.dma_size = size;
-+	ering->cq.desc_size = cq_desc_size;
-+	ering->cq.desc_size_shift = fls(cq_desc_size) - 1;
-+
-+	ering->num = num;
++	cmd->base.speed  = enet->speed;
++	cmd->base.duplex = enet->duplex;
++	cmd->base.port   = PORT_OTHER;
 +
 +	return 0;
-+
-+err_free_sq:
-+	ering_free_queue(ering->edev, ering->sq.dma_size,
-+			 ering->sq.desc, ering->sq.dma_addr);
-+	return -ENOMEM;
 +}
 +
-+static void ering_init(struct eea_ring *ering)
-+{
-+	ering->cq.phase = EEA_RING_DESC_F_CQ_PHASE;
-+	ering->num_free = ering->num;
-+}
-+
-+struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
-+			     u8 sq_desc_size, u8 cq_desc_size,
-+			     const char *name)
-+{
-+	struct eea_ring *ering;
-+
-+	ering = kzalloc(sizeof(*ering), GFP_KERNEL);
-+	if (!ering)
-+		return NULL;
-+
-+	ering->edev = edev;
-+	ering->name = name;
-+	ering->index = index;
-+	ering->msix_vec = index / 2 + 1; /* vec 0 is for error notify. */
-+
-+	if (ering_alloc_queues(ering, edev, num, sq_desc_size, cq_desc_size))
-+		goto err_free;
-+
-+	ering_init(ering);
-+
-+	return ering;
-+
-+err_free:
-+	kfree(ering);
-+	return NULL;
-+}
-+
-+void ering_free(struct eea_ring *ering)
-+{
-+	ering_free_queue(ering->edev, ering->cq.dma_size,
-+			 ering->cq.desc, ering->cq.dma_addr);
-+
-+	ering_free_queue(ering->edev, ering->sq.dma_size,
-+			 ering->sq.desc, ering->sq.dma_addr);
-+
-+	kfree(ering);
-+}
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.h b/drivers/net/ethernet/alibaba/eea/eea_ring.h
++const struct ethtool_ops eea_ethtool_ops = {
++	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT,
++	.get_drvinfo        = eea_get_drvinfo,
++	.get_link           = ethtool_op_get_link,
++	.get_ringparam      = eea_get_ringparam,
++	.set_ringparam      = eea_set_ringparam,
++	.set_channels       = eea_set_channels,
++	.get_channels       = eea_get_channels,
++	.get_strings        = eea_get_strings,
++	.get_sset_count     = eea_get_sset_count,
++	.get_ethtool_stats  = eea_get_ethtool_stats,
++	.get_link_ksettings = eea_get_link_ksettings,
++};
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ethtool.h b/drivers/net/ethernet/alibaba/eea/eea_ethtool.h
 new file mode 100644
-index 000000000000..ea7adc32bb23
+index 000000000000..1ee89b49addd
 --- /dev/null
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ring.h
-@@ -0,0 +1,91 @@
++++ b/drivers/net/ethernet/alibaba/eea/eea_ethtool.h
+@@ -0,0 +1,50 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
 + * Driver for Alibaba Elastic Ethernet Adapter.
@@ -527,90 +384,287 @@ index 000000000000..ea7adc32bb23
 + * Copyright (C) 2025 Alibaba Inc.
 + */
 +
-+#ifndef __EEA_RING_H__
-+#define __EEA_RING_H__
++#ifndef __EEA_ETHTOOL_H__
++#define __EEA_ETHTOOL_H__
 +
-+#include <linux/dma-mapping.h>
-+#include "eea_desc.h"
-+
-+#define EEA_RING_DESC_F_MORE		BIT(0)
-+#define EEA_RING_DESC_F_CQ_PHASE	BIT(7)
-+
-+struct eea_common_desc {
-+	__le16 flags;
-+	__le16 id;
++struct eea_tx_stats {
++	struct u64_stats_sync syncp;
++	u64_stats_t descs;
++	u64_stats_t packets;
++	u64_stats_t bytes;
++	u64_stats_t drops;
++	u64_stats_t kicks;
 +};
 +
-+struct eea_device;
++struct eea_rx_ctx_stats {
++	u64 descs;
++	u64 packets;
++	u64 bytes;
++	u64 drops;
++	u64 split_hdr_bytes;
++	u64 split_hdr_packets;
 +
-+struct eea_ring_sq {
-+	void *desc;
-+
-+	u16 head;
-+	u16 hw_idx;
-+
-+	u16 shadow_idx;
-+	__le16 shadow_id;
-+	u16 shadow_num;
-+
-+	u8 desc_size;
-+	u8 desc_size_shift;
-+
-+	dma_addr_t dma_addr;
-+	u32 dma_size;
++	u64 length_errors;
 +};
 +
-+struct eea_ring_cq {
-+	void *desc;
++struct eea_rx_stats {
++	struct u64_stats_sync syncp;
++	u64_stats_t descs;
++	u64_stats_t packets;
++	u64_stats_t bytes;
++	u64_stats_t drops;
++	u64_stats_t kicks;
++	u64_stats_t split_hdr_bytes;
++	u64_stats_t split_hdr_packets;
 +
-+	u16 head;
-+	u16 hw_idx;
-+
-+	u8 phase;
-+	u8 desc_size_shift;
-+	u8 desc_size;
-+
-+	dma_addr_t dma_addr;
-+	u32 dma_size;
++	u64_stats_t length_errors;
 +};
 +
-+struct eea_ring {
-+	const char *name;
-+	struct eea_device *edev;
-+	u32 index;
-+	void __iomem *db;
-+	u16 msix_vec;
++void eea_update_rx_stats(struct eea_rx_stats *rx_stats,
++			 struct eea_rx_ctx_stats *stats);
++void eea_stats(struct net_device *netdev, struct rtnl_link_stats64 *tot);
 +
-+	u8 mask;
++extern const struct ethtool_ops eea_ethtool_ops;
 +
-+	u32 num;
-+
-+	u32 num_free;
-+
-+	struct eea_ring_sq sq;
-+	struct eea_ring_cq cq;
-+
-+	char irq_name[32];
-+};
-+
-+struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
-+			     u8 sq_desc_size, u8 cq_desc_size,
-+			     const char *name);
-+void ering_free(struct eea_ring *ering);
-+bool ering_kick(struct eea_ring *ering);
-+
-+void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id,
-+			  bool is_last, u16 flags);
-+void *ering_aq_alloc_desc(struct eea_ring *ering);
-+void ering_sq_commit_desc(struct eea_ring *ering);
-+void ering_sq_cancel(struct eea_ring *ering);
-+
-+void ering_cq_ack_desc(struct eea_ring *ering, u32 num);
-+
-+void ering_irq_unactive(struct eea_ring *ering);
-+void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering);
-+void *ering_cq_get_desc(const struct eea_ring *ering);
 +#endif
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+index dc5895f5d495..397a05533774 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
+@@ -437,6 +437,7 @@ static const struct net_device_ops eea_netdev = {
+ 	.ndo_stop           = eea_netdev_stop,
+ 	.ndo_start_xmit     = eea_tx_xmit,
+ 	.ndo_validate_addr  = eth_validate_addr,
++	.ndo_get_stats64    = eea_stats,
+ 	.ndo_features_check = passthru_features_check,
+ 	.ndo_tx_timeout     = eea_tx_timeout,
+ };
+@@ -454,6 +455,7 @@ static struct eea_net *eea_netdev_alloc(struct eea_device *edev, u32 pairs)
+ 	}
+ 
+ 	netdev->netdev_ops = &eea_netdev;
++	netdev->ethtool_ops = &eea_ethtool_ops;
+ 	SET_NETDEV_DEV(netdev, edev->dma_dev);
+ 
+ 	enet = netdev_priv(netdev);
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
+index b451f6765480..d98a1a94d86e 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_net.h
++++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
+@@ -12,6 +12,7 @@
+ #include <linux/netdevice.h>
+ 
+ #include "eea_adminq.h"
++#include "eea_ethtool.h"
+ #include "eea_ring.h"
+ 
+ #define EEA_VER_MAJOR		1
+@@ -38,6 +39,8 @@ struct eea_net_tx {
+ 	u32 index;
+ 
+ 	char name[16];
++
++	struct eea_tx_stats stats;
+ };
+ 
+ struct eea_rx_meta {
+@@ -90,6 +93,8 @@ struct eea_net_rx {
+ 
+ 	struct napi_struct napi;
+ 
++	struct eea_rx_stats stats;
++
+ 	u16 irq_n;
+ 
+ 	char name[16];
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_rx.c b/drivers/net/ethernet/alibaba/eea/eea_rx.c
+index 4a802cf87de0..e0a0a9e29e99 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_rx.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_rx.c
+@@ -32,6 +32,8 @@ struct eea_rx_ctx {
+ 	u32 frame_sz;
+ 
+ 	struct eea_rx_meta *meta;
++
++	struct eea_rx_ctx_stats stats;
+ };
+ 
+ static struct eea_rx_meta *eea_rx_meta_get(struct eea_net_rx *rx)
+@@ -199,6 +201,7 @@ static int eea_harden_check_overflow(struct eea_rx_ctx *ctx,
+ 		pr_debug("%s: rx error: len %u exceeds truesize %u\n",
+ 			 enet->netdev->name, ctx->len,
+ 			 ctx->meta->truesize - ctx->meta->room);
++		++ctx->stats.length_errors;
+ 		return -EINVAL;
+ 	}
+ 
+@@ -215,6 +218,7 @@ static int eea_harden_check_size(struct eea_rx_ctx *ctx, struct eea_net *enet)
+ 
+ 	if (unlikely(ctx->hdr_len + ctx->len < ETH_HLEN)) {
+ 		pr_debug("%s: short packet %u\n", enet->netdev->name, ctx->len);
++		++ctx->stats.length_errors;
+ 		return -EINVAL;
+ 	}
+ 
+@@ -356,6 +360,7 @@ static int process_remain_buf(struct eea_net_rx *rx, struct eea_rx_ctx *ctx)
+ 
+ err:
+ 	dev_kfree_skb(rx->pkt.head_skb);
++	++ctx->stats.drops;
+ 	rx->pkt.do_drop = true;
+ 	rx->pkt.head_skb = NULL;
+ 	return 0;
+@@ -384,6 +389,7 @@ static int process_first_buf(struct eea_net_rx *rx, struct eea_rx_ctx *ctx)
+ 	return 0;
+ 
+ err:
++	++ctx->stats.drops;
+ 	rx->pkt.do_drop = true;
+ 	return 0;
+ }
+@@ -415,9 +421,12 @@ static void eea_rx_desc_to_ctx(struct eea_net_rx *rx,
+ 	ctx->flags = le16_to_cpu(desc->flags);
+ 
+ 	ctx->hdr_len = 0;
+-	if (ctx->flags & EEA_DESC_F_SPLIT_HDR)
++	if (ctx->flags & EEA_DESC_F_SPLIT_HDR) {
+ 		ctx->hdr_len = le16_to_cpu(desc->len_ex) &
+ 			EEA_RX_CDESC_HDR_LEN_MASK;
++		ctx->stats.split_hdr_bytes += ctx->hdr_len;
++		++ctx->stats.split_hdr_packets;
++	}
+ 
+ 	ctx->more = ctx->flags & EEA_RING_DESC_F_MORE;
+ }
+@@ -445,6 +454,8 @@ static int eea_cleanrx(struct eea_net_rx *rx, int budget,
+ 
+ 		eea_rx_meta_dma_sync_for_cpu(rx, meta, ctx->len);
+ 
++		ctx->stats.bytes += ctx->len;
++
+ 		if (!rx->pkt.idx)
+ 			process_first_buf(rx, ctx);
+ 		else
+@@ -462,17 +473,20 @@ static int eea_cleanrx(struct eea_net_rx *rx, int budget,
+ skip:
+ 		eea_rx_meta_put(rx, meta);
+ 		ering_cq_ack_desc(rx->ering, 1);
++		++ctx->stats.descs;
+ 
+ 		if (!ctx->more)
+ 			memset(&rx->pkt, 0, sizeof(rx->pkt));
+ 	}
+ 
++	ctx->stats.packets = packets;
++
+ 	return packets;
+ }
+ 
+ static bool eea_rx_post(struct eea_net *enet, struct eea_net_rx *rx)
+ {
+-	u32 tailroom, headroom, room, len;
++	u32 tailroom, headroom, room, flags, len;
+ 	struct eea_rx_meta *meta;
+ 	struct eea_rx_desc *desc;
+ 	int err = 0, num = 0;
+@@ -512,9 +526,14 @@ static bool eea_rx_post(struct eea_net *enet, struct eea_net_rx *rx)
+ 		++num;
+ 	}
+ 
+-	if (num)
++	if (num) {
+ 		ering_kick(rx->ering);
+ 
++		flags = u64_stats_update_begin_irqsave(&rx->stats.syncp);
++		u64_stats_inc(&rx->stats.kicks);
++		u64_stats_update_end_irqrestore(&rx->stats.syncp, flags);
++	}
++
+ 	/* true means busy, napi should be called again. */
+ 	return !!err;
+ }
+@@ -535,6 +554,8 @@ int eea_poll(struct napi_struct *napi, int budget)
+ 	if (rx->ering->num_free > budget)
+ 		busy |= eea_rx_post(enet, rx);
+ 
++	eea_update_rx_stats(&rx->stats, &ctx.stats);
++
+ 	busy |= received >= budget;
+ 
+ 	if (!busy) {
+@@ -720,6 +741,8 @@ struct eea_net_rx *eea_alloc_rx(struct eea_net_init_ctx *ctx, u32 idx)
+ 	rx->index = idx;
+ 	sprintf(rx->name, "rx.%u", idx);
+ 
++	u64_stats_init(&rx->stats.syncp);
++
+ 	/* ering */
+ 	ering = ering_alloc(idx * 2, ctx->cfg.rx_ring_depth, ctx->edev,
+ 			    ctx->cfg.rx_sq_desc_size,
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_tx.c b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+index a9c4cd0d75ff..acee33add96a 100644
+--- a/drivers/net/ethernet/alibaba/eea/eea_tx.c
++++ b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+@@ -114,6 +114,13 @@ static u32 eea_clean_tx(struct eea_net_tx *tx)
+ 		eea_tx_meta_put_and_unmap(tx, meta);
+ 	}
+ 
++	if (stats.packets) {
++		u64_stats_update_begin(&tx->stats.syncp);
++		u64_stats_add(&tx->stats.bytes, stats.bytes);
++		u64_stats_add(&tx->stats.packets, stats.packets);
++		u64_stats_update_end(&tx->stats.syncp);
++	}
++
+ 	return stats.packets;
+ }
+ 
+@@ -247,6 +254,10 @@ static int eea_tx_post_skb(struct eea_net_tx *tx, struct sk_buff *skb)
+ 	meta->num = shinfo->nr_frags + 1;
+ 	ering_sq_commit_desc(tx->ering);
+ 
++	u64_stats_update_begin(&tx->stats.syncp);
++	u64_stats_add(&tx->stats.descs, meta->num);
++	u64_stats_update_end(&tx->stats.syncp);
++
+ 	return 0;
+ 
+ err_cancel:
+@@ -258,6 +269,10 @@ static int eea_tx_post_skb(struct eea_net_tx *tx, struct sk_buff *skb)
+ static void eea_tx_kick(struct eea_net_tx *tx)
+ {
+ 	ering_kick(tx->ering);
++
++	u64_stats_update_begin(&tx->stats.syncp);
++	u64_stats_inc(&tx->stats.kicks);
++	u64_stats_update_end(&tx->stats.syncp);
+ }
+ 
+ netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev)
+@@ -282,8 +297,13 @@ netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	skb_tx_timestamp(skb);
+ 
+ 	err = eea_tx_post_skb(tx, skb);
+-	if (unlikely(err))
++	if (unlikely(err)) {
++		u64_stats_update_begin(&tx->stats.syncp);
++		u64_stats_inc(&tx->stats.drops);
++		u64_stats_update_end(&tx->stats.syncp);
++
+ 		dev_kfree_skb_any(skb);
++	}
+ 
+ 	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
+ 		eea_tx_kick(tx);
+@@ -346,6 +366,8 @@ int eea_alloc_tx(struct eea_net_init_ctx *ctx, struct eea_net_tx *tx, u32 idx)
+ 	struct eea_ring *ering;
+ 	u32 i;
+ 
++	u64_stats_init(&tx->stats.syncp);
++
+ 	sprintf(tx->name, "tx.%u", idx);
+ 
+ 	ering = ering_alloc(idx * 2 + 1, ctx->cfg.tx_ring_depth, ctx->edev,
 -- 
 2.32.0.3.g01195cf9f
 
