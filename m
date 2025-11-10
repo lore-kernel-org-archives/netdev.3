@@ -1,234 +1,184 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012003.outbound.protection.outlook.com [40.107.200.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D843176E6;
-	Mon, 10 Nov 2025 15:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789073; cv=fail; b=EwLqXACXgZaQ95sXppslchyj3uR8RVs8zDiqMvwQJ7scNOTKFzcg8B2rCDsap+/P1m58ehG150gxPKjMgGXVPyrW2qqUcKqfGseDJFTWUlRpgWMAzUtx7n5FOdk3wnWGXumkAFTqJ1gOrFMtQv2kKuJR6aXqgtAr/61v+LGintw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762789073; c=relaxed/simple;
-	bh=BSjAQNxanX6A0EOId5sL1DiDITwNYvTK7+YGLhvjKgQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9ZltBMo4H0z84KapOa0PsBhRN8vgGOwe/9zdXbKlHMdtxcgEwrzNKWN9uTjQYuUMf6Tk/PQM2wosTMLB4Vxa9Ce/9jA4G1h72ef/M4YMjXUCOVEm/3izOdV+5HCXSpCNM5u0RjhS69QdCJV512D3AX0h7a5+uax8J4ik8997pg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hK1ig/ak; arc=fail smtp.client-ip=40.107.200.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079D26F443
+	for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 15:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762789356; cv=none; b=GHdxpymGHheGAOi/BYIOwuWHApqJLYTowXVSrIfxxd7Z9NfJc4Sx6v1yEOZNs2bX3SV11sLX2Z8iOrfDXnApKF+QFxflcmqplHpWwNx5rZ6Nqd+ZxKaJbnKPu+s2HoEtyugbL/dc9YYmbQv834Mi6UL3MQ/uqBq6UyiInAawupc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762789356; c=relaxed/simple;
+	bh=Wk7OEAIm+YhJN0bl/25mfduKM6JkrL1iaxUr/xjPWV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H5dB5EpaTtCrE7Hq7F3YKlFLfoperiLjTGLEXJ1y7S73Ml/94RiZHIVd7F0soizie/9p1DxirB+1+UVDuiMHFjzhrlKqhiRCk5708gKNQ8AeyHg8RQw3n7MYU5Tck4+fGVcRLtiDqNtL+SFt6rBwk28f8calqxvtmqqdOd1Mvew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i6gUDVfZ; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hK1ig/ak"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eqo7JJaQ4oIeWv7YDWIepDxPLjwlzh/qVXkt2phtT5hVfm0joytZPexjN/jsZBmU76FKxuod5ZFTp0eK7/r+tFqmYEyCRcH51VNGjTn3rHlUghu7Dlndm7F8un0ySygHpxv0bGYK/G82o0ZzgBRdFT9PeCFPu4qLALIJsVndzDaIEftmEYmBslEJyyt/6xDQzWvSOb2UHq5rb5LfWs3xeq4G7IcWWEuVJr54Z8Eukc3wTdFoOgEzEvpt12sXlndbpT1iX8IObzqdUyhnT9U22OppX848aXvVDgWtNcIep/dTxu2qxgd2fZsLnfdEreHUDV2BRGaSikjAyNdDkJXkuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/pdIM2rqFiHAOWnvUPgIkem8gM0DDYwOrNkICZ7YmZ8=;
- b=F65gbzDi/4StyLYfsFcIhd0Biv6pQgarbZSZNYqGyXNLMEmMmbIv/BsiVDEUZRx5SgZek4oG8u2/+GSE1q05f91Aeerx7PQNKj5oBqfaV/UJxGH6W/Oonryw0XUwnl0mg3QFIGfXmQ8gvddhKZ9kjTl+jds1D5UuQzmhBa2CsZZ6G2Ur53B3m7N5rp32MNA6Bw+FIQ5NbomCgH86iOOl4xbzy7TkdYVWVLarkK96pg8KksH7z8Cu5PtOJdKi5y5ncNVl+APOx1Gq1Bf5RKDEgJrlllLxwq00MvHSoHHMLmiY5brcGsxH3aczKiZUCvNizVzlobAgdP4XDG36/wavvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/pdIM2rqFiHAOWnvUPgIkem8gM0DDYwOrNkICZ7YmZ8=;
- b=hK1ig/akON0FBLrAX3U5VqxH4zuzDBQ8dBS+0IllCPAdj6dxGkxvSmBBEAMgjYPzgYGf1mb6bmEK+GnXYRPeX6biheP5wkuP6FZs/8YWHIsM4ulik953n20cIaB4Vm/y0yC5W5xrlbUq3GKAlhT+XigZ0PyljHkMHYigsfwPUk0=
-Received: from PH8P220CA0023.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:345::29)
- by IA1PR12MB6185.namprd12.prod.outlook.com (2603:10b6:208:3e7::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 15:37:42 +0000
-Received: from SN1PEPF0002BA4D.namprd03.prod.outlook.com
- (2603:10b6:510:345:cafe::ee) by PH8P220CA0023.outlook.office365.com
- (2603:10b6:510:345::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.16 via Frontend Transport; Mon,
- 10 Nov 2025 15:37:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SN1PEPF0002BA4D.mail.protection.outlook.com (10.167.242.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Mon, 10 Nov 2025 15:37:41 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Mon, 10 Nov
- 2025 07:37:31 -0800
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 10 Nov
- 2025 09:37:31 -0600
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 10 Nov 2025 07:37:29 -0800
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>
-CC: Alejandro Lucero <alucerop@amd.com>, Zhi Wang <zhiw@nvidia.com>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>, Ben Cheatham
-	<benjamin.cheatham@amd.com>, Alison Schofield <alison.schofield@intel.com>
-Subject: [PATCH v20 16/22] cxl/region: Factor out interleave ways setup
-Date: Mon, 10 Nov 2025 15:36:51 +0000
-Message-ID: <20251110153657.2706192-17-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251110153657.2706192-1-alejandro.lucero-palau@amd.com>
-References: <20251110153657.2706192-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i6gUDVfZ"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4edb2eef810so20769151cf.0
+        for <netdev@vger.kernel.org>; Mon, 10 Nov 2025 07:42:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762789353; x=1763394153; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=naa0Xx0rF2nxqDQMqtUtFjK8ka1GPEo7lAdw6zaxtxk=;
+        b=i6gUDVfZdxrlscKjOWHsVzpTsKbwe4zlytgYRVbQ3OSgNMAcE2DTimi+a71UJJRUU7
+         ie1m6sVETNU4L6jTg4aZF4HqQ0jCyZAdDUeLFUaRfJ3/umQTeAg1NhFFSdatfKnZfkME
+         Ni1TNFdtFSTmttqUZIW3HJYv9bMv45h7urG8odVUG0U771sh3Bo4YTZb3tEaKj26QRR0
+         cSHPd07fP1UmZX8RvZyOJKxoMSnljCdajgfsMQDOd8C3WMBAOdVR6Yjczmj/t0/lm8SD
+         o3Ezj4bdzwwD3eGXpU08E43/R82DfKJZDI6wiWWFyZsBcK+C5Y0m2/8Ww87bnw+X6mAt
+         Di6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762789353; x=1763394153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=naa0Xx0rF2nxqDQMqtUtFjK8ka1GPEo7lAdw6zaxtxk=;
+        b=Ac8ZJn265oiPCBdVQKSOkwWxWgs1TISpfW7ST3OZCDOkL2tbWZjkhihrajsp+yq6yo
+         ZADDMYG7BWB+1ZwvXvGHfLgX7UHCiP0GEH+BYTBldY+5Yepab+486DjlhhQx8tl0+Qp1
+         8ez931smzEV2js+RM2i3Xu901NaQWHr0QeKbHiJW3DdTVB1aGsClpbxnITlHQXiOup7V
+         ANrTtNeNp1k+PcsqPFYZKBQUd0I81WUjkPrf5yP5dCOcz4JNRAawv9Kz6hNDRVnhhvmz
+         jf2D6ee2TjOWYbrrvayr0iv+A0+1rHsHm3p3i+/H8iWC2CTy+1UpHoYiZcvj5MiRf+oB
+         +JDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMRNvqwNpj+Zy+HjdWLh4jzTsd4jufBdGnsv23SfOJ1e8DYfbTUz3OaJ+1sCVb7ltCjWnGXiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoZf/V8mSf8Vw8Xv+LR173HYb/l+z9u5NJT2xQ52jkgOhYOll/
+	cxMwjmf1MVQ/Q7pbMfVmFiPLIxK2A2GrGn9rVfE9jhFmVqc6IL94oTKGI52gBhobZQacaDFW9TX
+	6uhBrLq8mL2UL4GcDTe7BdO3qAAYuDTRM4EvZpBan
+X-Gm-Gg: ASbGncs0a8R5A5K6eNuQmk0zuKAIUOIUGRJeepXB0LWGpeicuBr6N6h80z3DAX6itDR
+	IgWicQQqX7+5x6OWr5b27LhXhTR0YU8MsuQ5bjJw3BRe20pVJP1ylc25Bl95X+kIEczRyJDSYOI
+	u+lsCzSw3Olx+elVqc/mYSjWnk+Ew1i5NhbUNmwRoD3Gsjv+iW3ag3dbI7fIx6+uiq0dUJcedR9
+	LVXnj71L3NyQQp8WP7VN4FsJ+rZythA0NBRO30tZPHyXWaLwpC9wtRh+SfT
+X-Google-Smtp-Source: AGHT+IHx9zBMrTSRLei+eORgEhsgaG7T57bJ8DPsQIWX+vlhYmqpEpXN6LNtFzrWxdKz3Y/JdWfsPByW1Oxxztn/rTA=
+X-Received: by 2002:a05:622a:1455:b0:4ec:fc63:2587 with SMTP id
+ d75a77b69052e-4eda4f9a601mr97528851cf.50.1762789352746; Mon, 10 Nov 2025
+ 07:42:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4D:EE_|IA1PR12MB6185:EE_
-X-MS-Office365-Filtering-Correlation-Id: 289b654b-bc2d-4781-90e0-08de206f1640
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7jE6HbSE6ZO8RYEXc6kvgGi3ud8ZMUTsrvN8HkDrrWl9+4H2KQS9H1+K4ipp?=
- =?us-ascii?Q?S2F/RMejdduypOh6kVIcn9u53BbHFVUCiec7v4yvcqGhgpE4p+rhd2vwKC4x?=
- =?us-ascii?Q?+OyS1Ecglz17aNU2qaz/9SFHM0bvvgUNcUH0we9s7/YHabQFoKkWSrawPzpO?=
- =?us-ascii?Q?WVsYKhunMjcSL9ZiSa76eZAzH+NibBhKBpOpfWrrMSW6CoGcg8u2Y7aTBPA+?=
- =?us-ascii?Q?7qfDU8L+NoRFLqqabHizwBPNHWetTKONDtSpD0cF1dU0YChBy3PJZUhpVuEc?=
- =?us-ascii?Q?J/XuvkCjgxamHpGuAIiYUkrQ7Nd0PwCcB5+3K6IICBIrPrwsISq7LEEYqTOm?=
- =?us-ascii?Q?hvqYSoWzlQSv/iOypM3AVHOf5BD1XgBdUlwD3lrFH8EHxIs0KJOPJcAhkJj4?=
- =?us-ascii?Q?J4ncO8DFYRRaPYqX67trlfaISC0qkZzXFVMXuRhzonQUflAHpAQrbpM1BVVh?=
- =?us-ascii?Q?cmhyS1uIcLpO0jM1kV+W+l4KKJsdjn9OPf733KjGCRTmL9fSoIAi8tnc51Qu?=
- =?us-ascii?Q?HWdHI9mdR+IIG6FJFYWQv/QK6pJs25SBa7cO0wkuSOmW5TPONY45GkA1RAEX?=
- =?us-ascii?Q?O/31VSwCwqEime4gG4mF2ui65pcfE9Sa5CS1iYh23hXOBuqrHr7qGdKh2tsZ?=
- =?us-ascii?Q?L4MSk0HdG/PQY8lwbMqpdCgjrULsDfiNnyFbOE2CmIuHbRH6gxwyefp9i3n8?=
- =?us-ascii?Q?MxuVGC18w0XugkApopVUB3Vi8fwRcpf62OOAMw7zd0fgocb/oq+iKmLhtsgq?=
- =?us-ascii?Q?97ojcq2ehCvfhSg0Ki3WX6QOCVOJXNEKJ/SQ/Db2mgItYiaZem1MG0HaPkdF?=
- =?us-ascii?Q?eY3yuY27qYboHzQC7dnbZ/LVZc0jiVJaWK4sIP6VzVC+0EFmw89Aqair/ZNQ?=
- =?us-ascii?Q?3ZUt1EPmn4RFRg3HYhBk2BE4KvevHAJ0KANtbAwkppPl9RV8xhna4YnVmiUh?=
- =?us-ascii?Q?wUZFhGGp/th+Klp+6bLZz2zoOFCqrHqxTLqH64TiX/2n7M+pUcBbVotv7ulE?=
- =?us-ascii?Q?qDf75QyZVfz5ejdO3sxpawwZsyWrFTlw9HC+BkmcRH5bZs9xGyy+o11uocSX?=
- =?us-ascii?Q?Pmaxv9nQQiJcos6fdS7cdYqqP914U7lCTdXjRQgRg0vtHF0IfkzTXYwz+tZl?=
- =?us-ascii?Q?dVi5QlXUh5QrlCwcjZm1GUD7FUruwgnOh+Hcjfh2SsJf7tiK/0G3QDOeMZuw?=
- =?us-ascii?Q?MX9wJyfqNPeuzcwF9ThQfwWGwQhTimf1hygYZQv/pKU57UJhkvg6+wsTHtoK?=
- =?us-ascii?Q?KVFmPTTafbioUNSFr8axRAn+pDW5xa1uK1B23e5UIUHNwXt/1JxuQCQtHetN?=
- =?us-ascii?Q?S4jggv3R2iv9Q4Ql8+50Wa41i388Hjt6zgfYDa6iUMuF6t2zz23blz0iR2ev?=
- =?us-ascii?Q?l6Tp/eT2mrIatwjpW+V9Cku/KLDPdtgDNRqonucDA199oPDLj1rejbi2wlo9?=
- =?us-ascii?Q?DyXtD53zdBLAaNZ/QlcLuBOGrUJfzjtJDob9eu2gt2auvkWKUVxgmhUyq3yP?=
- =?us-ascii?Q?Mv4ZdSih+TNk+M8ACq6rmq/Jt/odVCYSXIFVMMFit4vUQnR9/Ho5Ay4CKfDq?=
- =?us-ascii?Q?WlLHNskDJyo1kgbFCzY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 15:37:41.9326
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 289b654b-bc2d-4781-90e0-08de206f1640
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002BA4D.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6185
+References: <20251106111054.3288127-1-edumazet@google.com> <CADvbK_fZABufnbF9vsS_GZ6OgYfKb7nT3NDdT+iO-C7Rw9K6mw@mail.gmail.com>
+In-Reply-To: <CADvbK_fZABufnbF9vsS_GZ6OgYfKb7nT3NDdT+iO-C7Rw9K6mw@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 10 Nov 2025 07:42:21 -0800
+X-Gm-Features: AWmQ_bnb48HN6WImp65bknk8b5x0uUR-FlpYmRF5IrKzW5EXrIowz5EZyy5EOvg
+Message-ID: <CANn89iLUiYteUoLV_AiZeW8rJe5ns5uu5gmQHbjmdQPD3sZy5A@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
+To: Xin Long <lucien.xin@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com, 
+	Daniel Borkmann <daniel@iogearbox.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alejandro Lucero <alucerop@amd.com>
+On Mon, Nov 10, 2025 at 7:36=E2=80=AFAM Xin Long <lucien.xin@gmail.com> wro=
+te:
+>
+> On Thu, Nov 6, 2025 at 6:10=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > syzbot reported a possible shift-out-of-bounds [1]
+> >
+> > Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
+> >
+> > It is unclear if some sctp users are setting very large rto_alpha
+> > and/or rto_beta.
+> >
+> > In order to prevent user regression, perform the test at run time.
+> >
+> > Also add READ_ONCE() annotations as sysctl values can change under us.
+> >
+> > [1]
+> >
+> > UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
+> > shift exponent 64 is too large for 32-bit type 'unsigned int'
+> > CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREE=
+MPT(full)
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS=
+ Google 10/02/2025
+> > Call Trace:
+> >  <TASK>
+> >   __dump_stack lib/dump_stack.c:94 [inline]
+> >   dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+> >   ubsan_epilogue lib/ubsan.c:233 [inline]
+> >   __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
+> >   sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
+> >   sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
+> >   sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
+> >   sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
+> >   sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
+> >
+> > Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_=
+beta knobs")
+> > Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GA=
+E@google.com/T/#u
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > Cc: Daniel Borkmann <daniel@iogearbox.net>
+> > ---
+> >  net/sctp/transport.c | 13 +++++++++----
+> >  1 file changed, 9 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+> > index 0d48c61fe6adefc1a9c56ca1b8ab00072825d9e6..0c56d9673cc137e3f1a6431=
+1e79bd41db2cb1282 100644
+> > --- a/net/sctp/transport.c
+> > +++ b/net/sctp/transport.c
+> > @@ -486,6 +486,7 @@ void sctp_transport_update_rto(struct sctp_transpor=
+t *tp, __u32 rtt)
+> >
+> >         if (tp->rttvar || tp->srtt) {
+> >                 struct net *net =3D tp->asoc->base.net;
+> > +               unsigned int rto_beta, rto_alpha;
+> >                 /* 6.3.1 C3) When a new RTT measurement R' is made, set
+> >                  * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT=
+ - R'|
+> >                  * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
+> > @@ -497,10 +498,14 @@ void sctp_transport_update_rto(struct sctp_transp=
+ort *tp, __u32 rtt)
+> >                  * For example, assuming the default value of RTO.Alpha=
+ of
+> >                  * 1/8, rto_alpha would be expressed as 3.
+> >                  */
+> > -               tp->rttvar =3D tp->rttvar - (tp->rttvar >> net->sctp.rt=
+o_beta)
+> > -                       + (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >=
+> net->sctp.rto_beta);
+> > -               tp->srtt =3D tp->srtt - (tp->srtt >> net->sctp.rto_alph=
+a)
+> > -                       + (rtt >> net->sctp.rto_alpha);
+> > +               rto_beta =3D READ_ONCE(net->sctp.rto_beta);
+> > +               if (rto_beta < 32)
+> Wouldn't be better to do:
+>
+> rto_beta =3D min(READ_ONCE(net->sctp.rto_beta), 31U); ?
+>
+> so that when rto_alpha >=3D 32, the update will not be skipped entirely.
 
-Region creation based on Type3 devices is triggered from user space
-allowing memory combination through interleaving.
+Skipping or not the update is a matter of taste really.
 
-In preparation for kernel driven region creation, that is Type2 drivers
-triggering region creation backed with its advertised CXL memory, factor
-out a common helper from the user-sysfs region setup for interleave ways.
+If someone was setting 30 or more, it was expecting tp->rttvar and
+tp->srtt to not change at all,
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Zhi Wang <zhiw@nvidia.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
----
- drivers/cxl/core/region.c | 43 ++++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 5dc309cf54ce..1d26a842c99d 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -491,22 +491,14 @@ static ssize_t interleave_ways_show(struct device *dev,
- 
- static const struct attribute_group *get_cxl_region_target_group(void);
- 
--static ssize_t interleave_ways_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t len)
-+static int set_interleave_ways(struct cxl_region *cxlr, int val)
- {
--	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(dev->parent);
-+	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
- 	struct cxl_decoder *cxld = &cxlrd->cxlsd.cxld;
--	struct cxl_region *cxlr = to_cxl_region(dev);
- 	struct cxl_region_params *p = &cxlr->params;
--	unsigned int val, save;
--	int rc;
-+	int save, rc;
- 	u8 iw;
- 
--	rc = kstrtouint(buf, 0, &val);
--	if (rc)
--		return rc;
--
- 	rc = ways_to_eiw(val, &iw);
- 	if (rc)
- 		return rc;
-@@ -521,9 +513,7 @@ static ssize_t interleave_ways_store(struct device *dev,
- 		return -EINVAL;
- 	}
- 
--	ACQUIRE(rwsem_write_kill, rwsem)(&cxl_rwsem.region);
--	if ((rc = ACQUIRE_ERR(rwsem_write_kill, &rwsem)))
--		return rc;
-+	lockdep_assert_held_write(&cxl_rwsem.region);
- 
- 	if (p->state >= CXL_CONFIG_INTERLEAVE_ACTIVE)
- 		return -EBUSY;
-@@ -531,10 +521,31 @@ static ssize_t interleave_ways_store(struct device *dev,
- 	save = p->interleave_ways;
- 	p->interleave_ways = val;
- 	rc = sysfs_update_group(&cxlr->dev.kobj, get_cxl_region_target_group());
--	if (rc) {
-+	if (rc)
- 		p->interleave_ways = save;
-+
-+	return rc;
-+}
-+
-+static ssize_t interleave_ways_store(struct device *dev,
-+				     struct device_attribute *attr,
-+				     const char *buf, size_t len)
-+{
-+	struct cxl_region *cxlr = to_cxl_region(dev);
-+	unsigned int val;
-+	int rc;
-+
-+	rc = kstrtouint(buf, 0, &val);
-+	if (rc)
-+		return rc;
-+
-+	ACQUIRE(rwsem_write_kill, rwsem)(&cxl_rwsem.region);
-+	if ((rc = ACQUIRE_ERR(rwsem_write_kill, &rwsem)))
-+		return rc;
-+
-+	rc = set_interleave_ways(cxlr, val);
-+	if (rc)
- 		return rc;
--	}
- 
- 	return len;
- }
--- 
-2.34.1
-
+>
+> > +                       tp->rttvar =3D tp->rttvar - (tp->rttvar >> rto_=
+beta)
+> > +                               + (((__u32)abs((__s64)tp->srtt - (__s64=
+)rtt)) >> rto_beta);
+> > +               rto_alpha =3D READ_ONCE(net->sctp.rto_alpha);
+> > +               if (rto_alpha < 32)
+> > +                       tp->srtt =3D tp->srtt - (tp->srtt >> rto_alpha)
+> > +                               + (rtt >> rto_alpha);
+> >         } else {
+> >                 /* 6.3.1 C2) When the first RTT measurement R is made, =
+set
+> >                  * SRTT <- R, RTTVAR <- R/2.
+> > --
+> > 2.51.2.1026.g39e6a42477-goog
+> >
