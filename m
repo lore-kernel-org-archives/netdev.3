@@ -1,110 +1,124 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D7E301707;
-	Mon, 10 Nov 2025 09:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379501DF72C;
+	Mon, 10 Nov 2025 09:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766715; cv=none; b=JRGX/RV3fWYJsUqFFJpgq2eXF8GmlOUcVuCOklPWABtCDvHsUDsaU1/UYp+aLKywyj01qB+5ESd0tN6t7qVXytiO++FCY7GTb8omZysoEe9DQ0oaklnwz+vjLWXVOC8DfpKcuWhMHb8Vs69ZRHq2/bjtUyN3tur+XKRS7idPvQI=
+	t=1762766807; cv=none; b=oKVhH7hlgnt8k7PVUyuNIwOxalSAofSADfz0bQZ63CMjaNy8AXlEnjhR3Nc1oQnFfQrC71yB0pQCfGlfAFNaFQNC7FmZhv/hAcNPEQ10qkhEnC3pE8xLIRLqUIhq04IsyaReMg8dVvjREzCgUBlG5YOsNId/WiUjA4nbWexMhWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766715; c=relaxed/simple;
-	bh=ULs1DEZEigOyIVU7AoEOuGOQZb2JvmSdJPOMo+K/7wM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RxIkvQ8AJFO6/c3VDmTL6EYP/JhxuYWj7agVU3oVvxGIdJSo2PfePIhKsytSO45EeKqp/YMepuZ4rJ6H9w599c7YBLGhj/ikKVVFk51p30IKIwHiyIy1QPW3JRzGz6e6+lOPT/wDiQJvtBpv+aBUxxz4CYryA/J5cjh4nudVjd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wArlXWyS; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1762766807; c=relaxed/simple;
+	bh=b0IFXuV/9PpQKpNg/c6/i5YuNUFwarm8QI9JGvletFs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jxcACXhxRhfxwZPhw408Py4ly1CuLV8i72xNlvTeViZSLFfndqe3UCReAH9Icms4TsUaLAN09yebxl3w/Tyoi+gXBYI9fSOL5/+zwW69BEuAAvsgiqaJvB6KN+dZGvcbzvo/jymDE9/EHGRO8IM8ww9Ak/9U440T4Q3VB/0AlO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDMsKLsK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wArlXWyS"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E73211A19A8;
-	Mon, 10 Nov 2025 09:25:04 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AD0FA606F5;
-	Mon, 10 Nov 2025 09:25:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F29D2103718CB;
-	Mon, 10 Nov 2025 10:25:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762766703; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=B1QSpE6XJ9KVp8HlVH1jfxpje3rEVDSSIyeKjy0FtNU=;
-	b=wArlXWySXjAeHWfd6jjhnKWGB9Tj29IdT3i2QxHg7WaOTjgZc/TU75thgXa+p8Utw2a2XF
-	dqfWXnQFi3uNI7le29Du88tlFt/eXa6ShMXtg7lRq+q1Iv6F1IJT3cFcVfWkwZ4sy12Wot
-	bwJIfogrPd1Hd+0pOm8gtzJFjBV9TCrcAv+K38W3F1chWvZxwtZrEx3CXdO59NwZkyHXj3
-	b5r2IUfVQ+s7jj9ESrAk0mPS/i/BeOHFNLG8D2B0wmhg+nrOe1Gt16lQ8icpQYtygFj3hQ
-	nbYFYmoNSW7gSpKGlS8Se6CI0ndrD/nG13xDigJxvTEaW13wGy6zn/Huj8Qg0g==
-From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Mon, 10 Nov 2025 10:24:54 +0100
-Subject: [PATCH net-next v2 2/3] net: phy: dp83869: ensure FORCE_LINK_GOOD
- is cleared
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDMsKLsK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F06EC116B1;
+	Mon, 10 Nov 2025 09:26:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762766805;
+	bh=b0IFXuV/9PpQKpNg/c6/i5YuNUFwarm8QI9JGvletFs=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=XDMsKLsK+bVR9DeEuIXtyzRVuyhrICIVTSQIMVL07RtxAGM2Y8MnHEoMVJAQ8piaC
+	 ZgoHaLn52+YX/eIS4IDhqSxZJ0jcoiNuujVU08+zY9L3oG0mwVvRIF/h/oAeLIcXa7
+	 Oy5eQzv2EzYDCUYESJO4t0Fo8tJyNDMFfBnEl5wjYQZd+uo4uM5KSEAZbGWkECnCvR
+	 RQ7Q/5StUrhU7qDDazxIa/MV03yTX9WupBtWECFn+BpV09QaaBNXL6mB6W5jyTkQhM
+	 azn9iNXFi4uJbYEVeLrU+e34VFMFcGwS0rBF5LG9LyMg9JFTD/ft899JzkgQqKVqvp
+	 Zc47RZDbgZ2tg==
+Message-ID: <55a8a7f1-013e-4528-b4dd-b26ee24dbb6b@kernel.org>
+Date: Mon, 10 Nov 2025 10:26:40 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH 00/18] media: microchip-isc: Color correction and
+ histogram stats
+To: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Eugen Hristev <eugen.hristev@linaro.org>, Chas Williams
+ <3chas3@gmail.com>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Balakrishnan Sambath <balakrishnan.s@microchip.com>,
+ Hans Verkuil <hverkuil@kernel.org>, Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Daniel Scally <dan.scally+renesas@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
+Content-Language: en-US, nl
+In-Reply-To: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-sfp-1000basex-v2-2-dd5e8c1f5652@bootlin.com>
-References: <20251110-sfp-1000basex-v2-0-dd5e8c1f5652@bootlin.com>
-In-Reply-To: <20251110-sfp-1000basex-v2-0-dd5e8c1f5652@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Romain Gantois <romain.gantois@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
 
-The FORCE_LINK_GOOD bit in the PHY_CONTROL register forces the reported
-link status to 1 if the selected speed is 1Gbps.
+On 09/10/2025 17:52, Balamanikandan Gunasundar wrote:
+> Hi,
+> 
+> This patch series has a set of enhancements to the Microchip Image Sensor
+> Controller driver. The objective is to expand its image processing
+> capabilities and to improve the colors.
+> 
+> This series also introduces a new stats driver that exposes the histogram
+> data to userspace via v4l2 controls. This allows applications such as
+> libcamera to access real time image statistics for advanced image
+> processing like automatic exposure, white balance adjustments etc.
 
-According to the DP83869 PHY datasheet, this bit should default to 0 after
-a hardware reset. However, the opposite has been observed on some DP83869
-components.
+Note that bisect of this series failed: some patches seem to have dependencies
+on later patches, which is obviously wrong. Make sure you double check that
+for v2.
 
-As a consequence, a valid link will be reported in 1000Base-X operational
-modes, even if the autonegotiation process failed.
+The documentation also fails to build since there is no documentation for the
+new meta format, but I already commented on that.
 
-Make sure that the FORCE_LINK_GOOD bit is cleared during initial
-configuration.
+Regards,
 
-Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
----
- drivers/net/phy/dp83869.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+	Hans
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index 309bf608d630..143b75842fc7 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -89,6 +89,7 @@
- #define DP83869_STRAP_MIRROR_ENABLED           BIT(12)
- 
- /* PHYCTRL bits */
-+#define DP83869_FORCE_LINK_GOOD	BIT(10)
- #define DP83869_RX_FIFO_SHIFT	12
- #define DP83869_TX_FIFO_SHIFT	14
- 
-@@ -811,6 +812,15 @@ static int dp83869_config_init(struct phy_device *phydev)
- 	struct dp83869_private *dp83869 = phydev->priv;
- 	int ret, val;
- 
-+	/* The FORCE_LINK_GOOD bit in the PHYCTRL register should be
-+	 * unset after a hardware reset but it is not. make sure it is
-+	 * cleared so that the PHY can function properly.
-+	 */
-+	ret = phy_clear_bits(phydev, MII_DP83869_PHYCTRL,
-+			     DP83869_FORCE_LINK_GOOD);
-+	if (ret)
-+		return ret;
-+
- 	/* Force speed optimization for the PHY even if it strapped */
- 	ret = phy_modify(phydev, DP83869_CFG2, DP83869_DOWNSHIFT_EN,
- 			 DP83869_DOWNSHIFT_EN);
-
--- 
-2.51.2
+> 
+> Balakrishnan Sambath (11):
+>   media: microchip-isc: Enable GDC and CBC module flags for RGB formats
+>   media: microchip-isc: Improve histogram calculation with outlier
+>     rejection
+>   media: microchip-isc: Use channel averages for Grey World AWB
+>   media: microchip-isc: Add range based black level correction
+>   media: platform: microchip: Extend gamma table and control range
+>   media: platform: microchip: Add new histogram submodule
+>   media: microchip-isc: Register and unregister statistics device
+>   media: microchip-isc: Always enable histogram for all RAW formats
+>   media: microchip-isc: fix histogram state initialization order
+>   media: microchip-isc: decouple histogram cycling from AWB mode
+>   media: microchip-isc: enable userspace histogram statistics export
+> 
+> Balamanikandan Gunasundar (7):
+>   media: platform: microchip: set maximum resolution for sam9x7
+>   media: platform: microchip: Include DPC modules flags in pipeline
+>   media: microchip-isc: expose hue and saturation as v4l2 controls
+>   media: microchip-isc: Rename CBC to CBHS
+>   media: microchip-isc: Store histogram data of all channels
+>   media: videodev2.h, v4l2-ioctl: Add microchip statistics format
+>   media: microchip-isc: expose color correction registers as v4l2
+>     controls
+> 
+>  drivers/media/platform/microchip/Kconfig      |   2 +
+>  drivers/media/platform/microchip/Makefile     |   2 +-
+>  .../platform/microchip/microchip-isc-base.c   | 373 ++++++++++--
+>  .../platform/microchip/microchip-isc-regs.h   |   3 +
+>  .../platform/microchip/microchip-isc-stats.c  | 549 ++++++++++++++++++
+>  .../media/platform/microchip/microchip-isc.h  |  44 +-
+>  .../microchip/microchip-sama5d2-isc.c         |   2 +-
+>  .../microchip/microchip-sama7g5-isc.c         |  73 ++-
+>  drivers/media/v4l2-core/v4l2-ioctl.c          |   1 +
+>  include/linux/atmel-isc-media.h               |  13 +
+>  include/uapi/linux/videodev2.h                |   3 +
+>  11 files changed, 1001 insertions(+), 64 deletions(-)
+>  create mode 100644 drivers/media/platform/microchip/microchip-isc-stats.c
+> 
 
