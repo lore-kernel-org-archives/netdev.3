@@ -1,186 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEFC361DCC;
-	Tue, 11 Nov 2025 12:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E76A3A5E6D
+	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 12:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762864098; cv=none; b=tQCzpeGYSxq52vkT2PBfpLvW0J/qkzH8pVr1F1B2RNpZXoZuvgmjj92brH18SlCyY/qhFvo7ZNecxPl0k6AR2Q9R1+HVkfIsGJuNR+PX1OGUiFg5tkTIIFo2emzWQigFfoYWXS7BveSvzVztYnhqiVuMCA/xexnJESe0L59GAac=
+	t=1762864399; cv=none; b=V7z+UXqI05lAxq0dQlphiRHTfaSM2ZsaQ7Du7m/vqsayaU1Xdy8arEIEDZaS/8N5e2t3zhOKj9bvYY2j9Gron86YvRmDZJzvEXozkGjUKMFk6c7/NV2AFuzqifSIjfjV7l22PON/UIKovZ7fj/+1q/NCTg10YEcP4P/Mu4qTmGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762864098; c=relaxed/simple;
-	bh=OtFs4nYXEH1ThWKykhpKfwgYG7osOn2qi/Z49bIrWUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bowNWiOjJhq+gQkmnAlgGKjlhyo81omPuMooKC4spaOIfs2w8wmDgM5K9tuiZr2onDxYAbjMnkAafQi2PQNEknUe/07gkYaxdcouRBZFOiI5du0wVN9TtI0UdP/WCGeXyFA7VG9oMaQT5esL2FAIaqluKxH8zMC1hxdqcb7qgHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BYVFL/wa; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1762864399; c=relaxed/simple;
+	bh=iOWBNEkhaYulz60fd9nqYbYaUth2lUkhdRV+MRZ+GSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G1KIRlrPxORwrBmIsqrk/v8whHZyMbV76Qukhcc97Phsh2ltK3zxq9p5Z2CGPGoiS/Nq2jpi6iWte8bq23CiqjdsQ+0FeLbZBlNveHWbup1rUe6VwFhOSQF/AMYI7ea4AYBz/NhIOJUhpvy9p7YLHsB8Ij7B5FGae17udUJiBn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HaT6A4Kb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qMSKEmH5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BYVFL/wa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762864096; x=1794400096;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=OtFs4nYXEH1ThWKykhpKfwgYG7osOn2qi/Z49bIrWUw=;
-  b=BYVFL/waIEA8DYye86BSPQEDB9l2CJ+IICWo51yTstEGSP4HUzXiH1fY
-   KnvkL4MZ70TyyrJeESLb+5Orcm8pxk1h0eyMHLjXreWmYeu+D4TJRYInm
-   +k8Yh/P4ZhyXfqOMws3ckgjny/7sZS4mfxTIAn4CkN1722UTT0GJCeTUH
-   DsEQ6xMJq9uqcS/cTW2T5dMZnJJojPjrtuuShoDunOqaK5zOuqcX58TGJ
-   lXtyKKU1CwGO1oi4C3ckk7yBlVnctVdFH+u9hLbtAXwx+xuwfOo2MIz29
-   jc5wUM32tfXbQBlBgkhEPv5YnojKF5LM/AyXCtUFf+U95xoahPHCAwNCH
-   A==;
-X-CSE-ConnectionGUID: HOShL0rVTROT+/juwYNR/g==
-X-CSE-MsgGUID: 6nLtbYHKQdObDHEGzxpnxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="75607210"
-X-IronPort-AV: E=Sophos;i="6.19,296,1754982000"; 
-   d="scan'208";a="75607210"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 04:28:13 -0800
-X-CSE-ConnectionGUID: tMUh47YlR0iztmLUL7ZOeg==
-X-CSE-MsgGUID: n8CanOcvRy2xvoMOm6Z2iA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,296,1754982000"; 
-   d="scan'208";a="188592937"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa007.fm.intel.com with ESMTP; 11 Nov 2025 04:28:05 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 5E57DAB; Tue, 11 Nov 2025 13:27:38 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Corey Minyard <corey@minyard.net>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Calvin Owens <calvin@wbinvd.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Sagi Maimon <maimon.sagi@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	amd-gfx@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	linux-mmc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-pci@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	ceph-devel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Gustavo Padovan <gustavo@padovan.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Satish Kharat <satishkh@cisco.com>,
-	Sesidhar Baddela <sebaddel@cisco.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 21/21] tracing: Switch to use %ptSp
-Date: Tue, 11 Nov 2025 13:20:21 +0100
-Message-ID: <20251111122735.880607-22-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251111122735.880607-1-andriy.shevchenko@linux.intel.com>
-References: <20251111122735.880607-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HaT6A4Kb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qMSKEmH5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762864396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEMqTiIls3GK+BcBgDdLsrWg6wcMid5JirlC8x4cCJQ=;
+	b=HaT6A4KbAtUPsaV3KjuB6fdoIR80uKtD7yDGnJjr6MhJDzPxajOECkbaprtSAD/H5hn8pv
+	K3BTCvd87F8qBpvTs8rsvyI8m6630wqK98zjKcFXfO3nAhq1D4fd2i/8nuqiyd+0PGU5pv
+	bAIwJf/bqfiuPYCOM5oJWUT14/9sHKc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-574-uJhHqeYgPBKj2JncLGQiig-1; Tue, 11 Nov 2025 07:33:15 -0500
+X-MC-Unique: uJhHqeYgPBKj2JncLGQiig-1
+X-Mimecast-MFC-AGG-ID: uJhHqeYgPBKj2JncLGQiig_1762864394
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42b3d7c1377so1192808f8f.2
+        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 04:33:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1762864394; x=1763469194; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TEMqTiIls3GK+BcBgDdLsrWg6wcMid5JirlC8x4cCJQ=;
+        b=qMSKEmH5zh3ctqKDwnt6cCK2+TpyDorwqW+f8NzcPEqfJ4MLx0ndMhrwyL7zZLp1zt
+         16zSbtXJ0s2I2KcT6CiFZNzRLm2KJOFSuj0BHYqi51ODGXmNF3qxzivmpGQrYbKbCuES
+         3wJy/skHPhdtEAk4Kw7EkNtROAvRgIlLxDZpD5GZURWN6EUGEKEV5npVlLk0/h10kjq4
+         BeN+znXsUmWfOEDrJK2NmRGjJ9sa+3EqHdM5feeSgyzjeHSlfq+arBRMCZVBZdD0ZhR2
+         VFnnE+6qwQewC7Ta9i81j70XtYWHLJdQ0V8GKCQNzF4+t+HH+780qPkFILuFjgN/WSc6
+         QDQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762864394; x=1763469194;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TEMqTiIls3GK+BcBgDdLsrWg6wcMid5JirlC8x4cCJQ=;
+        b=C/YXv2IPPn4sGl8Ss//OflbZPmXXQQgx5WQgzrqCjCD4pTC1mW/HQMY9TkUVIdp4F9
+         qKJfFaZoPNSe8wCSFDCd412mknFPqNpC/g+KQ3tXVqAVpHpZ97Wx8S2iGs5ecW7/ZDEP
+         inop7mgcYxIOWrf4gSTyAfuoXLEf8nIs+kw/fDxuhUiQxDxrjFZ2f/g5jpvrI+Sg6IFt
+         Q3X03/v+e4pvF/PY1pztyJF5pGpCguuYllouU2AdrTIV3qjdoXB30k4zJ1A98LhXL3T0
+         AXVu+E5dwN/dshmw1jbH2ZHogvmp0MfY2ZNdZcTpSXfHrx6mk3Ub7sirb7p4bkijViWh
+         rNCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKOEDHF9uBhA0XhLgUM67Hoqn9ozf/zvyQ4+A/B1sA1vOxx33B5rl6S8p8ZS4Qwd1NhgisgHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkGTVhHZT2IxUOgfH9epCBh22xfgBPutFdKUJk23c3/dW11oYu
+	vZ00Wy78l5hOFh7i+JbrmwjJY1aR8pGghRC3WYw1+4JY/bE6IzpSQf9GJD0JkBQT1YY7cp8j+US
+	Jd3xnFHPGHUW6vOPSkyC8wjGQkFFFQIE5boJTwFbeBNu2kea6islk5OUdrA==
+X-Gm-Gg: ASbGnct+FqoYiJMQv4m80khsvmdq1yLN4xWf04rOuiYrtGInZJM0QrFHGvcG07J/XQO
+	HuwAd/LM5IMdbWu3RML/kYtDSl53Vfo2NuEtDDqpCxuohl9pkSmnHudHL2LpYiSy2qAdSWpJRqp
+	XcFCyGODKvcfFKJiIs1qGYK23R2M4LnxFx7ZNiZHw3x83ko6gAdz5rK2I8TJDO4LUulOupaUxya
+	/6ygfq/ODKrQrc9JzoH1f0K4vfFkB/OpaLevey/soGhGDgijn4NxzDa4cLKuVNtm1YQpTsNNZp5
+	diVy7ZPcQszsdY9ZDzyaQaUie9aQZ9VMENWfaOWsJ8irLuTsrD9QGk5rdHGoNPEBpkMuNyZd6Pf
+	e+A==
+X-Received: by 2002:a5d:5f53:0:b0:42b:32c3:3949 with SMTP id ffacd0b85a97d-42b32c341e4mr8571487f8f.31.1762864393733;
+        Tue, 11 Nov 2025 04:33:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEogtUOY4yTdf1DuIqascBGW9c45+fo19oaNrpbIqMX41Hc32xWFtKascZRxunxinjoalWo2A==
+X-Received: by 2002:a5d:5f53:0:b0:42b:32c3:3949 with SMTP id ffacd0b85a97d-42b32c341e4mr8571452f8f.31.1762864393278;
+        Tue, 11 Nov 2025 04:33:13 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.55])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac6794f6esm31385653f8f.41.2025.11.11.04.33.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Nov 2025 04:33:12 -0800 (PST)
+Message-ID: <d19c7bea-9b4d-4f00-a6bc-35247011e788@redhat.com>
+Date: Tue, 11 Nov 2025 13:33:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 00/12] selftests/vsock: refactor and improve
+ vmtest infrastructure
+To: Bobby Eshleman <bobbyeshleman@gmail.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
+References: <20251108-vsock-selftests-fixes-and-improvements-v4-0-d5e8d6c87289@meta.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251108-vsock-selftests-fixes-and-improvements-v4-0-d5e8d6c87289@meta.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Use %ptSp instead of open coded variants to print content of
-struct timespec64 in human readable format.
+On 11/8/25 5:00 PM, Bobby Eshleman wrote:
+> This patch series refactors the vsock selftest VM infrastructure to
+> improve test run times, improve logging, and prepare for future tests
+> which make heavy usage of these refactored functions and have new
+> requirements such as simultaneous QEMU processes.
+> 
+> These patches were broken off from this prior series:
+> https://lore.kernel.org/all/20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com/
+> 
+> To: Stefano Garzarella <sgarzare@redhat.com>
+> To: Shuah Khan <shuah@kernel.org>
+> Cc: virtualization@lists.linux.dev
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Simon Horman <horms@kernel.org>
+> 
+> Changes in v4:
+> - fix messed up rebase (wrt check_result() and shared_vm_test() patches)
+> - more consistent variable quotes style
+> - use associative array for pidfiles, remove after terminate
+> - Link to v3: https://lore.kernel.org/r/20251106-vsock-selftests-fixes-and-improvements-v3-0-519372e8a07b@meta.com
+> 
+> Changes in v3:
+> - see per-patch changes
+> - Link to v2: https://lore.kernel.org/all/20251104-vsock-selftests-fixes-and-improvements-v2-0-ca2070fd1601@meta.com
+> 
+> Changes in v2:
+> - remove "Fixes" for some patches because they do not fix bugs in
+>   kselftest runs (some fix bugs only when using bash args that kselftest
+>   does not use or otherwise prepare functions for new usage)
+> - broke out one fixes patch for "net"
+> - per-patch changes
+> - add patch for shellcheck declaration to disable false positives
+> - Link to v1: https://lore.kernel.org/r/20251022-vsock-selftests-fixes-and-improvements-v1-0-edeb179d6463@meta.com
 
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- kernel/trace/trace_output.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Series LGTM, but let's wait a little bit more for explicit ack from Stefano.
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index ebbab3e9622b..cc2d3306bb60 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -1490,12 +1490,12 @@ trace_hwlat_print(struct trace_iterator *iter, int flags,
- 
- 	trace_assign_type(field, entry);
- 
--	trace_seq_printf(s, "#%-5u inner/outer(us): %4llu/%-5llu ts:%lld.%09ld count:%d",
-+	trace_seq_printf(s, "#%-5u inner/outer(us): %4llu/%-5llu ts:%ptSp count:%d",
- 			 field->seqnum,
- 			 field->duration,
- 			 field->outer_duration,
--			 (long long)field->timestamp.tv_sec,
--			 field->timestamp.tv_nsec, field->count);
-+			 &field->timestamp,
-+			 field->count);
- 
- 	if (field->nmi_count) {
- 		/*
--- 
-2.50.1
+Thanks,
+
+Paolo
 
