@@ -1,97 +1,104 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0E3570BF
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 10:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB55C3587DD
+	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 10:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762858483; cv=none; b=kAezOToh93NtEzcXwa4lBpyOECsw+4Pb2Fkbdu38rEqCtDtUm8tYjS0CPtn6kgwLc8a7kH5aPULAH/XgMbV6ONww5Tb75hrFMfIf5m21UiJxkspPwgpUrpDx7yV1hh8bSL7Mm7kkTJayCutmFr9hFszpMr04KTSzdN5QujEOlB0=
+	t=1762858636; cv=none; b=XFi3M28VFsexEki1xCQ14a66AntwLOjHT4ADpf9e5wSw2sUgOTFKivm+NtLLfNGsU37L2h1l5JOD7OkIlYrfuqeBnI0C3lQ1g5nDyX5nxSa2CU9sYO9ZfDwrKpG0YUpLlAFnsnv/jkOto6PVgBezW4F4F//9MD9NAbRTYBdKodo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762858483; c=relaxed/simple;
-	bh=uX2FRXbwwZCCv1tYbHwS7dtnDr3CH51sdbhNp9wWUD8=;
+	s=arc-20240116; t=1762858636; c=relaxed/simple;
+	bh=0qIKVWddtsPV5G/8hROLCcnDFjecC5eN+g5hMbRRlOw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rc4CgINp++1UThzQhgBol6CAM6BZF46VXtsDzmVwwh8MkajhDCC/7yJWRkJdDl9S+5lDsHkJdbgPWT0Bo7Ta3UhCxSuKDPWuhlFSoTLOO+4NcwHL0+DZoCmmErd28kikLg5qUbbWFFk4nPijLofLWBu/PuyGolFrK2kcJEhbdZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VZE9KAt0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q+UnbB4E; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQlTYVAPJ+cfCd36smfOk2+2sxBhb7NY9pSbxoNXEE3JV1PMmG/C2UCcuXzIT+X94b+KGOHcmsKy9glnelKjN7Q3kxF3dpinNbFM3/Vd2jF3zLBOEFpFmzfVsFsiv8vF3+PCPkF4LP1vdz38k0++89wYWIkqVcFbP2SGhQU6yF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MvCFFVYW; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=P3QkYLWD; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=AZ504nQQ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=33GaccVM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VZE9KAt0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q+UnbB4E"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AB7k85k1583025
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 10:54:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=bjzJGvDc5zRS1OfTZQSifCpq
-	YpVSEVlEOhF0L9KjMqA=; b=VZE9KAt0/uqTpHpUQlsHtUrGzV2Xaiq2acFdXg9B
-	0Oldk1XNUX+M1FOafQpV5D6QJ3w7vkE3cuvA4gyK0ZaWgcnfsbRbLDqWuydJgUSD
-	TUwTc7wXaXDRna/cAp+lomRL8nBE5FmtQokVflqaVpOufdXbfX3PAdSl1BP+qeQ4
-	gInKNEuGfpxRdqveezwIyNsQoWkxys2ksQh2mu0KL8Gc2yIArPBAgMObTxnc8o6H
-	CUq29WUP4BccXcwNsc72oo7yfgMws46TrdCv0uPKImHQyhKAEr1EV5Kw8B2uT7Ct
-	Kr4hhxoosmF8uKkkZZhjGFGSDyBAEwM7XSB48SLrxiDYDQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ac11x0j3v-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 10:54:40 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ed6855557aso16431151cf.1
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 02:54:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762858479; x=1763463279; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bjzJGvDc5zRS1OfTZQSifCpqYpVSEVlEOhF0L9KjMqA=;
-        b=Q+UnbB4Ewj2XeOZajBcSkjqCzmU4qlhJZkbBDIcJ4bUqtniuBEJ9lOJMnNLIw92FAr
-         VtueYJeLxyh+pc8bDLDyaDK+o0dmbDLHAuf5P1ZoPGbJ5jyKGDOK3SD1pBjdwx9WqFk6
-         MTFM0K4nuJypr3CwvJkDQYUTCbIEV2OUMu2hP/gqL7Rq6Zhhk9UObdgYVq+HXe3+siNQ
-         1cvV0xulJiMPNQ4kX3PfssHujeO0lG+i3DnljgLjF9kqrCEHcLYPSYS3jZnJ67qwip60
-         DKz7kMsBU8b2o3/bYcI9RIwR0PLxuTaqJS/8wbbwnjFt0XTabzOhuG21j9I4ph0ew0LZ
-         qQWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762858479; x=1763463279;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bjzJGvDc5zRS1OfTZQSifCpqYpVSEVlEOhF0L9KjMqA=;
-        b=JsAV8Ad4p+WYOT5eZoKH8HFMdq/VYHPbW2prBSYKJ53S8kresY1nQq2GlMLLN/yfwy
-         s1XEESVfzOyb/W/pPtVESaJ5BvSCllxDiRKuDIxuTZ0RnkxaEZJwgY0rsN8NypYH1+VS
-         aHRKaLabm3iqadODDXwi97Sr/f7SDpEW9DvEfXv0ENDqIGiM/uEWYqMRDhtJ+42jZD//
-         0cpxFMg/Io2JlaejRr0+0m3vBl+lzEGonQMByrvFGPG8j1zGINtqoBdiLHh+iginXyaf
-         trNrFuEyZ7bQqJVKxaupYkrBVaMuZqfDmSmytvhiEdcf1xI7PwYEi45rfJN8BmadoRpA
-         deow==
-X-Forwarded-Encrypted: i=1; AJvYcCUkixdoo53yxUdO0plAEkq7N3W+OKXMOP3kCYtt/i0x6jsIu7U2AqSNgQxWujfdpEZO6fPIfwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgopRbIXFm+OUEBtexjR2HPDqWy5FSnb5tGYuM3INJ+V5PzBR6
-	+3l1bmmV96yViPczs53owyloczlhqChf/fsATEDD1dWp4CSojjBi7ld8rrQQfqoQg/Iyvpj1Cf5
-	MTmBUutDiFpYsvC+MJo3RB8TfYuB2oVIPeJunvDlXxQ3PLgnUXZoMwvJQyrs=
-X-Gm-Gg: ASbGncsKo4GZVRaF+bYn8R9xnjn2Kp3mZ2txQrprylswHNuxKD945inbkVwZslg9AUv
-	DE7+i+nKLSdewY4TCYfPi2qzxoQ2MULKSHi9pLXJUmruspD7driiB0rzNwJBdgM49rm6lRDNEge
-	8fDxkOzOkNkJWVV84Gskrm/WNmqWr1LrvOHWmRHpl4IT76DPg1owKhs3c96rHG+zXWDOT5Z976k
-	d9pqEnzJaWlZGwNR8FEn5w93/aekAiSLPRmgRMpj1zhMQn4Ftv0RRaL38knSnQ4CVuwthYU5MsY
-	qYVl3PU3kBxg3USrJ2AeEMzzE+jdj6QEAxMngJDwAhsRpfIDlYtB7hXq88DMC/0hVvpGpN7PAWP
-	E2yCAQMnii5pVT1CRy02xGZ9zeQO3buyUsvmjOcee0y2KCBMDy65M+Rwq9d7Wm0l/h8y2V2sjlh
-	9/8feXzqSRmLa8
-X-Received: by 2002:a05:622a:188e:b0:4e6:ded9:6b29 with SMTP id d75a77b69052e-4edcaaa3ea4mr32888441cf.3.1762858479352;
-        Tue, 11 Nov 2025 02:54:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGlDf0js8yY75bKRYmabDEAq0elXP2pI/iZd6RI90nqeKsx02RoVZL9jJHhTzE+f6l/HKMiwg==
-X-Received: by 2002:a05:622a:188e:b0:4e6:ded9:6b29 with SMTP id d75a77b69052e-4edcaaa3ea4mr32888181cf.3.1762858478897;
-        Tue, 11 Nov 2025 02:54:38 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a0b74b6sm4784539e87.64.2025.11.11.02.54.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 02:54:38 -0800 (PST)
-Date: Tue, 11 Nov 2025 12:54:36 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Manivannan Sadhasivam <mani@kernel.org>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] net: mhi: Add MHI IP_SW1, ETH0 and ETH1 interface
-Message-ID: <ljrvtl447meb34zfgzef3dw4oqfp6j3ixxwoooewxxvqsi23tz@fbg4zkpctddn>
-References: <20251106-vdev_next-20251106_eth-v5-0-bbc0f7ff3a68@quicinc.com>
- <20251106-vdev_next-20251106_eth-v5-2-bbc0f7ff3a68@quicinc.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MvCFFVYW";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="P3QkYLWD";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AZ504nQQ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="33GaccVM"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DCD701F6E6;
+	Tue, 11 Nov 2025 10:57:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762858631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tro3eQIQ3vyegRPUo7YaUGYg3RQMDIXBqzFb8qZf8+g=;
+	b=MvCFFVYWL5JqlsT/4QlFyaMQSfKKnBXdNafiZLkP6b4bDJO3s7Vrjp/EY45p+ON7HJkvpT
+	LdC1gJ3IquF49avQWhiqvR4JUnpy+3etN7fs+6xsdiGPrC2uYQSlexFZxQHUV4LIzhaxUB
+	mnAX0YE5SJBgjjCwkCZQNQdhsGIM0Ms=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762858631;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tro3eQIQ3vyegRPUo7YaUGYg3RQMDIXBqzFb8qZf8+g=;
+	b=P3QkYLWDDehOJBhUl5o4hYHBQthdkh6UovCAOmKZrTJ2YKlzS4EUJpj3TfJp6hG+M2wwqZ
+	rifSI0SkbBM1J9BQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762858629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tro3eQIQ3vyegRPUo7YaUGYg3RQMDIXBqzFb8qZf8+g=;
+	b=AZ504nQQ/qxjD7wBdRDwoPJZk2UIlqEBuK7dzo2R4HW0ZWZ91xo0ujXogFopSyCucSFt1N
+	KE1jhJ7m7aEhPa3FflYyccMsS0xt3HZuxN5zQ+Se3l8GrB7RUsxwyZI3qqDiPquF0b2RZe
+	DRY6QjoRn7onOsXLD1a17Wp1q62Jqaw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762858629;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tro3eQIQ3vyegRPUo7YaUGYg3RQMDIXBqzFb8qZf8+g=;
+	b=33GaccVMUKt+yQ5hHqE1wM3DyUhmohaF+FnnT0u2N/oQsU98WvkobEmrkUwEHsmiJkEPmm
+	1UkSw875MKOLqeCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BE43F14904;
+	Tue, 11 Nov 2025 10:57:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NwZlLoUWE2muSAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 11 Nov 2025 10:57:09 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 72622A28C8; Tue, 11 Nov 2025 11:57:01 +0100 (CET)
+Date: Tue, 11 Nov 2025 11:57:01 +0100
+From: Jan Kara <jack@suse.cz>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, David Howells <dhowells@redhat.com>, 
+	Tyler Hicks <code@tyhicks.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Carlos Maiolino <cem@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v5 02/17] filelock: rework the __break_lease API to use
+ flags
+Message-ID: <n3nwojvti3upo6a75ndqci476aoo2ceoo3mz2zvuc35pxkcf4d@tqoqua3jjr64>
+References: <20251105-dir-deleg-ro-v5-0-7ebc168a88ac@kernel.org>
+ <20251105-dir-deleg-ro-v5-2-7ebc168a88ac@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,63 +107,237 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106-vdev_next-20251106_eth-v5-2-bbc0f7ff3a68@quicinc.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDA4NSBTYWx0ZWRfXxG6qib3ruNgw
- jIWtmQ88d6m6I9PF5os+BKz4srMLEHPgfJW16Ro4d8N1Hdzrdjf6KGBgG3svW4Wb0dnj1yeHTYs
- NyuEdLRo2qSSc+/naAjxWaJtDlinlMt6tNiNELnjKSKx5p7gKqBMxwLUzyLR4yWkBpQEP5/3joT
- jfiwThUhgYXKXaQnGcMas5Z/ZPvYumfu/zPcn8CNqeSEU0sA42aI0T0OUwi1cV1g2leT761HCRr
- DCheXLQP5i4yqR3fv9/N+gjZ6a8VyrbQCjepjt5rUFdlU7qEYqW9EjP/0IBM4dGnAlFZPWVx4b1
- L311GrUj5IzaS9VWERU/xvExwpEd4vPsyfqM188cVbA0lcTNjaByO2d1BXglkAJxwXn5UZmMwhx
- PtOelJOhWaxVCvT8w/F6EXqoE2pt5g==
-X-Proofpoint-ORIG-GUID: tkIWbVgU4exdz5W3zOv0Hlhy6kj3UDxl
-X-Authority-Analysis: v=2.4 cv=L94QguT8 c=1 sm=1 tr=0 ts=691315f0 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=bC9JWDkrhmRD4PJ24AEA:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22
-X-Proofpoint-GUID: tkIWbVgU4exdz5W3zOv0Hlhy6kj3UDxl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_02,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- clxscore=1011 priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511110085
+In-Reply-To: <20251105-dir-deleg-ro-v5-2-7ebc168a88ac@kernel.org>
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[44];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[szeredi.hu,zeniv.linux.org.uk,kernel.org,suse.cz,oracle.com,gmail.com,samba.org,manguebit.org,microsoft.com,talpey.com,linuxfoundation.org,redhat.com,tyhicks.com,brown.name,chromium.org,google.com,davemloft.net,vger.kernel.org,lists.samba.org,lists.linux.dev];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL63fqwwx8ot6gmekemcs76f9d)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.30
+X-Spam-Level: 
 
-On Thu, Nov 06, 2025 at 06:58:09PM +0530, Vivek Pernamitta wrote:
-> From: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
+On Wed 05-11-25 11:53:48, Jeff Layton wrote:
+> Currently __break_lease takes both a type and an openmode. With the
+> addition of directory leases, that makes less sense. Declare a set of
+> LEASE_BREAK_* flags that can be used to control how lease breaks work
+> instead of requiring a type and an openmode.
 > 
-> Add IP_SW1, ETH0 and ETH1 network interfaces are required
-> for M-plane, Nefconf and S-plane component.
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-This is a very useful, totally uncryptic message.
+Looks good. Feel free to add:
 
-> 
-> Signed-off-by: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  drivers/net/mhi_net.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  fs/locks.c               | 29 +++++++++++++++++----------
+>  include/linux/filelock.h | 52 +++++++++++++++++++++++++++++++++++-------------
+>  2 files changed, 56 insertions(+), 25 deletions(-)
 > 
-> diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
-> index aeb2d67aeb238e520dbd2a83b35602a7e5144fa2..7fca7b1ec7b8250fca5b99ba6d1be470fed87995 100644
-> --- a/drivers/net/mhi_net.c
-> +++ b/drivers/net/mhi_net.c
-> @@ -449,6 +449,9 @@ static const struct mhi_device_id mhi_net_id_table[] = {
->  	{ .chan = "IP_HW0", .driver_data = (kernel_ulong_t)&mhi_hwip0 },
->  	/* Software data PATH (to modem CPU) */
->  	{ .chan = "IP_SW0", .driver_data = (kernel_ulong_t)&mhi_swip0 },
-> +	{ .chan = "IP_SW1", .driver_data = (kernel_ulong_t)&mhi_swip0 },
-> +	{ .chan = "IP_ETH0", .driver_data = (kernel_ulong_t)&mhi_eth0 },
-> +	{ .chan = "IP_ETH1", .driver_data = (kernel_ulong_t)&mhi_eth0 },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(mhi, mhi_net_id_table);
+> diff --git a/fs/locks.c b/fs/locks.c
+> index b33c327c21dcd49341fbeac47caeb72cdf7455db..3cdd84a0fbedc9bd1b47725a9cf963342aafbce9 100644
+> --- a/fs/locks.c
+> +++ b/fs/locks.c
+> @@ -1529,24 +1529,31 @@ any_leases_conflict(struct inode *inode, struct file_lease *breaker)
+>  /**
+>   *	__break_lease	-	revoke all outstanding leases on file
+>   *	@inode: the inode of the file to return
+> - *	@mode: O_RDONLY: break only write leases; O_WRONLY or O_RDWR:
+> - *	    break all leases
+> - *	@type: FL_LEASE: break leases and delegations; FL_DELEG: break
+> - *	    only delegations
+> + *	@flags: LEASE_BREAK_* flags
+>   *
+>   *	break_lease (inlined for speed) has checked there already is at least
+>   *	some kind of lock (maybe a lease) on this file.  Leases are broken on
+> - *	a call to open() or truncate().  This function can sleep unless you
+> - *	specified %O_NONBLOCK to your open().
+> + *	a call to open() or truncate().  This function can block waiting for the
+> + *	lease break unless you specify LEASE_BREAK_NONBLOCK.
+>   */
+> -int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+> +int __break_lease(struct inode *inode, unsigned int flags)
+>  {
+> -	int error = 0;
+> -	struct file_lock_context *ctx;
+>  	struct file_lease *new_fl, *fl, *tmp;
+> +	struct file_lock_context *ctx;
+>  	unsigned long break_time;
+> -	int want_write = (mode & O_ACCMODE) != O_RDONLY;
+> +	unsigned int type;
+>  	LIST_HEAD(dispose);
+> +	bool want_write = !(flags & LEASE_BREAK_OPEN_RDONLY);
+> +	int error = 0;
+> +
+> +	if (flags & LEASE_BREAK_LEASE)
+> +		type = FL_LEASE;
+> +	else if (flags & LEASE_BREAK_DELEG)
+> +		type = FL_DELEG;
+> +	else if (flags & LEASE_BREAK_LAYOUT)
+> +		type = FL_LAYOUT;
+> +	else
+> +		return -EINVAL;
+>  
+>  	new_fl = lease_alloc(NULL, type, want_write ? F_WRLCK : F_RDLCK);
+>  	if (IS_ERR(new_fl))
+> @@ -1595,7 +1602,7 @@ int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+>  	if (list_empty(&ctx->flc_lease))
+>  		goto out;
+>  
+> -	if (mode & O_NONBLOCK) {
+> +	if (flags & LEASE_BREAK_NONBLOCK) {
+>  		trace_break_lease_noblock(inode, new_fl);
+>  		error = -EWOULDBLOCK;
+>  		goto out;
+> diff --git a/include/linux/filelock.h b/include/linux/filelock.h
+> index c2ce8ba05d068b451ecf8f513b7e532819a29944..47da6aa28d8dc9122618d02c6608deda0f3c4d3e 100644
+> --- a/include/linux/filelock.h
+> +++ b/include/linux/filelock.h
+> @@ -212,7 +212,14 @@ int locks_lock_inode_wait(struct inode *inode, struct file_lock *fl);
+>  void locks_init_lease(struct file_lease *);
+>  void locks_free_lease(struct file_lease *fl);
+>  struct file_lease *locks_alloc_lease(void);
+> -int __break_lease(struct inode *inode, unsigned int flags, unsigned int type);
+> +
+> +#define LEASE_BREAK_LEASE		BIT(0)	// break leases and delegations
+> +#define LEASE_BREAK_DELEG		BIT(1)	// break delegations only
+> +#define LEASE_BREAK_LAYOUT		BIT(2)	// break layouts only
+> +#define LEASE_BREAK_NONBLOCK		BIT(3)	// non-blocking break
+> +#define LEASE_BREAK_OPEN_RDONLY		BIT(4)	// readonly open event
+> +
+> +int __break_lease(struct inode *inode, unsigned int flags);
+>  void lease_get_mtime(struct inode *, struct timespec64 *time);
+>  int generic_setlease(struct file *, int, struct file_lease **, void **priv);
+>  int kernel_setlease(struct file *, int, struct file_lease **, void **);
+> @@ -367,7 +374,7 @@ static inline int locks_lock_inode_wait(struct inode *inode, struct file_lock *f
+>  	return -ENOLCK;
+>  }
+>  
+> -static inline int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+> +static inline int __break_lease(struct inode *inode, unsigned int flags)
+>  {
+>  	return 0;
+>  }
+> @@ -428,6 +435,17 @@ static inline int locks_lock_file_wait(struct file *filp, struct file_lock *fl)
+>  }
+>  
+>  #ifdef CONFIG_FILE_LOCKING
+> +static inline unsigned int openmode_to_lease_flags(unsigned int mode)
+> +{
+> +	unsigned int flags = 0;
+> +
+> +	if ((mode & O_ACCMODE) == O_RDONLY)
+> +		flags |= LEASE_BREAK_OPEN_RDONLY;
+> +	if (mode & O_NONBLOCK)
+> +		flags |= LEASE_BREAK_NONBLOCK;
+> +	return flags;
+> +}
+> +
+>  static inline int break_lease(struct inode *inode, unsigned int mode)
+>  {
+>  	struct file_lock_context *flctx;
+> @@ -443,11 +461,11 @@ static inline int break_lease(struct inode *inode, unsigned int mode)
+>  		return 0;
+>  	smp_mb();
+>  	if (!list_empty_careful(&flctx->flc_lease))
+> -		return __break_lease(inode, mode, FL_LEASE);
+> +		return __break_lease(inode, LEASE_BREAK_LEASE | openmode_to_lease_flags(mode));
+>  	return 0;
+>  }
+>  
+> -static inline int break_deleg(struct inode *inode, unsigned int mode)
+> +static inline int break_deleg(struct inode *inode, unsigned int flags)
+>  {
+>  	struct file_lock_context *flctx;
+>  
+> @@ -461,8 +479,10 @@ static inline int break_deleg(struct inode *inode, unsigned int mode)
+>  	if (!flctx)
+>  		return 0;
+>  	smp_mb();
+> -	if (!list_empty_careful(&flctx->flc_lease))
+> -		return __break_lease(inode, mode, FL_DELEG);
+> +	if (!list_empty_careful(&flctx->flc_lease)) {
+> +		flags |= LEASE_BREAK_DELEG;
+> +		return __break_lease(inode, flags);
+> +	}
+>  	return 0;
+>  }
+>  
+> @@ -470,7 +490,7 @@ static inline int try_break_deleg(struct inode *inode, struct inode **delegated_
+>  {
+>  	int ret;
+>  
+> -	ret = break_deleg(inode, O_WRONLY|O_NONBLOCK);
+> +	ret = break_deleg(inode, LEASE_BREAK_NONBLOCK);
+>  	if (ret == -EWOULDBLOCK && delegated_inode) {
+>  		*delegated_inode = inode;
+>  		ihold(inode);
+> @@ -482,7 +502,7 @@ static inline int break_deleg_wait(struct inode **delegated_inode)
+>  {
+>  	int ret;
+>  
+> -	ret = break_deleg(*delegated_inode, O_WRONLY);
+> +	ret = break_deleg(*delegated_inode, 0);
+>  	iput(*delegated_inode);
+>  	*delegated_inode = NULL;
+>  	return ret;
+> @@ -491,20 +511,24 @@ static inline int break_deleg_wait(struct inode **delegated_inode)
+>  static inline int break_layout(struct inode *inode, bool wait)
+>  {
+>  	smp_mb();
+> -	if (inode->i_flctx && !list_empty_careful(&inode->i_flctx->flc_lease))
+> -		return __break_lease(inode,
+> -				wait ? O_WRONLY : O_WRONLY | O_NONBLOCK,
+> -				FL_LAYOUT);
+> +	if (inode->i_flctx && !list_empty_careful(&inode->i_flctx->flc_lease)) {
+> +		unsigned int flags = LEASE_BREAK_LAYOUT;
+> +
+> +		if (!wait)
+> +			flags |= LEASE_BREAK_NONBLOCK;
+> +
+> +		return __break_lease(inode, flags);
+> +	}
+>  	return 0;
+>  }
+>  
+>  #else /* !CONFIG_FILE_LOCKING */
+> -static inline int break_lease(struct inode *inode, unsigned int mode)
+> +static inline int break_lease(struct inode *inode, bool wait)
+>  {
+>  	return 0;
+>  }
+>  
+> -static inline int break_deleg(struct inode *inode, unsigned int mode)
+> +static inline int break_deleg(struct inode *inode, unsigned int flags)
+>  {
+>  	return 0;
+>  }
 > 
 > -- 
-> 2.34.1
+> 2.51.1
 > 
-
 -- 
-With best wishes
-Dmitry
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
