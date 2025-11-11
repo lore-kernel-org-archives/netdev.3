@@ -1,55 +1,55 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8D82F2618
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 09:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A514D257831
+	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 09:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762853548; cv=none; b=NxSVFJpxXWoCLcp7L6C4cPagAvC1xEtwkSz3RCXOQY+39FksIgpYSHziQcNEGbyn+XNw50Mp/4jyILIDMG77VQQIKziIz4KzO6cvAAWTZq5WqfjCgNleaKGA6fFMh2Qfpqbo7Zl5uJPoRDF/5BT7ZVtUb2fJlDgFA3kx9K5EAWo=
+	t=1762853872; cv=none; b=gSTM+BFb2nCs/GwDKExjpz0/5gZiL+zNYh8w8FwNUy/GLDZyIL19Wl/QIHG7235CQHt9N6P0niFmDlEz2diV2k+YEohY4CnfbKC8EKa4TnOL4q9CYIn8jUuFQRPJX0eUrzaJ1bwV/qu9KsAPEf3/yQOt6Tbhb3vT935YCMoXzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762853548; c=relaxed/simple;
-	bh=QW8VhNaqKttycpHFwfku2Kgw+GgIuC6QhFkMlB43eq0=;
+	s=arc-20240116; t=1762853872; c=relaxed/simple;
+	bh=PGux2NR0IFPNax8NKO7ZxluButf36cG766hdCir5ZDs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pJAYahUluDzw7LQLR+YspV52Af2gm6xcZNKCcoC86DTXrWN8pSzIQb4Ele/wT7vh0i2DwLMNDMaPnb49cJmrKbotYlu498fLHmeKaVoV7j3sG79QpoETr7XnO7QmupE8YNbFCdy55NISWskOqTGKxap/Bqkgr2xGBqx2WfiqDv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VFNrqKFc; arc=none smtp.client-ip=209.85.219.74
+	 To:Cc:Content-Type; b=coEUt9EyS9pr1Gg4ZFrs0URenbZozgpJ4U8o3FB4z/2szuG6JkkOI1u/cMg/H651ikakBtvkMDami16kVmwI30u2gPu8kpjqI50MTTiRBcp3oFwvAUSwq0Rb6Fo4sLUF+GznBtjuMTFHFjeZvXi9PD/7G8gE5VGmEwZkTY8Rs+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IfcXmORO; arc=none smtp.client-ip=209.85.222.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VFNrqKFc"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8824292911cso15835486d6.1
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 01:32:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IfcXmORO"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8b259f0da04so360531385a.0
+        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 01:37:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762853546; x=1763458346; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762853869; x=1763458669; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qdJufPHVMbx1closdS+e5mPfBn5MsRicx3A6qjV6f70=;
-        b=VFNrqKFcS/fo0d5nKClmivYTfC+bkqxFDDCpCyajKgvQ+18u8EDhLojkrhLGDLvCPk
-         OdCARlsrA7puXpNzshPMA8YP7RWCiZ649LmI8L8i6/Nib92eTep4WdS9JNDR9CGLvkFt
-         WOuCV0XW4MBwnJqrBlNTZ+X7InvAcy+ROYjN3dMzY8TIQQsM+6KnGoVaMgWYNqaDCBnA
-         SMVY/mKQlUjexzEuOARUUBhhqspJTWXHHv6aJ4edMsZmKbcsnQKIzqHglVpgl/6f0Cnk
-         BN1F6JrlArUXTBbIFN9WgvHOnWJOBZhI5J38X/RTP1/hR9npSf7Us5dW/UoHI1tEhzLZ
-         AYUQ==
+        bh=iT/LuQJztWPY8htUJBN5PW7/w3kOnxLQY6YuXFmFCJY=;
+        b=IfcXmORO1Ftp5JLQ0kcSDwb/jGJVCPMoRnOZwVdoK1/zjdEeGoTVWL896z1vnOwqU/
+         kpWXsMXG0tcyJVpW1ZdvfhRcO58vMShNFTdHAdG6OtbDJiwLrHeCDhentMh5p6Nc3Hh6
+         kGGS2W9BG5qYX5CTx5vZB4A3ogeVwF45LEBOMVsvu/gXAmo0/7sgNivJqN2DWBvuEDM5
+         ggnhjzlbg60fjRR8CO+KDVF7d/u96MiIl6H2d/nJ2VngZexK69OsJ4zK4Oh0J1ft0qdr
+         V5lHtluiHxSPdniOEdQi0RhlUOqTzKopDmZagcK/syVxSiP+D7Eq96qVBtf+ixvjX4rC
+         aEtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762853546; x=1763458346;
+        d=1e100.net; s=20230601; t=1762853869; x=1763458669;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qdJufPHVMbx1closdS+e5mPfBn5MsRicx3A6qjV6f70=;
-        b=JlxFKiAIqU8r4eJkWOSKv96Mz+SalIkmRvlr6QwXQyiM1dptKTjy40inKZkHQV2sig
-         Z5vcpMWyDG2sIhvdwipmxDQpDzfFCt1+puy6kSsCWA2Xmngq4AlKhT0Mbmx+xB06teDa
-         pY4f0gfwQWblChqVod2jRblUr3g5Ew36tepYjddsF1XxSabRWYYum4xQyWOXRRoOTqe2
-         dmnMOEv76xVbP4TJbiVeUXrQBBijWnlQO4jKnccvnOfvdy3Qm5/XaI+R/yIpZNfFfHot
-         eD3rlQ1wRp+jxlOlzWhjlRWVoozC6yIaNMfM6ObVu33zP6mtv5WpAEE/5Wu5V8VbnSzQ
-         Jblw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTUG2Ow/fXdhGwWe003bwtTAOLx77sRBSNcoM5AjVBoCeLHCYwZNBoC8mo47Wfe3fyoYrAYww=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBdf8KekaVe/10ay7Jr17LAIyXl/fs45hPd084FZLZilUQ0SlF
-	D3ss+Vqv7Np4EfvRIqUMrkfKfFjFu8K2vG/XlB0lVuVD2orQtMMVHj3LphCjfa1r238xmR2tCGk
-	QRJf5UqAmMNw11Q==
-X-Google-Smtp-Source: AGHT+IFzcR+0THPJSADfPtKQhRLrDemW8qGJ7dqvBiWliEF1+v6d247hQmHAvvPCz3WlcTOpUkPKx1NZqvOg+w==
-X-Received: from qva22.prod.google.com ([2002:a05:6214:8016:b0:882:4912:459f])
+        bh=iT/LuQJztWPY8htUJBN5PW7/w3kOnxLQY6YuXFmFCJY=;
+        b=uXIHQrLq6B8Se4bot3gq8FZrvE9mP5NbdQdpasjnn2JBuZeNJQ+5+nlvarMmx1KwtM
+         whBciGIXan1LexNlcYowwsbosvilTnsveRQ4dg8xBDORCXbh1iBkhxHY9x4mVxI5l0Gh
+         N958JaEwSmc2mgP3GVScPm/8MEOUzVxb2mXtDuw7AXVfaYHkczE9g4QkYsopclI10OzA
+         l5HfWVMoTw1hrl5BHf6KzCgPQc2xKQsLzXrrEYeFDBgyAWMTzI4ACWyHtD0PXbpw9Nue
+         Z3eXUTz0w09qbYpgDgxHjvSnmIO97eC4lXRmOZoxl1/ICecE8IUhmAx+3hVtb8WRR/6H
+         32Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCU35GG6d1yAwyjxdO1NZI29e9kQ+iMZ5rPlwV0sS1lV8fOXvHs0MKxeAUNatMXQ7Kutgbrw2uI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz5iKeOYeO0AcUplnU2qx6doOQjoxx7vtcggIGeBwJLP6uPe69
+	1QXyaQmnD6l13GzfewHSrSQmf3mZMG+gFaMPE1JNINMI7qokZiWlQnDUqqaYgySh/Qc4nVZk+r2
+	fNEYVDkjzo7MVXA==
+X-Google-Smtp-Source: AGHT+IFXotGRr4Ed3Iif2CQhFwwRQO1qeDaqUR/d6EYywtlTjST6ICiLDxYPXCrCvpJECfG38tBZT2UzjSR9Ag==
+X-Received: from qvbiu13.prod.google.com ([2002:ad4:5ccd:0:b0:882:2f2f:9fe])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:2029:b0:882:36d6:e5c1 with SMTP id 6a1803df08f44-8825e85717amr35511566d6.29.1762853546383;
- Tue, 11 Nov 2025 01:32:26 -0800 (PST)
-Date: Tue, 11 Nov 2025 09:32:03 +0000
+ 2002:a05:6214:2a4f:b0:882:4d5c:1f36 with SMTP id 6a1803df08f44-8824d5c220amr87317166d6.28.1762853529865;
+ Tue, 11 Nov 2025 01:32:09 -0800 (PST)
+Date: Tue, 11 Nov 2025 09:31:52 +0000
 In-Reply-To: <20251111093204.1432437-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251111093204.1432437-1-edumazet@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251111093204.1432437-15-edumazet@google.com>
-Subject: [PATCH v2 net-next 14/14] net_sched: use qdisc_dequeue_drop() in
- cake, codel, fq_codel
+Message-ID: <20251111093204.1432437-4-edumazet@google.com>
+Subject: [PATCH v2 net-next 03/14] net_sched: initialize qdisc_skb_cb(skb)->pkt_segs
+ in qdisc_pkt_len_init()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -72,87 +72,78 @@ Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-cake, codel and fq_codel can drop many packets from dequeue().
+qdisc_pkt_len_init() is currently initalizing qdisc_skb_cb(skb)->pkt_len.
 
-Use qdisc_dequeue_drop() so that the freeing can happen
-outside of the qdisc spinlock scope.
-
-Add TCQ_F_DEQUEUE_DROPS to sch->flags.
+Add qdisc_skb_cb(skb)->pkt_segs initialization and rename this function
+to qdisc_pkt_len_segs_init().
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/sched/sch_cake.c     | 4 +++-
- net/sched/sch_codel.c    | 4 +++-
- net/sched/sch_fq_codel.c | 5 ++++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ net/core/dev.c       | 15 +++++++++++----
+ net/sched/sch_cake.c |  2 +-
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index dba9eef8bd83dda89b5edd870b47373722264f48..895c3e37e686f0f625bd5eec7079a43cbd33a7eb 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4069,17 +4069,23 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
+ }
+ EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
+ 
+-static void qdisc_pkt_len_init(struct sk_buff *skb)
++static void qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
++	u16 gso_segs;
+ 
+ 	qdisc_skb_cb(skb)->pkt_len = skb->len;
++	if (!shinfo->gso_size) {
++		qdisc_skb_cb(skb)->pkt_segs = 1;
++		return;
++	}
++
++	qdisc_skb_cb(skb)->pkt_segs = gso_segs = shinfo->gso_segs;
+ 
+ 	/* To get more precise estimation of bytes sent on wire,
+ 	 * we add to pkt_len the headers size of all segments
+ 	 */
+-	if (shinfo->gso_size && skb_transport_header_was_set(skb)) {
+-		u16 gso_segs = shinfo->gso_segs;
++	if (skb_transport_header_was_set(skb)) {
+ 		unsigned int hdr_len;
+ 
+ 		/* mac layer + network layer */
+@@ -4113,6 +4119,7 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
+ 				return;
+ 			gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
+ 			shinfo->gso_segs = gso_segs;
++			qdisc_skb_cb(skb)->pkt_segs = gso_segs;
+ 		}
+ 		qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
+ 	}
+@@ -4738,7 +4745,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 
+ 	skb_update_prio(skb);
+ 
+-	qdisc_pkt_len_init(skb);
++	qdisc_pkt_len_segs_init(skb);
+ 	tcx_set_ingress(skb, false);
+ #ifdef CONFIG_NET_EGRESS
+ 	if (static_branch_unlikely(&egress_needed_key)) {
 diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 5948a149129c6de041ba949e2e2b5b6b4eb54166..0ea9440f68c60ab69e9dd889b225c1a171199787 100644
+index 32bacfc314c260dccf94178d309ccb2be22d69e4..9213129f0de10bc67ce418f77c36fed2581f3781 100644
 --- a/net/sched/sch_cake.c
 +++ b/net/sched/sch_cake.c
-@@ -2183,7 +2183,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		b->tin_dropped++;
- 		qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 		qdisc_qstats_drop(sch);
--		kfree_skb_reason(skb, reason);
-+		qdisc_dequeue_drop(sch, skb, reason);
- 		if (q->rate_flags & CAKE_FLAG_INGRESS)
- 			goto retry;
- 	}
-@@ -2724,6 +2724,8 @@ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
- 	int i, j, err;
+@@ -1406,7 +1406,7 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
+ 	if (!shinfo->gso_size)
+ 		return cake_calc_overhead(q, len, off);
  
- 	sch->limit = 10240;
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	q->tin_mode = CAKE_DIFFSERV_DIFFSERV3;
- 	q->flow_mode  = CAKE_FLOW_TRIPLE;
- 
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index fa0314679e434a4f84a128e8330bb92743c3d66a..c6551578f1cf8d332ca20ea062e858ffb437966a 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -52,7 +52,7 @@ static void drop_func(struct sk_buff *skb, void *ctx)
- {
- 	struct Qdisc *sch = ctx;
- 
--	kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_CONGESTED);
-+	qdisc_dequeue_drop(sch, skb, SKB_DROP_REASON_QDISC_CONGESTED);
- 	qdisc_qstats_drop(sch);
- }
- 
-@@ -182,6 +182,8 @@ static int codel_init(struct Qdisc *sch, struct nlattr *opt,
+-	/* borrowed from qdisc_pkt_len_init() */
++	/* borrowed from qdisc_pkt_len_segs_init() */
+ 	if (!skb->encapsulation)
+ 		hdr_len = skb_transport_offset(skb);
  	else
- 		sch->flags &= ~TCQ_F_CAN_BYPASS;
- 
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	return 0;
- }
- 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index a141423929394d7ebe127aa328dcf13ae67b3d56..dc187c7f06b10d8fd4191ead82e6a60133fff09d 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -275,7 +275,7 @@ static void drop_func(struct sk_buff *skb, void *ctx)
- {
- 	struct Qdisc *sch = ctx;
- 
--	kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_CONGESTED);
-+	qdisc_dequeue_drop(sch, skb, SKB_DROP_REASON_QDISC_CONGESTED);
- 	qdisc_qstats_drop(sch);
- }
- 
-@@ -519,6 +519,9 @@ static int fq_codel_init(struct Qdisc *sch, struct nlattr *opt,
- 		sch->flags |= TCQ_F_CAN_BYPASS;
- 	else
- 		sch->flags &= ~TCQ_F_CAN_BYPASS;
-+
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	return 0;
- 
- alloc_failure:
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
