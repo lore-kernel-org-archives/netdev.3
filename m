@@ -1,149 +1,115 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A514D257831
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 09:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EBD2D130B;
+	Tue, 11 Nov 2025 09:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762853872; cv=none; b=gSTM+BFb2nCs/GwDKExjpz0/5gZiL+zNYh8w8FwNUy/GLDZyIL19Wl/QIHG7235CQHt9N6P0niFmDlEz2diV2k+YEohY4CnfbKC8EKa4TnOL4q9CYIn8jUuFQRPJX0eUrzaJ1bwV/qu9KsAPEf3/yQOt6Tbhb3vT935YCMoXzjQ=
+	t=1762854550; cv=none; b=JvT2jSS0cRzN3K9W7S9zB6BX81W9A0lu/O2NDERSDrcke5giZWolHjoiD3DG43rQVOw/1SN9zVg0VKUqnUGcoYnAMFI+bOQrWuwhjOiD2+UnUdNaalIQgQwUu9eHHsl2n1bkvLyhEMqaymlI4dmc7AwuUlqE8H24Tpk6eCFCd94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762853872; c=relaxed/simple;
-	bh=PGux2NR0IFPNax8NKO7ZxluButf36cG766hdCir5ZDs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=coEUt9EyS9pr1Gg4ZFrs0URenbZozgpJ4U8o3FB4z/2szuG6JkkOI1u/cMg/H651ikakBtvkMDami16kVmwI30u2gPu8kpjqI50MTTiRBcp3oFwvAUSwq0Rb6Fo4sLUF+GznBtjuMTFHFjeZvXi9PD/7G8gE5VGmEwZkTY8Rs+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IfcXmORO; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1762854550; c=relaxed/simple;
+	bh=nvoWb3cd+VFNoskVX/9UBGBSWxsWZtmu+agDwT9H9mc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ux3SZLCbJqF3LuT63fufpLjQ+wJk0BrsdK4FR8qD05mJQfiJUvy72/Ief5iFHIQcSWD3AQwPTRymx7UNWdsYBLuMvoSwYuFqFx6+7pxRzTmd35JXwB0omAEP8f9sI7YHt3nsrCJFngFTF1lxr3pm8zKCPichlshuCty6S8iGWh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lpAMrkJk; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IfcXmORO"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8b259f0da04so360531385a.0
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 01:37:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762853869; x=1763458669; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iT/LuQJztWPY8htUJBN5PW7/w3kOnxLQY6YuXFmFCJY=;
-        b=IfcXmORO1Ftp5JLQ0kcSDwb/jGJVCPMoRnOZwVdoK1/zjdEeGoTVWL896z1vnOwqU/
-         kpWXsMXG0tcyJVpW1ZdvfhRcO58vMShNFTdHAdG6OtbDJiwLrHeCDhentMh5p6Nc3Hh6
-         kGGS2W9BG5qYX5CTx5vZB4A3ogeVwF45LEBOMVsvu/gXAmo0/7sgNivJqN2DWBvuEDM5
-         ggnhjzlbg60fjRR8CO+KDVF7d/u96MiIl6H2d/nJ2VngZexK69OsJ4zK4Oh0J1ft0qdr
-         V5lHtluiHxSPdniOEdQi0RhlUOqTzKopDmZagcK/syVxSiP+D7Eq96qVBtf+ixvjX4rC
-         aEtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762853869; x=1763458669;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iT/LuQJztWPY8htUJBN5PW7/w3kOnxLQY6YuXFmFCJY=;
-        b=uXIHQrLq6B8Se4bot3gq8FZrvE9mP5NbdQdpasjnn2JBuZeNJQ+5+nlvarMmx1KwtM
-         whBciGIXan1LexNlcYowwsbosvilTnsveRQ4dg8xBDORCXbh1iBkhxHY9x4mVxI5l0Gh
-         N958JaEwSmc2mgP3GVScPm/8MEOUzVxb2mXtDuw7AXVfaYHkczE9g4QkYsopclI10OzA
-         l5HfWVMoTw1hrl5BHf6KzCgPQc2xKQsLzXrrEYeFDBgyAWMTzI4ACWyHtD0PXbpw9Nue
-         Z3eXUTz0w09qbYpgDgxHjvSnmIO97eC4lXRmOZoxl1/ICecE8IUhmAx+3hVtb8WRR/6H
-         32Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCU35GG6d1yAwyjxdO1NZI29e9kQ+iMZ5rPlwV0sS1lV8fOXvHs0MKxeAUNatMXQ7Kutgbrw2uI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz5iKeOYeO0AcUplnU2qx6doOQjoxx7vtcggIGeBwJLP6uPe69
-	1QXyaQmnD6l13GzfewHSrSQmf3mZMG+gFaMPE1JNINMI7qokZiWlQnDUqqaYgySh/Qc4nVZk+r2
-	fNEYVDkjzo7MVXA==
-X-Google-Smtp-Source: AGHT+IFXotGRr4Ed3Iif2CQhFwwRQO1qeDaqUR/d6EYywtlTjST6ICiLDxYPXCrCvpJECfG38tBZT2UzjSR9Ag==
-X-Received: from qvbiu13.prod.google.com ([2002:ad4:5ccd:0:b0:882:2f2f:9fe])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:2a4f:b0:882:4d5c:1f36 with SMTP id 6a1803df08f44-8824d5c220amr87317166d6.28.1762853529865;
- Tue, 11 Nov 2025 01:32:09 -0800 (PST)
-Date: Tue, 11 Nov 2025 09:31:52 +0000
-In-Reply-To: <20251111093204.1432437-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lpAMrkJk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=3vHk8yv00/JQMYrmI8CKdJho/+2xxViBt86X+AiwkXs=; b=lpAMrkJkFiawgDhsUd7cK2vYGW
+	HHuZnAakrmemk6S3lWl3WIxalRsV0Fxr6TsaMz743ajjVlUUk8WVJAXlPVJ4cjEayDYBDB8DFO2k+
+	/t83snfNII/EsKt1zpPpqhB/UFTr86lPP433nbohp8PheXFfoQl1QMn3iLbIrURUN5rocusBJH1A+
+	C+ab8nwdr5Z4uc1LqBrHaDwvLLGqT+flXKWN+gz9/A7udKvpVzW8CPyhMcxtUbETtgDIRnBzM0A0+
+	E4sH7O377i+vT70DtUZvs6qJcZ2e7vHFUNY0l4ir1hy3qP+eKy5+rp/RbEZjUVLbfU21f0q3LsfEV
+	d4kkO1rA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43662)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vIkzh-000000002It-12u1;
+	Tue, 11 Nov 2025 09:48:57 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vIkzd-000000002qb-21yZ;
+	Tue, 11 Nov 2025 09:48:53 +0000
+Date: Tue, 11 Nov 2025 09:48:53 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
+	boon.khai.ng@altera.com, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: stmmac: Disable EEE RX clock stop when
+ VLAN is enabled
+Message-ID: <aRMGhXohIK5swFSM@shell.armlinux.org.uk>
+References: <20251111093000.58094-1-ovidiu.panait.rb@renesas.com>
+ <20251111093000.58094-3-ovidiu.panait.rb@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251111093204.1432437-1-edumazet@google.com>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251111093204.1432437-4-edumazet@google.com>
-Subject: [PATCH v2 net-next 03/14] net_sched: initialize qdisc_skb_cb(skb)->pkt_segs
- in qdisc_pkt_len_init()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111093000.58094-3-ovidiu.panait.rb@renesas.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-qdisc_pkt_len_init() is currently initalizing qdisc_skb_cb(skb)->pkt_len.
+On Tue, Nov 11, 2025 at 09:30:00AM +0000, Ovidiu Panait wrote:
+> On the Renesas RZ/V2H EVK platform, where the stmmac MAC is connected to a
+> Microchip KSZ9131RNXI PHY, creating or deleting VLAN interfaces may fail
+> with timeouts:
+> 
+>     # ip link add link end1 name end1.5 type vlan id 5
+>     15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
+>     RTNETLINK answers: Device or resource busy
+> 
+> Disabling EEE at runtime avoids the problem:
+> 
+>     # ethtool --set-eee end1 eee off
+>     # ip link add link end1 name end1.5 type vlan id 5
+>     # ip link del end1.5
+> 
+> The stmmac hardware requires the receive clock to be running when writing
+> certain registers, such as those used for MAC address configuration or
+> VLAN filtering. However, by default the driver enables Energy Efficient
+> Ethernet (EEE) and allows the PHY to stop the receive clock when the link
+> is idle. As a result, the RX clock might be stopped when attempting to
+> access these registers, leading to timeouts and other issues.
+> 
+> Commit dd557266cf5fb ("net: stmmac: block PHY RXC clock-stop")
+> addressed this issue for most register accesses by wrapping them in
+> phylink_rx_clk_stop_block()/phylink_rx_clk_stop_unblock() calls.
+> However, VLAN add/delete operations may be invoked with bottom halves
+> disabled, where sleeping is not allowed, so using these helpers is not
+> possible.
+> 
+> Therefore, to fix this, disable the RX clock stop feature in the phylink
+> configuration if VLAN features are set. This ensures the RX clock remains
+> active and register accesses succeed during VLAN operations.
+> 
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-Add qdisc_skb_cb(skb)->pkt_segs initialization and rename this function
-to qdisc_pkt_len_segs_init().
+Thanks for the patch. I guess there is no other way around this, since
+as I've previously noted (and as you say above) we can't sleep in the
+VLAN ops to access the PHY.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/core/dev.c       | 15 +++++++++++----
- net/sched/sch_cake.c |  2 +-
- 2 files changed, 12 insertions(+), 5 deletions(-)
+I would like a comment in the code above this if() to state that EEE
+RX clock stop is disabled to allow access to VLAN registers to work.
+With that added, please add:
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index dba9eef8bd83dda89b5edd870b47373722264f48..895c3e37e686f0f625bd5eec7079a43cbd33a7eb 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4069,17 +4069,23 @@ struct sk_buff *validate_xmit_skb_list(struct sk_buff *skb, struct net_device *d
- }
- EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
- 
--static void qdisc_pkt_len_init(struct sk_buff *skb)
-+static void qdisc_pkt_len_segs_init(struct sk_buff *skb)
- {
- 	struct skb_shared_info *shinfo = skb_shinfo(skb);
-+	u16 gso_segs;
- 
- 	qdisc_skb_cb(skb)->pkt_len = skb->len;
-+	if (!shinfo->gso_size) {
-+		qdisc_skb_cb(skb)->pkt_segs = 1;
-+		return;
-+	}
-+
-+	qdisc_skb_cb(skb)->pkt_segs = gso_segs = shinfo->gso_segs;
- 
- 	/* To get more precise estimation of bytes sent on wire,
- 	 * we add to pkt_len the headers size of all segments
- 	 */
--	if (shinfo->gso_size && skb_transport_header_was_set(skb)) {
--		u16 gso_segs = shinfo->gso_segs;
-+	if (skb_transport_header_was_set(skb)) {
- 		unsigned int hdr_len;
- 
- 		/* mac layer + network layer */
-@@ -4113,6 +4119,7 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
- 				return;
- 			gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
- 			shinfo->gso_segs = gso_segs;
-+			qdisc_skb_cb(skb)->pkt_segs = gso_segs;
- 		}
- 		qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
- 	}
-@@ -4738,7 +4745,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 
- 	skb_update_prio(skb);
- 
--	qdisc_pkt_len_init(skb);
-+	qdisc_pkt_len_segs_init(skb);
- 	tcx_set_ingress(skb, false);
- #ifdef CONFIG_NET_EGRESS
- 	if (static_branch_unlikely(&egress_needed_key)) {
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 32bacfc314c260dccf94178d309ccb2be22d69e4..9213129f0de10bc67ce418f77c36fed2581f3781 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1406,7 +1406,7 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
- 	if (!shinfo->gso_size)
- 		return cake_calc_overhead(q, len, off);
- 
--	/* borrowed from qdisc_pkt_len_init() */
-+	/* borrowed from qdisc_pkt_len_segs_init() */
- 	if (!skb->encapsulation)
- 		hdr_len = skb_transport_offset(skb);
- 	else
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+Thanks!
+
 -- 
-2.52.0.rc1.455.g30608eb744-goog
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
