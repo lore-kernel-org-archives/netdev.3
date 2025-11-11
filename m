@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD0C34165A
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 01:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5426342C9E;
+	Tue, 11 Nov 2025 01:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762824040; cv=none; b=sCmCPV2n8NmnTlZ8TuRTf7CLVGRVMvM6xuc6u8x3veSQX4FHR6ByFAyRxNEDgSsUm+0sCvE0DVhfSEoTeBskKGl+OBNl1jmzNZe1OkvvG8+7jyYagxiZWDhGfpoLqNgpq5i6O4AhH0G+7UqGmGedGo+rr3LuRDhtz4EAUMovNYA=
+	t=1762824067; cv=none; b=R645TFezq5GDgTFP0fmBGTZU772FdhN9HMJ8za4UiGoP/OhAszOkaFf9B3MmyNb22XTt0Zv5+TQDWLA7U+zL5wEt4LJkSo5g7N68FPJF1QQxNqdCosdZ/SKg6p7JHRgWz3qRVFPKXYvWyJacJACAEnXKTvYJAxealhi96FZacdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762824040; c=relaxed/simple;
-	bh=Hs/caOKcz7dDsvbKz6ieBxxnISBDRnSvj9nRCyfK5AE=;
+	s=arc-20240116; t=1762824067; c=relaxed/simple;
+	bh=FFdV7/cFIweorkOByCrSnPpy45GjXad1Gn8uHcP1V7Y=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IOXKcEIVeh/OsLFQxY+/SilQjUp6d8M0GPT+YSYE5QNNr2ADcu2fuK5VH7NxkWzM3cu+3s0kg389UaONH5pds5go54GO6jQnLpQKRDOlM9eIKJ+3KLMss8fa3ti6DZvxokcmf/QVMCwcfJP/rQHvrnKlCdQkp8lCTtQb1T28wUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsZ5Vzr2; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=S76UP8IEdH7r+tsCW4EMdsoww2Jmvr58ri3j/AkS3Id/HU586fgsf6C80L9qNa3nB7LaEkVG9DFGvPNHk5I+Db7VCmnwVrF9zIt6rAHEWcB1x4Gjx4L3sq7/kxxBpQ+IfNtNqdvN6cgd3r9uIySpgFjKu7HHhFproipAf4SUtMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCH9KdN7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsZ5Vzr2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7375C4CEF5;
-	Tue, 11 Nov 2025 01:20:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCH9KdN7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67288C113D0;
+	Tue, 11 Nov 2025 01:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762824039;
-	bh=Hs/caOKcz7dDsvbKz6ieBxxnISBDRnSvj9nRCyfK5AE=;
+	s=k20201202; t=1762824067;
+	bh=FFdV7/cFIweorkOByCrSnPpy45GjXad1Gn8uHcP1V7Y=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=IsZ5Vzr2v3K+TirqR6+NZGVlNrBQMN0aF1TiZqa7+ncD8jozEc+KAl0sXYs6DUY+/
-	 Q1UBz2jXqUfemuGPeKxTUvz8n5i3Zj8L52bk5X/WExjMD/MXfo66vQBKM+KLzoy0uP
-	 EyzSIvTJNUSYeMpMh7QT/gzue2GdWnIaC1S8pY7uUdDSPQl2H+R+DicUemw40iOxWW
-	 Yt2t9ovrBIVaogf7LsuknNpXdvqM4KtqJsLadtSH5jGT+6Gzh+82TP4XcS1UDARrin
-	 U+ikV1BSG/ljSoUQv5QrK2m1Qnrd7xpuWb7bs8ekWyvhDV/bfwNoneixMgBTk+vk10
-	 w9z00Div/yaZg==
+	b=uCH9KdN75Tfe5CwQoOlmgnaVW53VfftRPiKnGCratYOJ0L+DAWfwVojmNe1gFCHVg
+	 hq6GbrkiSI3vOKo3zO1GHVytU161sTpW8FX8zMExv2957wLCFpH/K+dTZIZ3RwO1Cu
+	 yT9jAawH9kQUYC2fgEUBi067WQbaxenEx/tBZzLZvSES563rKzKoO0c4uf6UNLGqsc
+	 sWD1Gu/nyEr3/ufZLybUQMet+dspn8/8D48IYbUcrNN7Ad6dFdM2Hc3QfwSUC6WnzD
+	 ySzFoI/QjPTq5IwVJ4/6btKoN6m172/uPX92qoy6WWgN9Y52HYMo5piKHEnywqR3To
+	 tBXvCIQZJgvrg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE224380CFD7;
-	Tue, 11 Nov 2025 01:20:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D7C380CFD7;
+	Tue, 11 Nov 2025 01:20:39 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] net/sched: Abort __tc_modify_qdisc if parent is a
- clsact/ingress qdisc
+Subject: Re: pull-request: bpf-next 2025-11-10
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176282401024.2838761.18211030225410260090.git-patchwork-notify@kernel.org>
-Date: Tue, 11 Nov 2025 01:20:10 +0000
-References: <20251106205621.3307639-1-victor@mojatatu.com>
-In-Reply-To: <20251106205621.3307639-1-victor@mojatatu.com>
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, wangliang74@huawei.com,
- pctammela@mojatatu.ai
+ <176282403774.2838761.9222389956838334643.git-patchwork-notify@kernel.org>
+Date: Tue, 11 Nov 2025 01:20:37 +0000
+References: <20251110232427.3929291-1-martin.lau@linux.dev>
+In-Reply-To: <20251110232427.3929291-1-martin.lau@linux.dev>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+ martin.lau@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This pull request was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  6 Nov 2025 17:56:20 -0300 you wrote:
-> Wang reported an illegal configuration [1] where the user attempts to add a
-> child qdisc to the ingress qdisc as follows:
+On Mon, 10 Nov 2025 15:24:27 -0800 you wrote:
+> Hi David, hi Jakub, hi Paolo, hi Eric,
 > 
-> tc qdisc add dev eth0 handle ffff:0 ingress
-> tc qdisc add dev eth0 handle ffe0:0 parent ffff:a fq
+> The following pull-request contains BPF updates for your *net-next* tree.
 > 
-> To solve this, we reject any configuration attempt to add a child qdisc to
-> ingress or clsact.
+> We've added 19 non-merge commits during the last 3 day(s) which contain
+> a total of 22 files changed, 1345 insertions(+), 197 deletions(-).
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net/sched: Abort __tc_modify_qdisc if parent is a clsact/ingress qdisc
-    https://git.kernel.org/netdev/net/c/e781122d76f0
-  - [net,2/2] selftests/tc-testing: Create tests trying to add children to clsact/ingress qdiscs
-    https://git.kernel.org/netdev/net/c/60260ad93586
+  - pull-request: bpf-next 2025-11-10
+    https://git.kernel.org/netdev/net-next/c/7fc2bf8d30be
 
 You are awesome, thank you!
 -- 
