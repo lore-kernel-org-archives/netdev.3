@@ -1,119 +1,187 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFB430C347
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 11:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76B03126A6;
+	Wed, 12 Nov 2025 11:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762947037; cv=none; b=o2v2Dxp/8eUOalAliq3j2GpUKsrE+u+X1/Y25vGF4BpjZ+TDv4XuIw7bWVAcbT4s5XXpKpD8byANhTAr3CbfQLMKNJD6OmmBCs+F1WGZOvjhXuG9beHKEIhv7EbQl5QbbMPSjRacmyvMJyey6G/02RWuhjUArincIf1slFd3KqY=
+	t=1762947600; cv=none; b=oH9lrUEfIzM8dxWcDIS6lcqzchV4NdbMbgsINP/Btscaz9OLlO+inBZW7jOhwEVuHq+W3/gbkm8aNgRKDv09jJvaqnhEdeeEa/l9tQsf1SHUf6551lENzlt6TCIxzXUiJ/C1OkjA82+95hTDgTFAn1y5WG/9aGA/TWU+nTmTOK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762947037; c=relaxed/simple;
-	bh=iTAh58xsSTK/DPrCrA9XXO9oOUT/gyUSwdPtMZDZRY4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=STvXr1VDi7jlEm6VGs2IA7ttLxO6l2P02kUu7I4TCLOEbufUrPwEGAi4ynqwuIM4YKdbQdNu8glS4yrq6YYl4YIbKMdAGXIVF/KE5hzZ9SlgYvGn5D9FGBTJsOBVXMmPhNQ9PQYgL4JPy8km1Q4pQOHE4BkkOMeErWHKR6lY8LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BjVdOQYk; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762947600; c=relaxed/simple;
+	bh=ZJBlgVQUds5GbyehGat4CZz2u1xDcxYPkHK+oVc1SLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jsnQI5Eap9yAEm6hiE9l46gSpf77eqPTTDYTAb6KZ9n/8TMve0VUEEASAE0HN9OjrPJpbvV6a1bWycSnYwOpkbwR6PzdMCSu81YChz7Q5jOjDfAv5PcmxbOGjVrIJoIi2I76zbBHAdxG09tZZDdetQPs+bNJ3eLhae4T3NvkM84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=Y1pyWHhg; arc=none smtp.client-ip=178.154.239.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BjVdOQYk"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so5145455e9.0
-        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 03:30:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762947034; x=1763551834; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l/oUH46h86/olGMZU+XghYpDhfAZ96DwWr356lECM4A=;
-        b=BjVdOQYkNn1GugyEtpXSuZbkJ+6NMebvOiOl+vQATSk4DKzy9dP0IzIfF7t7DTxIc0
-         h79Cayo4rd1tZHnm3UF6iP16NquA/XmQD1sqR08B0brtBRUm4ITnOXvc+1xwtwV2k7jX
-         IqISyf0r5iDNq2JTyIpuefvmlX6xXMDkd9TrEWPtwqTgWsn4oyqRRTyIYNo4RHtFR6mP
-         09DYULt2CWaTGcv8PemxgkCUZjwV0kIiNzt5YSy402YM+Flyd34wvMhjIH7WNREJLZoB
-         3ZNkEHdsDRfFf3C6aBNo8t5pZGT8AXJXDZZepxyvwuUsqBbgn11CFPp+iptlcxfzy8jr
-         FszA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762947034; x=1763551834;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l/oUH46h86/olGMZU+XghYpDhfAZ96DwWr356lECM4A=;
-        b=hW3acGOTbvEQadPq7yssqLcXJb+tadagtuemd9EAqIEhbP0KEKG7FsDWeN+ON8nefR
-         aY2UX2GqiwEWt/KRRZ45Rv5t1PbIq1b6taZmUQaqqLTFE31WB4TqhPeBmwG7C4oGSYyS
-         wnPmY5mOGBJfnIYX9rJ8gk2HunYYKGK0jASTG33haRzMYYuRI6HpXiz3reNzpe6xpkuq
-         Asr/7VrDP8Fr+mm8ST3ilTJLYAPZLQH48B6kx+R/UOobX9dpR/+thoqyYZODY+gztpWk
-         Oe1Wogo0WyGgvNCvfh7rQENf9Rf0oX8ulLN7QwLcqVeBUUHOl4LIu8ojrQcstKOSV9IG
-         874Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXEtWBRg+65ggfmKGb3qk8DpP7QsUZanchyXx6n3rz8zOA8ZGpO8KlxbR2+t2eUeftGhHdZjvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXbjxIpxMHCm53pIGURJiZxe481xmruVr9dUwwrTV0Rb8dah0D
-	VnOLgUsj0I94oZEnumYbR55NGRjORivEF5UO9bjt3zO/I//gONIU+UH/
-X-Gm-Gg: ASbGncthj5cLxEYviy8dIoPu+eE5QeY3Wu9vjrRLmZhFxDSR9pjNB+Clxpzm2X+/t8b
-	UOIXxCF8/O8OebjqirWBEsMap5e48hpDqf6yDEW2p5Rj0V0Tgdz6P5CsOkIVDYq0MQwjpS0kIaK
-	1JEJw+bPtWbTcK84G3FGXQQwxYMGMsIA5xm7g4IPCG6WsFTfdVUDAJ5qRJKVaH7vtucSMSp2lCz
-	LMPJhWtYb67+Ytb24XOam3cbuaHnvouaNquEm93ywDa7mBr4umEoiNswhM8sYVPYcs+KMI7IdAD
-	4umIg3D9t3EaNIM0gsOH7Sw3oijvBa93jwfbw5JcDTJ61qFIsLbtgSLKn7lnKxeY5r2k4UXKyBx
-	zdXwl0VvZXFta/4XRy6BaZeFt34PnU6RcKYZKCthmbpSD39K17WXELoRuV43ZOHB9fLDs5lkuy6
-	CIZ+LxV5KFzqUUENEck17FZpU=
-X-Google-Smtp-Source: AGHT+IFzZn82+HqmV7Z5oaduLfvBaDy2CYnyKKDWs/rhY5yLhynN3LzPM9CdU2cQ0vUhoC+2FQjWgA==
-X-Received: by 2002:a05:600c:4f93:b0:477:bcb:24cd with SMTP id 5b1f17b1804b1-47787095d98mr24817395e9.22.1762947034215;
-        Wed, 12 Nov 2025 03:30:34 -0800 (PST)
-Received: from [10.125.200.88] ([165.85.126.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e2ad4csm31122115e9.1.2025.11.12.03.30.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 03:30:33 -0800 (PST)
-Message-ID: <89e33ec4-051d-4ca5-8fcd-f500362dee91@gmail.com>
-Date: Wed, 12 Nov 2025 13:30:32 +0200
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="Y1pyWHhg"
+Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:5a89:0:640:b4ed:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 54F5F80A01;
+	Wed, 12 Nov 2025 14:39:45 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id gdNvH92LqmI0-1AOLtqeG;
+	Wed, 12 Nov 2025 14:39:44 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1762947584; bh=Y3mu0Zw6QST5qSBBo3gTy6QNByaLKy+gd37sFxTRevU=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=Y1pyWHhgSLhZzpPR+vk8mZ/95k6LYQhXGM9iDjRZ27GGV5gbV3w1JSVwg0Lttd7Fy
+	 2ykih7JOhIhIdZtNT4RyCLr6hafvQH7xqoRzl5icHCepx4h66+mBzesJLGQryVeLCX
+	 XmHH2/8XMjlepTcz0//bNumUuLAGf6ygk+rYgtrw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH net] net: fix double dst_release() on sk_dst_cache race
+Date: Tue, 11 Nov 2025 19:42:02 +0300
+Message-ID: <20251111164205.77229-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/6] net/mlx5e: Speedup channel configuration
- operations
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Mark Bloch <mbloch@nvidia.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
- William Tu <witu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Nimrod Oren <noren@nvidia.com>, Alex Lazar <alazar@nvidia.com>
-References: <1762939749-1165658-1-git-send-email-tariqt@nvidia.com>
- <874iqzldvq.fsf@toke.dk>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <874iqzldvq.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+A reproducible rcuref - imbalanced put() warning is observed under
+IPv6 L2TP (pppol2tp) traffic with blackhole routes, indicating an
+imbalance in dst reference counting for routes cached in
+sk->sk_dst_cache and pointing to a subtle lifetime/synchronization
+issue between the helpers that validate and drop cached dst entries.
 
+rcuref - imbalanced put()
+WARNING: CPU: 0 PID: 899 at lib/rcuref.c:266 rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
+Modules linked in:
+CPSocket connected tcp:127.0.0.1:48148,server=on <-> 127.0.0.1:33750
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
 
-On 12/11/2025 12:54, Toke Høiland-Jørgensen wrote:
-> Tariq Toukan <tariqt@nvidia.com> writes:
-> 
->> Hi,
->>
->> This series significantly improves the latency of channel configuration
->> operations, like interface up (create channels), interface down (destroy
->> channels), and channels reconfiguration (create new set, destroy old
->> one).
-> 
-> On the topic of improving ifup/ifdown times, I noticed at some point
-> that mlx5 will call synchronize_net() once for every queue when they are
-> deactivated (in mlx5e_deactivate_txqsq()). Have you considered changing
-> that to amortise the sync latency over the full interface bringdown? :)
-> 
-> -Toke
-> 
-> 
+Call Trace:
+ <TASK>
+ __rcuref_put include/linux/rcuref.h:97 [inline]
+ rcuref_put include/linux/rcuref.h:153 [inline]
+ dst_release+0x291/0x310 net/core/dst.c:167
+ __sk_dst_check+0x2d4/0x350 net/core/sock.c:604
+ __inet6_csk_dst_check net/ipv6/inet6_connection_sock.c:76 [inline]
+ inet6_csk_route_socket+0x6ed/0x10c0 net/ipv6/inet6_connection_sock.c:104
+ inet6_csk_xmit+0x12f/0x740 net/ipv6/inet6_connection_sock.c:121
+ l2tp_xmit_queue net/l2tp/l2tp_core.c:1214 [inline]
+ l2tp_xmit_core net/l2tp/l2tp_core.c:1309 [inline]
+ l2tp_xmit_skb+0x1404/0x1910 net/l2tp/l2tp_core.c:1325
+ pppol2tp_sendmsg+0x3ca/0x550 net/l2tp/l2tp_ppp.c:302
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg net/socket.c:744 [inline]
+ ____sys_sendmsg+0xab2/0xc70 net/socket.c:2609
+ ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2663
+ __sys_sendmmsg+0x188/0x450 net/socket.c:2749
+ __do_sys_sendmmsg net/socket.c:2778 [inline]
+ __se_sys_sendmmsg net/socket.c:2775 [inline]
+ __x64_sys_sendmmsg+0x98/0x100 net/socket.c:2775
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe6960ec719
+ </TASK>
 
-Correct!
-This can be improved and I actually have WIP patches for this, as I'm 
-revisiting this code area recently.
+The race occurs between the lockless UDPv6 transmit path
+(udpv6_sendmsg() -> sk_dst_check()) and the locked L2TP/pppol2tp
+transmit path (pppol2tp_sendmsg() -> l2tp_xmit_skb() ->
+... -> inet6_csk_xmit() → __sk_dst_check()), when both handle
+the same obsolete dst from sk->sk_dst_cache: the UDPv6 side takes
+an extra reference and atomically steals and releases the cached
+dst, while the L2TP side, using a stale cached pointer, still
+calls dst_release() on it, and together these updates produce
+an extra final dst_release() on that dst, triggering
+rcuref - imbalanced put().
+
+The Race Condition:
+
+Initial:
+  sk->sk_dst_cache = dst
+  ref(dst) = 1   
+
+Thread 1: sk_dst_check()                Thread 2: __sk_dst_check()
+------------------------               ----------------------------
+sk_dst_get(sk):
+  rcu_read_lock()
+  dst = rcu_dereference(sk->sk_dst_cache)
+  rcuref_get(dst) succeeds
+  rcu_read_unlock()
+  // ref = 2  
+
+                                            dst = __sk_dst_get(sk)
+                                    // reads same dst from sk_dst_cache
+                                    // ref still = 2 (no extra get)
+
+[both see dst obsolete & check() == NULL]
+
+sk_dst_reset(sk):
+  old = xchg(&sk->sk_dst_cache, NULL)
+    // old = dst
+  dst_release(old)
+    // drop cached ref
+    // ref: 2 -> 1 
+
+                                  RCU_INIT_POINTER(sk->sk_dst_cache, NULL)
+                                  // cache already NULL after xchg
+                                            dst_release(dst)
+                                              // ref: 1 -> 0
+
+  dst_release(dst)
+  // tries to drop its own ref after final put
+  // rcuref_put_slowpath() -> "rcuref - imbalanced put()"
+
+Fix this by making the locked __sk_dst_check() use the same “steal
+from sk->sk_dst_cache” pattern as the lockless path: instead of
+clearing the cache and releasing a potentially stale local dst,
+it atomically exchanges sk->sk_dst_cache with NULL and only calls
+dst_release() on the pointer returned from that exchange. This
+guarantees that, for any given cached dst, at most one of the
+competing helpers (sk_dst_check() or __sk_dst_check()) can acquire
+and drop the cache-owned reference, so they can no longer
+double-release the same entry; the atomic operation runs only in the
+obsolete path and should not affect the main path.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: d14730b8e911 ("ipv6: use RCU in inet6_csk_xmit()")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+---
+ net/core/sock.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/sock.c b/net/core/sock.c
+index dc03d4b5909a..7f356f976627 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -607,14 +607,15 @@ INDIRECT_CALLABLE_DECLARE(struct dst_entry *ipv4_dst_check(struct dst_entry *,
+ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
+ {
+ 	struct dst_entry *dst = __sk_dst_get(sk);
++	struct dst_entry *old_dst;
+ 
+ 	if (dst && READ_ONCE(dst->obsolete) &&
+ 	    INDIRECT_CALL_INET(dst->ops->check, ip6_dst_check, ipv4_dst_check,
+ 			       dst, cookie) == NULL) {
+ 		sk_tx_queue_clear(sk);
+ 		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+-		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+-		dst_release(dst);
++		old_dst = unrcu_pointer(xchg(&sk->sk_dst_cache, RCU_INITIALIZER(NULL)));
++		dst_release(old_dst);
+ 		return NULL;
+ 	}
+ 
+-- 
+2.47.2
+
