@@ -1,170 +1,116 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C6352F96
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 21:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFDB2BEFF8
+	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 21:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762894917; cv=none; b=MQmVY0rgNH0ADFQbf30UC4v1g3LzHh7GOKLqWioo7QMzXPtZTJs/RBDXEumUl4nQQlc4Rll5annDc32fqMhB3P245oZ/M2X+i7mfF6mr6FIj3uosm3aKLl1L8VigKGhJVxEpyGUebP8gLCcXWv39ACu3Oxc/Uqbs8NcSRtoOM+s=
+	t=1762894961; cv=none; b=NtKzWrhZKPyrMRqqm91Pg/qjqh9mk26CvZBmS/ySRfcttGNL0RjXNHSp3md7rKN/kc2UQbDs2lO1+ga06OFWePRLVwxJ3GDIzjva/o4w40cdzimKLuQPTDlcEFC3HcNIkQayznMekCtqcYEY8fhOP3znGlRalVbp6MLRzdU8Wwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762894917; c=relaxed/simple;
-	bh=m2/ll1uTQe3vdYyhgsBOhN/isiT4ncOezX9iuBFvWf0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NtGLQmwTGy9lcbBtk4lgKhGYjDY5Y8p4ysW+x84nGV0x18o0uoyqob5jWZZb2/wIQv50ouqznwGuJlL0egIbrBMAIRRrl9z1AZL4YhBvQ39qmnJ2L7Dv94qNcPYogWhT69YVN/cl7xHXXCVBR7+v41YSjBdKsYOWaIc5KI63mbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EMZ27BoX; arc=none smtp.client-ip=74.125.224.52
+	s=arc-20240116; t=1762894961; c=relaxed/simple;
+	bh=oON1JhPqjwjhg7G9S0lDlzyPRkRNc3w2DTMTGVj9WQc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JmTVOV+GXVc9ii3zjqTcAsXhYptAHxNAxTAeEs52t1gYrH0k0alJTxbFsZCSQo2GI46du1ZIKA/vrNGA/SBYvWKlNtmwdPGAT01bYklt3Jvm8Gpt02FKTH6VieMs55njyTt9JSMLOzFDxMcZmd3T8qjAt9838Dw/7xaaS86Ave4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jQ2PcjmO; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EMZ27BoX"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-640c857ce02so197752d50.0
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 13:01:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jQ2PcjmO"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-297d6c0fe27so133485ad.2
+        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 13:02:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762894911; x=1763499711; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bDPq8KvClJvWwDQMfmOhMgSMTNNkWL2W9UB4UAss5Bg=;
-        b=EMZ27BoXyrccnWk6j0fZzJXConxIlnb+YJyxYnU4pvHMuVIow6oNh0p44L4eeNPAlb
-         EuU22N0Cu3NLv75bupq/7aQaIC76fv8insPYQvRVpLLgtxNnYfaxq1leWkBbQwLqpal1
-         dN2H45GfOTIZMIalPt3j+RAvbeKU5LUk5X4jrrgVx77EbEaniLj25o8hJrBzM2OzXDLb
-         6EjMCrvHtPJKTl0XLha4W+sb/tyBJSEidqBbro/8EAwK29bMgtOQYDZxKcG0Ho3RXKmv
-         B9Z4B6oHilKtSi+F0GDPzi4IS6pGJKPuoMNThYrWpESSL160+clnPrk3ZeGhyMlHRBO2
-         OiMw==
+        d=gmail.com; s=20230601; t=1762894959; x=1763499759; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QwP6Mm7gy1ZK8oeG4x4mgYN5Qt7fbG4Gah1TecksR98=;
+        b=jQ2PcjmOeqfPM/H74bOl2teruU5Viaz3bkXIWghhZzkMn2ivW3tl75mVkGM0gvFqFp
+         M0yKWW+nzADwJBQsqmEOevp8ACmNwClFgtcRwNyvpAbN25NuBDbkAxA3MmqoDCsGfmtB
+         +mCE8TYsoYm7hm60gwuilPdN58rMepqhS4F2WKslFKey62I+cDHCcZTeYunywAzUYQPI
+         ZOivc+rEow3Rq9Zvw8HFbWhEgzI0fF9XHQF3Rx96SZxVq8vh9jN//wuDL1hVdhJpIzJU
+         celcmpODoMvcfWdXY97rEMRbr9/jmLkcFFpwqDA82U8QMykXW9mtIYXEPwv/C1OY1+65
+         xM+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762894911; x=1763499711;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bDPq8KvClJvWwDQMfmOhMgSMTNNkWL2W9UB4UAss5Bg=;
-        b=Ma/C1041nm1bB+VGr/XVTgiwCEwGs+b951oeNeOrGYOxjMgXydAO3l9Z9Few+3Vc5b
-         /6qvmmZ3DOIrgV+PZC6LP/EKQpy7jaqmWy9Dz0MQd3bdwo3eK6JXJtB/8YRA5kpL+Vly
-         NNve2hnN834T3Izb0ehGpjKJoI6AHyVJgBNCyp/6np3IUdift6BvVlbyVDW5mYBICl2C
-         NjvkUjHZXfvWoK43pO2FukTbxzdLhXbv5wqGfRnz7d/F7W+4QLMoTGM/U/8A7F6Mo8ae
-         fONah2wtWE5Gu//mifvY4zgkz11RcQ5lxgvjnuuJ8DD5PzeRFORiQDSzbi715+lrwUew
-         Yc2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXbL/f1Fmu6oQGNrb2RmtCjy3qsW/Gz8arI+iMkgJGLLyUeR2Du1yxxAPN8KiVcS2zh/mN5Nxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHXTR6/P6SN7W8mQ/brsWYEJnkuH9R9ty1LJgDQzXEfFKWeTDM
-	LpCojG6bEDQsQ3U+1mmtU+OFhBWheti3KlvtgnZ9bvDk/NqHjtdMJhid
-X-Gm-Gg: ASbGncslVwSUMrDas9mrhTAhhvcRYcHbc99nYCBMHEx8voWMx+JUJ5fyolGBBaGI2Eh
-	MuGcOSjVDfgmDrIMsLXwfDrB3Cl97iHjl1ECSuEAxkbHKnU5K7zMJTwxzOnF+WVvt7uduyKwrIa
-	OwmCP7CkQhkKfJHcq8Uo0KXKN5xtn4DLa+phbVHPlNrrHP83UOE9yZ7C5B1b6hMu14XxC6xhYYd
-	b54TPMio5WDFDCw8lRtOyRgbZBei6EbWP2o3Ji2Ol7WgRqvSKRfpeKNnXO65her3T5NhLhjrbw2
-	lgIzvVmFaGVU/QMFOsYXcbpcpMVVGWqNDkdL62mZ4xR5x5RLxY9IjkHDDzPHYlqubAepb0lt60y
-	EpQ5hkHsvtURh23ov3Dq/mtLWnauWZ47uLPYnOA6FAaIEHYqopQxW6w7dbImGDhDh43xUYTAcl+
-	WoV35s7nonROVN5uO0/bx1A/d30wmIOZWf7kKSYBCjfznESA==
-X-Google-Smtp-Source: AGHT+IG5pLwkGsZ+eCK296l8q5rg85wfM1wAQ8NbbJwGyjxk6/mldP/Q7Z6BLYOivEyqJVyS1VY/EA==
-X-Received: by 2002:a53:c048:0:20b0:63f:a165:b9ed with SMTP id 956f58d0204a3-64101a0ab45mr674439d50.6.1762894911625;
-        Tue, 11 Nov 2025 13:01:51 -0800 (PST)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:d::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d684218dsm36167807b3.21.2025.11.11.13.01.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 13:01:49 -0800 (PST)
-Date: Tue, 11 Nov 2025 13:01:48 -0800
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Simon Horman <horms@kernel.org>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v3 07/11] selftests/vsock: add check_result()
- for pass/fail counting
-Message-ID: <aROkPIIeGq3Tb0I6@devvm11784.nha0.facebook.com>
-References: <20251106-vsock-selftests-fixes-and-improvements-v3-0-519372e8a07b@meta.com>
- <20251106-vsock-selftests-fixes-and-improvements-v3-7-519372e8a07b@meta.com>
- <aRMjeZVqsnc1BNr-@horms.kernel.org>
+        d=1e100.net; s=20230601; t=1762894959; x=1763499759;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QwP6Mm7gy1ZK8oeG4x4mgYN5Qt7fbG4Gah1TecksR98=;
+        b=ZGyxsal8H+AYSw3QeY/7zGM9eipXslWUe4zllxa1b/TEhyRkp2Dz6zkjbvwzt8Snm6
+         PRc1FSnedPzxtIR9DPEXlilg5y2j4CsjQBw1wZig4rVzuyqgh4OtgIqnS43IbMe+xVJ6
+         ePrdO/BmL+/5Hft0WJcOuJyeINtL8Ng8fFcs59MqWWvVUhUo7S4YNxNiioozvccvo8K/
+         L318BCFA2470W3RUR2kAYXWiQDzOL69lQq8ed7wM4KWMBY2e52wtdbAutLq3QQ7mlYTr
+         1i0TzIvpZqakpwOSeZ6y93W2wQcE6WlJUFKPQ+heVjNjBY03iZwJJyrynFLt1xWjUWqu
+         144w==
+X-Forwarded-Encrypted: i=1; AJvYcCWH0FT8q2hmQgcAUJ/I9IUMu5H4UEjmhOaQNHC+GVlbbTgBnNY4oFqHXaD0fZJPN/vVxAds79k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk+3sCd+S2BJJpVfj03XvafomHVdcunF/3HNqD4evDwNCrHgYP
+	nuCq5vR33B4ZZsIBkt+lmlKf+iHjMzNgnJdCVXJcPlIfFtRoSkA4luAi5Fv5EsyAmV4fiVcx9Kr
+	CjQmHXYBkw5+mGM9LleFsEtsW8ZhOdVE=
+X-Gm-Gg: ASbGncsNFipz6HDVopHHWKQin4eTMEcAPDw1urjUgkFzrf8urTzyLlhck8emXF/ae1G
+	7uYYKdyyPFlzZv7E/tiydqQFpe9h6xdMvLX0Blq/O3G1OzXhadOK3YVeMTkKW8YsZtoPIGcjvuM
+	SxSpYLax5n5E9MrgDRkb5cgxMtyLh0HTwqBF0fPfT1tzvv+f73AqHpKAZMp08sNZ7W9O1n+DuN2
+	ZVVO3KAHLEzt7cM8OdgxmD2jIjcCK8Tj6wv4fb6uxpAlGcY7yIeS7h1ApgEoOwguaQwig8Tuslh
+	4O2gCCJLF908HmENs9nOwe0WBYa4dqJVOkdxY1wxgJaEQmLVoBRbsqiAR30CntWFOQYutpfjFyQ
+	Gx0o=
+X-Google-Smtp-Source: AGHT+IFsOytGgnt1U92UtoUky/1wulIEh+Pmaa8W6gEGOIHALbiKUTckaUZPy8kghTMbfkFxlO7xNvj5AdbhpE8EjaQ=
+X-Received: by 2002:a17:902:f551:b0:297:d825:bf22 with SMTP id
+ d9443c01a7336-2984eda386emr4468665ad.5.1762894958907; Tue, 11 Nov 2025
+ 13:02:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRMjeZVqsnc1BNr-@horms.kernel.org>
+References: <20251110122223.1677654-1-ojeda@kernel.org> <20251110122223.1677654-2-ojeda@kernel.org>
+ <20251111.083413.2270464617525340597.fujita.tomonori@gmail.com>
+In-Reply-To: <20251111.083413.2270464617525340597.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 11 Nov 2025 22:02:26 +0100
+X-Gm-Features: AWmQ_bm-YuisXj51ok0HAEEwIhVZdnLtQdiqb_sOWGEJwZXB-OjiypMxPqOmm74
+Message-ID: <CANiq72=_KAgUZ9u5YY-iw7kyA9R1Nv6eNzZqMLSwOLQk6sR7kw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: net: phy: make example buildable
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, tmgross@umich.edu, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, dakr@kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Guillaume Gomez <guillaume1.gomez@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 11, 2025 at 11:52:25AM +0000, Simon Horman wrote:
-> On Thu, Nov 06, 2025 at 04:49:51PM -0800, Bobby Eshleman wrote:
-> > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > 
-> > Add check_result() function to reuse logic for incrementing the
-> > pass/fail counters. This function will get used by different callers as
-> > we add different types of tests in future patches (namely, namespace and
-> > non-namespace tests will be called at different places, and re-use this
-> > function).
-> > 
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> > Changes in v3:
-> > - increment cnt_total directly (no intermediary var) (Stefano)
-> > - pass arg to check_result() from caller, dont incidentally rely on
-> >   global (Stefano)
-> > - use new create_pidfile() introduce in v3 of earlier patch
-> > - continue with more disciplined variable quoting style
-> > ---
-> >  tools/testing/selftests/vsock/vmtest.sh | 95 +++++++++++++++++++++++++--------
-> >  1 file changed, 72 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> > index 557f9a99a306..05cf370a3db4 100755
-> > --- a/tools/testing/selftests/vsock/vmtest.sh
-> > +++ b/tools/testing/selftests/vsock/vmtest.sh
-> > @@ -46,6 +46,8 @@ readonly TEST_DESCS=(
-> >  	"Run vsock_test using the loopback transport in the VM."
-> >  )
-> >  
-> > +readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
-> > +
-> >  VERBOSE=0
-> >  
-> >  usage() {
-> > @@ -79,6 +81,28 @@ die() {
-> >  	exit "${KSFT_FAIL}"
-> >  }
-> >  
-> > +check_result() {
-> > +	local rc arg
-> > +
-> > +	rc=$1
-> > +	arg=$2
-> > +
-> > +	cnt_total=$(( cnt_total + 1 ))
-> > +
-> > +	if [[ ${rc} -eq $KSFT_PASS ]]; then
-> > +		cnt_pass=$(( cnt_pass + 1 ))
-> > +		echo "ok ${num} ${arg}"
-> > +	elif [[ ${rc} -eq $KSFT_SKIP ]]; then
-> > +		cnt_skip=$(( cnt_skip + 1 ))
-> > +		echo "ok ${num} ${arg} # SKIP"
-> > +	elif [[ ${rc} -eq $KSFT_FAIL ]]; then
-> > +		cnt_fail=$(( cnt_fail + 1 ))
-> > +		echo "not ok ${num} ${arg} # exit=$rc"
-> 
-> Hi Bobby,
-> 
-> Should num be cnt_total above?
-> 
-> > +	fi
-> > +
-> > +	cnt_total=$(( cnt_total + 1 ))
-> 
-> It seems that cnt_total is being incremented twice.
-> Once seems like it ought to be enough.
-> 
+On Tue, Nov 11, 2025 at 12:34=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> I think that some code begin lines with # for use lines in a "#
+> Examples" section, while others do not. Which style is recommended?
 
-Indeed. FWIW, this was fixed in the newest (v4). I messed up a rebase,
-and my eye didn't catch it before sending out.
+There is no hard rule for all cases -- we typically hide things that
+are not important for the example (e.g. fake `mod bindings` that are
+used to support the example but aren't important and would bloat the
+example or confuse the reader).
 
-> > +}
-> > +
-> >  vm_ssh() {
-> >  	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
-> >  	return $?
-> 
-> I'll confess that I didn't notice these myself, but
-> Claude Code with https://github.com/masoncl/review-prompts/ did.
+For imports, some people prefer to see them, others don't. Here, for
+instance, it may be interesting to show the paths (e.g. that the
+`Device` is a `net::phy::` one, or where `C22` is coming from), so we
+could unhide it. So up to you!
 
-Thanks for the note, I'll give it a try. I'm trying to build out my
-pre-send workflow atm, and this looks pretty useful.
+So I think the rule is really: if it is something that we think people
+should see to actually understand the example, then we should show it.
 
-Best,
-Bobby
+And if it is something that would confuse them more than help, or that
+generally should not be used in real code (like the fake bindings),
+then we should hide it.
+
+Ideally `rustdoc` could perhaps support showing the hidden parts with
+the click of a button or similar -- there was e.g.:
+
+    https://github.com/rust-lang/rust/pull/86892
+
+On the other hand, there is already a "Source" button nearby that one
+can click to see it, so it is not too bad. But, yeah, if they need to
+do that, it is likely it shouldn't have been hidden to begin with.
+
+Cheers,
+Miguel
