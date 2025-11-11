@@ -1,102 +1,94 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596CA2DC77F
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 11:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6B7248F78
+	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 12:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762862204; cv=none; b=HdvQN67DjJLW7u0mRdwfNLBkKBiqFOCTds52NKSleCCamWExS2uZFrdgojVGXwr+QiM3u7rLrpDS6wycVfU4sW3NKnSH9N6WlykMP1E/aRe8RczQcYWu+vDVOfxAKCNrrWA8j4RbVn0LqCvmsbnCm0NI7mhw3oohluTe7SSpDfQ=
+	t=1762862771; cv=none; b=Bsp9Hjvi9MzEBSOCFfPh7kY5XubVREWnQrYiMHyPNDJX0PQUvuLxcHRZj34gM98yEGq7h2pt1XjVlm2oKmFJcCFuc398a3EV6pq8jZ5lAmCq7qVMtybEJvdgx+ixkwgVZPkE2Uc+Zag/023SjnkcuEikK1YZT9ENnRsCnKinXq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762862204; c=relaxed/simple;
-	bh=7cpCvyszEn5HOezxZLBqqcsmZ2uT7ZtZtkiuIpkUXg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bkMmSOFZzQAqxgl9By1U+iw6qY+SQv741sjdt18ZjeD7w01qk4gX9U1SgLdgAndeWXsaDSz7ygQq0hu3HfVSedEdOGypKSzQ9Zjmj8xZX1KZXxU2xuKsI5F4AF8bn8J4CgCp4xAXhrtrDUyWOj4uwm+NeqM/SIFyCRHypm3KqTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Giy6O0F9; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1762862771; c=relaxed/simple;
+	bh=ZrriaY7f3hMQTaJUFpGqsdoFMi1c2aFwgNHHX8pPfuE=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=i4g4DYJ/N1zbfNHSI5Q589zSeGIgAGV6d86LI7pztYP9Jwfi+fyXHG65YnmimX21Kj021wQB9aF/KD0DIQBodSetEQB7Sw5Xh4H2PhPa7Q9Ng/UPaF2A0iIAa0/GHRy0RjLW5LGfE+3KzheJOxqnbEODO0kOddVMgWS/Z2Rj7Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ka92SsLp; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Giy6O0F9"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42b305881a1so312006f8f.0
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 03:56:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ka92SsLp"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4775638d819so23445005e9.1
+        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 04:06:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762862191; x=1763466991; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CJgHQCcCAAMF/dux7/grV0vztHoMiGEbVl3yeix1xGI=;
-        b=Giy6O0F98hm+bOKubD841CwYNu7joAPoUqyh55X85IVsqkQvraqRcWzFr24lNHUgyO
-         wvnfQXZOvtwURhzwQopBbB0D8NqI0DZlMiHVaerEuZBWABDvaEHf/z6o35jEwblBVUCQ
-         +7PTDy8qOBbTFgFX/C4VCcfiU6QV58uyiIAPXNI4G//yT8FRYnGhMSHQSEjDAgGUOW7x
-         5HtqCVENpciSPf3UETxkf9PfTniWDpsrQ5TPlPbQlOvtCwcbNRsI5v7oaCX+gjys97kO
-         sHDUBl0v1+ulaAoTxkpajUAL++4aLvoiPs8crcpuNyVG+ccC0YEnfUEiQrJOi+n9ti23
-         UfkQ==
+        d=gmail.com; s=20230601; t=1762862768; x=1763467568; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZrriaY7f3hMQTaJUFpGqsdoFMi1c2aFwgNHHX8pPfuE=;
+        b=Ka92SsLpBSosnHgQDnSJ9rhObb8x0M4za+EDeNOgd5HLVUh0Ww82/ncMqihMX3Qa9V
+         8H5IMDR9PtKuBYTyNGxiXFQNESHfr9Lcrw1RfT4L0mjXSwZe7auccE0qxlc0vqFyE8WV
+         /n3siSrFMQIbGWRS6kLJ6aioMTWmWU/vq8qSdGhCLKvMBM/A4LCu15ufY5hILjEpZ2Gw
+         A78ZOxRBj9DO8dxXp1GFsye0pAz7w14uBBa9ArwlENEEOgXOEyAJVAaHppLgwqhjJamI
+         YDwzUXuEP3s5qz/yfVSnWBVFgv0OxJ3MVIB+6maDkkHmy8nQxkgJN4f9ahgudrSjK1MR
+         nQBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762862191; x=1763466991;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CJgHQCcCAAMF/dux7/grV0vztHoMiGEbVl3yeix1xGI=;
-        b=cBVCgw/v50aq5c3o4Uee+oNV+JET2u2uZuIKdZe9R08xcmAB+/9a7M6EeUHYzYkKLy
-         f764qYdgVRQBibaNH268hMppBZYklY+dtBpkmszwWhRxB9LITIHuSR6sxm4xhTmHRm8L
-         9o3Nh3oHsD7BjdMjLYsflDVMtpgpXeffaj2v/waZlAH+DS1OEt/OjvlG3fbhzSN4JvXj
-         3OrqbSQqBZWVWLVUvTn6biYXleiShpvKnVkipD0HQp1CbrKgTlH/6Yv12Uya7mYKwA3k
-         +qBWAUL1Po9uYZ9464/Ha1BWJDmPyk77Nyd1aF7aJZrlnmdF3Tx59uPGoYV14cyTA5rI
-         S4gw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCIf7Vkj69yvVlxhdsnqhNibEoFm6+1fjShHgzNnug23NiDN383B8SrdvMa4/2Cn+jFC6Mmt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+WX5kWmkPfOkMRH4JUOuOZvBuFX1neu2n4h5kxLQRgyP9G0Tr
-	gX45vQr33kED7RF2+zihJ1r2yJcfUZ02bmqpNNhQbfQ4pEDudlyNTDbM
-X-Gm-Gg: ASbGncssC+rj/HLEOFYFg08UxI/XpOKDvh8027xKP8MPsQP9zxpU1KiloDVt2RMmw+l
-	Dp1dKt3LLSxPNcEP3gQlh3jUNqsWM04ENZmzYz5+FoUhHt6Sx35B2iZQsSEEi5mQk++TzNFSfV3
-	8dfzSUVrX98tuAPxwexJr3OSK4L95iWgkFw8v2HZkHaNyGW8pSEyBA35wRGBr0wRVC1F+NMJSIC
-	NBpXSRjQ9tEUCDF4xBSE8QSDRzHK4NZWOCyytpn4RA7mQFLwFExy90Ryn83QS0w18QHX7tmTW4e
-	5pXQaCz65BmjhQEi3b7O6QHSYO+mw5vqZ9AZTGo8l1QUBI8k/psNdeQHm8llgmCF7EtT67s7825
-	U3YtYVtq3i7fqHgaeO0jDwA0dYgk84cKghKGMO+vi6pBtBpiaqRYzHF9FyKeolHOAcN8cMFUTkn
-	fcTdU=
-X-Google-Smtp-Source: AGHT+IEvZuLBPX6umhXQeZ0Rv/NcKeiOMHYrfxaoqE4DsQaZb5ViZ0h12lREx2bg/R/5zR++qTxTlQ==
-X-Received: by 2002:a05:600c:4711:b0:475:d7b8:8505 with SMTP id 5b1f17b1804b1-4777329f181mr60253945e9.7.1762862190504;
-        Tue, 11 Nov 2025 03:56:30 -0800 (PST)
-Received: from skbuf ([2a02:2f04:d104:5e00:40fe:dea4:2692:5340])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775cdc33c8sm364910025e9.2.2025.11.11.03.56.28
+        d=1e100.net; s=20230601; t=1762862768; x=1763467568;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZrriaY7f3hMQTaJUFpGqsdoFMi1c2aFwgNHHX8pPfuE=;
+        b=P+qoPWvG1nY3g1xi/l1eFIOmV6eXCVrPcFE0Htbfo8w6siok5TpiWWC3Hk4gtbz3m7
+         jlk8ztBPTapP+41WtYFA8W+UAafag7JoPRGluLw2HpHqarfdNfzMPgnxtQ1vnUVQXdQJ
+         FrDGIyNoDHpeX/PJ8FS8WxO6YcsBx03I9oSGbFI8NGRP/aogalrHrd+6rIIONzTTbF5s
+         Ixps3vRkhUorWtyjaFqf39TY56QMHvY7RzIMaBUZsTNHW07UjGGTtohHe+9OagOZq0z0
+         +MXIkBK6l2Xy/ZNgaKxI05GtIiC7qvxbjhoIq1dIWu5kXDhc6edekuE9jaLd7gy+yrrI
+         hdQA==
+X-Gm-Message-State: AOJu0YzQoEWM7Wf/OkbROSskhRuHtGZZYKs6QyApoQHBaGtYGiarm7Pt
+	EY2yIiGKrFeuPIEwG2sThZHwXr+DWjC+3OKCrhaqRQE9AevdULvOx5LI
+X-Gm-Gg: ASbGncuBedD3vgnrzec/xJWm7aOVhR35iWnziTB5OaFe9K9Vcm5Gh+IY0diBOqYoC7e
+	AajGNZRNdtrwEad4/AGUI/iOZES52g2QhIrYU2OLBnzjwoy7Jcc4i/1zEowBfDYznNBcom/mfX2
+	pyFxUJtbM7NCYHtQN+Yo4RzFPfbQUs9F+cUPSfMBbzBhGuRMj70jevU8U4yxEcmyzgk06LylLnA
+	bgZRWbg/55l20483lhprOnvxyyMR0UegSwAp4D6PJ8Hjp9XUGTvgKP4itdXrVtOlIjKkLZ0ZsJG
+	BqUYP43pBPAUhX5ms5bBD7+1SsW85BdndFHZ+25fGp38/wAG1ud1fuC5tAQjMIvhL50N/nUl5Fz
+	SCUHBq3bIcLx5D/yapbETcsJw5fvEet/1TCdrApJLvA7mAJ3nxA+UPlze1/ph0pdmYBQNZzY8j4
+	mYtZW9aBiRIKcI35TIQBVLUTo=
+X-Google-Smtp-Source: AGHT+IEyYDG77M1STNeblmSWekQOp0fQBGtq11ULzfmgoplqW724/CyBqBulA2DwNiDx2tiNvs4SSw==
+X-Received: by 2002:a05:600c:1549:b0:477:7925:f7fb with SMTP id 5b1f17b1804b1-47779260013mr69044815e9.10.1762862768197;
+        Tue, 11 Nov 2025 04:06:08 -0800 (PST)
+Received: from imac ([2a02:8010:60a0:0:f46d:4de5:f20a:a3c4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477773f7749sm174403575e9.7.2025.11.11.04.06.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 03:56:29 -0800 (PST)
-Date: Tue, 11 Nov 2025 13:56:27 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 3/3] net: dsa: deny 8021q uppers on vlan
- unaware bridged ports
-Message-ID: <20251111115627.orks445s5o2adkbu@skbuf>
-References: <20251110214443.342103-1-jonas.gorski@gmail.com>
- <20251110214443.342103-4-jonas.gorski@gmail.com>
- <20251110222501.bghtbydtokuofwlr@skbuf>
- <CAOiHx=k8q7Zyr5CEJ_emKYLRV9SOXPjrrXYkUKs6=MbF_Autxw@mail.gmail.com>
+        Tue, 11 Nov 2025 04:06:07 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,  "David S.
+ Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jan Stancek
+ <jstancek@redhat.com>,  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+  =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
+ <ast@fiberby.net>,  Stanislav Fomichev
+ <sdf@fomichev.me>,  Ido Schimmel <idosch@nvidia.com>,  Guillaume Nault
+ <gnault@redhat.com>,  Sabrina Dubroca <sd@queasysnail.net>,  Petr Machata
+ <petrm@nvidia.com>
+Subject: Re: [PATCHv3 net-next 1/3] tools: ynl: Add MAC address parsing support
+In-Reply-To: <20251110100000.3837-2-liuhangbin@gmail.com>
+Date: Tue, 11 Nov 2025 10:07:13 +0000
+Message-ID: <m2frakq3vy.fsf@gmail.com>
+References: <20251110100000.3837-1-liuhangbin@gmail.com>
+	<20251110100000.3837-2-liuhangbin@gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOiHx=k8q7Zyr5CEJ_emKYLRV9SOXPjrrXYkUKs6=MbF_Autxw@mail.gmail.com>
+Content-Type: text/plain
 
-On Tue, Nov 11, 2025 at 11:06:48AM +0100, Jonas Gorski wrote:
-> But I noticed while testing that apparently b53 in filtering=0 mode
-> does not forward any tagged traffic (and I think I know why ...).
-> 
-> Is there a way to ask for a replay of the fdb (static) entries? To fix
-> this for older switches, we need to disable 802.1q mode, but this also
-> switches the ARL from IVL to SVL, which changes the hashing, and would
-> break any existing entries. So we need to flush the ARL before
-> toggling 802.1q mode, and then reprogram any static entries.
+Hangbin Liu <liuhangbin@gmail.com> writes:
 
-I'm not clear on what happens. "Broken" FDB entries in the incorrect
-bridge vlan_filtering mode sounds like normal behaviour (FDB entries
-with VID=0 while vlan_filtering=1, or FDB entries with VID!=0 while
-vlan_filtering=0). They should just sit idle in the ARL until the VLAN
-filtering mode makes them active.
+> Add missing support for parsing MAC addresses when display_hint is 'mac'
+> in the YNL library. This enables YNL CLI to accept MAC address strings
+> for attributes like lladdr in rt-neigh operations.
+>
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
