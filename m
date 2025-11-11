@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0D9377E93;
-	Tue, 11 Nov 2025 16:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2E71AA7BF;
+	Tue, 11 Nov 2025 16:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762879961; cv=none; b=U4GshyT7rSiLKD94Z4Zll5AbGOlGSBex/WETeXch8GuPtRk1udw6EORqd5r7ItPyWxlRbIOjBilFCG9jAV1JrwfmPQIhrU+N2qVh3OT6y3fq9Dv2E8V4GAYRpjhSlsMdbxVS/2x9aoXLXYPiyEcI/OY4A+pGzaVOjm0M8AAjTnE=
+	t=1762879962; cv=none; b=ITM7NcN9AjVE+SJMrrhN4NuiAw/tvngbnAL+2CpMjynuwvSOYf6CxWYX3swCVpCQWSboSzjdPGxJf5WsCXDkz2NY2VIccCx94zIE7FSXiyW0vsn0jiMVIIcIEBUu2ejDRTNpD8PP7W2+s8AgiXJ83XH6Z6JPpiZv/J2XV2quJjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762879961; c=relaxed/simple;
-	bh=n21JxC+PX1CB9sFEWjSyHhZRgvxqQIKCXsnZMj5jQ5g=;
+	s=arc-20240116; t=1762879962; c=relaxed/simple;
+	bh=aazcxWLrKHyY7rbPLqqqaWDYNKAua34+BWSjNQwtzlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OF2AKoFNwpKE2BYp17WwhsPS2q+3y5S1zgxkS0jhbOF3iWl6235p2zIheariuTYYp2ZSgwYb2ub5RMdsDNqjxRWz/KSjyum5jsaKd+EGQN/4BmYaEEeRtxhBLRljxrli8f/4XNSIExXSXPeuqhBqt8GaKryq3miicEeBeXlSaRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOQL980j; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=bHP7Rf9pohdV5+TXN2Hx+TuT27kOY5cKUmlFfgoJMuVqK5Ql2bRDEVZIOpU0UKSTOrSX5olveG66DpP4I26lhchWNggjqQqEUYip/P7viE84ZQLPLFy/VWJamXj0CEqIuPRL7xn5/6deu6kl8x0ARELmCQh7fKq7d9sQAlqxIwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SPz64imb; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOQL980j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SPz64imb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762879959; x=1794415959;
+  t=1762879960; x=1794415960;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=n21JxC+PX1CB9sFEWjSyHhZRgvxqQIKCXsnZMj5jQ5g=;
-  b=FOQL980jxHXZaJPip1GmIOxeES7wRDcp5j8+9taYosGv75ptz+G6zrMA
-   h/vpylrx/6dnLdef3BUmHjk6mijWIWwytvetTefpxllEiIT6QpD1u5ZZF
-   V06TsH4V/Q8CUr3ciLu8FaicRFS5ZoCgbHRUGox6NbJMXC9J8Nxe/tOD6
-   1NYj+VE9llL+lc7wZhy0cEN0O3ieAKQlylEbOZN8nWthPn78G+Rru6UPa
-   Phgncz2SLbNW0VQO+686NxmtDMtFd7m29394Ojv71gGAuhQTUrUf00tqi
-   1SGvNwXG0py416haOVFiNiGFl+kOUbjXTeCaoEit9XQJ79EkCumU5kfg9
-   Q==;
-X-CSE-ConnectionGUID: mtGWuR4jRUSN2rFrL5tGXw==
-X-CSE-MsgGUID: yuH18ebBRJGJX+/6bcrzbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="64647258"
+  bh=aazcxWLrKHyY7rbPLqqqaWDYNKAua34+BWSjNQwtzlg=;
+  b=SPz64imbLAXDYSVxflEXgL4fmWAcKqzEWh2bdUXiz7++YjmQwj3nWv9U
+   UwHkMx3LGyhPPd+pL6buEy4Qwcv7n/EXrC0tq1LmVv8E7k8+f//SDH9yp
+   83zK6EC+B0K9Ra/Ml2P+LQz+a9oVorKRzvZE0Ysulg05t0aEzfBPU8ps+
+   oeQb/JG0AI8IvYlVHQkPp6xRXt208q26/Y3N2Nul66pJJUWifcrRMTMVe
+   G5JtBCqNUAOLheKR1oA2exwyz1aw/z0G7D8gME8qfMhWgCdvIvsEmjj0z
+   3ZkKJREPUdQapFmK/GEe2llSS43YuKZpexNbtqBrQOUYz1tBGf3yybwR4
+   w==;
+X-CSE-ConnectionGUID: G7oPcq1lT1anAZzWV4veTA==
+X-CSE-MsgGUID: weWh5couRLGQF47JBFIBEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="76049256"
 X-IronPort-AV: E=Sophos;i="6.19,297,1754982000"; 
-   d="scan'208";a="64647258"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 08:52:36 -0800
-X-CSE-ConnectionGUID: Bv1dFJReTe6BgsPFmYhpbw==
-X-CSE-MsgGUID: H6esjo8CRDKTya+62MwoYQ==
+   d="scan'208";a="76049256"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2025 08:52:40 -0800
+X-CSE-ConnectionGUID: E96FJg6bTqKaqOC8SqhpLg==
+X-CSE-MsgGUID: LEr3mtVAQKie8tVgyvTT4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,297,1754982000"; 
-   d="scan'208";a="194202544"
+   d="scan'208";a="193112858"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa005.jf.intel.com with ESMTP; 11 Nov 2025 08:52:34 -0800
+  by orviesa003.jf.intel.com with ESMTP; 11 Nov 2025 08:52:38 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 6C5B097; Tue, 11 Nov 2025 17:52:33 +0100 (CET)
+	id 82A229C; Tue, 11 Nov 2025 17:52:33 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -57,9 +57,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH net-next v1 1/7] ptp: ocp: Refactor signal_show() and fix %ptT misuse
-Date: Tue, 11 Nov 2025 17:52:08 +0100
-Message-ID: <20251111165232.1198222-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH net-next v1 6/7] ptp: ocp: Sort headers alphabetically
+Date: Tue, 11 Nov 2025 17:52:13 +0100
+Message-ID: <20251111165232.1198222-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251111165232.1198222-1-andriy.shevchenko@linux.intel.com>
 References: <20251111165232.1198222-1-andriy.shevchenko@linux.intel.com>
@@ -71,50 +71,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Refactor signal_show() to avoid sequential calls to sysfs_emit*()
-and use the same pattern to get the index of a signal as it's done
-in signal_store().
-
-While at it, fix wrong use of %ptT against struct timespec64.
-It's kinda lucky that it worked just because the first member
-there 64-bit and it's of time64_t type. Now with %ptS it may
-be used correctly.
+For better maintenance sort headers alphabetically.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/ptp/ptp_ocp.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/ptp/ptp_ocp.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index eeebe4d149f7..95889f85ffb2 100644
+index 4c4b4a40e9d4..984293a2a696 100644
 --- a/drivers/ptp/ptp_ocp.c
 +++ b/drivers/ptp/ptp_ocp.c
-@@ -3250,20 +3250,16 @@ signal_show(struct device *dev, struct device_attribute *attr, char *buf)
- 	struct dev_ext_attribute *ea = to_ext_attr(attr);
- 	struct ptp_ocp *bp = dev_get_drvdata(dev);
- 	struct ptp_ocp_signal *signal;
-+	int gen = (uintptr_t)ea->var;
- 	struct timespec64 ts;
--	ssize_t count;
--	int i;
+@@ -2,28 +2,28 @@
+ /* Copyright (c) 2020 Facebook */
  
--	i = (uintptr_t)ea->var;
--	signal = &bp->signal[i];
--
--	count = sysfs_emit(buf, "%llu %d %llu %d", signal->period,
--			   signal->duty, signal->phase, signal->polarity);
-+	signal = &bp->signal[gen];
+ #include <linux/bits.h>
++#include <linux/clk-provider.h>
++#include <linux/clkdev.h>
++#include <linux/crc16.h>
++#include <linux/debugfs.h>
++#include <linux/dpll.h>
+ #include <linux/err.h>
++#include <linux/i2c.h>
++#include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/debugfs.h>
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-#include <linux/serial_8250.h>
+-#include <linux/clkdev.h>
+-#include <linux/clk-provider.h>
+-#include <linux/platform_device.h>
+-#include <linux/platform_data/i2c-xiic.h>
+-#include <linux/platform_data/i2c-ocores.h>
+-#include <linux/ptp_clock_kernel.h>
+-#include <linux/spi/spi.h>
+-#include <linux/spi/xilinx_spi.h>
+-#include <linux/spi/altera.h>
+-#include <net/devlink.h>
+-#include <linux/i2c.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/nvmem-consumer.h>
+-#include <linux/crc16.h>
+-#include <linux/dpll.h>
++#include <linux/pci.h>
++#include <linux/platform_data/i2c-ocores.h>
++#include <linux/platform_data/i2c-xiic.h>
++#include <linux/platform_device.h>
++#include <linux/ptp_clock_kernel.h>
++#include <linux/serial_8250.h>
++#include <linux/spi/altera.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/xilinx_spi.h>
++#include <net/devlink.h>
  
- 	ts = ktime_to_timespec64(signal->start);
--	count += sysfs_emit_at(buf, count, " %ptT TAI\n", &ts);
+ #define PCI_DEVICE_ID_META_TIMECARD		0x0400
  
--	return count;
-+	return sysfs_emit(buf, "%llu %d %llu %d %ptT TAI\n",
-+			  signal->period, signal->duty, signal->phase, signal->polarity,
-+			  &ts.tv_sec);
- }
- static EXT_ATTR_RW(signal, signal, 0);
- static EXT_ATTR_RW(signal, signal, 1);
 -- 
 2.50.1
 
