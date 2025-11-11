@@ -1,84 +1,126 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5362D97AF
-	for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 11:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE36C256C8D;
+	Tue, 11 Nov 2025 11:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762861840; cv=none; b=lnF7gupB+x0BtvrWKOVJMuBTAFGVIsCRP1Z7uIEcXPLPLb9xUGd299zJaUCEzFm3pI2wcAbmL4JKbMRdr7OGwn9052hk7oFxRPnORVa4m9vbHOuc2OxfxpbMz0ffWOttRgLh00KEAb2Cfx+Qblyoli8esv/tJlB6/I83VTXhu/g=
+	t=1762861949; cv=none; b=Cc5fz/tAupki/ul6QNtsvE+v7hNGyBivtpvPKBDvOM8xnPzIjUP1XlqNpVEQUbZ+2SxTsG7LiiTD8FPe1olv1COcRxhtyRkJyxNoMF8KCKjm4F2slApkgRU8bRcQ8mZfqGbY9i1pGiyhnE12XQzDCB42fFWnVYqi6GlZ/rIy/Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762861840; c=relaxed/simple;
-	bh=ZTzMfAdbokWAMu52c+kckiizg2ij0E72BrqK1tOeeAs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UnAcoyX/NVZo5/PGmvM4hoLuJkC9u98CJCFzoAsNk+JS4U+kxXcnKZm4fNNowNd7X6Avw1WF2lox7L9w0Vzug2nD0t4Jw11I5O+dbZ6ZlWiLyBYJaMQZ5T6U+lhmLCv+QKdYiSn228uMZglwPuFeZeUFJMkTQAHqdDlyp9Vw8Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTaPU1PR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762861949; c=relaxed/simple;
+	bh=7EWr3lLxkrG+MopAVeZM5w/ywBZTEz3erxdYhaDu5ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DolU6e2KbRfHzHtwF6CqGqu1c/5624LB3A1W+4Se1e5o2eFzz33vgWGwvdy1zvVjxjoDNWfML+pVr4ye4SOBtck+LPXUSL8OBkpxlM38icBee8TlSmdsmrRkZ+qNImDtcTe61mz61werLTu+rm7/Na8e/y8rsuauLiIviRNFwRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNMKetIT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTaPU1PR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38C4C16AAE;
-	Tue, 11 Nov 2025 11:50:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNMKetIT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB8AC4CEF5;
+	Tue, 11 Nov 2025 11:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762861840;
-	bh=ZTzMfAdbokWAMu52c+kckiizg2ij0E72BrqK1tOeeAs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lTaPU1PRx5An4hFjxBH/Fvxzf5S7FLddRhV//X7qTCPkr8bNkqnYQtdcdpKnXpbbi
-	 wqPLWBmWt6nACZ6NcaSQhuYYrCqpRgvp5i4Efz2fFVznfOM/zVceh2Oxvk/2YL3DJk
-	 dR63T+PvlG/6bczLldyZz41W7yEwwNzG+DFl5g/UZzQjx/r4Ud/1AQl/9dEbZYtBS+
-	 cCnW30/bHaVzzRq8zLH770+bIJgPnU/L27Uwa2DcO5YVTldoImpX3CNw+8Sy5P3jq1
-	 OLPQRAFPyZFZL5gRD/ybLp9vFrhyZMOe62/IZNgHg7J1YOsaIj6Fkl3jfuRb/P0haV
-	 Dq05QcDTmlOUg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70BDA380CFFA;
-	Tue, 11 Nov 2025 11:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1762861949;
+	bh=7EWr3lLxkrG+MopAVeZM5w/ywBZTEz3erxdYhaDu5ks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lNMKetITnIdI+xxdF/TA70hKOc2puba/EJVkuAHU4KEkcyHmBky9N/+8WHrn7hg7g
+	 EjYI+3A9E38ph29vGpUK0/MQCK6Uy3dNqFUy6DwyTd9YKtG3SuFlBo7bLri0P1DEg+
+	 9YWaZtitwhIXgzAk4MqX73z0jg1QuIVh/zbYIjk0IQaBPcxDcJmzYrWJg4cZdx3iTc
+	 y2ra2Yle9WZyvGkur0WAzYQ3V7U1cZsU23NxLdrqYOIcKQfa9mD+ESswcaHyJ1ZvCt
+	 gHQDvd/nmnKH7jyzdgbYYQuRAEt6APJvt1jcq1cr4Ij98MRKTr95TEg1UtR6ggUlcU
+	 U4QxcPGfnqTXg==
+Date: Tue, 11 Nov 2025 11:52:25 +0000
+From: Simon Horman <horms@kernel.org>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v3 07/11] selftests/vsock: add check_result()
+ for pass/fail counting
+Message-ID: <aRMjeZVqsnc1BNr-@horms.kernel.org>
+References: <20251106-vsock-selftests-fixes-and-improvements-v3-0-519372e8a07b@meta.com>
+ <20251106-vsock-selftests-fixes-and-improvements-v3-7-519372e8a07b@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/4] tools: ynl: turn the page-pool sample
- into a
- real tool
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176286181025.3403894.3277156213268110660.git-patchwork-notify@kernel.org>
-Date: Tue, 11 Nov 2025 11:50:10 +0000
-References: <20251107162227.980672-1-kuba@kernel.org>
-In-Reply-To: <20251107162227.980672-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, donald.hunter@gmail.com, netdev@vger.kernel.org,
- edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
- horms@kernel.org, sdf@fomichev.me, joe@dama.to, jstancek@redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251106-vsock-selftests-fixes-and-improvements-v3-7-519372e8a07b@meta.com>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri,  7 Nov 2025 08:22:23 -0800 you wrote:
-> The page-pool YNL sample is quite useful. It's helps calculate
-> recycling rate and memory consumption. Since we still haven't
-> figured out a way to integrate with iproute2 (not for the lack
-> of thinking how to solve it) - create a ynltool command in ynl.
+On Thu, Nov 06, 2025 at 04:49:51PM -0800, Bobby Eshleman wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
 > 
-> Add page-pool and qstats support.
+> Add check_result() function to reuse logic for incrementing the
+> pass/fail counters. This function will get used by different callers as
+> we add different types of tests in future patches (namely, namespace and
+> non-namespace tests will be called at different places, and re-use this
+> function).
 > 
-> [...]
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> ---
+> Changes in v3:
+> - increment cnt_total directly (no intermediary var) (Stefano)
+> - pass arg to check_result() from caller, dont incidentally rely on
+>   global (Stefano)
+> - use new create_pidfile() introduce in v3 of earlier patch
+> - continue with more disciplined variable quoting style
+> ---
+>  tools/testing/selftests/vsock/vmtest.sh | 95 +++++++++++++++++++++++++--------
+>  1 file changed, 72 insertions(+), 23 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+> index 557f9a99a306..05cf370a3db4 100755
+> --- a/tools/testing/selftests/vsock/vmtest.sh
+> +++ b/tools/testing/selftests/vsock/vmtest.sh
+> @@ -46,6 +46,8 @@ readonly TEST_DESCS=(
+>  	"Run vsock_test using the loopback transport in the VM."
+>  )
+>  
+> +readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
+> +
+>  VERBOSE=0
+>  
+>  usage() {
+> @@ -79,6 +81,28 @@ die() {
+>  	exit "${KSFT_FAIL}"
+>  }
+>  
+> +check_result() {
+> +	local rc arg
+> +
+> +	rc=$1
+> +	arg=$2
+> +
+> +	cnt_total=$(( cnt_total + 1 ))
+> +
+> +	if [[ ${rc} -eq $KSFT_PASS ]]; then
+> +		cnt_pass=$(( cnt_pass + 1 ))
+> +		echo "ok ${num} ${arg}"
+> +	elif [[ ${rc} -eq $KSFT_SKIP ]]; then
+> +		cnt_skip=$(( cnt_skip + 1 ))
+> +		echo "ok ${num} ${arg} # SKIP"
+> +	elif [[ ${rc} -eq $KSFT_FAIL ]]; then
+> +		cnt_fail=$(( cnt_fail + 1 ))
+> +		echo "not ok ${num} ${arg} # exit=$rc"
 
-Here is the summary with links:
-  - [net-next,v2,1/4] tools: ynltool: create skeleton for the C command
-    https://git.kernel.org/netdev/net-next/c/b02d229013aa
-  - [net-next,v2,2/4] tools: ynltool: add page-pool stats
-    https://git.kernel.org/netdev/net-next/c/124dac9b421c
-  - [net-next,v2,3/4] tools: ynltool: add qstats support
-    https://git.kernel.org/netdev/net-next/c/3f0a638d45fc
-  - [net-next,v2,4/4] tools: ynltool: add traffic distribution balance
-    https://git.kernel.org/netdev/net-next/c/9eef97a9dea3
+Hi Bobby,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Should num be cnt_total above?
 
+> +	fi
+> +
+> +	cnt_total=$(( cnt_total + 1 ))
 
+It seems that cnt_total is being incremented twice.
+Once seems like it ought to be enough.
+
+> +}
+> +
+>  vm_ssh() {
+>  	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
+>  	return $?
+
+I'll confess that I didn't notice these myself, but
+Claude Code with https://github.com/masoncl/review-prompts/ did.
