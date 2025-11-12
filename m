@@ -1,151 +1,93 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B015F337BBD;
-	Wed, 12 Nov 2025 13:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF4C30C364;
+	Wed, 12 Nov 2025 13:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762953110; cv=none; b=Iey1AQVIDXtvOSO+B429tt05ebkXjoAwrLFvqsSiQY1Z5CxoLtFvKMDdCuWh8pzMJm1RkJIsFODXGEP476Q1QthnZh8icWU7EeIUCIgXPsZG+CwIFd80OYv2P8ChrMTkKdOD90yP/ZbGi4Md+zfPCnIvyNjXyInrcUzuDXbCEvY=
+	t=1762953231; cv=none; b=h0qhDvsVPphwu3SUUJmcveRL7mOuq7aRr4FyBmE59YsnmMweYUOMoxhJ+vdnXMFh8CXIQ+LqMGE4C13pSHhUVJBJ+XDExhg6+woX6oLi8ngd6zZYWBqvP3FFjMx2QTrzWF9U39vuQ7oqXY0PGesbUaGFwlRw2ZXRhG5u2DxW1gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762953110; c=relaxed/simple;
-	bh=EJzR4sIlnN9uNuZaGeDHic11ALulh1hmmkfzpNsZ/1E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=EIWsFJqBoYoFpLTHFsQQMyYx9VvUUG1f8h+qwIOP3XSwzgy6MEAyl2SVahq85Z3vhqsscIVDCZtTZhy6SWzwp+rPOK/0y7YIpuDJTKdtDoy16YiWIcAy6hlB1liOQ79OWBTUiTKOBVF0OlHc0yT6abH3zjtzmEIxRkGGFNRlPv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kBYxLbE2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1762953231; c=relaxed/simple;
+	bh=dvz7hRmiuiAhbxgowOiFwTCdoSQOqn4Z/6EIk6czuZs=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=hpn2jV/Y0gI3TaGNvRRx7DSb8hMXvM41J4IqdRcbYwCBd+NFHyF4HUe68cZ7/yoICQXbuQpiBJsyCyuuBcqGmOLw4swgG8KmFu5duY/nTTqV2ZBuNYV4UGypmSDRg+5irAwKbJg57xQUQbJGJcBLTZhS0DliZeq2pLx9Aax5FLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LHZN+FnV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kBYxLbE2"
-Received: by linux.microsoft.com (Postfix, from userid 1231)
-	id 5B7D9201335C; Wed, 12 Nov 2025 05:11:48 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5B7D9201335C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1762953108;
-	bh=se0x+F/xDG1dSGAj+MYIh+M/qnKmpcnkyeeS1RLVacA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBYxLbE2+pcCXIDoUW/+o9R1RYBHIbANhi35cN3PMvBmqAg3RHebpEGwls2kV5LX0
-	 l9OW+Y3lPFa3DGXPDf8wzvpOZw1xClwubXXx2tlv2VUT/aulevyIAHJMCxd8unk6Wl
-	 gJ+OvPLUCU3RMaxe+0cqEy6npoR4kbvucg4f/fa0=
-From: Aditya Garg <gargaditya@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	leon@kernel.org,
-	mlevitsk@redhat.com,
-	yury.norov@gmail.com,
-	sbhatta@marvell.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	gargaditya@microsoft.com
-Cc: Aditya Garg <gargaditya@linux.microsoft.com>
-Subject: [PATCH net-next v4 2/2] net: mana: Drop TX skb on post_work_request failure and unmap resources
-Date: Wed, 12 Nov 2025 05:01:46 -0800
-Message-Id: <1762952506-23593-3-git-send-email-gargaditya@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1762952506-23593-1-git-send-email-gargaditya@linux.microsoft.com>
-References: <1762952506-23593-1-git-send-email-gargaditya@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LHZN+FnV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47389C4CEF8;
+	Wed, 12 Nov 2025 13:13:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762953231;
+	bh=dvz7hRmiuiAhbxgowOiFwTCdoSQOqn4Z/6EIk6czuZs=;
+	h=Subject:From:To:Cc:Date:From;
+	b=LHZN+FnV1ZxAOGspdw1QFuAH/vbK0L2ttX08AKV1nQ5VBW4DLCFpDgSj7S/smKYI5
+	 b1bece4HG6ckAzOjBQAq0m2f/J23jNVKcLFufbnUB+3JKVrrTKVI3eYVtM2UDYZO+/
+	 IRL6D1U03rkIoRlgb3hSJ5jXB3gW+i3FpO0V4LP850Bhr+xiVkc+RfBxFf6gM+lx5N
+	 K7V4v4OCnZ97azw/uA0XwEzoxhRH73+7KealfQ2yXQ9c17wKPw/Aw0TiOue5yX8AIy
+	 bKPYs2kNeZX+bKME+LgA/xFrUP2pSiryuRRtCyJF8FFA9hOjzXUfGLbog4yuxJrxQl
+	 qngVtDQrz05vg==
+Subject: [PATCH net V4] veth: Fix TXQ stall race condition
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+To: netdev@vger.kernel.org,
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
+ Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, ihor.solodrai@linux.dev,
+ "Michael S. Tsirkin" <mst@redhat.com>, makita.toshiaki@lab.ntt.co.jp,
+ toshiaki.makita1@gmail.com, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kernel-team@cloudflare.com
+Date: Wed, 12 Nov 2025 14:13:46 +0100
+Message-ID: <176295319819.307447.6162285688886096284.stgit@firesoul>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Drop TX packets when posting the work request fails and ensure DMA
-mappings are always cleaned up.
+This patchset addresses a race condition introduced in commit dc82a33297fc
+("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops"). In
+production, this has been observed to cause a permanently stalled transmit
+queue (TXQ) on ARM64 (Ampere Altra Max) systems, leading to a "lost wakeup"
+scenario where the TXQ remains in the QUEUE_STATE_DRV_XOFF state and traffic
+halts.
 
-Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+The root cause is a racy use of the__ptr_ring_empty() API from the producer
+side (veth_xmit). The producer stops the queue and then checks the ptr_ring
+consumer's head, but this is not guaranteed to be correct, when observed from
+the producer side, when the NAPI consumer on another CPU has just finished
+consuming.
+
+This series fixes the race bug, making the driver more resilient to recover is
+postponed to net-next as maintainers don't see this as an actual fix.
+
+V4:
+ - Focus on race fix for stable net-tree
+ - Watchdog recovery patch is postponed to net-next tree
+
+V3: https://lore.kernel.org/all/176236363962.30034.10275956147958212569.stgit@firesoul/
+ - Don't keep NAPI running when detecting race, because end of veth_poll will
+   see TXQ is stopped anyway and wake queue, making it responsibility of the
+   producer veth_xmit to do a "flush" that restarts NAPI.
+
+V2: https://lore.kernel.org/all/176159549627.5396.15971398227283515867.stgit@firesoul/
+ - Drop patch that changed up/down NDOs
+ - For race fix add a smb_rmb and improve commit message reasoning for race cases
+
+V1: https://lore.kernel.org/all/176123150256.2281302.7000617032469740443.stgit@firesoul/
+
 ---
-Changes in v4:
-* Fix warning during build reported by kernel test robot
----
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 6 +-----
- drivers/net/ethernet/microsoft/mana/mana_en.c   | 7 +++----
- include/net/mana/mana.h                         | 1 +
- 3 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index effe0a2f207a..8fd70b34807a 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1300,7 +1300,6 @@ int mana_gd_post_work_request(struct gdma_queue *wq,
- 			      struct gdma_posted_wqe_info *wqe_info)
- {
- 	u32 client_oob_size = wqe_req->inline_oob_size;
--	struct gdma_context *gc;
- 	u32 sgl_data_size;
- 	u32 max_wqe_size;
- 	u32 wqe_size;
-@@ -1330,11 +1329,8 @@ int mana_gd_post_work_request(struct gdma_queue *wq,
- 	if (wqe_size > max_wqe_size)
- 		return -EINVAL;
- 
--	if (wq->monitor_avl_buf && wqe_size > mana_gd_wq_avail_space(wq)) {
--		gc = wq->gdma_dev->gdma_context;
--		dev_err(gc->dev, "unsuccessful flow control!\n");
-+	if (wq->monitor_avl_buf && wqe_size > mana_gd_wq_avail_space(wq))
- 		return -ENOSPC;
--	}
- 
- 	if (wqe_info)
- 		wqe_info->wqe_size_in_bu = wqe_size / GDMA_WQE_BU_SIZE;
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 67ae5421f9ee..066d822f68f0 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -491,9 +491,9 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 
- 	if (err) {
- 		(void)skb_dequeue_tail(&txq->pending_skbs);
-+		mana_unmap_skb(skb, apc);
- 		netdev_warn(ndev, "Failed to post TX OOB: %d\n", err);
--		err = NETDEV_TX_BUSY;
--		goto tx_busy;
-+		goto free_sgl_ptr;
- 	}
- 
- 	err = NETDEV_TX_OK;
-@@ -513,7 +513,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	tx_stats->bytes += len + ((num_gso_seg - 1) * gso_hs);
- 	u64_stats_update_end(&tx_stats->syncp);
- 
--tx_busy:
- 	if (netif_tx_queue_stopped(net_txq) && mana_can_tx(gdma_sq)) {
- 		netif_tx_wake_queue(net_txq);
- 		apc->eth_stats.wake_queue++;
-@@ -1679,7 +1678,7 @@ static int mana_move_wq_tail(struct gdma_queue *wq, u32 num_units)
- 	return 0;
- }
- 
--static void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc)
-+void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc)
- {
- 	struct mana_skb_head *ash = (struct mana_skb_head *)skb->head;
- 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 50a532fb30d6..d05457d3e1ab 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -585,6 +585,7 @@ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
- void mana_query_phy_stats(struct mana_port_context *apc);
- int mana_pre_alloc_rxbufs(struct mana_port_context *apc, int mtu, int num_queues);
- void mana_pre_dealloc_rxbufs(struct mana_port_context *apc);
-+void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc);
- 
- extern const struct ethtool_ops mana_ethtool_ops;
- extern struct dentry *mana_debugfs_root;
--- 
-2.43.0
+Jesper Dangaard Brouer (1):
+      veth: more robust handing of race to avoid txq getting stuck
+
+
+ drivers/net/veth.c | 38 ++++++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
+
+--
 
