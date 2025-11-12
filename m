@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEA134575A
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 18:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D84034A773
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 18:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762973047; cv=none; b=C9g+xTacb7xcD5UGl9n0raV4igU/SYVHIFY3XofuwrjAZyGZtY78EQu8a23MtMychE2nE87fTJGbR2hfVc9j6IgFKaFccTqkYBwWfHV3vML5vuWFMtSgWgdblhjXqpWEZf+3he7PjyB8GnAHAkZvy0a1kFepHnfYaGwe5+pz88Q=
+	t=1762973049; cv=none; b=nz3U+tF7SUWlcSw8yrWHPe4TCbvt1hBSoTdzsuG+kAgHre9y91ZdXkJgcg529dCNFuHqyRRP9dhcDkYxFb7UXtWmx4EQXYypP1FaUwU/WhIFzsgbCQ8/0Nzvcx4enieu2yVJLUoqGSHPEn1AYK0MPTsYUGyYA8e7jd2CjC5LN2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762973047; c=relaxed/simple;
-	bh=151qXbDBRgiCeL2kp8PMB/MWWMxdf34qSLFk+65pyeE=;
+	s=arc-20240116; t=1762973049; c=relaxed/simple;
+	bh=RSKX9pbw/FXVLvD/Gle/jfUCM5raWcnaAXGORtbrJWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up/TpbSlwDr+X1Z9h4PCXZEOzxU7FjR5UJWRIQM1b5qVRB8KIBMDbozvrYkBQK5qUsvzWMUpd7Q9YvbdwviH1OeVIm8fI+Aifm4YaFpBgpauSv2Pzh6VpIeO/yOhJFovpg/hXOc20AtpEovG859mqB0q78BmVuK/73gPcAle69E=
+	 MIME-Version; b=DFK3C58lBRR/TsoCl0ygYoEkIAtOqOAcXiYyHqiVnA6IjeZeljW7+6RVZqUJpvq7JFCK6AMPjIkEiBv29ZkvQLlUB137Ka8YdIy6ZmvmUDK06yGx9a0QOjtRGGauQ2qA19R1zoT3L3fGlgYCiepCwDvlpqhFHT50zFMqcOEUxEw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJFos-0006tE-Dd; Wed, 12 Nov 2025 19:43:50 +0100
+	id 1vJFos-0006tS-Dh; Wed, 12 Nov 2025 19:43:50 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJFor-0008Cg-2H;
+	id 1vJFor-0008Cp-2l;
 	Wed, 12 Nov 2025 19:43:49 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 704AA49E0C9;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 9272549E0CB;
 	Wed, 12 Nov 2025 18:43:49 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -39,12 +39,13 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Gregor Herburger <gregor.herburger@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 07/11] can: mcp251xfd: add workaround for errata 5
-Date: Wed, 12 Nov 2025 19:40:26 +0100
-Message-ID: <20251112184344.189863-8-mkl@pengutronix.de>
+Subject: [PATCH net-next 09/11] can: mcp251xfd: add gpio functionality
+Date: Wed, 12 Nov 2025 19:40:28 +0100
+Message-ID: <20251112184344.189863-10-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112184344.189863-1-mkl@pengutronix.de>
 References: <20251112184344.189863-1-mkl@pengutronix.de>
@@ -62,160 +63,232 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Gregor Herburger <gregor.herburger@ew.tq-group.com>
 
-According to Errata DS80000789E 5 writing IOCON register using one SPI
-write command clears LAT0/LAT1.
+The mcp251xfd devices allow two pins to be configured as gpio. Add this
+functionality to driver.
 
-Errata Fix/Work Around suggests to write registers with single byte write
-instructions. However, it seems that every write to the second byte
-causes the overwrite of LAT0/LAT1.
-
-Never write byte 2 of IOCON register to avoid clearing of LAT0/LAT1.
-
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Gregor Herburger <gregor.herburger@ew.tq-group.com>
 Tested-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251001091006.4003841-4-viken.dadhaniya@oss.qualcomm.com
-[mkl: add missing MCP251XFD_REG_IOCON_GPIO_MASK]
+Link: https://patch.msgid.link/20251001091006.4003841-6-viken.dadhaniya@oss.qualcomm.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-regmap.c  | 89 +++++++++++++++++--
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |  1 +
- 2 files changed, 84 insertions(+), 6 deletions(-)
+ drivers/net/can/spi/mcp251xfd/Kconfig         |   1 +
+ .../net/can/spi/mcp251xfd/mcp251xfd-core.c    | 160 ++++++++++++++++++
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |   2 +
+ 3 files changed, 163 insertions(+)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-index e61cbd209955..70d5ff0ae7ac 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-@@ -13,9 +13,9 @@
- static const struct regmap_config mcp251xfd_regmap_crc;
- 
- static int
--mcp251xfd_regmap_nocrc_gather_write(void *context,
--				    const void *reg, size_t reg_len,
--				    const void *val, size_t val_len)
-+_mcp251xfd_regmap_nocrc_gather_write(void *context,
-+				     const void *reg, size_t reg_len,
-+				     const void *val, size_t val_len)
- {
- 	struct spi_device *spi = context;
- 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
-@@ -39,6 +39,45 @@ mcp251xfd_regmap_nocrc_gather_write(void *context,
- 	return spi_sync_transfer(spi, xfer, ARRAY_SIZE(xfer));
+diff --git a/drivers/net/can/spi/mcp251xfd/Kconfig b/drivers/net/can/spi/mcp251xfd/Kconfig
+index 877e4356010d..7c29846e6051 100644
+--- a/drivers/net/can/spi/mcp251xfd/Kconfig
++++ b/drivers/net/can/spi/mcp251xfd/Kconfig
+@@ -5,6 +5,7 @@ config CAN_MCP251XFD
+ 	select CAN_RX_OFFLOAD
+ 	select REGMAP
+ 	select WANT_DEV_COREDUMP
++	select GPIOLIB
+ 	help
+ 	  Driver for the Microchip MCP251XFD SPI FD-CAN controller
+ 	  family.
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index 565327bf9c43..5134ebb85880 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -1797,6 +1797,160 @@ static int mcp251xfd_register_check_rx_int(struct mcp251xfd_priv *priv)
+ 	return 0;
  }
  
-+static int
-+mcp251xfd_regmap_nocrc_gather_write(void *context,
-+				    const void *reg_p, size_t reg_len,
-+				    const void *val, size_t val_len)
++static const char * const mcp251xfd_gpio_names[] = { "GPIO0", "GPIO1" };
++
++static int mcp251xfd_gpio_request(struct gpio_chip *chip, unsigned int offset)
 +{
-+	const u16 byte_exclude = MCP251XFD_REG_IOCON +
-+				 mcp251xfd_first_byte_set(MCP251XFD_REG_IOCON_GPIO_MASK);
-+	u16 reg = be16_to_cpu(*(__be16 *)reg_p) & MCP251XFD_SPI_ADDRESS_MASK;
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 pin_mask = MCP251XFD_REG_IOCON_PM(offset);
 +	int ret;
 +
-+	/* Never write to bits 16..23 of IOCON register to avoid clearing of LAT0/LAT1
-+	 *
-+	 * According to MCP2518FD Errata DS80000789E 5 writing IOCON register using one
-+	 * SPI write command clears LAT0/LAT1.
-+	 *
-+	 * Errata Fix/Work Around suggests to write registers with single byte
-+	 * write instructions. However, it seems that the byte at 0xe06(IOCON[23:16])
-+	 * is for read-only access and writing to it causes the clearing of LAT0/LAT1.
-+	 */
-+	if (reg <= byte_exclude && reg + val_len > byte_exclude) {
-+		size_t len = byte_exclude - reg;
-+
-+		/* Write up to 0xe05 */
-+		ret = _mcp251xfd_regmap_nocrc_gather_write(context, reg_p, reg_len, val, len);
-+		if (ret)
-+			return ret;
-+
-+		/* Write from 0xe07 on */
-+		reg += len + 1;
-+		reg = (__force unsigned short)cpu_to_be16(MCP251XFD_SPI_INSTRUCTION_WRITE | reg);
-+		return _mcp251xfd_regmap_nocrc_gather_write(context, &reg, reg_len,
-+							    val + len + 1,
-+							    val_len - len - 1);
++	if (priv->rx_int && offset == 1) {
++		netdev_err(priv->ndev, "Can't use GPIO 1 with RX-INT!\n");
++		return -EINVAL;
 +	}
 +
-+	return _mcp251xfd_regmap_nocrc_gather_write(context, reg_p, reg_len,
-+						  val, val_len);
++	ret = pm_runtime_resume_and_get(priv->ndev->dev.parent);
++	if (ret)
++		return ret;
++
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON, pin_mask, pin_mask);
++}
++
++static void mcp251xfd_gpio_free(struct gpio_chip *chip, unsigned int offset)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++
++	pm_runtime_put(priv->ndev->dev.parent);
++}
++
++static int mcp251xfd_gpio_get_direction(struct gpio_chip *chip,
++					unsigned int offset)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 mask = MCP251XFD_REG_IOCON_TRIS(offset);
++	u32 val;
++	int ret;
++
++	ret = regmap_read(priv->map_reg, MCP251XFD_REG_IOCON, &val);
++	if (ret)
++		return ret;
++
++	if (mask & val)
++		return GPIO_LINE_DIRECTION_IN;
++
++	return GPIO_LINE_DIRECTION_OUT;
++}
++
++static int mcp251xfd_gpio_get(struct gpio_chip *chip, unsigned int offset)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 mask = MCP251XFD_REG_IOCON_GPIO(offset);
++	u32 val;
++	int ret;
++
++	ret = regmap_read(priv->map_reg, MCP251XFD_REG_IOCON, &val);
++	if (ret)
++		return ret;
++
++	return !!(mask & val);
++}
++
++static int mcp251xfd_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
++				       unsigned long *bit)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 val;
++	int ret;
++
++	ret = regmap_read(priv->map_reg, MCP251XFD_REG_IOCON, &val);
++	if (ret)
++		return ret;
++
++	*bit = FIELD_GET(MCP251XFD_REG_IOCON_GPIO_MASK, val) & *mask;
++
++	return 0;
++}
++
++static int mcp251xfd_gpio_direction_output(struct gpio_chip *chip,
++					   unsigned int offset, int value)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 dir_mask = MCP251XFD_REG_IOCON_TRIS(offset);
++	u32 val_mask = MCP251XFD_REG_IOCON_LAT(offset);
++	u32 val;
++
++	if (value)
++		val = val_mask;
++	else
++		val = 0;
++
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON,
++				  dir_mask | val_mask, val);
++}
++
++static int mcp251xfd_gpio_direction_input(struct gpio_chip *chip,
++					  unsigned int offset)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 dir_mask = MCP251XFD_REG_IOCON_TRIS(offset);
++
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON, dir_mask, dir_mask);
++}
++
++static int mcp251xfd_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 val_mask = MCP251XFD_REG_IOCON_LAT(offset);
++	u32 val;
++
++	if (value)
++		val = val_mask;
++	else
++		val = 0;
++
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON, val_mask, val);
++}
++
++static int mcp251xfd_gpio_set_multiple(struct gpio_chip *chip, unsigned long *mask,
++				       unsigned long *bits)
++{
++	struct mcp251xfd_priv *priv = gpiochip_get_data(chip);
++	u32 val;
++
++	val = FIELD_PREP(MCP251XFD_REG_IOCON_LAT_MASK, *bits);
++
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON,
++				  MCP251XFD_REG_IOCON_LAT_MASK, val);
++}
++
++static int mcp251fdx_gpio_setup(struct mcp251xfd_priv *priv)
++{
++	struct gpio_chip *gc = &priv->gc;
++
++	if (!device_property_present(&priv->spi->dev, "gpio-controller"))
++		return 0;
++
++	gc->label = dev_name(&priv->spi->dev);
++	gc->parent = &priv->spi->dev;
++	gc->owner = THIS_MODULE;
++	gc->request = mcp251xfd_gpio_request;
++	gc->free = mcp251xfd_gpio_free;
++	gc->get_direction = mcp251xfd_gpio_get_direction;
++	gc->direction_output = mcp251xfd_gpio_direction_output;
++	gc->direction_input = mcp251xfd_gpio_direction_input;
++	gc->get = mcp251xfd_gpio_get;
++	gc->get_multiple = mcp251xfd_gpio_get_multiple;
++	gc->set = mcp251xfd_gpio_set;
++	gc->set_multiple = mcp251xfd_gpio_set_multiple;
++	gc->base = -1;
++	gc->can_sleep = true;
++	gc->ngpio = ARRAY_SIZE(mcp251xfd_gpio_names);
++	gc->names = mcp251xfd_gpio_names;
++
++	return devm_gpiochip_add_data(&priv->spi->dev, gc, priv);
 +}
 +
  static int
- mcp251xfd_regmap_nocrc_write(void *context, const void *data, size_t count)
- {
-@@ -197,9 +236,9 @@ mcp251xfd_regmap_nocrc_read(void *context,
- }
+ mcp251xfd_register_get_dev_id(const struct mcp251xfd_priv *priv, u32 *dev_id,
+ 			      u32 *effective_speed_hz_slow,
+@@ -1930,6 +2084,12 @@ static int mcp251xfd_register(struct mcp251xfd_priv *priv)
  
- static int
--mcp251xfd_regmap_crc_gather_write(void *context,
--				  const void *reg_p, size_t reg_len,
--				  const void *val, size_t val_len)
-+_mcp251xfd_regmap_crc_gather_write(void *context,
-+				   const void *reg_p, size_t reg_len,
-+				   const void *val, size_t val_len)
- {
- 	struct spi_device *spi = context;
- 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
-@@ -230,6 +269,44 @@ mcp251xfd_regmap_crc_gather_write(void *context,
- 	return spi_sync_transfer(spi, xfer, ARRAY_SIZE(xfer));
- }
+ 	mcp251xfd_ethtool_init(priv);
  
-+static int
-+mcp251xfd_regmap_crc_gather_write(void *context,
-+				  const void *reg_p, size_t reg_len,
-+				  const void *val, size_t val_len)
-+{
-+	const u16 byte_exclude = MCP251XFD_REG_IOCON +
-+				 mcp251xfd_first_byte_set(MCP251XFD_REG_IOCON_GPIO_MASK);
-+	u16 reg = *(u16 *)reg_p;
-+	int ret;
-+
-+	/* Never write to bits 16..23 of IOCON register to avoid clearing of LAT0/LAT1
-+	 *
-+	 * According to MCP2518FD Errata DS80000789E 5 writing IOCON register using one
-+	 * SPI write command clears LAT0/LAT1.
-+	 *
-+	 * Errata Fix/Work Around suggests to write registers with single byte
-+	 * write instructions. However, it seems that the byte at 0xe06(IOCON[23:16])
-+	 * is for read-only access and writing to it causes the clearing of LAT0/LAT1.
-+	 */
-+	if (reg <= byte_exclude  && reg + val_len > byte_exclude) {
-+		size_t len = byte_exclude - reg;
-+
-+		/* Write up to 0xe05 */
-+		ret = _mcp251xfd_regmap_crc_gather_write(context, &reg, reg_len, val, len);
-+		if (ret)
-+			return ret;
-+
-+		/* Write from 0xe07 on */
-+		reg += len + 1;
-+		return _mcp251xfd_regmap_crc_gather_write(context, &reg, reg_len,
-+							  val + len + 1,
-+							  val_len - len - 1);
++	err = mcp251fdx_gpio_setup(priv);
++	if (err) {
++		dev_err_probe(&priv->spi->dev, err, "Failed to register gpio-controller.\n");
++		goto out_runtime_disable;
 +	}
 +
-+	return _mcp251xfd_regmap_crc_gather_write(context, reg_p, reg_len,
-+						  val, val_len);
-+}
-+
- static int
- mcp251xfd_regmap_crc_write(void *context,
- 			   const void *data, size_t count)
+ 	err = register_candev(ndev);
+ 	if (err)
+ 		goto out_runtime_disable;
 diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index dcbbd2b2fae8..e63034fd5947 100644
+index bd28510a6583..085d7101e595 100644
 --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
 +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -337,6 +337,7 @@
- #define MCP251XFD_REG_IOCON_PM0 BIT(24)
- #define MCP251XFD_REG_IOCON_GPIO1 BIT(17)
- #define MCP251XFD_REG_IOCON_GPIO0 BIT(16)
-+#define MCP251XFD_REG_IOCON_GPIO_MASK GENMASK(17, 16)
- #define MCP251XFD_REG_IOCON_LAT1 BIT(9)
- #define MCP251XFD_REG_IOCON_LAT0 BIT(8)
- #define MCP251XFD_REG_IOCON_XSTBYEN BIT(6)
+@@ -15,6 +15,7 @@
+ #include <linux/can/dev.h>
+ #include <linux/can/rx-offload.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/gpio/driver.h>
+ #include <linux/kernel.h>
+ #include <linux/netdevice.h>
+ #include <linux/regmap.h>
+@@ -676,6 +677,7 @@ struct mcp251xfd_priv {
+ 
+ 	struct mcp251xfd_devtype_data devtype_data;
+ 	struct can_berr_counter bec;
++	struct gpio_chip gc;
+ };
+ 
+ #define MCP251XFD_IS(_model) \
 -- 
 2.51.0
 
