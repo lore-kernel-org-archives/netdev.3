@@ -1,67 +1,67 @@
-Received: from sonic304-47.consmr.mail.ne1.yahoo.com (sonic304-47.consmr.mail.ne1.yahoo.com [66.163.191.173])
+Received: from sonic311-50.consmr.mail.ne1.yahoo.com (sonic311-50.consmr.mail.ne1.yahoo.com [66.163.188.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D7F2C029D
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 07:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.191.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EAC2D8DC4
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 07:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762933233; cv=none; b=UHvsx+oXlvbMaShg/8Y+c4PU3i1WJgSVKc+WT0fAnSZb+bET1I/V07UzUHm5z7LBP9LBGCHBQERuPbuORi+o0WvSwMyFvkVcvl2O3Vt2NavAnkrLm5glIeBYXFNEVlm8AfQj1nLW2DKs/XBYtK4CCADO45F5/Xlhe965t8AVWSQ=
+	t=1762933241; cv=none; b=FfyvjYr+subDlB6hI/MCJ/IntjSixc/Htqpaf8BcmU4sxPKDFiVfLB85ATTiOatjqSBvWsKVbXSD+KSaJpBJZo3npmdNcTgagr+w+yYc1Q1U2HihakIlslvE9RdFdTk2fy2X8n4BSD5dP33KFD/V91xUZssMABtJiMvIETRvHeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762933233; c=relaxed/simple;
-	bh=OoJ/zJzrLIWKOMxGyXCLacqQaA90FKj7x6cwln09UA8=;
+	s=arc-20240116; t=1762933241; c=relaxed/simple;
+	bh=Rx8pX50o09H0cLJVG1CRLQGeFBVSH/6cg3y0NY8jkbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcugIXvR5DreTvCcCEvLtMQMrNg/3eh59WCYi5Kg/48hOyJh8mzR8/Amj0lOkUtv9bG/h6Az1dz9FE6cV5v4hxh4W0+hNg8j6S1oy5FUv7YVeolBPex2DtiB/Mx7Rn8Zo9Q3zOkzv0UAEVNfrrYAFKK2fQTsI5LXpOr0GjC4oo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=ru7imzey; arc=none smtp.client-ip=66.163.191.173
+	 MIME-Version; b=SrplKov67vLmXg8Lg7vSbAc8drMhYdvS4cVV0wT+l5mfY1x1WQpp827exoiQBrJb8NWPUUNdg5RBgG6MalFpgt6zTjQygarlJUMrtVv5oI8q04K34wDVm2+GdvpRUbjU8NjJWNmbYfCJQ6OMlrMrzgcqHKJxB9tM/R7tHudetn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=FA3V0NfC; arc=none smtp.client-ip=66.163.188.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="ru7imzey"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762933231; bh=gQFK6/pqdltDR1oJK5uX3W6URmzRoO1lVHSeZ0hYKgE=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=ru7imzeyHJpe5X6ETeHtRsMhIspMZUv0sSFhdI2U1g6mEX2rFAHPy2oWvRN1BLtlixqvO06iZrCzfRXeA5EZ8t71INgsGvl2/b80Vr/dIdzSoBT/dWlM2i/P2chSafUlYWOXEempIM4Dt93fHVVhs4564IRYCJ4WxTO87PY3ccuB6h10QQMk5TGFzd04REM+QHyE17kvRaDI6flpmiTmvI7YupPq8uDvRbCAvKgbqFe1Cn4DdrIvQG8oXXC0+zE3TtyRiZ084+gxHyZiclVI4V5i90d8HS98sf+5mTsiwUiRST4X4A78795nGAzStRgzT8KOdWQzhzKY4Utl4zOypw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762933231; bh=Vxo0nwEaFAD3T9Y4jyxX5e32RzBCCm32wcDz869KGPt=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=ZxjkbKhI9+QYRmv4MRaDmGRkxYldzkAnJSkcjfuMMJ0PA3mD3JAqycMIfDpKMc/ibikL/CTYWyz7Zy6mjbKaebU58hc15W6LdyKXJab8HtyoG29ZRTX5OFQIKUKFGDtN3DPrXIoCInUrU1bw6rm8MRS1SmTYQYWPOlYZKpEOcI8zZH4fPfEZHlI4aL690jKiA5jMzgZYu4Dsb9Vk40pyZA2+uK9HBLOgoHFTCuBPVKs/UG8+ft+ScHmWR+YO250aEe1EwCNykJubF/CRkqsSVcOg0aI/auWxkfopIEehNacgtjMM7SQuMMUiZxlqC51ymx6Dz+iqer169a8cKhzx8Q==
-X-YMail-OSG: zHnUMqcVM1nt_VuQx5rK2KG792.OkFlG2EbifgA8bfDUSor216B3n9iggIG1TkD
- aCYUM8sW3IgswBabJm9U61CAOxVj3Dr1XpXFJ9MPVZ.1Jk6AUQW_TF76QbAUSQF2eWdfJJ_J7WJk
- mIJlWKeLnKK66kKkyk6GYtteb11_KKt2a3bjM1_oR2CWlB0Lp6LxgFH2fYGAVB1LeFmt5s0_3mF.
- xAJpSmuA14gV0JnNBCePe0aydGaRdm3OaHHfNxwqRXu8S2Kkgdb80WCrxMKljLbtenUbgbXatiJ_
- CXZwP1wXsvZxWNsEhOayL5wNrl8Uh_xW5oCHtQLiLPIKqaj3vXlz3z9A4XeWR2NX1dtaXI3UQxXr
- USBrRMM1zuSZ1MtvYe1S6.OBzUB4kqiKIj1wyKLqcmBHTJwe4vRtJEMSC8OFQ60OdpN3cP.ZnE.M
- JLFrn0thxR0cxxkhGoLxK6j9VaGpBrbRR4QDRqNGOKbN3.h33Nea2UZM.dsz.kb4LZMZtHAebjEv
- 2Tlf2BRIn2VNJWRzxzvwt1dn7PV13kAXkJIipFzy8EVAs0Wq2rpP0XStCfZqa0aYEt3rL0G_mTMG
- CEt_MsodiupCqDSuppdEpCswgSLQCzsiJWpPlXdvxptSsMoQZ9d_fTtMH3CgNtP1gdn6CuV35JeL
- CV3_nI854DxHceqHhC_X_JVOWAKj.7aJYBlcms4TVxprDGonHOXxLOvBBGXZnz70H9I5DYklI6.K
- XBwE2D9DOtArLKx7QH5JKSC5LByiOrZPNWX86v0M1bi.n_.Yte.Y8RJZaVwCF2XUfDQr55jIULj.
- JehjZO5YyqlUfmLC_5Xt5KhlK0t2YgUqHCQgdBAJB.qPVWxPNATvbVWOVXe3k74mKA8r2LZfjkpX
- bA3bbsn5YYOz_wQO028pkJd4os_JGfft73hVE2Xh9f5GVOukHkc0pfivOm6LKS7rJAmIZeBivPBC
- qMUE9ESwOjrtFRbs4xgIH48_INKZ.zAGLT7dLhreTgjwTRUw5tKYrjWLuMdC3V.Nv3ixxzKOVhEB
- g6WMIRbHCslhtVlt_dhpbgYfDpGR7XCbIhQ14sCDAtnjRcYnOMwG5wz8D6IQzWLFmJ_7Okk3lava
- XQl1KogEBntf.VCjBdDyJI8SJlqjdl2pdjRUHHd3W9d07uSqBpUhNmPUTvqA0g.YDOq7dMpDmwVl
- XgXQofgQX26a57Vo7WURwzjnD6pb73Rcg6UZPmJGu9cfQEGxqI1kY1Q6N1_6EDxywxxMhpWjl9Ls
- Ua8GTgQIQbSn8TFslH2stY7UcdK2Smp4_wF4nrfVwXxTass1XXqbwXH61IkZZde65ymGfGoikzc3
- ajTW9MaeNrU.Wcd4Jwr8f5dD9nkga_5sp5j81TqhF0vR0M5zKzyXiDKxR.eyru9XMpcWkp3TKtB9
- g.fzs4l4GZX69qOcpeg9OpD.o9KMBuzopgV7jql3SVBX9s3cxdpt.hNLp8fgCrydVDLCAtdbsqEh
- iavCZbyxPeAtgMNfWu0YVUivqQny1s7Av5BAjL48u1aah.C5VFia63Gq3La_N4LoIEdRfx2vjXu5
- a7SUXMVD0J5JlB8Pj.C_Gy0iDXfk7nDbUENMjedkPd6t4ngUf.lQtAAXMTOd24F2UCPjJBZbiRB8
- mGOzpbLiIE4fahiaBseJLIROfTsnhMf0tTKoA__MgoKPWeQYTd5Kl21yLr7uR2aFc6KTQEn2Er75
- 1Pcyn.WIzD3Le38Nwl3P68s.s3pQSEmZnw9j8D4Jfmfq3DbSOOpqqzYp5ICOF1Ju9SGIuM4MWDth
- FhCQlINEcfBSSXAX1D.n3oDKt_yg151.QcOYSgUtu_JSNSfAJEPIlil1OR1IErxrSxgvWwtpRC6P
- 0BZ5Xwt5LOeOXXGM4.aAGAzon3ikGlPo3QC2GIkeyZZDoxF5u_1kczB2_IbvClYqHF83u0PGveLW
- 1tkGeYS0JmY.742SpPIYS8bcqHbZUtGSagOqHPO7TfeThstnhkm20giQEcN3nT2hDMlgIlscYp5l
- SmaeKgYta6uZtM23z9cjRDEpTbOIonsmlgog8EMfu8aNTxrSeTFq3MtRlbnep2FC0RSkY.YqV1RC
- mWn4eVggT3qAB8bDKHL7DBkh6lx7Y0IVLlLjQ4OjlE.Wbl5UiVXJe0s66DyigpmN3tIPed3pUePe
- OA3gQTIWkx73DWntOI8VXO1jI6Ind9eMqGDS3l3.e5NhxV08z5EceD5V2AMXCmFy9vTXowsHSRPw
- HByjd
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="FA3V0NfC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762933238; bh=/sZea7JRuwpoKAvhfJGAG3YJWd3rWRXa/QQ8IB9e5BA=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=FA3V0NfC1gVg+qxa/3uMqJhcAdjl3Sb2+VW5VyLhHJGokKjGlVZewgH8zYMdHUusq3LrpMFSZF7QptvfFJ1CpAH1XPH8cIvgsROPFzZr0xhTpXhwqyHE3l5B75d0psMbLjvkQ8UD+rlKEaampXHJ50elVGDhpGspDG3D4X0NbrPRzTY3sXnrI4yxae0BpvKDoTRcdu2OqVRZtBBveJQrP/AcqXKWubcAkMQR/VhCRwQxWjw6gkMIRH9Dz5j6UbdOB+vVTIwjpLG8ixK22CsebMdLdZhhxjhCHM6cN83CiKmTVp/jwJ/YKH80Gwp6nvBxQ1xVHbxvincm23RUgQJGuQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762933238; bh=7WH2+Pxp6Nyj8VJBwuOhFA6XVqsuoiLmR61kwVXHAYa=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=ELLQ8XCjnT+DLsWk3Vi33a6JokvHnAjrArBySWu9mfUjU0HWzrHtfUCR5cdi9/HrEg18TzK4hNAAOXZLBF3k9VECq/I/nuu7rk+o8kCldQPR+l/c5AVSAQh45ggUmJsug+hTi56Bcn/neN3F/el/M6b8+cxpzH59Byxdoxe+EoEN9M1RPgTEtwmMHcIiYj2M326AeR8x9kuPQ+6BrHIaWLzGAKe1wynrsVogV9FGBXK4k317BfUC4IubNbywR074GAcQ53cd/bBVGoWycxQWRgy9b/jCHRwvahnk0eHWgGG4JULWGg/y4fn40Px3Ffhc/RTPOCqAt6iRptHe+AB7ng==
+X-YMail-OSG: xXxWdoEVM1keK9ThnJLmON9W6qqKd_9ZgHjDBzJ2DTNdKM5LvCSOdkUJiDYCxPc
+ oskwLbfTT8Rq7lROOAQiJgc1N6IUBxUhRqKiaqy8ZMOHWntKz3m24WpOWAkLiN.Im3vujmsuBoe1
+ 2hi.CqJE79raavNDK.a6zLWkp0eRq.Hc6caGs1C9OM2t7VtZUDm1J3UkXUpUZO3XX3RGWDbtWmDe
+ 1FvkYyMF0iI5pBu2NIBA_DvPCrP2SSb8EAshXsP5VONWPVfpx5iWe3H05MglVsGjRYWJ1lx2VIKD
+ p75dej.MM4KI9oJeVc2IbBR3vr7wrXZuUSezUy.pvZx5JZbIW01RAtm6LeVHoJi1i.Woa8IOBvqE
+ 3AsAt1jfbZk.khkGv.da5cNWeUb9CNGD0T6_MchQVmLMB_7ltH5GJVyK94HRnhrMcatVxeHA4R2n
+ 0Vr6afgu0IwFzeGu0oLYjhp081hlpd.1boZsU1nNNgko8IH52c1.SAILz.1TfAJyI7q1QYSZNXLZ
+ yuGPqObAo5e1E4ezDi4kaKNp9GJg6GWS933hQJuMxRos2qfQT_sKgXPQLu3MDfeGXmiBGiXFTaL_
+ IsuXhumVYjWpfq6kDk6dwfD2miWI0Bu0GLqhwyfXsWyXvTOFpUEAo70ANZwmnuuBpGgJeTTEyy9y
+ nbLbr.s3oYyzWMNQWkN3XBRqQQvK9aJdvUmxtpCBehDPJaWjWYL4SDTSmqArPrdKsbr7cdXbtnab
+ h2sneYK9B_vpIJa98qWzJFElNo9B95nU1dLbjJ41.T9u0kjM3_dPdyK4L3Yh_y1IFZXNqagcJeSJ
+ RukUa0ZMRny9qZE7mxmhmj_KKAr2dnCee42ggUDjth2C8UYc3L0NmAYY7qBTGVC6syk5AGna6NqK
+ 9aCkIkrrBN6Fa0P1F85XPLxgwfOY7ijXZG0aJ2pjPFTt7qcAQZx27FhSWlihv8aLYWlKQzdCccdz
+ tW9JouHbqDXKpyS8Wkm8Nl0dJrhKSP7x6SsUOHSiH8coLcIJOT5iE6eTTQSUwUqtYxrdhtSh60uh
+ kq2VgghD6QgEJFO2iiSoU6EvnuIVC7EzMCpyy2n7MucoAAAfuxKwzisdvdi_eYjgJ_KgRSCGt3tT
+ 5EuE8ksfwLwmiMofZNFuV5284m4kB5815oL76t40l5A7jPPRWFQHoxA1gZLSnkPBJLJXak3..8Es
+ om072ItFTtal_lfvBidoQDgQKh5YMdrAAy.SaQaca1BjFzho298MEsuDhQVQYICgujEz8GUk9Zut
+ OMIFA.oiROGgIcX.39HJhpm5KZK_A.MmZADsF.TgGxlm2oobK4RcovvThSUzZRes0jsfwzLjs4C.
+ wSI3TUaDn79f0eDVJO8QZvomgQp1zEOelsUC0eovajkKWeaBVfCRU1EBQgnNBxnQ.2Y0N1FV5e6Q
+ wOHBY_kZD0iNgjz70ofvJttOcucUgQzyPlsd.Ib6FdNLArvGE5.Z5UBNiJ8HS0PFHwGPBX7283vK
+ wC1GnG906nOtKDAMt3qrK4TNH..e_KftFgBEADRUXOWorVDfETQf4zA7VRTy_wzloC8WgGdyO7uY
+ HK.bV72Cei5eiN4AxoSz1siOeI0s..2RPJFXF8bC1sKmFO2dijbJE9lm_IKEw.gvk4lRhekY0j_P
+ sNtFAekIBMseZmXkRTBlkd3gxPZf4igvVffyeP.IC8_Xtn0B6xlSh_SmdVOfdiWNFxpQl1JKeXQO
+ 0C6JJf3gUS_DIiNdmda_rNlhFYYm88zSYVmk6HjV0C0Ubl1.z2I7r7ldjDlgNnS_chA.wpN4WELm
+ kB63bzGezSSZLVCUeZl88pynOtDpQdYBt0zAZn1R303ylXcMlN1FnDxidZu93qmHLL6JGtyuezGU
+ XJ.19G3A4BI4zx01PBLyTR_cSAqdhzWKgVPE2t.DlP5UxaXnwIUBm.iiLtnalH9VhF_JGNSagmBN
+ 9syze1TPNUMyOUF5Ye1ywU.fI7sNCvi4J3zJFmTrxebiW5uDtGSyxh_M2p2fUXy9mvPjDuzjAYv2
+ ACnNHr0vP8MFCayf0besafk1_MUqT9fgSjteAD_PC6sXjWXvAD7RaCdR8IfEw7JYfQvt74PlqlhP
+ h07ZnfvF8lMRbLr3uJ0OMNBRQPiHqW9Nvco_cMY_XI0Bwyr1QzNbKKEeyIAsBYqngJxIE0tR_h5C
+ SE5H7uYSBbCwKpDerz5qNKjuerIN2IimVOBWJrSPINSR0SRZ1WqXFQS50KbeXDombqUsz1D7zXQM
+ SW2IThA--
 X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: e846969f-424a-4b5a-9b68-29e0e667ec84
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ne1.yahoo.com with HTTP; Wed, 12 Nov 2025 07:40:31 +0000
+X-Sonic-ID: 7d0d6621-7108-4167-91f6-83db589ba9e7
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Wed, 12 Nov 2025 07:40:38 +0000
 Received: by hermes--production-ir2-5fcfdd8d7f-2cnbk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ce2e5d13638178c4daec60c4681fbbb6;
-          Wed, 12 Nov 2025 07:28:21 +0000 (UTC)
+          Wed, 12 Nov 2025 07:28:26 +0000 (UTC)
 From: Marek Mietus <mmietus97@yahoo.com>
 To: netdev@vger.kernel.org,
 	sd@queasysnail.net,
 	kuba@kernel.org
 Cc: Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v4 03/14] net: skb: rename skb_dstref_restore to skb_dstref_set
-Date: Wed, 12 Nov 2025 08:27:09 +0100
-Message-ID: <20251112072720.5076-4-mmietus97@yahoo.com>
+Subject: [PATCH net-next v4 04/14] net: dst_cache: add noref versions for dst_cache
+Date: Wed, 12 Nov 2025 08:27:10 +0100
+Message-ID: <20251112072720.5076-5-mmietus97@yahoo.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112072720.5076-1-mmietus97@yahoo.com>
 References: <20251112072720.5076-1-mmietus97@yahoo.com>
@@ -73,134 +73,331 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After changing skbuff to use the newly introduced dstref object,
-skb_dstref_restore is essentially just a setter for the dstref
-field.
-
-Rename the skb_dstref_restore function to skb_dstref_set.
+Implement noref variants for existing dst_cache helpers
+interacting with dst_entry. This is required for implementing
+noref flows, which avoid redundant atomic operations.
 
 Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
 ---
- include/linux/skbuff.h                  | 6 +++---
- include/net/tcp.h                       | 2 +-
- net/ieee802154/6lowpan/reassembly.c     | 2 +-
- net/ipv4/icmp.c                         | 2 +-
- net/ipv4/ip_fragment.c                  | 2 +-
- net/ipv4/ip_options.c                   | 2 +-
- net/ipv6/netfilter/nf_conntrack_reasm.c | 2 +-
- net/ipv6/reassembly.c                   | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+ include/net/dst_cache.h |  71 +++++++++++++++++++++
+ net/core/dst_cache.c    | 133 +++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 194 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index c46f817897a4..b71251372600 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1176,11 +1176,11 @@ static inline dstref_t skb_dstref_steal(struct sk_buff *skb)
- }
+diff --git a/include/net/dst_cache.h b/include/net/dst_cache.h
+index 1961699598e2..3ee387a8db45 100644
+--- a/include/net/dst_cache.h
++++ b/include/net/dst_cache.h
+@@ -23,6 +23,23 @@ struct dst_cache {
+  */
+ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache);
+ 
++/**
++ * dst_cache_get_rcu - perform cache lookup under RCU
++ * @dst_cache: the cache
++ *
++ * Perform cache lookup without taking a reference on the dst.
++ * Must be called with local BH disabled, and within an rcu read side
++ * critical section.
++ *
++ * The caller should use dst_cache_get_ip4() if it need to retrieve the
++ * source address to be used when xmitting to the cached dst.
++ * local BH must be disabled.
++ *
++ * Return: Pointer to retrieved rtable if cache is initialized and
++ * cached dst is valid, NULL otherwise.
++ */
++struct dst_entry *dst_cache_get_rcu(struct dst_cache *dst_cache);
++
+ /**
+  *	dst_cache_get_ip4 - perform cache lookup and fetch ipv4 source address
+  *	@dst_cache: the cache
+@@ -32,6 +49,21 @@ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache);
+  */
+ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
+ 
++/**
++ * dst_cache_get_ip4_rcu - lookup cache and ipv4 source under RCU
++ * @dst_cache: the cache
++ * @saddr: return value for the retrieved source address
++ *
++ * Perform cache lookup and fetch ipv4 source without taking a
++ * reference on the dst.
++ * Must be called with local BH disabled, and within an rcu read side
++ * critical section.
++ *
++ * Return: Pointer to retrieved rtable if cache is initialized and
++ * cached dst is valid, NULL otherwise.
++ */
++struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr);
++
+ /**
+  *	dst_cache_set_ip4 - store the ipv4 dst into the cache
+  *	@dst_cache: the cache
+@@ -43,6 +75,17 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
+ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
+ 		       __be32 saddr);
+ 
++/**
++ * dst_cache_steal_ip4 - store the ipv4 dst into the cache and steal its
++ * reference
++ * @dst_cache: the cache
++ * @dst: the entry to be cached whose reference will be stolen
++ * @saddr: the source address to be stored inside the cache
++ *
++ * local BH must be disabled
++ */
++void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
++			 __be32 saddr);
+ #if IS_ENABLED(CONFIG_IPV6)
  
  /**
-- * skb_dstref_restore() - restore skb dstref removed via skb_dstref_steal()
-+ * skb_dstref_set() - sets skb dstref
-  * @skb: buffer
-- * @dstref: dstref object from a call to skb_dstref_steal()
-+ * @dstref: dstref object
-  */
--static inline void skb_dstref_restore(struct sk_buff *skb, dstref_t dstref)
-+static inline void skb_dstref_set(struct sk_buff *skb, dstref_t dstref)
- {
- 	skb_dst_check_unset(skb);
- 	skb->_dstref = dstref;
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index e684f246e798..7a7408ad76fb 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2103,7 +2103,7 @@ static inline void tcp_skb_tsorted_anchor_cleanup(struct sk_buff *skb)
- 	dstref_t _dstref_save = skb_dstref_steal(skb);
+@@ -56,6 +99,18 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
+ void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
+ 		       const struct in6_addr *saddr);
  
- #define tcp_skb_tsorted_restore(skb)		\
--	skb_dstref_restore(skb, _dstref_save);	\
-+	skb_dstref_set(skb, _dstref_save);	\
++/**
++ * dst_cache_steal_ip6 - store the ipv6 dst into the cache and steal its
++ * reference
++ * @dst_cache: the cache
++ * @dst: the entry to be cached whose reference will be stolen
++ * @saddr: the source address to be stored inside the cache
++ *
++ * local BH must be disabled
++ */
++void dst_cache_steal_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
++			 const struct in6_addr *saddr);
++
+ /**
+  *	dst_cache_get_ip6 - perform cache lookup and fetch ipv6 source address
+  *	@dst_cache: the cache
+@@ -65,6 +120,22 @@ void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
+  */
+ struct dst_entry *dst_cache_get_ip6(struct dst_cache *dst_cache,
+ 				    struct in6_addr *saddr);
++
++/**
++ * dst_cache_get_ip6_rcu - lookup cache and ipv6 source under RCU
++ * @dst_cache: the cache
++ * @saddr: return value for the retrieved source address
++ *
++ * Perform cache lookup and fetch ipv6 source without taking a
++ * reference on the dst.
++ * Must be called with local BH disabled, and within an rcu read side
++ * critical section.
++ *
++ * Return: Pointer to retrieved dst_entry if cache is initialized and
++ * cached dst is valid, NULL otherwise.
++ */
++struct dst_entry *dst_cache_get_ip6_rcu(struct dst_cache *dst_cache,
++					struct in6_addr *saddr);
+ #endif
+ 
+ /**
+diff --git a/net/core/dst_cache.c b/net/core/dst_cache.c
+index 9ab4902324e1..52418cfb9b8a 100644
+--- a/net/core/dst_cache.c
++++ b/net/core/dst_cache.c
+@@ -25,20 +25,27 @@ struct dst_cache_pcpu {
+ 	};
+ };
+ 
+-static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
+-				      struct dst_entry *dst, u32 cookie)
++static void __dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
++					struct dst_entry *dst, u32 cookie)
+ {
+ 	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
+ 	dst_release(dst_cache->dst);
+-	if (dst)
+-		dst_hold(dst);
+ 
+ 	dst_cache->cookie = cookie;
+ 	dst_cache->dst = dst;
  }
  
- void tcp_write_queue_purge(struct sock *sk);
-diff --git a/net/ieee802154/6lowpan/reassembly.c b/net/ieee802154/6lowpan/reassembly.c
-index eb23c70c7416..183fb3f95809 100644
---- a/net/ieee802154/6lowpan/reassembly.c
-+++ b/net/ieee802154/6lowpan/reassembly.c
-@@ -146,7 +146,7 @@ static int lowpan_frag_queue(struct lowpan_frag_queue *fq,
- 		int res;
+-static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
+-					       struct dst_cache_pcpu *idst)
++static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
++				      struct dst_entry *dst, u32 cookie)
++{
++	if (dst)
++		dst_hold(dst);
++
++	__dst_cache_per_cpu_dst_set(dst_cache, dst, cookie);
++}
++
++static struct dst_entry *__dst_cache_per_cpu_get(struct dst_cache *dst_cache,
++						 struct dst_cache_pcpu *idst)
+ {
+ 	struct dst_entry *dst;
  
- 		res = lowpan_frag_reasm(fq, skb, prev_tail, ldev, refs);
--		skb_dstref_restore(skb, dstref);
-+		skb_dstref_set(skb, dstref);
- 		return res;
+@@ -47,14 +54,10 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
+ 	if (!dst)
+ 		goto fail;
+ 
+-	/* the cache already hold a dst reference; it can't go away */
+-	dst_hold(dst);
+-
+ 	if (unlikely(!time_after(idst->refresh_ts,
+ 				 READ_ONCE(dst_cache->reset_ts)) ||
+ 		     (READ_ONCE(dst->obsolete) && !dst->ops->check(dst, idst->cookie)))) {
+ 		dst_cache_per_cpu_dst_set(idst, NULL, 0);
+-		dst_release(dst);
+ 		goto fail;
  	}
- 	skb_dst_drop(skb);
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 6b19a0ffea21..bb6c0128a66b 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -553,7 +553,7 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		rt2 = skb_rtable(skb_in);
- 		/* steal dst entry from skb_in, don't drop refcnt */
- 		skb_dstref_steal(skb_in);
--		skb_dstref_restore(skb_in, dstref);
-+		skb_dstref_set(skb_in, dstref);
- 	}
+ 	return dst;
+@@ -64,6 +67,18 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
+ 	return NULL;
+ }
  
- 	if (err)
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index 33080c5350ed..a077070240b8 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -368,7 +368,7 @@ static int ip_frag_queue(struct ipq *qp, struct sk_buff *skb, int *refs)
- 		dstref_t dstref = skb_dstref_steal(skb);
++static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
++					       struct dst_cache_pcpu *idst)
++{
++	struct dst_entry *dst;
++
++	dst = __dst_cache_per_cpu_get(dst_cache, idst);
++	if (dst)
++		/* the cache already hold a dst reference; it can't go away */
++		dst_hold(dst);
++	return dst;
++}
++
+ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache)
+ {
+ 	struct dst_entry *dst;
+@@ -78,6 +93,20 @@ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache)
+ }
+ EXPORT_SYMBOL_GPL(dst_cache_get);
  
- 		err = ip_frag_reasm(qp, skb, prev_tail, dev, refs);
--		skb_dstref_restore(skb, dstref);
-+		skb_dstref_set(skb, dstref);
- 		if (err)
- 			inet_frag_kill(&qp->q, refs);
- 		return err;
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index d6c712269052..9e247ec9aa97 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -621,7 +621,7 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev)
- 		rt2 = skb_rtable(skb);
- 		if (err || (rt2->rt_type != RTN_UNICAST && rt2->rt_type != RTN_LOCAL)) {
- 			skb_dst_drop(skb);
--			skb_dstref_restore(skb, dstref);
-+			skb_dstref_set(skb, dstref);
- 			return -EINVAL;
- 		}
- 		dstref_drop(dstref);
-diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
-index 9fab51fb9497..c03ede44cfc7 100644
---- a/net/ipv6/netfilter/nf_conntrack_reasm.c
-+++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
-@@ -289,7 +289,7 @@ static int nf_ct_frag6_queue(struct frag_queue *fq, struct sk_buff *skb,
- 		dstref_t dstref = skb_dstref_steal(skb);
++struct dst_entry *dst_cache_get_rcu(struct dst_cache *dst_cache)
++{
++	struct dst_entry *dst;
++
++	if (!dst_cache->cache)
++		return NULL;
++
++	local_lock_nested_bh(&dst_cache->cache->bh_lock);
++	dst = __dst_cache_per_cpu_get(dst_cache, this_cpu_ptr(dst_cache->cache));
++	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++	return dst;
++}
++EXPORT_SYMBOL_GPL(dst_cache_get_rcu);
++
+ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr)
+ {
+ 	struct dst_cache_pcpu *idst;
+@@ -100,6 +129,28 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr)
+ }
+ EXPORT_SYMBOL_GPL(dst_cache_get_ip4);
  
- 		err = nf_ct_frag6_reasm(fq, skb, prev, dev, refs);
--		skb_dstref_restore(skb, dstref);
-+		skb_dstref_set(skb, dstref);
++struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr)
++{
++	struct dst_cache_pcpu *idst;
++	struct dst_entry *dst;
++
++	if (!dst_cache->cache)
++		return NULL;
++
++	local_lock_nested_bh(&dst_cache->cache->bh_lock);
++	idst = this_cpu_ptr(dst_cache->cache);
++	dst = __dst_cache_per_cpu_get(dst_cache, idst);
++	if (!dst) {
++		local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++		return NULL;
++	}
++
++	*saddr = idst->in_saddr.s_addr;
++	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++	return dst_rtable(dst);
++}
++EXPORT_SYMBOL_GPL(dst_cache_get_ip4_rcu);
++
+ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
+ 		       __be32 saddr)
+ {
+@@ -116,6 +167,24 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
+ }
+ EXPORT_SYMBOL_GPL(dst_cache_set_ip4);
  
- 		/* After queue has assumed skb ownership, only 0 or
- 		 * -EINPROGRESS must be returned.
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index aa8427f56ff3..016ca7344427 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -221,7 +221,7 @@ static int ip6_frag_queue(struct net *net,
- 		dstref_t dstref = skb_dstref_steal(skb);
++void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
++			 __be32 saddr)
++{
++	struct dst_cache_pcpu *idst;
++
++	if (!dst_cache->cache) {
++		dst_release(dst);
++		return;
++	}
++
++	local_lock_nested_bh(&dst_cache->cache->bh_lock);
++	idst = this_cpu_ptr(dst_cache->cache);
++	__dst_cache_per_cpu_dst_set(idst, dst, 0);
++	idst->in_saddr.s_addr = saddr;
++	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++}
++EXPORT_SYMBOL_GPL(dst_cache_steal_ip4);
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
+ 		       const struct in6_addr *saddr)
+@@ -135,6 +204,26 @@ void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
+ }
+ EXPORT_SYMBOL_GPL(dst_cache_set_ip6);
  
- 		err = ip6_frag_reasm(fq, skb, prev_tail, dev, refs);
--		skb_dstref_restore(skb, dstref);
-+		skb_dstref_set(skb, dstref);
- 		return err;
- 	}
++void dst_cache_steal_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
++			 const struct in6_addr *saddr)
++{
++	struct dst_cache_pcpu *idst;
++
++	if (!dst_cache->cache) {
++		dst_release(dst);
++		return;
++	}
++
++	local_lock_nested_bh(&dst_cache->cache->bh_lock);
++
++	idst = this_cpu_ptr(dst_cache->cache);
++	__dst_cache_per_cpu_dst_set(idst, dst,
++				    rt6_get_cookie(dst_rt6_info(dst)));
++	idst->in6_saddr = *saddr;
++	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++}
++EXPORT_SYMBOL_GPL(dst_cache_steal_ip6);
++
+ struct dst_entry *dst_cache_get_ip6(struct dst_cache *dst_cache,
+ 				    struct in6_addr *saddr)
+ {
+@@ -158,6 +247,30 @@ struct dst_entry *dst_cache_get_ip6(struct dst_cache *dst_cache,
+ 	return dst;
+ }
+ EXPORT_SYMBOL_GPL(dst_cache_get_ip6);
++
++struct dst_entry *dst_cache_get_ip6_rcu(struct dst_cache *dst_cache,
++					struct in6_addr *saddr)
++{
++	struct dst_cache_pcpu *idst;
++	struct dst_entry *dst;
++
++	if (!dst_cache->cache)
++		return NULL;
++
++	local_lock_nested_bh(&dst_cache->cache->bh_lock);
++
++	idst = this_cpu_ptr(dst_cache->cache);
++	dst = __dst_cache_per_cpu_get(dst_cache, idst);
++	if (!dst) {
++		local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++		return NULL;
++	}
++
++	*saddr = idst->in6_saddr;
++	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
++	return dst;
++}
++EXPORT_SYMBOL_GPL(dst_cache_get_ip6_rcu);
+ #endif
  
+ int dst_cache_init(struct dst_cache *dst_cache, gfp_t gfp)
 -- 
 2.51.0
 
