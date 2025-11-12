@@ -1,107 +1,109 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E02F2475CE
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 23:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058372737F3
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 23:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762989861; cv=none; b=KPOUr87xupUkbLrM2Mo9698sitiewWe+id6pMVbO5VfQiMa4qIbvgjM44Nr8PSyICjMJVFzZW5bjDQUn3wmWeSG+cW68GICwi0+Dg7JgqeJ3tJEGqU/MkTFgt2N5NN7Au9C1s1niS9SABJaR00HTYARthZ26tYDwhTR7x/S26P0=
+	t=1762990934; cv=none; b=YKwDPx50Q8QlXWcByixzGPUvYDhR0IyQdcS5XVbe5JbbMe/ele8sERrUPozrs9EIJsnSgRNpf4xLGv95JLw/JQx777xJzn+rlTu2Bn27cod/pPAPu1wTFQysiXIcY10P2zW2RSNqGY+yktV3volJWEODOYv1xmqPK39cqh8wLFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762989861; c=relaxed/simple;
-	bh=/rrqrWefr6Be8/0xwOqC6LYKV/EgTwyOcbreEBWCCuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FIE8xW/NML/jneWbsK6HZpLpJJ0uBkdZogkNYaYLWViGHzvGN1375RVeJa3Rsxu3bWrsPxHeLE0XszeUsybRPb12LnurCox2YGFT+eWYiH5nv+gDLVyZI5N/r7HkkeeSVfJrcbEPv+4FGRAou1iCjSggdSh2J5u5tC7vp2msFTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FtabXl5d; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762990934; c=relaxed/simple;
+	bh=1lMoFMACzbECk38vPby/3BbYs6Z3LfIE8mVZSaO1JLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RyPf6633m6VMA0RWvsvSmraIK2hazkxQtEz0PBEv3/db8ysz0oRwW0RrHKTq1txOKQh3/fRK0/661ZHCMULQu8seLT1fbMg6FsXIEc0fVLOIwS9GYyDMajsw37GV8O2Z3UQmOIXE9xP2f4/zbY3IEkOLYQKHyNS1fBD7cWZc6Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNzgPqhh; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FtabXl5d"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762989847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ae3Y9wLC7e7ztA80BXItavwEzFGlDsl4crb0Mx/OgXA=;
-	b=FtabXl5dLrk+jCbT6Y9bZm8NdSH0StZRFNjxqiKkDpSgpmpCI9EB50QX4Dwn2Mh/JQDXhq
-	uWDxxdkvrvANJfd10xVkxqTeU50xPvEzJiajee/TgnLeecoyB+rnHi0QW2bzmewAZ/LdaZ
-	YW/WvQwZILBFJcHBucFPNmuRsQgSvtQ=
-From: Martin KaFai Lau <martin.lau@linux.dev>
-To: bpf@vger.kernel.org
-Cc: 'Alexei Starovoitov ' <ast@kernel.org>,
-	'Andrii Nakryiko ' <andrii@kernel.org>,
-	'Daniel Borkmann ' <daniel@iogearbox.net>,
-	netdev@vger.kernel.org,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>
-Subject: [PATCH bpf-next 1/2] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
-Date: Wed, 12 Nov 2025 15:23:30 -0800
-Message-ID: <20251112232331.1566074-1-martin.lau@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNzgPqhh"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477632d9326so1629235e9.1
+        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 15:42:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762990931; x=1763595731; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TshU2etaSOogd1M2K3cI72dRrmMqzWKUmJSokl5dOkg=;
+        b=KNzgPqhh7/bu2fGYbsl+Imz2xNGDo0JoWjIH+/0TkRhmmy/p6zLe5vE3qM7ujpKNIZ
+         iCDDpOupX+oOWTe4cMXXOqA0baZNu2sZSMDvUs/z6+t2MM8uifBgwGwBz8OmcF3ZXDC6
+         Z86YfSAUROymmb+DRUWtnqU8/Ohbbd1JsgKcpZ5Jgupt4MGTFfV0lGL39RG8UeznO2TZ
+         fILhu8SH2xIjKvLLu35Bw1k4lMQ9mxez2sVSUwLStqNsgJw0H3LMK+0fCt27MfD2MBkJ
+         xKanfAXxXlJkxemqmW6dXX2CW+TUopQOe2p1O2w26PBVb65ZlYR7q95dTviWLaZ8Qfmk
+         h56w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762990931; x=1763595731;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TshU2etaSOogd1M2K3cI72dRrmMqzWKUmJSokl5dOkg=;
+        b=vlSNzWyMyRfJCUrjCG1GIPYtU5I+6X/GmvdBobD+U4zY9kbhjie37+7B4clWorgsnX
+         6iTbBJNhkA3n6ydbXhzi9BMCAVzJS5+K0e7NB635yv1ee4yOTxg/2P+5by7u/asam6ow
+         FIZnQmMWPP9XJLG7Tm+65gM0ExaYIcTvOQXEVKoOm+nsXOUxCSxzidHjeYB7fM81gvdP
+         hVdve1KukEFfimQUjsf5V0AP+Wmpq0q/gdQJxRMvTF57ZKFhAib4/mJVPHBtGvUHkMyv
+         NcRMhVHVieGONr9Ttx7icbAHKqZioj3rsbDSpkqzsl78YPKKcBmO77MUvQ9OD8usTfzc
+         9a4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW/H2HrxMObl/YBS5Vm6ptur0CwIYEODrI8mZ8JY/336JKDmLgDsN9bedzQfYGdW7Ufkf8LmXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1ANWScqMayTy4Ti8bnpbgbq7V16SNQmAn6Zn4iDgOZFz+Nguz
+	bYADrhnharOaQD0Fkb6OYr17owT73sQchTPmoEtBvkyyvL9sJXqUDCAy
+X-Gm-Gg: ASbGncsK9nPj46trs2KK+uJtTg/Ex4OVL6qhYlF7x0dDxzi0BUsFeT4dm/UoWrSMo+s
+	csMHGystAi6BBQ/qpSo91rVkNVnGDWssDCx7aMzLc8la7DM2ZGoUNLk2bTqtrmRLNID3SCS8IgG
+	aTVbJi0nHQFjFow9w7QMXFh5UfC5Dv68REqutop8cYOnxuWVLvr7OCxRxlqtQ+9kcgR8I5KfMtG
+	YOLLOkRoQ/H2yxphVhjCtqe87jiIrHRRmHwC9LTnlZsVpjqGXsCpnc+0qp5A2sJGov3O68Unjr0
+	cGlvTc07T0n9IWW2dPNhdkJSaF7OgmiLyo5vsHHn2RAj1T+vYflOuetvVhbI/Xvcsjds0fLayNe
+	+6IPbMJFvE523a+fDu9lu6wWtjeXNMa5x765D794mVH08Adq4MY4jFTF8GOsLpBEQGGdhZZeD
+X-Google-Smtp-Source: AGHT+IFFAk8S1cUSmChXmujEvmDeQzGglCBvYNUZFPq/4dEK7j7TC7hepzqst+d+TMDKaX2Il38imA==
+X-Received: by 2002:a05:600c:3546:b0:46e:32a5:bd8d with SMTP id 5b1f17b1804b1-4778703e738mr51144505e9.3.1762990931152;
+        Wed, 12 Nov 2025 15:42:11 -0800 (PST)
+Received: from archlinux ([143.58.192.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e7ae98sm368059f8f.2.2025.11.12.15.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 15:42:10 -0800 (PST)
+Date: Wed, 12 Nov 2025 23:42:08 +0000
+From: Andre Carvalho <asantostc@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v3 5/6] netconsole: resume previously
+ deactivated target
+Message-ID: <faql444wbuoqwtfsl2722xjphijchannmdk2d5gemupnpluhom@bvv2k6zy7lhx>
+References: <20251109-netcons-retrigger-v3-0-1654c280bbe6@gmail.com>
+ <20251109-netcons-retrigger-v3-5-1654c280bbe6@gmail.com>
+ <e4loxbog76cspufl7hu37uhdc54dtqjqryikwsnktdncpqvonb@mu6rsa3qbtvk>
+ <h5tdoarzjg2b5v3bvkmrlwgquejlhr5xjbrb6hn2ro4s46dpfs@4clrqzup6szk>
+ <j67rta6sn3c2tgor3gtcrr2hvcdnxk6iqvzkhqkjkr6cgaezbh@vri4vhhzv5rf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <j67rta6sn3c2tgor3gtcrr2hvcdnxk6iqvzkhqkjkr6cgaezbh@vri4vhhzv5rf>
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+On Wed, Nov 12, 2025 at 09:52:10AM -0800, Breno Leitao wrote:
+> > The main reason why I opted for a helper in netpoll was to keep reference
+> > tracking for these devices strictly inside netpoll and have simmetry between
+> > setup and cleanup. Having said that, this might be an overkill and I'm fine with 
+> > dropping the helper and taking your suggestion.
+> 
+> Right, that makes sense. Would we have other owners for that function?
 
-The bpf_skb_check_mtu helper needs to use skb->transport_header when
-the BPF_MTU_CHK_SEGS flag is used:
+I've looked at other drivers using netpoll and from what I could find all of them
+are using __netpoll_setup paired with __netpoll_free. They don't seem to 
+rely on dev_tracker to track references, I'd need to look a bit more to be certain,
+but I think other callers are own the devices and track their lifecycle separately.
+So I don't think this would be useful for them.
 
-	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
+Since we are moving netpoll_cleanup to netconsole in your patch below, I think I should
+drop the netpoll helper and keep it in netconsole. I wonder if we should consider
+moving do_netpoll_cleanup to netconsole as well, since it seems to be the only caller
+and then we would have the same symmetry I mentioned above.
 
-The transport_header is not always set. There is a WARN_ON_ONCE
-report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
-bpf_prog_test_run is used:
+So, to summarize, given your refactor patch I think it makes sense drop the previous
+patch and do the netdev_hold in netconsole as you suggested. Does that sound good?
 
-WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
- skb_gso_validate_network_len
- bpf_skb_check_mtu
- bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
- bpf_test_run
- bpf_prog_test_run_skb
-
-For a normal ingress skb (not test_run), skb_reset_transport_header
-is performed but there is plan to avoid setting it as described in
-commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
-
-This patch fixes the bpf helper by checking
-skb_transport_header_was_set(). The check is done just before
-skb->transport_header is used, to avoid breaking the existing bpf prog.
-The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
-
-Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
----
- net/core/filter.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 1efec0d70d78..df6ce85e48dc 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6429,9 +6429,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
- 	 */
- 	if (skb_is_gso(skb)) {
- 		ret = BPF_MTU_CHK_RET_SUCCESS;
--		if (flags & BPF_MTU_CHK_SEGS &&
--		    !skb_gso_validate_network_len(skb, mtu))
--			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		if (flags & BPF_MTU_CHK_SEGS) {
-+			if (!skb_transport_header_was_set(skb))
-+				return -EINVAL;
-+			if (!skb_gso_validate_network_len(skb, mtu))
-+				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		}
- 	}
- out:
- 	*mtu_len = mtu;
 -- 
-2.47.3
-
+Andre Carvalho
