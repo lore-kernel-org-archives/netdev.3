@@ -1,97 +1,96 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FEB2F617C
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 08:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A484C97
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 08:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762936441; cv=none; b=Iye9NsBK6dhjFWzec6P2JEbOD8GnBB+I6bVyKZAFTM6/YoaV+uA2sxdj7oQtCRf+Qw5Gmo0fJLqfWkIwoRsuAFNhJ6MfFmrunjME8cVuecd6Bhw1SmX/6M1BClS04THmme0lLAoR/KcN7hdVZl3UAFOGWX/0lNB5ZR7vtHntq0Q=
+	t=1762937150; cv=none; b=ESZ61wIHkJHkl6mXlIVjUm4+Hz/lPEhYzWx/l5ajhid7UKaPUsw+y/2yZBDaSwk5fgS3Qjb86KeljlHz++CIggJruMx1UXQuOgE13+UyL7jJSrQ2ESaly9FDGUlzrilIWjUVov012BWexybcGafR9lrcgCSd2xagbBtGTquKtjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762936441; c=relaxed/simple;
-	bh=bokRzc54GVe8W6oduREEJvk/PaKJNo1RzV355x8lVt8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IodaYzBXQzYhy6tZ+3HzMu1dxNInXwbxqvJOFsOAebwJ35zCqA2tIyIg6spjqdghI2wRiLBo0wQ1TxQMcg7W44DDb88PGIZvM/2y7Pls4Qsvu1wTRIB4tjsruLxZ5vN9d+bvTHW3GEsghD7K+OzVVlPv8Yct4oeMyFOTomx1aaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WHtuunsT; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1762937150; c=relaxed/simple;
+	bh=bMd/5ZCa9EMaSTREEd7iLAxqgvRmN67nkKKHJJi+jz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Uf23hKTX5DF2GwXQDrSg2CDUe6c/qxTt4cOnSeCZxVnVtxbbAQtDXuurgrkG4ezAUpeVlKsQ4QpqT8qjwRiBkz/YhxIRyIhmYGvAG4YdBeoVGam8vaq+xNJV4CLe6DntBAK5XEy3O53BTdDALJfsKsfdAW0lHYpshR6zSfOBen8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZRLcyJVA; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WHtuunsT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Cf2GYI+/yCcGPnacLcn3Cky5+fe23MqTI2IoOnZsu2s=; b=WHtuunsT1LjisomxJRxpuHtNDN
-	9yZEhz+uh0qFoV7gYiGdibgmUt9edS9+MeYCyofZ8VcIDHmJV4HQ2RYhQGAn+t7WB7Xyjlb2TzucV
-	VLCfpQ3BpLUIYJvYiYhrUXYLMYkDqTOphW6kAr2lYYqibBHhSakcIuSz2xwmiyk3F1JBylZq2mheC
-	I31Rqx0tGFQ+Vy04HzFmqCQ+YqZgO342nFrV9CKsFH0abGvRyW4TRTqdGlFQtl1GN5U1D1xjlfUjo
-	bK9ChCJ8IMzt/8AVruuc8+/oGToUsGHVFgQV1SHFSxp93w4TgD+WsN4XtlB9miZdhb2awt9KMQ2AB
-	0BPqfOIA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39690)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vJ6IY-000000003Y3-30kd;
-	Wed, 12 Nov 2025 08:33:50 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vJ6IW-000000003jx-1J9a;
-	Wed, 12 Nov 2025 08:33:48 +0000
-Date: Wed, 12 Nov 2025 08:33:48 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 2/2] net: phy: TI PHYs use
- phy_get_features_no_eee()
-Message-ID: <aRRGbAR26GuyKKZl@shell.armlinux.org.uk>
-References: <aRMgLmIU1XqLZq4i@shell.armlinux.org.uk>
- <E1vImhv-0000000DrQi-49UR@rmk-PC.armlinux.org.uk>
- <aRRFDUewyw9x7teC@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZRLcyJVA"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 66822C0F55A;
+	Wed, 12 Nov 2025 08:45:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 035936070B;
+	Wed, 12 Nov 2025 08:45:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4FC4310371975;
+	Wed, 12 Nov 2025 09:45:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762937145; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Xx9lma/uNuwe8Ol8EXR6l6X/Zl29lmcXdESupmUg7+Q=;
+	b=ZRLcyJVAlZkwnw6blito1gQWc+V4oy/WEyWjCCj1oyLX148EAorok0b/07wznJzWidgnFC
+	INrMwtcr/yaYDC9fz5b9wmfwUdpNRkBjQKxUPym7IcC0htcpSBkMmG3ec3qlFsUKvXtZBX
+	u3an52FI6Tshcl5W40vZK56JwarrkQn166rhPlYBlHihAXuHpa5+sN3QiyTBu3pr7VsAYq
+	f/MYu12egS5LgK05i0LIIbi54QtVtIV2Iv2Lb+SSWExFDudr9NoQU1Yc0rR81/t9EIvCZo
+	+ULzMQdeeqi41pVjZvGD8Zb0NvCz7G8bLtVaiEG27bwRZ2zgsLCH1qua+9LFZQ==
+Date: Wed, 12 Nov 2025 09:45:41 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Jiaming Zhang <r772577952@gmail.com>
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me,
+ syzkaller@googlegroups.com, vladimir.oltean@nxp.com
+Subject: Re: [PATCH v4 1/1] net: core: prevent NULL deref in
+ generic_hwtstamp_ioctl_lower()
+Message-ID: <20251112094541.5510346b@kmaincent-XPS-13-7390>
+In-Reply-To: <20251111173652.749159-2-r772577952@gmail.com>
+References: <20251103171557.3c5123cc@kernel.org>
+	<20251111173652.749159-1-r772577952@gmail.com>
+	<20251111173652.749159-2-r772577952@gmail.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRRFDUewyw9x7teC@pengutronix.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 12, 2025 at 09:27:57AM +0100, Oleksij Rempel wrote:
-> On Tue, Nov 11, 2025 at 11:38:43AM +0000, Russell King (Oracle) wrote:
-> > As TI Gigabit PHYs do not support EEE, use the newly introduced
-> > phy_get_features_no_eee() to read the features but mark EEE as
-> > disabled.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-...
-> > @@ -1196,6 +1198,7 @@ static int dp83822_led_hw_control_get(struct phy_device *phydev, u8 index,
-> >  		.name		= (_name),			\
-> >  		/* PHY_BASIC_FEATURES */			\
-> >  		.probe          = dp83826_probe,		\
-> > +		.get_features	= phy_get_features_no_eee,	\
-> >  		.soft_reset	= dp83822_phy_reset,		\
-> >  		.config_init	= dp83826_config_init,		\
-> >  		.get_wol = dp83822_get_wol,			\
-> 
-> The DP83822/25/26 are all 100 Mbit variants. They all officially claim
-> EEE support. Maybe it is too early to give up here?
+On Wed, 12 Nov 2025 01:36:52 +0800
+Jiaming Zhang <r772577952@gmail.com> wrote:
 
-This is going to be horrid to guarantee getting the correct entry
-in the patch - I *absolutely* hate this driver struct array. Please
-provide a diff to be squashed into the patch.
+> The ethtool tsconfig Netlink path can trigger a null pointer
+> dereference. A call chain such as:
+>=20
+>   tsconfig_prepare_data() ->
+>   dev_get_hwtstamp_phylib() ->
+>   vlan_hwtstamp_get() ->
+>   generic_hwtstamp_get_lower() ->
+>   generic_hwtstamp_ioctl_lower()
+>=20
+> results in generic_hwtstamp_ioctl_lower() being called with
+> kernel_cfg->ifr as NULL.
+>=20
+> The generic_hwtstamp_ioctl_lower() function does not expect a
+> NULL ifr and dereferences it, leading to a system crash.
+>=20
+> Fix this by adding a NULL check for kernel_cfg->ifr in
+> generic_hwtstamp_ioctl_lower(). If ifr is NULL, return -EINVAL.
+>=20
+> Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to
+> get/set hwtstamp config") Closes:
+> https://lore.kernel.org/lkml/cd6a7056-fa6d-43f8-b78a-f5e811247ba8@linux.d=
+ev/T/#mf5df538e21753e3045de98f25aa18d948be07df3
+>=20
+> Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
 
-Thanks.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Thank you!
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
