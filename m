@@ -1,49 +1,74 @@
-Received: from smtp.lsv.jp (ns1.lsv.jp [133.18.31.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD35C2D3217
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 04:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=133.18.31.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE0C2820DB;
+	Wed, 12 Nov 2025 04:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762920005; cv=none; b=OSn4Sxo45dqIwZ4QtVWnOquCmtr4OSqJzBbQxx27/LGK5DkiFImYuEtqhC6zjqxMcSr0gpff08M2T33c7MPHPmnCQSEg105K1deCO2yCYIEf/wSrUKZLLnwNbDfR4sprQbsGAVGUMf5an0Twz6org1OYoDnu/7fXqW5vM8XlWdA=
+	t=1762920443; cv=none; b=k8ZEdbGtCrzHMQFkMtFBd833VEf4kxyoN75njzXcV3vVGideGaGcLeYkJQ0YFmBrMvtfjSJ/SeCSRLCg4FVKQPWywDeB7XXhDIwYhK7RtAJO387qrAlxv9Z2rtN9rDwVwe/QXhHdp6JuNYxGMIpVszen+9K6HyJvtZjz2DNifEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762920005; c=relaxed/simple;
-	bh=1lW6gQPeGdUQiYLyOUf3tUhKAz4GhVShWonsE7+Kf3Q=;
-	h=To:Subject:From:Content-Type:Message-Id:Date; b=TA0scXSIN9ZZ1TJNVg3QDru6GCxeAWEZ9c4VJmrPV0bRHJulrMNq2v1Y2nbsk2xnM/MT+EQLV89Yoom70d+qFs5ufkzrMpMmsEfSwNUVrRpkUrqh1eIUoAiYkM7Ri7g7Tsm0H50DISXNuDDclCaW2wzq6L6aYPMtbaDCtvg6L8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=f-elead.biz; spf=pass smtp.mailfrom=cv3.lsv.jp; arc=none smtp.client-ip=133.18.31.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=f-elead.biz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cv3.lsv.jp
-Received: from cv3.lsv.jp (cv3.lsv.jp [113.36.242.232])
-	by smtp.lsv.jp (Postfix) with ESMTP id 0A5BB11C115D
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 12:51:25 +0900 (JST)
-Received: by cv3.lsv.jp (Postfix, from userid 1717)
-	id EEC16403ACD9A; Wed, 12 Nov 2025 12:51:24 +0900 (JST)
-To: netdev@vger.kernel.org
-Subject: =?iso-2022-jp?B?GyRCR1s/LkRkO18kcjx1JDFJVSQxJF4kNyQ/GyhC?=
-From: info@f-elead.biz
-Reply-To: info@f-elead.biz
-Content-Type: text/plain;charset=iso-2022-jp
-X-Mailer: PHP/7.4.27
-Message-Id: <20251112035124.EEC16403ACD9A@cv3.lsv.jp>
-Date: Wed, 12 Nov 2025 12:51:24 +0900 (JST)
+	s=arc-20240116; t=1762920443; c=relaxed/simple;
+	bh=m3plAV8OHJtWBsWMLz9UPId3Nq/viGgfVBH4/ctoAG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HKZRhOGOvNb9arvUcsplMU2bNFolZ1jIV4/TANVOVNUOAgPaNHj0pOCNWuUhx8rbSk0Qngj08AKb0bZqkj1STzWIKGU5n6FydsuPgtWUuMtHe3HjYZHaq7MyCxZVNDWGJSS4hcjzXWzpmk4Jz5LGidYv8Gl8i5ToPB8fVgKt54U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsQa5b7u; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsQa5b7u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E819C116B1;
+	Wed, 12 Nov 2025 04:07:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762920441;
+	bh=m3plAV8OHJtWBsWMLz9UPId3Nq/viGgfVBH4/ctoAG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XsQa5b7u3/JQQxE2ic9zBaNt/Ct3YlRuJiMdgvg2qjVjZBe6UXk+ab23VSlVEH7Rn
+	 x56n6rgTiqDJSH2zMgqQCmXTSWkTrwBKaHaGMPFZCYV1cuCKQqCsNF2w2kNjWSTqsC
+	 Q2/q59MDofR4D+WiIlCgj7onOhmOi6mr7vC7y8OKANfTf8+Kqyi3/kX7O+ON2Un98c
+	 NrZcl3egV7u1m9tj05LTrvmYZkolMlz8Dx3Kqm3fxB4X8EvH2Rhhi97Hk1RBLOVRv6
+	 gLMJiFyh2rvh0kxTUK2tIJ+U5yOxtwf6JDtaQLyQnREbQItr1j9563lR2hhzZyRMPV
+	 slKlaPfyk+GFA==
+Date: Wed, 12 Nov 2025 04:07:19 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Stephen Hemminger <stephen@networkplumber.org>,
+	David Ahern <dsahern@kernel.org>
+Cc: linux-crypto@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH iproute2-next v2] lib/bpf_legacy: Use userspace SHA-1
+ code instead of AF_ALG
+Message-ID: <20251112040719.GB2832160@google.com>
+References: <20250929194648.145585-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250929194648.145585-1-ebiggers@kernel.org>
 
-メール配信手続きを受け付けました。
+[Adding David Ahern.  I overlooked that iproute2 has separate
+maintainers for the main tree and the next tree.]
 
-配信停止の手続きまで１〜２営業日程度かかりますこと、
-何卒ご了承いただきますようお願い申し上げます。
- 
+On Mon, Sep 29, 2025 at 12:46:48PM -0700, Eric Biggers wrote:
+> Add a basic SHA-1 implementation to lib/, and make lib/bpf_legacy.c use
+> it to calculate SHA-1 digests instead of the previous AF_ALG-based code.
+> 
+> This eliminates the dependency on AF_ALG, specifically the kernel config
+> options CONFIG_CRYPTO_USER_API_HASH and CONFIG_CRYPTO_SHA1.
+> 
+> Over the years AF_ALG has been very problematic, and it is also not
+> supported on all kernels.  Escalating to the kernel's privileged
+> execution context merely to calculate software algorithms, which can be
+> done in userspace instead, is not something that should have ever been
+> supported.  Even on kernels that support it, the syscall overhead of
+> AF_ALG means that it is often slower than userspace code.
+> 
+> Let's do the right thing here, and allow people to disable AF_ALG
+> support (or not enable it) on systems where iproute2 is the only user.
+> 
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-イーリード
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+Stephen and David, any interest in applying this patch?
 
-【 Email 】 netdev@vger.kernel.org
-
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-送信日時：2025/11/12 (Wed) 12:51:24
-
+- Eric
