@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0103491EB
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DE034BA5B
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 18:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762973050; cv=none; b=Vt8LggB6nyNA9SWAAJyPxIZ/99T2Lod9M7X/FBF5Jw1XI93lLvWQD2dRSYNZ/VDGetxZ5Vv5wWHOWxFXvMxq3afP2aeQes1B5tBObuM/8OTyx2kdSzM+dIgpPReNWd7tGgtogqwN/DNJwviOeH155uru6sWhOy6XEpnrjdZuuFA=
+	t=1762973050; cv=none; b=BU3NQvjFOuWmnYfdz04SoQsYKDx8zhPKInWLNqeM1vHbBzRUrLQchD9tjfcGz2GZQLFJgssU37xHTQmrioIXjoVixTR5tWLckZz71WLlDMAhmsOKQ20X0fK30EvFs+/JMH3lQja12A/ZDjgqDnv+t3TcwjeOD2QWdsZ9CfH3GH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762973050; c=relaxed/simple;
-	bh=yS5KxhWOIq8laBCLLPL8hY0CywZGKfbT5VvT4aOdYVQ=;
+	bh=AW7kgSmkrxzbFDoWM68dq4FFV6JmO+GBvqwkcwA7z3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKyV+Sn44pa6c0HmA+EmefNykZYSgNGacUCWNMI2e7qEKcYQLfIg+yigxCBpwB341mQPxTHhFUW6bR+GpxSqFmdaEUbU8FKMHpf0eZDrWzgIFdlSIRjKKkBWvN8Znje5pZcd78xTmQvbIGKwiwFD6zqYyoiv5D3is2Bs4y5l404=
+	 MIME-Version; b=FYi9vbH8BE/oSCctFImtTQIzLCdMV3FkRBty0bSL1+2L99M2LUKXsyjRVD72Y3QzwMFHif+k30h85lE3SfSm5TSfTW3RV33gwfJPUWQYEQXyKyg5JAfL6T8WBUrlJiWY5fKE9uf0jJRVqhlGM3sXR/JkXY4UojF9g6tQWm7LrbI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJFow-0006tr-6M; Wed, 12 Nov 2025 19:43:54 +0100
+	id 1vJFor-0006t4-SN; Wed, 12 Nov 2025 19:43:49 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJFor-0008Cw-3A;
-	Wed, 12 Nov 2025 19:43:50 +0100
+	id 1vJFor-0008CY-1c;
+	Wed, 12 Nov 2025 19:43:49 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B886649E0CD;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 2175349E0C5;
 	Wed, 12 Nov 2025 18:43:49 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Chu Guangqing <chuguangqing@inspur.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 11/11] can: bxcan: Fix a typo error for assign
-Date: Wed, 12 Nov 2025 19:40:30 +0100
-Message-ID: <20251112184344.189863-12-mkl@pengutronix.de>
+Subject: [PATCH net-next 03/11] can: peak_usb: convert to use ndo_hwtstamp callbacks
+Date: Wed, 12 Nov 2025 19:40:22 +0100
+Message-ID: <20251112184344.189863-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112184344.189863-1-mkl@pengutronix.de>
 References: <20251112184344.189863-1-mkl@pengutronix.de>
@@ -59,31 +60,77 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Chu Guangqing <chuguangqing@inspur.com>
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-Fix the spelling error of "assign".
+Convert driver to use ndo_hwtstamp_set()/ndo_hwtstamp_get() callbacks.
+ndo_eth_ioctl handler does nothing after conversion - remove it.
 
-Signed-off-by: Chu Guangqing <chuguangqing@inspur.com>
-Reviewed-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20251103074009.4708-1-chuguangqing@inspur.com
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20251029231620.1135640-4-vadim.fedorenko@linux.dev
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/bxcan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c | 35 +++++++++-----------
+ 1 file changed, 16 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/can/bxcan.c b/drivers/net/can/bxcan.c
-index 0b579e7bb3b6..baf494d20bef 100644
---- a/drivers/net/can/bxcan.c
-+++ b/drivers/net/can/bxcan.c
-@@ -227,7 +227,7 @@ static void bxcan_enable_filters(struct bxcan_priv *priv, enum bxcan_cfg cfg)
- 	 * mask mode with 32 bits width.
- 	 */
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+index 94b1d7f15d27..cf48bb26d46d 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+@@ -784,36 +784,33 @@ static int peak_usb_set_data_bittiming(struct net_device *netdev)
+ 	return 0;
+ }
  
--	/* Enter filter initialization mode and assing filters to CAN
-+	/* Enter filter initialization mode and assign filters to CAN
- 	 * controllers.
- 	 */
- 	regmap_update_bits(priv->gcan, BXCAN_FMR_REG,
+-static int peak_eth_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
++static int peak_hwtstamp_get(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config)
+ {
+-	struct hwtstamp_config hwts_cfg = { 0 };
++	config->tx_type = HWTSTAMP_TX_OFF;
++	config->rx_filter = HWTSTAMP_FILTER_ALL;
+ 
+-	switch (cmd) {
+-	case SIOCSHWTSTAMP: /* set */
+-		if (copy_from_user(&hwts_cfg, ifr->ifr_data, sizeof(hwts_cfg)))
+-			return -EFAULT;
+-		if (hwts_cfg.tx_type == HWTSTAMP_TX_OFF &&
+-		    hwts_cfg.rx_filter == HWTSTAMP_FILTER_ALL)
+-			return 0;
+-		return -ERANGE;
++	return 0;
++}
+ 
+-	case SIOCGHWTSTAMP: /* get */
+-		hwts_cfg.tx_type = HWTSTAMP_TX_OFF;
+-		hwts_cfg.rx_filter = HWTSTAMP_FILTER_ALL;
+-		if (copy_to_user(ifr->ifr_data, &hwts_cfg, sizeof(hwts_cfg)))
+-			return -EFAULT;
++static int peak_hwtstamp_set(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack)
++{
++	if (config->tx_type == HWTSTAMP_TX_OFF &&
++	    config->rx_filter == HWTSTAMP_FILTER_ALL)
+ 		return 0;
+ 
+-	default:
+-		return -EOPNOTSUPP;
+-	}
++	NL_SET_ERR_MSG_MOD(extack, "Only RX HWTSTAMP_FILTER_ALL is supported");
++	return -ERANGE;
+ }
+ 
+ static const struct net_device_ops peak_usb_netdev_ops = {
+ 	.ndo_open = peak_usb_ndo_open,
+ 	.ndo_stop = peak_usb_ndo_stop,
+-	.ndo_eth_ioctl = peak_eth_ioctl,
+ 	.ndo_start_xmit = peak_usb_ndo_start_xmit,
++	.ndo_hwtstamp_get = peak_hwtstamp_get,
++	.ndo_hwtstamp_set = peak_hwtstamp_set,
+ };
+ 
+ /* CAN-USB devices generally handle 32-bit CAN channel IDs.
 -- 
 2.51.0
 
