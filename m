@@ -1,108 +1,315 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7CB3009D9
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 11:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1C535CBB7
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 11:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762945578; cv=none; b=IY82qaKygNymicKx0nvTyAsXWj05LKFBAhv43G60JJqo5Bv8rQHbcg/Lg+ClLvFfjQj0huDc6TtgR+vd8F2XMWfphmjKnYGjMTqjwFr2Ct1fSidNtPwUyoB6OTTRTr7b26zLJ1UaVRyZ8078CrDBru7XrubVrXpZ+vaVCfrvma0=
+	t=1762946114; cv=none; b=jFMwSBLsnDYGWldPlXiXh+Q5FI276M37HjjqRgOnpuqOn9FHWREjNjbFJgzXP02Sxk3fbtcbd+LL6CuhM8caBaD3JMshrhAQmJVC4+j97E+AekBp78SwOO6n7BPI2LK0qx9B+mSW+hxwqwES0w/O0wr5Wf3yqcjVavYFR1As4s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762945578; c=relaxed/simple;
-	bh=tDH5RdXScHosnp3tBgCu6Wo6hK9wWBwFctAls40eQ2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AhQ8X9EyrwQ0WUkmRKatCmB3OuNFaL4TkoLzUuc9JbeeQPJG1PMStLqTLILph4eEVfTERsGFI3b4iEIClMC1GVzjgU0/9QzPxRdvR6PweWMQsxFyBeGbRsz4jopDfDn/7mhjBw4uz9mAFwycx4/IMCJaKEhlcpPwiUsszEbvHGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=bAOysrJk; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1762946114; c=relaxed/simple;
+	bh=QJ7RsItWW94sQLYSWk24Ndul83P/s6M1Pj6x+zsl1P0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jCrDGeT/1bIl40+wwbKaSPYH5B/gOvIRPwDu51Zsc41LPiAGUv0H7svTCYOU3hgHdV7oRQpGL/9XnXQS5BP1xa/MKhPj6uLhyVSSX4oLPko/aP5go07FXwPHSMZ/2Kq9Bqa+0Qq/vhZ2sX3OChBgDF3JthC9s65X63zcAplgDoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZXZv+oCI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B2iZv6jk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="bAOysrJk"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7291af7190so111605766b.3
-        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 03:06:16 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZXZv+oCI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B2iZv6jk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762946112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZkPHyOZo9yzOxxQpkBZ/awKCWdH75xgCHLmw72fGjXc=;
+	b=ZXZv+oCIIO5Kkt3mn6nRV6yk1WtRYRKBxuwP+MoNP3mw9pXtJWF4UtV9/Y/6ppmnS7YVj/
+	MEj+pDIPA8deSkdtuVhIbcRHxU1noiG9RE3P0pqB6lReMYWwntxScFjjQ6LMtWKeaocpcq
+	YOCgsJWXPeBOTfxzOIqL8KTw4swC4bg=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-383-4YKdq3zKOaKETRouljKpoA-1; Wed, 12 Nov 2025 06:15:10 -0500
+X-MC-Unique: 4YKdq3zKOaKETRouljKpoA-1
+X-Mimecast-MFC-AGG-ID: 4YKdq3zKOaKETRouljKpoA_1762946110
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b225760181so76797685a.2
+        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 03:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1762945575; x=1763550375; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RscwFBq3OyRCWl61Ef104IM+J+P4bfAkKVg6cbBGEEk=;
-        b=bAOysrJkB12ud+FOcHW9n3eccs3QzMRt38Mlj7BmSBqmGOsAmSAx1c2w5CIiN3rA4Q
-         fJAV0ZxyyBGxk0Z7yMw2utxVzfpdTfqqDlnZtqigk+h/HkNBqHD5AJQD+5T4n14y5aca
-         IIkMwhKwP8FpA4eBz20Fd6IfCSsxK2oVaNKFMpYD7uj394yDrRP8I4Gd0a6VOPb2TMkB
-         YcGjWdUDMC3bvoh72g8BJK+aNeoya8gsFG+R+264q4GdwBDSQyBLW+KxxEvnzUXzc22k
-         QoHL8c1zjKTr5uCLH8XJw89HnG25QRlv83PR9g7Wg1427W3kegingLDHjoMh9CfZnDNT
-         Bh+g==
+        d=redhat.com; s=google; t=1762946110; x=1763550910; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZkPHyOZo9yzOxxQpkBZ/awKCWdH75xgCHLmw72fGjXc=;
+        b=B2iZv6jkd/5HO4LZRYErbuKpHm1UwabumFpGY9l5LNAUnm3EIVRPwlgEpK+8oaTtpo
+         tyi0By9GTba40ichXEcMm+GvefbGaGVgPtMNG8ZjCci79IBeyoKedmai0COaJ6F1GNnb
+         Vkkd1pKzem1btV/d0HkGiiRBKIP8AFq/gvQ3WdCdQb9nKPYf4WN4rZplnhDYC85+EPcT
+         9iR7Y6AmXjgqVyHRysMOlu8Gj12HEPz6g/JDrYNHhzI0maiI8QDN1MmAhV8qgY7prkzS
+         Rny1FXTURllBsW7RtCaTF/WLWXoOr/sCJIrs36onezB4S/r9BuMoudBpPfBHFV+Eae5m
+         toLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762945575; x=1763550375;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RscwFBq3OyRCWl61Ef104IM+J+P4bfAkKVg6cbBGEEk=;
-        b=YfkU5GF7AoCASaCFd6fOA46nyiKKpDG7AvAX2sT2qj4O8P8nCW6LtuMjqBXPL/sMFT
-         Lb09lNc1FEidS9uzdZDuyFcOGk4qdS63L3swb4H4yK7wOnp1pkgGeh41qhCj1fd8IN4N
-         HI/X1ZiZGs3RK5Nzn1LmmQW3a3pB+GdHotYoUGFKSxD/PsX3UZq+nZ6SbAijOk6nXfkn
-         mSzcyqFxP2HieZccPDmVP9z3BC1sig5c6140xtiS50mCW7j3HL88JF5BQzCpxi3tpwRo
-         VThHFQgu1nYjzl4rC2JL5tekITq+9WIYbPoIuAQRCyXsjkOXjkLiPyZtF5V7tUaKzW9A
-         8Zog==
-X-Gm-Message-State: AOJu0YxcEmJilIcjnO6u+hYiGF05VnietkV/kavpJiJMQ/eWcmWMV6KJ
-	Sx2Imhz1F4R53M1V7SpjQnreo0wNvXuVAl3GXMAF9nesvmG3DuuaD4DlammbWhMb04k=
-X-Gm-Gg: ASbGnctxihEII9q3HUix60jXxjaBx8imAl57//g4upnP6G2FQ2/1KoxxSBxjvPHMj0Y
-	p+5KWGOyAkzwO+KRm0GVp3nR/oM35wNGIW+bGN6uB/nZQ7j9CQS2yBznmOOq/E0ywexdMwuJJg0
-	LBQoOjowP4sZmRfKNbRvdW4WgDpFDa22Xwe1GgftSFBqzOeJsKA8ptjLnxN3vO1I1nMzhs4Sbr1
-	WNVQpYagsiZqsv1EWhsTVwlmJwubf2g0Tc4Qfex8FGgi4s6XZ52CH71e6mls083QoG9EwGGuvOT
-	A9J7f0FwHPJUO9BKNaTGzJTUtatg2zL7upTWPhMp4aDG1L85cSPDeZaMThxCApUgEDW5N2hFGj7
-	YQn0WFOTAkJu7WfsaQK6bRkOzC/H7JV2XZBHHogG8EtC91W8myHYMaInakfknM0B9M9M1cp/0uE
-	Lcv5F6Qyy1JOj8QCPmQAlnLWG+sx9e9qw=
-X-Google-Smtp-Source: AGHT+IE61k0FNld65Na0gwrWMjkcd6KnQX2WlVWRh2ThOyOuZMLyUreP+xoQ3sjP15lbD78y9IaeSg==
-X-Received: by 2002:a17:907:6092:b0:b72:70e7:5b62 with SMTP id a640c23a62f3a-b733197ecdcmr239036666b.23.1762945574535;
-        Wed, 12 Nov 2025 03:06:14 -0800 (PST)
-Received: from [192.168.0.161] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9bd741sm1528348266b.57.2025.11.12.03.06.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 03:06:14 -0800 (PST)
-Message-ID: <c042de5b-4167-4015-989c-ef0d34b85c83@blackwall.org>
-Date: Wed, 12 Nov 2025 13:06:12 +0200
+        d=1e100.net; s=20230601; t=1762946110; x=1763550910;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZkPHyOZo9yzOxxQpkBZ/awKCWdH75xgCHLmw72fGjXc=;
+        b=SbLOc/x/USJiQtfR8L9Bx7C/g1u99+dp8t8jAJ84jEqok1LDXOHPza+ErTxMlTSvdF
+         skk3vqBCMC+3zaP19z3uGwLElwXhIjBbPc6yVV2ZwDOjbhvBwSuoggypcWJhg6puau+O
+         biz8kjcEbx7UCPtxIRJO7oJ2vH/1TxVsPV+DRr/RFS2kDimE7na+r3PeJIzZO84BlBd4
+         mDM+jZfUxFvMTCNzxyMNKmVKIRG8ggntRvJoTVLM+164qd5zMTYihZyXrq+ZiOTNnbUZ
+         7Lc2XykVT3AtZ3ZeTkxDr6+5lmFilfXoIMKfoVehSSQSMscO/iOIKWMfXOxHUn+/LND8
+         5PmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXmf7CNIqXn6Na+f/aAyFbOND3Qxs6u5VcK1A3bJrcNlu+t+1cX2yhNcFkeKPUIYi7m2YPWX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFfE7DF8aXsPvB4CQVRP8Dm820nuHgm9LTott/kJ2ArRuYw0Ph
+	EnG35AmYssxh5NB7aGQ4tdlxi1FO1DTRkRSbjo3Lz7EW4HT6jaG3Tzp+FrWOrH7uQov/XQRPN+w
+	Rpm5SHoaP2FsyYkkqnIZm313dVs/nm1Dw27xkn2ky690NZyjZa9jOj7fCjA==
+X-Gm-Gg: ASbGnctilgD/nA4YGGzOngYE9Hps+Jq78Ny3uEBCRA9aHFqmZrNLS1VOfopuEgCkfqV
+	mq181ZQJUG/U7dS9jukfJB5CFYyRCt5Te5iRMBI8vnsfZ/X2cvo//B2UcDQXh/ei9imjqpI6/Cq
+	jpafAh5OLXnN+1+h3qzw0QzKwFc8vl154fRIKpNmzwa/pHM2/FhVv6AQzE4AAMwJT0+cuNPSn9Y
+	jMvpp1Ny3uoxVhdi4nNsnaSvQd3NOPDOZGZqLoMX4xeBwmOxUwhuWcLkwFlmiiXZPt17mF3Tcnr
+	P2kzUCe/oY0RAulg7wgyo46v69SDKhaQ6/QgmljKH4jSHcNtJFPVVmqRmHcbk8mM/tpn+R6GeDW
+	Iz6+2tQxFn3MTjKjWWY7E6ZhiQnVxmz64WKd39ah7jTfRgmkPlf8=
+X-Received: by 2002:a05:620a:44ca:b0:8b2:6606:edaf with SMTP id af79cd13be357-8b29b78a980mr307073685a.37.1762946109819;
+        Wed, 12 Nov 2025 03:15:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFtAKTvMbP3cFM+QNIMi0izCHSApoyYNJQFMwUCPX7a0E+uO7ILp2ns+ST+uoNT4M7IO7oCPw==
+X-Received: by 2002:a05:620a:44ca:b0:8b2:6606:edaf with SMTP id af79cd13be357-8b29b78a980mr307070285a.37.1762946109277;
+        Wed, 12 Nov 2025 03:15:09 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-153.retail.telecomitalia.it. [79.46.200.153])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa277ecsm170269385a.58.2025.11.12.03.15.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 03:15:08 -0800 (PST)
+Date: Wed, 12 Nov 2025 12:15:03 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v4 01/12] selftests/vsock: improve logging in
+ vmtest.sh
+Message-ID: <kitbuqe5a2tyjbtjcyijcpqioidmrxa4b3iq7kulmbngofyt4l@d73gmgipbiid>
+References: <20251108-vsock-selftests-fixes-and-improvements-v4-0-d5e8d6c87289@meta.com>
+ <20251108-vsock-selftests-fixes-and-improvements-v4-1-d5e8d6c87289@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] vxlan: Remove unused declarations eth_vni_hash()
- and fdb_head_index()
-To: Yue Haibing <yuehaibing@huawei.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, idosch@nvidia.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251112092055.3546703-1-yuehaibing@huawei.com>
-Content-Language: en-US
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20251112092055.3546703-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20251108-vsock-selftests-fixes-and-improvements-v4-1-d5e8d6c87289@meta.com>
 
-On 12/11/2025 11:20, Yue Haibing wrote:
-> Commit 1f763fa808e9 ("vxlan: Convert FDB table to rhashtable") removed the
-> implementations but leave declarations.
-> 
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-> ---
->   drivers/net/vxlan/vxlan_private.h | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-> index 99fe772ad679..b1eec2216360 100644
-> --- a/drivers/net/vxlan/vxlan_private.h
-> +++ b/drivers/net/vxlan/vxlan_private.h
-> @@ -188,8 +188,6 @@ int __vxlan_fdb_delete(struct vxlan_dev *vxlan,
->   		       const unsigned char *addr, union vxlan_addr ip,
->   		       __be16 port, __be32 src_vni, __be32 vni,
->   		       u32 ifindex, bool swdev_notify);
-> -u32 eth_vni_hash(const unsigned char *addr, __be32 vni);
-> -u32 fdb_head_index(struct vxlan_dev *vxlan, const u8 *mac, __be32 vni);
->   int vxlan_fdb_update(struct vxlan_dev *vxlan,
->   		     const u8 *mac, union vxlan_addr *ip,
->   		     __u16 state, __u16 flags,
+On Sat, Nov 08, 2025 at 08:00:52AM -0800, Bobby Eshleman wrote:
+>From: Bobby Eshleman <bobbyeshleman@meta.com>
+>
+>Improve usability of logging functions. Remove the test name prefix from
+>logging functions so that logging calls can be made deeper into the call
+>stack without passing down the test name or setting some global. Teach
+>log function to accept a LOG_PREFIX variable to avoid unnecessary
+>argument shifting.
+>
+>Remove log_setup() and instead use log_host(). The host/guest prefixes
+>are useful to show whether a failure happened on the guest or host side,
+>but "setup" doesn't really give additional useful information. Since all
+>log_setup() calls happen on the host, lets just use log_host() instead.
+>
+>Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>---
+>Changes in v4:
+>- add quotes to "${redirect}" for consistency
+>
+>Changes in v2:
+>- add quotes around $@ in log_{host,guest} (Simon)
+>- remove unnecessary cat for piping into awk (Simon)
+>
+>Changes from previous series:
+>- do not use log levels, keep as on/off switch, after revising the other
+>  patch series the levels became unnecessary.
+>---
+> tools/testing/selftests/vsock/vmtest.sh | 69 ++++++++++++++-------------------
+> 1 file changed, 29 insertions(+), 40 deletions(-)
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>
+>diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+>index 8ceeb8a7894f..bc16b13cdbe3 100755
+>--- a/tools/testing/selftests/vsock/vmtest.sh
+>+++ b/tools/testing/selftests/vsock/vmtest.sh
+>@@ -271,60 +271,51 @@ EOF
+>
+> host_wait_for_listener() {
+> 	wait_for_listener "${TEST_HOST_PORT_LISTENER}" "${WAIT_PERIOD}" "${WAIT_PERIOD_MAX}"
+>-}
+>-
+>-__log_stdin() {
+>-	cat | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }'
+>-}
+>
+>-__log_args() {
+>-	echo "$*" | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }'
+> }
+>
+> log() {
+>-	local prefix="$1"
+>+	local redirect
+>+	local prefix
+>
+>-	shift
+>-	local redirect=
+> 	if [[ ${VERBOSE} -eq 0 ]]; then
+> 		redirect=/dev/null
+> 	else
+> 		redirect=/dev/stdout
+> 	fi
+>
+>+	prefix="${LOG_PREFIX:-}"
+>+
+> 	if [[ "$#" -eq 0 ]]; then
+>-		__log_stdin | tee -a "${LOG}" > ${redirect}
+>+		if [[ -n "${prefix}" ]]; then
+>+			awk -v prefix="${prefix}" '{printf "%s: %s\n", prefix, $0}'
+>+		else
+>+			cat
+>+		fi
+> 	else
+>-		__log_args "$@" | tee -a "${LOG}" > ${redirect}
+>-	fi
+>-}
+>-
+>-log_setup() {
+>-	log "setup" "$@"
+>+		if [[ -n "${prefix}" ]]; then
+>+			echo "${prefix}: " "$@"
+>+		else
+>+			echo "$@"
+>+		fi
+>+	fi | tee -a "${LOG}" > "${redirect}"
+> }
+>
+> log_host() {
+>-	local testname=$1
+>-
+>-	shift
+>-	log "test:${testname}:host" "$@"
+>+	LOG_PREFIX=host log "$@"
+> }
+>
+> log_guest() {
+>-	local testname=$1
+>-
+>-	shift
+>-	log "test:${testname}:guest" "$@"
+>+	LOG_PREFIX=guest log "$@"
+> }
+>
+> test_vm_server_host_client() {
+>-	local testname="${FUNCNAME[0]#test_}"
+>
+> 	vm_ssh -- "${VSOCK_TEST}" \
+> 		--mode=server \
+> 		--control-port="${TEST_GUEST_PORT}" \
+> 		--peer-cid=2 \
+>-		2>&1 | log_guest "${testname}" &
+>+		2>&1 | log_guest &
+>
+> 	vm_wait_for_listener "${TEST_GUEST_PORT}"
+>
+>@@ -332,18 +323,17 @@ test_vm_server_host_client() {
+> 		--mode=client \
+> 		--control-host=127.0.0.1 \
+> 		--peer-cid="${VSOCK_CID}" \
+>-		--control-port="${TEST_HOST_PORT}" 2>&1 | log_host "${testname}"
+>+		--control-port="${TEST_HOST_PORT}" 2>&1 | log_host
+>
+> 	return $?
+> }
+>
+> test_vm_client_host_server() {
+>-	local testname="${FUNCNAME[0]#test_}"
+>
+> 	${VSOCK_TEST} \
+> 		--mode "server" \
+> 		--control-port "${TEST_HOST_PORT_LISTENER}" \
+>-		--peer-cid "${VSOCK_CID}" 2>&1 | log_host "${testname}" &
+>+		--peer-cid "${VSOCK_CID}" 2>&1 | log_host &
+>
+> 	host_wait_for_listener
+>
+>@@ -351,19 +341,18 @@ test_vm_client_host_server() {
+> 		--mode=client \
+> 		--control-host=10.0.2.2 \
+> 		--peer-cid=2 \
+>-		--control-port="${TEST_HOST_PORT_LISTENER}" 2>&1 | log_guest "${testname}"
+>+		--control-port="${TEST_HOST_PORT_LISTENER}" 2>&1 | log_guest
+>
+> 	return $?
+> }
+>
+> test_vm_loopback() {
+>-	local testname="${FUNCNAME[0]#test_}"
+> 	local port=60000 # non-forwarded local port
+>
+> 	vm_ssh -- "${VSOCK_TEST}" \
+> 		--mode=server \
+> 		--control-port="${port}" \
+>-		--peer-cid=1 2>&1 | log_guest "${testname}" &
+>+		--peer-cid=1 2>&1 | log_guest &
+>
+> 	vm_wait_for_listener "${port}"
+>
+>@@ -371,7 +360,7 @@ test_vm_loopback() {
+> 		--mode=client \
+> 		--control-host="127.0.0.1" \
+> 		--control-port="${port}" \
+>-		--peer-cid=1 2>&1 | log_guest "${testname}"
+>+		--peer-cid=1 2>&1 | log_guest
+>
+> 	return $?
+> }
+>@@ -399,25 +388,25 @@ run_test() {
+>
+> 	host_oops_cnt_after=$(dmesg | grep -i 'Oops' | wc -l)
+> 	if [[ ${host_oops_cnt_after} -gt ${host_oops_cnt_before} ]]; then
+>-		echo "FAIL: kernel oops detected on host" | log_host "${name}"
+>+		echo "FAIL: kernel oops detected on host" | log_host
+> 		rc=$KSFT_FAIL
+> 	fi
+>
+> 	host_warn_cnt_after=$(dmesg --level=warn | grep -c -i 'vsock')
+> 	if [[ ${host_warn_cnt_after} -gt ${host_warn_cnt_before} ]]; then
+>-		echo "FAIL: kernel warning detected on host" | log_host "${name}"
+>+		echo "FAIL: kernel warning detected on host" | log_host
+> 		rc=$KSFT_FAIL
+> 	fi
+>
+> 	vm_oops_cnt_after=$(vm_ssh -- dmesg | grep -i 'Oops' | wc -l)
+> 	if [[ ${vm_oops_cnt_after} -gt ${vm_oops_cnt_before} ]]; then
+>-		echo "FAIL: kernel oops detected on vm" | log_host "${name}"
+>+		echo "FAIL: kernel oops detected on vm" | log_host
+> 		rc=$KSFT_FAIL
+> 	fi
+>
+> 	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
+> 	if [[ ${vm_warn_cnt_after} -gt ${vm_warn_cnt_before} ]]; then
+>-		echo "FAIL: kernel warning detected on vm" | log_host "${name}"
+>+		echo "FAIL: kernel warning detected on vm" | log_host
+> 		rc=$KSFT_FAIL
+> 	fi
+>
+>@@ -452,10 +441,10 @@ handle_build
+>
+> echo "1..${#ARGS[@]}"
+>
+>-log_setup "Booting up VM"
+>+log_host "Booting up VM"
+> vm_start
+> vm_wait_for_ssh
+>-log_setup "VM booted up"
+>+log_host "VM booted up"
+>
+> cnt_pass=0
+> cnt_fail=0
+>
+>-- 
+>2.47.3
+>
 
