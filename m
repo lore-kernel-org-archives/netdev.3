@@ -1,151 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E302BE02C;
-	Wed, 12 Nov 2025 09:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E69A9476
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 09:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762938072; cv=none; b=IbYqAGKwh0FIc+WIaGoSRnsxDMeIwtQR++IM/bFQeC+SVB1Mv0/o1vOkvMTr6w8O6JHhYn3BODfjMQNl+yI2nd7HCQ68FH7uKHg8IiMZRZ8NDovJaaPXg8lL6liQtdl12lKZBs8kg7+LXAycG7qurliYK88PVmny8iaziEBimqo=
+	t=1762939071; cv=none; b=QF/dh1MbNJ7KZ5c/TfckxivGeKPwYV9h2G1omGVBwVPOqeIcGxWLOss2EOF3/+kv1sD265lAu2jvBIdTFTTOhbkX77qxVcnZNelY+0E6JJbX15O1Axi6fesa3T9iJCZTOl7YQUrfFdbomQtHoLNV2bx30M4HD2zd18T1gf5ZDKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762938072; c=relaxed/simple;
-	bh=NmxT3e9rVD+Vk0gwGiTwEsfo+VbVQUJ9eVtsypMNXuc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kjIRRlg54TReeS1MKEdXqZMJlYz4sTsQ14Evn9NObmG+g9VbSGcYYnj5EgTSrPT7sDHFa8coyGKrkoem+DiMeIT6HR/0UrRv7k/L1mQ9OunOXBG7JqH6rBSM+hkTbxc577N+IxKQRVERNzGp/D/mL7fm7KeRTsxGW8obojUksYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sdP5jmGf; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sdP5jmGf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6871C4CEF5;
-	Wed, 12 Nov 2025 09:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762938071;
-	bh=NmxT3e9rVD+Vk0gwGiTwEsfo+VbVQUJ9eVtsypMNXuc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdP5jmGfLM+SqEuBX/RsMGAmFa8GSx+5s3qlPF12YVUgFuFMpcff20Xhp8BQtu318
-	 XA2RUpFBp4/3lodTcuJD9YOxWBHcqQMk3h0u5+ME/+CzWeA+bk0+dKlaisCTBqHd6o
-	 T355kOHQKyPmjbq0GoHZQNmcLvQtYngvT4iiH2Yz4Pxoon6WrwLqGla9zLz5WNvIde
-	 cx9FOyjZdSQNY97ifMj9UKI2ssD71LcFv7Xa9qcxmE1cNFEdtAm9HMRRMZLh6u0A5a
-	 AD1vXlXRa/op+Ax2MTk3mKPyO0SMhntbfLDp2az621cBgWCihv3p++dBVMO0VEQrwn
-	 3SDY/PgaVZE9g==
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	netfs@lists.linux.dev,
-	ecryptfs@vger.kernel.org,
-	linux-unionfs@vger.kernel.org,
-	linux-xfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH v6 00/17] vfs: recall-only directory delegations for knfsd
-Date: Wed, 12 Nov 2025 10:00:47 +0100
-Message-ID: <20251112-allesamt-ursprung-7581bf774318@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251111-dir-deleg-ro-v6-0-52f3feebb2f2@kernel.org>
-References: <20251111-dir-deleg-ro-v6-0-52f3feebb2f2@kernel.org>
+	s=arc-20240116; t=1762939071; c=relaxed/simple;
+	bh=DS9XNu0+sV4N1jZQNGIhcpbWVrqHJgFpyHZN6M8aoDM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kBleQjYNAK2GJhEBt2Ekq0XUauOKSQ2MbkxONBKItenjYIh8N1wXj64Fd3IUIaL26HE/EDJloN9HaNDoH0JlVP0XOe1YxaRFXjvVI80ihKPxQoEFzFY1FVUJslCLSBI7elbNTSQDiuDmvVIbeAhYULT1e4Pn4AN2vGaQVS7BOs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vJ6yw-0007V2-B2; Wed, 12 Nov 2025 10:17:38 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vJ6yv-0003cG-1a;
+	Wed, 12 Nov 2025 10:17:37 +0100
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 3215D49D997;
+	Wed, 12 Nov 2025 09:17:37 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net-next 0/11] pull-request: can-next 2025-11-12
+Date: Wed, 12 Nov 2025 10:13:40 +0100
+Message-ID: <20251112091734.74315-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3125; i=brauner@kernel.org; h=from:subject:message-id; bh=NmxT3e9rVD+Vk0gwGiTwEsfo+VbVQUJ9eVtsypMNXuc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSK+Jx86vPs+ErnB/wb72nN1on3KMp9zX7dQSQ82GOlr L4T45e1HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5uY/hn/2qqoNLZz+dwN+8 MaJT8c46z87PsQEvsjp28yya0xLDk8bwTylL6cEuZvNOz6YbIjsbtC63ni4K0TY9cPOZxLVsp4t dPAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Tue, 11 Nov 2025 09:12:41 -0500, Jeff Layton wrote:
-> Behold, another version of the directory delegation patchset. This
-> version contains support for recall-only delegations. Support for
-> CB_NOTIFY will be forthcoming (once the client-side patches have caught
-> up).
-> 
-> The main changes here are in response to Jan's comments. I also changed
-> struct delegation use to fixed-with integer types.
-> 
-> [...]
+Hello netdev-team,
 
-Applied to the vfs-6.19.directory.delegations branch of the vfs/vfs.git tree.
-Patches in the vfs-6.19.directory.delegations branch should appear in linux-next soon.
+this is a pull request of 11 patches for net-next/main.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+The first 3 patches are by Vadim Fedorenko and convert the CAN drivers
+to use the ndo_hwtstamp callbacks.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Maud Spierings contributes a patch to the mcp251x driver that converts
+it to use dev_err_probe()
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+The remaining patches target the mcp251xfd driver and are by Gregor
+Herburger and me. They add GPIO controller functionality to the
+driver.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.19.directory.delegations
+regards,
+Marc
 
-[01/17] filelock: make lease_alloc() take a flags argument
-        https://git.kernel.org/vfs/vfs/c/6fc5f2b19e75
-[02/17] filelock: rework the __break_lease API to use flags
-        https://git.kernel.org/vfs/vfs/c/4be9f3cc582a
-[03/17] filelock: add struct delegated_inode
-        https://git.kernel.org/vfs/vfs/c/6976ed2dd0d5
-[04/17] filelock: push the S_ISREG check down to ->setlease handlers
-        https://git.kernel.org/vfs/vfs/c/e6d28ebc17eb
-[05/17] vfs: add try_break_deleg calls for parents to vfs_{link,rename,unlink}
-        https://git.kernel.org/vfs/vfs/c/b46ebf9a768d
-[06/17] vfs: allow mkdir to wait for delegation break on parent
-        https://git.kernel.org/vfs/vfs/c/e12d203b8c88
-[07/17] vfs: allow rmdir to wait for delegation break on parent
-        https://git.kernel.org/vfs/vfs/c/4fa76319cd0c
-[08/17] vfs: break parent dir delegations in open(..., O_CREAT) codepath
-        https://git.kernel.org/vfs/vfs/c/134796f43a5e
-[09/17] vfs: clean up argument list for vfs_create()
-        https://git.kernel.org/vfs/vfs/c/85bbffcad730
-[10/17] vfs: make vfs_create break delegations on parent directory
-        https://git.kernel.org/vfs/vfs/c/c826229c6a82
-[11/17] vfs: make vfs_mknod break delegations on parent directory
-        https://git.kernel.org/vfs/vfs/c/e8960c1b2ee9
-[12/17] vfs: make vfs_symlink break delegations on parent dir
-        https://git.kernel.org/vfs/vfs/c/92bf53577f01
-[13/17] filelock: lift the ban on directory leases in generic_setlease
-        https://git.kernel.org/vfs/vfs/c/d0eab9fc1047
-[14/17] nfsd: allow filecache to hold S_IFDIR files
-        https://git.kernel.org/vfs/vfs/c/544a0ee152f0
-[15/17] nfsd: allow DELEGRETURN on directories
-        https://git.kernel.org/vfs/vfs/c/80c8afddc8b1
-[16/17] nfsd: wire up GET_DIR_DELEGATION handling
-        https://git.kernel.org/vfs/vfs/c/8b99f6a8c116
-[17/17] vfs: expose delegation support to userland
-        https://git.kernel.org/vfs/vfs/c/1602bad16d7d
+---
+
+The following changes since commit ea7d0d60ebc9bddf3ad768557dfa1495bc032bf6:
+
+  Merge branch 'add-cn20k-nix-and-npa-contexts' (2025-10-30 10:44:12 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.19-20251112
+
+for you to fetch changes up to 5bce93417a62b1da306a33f1e7ebb12bc915a80e:
+
+  can: bxcan: Fix a typo error for assign (2025-11-12 09:48:07 +0100)
+
+----------------------------------------------------------------
+linux-can-next-for-6.19-20251112
+
+----------------------------------------------------------------
+Chu Guangqing (1):
+      can: bxcan: Fix a typo error for assign
+
+Gregor Herburger (5):
+      can: mcp251xfd: utilize gather_write function for all non-CRC writes
+      can: mcp251xfd: add workaround for errata 5
+      can: mcp251xfd: only configure PIN1 when rx_int is set
+      can: mcp251xfd: add gpio functionality
+      dt-bindings: can: mcp251xfd: add gpio-controller property
+
+Marc Kleine-Budde (3):
+      Merge patch series "convert can drivers to use ndo_hwtstamp callbacks"
+      can: mcp251xfd: move chip sleep mode into runtime pm
+      Merge patch series "can: mcp251xfd: add gpio functionality"
+
+Maud Spierings (1):
+      can: mcp251x: mcp251x_can_probe(): use dev_err_probe()
+
+Vadim Fedorenko (3):
+      can: convert generic HW timestamp ioctl to ndo_hwtstamp callbacks
+      can: peak_canfd: convert to use ndo_hwtstamp callbacks
+      can: peak_usb: convert to use ndo_hwtstamp callbacks
+
+ .../bindings/net/can/microchip,mcp251xfd.yaml      |   5 +
+ drivers/net/can/bxcan.c                            |   2 +-
+ drivers/net/can/dev/dev.c                          |  45 ++--
+ drivers/net/can/esd/esd_402_pci-core.c             |   3 +-
+ drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c |   3 +-
+ drivers/net/can/peak_canfd/peak_canfd.c            |  35 ++-
+ drivers/net/can/spi/mcp251x.c                      |  31 ++-
+ drivers/net/can/spi/mcp251xfd/Kconfig              |   1 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     | 284 +++++++++++++++++----
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c   | 114 +++++++--
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |   8 +
+ drivers/net/can/usb/etas_es58x/es58x_core.c        |   3 +-
+ drivers/net/can/usb/gs_usb.c                       |  20 +-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   3 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c       |  35 ++-
+ include/linux/can/dev.h                            |   6 +-
+ 16 files changed, 446 insertions(+), 152 deletions(-)
