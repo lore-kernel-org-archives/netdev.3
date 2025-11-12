@@ -1,140 +1,158 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2F52FD672
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 08:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1812FDC4B;
+	Wed, 12 Nov 2025 08:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762937384; cv=none; b=GBFRxaTE6IMf8g/OfpAZcvEAmT5kVRtbG650RawlQ32LYZKsmdwDLVY7cL86iEsuDy/RGyfrPXaMkeKgmUUL95RvnzE7gDs5jN705Pxn5KlVqN9HPoVrt2K87VrER0hs2S5yWAmhDKkj11LnV7McXTcvNMp6n5MuVYM8m3+ZzLA=
+	t=1762937413; cv=none; b=T4ztP0kXk6tBNG8NE+s1n+Bd6giid4ElaRqIoIVdyosYsVlu1vcdxrXW9xgJUsiXcRjXldKdwHr4ZZ/f28jTRx96F8z9X0yvGbpZnPHRD8ZzLYK1RLa/FX2FSknCxlC1bGO6pGW13/dXcSoEfawbDE/Fd8WatNnjqlyIBQohnlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762937384; c=relaxed/simple;
-	bh=GEPcxScTlNQXWLN1NkRTChaD1+/VaqI0xZxACdHRNZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XBH4zACCNiBNMiYAzg699bICNLOMnPDxMroa2WtdXd3z5AQ0zMbLLTevEegOzcJ91CIvAXnw4OaqvhZ8hz2cS5JUPa2vQi0ih19hSAltB6eoPVLJR1jhAoGdpNiJGSbCQayBzGfjW3me8h6TEWXwJvXoPEfWOWjcy7u97EYvbIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-55965c96fd7so167965e0c.0
-        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 00:49:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762937380; x=1763542180;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QRuYUt97/AAYUOVBqnw5NKTwDWHex1IdJ959zTzv1gA=;
-        b=bai7RI1AcUuVBjzGv6h3YOjqCOPHZ6is1XJ1mVKJa+JsSvUnT9NHXScBRk3PXMGo7b
-         5lxqCBO+403C6cKQK+285ULPnY7iVFlznkWRpcE4huIO2W1XzKcsVuQj6OAqsEsrWF47
-         PE/o86fJ14VYaEr6c6jlMoFIVQGg+58BRKKioETB7Do+M+caBh41BRZAgJFgD5UwUpWJ
-         E1kYXG6jlp8mDnUNitHTmRkFXBKgr+QaloS7kz76zTwNwRK+oG8EakecgoOtWMmoujq2
-         T2lwPC9HCJz/qZS+fj+SxyZ8cvSfaJfMdx0F8i8veu+IUxntguJFVJvQ38UCn+KoKCoL
-         B70g==
-X-Forwarded-Encrypted: i=1; AJvYcCWbVPS8giN1xDH+9lnMG3wdl98n5nReGSIdejvCJP5ei0cSiyNB4CQIyJLIpnn95HPnH5n7oFc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6pLovEpT0AV0HNB/VDfwQnrKfWTNtyGs+BlcZJPYJ3bjShnBL
-	ycgTM10aZk7M+9dYXXfWLvEVj/KPo/EFhLGwUaOSI4Osv5eylPB6/1A2Z2GjVDnZ
-X-Gm-Gg: ASbGnctiiUEoWkdLYsy8OAlwZiyTA0uTBQWAsiG0Gi+9lnTxMYIkuZJfTe6zt08FbcS
-	YrdPp2p4wb8t13BTsc83l+yzYrfkcFMeT7IU08nBJEb61wTXRn2sjT9qtm0dxPM6Wnx+ih0za+h
-	nVfk2CL1HvTuuYtIHqUBhYYhKIwpg5/7BypI6lN1F2gBK1HOzMhUJhetEufH8StUZNYYOMAZwq4
-	7vdmcEcHBQHsrPvs3foPNsHSxDi9sfAb1alBLHeocFq9ZLbSSXHE00XSYtbmOaUBHbPZ1/Lpdyu
-	JqPi4Z2PyMgf80VT5kjjD8q9dZOnxCK0WsSpLd8PctPEJeybjrb0JC50PUuxTU0roRCu5ImUgHT
-	CQ2ufDSjdmlfZcLn8QpD9JyOK/7KbNKB2+0Co0m+DwhcdySWRsv4gsinPMviphL2jw7V+SaJK4O
-	Sm34NanGLiHh/PLAnSimbDaib27za2MhXh6juwpQ==
-X-Google-Smtp-Source: AGHT+IEPxwc1KYwCpI9/S3A6cNmFwCKA5A+9kz7sm26Md/a2ZjXBVljMEyOYgGEPzQNQaLfw2NJ5wA==
-X-Received: by 2002:a05:6122:16aa:b0:54b:c83b:9299 with SMTP id 71dfb90a1353d-559e7cdd3f1mr723092e0c.10.1762937379791;
-        Wed, 12 Nov 2025 00:49:39 -0800 (PST)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-559968c29a1sm9252222e0c.3.2025.11.12.00.49.38
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 00:49:39 -0800 (PST)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5d61f261ebfso240293137.2
-        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 00:49:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWHWpZO5WfwUIXAcevq18elUC/HS6SrDi65HYpLI2bcgKM9DsHj4G/9jLHo7iIAr8eGpYoGbzg=@vger.kernel.org
-X-Received: by 2002:a05:6102:3a0a:b0:5d7:bb3c:d5dc with SMTP id
- ada2fe7eead31-5de07f16d04mr501696137.41.1762937378500; Wed, 12 Nov 2025
- 00:49:38 -0800 (PST)
+	s=arc-20240116; t=1762937413; c=relaxed/simple;
+	bh=oSXNIlCJ4nUuItwxkksnV1j0nQ9O8xQlEqMORgnbj3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SV115SZZHzyFO1dlO7Zz5LWEcOmKOWSJ4UVGbElR5pchX+cWXrtvFhQFZZ9gNH3OxmWFttqGiE8FwHy4v9fX1jawPJLue7CSjCtTTWLg7HiCyozO6BFcOFwmENdYlUOrBP0finnje5ZqH+8XdX0ka5/hv1gWI0fiWR1tjcanIf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
+Received: from [10.17.112.36] (unknown [15.248.2.224])
+	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 73D8540037;
+	Wed, 12 Nov 2025 08:40:35 +0000 (UTC)
+Authentication-Results: Plesk;
+        spf=pass (sender IP is 15.248.2.224) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[10.17.112.36]
+Received-SPF: pass (Plesk: connection is authenticated)
+Message-ID: <3f79436c-d343-46ff-8559-afb7da24a44d@arnaud-lcm.com>
+Date: Wed, 12 Nov 2025 08:40:34 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111091047.831005-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20251111091047.831005-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20251111091047.831005-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 12 Nov 2025 09:49:27 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUv7tOc-QC8N_ie7739t07Y5A_6HQPMVR9fxW-jo_d9Ng@mail.gmail.com>
-X-Gm-Features: AWmQ_bnWiYGIV8O5vMXPYGxK5G9F49mp_eGvUmhrBRrD8EAR2kAYVwJHFvxANG8
-Message-ID: <CAMuHMdUv7tOc-QC8N_ie7739t07Y5A_6HQPMVR9fxW-jo_d9Ng@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/3] net: phy: mscc: Consolidate probe
- functions into a common helper
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v3] bpf: Clamp trace length in __bpf_get_stack to
+ fix OOB write
+To: Brahmajit Das <listout@listout.xyz>,
+ syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
+Cc: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org,
+ daniel@iogearbox.net, eddyz87@gmail.com, haoluo@google.com,
+ john.fastabend@gmail.com, jolsa@kernel.org, kpsingh@kernel.org,
+ linux-kernel@vger.kernel.org, martin.lau@linux.dev, netdev@vger.kernel.org,
+ sdf@fomichev.me, song@kernel.org, syzkaller-bugs@googlegroups.com,
+ yonghong.song@linux.dev
+References: <691231dc.a70a0220.22f260.0101.GAE@google.com>
+ <20251111081254.25532-1-listout@listout.xyz>
+Content-Language: en-US
+From: "Lecomte, Arnaud" <contact@arnaud-lcm.com>
+In-Reply-To: <20251111081254.25532-1-listout@listout.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <176293683631.16609.1825395533128077628@Plesk>
+X-PPP-Vhost: arnaud-lcm.com
 
-Hi Prabhakar,
+I am a not sure this is the right solution and I am scared that by
+forcing this clamping, we are hiding something else.
+If we have a look at the code below:
+```
 
-On Tue, 11 Nov 2025 at 10:11, Prabhakar <prabhakar.csengg@gmail.com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+|
+
+	if (trace_in) {
+		trace = trace_in;
+		trace->nr = min_t(u32, trace->nr, max_depth);
+	} else if (kernel && task) {
+		trace = get_callchain_entry_for_task(task, max_depth);
+	} else {
+		trace = get_perf_callchain(regs, kernel, user, max_depth,
+					crosstask, false, 0);
+	} ``` trace should be (if I remember correctly) clamped there. If not, 
+it might hide something else. I would like to have a look at the return 
+for each if case through gdb. |
+
+On 11/11/2025 08:12, Brahmajit Das wrote:
+> syzbot reported a stack-out-of-bounds write in __bpf_get_stack()
+> triggered via bpf_get_stack() when capturing a kernel stack trace.
 >
-> Unify the probe implementations of the VSC85xx PHY family into a single
-> vsc85xx_probe_common() helper. The existing probe functions for the
-> vsc85xx, vsc8514, vsc8574, and vsc8584 variants contained almost
-> identical initialization logic, differing only in configuration
-> parameters such as the number of LEDs, supported LED modes, hardware
-> statistics, and PTP support.
+> After the recent refactor that introduced stack_map_calculate_max_depth(),
+> the code in stack_map_get_build_id_offset() (and related helpers) stopped
+> clamping the number of trace entries (`trace_nr`) to the number of elements
+> that fit into the stack map value (`num_elem`).
 >
-> Introduce a vsc85xx_probe_config structure to describe the per-variant
-> parameters, and move all common setup code into the shared helper. Each
-> variant's probe function now defines a constant configuration instance
-> and calls vsc85xx_probe_common().
+> As a result, if the captured stack contained more frames than the map value
+> can hold, the subsequent memcpy() would write past the end of the buffer,
+> triggering a KASAN report like:
 >
-> Also mark the default LED mode array parameter as const to match its
-> usage.
+>      BUG: KASAN: stack-out-of-bounds in __bpf_get_stack+0x...
+>      Write of size N at addr ... by task syz-executor...
 >
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Restore the missing clamp by limiting `trace_nr` to `num_elem` before
+> computing the copy length. This mirrors the pre-refactor logic and ensures
+> we never copy more bytes than the destination buffer can hold.
+>
+> No functional change intended beyond reintroducing the missing bound check.
+>
+> Reported-by: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
+> Fixes: e17d62fedd10 ("bpf: Refactor stack map trace depth calculation into helper function")
+> Signed-off-by: Brahmajit Das <listout@listout.xyz>
 > ---
-> v2->v3:
-> - Grouped check_rate_magic check
-
-Thanks for your patch!
-
-> --- a/drivers/net/phy/mscc/mscc_main.c
-> +++ b/drivers/net/phy/mscc/mscc_main.c
-> @@ -22,6 +22,24 @@
->  #include "mscc_serdes.h"
->  #include "mscc.h"
+> Changes in v3:
+> Revert back to num_elem based logic for setting trace_nr. This was
+> suggested by bpf-ci bot, mainly pointing out the chances of underflow
+> when  max_depth < skip.
 >
-> +struct vsc85xx_probe_config {
-> +       const struct vsc85xx_hw_stat *hw_stats;
-> +       u8 nleds;
-> +       u16 supp_led_modes;
-> +       size_t nstats;
-> +       bool use_package;
-> +       size_t shared_size;
-> +       bool has_ptp;
-> +       bool check_rate_magic;
-> +};
+> Quoting the bot's reply:
+> The stack_map_calculate_max_depth() function can return a value less than
+> skip when sysctl_perf_event_max_stack is lowered below the skip value:
+>
+>      max_depth = size / elem_size;
+>      max_depth += skip;
+>      if (max_depth > curr_sysctl_max_stack)
+>          return curr_sysctl_max_stack;
+>
+> If sysctl_perf_event_max_stack = 10 and skip = 20, this returns 10.
+>
+> Then max_depth - skip = 10 - 20 underflows to 4294967286 (u32 wraps),
+> causing min_t() to not limit trace_nr at all. This means the original OOB
+> write is not fixed in cases where skip > max_depth.
+>
+> With the default sysctl_perf_event_max_stack = 127 and skip up to 255, this
+> scenario is reachable even without admin changing sysctls.
+>
+> Changes in v2:
+> - Use max_depth instead of num_elem logic, this logic is similar to what
+> we are already using __bpf_get_stackid
+> Link: https://lore.kernel.org/all/20251111003721.7629-1-listout@listout.xyz/
+>
+> Changes in v1:
+> - RFC patch that restores the number of trace entries by setting
+> trace_nr to trace_nr or num_elem based on whichever is the smallest.
+> Link: https://lore.kernel.org/all/20251110211640.963-1-listout@listout.xyz/
+> ---
+>   kernel/bpf/stackmap.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+> index 2365541c81dd..cef79d9517ab 100644
+> --- a/kernel/bpf/stackmap.c
+> +++ b/kernel/bpf/stackmap.c
+> @@ -426,7 +426,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+>   			    struct perf_callchain_entry *trace_in,
+>   			    void *buf, u32 size, u64 flags, bool may_fault)
+>   {
+> -	u32 trace_nr, copy_len, elem_size, max_depth;
+> +	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
+>   	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
+>   	bool crosstask = task && task != current;
+>   	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
+> @@ -480,6 +480,8 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+>   	}
+>   
+>   	trace_nr = trace->nr - skip;
+> +	num_elem = size / elem_size;
+> +	trace_nr = min_t(u32, trace_nr, num_elem);
+>   	copy_len = trace_nr * elem_size;
+>   
+>   	ips = trace->ip + skip;
 
-Please sort by decreasing size, to reduce holes:
-  1. pointer and size_t,
-  2. u16,
-  3. u8 and bool.
+Thanks,
+Arnaud
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
