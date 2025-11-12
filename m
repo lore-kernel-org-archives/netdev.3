@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E69A9476
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 09:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1A12DC35A
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 09:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762939071; cv=none; b=QF/dh1MbNJ7KZ5c/TfckxivGeKPwYV9h2G1omGVBwVPOqeIcGxWLOss2EOF3/+kv1sD265lAu2jvBIdTFTTOhbkX77qxVcnZNelY+0E6JJbX15O1Axi6fesa3T9iJCZTOl7YQUrfFdbomQtHoLNV2bx30M4HD2zd18T1gf5ZDKE=
+	t=1762939075; cv=none; b=s91MvFAdanxVuLZD4TzKezL3ORk3jNYCp9AjivlsBieBJING16cH1RrkBWch1+xWzqVdQowoyRJbKF+g5UCmtHqrrmkcgr49ae7rhemNSRqZq13OihPoCiMS+47FJ7CWzGVvCpkgn7FJMrHJqNw3EZ2B2039UoII6uAFVvsfax8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762939071; c=relaxed/simple;
-	bh=DS9XNu0+sV4N1jZQNGIhcpbWVrqHJgFpyHZN6M8aoDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kBleQjYNAK2GJhEBt2Ekq0XUauOKSQ2MbkxONBKItenjYIh8N1wXj64Fd3IUIaL26HE/EDJloN9HaNDoH0JlVP0XOe1YxaRFXjvVI80ihKPxQoEFzFY1FVUJslCLSBI7elbNTSQDiuDmvVIbeAhYULT1e4Pn4AN2vGaQVS7BOs4=
+	s=arc-20240116; t=1762939075; c=relaxed/simple;
+	bh=BybLz8R/6E4SyXOF+fTFA74JdgAgAbvozI8MqTL2cz8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lqmWONI6KctKrj5rVyFSNj0IORwgZoZDGWehzKsl2/sZdQPOhOCdGaZ03Ms0kFMZ7oghopwZ/s7cpSxhv7FtAQnDipu8ANcpCAkYuqYNmWyPmB0XKKLDg8qL0uCOYU/ZoZSbW+V+sGaUbUGNlR44wHzFjXqVHbRStKERfQdbszE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,30 +18,34 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6yw-0007V2-B2; Wed, 12 Nov 2025 10:17:38 +0100
+	id 1vJ6yw-0007V6-Ew; Wed, 12 Nov 2025 10:17:38 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6yv-0003cG-1a;
+	id 1vJ6yv-0003cM-31;
 	Wed, 12 Nov 2025 10:17:37 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3215D49D997;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 9072749D99B;
 	Wed, 12 Nov 2025 09:17:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/11] pull-request: can-next 2025-11-12
-Date: Wed, 12 Nov 2025 10:13:40 +0100
-Message-ID: <20251112091734.74315-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 04/11] can: mcp251x: mcp251x_can_probe(): use dev_err_probe()
+Date: Wed, 12 Nov 2025 10:13:44 +0100
+Message-ID: <20251112091734.74315-5-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251112091734.74315-1-mkl@pengutronix.de>
+References: <20251112091734.74315-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,78 +58,121 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-this is a pull request of 11 patches for net-next/main.
+The currently used combination of dev_err() plus return leaves a loud error
+in dmesg even when the error is a deferred probe which gets resolved later.
+For example a supply that has not been probed yet.
 
-The first 3 patches are by Vadim Fedorenko and convert the CAN drivers
-to use the ndo_hwtstamp callbacks.
+Use dev_err_probe() to improve the handling/display of errors.
 
-Maud Spierings contributes a patch to the mcp251x driver that converts
-it to use dev_err_probe()
-
-The remaining patches target the mcp251xfd driver and are by Gregor
-Herburger and me. They add GPIO controller functionality to the
-driver.
-
-regards,
-Marc
-
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Link: https://patch.msgid.link/20251030-mcp_err-v1-1-eecf737823b7@gocontroll.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ drivers/net/can/spi/mcp251x.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-The following changes since commit ea7d0d60ebc9bddf3ad768557dfa1495bc032bf6:
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index 1e54e1a22702..fa97adf25b73 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1320,7 +1320,7 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 
+ 	clk = devm_clk_get_optional(&spi->dev, NULL);
+ 	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++		return dev_err_probe(&spi->dev, PTR_ERR(clk), "Cannot get clock\n");
+ 
+ 	freq = clk_get_rate(clk);
+ 	if (freq == 0)
+@@ -1328,7 +1328,7 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 
+ 	/* Sanity check */
+ 	if (freq < 1000000 || freq > 25000000)
+-		return -ERANGE;
++		return dev_err_probe(&spi->dev, -ERANGE, "clock frequency out of range\n");
+ 
+ 	/* Allocate can/net device */
+ 	net = alloc_candev(sizeof(struct mcp251x_priv), TX_ECHO_SKB_MAX);
+@@ -1336,8 +1336,10 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 		return -ENOMEM;
+ 
+ 	ret = clk_prepare_enable(clk);
+-	if (ret)
++	if (ret) {
++		dev_err_probe(&spi->dev, ret, "Cannot enable clock\n");
+ 		goto out_free;
++	}
+ 
+ 	net->netdev_ops = &mcp251x_netdev_ops;
+ 	net->ethtool_ops = &mcp251x_ethtool_ops;
+@@ -1362,20 +1364,25 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 	else
+ 		spi->max_speed_hz = spi->max_speed_hz ? : 10 * 1000 * 1000;
+ 	ret = spi_setup(spi);
+-	if (ret)
++	if (ret) {
++		dev_err_probe(&spi->dev, ret, "Cannot set up spi\n");
+ 		goto out_clk;
++	}
+ 
+ 	priv->power = devm_regulator_get_optional(&spi->dev, "vdd");
+ 	priv->transceiver = devm_regulator_get_optional(&spi->dev, "xceiver");
+ 	if ((PTR_ERR(priv->power) == -EPROBE_DEFER) ||
+ 	    (PTR_ERR(priv->transceiver) == -EPROBE_DEFER)) {
+ 		ret = -EPROBE_DEFER;
++		dev_err_probe(&spi->dev, ret, "supply deferred\n");
+ 		goto out_clk;
+ 	}
+ 
+ 	ret = mcp251x_power_enable(priv->power, 1);
+-	if (ret)
++	if (ret) {
++		dev_err_probe(&spi->dev, ret, "Cannot enable power\n");
+ 		goto out_clk;
++	}
+ 
+ 	priv->wq = alloc_workqueue("mcp251x_wq",
+ 				   WQ_FREEZABLE | WQ_MEM_RECLAIM | WQ_PERCPU,
+@@ -1409,21 +1416,24 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ 	/* Here is OK to not lock the MCP, no one knows about it yet */
+ 	ret = mcp251x_hw_probe(spi);
+ 	if (ret) {
+-		if (ret == -ENODEV)
+-			dev_err(&spi->dev, "Cannot initialize MCP%x. Wrong wiring?\n",
+-				priv->model);
++		dev_err_probe(&spi->dev, ret, "Cannot initialize MCP%x. Wrong wiring?\n",
++			      priv->model);
+ 		goto error_probe;
+ 	}
+ 
+ 	mcp251x_hw_sleep(spi);
+ 
+ 	ret = register_candev(net);
+-	if (ret)
++	if (ret) {
++		dev_err_probe(&spi->dev, ret, "Cannot register CAN device\n");
+ 		goto error_probe;
++	}
+ 
+ 	ret = mcp251x_gpio_setup(priv);
+-	if (ret)
++	if (ret) {
++		dev_err_probe(&spi->dev, ret, "Cannot set up gpios\n");
+ 		goto out_unregister_candev;
++	}
+ 
+ 	netdev_info(net, "MCP%x successfully initialized.\n", priv->model);
+ 	return 0;
+@@ -1442,7 +1452,6 @@ static int mcp251x_can_probe(struct spi_device *spi)
+ out_free:
+ 	free_candev(net);
+ 
+-	dev_err(&spi->dev, "Probe failed, err=%d\n", -ret);
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
 
-  Merge branch 'add-cn20k-nix-and-npa-contexts' (2025-10-30 10:44:12 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.19-20251112
-
-for you to fetch changes up to 5bce93417a62b1da306a33f1e7ebb12bc915a80e:
-
-  can: bxcan: Fix a typo error for assign (2025-11-12 09:48:07 +0100)
-
-----------------------------------------------------------------
-linux-can-next-for-6.19-20251112
-
-----------------------------------------------------------------
-Chu Guangqing (1):
-      can: bxcan: Fix a typo error for assign
-
-Gregor Herburger (5):
-      can: mcp251xfd: utilize gather_write function for all non-CRC writes
-      can: mcp251xfd: add workaround for errata 5
-      can: mcp251xfd: only configure PIN1 when rx_int is set
-      can: mcp251xfd: add gpio functionality
-      dt-bindings: can: mcp251xfd: add gpio-controller property
-
-Marc Kleine-Budde (3):
-      Merge patch series "convert can drivers to use ndo_hwtstamp callbacks"
-      can: mcp251xfd: move chip sleep mode into runtime pm
-      Merge patch series "can: mcp251xfd: add gpio functionality"
-
-Maud Spierings (1):
-      can: mcp251x: mcp251x_can_probe(): use dev_err_probe()
-
-Vadim Fedorenko (3):
-      can: convert generic HW timestamp ioctl to ndo_hwtstamp callbacks
-      can: peak_canfd: convert to use ndo_hwtstamp callbacks
-      can: peak_usb: convert to use ndo_hwtstamp callbacks
-
- .../bindings/net/can/microchip,mcp251xfd.yaml      |   5 +
- drivers/net/can/bxcan.c                            |   2 +-
- drivers/net/can/dev/dev.c                          |  45 ++--
- drivers/net/can/esd/esd_402_pci-core.c             |   3 +-
- drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c |   3 +-
- drivers/net/can/peak_canfd/peak_canfd.c            |  35 ++-
- drivers/net/can/spi/mcp251x.c                      |  31 ++-
- drivers/net/can/spi/mcp251xfd/Kconfig              |   1 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     | 284 +++++++++++++++++----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c   | 114 +++++++--
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |   8 +
- drivers/net/can/usb/etas_es58x/es58x_core.c        |   3 +-
- drivers/net/can/usb/gs_usb.c                       |  20 +-
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   3 +-
- drivers/net/can/usb/peak_usb/pcan_usb_core.c       |  35 ++-
- include/linux/can/dev.h                            |   6 +-
- 16 files changed, 446 insertions(+), 152 deletions(-)
