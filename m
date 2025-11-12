@@ -1,183 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EB12BF016
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 07:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D232E285C9F;
+	Wed, 12 Nov 2025 07:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762931899; cv=none; b=G0PaTmRO+hDr/sqJaZEJ7EibFyWoySYCwS1AA3hSmHupBftblLhbXi1771WV5fyObA4e+zzp9tJSh4gtR00MSxQjHaq0Co5MjF01VNX7e3/l+kW2BvTXDgybden39pXdPhR3nP89IC5FqHEiCd/ORbmkICIViRfl9zSwxoROykg=
+	t=1762932539; cv=none; b=NYhlnC8ch6QSL6KqexsyqlWytvIy0+aU/6spxlPw8eKWRyup5RBjR59OV8F6RXa9yBbcqsg2p99LE2uMzIj4m0O382GB4FPO4QeOoT4A9AnoK2jYovpNeLRRyu/CFA2ctM4vYpdO+9cEib7uEDFudMcdnubXWU6PMaXGL4C0jmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762931899; c=relaxed/simple;
-	bh=l+NV0k7Bp/+YgOf/+PvP9J8DW53va6OQMtA4SQp1YmQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rN9f61WJNIB7hKP9p8fHXwEUsVp8Slr3qXkBeyFAVqatQs7sBSeufAGZqhXL6s00rHh2HqEzaVTqQ08/3f8ckjEi95nhVmaphQGAqfcH2PaPax/nurcHiKxOodAdPORFTVYo/pJoDYfBb48neqmmFZNphNcgPY16uDV1xKquQzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GMVuL/zZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=McaKno0A; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762932539; c=relaxed/simple;
+	bh=V6wi0kcFw0Q8gGUYw1DFlgX+4CHH6igLN6gf7Xs9mfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EFUxt8LpG9PBOWfUUnhWnICHWzXerk/YK4rq9rdZ6ZcypsyoiMdnb/UggHaoytsvx/cWZlvRK8Q/YHBliBFRBrDedaH77I9/YJFgHbbL+w/KqCAFN17o6dFlahtKWnxMS1UkvGrc7F4BMXdx1USj8TuP0Cu3py/cNe10mAi6h10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lNYpv4uu; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GMVuL/zZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="McaKno0A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762931896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2OQTWc8k6eLNIl1r2U6IKGTRX88Qf57rZqkALXWLQcE=;
-	b=GMVuL/zZYJhzTG+dMGxiZzpm6+GOSCSuDbFzIwEnOepnihS3g3iIaoJlHtS1W+uTd2f1jK
-	mUt6BDmprt/5hUgNcS30I6z7WI8DNCmu2Bq9GWrAxSDuHPnoGjSYc2lW4LfgqCu9Ji4L4J
-	JRgloz7XdMvcNf1pr8EtE/5K4mBKhGA=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687--4eTCGcUN4esBgK3Vt-dQg-1; Wed, 12 Nov 2025 02:18:15 -0500
-X-MC-Unique: -4eTCGcUN4esBgK3Vt-dQg-1
-X-Mimecast-MFC-AGG-ID: -4eTCGcUN4esBgK3Vt-dQg_1762931894
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34385d7c4a7so451606a91.0
-        for <netdev@vger.kernel.org>; Tue, 11 Nov 2025 23:18:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762931894; x=1763536694; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2OQTWc8k6eLNIl1r2U6IKGTRX88Qf57rZqkALXWLQcE=;
-        b=McaKno0AxqBSMDRaZ1E0wtgioE7Ao4+c+LQO9zbl3UJrV2OUpPwRCOcPK712sSU0MA
-         I9FGJHo5yMVhTRp5aF9LhyVYVZbG8mEOg8r62TdDIA9iAyO4S69rrvmjQBe/3/VztSYL
-         2v593YFMTtZVfmwfTvy0Kbwb1na9OEkLY9PCM1AgP9z5tHF4FL59KEx2epu7wjt+cLE8
-         qPzkkwFsDXxYaM5gMiNPW01Pztmsxp5/eEqTMZFdbWHtVxVjPos1dLq22t84qsxPlckc
-         pZD4uTwT87gpsTPOgWTgo6tm6lc18PugpNoaTIQxKQNoWjzdMa7PoDF6Vx6ua1NzhY+J
-         orFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762931894; x=1763536694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2OQTWc8k6eLNIl1r2U6IKGTRX88Qf57rZqkALXWLQcE=;
-        b=I7qdZzQJyq5RJKW1Z92lSFj70rOEuLAae/nI4OdzT4UuW1uE8FF5Si1F2LiHVjEmsc
-         cu9aLBc5ds/5H7vD6iNyVon+YTvAiFyHzhDMPFg78TuvRyMp52Fk5z01CUhgZ53Dv+to
-         KKdRFeZ4vaE+1GNfqz8wwKRK/jyRdtYhFJJh7fSZdkg7TMYdltx1Q39MLQCfNVgf65RF
-         TKQhMzbbKwALGqv46uMfPBHXmPAPzKeKSDlE/oAp5lplUNaSR8d6PKaoY3HIepz5V9Uk
-         EjUKJRlp34eXi+IlfPpzRKASiHmS8gKULzkgXkNyRNeCYyKa0x93Z8fh6tbO/r+y9Iow
-         s+mw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmMy9VuxEkJd75nCextKjZMt7yAYgi2VJOkG/FospCZQ4ocLIUtYlkIoNEGL7EryxAVjpr3iE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCoH0LF+FUGDLiNCVhlCwf3JoU4P0uorxK42B9cDsuMUvcHDPA
-	uPLCxkgwxxe4fb5k2pH0oNdSPPA5fkD0R3SnIRSZxWPrJWpAC3st1hOEPsb9ORppo9vBCBEHuff
-	6K13DoN5IuG18QkU/mxyL1lq5dkqpT0I85IDTN9GDo4xK/hFcVxX4fK9xObmBxwfpJz7tKI9wkB
-	0wSiBxqFZAl7eFANc3/FkSBOjd+5N/RpAM
-X-Gm-Gg: ASbGncsySyna3wVoAiHg6kEp3YDtITr8Ap87ngZumzSo3AiYUVhe9FrQsT1vPjztucv
-	zjOwczX5tx3EC26DA7S6QeH/vzZPlkfXO5++sIT43SNUf9dLEjprKxWJ/U49HSAnEFsa8wQIRyR
-	76ew/oEN2KDJE4YgyvmMuLqrnIZqzvxsXd3/NqEAeyT/XTOqmAIdPtvCQV
-X-Received: by 2002:a17:90a:ec8b:b0:340:e103:bfd4 with SMTP id 98e67ed59e1d1-343dddf5290mr2457737a91.2.1762931893997;
-        Tue, 11 Nov 2025 23:18:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEiyTtRY6Si4zXAKOZru7EoKpBQTUibKUV8Jrm0qaneiJMYyuUjN+SN/kgXL/nz1Zlqo7mpRrDD+OqPMOc61qU=
-X-Received: by 2002:a17:90a:ec8b:b0:340:e103:bfd4 with SMTP id
- 98e67ed59e1d1-343dddf5290mr2457700a91.2.1762931893477; Tue, 11 Nov 2025
- 23:18:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lNYpv4uu"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8F4CC7A01E4;
+	Wed, 12 Nov 2025 02:28:56 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 12 Nov 2025 02:28:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1762932536; x=1763018936; bh=/qRyiDiAt8Ei9aeC9qYnbXqrngQdTyNLTYg
+	+pPQSEdY=; b=lNYpv4uuczW9jJ51COZWxybhWMYHt1jnsMOuTNbBjUCB+c///Pq
+	tZOQFQ2xr+LxsEAatisVecUuM1vjRoODnMXKjkot7p6NRTEVCLVvCCw31R7SmHgU
+	sp2P9SE1HPwWDZHGSGdV82+NbzPe1rFn6W/ptrLzIehk7l3pEFvZ/FWbk45U1IDr
+	VASAK90DM/VFhnM1vaUZ4iTKvDF4pe3Jnx8hry5CeSesbiTYzsSELKqd3HguImHn
+	g8+lxcj+J60ukdeMY8jXk+DvA3mraKeK26VzHeBslAuycCOd5aDCmsUNliwGn6o3
+	3TKhUXWrejyo6zB8GGkj/sCa7revkPnXQlg==
+X-ME-Sender: <xms:NzcUaVCIPFnaxmDOyeBkIvxf1XNW4k3BTajYLbYuVLf2RnYIvAKVpA>
+    <xme:NzcUaZhhAEQHdeIGnpGj1KlsVs90GzZZaRt7FG9LCEzgtdjZ68EVfQXi015-wGtzm
+    MWXGUZNJgsINtk15jM9G6dhGugq_drsxjrzH7Yo1enAA2PcPzL6>
+X-ME-Received: <xmr:NzcUabaGuKdvSTjaGpuf4L5iCyojdXmYbGS5YTiAdsY0vgUrOzo7OGvV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdefgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
+    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepvddufeevkeehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeggefh
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihguoh
+    hstghhsehiughoshgthhdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopehnrghshhhuihhlihgrnhhgsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegushgrhhgvrh
+    hnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgv
+    rdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:NzcUaSnw0vjSTsRlETzAO-f6e9txzJBTexzov_bkv-ajTlSv1vSCdA>
+    <xmx:NzcUaZjZ2_KIHPkgLVr9rAP7czoqp57UYhS2_XknATW1q3FC2G1VdA>
+    <xmx:NzcUacS7srdZXtMu_XjR68i_0KHfbP7qe2kYO9UOglvF5F0wyVZQcg>
+    <xmx:NzcUaSZOytN-o93XqUe2BNWbppfw5msVwglET4mkIgmcRv_igEFAZw>
+    <xmx:ODcUaeoyGUVhTGJ-9EHCyB9fs9EJf3a3Ewq0jcW2XYpoXsiCXISEZ9qr>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Nov 2025 02:28:55 -0500 (EST)
+Date: Wed, 12 Nov 2025 09:28:53 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Chuang Wang <nashuiliang@gmail.com>
+Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] ipv4: route: Prevent rt_bind_exception() from
+ rebinding stale fnhe
+Message-ID: <aRQ3NYERGcHJ4rZP@shredder>
+References: <20251111064328.24440-1-nashuiliang@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107041523.1928-1-danielj@nvidia.com> <20251107041523.1928-6-danielj@nvidia.com>
- <ee527a09-6e6e-4184-8a0c-46aacb11302f@redhat.com> <CACGkMEt2SEWY-hUKv2=PwLZr+NNGSobr4i-XQ_qDtGk+tNw8Gw@mail.gmail.com>
- <443232ac-2e4f-4893-a956-cf9185bc3ac1@nvidia.com> <CACGkMEtMP2XfXFmuhoAkMrcgJD8JiRTc-tuq1i7xxxzA43A4mg@mail.gmail.com>
- <ada8b5c4-2a9e-45d9-a9e1-28fa50afce8d@nvidia.com>
-In-Reply-To: <ada8b5c4-2a9e-45d9-a9e1-28fa50afce8d@nvidia.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 12 Nov 2025 15:18:02 +0800
-X-Gm-Features: AWmQ_bnZhIKWSMpkWsQnvAN7AMqno6qxXdnPzDz-AkTZBuWbcERPcd9gvbM-Fys
-Message-ID: <CACGkMEvgPyfOquwxXbugukpxenMt9NDevpJJi3QXD1s=0pgWXw@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 05/12] virtio_net: Query and set flow filter caps
-To: Dan Jurgens <danielj@nvidia.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, mst@redhat.com, 
-	virtualization@lists.linux.dev, parav@nvidia.com, shshitrit@nvidia.com, 
-	yohadt@nvidia.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, 
-	shameerali.kolothum.thodi@huawei.com, jgg@ziepe.ca, kevin.tian@intel.com, 
-	kuba@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111064328.24440-1-nashuiliang@gmail.com>
 
-On Wed, Nov 12, 2025 at 1:16=E2=80=AFPM Dan Jurgens <danielj@nvidia.com> wr=
-ote:
->
-> On 11/11/25 10:18 PM, Jason Wang wrote:
-> > On Wed, Nov 12, 2025 at 11:02=E2=80=AFAM Dan Jurgens <danielj@nvidia.co=
-m> wrote:
-> >>
-> >> On 11/11/25 7:00 PM, Jason Wang wrote:
-> >>> On Tue, Nov 11, 2025 at 6:42=E2=80=AFPM Paolo Abeni <pabeni@redhat.co=
-m> wrote:
-> >>>>
-> >>>> On 11/7/25 5:15 AM, Daniel Jurgens wrote:
-> >>>>> @@ -7121,6 +7301,15 @@ static int virtnet_probe(struct virtio_devic=
-e *vdev)
-> >>>>>       }
-> >>>>>       vi->guest_offloads_capable =3D vi->guest_offloads;
-> >>>>>
-> >>>>> +     /* Initialize flow filters. Not supported is an acceptable an=
-d common
-> >>>>> +      * return code
-> >>>>> +      */
-> >>>>> +     err =3D virtnet_ff_init(&vi->ff, vi->vdev);
-> >>>>> +     if (err && err !=3D -EOPNOTSUPP) {
-> >>>>> +             rtnl_unlock();
-> >>>>> +             goto free_unregister_netdev;
-> >>>>
-> >>>> I'm sorry for not noticing the following earlier, but it looks like =
-that
-> >>>> the code could error out on ENOMEM even if the feature is not really
-> >>>> supported,  when `cap_id_list` allocation fails, which in turn looks=
- a
-> >>>> bit bad, as the allocated chunk is not that small (32K if I read
-> >>>> correctly).
-> >>>>
-> >>>> @Jason, @Micheal: WDYT?
-> >>>
-> >>> I agree. I think virtnet_ff_init() should be only called when the
-> >>> feature is negotiated.
-> >>>
-> >>> Thanks
-> >>>
-> >>
-> >> Are you suggesting we wait to call init until get/set_rxnfc is called?=
- I
-> >> don't like that idea. Probe is the right time to do feature discovery.
-> >
-> > Nope I meant it might be better:
-> >
-> > 1) embed virtio_admin_cmd_query_cap_id_result in virtnet_info to avoid
-> > dynamic allocation
-> >
-> > Or
-> >
-> > 2) at least check if there's an adminq before trying to call virtnet_ff=
-_init()?
->
-> I could do a check like this:
->
->         if (!vdev->config->admin_cmd_exec)
->                 return -EOPNOTSUPP;
->
-> Or would you prefer it added to the virtio_admin_command api?
->
-> bool virtio_admin_supported(struct virtio_device *vdev);
+On Tue, Nov 11, 2025 at 02:43:24PM +0800, Chuang Wang wrote:
+> The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
+> update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
+> to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
+> 
+> The race window is between fnhe_remove_oldest() selecting fnheX for
+> deletion and the subsequent kfree_rcu(). During this time, the
+> concurrent path's __mkroute_output() -> find_exception() can fetch the
+> soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
+> new dst using a dst_hold(). When the original fnheX is freed via RCU,
+> the dst reference remains permanently leaked.
+> 
+> CPU 0                             CPU 1
+> __mkroute_output()
+>   find_exception() [fnheX]
+>                                   update_or_create_fnhe()
+>                                     fnhe_remove_oldest() [fnheX]
+>   rt_bind_exception() [bind dst]
+>                                   RCU callback [fnheX freed, dst leak]
+> 
+> This issue manifests as a device reference count leak and a warning in
+> dmesg when unregistering the net device:
+> 
+>   unregister_netdevice: waiting for sitX to become free. Usage count = N
+> 
+> Ido Schimmel provided the simple test validation method [1].
+> 
+> The fix clears 'oldest->fnhe_daddr' before calling fnhe_flush_routes().
+> Since rt_bind_exception() checks this field, setting it to zero prevents
+> the stale fnhe from being reused and bound to a new dst just before it
+> is freed.
+> 
+> [1]
+> ip netns add ns1
+> ip -n ns1 link set dev lo up
+> ip -n ns1 address add 192.0.2.1/32 dev lo
+> ip -n ns1 link add name dummy1 up type dummy
+> ip -n ns1 route add 192.0.2.2/32 dev dummy1
+> ip -n ns1 link add name gretap1 up arp off type gretap \
+>     local 192.0.2.1 remote 192.0.2.2
+> ip -n ns1 route add 198.51.0.0/16 dev gretap1
+> taskset -c 0 ip netns exec ns1 mausezahn gretap1 \
+>     -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+> taskset -c 2 ip netns exec ns1 mausezahn gretap1 \
+>     -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+> sleep 10
+> ip netns pids ns1 | xargs kill
+> ip netns del ns1
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+> Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
 
-I prefer 1) but I'm fine for 2) if everyone think it's ok.
-
-Thanks
-
->
-> >
-> > Thanks
-> >
-> >>
-> >>
-> >>>>
-> >>>> /P
-> >>>>
-> >>>
-> >>
-> >
->
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
