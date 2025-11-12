@@ -1,224 +1,125 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596542550AF
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 16:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0062BF00B
+	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 16:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762964963; cv=none; b=kRP9wWZ92swRZUXGEVKGrsEB6nhaqZTBoyoYVhJViYkTX1RGNhdVc3VAnqwXL0BAy3BHHeSoeyk+EYt5PQc1Deu6AXJ9MROmk+/OF+NWk0Mg+z6JQQugaLKBLAoAKb6hBB3k05/tm9qv8P85UdCEPWCWUPb6gETBlz6ousN6WxI=
+	t=1762965160; cv=none; b=VMG1q1uaidLOvfOVBkH7+lj9FQJeEFM61DCUr8TGjwkDDlhIV5Hkfwpoj+ife9+Zy+vj7rV859e3DuSv4jk+rHBjpENmi/e1VBQfngzopZ7Kidbmw9yi7+CFVBDEqFtpDr2KG33tAZn7tTZ0pTW0EjtaMGuLT/+h6xUpdJqzXdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762964963; c=relaxed/simple;
-	bh=9ZAyfBSZkjFw6t6tesPjp89F4i5/XToxggH/Myp7Hpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mx+UL0bE+uA9ndt9m0g0FKmwJLC2oZiM/Nc11gn1AagP+PdizS9T1M5ephTU3pTRvQx4H9CJELl4jCfe+2RVjng/l+E6Mg7PXDAC/pY/JtmLoC6M1KIRw9D3VQQo+ouO+tiSFYfrG3JiI0qlJqjxMncBZFxVtYaKqAozFqI/RGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=vJ26Nqr/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oiAJR3WG; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1762965160; c=relaxed/simple;
+	bh=c1QrvIRwprlUcKJLB3uc4wKdSKcMusSWC4zjgxF/IHI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=C6kZ/o2jz1MaxntD9kQXwfqe9cDktHv0M9oHd6+YnKCLTC0xXjaMtYdoqsCOTfB4Jy1ymhxNaRNorpS8SUguC+BavlQCduOjIozHNFei6iwdjTY5K88BOAWRPitlIM3e+Q85rD9byggpvUwkM8DG0AQ/UT2LZLESizPpc/t2K3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qu9uKmqB; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="vJ26Nqr/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oiAJR3WG"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.phl.internal (Postfix) with ESMTP id 268DDEC02F1;
-	Wed, 12 Nov 2025 11:29:19 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Wed, 12 Nov 2025 11:29:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1762964959; x=
-	1763051359; bh=xA2MNB57MGhHXw3GXGUNElUFH16jvV2Gk1L1LUDJRC8=; b=v
-	J26Nqr/J2Lo8ai3+UUixCP6iCi+mtMxyZ7ytvpprRxrvlUze/Y3P3KO7qBCurScw
-	okVgPnHzvLaMdMnqjCI8cyQZ2wy1Tg+vwapzFU0KahuI/2SIETphjk6usJaEJsVf
-	ciZJf2sWFt8wEMsY+TzY+pj1c3j/1hpEv3bzwPNj/KcLHYvje4AitUgeFKc4HOgv
-	00olluG4RwnOaaHn/cNaeTE5PTE5ISb63B1sunmzKZWIjrQhgvkSQj3mHtxtShpM
-	pf+XRz2t6DuLoeY01f/lsOJJ7PPNc0MV4mujAVEaw5Hq6alLgT4hRggGs3P6Jbnq
-	41MikdnPOUGMlJLwhIFvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1762964959; x=1763051359; bh=xA2MNB57MGhHXw3GXGUNElUFH16jvV2Gk1L
-	1LUDJRC8=; b=oiAJR3WGVEYC9SjNGwvW3+IZ5T0vdiByCipabFK9vOuZXc0JE8x
-	r0zYzQq4oVKq/fHqDf9ypxi0ZoIyiVntNoCiGQhqoFm7SO0AgAUl2RfSgqH4it9e
-	x0LcQQZry0cgyGXmdynjNs7XEp6FrBsdzs8mIJbyC76pJaaPmBv0sWGAgmZ94uO9
-	HDrYdSj2JPWeQ0CskRzTJJJnRRg+mzpIJdkaSOnaHCwp8MGVlO5HA8fJeGQRZkn3
-	QdrbY8U1bOI29sCoJwgDPR4LtIRhZIEqYSJ755A5t8zaE7yFH/8k6D+qJV9/mwGv
-	NCkBHlbSNCUXgnbERMkBwZ8B1PduWpjxBdA==
-X-ME-Sender: <xms:3rUUaaNpHjHAx2xoklqCf6K5iOoCoCuExRmi1-ugt6FFK3YKZCYVTg>
-    <xme:3rUUacqtkPDCMxbOQzDLv_HlvFLuxmjjKCv0WxLLgqR0Av0waG23He2_MxCNhHrlA
-    9SE3_NPtOyUQ1b777DwaQ3RTkr5l7yJQBZIzpEcLTv3wP2Yz9e12pQ>
-X-ME-Received: <xmr:3rUUabHVuBTAhPxZjR2ZxWA5-Q8XHKHpPBHVhsxAgiBZSaX-y_-gUzstu80Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdegheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopeeipdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrnhhtohhnihhosehophgvnhhvphhnrdhnvg
-    htpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrg
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtgho
-    mhdprhgtphhtthhopehrrghlfhesmhgrnhguvghlsghithdrtghomh
-X-ME-Proxy: <xmx:3rUUaRpyyUM25Z9z-FpLf6AeLt-cfTrfp-YoNoxj6GVomhh8fFxrKQ>
-    <xmx:3rUUaUbAtvvN5jTEf-pil7mcXfVCB_wtE9G_zyzg63nPMhYfWv79Lw>
-    <xmx:3rUUaaXgRuEwuqq2Yi8vYqywAox3Y76zRN3_HWjfOiwkKZRgK84L7w>
-    <xmx:3rUUad9aJtVKrFeeYz2FwgSzPlprwhkPccZPI7o8bIH1CozEGFYL4A>
-    <xmx:37UUaTWi7QOBzdNCGlAG9qcXGYBjSEYh5fX0RDRIGTuClhRd7X3LLtPH>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Nov 2025 11:29:18 -0500 (EST)
-Date: Wed, 12 Nov 2025 17:29:16 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Ralf Lici <ralf@mandelbit.com>
-Subject: Re: [PATCH net-next 6/8] ovpn: consolidate crypto allocations in one
- chunk
-Message-ID: <aRS13OqKdhx4aVRo@krikkit>
-References: <20251111214744.12479-1-antonio@openvpn.net>
- <20251111214744.12479-7-antonio@openvpn.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qu9uKmqB"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b55517e74e3so974620a12.2
+        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 08:32:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762965158; x=1763569958; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=B8FAT13muYHU2l7KuPkAgXskDVFmueBFnB0vVejWGok=;
+        b=Qu9uKmqBPIo/+l+oDw1LScPofUv8miQ8QtCBpd0sCpiY9qv+r38AAnRTBtU/oDJ76B
+         2fErEaBFsUgt8NYnpIafy3hxU6h/AX73myu+YLSvekC6+lU4IBGgpR8Le/ak1jEnzIfP
+         bI5NuedhqYVpUOEzbnrH14UhzCeV5NA5wqpL7c0JJ14yjImWV8KAXReByt+fqvZhHl7H
+         rjU8ef4N+OvR/+/AVQZC8bN9ajKK3AKXa4HCSuGfTAiqTnaGM56WIcA7IiK3nyd2wkRJ
+         9ClfJ5VPjODmRMPn7ZzDwGE4IcGM14lOYOKfti7TfKXta4CQ2zoqFqWK1tFYO+lSe7NM
+         Nq/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762965158; x=1763569958;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8FAT13muYHU2l7KuPkAgXskDVFmueBFnB0vVejWGok=;
+        b=g6FnSzv2z8Z4jtuFFBCa+Y5vTK1p7F2+qYgI/MOnFl5ZzLyvnqp3IdcXWPJPo3fENV
+         dfUezQf5+ciKTuBn37wOm8pmDOYdhvGQ0m+J5FvhMyNt0xz9+e9kfwDema7+AMtyYto7
+         j8TbBuzregyjAsO8TO0O5Ih4s1NAvvvSZrAFHj/ASQshcmR21+5hjEIaM/Ou3mVavnPY
+         X4vewjtPxiwIhOMCxNDnASHgWW0XXwaEPVsuTAzowFjMHCFUlkl2MANOFhnSDLsV6yW5
+         ofK539+5t9T7zwGmxQ+LnNjpYVW9oe/i7/2b8gTCLYRKx+HIOdA4XlRXpKl+K9Lmn/jd
+         RiYQ==
+X-Gm-Message-State: AOJu0YyBsZw0THihC9XhX4xBZaPjzhUtZr8q6dWoiY87yLiRM7g5AUmT
+	34BXwMfGI7tbGTNzyrmBBwf5+gg0/xtVhxtK+/p6VBkFv8hgYLS52nCP
+X-Gm-Gg: ASbGncvosPLHMJSWBUvu8hqZMMQ6qTGmCGFaVuyzAxX3Rb/t+CkVTv5pPnXT+yLEDKK
+	4SNY+0a1Mp4KHK2b8wzZ+r9zJrFEvvQs25Ab2FBV3k+YPbcGALCMSxVoYm/n/d3yrskmQX9RtOf
+	qNo+wSqWQd0MdnGFB+4IeTHYkqgWSmslhHFHhrb1LnbBQXkld2F08Brec21T83iw8WAcI0vEvt9
+	+fVGOuXjHZJl60jH7lgRIrX2B64+IK4FkvKaO3o9yvcD0xqQA8Q2RI9qGkkZh3xSqlk01fYHRYt
+	a7zCkgLjE12EdinU0IBp3XDbsA9qisaKQ4kOUlp1yPUjJPTcpX3O9sAq+YKupV/2LBEfyD+jtqV
+	pDZQ7CW7WzIeaJzDIkmulNw0+QFuaiJt3NEhG7YoYc6t8FaRemsk+aMDCuvSi8BK2yn/aDsE7dv
+	4gWDIZmYONCKs+uGDCjJeLFtmca9/Yv3fQgYaHj7E0JcDkc++o1kQ1dZRcytmDcDlWkw==
+X-Google-Smtp-Source: AGHT+IGASxaIXHRq6J4yMOz+LG6YdpDJPlE+XhjnpnzYhJ0OTSMjlf4w7B/HbJv8QfkLz2INP4aDMg==
+X-Received: by 2002:a17:902:ec89:b0:26c:2e56:ec27 with SMTP id d9443c01a7336-2984ed4720dmr44862225ad.19.1762965157975;
+        Wed, 12 Nov 2025 08:32:37 -0800 (PST)
+Received: from ?IPv6:2605:59c8:829:4c00:82ee:73ff:fe41:9a02? ([2605:59c8:829:4c00:82ee:73ff:fe41:9a02])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2984db00ff4sm36676155ad.0.2025.11.12.08.32.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 08:32:37 -0800 (PST)
+Message-ID: <9446c349e725cf97021e8f205333d825d48de362.camel@gmail.com>
+Subject: Re: [net-next PATCH v3 02/10] net: phy: Rename MDIO_CTRL1_SPEED for
+ 2.5G and 5G to reflect PMA values
+From: Alexander H Duyck <alexander.duyck@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, kernel-team@meta.com, 
+	andrew+netdev@lunn.ch, hkallweit1@gmail.com, pabeni@redhat.com, 
+	davem@davemloft.net
+Date: Wed, 12 Nov 2025 08:32:36 -0800
+In-Reply-To: <aRRkfg6zKW5gAOz6@shell.armlinux.org.uk>
+References: 
+	<176279018050.2130772.17812295685941097123.stgit@ahduyck-xeon-server.home.arpa>
+	 <176279047080.2130772.6017646787024578804.stgit@ahduyck-xeon-server.home.arpa>
+	 <aRRkfg6zKW5gAOz6@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251111214744.12479-7-antonio@openvpn.net>
 
-2025-11-11, 22:47:39 +0100, Antonio Quartulli wrote:
-> From: Ralf Lici <ralf@mandelbit.com>
-> 
-> Currently ovpn uses three separate dynamically allocated structures to
-> set up cryptographic operations for both encryption and decryption. This
-> adds overhead to performance-critical paths and contribute to memory
-> fragmentation.
-> 
-> This commit consolidates those allocations into a single temporary blob,
-> similar to what esp_alloc_temp() does.
+On Wed, 2025-11-12 at 10:42 +0000, Russell King (Oracle) wrote:
+> On Mon, Nov 10, 2025 at 08:01:10AM -0800, Alexander Duyck wrote:
+> > From: Alexander Duyck <alexanderduyck@fb.com>
+> >=20
+> > The 2.5G and 5G values are not consistent between the PCS CTRL1 and PMA
+> > CTRL1 values. In order to avoid confusion between the two I am updating=
+ the
+> > values to include "PMA" in the name similar to values used in similar
+> > places.
+>=20
+> As this us UAPI, please _add_ new values with _PCS_ and _PMA_ infixes
+> rather than renaming existing definitionsi.
+>=20
+> Thanks.
 
-nit: esp_alloc_tmp (no 'e')
+Sorry about that. I had overlooked that this was UAPI.
 
-> The resulting performance gain is +7.7% and +4.3% for UDP when using AES
-> and ChaChaPoly respectively, and +4.3% for TCP.
+Would something like the following add-on work, or would you prefer I
+just don't touch the existing defines?
 
-Nice improvement! I didn't think it would be that much.
-
-
-> Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-
-BTW, I didn't see any of these patches posted on the openvpn-devel
-list or on netdev before this pull request. Otherwise I'd have
-reviewed them earlier.
-
-
->  drivers/net/ovpn/crypto_aead.c | 151 +++++++++++++++++++++++++--------
->  drivers/net/ovpn/io.c          |   8 +-
->  drivers/net/ovpn/skb.h         |  13 ++-
->  3 files changed, 129 insertions(+), 43 deletions(-)
-> 
-> diff --git a/drivers/net/ovpn/crypto_aead.c b/drivers/net/ovpn/crypto_aead.c
-> index cb6cdf8ec317..9ace27fc130a 100644
-> --- a/drivers/net/ovpn/crypto_aead.c
-> +++ b/drivers/net/ovpn/crypto_aead.c
-> @@ -36,6 +36,105 @@ static int ovpn_aead_encap_overhead(const struct ovpn_crypto_key_slot *ks)
->  		crypto_aead_authsize(ks->encrypt);	/* Auth Tag */
->  }
->  
-> +/*
-
-nit: missing a 2nd * to make it kdoc?
-
-> + * ovpn_aead_crypto_tmp_size - compute the size of a temporary object containing
-> + *			       an AEAD request structure with extra space for SG
-> + *			       and IV.
-> + * @tfm: the AEAD cipher handle
-> + * @nfrags: the number of fragments in the skb
-> + *
-> + * This function calculates the size of a contiguous memory block that includes
-> + * the initialization vector (IV), the AEAD request, and an array of scatterlist
-> + * entries. For alignment considerations, the IV is placed first, followed by
-> + * the request, and then the scatterlist.
-> + * Additional alignment is applied according to the requirements of the
-> + * underlying structures.
-> + *
-> + * Return: the size of the temporary memory that needs to be allocated
-> + */
-> +static unsigned int ovpn_aead_crypto_tmp_size(struct crypto_aead *tfm,
-> +					      const unsigned int nfrags)
-> +{
-> +	unsigned int len = crypto_aead_ivsize(tfm);
-> +
-> +	if (likely(len)) {
-
-Is that right?
-
-Previously iv was reserved with a constant size (OVPN_NONCE_SIZE), and
-we're always going to write some data into ->iv via
-ovpn_pktid_aead_write, but now we're only reserving the crypto
-algorithm's IV size (which appear to be 12, ie OVPN_NONCE_SIZE, for
-both chachapoly and gcm(aes), so maybe it doesn't matter).
-
-
-> @@ -71,13 +171,15 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
->  	if (unlikely(nfrags + 2 > (MAX_SKB_FRAGS + 2)))
->  		return -ENOSPC;
->  
-> -	/* sg may be required by async crypto */
-> -	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
-> -				       (nfrags + 2), GFP_ATOMIC);
-> -	if (unlikely(!ovpn_skb_cb(skb)->sg))
-> +	/* allocate temporary memory for iv, sg and req */
-> +	tmp = kmalloc(ovpn_aead_crypto_tmp_size(ks->encrypt, nfrags),
-> +		      GFP_ATOMIC);
-> +	if (unlikely(!tmp))
->  		return -ENOMEM;
->  
-> -	sg = ovpn_skb_cb(skb)->sg;
-> +	iv = ovpn_aead_crypto_tmp_iv(ks->encrypt, tmp);
-> +	req = ovpn_aead_crypto_tmp_req(ks->encrypt, iv);
-> +	sg = ovpn_aead_crypto_req_sg(ks->encrypt, req);
->  
->  	/* sg table:
->  	 * 0: op, wire nonce (AD, len=OVPN_OP_SIZE_V2+OVPN_NONCE_WIRE_SIZE),
-> @@ -105,13 +207,6 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
->  	if (unlikely(ret < 0))
->  		return ret;
->  
-> -	/* iv may be required by async crypto */
-> -	ovpn_skb_cb(skb)->iv = kmalloc(OVPN_NONCE_SIZE, GFP_ATOMIC);
-> -	if (unlikely(!ovpn_skb_cb(skb)->iv))
-> -		return -ENOMEM;
-> -
-> -	iv = ovpn_skb_cb(skb)->iv;
-> -
->  	/* concat 4 bytes packet id and 8 bytes nonce tail into 12 bytes
->  	 * nonce
->  	 */
-> @@ -130,11 +225,7 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
->  	/* AEAD Additional data */
->  	sg_set_buf(sg, skb->data, OVPN_AAD_SIZE);
->  
-> -	req = aead_request_alloc(ks->encrypt, GFP_ATOMIC);
-> -	if (unlikely(!req))
-> -		return -ENOMEM;
-> -
-> -	ovpn_skb_cb(skb)->req = req;
-> +	ovpn_skb_cb(skb)->crypto_tmp = tmp;
-
-That should be done immediately after the allocation, so that any
-failure before this (skb_to_sgvec_nomark, ovpn_pktid_xmit_next) will
-not leak this blob? ovpn_aead_encrypt returns directly and lets
-ovpn_encrypt_post handle the error and free the memory, but only after
- ->crypto_tmp has been set.
-
-(same thing on the decrypt path)
-
--- 
-Sabrina
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 75ed41fc46c6..e80bcad1b278 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -116,6 +116,14 @@
+ #define MDIO_CTRL1_SPEED10G            (MDIO_CTRL1_SPEEDSELEXT | 0x00)
+ /* 10PASS-TS/2BASE-TL */
+ #define MDIO_CTRL1_SPEED10P2B          (MDIO_CTRL1_SPEEDSELEXT | 0x04)
++/* The MDIO_CTRL1_SPEED_XXX values for everything past 10PASS-TS/2BASE-TL =
+do
++ * not match between the PCS and PMA values. For this reason any additions=
+ past
++ * this point should be PMA or PCS specific. The following 2 defines are
++ * workarounds for values added before this was caught. They should be
++ * considered deprecated.
++ */
++#define MDIO_CTRL1_SPEED2_5G           MDIO_PMA_CTRL1_SPEED2_5G
++#define MDIO_CTRL1_SPEED5G             MDIO_PMA_CTRL1_SPEED5G
+ /* 100 Gb/s */
+ #define MDIO_PMA_CTRL1_SPEED100G       (MDIO_CTRL1_SPEEDSELEXT | 0x0c)
+ /* 25 Gb/s */
