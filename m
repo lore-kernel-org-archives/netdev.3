@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E5F2FE58F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1BC2FF144
 	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 09:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762939077; cv=none; b=iEdVDSyTGeURAL3glisYpfK6W3Tw0MOPwyJjbpggNYd3QFbGLaRhytBoIni3xIjmQpX6asMQ8z07MsWMIa4PzoragP6V2x3bgK2HZZAJS0rtPEpvsCd90q+tXeRKPd/9AVhaZVTghSVJWkhS+4gHmlmzah1wDpvA25gUaz97fGw=
+	t=1762939077; cv=none; b=EiKUpwtuvPerxY9jftC7f7XMBDfEwvDKxSwMiwjPOiHv6SbzSok9aX/4noDm6B0KWJuPH4WEtvmbNGkGZqcpb/q9hR7RyL1tDEzesW8sOKzSQKslbnqDTzNIDCW04Ww7+cb9fmQ/GE2cwPImeAm8cxnga+yLdovsiAVw0+g/0IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762939077; c=relaxed/simple;
-	bh=e9q/DXjN/b4dCjtBvvpqQ1JR+MgtPisyQN5gCDgUTO8=;
+	bh=S8RKtQ0A8DtZqGkLEOIzavzq3GAti7yAXT46trlWDiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrLrrMfjexnGQOfqsa9VL1vVB1f32wGLG72RTGFYHDG0t+njxNUWSqGi8t9YIij0ERgnHsTN0LbiSI0L5iQrTIB7EURKuvwIatpLnDA4MRKTsBvWVpHsuCL9NC3ZREkJ+pHXqC8HpZ34aIax2KArD+RYXciX0IBbVdGF/nGwCcg=
+	 MIME-Version; b=M5T9vJKd3fDDx0QW/Jck8OZ30xIvWIivvRtG2mWCZGCG4Zy8UcO6WpD2CF05cYQq0yPJW7Zt8dhUR3m834GA/OFnMoIaR7CgkKKie/ksV86pqjW0hPszB+Q+6LBHzBWwjJep2DpDqxg4B6Ch+wo2znMYA9QeZs8DjIaZzhZEDBc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6yw-0007V8-Nb; Wed, 12 Nov 2025 10:17:38 +0100
+	id 1vJ6yw-0007VA-Nc; Wed, 12 Nov 2025 10:17:38 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vJ6yw-0003cR-02;
+	id 1vJ6yw-0003cW-0L;
 	Wed, 12 Nov 2025 10:17:38 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B21EB49D99D;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D50FB49D99F;
 	Wed, 12 Nov 2025 09:17:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -42,9 +42,9 @@ Cc: davem@davemloft.net,
 	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 06/11] can: mcp251xfd: utilize gather_write function for all non-CRC writes
-Date: Wed, 12 Nov 2025 10:13:46 +0100
-Message-ID: <20251112091734.74315-7-mkl@pengutronix.de>
+Subject: [PATCH net-next 08/11] can: mcp251xfd: only configure PIN1 when rx_int is set
+Date: Wed, 12 Nov 2025 10:13:48 +0100
+Message-ID: <20251112091734.74315-9-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251112091734.74315-1-mkl@pengutronix.de>
 References: <20251112091734.74315-1-mkl@pengutronix.de>
@@ -62,82 +62,99 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Gregor Herburger <gregor.herburger@ew.tq-group.com>
 
-This is a preparation patch to add errata workaround for non crc writes.
+When rx_int is used th mcp251xfd_chip_rx_int_enable and
+mcp251xfd_chip_rx_int_disable function configure both PIN0 and PIN1. To
+prepare the support of the GPIOS only configure PIN1 with
+regmap_update_bits.
 
-Currently for non-crc writes to the chip can go through the
-.gather_write, .write or the reg_update_bits callback.
-
-To allow the addition of the errata fix at a single location use
-mcp251xfd_regmap_nocrc_gather_write for all non-CRC write instructions,
-similar to the crc regmap.
+This way PIN0 can be used as GPIO while PIN1 is used as rx_int
+interrupt.
 
 Signed-off-by: Gregor Herburger <gregor.herburger@ew.tq-group.com>
 Tested-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251001091006.4003841-3-viken.dadhaniya@oss.qualcomm.com
+Link: https://patch.msgid.link/20251001091006.4003841-5-viken.dadhaniya@oss.qualcomm.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-regmap.c  | 25 ++++++++++---------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ .../net/can/spi/mcp251xfd/mcp251xfd-core.c    | 22 +++++++------------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |  6 +++++
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-index 8c5be8d1c519..e61cbd209955 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-@@ -12,14 +12,6 @@
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index 9104561e0995..565327bf9c43 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -608,23 +608,21 @@ static int mcp251xfd_set_bittiming(const struct mcp251xfd_priv *priv)
  
- static const struct regmap_config mcp251xfd_regmap_crc;
+ static int mcp251xfd_chip_rx_int_enable(const struct mcp251xfd_priv *priv)
+ {
+-	u32 val;
++	u32 val, mask;
  
--static int
--mcp251xfd_regmap_nocrc_write(void *context, const void *data, size_t count)
--{
--	struct spi_device *spi = context;
--
--	return spi_write(spi, data, count);
--}
--
- static int
- mcp251xfd_regmap_nocrc_gather_write(void *context,
- 				    const void *reg, size_t reg_len,
-@@ -47,6 +39,15 @@ mcp251xfd_regmap_nocrc_gather_write(void *context,
- 	return spi_sync_transfer(spi, xfer, ARRAY_SIZE(xfer));
+ 	if (!priv->rx_int)
+ 		return 0;
+ 
+-	/* Configure GPIOs:
+-	 * - PIN0: GPIO Input
+-	 * - PIN1: GPIO Input/RX Interrupt
++	/* Configure PIN1 as RX Interrupt:
+ 	 *
+ 	 * PIN1 must be Input, otherwise there is a glitch on the
+ 	 * rx-INT line. It happens between setting the PIN as output
+ 	 * (in the first byte of the SPI transfer) and configuring the
+ 	 * PIN as interrupt (in the last byte of the SPI transfer).
+ 	 */
+-	val = MCP251XFD_REG_IOCON_PM0 | MCP251XFD_REG_IOCON_TRIS1 |
+-		MCP251XFD_REG_IOCON_TRIS0;
+-	return regmap_write(priv->map_reg, MCP251XFD_REG_IOCON, val);
++	val = MCP251XFD_REG_IOCON_TRIS(1);
++	mask = MCP251XFD_REG_IOCON_TRIS(1) | MCP251XFD_REG_IOCON_PM(1);
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON, mask, val);
  }
  
-+static int
-+mcp251xfd_regmap_nocrc_write(void *context, const void *data, size_t count)
-+{
-+	const size_t data_offset = sizeof(__be16);
-+
-+	return mcp251xfd_regmap_nocrc_gather_write(context, data, data_offset,
-+						   data + data_offset, count - data_offset);
-+}
-+
- static inline bool
- mcp251xfd_update_bits_read_reg(const struct mcp251xfd_priv *priv,
- 			       unsigned int reg)
-@@ -64,6 +65,7 @@ mcp251xfd_update_bits_read_reg(const struct mcp251xfd_priv *priv,
- 	case MCP251XFD_REG_CON:
- 	case MCP251XFD_REG_OSC:
- 	case MCP251XFD_REG_ECCCON:
-+	case MCP251XFD_REG_IOCON:
- 		return true;
- 	default:
- 		mcp251xfd_for_each_rx_ring(priv, ring, n) {
-@@ -139,10 +141,9 @@ mcp251xfd_regmap_nocrc_update_bits(void *context, unsigned int reg,
- 	tmp_le32 = orig_le32 & ~mask_le32;
- 	tmp_le32 |= val_le32 & mask_le32;
+ static int mcp251xfd_chip_rx_int_disable(const struct mcp251xfd_priv *priv)
+@@ -634,13 +632,9 @@ static int mcp251xfd_chip_rx_int_disable(const struct mcp251xfd_priv *priv)
+ 	if (!priv->rx_int)
+ 		return 0;
  
--	mcp251xfd_spi_cmd_write_nocrc(&buf_tx->cmd, reg + first_byte);
--	memcpy(buf_tx->data, &tmp_le32, len);
--
--	return spi_write(spi, buf_tx, sizeof(buf_tx->cmd) + len);
-+	reg += first_byte;
-+	mcp251xfd_spi_cmd_write_nocrc(&buf_tx->cmd, reg);
-+	return mcp251xfd_regmap_nocrc_gather_write(context, &buf_tx->cmd, 2, &tmp_le32, len);
+-	/* Configure GPIOs:
+-	 * - PIN0: GPIO Input
+-	 * - PIN1: GPIO Input
+-	 */
+-	val = MCP251XFD_REG_IOCON_PM1 | MCP251XFD_REG_IOCON_PM0 |
+-		MCP251XFD_REG_IOCON_TRIS1 | MCP251XFD_REG_IOCON_TRIS0;
+-	return regmap_write(priv->map_reg, MCP251XFD_REG_IOCON, val);
++	/* Configure PIN1 as GPIO Input */
++	val = MCP251XFD_REG_IOCON_PM(1) | MCP251XFD_REG_IOCON_TRIS(1);
++	return regmap_update_bits(priv->map_reg, MCP251XFD_REG_IOCON, val, val);
  }
  
- static int
+ static int mcp251xfd_chip_ecc_init(struct mcp251xfd_priv *priv)
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index dcbbd2b2fae8..bd28510a6583 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -335,13 +335,19 @@
+ #define MCP251XFD_REG_IOCON_TXCANOD BIT(28)
+ #define MCP251XFD_REG_IOCON_PM1 BIT(25)
+ #define MCP251XFD_REG_IOCON_PM0 BIT(24)
++#define MCP251XFD_REG_IOCON_PM(n) (MCP251XFD_REG_IOCON_PM0 << (n))
+ #define MCP251XFD_REG_IOCON_GPIO1 BIT(17)
+ #define MCP251XFD_REG_IOCON_GPIO0 BIT(16)
++#define MCP251XFD_REG_IOCON_GPIO(n) (MCP251XFD_REG_IOCON_GPIO0 << (n))
++#define MCP251XFD_REG_IOCON_GPIO_MASK GENMASK(17, 16)
+ #define MCP251XFD_REG_IOCON_LAT1 BIT(9)
+ #define MCP251XFD_REG_IOCON_LAT0 BIT(8)
++#define MCP251XFD_REG_IOCON_LAT(n) (MCP251XFD_REG_IOCON_LAT0 << (n))
++#define MCP251XFD_REG_IOCON_LAT_MASK GENMASK(9, 8)
+ #define MCP251XFD_REG_IOCON_XSTBYEN BIT(6)
+ #define MCP251XFD_REG_IOCON_TRIS1 BIT(1)
+ #define MCP251XFD_REG_IOCON_TRIS0 BIT(0)
++#define MCP251XFD_REG_IOCON_TRIS(n) (MCP251XFD_REG_IOCON_TRIS0 << (n))
+ 
+ #define MCP251XFD_REG_CRC 0xe08
+ #define MCP251XFD_REG_CRC_FERRIE BIT(25)
 -- 
 2.51.0
 
