@@ -1,141 +1,166 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010001.outbound.protection.outlook.com [52.101.84.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8954F21CFF7
-	for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 21:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762981577; cv=none; b=IFtl5YQEnNZW3GHqd5wwR/gm2/DhStVURk+pZHhN+8rj15kpZcdUM/giDUmSv0Vkti6XZnGYMaAP9pe1bUnYaWxxowwAkkEoTXeKwSQW5hDXmXInLKUIP2ZiaCVygy6tcNRLlaLK48A9/sqDuBiQWn/hOI5K81PCkI4vp6cqEks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762981577; c=relaxed/simple;
-	bh=0NUZzNJ831SOSmKTwYtBymzpUuiMmfMLsWGUVbC8qK8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=K+x9Y2fHCQJV17kzN7OHTOtwXJlRZns2VSC1oGVrFk6kgz5C7UFD/E3y+IMr+doPlnCKStU3VBTideQ7/S3RSSWqln98Y0aY2myfsKKAVnR5Tg/pr96AfOxgRJ7hBGVUdRuT7v3mkXggrHtsG9ecMZhV5uvDLhIhgYeZGPYqC+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JsWmcfv9; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E542D5944;
+	Wed, 12 Nov 2025 21:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762981897; cv=fail; b=eurIw2Dflznch983bg6EVS8Z6HwYOsPvdYwCWdDt2unI5OY6a2sBfP1ERTS9eaTezpbiHh7+QAq0T6mxxrsDyW55sFGXrOAoy7K9BTLDNTe5TIp4QJFMjmvfSnW54Gb02ETPoG8aUZKTVd0iNZSb4A1WKRMhbahTr5BL0iCEdd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762981897; c=relaxed/simple;
+	bh=U8/MOvx7aMwIfdcdxCkNJIHezLFwet3BHgLgPv7+aXI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iRQ1SAkV0IIwg1cvuDKlrhsst9UiUYmwLlsT0liu94hGtrYw8I84Gko96qcWhjaV1t9Y9iNJXGSkMDc82kV6zg3Xqs5ikDMh9AFiIWxrf7KHb4VxOfyUDh9mFp6TpHFOyDUdkntAa9tQ8gmVTuetQsxApv/LJ+lnUbTv0VOLh+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IL2NbtJF; arc=fail smtp.client-ip=52.101.84.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JsWmcfv9"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47721743fd0so816215e9.2
-        for <netdev@vger.kernel.org>; Wed, 12 Nov 2025 13:06:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762981572; x=1763586372; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3CExdMeFTXeQXWVMXk35yOhT2Ezt8HRdUhVu0ILjAnY=;
-        b=JsWmcfv9mO+HbwpFTstANBPJMDKvnjIx9vp1sSJUUQktPyVHXGUa4vybbWpiQrT59v
-         lkS1TZHnw4LJ7xAieNv33fqFY6BQxnjm1XrlulD4sEEYPCfo+UbYs+EMRWBP6EU4a7Lb
-         yzRI5DfcEDCY9XZ5bZwed4Zc5up6mcTfI3IxfjRZulS3Rsi3o9WHCJDab2B7nYdoZ0pk
-         3BB4ZVL3jnIAFztsIwhG1OBh6GKduf4IoyI3qqTSYCj/6xUrd0Sfc2w8Yr8AL1XkZXGM
-         QoIIJt+Ri2FVgM1zxh9/bYUooN3nBXUdv8aPit/NuXflWuQ4lVUO4JcBWhLsG3D9ZfGS
-         Whbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762981572; x=1763586372;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3CExdMeFTXeQXWVMXk35yOhT2Ezt8HRdUhVu0ILjAnY=;
-        b=BBaOGcI340gT4TbaWW+tqctkaSGbmL1c3rCPh41C7+b6ZgVRifnnlZdnHEnincrale
-         UsdgMLamjFUVoF3tTSUN1k4A4CWZRBFyUk9KupHDmS6/UmoELB8WTy+B16oIKV/ZiErJ
-         KN7GUNWssYSIs6irJ16G4fzw35CIOtyETVNPOP+Y8YuG25yfd2cqxYkeB8FigXckhm+f
-         lJ5aoOuXAV1RHtGWbNNe0oQ4ZHZBG1HVS1aP8RUhnVDkVdfrSpTb/7tuZSI8V07cirZi
-         k8f5bRuNu6RrG2vdM0dY4LzDHuIloeXennpnXwzM8ivjh5boHffjWsX1knhN2PgTGUfG
-         4fnw==
-X-Gm-Message-State: AOJu0Yz44Y5fj0MFpObv4o/nm7dh97/gB4NGjiGFmd87remarAqnXeg8
-	S7bC6TJb5oDhUZtflmQpGPTfMX7pT19C+5ZWsOat3H1kyJmFT/+rF7X4
-X-Gm-Gg: ASbGncuycvY0cEIVUa5+siGQJqhGv1IVQ23wyLFZk4Y8ZAu6ImmvHpZQB7beT2/AvN8
-	gZUJZlir19+8YdNVh86QANZnR029q3shefQAhf8gBjIKKTYmeXnhDiaX2FWQPh4H5igWB6H/WEY
-	poYNCivVkyphSnPfJzXqbOilDPk5DAtPATWjuDEZO4//V/bar+21Du9lmKXom14OeYLak+WfGNi
-	wHmp0bRThjlU6ueQd8tw3K8Qi51+7Ubi0tiZM2Lyb1i6oCLwkM80jD8xhmBCmWGKrCYANbD5E1/
-	z1ZbukeEz4COwarRVZqQBHFO5FM3AObNDErZOHzdIBkBHXZvmuRXWA23fKbLeD3MKac8SF0i/jd
-	+Vu55mnSDdt2UTP2X5WCEqrbsaSvFvqXQTCJGgclnZxUOLiYCKYr/aERnBZDTlx8yGeobxTrJZV
-	bOehzVvb+oG409Er7t/KpI5nKnxqvlWKgMGcHKrWyV/XAqkGUm2XE3k+ZmIslFXUtNvbY/0aFI2
-	GJThjiOsLD3m54T7s8dNjJqxn7MdMDVO4YQhXKbjwE=
-X-Google-Smtp-Source: AGHT+IEBAb6KLEu4dZTKlIdVkKZXOQ6clzSYSKmogg7ZnW7ECOMmDOHdHHo5cuDbY88fNQTruczWag==
-X-Received: by 2002:a05:6000:609:b0:42b:40b5:e665 with SMTP id ffacd0b85a97d-42b4bdb080fmr4169565f8f.31.1762981571736;
-        Wed, 12 Nov 2025 13:06:11 -0800 (PST)
-Received: from ?IPV6:2003:ea:8f26:f700:b18b:e3d1:83c0:fb24? (p200300ea8f26f700b18be3d183c0fb24.dip0.t-ipconnect.de. [2003:ea:8f26:f700:b18b:e3d1:83c0:fb24])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b32ecf522sm24811675f8f.45.2025.11.12.13.06.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 13:06:11 -0800 (PST)
-Message-ID: <3abaa3c5-fbb9-4052-9346-6cb096a25878@gmail.com>
-Date: Wed, 12 Nov 2025 22:06:13 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IL2NbtJF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JXiEClTMvzM21hcYQex5tdnQR7+A3/TdfM3YWekrnMokQNodUhaOQFTQ8gDTLT7FoIWw8Y0e/0n2QU5+oWHLHunQIEgeZesesBhNRlMQI3QADHMZZCIyVLiAH9GWWD/d9swWaXGrPjFV30oZOYDAv7/Tr7JuHSTOS92LdrBequzpVv9VOiRVjmuCkdbP0+r3S/t0+INt+ljf3A1MxHMg70zQc05vc2V5C9J4+qiJNa8Q86aYyhw2gVpESk8UReRSkRNhaCqtgeeuUYvsWtDUUTUJpwhIRcPjQhAdpq3soo7pn5zHZr/sWLqA25ldRoRFjlVdWUr5+hhLMzv/ByuYGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5x/LDmTKVtK5+YoI6xXWWBWfbEX12B5SWDcrWoJXyDA=;
+ b=F0pe9dSafhArdJl5QAjkXcEfx4/Ug9MTgonW85NecpFCyIaNDwutCNWG/KCoP5pPi1Nd6gDr9gw8YNVy4n/GBM21h4HKMKzIPBe8f3IvHcJc3b85wSth+/DcUar79/vLIEh/XK+X5m7hMKwwpWZQskxjKC373dIxl5x7fLjtVLxsAvcXRn5BEWzy0/oABvHxkMH4yu+wRVvdKqeJ3LifNwI5sA62Y2sOJDiMvZeeuGZUtHZ6FgTLTFf3IN/zsrUMe7fLGN+nzzImdWkEGYx8naXYheBHEXr1Ysn5NqNwJWT8zplhCkUTzUFaa3pmluyPBCdasiGzohUia+L/JlFsQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5x/LDmTKVtK5+YoI6xXWWBWfbEX12B5SWDcrWoJXyDA=;
+ b=IL2NbtJFTjEh+thyNZ5IQLp4ur9P6VaBCRq/Lbv80SsWQZkE1tTzr2Qlfj7C4dmFNbhFF4dCpXBgUSq5fLp2ccFaovNgvsFRgpx2l5O8bYuKwJef8UmO4ovCVyRXSJJWt56bHpucOblcfT/6HQhUVI//Irjqtx8YL2Z9Ye3G7WR921kqCGwjYX0pNVP/HoNZcfnuhqbE9TLLB/5hhJYCBfBNc7OrV8uRE3EkMLC6r9gMn3+ZXBsRkPz2ahirf8aHz4O58vun5AmoFoDVHdnnwrMQ4R/hoWxCjFZ1MNOQkrSj/4Xsu725JQNb+9Zjcb+eB0EH/p3mrwsHSq31j9GPkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AM0PR04MB7153.eurprd04.prod.outlook.com (2603:10a6:208:1a0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 21:11:32 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::b067:7ceb:e3d7:6f93]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::b067:7ceb:e3d7:6f93%5]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
+ 21:11:32 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: pcs: xpcs-plat: fix MODULE_AUTHOR
+Date: Wed, 12 Nov 2025 23:11:18 +0200
+Message-Id: <20251112211118.700875-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P190CA0017.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::7) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH net-next] net: phy: fixed_phy: remove setting
- supported/advertised modes from fixed_phy_register
-To: Russell King - ARM Linux <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM0PR04MB7153:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b32ee90-088b-47be-aa16-08de22300e10
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|366016|19092799006|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ubJMsypLkLlIZRb2yPBGayDjExdAUzfgekbhiTW9pw6+X+yUTGejSIQT5i7Z?=
+ =?us-ascii?Q?mbXlZ38eklqSG92i6IocA25F7fREPPUJOPlt3A+AxJvXMCANL1YaEnN8i9Cq?=
+ =?us-ascii?Q?3tjeexI1XKJEjLMWwFBUHvF9E+7Rbk270wma7Qu+8+F3DPihJ8LygWFQSgMj?=
+ =?us-ascii?Q?Yj7+e231GiGSc5P6dfWixpXEV1/CN985+ycHnsoNk2vzX76T+OPFYD8VrgEd?=
+ =?us-ascii?Q?hcfbYW2WeLBT4vF49QjnnX/A7I5x4c9Fqgajqk3XH8XRqA8CXfwO1yiTcOVi?=
+ =?us-ascii?Q?/kIqOijLdLaLGXyhsqUOBokmEO8uiVI4VRs1/xfmtEqVGXhNclGsyjA8pHPM?=
+ =?us-ascii?Q?VkPkwJXy0WNgfH73XjB2fn2xHLo3y21PejDwVTIStu+1Avjp9StqproOu3Nb?=
+ =?us-ascii?Q?q+NH6VGZp+H4AczzU5JNIYC1cwnzVhUQXLIbjioTaTQ+NK6FFXip/JznWg8q?=
+ =?us-ascii?Q?50bS4zAhUbCC/O3QRR+Sc1S+GfCGSEM8dgUm32zD/Kh5LujD9Fw0CnMbexXR?=
+ =?us-ascii?Q?pn7UaPVDQEbF2cwu4I8A7Zah7rLhg1f6i0y9ZvzlEehVLuE2IrUm6blHsBIT?=
+ =?us-ascii?Q?lnOArAGcA2urGxR5OohsFJ4LBGnEHfNdV7SAeD5VEn+QkxpQfIVWvAEmOdFt?=
+ =?us-ascii?Q?UmvK+eH08AhC6nnfhSMHdnFc0GWTPYiBF4EdOlRGrsFCoA1KyxdGvq9aDjVS?=
+ =?us-ascii?Q?zDv9wOlRUvxh4shbljNr85orr3KGcEB7PCGE54XZnBbwwBObakFCvo6ET22c?=
+ =?us-ascii?Q?fXRL3bEhTloB5gnnkW2zJVs9Qh8q4scXgp5CrY2JCCFFXkVxXCUGR6cw+OEj?=
+ =?us-ascii?Q?N79zJla3p07mZhAPG8QVvtefY7JYxw6YBvZCMY8YiK9mBsrgc4bXte7kgmAt?=
+ =?us-ascii?Q?hHRsLPo5gzbYI5i+1lhguX1edtqxNOdbZAY9Wr2u8W5cJZwNjplN1Ofqyrct?=
+ =?us-ascii?Q?PwEGa77bBuZYK/1DIElh2RDJesn1waSlvz9eouMFjObzKYqL1kBa8arSJNrO?=
+ =?us-ascii?Q?6wIfEM3nMALiMyVUuRrzw51pI7JuNdoUFj7J/noEZlli+bPKEsf9aD139if/?=
+ =?us-ascii?Q?UOsDybwcufU29fmG946XwcPuTnygCiD19i+AWgHyB/iQ5cIVREr3uKNcRr2b?=
+ =?us-ascii?Q?+oOAuzDlkFIUgkYLGgoAmvhhC/mURbtXpSsF/838RWRwUQ54LZYAGchhrXEs?=
+ =?us-ascii?Q?sLKB8z5jdixTFJ9500HCuE9k6oTQsdnSg+IlOh96ki+7j5BFfQ2ipDAYi6da?=
+ =?us-ascii?Q?i3urvGb+H3Pddf5GXVDvO/0EBXV1KdQYvIRNZBV0Jb7Wj3/TsJOM0I5AHjXR?=
+ =?us-ascii?Q?URizrIWK9yHhkFHgomPZjItpdH3Hbk7uFTn2zmLPMygmNKy7ivemPSnOoLag?=
+ =?us-ascii?Q?v2oRusu1pglfDRSQ+kMQiScxsxAyvATM0a3/Xiy0pdu1Gpvojv2ZZiwzuA79?=
+ =?us-ascii?Q?TyeSF2Fd8tI9/h6Pp4jzIvYNwLgu6rC4?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(19092799006)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5CcWu8Sn++FI2OsyAw1UibjFTljeI5nK8KmvsbcNIJ1W4uLIo/ZyNlN2apCf?=
+ =?us-ascii?Q?jranSVThtu4OtQ0lw2Pj9/l7I8lA6P1j5DUdej33cLjH0dQF2OMCmGlslmHV?=
+ =?us-ascii?Q?9+37dnmn5BlIiwUIt9i+j9zgsWot9JjhusHqGBuYHkI+T9YmlOs5tviCqj2H?=
+ =?us-ascii?Q?Scb/bzPHZTa3sTAgpixESOilXGtMQpkSvYKPj3I8eITK+4ZyNDZYMlcYupeH?=
+ =?us-ascii?Q?Web9gq0bws3N8kPwMdzt4yJKLJ87jeq7mD9AQAGPeGG0dcEoij3NjJx8vKhT?=
+ =?us-ascii?Q?oQ07LFviQ1R4XegBjdk3+EbKID5iiv+bgUWJXv3s4C5Hs0Cuy+jmT1ZthWxU?=
+ =?us-ascii?Q?bqCNpn5RPQ97T0OD1dPVGcTV9j6ovjlzRuan/qnAB41CZaZQPZInEzVnwnTu?=
+ =?us-ascii?Q?W3/6+1kP755lKrVhX9zy2BdUlGakIIQRavFMBmnVElvtCQTz2+Dwx3xeKPKO?=
+ =?us-ascii?Q?FU/QbJL4QkrosqjsNnPSgEYk3SMXYp8YyuXBhkEPxg9X+0t162SZ8RQVrSPP?=
+ =?us-ascii?Q?cjyLxTbulWM1CnZU5FX8mVEF2zytrppo0D95EXrCr+d8puCFSgVd1U1birbi?=
+ =?us-ascii?Q?67RVgVSPgTKdUreWtQrbZjM08tSRN166RVL7WZAKP27UDh6CU/kfbG/DaPV2?=
+ =?us-ascii?Q?7STaMZ5IZWerIaj8bUOv1BXKdeD1BnMSl0G54Ra5CD+DFNejw/TNPXQ3O/VK?=
+ =?us-ascii?Q?jeCHRr0+Sy4WWRJ7ykqObXqdV2uFDEK8RLPZTb8zbbjWzRrehpgDUeJ/D8OK?=
+ =?us-ascii?Q?0V89dAEZE1k4a2FtvxLEigNLec4lpjLg+idvmje4bU3RXi7CkR+sv/uWPyEI?=
+ =?us-ascii?Q?/0VyiEVTlclZq1kYGPhtXJTMko9V2ceWsnuNk9L3emT8U1IzkKhffpRpPqJX?=
+ =?us-ascii?Q?YNkeRwEfXZD8B1fzG/yx5knKwwaKZYFdVrEoajbuKlzwfR7cfDBXwSZJSVxy?=
+ =?us-ascii?Q?QqQF0ey6oNMWJHCiij1xvlxhVr4XYMjyZb3eXrowukaeAUPbi8AqWQU6B4xg?=
+ =?us-ascii?Q?l77bDO+bAlR8tyNnzLwgfb7H7qwpJoE+fGxiqm65W5rHvPq4LGj4HsV1uvcd?=
+ =?us-ascii?Q?FELHJriorIO4kWqf/zEIJ1BdE8DcU2GPMCEL7RUEI5+6xzagfNN8wVHkG/fx?=
+ =?us-ascii?Q?6VtGaoql6+lCe+6yS0tdF8lFX03jB5x9EBlcC7xh7Za6lFkG6cWWJCEnbtHA?=
+ =?us-ascii?Q?CP20ZVFCf3XcX9RJ2RPSZLATRYybok4g8ERgWkUU8K6byWhgF7AlOULpj7ZV?=
+ =?us-ascii?Q?UjthdTTNpdK/NTvW8BfimStBea9/lUpUxSVrEO6w7RUrWYYvmQywCXd6txbT?=
+ =?us-ascii?Q?bUTwB3yQORpIjeFKnSduiFk61gk9ETHtrVP3DsY2hD5WeKJRXS3Tp75UV6Na?=
+ =?us-ascii?Q?TFNgRp2o1ET+jkNRgArRFng6HYxX9OVXwO9sCyIMntyoNCZ64ufckwk5A177?=
+ =?us-ascii?Q?CxAn3ncT7nNa+k1mnjlhwi0iGiXqC3o3OV89OYPMreHlH0/e3gc/RD8e+FRh?=
+ =?us-ascii?Q?+tC4QtiuUuDcNmyMEiMfj+VdGvTa2rTmIITEJ5/CG2Y250C3en5XzEmS0FRi?=
+ =?us-ascii?Q?U38OwdUzxEdyDeCePeCvAFJsV4wptU2zHs3IZ/Pa23AlfXFbLvuz/KTa4ZJi?=
+ =?us-ascii?Q?zjig0aIK8W23bkO1VLjKmHo=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b32ee90-088b-47be-aa16-08de22300e10
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 21:11:32.5623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qW3ZvCq4Ylm2IeFUH4EpNH+49aioasrLe0cvGRTFZOIyXecxoy6WZQYiO2LHsYsLD8dA8LnEqnUxUGeSqyTYXg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7153
 
-This code was added with 34b31da486a5 ("phy: fixed_phy: Set supported
-speed in phydev") 10 yrs ago. The commit message of this change
-mentions a use case involving callback adjust_link of struct
-dsa_switch_driver. This struct doesn't exist any longer, and in general
-usage of the legacy fixed PHY has been removed from DSA with the switch
-to phylink.
+This field needs to hold just Serge's name.
 
-Note: Supported and advertised modes are now set by phy_probe() when
-the fixed PHY is attached to the netdev and bound to the genphy driver.
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/phy/fixed_phy.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ drivers/net/pcs/pcs-xpcs-plat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
-index 715f0356f..1ad77f542 100644
---- a/drivers/net/phy/fixed_phy.c
-+++ b/drivers/net/phy/fixed_phy.c
-@@ -19,7 +19,6 @@
- #include <linux/of.h>
- #include <linux/idr.h>
- #include <linux/netdevice.h>
--#include <linux/linkmode.h>
+diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
+index 9e1ccc319a1d..c422e8d8b89f 100644
+--- a/drivers/net/pcs/pcs-xpcs-plat.c
++++ b/drivers/net/pcs/pcs-xpcs-plat.c
+@@ -456,5 +456,5 @@ static struct platform_driver xpcs_plat_driver = {
+ module_platform_driver(xpcs_plat_driver);
  
- #include "swphy.h"
- 
-@@ -184,29 +183,6 @@ struct phy_device *fixed_phy_register(const struct fixed_phy_status *status,
- 	phy->mdio.dev.of_node = np;
- 	phy->is_pseudo_fixed_link = true;
- 
--	switch (status->speed) {
--	case SPEED_1000:
--		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
--				 phy->supported);
--		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
--				 phy->supported);
--		fallthrough;
--	case SPEED_100:
--		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT,
--				 phy->supported);
--		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT,
--				 phy->supported);
--		fallthrough;
--	case SPEED_10:
--	default:
--		linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
--				 phy->supported);
--		linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
--				 phy->supported);
--	}
--
--	phy_advertise_supported(phy);
--
- 	ret = phy_device_register(phy);
- 	if (ret) {
- 		phy_device_free(phy);
+ MODULE_DESCRIPTION("Synopsys DesignWare XPCS platform device driver");
+-MODULE_AUTHOR("Signed-off-by: Serge Semin <fancer.lancer@gmail.com>");
++MODULE_AUTHOR("Serge Semin <fancer.lancer@gmail.com>");
+ MODULE_LICENSE("GPL");
 -- 
-2.51.2
+2.34.1
 
