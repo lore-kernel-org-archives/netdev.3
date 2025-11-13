@@ -1,159 +1,149 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F991EEA5F
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712013559EE
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763051566; cv=none; b=ZQHY2Q1YLedQOxXKP3BihAAmue2nYZcCrrX64YYy94PXtgb2cJQ6jBtzM++5YBXOpCIpth+H05ZIqojdUjmog6N29SKESq0VDi2ToOwnYrjAkOpdqel1pxnsofLshPkIDYwXMZap/NvpVRTyS7bikJsSfmq+fgWFxJztnQgZkRs=
+	t=1763051580; cv=none; b=FGkxSQLnLpMYuxpdmYfbHzRJ8ym7BAB7U0RzfZPDKYHlGFfCDTZcL3uxrveSJJo5M4OmVEv8W1//NLt5iz7kZT0jmjSPYXKyYVAoH29axLhU8Nfsq6LYCXDw1ZHM6XL09Ap+efDaXTKtSZBVn+CHLLRivbzga8AUqyY9Udp4JbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763051566; c=relaxed/simple;
-	bh=A4sx7YUeD3fO8/Yv4HHEyzNCLfzv5jGzvARBXVbjTzs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FtTs1VW++x9PKsqZtiuw4E79u6sOjSWNJDjk9xbW9Os7BhqvAnro0SJC5khgG6+BJjClFfwRqoWd8Zx5RkFnLL1yt9vUt/xSbEzbpmTqKzoFDTENqWuwMW8Xkseec08TXz2JWSwPCzimmzKp8j7DGygATyoZHs0Fw6PysFoRC7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=meXn2O5V; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1763051580; c=relaxed/simple;
+	bh=t6Fmt4wv7oAC0aHrB69ItO8hB+u00274+wAmHaYqlF8=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=n2xL9tGDTbDLETvl9DVxjKxYTzQjvrEDPstQZuAWB9J5GxLOb81b/7wA3cU1rD2w9WrVgRsp0ywmD5bslLBsgzF9QYhdZwU8nX0Wf8edKzBgmJV94AvftelZmNtrDJ20kqTTAapVfe5/KqgGHl/hZJcS4RHh+HsHmOBX+5WDTIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YWvR+5OX; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="meXn2O5V"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47777000dadso7887935e9.1
-        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 08:32:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YWvR+5OX"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-295548467c7so11338855ad.2
+        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 08:32:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mandelbit.com; s=google; t=1763051563; x=1763656363; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BDXhrF3jmCsik0pVpflFinqzPLyBF5bBUKarlz+FDeU=;
-        b=meXn2O5V/Uhduf7rxM0IOoqNW2Y4GNacb1Z3M1b87JyEztcKLIBELazBZpu8doEoTx
-         QJQ4UX0NtjB0M0oolT40LflfWogzub2OhvvygilSagZRIbkxuPNq2+Ufmvjk4ZC37CGq
-         blaio40QD5hJkfZxDtBRGbreXNcf5PDi2uqBOCW8VkW45bo9UPh3NdbqTwY/qnHkEKsD
-         TBQhhYEWy0FxjzSHjWToZqI/7MBJZq6r3zHJbqLwlsdg7TNzoht9KsKGsm7ZB89RazqJ
-         H3FZWTzX397PcCFSFMsKYkwc/RBPWGgmjuFXCKVC9vhmpLuPI4DMGovnPXo6h+G1YE3d
-         dnog==
+        d=gmail.com; s=20230601; t=1763051578; x=1763656378; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:from:to:cc:subject:date:message-id:reply-to;
+        bh=toekOdBn4I50C10qOh4hWmRYNqt393qtwZ6s1C6jTlc=;
+        b=YWvR+5OXMYPBMbpmv0qoTomZ5lvFhY6pEC2RWVA3l36kcbWhq69gS0f5qMENUxOIUM
+         2/6GbaGFevCGi0Fwgv2cvKv4h4XFKgCjrV7Wk+056kN687I9mFZQWe2eC6y7zOILrlFj
+         +QRqvfi0r4hQJsUVopb2GRH+AkP0eT8nJkOMSfKC5oYBmJvsyii7pIPVJ6CLkc+yUGk9
+         j65uUeyMP5MoTebm+dqD7o3K4Q7GAn3oXpTOWqRBfD2GMsr2OLmti8IrUZEZ9BY4V7Uf
+         V4wGNa3mQbiyquaywGJSkuRYizCMBN6iXEEPzWC/oBIuuk+dgKARs1ujPSMxIQJas5zo
+         I8vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763051563; x=1763656363;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDXhrF3jmCsik0pVpflFinqzPLyBF5bBUKarlz+FDeU=;
-        b=fcEaNLU//4Rk0JWMmTXlupfgII5jik3OjoeNIHar6dUnwnYK2W4i1fL3hRS+c3aj2Z
-         njiCF8CUEX/efDxTSlfp4gyETsXt1wLGgsYHPqYuV1oNxxBUi24r/MZkdLJhEI2Jei8G
-         Z4FcKlsINUL9ahvFynIqVNKzghhO7Jg/cBazmMyiGb+ETplwXl2oMvbKANv+lEH1+Wxc
-         jQnWP9+6cG6VVJ+euXyRXuPffmTj62BpZdBbMtFwIurO0kCDaNdGpiWD2NFyUaucDIzY
-         kjqW5WnfSltHvRAnzOhnJs9w98HzInbrTZ7neQC/XbfCE9zsPjLQqkQD0JHEiUVetDrg
-         EM/g==
-X-Forwarded-Encrypted: i=1; AJvYcCX/j1mTRHeyaL4lg0pCCDu8TADKXDDHQYGHNZ67bhij5Wnsbz5FuZIfqHB/4fLXTfVWaKjm5Mk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytLsHG++EGh93S2YuGZnW9ewk0RO5M1SjVmIrkYgjIn8lWA1JL
-	v36GCNoHUS7SqfVBQDxTzTecBHi00t3lxhq14eYsles+pmy5nMQCF4ZMwj2Y93iUhRk=
-X-Gm-Gg: ASbGncv1XK/MCZjV9UWUQfDBlXiuSQmjQwql3Az4pU+sam4HII5jcKdnhXMMFy74Km5
-	Mdx8rN7R7Hr2dj7C+UJcLZDvVmDj1fxjeQAsvvqrlgh96pYhN5Bnto/VVnjck0rrxlDV3WsLPke
-	fAYweW84S2ZcV/DgDg4TgA+vBGdyG2WzeoXoYI+2JiFPEi0kpXPigYw8R1JXIMEMDC/5kC0Mfwl
-	Jnbine94ivII9y5GyEYUIAtbZ1N8ek0NJp1UIfcO9dPRWYQwkvX1M5wovqUuVvS1tH+AEJvW1+d
-	g5MFYroGwsmlK9mqO+dxAMcs/L+5KL9Ms04gaazN9a/Mphg4DoZjOlEbkSTwTTRp8apDIIEbpPh
-	mp76Uz20AB+gzxRuMvi22NTVUNykOhx2LumWXtwVXD6EVPqqhXo4RzlcOlGeWK2v9vQWCJQii22
-	tOOScJDTLEtItfqN1OhNiM5rh0jZsBPBrrjL+FowE6yeHHF7Q=
-X-Google-Smtp-Source: AGHT+IEJSd77CW4XgrN9WTg1QdiwHG55no6Jxrml6vSOBqrTjHS8POZLoCMJXjaTuiRM5/WAf8JRVA==
-X-Received: by 2002:a05:600c:45d4:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-4778fe7f6d4mr934365e9.18.1763051563085;
-        Thu, 13 Nov 2025 08:32:43 -0800 (PST)
-Received: from ?IPv6:2a01:e11:600c:d1a0:3dc8:57d2:efb7:51a8? ([2a01:e11:600c:d1a0:3dc8:57d2:efb7:51a8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53f17291sm4707184f8f.32.2025.11.13.08.32.42
+        d=1e100.net; s=20230601; t=1763051578; x=1763656378;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=toekOdBn4I50C10qOh4hWmRYNqt393qtwZ6s1C6jTlc=;
+        b=VwFuF3Y0oHHmylD92lAh+oU1IN4ReBoS+hHiSIJ+Jq+GCtmfydFTnkIfwFU+Jvomyt
+         GCDA2DRp2OU0YIxpSKPfXJgT4HH7torj1RRKrZA7cCuq2E5oeQ7OJ5+FbW72pT2Fskw2
+         TptmqfehN8BkdXLxI9bMLfIb4HWOwokssSH43BOPxF57NCZyUrSLtSucrRtDF37QSCy4
+         WjKAy4wjMrnGYukVbsaRbP3BoplzWQ2VPAMWRlHOjnpjBAd52DW1RtNF14ihC05/XV7w
+         vL1iSLWDUxSaNdHQqQ9MblqMfc0NGpGAnTrlCccSqTsX3efyus58OA4iIcmYx33KAhV7
+         Mk6g==
+X-Gm-Message-State: AOJu0YxtPJUkU8H8gGM0LavYh2KPoNygFlkk4u5nuxPG1NL8JRahZfLH
+	Y+jcG57YpZUvUgrborvJXaQCxPAwyW1OMELXyEqNcba2ph1Ybxr0EcUR
+X-Gm-Gg: ASbGncuGRyS69FTUHpxUuHKM/S5A3Hh4o+znj2vEAsZcDOL6pZTlpZablMX88D++etw
+	sSFB3+ZBxFhkI6cyj94wVV0Q1fjifrNtnRNH4YeYzxYgKxnrlVgUxIM8IF3+/TSXQjfr38gIusT
+	nF/eB7piKYONOn7mylqGyhlUbkcA3GVf4aON35gnTf1XeWqNhn9CPlPo3PWtP3bB5sl+oTpEJ7D
+	ExEvXEJFwQFN9nXcJm1ZNluI6AwA/0UwmtEl+m2qe11ECtfsHfU3vnCBRdFIDYmK04PHwsds5c0
+	ygMmjAAcfT6VbAJ/GuTRYjj1Wi8sRR45gPd1XTAoY3SWnKue7Qogo4nsr7a0P6E9ootwg/QmzjT
+	XFVQ2Nxr1y7em0dU6t0akD1xPY9cVH/4w7FfEiMdy/qNe2VXc81pmOr2VcjyFufaPuq7Rraib9c
+	D/YmNFs5q/gxHNTWs5EhQ0BqUi3MSJEMDoWA==
+X-Google-Smtp-Source: AGHT+IF0vY/OxXg7W2wdjBEbR03RUrH8rAKJKTOP+B1UmMHh+Lx/bBcILWzv3kE97LxyBvcE3yHVSw==
+X-Received: by 2002:a17:903:1904:b0:297:c638:d7ca with SMTP id d9443c01a7336-2984ed356e1mr79538965ad.14.1763051577767;
+        Thu, 13 Nov 2025 08:32:57 -0800 (PST)
+Received: from ahduyck-xeon-server.home.arpa ([2605:59c8:829:4c00:9e5c:8eff:fe4f:f2d0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2ccc03sm30020415ad.109.2025.11.13.08.32.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 08:32:42 -0800 (PST)
-Message-ID: <34c250472e36c5b506aed9416420d608a9b3969b.camel@mandelbit.com>
-Subject: Re: [PATCH net-next 6/8] ovpn: consolidate crypto allocations in
- one chunk
-From: Ralf Lici <ralf@mandelbit.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Antonio Quartulli <antonio@openvpn.net>, netdev@vger.kernel.org, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>
-Date: Thu, 13 Nov 2025 17:32:42 +0100
-In-Reply-To: <aRXhsFpwTEfne0vF@krikkit>
-References: <20251111214744.12479-1-antonio@openvpn.net>
-	 <20251111214744.12479-7-antonio@openvpn.net> <aRS13OqKdhx4aVRo@krikkit>
-	 <7315d47ac4cd7510ad9df7760e04c49bddd92383.camel@mandelbit.com>
-	 <aRXhsFpwTEfne0vF@krikkit>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+        Thu, 13 Nov 2025 08:32:57 -0800 (PST)
+Subject: [net-next PATCH v4 00/10] net: phy: Add support for fbnic PHY w/ 25G,
+ 50G, and 100G support
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org, kernel-team@meta.com, andrew+netdev@lunn.ch,
+ hkallweit1@gmail.com, linux@armlinux.org.uk, pabeni@redhat.com,
+ davem@davemloft.net
+Date: Thu, 13 Nov 2025 08:32:56 -0800
+Message-ID: 
+ <176305128544.3573217.7529629511881918177.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2025-11-13 at 14:48 +0100, Sabrina Dubroca wrote:
-> 2025-11-13, 11:35:07 +0100, Ralf Lici wrote:
-> > On Wed, 2025-11-12 at 17:29 +0100, Sabrina Dubroca wrote:
-> > > 2025-11-11, 22:47:39 +0100, Antonio Quartulli wrote:
-> > > > +static unsigned int ovpn_aead_crypto_tmp_size(struct
-> > > > crypto_aead
-> > > > *tfm,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const unsigned
-> > > > int
-> > > > nfrags)
-> > > > +{
-> > > > +	unsigned int len =3D crypto_aead_ivsize(tfm);
-> > > > +
-> > > > +	if (likely(len)) {
-> > >=20
-> > > Is that right?
-> > >=20
-> > > Previously iv was reserved with a constant size (OVPN_NONCE_SIZE),
-> > > and
-> > > we're always going to write some data into ->iv via
-> > > ovpn_pktid_aead_write, but now we're only reserving the crypto
-> > > algorithm's IV size (which appear to be 12, ie OVPN_NONCE_SIZE,
-> > > for
-> > > both chachapoly and gcm(aes), so maybe it doesn't matter).
-> >=20
-> > Exactly, I checked and both gcm-aes and chachapoly return an IV size
-> > equal to OVPN_NONCE_SIZE, as you noted. I just thought it wouldn't
-> > hurt
-> > to make the function a bit more generic in case we ever support
-> > algorithms without an IV in the future, knowing that OVPN_NONCE_SIZE
-> > matches ivsize for all current cases.
->=20
-> IMO there's not much to gain here, since the rest of the code
-> (ovpn_aead_encrypt/decrypt) isn't ready for it. It may even be more
-> confusing since this bit looks generic but the rest isn't, and
-> figuring out why the packets are not being encrypted/decrypted
-> correctly could be a bit painful.
+To transition the fbnic driver to using the XPCS driver we need to address
+the fact that we need a representation for the FW managed PMA/PMD that is
+actually a SerDes PHY to handle link bouncing during link training.
 
-That=E2=80=99s a good point, actually.
+This patch set first introduces the necessary bits to the
+generic c45 driver code to enable it to read 25G, 50G, and 100G modes from
+the PHY. After that we update the XPCS driver to to do the same.
 
-> > Also, there's a check in ovpn_aead_init to ensure that
-> > crypto_aead_ivsize returns the expected value, so we're covered if
-> > anything changes unexpectedly.
->=20
-> Ah, good.
->=20
-> Then I would prefer to just make ovpn_aead_crypto_tmp_size always use
-> OVPN_NONCE_SIZE, and maybe add a comment in ovpn_aead_init referencing
-> ovpn_aead_crypto_tmp_size.
->=20
-> Something like:
->=20
-> /* basic AEAD assumption
-> =C2=A0* all current algorithms use OVPN_NONCE_SIZE.
-> =C2=A0* ovpn_aead_crypto_tmp_size and ovpn_aead_encrypt/decrypt
-> =C2=A0* expect this.
-> =C2=A0*/
->=20
->=20
-> Or a
->=20
-> =C2=A0=C2=A0=C2=A0 DEBUG_NET_WARN_ON_ONCE(OVPN_NONCE_SIZE !=3D
-> crypto_aead_ivsize(tfm));
->=20
-> in ovpn_aead_crypto_tmp_size, which would fire if the check in
-> ovpn_aead_init is ever removed.
+The rest of this patch set enables the changes to fbnic to make use of these
+interfaces and expose a PMA/PMD that can provide a necessary link delay to
+avoid link flapping in the event that a cable is disconnected and
+reconnected, and to correctly provide the count for the link down events.
 
-I'll go with both to clearly assert the assumption.
+With this we have the basic groundwork laid as with this all the bits and
+pieces are in place in terms of reading the configuration. The general plan for
+follow-on patch sets is to start looking at enabling changing the configuration
+in environments where that is supported.
 
-Thanks,
+v2: Added XPCS code to the patch set
+    Dropped code adding bits for extended ability registers
+    Switched from enabling code in generic c45 to enabling code in fbnic_phy.c
+    Fixed several bugs related to phy state machine and use of resume
+    Moved PHY assignment into ndo_init/uninit
+    Renamed fbnic_swmii.c to fbnic_mdio.c
+v3: Modified XPCS to have it read link from PMA instead of using a phydev
+    Fixed naming for PCS vs PMA for CTRL1 register speed bit values
+    Added logic to XPCS to get speed from PCS CTRL1 register
+    Swapped fbnic link delay timer from tracking training start to end
+    Dropped driver code for fbnic_phy.c and phydev code from patches
+    Updated patch naming to match expectations for PCS changes
+    Cleaned up dead code and defines from earlier versions
+v4: Added back in UAPI defines for MDIO_CTRL1_SPEED[5G|2_5G] w/ comment
+    Swapped patches 1 and 2 placing the 2.5/5G fixes first
 
---=20
-Ralf Lici
-Mandelbit Srl
+---
+
+Alexander Duyck (10):
+      net: phy: Rename MDIO_CTRL1_SPEED for 2.5G and 5G to reflect PMA values
+      net: phy: Add support for 25, 50 and 100Gbps PMA to genphy_c45_read_pma
+      net: pcs: xpcs: Add support for 25G, 50G, and 100G interfaces
+      net: pcs: xpcs: Fix PMA identifier handling in XPCS
+      net: pcs: xpcs: Add support for FBNIC 25G, 50G, 100G PMA
+      fbnic: Rename PCS IRQ to MAC IRQ as it is actually a MAC interrupt
+      fbnic: Add logic to track PMD state via MAC/PCS signals
+      fbnic: Cleanup handling for link down event statistics
+      fbnic: Add SW shim for MDIO interface to PMA/PMD and PCS
+      fbnic: Replace use of internal PCS w/ Designware XPCS
+
+
+ drivers/net/ethernet/meta/Kconfig             |   1 +
+ drivers/net/ethernet/meta/fbnic/Makefile      |   1 +
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |  15 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |   2 +
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |   9 +
+ drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |  45 +++--
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |  71 ++++---
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  40 +++-
+ drivers/net/ethernet/meta/fbnic/fbnic_mdio.c  | 190 ++++++++++++++++++
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  11 +-
+ .../net/ethernet/meta/fbnic/fbnic_netdev.h    |   6 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  17 +-
+ .../net/ethernet/meta/fbnic/fbnic_phylink.c   | 163 ++++++++-------
+ drivers/net/pcs/pcs-xpcs.c                    | 135 ++++++++++++-
+ drivers/net/phy/phy-c45.c                     |  17 +-
+ include/linux/pcs/pcs-xpcs.h                  |   4 +-
+ include/uapi/linux/mdio.h                     |  26 ++-
+ 17 files changed, 600 insertions(+), 153 deletions(-)
+ create mode 100644 drivers/net/ethernet/meta/fbnic/fbnic_mdio.c
+
+--
+
