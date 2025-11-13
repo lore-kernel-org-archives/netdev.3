@@ -1,146 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic307-56.consmr.mail.ne1.yahoo.com (sonic307-56.consmr.mail.ne1.yahoo.com [66.163.190.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6052DF709
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 09:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB6B29BDB0
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 10:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763027996; cv=none; b=T7ljefVivAmj+dnK4Qvpx04fvngdq6OhMFAqYPGRT7hBrKjR9Kja8TRP+yKpH4mzoBePrRBiRHEP7caoDTTBycPzI54uFE6DCn9MHjmP1jgOsbntCU9AqaDHqtETrvIBBd8okl1E/whJidIMgEuz3GLJ4f11Sitnt2Q4P90MSUc=
+	t=1763028461; cv=none; b=WGOYu9TXBY1inWdIXFbZBz7OzloM1Q2a3I/ii7AMrXJB8cWdfgHinh+Utv3d+sKI3+4UkRAZYu0SnUfH+HQPfPy3+vt2Xs2twRkwFT4UG4kQhkOQZ9wwesXHcG3sNTHJSMgAaUGoN4bUlaI3vpLKdYkZ3LSCwpdMZAEpsSRzFMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763027996; c=relaxed/simple;
-	bh=/dgGs4C97wxy8uyC33Ehvup61Fr/520IRPHnpbPX4Xk=;
+	s=arc-20240116; t=1763028461; c=relaxed/simple;
+	bh=yfBHkXtYZkMnrC2241QVykXVZoThQqOY+KvmC0bm+9k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LEUGord7kmNhyRnFf/8w7pGfejf7yWttZYIi+/MGyE7Td5wu29H005DUJ/52HjWykHSnrqXz9tz6D9Lh014aKVH7772NzQc8J4/t72AUxkJ6EfiP2Iarx23mJIPNxQBSCp+6FRHQWxyi5+1O748AmrsnrdjVK6HeNBZfDreYClU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TXHQDoRV; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=aoV2hYRZfZ6u+MPXMTAaBLGfAWy3XXmWWX/yh+tHt3vNB8zmLBOpQoqoKoqdd0HhzvIQgNCreL4NUeRLnhsJ7pc3q3Ng3f8PrAl7MGv0hruYr3lB6USJE4IrZfhh4urNdfSpBQyGCZqZV36b8eW2KhUAf5isZ/K+B2dzyCd1oss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=ZwcePGS5; arc=none smtp.client-ip=66.163.190.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TXHQDoRV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB03C4CEF8;
-	Thu, 13 Nov 2025 09:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763027995;
-	bh=/dgGs4C97wxy8uyC33Ehvup61Fr/520IRPHnpbPX4Xk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TXHQDoRVde43WThwASzvo6wIqAPwnLvM5l36WGu4orOrJWqxXgvF4napv8vUdQy1V
-	 bVQpJz5IwBOJ3cjL4q6mio8mo1sftIeCjwxojY2/DX7nNcE9YdF6o+XI5NAkb4lUU2
-	 Sf3eQfmdxdY0HJzvN2Xqnh1q3Kd0hTpz2lIUhdiUIvXiVPL0V7py2JCO3Y7NSOacCy
-	 durHk8Zfc4j4VKUJVzgvvS0jy60GxPNDbk9g1T2fUC90r+TZnXoglUAIGNIR1Tawzw
-	 DO23Wi3IaganJuwrclQGSgdfTO3eEj79Qev9OcgLktS8gbwjKvRJlvA9YZQtIw8r4u
-	 AJpUF4jvosLjQ==
-Message-ID: <e5c95174-2f6f-439d-b557-6e223f982de5@kernel.org>
-Date: Thu, 13 Nov 2025 10:59:49 +0100
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="ZwcePGS5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1763028458; bh=MY75YRxq0WOxOFYKIbvygfAxaaUgS8HMYCOtfJwLLjA=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=ZwcePGS50Il99sx7ze6t9sf7nvC9ZXM9i6D06xC5haRvjv3eSyYKP3NiAStu5tOa6ikOVUZWhPT0qdMRXZVh12Dp8WRS8FH2Y5i2WttxiP/s40JVQBLB2YWnJs9oqccsnSlrdQ0sB3nrepmatRUY9U1l5SSv9iKxehb1CfN3VQqSKmIZTK9ThDjCSm0Vp4fwgMy27wwHFbMEcC7wgdEiNRaAmIMWihv9W8+DuXtssaRO3aCBOZlhsi6znEsZk08+xcnsjAlR9p+gC+ZWS34vzwQPtWnLM8H4l2Z4BOBaAuLnwTuzfdQocub/YS/HgXtV+nInDA9qlqqM2PvW+ueb4Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1763028458; bh=J1bScWPUF2K1qxto9E66zHOtraPbeuu/a0iXMvHzCOI=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=OwRk6QpyQnOdS/ExL7HPBHicpzQIE0jwLrKnylBmqQtpdwempq9ywqcfCoP3q/TuXSHSUAv05vbHpEVbLt02Wd5eIuoFndz/3y33JAEYxFAq8zJJeMSEVCF8FixthaMqbD38P3SVxoP9E8d5jz1mLUgbkDqczb8omVoejqQ6nXur1uIi6PAalJJZ3NlCfP47op9c2QiBuuBt2cvkpL7XsHIDlK/yPlxkwDxBueN8DmABAr/WXguQeWlHrz58DyfvQEUH+IEL/qt4MQ6FQ62PNf0CcyXZwjkNH8dGJa50PyfcyRl1SxV0D+326lg894nsTIeL0L0cNQB0zpt41B+ggA==
+X-YMail-OSG: Mr_vfU8VM1mVpk_GNdCfJTpHO7u5QQQZgv5W6zxkrK4F41U.BRZsGysH1lsmGzz
+ IbUEmJ3ACvUd5FCXwE_L_hOWdHJfk119XJVn6AUTe_hQbrrwbCspWDy9GiUDlx7QBifTuJMW0DCv
+ ZckmvOp90pmTotb5UbH5hEsNNtORV.Kit0gifV8Rpll3VpOinQsXDmjRbbvANxi03Ka.IzlrfjGN
+ RxkNTXTqgU_jd.v71sWkYf4LzqCqIgbhj9KoGT.lUqxyg989v6hW2Gfjycz3QxTIp5rnDC69WvZJ
+ 3MD78_gaOzHYhiOGrKVUhx1ypz35lZfbt792nA_ju1ny_QBghWySqJJ8U9N9.mXncZyJtYeNmYec
+ v.JhlhO78d3VFveZO7TjmsbPZl5BrAbLhwlfzvOmY9FGDfMLDebW.r0yZkAE4FBLahQisi3taj1K
+ YHzp6JumozqtJYxZPGS5XSkxkyUjRwHUmsrqnXz173QtiC2R6m.Gua3tkmYjQSu5FIc_N7.huk7j
+ Jn5veLhQDSkaDQi7MMchVUONwKh710ZzZukw.PyEUwmYV0EL_wJ.reVHaLJrsU1z306oXTBjonPV
+ oPyhOVH3JlBHz8ilJW3xGTQrXkd_vjQNd5a0wwQ_Fpk2IefmDZ56CFcV.uQljsbvquGEM8slTIPa
+ deedBR9Mrux500iDhexwMw40DJCgBW7oJ9yMH9u5588Bv1tzChXRgRHcnZenQtBegD4F3AjqeEJm
+ fHX5dvgruW6itC5qcEQifkgrmIEtP9mwjsxPZyhXnnU5RvZMCsSnTDJ9Fz9mk_sMVlBHCespOMWZ
+ tQuHl.lft9mrkt1SM97_Z9rgat4QIoFwIXUoHUoHEGyuKGS.d1ngUO9xviEy7NRIjY4OuEb_Gpdn
+ uyx3BtiyjtpVmmCdWDESRZiVGSQXIBdqMeOV.Ar0mPgWT8DnewIoy602Tk6k8tPBXtjWyzS553.D
+ uNl5dS2h.9UdWBFFuQxTvIM.wTQFVHCObpZtOHIgIA1BMK6Zqfwm1_my6x6zz0sdVODsMpU5MF4T
+ 9lHWgpfxilDWYCWu_4W9GClikXSpqx7ei.UXr8Hnr5pDLzAlffldf8GKAQbOkYNoXj1IWd3r3Ch.
+ ka9PjbJFTZXKgLAXASFCEdwjOUsl6vTP_8uwb.bBXlb_x3_cS6O_LjCVOk70mK0HZ4HLEzmqhaTZ
+ wJk5BtnC.CBzjd5p7wbp.TiSsNTYgDzPkz3hIlv7tsyhV6mQ7ZXvqIgjOwkuDW1oGnu.0VlTLK2G
+ 2WusiiPsR9RHyah5TTkd5IfAU6kNzjEgl09LqF8DEdVqGSRJDoT1cTvT3QjS60tcle2Dwn0Hnz7a
+ cLSI8WLn5vradstXvKSTyBisTq6z9ytvYqND.ja57EQlQvde2FPqz2U78MRyZnPa0SYO3dKnFZXe
+ cinqasgbGpwdz_XZ0wpKp0STdFwoXj4usQ6S_Qtazj8gK7QnUpv4S5y9nlt2Zhf4SNnlTi3yVdoO
+ r6zTJHM.PWGZ2.apfmhQGFCQuKSmWQA34OVcfiggjfkkCR4QDIWoH9v37h_FyGku_FWy5LAEIIb0
+ a7cE_rf7vjggISj7HwfAIw0bZ.XbTr9YQoK1lxWp_0Hm.ZLsMIilbL13aNMsp8b4VPVIu4G44.GX
+ 3HykR2ktCTNHhD_2YryfyyOfiwYIfq5MdYo42RzeuhHCx26eBQ8HSbA0eeyDYK3CxDaU6xT1yHYE
+ 2921T.xvgBfbaF2bIFBmX0sfFou_Lle7qP._OopuzlXUCkBPV.uGSe7OABhXwYplo524nLOqARxL
+ Wt7jtE9VqDG0_5sdC__CCa6IOksEY4dDcQOpd4KmwQFknkNur4W4L4Yqx_VD_SF3932r1ozWA6F5
+ oPCGCQgvFCcIbMdhQWnIqPEGF0Iz761qdp5TEUvaDdLmsErhkOfcC3wfLZMuzaTuyJ6vOQdtyWun
+ zpFdjY_JFDTfhu0Nb8s13mWUwQ9hSJWRwcZGGS6UZUlKoQXZP_GF0KPiXjfMGzdIZWBzU2ttgpdL
+ gWOr10pip88ot5TEahkDX4zdVux9Hh844ViJPgEqm6NDmme5XpY63RDiJ0UIBwct.Z.hna4IrvA6
+ zYNJ.ck3ZOzKQUMld0wAxa1GI5Q2.PbewxBlYndvZXhMMgsvcGSCP4AYLhWL_5Wj0o0DRZcyEtaE
+ uH.Kpf.VEyfhxkazuQ8UxNcU4EwuOXw.YEVs-
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: ee51cfc4-c65b-4680-96fe-584e72dec4fd
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Thu, 13 Nov 2025 10:07:38 +0000
+Received: by hermes--production-ir2-5fcfdd8d7f-xjb4h (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c4610d66785fb1449b69e944a1a3bc0c;
+          Thu, 13 Nov 2025 09:37:09 +0000 (UTC)
+Message-ID: <5af3e1bd-6b20-432b-8223-9302a8f9fe44@yahoo.com>
+Date: Thu, 13 Nov 2025 10:36:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCHv3 net-next 3/3] tools: ynl: add YNL test framework
-Content-Language: en-GB, fr-BE
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jan Stancek <jstancek@redhat.com>,
- =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
- Stanislav Fomichev <sdf@fomichev.me>, Ido Schimmel <idosch@nvidia.com>,
- Guillaume Nault <gnault@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>,
- Petr Machata <petrm@nvidia.com>
-References: <20251110100000.3837-1-liuhangbin@gmail.com>
- <20251110100000.3837-4-liuhangbin@gmail.com> <m27bvwpz1x.fsf@gmail.com>
- <aRV1VZ6Z-tzbDlLH@fedora> <e63b88ca-ba6b-4a6f-9a57-8d3b2e8c5de2@kernel.org>
- <aRWqKA5nUAySkJFX@fedora>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <aRWqKA5nUAySkJFX@fedora>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 02/14] net: skb: use dstref for storing dst
+ entry
+To: Sabrina Dubroca <sd@queasysnail.net>, edumazet@google.com,
+ pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net
+Cc: netdev@vger.kernel.org
+References: <20251112072720.5076-1-mmietus97@yahoo.com>
+ <20251112072720.5076-3-mmietus97@yahoo.com> <aRS_SEUbglrR_MeX@krikkit>
+Content-Language: en-US
+From: Marek Mietus <mmietus97@yahoo.com>
+In-Reply-To: <aRS_SEUbglrR_MeX@krikkit>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.24652 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On 13/11/2025 10:51, Hangbin Liu wrote:
-> On Thu, Nov 13, 2025 at 10:21:41AM +0100, Matthieu Baerts wrote:
->>>>> +	if [ $$failed -eq 0 ]; then \
->>>>> +		echo "All tests passed!"; \
->>>>> +	else \
->>>>> +		echo "$$failed test(s) failed!"; \
->>>>
->>>> AFAICS this will never be reported since the scripts only ever exit 0.
->>>> The message is also a bit misleading since it would be the count of
->>>> scripts that failed, not individual tests.
->>>>
->>>> It would be great if the scripts exited with the number of test failures
->>>> so the make file could report a total.
->>>
->>> Oh, BTW, do you think if we should exit with the failed test number or just
->>
->> I know these new tests are not in the selftests, but maybe "safer" to
->> keep the same exit code to avoid being misinterpreted?
->>
->>   KSFT_PASS=0
->>   KSFT_FAIL=1
->>   KSFT_XFAIL=2
->>   KSFT_XPASS=3
->>   KSFT_SKIP=4
+W dniu 11/12/25 o 18:09, Sabrina Dubroca pisze:
+> 2025-11-12, 08:27:08 +0100, Marek Mietus wrote:
+>> Use the newly introduced dstref object for storing the dst entry
+>> in skb instead of using _skb_refdst, and remove code related
+>> to _skb_refdst.
 > 
-> Yes, that's why I ask about the return code. I also prefer use the same exit
-> code with selftest.
+> This is an important change to a very core part of networking. You
+> need to CC all the networking maintainers/reviewers for this series
+> (ask scripts/get_maintainer.pl).
 
-Should you then exit with rc=4 instead of 0 in case of SKIP?
+Noted for next time.
 
->> If there is a need to know which tests have failed, why not using (K)TAP
->> format for the output?
 > 
-> I feel it's too heavy to copy the (K)TAP format here. I would just using the
-> exit code unless Jakub ask to using the specific output format
+>> This is mostly a cosmetic improvement. It improves readability
+> 
+> That rename, and the rest of the changes in this series. is causing
+> some non-negligible churn and will take a while to review, to ensure
+> all the conversions are correct.
+> 
+> @Maintainers can I get some time to look at this in detail?
+> 
 
-OK, I thought it was just a question of changing your 'echo' from "PASS"
-and "FAIL" to "(not )ok ${COUNTER} (...)" + print the header and the
-number of tests. But sure, if this format is not needed, no need to bother.
+I figured it would require a thorough review.
+Thank you for taking the time to look at it!
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+> 
+> Also, I'm not sure how we ended up from the previous proposal ("some
+> tunnels are under RCU so they don't need a reference" [1]) to this.
+> 
+> [1] https://lore.kernel.org/netdev/20250922110622.10368-1-mmietus97@yahoo.com/
+> 
 
+As previously discussed with Jakub [2], tunnels that use udp_tunnel_dst_lookup
+add notable complexity because the returned dst could either be from
+ip_route_output_key (referenced) or from the dst_cache (which I'm changing to
+be noref). There are also other tunnels that follow a similar pattern.
+
+The cleanest way to keep track of which dst is referenced and which isn't
+is to borrow existing refdst concepts. This allows us to more easily track
+the ref state of dst_entries in later flows to avoid unnecessarily taking
+a reference. I played around with a couple implementations and this turned
+out to be the most elegant. It's a big change, but it's mostly semantic.
+
+[2] https://lore.kernel.org/netdev/20250923184856.6cce6530@kernel.org/
