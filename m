@@ -1,66 +1,52 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4373659FC
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34555359F88
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763052157; cv=none; b=p6/neuCLBpw4YQ03JHLTjTlopRnV2uglEAYMwJrmqSEv18ErpqZFEtJiGIZE4Nog0R2ty+OjX21+j2HMg8wE/ZKMbm7daEmWSvnspYTL25ChoECDluWU671LECUgIDScSIbnXC4Rqid4OonKJjMFaUrooOcg3dttNiG8fQ61gr8=
+	t=1763052377; cv=none; b=K7Kz57RB7xBvlvI9YCGNrrWp2vv8NmKrpydssNrZ9wMAo4/j+7uB5y5R+u89sshGJ967cOJu/ryuX6yMxFdKxo4D7cr1Zy4lcDEUIwVt8uyEE6WwpneEzPOTrJYreyE6c0SXju+yju2Yq/6T8NshkoHyZA2Lx3LIhtWEiCYZ1Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763052157; c=relaxed/simple;
-	bh=AZDhgFsJHk/7/ccWHmuKjRVzzDMIUsT8B2xszzmjcS4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T+RjydmQmWyDie3qi83OeAP2BjnZtxdlsbhwJFjh9UAwxc1n90NJ/RHrSPgCbCvzLuXzMIGB9nkPzLnyIvR/Z/tgNUXAVQ0o+TjMl8r1w6A7XDzuKcvsl2JRo4R0r6tt6UZnPmtGbU1Y0FP/2SAetRSHaDJJ1xjC7fkVwamEEIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IuJ4IYJX; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1763052377; c=relaxed/simple;
+	bh=VGnC9M5GyCZAIUV5N/UMNwO6x7HUT0IBSW2UW8dHOTs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WmUqwyTzEzBTW4aezaciB05lDJzhnilx8JiRs4ogrppJIQ9XmkBjaxShOAdH0p8VoVsqAY1TztEuvBGTG/kpQtabdWdlfVPr0Hn10qKwEjGcRiTQKfHfh4YYxXDTJIICs6Pk3zyA85o8cT4gMX4aLJo/ZWvw1mqJKKbgn81Uex4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IuJ4IYJX"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42b2dd19681so187260f8f.3
-        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 08:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763052154; x=1763656954; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Tnv5GvLZO90fssK5mBO/V2ejb0VVnidgq+QHki0NiLw=;
-        b=IuJ4IYJXLJ2V5+7Y5+mRDTUTL2yzgqfIK7tEPsOTetMWojJb6Y1g9LSVir2GIvKVRf
-         Yv+a1pGGPiP6Gfxk16B/uaFurp0SkXbX+hphQNp07ksmvhtcOWOV7mjdOuI0BqjvYYKU
-         zDONzb9C2el/O/eHTD6PIjHk62BdfujD1UdFvbAhW0UuvYcywIzbmM9w7oUWYdX62qrk
-         DFBCpTUbKm+UhP7HXJ7dusVMcE2FsBbdwYrOUlcKBjsaVC2379pTisGc+099x7tO//2V
-         e/1QdPmECdMRPGnOfCRPRTJO4BLRv+D3Hbpl4s0fCD/vFymEydKWRfbkioWs0E5X+Hzt
-         glvQ==
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7c6cc44ff62so776806a34.3
+        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 08:46:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763052154; x=1763656954;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Tnv5GvLZO90fssK5mBO/V2ejb0VVnidgq+QHki0NiLw=;
-        b=jc8aWSaGx0pPdkUyvoaCjdVVTEfJakhSbYWwxRO0fR7ldrlhma2mF/4SO/lS8FO7TS
-         a7BUui2K5RSj9u2INzLGmYJ0OE9ZShheF4MRAfBUyRvdI9Wp5qZnBkMoWAquC/8oEloX
-         0NWWUkDiU6o3UklwjiRtXix3pTugSO6QEDasSJ4MiDFB4muluM7YO2BvpuWA8KDWjKyw
-         1kP3+XW0J1VSmTsiD8d5A1jNno7YjUG1qm3ZFPkmmqHt7PrgViCgQXjZqrynxxh6rbxL
-         AEYpZD6qHIdQjhzAsmZDLjHYNIXmyK6HxefVTv2NNgG4pHiw3H3DhCJZNzqDvR8Rb6cl
-         i++w==
-X-Gm-Message-State: AOJu0Yy7s8ZlpIX/n3Ez95GQ1mH3LfNaQkIXaXGLkBKYXvrLdPmtQat3
-	75+Zi9xEiqGUFWqMStMFTKVwuHvqc/nqo5oHnvkjvQ4M8ljDmKM5bide
-X-Gm-Gg: ASbGncu6rTeZRZdYypikOvNRArdi2U3eRF9+cPw0/+/wBN5hZH+FIfoYR3+8mHetfiB
-	LdQwRQ+1lqXM/NkzthFpeIT0q+sDt3PuPOcBm9icRg/MhJ2bYy488xhvRQW97Wmlos2MrUE2sUP
-	Xs43kvwltAH9yvjr2LvUnDUD7eoAX1brATKouxjXCS8CJijEq5USyRLFFYeOfnkOUvhuWJHpcAq
-	7qF79x9HzXoPwUyY6yD7s06imcpO1/xIbLg7XrNyTRL3HOUOALBGJu29U8LJYEPxF3gufC8/7m/
-	/piKxZ7oGlUgYvqWJjIvKw6Xo6iu5i1aCwQO8LuOFdIMJRycL8r418tE6SONOn+u/KZ0H3XmP9M
-	VBIixIDHhUkF2tE6Ko1suA4wnwJoxL1AaMFtqZmYEuE83RKJVOUR5i8YVIcWq2BfO7qzNXMTVgb
-	1mZk5qTBr6RwzRigo=
-X-Google-Smtp-Source: AGHT+IFlJhZQHRbGLobb3YLbAsBiS2Koyw/Ec1i06oLS8N0XCLnx1tPyDdy1oAHB/rz71WT4cMX8YQ==
-X-Received: by 2002:a05:600c:c4b8:b0:477:5b01:7d42 with SMTP id 5b1f17b1804b1-4778fee8183mr614895e9.5.1763052153366;
-        Thu, 13 Nov 2025 08:42:33 -0800 (PST)
-Received: from localhost ([2a03:2880:31ff:50::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53f21948sm4877254f8f.43.2025.11.13.08.42.32
+        d=1e100.net; s=20230601; t=1763052373; x=1763657173;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Le654lwVo/6yvzyB42yjnqH7EJH3FTtiuiBest9Aydw=;
+        b=rXn0GZT0cPu8jKfWyL0ZLkZlhmmeMYCmXOngwZu2DaG9z3GkxL6dTPG2HpVOBjclm6
+         wz3jZ6XCu5pz1XO4q/oclimmn94YhcZNlGBvCCucL6RQawgrkk/v0FO/lGwmYt9/I8hB
+         RtX3JsQ4pUqRQWawQzA9KSQadne95sV6NfzH/u4PC8528KLgLtuuTrRPbSnTz+me0ONX
+         XZOHbOX8ytwoJm/qbo0nNzdQRlzzDY5eK6OzvRBGid/wrAveYTvraNSA1b5pSHUkJDGx
+         y1113/X1pF69uAYldXD7tOsESu5cdwGAv6FlYWy2FehyH1upMw6Lni9vW90d0R28VBJc
+         Bf0A==
+X-Gm-Message-State: AOJu0YygQ1lcmRREZLxU2Ed+HYvyLOxD1jHWM38u+dCh1snEqCcDJ6xE
+	atgL7nFFU/DkTQ/v+TxZn9uczRNU/T63KEjlbRaD0k/lsfjsUiieapPZ
+X-Gm-Gg: ASbGncuhXImTJT6MtjJdw4IQotDm4vH7lG3LtD/0ruVCZUUoSVYOHzx6jUjr2pT02Fh
+	dzJH6EdbacW9u9N8baDr96OJR3VSaWRM8ASXqSE9OwXz7KNgOmS3BWVk04k5cFV2n3WwacJIgOs
+	r8ju7VUPucby5QUUgjFgIDVgPrlmllbmJtwTMTdETnkpcUkrIMPKGR2ar7Z0zC4btYpJKK8pV5n
+	nVigE5gqxdMAfW40Lp7NoiBDxZk+sV2x68Qe94+Kb+DVZ4z/MwCZKH2g4rAmi+2LTfOd2XDFiuS
+	k1YK3iM83PZ9jGQhmWeWcSoqvTIA2UPlYJvy+BlL97lcxFM5M8ym/Xm0zq0MgRJ1r0xXfH5M0Sw
+	W09u+W1zZXTOgpyBMMGT2Dijes8FCdIC+n23iMILHUO7++uICxqakas9QtJabqIhCWdsi5B2U8F
+	xUTw==
+X-Google-Smtp-Source: AGHT+IHMlldWyJC6JRWEYFYT1iL5gomLD7IIC4KMdUcHwaxmTiV3LQSm9YXqc/Il2hpg7iYHwyqiKQ==
+X-Received: by 2002:a05:6830:67da:b0:7ba:8107:d559 with SMTP id 46e09a7af769-7c74454ea64mr121594a34.26.1763052373137;
+        Thu, 13 Nov 2025 08:46:13 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:1::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c73a39310csm1490035a34.21.2025.11.13.08.46.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 08:42:32 -0800 (PST)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Thu, 13 Nov 2025 08:42:21 -0800
-Subject: [PATCH net-next v2 4/4] netconsole: Increase MAX_USERDATA_ITEMS
+        Thu, 13 Nov 2025 08:46:12 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH 0/2] net: mlx: migrate to new get_rx_ring_count ethtool API
+Date: Thu, 13 Nov 2025 08:46:02 -0800
+Message-Id: <20251113-mlx_grxrings-v1-0-0017f2af7dd0@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,63 +55,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251113-netconsole_dynamic_extradata-v2-4-18cf7fed1026@meta.com>
-References: <20251113-netconsole_dynamic_extradata-v2-0-18cf7fed1026@meta.com>
-In-Reply-To: <20251113-netconsole_dynamic_extradata-v2-0-18cf7fed1026@meta.com>
-To: Breno Leitao <leitao@debian.org>, Andre Carvalho <asantostc@gmail.com>, 
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+X-B4-Tracking: v=1; b=H4sIAEoLFmkC/x3MQQqDMBAF0KsMf20gY5tFcpUiInVMB2osE5CA5
+ O5C3wHehSqmUpHogsmpVY+CRDwQ3p+lZHG6IhFGPwZmfrj92+ZszbTk6jiGNYZNvMQnBsLPZNP
+ 2715T7ze2omJYXgAAAA==
+X-Change-ID: 20251113-mlx_grxrings-195d95fe0e94
+To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.13.0
+ Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+ Leon Romanovsky <leon@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=leitao@debian.org;
+ h=from:subject:message-id; bh=VGnC9M5GyCZAIUV5N/UMNwO6x7HUT0IBSW2UW8dHOTs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpFgtTGtn9i7Py9ec07FVPLZv/6rFQlwLiE6XVC
+ 6+4CuAYJhqJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaRYLUwAKCRA1o5Of/Hh3
+ bYrZEACULVWobdnQ9efzrcFpilU50BH9Lh3TGK7pgRlVM29ZOju0jvQacwOi19SlHukYZiOnmW8
+ yKgdmIVbPFSYuCgIcHTU6SUQ4W2LDKqDenwbmKJiTNVGgr91vWVhms1+0hT5EOtCfzvPZjmWaIF
+ uv4ZRJiT088YQUbMrVIORBqpOICaKHx8Qm+lN+6uSnd7pfDT05W9PNlBoMaJoMnG0Ds0gTfot4h
+ s2+CsizvYVB2M7ij2zxJh8xIkY0WjFd2VoZXuij8yZK4sXJhDKnIe6FEqTbs/KoTBEhpbpr7ech
+ wvQGJEKIyeoZK5xN9f8gvt4wkOrnsbVi9U8cxelWfeeOPgxX+mnDVEOiPweFUO6N3KXy2dNSbhB
+ j9QQzvR9361xkSpftm2D2A2IloduQSnM7kNT5tbrM8qjR+w69UftVJ5en4VobiHw+4nwFXWxHW5
+ 5r7N3W7m38YKbTgcXfF9cA7lqiyqyJLYDoGrAYPjupKQoqhFCplb3uR7aYShy4HeuioYeo3ZW3x
+ 5Vd0CyLn14g41jd8WTraQpkuAFRE+V4C+qozgMkI21bJwyOcRzrRiBHqrZpVzEfMWxfbZjLR3II
+ /4Uqcgmh/AjJnxOL7tKsLW/dFHTjhxC66B7Gd+UYoDtwbFVczLz7X2CS+/N9JAPHZ7VQ84HpgtI
+ 0IdnQAAKtiQKs0Q==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Increase MAX_USERDATA_ITEMS from 16 to 256 entries now that the userdata
-buffer is allocated dynamically.
+This series migrates the mlx4 and mlx5 drivers to use the new
+.get_rx_ring_count() callback introduced in commit 84eaf4359c36 ("net:
+ethtool: add get_rx_ring_count callback to optimize RX ring queries").
 
-The previous limit of 16 was necessary because the buffer was statically
-allocated for all targets. With dynamic allocation, we can support more
-entries without wasting memory on targets that don't use userdata.
+Previously, these drivers handled ETHTOOL_GRXRINGS within the
+.get_rxnfc() callback. With the dedicated .get_rx_ring_count() API, this
+handling can be extracted and simplified.
 
-This allows users to attach more metadata to their netconsole messages,
-which is useful for complex debugging and logging scenarios.
+For mlx5, this affects both the ethernet and IPoIB drivers. The
+ETHTOOL_GRXRINGS handling was previously kept in .get_rxnfc() to support
+"ethtool -x" when CONFIG_MLX5_EN_RXNFC=n, but this is no longer
+necessary with the new dedicated callback.
 
-Also update the testcase accordingly.
+Note: The mlx4 changes are compile-tested only, while mlx5 changes were
+properly tested.
 
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/netconsole.c                                | 2 +-
- tools/testing/selftests/drivers/net/netcons_overflow.sh | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Breno Leitao (2):
+      mlx4: extract GRXRINGS from .get_rxnfc
+      mlx5: extract GRXRINGS from .get_rxnfc
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 12fbc303a8240..36ce19936fa39 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -50,7 +50,7 @@ MODULE_LICENSE("GPL");
- /* The number 3 comes from userdata entry format characters (' ', '=', '\n') */
- #define MAX_EXTRADATA_NAME_LEN		(MAX_EXTRADATA_ENTRY_LEN - \
- 					MAX_EXTRADATA_VALUE_LEN - 3)
--#define MAX_USERDATA_ITEMS		16
-+#define MAX_USERDATA_ITEMS		256
- #define MAX_PRINT_CHUNK			1000
- 
- static char config[MAX_PARAM_LENGTH];
-diff --git a/tools/testing/selftests/drivers/net/netcons_overflow.sh b/tools/testing/selftests/drivers/net/netcons_overflow.sh
-index 29bad56448a24..06089643b7716 100755
---- a/tools/testing/selftests/drivers/net/netcons_overflow.sh
-+++ b/tools/testing/selftests/drivers/net/netcons_overflow.sh
-@@ -15,7 +15,7 @@ SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
- 
- source "${SCRIPTDIR}"/lib/sh/lib_netcons.sh
- # This is coming from netconsole code. Check for it in drivers/net/netconsole.c
--MAX_USERDATA_ITEMS=16
-+MAX_USERDATA_ITEMS=256
- 
- # Function to create userdata entries
- function create_userdata_max_entries() {
+ drivers/net/ethernet/mellanox/mlx4/en_ethtool.c        | 11 ++++++++---
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c   | 18 ++++++++----------
+ .../net/ethernet/mellanox/mlx5/core/ipoib/ethtool.c    | 18 ++++++++----------
+ 3 files changed, 24 insertions(+), 23 deletions(-)
+---
+base-commit: 9f07af1d274223a4314b5e2e6d395a78166c24c5
+change-id: 20251113-mlx_grxrings-195d95fe0e94
 
--- 
-2.47.3
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
