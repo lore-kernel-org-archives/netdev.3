@@ -1,47 +1,42 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7003D338900;
-	Thu, 13 Nov 2025 11:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5327B4E8;
+	Thu, 13 Nov 2025 11:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763033001; cv=none; b=J/4HaRyzYLm13oVGrd2Olhttxmy8PZFxO33zlRP1ok/8TDjqs6yhU2V6OVTGFAjAanZI35BOTMK/nBiXfVtgCjWXFDHslEhNsp3hfOVGgRDm4mmrcgB7gRtIbcXWAX+NOZUJ8sPIF00bNQ1NmktlyFlGPPwZ2pH2JkkCUkWvkiU=
+	t=1763033256; cv=none; b=F3o0SxrCClXkGUMr2p9G20vf6i7HSfUq0ee5zS2EZa3uEV0Y+Bxwt4JTJQSzPJNDSzl2/GzL8iXNo2JmoP3vGspZV42jdslF9TuKRbYypoZulksEiVg2WsuZJCelexeIdRmFcRh4XLzlgiXydUAkdTr9Z4iwsjf9Eds3jtBIYYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763033001; c=relaxed/simple;
-	bh=kPlPh//r2gTARcw728eg3pBZDeBIeXPyQNHrP8jSsMA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bYdIemRM/Sd0rjCouyz6F+eLoOdJOv46Kco40eh8st9fwoyECskOM8d1UtJLZMrXm72uvx1dUONM3cCq/dFDvXDSbwJZNLao5Ud9nJUamYwga0D5jCIjCTaQyvmtaKolLtkkf4JbsfKUZRcVQI2g8iexNjN0pr721xldoS+hNSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=DB9BRqDg; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="DB9BRqDg"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=F3dSujDdh5WWIoQCAqCdwVBbckq0q+DWYe55BaO5CUE=;
-	b=DB9BRqDgA1M37iHvXg01Jp/2DdLSLQI/Pru3d5OSoPi09PraYnjtdaGx26UydhCzY4ZctiOYf
-	xiZme4uPFJ3/+EG2bQZDtF2xeAdYC4XGQrVcq/UXfeUsULoyCU1PM6EoE0BQ58+4owePfKHuUo5
-	bnNGCx8VI+2LI1thKJYUWAI=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4d6dBX12Htzcb0j;
-	Thu, 13 Nov 2025 19:21:24 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 93951140202;
-	Thu, 13 Nov 2025 19:23:15 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 13 Nov
- 2025 19:23:14 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <marcelo.leitner@gmail.com>, <lucien.xin@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <ebiggers@kernel.org>
-CC: <linux-sctp@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>
-Subject: [PATCH net-next] sctp: Remove unused declaration sctp_auth_init_hmacs()
-Date: Thu, 13 Nov 2025 19:45:01 +0800
-Message-ID: <20251113114501.32905-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1763033256; c=relaxed/simple;
+	bh=UrvlQ83EKK9oIfUzK6QTaUu2K8vkuGwtm07L3TzfAzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M7wXGHwjIZQae9TgImoFzXeTIWKWKYGMmN8xz7xf7Q/PSyKuhdA0WYpd2+y6td1Id6zpHEyrzDhZBbpAiwSDSmR7nEBKYlWNNRlyw8rLH+ZbBRd7P6kW0OyiA0uba26sbMI5HWtYTQunApvTHiJ/l2V6ldbrnAdQpjhPJh7zkjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+X-CSE-ConnectionGUID: yahheH1SRiuOOQtMT8/IWA==
+X-CSE-MsgGUID: Df5RvJB/RFamhu+4zrneHQ==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 13 Nov 2025 20:27:27 +0900
+Received: from vm01.adwin.renesas.com (unknown [10.226.92.175])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 084A2428B0E9;
+	Thu, 13 Nov 2025 20:27:22 +0900 (JST)
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	boon.khai.ng@altera.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: stmmac: Disable EEE RX clock stop when VLAN is enabled
+Date: Thu, 13 Nov 2025 11:27:19 +0000
+Message-ID: <20251113112721.70500-1-ovidiu.panait.rb@renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,30 +44,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500002.china.huawei.com (7.185.36.57)
 
-Commit bf40785fa437 ("sctp: Use HMAC-SHA1 and HMAC-SHA256 library for chunk
-authentication") removed the implementation but leave declaration.
+Hi,
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- include/net/sctp/auth.h | 1 -
- 1 file changed, 1 deletion(-)
+This series fixes a couple of VLAN issues observed on the Renesas RZ/V2H
+EVK platform (stmmac + Microchip KSZ9131RNXI PHY):
 
-diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
-index 3d5879e08e78..6f2cd562b1de 100644
---- a/include/net/sctp/auth.h
-+++ b/include/net/sctp/auth.h
-@@ -72,7 +72,6 @@ struct sctp_shared_key *sctp_auth_get_shkey(
- int sctp_auth_asoc_copy_shkeys(const struct sctp_endpoint *ep,
- 				struct sctp_association *asoc,
- 				gfp_t gfp);
--int sctp_auth_init_hmacs(struct sctp_endpoint *ep, gfp_t gfp);
- const struct sctp_hmac *sctp_auth_get_hmac(__u16 hmac_id);
- const struct sctp_hmac *
- sctp_auth_asoc_get_hmac(const struct sctp_association *asoc);
+- The first patch fixes a bug where VLAN ID 0 would not be properly removed
+due to how vlan_del_hw_rx_fltr() matched entries in the VLAN filter table.
+
+- The second patch addresses RX clock gating issues that occur during VLAN
+creation and deletion when EEE is enabled with RX clock-stop active (the
+default configuration). For example:
+
+    # ip link add link end1 name end1.5 type vlan id 5
+    15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
+    RTNETLINK answers: Device or resource busy
+
+The stmmac hardware requires the receive clock to be running when writing
+certain registers, including VLAN registers. However, by default the driver
+enables Energy Efficient Ethernet (EEE) and allows the PHY to stop the
+receive clock when the link is idle. As a result, the RX clock might be
+stopped when attempting to access these registers, leading to timeouts.
+
+A more comprehensive overview of receive clock related issues in the
+stmmac driver can be found here:
+https://lore.kernel.org/all/Z9ySeo61VYTClIJJ@shell.armlinux.org.uk/
+
+Most of the issues were resolved by commit dd557266cf5fb ("net: stmmac:
+block PHY RXC clock-stop"), which wraps register accesses with
+phylink_rx_clk_stop_block()/unblock() calls. However, VLAN add/delete
+operations are invoked with bottom halves disabled, where sleeping is
+not permitted, so those helpers cannot be used.
+
+To avoid these VLAN timeouts, the second patch disables the EEE RX
+clock-stop feature when VLAN support is enabled. This ensures the receive
+clock remains active, allowing VLAN operations to complete successfully.
+
+Best regards,
+Ovidiu
+
+v2:
+- Added comment mentioning that EEE RX clock stop is disabled to allow
+  access to VLAN registers.
+- Added "Reviewed-by" tag from Russell.
+
+Ovidiu Panait (2):
+  net: stmmac: Fix VLAN 0 deletion in vlan_del_hw_rx_fltr()
+  net: stmmac: Disable EEE RX clock stop when VLAN is enabled
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c | 3 ++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
 -- 
-2.34.1
+2.51.0
 
