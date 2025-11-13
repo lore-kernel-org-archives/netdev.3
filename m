@@ -1,115 +1,133 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFBB355038
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B015F2FB085;
+	Thu, 13 Nov 2025 16:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763050736; cv=none; b=lZ9JRyzv+H4BhDtEjcAxpu1bap1LeFYRCv3x+vpEDlG0OSZ2ht49k8PLqabqMYT4HdoN/KwlxY68AYuibVSZwW8TUzZWL1hBo3Mc+wwAhtLVu+/hm7Q5VMHVC6Zdu2kAoFsvOLb4CwcdCXBXepCexKTXLc2hhBkBixkZiuzg+rs=
+	t=1763050774; cv=none; b=ZLWdrwi4xH8L/vnFnuwlWHx877fqiqzb7DccikOfh2oErSXuXUy46lWtkzNWUw9QFowjP86ZsBBF9mQSH2rPjXH2/0cH0wYMWReY5VhkaEUoIb+n9EF0x3irjgT+XW8goJnQPh7iPlVrLnSfNVuAHxUV/uI6wnXcoGqWfj0IC28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763050736; c=relaxed/simple;
-	bh=X+jglSuIcAqBj4r2Yvzejgtem7Zuj3d3HuPiUn8D4x4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UoQWzbDOW7Ah3MKlaMYLWNJOb+aghApQzJeOwISkmHx1Hh01x9QIK0uDqUlYqVmUUTgSBFTbFoyYvPqExEWz4UXk6qQxxOzUYdcgyBVR2r6WBtn59OqSffe6IlZRN9U1KO9iIKfK/u6dXgVoH3SrQuLaJsXGWOFnIneI3WqWMac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2Hxzr9d; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763050774; c=relaxed/simple;
+	bh=7wf/xOs7XuSmGg449lsqqvdQlHgd0WZoRwyEoxYWEsI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IuiLkKHMhbOmZh+AE7LtE1T0J5xrVZpn0u+YR0fTZhSMq0gIPWAUMje7R1GbZGy71Ugda/du5GEdyfudQU0BMDIQjfPNwvuB8QabDOf/uu0Djb9fg+Cg6O8JIDODgAIc0QEbz504VCJBFKpQFW5LWpCv9URw1o4i1uZWodP3LXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=xfx8k0sh; arc=none smtp.client-ip=91.103.66.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2Hxzr9d"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-559836d04f6so674133e0c.0
-        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 08:18:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763050734; x=1763655534; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X+jglSuIcAqBj4r2Yvzejgtem7Zuj3d3HuPiUn8D4x4=;
-        b=g2Hxzr9d1+BSv+THQ6Mf2zWVTLYFPfNC0n+CgAzWx4ljQRadWCZssG7VITcPJ/hdwb
-         SfhWo508HygUpzjAoiUc3a1ooLqcasT5utH2z3Dp6muTbYmHa9N6WFd7rZJovYMtDlQu
-         g6xMxN/o7TBprchv4nFV6515aowPDnqKV9QFHMDiwZwssURu7zQzhqAPPjRV8+HA0q2B
-         B/frdEHcLxNCM5LYGwqqzLXv4qBD+dwRoFvmsfrE5HdrL4VKtDUlW/YETWvG1Dc+Obai
-         WE+WCgAAGHYKbBbzsFnRh70tvOoQymvEr181iJFSPQCmhdcV8fYObR/3RdxhIB/A3ogg
-         FhnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763050734; x=1763655534;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X+jglSuIcAqBj4r2Yvzejgtem7Zuj3d3HuPiUn8D4x4=;
-        b=Zddb/yYER9KElV18tCnbAzH1C+wWlJEH4Q+r7FMzg8ST3GNJ6P02cJGWlZTqeVnYgZ
-         nEYGhSF4iVrsd8a09K8MyzWCmwlLCPCQPO0wQz5lwl+BauBRFdRupUlPNfjT9PBWVPwR
-         dIN2pCf2ljAhiJqjDlFC8YEMRDYASLq9wgdHL9jZ4dTy8NI58Fo6s2qWPq0g0e0gZbL/
-         5WNT1JRQxG0pxoJA3T2QtsFTbzTUbPd0o7hs1irpx8J79XD2zFsVTAEknt+yQQe3SC9k
-         8UUFxHeZpIzU5EtNzlwf8X21enkYKmRPBQqrYsFUaJ/Kw600sP6XEq0ZiHdD+RC0FXR8
-         gg6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWrwkCnobzBqfF8o+cMXnCFuwabfV1E+Xc3ZN0lj8ks18X1c4p3fbN5DIAgJeqcyoqtPSek7ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTUWySOdeYQhgDYwxcbPwbbZtPz4ITz3LLZhIK8Bps8zPvq8fF
-	nbGw2vhzzrE6E6ft0LdL+wX5+9ebngeodC3IOD0bC4XdU0BsO9Ha3FNHSJG8sp/wjpEeuLpNZmC
-	DCJQpvmEHZdqttQlbtpkcPxvRg/yE5YI=
-X-Gm-Gg: ASbGncu+1S9uFiFyx41vyE/CXpwZURspUH8LC6mSH8bH54uozV0nkLBfnkh4MGjTKPM
-	6Y45aiIsCxfxAg9UfFP56V2Ee2I1eXNm5Qs/AxtvkDyWFHQsVm/9poIV4Uc0yApOFRZkvnnG9Gh
-	UrsIZyrVk1oDQD4PXS5PSOm2QXPt3rFGRgB2fdFrLRxvyylxFqV0bjfw4rnDH/Sq21Y8TIgWU9Z
-	GTetC/MZbnapwaYeSDKtA98vt30CtvXTiAuHhaQZEmrvqLh/EuL6WKAbHmsL2g=
-X-Google-Smtp-Source: AGHT+IHQlvloEzjKkY5BkMvD2gAnBdnRNb1amCMLvHF1Utj0ORHdSRDHFy5DC5NLvgH60/r/vrHA1AW5hpH3I+XpRwc=
-X-Received: by 2002:a05:6102:4487:b0:5dd:c3ec:b5b with SMTP id
- ada2fe7eead31-5dfc5b72883mr124216137.31.1763050733707; Thu, 13 Nov 2025
- 08:18:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="xfx8k0sh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1763050768;
+	bh=jnA9DA8lX4Guv4D7cGrX3r5E4UpXiQdK0MPT7VSRILs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=xfx8k0shGB53wDM8+2laIcnxxJzhsneRVU96FJbJ16Tp21kzyB2ulgVkOS6U+hGL3
+	 yxZgQ13iuRArXn4Yyzu7ImWWPYjFsLJz8jX8y4BT+A4dqeHnzl204HY8FexWbt8oPr
+	 AHb1o7e87opw0WLG792Vzowde34Qj6dt3XFMCd/Y4V30ktfzIFZVm1lpLqzgXF5a8y
+	 bI1va3pwqGIzaQkfnv4T2uWcr2S381F2LLAN5AslF/5MI4f1MQ4xIENQdzUU3QUxjm
+	 1+TXeKSa821BruKSTmam+8QenBknWPa0qcy7vd6cYdS4/4spdi8SfysNajdez2RQHX
+	 Pt+WbEu2/bQCQ==
+Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay13.kaspersky-labs.com (Postfix) with ESMTP id B43D93E2614;
+	Thu, 13 Nov 2025 19:19:28 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 4599A3E4518;
+	Thu, 13 Nov 2025 19:19:27 +0300 (MSK)
+Received: from zhigulin-p.avp.ru (10.16.104.190) by HQMAILSRV3.avp.ru
+ (10.64.57.53) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 13 Nov
+ 2025 19:19:26 +0300
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+To: Ido Schimmel <idosch@nvidia.com>
+CC: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>, Petr Machata
+	<petrm@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko
+	<jiri@resnulli.us>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH net] net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
+Date: Thu, 13 Nov 2025 19:19:21 +0300
+Message-ID: <20251113161922.813828-1-Pavel.Zhigulin@kaspersky.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251113154605.23370-1-scott_mitchell@apple.com> <CANn89iJ_b6hfj96Me-8AZN92W+cA52HpGcu81J0MNtzeahpfXg@mail.gmail.com>
-In-Reply-To: <CANn89iJ_b6hfj96Me-8AZN92W+cA52HpGcu81J0MNtzeahpfXg@mail.gmail.com>
-From: Scott Mitchell <scott.k.mitch1@gmail.com>
-Date: Thu, 13 Nov 2025 08:18:42 -0800
-X-Gm-Features: AWmQ_bnF1bGJN_bDR1NS8Ie2R0lRRCVzMsqRXHPobd7cBDwaINkzoduMtW9VB0s
-Message-ID: <CAFn2buA+uHsRLU-TG9Xy42-pATex9Hh7kD4uCtcVRHAKVCgZow@mail.gmail.com>
-Subject: Re: [PATCH v4] netfilter: nfnetlink_queue: optimize verdict lookup
- with hash table
-To: Eric Dumazet <edumazet@google.com>
-Cc: pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de, phil@nwl.cc, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV3.avp.ru
+ (10.64.57.53)
+X-KSE-ServerInfo: HQMAILSRV3.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/13/2025 16:01:27
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 198067 [Nov 13 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: Pavel.Zhigulin@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 76 0.3.76
+ 6aad6e32ec76b30ee13ccddeafeaa4d1732eef15
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;zhigulin-p.avp.ru:5.0.1,7.1.1;kaspersky.com:5.0.1,7.1.1
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/13/2025 16:04:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 11/13/2025 3:25:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/13 15:20:00 #27921117
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-On Thu, Nov 13, 2025 at 7:50=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Thu, Nov 13, 2025 at 7:46=E2=80=AFAM Scott Mitchell <scott.k.mitch1@gm=
-ail.com> wrote:
-> >
-> > From: Scott Mitchell <scott.k.mitch1@gmail.com>
-> >
-> > The current implementation uses a linear list to find queued packets by
-> > ID when processing verdicts from userspace. With large queue depths and
-> > out-of-order verdicting, this O(n) lookup becomes a significant
-> > bottleneck, causing userspace verdict processing to dominate CPU time.
-> >
-> > Replace the linear search with a hash table for O(1) average-case
-> > packet lookup by ID. The hash table size is configurable via the new
-> > NFQA_CFG_HASH_SIZE netlink attribute (default 1024 buckets, matching
-> > NFQNL_QMAX_DEFAULT; max 131072). The size is normalized to a power of
-> > two to enable efficient bitwise masking instead of modulo operations.
-> > Unpatched kernels silently ignore the new attribute, maintaining
-> > backward compatibility.
-> >
-> > The existing list data structure is retained for operations requiring
-> > linear iteration (e.g. flush, device down events). Hot fields
-> > (queue_hash_mask, queue_hash pointer) are placed in the same cache line
-> > as the spinlock and packet counters for optimal memory access patterns.
-> >
-> > Signed-off-by: Scott Mitchell <scott.k.mitch1@gmail.com>
->
-> Please wait ~24 hours between each version.
->
-> Documentation/process/maintainer-netdev.rst
->
-> Thank you.
+The call to devlink_info_version_fixed_put() in
+mlxsw_linecard_devlink_info_get() did not check for errors,
+although it is checked everywhere in the code.
 
-ack. I will wait 24 hours to address Florian's comments on v3 (unless
-instructed otherwise).
+Add missed 'err' check to the mlxsw_linecard_devlink_info_get()
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 3fc0c51905fb ("mlxsw: core_linecards: Expose device PSID over device info")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+---
+ drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+index b032d5a4b3b8..10f5bc4892fc 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
+@@ -601,6 +601,8 @@ int mlxsw_linecard_devlink_info_get(struct mlxsw_linecard *linecard,
+ 		err = devlink_info_version_fixed_put(req,
+ 						     DEVLINK_INFO_VERSION_GENERIC_FW_PSID,
+ 						     info->psid);
++		if (err)
++			goto unlock;
+
+ 		sprintf(buf, "%u.%u.%u", info->fw_major, info->fw_minor,
+ 			info->fw_sub_minor);
+--
+2.43.0
+
