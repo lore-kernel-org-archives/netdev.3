@@ -1,74 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9BE2609CC;
-	Thu, 13 Nov 2025 17:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539181FC0EA
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 17:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763054448; cv=none; b=JEtRe0Yvweh9oz64sV60Cpyj9syARSp79adq8sJCclwG0DPmjqqoOdz+XGWQcw5XcRQQQySrYweeaNDGb2myFsAtn2FtriN0OCsBXGvpYk5x9XygtzCild6rFEp/6HbN1RoxhDfMjRe6fQ414b65aSi5D+DFSatECsIrb74tH7A=
+	t=1763054567; cv=none; b=Fm+adcvWQnma00cd8p7LAGRl5WcZdcBtAHIs01mykNPrZdQc63fdTW8OwE2zuwEbDz0o4eRVqV6odZLRSa5EkPN4PulOfmpbolem4gy9i2X6garj65zPJ3Q7wycngJv8ieQvclu7F5DzmrcQicnsacRjUaYbNfZFHH3EYWDGWjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763054448; c=relaxed/simple;
-	bh=e4w8F5T0ln8Rha6zvjUQabjHWXT2GZbMyXlv8D2R2e4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EfUmH+2Qgn09m+8gR47+stODgS7p2VQxKSNVzJAGeUdvVYMsCWk4kOUpZWcrw1jqh49GjHfNuf5CVcSy3qCloAOryhfAilyAVfuWmdzqCWCK53BgLpilL3koavR7Ytuwh/7uDwdZmJvKcDc8mOze7KBrtHz8muNud8SnRshmfO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpkIEYXU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763054567; c=relaxed/simple;
+	bh=MdYfZqAAfI9UhZo7IuK3PHUM5hvs8ciQVUC6Vr0MK90=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ujz9LuU8DNbQNNJAjKa1LJH1qnvpa/Do1U9qujBRXj7pp1rBXuyUtyNauc5YtCYYUAHvA6e2hsY79NFJ+DPG+2nC523YrM3w8cU9djhm4fbo4UaDNavByyhyyXGMkrGlAjq9e/OvHOutw7oxcZYXKw72kQyvb1pkftR3AlHw3Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KtNR02rl; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpkIEYXU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74404C113D0;
-	Thu, 13 Nov 2025 17:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763054447;
-	bh=e4w8F5T0ln8Rha6zvjUQabjHWXT2GZbMyXlv8D2R2e4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BpkIEYXUe6cYwg9EkzPKlx03iEjVWmvIjpqVtXudwkoLL4jSSaCkneVYo1rNFLEye
-	 Y5SgDZkNqsfqrvLxPWGqOZsIXakpQnHX/X5lMZxFaxRkIcap2TyXcIGU9TtbzAmwMn
-	 yDet18iw3ds+dqjzeYN1aMeEj+1jOf3S2/AQ9YNd0itg2U0EKPyzMgkN8YJpo2nLyl
-	 3uHISwMmLX9lh3kIFpgIAEVQZRyF9yuP1OHCwjZ8JI0EnTDBZgampMHF+SzsBoLtcS
-	 DFFxZ24Dz31mV0rRlopLYDYn8QyI16vtt16yo5StfHuRFPawmW38zmN0QU/QL4d7+i
-	 6lGsJF13Ru1aw==
-Date: Thu, 13 Nov 2025 09:19:06 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Yue Haibing <yuehaibing@huawei.com>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] sctp: Remove unused declaration
- sctp_auth_init_hmacs()
-Message-ID: <20251113171906.GB1792@sol>
-References: <20251113114501.32905-1-yuehaibing@huawei.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KtNR02rl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763054566; x=1794590566;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=MdYfZqAAfI9UhZo7IuK3PHUM5hvs8ciQVUC6Vr0MK90=;
+  b=KtNR02rlxSz9aiXkguDe+1huxw861JjxO39013qFvq0G+AdkELlfASCb
+   MB6yq4m6S7ysEupPwHVJIbIqd+657JrP5p9IVRvXpLuZoE211EIhT64eC
+   /JX36QYp7v6pqDmxQzaJyeCZx34jGh5LXqrhMlby57eiY6SHuTgsNfP+0
+   VSxyWDLNQR7Ffl5PvYcNsvb45YiCM4aemcNLCsZlbjkeTG0SKUrJS71Q4
+   z6HNQ44LGcJkbT5XYBS1Ek+Mxu5gNf0McBZ3+J0SEGTH3RfCdoIA3LIgv
+   YSO6SedSe7soFLUS0Znm61aR2cHqdk4rDpncFOMrUz2YwhX+qiRMCs22+
+   Q==;
+X-CSE-ConnectionGUID: kzet9P4LS5GXd5M4jBBRgA==
+X-CSE-MsgGUID: mIMkw8igQLeupbTP/Orfdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="90621016"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="90621016"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 09:22:46 -0800
+X-CSE-ConnectionGUID: KGfI05O1Qk6pC7jk7wmDHA==
+X-CSE-MsgGUID: bOpJib/jReq0+a1qsf5Clw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; 
+   d="scan'208";a="212957758"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO vcostago-mobl3) ([10.125.108.134])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 09:22:45 -0800
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Kurt Kanzenbach <kurt@linutronix.de>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH iwl-next] igc: Restore default Qbv schedule when
+ changing channels
+In-Reply-To: <87bjl6l3j5.fsf@jax.kurt.home>
+References: <20251107-igc_mqprio_channels-v1-1-42415562d0f8@linutronix.de>
+ <87ldkblyhd.fsf@intel.com> <87bjl6l3j5.fsf@jax.kurt.home>
+Date: Thu, 13 Nov 2025 09:22:44 -0800
+Message-ID: <871pm126fv.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113114501.32905-1-yuehaibing@huawei.com>
+Content-Type: text/plain
 
-On Thu, Nov 13, 2025 at 07:45:01PM +0800, Yue Haibing wrote:
-> Commit bf40785fa437 ("sctp: Use HMAC-SHA1 and HMAC-SHA256 library for chunk
-> authentication") removed the implementation but leave declaration.
-> 
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-> ---
->  include/net/sctp/auth.h | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/include/net/sctp/auth.h b/include/net/sctp/auth.h
-> index 3d5879e08e78..6f2cd562b1de 100644
-> --- a/include/net/sctp/auth.h
-> +++ b/include/net/sctp/auth.h
-> @@ -72,7 +72,6 @@ struct sctp_shared_key *sctp_auth_get_shkey(
->  int sctp_auth_asoc_copy_shkeys(const struct sctp_endpoint *ep,
->  				struct sctp_association *asoc,
->  				gfp_t gfp);
-> -int sctp_auth_init_hmacs(struct sctp_endpoint *ep, gfp_t gfp);
->  const struct sctp_hmac *sctp_auth_get_hmac(__u16 hmac_id);
->  const struct sctp_hmac *
->  sctp_auth_asoc_get_hmac(const struct sctp_association *asoc);
+Kurt Kanzenbach <kurt@linutronix.de> writes:
 
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+> On Wed Nov 12 2025, Vinicius Costa Gomes wrote:
+>> Hi,
+>>
+>> Kurt Kanzenbach <kurt@linutronix.de> writes:
+>>
+>>> The MQPRIO (and ETF) offload utilizes the TSN Tx mode. This mode is always
+>>> coupled to Qbv. Therefore, the driver sets a default Qbv schedule of all gates
+>>> opened and a cycle time of 1s. This schedule is set during probe.
+>>>
+>>> However, the following sequence of events lead to Tx issues:
+>>>
+>>>  - Boot a dual core system
+>>>    probe():
+>>>      igc_tsn_clear_schedule():
+>>>        -> Default Schedule is set
+>>>        Note: At this point the driver has allocated two Tx/Rx queues, because
+>>>        there are only two CPU(s).
+>>>
+>>>  - ethtool -L enp3s0 combined 4
+>>>    igc_ethtool_set_channels():
+>>>      igc_reinit_queues()
+>>>        -> Default schedule is gone, per Tx ring start and end time are zero
+>>>
+>>>   - tc qdisc replace dev enp3s0 handle 100 parent root mqprio \
+>>>       num_tc 4 map 3 3 2 2 0 1 1 1 3 3 3 3 3 3 3 3 \
+>>>       queues 1@0 1@1 1@2 1@3 hw 1
+>>>     igc_tsn_offload_apply():
+>>>       igc_tsn_enable_offload():
+>>>         -> Writes zeros to IGC_STQT(i) and IGC_ENDQT(i) -> Boom
+>>>
+>>> Therefore, restore the default Qbv schedule after changing the amount of
+>>> channels.
+>>>
+>>
+>> Couple of questions:
+>>  - Would it make sense to mark this patch as a fix?
+>
+> This only happens if a user uses ETF or MQPRIO and a dual/single core
+> system. So I didn't see the need to mark it as a fix.
+>
 
-- Eric
+I still think this is fix material. People can always run stuff in VMs,
+and it makes it easier to have single/dual core systems.
+
+>>
+>>  - What would happen if the user added a Qbv schedule (not the default
+>>    one) and then changed the number of queues? My concern is that 'tc
+>>    qdisc' would show the custom user schedule and the hardware would be
+>>    "running" the default schedule, this inconsistency is not ideal. In
+>>    any case, it would be a separate patch.
+>
+> Excellent point. Honestly I'm not sure what to expect when changing the
+> number of queues after a user Qbv schedule is added. For MQPRIO we added
+> a restriction [1] especially for that case. I'm leaning towards the same
+> solution here. What do you think?
+
+Sounds great. Avoiding getting into inconsistent states is better than
+trying to fix it later.
+
+>
+> Thanks,
+> Kurt
+>
+> [1] - https://elixir.bootlin.com/linux/v6.18-rc5/source/drivers/net/ethernet/intel/igc/igc_ethtool.c#L1564
+
+
+Cheers,
+-- 
+Vinicius
