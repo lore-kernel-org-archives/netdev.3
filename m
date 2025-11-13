@@ -1,132 +1,153 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEB233F8D2
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 13:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ED22CCC0
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 13:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763040520; cv=none; b=sy3xb5iHRjd08sdRF20KY3izroBMpCXZFg2WTaFHH7KnMd9IGx7K+xcGIMtZsvPinmtj10Z6ZhYVlmBkCB3s/tDmYjWqRSHObzV8IjztyK3PVH4jSSd+aq52HpAvVlPf3fiEQNob40yzVs1EF+v25meD58ZI/aXARbp9cD7sa1s=
+	t=1763040698; cv=none; b=lGC35+VtTTj6JnxbM4khMitJ1u/aakdcclnx4uKP8h8tbqaEfdooFOuM1Pb4VWGp+HTAf0XLrkMIU7PkLLEe5cb98IcrohltEKYFvDe60rnQrtlIRdT85qykDKp7kb9h8/JFuiS5NeYaf41bcPnsQ6JPcZVltTrmceGCVMiUn14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763040520; c=relaxed/simple;
-	bh=O6l4vdIsHCK99eA/SnWM2kyLR+VrLR2rPpzCLtw7sBw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sJKtZyk4IjLfAQGyFjS+wHYAr8YQl/qRMeZPuI1R2VNerBz9qn1KrGmrCRL39EQdhn6A/7G08S4Jyx2b0cfSpVhfCmLHzIZbguZY8mYN87i7WuutxGc2+vrXy5h1o6klF3T0ZtmTBs6fjkYHQezMljXWWX8pNKIaAZb39agpniw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=eyNJzlxV; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+	s=arc-20240116; t=1763040698; c=relaxed/simple;
+	bh=ozyIZ+DRAXgcmWNPabI3QVCnzbiWETR79BPnKWOg1ac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eHPSqlLJxwGug9fgCgkwnsBLQfCp6LL6AHfFQCsZj5jna6ePPrnzF8XwjLd7+Si7i9dpXj6C4PbrFVbIdUZNXjwkA09+cTKenlxXHevkTQTy40v48DBZhwV3gb9F9RP0ZGLJ46h0W0DBj6aK86TYL5Z8wcPt9esyxWF03HQNzuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=RLf5/szz; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="eyNJzlxV"
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1763040115; bh=O6l4vdIsHCK99eA/SnWM2kyLR+VrLR2rPpzCLtw7sBw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=eyNJzlxVGWiBPpcfE0be6NkmLGTpv94GnMj8d2uVta+gFGHm9ZmygRc/w4cyRov1d
-	 fSKKy4eyK3fgkh+OMY8bBpKMRZjKS875y5KskBN/n0lvl2wBcKLaBqzpezw0SoSCZ/
-	 IElWEufaIqQMRkgnuUPX/BezxEhKn+PhIsHxHXO78X6AFMZu5EzNf6K2J0gwtQPdJU
-	 Ui1ElV7Z0d3GxKfn5MyyN5EAqWrg+bYyKwv+NKhBjZYxuZNph7AkKfesuZIIdrytsN
-	 48MmapyG/TUvMIQHKj/4VSO4T258YVleRFZTtOsDWAS0UDQWeU4e4RHNKU2jgomgCg
-	 2M1pCU/n59GCQ==
-To: Xiang Mei <xmei5@asu.edu>, security@kernel.org
-Cc: netdev@vger.kernel.org, cake@lists.bufferbloat.net, bestswngs@gmail.com,
- Xiang Mei <xmei5@asu.edu>
-Subject: Re: [PATCH net v3] net/sched: sch_cake: Fix incorrect qlen
- reduction in cake_drop
-In-Reply-To: <20251113035303.51165-1-xmei5@asu.edu>
-References: <20251113035303.51165-1-xmei5@asu.edu>
-Date: Thu, 13 Nov 2025 14:21:54 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <875xbejcel.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="RLf5/szz"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59577c4c7c1so1806014e87.1
+        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 05:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763040694; x=1763645494; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=73kr7nUrOWZMw2Xrq3JK7B68+7C7ERu+i4U/2oSeqZY=;
+        b=RLf5/szzPsqFeDCV3opzXWfb0Ldojdtec8pQE3xNDEhETeIs/yOkZbdXLVp4EEkrIZ
+         QpfBvawPoegB/EtYhzVvIJ/MrYSSmoZu+Gf9comaIWAEujb8gSPYXnUf8geDlOoaVqcw
+         8H+HesTJqMQZgCfvj7IxVvMtG8EcJGGB1sXixe4YycCb8i6CeKb9120eRoL00JKYeeTv
+         42bNPTNAZwbL3pvkZthRqGeGKSWfFpRIosZE8uJJtkg/JFfBsc8A4GoG43jnXGFqGPrW
+         4SbyByIn6hDOGX77lIH0wiTKLqhsSS2rxX7EKezvibn4f8vmrDs+Xx1Ka9R7u7nhY3yM
+         yXFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763040694; x=1763645494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=73kr7nUrOWZMw2Xrq3JK7B68+7C7ERu+i4U/2oSeqZY=;
+        b=GwWz3BydHy84USu2RIexkTmc4PoTAAZbKGiYvXU4ifC9Ku4DNRxwM/FjT95l8toXfg
+         N81D6SNFeuurJ+SGkm0eEIQElDqkZO8HXELCLAAYZdgtzmLGt18QE79Sw8QQKRQgYYW6
+         duuchf8iyp/DF4g5eiZnwxuF5RAuuUfo6PKjLzyFgfPmbnF4xj0I1uBE/qqVlpPkv0yV
+         w/XXg/l/rvx525O1eHog7zer8OkvSirSMYxIJPX7vfzDWxudVVf/73oMzixsIcq4EUym
+         z6+bm3H9fC2NPOlRT3/omQUI8AXO5YnoML7quz7F09djEfT4sarXCzHG4LOp17A9vVkF
+         HVmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUnPasA/bAQz3DyOY4WqcYOngM1RldWRRas+O/XEFj8NPIaTUddjqq2iyeVK6T0Wetcz3wFcms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMeogmI6T1AnefEoJpDSXIFVm70dn1uMKAiJuu7I1VuprHlXFA
+	ADRB7/E+dkRunwciF10cJrJmEsEge6/KZy53QR8hLblEB4Gf4V5aNysxOChX12gUz/zFdUnJE6U
+	ZaoQG7EHsfNrdsCdnVxZbWUDX8shoEnSoUIOWYH0/ZA==
+X-Gm-Gg: ASbGnctUBRa748FavS/9q8kJwns9w5tymLhKPFSPc7VLujzjhHNDbWpOU0VwFk4ACUl
+	1V8XGxdDqDtx6qNc3UYjkMf6l3nRBu4i+lDiNtE1X1cwN6GE8JOeqtaU1db4SIPXkWD+tY4JAJj
+	/ncIFfrkTjOGtgNbaRR/HIw5VRdhQmIxg9/3jz57hyTHwiszpSnjSOuSZ08LJiUSv9+PlJjn1w5
+	DM/9q7J4X9bSkYXKCXaepON5AuCdipI/fu6JzE4ur7UY2xo2qoqWPozqWAyUIjXdu3LhKkc+kez
+	kVeLj+qd9/0AAXwj
+X-Google-Smtp-Source: AGHT+IFmYGYaNrPxFWU0ghXUofhzNye14/5vushtgIFDWSfgA/MklzOW/JNoBE9rLO+zgbK8iJzH+WbW5agg2UGK7Co=
+X-Received: by 2002:a05:6512:144d:20b0:595:7b24:d352 with SMTP id
+ 2adb3069b0e04-5957ececb1fmr730185e87.24.1763040694032; Thu, 13 Nov 2025
+ 05:31:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org>
+ <20251107-qcom-sa8255p-emac-v5-3-01d3e3aaf388@linaro.org> <9805b902-95bb-4b18-b65f-f6efdfb6807a@oss.qualcomm.com>
+In-Reply-To: <9805b902-95bb-4b18-b65f-f6efdfb6807a@oss.qualcomm.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 13 Nov 2025 14:31:22 +0100
+X-Gm-Features: AWmQ_bmfo87z1zTXv8LP-M-WOLEoIFCS2S60P9_2zq_qXBjBuZTULdbiMAAMcS0
+Message-ID: <CAMRc=MdWu5x5bgh4CfPsowJnF0Qh1W770KTDtTFMkGkQf4_LKg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/8] net: stmmac: qcom-ethqos: improve typing in devres callback
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Romain Gantois <romain.gantois@bootlin.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
+	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
+	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
+	Samin Guo <samin.guo@starfivetech.com>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Xiang Mei <xmei5@asu.edu> writes:
-
-> In cake_drop(), qdisc_tree_reduce_backlog() is called to decrement
-> the qlen of the qdisc hierarchy. However, this can incorrectly reduce
-> qlen when the dropped packet was never enqueued, leading to a possible
-> NULL dereference (e.g., when QFQ is the parent qdisc).
+On Fri, Nov 7, 2025 at 11:50=E2=80=AFAM Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> wrote:
 >
-> This happens when cake_enqueue() returns NET_XMIT_CN: the parent
-> qdisc does not enqueue the skb, but cake_drop() still reduces backlog.
+> On 11/7/25 11:29 AM, Bartosz Golaszewski wrote:
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > It's bad practice to just directly pass void pointers to functions whic=
+h
+> > expect concrete types. Make it more clear what type ethqos_clks_config(=
+)
+> > expects.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/=
+drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > index 8578a2df8cf0d1d8808bcf7e7b57c93eb14c87db..8493131ca32f5c6ca7e1654=
+da0bbf4ffa1eefa4e 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > @@ -726,7 +726,9 @@ static int ethqos_clks_config(void *priv, bool enab=
+led)
+> >
+> >  static void ethqos_clks_disable(void *data)
+> >  {
+> > -     ethqos_clks_config(data, false);
+> > +     struct qcom_ethqos *ethqos =3D data;
+> > +
+> > +     ethqos_clks_config(ethqos, false);
 >
-> This patch avoids the extra reduction by checking whether the packet
-> was actually enqueued. It also moves qdisc_tree_reduce_backlog()
-> out of cake_drop() to keep backlog accounting consistent.
+> ethqos_clks_config() takes a voidptr too
 >
-> Fixes: 15de71d06a40 ("net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit")
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
-> v2: add missing cc
-> v3: move qdisc_tree_reduce_backlog out of cake_drop
->
->  net/sched/sch_cake.c | 40 ++++++++++++++++++++++++----------------
->  1 file changed, 24 insertions(+), 16 deletions(-)
->
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index 32bacfc314c2..179cafe05085 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -1597,7 +1597,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
->  
->  	qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
->  	sch->q.qlen--;
-> -	qdisc_tree_reduce_backlog(sch, 1, len);
->  
->  	cake_heapify(q, 0);
->  
-> @@ -1750,7 +1749,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  	ktime_t now = ktime_get();
->  	struct cake_tin_data *b;
->  	struct cake_flow *flow;
-> -	u32 idx, tin;
-> +	u32 dropped = 0;
-> +	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
-> +	bool same_flow = false;
->  
->  	/* choose flow to insert into */
->  	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
-> @@ -1927,24 +1928,31 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  	if (q->buffer_used > q->buffer_max_used)
->  		q->buffer_max_used = q->buffer_used;
->  
-> -	if (q->buffer_used > q->buffer_limit) {
-> -		bool same_flow = false;
-> -		u32 dropped = 0;
-> -		u32 drop_id;
-> +	if (q->buffer_used <= q->buffer_limit)
-> +		return NET_XMIT_SUCCESS;
+> Konrad
 
-While this does reduce indentation, I don't think it's an overall
-improvement; the overflow condition is the exceptional case, so it's
-clearer to keep it inside the if statement (which also keeps the
-variable scope smaller).
+Right. I think I had something in mind when I wrote it but I'm not
+sure what anymore. Best drop this.
 
-> -		while (q->buffer_used > q->buffer_limit) {
-> -			dropped++;
-> -			drop_id = cake_drop(sch, to_free);
-> +	prev_qlen = sch->q.qlen;
-> +	prev_backlog = sch->qstats.backlog;
->  
-> -			if ((drop_id >> 16) == tin &&
-> -			    (drop_id & 0xFFFF) == idx)
-> -				same_flow = true;
-> -		}
-> -		b->drop_overlimit += dropped;
-> +	while (q->buffer_used > q->buffer_limit) {
-> +		dropped++;
-> +		drop_id = cake_drop(sch, to_free);
-> +		if ((drop_id >> 16) == tin &&
-> +		    (drop_id & 0xFFFF) == idx)
-> +			same_flow = true;
-> +	}
-> +	b->drop_overlimit += dropped;
-
-The 'dropped' variable is wholly redundant after this change, so let's
-just get rid of it and use the prev_qlen for this statistic instead.
-
--Toke
+Bart
