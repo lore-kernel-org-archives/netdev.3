@@ -1,76 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296A82F6925
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 02:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094042F6910;
+	Thu, 13 Nov 2025 02:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763000456; cv=none; b=L3U2jZKdXJNXTaUpPBxK+/5PIKeszSiMLf7souGnscWDjYUaBuPx341zhprFNOCtIfyMrgSAJhIqCamE7MefcQbak4MyC6+5nn4jO8yBqObrFGFNeN1UlR2OHmOMpqtQVoi0jEYFUV6XdP0cYKaAqj8L6blGZ7skRt2pV+U63OE=
+	t=1763000632; cv=none; b=e+X1BA7kPYaeAVIlfWuNoxfqM/lnDU5QYHpGUWUTQJvm1F1mPVDqASTG79EL5KGxbKRfdcW6zDUuqOovfwGSm59qbOLx5YEVncus0cxiSgvzfw1fBcy5HmZx5PrZO06xI/pYISeLsGjx3on3wY/XfvKMYCyd4jJ9zmLhCsuKKs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763000456; c=relaxed/simple;
-	bh=PRul9qPgpAa+tEqbjy1wzcI1TvjnKlmYgIht2eQy3v4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=C9FyxxXX9j1yVwQ2EIxPd8eHUm4+D6ryIcwuTy9am8Heq7m8sDxucJUcj5sPoH0Hm5AsGoguR6ZyxdmAqA3aN3KPGPStC80dmXXDXp0ZOovAvF6ebxfaIu0syIsrfxWG+w027+yB3O2jD9uNHM/jKpYHWxFFH/RPOQr0cU9liQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLBDPxXa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763000632; c=relaxed/simple;
+	bh=uiIKjmlOaAuVzG/eOCcOMDdAt1BLiAZtilWHaUZlBp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f05lLaqMIz1HTfdPrfN9jkZY6yGwH1yJHcthBppw0yTXr0m/2X2h0eF8RXMTuxj7DU2oUjaLVTZsymIowLhC5RtDTrMY231bWHwMiXQaBXjeerYYkcQChxT6XQo5e6PbHB6vhj6da5mgwFh+znhdiBI6y3x4PB/FGgZQmYGNdU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+OhYIvL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLBDPxXa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0486AC16AAE;
-	Thu, 13 Nov 2025 02:20:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+OhYIvL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E38C4CEF1;
+	Thu, 13 Nov 2025 02:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763000456;
-	bh=PRul9qPgpAa+tEqbjy1wzcI1TvjnKlmYgIht2eQy3v4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bLBDPxXa2NGJiRfA5EQq7SkfEk/fI/70UUCYc9fRYHNUCyKfR/mwscSS0HhNz2J9G
-	 x9GJPzP90HA1oPQoLCBNsF8P67bkAV5TofRW13QV/zarVJR5H8oSzKgiZV/lZ6qAO/
-	 MFxtmJcp+OY9N1bd7BouFM4XwUM6r2JGBVWhY/tyTi+B0YE7g2nW6VdiRQnqeZg+Ax
-	 Nn13+ODk5sBcLoT/CjJduc8sinjU5nQFvqPiyUAiwB0LyGQPoHO1Sy3P5ObWYp03Nb
-	 8MbtChxPSjIuY0J6DS4vrfQ7HSGJv8hcRRsR/f6ooIrsQPaiKNCdaSiwT5tyScEFMz
-	 F0bQlB9bt2Dmg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD1A3A40FD1;
-	Thu, 13 Nov 2025 02:20:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1763000631;
+	bh=uiIKjmlOaAuVzG/eOCcOMDdAt1BLiAZtilWHaUZlBp0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=I+OhYIvLdMiP1mW5j/cV/kopMRJpCWVRFR3lRntku6GmbCToIZY329xsfRedUegmv
+	 ZxhYT+fg7PhIa080G0AgZYogyz5dCXaPfBHYD3BDCsCIGcyCCYu7lzX2NEYLDH7HDe
+	 7xjxE1e9A63IaO1sTt1dY45Hb+JiqaqzUk3WvqrRjdI8RyWVZVUTOsKZyOk+iLl2mx
+	 hs9T1Zfx1IqwdlhSubVEUHcDgkTeOd6f66Kz8vfWxkhbBM7ypxHVqYvJyFI2UZRVrd
+	 1k9T3H33cEwhKCVKrtFFws+GGDseWphrX51h0gO3rjrQn5rYUi/FsTJH8nyfzdbApQ
+	 n2CUHvBW4mKcw==
+Date: Wed, 12 Nov 2025 18:23:49 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, mptcp@lists.linux.dev, Mat
+ Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
+ Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, Christoph Paasch
+ <cpaasch@apple.com>, Florian Westphal <fw@strlen.de>, Peter Krystad
+ <peter.krystad@linux.intel.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v5 0/3] mptcp: Fix conflicts between MPTCP and
+ sockmap
+Message-ID: <20251112182349.281a6a11@kernel.org>
+In-Reply-To: <cf035c68-fe96-49e0-acdb-bf813ae71d57@kernel.org>
+References: <20251111060307.194196-1-jiayuan.chen@linux.dev>
+	<cf035c68-fe96-49e0-acdb-bf813ae71d57@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tools: ynltool: correct install in Makefile
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176300042550.285552.568373176581908659.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Nov 2025 02:20:25 +0000
-References: <20251111155214.2760711-1-kuba@kernel.org>
-In-Reply-To: <20251111155214.2760711-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, sdf@fomichev.me
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 11 Nov 2025 11:35:04 +0100 Matthieu Baerts wrote:
+> I think this series can be applied directly in 'net', if that's OK for
+> both of you.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Also no preference here, Martin mentioned he will take it via bpf
+tomorrow. 
 
-On Tue, 11 Nov 2025 07:52:14 -0800 you wrote:
-> Use the variable in case user has a custom install binary.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: donald.hunter@gmail.com
-> CC: sdf@fomichev.me
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] tools: ynltool: correct install in Makefile
-    https://git.kernel.org/netdev/net-next/c/9c577f09989f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Please let us know on the off chance that you have anything that may
+conflict queued up. These will likely need a week of travel before 
+they reach net in this case.
