@@ -1,91 +1,132 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DD4351FD4
-	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 13:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEB233F8D2
+	for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 13:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763040509; cv=none; b=mX3NHtbPyfbJgiXLpQTpi4ljpDzylSCdOAva06C9T6st2unxwk45bolJhbh6JHJxfKV/nNN/7UCzZexaNyKKXv4BTQXdbhCX4mm+wiK27VLk0Iqb1WITm9/ASlw/LZ8AaeP4HQbwSm5OEd0BKNItqISEQn+KAinNfgZD8SWGduQ=
+	t=1763040520; cv=none; b=sy3xb5iHRjd08sdRF20KY3izroBMpCXZFg2WTaFHH7KnMd9IGx7K+xcGIMtZsvPinmtj10Z6ZhYVlmBkCB3s/tDmYjWqRSHObzV8IjztyK3PVH4jSSd+aq52HpAvVlPf3fiEQNob40yzVs1EF+v25meD58ZI/aXARbp9cD7sa1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763040509; c=relaxed/simple;
-	bh=ZYWDqVDFFBWAWu4M4cQ2MwMwbx+eoplszaPzeJN8SXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J58GEMdJB/XZF++qNrEIPiZHYHVxIzBVxT0ZnPNvEM2/CoXoVlE9Mq6ybdO9ESPGI0pQRdtsvcV8BgsADwGZsrnF5fkm6oDkLgpnXWGnoOVYprCuDwnA2sIDCJXJtKsb4n+kFXisBkGKVGfQilC1+A6KyHDp54xnlMCRk1qrkRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Y3KRyinO; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1763040520; c=relaxed/simple;
+	bh=O6l4vdIsHCK99eA/SnWM2kyLR+VrLR2rPpzCLtw7sBw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sJKtZyk4IjLfAQGyFjS+wHYAr8YQl/qRMeZPuI1R2VNerBz9qn1KrGmrCRL39EQdhn6A/7G08S4Jyx2b0cfSpVhfCmLHzIZbguZY8mYN87i7WuutxGc2+vrXy5h1o6klF3T0ZtmTBs6fjkYHQezMljXWWX8pNKIaAZb39agpniw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=eyNJzlxV; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Y3KRyinO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ruvoHpWb3Yb1KVyAcxbdZgr/hMHxuURyVujMnwRXLEE=; b=Y3KRyinOS+dtcdfaOgHEcppdY0
-	t4UzKYCWmfCDdxUlWtimsROmaahVZLZjakMNc6XCcHosSB3DzVGu3ZnDjNwHv4qaeKaBRSs+B60OO
-	VEXoBpDis1woDNqPdPFmXj7oIMTbnGDhvEeIuKwS5F64gKS5gP+hchkgAgDglnKLKOOM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vJXN3-00Drjm-Bi; Thu, 13 Nov 2025 14:28:17 +0100
-Date: Thu, 13 Nov 2025 14:28:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Susheela Doddagoudar <susheelavin@gmail.com>, netdev@vger.kernel.org,
-	mkubecek@suse.cz, Hariprasad Kelam <hkelam@marvell.com>,
-	Lee Trager <lee@trager.us>, Alexander Duyck <alexanderduyck@fb.com>
-Subject: Re: Ethtool: advance phy debug support
-Message-ID: <eca707a6-7161-4efc-9831-69fbfa56eb93@lunn.ch>
-References: <CAOdo=cNAy4kTrJ7KxEf2CQ_kiuR5sMD6jG3mJSFeSwqD6RdUtw@mail.gmail.com>
- <843c25c6-dd49-4710-b449-b03303c7cf45@bootlin.com>
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="eyNJzlxV"
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1763040115; bh=O6l4vdIsHCK99eA/SnWM2kyLR+VrLR2rPpzCLtw7sBw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eyNJzlxVGWiBPpcfE0be6NkmLGTpv94GnMj8d2uVta+gFGHm9ZmygRc/w4cyRov1d
+	 fSKKy4eyK3fgkh+OMY8bBpKMRZjKS875y5KskBN/n0lvl2wBcKLaBqzpezw0SoSCZ/
+	 IElWEufaIqQMRkgnuUPX/BezxEhKn+PhIsHxHXO78X6AFMZu5EzNf6K2J0gwtQPdJU
+	 Ui1ElV7Z0d3GxKfn5MyyN5EAqWrg+bYyKwv+NKhBjZYxuZNph7AkKfesuZIIdrytsN
+	 48MmapyG/TUvMIQHKj/4VSO4T258YVleRFZTtOsDWAS0UDQWeU4e4RHNKU2jgomgCg
+	 2M1pCU/n59GCQ==
+To: Xiang Mei <xmei5@asu.edu>, security@kernel.org
+Cc: netdev@vger.kernel.org, cake@lists.bufferbloat.net, bestswngs@gmail.com,
+ Xiang Mei <xmei5@asu.edu>
+Subject: Re: [PATCH net v3] net/sched: sch_cake: Fix incorrect qlen
+ reduction in cake_drop
+In-Reply-To: <20251113035303.51165-1-xmei5@asu.edu>
+References: <20251113035303.51165-1-xmei5@asu.edu>
+Date: Thu, 13 Nov 2025 14:21:54 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <875xbejcel.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <843c25c6-dd49-4710-b449-b03303c7cf45@bootlin.com>
+Content-Type: text/plain
 
-On Thu, Nov 13, 2025 at 12:11:08PM +0100, Maxime Chevallier wrote:
-> Hi,
-> 
-> On 13/11/2025 06:12, Susheela Doddagoudar wrote:
-> > Hi All/ Michal Kubecek,
-> > 
-> > To support Advanced PHY Debug operations like
-> > PRBS pattern tests,  EHM tests, TX_EQ settings, Various PHY loopback etc.....
-> 
-> Added a bunch of people in CC:
-> 
-> I don't have feedback on your current proposition, however people have
-> showed interest in what you mention, it may be a good idea to get everyone
-> in the loop.
-> 
-> For the Loopback you're mentionning, there's this effort here [1] that
-> Hariprasad is working on, it may be a good idea to sync the effort :)
-> 
-> [1] : https://lore.kernel.org/netdev/20251024044849.1098222-1-hkelam@marvell.com/
-> 
-> As for the PRBS, there was a discussion on this at the last Netdevconf,
-> see the slides and talk here [2], I've added Lee in CC but I don't
-> really know what's the state of that work.
-> 
-> [2] : https://netdevconf.info/0x19/sessions/talk/open-source-tooling-for-phy-management-and-testing.html
+Xiang Mei <xmei5@asu.edu> writes:
 
-For PRBS pattern tests testing i think there needs to be a framework
-around it.
+> In cake_drop(), qdisc_tree_reduce_backlog() is called to decrement
+> the qlen of the qdisc hierarchy. However, this can incorrectly reduce
+> qlen when the dropped packet was never enqueued, leading to a possible
+> NULL dereference (e.g., when QFQ is the parent qdisc).
+>
+> This happens when cake_enqueue() returns NET_XMIT_CN: the parent
+> qdisc does not enqueue the skb, but cake_drop() still reduces backlog.
+>
+> This patch avoids the extra reduction by checking whether the packet
+> was actually enqueued. It also moves qdisc_tree_reduce_backlog()
+> out of cake_drop() to keep backlog accounting consistent.
+>
+> Fixes: 15de71d06a40 ("net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit")
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> ---
+> v2: add missing cc
+> v3: move qdisc_tree_reduce_backlog out of cake_drop
+>
+>  net/sched/sch_cake.c | 40 ++++++++++++++++++++++++----------------
+>  1 file changed, 24 insertions(+), 16 deletions(-)
+>
+> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> index 32bacfc314c2..179cafe05085 100644
+> --- a/net/sched/sch_cake.c
+> +++ b/net/sched/sch_cake.c
+> @@ -1597,7 +1597,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+>  
+>  	qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
+>  	sch->q.qlen--;
+> -	qdisc_tree_reduce_backlog(sch, 1, len);
+>  
+>  	cake_heapify(q, 0);
+>  
+> @@ -1750,7 +1749,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+>  	ktime_t now = ktime_get();
+>  	struct cake_tin_data *b;
+>  	struct cake_flow *flow;
+> -	u32 idx, tin;
+> +	u32 dropped = 0;
+> +	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+> +	bool same_flow = false;
+>  
+>  	/* choose flow to insert into */
+>  	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
+> @@ -1927,24 +1928,31 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+>  	if (q->buffer_used > q->buffer_max_used)
+>  		q->buffer_max_used = q->buffer_used;
+>  
+> -	if (q->buffer_used > q->buffer_limit) {
+> -		bool same_flow = false;
+> -		u32 dropped = 0;
+> -		u32 drop_id;
+> +	if (q->buffer_used <= q->buffer_limit)
+> +		return NET_XMIT_SUCCESS;
 
-When you enable testing, the netif becomes usable, so its state needs
-changing to "under test" as defined in RFC2863. We ideally want it
-revert to normal operation after a time period. There are a number of
-different PRBS patterns, so you need to be able to select one, and
-maybe pass the test duration. It can also be performed in different
-places. 802.3 defines a number of registers in the PCS for this. I
-would expect to see a library that any standards conforming PCS can
-use. There are also PHYs which support this features, but each vendor
-implements it differently, so we need some sort of generic API for
-PHYs. I expect we will also end up with a set of netlink message,
-similar to how cable testing working.
+While this does reduce indentation, I don't think it's an overall
+improvement; the overflow condition is the exceptional case, so it's
+clearer to keep it inside the if statement (which also keeps the
+variable scope smaller).
 
-	Andrew
+> -		while (q->buffer_used > q->buffer_limit) {
+> -			dropped++;
+> -			drop_id = cake_drop(sch, to_free);
+> +	prev_qlen = sch->q.qlen;
+> +	prev_backlog = sch->qstats.backlog;
+>  
+> -			if ((drop_id >> 16) == tin &&
+> -			    (drop_id & 0xFFFF) == idx)
+> -				same_flow = true;
+> -		}
+> -		b->drop_overlimit += dropped;
+> +	while (q->buffer_used > q->buffer_limit) {
+> +		dropped++;
+> +		drop_id = cake_drop(sch, to_free);
+> +		if ((drop_id >> 16) == tin &&
+> +		    (drop_id & 0xFFFF) == idx)
+> +			same_flow = true;
+> +	}
+> +	b->drop_overlimit += dropped;
+
+The 'dropped' variable is wholly redundant after this change, so let's
+just get rid of it and use the prev_qlen for this statistic instead.
+
+-Toke
