@@ -1,156 +1,78 @@
-Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBB921ADA4;
-	Fri, 14 Nov 2025 14:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721DA326D76
+	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 14:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763130306; cv=none; b=fw8tzxuE+kafMPSLTS7e4fSSs1sqB4nM2WYY5hnzI8km8xkBVUwSCXDybaXQ6FywP9npJ1oHGJMd1JLqjDcJKQfE71HwMbE4IKDJSHY12sp+9bfe3wtfHDXG7lWSpyPkWHjEhfbhK6N4o/jdFiihD9CPE5zs4ejvUY945bKm7Ks=
+	t=1763130495; cv=none; b=giM5pc0dPcFxaIV+6px73b4Fnk17jsG0Qu3HxYpM7I2jrIVeB+SrxaKJlDo7A1Xqt3X5w3EDfUKZiPXtdzkgrHiuQQ93Az8Me5lFCd0bHlQ31awafD+b8vhkOje1qBGgoVX02PzNvKExK3/VvfsS5OcqF1DNj1JR3M0TeveyB/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763130306; c=relaxed/simple;
-	bh=Jf/CdMXbd62d+wZauqYAjVsHb3RCi12OjVkVw76mHBo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F3NF2Z0FTJd8fgW5/IN4XIG/wIdHPQvC8LAwddfUYzxzyQqEqiXnlbSwqbseG1oME0aE2m0HTaZj6f/T1bnW10C24oVkbN/USPY97S9PTlM0wLjmOT4XOnxeMkh2ltIG45WSjLEKsJKe2WVbz3Mq+5HziNBstBHsNov684DMDsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=S6CjI91v; arc=none smtp.client-ip=91.103.66.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="S6CjI91v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1763130294;
-	bh=TQ9qAP1jynhq56w3FNF76wiXhRdCJQJmkcCu8hs9das=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=S6CjI91vAWRwG3S5c1FA5vp36IzbpPBJzU9drG0r20BybvNfgWjHMgpG8hHE9Fcxv
-	 4uxKJ7idstligMMNamNJjVqCdEEhqczWs63qUWahgcmdAmKDkYj2zCX6f4xIZuwmgm
-	 7EA10lz9kym3uWgKci4c77UfEyZ3cj9OEpLfI2w+GzajTxkb3txtlHyYpFPMhisdpJ
-	 +Pwu/75k2rzYATaJTpRkbi+9XVivKmWeVvZeABPYtmIpvWjnHrZkjEvOMQvNZWWO4z
-	 DgyFdyfw0K8QYe4ZHP0lNkJOVcyEQBFwKssQH4YYGGwzcFX8gKV9bySrFG4eD+DZjc
-	 G7xeSsHORCZ4A==
-Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay13.kaspersky-labs.com (Postfix) with ESMTP id AABC93E5142;
-	Fri, 14 Nov 2025 17:24:54 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id A41413E230B;
-	Fri, 14 Nov 2025 17:24:51 +0300 (MSK)
-Received: from zhigulin-p.avp.ru (10.16.104.190) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 14 Nov
- 2025 17:23:52 +0300
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Inochi Amaoto
-	<inochiama@gmail.com>, Quentin Schulz <quentin.schulz@cherry.de>, Joe Hattori
-	<joe@pf.is.s.u-tokyo.ac.jp>, Rayagond Kokatanur <rayagond@vayavyalabs.com>,
-	Giuseppe CAVALLARO <peppe.cavallaro@st.com>, <netdev@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH net v2] net: stmmac: add clk_prepare_enable() error handling
-Date: Fri, 14 Nov 2025 17:23:50 +0300
-Message-ID: <20251114142351.2189106-1-Pavel.Zhigulin@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1763130495; c=relaxed/simple;
+	bh=5NYO8c/labYquofE4JgMA3Bw2DbW4rxzSW2Y+fx6w2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XgdUu95rzezac1hokhmeCmyf2i4z6GhKVJxR8UCBBClY7PZQRVzdTsG6t5xhSljnJnNHZ5lvpsnyXBte1ABA60WSlUSZW5aTe8s9T0F1R0E3+zA0gJ5gc0fTshanTFkdGWMmiH8wpZTWgt2OckZgoCQ7fdn1/Ueb1Ek/R1usV/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1vJuRK-000000003Zo-2Iyw;
+	Fri, 14 Nov 2025 14:06:14 +0000
+Date: Fri, 14 Nov 2025 14:06:11 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Peter Enderborg <peterend@axis.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH for net-next] if_ether.h: Clarify ethertype validity for
+ gsw1xx dsa
+Message-ID: <aRc3U29wVvZEG0zv@makrotopia.org>
+References: <20251114135935.2710873-1-peterend@axis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV2.avp.ru (10.64.57.52) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/14/2025 14:08:44
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 198105 [Nov 14 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Pavel.Zhigulin@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 76 0.3.76
- 6aad6e32ec76b30ee13ccddeafeaa4d1732eef15
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;zhigulin-p.avp.ru:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/14/2025 14:16:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/14/2025 12:07:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/11/14 13:28:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/14 12:42:00 #27925085
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/11/14 13:28:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251114135935.2710873-1-peterend@axis.com>
 
-The driver previously ignored the return value of 'clk_prepare_enable()'
-for both the CSR clock and the PCLK in 'stmmac_probe_config_dt()' function.
+On Fri, Nov 14, 2025 at 02:59:36PM +0100, Peter Enderborg wrote:
+> This 0x88C3 is registered to Infineon Technologies Corporate Research ST
+> and are used by MaxLinear. Infineon subsidiary Lantiq was acquired
+> by Intel. MaxLinear bought IP's from Intel including this network chip.
+> Ref https://standards-oui.ieee.org/ethertype/eth.txt
+> 
+> Signed-off-by: Peter Enderborg <peterend@axis.com>
 
-Add 'clk_prepare_enable()' return value checks.
+Thank you!
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Reviewed-by: Daniel Golle <daniel@makrotopia.org>
 
-Fixes: bfab27a146ed ("stmmac: add the experimental PCI support")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
----
-v2: Fix 'ret' value initialization after build bot notification.
-v1: https://lore.kernel.org/all/20251113134009.79440-1-Pavel.Zhigulin@kaspersky.com/
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 27bcaae07a7f..8f9eb9683d2b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -632,7 +632,9 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 			dev_warn(&pdev->dev, "Cannot get CSR clock\n");
- 			plat->stmmac_clk = NULL;
- 		}
--		clk_prepare_enable(plat->stmmac_clk);
-+		rc = clk_prepare_enable(plat->stmmac_clk);
-+		if (rc < 0)
-+			dev_warn(&pdev->dev, "Cannot enable CSR clock: %d\n", rc);
- 	}
-
- 	plat->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
-@@ -640,7 +642,12 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 		ret = plat->pclk;
- 		goto error_pclk_get;
- 	}
--	clk_prepare_enable(plat->pclk);
-+	rc = clk_prepare_enable(plat->pclk);
-+	if (rc < 0) {
-+		ret = ERR_PTR(rc);
-+		dev_err(&pdev->dev, "Cannot enable pclk: %d\n", rc);
-+		goto error_pclk_get;
-+	}
-
- 	/* Fall-back to main clock in case of no PTP ref is passed */
- 	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
---
-2.43.0
-
+> ---
+>  include/uapi/linux/if_ether.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/uapi/linux/if_ether.h b/include/uapi/linux/if_ether.h
+> index 2c93b7b731c8..df9d44a11540 100644
+> --- a/include/uapi/linux/if_ether.h
+> +++ b/include/uapi/linux/if_ether.h
+> @@ -92,7 +92,9 @@
+>  #define ETH_P_ETHERCAT	0x88A4		/* EtherCAT			*/
+>  #define ETH_P_8021AD	0x88A8          /* 802.1ad Service VLAN		*/
+>  #define ETH_P_802_EX1	0x88B5		/* 802.1 Local Experimental 1.  */
+> -#define ETH_P_MXLGSW	0x88C3		/* MaxLinear GSW DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+> +#define ETH_P_MXLGSW	0x88C3		/* Infineon Technologies Corporate Research ST
+> +					 * Used by MaxLinear GSW DSA
+> +					 */
+>  #define ETH_P_PREAUTH	0x88C7		/* 802.11 Preauthentication */
+>  #define ETH_P_TIPC	0x88CA		/* TIPC 			*/
+>  #define ETH_P_LLDP	0x88CC		/* Link Layer Discovery Protocol */
+> -- 
+> 2.34.1
+> 
