@@ -1,243 +1,617 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD972D7DEE
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 05:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763099789; cv=fail; b=C+Dh9wHO+1w6xYucoP77nXA6a5S2yaYEXeja2VJq3heV/dDDLZoN8mljOZka1CsM74MaLyN8fyHbtOYL1dH9L47blO/aXS25atjJrwyx/y3uxUWva/9QF4T00D6uYnSw7A4DbOwWvDvQOOsRr/VVwk8IovbM4AuMNPWiChXMFrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763099789; c=relaxed/simple;
-	bh=0XE8CwfVAvEYEvHUoNvQLRgBkLHqmJp9GBiRqFL2OOM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sgFG3Qu7kIFjrPhOcvaGgH3aYlWySSWW/atvyO4119R77wBkp2AMKbplUOXUc1Lk7Eq6UYKlIACVG01Tp5kYQlcsa7ybvAZevaG/zS88D4SQnLGG+qYeVEe5W0YDOJjTAOn2VVP4wrbFV355zTl4n0ovoSnDc/ejI3UrgzilIP0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VlgtaPFA; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C237B2877FA
+	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 06:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763100917; cv=none; b=J+QqBeihhLz2vVuJqpPFqLU5gKqyzpIsf6CUB2s3y0vdV6uMz74pRfrhqYRlKiBfRvyFVpaD+slTG4Pv8CQklkB0VooZR+0oAcQExfA5R1+GGJQQzdY0R4NBCP5vSdJljLijb9PEXVPy56sX6d+61IVSR8pJ/NBfpXJTvFFWtV4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763100917; c=relaxed/simple;
+	bh=ssOMmfACjLqYXLfChv925Mj3dGH5taBjUzNjapns9mU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XFIUsxYkNSQII1bNJF0ian78YWsF0qM0qhwZWOH0RrnU//uUJcUuGNv/iPcLEPHXJ0SzH/oYIQQoHdCyehRPXRCYIG49B5MNBQUM9zELhgUh/WUN+26aCZtNhnpp5kZNpk8S5pRSAEPcdWU6PQD/+lALSeFvOrVMMyRLPkk3y4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MmkDjN9A; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VlgtaPFA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763099787; x=1794635787;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=0XE8CwfVAvEYEvHUoNvQLRgBkLHqmJp9GBiRqFL2OOM=;
-  b=VlgtaPFAAkICL8m5byr6E5C9Hf1O70zpktwTmIOL/RmmnAdRXFDUBTMh
-   cpJdb2mBUMhsTaKoDcAo+fJueeJ3z3UsAcYE+YxC0Px9FQ7Vg+ev/mzqs
-   iqP8gN/SZYGoyaHjb6peh/AG2g0iUWdelOq2Ws6TNGf9n1SIuxoHmW/xG
-   xj9eTeBjshDgP0m2ffjJe9PMWkMsqZj8JcrSzjESJFHnDUQH6sxR7Zgmz
-   s9I285/6NLHocoEWGjWpx2fX3vUuBbquFbwA8Q1rz1k4We/MOtKFqyuGw
-   oxAz0FC0zTkLZw3709b4YcwV6TiOPRiTj+1adbY0X557ok1OUQs7Cvfhq
-   w==;
-X-CSE-ConnectionGUID: XTDQh6k3RwuCKMBGRQWYkw==
-X-CSE-MsgGUID: nPRqLuiMQtWYYee33wygkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="87836658"
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="87836658"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 21:56:26 -0800
-X-CSE-ConnectionGUID: uRCJqUpGQoavLwTWIqvvDQ==
-X-CSE-MsgGUID: I5Sh0hAHTlG4xgiPzUY27w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="189885877"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 21:56:27 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 13 Nov 2025 21:56:26 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 13 Nov 2025 21:56:26 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.70) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 13 Nov 2025 21:56:25 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZYg8glqnmtCWxX1o2yr71ssUR7qv1uRFfRSqHdGUEkVHnffJAc8TeAGMu1FO5TZIYjkWQRuWc6RfYQLEt20mrBecDPK227k9izlWu700brBFsYLeokxT0CJ6Ze5XhsKuZvat04btNzxfohvaOxYBqpLT3uHeDkK5QrZH8Vx97vzGnN3DHx+OyG3AO9FwV0FTtG4EntlLTBEiotR5bghfqFLbjWLNIJqOxqdIci1s5pgPXumMrskf3lxf+x4suG8gbi8rdNX45bj9dw3Qb9uvq+LIFxDgRPXofLzv7e7HF0Gps9NR0BV3WeItqQE0E8IHDuuIINhMhsHMq1yJz6sc9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QsQffnHBkm6l3isUWFNBbzegJ41LuqZyd7knQt1YkEs=;
- b=PxxzO1E8eVAxuv02O39w6Vls/ixnoyK45EmIszzgn9PKz4DX90Sv3Rdolfy+6CrTB5BDN81tUaUv2EeRrLZxRETd3Sxppe12xJPZSb0HagjLY9LpfeDEqDVMyoyzIFJGv+OXzukLyYFIpiOW9Mb4T8rzNN9OarTD1Mfss6gruJXD6WkrzfMJHo32cYumQlgSvwJSTQUQ5YIt4AcRsyu9mQVEC181rbwr9Uk0leFVhX2Xvi7qVspg2AL45hRomKHoVgwyPALIKUba1JaQROjeKyTrloF+wEOBIugbJaKV/0MNgx2hciB74yku42pDu0PnibIPkWrgLUWCG/zbAmdVOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::31) by CY5PR11MB6209.namprd11.prod.outlook.com
- (2603:10b6:930:27::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
- 2025 05:56:18 +0000
-Received: from DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::67f8:8630:9f17:7876]) by DS4PPF7551E6552.namprd11.prod.outlook.com
- ([fe80::67f8:8630:9f17:7876%6]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 05:56:17 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Hay, Joshua A" <joshua.a.hay@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v10 03/10] idpf: move queue
- resources to idpf_q_vec_rsrc structure
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v10 03/10] idpf: move queue
- resources to idpf_q_vec_rsrc structure
-Thread-Index: AQHcVLV5P9FFM/qfBUuSDBYnKC8JUrTxrJVg
-Date: Fri, 14 Nov 2025 05:56:17 +0000
-Message-ID: <DS4PPF7551E655260DB51D48D8A7553BF48E5CAA@DS4PPF7551E6552.namprd11.prod.outlook.com>
-References: <20251113004143.2924761-1-joshua.a.hay@intel.com>
- <20251113004143.2924761-4-joshua.a.hay@intel.com>
-In-Reply-To: <20251113004143.2924761-4-joshua.a.hay@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPF7551E6552:EE_|CY5PR11MB6209:EE_
-x-ms-office365-filtering-correlation-id: 0cc7b670-d548-4b5e-ecdc-08de2342875a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?bdih+UXtdzoS+1GBOq5MmvkmD7GO+tdpiaKYM/3A+4I/wIB52iu2Hb1KU2qD?=
- =?us-ascii?Q?Zahi8FCim+rgFXbuYIKDY7kN15mySE2L3tt1jAvgtCRi1nM+TLEYtIjmZQKR?=
- =?us-ascii?Q?tVpU+7xTlPw+gHDs+8we8NPx4rJeN8Pgxo/669cTPOanJYkJ2poNNZx32jFl?=
- =?us-ascii?Q?fifP6tDsPR+8vF9q+1uIFpzQTN4C/x0bmfxRKeJfGuQfhiFiev98Qmqv9p1V?=
- =?us-ascii?Q?9ja+WFd6Is4qRft+5JJiHad7kMBw4Zndjolg7rEBujcrfbbTfMtyByynT/1u?=
- =?us-ascii?Q?CKgpNsY4muDiLawybQxzb9ektUlD9KqLtbj19W1pnZsk6+29DO9GE8esuIdr?=
- =?us-ascii?Q?9FrnFPxNYQfSwsduxc2UGBf25PDquVHrI6dnH9tPoK1BpcNgd8OuCpZrRsOW?=
- =?us-ascii?Q?UkNP44PZlXW3jW5WLCQIBZypq7gSn2xhdA2zsAh1WtCWnA6GM/JsiyU9f0Or?=
- =?us-ascii?Q?MSQ2oFT64DZYESelftSXPCuIV+5RIBeyWFAva6pMiIaXTDI8XM1o1ghujoSh?=
- =?us-ascii?Q?GDvtovdNqwXJPpWojF3F/aGbynbTOnJRptzQd24n3DAGbSxFVi+fTyaj/NU9?=
- =?us-ascii?Q?u3mWIv2mQGCtV4qtFlDdgSJAQxZHl75K/WFvOQqA1FoXvcejpcwFTaWbcLY4?=
- =?us-ascii?Q?m/qFJfcRiDN8otbRmNfY3uJqXcG3UPbt6zggaQkFnGgR/sKWQDL0xpx7XjzD?=
- =?us-ascii?Q?zqqbk90xm259l9mhG99EfNL9Bk2uuHAnIwZB+Bv+0gQuBi3SNcCv8fBbxg8a?=
- =?us-ascii?Q?4utW7KEyI1tUhSxHdhMGjl6nz3VicXOsxWE3yuP385bszygkcDq5wHAaIOJ7?=
- =?us-ascii?Q?Q8DwtQQWVg2aZIgtDdD08rBUKK1p+Om2gKR2u6OEwqIhDXgUXxqvhLuZhgjO?=
- =?us-ascii?Q?uapv1vliWJibqrlORmjLmAict6OcqWPWIP+RWvK3mwT1Dd0/9LirItH+CYit?=
- =?us-ascii?Q?2R0OhBDlPtiNp18z6FGpPCitNhYuh+KM+kzEBO+iAIbIMy60SznNfG/5Dtzq?=
- =?us-ascii?Q?GlH48FJ8D5V5kEmmCMc6Q77hiFojd+/+GjU1aYXuO1AruXBue8fEp3fEOy/h?=
- =?us-ascii?Q?+iclhZJMqPqIa3WoeM+lCgXMRiNP3Z2+qpikxOk7iYOv5ZlbwXxl+TC1FL2e?=
- =?us-ascii?Q?NyLG09/OqilwHIiNLhGcpYUBy+vXtxhtkHniZ5XSeLa/n2iGttCuHlii6hpk?=
- =?us-ascii?Q?DBMfNxlqmTkViQk76Hil4bkYBkIGfhZy70vfeUETxTzjz0V+sSKXWsYzA6qJ?=
- =?us-ascii?Q?Uxj9C0VbGoDk0caoXlMhfRVCyZaMJzJ6NQAkMRfxZGr6jqJUNdJpax6dvBzo?=
- =?us-ascii?Q?SxG0ulWEkkAzB12VNTEy00T6yNqdaLkjfN4K+Of32TKESXmW7sJsnwXNceV5?=
- =?us-ascii?Q?L05bse1BpHPTJZPjtNFi9KZbRPbRIRoF1PSC9LPxkxl3HrjA6M7kgDGAS8sq?=
- =?us-ascii?Q?dWYFyElmbgwqKBiqzx++MKR+R8/d9bI2YRiOJtisYjlg3+ZUBqTDySK0qvkz?=
- =?us-ascii?Q?QhvDDXbI4g8y5xscaCAVQcuZvEtBteZEaQGw?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF7551E6552.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3WOfgwwCs+mAbUtER2XJ6C/sWNBXGwpnul/DyUD7pTcerjFfM4/jaL3MPODB?=
- =?us-ascii?Q?p/yDV5Y1zVf4hP5LLrzaz+W6qx8lVieWG7LX1Mje8X6tD4Wg3pKWf3gv13K1?=
- =?us-ascii?Q?oBk7Ue+yYUZRqDks7Um4DYKVpR2Wk8aosf+37hfzdflJsYakGiltPSvJjvy0?=
- =?us-ascii?Q?kN7nzqAK0uSHrNHqWJ7XXNUiDJ8exeV+79/LII1t/JePr2yUm5EmhqtsUg5D?=
- =?us-ascii?Q?sqc9z6x/HnOiSYtp0IUIg6wdhELtfZ0IYPo+/EZU08lfUrprE0ydBineOgWA?=
- =?us-ascii?Q?zB2wCIpnHj0wZeEgbV+iuUcxlS1pVpsEr1ZkP9wE0yJS7px1byFIWmhkt2xx?=
- =?us-ascii?Q?4qwHZ2jCqBwSOd0e+k5ZTVG8eupYKD+ymhQdnhNKZSiyZCV2ccVAgD8Teip5?=
- =?us-ascii?Q?p//2Det+EuVI3KE9eHT2vdSJoV0TNyWyTXn6hZIRtE7Ak3uLhb1HpeKZpCK/?=
- =?us-ascii?Q?rJ8jvvR16Yi1tWX/+VCyPDoTcXVscVWN3I5ckFQsoZ2VZwdnKuDa0WSuxxZW?=
- =?us-ascii?Q?0tWNXXnkOj+ntm8sC3acXyXdWvX4COnr8legwFjbki5wZv84gftOtII9KazG?=
- =?us-ascii?Q?E/ALALalm4foMWV09Zt1KuB2PwRndk5shuzIoE4WJB4sSVCogiePozx7MTwk?=
- =?us-ascii?Q?/VHHYDH5zdUn17/IGBHhelJrUEi0oBq7XVFXj8vZf/7E3aXRQlsCHe00dui/?=
- =?us-ascii?Q?plfhbTLY1pL48UU1U0NYRzaewk7E+usenOr783o5yOtT1GM0+gWpH+6vTdf9?=
- =?us-ascii?Q?Rq0Hwpx+FsDDmz/ynQQk+be+nXxtuKuyqztZ/fIfh3brODm8JokJeTSfWDjq?=
- =?us-ascii?Q?SDu3GUUwwU6OU3taLLQydRiXv72c1i/Sa95OSl4ZFmNSADwDlumR8FF8cOfI?=
- =?us-ascii?Q?5K9lxshb4OHFG3UOhlipsmZqk2Bt7gAObK/wdisYLg31aZ8RVtVVVGwvzhA8?=
- =?us-ascii?Q?DhYThNJPLmMLIokJfq9bGRlaErzyNCbhP4l+KJ99L0RDMTijTv16zkfVj4L2?=
- =?us-ascii?Q?+AuvBgm/4C4JOfMme1okBecPR04C4Rw2/+5DRadryVD+U1jsaosWT210fB0v?=
- =?us-ascii?Q?BbV4CJ14vYhhqPwq+a5iI0kHJO5+L/jg0/Oh8I0nVZL8W3hf6HwimEsZUgOf?=
- =?us-ascii?Q?+sT3bCoOPXlpARiEURJFvuOVGa9bzQ1FJcTPZY3zR+CtNXwBVwe+1ijXJ8Mj?=
- =?us-ascii?Q?TWKF1/vxJf/QD5rnBi8i2CtEJUEEFyFF/f7RaH+cYKaHOy8I/z5douRnoI8I?=
- =?us-ascii?Q?edht9Bc6IrXopn/fzTmovNerA4/uaYOU8kC/DncNOUiN2fK7vBbnzaa8KaNy?=
- =?us-ascii?Q?V3dNivXbQtSlFPBZJoiAFYj2WygGrTRWAbDSkCfdqOhN6Ei8dpxQWQVzVtSq?=
- =?us-ascii?Q?U4TcLlHU1A4wBkOl8rgwQAvfPLLWpfgQh/EmNyVngWZA2f0g0xKi1EigUKW3?=
- =?us-ascii?Q?PMzgES9hPtbjpfuRG7JSGxZ+4UmOFUnPlGN3/Is3H7zU+cFWSlkRInj3cpNX?=
- =?us-ascii?Q?hS7Pak6RgtL1Sk26UqZ5onsCiRfFqTX6qQiwig3K42efyvPPBsUeZIBVkzwF?=
- =?us-ascii?Q?3XlMJowPhwHfAu0T+Dpeef5QeyZk5NaZXVjyurhh6TpVOvDDgamtNO9uu/qy?=
- =?us-ascii?Q?tA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MmkDjN9A"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763100910; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=eo0tmBVQlyk+I3Iya5UoKt5JmbMg0BYXF+baLg2SwAs=;
+	b=MmkDjN9A77UC2OAHDW7QOdVxjEqwwftayq7cXh0+mLJBxFJYDFEDu5l6T1XB8HZXmBf2UI1n2U6cbdPF1ZrHzp6h+U5vle+/EOtu0U9a8h1CpTRWNOJdP25yyqALRqQPNCvJPyIqJShW973H43+8faO9CDVsF691pz3DQ4OQrjg=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WsM8JtQ_1763100908 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 14 Nov 2025 14:15:09 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Dong Yibo <dong100@mucse.com>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v14 2/5] eea: introduce ring and descriptor structures
+Date: Fri, 14 Nov 2025 14:15:03 +0800
+Message-Id: <20251114061506.45978-3-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20251114061506.45978-1-xuanzhuo@linux.alibaba.com>
+References: <20251114061506.45978-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPF7551E6552.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cc7b670-d548-4b5e-ecdc-08de2342875a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2025 05:56:17.8308
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sMe6p7gVWn1P/7WLolTKVzY7RSLLHstzk/qQGpK8kq/I81jZqos01xEisD7bCanKdAaL4W+eCpNMTimQGUTR9cs+rgo2gNsYL47gGo82OIE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6209
-X-OriginatorOrg: intel.com
+X-Git-Hash: 5464bf8dd816
+Content-Transfer-Encoding: 8bit
 
+Add basic driver framework for the Alibaba Elastic Ethernet Adapter(EEA).
 
+This commit introduces the ring and descriptor implementations.
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Joshua Hay
-> Sent: Thursday, November 13, 2025 1:42 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org
-> Subject: [Intel-wired-lan] [PATCH iwl-next v10 03/10] idpf: move
-> queue resources to idpf_q_vec_rsrc structure
->=20
-> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
->=20
-> Move both TX and RX queue resources to the newly introduced
-> idpf_q_vec_rsrc structure.
->=20
-Please augment the commit message with a brief Why and Tested: section (spl=
-it/single queue, XDP on/off, PTP/Rx tstamp, coalesce, RSS reconfig), given =
-the breadth of changes
+These structures and ring APIs are used by the RX, TX, and admin queues.
 
-Everything else is fine for me.
-Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ drivers/net/ethernet/alibaba/eea/Makefile   |   3 +-
+ drivers/net/ethernet/alibaba/eea/eea_desc.h | 156 ++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.c | 260 ++++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.h |  91 +++++++
+ 4 files changed, 509 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
 
-> Reviewed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
-> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-> ---
-> v9: move iterator declaration changes to commit after this
-> v8:
-> - rebase on AF_XDP series
-> - remove dev param from_rx_desc_rel and access through q_vector
-> - introduce per queue rsc flag to avoid vport check
-> ---
->  drivers/net/ethernet/intel/idpf/idpf.h        |  69 +--
->  .../net/ethernet/intel/idpf/idpf_ethtool.c    |  77 ++--
->  drivers/net/ethernet/intel/idpf/idpf_lib.c    |  67 +--
->  drivers/net/ethernet/intel/idpf/idpf_ptp.c    |  17 +-
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 397 ++++++++++-----
-> ---
->  drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  21 +-
->  .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 258 ++++++------
->  .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  12 +-
->  drivers/net/ethernet/intel/idpf/xdp.c         |  37 +-
->  drivers/net/ethernet/intel/idpf/xdp.h         |   6 +-
->  drivers/net/ethernet/intel/idpf/xsk.c         |   7 +-
->  11 files changed, 534 insertions(+), 434 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h
-> b/drivers/net/ethernet/intel/idpf/idpf.h
-> index f32dc148cfc2..781e0c8dbc2f 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
-> @@ -297,6 +297,25 @@ struct idpf_fsteer_fltr {
->   * @noirq_v_idx: ID of the NOIRQ vector
->   * @noirq_dyn_ctl_ena: value to write to the above to enable it
->   * @noirq_dyn_ctl: register to enable/disable the vector for NOIRQ
-> queues
-> + * @txq_grps: array of TX queue groups
-> + * @txq_desc_count: TX queue descriptor count
-> + * @complq_desc_count: nompletion queue descriptor count
-nompletion -> completion
-
-> --
-> 2.39.2
+diff --git a/drivers/net/ethernet/alibaba/eea/Makefile b/drivers/net/ethernet/alibaba/eea/Makefile
+index cf2acf1733fd..e5e4007810a6 100644
+--- a/drivers/net/ethernet/alibaba/eea/Makefile
++++ b/drivers/net/ethernet/alibaba/eea/Makefile
+@@ -1,3 +1,4 @@
+ 
+ obj-$(CONFIG_EEA) += eea.o
+-eea-y := eea_pci.o
++eea-y :=  eea_ring.o \
++	eea_pci.o
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_desc.h b/drivers/net/ethernet/alibaba/eea/eea_desc.h
+new file mode 100644
+index 000000000000..541346a03375
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_desc.h
+@@ -0,0 +1,156 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#ifndef __EEA_DESC_H__
++#define __EEA_DESC_H__
++
++#define EEA_DESC_TS_MASK GENMASK(47, 0)
++#define EEA_DESC_TS(desc) (le64_to_cpu((desc)->ts) & EEA_DESC_TS_MASK)
++
++struct eea_aq_desc {
++	__le16 flags;
++	__le16 id;
++	__le16 reserved;
++	u8 classid;
++	u8 command;
++	__le64 data_addr;
++	__le64 reply_addr;
++	__le32 data_len;
++	__le32 reply_len;
++};
++
++struct eea_aq_cdesc {
++	__le16 flags;
++	__le16 id;
++#define EEA_OK     0
++#define EEA_ERR    0xffffffff
++	__le32 status;
++	__le32 reply_len;
++	__le32 reserved1;
++
++	__le64 reserved2;
++	__le64 reserved3;
++};
++
++struct eea_rx_desc {
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	__le64 addr;
++
++	__le64 hdr_addr;
++	__le32 reserved2;
++	__le32 reserved3;
++};
++
++#define EEA_RX_CDESC_HDR_LEN_MASK GENMASK(9, 0)
++
++struct eea_rx_cdesc {
++#define EEA_DESC_F_DATA_VALID	BIT(6)
++#define EEA_DESC_F_SPLIT_HDR	BIT(5)
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++#define EEA_NET_PT_NONE      0
++#define EEA_NET_PT_IPv4      1
++#define EEA_NET_PT_TCPv4     2
++#define EEA_NET_PT_UDPv4     3
++#define EEA_NET_PT_IPv6      4
++#define EEA_NET_PT_TCPv6     5
++#define EEA_NET_PT_UDPv6     6
++#define EEA_NET_PT_IPv6_EX   7
++#define EEA_NET_PT_TCPv6_EX  8
++#define EEA_NET_PT_UDPv6_EX  9
++	/* [9:0] is packet type. */
++	__le16 type;
++
++	/* hw timestamp [0:47]: ts */
++	__le64 ts;
++
++	__le32 hash;
++
++	/* 0-9: hdr_len  split header
++	 * 10-15: reserved1
++	 */
++	__le16 len_ex;
++	__le16 reserved2;
++
++	__le32 reserved3;
++	__le32 reserved4;
++};
++
++#define EEA_TX_GSO_NONE   0
++#define EEA_TX_GSO_TCPV4  1
++#define EEA_TX_GSO_TCPV6  4
++#define EEA_TX_GSO_UDP_L4 5
++#define EEA_TX_GSO_ECN    0x80
++
++struct eea_tx_desc {
++#define EEA_DESC_F_DO_CSUM	BIT(6)
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	__le64 addr;
++
++	__le16 csum_start;
++	__le16 csum_offset;
++	u8 gso_type;
++	u8 reserved2;
++	__le16 gso_size;
++	__le64 reserved3;
++};
++
++struct eea_tx_cdesc {
++	__le16 flags;
++	__le16 id;
++	__le16 len;
++	__le16 reserved1;
++
++	/* hw timestamp [0:47]: ts */
++	__le64 ts;
++	__le64 reserved2;
++	__le64 reserved3;
++};
++
++struct eea_db {
++#define EEA_IDX_PRESENT   BIT(0)
++#define EEA_IRQ_MASK      BIT(1)
++#define EEA_IRQ_UNMASK    BIT(2)
++#define EEA_DIRECT_INLINE BIT(3)
++#define EEA_DIRECT_DESC   BIT(4)
++	u8 kick_flags;
++	u8 reserved;
++	__le16 idx;
++
++	__le16 tx_cq_head;
++	__le16 rx_cq_head;
++};
++
++struct eea_db_direct {
++	u8 kick_flags;
++	u8 reserved;
++	__le16 idx;
++
++	__le16 tx_cq_head;
++	__le16 rx_cq_head;
++
++	u8 desc[24];
++};
++
++static_assert(sizeof(struct eea_rx_desc) == 32, "rx desc size does not match");
++static_assert(sizeof(struct eea_rx_cdesc) == 32,
++	      "rx cdesc size does not match");
++static_assert(sizeof(struct eea_tx_desc) == 32, "tx desc size does not match");
++static_assert(sizeof(struct eea_tx_cdesc) == 32,
++	      "tx cdesc size does not match");
++static_assert(sizeof(struct eea_db_direct) == 32,
++	      "db direct size does not match");
++#endif
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.c b/drivers/net/ethernet/alibaba/eea/eea_ring.c
+new file mode 100644
+index 000000000000..f05745474ecf
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_ring.c
+@@ -0,0 +1,260 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#include "eea_pci.h"
++#include "eea_ring.h"
++
++void ering_irq_unactive(struct eea_ring *ering)
++{
++	union {
++		u64 data;
++		struct eea_db db;
++	} val;
++
++	if (ering->mask == EEA_IRQ_MASK)
++		return;
++
++	ering->mask = EEA_IRQ_MASK;
++
++	val.db.kick_flags = EEA_IRQ_MASK;
++
++	writeq(val.data, (void __iomem *)ering->db);
++}
++
++void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering)
++{
++	union {
++		u64 data;
++		struct eea_db db;
++	} val;
++
++	if (ering->mask == EEA_IRQ_UNMASK)
++		return;
++
++	ering->mask = EEA_IRQ_UNMASK;
++
++	val.db.kick_flags = EEA_IRQ_UNMASK;
++
++	val.db.tx_cq_head = cpu_to_le16(tx_ering->cq.hw_idx);
++	val.db.rx_cq_head = cpu_to_le16(ering->cq.hw_idx);
++
++	writeq(val.data, ering->db);
++}
++
++void *ering_cq_get_desc(const struct eea_ring *ering)
++{
++	u8 phase;
++	u8 *desc;
++
++	desc = ering->cq.desc + (ering->cq.head << ering->cq.desc_size_shift);
++
++	phase = *(u8 *)(desc + ering->cq.desc_size - 1);
++
++	if ((phase & EEA_RING_DESC_F_CQ_PHASE) == ering->cq.phase) {
++		dma_rmb();
++		return desc;
++	}
++
++	return NULL;
++}
++
++/* sq api */
++void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id, bool is_last,
++			  u16 flags)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	struct eea_common_desc *desc;
++
++	if (!sq->shadow_num) {
++		sq->shadow_idx = sq->head;
++		sq->shadow_id = cpu_to_le16(id);
++	}
++
++	if (!is_last)
++		flags |= EEA_RING_DESC_F_MORE;
++
++	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
++
++	desc->flags = cpu_to_le16(flags);
++	desc->id = sq->shadow_id;
++
++	if (unlikely(++sq->shadow_idx >= ering->num))
++		sq->shadow_idx = 0;
++
++	++sq->shadow_num;
++
++	return desc;
++}
++
++/* alloc desc for adminq */
++void *ering_aq_alloc_desc(struct eea_ring *ering)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	struct eea_common_desc *desc;
++
++	sq->shadow_idx = sq->head;
++
++	desc = sq->desc + (sq->shadow_idx << sq->desc_size_shift);
++
++	if (unlikely(++sq->shadow_idx >= ering->num))
++		sq->shadow_idx = 0;
++
++	++sq->shadow_num;
++
++	return desc;
++}
++
++void ering_sq_commit_desc(struct eea_ring *ering)
++{
++	struct eea_ring_sq *sq = &ering->sq;
++	int num;
++
++	num = sq->shadow_num;
++
++	ering->num_free -= num;
++
++	sq->head       = sq->shadow_idx;
++	sq->hw_idx     += num;
++	sq->shadow_num = 0;
++}
++
++void ering_sq_cancel(struct eea_ring *ering)
++{
++	ering->sq.shadow_num = 0;
++}
++
++/* cq api */
++void ering_cq_ack_desc(struct eea_ring *ering, u32 num)
++{
++	struct eea_ring_cq *cq = &ering->cq;
++
++	cq->head += num;
++	cq->hw_idx += num;
++
++	if (unlikely(cq->head >= ering->num)) {
++		cq->head -= ering->num;
++		cq->phase ^= EEA_RING_DESC_F_CQ_PHASE;
++	}
++
++	ering->num_free += num;
++}
++
++/* notify */
++bool ering_kick(struct eea_ring *ering)
++{
++	union {
++		struct eea_db db;
++		u64 data;
++	} val;
++
++	val.db.kick_flags = EEA_IDX_PRESENT;
++	val.db.idx = cpu_to_le16(ering->sq.hw_idx);
++
++	writeq(val.data, ering->db);
++
++	return true;
++}
++
++/* ering alloc/free */
++static void ering_free_queue(struct eea_device *edev, size_t size,
++			     void *queue, dma_addr_t dma_handle)
++{
++	dma_free_coherent(edev->dma_dev, size, queue, dma_handle);
++}
++
++static void *ering_alloc_queue(struct eea_device *edev, size_t size,
++			       dma_addr_t *dma_handle)
++{
++	gfp_t flags = GFP_KERNEL | __GFP_NOWARN;
++
++	return dma_alloc_coherent(edev->dma_dev, size, dma_handle, flags);
++}
++
++static int ering_alloc_queues(struct eea_ring *ering, struct eea_device *edev,
++			      u32 num, u8 sq_desc_size, u8 cq_desc_size)
++{
++	dma_addr_t addr;
++	size_t size;
++	void *ring;
++
++	size = num * sq_desc_size;
++
++	ring = ering_alloc_queue(edev, size, &addr);
++	if (!ring)
++		return -ENOMEM;
++
++	ering->sq.desc     = ring;
++	ering->sq.dma_addr = addr;
++	ering->sq.dma_size = size;
++	ering->sq.desc_size = sq_desc_size;
++	ering->sq.desc_size_shift = fls(sq_desc_size) - 1;
++
++	size = num * cq_desc_size;
++
++	ring = ering_alloc_queue(edev, size, &addr);
++	if (!ring)
++		goto err_free_sq;
++
++	ering->cq.desc     = ring;
++	ering->cq.dma_addr = addr;
++	ering->cq.dma_size = size;
++	ering->cq.desc_size = cq_desc_size;
++	ering->cq.desc_size_shift = fls(cq_desc_size) - 1;
++
++	ering->num = num;
++
++	return 0;
++
++err_free_sq:
++	ering_free_queue(ering->edev, ering->sq.dma_size,
++			 ering->sq.desc, ering->sq.dma_addr);
++	return -ENOMEM;
++}
++
++static void ering_init(struct eea_ring *ering)
++{
++	ering->cq.phase = EEA_RING_DESC_F_CQ_PHASE;
++	ering->num_free = ering->num;
++}
++
++struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
++			     u8 sq_desc_size, u8 cq_desc_size,
++			     const char *name)
++{
++	struct eea_ring *ering;
++
++	ering = kzalloc(sizeof(*ering), GFP_KERNEL);
++	if (!ering)
++		return NULL;
++
++	ering->edev = edev;
++	ering->name = name;
++	ering->index = index;
++	ering->msix_vec = index / 2 + 1; /* vec 0 is for error notify. */
++
++	if (ering_alloc_queues(ering, edev, num, sq_desc_size, cq_desc_size))
++		goto err_free;
++
++	ering_init(ering);
++
++	return ering;
++
++err_free:
++	kfree(ering);
++	return NULL;
++}
++
++void ering_free(struct eea_ring *ering)
++{
++	ering_free_queue(ering->edev, ering->cq.dma_size,
++			 ering->cq.desc, ering->cq.dma_addr);
++
++	ering_free_queue(ering->edev, ering->sq.dma_size,
++			 ering->sq.desc, ering->sq.dma_addr);
++
++	kfree(ering);
++}
+diff --git a/drivers/net/ethernet/alibaba/eea/eea_ring.h b/drivers/net/ethernet/alibaba/eea/eea_ring.h
+new file mode 100644
+index 000000000000..ea7adc32bb23
+--- /dev/null
++++ b/drivers/net/ethernet/alibaba/eea/eea_ring.h
+@@ -0,0 +1,91 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Driver for Alibaba Elastic Ethernet Adapter.
++ *
++ * Copyright (C) 2025 Alibaba Inc.
++ */
++
++#ifndef __EEA_RING_H__
++#define __EEA_RING_H__
++
++#include <linux/dma-mapping.h>
++#include "eea_desc.h"
++
++#define EEA_RING_DESC_F_MORE		BIT(0)
++#define EEA_RING_DESC_F_CQ_PHASE	BIT(7)
++
++struct eea_common_desc {
++	__le16 flags;
++	__le16 id;
++};
++
++struct eea_device;
++
++struct eea_ring_sq {
++	void *desc;
++
++	u16 head;
++	u16 hw_idx;
++
++	u16 shadow_idx;
++	__le16 shadow_id;
++	u16 shadow_num;
++
++	u8 desc_size;
++	u8 desc_size_shift;
++
++	dma_addr_t dma_addr;
++	u32 dma_size;
++};
++
++struct eea_ring_cq {
++	void *desc;
++
++	u16 head;
++	u16 hw_idx;
++
++	u8 phase;
++	u8 desc_size_shift;
++	u8 desc_size;
++
++	dma_addr_t dma_addr;
++	u32 dma_size;
++};
++
++struct eea_ring {
++	const char *name;
++	struct eea_device *edev;
++	u32 index;
++	void __iomem *db;
++	u16 msix_vec;
++
++	u8 mask;
++
++	u32 num;
++
++	u32 num_free;
++
++	struct eea_ring_sq sq;
++	struct eea_ring_cq cq;
++
++	char irq_name[32];
++};
++
++struct eea_ring *ering_alloc(u32 index, u32 num, struct eea_device *edev,
++			     u8 sq_desc_size, u8 cq_desc_size,
++			     const char *name);
++void ering_free(struct eea_ring *ering);
++bool ering_kick(struct eea_ring *ering);
++
++void *ering_sq_alloc_desc(struct eea_ring *ering, u16 id,
++			  bool is_last, u16 flags);
++void *ering_aq_alloc_desc(struct eea_ring *ering);
++void ering_sq_commit_desc(struct eea_ring *ering);
++void ering_sq_cancel(struct eea_ring *ering);
++
++void ering_cq_ack_desc(struct eea_ring *ering, u32 num);
++
++void ering_irq_unactive(struct eea_ring *ering);
++void ering_irq_active(struct eea_ring *ering, struct eea_ring *tx_ering);
++void *ering_cq_get_desc(const struct eea_ring *ering);
++#endif
+-- 
+2.32.0.3.g01195cf9f
 
