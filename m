@@ -1,129 +1,246 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward205d.mail.yandex.net (forward205d.mail.yandex.net [178.154.239.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D69518FDBE
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 17:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1724132ABC8;
+	Tue, 25 Nov 2025 17:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764092564; cv=none; b=Vc7LFXSWRYsuxOE2a2wJlOUrxZZmci0CLpHSuvc0Un/nyzvaF2+a/Q1CWNUqBJOl4Ppd16kfgfl7DeHtnp4XNByzfq6Xr/1oLr6acB+6fzippWpAmWpydGfPhpxJvryAev9xCAA9rs1aOkZ57wwDhvvhT7y2F0IKRpkF1ciZal4=
+	t=1764092899; cv=none; b=LlAr8dmjugCuLG1LIXfRciuBVYnIAd+hggy0DO9C7VjfF9Fw6J9il7gLfLQUlZ3CaxajVVwTyBzxe/IR+TlH8mkbJ4hlbRDDVUmot5scY8+IxLyR98+ADht7P5YX3mxqdcbQtLQGpCI110znKwxuV9ICfIgIePxOzZ48MiYiik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764092564; c=relaxed/simple;
-	bh=y4tyX8TPr8Fd4sNfx70JolFLTf3E7Kwk14TnfD7hLbA=;
-	h=Content-Type:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To; b=XJL5RxPRBzE6dMjEWSmnoFmMzdcmFABIJCwvyewtC3UHssogIV3tEkVWrNNeue0zENhWlQEEFZ3geG3rKgdwmlLkJmjnF4PdIIXFoNPXXKzynFX9ELeEQtfAOnUREIuD9lMIIwfDy7sKAKyh01UiB0aqqKw/jct1JxRJh5bU4HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZ+ldf+7; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764092899; c=relaxed/simple;
+	bh=MRIq57IRKx/1HPytX+ssMg4otSRFXnrSH8LkQyw3JjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EY8m78FCyHkRkjtaUyXxPKPl5hmMlvaQX/IfrQfeotVPwkxF7JvrIJQvij1FA1ULxDmXbFgEOZgDzNPetOU1YrBHJJAroVU0e2Sho/u7/PoTSWE1BrYxttaLldjLsDarOTDTj4uP4nFtOanOOVo9MDKY+yryLxMvla6AcMiTFjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=gs5/7kV9; arc=none smtp.client-ip=178.154.239.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZ+ldf+7"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-298456bb53aso72539065ad.0
-        for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 09:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764092563; x=1764697363; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:subject:references:cc:to
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y4tyX8TPr8Fd4sNfx70JolFLTf3E7Kwk14TnfD7hLbA=;
-        b=iZ+ldf+7J+48YlNUr8gtiuj+IDnbVTjyVO8IkfbT5A74/Z0IO4Y7bprWNkOp+ss7ob
-         skbsxGrfo+svDMi/vq1EJSlFcEbzydnTQPwp8tKWW9q5K5zGE/EnnNfrIHqh8YEci/jA
-         o2LohtOwLL6eaza3NEonhO7RRHVIvct+6IyDXWeFRhi35FufVXWp36VHZTU/6mmcWUlU
-         vnlEIE97cZzP30MVF2ioaiFPcWLlEHzdr6DJIDu+MX8fMyb8k5oBCXZ/FcOQdJNJB1SW
-         J7b05+EXHnrAxCtaOfwg37OWv+SAcTKkaL6TiuPQ6koIcusjYtiqTX3wMi6/JFwD0IuB
-         DDGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764092563; x=1764697363;
-        h=in-reply-to:from:content-language:subject:references:cc:to
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y4tyX8TPr8Fd4sNfx70JolFLTf3E7Kwk14TnfD7hLbA=;
-        b=E+3349ckudNBGzOi72Ur/0vBf9p0oJEfanQv2vCbzHq+EQuaEwGJew/7kltPaE71TO
-         kaUmowxthFuVozOeA2Ynj2uCcv9XD5AhXf0luKgH4jMarhBjBsY84s2aWx+5weqKy+Oy
-         lWW+nxGDBZTGmdBzQcV4N9Kz+h5Pczqo3jf03kR8KYj799hoj1QclfIrKQBsvZwJdDAs
-         QjjfYv9L/3aKZdIYYmcwL8juMgHNG5OFD9hv/iHBRWFyODm38U40UIaoLRj+FrgDdoo8
-         XpJvjIBi4CZyAd9C5DAYlgWrS0svYcEOhQ1lq6GOZaTKNNTTRk6OBAmiykeD+dkU/044
-         Bvgg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4NbxYo3xxYnPqxVi3RVIVqfRhbfbbJ3Kdz4BjsPsIynz018cFv+EF4DggLfAM78K4pObhbeA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1t2FX7agjipSZoX/mCyI4WzAb/A1dh2we8SBE6295aQSU1cro
-	loYrO7QEdBvolxWIv04cWF3GCHlCqOswF9vVOUZb/P9Fb0Xk9EddPB5h
-X-Gm-Gg: ASbGncu4hcMoe3Pd4pSNQAUyGel7gT27ooDtfjZy2tggYkatiEA9BuWb+xGiIwKD//A
-	wbMeXR0msD2Bkaj2kpuCGOv6NYOhoQWfp/rsETlu5yZtWdSQn+4qDbAKG8bxIUNeMp8p3M+SM3j
-	vuymNQ92MZlsIIhRtMQmTzpyzy023lrzzb7Eh8oZNgdfInS5AkX3WeRII98jIuG0T8Jus1yrqb5
-	jr3xwBkinHO3ddLdbffsOy0lzQXllpRptpFlbYoZYR4kxlf7Pd7DEDopEpGz512GRRRAmheGl+4
-	IAIf3GlEth1hajyNV+hM7vWg6hkQH+JzEJ1YB0MYhHqTNyNR772tEfmj7KvHo5FC/46uCuK+XWV
-	fwXYgzoxC6Edl5dHezdmvFCCv2xKqH8G1AJ5gKgVYvtCaulX3TqxtXNzcqhwLUtrHIes7xAOcJM
-	7/twsk2wXUFp6EPei+tEzmwAPaZay6X3veGrksDly+
-X-Google-Smtp-Source: AGHT+IFGM18V5BmoNcYUf2okviT2kmAXvknm9jZn5oKlaoNk7p3xJlIfxznSGPSVf/lbXXzEGazn2g==
-X-Received: by 2002:a17:903:2451:b0:294:9813:4512 with SMTP id d9443c01a7336-29b6c3dba71mr192201425ad.3.1764092562714;
-        Tue, 25 Nov 2025 09:42:42 -0800 (PST)
-Received: from ?IPV6:2405:201:31:d869:c163:7f74:bed9:a2d1? ([2405:201:31:d869:c163:7f74:bed9:a2d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b1075basm170831165ad.21.2025.11.25.09.42.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Nov 2025 09:42:42 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------45qQ0oCK0HZ0Ruk4XZVcr08P"
-Message-ID: <3e74d313-99df-4aeb-87b3-612f4f3634f0@gmail.com>
-Date: Tue, 25 Nov 2025 23:12:38 +0530
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="gs5/7kV9"
+Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d103])
+	by forward205d.mail.yandex.net (Yandex) with ESMTPS id 0131886DC0;
+	Tue, 25 Nov 2025 20:42:46 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:270c:0:640:c38e:0])
+	by forward103d.mail.yandex.net (Yandex) with ESMTPS id 775E1C00A8;
+	Tue, 25 Nov 2025 20:42:36 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XggujTkLOGk0-Gv1KCdnO;
+	Tue, 25 Nov 2025 20:42:35 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1764092555; bh=o4o2XDA5nrOQmDLxiRc+aANwxnB8EPeJ00/Ueu4aUxY=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=gs5/7kV9kD7dLgoP5XXJnyOpbocu0OwbXry26lubWQeDECl0o5gSd1D5Q7fjS++m9
+	 jBggVSHWEQQxMLnc1e92PUZma1kDJdhfuPIqtxUYxqVtzmYNXpYzRvdPFQQx5Tam7M
+	 1GWaWC4dXA7tDSL6ZKbPu23xYoK7P6qKR/dzVkjk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: "David S. Miller" <davem@davemloft.net>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Bauer <mail@david-bauer.net>,
+	James Chapman <jchapman@katalix.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH net-next v4] l2tp: fix double dst_release() on sk_dst_cache race
+Date: Fri, 14 Nov 2025 06:24:08 +0300
+Message-ID: <20251114032414.524965-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- syzkaller-bugs@googlegroups.com
-References: <6925da1b.a70a0220.d98e3.00af.GAE@google.com>
-Subject: Re: [syzbot] [batman?] KMSAN: uninit-value in skb_clone
-Content-Language: en-US
-From: shaurya <ssranevjti@gmail.com>
-In-Reply-To: <6925da1b.a70a0220.d98e3.00af.GAE@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-This is a multi-part message in MIME format.
---------------45qQ0oCK0HZ0Ruk4XZVcr08P
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+A reproducible rcuref - imbalanced put() warning is observed under
+IPv6 L2TP (pppol2tp) traffic with blackhole routes, indicating an
+imbalance in dst reference counting for routes cached in
+sk->sk_dst_cache and pointing to a subtle lifetime/synchronization
+issue between the helpers that validate and drop cached dst entries.
 
-#syz test:
-git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+rcuref - imbalanced put()
+WARNING: CPU: 0 PID: 899 at lib/rcuref.c:266 rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.>
+Modules linked in:
+CPSocket connected tcp:127.0.0.1:48148,server=on <-> 127.0.0.1:33750
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01>
+RIP: 0010:rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
 
---------------45qQ0oCK0HZ0Ruk4XZVcr08P
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-hsr-fix-NULL-pointer-dereference-in-skb_clone-with-h.patch"
-Content-Disposition: attachment;
- filename*0="0001-hsr-fix-NULL-pointer-dereference-in-skb_clone-with-h.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
+Call Trace:
+ <TASK>
+ __rcuref_put include/linux/rcuref.h:97 [inline]
+ rcuref_put include/linux/rcuref.h:153 [inline]
+ dst_release+0x291/0x310 net/core/dst.c:167
+ __sk_dst_check+0x2d4/0x350 net/core/sock.c:604
+ __inet6_csk_dst_check net/ipv6/inet6_connection_sock.c:76 [inline]
+ inet6_csk_route_socket+0x6ed/0x10c0 net/ipv6/inet6_connection_sock.c:104
+ inet6_csk_xmit+0x12f/0x740 net/ipv6/inet6_connection_sock.c:121
+ l2tp_xmit_queue net/l2tp/l2tp_core.c:1214 [inline]
+ l2tp_xmit_core net/l2tp/l2tp_core.c:1309 [inline]
+ l2tp_xmit_skb+0x1404/0x1910 net/l2tp/l2tp_core.c:1325
+ pppol2tp_sendmsg+0x3ca/0x550 net/l2tp/l2tp_ppp.c:302
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg net/socket.c:744 [inline]
+ ____sys_sendmsg+0xab2/0xc70 net/socket.c:2609
+ ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2663
+ __sys_sendmmsg+0x188/0x450 net/socket.c:2749
+ __do_sys_sendmmsg net/socket.c:2778 [inline]
+ __se_sys_sendmmsg net/socket.c:2775 [inline]
+ __x64_sys_sendmmsg+0x98/0x100 net/socket.c:2775
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe6960ec719
+ </TASK>
 
-RnJvbSA5YmRlODZhZDJlZDYzYWNjMDlhMjVlNjY1MDI4ZGJhZGE3ZjVmMGFjIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBTaGF1cnlhIFJhbmUgPHNzcmFuZV9iMjNAZWUudmp0
-aS5hYy5pbj4KRGF0ZTogVHVlLCAyNSBOb3YgMjAyNSAyMzowMjozMyArMDUzMApTdWJqZWN0
-OiBbUEFUQ0hdIGhzcjogZml4IE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSBpbiBza2JfY2xv
-bmUgd2l0aCBodyB0YWcKIGluc2VydGlvbgoKV2hlbiBoYXJkd2FyZSBIU1IgdGFnIGluc2Vy
-dGlvbiBpcyBlbmFibGVkIChORVRJRl9GX0hXX0hTUl9UQUdfSU5TKSBhbmQKZnJhbWUtPnNr
-Yl9zdGQgaXMgTlVMTCwgYm90aCBoc3JfY3JlYXRlX3RhZ2dlZF9mcmFtZSgpIGFuZApwcnBf
-Y3JlYXRlX3RhZ2dlZF9mcmFtZSgpIHdpbGwgY2FsbCBza2JfY2xvbmUoKSB3aXRoIGEgTlVM
-TCBza2IgcG9pbnRlciwKY2F1c2luZyBhIGtlcm5lbCBjcmFzaC4KCkZpeCB0aGlzIGJ5IGFk
-ZGluZyBOVUxMIGNoZWNrcyBmb3IgZnJhbWUtPnNrYl9zdGQgYmVmb3JlIGNhbGxpbmcKc2ti
-X2Nsb25lKCkgaW4gYm90aCBmdW5jdGlvbnMuCgpSZXBvcnRlZC1ieTogc3l6Ym90KzJmYTM0
-NDM0OGE1NzliNzc5ZTA1QHN5emthbGxlci5hcHBzcG90bWFpbC5jb20KRml4ZXM6IGYyNjZh
-NjgzYTQ4MCAoXCJuZXQvaHNyOiBCZXR0ZXIgZnJhbWUgZGlzcGF0Y2hcIikKU2lnbmVkLW9m
-Zi1ieTogU2hhdXJ5YSBSYW5lIDxzc3JhbmVfYjIzQGVlLnZqdGkuYWMuaW4+Ci0tLQogbmV0
-L2hzci9oc3JfZm9yd2FyZC5jIHwgNCArKysrCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRp
-b25zKCspCgpkaWZmIC0tZ2l0IGEvbmV0L2hzci9oc3JfZm9yd2FyZC5jIGIvbmV0L2hzci9o
-c3JfZm9yd2FyZC5jCmluZGV4IDMzOWYwZDIyMDIxMi4uN2JkODI3NjdjNTQ0IDEwMDY0NAot
-LS0gYS9uZXQvaHNyL2hzcl9mb3J3YXJkLmMKKysrIGIvbmV0L2hzci9oc3JfZm9yd2FyZC5j
-CkBAIC0zNDEsNiArMzQxLDggQEAgc3RydWN0IHNrX2J1ZmYgKmhzcl9jcmVhdGVfdGFnZ2Vk
-X2ZyYW1lKHN0cnVjdCBoc3JfZnJhbWVfaW5mbyAqZnJhbWUsCiAJCWhzcl9zZXRfcGF0aF9p
-ZChmcmFtZSwgaHNyX2V0aGhkciwgcG9ydCk7CiAJCXJldHVybiBza2JfY2xvbmUoZnJhbWUt
-PnNrYl9oc3IsIEdGUF9BVE9NSUMpOwogCX0gZWxzZSBpZiAocG9ydC0+ZGV2LT5mZWF0dXJl
-cyAmIE5FVElGX0ZfSFdfSFNSX1RBR19JTlMpIHsKKwkJaWYgKCFmcmFtZS0+c2tiX3N0ZCkK
-KwkJCXJldHVybiBOVUxMOwogCQlyZXR1cm4gc2tiX2Nsb25lKGZyYW1lLT5za2Jfc3RkLCBH
-RlBfQVRPTUlDKTsKIAl9CiAKQEAgLTM4NSw2ICszODcsOCBAQCBzdHJ1Y3Qgc2tfYnVmZiAq
-cHJwX2NyZWF0ZV90YWdnZWRfZnJhbWUoc3RydWN0IGhzcl9mcmFtZV9pbmZvICpmcmFtZSwK
-IAkJfQogCQlyZXR1cm4gc2tiX2Nsb25lKGZyYW1lLT5za2JfcHJwLCBHRlBfQVRPTUlDKTsK
-IAl9IGVsc2UgaWYgKHBvcnQtPmRldi0+ZmVhdHVyZXMgJiBORVRJRl9GX0hXX0hTUl9UQUdf
-SU5TKSB7CisJCWlmICghZnJhbWUtPnNrYl9zdGQpCisJCQlyZXR1cm4gTlVMTDsKIAkJcmV0
-dXJuIHNrYl9jbG9uZShmcmFtZS0+c2tiX3N0ZCwgR0ZQX0FUT01JQyk7CiAJfQogCi0tIAoy
-LjM0LjEKCg==
+The race occurs between the lockless UDPv6 transmit path
+(udpv6_sendmsg() -> sk_dst_check()) and the locked L2TP/pppol2tp
+transmit path (pppol2tp_sendmsg() -> l2tp_xmit_skb() ->
+... -> inet6_csk_xmit() → __sk_dst_check()), when both handle
+the same obsolete dst from sk->sk_dst_cache: the UDPv6 side takes
+an extra reference and atomically steals and releases the cached
+dst, while the L2TP side, using a stale cached pointer, still
+calls dst_release() on it, and together these updates produce
+an extra final dst_release() on that dst, triggering
+rcuref - imbalanced put().
 
---------------45qQ0oCK0HZ0Ruk4XZVcr08P--
+The Race Condition:
+
+Initial:
+  sk->sk_dst_cache = dst
+  ref(dst) = 1   
+
+Thread 1: sk_dst_check()                Thread 2: __sk_dst_check()
+------------------------               ----------------------------
+sk_dst_get(sk):
+  rcu_read_lock()
+  dst = rcu_dereference(sk->sk_dst_cache)
+  rcuref_get(dst) succeeds
+  rcu_read_unlock()
+  // ref = 2  
+
+                                            dst = __sk_dst_get(sk)
+                                    // reads same dst from sk_dst_cache
+                                    // ref still = 2 (no extra get)
+
+[both see dst obsolete & check() == NULL]
+
+sk_dst_reset(sk):
+  old = xchg(&sk->sk_dst_cache, NULL)
+    // old = dst
+  dst_release(old)
+    // drop cached ref
+    // ref: 2 -> 1 
+
+                                  RCU_INIT_POINTER(sk->sk_dst_cache, NULL)
+                                  // cache already NULL after xchg
+                                            dst_release(dst)
+                                              // ref: 1 -> 0
+
+  dst_release(dst)
+  // tries to drop its own ref after final put
+  // rcuref_put_slowpath() -> "rcuref - imbalanced put()"
+
+Make L2TP’s IPv6 transmit path stop using inet6_csk_xmit()
+(and thus __sk_dst_check()) and instead open-code the same
+routing and transmit sequence using ip6_sk_dst_lookup_flow()
+and ip6_xmit(). The new code builds a flowi6 from the socket
+fields in the same way as inet6_csk_route_socket(), then calls
+ip6_sk_dst_lookup_flow(), which internally relies on the lockless
+sk_dst_check()/sk_dst_reset() pattern shared with UDPv6, and
+attaches the resulting dst to the skb before invoking ip6_xmit().
+This makes both the UDPv6 and L2TP IPv6 paths use the same
+dst-cache handling logic for a given socket and removes the
+possibility that sk_dst_check() and __sk_dst_check() concurrently
+drop the same cached dst and trigger the rcuref - imbalanced put()
+warning under concurrent traffic.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b0270e91014d ("ipv4: add a sock pointer to ip_queue_xmit()")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+---
+v2: move fix to L2TP as suggested by Eric Dumazet.
+v3: dropped the lockless sk_dst_check() pre-validation
+and the extra sk_dst_get() reference; instead, under
+the socket lock, mirror __sk_dst_check()’s condition
+and invalidate the cached dst via sk_dst_reset(sk) so
+the cache-owned ref is released exactly once via the 
+xchg-based helper.
+v4: switch L2TP IPv6 xmit to open-coded (using sk_dst_check()) 
+and test with tools/testing/selftests/net/l2tp.sh.
+https://lore.kernel.org/netdev/a601c049-0926-418b-aa54-31686eea0a78@redhat.com/T/#t
+
+ net/l2tp/l2tp_core.c | 48 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
+
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 0710281dd95a..72a43cbd4569 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1206,15 +1206,55 @@ static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
+ static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, struct flowi *fl)
+ {
+ 	int err;
++	struct sock *sk = tunnel->sock;
+ 
+ 	skb->ignore_df = 1;
+ 	skb_dst_drop(skb);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (l2tp_sk_is_v6(tunnel->sock))
+-		err = inet6_csk_xmit(tunnel->sock, skb, NULL);
+-	else
++	if (l2tp_sk_is_v6(sk)) {
++		struct ipv6_pinfo *np = inet6_sk(sk);
++		struct inet_sock *inet = inet_sk(sk);
++		struct flowi6 fl6;
++		struct dst_entry *dst;
++		struct in6_addr *final_p, final;
++		struct ipv6_txoptions *opt;
++
++		memset(&fl6, 0, sizeof(fl6));
++		fl6.flowi6_proto = sk->sk_protocol;
++		fl6.daddr        = sk->sk_v6_daddr;
++		fl6.saddr        = np->saddr;
++		fl6.flowlabel    = np->flow_label;
++		IP6_ECN_flow_xmit(sk, fl6.flowlabel);
++
++		fl6.flowi6_oif   = sk->sk_bound_dev_if;
++		fl6.flowi6_mark  = sk->sk_mark;
++		fl6.fl6_sport    = inet->inet_sport;
++		fl6.fl6_dport    = inet->inet_dport;
++		fl6.flowi6_uid   = sk->sk_uid;
++
++		security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
++
++		rcu_read_lock();
++		opt = rcu_dereference(np->opt);
++		final_p = fl6_update_dst(&fl6, opt, &final);
++
++		dst = ip6_sk_dst_lookup_flow(sk, &fl6, final_p, true);
++		if (IS_ERR(dst)) {
++			rcu_read_unlock();
++			kfree_skb(skb);
++			return NET_XMIT_DROP;
++		}
++
++		skb_dst_set(skb, dst);
++		fl6.daddr = sk->sk_v6_daddr;
++
++		err = ip6_xmit(sk, skb, &fl6, sk->sk_mark,
++			       opt, np->tclass,
++			       READ_ONCE(sk->sk_priority));
++		rcu_read_unlock();
++	} else
+ #endif
+-		err = ip_queue_xmit(tunnel->sock, skb, fl);
++		err = ip_queue_xmit(sk, skb, fl);
+ 
+ 	return err >= 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
+ }
+-- 
+2.47.2
+
