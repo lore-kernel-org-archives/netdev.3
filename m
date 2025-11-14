@@ -1,118 +1,75 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8A0221F29
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 00:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457012561A2;
+	Fri, 14 Nov 2025 01:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763081102; cv=none; b=FOR/cJxJ8K6FEH700oU8iJjoxAMUVccr9kVBLaaRF8WnKQYDtwvMct5Eoz+GEHT+rMggBr5dynOvbOMo9/S7CxP4YyNTgJ8k8eeOsaXn/4dq4pdGuUsSOd+PYlEMFJA4lcJqvFvhjh+gmYpbCCJ6dCXtgy0f4uhwe9nQbxNjjIc=
+	t=1763082038; cv=none; b=I3v06FyVCRiipodYSciQahNwLS/Anm7wrEDvjJvMnvt4jhyFPJkI+2jGeGNbbIRRKGt9bnRYOMqlCLFHVWKeQcAdSrnKXFFir9fsPTsL2XOsW1YT0gbxjnuGfz9Sqo6KF5FzT3b5FhtDhRwTrVjTgh4WI+TPCfMxSruxAyFFQ+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763081102; c=relaxed/simple;
-	bh=VFxzxVwJ2PEBFZc0AIz2gAD0d5vblCRY8PlOiHNzmGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JUJFTgLWwrI16ZQX0lwrnFG8m04Yu1Z1pGLrc6ZO9jKbCKcLQyAOCFC17vSj21I/hrvx/50ugYfn8eKQ02o5M7XuVOUvRUBI+vR0Kpl4TgTD54JYDccD45mUB1pAx6b0pxzwhsvko9qasH9sfHbzmfOfMKJU3/E/0zcQAR6wx24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=[192.168.1.226])
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1vJhLM-00044e-G1; Fri, 14 Nov 2025 00:07:12 +0000
-Message-ID: <52e1917a-2030-4019-bb9f-a836dc47bda9@trager.us>
-Date: Thu, 13 Nov 2025 16:07:05 -0800
+	s=arc-20240116; t=1763082038; c=relaxed/simple;
+	bh=8/ErFUEyC8wp6OEGHuFxyQcxgP5VBA4JKxvq0P8q1M0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ADIrVfyDTkjONe7pCf8gg0zhEf2C+i5FKwEMBeoms4xNh5Ge4/2aQJHNl1S+ZM4DyF7zmdhcgLypX4y+JMH5vAr3ObAeRT26J2b3Ga2C0t//+Cl1st29uO0xso8ZPPTtIBR/P/9k9S+1LwR7Z5H074+rTgXyt8FPanyqkz0ifHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDuDqnaA; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDuDqnaA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890F6C116D0;
+	Fri, 14 Nov 2025 01:00:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763082037;
+	bh=8/ErFUEyC8wp6OEGHuFxyQcxgP5VBA4JKxvq0P8q1M0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cDuDqnaAOMK81ldxIzyRxOczUviebqMESET3gtoqpVXACplLzwsUIibAkXS4o8NHl
+	 mUbMG7wq9nDYJg5yofP6STyZOHppU+qRU3LoO4N4+M02PDHxwsyoqZadh/0wTvRZel
+	 NELPDSM3YY/MfmCIvx50BHEGRWc0KouclgLrsQyjd3/3VxBdHd2RUJFhC0P+QL/YGy
+	 nxIBHE9oV/YFiosSmJoE7i1Xi5VyoW1kgkak8+HSytrbLPuXpTR1WyzhmDAJwpk+8O
+	 EEhbFnMj1rQ4Rt/+c4vzOQ73My2uOV43nuNH+mKE0o/xMVkgaX/lupCxpuHWYM2455
+	 vFtd6Iw91Jfbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE2E3A55F83;
+	Fri, 14 Nov 2025 01:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Ethtool: advance phy debug support
-To: Andrew Lunn <andrew@lunn.ch>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Susheela Doddagoudar <susheelavin@gmail.com>, netdev@vger.kernel.org,
- mkubecek@suse.cz, Hariprasad Kelam <hkelam@marvell.com>,
- Alexander Duyck <alexanderduyck@fb.com>
-References: <CAOdo=cNAy4kTrJ7KxEf2CQ_kiuR5sMD6jG3mJSFeSwqD6RdUtw@mail.gmail.com>
- <843c25c6-dd49-4710-b449-b03303c7cf45@bootlin.com>
- <eca707a6-7161-4efc-9831-69fbfa56eb93@lunn.ch>
-Content-Language: en-US
-From: Lee Trager <lee@trager.us>
-In-Reply-To: <eca707a6-7161-4efc-9831-69fbfa56eb93@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] MAINTAINERS: Remove eth bridge website
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176308200652.1069791.7434847464546852384.git-patchwork-notify@kernel.org>
+Date: Fri, 14 Nov 2025 01:00:06 +0000
+References: 
+ <0a32aaf7fa4473e7574f7327480e8fbc4fef2741.1762946223.git.baruch@tkos.co.il>
+In-Reply-To: 
+ <0a32aaf7fa4473e7574f7327480e8fbc4fef2741.1762946223.git.baruch@tkos.co.il>
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
+ netdev@vger.kernel.org
 
-On 11/13/25 5:28 AM, Andrew Lunn wrote:
+Hello:
 
-> On Thu, Nov 13, 2025 at 12:11:08PM +0100, Maxime Chevallier wrote:
->> Hi,
->>
->> On 13/11/2025 06:12, Susheela Doddagoudar wrote:
->>> Hi All/ Michal Kubecek,
->>>
->>> To support Advanced PHY Debug operations like
->>> PRBS pattern tests,  EHM tests, TX_EQ settings, Various PHY loopback etc.....
->> Added a bunch of people in CC:
->>
->> I don't have feedback on your current proposition, however people have
->> showed interest in what you mention, it may be a good idea to get everyone
->> in the loop.
->>
->> For the Loopback you're mentionning, there's this effort here [1] that
->> Hariprasad is working on, it may be a good idea to sync the effort :)
->>
->> [1] : https://lore.kernel.org/netdev/20251024044849.1098222-1-hkelam@marvell.com/
->>
->> As for the PRBS, there was a discussion on this at the last Netdevconf,
->> see the slides and talk here [2], I've added Lee in CC but I don't
->> really know what's the state of that work.
->>
->> [2] : https://netdevconf.info/0x19/sessions/talk/open-source-tooling-for-phy-management-and-testing.html
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I have PRBS testing and configuring TX coefficent support working in an 
-internal version of the fbnic driver. The problem is the interface. 
-Right now I'm using DebugFS, my understanding is write access in DebugFS 
-is frowned upon which is why it hasn't been up streamed yet. My original 
-idea was to extend ethtool, similar to what Susheela suggested, to add 
-support but I got some push back on that at netdev. I received the 
-suggestion that this is really something that should be part of the phy 
-subsystem which would require a new tool to be written.
+On Wed, 12 Nov 2025 13:17:03 +0200 you wrote:
+> Ethernet bridge website URL shows "This page isn’t available".
+> 
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
 
-Alex had started to onboard fbnic to phy as part of his work to onboard 
-fbnic to phylink. My understanding is that Alex was recently asked to 
-not use the phy subsystem. So the question is where does this go? What 
-user space tool interacts with the API?
+Here is the summary with links:
+  - MAINTAINERS: Remove eth bridge website
+    https://git.kernel.org/netdev/net/c/7410c86fc05b
 
-> For PRBS pattern tests testing i think there needs to be a framework
-> around it.
->
-> When you enable testing, the netif becomes usable, so its state needs
-> changing to "under test" as defined in RFC2863. We ideally want it
-> revert to normal operation after a time period. There are a number of
-> different PRBS patterns, so you need to be able to select one, and
-> maybe pass the test duration. It can also be performed in different
-> places. 802.3 defines a number of registers in the PCS for this. I
-> would expect to see a library that any standards conforming PCS can
-> use. There are also PHYs which support this features, but each vendor
-> implements it differently, so we need some sort of generic API for
-> PHYs. I expect we will also end up with a set of netlink message,
-> similar to how cable testing working.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Nothing can touch the comphy while PRBS testing is running. The fbnic 
-driver rejects starting testing if the link is up. Once testing has 
-begun I actually detach the netdev to prevent the link from coming up. 
-To help enforce this I added a test mode to firmware to ensure both 
-driver and firmware are hands off the comphy while testing is running.
-
-When I spoke with test engineers internally in Meta I could not come up 
-with a time period and over night testing came up as a requirement. I 
-decided to just let the user start and stop testing with no time 
-requirement. If firmware loses the host heartbeat it automatically 
-disables PRBS testing.
-
-fbnic controls the comphy in firmware due to limitations in 4 slice 
-mode. Even if it didn't the controls are non-standard.
-
-Lee
 
