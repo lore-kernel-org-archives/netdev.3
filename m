@@ -1,75 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457012561A2;
-	Fri, 14 Nov 2025 01:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D47EEB3;
+	Fri, 14 Nov 2025 01:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763082038; cv=none; b=I3v06FyVCRiipodYSciQahNwLS/Anm7wrEDvjJvMnvt4jhyFPJkI+2jGeGNbbIRRKGt9bnRYOMqlCLFHVWKeQcAdSrnKXFFir9fsPTsL2XOsW1YT0gbxjnuGfz9Sqo6KF5FzT3b5FhtDhRwTrVjTgh4WI+TPCfMxSruxAyFFQ+o=
+	t=1763082931; cv=none; b=oNYRzFjwZcqr2taSRUp/wUdrHuGLhgQGctXhmuqgUAxQSZm5Ry5k/UkYobQZThVDM0FsPaiFGZ9f/IE8Z76BcBTeVyqmXzrdNrdvGQnwgTo6y8qSoiEUeG230Hx9vnLb0I8Pb+zm0/I1YUGLBwgOPdM2hbjLZknzAFvYY1bzwGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763082038; c=relaxed/simple;
-	bh=8/ErFUEyC8wp6OEGHuFxyQcxgP5VBA4JKxvq0P8q1M0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ADIrVfyDTkjONe7pCf8gg0zhEf2C+i5FKwEMBeoms4xNh5Ge4/2aQJHNl1S+ZM4DyF7zmdhcgLypX4y+JMH5vAr3ObAeRT26J2b3Ga2C0t//+Cl1st29uO0xso8ZPPTtIBR/P/9k9S+1LwR7Z5H074+rTgXyt8FPanyqkz0ifHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDuDqnaA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763082931; c=relaxed/simple;
+	bh=VdRjP+mVcT5n42lUoYJcl4wtQbB4jERHjzOo/SD1Uaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gHQfugmzTTNLFB0qiYHfZN7yZ2sN6ILPz5Kxo8SveIqdRYk651XBqwI74zZ1VMe+8U78/aH18oVs3INmZHOH0jU2nzzWsUKbaCLhRnwn00Vv6krEqNpP1eknxaDjmv1hwzw7cjUXk9npQ+ACoX97wiHhMIslafY4ez3Jij1FqpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MW7tZCQo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDuDqnaA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890F6C116D0;
-	Fri, 14 Nov 2025 01:00:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MW7tZCQo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF155C16AAE;
+	Fri, 14 Nov 2025 01:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763082037;
-	bh=8/ErFUEyC8wp6OEGHuFxyQcxgP5VBA4JKxvq0P8q1M0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cDuDqnaAOMK81ldxIzyRxOczUviebqMESET3gtoqpVXACplLzwsUIibAkXS4o8NHl
-	 mUbMG7wq9nDYJg5yofP6STyZOHppU+qRU3LoO4N4+M02PDHxwsyoqZadh/0wTvRZel
-	 NELPDSM3YY/MfmCIvx50BHEGRWc0KouclgLrsQyjd3/3VxBdHd2RUJFhC0P+QL/YGy
-	 nxIBHE9oV/YFiosSmJoE7i1Xi5VyoW1kgkak8+HSytrbLPuXpTR1WyzhmDAJwpk+8O
-	 EEhbFnMj1rQ4Rt/+c4vzOQ73My2uOV43nuNH+mKE0o/xMVkgaX/lupCxpuHWYM2455
-	 vFtd6Iw91Jfbw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE2E3A55F83;
-	Fri, 14 Nov 2025 01:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1763082930;
+	bh=VdRjP+mVcT5n42lUoYJcl4wtQbB4jERHjzOo/SD1Uaw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MW7tZCQoXmSd7hxHKrf4jId6bihlxpHlBjVNSKVajzjvILrYAXBJUAU8pLg4z3/yo
+	 xKNBjwQNFad1KNBCRDZHF0sQPrNXjD32fDUPIJIu5WEQUa1dqs+THhZ1L+0eMwAz5a
+	 sDP7+FgHSftgxjIrcjkOfooglGmR+7W6HjhmldJmGWB2YltSmM9DicuBzfwy6bUqwO
+	 W99ONbmu1yQX34NylsaLulWbkxqamwywKz80JPqh1hqIdfwnWRMDc7ujJN0y/awFg0
+	 lVOs6EWf22twzFAhUGvTUYOWLV1SXPECBBh7CAhZoUcSBynAsL3O1dGJErHGqJbF8W
+	 zSMXglDeTFzYQ==
+Date: Thu, 13 Nov 2025 17:15:28 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Shay Drori <shayd@nvidia.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Jiri Pirko <jiri@resnulli.us>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Mark Bloch
+ <mbloch@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky
+ <leonro@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Moshe Shemesh
+ <moshe@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Carolina Jubran
+ <cjubran@nvidia.com>
+Subject: Re: [PATCH net] devlink: rate: Unset parent pointer in
+ devl_rate_nodes_destroy
+Message-ID: <20251113171528.12517f4a@kernel.org>
+In-Reply-To: <d751e671-9b73-42ce-acce-c98947b632c2@nvidia.com>
+References: <1762863279-1092021-1-git-send-email-tariqt@nvidia.com>
+	<20251112181248.190415f7@kernel.org>
+	<d751e671-9b73-42ce-acce-c98947b632c2@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] MAINTAINERS: Remove eth bridge website
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176308200652.1069791.7434847464546852384.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Nov 2025 01:00:06 +0000
-References: 
- <0a32aaf7fa4473e7574f7327480e8fbc4fef2741.1762946223.git.baruch@tkos.co.il>
-In-Reply-To: 
- <0a32aaf7fa4473e7574f7327480e8fbc4fef2741.1762946223.git.baruch@tkos.co.il>
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
- netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 12 Nov 2025 13:17:03 +0200 you wrote:
-> Ethernet bridge website URL shows "This page isn’t available".
+On Thu, 13 Nov 2025 10:33:09 +0200 Shay Drori wrote:
+> > On Tue, 11 Nov 2025 14:14:39 +0200 Tariq Toukan wrote:  
+> >> The function devl_rate_nodes_destroy is documented to "Unset parent for
+> >> all rate objects". However, it was only calling the driver-specific
+> >> `rate_leaf_parent_set` or `rate_node_parent_set` ops and decrementing
+> >> the parent's refcount, without actually setting the
+> >> `devlink_rate->parent` pointer to NULL.
+> >>
+> >> This leaves a dangling pointer in the `devlink_rate` struct, which is
+> >> inconsistent with the behavior of `devlink_nl_rate_parent_node_set`,
+> >> where the parent pointer is correctly cleared.
+> >>
+> >> This patch fixes the issue by explicitly setting `devlink_rate->parent`
+> >> to NULL after notifying the driver, thus fulfilling the function's
+> >> documented behavior for all rate objects.  
+> > 
+> > What is the _real_ issue you're solving here? If the function destroys
+> > all nodes maybe it doesn't matter that the pointer isn't cleared.
 > 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
+> The problem is a leaf which have this node as a parent, now pointing to
+> invalid memory. When this leaf will be destroyed, in
+> devl_rate_leaf_destroy, we can get NULL-ptr error, or refcount error.
+> 
+> Is this answer your question?
 
-Here is the summary with links:
-  - MAINTAINERS: Remove eth bridge website
-    https://git.kernel.org/netdev/net/c/7410c86fc05b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Kind of. I was hoping you can add a concrete example to the commit
+message. What sequence of user operations are needed with mlx5 to
+make the kernel oops.
