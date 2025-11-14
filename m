@@ -1,99 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173321C9EA
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 16:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BE032D449;
+	Fri, 14 Nov 2025 16:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763136187; cv=none; b=fIi398SEA3onvGUIEA2+vhqAJ3z42epmNt2Z+90Xai4S6ggF1lwjPkwP/l0qK8Ixo1+ebQXnzeF7ASS13utYlqsQ6+UAkXQJSdjcBW1bmPMGx9dbWGJx0v6Mtbu241pkM8TE+mLD/3paOHQ1AQdV1E5qRcuMlG4zjhmA/dBxaDM=
+	t=1763136219; cv=none; b=IlF880fYH63aSgwEtin9erpbTEVkeCxCT3C8EYuAEFNNOzXrPn2OTCAkKYY6Xhs2qsB4X6qLacjAtINOWjljcmPdHNnSlB7WdlIYbWCc3y0ElLV+GK0Yw1wJyJ1MUMz4c5N32Ujoc186e91AMkM+lCMiyXXw/Uk40axsyk4FoBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763136187; c=relaxed/simple;
-	bh=Gug63O31uXdMLrnpz+G89mRGIkLeG5Y311JrJGMg+YI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hkEgwE+nBAAuNOWGBMCoUcpfemYSpTH8eZanCfdxIFMPy0ZIp90tA0U7un6mtnv6HBM+PZl/Ydcd8KgZTM6Dz4Yh5SvKIK1woGbPg6ap8mCow/kJiOBffpx5U5Ob2b1pH9Zm4OKQXnkQNLJEwLcZE/nv9JR+nNOI/J7et2uUkJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tz9b3Qgb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763136219; c=relaxed/simple;
+	bh=UQvfqMIxn+7USSiP0F4nA0IVKN2RF+Ag4N9jiQjtM9g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SAqTiLWyt/VUT8nzgldwgHDiE2srzifVYgeWXn41dbRr9Mz5Jlb22wq3aX1ySAt+ZnLmh84zuylWEUrbsDByowiVfWuF1UQINJpOKmONBwsa5h3Vifet1/yw3Beva06b0vE6eUDEALFTB75iNCTtfIRqTenQvB3IrU+7++cATnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=j8UpDDNZ; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tz9b3Qgb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BEFC4CEF1;
-	Fri, 14 Nov 2025 16:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763136186;
-	bh=Gug63O31uXdMLrnpz+G89mRGIkLeG5Y311JrJGMg+YI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tz9b3QgbWSfm2tO5hgG/g3P3mLgSWK1o/R441Kt1SOvEl79ZNtI5YP9oqfQaja8Cp
-	 +wc5sqZQX/+FX0XzRbBBEoQAVpYlgVPrHWDMtlgCaMSqYeT1df6i7PJjx4nWMH9Th4
-	 shbJyr5FshB+YrVGthHM1FSpzb+YWdRhkPqXGJ93dg7WKYeDNITMeW9cuhPqAzXFLh
-	 QZ6Mx5zKo5njpQwJszD9U7RFEOSm5q28nVEj+/fK61pICdUtxBZzdzS0P5e3O0Iykl
-	 av4FvZZ13QpphAVYNHXOelUi0KjgOKMTV5CF3jI2pqQxSoR5D7SBzgHYVPxa2OuqNh
-	 s2u2yLCThKuJg==
-Date: Fri, 14 Nov 2025 08:03:05 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net] tcp: reduce tcp_comp_sack_slack_ns default value to
- 10 usec
-Message-ID: <20251114080305.6c275a7d@kernel.org>
-In-Reply-To: <CANn89iLp_7voEq8SryQXUFhDDTPaRosryNtHersRD6RM49Kh0g@mail.gmail.com>
-References: <20251114135141.3810964-1-edumazet@google.com>
-	<CANn89iLp_7voEq8SryQXUFhDDTPaRosryNtHersRD6RM49Kh0g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="j8UpDDNZ"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AECv49t001403;
+	Fri, 14 Nov 2025 16:03:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=7KBzqYMar8raGBq7LNnXBQEaX4aZg
+	mfqEFaee1HkP1E=; b=j8UpDDNZ5kEeIq5rUuBeGby6b1wCNOurvgomGcEig/1mS
+	9C978H3HfKuQYrfafb+sDcVaMEr5nBrbLJaYts3Y0+4Qdg6avSYgiWQ4gnlUYfGk
+	IF9S4DoVurTJjZmRAFGxrcG3Mp4MWHpp2urgnN/b12oLze/OqtwJxf7rQ47nrNGh
+	SqWg4DoysO6pjPR/DSW21bcqrrf+0OqMvy3tMMamQ6wgk9pDlyTEYxaJ5YbN9t+W
+	IN4lcWmgsPi89Ms1sJcCU4BZiopMutOL1JXjdpVLWSAdKIXjxcz52jShdMVBK+ut
+	7jtwQ1v0hNC6HpqD5t/SH1l+8BuEcEjGNrKvcz3oQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4adr8s9edn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Nov 2025 16:03:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AEEFS15022034;
+	Fri, 14 Nov 2025 16:03:19 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9vadpv3h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Nov 2025 16:03:19 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AEG3IZB029266;
+	Fri, 14 Nov 2025 16:03:18 GMT
+Received: from oracle (dhcp-10-154-173-166.vpn.oracle.com [10.154.173.166])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4a9vadpv0s-1;
+	Fri, 14 Nov 2025 16:03:18 +0000
+From: gregory.herrero@oracle.com
+To: aleksandr.loktionov@intel.com, anthony.l.nguyen@intel.com,
+        przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Gregory Herrero <gregory.herrero@oracle.com>
+Subject: [PATCH v3 0/1] i40e: additional safety check
+Date: Fri, 14 Nov 2025 17:03:03 +0100
+Message-ID: <20251114160304.2576306-1-gregory.herrero@oracle.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-14_04,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
+ mlxlogscore=999 spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511140129
+X-Authority-Analysis: v=2.4 cv=VqQuwu2n c=1 sm=1 tr=0 ts=691752c8 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=9rXuIt3xGVaoFKTACzIA:9
+X-Proofpoint-ORIG-GUID: vU9oM9JmRxHYy9ZW7VZbdLPD5efe2-wm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEzMDE3OCBTYWx0ZWRfX2uMUE8vU6QV5
+ i66lk5VJa8+3tuHNR1Xi599A0zy3PId/Kjp3pVY4X9KleMk/1EiEJ4deidUe3VtY0Cn3bsXhzwd
+ 3plo10r7ZLDrrH3jsZmMlFwrfDWxcnJQsJRwzd6gJo/fArDEKhSwCkuB359HFuDybWfJfkVnGoX
+ 83FHnkBnfskpVBb8TohlX4Mwwuj8yGlvlcEA25Elbo8LEaXi0AlbAcIYZDuEeVjvtb4UDM+lnx5
+ fYUskLrjwdJbGyq51/6aFw6I9MgOl/tarK7UOtSFubglzTqMOdBsG5Vvh/Fc8Hbzhy6XXpJgU6R
+ pDDP4JnkEP1Imi24eACDbxQ9UvG9PkLNPEo/UPd8xgf2vT2Ccky0eoJc9/S3pdz8G2Uk4wLmwF9
+ OChzwnnyugfPPO4wa1rETR0kglikPQ==
+X-Proofpoint-GUID: vU9oM9JmRxHYy9ZW7VZbdLPD5efe2-wm
 
-On Fri, 14 Nov 2025 06:08:58 -0800 Eric Dumazet wrote:
-> On Fri, Nov 14, 2025 at 5:51=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > net.ipv4.tcp_comp_sack_slack_ns current default value is too high.
-> >
-> > When a flow has many drops (1 % or more), and small RTT, adding 100 usec
-> > before sending SACK stalls the sender relying on getting SACK
-> > fast enough to keep the pipe busy.
-> >
-> > Decrease the default to 10 usec.
-> >
-> > This is orthogonal to Congestion Control heuristics to determine
-> > if drops are caused by congestion or not.
-> >
-> > Signed-off-by: Eric Dumazet <edumazet@google.com> =20
->=20
-> This was meant for net-next, but applying this to net tree should be
-> fine as well.
->=20
-> No need for backports though.
+From: Gregory Herrero <gregory.herrero@oracle.com>
 
-Sorry to piggy back on a random post but looks like the changes from
-a ~week ago made ncdevmem flaky:=20
+On code inspection, I realized we may want to check ring_len parameter
+against hardware specific values in i40e_config_vsi_tx_queue() and
+i40e_config_vsi_rx_queue().
 
-https://netdev.bots.linux.dev/contest.html?executor=3Dvmksft-fbnic-qemu&tes=
-t=3Ddevmem-py
+v3:
+- drop trailing period from the subject
+- reword commit description
+- remove u32 cast in i40e_config_vsi_rx_queue()
+v2:
+- make i40e_get_max_num_descriptors() 'pf' argument const.
+- reword i40e_get_max_num_descriptors() description.
+- modify commit description to explain potential behavior change.
 
-Specifically it says:
+Gregory Herrero (1):
+  i40e: validate ring_len parameter against hardware-specific values
 
-using ifindex=3D3
-using queues 2..3
-got tx dmabuf id=3D5
-Connect to 2001:db8:1::2 37943 (via enp1s0)
-sendmsg_ret=3D6
-ncdevmem: did not receive tx completion
+ drivers/net/ethernet/intel/i40e/i40e.h          | 17 +++++++++++++++++
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c  | 12 ------------
+ .../net/ethernet/intel/i40e/i40e_virtchnl_pf.c  |  4 ++--
+ 3 files changed, 19 insertions(+), 14 deletions(-)
 
-This is what was in the branch that made the test fail:
+-- 
+2.51.0
 
-[+] tcp: add net.ipv4.tcp_comp_sack_rtt_percent
-[+] net: increase skb_defer_max default to 128
-[+] net: fix napi_consume_skb() with alien skbs
-[+] net: allow skb_release_head_state() to be called multiple times
-
-https://netdev.bots.linux.dev/static/nipa/branch_deltas/net-next-hw-2025-11=
--08--00-00.html
-
-I'm guessing we need to take care of the uarg if we defer freeing=20
-of Tx skbs..
