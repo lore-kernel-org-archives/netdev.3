@@ -1,136 +1,99 @@
-Received: from mx12.kaspersky-labs.com (mx12.kaspersky-labs.com [91.103.66.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A8B315777;
-	Fri, 14 Nov 2025 15:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173321C9EA
+	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 16:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763135783; cv=none; b=iW+coIV/Hl9Dt1aG82oOzbVu0dkNJWBa/wZEErABNW1jLjBXGSWonpmGm9zQcCcueFSYPTOuWn/7gqPGNr6i4+JfqFSHM5PW7tE2CNWx/+d6pNA8H3g019Ml20s3zQVMd+hQ3x4p8cAosQ1w5eJOiTvmnWPh0ZbDmXYYFMeiQ9c=
+	t=1763136187; cv=none; b=fIi398SEA3onvGUIEA2+vhqAJ3z42epmNt2Z+90Xai4S6ggF1lwjPkwP/l0qK8Ixo1+ebQXnzeF7ASS13utYlqsQ6+UAkXQJSdjcBW1bmPMGx9dbWGJx0v6Mtbu241pkM8TE+mLD/3paOHQ1AQdV1E5qRcuMlG4zjhmA/dBxaDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763135783; c=relaxed/simple;
-	bh=GTe7rjQArXm9Jvhr/1+AaZMCTV37ChVrtVknGqvvavo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Geg+mzuCHxyU9pDd16Hr5mtUQotiDLzNcxijm+uW9xIVlRyI6tXRAYpIJ7umBxXD2CJLrNEkPQR7SpnPWmtCff/vu+7Z6bEuw4eEmI9Axke2PoXebdgNeX7Op0SH+2tFq+ius2C6Jyf2sSnml8w9XAvpCNa2iLZsUie/s94DrA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=KlFJoQtC; arc=none smtp.client-ip=91.103.66.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+	s=arc-20240116; t=1763136187; c=relaxed/simple;
+	bh=Gug63O31uXdMLrnpz+G89mRGIkLeG5Y311JrJGMg+YI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hkEgwE+nBAAuNOWGBMCoUcpfemYSpTH8eZanCfdxIFMPy0ZIp90tA0U7un6mtnv6HBM+PZl/Ydcd8KgZTM6Dz4Yh5SvKIK1woGbPg6ap8mCow/kJiOBffpx5U5Ob2b1pH9Zm4OKQXnkQNLJEwLcZE/nv9JR+nNOI/J7et2uUkJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tz9b3Qgb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="KlFJoQtC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1763135780;
-	bh=y4SDX/1GdpbWKhuMsarQXHUPLRNPCdexVegUqbW62Vs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=KlFJoQtC22dpCNQqqa7/IWbq3YawzGIKtcf9PX40ZxKVhveuUlpevQjVEcPbjg4y3
-	 pxaj5BSxRrAiDGGBc28OoUo2M8Zsi+eSxBHFQ8iGv0siYFOFmmxla1GwQxG8GVOjBr
-	 nEzvCM6mK4iVdRTn982gzKLv9CbuTw4L3voo3/f1tQi7P5EyUMhoCHO021NkZrH9hL
-	 ziWnVInYJHWehL5TzMu2yfyuWXcMJacq2tSwiIkNOx5QkZFIuKb8xybyexN9jU+L0o
-	 9E48oZ5JzxxQEBk/6mZOn6nL9ZWPMoslpu2f13b2CDVrboVrwccLMc1B0dlI8il9C6
-	 elAU9ELmU5I5g==
-Received: from relay12.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay12.kaspersky-labs.com (Postfix) with ESMTP id 0BBBB5A5483;
-	Fri, 14 Nov 2025 18:56:20 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub12.kaspersky-labs.com (Postfix) with ESMTPS id 080615A49C8;
-	Fri, 14 Nov 2025 18:56:19 +0300 (MSK)
-Received: from zhigulin-p.avp.ru (10.16.104.190) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 14 Nov
- 2025 18:55:19 +0300
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-CC: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Michal Simek
-	<michal.simek@amd.com>, Esben Haabendal <esben@geanix.com>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH net] net: xilinx: ll_temac: handle of_address_to_resource() failure in MDIO setup
-Date: Fri, 14 Nov 2025 18:55:18 +0300
-Message-ID: <20251114155519.3524628-1-Pavel.Zhigulin@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tz9b3Qgb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BEFC4CEF1;
+	Fri, 14 Nov 2025 16:03:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763136186;
+	bh=Gug63O31uXdMLrnpz+G89mRGIkLeG5Y311JrJGMg+YI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tz9b3QgbWSfm2tO5hgG/g3P3mLgSWK1o/R441Kt1SOvEl79ZNtI5YP9oqfQaja8Cp
+	 +wc5sqZQX/+FX0XzRbBBEoQAVpYlgVPrHWDMtlgCaMSqYeT1df6i7PJjx4nWMH9Th4
+	 shbJyr5FshB+YrVGthHM1FSpzb+YWdRhkPqXGJ93dg7WKYeDNITMeW9cuhPqAzXFLh
+	 QZ6Mx5zKo5njpQwJszD9U7RFEOSm5q28nVEj+/fK61pICdUtxBZzdzS0P5e3O0Iykl
+	 av4FvZZ13QpphAVYNHXOelUi0KjgOKMTV5CF3jI2pqQxSoR5D7SBzgHYVPxa2OuqNh
+	 s2u2yLCThKuJg==
+Date: Fri, 14 Nov 2025 08:03:05 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal Cardwell
+ <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH net] tcp: reduce tcp_comp_sack_slack_ns default value to
+ 10 usec
+Message-ID: <20251114080305.6c275a7d@kernel.org>
+In-Reply-To: <CANn89iLp_7voEq8SryQXUFhDDTPaRosryNtHersRD6RM49Kh0g@mail.gmail.com>
+References: <20251114135141.3810964-1-edumazet@google.com>
+	<CANn89iLp_7voEq8SryQXUFhDDTPaRosryNtHersRD6RM49Kh0g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/14/2025 15:35:04
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 198111 [Nov 14 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: Pavel.Zhigulin@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 76 0.3.76
- 6aad6e32ec76b30ee13ccddeafeaa4d1732eef15
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: kaspersky.com:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;zhigulin-p.avp.ru:7.1.1,5.0.1
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/14/2025 15:36:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/14/2025 2:08:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/14 12:42:00 #27925085
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-temac_mdio_setup() ignores potential errors from
-of_address_to_resource() call and continues with
-an uninitialized resource.
+On Fri, 14 Nov 2025 06:08:58 -0800 Eric Dumazet wrote:
+> On Fri, Nov 14, 2025 at 5:51=E2=80=AFAM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > net.ipv4.tcp_comp_sack_slack_ns current default value is too high.
+> >
+> > When a flow has many drops (1 % or more), and small RTT, adding 100 usec
+> > before sending SACK stalls the sender relying on getting SACK
+> > fast enough to keep the pipe busy.
+> >
+> > Decrease the default to 10 usec.
+> >
+> > This is orthogonal to Congestion Control heuristics to determine
+> > if drops are caused by congestion or not.
+> >
+> > Signed-off-by: Eric Dumazet <edumazet@google.com> =20
+>=20
+> This was meant for net-next, but applying this to net tree should be
+> fine as well.
+>=20
+> No need for backports though.
 
-Add return value check for of_address_to_resource()
-call in temac_mdio_setup().
+Sorry to piggy back on a random post but looks like the changes from
+a ~week ago made ncdevmem flaky:=20
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+https://netdev.bots.linux.dev/contest.html?executor=3Dvmksft-fbnic-qemu&tes=
+t=3Ddevmem-py
 
-Fixes: 8425c41d1ef7 ("net: ll_temac: Extend support to non-device-tree platforms")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
----
- drivers/net/ethernet/xilinx/ll_temac_mdio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Specifically it says:
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_mdio.c b/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-index 07a9fb49eda1..ab23dc233768 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-@@ -98,7 +98,9 @@ int temac_mdio_setup(struct temac_local *lp, struct platform_device *pdev)
- 		return -ENOMEM;
+using ifindex=3D3
+using queues 2..3
+got tx dmabuf id=3D5
+Connect to 2001:db8:1::2 37943 (via enp1s0)
+sendmsg_ret=3D6
+ncdevmem: did not receive tx completion
 
- 	if (np) {
--		of_address_to_resource(np, 0, &res);
-+		rc = of_address_to_resource(np, 0, &res);
-+		if (rc)
-+			return rc;
- 		snprintf(bus->id, MII_BUS_ID_SIZE, "%.8llx",
- 			 (unsigned long long)res.start);
- 	} else if (pdata) {
---
-2.43.0
+This is what was in the branch that made the test fail:
 
+[+] tcp: add net.ipv4.tcp_comp_sack_rtt_percent
+[+] net: increase skb_defer_max default to 128
+[+] net: fix napi_consume_skb() with alien skbs
+[+] net: allow skb_release_head_state() to be called multiple times
+
+https://netdev.bots.linux.dev/static/nipa/branch_deltas/net-next-hw-2025-11=
+-08--00-00.html
+
+I'm guessing we need to take care of the uarg if we defer freeing=20
+of Tx skbs..
