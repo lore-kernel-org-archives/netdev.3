@@ -1,37 +1,46 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721DA326D76
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 14:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50894328271;
+	Fri, 14 Nov 2025 14:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763130495; cv=none; b=giM5pc0dPcFxaIV+6px73b4Fnk17jsG0Qu3HxYpM7I2jrIVeB+SrxaKJlDo7A1Xqt3X5w3EDfUKZiPXtdzkgrHiuQQ93Az8Me5lFCd0bHlQ31awafD+b8vhkOje1qBGgoVX02PzNvKExK3/VvfsS5OcqF1DNj1JR3M0TeveyB/w=
+	t=1763130773; cv=none; b=KlTj64Q6TKoFtuyohj/G/giQX0H/ANHh87uKL7ims0Fq46rx6E0OoSywWtazR8NUKa0bJwmMWwAGgSAtiMmKf5iRYKY/j2UYw6GEWFoaeoTHRwwCxtrfXaHjB8TzZsGbXBDpnwtvrryNGHowQiavf3/OLMhtQg6kb0wVof6TXT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763130495; c=relaxed/simple;
-	bh=5NYO8c/labYquofE4JgMA3Bw2DbW4rxzSW2Y+fx6w2c=;
+	s=arc-20240116; t=1763130773; c=relaxed/simple;
+	bh=Q0blmjIuOVmZ1uWqzHegccPNOEM4WByfQGUU/TA8TNs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgdUu95rzezac1hokhmeCmyf2i4z6GhKVJxR8UCBBClY7PZQRVzdTsG6t5xhSljnJnNHZ5lvpsnyXBte1ABA60WSlUSZW5aTe8s9T0F1R0E3+zA0gJ5gc0fTshanTFkdGWMmiH8wpZTWgt2OckZgoCQ7fdn1/Ueb1Ek/R1usV/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vJuRK-000000003Zo-2Iyw;
-	Fri, 14 Nov 2025 14:06:14 +0000
-Date: Fri, 14 Nov 2025 14:06:11 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Peter Enderborg <peterend@axis.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH for net-next] if_ether.h: Clarify ethertype validity for
- gsw1xx dsa
-Message-ID: <aRc3U29wVvZEG0zv@makrotopia.org>
-References: <20251114135935.2710873-1-peterend@axis.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hoWFWovIb9WeL8iVWoJQwn+KJp5TpnTzslwi3EYunaqGglJkNvay595Inuz8qFAF7Uy7aq6TDGUDNFQ7TzQkcBAGAJRFTMWosWSy6z72GhqqVcA854VYv00VTTicYHvTOQjbWOhVWq85jsbCN7F9NbtT8euflMR3Zbn3IciSt6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AnChkPDb; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AnChkPDb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9n6golDYGL0AbMnkiDJo0egqftyXKLLrhDrZyv6hZn8=; b=AnChkPDb4BIef3JpA4cbTNSph0
+	M0PZ/t7dtkWGhNwKwst2S6ePumvJvKbaPwDig7gv24qEreMnNH1jsHeama/Ses9E5wnzCXzL8GGNF
+	pNpa39uEtYSXB0n0cEdcU2UgOGrlQufubwm+raJXWZ8v2E6vn87EtnLxz6M0NOu5Z3xI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vJuqs-00DzHN-1e; Fri, 14 Nov 2025 15:32:38 +0100
+Date: Fri, 14 Nov 2025 15:32:38 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Parthiban.Veerasooran@microchip.com
+Cc: piergiorgio.beruto@gmail.com, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] net: phy: phy-c45: add SQI and SQI+ support
+ for OATC14 10Base-T1S PHYs
+Message-ID: <4576bf3a-0945-4745-b7e9-3833cc45027a@lunn.ch>
+References: <20251113115206.140339-1-parthiban.veerasooran@microchip.com>
+ <20251113115206.140339-2-parthiban.veerasooran@microchip.com>
+ <f6acd8db-4512-4f5d-a8cc-0cc522573db5@lunn.ch>
+ <479bd561-3bc2-44fd-8bab-ecd3e62f9c3e@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,39 +49,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251114135935.2710873-1-peterend@axis.com>
+In-Reply-To: <479bd561-3bc2-44fd-8bab-ecd3e62f9c3e@microchip.com>
 
-On Fri, Nov 14, 2025 at 02:59:36PM +0100, Peter Enderborg wrote:
-> This 0x88C3 is registered to Infineon Technologies Corporate Research ST
-> and are used by MaxLinear. Infineon subsidiary Lantiq was acquired
-> by Intel. MaxLinear bought IP's from Intel including this network chip.
-> Ref https://standards-oui.ieee.org/ethertype/eth.txt
+> If I understand correctly, do you mean to store the capability details 
+> in the phydev structure when genphy_c45_oatc14_get_sqi_max() is called, 
+> and then use them in the genphy_c45_oatc14_get_sqi() function?
 > 
-> Signed-off-by: Peter Enderborg <peterend@axis.com>
+> In that case, I may need to introduce new parameters in the phydev 
+> structure. Do you think introducing new parameters in the phydev 
+> structure is still necessary for this?
 
-Thank you!
+I'm not sure it is worth it. Do we expect an SNMP agent polling the
+SQI value once per second? Once per minute? One extra read per minute
+costs nothing. If it was happening more frequently, then it might be
+worth caching the capabilities.
 
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+How do you see this being used?
 
-> ---
->  include/uapi/linux/if_ether.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/uapi/linux/if_ether.h b/include/uapi/linux/if_ether.h
-> index 2c93b7b731c8..df9d44a11540 100644
-> --- a/include/uapi/linux/if_ether.h
-> +++ b/include/uapi/linux/if_ether.h
-> @@ -92,7 +92,9 @@
->  #define ETH_P_ETHERCAT	0x88A4		/* EtherCAT			*/
->  #define ETH_P_8021AD	0x88A8          /* 802.1ad Service VLAN		*/
->  #define ETH_P_802_EX1	0x88B5		/* 802.1 Local Experimental 1.  */
-> -#define ETH_P_MXLGSW	0x88C3		/* MaxLinear GSW DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
-> +#define ETH_P_MXLGSW	0x88C3		/* Infineon Technologies Corporate Research ST
-> +					 * Used by MaxLinear GSW DSA
-> +					 */
->  #define ETH_P_PREAUTH	0x88C7		/* 802.11 Preauthentication */
->  #define ETH_P_TIPC	0x88CA		/* TIPC 			*/
->  #define ETH_P_LLDP	0x88CC		/* Link Layer Discovery Protocol */
-> -- 
-> 2.34.1
-> 
+	Andrew
