@@ -1,41 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7151EF36C
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 07:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8AE270541
+	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 07:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763104839; cv=none; b=FiL6Q8EZP3hye+NR6r8Y1CGoyVZWRZMsn9Rn7KKkUwGIs5uN7v2/NPImqQNbHkSK3NeJLRXUwyWdaOdfDLooxXxefY+hjXX0buXSgL5+GRTCddnYHDIbj5Dir4++AryLxb2fyzGTSrfIA9zhoQ6ZL+fUYAXDW8Q5dAhrwsLA/aw=
+	t=1763104840; cv=none; b=WxkqgiXU51F4G1UYInYQPI0uUUfCDKuzA08SHdMzsQDysk90HobsC7QQKUAo9fCpT48KAZIkJukVmEreVc9+DDupKE1mZF615zgSe2AuPaQxRNOnzg6f0SNO7PGovkoTTOu4vhqiwbMNyBWki95Tfd/FEipLyMAxau4hyzOwARU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763104839; c=relaxed/simple;
-	bh=F+eux7yWpElcLJXOrH1Btxiz4FLKcFEJVBy0FM6qB3k=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nk4Y/0po2NrFP5lT0521eZfBXVV0oNNQeFwEWhQj9ERGrqShAdZFhP79ZiVrHJm52NHC07SWSc5hJuW+TyKt35L9+YSEDa9mIbvI0PDVFSG9pzMEeYpDmIyaj2DDfnk0hGgrbh2MsvScEEvNgPc0q/EJnDTG2/8k7BFBO/3uZBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vR4NCeqh; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1763104840; c=relaxed/simple;
+	bh=Jl90UdEr8NC9NQJHRyLWV6kpPFz4gyUYS0h9z2g368U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J3Aw2xnd3uZ7eE/F0IpiVtLlu1K596wF5s1eqCjY4lxxTITFZQWa7tfBOU4stBsq+eYG3aDhWq73POqPsNL7G6OchwHl/3HyvF3H74Gqxpmx5TrKLWXtOB0cs4JVggu+IHTgCFpGAzg8PKgkOZUT5pvKpQYTe5prvJzki7NGSc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dVnGOGwc; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vR4NCeqh"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dVnGOGwc"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 664824E416AB;
-	Fri, 14 Nov 2025 07:20:27 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A710E4E416AD;
+	Fri, 14 Nov 2025 07:20:30 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 366596060E;
-	Fri, 14 Nov 2025 07:20:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B40A9102F24BE;
-	Fri, 14 Nov 2025 08:20:22 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7DFD16060E;
+	Fri, 14 Nov 2025 07:20:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45D2F102F291C;
+	Fri, 14 Nov 2025 08:20:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763104826; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=k/9ZgPG0n5e6H9PXL5ixzR64GkWl0Sz7L1vAFR9Y9f8=;
-	b=vR4NCeqhaOUl6Ni0NQIiCnunMCXzrN4IoboPAvU/uYTlnwpuEu8uzJBJz92TKlXEhoXgl2
-	M+fNlyWeHyt1+kOjxK3HfZlplsvYd5EaFojfZ1rqqd5dqk0Y4l1cI7fj7lTzdENEHmw37e
-	8JZQTgXK2S0pNgfwikONjw6i+RcAkANypa0AfOCfVbhT6E3jgzRaJfoNAo81Hdvwu2+hlI
-	z9YFfMRk5Q3i2mfHEUHR4PAuO1sxBuJzoZdK/Z1RAXSxVghLG6HFpki3k2WdNYEWfMSM/C
-	Oa2XmEbxe9ZGa+EUDCgUWKuCvZ5cJQDskXeOUD0csbqCY891JvnVrNDFVc7+eQ==
+	t=1763104829; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=RTnapVv6Kq237V0+NqTV4P/zgR2L1d18jSkpYpEllMQ=;
+	b=dVnGOGwcwe4M9KEGgf15/UOcqd1SPIo96q37GYcbRYtmy0B2ccfF/RdtZvcoumyWoPfCfd
+	OS69ACjkAZwiCkLZ58uGj5qXi/IhXSnAd9cTu1Ub20jH0KsTLrB3cBwdItBtfRBqFqxGNE
+	XXZk6qXMWi17PLha5ypKe+liMVnl1cgFSpaXr9fLnnxnCmjxJgquhrK+8cRdgcdJPk8u7Y
+	JhCeQ8I3pHnEqQUit3O4IQEv6h4+JXevwb18G6WCYARXw0UyAQLIjO4lfsvwBFLkLn4kE0
+	XsTHw7fo0CHzCe964iO7F5fdXpmlVw1es0XV1kME6eTdIKEZJN/623UuHsWCpQ==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Subject: [PATCH net v3 0/4] net: dsa: microchip: Fix resource releases in
- error path
-Date: Fri, 14 Nov 2025 08:20:19 +0100
-Message-Id: <20251114-ksz-fix-v3-0-acbb3b9cc32f@bootlin.com>
+Date: Fri, 14 Nov 2025 08:20:21 +0100
+Subject: [PATCH net v3 2/4] net: dsa: microchip: ptp: Fix checks on
+ irq_find_mapping()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,11 +45,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADPYFmkC/2WMSw7CIBRFt9K8sRg+LVBH7sM4sOVhiQoGGqI23
- buESWMc3s85CySMDhMcmgUiZpdc8CWIXQPjdPFXJM6UDJzyjlHByC19iHUvYgbRdsYqKToL5f2
- MWOpqOoHHGc6lnFyaQ3xXe2Z1+hNlRihR2EqDfd+jYcchhPnu/H4Mj2rJfCMZlRvJC0kV09pKq
- rUSv+S6rl97fuUP3wAAAA==
-X-Change-ID: 20251031-ksz-fix-db345df7635f
+Message-Id: <20251114-ksz-fix-v3-2-acbb3b9cc32f@bootlin.com>
+References: <20251114-ksz-fix-v3-0-acbb3b9cc32f@bootlin.com>
+In-Reply-To: <20251114-ksz-fix-v3-0-acbb3b9cc32f@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -63,45 +62,35 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi all,
+irq_find_mapping() returns a positive IRQ number or 0 if no IRQ is found
+but it never returns a negative value. However, during the PTP IRQ setup,
+we verify that its returned value isn't negative.
 
-I worked on adding PTP support for the KSZ8463. While doing so, I ran
-into a few bugs in the resource release process that occur when things go
-wrong arount IRQ initialization.
+Fix the irq_find_mapping() check to enter the error path when 0 is
+returned. Return -EINVAL in such case.
 
-This small series fixes those bugs.
-
-The next series, which will add the PTP support, depend on this one.
-
+Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
-Changes in v3:
-- PATCH 1 and 3: Fix Fixes tags
-- PATCH 3: Move the irq_dispose_mapping() behind the check that verifies that
-  the domain is initialized
-- Link to v2: https://lore.kernel.org/r/20251106-ksz-fix-v2-0-07188f608873@bootlin.com
+ drivers/net/dsa/microchip/ksz_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes in v2:
-- Add Fixes tag.
-- Split PATCH 1 in two patches as it needed two different Fixes tags
-- Add details in commit logs
-- Link to v1: https://lore.kernel.org/r/20251031-ksz-fix-v1-0-7e46de999ed1@bootlin.com
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 35fc21b1ee48a47daa278573bfe8749c7b42c731..c8bfbe5e2157323ecf29149d1907b77e689aa221 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1139,8 +1139,8 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ 		irq_create_mapping(ptpirq->domain, irq);
+ 
+ 	ptpirq->irq_num = irq_find_mapping(port->pirq.domain, PORT_SRC_PTP_INT);
+-	if (ptpirq->irq_num < 0) {
+-		ret = ptpirq->irq_num;
++	if (!ptpirq->irq_num) {
++		ret = -EINVAL;
+ 		goto out;
+ 	}
+ 
 
----
-Bastien Curutchet (Schneider Electric) (4):
-      net: dsa: microchip: common: Fix checks on irq_find_mapping()
-      net: dsa: microchip: ptp: Fix checks on irq_find_mapping()
-      net: dsa: microchip: Ensure a ksz_irq is initialized before freeing it
-      net: dsa: microchip: Immediately assing IRQ numbers
-
- drivers/net/dsa/microchip/ksz_common.c | 23 +++++++++++++----------
- drivers/net/dsa/microchip/ksz_ptp.c    | 17 +++++++++--------
- 2 files changed, 22 insertions(+), 18 deletions(-)
----
-base-commit: cd2f741f5aec1043b707070e7ea024e646262277
-change-id: 20251031-ksz-fix-db345df7635f
-
-Best regards,
 -- 
-Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+2.51.1
 
