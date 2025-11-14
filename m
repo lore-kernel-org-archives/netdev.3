@@ -1,151 +1,118 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from trager.us (trager.us [52.5.81.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71DE21C9E1
-	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 00:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8A0221F29
+	for <netdev@vger.kernel.org>; Fri, 14 Nov 2025 00:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763081085; cv=none; b=re7UvSH2Jqt06m4LbkNuBi77UYLdckVHfVVAR2OSjAyu6d5BldyeWkWOevZAbLujnYwCR2cS9lmouuFPud/CbRtm4KWgxkSpu8F0hEu9qhYFi2xeZVP7C2PxTD0ZwsX/7gnsR00oyiKneuisqB8+YdEv7YPf5LQEWEgXTpQNLyc=
+	t=1763081102; cv=none; b=FOR/cJxJ8K6FEH700oU8iJjoxAMUVccr9kVBLaaRF8WnKQYDtwvMct5Eoz+GEHT+rMggBr5dynOvbOMo9/S7CxP4YyNTgJ8k8eeOsaXn/4dq4pdGuUsSOd+PYlEMFJA4lcJqvFvhjh+gmYpbCCJ6dCXtgy0f4uhwe9nQbxNjjIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763081085; c=relaxed/simple;
-	bh=LwIRwAFzw0dXy5ckYyTbkNonSYIHgG2ZAUuHV9IY4Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i5DLdpmYgIgy7ZOlf0kpws0RebE5RNXfgGwZe3z4aHIUPYj7GHAwmEvjPzlC+L5/ZzgtbBwAe4J4XzwnuIwA9mrbsm06Ywpjd34XU1uICfbq2cXbtbvqzVpsgY6v3xf40YpoVpHELzHMoK9EeVdh1kx2dMzhXh2kcmIx7k3+K5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aVgq7lyI; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aVgq7lyI"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso1024562a12.3
-        for <netdev@vger.kernel.org>; Thu, 13 Nov 2025 16:44:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763081083; x=1763685883; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5LXJv7wRXF9U/cick5b/LfhiRGQebQw7e2o2OTwwBSk=;
-        b=aVgq7lyIf57iXFvKndprSSywmm1mtO31l3X5WK6ZtHPRGqzHJ0eAC0ra/Y0sDGgVRg
-         UHCjSQ2Hvdq1PIB6Ovl7GyA/E4erBCoDJGthumOjoJRYzUlPMYEih04obKLWcSRgfRUI
-         yc5XLBT3TFG+TpuSDyhm+virRmnLF1uo9pVeps2tk2S9P4j714HHHR9oNSHhE35N7q92
-         8xFYMJJfci86oSBGKGGIxYn1H9K0U2GMoZL8YZ7Qu/l7e4CryvrCv0riC3e2NQP+eKNo
-         US2F58jQT/B/RgD9tRn6ZTuGCVMK1JxXbwS6ml6aQzp6X4KXZ9hef+mvOC/+810aFrjk
-         UcyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763081083; x=1763685883;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5LXJv7wRXF9U/cick5b/LfhiRGQebQw7e2o2OTwwBSk=;
-        b=gSlzf1hIB0jpeuViBGRwMwBo7ApeXyf0s0WcEGkW+3cd8EpYIa1URg+eEmPUbAbcCj
-         A5RyB1TOYZTP4c1SebN6fzDRos0zjP8MXPt4L/7JjtJGdoEJtvIatidnJP3yshr3vx0b
-         +0nR/SC1ZlafDI44ipPkqi/vTHY29dRIE9+yMKwPWIinwtcUcip5HKjAjRRdS3DlZhi+
-         /Jdt2aAn7CkBevcjFtIJsYg+M3XzugHRWcowv8OvkwstFBhY0ybw77DN/gPuKLVCUmx8
-         KFoweC7ZSRoNYMPXcfKgV1dsGMXY3NIRe4HvC36vNnawfsVGW8S49RB287cl2PJfNpIL
-         CHzw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0d7O4zbCHtSX0vvhwxUFAsyFuPdRYEotnPci1Pirs39q8l5wPk/YkyoqlCslduSutRcVywW8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrwRSdRYvt5uc57Ts2YRLg+lFW+CmtHaiGciaU/S1UmlIJOBZM
-	r3Fu/I5taEYFEE15feBlJ59BBMYMffp7q5o2wMfGH82aAnBtxSr0soGY
-X-Gm-Gg: ASbGncvbXb6x9owoeRg4yBeR4VuKeIC+zmx/U8boa2NG4y+H53XNNSNKDE+P8zEPnnS
-	goU8uut0LlEsx10RoTbz0JwK9/aWHOSY2bGpqDGaVUj3UfPmoC2K+E/r7cy6giGZT8Vr21QMGuk
-	lxIN31AdWUo/PuphbJXYazbISdlREI6rQbM26OwC9UQnkPxd+r1WSorfqrjICrI7LT2svCdr/Wq
-	o4XJTtBrEWb31fmmNtLj+iFnRihPNUcVyYDUGwxSSdQD/jl3RoZ64lZ2AHmtGYHaGCBMjR1xl19
-	FR82TqXyUqunXDPW9O1AuYTEWxT7f98IpqEy6tHw7DaQGf3727QuiH4Q7LWFfACq3DgXgslIuBq
-	mQPf7YxCf13mkPNPVoX0uvHbikyLsGp0ZwP6jZuhXIiJqfYKWSMXRyqhu9R1zavLWMddrhP4RFi
-	Q=
-X-Google-Smtp-Source: AGHT+IEIKjjPhOVUqGPDpl5dOo+GAofGTEs4SPWCZYKYPUBqhOjG64m/9E3v+5NweXcdOCz4DDVv4g==
-X-Received: by 2002:a05:701a:ca8c:b0:119:e569:f62b with SMTP id a92af1059eb24-11b41707c45mr465043c88.36.1763081082981;
-        Thu, 13 Nov 2025 16:44:42 -0800 (PST)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b060885e3sm3672341c88.0.2025.11.13.16.44.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 16:44:42 -0800 (PST)
-Date: Fri, 14 Nov 2025 08:44:15 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Conor Dooley <conor+dt@kernel.org>
-Cc: Han Gao <rabenda.cn@gmail.com>, Icenowy Zheng <uwu@icenowy.me>, 
-	Vivian Wang <wangruikang@iscas.ac.cn>, Yao Zi <ziyao@disroot.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
-	Inochi Amaoto <inochiama@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, sophgo@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>, 
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v8 1/3] dt-bindings: net: sophgo,sg2044-dwmac: add phy
- mode restriction
-Message-ID: <yjl3gnf2gwh327wbbwcbkxwnqy5tyhwutffovlxhcm7b4vr2xu@he4tg6bcrduu>
-References: <20251114003805.494387-1-inochiama@gmail.com>
- <20251114003805.494387-2-inochiama@gmail.com>
+	s=arc-20240116; t=1763081102; c=relaxed/simple;
+	bh=VFxzxVwJ2PEBFZc0AIz2gAD0d5vblCRY8PlOiHNzmGY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JUJFTgLWwrI16ZQX0lwrnFG8m04Yu1Z1pGLrc6ZO9jKbCKcLQyAOCFC17vSj21I/hrvx/50ugYfn8eKQ02o5M7XuVOUvRUBI+vR0Kpl4TgTD54JYDccD45mUB1pAx6b0pxzwhsvko9qasH9sfHbzmfOfMKJU3/E/0zcQAR6wx24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
+Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=[192.168.1.226])
+	by trager.us with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128)
+	(Exim 4.92.3)
+	(envelope-from <lee@trager.us>)
+	id 1vJhLM-00044e-G1; Fri, 14 Nov 2025 00:07:12 +0000
+Message-ID: <52e1917a-2030-4019-bb9f-a836dc47bda9@trager.us>
+Date: Thu, 13 Nov 2025 16:07:05 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251114003805.494387-2-inochiama@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Ethtool: advance phy debug support
+To: Andrew Lunn <andrew@lunn.ch>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Susheela Doddagoudar <susheelavin@gmail.com>, netdev@vger.kernel.org,
+ mkubecek@suse.cz, Hariprasad Kelam <hkelam@marvell.com>,
+ Alexander Duyck <alexanderduyck@fb.com>
+References: <CAOdo=cNAy4kTrJ7KxEf2CQ_kiuR5sMD6jG3mJSFeSwqD6RdUtw@mail.gmail.com>
+ <843c25c6-dd49-4710-b449-b03303c7cf45@bootlin.com>
+ <eca707a6-7161-4efc-9831-69fbfa56eb93@lunn.ch>
+Content-Language: en-US
+From: Lee Trager <lee@trager.us>
+In-Reply-To: <eca707a6-7161-4efc-9831-69fbfa56eb93@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 14, 2025 at 08:38:03AM +0800, Inochi Amaoto wrote:
-> As the ethernet controller of SG2044 and SG2042 only supports
-> RGMII phy. Add phy-mode property to restrict the value.
-> 
-> Also, since SG2042 has internal rx delay in its mac, make
-> only "rgmii-txid" and "rgmii-id" valid for phy-mode.
-> 
-> Fixes: e281c48a7336 ("dt-bindings: net: sophgo,sg2044-dwmac: Add support for Sophgo SG2042 dwmac")
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On 11/13/25 5:28 AM, Andrew Lunn wrote:
 
-> ---
->  .../bindings/net/sophgo,sg2044-dwmac.yaml     | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> index ce21979a2d9a..e8d3814db0e9 100644
-> --- a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> @@ -70,6 +70,25 @@ required:
->  
->  allOf:
->    - $ref: snps,dwmac.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: sophgo,sg2042-dwmac
-> +    then:
-> +      properties:
-> +        phy-mode:
-> +          enum:
+> On Thu, Nov 13, 2025 at 12:11:08PM +0100, Maxime Chevallier wrote:
+>> Hi,
+>>
+>> On 13/11/2025 06:12, Susheela Doddagoudar wrote:
+>>> Hi All/ Michal Kubecek,
+>>>
+>>> To support Advanced PHY Debug operations like
+>>> PRBS pattern tests,  EHM tests, TX_EQ settings, Various PHY loopback etc.....
+>> Added a bunch of people in CC:
+>>
+>> I don't have feedback on your current proposition, however people have
+>> showed interest in what you mention, it may be a good idea to get everyone
+>> in the loop.
+>>
+>> For the Loopback you're mentionning, there's this effort here [1] that
+>> Hariprasad is working on, it may be a good idea to sync the effort :)
+>>
+>> [1] : https://lore.kernel.org/netdev/20251024044849.1098222-1-hkelam@marvell.com/
+>>
+>> As for the PRBS, there was a discussion on this at the last Netdevconf,
+>> see the slides and talk here [2], I've added Lee in CC but I don't
+>> really know what's the state of that work.
+>>
+>> [2] : https://netdevconf.info/0x19/sessions/talk/open-source-tooling-for-phy-management-and-testing.html
 
-> +            - rgmii-rxid
-> +            - rgmii-id
+I have PRBS testing and configuring TX coefficent support working in an 
+internal version of the fbnic driver. The problem is the interface. 
+Right now I'm using DebugFS, my understanding is write access in DebugFS 
+is frowned upon which is why it hasn't been up streamed yet. My original 
+idea was to extend ethtool, similar to what Susheela suggested, to add 
+support but I got some push back on that at netdev. I received the 
+suggestion that this is really something that should be part of the phy 
+subsystem which would require a new tool to be written.
 
-Hi, Conor,
+Alex had started to onboard fbnic to phy as part of his work to onboard 
+fbnic to phylink. My understanding is that Alex was recently asked to 
+not use the phy subsystem. So the question is where does this go? What 
+user space tool interacts with the API?
 
-I have restricted the phy-mode with wrong mode here, it should be
-rgmii-rxid instead of rgmii-txid as the SG2042 always add rx delay
-in their mac. As this is more like a mistake for me when writing
-the binding, I keep you tag with the fix. If you need something
-further, please let me know.
+> For PRBS pattern tests testing i think there needs to be a framework
+> around it.
+>
+> When you enable testing, the netif becomes usable, so its state needs
+> changing to "under test" as defined in RFC2863. We ideally want it
+> revert to normal operation after a time period. There are a number of
+> different PRBS patterns, so you need to be able to select one, and
+> maybe pass the test duration. It can also be performed in different
+> places. 802.3 defines a number of registers in the PCS for this. I
+> would expect to see a library that any standards conforming PCS can
+> use. There are also PHYs which support this features, but each vendor
+> implements it differently, so we need some sort of generic API for
+> PHYs. I expect we will also end up with a set of netlink message,
+> similar to how cable testing working.
 
-Regards,
-Inochi
+Nothing can touch the comphy while PRBS testing is running. The fbnic 
+driver rejects starting testing if the link is up. Once testing has 
+begun I actually detach the netdev to prevent the link from coming up. 
+To help enforce this I added a test mode to firmware to ensure both 
+driver and firmware are hands off the comphy while testing is running.
 
-> +    else:
-> +      properties:
-> +        phy-mode:
-> +          enum:
-> +            - rgmii
-> +            - rgmii-rxid
-> +            - rgmii-txid
-> +            - rgmii-id
->  
->  unevaluatedProperties: false
->  
-> -- 
-> 2.51.2
-> 
+When I spoke with test engineers internally in Meta I could not come up 
+with a time period and over night testing came up as a requirement. I 
+decided to just let the user start and stop testing with no time 
+requirement. If firmware loses the host heartbeat it automatically 
+disables PRBS testing.
+
+fbnic controls the comphy in firmware due to limitations in 4 slice 
+mode. Even if it didn't the controls are non-standard.
+
+Lee
+
