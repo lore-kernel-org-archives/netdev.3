@@ -1,84 +1,88 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA57231C91
-	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 09:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADED2309B2
+	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 10:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763286396; cv=none; b=RaWptfmoY7Rqu9X7gKM+1p0Ce0ccyNq3ztMmqalwa0WMWmCLlMboaCrFZz8S758P4ec60Ati5ibKiZWkRq+0xaDkMI+6lS56BxdDIxBeo+UNL7+aSSS/BHNWJQfrFdvWjP070exRuQDzz49CM0Z1vih0O4NQ2ZMzhQ5BhIVEz9Q=
+	t=1763289548; cv=none; b=M2MPP4NHnfXkqfPVKRLmOTfbxNLxZ6eU81pzENLphF4Wa2C+0V6CivBe070uCK//Xq7I/X1DbnNJUSakzBNSGUF18xVxRx5ND8PDYS1L/yDm3kDS2/GUF0PAyrrWZq+0PRH8uJxpbXkimw3lP5WVFVMnsLyg/xuOE4l9AgixMvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763286396; c=relaxed/simple;
-	bh=x9hR9SjyCtIHLxgT9NqWko3gLVtNUDrKhW+nxCbwkLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tpuvx3i4Q05tZz9zcfFRWmFKsLgW2MLZ++piICkUSvsYrO3km3mQVUuqrDYcI0X4u3VuB6G5xN3jZ0ns6L4BpLeWlnsDnJK+ZiiqxBKd6Z4JZGKK7Rfpktc8Uj3NonxGvAgnJ8k8m3Hl+wAwzOYlKtcPB5j/635H+KUe9vcSoS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EAwQc0UT; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1763289548; c=relaxed/simple;
+	bh=eUooGoIK3p0HDkJHI44CQC5dCUwh7Ui3R3yP/HMUo7o=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=W0m7ERRJ9BRM1jcu1cxoIVX+jnEtDOmKIP5rO40OYG4rMuI/789Sva0LlCfOMka2/ZDQSHMKftPyJpLThMWgI2te79m6oCaxzTJvoIY82OAdxADn+BcqfgzEFs6I0O/Oc47r5R4BOXz+II7GtdYJEU+OrnUnryYW8z0+CHiW2Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmMgaCoL; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EAwQc0UT"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763286387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zNhPYwtelZQc8+GbYLnOTAnsgfYOcEfexBQ2xZktde0=;
-	b=EAwQc0UTTagbB2ie7sAM/0Z/ttwTxwua7Sb2OOUVni0EnYpiIN4+uVHKsKl3xfEnuryu1D
-	6O2oFV4jTQG2Y/v2HHoOGb3qvOhTwt5mC4fP0K9gjxntSyFQKRombIjlZzzLqZXdL4nOqY
-	20CZ1ppcQr50mjEzFlhmOI79ZmQoCPY=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Manish Chopra <manishc@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v5 0/2] convert drivers to use ndo_hwtstamp callbacks part 4
-Date: Sun, 16 Nov 2025 09:46:08 +0000
-Message-ID: <20251116094610.3932005-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmMgaCoL"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-477a219db05so157295e9.2
+        for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 02:39:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763289544; x=1763894344; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eUooGoIK3p0HDkJHI44CQC5dCUwh7Ui3R3yP/HMUo7o=;
+        b=MmMgaCoL9Gw8wGi6SOiSdRAQoeRGk275mdhAkS3qdEWAyNXQdojX7I6NkxvS/KD2ci
+         8z3C3HZM4aEmjZV6MYGUiz6+hNvur2O71a/2HJy1UXrCSww/cvPF5rS5Rwb3CB9otFSI
+         ahow5XiG/sTT3Paowoq6ORDSj08B7uOaV1eWDyw38IuVZ5oCzr1rb3bMpC9S4eJhRVSr
+         h5xchwULR27Cykpo1WG1FT7OM5b84XmY1I875eeSAX2qDGWmSzdF40MMoPTARTVFlhN0
+         Hzo6iJjy0Y+1WBclqrkPpteji6JXbMZ0dCkWqYTwV3YvAFWNX79/xKVpt9Ujqs+dkgFI
+         r4BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763289544; x=1763894344;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eUooGoIK3p0HDkJHI44CQC5dCUwh7Ui3R3yP/HMUo7o=;
+        b=TSTRgv1Rmjpa1qHMYshVAqPx5SL0oNMs4KpxWv5xC/LMJbk07vMMRhl7wKiFNHVlfQ
+         ekFvS9y/kk2jUSh1WRHgnydOLmsODZtjStPQdZdLLbExDAXXS+U29e+cpWM+AxPm0A1k
+         YIKq/7V/pbm75NYjb51nB0W5n9bTp5nuUPUYjXcVASXv4l+X8hhr2Nenc6uDYOHSbZZq
+         V1mPfECuh09ci6dJfNnL/Z0glnWB8hhkWmgMgRbHu0vJbx6132JzNC++8PWKkjzTYIdV
+         f5o1RvABSHJZyA7SSi4LFvuNjq6Hb2KfnqvPFVKjEKE5SpVkvMH8nvIAz8enNlpOkDzm
+         WYtg==
+X-Forwarded-Encrypted: i=1; AJvYcCXym4YwxDkRvyX6EpSOJc+AnagKTq9tJadtPFyLzt/Jsuipc+Hy1nwNOEDaqSGEZP7qPkd3i8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzT4RP6Zj6P8QX/jeuUyD2UFljU3bwAPQcXHP87YLnKZpaoy67Z
+	yqJ3r/oqWE2f0x5FLWHDJ880sDUhW3+QvTjRWu1j8nhYe4js6IshhOwX
+X-Gm-Gg: ASbGncuckStL6tV2uKtyUrTq7CpQdWwvoWGJGUjQVyfNGVAguFufa1B/aepPJLMN1AK
+	Qp8DbLfFEzYufv67rrltrFfQagArId4VjGYnGxG5vkeKtyeLWUXrW8XHcVStUvPhilLdN+RVqSU
+	wJ6UpkecRi4KNwsvqfcyNUE9Gt04m7JEdZ9WmhH+ENTFG7cLm5OvxHVN/HQVs6NERoIG3yAkxvC
+	1sj9pLsymOvPWS4YGOOJbkPHJuczUfXgLEdLObGr3SH5zPp0QJ5yLfZMlCR6+HwNg1W7ieAoEQa
+	cC1btpRURU9NnpdJ+k3k+NKYqqSR9/T5QwZHXI78oqRbT6GClouTSeals7LXpr+DKEGkcsWuC6l
+	7tZE+kTXIHF1d8QkYaaNUEnWj5pcCOk9fRmEoRqNuyHIsuXN6i6Jkjs4vrtX51fIX68Irjlsh/b
+	T+ygpWZoqtZv+y8zG1XBXaJEc6AdMO4gRmkw==
+X-Google-Smtp-Source: AGHT+IHUgA14e0djNX2e3oM4Gvg+pve85sKiv5fjYxtKFgTIDLrC8YQXvlm3ko1cndGmvyw773o/eg==
+X-Received: by 2002:a05:600c:1382:b0:471:114e:5894 with SMTP id 5b1f17b1804b1-4778fea3098mr65089985e9.25.1763289543502;
+        Sun, 16 Nov 2025 02:39:03 -0800 (PST)
+Received: from imac ([2a02:8010:60a0:0:adf2:6bca:3da5:f30d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477981347f1sm35447105e9.6.2025.11.16.02.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Nov 2025 02:39:02 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  sdf@fomichev.me
+Subject: Re: [PATCH net-next] tools: ynltool: remove -lmnl from link flags
+In-Reply-To: <20251115225508.1000072-1-kuba@kernel.org>
+Date: Sun, 16 Nov 2025 10:31:40 +0000
+Message-ID: <m2h5uunu9f.fsf@gmail.com>
+References: <20251115225508.1000072-1-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-This patchset is a subset of part 3 patchset to convert bnx2x and qede
-drviers to use ndo callbacks instead ioctl to configure and report time
-stamping. These drivers implemented only SIOCSHWTSTAMP command, but
-converted to also provide configuration back to users. Some logic is
-changed to avoid reporting configuration which is not in sync with the
-HW in case of error happened.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-v4 -> v5:
-- add netif_running() check in bnx2x driver
-- improve phrasing for netif_running() check
-v3 -> v4:
-- improve tx_type checks to the slightly more resilient variant
-- restore netif_running() check in qede driver
-v2 -> v3:
-- keep bnx2x driver's logic as is. Improvements will be sent as
-  follow-ups
-v1 -> v2:
-- remove unused variable in qede patch
+> The libmnl dependency has been removed from libynl back in
+> commit 73395b43819b ("tools: ynl: remove the libmnl dependency")
+> Remove it from the ynltool Makefile.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Vadim Fedorenko (2):
-  bnx2x: convert to use ndo_hwtstamp callbacks
-  qede: convert to use ndo_hwtstamp callbacks
-
- .../net/ethernet/broadcom/bnx2x/bnx2x_main.c  | 72 ++++++++++++------
- drivers/net/ethernet/qlogic/qede/qede_main.c  | 22 +-----
- drivers/net/ethernet/qlogic/qede/qede_ptp.c   | 76 ++++++++++++-------
- drivers/net/ethernet/qlogic/qede/qede_ptp.h   |  6 +-
- 4 files changed, 103 insertions(+), 73 deletions(-)
-
--- 
-2.47.3
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
