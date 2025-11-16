@@ -1,211 +1,259 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CDD8634C
-	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 09:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAE723372C
+	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 09:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763284409; cv=none; b=AWZfW8MVn/22czBvXQcgnY69qOMbiIQsQ1Oh1OUY2JiuFabKDa6AfMOTsKnDOKkANmp2Xvou7HcLax3kCr6pcP4GQ55cmmbLfKExNYDNjeKpLTVunnSlViaq7Rydd3Abzzjn4A7ZrNRyrG5EyCYPz4ChkvUk3b/bcsSTEY5NRU8=
+	t=1763286393; cv=none; b=bSVPtn/1iONwP/FcDHOMhwHGW3raBsbXWsyNlN+/wRhua0AhdkImvSStEoEN8jFS73dtO2T4hj13viWAA7zhgWf6SSsWEXNhzYbLZpqlVwlcYy8OBUEvT7qqImj0QV593vE3CAZaaOm9GRXf3Qq3cStJIIcUI7kml0Zqs+0GWi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763284409; c=relaxed/simple;
-	bh=BkWoUxz2hh26KqyrNr39DUMdACas5qd/J5T8s6lZCO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XeNEdsdbpeHFTRcjuSkneGTmQ1LEAjJy+mXm5P72w4bHZzpDi79ShWPHKw7e00iHNztts5fEs+fs5cFx38FThacp/G+R9+KoIvFIJXb8Gt0/iRbZBnZp+1sheuKvF2lyKXFn4b7lY5AvGnzWBgRSmnuTK/fCr2elZ18pjmJ0jnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mI8WW9P5; arc=none smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763286393; c=relaxed/simple;
+	bh=pQOFacc/6pRj+ytn8qyiq4d21QgkEQFOtLsH9oNa840=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JZVQcnuqKxizyRWHGI+XnDb7wqt8olTG/mcVCoYLmyBz0DOAvUMXLrt7rw1YxWE5L8vBOGiH3A9xTtDEU6Xh2i9qsRFYXUb++dwJgYHQZIBk8lOkMnc2N9GepHb8q6po+2TLmr41wyqJKLG0qctXmY2icugTt/zxhzCt8iG4Z6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gxrFCO50; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mI8WW9P5"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-63bc1aeb427so2914298d50.3
-        for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 01:13:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763284406; x=1763889206; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JNVcTrKvmoNAxnJtsbT6YNfDn6knC6baCtCdNjXtbuU=;
-        b=mI8WW9P5f0iniDglfHG61JvRPCBkR+QoQyeT8oYMQjM0h0XXln1/ywgTBwsqhJbnx5
-         iUTyYnLgE67UtKcy3G9fJdL0WQlnYCrV3ageBIoBWz6EN9e2tgEC5MYnX8mVB6wXEFYK
-         ORzyz3dtmIEaw4EHF/7CyA5b90B7cMq/06toL7STS3I0WXn4JmG7ymo49J/troFQpb0J
-         iNbqFfnFQtTIQIOBdaf6pEsKqsMm/aUp/XWT+b2F19gXCMgozcyH5npo96F4FZxQkwtH
-         eS/PgQb9wi/kGT35f5jBQg9N99RSdn0ueiYyd+HWqjDftCQyoVjDABNu3xpMgnD1WM/J
-         uEEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763284406; x=1763889206;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JNVcTrKvmoNAxnJtsbT6YNfDn6knC6baCtCdNjXtbuU=;
-        b=e5MC2JbHPkGkaNkt5Ff5nhV44x0ah6V/TnrwudkwmJCDASL0EtEGtnGPn/ZgbpkB+7
-         nUotz41D2Rj8q4u6jMqIILvUuhQTDDrH6ScZhGSqEwIZDGh1gTVmDhY1I1SRdIQJsoyd
-         Rw9Dxd24WyX/RbL9FHXLHMOLhIif8gHP8fSYFAgo1wCoskqhy/aawWqlgalm8NGnP+n6
-         6TdusIG7lf3EGUGp6m0LN5eXWkNM/Plrit3FAElISauzvhJ0P9mkJEBvTQufbmMfxqDl
-         uebntcF5VejkzaZFwBCZm8igoPp0OPY2K5rMNdDnfUBb8k/Iqg7vOa34wVkSmfOQBzMa
-         RJAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWISvIqVoHxCckRxV5F0EpUcB/gvOkorFPUk6Bvx9g10OkPXchOKyJeKTcWliZ7KzNFa/Y2Ew=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh5+JvBXhIMFRv4xXViqyPuHeoPXQljoegwMwlH1tnNEe0TkBS
-	DZxl9bzz3N+m/Z1fweAN+YHt0EBMkgNTqZKE43lwqPBtiUPSuSpSy/nFlgtR/9cLlm4jH6iirI5
-	ltRlk57vp4ZtYDd/wtPGNz7rtU5xRduk=
-X-Gm-Gg: ASbGnctnxXyOT0ugn9Yqxl91fv1LMMri6ezvrbho9vz8sbyAgJtT15c4b1WtNw3tnMS
-	uIp+dIdBaYCIEXooCPjIqFNL4Cq2l5AePrYMTSmDKvltT1TK030HcZdo57VF0HpdcrsylU68Yh0
-	KSeS/fudpi0E0eILBim32izEcuE777PnNnBfLcY+BLYRVsVri/zTe/GOx3J4ANvqRd7a/2qHZQ/
-	yVdY5496ruYinrWdMYW0fnJCXNpOdnoE/4dPcf3VEJT2tw1Mjnur3tGukQ5TYMZzFHTV+f90Qvi
-	LX/ajwvseBr0L9Y=
-X-Google-Smtp-Source: AGHT+IGOgWtGvmjQMBDkdB1UQc7aAwuEfB9id/q/7KUXPQcw/751DQs9toKRWGddtMhJ7MEMpbMIskXgiXr7OQmXHt0=
-X-Received: by 2002:a53:d006:0:b0:641:f5bc:6944 with SMTP id
- 956f58d0204a3-641f5bc71acmr3429058d50.72.1763284406364; Sun, 16 Nov 2025
- 01:13:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gxrFCO50"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763286389;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gOKdmAS+pSStXuuMqPxHavhtunygIwQ9eh2TmLglcKg=;
+	b=gxrFCO50k9FYSJNEdPIo4UTsWVbJPMjj5tPRfXLFYp5YKzc08XnwbcEfkSM32erTDdVxXk
+	B7HppslroekJ4y4QxRl8qXSZAy9WCnpydhSqEEEdznS0dYty1wZup6RiuJgLZsQjOLvWzp
+	gwmTP6mOdPiSBpk9esH/tthycTFHwlU=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Manish Chopra <manishc@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v5 2/2] qede: convert to use ndo_hwtstamp callbacks
+Date: Sun, 16 Nov 2025 09:46:10 +0000
+Message-ID: <20251116094610.3932005-3-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251116094610.3932005-1-vadim.fedorenko@linux.dev>
+References: <20251116094610.3932005-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAN9vWDK=36NUdTtZhPMu7Yh15kGv+gkE35A93dU0qg01z5VkbA@mail.gmail.com>
- <67c7ccab-2377-46bf-b59d-01a6d8d7e8f4@gmail.com>
-In-Reply-To: <67c7ccab-2377-46bf-b59d-01a6d8d7e8f4@gmail.com>
-From: Michael Zimmermann <sigmaepsilon92@gmail.com>
-Date: Sun, 16 Nov 2025 10:13:15 +0100
-X-Gm-Features: AWmQ_bki3vsF0c4XZ0is8F_wrw9Q0-AOUjfzQQw-K0HrEBqay1RF_VmJBra_U8Q
-Message-ID: <CAN9vWDJvD9TZAwKUu8NSfbLZTLkNga8AR7LQ4qTTwEDxLr8brw@mail.gmail.com>
-Subject: Re: RTL8127AF doesn't get a link over SFP+ DAC
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Nov 13, 2025 at 8:54=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.c=
-om> wrote:
->
-> On 11/13/2025 6:30 PM, Michael Zimmermann wrote:
-> > Hi,
-> >
-> > I have a RT8127AF card from DIEWU:
-> > https://24wireless.info/diewu-txa403-and-txa405 .
-> > The card is detected just fine:
-> > [125201.683763] r8169 0000:08:00.0 eth1: RTL8127A, xx:xx:xx:xx:xx:xx,
-> > XID 6c9, IRQ 143
-> > [125201.683770] r8169 0000:08:00.0 eth1: jumbo features [frames: 16362
-> > bytes, tx checksumming: ko]
-> > [125201.688543] r8169 0000:08:00.0 enp8s0: renamed from eth1
-> > [125201.715519] Realtek Internal NBASE-T PHY r8169-0-800:00: attached
-> > PHY driver (mii_bus:phy_addr=3Dr8169-0-800:00, irq=3DMAC)
-> > [125202.277034] r8169 0000:08:00.0 enp8s0: Link is Down
-> >
-> > This is what ethtool shows:
-> > Settings for enp8s0:
-> >         Supported ports: [ TP    MII ]
-> >         Supported link modes:   10baseT/Half 10baseT/Full
-> >                                 100baseT/Half 100baseT/Full
-> >                                 1000baseT/Full
-> >                                 10000baseT/Full
-> >                                 2500baseT/Full
-> >                                 5000baseT/Full
-> >         Supported pause frame use: Symmetric Receive-only
-> >         Supports auto-negotiation: Yes
-> >         Supported FEC modes: Not reported
-> >         Advertised link modes:  10baseT/Half 10baseT/Full
-> >                                 100baseT/Half 100baseT/Full
-> >                                 1000baseT/Full
-> >                                 10000baseT/Full
-> >                                 2500baseT/Full
-> >                                 5000baseT/Full
-> >         Advertised pause frame use: Symmetric Receive-only
-> >         Advertised auto-negotiation: Yes
-> >         Advertised FEC modes: Not reported
-> >         Speed: Unknown!
-> >         Duplex: Unknown! (255)
-> >         Auto-negotiation: on
-> >         master-slave cfg: preferred slave
-> >         master-slave status: unknown
-> >         Port: Twisted Pair
-> >         PHYAD: 0
-> >         Transceiver: internal
-> >         MDI-X: Unknown
-> >         Supports Wake-on: pumbg
-> >         Wake-on: d
-> >         Link detected: no
-> >
-> > and `ip a`:
-> > 10: enp8s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc
-> > fq_codel state DOWN group default qlen 1000
-> >     link/ether xx:xx:xx:xx:xx:xx brd ff:ff:ff:ff:ff:ff
-> >     altname enxXXXXXXXXXXXX
-> >
-> > And that's it, the link never comes up. The 10G Mikrotik switch on the
-> > other side sees that the module is inserted on its side, but doesn't
-> > show any change when I plug in the RTL8127AF.
-> >
-> > It works in Windows 11 and it also works with the r8127 Linux driver
-> > downloaded from Realteks website:
-> > https://www.realtek.com/Download/List?cate_id=3D584 :
-> >
-> > [129318.976134] r8127: This product is covered by one or more of the
-> > following patents: US6,570,884, US6,115,776, and US6,327,625.
-> > [129318.976175] r8127  Copyright (C) 2025 Realtek NIC software team
-> > <nicfae@realtek.com>
-> >                  This program comes with ABSOLUTELY NO WARRANTY; for
-> > details, please see <http://www.gnu.org/licenses/>.
-> >                  This is free software, and you are welcome to
-> > redistribute it under certain conditions; see
-> > <http://www.gnu.org/licenses/>.
-> > [129318.988293] r8127 0000:08:00.0 enp8s0: renamed from eth1
-> > [129318.997092] enp8s0: 0xffffd49ec9140000, xx:xx:xx:xx:xx:xx, IRQ 137
-> > [129319.421629] r8127: enp8s0: link up
-> >
-> > ethtool with realteks driver shows something quite interesting:
-> > Settings for enp8s0:
-> >         Supported ports: [ TP ]
-> >         Supported link modes:   1000baseT/Full
-> >                                 10000baseT/Full
-> >         Supported pause frame use: No
-> >         Supports auto-negotiation: No
-> >         Supported FEC modes: Not reported
-> >         Advertised link modes:  1000baseT/Full
-> >                                 10000baseT/Full
-> >         Advertised pause frame use: No
-> >         Advertised auto-negotiation: No
-> >         Advertised FEC modes: Not reported
-> >         Speed: 10000Mb/s
-> >         Duplex: Full
-> >         Auto-negotiation: off
-> >         Port: Twisted Pair
-> >         PHYAD: 0
-> >         Transceiver: internal
-> >         MDI-X: on
-> >         Supports Wake-on: pumbg
-> >         Wake-on: g
-> >         Current message level: 0x00000033 (51)
-> >                                drv probe ifdown ifup
-> >         Link detected: yes
-> >
-> > auto-negotiation is off, even though it's enabled on my Mikrotik
-> > switch. "ethtool -s enp8s0 autoneg on" (or off) on the realtek driver
-> > succeeds but doesn't change what ethtools status shows. "ethtool -s
-> > enp8s0 autoneg off" on the mainline driver does fail with:
-> > netlink error: link settings update failed
-> > netlink error: Invalid argument
-> >
-> > So while I have no idea why things are not working, my best theory is
-> > that auto-negotiation isn't supported (properly) and the mainline
-> > driver doesn't support disabling it.
-> >
-> Realtek uses a proprietary way to deal with the SFP and hides it
-> behind the internal PHY. The SFP signals aren't exposed.
-> When in fiber mode the internal PHY doesn't behave fully compliant
-> with clause 22 any longer. E.g. link status isn't reported by the
-> PHY, but only via a proprietary register.
-> To cut a long story short: Fiber mode isn't supported by r8169
-> at the moment.
->
-> > Thanks
-> > Michael
->
+The driver implemented SIOCSHWTSTAMP ioctl cmd only, but it stores
+configuration in private structure, so it can be reported back to users.
+Implement both ndo_hwtstamp_set and ndo_hwtstamp_set callbacks.
+ndo_hwtstamp_set implements a check of unsupported 1-step timestamping
+and qede_ptp_cfg_filters() becomes void as it cannot fail anymore.
 
-Thanks for the hint. I've spent some time understanding and comparing
-both drivers and testing a couple of things and was actually able to
-get it working with r8169. After some more testing and code cleanup
-I'll send a patch.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ drivers/net/ethernet/qlogic/qede/qede_main.c | 22 +-----
+ drivers/net/ethernet/qlogic/qede/qede_ptp.c  | 76 ++++++++++++--------
+ drivers/net/ethernet/qlogic/qede/qede_ptp.h  |  6 +-
+ 3 files changed, 54 insertions(+), 50 deletions(-)
+
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
+index b5d744d2586f..66ab1b9d65a1 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -506,25 +506,6 @@ static int qede_set_vf_trust(struct net_device *dev, int vfidx, bool setting)
+ }
+ #endif
+ 
+-static int qede_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+-{
+-	struct qede_dev *edev = netdev_priv(dev);
+-
+-	if (!netif_running(dev))
+-		return -EAGAIN;
+-
+-	switch (cmd) {
+-	case SIOCSHWTSTAMP:
+-		return qede_ptp_hw_ts(edev, ifr);
+-	default:
+-		DP_VERBOSE(edev, QED_MSG_DEBUG,
+-			   "default IOCTL cmd 0x%x\n", cmd);
+-		return -EOPNOTSUPP;
+-	}
+-
+-	return 0;
+-}
+-
+ static void qede_fp_sb_dump(struct qede_dev *edev, struct qede_fastpath *fp)
+ {
+ 	char *p_sb = (char *)fp->sb_info->sb_virt;
+@@ -717,7 +698,6 @@ static const struct net_device_ops qede_netdev_ops = {
+ 	.ndo_set_mac_address	= qede_set_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_change_mtu		= qede_change_mtu,
+-	.ndo_eth_ioctl		= qede_ioctl,
+ 	.ndo_tx_timeout		= qede_tx_timeout,
+ #ifdef CONFIG_QED_SRIOV
+ 	.ndo_set_vf_mac		= qede_set_vf_mac,
+@@ -742,6 +722,8 @@ static const struct net_device_ops qede_netdev_ops = {
+ #endif
+ 	.ndo_xdp_xmit		= qede_xdp_transmit,
+ 	.ndo_setup_tc		= qede_setup_tc_offload,
++	.ndo_hwtstamp_get	= qede_hwtstamp_get,
++	.ndo_hwtstamp_set	= qede_hwtstamp_set,
+ };
+ 
+ static const struct net_device_ops qede_netdev_vf_ops = {
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_ptp.c b/drivers/net/ethernet/qlogic/qede/qede_ptp.c
+index a38f1e72c62b..d351be5fbda1 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_ptp.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_ptp.c
+@@ -199,18 +199,15 @@ static u64 qede_ptp_read_cc(struct cyclecounter *cc)
+ 	return phc_cycles;
+ }
+ 
+-static int qede_ptp_cfg_filters(struct qede_dev *edev)
++static void qede_ptp_cfg_filters(struct qede_dev *edev)
+ {
+ 	enum qed_ptp_hwtstamp_tx_type tx_type = QED_PTP_HWTSTAMP_TX_ON;
+ 	enum qed_ptp_filter_type rx_filter = QED_PTP_FILTER_NONE;
+ 	struct qede_ptp *ptp = edev->ptp;
+ 
+-	if (!ptp)
+-		return -EIO;
+-
+ 	if (!ptp->hw_ts_ioctl_called) {
+ 		DP_INFO(edev, "TS IOCTL not called\n");
+-		return 0;
++		return;
+ 	}
+ 
+ 	switch (ptp->tx_type) {
+@@ -223,11 +220,6 @@ static int qede_ptp_cfg_filters(struct qede_dev *edev)
+ 		clear_bit(QEDE_FLAGS_TX_TIMESTAMPING_EN, &edev->flags);
+ 		tx_type = QED_PTP_HWTSTAMP_TX_OFF;
+ 		break;
+-
+-	case HWTSTAMP_TX_ONESTEP_SYNC:
+-	case HWTSTAMP_TX_ONESTEP_P2P:
+-		DP_ERR(edev, "One-step timestamping is not supported\n");
+-		return -ERANGE;
+ 	}
+ 
+ 	spin_lock_bh(&ptp->lock);
+@@ -286,39 +278,65 @@ static int qede_ptp_cfg_filters(struct qede_dev *edev)
+ 	ptp->ops->cfg_filters(edev->cdev, rx_filter, tx_type);
+ 
+ 	spin_unlock_bh(&ptp->lock);
+-
+-	return 0;
+ }
+ 
+-int qede_ptp_hw_ts(struct qede_dev *edev, struct ifreq *ifr)
++int qede_hwtstamp_set(struct net_device *netdev,
++		      struct kernel_hwtstamp_config *config,
++		      struct netlink_ext_ack *extack)
+ {
+-	struct hwtstamp_config config;
++	struct qede_dev *edev = netdev_priv(netdev);
+ 	struct qede_ptp *ptp;
+-	int rc;
++
++	if (!netif_running(netdev)) {
++		NL_SET_ERR_MSG_MOD(extack, "Device is down");
++		return -EAGAIN;
++	}
+ 
+ 	ptp = edev->ptp;
+-	if (!ptp)
++	if (!ptp) {
++		NL_SET_ERR_MSG_MOD(extack, "HW timestamping is not supported");
+ 		return -EIO;
+-
+-	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
+-		return -EFAULT;
++	}
+ 
+ 	DP_VERBOSE(edev, QED_MSG_DEBUG,
+-		   "HWTSTAMP IOCTL: Requested tx_type = %d, requested rx_filters = %d\n",
+-		   config.tx_type, config.rx_filter);
++		   "HWTSTAMP SET: Requested tx_type = %d, requested rx_filters = %d\n",
++		   config->tx_type, config->rx_filter);
++
++	switch (config->tx_type) {
++	case HWTSTAMP_TX_ON:
++	case HWTSTAMP_TX_OFF:
++		break;
++	default:
++		NL_SET_ERR_MSG_MOD(extack,
++				   "One-step timestamping is not supported");
++		return -ERANGE;
++	}
+ 
+ 	ptp->hw_ts_ioctl_called = 1;
+-	ptp->tx_type = config.tx_type;
+-	ptp->rx_filter = config.rx_filter;
++	ptp->tx_type = config->tx_type;
++	ptp->rx_filter = config->rx_filter;
+ 
+-	rc = qede_ptp_cfg_filters(edev);
+-	if (rc)
+-		return rc;
++	qede_ptp_cfg_filters(edev);
++
++	config->rx_filter = ptp->rx_filter;
++
++	return 0;
++}
+ 
+-	config.rx_filter = ptp->rx_filter;
++int qede_hwtstamp_get(struct net_device *netdev,
++		      struct kernel_hwtstamp_config *config)
++{
++	struct qede_dev *edev = netdev_priv(netdev);
++	struct qede_ptp *ptp;
+ 
+-	return copy_to_user(ifr->ifr_data, &config,
+-			    sizeof(config)) ? -EFAULT : 0;
++	ptp = edev->ptp;
++	if (!ptp)
++		return -EIO;
++
++	config->tx_type = ptp->tx_type;
++	config->rx_filter = ptp->rx_filter;
++
++	return 0;
+ }
+ 
+ int qede_ptp_get_ts_info(struct qede_dev *edev, struct kernel_ethtool_ts_info *info)
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_ptp.h b/drivers/net/ethernet/qlogic/qede/qede_ptp.h
+index adafc894797e..88f168395812 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_ptp.h
++++ b/drivers/net/ethernet/qlogic/qede/qede_ptp.h
+@@ -14,7 +14,11 @@
+ 
+ void qede_ptp_rx_ts(struct qede_dev *edev, struct sk_buff *skb);
+ void qede_ptp_tx_ts(struct qede_dev *edev, struct sk_buff *skb);
+-int qede_ptp_hw_ts(struct qede_dev *edev, struct ifreq *req);
++int qede_hwtstamp_get(struct net_device *netdev,
++		      struct kernel_hwtstamp_config *config);
++int qede_hwtstamp_set(struct net_device *netdev,
++		      struct kernel_hwtstamp_config *config,
++		      struct netlink_ext_ack *extack);
+ void qede_ptp_disable(struct qede_dev *edev);
+ int qede_ptp_enable(struct qede_dev *edev);
+ int qede_ptp_get_ts_info(struct qede_dev *edev, struct kernel_ethtool_ts_info *ts);
+-- 
+2.47.3
+
