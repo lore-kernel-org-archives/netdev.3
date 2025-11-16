@@ -1,287 +1,110 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from sonic303-21.consmr.mail.ne1.yahoo.com (sonic303-21.consmr.mail.ne1.yahoo.com [66.163.188.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8F830F959
-	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 17:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DD52DCF69
+	for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 17:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763313261; cv=none; b=B9Ee4mfhDPaaNu9nOZRnQS5OulSwf0v+XiIylXs7oH3YeO7cGBlx3+9ovUtltE71NlSwLetXZT8V/Owpvtk5b8OzaX7uM7q1mjav81Z7QL5Fun43rJGO7moIAJZcba7B5jA7sfcBqLLcLnnO0FFjb7nP7D6AGigXrQnkSNW1TFc=
+	t=1763313434; cv=none; b=hzl/H85TfxX9t4xh4GX4oniiIsoPsI+fD0bvpkOi5rSasJCUai+IWDsObNsXA9xdR3i+siqCxkFGC85p+ksUAModuwzSgRUBx4Hj0ih/a4YNtj3FYY7FPcwgvDo1KSC28GqZAxCU4Wh5rrPp+v06UAfv7ix/qX2jmI80l17seI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763313261; c=relaxed/simple;
-	bh=cSkbpzOScZDOIzNwW1Ore/elvihVGtq9EEd1znjD/vg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JtEKC89FHvQGHL4so0JGe0LhuzXuteT5AB02A+f/qlnZpIcnlCeeMPvrvA4d/xeLWiUkp8i3RFqhyV5rm0NrDG+V3TXl09b2R2+ZFiAuXBQJf3sf5R+EvQkisqXVJhhCcSA7zwpb88+Cziu0eBS0vAfID0bIRy3mGKq5THj4XUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqznU/vH; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763313434; c=relaxed/simple;
+	bh=JxMWQwAU4b9C2bCjmzdkCCMeO0o9Soh43PFQuy7c2AI=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type:
+	 References; b=RcVPg4v/VTY8uH32AH2GvPZEN7dm6rUdBabVMmyjzsOzuVX5wFKDmSykMDC7gY6RJuVH6892UGUFGqE67Fx9KxXWjyWGe4Y43WsgdhZ+OgKHOq+0miFTVJm9KWhOKJEdnn7LFxb6lJ6bYLy3jaJ7tQnSUMcDH3gJ0ZIZmr3NhkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=NrHAjF6I; arc=none smtp.client-ip=66.163.188.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqznU/vH"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4774f41628bso23730935e9.0
-        for <netdev@vger.kernel.org>; Sun, 16 Nov 2025 09:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763313257; x=1763918057; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2JYJQBu9iv6dVjvkSHn+sjpe3Hje65AyykqNzlW6M0I=;
-        b=FqznU/vHNNCzDCRMSjJd4kMvdv2+sV74Hx/l0x5CjAy/XixrbYcGakKendQyIvcSn/
-         CHaKZ9oQebLueb2wnD/KOXeL+W84yoKwM2GEUWSmffAjsSf3YE14gucZ1yENCuWGYLbf
-         5t4gseuIzXMvnO/JFtTzmJHu6nU7DEvHrnJ5wtOgHNY7pSNXnFpw68U7V0IbfA0JqtG2
-         nCcSswOr9/tWmQ8M3lWZHhZ0DXReERTY+7vtySbdQP7BWjYJrCzdjE1MRjTuSQyP2REa
-         EB0DBFqKoLlNJxGF3nPWZ1yjUN3UhSf/y11m81rh20KkK5vta/7l45BsA22SpxsPuKjX
-         boPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763313257; x=1763918057;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2JYJQBu9iv6dVjvkSHn+sjpe3Hje65AyykqNzlW6M0I=;
-        b=cjFE+obscuWSev7cmxtCqJY0dG4bxluzrADCHmym4tc4YY4jdD+AVgcv9ai7/znDP2
-         U8biupojtXvO6j3sVE+XgxpVm7/uBGx3WT4qRfn17L/Ze8cOXbmrC9b2AAjtZKRBzP7l
-         Hw7sMAnoITU4tMavo3XBzl8XvpkGekSJrgUljnoQzFRvoyDHIJLRydqqvGE7paZaKDKo
-         1XvQewGC8ybI0xed6qUVRMU10maV88HCs9w1+8cMHCJcYOcWcyrPlMhADvF9n+fZ99EF
-         RjA3n5Xfh49GAtitf5ymz12LKwX1imzL67bJWNWFIVv+V4xYCluvKUYQA9A/IDP50pAy
-         eGGA==
-X-Gm-Message-State: AOJu0YzaK9aqUKQjkhT+HORGjaqQZwmek/3XnqVZVo8u9bWA3OP/Cwyn
-	x37zidNfTtP6D3XI9B4535ftWG9ABpc0XRrpBVMGk3NBS3S/mR3X510n
-X-Gm-Gg: ASbGncstS4W2VhFMkO378nVsUDSw3T2IxalAXtDzpc2ZMFKuPADpf9GbAw4K+kzZXcb
-	2i3gsEbVYNJHlngt+jlHIg09npf4UMD/4E0a/djdovrZs9ErPhFdRWHhYPCLtNaNbEKbllRwm7W
-	7VjbMnQxD9eC01IVwyvLNZYoj/YqE95Eli493VTqJoEU4QcoFnYE5UBsoaR2Rdd8sQXP2+QGpdM
-	Q0rzARpRDAlbDaoWFJ7crg07Foe6HkghvNePvRUaYmvQKBiTkDpTRWj+Q4JUbWCd5mrG6jngSO3
-	LBvP9jBaFWhyR22mul58b9/Zl4fyMxcNRmA3J+tutUQ2NilWyYkJ8zGy11yOv9PvEWR4uI7gHx6
-	3QT5lBL4zHr4d5EjQ7xI+EDxSj0TQUL9vc2/Rc+BhJ6bUMzSXzVJLabkac66MpphtNDBZou7E/n
-	cST4ezjT4GvYOaxw5Ykhjc5sbekw==
-X-Google-Smtp-Source: AGHT+IHCYuk5mG7mCpI3ofpnHFX152jLfPh0VKK8Yl+QsCayK9hrd3d7t05L3SHcQkISCGCM1B4z6w==
-X-Received: by 2002:a05:600c:a406:b0:477:75b4:d2d1 with SMTP id 5b1f17b1804b1-4778bd13e4amr98405915e9.15.1763313257465;
-        Sun, 16 Nov 2025 09:14:17 -0800 (PST)
-Received: from [192.168.1.243] ([143.58.192.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4779d722bc5sm70874245e9.2.2025.11.16.09.14.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Nov 2025 09:14:16 -0800 (PST)
-From: Andre Carvalho <asantostc@gmail.com>
-Date: Sun, 16 Nov 2025 17:14:05 +0000
-Subject: [PATCH net-next v4 5/5] selftests: netconsole: validate target
- resume
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="NrHAjF6I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1763313431; bh=JxMWQwAU4b9C2bCjmzdkCCMeO0o9Soh43PFQuy7c2AI=; h=Date:From:To:Cc:Subject:References:From:Subject:Reply-To; b=NrHAjF6IREKbCzlBCUyx1TLHk76kF1X2bjaU4k/F7SQ6+mAPu3pIJqWy3BRxcJRbDKIzV3SlNsT8BJBKFiwBa+blV8+dEOQIFVD6e4/eeo+Jam686tvBXnZ91kMBcq+ZAx/KaXfGvCumWLU1jmd6GeY+aNV6H6DF8FPyaa9sCeiRQkrIvLHhni1Ll2Y3bkN69I1kr6IsQ4yveg/2s7eo/HRY75/BPB/CG7DDcuMu9d0HoAG2A38mdLv18efgZGUXZQwT4Mqu5FXYdaffu2abbXui2AbUIC8fAlIUsXjNd7zkm0npFMv4tomP4FNVtzvuvnRnZDajO6jYwQjS73WeyA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1763313431; bh=uwxCzb542pIidImFb7zj0jALkGoRVOnwIoO10U29pLb=; h=X-Sonic-MF:Date:From:To:Subject:From:Subject; b=sIVtbCxpy6BzVxogM6H5l11Tl2FKQGs3YxXkVsNAvtm20vnK6LMNTgeMf25TIcS83PPU/z/p1LBX8DUebq37nJxpvzM2g9bmM3qxH7NaKU2iiftu2vFj9i0L6kEqBjVq7UuW1rgOZnCz91+6o6b2/9Pbesh8zJoXmicUGVCoqRFWzqyJhJjVOqxJ2SBdMvfcwOQSJPhVUnYmtJ0aE2JBEWheTvr/0NUvL0TK8tbTlsZdG8YloWofAbeEUFL+Ux5eI6ddAISqzLnHSAthsHasJSjmi0Zmb684bLP1bcBhJbaXNjm4yx4ywA6enROnEdKPPV1rzSOgjFhJk1XovgV7ow==
+X-YMail-OSG: VvsL1r8VM1lijBZjagzAlqpCuJ0BMk0o_nj8A7T9cZ_wJXa8UUr9sNZh618GhAo
+ GX2ulv9QbL7IT3QIaNS5ZECSu4XpDSnITlW4L5uRpU3bjzgTSTDWbDRten8mmVgx3EarSK83rLBM
+ XylKsIKV7DwWs2kiySE0HIM6lalf_LfFzH0eOPX55EKTm9y4kn6KmxnzvzzMbs4DnGQX42wEbzYU
+ VqsjeUJsfMb9WUbX9s7QesYDeUqprfdfmFt5tZ.6KUoxDgraZs6Om.yIWXFgHLHZK63Q4Bjs7G3x
+ T5XBNXBkVC2Q9fILYEwOpkeMwsagdf5eIOT6t_Fu6FtHwFXM0ZPyb5PgWvh9kuI42yfZkxa0L6ZS
+ pBprnTzgGDp94aHrBBSYfmMm7m9UQQg1EMWMa3RZ1a84yMMtauuruEb98kNXybYWEoYJ3bd3POiX
+ MD0AGilxXyhe6iZw_c_d4t1W0JECtWvgKA5BAbmFnLVFh4AnDbSxZTmqspoegHKbOujK23YyZimd
+ Til6_xybJmOCcnCeMqYvMYBpvctGCeULwTW_ASZhUQZx38AstaBEdYZhOe5Cl00V7p5Eek4lM6.p
+ euzFYHXYUP_OGOYdaIwfgXeP8lypdVz0UN0pS6H90K85ozia4xhwWEKjrLO_Y.e4OX87ZWrc.pbr
+ cqXBK2MPCpI_BOcoIGf2iJqdA8j9c3mBrtUlkFnC5loNSCs181oC9gEj_H.FlWmHPwIsJsCEK1Ow
+ A_zEKzl04LLN5DC0LJCC3nhpIVpd5xTR21p3KoSnSKCQT7cC4aEnBb8R3nPnhrRoQ48XCDFrut8U
+ uSjXMdMtogMUW.RycXGCamHXZWa2y3kpRRiBQ_7rNZANzFLCoPfMZjYmz4y_tcOtoxEM5LUW6Egg
+ mwqlEx77chNC0JTMk5cWtUTSpYKnhJfpXGg.4YdOaZR3WsGRtorRhuAXFL1sLVv4jLI0n8BWQq6l
+ TZZSk_RvUhWgtaNo6Qkb8mYl2jxB8vpCzd.al4ZzYIlxckfbtfiRBq.BYGH6O0dCqlzKtwhCaWNO
+ zgh.3hQWYvHS6BrabUEkv_7zMFrrCENgl0aBp9fVVdiXKz3mmmmNyF8EvRus6qD.mLaX.S74x4fe
+ S.ga66Iu1HeUX52I8QuS6Dx.8alqIMu1XcGkGloFHSSzuGg3AiDeUl1eCg9mpobSuh2BQYEu.d5r
+ 51s9XJQkuV35mnIe3FkuNikfF3KpNJOuoLlDc4nbTSvTGDUbUbizBhhP3dmZuAS2dlnmjz0RJYRN
+ 6RF5FtqpKIqV0jTv6LLZ_Rd4IASE2ougyZgmtMfwkvolVRdT7EsRpZOMfjA2Wiy4IYQpN_ccxhy4
+ w0untREOs68oJcfuRSoyU9j0nVijJVJxQ.W7HEWSe59ZQli6WSG3.3bhETUggE1y.SsTr_f.qgUU
+ 4C1tSIZD5_71C8tdI5y4tWJLOEQxVNCNfmh8ELyasG5f8Rm7_fOnYOjJlqNQm6yRKgHmGJUJRO2Y
+ YXLKOD2myL7KkWUYuTW670G.Eqv0kBld2IK3W9wBDcsRY6QeJwiP9.IGw15O2SW3oL.aYuweREdf
+ CnEWKuKRWDNRe9LOuAASu4VHjcdmHUlWCsqhcvuujcDt.L9SxRupRLzfpuXA8iP_wDXGzi8qcBp2
+ is5DrlNdfDSmsfq2jPTBVWw4j_5Oz8k212vy4J1OR6.659AeDX0Fl2BZMG99eNbUyztyk9qgIK7e
+ AMd50ZRsbA7uK88U01.gaFoQVSCyWttndMbXdgYVFysHHdsDEfMKibNnmvvoGRJTEXJHqHtirABi
+ sWepuHzpmzwFKKJLnCgEDZD8eQ1YecOURzwMkGKhfX9qV4Olrz045eldl1PhOR7xXREsnADw2SCs
+ 6QYyCDeNv0yvgdPo3zs4qsjryNVQvLSrfq5VbgGR2kQLbdxlydmleZgXYZU_HnMqogWwxkjsccNj
+ NNNGZb2uDoUEb1mZ4DHalVFd5Xk_0AHgIKqrS9yAJCO2gjsu3AiG9ps6pozcO._E6b0L0PUyZsmi
+ _Sf.zAkMOabVDc.4uoq08mE0jkdPzwRxOwUpNgN6lAtLj1LFCdUhdc2qloeCT3D68HlArg8mv86K
+ Zso_E789euwRQQ2WJBmQf7UdmaJhFGTlZIGjQnnwNIbqaFh20KWmmjHRzvGMG9kg1ELcjikxPkg8
+ IDVAtwDAVvs41_2OJQwHnYy5r5esMsam0O6tHg3niCEVwWLXr8Ma9GdmKBUoY.DQF6tYBC1vo.oQ
+ _wRE.EeDmoxoBfZHaz9ap4bGbN991z6GG6ERs9GrNj7dDe0yYaG7SUOeD
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 383bffb9-b322-40d1-9a54-691721ce7965
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Sun, 16 Nov 2025 17:17:11 +0000
+Date: Sun, 16 Nov 2025 16:56:24 +0000 (UTC)
+From: Mietek N <namiltd@yahoo.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "linus.walleij@linaro.org" <linus.walleij@linaro.org>, 
+	"edumazet@google.com" <edumazet@google.com>, 
+	"alsi@bang-olufsen.dk" <alsi@bang-olufsen.dk>, 
+	"olteanv@gmail.com" <olteanv@gmail.com>, 
+	"kuba@kernel.org" <kuba@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, 
+	Andrew Lunn <andrew@lunn.ch>, 
+	"davem@davemloft.net" <davem@davemloft.net>
+Message-ID: <2114795695.8721689.1763312184906@mail.yahoo.com>
+Subject: [PATCH] net: dsa: realtek: rtl8365mb: fix return value in
+ rtl8365mb_phy_ocp_write
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251116-netcons-retrigger-v4-5-5290b5f140c2@gmail.com>
-References: <20251116-netcons-retrigger-v4-0-5290b5f140c2@gmail.com>
-In-Reply-To: <20251116-netcons-retrigger-v4-0-5290b5f140c2@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Andre Carvalho <asantostc@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763313249; l=6495;
- i=asantostc@gmail.com; s=20250807; h=from:subject:message-id;
- bh=cSkbpzOScZDOIzNwW1Ore/elvihVGtq9EEd1znjD/vg=;
- b=MlEjVU6NAqK/Eg10qo/ju+anbefWk7ZE96KoLgXDvkn8bCFTefxY4eVTNz3MymmW6l0qa86X5
- yNBUcMiIHpuAfZAdjpOXhBdWAEHBKoe7yMyrh2X3c/I3lQXFgwmLE/z
-X-Developer-Key: i=asantostc@gmail.com; a=ed25519;
- pk=eWre+RwFHCxkiaQrZLsjC67mZ/pZnzSM/f7/+yFXY4Q=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+References: <2114795695.8721689.1763312184906.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.24652 YMailNorrin
 
-Introduce a new netconsole selftest to validate that netconsole is able
-to resume a deactivated target when the low level interface comes back.
+Function rtl8365mb_phy_ocp_write() always returns 0, even when an error
+occurs during register access. This patch fixes the return value to
+propagate the actual error code from regmap operations.
 
-The test setups the network using netdevsim, creates a netconsole target
-and then remove/add netdevsim in order to bring the same interfaces
-back. Afterwards, the test validates that the target works as expected.
-
-Targets are created via cmdline parameters to the module to ensure that
-we are able to resume targets that were bound by mac and interface name.
-
-Signed-off-by: Andre Carvalho <asantostc@gmail.com>
+Fixes: 964a56e ("net: dsa: realtek: add RTL8365MB switch driver")
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 ---
- tools/testing/selftests/drivers/net/Makefile       |  1 +
- .../selftests/drivers/net/lib/sh/lib_netcons.sh    | 35 ++++++--
- .../selftests/drivers/net/netcons_resume.sh        | 97 ++++++++++++++++++++++
- 3 files changed, 128 insertions(+), 5 deletions(-)
+drivers/net/dsa/realtek/rtl8365mb.c | 2 +-
+1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index 33f4816216ec..7dc9e5b23d5b 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -17,6 +17,7 @@ TEST_PROGS := \
- 	netcons_cmdline.sh \
- 	netcons_fragmented_msg.sh \
- 	netcons_overflow.sh \
-+	netcons_resume.sh \
- 	netcons_sysdata.sh \
- 	netcons_torture.sh \
- 	netpoll_basic.py \
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-index 87f89fd92f8c..6157db660067 100644
---- a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-+++ b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-@@ -203,19 +203,21 @@ function do_cleanup() {
- function cleanup_netcons() {
- 	# delete netconsole dynamic reconfiguration
- 	# do not fail if the target is already disabled
--	if [[ ! -d "${NETCONS_PATH}" ]]
-+	local TARGET_PATH=${1:-${NETCONS_PATH}}
-+
-+	if [[ ! -d "${TARGET_PATH}" ]]
- 	then
- 		# in some cases this is called before netcons path is created
- 		return
- 	fi
--	if [[ $(cat "${NETCONS_PATH}"/enabled) != 0 ]]
-+	if [[ $(cat "${TARGET_PATH}"/enabled) != 0 ]]
- 	then
--		echo 0 > "${NETCONS_PATH}"/enabled || true
-+		echo 0 > "${TARGET_PATH}"/enabled || true
- 	fi
- 	# Remove all the keys that got created during the selftest
--	find "${NETCONS_PATH}/userdata/" -mindepth 1 -type d -delete
-+	find "${TARGET_PATH}/userdata/" -mindepth 1 -type d -delete
- 	# Remove the configfs entry
--	rmdir "${NETCONS_PATH}"
-+	rmdir "${TARGET_PATH}"
- }
- 
- function cleanup() {
-@@ -377,6 +379,29 @@ function check_netconsole_module() {
- 	fi
- }
- 
-+function wait_target_state() {
-+	local TARGET=${1}
-+	local STATE=${2}
-+	local TARGET_PATH="${NETCONS_CONFIGFS}"/"${TARGET}"
-+	local ENABLED=0
-+
-+	if [ "${STATE}" == "enabled" ]
-+	then
-+		local ENABLED=1
-+	fi
-+
-+	if [ ! -d "$TARGET_PATH" ]; then
-+		echo "FAIL: Target does not exist." >&2
-+		exit "${ksft_fail}"
-+	fi
-+
-+	local CHECK_CMD="grep \"$ENABLED\" \"$TARGET_PATH/enabled\""
-+	slowwait 2 sh -c "test -n \"\$($CHECK_CMD)\"" || {
-+		echo "FAIL: ${TARGET} is not ${STATE}." >&2
-+		exit "${ksft_fail}"
-+	}
-+}
-+
- # A wrapper to translate protocol version to udp version
- function wait_for_port() {
- 	local NAMESPACE=${1}
-diff --git a/tools/testing/selftests/drivers/net/netcons_resume.sh b/tools/testing/selftests/drivers/net/netcons_resume.sh
-new file mode 100755
-index 000000000000..8f7f07779c41
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netcons_resume.sh
-@@ -0,0 +1,97 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# This test validates that netconsole is able to resume a target that was
-+# deactivated when its interface was removed when the interface is brought
-+# back up.
-+#
-+# The test configures a netconsole target and then removes netdevsim module to
-+# cause the interface to disappear. Targets are configured via cmdline to ensure
-+# targets bound by interface name and mac address can be resumed.
-+# The test verifies that the target moved to disabled state before adding
-+# netdevsim and the interface back.
-+#
-+# Finally, the test verifies that the target is re-enabled automatically and
-+# the message is received on the destination interface.
-+#
-+# Author: Andre Carvalho <asantostc@gmail.com>
-+
-+set -euo pipefail
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "${SCRIPTDIR}"/lib/sh/lib_netcons.sh
-+
-+modprobe netdevsim 2> /dev/null || true
-+rmmod netconsole 2> /dev/null || true
-+
-+check_netconsole_module
-+
-+function cleanup() {
-+	cleanup_netcons "${NETCONS_CONFIGFS}/cmdline0"
-+	do_cleanup
-+	rmmod netconsole
-+}
-+
-+trap cleanup EXIT
-+
-+# Run the test twice, with different cmdline parameters
-+for BINDMODE in "ifname" "mac"
-+do
-+	echo "Running with bind mode: ${BINDMODE}" >&2
-+	# Set current loglevel to KERN_INFO(6), and default to KERN_NOTICE(5)
-+	echo "6 5" > /proc/sys/kernel/printk
-+
-+	# Create one namespace and two interfaces
-+	set_network
-+
-+	# Create the command line for netconsole, with the configuration from
-+	# the function above
-+	CMDLINE=$(create_cmdline_str "${BINDMODE}")
-+
-+	# The content of kmsg will be save to the following file
-+	OUTPUT_FILE="/tmp/${TARGET}-${BINDMODE}"
-+
-+	# Load the module, with the cmdline set
-+	modprobe netconsole "${CMDLINE}"
-+	# Expose cmdline target in configfs
-+	mkdir "${NETCONS_CONFIGFS}/cmdline0"
-+
-+	# Target should be enabled
-+	wait_target_state "cmdline0" "enabled"
-+
-+	# Remove low level module
-+	rmmod netdevsim
-+	# Target should be disabled
-+	wait_target_state "cmdline0" "disabled"
-+
-+	# Add back low level module
-+	modprobe netdevsim
-+	# Recreate namespace and two interfaces
-+	set_network
-+	# Target should be enabled again
-+	wait_target_state "cmdline0" "enabled"
-+
-+	# Listen for netconsole port inside the namespace and destination
-+	# interface
-+	listen_port_and_save_to "${OUTPUT_FILE}" &
-+	# Wait for socat to start and listen to the port.
-+	wait_local_port_listen "${NAMESPACE}" "${PORT}" udp
-+	# Send the message
-+	echo "${MSG}: ${TARGET}" > /dev/kmsg
-+	# Wait until socat saves the file to disk
-+	busywait "${BUSYWAIT_TIMEOUT}" test -s "${OUTPUT_FILE}"
-+	# Make sure the message was received in the dst part
-+	# and exit
-+	validate_msg "${OUTPUT_FILE}"
-+
-+	# kill socat in case it is still running
-+	pkill_socat
-+	# Cleanup & unload the module
-+	cleanup
-+	trap - EXIT
-+
-+	echo "${BINDMODE} : Test passed" >&2
-+done
-+
-+exit "${ksft_pass}"
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/=
+rtl8365mb.c
+index 964a56e..d06b384 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -769,7 +769,7 @@ static int rtl8365mb_phy_ocp_write(struct realtek_priv =
+*priv, int phy,
+out:
+=C2=A0=C2=A0=C2=A0=C2=A0rtl83xx_unlock(priv);
 
--- 
-2.51.2
+-=C2=A0=C2=A0=C2=A0=C2=A0return 0;
++=C2=A0=C2=A0=C2=A0=C2=A0return ret;
+}
+
+static int rtl8365mb_phy_read(struct realtek_priv *priv, int phy, int regnu=
+m)
+--
+2.43.0
+
+
 
