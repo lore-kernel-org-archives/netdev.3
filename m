@@ -1,191 +1,124 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CDA28D8DF
-	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 15:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EA12641E7
+	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 16:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763394541; cv=none; b=uNzBx4gs4q7XTSCLUsrj7pJtBAxrfsg8aLRu5kyaewCB44GUENvhwGjL8itMFyhOZZ3DdpII6OcP8iMzxi1C/oTWpQc//O0HRVFjOx9w0V5E7v/VUPZgzSV42ZxVxzngMSbDuvZBDAXEWSd5scRJjEsqp2NUpR6WcXvE/Qdfhq8=
+	t=1763395234; cv=none; b=XlxlqFLbcUDNukNkGfaKQFlxMZ20ZB066H7rFIAQKYPy7/lDcN3uBWwL2cDeXan01Hd4zy8mMn+TyRTcCPWY535nJfqMNFex1LkxkRn3vvcza13AudkqWl+D55rMmPIQMDje4arXBVcrVmR0pkUglhqf4G2MoTtm8sb8r2OYAb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763394541; c=relaxed/simple;
-	bh=dW17Xtf60yMPT5ps4T8sOTJvB9Wdvt1Dcr9Gkv/rbrI=;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=TbY1XGSuFmsVKNN54lfVuLU2pJ74HAs3tQqfB/TSbbzTHq/WsYsrYZbgoh1zXHLij9fUlPoMz42Eb3557CTsmOU4i9lKLDneKYns4LR/c/cQYQQJkey/gnP6u/cl31yQFZIU+Z/TQVRSXU5qaVjmAl9pHsFSW+y6aN+lvYEp158=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Un7Gp+qc; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763395234; c=relaxed/simple;
+	bh=G7C4pAgpKtZexEHJcykCN6RuqFFJo5KbCaykefTP9os=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ja0VJt5H1mx3mQQUI6MYt6s4cT8hSm8c+rjqTXYrLEAHBGMPtxu6Fmwy8D60LS67Ez3RC9goNF/Zd3jQ7gYdpvqR2zHe+xbjDMAK0nbFQTJzgdWfcH13ICW5frnuMuh/iPiTOdqCsaUJvgEQ9bQC1nfQkEiIn3idILX321fYz8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=O5EyoHLI; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Un7Gp+qc"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37bbb36c990so13238671fa.0
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 07:48:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="O5EyoHLI"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ee1a3ef624so9741551cf.0
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 08:00:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763394538; x=1763999338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:date:message-id
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LGblZlAzPFW/2WQFRjSDWi5Fba28kD07gZJ1IX2a3nA=;
-        b=Un7Gp+qclTuRZv7ffd9KVRG0N07pMeLxqFb3tdXaAzhmZ4RFxGI/HnESxhKvsuvQYB
-         YjoN/gU6n8aobsy7pbc2oX+C5sil5VqcUL8iuybnkcG8amQz9mnsPp3qygqoOPM5XBx/
-         svro+HtVAWKrpdmrz8DA14zQpi8Oo0bzsgA94dBkYDEoULrssCy64KymCM9rNkZyeXef
-         PY3Y4l347ivLqrPz7LnpHpN9HgeKNhNcXS4oirsMnn+TnfpzlKOye3i85FwsotL1XXtt
-         JlnsGaoWW30c6RPGxOaz26v4Cc7IeCNh7PJvbmOfY6JovuxphT2CTevzV3nDGel5CMba
-         UMBA==
+        d=ziepe.ca; s=google; t=1763395231; x=1764000031; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gFCLv8SrKLLdHd1BTr34c+OpWZv8CYrj5E911NYrygg=;
+        b=O5EyoHLIhbrQuztPhtUFu74iYvDbavEgjlvI3ocBpCsWgvRTYhekXKOyBqMvrRZgS5
+         XtNhz/v05SOPK6Bmy8b1MT4K+92OCcHdpXyynn27yKtp0kPfVa/IHLSeZewoV6QCLxbd
+         MvN4HIIiMY0vWcBc0p8nzuyeCMkpvTtB1pQCEu5eKXqU9jRiAeDPJm44wE1iCbg7JoXw
+         ZOlr7F/M3C0jBYGrBrZpLhT+2GLRIEaCRvM76q0dEv613B3JOSGmZpy1uj7v+Q0n5l9X
+         th9gNsW8s8wDzeCjDu61LIPxThJSarYueYtavnLaOPFblcu9AWJvuNATHHb9AmOXfgo5
+         olYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763394538; x=1763999338;
-        h=content-transfer-encoding:mime-version:user-agent:date:message-id
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LGblZlAzPFW/2WQFRjSDWi5Fba28kD07gZJ1IX2a3nA=;
-        b=VAmerSHOZ3E+3uitFeD/Nc/DAEVkexoDSXcloje/so2MD+9DrSAAf8xgbnZsINHAke
-         U6L/TetDeXN9I1JQI3K+DtVnE80QJ8Ea+dKeTc+TkNX4YC8f2ajzXdfiVwtq7M95pWuB
-         zLbRtYvlfqM99RQuCuJTfXjNnSgZWQh+3cSzBEsv4b0ueCS3MtQajJcV8EwBTqC81DUk
-         VkqI0CUVHUQbNFUQwI4apoM0n99mGfmgqkmNnzWxIAM0mZd2YH6hn8iVBwTCfzlhWw8e
-         KGdH7kQvmtZ0jQpTUhfIti+2L0cgZQPZ06Gci2A60EXlHbgl+6rVivY7Z8n0Kk9Dy6xE
-         hoiA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7/DMcQrEnj4DunS6clLKAXhLhGSFfmsBXrIEVHLrTs5YTMAlokWXhx7t8NUCZ8E4aZvvFQNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvR44id247DSrQdevCoM5RAYI51mljsbmakKPJQWfY+QWPFjRt
-	537xBvNeq0h0zpf63VHR7LCS5NVCnKgr4nPa01C5zAdbdHs20BcxpzAuGKaQSF3H
-X-Gm-Gg: ASbGncvHrOEY7LZgbDPimDgqA2jSzOU1Yv+/jryU+qUV21Esv3TM/Kq6i41Oxf3C0Ic
-	NNZT8rx2N7/TwEKb+vRWJcOs0IYoFSLIH1lKruCNXXG7ETcUEHOQD+sV9mb08pL2VCdFdQ15DGr
-	7Ax6Z+NTrI26gJ8vAf4SH0I4CcqQ1xBl3GTiiAAC6xHI64LhTKx9hobQiFTni09exEsPTLgn4/N
-	ThQDcNnOgJHr8TX0oSK3UmsAlQPTOQAqSBlC2YUNvMDuC7m8+TyNmkmubRNgP5VuOLuRrSXL72m
-	Nu+aHuixlDdICVjIqn9jqos9hx11oKdwYuWtN2khgcG85YU+Ny2TToM7O26zDV9udnHOOa4qvAy
-	7tVQ2JtQlJjeQ/E0cbmeBLSv4hE26Hcu8trgc5KBcbR/vZdf3WEj3DLcqRGMQK356sa/LeJMKcn
-	Pg+LOUlB1V/DnYko5/XwNWkkY=
-X-Google-Smtp-Source: AGHT+IF1rpPVTmlQvY0tbCs1bx4/RNae4dLLTTWFHwfN3jpYicr+8cuN8Uv57cOfRwrbAVJg0vGaGg==
-X-Received: by 2002:a05:651c:310:b0:37b:986a:fc1 with SMTP id 38308e7fff4ca-37b9b16d83amr29417181fa.22.1763394537247;
-        Mon, 17 Nov 2025 07:48:57 -0800 (PST)
-Received: from lilem.mirepesht ([89.40.241.109])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37b9cee2beesm29047651fa.43.2025.11.17.07.48.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 17 Nov 2025 07:48:56 -0800 (PST)
-From: Ali Gholami Rudi <aligrudi@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Eugenio P=?UTF-8?B?w6k=?=rez" <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Kernel Crashes When Using VHOST/VIRTIO
-Message-ID: <20251711154506@laper.mirepesht>
-Date: Mon, 17 Nov 2025 15:45:06 -0000
-User-Agent: Neatmail/1.1 (https://github.com/aligrudi/neatmail)
+        d=1e100.net; s=20230601; t=1763395231; x=1764000031;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gFCLv8SrKLLdHd1BTr34c+OpWZv8CYrj5E911NYrygg=;
+        b=oMuA6s/AnkCuDBwj6F2wePaDAwn3L7xswPhxX9XldFDvD1R19rEkeFB/2EH2TjrK3a
+         m/qqve5BkypKvVdHd+idQpnZz6/jxnjwDyf8AAy2C5h3M7+3JxDxSvD/2rXlKWci27YX
+         Ks6y1Ck6OEbFF6eq5RpeMDpvF4/xWANMfjpUE/MF8//Uvc2fZObi1UbPWIs/UkXihX/q
+         /h7M2HkRyJq3mNV698c0bgBCiY7yys4W8sukCcOZhoiU3MyfPssdHj9GYpU63caFkpcf
+         oTeRrsxlVXd643R5zykHKV5g5IgWOOsgWI7ukkvSZG4/v6U5jlvUR77D5zUw9EaXlEDu
+         baDA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0y7gt+LU1gJl7x8htW8Dwlze48Nav7VEBvS6FG72HXXgRzxaPOZhNamB16n/LG9z2X1CzDvs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIGjA8rUscV5C8mdWmw3xiaraX5SRognb6FkfNqU73WNcOarRs
+	/RT00BWpPkNiVgAtbqjtj0jLrqBV1FAUscZ+NhQgymvj8dqc/vGno0KWgJOZdTYb8kQ=
+X-Gm-Gg: ASbGnctPzXyg7d37BIYiZ8JyA2oQoD9FHf6vjU4l7BwbjX4uJMoLfPWDJ6m8rZUO+ix
+	A7UNwR3HQqWUPYjDgDtKBiFujL64zpjHtPZuAGdWh8B4bJFxx2VxiWGL0XFos37x0Jwa4C0wGvb
+	iwDscnJXM/cETw34esCbZPZs7SLwJoBjEljpfu2xOXjMDcC9mNrAp7I3EqMM04hm6x8ouKK4B9v
+	VBH/x3wDPLASdpFGcZMdzEb3r/X+RjHPgSqLD2uOpjGpIUWVmGkeC5O/ymPW8WxrP3kDk1fpII7
+	H1vgVrZnSlvdeBjf3cs5NjLC4+UTS3Hmt+wtG9Ii2A9VSXaL+W7TzvCAfCxxtpihwXocd28Uimu
+	MOlUig5Cu3F1tD/FA4ON/7dZjLkkVwHaPkKxGKtXHwYbY+74qcdo95RpwQMCMUjpSFokaIGzDL2
+	ydVPZcd2rYNrc7NLIf3+X5I+bKKXO+CzLV31HjCFqTR08w5WmW5B0SFogE
+X-Google-Smtp-Source: AGHT+IHbSQImGkihOS5IZmENbT3R5EBp3J8G7fdTRwsSVJjLa5azC+CHu51Ebm1tLe+D3yglmQCuLw==
+X-Received: by 2002:a05:622a:1453:b0:4ee:2e6e:a0f9 with SMTP id d75a77b69052e-4ee2e6ea38fmr9781441cf.35.1763395229938;
+        Mon, 17 Nov 2025 08:00:29 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-882862d04e1sm94957706d6.7.2025.11.17.08.00.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 08:00:29 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vL1eW-000000004wY-27Uj;
+	Mon, 17 Nov 2025 12:00:28 -0400
+Date: Mon, 17 Nov 2025 12:00:28 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [RFC 2/2] Set steering-tag directly for PCIe P2P memory access
+Message-ID: <20251117160028.GA17968@ziepe.ca>
+References: <20251113213712.776234-1-zhipingz@meta.com>
+ <20251113213712.776234-3-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113213712.776234-3-zhipingz@meta.com>
 
-Hi,
+On Thu, Nov 13, 2025 at 01:37:12PM -0800, Zhiping Zhang wrote:
+> RDMA: Set steering-tag value directly in DMAH struct for DMABUF MR
+> 
+> This patch enables construction of a dma handler (DMAH) with the P2P memory type
+> and a direct steering-tag value. It can be used to register a RDMA memory
+> region with DMABUF for the RDMA NIC to access the other device's memory via P2P.
+> 
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> ---
+>  .../infiniband/core/uverbs_std_types_dmah.c   | 28 +++++++++++++++++++
+>  drivers/infiniband/core/uverbs_std_types_mr.c |  3 ++
+>  drivers/infiniband/hw/mlx5/dmah.c             |  5 ++--
+>  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 12 +++++---
+>  include/linux/mlx5/driver.h                   |  4 +--
+>  include/rdma/ib_verbs.h                       |  2 ++
+>  include/uapi/rdma/ib_user_ioctl_cmds.h        |  1 +
+>  7 files changed, 46 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/infiniband/core/uverbs_std_types_dmah.c b/drivers/infiniband/core/uverbs_std_types_dmah.c
+> index 453ce656c6f2..1ef400f96965 100644
+> --- a/drivers/infiniband/core/uverbs_std_types_dmah.c
+> +++ b/drivers/infiniband/core/uverbs_std_types_dmah.c
+> @@ -61,6 +61,27 @@ static int UVERBS_HANDLER(UVERBS_METHOD_DMAH_ALLOC)(
+>  		dmah->valid_fields |= BIT(IB_DMAH_MEM_TYPE_EXISTS);
+>  	}
+>  
+> +	if (uverbs_attr_is_valid(attrs, UVERBS_ATTR_ALLOC_DMAH_DIRECT_ST_VAL)) {
+> +		ret = uverbs_copy_from(&dmah->direct_st_val, attrs,
+> +				       UVERBS_ATTR_ALLOC_DMAH_DIRECT_ST_VAL);
+> +		if (ret)
+> +			goto err;
 
-The problem happens if a Qemu VM using vhost/virtio receives packets at
-a very high rate.  After Qemu's quit command or when the VM is rebooted,
-the kernel panics.  The problem is easy to reproduce; we tried different
-kernel versions, including 6.1.158 and the mainline, with the same result.
-We also reproduced the problem with both Mellanox ConnectX-6 and Intel
-XL710 NICs.  The VM is run in Debian 12 using Qemu-7.2.19, on a machine
-with AMD Ryzen 9 processor and 192GB of memory.
+This should not come from userspace, the dmabuf exporter should
+provide any TPH hints as part of the attachment process.
 
-I have to note that while Qemu's quit command triggers the problem,
-if Qemu is killed with SIGTERM, nothing happens.  Kernel's call trace
-is included at the end of this email.
+We are trying not to allow userspace raw access to the TPH values, so
+this is not a desirable UAPI here.
 
-Thanks,
-Ali
-
-------------[ cut here ]------------
-kernel BUG at mm/slub.c:419!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 119 PID: 0 Comm: swapper/119 Not tainted 6.1.0-30-amd64 #1  Debian 6.1.124-1
-Hardware name: Supermicro AS -1023US-TR4/H11DSU-iN, BIOS 2.5 10/25/2022
-RIP: 0010:__slab_free+0x118/0x2d0
-Code: 74 35 49 8b 06 48 89 4c 24 20 48 c1 e8 36 4c 8b a4 c3 d8 00 00 00 4c 89 e7 e8 e4 e3 71 00 48 8b 4c 24 20 48 89 44 24 18 eb 8f <0f> 0b f7 43 08 00 0d 21 00 75 cd eb c6 80 4c 24 53 80 e9 75 ff ff
-RSP: 0018:ffffbbfedab8c8c8 EFLAGS: 00010246
-RAX: ffff96e7c0c89070 RBX: ffff962c5000e700 RCX: 0000000080400026
-RDX: ffffbbfedab8c8f0 RSI: fffffb5d6f032200 RDI: ffffbbfedab8c930
-RBP: ffff96e7c0c89000 R08: 0000000000000001 R09: ffffffffc0ecafe5
-R10: 000000000000037c R11: 0000000000000370 R12: 0000000000000000
-R13: ffff96e7c0c89000 R14: fffffb5d6f032200 R15: ffff96e7c0c89000
-FS:  0000000000000000(0000) GS:ffff97284e7c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffd109bccb7010 CR3: 0000000fce206000 CR4: 0000000000350ee0
-Call Trace:
- <IRQ>
- ? __die_body.cold+0x1a/0x1f
- ? die+0x2a/0x50
- ? do_trap+0xc5/0x110
- ? __slab_free+0x118/0x2d0
- ? do_error_trap+0x6a/0x90
- ? __slab_free+0x118/0x2d0
- ? exc_invalid_op+0x4c/0x60
- ? __slab_free+0x118/0x2d0
- ? asm_exc_invalid_op+0x16/0x20
- ? tun_net_xmit+0x2c5/0x4f0 [tun]
- ? __slab_free+0x118/0x2d0
- ? __slab_free+0xbf/0x2d0
- tun_net_xmit+0x2c5/0x4f0 [tun]
- dev_hard_start_xmit+0x63/0x1d0
- sch_direct_xmit+0xa0/0x370
- __qdisc_run+0x145/0x590
- __dev_queue_xmit+0x7e9/0xd90
- ? srso_return_thunk+0x5/0x10
- br_dev_queue_push_xmit+0xb7/0x1d0 [bridge]
- br_handle_frame_finish+0x365/0x5b0 [bridge]
- ? srso_return_thunk+0x5/0x10
- ? nft_do_chain_netdev+0x15f/0x2f0 [nf_tables]
- ? srso_return_thunk+0x5/0x10
- br_handle_frame+0x2a6/0x3c0 [bridge]
- ? br_handle_frame_finish+0x5b0/0x5b0 [bridge]
- __netif_receive_skb_core.constprop.0+0x263/0xef0
- ? srso_return_thunk+0x5/0x10
- ? asm_sysvec_call_function_single+0x16/0x20
- __netif_receive_skb_list_core+0x13a/0x2c0
- ? srso_return_thunk+0x5/0x10
- netif_receive_skb_list_internal+0x1cd/0x300
- ? dev_gro_receive+0x3b1/0x730
- napi_complete_done+0x6d/0x1a0
- i40e_napi_poll+0xe27/0x1330 [i40e]
- __napi_poll+0x2b/0x160
- net_rx_action+0x2a0/0x350
- ? srso_return_thunk+0x5/0x10
- handle_softirqs+0xd7/0x280
- ? handle_edge_irq+0x87/0x220
- __irq_exit_rcu+0xac/0xe0
- common_interrupt+0x82/0xa0
- </IRQ>
- <TASK>
- asm_common_interrupt+0x22/0x40
-RIP: 0010:finish_task_switch.isra.0+0x96/0x2d0
-Code: 45 34 00 00 00 00 0f 1f 44 00 00 49 8b 9c 24 20 0a 00 00 48 85 db 0f 85 aa 00 00 00 4c 89 e7 e8 b0 a5 96 00 fb 0f 1f 44 00 00 <65> 48 8b 04 25 80 fb 01 00 eb 42 4d 85 f6 74 21 65 48 8b 04 25 80
-RSP: 0018:ffffbbfed0adfe50 EFLAGS: 00000282
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000002
-RDX: 0000000000000000 RSI: ffff962c5ccc1980 RDI: ffff97284e7f1a40
-RBP: ffffbbfed0adfe78 R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000fffffffb R11: 0000000000000000 R12: ffff97284e7f1a40
-R13: ffff95424d908000 R14: 0000000000000000 R15: 0000000000000001
- __schedule+0x355/0x9e0
- schedule_idle+0x26/0x40
- do_idle+0x172/0x2a0
- cpu_startup_entry+0x26/0x30
- start_secondary+0x12a/0x150
- secondary_startup_64_no_verify+0xe5/0xeb
- </TASK>
-Modules linked in: nfsd nfs_acl nbd act_police cls_matchall sch_ingress vhost_net vhost vhost_iotlb tap sch_tbf tun nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nft_limit nft_meta_bridge nf_tables nfnetlink rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs bridge stp llc bonding msr cpufreq_powersave cpufreq_ondemand cpufreq_userspace cpufreq_conservative tls intel_rapl_msr intel_rapl_common amd64_edac edac_mce_amd kvm_amd kvm irqbypass ghash_clmulni_intel sha512_ssse3 sha512_generic sha256_ssse3 sha1_ssse3 aesni_intel ipmi_ssif crypto_simd cryptd rapl pcspkr sunrpc binfmt_misc nls_ascii ast nls_cp437 drm_vram_helper vfat drm_ttm_helper fat ttm drm_kms_helper sr_mod cdrom acpi_ipmi sp5100_tco ccp sg watchdog k10temp ipmi_si ipmi_devintf ipmi_msghandler evdev joydev acpi_cpufreq button drm fuse loop efi_pstore dm_mod configfs ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 efivarfs raid456 async_raid6_recov async_memcpy async_pq async_xor
- async_tx xor raid6_pq libcrc32c crc32c_generic raid1 raid0 multipath linear raid10 hid_generic usbhid uas md_mod hid usb_storage crc32_pclmul crc32c_intel nvme nvme_core ahci xhci_pci libahci t10_pi xhci_hcd crc64_rocksoft libata crc64 igb crc_t10dif i40e usbcore scsi_mod crct10dif_generic i2c_algo_bit crct10dif_pclmul crct10dif_common dca scsi_common i2c_piix4 usb_common
----[ end trace 0000000000000000 ]---
-RIP: 0010:__slab_free+0x118/0x2d0
-Code: 74 35 49 8b 06 48 89 4c 24 20 48 c1 e8 36 4c 8b a4 c3 d8 00 00 00 4c 89 e7 e8 e4 e3 71 00 48 8b 4c 24 20 48 89 44 24 18 eb 8f <0f> 0b f7 43 08 00 0d 21 00 75 cd eb c6 80 4c 24 53 80 e9 75 ff ff
-RSP: 0018:ffffbbfedab8c8c8 EFLAGS: 00010246
-RAX: ffff96e7c0c89070 RBX: ffff962c5000e700 RCX: 0000000080400026
-RDX: ffffbbfedab8c8f0 RSI: fffffb5d6f032200 RDI: ffffbbfedab8c930
-RBP: ffff96e7c0c89000 R08: 0000000000000001 R09: ffffffffc0ecafe5
-R10: 000000000000037c R11: 0000000000000370 R12: 0000000000000000
-R13: ffff96e7c0c89000 R14: fffffb5d6f032200 R15: ffff96e7c0c89000
-FS:  0000000000000000(0000) GS:ffff97284e7c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffd109bccb7010 CR3: 0000000fce206000 CR4: 0000000000350ee0
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: 0x22a00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-
+Jason
