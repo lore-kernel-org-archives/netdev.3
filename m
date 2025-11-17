@@ -1,122 +1,121 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A730308F39;
-	Mon, 17 Nov 2025 17:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E827935F
+	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 17:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763399865; cv=none; b=VQa2BQkrdbGj3HpJIwTgl2Hgz06M9d7vO6jLndaYEVCxWJa8jygIgZwPiNO2N9/f585lua06crO+HCziA903tnfz8KCpPK95GIrtEYOWp5YGAhzr6CHftiEJZwvfmf8i+Vx54G4BY6q2QmX7hFQBSDnRw0a4JmZobar6Jm5eDOw=
+	t=1763401161; cv=none; b=CSr3ngn0WVcLjUHeCmKcX/BS4QTZ8aqSHbwk8RUcts+rK1AoioTiAWNJ9L26jmCEqcr/wVUx7CkpSURktETJJ3QppyGzIPXyhcUqoKfxTkOduvqOE263q0ft+Jhya8qnT/IKq8wFtutekeH+8atYAwo/vUXSrrOOt/NQj5nsjCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763399865; c=relaxed/simple;
-	bh=Rjs2OOyF6SYECcdH0ADxnHYKMjotvNyhStyzl9wulrw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=KiIIbL0H1haI1qTRgCxEcfPAsTInAlJDZsx4ANfPPpiP5Ssg/XFST84q5YiYxaXLaj0bgmGLOkkwV33OsWSHhPZuUvbaylnQ9trSMOx1peFPT2b027gcWM98U2JHuRKKRkGuWPRBFdDvFU49vN/j1ts6R4KDkD1djlhIyg0zP1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=WxHV3RI3; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1763401161; c=relaxed/simple;
+	bh=gCVi1ujSlZCVvKqC5qVeWlGdEHW5kKS+H5GkDDqAhkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aRbvJp0stGNpjZCcPZHXFyCmKm+qJKE3lvn0oO73iXjQmgKv+V6P7SVE5iBqh0S4eAqq/W09+xyvYeIf2Yb/6VjjuXgNrb5Xigp7zFV6Omvmg4RQVZs6hCBzMfSZKzm+1Hhz4rMUbqbR63mY4VpV/hswc+gRkVinK+3h3XH4nug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=whzQxRT+; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="WxHV3RI3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1763399863; x=1794935863;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Rjs2OOyF6SYECcdH0ADxnHYKMjotvNyhStyzl9wulrw=;
-  b=WxHV3RI3QgShRTEgH1DzPImfGGb9dTwy7FC3F/Hmq9zK8QqgB7xyfyEL
-   iwo44nA5WcM9li+uhsHobiAOLk4teNxpUHFMnkV/YgWE75mKm2w7P+A+/
-   fa5YAwdeRfxU7TRQUuVNZ3Q2UMat+5jEukFAxTvewr0rKu5pSMfsQIu+7
-   kM/a6kUbPD0rCZx2brLJcVedlJGf7JTPk0HKCD7I3lPuzp0KjXFgSnGwi
-   SsdnbsA1SBFLw0+UiDkPUqYzj7Re76eACpl9qOQP0HJTKFjvSe9S+oB/P
-   4mQJz032deFPQxUjk9ynkafCtmHZfmCXuwENM3XS18cNDOD7H1W2rIwmC
-   A==;
-X-CSE-ConnectionGUID: COIhNW6VSiuOuR1c6xAlwQ==
-X-CSE-MsgGUID: 31W8C5cmQZqT6akm8Ar6YA==
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="48617166"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 17 Nov 2025 10:17:41 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 17 Nov 2025 10:17:02 -0700
-Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 17 Nov 2025 10:16:59 -0700
-Message-ID: <c352ba06-05b8-47d1-ba0b-6972a06e9d29@microchip.com>
-Date: Mon, 17 Nov 2025 18:16:58 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="whzQxRT+"
+Message-ID: <59d08292-6f38-4784-b12b-520fd24600a7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763401157;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xHX3MnQzc/7gW3re+k58QWQwpOD8JJvZtIAKZeMj+3A=;
+	b=whzQxRT+fXYazHXwaGm87corTH12nfT500cAkbAUUNKnEf1HPy3QVZazCegEkXdJP9sxwb
+	E9C5db42EQhDYIyYWIyf0YgSS1jyMlhSVNFD0Hzb3SnO26HzHlgELDUdlEG4EiL3KWx4Ff
+	fFM547I9DZVOmPcYH35Cuwo7I/nJ2As=
+Date: Mon, 17 Nov 2025 17:39:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next] dt-bindings: net: cdns,macb: Add pic64gx compatibility
-To: Conor Dooley <conor@kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>, Conor Dooley
-	<conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
-References: <20251117-easter-machine-37851f20aaf3@spud>
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Content-Language: en-US, fr
-Organization: microchip
-In-Reply-To: <20251117-easter-machine-37851f20aaf3@spud>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH net-next v2 2/9] phy: add hwtstamp_get callback to phy
+ drivers
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Andrei Botila <andrei.botila@oss.nxp.com>,
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Simon Horman <horms@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org
+References: <20251113113207.3928966-1-vadim.fedorenko@linux.dev>
+ <20251113113207.3928966-3-vadim.fedorenko@linux.dev>
+ <aRXIuckumra-3Y0L@shell.armlinux.org.uk>
+ <12c8b9e9-4375-4d52-b8f4-afccba49448c@linux.dev>
+ <aRXN61oICP3Vkk84@shell.armlinux.org.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <aRXN61oICP3Vkk84@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 17/11/2025 at 17:24, Conor Dooley wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+On 13/11/2025 12:24, Russell King (Oracle) wrote:
+> On Thu, Nov 13, 2025 at 12:12:44PM +0000, Vadim Fedorenko wrote:
+>> On 13/11/2025 12:02, Russell King (Oracle) wrote:
+>>> On Thu, Nov 13, 2025 at 11:32:00AM +0000, Vadim Fedorenko wrote:
+>>>> PHY devices had lack of hwtstamp_get callback even though most of them
+>>>> are tracking configuration info. Introduce new call back to
+>>>> mii_timestamper.
+>>>>
+>>>> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+>>>
+>>> As part of my Marvell PTP work, I have a similar patch, but it's
+>>> way simpler. Is this not sufficient?
+>>>
+>>> __phy_hwtstamp_get() is called via phylib_stubs struct and
+>>> phy_hwtstamp_get(), dev_get_hwtstamp_phylib(), dev_get_hwtstamp(),
+>>> and dev_ifsioc().
+>>>
+>>> Using the phylib ioctl handler means we're implementing a path that
+>>> is already marked as legacy - see dev_get_hwtstamp():
+>>>
+>>>           if (!ops->ndo_hwtstamp_get)
+>>>                   return dev_eth_ioctl(dev, ifr, SIOCGHWTSTAMP); /* legacy */
+>>>
+>>> So, I think the below would be the preferred implementation.
+>>
+>> You mean do not add SIOCGHWTSTAMP case in phy_mii_ioctl() as we should
+>> never reach this legacy option?
 > 
-> From: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>
+> We _can_ reach phy_mii_ioctl() for SIOCGHWTSTAMP where drivers do not
+> provide the ndo_hwtstamp_get() method. However, as this is legacy code,
+> the question is: should we add it?
 > 
-> The pic64gx uses an identical integration of the macb IP to mpfs.
+>> Technically, some drivers are (yet) not
+>> converted to ndo_hwtstamp callbacks and this part can potentially work
+>> for bnx2x driver, until the other series lands.
 > 
-> Signed-off-by: Pierre-Henry Moussay <pierre-henry.moussay@microchip.com>
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Thanks, regards,
-   Nicolas
-
-> ---
-> CC: Andrew Lunn <andrew+netdev@lunn.ch>
-> CC: David S. Miller <davem@davemloft.net>
-> CC: Eric Dumazet <edumazet@google.com>
-> CC: Jakub Kicinski <kuba@kernel.org>
-> CC: Paolo Abeni <pabeni@redhat.com>
-> CC: Rob Herring <robh@kernel.org>
-> CC: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> CC: Conor Dooley <conor+dt@kernel.org>
-> CC: Nicolas Ferre <nicolas.ferre@microchip.com>
-> CC: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-> CC: netdev@vger.kernel.org
-> CC: devicetree@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
->   Documentation/devicetree/bindings/net/cdns,macb.yaml | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+> Right, but providing new features to legacy paths gives less reason for
+> people to stop using the legacy paths.
 > 
-> diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-> index 1029786a855c..07ede706a8c6 100644
-> --- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
-> +++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-> @@ -38,7 +38,10 @@ properties:
->                 - cdns,sam9x60-macb     # Microchip sam9x60 SoC
->                 - microchip,mpfs-macb   # Microchip PolarFire SoC
->             - const: cdns,macb          # Generic
-> -
-> +      - items:
-> +          - const: microchip,pic64gx-macb # Microchip PIC64GX SoC
-> +          - const: microchip,mpfs-macb    # Microchip PolarFire SoC
-> +          - const: cdns,macb              # Generic
->         - items:
->             - enum:
->                 - atmel,sama5d3-macb    # 10/100Mbit IP on Atmel sama5d3 SoCs
-> --
-> 2.51.0
+>> I was planning to remove SIOCSHWTSTAMP/SIOCGHWTSTAMP dev_eth_ioctl calls
+>> later once everything has landed and we have tests confirming that ioctl
+>> and netlink interfaces work exactly the same way.
 > 
-
+> However, implementations that do populate non-legacy ndo_hwtstamp_get()
+> won't work correctly with your conversion, since we'll fall through to
+> the path which calls __phy_hwtstamp_get() which won't do anything.
+> 
+> So I disagree with your patch - it only adds support for legacy net
+> drivers to get the hwtstamp settings from the PHY. Non-legacy won't be
+> supported.
+> 
+> At minimum, we should be adding support for non-legacy, and _possibly_
+> legacy.
+> 
+> Let's wait for others to comment on my point about adding this for the
+> legacy drivers/code path.
+As there was no conversation for a couple of days, and Andrew expressed
+the same thought about not going to implement SIOCGHWTSTAMP, I'm going
+to publish new version with this part removed.
