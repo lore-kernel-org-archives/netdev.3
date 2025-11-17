@@ -1,198 +1,111 @@
-Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EFA3090E6
-	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 17:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C650D309F18
+	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 17:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763399511; cv=none; b=Np6DaVUZeuoGramBHwrC78eeSUezdDLCVc0ZhG/7k1NSAhXz5k3L+fXCr6UK6qgK7PpiHnLmbZg+12xBo5AJtkcHHNUlsNpf614+YWP4/LivWzskNZSv+8DXDt2iTUnuuPqfDBsyuC3uGu1SGc112ak4al4Wtra4Qxl5Z0mX1ZY=
+	t=1763399532; cv=none; b=nfOLEbamGsr5t02HjoGHzJtcmnqRIP3Vpnw7mvgHr+jHYljxnN4zAEVrQsb/7aifpcoLpKjUO3AsovEl0eyp5iuKKr5CfVWdyxM6Rbp5xs8ECnHLd76GmdxffHtlDXkdlhy874G7lsWKeeubK+hB3MslTJ3ey6u9uw0p1Wc0qjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763399511; c=relaxed/simple;
-	bh=CGD3WWM4RJsKjiBIKI5DOKn8UKZZLCFREOivv4kIa68=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PKVVhnaKezQsggsNtRg47fdr7/ZWl5+nVcN35+mXZJXUmhWw+BwK0eO5u+PhBAQhUttwmPMIUG1thtKXwWZEUA7eLtQ7SgUZKbtoElJE4v7Shmn5LXIx0yWbrkFGBWMl0cNjdqBHJ6slQrD5uc81N8XMUnbq3wl7lS6sPRd2DUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Rb5oBhl3; arc=none smtp.client-ip=209.85.210.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1763399532; c=relaxed/simple;
+	bh=zlUc4wrkb7uexfNnlaJ0X3CQbC6SS+1/TLUIDSJM034=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QT77ItMx6zDrh2XtdEDtclLNTH7Rh14sUi4vGEkhJp73dpanBu7lsg3Uqkj7CyTlRsah8B68urOAohTv6m7m1zm5IsCZqk54RNUiVs3dOlmwNL4S+4MjLSgPfkWq2IH+jKor9nvDrhOHYexAAApCHXEMt3b/knMKDGXJ+tXrgqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rj+T6bvq; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Rb5oBhl3"
-Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso4572318b3a.2
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 09:11:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763399509; x=1764004309;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/PnfIwiIPLokh861WW9VvfFK1qgK6/9Jm139k+AFMko=;
-        b=DSJ58ECaB4LJfDU0foUorXPp8foeizjBj8uaTD+plQBkdU92JgNwoFgqPzr/zjh08R
-         thMNlSnx4H551CcLXDJ0etYtn32iG+19WKGCNBtSr4y25pGfWUaP3RvkJ4jxJjBKCcd2
-         crp9rAcQx48Zzuusv3Ba3Tgyo28DRZhAk+4EaTiPOjS42FulK+Uq7vJpxjnpEJZ8ABpL
-         nVWWzCk1bgWIp2dY8XeRSX3Q9F+2Tzg5AHy+BzrPGo9LNOnMy6P2WM2CyyYtXjAULTzZ
-         WUd5IC0NKSJzM8HCHjL4l1MvGGWN1WDAfKCTIMPT2tQBmB2ystmt4IzwfOQF8rGZcTrH
-         0j7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWiQQkPQkZFys7Sjxc8O8CBsNmE46N6aMGGdfXvWYRwGhEbmjWrIKH6phtmkjKJgVIDBtfgam4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyqlb9PUw3BuFpOlDsbG1k/m+ngH+b58tRMywzcRcE/++a8NxDm
-	AumJcNuidfRNk8LEu3kWnDWQJGf0jXx86hnYsw9NiAzoDQMketl+r5QmwqhtrTFzSBgXcFM/Aei
-	dbQyRCNPvqtVSVpixdPHV5pSSofoncuu0wUyJM3lUP3cccU9lWX2H0uFRzL+Rs/D84FWIt5VC9X
-	KecMTf3EKpvyQzOm8mAz6OsyDTPkqJnCtLmPb60pMH43O5UEqYRPzzbj6maTnvr/MJMgmCfCUMG
-	7rC3gmbuinW
-X-Gm-Gg: ASbGncs8r/qdiGYwnWrM5A4dXxofXtgEcEN5QYmzEfo5giXg1OE6cE3m9MspOQdexb0
-	O/zRSfvz2smjJqkV2WuUrN/W+jsxyPcn8Zv7JNTN02z9JWbyiII+o6Wnh7nvjhko0xD+WHIgNi8
-	piC5ELkiDpFjdUv5tKrShnubdLhbttODA/q7UJQbgN4eD6a0T5RTYqwhVpVG+YKp0M9FNK41juR
-	umfMKDG+N0XZyiAk5nwT5pvxsO4eYD/MKBD061PWiHdeCUy+wzpt3gWtbAx8ik44tCN0lWW8XMN
-	1ULb6n4WBL7FPoLWg7wBbRdwQqETw1bAr3wrF78HnU8j6PJdDbcZO/u6lv3DK/+Ro22VWRtCTVl
-	Ftv7SlD2rWDe57vyipaQXG8BU/XFZloWe1QA4EbH9YzcZbyuHqfklioXQCZWlZiT1TqMqPXfqSD
-	+H92MqTW5OxC147fg3jBtaClCARU2sL3xr
-X-Google-Smtp-Source: AGHT+IH8I8FT/xnE3r9R6UEXINQiQrTCslgRUqBXQzvt/QWVzZBIqi9dmFF40yitsoSpwMxm89UE7F34R5EI
-X-Received: by 2002:a05:7022:221:b0:119:e56b:959c with SMTP id a92af1059eb24-11b411ff74amr6304210c88.33.1763399509154;
-        Mon, 17 Nov 2025 09:11:49 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
-        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-11b0609138asm1227700c88.6.2025.11.17.09.11.48
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Nov 2025 09:11:49 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8824f62b614so34220526d6.0
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 09:11:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rj+T6bvq"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-376466f1280so49815251fa.0
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 09:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1763399508; x=1764004308; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/PnfIwiIPLokh861WW9VvfFK1qgK6/9Jm139k+AFMko=;
-        b=Rb5oBhl3eD/ngdzcvSDNKaSMiVXFL0NdgVuvBUZDldNP0bn3uPf1BWh7s6S+Sr7MQ6
-         IOjxmiQ7IvlrlZb78fFrIP7bOKcrtdle5ug0gpAxwhdpnNApKa/LYv2EROhJ1oa3x15C
-         w/rxTb8vqbbwwGpatz3N/KqiQkUunxG9lgIIs=
-X-Forwarded-Encrypted: i=1; AJvYcCX3VzL5qSMVqgol3tTtJAGwoxt3dV3P7s/M/7JziO/A/WMKCqPD9q73qSjK2iDAkGAup4vhzGs=@vger.kernel.org
-X-Received: by 2002:a05:6214:21a3:b0:882:401c:e391 with SMTP id 6a1803df08f44-882926e0205mr225523966d6.57.1763399507644;
-        Mon, 17 Nov 2025 09:11:47 -0800 (PST)
-X-Received: by 2002:a05:6214:21a3:b0:882:401c:e391 with SMTP id 6a1803df08f44-882926e0205mr225523336d6.57.1763399507161;
-        Mon, 17 Nov 2025 09:11:47 -0800 (PST)
-Received: from sjs-csg-thor3-swe-29.lvn.broadcom.net044broadcom.net ([192.19.224.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88286314557sm96082236d6.20.2025.11.17.09.11.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 09:11:46 -0800 (PST)
-From: Siva Reddy Kallam <siva.kallam@broadcom.com>
-To: leonro@nvidia.com,
-	jgg@nvidia.com
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	vikas.gupta@broadcom.com,
-	selvin.xavier@broadcom.com,
-	anand.subramanian@broadcom.com,
-	usman.ansari@broadcom.com,
-	Siva Reddy Kallam <siva.kallam@broadcom.com>
-Subject: [PATCH v3 0/8] Introducing Broadcom BNG_RE RoCE Driver
-Date: Mon, 17 Nov 2025 17:11:18 +0000
-Message-ID: <20251117171136.128193-1-siva.kallam@broadcom.com>
-X-Mailer: git-send-email 2.43.0
+        d=gmail.com; s=20230601; t=1763399529; x=1764004329; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RFsQ1+FNuisUabhvP8EGuIN9Ox5iFHJYhKLw4CzRep4=;
+        b=Rj+T6bvqG6OHsjc41HGGOhKju5nGYsRg1YeE8BKybh1xcZHP0IfB9q0MOnwnfDUF5u
+         LJWLGUJkJpOba/mIVvp//tz+npf/rqtu1P2DcphTWYnRsQOzjZzEIuWmytzq8ftUcdVV
+         64wg53EHYAsFmunUnFU3CijJNaDWRcZvWXBpFCTTE1H6Agjx0WCy+JTE/u5mDcsnZyBh
+         ikgDi03ytdChF+6V/a07p90f226NinYg62MWRludjco9gjWzAs+LAtAZk6tVGIGvsL0K
+         xIKOODHOHgdE5FAbrSNWsFcy/5NkYZADe8T0Z31BffZbRs7D6LiEnIOU+k457y8zSeGw
+         F9lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763399529; x=1764004329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RFsQ1+FNuisUabhvP8EGuIN9Ox5iFHJYhKLw4CzRep4=;
+        b=xR37B9uYL6JNAdw0XgVYKedfYLtNamCgAtqWE2YTR0n42/MRbgiGos6+GYISy3pz1f
+         z9OEdbYJ33zpEPjNA/hvU7eAbuZ8UVvYaic6vNYIjwlKcFlStqOIlew0RyTwqiTpK3ju
+         2cEXjr5f+MCE9g5EfpI/b8lRyQi4vgk4ypqnA3znxifzme07bqbyNaiX+bkjebtJIsbx
+         WnChAmjxshBHpanjYTD6H+rcbGtU+A9nOqZcAqxN2jK4fvp7zVmK3fQufDyCnkiIXw4U
+         Uuxj0UDMZOHGk8iY3Ipm/PX0Jb8qF32ogWn06Plbvr+m2NcQRRAJX9JuS4Dae8l6/KyP
+         1LJw==
+X-Forwarded-Encrypted: i=1; AJvYcCU07FuuLdiJkhRd5PUgpF+JFjo7EdOyKkxEvpUHr7hY3BtQZQ2v1GifKxGgke1AqMJDKC+gNEs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwTzOEkYP0v6AjXDBOciyyJAjzB41jl4vFgCaiEzurDlAF9QsU
+	cQHmL52L6VoSQd1NfvA8TGsJw7RSRr8AC8DGhI9aavdf+w1O7RHUkaw1X/dtZTJ7cR9cJxJTVTo
+	9omOLbUffbG+qhIKudL1DHNfAAPWJZ74=
+X-Gm-Gg: ASbGncsEvU1sWu+z+PnUzlEMlDk1wXed+XjrjaMD5ftdHwbGLBns1cqf297njYT/aJn
+	Vmopa/oPGnzZTmhESnGD80Ill1TW3/E60cjfKdG3T6ewqrmSOaf+4XW6z/aWoTLARgp9hcWQsRi
+	eN5mRmmp+ig2xbl68lwxJCwun3TVQcw7NLimM2uUvdknHOBjIXChsXmmo4XIm6dpHPJZS6jy5PX
+	kd7aupebMSH2wqcsWDP2wFOG/9RfRwsyfHRZA3PObpSylaFEygL2YFlgsZtSPRme3KJaPiONl64
+	Ji0x6sp7nH4btfBEP9mQMt/VSAyDy+bmSAvUQqlTdU/M/8vxkdNfUA9YmWc0xUUlRdofKM+AkmB
+	QKW/veg==
+X-Google-Smtp-Source: AGHT+IFszS39w4gyBp/ehwuAxtCUH8C08PjzRvdcYZ7F1mfYB9spnDw3ySKrBPh6xcHzbycXp1H7Lxw5DqNHFEAdHik=
+X-Received: by 2002:a2e:8a9c:0:b0:37b:b8c0:b5ec with SMTP id
+ 38308e7fff4ca-37bb8c0b6e2mr15580541fa.24.1763399528680; Mon, 17 Nov 2025
+ 09:12:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=all
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20251113-core-cstr-cstrings-v3-0-411b34002774@gmail.com>
+ <20251113-core-cstr-cstrings-v3-4-411b34002774@gmail.com> <CANiq72mBfKwXEbyaw=pBAw37d7gCLVJqHcLcd6H7vNKey1UXfA@mail.gmail.com>
+ <CANiq72nQhR2iToP8ZauwAjM2p1OWEK1G5cjsEXqs=91s7jOxMQ@mail.gmail.com> <aRs1-KshwnBjIIuQ@google.com>
+In-Reply-To: <aRs1-KshwnBjIIuQ@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 17 Nov 2025 12:11:32 -0500
+X-Gm-Features: AWmQ_bmRFAqmfhrzkLnE8yUQroFLwLVQEZRKlJSh6ngKy6V9tYibsuHi6Nvh8Js
+Message-ID: <CAJ-ks9=whG4K2s0vhBetGAaCHtFBXcHETWqQjVh2DWciYK4Xdw@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] rust: sync: replace `kernel::c_str!` with C-Strings
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch series introduces the Next generation RoCE driver for
-Broadcom’s BCM5770X chip family, which supports 50/100/200/400/800G
-link speeds. The driver is built as the bng_re.ko kernel module.
+On Mon, Nov 17, 2025 at 9:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Mon, Nov 17, 2025 at 12:52:22AM +0100, Miguel Ojeda wrote:
+> > On Mon, Nov 17, 2025 at 12:09=E2=80=AFAM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > This requires the next commit plus it needs callers of `new_spinlock!=
+`
+> > > in Binder to be fixed at the same time.
+> >
+> > Actually, do we even want callers to have to specify `c`?
+> >
+> > For instance, in the `module!` macro we originally had `b`, and
+> > removed it for simplicity of callers:
+> >
+> >     b13c9880f909 ("rust: macros: take string literals in `module!`")
+>
+> Yeah I think ideally the new_spinlock! macro invokes c_str! on the
+> provided string literal to avoid users of the macro from needing the
+> c prefix.
+>
+> Alice
 
-To keep the series within a reviewable size (~3.5K lines of code),
-this initial submission focuses on the core infrastructure and
-hardware initialization, including:
-
-1) bng_en: Auxiliary device support
-2) Auxiliary device support (probe/remove)
-3) Get the required resources from bng_en
-4) Firmware communication mechanism
-5) Allocation of ib device
-6) Basic debugfs infrastructure support
-7) Get the device capability (QPs, CQs, SRQs, etc.)
-8) Initialize the Hardware
-
-Support for Verbs, User library and additional features will be
-built on top of this patchset. hence, they will be introduced in
-the subsequent patch series.
-
-The bng_re driver shares the roce_hsi.h file with the bnxt_re
-driver, as the bng_re driver leverages the hardware communication
-protocol used by the bnxt_re driver.
-======================================================================
-Changes from:
-v2->v3
-Rebased the patchseries to rdma-next
-
-v1->v2
-Addressed the following comments by Simon Horman and Leon Romanovsky:
-Patch 2/8:
-  - Remove rdev_to_dev check in bng_re_add_device.
-Patch 5/8:
-  - Remove uninitalized variable rc in bng_re_process_func_event.
-  - Remove unused variable in creq bng_re_enable_fw_channel.
-  - Modified the switch case as suggested by Leon in
-    bng_re_process_func_event.
-Patch 6/8:
-  - Remove unused variable cctx in bng_re_get_dev_attr.
-
-Thanks,
-Siva
-
-Siva Reddy Kallam (7):
-  RDMA/bng_re: Add Auxiliary interface
-  RDMA/bng_re: Register and get the resources from bnge driver
-  RDMA/bng_re: Allocate required memory resources for Firmware channel
-  RDMA/bng_re: Add infrastructure for enabling Firmware channel
-  RDMA/bng_re: Enable Firmware channel and query device attributes
-  RDMA/bng_re: Add basic debugfs infrastructure
-  RDMA/bng_re: Initialize the Firmware and Hardware
-
-Vikas Gupta (1):
-  bng_en: Add RoCE aux device support
-
- MAINTAINERS                                   |   7 +
- drivers/infiniband/Kconfig                    |   1 +
- drivers/infiniband/hw/Makefile                |   1 +
- drivers/infiniband/hw/bng_re/Kconfig          |  10 +
- drivers/infiniband/hw/bng_re/Makefile         |   8 +
- drivers/infiniband/hw/bng_re/bng_debugfs.c    |  39 +
- drivers/infiniband/hw/bng_re/bng_debugfs.h    |  12 +
- drivers/infiniband/hw/bng_re/bng_dev.c        | 539 ++++++++++++
- drivers/infiniband/hw/bng_re/bng_fw.c         | 767 ++++++++++++++++++
- drivers/infiniband/hw/bng_re/bng_fw.h         | 211 +++++
- drivers/infiniband/hw/bng_re/bng_re.h         |  86 ++
- drivers/infiniband/hw/bng_re/bng_res.c        | 279 +++++++
- drivers/infiniband/hw/bng_re/bng_res.h        | 215 +++++
- drivers/infiniband/hw/bng_re/bng_sp.c         | 131 +++
- drivers/infiniband/hw/bng_re/bng_sp.h         |  47 ++
- drivers/infiniband/hw/bng_re/bng_tlv.h        | 128 +++
- drivers/net/ethernet/broadcom/bnge/Makefile   |   3 +-
- drivers/net/ethernet/broadcom/bnge/bnge.h     |  10 +
- .../net/ethernet/broadcom/bnge/bnge_auxr.c    | 258 ++++++
- .../net/ethernet/broadcom/bnge/bnge_auxr.h    |  84 ++
- .../net/ethernet/broadcom/bnge/bnge_core.c    |  18 +-
- .../net/ethernet/broadcom/bnge/bnge_hwrm.c    |  40 +
- .../net/ethernet/broadcom/bnge/bnge_hwrm.h    |   2 +
- .../net/ethernet/broadcom/bnge/bnge_resc.c    |  12 +
- .../net/ethernet/broadcom/bnge/bnge_resc.h    |   1 +
- 25 files changed, 2907 insertions(+), 2 deletions(-)
- create mode 100644 drivers/infiniband/hw/bng_re/Kconfig
- create mode 100644 drivers/infiniband/hw/bng_re/Makefile
- create mode 100644 drivers/infiniband/hw/bng_re/bng_debugfs.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_debugfs.h
- create mode 100644 drivers/infiniband/hw/bng_re/bng_dev.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_fw.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_fw.h
- create mode 100644 drivers/infiniband/hw/bng_re/bng_re.h
- create mode 100644 drivers/infiniband/hw/bng_re/bng_res.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_res.h
- create mode 100644 drivers/infiniband/hw/bng_re/bng_sp.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_sp.h
- create mode 100644 drivers/infiniband/hw/bng_re/bng_tlv.h
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
-
--- 
-2.43.0
-
+Makes sense and done in v4 (which contains only a small portion of
+this patch and no others).
