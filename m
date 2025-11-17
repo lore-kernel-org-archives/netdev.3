@@ -1,385 +1,254 @@
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D7C24C676
-	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 14:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763389936; cv=none; b=j9oPl2cH/sYc6l+580yelElmpQ3mlXAIsnQGh5xq7FvBScAgGu2z9sDA+/Gvj9fZwoDmInZzf2j0st11uddJ9vb/47dwzy0zJIYWHD9gb8bMHBAOcuqVvOp+boTweogyqcj+J58qbTGYVG5NycWa+5SykN2HVCyycj5jHzl7Ht0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763389936; c=relaxed/simple;
-	bh=3B7oQYQXxISpc0yFEceVqJz2wkI4hp4t6apF7PARqaE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tz069ZNz/dhOwr3WusvXx10l9WbQynLLQYHNZwbsfP19NigEW4iqomqwXu6ccBPRO0ByPwnfX+fj6sA8jfWKNnmHAmj4IyAVNNK0cKtl5YoYmKshJNzZJC+v0vfgGxVY1oNRsBwywQy8bgB0eVtV3Q6kTQcV3rPkkaVd61vOMyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmNsJ4Tm; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAAB329381;
+	Mon, 17 Nov 2025 14:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763390336; cv=fail; b=st598y6d5mCnq8IHnJhmnlOj0CHM/hy6IO1g7k1E/FvZDBB7GPP35JoOiai+I5C/iumtjYj9R2i35wEYX9d2OVxiRQynOW5ESjkfgcY8Z+nqVo0GFo9c0+olv/GIx9f6cM0mB71mfHSmYLHB5MQ0HSdASU6z2sdYR8oqFA9vFFg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763390336; c=relaxed/simple;
+	bh=CKupKswpN3yjctiIhqjAnEuq1/78OwJpI1qiJP11fQM=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XVsZ6j4dctKkt3HJNGdNDeatyf1WGSU9lrUz/oc/LXzxxZI1nR+HbogHET2fsWAaDwrQW7HhQyrSI2pNXnXkBT04mbJVqQiIx8tnjahXdhgfkhYg3zZ01teBVcwzdLigpnDox23+3oTnXtwWjOTVcscsHC42CDqU8Y57508D3wQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RG/VkB9K; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmNsJ4Tm"
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-4331709968fso15859565ab.2
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 06:32:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763389934; x=1763994734; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rphyKd6lx5vXiMn4wS+v0AFlFan4k7wZ5A0z4ZjVXvQ=;
-        b=UmNsJ4TmzPdwkQYp+WSw7xh1ws7+A7ZpEXpNfbwEz13wsRhMW9S86cs9UGM42fezJH
-         pTDtjan7x1HezaP2IEIK0VJ4aUB9ebBVFDxzDGUfhzsrK4Qnhc/7oQ7MjTC5+T5pr/yP
-         AnBo6a45IPwfGXO5g3HvoZV/VPtPYLmP8RGqIgxQQAiCR5hNCETBuyyXuco44HE/2/2s
-         1HE7dac4QKrNM27MK4b/LgeUaaWaQPJtqb2sO9AweEOlRRjq5iE87/UvC/Gr0Fp0X2Bw
-         +P1fTqX2kez12fcrSFIkzS0yW3IgRoEOW9N7rjGqs1IrEuFBq9x/5PqsBjYnXsTRQ4k2
-         zBPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763389934; x=1763994734;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rphyKd6lx5vXiMn4wS+v0AFlFan4k7wZ5A0z4ZjVXvQ=;
-        b=QKmIjf6bezKF4jpvQj6yCMGjgjoJTYgix+0n0zWfPItVLoYN3LRQwBOTGxgVpuGqiK
-         zBw7gBtQv6Z7wAc+Ee8jsOjzEiA8uLwNlx7aAIz4mhipHVLkXbnKs33IhVAPnkm3edL5
-         Tymi1pfSjoxLIfD6x+HvbFhs3zLmh0yQnJ18Bzws+vppQ0bCS0PRxVFrfOK9UF5kBKKe
-         FooVz79ZNPCPPagOn2Q8P6uXJKo5yIBFdW4He6ZQBhVAmQeEjjavM202ppnt7tohzicD
-         789yZh1iT27UF9sSy+WkM2nCRhi3qzVxB8wtXqjZGvFvHO2idftdGy2BMZTT/FT2lJQX
-         KhlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV+sy8GdibgtUVR4pI3u9mYVp/ap2eI8uBNvm7bgdapmSEF9rbpDzTFLUizLhBV8pmGEd9rOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl9uSfIRIPq93kMaZvRvr5Ukq7Uj+oPKnfEdATnY0d+8H1aUxq
-	D0JcYh4gkuDera7YPA+phpt9bnU3bU6GQcN0SiTz32gIjNJNJLsMiFsxA1r2JP86pdln2FhDnIR
-	UIanWDqCLQ85IryLBJdBTt/9YXyFkRGI=
-X-Gm-Gg: ASbGncuFql7aZxxjnLOljlf7N3bAOUedCRTKXr5dj4qoFhLRxTwZ9ScAfAP9BhlJ+oj
-	/POR5QDpjnaQvXMHwiOSWe/a+NCn58sFD70uwoBbPh+EMeILphu+amvFrBEIwVa8gbzgOlD4kER
-	RLoiOJF6Y3mLctRFjWf9x8pQJZNo5KRrxAKeRuuRDQ9O3gYvfp3zolq//mabzB7fsDpEACOi3UC
-	SFIugT6wjg5zPtbdMpESpv0NXGynndV9nZ+8pJxonVR5y407X/ptkZoyv3bR48MVVmU+Rk=
-X-Google-Smtp-Source: AGHT+IF0MlryiRyh2cGtu1dYZK5+v+yYd1YN4/TITZfb7WUGfWDVF5Xk5Vki95YCRShyRiYKoDkUGdNYitAZ1KHry+0=
-X-Received: by 2002:a05:6e02:156c:b0:433:4f9c:96a7 with SMTP id
- e9e14a558f8ab-4348c864ab4mr171162245ab.10.1763389933765; Mon, 17 Nov 2025
- 06:32:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RG/VkB9K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763390335; x=1794926335;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=CKupKswpN3yjctiIhqjAnEuq1/78OwJpI1qiJP11fQM=;
+  b=RG/VkB9KDbdufzLrGJrq9FKGO80UQoF3Yvn3bj4fbzbNq8pvzfwtLHhI
+   25DTNVoWGO9Xji7I4JGOBTLZpLqahygBANeYhrtsmfgTGaRW/RH9Evevn
+   TQjHKCZYfs4xWzsMrHOVg+bi7NSC8Yn1dIdLaw6FnCytVMRr59Z5iS8nN
+   mJPqimKEi3q+Tbkg0pDVc1u9ZvAszCO+BvEIY8qsISDzHZ1WkQ0+VAdGj
+   LMSKwnluu2lLfBF5+DAs9SN3iVlvUroFpb4gO3oOsECPehPtxX5ESAJUn
+   hZyF7rZVlWjKzckgugYYnXag8VT6VpnsoFSMgJmtLcYDO64Zj4cOy+CdE
+   w==;
+X-CSE-ConnectionGUID: NxxpHMF2R+Wpv2We8KKr0Q==
+X-CSE-MsgGUID: 0GVTaYLaSBKhr0nMTB5xuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76740124"
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="76740124"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 06:37:45 -0800
+X-CSE-ConnectionGUID: wuoUdZ+aQMS5tcEidPaXTg==
+X-CSE-MsgGUID: RvXx8OtBSx6+4GOvyMdYxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="213865468"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 06:37:44 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 06:37:44 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 06:37:44 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.5) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 06:37:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RoQIYD0qN81iGkm+inM5zlV+zwYNQB7nWPnjBzEftF11K/mDAbGAjzeEaFi9tQJeu5R/f3IovItuH7gRrsT0wNFjFiNtlH58ktIko3gnaKlgrtCKuEiV/vdHdbUQ5Hi3wYYohXIHE5E1l3gAvNcvlx7r9ORyh8dZQYSxxQzMAD3iTMRziDU8jUVAqZANLAn7FxKvAxD7bD2JbR6nuDWMkYgMHUdDrI1YV/K63dbvfyU1wrsHCj3ZGBRJQw1UZIHON4f3deIJgdHBc/WFL7l1UuS89Ua5YnwWVfGM9LwkBLx8wssidQz8u4xJR33OuEs/aLJp+NPKdu34m5+vNp5dVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U7dVchozfdbnm1i6CK72CWQ5lu2L9dphtcrjXhpoDO4=;
+ b=hBLos4DMc5JcAuR6uCPxX2j9fh+T+arvB3cbTDZKBtsXm/E5XNovS1630/L+4LibYzQmAabHYD0ErZvRpArC82QjZK/JdUUtVB+5xXpPgZr5cF39zZm33dYUEk7Zsm8X04Vcp5pqIBzOlskuUWMu4HvLe/+D70GbbPzi1NFvkCfe/w3JsK50eu5pvHXLPjs/3aFVLUUooExkWR1qiHnjacH6E9pYL2bz01/4hK0vMN72YlP77zjXGsl8/yHdK8VpHAYS4lxo+j7xgaqH1UmFuGEOJ8OxcuT91x1hnEKByaPZEKk/qxmhsRs9NYGRCyo/oDY9rMwe1JazG1R/enD+WA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV8PR11MB8722.namprd11.prod.outlook.com (2603:10b6:408:207::12)
+ by CO1PR11MB4915.namprd11.prod.outlook.com (2603:10b6:303:93::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
+ 2025 14:37:39 +0000
+Received: from LV8PR11MB8722.namprd11.prod.outlook.com
+ ([fe80::314a:7f31:dfd4:694c]) by LV8PR11MB8722.namprd11.prod.outlook.com
+ ([fe80::314a:7f31:dfd4:694c%2]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
+ 14:37:39 +0000
+Message-ID: <dd88462f-19cb-4fde-b1f0-5caf7e6c6ce6@intel.com>
+Date: Mon, 17 Nov 2025 15:37:30 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH v3] net: ethernet: fix uninitialized
+ pointers with free attribute
+To: Dan Carpenter <dan.carpenter@linaro.org>
+CC: Ally Heev <allyheev@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-hyperv@vger.kernel.org>
+References: <20251106-aheev-uninitialized-free-attr-net-ethernet-v3-1-ef2220f4f476@gmail.com>
+ <575bfdb1-8fc4-4147-8af7-33c40e619b66@intel.com>
+ <aRsfBDC3Y8OHOnOl@stanley.mountain>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Language: en-US
+In-Reply-To: <aRsfBDC3Y8OHOnOl@stanley.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL0P290CA0003.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::18) To LV8PR11MB8722.namprd11.prod.outlook.com
+ (2603:10b6:408:207::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251116202717.1542829-1-edumazet@google.com> <20251116202717.1542829-4-edumazet@google.com>
- <CAL+tcoD3-qtq4Kcmo9eb4mw6bdSYCCjxzNB3qov5LDYoe_gtkw@mail.gmail.com>
- <CAL+tcoBpUg=ggf6nQpYeZyAcMbXobuJtyUdN98G1HpcuUqFZ+w@mail.gmail.com>
- <CANn89iJb8hLw7Mx1+Td_BK7gGm5guRaUe6zdhqRqtfdw_0gLzA@mail.gmail.com>
- <CAL+tcoBeEXmyugUrqxct9VuYrSErVDA61nZ1Y62w8-NSwgdxjw@mail.gmail.com> <CANn89iJec+7ssKpAp0Um5pNecfzxohRJBKQybSYS=e-9pQjqag@mail.gmail.com>
-In-Reply-To: <CANn89iJec+7ssKpAp0Um5pNecfzxohRJBKQybSYS=e-9pQjqag@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Mon, 17 Nov 2025 22:31:36 +0800
-X-Gm-Features: AWmQ_bm_KExQz8ccKCiAUEDGoM_HdAph8snpO2Jjoch1rLDw3g8O-CROBqQBcMY
-Message-ID: <CAL+tcoAJR3Du1ZsJC5KU=pNB7G9FP+qYVe8314GXu8xv7-PC3g@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 3/3] net: use napi_skb_cache even in process context
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR11MB8722:EE_|CO1PR11MB4915:EE_
+X-MS-Office365-Filtering-Correlation-Id: c70591a2-3625-4d66-77ba-08de25e6db79
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NnBxSG56MlJ0T0I2WXVpTWVtOWwxTzBhbGIwdW9xaUFtQjFPdFY5V3FkVTdE?=
+ =?utf-8?B?Um9uKzVRb013Z3NmaDc5L0FoK0I3ZW9jcEdIa3doc2FQd1EyRmJFdDFnekU1?=
+ =?utf-8?B?WDI4aURvSCtCd3hicHNMMURydHdZcnFNbHBQODFTTmxUelFlRzFhVTRERU1W?=
+ =?utf-8?B?TlNNN2NNZkxkZ1RzbUxFOC9wZzJYOFI1N1ZQdm1Nb0VnUGdIYlBERUdyY3BK?=
+ =?utf-8?B?blY3TVFEbHVSMGZQVUVUVmZjeS9BNmRpYU1yS2ZCQ3NhV3RJaSthaENCTlR1?=
+ =?utf-8?B?dHljaWJ0QXM0V08wejlvNHVpMnBsaTgxY0ZGTUFLR0NKbUZ5dFpHR0dxRUpa?=
+ =?utf-8?B?dHNjTFV0K25MMmZjM2VMY2F5STRPejZleDBwRDdJQUgvbXhLQzJNLzVyUGs0?=
+ =?utf-8?B?TjFtSFRGbnovNEtHQXZoeHIzYlVmNkJha1BBK3dOcXhZSnYxV1dqOGQ3d29a?=
+ =?utf-8?B?TlYvSHNMc0J1OSszYnQwUW1EODBWdnc3akEyZ1I1b3owNGdjQ25lTWNTTkZh?=
+ =?utf-8?B?b0hKRHduOTBVNDZOK2x0UVpEaXR5MWpxV0tIeWRUNHh6T3NLU1orMEorWmk1?=
+ =?utf-8?B?YU5leSs2WnVMeXZGUEd0ZzNTeFlHaGx4NXMyei9CNXcyQU1UelhFSFNkQmhH?=
+ =?utf-8?B?ZlgxTU9XbzdqdjlUK1JLWjVDdXpNUVBJQjhYUHhiS1B3anZGTk9BdGRwV2F5?=
+ =?utf-8?B?MjMyU1lvQm14cGdvTFFKTGJxL0F2Qzd1Z0c5OGNySW9YUWNqOUIrRnZKWXBP?=
+ =?utf-8?B?Y2pKWCtIZHRVeWcrZHB0aFk3TGRzcE9jZThVSDJNT3pha1gyYTM0ZTE3NzJl?=
+ =?utf-8?B?eWRnYnhENy9uL3FDeGdlZFEyQ0tQUERCMzV5OENSMDdpdmM2RmFYR1pSZ2xG?=
+ =?utf-8?B?WmlKRTl0NFJia0xEYUgvUEw2amFVeEh5cDE3RkRKSlRlUkdhUWpOUUZ0NjB3?=
+ =?utf-8?B?NU1qZW45VkNyZDVRYmRWeWpEei9PQTlmQ3VBUUlEeXpPdEVwcytwc0R0b201?=
+ =?utf-8?B?RTNQdlpzOXVMdjFza3BiamJKVXNqNDltRkY5THRMOVY2dTFDaEpUcVJBbkN2?=
+ =?utf-8?B?WjNXV0tSOGF2VVJ6RzNieTZzNnppbUEwY29OU0o2S1JpSGJVaHcwdU4vTjYv?=
+ =?utf-8?B?VmVENXJwVXljVWdTcGNzWkVwdkk5Mmw1SFFmZjQrdS9rbTZSaXU0SlFzQXRP?=
+ =?utf-8?B?ZUtsdWpuNmI2NUdEUFN1a09QS1pGelpQd2lsOUFSOFFvUlkrdGRVT2oyM0lZ?=
+ =?utf-8?B?QkVKbGR5MENBN0pKdzlRZk41bFJrUkZFRzZoSm1qMFZPZnZUcUZHYTh5L3NY?=
+ =?utf-8?B?aWpVRE94Qm4vLytXTHdmWVg1dmowaUJPY2FSWVlMRUkwK1pYTmx1WEg5Ti9P?=
+ =?utf-8?B?ejE4bDNnM1Q1MmVzRXRoQjdCVUcyYnZ3SENkVTlPbFBIL0o3V3ExeFRLQm0z?=
+ =?utf-8?B?Tk5DanNxbjNKUHVGZ1dZckFzclVWNGZFU1RXZ2Mvb2ZNOXJZTkhBMThab2FZ?=
+ =?utf-8?B?Tkp3YTdhTzZLZ2JXd25FSWtzQmdqbzZXR3p5bVlQTDJGbko0WXV3alk0ZnpE?=
+ =?utf-8?B?Q2JLRVVsNTh2ZElGdkt2T3hHbXhXcmloYjB6UVk2MXMrVWtRYTVrVHpJNytC?=
+ =?utf-8?B?SEZJQjh3eWhzRWlEOVlzdjViTkhJcmhqRTlzYlBTSitJVmpTZUN4UTlDQXFR?=
+ =?utf-8?B?MnhWQmNoYXFpWURnaCtDOGR6REp2ajFZa2kyQzRzMEkwVnlWWmUxTExPMkVs?=
+ =?utf-8?B?V09sVjNtN2R5UmVQbmdaZmZ4cVphbjl0UWN6QXBGeDFKN24vRGQxUzVjcWZI?=
+ =?utf-8?B?bXQxKzc2YllOUEtXQnliZkNzK2VTaGRjbHRyRng2VXJ4QlpTSVJEdnNWT1p0?=
+ =?utf-8?B?RVhrYm5XbGk0dmlqQnpKMWw1RkJvZHlNb2pQVUxQTXMwTzJqL3RPYTRqOTkx?=
+ =?utf-8?Q?M+L5Mts4M7Zycu6G0IvXHZ6aK+KnUd1L?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR11MB8722.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnlqaGpLZm96Nm90OGxSVEZlbHdUWEtqMXY2ZmNBNERoeTM3OFRkdmU4dnp0?=
+ =?utf-8?B?Z3l2Z1lOZGZNcU14YkcxaDYvSStkWC9vckNyN08rSWNIWGQ2Q3ZEQ3RXMGdX?=
+ =?utf-8?B?ZElrT0h1L0YzcVFaaGFFeXlDbklSRHRoL2FUK1lDS01BWkx1TUNJbzRqclAz?=
+ =?utf-8?B?OWdUUUE5RzNNdy9qeWtKand4MHdIWWs3UnhDdkpvZGNvaGtUeERoWGxlWmpF?=
+ =?utf-8?B?eFNDZlpXSUhPelp3UkRQRmxDQ2hIZzI4MjdWNWxzZjc0eEJmWG9Eay90eTNT?=
+ =?utf-8?B?Y2ZVcitQQ2UwVm4xNjhQeEF5M1NYZVB3QVMyWnNpUHJmVUpkOWVXU28vZkVW?=
+ =?utf-8?B?NTB5R084bTFIbk9iTFlFNUVEcWNDNTl3b3ZDQ1Y3VE9NaE1XOUVlYk1GejZ4?=
+ =?utf-8?B?czc0cjVpcjZ3TElBMXZGSmFTNkxiRy9RTzMzdlk5OXR1TFdtK2tSdVNOV0F5?=
+ =?utf-8?B?dk9MSTVydGRRdkRNYjlWTXoycGhwV21VcUZ5WlFEekhPZFluRXhQSXFzdGw2?=
+ =?utf-8?B?UDRxSGkrV1JFN05rZk5SOHhIMSt1VFk2Um9zNDd6SFRZVGlXcUpyZkNSM1Ro?=
+ =?utf-8?B?T3NUR0tNeHoydUtKalFNVUdjRlBvaWN4Y2VTNElUdkNFbGZPNitldTFqVFdv?=
+ =?utf-8?B?T0o1WTRJR2JYMWY5KzNET3pqT2k2a0ZMUTlrSTFCcGtmSWNsQldkMm9zTG1z?=
+ =?utf-8?B?SEJCREJOMysyL0hLeG5jU1dFQXhkNUlya284MXJJajEzNWVSa0JqYStSSDdk?=
+ =?utf-8?B?eWwwUCtKWVloOUo4RkdYNldoTGsrS21IckRaT3l1TkFBVGp4cXErcXBiT2c2?=
+ =?utf-8?B?VjNUdzh6VGxIQXpSQU1pS01vaFhKVUlSa2RSV1RZSHVvdWlmZjVnYXYvVTly?=
+ =?utf-8?B?dFNmOEUrZVJJUEREL1ZsYXFzQjN0TERPSkQyL1RCTSs2eVhmenhBUkExZlJV?=
+ =?utf-8?B?ZWtBTnhOZDVTVUl3VUYwbC9wZUR4c3o5aFJDVlRYV2R2WXhhOWs3c2FpeEpB?=
+ =?utf-8?B?ekd5WXhSMk4vRUYxNzlpazFkbXdoZXpNeG9MN1UwbW5xVG5IOER2aUhtNHFl?=
+ =?utf-8?B?MTFJTlJEb0gxS0Z1Z1hUejhNQVp3aHd1dGFQWVFHb3cxak8wbCtmeWJhY05h?=
+ =?utf-8?B?YjRhT2UvQnZoMWFMc0t6QllyZDg1NFZkVXRSc29BVEl6RGorZFg2YmdSNUZP?=
+ =?utf-8?B?K1RScFVhcldTRXo5RlQvOUxwQUtCSVk4bW03VVRLOFdtSm1tMlpHMDMrdGlz?=
+ =?utf-8?B?Mm1qMnJXR3ZRbkNBMjVudmxFVnZUaXE4ZnU0ZGJWMG1LZjQ0SjZWZWtiRmhn?=
+ =?utf-8?B?RUxTdEtQNnNqQzRPNDFaOWFUL0tLSW55dzBKb2RrUWxtT0RocXVaclBkbkJm?=
+ =?utf-8?B?enNRMEV2eXJEYzcyTTdLeHp3K00yNUQyM1VmaFc4ZlRpWVJ6bDYzeTE2T0hO?=
+ =?utf-8?B?aFZ3SUJDK3RqZ1VjeHFHdkxGNUFBcUUyMFZMcjBNWHBXRUhSNXluNC80NGs4?=
+ =?utf-8?B?Z3RUamJQYzdCQ0FYbzJiK0k4dTNCWDRVdUFheUx0cG9XZ1JqZXlxNWJRTExr?=
+ =?utf-8?B?bnB3QVRYbzZlNE1QR2pnU0dZc0hLVXRjK0o4NTZjTExobUJ5QUZvYjFhK0hR?=
+ =?utf-8?B?ZnJmeGhQcVc0UUhITlduUFk0K3BwSGJONmpIV0hXcG5mbGtNUGJiT0pTNG9Z?=
+ =?utf-8?B?VmpqekNuRlpwNlJBZEI5Z0FlejNUQWZ5cXlPZWRJMGdwdDlhd1VtMlRGbHdB?=
+ =?utf-8?B?cVVFbTRIZGJjbGdvdnF1ejg3YzViUzBaRjFMb2Y1b0FiS1VSYUljdWVmL3VX?=
+ =?utf-8?B?RU80MXoyUGU2cEp2a0JscWJzaWhMM0NVckxRS1VTUXhNWEZJaTIrZmMxSEMy?=
+ =?utf-8?B?ZXFySDN0QllHRDhzWmd2TFR6OFQxdmhjSTBpd1ZKSlJQdy9ubk91cTZ5c0ZH?=
+ =?utf-8?B?b1g0bUtOTS9UaU5EUGpwNjFRczcwMkdzeHFiWEc0UjFiU1VYVmtKdWMyY0JB?=
+ =?utf-8?B?WnlVTEJ0bzZ0VWU1RzRPbEoreWdZR213TWJzK0ZKbjRjRkdtcGxnM3YzdENq?=
+ =?utf-8?B?UWFPOFU3NFVubXEwb2lwRkp3ZzA4bzhVTVU2a1lhOFpRSUMzeUpycVpjVWUx?=
+ =?utf-8?B?TUdBcjBWR25sTXA3YUs4SEdmdE8xWWNpRmhZSGtXYlNhZFZyMEF6MFE3dGx0?=
+ =?utf-8?B?MkE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c70591a2-3625-4d66-77ba-08de25e6db79
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8722.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 14:37:39.1274
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vpgHuqXt2aBblRml5aFQx2mVTTUtJZ5ZksKGXBBIFZNnK5JqoKJHxGlZpoZ6e9Y94aw785Or/aDH2fnqcYJJu0uGQZ+uV6DO7uxXCz0crC4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4915
+X-OriginatorOrg: intel.com
 
-On Mon, Nov 17, 2025 at 5:48=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Mon, Nov 17, 2025 at 1:17=E2=80=AFAM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Mon, Nov 17, 2025 at 4:57=E2=80=AFPM Eric Dumazet <edumazet@google.c=
-om> wrote:
-> > >
-> > > On Mon, Nov 17, 2025 at 12:41=E2=80=AFAM Jason Xing <kerneljasonxing@=
-gmail.com> wrote:
-> > > >
-> > > > On Mon, Nov 17, 2025 at 9:07=E2=80=AFAM Jason Xing <kerneljasonxing=
-@gmail.com> wrote:
-> > > > >
-> > > > > On Mon, Nov 17, 2025 at 4:27=E2=80=AFAM Eric Dumazet <edumazet@go=
-ogle.com> wrote:
-> > > > > >
-> > > > > > This is a followup of commit e20dfbad8aab ("net: fix napi_consu=
-me_skb()
-> > > > > > with alien skbs").
-> > > > > >
-> > > > > > Now the per-cpu napi_skb_cache is populated from TX completion =
-path,
-> > > > > > we can make use of this cache, especially for cpus not used
-> > > > > > from a driver NAPI poll (primary user of napi_cache).
-> > > > > >
-> > > > > > We can use the napi_skb_cache only if current context is not fr=
-om hard irq.
-> > > > > >
-> > > > > > With this patch, I consistently reach 130 Mpps on my UDP tx str=
-ess test
-> > > > > > and reduce SLUB spinlock contention to smaller values.
-> > > > > >
-> > > > > > Note there is still some SLUB contention for skb->head allocati=
-ons.
-> > > > > >
-> > > > > > I had to tune /sys/kernel/slab/skbuff_small_head/cpu_partial
-> > > > > > and /sys/kernel/slab/skbuff_small_head/min_partial depending
-> > > > > > on the platform taxonomy.
-> > > > > >
-> > > > > > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > > > >
-> > > > > Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-> > > > >
-> > > > > Thanks for working on this. Previously I was thinking about this =
-as
-> > > > > well since it affects the hot path for xsk (please see
-> > > > > __xsk_generic_xmit()->xsk_build_skb()->sock_alloc_send_pskb()). B=
-ut I
-> > > > > wasn't aware of the benefits between disabling irq and allocating
-> > > > > memory. AFAIK, I once removed an enabling/disabling irq pair and =
-saw a
-> > > > > minor improvement as this commit[1] says. Would you share your
-> > > > > invaluable experience with us in this case?
-> > > > >
-> > > > > In the meantime, I will do more rounds of experiments to see how =
-they perform.
-> > > >
-> > > > Tested-by: Jason Xing <kerneljasonxing@gmail.com>
-> > > > Done! I managed to see an improvement. The pps number goes from
-> > > > 1,458,644 to 1,647,235 by running [2].
-> > > >
-> > > > But sadly the news is that the previous commit [3] leads to a huge
-> > > > decrease in af_xdp from 1,980,000 to 1,458,644. With commit [3]
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Mon, 17 Nov 2025 16:11:32 +0300
 
-I have to rephrase a bit. What I did is on top of the commit just
-before [3], I tried out the tests to see the number w/o [3] series, so
-the numbers were respectively 1,458,644 and 1,980,000. That means
-reverting commit [3] brought back that much performance.
+> On Thu, Nov 06, 2025 at 03:07:26PM +0100, Alexander Lobakin wrote:
+>>> diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
+>>> index 6d5c939dc8a515c252cd2b77d155b69fa264ee92..3590dacf3ee57879b3809d715e40bb290e40c4aa 100644
+>>> --- a/drivers/net/ethernet/intel/ice/ice_flow.c
+>>> +++ b/drivers/net/ethernet/intel/ice/ice_flow.c
+>>> @@ -1573,12 +1573,13 @@ ice_flow_set_parser_prof(struct ice_hw *hw, u16 dest_vsi, u16 fdir_vsi,
+>>>  			 struct ice_parser_profile *prof, enum ice_block blk)
+>>>  {
+>>>  	u64 id = find_first_bit(prof->ptypes, ICE_FLOW_PTYPE_MAX);
+>>> -	struct ice_flow_prof_params *params __free(kfree);
+>>>  	u8 fv_words = hw->blk[blk].es.fvw;
+>>>  	int status;
+>>>  	int i, idx;
+>>>  
+>>> -	params = kzalloc(sizeof(*params), GFP_KERNEL);
+>>> +	struct ice_flow_prof_params *params __free(kfree) =
+>>> +		kzalloc(sizeof(*params), GFP_KERNEL);
+>>
+>> Please don't do it that way. It's not C++ with RAII and
+>> declare-where-you-use.
+>> Just leave the variable declarations where they are, but initialize them
+>> with `= NULL`.
+>>
+>> Variable declarations must be in one block and sorted from the longest
+>> to the shortest.
+>>
+> 
+> These days, with __free the trend is to say yes this is RAII and we
+> should declare it where you use it.  I personally don't have a strong
 
-Furthermore, I did a few more tests and my env changed:
-1) I tried the latest kernel, the number is around 1,680,000. And then
-revert commit [3], it's increased to 1,850,000.
-2) I tried to apply the current series, the number was around 1,730,000.
-3) I tried to apply the current series and reverted [3], the number
-was still around 1,730,000.
+Sorta, but we can't "declare it where you use it" since we don't allow
+declaration-after-statement in the kernel.
 
-That means the current series negates the benefits of that commit [3].
-I've done many rounds of tests, so the above numbers are quite stable.
-I feel I need to directly use the fallback memory allocation instead
-of trying napi_skb_cache_get for xsk? I'm not sure if any theory
-supports which one is good or not. From my instinct, trying
-disabling/enabling is saving time while using napi_skb_cache_get is
-also saving time...
-
-> > > > applied, I observed and found xdpsock always allocated the skb on c=
-pu
-> > > > 0 but the napi poll triggered skb_attempt_defer_free() on another
-> > > > call[4], which affected the final results.
-> > > >
-> > > > [2]
-> > > > taskset -c 0 ./xdpsock -i enp2s0f1 -q 1 -t -S -s 64
-> > > >
-> > > > [3]
-> > > > commit e20dfbad8aab2b7c72571ae3c3e2e646d6b04cb7
-> > > > Author: Eric Dumazet <edumazet@google.com>
-> > > > Date:   Thu Nov 6 20:29:34 2025 +0000
-> > > >
-> > > >     net: fix napi_consume_skb() with alien skbs
-> > > >
-> > > >     There is a lack of NUMA awareness and more generally lack
-> > > >     of slab caches affinity on TX completion path.
-> > > >
-> > > > [4]
-> > > > @c[
-> > > >     skb_attempt_defer_free+1
-> > > >     ixgbe_clean_tx_irq+723
-> > > >     ixgbe_poll+119
-> > > >     __napi_poll+48
-> > > > , ksoftirqd/24]: 1964731
-> > > >
-> > > > @c[
-> > > >     kick_defer_list_purge+1
-> > > >     napi_consume_skb+333
-> > > >     ixgbe_clean_tx_irq+723
-> > > >     ixgbe_poll+119
-> > > > , 34, swapper/34]: 123779
-> > > >
-> > > > Thanks,
-> > > > Jason
-> > >
-> > > Hi Jason.
-> > >
-> > > It is a bit hard to guess without more details (cpu you are using),
-> > > and perhaps perf profiles.
-> >
-> > Xdpsock only calculates the speed on the cpu where it sends packets.
-> > To put in more details, it will check if the packets are sent by
-> > inspecting the completion queue and then send another group of packets
-> > over and over again.
-> >
-> > My test env is relatively old:
-> > [root@localhost ~]# lscpu
-> > Architecture:                x86_64
-> >   CPU op-mode(s):            32-bit, 64-bit
-> >   Address sizes:             46 bits physical, 48 bits virtual
-> >   Byte Order:                Little Endian
-> > CPU(s):                      48
-> >   On-line CPU(s) list:       0-47
-> > Vendor ID:                   GenuineIntel
-> >   BIOS Vendor ID:            Intel(R) Corporation
-> >   Model name:                Intel(R) Xeon(R) CPU E5-2670 v3 @ 2.30GHz
-> >     BIOS Model name:         Intel(R) Xeon(R) CPU E5-2670 v3 @ 2.30GHz
-> >  CPU @ 2.3GHz
-> >     BIOS CPU family:         179
-> >     CPU family:              6
-> >     Model:                   63
-> >     Thread(s) per core:      2
-> >     Core(s) per socket:      12
-> >     Socket(s):               2
-> >     Stepping:                2
-> >     CPU(s) scaling MHz:      84%
-> >     CPU max MHz:             3100.0000
-> >     CPU min MHz:             1200.0000
-> >
-> > After that commit [3], the perf differs because of the interrupts
-> > jumping in the tx path frequently:
-> > -   98.72%     0.09%  xdpsock          libc.so.6          [.]
-> > __libc_sendto
-> >       =E2=96=92
-> >    - __libc_sendto
-> >                                                                     =E2=
-=97=86
-> >       - 98.28% entry_SYSCALL_64_after_hwframe
-> >                                                                     =E2=
-=96=92
-> >          - 98.19% do_syscall_64
-> >                                                                     =E2=
-=96=92
-> >             - 97.94% x64_sys_call
-> >                                                                     =E2=
-=96=92
-> >                - 97.91% __x64_sys_sendto
-> >                                                                     =E2=
-=96=92
-> >                   - 97.80% __sys_sendto
-> >                                                                     =E2=
-=96=92
-> >                      - 97.28% xsk_sendmsg
-> >                                                                     =E2=
-=96=92
-> >                         - 97.18% __xsk_sendmsg.constprop.0.isra.0
-> >                                                                     =E2=
-=96=92
-> >                            - 87.85% __xsk_generic_xmit
-> >                                                                     =E2=
-=96=92
-> >                               - 41.71% xsk_build_skb
-> >                                                                     =E2=
-=96=92
-> >                                  - 33.06% sock_alloc_send_pskb
-> >                                                                     =E2=
-=96=92
-> >                                     + 22.06% alloc_skb_with_frags
-> >                                                                     =E2=
-=96=92
-> >                                     + 7.61% skb_set_owner_w
-> >                                                                     =E2=
-=96=92
-> >                                     + 0.58%
-> > asm_sysvec_call_function_single
-> >                         =E2=96=92
-> >                                    1.66% skb_store_bits
-> >                                                                     =E2=
-=96=92
-> >                                    1.60% memcpy_orig
-> >                                                                     =E2=
-=96=92
-> >                                    0.69% xp_raw_get_data
-> >                                                                     =E2=
-=96=92
-> >                               - 32.56% __dev_direct_xmit
-> >                                                                     =E2=
-=96=92
-> >                                  + 15.62% 0xffffffffa064e5ac
-> >                                                                     =E2=
-=96=92
-> >                                  - 7.33% __local_bh_enable_ip
-> >                                                                     =E2=
-=96=92
-> >                                     + 6.18% do_softirq
-> >                                                                     =E2=
-=96=92
-> >                                     + 0.70%
-> > asm_sysvec_call_function_single
-> >                         =E2=96=92
-> >                                  + 5.78% validate_xmit_skb
-> >                                                                     =E2=
-=96=92
-> >                               - 6.08% asm_sysvec_call_function_single
-> >                                                                     =E2=
-=96=92
-> >                                  + sysvec_call_function_single
-> >                                                                     =E2=
-=96=92
-> >                               + 1.62% xp_raw_get_data
-> >                                                                     =E2=
-=96=92
-> >                            - 8.29% _raw_spin_lock
-> >                                                                     =E2=
-=96=92
-> >                               + 3.01% asm_sysvec_call_function_single
-> >
-> > Prior to that patch, I didn't see any interrupts coming in, so I
-> > assume the defer part caused the problem.
->
-> This is a trade off.
->
-> If you are using a single cpu to send packets, then it will not really
-> have contention on SLUB structures.
->
-> A bit like RFS : If you want to reach max throughput on a single flow,
-> it is probably better _not_ using RFS/RPS,
-> so that more than one cpu can be involved in the rx work.
-
-Point taken!
-
->
-> We can add a static key to enable/disable the behaviors that are most
-> suited to a particular workload.
-
-Are we going to introduce a new knob to control this snippet in
-napi_consume_skb()?
-
->
-> We could also call skb_defer_free_flush() (now it is IRQ safe) from
-> napi_skb_cache_get() before
-> we attempt to allocate new sk_buff. This would prevent IPI from being sen=
-t.
-
-Well, it can but it adds more complexity into the allocation phase. I
-would prefer the static key approach :)
+> opinion on this either way, but other maintainers do and will NAK the
+> `= NULL` approach.
+> 
+> The documentation says you should do it that way and avoid the `= NULL`
+> as well.  The issue is with lock ordering.  It's a FILO ordering, so if
+> we require a specific unlock order then declaring variables at the top
+> could mess things up.
+> 
+> The counter argument is that if you declare a variable after a goto
+> then that's undefined behavior as well.  Clang will detect that bug so
+> it be detected before it hits actual users.
+> 
+> regards,
+> dan carpenter
 
 Thanks,
-Jason
-
->
-> >
-> > > In particular which cpu is the bottleneck ?
-> > >
-> > > 1) There is still the missing part about tuning NAPI_SKB_CACHE_SIZE /
-> > > NAPI_SKB_CACHE_BULK, I was hoping you could send the patch we
-> > > discussed earlier ?
-> >
-> > Sure thing :) I've done that part locally, thinking I will post it as
-> > long as the current series gets merged?
-> >
-> > >
-> > > 2) I am also working on allowing batches of skbs for skb_attempt_defe=
-r_free().
-> > >
-> > > Another item I am working on is to let the qdisc being serviced
-> > > preferably not by the cpu performing TX completion,
-> > > I mentioned about making qdisc->running a sequence that we can latch
-> > > in __netif_schedule().
-> > > (Idea is to be able to not spin on qdisc spinlock from net_tx_action(=
-)
-> > > if another cpu was able to call qdisc_run())
-> >
-> > Awesome work. Hope to see it very soon :)
-> >
-> > Thanks,
-> > Jason
+Olek
