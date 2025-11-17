@@ -1,68 +1,270 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD29309F09;
-	Mon, 17 Nov 2025 19:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B81433EB06;
+	Mon, 17 Nov 2025 20:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763408280; cv=none; b=May2N1R/bEppeo+jTotXe73kaF+6UvkQhDdcvPoALV8HX2MXOA41yQMwuYQfM9ssGuXPo+ttNC3MQzoTfpnih0rTazg0B+whvMqCn4ghDiFx3Bm/gEx1BapnlNiaPy9bnvYuCLgqtsXYhnmXrlS3+RTkexOy2YMvI8zGRvq1Bn4=
+	t=1763411023; cv=none; b=lbA/PhaT2RdMGlGWKY0YZ7V8OgiTJIjR9OZ+1F9d1Yv2TYQqyjNCJ7NEeUCn/QZsvF9b+ISPtQrPFzvKZk1fwlCuxNiWOmvU6bF7helWuenoSicfnZVWXVBt9ssXaJWUjNBRK0zxoGCJI9dlzbrWIAzQ9XIFmHrdX1Y7r9cqrw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763408280; c=relaxed/simple;
-	bh=BL6kQAxMiMA7Yro/dmHN9DlWSpOewGHyvVsJZYWLQ8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0h1iwm+MqUc7QZh2R9n5hecv4TK+QgsaHAcgOhQVGumvalPapEdZ2WfbIBt5B7ExOtmh9WHjKlW0u5QbNnRMtnSsMit1XNoi0+FNnEgeXSkYPsffRJ3P9ykD2Gdm3/+DQPMkBrzfhQ3cujXarI2RrHXCOSq4TrO2oi3pO8xxMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bKUUkUxp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1763411023; c=relaxed/simple;
+	bh=s4Jx5HODf2NcnbbPfcfTeDgUjF3JZ2jvwst/LMiHEj8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nsREve/Scwwsv6ySMXEi+9Xb9BiEiMdDSsuDvZUy2ZwE7iAWInBagGAS1CUhp2SkgIzYOa/asFakMB6tIsXqMZtyP8SDLUs7FfPCqO6rrNlHi7LBpqP0441HhXOGXqwRabS7QkLxxtoyhjbV4PsM9GfvBoBeKbRDcy9DZnGcsJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRkHRr8q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bKUUkUxp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=aLkH5EkqMFLrYkdoNe8fL9zWn0q42zqbxvQwbRLzdGE=; b=bKUUkUxpKAVE0Iau4lH7xH9i0F
-	n/qZXVcCgQM7UX0chIQxz72Izx66+8PYeCpSOYNM91rcs/72bC48R/wfzKwfmj2qCGHD10fE0X3e2
-	XUZTtZFQB529WnXPPaSwQFqWFVRd5c5G7+R0p6Z1T3U0NzAt5cv4FrJvsB/Nph0kZPbo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vL52j-00EH4o-6n; Mon, 17 Nov 2025 20:37:41 +0100
-Date: Mon, 17 Nov 2025 20:37:41 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Fabio Baltieri <fabio.baltieri@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] r8169: add support for RTL8127ATF
-Message-ID: <c6beb0d4-f65e-4181-80e6-212b0a938a15@lunn.ch>
-References: <20251117191657.4106-1-fabio.baltieri@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRkHRr8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E23C2BCB5;
+	Mon, 17 Nov 2025 20:23:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763411022;
+	bh=s4Jx5HODf2NcnbbPfcfTeDgUjF3JZ2jvwst/LMiHEj8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TRkHRr8q7Jx5eGCF7FL6ecHcaq6E5tsLDxbGA4rfQPg3to1Z//tm68PPKdH0lPnLY
+	 RU39+ph3JmOHZbAWpnkYVPRHbKU3D5GjqUOOScswpdT4WQZY7mpJhBriIq8y4MlNLI
+	 Sbe2moSL5eEN6UERu7Cr6emXdGogqn+rbd8x6sJVzl5n1LG+0K6MsNB7MGVsrVq8AL
+	 u/+o0zyGrV1uwGGZw/dJyOQdEG2c3Eo8Ev+a/VCJa7jSyaa4yhUaCbZExwWalwzMLF
+	 /qSNegeRxvo7fHaD2ECL5uR+6re9MSoIyKct1HK6P3ZjTmWhPSwLGYqKRtMRJGoP2x
+	 wi283e8Tr35/Q==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org
+Cc: achender@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	rds-devel@oss.oracle.com,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] net/rds: Add per cp work queue
+Date: Mon, 17 Nov 2025 13:23:37 -0700
+Message-ID: <20251117202338.324838-2-achender@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251117202338.324838-1-achender@kernel.org>
+References: <20251117202338.324838-1-achender@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251117191657.4106-1-fabio.baltieri@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> +	if (tp->fiber_mode) {
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_100baseT_Full_BIT);
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_2500baseT_Full_BIT);
-> +		phy_remove_link_mode(tp->phydev, ETHTOOL_LINK_MODE_5000baseT_Full_BIT);
+From: Allison Henderson <allison.henderson@oracle.com>
 
-An SFP module can support baseT modes, if the SFP module has a PHY
-inside it. But it could also be it is a fibre module with a laser and
-so uses 100baseFX, 1000baseX, 2500BaseX, etc.
+This patch adds a per connection workqueue which can be initialized
+and used independently of the globally shared rds_wq.
 
-To do this properly, you need to be able to read the SFP EERPOMs
-content, to know what sort of SFP module you have plugged in. Then you
-can list the correct modes.
+This patch is the first in a series that aims to address tcp ack
+timeouts during the tcp socket shutdown sequence.
 
-	Andrew
+This initial refactoring lays the ground work needed to alleviate
+queue congestion during heavy reads and writes.  The independently
+managed queues will allow shutdowns and reconnects respond more quickly
+before the peer(s) timeout waiting for the proper acks.
+
+Signed-off-by: Allison Henderson <allison.henderson@oracle.com>
+---
+ net/rds/connection.c |  5 +++--
+ net/rds/ib_recv.c    |  2 +-
+ net/rds/ib_send.c    |  2 +-
+ net/rds/rds.h        |  1 +
+ net/rds/send.c       |  9 +++++----
+ net/rds/tcp_recv.c   |  2 +-
+ net/rds/tcp_send.c   |  2 +-
+ net/rds/threads.c    | 16 ++++++++--------
+ 8 files changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/net/rds/connection.c b/net/rds/connection.c
+index 68bc88cce84ec..dc7323707f450 100644
+--- a/net/rds/connection.c
++++ b/net/rds/connection.c
+@@ -269,6 +269,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
+ 		__rds_conn_path_init(conn, &conn->c_path[i],
+ 				     is_outgoing);
+ 		conn->c_path[i].cp_index = i;
++		conn->c_path[i].cp_wq = rds_wq;
+ 	}
+ 	rcu_read_lock();
+ 	if (rds_destroy_pending(conn))
+@@ -884,7 +885,7 @@ void rds_conn_path_drop(struct rds_conn_path *cp, bool destroy)
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+-	queue_work(rds_wq, &cp->cp_down_w);
++	queue_work(cp->cp_wq, &cp->cp_down_w);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(rds_conn_path_drop);
+@@ -909,7 +910,7 @@ void rds_conn_path_connect_if_down(struct rds_conn_path *cp)
+ 	}
+ 	if (rds_conn_path_state(cp) == RDS_CONN_DOWN &&
+ 	    !test_and_set_bit(RDS_RECONNECT_PENDING, &cp->cp_flags))
+-		queue_delayed_work(rds_wq, &cp->cp_conn_w, 0);
++		queue_delayed_work(cp->cp_wq, &cp->cp_conn_w, 0);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(rds_conn_path_connect_if_down);
+diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+index 4248dfa816ebf..357128d34a546 100644
+--- a/net/rds/ib_recv.c
++++ b/net/rds/ib_recv.c
+@@ -457,7 +457,7 @@ void rds_ib_recv_refill(struct rds_connection *conn, int prefill, gfp_t gfp)
+ 	    (must_wake ||
+ 	    (can_wait && rds_ib_ring_low(&ic->i_recv_ring)) ||
+ 	    rds_ib_ring_empty(&ic->i_recv_ring))) {
+-		queue_delayed_work(rds_wq, &conn->c_recv_w, 1);
++		queue_delayed_work(conn->c_path->cp_wq, &conn->c_recv_w, 1);
+ 	}
+ 	if (can_wait)
+ 		cond_resched();
+diff --git a/net/rds/ib_send.c b/net/rds/ib_send.c
+index 4190b90ff3b18..e35bbb6ffb689 100644
+--- a/net/rds/ib_send.c
++++ b/net/rds/ib_send.c
+@@ -419,7 +419,7 @@ void rds_ib_send_add_credits(struct rds_connection *conn, unsigned int credits)
+ 
+ 	atomic_add(IB_SET_SEND_CREDITS(credits), &ic->i_credits);
+ 	if (test_and_clear_bit(RDS_LL_SEND_FULL, &conn->c_flags))
+-		queue_delayed_work(rds_wq, &conn->c_send_w, 0);
++		queue_delayed_work(conn->c_path->cp_wq, &conn->c_send_w, 0);
+ 
+ 	WARN_ON(IB_GET_SEND_CREDITS(credits) >= 16384);
+ 
+diff --git a/net/rds/rds.h b/net/rds/rds.h
+index a029e5fcdea72..b35afa2658cc4 100644
+--- a/net/rds/rds.h
++++ b/net/rds/rds.h
+@@ -118,6 +118,7 @@ struct rds_conn_path {
+ 
+ 	void			*cp_transport_data;
+ 
++	struct workqueue_struct	*cp_wq;
+ 	atomic_t		cp_state;
+ 	unsigned long		cp_send_gen;
+ 	unsigned long		cp_flags;
+diff --git a/net/rds/send.c b/net/rds/send.c
+index 0b3d0ef2f008b..3e3d028bc21ee 100644
+--- a/net/rds/send.c
++++ b/net/rds/send.c
+@@ -458,7 +458,8 @@ int rds_send_xmit(struct rds_conn_path *cp)
+ 			if (rds_destroy_pending(cp->cp_conn))
+ 				ret = -ENETUNREACH;
+ 			else
+-				queue_delayed_work(rds_wq, &cp->cp_send_w, 1);
++				queue_delayed_work(cp->cp_wq,
++						   &cp->cp_send_w, 1);
+ 			rcu_read_unlock();
+ 		} else if (raced) {
+ 			rds_stats_inc(s_send_lock_queue_raced);
+@@ -1380,7 +1381,7 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
+ 		if (rds_destroy_pending(cpath->cp_conn))
+ 			ret = -ENETUNREACH;
+ 		else
+-			queue_delayed_work(rds_wq, &cpath->cp_send_w, 1);
++			queue_delayed_work(cpath->cp_wq, &cpath->cp_send_w, 1);
+ 		rcu_read_unlock();
+ 	}
+ 	if (ret)
+@@ -1470,10 +1471,10 @@ rds_send_probe(struct rds_conn_path *cp, __be16 sport,
+ 	rds_stats_inc(s_send_queued);
+ 	rds_stats_inc(s_send_pong);
+ 
+-	/* schedule the send work on rds_wq */
++	/* schedule the send work on cp_wq */
+ 	rcu_read_lock();
+ 	if (!rds_destroy_pending(cp->cp_conn))
+-		queue_delayed_work(rds_wq, &cp->cp_send_w, 1);
++		queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 1);
+ 	rcu_read_unlock();
+ 
+ 	rds_message_put(rm);
+diff --git a/net/rds/tcp_recv.c b/net/rds/tcp_recv.c
+index 7997a19d1da30..b7cf7f451430d 100644
+--- a/net/rds/tcp_recv.c
++++ b/net/rds/tcp_recv.c
+@@ -327,7 +327,7 @@ void rds_tcp_data_ready(struct sock *sk)
+ 	if (rds_tcp_read_sock(cp, GFP_ATOMIC) == -ENOMEM) {
+ 		rcu_read_lock();
+ 		if (!rds_destroy_pending(cp->cp_conn))
+-			queue_delayed_work(rds_wq, &cp->cp_recv_w, 0);
++			queue_delayed_work(cp->cp_wq, &cp->cp_recv_w, 0);
+ 		rcu_read_unlock();
+ 	}
+ out:
+diff --git a/net/rds/tcp_send.c b/net/rds/tcp_send.c
+index 7d284ac7e81a5..4e82c9644aa6a 100644
+--- a/net/rds/tcp_send.c
++++ b/net/rds/tcp_send.c
+@@ -201,7 +201,7 @@ void rds_tcp_write_space(struct sock *sk)
+ 	rcu_read_lock();
+ 	if ((refcount_read(&sk->sk_wmem_alloc) << 1) <= sk->sk_sndbuf &&
+ 	    !rds_destroy_pending(cp->cp_conn))
+-		queue_delayed_work(rds_wq, &cp->cp_send_w, 0);
++		queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 0);
+ 	rcu_read_unlock();
+ 
+ out:
+diff --git a/net/rds/threads.c b/net/rds/threads.c
+index 1f424cbfcbb47..639302bab51ef 100644
+--- a/net/rds/threads.c
++++ b/net/rds/threads.c
+@@ -89,8 +89,8 @@ void rds_connect_path_complete(struct rds_conn_path *cp, int curr)
+ 	set_bit(0, &cp->cp_conn->c_map_queued);
+ 	rcu_read_lock();
+ 	if (!rds_destroy_pending(cp->cp_conn)) {
+-		queue_delayed_work(rds_wq, &cp->cp_send_w, 0);
+-		queue_delayed_work(rds_wq, &cp->cp_recv_w, 0);
++		queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 0);
++		queue_delayed_work(cp->cp_wq, &cp->cp_recv_w, 0);
+ 	}
+ 	rcu_read_unlock();
+ 	cp->cp_conn->c_proposed_version = RDS_PROTOCOL_VERSION;
+@@ -140,7 +140,7 @@ void rds_queue_reconnect(struct rds_conn_path *cp)
+ 		cp->cp_reconnect_jiffies = rds_sysctl_reconnect_min_jiffies;
+ 		rcu_read_lock();
+ 		if (!rds_destroy_pending(cp->cp_conn))
+-			queue_delayed_work(rds_wq, &cp->cp_conn_w, 0);
++			queue_delayed_work(cp->cp_wq, &cp->cp_conn_w, 0);
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+@@ -151,7 +151,7 @@ void rds_queue_reconnect(struct rds_conn_path *cp)
+ 		 conn, &conn->c_laddr, &conn->c_faddr);
+ 	rcu_read_lock();
+ 	if (!rds_destroy_pending(cp->cp_conn))
+-		queue_delayed_work(rds_wq, &cp->cp_conn_w,
++		queue_delayed_work(cp->cp_wq, &cp->cp_conn_w,
+ 				   rand % cp->cp_reconnect_jiffies);
+ 	rcu_read_unlock();
+ 
+@@ -203,11 +203,11 @@ void rds_send_worker(struct work_struct *work)
+ 		switch (ret) {
+ 		case -EAGAIN:
+ 			rds_stats_inc(s_send_immediate_retry);
+-			queue_delayed_work(rds_wq, &cp->cp_send_w, 0);
++			queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 0);
+ 			break;
+ 		case -ENOMEM:
+ 			rds_stats_inc(s_send_delayed_retry);
+-			queue_delayed_work(rds_wq, &cp->cp_send_w, 2);
++			queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 2);
+ 			break;
+ 		default:
+ 			break;
+@@ -228,11 +228,11 @@ void rds_recv_worker(struct work_struct *work)
+ 		switch (ret) {
+ 		case -EAGAIN:
+ 			rds_stats_inc(s_recv_immediate_retry);
+-			queue_delayed_work(rds_wq, &cp->cp_recv_w, 0);
++			queue_delayed_work(cp->cp_wq, &cp->cp_recv_w, 0);
+ 			break;
+ 		case -ENOMEM:
+ 			rds_stats_inc(s_recv_delayed_retry);
+-			queue_delayed_work(rds_wq, &cp->cp_recv_w, 2);
++			queue_delayed_work(cp->cp_wq, &cp->cp_recv_w, 2);
+ 			break;
+ 		default:
+ 			break;
+-- 
+2.43.0
+
