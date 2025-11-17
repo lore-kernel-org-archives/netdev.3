@@ -1,124 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A2D2F068F;
-	Mon, 17 Nov 2025 16:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C7C2F5337;
+	Mon, 17 Nov 2025 16:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398039; cv=none; b=aoGhyOf7jLKJMeYe7eBV6wWxaYHoprUnLhNtBqn/XD71OmV1V9uMp7lTofZ1ZqPa6kJEhNL0YSr6grWvuuOCGtgpKy7eL3Ghw+ERsQ16ewJJ8AWSobHmsCjcLIXRpssVYIYWC9ayRJpzfn+Zr24931CrBwtrtpc1FqbPNGONJQc=
+	t=1763398237; cv=none; b=Id1ScwIVkpxTWkCTN7w0u+DnodoosTrm9wemE8VXIhpSB0gH1s8T422uaOMXNlqoewobMLNIJUNILRsB+hjoW0rt5EyJd0Eiks9jgyaG+9ZUua2B38VQqGm5FcFnTYvy6tOA+ieJqwCVZJ2HxoaRvS2fjy3911xFHLjRh9vQjDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398039; c=relaxed/simple;
-	bh=VDPU8WBpaSMdog+Adn5C5R/6IBPWeQhuaPBSI4eT7Ko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VAsAYPEaQjJEAOlb8qYfBp+dHLWMMeBcO3WBARYh5YacGJws6ma3E+kL1UZgUaoq/ezXZCqPOLBJXoXUmtlCugw8FJXXJBoMZhrMTB1OGQ3ZVd9J592Dz4L4YCU8bkWl8ETymCLZZlPjD1rPefLzNGgKfT62KUtXAO9R5kH18Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4mLEid5; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4mLEid5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818FDC4AF0B;
-	Mon, 17 Nov 2025 16:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763398039;
-	bh=VDPU8WBpaSMdog+Adn5C5R/6IBPWeQhuaPBSI4eT7Ko=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I4mLEid5UB2vfOwQXMYCyyiehnTm4dhzeg8ijCEtfD2upmwu1wXdOEhJ+MLKn5PyL
-	 XWjEQLi4Gkzt61V91UBFEXN4IvveVwebdp3HmwNGmDyTT3QB4mXI5bbIo+K+MmoMNn
-	 LgsO/tTrW0XgeARy9TG+bmFaCZbslP/UdD/1PnRitn2CLZfBffpDBprSsOJ/9yJEL0
-	 5G7QezrhBDd/ytSQhI+YTKE0+c7cXgDd5CnuaNKFtHucUrNJE4J+3snXSh/O5y+7ju
-	 5mJjRxcNDM8F9XTrK87uvomDx9F2hDcRKfm4olTCbOTtGNf6+tq4xFxicNH+bG1uM4
-	 6zkTWIT+Y7vaQ==
-Message-ID: <e470c73a-9867-4387-9a9a-a63cd3b2654f@kernel.org>
-Date: Mon, 17 Nov 2025 17:47:05 +0100
+	s=arc-20240116; t=1763398237; c=relaxed/simple;
+	bh=rLnSkle9gDtzmk+Xzjh4JTt9WyaHRuH0dl6amNgDsgk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Tbz2OI1UwV+wr/s/2xE4aIN+PfcX382okON4ZNviSBjty2K9NnaDtObGnBXiiuSSgGJH+tASVTdEnVMnPYqW0HP1v6qEbk51WMsQlLlK3L0twoXGFyvZcy0bM89+s/cvsg3Jh5E6ZyxBrbYSSX+sVBNuSixVj5KOogOzJHhbFxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d9D964M8Rz9sTQ;
+	Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 3rt6ikktw9sm; Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d9D9638tnz9sSL;
+	Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 540BA8B763;
+	Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 7sNQuGfP_LfF; Mon, 17 Nov 2025 17:44:10 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 347AE8B768;
+	Mon, 17 Nov 2025 17:44:09 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ingo Molnar <mingo@redhat.com>,
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Andre Almeida" <andrealmeid@igalia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nichlas Piggin <npiggin@gmail.com>,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v5 1/4] iov_iter: Convert copy_from_user_iter() to masked user access
+Date: Mon, 17 Nov 2025 17:43:41 +0100
+Message-ID: <58e4b07d469ca68a2b9477fe2c1ccc8a44cef131.1763396724.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1763396724.git.christophe.leroy@csgroup.eu>
+References: <cover.1763396724.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC mm v6] mm: introduce a new page type for page pool in page
- type
-To: Jesper Dangaard Brouer <hawk@kernel.org>,
- Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
- brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
- usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
- bpf@vger.kernel.org, linux-rdma@vger.kernel.org, sfr@canb.auug.org.au,
- dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com
-References: <20251117052041.52143-1-byungchul@sk.com>
- <f25a95a4-5371-40bd-8cc8-d5f7ede9a6ac@kernel.org>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <f25a95a4-5371-40bd-8cc8-d5f7ede9a6ac@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=rLnSkle9gDtzmk+Xzjh4JTt9WyaHRuH0dl6amNgDsgk=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRKBxw/U/rkPt+bqXsso2+trmi+bHKls0f76bOjvtFBu 98d1L33qqOUhUGMi0FWTJHl+H/uXTO6vqTmT92lDzOHlQlkCAMXpwBMRHkWI8Oc5nubJl3hm2vk sPjTg6ONon2q7p5t0otnK8VZd6aoO8kxMswMeGirabeizWPDTi6RbW2bzzgkp/nacr7ST90TKce xiwsA
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+Content-Transfer-Encoding: 8bit
 
-On 17.11.25 17:02, Jesper Dangaard Brouer wrote:
-> 
-> On 17/11/2025 06.20, Byungchul Park wrote:
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 600d9e981c23..01dd14123065 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
->>    #ifdef CONFIG_MEMCG
->>    			page->memcg_data |
->>    #endif
->> -			page_pool_page_is_pp(page) |
->>    			(page->flags.f & check_flags)))
->>    		return false;
->>    
->> @@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
->>    	if (unlikely(page->memcg_data))
->>    		bad_reason = "page still charged to cgroup";
->>    #endif
->> -	if (unlikely(page_pool_page_is_pp(page)))
->> -		bad_reason = "page_pool leak";
->>    	return bad_reason;
->>    }
-> 
-> This code have helped us catch leaks in the past.
-> When this happens the result is that the page is marked as a bad page.
-> 
->>    
->> @@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
->>    		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->>    		folio->mapping = NULL;
->>    	}
->> -	if (unlikely(page_has_type(page)))
->> +	if (unlikely(page_has_type(page))) {
->> +		/* networking expects to clear its page type before releasing */
->> +		WARN_ON_ONCE(PageNetpp(page));
->>    		/* Reset the page_type (which overlays _mapcount) */
->>    		page->page_type = UINT_MAX;
->> +	}
->>    
->>    	if (is_check_pages_enabled()) {
->>    		if (free_page_is_bad(page))
-> 
-> What happens to the page? ... when it gets marked with:
->     page->page_type = UINT_MAX
-> 
-> Will it get freed and allowed to be used by others?
-> - if so it can result in other hard-to-catch bugs
+Following patch will add missing barrier_nospec() to
+copy_from_user_iter(). On some architecture like x86 it might
+degrade performance, which would be unfortunate as
+copy_from_user_iter() is a critical function.
 
-Yes, just like most other use-after-free from any other subsystem in the 
-kernel :)
+Convert copy_from_user_iter() to using masked user access on
+architecture that support it.
 
-The expectation is that such BUGs are found early during testing 
-(triggering a WARN) such that they can be fixed early.
+This is similar to what was done for copy_from_user() by
+commit 0fc810ae3ae1 ("x86/uaccess: Avoid barrier_nospec()
+in 64-bit copy_from_user()")
 
-But we could also report a bad page here and just stop (return false).
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v5: Changed commit message
 
+v2: New in v2
+---
+ lib/iov_iter.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 2fe66a6b8789..a589935bf302 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -49,12 +49,16 @@ size_t copy_from_user_iter(void __user *iter_from, size_t progress,
+ 
+ 	if (should_fail_usercopy())
+ 		return len;
+-	if (access_ok(iter_from, len)) {
+-		to += progress;
+-		instrument_copy_from_user_before(to, iter_from, len);
+-		res = raw_copy_from_user(to, iter_from, len);
+-		instrument_copy_from_user_after(to, iter_from, len, res);
+-	}
++	if (can_do_masked_user_access())
++		iter_from = mask_user_address(iter_from);
++	else if (!access_ok(iter_from, len))
++		return res;
++
++	to += progress;
++	instrument_copy_from_user_before(to, iter_from, len);
++	res = raw_copy_from_user(to, iter_from, len);
++	instrument_copy_from_user_after(to, iter_from, len, res);
++
+ 	return res;
+ }
+ 
 -- 
-Cheers
+2.49.0
 
-David
