@@ -1,151 +1,122 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0A51991CB
-	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 11:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B16329E7B
+	for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 11:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763378462; cv=none; b=NvLa5n5g/e+eoqxw+qOdu60IkJokDWkZV+/tzTRo9ElEi+DcDl23RRD/0gBwJStlrsmTBUqU+U1ujGLUIMJvXal39zUN1sESKbsoP3TYPrFM0esA+ODQ3/aj5TZqUXBwuhjkwDuPmUp2QWlSH/TEEr2hlcDhLH8btM0LXg+ZBzY=
+	t=1763379321; cv=none; b=mGagM/moMHHNTbrb54VPFbv1gQ1nDbLlQmcOpPL5B4r9ya2fb/2mC0mpXqsXDzAdr+3T/air5evwrUto2mEYZn8GLQWwqIkp3eK1aSM/QUkTW4+fZSJLkTlm8GEfyBdiwHYdU4qrlmz8JWYIRwYY86J4GgqeE1EcPMW2XWTjO8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763378462; c=relaxed/simple;
-	bh=dPcOQIPBIBCLa/NKsa8a0L2Mq5wMH471wz/f//gTuWU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SisYW4B/HuNaAwS4T8dpWXJHyOIpwK80h2znTLoSZq/HLAcUBTVN4AV3nht+3AvTlPokgFB0sr/OdwpG8Mmh/oZbNCr+0jOzNdD+lVUucmWvSuISS6iF+0o1A1IUrMZqv0nT8PfVtjLT2Q75ZCnpixRyeyZCscUsz2URN4/stZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I8bYIGgX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Un8PpfQv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763379321; c=relaxed/simple;
+	bh=I6qn8T9OloH2SwY804Ywtu0Iwvuz0lJ2cwzXMa1S7cM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YAIN1iC6Kc/rIP6p8OJklwSI7hKdLQ6rw27CKwvO3GRIzthufw2QFRXCd4jCybZcRJ1AbrmH66offLFLxAZHaNyLcT+579Pan7xrHSGduh/FKMwuj0CmBgowVrTGJJxR/4M5bwi+exwi6aM1c181Dnep9VcnWNRPVR/CrqyGbCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fA0QIt+Y; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I8bYIGgX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Un8PpfQv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763378459;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QVf9LxNdBO8TaOKgZFNSQsuTbNOO3hmBDaXVsTWiiWA=;
-	b=I8bYIGgXifOH20wmS9+zXtI6/O28rgITo46ljUCAfuNK9KFeoDV4GFP+ayX56s8zODiBrX
-	3Dzkwj3TDLulB8RyEXQhdfjrdXNqxjHfdAf/PgDEA2O2K11s4h88z/g05q2Sz55pRaoFb3
-	NQX/2Srd7fH1KA5tXOYfTIbNA/Uc4bA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-FfN8ScG1P_uzIbfQKZmZJw-1; Mon, 17 Nov 2025 06:20:58 -0500
-X-MC-Unique: FfN8ScG1P_uzIbfQKZmZJw-1
-X-Mimecast-MFC-AGG-ID: FfN8ScG1P_uzIbfQKZmZJw_1763378457
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-640cc916e65so5237971a12.1
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 03:20:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fA0QIt+Y"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29568d93e87so37382505ad.2
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 03:35:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763378457; x=1763983257; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QVf9LxNdBO8TaOKgZFNSQsuTbNOO3hmBDaXVsTWiiWA=;
-        b=Un8PpfQvqC5wTzErk38aMO3hEdRvYC+9HtuNTDGBm9eo9yKT41VxFEqSkHgp8wYcnf
-         8aQAQoGDUFWK8yN26R0WEYsVQtyGmapOQoHTSi81dPLUDDC6bb2IO9WJdnQxAHMIlIuX
-         SJK4J5GZQz/Hq3fbkdDS/Y8Waxb7c7eqBKR9wG7T2mfSFdiLGYd989bXAn0vLTvsC8SL
-         bhk3wrqgrmYDyWLgLqUsCJOW6lpgbg3TMTlG8qCGxSrCmY8Ru2F9SC3ir0YU8HoFtzu6
-         wq8rR1SU1XpJQR4UMj9DuCQLWS6Lz4Tiz3HXvtBPEEshYksNe8mE3S05vEV4AY2u0gu5
-         OH5w==
+        d=gmail.com; s=20230601; t=1763379320; x=1763984120; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0w2CBv3xt6XYZVJpsYHadNIaQcj5i+N3tQ1qd3caqOg=;
+        b=fA0QIt+YfKV9voD4cWwg1ZL8mFHpwZUyLy2NVy7RgU6eH2e/zSbGuJ7J+FqOTcoOHF
+         PS2DZudDraiuDYg6ImGgGxZKhIhxApJef9Oyr7CXaYM3y5nyYfB9vAJeMvR5w9K3BWUn
+         YiUuv/W3FFL066xaws6+MqfgGd+by+GcNsCvEirR9pkoSYuKmiGLlaTnDRY+eIK7SiVU
+         SSbSMqnQ4esVE6c8Jxf6tI16ILjea4P01iYzyVlwqt6GAqT5gQN06RN4eOQ2eUNFKG4T
+         pEHeW4WqCV52lhxU+vp2RuKv6o6Fu3o3Lc8d0lHHb77gMn5KzonXMxMxbODshpSO2MLW
+         HuWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763378457; x=1763983257;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QVf9LxNdBO8TaOKgZFNSQsuTbNOO3hmBDaXVsTWiiWA=;
-        b=KyCXLo9807GJ/8nqu7DJjL0BA9LKcaqeyWMYZX8VgPv/Yfbhb/PcXZBuBPdi9hCGQd
-         G2/pA6kFRrirQSfo5d0YP+yykQYURwYreE9PBWseiDt5Fq8zlfjpvK2Y6p/uDJEqt5jI
-         RUDaRztpYvgoQ2OzrzIaSFvnzSrzjAQvfF5Tqe4YJaTmYR/oOyobv+gWCSNFDEGK8uzK
-         TsjrD4/EEV4jPv1Vj1fungVuAmABrIEdMlOt4g7Xor5/eQMImzzEoageG8HquOtOBk7F
-         YPgM5penfaZMmKOa/c/UKNmohB8SLebOu4sa6PuxZ2wwF+DaH1zICaG/ygtaYzG0G0s/
-         fHUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVtQYbrJYbXI/aEXlXIerSWKJqjT9Zwo3oO21XyxRtFYxzrdfKl1F0Et9ZdlB3eFVhhoWZ9ds0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzM5RId/l4WlnQ59Svu4L8i5jgX2Mro1U8sypkuMM9J4fWJ2UQV
-	vMd0v02Q0gyORr14L35YJImFxpSquEL1z+i4X7LOlpoY8VlpuBYQmOV7SDgO7Zbp9UT3c7gR8Gg
-	njlYiniqD3veUuLXKWdn8fBCdZ/VKbqB7z5Lxd8f/ARseMgNgCeW08Zr7mg==
-X-Gm-Gg: ASbGncvQgkpryqK+QVDwHqZKwBLcHmZnqWUCayxYVHNXWXfWahzgsGz+b0oEcQG/+94
-	k5/Kv8No28x1qY5B5qdbMcT71Xhd9YY8KQ8RxuXppT9t0W5H36kxsYV3NQf1SjbWyZRWvSkUCVN
-	a6kuBbrGprIDOH0z79d2QWZ9S2qvKZEHJhWw3oImFh5nxMZzJZDdY0YlarH6c5/EDNvLmUbVDZG
-	aoOpxTYo7CqPoJ8ITx2Le9wbfzbZm9BWumfhW15MZQYa1jmUMNSCsyGnqwNKmDSZRroyxqxbOJj
-	WTMhBCxaRFOr638euQIwg8HEUS1atwKMNXtEybCQEaVmVVv//KVuaSQVXcyXF0HZbZ5xGQ6qzSV
-	8YAXCv7VVjs7DQaQhi336rdoLuw==
-X-Received: by 2002:a05:6402:51d0:b0:640:b736:6c15 with SMTP id 4fb4d7f45d1cf-64350e23625mr11703521a12.10.1763378456945;
-        Mon, 17 Nov 2025 03:20:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF4Wdj00OQMd3S1KCNlU9xBz46Uej0UIJ1gNeKRvwBEkwOcay/vlwA/7tWC70CgNVFMvt+NUw==
-X-Received: by 2002:a05:6402:51d0:b0:640:b736:6c15 with SMTP id 4fb4d7f45d1cf-64350e23625mr11703494a12.10.1763378456453;
-        Mon, 17 Nov 2025 03:20:56 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a49806csm9992622a12.18.2025.11.17.03.20.55
+        d=1e100.net; s=20230601; t=1763379320; x=1763984120;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0w2CBv3xt6XYZVJpsYHadNIaQcj5i+N3tQ1qd3caqOg=;
+        b=Na2gGH3pGkvsCNErEIb5ejVuCYuU/pWFSaiYnWROUsAfRLWFxdscmIyM1tNDUaaJsP
+         APXQCg2riOUy5GfLh4+rRVRHmu5a43UKHVA2qxjev8wAGJhgWFoEIniGaAbsorgARblO
+         Jy2SN5EI60IZJcTp3bXkjDht9Npb8xbek2MeS4DxT3VW9z+ezfHwl8A2/7GnhPqW5GGQ
+         lNHDr+JppO4R837Oy0ajv0Qz3upjxqVIr7B+lG67PXaW9f/vnVnB2Xtrqne1r8zwHtHz
+         arpPiGJh0e8oHRBjdnerNRzlHLCaJOdQTHIPZrUQIbXs1Dwknt2VRVQaYrZiy1x5EPiw
+         POYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVyq251M/fuXrnIFdb1byjl7P3AruMlJ/b6KugpZjdWGjCrNw2tZqvVcXo74gfmLUKAK93Dbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhfH/ZZxomSH5MnZvriCQFjl3tAHm5lKTF4eRriv4l1XF/fsLA
+	CTdd6vk9x1iBVYaNhN0lp8fzpAsPIfPjOmvHAykQC2JMwD6CSpmclCJX
+X-Gm-Gg: ASbGncu2VWGlsEDfM+RWYvp0CyErX2GtnlQ8sCpRWCoLsrFFUz25jd3XhtrMB+tQ3kM
+	FOeSlpYEhlgPnkkhN00ark9c0EByInvcF0nI7dMLLpW9JTXfQ00lx/Ui6rrC/CrUk1fsALTLenl
+	r5TzMMOXxrrC1hgZg3YIrn20usqGQZRXrhCyxgyx9sQlIM4DTEGa9WTpCixKFe7iGItpmjGIAY8
+	12mDu39mv1N3VZH/i/nQM60Yn5YG9bns65/OkyFH2b6REgTvLbtSyw+0gMgB/fndoyJYVTgiW+P
+	wKOPhes4atC4qlLTtXpioxDFzGsZ8qqkm8yKtkJdhZIl6oFFex3Il2TpC6s6/qdPnOkNDo8wGY7
+	i+qHalCjX0mFrJUsVaE+G48YI9AlZGj+P0CBllnXdzWpLtGSR9qd+dA/Gw6Y8vxfJAeuJAntUI/
+	Zg3LA3OVijXVMsEw3jVHqA
+X-Google-Smtp-Source: AGHT+IG635YafGXUVd7DvvphcfIU5ppiIl0oaJrECq0Sb7Uh7C8Et6uGZUlvvd1XsYkn+5XV8TwdKA==
+X-Received: by 2002:a17:902:cf41:b0:27d:69cc:9a6 with SMTP id d9443c01a7336-2986a768205mr143606335ad.53.1763379319619;
+        Mon, 17 Nov 2025 03:35:19 -0800 (PST)
+Received: from google.com ([2401:fa00:95:201:43f6:9b48:f7fa:a8c9])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bc36db25bfbsm12515724a12.1.2025.11.17.03.35.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 03:20:55 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 1D7AF329B3D; Mon, 17 Nov 2025 12:20:54 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
- netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
- willy@infradead.org, brauner@kernel.org, kas@kernel.org,
- yuzhao@google.com, usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, asml.silence@gmail.com, bpf@vger.kernel.org,
- linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
- ap420073@gmail.com, dtatulea@nvidia.com
-Subject: Re: [RFC mm v6] mm: introduce a new page type for page pool in page
- type
-In-Reply-To: <20251117052041.52143-1-byungchul@sk.com>
-References: <20251117052041.52143-1-byungchul@sk.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Mon, 17 Nov 2025 12:20:53 +0100
-Message-ID: <87o6p0oqga.fsf@toke.dk>
+        Mon, 17 Nov 2025 03:35:19 -0800 (PST)
+Date: Mon, 17 Nov 2025 19:35:15 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <eric.dumazet@gmail.com>
+Subject: Re: [PATCH 0/2] rbree: inline rb_first() and rb_last()
+Message-ID: <aRsIc-7VImwUb58q@google.com>
+References: <20251114140646.3817319-1-edumazet@google.com>
+ <aRoRKp4yDGOsZ4o0@google.com>
+ <CANn89iKYLf1AWi_YvK47NvQXb0B31NHxF736dXYg=2E5Xxg0Ew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANn89iKYLf1AWi_YvK47NvQXb0B31NHxF736dXYg=2E5Xxg0Ew@mail.gmail.com>
 
-Byungchul Park <byungchul@sk.com> writes:
+On Sun, Nov 16, 2025 at 10:41:31AM -0800, Eric Dumazet wrote:
+> On Sun, Nov 16, 2025 at 10:00 AM Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
+> >
+> > Hi Eric,
+> >
+> > On Fri, Nov 14, 2025 at 02:06:44PM +0000, Eric Dumazet wrote:
+> > > Inline these two small helpers, heavily used in TCP and FQ packet scheduler,
+> > > and in many other places.
+> > >
+> > > This reduces kernel text size, and brings an 1.5 % improvement on network
+> > > TCP stress test.
+> >
+> > Thanks for the patch!
+> >
+> > Just out of curiosity, do you think rb_first() and rb_last() would be
+> > worth marking with __always_inline?
+> 
+> I have not seen any difference, what compilers are you using that
+> would not inline this ?
 
-> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-> determine if a page belongs to a page pool.  However, with the planned
-> removal of @pp_magic, we should instead leverage the page_type in struct
-> page, such as PGTY_netpp, for this purpose.
->
-> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> netmem_clear_pp_magic().
->
-> Plus, add @page_type to struct net_iov at the same offset as struct page
-> so as to use the page_type APIs for struct net_iov as well.  While at it,
-> reorder @type and @owner in struct net_iov to avoid a hole and
-> increasing the struct size.
->
-> This work was inspired by the following link:
->
->   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
->
-> While at it, move the sanity check for page pool to on the free path.
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> ---
-> I dropped all the Reviewed-by and Acked-by given for network changes
-> since I changed how to implement the part on the request from Jakub.
-> Can I keep your tags?  Jakub, are you okay with this change?
+I haven't specifically measured the difference. I was curious if using
+__always_inline would be better to guarantee the compiler inlines the
+function, given that the inline keyword is only a suggestion, and this
+optimization is important for performance in a hot path.
 
-LGTM, you can keep mine :)
+Also, FWIW, I tried building an arm64 defconfig with LLVM both with and
+without __always_inline. I got the same results from size vmlinux, but
+scripts/bloat-o-meter output is as follows:
 
--Toke
+add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-8 (-8)
+Function                                     old     new   delta
+__aarch32_sigret_code_end                     24      16      -8
+Total: Before=129127208516005098430, After=129127208516005098422, chg -0.00%
 
+Regards,
+Kuan-Wei
