@@ -1,38 +1,38 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB68314B74;
-	Tue, 18 Nov 2025 10:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625732E13F;
+	Tue, 18 Nov 2025 10:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763460066; cv=none; b=jIg0rhEOZjwwRQGbASVgl/OeIF5w9bxSAMTqmfRZd9P9Km9K3o4+ZY4ItImR1GgJSPV5KIS8AqpVlr6uWpGQx/zy9LfWi9VTghU8vP4g8mVm6mvVqQHI1pLAQLK6XsACY11wx0Tv2pCjxzjbOHpzqzb2x1z6lXetM+hwuK+QP8c=
+	t=1763460067; cv=none; b=kmFpWcg/5tpKqiaXZtLXDZ8SOnNQVhC3fQ7Qy0SqMQZ0tsL2kccghJjvIeHvQlhY5EE8TQ29JRcsADUMlvW9iCnyTHDETY53C1ur0b0UV70uCIAbOpI6AkiS/cPd5sIRm4zf5JUkYivwtZJKeh5VDtl4uIV6BfKoqfVdfke/cpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763460066; c=relaxed/simple;
-	bh=JYSI/L37LKtsQ5DU+yg7KSZ9DQv5No4o/xw7p95pF2E=;
+	s=arc-20240116; t=1763460067; c=relaxed/simple;
+	bh=qmgjH/LTamdCv+gZqdGKNFQBPjfwsn3zoCVT6WsYaZ8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BGXdzZTHGOviv4SuOmw6nua+Xp9nrRfdh355y51Ge/F843TCA9P6+G44S7puxsRPIyvyAbAqsnlH8STux/81EggWGNevUBYRjfVsJld0P8iEeavuHSJNanQtSM/kumiWOl6sJOFop32TyzaJXb18OKtVKiBz/mu6caoq89SoD3Y=
+	 MIME-Version:Content-Type; b=f4x6wBG40ABSQ2RhD/Fu1zV1xL12ax3yUfxivIAB8aVlt1FB5ki0CIlWBLGF2jovHSay1PPBJUMlDYgLZC+2IS/5hxO/RUBYU2TiE8HJ1Ld+QWJCvHOIiAF8TdNAwEvG7Wn51f9XJ2h/Tx6AcruPVtONdRPDBfA0nJoz7Cxpu5M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d9g8h0ZB3zJ46kb;
-	Tue, 18 Nov 2025 18:00:20 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d9g8j2ll9zJ46fP;
+	Tue, 18 Nov 2025 18:00:21 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 236D41404FD;
-	Tue, 18 Nov 2025 18:01:02 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6E7BC1404FE;
+	Tue, 18 Nov 2025 18:01:03 +0800 (CST)
 Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Nov 2025 13:01:01 +0300
+ 15.2.1544.11; Tue, 18 Nov 2025 13:01:02 +0300
 From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <andrey.bokhanko@huawei.com>, <edumazet@google.com>, Dmitry Skorodumov
 	<skorodumov.dmitry@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
  S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo
  Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 09/13] ipvlan: const-specifier for functions that use iaddr
-Date: Tue, 18 Nov 2025 13:00:41 +0300
-Message-ID: <20251118100046.2944392-10-skorodumov.dmitry@huawei.com>
+Subject: [PATCH net-next 11/13] ipvlan: common code to handle ipv6/ipv4 address events
+Date: Tue, 18 Nov 2025 13:00:43 +0300
+Message-ID: <20251118100046.2944392-12-skorodumov.dmitry@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251118100046.2944392-1-skorodumov.dmitry@huawei.com>
 References: <20251118100046.2944392-1-skorodumov.dmitry@huawei.com>
@@ -47,70 +47,194 @@ Content-Type: text/plain
 X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
  mscpeml500004.china.huawei.com (7.188.26.250)
 
-Fix functions that accept "void *iaddr" as param to have
-const-specifier.
+Both IPv4 and IPv6 addr-event functions are very similar. Refactor
+to use common funcitons.
 
 Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 ---
- drivers/net/ipvlan/ipvlan.h      | 6 +++---
- drivers/net/ipvlan/ipvlan_core.c | 2 +-
- drivers/net/ipvlan/ipvlan_main.c | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 117 ++++++++++---------------------
+ 1 file changed, 37 insertions(+), 80 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
-index faba1308c135..be2bc2d33ddb 100644
---- a/drivers/net/ipvlan/ipvlan.h
-+++ b/drivers/net/ipvlan/ipvlan.h
-@@ -194,11 +194,11 @@ void ipvlan_multicast_enqueue(struct ipvl_port *port,
- int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev);
- void ipvlan_ht_addr_add(struct ipvl_dev *ipvlan, struct ipvl_addr *addr);
- int ipvlan_add_addr(struct ipvl_dev *ipvlan,
--		    void *iaddr, bool is_v6, const u8 *hwaddr);
--void ipvlan_del_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6);
-+		    const void *iaddr, bool is_v6, const u8 *hwaddr);
-+void ipvlan_del_addr(struct ipvl_dev *ipvlan, const void *iaddr, bool is_v6);
- struct ipvl_addr *ipvlan_find_addr(const struct ipvl_dev *ipvlan,
- 				   const void *iaddr, bool is_v6);
--bool ipvlan_addr_busy(struct ipvl_port *port, void *iaddr, bool is_v6);
-+bool ipvlan_addr_busy(struct ipvl_port *port, const void *iaddr, bool is_v6);
- void ipvlan_ht_addr_del(struct ipvl_addr *addr);
- struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 				     int addr_type, bool use_dest);
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index f08edaaae61d..425d2a12a4ee 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -121,7 +121,7 @@ struct ipvl_addr *ipvlan_find_addr(const struct ipvl_dev *ipvlan,
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index e50dd9022557..33da1d45eb24 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -1180,33 +1180,39 @@ static int ipvlan_addr_validator_event(struct net_device *dev,
+ 	return NOTIFY_OK;
+ }
+ 
+-#if IS_ENABLED(CONFIG_IPV6)
+-static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
++static int ipvlan_add_addr_event(struct ipvl_dev *ipvlan, const void *iaddr,
++				 bool is_v6)
+ {
+ 	int ret = -EINVAL;
+ 
+ 	spin_lock_bh(&ipvlan->port->addrs_lock);
+-	if (ipvlan_addr_busy(ipvlan->port, ip6_addr, true))
+-		netif_err(ipvlan, ifup, ipvlan->dev,
+-			  "Failed to add IPv6=%pI6c addr for %s intf\n",
+-			  ip6_addr, ipvlan->dev->name);
+-	else
+-		ret = ipvlan_add_addr(ipvlan, ip6_addr, true, NULL);
++	if (ipvlan_addr_busy(ipvlan->port, iaddr, is_v6)) {
++		if (is_v6) {
++			netif_err(ipvlan, ifup, ipvlan->dev,
++				  "Failed to add IPv6=%pI6c on %s intf.\n",
++				  iaddr, ipvlan->dev->name);
++		} else {
++			netif_err(ipvlan, ifup, ipvlan->dev,
++				  "Failed to add IPv4=%pI4 on %s intf.\n",
++				  iaddr, ipvlan->dev->name);
++		}
++	} else {
++		ret = ipvlan_add_addr(ipvlan, iaddr, is_v6, NULL);
++	}
+ 	spin_unlock_bh(&ipvlan->port->addrs_lock);
  	return ret;
  }
  
--bool ipvlan_addr_busy(struct ipvl_port *port, void *iaddr, bool is_v6)
-+bool ipvlan_addr_busy(struct ipvl_port *port, const void *iaddr, bool is_v6)
+-static void ipvlan_del_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
++static void ipvlan_del_addr_event(struct ipvl_dev *ipvlan, const void *iaddr,
++				  bool is_v6)
  {
- 	struct ipvl_dev *ipvlan;
- 	bool ret = false;
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index c8cf3b85fce1..e99285bca1cd 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -1058,7 +1058,7 @@ static int ipvlan_device_event(struct notifier_block *unused,
+-	return ipvlan_del_addr(ipvlan, ip6_addr, true);
++	return ipvlan_del_addr(ipvlan, iaddr, is_v6);
  }
  
- /* the caller must held the addrs lock */
--int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6,
-+int ipvlan_add_addr(struct ipvl_dev *ipvlan, const void *iaddr, bool is_v6,
- 		    const u8 *hwaddr)
+-static int ipvlan_addr6_event(struct notifier_block *unused,
+-			      unsigned long event, void *ptr)
++static int ipvlan_addr_event(struct net_device *dev, unsigned long event,
++			     const void *iaddr, bool is_v6)
  {
- 	struct ipvl_addr *addr;
-@@ -1092,7 +1092,7 @@ int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6,
- 	return 0;
+-	struct inet6_ifaddr *if6 = (struct inet6_ifaddr *)ptr;
+-	struct net_device *dev = (struct net_device *)if6->idev->dev;
+-	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	struct ipvl_dev *ipvlan;
+ 
+ 	if (netif_is_ipvlan_port(dev)) {
+ 		struct ipvl_port *port = ipvlan_port_get_rcu(dev);
+@@ -1216,11 +1222,9 @@ static int ipvlan_addr6_event(struct notifier_block *unused,
+ 
+ 		switch (event) {
+ 		case NETDEV_UP:
+-			return ipvlan_port_add_addr_event(port, &if6->addr,
+-							  true);
++			return ipvlan_port_add_addr_event(port, iaddr, is_v6);
+ 		case NETDEV_DOWN:
+-			return ipvlan_port_del_addr_event(port, &if6->addr,
+-							  true);
++			return ipvlan_port_del_addr_event(port, iaddr, is_v6);
+ 		default:
+ 			return NOTIFY_OK;
+ 		}
+@@ -1229,20 +1233,31 @@ static int ipvlan_addr6_event(struct notifier_block *unused,
+ 	if (!ipvlan_is_valid_dev(dev))
+ 		return NOTIFY_DONE;
+ 
++	ipvlan = netdev_priv(dev);
+ 	switch (event) {
+ 	case NETDEV_UP:
+-		if (ipvlan_add_addr6(ipvlan, &if6->addr))
++		if (ipvlan_add_addr_event(ipvlan, iaddr, is_v6))
+ 			return NOTIFY_BAD;
+ 		break;
+ 
+ 	case NETDEV_DOWN:
+-		ipvlan_del_addr6(ipvlan, &if6->addr);
++		ipvlan_del_addr_event(ipvlan, iaddr, is_v6);
+ 		break;
+ 	}
+ 
+ 	return NOTIFY_OK;
  }
  
--void ipvlan_del_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
-+void ipvlan_del_addr(struct ipvl_dev *ipvlan, const void *iaddr, bool is_v6)
++#if IS_ENABLED(CONFIG_IPV6)
++static int ipvlan_addr6_event(struct notifier_block *unused,
++			      unsigned long event, void *ptr)
++{
++	struct inet6_ifaddr *if6 = (struct inet6_ifaddr *)ptr;
++	struct net_device *dev = (struct net_device *)if6->idev->dev;
++
++	return ipvlan_addr_event(dev, event, &if6->addr, true);
++}
++
+ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
+ 					unsigned long event, void *ptr)
  {
- 	struct ipvl_addr *addr;
+@@ -1254,71 +1269,13 @@ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
+ }
+ #endif
  
+-static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
+-{
+-	int ret = -EINVAL;
+-
+-	spin_lock_bh(&ipvlan->port->addrs_lock);
+-	if (ipvlan_addr_busy(ipvlan->port, ip4_addr, false))
+-		netif_err(ipvlan, ifup, ipvlan->dev,
+-			  "Failed to add IPv4=%pI4 on %s intf.\n",
+-			  ip4_addr, ipvlan->dev->name);
+-	else
+-		ret = ipvlan_add_addr(ipvlan, ip4_addr, false, NULL);
+-	spin_unlock_bh(&ipvlan->port->addrs_lock);
+-	return ret;
+-}
+-
+-static void ipvlan_del_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
+-{
+-	return ipvlan_del_addr(ipvlan, ip4_addr, false);
+-}
+-
+ static int ipvlan_addr4_event(struct notifier_block *unused,
+ 			      unsigned long event, void *ptr)
+ {
+ 	struct in_ifaddr *if4 = (struct in_ifaddr *)ptr;
+ 	struct net_device *dev = (struct net_device *)if4->ifa_dev->dev;
+-	struct ipvl_dev *ipvlan = netdev_priv(dev);
+-	struct in_addr ip4_addr;
+-
+-	if (netif_is_ipvlan_port(dev)) {
+-		struct ipvl_port *port = ipvlan_port_get_rcu(dev);
+-
+-		if (!ipvlan_is_macnat(port))
+-			return NOTIFY_DONE;
+-
+-		switch (event) {
+-		case NETDEV_UP:
+-			return ipvlan_port_add_addr_event(port,
+-							  &if4->ifa_address,
+-							  false);
+-		case NETDEV_DOWN:
+-			return ipvlan_port_del_addr_event(port,
+-							  &if4->ifa_address,
+-							  false);
+-		default:
+-			return NOTIFY_OK;
+-		}
+-	}
+-
+-	if (!ipvlan_is_valid_dev(dev))
+-		return NOTIFY_DONE;
+ 
+-	switch (event) {
+-	case NETDEV_UP:
+-		ip4_addr.s_addr = if4->ifa_address;
+-		if (ipvlan_add_addr4(ipvlan, &ip4_addr))
+-			return NOTIFY_BAD;
+-		break;
+-
+-	case NETDEV_DOWN:
+-		ip4_addr.s_addr = if4->ifa_address;
+-		ipvlan_del_addr4(ipvlan, &ip4_addr);
+-		break;
+-	}
+-
+-	return NOTIFY_OK;
++	return ipvlan_addr_event(dev, event, &if4->ifa_address, false);
+ }
+ 
+ static int ipvlan_addr4_validator_event(struct notifier_block *unused,
 -- 
 2.25.1
 
