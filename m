@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD9230FC1C
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 09:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564BF2D1F7E
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 09:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763457981; cv=none; b=XxGbGm9kv68zIZ4x19v9TJSmb67I74q86owDeBYlVcmrGlQvs/OAn6P1dgQh9UZxELahquQ1n4ig4i106Ak0WajFl0FbF66Bi9pPCthnpQb+p3fHhkBMHHWuFcCIHGj/xYYH+lZ9DA2/cpOtmr8sDJo2jcZxHC7tvdRYq1Iouyc=
+	t=1763457982; cv=none; b=aI0ZbAdmlh4Fg1iXwd9C3S5S8Bt66Q5793WSYLwV3VDmqXNDXc6JZ6+XM4kISMduOf5VFzkPKzpodf9EkKNr70M5Oxy0avoT+/y050z0x4m2NdJGA9jq3UST2LKvdjuy/y3GfGseWaoYaTxvTlAan7pt+I/sQ16y0QLBTMgpRaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763457981; c=relaxed/simple;
-	bh=WBmQq2XZwEZZyg7DllNSNIA7bqgyfnTxZKe1YOhh3IE=;
+	s=arc-20240116; t=1763457982; c=relaxed/simple;
+	bh=etndUoCNFhW4jjedrFIwOf7hzzGdmoOHn6vVP4dOzHY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ekUY+jGuphtzPKf5Mn7WbS94rud4//J91Hbnme6EhIaXu+01bJ1lTPd4QkUc9aCsjZGPuviw0HiidvPHeAv+57AefSP2FUoiIdVVd8THR0bLsdFTAtlM9arBag+yQU9BkW42F3J6/xfbpHv+HAGIqEql8s0deflnd6ZQzlYkXG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=wSLoyHZj; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=C611v4+1y9dbWmtxir2arirmUQjXgH2KKlMAtVIibgb3uhXFOCtf0Iz408H/cOlkdjfLqDiaIkzPMyRMTo2isOf532qqBHgpam+ZfSNHVrzPa3lhB6niF/ldlaZjW7aa5kwaO2NScD2jE0OCtgrRnQ9GWKrGTB3WQ7/LC2lRcUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Ky2cxg8x; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="wSLoyHZj"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Ky2cxg8x"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 23CE320885;
+	by mx1.secunet.com (Postfix) with ESMTP id 9BB6C2074B;
 	Tue, 18 Nov 2025 10:26:18 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wdTmLZsIIPNo; Tue, 18 Nov 2025 10:26:16 +0100 (CET)
+ with ESMTP id ckOOyC97zAmU; Tue, 18 Nov 2025 10:26:18 +0100 (CET)
 Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 507E22074B;
-	Tue, 18 Nov 2025 10:26:16 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 507E22074B
+	by mx1.secunet.com (Postfix) with ESMTPS id 0B86820839;
+	Tue, 18 Nov 2025 10:26:18 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0B86820839
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1763457976;
-	bh=x5/iutxgzI5WBViSaGmiPbfqWacCC7AqQDMXBgY6SaQ=;
+	s=202301; t=1763457978;
+	bh=LXlFHQcQPXRh/V9RsCH6PponKfgaabSW6onQI0xMopM=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=wSLoyHZjNjG+xACizWIKB1hvxYbIcMd6m/HzZ8mYYfUcH3t+aGsn6dpW+nOopgjKw
-	 PkvgS3R3Z9nnN5Hu3z2cg4HSapV5jsWoO2+Azt9bEgRz35tvVHnbrIXQh/H3PXU5nd
-	 beF6u3zmpeYxE17pO07EfuzbfkMvbslipPClaPgVc+gzp8wAaI4ffutEoLNVlsD0kJ
-	 3gzILea9Pfyk2jzPqplGkjpoi1+s1TDqc3fCXyh5JMQhPkLrrCaNdqQGT4+CL4lRyZ
-	 UOKeA0b9P2oENg33c9XDzrMzuWFtLGy5PsxPgVKFQOJXcg3QyEIQZeZ9prGIZvrz+C
-	 3tG6+ajUr3CoA==
+	b=Ky2cxg8xa+uHe+7v+j8JfiY6fsDvwcjkn5ZOIzjqfVyQaB4QdQd1Ac1niNL5fLPLX
+	 tP9gUweJ0i0UYL9z6cPufFWaw72j6yyxUSi7cWa10bA5jQbxRddgkz5A+zx5t0a8G6
+	 RgISZPXrMITARxjEQ+RbV2P2/QumP/9A8AyIpC3oe91FZE4h/feruN5j5SA8Z6oFSR
+	 q3O9cWoxN4axdGCvxn7lJiVbS7wrVJBp3udIgRU63vUYTL9cJnYa8DE5XW/WJ8dJSn
+	 xW3oE26QKHEMfED4Iic+p7yzBuVfLIIFSnA82gmjAdXuD87qIzGVW6TV2Vc+xhv6j2
+	 Fs2hiIMt2n1rQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 18 Nov
- 2025 10:26:15 +0100
-Received: (nullmailer pid 2223991 invoked by uid 1000);
+ 2025 10:26:17 +0100
+Received: (nullmailer pid 2223972 invoked by uid 1000);
 	Tue, 18 Nov 2025 09:26:12 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 10/12] Documentation: xfrm_sync: Number the fifth section
-Date: Tue, 18 Nov 2025 10:25:47 +0100
-Message-ID: <20251118092610.2223552-11-steffen.klassert@secunet.com>
+Subject: [PATCH 06/12] Documentation: xfrm_device: Separate hardware offload sublists
+Date: Tue, 18 Nov 2025 10:25:43 +0100
+Message-ID: <20251118092610.2223552-7-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118092610.2223552-1-steffen.klassert@secunet.com>
 References: <20251118092610.2223552-1-steffen.klassert@secunet.com>
@@ -63,38 +63,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
  EXCH-01.secunet.de (10.32.0.171)
 
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Number the fifth section ("Exception to threshold settings") to be
-consistent with the rest of sections.
+Sublists of hardware offload type lists are rendered in combined
+paragraph due to lack of separator from their parent list. Add it.
 
 Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- Documentation/networking/xfrm_sync.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/networking/xfrm_device.rst | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/xfrm_sync.rst b/Documentation/networking/xfrm_sync.rst
-index de4da4707037..112f7c102ad0 100644
---- a/Documentation/networking/xfrm_sync.rst
-+++ b/Documentation/networking/xfrm_sync.rst
-@@ -179,8 +179,8 @@ happened) is set to inform the user what happened.
- Note the two flags are mutually exclusive.
- The message will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
+diff --git a/Documentation/networking/xfrm_device.rst b/Documentation/networking/xfrm_device.rst
+index 86db3f42552d..b0d85a5f57d1 100644
+--- a/Documentation/networking/xfrm_device.rst
++++ b/Documentation/networking/xfrm_device.rst
+@@ -20,11 +20,15 @@ can radically increase throughput and decrease CPU utilization.  The XFRM
+ Device interface allows NIC drivers to offer to the stack access to the
+ hardware offload.
  
--Exceptions to threshold settings
----------------------------------
-+5) Exceptions to threshold settings
-+-----------------------------------
- 
- If you have an SA that is getting hit by traffic in bursts such that
- there is a period where the timer threshold expires with no packets
+-Right now, there are two types of hardware offload that kernel supports.
++Right now, there are two types of hardware offload that kernel supports:
++
+  * IPsec crypto offload:
++
+    * NIC performs encrypt/decrypt
+    * Kernel does everything else
++
+  * IPsec packet offload:
++
+    * NIC performs encrypt/decrypt
+    * NIC does encapsulation
+    * Kernel and NIC have SA and policy in-sync
 -- 
 2.43.0
 
