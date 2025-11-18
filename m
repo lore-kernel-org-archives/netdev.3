@@ -1,243 +1,158 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF802609EE
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 00:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BC9273D6F
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 00:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763425499; cv=none; b=iEgH6n2vPnoAIRgsqvwQctpPGEo1mr1p6rhWLAuOO4H0udzU0GZlMBQ/Vk3d4y9pqsTEMVp8krz4CijRi1TJmPjOm7s19cLe/cc2yGM/nnjmM9w2xj4JRC9PGfD47dsm6lzp7ZPM1VsJkHAiPtTdLslq1zBDxWpjMmqIqZksrRs=
+	t=1763425510; cv=none; b=ihVANbj4JuuRIAGiX8ko3LuxSiEAeRmz5DWVXQ2H9m5/fzFn+KpY5YkpFd+hg8ovpADL4gqEz3JREIPZ2+Pp4GUkQVfMdXYemkyWfaNRDyEbZE6Gsb0ySmu4cmpGa6+WpjL7nG37hR4SHd3b0Wk6CvUNXy0pu3X1dIQJMAHppec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763425499; c=relaxed/simple;
-	bh=GU2W4Env3pVySzouvOpft34vMD3lKZ1I3nej/UOh/y4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FC+pj/FyH3Pd26jtk3wO0nVoCeMjLTKNZJYSLsDSHGp0yCVBPcR2OzD8GPr5zsoKo+Z/hpGNMQoNFOxv/RgPViOg9OcU6btPsb9HKYL7bQN+uM/yy7qYav1R64VsQLvuQp/sd9wsSdDw6hGieGeXKEoSDwIbYmMOYrgY9vcM/+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CRUibDaQ; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1763425510; c=relaxed/simple;
+	bh=4mzWxm0FExzAVQfP+Nggm4NdLPQI9ceVCiBNtj72gag=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dYEERnhsdYloIb2SerN4afYiV7Iw5iOVd1hCdPf+EmIkY65CEBhahNa/x9xbOC/lyi9qXzBobBkNvyEy76aE2iSnAxzVEkSPsuiMBqiJJIYZyPryawjxyWK3iPzB0Gja6Le1HWh3xVFuS6/eUo/LuaJv5IAuGpvhaEGoxpNttCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDYnXp23; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CRUibDaQ"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7881b67da53so43747777b3.1
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 16:24:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDYnXp23"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-787df0d729dso49250707b3.3
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 16:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763425492; x=1764030292; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763425507; x=1764030307; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Lpm61WVMpXaTS4gWKedINtFRMcV4KgYOfoTCHp0JnK8=;
-        b=CRUibDaQhsp+gAFQgFCmRFnf8lP/m/6XOnfCBXDxhpA1lE5ni/dhiJjAQyMS3K5wQZ
-         fCNH76cMG0JBGzsGLvGDbjzZo60ukpRrvyLZCDQ9/KHxd3U1S3Sn7gUkXvqTHNKIJHOa
-         fOXF8wCEKHY9TBv8e3qhcmC2dRtdgC5NzSmNjjQD5/ceZBly6rZWWraiKFYL/+8+ZeZq
-         216AvoAimu0/XhbE97qa17cOHJDcfFnWDqCXuIRUHXugSkjZ0F/pmdw84Xl7GYMYD7sO
-         bgdW18rYKF7+Tnjo52cJF9TD7Twy/OU3I6o6vUhRNouRMKbfo7PDAGaRCeY57+Mi61dN
-         6qIA==
+        bh=cXfCa+oVsDITgwK8E28o89vmmOunafNUqzYLlmnNM/U=;
+        b=ZDYnXp23Qe5lguiuBJvK3Svm7I3EnDmSpwh4WEPt19man5kNf+eNE026RKR7NXB46N
+         8nWQyfM9QMTJMQvI4B2+ijaQWmawyFtavUpmKkw0Z0D2j2TrFQhGuOAiKnkQl9Fqa2sC
+         xqrfNn+QaaDFFAuroy1ncAhRqe5kTXKU2OrecFvsJk4JY61jOVdd3Ymq4GDJ+uxa4pq1
+         p02SpiBON5WjjAny6AneA4Sqj7jd9IePYJkI+DVmYbPxaBNoos/ODikTEgwRDrfmV2pk
+         6kSNNzcnW3ACl2sWf1fvpzrW0+yQM0DiBnAiFULG9miE+bDkRWDiWKmc8nw6iKjUOUgQ
+         Zbsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763425492; x=1764030292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1763425507; x=1764030307;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Lpm61WVMpXaTS4gWKedINtFRMcV4KgYOfoTCHp0JnK8=;
-        b=pnWH9+plZCel860XWeHMP/+df/NxlSJWSerevYeXewGp9nwiyFj8fO7nHw9hOMTjgA
-         YAqFl2kZCYstnKz8Qzh+fu/PMkVmvR/xSoESVrIeyFr8QkkQqAAzScHWZAmSMWYeQBCi
-         Q8iSXli4MkFvMkGYNs9ohziKhbvVXK6w3xERM+jPSLmdGh3JX19B+5fujX0dRNSBJous
-         HCEamcWDbFaCaJ8f/5CS6jn9vbe5jqbzT+27Qdm1f80g3Nb3/dqTj57YW5/VjBWurlwO
-         GrQEMFoIMZv1CyhZkt5UelrlH4Ch4qMdSRk38jLL0tR7ir8oz6yvWpSeAiWSi8NrshT9
-         kz4Q==
-X-Gm-Message-State: AOJu0YwtIw6bbccbzwDEALiOhelv/TdWWoSQXAD+H26gx2i3Pg/gQp4H
-	nzMa3BVdoctSDnXJNEEX2+niCL2eX/SINSO/zIFGKl+k2ET2AtCA2Gbn
-X-Gm-Gg: ASbGncsY8JDPZPBvhiMOU3dMFsWCJqAxvT1wdIYm2YezHbbZ3x75PtC0Fo/YvzTcxyY
-	xHDHGOWaPyqjDUeToZRfA+wqARTius5+GxHgHIhMcouojwacgwnWF+kX9nY/KL1SPguisuFY/XM
-	HH9TAnZkIbOWnaSztU7xthLCrDTerdytWXCKX+dMEdQw5k2GkFIg5CFui87ISLhz54FgDubytVz
-	TDugX5QBMIYewa7Q4zBrPAQ8QFM90KqzdmT6Rfp9KrfyaxVf37s2d43XrycSMSRWZDPQbkLwryB
-	T15QylninZ5TbIwIeUqQRrc/srMgcAktqoigokeSX9tf0nyykRzN+wORAskpnsu1o+0iy+sLJFm
-	/YZ6rPe6Zez1QNhP6HKjBkT74UChlsrg28zu6IQ9TTuqo/pPtRxhCT8YWeCTuvytYD1v8iyZSrn
-	NgCilVNQ3Rct1hd+moMR1Z
-X-Google-Smtp-Source: AGHT+IG+Fh1oMqCwOWhdJCefG39eiTd3KH357Rm2dtFkemtoWRfvUtMRNQYxOyrW7sTnzPCc3JOpvw==
-X-Received: by 2002:a05:690c:c3f1:b0:786:660b:82b5 with SMTP id 00721157ae682-78929e46780mr104068197b3.27.1763425492499;
-        Mon, 17 Nov 2025 16:24:52 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:47::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7882214ea47sm46813667b3.45.2025.11.17.16.24.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 16:24:49 -0800 (PST)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-To: Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v4 5/6] netdevsim: register a new devlink param with default value interface
-Date: Mon, 17 Nov 2025 16:24:31 -0800
-Message-ID: <20251118002433.332272-6-daniel.zahka@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251118002433.332272-1-daniel.zahka@gmail.com>
-References: <20251118002433.332272-1-daniel.zahka@gmail.com>
+        bh=cXfCa+oVsDITgwK8E28o89vmmOunafNUqzYLlmnNM/U=;
+        b=DgW9v8bnrQcK/QOJz7s1x5q628ls/xZUs0gPeOmLg79vFIIDBj01ujAFwZ+PwCfveb
+         6dQlzRjq4dy7QTa6cJSsnhKjnCxK9h1FXGjXI/+YYzBWD8pLD8b32QA5SkE9ugcVmp8V
+         yYsn/6B7tUpgKtP7RhcpPvvXZGZCV0LKfVMJD0TAQil0/ZMGEgsTaaOtslmuRvqLRzjQ
+         FiqMBZdM7GJ6w9DKQ8/jZPKjdd3UBVaVidxzJz1+Pvs9weNIA6wGSg17i0Wew27ERs0K
+         5i5Xf35DWR6FaXUN1vTQnH/4WMdd5/xlgKxlI4ixPxj2qYPv3KcNLuQ1cH71oYCrCqAw
+         9S+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVh02CexapGos2aZFbj+NGDEV0ZRrL18wBj4yDgEtoFRbOi0XAeIxWh85NkZlNEO049RX7GPFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwncoKMJjChlC72AqlldniuBkXxSf87Re8ozhy3mveGIgut+Jip
+	gYpekVyQ/DhkdJkPLNkTsmBMxlbHlUUkVHdjAC+Rd9kMLKhtoz6tdqyEwkc0+jVXggvda3BuLZH
+	vt2IFtYkJlIRh9IHFLJkK59vUtvURVN4=
+X-Gm-Gg: ASbGncvbtlVYzYGJLE0WLM/c6z16Orq5oIa9plWrhCHxPp8cUHh921RHJcU40kGDKLa
+	wRC/mxzg5saku9yQU1dsuDiITbGk9DYOY0NTLmyFDWCQdm1Xh6V+veOl89o2Dt6Exbn72ZGb1Cd
+	gaI1qovLTS1GoRUfOKHCqXMc+9+pUrNqaUV3OldNQLLV3leWgnsruG0q4IVuo1sN3anT3UVy9Vy
+	4rO7VFIyL+S8lmVYBYlKZ0WY9HIQYThZt1XP5AO4a3YpJsOFSj4lAV93iz8tfOP3ivuHeDJ6qrj
+	nadQGASCGNEye3sr
+X-Google-Smtp-Source: AGHT+IHAbfGoyHsYKH3jzHgG0RQdTWgI5Lr057GSg4HE7cHSIAb0B6av2FDxAkjEWfHyMd+mdAfguAzO/NjFZpbRp+4=
+X-Received: by 2002:a05:690e:4101:b0:642:84a:7bdc with SMTP id
+ 956f58d0204a3-642084a7ee2mr3479239d50.83.1763425507022; Mon, 17 Nov 2025
+ 16:25:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251114201329.3275875-1-ameryhung@gmail.com> <20251114201329.3275875-5-ameryhung@gmail.com>
+ <CAADnVQJD0xLa=bWUerdYsRg8R4S54yqnPnuwkHWL1R663U3Xcg@mail.gmail.com>
+ <CAMB2axPEmykdt2Wcvb49j1iG8b+ZTxvDoRgRYKmJAnTvbLsN9g@mail.gmail.com>
+ <CAADnVQ+FC5dscjW0MQbG2qYP7KSQ2Ld6LCt5uK8+M2xreyeU7w@mail.gmail.com> <450751b2-5bc4-4c76-b9ca-019b87b96074@paulmck-laptop>
+In-Reply-To: <450751b2-5bc4-4c76-b9ca-019b87b96074@paulmck-laptop>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Mon, 17 Nov 2025 16:24:56 -0800
+X-Gm-Features: AWmQ_blKF7jNU3eJ3H4uPhlx_7GuSkI4zHWsuVPdxNFvoNJJVys8ZBeiZMnjxas
+Message-ID: <CAMB2axM==X6+WJFenbuwTn82=2iRL-5_GCmj5RmK_fsGf07x7w@mail.gmail.com>
+Subject: Re: [PATCH v2 bpf-next 4/4] bpf: Replace bpf memory allocator with
+ kmalloc_nolock() in local storage
+To: paulmck@kernel.org
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf <bpf@vger.kernel.org>, 
+	Network Development <netdev@vger.kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Song Liu <song@kernel.org>, 
+	Kernel Team <kernel-team@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Create a new devlink param, test2, that supports default param actions
-via the devlink_param::get_default() and
-devlink_param::reset_default() functions.
+On Mon, Nov 17, 2025 at 3:46=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
+>
+> On Mon, Nov 17, 2025 at 03:36:08PM -0800, Alexei Starovoitov wrote:
+> > On Mon, Nov 17, 2025 at 12:37=E2=80=AFPM Amery Hung <ameryhung@gmail.co=
+m> wrote:
+> > >
+> > > On Fri, Nov 14, 2025 at 6:01=E2=80=AFPM Alexei Starovoitov
+> > > <alexei.starovoitov@gmail.com> wrote:
+> > > >
+> > > > On Fri, Nov 14, 2025 at 12:13=E2=80=AFPM Amery Hung <ameryhung@gmai=
+l.com> wrote:
+> > > > >
+> > > > >
+> > > > > -       if (smap->bpf_ma) {
+> > > > > +       if (smap->use_kmalloc_nolock) {
+> > > > >                 rcu_barrier_tasks_trace();
+> > > > > -               if (!rcu_trace_implies_rcu_gp())
+> > > > > -                       rcu_barrier();
+> > > > > -               bpf_mem_alloc_destroy(&smap->selem_ma);
+> > > > > -               bpf_mem_alloc_destroy(&smap->storage_ma);
+> > > > > +               rcu_barrier();
+> > > >
+> > > > Why unconditional rcu_barrier() ?
+> > > > It's implied in rcu_barrier_tasks_trace().
+> > >
+> > > Hmm, I am not sure.
+> > >
+> > > > What am I missing?
+> > >
+> > > I hit a UAF in v1 in bpf_selem_free_rcu() when running selftests and
+> > > making rcu_barrier() unconditional addressed it. I think the bug was
+> > > due to map_free() not waiting for bpf_selem_free_rcu() (an RCU
+> > > callback) to finish.
+> > >
+> > > Looking at rcu_barrier() and rcu_barrier_tasks_trace(), they pass
+> > > different rtp to rcu_barrier_tasks_generic() so I think both are
+> > > needed to make sure in-flight RCU and RCU tasks trace callbacks are
+> > > done.
+> > >
+> > > Not an expert in RCU so I might be wrong and it was something else.
+> >
+> > Paul,
+> >
+> > Please help us here.
+> > Does rcu_barrier_tasks_trace() imply rcu_barrier() ?
+>
+> I am sorry, but no, it does not.
 
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
- drivers/net/netdevsim/dev.c       | 55 +++++++++++++++++++++++++++++++
- drivers/net/netdevsim/netdevsim.h |  1 +
- 2 files changed, 56 insertions(+)
+Thanks for the clarification, Paul!
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 95f66c1f59db..3aeb3abfec83 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -320,6 +320,8 @@ static int nsim_dev_debugfs_init(struct nsim_dev *nsim_dev)
- 			   &nsim_dev->max_macs);
- 	debugfs_create_bool("test1", 0600, nsim_dev->ddir,
- 			    &nsim_dev->test1);
-+	debugfs_create_u32("test2", 0600, nsim_dev->ddir,
-+			   &nsim_dev->test2);
- 	nsim_dev->take_snapshot = debugfs_create_file("take_snapshot",
- 						      0200,
- 						      nsim_dev->ddir,
-@@ -521,8 +523,51 @@ static int nsim_dev_resources_register(struct devlink *devlink)
- enum nsim_devlink_param_id {
- 	NSIM_DEVLINK_PARAM_ID_BASE = DEVLINK_PARAM_GENERIC_ID_MAX,
- 	NSIM_DEVLINK_PARAM_ID_TEST1,
-+	NSIM_DEVLINK_PARAM_ID_TEST2,
- };
- 
-+static int
-+nsim_devlink_param_test2_get(struct devlink *devlink, u32 id,
-+			     struct devlink_param_gset_ctx *ctx,
-+			     struct netlink_ext_ack *extack)
-+{
-+	struct nsim_dev *nsim_dev = devlink_priv(devlink);
-+
-+	ctx->val.vu32 = nsim_dev->test2;
-+	return 0;
-+}
-+
-+static int
-+nsim_devlink_param_test2_set(struct devlink *devlink, u32 id,
-+			     struct devlink_param_gset_ctx *ctx,
-+			     struct netlink_ext_ack *extack)
-+{
-+	struct nsim_dev *nsim_dev = devlink_priv(devlink);
-+
-+	nsim_dev->test2 = ctx->val.vu32;
-+	return 0;
-+}
-+
-+static int
-+nsim_devlink_param_test2_get_default(struct devlink *devlink, u32 id,
-+				     struct devlink_param_gset_ctx *ctx,
-+				     struct netlink_ext_ack *extack)
-+{
-+	ctx->val.vu32 = 1234;
-+	return 0;
-+}
-+
-+static int
-+nsim_devlink_param_test2_reset_default(struct devlink *devlink, u32 id,
-+				       enum devlink_param_cmode cmode,
-+				       struct netlink_ext_ack *extack)
-+{
-+	struct nsim_dev *nsim_dev = devlink_priv(devlink);
-+
-+	nsim_dev->test2 = 1234;
-+	return 0;
-+}
-+
- static const struct devlink_param nsim_devlink_params[] = {
- 	DEVLINK_PARAM_GENERIC(MAX_MACS,
- 			      BIT(DEVLINK_PARAM_CMODE_DRIVERINIT),
-@@ -531,6 +576,14 @@ static const struct devlink_param nsim_devlink_params[] = {
- 			     "test1", DEVLINK_PARAM_TYPE_BOOL,
- 			     BIT(DEVLINK_PARAM_CMODE_DRIVERINIT),
- 			     NULL, NULL, NULL),
-+	DEVLINK_PARAM_DRIVER_WITH_DEFAULTS(NSIM_DEVLINK_PARAM_ID_TEST2,
-+					   "test2", DEVLINK_PARAM_TYPE_U32,
-+					   BIT(DEVLINK_PARAM_CMODE_RUNTIME),
-+					   nsim_devlink_param_test2_get,
-+					   nsim_devlink_param_test2_set,
-+					   NULL,
-+					   nsim_devlink_param_test2_get_default,
-+					   nsim_devlink_param_test2_reset_default),
- };
- 
- static void nsim_devlink_set_params_init_values(struct nsim_dev *nsim_dev,
-@@ -1396,6 +1449,7 @@ static const struct devlink_ops nsim_dev_devlink_ops = {
- 
- #define NSIM_DEV_MAX_MACS_DEFAULT 32
- #define NSIM_DEV_TEST1_DEFAULT true
-+#define NSIM_DEV_TEST2_DEFAULT 1234
- 
- static int __nsim_dev_port_add(struct nsim_dev *nsim_dev, enum nsim_dev_port_type type,
- 			       unsigned int port_index, u8 perm_addr[ETH_ALEN])
-@@ -1590,6 +1644,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
- 	nsim_dev->fw_update_flash_chunk_time_ms = NSIM_DEV_FLASH_CHUNK_TIME_MS_DEFAULT;
- 	nsim_dev->max_macs = NSIM_DEV_MAX_MACS_DEFAULT;
- 	nsim_dev->test1 = NSIM_DEV_TEST1_DEFAULT;
-+	nsim_dev->test2 = NSIM_DEV_TEST2_DEFAULT;
- 	spin_lock_init(&nsim_dev->fa_cookie_lock);
- 
- 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index af6fcfcda8ba..d1a941e2b18f 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -331,6 +331,7 @@ struct nsim_dev {
- 	u32 fw_update_flash_chunk_time_ms;
- 	u32 max_macs;
- 	bool test1;
-+	u32 test2;
- 	bool dont_allow_reload;
- 	bool fail_reload;
- 	struct devlink_region *dummy_region;
--- 
-2.47.3
+>
+> If latency proves to be an issue, one approach is to invoke rcu_barrier()
+> and rcu_barrier_tasks_trace() each in its own workqueue handler.  But as
+> always, I suggest invoking them one after the other to see if a latency
+> problem really exists before adding complexity.
+>
+> Except that rcu_barrier_tasks_trace() is never invoked by rcu_barrier(),
+> only rcu_barrier_tasks() and rcu_barrier_tasks_trace().  So do you really
+> mean rcu_barrier()?  Or rcu_barrier_tasks()?
 
+Sorry for the confusion. I misread the code. I was trying to say that
+rcu_barrier() and rcu_barrier_tasks_trace() seem to wait on different
+callacks but then referring to rcu_barrier_tasks() implementation
+wrongly.
+
+>
+> Either way, rcu_barrier_tasks() and rcu_barrier_tasks_trace() are also
+> independent of each other in the sense that if you need tw wait on
+> callbacks from both call_rcu_tasks() and call_rcu_tasks_trace(), you
+> need both rcu_barrier_tasks() and rcu_barrier_tasks_trace() to be invoked=
+.
+>
+>                                                         Thanx, Paul
