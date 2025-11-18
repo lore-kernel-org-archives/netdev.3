@@ -1,89 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6E41A9F9D;
-	Tue, 18 Nov 2025 02:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0138E2D0631
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763433309; cv=none; b=UNJygIuu2ghLjRYHSK6qhhySmOe/71zi9OaYTVVP9n5Iufy5d8kqt5f4INA8wcVoDfcPffMo3qZywc6yqbJ0bmGNAMSSK0b4Yh1Gevt/Z3ciL+0pZcq0GkwOXIv8E4S5Ep5WBK9t8mB75mPftBwL3Du/KbnDYrr0mS90iWcMvkU=
+	t=1763433851; cv=none; b=rLXM3pwtl9vpbq3ldK8dUuXrs/+3fPIq/KldOpzzyVAT3MZ8lhDFttdkkyr+lpTN0fgOc2fp1hAgHIZWU+IPtZNJyM3QVQDJDK/e1zcANSP80tLVIiAK6aFFoLavxhbDaNCjYSd6tL7o4jKDlvxVT9MlRiu6mVoPXX9d5zCuG5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763433309; c=relaxed/simple;
-	bh=unEI2uhhjW5eYfpjHH3xZyxUa780fWtiM4vIAPvgu0s=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=oArwIEOAE7y6oc/bm9NtqsNxJBY0a+NiGfVOTl28l5OJCIfBGEdWn9OKGlD/4i4PU73X6LkoU6/+h9hG3q3/Bs3UYORIhIkBqaPnJH15sUPsQhc6ez5T3J991BaoEhdo2/YM8eVjRdPzbxctbvZJA9awHhvxfZ1LXphk0SJDjm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbEkU+vK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763433851; c=relaxed/simple;
+	bh=T2i5EXg5pUjBgOCmxY1mdqgGaYKX/Wog3/pySxcqeyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=naIJP7qA5vD/mi13V4SYMeCYTUg27GqiY+9m/J1KJ4ZtW1CpqJgaFiDts3VbiabkdEkA3klf0uaarSO0010kUP2JyXL49sX2MohlJmAAosz5/THnaxMenwgUHp5Pc2s5fX066GbACosweomAByjzE17Ig3fNxITX60cB8/X0C4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EIcLWU8R; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbEkU+vK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC38C2BCAF;
-	Tue, 18 Nov 2025 02:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763433309;
-	bh=unEI2uhhjW5eYfpjHH3xZyxUa780fWtiM4vIAPvgu0s=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=KbEkU+vKBZPRe4ynAmIGePSLWzkRnccklCwaTHYUWfu6JsaxVMNtlqeiVGQeDtFB8
-	 VBOCY0BygSA9fSxAMLzEhZCA31fNtH7hcbK1gTvxgLdAfpwDVnYXEb5PmhD2YcF7E5
-	 2XayufdDzN8QTADIdopwIxh6su98tFZDRSlwdWQs5MascbQ7knp1zfK3kqM0kNd2yT
-	 gOu9vdR027RDvpEwz72C7uv8SM5lTvcvzU+wnafBGWbpZQQYJ4CjsJSu5Vex7ufo9s
-	 E7N83+BkeQut/+UUEcvIFIrOl5kG3a7kooIb2WNXmBaJv83RQ/tVZ1Dauc8XS7KmWU
-	 riX9AQ+tuGNFw==
-Date: Tue, 18 Nov 2025 03:35:00 +0100 (GMT+01:00)
-From: Matthieu Baerts <matttbe@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com,
-	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
-	Geliang Tang <geliang@kernel.org>,
-	MPTCP Linux <mptcp@lists.linux.dev>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>
-Message-ID: <e7200954-ce62-42fe-853a-49127b2f129d@kernel.org>
-In-Reply-To: <20251117170508.4ffe043f@kernel.org>
-References: <20251117100745.1913963-1-edumazet@google.com> <c378da30-4916-4fd6-8981-4ab2ffa17482@kernel.org> <CANn89iLxt+F+SrpgXGvYh9CZ8GNmbbowv5Ce80P1gsWjaXf+CA@mail.gmail.com> <a155bf8b-08cd-4cd9-91d9-f49180f19f6c@kernel.org> <20251117170508.4ffe043f@kernel.org>
-Subject: Re: [PATCH v2 net] mptcp: fix a race in mptcp_pm_del_add_timer()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EIcLWU8R"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso1022577b3a.1
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 18:44:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763433848; x=1764038648; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M042loYaXFofILJwlE8k6U1p0bY4FWeWgekh3e1FjWg=;
+        b=EIcLWU8RUxMdpLCDdVnVimrEH6UNhCC4XeMD+UO+UCinN5bowTLy9FUj/rIQXK827t
+         TH/q93tcSfP3tA9ZI69nmnWl38vvZSmlSazzwip4/7v8qngwy38NN0NWoE6qo8NXFyai
+         OU2K4t2UAEGFDLNdTBMNUxZTI5me0gvq1ACjsT9uJYb4F2jbLP6okeT4WNA6XrZfGAXp
+         I+uwvi5+dHD+/MJ0TvgSkvn50C05YdWmYaSwS+CfXL5KMzYsCWBymVGVlcr2qC7ThHKh
+         SS/hkviqPcBkHB6CCpZunlGJNyZ7W7aS6fvJ59TEQNo3K24MYUeKePRxns07XQmt6LNr
+         +pzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763433848; x=1764038648;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M042loYaXFofILJwlE8k6U1p0bY4FWeWgekh3e1FjWg=;
+        b=UIQi/VrggGbfeQXvEOmLq/b0eiPH7BPSRNsGiZRKwCx0rI3K4a6ucA9BXyZcxTdNB5
+         YwP7a+2daLLTlxoI7V49ZhCUjJggOxcZ1z+kBZ99OgJKhAYawXBetY1nBwOZqUMu07Bc
+         CQeqgW+23x4a1hsM7TwBSpJd1ZZg4bqSGXOlmzp71E48uOT6+Mlv0IhKCrVhupAReGdE
+         ks7Mmr0mYY2XG8vFpVEkD3/+Gym7ZO50+nE3MrFML48QaKeA0OHvL3w3MvJgUOTAGjfJ
+         3JSE0lJ1qvlgFStJr1LXTHR7SKx5AC1xRZRvxAGaG8I1ApbtJm28dfy5vyJf+znFeRVk
+         I+KQ==
+X-Gm-Message-State: AOJu0YzfIB1aYGlP6U83HnmzpysBEpWfxJJseGtJviTqZ6kP0fKCSZsY
+	eJ2uoLygsw5qbplz6My32wfMKD9J1uOCwaQVnA59WAgn1hu9NYWbBIcj
+X-Gm-Gg: ASbGncuUWo3I2/qZydpMcqvp8rePbwIxfPwYZElYyuPxFR3Aj3l/ANf/cD0TUd9Tafm
+	yv24oeiWVwSNTCfbEtcUM93LtbpYGNUeZIvrCeE9CbaF4TANAanesd1jfsR8nQpgqB2XhQkD5kj
+	HkAZ0dFpp0fCcaNSX9NiXhVMpJONv/jfxaV/2UcUTWyeI+1JSL9Ttd3+b59DgJPXvOJt5bLsJ4L
+	X8X+1tvNEiJEAS5dT/K2CouyRac2rDZpkNPOPi6TMuOgQaFe8rguh9BzAr5r43Omn13hp2bcoGq
+	9m1eiFxjUFqOw2tKHPapqA/ddW9qIG9lllyMtoOm0XJnJbWipwBBS38d0SF/cH7Wx45FF+XjPFG
+	KxXDlCWl2tdQyfDNaZZtJ8oOnn3wHyGB1XqSuIBh1kAOZz76oMsHa/h0EJefrATcVAH3I3upds3
+	8XU2FCfbdpWXFiiX5pp3NY6LUiHw==
+X-Google-Smtp-Source: AGHT+IEivVNZyA22uPoRtfAnjtNUxnW+RumQnM0IoFu3zGcPqjo4vlWQMadtkzGLGpB5xWdVqzga0w==
+X-Received: by 2002:a05:6a20:2588:b0:358:dc7d:a2be with SMTP id adf61e73a8af0-35ba007e759mr17867249637.17.1763433848003;
+        Mon, 17 Nov 2025 18:44:08 -0800 (PST)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bc36db21e76sm13766237a12.7.2025.11.17.18.44.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Nov 2025 18:44:07 -0800 (PST)
+Date: Tue, 18 Nov 2025 02:43:59 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jan Stancek <jstancek@redhat.com>,
+	=?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Petr Machata <petrm@nvidia.com>
+Subject: Re: [PATCHv5 net-next 3/3] tools: ynl: add YNL test framework
+Message-ID: <aRvdb65MyVc39nm6@fedora>
+References: <20251117024457.3034-1-liuhangbin@gmail.com>
+ <20251117024457.3034-4-liuhangbin@gmail.com>
+ <b3041d17-8191-4039-a307-d7b5fb3ea864@kernel.org>
+ <aRvIh-Hs6WjPiwdV@fedora>
+ <e7aba5b3-d402-4a09-9656-1b96be6efa84@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <e7200954-ce62-42fe-853a-49127b2f129d@kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e7aba5b3-d402-4a09-9656-1b96be6efa84@kernel.org>
 
-Hi Jakub,
+On Tue, Nov 18, 2025 at 03:21:35AM +0100, Matthieu Baerts wrote:
+> 18 Nov 2025 02:15:08 Hangbin Liu <liuhangbin@gmail.com>:
+> 
+> > On Mon, Nov 17, 2025 at 11:59:32AM +0100, Matthieu Baerts wrote:
+> >> I just have one question below, but that's not blocking.
+> >>
+> >> (...)
+> >>
+> >>> diff --git a/tools/net/ynl/tests/test_ynl_cli.sh b/tools/net/ynl/tests/test_ynl_cli.sh
+> >>> new file mode 100755
+> >>> index 000000000000..cccab336e9a6
+> >>> --- /dev/null
+> >>> +++ b/tools/net/ynl/tests/test_ynl_cli.sh
+> >>> @@ -0,0 +1,327 @@
+> >>> +#!/bin/bash
+> >>> +# SPDX-License-Identifier: GPL-2.0
+> >>> +# Test YNL CLI functionality
+> >>> +
+> >>> +# Load KTAP test helpers
+> >>> +KSELFTEST_KTAP_HELPERS="$(dirname "$(realpath "$0")")/../../../testing/selftests/kselftest/ktap_helpers.sh"
+> >>> +# shellcheck source=/dev/null
+> >>
+> >> Out of curiosity, why did you put source=/dev/null? It is equivalent to
+> >> "disable=SC1090" and there is no comment explaining why: was it not OK
+> >> to use this?
+> >>
+> >>   shellcheck source=../../../testing/selftests/kselftest/ktap_helpers.sh
+> >>
+> >
+> > I got the following warning with it
+> >
+> > In test_ynl_cli.sh line 8:
+> > source "$KSELFTEST_KTAP_HELPERS"
+> >        ^-----------------------^ SC1091 (info): Not following: ../../../testing/selftests/kselftest/ktap_helpers.sh was not specified as input (see shellcheck -x).
+> 
+> How did you execute shellcheck?
+> 
+> If I'm not mistaken, you are supposed to execute it from the same directory, and with -x:
+> 
+>   cd "$(dirname "${script}")"
+>   shellcheck -x "$(basename "${script}")"
 
-Thank you for your reply!
+Ah, I forgot to add the "-x" option... I will fix the comment in future test
+case update.
 
-18 Nov 2025 02:05:12 Jakub Kicinski <kuba@kernel.org>:
-
-> On Mon, 17 Nov 2025 11:42:31 +0100 Matthieu Baerts wrote:
->>>> Out of curiosity, is it not OK to reply to the patch with the new
->>>> Reported-by & Closes tags to have them automatically added when applyi=
-ng
->>>> the patch? (I was going to do that on the v1, then I saw the v2 just
->>>> when I was going to press 'Send' :) )=C2=A0
->>>
->>> I am not sure patchwork has been finally changed to understand these tw=
-o tags.=C2=A0
->>
->> Ah yes, thank you! If there is a dependence on Patchwork, I think
->> indeed, it doesn't recognise the 'Closes' tag (but I think 'Reported-by'
->> is OK).
->>
->> While at it, I forgot to add: this patch can be applied in net directly.
->
-> FWIW I have a local script which extracts them from patchwork comments
-> and applies them (same for Fixes tags).
-
-Great, good to know, thanks!
-
-(So similar to what "b4 shazam -Msl" would do then.)
-
-> But it's always safer to resend.
-
-Indeed.
-
-Cheers,
-Matt
+Thanks
+Hangbin
