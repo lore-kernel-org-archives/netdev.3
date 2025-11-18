@@ -1,56 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913AA2DA746;
-	Tue, 18 Nov 2025 18:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8192C2349;
+	Tue, 18 Nov 2025 18:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763490675; cv=none; b=FFbP7/dorqZCGnMBMEuFaUduvM7IkW5jixjg1STj+fa0trFe/2T3hm9zLbi4BuHduvj3ueLcMVsFp/ROSuw900YMqyg3/fGJMqnvLzYiOPGfnVYdQiJtl2iuSEAZV725XutyIyYvDwXMAfloTJ3bt4EhaQabf+9CqJqNihjZUYU=
+	t=1763491047; cv=none; b=MAc45CuhL6sNNdNPyH/MVLcxfAIQ3um/Yt7ddj3qLduPmAFh3rnCQgDhnrCDH08VrbeoWNa4w8+ZgBXOUmL7ALLQ498nO+xXdLuzy/V08bW0uqZUWNZ2kbyEtPsxNWYyHH5qJz/A2LIlzTGFuqYgd2cNz0+JrpqM1sEa/BN5ZCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763490675; c=relaxed/simple;
-	bh=WHE6fEbSFB+M4z+84cWisGXo1CFTEI0Z2qy8Hupts14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fUla7mokaz3hDmFUVSW0QmFCeS69wjqqW0hA2AY7bIdM2J9uEKYPiGfcxqr4plQ50Z7OvP4bLBs5vlPhruNMyQxuMh6ZxQVzLm4NHdcvdONleLZihgl0Hh6HplAfA/Y/EVIzNu0YLogKOvFfCg7+M2Jm4KS3Ug/hIvvPlDqLNu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l1cyRrxZ; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1763491047; c=relaxed/simple;
+	bh=iIYEMQjx/M1XUrR5hgrjP+2FqsUWRotw30++B0tJHME=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AIK6h3yegxDZjUMKd9IwfbE4Ww5+EOLjM9PYIRVQGswLuBaEmkvn6OsXfR/2i8ztj3YSC2N3Z4nsDCpFfGriwA85+y4M8PLmNEFR9KSej96ZIat/UWU7lhCeahFBSJiL3h3zUF05ihbJs1j9cuvxj7u9MQABnisZ8clgC2TTqlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NpETt1aw; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l1cyRrxZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NpETt1aw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763490674; x=1795026674;
-  h=resent-from:resent-date:resent-message-id:resent-to:date:
-   from:to:cc:subject:message-id:references:mime-version:
-   in-reply-to;
-  bh=WHE6fEbSFB+M4z+84cWisGXo1CFTEI0Z2qy8Hupts14=;
-  b=l1cyRrxZ61MwheN4oU6AIS3yOJ62tdqGYq061QabGjvB/Ud9YLwh8z57
-   LyaCV+mZAccNXHzpwzOq0BK1RB+JcQK1HNNYlVA78xaNJeldVmr8J+TuG
-   nUEjZ6keuMg6OUZKs5QXdoETtGgTT0b3KtQSe1SZD7bNkETFlyXP4TsH1
-   pdgSIyh7EyN3kLrbevNWF1cWnchhiqyi3D4Bw4e3oMHplPyujdyp1KmKh
-   Cm1caP9XD+IQCCuy5DQUrh+yD0KYzy4xlNFDrV5QQiOtSFKeu3BAZPY9l
-   E+X/AgEZzQR1iOgQBu7eeIzGetNuBuI9Hiy2qpaECKLgyOjSRPA3Luxwz
-   w==;
-X-CSE-ConnectionGUID: /q9o71FqRS+p4276zjJRgQ==
-X-CSE-MsgGUID: 4veCIHmiSAaApCkId4Vl1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="69373908"
+  t=1763491045; x=1795027045;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=iIYEMQjx/M1XUrR5hgrjP+2FqsUWRotw30++B0tJHME=;
+  b=NpETt1aw5iFXwLlWhSCW8Kr6Fy2jmoqNzaTxMUP1NpOOAAeTZV5+KqhT
+   wtJf4KUQSvaojysytvWQVLXYlJkck/cIO28pEsq6f4yCJHQoEHfMwV8e7
+   /eFuUUosDBD3Mpy71r9d8CptkR9bLr85eYE5kMERTS5FBKbVu7IQ/B3jP
+   jRAddhTFCqxkXdCsVU6/CSpQIp+VEOUuerrjAL5d+LN7F7CtEFq/ai8Be
+   z2s5NGZxmQkF/719r0mC1Lj9+uoNJVqWXTXOROZcQSfqNsQg09lQwAALH
+   jtIzbZeeh037lsZTN/tjZycmsoWt77Yq04NRuAqNnGvkBF+W9LTwsbwGe
+   A==;
+X-CSE-ConnectionGUID: 1laKZg9HQlCYOcuNnIZIbQ==
+X-CSE-MsgGUID: AxDzOP6CSj60+B2SRyg1UA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="90999881"
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="69373908"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:31:13 -0800
-X-CSE-ConnectionGUID: pTHrSlRPTG2ZUlamUEpGiQ==
-X-CSE-MsgGUID: d8aRJePhS4OhK7hiw9dsvw==
+   d="scan'208";a="90999881"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:37:24 -0800
+X-CSE-ConnectionGUID: 5jsUiwQYTZ+aZm1TcLT33A==
+X-CSE-MsgGUID: F02ZlehpSQKaQESX8lqbDg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="190862538"
+   d="scan'208";a="190488586"
 Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:31:11 -0800
-Resent-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-Resent-Date: Tue, 18 Nov 2025 20:31:08 +0200
-Resent-Message-ID: <aRy7bNwTm9ODIBXM@ashevche-desk.local>
-Resent-To: vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, kuba@kernel.org, pabeni@redhat.com,
-	davem@davemloft.net, linux-kernel@vger.kernel.org
-Date: Wed, 12 Nov 2025 17:04:29 +0200
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:37:22 -0800
+Date: Tue, 18 Nov 2025 20:37:20 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -60,12 +52,8 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v1 3/7] ptp: ocp: Refactor
- ptp_ocp_i2c_notifier_call()
-Message-ID: <aRSh_dNeOPFRjXyD@smile.fi.intel.com>
-References: <20251111165232.1198222-1-andriy.shevchenko@linux.intel.com>
- <20251111165232.1198222-4-andriy.shevchenko@linux.intel.com>
- <7ae9b0c0-c84a-4c2c-b2ee-9252e9c411b0@linux.dev>
+Subject: Re: [PATCH v1 0/7] ptp: ocp: A fix and refactoring
+Message-ID: <aRy84Cm8Wo84SIpo@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,24 +62,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7ae9b0c0-c84a-4c2c-b2ee-9252e9c411b0@linux.dev>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 12, 2025 at 01:45:31PM +0000, Vadim Fedorenko wrote:
+On Wed, Nov 12, 2025 at 03:27:14PM +0000, Vadim Fedorenko wrote:
 > On 11/11/2025 16:52, Andy Shevchenko wrote:
-> > Refactor ptp_ocp_i2c_notifier_call() to avoid unneeded local variable.
+> 
+> >    ptp: ocp: Sort headers alphabetically
+> >    ptp: ocp: don't use "proxy" headers
+> I don't see benefits of these 2 patches, what's the reason?
+
+I may give these reasons:
+
+1. Makes clear what headers are in use (avoids dups and improves long-term
+maintenance experience).
+
+2. Makes sure we don't "include everything". This might (slightly) improve
+the module build time, but also shows that we use what we use.
+
+There are patches in the history of the Linux kernel for both scenarios
+in C files (yes, for the h files such a change is much more important).
 
 ...
 
-> the reason we've done it is to avoid iterating over devices and do
-> string comparisons for actions we don't care about. We can still avoid
-> local variable by changing if condition later in the code, but I'm not
-> sure this refactor gives any benefits.
-
-This is definitely a slow path and having less LoCs and straightforward code
-flow is important for readability and maintenance. I find my proposed change
-useful.
+TBH, the driver is written in a bad style, it has so-o-o many issues,
+I even don't know where to start... Oh, wait.
 
 -- 
 With Best Regards,
