@@ -1,36 +1,47 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80EB3563DF;
-	Tue, 18 Nov 2025 14:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED8F3043D1;
+	Tue, 18 Nov 2025 14:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763474426; cv=none; b=d+DVmSjwKtmcwKU/Z5oRstdQJBE0A7EYlYN8y08Moq7W1UpITrzCHg2lVWkJAypqClh+sBITUXNUh9DWP7Jp0+zJLXM6Iw/jVXRl6OIHbOOv8dzM897LlALXX6XOq1I3xyvqvxV43UjoTJH/Y5hv2E2wOo+3Pao+pdoQvvftUwE=
+	t=1763474548; cv=none; b=CSGdk6TZ/qOTg5bMW2Nvl5GYP94XxaU3mdDl5NOygEUB2oef8YP6LEixmmEsKGOZNhf+RpjD/KdQLaDKRZqN1lzB1F6o9wOVX5SZ7aRG6bnP0xMmJSRzZaUIoZexmofpksygYFVYT2ZejLKrq6Q92NIpdJCyVLRvMg6Hc2x3Tyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763474426; c=relaxed/simple;
-	bh=fCcU9TyQkKjc5NX25gWINtX0O4+sBExnUHV9jCvCNSQ=;
+	s=arc-20240116; t=1763474548; c=relaxed/simple;
+	bh=+KhqY3oB1wgkGc6jzN+UfYOvpqqc60Dgp6JPVcxBT1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UdqMNwb1tD0+swPmJjtowx15x0orar405ngs9SmQn2xNpah8GuV8snOahy7JwN4gxMFVE0EdccNsoQOZum6Bgejc+eg1zr+NOVKqlSp2an0H0s0y36M90qF+gj8hAARcJqCZ6jd5qRnJ8qP6jnP3QnLGvx/PS+IADS/yNy4rY0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=R9yDETBG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=GXE7y0tEWyqbND+vzGYrwYzfMgezSst+Agr1xP6Ip0pBryZUNsdov9nBnvatIRdipMBKNlAMHy5B8N14W3rSYSwYxYXiFBVFoDJt82kHURFGCW1yJ2LtVBDzRdBMv2RZ5iVX2d8XT4FLFe5iEA+gT+7fPZ5c4FCfQ/YfjvFyLog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Uv0XmdqB; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="R9yDETBG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jb/iIbCDTMamWRNRZBPWYkt70gOkuJvH7L/84zgh4M4=; b=R9yDETBGgvAKhKSDOj6qFRZOE9
-	U3rYZq0vNSLvu0ftUJsOpxrQkVrR6IvPCbG1jQ/FxMv6YhttLGCbgbk8hv1mOgphJpsxwrglaRise
-	wdjnVKm5MYkrpvPA+INbyNS/VlNytRYYK3OHvxuXhFFIAs1Ih2a5unbMZ/cEHcVCrtto=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vLMFU-00EM6I-SP; Tue, 18 Nov 2025 15:00:00 +0100
-Date: Tue, 18 Nov 2025 15:00:00 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Uv0XmdqB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Dg01KqUntpaFpjCXJtHlRufZ34s60nzPkse3Ae90upo=; b=Uv0XmdqBapCHl4/1aM3xKwbpby
+	m739xINTZZujr9WHqEVYit0n8ne2KlWegg8Q1/AiVm07rmj+MUplkUH7Vs0QHzhekb91pQ4jV9iAa
+	oMsfnrWvz206steIJdpH/Ek2LQz6TkQva7Okdu9D8pYbAkKDHxsd8Eda9skbMCkhD44iTnQabge1/
+	hYMUTL1LSRZQ26f9uEFFW7pWrwGjHzj7a5tnxZWUAFNNeT3FONqRrpGDjJjJGJbd/C3xbn9ObVBv6
+	iIT7koyhZp4BH9U4q22aIx2IlYJq/1h8denLX9mNx0DubtV9LT5eTxSmn5vvEeSB5IS6He67Yq46f
+	aWp5Havg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50934)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vLMHg-000000003Hs-3XN4;
+	Tue, 18 Nov 2025 14:02:16 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vLMHe-000000002VP-0rEX;
+	Tue, 18 Nov 2025 14:02:14 +0000
+Date: Tue, 18 Nov 2025 14:02:14 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Wei Fang <wei.fang@nxp.com>,
 	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
 	"davem@davemloft.net" <davem@davemloft.net>,
 	"edumazet@google.com" <edumazet@google.com>,
@@ -43,10 +54,11 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v3 net] net: phylink: add missing supported link modes
  for the fixed-link
-Message-ID: <e7222c87-3e4c-4170-993b-dbf5ba26c462@lunn.ch>
+Message-ID: <aRx8Zh-7MWeY0iJd@shell.armlinux.org.uk>
 References: <20251117102943.1862680-1-wei.fang@nxp.com>
  <aRwtEVvzuchzBHAu@shell.armlinux.org.uk>
  <PAXPR04MB8510A92D5185F67DDC8CC32F88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <e7222c87-3e4c-4170-993b-dbf5ba26c462@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,22 +67,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510A92D5185F67DDC8CC32F88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To: <e7222c87-3e4c-4170-993b-dbf5ba26c462@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-> > > Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link
-> > > configuration")
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+On Tue, Nov 18, 2025 at 03:00:00PM +0100, Andrew Lunn wrote:
+> > > > Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link
+> > > > configuration")
+> > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > > 
+> > > NAK. I give up.
+> > > 
 > > 
-> > NAK. I give up.
-> > 
+> > Sorry, could you please tell me what the reason is?
 > 
-> Sorry, could you please tell me what the reason is?
+> I think Russell is referring to the commit message, and how you only
+> quoted a little section of his explanation. There is no limit to
+> commit messages, they don't need to be short. It is actually better if
+> they are long. So you could use his whole explanation. And then you
+> don't need the link.
 
-I think Russell is referring to the commit message, and how you only
-quoted a little section of his explanation. There is no limit to
-commit messages, they don't need to be short. It is actually better if
-they are long. So you could use his whole explanation. And then you
-don't need the link.
+Worse than that. I gave my reviewed-by, which seems to have been a waste
+of time.
 
-	Andrew
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
