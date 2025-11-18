@@ -1,173 +1,209 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB413563CB
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 13:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32EB35503F;
+	Tue, 18 Nov 2025 13:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763474347; cv=none; b=lv3WQDb5WcgroDfWlArxVQDsvW6m8hMfMGcI9rTPXLl83CSRdpISU14GUIpqpeIIWvCDwflzXzgyaMmt+/zZWeZaSiEGOCIeVOiVBSO4B2/4BlMNZsXV5B7MNwu5TAcjlXblYyoNKmXHj5DHqKOJUV2abtbhsyaigF9IEcdYEkg=
+	t=1763474352; cv=none; b=JvflSLNVDdKbBGLzbRJldgLdbxHLf7hNHe3lutPJqw72xCEHcwf8M/Cw2xfsl8JvSFiAWBOCs8vRiFDQSLDjb4ymEsmpsH8eK3srtiwi7rcnak3DW+d2JCEG2j723DYsH+x4DOQxJb0raMeZqoJh18Ycm89cZ2+Mud5xArOkUwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763474347; c=relaxed/simple;
-	bh=aDOXQIB2n+pg4b/q/S49BAM6icV8tjHMUu6SgbSHF3M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=a896giZRH7yK/NtN/y7+QnBsV9ZjeCScNzPGzysWMDGmDFm4c1bgw7+D5OfaQAe2XzjczOWssYo6vFBzLm/Wo97f0JTHchTU0RCcTsu39MS+teyG8tfEhVnY8tnAelGqYW9m4mULTTtIDgntbJR8SpKAZ4VkSbUXD7TExTdQWpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XK4Td46z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aC6M3Cjc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763474352; c=relaxed/simple;
+	bh=Ma7HQDyMOsSkortRll35FHiQPSK80dtQ4ppaAjNf5Rk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LU4Q3js6BK+aP/Hq8irj1TkfZ2Ud9gBMQ3JoNpFE3PfMendonasAv9dM2rF57hbAqPnZDa3YG9yIuB+/5GsoNf4Q8a9x7HKCUi3jsU5YnNIPTnnhkVaIynFk1S+vK4cSPD4IQOk4PIfLWMC5y7xtfRnkRuu5Pl48q0j/FJKdwYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=XeIM/Umv; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XK4Td46z";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aC6M3Cjc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763474343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/sMrzWdyDZvwFZkmGhcBLLXh+fImVyjMBGC8vdg9gsc=;
-	b=XK4Td46zKk99R21Rlga4CfC+43zsFYx2JIzS4w5rbzAVeVCIF4dldZZXfArjVVNEERT5Q7
-	RH7TlgzI+6rfMEqWfHCWfsp8TAQhMDopaH284OT77WN0N6mG9krPdEo5PMz0QHsHuigOYb
-	9IBaxvKOLwIHUnyI/XhOqxEvvpobVsA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-nB8RJIgoNUSKa4PBbuN7sA-1; Tue, 18 Nov 2025 08:59:02 -0500
-X-MC-Unique: nB8RJIgoNUSKa4PBbuN7sA-1
-X-Mimecast-MFC-AGG-ID: nB8RJIgoNUSKa4PBbuN7sA_1763474341
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4775d110fabso43249615e9.1
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 05:59:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763474341; x=1764079141; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/sMrzWdyDZvwFZkmGhcBLLXh+fImVyjMBGC8vdg9gsc=;
-        b=aC6M3CjcSJ3JHIvhVPo6nuzb9LRIbQY7YGexjD9QcSAzfyiL8M/bJXaEy4f0VSi6Kf
-         JfHWaXFSQ/Qr7dOFkq+uXGHmg/Zg6VNf0xIn2WLWKDCVT0O+NKsi9JNGX+y8mPDWBw/3
-         prPFcyeaaGc2YvCoSFjH/jrOsn2RHVdzAEBseKOX5Grv0NZ4r4FLSb0daLHHG5eOi1oK
-         mAF+h2ext16wAdV1uLc/+A98iSBMiYUDKEl+1WQv0oqLpwppwhjnxKmYaIenNUVyy/lV
-         XLn5SmJedRevW+eL0O1d/Ek8h1NrKHjBaBPX/TmyByD7cAIZ1hckHhrJA06rcEE3y6OV
-         xnFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763474341; x=1764079141;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/sMrzWdyDZvwFZkmGhcBLLXh+fImVyjMBGC8vdg9gsc=;
-        b=OV5RrIOULsPB2afbK6/NNjM4oZiHrM25xv0Dsrww7RtnXM6Vsb9IV45YbDOXlWNhR/
-         JkWRCnx4faJAO3OmIIwFnRvzxJGlczqufX1iRMsBH453uQB26UfLBvc8ohrQ3ydj63Vh
-         MgNM6SsgiC3hohdeLF8fn0jK3lvStjQmcCLpU0kzLg8Q8Gop77CfAM2lUbpW4PrEFoAU
-         6WQnculgmNCvb4QPtOWiL5VEcuNSyEerzhaa2oXEg1Nurfd2vNTkJzbPJTMnLrRZCG4C
-         qYfVgYB2KrPzbt/kr+m1U+BfcaIq68zxvvODSZkPmrc+8UdDU4d/1XWCTAOKGutSQkIb
-         DGiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUO7vuxd8mxazjHL44WsXCsfL+1hFrfywUf++aCiNO1iS/UXAGk8ZMnjz0zzoTRgFNDhL3ueDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHbTf9ZhL/Y+XFkPCL/5t7qKcoOyP42IZKoDLQoyKWZ3sWsJuq
-	2h5fuVm/6eHiRV9ciFtHsyHs+NnYiUi1W18nsjXoppD7lTXolV6iC3myyEmcHn9mUm9ok+Qg6qc
-	rKbmF4KeUebkUc4EmiiYoWrvfYIcuEkOlHU+C+gpDUnCW/avvXzRJQohjzQ==
-X-Gm-Gg: ASbGnctN5Vt1yVIh5xwlYMCK74I4cpobthOs6VKswyXxzoVa3khg3MPbGQydST0DTi/
-	YLKpiv1Wwk1wwYB3LBl84k2EgnHyfhsh03Y2+KMJuRatYN9MWWDc3nDzzVrQe6awm5dKUc64Zhi
-	R7Y1fFdkjhgiH3ApOPXa21gFq57xwr21wJ9ooYMcrEOlGILUhfciBnUvx/mOOUvzBSGXSeMRk5J
-	3z5V1DDH5pwCTcFz0R9Pcom10QWA0lCcI2LFCQIgWrf3TS7LQu+7hHn32oV3BBdAEDqgA87uw+l
-	ygSDMtwCxnIfEttsPO8plcJh7adBmcGeUq+1gGn7eXGFs4PZVSvrK9wzIS9xzdWh/X1ebgN+2KU
-	rg2tkvvEyuDTa
-X-Received: by 2002:a05:600c:4595:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-4778fe88265mr151064045e9.27.1763474340688;
-        Tue, 18 Nov 2025 05:59:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE9Am1Diu+ximSUOXMP3A5a0o3OiqTxBDb1D8Ajqh2TFqWWMm87brTKlLuvl3dgDrOlhHHa3A==
-X-Received: by 2002:a05:600c:4595:b0:45d:d8d6:7fcc with SMTP id 5b1f17b1804b1-4778fe88265mr151063795e9.27.1763474340210;
-        Tue, 18 Nov 2025 05:59:00 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.155.41])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9deb126sm16925725e9.9.2025.11.18.05.58.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Nov 2025 05:58:59 -0800 (PST)
-Message-ID: <769c1ba6-b622-402e-a615-dffa6f3d640c@redhat.com>
-Date: Tue, 18 Nov 2025 14:58:56 +0100
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="XeIM/Umv"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 1A029A13FD;
+	Tue, 18 Nov 2025 14:58:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=lVWbjU6OZMZKSfpBWgnJ
+	aHrHugrOdzvPNNE0axpkUrU=; b=XeIM/UmvDcHivrZTyWMvlynxn99Kk3q1Xmin
+	2tnNhfpQXBsZ/i5ApJLkJPGnb9IKemwX0sKCqBm+ONPB7aj0o/yv6w7ngbOHnuM0
+	A/AkhK4ohOoXdFdn5tpx72iXnWEfoBI8BfUOQGRNL7TYVMJGanfr6Bo3oZ6g0pj4
+	6JTuPJFO4dgefcTOBnjiU9JvB3pqsxSF9QW3dNj3byeXr7y+pz303lP+afv3tcGc
+	DOUKefuHsawL7+QGa3cIDS78wBABPmvecg4kWvwMFeKX19yCVB3ANbrYxgnDZLyj
+	ARP1bn3EH0fNgBVcSFha0AALQsxR7hnBLeWUkP03pSGZyi1wn6YoEh4R8n49tMiQ
+	41Mp3TB3tXs0jQfHppoHGiQHgq78JbtEjc2rVwNGGSDKIQgkvbN94OLdKV5t35t8
+	p0GuNfPvDC2I4X1HiBYyF/NT8zMJPhesbJQ/G27hS4CMO98CePsWiJBOai2f27cx
+	1bug+Wy4sAxLznG8fYwXerLYz5wfuSwUqYLFx2JEEGXTBc1CKbYv3C0R6Zqf1Z3C
+	VPpYqm8RcGfC4Cmx+fe1TAwCAnSYNfC9P2h8/YNeZON2Y8gVST8Jv7XByD0+rdOM
+	8rZgvrrH7b94327swcJuOIdxTWBgGCgwayNBGsUmOCROacCZhyBNle7i3E4ctxZW
+	EovMa1g=
+From: Buday Csaba <buday.csaba@prolan.hu>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Philipp Zabel
+	<p.zabel@pengutronix.de>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+CC: Buday Csaba <buday.csaba@prolan.hu>
+Subject: [PATCH net-next v3 1/3] net: mdio: move device reset functions to mdio_device.c
+Date: Tue, 18 Nov 2025 14:58:52 +0100
+Message-ID: <5f684838ee897130f21b21beb07695eea4af8988.1763473655.git.buday.csaba@prolan.hu>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <cover.1763473655.git.buday.csaba@prolan.hu>
+References: <cover.1763473655.git.buday.csaba@prolan.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 net-next 10/14] tcp: accecn: retransmit SYN/ACK without
- AccECN option or non-AccECN SYN/ACK
-To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com, parav@nvidia.com,
- linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
- dsahern@kernel.org, kuniyu@google.com, bpf@vger.kernel.org,
- netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
- kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
- donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
- ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
- g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
- mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
- Jason_Livingood@comcast.com, vidhi_goel@apple.com
-References: <20251114071345.10769-1-chia-yu.chang@nokia-bell-labs.com>
- <20251114071345.10769-11-chia-yu.chang@nokia-bell-labs.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251114071345.10769-11-chia-yu.chang@nokia-bell-labs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1763474337;VERSION=8002;MC=2836567782;ID=69549;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2998FD515F617266
 
-On 11/14/25 8:13 AM, chia-yu.chang@nokia-bell-labs.com wrote:
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> 
-> For Accurate ECN, the first SYN/ACK sent by the TCP server shall set the
-> ACE flag (see Table 1 of RFC9768) and the AccECN option to complete the
-> capability negotiation. However, if the TCP server needs to retransmit such
-> a SYN/ACK (for example, because it did not receive an ACK acknowledging its
-> SYN/ACK, or received a second SYN requesting AccECN support), the TCP server
-> retransmits the SYN/ACK without the AccECN option. This is because the
-> SYN/ACK may be lost due to congestion, or a middlebox may block the AccECN
-> option. Furthermore, if this retransmission also times out, to expedite
-> connection establishment, the TCP server should retransmit the SYN/ACK with
-> (AE,CWR,ECE) = (0,0,0) and without the AccECN option, while maintaining
-> AccECN feedback mode.
-> 
-> This complies with Section 3.2.3.2.2 of the AccECN specification (RFC9768).
-> 
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> 
-> ---
-> v6:
-> - Use new synack_type TCP_SYNACK_RETRANS and num_retrans.
-> ---
->  include/net/tcp_ecn.h | 20 ++++++++++++++------
->  net/ipv4/tcp_output.c |  4 ++--
->  2 files changed, 16 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-> index a709fb1756eb..57841dfa6705 100644
-> --- a/include/net/tcp_ecn.h
-> +++ b/include/net/tcp_ecn.h
-> @@ -649,12 +649,20 @@ static inline void tcp_ecn_clear_syn(struct sock *sk, struct sk_buff *skb)
->  }
->  
->  static inline void
-> -tcp_ecn_make_synack(const struct request_sock *req, struct tcphdr *th)
-> -{
-> -	if (tcp_rsk(req)->accecn_ok)
-> -		tcp_accecn_echo_syn_ect(th, tcp_rsk(req)->syn_ect_rcv);
-> -	else if (inet_rsk(req)->ecn_ok)
-> -		th->ece = 1;
-> +tcp_ecn_make_synack(const struct request_sock *req, struct tcphdr *th,
-> +		    enum tcp_synack_type synack_type)
-> +{
-> +	// num_retrans will be incresaed after tcp_ecn_make_synack()
+The functions mdiobus_register_gpiod() and mdiobus_register_reset()
+handle the mdio device reset initialization, which belong to
+mdio_device.c.
+Move them from mdio_bus.c to mdio_device.c, and rename them to match
+the corresponding source file: mdio_device_register_gpio() and
+mdio_device_register_reset().
+Remove 'static' qualifiers and declare them in
+drivers/net/phy/mdio-private.h (new header file).
 
-Please use /* */ for comments
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+---
+V2 -> V3: removed declarations from include/linux/mdio.h to
+	  drivers/net/phy/mdio-private.h on maintainer request.
+V1 -> V2: rebase, no changes
+---
+ drivers/net/phy/mdio-private.h | 11 +++++++++++
+ drivers/net/phy/mdio_bus.c     | 32 +++-----------------------------
+ drivers/net/phy/mdio_device.c  | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 29 deletions(-)
+ create mode 100644 drivers/net/phy/mdio-private.h
 
-> +	if (!req->num_retrans) {
+diff --git a/drivers/net/phy/mdio-private.h b/drivers/net/phy/mdio-private.h
+new file mode 100644
+index 000000000..44e2e0907
+--- /dev/null
++++ b/drivers/net/phy/mdio-private.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __MDIO_PRIVATE_H
++#define __MDIO_PRIVATE_H
++
++/* MDIO internal helpers
++ */
++
++int mdio_device_register_reset(struct mdio_device *mdiodev);
++int mdio_device_register_gpiod(struct mdio_device *mdiodev);
++
++#endif /* __MDIO_PRIVATE_H */
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 435424113..575b8bb5b 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -29,37 +29,11 @@
+ #include <linux/string.h>
+ #include <linux/uaccess.h>
+ #include <linux/unistd.h>
++#include "mdio-private.h"
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/mdio.h>
+ 
+-static int mdiobus_register_gpiod(struct mdio_device *mdiodev)
+-{
+-	/* Deassert the optional reset signal */
+-	mdiodev->reset_gpio = gpiod_get_optional(&mdiodev->dev,
+-						 "reset", GPIOD_OUT_LOW);
+-	if (IS_ERR(mdiodev->reset_gpio))
+-		return PTR_ERR(mdiodev->reset_gpio);
+-
+-	if (mdiodev->reset_gpio)
+-		gpiod_set_consumer_name(mdiodev->reset_gpio, "PHY reset");
+-
+-	return 0;
+-}
+-
+-static int mdiobus_register_reset(struct mdio_device *mdiodev)
+-{
+-	struct reset_control *reset;
+-
+-	reset = reset_control_get_optional_exclusive(&mdiodev->dev, "phy");
+-	if (IS_ERR(reset))
+-		return PTR_ERR(reset);
+-
+-	mdiodev->reset_ctrl = reset;
+-
+-	return 0;
+-}
+-
+ int mdiobus_register_device(struct mdio_device *mdiodev)
+ {
+ 	int err;
+@@ -68,11 +42,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
+ 		return -EBUSY;
+ 
+ 	if (mdiodev->flags & MDIO_DEVICE_FLAG_PHY) {
+-		err = mdiobus_register_gpiod(mdiodev);
++		err = mdio_device_register_gpiod(mdiodev);
+ 		if (err)
+ 			return err;
+ 
+-		err = mdiobus_register_reset(mdiodev);
++		err = mdio_device_register_reset(mdiodev);
+ 		if (err) {
+ 			gpiod_put(mdiodev->reset_gpio);
+ 			mdiodev->reset_gpio = NULL;
+diff --git a/drivers/net/phy/mdio_device.c b/drivers/net/phy/mdio_device.c
+index f64176e0e..0e04bddd3 100644
+--- a/drivers/net/phy/mdio_device.c
++++ b/drivers/net/phy/mdio_device.c
+@@ -22,6 +22,7 @@
+ #include <linux/string.h>
+ #include <linux/unistd.h>
+ #include <linux/property.h>
++#include "mdio-private.h"
+ 
+ void mdio_device_free(struct mdio_device *mdiodev)
+ {
+@@ -118,6 +119,33 @@ void mdio_device_remove(struct mdio_device *mdiodev)
+ }
+ EXPORT_SYMBOL(mdio_device_remove);
+ 
++int mdio_device_register_gpiod(struct mdio_device *mdiodev)
++{
++	/* Deassert the optional reset signal */
++	mdiodev->reset_gpio = gpiod_get_optional(&mdiodev->dev,
++						 "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(mdiodev->reset_gpio))
++		return PTR_ERR(mdiodev->reset_gpio);
++
++	if (mdiodev->reset_gpio)
++		gpiod_set_consumer_name(mdiodev->reset_gpio, "PHY reset");
++
++	return 0;
++}
++
++int mdio_device_register_reset(struct mdio_device *mdiodev)
++{
++	struct reset_control *reset;
++
++	reset = reset_control_get_optional_exclusive(&mdiodev->dev, "phy");
++	if (IS_ERR(reset))
++		return PTR_ERR(reset);
++
++	mdiodev->reset_ctrl = reset;
++
++	return 0;
++}
++
+ void mdio_device_reset(struct mdio_device *mdiodev, int value)
+ {
+ 	unsigned int d;
+-- 
+2.39.5
 
-It's unclear you this function receives a `synack_type` argument and
-don't use it. Should the above be
-
-	if (synack_type != TCP_SYNACK_RETRANS) {
-
-?
-
-Or just remove such argument.
-
-/P
 
