@@ -1,86 +1,39 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B792FFFBC
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 12:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C5C3093DB;
+	Tue, 18 Nov 2025 12:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763468072; cv=none; b=sjMUAwoV+aTKiCUQw8fCen+mg8qiZcEDutb2Z1rUrWRK2t90+F8oDnIF7J8a7l8vJhGqtRnDw/oifyF43bMz7WME0DO2g5uLZE+MMRuMzGv4fs/cVcmOddbTYPKeAsd+sI8Y1sSoAAt2nbM/sicpMlOb2UvoX4Ls/Diwbh+EX5g=
+	t=1763468360; cv=none; b=Yd5aM1b65W67QxVOAP3IciMhe5gHNZkoUwexIAJTvJJbtwkHw26ORalV3PAfmIQMcFxcFxEiYLCLED4FXKo94nb75mz/YmJJ81zpnsiy9KB0xcLmrUA0MzqSeGRrnxa1Si2613L1b2SeE5sRb+XBPPDq5x/aQFQRtJIzi0C9Ho4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763468072; c=relaxed/simple;
-	bh=ImZWzph7mTWwkohu9lyvahWKCLQchy6l2VlEx8q1Poc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uB5cK4l6FVgdxtcagnNw48NHwXV8MLexBd+wVlU5sz+rLGUHrB5+ZL60voB4OxxfED8/OoA9/Yyo55dS+4AeoMR08kXaWzRdabxsof5L7SxdqdjaWF8A1nSiPSZPnSO/jk2XjUK/7zDhGlxLsA+9Ml2nvUmZlPPJPEEe0tdhNNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hcg0IXDp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oLIeIMCE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763468360; c=relaxed/simple;
+	bh=PW0Ba5WBdUEev84fiTtUqYn0ryT2ZNpF7ayFuhtjL1E=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=UA/WCiOr60Z3BzsGEhp0XXXya2wFMqDsD78Po+ccprM99FEfgABo6yQLS0UXuptOINew9pLHS8CpErBe/8l/rS/1r/q4FXrkR5L5tM+4lxXsAfI5jMNGpBg2cuOx4MOjTneaPnaMboCXd5hlonST+hFNu0xF3Nz8iHY/KN79VDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=jRJJFAjy; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hcg0IXDp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oLIeIMCE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763468070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3BCjv/CGdgcWSx02tEn5XWDlQF9iUwwpCMljkc4+gpo=;
-	b=hcg0IXDpAJdZtgzqplOFtjK4rVH/CRqdtb0/crbzR1qK6JlL/l9rCS9EOYYsQg/mKb3xGU
-	BBkod/E5h5AUqIyvhZar+1w2LWqrUl5MvBzRjz2yNQj3hYw1DPFSI9Af8qZCUUHoDtS1xY
-	THl+IPurzQtRKe0m//SzCA/AUUii4YM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-BWNYLUC2N6u3g5LmvlG5Ug-1; Tue, 18 Nov 2025 07:14:18 -0500
-X-MC-Unique: BWNYLUC2N6u3g5LmvlG5Ug-1
-X-Mimecast-MFC-AGG-ID: BWNYLUC2N6u3g5LmvlG5Ug_1763468058
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-42b2e448bd9so3447996f8f.1
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 04:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763468057; x=1764072857; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3BCjv/CGdgcWSx02tEn5XWDlQF9iUwwpCMljkc4+gpo=;
-        b=oLIeIMCElJTKvOrIRloJeEjKzP/+i8UlXsW3TG37K6DPDuom3PBXUFYoJf/wMcCHyN
-         oNebRpWyM/UJjHLDg5AzQmehE9aVF7OiijMX8mR4M/uFi51lL/R95pWLghcFcnJXzSst
-         48jORu4dVC3TOaVGaaCg7nQGO1DSthhgzjrLFvcO9FcL/7mMon+1SBY2xlNrJAr+eC1r
-         UjgTeseIO70sV+BCldlo2LkwysEhyWoFMjnwcRVSi+3hqR+eFmqMLEhJMSn91d8zQGIX
-         y+ScJl29Ocjwn6qz1zU5o9PuNzEY970o+cRC90H99Juo7CEIfUBi3VD6zuPYkI0cttma
-         KfYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763468057; x=1764072857;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3BCjv/CGdgcWSx02tEn5XWDlQF9iUwwpCMljkc4+gpo=;
-        b=M5TVJDDhmMViNk3odEEXKm0TFehGwGkSO39ndE020opsbd8SG1JaZO8a/tTWS5ARvv
-         LpeNUdShdixtSFmVmBvCSQeUM8zzwUiue2wmDkJGobrht8IpvuzgEyf9d0yvrEJ4fWSE
-         MVHgpVJwDyi0LDmLmMPgmw/MylzMVOaAnmcBW/VAclvfBXlpGm6Y+1EY3ilfmC7GzgJ0
-         4p5jqoPRHDoRyemSILY3DQwRKM0K4E2fLr9C8w6xEkd5hVvFMVcvEPYRDahTtxigxK5X
-         PIqq/BorjW/0UEifKBqR83fT5PW//RYlFoyc2Hk+exUYW8vnb1dYAi6rmj5TeALJeTdk
-         in3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWiD/XdsaMDUPrD7YGNTtRP2yFqBMQrT0BjJGg7MwZB3oDu9lXzxdNvD6O2l3mZW/6ktNULfOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUFAhRlKjDm8KdJ9w2xpOmKssHQYC3ffDIjYKw3UFwquarQAWS
-	4UDLNlPVIU/IjJtun7fxPWQt1AwC3Euwm9f5stSJWGIcMB23wtc5jZkBZvJIW6gSPEe8pnGAbL1
-	FS8m9ECuH4nfKSOiRKmGchYql1ek3NHLcl5PRIHtV/puhedbahInPR86ZfA==
-X-Gm-Gg: ASbGncteo/eBrqugQao4CPoXxttXf4jBE3Jzut7nTQrICmooirchtaXPnCiZQoYQACK
-	6qbp+cqFyIL9MYQoDj22ZVNuxJFYmkbZzzZk/Nn5Ilh2YEKjZ025OtdKDzfE98N+nB2bPHmEu3I
-	lk9gH6Br+ht3YFQ6m54l5SqMWPgH+c1RWj6iJq6HK3kc7NL2lcYUvxGtopCqqiY7tzn6nvmkT2W
-	OxG8Z8RsWQxtHIMX54Sh5Uuvq1X0TV8oNc50S2dqNbh9x3mA8qITK1dmYnFPTxLTv+7E66/xIXr
-	QllWa5ZGYVqCWgvdGuyLBnNy5e0Nm1GdkYJBM5XRgvi9UX3/Mcs3nfMdTdQdc5yqLGfhi0I3Fsm
-	a0P9NlIfH7Odq
-X-Received: by 2002:a05:6000:4186:b0:429:d19f:d959 with SMTP id ffacd0b85a97d-42b5934d6f1mr14360736f8f.15.1763468057539;
-        Tue, 18 Nov 2025 04:14:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IErQTLe3bQ/i474JHpwGcSyu8Y7j1VvytPeuMCoBPNChkmE/I6UW+IYqaTo4xS93xhgJz9RAA==
-X-Received: by 2002:a05:6000:4186:b0:429:d19f:d959 with SMTP id ffacd0b85a97d-42b5934d6f1mr14360710f8f.15.1763468057114;
-        Tue, 18 Nov 2025 04:14:17 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.155.41])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e97a87sm32474774f8f.20.2025.11.18.04.14.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Nov 2025 04:14:16 -0800 (PST)
-Message-ID: <92c77477-9945-49c2-90bd-6e05761e2a3e@redhat.com>
-Date: Tue, 18 Nov 2025 13:14:13 +0100
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="jRJJFAjy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1763467832;
+	bh=PW0Ba5WBdUEev84fiTtUqYn0ryT2ZNpF7ayFuhtjL1E=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=jRJJFAjyqBKS/RnfxoMguDUCD6xe+wdqKLpm2XZorwT9u9bZQ02JqFPayIsHPBbOa
+	 l3Dia30mG2TQjhWHBKy7OW2BegUOvVSbWK3MoHlzO/eF5fHQ4Ubq4H4utnubyJnA6q
+	 +AspxsamqIAovqOXhKZGXT5PODs9NTgLDsAciXRZ3/5f4xOmrYC++3b0dAa5DWSgvm
+	 LNDuaP9vLbuUFbFTETaydUZEnIt03LHieUGbhXy68Cs4bBUubPutTV/f5BazCobX7K
+	 s3n9Nz6CmpZB3qshSYZ+UcLXLna5cJH6PbgXssuM0pdqtLTvIkC4R2wAWcJrhuXZGO
+	 zso4sjzdcMu9w==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 2A2CD600C1;
+	Tue, 18 Nov 2025 12:10:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by x201s (Postfix) with ESMTP id 03A0B203E83;
+	Tue, 18 Nov 2025 12:08:20 +0000 (UTC)
+Message-ID: <f21458b6-f169-4cd3-bd1b-16255c78d6cd@fiberby.net>
+Date: Tue, 18 Nov 2025 12:08:20 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,109 +41,132 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 net-next 04/14] selftests/net: gro: add self-test for
- TCP CWR flag
-To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com, parav@nvidia.com,
- linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
- dsahern@kernel.org, kuniyu@google.com, bpf@vger.kernel.org,
- netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
- kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
- donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
- ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
- g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
- mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
- Jason_Livingood@comcast.com, vidhi_goel@apple.com
-References: <20251114071345.10769-1-chia-yu.chang@nokia-bell-labs.com>
- <20251114071345.10769-5-chia-yu.chang@nokia-bell-labs.com>
+From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
+Subject: Re: [PATCH net-next v3 04/11] netlink: specs: add specification for
+ wireguard
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
+ Jacob Keller <jacob.e.keller@intel.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jordan Rife <jordan@jrife.io>
+References: <20251105183223.89913-1-ast@fiberby.net>
+ <20251105183223.89913-5-ast@fiberby.net> <aRvWzC8qz3iXDAb3@zx2c4.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251114071345.10769-5-chia-yu.chang@nokia-bell-labs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <aRvWzC8qz3iXDAb3@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 11/14/25 8:13 AM, chia-yu.chang@nokia-bell-labs.com wrote:
-> +/* send extra flags of the (NUM_PACKETS / 2) and (NUM_PACKETS / 2 - 1)
-> + * pkts, not first and not last pkt
-> + */
-> +static void send_flags(int fd, struct sockaddr_ll *daddr, int psh, int syn,
-> +		       int rst, int urg, int cwr)
-> +{
-> +	static char flag_buf[2][MAX_HDR_LEN + PAYLOAD_LEN];
-> +	static char buf[MAX_HDR_LEN + PAYLOAD_LEN];
-> +	int payload_len, pkt_size, i;
-> +	struct tcphdr *tcph;
-> +	int flag[2];
-> +
-> +	payload_len = PAYLOAD_LEN * (psh || cwr);
-> +	pkt_size = total_hdr_len + payload_len;
-> +	flag[0] = NUM_PACKETS / 2;
-> +	flag[1] = NUM_PACKETS / 2 - 1;
-> +
-> +	// Create and configure packets with flags
+Hi Jason,
 
-Please use /* */ for comments.
+Thanks for the review.
 
-Other than that:
+On 11/18/25 2:15 AM, Jason A. Donenfeld wrote:
+> On Wed, Nov 05, 2025 at 06:32:13PM +0000, Asbjørn Sloth Tønnesen wrote:
+>> +name: wireguard
+>> +protocol: genetlink-legacy
+> 
+> I'll need to do my own reading, I guess, but what is going on with this
+> "legacy" business? Is there some newer genetlink that falls outside of
+> versioning?
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+There's a few reasons why the stricter genetlink doesn't fit:
+- Less flexible with C naming (breaking UAPI).
+- Doesn't allow C struct types.
 
-> +	for (i = 0; i < 2; i++) {
-> +		if (flag[i] > 0) {
-> +			create_packet(flag_buf[i], flag[i] * payload_len, 0,
-> +				      payload_len, 0);
-> +			tcph = (struct tcphdr *)(flag_buf[i] + tcp_offset);
-> +			set_flags(tcph, payload_len, psh, syn, rst, urg, cwr);
-> +		}
-> +	}
->  
->  	for (i = 0; i < NUM_PACKETS + 1; i++) {
-> -		if (i == flag) {
-> -			write_packet(fd, flag_buf, pkt_size, daddr);
-> +		if (i == flag[0]) {
-> +			write_packet(fd, flag_buf[0], pkt_size, daddr);
-> +			continue;
-> +		} else if (i == flag[1] && cwr) {
-> +			write_packet(fd, flag_buf[1], pkt_size, daddr);
->  			continue;
->  		}
->  		create_packet(buf, i * PAYLOAD_LEN, 0, PAYLOAD_LEN, 0);
-> @@ -1020,16 +1045,19 @@ static void gro_sender(void)
->  		send_ack(txfd, &daddr);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  	} else if (strcmp(testname, "flags") == 0) {
-> -		send_flags(txfd, &daddr, 1, 0, 0, 0);
-> +		send_flags(txfd, &daddr, 1, 0, 0, 0, 0);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  
-> -		send_flags(txfd, &daddr, 0, 1, 0, 0);
-> +		send_flags(txfd, &daddr, 0, 1, 0, 0, 0);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  
-> -		send_flags(txfd, &daddr, 0, 0, 1, 0);
-> +		send_flags(txfd, &daddr, 0, 0, 1, 0, 0);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  
-> -		send_flags(txfd, &daddr, 0, 0, 0, 1);
-> +		send_flags(txfd, &daddr, 0, 0, 0, 1, 0);
-> +		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-> +
-> +		send_flags(txfd, &daddr, 0, 0, 0, 0, 1);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  	} else if (strcmp(testname, "tcp") == 0) {
->  		send_changed_checksum(txfd, &daddr);
-> @@ -1163,6 +1191,12 @@ static void gro_receiver(void)
->  
->  		printf("urg flag ends coalescing: ");
->  		check_recv_pkts(rxfd, correct_payload, 3);
-> +
-> +		correct_payload[0] = PAYLOAD_LEN;
-> +		correct_payload[1] = PAYLOAD_LEN * 2;
-> +		correct_payload[2] = PAYLOAD_LEN * 2;
-> +		printf("cwr flag ends coalescing: ");
-> +		check_recv_pkts(rxfd, correct_payload, 3);
->  	} else if (strcmp(testname, "tcp") == 0) {
->  		correct_payload[0] = PAYLOAD_LEN;
->  		correct_payload[1] = PAYLOAD_LEN;
+diff -Naur Documentation/netlink/genetlink{,-legacy}.yaml
+>> +c-family-name: wg-genl-name
+>> +c-version-name: wg-genl-version
+>> +max-by-define: true
+>> +
+>> +definitions:
+>> +  -
+>> +    name-prefix: wg-
+> 
+> There's lots of control over the C output here. Why can't there also be
+> a top-level c-function-prefix attribute, so that patch 10/11 is
+> unnecessary? Stack traces for wireguard all include wg_; why pollute
+> this with the new "wireguard_" ones?
 
+It could also be just "c-prefix".
+
+Jakub, WDYT?
+
+>> +        doc: The index is set as ``0`` in ``DUMP``, and unused in ``DO``.
+> 
+> I think get/set might match the operations better than the underlying
+> netlink verbs? This is a doc comment specific to getting and setting.
+
+Sure, I could change that. Originally opted for the C-style, as I kept the
+C-style from your original text in the rest of the doc comments.
+
+> On the other hand, maybe that's an implementation detail and doesn't
+> need to be specified? Or if you think rigidity is important, we should
+> specify 0 in both directions and then validate it to ensure userspace
+> sends 0 (all userspaces currently do).
+
+As is, the YNL-based clients are taking advantage of it not being validated.
+Changing that would require adding some new YNL type properties.
+See this series[1] for my earlier attempt to extend YNL in this area.
+
+[1] https://lore.kernel.org/r/20251022182701.250897-1-ast@fiberby.net/
+
+The modern way would be to use multi-attrs, but I don't think it's worth it
+to transition, you mainly save a few bytes of overhead.
+
+WGDEVICE_A_IFINDEX
+WGDEVICE_A_PEERS2: NLA_NESTED
+   WGPEER_A_PUBLIC_KEY
+   [..]
+   WGPEER_A_ALLOWEDIPS2: NLA_NESTED
+     WGALLOWEDIP_A_FAMILY
+     [..]
+   WGPEER_A_ALLOWEDIPS2: NLA_NESTED
+     WGALLOWEDIP_A_FAMILY
+     [..]
+WGDEVICE_A_PEERS2: NLA_NESTED
+   [..]
+
+>> +        The kernel will then return several messages (``NLM_F_MULTI``).
+>> +        It is possible that all of the allowed IPs of a single peer
+>> +        will not fit within a single netlink message. In that case, the
+>> +        same peer will be written in the following message, except it will
+>> +        only contain ``WGPEER_A_PUBLIC_KEY`` and ``WGPEER_A_ALLOWEDIPS``.
+>> +        This may occur several times in a row for the same peer.
+>> +        It is then up to the receiver to coalesce adjacent peers.
+>> +        Likewise, it is possible that all peers will not fit within a
+>> +        single message.
+>> +        So, subsequent peers will be sent in following messages,
+>> +        except those will only contain ``WGDEVICE_A_IFNAME`` and
+>> +        ``WGDEVICE_A_PEERS``. It is then up to the receiver to coalesce
+>> +        these messages to form the complete list of peers.
+> 
+> There's an extra line break before the "So," that wasn't there in the
+> original.
+
+It's collapsed when rendered, added them to reduce diff stat for future changes.
+A new paragraph in .rst requires a double line break, but I can remove them.
+
+>> +        While this command does accept the other ``WGDEVICE_A_*``
+>> +        attributes, for compatibility reasons, but they are ignored
+>> +        by this command, and should not be used in requests.
+> 
+> Either "While" or ", but" but not both.
+> 
+> However, can we actually just make this strict? No userspaces send
+> random attributes in a GET. Nothing should break.
+
+I agree that nothing should break, just tried to avoid changing UAPI in the
+spec commit, but by moving the split ops conversion patch, then I can eliminate
+this before adding the spec.
+
+>> +      dump:
+>> +        pre: wireguard-nl-get-device-start
+>> +        post: wireguard-nl-get-device-done
+> 
+> Oh, or, the wg_ prefix can be defined here (instead of wireguard_, per
+> my 10/11 comment above).
+
+The key here is the missing ones, I renamed these for alignment with
+doit and dumpit which can't be customized at this time.
