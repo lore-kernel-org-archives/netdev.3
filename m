@@ -1,254 +1,155 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B9134C9AE
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 10:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF0A30BBA0
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 10:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763461361; cv=none; b=PNP6CLJ10RmnSod7DkiZcCKjiW2HPcxTdFKQVq9f4s9woGnALAM4Qg8i++QM8nCl+rQWl2Vyql5A/WLAFuQYVwoGv7ul/PXZOAcx7QWew++1pnt+RQRCd7KANDpr4yoBfrzRCMC1hHW10wIlK0hGc4RfnEHSlC2Grxhh2SxnbrU=
+	t=1763461589; cv=none; b=j7Eyd6DN6HAHhdqDMJW4We3U2/oVqLrX5tisRulZtTgnFCb0jwmLce12uHCLMpdDpK4x6C7WO2KyJiEfgVQd1qePBSis1WgBBzUkTYt8Ip/RihGHxEbewdqitc6KQq+OTQ9MfsimIkLlUR3ULdqKp0XJCJp8v3I/vERU/4fJYoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763461361; c=relaxed/simple;
-	bh=DP2UqYoAhUQhjzVLwVf1Qc3K1rq3/0/jImzuikX3f1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lDeNtSkRwaoVa0kvvXqK5HwIEiOGyH1V2zbpsBVqzeX3eP1ohk35G29UHeFU7fGD9k0d+tjZNNKFmhX2X9a0vpethqA4AC6NIm6Los/SuuVQplNPjsShyqCK9hqQ2GGmR4QpWOqwfhnyfZ1f00KE9w26pJgD1QoHuzwofDolGrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbXbVUvM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZN8PruE3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1763461589; c=relaxed/simple;
+	bh=oay2Y0RYtBNA35kUgmNA70K3Qe/H7tL7ZlQWPWImoU8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k7bTlmVIu38ykinc3MzC9bTGNS8jYlE+/GO8lI5J2z8HeDgTgP89goBhZmHHxxfA1wbxjKjGywymWyha752Q1JeLxtUQ1kucGaaQA4heOOT8uuRrKVRgSG8vR1F/SSa58z1HIT9uoElGyD7BwqEWoosgzZqjnNuv/Y8CZDYdwsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=NahMNgS3; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbXbVUvM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZN8PruE3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763461356;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
-	b=NbXbVUvM1qQDjY1haandtAfbRcAzW3zhCwNPZDqd8elx5wiJRwVNu0j7bsVh2CYSBLq7J2
-	XpLsJQr7Lr0I6M0eABNKO3ZHS4ChtPKpncMDcTw73wS8OaorqL2pX9oHFlDWDzc4vjdBeT
-	bQLeUX2PrAmyjuEOXEjpLo5ZmtfwG5c=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-495-w_AWfXHDMzmkI2TLmkyA9g-1; Tue, 18 Nov 2025 05:22:34 -0500
-X-MC-Unique: w_AWfXHDMzmkI2TLmkyA9g-1
-X-Mimecast-MFC-AGG-ID: w_AWfXHDMzmkI2TLmkyA9g_1763461353
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b739a4cf54fso448782366b.3
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:22:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="NahMNgS3"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b739ef3f739so322076166b.1
+        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:26:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763461353; x=1764066153; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
-        b=ZN8PruE3rdHFqElf9iN0OL/et5yxTHljvbCSfqNEVePsZ6kevuUWMraFEx78tr7E33
-         t/8VxIssI/23+QchxiXVm3jGGiHwTqbG/MyvinBAhV2kYhGMDPcei4mV48RhUdQveegx
-         e7aXr9W/RPI3UNRJPpnveTKuhpG33daW6/mUwDdMKVuzPPJ7N/BUuHNsFMQBM3uvMsEi
-         qSP0bOY/ZO2hnfA+pglXj4ArNMXbCyg72TH43HMyMGM+xC7Fj3FZCPPuOhDseFmbh+MC
-         MWa4RBuo/manUFGbvAjNWmT5aa3mFBNUjdSZr8g58DA+lmzppAGtvpuT/5g5Bes1Tnda
-         aQLw==
+        d=openvpn.net; s=google; t=1763461581; x=1764066381; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/OTTsu0LjJ22YPCAfK50R8FQVgllWZ9069adGRfH0gk=;
+        b=NahMNgS32eTtYm08Az70NZQVJL1HpOhmWhBMO9qrC5de/9p3HEPb8ebScqLRIINdZU
+         SnhKmqgDyj/0sJQFAf++6cw0G+0N4OP+D+MqD7SSYEVJLxO+3ce5v/HFlwYY37XBgLCe
+         AgOkXkjssyT+ZNBxdyhktEQFGUGCjGtrDTHndvGIQzse8cktJQEUQEZMF59aav542T1D
+         fJnYm5pRvUZtcvEbLYeLtqLCvmlOcpFU1K8W0nyFYM1QbB0dNp7wMghEou6eX5B7mmyZ
+         yCx9L6UrN6zPSuzOceYCQRv997VzLCeejCgYvlnr7uk0URFUHp7Cb8RReDY6ncLJ3Gj4
+         J4DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763461353; x=1764066153;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
-        b=I3ux43CcEJcT83FXOugqgj6y8r765wWiEnAHpQkL/3j68ekBOjc4kOin6i8FrvBDFu
-         Zo9Weud3/xXvc+wWFyeekyFcTls9WoOleH385xcKjbfn9O57C+IYhz2aweLq3w8wvSO+
-         jzTRturQ7CUtBzOF44yAxGIM5B2siCOlCG5/de5ID9olew4UufHjQmc7zcFod0Z6T8FI
-         lT8myf/YAkdey9xHXtsFSkQh0+KT9IKwp+nUzJMDPd0P8F325JMdK2oDaZfQtZ3599lx
-         HTjNcDmwRqJXSOyF/17gO0exG7eGB19LgJjiTTGaF42vS7HNJ5XFdfdee/JoeCvEfzcm
-         MNTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNLo1GXoIm6HWp5l4d9Ab7HOfwL5j+pRzSs/jXdgCGRdT9xSCD9l/iq/JWHja0fuck57t7H/c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH4pRzbOfLnL3VsDbLjD621U/7WLv40BJ4uw3iwf0BayxtakSb
-	CyLn/QJvW5wlUsh56DGh0T5IBs0auNtWhtun3/2yTby8NjIAujlljg2YbDog//jogyXa7jALMRp
-	kyFJpfAnsHnEDCTKA4oKrGDGkoXJCModNtVnUn/ynbiUDEtoJoepdFcAQ+Q==
-X-Gm-Gg: ASbGncueLr0dH2ArUhf9OGtLmxFSA9d1pwoz8ogN0fKQwQu3Z64AsrOsKqtrDv4KWcm
-	TJH9eR0x5fdGIGssTs2jQeK4+pgNFr6ST3D6wSxGoVS6fumKjclGVme79Dfbc56NfvslO3B9jVF
-	TDwna37kUWnjj3x+pYjP5eEcTrO98YhRvvQfGotOaOLtbBwGxng6l74O2KZn+wCR3tpgCtOs4zV
-	5XVXxotvunX9VABXoGBSptTwwmfmqM+wf4LP2cjUrKCt7jkijIvGRgeN+HVwq7KigKcrEIiH9nP
-	B6SFvnaFSDGKt3jsOX0DtfVyYIVLfzgTXhfIqUiu/5y9NIi6EAkCxDk+3qqik1V7Siqtc2YaQDT
-	Xo2LZGnA79SVGdTsuF9evQxgxCVHKRgO8ajULFKE2O1clkrcd
-X-Received: by 2002:a17:907:9446:b0:b71:29f7:47ef with SMTP id a640c23a62f3a-b7367bd9eddmr1553213666b.61.1763461353305;
-        Tue, 18 Nov 2025 02:22:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH5wXBLs/IvjmY2IFBzvdXJdfIARJZCTsl5s37hgphmEAYMJcnafh7q0nxw3c1pVEGtYDAXPQ==
-X-Received: by 2002:a17:907:9446:b0:b71:29f7:47ef with SMTP id a640c23a62f3a-b7367bd9eddmr1553210066b.61.1763461352763;
-        Tue, 18 Nov 2025 02:22:32 -0800 (PST)
-Received: from sgarzare-redhat (host-82-57-51-250.retail.telecomitalia.it. [82.57.51.250])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa812a3sm1314518866b.8.2025.11.18.02.22.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 02:22:32 -0800 (PST)
-Date: Tue, 18 Nov 2025 11:14:12 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: vsock broken after connect() returns EINTR (was Re: [PATCH net
- 2/2] vsock/test: Add test for SO_LINGER null ptr deref)
-Message-ID: <cosqkkilcmorj5kmivfn3qhd2ixmjnrx7b2gv6ueadvh344yrh@ppqrpwfaql7d>
-References: <xafz4xrgpi5m3wedkbhfx6qoqbbpogryxycrvawwzerge3l4t3@d6r6jbnpiyhs>
- <f201fcb6-9db9-4751-b778-50c44c957ef2@rbox.co>
- <hkhwrfz4dzhaco4mb25st5zyfybimchac3zcqsgzmtim53sq5o@o4u6privahp3>
- <aa00af3b-2bb1-4c09-8222-edeec0520ae1@rbox.co>
- <cd7chdxitqx7pvusgt45p7s4s4cddyloqog2koases4ocvpayg@ryndsxdgm5ul>
- <7566fe52-23b7-46cc-95ef-63cbbd3071a1@rbox.co>
- <kiz4tjwsvauyupixpccqug5wt7tq7g3mld5yy5drpg5zxkmiap@3z625aedysx7>
- <d3a0a4e3-57bd-43f2-8907-af60c18d53ec@rbox.co>
- <js3gdbpaupbglmtowcycniidowz46fp23camtvsohac44eybzd@w5w5mfpyjawd>
- <70371863-fa71-48e0-a1e5-fee83e7ca37c@rbox.co>
+        d=1e100.net; s=20230601; t=1763461581; x=1764066381;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/OTTsu0LjJ22YPCAfK50R8FQVgllWZ9069adGRfH0gk=;
+        b=SUAVRgfivbW3T0CRCWcJB1zQ/HRnVeQljQVJbj2QRZtn3RgPrfBDmEoija6mPCU27s
+         8t5xj7p9sLd4KbR4ho1AlyMfiYE62DakLZAzXwhA1NYVIzqKHKQh8nSAvsoiII4AV+hi
+         zQqbYVxzQOinIMQSnRIJAYxklh5fbMMPLZZOBkvg6uUvQBybRgM/JLqrIXjQO5G+UYUY
+         bv5zCRl6C9OZPl2NsoxePM1qoeYHAciMoNtm40UeuIlYgFdo+JOOGJ/ndgFG2+9/ORug
+         88Q86fKrt2rmt6JahkT3HqAwgmXyRZf+UVD3TsLZvdMbqJSUF1pkn1alrb2WNAjZ1NCu
+         P22Q==
+X-Gm-Message-State: AOJu0YyJQaZZK7PAvAlZfSadrlO0wfQZzdrPL3/qEPrRdjnaMv8w93WP
+	ChUfhc/kFJeK+7w7BgTOAy7/gGtHRAXoq5uiEJt7fn4y/P6DsBwbxV/zi8gvW2rXPvkh//VBghW
+	haEZn+/pUM3eljjuImJisIX6OVm77GUFmLW74IdC4qZHDcQKAwD4=
+X-Gm-Gg: ASbGncs1pw8kF5Sxwgogsfj3UXQwGiZS1137Jc35M2Owx+YpsGXv2040H3SmrrdZKQz
+	YZ9X/EjtX70Aj1ZVrly5kTQE7eBbqCaxF/hGESszEb92nJJ4VYBL8eJK4jzbrCFt6OTIy7Zg/K4
+	pzpORxgYtSk9UlFl4C5f3iYOIRqqEqvReRFHgX8wZOuEP9+rfcGn2+X5lsXGahfvtsZcnl/kJ6b
+	nWd578Y9+rHJoIKjmdawrdE7EFYYwxery73DMw9EWQK+KqLXU1QP89jZY2wPdHYb0vVTJJDxgA+
+	tez0iPe845WvaWFmWGcyLDsn9f0O2J5tMyILEu+ukGjGLLEseU+6lEK8IMq17b0gXWGDZ3okMqD
+	w4IBaZb0leeUjAeZjD7m64lH/iC87wcT3fhJyjN9Q1hQV7iTvQqUY3kHxjWZauS4o1AGQB3D5iS
+	VaRe/Bae75AXe9IZLiUaykio9KIV98BWNl+kg5POj0QN8iv8qnaw==
+X-Google-Smtp-Source: AGHT+IFNYEFrAG7pmSV+LK/IVfb35+vI+/316e49HgB5Fw83Rsc8L3++7RCFm60Ztr1YEaF80OkYEg==
+X-Received: by 2002:a17:907:989:b0:b73:5936:77fc with SMTP id a640c23a62f3a-b7367829d26mr1634736566b.13.1763461581446;
+        Tue, 18 Nov 2025 02:26:21 -0800 (PST)
+Received: from ?IPV6:2001:67c:2fbc:1:63aa:7ccd:fa6e:231b? ([2001:67c:2fbc:1:63aa:7ccd:fa6e:231b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7359bfb238sm1235848566b.14.2025.11.18.02.26.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 02:26:20 -0800 (PST)
+Message-ID: <819ccede-6edf-49d4-b07f-a973552e02a9@openvpn.net>
+Date: Tue, 18 Nov 2025 11:26:19 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <70371863-fa71-48e0-a1e5-fee83e7ca37c@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/8] ovpn: Allow IPv6 link-local addresses
+ through RPF check
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Ralf Lici <ralf@mandelbit.com>
+References: <20251111214744.12479-1-antonio@openvpn.net>
+ <20251111214744.12479-5-antonio@openvpn.net> <aRdTkDHlRi0WbsVS@krikkit>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+Organization: OpenVPN Inc.
+In-Reply-To: <aRdTkDHlRi0WbsVS@krikkit>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 25, 2025 at 11:06:52AM +0200, Michal Luczaj wrote:
->On 4/15/25 15:07, Stefano Garzarella wrote:
->> On Fri, Apr 11, 2025 at 04:43:35PM +0200, Michal Luczaj wrote:
->...
->>> Once connect() fails with EINTR (e.g. due to a signal delivery), retrying
->>> connect() (to the same listener) fails. That is what the code below was
->>> trying to show.
+On 14/11/2025 17:06, Sabrina Dubroca wrote:
+> 2025-11-11, 22:47:37 +0100, Antonio Quartulli wrote:
+>> From: Ralf Lici <ralf@mandelbit.com>
 >>
->> mmm, something is going wrong in the vsock_connect().
+>> IPv6 link-local addresses are not globally routable and are therefore
+>> absent in the unicast routing table. This causes legitimate packets with
+>> link-local source addresses to fail standard RPF checks within ovpn.
 >>
->> IIUC if we fails with EINTR, we are kind of resetting the socket.
->> Should we do the same we do in vsock_assign_transport() when we found
->> that we are changing transport?
->>
->> I mean calling release(), vsock_deassign_transport(). etc.
->> I'm worried about having pending packets in flight.
->>
->> BTW we need to investigate more, I agree.
->
->I took a look. Once I've added a condition to break the connect() loop
->(right after schedule_timeout(), on `sk_state == TCP_ESTABLISHED`), things
->got a bit clearer for me.
+>> Introduce an exception to explicitly allow such packets as link-local
+>> addresses are essential for core IPv6 link-level operations like NDP,
+>> which must function correctly within the virtual tunnel interface.
+> 
+> Does this fix an existing bug, or does it only become a problem for
+> some of the new features in that series (multipeer-to-multipeer?)? If
+> this is a problem for existing use-cases, there should be a Fixes tag.
+> 
 
-Great! and sorry for the delay!
+Actually, after having spent more time on this patch, we realized that 
+this patch is not really needed, because we can't truly route packets to 
+addresses that are not known to ovpn (we wouldn't know which peer to 
+send them to).
 
->
->Because listener keeps child socket in the accept_queue _and_
->connected_table, every time we try to re-connect() our
->VIRTIO_VSOCK_OP_REQUEST is answered with VIRTIO_VSOCK_OP_RST, which kills
->the re-connect(). IOW:
->
->L = socket()
->listen(L)
->				S = socket()
->				connect(S, L)
->					S.sk_state = TCP_SYN_SENT
->					send VIRTIO_VSOCK_OP_REQUEST
->
->				connect() is interrupted
->					S.sk_state = TCP_CLOSE
->
->L receives REQUEST
->	C = socket()
->	C.sk_state = TCP_ESTABLISHED
->	add C to L.accept_queue
->	add C to connected_table
->	send VIRTIO_VSOCK_OP_RESPONSE
->
->				S receives RESPONSE
->					unexpected state:
->					S.sk_state != TCP_SYN_SENT
->					send VIRTIO_VSOCK_OP_RST
->
->C receives RST
->	virtio_transport_do_close()
->		C.sk_state = TCP_CLOSING
->
->				retry connect(S, L)
->					S.sk_state = TCP_SYN_SENT
->					send VIRTIO_VSOCK_OP_REQUEST
->
->C (not L!) receives REQUEST
->	send VIRTIO_VSOCK_OP_RST
->
->				S receives RST, connect() fails
->					S.sk_state = TCP_CLOSE
->					S.sk_err = ECONNRESET
->
->I was mistaken that flushing the accept queue, i.e. close(accept()), would
->be enough to drop C from connected_table and let the re-connect() succeed.
->In fact, for the removal to actually take place you need to wait a bit
->after the flushing close(). What's more, child's vsock_release() might
->throw a poorly timed OP_RST at a client -- affecting the re-connect().
->
->Now, one thing we can do about this is: nothing. Let the user space handle
->the client- and server-side consequences of client-side's signal delivery
->(or timeout).
+Hence this is a change that we originally thought to be needed, but 
+further tests proved what I said above.
 
-Perhaps until we receive a specific request from a user, we could leave 
-things as they are, because it really seems like a rare corner case to 
-me.
+I'll drop this patch from the next PR.
 
->
->Another thing we can do is switch to a 3-way handshake. I think that would
->also eliminate the need for vsock_transport_cancel_pkt(), which was
->introduced in commit 380feae0def7 ("vsock: cancel packets when failing to
->connect").
+Regards,
 
-Unfortunately, I think this is a problem. For now, each transport 
-implements whatever it wants.
 
-In the case of virtio-vsock, we have a specification, and making this 
-change will require a change in the specification. In addition, we would 
-still have to continue to support the old versions in some way, so I 
-don't know if it just adds complexity.
-
->
->All the other options I was considering (based on the idea to send client
->-> server OP_SHUTDOWN on connect() interrupt) are racy. Even if we make
->server-side drop the half-open-broken child from accept_queue, user might
->race us with accept().
->
->L = socket()
->listen(L)
->				S = socket()
->				connect(S, L)
->					S.sk_state = TCP_SYN_SENT
->					send VIRTIO_VSOCK_OP_REQUEST
->
->				connect() is interrupted
->					S.sk_state = TCP_CLOSE
->					send VIRTIO_VSOCK_OP_SHUTDOWN|CHILD
->
->L receives REQUEST
->	C = socket()
->	C.sk_state = TCP_ESTABLISHED
->	add C to L.accept_queue
->	add C to connected_table
->	send VIRTIO_VSOCK_OP_RESPONSE
->
->				S receives RESPONSE
->					unexpected state:
->					S.sk_state != TCP_SYN_SENT
->					send VIRTIO_VSOCK_OP_RST
->
->C receives SHUTDOWN
->	if !flags.CHILD
->		send VIRTIO_VSOCK_OP_RST
->	virtio_transport_do_close()
->		C.sk_state = TCP_CLOSING
->	del C from connected_table
->	// if flags.CHILD
->	//	(schedule?) del C from L.accept_queue?
->	//	racy anyway
->
->L receives RST
->	nothing (as RST reply to client's RST won't be send)
->
->So that's all I could come up with. Please let me know what you think.
-
-Thanks again for everything you're doing, much appreciated!
-
-If you agree, I'd say let's leave things as they are for now.
-
-Thanks,
-Stefano
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
