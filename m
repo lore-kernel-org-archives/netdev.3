@@ -1,67 +1,68 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758523148A4
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A10320CB5
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763431232; cv=none; b=AT9nkHQDmIL2peQC+DPxCZHnC3CDsSI0uGQjN1ZQVmHeskTp153zNalMd6uc1Kf+jZ71DLBj1K48bx2YvGk0Zq7ttT7EztCgnQjqP7uHNG1bsYxQi9TIrU1CM0N4lgQBlOl1iy6aDSkbz8E2yVT/+cq8vsU3gPM8Su/4zmwZ+Y0=
+	t=1763431236; cv=none; b=FXBe9dWtPhd1uTiJMTOjnD07i0pUKppVwmkokFyZIviwGE9hgAsVKv5LK/fA7ESMA60Kseelk4aLHJrtub24iCVQDEDGii+Cy6OfWA6mRng8QOnK5aEFmiuBZHd5X/wiOyOCaRdW2lbZji5U6s6gdkAuYlJGrgL4Jr84FO/L+rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763431232; c=relaxed/simple;
-	bh=rxQ/1GJhCmCe2AFwaDeo7zZNAc/4zN5ruqTcN3iFTYA=;
+	s=arc-20240116; t=1763431236; c=relaxed/simple;
+	bh=lpQTojzEs/okUQ7fOYuYhyqIVXbB/fT4DFlfWpvIxXk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H1V6cXSDr2+jqPmaTRrfbB3kehYNkg8WFhUNbEE7o2J6Jdz49y6RzuzLTiW3tepWMSmPcIxwXwm2LvW4/6lKH3dvX0c5wFnAtY5MPsqqgCXiKMKCVp4RSEQ9j3ZHt/S6DlQB7yNVq2aZjHBxK/TiMGmuOGTID5S3RifJYsubdYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkJ7Xr8p; arc=none smtp.client-ip=209.85.216.47
+	 In-Reply-To:To:Cc; b=lBEPgb+QQyMvCmcWEpBcb32hnlV4fErv0hhkQnXCOjicjhmmWaaHd1iFUwSnd9qFnZ8K3ITGDJ460RRL5zcx37/5atfKvt9AGdXKDZ0BKGzR1/qEwnTRR7TYodTzAcbpE1cb2QyFV4TWuGUir1qwvbPcUKK/2mIYNGEXD29nDhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qv3Rs1ej; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hkJ7Xr8p"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34374febdefso5296977a91.0
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 18:00:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qv3Rs1ej"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-298250d7769so33297705ad.0
+        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 18:00:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763431230; x=1764036030; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763431232; x=1764036032; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NqihfKJRHAENT+vtDuZaHGz1v+/r/9FmzH4WlFsBg7Q=;
-        b=hkJ7Xr8pMisnltHjKWCskpOMVJmScPJV1TvUEwICznzrroDM/oe/A1hOdjekvuw/Ep
-         v9d0pSVePS6dspYrvpF7rkxSr42Wb5pR5T3R79FzXzzi+0V4QDdEJ6yt7HO8W5oFFTr3
-         4bSJH5a/AmB/6uwdkSZhe8Dqb15C8V/VZ0MbwRbfeBFEp7L4e3EROtLOuE1D4yrHUIgL
-         dxlXcYU8OeTLNRROAMoNm2CkOg94Qp+UiF9dBzPIhXLgedBG4IQtEGubG0mAfwKkkAOK
-         HoSebBbMhIgTzjpl9+bKoVGJ5o1KmyxzPTDCh57ndVxfMIIsftBpTMaTzkIz0Ww6Oj6u
-         DWnw==
+        bh=b8aIeeKxPnyywiO1EfP9zuyICRurfwXKu8QSv7CunkI=;
+        b=Qv3Rs1ejm4e1zyADitkycTjvUdHJGK9REhexfrwC299QF+bfpM3MM5jX16fhMF1T84
+         34bIv24RhMzzZNSB8208zcr1R6jDDbZCzdyyS/N88ssoVyePN/Os3O+MtfHiCe3D6n2J
+         0LCUwYchWlPL7PiyWFlZQMndoS+SIqonoF6qWXt8rWA99bPK+7mMLnMuh/8yKQKlzjxr
+         7ZDT5hlIv09dQ9t/K2OVTVk/Nv1tHVr1iWqNhd+Kz8gAy/3gkOcx/8TqtHez18VKIc7K
+         wfNGx5vJxaIMi9yL6Y4y0ocYk4Nz3htw3XYz8n7foXvz/s/67nCkXwi2OClDtU61+WUz
+         uZ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763431230; x=1764036030;
+        d=1e100.net; s=20230601; t=1763431232; x=1764036032;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NqihfKJRHAENT+vtDuZaHGz1v+/r/9FmzH4WlFsBg7Q=;
-        b=ay5rIEhflLNRB1NBt7KbiNwQVcnpsFAwooNjNHDTUQRo4pHDcvIvQoQ74cxzZfkbwg
-         urXsD8pAY1oHRFOkpZGG0w4+jwK158twfXAgS3bbXoWfMOfLJ0lyeLcohs5jt1t4wsqR
-         uqLKLYyUz3SfieoiiUoJXWPAx/PNoGdf2zMKL7v35f6UlvCetHQPuryFfQQ46wU5qPgk
-         ll3oKNM7AXTAoT4nyYrbSZk89sUBwLCIY38TVMLiwD4FVRTXvjSVFHR2tYDOqJlPT/Jf
-         /79EQNsnHUvQxIcD84/iIb29uGz3qS1LPLUUiCXcipCNnYI3yrMsXguaAWq9PcEmgl+C
-         nyfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvdZcMZLcJGo/FHUz9yQ+/CdFl2ESnhRt/zRfXd+RfX4DPGZIXcNv8t8cOVgHQ67zhIv1J8RM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFrkymGGiGdq+rpS+bGvyAI5LSSjSKjcIFN2od+ErGXzuRr/0P
-	4p3pQbAnuaUc4kaE8SdRgwzioaRM4YNSQ90IKyB+M3qXcqa7duVD9g/D
-X-Gm-Gg: ASbGnctxO+R66h7JvJMjYfdj/eKn7T4YQbxDlwOHwQcELg3yi2SZ3xayMCuFCoVyoN4
-	v9fDfGmyKbAzqmuLvfovJGp3RNNWQlR8RU9pBpjj7lUJA2cee7bJLMnvk7J/igf6oY8FUacYNtW
-	pf2B6DvC6j6qw+/AX1uqSSsoJq6E5D990OKW+pONkJDYNrkoEJCd9r8DQxh54pX4KOnWP/uWmk6
-	p1xzJ5tPJ86u4GyBJdVLB+zpj2kRG1OalplQbGuJveW7VBmiLVGBsHVexKbAi3SvCGJH5Y4L7oR
-	+Z37jrL5/umfBn/PYAg9PUTLQ56Bu9IFj7mDZm15QD5bZOO0B1+TJ6lbklGBBBrCl2DRRyVQkON
-	STkRQDBdVMMPkVUonG1ty9YsXlVg9uFlODJFiA6p2CqfMBgbrIAXlP7sqA5/RCBgnx/Z+KWQQn3
-	tQY2zjwOjAN7ydEhRIxibAHu/kQQHOfA==
-X-Google-Smtp-Source: AGHT+IEbZw6qRSUc9CAVQ8dKc8ULj7Y+j+jbzDDMbNJuCyLL/Q1LuCfTO0BI6N2AF9S1ioRpA4NGpw==
-X-Received: by 2002:a17:90b:3b45:b0:33e:1acc:1799 with SMTP id 98e67ed59e1d1-343f9edf47dmr16628668a91.14.1763431229421;
-        Mon, 17 Nov 2025 18:00:29 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:4::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3456513f0eesm11147308a91.7.2025.11.17.18.00.28
+        bh=b8aIeeKxPnyywiO1EfP9zuyICRurfwXKu8QSv7CunkI=;
+        b=lC3Z+pcellecZwEhb7FMuS5qK3Q7wIZGG5mxUzExdZHJGStU7QtOleCM0j5ykmHxEF
+         Km2xjeeqqUtc2qN7YRqh1Ck/5pVWiBSy7avr0ODAAF8BgOaRghDNjgKqQ9euKRCGgt33
+         GN2RjHwhLoQG3ciCWjnQ6EeQ/0uOfTiFeULduSAClu0ltmhOJNRHGPW660QKS2pmYHwa
+         vCVUABp+vQnyGiCytvHgm7zAe1F/s6KVjWXFWjp53Il6QQzMFVLg4Ek3kqeJ5V8sRiH6
+         FgM3PkP1rfXp46OpkXqUFbeBX+oxry149ld33dehUn8ZoZW6pXOISm0C5xiCUAlQuVPT
+         cD3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVDFWegMO7Z0J0DBX8SSgCcaYDBpHSKuvHTO24DtSI7fAcC46ZiE3yHVOuvOL5rOS5z6ZKW0bs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaagddrfEfM1aNJh+eIxRKL7OluvptFWK3miUrGgSocnqko6J3
+	z2Z3NRkoDQlhxe+AOD5Li6eaP2y7FAlccsfVbSqwzaDzFnKgqhNdEcbF
+X-Gm-Gg: ASbGncs9xtgLKKKczhmpblLhwd8Es7zXXTo3/OxiwO8qdwSfaxGkuvSyr24hzCkmPqT
+	BriLcGjbq1aUtHeKxzH4uluK8Klx2/5wrOdkgMC+1GeecSHlSebA7+PZjuEnDEqiGoHfiPm95lG
+	BkLs2eNd93cF8G7AxMUMoFEPvs0hdNYZ0R8bvO1kUeAw6TotAQjOsjodImDYKpLX38JfolBF8N/
+	OKde41z2A5T1HI68Hf88Q4z3BkscXb1YVJCAfbCzl6QfuRb6mh4Ue6Pmqh10q6lp1ClFakA+aVj
+	CfbLFKcSRRubXMh/s41ZKRnEmsTypxzkx3pwNEG1F+TlNVLpLApEuEscNECJFW/j41R4WmOEC6t
+	6APmdtvuuoghDhCcTHqZVfCmlcy1ZkYnKUZaTIFbz+3dADGFcAAt9DbrKcpzKS/zi32Xd7vBIQq
+	k3SYhpwpsVDsReJLAkdelc
+X-Google-Smtp-Source: AGHT+IEmB0prY00kHOsKXykH548IXaPXxfppFbbvu13bbSYlmmT/BQ2oYwszeiiVDOoywMQR5St25A==
+X-Received: by 2002:a17:903:1c5:b0:295:5945:2920 with SMTP id d9443c01a7336-2986a72c2dfmr169951025ad.34.1763431232086;
+        Mon, 17 Nov 2025 18:00:32 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:73::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0d68sm155537775ad.61.2025.11.17.18.00.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 18:00:29 -0800 (PST)
+        Mon, 17 Nov 2025 18:00:31 -0800 (PST)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Mon, 17 Nov 2025 18:00:24 -0800
-Subject: [PATCH net-next v10 01/11] vsock: a per-net vsock NS mode state
+Date: Mon, 17 Nov 2025 18:00:26 -0800
+Subject: [PATCH net-next v10 03/11] vsock: reject bad VSOCK_NET_MODE_LOCAL
+ configuration for G2H
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251117-vsock-vmtest-v10-1-df08f165bf3e@meta.com>
+Message-Id: <20251117-vsock-vmtest-v10-3-df08f165bf3e@meta.com>
 References: <20251117-vsock-vmtest-v10-0-df08f165bf3e@meta.com>
 In-Reply-To: <20251117-vsock-vmtest-v10-0-df08f165bf3e@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, 
@@ -95,184 +96,286 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Add the per-net vsock NS mode state. This only adds the structure for
-holding the mode and some of the functions for setting/getting and
-checking the mode, but does not integrate the functionality yet.
+Reject setting VSOCK_NET_MODE_LOCAL with -EOPNOTSUPP if a G2H transport
+is operational. Additionally, reject G2H transport registration if there
+already exists a namespace in local mode.
 
-A "net_mode" field is added to vsock_sock to store the mode of the
-namespace when the vsock_sock was created. In order to evaluate
-namespace mode rules we need to know both a) which namespace the
-endpoints are in, and b) what mode that namespace had when the endpoints
-were created. This allows us to handle the changing of modes from global
-to local *after* a socket has been created by remembering that the mode
-was global when the socket was created. If we were to use the current
-net's mode instead, then the lookup would fail and the socket would
-break.
+G2H sockets break in local mode because the G2H transports don't support
+namespacing yet. The current approach is to coerce packets coming out of
+G2H transports into VSOCK_NET_MODE_GLOBAL mode, but it is not possible
+to coerce sockets in the same way because it cannot be deduced which
+transport will be used by the socket. Specifically, when bound to
+VMADDR_CID_ANY in a nested VM (both G2H and H2G available), it is not
+until a packet is received and matched to the bound socket that we
+assign the transport. This presents a chicken-and-egg problem, because
+we need the namespace to lookup the socket and resolve the transport,
+but we need the transport to know how to use the namespace during
+lookup.
+
+For that reason, this patch prevents VSOCK_NET_MODE_LOCAL from being
+used on systems that support G2H, even nested systems that also have H2G
+transports.
+
+Local mode is blocked based on detecting the presence of G2H devices
+(when possible, as hyperv is special). This means that a host kernel
+with G2H support compiled in (or has the module loaded), will still
+support local mode if there is no G2H (e.g., virtio-vsock) device
+detected. This enables using the same kernel in the host and in the
+guest, as we do in kselftest.
+
+Systems with only namespace-aware transports (vhost-vsock, loopback) can
+still use both VSOCK_NET_MODE_GLOBAL and VSOCK_NET_MODE_LOCAL modes as
+intended.
+
+Add supports_local_mode() transport callback to indicate
+transport-specific local mode support.
+
+These restrictions can be lifted in a future patch series when G2H
+transports gain namespace support.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
 Changes in v10:
-- change mode_locked to int (Stefano)
-
-Changes in v9:
-- use xchg(), WRITE_ONCE(), READ_ONCE() for mode and mode_locked (Stefano)
-- clarify mode0/mode1 meaning in vsock_net_check_mode() comment
-- remove spin lock in net->vsock (not used anymore)
-- change mode from u8 to enum vsock_net_mode in vsock_net_write_mode()
-
-Changes in v7:
-- clarify vsock_net_check_mode() comments
-- change to `orig_net_mode == VSOCK_NET_MODE_GLOBAL && orig_net_mode == vsk->orig_net_mode`
-- remove extraneous explanation of `orig_net_mode`
-- rename `written` to `mode_locked`
-- rename `vsock_hdr` to `sysctl_hdr`
-- change `orig_net_mode` to `net_mode`
-- make vsock_net_check_mode() more generic by taking just net pointers
-  and modes, instead of a vsock_sock ptr, for reuse by transports
-  (e.g., vhost_vsock)
-
-Changes in v6:
-- add orig_net_mode to store mode at creation time which will be used to
-  avoid breakage when namespace changes mode during socket/VM lifespan
-
-Changes in v5:
-- use /proc/sys/net/vsock/ns_mode instead of /proc/net/vsock_ns_mode
-- change from net->vsock.ns_mode to net->vsock.mode
-- change vsock_net_set_mode() to vsock_net_write_mode()
-- vsock_net_write_mode() returns bool for write success to avoid
-  need to use vsock_net_mode_can_set()
-- remove vsock_net_mode_can_set()
+- move this patch before any transports bring online namespacing (Stefano)
+- move vsock_net_mode_string into critical section (Stefano)
+- add ->supports_local_mode() callback to transports (Stefano)
 ---
- MAINTAINERS                 |  1 +
- include/net/af_vsock.h      | 44 ++++++++++++++++++++++++++++++++++++++++++++
- include/net/net_namespace.h |  4 ++++
- include/net/netns/vsock.h   | 17 +++++++++++++++++
- 4 files changed, 66 insertions(+)
+ drivers/vhost/vsock.c            |  6 +++++
+ include/net/af_vsock.h           |  5 ++++
+ net/vmw_vsock/af_vsock.c         | 50 ++++++++++++++++++++++++++++++++++------
+ net/vmw_vsock/hyperv_transport.c |  6 +++++
+ net/vmw_vsock/virtio_transport.c | 13 +++++++++++
+ net/vmw_vsock/vmci_transport.c   |  7 ++++++
+ net/vmw_vsock/vsock_loopback.c   |  6 +++++
+ 7 files changed, 86 insertions(+), 7 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 37f4278db851..e1e0e2092d0c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27101,6 +27101,7 @@ L:	netdev@vger.kernel.org
- S:	Maintained
- F:	drivers/vhost/vsock.c
- F:	include/linux/virtio_vsock.h
-+F:	include/net/netns/vsock.h
- F:	include/uapi/linux/virtio_vsock.h
- F:	net/vmw_vsock/virtio_transport.c
- F:	net/vmw_vsock/virtio_transport_common.c
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index d40e978126e3..9b5bdd083b6f 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -10,6 +10,7 @@
- 
- #include <linux/kernel.h>
- #include <linux/workqueue.h>
-+#include <net/netns/vsock.h>
- #include <net/sock.h>
- #include <uapi/linux/vm_sockets.h>
- 
-@@ -65,6 +66,7 @@ struct vsock_sock {
- 	u32 peer_shutdown;
- 	bool sent_request;
- 	bool ignore_connecting_rst;
-+	enum vsock_net_mode net_mode;
- 
- 	/* Protected by lock_sock(sk) */
- 	u64 buffer_size;
-@@ -256,4 +258,46 @@ static inline bool vsock_msgzerocopy_allow(const struct vsock_transport *t)
- {
- 	return t->msgzerocopy_allow && t->msgzerocopy_allow();
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 2c937a2df83b..c8319cd1c232 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -64,6 +64,11 @@ static u32 vhost_transport_get_local_cid(void)
+ 	return VHOST_VSOCK_DEFAULT_HOST_CID;
  }
-+
-+static inline enum vsock_net_mode vsock_net_mode(struct net *net)
+ 
++static bool vhost_transport_supports_local_mode(void)
 +{
-+	return READ_ONCE(net->vsock.mode);
-+}
-+
-+static inline bool vsock_net_write_mode(struct net *net,
-+					enum vsock_net_mode mode)
-+{
-+	if (xchg(&net->vsock.mode_locked, 1))
-+		return false;
-+
-+	WRITE_ONCE(net->vsock.mode, mode);
 +	return true;
 +}
 +
-+/* Return true if two namespaces and modes pass the mode rules. Otherwise,
-+ * return false.
-+ *
-+ * - ns0 and ns1 are the namespaces being checked.
-+ * - mode0 and mode1 are the vsock namespace modes of ns0 and ns1 at the time
-+ *   the vsock objects were created.
-+ *
-+ * Read more about modes in the comment header of net/vmw_vsock/af_vsock.c.
-+ */
-+static inline bool vsock_net_check_mode(struct net *ns0,
-+					enum vsock_net_mode mode0,
-+					struct net *ns1,
-+					enum vsock_net_mode mode1)
-+{
-+	/* Any vsocks within the same network namespace are always reachable,
-+	 * regardless of the mode.
-+	 */
-+	if (net_eq(ns0, ns1))
-+		return true;
-+
-+	/*
-+	 * If the network namespaces differ, vsocks are only reachable if both
-+	 * were created in VSOCK_NET_MODE_GLOBAL mode.
-+	 */
-+	return mode0 == VSOCK_NET_MODE_GLOBAL && mode0 == mode1;
-+}
- #endif /* __AF_VSOCK_H__ */
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index cb664f6e3558..66d3de1d935f 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -37,6 +37,7 @@
- #include <net/netns/smc.h>
- #include <net/netns/bpf.h>
- #include <net/netns/mctp.h>
-+#include <net/netns/vsock.h>
- #include <net/net_trackers.h>
- #include <linux/ns_common.h>
- #include <linux/idr.h>
-@@ -196,6 +197,9 @@ struct net {
- 	/* Move to a better place when the config guard is removed. */
- 	struct mutex		rtnl_mutex;
- #endif
-+#if IS_ENABLED(CONFIG_VSOCKETS)
-+	struct netns_vsock	vsock;
-+#endif
- } __randomize_layout;
+ /* Callers that dereference the return value must hold vhost_vsock_mutex or the
+  * RCU read lock.
+  */
+@@ -412,6 +417,7 @@ static struct virtio_transport vhost_transport = {
+ 		.module                   = THIS_MODULE,
  
- #include <linux/seq_file_net.h>
-diff --git a/include/net/netns/vsock.h b/include/net/netns/vsock.h
-new file mode 100644
-index 000000000000..c1a5e805949d
---- /dev/null
-+++ b/include/net/netns/vsock.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __NET_NET_NAMESPACE_VSOCK_H
-+#define __NET_NET_NAMESPACE_VSOCK_H
+ 		.get_local_cid            = vhost_transport_get_local_cid,
++		.supports_local_mode	  = vhost_transport_supports_local_mode,
+ 
+ 		.init                     = virtio_transport_do_socket_init,
+ 		.destruct                 = virtio_transport_destruct,
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 59d97a143204..824d89657d41 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -180,6 +180,11 @@ struct vsock_transport {
+ 	/* Addressing. */
+ 	u32 (*get_local_cid)(void);
+ 
++	/* Return true if this transport supports VSOCK_NET_MODE_LOCAL.
++	 * Otherwise, return false.
++	 */
++	bool (*supports_local_mode)(void);
 +
-+#include <linux/types.h>
+ 	/* Read a single skb */
+ 	int (*read_skb)(struct vsock_sock *, skb_read_actor_t);
+ 
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 54373ae101c3..7a235bb94437 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -91,6 +91,12 @@
+  *   and locked down by a namespace manager. The default is "global". The mode
+  *   is set per-namespace.
+  *
++ *   Note: LOCAL mode is only supported when using namespace-aware transports
++ *   (vhost-vsock, loopback). If a guest-to-host transport (virtio-vsock,
++ *   hyperv-vsock, vmci-vsock) is loaded, attempts to set LOCAL mode will fail
++ *   with EOPNOTSUPP, as these transports do not support per-namespace
++ *   isolation.
++ *
+  *   The modes affect the allocation and accessibility of CIDs as follows:
+  *
+  *   - global - access and allocation are all system-wide
+@@ -2765,17 +2771,30 @@ static int vsock_net_mode_string(const struct ctl_table *table, int write,
+ 	if (*lenp >= sizeof(data))
+ 		return -EINVAL;
+ 
+-	if (!strncmp(data, VSOCK_NET_MODE_STR_GLOBAL, sizeof(data)))
++	ret = 0;
++	mutex_lock(&vsock_register_mutex);
++	if (!strncmp(data, VSOCK_NET_MODE_STR_GLOBAL, sizeof(data))) {
+ 		mode = VSOCK_NET_MODE_GLOBAL;
+-	else if (!strncmp(data, VSOCK_NET_MODE_STR_LOCAL, sizeof(data)))
++	} else if (!strncmp(data, VSOCK_NET_MODE_STR_LOCAL, sizeof(data))) {
++		if (transport_g2h && transport_g2h->supports_local_mode &&
++		    !transport_g2h->supports_local_mode()) {
++			ret = -EOPNOTSUPP;
++			goto out;
++		}
+ 		mode = VSOCK_NET_MODE_LOCAL;
+-	else
+-		return -EINVAL;
++	} else {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+-	if (!vsock_net_write_mode(net, mode))
+-		return -EPERM;
++	if (!vsock_net_write_mode(net, mode)) {
++		ret = -EPERM;
++		goto out;
++	}
+ 
+-	return 0;
++out:
++	mutex_unlock(&vsock_register_mutex);
++	return ret;
+ }
+ 
+ static struct ctl_table vsock_table[] = {
+@@ -2916,6 +2935,7 @@ int vsock_core_register(const struct vsock_transport *t, int features)
+ {
+ 	const struct vsock_transport *t_h2g, *t_g2h, *t_dgram, *t_local;
+ 	int err = mutex_lock_interruptible(&vsock_register_mutex);
++	struct net *net;
+ 
+ 	if (err)
+ 		return err;
+@@ -2938,6 +2958,22 @@ int vsock_core_register(const struct vsock_transport *t, int features)
+ 			err = -EBUSY;
+ 			goto err_busy;
+ 		}
 +
-+enum vsock_net_mode {
-+	VSOCK_NET_MODE_GLOBAL,
-+	VSOCK_NET_MODE_LOCAL,
-+};
++		/* G2H sockets break in LOCAL mode namespaces because G2H
++		 * transports don't support them yet. Block registering new G2H
++		 * transports if we already have local mode namespaces on the
++		 * system.
++		 */
++		rcu_read_lock();
++		for_each_net_rcu(net) {
++			if (vsock_net_mode(net) == VSOCK_NET_MODE_LOCAL) {
++				rcu_read_unlock();
++				err = -EOPNOTSUPP;
++				goto err_busy;
++			}
++		}
++		rcu_read_unlock();
 +
-+struct netns_vsock {
-+	struct ctl_table_header *sysctl_hdr;
-+	enum vsock_net_mode mode;
-+	int mode_locked;
-+};
-+#endif /* __NET_NET_NAMESPACE_VSOCK_H */
+ 		t_g2h = t;
+ 	}
+ 
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index 432fcbbd14d4..279f04fcd81a 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -833,10 +833,16 @@ int hvs_notify_set_rcvlowat(struct vsock_sock *vsk, int val)
+ 	return -EOPNOTSUPP;
+ }
+ 
++static bool hvs_supports_local_mode(void)
++{
++	return false;
++}
++
+ static struct vsock_transport hvs_transport = {
+ 	.module                   = THIS_MODULE,
+ 
+ 	.get_local_cid            = hvs_get_local_cid,
++	.supports_local_mode      = hvs_supports_local_mode,
+ 
+ 	.init                     = hvs_sock_init,
+ 	.destruct                 = hvs_destruct,
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 5d379ccf3770..e585cb66c6f5 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -94,6 +94,18 @@ static u32 virtio_transport_get_local_cid(void)
+ 	return ret;
+ }
+ 
++static bool virtio_transport_supports_local_mode(void)
++{
++	struct virtio_vsock *vsock;
++
++	rcu_read_lock();
++	vsock = rcu_dereference(the_virtio_vsock);
++	rcu_read_unlock();
++
++	/* Local mode is supported only when no G2H device is present. */
++	return vsock ? false : true;
++}
++
+ /* Caller need to hold vsock->tx_lock on vq */
+ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
+ 				     struct virtio_vsock *vsock, gfp_t gfp)
+@@ -544,6 +556,7 @@ static struct virtio_transport virtio_transport = {
+ 		.module                   = THIS_MODULE,
+ 
+ 		.get_local_cid            = virtio_transport_get_local_cid,
++		.supports_local_mode      = virtio_transport_supports_local_mode,
+ 
+ 		.init                     = virtio_transport_do_socket_init,
+ 		.destruct                 = virtio_transport_destruct,
+diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+index 7eccd6708d66..da7c52ad7b2a 100644
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -2033,6 +2033,12 @@ static u32 vmci_transport_get_local_cid(void)
+ 	return vmci_get_context_id();
+ }
+ 
++static bool vmci_transport_supports_local_mode(void)
++{
++	/* Local mode is supported only when no device is present. */
++	return vmci_transport_get_local_cid() == VMCI_INVALID_ID;
++}
++
+ static struct vsock_transport vmci_transport = {
+ 	.module = THIS_MODULE,
+ 	.init = vmci_transport_socket_init,
+@@ -2062,6 +2068,7 @@ static struct vsock_transport vmci_transport = {
+ 	.notify_send_post_enqueue = vmci_transport_notify_send_post_enqueue,
+ 	.shutdown = vmci_transport_shutdown,
+ 	.get_local_cid = vmci_transport_get_local_cid,
++	.supports_local_mode = vmci_transport_supports_local_mode,
+ };
+ 
+ static bool vmci_check_transport(struct vsock_sock *vsk)
+diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
+index 8722337a4f80..1e25c1a6b43f 100644
+--- a/net/vmw_vsock/vsock_loopback.c
++++ b/net/vmw_vsock/vsock_loopback.c
+@@ -26,6 +26,11 @@ static u32 vsock_loopback_get_local_cid(void)
+ 	return VMADDR_CID_LOCAL;
+ }
+ 
++static bool vsock_loopback_supports_local_mode(void)
++{
++	return true;
++}
++
+ static int vsock_loopback_send_pkt(struct sk_buff *skb)
+ {
+ 	struct vsock_loopback *vsock = &the_vsock_loopback;
+@@ -58,6 +63,7 @@ static struct virtio_transport loopback_transport = {
+ 		.module                   = THIS_MODULE,
+ 
+ 		.get_local_cid            = vsock_loopback_get_local_cid,
++		.supports_local_mode	  = vsock_loopback_supports_local_mode,
+ 
+ 		.init                     = virtio_transport_do_socket_init,
+ 		.destruct                 = virtio_transport_destruct,
 
 -- 
 2.47.3
