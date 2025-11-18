@@ -1,195 +1,254 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0730E3491CD
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 10:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B9134C9AE
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 10:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763461270; cv=none; b=fcrHIY/j2gTReAKwKWMVi9kYEqJVaJkPYCl4wOKdxT6R6fyUbjr/8AuDNe0MPBWK0tNbShKBrr7lNjAJlxYVFDBKeAicamQfdUh1EVp4jx8Sh9sKwPXlDhjkEL7TN5FH60hd9BwmEpfZVM7HRBskDGBQr05ZJ4C6/1zt85FfEHk=
+	t=1763461361; cv=none; b=PNP6CLJ10RmnSod7DkiZcCKjiW2HPcxTdFKQVq9f4s9woGnALAM4Qg8i++QM8nCl+rQWl2Vyql5A/WLAFuQYVwoGv7ul/PXZOAcx7QWew++1pnt+RQRCd7KANDpr4yoBfrzRCMC1hHW10wIlK0hGc4RfnEHSlC2Grxhh2SxnbrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763461270; c=relaxed/simple;
-	bh=QKHrTMU8AS2rDV5NflMgKvQqapBxTNGK+ptCn0J05jU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GVHoojQPsUcOOZfIfINY03yM8p07EDhI25aRhqaMlypt+CjzXuaPkn/oL2JcjFShcOTAudstv8CCbTELaTE3wuj066AnMsfyfj/dyl6LfucD2XviWmd12Lhxg7SuHFR7Nj7TCYKp6RtiDWDTO8ASYRRfDgkAM9w2ZiU/13NH3KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PdxTz88O; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MDhKhUcf; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1763461361; c=relaxed/simple;
+	bh=DP2UqYoAhUQhjzVLwVf1Qc3K1rq3/0/jImzuikX3f1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lDeNtSkRwaoVa0kvvXqK5HwIEiOGyH1V2zbpsBVqzeX3eP1ohk35G29UHeFU7fGD9k0d+tjZNNKFmhX2X9a0vpethqA4AC6NIm6Los/SuuVQplNPjsShyqCK9hqQ2GGmR4QpWOqwfhnyfZ1f00KE9w26pJgD1QoHuzwofDolGrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbXbVUvM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZN8PruE3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PdxTz88O";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MDhKhUcf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbXbVUvM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZN8PruE3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763461263;
+	s=mimecast20190719; t=1763461356;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Qqdb8OtTIWPqMLICOLkFlFxhk9j2szKMv7aCnVG8Juk=;
-	b=PdxTz88OC4/lasTp7dwTTut/l1b/YFsJ5sexpyoIS3C16vfCfv5nAwuGUTe/Z8ZS2fl5Nl
-	OccWshrjZskhlxDIebDiJ8rxfkeP+DzSvMR+WVgJQiDCorzCXyoy/FKKQJm0HvQl/7a7cN
-	7xBDbeUq0A1MM1SSTPkuF5FrtWuVm5c=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
+	b=NbXbVUvM1qQDjY1haandtAfbRcAzW3zhCwNPZDqd8elx5wiJRwVNu0j7bsVh2CYSBLq7J2
+	XpLsJQr7Lr0I6M0eABNKO3ZHS4ChtPKpncMDcTw73wS8OaorqL2pX9oHFlDWDzc4vjdBeT
+	bQLeUX2PrAmyjuEOXEjpLo5ZmtfwG5c=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-tGEAf4ohOAu2jz-s3VMh6g-1; Tue, 18 Nov 2025 05:20:50 -0500
-X-MC-Unique: tGEAf4ohOAu2jz-s3VMh6g-1
-X-Mimecast-MFC-AGG-ID: tGEAf4ohOAu2jz-s3VMh6g_1763461249
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6450e804cd9so208419a12.3
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:20:50 -0800 (PST)
+ us-mta-495-w_AWfXHDMzmkI2TLmkyA9g-1; Tue, 18 Nov 2025 05:22:34 -0500
+X-MC-Unique: w_AWfXHDMzmkI2TLmkyA9g-1
+X-Mimecast-MFC-AGG-ID: w_AWfXHDMzmkI2TLmkyA9g_1763461353
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b739a4cf54fso448782366b.3
+        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 02:22:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763461249; x=1764066049; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qqdb8OtTIWPqMLICOLkFlFxhk9j2szKMv7aCnVG8Juk=;
-        b=MDhKhUcfSMNQhXr5EW7cLe6FIXiYHeg9ntXyCankqnmKUbn4Hc/LT8W0J7m4RRb+p8
-         DLbybrFOukGkWA44v0MK/JjUTTwAqwOwnvpQKr/gJDFUHPrRkmp+UPo+kgB8Hvq7Wgzq
-         BENj9+iYZOPyhMFKfjoxoHpOtq4pgeY70u1LH1FQw5/zgbO/wZ6QvjaErixIgjIyEodW
-         9CQ42RwbAj4zqrnyQNFOECwmkyjIwTIv9rzPDRuXFBBjmGJ2zAdtki2HXUzIgEpyWuvt
-         kIqYmvRluMZY6X8oSpBz/285YDMjplkcqPUWSzeWVBye19A8tG6A7NJglOW9g68JyZzw
-         1t+w==
+        d=redhat.com; s=google; t=1763461353; x=1764066153; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
+        b=ZN8PruE3rdHFqElf9iN0OL/et5yxTHljvbCSfqNEVePsZ6kevuUWMraFEx78tr7E33
+         t/8VxIssI/23+QchxiXVm3jGGiHwTqbG/MyvinBAhV2kYhGMDPcei4mV48RhUdQveegx
+         e7aXr9W/RPI3UNRJPpnveTKuhpG33daW6/mUwDdMKVuzPPJ7N/BUuHNsFMQBM3uvMsEi
+         qSP0bOY/ZO2hnfA+pglXj4ArNMXbCyg72TH43HMyMGM+xC7Fj3FZCPPuOhDseFmbh+MC
+         MWa4RBuo/manUFGbvAjNWmT5aa3mFBNUjdSZr8g58DA+lmzppAGtvpuT/5g5Bes1Tnda
+         aQLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763461249; x=1764066049;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qqdb8OtTIWPqMLICOLkFlFxhk9j2szKMv7aCnVG8Juk=;
-        b=jsexOoovjWeujPvO8qRnKqvBa6UvYLdwtGPJAIXA1+iRg+dSlkxLKqS5RqQTLl90GA
-         GO0r1ubeXi0810e+gUsiS39rGshBLRt10CY7zk8bYgUrzORb3TtyJsoMIcaLQjmvKnPf
-         hFQiku1/vxyQDDRs9ndV9c0vCL6sT/04g45JfNKNhpNKVOIkfk5v9TqQYH8fvvTFYBWe
-         iwh95oeBZyW9zYUK08lHoWK993KrXpP6ErYmdqBZS0sdY2MiaFs8UBWoLwZovjjrMZuq
-         s0nCpc3jIkjA7xeZ0PYTip2XKnJ1xYVx5Nifxb4E/GMVl1LvGRXJRagmMrPEfIMU5XA/
-         AlMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIIya/8ytUTScxr0yGTP5/PlaItULisaKuetwydu2wCSUtRHw03s63dKMPuvVAMx+CnCUOVLM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGc1MDVrS1BOeilCRZuI7Qpg2D2j3RmQMMFfnCrv399YhLPGI+
-	pWxXJFaVgF6BQqJDlCgzLsuz21u3e9eJTbB4YEhOB1hWh08TGMhefkrbxiKn3a3FtedN3vrWM3l
-	Tq5eYYGuqGKn24K7hgjs/5Vh9Gr42mXtUZjNlWMz/LHdLLQvuKL8Shph5Hg==
-X-Gm-Gg: ASbGncvn1HgFFBho4nMMVMltu9eOTRFtQlrgplD/JO4oM2SgU9MOhcoMss5BXdogfe5
-	tUiHB4tNjttxq0DVEZeyeTQM92lE9e8AGc3VaTaB4yvXyR+UzuqKayLbAxbOR2sQezIc4I9pLo5
-	dQGvRuqfv/6fD/xbZVvGoJllv6/FNKas1ShzudQGbMtmoWAk0uKMFALMWnTMM+EcVmr+Bhof6Ia
-	mVN/0J/56nFMr4ODOHkG9QdFfcJoMIwEcof4uo8K7Xcab3lb0iLdXb8rgEOlMiHrTzy+VYl+6/k
-	8dL0MI9SuIIWz1D+h29p5Z9MxncRVZ02Lv7Y/FFEUINatUjrLvrogUOdPlo/wlTQt8UmUahEl4S
-	6HwikzJlYRcv/G3lLMB5bwqkdVw==
-X-Received: by 2002:a05:6402:2813:b0:640:9eb3:3686 with SMTP id 4fb4d7f45d1cf-64350e8e398mr14659680a12.19.1763461249110;
-        Tue, 18 Nov 2025 02:20:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMmLVmalw0Ch5oVUFByxi23ViTAeHA9jZ/CP/GaJCrMyZNeJXWNQJXBphzVUwZfa0E+XKE2w==
-X-Received: by 2002:a05:6402:2813:b0:640:9eb3:3686 with SMTP id 4fb4d7f45d1cf-64350e8e398mr14659656a12.19.1763461248670;
-        Tue, 18 Nov 2025 02:20:48 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6433a4cbd18sm12247224a12.35.2025.11.18.02.20.47
+        d=1e100.net; s=20230601; t=1763461353; x=1764066153;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WhrxnuIQ+DWK1cNZVwgN/Tu9b3I3RG0xWTJTU2uF+lc=;
+        b=I3ux43CcEJcT83FXOugqgj6y8r765wWiEnAHpQkL/3j68ekBOjc4kOin6i8FrvBDFu
+         Zo9Weud3/xXvc+wWFyeekyFcTls9WoOleH385xcKjbfn9O57C+IYhz2aweLq3w8wvSO+
+         jzTRturQ7CUtBzOF44yAxGIM5B2siCOlCG5/de5ID9olew4UufHjQmc7zcFod0Z6T8FI
+         lT8myf/YAkdey9xHXtsFSkQh0+KT9IKwp+nUzJMDPd0P8F325JMdK2oDaZfQtZ3599lx
+         HTjNcDmwRqJXSOyF/17gO0exG7eGB19LgJjiTTGaF42vS7HNJ5XFdfdee/JoeCvEfzcm
+         MNTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNLo1GXoIm6HWp5l4d9Ab7HOfwL5j+pRzSs/jXdgCGRdT9xSCD9l/iq/JWHja0fuck57t7H/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwH4pRzbOfLnL3VsDbLjD621U/7WLv40BJ4uw3iwf0BayxtakSb
+	CyLn/QJvW5wlUsh56DGh0T5IBs0auNtWhtun3/2yTby8NjIAujlljg2YbDog//jogyXa7jALMRp
+	kyFJpfAnsHnEDCTKA4oKrGDGkoXJCModNtVnUn/ynbiUDEtoJoepdFcAQ+Q==
+X-Gm-Gg: ASbGncueLr0dH2ArUhf9OGtLmxFSA9d1pwoz8ogN0fKQwQu3Z64AsrOsKqtrDv4KWcm
+	TJH9eR0x5fdGIGssTs2jQeK4+pgNFr6ST3D6wSxGoVS6fumKjclGVme79Dfbc56NfvslO3B9jVF
+	TDwna37kUWnjj3x+pYjP5eEcTrO98YhRvvQfGotOaOLtbBwGxng6l74O2KZn+wCR3tpgCtOs4zV
+	5XVXxotvunX9VABXoGBSptTwwmfmqM+wf4LP2cjUrKCt7jkijIvGRgeN+HVwq7KigKcrEIiH9nP
+	B6SFvnaFSDGKt3jsOX0DtfVyYIVLfzgTXhfIqUiu/5y9NIi6EAkCxDk+3qqik1V7Siqtc2YaQDT
+	Xo2LZGnA79SVGdTsuF9evQxgxCVHKRgO8ajULFKE2O1clkrcd
+X-Received: by 2002:a17:907:9446:b0:b71:29f7:47ef with SMTP id a640c23a62f3a-b7367bd9eddmr1553213666b.61.1763461353305;
+        Tue, 18 Nov 2025 02:22:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH5wXBLs/IvjmY2IFBzvdXJdfIARJZCTsl5s37hgphmEAYMJcnafh7q0nxw3c1pVEGtYDAXPQ==
+X-Received: by 2002:a17:907:9446:b0:b71:29f7:47ef with SMTP id a640c23a62f3a-b7367bd9eddmr1553210066b.61.1763461352763;
+        Tue, 18 Nov 2025 02:22:32 -0800 (PST)
+Received: from sgarzare-redhat (host-82-57-51-250.retail.telecomitalia.it. [82.57.51.250])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa812a3sm1314518866b.8.2025.11.18.02.22.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 02:20:47 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id ABC7F329BD0; Tue, 18 Nov 2025 11:20:46 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Jesper Dangaard Brouer <hawk@kernel.org>, Byungchul Park
- <byungchul@sk.com>, "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
- willy@infradead.org, brauner@kernel.org, kas@kernel.org,
- yuzhao@google.com, usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, asml.silence@gmail.com, bpf@vger.kernel.org,
- linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
- ap420073@gmail.com, dtatulea@nvidia.com
-Subject: Re: [RFC mm v6] mm: introduce a new page type for page pool in page
- type
-In-Reply-To: <ea294b1d-7698-4f67-abd5-a7b9b67db6bb@kernel.org>
-References: <20251117052041.52143-1-byungchul@sk.com>
- <f25a95a4-5371-40bd-8cc8-d5f7ede9a6ac@kernel.org>
- <e470c73a-9867-4387-9a9a-a63cd3b2654f@kernel.org>
- <20251118010735.GA73807@system.software.com>
- <20251118011831.GA7184@system.software.com>
- <ea294b1d-7698-4f67-abd5-a7b9b67db6bb@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Tue, 18 Nov 2025 11:20:46 +0100
-Message-ID: <874iqrod4x.fsf@toke.dk>
+        Tue, 18 Nov 2025 02:22:32 -0800 (PST)
+Date: Tue, 18 Nov 2025 11:14:12 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: vsock broken after connect() returns EINTR (was Re: [PATCH net
+ 2/2] vsock/test: Add test for SO_LINGER null ptr deref)
+Message-ID: <cosqkkilcmorj5kmivfn3qhd2ixmjnrx7b2gv6ueadvh344yrh@ppqrpwfaql7d>
+References: <xafz4xrgpi5m3wedkbhfx6qoqbbpogryxycrvawwzerge3l4t3@d6r6jbnpiyhs>
+ <f201fcb6-9db9-4751-b778-50c44c957ef2@rbox.co>
+ <hkhwrfz4dzhaco4mb25st5zyfybimchac3zcqsgzmtim53sq5o@o4u6privahp3>
+ <aa00af3b-2bb1-4c09-8222-edeec0520ae1@rbox.co>
+ <cd7chdxitqx7pvusgt45p7s4s4cddyloqog2koases4ocvpayg@ryndsxdgm5ul>
+ <7566fe52-23b7-46cc-95ef-63cbbd3071a1@rbox.co>
+ <kiz4tjwsvauyupixpccqug5wt7tq7g3mld5yy5drpg5zxkmiap@3z625aedysx7>
+ <d3a0a4e3-57bd-43f2-8907-af60c18d53ec@rbox.co>
+ <js3gdbpaupbglmtowcycniidowz46fp23camtvsohac44eybzd@w5w5mfpyjawd>
+ <70371863-fa71-48e0-a1e5-fee83e7ca37c@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <70371863-fa71-48e0-a1e5-fee83e7ca37c@rbox.co>
 
-Jesper Dangaard Brouer <hawk@kernel.org> writes:
-
-> On 18/11/2025 02.18, Byungchul Park wrote:
->> On Tue, Nov 18, 2025 at 10:07:35AM +0900, Byungchul Park wrote:
->>> On Mon, Nov 17, 2025 at 05:47:05PM +0100, David Hildenbrand (Red Hat) wrote:
->>>> On 17.11.25 17:02, Jesper Dangaard Brouer wrote:
->>>>>
->>>>> On 17/11/2025 06.20, Byungchul Park wrote:
->>>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>>>> index 600d9e981c23..01dd14123065 100644
->>>>>> --- a/mm/page_alloc.c
->>>>>> +++ b/mm/page_alloc.c
->>>>>> @@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
->>>>>>     #ifdef CONFIG_MEMCG
->>>>>>                       page->memcg_data |
->>>>>>     #endif
->>>>>> -                    page_pool_page_is_pp(page) |
->>>>>>                       (page->flags.f & check_flags)))
->>>>>>               return false;
->>>>>>
->>>>>> @@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
->>>>>>       if (unlikely(page->memcg_data))
->>>>>>               bad_reason = "page still charged to cgroup";
->>>>>>     #endif
->>>>>> -    if (unlikely(page_pool_page_is_pp(page)))
->>>>>> -            bad_reason = "page_pool leak";
->>>>>>       return bad_reason;
->>>>>>     }
->>>>>
->>>>> This code have helped us catch leaks in the past.
->>>>> When this happens the result is that the page is marked as a bad page.
->>>>>
->>>>>>
->>>>>> @@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
->>>>>>               mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->>>>>>               folio->mapping = NULL;
->>>>>>       }
->>>>>> -    if (unlikely(page_has_type(page)))
->>>>>> +    if (unlikely(page_has_type(page))) {
->>>>>> +            /* networking expects to clear its page type before releasing */
->>>>>> +            WARN_ON_ONCE(PageNetpp(page));
->>>>>>               /* Reset the page_type (which overlays _mapcount) */
->>>>>>               page->page_type = UINT_MAX;
->>>>>> +    }
->>>>>>
->>>>>>       if (is_check_pages_enabled()) {
->>>>>>               if (free_page_is_bad(page))
->>>>>
->>>>> What happens to the page? ... when it gets marked with:
->>>>>      page->page_type = UINT_MAX
->>>>>
->>>>> Will it get freed and allowed to be used by others?
->>>>> - if so it can result in other hard-to-catch bugs
->>>>
->>>> Yes, just like most other use-after-free from any other subsystem in the
->>>> kernel :)
->>>>
->>>> The expectation is that such BUGs are found early during testing
->>>> (triggering a WARN) such that they can be fixed early.
->>>>
->>>> But we could also report a bad page here and just stop (return false).
+On Fri, Jul 25, 2025 at 11:06:52AM +0200, Michal Luczaj wrote:
+>On 4/15/25 15:07, Stefano Garzarella wrote:
+>> On Fri, Apr 11, 2025 at 04:43:35PM +0200, Michal Luczaj wrote:
+>...
+>>> Once connect() fails with EINTR (e.g. due to a signal delivery), retrying
+>>> connect() (to the same listener) fails. That is what the code below was
+>>> trying to show.
+>>
+>> mmm, something is going wrong in the vsock_connect().
+>>
+>> IIUC if we fails with EINTR, we are kind of resetting the socket.
+>> Should we do the same we do in vsock_assign_transport() when we found
+>> that we are changing transport?
+>>
+>> I mean calling release(), vsock_deassign_transport(). etc.
+>> I'm worried about having pending packets in flight.
+>>
+>> BTW we need to investigate more, I agree.
 >
-> I agree, that we want to catch these bugs early by triggering a WARN.
-> The bad_page() call also triggers dump_stack() and have a burst limiter,
-> which I like.  We are running with CONFIG_DEBUG_VM=y in production (as
-> the measured overhead was minimal) to monitor these kind of leaks.
+>I took a look. Once I've added a condition to break the connect() loop
+>(right after schedule_timeout(), on `sk_state == TCP_ESTABLISHED`), things
+>got a bit clearer for me.
+
+Great! and sorry for the delay!
+
 >
-> For the case with page_pool, we *could* recover more gracefully, by
-> returning the page to the page_pool (page->pp) instance.  But I'm
-> reluctant to taking this path, as that puts less pressure on fixing the
-> leak as we "recovered", as this becomes are warning and not a bug.
-> Opinions are welcomed, should we recover or do bad_page() ?
+>Because listener keeps child socket in the accept_queue _and_
+>connected_table, every time we try to re-connect() our
+>VIRTIO_VSOCK_OP_REQUEST is answered with VIRTIO_VSOCK_OP_RST, which kills
+>the re-connect(). IOW:
+>
+>L = socket()
+>listen(L)
+>				S = socket()
+>				connect(S, L)
+>					S.sk_state = TCP_SYN_SENT
+>					send VIRTIO_VSOCK_OP_REQUEST
+>
+>				connect() is interrupted
+>					S.sk_state = TCP_CLOSE
+>
+>L receives REQUEST
+>	C = socket()
+>	C.sk_state = TCP_ESTABLISHED
+>	add C to L.accept_queue
+>	add C to connected_table
+>	send VIRTIO_VSOCK_OP_RESPONSE
+>
+>				S receives RESPONSE
+>					unexpected state:
+>					S.sk_state != TCP_SYN_SENT
+>					send VIRTIO_VSOCK_OP_RST
+>
+>C receives RST
+>	virtio_transport_do_close()
+>		C.sk_state = TCP_CLOSING
+>
+>				retry connect(S, L)
+>					S.sk_state = TCP_SYN_SENT
+>					send VIRTIO_VSOCK_OP_REQUEST
+>
+>C (not L!) receives REQUEST
+>	send VIRTIO_VSOCK_OP_RST
+>
+>				S receives RST, connect() fails
+>					S.sk_state = TCP_CLOSE
+>					S.sk_err = ECONNRESET
+>
+>I was mistaken that flushing the accept queue, i.e. close(accept()), would
+>be enough to drop C from connected_table and let the re-connect() succeed.
+>In fact, for the removal to actually take place you need to wait a bit
+>after the flushing close(). What's more, child's vsock_release() might
+>throw a poorly timed OP_RST at a client -- affecting the re-connect().
+>
+>Now, one thing we can do about this is: nothing. Let the user space handle
+>the client- and server-side consequences of client-side's signal delivery
+>(or timeout).
 
-I think we should do bad_page() to get the bugs fixed :)
+Perhaps until we receive a specific request from a user, we could leave 
+things as they are, because it really seems like a rare corner case to 
+me.
 
--Toke
+>
+>Another thing we can do is switch to a 3-way handshake. I think that would
+>also eliminate the need for vsock_transport_cancel_pkt(), which was
+>introduced in commit 380feae0def7 ("vsock: cancel packets when failing to
+>connect").
+
+Unfortunately, I think this is a problem. For now, each transport 
+implements whatever it wants.
+
+In the case of virtio-vsock, we have a specification, and making this 
+change will require a change in the specification. In addition, we would 
+still have to continue to support the old versions in some way, so I 
+don't know if it just adds complexity.
+
+>
+>All the other options I was considering (based on the idea to send client
+>-> server OP_SHUTDOWN on connect() interrupt) are racy. Even if we make
+>server-side drop the half-open-broken child from accept_queue, user might
+>race us with accept().
+>
+>L = socket()
+>listen(L)
+>				S = socket()
+>				connect(S, L)
+>					S.sk_state = TCP_SYN_SENT
+>					send VIRTIO_VSOCK_OP_REQUEST
+>
+>				connect() is interrupted
+>					S.sk_state = TCP_CLOSE
+>					send VIRTIO_VSOCK_OP_SHUTDOWN|CHILD
+>
+>L receives REQUEST
+>	C = socket()
+>	C.sk_state = TCP_ESTABLISHED
+>	add C to L.accept_queue
+>	add C to connected_table
+>	send VIRTIO_VSOCK_OP_RESPONSE
+>
+>				S receives RESPONSE
+>					unexpected state:
+>					S.sk_state != TCP_SYN_SENT
+>					send VIRTIO_VSOCK_OP_RST
+>
+>C receives SHUTDOWN
+>	if !flags.CHILD
+>		send VIRTIO_VSOCK_OP_RST
+>	virtio_transport_do_close()
+>		C.sk_state = TCP_CLOSING
+>	del C from connected_table
+>	// if flags.CHILD
+>	//	(schedule?) del C from L.accept_queue?
+>	//	racy anyway
+>
+>L receives RST
+>	nothing (as RST reply to client's RST won't be send)
+>
+>So that's all I could come up with. Please let me know what you think.
+
+Thanks again for everything you're doing, much appreciated!
+
+If you agree, I'd say let's leave things as they are for now.
+
+Thanks,
+Stefano
 
