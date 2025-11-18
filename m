@@ -1,158 +1,112 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D148934FF7A;
-	Tue, 18 Nov 2025 11:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0635E307AD9
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 11:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763465185; cv=none; b=GEkHdCg+20Nvcls8XMsLG7pABy4DtRYkgTKgNcVu4gEmX3xPuT7IyJs23oopx7tljGjpt3BEw1VsKoTe5CWxruqk6+M+X/YizgOT6b0eIs6lEwErsrd39vQFQDbCygoAj/AKdVoel35F16q3kZzVIgaBPR8AXuY8Xo1v0LBYcg0=
+	t=1763465534; cv=none; b=qNnAQguUGpCGI4gynEO5XmpGspbOFKgnxDzom/azTcjaHBjlDxCm6rTABkVk4QtrHo0EcDAxbUWulJNUt88jrGxnTFGpz67syCKNdUZJB/YCTkNrKZcTNAX0K4s3TYKlIEr2Xx/x4yRYwkTAIPZ9DgPNR9H7WFaH/knNts+8/og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763465185; c=relaxed/simple;
-	bh=x1wIAFncgvboxuHLahLbPOyRHNSWyKlaAo8thvAKIWM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=oNPVupgkknnEcv8DCii9KhFgjQIogx3jXogWRBWZGdtzXWosdw9J6Y6GDC+w55D8MdLoOzj4qFRZ5rEDqzN02wNF2d7S84ecpYGJWMUGr5CuJpc49OMkQysXGb2PbVMvdn6LeQeceinsq6gKmtd3cz4jBfqgcTEmBTVxujwtOb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=d1lOsvbk; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1763465534; c=relaxed/simple;
+	bh=ZSYPQPCcxbyR8zWwisBrVYv9dYR/LlXu7hMPPvqRZKE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gWXLnvw/OkYcJY8VzjcV/RSnBZcyyCFB9UcHH4NqvjcXHADi8lSOG20gguMbuULBaf+PwxtwSUKBIaPvHT9MSr3JSRi9N1U4+hNkSETHYuLDthXVrHGYPszFx0Se0lkBGHaTHL8ksfNCxElKLuIrZD41DsTZcKUgCMHPdGKdHos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RmUOcx1z; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="d1lOsvbk"
-Received: by linux.microsoft.com (Postfix, from userid 1231)
-	id 950B0211CFB8; Tue, 18 Nov 2025 03:26:22 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 950B0211CFB8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1763465182;
-	bh=VgYOnPe2VlONnKvj0poPVh0ufECls3xCkbpzYjs44w4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1lOsvbkqVKRVeBYGrM3/egdFnYTgQCvjAI3ojrxuwoAXgGcsVLzf3/PmYayZbJQx
-	 GCtvyapgjKm7oY44uzoX1z2FVL1LkIx5s07R6EH0l0gtxPfti+/GuyFOpqxmS2WGUG
-	 RdVDpzln7Rxp7H2MyZeEyFZ3fpOLVVDoXrw+GRqE=
-From: Aditya Garg <gargaditya@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	leon@kernel.org,
-	mlevitsk@redhat.com,
-	yury.norov@gmail.com,
-	sbhatta@marvell.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RmUOcx1z"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34372216275so5838260a91.2
+        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 03:32:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763465532; x=1764070332; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wj03nqtcPgmxcon+GCPvYB3CYWne1EFGms665/lYYBY=;
+        b=RmUOcx1zwMaypuoh8LLXaReBq1XiGuL8EVpQzTm7kmr/WAJabMVdZhTpBcUUMTVFTu
+         4x17YtRUIANplQ5hAUs7DEAAfE+EhnKDU+tr3GhPU0UB9vzBXX0EO8Hd7HGhqznoocWD
+         HsYE1L+UcWs6qUasEwjTvAZyZJXlXctFtDc8LtZrBKXalJkqdMsic9QMC6iq0jAa5QhK
+         61OUPA6s6C3FrBkCcq2nRsrXgKWxfe4cyVGfF0P390vNrN6x68ecAG1vNYfi6VnXsqEL
+         T36KYO/l7kGvEWDuCuWAjwJIjJXCtZn3LRWCRGTRm1CVjbUm5LKvMFHVbsysAWmyDSK0
+         2PRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763465532; x=1764070332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wj03nqtcPgmxcon+GCPvYB3CYWne1EFGms665/lYYBY=;
+        b=seiPgXfTZoAV6pkqKX5bGwE5TD5OJ7dJAGdOjAd6uP5kQ8pj5cNLBfFqN58nFM8sSo
+         x7hJW5sPz/RNkrA1/cnAKfavbWR3lopIHsi0GtIsD8m0ciMa6tWcO3tdGR+LY9nfbYMV
+         GtPRb+jQDj8Be4gv2AVgSFwX0HPAT0CvuAElBvRjrkXzUiHPIO1Omz+UgWs3n51q2WvA
+         gZYjH0KF/viSiqsHuJQc0V2sO7+lc1AXP0U3y6Nesozd1Pcy3xB0OlJxAg1XPJrpIsLq
+         uXvbOrLBJv9SO/L83Qj/kM+k20Ba+VwA2F2f1ncdWu0COVItNTiKBKDSho7BUXUFLQMA
+         DZfQ==
+X-Gm-Message-State: AOJu0YzyjvsbjbdGXlEdodVtdOKi6mEdrnYyZSL/0a8H0Rt1pXDFot3r
+	dQwtppjtK3u90VZVUobLNV3N4FlKAoRbY7PPeMR1D0vMONIQRXVzZ+3rlNz8eCcQd+Y=
+X-Gm-Gg: ASbGnctA9itNOyISfgL1vHEQvTa8oZc0hcPfMs3I8arfrwRQ/wyfLm555oY2NkdrUCR
+	pvfoj4p2/Mpw+dZ1Mfx96znTVM5lq9BDk8zvmzuqI1whNHJ8jiiHeFgeqkxvYY14qrn3wslCeXl
+	O2sNcP8Ro09DWCXFNWOx7Jp9cA475tmerrMdlobg+I+8lFKtaif0VtEcn+GI7vIuhY76NJ4lxUx
+	kfsh0r5L5F0G6dvEbD/qIqJCX9kD+NGyKEnKeL26bJrMwiqn3I2gic+4urZPAqjU//TvXdAywLH
+	Zi2YfZPweu7rviWl/YGQAo+Muefb8OnLdMvbp8VXnGyq99gxctGnMCdsDUoUN4XM+HErQdqSxOH
+	/D+1KmiXJaCBxV3/F9mR5OYII+8QyU2ItBrDb1yesT/2kbUvJ/emrClr1AnZrD1Vvn06PABzY4+
+	TAry/AtQqVZvMQfTgngo5A9x7d0zdy378EXOXgmNnmB79m5sNF9g==
+X-Google-Smtp-Source: AGHT+IG5VaG6Q0GIZPMrPaqT5GuUqUFcmdC9/5IBvB6VhxiJ4DPZkDYWpqxjta4C8WIbFOkh7vfiXg==
+X-Received: by 2002:a17:90b:3c90:b0:340:dd2c:a3d9 with SMTP id 98e67ed59e1d1-343f9ec8d58mr19036285a91.12.1763465531943;
+        Tue, 18 Nov 2025 03:32:11 -0800 (PST)
+Received: from localhost.localdomain ([103.246.102.164])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3456516d4a9sm12583736a91.11.2025.11.18.03.32.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 18 Nov 2025 03:32:11 -0800 (PST)
+From: Alessandro Decina <alessandro.d@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Tirthendu Sarkar <tirthendu.sarkar@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	bpf@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	gargaditya@microsoft.com
-Cc: Aditya Garg <gargaditya@linux.microsoft.com>
-Subject: [PATCH net-next v6 2/2] net: mana: Drop TX skb on post_work_request failure and unmap resources
-Date: Tue, 18 Nov 2025 03:11:09 -0800
-Message-Id: <1763464269-10431-3-git-send-email-gargaditya@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1763464269-10431-1-git-send-email-gargaditya@linux.microsoft.com>
-References: <1763464269-10431-1-git-send-email-gargaditya@linux.microsoft.com>
+	Alessandro Decina <alessandro.d@gmail.com>
+Subject: [PATCH net v4 0/1] i40e: xsk: advance next_to_clean on status descriptors
+Date: Tue, 18 Nov 2025 22:31:16 +1100
+Message-Id: <20251118113117.11567-1-alessandro.d@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Drop TX packets when posting the work request fails and ensure DMA
-mappings are always cleaned up.
+Alright, hopefully last time I spam you with this.
 
-Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
----
-Changes in v6:
-* No change.
+The status descriptor handling code is now shared in
+i40e_clean_programming_status. 
 
-Changes in v5:
-* No change.
+Changes since v3:
 
-Changes in v4:
-* Fix warning during build reported by kernel test robot
----
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 6 +-----
- drivers/net/ethernet/microsoft/mana/mana_en.c   | 7 +++----
- include/net/mana/mana.h                         | 1 +
- 3 files changed, 5 insertions(+), 9 deletions(-)
+* move the shared code in i40e_clean_programming_status
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index effe0a2f207a..8fd70b34807a 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1300,7 +1300,6 @@ int mana_gd_post_work_request(struct gdma_queue *wq,
- 			      struct gdma_posted_wqe_info *wqe_info)
- {
- 	u32 client_oob_size = wqe_req->inline_oob_size;
--	struct gdma_context *gc;
- 	u32 sgl_data_size;
- 	u32 max_wqe_size;
- 	u32 wqe_size;
-@@ -1330,11 +1329,8 @@ int mana_gd_post_work_request(struct gdma_queue *wq,
- 	if (wqe_size > max_wqe_size)
- 		return -EINVAL;
- 
--	if (wq->monitor_avl_buf && wqe_size > mana_gd_wq_avail_space(wq)) {
--		gc = wq->gdma_dev->gdma_context;
--		dev_err(gc->dev, "unsuccessful flow control!\n");
-+	if (wq->monitor_avl_buf && wqe_size > mana_gd_wq_avail_space(wq))
- 		return -ENOSPC;
--	}
- 
- 	if (wqe_info)
- 		wqe_info->wqe_size_in_bu = wqe_size / GDMA_WQE_BU_SIZE;
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 7b49ab005e2d..1ad154f9db1a 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -492,9 +492,9 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 
- 	if (err) {
- 		(void)skb_dequeue_tail(&txq->pending_skbs);
-+		mana_unmap_skb(skb, apc);
- 		netdev_warn(ndev, "Failed to post TX OOB: %d\n", err);
--		err = NETDEV_TX_BUSY;
--		goto tx_busy;
-+		goto free_sgl_ptr;
- 	}
- 
- 	err = NETDEV_TX_OK;
-@@ -514,7 +514,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	tx_stats->bytes += len + ((num_gso_seg - 1) * gso_hs);
- 	u64_stats_update_end(&tx_stats->syncp);
- 
--tx_busy:
- 	if (netif_tx_queue_stopped(net_txq) && mana_can_tx(gdma_sq)) {
- 		netif_tx_wake_queue(net_txq);
- 		apc->eth_stats.wake_queue++;
-@@ -1687,7 +1686,7 @@ static int mana_move_wq_tail(struct gdma_queue *wq, u32 num_units)
- 	return 0;
- }
- 
--static void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc)
-+void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc)
- {
- 	struct mana_skb_head *ash = (struct mana_skb_head *)skb->head;
- 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index fb28b3cac067..d7e089c6b694 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -593,6 +593,7 @@ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
- void mana_query_phy_stats(struct mana_port_context *apc);
- int mana_pre_alloc_rxbufs(struct mana_port_context *apc, int mtu, int num_queues);
- void mana_pre_dealloc_rxbufs(struct mana_port_context *apc);
-+void mana_unmap_skb(struct sk_buff *skb, struct mana_port_context *apc);
- 
- extern const struct ethtool_ops mana_ethtool_ops;
- extern struct dentry *mana_debugfs_root;
+Alessandro Decina (1):
+  i40e: xsk: advance next_to_clean on status descriptors
+
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   | 59 +++++++++++--------
+ .../ethernet/intel/i40e/i40e_txrx_common.h    |  5 +-
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c    | 14 ++---
+ 3 files changed, 42 insertions(+), 36 deletions(-)
+
+
+base-commit: 896f1a2493b59beb2b5ccdf990503dbb16cb2256
 -- 
 2.43.0
 
