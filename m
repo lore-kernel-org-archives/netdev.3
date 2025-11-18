@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01A7317701
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5E5314D00
 	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 09:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763457985; cv=none; b=B0uzvZFZITBFK7Mn883bRHedQhBFEA3SGLP4+JZB+yR1WNf3uRxIFwh8ilfe8EvkumeCgBgN2MV98XkgUqZVziunZ2+8aokXX1L+MY1AEO68y5l+1bQE87ikKOafKvGKxv5io2jgFZSvhBX4IAqqGhFdTTrIRKhw86qVztoy9MU=
+	t=1763457985; cv=none; b=niQr71pKHPH2BIHjxCfinvn5YVrq2ZFnxgvEEfBXbd0W7nczB+RX30RDkZ8qSowBqtGq/zH36F5uUWUwIWRJRfnNIPhGY9jfOyJrLOdRH46Hl1+bQf8jQ40KkYV/g288jXVBCmZbjXPlhgy4j+9UtMwS6uwX6ZIYPRDebQ9sG8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763457985; c=relaxed/simple;
-	bh=MYMc4iyaxFjVj9AfFQKF5hadUyx03tWdLPnv7oJdYGc=;
+	bh=nPdp5XO+2eSUSocWcA16g5appOszRBzUVwtb7fa7uIU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kaicAzKRHvexsMvnD2INpWumJe8hSL19xEtkDcsjAuPT+L+6MXOgoY+9OGeFXxbFQbfzoULPzuXhWtXj0kaLU5Trg8zccx1QuS4vmhLmA9x9gsPAM9Lbq6QONt1Wws67zEfxXJ/Zx4UMx554BdaYTOfR6p6mx1T1p6qJ4kiVVJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cm6DWFtZ; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=SkQ6f56M663G8l8LokzVG/fpStedR4XClMNUQl6ejgZYLJvUu8B6q9T/HHME+OmbWdvc+nIS+h6RuSHNfQCTr0PnAqsGbym7eySLIaqwASdWmgQdX4KU5LoEwtOX1RnsPnycsYNzX90Bixu6DfW/PA8Q0nXRJGkB/2fgqwSt+DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=JltiiLgs; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cm6DWFtZ"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="JltiiLgs"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 580C8207FC;
-	Tue, 18 Nov 2025 10:26:21 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id A785A20839;
+	Tue, 18 Nov 2025 10:26:18 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id xeYOdAW15RZC; Tue, 18 Nov 2025 10:26:20 +0100 (CET)
+ with ESMTP id 87CBNwy-VWtr; Tue, 18 Nov 2025 10:26:17 +0100 (CET)
 Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B49DF20890;
-	Tue, 18 Nov 2025 10:26:20 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B49DF20890
+	by mx1.secunet.com (Postfix) with ESMTPS id 34195207FC;
+	Tue, 18 Nov 2025 10:26:17 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 34195207FC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1763457980;
-	bh=+RURHZkJw+O3F9TIGaHJmzSawtt0eUYUQkUsPKbzuTU=;
+	s=202301; t=1763457977;
+	bh=+d3vPve3IrE42AW3YJikWD4KFeWn33tK5hKRg1xTfaI=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=cm6DWFtZl4M9CzbdIkf0XboP+qf+vACBeRaq8xGH4/gC5v7pvwjQZW//Om+LlAJ8w
-	 XzrauuD4MUgqK4lJbK7QvGwOW+S6PuaM5mkwcV2ntyoaV/o93E73VuyNW9n8QvnXlE
-	 X8rdqVJ5WZCY62Nikvf1VulRCWBmpTKoFldKGo1Uc90PwaJEoSb8VNfdbt2NVyF68n
-	 u7x0F4RFNC2PeN7LFu4hxIcsx+ikF590FBjjJT8oUrjeaTkanjHvFjpRgY4twwisZk
-	 R717yplONco8PfvkiSzSLEumtPCnLd8B3o7bLT++b0OyOoyVnHhmbLe9TsEmDzae5P
-	 gG2SoX71KYtvw==
+	b=JltiiLgsQcOKcCW7eqQv6HAuBeEaQJgfJvN25uyVIc0BYJxtchE/LBGyopiKWwhO0
+	 96fkMn2mwnDX0ZCXBfXvgJ5MezL9v8ckctcu30YMYn/4duZ5oHptS6HdxBelhgwrTi
+	 Rd6+d9CcXjUpyFuiUGRFEORy1izjtOdwOEKYadC7399FmkKB3mqbkJ+2qKOZOa5Njm
+	 uSbLuA/sYBtumffnpzhEvI6pG5znO9ee4nYyUEbxcJHRKZ+ItL6CCxRQP+ox8Zlj34
+	 H66h1amK8/heqHhHpPfKL7hkRT8H8SpGdU5Pd+zUh2zwNxiPEGztBkbt2ZUTlfdiov
+	 mMuQAM/Vzvfng==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 18 Nov
- 2025 10:26:20 +0100
-Received: (nullmailer pid 2223969 invoked by uid 1000);
+ 2025 10:26:16 +0100
+Received: (nullmailer pid 2223975 invoked by uid 1000);
 	Tue, 18 Nov 2025 09:26:12 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 05/12] Documentation: xfrm_device: Use numbered list for offloading steps
-Date: Tue, 18 Nov 2025 10:25:42 +0100
-Message-ID: <20251118092610.2223552-6-steffen.klassert@secunet.com>
+Subject: [PATCH 07/12] Documentation: xfrm_sync: Properly reindent list text
+Date: Tue, 18 Nov 2025 10:25:44 +0100
+Message-ID: <20251118092610.2223552-8-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118092610.2223552-1-steffen.klassert@secunet.com>
 References: <20251118092610.2223552-1-steffen.klassert@secunet.com>
@@ -68,52 +68,141 @@ X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
 
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Format xfrm offloading steps as numbered list.
+List texts are currently aligned at the start of column, rather than
+after the list marker. Reindent them.
 
 Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- Documentation/networking/xfrm_device.rst | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/networking/xfrm_sync.rst | 77 +++++++++++++-------------
+ 1 file changed, 40 insertions(+), 37 deletions(-)
 
-diff --git a/Documentation/networking/xfrm_device.rst b/Documentation/networking/xfrm_device.rst
-index 7a13075b5bf0..86db3f42552d 100644
---- a/Documentation/networking/xfrm_device.rst
-+++ b/Documentation/networking/xfrm_device.rst
-@@ -153,26 +153,26 @@ the packet's skb.  At this point the data should be decrypted but the
- IPsec headers are still in the packet data; they are removed later up
- the stack in xfrm_input().
+diff --git a/Documentation/networking/xfrm_sync.rst b/Documentation/networking/xfrm_sync.rst
+index 6246503ceab2..c811c3edfa57 100644
+--- a/Documentation/networking/xfrm_sync.rst
++++ b/Documentation/networking/xfrm_sync.rst
+@@ -88,23 +88,23 @@ to get notified of these events.
  
--	find and hold the SA that was used to the Rx skb::
-+1. Find and hold the SA that was used to the Rx skb::
+ a) byte value (XFRMA_LTIME_VAL)
  
--		get spi, protocol, and destination IP from packet headers
-+		/* get spi, protocol, and destination IP from packet headers */
- 		xs = find xs from (spi, protocol, dest_IP)
- 		xfrm_state_hold(xs);
+-This TLV carries the running/current counter for byte lifetime since
+-last event.
++   This TLV carries the running/current counter for byte lifetime since
++   last event.
  
--	store the state information into the skb::
-+2. Store the state information into the skb::
+-b)replay value (XFRMA_REPLAY_VAL)
++b) replay value (XFRMA_REPLAY_VAL)
  
- 		sp = secpath_set(skb);
- 		if (!sp) return;
- 		sp->xvec[sp->len++] = xs;
- 		sp->olen++;
+-This TLV carries the running/current counter for replay sequence since
+-last event.
++   This TLV carries the running/current counter for replay sequence since
++   last event.
  
--	indicate the success and/or error status of the offload::
-+3. Indicate the success and/or error status of the offload::
+-c)replay threshold (XFRMA_REPLAY_THRESH)
++c) replay threshold (XFRMA_REPLAY_THRESH)
  
- 		xo = xfrm_offload(skb);
- 		xo->flags = CRYPTO_DONE;
- 		xo->status = crypto_status;
+-This TLV carries the threshold being used by the kernel to trigger events
+-when the replay sequence is exceeded.
++   This TLV carries the threshold being used by the kernel to trigger events
++   when the replay sequence is exceeded.
  
--	hand the packet to napi_gro_receive() as usual
-+4. Hand the packet to napi_gro_receive() as usual.
+ d) expiry timer (XFRMA_ETIMER_THRESH)
  
- In ESN mode, xdo_dev_state_advance_esn() is called from
- xfrm_replay_advance_esn() for RX, and xfrm_replay_overflow_offload_esn for TX.
+-This is a timer value in milliseconds which is used as the nagle
+-value to rate limit the events.
++   This is a timer value in milliseconds which is used as the nagle
++   value to rate limit the events.
+ 
+ 3) Default configurations for the parameters:
+ ---------------------------------------------
+@@ -121,12 +121,14 @@ in case they are not specified.
+ the two sysctls/proc entries are:
+ 
+ a) /proc/sys/net/core/sysctl_xfrm_aevent_etime
+-used to provide default values for the XFRMA_ETIMER_THRESH in incremental
+-units of time of 100ms. The default is 10 (1 second)
++
++   Used to provide default values for the XFRMA_ETIMER_THRESH in incremental
++   units of time of 100ms. The default is 10 (1 second)
+ 
+ b) /proc/sys/net/core/sysctl_xfrm_aevent_rseqth
+-used to provide default values for XFRMA_REPLAY_THRESH parameter
+-in incremental packet count. The default is two packets.
++
++   Used to provide default values for XFRMA_REPLAY_THRESH parameter
++   in incremental packet count. The default is two packets.
+ 
+ 4) Message types
+ ----------------
+@@ -134,42 +136,43 @@ in incremental packet count. The default is two packets.
+ a) XFRM_MSG_GETAE issued by user-->kernel.
+    XFRM_MSG_GETAE does not carry any TLVs.
+ 
+-The response is a XFRM_MSG_NEWAE which is formatted based on what
+-XFRM_MSG_GETAE queried for.
++   The response is a XFRM_MSG_NEWAE which is formatted based on what
++   XFRM_MSG_GETAE queried for.
++
++   The response will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
+ 
+-The response will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
+-* if XFRM_AE_RTHR flag is set, then XFRMA_REPLAY_THRESH is also retrieved
+-* if XFRM_AE_ETHR flag is set, then XFRMA_ETIMER_THRESH is also retrieved
++     * if XFRM_AE_RTHR flag is set, then XFRMA_REPLAY_THRESH is also retrieved
++     * if XFRM_AE_ETHR flag is set, then XFRMA_ETIMER_THRESH is also retrieved
+ 
+ b) XFRM_MSG_NEWAE is issued by either user space to configure
+    or kernel to announce events or respond to a XFRM_MSG_GETAE.
+ 
+-i) user --> kernel to configure a specific SA.
++   i) user --> kernel to configure a specific SA.
+ 
+-any of the values or threshold parameters can be updated by passing the
+-appropriate TLV.
++      any of the values or threshold parameters can be updated by passing the
++      appropriate TLV.
+ 
+-A response is issued back to the sender in user space to indicate success
+-or failure.
++      A response is issued back to the sender in user space to indicate success
++      or failure.
+ 
+-In the case of success, additionally an event with
+-XFRM_MSG_NEWAE is also issued to any listeners as described in iii).
++      In the case of success, additionally an event with
++      XFRM_MSG_NEWAE is also issued to any listeners as described in iii).
+ 
+-ii) kernel->user direction as a response to XFRM_MSG_GETAE
++   ii) kernel->user direction as a response to XFRM_MSG_GETAE
+ 
+-The response will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
++       The response will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
+ 
+-The threshold TLVs will be included if explicitly requested in
+-the XFRM_MSG_GETAE message.
++       The threshold TLVs will be included if explicitly requested in
++       the XFRM_MSG_GETAE message.
+ 
+-iii) kernel->user to report as event if someone sets any values or
+-     thresholds for an SA using XFRM_MSG_NEWAE (as described in #i above).
+-     In such a case XFRM_AE_CU flag is set to inform the user that
+-     the change happened as a result of an update.
+-     The message will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
++   iii) kernel->user to report as event if someone sets any values or
++        thresholds for an SA using XFRM_MSG_NEWAE (as described in #i above).
++        In such a case XFRM_AE_CU flag is set to inform the user that
++        the change happened as a result of an update.
++        The message will always have XFRMA_LTIME_VAL and XFRMA_REPLAY_VAL TLVs.
+ 
+-iv) kernel->user to report event when replay threshold or a timeout
+-    is exceeded.
++   iv) kernel->user to report event when replay threshold or a timeout
++       is exceeded.
+ 
+ In such a case either XFRM_AE_CR (replay exceeded) or XFRM_AE_CE (timeout
+ happened) is set to inform the user what happened.
 -- 
 2.43.0
 
