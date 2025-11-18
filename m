@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B68332C33A
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0D132C956
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763456043; cv=none; b=ZYrFOBVdpjeV9LH/WkYe3eVZohrq/So0iS+wK2g2+TDElfpWqb5Rjv/V5dlarNQsRWU70JiQ+pB/zIFmn/RtZUNW9Ifd/oYLNFzJCQ34gZYn+jLuJO5mOuImqDnB1mqj3jGESm9ZY8JP47WM/OGwog96fuVyVf/DwWX+fIerTKw=
+	t=1763456045; cv=none; b=ONDGm/LqovQzk8X60J/Cb/DqOIKpBog85BhRReXYvk6E2U0d4RVZZy1C2cxB+v2GNh8rlb5uZopdPyvd3FtNsKLcG/f2U59K903xvNoEGAPfksNg2KUwQzRtIc4BwLAhJLRHdnoAr03tp4FQEFe3e2dz96zjNsJN4NX9GAfcNjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763456043; c=relaxed/simple;
-	bh=zm+TNKVn91ZW3ASao/wstRGHcKPQKEZ+XZpl1fqrK5U=;
+	s=arc-20240116; t=1763456045; c=relaxed/simple;
+	bh=Zb0ObcrPtXtT8SS9VpZHslp4JwBzFVOonQjBJvP61lg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBLcvtlSpGKcok4Yo8mFejOIWM7zhHlGqB71hDaA5g9qmFvS/QoZEzcWv53+pK3t1PXZf+tCPsaIrvhJSg8CKC9chvayKqINHY+podmD8SlvtlSLw2oMyQwlCuIybCCjwT4HaeIgRgyrRrjoIl0FGXfGNg6mMlkRvWhawC6o+G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=baF/m4eG; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=eknQ0ZqECT0tr75n80HbXM4wGUqPXR9CtiSMLR18gFZSqCDN87bprOu50avwoXj5Bzy/wsNFf2hefWoiAOhCDLIHqyTH++aRNDLlYgAj4rIG2/3W1RSsetYvmPTW/q3dhg+gHoRl1CAA+00blc6yfWogDFy9Qfm84hm48lx1RAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=W49lb63A; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="baF/m4eG"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="W49lb63A"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A415220839;
-	Tue, 18 Nov 2025 09:53:53 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 19D8C20851;
+	Tue, 18 Nov 2025 09:53:56 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id AhSLELP7HJFw; Tue, 18 Nov 2025 09:53:53 +0100 (CET)
+ with ESMTP id 8KqJaDMNIcei; Tue, 18 Nov 2025 09:53:55 +0100 (CET)
 Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 1E92D2080B;
-	Tue, 18 Nov 2025 09:53:53 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1E92D2080B
+	by mx1.secunet.com (Postfix) with ESMTPS id 89C7B2080B;
+	Tue, 18 Nov 2025 09:53:55 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 89C7B2080B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1763456033;
-	bh=C+TskNxsOQzS9iOT6P22vH+j8EqJRi3Dt8DqAccK+5I=;
+	s=202301; t=1763456035;
+	bh=jPJlK/seOKpH+DUoUgwHbOKPbUZX+FnT74FFU5Bm4VE=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=baF/m4eG9bsdQvdBxCUx81TxP9WlIaHuEW7VZfhzApxsyxHp3Jj1eopnefNso4OAC
-	 qgP4nFh67+S6TYyXvjxlU550WU40Ynv22p3XAd8054qIKKHy/xuqLf/Sa4QVH6t1Q+
-	 7bu85BW+5yfism3U8ENxo0JGvJrgdXbDibnL0+082MgzKKoWiPVqhl7TRZQ0IkP0xN
-	 33m6ZZx7zojHvaDnP8YIemCIH8c4zZi+FfO34LYRQwV8AQpnqH+yvknp2QDishXbee
-	 ZM3rQHkIvkMfbICMS9iDOULKZ01Wkq+AP9Y9WGndtCa+dsru6sTADHoTZEJmX0ojXe
-	 M26wGwEFGmDZg==
+	b=W49lb63ALsnYh7I3ZzGhoYH4VJEBRlvONhUI+SoefrfqWAlj4P/cYjdBhOSPkXxXJ
+	 P8HKEF2hhoTuu9yYnlTEmqGylctmQLOnWD3IDbJ/rwqwCR8ai+z8DPdKjuQSClKxfb
+	 jTrVzdzJDwFUMWSYPhxGkqgQ7mataNb4sQuoWle0dqLUY8ytpZYshTgGi/fMmJRnwI
+	 R0qrtrwvyu4KBMjKwrdnK6zczWqEtqXG1h2PM7yfmhmIsiV0pf9ayR4pgLLKyW9yRQ
+	 ik6NBccJkPAHZNwwQk53hhGqWLby0FMSl1BE5kwNIQX34A98lqy+VYnE9ypkySSnF/
+	 sHDxPvfveYCtw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 18 Nov
- 2025 09:53:52 +0100
-Received: (nullmailer pid 2200646 invoked by uid 1000);
+ 2025 09:53:55 +0100
+Received: (nullmailer pid 2200659 invoked by uid 1000);
 	Tue, 18 Nov 2025 08:53:48 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 01/10] xfrm: drop SA reference in xfrm_state_update if dir doesn't match
-Date: Tue, 18 Nov 2025 09:52:34 +0100
-Message-ID: <20251118085344.2199815-2-steffen.klassert@secunet.com>
+Subject: [PATCH 05/10] xfrm: set err and extack on failure to create pcpu SA
+Date: Tue, 18 Nov 2025 09:52:38 +0100
+Message-ID: <20251118085344.2199815-6-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118085344.2199815-1-steffen.klassert@secunet.com>
 References: <20251118085344.2199815-1-steffen.klassert@secunet.com>
@@ -63,45 +63,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
  EXCH-01.secunet.de (10.32.0.171)
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-We're not updating x1, but we still need to put() it.
+xfrm_state_construct can fail without setting an error if the
+requested pcpu_num value is too big. Set err and add an extack message
+to avoid confusing userspace.
 
-Fixes: a4a87fa4e96c ("xfrm: Add Direction to the SA in or out")
+Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_user.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index d213ca3653a8..e4736d1ebb44 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2191,14 +2191,18 @@ int xfrm_state_update(struct xfrm_state *x)
- 	}
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 010c9e6638c0..9d98cc9daa37 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -947,8 +947,11 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
  
- 	if (x1->km.state == XFRM_STATE_ACQ) {
--		if (x->dir && x1->dir != x->dir)
-+		if (x->dir && x1->dir != x->dir) {
-+			to_put = x1;
- 			goto out;
-+		}
- 
- 		__xfrm_state_insert(x);
- 		x = NULL;
- 	} else {
--		if (x1->dir != x->dir)
-+		if (x1->dir != x->dir) {
-+			to_put = x1;
- 			goto out;
+ 	if (attrs[XFRMA_SA_PCPU]) {
+ 		x->pcpu_num = nla_get_u32(attrs[XFRMA_SA_PCPU]);
+-		if (x->pcpu_num >= num_possible_cpus())
++		if (x->pcpu_num >= num_possible_cpus()) {
++			err = -ERANGE;
++			NL_SET_ERR_MSG(extack, "pCPU number too big");
+ 			goto error;
 +		}
  	}
- 	err = 0;
  
+ 	err = __xfrm_init_state(x, extack);
 -- 
 2.43.0
 
