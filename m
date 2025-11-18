@@ -1,109 +1,263 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75AD2F531A
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 07:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763449634; cv=none; b=Z7XmwKytT6jaYdY/g8VkcSII9ANwNoTOPM5LY9DCd4Hjgyu+JNW0vi7TrzhVDnxE2GDPGl0E2iW5DvdMaeHVHC/JbQCRHiUgqgBXjVgoC6nStO4C+z0G1iLBRsDU1HgJskwb+xa982fVY7MGFckLWmCtlrqdPvG7w/sIp4K10iA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763449634; c=relaxed/simple;
-	bh=3RED3YqVVZqWfs4npKZKtaBwJGrtnDirzNNEGnJpL7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ik555bShIpf2XgbVswNdT77sqf3zoPGXJEZyhy7OLdzsdBoC3TKnPdBW+Cu8sozb7XkDwPki/O7A79kxM7iOY0NwMP3io0CtHd3Y6Xf201D09xFW/LfORDLgVgQwhZdOlnfvq+xK2gfIreLjxx7ZIIvtMgY1OJfJf5QqRaI4A6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c5lGP3Td; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D32D9EDA;
+	Tue, 18 Nov 2025 07:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763450297; cv=fail; b=pfPoRWBwiFsW9X3/Z/BLue76y46l55tO/lCVSAV9h8DzsjF/A0TdUhdPHYRQJPzT0aQDPn9OBRpWhnS0iFo5PtYIJQpBzupKgCwWo1gHPdFYpwusvVoOcyk9isZd4a3o1trwnvhzOrRqPTtqLcsQ83ZLH+VPHZMNUiZgWdJfzrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763450297; c=relaxed/simple;
+	bh=2QFG5HKxkHG/kR52d/adFZpZUUljuhweCXnKiSJf1qw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ISd5fXTfJvAAP4O0ZijmEgmap/nOof7L15JsPzffCpYaLfvf0uTLWGA+BwMEJtn6sx9x4VqqbNverf3tHqqsD2zgjM1EVR4UUhW/3bigptRKgUw+zBHLnjAVZeuLJPC/l6mM/6WgqslVnAUZf4wS+L+nNnYLU6MI/UxditrHBrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kfwXEE55; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c5lGP3Td"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3410c86070dso3887772a91.1
-        for <netdev@vger.kernel.org>; Mon, 17 Nov 2025 23:07:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763449632; x=1764054432; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cox+QGAKOZb0FZ+q6lv8UkSqGpKkoFZtrVzvrKo4ouQ=;
-        b=c5lGP3TdXVH4Q5uoi8TZreYVNjMBniSbaKJYzlqQ2kyoGlQhitO4Jbda2LmXMxk5qV
-         /y4ZKOhhnurSxGKvDXUN3OGr4h6HS/3eB16YI82zAuq58MuW5Ddr9UbZqTJoKUAlKN+p
-         dDK6quGQ/kvr7ha2dzIXH9ziY7518vdmT4iwzxzaKa1yDJVn3YrGnUiqvk4es++2mRq3
-         i3wqWhyoc+Cr0GNeJwdTlcDOd+4shjTzF3xUkBcU2YY7UPJbLmdQOWuAk022TrJSb0A/
-         rgDMNIXXAMvxJU7A989Zgi7Pj0lHcWZ12kv79GryYMESdUKSUZErcy7YNwAPMfydes+b
-         Vxwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763449632; x=1764054432;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Cox+QGAKOZb0FZ+q6lv8UkSqGpKkoFZtrVzvrKo4ouQ=;
-        b=iZy2cPbH8BP190Pc5+tA9vxOSEB2X4ed1ON83L20Q1dKPd36Wqf5pbYt+CVg12vldf
-         iVv2sDAai7AA0dIIEPt73GvYX8gaSzPtBu4RUjlTfoxoBwFrVWSJRpQsGaqxItXqiUDv
-         Wm1EP3mnLOblrfV80n/8KzFKnUk9KToz4RwZXKjWir2xBqMdFNi4q4m7weGmdQkln3Ey
-         78VtgkmEES7ASqDeL3cfRHRr+rgfdsaBfGLqCTHOUyvpt3U9H6zlffOmWqJDeeOcxuog
-         dbOG+jcXY5DqZexDOr9mJdkU8jUV06CPEZTUjUlTdN3R9om3wmLEV0+YRfGJsP+CR0o8
-         /xfQ==
-X-Gm-Message-State: AOJu0YwnvUCvs8ZNWr1JxZ+Z5KN/OC6TR0Y/VAgfSeIqN+JGFmj1i+x+
-	7n5h+hoKcRc7BEDR4kV/uWwHnvJvbZfT6XMqj1TrqVrYrxlgYH3XlMGd
-X-Gm-Gg: ASbGncuvFUOTfzVsJQBrdwoR37RmD1yHoFvF+8YeJ3BWQJrv5aUTgO0ROz4DDwL6qb4
-	Co9yG4E8dHWEydY4OSBbbGx7AavDl/+inBTMkYIGNxGdm7uHQm4Ks0vOTXc4P/qdw2DLV7xNMhc
-	kaia0iUt3jS6X/1dcWRMi1vcr33t9dIt97xyfGCkaa2qm6v3/ipXJJ/3oqBIl4mHCU5WRAawLLo
-	tGk1nqM/mUqg23IlQAyNngvjHoT/stCq0o4KM6jSL6siW+mE6AB7z7IQEJqfOnGv2cllNrptQEE
-	kTkEPvzO9urqg9sXjaKy+51MLlr8JcBHbxd0o+7c6k/sgyh4fuH8z32tOFTpXZJdLs8ycis58Ln
-	5tqno+2LoWEYF1jtDKW+vEEnHfPPRHDx0EmaL1J1Y3CGT4VyK7QRDPORpPmTUSrlGpeRGj8dE95
-	VQ76x/ciXLlXIPenjnhMMe5lk4DDJ2+mSdDEd3S9MhO6MNrdY=
-X-Google-Smtp-Source: AGHT+IGhN6YS+jHampvyhEZt253P0eaNhUc1BOQA57xlR/xLHJdePDApMnfuel430mxolKjANOr7DQ==
-X-Received: by 2002:a17:90b:1a8a:b0:341:69e3:785a with SMTP id 98e67ed59e1d1-343f9fdf8efmr20032430a91.16.1763449632102;
-        Mon, 17 Nov 2025 23:07:12 -0800 (PST)
-Received: from KERNELXING-MB0.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-345651183b2sm11868494a91.2.2025.11.17.23.07.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 23:07:11 -0800 (PST)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>
-Subject: [PATCH net-next 4/4] net: prefetch the next skb in napi_skb_cache_get()
-Date: Tue, 18 Nov 2025 15:06:46 +0800
-Message-Id: <20251118070646.61344-5-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20251118070646.61344-1-kerneljasonxing@gmail.com>
-References: <20251118070646.61344-1-kerneljasonxing@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kfwXEE55"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763450296; x=1794986296;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=2QFG5HKxkHG/kR52d/adFZpZUUljuhweCXnKiSJf1qw=;
+  b=kfwXEE55pHBupiQPExzCi6UUlR1LNsJUJXzQ8EjPHC+8x5O1tEJ/bsmx
+   PzOKhC9He4hwkTQ8EW3ZJVE0DYwQ2rPP4vrQ4GLVVNMTqufNsHZmcLYTc
+   qgPu3CM7kHX7CKAwloR6j9Xfp/8KCGCUaIVeDIfg9k2DlH30qxzTPf5PB
+   U9TxVklxTUAavqH+s/grxm2LupTH5BOimi2XExXV7sAoT2liALlqvHJI0
+   ygpTjIYmNiPCazRhTcib0MZkt3vNlU4dD/Ky0jT0QMC/MTdX3JPbteMdN
+   cNseGQvxXMoxj2OK1OG4DuQR+aS0oTGxokYRQQjQL53Nl2L5NFYFKKPb1
+   Q==;
+X-CSE-ConnectionGUID: W0bxoB9jQJKUQeleL0yvcg==
+X-CSE-MsgGUID: us3kAgHVTOGbni1beh5vDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65401505"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
+   d="scan'208";a="65401505"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 23:18:15 -0800
+X-CSE-ConnectionGUID: W4CyNSLrT9qTy40nafVstg==
+X-CSE-MsgGUID: PNP0Cy5TRVSI8OFEeJ/4wA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
+   d="scan'208";a="214074880"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 23:18:14 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 23:18:14 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 23:18:14 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.50) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 23:18:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UEfD7Vsve1ZLW+Gv1lCh/HAR6YQrproqPuXFjVbhkGPWVeqDJaVqCm52eSA8x/i1lhBbZEXnlsLgonUFtz9p7LukCBn3zZuWT4kyiUMYsKJUFKeqLN9GuAMO9xm5N5oWjmTIlLorYAF8WwMJRu+aUeEYwyk93P1cdREGBYTxmCQzd7p78vZm/HDDl5b6QcOfUWEN/5bDmZN1PPpjHB6n5Kj0DiWR9xY58vjIHsSc7PbPpg48sfLAkUXrh+Izr0w92s2f1KimuujIPJDu1aoUEpXSoWbE7AKaBKxs0SS08bmsxEKarTfVuPgIuPw6AccH1F+eE8ln4HBPHgM1BD+HBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H0bs4CHhaDMMDwI+oQY28XNuuCiJkW+kT8/tOdza+lE=;
+ b=LvKhxkGm+WcAaRa7KWY033T8ryBXJd5UQCau8eke8ZZNVc8L0Ay2meWPHVFZFEuSO8+ONOK/BEMciXi65D7sckWlo1G3WJCqAeEbfhIHcZ+DHabYE49mhE1LaEETP7I9NjiBT2mbpbnoFPiaRVGno050yTns+o7+rap/ZexW/r/Cx5J5PpmjZxhLfBSxSVMphbmcUPE4izJHAhmJppFHpiTlTq+8k9MicOisiD/RJC4qye3CQDVqKsgK/Gj/WnmnmC1CR6MV5IEvV3FUV36Htqc8hWgo+9N6or20yKzCKkw48hD7Fu3qOY0M8pnsyr+HoowDIyPF1XZM8Ks5yync6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by IA1PR11MB8246.namprd11.prod.outlook.com (2603:10b6:208:445::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Tue, 18 Nov
+ 2025 07:18:11 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408%3]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
+ 07:18:11 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Srujana Challa
+	<schalla@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, Brett Creeley <brett.creeley@amd.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Goutham, Sunil Kovvuri"
+	<sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, Geetha sowjanya
+	<gakula@marvell.com>, Jerin Jacob <jerinj@marvell.com>, hariprasad
+	<hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Tariq Toukan
+	<tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky
+	<leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Ido Schimmel
+	<idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Manish Chopra
+	<manishc@marvell.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Siddharth Vadapalli
+	<s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, Loic Poulain
+	<loic.poulain@oss.qualcomm.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>, Vladimir Oltean
+	<olteanv@gmail.com>, Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	"Ertman, David M" <david.m.ertman@intel.com>, Vlad Dumitrescu
+	<vdumitrescu@nvidia.com>, "Russell King (Oracle)"
+	<rmk+kernel@armlinux.org.uk>, Alexander Sverdlin
+	<alexander.sverdlin@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+Subject: RE: [PATCH net-next v4 2/6] devlink: refactor
+ devlink_nl_param_value_fill_one()
+Thread-Topic: [PATCH net-next v4 2/6] devlink: refactor
+ devlink_nl_param_value_fill_one()
+Thread-Index: AQHcWCHH3M5Z6abaBUS8c2x/Bs4+87T4BqHQ
+Date: Tue, 18 Nov 2025 07:18:11 +0000
+Message-ID: <IA3PR11MB8986E87D02332340BFB35451E5D6A@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20251118002433.332272-1-daniel.zahka@gmail.com>
+ <20251118002433.332272-3-daniel.zahka@gmail.com>
+In-Reply-To: <20251118002433.332272-3-daniel.zahka@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA1PR11MB8246:EE_
+x-ms-office365-filtering-correlation-id: d51d0583-287a-432b-45ff-08de2672a1ab
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021|921020;
+x-microsoft-antispam-message-info: =?us-ascii?Q?4Hybpjp6a+MR3KE+VyFyzfJx8ZZcG7cIfQn1dm+umQLEMFll+YdgnnKzOiLY?=
+ =?us-ascii?Q?vlBztsDZ4j3WkJNkNBx+BfZ/If1vfQtIl6B0Cs9w4iFW0hd8mTUW+O/BEBoc?=
+ =?us-ascii?Q?iuRafcwKU6dyVqRD30/UfKPVnrFKxjAXv2dJmEPk2Q31ayuCrNML3itFg7Lr?=
+ =?us-ascii?Q?P7W3qDJSu1YynDnPta6GDxjVsx0cuMvw5Lq4O8hXmQLe1WjJin0CcFUu3SZR?=
+ =?us-ascii?Q?+uJDmPAlKtclRf0RfHEI7eVxzusc4i00yLV8ZTS51wwTeZezPaFzwEU2PLSU?=
+ =?us-ascii?Q?OcmYXXbrFHWFtR4YeytixSgwO63ykV31f9/3GbuQpptZJkYfAxv/t3PpMAUY?=
+ =?us-ascii?Q?GOOsrIsN9uMxBoB6PNsjb52XcJd2nwj6be1CLNLsDgjn3T+k72QeiQfl+b/W?=
+ =?us-ascii?Q?UBv9IRTLBveecO5It30zzB6X/G9MBZMNYkHcaOhP56IHCGu4Y0eFo1AMqRgP?=
+ =?us-ascii?Q?aGxodOnVc1UlLEU/ih07j7oKmtUqiv0om/0sr5FslBcjaTzdwYDGIMJjsLwo?=
+ =?us-ascii?Q?ruMLm4IY4EDtOoT7pB4AzLq/K8fDYA7FjNMH6Dw6MmBtfz0qUzQhSpTuSTwO?=
+ =?us-ascii?Q?I/02Nke2C93ypVvHl1tanqyiLHYb94+qJD8iUZKOy8mBV506H+R3ye1LfepU?=
+ =?us-ascii?Q?nHMjjiXEMcVNgv5NtcYi4drxZ8/t4hgEHTLRHUDnuzR8xf06Lxh0Qqnk7ehe?=
+ =?us-ascii?Q?mn5iCprUjA03WQU4Oz4nNc8u6O/vp9XJNH+bvuByl3OdORhh5OQGSO4KXQpv?=
+ =?us-ascii?Q?m819tke62pmyMOI1UkSnyZOpw5fnf6l6yf5ag8H8j7RFs2mRv3SOxluj7mJ2?=
+ =?us-ascii?Q?MwtzJTZS448g9MMjOdGGH1sFh7N9DSS8hRRuFIMZtbZ4KEdViz0IFPMo9g/Z?=
+ =?us-ascii?Q?oRTICc91DCIOsL7LaARhClFxTW6pMGe48WyVWuG/3W7iiwm5mtnbyvTvKxD1?=
+ =?us-ascii?Q?Ptkto8XQ1m5o5Kv4qlLpnuUOtnZxwSU8n81WQVAxwPTUqXn14xF26ybYPTfU?=
+ =?us-ascii?Q?3gQlF42n28/qXwN8L1p0cBXduTccg5/FMJi92Q3tUEyImRJU3qef/LBBLQzz?=
+ =?us-ascii?Q?K1BlGUxjgcD4P+HxL44U0JHDFhvljEx4v3S1RmwUROt5q3az/Jj825RWH0lB?=
+ =?us-ascii?Q?qTSFWM0nmJb3vG43tgrydJYT4SE8za3SWMXIHybRiQHhSzu262RdnmL3W8Bw?=
+ =?us-ascii?Q?8sMCq/KrOsaD6LJuq2255Jpg+J4DN1DKMi7b/9EKGRyEUDh7bgn3BecTtB8D?=
+ =?us-ascii?Q?kdlODLixn02Li+dhMTR46Z7sq6xGz8Eav5Vwk11No7A92ZVyHA6HEL/dF6Ql?=
+ =?us-ascii?Q?+aOK++HmCFGvcJ8QdkVqyPqJmW4yOoZFz9KLj35WmYuQjOgJsfQ7ltQKQtsz?=
+ =?us-ascii?Q?lz6OyvxWP0VwC4YynnrcEnIweM9XWtQ7yTJENfMPEW3Lp1NHgyPvdgaMTcLh?=
+ =?us-ascii?Q?Zs1KlCoeuPwnvxd1F+cuy9a3tSIvPha0ClM9H0sWY7Km1vn+EzE5fZlLthvq?=
+ =?us-ascii?Q?cnHUxQHPru0Rx3UGcxNO69MiSk6gVcGsSgolmi9umzK/k00CEeVlVsPODw?=
+ =?us-ascii?Q?=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qwHw1H2jtUG7xuW9HsmWOKxyhBPeQZdM/wziUhTfr+bKYgB7QKy5GcLXyrz6?=
+ =?us-ascii?Q?iCmUKOU8auegp7YpeMU6uRlflyHcoyF8vCdaNnZFdIRPqTEpfZWoZnTHiVCO?=
+ =?us-ascii?Q?cYOgDZmHuQIYLfdR6BgPi2tDPQPmw1Ai0JvnbGFqsCN8K47sQ6yT17a17go8?=
+ =?us-ascii?Q?s7UbE19vEBsVFUXHTa0Ys0dOdpdHtDST9vPSh9Lcs4ErzGBBlU0iuTy1DyN4?=
+ =?us-ascii?Q?KacOUUE/PvfBDAD7tCTo/T19YFIWMJWQ3mMEszqPaDLslSwTT2LSQmri9t3x?=
+ =?us-ascii?Q?r2Qs0B1P6EynfcnRcbdWMKzJTZr6+RbSyHfhfjWcWaIun8TbEjv+VhwRhJJ0?=
+ =?us-ascii?Q?gmpzb4QqG9zVqNtHXWoq5qt3pRDkJ/bCts8WZpDdtH7qd9Rw7/eojZyngg2V?=
+ =?us-ascii?Q?h9XJis6fg0EJvAI9lOqNkDpCkxHHE/4IUrYbRHuYjMvOHlw/YtHjiBBBGw9W?=
+ =?us-ascii?Q?ZY8g7kdu/0wYIQzwITUrOeNH47d/+ysPYrjINn+JSzQkYiqs9C0ueYWpDBDR?=
+ =?us-ascii?Q?kNsDyqedsgxwPSLnur78A79CJcKv3qtVjIzOL3VEzghv0zxeCzPSEibEv4BK?=
+ =?us-ascii?Q?egx3jAkqp7fL7mBpw5VOsHuNKmIiI3sr58WqcmgUZyg2KMvzqu+0eK+lP6i/?=
+ =?us-ascii?Q?6oKeO2CcuHSSkrrpQiPFrX3/y+ieA9r9eY6HSlhtm4bU0Tja6remqjXzradJ?=
+ =?us-ascii?Q?jeD/blqkTvr/6NjX0jU+/aq0Ag75QpMBxj0lksoyJJ0IPGe8jZF+QA/rONl2?=
+ =?us-ascii?Q?eQatRANc1TbKPEgmAmgDGNi+/IHcDHiVWxjgZCXG6TInm+EgblXDAyPqAQTD?=
+ =?us-ascii?Q?vAQwgEnR2edwWtIg/qyfZqhoEaorZd1H5rDUBjKHw5N8mEgNb9enWBtxUhGg?=
+ =?us-ascii?Q?2gDZMh5U59cphSnhk+py1UJcphrkWaEDLPm5r4hzyOpYmOQpa61yblRAjjxM?=
+ =?us-ascii?Q?7CmPGCpZOfWcjNSqHV+rIy9YqdOji7Or7IPslcsG98lkN2I9gUYtp+ks4amV?=
+ =?us-ascii?Q?7kyaf4nWzTN6serTvvy7TbIm8Cew9xhDvakgMEoaS+5DysnZFcA/9fiiVLmr?=
+ =?us-ascii?Q?oArsr0f8aaKGag2et766yrO9T/mMfqvTUAhxWvN9k6EZ880ceRdDU/G2VIKZ?=
+ =?us-ascii?Q?4C2AyB4EOg1GTj2y+bGJ2Ihaynuy8W25Hq5+Wr0QznEoO+CRKMdt4WqIoKYo?=
+ =?us-ascii?Q?gpgM/b+4lp9xuizO3ZdY5fb9wF5P0MqDSBGoumj3Rwq7eA6j2hRTFZRXRZ4s?=
+ =?us-ascii?Q?WSqDN7io0MLCIXLGr81waSYl7eMiC6wuoAd4gRBLx+iUQkLET4BKHldTfrbm?=
+ =?us-ascii?Q?7wpeJlGG5ooamwnlu408mmpyNkcd+1qF2AMXhtln3kZ6ISKFMgC3cYl4HabS?=
+ =?us-ascii?Q?cZ5MAJc3ul5y5zaeRjXAydJg1lT6o4nS05IuKz7SFiJ9eHLMtRpbguXIfSU1?=
+ =?us-ascii?Q?yYySNe2+uEorIuX6hW1wTXBqoN+GQJ3DakY9gyO4YwPX6wB3VmYcRclFzwy5?=
+ =?us-ascii?Q?x8prjR3JwTGiiwZhd66LUnCOBENvsa4NgJQ/5MhAYw9A8soPmfcpwQO8J8yu?=
+ =?us-ascii?Q?3RAosVRA8s/Ek9sSkxqtmm4GOqHi1TcNfCajT6u7vFH4jMnv8CTD7xAvrNMb?=
+ =?us-ascii?Q?ww=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d51d0583-287a-432b-45ff-08de2672a1ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2025 07:18:11.3527
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IWtsgRv3ATkLjzc6amuUUZCFpVyTSt/iHg5bpj3aH13nmG4z0ZGHBo5EyJkxn0APcr4lRhN2bRVKxSUfghed276BdBvJ1pHfsWBmjBFcHTk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8246
+X-OriginatorOrg: intel.com
 
-From: Jason Xing <kernelxing@tencent.com>
 
-After getting the current skb in napi_skb_cache_get(), the next skb in
-cache is highly likely to be used soon, so prefetch would be helpful.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
----
- net/core/skbuff.c | 2 ++
- 1 file changed, 2 insertions(+)
+> -----Original Message-----
+> From: Daniel Zahka <daniel.zahka@gmail.com>
+> Sent: Tuesday, November 18, 2025 1:24 AM
+> To: Jiri Pirko <jiri@resnulli.us>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Simon
+> Horman <horms@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Srujana
+> Challa <schalla@marvell.com>; Bharat Bhushan <bbhushan2@marvell.com>;
+> Herbert Xu <herbert@gondor.apana.org.au>; Brett Creeley
+> <brett.creeley@amd.com>; Andrew Lunn <andrew+netdev@lunn.ch>; Michael
+> Chan <michael.chan@broadcom.com>; Pavan Chebbi
+> <pavan.chebbi@broadcom.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Goutham, Sunil Kovvuri
+> <sgoutham@marvell.com>; Linu Cherian <lcherian@marvell.com>; Geetha
+> sowjanya <gakula@marvell.com>; Jerin Jacob <jerinj@marvell.com>;
+> hariprasad <hkelam@marvell.com>; Subbaraya Sundeep
+> <sbhatta@marvell.com>; Tariq Toukan <tariqt@nvidia.com>; Saeed
+> Mahameed <saeedm@nvidia.com>; Leon Romanovsky <leon@kernel.org>; Mark
+> Bloch <mbloch@nvidia.com>; Ido Schimmel <idosch@nvidia.com>; Petr
+> Machata <petrm@nvidia.com>; Manish Chopra <manishc@marvell.com>;
+> Maxime Coquelin <mcoquelin.stm32@gmail.com>; Alexandre Torgue
+> <alexandre.torgue@foss.st.com>; Siddharth Vadapalli <s-
+> vadapalli@ti.com>; Roger Quadros <rogerq@kernel.org>; Loic Poulain
+> <loic.poulain@oss.qualcomm.com>; Sergey Ryazanov
+> <ryazanov.s.a@gmail.com>; Johannes Berg <johannes@sipsolutions.net>;
+> Vladimir Oltean <olteanv@gmail.com>; Michal Swiatkowski
+> <michal.swiatkowski@linux.intel.com>; Loktionov, Aleksandr
+> <aleksandr.loktionov@intel.com>; Ertman, David M
+> <david.m.ertman@intel.com>; Vlad Dumitrescu <vdumitrescu@nvidia.com>;
+> Russell King (Oracle) <rmk+kernel@armlinux.org.uk>; Alexander Sverdlin
+> <alexander.sverdlin@gmail.com>; Lorenzo Bianconi <lorenzo@kernel.org>
+> Cc: netdev@vger.kernel.org; linux-doc@vger.kernel.org; linux-
+> rdma@vger.kernel.org
+> Subject: [PATCH net-next v4 2/6] devlink: refactor
+> devlink_nl_param_value_fill_one()
+>=20
+> Lift the param type demux and value attr placement into a separate
+> function. This new function, devlink_nl_param_put(), can be used to
+> place additional types values in the value array, e.g., default,
+> current, next values. This commit has no functional change.
+>=20
+> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+> ---
+>  net/devlink/param.c | 70 +++++++++++++++++++++++++-------------------
+> -
+>  1 file changed, 39 insertions(+), 31 deletions(-)
+>=20
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index d81ac78c32ff..5a1d123e7ef7 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -299,6 +299,8 @@ static struct sk_buff *napi_skb_cache_get(bool alloc)
- 	}
- 
- 	skb = nc->skb_cache[--nc->skb_count];
-+	if (nc->skb_count)
-+		prefetch(nc->skb_cache[nc->skb_count - 1]);
- 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 	kasan_mempool_unpoison_object(skb, skbuff_cache_size);
- 
--- 
-2.41.3
+...
 
+> --
+> 2.47.3
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
