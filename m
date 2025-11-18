@@ -1,115 +1,100 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9996E311C2E
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 09:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A9F30FC0A
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 09:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763457797; cv=none; b=kSvN1yKzWqsVAhPmFV3h+AhzTJ16UeCwJ7HGjjjccFWDYURF3+4bACOHh6oZr0ck1qQ2wGrY17aeb6sghrgd5Chi4cCrUmDcd6x8vPf7pTwyA1h8TfKGNBMm35RtSdecyqQ4cKdWeg5gjv6WZWgW4VXojScVcsWPBnrGfvxMt4Y=
+	t=1763457980; cv=none; b=XKvo5duOUJjJeo6cNLe1T1HwZsQPx6lK1lRP1KyxcIQ4dsZgm5I9+cP8D1naLPMUlvTVwabN0ano37AHp2oVGd43nD9OWVfMV85Z5JkfiaKyB5y/6rTEfeMd6ED+HzZRgkwWYfQMHyR5rS03oirUgrurmJZsqgqC2jvQzw5nL/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763457797; c=relaxed/simple;
-	bh=U5TuDAvrj5r8pBKhj1sNLwuZdW4sFnFaM7z/1ZDS3iU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g+EpPrk+AmNf0uleXj5VLSO+7bP3qkVNYpUnijvFjkeBA0u37GA/yQYdScZNLS3HoGAhftODVVDakP7/VtEtFhQkQ7ZIo349gID4CXkrQVeD8agujkIeJg1Z6BFiCx+++rLo6/m2myCuCq2mh/ASUD1hCFXdP/GShEhwqg1FZqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IWXL9y66; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763457980; c=relaxed/simple;
+	bh=a3ozMkFpQVb1x9C7JpLZzUDyGA69jVmBVw7CtNVSaz8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uxw2g+4Cp3G1eJcsV/7xvx+JOB0itRSR4Qky7KElR0yztEpqAlUjf8gFCeXIzBmkLIlgY1xpql3BDxNJZP33xOF4T4nIicUPTfp+Mllh4anHiee+YNtN60vUfQjJowTaZSOrKMWRVHJ0WWX5RrvJ4oD4k2qbZK7+ygA2IHYLbOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=wSj7tz4C; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IWXL9y66"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-4330d78f935so36011445ab.2
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 01:23:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763457794; x=1764062594; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U5TuDAvrj5r8pBKhj1sNLwuZdW4sFnFaM7z/1ZDS3iU=;
-        b=IWXL9y66ECqrfe6MYQeniw9OzCre6cFRma7NPZjE6YbUqqCZsHe0xvJHzmBumpXca8
-         nLYGl3miJp1nNFZB5QHEsfoHyhtFot5F8GhBQo+ABfkpgwaXyBDMofI+UMA2g3ZjtDNL
-         N68zhyP5kzbRAuznt2WaaplY3+5XM3tE0AmK1ODQ0NN6b+bZdCSWe51C6jhAD9ANTKO6
-         b2GQM8/syoDrE2l7gKSJNH/nvi3YEImWPS7N5Lzo1a/e6xLGEN7ODTiWNTH41any2L1I
-         7aDz10RMIB7QFV/qjFtVz8vQHrh1dwVEAkS49zRcNK2O989cy8j4MjfgaHRJUUA4aLBh
-         9yuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763457794; x=1764062594;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=U5TuDAvrj5r8pBKhj1sNLwuZdW4sFnFaM7z/1ZDS3iU=;
-        b=NjJFVfw5sxdQSgxryJnmTuMRw+Ko4N+bmvqzsmax3q4gDfjXb4ui9PUrOjIlHtubZR
-         Pg31exjb7nZ6URmnLVrjJGwTEPP4Szk1NJXIdp4QB6sXzrZ/KU2Y98o04uKul49eoqXp
-         kdIn43y0ybQrZUFwAVlhL2UUEqu/cPggIT5Mqbu3st2j3XR+W7CqHzbHzEPyJCSJVOg5
-         RyMScPeAJWULpHhf53koRFXIVqV3zjq/ye9nXOXTTh8Bf/4YAr3cFeRR/ybWmJQvXHJk
-         OPlmnmiswpQ66EQLqkkv7KZ+qpPmGbLDlf0mBSdX8j0QqlNCxmlx4Tap1YIkz/Av61z4
-         iAog==
-X-Forwarded-Encrypted: i=1; AJvYcCXo9gqXbEBxOXnBfzpYTGLe4iPzfTtVWhIkL6m7RL95w9CoGWjw2rCpEnccAYcxJ01r1Cx1Khw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJvSGfQVehOoNlT4pbKjbU50CSErws7psi0hE4oxgk4CwhSGe9
-	hc44xau+by6aPKUdxtHmHta7kr2ePDH6EimMdywYGzZ08vgTpcskZ5/nNi6GcFucEI+BFG3k1RG
-	apXhScJqtjZMRKrm9gEtLBP6+HN8y7lFtiNnL
-X-Gm-Gg: ASbGnctevawfOSjNopPsBOpCqjlt432XvgLQmJRzS71cjHA/zNW3XgeQW6ZPCrYsGMt
-	adaifsYFjBEuIckfXjvNVwiBc69Vt/WuD//Ba1UvmT5J6N2M7ohJAzVI5FzATznMj9yAoz6ipsS
-	vytM7sNkZoJCu6sVTniXgGZmDjP4OnrvKm4/Qnho3+c8+VtEYwCicSeygAeFpouD8nn1Hp/p1KH
-	vO5DTLUl5ZKpbjG2KkxsuXV6A+Sgqea7p2UkwwMr+8xZSY2KnDQ3RSjYQpd
-X-Google-Smtp-Source: AGHT+IGIvyNzpe6s6AnxwjuT2Fjp6uHG+IxlS8W3TkWb2cnhQhvDgoecXAHWUZWC+uZweLSPtk6Rps4YeYvu6i9+y3k=
-X-Received: by 2002:a92:cda5:0:b0:433:7c86:74e7 with SMTP id
- e9e14a558f8ab-4348c942cc1mr180582195ab.19.1763457793849; Tue, 18 Nov 2025
- 01:23:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="wSj7tz4C"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id EE3EC2080B;
+	Tue, 18 Nov 2025 10:26:16 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 4Kt0LJeNCVkV; Tue, 18 Nov 2025 10:26:16 +0100 (CET)
+Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id B26B620841;
+	Tue, 18 Nov 2025 10:26:14 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B26B620841
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1763457974;
+	bh=rm9SO7AwSck7LOTRIoLPV4Nif7mDFYoIzraQIEfhENQ=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=wSj7tz4CLspDD9mjUMjaJ2cC20weFFZuX10oZ56Hrf51V8wuB118zoi1wTF6S4faO
+	 A4HEeZcc6I8A5PW0QZNyQVfHOU872G6ZGel18v6M+aTPiJlnTzsN570JiMFsp0CUJu
+	 4U/vnyhZ33xws8cf9fjfNco6utIPLm5SeMkTOEnLhUFtrBr9b7r/CPCuQK1cqrGKHp
+	 6wReDYcwtUdN9WreWvQhYMUYGAs5TKGtuey4u+sifyZ/hQvd3yMZUMzEWp7fnq6kgq
+	 I0IFeNTnu2exk/FQ0OTR91i7D0qAh6ngw8xd5BInaKUQBRyMaioq3ckbnQOS0Zwhl4
+	 9t03oKV6vngsg==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 18 Nov
+ 2025 10:26:14 +0100
+Received: (nullmailer pid 2223988 invoked by uid 1000);
+	Tue, 18 Nov 2025 09:26:12 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 09/12] Documentation: xfrm_sysctl: Trim trailing colon in section heading
+Date: Tue, 18 Nov 2025 10:25:46 +0100
+Message-ID: <20251118092610.2223552-10-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251118092610.2223552-1-steffen.klassert@secunet.com>
+References: <20251118092610.2223552-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251116202717.1542829-1-edumazet@google.com> <20251116202717.1542829-4-edumazet@google.com>
- <CAL+tcoD3-qtq4Kcmo9eb4mw6bdSYCCjxzNB3qov5LDYoe_gtkw@mail.gmail.com>
- <CAL+tcoBpUg=ggf6nQpYeZyAcMbXobuJtyUdN98G1HpcuUqFZ+w@mail.gmail.com>
- <CANn89iJb8hLw7Mx1+Td_BK7gGm5guRaUe6zdhqRqtfdw_0gLzA@mail.gmail.com>
- <CAL+tcoBeEXmyugUrqxct9VuYrSErVDA61nZ1Y62w8-NSwgdxjw@mail.gmail.com>
- <CANn89iJec+7ssKpAp0Um5pNecfzxohRJBKQybSYS=e-9pQjqag@mail.gmail.com>
- <CAL+tcoAJR3Du1ZsJC5KU=pNB7G9FP+qYVe8314GXu8xv7-PC3g@mail.gmail.com>
- <CAL+tcoC8v9QpTxRJWA17ciu=sB-RAZJ_eWNZZTVFYwUXEQHtbA@mail.gmail.com> <CANn89iLhd2Y0Htwx_kO7RixXPrPviBngZxngeMgN5n2zBTNG-w@mail.gmail.com>
-In-Reply-To: <CANn89iLhd2Y0Htwx_kO7RixXPrPviBngZxngeMgN5n2zBTNG-w@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 18 Nov 2025 17:22:36 +0800
-X-Gm-Features: AWmQ_bkYv5xbcrauQH4tpuGoEoo5PBF0k70AYdOT8E0W_jbXR76wo9cI8eFeNEs
-Message-ID: <CAL+tcoA8Ve2zy7UDLsksdsKP1cQokWQD1h41UBjPoXWqQ-DU7A@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 3/3] net: use napi_skb_cache even in process context
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ EXCH-01.secunet.de (10.32.0.171)
 
-On Tue, Nov 18, 2025 at 4:32=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Mon, Nov 17, 2025 at 6:07=E2=80=AFPM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Mon, Nov 17, 2025 at 10:31=E2=80=AFPM Jason Xing <kerneljasonxing@gm=
-ail.com> wrote:
-> > >
-> > > On Mon, Nov 17, 2025 at 5:48=E2=80=AFPM Eric Dumazet <edumazet@google=
-.com> wrote:
-> > > >
->
-> > >
-> > > >
-> > > > We can add a static key to enable/disable the behaviors that are mo=
-st
-> > > > suited to a particular workload.
-> > >
-> > > Are we going to introduce a new knob to control this snippet in
-> > > napi_consume_skb()?
-> >
-> > That's it. For single flow in xsk scenarios, adding something like a
-> > static key to avoid 1) using napi_skb_cache_get() in this patch, 2)
-> > deferring free in commit [3] can contribute to a higher performance
-> > back to more than 1,900,000 pps. I have no clue if adding a new sysctl
-> > is acceptable.
->
-> I will add one as soon as this series is merged.
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Great! Thanks!
+The sole section heading ("/proc/sys/net/core/xfrm_* Variables") has
+trailing colon. Trim it.
+
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ Documentation/networking/xfrm_sysctl.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/networking/xfrm_sysctl.rst b/Documentation/networking/xfrm_sysctl.rst
+index 47b9bbdd0179..7d0c4b17c0bd 100644
+--- a/Documentation/networking/xfrm_sysctl.rst
++++ b/Documentation/networking/xfrm_sysctl.rst
+@@ -4,8 +4,8 @@
+ XFRM Syscall
+ ============
+ 
+-/proc/sys/net/core/xfrm_* Variables:
+-====================================
++/proc/sys/net/core/xfrm_* Variables
++===================================
+ 
+ xfrm_acq_expires - INTEGER
+ 	default 30 - hard timeout in seconds for acquire requests
+-- 
+2.43.0
+
