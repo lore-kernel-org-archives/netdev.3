@@ -1,27 +1,27 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ED1301718
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD752EAB64
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763453144; cv=none; b=SuSLIVPR9xDi6BwjrCTs5x8yBYFOu1spEbmcH/jO8JMTBof/1iT5KWj2u/hnBOJLaHv641ahSuHCqdlZaiNBVKh4ziwUmlDL+sNFE5CleGG2MbNfYI6VvuD2ZticdB8/E0nMWf6/jiyClvOKqM71KvjdRMV7+KER5qPoaPAJj0M=
+	t=1763453178; cv=none; b=ErbG0yZqrKZKt1whNpUSOB2teAw+1yEZAhRFA9w1C7/BX0DCN7l/oEHtVwXCuPru6ZfZ0nxJANSEoOzl6dXHirrdsVTQD6ASBxASnoWJl2Ueoc+RrItb3+wU5SWda6ZDBBcJPgtQCwfhy5g7F24u0GvPvXUCzKoyK8YM+gxMHDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763453144; c=relaxed/simple;
-	bh=JAd5OnyD+v5LZTQJ21SI02WQQ7Fox3HW3mj8jlDsMEM=;
+	s=arc-20240116; t=1763453178; c=relaxed/simple;
+	bh=AN4QvZgdnSi/Y0ZTZszrq7i6ollT2s7f/d5LA7zuY2M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BHkh5qCmAJn9xCysFdTqa5GA+hUg6f0R/f2oMgrAt6T2hI3QYZfiotpHuT955jEsNbhPlvbr+1seex55MwMC1DzLrEX5huCsCQga4/ehOnzFgYgAixwImjMJYBQ54a4eogYc+vmS6sIanTukLxT5CYiHgQ6AOlfSqhbQpJHf+84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+	 MIME-Version; b=LSAGgeNIofJYUhlrs/p1Wd3R/mY2heXCoGebDwjbqgnD9v9CLPz550oDrZwShgCyS3SZUW7SkzH0DzCUJVj8y+ZujyrTOcy588pGhJoMGNnYg2BieQ6cl8TaeL+Z6MzZbTXiioT8XlyxS/ijabxAe8bZXWz6i5LudYzuN+bCJpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz8t1763453008t78fd6d2c
-X-QQ-Originating-IP: puOYpVNrGQL7gb5pTDdx2ZOEONbdHKoMtzdkIkqB6LM=
+X-QQ-mid: zesmtpgz8t1763453000t20907abc
+X-QQ-Originating-IP: BAQgNe8UcrP9D9e+8czKd5uXU3XjO9EqIqnn5XMvMK8=
 Received: from lap-jiawenwu.trustnetic.com ( [125.120.152.51])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 18 Nov 2025 16:03:27 +0800 (CST)
+	id ; Tue, 18 Nov 2025 16:03:19 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6216807809175546591
+X-BIZMAIL-ID: 9038855050498999249
 EX-QQ-RecipientCnt: 12
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -36,9 +36,9 @@ To: netdev@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 5/5] net: txgbe: support getting module EEPROM by page
-Date: Tue, 18 Nov 2025 16:02:59 +0800
-Message-Id: <20251118080259.24676-6-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 2/5] net: txgbe: rename the SFP related
+Date: Tue, 18 Nov 2025 16:02:56 +0800
+Message-Id: <20251118080259.24676-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20251118080259.24676-1-jiawenwu@trustnetic.com>
 References: <20251118080259.24676-1-jiawenwu@trustnetic.com>
@@ -51,182 +51,268 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OCG/O0Z17aKrCh8yLLXQP9h47LZ2Xq50qyLsnTC0KpxN8YSjEzW/w3By
-	g3aDcdfNWiHBJEKFZTOf2Yv8G9CskJUsOw2W8eUP9iMi+k9HfNLi8O9IEj6+leDmcMetWrU
-	JKMVTLixOeCe4QilKr/T70a7JLzIU5aMPUIM7o1NdVpXe4M3KNymiMfJRYzXvoVgYXUSCjN
-	jQ4EggIjRbYMhyu57BvtdnTYwoD3rZiBManUYID3ewbjuLX+dbCpLiaTzEheaTgrqhYFeYp
-	wAcQKQ6O/XW5hPmv5GKQJ3od2IMCiSM/EonIsIJeCFN/KsboaJYBsfOMqDKFKbAeV4dpOQU
-	2WE2pdc/ZIdE+QJwvE4wbaPMwG4E+ZdEf/feXuOX+0nyP8m9PCSOz2+Ta/kGxVuobXnCnYI
-	ONw39cN4C9UxuwhL7cb4kwmJnWqUNBwjBZJHGC5/Z6OR270aPkSdspYnO7VsPNdd24WkmEl
-	qU152rVyODaTxNY/2GpVPT9SNzBhTLH/fv9ddfbZSSeaNvlHwNZK3cPKy4Z3j32cIt8gzh5
-	xcpKEe0gUXXxsU4H+FEvUvfsiKmiNHQwyTbjS6qHeWHoP3eEWQEjmqmp2stVIylf5ne073R
-	5trD+68SZvvuzFZrkkainZQlFttIty0EbiV5ayv1CWhOKzPEcER3QrdXZ0HEmWCsDhFjSi+
-	c2FfRa0ZOXWFV9BaxGIk263z8SqzdA2REapSjeihKnKyHFrtbHJKET12fyKOa9cwrHqfDB3
-	0RQW1/nqBA7FAjti2st0+fqmkHk2G7jvq2SGMbPPI/sXdnXXsRYLOLD//w3gk2mqr8M0lEI
-	EL4CCC2s3AlltIHL/p6MilYPVWxa1lQx2oMfTZlv90RhGBOYEmsTna86+b+iudxk+PV6WuL
-	28reb+2WX4EFJHdd/aZxkpZAXgoAfGaLxQ9lRs5mHaUpr45wOIs0va3k4G7LxRPQLL4qlr+
-	I3uS6d2oR7zkrZjoruE4s11NsVXwkMz0nGRDKjCBrBjEu6XWrfeUzJWcOFzTEBmtXMERT58
-	b+yzSfAG8NAS0KPh0I/EKeYN9CEojbI681NW6CbOzpxMu1sD+diuDrNKA41As4/ngadyOQB
-	5aAFBuPIZy/7/vrY03ywEs=
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-XMAILINFO: M+0YV038q5N1cPv5/MlhYo7hvaGzi420iT3MgaO4MwunzbC3UK9NP5Ud
+	bxEB7zXs5Pjc2gGaG7Vcji4niiA9iPQqxAJxe9slQBZ5J5ChLrbTGzluHYAH4Fwz5ijo/Ah
+	tFjhtLfParAEddbfh4fXCdRYjRxCUIJyL3fcrd6VT8dBSXMAhbBYTIIBeApYAulaDwynin1
+	brLMMp/fji0gUON7FwUZmYnDfsfdXwi0YZaN9gVcawu9Kj4znrTUKPM7dZNJ/xfQ0eIcpfn
+	LMJVW7v+mfbuTDJgwZuBcbLIA0Rdaqn3DA5D/9w/TTeuHh8hLx9EYlmYxdzpdbQaox6p4V2
+	P8WLwPpvUtNRsXplj5oGzU8vVugIN2I+p3coJCbnSnoaUxA2KM8ML9UnwXcHEWnLaXR3tYc
+	9HDidwHxx8cAWcbpy6uU04JgVDZrEMSwZ8n/K6KWUA5SHoHI2C15mBGOgRoidgLC6MeLo6n
+	ehEaFGmYzqqtbYQfGaaWu+A4GUuSehvnK8KCJIpgKsBYLXDDBqjk/+EerE+HaeV3DkpDBXw
+	fU8nLYI+mAg5xEAw1gtnyLwZBgojI83D+hjGbGspoSQX54kQEizeA75DkilrnK5R3QDtUHj
+	b2hosah35NDPWgUAmUYZsJf3qBt4lS3P4xffBw+xmaHqsloaIzmsaLcvivLyp1h5AKrRgK8
+	i4c7WrZtOUdTmwUwvzGm70mJlnGy4cTL11HxZnHG2WgYqu6W9FX1JbfFZYSavWzyftLfl9n
+	8LiVt0tcQ4GofmoSn5vkjZ/55J13pSMwnwsvKYz6gbbOgWeBe+gqxgfTFmtqlRR+Ior3CYO
+	tte73hX9gIiQsVfvCOeo3J7Dr1FkIiv/mpBDNZ2IUThVPszjU00OPY9yNyuZuw9scuee9HE
+	WpvugcXVljzUezqkGdNeR1bbUKOEqGbHQUUQ/Tt1peZ5Q3P9jCOdwFQ/Oxw+XWaB+eveBM1
+	LLN7R9P2wHk5xZRGHm8IFMQY0VLmWRwLPhKFlcGSBh4RUgOsFiTFrAfdNG9xNHng6/0JXFM
+	ltaVVBcqfzau6M0qUOnGDQGXANim7tuAwID6nDWLEZpiv8bg1i
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
 X-QQ-RECHKSPAM: 0
 
-Getting module EEPROM has been supported in TXGBE SP devices, since SFP
-driver has already implemented it.
+QSFP supported will be introduced for AML 40G devices, the code related
+to identify various modules should be renamed to more appropriate names.
 
-Now add support to read module EEPROM for AML devices. Towards this, add
-a new firmware mailbox command to get the page data.
+And struct txgbe_hic_i2c_read used to get module information is renamed
+as struct txgbe_hic_get_module_info, because another SW-FW command to
+read I2C will be added later.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 33 +++++++++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_aml.h    |  3 ++
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    | 30 +++++++++++++++++
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   | 11 +++++++
- 4 files changed, 77 insertions(+)
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 39 ++++++++++---------
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.h    |  2 +-
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 12 +++---
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   | 12 +++---
+ 6 files changed, 35 insertions(+), 34 deletions(-)
 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index b1a6ef5709a9..29e5c5470c94 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1249,7 +1249,7 @@ enum wx_pf_flags {
+ 	WX_FLAG_RX_HWTSTAMP_IN_REGISTER,
+ 	WX_FLAG_PTP_PPS_ENABLED,
+ 	WX_FLAG_NEED_LINK_CONFIG,
+-	WX_FLAG_NEED_SFP_RESET,
++	WX_FLAG_NEED_MODULE_RESET,
+ 	WX_FLAG_NEED_UPDATE_LINK,
+ 	WX_FLAG_NEED_DO_RESET,
+ 	WX_FLAG_RX_MERGE_ENABLED,
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-index 3b6ea456fbf7..62d7f47d4f8d 100644
+index a7650f548fa4..432880ccc640 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
-@@ -73,6 +73,39 @@ int txgbe_test_hostif(struct wx *wx)
+@@ -38,7 +38,7 @@ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data)
+ 	wr32(wx, WX_GPIO_INTMASK, 0xFF);
+ 	status = rd32(wx, WX_GPIO_INTSTATUS);
+ 	if (status & TXGBE_GPIOBIT_2) {
+-		set_bit(WX_FLAG_NEED_SFP_RESET, wx->flags);
++		set_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
+ 		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_2);
+ 		wx_service_event_schedule(wx);
+ 	}
+@@ -63,15 +63,16 @@ int txgbe_test_hostif(struct wx *wx)
  					WX_HI_COMMAND_TIMEOUT, true);
  }
  
-+int txgbe_read_eeprom_hostif(struct wx *wx,
-+			     struct txgbe_hic_i2c_read *buffer,
-+			     u32 length, u8 *data)
-+{
-+	u32 dword_len, offset, value, i;
-+	int err;
-+
-+	buffer->hdr.cmd = FW_READ_EEPROM_CMD;
-+	buffer->hdr.buf_len = sizeof(struct txgbe_hic_i2c_read) -
-+			      sizeof(struct wx_hic_hdr);
-+	buffer->hdr.cmd_or_resp.cmd_resv = FW_CEM_CMD_RESERVED;
-+
-+	err = wx_host_interface_command(wx, (u32 *)buffer,
-+					sizeof(struct txgbe_hic_i2c_read),
-+					WX_HI_COMMAND_TIMEOUT, false);
-+	if (err != 0)
-+		return err;
-+
-+	/* buffer length offset to read return data */
-+	offset = sizeof(struct txgbe_hic_i2c_read) >> 2;
-+	dword_len = round_up(length, 4) >> 2;
-+
-+	for (i = 0; i < dword_len; i++) {
-+		value = rd32a(wx, WX_FW2SW_MBOX, i + offset);
-+		le32_to_cpus(&value);
-+
-+		memcpy(data, &value, 4);
-+		data += 4;
-+	}
-+
-+	return 0;
-+}
-+
- static int txgbe_identify_module_hostif(struct wx *wx,
- 					struct txgbe_hic_get_module_info *buffer)
+-static int txgbe_identify_sfp_hostif(struct wx *wx, struct txgbe_hic_i2c_read *buffer)
++static int txgbe_identify_module_hostif(struct wx *wx,
++					struct txgbe_hic_get_module_info *buffer)
  {
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-index 7c8fa48e68d3..4f6df0ee860b 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
-@@ -7,6 +7,9 @@
- void txgbe_gpio_init_aml(struct wx *wx);
- irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data);
- int txgbe_test_hostif(struct wx *wx);
-+int txgbe_read_eeprom_hostif(struct wx *wx,
-+			     struct txgbe_hic_i2c_read *buffer,
-+			     u32 length, u8 *data);
- int txgbe_set_phy_link(struct wx *wx);
- int txgbe_identify_module(struct wx *wx);
- void txgbe_setup_link(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index f553ec5f8238..f3cb00109529 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -10,6 +10,7 @@
- #include "../libwx/wx_lib.h"
- #include "txgbe_type.h"
- #include "txgbe_fdir.h"
-+#include "txgbe_aml.h"
- #include "txgbe_ethtool.h"
+-	buffer->hdr.cmd = FW_READ_SFP_INFO_CMD;
+-	buffer->hdr.buf_len = sizeof(struct txgbe_hic_i2c_read) -
++	buffer->hdr.cmd = FW_GET_MODULE_INFO_CMD;
++	buffer->hdr.buf_len = sizeof(struct txgbe_hic_get_module_info) -
+ 			      sizeof(struct wx_hic_hdr);
+ 	buffer->hdr.cmd_or_resp.cmd_resv = FW_CEM_CMD_RESERVED;
  
- int txgbe_get_link_ksettings(struct net_device *netdev,
-@@ -534,6 +535,34 @@ static int txgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
- 	return ret;
+ 	return wx_host_interface_command(wx, (u32 *)buffer,
+-					 sizeof(struct txgbe_hic_i2c_read),
++					 sizeof(struct txgbe_hic_get_module_info),
+ 					 WX_HI_COMMAND_TIMEOUT, true);
  }
  
-+static int
-+txgbe_get_module_eeprom_by_page(struct net_device *netdev,
-+				const struct ethtool_module_eeprom *page_data,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+	struct txgbe_hic_i2c_read buffer;
-+	int err;
-+
-+	if (!test_bit(WX_FLAG_SWFW_RING, wx->flags))
-+		return -EOPNOTSUPP;
-+
-+	buffer.length = cpu_to_be32(page_data->length);
-+	buffer.offset = cpu_to_be32(page_data->offset);
-+	buffer.page = page_data->page;
-+	buffer.bank = page_data->bank;
-+	buffer.i2c_address = page_data->i2c_address;
-+
-+	err = txgbe_read_eeprom_hostif(wx, &buffer, page_data->length,
-+				       page_data->data);
-+	if (err) {
-+		wx_err(wx, "Failed to read module EEPROM\n");
-+		return err;
-+	}
-+
-+	return page_data->length;
-+}
-+
- static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ |
-@@ -568,6 +597,7 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.set_msglevel		= wx_set_msglevel,
- 	.get_ts_info		= wx_get_ts_info,
- 	.get_ts_stats		= wx_get_ptp_stats,
-+	.get_module_eeprom_by_page	= txgbe_get_module_eeprom_by_page,
- };
+@@ -109,9 +110,9 @@ static void txgbe_get_link_capabilities(struct wx *wx, int *speed,
+ {
+ 	struct txgbe *txgbe = wx->priv;
  
- void txgbe_set_ethtool_ops(struct net_device *netdev)
+-	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->sfp_interfaces))
++	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->link_interfaces))
+ 		*speed = SPEED_25000;
+-	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->sfp_interfaces))
++	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->link_interfaces))
+ 		*speed = SPEED_10000;
+ 	else
+ 		*speed = SPEED_UNKNOWN;
+@@ -150,7 +151,7 @@ int txgbe_set_phy_link(struct wx *wx)
+ 	return 0;
+ }
+ 
+-static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
++static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sff_id *id)
+ {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(modes) = { 0, };
+ 	DECLARE_PHY_INTERFACE_MASK(interfaces);
+@@ -204,9 +205,9 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	phylink_set(modes, Asym_Pause);
+ 	phylink_set(modes, FIBRE);
+ 
+-	if (!linkmode_equal(txgbe->sfp_support, modes)) {
+-		linkmode_copy(txgbe->sfp_support, modes);
+-		phy_interface_and(txgbe->sfp_interfaces,
++	if (!linkmode_equal(txgbe->link_support, modes)) {
++		linkmode_copy(txgbe->link_support, modes);
++		phy_interface_and(txgbe->link_interfaces,
+ 				  wx->phylink_config.supported_interfaces,
+ 				  interfaces);
+ 		linkmode_copy(txgbe->advertising, modes);
+@@ -217,10 +218,10 @@ static int txgbe_sfp_to_linkmodes(struct wx *wx, struct txgbe_sfp_id *id)
+ 	return 0;
+ }
+ 
+-int txgbe_identify_sfp(struct wx *wx)
++int txgbe_identify_module(struct wx *wx)
+ {
+-	struct txgbe_hic_i2c_read buffer;
+-	struct txgbe_sfp_id *id;
++	struct txgbe_hic_get_module_info buffer;
++	struct txgbe_sff_id *id;
+ 	int err = 0;
+ 	u32 gpio;
+ 
+@@ -228,9 +229,9 @@ int txgbe_identify_sfp(struct wx *wx)
+ 	if (gpio & TXGBE_GPIOBIT_2)
+ 		return -ENODEV;
+ 
+-	err = txgbe_identify_sfp_hostif(wx, &buffer);
++	err = txgbe_identify_module_hostif(wx, &buffer);
+ 	if (err) {
+-		wx_err(wx, "Failed to identify SFP module\n");
++		wx_err(wx, "Failed to identify module\n");
+ 		return err;
+ 	}
+ 
+@@ -247,10 +248,10 @@ void txgbe_setup_link(struct wx *wx)
+ {
+ 	struct txgbe *txgbe = wx->priv;
+ 
+-	phy_interface_zero(txgbe->sfp_interfaces);
+-	linkmode_zero(txgbe->sfp_support);
++	phy_interface_zero(txgbe->link_interfaces);
++	linkmode_zero(txgbe->link_support);
+ 
+-	txgbe_identify_sfp(wx);
++	txgbe_identify_module(wx);
+ }
+ 
+ static void txgbe_get_link_state(struct phylink_config *config,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+index 25d4971ca0d9..7c8fa48e68d3 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.h
+@@ -8,7 +8,7 @@ void txgbe_gpio_init_aml(struct wx *wx);
+ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data);
+ int txgbe_test_hostif(struct wx *wx);
+ int txgbe_set_phy_link(struct wx *wx);
+-int txgbe_identify_sfp(struct wx *wx);
++int txgbe_identify_module(struct wx *wx);
+ void txgbe_setup_link(struct wx *wx);
+ int txgbe_phylink_init_aml(struct txgbe *txgbe);
+ 
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+index e8dd277a35c7..d7f905359458 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+@@ -32,7 +32,7 @@ int txgbe_get_link_ksettings(struct net_device *netdev,
+ 	cmd->base.port = txgbe->link_port;
+ 	cmd->base.autoneg = phylink_test(txgbe->advertising, Autoneg) ?
+ 			    AUTONEG_ENABLE : AUTONEG_DISABLE;
+-	linkmode_copy(cmd->link_modes.supported, txgbe->sfp_support);
++	linkmode_copy(cmd->link_modes.supported, txgbe->link_support);
+ 	linkmode_copy(cmd->link_modes.advertising, txgbe->advertising);
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index daa761e48f9d..91d1b4e68126 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -89,21 +89,21 @@ static int txgbe_enumerate_functions(struct wx *wx)
+ 	return physfns;
+ }
+ 
+-static void txgbe_sfp_detection_subtask(struct wx *wx)
++static void txgbe_module_detection_subtask(struct wx *wx)
+ {
+ 	int err;
+ 
+-	if (!test_bit(WX_FLAG_NEED_SFP_RESET, wx->flags))
++	if (!test_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
+ 		return;
+ 
+-	/* wait for SFP module ready */
++	/* wait for SFF module ready */
+ 	msleep(200);
+ 
+-	err = txgbe_identify_sfp(wx);
++	err = txgbe_identify_module(wx);
+ 	if (err)
+ 		return;
+ 
+-	clear_bit(WX_FLAG_NEED_SFP_RESET, wx->flags);
++	clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
+ }
+ 
+ static void txgbe_link_config_subtask(struct wx *wx)
+@@ -128,7 +128,7 @@ static void txgbe_service_task(struct work_struct *work)
+ {
+ 	struct wx *wx = container_of(work, struct wx, service_task);
+ 
+-	txgbe_sfp_detection_subtask(wx);
++	txgbe_module_detection_subtask(wx);
+ 	txgbe_link_config_subtask(wx);
+ 
+ 	wx_service_event_complete(wx);
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index e72edb9ef084..82433e9cb0e3 100644
+index b9a4ba48f5b9..c115ed659544 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -353,6 +353,7 @@ void txgbe_do_reset(struct net_device *netdev);
+@@ -341,9 +341,9 @@ void txgbe_do_reset(struct net_device *netdev);
+ 
  #define FW_PHY_GET_LINK_CMD             0xC0
  #define FW_PHY_SET_LINK_CMD             0xC1
- #define FW_GET_MODULE_INFO_CMD          0xC5
-+#define FW_READ_EEPROM_CMD              0xC6
+-#define FW_READ_SFP_INFO_CMD            0xC5
++#define FW_GET_MODULE_INFO_CMD          0xC5
  
- struct txgbe_sff_id {
+-struct txgbe_sfp_id {
++struct txgbe_sff_id {
  	u8 identifier;		/* A0H 0x00 */
-@@ -394,6 +395,16 @@ struct txgbe_hic_ephy_getlink {
- 	u8 resv[6];
+ 	u8 com_1g_code;		/* A0H 0x06 */
+ 	u8 com_10g_code;	/* A0H 0x03 */
+@@ -358,9 +358,9 @@ struct txgbe_sfp_id {
+ 	u8 reserved[5];
  };
  
-+struct txgbe_hic_i2c_read {
-+	struct wx_hic_hdr hdr;
-+	__be32 offset;
-+	__be32 length;
-+	u8 page;
-+	u8 bank;
-+	u8 i2c_address;
-+	u8 resv;
-+};
-+
- #define NODE_PROP(_NAME, _PROP)			\
- 	(const struct software_node) {		\
- 		.name = _NAME,			\
+-struct txgbe_hic_i2c_read {
++struct txgbe_hic_get_module_info {
+ 	struct wx_hic_hdr hdr;
+-	struct txgbe_sfp_id id;
++	struct txgbe_sff_id id;
+ };
+ 
+ struct txgbe_hic_ephy_setlink {
+@@ -451,8 +451,8 @@ struct txgbe {
+ 	int fdir_filter_count;
+ 	spinlock_t fdir_perfect_lock; /* spinlock for FDIR */
+ 
+-	DECLARE_PHY_INTERFACE_MASK(sfp_interfaces);
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
++	DECLARE_PHY_INTERFACE_MASK(link_interfaces);
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(link_support);
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising);
+ 	u8 link_port;
+ };
 -- 
 2.48.1
 
