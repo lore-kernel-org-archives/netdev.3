@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EEF32C323
-	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B68332C33A
+	for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 08:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763456042; cv=none; b=Sl1vXGMIwOUitMv28s3bTX1qj4tvCx+LiSDoERQv4FjHbPgsFONyTIhRusvOiOEzxChgqpbk/Mp83Z2miaigZiBybzorN+3+pftowYrFwOEQMfsegyP/fCZ5qWE1oK/+v/2wSAJgbJLAYgzFPHZjOw7Oz2nW3C1A99GTfzW9vms=
+	t=1763456043; cv=none; b=ZYrFOBVdpjeV9LH/WkYe3eVZohrq/So0iS+wK2g2+TDElfpWqb5Rjv/V5dlarNQsRWU70JiQ+pB/zIFmn/RtZUNW9Ifd/oYLNFzJCQ34gZYn+jLuJO5mOuImqDnB1mqj3jGESm9ZY8JP47WM/OGwog96fuVyVf/DwWX+fIerTKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763456042; c=relaxed/simple;
-	bh=NZNDZ0V0bIsGo7pJNp0FXJTEZkAuHd8x+UvhyMpHfrY=;
+	s=arc-20240116; t=1763456043; c=relaxed/simple;
+	bh=zm+TNKVn91ZW3ASao/wstRGHcKPQKEZ+XZpl1fqrK5U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r24ZjFlGHYdBEFgbIJHliPhtG9GxkZEMIk31X/QBV6VAuhuega+t+Fhrb3PfBdP3vmPiPGRNenJ+jR7GyZdGtQmfQc5dFKowrnrZCzs+asqBih/jlaetVrR4AQMChOTqFKdC3PPOnT4o+74FTuXUgOb6lF3NrNoZpNQplp/pb8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=QlbRwTl/; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=KBLcvtlSpGKcok4Yo8mFejOIWM7zhHlGqB71hDaA5g9qmFvS/QoZEzcWv53+pK3t1PXZf+tCPsaIrvhJSg8CKC9chvayKqINHY+podmD8SlvtlSLw2oMyQwlCuIybCCjwT4HaeIgRgyrRrjoIl0FGXfGNg6mMlkRvWhawC6o+G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=baF/m4eG; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="QlbRwTl/"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="baF/m4eG"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 842DD20743;
-	Tue, 18 Nov 2025 09:53:52 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id A415220839;
+	Tue, 18 Nov 2025 09:53:53 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id fZmKnf-wcjkn; Tue, 18 Nov 2025 09:53:52 +0100 (CET)
+ with ESMTP id AhSLELP7HJFw; Tue, 18 Nov 2025 09:53:53 +0100 (CET)
 Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id EC04920839;
-	Tue, 18 Nov 2025 09:53:51 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com EC04920839
+	by mx1.secunet.com (Postfix) with ESMTPS id 1E92D2080B;
+	Tue, 18 Nov 2025 09:53:53 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1E92D2080B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1763456032;
-	bh=UCquora3kYe1F0r0/E8p3XMJAfOr2Qu7w0ORHn4I5xQ=;
+	s=202301; t=1763456033;
+	bh=C+TskNxsOQzS9iOT6P22vH+j8EqJRi3Dt8DqAccK+5I=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=QlbRwTl/8XgblmMrmxwv1lee3WXIMLbYh9kNbtjfT7r9kb6EjHVIyLhNSAHcwHkBS
-	 SzLrBW5PbzGFPwXt0CnNflIj7BWN2OgVM+veQumBz6BZBuEw/oPwYZAPrM4HPvTKAi
-	 WQ2I7z6g2yC52U+Ki8PTwKHoeTRSrMsZiCjpFCW9QBMLv7tvPM7GVR+EutFz9//qvR
-	 48SPXU7vgb47QaqmnLhqRia2SvO7zuQrDj5Ms52Ec+blQV8Wq8+/BDhM2XnwBM+Oyp
-	 2hJ3fgrH4k/pU4ixK43BauJ6PjyIiWSF9lEpbjlwkEiCnm3jDc8b0kJR58192epRoU
-	 CKB9CeY1DmkxQ==
+	b=baF/m4eG9bsdQvdBxCUx81TxP9WlIaHuEW7VZfhzApxsyxHp3Jj1eopnefNso4OAC
+	 qgP4nFh67+S6TYyXvjxlU550WU40Ynv22p3XAd8054qIKKHy/xuqLf/Sa4QVH6t1Q+
+	 7bu85BW+5yfism3U8ENxo0JGvJrgdXbDibnL0+082MgzKKoWiPVqhl7TRZQ0IkP0xN
+	 33m6ZZx7zojHvaDnP8YIemCIH8c4zZi+FfO34LYRQwV8AQpnqH+yvknp2QDishXbee
+	 ZM3rQHkIvkMfbICMS9iDOULKZ01Wkq+AP9Y9WGndtCa+dsru6sTADHoTZEJmX0ojXe
+	 M26wGwEFGmDZg==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Tue, 18 Nov
- 2025 09:53:51 +0100
-Received: (nullmailer pid 2200662 invoked by uid 1000);
+ 2025 09:53:52 +0100
+Received: (nullmailer pid 2200646 invoked by uid 1000);
 	Tue, 18 Nov 2025 08:53:48 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 06/10] xfrm: check all hash buckets for leftover states during netns deletion
-Date: Tue, 18 Nov 2025 09:52:39 +0100
-Message-ID: <20251118085344.2199815-7-steffen.klassert@secunet.com>
+Subject: [PATCH 01/10] xfrm: drop SA reference in xfrm_state_update if dir doesn't match
+Date: Tue, 18 Nov 2025 09:52:34 +0100
+Message-ID: <20251118085344.2199815-2-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118085344.2199815-1-steffen.klassert@secunet.com>
 References: <20251118085344.2199815-1-steffen.klassert@secunet.com>
@@ -63,59 +63,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
  EXCH-01.secunet.de (10.32.0.171)
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-The current hlist_empty checks only test the first bucket of each
-hashtable, ignoring any other bucket. They should be caught by the
-WARN_ON for state_all, but better to make all the checks accurate.
+We're not updating x1, but we still need to put() it.
 
-Fixes: 73d189dce486 ("netns xfrm: per-netns xfrm_state_bydst hash")
-Fixes: d320bbb306f2 ("netns xfrm: per-netns xfrm_state_bysrc hash")
-Fixes: b754a4fd8f58 ("netns xfrm: per-netns xfrm_state_byspi hash")
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
+Fixes: a4a87fa4e96c ("xfrm: Add Direction to the SA in or out")
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_state.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index c3518d1498cd..9e14e453b55c 100644
+index d213ca3653a8..e4736d1ebb44 100644
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -3308,6 +3308,7 @@ int __net_init xfrm_state_init(struct net *net)
- void xfrm_state_fini(struct net *net)
- {
- 	unsigned int sz;
-+	int i;
+@@ -2191,14 +2191,18 @@ int xfrm_state_update(struct xfrm_state *x)
+ 	}
  
- 	flush_work(&net->xfrm.state_hash_work);
- 	xfrm_state_flush(net, 0, false);
-@@ -3315,14 +3316,17 @@ void xfrm_state_fini(struct net *net)
+ 	if (x1->km.state == XFRM_STATE_ACQ) {
+-		if (x->dir && x1->dir != x->dir)
++		if (x->dir && x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
  
- 	WARN_ON(!list_empty(&net->xfrm.state_all));
+ 		__xfrm_state_insert(x);
+ 		x = NULL;
+ 	} else {
+-		if (x1->dir != x->dir)
++		if (x1->dir != x->dir) {
++			to_put = x1;
+ 			goto out;
++		}
+ 	}
+ 	err = 0;
  
-+	for (i = 0; i <= net->xfrm.state_hmask; i++) {
-+		WARN_ON(!hlist_empty(net->xfrm.state_byseq + i));
-+		WARN_ON(!hlist_empty(net->xfrm.state_byspi + i));
-+		WARN_ON(!hlist_empty(net->xfrm.state_bysrc + i));
-+		WARN_ON(!hlist_empty(net->xfrm.state_bydst + i));
-+	}
-+
- 	sz = (net->xfrm.state_hmask + 1) * sizeof(struct hlist_head);
--	WARN_ON(!hlist_empty(net->xfrm.state_byseq));
- 	xfrm_hash_free(net->xfrm.state_byseq, sz);
--	WARN_ON(!hlist_empty(net->xfrm.state_byspi));
- 	xfrm_hash_free(net->xfrm.state_byspi, sz);
--	WARN_ON(!hlist_empty(net->xfrm.state_bysrc));
- 	xfrm_hash_free(net->xfrm.state_bysrc, sz);
--	WARN_ON(!hlist_empty(net->xfrm.state_bydst));
- 	xfrm_hash_free(net->xfrm.state_bydst, sz);
- 	free_percpu(net->xfrm.state_cache_input);
- }
 -- 
 2.43.0
 
