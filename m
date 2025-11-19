@@ -1,118 +1,74 @@
-Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A234CFCB;
-	Wed, 19 Nov 2025 10:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FF233F368;
+	Wed, 19 Nov 2025 10:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763549626; cv=none; b=NuPv4UHnY7ygSpXZkd3Se+Sh+Gfj7W7uxuX9cJjUr+8QJRQ59T0Qs3TleydrtZnh9lvLUDo6GPG5oBtYLEIxVhevLxt1U69O5yHh0u4UkSKyTDNNReQbnq6uzKzpHZU77M8/VSFOIK2ThLkoXSsk8Jqw+5kCI46ZcJHoenIOiT0=
+	t=1763549894; cv=none; b=f8HlgEzjUBC9LPQqrltAlzi7fSFc41F3kZDB+QzZKAG3EnKPGdmdm91le/FcOOPt816M5KbxQZsOZobdTQQH3VYzR3ufzKOr3tjq7IrZ9SaIzmo0CDAQjVirxy02pUk2LnJFfMkd06gwXnxnY0ZNO7M2Z3l13LMoqJ7cgmIvfJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763549626; c=relaxed/simple;
-	bh=r8NQXmkDGFK45wMHuCWwoJWze6DIL4Jbz9p+2HOcp/o=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Vn4y196lZmYUtAfXXowQfDF66gjFaThSESjAwPxrjFb6ApKfBmgucVt+bb8Vrc7EWigOxH+qfRc5c5kvtioTAG107E5K+ppSNKJsDfIHPowmGFScylK88TY5Cjh7L7LnPGA57GuNk8dazvYdMElepavL47mig/Qr+BhkFmYUy+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=ejtmpWyK; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+	s=arc-20240116; t=1763549894; c=relaxed/simple;
+	bh=aLW1fNaqRIGekF37yZApHqwtjyCn3DxX8pd2hsHpK5s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kAOyuSUhGA58hn7UxIBE/NtDQQfUYaN0txs32qnUEgmuDeGiJPw4fIXfo4Y2SP22VvB9Sj/4HdnRCBFGX6tGJYN1OmYZGwOlDGfpFeLxytgkDLv6s+GCI1JpXNVruhb9g6sqnnr6YPtq+y663wNFMbzii//pw5HCJ/ScCwlweB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=n2I92/gK; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="ejtmpWyK"
-Received: from mail.crpt.ru ([192.168.60.3])
-	by mail.crpt.ru  with ESMTPS id 5AJApD1P015814-5AJApD1R015814
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Wed, 19 Nov 2025 13:51:13 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex1.crpt.local (192.168.60.3)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 19 Nov
- 2025 13:51:12 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Wed, 19 Nov 2025 13:51:12 +0300
-From: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>
-To: Ajit Khaparde <ajit.khaparde@broadcom.com>
-CC: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>, Sriharsha Basavapatna
-	<sriharsha.basavapatna@broadcom.com>, Somnath Kotur
-	<somnath.kotur@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Venkata Duvvuru
-	<VenkatKumar.Duvvuru@Emulex.Com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH net] be2net: pass wrb_params in case of OS2BMC
-Thread-Topic: [PATCH net] be2net: pass wrb_params in case of OS2BMC
-Thread-Index: AQHcWUJr/pH3Et6rekuGUHy0xRHHsg==
-Date: Wed, 19 Nov 2025 10:51:12 +0000
-Message-ID: <20251119105015.194501-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX1.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 11/18/2025 10:39:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9AAC07FCABA36D47B99B9BEAA47F1486@crpt.ru>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="n2I92/gK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Mr
+	wR+Ad5Fj26DL5Ubo709J1vkzhUIdBWLGe+WfKWy30=; b=n2I92/gKjmCYY7CQTr
+	B1+rE5za7uGo7XjQhw/DXJ+itH8+cJ2MjHc66hXtjK3oFJr2fES0DHIj8nIZm4cw
+	y4V+A4TmisLWKSElPA5CUIphdDjyk+P6SKM1b+t/PF4ys75sD3HohJHowWEkmEnm
+	rD9ptJSQLEXnV6yAxt80qdfvY=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCHOlVooh1pwNIrEg--.51100S2;
+	Wed, 19 Nov 2025 18:56:42 +0800 (CST)
+From: Slark Xiao <slark_xiao@163.com>
+To: mani@kernel.org,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Slark Xiao <slark_xiao@163.com>
+Subject: [PATCH v3 0/2] *** Add support for Foxconn T99W760 ***
+Date: Wed, 19 Nov 2025 18:56:13 +0800
+Message-Id: <20251119105615.48295-1-slark_xiao@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhaXkgJAgEcRgMACRgJGgwNKAoaBwkMCwcFRgsHBUhYSFpIWVpIWVFaRlleUEZeWEZbSFBIWEhYSFFIWEhYSFhIWl5ICQIBHEYDAAkYCRoMDSgKGgcJDAsHBUYLBwVIWEhaWUgJBgwaDR9DBg0cDA0eKAQdBgZGCwBIWEhZUUgMCR4NBSgMCR4NBQQHDhxGBg0cSFhIWVFIDQwdBQkSDRwoDwcHDwQNRgsHBUhYSFldSAMdCgkoAw0aBg0ERgcaD0hYSFpQSAQBBh0QRQMNGgYNBCgeDw0aRgMNGgYNBEYHGg9IWEhaUEgEHgtFGBoHAg0LHCgEAQYdEBwNGxwBBg9GBxoPSFhIWV9IGAkKDQYBKBoNDAAJHEYLBwVIWEhbWEg+DQYDCRwjHQUJGkYsHR4eHRodKA0FHQQNEEYLBwVIWA==
-X-FEAS-Client-IP: 192.168.60.3
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=r8NQXmkDGFK45wMHuCWwoJWze6DIL4Jbz9p+2HOcp/o=;
- b=ejtmpWyK3YYi/4wHcCWgLa/WMvB3Aa4S/mFVSwPGpDEs8p4I5jh3NuFzmSw+tRkd6N70ojzON4zE
-	3vVfUx/un5npcgUV7lCWVFekeKkPrQjb9dGRNxGynrmgJM+7S3uKY70a4Hh2PZIPHA2xr3ToQ4Qs
-	v/vfspGiXIo3PBgWrwhU9HsZdcbtvAOjRzzw2KiOlxzCVvBkTsj1OxjIzON8mq45Xa8rlWWifoIC
-	zmnMF7gJowE45V8kB32cFuZEIuCBTmeVYfZXLubyfBwScAd7dZfTUxMVSqqXxdcefzY4kEyK/+Zb
-	FFwZ4NY0AyGU3uyX+aVyKDm1lzawBaL3Y7wjlQ==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCHOlVooh1pwNIrEg--.51100S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRQdbUUUUUU
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/1tbibhELZGkdoY8SBgAAse
 
-RnJvbTogQW5kcmV5IFZhdG9yb3BpbiA8YS52YXRvcm9waW5AY3JwdC5ydT4NCg0KYmVfaW5zZXJ0
-X3ZsYW5faW5fcGt0KCkgaXMgY2FsbGVkIHdpdGggdGhlIHdyYl9wYXJhbXMgYXJndW1lbnQgYmVp
-bmcgTlVMTA0KYXQgYmVfc2VuZF9wa3RfdG9fYm1jKCkgY2FsbCBzaXRlLsKgIFRoaXMgbWF5IGxl
-YWQgdG8gZGVyZWZlcmVuY2luZyBhIE5VTEwNCnBvaW50ZXIgd2hlbiBwcm9jZXNzaW5nIGEgd29y
-a2Fyb3VuZCBmb3Igc3BlY2lmaWMgcGFja2V0LCBhcyBjb21taXQNCmJjMGMzNDA1YWJiYiAoImJl
-Mm5ldDogZml4IGEgVHggc3RhbGwgYnVnIGNhdXNlZCBieSBhIHNwZWNpZmljIGlwdjYNCnBhY2tl
-dCIpIHN0YXRlcy4NCg0KVGhlIGNvcnJlY3Qgd2F5IHdvdWxkIGJlIHRvIHBhc3MgdGhlIHdyYl9w
-YXJhbXMgZnJvbSBiZV94bWl0KCkuDQoNCkZvdW5kIGJ5IExpbnV4IFZlcmlmaWNhdGlvbiBDZW50
-ZXIgKGxpbnV4dGVzdGluZy5vcmcpIHdpdGggU1ZBQ0UuDQoNCkZpeGVzOiA3NjBjMjk1ZTBlOGQg
-KCJiZTJuZXQ6IFN1cHBvcnQgZm9yIE9TMkJNQy4iKQ0KQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5v
-cmcNClNpZ25lZC1vZmYtYnk6IEFuZHJleSBWYXRvcm9waW4gPGEudmF0b3JvcGluQGNycHQucnU+
-DQotLS0NCnYyOiAtIHBhc3Mgd3JiX3BhcmFtcyBmcm9tIGluc2lkZSBiZV94bWl0KCnCoCAoSmFr
-dWIgS2ljaW5za2kpDQp2MTogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbmV0ZGV2LzIwMjUxMTEy
-MDkyMDUxLjg1MTE2My0xLWEudmF0b3JvcGluQGNycHQucnUvDQogZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvZW11bGV4L2JlbmV0L2JlX21haW4uYyB8IDcgKysrKy0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCA0
-IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5jIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQv
-ZW11bGV4L2JlbmV0L2JlX21haW4uYw0KaW5kZXggY2IwMDRmZDE2MjUyLi41YmIzMWM4ZmFiMzkg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5j
-DQorKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9lbXVsZXgvYmVuZXQvYmVfbWFpbi5jDQpAQCAt
-MTI5Niw3ICsxMjk2LDggQEAgc3RhdGljIHZvaWQgYmVfeG1pdF9mbHVzaChzdHJ1Y3QgYmVfYWRh
-cHRlciAqYWRhcHRlciwgc3RydWN0IGJlX3R4X29iaiAqdHhvKQ0KIAkJKGFkYXB0ZXItPmJtY19m
-aWx0X21hc2sgJiBCTUNfRklMVF9NVUxUSUNBU1QpDQogDQogc3RhdGljIGJvb2wgYmVfc2VuZF9w
-a3RfdG9fYm1jKHN0cnVjdCBiZV9hZGFwdGVyICphZGFwdGVyLA0KLQkJCSAgICAgICBzdHJ1Y3Qg
-c2tfYnVmZiAqKnNrYikNCisJCQkgICAgICAgc3RydWN0IHNrX2J1ZmYgKipza2IsDQorCQkJICAg
-ICAgIHN0cnVjdCBiZV93cmJfcGFyYW1zICp3cmJfcGFyYW1zKQ0KIHsNCiAJc3RydWN0IGV0aGhk
-ciAqZWggPSAoc3RydWN0IGV0aGhkciAqKSgqc2tiKS0+ZGF0YTsNCiAJYm9vbCBvczJibWMgPSBm
-YWxzZTsNCkBAIC0xMzYwLDcgKzEzNjEsNyBAQCBzdGF0aWMgYm9vbCBiZV9zZW5kX3BrdF90b19i
-bWMoc3RydWN0IGJlX2FkYXB0ZXIgKmFkYXB0ZXIsDQogCSAqIHRvIEJNQywgYXNpYyBleHBlY3Rz
-IHRoZSB2bGFuIHRvIGJlIGlubGluZSBpbiB0aGUgcGFja2V0Lg0KIAkgKi8NCiAJaWYgKG9zMmJt
-YykNCi0JCSpza2IgPSBiZV9pbnNlcnRfdmxhbl9pbl9wa3QoYWRhcHRlciwgKnNrYiwgTlVMTCk7
-DQorCQkqc2tiID0gYmVfaW5zZXJ0X3ZsYW5faW5fcGt0KGFkYXB0ZXIsICpza2IsIHdyYl9wYXJh
-bXMpOw0KIA0KIAlyZXR1cm4gb3MyYm1jOw0KIH0NCkBAIC0xMzg3LDcgKzEzODgsNyBAQCBzdGF0
-aWMgbmV0ZGV2X3R4X3QgYmVfeG1pdChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbmV0X2Rl
-dmljZSAqbmV0ZGV2KQ0KIAkvKiBpZiBvczJibWMgaXMgZW5hYmxlZCBhbmQgaWYgdGhlIHBrdCBp
-cyBkZXN0aW5lZCB0byBibWMsDQogCSAqIGVucXVldWUgdGhlIHBrdCBhIDJuZCB0aW1lIHdpdGgg
-bWdtdCBiaXQgc2V0Lg0KIAkgKi8NCi0JaWYgKGJlX3NlbmRfcGt0X3RvX2JtYyhhZGFwdGVyLCAm
-c2tiKSkgew0KKwlpZiAoYmVfc2VuZF9wa3RfdG9fYm1jKGFkYXB0ZXIsICZza2IsICZ3cmJfcGFy
-YW1zKSkgew0KIAkJQkVfV1JCX0ZfU0VUKHdyYl9wYXJhbXMuZmVhdHVyZXMsIE9TMkJNQywgMSk7
-DQogCQl3cmJfY250ID0gYmVfeG1pdF9lbnF1ZXVlKGFkYXB0ZXIsIHR4bywgc2tiLCAmd3JiX3Bh
-cmFtcyk7DQogCQlpZiAodW5saWtlbHkoIXdyYl9jbnQpKQ0KLS0gDQoyLjQzLjANCg==
+*** This series add support for Foxconn 5G modem T99W760 ***
+
+Updates:
+  v3: Fix the 2 patches not in one thread issue
+  v2: Add net and MHI mantainer together
+
+Slark Xiao (2):
+  bus: mhi: host: pci_generic: Add Foxconn T99W760 modem
+  net: wwan: mhi: Add network support for Foxconn T99W760
+
+ drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++++
+ drivers/net/wwan/mhi_wwan_mbim.c   |  3 ++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
