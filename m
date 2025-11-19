@@ -1,110 +1,166 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB862366DA0;
-	Wed, 19 Nov 2025 17:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCD41FAC42;
+	Wed, 19 Nov 2025 17:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763573392; cv=none; b=aKbrDjW8rTT45pzPx5pkX6G+m+mVimJXPbDhkZNLPrVq93q+5ozIt4dhrHLoreRtXdw8RQaPM97gsliraU3GzV1sqTBq4cbYbaEp9dJN2MMJb4yZfALeyoHWbVirTbiqNgWY7Wv56d6wvUIAPOEQc1vDYHj4JuR+AemVN8ogd/w=
+	t=1763573697; cv=none; b=uR1Y8loITu/DB6xt8TBDIjUkjpR4ZPoToMqam8O2Mw/Xw1w9Rq5K7j9mRDzV8wQOhz/J6IoMt7FI1pK4b6mu8CMUBGXgyO0svOZu0CKEt9HUgyIFPalCr5sau2kycl0BMLmh2G6uH76ve4h0PaF5w66aUNWlvAbxwqHPHMbeP9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763573392; c=relaxed/simple;
-	bh=AAhInjK0hV7inLiITcWEDEw5AyGHlBIp5m8Q6XZHpPM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ueNdC2fhC5rJxG4vdC7XOb+zOckhqBLMzqWETLPjN3DaD6GuIZTUGqhj6VAcVZRWF03xx5iPOUAxYuiGOA1Oe33zZ+7QnrZl5hWgTAmbVj8xsnyG97Kd0Ts+kyhGlVu/fr55lWxGlCsVCtbyyHAYscj31amHY0XBvvXqC6ja5B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=WSeaeorj; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1763573697; c=relaxed/simple;
+	bh=CP1RHwnLKRxiLODuRu9d3QUcRfYZy94bnfo/gKve3d8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=umqo6DKNqn1FfDaHGfhaaign2CgosCxNtWE1IROx7VtWkOIyVPPcuD8lRea0f8TAApP8uu0lZPdweo4ADnJvjM0BNNRYZYh2Viy+yQmrrU5P+x3+71XpCONL+9ZmMHkHa0yDrswJrHQEZTkn0duQJvYvv+3yZiPFlO8lSiUOmr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=yEd2xxua; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="WSeaeorj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1763573390; x=1795109390;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=AAhInjK0hV7inLiITcWEDEw5AyGHlBIp5m8Q6XZHpPM=;
-  b=WSeaeorjxU0zt/BfY7uqjLKgG5tsFITlT/Fa7Bodnr698dxf90wUGJsS
-   ZJemycQQv67aM2Ix91lwn2yysV8UfxwXHmRgXEpkUmVDPUA3FfZUrDUy9
-   g0R4mgCzOkAgsiRH5gCntfyHgCPLVi9cW563AKKu+4nyzA2AMXnLPwhaJ
-   lvTtkjf0kC7p/SJN99AJCyiMLFshpkZoYs4TpOCG7EXN3LabKklPIqEmu
-   bk5AeErAvgm9jALelct2JTi7CHTIpO8ltjcsKuJbmA+1YUCry+tLLCH8l
-   igdIe/5jZl3gFjLMbvwxo+EW80mh7bgsKITXC2VD7q1pbENTt2GSp/Hz3
-   A==;
-X-CSE-ConnectionGUID: X5qVgr6yQDyAe5PvHREMHg==
-X-CSE-MsgGUID: B3WnMsxrS5O9HsUuXdhCUA==
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="49869025"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Nov 2025 10:29:39 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 19 Nov 2025 10:28:58 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 19 Nov 2025 10:28:57 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v2] net: lan966x: Fix the initialization of taprio
-Date: Wed, 19 Nov 2025 18:28:45 +0100
-Message-ID: <20251119172845.430730-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="yEd2xxua"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dBTBW16zVz9tl0;
+	Wed, 19 Nov 2025 18:34:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1763573683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e8QG+N4/1kcdXJQ/ndyF1FfjMK6+46fe00n91fXl4zg=;
+	b=yEd2xxualOZVytUgw3Cm0xIpSSC+7i0hA/sy4Jpc/iTSCJvNNzs1XQ0HU5b74/FHvDgBb5
+	X6QCpYcnMXyMVeqbdnCjfWM9ZHsbz95+R8P5Ai/2+V9PS0a33sJsxAa4dDebvAqdic28Av
+	obTly/Pir2GjLVbNv/RvwHWdFWAMGgTjrNtwVYuO4LcNRiHgIxDhq/GKupAlfvIkaat3Ad
+	ZvrX+B+wVyf3eErqKyxWbTdt6/oTWudG1hcfgjwQZ3W7cK7yaSGVoO1IGVXreyah4PpCvC
+	9CuOUsy9k9wCuOuGQ98BEHBzpVFOzZ/Ye1MT8O8XtNXvDRi0ciTzMbnOvUaf9Q==
+Message-ID: <d520f61e-1c51-48dd-aa49-6bf4618d6b54@mailbox.org>
+Date: Wed, 19 Nov 2025 17:09:30 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH] leds: trigger: netdev: Check offload ability on interface
+ up
+From: Marek Vasut <marek.vasut@mailbox.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: linux-leds@vger.kernel.org,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Christian Marangi <ansuelsmth@gmail.com>,
+ Christophe Roullier <christophe.roullier@foss.st.com>,
+ Daniel Golle <daniel@makrotopia.org>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Lee Jones <lee@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, kernel@dh-electronics.com,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20241001024731.140069-1-marex@denx.de>
+ <1d72f370-3409-4b0f-b971-8f194cf1644b@lunn.ch>
+ <d0411d89-5c83-47b4-bef9-904b63cbc2c0@denx.de>
+ <b4ba27e5-a1cc-4477-a254-a318e586ef2a@mailbox.org>
+Content-Language: en-US
+In-Reply-To: <b4ba27e5-a1cc-4477-a254-a318e586ef2a@mailbox.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-MBO-RS-ID: 846c09ea91c3b08f769
+X-MBO-RS-META: sx15x14jwms1as3f6qs156fxnrhnbrkr
 
-To initialize the taprio block in lan966x, it is required to configure
-the register REVISIT_DLY. The purpose of this register is to set the
-delay before revisit the next gate and the value of this register depends
-on the system clock. The problem is that the we calculated wrong the value
-of the system clock period in picoseconds. The actual system clock is
-~165.617754MHZ and this correspond to a period of 6038 pico seconds and
-not 15125 as currently set.
+On 11/17/25 12:18 PM, Marek Vasut wrote:
 
-Fixes: e462b2717380b4 ("net: lan966x: Add offload support for taprio")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Hello one more time,
 
----
-v1->v2:
-- add define for system clock and calculate the period in picoseconds
----
- drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+>>>> On STM32MP13xx with RTL8211F, it is enough to have the following 
+>>>> udev rule
+>>>> in place, boot the machine with cable plugged in, and the LEDs won't 
+>>>> work
+>>>> without this patch once the interface is brought up, even if they 
+>>>> should:
+>>>> "
+>>>> ACTION=="add", SUBSYSTEM=="leds", KERNEL=="stmmac-0:01:green:wan", 
+>>>> ATTR{trigger}="netdev", ATTR{link_10}="1", ATTR{link_100}="1", 
+>>>> ATTR{link_1000}="1", ATTR{device_name}="end0"
+>>>> ACTION=="add", SUBSYSTEM=="leds", KERNEL=="stmmac-0:01:yellow:wan", 
+>>>> ATTR{trigger}="netdev", ATTR{rx}="1", ATTR{tx}="1", 
+>>>> ATTR{device_name} ="end0"
+>>>> "
+>>>
+>>> Nice use of udev. I had not thought about using it for this.
+> 
+> I might have been a bit too hasty with this. The following is only a 
+> quick preliminary FYI, I am still investigating the details.
+> 
+> I observe on 6.18-rc6 (ST STM32MP13xx , so STM32 DWMAC ethernet, and 
+> RTL8211F PHY), that if I use the these udev rules (SoC has two MACs, 
+> there are two rules for each MAC, and 2 rules for each of two LEDs on 
+> each MAC PHY , therefore four rules in total ; the rules for both MACs 
+> are identical):
+> 
+> "
+> ACTION=="add|change", SUBSYSTEM=="leds", 
+> KERNEL=="stmmac-0:01:green:wan", ATTR{trigger}="netdev", ATTR{link_10} 
+> ="1", ATTR{link_100}="1", ATTR{link_1000}="1", ATTR{device_name}="ethsom0"
+> ACTION=="add|change", SUBSYSTEM=="leds", 
+> KERNEL=="stmmac-0:01:yellow:wan", ATTR{trigger}="netdev", ATTR{rx}="1", 
+> ATTR{tx}="1", ATTR{device_name}="ethsom0"
+> 
+> ACTION=="add|change", SUBSYSTEM=="leds", 
+> KERNEL=="stmmac-1:01:green:lan", ATTR{trigger}="netdev", ATTR{link_10} 
+> ="1", ATTR{link_100}="1", ATTR{link_1000}="1", ATTR{device_name}="ethsom1"
+> ACTION=="add|change", SUBSYSTEM=="leds", 
+> KERNEL=="stmmac-1:01:yellow:lan", ATTR{trigger}="netdev", ATTR{rx}="1", 
+> ATTR{tx}="1", ATTR{device_name}="ethsom1"
+> "
+> 
+> I get this backtrace. Notice the "sysfs: cannot create duplicate 
+> filename ..." part , I suspect there is some subtle race condition ?
+> 
+> "
+> sysfs: cannot create duplicate filename '/devices/platform/ 
+> soc/5c007000.bus/5800e000.ethernet/mdio_bus/stmmac-1/stmmac-1:01/leds/ 
+> stmmac-1:01:green:lan/link_10'
+> CPU: 0 UID: 0 PID: 153 Comm: (udev-worker) Not tainted 6.18.0-rc6 #1 
+> PREEMPT
+> Hardware name: STM32 (Device Tree Support)
+> Call trace:
+>   unwind_backtrace from show_stack+0x18/0x1c
+>   show_stack from dump_stack_lvl+0x54/0x68
+>   dump_stack_lvl from sysfs_warn_dup+0x58/0x6c
+>   sysfs_warn_dup from sysfs_add_file_mode_ns+0xf0/0x130
+>   sysfs_add_file_mode_ns from internal_create_group+0x344/0x480
+>   internal_create_group from internal_create_groups+0x48/0x6c
+>   internal_create_groups from led_trigger_set+0x1e4/0x278
+>   led_trigger_set from led_trigger_write+0xe0/0x118
+>   led_trigger_write from sysfs_kf_bin_write+0x98/0xa0
+>   sysfs_kf_bin_write from kernfs_fop_write_iter+0x14c/0x198
+>   kernfs_fop_write_iter from vfs_write+0x170/0x1d4
+>   vfs_write from ksys_write+0x7c/0xd0
+>   ksys_write from ret_fast_syscall+0x0/0x54
+> Exception stack(0xedbf1fa8 to 0xedbf1ff0)
+> 1fa0:                   00000006 bec4476c 00000015 bec4476c 00000006 
+> 00000001
+> 1fc0: 00000006 bec4476c 000e7698 00000004 00000006 fffffff7 00000000 
+> 000d1710
+> 1fe0: 00000004 bec44578 b6c34397 b6bb15e6
+> leds stmmac-1:01:green:lan: Failed to add trigger attributes
+> "
+> 
+> If I find out more, I will get back to this thread.
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index b4377b8613c3a..18fab2d4bda0d 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -1,11 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0+
- 
- #include <linux/ptp_classify.h>
-+#include <linux/units.h>
- 
- #include "lan966x_main.h"
- #include "vcap_api.h"
- #include "vcap_api_client.h"
- 
-+#define LAN9X66_CLOCK_RATE	165617754
-+
- #define LAN966X_MAX_PTP_ID	512
- 
- /* Represents 1ppm adjustment in 2^59 format with 6.037735849ns as reference
-@@ -1126,5 +1129,5 @@ void lan966x_ptp_rxtstamp(struct lan966x *lan966x, struct sk_buff *skb,
- u32 lan966x_ptp_get_period_ps(void)
- {
- 	/* This represents the system clock period in picoseconds */
--	return 15125;
-+	return PICO / 165617754;
- }
--- 
-2.34.1
+I've been tracking it all the way to kernfs, but so far without much 
+success.
 
+I found commit 52c47742f79d ("leds: triggers: send uevent when changing 
+triggers") which indicates the udev rules above are likely wrong, but 
+they still shouldn't corrupt sysfs the way they do, right ?
+
+If you have any hint how to find out what is actually going on, I would 
+be much grateful. I already tried KASAN on this and LOCKDEP, but neither 
+triggers. I was also adding a lot of trace_printk() into netdev LED 
+trigger, but all I could find is the link_* attributes are removed, then 
+added again, and the kernel complains the link_10 attribute already exists.
+
+I also noticed that if I try to list /sys/...stmmac-1:01:green:lan/ 
+directory after the splat with netdev trigger set, the result of the 
+listing is not always the same, sometimes there are the netdev trigger 
+attributes, sometimes not, and sometimes they are corrupted.
