@@ -1,36 +1,48 @@
 Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4155C2F6929
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 12:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE752DC79A;
+	Wed, 19 Nov 2025 12:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763557060; cv=none; b=dE9FwIY551/j6M5ksMyd9QLbiGKph79tV0XLIZhjInZ+e21ockTH9OdMAXORetu4RLTLMkWCI+IS9xJ3Aj++AquDQZEqx96N/FgumORob1S+tGjng72si5nZ7Qqh2u4waUOE1zVtFBo0PEvfMklrkwGPx2GlN554nvHd9lhXjC8=
+	t=1763557061; cv=none; b=gJjgiWUfBw7+SbfvV0rTfoqeAO2LUyXFoVAJ2nXpti+VhU5Rvl1Awa/W2fDcPH9vaZfWdsX41Tl6IX3CIiGu9JwR//GpcysMezhmZQJhzv3wU2tv60Y1IpQ8fcUPF+YGP32Yzg74VWi2ZzNibsb+3A1qzvensrqOSm9pz/iq1Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763557060; c=relaxed/simple;
-	bh=jbyO2iXTJWKsPH084GotjCd1zsUwDuhyqpR9YD38bG4=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=Q6nTj4BUaIWetywvo8tdLrk8DshAQ3AvlRJMVtM64miREk8zBxn8ga2iO2yjLl4TDbYXnWWzU+WMewqagrnGWxLpdFl9FsyB2sk3dKN3VwYmcCpdnv3ODnRQoayxtz2/2JRUjN3LVl0EsP7ciwSFA3KzFuY2QrDo+hl05Pq2aIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=DEdkcZEB; arc=none smtp.client-ip=217.92.40.78
+	s=arc-20240116; t=1763557061; c=relaxed/simple;
+	bh=lDpfDZZLzKC/+8YOzOt8G6Q/lq3VVu1m1qnnMWi3BMA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HPSfj2hn4aMMrU5eTvJWyfJRiCb0zKruRzS/WJyWNus6DNKK/Oiv1+qCzFvT2KzovYLU/3pZ653OKpgTqXTv0fkPdJLdIH8TpbIrv9wbu1DmpYarhGt/zAawcF9S53IA1FthERhMLdEgGePC9/Od0tQJJ2EUOekJAGsMAfCpvus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=pzAMxA3K; arc=none smtp.client-ip=217.92.40.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="DEdkcZEB"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 864B21483ED3
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 13:47:42 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="pzAMxA3K"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8BF72148417A;
+	Wed, 19 Nov 2025 13:47:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1763556462; h=from:subject:date:message-id:to:mime-version:
-	 content-transfer-encoding; bh=bFhm/WttfaQ80Th2gK8NctIigdXN0YWmNPFU81xWTsU=;
-	b=DEdkcZEBmV1pulLvtqZbnDnzIUKK5GPLxcnOyan56lyMvTwOIMHp/EejbK4hKZANj5BSx2
-	L3ys+QPCj/lRrELRbCXl2LI/dQzxOoxXMnGHMYKRlPjSZwRJJu4FSkLubZVCtuHxIF41VB
-	+rjwBqN4jbuck2Zf+6DU+y3SSq+Q31dii5M0a/bMO98lOOWMp5Y9wRxD6emSev4OEBNHKf
-	mNqlD8EvAnCsViVbob7VfgRwxmt/kqqONPwCLX5wuj0iKPEewP0gZDBKh7EkChVMvnPBaR
-	ZPYPN/yur4F2tbTDQugVPbpPihbAUEeeg2zhLGsuMuFIxYYLsVltPDS4S1Yb4A==
+	t=1763556467; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4QLcm5qkXXAuRIaVPLg1w01B5zqSyUJCjYnONDVhwi8=;
+	b=pzAMxA3KunClD3pc0EolMdlA6knRcGjewgVmOHhHbLFYlcuVZNDe0R2cDtD3X7UOOyVsCW
+	/XLhAaNBtfQ/suce1cPIrwZYNqH0zTsCBU414TKk/3YkMXIu4usK3VSSr67tcth1NZAF0p
+	uhIBFupIuSLSF4T0kQ+6cbWPh90uNCxnvf3Naw1XFEZAVvrFuk2IULpN2tI9KOAso7+A2f
+	5GxwjOwcL8BQRBbaChN/ISmqFReMNE21haqTW4T1WiPKZ8EkACIvzWL1lEOIGkR+D0ARy2
+	Re0mjVbXdcnIcqJ/kLmB9+dghoBwt5SDuaNAscpwGSSOmrpf3ce/y9G/Y4INwg==
 From: Alexander Dahl <ada@thorsis.com>
 To: netdev@vger.kernel.org
-Subject: [PATCH 0/2] net: phy: adin1100: Fix powerdown mode setting
-Date: Wed, 19 Nov 2025 13:47:35 +0100
-Message-Id: <20251119124737.280939-1-ada@thorsis.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 2/2] net: phy: adin1100: Simplify register value passing
+Date: Wed, 19 Nov 2025 13:47:37 +0100
+Message-Id: <20251119124737.280939-3-ada@thorsis.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251119124737.280939-1-ada@thorsis.com>
+References: <20251119124737.280939-1-ada@thorsis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,24 +52,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hei hei,
+The additional use case for that variable is gone,
+the expression is simple enough to pass it inline now.
 
-while building a new device around the ADIN1100 I noticed some errors in
-kernel log when calling `ifdown` on the ethernet device.  Series has a
-straight forward fix and an obvious follow-up code simplification.
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+---
+ drivers/net/phy/adin1100.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Greets
-Alex
-
-Alexander Dahl (2):
-  net: phy: adin1100: Fix software power-down ready condition
-  net: phy: adin1100: Simplify register value passing
-
- drivers/net/phy/adin1100.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-
-base-commit: 6a23ae0a96a600d1d12557add110e0bb6e32730c
+diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
+index 10b796c2daee..8f9753d4318c 100644
+--- a/drivers/net/phy/adin1100.c
++++ b/drivers/net/phy/adin1100.c
+@@ -192,11 +192,10 @@ static irqreturn_t adin_phy_handle_interrupt(struct phy_device *phydev)
+ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
+ {
+ 	int ret;
+-	int val;
+ 
+-	val = en ? ADIN_CRSM_SFT_PD_CNTRL_EN : 0;
+ 	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1,
+-			    ADIN_CRSM_SFT_PD_CNTRL, val);
++			    ADIN_CRSM_SFT_PD_CNTRL,
++			    en ? ADIN_CRSM_SFT_PD_CNTRL_EN : 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
