@@ -1,83 +1,100 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9C622D4DD;
-	Wed, 19 Nov 2025 03:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A48B298CA7
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 03:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763523689; cv=none; b=APn9FcAahuEqrtOyCx3pWYXQTGeJtAmcrL5OYsSIRv0iAzVH08gct3vvmvbdehal++VlLXnyxHwE0dxDiWSLHTxv5rvzC5yyHf7mwS9xOiIiIYuwMgxIvYioJwCNvHW5IjQAy6K4ngStOAXaMueDiB5y5Ix4C+KKsfdEFFuFpFM=
+	t=1763524693; cv=none; b=qoFdAh99jBdMTQM7poBoIpIWMyoV9Mi/TyyQND90j5507m16Y/5yODQ65iEebK8EovoVDv+mEDjPrzG/ChlwE1sWa9jxKCO+DRZSXOopQhIiwntFSuRwiT/ORFckvBXycEOwbgFBjbUZFn3ECj8bihV0nnYl3H1ER0s4in2XAt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763523689; c=relaxed/simple;
-	bh=96e2DZg5qkbEeMdYACgFxoT8iVrER3FKyJfTpOMAJOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Iyh8YEfjBjGzv7HtoQ2ZkDGzmxEego7WeA4ahaLApquQdnFVGWRm3RxMjPunSLcj/GXwRni9D7bOA9RX0HJ/WuMgC+ja/5RmswyztCJY3XJrlgjf1vL3lbjtJXML2vxQGNGOoLZ99eWbP9LBeptbABjpEc9eF3D4Hdv5RPCHk54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Ej3+GK6H; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1763524693; c=relaxed/simple;
+	bh=PI3QKLL1UFflRMFBd9gNh7xeqS0cnp6FXnZ/gxAlTuI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XaalwbjBuihUmBgWI3L9+u1gA+eo78Xb1y4PyW7kw1jAA/V2SOZXi1a/0OWQXYjeXj8cRyko7X2s8aqDLtVWu/RNpvQ+H1V3M0mtAUrYIRpZnFpdnbjyosHLctWnN0Opd+HKOUxm5kNVNR4atouixn4/bB2ZMtV1PxLqA80jkXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iyA899Ec; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Ej3+GK6H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=G7
-	ktBLapi4WYq3AgaOQl07RKxAd2Ezai0vnmbghINj8=; b=Ej3+GK6HMIFjt3HJs4
-	nNbZgD0MU2zVnGsSGd3peV81o0nyx8IZrjD2eVz+oUo1qY6a4gltjfsPLZ9GR0Ta
-	RLQBupUA8i3LzAGBuv42O3KmsyKdBSB3pBPhAdERWDsuG6AAj/AaUIb9lOTkDAiw
-	3E3nLPaxxu77mJtb8fms7qfnc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wBHewTqOx1pcD0SBQ--.3650S2;
-	Wed, 19 Nov 2025 11:39:24 +0800 (CST)
-From: Slark Xiao <slark_xiao@163.com>
-To: loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: mani@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Slark Xiao <slark_xiao@163.com>
-Subject: [PATCH] net: wwan: mhi: Add network support for Foxconn T99W760
-Date: Wed, 19 Nov 2025 11:39:17 +0800
-Message-Id: <20251119033917.7526-1-slark_xiao@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iyA899Ec"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640aaa89697so8406845a12.3
+        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 19:58:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763524690; x=1764129490; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PI3QKLL1UFflRMFBd9gNh7xeqS0cnp6FXnZ/gxAlTuI=;
+        b=iyA899Ecjt4iDeTAl7ahAB5SI8oWexpKYqt7JHLGBr8PC5gtDNoGP4oT9bLH4S+sJk
+         ABDNrdtESPEVCGxoc41QUngckXvJB4IQz1ttzjlzYRsRplc0KWUtjujhokQMCFhC8V68
+         jN0CBA+sxzjucRD2lazJ30RxN4RITVS4TKMNGCMzprXWaUcRufId5YKaH7vyDF1f57Np
+         gN1ZugUcJdMwJsxAyEYiWtgqxLvnY+KmQn6xwEHgIULqoLbghjDKOopV+BI8ZNBnQ0LV
+         Y7a2AzwQJrCf3Te4CI8TT2mcEvs9/AoIoBED16i1DKlIktEBDlVaHtrHspA9VbRKVVJN
+         dAhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763524690; x=1764129490;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PI3QKLL1UFflRMFBd9gNh7xeqS0cnp6FXnZ/gxAlTuI=;
+        b=NpuwLOralVDzv7Q0tii91AD6+r9orbMOt/wF5ihke/upVTvtQju8CR7DzLjweMvmUd
+         of4/HUpH8Au0K+zOBpiEtvA9LXo2SwPhmpj90RSwODrUfQxNyuXFG3xKiFdCQTixQFEC
+         sXw2IMN/vHvWErJ276hJ6DDW2iMIwLpiDgEod1R9PxtYfpg9I0rOCxQyk+naGDEDZuTP
+         XqPXnm20akHgy4b5vxgd+Lz7aZuM+ui/6ywkVaWAcdSNEJwLK3dkMHkfsCuxyjqoLxfs
+         WHygUoj0RfUI3CQ0pDzHGHOtLj9ja0PI6I3AsBXRww1jtnKHeozfgHbhEOdVuQbQ1/Hn
+         bhYw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMkrNmQFTbCyQIIgNeoAYO6VT4s3OGbGVK7eB7XGG7u3Mi5zVZTApS0w/6n4uxSXQeGgch05A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7a+NzeU1resvtbULrKlidzPnmcKntuDuAqBJ+lRKQtdyHKwqU
+	QRUANcbMUleoOodqdG/gOB5++d5pWzefB1Bdni44NBCiQqg9QziDep1+n1c/88P+31gjjGQGROJ
+	XjSGVvjS/lvaiACaPJ3bXdiAz7UcZYQo=
+X-Gm-Gg: ASbGnctYNrsBovOLgZ+e3ZCYiGX8zhewUK1C0N2az7kUT9PtxjG9yXhsaygno/abpVa
+	WS/KveztI+dT//uuOlSGT10fCcQtVkL39F5RkJs0/XPv8tqGKCKSFd3bTBJpP+m8334vuXSk0LT
+	QhCtpYphMm8HRugAU+rG4AjRpJUOuSI6G1myW9+sO2Vtcv4WFPDo8vsPmtLqU9mc0nAQq+cN5D1
+	5IwU3qa0X6nxuWrKPbZwQTy8i1S89zUtM5D5Gz4+uKCyPItELO+mYWNXqLisCTRgkUPstvEyPWC
+	l+xLvQ==
+X-Google-Smtp-Source: AGHT+IG3PwSV/TBqcgYiQTrXM8pDMO5dg/Jf6yZQNxRWinFCJb2bV92dB5BAFrlKAhEykr/231k5fj1ur5+oNuf4Gz4=
+X-Received: by 2002:a05:6402:52d5:b0:643:c8b:8d30 with SMTP id
+ 4fb4d7f45d1cf-64350eac57bmr15010389a12.30.1763524690169; Tue, 18 Nov 2025
+ 19:58:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHewTqOx1pcD0SBQ--.3650S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr45tF13Wr1xtryxGrW3ZFb_yoWDArcE9r
-	1kXF9rJr4jgFyjkr1kKF43ZFyfGwn7XF1vvFsav398AFykX3WrWrWrZFyaq3429wnrJFsr
-	urnrZF1Yv3yxKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRKeOJUUUUUU==
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/1tbiGRQLZGkdNw6RjwAAsx
+References: <20251118164333.24842-1-viswanathiyyappan@gmail.com>
+ <CAPrAcgNSqdo_d2WWG25YBDjFzsE6RR63CBLs9aMwXd8DGiKRew@mail.gmail.com> <20251118105047.20788ed9@kernel.org>
+In-Reply-To: <20251118105047.20788ed9@kernel.org>
+From: I Viswanath <viswanathiyyappan@gmail.com>
+Date: Wed, 19 Nov 2025 09:27:58 +0530
+X-Gm-Features: AWmQ_blCdRe1tCw5lI8xL4ehntzBrd_SGHl4OQqj-ctDdgKE4rWDvz00iLoDe1Q
+Message-ID: <CAPrAcgOBa5Q3k5r=G4qixzWRuvK+PEinj9sGVf-nxWYon4BkpA@mail.gmail.com>
+Subject: Re: [RFT net-next v4 0/2] net: Split ndo_set_rx_mode into snapshot
+ and deferred write
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, mst@redhat.com, jasowang@redhat.com, 
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, sdf@fomichev.me, 
+	kuniyu@google.com, skhawaja@google.com, aleksander.lobakin@intel.com, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-T99W760 is designed based on Qualcomm SDX35 chip. It use similar
-architecture with SDX72/SDX75 chip. So we need to assign initial
-link id for this device to make sure network available.
+On Wed, 19 Nov 2025 at 00:20, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> Broken as in patch titles or broken as in it crashes the kernel?
+> Both are true.
+Yeah, I will fix both
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
----
- drivers/net/wwan/mhi_wwan_mbim.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Just to be safe "as soon as possible" hopefully
+> takes into account our "no reposts within 24h" rule.
+> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+Yes, It does
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index c814fbd756a1..a142af59a91f 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -98,7 +98,8 @@ static struct mhi_mbim_link *mhi_mbim_get_link_rcu(struct mhi_mbim_context *mbim
- static int mhi_mbim_get_link_mux_id(struct mhi_controller *cntrl)
- {
- 	if (strcmp(cntrl->name, "foxconn-dw5934e") == 0 ||
--	    strcmp(cntrl->name, "foxconn-t99w515") == 0)
-+	    strcmp(cntrl->name, "foxconn-t99w515") == 0 ||
-+	    strcmp(cntrl->name, "foxconn-t99w760") == 0)
- 		return WDS_BIND_MUX_DATA_PORT_MUX_ID;
- 
- 	return 0;
--- 
-2.25.1
+> Also I'm not sure what you mean by RFT, doubt anyone will test this
+> for you, and you're modifying virtio which you should be able to test
+> yourself.. RFC or PATCH is the choice.
 
+Just to be clear, would testing packet flow with all the possible mode
+combinations
+under heavy traffic be sufficient and exhaustive? I think this should
+be PATCH once
+I sort everything out
