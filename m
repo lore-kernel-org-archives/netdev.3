@@ -1,68 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EAE2E6CB2;
-	Wed, 19 Nov 2025 22:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D52C178E;
+	Wed, 19 Nov 2025 22:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763592007; cv=none; b=li8q+F1DZ4XkG3MzWaW8Ymv9N9JH5fYM2bM3YK8FWtDU1YXv81RbMickO8H/52cuEbFbhLqocewRi8u8f0NoswKb1Fxn3zP3olOqqxBPUrKzoMTSTj70utH7pzwd0sOTddAKtFHsdEbGjc/dNFWFqVapheftP1KGxPZzwuh65UE=
+	t=1763592158; cv=none; b=bqpsdxLUJGLhkPYQQ5aFbLpDzdl2IZMhDisVPuhTONkEGhz9+gRsPe8xDjCcc4biG2ExYW+UxqTQt2sUaFFeOYGjUphkWF7emA8L3EREYv0E/PECSUPCvWBmiQ7reWJC8ECtllnf4fNi9l/tRINSM6Q4Uu17E4fs01Jz87UUDw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763592007; c=relaxed/simple;
-	bh=nPEusvPgOAT/NwcTaXoVhxtHcPgLEuoF4hq8tl6Ym2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kVZg8vhqumUJrKFkjU/zWq8AnldAZX/2Jcv7fzFsK5hTh00y85JKwnWjZO0Ftrdo8DqPhwyr0EQlK/2xEzt4poRFRTG8Yk0iKkrG0rwqTJ1DPIpgifV1Ez3NRsHTfjVp6HgLYgC4ChbC1SRWkGMeMnv0F0vELtlZcPE2W2JuuyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSpLMKwu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763592158; c=relaxed/simple;
+	bh=/88llFjR+aW+sKimOPnEFHk+cZxtJ0WQo1sV7i/jqyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KxP9R3WLtJLmvdaGCJAJV+w4xchyWKWDQYVuF8YFZTi2kw5pp3GRC9bR8hMjQkFI0/b43n/bnk6LpKljC845mU7imEfat1oGpILNTVHrce/oE1E3s+AoAtf8ITMgZelTRDE7BjKUj31Hq4hhanjRj32yKu3EKM2g/HZP5swzVBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=hvsFicVn; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSpLMKwu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E70DC4CEF5;
-	Wed, 19 Nov 2025 22:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763592005;
-	bh=nPEusvPgOAT/NwcTaXoVhxtHcPgLEuoF4hq8tl6Ym2M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WSpLMKwubKK/uuJ/ah6lCGsEP67W1mVEiB6oLXd1Oy+e3PDU5vcHAjc+umu7Khrjf
-	 pi22HF7KH5hmFgdWj1eWwYX+VVN7z4Op6yRM8o7JfBX2PXsCAmnpBNkIsr3EzDuyiL
-	 BdTQ64vQkVO0mcAicVT+tIeV8SxqOARHKbuLg50OyASau6FXheVDwcw2hfD6TbjE2u
-	 FaGrXzzthTNhQAkPsiw9Auq/eB6M5RO4bEWHronoGZlgaBljgpZzqF/BeJeQpVcTdC
-	 NvaTMH+aQVpqfpysQM2od4ehEQ+fiDLXNfVVPVfSsiBnu1uLpPBEt1ycSXSA2ozqNU
-	 oDgSAFjYj/c7A==
-Date: Wed, 19 Nov 2025 14:40:04 -0800
-From: Kees Cook <kees@kernel.org>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="hvsFicVn"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1vLqsk-006ks8-OU; Wed, 19 Nov 2025 23:42:34 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
+	:Message-Id:Date:Subject:Cc:To:From;
+	bh=yHVSmeGdA9+Qmi1v5uWkOlHaQm/+UGKct/GaarfRyAc=; b=hvsFicVn5RMO7/y5voskYgS44h
+	L9lC1HCvmHl3qGjSylT6IZsHmcy9DKwyM18j8Zi+85p6ChAyfSEkpNeEFOxu8qwUiE0Hxm612urJ1
+	cQ0JIK6wT/S3x6qeUe4IZ3rSw2nLwh9bdqSs77iSCw9Yav6kYi/2lbZIG4BqDZahOj/3XvTAcFPjU
+	OKoh0aE/YxDLhoyOmWoEI+VIeA3ullbFfuWzyRjVnWzxyZb2L2DKb5rBQ74qgn9QUKa0CCx/23KzL
+	uJS1QMFE+YXGO6SAP2PQl8HWzwrhfKLE054TEFyBtxKLIi6IbMycYy50R5o1Rh4YTj/hJYylCcJwu
+	ilkZArtQ==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight.linux_spam@runbox.com>)
+	id 1vLqsk-000057-Er; Wed, 19 Nov 2025 23:42:34 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vLqsY-00Fos6-DI; Wed, 19 Nov 2025 23:42:22 +0100
+From: david.laight.linux@gmail.com
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] net: inet_sock.h: Avoid thousands of
- -Wflex-array-member-not-at-end warnings
-Message-ID: <202511191439.C737EF792@keescook>
-References: <aPdx4iPK4-KIhjFq@kspp>
- <20251023172518.3f370477@kernel.org>
- <949f472c-baca-4c2f-af23-7ba76fff1ddc@embeddedor.com>
- <20251024162354.0a94e4b1@kernel.org>
- <bf9c2ceb-f80f-4fea-999d-4f46b2369721@embeddedor.com>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: [PATCH 09/44] ipv6: __ip6_append_data() don't abuse max_t() casts
+Date: Wed, 19 Nov 2025 22:41:05 +0000
+Message-Id: <20251119224140.8616-10-david.laight.linux@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bf9c2ceb-f80f-4fea-999d-4f46b2369721@embeddedor.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 18, 2025 at 01:36:41PM +0900, Gustavo A. R. Silva wrote:
->  struct ip_options_data {
->  	struct ip_options_rcu	opt;
-> -	char			data[40];
->  };
+From: David Laight <david.laight.linux@gmail.com>
 
-If this just contains struct ip_options_rcu now, can ip_options_data
-just be removed entirely?
+The implicit casts done by max_t() should only really be used to
+convert positive values to signed or unsigned types.
+In the EMSGSIZE error path
+	pmtu = max_t(int, mtu - headersize + sizeof(struct ipv6hdr), 0);
+is being used to convert a large unsigned value to a signed negative one.
+Rework using a signed temporary variable and max(pmtu, 0), as well as
+casting sizeof() to (int) - which is where the unsignedness comes from.
 
--Kees
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+---
+ net/ipv6/ip6_output.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index f904739e99b9..6fecf2f2cc9a 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1440,7 +1440,7 @@ static int __ip6_append_data(struct sock *sk,
+ 	struct sk_buff *skb, *skb_prev = NULL;
+ 	struct inet_cork *cork = &cork_full->base;
+ 	struct flowi6 *fl6 = &cork_full->fl.u.ip6;
+-	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
++	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu;
+ 	struct ubuf_info *uarg = NULL;
+ 	int exthdrlen = 0;
+ 	int dst_exthdrlen = 0;
+@@ -1504,9 +1504,10 @@ static int __ip6_append_data(struct sock *sk,
+ 		maxnonfragsize = mtu;
+ 
+ 	if (cork->length + length > maxnonfragsize - headersize) {
++		int pmtu;
+ emsgsize:
+-		pmtu = max_t(int, mtu - headersize + sizeof(struct ipv6hdr), 0);
+-		ipv6_local_error(sk, EMSGSIZE, fl6, pmtu);
++		pmtu = mtu - headersize + (int)sizeof(struct ipv6hdr);
++		ipv6_local_error(sk, EMSGSIZE, fl6, max(pmtu, 0));
+ 		return -EMSGSIZE;
+ 	}
+ 
 -- 
-Kees Cook
+2.39.5
+
