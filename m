@@ -1,117 +1,161 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE49232D0ED
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 14:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBE232FA0B
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 14:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763563423; cv=none; b=i33wIOKaRHP1frhj26HwvsDeixyOk4jGvudYZW/cOMkq8Uie182oOB3Sift5SCfQyjjy25Doiy4RwTMSBxzHpYOADOe6JGALyl085Xd3+AgNEJ/UaUMuXK8mEXTC9k+tDXOaQGLnfoATK5YAcc1vGbOflh12O5MNBBdMJSrWpq0=
+	t=1763563502; cv=none; b=j4m3bQ6kcloCm/RbJZ45zOCvHeJtit3QQTTUdWNvVyqYCnFj+D86Nlb+RmXlMbaKqVDEBRSX+qzOj7gnj06b0+ueTvGHAVvWOEEv2HXieMIqXx/ZFo5vOMD8+t73AQU6DXMAfvSYYBqkfKlRdDO3/wzJU7Mt9J3bvkPMqopLtNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763563423; c=relaxed/simple;
-	bh=tN4N7vuK4JJ0rterP05amy6D7j/6Qj9sv/6YKc8hKYg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LJAMgMWxujmXKW/AyO9QvV0UcjFXbouGehvYFf8iJ1lBlcZtxtT84R7mLmuUHRChCNgJy6v5E9lCul67Nos7bZOBJuk+NA2TP+bNpcTnZlTX2QF9KT1a0NmEhktwoTkhwUX6wd+ghAAXiEw5bwz2QNe9RqMs4NTshyfejYF/Ig0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=csie.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-37ba5af5951so61919301fa.1
-        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 06:43:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763563416; x=1764168216;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U4rPsaXkkkPPqP8F89aStRjGcZr5tE7ulQ3b9FN2Uak=;
-        b=Mz7PPbspKp+ujT0mepw90gTWKME3b7Mcus9iCF5bFpTWKrg5bYcAPX5MiTx7fH7lh0
-         kMF6Dn1q5BrrAz4ZYQQANdajddR1SckZ1SgO+M37Z3jOlkN9fFlQShlrq+ckMuf7fsIc
-         3JyALRfggoSmGt7iTeeRtVB4XtOrKTwIAvXfeRZEgZy+glHbGgClJCoEXiueShzf/YVc
-         3U7rzkdYmOz71yNOOjH88pioW0IrlVQl2An061+nWxex24GpElo26w8RKUPVf7o8S/aB
-         Mu7nMtY2U0nCIITG0esueq9TWsvn7lk91MbkGsaXP88owCU0RKewRKRs2zJce9q2oCTu
-         Nafw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvqX7HCPNux4EBg0zIu12Vj2t3xz8KXGn0wL4smGEUIDZxatMeYi52DY3cO/FZ6OSnxqK2gn8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBbqPjXk2KHKV18WHGQjmcgxAtH7mDykwrOORU7RfoP1N/8Rzf
-	vbkuL27ahcPXkdyIPdKAkI+uG8UmWh+NKQFY7YVPRsQ6NTOxqCO33KFVIzde5SWB
-X-Gm-Gg: ASbGncuuz03DV0C01O6q3DEprpXesTYuY+Nkl7j37kbheLu/uF/UDdx+3zZRHgAb66A
-	KJnc2n4iTXr86LH2M0ki7yHpgokdODPqsGOmqoMcvKnix7+vVvTDZO44gn7B/tI8KEPETOL271n
-	VsMS2p5FJxJTb0Bsv6G1NFFBx/x3EDUccmeTQ8amApxp1IakmVfK9G2ltOsEy38K3BRgd7Q3h7U
-	IHoJ+5/RQJNtcfuH0bmWCac61yIEVPng0tJgaMPJ2/BKse7gEPp4dqXMH26nVmhGA2AN3R75iP0
-	+/tJ3Tn+enyz3TThwqGdNaPdvIAPX2RnvIRNiClypbr97MpEAD42iG4UXbNUE9HiPnDyTuOlZL6
-	sKMvIbjz49JfCP8vk9c6zO8egJ02vm1iRDUy+3uRLW2/+HrOFbO+vr6z7Uyt5xGXPBmZBpU6IM3
-	O/Bax69tD/C2C5JMX2EPkYmX5cnGcKAoZzvfCsd0+mbvy5Xv2DZkDlkA==
-X-Google-Smtp-Source: AGHT+IHnxVBRnkWu6mRZSyUTXxFbVnhLpzzz1f2NKcF7+hWUUAHLvK/nV4REGK6Q3UChVMYlPqWy8w==
-X-Received: by 2002:a05:651c:23c2:20b0:37a:5c06:6eb1 with SMTP id 38308e7fff4ca-37babbacecdmr50467501fa.17.1763563415965;
-        Wed, 19 Nov 2025 06:43:35 -0800 (PST)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37b9cee0cabsm40924281fa.40.2025.11.19.06.43.34
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Nov 2025 06:43:34 -0800 (PST)
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37ba5af5951so61916991fa.1
-        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 06:43:34 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWIDM7fVLC0+U6hdCRIeEqX73gSIq3/lxeqN+NncpHW5RrGXR+S6xuGk/qrrm/F8zt6MD2pRr0=@vger.kernel.org
-X-Received: by 2002:a2e:9ace:0:b0:372:904d:add4 with SMTP id
- 38308e7fff4ca-37babd35f8amr45635351fa.28.1763563413779; Wed, 19 Nov 2025
- 06:43:33 -0800 (PST)
+	s=arc-20240116; t=1763563502; c=relaxed/simple;
+	bh=4Z5a11EyYCieIyPiW/n4D512METjXrEvfjMOaNbvIrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IUiYq5999AbqtwcMSMyYIVBaXDPGUc9gRsSaXddh/J8LbUTDStPhoY1VNBGAuBpgqXFfuScak5lGIREOLATL/GqjH67VWbNvvdKMnz44SumPIXyD/fBhGOPk49f74BWLJ0O6mDgisBmBMzvjaGP7OeTI05TDrKId0TpstdwhY6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0Rl0sp1w; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0Rl0sp1w"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D749E4E417A3;
+	Wed, 19 Nov 2025 14:44:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 97E8860699;
+	Wed, 19 Nov 2025 14:44:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6873910371A6A;
+	Wed, 19 Nov 2025 15:44:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763563495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7iiJkyAiaoC4nTbLPRcA1iOunb9oVr36vkZfSc57VsA=;
+	b=0Rl0sp1wQb64Ay+ArkOFLsYq3M6SnWwGlpPikPGywEbaTi3z77+SAYX9/bHivJ2qoCNPYN
+	sViCpqRDrKydyagjH2XgJNWvPtFaZb1A1iEOEtv+I3PDwh6eXJg3ISIhNQPlfuKphn19+B
+	LRtaSs/o/VKQSKfnn6mUU4itsvg36WPDiXxrLFYjb9Z5u19zbl53KWy41FWRbQlqotce6u
+	mkKFHojmi+gzW+wUC8/lzJI69mt5sLerjQ1WMxVh6zLSJmymTRzm1UdswJ/Ymk0T64nyBg
+	ZkM9NSfMU8jcM6eB16wLE1KhOmxhihW3/NvhCPAHOssM6UrwrkGMf45xlXPzgA==
+Date: Wed, 19 Nov 2025 15:44:48 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrei Botila
+ <andrei.botila@oss.nxp.com>, Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Simon Horman <horms@kernel.org>, Vladimir
+ Oltean <vladimir.oltean@nxp.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 5/9] net: phy: micrel: add HW timestamp
+ configuration reporting
+Message-ID: <20251119154448.2ca40ac9@kmaincent-XPS-13-7390>
+In-Reply-To: <20251119124725.3935509-6-vadim.fedorenko@linux.dev>
+References: <20251119124725.3935509-1-vadim.fedorenko@linux.dev>
+	<20251119124725.3935509-6-vadim.fedorenko@linux.dev>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk> <E1vLf2U-0000000FMN2-0SLg@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1vLf2U-0000000FMN2-0SLg@rmk-PC.armlinux.org.uk>
-Reply-To: wens@csie.org
-From: Chen-Yu Tsai <wens@csie.org>
-Date: Wed, 19 Nov 2025 22:43:18 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65syu47YAy8-24LDXt1MC2K7r+weOyCWn5fZzRgSFhnDA@mail.gmail.com>
-X-Gm-Features: AWmQ_bnEwqpydG-ZRtqWc8I4l30DitJuwNrACYzTdhyRCjLGsAnpeFb-cKD8BLA
-Message-ID: <CAGb2v65syu47YAy8-24LDXt1MC2K7r+weOyCWn5fZzRgSFhnDA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/3] net: stmmac: pass struct device to
- init()/exit() methods
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Drew Fustini <fustini@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Fu Wei <wefu@redhat.com>, Guo Ren <guoren@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jakub Kicinski <kuba@kernel.org>, Jan Petrous <jan.petrous@oss.nxp.com>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Keguang Zhang <keguang.zhang@gmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, s32@nxp.com, 
-	Samuel Holland <samuel@sholland.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 19, 2025 at 6:04=E2=80=AFPM Russell King (Oracle)
-<rmk+kernel@armlinux.org.uk> wrote:
->
-> As struct plat_stmmacenet_data is not platform_device specific, pass
-> a struct device into the init() and exit() methods to allow them to
-> become independent of the underlying device.
->
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+On Wed, 19 Nov 2025 12:47:21 +0000
+Vadim Fedorenko <vadim.fedorenko@linux.dev> wrote:
+
+> The driver stores HW timestamping configuration and can technically
+> report it. Add callback to do it.
+>=20
+> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 > ---
->  .../ethernet/stmicro/stmmac/dwmac-anarion.c   |  4 +--
->  .../ethernet/stmicro/stmmac/dwmac-eic7700.c   |  4 +--
->  .../ethernet/stmicro/stmmac/dwmac-loongson1.c | 12 ++++----
->  .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  4 +--
->  .../net/ethernet/stmicro/stmmac/dwmac-s32.c   | 14 +++++-----
->  .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  2 +-
->  .../net/ethernet/stmicro/stmmac/dwmac-sti.c   |  4 +--
+>  drivers/net/phy/micrel.c | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>=20
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index 05de68b9f719..b149d539aec3 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -3147,6 +3147,18 @@ static void lan8814_flush_fifo(struct phy_device
+> *phydev, bool egress) lanphy_read_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+> PTP_TSU_INT_STS); }
+> =20
+> +static int lan8814_hwtstamp_get(struct mii_timestamper *mii_ts,
+> +				struct kernel_hwtstamp_config *config)
+> +{
+> +	struct kszphy_ptp_priv *ptp_priv =3D
+> +			  container_of(mii_ts, struct kszphy_ptp_priv,
+> mii_ts); +
+> +	config->tx_type =3D ptp_priv->hwts_tx_type;
+> +	config->rx_filter =3D ptp_priv->rx_filter;
+> +
+> +	return 0;
+> +}
+> +
+>  static int lan8814_hwtstamp_set(struct mii_timestamper *mii_ts,
+>  				struct kernel_hwtstamp_config *config,
+>  				struct netlink_ext_ack *extack)
+> @@ -4390,6 +4402,7 @@ static void lan8814_ptp_init(struct phy_device *phy=
+dev)
+>  	ptp_priv->mii_ts.rxtstamp =3D lan8814_rxtstamp;
+>  	ptp_priv->mii_ts.txtstamp =3D lan8814_txtstamp;
+>  	ptp_priv->mii_ts.hwtstamp_set =3D lan8814_hwtstamp_set;
+> +	ptp_priv->mii_ts.hwtstamp_get =3D lan8814_hwtstamp_get;
+>  	ptp_priv->mii_ts.ts_info  =3D lan8814_ts_info;
+> =20
+>  	phydev->mii_ts =3D &ptp_priv->mii_ts;
+> @@ -5042,6 +5055,19 @@ static void lan8841_ptp_enable_processing(struct
+> kszphy_ptp_priv *ptp_priv, #define LAN8841_PTP_TX_TIMESTAMP_EN
+> 443 #define LAN8841_PTP_TX_MOD			445
+> =20
+> +static int lan8841_hwtstamp_get(struct mii_timestamper *mii_ts,
+> +				struct kernel_hwtstamp_config *config)
+> +{
+> +	struct kszphy_ptp_priv *ptp_priv;
+> +
+> +	ptp_priv =3D container_of(mii_ts, struct kszphy_ptp_priv, mii_ts);
+> +
+> +	config->tx_type =3D ptp_priv->hwts_tx_type;
+> +	config->rx_filter =3D ptp_priv->rx_filter;
+
+Something related to this patch, it seems there is an issue in the set
+callback:
+https://elixir.bootlin.com/linux/v6.18-rc6/source/drivers/net/phy/micrel.c#=
+L3056
+
+The priv->rx_filter and priv->hwts_tx_type are set before the switch condit=
+ion.
+The hwtstamp_get can then report something that is not supported.
+Also HWTSTAMP_TX_ONESTEP_P2P is not managed by the driver but not returning
+-ERANGE either so if we set this config the hwtstamp_get will report someth=
+ing
+wrong as not supported.
+I think you will need to add a new patch here to fix the hwtstamp_set ops.
+
+Maybe we should update net_hwtstamp_validate to check on the capabilities
+reported by ts_info but that is a bigger change.
+
+> +
+> +	return 0;
+> +}
+> +
+>  static int lan8841_hwtstamp_set(struct mii_timestamper *mii_ts,
+>  				struct kernel_hwtstamp_config *config,
+>  				struct netlink_ext_ack *extack)
+> @@ -5925,6 +5951,7 @@ static int lan8841_probe(struct phy_device *phydev)
+>  	ptp_priv->mii_ts.rxtstamp =3D lan8841_rxtstamp;
+>  	ptp_priv->mii_ts.txtstamp =3D lan8814_txtstamp;
+>  	ptp_priv->mii_ts.hwtstamp_set =3D lan8841_hwtstamp_set;
+> +	ptp_priv->mii_ts.hwtstamp_get =3D lan8841_hwtstamp_get;
+>  	ptp_priv->mii_ts.ts_info =3D lan8841_ts_info;
+> =20
+>  	phydev->mii_ts =3D &ptp_priv->mii_ts;
 
 
->  .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 10 +++----
->  .../net/ethernet/stmicro/stmmac/dwmac-sunxi.c |  4 +--
 
-For sun8i / sunxi,
-
-Acked-by: Chen-Yu Tsai <wens@kernel.org>
-
->  .../net/ethernet/stmicro/stmmac/dwmac-thead.c |  2 +-
->  .../ethernet/stmicro/stmmac/stmmac_platform.c | 28 ++++++++++---------
->  include/linux/stmmac.h                        |  4 +--
->  12 files changed, 47 insertions(+), 45 deletions(-)
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
