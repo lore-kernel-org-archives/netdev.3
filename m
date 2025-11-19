@@ -1,381 +1,202 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010008.outbound.protection.outlook.com [52.101.61.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B767230505E
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 13:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763560466; cv=none; b=a+jzKR/S3VvhfMZmYHEHRpQY37/lja2uLr/P4KYr90wTgs5FHfAkN+fuaCrddLknALnlN4+XxBbz4OVwNamf0oxfrhSBh5EKv+XDeidfwSGe1xX6qRNaWvQcBcXUIszqDiChVVnlkaysZLjzNkLNKZfOAo5XSCjmMoTofj48/sg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763560466; c=relaxed/simple;
-	bh=lQsRnWwJ4Uq6uExwcDQWUvFP+UVInAsDQnZa5oGWxWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpwKp1pbqsuR+cP/jCnIH4NicyAmbt4z1aDczXwGz8TEm6sqrx63UHkhh19jgcDhwsPt3zYZi8mzqF1MDmRHproJhqd70zpFuNXSjPBi+LpOzNCjHC0i0n20f+1i/upV8j5I50ztPvn0VHor/AvROm6vWdYN/24oKeToAp0S9xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e0gKGGZI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QBAoqDeS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3899436402E;
+	Wed, 19 Nov 2025 13:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763560489; cv=fail; b=TkY9/+vvzeiVcDxFHpbdQ3SWENjXWW+fQvKuGNI6XJI2gL49vNY67mypjF1OZnX1xKZzJHj+XKc1vF+bGMBZYFwK+jwFAQYBhuHxfyJ/A+54aFshZHsqC5RD4sKXzQcmDojm48yK+fDYElmU/DLIPvWTGKCHuG2QdUvY+warV7o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763560489; c=relaxed/simple;
+	bh=jbNGy6UakX4Rih2e44J5M+qQUn4LxjhgBhsQ4Mj1grg=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=iayKhGX8OxAK762buOIO5s8PmgJxYU0prp3QLCiSOJyDbItmQ106bcv+j7wJpaPoXmrbbkJt7D9X+utCNqvLm7wRxoLRVfXeGfw3pqkm4W9czzZl25JQsjkWT/OqEA7X8GJPJ9wmg4LEWSNyQBY8f8Wp3CqNw2nGriamFNyUEAA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rONf+Lzf; arc=fail smtp.client-ip=52.101.61.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e0gKGGZI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QBAoqDeS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763560463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mMCB3ZyCH+UL+sdJhXbdnULFfH6fMX/QhoJaHlVH/94=;
-	b=e0gKGGZIpHFcW6Y9LOK8XpPIbS5MCg0EszuTlnFM7J0t5rbhEE1T8kmza/gyVpGdQHNs+k
-	7Dvn6ltYz13p8HEq1kWrlRjFC4K8WK/7IdjUSlMHDEnCqBv0Nc/gyxWp4WW5Y0Hd5k2kTW
-	blM89+hKX8/IrlwyJryBwLLsCYXSJcM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-MLZUlfvHPei-FXbyTmc8uw-1; Wed, 19 Nov 2025 08:54:22 -0500
-X-MC-Unique: MLZUlfvHPei-FXbyTmc8uw-1
-X-Mimecast-MFC-AGG-ID: MLZUlfvHPei-FXbyTmc8uw_1763560461
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4779ecc3cc8so18605915e9.3
-        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 05:54:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763560460; x=1764165260; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mMCB3ZyCH+UL+sdJhXbdnULFfH6fMX/QhoJaHlVH/94=;
-        b=QBAoqDeSsvbSRHp32wt5HDho7z3z3d27tSpzJvfkfUpAY3Id+eUe9Wc862b3xZyMW6
-         w2GPgwBvtPtbwdtoFnr/7IN16pdNJe9LtQ6hncTAjSCDYJjKkwzE2SH2spQ+rFdZjpTC
-         +U9hgjO5bkOc4r4aBZvt4qVBiNI4SDqtTLXH4s7Gz/Eq3/Bpob3izWlz/CCltB+22WzL
-         oA4+YiQSD/5LVDu4+A15WEz0WB9m0m48c9LyTiBxU3WzOFLSndwPT07XYhiCKrKMXTj2
-         oHkvicAnQ9/8io0WgXa43MisAaQCVmjA5EbPI/Qt5Por+ffl4m+KWt5ujsgglXzn+mKR
-         4r9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763560460; x=1764165260;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mMCB3ZyCH+UL+sdJhXbdnULFfH6fMX/QhoJaHlVH/94=;
-        b=S49zUe4su0KNxYpKgYSSnhvzi6a2IWg3rS6Hm6sAfDm1vmFOVZNZgqa+dPZQHjLjBB
-         IkN9v1xKB53tLwdqDorurE0XWUqZnCrI2Kg4aB+TwDC979j5kBEdxR80DBxhFsQaUAp1
-         KvpvY9Iv39/S/s9uI+Gl9hN++bc10HP1om2a2tqAMsv30WS2bv4kni0vbkEtgxSpELce
-         iFX2S1Le3M/Zx/K9zRCoEhDWScdVTACdPdO0YpfGHvgtYVxkhjBV9oVXKSK6Fq4WpcGB
-         i/kMVcawJPGmLBa5S7lMGJ+N1h9UxXSzJYvOdxg456kKV29p9RQwXGa0ZBFPOudsO9eV
-         AAOA==
-X-Gm-Message-State: AOJu0YxByqg9NrGJfP5xjAKNz0Gj5iWYkdTomei3smWrFX0gcVXL1SO7
-	RJEnuQLPk+/6Daqzd3rG8G4nWKxcWdEKZskqc+FsmBMFJswvivIYMhNUrJWfJNK3sstfEHPFXD3
-	ut0i+gfYN2ljCh3+7YFlrO635z63FvC6MDVFLAfo0HexIzm5/nlTfPQkKqu/tJY0FpjVYghekaB
-	G7YuLL8mXCZ281ZHiP7LASfr0FUQLUj3xriqdwz+G6PTcs
-X-Gm-Gg: ASbGncvYFdlIt9G/+B4FIBZ9sjWUs55n+gkslE3dMIEeu7Io5xrzsmr1mGpuYoDyen7
-	GBUnGKEuWQoKbf2jwpRJidZqhzevtJgxgyv48ncBtc59jlfz94OrVYLVhzdXaCTCmLYkXi5BKZq
-	JIVLmsHvayW0TyFVNLdXk5gSt4SZtvOaW8qhfljXK9Y59uyKzzoKboNQdcL+jdzsQP/3rozM6bV
-	p5mP7M7fwNLqMv2ypfias3BIJmMyveajQMSTlOU73LgRWshqIhwzly+z+drwhh7lGmJ75JO5LCk
-	HPn4KGU/JY+0JNWt18CbRBHPfeTi8BCFNtgq4Oxb/FhFG8WBPhxFQs+pfcdVGmHRurFsB4p2xtn
-	8TqSgmRbv5dME4+5UGkOJKtzFB8R4qFh4urbG442PAtZB5wqigA==
-X-Received: by 2002:a05:600c:1f86:b0:477:7c7d:d9b2 with SMTP id 5b1f17b1804b1-4778fea17bemr171055615e9.32.1763560460402;
-        Wed, 19 Nov 2025 05:54:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGmDllfr71GVXTEK0JtVnC1sII5XtYPvO0JStUBFVZbkKCA3WWdOnYSKgjF1r5/J/jiPd0YsA==
-X-Received: by 2002:a05:600c:1f86:b0:477:7c7d:d9b2 with SMTP id 5b1f17b1804b1-4778fea17bemr171055255e9.32.1763560459900;
-        Wed, 19 Nov 2025 05:54:19 -0800 (PST)
-Received: from localhost (net-130-25-194-234.cust.vodafonedsl.it. [130.25.194.234])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9e1b657sm39767195e9.17.2025.11.19.05.54.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 05:54:17 -0800 (PST)
-From: Paolo Valerio <pvalerio@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH RFC net-next 6/6] cadence: macb/gem: introduce xmit support
-Date: Wed, 19 Nov 2025 14:53:30 +0100
-Message-ID: <20251119135330.551835-7-pvalerio@redhat.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251119135330.551835-1-pvalerio@redhat.com>
-References: <20251119135330.551835-1-pvalerio@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rONf+Lzf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t9ClZCLd4olvTbc2hTHlIvBsXVN/RSj9nu78D/w7afkV8sSZnBxGPRgMenvNXrUQCNLKb5J6cZChTp+UHslyoAu3q2O5QWO9iVw4q3AyOWoV24eHliLJ4ZwBdtZFuIzvWqqz1bOBLdygtMkqPYlti9EZvOIDFoY8Syt8+PjNayj0XZHVo9oNbLtJd+yiNjebTxd4Zp4oXBF83hDDQXp7gtA+APNldeCeOA0bmX9aemfQALQz6wruMggVL4+4GBQLWHnJHw0tlIiR31fqxnUXV6OzISdDod19Hq6bCjjb4/Wwn0gCE610yTYDuzcoDNEHykxmJpRx172ZKsueawjsVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lPf3iFPRWMh6mXpMekFMhn2mCvwcqwRT3yoATXbvMyo=;
+ b=xti30/MAfEzO7ts04HN20LUQXA4zXe2T0lSKjz6r6OtHbbl2SRzSp0Mb9SYQYHRiz+vMseCsDRDMdeCwpHUMFsYx3U2nyCpSZIYSftlQ/ZonJ8awl+odRHHwVrc5y1pjRakAG8b0yO0DfyRwrZZbh3HJc2dUvTRLQYtVweCclN9ljdq6fFnkSE5iSUfcnSay6LVdzoN2G/yTJHU0hbBuc+jbSYFpVOLRtMB4nMiHCLGbghGpIHeriGm0LXIWlHa4osc9PVd/znvznkGXgucF0naIqOo5Q22WjpYxQrKDvBGyYwvUIMYD0AFLadSKebgUbU/f3pmXpDTIhrJG9k4t/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lPf3iFPRWMh6mXpMekFMhn2mCvwcqwRT3yoATXbvMyo=;
+ b=rONf+LzfSc8u2lKcBe1EOhviXcTs2l4r9JmtrAzImbmQaL/Q/zX34ZwWIpATrzFz7dwTZr30XrJ98TSLHTLx1VvnPRKcg9C4qC3zk9zxhRsG3Wve/FDwRT6cLSZufJ3QW+WW++rid5Uoi+y9sBfMvbT5eGyFOWj9AVLTFtM9wQVOL5EpbQo6AG6g0e+3ZMFlRtVnNjVm6EBbtgzscQS94Fl2nEAqDUFgKUd7C/6PCeoTvEL2mlzltQs3NaPATeHmuZY5nd2WrpF/qECVH/I2AStjE6M15CGq3dPqD+luXx9Dh3xssMTwi8FDjZlA8sxUdf9LgIJU3pHhEqYh5sVdGg==
+Received: from CY5PR15CA0116.namprd15.prod.outlook.com (2603:10b6:930:68::26)
+ by CY3PR12MB9577.namprd12.prod.outlook.com (2603:10b6:930:109::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Wed, 19 Nov
+ 2025 13:54:44 +0000
+Received: from CY4PEPF0000EDD7.namprd03.prod.outlook.com
+ (2603:10b6:930:68:cafe::de) by CY5PR15CA0116.outlook.office365.com
+ (2603:10b6:930:68::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
+ 19 Nov 2025 13:54:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000EDD7.mail.protection.outlook.com (10.167.241.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 13:54:44 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
+ 2025 05:54:26 -0800
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
+ 2025 05:54:20 -0800
+References: <20251118215126.2225826-1-kuba@kernel.org>
+ <20251118215126.2225826-2-kuba@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<willemdebruijn.kernel@gmail.com>, <shuah@kernel.org>, <sdf@fomichev.me>,
+	<krakauer@google.com>, <linux-kselftest@vger.kernel.org>, <petrm@nvidia.com>,
+	<matttbe@kernel.org>
+Subject: Re: [PATCH net-next v2 01/12] selftests: net: py: coding style
+ improvements
+Date: Wed, 19 Nov 2025 14:40:41 +0100
+In-Reply-To: <20251118215126.2225826-2-kuba@kernel.org>
+Message-ID: <87ms4icely.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|CY3PR12MB9577:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17e5ea2f-9dd6-4bab-50f6-08de277331cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?u8U/5zH+qLzWvqNpN7xJ7frCp4ZjeYdjZ31Wjff6xTydFvk1gyibY6uvLByW?=
+ =?us-ascii?Q?tnlYxr365YAOPQMTRbPOkIhuaK4kIJJo4CzYPDr3N35u4ar895DTaB/02yFQ?=
+ =?us-ascii?Q?CerKTg0FX0Fdv+W8kHs70UobnjR4CRN2nqrkg2bzYvRyC2tUtwJAQYYKNNK5?=
+ =?us-ascii?Q?6A2i2RNh0sGaXVefbjXtNXIi/sXCmwgQHtbmpb2Cw5rdKdd9EDvqt8Kt0b2l?=
+ =?us-ascii?Q?5moQzU/D2Krso0utHWcla08UjaA5Tfb1BDaKmunlc8DcG/PnCR5AXQGwj4Kc?=
+ =?us-ascii?Q?m4J/2ryUHBcGSKfBLpbN9lWm4hAdfzhNDVJ2WTHdgHQHEyrBZ+XU0KQ+JOHm?=
+ =?us-ascii?Q?egNO+j3jHaHWKN9X0pXCVD3E91Y0dAxqfmdX2zdMv1kBZfrwDYzoGlPXD+qA?=
+ =?us-ascii?Q?cSYjZLNLpAghF+ufsp0xWBmI8hsTvGrdWjA7f+2cuNebb83l27PAVwY8l0FV?=
+ =?us-ascii?Q?zLwCZQTs+j4NhWTLapTPuWSxMvww7az6FXLqCoqMK4+oYqkgQsS0zL2wRVEW?=
+ =?us-ascii?Q?F3j4lGoVlyejLRgaDrq50C0SwbFunVLXNqpecICHXPfpwIG3kyfWGsDogBdW?=
+ =?us-ascii?Q?aB3+yf0ZjfcmhDNRevlzKHX1HiafuElZHlKt8co1z1nPYNlORc6tl8a5pIlv?=
+ =?us-ascii?Q?oB5esG3Q5N4wsXUPqF/StW7LECcOYCCEem+22Q60NpPqiwSa5w2y6k15PqS5?=
+ =?us-ascii?Q?9cC75VUGg4n2pOsJVqXy+3+qeMOR/Qa+CVva2EWLaQlvg2X6Wh+ax0z2BaXg?=
+ =?us-ascii?Q?3fvDHN2RrZmko2fBJv2X+Lckr8CiELIzrbC/3B44MLUJsYSj1obtiHCm3FNC?=
+ =?us-ascii?Q?qYjuR9gXYOnsJjCItBFg2Y0sDdgXE5PUgzja1r/C63DSRULZqMeFUAhECn1b?=
+ =?us-ascii?Q?1aQTx9SyfG7KeAl3yeTYryeJZdlC5eO2hF9akWCLh2g6VUGmyDhJ/Lxnkz0o?=
+ =?us-ascii?Q?vwOzArwLW5tMyI7We1jYWMJPOEb/bMiYml55oLEk3aQ/1ks+FgBJnSXUE53I?=
+ =?us-ascii?Q?aF5ojuJotBueRNXDK0hohAfyy2Jl8V2g4eeycRlYixFawv6wnsDrg6Lmgzqe?=
+ =?us-ascii?Q?txwG1FIACeRUvhasxc07q3nxc73ux6hqzhQmgYJ6RBoSRTPXCRf2Z1RYBUQ5?=
+ =?us-ascii?Q?FCcii1fS6MyQnZjWrFlwm1ObhGpvuxWh6tLScYmS6cnbRM1/+35Df4aa5qR5?=
+ =?us-ascii?Q?1muG5coNX8S8n+zVPVA+Le+H6ZG8HIRXPURbrDTast0X/Ah92vyNov6R2v45?=
+ =?us-ascii?Q?Qs7E3ThB6gHyLmkK4M2PHigwjmQwZRWU4SmStkP6gsoZBaMcBD/erdafeIu7?=
+ =?us-ascii?Q?JKbpEvbejf0GSChHMEtEHGqK8wTU3fsjiS8RxeW4kBiJqsaq03b4V6tZYMtY?=
+ =?us-ascii?Q?tfIbWe1zU46VPHWupNzH3bpGpDjk1eRUUDgg45fGns+soTG8gJFHyHCzpVMT?=
+ =?us-ascii?Q?U6O3Uq8oeQMf8nFgV2gz3POX4ww7UtlwHnWPzP5XoQbDEWDo8vc5aZQfoogT?=
+ =?us-ascii?Q?N9q4UlhHyaVJD5/qb8JkPlC2kzyIrjEWOxbhxNBOLjcabkIaVz5TILez40ES?=
+ =?us-ascii?Q?8Z1P7lJUfDdupE+t1C0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 13:54:44.2394
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17e5ea2f-9dd6-4bab-50f6-08de277331cd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD7.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9577
 
-Add XDP_TX verdict support, also introduce ndo_xdp_xmit function for
-redirection, and update macb_tx_unmap() to handle both skbs and xdp
-frames advertising NETDEV_XDP_ACT_NDO_XMIT capability and the ability
-to process XDP_TX verdicts.
 
-Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 166 +++++++++++++++++++++--
- 1 file changed, 153 insertions(+), 13 deletions(-)
+Jakub Kicinski <kuba@kernel.org> writes:
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index eeda1a3871a6..bd62d3febeb1 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -969,6 +969,17 @@ static int macb_halt_tx(struct macb *bp)
- 					bp, TSR);
- }
- 
-+static void release_buff(void *buff, enum macb_tx_buff_type type, int budget)
-+{
-+	if (type == MACB_TYPE_SKB) {
-+		napi_consume_skb(buff, budget);
-+	} else if (type == MACB_TYPE_XDP_TX) {
-+		xdp_return_frame_rx_napi(buff);
-+	} else {
-+		xdp_return_frame(buff);
-+	}
-+}
-+
- static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
- 			  int budget)
- {
-@@ -983,10 +994,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
- 	}
- 
- 	if (tx_buff->data) {
--		if (tx_buff->type != MACB_TYPE_SKB)
--			netdev_err(bp->dev, "BUG: Unexpected tx buffer type while unmapping (%d)",
--				   tx_buff->type);
--		napi_consume_skb(tx_buff->data, budget);
-+		release_buff(tx_buff->data, tx_buff->type, budget);
- 		tx_buff->data = NULL;
- 	}
- }
-@@ -1076,8 +1084,8 @@ static void macb_tx_error_task(struct work_struct *work)
- 		tx_buff = macb_tx_buff(queue, tail);
- 
- 		if (tx_buff->type != MACB_TYPE_SKB)
--			netdev_err(bp->dev, "BUG: Unexpected tx buffer type (%d)",
--				   tx_buff->type);
-+			goto unmap;
-+
- 		skb = tx_buff->data;
- 
- 		if (ctrl & MACB_BIT(TX_USED)) {
-@@ -1118,6 +1126,7 @@ static void macb_tx_error_task(struct work_struct *work)
- 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
- 		}
- 
-+unmap:
- 		macb_tx_unmap(bp, tx_buff, 0);
- 	}
- 
-@@ -1196,6 +1205,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
- 	head = queue->tx_head;
- 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
-+		void			*data = NULL;
- 		struct macb_tx_buff	*tx_buff;
- 		struct sk_buff		*skb;
- 		struct macb_dma_desc	*desc;
-@@ -1218,11 +1228,16 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 		for (;; tail++) {
- 			tx_buff = macb_tx_buff(queue, tail);
- 
--			if (tx_buff->type == MACB_TYPE_SKB)
--				skb = tx_buff->data;
-+			if (tx_buff->type != MACB_TYPE_SKB) {
-+				data = tx_buff->data;
-+				goto unmap;
-+			}
- 
- 			/* First, update TX stats if needed */
--			if (skb) {
-+			if (tx_buff->type == MACB_TYPE_SKB && tx_buff->data) {
-+				data = tx_buff->data;
-+				skb = tx_buff->data;
-+
- 				if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
- 				    !ptp_one_step_sync(skb))
- 					gem_ptp_do_txstamp(bp, skb, desc);
-@@ -1238,6 +1253,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 				bytes += skb->len;
- 			}
- 
-+unmap:
- 			/* Now we can safely release resources */
- 			macb_tx_unmap(bp, tx_buff, budget);
- 
-@@ -1245,7 +1261,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 			 * WARNING: at this point skb has been freed by
- 			 * macb_tx_unmap().
- 			 */
--			if (skb)
-+			if (data)
- 				break;
- 		}
- 	}
-@@ -1357,8 +1373,124 @@ static void discard_partial_frame(struct macb_queue *queue, unsigned int begin,
- 	 */
- }
- 
-+static int macb_xdp_submit_frame(struct macb *bp, struct xdp_frame *xdpf,
-+				 struct net_device *dev, dma_addr_t addr)
-+{
-+	enum macb_tx_buff_type buff_type;
-+	struct macb_tx_buff *tx_buff;
-+	int cpu = smp_processor_id();
-+	struct macb_dma_desc *desc;
-+	struct macb_queue *queue;
-+	unsigned long flags;
-+	dma_addr_t mapping;
-+	u16 queue_index;
-+	int err = 0;
-+	u32 ctrl;
-+
-+	queue_index = cpu % bp->num_queues;
-+	queue = &bp->queues[queue_index];
-+	buff_type = !addr ? MACB_TYPE_XDP_NDO : MACB_TYPE_XDP_TX;
-+
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
-+
-+	/* This is a hard error, log it. */
-+	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
-+		       bp->tx_ring_size) < 1) {
-+		netif_stop_subqueue(dev, queue_index);
-+		netdev_dbg(bp->dev, "tx_head = %u, tx_tail = %u\n",
-+			   queue->tx_head, queue->tx_tail);
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
-+
-+	if (!addr) {
-+		mapping = dma_map_single(&bp->pdev->dev,
-+					 xdpf->data,
-+					 xdpf->len, DMA_TO_DEVICE);
-+		if (unlikely(dma_mapping_error(&bp->pdev->dev, mapping))) {
-+			err = -ENOMEM;
-+			goto unlock;
-+		}
-+	} else {
-+		mapping = addr;
-+		dma_sync_single_for_device(&bp->pdev->dev, mapping,
-+					   xdpf->len, DMA_BIDIRECTIONAL);
-+	}
-+
-+	unsigned int tx_head = queue->tx_head + 1;
-+
-+	ctrl = MACB_BIT(TX_USED);
-+	desc = macb_tx_desc(queue, tx_head);
-+	desc->ctrl = ctrl;
-+
-+	desc = macb_tx_desc(queue, queue->tx_head);
-+	tx_buff = macb_tx_buff(queue, queue->tx_head);
-+	tx_buff->data = xdpf;
-+	tx_buff->type = buff_type;
-+	tx_buff->mapping = mapping;
-+	tx_buff->size = xdpf->len;
-+	tx_buff->mapped_as_page = false;
-+
-+	ctrl = (u32)tx_buff->size;
-+	ctrl |= MACB_BIT(TX_LAST);
-+
-+	if (unlikely(macb_tx_ring_wrap(bp, queue->tx_head) == (bp->tx_ring_size - 1)))
-+		ctrl |= MACB_BIT(TX_WRAP);
-+
-+	/* Set TX buffer descriptor */
-+	macb_set_addr(bp, desc, tx_buff->mapping);
-+	/* desc->addr must be visible to hardware before clearing
-+	 * 'TX_USED' bit in desc->ctrl.
-+	 */
-+	wmb();
-+	desc->ctrl = ctrl;
-+	queue->tx_head = tx_head;
-+
-+	/* Make newly initialized descriptor visible to hardware */
-+	wmb();
-+
-+	spin_lock(&bp->lock);
-+	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
-+	spin_unlock(&bp->lock);
-+
-+	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
-+		netif_stop_subqueue(dev, queue_index);
-+
-+unlock:
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
-+
-+	if (err)
-+		release_buff(xdpf, buff_type, 0);
-+
-+	return err;
-+}
-+
-+static int
-+macb_xdp_xmit(struct net_device *dev, int num_frame,
-+	      struct xdp_frame **frames, u32 flags)
-+{
-+	struct macb *bp = netdev_priv(dev);
-+	u32 xmitted = 0;
-+	int i;
-+
-+	if (!macb_is_gem(bp))
-+		return -EOPNOTSUPP;
-+
-+	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
-+		return -EINVAL;
-+
-+	for (i = 0; i < num_frame; i++) {
-+		if (macb_xdp_submit_frame(bp, frames[i], dev, 0))
-+			break;
-+
-+		xmitted++;
-+	}
-+
-+	return xmitted;
-+}
-+
- static u32 gem_xdp_run(struct macb_queue *queue, struct xdp_buff *xdp,
--		       struct net_device *dev)
-+		       struct net_device *dev, dma_addr_t addr)
- {
- 	struct bpf_prog *prog;
- 	u32 act = XDP_PASS;
-@@ -1379,6 +1511,12 @@ static u32 gem_xdp_run(struct macb_queue *queue, struct xdp_buff *xdp,
- 			break;
- 		}
- 		goto out;
-+	case XDP_TX:
-+		struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
-+
-+		if (!xdpf || macb_xdp_submit_frame(queue->bp, xdpf, dev, addr))
-+			act = XDP_DROP;
-+		goto out;
- 	default:
- 		bpf_warn_invalid_xdp_action(dev, prog, act);
- 		fallthrough;
-@@ -1467,7 +1605,7 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 				 false);
- 		xdp_buff_clear_frags_flag(&xdp);
- 
--		ret = gem_xdp_run(queue, &xdp, bp->dev);
-+		ret = gem_xdp_run(queue, &xdp, bp->dev, addr);
- 		if (ret == XDP_REDIRECT)
- 			xdp_flush = true;
- 
-@@ -4546,6 +4684,7 @@ static const struct net_device_ops macb_netdev_ops = {
- 	.ndo_hwtstamp_get	= macb_hwtstamp_get,
- 	.ndo_setup_tc		= macb_setup_tc,
- 	.ndo_bpf		= macb_xdp,
-+	.ndo_xdp_xmit		= macb_xdp_xmit,
- };
- 
- /* Configure peripheral capabilities according to device tree
-@@ -5851,7 +5990,8 @@ static int macb_probe(struct platform_device *pdev)
- 			bp->rx_offset += NET_IP_ALIGN;
- 
- 		dev->xdp_features = NETDEV_XDP_ACT_BASIC |
--				    NETDEV_XDP_ACT_REDIRECT;
-+				    NETDEV_XDP_ACT_REDIRECT |
-+				    NETDEV_XDP_ACT_NDO_XMIT;
- 	}
- 
- 	netif_carrier_off(dev);
--- 
-2.51.1
+> We're about to add more features here and finding new issues with old
+> ones in place is hard. Address ruff checks:
+>  - bare exceptions
+>  - f-string with no params
+>  - unused import
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  tools/testing/selftests/net/lib/py/ksft.py | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
+> index 83b1574f7719..56dd9bd060cd 100644
+> --- a/tools/testing/selftests/net/lib/py/ksft.py
+> +++ b/tools/testing/selftests/net/lib/py/ksft.py
+> @@ -1,6 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+> -import builtins
+>  import functools
+>  import inspect
+>  import signal
+> @@ -163,7 +162,7 @@ KSFT_DISRUPTIVE = True
+>          entry = global_defer_queue.pop()
+>          try:
+>              entry.exec_only()
+> -        except:
+> +        except Exception:
+
+This used to catch KsftTerminate, which we use for SIGTERM handling, now
+it doesn't anymore. I think it could legitimately appear in that context
+if SIGTERM si delivered while exec_only() is running.
+
+IMHO it should catch BaseException, like ksft_run() already does.
+
+>              ksft_pr(f"Exception while handling defer / cleanup (callback {i} of {qlen_start})!")
+>              tb = traceback.format_exc()
+>              for line in tb.strip().split('\n'):
+> @@ -181,7 +180,7 @@ KSFT_DISRUPTIVE = True
+>      @functools.wraps(func)
+>      def wrapper(*args, **kwargs):
+>          if not KSFT_DISRUPTIVE:
+> -            raise KsftSkipEx(f"marked as disruptive")
+> +            raise KsftSkipEx("marked as disruptive")
+>          return func(*args, **kwargs)
+>      return wrapper
+>  
+
+> @@ -199,7 +198,7 @@ KSFT_DISRUPTIVE = True
+>              return False
+>          try:
+>              return bool(int(value))
+> -        except:
+> +        except Exception:
+>              raise Exception(f"failed to parse {name}")
+
+I think this will end up being called from inside the try/except in
+ksft_run() and therefore should be OK like this. It's actually more
+correct like this, SIGTERM shouldn't cause "failed to parse" errors.
+
+>  
+>      if "DISRUPTIVE" in env:
 
