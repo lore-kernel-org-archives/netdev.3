@@ -1,92 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520836B052;
-	Wed, 19 Nov 2025 16:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7C036E558
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 16:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763569168; cv=none; b=MbomFMJBat3RT8nEUL4lZpDi494wIw31cmiIbrmPavg94i+Euk1RQYDS5S0fnAsTOTFL6BN2TSTIs3drGF+38W+y+7WeBKXil8XGu6FZqZjpT2yC7x/GJRnWi5pLd8920vDqB7RyPOUlEJP/KFAMmHvuTvI+cDIGbqEl48X7bXw=
+	t=1763569483; cv=none; b=CLl2eKzEf4ZKxc/B6yfvkjSwuh5+o7WJP4rXnHco0IZWx/oM6Y0sziNRSYz4TBEZbm9SRLh81ap4rMLrtbWfd8wEm8rPCQgnS1RElQFD0O8NiN2NXDD5vXBXMWOBWJh6P4pvJp2sG3d/ePw6r2zfs2E5W2n5hfrCj+ffrE7oAk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763569168; c=relaxed/simple;
-	bh=BPzTK2gEFsViZFmyOno1UxdtkaYyPLFM9cgU3Gme0aY=;
+	s=arc-20240116; t=1763569483; c=relaxed/simple;
+	bh=UUiLN5PsGhbk/UslXZY/UEJEemNxtVPnF9dd1BorKkg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PCCA/dHxMVXpBJa7G+f+n4sO55EVWgYFyuWcYPtk2NQoFcqRiYshwIiYsVlY8VQ5XAznnZW9ct4HtxIiEaA8LLtxciN9P0YBNa7IYdNDpSScbvTIBjRgk1eFP10Up/vxkP1SGkhQawdkCMzcUu17FoKeJ1pUKjG+SRYQiM8iTMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qT0M/WXX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=D401pfwT6ImZih1SzdlkkTzIMXa0FfOJ45tvUjniiZLherojjSo+y+FHjiJGfrxSVJTg4fhMF/4qAODPySDl+GWSosL4+++7f1GPRTcx4EqdKmli3BZmnaCh4scvHyPkALhj3wjslsmW8WG/bC17DgnXCnhW3JF9rpvVvtmHCWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTTDoma3; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qT0M/WXX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E806EC116B1;
-	Wed, 19 Nov 2025 16:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763569168;
-	bh=BPzTK2gEFsViZFmyOno1UxdtkaYyPLFM9cgU3Gme0aY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qT0M/WXX2B9Kv1nVbIu43kmraVe20viEsQAOxsj+uCaOZTXTFtX5KOnOvI5cfNmZm
-	 1fSlTx54W2q3AxaOoKrmQ5pzDOPg+pJvj3VKLpbGobNGSgppaNPXtlUIWhPBR50WJh
-	 Sybx5lTWfm5yXaL76r02PUgOwjW90/L9Zjl0USXTbFCERWWrMzx+17YRsqTwijis8Q
-	 u0JdTIiPOpqWZjC3uWRDxBEVjq+u+lKKpHddPkhK8sBHV0LoczsBu6274ZzhzcU0FC
-	 Sm151mMoH8kI9mCj1Er9C34XhLeKg+50DT2lamDVDt3hO8+WOpEkC5xAdI5oU845dQ
-	 ooQgLNOwT7Uaw==
-Date: Thu, 20 Nov 2025 00:01:36 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 resend] net: stmmac: add support for dwmac 5.20
-Message-ID: <aR3p4NBK-AnCGK6a@xhacker>
-References: <20251119153526.13780-1-jszhang@kernel.org>
- <aR3snSb1YUFh9Dwp@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTTDoma3"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b734fcbf1e3so1042206166b.3
+        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 08:24:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763569480; x=1764174280; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p3N9ErNANzGGwfgeY1v7mT4M/wDvg0ygAOwvykoq3xY=;
+        b=UTTDoma3AA7WP5zj6S33a2gyCwsHucTsX4Qf9IbXgMKbr54cSrplyArIV+eZMu+8TV
+         W+zYWYLULscpo/gOM8KgwjyW5NOniGeQwAPElUu5dsdsOaongtgHTdsiJ+ZlYudsYidm
+         FnTSeVqARjFBy3Hcn6VBfK/9taKNdVDSFRnfcRi75WmFNgX+3FD+SMe86IDmjoSaWTDO
+         7b6G0Cm8wT8HXLgWjpD1KlnUwR2qzdYwIcp7v8rK/wayOqCW9RJ8/dzBbJOvjWx5bjQ2
+         7Dr+niwS8RlXl4W1jcoykKDVmGaa78xwfV677YrKgBuIOMVmaSUSfM071mW+81hFMHP+
+         9K/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763569480; x=1764174280;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p3N9ErNANzGGwfgeY1v7mT4M/wDvg0ygAOwvykoq3xY=;
+        b=A7JSXFSFAqS/RLPUlSthEK50KbmLseROhVOseoEeGdAKeDJZiBCNRL+O2s2gTotDQB
+         0pVS7O9pRTEETaILNIcPOHTCiOWpOVZcqpQd7fe0gLxEI9JRZ6SwE2UvHoyVoi6tTPNE
+         yzdeYqgVEgutyH0et2GBUyLyMov1vss9sWliZfiAfIjnVu191lae6xox6fSAatHrAlTm
+         EzigUvrQqtTKPHeFGfsiOunzXk7oLsf/UfKG9s8TJuTa2j4b0zo/L+Q9znt0n5Dp/QZ7
+         0mfgXVC1VcQl3I6jdZiAlvJXW2P8g0EXuELCFRdXyaLbNDhY0ojVIxSJwTeKoLGereNV
+         8Fzg==
+X-Forwarded-Encrypted: i=1; AJvYcCXLLedwuE4epEN+P88nZFa1Km8aNg8J+y8dnB8pmK3Audmc5/FVOXb5Be1UXTII5en7E0ZFKwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1ZTEORqNu2Za5SwOKNBLW47XIjrU0IpP6iuYdpKf9LaZ+UQZ0
+	93WM0eMuQuzSeC/IilEv1vK47em3XdsGs/8tC3foMJRQw8Bklmh2/KuY
+X-Gm-Gg: ASbGncsg8L7IzvHgdX6vzCc8dLE46Rz+M1YSAPQXQK8tCEt7ojNiHboZOmM4YFqnUdU
+	wXTrRdnk9Gdk3GjKbpbawqRuHoJCKQuScx9QMT4VjFEQ1/gDozP1NYagvt0xS9FDtriO9Dx8CjO
+	VvIAOYreSQuN5xH66w5ZDToLtCteyZ5t7TYxXzai2TWZnStlLTF7g5Glc0RtzYTF9Zant6QBXXx
+	Q5HdU3DxH7Yf6DHKjGnLkxdHhEFc7MhozwOaiBuGUESlwLgR7OEqCn5vcFGzmnFqpLk7CuVWfF5
+	WUnYB1XkhZf/7/L6JybhgcO6bvqn9wfGLPTYqpYWKaN8NJ5OcAQonhPE//AtXJXemzxLVKRssDR
+	10g3XTU4fWoFxKni6V0B/GXRj/mWLKmOXF1D3pdc8ZD5H+ytj2e2m7a5/iV0YYZweoqL+OfUFWM
+	TS8IwhTlR6iafi04F/EVlo5Q==
+X-Google-Smtp-Source: AGHT+IEhDRw4dV8UjCbRWVY4aY/eenqpiZBRwRmszWkO7M5Mr++PemeK3uIbC0+zEzuxM0+Ytez6Zw==
+X-Received: by 2002:a17:907:7f02:b0:b73:9be1:33ec with SMTP id a640c23a62f3a-b739be13868mr1255076266b.9.1763569480058;
+        Wed, 19 Nov 2025 08:24:40 -0800 (PST)
+Received: from localhost.localdomain ([46.10.223.24])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fedb91bsm1639328366b.70.2025.11.19.08.24.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 08:24:39 -0800 (PST)
+Date: Wed, 19 Nov 2025 18:24:37 +0200
+From: "Nikola Z. Ivanov" <zlatistiv@gmail.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Paolo Abeni <pabeni@redhat.com>, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	khalid@kernel.org, linux-kernel-mentees@lists.linuxfoundation.org, 
+	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
+Subject: Re: [PATCH net] team: Move team device type change at the end of
+ team_port_add
+Message-ID: <vv54er56wgnehntr2zh5jk6iz5s36jpyi4jfwjnkfabfwithtl@aizn2anzknjm>
+References: <20251112003444.2465-1-zlatistiv@gmail.com>
+ <c6fa0160-aac6-4fc4-b252-7151a0cb91d3@redhat.com>
+ <mekjl7qqrb6nkk6ru4fztqxzemldzbsplf5tzuu7amc7yaa5j3@rulh6ijsppaq>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aR3snSb1YUFh9Dwp@shell.armlinux.org.uk>
+In-Reply-To: <mekjl7qqrb6nkk6ru4fztqxzemldzbsplf5tzuu7amc7yaa5j3@rulh6ijsppaq>
 
-On Wed, Nov 19, 2025 at 04:13:17PM +0000, Russell King (Oracle) wrote:
-> On Wed, Nov 19, 2025 at 11:35:26PM +0800, Jisheng Zhang wrote:
-> > The dwmac 5.20 IP can be found on some synaptics SoCs. 
-> > 
-> > The binding doc has been already upstreamed by
-> > commit 13f9351180aa ("dt-bindings: net: snps,dwmac: Add dwmac-5.20
-> > version")
-> > 
-> > So we just need to add a compatibility flag in dwmac generic driver.
+On Wed, Nov 19, 2025 at 05:10:15PM +0100, Jiri Pirko wrote:
+> Tue, Nov 18, 2025 at 12:46:36PM +0100, pabeni@redhat.com wrote:
+> >On 11/12/25 1:34 AM, Nikola Z. Ivanov wrote:
+> >> @@ -1233,6 +1231,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+> >>  		}
+> >>  	}
+> >>  
+> >> +	err = team_dev_type_check_change(dev, port_dev);
+> >> +	if (err)
+> >> +		goto err_set_dev_type;
+> >
+> >Please don't add unneeded new labels, instead reuse the exiting
+> >`err_set_slave_promisc`.
 > 
-> Do we _need_ to add it to the generic driver? Do the platforms that are
-> using this really not need any additional code to support them?
-> 
-> Looking at all the DT that mention dwmac-5.20 in their compatible
-> strings, that is always after other compatibles that point to other
-> platform specific drivers.
-> 
-> So, can you point to a platform that doesn't have its own platform
-> glue, and would be functional when using the dwmac-generic driver?
+> Well, that is how error labels are done in team. "action" and
+> "err_action" is always paired. Why to break this consistent pattern?
 
-Synatpics platforms use the dwmac-generic driver, it's enough now.
-But we haven't upstreamed related platforms, but will do soon.
-> 
-> For reference, the dts that refer to dwmac-5.20 are:
-> 
-> arch/arm64/boot/dts/renesas/r9a09g047.dtsi
-> arch/arm64/boot/dts/renesas/r9a09g056.dtsi
-> arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-> arch/arm64/boot/dts/st/stm32mp251.dtsi
-> arch/arm64/boot/dts/st/stm32mp253.dtsi
-> arch/arm64/boot/dts/st/stm32mp233.dtsi
-> arch/arm64/boot/dts/st/stm32mp231.dtsi
-> arch/riscv/boot/dts/starfive/jh7110.dtsi
-> 
-> Thanks.
-> 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Hi Jiri,
+
+This pattern is already broken in the same function by this:
+
+        /* set promiscuity level to new slave */
+        if (dev->flags & IFF_PROMISC) {
+                err = dev_set_promiscuity(port_dev, 1);
+                if (err)
+                        goto err_set_slave_promisc;
+        }
+
+        /* set allmulti level to new slave */
+        if (dev->flags & IFF_ALLMULTI) {
+                err = dev_set_allmulti(port_dev, 1);
+                if (err) {
+                        if (dev->flags & IFF_PROMISC)
+                                dev_set_promiscuity(port_dev, -1);
+                        goto err_set_slave_promisc;
+                }
+        }
+
+So I guess I should also "break" it or do it as you've just
+suggested and add another label "err_set_slave_allmulti"
+so that we are at least consistent with this.
+
+Thank you!
