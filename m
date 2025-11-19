@@ -1,320 +1,108 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D915BE5E;
-	Wed, 19 Nov 2025 22:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1F920B80D
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 22:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763592194; cv=none; b=MOl6pN743l6jfbyMkZ0izdN9yLYrMIib2bdv63e1sLauv3UHeJc3sO0BT7v9MSVo6nvGvdyyeFMyqPq7lesZ1DqKM++KBQ3YACnK3317bdu1adrkFwFr3SptOh6FY0DzOXJgKsbKaO4xeGAEwyo8S3az3DVd3Pz1F+Tu1ENTz6o=
+	t=1763593128; cv=none; b=MAVUqTE9OikthlPeZvwTsenU+chw2ybczUkn7HFby52Xc9eHAMCRwvyDiChT+1+mByU4vl3j+4urq5wNdJ0A+AijyofpIhnHGsh1ycnzP1Cgd69GR4vFagbIDEjIqyrWrWYJiF7o5GEp7gRV+4o7sOFfaPZbN19AuLi0Q8DlZ4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763592194; c=relaxed/simple;
-	bh=SB6KrqYz2LaY0bnmGLgzebEVm2460Yuuig9I59sAzLQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qmfU/YO31BpDk0UvupRPFKIkbMyB9lEnUNM6GKukcLrSPVcU+bGr5UCSKMQlz/ZpehbqYEeyHCXfWzp7RaGvrIk74Hrb+GvFL6S+DZbGe5BQ8WyfyXrqtYEXPfrIk9eTNG2M9HiTBzxnDbVt+afOLcqysZzQ1lsHUfLCg4gX4SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=PsN5RGYw; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	s=arc-20240116; t=1763593128; c=relaxed/simple;
+	bh=f2l5MkKNSF6v8HTpthCW9c0REcYxtwaiNPwhFd/gKsY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AIAjp9fUVa5FzQUIldzmVN04G83ND7pftasJlOl0ShVd8wihQ2LL7co/O/BF0aA+855Ls3jvhR4Zz/C0XPq5gEzXjtkRIPeSiz5uLsvxXFgqKtOEkoTO9A8YDr+qIiuU5miSp0fhn0kief+6QHj6IYp6JLVfsPL9EYZ3GJP8xXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=at85dKXL; arc=none smtp.client-ip=74.125.224.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="PsN5RGYw"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqsC-006yiG-CY; Wed, 19 Nov 2025 23:42:00 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=vH8FIvcSxGANwVWko1oGmXX5GS5gNWUC/JCXBzpAFv8=; b=PsN5RG
-	Yw4adVp36kJvtQBzaOeT30b6SW8wtA5jYGrJdbMMMsYsvDj4CzgnWokM1Sou28r+uOGKmcLsCEfjF
-	x7vRqk4x0ZUk5Q3m4pLyHeUUi+2iNW4NTnKESfxwnZdG/Am3FVwILrLSmsIUe5z7hIsRaqS00FKIb
-	wpBgN3ajl01apzJtdlTrMHmSUaRE77jg78EefkqX+M/OVhBFzrdgCcdKMETn1d8vUsGL8F9h+RdA+
-	wbd/Fhu7XqijCSkRTMRCMNALzN5ANR/Nkxu1LF1FZnjDAvEZUMlegQ7pY4fPBR4It4haMp7qd5v5s
-	K6zPsakFUTM6CKZVixkuDzeoxeCg==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqs5-0007yi-PP; Wed, 19 Nov 2025 23:41:53 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vLqs1-00Fos6-6h; Wed, 19 Nov 2025 23:41:49 +0100
-From: david.laight.linux@gmail.com
-To: linux-kernel@vger.kernel.org
-Cc: Alan Stern <stern@rowland.harvard.edu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Christian Brauner <brauner@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	David Ahern <dsahern@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dennis Zhou <dennis@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Allen <john.allen@amd.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	KP Singh <kpsingh@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mika Westerberg <westeri@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	nic_swsd@realtek.com,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Olivia Mackall <olivia@selenic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tejun Heo <tj@kernel.org>,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	x86@kernel.org,
-	Yury Norov <yury.norov@gmail.com>,
-	amd-gfx@lists.freedesktop.org,
-	bpf@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	io-uring@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	netdev@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH 00/44] Change a lot of min_t() that might mask high bits
-Date: Wed, 19 Nov 2025 22:40:56 +0000
-Message-Id: <20251119224140.8616-1-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="at85dKXL"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63fb5a43d0aso36502d50.3
+        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 14:58:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763593125; x=1764197925; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f2l5MkKNSF6v8HTpthCW9c0REcYxtwaiNPwhFd/gKsY=;
+        b=at85dKXLFmwm0KYJmh7+JqEt1Y9DRGf2x2iFegbBk7ak4T3eQ6QWZeGkMurNjkGlpM
+         jLw7XfjyjClDMv74r9dTYztEeSBnDkKj9Qgd29Zl7hatVH0/yyjrReKBbW6JoS2rUZdQ
+         PIUAEMgxTdxEMT1lO0R2fBtFNnS1bDvx5iso6zZYpGjf+cs4uj5K5yrF4xWqOLWVOJLs
+         7WO1HEcsxQH3shGT3b7/WtiE65K9NNl8C6Rbsyq7h8UK0Jv+pRVnplBIJS0qwP8/b7ok
+         9fyeOlMfbCFvk0vADUqSzm+y8w3OvuN6cCTLfEn/5EVGlrFcOeH02yuv+HSJbsiV9bKD
+         Kpzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763593125; x=1764197925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f2l5MkKNSF6v8HTpthCW9c0REcYxtwaiNPwhFd/gKsY=;
+        b=TWYI7RdrIBTZzongc8OKSLYm1i4i522QuWgQcucSc/tyZ29KM0utAhe97sautC3f+E
+         aQ5zJz4d8aXd5nRPOFBbzHuYIfbURYRM0597RLstmkH5uba6vzHZdgOLtHIof0f/q0WA
+         zCsnIiKaPpVcojGk5RQFp7KSfbokv+51isP38tQOymkHRvk/46eQdBkO/PYbzxXo0pts
+         nC2Wn7GhlNT1+9AiLCR9YjnqNeMgiQfhPzFySyHPY2SeVVcvTUhZnsSiw0+V0TQd0k4i
+         5478AbB8gwrP2vBb+mFZlh+OIwubQkbMHHyjAIZ4Cjf7SGD48T4yadZsJ8jDweoQilAg
+         pVjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1MtYLzV9w5nUICyq/3NiYHlP/qN99sBARObUHZMc4oHJ3jOVpTndoCH13ZC7LRJTDsB+q3Vg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL+2gBlMbUkzhCq4asUqtxDyfGsATmZzEJXzHDr1gIOZ7/epdH
+	2A/LfzglVZKazwBZ81fHhp7KCnBxRGndrTlVZp+hFOANOJlsPoU/1tU2Q4zcDANuCnh7BlU3N5u
+	7HFBOMX2XRYmmfvjJfsTQFNRs9AEz4yc=
+X-Gm-Gg: ASbGnct81Zg6II1sJU7VQJH0dkee/Q58bAG7BEGAPAJcB3rxa36e9NUF6FYYACK6cZs
+	w3ErdpLCMDcgls9/IaV5IBbSJsuJPgT8mHLm5nna3aPJzuXanpP8z3gnfhQYpAZj9icQcWyZi8l
+	1N3gvJc4tf0qc0v31yLtuyvoSmPRDQAuAewLDEBoVouqhohJSFQ5iNaim8glNcHDtl2lkRZmsbD
+	1lFPP1pEuNw24H5PskTk/ztOGEmals4LyeruuihuHOITAvblgOt4Pqv9ZnXFM5wEj1Nnqq2/120
+	x7CT7AgehTtOOrxkTT3xRrKZQfh91KA=
+X-Google-Smtp-Source: AGHT+IFIbdlD0slMDf0ec9/PDny5wf8Cs5EBojHNy7+PN47moxCbujYhgeKqvmUnVr7j4rMEgn4Rfe7CinYPHNqGi6g=
+X-Received: by 2002:a05:690c:d:b0:787:deea:1b85 with SMTP id
+ 00721157ae682-78a796139f6mr7902247b3.7.1763593125345; Wed, 19 Nov 2025
+ 14:58:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251113-netconsole_dynamic_extradata-v2-0-18cf7fed1026@meta.com>
+ <20251113-netconsole_dynamic_extradata-v2-4-18cf7fed1026@meta.com> <v4xuuka7oovpcmcw4ualj5mdhw6jlgtcdheybbwtuy7qhd6nyd@3kav6dwkkdac>
+In-Reply-To: <v4xuuka7oovpcmcw4ualj5mdhw6jlgtcdheybbwtuy7qhd6nyd@3kav6dwkkdac>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
+Date: Wed, 19 Nov 2025 22:58:34 +0000
+X-Gm-Features: AWmQ_bkblqT4UnsE6iXRexrupNu4V6Dl9BSuZjWsv7DfjnR_A5WtYtp478fk8Kc
+Message-ID: <CAGSyskU2awfHd4JCFysCJ=Gf8z2tj_oZRZ4TD3_=K2KRuM=U1g@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 4/4] netconsole: Increase MAX_USERDATA_ITEMS
+To: Breno Leitao <leitao@debian.org>
+Cc: Andre Carvalho <asantostc@gmail.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Laight <david.laight.linux@gmail.com>
+On Fri, Nov 14, 2025 at 1:07=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
+ote:
+>
+> On Thu, Nov 13, 2025 at 08:42:21AM -0800, Gustavo Luiz Duarte wrote:
+> > Increase MAX_USERDATA_ITEMS from 16 to 256 entries now that the userdat=
+a
+> > buffer is allocated dynamically.
+> >
+> > The previous limit of 16 was necessary because the buffer was staticall=
+y
+> > allocated for all targets. With dynamic allocation, we can support more
+> > entries without wasting memory on targets that don't use userdata.
+> >
+> > This allows users to attach more metadata to their netconsole messages,
+> > which is useful for complex debugging and logging scenarios.
+> >
+> > Also update the testcase accordingly.
+> >
+> > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+>
+> Reviewed-by: Breno Leitao <leitao@debian.org>
+>
+> Please expand netcons_fragmented_msg.sh selftest to have ~100 userdata,
+> so, we can exercise this code in NIPA.
 
-It in not uncommon for code to use min_t(uint, a, b) when one of a or b
-is 64bit and can have a value that is larger than 2^32;
-This is particularly prevelant with:
-	uint_var = min_t(uint, uint_var, uint64_expression);
-
-Casts to u8 and u16 are very likely to discard significant bits.
-
-These can be detected at compile time by changing min_t(), for example:
-#define CHECK_SIZE(fn, type, val) \
-	BUILD_BUG_ON_MSG(sizeof (val) > sizeof (type) && \
-		!statically_true(((val) >> 8 * (sizeof (type) - 1)) < 256), \
-		fn "() significant bits of '" #val "' may be discarded")
-
-#define min_t(type, x, y) ({ \
-	CHECK_SIZE("min_t", type, x); \
-	CHECK_SIZE("min_t", type, y); \
-	__cmp_once(min, type, x, y); })
-
-(and similar changes to max_t() and clamp_t().)
-
-This shows up some real bugs, some unlikely bugs and some false positives.
-In most cases both arguments are unsigned type (just different ones)
-and min_t() can just be replaced by min().
-
-The patches are all independant and are most of the ones needed to
-get the x86-64 kernel I build to compile.
-I've not tried building an allyesconfig or allmodconfig kernel.
-I've also not included the patch to minmax.h itself.
-
-I've tried to put the patches that actually fix things first.
-The last one is 0009.
-
-I gave up on fixing sched/fair.c - it is too broken for a single patch!
-The patch for net/ipv4/tcp.c is also absent because do_tcp_getsockopt()
-needs multiple/larger changes to make it 'sane'.
-
-I've had to trim the 124 maintainers/lists that get_maintainer.pl finds
-from 124 to under 100 to be able to send the cover letter.
-The individual patches only go to the addresses found for the associated files.
-That reduces the number of emails to a less unsane number.
-
-David Laight (44):
-  x86/asm/bitops: Change the return type of variable__ffs() to unsigned
-    int
-  ext4: Fix saturation of 64bit inode times for old filesystems
-  perf: Fix branch stack callchain limit
-  io_uring/net: Change some dubious min_t()
-  ipc/msg: Fix saturation of percpu counts in msgctl_info()
-  bpf: Verifier, remove some unusual uses of min_t() and max_t()
-  net/core/flow_dissector: Fix cap of __skb_flow_dissect() return value.
-  net: ethtool: Use min3() instead of nested min_t(u16,...)
-  ipv6: __ip6_append_data() don't abuse max_t() casts
-  x86/crypto: ctr_crypt() use min() instead of min_t()
-  arch/x96/kvm: use min() instead of min_t()
-  block: use min() instead of min_t()
-  drivers/acpi: use min() instead of min_t()
-  drivers/char/hw_random: use min3() instead of nested min_t()
-  drivers/char/tpm: use min() instead of min_t()
-  drivers/crypto/ccp: use min() instead of min_t()
-  drivers/cxl: use min() instead of min_t()
-  drivers/gpio: use min() instead of min_t()
-  drivers/gpu/drm/amd: use min() instead of min_t()
-  drivers/i2c/busses: use min() instead of min_t()
-  drivers/net/ethernet/realtek: use min() instead of min_t()
-  drivers/nvme: use min() instead of min_t()
-  arch/x86/mm: use min() instead of min_t()
-  drivers/nvmem: use min() instead of min_t()
-  drivers/pci: use min() instead of min_t()
-  drivers/scsi: use min() instead of min_t()
-  drivers/tty/vt: use umin() instead of min_t(u16, ...) for row/col
-    limits
-  drivers/usb/storage: use min() instead of min_t()
-  drivers/xen: use min() instead of min_t()
-  fs: use min() or umin() instead of min_t()
-  block: bvec.h: use min() instead of min_t()
-  nodemask: use min() instead of min_t()
-  ipc: use min() instead of min_t()
-  bpf: use min() instead of min_t()
-  bpf_trace: use min() instead of min_t()
-  lib/bucket_locks: use min() instead of min_t()
-  lib/crypto/mpi: use min() instead of min_t()
-  lib/dynamic_queue_limits: use max() instead of max_t()
-  mm: use min() instead of min_t()
-  net: Don't pass bitfields to max_t()
-  net/core: Change loop conditions so min() can be used
-  net: use min() instead of min_t()
-  net/netlink: Use umin() to avoid min_t(int, ...) discarding high bits
-  net/mptcp: Change some dubious min_t(int, ...) to min()
-
- arch/x86/crypto/aesni-intel_glue.c            |  3 +-
- arch/x86/include/asm/bitops.h                 | 18 +++++-------
- arch/x86/kvm/emulate.c                        |  3 +-
- arch/x86/kvm/lapic.c                          |  2 +-
- arch/x86/kvm/mmu/mmu.c                        |  2 +-
- arch/x86/mm/pat/set_memory.c                  | 12 ++++----
- block/blk-iocost.c                            |  6 ++--
- block/blk-settings.c                          |  2 +-
- block/partitions/efi.c                        |  3 +-
- drivers/acpi/property.c                       |  2 +-
- drivers/char/hw_random/core.c                 |  2 +-
- drivers/char/tpm/tpm1-cmd.c                   |  2 +-
- drivers/char/tpm/tpm_tis_core.c               |  4 +--
- drivers/crypto/ccp/ccp-dev.c                  |  2 +-
- drivers/cxl/core/mbox.c                       |  2 +-
- drivers/gpio/gpiolib-acpi-core.c              |  2 +-
- .../gpu/drm/amd/amdgpu/amdgpu_doorbell_mgr.c  |  4 +--
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c        |  2 +-
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  2 +-
- drivers/i2c/busses/i2c-designware-master.c    |  2 +-
- drivers/net/ethernet/realtek/r8169_main.c     |  3 +-
- drivers/nvme/host/pci.c                       |  3 +-
- drivers/nvme/host/zns.c                       |  3 +-
- drivers/nvmem/core.c                          |  2 +-
- drivers/pci/probe.c                           |  3 +-
- drivers/scsi/hosts.c                          |  2 +-
- drivers/tty/vt/selection.c                    |  9 +++---
- drivers/usb/storage/protocol.c                |  3 +-
- drivers/xen/grant-table.c                     |  2 +-
- fs/buffer.c                                   |  2 +-
- fs/exec.c                                     |  2 +-
- fs/ext4/ext4.h                                |  2 +-
- fs/ext4/mballoc.c                             |  3 +-
- fs/ext4/resize.c                              |  2 +-
- fs/ext4/super.c                               |  2 +-
- fs/fat/dir.c                                  |  4 +--
- fs/fat/file.c                                 |  3 +-
- fs/fuse/dev.c                                 |  2 +-
- fs/fuse/file.c                                |  8 ++---
- fs/splice.c                                   |  2 +-
- include/linux/bvec.h                          |  3 +-
- include/linux/nodemask.h                      |  9 +++---
- include/linux/perf_event.h                    |  2 +-
- include/net/tcp_ecn.h                         |  5 ++--
- io_uring/net.c                                |  6 ++--
- ipc/mqueue.c                                  |  4 +--
- ipc/msg.c                                     |  6 ++--
- kernel/bpf/core.c                             |  4 +--
- kernel/bpf/log.c                              |  2 +-
- kernel/bpf/verifier.c                         | 29 +++++++------------
- kernel/trace/bpf_trace.c                      |  2 +-
- lib/bucket_locks.c                            |  2 +-
- lib/crypto/mpi/mpicoder.c                     |  2 +-
- lib/dynamic_queue_limits.c                    |  2 +-
- mm/gup.c                                      |  4 +--
- mm/memblock.c                                 |  2 +-
- mm/memory.c                                   |  2 +-
- mm/percpu.c                                   |  2 +-
- mm/truncate.c                                 |  3 +-
- mm/vmscan.c                                   |  2 +-
- net/core/datagram.c                           |  6 ++--
- net/core/flow_dissector.c                     |  7 ++---
- net/core/net-sysfs.c                          |  3 +-
- net/core/skmsg.c                              |  4 +--
- net/ethtool/cmis_cdb.c                        |  7 ++---
- net/ipv4/fib_trie.c                           |  2 +-
- net/ipv4/tcp_input.c                          |  4 +--
- net/ipv4/tcp_output.c                         |  5 ++--
- net/ipv4/tcp_timer.c                          |  4 +--
- net/ipv6/addrconf.c                           |  8 ++---
- net/ipv6/ip6_output.c                         |  7 +++--
- net/ipv6/ndisc.c                              |  5 ++--
- net/mptcp/protocol.c                          |  8 ++---
- net/netlink/genetlink.c                       |  9 +++---
- net/packet/af_packet.c                        |  2 +-
- net/unix/af_unix.c                            |  4 +--
- 76 files changed, 141 insertions(+), 176 deletions(-)
-
--- 
-2.39.5
-
+I had a quick look and netcons_fragmented_msg.sh needs some
+refactoring to be more reliable before I can do this. I will send this
+as a separate patch set.
