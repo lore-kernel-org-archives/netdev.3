@@ -1,517 +1,263 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C88534575A;
-	Wed, 19 Nov 2025 10:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D3B347FD2
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 10:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763546688; cv=none; b=Tq/XkVXKlrsLjet1DqQbNeLfDzUJLh+sB69UG3ZkXSrhWidELtzT5aSFH4F/q4D/Ax+ODheyy47E+hjVaA5oItL5YWSSsH2npC4hP035dZVmc1wGLQgF772IiEuxPRV0jbHgoeG8qdh1z6YIjCtvcX4FQQLxnR+1G6FhY4tbb8A=
+	t=1763546968; cv=none; b=nhDvtzCExb+4+XX2GVvCer0EJYEPHm7PFZ+f1zsMgDHEpGy6GwzLpNAfHaL7Y0Xqsil3zZcjijV/BdvUO5ZFJj6c+QTbYh19PSlh8/FvVpu5/i/cx9kfJWRDmopmU1ZfQjz63PjwFKtl12yPyaO9dY7+bhRoE3rQlux194fcesI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763546688; c=relaxed/simple;
-	bh=lyYz8eesuYWb90rFv8QcalGy4osDMd3Gqite1FalogI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=L31h4lscQoq+ZPA4cMg/jdzlXHsO1Ef2KqO4U3QiUkXttcEWlO67OSmF9sfFATHh+w3HIRcY7HgEy8TkDD5oqZRrWYIjswm2sVdxhbRUNp1IEhhEICMRGS66SbStAgwDmmxymclkG8Hs1I5X/wKtenJ32AYqRQ+kxeb/uMHU6jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=MIzG8C3I; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1763546968; c=relaxed/simple;
+	bh=OJvuqh8SyRe//eizJsEe1K247PQ8bD47X5Q22nudA1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltg0GgXHs9fzUEgRMb/hYtR7qZEbnZljslpM3YiPsjimJqC//r3qIHj0sF93zoZgdPv8jPkUxcZawdiro7Bn3UMY1rFyw8z9PGubx0IBI0g+xTsvE4z9xLFDPAgr459ptBp7CDA72Dxtc0jaaU1q9Qt+pPwWtm2gCO74L1AE7+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Me68I3F7; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MIzG8C3I"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=m3WCGFaobDN79FTEcHtVNwT/nYzQsnA34Pvinfr8574=; b=MIzG8C3I3B0Eaqs3tmExaHC/ok
-	XNjjkYvjLXvFfsFaU+AMTBa3AYEuh3fUDueeYx9oUnqtwNkW1NHpPfFnZBlTHxNuuoGNIlsd9Ie/T
-	0I0NARTUyiFHxCPm9r4qE5bXoFc4hxMfeR0c4k1ieGeWmVpHEveG7PeSEU/4+nhKFCdHxaSj5FFIf
-	UsRFi5MzSLVJteT8XErM7XLYzBksejvPEZQrvlh+JXIARAUJ1wi4HlK0iNHZfzf1b2nYJ/5XdxK9m
-	AnxDkBsreApW0qduA14MvVHKc/uGvptAinuBAW7pt2WtCbFmE1XPxlspjYU1ACNLbpBp9qFLq78o3
-	wMlPAYgg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35844 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vLf2U-000000004Qx-40xg;
-	Wed, 19 Nov 2025 10:03:51 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vLf2U-0000000FMN2-0SLg;
-	Wed, 19 Nov 2025 10:03:50 +0000
-In-Reply-To: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk>
-References: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chen-Yu Tsai <wens@csie.org>,
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Me68I3F7"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7277324204so903949066b.0
+        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 02:09:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1763546963; x=1764151763; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mZmwnZeJsVmH4Emd6Sk7OTkRxBmCW6aXF7g1I/Zjods=;
+        b=Me68I3F7En431raJbedjbBOoq/VSyrLNPSHh1NDSm7hS35yUH6C/wWOVtLpKfCtyKl
+         pgezovtS+J6QjL9ajtb55htcb981QToFRQ+otMIJfwMjjV11g4S/+ihLcnAz/y8U6bMQ
+         vvXmi1cN/61t0y6wCN8KE5mqZ1KQunNOGGjztAYvEIM9rtm2yLoN1BWHaoGQB0l04TCm
+         cnIlJieWZmh52VixvgLDVLIKN7Oy65N1tNxRLoCQ5ndqdmyKOMCwQZUDSWQdLd5mGVUn
+         Hr8IR746a3flbusR85EkV3KQPqkp5ZhtLalhLau2pCQSTiay13R7j/1/SFqpcCg/+jVE
+         uPQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763546963; x=1764151763;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mZmwnZeJsVmH4Emd6Sk7OTkRxBmCW6aXF7g1I/Zjods=;
+        b=v2QScMR5MEJf7TcLeeZMO6dyYE9GcMKBKH/RmevmzQp7G5tssbmtqxvpOyWx52YMuJ
+         5v1uejs90nJJUcBbMV5EEnGqBAdR3BPK5QXbewNUda1efJYeo86ceJX/W+qFvOu2JgK0
+         onBmcpd7bPhupW0gFEbz/ham8Z8v76dEfvwaKWqtjyu2xwD4d8IupleS6Po09kGuOCFR
+         fAUgG8Yg9T4VND8mc4aAScpGnJk5fZbzPIVmTzfY+A5/4SE6LfK0i9qiI1xBoeUcoGcP
+         k5v9gutX63AaZ6hJaYpnZPi0wNis9prwSWGs55y7DKfnjWvFNll1Tnk+OIvfi7hdR2Tm
+         yZ5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUAAQiOviMXGse/nsI/4BNKuPdif3fnxei+zJkHPs2Fq+n++Xph1d3PptmS5jym0c23tTb+cjI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnE1MVy6yN7vwbEac3mN/9EW3FKPn51sUqWCqAYB2jgCM6yKoZ
+	AUp75VJlYErwznUnZGgNK5ktx8h+J7AlkAxhAE6WUxeTlu4dx4zBLTXUNLnixLiL9qg=
+X-Gm-Gg: ASbGnctgqp1RA0u57d3ZX2H/UHqrQ7YEh3h7rC0srkbxPc7HJaLHO4wcE77mFJOlnF+
+	DvsQxAK/2A1bcGntcsu9RvfQWBaUyDTM8pgrAf+9l9LUaY9gFOfioGvszx2zsttijcdMLupRcLe
+	g02pQAd7cKJ6rRTlAPG8wn8HfivQczKXNYhHEg9nhZcNWapdNFOnIxSEI73EQ7Y1tN39yh30b4w
+	344mBJivk0ApMHsSTR0ync60p8IjlFXt34F+wm6lDN/C55YXCiqYR875Pdq6wZo6RPtEtJcG5CW
+	7bHhEVW/DFMUWi1+P91OW4mLH5r7hwjQAy7+nughdcUBL9XMte3sbyf9pXlRIt4MHCqGbZlXPyk
+	e+d2LIEmY9g3H/jA6sfAPulmgXu8vtGwKFV0yuLd9uQ2X/grpSj5lRGFByVpT9w24hYwpaftHYU
+	SOcK6nA0dvcvCvP4YLDU1ndt9A
+X-Google-Smtp-Source: AGHT+IHL60A5nBupA1OyvdeZdvK8rVJqcdAj2UJ8GMSSqilZDEkvpcYDaNSL65+yyn9lVOsemK499g==
+X-Received: by 2002:a17:907:1c81:b0:b72:d2df:641c with SMTP id a640c23a62f3a-b736795d498mr2006941666b.49.1763546963352;
+        Wed, 19 Nov 2025 02:09:23 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fda8bc8sm1594056066b.49.2025.11.19.02.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 02:09:22 -0800 (PST)
+Date: Wed, 19 Nov 2025 11:08:01 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Corey Minyard <corey@minyard.net>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, Calvin Owens <calvin@wbinvd.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Sagi Maimon <maimon.sagi@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Karan Tilak Kumar <kartilak@cisco.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, amd-gfx@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-mmc@vger.kernel.org,
+	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	linux-pci@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+	ceph-devel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Gustavo Padovan <gustavo@padovan.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Drew Fustini <fustini@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Fu Wei <wefu@redhat.com>,
-	Guo Ren <guoren@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	s32@nxp.com,
-	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH net-next 1/3] net: stmmac: pass struct device to init()/exit()
- methods
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Satish Kharat <satishkh@cisco.com>,
+	Sesidhar Baddela <sebaddel@cisco.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 19/21] scsi: fnic: Switch to use %ptSp
+Message-ID: <aR2XAYWTEgMZu_Mx@pathway.suse.cz>
+References: <20251113150217.3030010-1-andriy.shevchenko@linux.intel.com>
+ <20251113150217.3030010-20-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vLf2U-0000000FMN2-0SLg@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 19 Nov 2025 10:03:50 +0000
+In-Reply-To: <20251113150217.3030010-20-andriy.shevchenko@linux.intel.com>
 
-As struct plat_stmmacenet_data is not platform_device specific, pass
-a struct device into the init() and exit() methods to allow them to
-become independent of the underlying device.
+On Thu 2025-11-13 15:32:33, Andy Shevchenko wrote:
+> Use %ptSp instead of open coded variants to print content of
+> struct timespec64 in human readable format.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../ethernet/stmicro/stmmac/dwmac-anarion.c   |  4 +--
- .../ethernet/stmicro/stmmac/dwmac-eic7700.c   |  4 +--
- .../ethernet/stmicro/stmmac/dwmac-loongson1.c | 12 ++++----
- .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  4 +--
- .../net/ethernet/stmicro/stmmac/dwmac-s32.c   | 14 +++++-----
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  2 +-
- .../net/ethernet/stmicro/stmmac/dwmac-sti.c   |  4 +--
- .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 10 +++----
- .../net/ethernet/stmicro/stmmac/dwmac-sunxi.c |  4 +--
- .../net/ethernet/stmicro/stmmac/dwmac-thead.c |  2 +-
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 28 ++++++++++---------
- include/linux/stmmac.h                        |  4 +--
- 12 files changed, 47 insertions(+), 45 deletions(-)
+I was about to commit the changes into printk/linux.git and
+found a mistake during the final double check, see below.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-index 84072c8ed741..5e0fc31762d9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-anarion.c
-@@ -34,7 +34,7 @@ static void gmac_write_reg(struct anarion_gmac *gmac, uint8_t reg, uint32_t val)
- 	writel(val, gmac->ctl_block + reg);
- }
- 
--static int anarion_gmac_init(struct platform_device *pdev, void *priv)
-+static int anarion_gmac_init(struct device *dev, void *priv)
- {
- 	uint32_t sw_config;
- 	struct anarion_gmac *gmac = priv;
-@@ -52,7 +52,7 @@ static int anarion_gmac_init(struct platform_device *pdev, void *priv)
- 	return 0;
- }
- 
--static void anarion_gmac_exit(struct platform_device *pdev, void *priv)
-+static void anarion_gmac_exit(struct device *dev, void *priv)
- {
- 	struct anarion_gmac *gmac = priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-index 1dcf2037001e..bcb8e000e720 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-@@ -58,14 +58,14 @@ static int eic7700_clks_config(void *priv, bool enabled)
- 	return ret;
- }
- 
--static int eic7700_dwmac_init(struct platform_device *pdev, void *priv)
-+static int eic7700_dwmac_init(struct device *dev, void *priv)
- {
- 	struct eic7700_qos_priv *dwc = priv;
- 
- 	return eic7700_clks_config(dwc, true);
- }
- 
--static void eic7700_dwmac_exit(struct platform_device *pdev, void *priv)
-+static void eic7700_dwmac_exit(struct device *dev, void *priv)
- {
- 	struct eic7700_qos_priv *dwc = priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson1.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson1.c
-index 894ee66f5c9b..de9aba756aac 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson1.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson1.c
-@@ -48,7 +48,7 @@ struct ls1x_dwmac {
- struct ls1x_data {
- 	int (*setup)(struct platform_device *pdev,
- 		     struct plat_stmmacenet_data *plat_dat);
--	int (*init)(struct platform_device *pdev, void *bsp_priv);
-+	int (*init)(struct device *dev, void *bsp_priv);
- };
- 
- static int ls1b_dwmac_setup(struct platform_device *pdev,
-@@ -79,7 +79,7 @@ static int ls1b_dwmac_setup(struct platform_device *pdev,
- 	return 0;
- }
- 
--static int ls1b_dwmac_syscon_init(struct platform_device *pdev, void *priv)
-+static int ls1b_dwmac_syscon_init(struct device *dev, void *priv)
- {
- 	struct ls1x_dwmac *dwmac = priv;
- 	struct plat_stmmacenet_data *plat = dwmac->plat_dat;
-@@ -98,7 +98,7 @@ static int ls1b_dwmac_syscon_init(struct platform_device *pdev, void *priv)
- 					   GMAC0_USE_TXCLK | GMAC0_USE_PWM01);
- 			break;
- 		default:
--			dev_err(&pdev->dev, "Unsupported PHY mode %u\n",
-+			dev_err(dev, "Unsupported PHY mode %u\n",
- 				plat->phy_interface);
- 			return -EOPNOTSUPP;
- 		}
-@@ -122,7 +122,7 @@ static int ls1b_dwmac_syscon_init(struct platform_device *pdev, void *priv)
- 					   GMAC1_USE_TXCLK | GMAC1_USE_PWM23);
- 			break;
- 		default:
--			dev_err(&pdev->dev, "Unsupported PHY mode %u\n",
-+			dev_err(dev, "Unsupported PHY mode %u\n",
- 				plat->phy_interface);
- 			return -EOPNOTSUPP;
- 		}
-@@ -133,7 +133,7 @@ static int ls1b_dwmac_syscon_init(struct platform_device *pdev, void *priv)
- 	return 0;
- }
- 
--static int ls1c_dwmac_syscon_init(struct platform_device *pdev, void *priv)
-+static int ls1c_dwmac_syscon_init(struct device *dev, void *priv)
- {
- 	struct ls1x_dwmac *dwmac = priv;
- 	struct plat_stmmacenet_data *plat = dwmac->plat_dat;
-@@ -143,7 +143,7 @@ static int ls1c_dwmac_syscon_init(struct platform_device *pdev, void *priv)
- 	phy_intf_sel = stmmac_get_phy_intf_sel(plat->phy_interface);
- 	if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
- 	    phy_intf_sel != PHY_INTF_SEL_RMII) {
--		dev_err(&pdev->dev, "Unsupported PHY-mode %u\n",
-+		dev_err(dev, "Unsupported PHY-mode %u\n",
- 			plat->phy_interface);
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-index bc7bb975803c..be7f5eb2cdcf 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-@@ -91,7 +91,7 @@ static struct phylink_pcs *renesas_gmac_select_pcs(struct stmmac_priv *priv,
- 	return priv->hw->phylink_pcs;
- }
- 
--static int renesas_gbeth_init(struct platform_device *pdev, void *priv)
-+static int renesas_gbeth_init(struct device *dev, void *priv)
- {
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct renesas_gbeth *gbeth = priv;
-@@ -113,7 +113,7 @@ static int renesas_gbeth_init(struct platform_device *pdev, void *priv)
- 	return ret;
- }
- 
--static void renesas_gbeth_exit(struct platform_device *pdev, void *priv)
-+static void renesas_gbeth_exit(struct device *dev, void *priv)
- {
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct renesas_gbeth *gbeth = priv;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-index 2b7ad64bfdf7..5a485ee98fa7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-@@ -47,7 +47,7 @@ static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
- 	return 0;
- }
- 
--static int s32_gmac_init(struct platform_device *pdev, void *priv)
-+static int s32_gmac_init(struct device *dev, void *priv)
- {
- 	struct s32_priv_data *gmac = priv;
- 	int ret;
-@@ -55,31 +55,31 @@ static int s32_gmac_init(struct platform_device *pdev, void *priv)
- 	/* Set initial TX interface clock */
- 	ret = clk_prepare_enable(gmac->tx_clk);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't enable tx clock\n");
-+		dev_err(dev, "Can't enable tx clock\n");
- 		return ret;
- 	}
- 	ret = clk_set_rate(gmac->tx_clk, GMAC_INTF_RATE_125M);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't set tx clock\n");
-+		dev_err(dev, "Can't set tx clock\n");
- 		goto err_tx_disable;
- 	}
- 
- 	/* Set initial RX interface clock */
- 	ret = clk_prepare_enable(gmac->rx_clk);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't enable rx clock\n");
-+		dev_err(dev, "Can't enable rx clock\n");
- 		goto err_tx_disable;
- 	}
- 	ret = clk_set_rate(gmac->rx_clk, GMAC_INTF_RATE_125M);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't set rx clock\n");
-+		dev_err(dev, "Can't set rx clock\n");
- 		goto err_txrx_disable;
- 	}
- 
- 	/* Set interface mode */
- 	ret = s32_gmac_write_phy_intf_select(gmac);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't set PHY interface mode\n");
-+		dev_err(dev, "Can't set PHY interface mode\n");
- 		goto err_txrx_disable;
- 	}
- 
-@@ -92,7 +92,7 @@ static int s32_gmac_init(struct platform_device *pdev, void *priv)
- 	return ret;
- }
- 
--static void s32_gmac_exit(struct platform_device *pdev, void *priv)
-+static void s32_gmac_exit(struct device *dev, void *priv)
- {
- 	struct s32_priv_data *gmac = priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 49d651948e2b..a2b52d2c4eb6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -551,7 +551,7 @@ static struct phylink_pcs *socfpga_dwmac_select_pcs(struct stmmac_priv *priv,
- 	return priv->hw->phylink_pcs;
- }
- 
--static int socfpga_dwmac_init(struct platform_device *pdev, void *bsp_priv)
-+static int socfpga_dwmac_init(struct device *dev, void *bsp_priv)
- {
- 	struct socfpga_dwmac *dwmac = bsp_priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-index b0509ab6b31c..f50547b67fbc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c
-@@ -229,14 +229,14 @@ static int sti_dwmac_parse_data(struct sti_dwmac *dwmac,
- 	return 0;
- }
- 
--static int sti_dwmac_init(struct platform_device *pdev, void *bsp_priv)
-+static int sti_dwmac_init(struct device *dev, void *bsp_priv)
- {
- 	struct sti_dwmac *dwmac = bsp_priv;
- 
- 	return clk_prepare_enable(dwmac->clk);
- }
- 
--static void sti_dwmac_exit(struct platform_device *pdev, void *bsp_priv)
-+static void sti_dwmac_exit(struct device *dev, void *bsp_priv)
- {
- 	struct sti_dwmac *dwmac = bsp_priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 7434d4bbb526..8aa496ac85cc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -571,16 +571,16 @@ static const struct stmmac_dma_ops sun8i_dwmac_dma_ops = {
- 
- static int sun8i_dwmac_power_internal_phy(struct stmmac_priv *priv);
- 
--static int sun8i_dwmac_init(struct platform_device *pdev, void *priv)
-+static int sun8i_dwmac_init(struct device *dev, void *priv)
- {
--	struct net_device *ndev = platform_get_drvdata(pdev);
-+	struct net_device *ndev = dev_get_drvdata(dev);
- 	struct sunxi_priv_data *gmac = priv;
- 	int ret;
- 
- 	if (gmac->regulator) {
- 		ret = regulator_enable(gmac->regulator);
- 		if (ret) {
--			dev_err(&pdev->dev, "Fail to enable regulator\n");
-+			dev_err(dev, "Fail to enable regulator\n");
- 			return ret;
- 		}
- 	}
-@@ -1005,7 +1005,7 @@ static void sun8i_dwmac_unset_syscon(struct sunxi_priv_data *gmac)
- 				   (H3_EPHY_SHUTDOWN | H3_EPHY_SELECT));
- }
- 
--static void sun8i_dwmac_exit(struct platform_device *pdev, void *priv)
-+static void sun8i_dwmac_exit(struct device *dev, void *priv)
- {
- 	struct sunxi_priv_data *gmac = priv;
- 
-@@ -1265,7 +1265,7 @@ static void sun8i_dwmac_shutdown(struct platform_device *pdev)
- 	struct stmmac_priv *priv = netdev_priv(ndev);
- 	struct sunxi_priv_data *gmac = priv->plat->bsp_priv;
- 
--	sun8i_dwmac_exit(pdev, gmac);
-+	sun8i_dwmac_exit(&pdev->dev, gmac);
- }
- 
- static const struct of_device_id sun8i_dwmac_match[] = {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c
-index 7f560d78209d..52593ba3a3a3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c
-@@ -27,7 +27,7 @@ struct sunxi_priv_data {
- #define SUN7I_GMAC_GMII_RGMII_RATE	125000000
- #define SUN7I_GMAC_MII_RATE		25000000
- 
--static int sun7i_gmac_init(struct platform_device *pdev, void *priv)
-+static int sun7i_gmac_init(struct device *dev, void *priv)
- {
- 	struct sunxi_priv_data *gmac = priv;
- 	int ret = 0;
-@@ -58,7 +58,7 @@ static int sun7i_gmac_init(struct platform_device *pdev, void *priv)
- 	return ret;
- }
- 
--static void sun7i_gmac_exit(struct platform_device *pdev, void *priv)
-+static void sun7i_gmac_exit(struct device *dev, void *priv)
- {
- 	struct sunxi_priv_data *gmac = priv;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-index a3378046b061..e291028ba56e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
-@@ -186,7 +186,7 @@ static int thead_dwmac_enable_clk(struct plat_stmmacenet_data *plat)
- 	return 0;
- }
- 
--static int thead_dwmac_init(struct platform_device *pdev, void *priv)
-+static int thead_dwmac_init(struct device *dev, void *priv)
- {
- 	struct thead_dwmac *dwmac = priv;
- 	unsigned int reg;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 1fefa6c55db1..feccb8a3e7e8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -747,40 +747,40 @@ EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
- 
- /**
-  * stmmac_pltfr_init
-- * @pdev: pointer to the platform device
-+ * @dev: pointer to the device structure
-  * @plat: driver data platform structure
-  * Description: Call the platform's init callback (if any) and propagate
-  * the return value.
-  */
--static int stmmac_pltfr_init(struct platform_device *pdev,
-+static int stmmac_pltfr_init(struct device *dev,
- 			     struct plat_stmmacenet_data *plat)
- {
- 	int ret = 0;
- 
- 	if (plat->init)
--		ret = plat->init(pdev, plat->bsp_priv);
-+		ret = plat->init(dev, plat->bsp_priv);
- 
- 	return ret;
- }
- 
- /**
-  * stmmac_pltfr_exit
-- * @pdev: pointer to the platform device
-+ * @dev: pointer to the device structure
-  * @plat: driver data platform structure
-  * Description: Call the platform's exit callback (if any).
-  */
--static void stmmac_pltfr_exit(struct platform_device *pdev,
-+static void stmmac_pltfr_exit(struct device *dev,
- 			      struct plat_stmmacenet_data *plat)
- {
- 	if (plat->exit)
--		plat->exit(pdev, plat->bsp_priv);
-+		plat->exit(dev, plat->bsp_priv);
- }
- 
- static int stmmac_plat_suspend(struct device *dev, void *bsp_priv)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev_get_drvdata(dev));
- 
--	stmmac_pltfr_exit(to_platform_device(dev), priv->plat);
-+	stmmac_pltfr_exit(dev, priv->plat);
- 
- 	return 0;
- }
-@@ -789,7 +789,7 @@ static int stmmac_plat_resume(struct device *dev, void *bsp_priv)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev_get_drvdata(dev));
- 
--	return stmmac_pltfr_init(to_platform_device(dev), priv->plat);
-+	return stmmac_pltfr_init(dev, priv->plat);
- }
- 
- /**
-@@ -804,6 +804,7 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
- 		       struct plat_stmmacenet_data *plat,
- 		       struct stmmac_resources *res)
- {
-+	struct device *dev = &pdev->dev;
- 	int ret;
- 
- 	if (!plat->suspend && plat->exit)
-@@ -811,13 +812,13 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
- 	if (!plat->resume && plat->init)
- 		plat->resume = stmmac_plat_resume;
- 
--	ret = stmmac_pltfr_init(pdev, plat);
-+	ret = stmmac_pltfr_init(dev, plat);
- 	if (ret)
- 		return ret;
- 
--	ret = stmmac_dvr_probe(&pdev->dev, plat, res);
-+	ret = stmmac_dvr_probe(dev, plat, res);
- 	if (ret) {
--		stmmac_pltfr_exit(pdev, plat);
-+		stmmac_pltfr_exit(dev, plat);
- 		return ret;
- 	}
- 
-@@ -866,9 +867,10 @@ void stmmac_pltfr_remove(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct stmmac_priv *priv = netdev_priv(ndev);
- 	struct plat_stmmacenet_data *plat = priv->plat;
-+	struct device *dev = &pdev->dev;
- 
--	stmmac_dvr_remove(&pdev->dev);
--	stmmac_pltfr_exit(pdev, plat);
-+	stmmac_dvr_remove(dev);
-+	stmmac_pltfr_exit(dev, plat);
- }
- EXPORT_SYMBOL_GPL(stmmac_pltfr_remove);
- 
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 4f70a6551e68..673b068fdadf 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -264,8 +264,8 @@ struct plat_stmmacenet_data {
- 			  unsigned int mode,
- 			  phy_interface_t interface);
- 	void (*ptp_clk_freq_config)(struct stmmac_priv *priv);
--	int (*init)(struct platform_device *pdev, void *priv);
--	void (*exit)(struct platform_device *pdev, void *priv);
-+	int (*init)(struct device *dev, void *priv);
-+	void (*exit)(struct device *dev, void *priv);
- 	int (*suspend)(struct device *dev, void *priv);
- 	int (*resume)(struct device *dev, void *priv);
- 	int (*mac_setup)(void *priv, struct mac_device_info *mac);
--- 
-2.47.3
+> diff --git a/drivers/scsi/fnic/fnic_trace.c b/drivers/scsi/fnic/fnic_trace.c
+> index cdc6b12b1ec2..0a849a195a8e 100644
+> --- a/drivers/scsi/fnic/fnic_trace.c
+> +++ b/drivers/scsi/fnic/fnic_trace.c
+> @@ -215,30 +213,26 @@ int fnic_get_stats_data(struct stats_debug_info *debug,
+>  {
+>  	int len = 0;
+>  	int buf_size = debug->buf_size;
+> -	struct timespec64 val1, val2;
+> +	struct timespec64 val, val1, val2;
+>  	int i = 0;
+>  
+> -	ktime_get_real_ts64(&val1);
+> +	ktime_get_real_ts64(&val);
+>  	len = scnprintf(debug->debug_buffer + len, buf_size - len,
+>  		"------------------------------------------\n"
+>  		 "\t\tTime\n"
+>  		"------------------------------------------\n");
+>  
+> +	val1 = timespec64_sub(val, stats->stats_timestamps.last_reset_time);
+> +	val2 = timespec64_sub(val, stats->stats_timestamps.last_read_time);
+>  	len += scnprintf(debug->debug_buffer + len, buf_size - len,
+> -		"Current time :          [%lld:%ld]\n"
+> -		"Last stats reset time:  [%lld:%09ld]\n"
+> -		"Last stats read time:   [%lld:%ld]\n"
+> -		"delta since last reset: [%lld:%ld]\n"
+> -		"delta since last read:  [%lld:%ld]\n",
+> -	(s64)val1.tv_sec, val1.tv_nsec,
+> -	(s64)stats->stats_timestamps.last_reset_time.tv_sec,
+> -	stats->stats_timestamps.last_reset_time.tv_nsec,
+> -	(s64)stats->stats_timestamps.last_read_time.tv_sec,
+> -	stats->stats_timestamps.last_read_time.tv_nsec,
+> -	(s64)timespec64_sub(val1, stats->stats_timestamps.last_reset_time).tv_sec,
+> -	timespec64_sub(val1, stats->stats_timestamps.last_reset_time).tv_nsec,
+> -	(s64)timespec64_sub(val1, stats->stats_timestamps.last_read_time).tv_sec,
+> -	timespec64_sub(val1, stats->stats_timestamps.last_read_time).tv_nsec);
+> +			 "Current time :          [%ptSp]\n"
+> +			 "Last stats reset time:  [%ptSp]\n"
+> +			 "Last stats read time:   [%ptSp]\n"
+> +			 "delta since last reset: [%ptSp]\n"
+> +			 "delta since last read:  [%ptSp]\n",
 
+Both delta times are printed at the end.
+
+> +			 &val,
+> +			 &stats->stats_timestamps.last_reset_time, &val1,
+> +			 &stats->stats_timestamps.last_read_time, &val2);
+
+I think that this should be:
+
+			 &stats->stats_timestamps.last_reset_time,
+			 &stats->stats_timestamps.last_read_time,
+			 &val1, &val2);
+
+>  	stats->stats_timestamps.last_read_time = val1;
+
+The original code stored the current time in "val1". This should be:
+
+	stats->stats_timestamps.last_read_time = val;
+
+> @@ -416,8 +410,8 @@ int fnic_get_stats_data(struct stats_debug_info *debug,
+>  	jiffies_to_timespec64(stats->misc_stats.last_ack_time, &val2);
+
+Just for record. Another values are stored into @val1 and @val2 at
+this point.
+
+>  	len += scnprintf(debug->debug_buffer + len, buf_size - len,
+> -		  "Last ISR time: %llu (%8llu.%09lu)\n"
+> -		  "Last ACK time: %llu (%8llu.%09lu)\n"
+> +		  "Last ISR time: %llu (%ptSp)\n"
+> +		  "Last ACK time: %llu (%ptSp)\n"
+>  		  "Max ISR jiffies: %llu\n"
+>  		  "Max ISR time (ms) (0 denotes < 1 ms): %llu\n"
+>  		  "Corr. work done: %llu\n"
+> @@ -437,10 +431,8 @@ int fnic_get_stats_data(struct stats_debug_info *debug,
+>  		  "Number of rport not ready: %lld\n"
+>  		 "Number of receive frame errors: %lld\n"
+>  		 "Port speed (in Mbps): %lld\n",
+> -		  (u64)stats->misc_stats.last_isr_time,
+> -		  (s64)val1.tv_sec, val1.tv_nsec,
+> -		  (u64)stats->misc_stats.last_ack_time,
+> -		  (s64)val2.tv_sec, val2.tv_nsec,
+> +		  (u64)stats->misc_stats.last_isr_time, &val1,
+> +		  (u64)stats->misc_stats.last_ack_time, &val2,
+
+So, this is correct!
+
+>  		  (u64)atomic64_read(&stats->misc_stats.max_isr_jiffies),
+>  		  (u64)atomic64_read(&stats->misc_stats.max_isr_time_ms),
+>  		  (u64)atomic64_read(&stats->misc_stats.corr_work_done),
+
+
+Now, I think that there is no need to resend the entire huge patchset.
+
+I could either fix this when comitting or commit the rest and
+you could send only this patch for review.
+
+Best Regards,
+Petr
+
+PS: All other patches look good. Well, nobody acked 7th patch yet.
+    But I think that the change is pretty straightforward and
+    we could do it even without an ack.
