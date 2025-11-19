@@ -1,75 +1,57 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900C6304BAB
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 17:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB862366DA0;
+	Wed, 19 Nov 2025 17:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763573096; cv=none; b=C8vGzBTulrsqdHGUZuklUX9Mit2u8IzQ/fQBcXkrkCZwUxQgqJzAKNo7sB4wEMtce7HY12DPCwXjXWEWu4jQSzyEECA7vRBYhOeKXuBuACBwyOCmvtAtN2BFBq8RUhVMSgdpcGh7aXp6lJQs+s9t2tLETXiCq7I6mtrbgSbfGxE=
+	t=1763573392; cv=none; b=aKbrDjW8rTT45pzPx5pkX6G+m+mVimJXPbDhkZNLPrVq93q+5ozIt4dhrHLoreRtXdw8RQaPM97gsliraU3GzV1sqTBq4cbYbaEp9dJN2MMJb4yZfALeyoHWbVirTbiqNgWY7Wv56d6wvUIAPOEQc1vDYHj4JuR+AemVN8ogd/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763573096; c=relaxed/simple;
-	bh=LXO4rDdTBgbuM/YA0kPF6N03fGhHLBgeEcVQW1wfkcM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YqiLpLX2IfiQ6dQzEMlrNSpYKUYqW2tGdScUNp3wktntbfDaYEbv3Lhso91Cn8DEA8jV8J6xP1EX+eFPKDAuSUE86zYSmapm3a4eTj7/Z/CMNyYe5bKWBagbpbesNLOoLjMEWa6oMz5DAwmNRlj1UFYZwiQ2dRIVh6W/rqI8hHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEwsqXJ/; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763573392; c=relaxed/simple;
+	bh=AAhInjK0hV7inLiITcWEDEw5AyGHlBIp5m8Q6XZHpPM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ueNdC2fhC5rJxG4vdC7XOb+zOckhqBLMzqWETLPjN3DaD6GuIZTUGqhj6VAcVZRWF03xx5iPOUAxYuiGOA1Oe33zZ+7QnrZl5hWgTAmbVj8xsnyG97Kd0Ts+kyhGlVu/fr55lWxGlCsVCtbyyHAYscj31amHY0XBvvXqC6ja5B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=WSeaeorj; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEwsqXJ/"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so7898912b3a.3
-        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 09:24:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763573094; x=1764177894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OX/n7B61DXx8TflUhCVSCBsbf+p06lqRcS2ORfg3AuQ=;
-        b=cEwsqXJ/47LCMMREoFm1rVxzygbiH1bSZKup26kSq/unsPBk7o6u7BmNe+CiDJmpv7
-         hfR1r3CMszvF7xCsoWpPoDNxFOX4LvJbIBMIUihrT0ixnLe7mca5HeHUDaGhL9Pw1Ru/
-         Ake4J6neRyzRsf+aAPtq/V7AaX0b4Ox348CyppouDrmaQZdriChCVIfzUtdcZTO3p1bo
-         f1RfDuWoU/bVTtGAHWe0dHM0erSlsvPTasGAOnhZbqMrn30jTsMyG2+73756pSRgOwO0
-         5XjQ4rQVu8YrK5Yyhe4OQJ1GP1R9rnodNWqiDlWGElG6pJfiLHySeGAM8IUojGDfJ4DW
-         JG9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763573094; x=1764177894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OX/n7B61DXx8TflUhCVSCBsbf+p06lqRcS2ORfg3AuQ=;
-        b=avQhLBzybaDQpuBRNu+3HV04okzqek8M1/pywh3SUDhRIC4hy4/AYYyTlAWKshqTMa
-         kCh2C81W3Kv93Wk87uX5ddbefMxkPq9WclvuufswoN2Jt+AfJSWnnUx+htH7Ts5ck5vt
-         C89mAMJj8HJbnm3MWWWtaE2PJ+RamVRMbyOou5HIgbdU056ppwhhbkwriW95jZGhpxVu
-         i58ugPPUZRcERBPF2EbwA3XqmDFEVChqRXV/IXniqDklP8ctUx2l9qYmVLC28UBPpJgA
-         TODbGI/zy7exFL+6AvFHsHp1Cdc0WE57cwjpGq87hfL9LlY6rPicWAgeKD/CqtxWraAx
-         kYig==
-X-Forwarded-Encrypted: i=1; AJvYcCUbSPP/LawWcWGfo3rcg9/VKV5jdyFK1zkb5V7kBAqf2moKIZrTVJ+2QVHYBV1bFLMHu6Tjx3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZOKcWfaplukFBkaHmXAYzGySHL6Pd5YA/Ul06NNOEJRpp1xub
-	08h8Ax3xtnINU2i2FeIyxZ03Whpp+C3I9Pm9d0OfBqTC7yMw68yLFHZe
-X-Gm-Gg: ASbGncuT612qKi6MwnFaDo8GOHJkEjpaGih0WWdHpMuoHNiwMp6uWy2sEGe93C6/Kff
-	8Y1kjpr934i5bzg/7mK8POMxNUfOPbgFbEcer+ADBqgr8EiWPBIpnX9PEW0583KgFM3r9eHYMWL
-	vZENzftaFxR2bGW6P8mCXxbuROu03k20SKAeIA8XYFHgnAjVtWQujcoywyUOOOCmRlwvMcP6RVD
-	zOddmYm7vt7Z6jJ+9fAA2EZfwa9fPnQECCYRbEhV1BBA72s1mBXVa5THdRnGwsS/rshpSnWWBnU
-	tT2UmDE401Ju6J+1nPkIl6y+sjC6XE8NIPwvYPhNCVEN0h+X9biyTY105JFWwqcE+qCes2J9Tq3
-	8oC6kcumrim9YgX9UUSE+PzS/dgx41TABHpRRmGfl289IlAW6zQ+O36QuBtovcExtol7oa/Yy7i
-	8qf0Jo8bI=
-X-Google-Smtp-Source: AGHT+IEC/HLrLINt0xXoa7ewEDUcprZ6BTZq3/IZpchioggBzCVMw9Hf3alVFdah+AZzS8uQB60heg==
-X-Received: by 2002:a05:6300:218e:b0:350:31b3:218a with SMTP id adf61e73a8af0-3613b535290mr355474637.27.1763573093780;
-        Wed, 19 Nov 2025 09:24:53 -0800 (PST)
-Received: from fedora ([122.173.30.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b9250d24b9sm20209696b3a.17.2025.11.19.09.24.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 09:24:53 -0800 (PST)
-From: Shi Hao <i.shihao.999@gmail.com>
-To: ncardwell@google.com
-Cc: pabeni@redhat.com,
-	davem@davemloft.net,
-	kuniyu@google.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	i.shihao.999@gmail.com
-Subject: [PATCH] net: ipv4: fix spelling typo in comment
-Date: Wed, 19 Nov 2025 22:52:39 +0530
-Message-ID: <20251119172239.41963-1-i.shihao.999@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="WSeaeorj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1763573390; x=1795109390;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AAhInjK0hV7inLiITcWEDEw5AyGHlBIp5m8Q6XZHpPM=;
+  b=WSeaeorjxU0zt/BfY7uqjLKgG5tsFITlT/Fa7Bodnr698dxf90wUGJsS
+   ZJemycQQv67aM2Ix91lwn2yysV8UfxwXHmRgXEpkUmVDPUA3FfZUrDUy9
+   g0R4mgCzOkAgsiRH5gCntfyHgCPLVi9cW563AKKu+4nyzA2AMXnLPwhaJ
+   lvTtkjf0kC7p/SJN99AJCyiMLFshpkZoYs4TpOCG7EXN3LabKklPIqEmu
+   bk5AeErAvgm9jALelct2JTi7CHTIpO8ltjcsKuJbmA+1YUCry+tLLCH8l
+   igdIe/5jZl3gFjLMbvwxo+EW80mh7bgsKITXC2VD7q1pbENTt2GSp/Hz3
+   A==;
+X-CSE-ConnectionGUID: X5qVgr6yQDyAe5PvHREMHg==
+X-CSE-MsgGUID: B3WnMsxrS5O9HsUuXdhCUA==
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="49869025"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Nov 2025 10:29:39 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 19 Nov 2025 10:28:58 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 19 Nov 2025 10:28:57 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net v2] net: lan966x: Fix the initialization of taprio
+Date: Wed, 19 Nov 2025 18:28:45 +0100
+Message-ID: <20251119172845.430730-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,27 +59,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Replace "splitted" with "split" in comment.
+To initialize the taprio block in lan966x, it is required to configure
+the register REVISIT_DLY. The purpose of this register is to set the
+delay before revisit the next gate and the value of this register depends
+on the system clock. The problem is that the we calculated wrong the value
+of the system clock period in picoseconds. The actual system clock is
+~165.617754MHZ and this correspond to a period of 6038 pico seconds and
+not 15125 as currently set.
 
-Signed-off-by: Shi Hao <i.shihao.999@gmail.com>
+Fixes: e462b2717380b4 ("net: lan966x: Add offload support for taprio")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+
 ---
- net/ipv4/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v1->v2:
+- add define for system clock and calculate the period in picoseconds
+---
+ drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 8a18aeca7ab0..0d1c8e805d24 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1600,7 +1600,7 @@ struct sk_buff *tcp_recv_skb(struct sock *sk, u32 seq, u32 *off)
- 			return skb;
- 		}
- 		/* This looks weird, but this can happen if TCP collapsing
--		 * splitted a fat GRO packet, while we released socket lock
-+		 * split a fat GRO packet, while we released socket lock
- 		 * in skb_splice_bits()
- 		 */
- 		tcp_eat_recv_skb(sk, skb);
---
-2.51.0
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+index b4377b8613c3a..18fab2d4bda0d 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+@@ -1,11 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ 
+ #include <linux/ptp_classify.h>
++#include <linux/units.h>
+ 
+ #include "lan966x_main.h"
+ #include "vcap_api.h"
+ #include "vcap_api_client.h"
+ 
++#define LAN9X66_CLOCK_RATE	165617754
++
+ #define LAN966X_MAX_PTP_ID	512
+ 
+ /* Represents 1ppm adjustment in 2^59 format with 6.037735849ns as reference
+@@ -1126,5 +1129,5 @@ void lan966x_ptp_rxtstamp(struct lan966x *lan966x, struct sk_buff *skb,
+ u32 lan966x_ptp_get_period_ps(void)
+ {
+ 	/* This represents the system clock period in picoseconds */
+-	return 15125;
++	return PICO / 165617754;
+ }
+-- 
+2.34.1
 
