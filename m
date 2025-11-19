@@ -1,229 +1,361 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010035.outbound.protection.outlook.com [52.101.84.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C6E34DCC8;
-	Wed, 19 Nov 2025 10:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763549346; cv=fail; b=r+lRWKsIJG0QaYN13/4Tr+xX/voFYsh+kfNvt5PFtmYMkt1VDRDXETbgoLrkcwFw7hr+OALOmyqj7v2D1df05uCjVBZekG9e9q7BZO7pIxgZpjP+Qf3WUDhi7ySvkd5e4g0e2Rs6SzlK9opJI1XNmiFeBc4UvCI31BeoIJq3JFk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763549346; c=relaxed/simple;
-	bh=PMs/xmtapr29yv31vvLAIgTlIQytmQEWyHpOXFfCLNg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MZAR9iFqyp05VCqjtzmBcxAolwOsShu098/UTboPrApwIIAy+fbPYuAEZ4iNsbSNi6nBA9XdOzYhjwcLtJh+6ubiY96emSD30v0ISk0++6i5TueFQHbY90b02Ikd7bkVrX1U2vKPgTYYNAMaQBzag3bNqVuFbFfmWZ84LHQrdyE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jozRnVoP; arc=fail smtp.client-ip=52.101.84.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jozRnVoP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nb/H7enPX3gs5zObj2VFDPyKWOOKSMSY6AGbfT2kvWZiaWYEIdsDFNGx/gjoOKp/Fs98ghJCYIyUHBjL/15MnipZDoNuNqYwdRFVwBlwnJHEmSMSwR123oSlllua2r8OkpMiJGN7huDf3ZKIqpagcc927TI5PCYerO96dQ9xjjv4Zk9CX4phqj0eS639QSZ4l43zaOVXzHOk0iLCG5xFtSwljaGWmr0LakZjZR2SXRf9bd61HYD0i/fxJQFj6CwuRnWI2wIpJTSdNOfHkjtT8ovv/BmUAchwe4zcVNqUK3vDMywi3jOXYD5vK7Knvx6rtrHIeg8cNptBssyU5KiVnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wh1ugBt8Nkt4TSeliMD6m/ioEoY2ZTis6gDExb45f7k=;
- b=xobf1uQC7WaSbNZcnpJ9zVLsEEbsnb80fDX5B80St3Ubp/jY5nDxjgTdS98a25lQf1DwSKfJVUfs8P/7A/ytxiIBwVMdDXb8vILtfpPnWZqReP7iiGlkyF3YWwelw3Ff8VOyVIFRgJjNQ10k1+RZQw4BSXQNEfSR/iAeEhols0G9x0aVLx2EAiwHoGg0fx/qWCypgEeP5AKNMg1d4Yxz8Op88YD/bmlWHEHitCwNd+Q2uvauYHMKuG2TEJQjBetRG1rmdxB9arG7+B01G/qNeYQ/KwCf+FjLdWpXnAUJFvlbvwJfT6RP3fcr+BUFWz6EnpbdGtScLUS16v2DThokcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wh1ugBt8Nkt4TSeliMD6m/ioEoY2ZTis6gDExb45f7k=;
- b=jozRnVoPYu9CWbBAi04QbsGhX89GuzPw8vSe4HWuFK+l3FrJYuqrV6BIy9uhl5V4IE2r0nat2O7LBowyTAG8vtKkZ3JTnfz1zQ+JUdg2w/jWL6hFadoenfPm6gMJKjuH5kdWXXn5bFkColHL9b6eu8tLxVpnX1uMDiO2GLv2Xzdrw7/9HB8gLd6CElPnsl+J3am0rYxOrcSbMIBb40gnVbisBA/eGXOBTq/ybeO2JMyV/VI8OWS80eeshIfCV2Shk+R+TCUu3SlcT5hv7+1iTJhTQW9dCSezXcGvvo5K8Txu0r/Xu81Z/AcE/25CcZdIfIwwiH8zYA3+kvdqfN2WUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA1PR04MB10628.eurprd04.prod.outlook.com (2603:10a6:102:490::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 10:49:02 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
- 10:49:02 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: aziz.sellami@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 net-next 3/3] net: enetc: update the base address of port MDIO registers for ENETC v4
-Date: Wed, 19 Nov 2025 18:25:57 +0800
-Message-Id: <20251119102557.1041881-4-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251119102557.1041881-1-wei.fang@nxp.com>
-References: <20251119102557.1041881-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR06CA0210.apcprd06.prod.outlook.com
- (2603:1096:4:68::18) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7E5313E12;
+	Wed, 19 Nov 2025 10:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763549605; cv=none; b=kb0PsW3zSDeSMA8r1nYYk3hUDR2RzP2HcTxEWEgP5mNkMMYOl62nayWU21iklx8OXYcCA6LJNAd6WVPlHrNRji1EakiWFb5r0Vy1JXOTeq0sWWh9ZUPJDZ346TfJ/A2mxucUsaCIIpxJBpQKexi2hPLkvDJS+KDuTHkl0LWKuZg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763549605; c=relaxed/simple;
+	bh=GYqmggF3znhUGPatz51esM7m1/OXe2ZD930Ya1NBl3c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HHnY/dMGIxxCFdRfTZcTrDjN5VqVIac5c9OXH/ozQT4rGbWwnvm9gKHFq9KVv7u1RUd6GyPRR384da+mMjfaaQPcINxRP2yo0aqTzFTkkdTRvhbx6AtKWCBhr2EpcWp+qWuKDqDEYl4Zb+wNP0KLQks/NDEIl/6+4OFBW4gkYKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c45ff70000001609-19-691da19e89c8
+Date: Wed, 19 Nov 2025 19:53:12 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
+	yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org,
+	sumit.semwal@linaro.org, gustavo@padovan.org,
+	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
+	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v17 44/47] dept: introduce APIs to set page usage and use
+ subclasses_evt for the usage
+Message-ID: <20251119105312.GA11582@system.software.com>
+References: <20251002081247.51255-1-byungchul@sk.com>
+ <20251002081247.51255-45-byungchul@sk.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA1PR04MB10628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 899f69b9-9934-4a0d-9cd2-08de275940b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h4v/j2t6zrG4roYNnW7mV54kVNcPqIjBN7oSkWJuNFxzW7/x1+jWuHeKowCs?=
- =?us-ascii?Q?WKMzrl4Bu7O+SiBbRbww25RFiSA2p/ejvsFtsuyKbNO1NEwyY4EhD3HN9LrQ?=
- =?us-ascii?Q?YTsgptgq8veMY4mtX29I99WV61QYufl3VL/2q6VECEoQA3dWx9E+HC6PPl7B?=
- =?us-ascii?Q?h0pDbrD95KdmzOrB5/LbPb8wXD7Vw8bEa3JxAsf3o9UEM29EadC446CkM3yA?=
- =?us-ascii?Q?kDmStcf65rUIC2fOfHacTjmX6Eg+YLeIj6Qnw8oyGVsALDQ/7qtXy77Y1prM?=
- =?us-ascii?Q?r1KKq0gzeq39M1hoTUFpN67xzg3iXotO+x4bSl2iuAUYONnnO+GTiEiNoNv2?=
- =?us-ascii?Q?IRiNPY0jKwoVpXQJsclFSzLk4/dV/cG2xmxwvEeMnfi0uMAJGAAbNLlmcSo4?=
- =?us-ascii?Q?TZQwbMQqlE1GaVVcBswJR7WvcnJ2h5FGO7c++BinA4WbL52+pjWWt65He1i0?=
- =?us-ascii?Q?wYTpn2N2+IEm33Kbz+330lvjxSWvXNRALpA61mEBnwfyxR22Ooo/htjLtfFE?=
- =?us-ascii?Q?WB8IGdtWHZiw8W5TjToe2RIH7Jz+Q3LfXZ5TUb+o/71Pzq0z+fKR1+brPw4P?=
- =?us-ascii?Q?r6t3EhsmkhpGEsHKhS3lwZ327JNgmP709qCLRb/6r4+9DXzBvCNXVdNSGC3A?=
- =?us-ascii?Q?MdcXWgvzI5uQslTVInkBPMAV+nISoukKpShll25HZVlhdzTm5EuaxNOlRJcm?=
- =?us-ascii?Q?bBbbTNPVNAkmB/nZA6jbP9XflpcYLjdfzXAyxpIZp3RDFFFHo1NP/XlZppxJ?=
- =?us-ascii?Q?LeEpW0vCaTJgpZBEiGvk6SQP+rJg5MtDsI5rBVURb9SFlE4Jt2TJQCtl0U/x?=
- =?us-ascii?Q?nk8LLDd8g/FjEQQA6YIbCSyMxuHO/q90mih+u89Rtg8ID+bff4GYWNhF4/Wy?=
- =?us-ascii?Q?/Ay5l1kl2EZY+NbNGoAZKGAjo/L+cd8pEaGcJNQOoWgwDPVquyMwV6Fbz4Mn?=
- =?us-ascii?Q?kVsgEyY4kM7hwIrsy4J2okO0F4StGCeD3/7CUg+E0pZPwQx3Bw+E0s8XxKpM?=
- =?us-ascii?Q?73EUp8HkX6wvViOc+pqgbidRGVeyQUDzzJzsKbw5599VE+mrKqaujJYoRY6v?=
- =?us-ascii?Q?ZkDcW70qTSGq7CKdiyg7qoV8LRgZ58dyDR0CpCVAX3hqOoPGVVYjOnVgdtD2?=
- =?us-ascii?Q?0MzAb68bg5pb7YvH51tbGivUld1zkTTI3/hTByqI++bAkY4xMBkqCfPDduWm?=
- =?us-ascii?Q?YWORQxnpKPKrWxDNcFY7IRr6V7nmusz5initKXn1lOELZXN0a9ZJvjn5j4Ax?=
- =?us-ascii?Q?4CTACtVDXsAl00IEbuQaRrJSkUcmcn1w3cQW83yEb+HLEJHcnGCF2RUi7cce?=
- =?us-ascii?Q?V7033ERWsberoS/CC8PITg1f2QPbLlCmE8TNwkapfuwUoO42fbvEgJfrhOaK?=
- =?us-ascii?Q?Sjk8wAjd1ajtmJzqUyvTU+vpsaxBwnB4YWLPjMONQh9Q1UpaKb2ix1DmcBBG?=
- =?us-ascii?Q?xbO8s39DZ0P4QJQuwEAEUE2EZ3BhkKkOQUqBjLztHY39pDbiEe7xHng2HZVY?=
- =?us-ascii?Q?08yJ7tP78/opNAs4wpmoyWsL00RL5px9gk1H?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?euV1HwdykL9pNQwqueKLLA73edKM1xNdhl2I0k4d95aXC02bLmzzQS/Ve5Wd?=
- =?us-ascii?Q?hH13Xif/Q7GoICdgzzIk+8Kzy0d48OSJtF/2xuG+ErCPwX/pMN8UAbvhpm2f?=
- =?us-ascii?Q?O2E8l0/5q1vCOZ4MnMlo2zOECXL+qIHxPSA53l0JFzOqpiACTt3L+eJn9jLN?=
- =?us-ascii?Q?QXPoEDiqGiWnrvLOzrlnksfspzT1wPRYL1PzK49i/hIu7QML9hAuiw526KuY?=
- =?us-ascii?Q?snMJpZawGP6lLb+LbM43SwXyOQYRd1cGEQuAJAfkBroBhk8U/W2s+YkBfbCQ?=
- =?us-ascii?Q?7OuO9c79tbkXKhC4am0tCab9LNmpjSARui8yq1/aT59mKm72KZJoofDhUVc6?=
- =?us-ascii?Q?Yeh2uTvlg7T124mR/RUIg1dQ/QwHdodIMty60Zn2sQi2yV6vdKJEVZQfjwt7?=
- =?us-ascii?Q?YFgR3QohCvjAmOHgzA4UNT7516euI+pVGQbcQNOM2xlqSnPrD+csPUzla3k5?=
- =?us-ascii?Q?Wmw4zwpZXrYOr9ifdkV6iN3/rrJ81p+u11z0Qg642Pm8ZvEa20q13YCGkJc8?=
- =?us-ascii?Q?HqqtjhVU9Ioxa9hGGWr08jk38kPk4gfUl6h80GlZEdbIGSX4f8Z/jdTPP/zL?=
- =?us-ascii?Q?69IeydUBZE7+WakWkTui7GoTXH6r4ZBhhlb9Jh4dTkd5EfUwESHes8Q388VX?=
- =?us-ascii?Q?mAnpiJyqWttae048XMljbynakDri3vuMchFJf2IjTOucgxwy7YuB8tdKJ56M?=
- =?us-ascii?Q?n1RmJ1NzCOtuCgfjhcew11P+Xsaym/eeJO2z66u52OoCJ0WVsYY4N61fvdbS?=
- =?us-ascii?Q?c351CDHM7i4TYjreu20NwQF/Wi9ACvqmthwi4UmcGdSCaplWEtBGg/vrvWPd?=
- =?us-ascii?Q?3Of4ztJ4nQL/1W3IT7R44l1+4Ic4aI69v5g1WhHMfg0PWqsd8N/XKvX8wqnf?=
- =?us-ascii?Q?FaKMbh+yClZIYwWX3d0cAWaveT6t8+bbl7jFQOGrkaUCKtrzsghCKrw8ogxD?=
- =?us-ascii?Q?jJeF7ZFBJJtkM5utx36n8hLyGcWWG6bDyAn1d2qOUnTAN/V3by1MHWv/f0hc?=
- =?us-ascii?Q?GxWQAm7VzmqfCUNqch2NGAQ20rGL7ygSlBbnY73xgf2EdD3202JADAOieQiG?=
- =?us-ascii?Q?tUDSwJcVBYO+E9BSiozn8RsomSl6oisrhgB8zmb3v2TEsVqxzAcf1mV/4Q/1?=
- =?us-ascii?Q?0wDlFiYLMgrfxLuh92po2FTNjPbVmm+4fq0GxMpSXQJ/YKVodVkLK9lwk/SX?=
- =?us-ascii?Q?24tFvoU6U9aIHKxu3cDRruOembkYb0ArLK4ZLmYJugL0Z69zVkqKoVKgdK+I?=
- =?us-ascii?Q?0IavH8AYVIoOadpNIzOqCLF+CE2JJFxQzT3qYd0V9NZ0pnEO/X7FJXrCWV8A?=
- =?us-ascii?Q?lrJXyItvN3YKiP73hnjRdoTI8Ibldoi+j3d6yAoAr0Zr0szJuDKuTWxz6+NI?=
- =?us-ascii?Q?aOlW9xB1TFlfAGov0Ux11q4pfryI5jpSm53WNUZYvByHW4RdrCd0r3cCvNZL?=
- =?us-ascii?Q?W+NoJRhaSp8Wffijz5IPlU+Z+/cM29zevDfaz4L3O4HV19ouER9L9lv5nX04?=
- =?us-ascii?Q?gDUgaHqj4RcCcIfmlan2ks/roU8kLUDbh9j5XWhVPT1UyZEbgJq3XwynYLMD?=
- =?us-ascii?Q?pg/7GN+DDScU9X36J3o8iKjqniCElZ7pRqyA9dAZ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 899f69b9-9934-4a0d-9cd2-08de275940b4
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 10:49:02.7080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mf62QpKNeNXvzl4R+Ux+7ak0IJLZ47e3tGLn8LnOLPfChjARlUSpRQy91vDe/5+V5uERtXtP+f663lP3SduTVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10628
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251002081247.51255-45-byungchul@sk.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHed67o9HrtHrMhFhJYGQaYoeyKPDD+6WILoQF1cqXHM0VW1lG
+	hWWpWVJMFrkuXtO1vLWVeWeazUsXK22saF5CtDCNprOaS3NG5Lcfv8P5/8+Hw5EyO72YU6qP
+	ixq1QiVnJJRkZF7Bqrv5IcqIhochkGHOoaHXnYHgUs00Bb91NhamG2wIhp+6EOj7BxiYdg4R
+	MGBNRzD5spOER7YeBO36KwyMvLlNQN6FBhpSCysYqOmrZeHGw0WgL6sjoDglFD4ZDSw4r+kp
+	aO+x0zA8qGNgvLufgPy0Igps1Z8IuFr5mIae0mkaUm79oKGztoyG/j4HDdmjgwiK3d9YsOUt
+	BN2giwVX0QQFaWNTNLRmWQnofl+HoDGjj4CWiicEmEvtDHQ4x1jwOKtpsOtyGaj8XsLAnfFI
+	KPttR5siBJOlihBK75YiYdKjQ8L4vVRS8LjfMUJHARZqDE5WuNj4gRUsxjChsP4LIeS73LRg
+	Nl1mBLNLxwqZI92E8NFezwijr16x25bskcTEiyplkqhZvfGAJKGxr4Q5lr7hlHGomk1BLyIy
+	kR+H+Sjce76X+sdfx/NZH1N8KG4730X7mOFXYIfjF+njQH4ptmQNzngJR/I5wdhdmcr4BgG8
+	Ck+0lM8uS3nALbkts17GH8R6Uzb91/vj9pyB2TKSD8OOqS9EJuJmOBiXTHE+7cevxeW5NuTj
+	BfwybK1qJXxdmO/xw1XGn+jvoUG4yeigriPeMCfWMCfW8D82D5EmJFOqkxIVSlVUeEKyWnkq
+	/NDRRDOa+bbis9691cj1ekcz4jkknyfNmB+ilNGKJG1yYjPCHCkPlIZuXqKUSeMVyadFzdH9
+	mhMqUduMgjlKvki6ZuJkvIw/rDguHhHFY6Lm35Tg/BanoJVnRm+v927dpIvd9cLjv/1BZNby
+	Q1cnK+ss2UExnWShmBDr/8hakN110vK8oO2NN5KuNacPlN/ct2a33qaIttbnVnl3bqkju5yx
+	0RXhsV3rkos2ar0QnxaXfjC6adgRZA58Vrxs+G3AOXy6Q/353X0yKuKyyR4V51k3tLw87eMN
+	OaVNUESGkRqt4g+/LpDnaQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0xTZxjHfc+dZtUjg3hiXUK6oQaDQjLmk7kZlyzxxGXGxA9LtkWtejYa
+	SmGtY9aEDCyNBJ3UukJoBcrt2BSE2noBSQ3jUqdCLKubZIMBSy0wuSTaApXbTl2W+eXN7/39
+	n3/yfHgYPHGF3MyotacEnValUVIyQnZwjzG9uu4tdUYgvBt+K+4iIBopJeBKWwsFpZ4qEgKt
+	zQhGo6UIFpbsOJg61ghYsfhpiMT+oGHN50dQMWjBoeVGMQYv3KsUPOt5jsA6HqKgcqqYgDnx
+	AgJb2E7DVN9+mBntJGFtZAKDJ/PTCMTQKgahrnMIVipyoLbeS8HSwCMcKq0BBHXjIzhMuqXw
+	hv9PBD7nWQqemm/iEAyth8fROQruW89TMDN4BYNZNwWOsz4Squ0WBMaGNgoqqj0EdIzdoWHw
+	2TIGwxUWDJo9n8KoGCbgobkek/aTpq5vAnulEZOeSQys1zoxiIkuGvobhgkQi1LBPhAk4S+n
+	jYbl8UxYc+SBv3mChpFyKwGtM4/IfVbEL5guErzLewvjTb+sUHxLTQvil15aEB9pMuK8ySx9
+	e6bncL7E+x3f9HCa4l9Gf6V437yD4B/Uc/ylgXS+wzZC8yV3f6cPvf+57IOTgkZdIOh27T0m
+	y747dpXKP/fhaedEO12E+jPKUALDse9y05E6Os4Em8r9XBwk40yx27ihoRge5yQ2hfP+EJa8
+	jMHZKgUXdRupePAmq+Hme1tfleUscL21va98Inucs7ouk//6jdz9qhARZ5xN44ZWp7AyxEis
+	4K6uMnGdwO7mWmv9KM7J7Ntc1617mBnJba+1ba+1bf+3HQh3oSS1tiBXpdZk7dTnZBu06tM7
+	T+TlepB0lGLh8qV2FAnu70Ysg5RvyBfNW9SJpKpAb8jtRhyDK5PkqR9JSn5SZTgj6PKO6r7V
+	CPpupGAI5Sb5gc+EY4ns16pTQo4g5Au6/1KMSdhchFwpXRu+f55pejyW9YVKH3sykbl93dbC
+	NPTJ4t5wRvJC5zd/L9aUKH5aUISInB9v6icPtycf6T/cdHQwwJ+pOeBrNNBHKgvHHxwKOi+I
+	X/aleAJfpR8MG4wZTva2uyemnd1RfvHpO0lZfeWjH7MNmONyG31evL7eWzY7/F7jjJjfqyT0
+	2arMNFynV/0DMGDGq5ADAAA=
+X-CFilter-Loop: Reflected
 
-Each ENETC has a set of external MDIO registers to access its external
-PHY based on its port EMDIO bus, these registers are used for MDIO bus
-access, such as setting the PHY address, PHY register address and value,
-read or write operations, C22 or C45 format, etc. The base address of
-this set of registers has been modified in ENETC v4 and is different
-from that in ENETC v1. So the base address needs to be updated so that
-ENETC v4 can use port MDIO to manage its own external PHY.
+On Thu, Oct 02, 2025 at 05:12:44PM +0900, Byungchul Park wrote:
+> False positive reports have been observed since dept works with the
+> assumption that all the pages have the same dept class, but the class
+> should be split since the problematic call paths are different depending
+> on what the page is used for.
+> 
+> At least, ones in block device's address_space and ones in regular
+> file's address_space have exclusively different usages.
+> 
+> Thus, define usage candidates like:
+> 
+>    DEPT_PAGE_REGFILE_CACHE /* page in regular file's address_space */
+>    DEPT_PAGE_BDEV_CACHE    /* page in block device's address_space */
+>    DEPT_PAGE_DEFAULT       /* the others */
 
-Additionally, if ENETC has the PCS layer, it also has a set of internal
-MDIO registers for managing its on-die PHY (PCS/Serdes). The base address
-of this set of registers is also different from that of ENETC v1, so the
-base address also needs to be updated so that ENETC v4 can support the
-management of on-die PHY through the internal MDIO bus.
+1. I'd like to annotate a page to DEPT_PAGE_REGFILE_CACHE when the page
+   starts to be associated with a page cache for fs data.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc4_hw.h   |  6 ++++++
- .../net/ethernet/freescale/enetc/enetc_pf_common.c | 14 ++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+2. And I'd like to annotate a page to DEPT_PAGE_BDEV_CACHE when the page
+   starts to be associated with meta data of fs e.g. super block.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-index ebea4298791c..3ed0f7a02767 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-@@ -170,6 +170,9 @@
- /* Port MAC 0/1 Maximum Frame Length Register */
- #define ENETC4_PM_MAXFRM(mac)		(0x5014 + (mac) * 0x400)
- 
-+/* Port internal MDIO base address, use to access PCS */
-+#define ENETC4_PM_IMDIO_BASE		0x5030
-+
- /* Port MAC 0/1 Pause Quanta Register */
- #define ENETC4_PM_PAUSE_QUANTA(mac)	(0x5054 + (mac) * 0x400)
- 
-@@ -198,6 +201,9 @@
- #define   SSP_1G			2
- #define  PM_IF_MODE_ENA			BIT(15)
- 
-+/* Port external MDIO Base address, use to access off-chip PHY */
-+#define ENETC4_EMDIO_BASE		0x5c00
-+
- /**********************ENETC Pseudo MAC port registers************************/
- /* Port pseudo MAC receive octets counter (64-bit) */
- #define ENETC4_PPMROCR			0x5080
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 9c634205e2a7..76263b8566bb 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -176,7 +176,12 @@ static int enetc_mdio_probe(struct enetc_pf *pf, struct device_node *np)
- 	bus->parent = dev;
- 	mdio_priv = bus->priv;
- 	mdio_priv->hw = &pf->si->hw;
--	mdio_priv->mdio_base = ENETC_EMDIO_BASE;
-+
-+	if (is_enetc_rev1(pf->si))
-+		mdio_priv->mdio_base = ENETC_EMDIO_BASE;
-+	else
-+		mdio_priv->mdio_base = ENETC4_EMDIO_BASE;
-+
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
- 
- 	err = of_mdiobus_register(bus, np);
-@@ -221,7 +226,12 @@ static int enetc_imdio_create(struct enetc_pf *pf)
- 	bus->phy_mask = ~0;
- 	mdio_priv = bus->priv;
- 	mdio_priv->hw = &pf->si->hw;
--	mdio_priv->mdio_base = ENETC_PM_IMDIO_BASE;
-+
-+	if (is_enetc_rev1(pf->si))
-+		mdio_priv->mdio_base = ENETC_PM_IMDIO_BASE;
-+	else
-+		mdio_priv->mdio_base = ENETC4_PM_IMDIO_BASE;
-+
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-imdio", dev_name(dev));
- 
- 	err = mdiobus_register(bus);
--- 
-2.34.1
+3. Lastly, I'd like to reset the annotated value if any, that has been
+   set in the page, when the page ends the assoication with either page
+   cache or meta block of fs e.g. freeing the page.
 
+Can anyone suggest good places in code for the annotation 1, 2, 3?  It'd
+be totally appreciated. :-)
+
+	Byungchul
+
+> Introduce APIs to set each page's usage properly and make sure not to
+> interact between at least between DEPT_PAGE_REGFILE_CACHE and
+> DEPT_PAGE_BDEV_CACHE.  However, besides the exclusive usages, allow any
+> other combinations to interact to the other for example:
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_REGFILE_CACHE page and vice versa.
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_BDEV_CACHE page and vice versa.
+> 
+>    PG_locked for DEPT_PAGE_DEFAULT page can wait for PG_locked for
+>    DEPT_PAGE_DEFAULT page.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  include/linux/dept.h       | 31 +++++++++++++++-
+>  include/linux/mm_types.h   |  1 +
+>  include/linux/page-flags.h | 76 +++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 104 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/dept.h b/include/linux/dept.h
+> index 0ac13129f308..fbbc41048fac 100644
+> --- a/include/linux/dept.h
+> +++ b/include/linux/dept.h
+> @@ -21,8 +21,8 @@ struct task_struct;
+>  #define DEPT_MAX_WAIT_HIST		64
+>  #define DEPT_MAX_ECXT_HELD		48
+>  
+> -#define DEPT_MAX_SUBCLASSES		16
+> -#define DEPT_MAX_SUBCLASSES_EVT		2
+> +#define DEPT_MAX_SUBCLASSES		24
+> +#define DEPT_MAX_SUBCLASSES_EVT		3
+>  #define DEPT_MAX_SUBCLASSES_USR		(DEPT_MAX_SUBCLASSES / DEPT_MAX_SUBCLASSES_EVT)
+>  #define DEPT_MAX_SUBCLASSES_CACHE	2
+>  
+> @@ -390,6 +390,32 @@ struct dept_ext_wgen {
+>  	unsigned int wgen;
+>  };
+>  
+> +enum {
+> +	DEPT_PAGE_DEFAULT = 0,
+> +	DEPT_PAGE_REGFILE_CACHE,	/* regular file page cache */
+> +	DEPT_PAGE_BDEV_CACHE,		/* block device cache */
+> +	DEPT_PAGE_USAGE_NR,		/* nr of usages options */
+> +};
+> +
+> +#define DEPT_PAGE_USAGE_SHIFT 16
+> +#define DEPT_PAGE_USAGE_MASK ((1U << DEPT_PAGE_USAGE_SHIFT) - 1)
+> +#define DEPT_PAGE_USAGE_PENDING_MASK (DEPT_PAGE_USAGE_MASK << DEPT_PAGE_USAGE_SHIFT)
+> +
+> +/*
+> + * Identify each page's usage type
+> + */
+> +struct dept_page_usage {
+> +	/*
+> +	 * low 16 bits  : the current usage type
+> +	 * high 16 bits : usage type requested to be set
+> +	 *
+> +	 * Do not apply the type requested immediately but defer until
+> +	 * after clearing PG_locked bit of the folio or page e.g. by
+> +	 * folio_unlock().
+> +	 */
+> +	atomic_t type; /* Update and read atomically */
+> +};
+> +
+>  struct dept_event_site {
+>  	/*
+>  	 * event site name
+> @@ -562,6 +588,7 @@ extern void dept_hardirqs_off(void);
+>  struct dept_key { };
+>  struct dept_map { };
+>  struct dept_ext_wgen { };
+> +struct dept_page_usage { };
+>  struct dept_event_site { };
+>  
+>  #define DEPT_MAP_INITIALIZER(n, k) { }
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 5ebc565309af..8ccbb030500c 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -224,6 +224,7 @@ struct page {
+>  	struct page *kmsan_shadow;
+>  	struct page *kmsan_origin;
+>  #endif
+> +	struct dept_page_usage usage;
+>  	struct dept_ext_wgen pg_locked_wgen;
+>  } _struct_page_alignment;
+>  
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index d3c4954c4218..3fd3660ddc6f 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -204,6 +204,68 @@ enum pageflags {
+>  
+>  extern struct dept_map pg_locked_map;
+>  
+> +static inline int dept_set_page_usage(struct page *p,
+> +		unsigned int new_type)
+> +{
+> +	unsigned int type = atomic_read(&p->usage.type);
+> +
+> +	if (WARN_ON_ONCE(new_type >= DEPT_PAGE_USAGE_NR))
+> +		return -1;
+> +
+> +	new_type <<= DEPT_PAGE_USAGE_SHIFT;
+> +retry:
+> +	new_type &= ~DEPT_PAGE_USAGE_MASK;
+> +	new_type |= type & DEPT_PAGE_USAGE_MASK;
+> +
+> +	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
+> +		goto retry;
+> +
+> +	return 0;
+> +}
+> +
+> +static inline int dept_reset_page_usage(struct page *p)
+> +{
+> +	return dept_set_page_usage(p, DEPT_PAGE_DEFAULT);
+> +}
+> +
+> +static inline void dept_update_page_usage(struct page *p)
+> +{
+> +	unsigned int type = atomic_read(&p->usage.type);
+> +	unsigned int new_type;
+> +
+> +retry:
+> +	new_type = type & DEPT_PAGE_USAGE_PENDING_MASK;
+> +	new_type >>= DEPT_PAGE_USAGE_SHIFT;
+> +	new_type |= type & DEPT_PAGE_USAGE_PENDING_MASK;
+> +
+> +	/*
+> +	 * Already updated by others.
+> +	 */
+> +	if (type == new_type)
+> +		return;
+> +
+> +	if (!atomic_try_cmpxchg(&p->usage.type, &type, new_type))
+> +		goto retry;
+> +}
+> +
+> +static inline unsigned long dept_event_flags(struct page *p, bool wait)
+> +{
+> +	unsigned int type;
+> +
+> +	type = atomic_read(&p->usage.type) & DEPT_PAGE_USAGE_MASK;
+> +
+> +	if (WARN_ON_ONCE(type >= DEPT_PAGE_USAGE_NR))
+> +		return 0;
+> +
+> +	/*
+> +	 * event
+> +	 */
+> +	if (!wait)
+> +		return 1UL << type;
+> +
+> +	return (1UL << DEPT_PAGE_DEFAULT) | (1UL << type);
+> +}
+> +
+>  /*
+>   * Place the following annotations in its suitable point in code:
+>   *
+> @@ -214,20 +276,28 @@ extern struct dept_map pg_locked_map;
+>  
+>  static inline void dept_page_set_bit(struct page *p, int bit_nr)
+>  {
+> +	dept_update_page_usage(p);
+>  	if (bit_nr == PG_locked)
+>  		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
+>  }
+>  
+>  static inline void dept_page_clear_bit(struct page *p, int bit_nr)
+>  {
+> +	unsigned long evt_f;
+> +
+> +	evt_f = dept_event_flags(p, false);
+>  	if (bit_nr == PG_locked)
+> -		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
+> +		dept_event(&pg_locked_map, evt_f, _RET_IP_, __func__, &p->pg_locked_wgen);
+>  }
+>  
+>  static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
+>  {
+> +	unsigned long evt_f;
+> +
+> +	dept_update_page_usage(p);
+> +	evt_f = dept_event_flags(p, true);
+>  	if (bit_nr == PG_locked)
+> -		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
+> +		dept_wait(&pg_locked_map, evt_f, _RET_IP_, __func__, 0, -1L);
+>  }
+>  
+>  static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
+> @@ -245,6 +315,8 @@ static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
+>  	dept_page_wait_on_bit(&f->page, bit_nr);
+>  }
+>  #else
+> +#define dept_set_page_usage(p, t)		do { } while (0)
+> +#define dept_reset_page_usage(p)		do { } while (0)
+>  #define dept_page_set_bit(p, bit_nr)		do { } while (0)
+>  #define dept_page_clear_bit(p, bit_nr)		do { } while (0)
+>  #define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
+> -- 
+> 2.17.1
