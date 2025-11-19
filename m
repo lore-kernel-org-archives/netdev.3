@@ -1,61 +1,63 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D8E2309AA
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 02:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8332D0C89
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 02:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763520641; cv=none; b=jEEIM64VT1hnnruJFrTIIHznq0HOpCp0/dv8VvWkjXDKXZI+H2Pn7/xxLvDaTMWLheEYRGOwR2pBAOQoxzZSqRApLR0YxNFnbB6yFMH+W8Swx6GcGQ2U0BdiDCN9tVCqV8JYmMB0G/WYUg1yZpTPQEPrm2zqscEVyPYQ1D9y8Jk=
+	t=1763520644; cv=none; b=SnpOqYdhHofEEUL6fndgLL0MSzbgEmF5xuNvuwE9TvGxHlNeJPIUGjOQitYGP3hslxsWrvdQ6mF9+V9rQuyUAVJwG8IVb67WNCUnaQ73r+y6/UfB4jYZPqaOiZGCWD6g5bMU/oSqsMUDdI5/lt0sTfthsW9l3apZNhmEE+a61vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763520641; c=relaxed/simple;
-	bh=oASI8lZvOzwQn6SpNUuGmAnjqOmTkocC/M3zGkdECog=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=df/GzeAHdLQVst7AiH9olijMDfyN8ytBwvc0umKJYTx4n4vpqiqZjmispO/fKYCZypsXq71Yqdz/FS6wJ4LWE2GIQpPp8b+cyS7EG9dJcR6CHHV+/Nnj2w6kflV9n1ahLwfzXZy5X6Y60/GVdvKlf1DIqMi5wqOoosEmZz9CR60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aMeaE7X8; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1763520644; c=relaxed/simple;
+	bh=0T8UVJx47R1toXxTH5zXlqCaQiDCFi6Awm0Ozd2R4M0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nb83H88D7jUXbcasvsz0equzm5iASl5tq6fbXixP2b1rRUqL/6W8+vVoKe/DBinqtlW6ieMU6qOQyqFt0Pr6UNn36ujKdA/1BnQjDKJ4KBtXVetqYDrxaaanSkk4DblXCqt2+Er45ODxOCqKSBf+VcXDs6lDOAzNbeqxGchPAmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iD8ot6IH; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aMeaE7X8"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7869deffb47so58562467b3.1
-        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 18:50:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iD8ot6IH"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78802ac2296so58485787b3.3
+        for <netdev@vger.kernel.org>; Tue, 18 Nov 2025 18:50:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763520639; x=1764125439; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V2piU0LZ9m4ZEPcYM7zXazGE2L2mQPsKP360MC0AEh4=;
-        b=aMeaE7X8bqmwdKMmeZQmJFA3LmQ1tC8w5E4WX24TwTDXBngMLmn6vyqvemq63Asq+S
-         eM6qgfM89koSAHo2HoRmZoNTEIHcgX+FLRl2snXLg51XZE05PB1Hmtvhw8RAMr+fjK2w
-         9O9TzTN3qkK9dm57ALCJzOO2mH9wVMqAZPSLT/s56eOZaWX94wVktRp0VsBBgdVvA1H/
-         06HyuwM8Yj5fZmJlC8J+LgjWR3bRCVZOO7s0SrATbZS7Ngf/y34X3+R5HimYo3BfKVbN
-         C+M0yso8XyOLw1/ko2RQmyIKAChnM0f3xv6wSQ1N3liWAsMrxxsF2zSalfYmWIYz6AjN
-         IsDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763520639; x=1764125439;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763520642; x=1764125442; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V2piU0LZ9m4ZEPcYM7zXazGE2L2mQPsKP360MC0AEh4=;
-        b=q3QnhwGjvzEtGPB22HToqI7u+O90aMvxE1DjwfPebgFLkGz1OddMh0YxJFlj6yBQ+W
-         JR93wvU5v+uTQxiSJ4kQi/xZxIICDQeNcEls36JQBxUE7YFExURA30o9nCHRzNpGNC0M
-         d/yJuta69Y+u53tNgL48yM7D/NroScHDgRvGo/ZFBJyVAvlXW86oHbPmyf8Q4H7a84Ly
-         7hXSz2pT3EJ1KyYMHxuKtmFP39XHcJoU9Wzhvf6cjVdqF8qwTlq+0M5zLKCj/hcQ7OLf
-         hSBW624BQbVm4q5mNpMY9HSh0WMQ2fwH8jwr6Hl68W/cEkaM8zF0T53FCBHc0imBZm0s
-         D6HA==
-X-Gm-Message-State: AOJu0YwvvjEfyd6Tw+40L7k0ZOKIP9j7ksuAaNt87VxMu0dNuhjF6D0n
-	ciTaD/W9gKT8lf+8w95JUPjjNVhkCOLfNSrjb/ZrVIEi3Ce0Z4yoo0pS
-X-Gm-Gg: ASbGnctx/jrve5gRcmwmoIbWt126EEUvH8sIgI4fQiJSnbZvinRhaTLqmbQGslKx2IK
-	Ehb634F57/2hBwUgyuQzCHfHqYdsHrpWbUj24KchR3TvfGF77iEaHzayYkgzqmYcjNx+cTl4frO
-	y7StwRqSvxRVmDacwC0on3+7UQFxoRp2t4MSDlJML8dS7PMIi4VhhAUZUkZ2HOkbEhLrEzMrUOh
-	Oty8YCte9/WMjACscGMtY9Mu9gIErwaFVUGlnAzPQqkd4OViha8KdY0XqC9Jg779s1BfYV6zqY/
-	E0kbVW2ZdYZckpjIHwIMcrNKLelozttFW477oID91EOipHfgb4Bcl2HcD2JGrc/8/8tCRQrUAAP
-	KIjTIRXiQaFA4QD2ATrNJY5aKW+bl6FRtgzT7srz0K/AzVLW3qWQUhEjGigkPB8D+9KfmDQl2Pf
-	WVNXlJJBnXhzLaPgVPHka/
-X-Google-Smtp-Source: AGHT+IHmPfuA1AfzD47/iHwlrM3QKsLm8uiu8WFR1L4/8ZeMuu0e/fGVu7V4aOsTJ5TB7osUk7vFCA==
-X-Received: by 2002:a05:690c:6610:b0:787:d0a2:1cb1 with SMTP id 00721157ae682-78929f16b05mr167103887b3.53.1763520639152;
-        Tue, 18 Nov 2025 18:50:39 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:53::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7882214a45fsm58420747b3.41.2025.11.18.18.50.38
+        bh=+Q+D4xi4pZMCXKvcb+ARJAFJMgk4uxgy92qNv9ZisJo=;
+        b=iD8ot6IHTvZ56ci3S0MVEhPKyMwaGLYIusImHswxGmeVG6+qXC7upu50223Z9hSWSB
+         VPqqt9gm/pYO279dEEreNADH9tSM4HGJ6YD5PvOKqF/sfs+GGKiJKWyUrR3JQ/7GmZfr
+         bWdJPksiD7corkrfT9D76VQhrQTpmiAijIsp8Az7MVt5ggopkImrCiTGgMrM2q+4fFjS
+         Jzwu7y90wtWB7jJQ2LryLW7CtKm1e+X9iiBJlsSVBt4gIjotV4ldwdRrXGWD9kg1MLSQ
+         45kA1SkMQfWIhQ7aeJTH9IlRa8hqRRSqQ/1tbQy+UdQBD/Hb4ULKSljW47DqFe6cxLMf
+         eNug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763520642; x=1764125442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+Q+D4xi4pZMCXKvcb+ARJAFJMgk4uxgy92qNv9ZisJo=;
+        b=oizUfhDEukDZtx/MKBzNSijRMxVjfBPMR30sOvqpNHALNy+3qBdOvGve/XK1VEvk0y
+         XULu1MWv+Rf/iosbn5eooOeJ8RZ5ysRYlgF03ubFF3PeIw03zvDlz55i6mkpyPezZGgF
+         G450G3/fe39pT9CXf6NYao+El9QipGzXlakCxYfLuT5ESnn8UU1FfmEhla+r1a7M314G
+         yylBNhKt7PyzfGsmg1ZNr+XU0dNUcYI7ZQieZ3wgWNsos8/tSSkrIEI8XEp/nXnbIOcT
+         bfSJ0dLSo3PsNN27PKIo2B9v71c5h+JGZCE2np3l/sN4ZptPKGBIZABH2uF0IvrTcGLw
+         01vw==
+X-Gm-Message-State: AOJu0Yx9YoNobkEMnrQcBHJPzohYH8X1X2NYoKp+GSHJ3Q6RFKkIEQc9
+	+N5orFH0zZdHpfniKLbkP5reE70hDMqhEZgl3UwCgcr7HZ0k7PX+RIoU
+X-Gm-Gg: ASbGncuzx3htECFD4i9bNpvMllr51CGitIzwy/mhagpbXSlQp1u7fFCv+BSGIky3Wqr
+	TSLEto7VwNFRIoSrsmdjuGmvnmJHGlJPCkUcYusTcp17d4VrMGq1iPDqeGS9l7KfnvuOBeX8GTA
+	BqqldRBMpp0Mf4uOjOtV+UX+F6WNnWznXuQ2ResFhvqDgmkbB4RxfZqYBtBT0Yb0Ok4Ndja0DS8
+	dVGF/yr2PBWEunH6HDqI57cBkWfOdG3FOTydnUxXCqDlDuHWzph1GN2lBzezfIHB7envBn1/ZSd
+	NS0UzvFu31x3F7iRkCMv03oJy4QkOJDZODaRdLiEm+E7nPTBS3D3DEj47QHjdqL0OlWYpN1s2w+
+	rs+D3iM6IthJvCRVuyt21hXXyyBUUU4/qPm/IZiBVnFglkpu7Huw4AQrdhIeg139BGHu/D6mocd
+	m4VKQNT1PUcbC+1ao19PTgXypsYcePnQ==
+X-Google-Smtp-Source: AGHT+IEuqWYlgnJx+1p1oS9BwNgqcAGRAad/SBsLawrFhVZgJirmmQxmRnDIWr1P6RUTLWy17BUZPA==
+X-Received: by 2002:a05:690c:a003:b0:788:4d:3422 with SMTP id 00721157ae682-78929ee3e23mr140127257b3.38.1763520641784;
+        Tue, 18 Nov 2025 18:50:41 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:6::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78822179d40sm58964867b3.54.2025.11.18.18.50.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 18:50:38 -0800 (PST)
+        Tue, 18 Nov 2025 18:50:41 -0800 (PST)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -104,10 +106,12 @@ To: Jiri Pirko <jiri@resnulli.us>,
 Cc: netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v5 0/6] devlink: net/mlx5: implement swp_l4_csum_mode via devlink params
-Date: Tue, 18 Nov 2025 18:50:30 -0800
-Message-ID: <20251119025038.651131-1-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v5 2/6] devlink: refactor devlink_nl_param_value_fill_one()
+Date: Tue, 18 Nov 2025 18:50:32 -0800
+Message-ID: <20251119025038.651131-3-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251119025038.651131-1-daniel.zahka@gmail.com>
+References: <20251119025038.651131-1-daniel.zahka@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -116,152 +120,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series introduces a new devlink feature for querying param
-default values, and resetting params to their default values. This
-feature is then used to implement a new mlx5 driver param.
+Lift the param type demux and value attr placement into a separate
+function. This new function, devlink_nl_param_put(), can be used to
+place additional types values in the value array, e.g., default,
+current, next values. This commit has no functional change.
 
-The series starts with two pure refactor patches: one that passes
-through the extack to devlink_param::get() implementations. And a
-second small refactor that prepares the netlink tlv handling code in
-the devlink_param::get() path to better handle default parameter
-values.
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+---
+ net/devlink/param.c | 70 +++++++++++++++++++++++++--------------------
+ 1 file changed, 39 insertions(+), 31 deletions(-)
 
-The third patch introduces the uapi and driver api for default
-parameter values. The driver api is opt-in, and both the uapi and
-driver api preserve existing behavior when not used by drivers or
-userspace.
-
-The fourth patch introduces a new mlx5 driver param, swp_l4_csum_mode,
-for controlling tx csum behavior. The "l4_only" value of this param is
-a dependency for PSP initialization on CX7 NICs.
-
-Lastly, the series introduces a new driver param with cmode runtime to
-netdevsim, and then uses this param in a new testcase for netdevsim
-devlink params.
-
-Here are some examples of using the default param uapi with the devlink
-cli. Note the devlink cli binary I am using has changes which I am
-posting in accompanying series targeting iproute2-next:
-
-  # netdevsim
-./devlink dev param show netdevsim/netdevsim0
-netdevsim/netdevsim0:
-  name max_macs type generic
-    values:
-      cmode driverinit value 32 default 32
-  name test1 type driver-specific
-    values:
-      cmode driverinit value true default true
-
-  # set to false
-./devlink dev param set netdevsim/netdevsim0 name test1 value false cmode driverinit
-./devlink dev param show netdevsim/netdevsim0
-netdevsim/netdevsim0:
-  name max_macs type generic
-    values:
-      cmode driverinit value 32 default 32
-  name test1 type driver-specific
-    values:
-      cmode driverinit value false default true
-
-  # set back to default
-./devlink dev param set netdevsim/netdevsim0 name test1 default cmode driverinit
-./devlink dev param show netdevsim/netdevsim0
-netdevsim/netdevsim0:
-  name max_macs type generic
-    values:
-      cmode driverinit value 32 default 32
-  name test1 type driver-specific
-    values:
-      cmode driverinit value true default true
-
- # mlx5 params on cx7
-./devlink dev param show pci/0000:01:00.0
-pci/0000:01:00.0:
-  name max_macs type generic
-    values:
-      cmode driverinit value 128 default 128
-...
-  name swp_l4_csum_mode type driver-specific
-    values:
-      cmode permanent value default default default
-
-  # set to l4_only
-./devlink dev param set pci/0000:01:00.0 name swp_l4_csum_mode value l4_only cmode permanent
-./devlink dev param show pci/0000:01:00.0 name swp_l4_csum_mode
-pci/0000:01:00.0:
-  name swp_l4_csum_mode type driver-specific
-    values:
-      cmode permanent value l4_only default default
-
-  # reset to default
-./devlink dev param set pci/0000:01:00.0 name swp_l4_csum_mode default cmode permanent
-./devlink dev param show pci/0000:01:00.0 name swp_l4_csum_mode
-pci/0000:01:00.0:
-  name swp_l4_csum_mode type driver-specific
-    values:
-      cmode permanent value default default default
-
-CHANGES:
-v5:
-  - use define instead of magic value for test2 param default handlers
-v4: https://lore.kernel.org/netdev/20251118002433.332272-1-daniel.zahka@gmail.com/
-  - add test case for default params.
-  - add new cmode runtime test param to netdevsim.
-  - introduce uapi and driver api for supporting default param values.
-  - rename device_default to default in mlx5 patch.
-v3: https://lore.kernel.org/netdev/20251107204347.4060542-1-daniel.zahka@gmail.com/
-  - fix warnings about undocumented param in intel ice driver
-v2: https://lore.kernel.org/netdev/20251103194554.3203178-1-daniel.zahka@gmail.com/
-  - fix indentation issue in new mlx5.rst entry
-  - use extack in mlx5_nv_param_devlink_swp_l4_csum_mode_get()
-  - introduce extack patch.
-v1: https://lore.kernel.org/netdev/20251022190932.1073898-1-daniel.zahka@gmail.com/
-
-Daniel Zahka (6):
-  devlink: pass extack through to devlink_param::get()
-  devlink: refactor devlink_nl_param_value_fill_one()
-  devlink: support default values for param-get and param-set
-  net/mlx5: implement swp_l4_csum_mode via devlink params
-  netdevsim: register a new devlink param with default value interface
-  selftest: netdevsim: test devlink default params
-
- Documentation/netlink/specs/devlink.yaml      |   9 +
- .../networking/devlink/devlink-params.rst     |  10 +
- Documentation/networking/devlink/mlx5.rst     |  14 ++
- .../marvell/octeontx2/otx2_cpt_devlink.c      |   6 +-
- drivers/net/ethernet/amd/pds_core/core.h      |   3 +-
- drivers/net/ethernet/amd/pds_core/devlink.c   |   3 +-
- .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   6 +-
- .../net/ethernet/intel/i40e/i40e_devlink.c    |   3 +-
- .../net/ethernet/intel/ice/devlink/devlink.c  |  14 +-
- .../marvell/octeontx2/af/rvu_devlink.c        |  15 +-
- .../marvell/octeontx2/nic/otx2_devlink.c      |   6 +-
- drivers/net/ethernet/mellanox/mlx4/main.c     |   6 +-
- .../net/ethernet/mellanox/mlx5/core/devlink.h |   3 +-
- .../net/ethernet/mellanox/mlx5/core/eswitch.c |   3 +-
- .../mellanox/mlx5/core/eswitch_offloads.c     |   3 +-
- .../net/ethernet/mellanox/mlx5/core/fs_core.c |   3 +-
- .../ethernet/mellanox/mlx5/core/fw_reset.c    |   3 +-
- .../mellanox/mlx5/core/lib/nv_param.c         | 238 +++++++++++++++++-
- .../mellanox/mlxsw/spectrum_acl_tcam.c        |   3 +-
- .../ethernet/netronome/nfp/devlink_param.c    |   3 +-
- drivers/net/ethernet/qlogic/qed/qed_devlink.c |   3 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |   3 +-
- drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   3 +-
- drivers/net/ethernet/ti/cpsw_new.c            |   6 +-
- drivers/net/netdevsim/dev.c                   |  56 +++++
- drivers/net/netdevsim/netdevsim.h             |   1 +
- drivers/net/wwan/iosm/iosm_ipc_devlink.c      |   3 +-
- include/net/devlink.h                         |  45 +++-
- include/net/dsa.h                             |   3 +-
- include/uapi/linux/devlink.h                  |   3 +
- net/devlink/netlink_gen.c                     |   5 +-
- net/devlink/param.c                           | 180 +++++++++----
- net/dsa/devlink.c                             |   3 +-
- .../drivers/net/netdevsim/devlink.sh          | 116 ++++++++-
- 34 files changed, 693 insertions(+), 91 deletions(-)
-
+diff --git a/net/devlink/param.c b/net/devlink/param.c
+index 3dbd023e4c36..3aa14ef345f0 100644
+--- a/net/devlink/param.c
++++ b/net/devlink/param.c
+@@ -193,58 +193,66 @@ static int devlink_param_set(struct devlink *devlink,
+ }
+ 
+ static int
+-devlink_nl_param_value_fill_one(struct sk_buff *msg,
+-				enum devlink_param_type type,
+-				enum devlink_param_cmode cmode,
+-				union devlink_param_value val)
++devlink_nl_param_value_put(struct sk_buff *msg, enum devlink_param_type type,
++			   int nla_type, union devlink_param_value val)
+ {
+-	struct nlattr *param_value_attr;
+-
+-	param_value_attr = nla_nest_start_noflag(msg,
+-						 DEVLINK_ATTR_PARAM_VALUE);
+-	if (!param_value_attr)
+-		goto nla_put_failure;
+-
+-	if (nla_put_u8(msg, DEVLINK_ATTR_PARAM_VALUE_CMODE, cmode))
+-		goto value_nest_cancel;
+-
+ 	switch (type) {
+ 	case DEVLINK_PARAM_TYPE_U8:
+-		if (nla_put_u8(msg, DEVLINK_ATTR_PARAM_VALUE_DATA, val.vu8))
+-			goto value_nest_cancel;
++		if (nla_put_u8(msg, nla_type, val.vu8))
++			return -EMSGSIZE;
+ 		break;
+ 	case DEVLINK_PARAM_TYPE_U16:
+-		if (nla_put_u16(msg, DEVLINK_ATTR_PARAM_VALUE_DATA, val.vu16))
+-			goto value_nest_cancel;
++		if (nla_put_u16(msg, nla_type, val.vu16))
++			return -EMSGSIZE;
+ 		break;
+ 	case DEVLINK_PARAM_TYPE_U32:
+-		if (nla_put_u32(msg, DEVLINK_ATTR_PARAM_VALUE_DATA, val.vu32))
+-			goto value_nest_cancel;
++		if (nla_put_u32(msg, nla_type, val.vu32))
++			return -EMSGSIZE;
+ 		break;
+ 	case DEVLINK_PARAM_TYPE_U64:
+-		if (devlink_nl_put_u64(msg, DEVLINK_ATTR_PARAM_VALUE_DATA,
+-				       val.vu64))
+-			goto value_nest_cancel;
++		if (devlink_nl_put_u64(msg, nla_type, val.vu64))
++			return -EMSGSIZE;
+ 		break;
+ 	case DEVLINK_PARAM_TYPE_STRING:
+-		if (nla_put_string(msg, DEVLINK_ATTR_PARAM_VALUE_DATA,
+-				   val.vstr))
+-			goto value_nest_cancel;
++		if (nla_put_string(msg, nla_type, val.vstr))
++			return -EMSGSIZE;
+ 		break;
+ 	case DEVLINK_PARAM_TYPE_BOOL:
+-		if (val.vbool &&
+-		    nla_put_flag(msg, DEVLINK_ATTR_PARAM_VALUE_DATA))
+-			goto value_nest_cancel;
++		if (val.vbool && nla_put_flag(msg, nla_type))
++			return -EMSGSIZE;
+ 		break;
+ 	}
++	return 0;
++}
++
++static int
++devlink_nl_param_value_fill_one(struct sk_buff *msg,
++				enum devlink_param_type type,
++				enum devlink_param_cmode cmode,
++				union devlink_param_value val)
++{
++	struct nlattr *param_value_attr;
++	int err = -EMSGSIZE;
++
++	param_value_attr = nla_nest_start_noflag(msg,
++						 DEVLINK_ATTR_PARAM_VALUE);
++	if (!param_value_attr)
++		return -EMSGSIZE;
++
++	if (nla_put_u8(msg, DEVLINK_ATTR_PARAM_VALUE_CMODE, cmode))
++		goto value_nest_cancel;
++
++	err = devlink_nl_param_value_put(msg, type,
++					 DEVLINK_ATTR_PARAM_VALUE_DATA, val);
++	if (err)
++		goto value_nest_cancel;
+ 
+ 	nla_nest_end(msg, param_value_attr);
+ 	return 0;
+ 
+ value_nest_cancel:
+ 	nla_nest_cancel(msg, param_value_attr);
+-nla_put_failure:
+-	return -EMSGSIZE;
++	return err;
+ }
+ 
+ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
 -- 
 2.47.3
 
