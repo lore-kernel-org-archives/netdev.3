@@ -1,104 +1,218 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE3B32A3C8;
-	Wed, 19 Nov 2025 10:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E60336ED1;
+	Wed, 19 Nov 2025 10:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763546627; cv=none; b=k7s+ISUnY1dSJivN7umwnws6CABoNt+sg4wF2+ks8Q7ArFNhLD2LWxpgi93vC+Uj7W/Radm3cS62SYo5ngWms1MwM2Ehe0z9S08J+5icrk7naUJAfg77P4iJbPUfpiJ53glaG2pyxx/duZRxhDxYJz1Nr3JGS15Uu/3HI2oiqlM=
+	t=1763546679; cv=none; b=ClKF8Q586T7MBCeaWAo8aD8wpraxH52eWxR4jvQoJkeOndxonb1NNH1eVVNAlvh+r7M+ngz+wc+ezgJE2CWFY/c1ePgCapkLZWVCtPA7r9a+iT6kYR0Sm663RDlyHqGVAe6s8FTIaN/0Rr10QTSoM8QBBgn2QmP4B2ct0zPiIe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763546627; c=relaxed/simple;
-	bh=h9QjrqcAykY5VUto6sGBKZPUvaRZiFnE4qVIX1eiuGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rYhShZvmV2zMEtCVey/ICNaK4QGJciRD9NTnVYtZHa+OTqk5C2Am4fMpf9eXeBPu5z7brnB/dK66Ltl1CwvANJbVem37NtV0h5Jr4AWl7NA3wx6zmBh1E7VjbLuvgdUzQ3ljvlL1aVCi6vD0EKty0Ubo5n/lWnrsVkvjAg9v7Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kpFo9qM7; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1763546679; c=relaxed/simple;
+	bh=R1W+D2JRPWwarJ7l+JsNREKcQeUaSc9NN24K0kJrUOs=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=VYh3lsYuT8KlNkIhz6wpYkoRzaz5FQNvfKMrWS1Mq6wFQvw5Jq5ETn+v2Pra13xTwPsEkylO1plP4BarzqwJsD7YSb9SkBePbh38eWMcXfRCNNbhc4S3hA2P9EuPfg26oNGHp50dBqLLnwCna6zukDHx5tmTCbq3VN68lubi0+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=q3ul+T+8; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kpFo9qM7"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="q3ul+T+8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Y+sgIiXuLSX8878BXnZdAURbfpZ/7Ejmg1bqP8JP5ck=; b=kpFo9qM7iuPsdM+zYOjqS02txO
-	4M7kLehtYNmXBJfY73fpDpk3On1guAxfTdG3f4/+cB+hDWj4idMIug9TUrx8eqs7yy0IupTxLV2qG
-	D6959asz+TtdSGQiUzwGyJ4MlKUAo0S3goHu9FNs4pswpYkWgv/PECttzzMI6yzoyzHSjhKtgy2zE
-	u2QeQIJ7CmdDzj1QOIkaOS0RvSIGGF22MtkkLBSY9+bfqK+zczx8GFugnk1THmhmI88MPrFpWROJ9
-	lhZ220fN1y6GKdujBRN0FEIb8nFjbSX2LL3amzluVFeyhPXQB6rGX5QLGe0v3wHRI9GytQ6/g7Ouc
-	+KwYFJeg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52384)
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=KPfsu59Yt0PWFOvEro80t5AXlzEkyAnGNmZkqzrwQ08=; b=q3ul+T+81Zi9zcWuHHvUgADgER
+	BzFveuxWasUnltUsKMhFpZ3ESyIvg1/o3u9GqFegfprpHjcL6COj2PiuZuyrVRfgv8UfqOtTyqiRp
+	1SLApR2bWJpjEEtniaNAAzGc8ectQSfqS6eczI0+DFQtK2XEU/m2rlWCoN+4fNUM+DQ8eD86f4OfR
+	NJ/rl0935lL0UzWKz90hTr96PekeMW01mU1zdKi9Um/sh2CwkBOAgbQe3m9H9PANphlT0Tp4WlUI1
+	NjYsJX994DlxriT3keDjr5mkBJU6q6i6MQ/al/IMEbN6jlstqMO42C9cFeuOMNwNpITbB/kUWNCWi
+	nN8VjxdQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35848 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vLf1k-000000004QW-32gK;
-	Wed, 19 Nov 2025 10:03:04 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vLf1d-000000003Ji-0q5P;
-	Wed, 19 Nov 2025 10:02:57 +0000
-Date: Wed, 19 Nov 2025 10:02:56 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vLf2a-000000004RB-1cM3;
+	Wed, 19 Nov 2025 10:03:56 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vLf2Z-0000000FMNH-0xPV;
+	Wed, 19 Nov 2025 10:03:55 +0000
+In-Reply-To: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk>
+References: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Chen-Yu Tsai <wens@csie.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chen-Yu Tsai <wens@csie.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Drew Fustini <fustini@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Fu Wei <wefu@redhat.com>,
-	Guo Ren <guoren@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Fu Wei <wefu@redhat.com>,
+	Guo Ren <guoren@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Jan Petrous <jan.petrous@oss.nxp.com>,
 	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Keguang Zhang <keguang.zhang@gmail.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
 	linux-rockchip@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-sunxi@lists.linux.dev,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, s32@nxp.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	s32@nxp.com,
 	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH net-next 0/3] net: stmmac: pass struct device to init/exit
-Message-ID: <aR2V0Kib7j0L4FNN@shell.armlinux.org.uk>
+Subject: [PATCH net-next 2/3] net: stmmac: move probe/remove calling of
+ init/exit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vLf2Z-0000000FMNH-0xPV@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 19 Nov 2025 10:03:55 +0000
 
-Rather than passing the platform device to the ->init() and ->exit()
-methods, make these methods useful for other devices by passing the
-struct device instead. Update the implementations appropriately for
-this change.
+Move the probe/remove time calling of the init()/exit() methods in
+the platform data to the main driver probe/remove functions. This
+allows them to be used by non-platform_device based drivers.
 
-Move the calls for these methods into the core driver's probe and
-remove methods from the stmmac_platform layer.
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 47 ++++++++++++++-----
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 23 +--------
+ 2 files changed, 36 insertions(+), 34 deletions(-)
 
-Convert dwmac-rk to use ->init() and ->exit().
-
- .../net/ethernet/stmicro/stmmac/dwmac-anarion.c    |  4 +-
- .../net/ethernet/stmicro/stmmac/dwmac-eic7700.c    |  4 +-
- .../net/ethernet/stmicro/stmmac/dwmac-loongson1.c  | 12 +++---
- .../ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c  |  4 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c     | 47 +++++++++-------------
- drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c    | 14 +++----
- .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    |  2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c    |  4 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  | 10 ++---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sunxi.c  |  4 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c  |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 47 ++++++++++++++++------
- .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 35 +++++-----------
- include/linux/stmmac.h                             |  4 +-
- 14 files changed, 94 insertions(+), 99 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 644dccb29f75..aac8188248ff 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7593,19 +7593,9 @@ struct plat_stmmacenet_data *stmmac_plat_dat_alloc(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(stmmac_plat_dat_alloc);
+ 
+-/**
+- * stmmac_dvr_probe
+- * @device: device pointer
+- * @plat_dat: platform data pointer
+- * @res: stmmac resource pointer
+- * Description: this is the main probe function used to
+- * call the alloc_etherdev, allocate the priv structure.
+- * Return:
+- * returns 0 on success, otherwise errno.
+- */
+-int stmmac_dvr_probe(struct device *device,
+-		     struct plat_stmmacenet_data *plat_dat,
+-		     struct stmmac_resources *res)
++static int __stmmac_dvr_probe(struct device *device,
++			      struct plat_stmmacenet_data *plat_dat,
++			      struct stmmac_resources *res)
+ {
+ 	struct net_device *ndev = NULL;
+ 	struct stmmac_priv *priv;
+@@ -7912,6 +7902,34 @@ int stmmac_dvr_probe(struct device *device,
+ 
+ 	return ret;
+ }
++
++/**
++ * stmmac_dvr_probe
++ * @dev: device pointer
++ * @plat_dat: platform data pointer
++ * @res: stmmac resource pointer
++ * Description: this is the main probe function used to
++ * call the alloc_etherdev, allocate the priv structure.
++ * Return:
++ * returns 0 on success, otherwise errno.
++ */
++int stmmac_dvr_probe(struct device *dev, struct plat_stmmacenet_data *plat_dat,
++		     struct stmmac_resources *res)
++{
++	int ret;
++
++	if (plat_dat->init) {
++		ret = plat_dat->init(dev, plat_dat->bsp_priv);
++		if (ret)
++			return ret;
++	}
++
++	ret = __stmmac_dvr_probe(dev, plat_dat, res);
++	if (ret && plat_dat->exit)
++		plat_dat->exit(dev, plat_dat->bsp_priv);
++
++	return ret;
++}
+ EXPORT_SYMBOL_GPL(stmmac_dvr_probe);
+ 
+ /**
+@@ -7950,6 +7968,9 @@ void stmmac_dvr_remove(struct device *dev)
+ 
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_put_noidle(dev);
++
++	if (priv->plat->exit)
++		priv->plat->exit(dev, priv->plat->bsp_priv);
+ }
+ EXPORT_SYMBOL_GPL(stmmac_dvr_remove);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index feccb8a3e7e8..9015b7f80d1b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -804,25 +804,12 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
+ 		       struct plat_stmmacenet_data *plat,
+ 		       struct stmmac_resources *res)
+ {
+-	struct device *dev = &pdev->dev;
+-	int ret;
+-
+ 	if (!plat->suspend && plat->exit)
+ 		plat->suspend = stmmac_plat_suspend;
+ 	if (!plat->resume && plat->init)
+ 		plat->resume = stmmac_plat_resume;
+ 
+-	ret = stmmac_pltfr_init(dev, plat);
+-	if (ret)
+-		return ret;
+-
+-	ret = stmmac_dvr_probe(dev, plat, res);
+-	if (ret) {
+-		stmmac_pltfr_exit(dev, plat);
+-		return ret;
+-	}
+-
+-	return ret;
++	return stmmac_dvr_probe(&pdev->dev, plat, res);
+ }
+ EXPORT_SYMBOL_GPL(stmmac_pltfr_probe);
+ 
+@@ -864,13 +851,7 @@ EXPORT_SYMBOL_GPL(devm_stmmac_pltfr_probe);
+  */
+ void stmmac_pltfr_remove(struct platform_device *pdev)
+ {
+-	struct net_device *ndev = platform_get_drvdata(pdev);
+-	struct stmmac_priv *priv = netdev_priv(ndev);
+-	struct plat_stmmacenet_data *plat = priv->plat;
+-	struct device *dev = &pdev->dev;
+-
+-	stmmac_dvr_remove(dev);
+-	stmmac_pltfr_exit(dev, plat);
++	stmmac_dvr_remove(&pdev->dev);
+ }
+ EXPORT_SYMBOL_GPL(stmmac_pltfr_remove);
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.47.3
+
