@@ -1,83 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E47371DF6;
-	Wed, 19 Nov 2025 15:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8920836E546
+	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 15:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763567599; cv=none; b=GhlZpSsPznUnfTwfXjOtvb5fbHtJ1Krh8cQQsSuRpwsYhyet/CCLl+6+xgUbVS9VE9BtfEaVq6CI/ydHbGt9xcI8TN/8jbAQ5scaNlZiVYCcyAzMlAWIUD4nh8pgF/v+YqllJ4HvGYy/pwRcpfUeJOgjkWKmpUju9YBxooPxDko=
+	t=1763567878; cv=none; b=E09ves3ku8zc3xzkuXX3XjjUD5lMUlgAa7Sn+aQtOnY+WT2we28UkCt2H8jLl5K3iN+zU7Nzp/P5GfxS69NjVsQNwAZTOim0N90FkrCbatyKV7abBIJNxhFjOBCPVvetcdFM6E93+At3AHoe+Dgkqu7eI3Lf8tedw35jnjzAFOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763567599; c=relaxed/simple;
-	bh=ghn1DQMvwDFb2t8E3blcc0GQRRX7k47nsQNotsdpd5k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hg980xYWPUlgychblnQAtSsiiOjMPFDwBZDIXkm3Qv2BeLUo6/sDwKtjRMbCvCvMFQobP/B8WhU7XhiRBKILwcCRdmBh+WEinpbcpQdSE3Xk2I8ABXb/3poywTx7xXP+rNUr9vAEl/iW6OwUVBvRsmSsF4kt6TE9XPpz6+itQ0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LX+K4FSD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763567878; c=relaxed/simple;
+	bh=JXMPvu/J4g8fmYDP1TB+ZNrorTpX3IoJnMErkAbn9m4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iUmIM4DDmV9XzbVZ0O5hNZiAOueehwnpbG8DDVd1fQrQKvtLD/ZKlXfAmLUOAqdRbOlW0x1biLkkKlle6hDBbttxhwhifLVVHP9CzaN9F7xL6BxJE4W8LZqMy5MqFAInFX6qZcN58zUt82fOLuOapWo8yDs9qfTfNljD95C5sh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dHGZhpUr; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LX+K4FSD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6339C4AF14;
-	Wed, 19 Nov 2025 15:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763567597;
-	bh=ghn1DQMvwDFb2t8E3blcc0GQRRX7k47nsQNotsdpd5k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LX+K4FSDDP4e9yAEryXqFyjA/EQPdkOCtujeK1HOh4xZoELGg5FYGLKkmK42o0XBO
-	 88LV5Z4Xcp0LVexLHCGjyrmQK4hIPPsEFJi8mwwBRGn0zL3dWUxTVAJxaIWAcLbzrX
-	 wkc5Cv+tRibnjmRcjZiO3WsiORlul+yjjCDbVDxHQqk6OXT/hlHSjcNbEkq4D3cV4E
-	 FS3c2VIXH4jtiu1fpJLE4svc5x+tS6oF7fo+xBJcjIyehIOX8auitNcy4GKdUMlhkF
-	 2EIgcAw7Ped67nJvYNUZSAze5OjzWKlVyrXW2T21L9sFwQ2wnoPLq0V/bNvwm8j7HZ
-	 doxPGSbZI9KIA==
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 resend] net: stmmac: add support for dwmac 5.20
-Date: Wed, 19 Nov 2025 23:35:26 +0800
-Message-ID: <20251119153526.13780-1-jszhang@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dHGZhpUr"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F3B4DC1118D;
+	Wed, 19 Nov 2025 15:57:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1DE3160699;
+	Wed, 19 Nov 2025 15:57:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77732103719E4;
+	Wed, 19 Nov 2025 16:57:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763567871; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=FQuh6VmaD93GvvXK5c4xgLR0ZzMDhEwGj0WmLsCnIN8=;
+	b=dHGZhpUrZgi42dyqEhybjEegv6IaaMxibHfTTXQW7iH2qRs/rle+ULMC+CEEWAPFtAI1gA
+	+5XfHJGdD/5mmJD8Gf/2HnFufqxYAYAe9DHWfi5A8Gl1cWpJCwFML67yJp+zQKZZBuW42S
+	PZ45DjIbcmTQrRnIGapS3it8IgDzjEFXgE+f/uUzZOOc7Pydy7RnFI3vRdh5AyXMevWKxi
+	LmwboiRg293CzWz4c5YVEh1st/PEiWFUpOGbYl+KHM3Ehjz6woZPd0x6XwkEZJytO/lbgl
+	gocNJVu3Ohyfcy3OUIgEcDCCNocXZucnjElO3VCQ9xIyS3edrwVULW3pLLPSjQ==
+Message-ID: <0ca796b8-2add-4101-a3d5-cd7135662938@bootlin.com>
+Date: Wed, 19 Nov 2025 16:57:47 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] amd-xgbe: let the MAC manage PHY PM
+To: Raju Rangoju <Raju.Rangoju@amd.com>, netdev@vger.kernel.org
+Cc: pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, andrew+netdev@lunn.ch, Shyam-sundar.S-k@amd.com
+References: <20251119093124.548566-1-Raju.Rangoju@amd.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20251119093124.548566-1-Raju.Rangoju@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The dwmac 5.20 IP can be found on some synaptics SoCs. 
+Hi Raju,
 
-The binding doc has been already upstreamed by
-commit 13f9351180aa ("dt-bindings: net: snps,dwmac: Add dwmac-5.20
-version")
+On 19/11/2025 10:31, Raju Rangoju wrote:
+> Use the MAC managed PM flag to indicate that MAC driver takes care of
+> suspending/resuming the PHY, and reset it when the device is brought up.
+> 
+> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+> ---
+>  drivers/net/ethernet/amd/xgbe/xgbe-drv.c    | 3 +++
+>  drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 1 +
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> index f3adf29b222b..1c03fb138ce6 100644
+> --- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+> @@ -1266,6 +1266,9 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+>  
+>  	clear_bit(XGBE_STOPPED, &pdata->dev_state);
+>  
+> +	/* Reset the phy settings */
+> +	xgbe_phy_reset(pdata);
+> +
 
-So we just need to add a compatibility flag in dwmac generic driver.
+At a first glance, this looks like 2 different things, so maybe 2
+different patches ?
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
----
-Since v1:
- - fix the commit msg
+That said, with this change does it still make sense to call
+xgbe_phy_reset() in xgbe_open() ?
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c | 1 +
- 1 file changed, 1 insertion(+)
+With this patch we have :
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c
-index b9218c07eb6b..cecce6ed9aa6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-generic.c
-@@ -59,6 +59,7 @@ static const struct of_device_id dwmac_generic_match[] = {
- 	{ .compatible = "snps,dwmac-3.72a"},
- 	{ .compatible = "snps,dwmac-4.00"},
- 	{ .compatible = "snps,dwmac-4.10a"},
-+	{ .compatible = "snps,dwmac-5.20"},
- 	{ .compatible = "snps,dwmac"},
- 	{ .compatible = "snps,dwxgmac-2.10"},
- 	{ .compatible = "snps,dwxgmac"},
--- 
-2.51.0
+xgpe_open() {
+
+  xgbe_phy_reset();
+
+  xgbe_start() {
+    xgbe_phy_reset(); /* again */
+  }
+}
+
+Can you remove the first call in .ndo_open ?
+
+Maxime
 
