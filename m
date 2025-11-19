@@ -1,202 +1,163 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010008.outbound.protection.outlook.com [52.101.61.8])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3899436402E;
-	Wed, 19 Nov 2025 13:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763560489; cv=fail; b=TkY9/+vvzeiVcDxFHpbdQ3SWENjXWW+fQvKuGNI6XJI2gL49vNY67mypjF1OZnX1xKZzJHj+XKc1vF+bGMBZYFwK+jwFAQYBhuHxfyJ/A+54aFshZHsqC5RD4sKXzQcmDojm48yK+fDYElmU/DLIPvWTGKCHuG2QdUvY+warV7o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763560489; c=relaxed/simple;
-	bh=jbNGy6UakX4Rih2e44J5M+qQUn4LxjhgBhsQ4Mj1grg=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=iayKhGX8OxAK762buOIO5s8PmgJxYU0prp3QLCiSOJyDbItmQ106bcv+j7wJpaPoXmrbbkJt7D9X+utCNqvLm7wRxoLRVfXeGfw3pqkm4W9czzZl25JQsjkWT/OqEA7X8GJPJ9wmg4LEWSNyQBY8f8Wp3CqNw2nGriamFNyUEAA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rONf+Lzf; arc=fail smtp.client-ip=52.101.61.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959A2FB0BD;
+	Wed, 19 Nov 2025 14:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763561069; cv=none; b=Yt8MBNeqtKmnvyk4PnavGzvB0M7OWnPwnFRgLf7VN6AILY9hF8q4xEFWTMDFOFUwhChwkLKwu8SDOAAdWfW4K/a/It+RPRCYcQjfhNh7sQCZvM1moI5DDvYCTZDPxdeSJOrbqy07mIEz9KTh6494Y57baV3JsMezY8JOY9xRzvQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763561069; c=relaxed/simple;
+	bh=/+BPYtNUG5Xu5+ISDv/HUJHRqC36BinwRESOVXe6Aa4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JQTev5lZI/NlOgcS1oHVDgL5/JWPowPVwP9UMJWMp/M0kTBt02yw1sbsFy3M71bjGkfAsJd73WnUVFvITVPalhMSz8wKlNry84E3b2YWb4eDbNrXpNgzi7gVSEsynN5xRP9HZ/qDfbBE1HTZNv/qjBafizDgnZvpuYu1cwgHdM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=xco3s39q; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rONf+Lzf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t9ClZCLd4olvTbc2hTHlIvBsXVN/RSj9nu78D/w7afkV8sSZnBxGPRgMenvNXrUQCNLKb5J6cZChTp+UHslyoAu3q2O5QWO9iVw4q3AyOWoV24eHliLJ4ZwBdtZFuIzvWqqz1bOBLdygtMkqPYlti9EZvOIDFoY8Syt8+PjNayj0XZHVo9oNbLtJd+yiNjebTxd4Zp4oXBF83hDDQXp7gtA+APNldeCeOA0bmX9aemfQALQz6wruMggVL4+4GBQLWHnJHw0tlIiR31fqxnUXV6OzISdDod19Hq6bCjjb4/Wwn0gCE610yTYDuzcoDNEHykxmJpRx172ZKsueawjsVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lPf3iFPRWMh6mXpMekFMhn2mCvwcqwRT3yoATXbvMyo=;
- b=xti30/MAfEzO7ts04HN20LUQXA4zXe2T0lSKjz6r6OtHbbl2SRzSp0Mb9SYQYHRiz+vMseCsDRDMdeCwpHUMFsYx3U2nyCpSZIYSftlQ/ZonJ8awl+odRHHwVrc5y1pjRakAG8b0yO0DfyRwrZZbh3HJc2dUvTRLQYtVweCclN9ljdq6fFnkSE5iSUfcnSay6LVdzoN2G/yTJHU0hbBuc+jbSYFpVOLRtMB4nMiHCLGbghGpIHeriGm0LXIWlHa4osc9PVd/znvznkGXgucF0naIqOo5Q22WjpYxQrKDvBGyYwvUIMYD0AFLadSKebgUbU/f3pmXpDTIhrJG9k4t/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lPf3iFPRWMh6mXpMekFMhn2mCvwcqwRT3yoATXbvMyo=;
- b=rONf+LzfSc8u2lKcBe1EOhviXcTs2l4r9JmtrAzImbmQaL/Q/zX34ZwWIpATrzFz7dwTZr30XrJ98TSLHTLx1VvnPRKcg9C4qC3zk9zxhRsG3Wve/FDwRT6cLSZufJ3QW+WW++rid5Uoi+y9sBfMvbT5eGyFOWj9AVLTFtM9wQVOL5EpbQo6AG6g0e+3ZMFlRtVnNjVm6EBbtgzscQS94Fl2nEAqDUFgKUd7C/6PCeoTvEL2mlzltQs3NaPATeHmuZY5nd2WrpF/qECVH/I2AStjE6M15CGq3dPqD+luXx9Dh3xssMTwi8FDjZlA8sxUdf9LgIJU3pHhEqYh5sVdGg==
-Received: from CY5PR15CA0116.namprd15.prod.outlook.com (2603:10b6:930:68::26)
- by CY3PR12MB9577.namprd12.prod.outlook.com (2603:10b6:930:109::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Wed, 19 Nov
- 2025 13:54:44 +0000
-Received: from CY4PEPF0000EDD7.namprd03.prod.outlook.com
- (2603:10b6:930:68:cafe::de) by CY5PR15CA0116.outlook.office365.com
- (2603:10b6:930:68::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
- 19 Nov 2025 13:54:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000EDD7.mail.protection.outlook.com (10.167.241.203) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 13:54:44 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
- 2025 05:54:26 -0800
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
- 2025 05:54:20 -0800
-References: <20251118215126.2225826-1-kuba@kernel.org>
- <20251118215126.2225826-2-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<willemdebruijn.kernel@gmail.com>, <shuah@kernel.org>, <sdf@fomichev.me>,
-	<krakauer@google.com>, <linux-kselftest@vger.kernel.org>, <petrm@nvidia.com>,
-	<matttbe@kernel.org>
-Subject: Re: [PATCH net-next v2 01/12] selftests: net: py: coding style
- improvements
-Date: Wed, 19 Nov 2025 14:40:41 +0100
-In-Reply-To: <20251118215126.2225826-2-kuba@kernel.org>
-Message-ID: <87ms4icely.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="xco3s39q"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1vLinA-005mv9-3g; Wed, 19 Nov 2025 15:04:16 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From;
+	bh=LL1kx54MTYNXzaYfz6YCwaEQd6cdxw7HMjZNJrr5nf0=; b=xco3s39qM71PqlAo+Xqb/nar0N
+	kToWfsOyzPkN62CvWVnE4HN+owlB8sFFFl/jnYaEXKBpAY380ZU+HzbEOV7QH2lCVjtrRAIWBLOFA
+	smJ2I5h4KFG1gVqHoic+8jnHw0xFQkH90+j65LrGJcY/xmRxECj1utt/T5HFgcDRxdEid8tfjmJzp
+	4KragQmk8IoFCu1Z1IrkZ+KeUBL9h5mf9gU0IFvZ0YFoGS37WGDTdfHN9t9DF6ZjulXRqR17L9CaC
+	10d74XSAxNMvhyvFrzsehI0kyjerH3Q7vXJo9AEQ32COCfT2bncGMs6x49yiiyR2aQqBXv5l/XWF4
+	O7RNb1cg==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1vLin9-0000kv-3C; Wed, 19 Nov 2025 15:04:15 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vLim2-00FgY3-Qx; Wed, 19 Nov 2025 15:03:06 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 19 Nov 2025 15:02:59 +0100
+Subject: [PATCH net v2] vsock: Ignore signal/timeout on connect() if
+ already established
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|CY3PR12MB9577:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17e5ea2f-9dd6-4bab-50f6-08de277331cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?u8U/5zH+qLzWvqNpN7xJ7frCp4ZjeYdjZ31Wjff6xTydFvk1gyibY6uvLByW?=
- =?us-ascii?Q?tnlYxr365YAOPQMTRbPOkIhuaK4kIJJo4CzYPDr3N35u4ar895DTaB/02yFQ?=
- =?us-ascii?Q?CerKTg0FX0Fdv+W8kHs70UobnjR4CRN2nqrkg2bzYvRyC2tUtwJAQYYKNNK5?=
- =?us-ascii?Q?6A2i2RNh0sGaXVefbjXtNXIi/sXCmwgQHtbmpb2Cw5rdKdd9EDvqt8Kt0b2l?=
- =?us-ascii?Q?5moQzU/D2Krso0utHWcla08UjaA5Tfb1BDaKmunlc8DcG/PnCR5AXQGwj4Kc?=
- =?us-ascii?Q?m4J/2ryUHBcGSKfBLpbN9lWm4hAdfzhNDVJ2WTHdgHQHEyrBZ+XU0KQ+JOHm?=
- =?us-ascii?Q?egNO+j3jHaHWKN9X0pXCVD3E91Y0dAxqfmdX2zdMv1kBZfrwDYzoGlPXD+qA?=
- =?us-ascii?Q?cSYjZLNLpAghF+ufsp0xWBmI8hsTvGrdWjA7f+2cuNebb83l27PAVwY8l0FV?=
- =?us-ascii?Q?zLwCZQTs+j4NhWTLapTPuWSxMvww7az6FXLqCoqMK4+oYqkgQsS0zL2wRVEW?=
- =?us-ascii?Q?F3j4lGoVlyejLRgaDrq50C0SwbFunVLXNqpecICHXPfpwIG3kyfWGsDogBdW?=
- =?us-ascii?Q?aB3+yf0ZjfcmhDNRevlzKHX1HiafuElZHlKt8co1z1nPYNlORc6tl8a5pIlv?=
- =?us-ascii?Q?oB5esG3Q5N4wsXUPqF/StW7LECcOYCCEem+22Q60NpPqiwSa5w2y6k15PqS5?=
- =?us-ascii?Q?9cC75VUGg4n2pOsJVqXy+3+qeMOR/Qa+CVva2EWLaQlvg2X6Wh+ax0z2BaXg?=
- =?us-ascii?Q?3fvDHN2RrZmko2fBJv2X+Lckr8CiELIzrbC/3B44MLUJsYSj1obtiHCm3FNC?=
- =?us-ascii?Q?qYjuR9gXYOnsJjCItBFg2Y0sDdgXE5PUgzja1r/C63DSRULZqMeFUAhECn1b?=
- =?us-ascii?Q?1aQTx9SyfG7KeAl3yeTYryeJZdlC5eO2hF9akWCLh2g6VUGmyDhJ/Lxnkz0o?=
- =?us-ascii?Q?vwOzArwLW5tMyI7We1jYWMJPOEb/bMiYml55oLEk3aQ/1ks+FgBJnSXUE53I?=
- =?us-ascii?Q?aF5ojuJotBueRNXDK0hohAfyy2Jl8V2g4eeycRlYixFawv6wnsDrg6Lmgzqe?=
- =?us-ascii?Q?txwG1FIACeRUvhasxc07q3nxc73ux6hqzhQmgYJ6RBoSRTPXCRf2Z1RYBUQ5?=
- =?us-ascii?Q?FCcii1fS6MyQnZjWrFlwm1ObhGpvuxWh6tLScYmS6cnbRM1/+35Df4aa5qR5?=
- =?us-ascii?Q?1muG5coNX8S8n+zVPVA+Le+H6ZG8HIRXPURbrDTast0X/Ah92vyNov6R2v45?=
- =?us-ascii?Q?Qs7E3ThB6gHyLmkK4M2PHigwjmQwZRWU4SmStkP6gsoZBaMcBD/erdafeIu7?=
- =?us-ascii?Q?JKbpEvbejf0GSChHMEtEHGqK8wTU3fsjiS8RxeW4kBiJqsaq03b4V6tZYMtY?=
- =?us-ascii?Q?tfIbWe1zU46VPHWupNzH3bpGpDjk1eRUUDgg45fGns+soTG8gJFHyHCzpVMT?=
- =?us-ascii?Q?U6O3Uq8oeQMf8nFgV2gz3POX4ww7UtlwHnWPzP5XoQbDEWDo8vc5aZQfoogT?=
- =?us-ascii?Q?N9q4UlhHyaVJD5/qb8JkPlC2kzyIrjEWOxbhxNBOLjcabkIaVz5TILez40ES?=
- =?us-ascii?Q?8Z1P7lJUfDdupE+t1C0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 13:54:44.2394
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17e5ea2f-9dd6-4bab-50f6-08de277331cd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9577
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co>
+X-B4-Tracking: v=1; b=H4sIABLOHWkC/32NQQrCMBBFr1Jm7UgmWmpdeQ/pop1MbBASSWKol
+ N7d2AO4fP/z318hSXSS4NqsEKW45IKvoA8N8Dz6h6AzlUEr3aoLtVhS4Cc6nyXG9yuLQQ7eC2e
+ 0vTZ2bNVZs4G6f0Wxbtndd/CSYajh7FIO8bP/Fdqrn5qIuj/qQkg4sdIkver4ZG9xCsuRAwzbt
+ n0BrRB3kMUAAAA=
+X-Change-ID: 20250815-vsock-interrupted-connect-f92dfa5042cd
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, George Zhang <georgezhang@vmware.com>, 
+ Andy King <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.3
 
+During connect(), acting on a signal/timeout by disconnecting an already
+established socket leads to several issues:
 
-Jakub Kicinski <kuba@kernel.org> writes:
+1. connect() invoking vsock_transport_cancel_pkt() ->
+   virtio_transport_purge_skbs() may race with sendmsg() invoking
+   virtio_transport_get_credit(). This results in a permanently elevated
+   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
 
-> We're about to add more features here and finding new issues with old
-> ones in place is hard. Address ruff checks:
->  - bare exceptions
->  - f-string with no params
->  - unused import
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  tools/testing/selftests/net/lib/py/ksft.py | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->
-> diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
-> index 83b1574f7719..56dd9bd060cd 100644
-> --- a/tools/testing/selftests/net/lib/py/ksft.py
-> +++ b/tools/testing/selftests/net/lib/py/ksft.py
-> @@ -1,6 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -import builtins
->  import functools
->  import inspect
->  import signal
-> @@ -163,7 +162,7 @@ KSFT_DISRUPTIVE = True
->          entry = global_defer_queue.pop()
->          try:
->              entry.exec_only()
-> -        except:
-> +        except Exception:
+2. connect() resetting a connected socket's state may race with socket
+   being placed in a sockmap. A disconnected socket remaining in a sockmap
+   breaks sockmap's assumptions. And gives rise to WARNs.
 
-This used to catch KsftTerminate, which we use for SIGTERM handling, now
-it doesn't anymore. I think it could legitimately appear in that context
-if SIGTERM si delivered while exec_only() is running.
+3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
+   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
+   any simultaneous sendmsg() or connect() and may result in a
+   use-after-free/null-ptr-deref.
 
-IMHO it should catch BaseException, like ksft_run() already does.
+Do not disconnect socket on signal/timeout. Keep the logic for unconnected
+sockets: they don't linger, can't be placed in a sockmap, are rejected by
+sendmsg().
 
->              ksft_pr(f"Exception while handling defer / cleanup (callback {i} of {qlen_start})!")
->              tb = traceback.format_exc()
->              for line in tb.strip().split('\n'):
-> @@ -181,7 +180,7 @@ KSFT_DISRUPTIVE = True
->      @functools.wraps(func)
->      def wrapper(*args, **kwargs):
->          if not KSFT_DISRUPTIVE:
-> -            raise KsftSkipEx(f"marked as disruptive")
-> +            raise KsftSkipEx("marked as disruptive")
->          return func(*args, **kwargs)
->      return wrapper
->  
+[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
+[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
+[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
 
-> @@ -199,7 +198,7 @@ KSFT_DISRUPTIVE = True
->              return False
->          try:
->              return bool(int(value))
-> -        except:
-> +        except Exception:
->              raise Exception(f"failed to parse {name}")
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+Changes in v2:
+- Keep changes to minimum, fold in vsock_reset_interrupted() [Stefano]
+- Link to v1: https://lore.kernel.org/r/20251117-vsock-interrupted-connect-v1-1-bc021e907c3f@rbox.co
+---
+ net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-I think this will end up being called from inside the try/except in
-ksft_run() and therefore should be OK like this. It's actually more
-correct like this, SIGTERM shouldn't cause "failed to parse" errors.
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 76763247a377..a9ca9c3b87b3 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1661,18 +1661,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 		timeout = schedule_timeout(timeout);
+ 		lock_sock(sk);
+ 
+-		if (signal_pending(current)) {
+-			err = sock_intr_errno(timeout);
+-			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
+-			sock->state = SS_UNCONNECTED;
+-			vsock_transport_cancel_pkt(vsk);
+-			vsock_remove_connected(vsk);
+-			goto out_wait;
+-		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+-			err = -ETIMEDOUT;
++		/* Connection established. Whatever happens to socket once we
++		 * release it, that's not connect()'s concern. No need to go
++		 * into signal and timeout handling. Call it a day.
++		 *
++		 * Note that allowing to "reset" an already established socket
++		 * here is racy and insecure.
++		 */
++		if (sk->sk_state == TCP_ESTABLISHED)
++			break;
++
++		/* If connection was _not_ established and a signal/timeout came
++		 * to be, we want the socket's state reset. User space may want
++		 * to retry.
++		 *
++		 * sk_state != TCP_ESTABLISHED implies that socket is not on
++		 * vsock_connected_table. We keep the binding and the transport
++		 * assigned.
++		 */
++		if (signal_pending(current) || timeout == 0) {
++			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
++
++			/* Listener might have already responded with
++			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
++			 * sk_state == TCP_SYN_SENT, which hereby we break.
++			 * In such case VIRTIO_VSOCK_OP_RST will follow.
++			 */
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
++
++			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
++			 * transport->connect().
++			 */
+ 			vsock_transport_cancel_pkt(vsk);
++
+ 			goto out_wait;
+ 		}
+ 
 
->  
->      if "DISRUPTIVE" in env:
+---
+base-commit: 106a67494c53c56f55a2bd0757be0edb6eaa5407
+change-id: 20250815-vsock-interrupted-connect-f92dfa5042cd
+
+Best regards,
+-- 
+Michal Luczaj <mhal@rbox.co>
 
