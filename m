@@ -1,113 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EA430F938;
-	Wed, 19 Nov 2025 16:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520836B052;
+	Wed, 19 Nov 2025 16:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763569076; cv=none; b=iShCXZIyWUJ+jtiOSh+S/uyO/NCdztY8AcQLrNNIX5gKanZN206WEHxVdjtsZgKiqba/YwL85qrQcsnvweOkeYDJgCUVqhVaNHrwlwPqBbbG18VgLmoTqArqCEyJMO0hoZ6IfX3HZppLFG2uoQ/niDEJXyy3/BFazphx+cu0rzQ=
+	t=1763569168; cv=none; b=MbomFMJBat3RT8nEUL4lZpDi494wIw31cmiIbrmPavg94i+Euk1RQYDS5S0fnAsTOTFL6BN2TSTIs3drGF+38W+y+7WeBKXil8XGu6FZqZjpT2yC7x/GJRnWi5pLd8920vDqB7RyPOUlEJP/KFAMmHvuTvI+cDIGbqEl48X7bXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763569076; c=relaxed/simple;
-	bh=KZojjTAuT7Jo/IAEhOuOTd7OhdZ6sgudnBZtwsb7/Po=;
+	s=arc-20240116; t=1763569168; c=relaxed/simple;
+	bh=BPzTK2gEFsViZFmyOno1UxdtkaYyPLFM9cgU3Gme0aY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gzhIFu2WyxZSHa4ogdpQxzXhdsEUffAe6HARERarGtoTFrwr1ITGpFAcYHBuVm/BiR5of121WViwjGILfJ6awzFnMN1RlIkbbWJOoMByvdxlreCbNq6JhgyWWa3WRVocp1rS7AI4lRtm1aW4s6VTON68bxf625yqOoWKIRbAqlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LgblkGQo; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=PCCA/dHxMVXpBJa7G+f+n4sO55EVWgYFyuWcYPtk2NQoFcqRiYshwIiYsVlY8VQ5XAznnZW9ct4HtxIiEaA8LLtxciN9P0YBNa7IYdNDpSScbvTIBjRgk1eFP10Up/vxkP1SGkhQawdkCMzcUu17FoKeJ1pUKjG+SRYQiM8iTMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qT0M/WXX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LgblkGQo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763569074; x=1795105074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KZojjTAuT7Jo/IAEhOuOTd7OhdZ6sgudnBZtwsb7/Po=;
-  b=LgblkGQo1CDnRg2hL9shlL9wy2ZNQB+L7yet5DEaOS7fduS8fTndSdVz
-   pXz7fpMPLPvvhtpP7dG7Q4Ecbz3XYrnREG7NlYvlvQAGEEuDFsqiyTTTE
-   sdutX8X812XHDdYOB5iy6/LhO+uU+7Tm20ykEYZy5WZt3gM9Te/ssE6po
-   ZZ56TTYt9ukS00h08AuhN82oQSMtp1bP0eopJAdLNVbRC4ADohyovcoNp
-   r96Sk9v3ACrALBDspLGjiAttimMByxC/veBdk6z2XCl93k9jhFmgev3GD
-   cXXBVi/F1Klh+QWTAOIsWCYUhKtBhV5sZqWYC7v1yAqeCFjKxwFeZdDEx
-   A==;
-X-CSE-ConnectionGUID: kGTKlBSmR8a+MuWPkwervQ==
-X-CSE-MsgGUID: /9BSKdIgS9+sCcDqsm1/vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="64812777"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="64812777"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 08:17:53 -0800
-X-CSE-ConnectionGUID: yad8mbXFQV+zDTAHMNdg0Q==
-X-CSE-MsgGUID: /+VV7mzjSI6pL4Pac6nzlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
-   d="scan'208";a="222025487"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.245])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 08:17:50 -0800
-Date: Wed, 19 Nov 2025 18:17:48 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 14/15] net: dsa: sja1105: replace mdiobus-pcs
- with xpcs-plat driver
-Message-ID: <aR3trBo3xqZ0sDyr@smile.fi.intel.com>
-References: <20251118190530.580267-1-vladimir.oltean@nxp.com>
- <20251118190530.580267-15-vladimir.oltean@nxp.com>
- <20251118190530.580267-1-vladimir.oltean@nxp.com>
- <20251118190530.580267-15-vladimir.oltean@nxp.com>
- <20251118164130.4e107c93@kernel.org>
- <20251118164130.4e107c93@kernel.org>
- <20251119095942.bu64kg6whi4gtnwe@skbuf>
- <aR2cf91qdcKMy5PB@smile.fi.intel.com>
- <20251119112522.dcfrh6x6msnw4cmi@skbuf>
- <20251119081112.3bcaf923@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qT0M/WXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E806EC116B1;
+	Wed, 19 Nov 2025 16:19:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763569168;
+	bh=BPzTK2gEFsViZFmyOno1UxdtkaYyPLFM9cgU3Gme0aY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qT0M/WXX2B9Kv1nVbIu43kmraVe20viEsQAOxsj+uCaOZTXTFtX5KOnOvI5cfNmZm
+	 1fSlTx54W2q3AxaOoKrmQ5pzDOPg+pJvj3VKLpbGobNGSgppaNPXtlUIWhPBR50WJh
+	 Sybx5lTWfm5yXaL76r02PUgOwjW90/L9Zjl0USXTbFCERWWrMzx+17YRsqTwijis8Q
+	 u0JdTIiPOpqWZjC3uWRDxBEVjq+u+lKKpHddPkhK8sBHV0LoczsBu6274ZzhzcU0FC
+	 Sm151mMoH8kI9mCj1Er9C34XhLeKg+50DT2lamDVDt3hO8+WOpEkC5xAdI5oU845dQ
+	 ooQgLNOwT7Uaw==
+Date: Thu, 20 Nov 2025 00:01:36 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 resend] net: stmmac: add support for dwmac 5.20
+Message-ID: <aR3p4NBK-AnCGK6a@xhacker>
+References: <20251119153526.13780-1-jszhang@kernel.org>
+ <aR3snSb1YUFh9Dwp@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251119081112.3bcaf923@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aR3snSb1YUFh9Dwp@shell.armlinux.org.uk>
 
-On Wed, Nov 19, 2025 at 08:11:12AM -0800, Jakub Kicinski wrote:
-> On Wed, 19 Nov 2025 13:25:22 +0200 Vladimir Oltean wrote:
-> > I think it's due to the fact that the "contest" checks are fundamentally
-> > so slow, that they can't be run on individual patch sets, and are run on
-> > batches of patch sets merged into a single branch (of which there seem
-> > to be 8 per day).
+On Wed, Nov 19, 2025 at 04:13:17PM +0000, Russell King (Oracle) wrote:
+> On Wed, Nov 19, 2025 at 11:35:26PM +0800, Jisheng Zhang wrote:
+> > The dwmac 5.20 IP can be found on some synaptics SoCs. 
+> > 
+> > The binding doc has been already upstreamed by
+> > commit 13f9351180aa ("dt-bindings: net: snps,dwmac: Add dwmac-5.20
+> > version")
+> > 
+> > So we just need to add a compatibility flag in dwmac generic driver.
 > 
-> Correct, looking at the logs AFAICT coccicheck takes 25min on a
-> relatively beefy machine, and we only run it on path that were actually
-> modified by pending changes. We get 100+ patches a day, and 40+ series,
-> and coccicheck fails relatively rarely. So on the NIPA side it's not
-> worth it.
+> Do we _need_ to add it to the generic driver? Do the platforms that are
+> using this really not need any additional code to support them?
 > 
-> But, we can certainly integrate it into ingest_mdir.
+> Looking at all the DT that mention dwmac-5.20 in their compatible
+> strings, that is always after other compatibles that point to other
+> platform specific drivers.
 > 
-> FTR make htmldocs and of course selftests are also not executed by
-> ingest_mdir.
+> So, can you point to a platform that doesn't have its own platform
+> glue, and would be functional when using the dwmac-generic driver?
 
-Btw, do you do `make W=1` while having CONFIG_WERROR=y?
-And if so, do you also compile with clang?
-
-Sorry if it's documented / answered already, please point me to that discussion
-/ documentation.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Synatpics platforms use the dwmac-generic driver, it's enough now.
+But we haven't upstreamed related platforms, but will do soon.
+> 
+> For reference, the dts that refer to dwmac-5.20 are:
+> 
+> arch/arm64/boot/dts/renesas/r9a09g047.dtsi
+> arch/arm64/boot/dts/renesas/r9a09g056.dtsi
+> arch/arm64/boot/dts/renesas/r9a09g057.dtsi
+> arch/arm64/boot/dts/st/stm32mp251.dtsi
+> arch/arm64/boot/dts/st/stm32mp253.dtsi
+> arch/arm64/boot/dts/st/stm32mp233.dtsi
+> arch/arm64/boot/dts/st/stm32mp231.dtsi
+> arch/riscv/boot/dts/starfive/jh7110.dtsi
+> 
+> Thanks.
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
