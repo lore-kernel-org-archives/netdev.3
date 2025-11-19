@@ -1,75 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383B82E8B81;
-	Wed, 19 Nov 2025 03:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2F420D4E9;
+	Wed, 19 Nov 2025 03:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763522284; cv=none; b=V5WIWtaF96ATyumA4S0GBnXF/ccZcfz2QI2j8jfHDn/Q2xdKFsg+X9UyXeLIncs08D9UuxG7cwbcsKiqodf4igsYeRxdGft9mGU2ho8KyhLGY/Wmw0iEfRVFBMFlY35E9wVoa0beNsbIzxxYTdj5jggGC/j7kIkIYh+eBN/ODwo=
+	t=1763522445; cv=none; b=hgHu8bXERTtf5IpV2K3C0inhGM/3v2KZBV07JIdwUIZOQLR3M1bFRV/U6LjkwcgcUfX4tvbG6sBX2ufkGXh+mpS1Hy790Y4C65WY9h2X3INq7zf0JF8q4IYfmqIwTslm+3B2A5QggXnSj4SqfzF9HYMWPeX+HoEnk1ARHFiOQfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763522284; c=relaxed/simple;
-	bh=gxvdTPLxCEGTom2KcOW4d2OIxzZkBK8tZnnpHG/Yqoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hQGuhP+d++KZZzTDx/Fn2d5+9UlEVlZ1YVlxmoym/6pFkeaw1VQS7wtANqyrg/9/b4eK4i5CoZDk4TiK/LX2RrThyn3G5c4Ro5QsDQTVLQgyM1z2kNV7mQPwrPCjeU94mlPJbMzu+K6Qi1IM2p91qtDyVKcL4VW9ZO4Bc1aMmeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tz3RVSUy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763522445; c=relaxed/simple;
+	bh=eOC6tGauOJdErGyxtuvSSvFZQ9jXZDFARNZhSFw4ZFQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IhRR4/dyUrELa1dUEYaLyPyVa+VjBRz5OFX7YlbF84pHLF6srHpPIbi8x1Rl3Mc2BI5DYMr+IaxfsCJOhgIBwFOpP8sEsbHPYJGyDMklnM9xVOwbv+8uIOSmFs623RdgWx5YmviY91bCl+MrM17KxBtmvTEoK2WApB/Xsd5tAoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTzQJElP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tz3RVSUy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C28C4AF17;
-	Wed, 19 Nov 2025 03:18:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTzQJElP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13676C113D0;
+	Wed, 19 Nov 2025 03:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763522283;
-	bh=gxvdTPLxCEGTom2KcOW4d2OIxzZkBK8tZnnpHG/Yqoo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tz3RVSUy64qcOSIcwGieM3noZcd3gVKOBEsnFaJrFLXtpbA/sXEgOIkMFERtQTbrb
-	 QTKvesIgOdtS5i3FRmBXs7ketsUPEin/mSp8UmqjIWq4OFdocC67Awp06GItVRjDgy
-	 tTrNzx6NEEZNcpeMgtk3TkwS4JZxK5fhT2cR881LhEsLu3rHB62Huwxh5Wv6Vq4B16
-	 97EH5U6In+fmrPnMMJd9CX3/fwL3GuVMQXnaWt+ph17MMrpUKRorloA8YTQAq3CNnb
-	 L8JvbyckRFfPAgOBSC4kpAgwVkaGZsdH8pa6sSjp5O7JDr03peT2fZJ7Aw86EJzc5X
-	 4v8jmCJGZS3Mg==
-Date: Tue, 18 Nov 2025 19:17:59 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Herve Codina
- <herve.codina@bootlin.com>, Florian Fainelli <f.fainelli@gmail.com>, Heiner
- Kallweit <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Marek
- =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
- <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
- mwojtas@chromium.org, Antoine Tenart <atenart@kernel.org>,
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Romain
- Gantois <romain.gantois@bootlin.com>, Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: Re: [PATCH net-next v16 15/15] Documentation: networking: Document
- the phy_port infrastructure
-Message-ID: <20251118191759.28d14e32@kernel.org>
-In-Reply-To: <20251113081418.180557-16-maxime.chevallier@bootlin.com>
-References: <20251113081418.180557-1-maxime.chevallier@bootlin.com>
-	<20251113081418.180557-16-maxime.chevallier@bootlin.com>
+	s=k20201202; t=1763522445;
+	bh=eOC6tGauOJdErGyxtuvSSvFZQ9jXZDFARNZhSFw4ZFQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nTzQJElP4EsswwgfkWu6ebm4PWxZzkPD2YFciahz9ny7K83w8c8W/0wG+jNUzHVF4
+	 v4KVvRiLSY/paBCwZgZDbeODXU/iMx6QMpXEH9eNgfI0liA6qkczDJN1ueah+E3K4S
+	 aGKiAvmxs1qu3EJVsHoDsXZJmvHxr5cHi33Cy91fZs/mzzHvX/1h7mPlKLBXz56c53
+	 a5SdC+KMfP6KQHbMzGkEouIFWTeFZExUBs/0g28wu2vyzXLZkKJrr91Zyw+pl7B9OY
+	 RCAIgfRWQWtLIrh2kXUd+8KXxIkSFAJhZWPsWAM7wlEVzNFjxwk2UgLsUHETeCYO2M
+	 zNeb8agFxjbOw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF38380A955;
+	Wed, 19 Nov 2025 03:20:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V3] net/mlx5: Clean up only new IRQ glue on
+ request_irq()
+ failure
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176352241025.205878.1321360381444626119.git-patchwork-notify@kernel.org>
+Date: Wed, 19 Nov 2025 03:20:10 +0000
+References: <1763381768-1234998-1-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1763381768-1234998-1-git-send-email-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
+ leonro@nvidia.com, cratiu@nvidia.com, moshe@nvidia.com,
+ anand.a.khoje@oracle.com, elic@nvidia.com, jacob.e.keller@intel.com,
+ manjunath.b.patil@oracle.com, pradyumn.rahar@oracle.com,
+ qing.huang@oracle.com, rajesh.sivaramasubramaniom@oracle.com,
+ rama.nichanamatlu@oracle.com, rohit.sajan.kumar@oracle.com, shayd@nvidia.com,
+ mohith.k.kumar.thummaluru@oracle.com
 
-On Thu, 13 Nov 2025 09:14:17 +0100 Maxime Chevallier wrote:
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9281,6 +9281,7 @@ F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
->  F:	Documentation/devicetree/bindings/net/ethernet-phy.yaml
->  F:	Documentation/devicetree/bindings/net/mdio*
->  F:	Documentation/devicetree/bindings/net/qca,ar803x.yaml
-> +F:	Documentation/networking/phy-port.rst
+Hello:
 
-I think you should add a MAINTAINERS entry like the one we have for
-NETWORKING [ETHTOOL PHY TOPOLOGY] no? Please include some keyword matches
-on the relevant driver-facing APIs if you can:)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 17 Nov 2025 14:16:08 +0200 you wrote:
+> From: Pradyumn Rahar <pradyumn.rahar@oracle.com>
+> 
+> The mlx5_irq_alloc() function can inadvertently free the entire rmap
+> and end up in a crash[1] when the other threads tries to access this,
+> when request_irq() fails due to exhausted IRQ vectors. This commit
+> modifies the cleanup to remove only the specific IRQ mapping that was
+> just added.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,V3] net/mlx5: Clean up only new IRQ glue on request_irq() failure
+    https://git.kernel.org/netdev/net/c/d47515af6ccc
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
