@@ -1,56 +1,56 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831A322547;
-	Wed, 19 Nov 2025 22:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E43A3396E1;
+	Wed, 19 Nov 2025 22:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763592180; cv=none; b=dAIyxEwxcL87Tb78++Pmi/tMN6NsqzQQFUE755EdpszLCb7BjgYjNiwkt7WNyVYTyvP9B6myTkCtKIb+4o0YUhYkGj8GsRwoXzvarawobmkTdkyCO5Lp0/Df5FLlPLB6mdxjBhjNI5b2Hs2Z5JjCQPFh2pvjdvMCEB2zG1T+q6s=
+	t=1763592180; cv=none; b=KzPnW7PxoNhXCVm7tZCTmwY+KOjIDgsH3tpVim8sjdGlyJNRQkqkTBQxS0OZz0DKvUl7L8ljFmEmiqmXQ8F5/DrEMobNM20oKFu4XjKUaQcwHwhwpg7EArVAoHwpgrZ6xN0e/vUFbAQWhN1jut7PykBAoDpnBw0safjiEWm+mjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763592180; c=relaxed/simple;
-	bh=XFrfwVCvPCtb0hiydszl3RIWBMsxeFfaRQl+89Butuk=;
+	bh=kDTQhJIiq4Kp004XdWpSKDD3BQKOQI9MO/ePej/Dds0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qxala0pxsZ+ljQUql0P//lxy0e+3u8GA+fxnFMiWiXhDpcuTQcYk2eoETcdO67NxObJyqb1AxhjYipxWLNcpYlo4rh083o03UTABIvCZ449140YFSt5QjZjjbkxn3/QVm8RcSgGIGH3EXkknIGTR+TkPoETslvoNk4Pl4kw3VpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=mH3mu7CU; arc=none smtp.client-ip=185.226.149.38
+	 MIME-Version; b=qIHl1RAbHo6SSqQQZj1Ej98M60KXP3fQ2ibjDSjA0SzQ0NJtTH82WWs9ylO0Q94Rcqmvnnm9QGXlLS0Hs3OuIIT7gxt9SjodnRmclFx5sr18NMBRd+6HcgSC1nBRIBUuskmd5Mh2kI2b/09jKEeuS2DDJTysKkiF22n8lykewTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=KfDfAGR/; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="mH3mu7CU"
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="KfDfAGR/"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqt4-006kya-5z; Wed, 19 Nov 2025 23:42:54 +0100
+	id 1vLqt5-006kz2-5Y; Wed, 19 Nov 2025 23:42:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector1; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
 	:Message-Id:Date:Subject:Cc:To:From;
-	bh=gcWmtAAfsAw9kpNlGTgaWUDkrcywIVK3kKVtDQyu4MQ=; b=mH3mu7CUOLOgvZQQz4iSHYl8md
-	bDHLoV5jQJ8+4QdanQY9jEszDaCJGnYBPdN/4BkP6xA9uFDgkIQlZ7zgNuiie8/ZY6pBzFla7+hXS
-	9r8objOy4Ex6It0D6XXEOl/Ymqhq8c9jrgoXsT3A2gKVHlNDl/K8WSP+dYsluD8oldGHLBid67cdC
-	5wh75wheE42DC29E923kuHXpZ2xLnaVZZzR380BbZO6/MLyooYHxkfo0oix0AeASsGKtT2Tm6ErWp
-	Cz7stmPzBciBUC+4KoVhXmQ+C9WaxPETYMv1feWdSi4IHH4NcmDS5XzkRdZQCyyyJ7+x7csJw6sfP
-	L3rM3iwg==;
+	bh=CvT81+/OMdXIo3A/snFu6tlNvkl886+eK8dSY3ZBXJ0=; b=KfDfAGR/6CG5etf7USf9VWenKL
+	GREPJJdM1fDVS+mr5G1/mFmzwIs8sIek6Ezji9nPizCgYA3zQbCEx85uWeazAhzWjNPEgst3cJtNm
+	gFh0Y9hfgdBAvg6qOp2Wg379crmK7hyC6o3ZmNc4zVAcsXDLYZCRqHWYQyOeFWZ1sPJB0Fij6Ipfi
+	FNhePtiZoRKDcTDA2Y/ITBjrGMceGZWABKg39B49b0tfZFl4GEem31IGkglz4723RRGb6RZQrDRq5
+	8DjaFtdAk7tQlpgVBCl+qkbcK39pi0yTNsFCqaJr5/iKifpYsVTPt0lLHVzqNijtEtBHBHE1kKSvZ
+	42tPschg==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vLqt3-0000E8-Mq; Wed, 19 Nov 2025 23:42:53 +0100
+	id 1vLqt4-0000EX-NM; Wed, 19 Nov 2025 23:42:54 +0100
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1vLqso-00Fos6-ED; Wed, 19 Nov 2025 23:42:38 +0100
+	id 1vLqsq-00Fos6-9P; Wed, 19 Nov 2025 23:42:40 +0100
 From: david.laight.linux@gmail.com
 To: linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
+	mptcp@lists.linux.dev,
 	netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH 41/44] net/core: Change loop conditions so min() can be used
-Date: Wed, 19 Nov 2025 22:41:37 +0000
-Message-Id: <20251119224140.8616-42-david.laight.linux@gmail.com>
+Subject: [PATCH 44/44] net/mptcp: Change some dubious min_t(int, ...) to min()
+Date: Wed, 19 Nov 2025 22:41:40 +0000
+Message-Id: <20251119224140.8616-45-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251119224140.8616-1-david.laight.linux@gmail.com>
 References: <20251119224140.8616-1-david.laight.linux@gmail.com>
@@ -64,65 +64,56 @@ Content-Transfer-Encoding: 8bit
 
 From: David Laight <david.laight.linux@gmail.com>
 
-Loops like:
-	int copied = ...;
-	...
-	while (copied) {
-		use = min_t(type, copied, PAGE_SIZE - offset);
-		...
-		copied -= 0;
-	}
-can be converted to a plain min() if the comparison is changed to:
-	while (copied > 0) {
-This removes any chance of high bits being discded by min_t().
-(In the case above PAGE_SIZE is 64bits so the 'int' cast is safe,
-but there are plenty of cases where the check shows up bugs.)
+There are two:
+	min_t(int, xxx, mptcp_wnd_end(msk) - msk->snd_nxt);
+Both mptcp_wnd_end(msk) and msk->snd_nxt are u64, their difference
+(aka the window size) might be limited to 32 bits - but that isn't
+knowable from this code.
+So checks being added to min_t() detect the potential discard of
+significant bits.
+
+Provided the 'avail_size' and return of mptcp_check_allowed_size()
+are changed to an unsigned type (size_t matches the type the caller
+uses) both min_t() can be changed to min().
 
 Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
- net/core/datagram.c | 6 +++---
- net/core/skmsg.c    | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/mptcp/protocol.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index c285c6465923..555f38b89729 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -664,8 +664,8 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
- 		head = compound_head(pages[n]);
- 		order = compound_order(head);
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 2d6b8de35c44..d57c3659462f 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1123,8 +1123,8 @@ struct mptcp_sendmsg_info {
+ 	bool data_lock_held;
+ };
  
--		for (refs = 0; copied != 0; start = 0) {
--			int size = min_t(int, copied, PAGE_SIZE - start);
-+		for (refs = 0; copied > 0; start = 0) {
-+			int size = min(copied, PAGE_SIZE - start);
- 
- 			if (pages[n] - head > (1UL << order) - 1) {
- 				head = compound_head(pages[n]);
-@@ -783,7 +783,7 @@ EXPORT_SYMBOL(__zerocopy_sg_from_iter);
-  */
- int zerocopy_sg_from_iter(struct sk_buff *skb, struct iov_iter *from)
+-static int mptcp_check_allowed_size(const struct mptcp_sock *msk, struct sock *ssk,
+-				    u64 data_seq, int avail_size)
++static size_t mptcp_check_allowed_size(const struct mptcp_sock *msk, struct sock *ssk,
++				       u64 data_seq, size_t avail_size)
  {
--	int copy = min_t(int, skb_headlen(skb), iov_iter_count(from));
-+	int copy = min(skb_headlen(skb), iov_iter_count(from));
+ 	u64 window_end = mptcp_wnd_end(msk);
+ 	u64 mptcp_snd_wnd;
+@@ -1133,7 +1133,7 @@ static int mptcp_check_allowed_size(const struct mptcp_sock *msk, struct sock *s
+ 		return avail_size;
  
- 	/* copy up to skb headlen */
- 	if (skb_copy_datagram_from_iter(skb, 0, from, copy))
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 2ac7731e1e0a..b58e319f4e2e 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -335,8 +335,8 @@ int sk_msg_zerocopy_from_iter(struct sock *sk, struct iov_iter *from,
- 		bytes -= copied;
- 		msg->sg.size += copied;
+ 	mptcp_snd_wnd = window_end - data_seq;
+-	avail_size = min_t(unsigned int, mptcp_snd_wnd, avail_size);
++	avail_size = min(mptcp_snd_wnd, avail_size);
  
--		while (copied) {
--			use = min_t(int, copied, PAGE_SIZE - offset);
-+		while (copied > 0) {
-+			use = min(copied, PAGE_SIZE - offset);
- 			sg_set_page(&msg->sg.data[msg->sg.end],
- 				    pages[i], use, offset);
- 			sg_unmark_end(&msg->sg.data[msg->sg.end]);
+ 	if (unlikely(tcp_sk(ssk)->snd_wnd < mptcp_snd_wnd)) {
+ 		tcp_sk(ssk)->snd_wnd = min_t(u64, U32_MAX, mptcp_snd_wnd);
+@@ -1477,7 +1477,7 @@ struct sock *mptcp_subflow_get_send(struct mptcp_sock *msk)
+ 	if (!ssk || !sk_stream_memory_free(ssk))
+ 		return NULL;
+ 
+-	burst = min_t(int, MPTCP_SEND_BURST_SIZE, mptcp_wnd_end(msk) - msk->snd_nxt);
++	burst = min(MPTCP_SEND_BURST_SIZE, mptcp_wnd_end(msk) - msk->snd_nxt);
+ 	wmem = READ_ONCE(ssk->sk_wmem_queued);
+ 	if (!burst)
+ 		return ssk;
 -- 
 2.39.5
 
