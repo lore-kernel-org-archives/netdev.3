@@ -1,487 +1,186 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012016.outbound.protection.outlook.com [40.107.209.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBCA2E9EBB
-	for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 20:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763584586; cv=none; b=UL5gERKAZeMoESyplUw6FcaxX0jlTyCM2ciOWa7q6JnPMHijzVTni4dIN7pxqYs6N6xKf6wXbCGsc4jfNoKKFNFYGQx5890q51lRuJ6TSlgXnJ8KLG7TDYUGLS7o6nMcKrACe/bLvLAXjlfBOeX/26CVgECZf63MaIYOBt+M+LQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763584586; c=relaxed/simple;
-	bh=W7Jd0Osdu2kVVY+MHibry+Pji1n/kI44wcTlORnoYf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lg8UAm9jYWSN4HQInYKVhElstGwzmtPQ7i8KB2hINLGkq7j14+s8qzXRDkqGNpqu4GR0REZ+dvpS/Ji5HUvw78CCrsjrQo5hSl2hUr0m93VQHsSjtsTDGElvzX8nTRIRq/OXpPWWbV4PIYPNtyOIskv28TZpJLR/+KEFJyfERmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Gu2FtYR/; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70EE2D94B6;
+	Wed, 19 Nov 2025 20:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763585350; cv=fail; b=rVqzU8LnJYEmXGPXh8y6EKIpEZzl2FDXB81J42JAzBCTw3tmqdLKLuGa31VAzqw9oOKoXpGnau86kcVNesTQLG1BNiPUM2smHLROZvAgd67dIbfUxgdD3URCgHM6XlGa7lnyQxd5SIcKht97T3f9sNF1N4B03U0ScUgkbK1pzEs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763585350; c=relaxed/simple;
+	bh=D7AMSbkwFKHlk3zsqgVV1qCwQhj7HUNO1YoIBm/A2D0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SiX0YHok7peHG58wYHF8b8GJJ3tAROgd+Tsx3dEFmsADlJhuvKBNp0mrgZ5JJ3zBE2g3kzSRG5ph16Nx5NF2/Q0F9YMjZZPGkCB/7sQj6msmb0u1u097y2+VrSiTdln/sZGzlYkjNoMqim2Wy45leyrs1XayLW6VsHbGegO0MQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=El1Y0jf/; arc=fail smtp.client-ip=40.107.209.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Gu2FtYR/"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-429c82bf86bso95969f8f.1
-        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 12:36:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1763584583; x=1764189383; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Utq4jMNSJ93HG6IrUkHOln/2L5e8kODiHg/RjpN9KsY=;
-        b=Gu2FtYR/5TemfSScaHR80jkFthXDvn0Tj33XSjpXP9ymBzakqaRNFEHitB7XpGZtek
-         sng2q4wWuX5aXyHmRlzu/K7QyJ8yRbUyTCrro9I6mC9QfXzEheutvo7w5ksG8xD0B3Ub
-         6QF3aKryBra9q6knE6D4JCg62UqkrdSfqPwEIP+L7A0+Uq1jzynsqC17rocz+9dJtB1F
-         8LejpQQDlgXYe92BVotGkyIjovsns7JyX+l5hvvdzRlKPSaMQlUcMxiyw0TyPnF6vDAA
-         miSgrGy/744BwLfLg8bqJupu8cKoLc2uMEaVADt8bec6GNx1fIEIMuBIStJnatCWaQLz
-         cykg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763584583; x=1764189383;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Utq4jMNSJ93HG6IrUkHOln/2L5e8kODiHg/RjpN9KsY=;
-        b=MIRZA6MQ4SkfyBBd8PjiHP8Fpmh1ALqsn2ojDmMYrvM/ZwleKecvMUHZcgEWB85D3z
-         fU4aeG8D1LDH+pEE29MwcPJX7MjKIr78cFvtvX9CfocAzjpEkJvnk4tyXw3VU45VaIxU
-         oiPs1X0gQcrnWOR9Z6ocrv6oRRc7mFRCIi1k04FhyLlZcZeNZCUt7VQUD1JT6WsotVWx
-         l8nAgi30b5Fx8yyDW1GCH5PM6NXdtQOB7iXcAGSf1eRgamec8k2/GZBVCKpA1ewj+U2a
-         ZZALPaGFLw30qA3dQNf4rfFs5/lLakn57uDqBmIS7WkjLMk3VJbIbWRnqD9vVcx68V+C
-         FyfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXq1iI5uedHxWwsFJdLeSrUxTjZvfH9Xouu1iP+2/YIOoPNOG8/cTHbfRZ231rGpY8olQqZBLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFJywE1WobtKhvs7fICjTn0E1ndioxv56oUAtgJ7w68goO16sl
-	9EtVSiMFPhb60WydnMzwh7UH/3Uz8pHO/c3/jh9wpAv4ln88RtPzn6LQ
-X-Gm-Gg: ASbGncst402wxuwk5gBw69G4JhWZ0WyFOuyQpQ2UH35T+Kak5YZW9yG61H0c7GD0haw
-	GbuSVj2QpGjgu9lrYuWoRNYxAInj1MaHbthQ3MiIOULLvbyX+JIES3cv8KETxKP1ZfIKxIdYrB+
-	8+5q7nK90JdBHLMwhalEVaGfvKoUrmxDjcavOY38kxHj8jBp/1kE+dRxz/U6TvNj62QUeKZRJbN
-	o3SCl5ZTnupMuh93EyyJwSShyYk5xar/HCJQKzVlfhA+gq+2KPhYDZBqzqyCesO76N/hzPXOUKR
-	eUz6yVrwcrfpsxfOOUO1WBMJzLcpT0LXfWcir5FpGUnzh1TJ3wzscCiwXa7pK1wjkrYJVVBoNrC
-	SdWavLJ02snkbKNlP3OOHVxyvxtm3x2mmwOP0p+RL/nNG/hAnL8KhstAwHQnckzklMTtAKQkIU/
-	Bj44tKv43J5ot5Dzl7A9gCB+YZK2pPmbMX5SeREteAxH6smSk5OTkhxDVHW4Q6ORPvXhmOiFKdr
-	xCQyc2f7jI9
-X-Google-Smtp-Source: AGHT+IH/4H0TGgxOn/KdPk6KDWmGWTp8ir5hs9Ymxn9R2qjI9hs79ItyvYjQFYs1lUs6WW1eGeSxUg==
-X-Received: by 2002:a05:6000:2893:b0:42b:2b07:8630 with SMTP id ffacd0b85a97d-42cb9a3f211mr88357f8f.31.1763584582774;
-        Wed, 19 Nov 2025 12:36:22 -0800 (PST)
-Received: from tycho (p200300c1c7266600ba8584fffebf2b17.dip0.t-ipconnect.de. [2003:c1:c726:6600:ba85:84ff:febf:2b17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb9190sm1067910f8f.33.2025.11.19.12.36.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 12:36:22 -0800 (PST)
-Sender: Zahari Doychev <zahari.doychev@googlemail.com>
-From: Zahari Doychev <zahari.doychev@linux.com>
-To: donald.hunter@gmail.com,
-	kuba@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	ast@fiberby.net,
-	matttbe@kernel.org,
-	netdev@vger.kernel.org,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	johannes@sipsolutions.net,
-	zahari.doychev@linux.com
-Subject: [PATCH v4 1/1] ynl: samples: add tc filter example
-Date: Wed, 19 Nov 2025 21:36:18 +0100
-Message-ID: <20251119203618.263780-2-zahari.doychev@linux.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251119203618.263780-1-zahari.doychev@linux.com>
-References: <20251119203618.263780-1-zahari.doychev@linux.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="El1Y0jf/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=djZlgOR6WjMaH375Bn45i954Pr9ZweH01bAsZCIY+301D4WA5b9dEsBjNGyG64kDhmB42noVmpEqaT27OYSFlgTn73WL407QZOgg/mW6CLgV0KISkKZTKe0fQ5EusSqKwEt0Gd0m7tHCGnPzTCbC4Ecbgsq3T3Oz+L+hQcNpfbXhcOQ2q78le02Y3fqRs7szfMjZ5HTwec02wBQvwkZFJ6mQbrKffIUBWp7rSPjDHBVyj0yYciaKJZBjKIcnt3s2GfyYz5AFxcAGexwaHdPt+iTgFFt2daHyCk7EULszK7xuviyDeJStnkbphshS17MrMIPrQ18dFFG3+rITcIShLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cfn3RuMvAqlEsDJe7xi6qO7s46c4xk49AIT7N680aLg=;
+ b=QXv5fYt2JDndT1GrfE51hwnh8idFO03C371eDltYpcoACMHGKe6khlmhMlfWg/Jv/HiAmJK6xIMzvlC3jIe2Ayw25tWgStPy+y98soHXZB+UwXGN/rVSKvGl5bELulHAae7RuAluFEYGMyyK3DxXvb/rH52ccffYfayZlwJFAFZmZg4XanHEabXOEIt0Jw9DJ8s6MU4mVm0DQcX/9QSCnvWG94eO2/AhsUzTjDRowuUe5eOZ0pvsyc53vl5REg+fGY4jEUdZp5A/iW3nXhx7tZvniyVfuNtRYc5sv8VNakHOpQQzcxqNVU4S30oGgJZFvg5nh2ibugaVFtuSlJa3AQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cfn3RuMvAqlEsDJe7xi6qO7s46c4xk49AIT7N680aLg=;
+ b=El1Y0jf/q0T02YeVHlCC65u1ruLJK8HQXmsrAUVNKHa38rNZS1Nk8VVJTJNfMvfysIkIJhUFCVvaiaOv8U7qj9hBMW1OPqGHxQHmHxsYNKGInpwgnjRW/NN50fAjDQiU7Gk/IdwVJRDcVOgB1ZbjEU6/AptZ3VdKoATWJhebpQ2J5u+E28rOJkSgkBa0f66Iof6oeZ6l0VPz2LmDJhU6sulVmeNd/DmFdK7HIUMKj0gRX32aJJVwODAwniBcx0uSphxMLytXmziHHmnkFBiRQygCLkdX6MxBesqgVB1IFQZApt160NxVPpLe33yvuglszD08xtv9nPmlmWM3YjJk0w==
+Received: from MN2PR15CA0041.namprd15.prod.outlook.com (2603:10b6:208:237::10)
+ by SN7PR12MB6931.namprd12.prod.outlook.com (2603:10b6:806:261::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Wed, 19 Nov
+ 2025 20:49:04 +0000
+Received: from BL02EPF0002992D.namprd02.prod.outlook.com
+ (2603:10b6:208:237:cafe::b4) by MN2PR15CA0041.outlook.office365.com
+ (2603:10b6:208:237::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.10 via Frontend Transport; Wed,
+ 19 Nov 2025 20:49:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF0002992D.mail.protection.outlook.com (10.167.249.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Wed, 19 Nov 2025 20:49:03 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
+ 2025 12:48:45 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Nov
+ 2025 12:48:44 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Wed, 19
+ Nov 2025 12:48:39 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Jay Vosburgh <jv@jvosburgh.net>, Saeed Mahameed <saeedm@nvidia.com>,
+	"Tariq Toukan" <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>, Yael Chemla
+	<ychemla@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next V2 2/3] net/mlx5e: Add 1600Gbps link modes
+Date: Wed, 19 Nov 2025 22:48:16 +0200
+Message-ID: <1763585297-1243980-3-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
+In-Reply-To: <1763585297-1243980-1-git-send-email-tariqt@nvidia.com>
+References: <1763585297-1243980-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992D:EE_|SN7PR12MB6931:EE_
+X-MS-Office365-Filtering-Correlation-Id: 241326ed-eec7-4bec-2a0b-08de27ad1344
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|7416014|1800799024|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qs11W1p/0na5kcy378StuDcVud86J6BaqW4YQdoQkypgmeSXwfkwPYPDj+if?=
+ =?us-ascii?Q?PD3J+l9/yAYQsA5zgLRtdWkVlGLQHeNsmPo9b2ZCgEPKYGg2g0P3T182707L?=
+ =?us-ascii?Q?4D9NFVhTwjuSgEKQqLyg7wp8J8kkrEAJLGXvO8u/In//Zv/y94AsPN0EPJ2Z?=
+ =?us-ascii?Q?6CAqqQudV0UBEZgC6IRckhO7UrixdwUHNgh4GTSNa0uhik0uYhqdNWAe6uw6?=
+ =?us-ascii?Q?TiwSMadX/qlStGxwnmCK8wJUJMdH/wq0d+orlXv7M/ZMpJQGW42f0e+4uz7P?=
+ =?us-ascii?Q?2zjLNiiRG09auQ7RDakG2KqPJI/SGMCtcLjaumSFr9JxkAaLnIAey1CosdCL?=
+ =?us-ascii?Q?5FhVHvsXPoejRqEYRVZQA4xmudm6zd91sjJ2zt/tOg/NZ7xKoGR8PHJ4R6L0?=
+ =?us-ascii?Q?WrUaGbatQ0E405WFE3LGoSXRMhp5PjwynGXW39ZeWKtcYeWaY2Vl/wl/8/Mf?=
+ =?us-ascii?Q?IdW1yOjNLhE16vtF234REiG8/4ZtjfD3wGij4RD9WsIGxGCYADXyByroTR7P?=
+ =?us-ascii?Q?wHkuuSLkmNUHC20uEqmyeyk2V+QMmqF7Ww5WKNbNWsxTOIOnN1GyubteDd1v?=
+ =?us-ascii?Q?g4NzgMKDofWNNmdhkgJr4nuPgdyZY+8ULpyYSqpc6K6Wp+S5YYWNNz6gyVxA?=
+ =?us-ascii?Q?+1bXA+icqdEScaGP4OSPP619+fm6fhXgTu9orzgajpzS3Cxeku+QAIcUiVfl?=
+ =?us-ascii?Q?xLz+dX2JIGwXwoTTnv2qDx870ihiyH4nKsFO5zfhqmSYC9Rrl8HdtSBZ6/DX?=
+ =?us-ascii?Q?TiEC2YcFZlBrkj1sImqr6YyaFGKMHzg8yP2fPYjj8g7CfTAfJlehVgHiDX6p?=
+ =?us-ascii?Q?ipgqcvELtVjg4Qp5dTJgU+UsCncDgHMRXhxZzgxOLoNVIHN2OumNIqttXUWz?=
+ =?us-ascii?Q?FWZG8CwM9hNobapFDUv6NRDm5BwXLLmUJBlhTliHlUSSVhzmsrjICtht4J1m?=
+ =?us-ascii?Q?7a/QgLELwOOKUy1UiGLK/TdilS1+y32GkJ+6XgOtHp7Ib2+Zcb5gRKRNZYM1?=
+ =?us-ascii?Q?Wu4GMD6yLBwmOLSo3AWOaxKP2KfXpIKXgypHcuNbVQAXhaR46ufz4EQhkQZ1?=
+ =?us-ascii?Q?Ddl142C7743+QGrGDrLoF+cveH8yTzvxy3r3oCwYKabkLlE40jF1TN9UCB3s?=
+ =?us-ascii?Q?FHSr7y3hejV0eEs/rpruKEJUfWW5FeGtYYgux16sw8VFE0QbVnFXtJ54Y/Cs?=
+ =?us-ascii?Q?puIIOoeMJo0WsmlpegLlTpSVoG7EbXQ8L1lPkjjDI5zigBWw7lmGawBBVCOK?=
+ =?us-ascii?Q?tnFLUZJlcBbuVC2laLRabXgnZJ6nQSkYGjO2eckKPyxk6O9JMaDD3XzCfxp9?=
+ =?us-ascii?Q?Jxz5WnMr/YfYoKcwrUEthvxcsrzB2POcqboofTxOeCKzn4NssM4bPuPeGuSQ?=
+ =?us-ascii?Q?MJARK33ScZL7N4KJVX4dAisIG2cdV2nnxl9Ol0NAUR7489rdLbhZp9Z2iavs?=
+ =?us-ascii?Q?QCY70dlPDH4EfH+I9nljvzu2BC883UVo7MkNfbKuikwOC8kgpIIFMp9zWySh?=
+ =?us-ascii?Q?EY+l5cMfChms4ryVHldDcbUUTQVhGJG45yrallRKSNG/FDsGDa0ihCgCpvOP?=
+ =?us-ascii?Q?4CxGELIld086mUEqaLM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 20:49:03.7403
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 241326ed-eec7-4bec-2a0b-08de27ad1344
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0002992D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6931
 
-Add a sample tool demonstrating how to add, dump, and delete a
-flower filter with two VLAN push actions. The example can be
-invoked as:
+From: Yael Chemla <ychemla@nvidia.com>
 
-  # samples/tc-filter-add p2
+Introduce support for a 1600Gbps link mode, utilizing 8 lanes at 200Gbps
+per lane.
 
-    flower pref 1 proto: 0x8100
-    flower:
-      vlan_id: 100
-      vlan_prio: 5
-      num_of_vlans: 3
-    action order: 1 vlan push id 200 protocol 0x8100 priority 0
-    action order: 2 vlan push id 300 protocol 0x8100 priority 0
-
-This verifies correct handling of tc action attributes for multiple
-VLAN push actions. The tc action indexed arrays start from index 1,
-and the index defines the action order. This behavior differs from
-the YNL specification, which expects arrays to be zero-based. To
-accommodate this, the example adds a dummy action at index 0, which
-is ignored by the kernel.
-
-Signed-off-by: Zahari Doychev <zahari.doychev@linux.com>
+Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- tools/net/ynl/samples/.gitignore      |   1 +
- tools/net/ynl/samples/Makefile        |   1 +
- tools/net/ynl/samples/tc-filter-add.c | 335 ++++++++++++++++++++++++++
- 3 files changed, 337 insertions(+)
- create mode 100644 tools/net/ynl/samples/tc-filter-add.c
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 5 +++++
+ drivers/net/ethernet/mellanox/mlx5/core/port.c       | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/net/ynl/samples/.gitignore b/tools/net/ynl/samples/.gitignore
-index 7f5fca7682d7..05087ee323ba 100644
---- a/tools/net/ynl/samples/.gitignore
-+++ b/tools/net/ynl/samples/.gitignore
-@@ -7,3 +7,4 @@ rt-addr
- rt-link
- rt-route
- tc
-+tc-filter-add
-diff --git a/tools/net/ynl/samples/Makefile b/tools/net/ynl/samples/Makefile
-index c9494a564da4..d76cbd41cbb1 100644
---- a/tools/net/ynl/samples/Makefile
-+++ b/tools/net/ynl/samples/Makefile
-@@ -19,6 +19,7 @@ include $(wildcard *.d)
- all: $(BINS)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 727d7a833110..fe67c73849f9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -261,6 +261,11 @@ void mlx5e_build_ptys2ethtool_map(void)
+ 				       ETHTOOL_LINK_MODE_800000baseDR4_2_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_800000baseSR4_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_800000baseVR4_Full_BIT);
++	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_1600TAUI_8_1600TBASE_CR8_KR8, ext,
++				       ETHTOOL_LINK_MODE_1600000baseCR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_1600000baseKR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_1600000baseDR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_1600000baseDR8_2_Full_BIT);
+ }
  
- CFLAGS_page-pool=$(CFLAGS_netdev)
-+CFLAGS_tc-filter-add:=$(CFLAGS_tc)
+ static void mlx5e_ethtool_get_speed_arr(bool ext,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index e4b1dfafb41f..85a9e534f442 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -1108,6 +1108,7 @@ mlx5e_ext_link_info[MLX5E_EXT_LINK_MODES_NUMBER] = {
+ 	[MLX5E_200GAUI_1_200GBASE_CR1_KR1]	= {.speed = 200000, .lanes = 1},
+ 	[MLX5E_400GAUI_2_400GBASE_CR2_KR2]	= {.speed = 400000, .lanes = 2},
+ 	[MLX5E_800GAUI_4_800GBASE_CR4_KR4]	= {.speed = 800000, .lanes = 4},
++	[MLX5E_1600TAUI_8_1600TBASE_CR8_KR8]	= {.speed = 1600000, .lanes = 8},
+ };
  
- $(BINS): ../lib/ynl.a ../generated/protos.a $(SRCS)
- 	@echo -e '\tCC sample $@'
-diff --git a/tools/net/ynl/samples/tc-filter-add.c b/tools/net/ynl/samples/tc-filter-add.c
-new file mode 100644
-index 000000000000..1f9cd3f62df6
---- /dev/null
-+++ b/tools/net/ynl/samples/tc-filter-add.c
-@@ -0,0 +1,335 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <stdio.h>
-+#include <string.h>
-+#include <stdlib.h>
-+#include <arpa/inet.h>
-+#include <linux/pkt_sched.h>
-+#include <linux/tc_act/tc_vlan.h>
-+#include <linux/tc_act/tc_gact.h>
-+#include <linux/if_ether.h>
-+#include <net/if.h>
-+
-+#include <ynl.h>
-+
-+#include "tc-user.h"
-+
-+#define TC_HANDLE (0xFFFF << 16)
-+
-+const char *vlan_act_name(struct tc_vlan *p)
-+{
-+	switch (p->v_action) {
-+	case TCA_VLAN_ACT_POP:
-+		return "pop";
-+	case TCA_VLAN_ACT_PUSH:
-+		return "push";
-+	case TCA_VLAN_ACT_MODIFY:
-+		return "modify";
-+	default:
-+		break;
-+	}
-+
-+	return "not supported";
-+}
-+
-+const char *gact_act_name(struct tc_gact *p)
-+{
-+	switch (p->action) {
-+	case TC_ACT_SHOT:
-+		return "drop";
-+	case TC_ACT_OK:
-+		return "ok";
-+	case TC_ACT_PIPE:
-+		return "pipe";
-+	default:
-+		break;
-+	}
-+
-+	return "not supported";
-+}
-+
-+static void print_vlan(struct tc_act_vlan_attrs *vlan)
-+{
-+	printf("%s ", vlan_act_name(vlan->parms));
-+	if (vlan->_present.push_vlan_id)
-+		printf("id %u ", vlan->push_vlan_id);
-+	if (vlan->_present.push_vlan_protocol)
-+		printf("protocol %#x ", ntohs(vlan->push_vlan_protocol));
-+	if (vlan->_present.push_vlan_priority)
-+		printf("priority %u ", vlan->push_vlan_priority);
-+}
-+
-+static void print_gact(struct tc_act_gact_attrs *gact)
-+{
-+	struct tc_gact *p = gact->parms;
-+
-+	printf("%s ", gact_act_name(p));
-+}
-+
-+static void flower_print(struct tc_flower_attrs *flower, const char *kind)
-+{
-+	struct tc_act_attrs *a;
-+	unsigned int i;
-+
-+	printf("%s:\n", kind);
-+
-+	if (flower->_present.key_vlan_id)
-+		printf("  vlan_id: %u\n", flower->key_vlan_id);
-+	if (flower->_present.key_vlan_prio)
-+		printf("  vlan_prio: %u\n", flower->key_vlan_prio);
-+	if (flower->_present.key_num_of_vlans)
-+		printf("  num_of_vlans: %u\n", flower->key_num_of_vlans);
-+
-+	for (i = 0; i < flower->_count.act; i++) {
-+		a = &flower->act[i];
-+		printf("action order: %i %s ", i + 1, a->kind);
-+		if (a->options._present.vlan)
-+			print_vlan(&a->options.vlan);
-+		else if (a->options._present.gact)
-+			print_gact(&a->options.gact);
-+		printf("\n");
-+	}
-+	printf("\n");
-+}
-+
-+static void tc_filter_print(struct tc_gettfilter_rsp *f)
-+{
-+	struct tc_options_msg *opt = &f->options;
-+
-+	if (opt->_present.flower)
-+		flower_print(&opt->flower, f->kind);
-+	else if (f->_len.kind)
-+		printf("%s pref %u proto: %#x\n", f->kind,
-+		       (f->_hdr.tcm_info >> 16),
-+			ntohs(TC_H_MIN(f->_hdr.tcm_info)));
-+}
-+
-+static int tc_filter_add(struct ynl_sock *ys, int ifi)
-+{
-+	struct tc_newtfilter_req *req;
-+	struct tc_act_attrs *acts;
-+	struct tc_vlan p = {
-+		.action = TC_ACT_PIPE,
-+		.v_action = TCA_VLAN_ACT_PUSH
-+	};
-+	__u16 flags = NLM_F_REQUEST | NLM_F_EXCL | NLM_F_CREATE;
-+	int ret;
-+
-+	req = tc_newtfilter_req_alloc();
-+	if (!req) {
-+		fprintf(stderr, "tc_newtfilter_req_alloc failed\n");
-+		return -1;
-+	}
-+	memset(req, 0, sizeof(*req));
-+
-+	acts = tc_act_attrs_alloc(3);
-+	if (!acts) {
-+		fprintf(stderr, "tc_act_attrs_alloc\n");
-+		tc_newtfilter_req_free(req);
-+		return -1;
-+	}
-+	memset(acts, 0, sizeof(*acts) * 3);
-+
-+	req->_hdr.tcm_ifindex = ifi;
-+	req->_hdr.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-+	req->_hdr.tcm_info = TC_H_MAKE(1 << 16, htons(ETH_P_8021Q));
-+	req->chain = 0;
-+
-+	tc_newtfilter_req_set_nlflags(req, flags);
-+	tc_newtfilter_req_set_kind(req, "flower");
-+	tc_newtfilter_req_set_options_flower_key_vlan_id(req, 100);
-+	tc_newtfilter_req_set_options_flower_key_vlan_prio(req, 5);
-+	tc_newtfilter_req_set_options_flower_key_num_of_vlans(req, 3);
-+
-+	__tc_newtfilter_req_set_options_flower_act(req, acts, 3);
-+
-+	/* Skip action at index 0 because in TC, the action array
-+	 * index starts at 1, with each index defining the action's
-+	 * order. In contrast, in YNL indexed arrays start at index 0.
-+	 */
-+	tc_act_attrs_set_kind(&acts[1], "vlan");
-+	tc_act_attrs_set_options_vlan_parms(&acts[1], &p, sizeof(p));
-+	tc_act_attrs_set_options_vlan_push_vlan_id(&acts[1], 200);
-+	tc_act_attrs_set_kind(&acts[2], "vlan");
-+	tc_act_attrs_set_options_vlan_parms(&acts[2], &p, sizeof(p));
-+	tc_act_attrs_set_options_vlan_push_vlan_id(&acts[2], 300);
-+
-+	tc_newtfilter_req_set_options_flower_flags(req, 0);
-+	tc_newtfilter_req_set_options_flower_key_eth_type(req, htons(0x8100));
-+
-+	ret = tc_newtfilter(ys, req);
-+	if (ret)
-+		fprintf(stderr, "tc_newtfilter: %s\n", ys->err.msg);
-+
-+	tc_newtfilter_req_free(req);
-+
-+	return ret;
-+}
-+
-+static int tc_filter_show(struct ynl_sock *ys, int ifi)
-+{
-+	struct tc_gettfilter_req_dump *req;
-+	struct tc_gettfilter_list *rsp;
-+
-+	req = tc_gettfilter_req_dump_alloc();
-+	if (!req) {
-+		fprintf(stderr, "tc_gettfilter_req_dump_alloc failed\n");
-+		return -1;
-+	}
-+	memset(req, 0, sizeof(*req));
-+
-+	req->_hdr.tcm_ifindex = ifi;
-+	req->_hdr.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-+	req->_present.chain = 1;
-+	req->chain = 0;
-+
-+	rsp = tc_gettfilter_dump(ys, req);
-+	tc_gettfilter_req_dump_free(req);
-+	if (!rsp) {
-+		fprintf(stderr, "YNL: %s\n", ys->err.msg);
-+		return -1;
-+	}
-+
-+	if (ynl_dump_empty(rsp))
-+		fprintf(stderr, "Error: no filters reported\n");
-+	else
-+		ynl_dump_foreach(rsp, flt) tc_filter_print(flt);
-+
-+	tc_gettfilter_list_free(rsp);
-+
-+	return 0;
-+}
-+
-+static int tc_filter_del(struct ynl_sock *ys, int ifi)
-+{
-+	struct tc_deltfilter_req *req;
-+	__u16 flags = NLM_F_REQUEST;
-+	int ret;
-+
-+	req = tc_deltfilter_req_alloc();
-+	if (!req) {
-+		fprintf(stderr, "tc_deltfilter_req_alloc failedq\n");
-+		return -1;
-+	}
-+	memset(req, 0, sizeof(*req));
-+
-+	req->_hdr.tcm_ifindex = ifi;
-+	req->_hdr.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-+	req->_hdr.tcm_info = TC_H_MAKE(1 << 16, htons(ETH_P_8021Q));
-+	tc_deltfilter_req_set_nlflags(req, flags);
-+
-+	ret = tc_deltfilter(ys, req);
-+	if (ret)
-+		fprintf(stderr, "tc_deltfilter failed: %s\n", ys->err.msg);
-+
-+	tc_deltfilter_req_free(req);
-+
-+	return ret;
-+}
-+
-+static int tc_clsact_add(struct ynl_sock *ys, int ifi)
-+{
-+	struct tc_newqdisc_req *req;
-+	__u16 flags = NLM_F_REQUEST | NLM_F_EXCL | NLM_F_CREATE;
-+	int ret;
-+
-+	req = tc_newqdisc_req_alloc();
-+	if (!req) {
-+		fprintf(stderr, "tc_newqdisc_req_alloc failed\n");
-+		return -1;
-+	}
-+	memset(req, 0, sizeof(*req));
-+
-+	req->_hdr.tcm_ifindex = ifi;
-+	req->_hdr.tcm_parent = TC_H_CLSACT;
-+	req->_hdr.tcm_handle = TC_HANDLE;
-+	tc_newqdisc_req_set_nlflags(req, flags);
-+	tc_newqdisc_req_set_kind(req, "clsact");
-+
-+	ret = tc_newqdisc(ys, req);
-+	if (ret)
-+		fprintf(stderr, "tc_newqdisc failed: %s\n", ys->err.msg);
-+
-+	tc_newqdisc_req_free(req);
-+
-+	return ret;
-+}
-+
-+static int tc_clsact_del(struct ynl_sock *ys, int ifi)
-+{
-+	struct tc_delqdisc_req *req;
-+	__u16 flags = NLM_F_REQUEST;
-+	int ret;
-+
-+	req = tc_delqdisc_req_alloc();
-+	if (!req) {
-+		fprintf(stderr, "tc_delqdisc_req_alloc failed\n");
-+		return -1;
-+	}
-+	memset(req, 0, sizeof(*req));
-+
-+	req->_hdr.tcm_ifindex = ifi;
-+	req->_hdr.tcm_parent = TC_H_CLSACT;
-+	req->_hdr.tcm_handle = TC_HANDLE;
-+	tc_delqdisc_req_set_nlflags(req, flags);
-+
-+	ret = tc_delqdisc(ys, req);
-+	if (ret)
-+		fprintf(stderr, "tc_delqdisc failed: %s\n", ys->err.msg);
-+
-+	tc_delqdisc_req_free(req);
-+
-+	return ret;
-+}
-+
-+static int tc_filter_config(struct ynl_sock *ys, int ifi)
-+{
-+	int ret = 0;
-+
-+	if (tc_filter_add(ys, ifi))
-+		return -1;
-+
-+	ret = tc_filter_show(ys, ifi);
-+
-+	if (tc_filter_del(ys, ifi))
-+		return -1;
-+
-+	return ret;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	struct ynl_error yerr;
-+	struct ynl_sock *ys;
-+	int ifi, ret = 0;
-+
-+	if (argc < 2) {
-+		fprintf(stderr, "Usage: %s <interface_name>\n", argv[0]);
-+		return 1;
-+	}
-+	ifi = if_nametoindex(argv[1]);
-+	if (!ifi) {
-+		perror("if_nametoindex");
-+		return 1;
-+	}
-+
-+	ys = ynl_sock_create(&ynl_tc_family, &yerr);
-+	if (!ys) {
-+		fprintf(stderr, "YNL: %s\n", yerr.msg);
-+		return 1;
-+	}
-+
-+	if (tc_clsact_add(ys, ifi)) {
-+		ret = 2;
-+		goto err_destroy;
-+	}
-+
-+	if (tc_filter_config(ys, ifi))
-+		ret = 3;
-+
-+	if (tc_clsact_del(ys, ifi))
-+		ret = 4;
-+
-+err_destroy:
-+	ynl_sock_destroy(ys);
-+	return ret;
-+}
+ int mlx5_port_query_eth_proto(struct mlx5_core_dev *dev, u8 port, bool ext,
 -- 
-2.51.2
+2.31.1
 
