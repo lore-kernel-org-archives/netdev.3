@@ -1,214 +1,128 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA832F60D8;
-	Thu, 20 Nov 2025 17:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD451F0995
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 17:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763660882; cv=none; b=SrOUTcl4klVrJSykFAumysY8cGudnEvvyx0GTsR4/TvrBu4U+WhmRcKUWv9xMPc+c+biTJc+9mAUGgjBcBJWUORfWUdb4O1WLoQZeeP82Q4SPmNsADmwJK9A65NV1QLuklicvYKRUspIiJ+GNMqFWU5xKZ3vlDT+Omv6Lx8G8Z8=
+	t=1763661002; cv=none; b=fvQb9jhFWIvvytBl/gDe7TuAVCFa7Ls8pl7390WB5RKQVxpEo6hWoCFrZr/Pdu0JRCNhKciZaANHoVClolCBDLlw2u5o+Grp7zyU/q5kufnRPkXQX9budFQp5wVwJ2lk4CCp1+/bjNMEKC4mMkV8N5DiwVnW1YM9Dcu3g8Zxtxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763660882; c=relaxed/simple;
-	bh=7Hii1fepSYb2R2xAPHJoYXk4k8Ps7RQqJ8Ba8lBX0ks=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZItXDGz81GPmU5qxsDdEsh5u/YUp73Xr5rxt24NAb3fLjLgYaHpTAx1axvA1cOZCr8UzMxzgBHE9fp03vWdECu0+VQR1VOvHDusWrJFcZnaU2sONccHC3YUoRUN4GT1ZXnDA3TkEatZvKMqg0FtNAwNv6caX+FEWZGxqPR/PCFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=mgQAyN0J; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="mgQAyN0J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1763660872;
-	bh=7Hii1fepSYb2R2xAPHJoYXk4k8Ps7RQqJ8Ba8lBX0ks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgQAyN0JxSO6T6Wp5PMGr0h69W2XRKcuK8ZRopawNJa1H7NO/c34ySjzfjfkW9CZ2
-	 yzqWf7WugthCmQ7v/3QeQa/1WXV4b8yKU6mZmsZDyRDLPHwPhTLyaMaokFm9oC9ghj
-	 uL5WMJgNzAUTbCw9x/0P4m9fJu/b9poMf5twrXMU679J/v0Q6hikFJGRc0lFk63Rer
-	 PAHjWP+xfX9ABUmGPJEG+gYG0Qc5DpDbELZyCamW4oXLxsjBwbIcqinQfHmmIswSGo
-	 tLmgI/2KlmksbDBV12YsvWUe60rihOmF9CJV73fwrCNGFRjSK7QUMD0hQ0E2czoUZG
-	 2UqVIKQaguBZQ==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 6A0AC60103;
-	Thu, 20 Nov 2025 17:46:25 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id D1CB8203EA5; Thu, 20 Nov 2025 17:45:07 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Anna Schumaker <anna@kernel.org>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Wei <dw@davidwei.uk>,
-	Eric Dumazet <edumazet@google.com>,
-	Geliang Tang <geliang@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hannes Reinecke <hare@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Joe Damato <jdamato@fastly.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Li Li <dualli@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	Martijn Coenen <maco@android.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mina Almasry <almasrymina@google.com>,
-	mptcp@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	netdev@vger.kernel.org,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Todd Kjos <tkjos@android.com>,
-	Tom Talpey <tom@talpey.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next 1/2] tools: ynl-gen: add function prefix argument
-Date: Thu, 20 Nov 2025 17:44:26 +0000
-Message-ID: <20251120174429.390574-2-ast@fiberby.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251120174429.390574-1-ast@fiberby.net>
-References: <20251120174429.390574-1-ast@fiberby.net>
+	s=arc-20240116; t=1763661002; c=relaxed/simple;
+	bh=hgpgSpE9+b5syoXb7NqY3pXqB22X6YPN+HqOuWl/nSs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sox5NuNi277siksNTgAr+wZLQRIKuP9Fe+mI44RFFSf9dXY5u0OnRHPJMJSUQqqalOGP3hUcnTsY7Fh9k6pVTUcQUacFcZWXjjKNXNitu44oFxkcpg88BYJvE/iIYbzzIwKK+YQQq5c/D93+LT47XsChWAYuuV5mEazifKxUWJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dC5Sx2s5pzHnGcx
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 01:49:21 +0800 (CST)
+Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8B13E1402FD
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 01:49:56 +0800 (CST)
+Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
+ mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 20 Nov 2025 20:49:55 +0300
+From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+To: <netdev@vger.kernel.org>
+CC: <andrey.bokhanko@huawei.com>, <edumazet@google.com>, Dmitry Skorodumov
+	<skorodumov.dmitry@huawei.com>
+Subject: [PATCH v5 net-next 00/12] ipvlan: support mac-nat mode
+Date: Thu, 20 Nov 2025 20:49:37 +0300
+Message-ID: <20251120174949.3827500-1-skorodumov.dmitry@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500004.china.huawei.com (7.188.26.250)
 
-This patch adds a new CLI argument for overriding the default
-function prefix, as used for naming the doit/dumpit functions
-in the generated kernel code.
+pvlan: support mac-nat mode
 
-When not specified the default "$(FAMILY)-nl" is used.
+ipvlan: Add support of MAC-NAT translation in L2-bridge
 
-This can also be specified persistently in generated files:
-  /* YNL-ARG --function-prefix wg */
+Make it is possible to create link in L2_MACNAT mode: learnable
+bridge with MAC Address Translation. The IPs and MAC addresses will be learned
+from TX-packets of child interfaces.
 
-In the above example it causes the following changes:
-  wireguard_nl_get_device_dumpit() -> wg_get_device_dumpit()
-  wireguard_nl_get_device_doit()   -> wg_get_device_doit()
+Also, dev_add_pack() protocol is attached to the main port
+to support communication from main to child interfaces.
 
-The variable name fn_prefix, was chosen as it relates to op_prefix
-which is used to prefix the UAPI commands enum entries.
+This mode is intended for the desktop virtual machines, for
+bridging to Wireless interfaces.
 
-Link: https://lore.kernel.org/r/aRvWzC8qz3iXDAb3@zx2c4.com/
-Suggested-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- tools/net/ynl/pyynl/ynl_gen_c.py | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+The mode should be specified while creating first child interface.
+It is not possible to change it after this.
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index aadeb3abcad8..0dd589e502cb 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -1205,7 +1205,7 @@ class SubMessage(SpecSubMessage):
- 
- 
- class Family(SpecFamily):
--    def __init__(self, file_name, exclude_ops):
-+    def __init__(self, file_name, exclude_ops, fn_prefix):
-         # Added by resolve:
-         self.c_name = None
-         delattr(self, "c_name")
-@@ -1237,6 +1237,8 @@ class Family(SpecFamily):
-         else:
-             self.uapi_header_name = self.ident_name
- 
-+        self.fn_prefix = fn_prefix if fn_prefix else f'{self.ident_name}-nl'
-+
-     def resolve(self):
-         self.resolve_up(super())
- 
-@@ -2911,12 +2913,12 @@ def print_kernel_op_table_fwd(family, cw, terminate):
-             continue
- 
-         if 'do' in op:
--            name = c_lower(f"{family.ident_name}-nl-{op_name}-doit")
-+            name = c_lower(f"{family.fn_prefix}-{op_name}-doit")
-             cw.write_func_prot('int', name,
-                                ['struct sk_buff *skb', 'struct genl_info *info'], suffix=';')
- 
-         if 'dump' in op:
--            name = c_lower(f"{family.ident_name}-nl-{op_name}-dumpit")
-+            name = c_lower(f"{family.fn_prefix}-{op_name}-dumpit")
-             cw.write_func_prot('int', name,
-                                ['struct sk_buff *skb', 'struct netlink_callback *cb'], suffix=';')
-     cw.nl()
-@@ -2942,7 +2944,7 @@ def print_kernel_op_table(family, cw):
-                                             for x in op['dont-validate']])), )
-             for op_mode in ['do', 'dump']:
-                 if op_mode in op:
--                    name = c_lower(f"{family.ident_name}-nl-{op_name}-{op_mode}it")
-+                    name = c_lower(f"{family.fn_prefix}-{op_name}-{op_mode}it")
-                     members.append((op_mode + 'it', name))
-             if family.kernel_policy == 'per-op':
-                 struct = Struct(family, op['attribute-set'],
-@@ -2980,7 +2982,7 @@ def print_kernel_op_table(family, cw):
-                         members.append(('validate',
-                                         ' | '.join([c_upper('genl-dont-validate-' + x)
-                                                     for x in dont_validate])), )
--                name = c_lower(f"{family.ident_name}-nl-{op_name}-{op_mode}it")
-+                name = c_lower(f"{family.fn_prefix}-{op_name}-{op_mode}it")
-                 if 'pre' in op[op_mode]:
-                     members.append((cb_names[op_mode]['pre'], c_lower(op[op_mode]['pre'])))
-                 members.append((op_mode + 'it', name))
-@@ -3402,6 +3404,7 @@ def main():
-                         help='Do not overwrite the output file if the new output is identical to the old')
-     parser.add_argument('--exclude-op', action='append', default=[])
-     parser.add_argument('-o', dest='out_file', type=str, default=None)
-+    parser.add_argument('--function-prefix', dest='fn_prefix', type=str)
-     args = parser.parse_args()
- 
-     if args.header is None:
-@@ -3410,7 +3413,7 @@ def main():
-     exclude_ops = [re.compile(expr) for expr in args.exclude_op]
- 
-     try:
--        parsed = Family(args.spec, exclude_ops)
-+        parsed = Family(args.spec, exclude_ops, args.fn_prefix)
-         if parsed.license != '((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)':
-             print('Spec license:', parsed.license)
-             print('License must be: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)')
-@@ -3430,10 +3433,14 @@ def main():
-     cw.p("/* Do not edit directly, auto-generated from: */")
-     cw.p(f"/*\t{spec_kernel} */")
-     cw.p(f"/* YNL-GEN {args.mode} {'header' if args.header else 'source'} */")
--    if args.exclude_op or args.user_header:
-+    if args.exclude_op or args.user_header or args.fn_prefix:
-         line = ''
--        line += ' --user-header '.join([''] + args.user_header)
--        line += ' --exclude-op '.join([''] + args.exclude_op)
-+        if args.user_header:
-+            line += ' --user-header '.join([''] + args.user_header)
-+        if args.exclude_op:
-+            line += ' --exclude-op '.join([''] + args.exclude_op)
-+        if args.fn_prefix:
-+            line += f' --function-prefix {args.fn_prefix}'
-         cw.p(f'/* YNL-ARG{line} */')
-     cw.nl()
- 
+This functionality is quite often requested by users.
+
+diff from v4
+- Patch "Fix compilation warning about __be32 -> u32"
+was sent as a separate patch, out of this series
+- Fixed unused-variable "orig_skb" in "Support IPv6 in macnat mode."
+patch
+- Fixed shellcheck and pylint warnings in "selftests: net" patch
+- Fixed conflict with Makefile in selftests/net
+- Fixed "suspicious RCU usage" warning in ipvlan_addr_event() func:
+need to use ipvlan_port_get_rcu_rtnl(), since this function can
+be called with either rtnl or just with rcu for some ipv6 events
+
+diff from v3:
+- Restructured code, to place all new functionality under
+if (ipvlan_is_macnat(port) condition and minimize refactoring
+of existing code.
+- Added kselftest for the new functionality
+- Removed patch with unnecessary gso_segment() call
+- Patches 1-3 were merged into 1
+- Fixed compilation warnings about __be16/__be32 conversions
+
+diff from v2:
+- forgotten patches (10..14) added
+
+diff from v1:
+
+- changed name of the mode to be L2_MACNAT
+- Fixed use of uninitialized variable, found by Intel CI/CD
+- Fixed style problems with lines more then 80 chars
+- Try to use xmastree style of vars declarations
+- Fixed broken intermediate compilation
+- Added check, that child-ip doesn't use IP of the main port
+- Added patch to ignore PACKET_LOOPBACK in handle_mode_l2()
+- Some patches with style-refactoring of addr-event notifications
+
+*** BLURB HERE ***
+
+Dmitry Skorodumov (12):
+  ipvlan: Support MACNAT mode
+  ipvlan: macnat: Handle rx mcast-ip and unicast eth
+  ipvlan: Forget all IP when device goes down
+  ipvlan: Support IPv6 in macnat mode.
+  ipvlan: Make the addrs_lock be per port
+  ipvlan: Take addr_lock in ipvlan_open()
+  ipvlan: Don't allow children to use IPs of main
+  ipvlan: const-specifier for functions that use iaddr
+  ipvlan: Common code from v6/v4 validator_event
+  ipvlan: common code to handle ipv6/ipv4 address events
+  ipvlan: Ignore PACKET_LOOPBACK in handle_mode_l2()
+  selftests: net: selftest for ipvlan-macnat mode
+
+ Documentation/networking/ipvlan.rst           |  22 +-
+ drivers/net/ipvlan/ipvlan.h                   |  51 +-
+ drivers/net/ipvlan/ipvlan_core.c              | 479 ++++++++++++++++-
+ drivers/net/ipvlan/ipvlan_main.c              | 506 ++++++++++++++----
+ include/uapi/linux/if_link.h                  |   1 +
+ tools/testing/selftests/net/Makefile          |   2 +
+ .../selftests/net/ipvtap_macnat_bridge.py     | 168 ++++++
+ .../selftests/net/ipvtap_macnat_test.sh       | 333 ++++++++++++
+ 8 files changed, 1422 insertions(+), 140 deletions(-)
+ create mode 100755 tools/testing/selftests/net/ipvtap_macnat_bridge.py
+ create mode 100755 tools/testing/selftests/net/ipvtap_macnat_test.sh
+
 -- 
-2.51.0
+2.25.1
 
