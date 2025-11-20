@@ -1,81 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7901A0BD6;
-	Thu, 20 Nov 2025 01:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE0A1DE8AE
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 01:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763603512; cv=none; b=RMvZvpfzriSsMECIuxWVBdXoPmEjI9xby05JOMEU4zTxpyX8M4egKYHLxGwVkLRscWik3D+ftHb+fLLHBc9MGf/b56bZa+xp1bTaFtW+ssJ7mlh9iZmHJV93gJymBWSbW1A52cnwtnPpmSThx/sBtk5YlTHYxdieH7agQXmzH00=
+	t=1763603669; cv=none; b=RiznKLoZj/KBZIt5AA1LrST55LNsofc04idhE9YYjTFySSBj9DyjEgNMqtujgYF1zYvGlc1u+kh3qZxlg5K81aA9E3RmlI8DPhh/wSbXabCHFYxKb57Iyrdq8pqlQkZEriHufbX2Mj8UV9XZdQNOE8oq4ub7Z/37lxFiWIaXjp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763603512; c=relaxed/simple;
-	bh=SzX2KHR9gIXn5bOMqReBmE7R+HL7IMhmVAPuYEN8ycY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M7HEwzO0uYJZCJMJVWPj/XHv99uzZlAzpPKyC15uJ7rDJFBikcpaXOcFcksrOs7ZGTmHwCvwv5f94cpU0iwmKtAYkZ2RU3Zy59vyiuibnCZdEIVnbvjMBextjiHC8rUFnKLKzfYCT21w34q7nP3c/SwJgCQj7rHfTUgInrr6Wfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kjqz7fPL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763603669; c=relaxed/simple;
+	bh=MFvDHRF3d5FB9PKU6LXkmJgvlUEZr0HeuQ97CnYKPac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VR2gFYexbXa2yHXr257HM9l/3tWtrgqTGkW1rVvUHfF8DLseSU/AYPBTaSS6RxvIkYKPWX626hCCX+H8DR8vlrjDtlRN4dzvIWaybtWjg2N9Q0q+GqgojOaXmJw0PWblybq+FvNS8hyJU7ZpR4JK71mt3Oyw8vQBiRwoE0c/bI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEJSHFJf; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kjqz7fPL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12E8C4CEF5;
-	Thu, 20 Nov 2025 01:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763603511;
-	bh=SzX2KHR9gIXn5bOMqReBmE7R+HL7IMhmVAPuYEN8ycY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Kjqz7fPLreOO/Z365070Tl16LMAvfIt9Zv4N3qPNwQ6cuOE9x2j2XWskO+O/Mygaa
-	 KHC8qtxozKmJVSqZklTC5VIxMpRIDUsuMWrDuJw/WajFN+ksgnvuCCmfLgVa7gi+Vy
-	 bnVc2UMl5aH29ZGyx9CJHlqAkXy0F53tJ6HptXgQVkkeGSl9bNTJu/HQRkgqa8TmcQ
-	 KsXKRGjXv/U75jL9IWJStwjf19kE6YRHCDlIJukKm3entN0n+eLHvWvBbNZBARQWH0
-	 Of5Yx0WC2jbopmEQf+jUSq7rjwouakB7ufmhw28sl+2bUbz7F9AERsgY1Z3PdRe1NF
-	 H0I/QQEO71NbQ==
-Date: Wed, 19 Nov 2025 17:51:49 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Jurgens <danielj@nvidia.com>
-Cc: <netdev@vger.kernel.org>, <mst@redhat.com>, <jasowang@redhat.com>,
- <pabeni@redhat.com>, <virtualization@lists.linux.dev>, <parav@nvidia.com>,
- <shshitrit@nvidia.com>, <yohadt@nvidia.com>, <xuanzhuo@linux.alibaba.com>,
- <eperezma@redhat.com>, <jgg@ziepe.ca>, <kevin.tian@intel.com>,
- <andrew+netdev@lunn.ch>, <edumazet@google.com>
-Subject: Re: [PATCH net-next v12 05/12] virtio_net: Query and set flow
- filter caps
-Message-ID: <20251119175149.6bc8f7b2@kernel.org>
-In-Reply-To: <20251119191524.4572-6-danielj@nvidia.com>
-References: <20251119191524.4572-1-danielj@nvidia.com>
-	<20251119191524.4572-6-danielj@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEJSHFJf"
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-434709e7cc9so2127805ab.1
+        for <netdev@vger.kernel.org>; Wed, 19 Nov 2025 17:54:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763603667; x=1764208467; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MFvDHRF3d5FB9PKU6LXkmJgvlUEZr0HeuQ97CnYKPac=;
+        b=fEJSHFJfnvJhCRNsErH7L5e+xFMtxmvbem7AdE051tsFvMKWDNPwZejEUX6mwmYXGU
+         E+ZGsx8j7tpX2iz2/rfpbh/WvXNh13C4B8M00kN0OwS0tK3WjQgXNF2vQmwc32S9jj28
+         9uZVsCEnUh9aun84I8k9omp5+vHV/43pF3tHCGpE6ZO77N5y6yKYbw2K6sKi0sU5NEoM
+         Pd+ReNvU97gowoeVWL9swPvelVf/s4AjBV6oFnup0mWA9lAtlAmbn09fmwKbkh0MaPRG
+         xB9CwamaPjJY+1BOFlWKj6h1+epvJEVgNnn74gUQXJct3quQShvBqUerlXgZMK//LlPK
+         qBFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763603667; x=1764208467;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MFvDHRF3d5FB9PKU6LXkmJgvlUEZr0HeuQ97CnYKPac=;
+        b=W+5LBG2/dQwk68NnKfcsQ9icAyEVBuUvuB7eJsJFQx4Iyy6UdADHnuwcEEoIfUmJ+Z
+         2IKdMi0Qp8U5nJvgKRNFwyvoE5462DuTYGroSOl8gnBOBOs7ZDONduwwTLTkmquBWZsf
+         opE/XxkQSnK2rF0LXu1+jGphAHJpO+C7r21ROFgRkI61/H8PfziNd61Hyrskfjf+r/+C
+         F6JH2XdsBWFOjdQtbaC4CCivm78sUt2PAeAYS4/SokyLcXJD+LUm+1MDTfcwkr0xrrr+
+         IdEFLzueXNykP7atC1vGa+1JcAsdkkGd1eQ8mDDxcAXNJ1s/p622ts1HSLIWrw4nj0/K
+         i5ew==
+X-Forwarded-Encrypted: i=1; AJvYcCV5TNyLSUWgeLDYlxd/RRM+ldPveQahRkrrZdg1SuXI2RmJDD561PrAgCk6Rp+72ekA5LwQ1gI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNQ/CmoxQZVxUD1hyV/LIpvJ74aUitAWm9DIi1bearcewKhBjh
+	LevSup3+EMOnAAheRilvrNtKS0KlABFTJTig2XWJvIAj4iD48biY7Fv+liqo7fq0RjFAiZR8BFc
+	oWJ6Wh3ZRMtY8KrDkLUCxNAW3nksng8Q=
+X-Gm-Gg: ASbGncufDI/ojYHTaCqEQLdieSIDvRSAdc1qXjwdMHoiUosAnfyXiL3rP2Jg6XfzLBt
+	syFWzWwnp9Xvp9HrGi33U5O+huiVFur1Fu8nWYCShMzvXPGJGD2KCHJG1FczM2Alz3MexZgGDNm
+	q6lKBGL0IxK2fKirrIKF/yuK0Opmldza4n6ea2KqgY1pb0WPDes4c0naU2Vw/j6pvP8+VZ1yHD+
+	3qwWn7VrL1Bysc0GQiUyv/BH4rOcUgGsZyhJ+4SXcxQ6tbY/eH266H1cK0b0HSl3MhqXlmnb3E=
+X-Google-Smtp-Source: AGHT+IFcqX1ajqVeyeILSfupP3SzSGXZNwYJDvfOdroU/r/HiyZpgaHK6DQI/9RwOKMP8kx6ejcjMrH+ZMytLMSqPV4=
+X-Received: by 2002:a92:ca45:0:b0:433:2812:8066 with SMTP id
+ e9e14a558f8ab-435b206566dmr563175ab.23.1763603666872; Wed, 19 Nov 2025
+ 17:54:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20251119172239.41963-1-i.shihao.999@gmail.com>
+In-Reply-To: <20251119172239.41963-1-i.shihao.999@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 20 Nov 2025 09:53:50 +0800
+X-Gm-Features: AWmQ_bmOAuwXIUOZm3EqDuKTmIlqM0xlq_3Bm6d6scJyYgIVEGsJDabtzsVDhSo
+Message-ID: <CAL+tcoCthG3AzW4Gs=XeWjMGYo+UoZSu34N0tJju4+0jr++j6g@mail.gmail.com>
+Subject: Re: [PATCH] net: ipv4: fix spelling typo in comment
+To: Shi Hao <i.shihao.999@gmail.com>
+Cc: ncardwell@google.com, pabeni@redhat.com, davem@davemloft.net, 
+	kuniyu@google.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 19 Nov 2025 13:15:16 -0600 Daniel Jurgens wrote:
-> +/**
-> + * struct virtio_net_ff_cap_data - Flow filter resource capability limits
-> + * @groups_limit: maximum number of flow filter groups supported by the device
-> + * @classifiers_limit: maximum number of classifiers supported by the device
-> + * @rules_limit: maximum number of rules supported device-wide across all groups
-> + * @rules_per_group_limit: maximum number of rules allowed in a single group
-> + * @last_rule_priority: priority value associated with the lowest-priority rule
-> + * @selectors_per_classifier_limit: maximum selectors allowed in one classifier
-> + */
-> +struct virtio_net_ff_cap_data {
-> +	__le32 groups_limit;
-> +	__le32 classifiers_limit;
-> +	__le32 rules_limit;
-> +	__le32 rules_per_group_limit;
-> +	__u8 last_rule_priority;
-> +	__u8 selectors_per_classifier_limit;
+On Thu, Nov 20, 2025 at 1:30=E2=80=AFAM Shi Hao <i.shihao.999@gmail.com> wr=
+ote:
+>
+> Replace "splitted" with "split" in comment.
+>
+> Signed-off-by: Shi Hao <i.shihao.999@gmail.com>
 
-pop in a :
+I think minor typo patches regarding networking should be squashed
+into one as they are easier to review at one time.
 
-	/* private: */
+Please repost them as one after ~24 hours.
 
-comment here, otherwise kdoc will complain that @reserved is
-undocumented.
-
-> +	__u8 reserved[2];
-> +};
-
-That said, if you don't mind pls wait for Michael's review with 
-the repost. Unless someone else provides review comments first.
+Thanks,
+Jason
