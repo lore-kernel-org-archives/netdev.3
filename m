@@ -1,119 +1,173 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE6A269D06
-	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 20:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E106330505B
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 20:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763669546; cv=none; b=UXN7LIFX8zY8AgeWfnvziFFFN7AYdSU3x58KZiPmbfd5EJiDFVPzTYjScqijNWk26gdOthN3/8QNKS96eYR3e/2lk1YsQFY2GVmibly64fIuc8hUEz4yHduL1svevUSzRBtFG6ZGWKfo2CIpR4Yu0T3yJHfMCXTUTXs8p6/d8k4=
+	t=1763670079; cv=none; b=AjjHmhD61CUKQF0JE3bMZvqRp0l8KLaqYC8RJsmK5T5cb2xZtdTGndQ5+ZcI2o0Jp31dvQVIv6n6m+Yzv6/6JVYgjH6xk8S6NsT6IUNWi2ztn2Qhn1dNtEUUJGd66eaeQnCqCEqCHex7jeo8LGCO85UjzeCtB8e9gOQAQzn5cPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763669546; c=relaxed/simple;
-	bh=lP6d5dwYL+W6nv5Kz56dzsnhy+cIECD/isjPtt4lNjo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nD6LSOWtJZS2kklaz6vjmKeD2F4ZMRMRgxKWz+UTLgdG5E1WsFiZvgzlvZTbiaiozLVHUEHtFSsY4VmYmYfPE9CIhGF6j4aGJL1Ze8B26madIuhJAKEMroXmp0CVpVzjhfv9hGIYgAPkmHD5ebylnBSKdi5W/D3u6fDe989RXtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bi1WRbFQ; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763670079; c=relaxed/simple;
+	bh=tBghntix0JxYcHAoVTDvSRKr3XGcAk48NVaobw7ZEbU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=M78lukm7SUIkLUwB8nVCC1vhfc9ePPPzj0c2UFhswL2tDxXd6YvryfEK9onleB15QI5NjZL/YTXnf4ZmduRQ5h8Pcuxs9njMcO59rzbF2Ep7FWTlTC6SAZfLA94mXi+mgKzdaUvDQmXP4jr35DaTQ557U20PVCzqGOJLNnHkYqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G1+JFIyt; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bi1WRbFQ"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7866375e943so11174427b3.0
-        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:12:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763669543; x=1764274343; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ArLBssIhqmPzhIFPuYuwBivCUg4rQV57fxyLID3UDrQ=;
-        b=bi1WRbFQ7sCxsCI+jCTjZn2Mxk7PHMhdp8VrnlosX/Vv7Gq7p66NSBPgKLBY5WxHFJ
-         LG2izDHdvjj9vfpZdbrDJkAoDhMglH/ysyqMMlf3oKuTElc8hMRjG14JdFMEHes4O+9h
-         HMQvldKtgRjHILpT/WKNAEydZXbf/bFTiaxRkb4S8XPeDKCEcRtb4X1K9+ADMl6IT8pt
-         tFbCAWuHYJk8I6GfDqCeI261m+Q8tJ7J05Of0EgVKqujuIfRxdvFyiPN45GrYlFVAUlx
-         wxDLc5OvQEnTFDJ95pQcBpMbJsPfDIlkP5Lzm818ackHF/V+e2JEYPmoIgmGYC6cYlMB
-         0Yjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763669543; x=1764274343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ArLBssIhqmPzhIFPuYuwBivCUg4rQV57fxyLID3UDrQ=;
-        b=lImfp+/S6T3uoRh2U0+RGcliMITofqcPDL3+H6M4h1CVBw0CzL3KOIfnHoIE0Mv8S/
-         iisspYUzXARSlBufVBNV1Nm+NvDEFC/qQPGVpxLWkpb3OKu+90pVOZdJYUzDWh00TOln
-         KjX7n9cBu+Im7qxM0mxSxyseoPJtZMay3E6Deg1k3gwtG0MiogVfcg7awRwxi3jqzXBB
-         AXL3ut/KvditSqOllKD/H0qRrIBmdT60Ly9xGbUymydpN/jqRKCuo+X2RYj5YvFuvteB
-         Yal9BViKIBrZz50zrD39NeN8KSNmvUlUElIZ7JO8V/YfBrcf+NM1pMXkCefbkpzmjzNN
-         rpHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSG3x+8OPvjsqUU1dfDwFHuswj617Zej0f/c1/h1djpcLUMh/p+NkyWKpbQeLZ+0v1wsJZs5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVJI7o6BQaXkTlfK0U0VxGbGemRHdS//Ds9ztnDOv3AGVHtlFG
-	rTQx9oC2jgKlACoo9dAb+fx6/AFZcctNpQRreYDtO8doyHCz90ibVokCjurrGEMjzqwKFtqzyen
-	jl+T+ICpwC5cd2s4uakbeoP2TfiFt88s=
-X-Gm-Gg: ASbGnculiaRYgGNh/0fQmcWIkTqmjeyXiE1Go694BhpeTXeQSphVgVAuXrAeyON44GB
-	mmULHSlfL9Sig9hNNEa0tmOYSNxOpo0ILzLuE35Qoj2ty2xBDTAtn6BC6gLMoftKwEiNH9KyaZf
-	OxRI1A0OtgApIB+Ms5f3WpxUmglsml5Gavn5xM8lVc+wnsjB5awqQSwlX99H6283nER2EIOrRm4
-	E6HbUQ4IIqn9V4QJwtmY95iQwlnVs0Jwf5QcZo7qAF/P1uygfWc9vE5MMfkZMyZCpHEG+Ybix3n
-	j25HbwLuK4Y=
-X-Google-Smtp-Source: AGHT+IGHCLO2HZXDfY2Lh2C6v0dezhGL+uyOjdWenNvCCppd3pfq3EZcOR1/4+hPB+0UBNjcVEwv7WmexiAJTCJeKSQ=
-X-Received: by 2002:a05:690c:7243:b0:786:5789:57ce with SMTP id
- 00721157ae682-78a79607f78mr35271707b3.43.1763669543514; Thu, 20 Nov 2025
- 12:12:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G1+JFIyt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763670077; x=1795206077;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=tBghntix0JxYcHAoVTDvSRKr3XGcAk48NVaobw7ZEbU=;
+  b=G1+JFIyt9BabEP+CdZbAvXCWSoxRcYbx0aT4Iy9nCVpY+SHVYaEKdlZL
+   4TB9XGMKb5OWLFdSGBTrfVMctxJhZ3Mhzd2iJ/prrBi5uJOlBj98Gdqfc
+   Rg/eNAQOB5f2NvTWQZ6n3vtoz9GS5vGVuzIiy/UAq7kQCMNO7X3Xqs0o0
+   ws6/s3F0xNq2c961MjlqAgNHLL4qDNLnbErgBfGiiUg/9jQiICX+m1MTU
+   3PphppZSQ45s1hkNGwRrbFE2LNNsLqQWlFbUtbqciwqFqo82AJ9llc1et
+   JcfLOPz4KWsKF80sG31TNanZ5yfC0qWfeOV3MhDyG8FUGR4z1/lk1eBrG
+   w==;
+X-CSE-ConnectionGUID: Q1SGf2TRTpC1OuTXewigLA==
+X-CSE-MsgGUID: Rgdux5dHTfWapX0H2VBOAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65688929"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
+   d="scan'208";a="65688929"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 12:21:16 -0800
+X-CSE-ConnectionGUID: ZjWlT9TlSxuRHvu6IprOkw==
+X-CSE-MsgGUID: nHHsZqjNRpeixXf1xQuxcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
+   d="scan'208";a="222419696"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.90]) ([10.166.28.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 12:21:12 -0800
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 20 Nov 2025 12:20:42 -0800
+Subject: [PATCH iwl-next v4 2/6] ice: pass pointer to
+ ice_fetch_u64_stats_per_ring
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251117191515.2934026-1-ameryhung@gmail.com> <CAP01T74CcZqt9W8Y5T3NYheU8HyGataKXFw99cnLC46ZV9oFPQ@mail.gmail.com>
- <20251118104247.0bf0b17d@pumpkin>
-In-Reply-To: <20251118104247.0bf0b17d@pumpkin>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Thu, 20 Nov 2025 12:12:12 -0800
-X-Gm-Features: AWmQ_bk2-fHm4Nt0R2y5_0QXWfg5bB5o2vYXDx09DXPnSNfJW8icAeGFOBUwRto
-Message-ID: <CAMB2axPqr6bw-MgH-QqSRz+1LOuByytOwHj8KWQc-4cG8ykz7g@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v1 1/1] bpf: Annotate rqspinlock lock acquiring
- functions with __must_check
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	alexei.starovoitov@gmail.com, andrii@kernel.org, daniel@iogearbox.net, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251120-jk-refactor-queue-stats-v4-2-6e8b0cea75cc@intel.com>
+References: <20251120-jk-refactor-queue-stats-v4-0-6e8b0cea75cc@intel.com>
+In-Reply-To: <20251120-jk-refactor-queue-stats-v4-0-6e8b0cea75cc@intel.com>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Simon Horman <horms@kernel.org>, intel-wired-lan@lists.osuosl.org, 
+ netdev@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+X-Mailer: b4 0.15-dev-f4b34
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3937;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=tBghntix0JxYcHAoVTDvSRKr3XGcAk48NVaobw7ZEbU=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkz5CtNyOQuzKa8X+l++1G4e5Xyl881u+3sR8St+bm528
+ iy3yQ/sKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgF4CYHM/wvyW+WevCvvK0i5Ubc
+ /55DNv2X/L6fWNJxzVDYT3bZn2xOhn869++JLtzokrO1ySH60Z2Nyc/l53duNTlSGDCDyVcgXIA
+ RAA==
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-On Tue, Nov 18, 2025 at 2:42=E2=80=AFAM David Laight
-<david.laight.linux@gmail.com> wrote:
->
-> On Tue, 18 Nov 2025 05:16:50 -0500
-> Kumar Kartikeya Dwivedi <memxor@gmail.com> wrote:
->
-> > On Mon, 17 Nov 2025 at 14:15, Amery Hung <ameryhung@gmail.com> wrote:
-> > >
-> > > Locking a resilient queued spinlock can fail when deadlock or timeout
-> > > happen. Mark the lock acquring functions with __must_check to make su=
-re
-> > > callers always handle the returned error.
-> > >
-> > > Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-> > > Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> > > ---
-> >
-> > Looks like it's working :)
-> > I would just explicitly ignore with (void) cast the locktorture case.
->
-> I'm not sure that works - I usually have to try a lot harder to ignore
-> a '__must_check' result.
+The ice_fetch_u64_stats_per_ring function takes a pointer to the syncp from
+the ring stats to synchronize reading of the packet stats. It also takes a
+*copy* of the ice_q_stats fields instead of a pointer to the stats. This
+completely defeats the point of using the u64_stats API. We pass the stats
+by value, so they are static at the point of reading within the
+u64_stats_fetch_retry loop.
 
-Thanks for the heads up.
+Simplify the function to take a pointer to the ice_ring_stats instead of
+two separate parameters. Additionally, since we never call this outside of
+ice_main.c, make it a static function.
 
-Indeed, gcc still complains about it even casting the return to (void)
-while clang does not.
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h      |  3 ---
+ drivers/net/ethernet/intel/ice/ice_main.c | 24 +++++++++---------------
+ 2 files changed, 9 insertions(+), 18 deletions(-)
 
-I have to silence the warning by:
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 147aaee192a7..5c01e886e83e 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -957,9 +957,6 @@ u16 ice_get_avail_rxq_count(struct ice_pf *pf);
+ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked);
+ void ice_update_vsi_stats(struct ice_vsi *vsi);
+ void ice_update_pf_stats(struct ice_pf *pf);
+-void
+-ice_fetch_u64_stats_per_ring(struct u64_stats_sync *syncp,
+-			     struct ice_q_stats stats, u64 *pkts, u64 *bytes);
+ int ice_up(struct ice_vsi *vsi);
+ int ice_down(struct ice_vsi *vsi);
+ int ice_down_up(struct ice_vsi *vsi);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 0b6175ade40d..4133d297dda2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6811,25 +6811,23 @@ int ice_up(struct ice_vsi *vsi)
+ 
+ /**
+  * ice_fetch_u64_stats_per_ring - get packets and bytes stats per ring
+- * @syncp: pointer to u64_stats_sync
+- * @stats: stats that pkts and bytes count will be taken from
++ * @stats: pointer to ring stats structure
+  * @pkts: packets stats counter
+  * @bytes: bytes stats counter
+  *
+  * This function fetches stats from the ring considering the atomic operations
+  * that needs to be performed to read u64 values in 32 bit machine.
+  */
+-void
+-ice_fetch_u64_stats_per_ring(struct u64_stats_sync *syncp,
+-			     struct ice_q_stats stats, u64 *pkts, u64 *bytes)
++static void ice_fetch_u64_stats_per_ring(struct ice_ring_stats *stats,
++					 u64 *pkts, u64 *bytes)
+ {
+ 	unsigned int start;
+ 
+ 	do {
+-		start = u64_stats_fetch_begin(syncp);
+-		*pkts = stats.pkts;
+-		*bytes = stats.bytes;
+-	} while (u64_stats_fetch_retry(syncp, start));
++		start = u64_stats_fetch_begin(&stats->syncp);
++		*pkts = stats->stats.pkts;
++		*bytes = stats->stats.bytes;
++	} while (u64_stats_fetch_retry(&stats->syncp, start));
+ }
+ 
+ /**
+@@ -6853,9 +6851,7 @@ ice_update_vsi_tx_ring_stats(struct ice_vsi *vsi,
+ 		ring = READ_ONCE(rings[i]);
+ 		if (!ring || !ring->ring_stats)
+ 			continue;
+-		ice_fetch_u64_stats_per_ring(&ring->ring_stats->syncp,
+-					     ring->ring_stats->stats, &pkts,
+-					     &bytes);
++		ice_fetch_u64_stats_per_ring(ring->ring_stats, &pkts, &bytes);
+ 		vsi_stats->tx_packets += pkts;
+ 		vsi_stats->tx_bytes += bytes;
+ 		vsi->tx_restart += ring->ring_stats->tx_stats.restart_q;
+@@ -6899,9 +6895,7 @@ static void ice_update_vsi_ring_stats(struct ice_vsi *vsi)
+ 		struct ice_ring_stats *ring_stats;
+ 
+ 		ring_stats = ring->ring_stats;
+-		ice_fetch_u64_stats_per_ring(&ring_stats->syncp,
+-					     ring_stats->stats, &pkts,
+-					     &bytes);
++		ice_fetch_u64_stats_per_ring(ring_stats, &pkts, &bytes);
+ 		vsi_stats->rx_packets += pkts;
+ 		vsi_stats->rx_bytes += bytes;
+ 		vsi->rx_buf_failed += ring_stats->rx_stats.alloc_buf_failed;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-result"
-       raw_res_spin_lock(&rqspinlock);
-#pragma GCC diagnostic pop
+-- 
+2.51.0.rc1.197.g6d975e95c9d7
 
-Thanks!
-Amery
-
->
->         David
