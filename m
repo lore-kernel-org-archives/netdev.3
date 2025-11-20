@@ -1,76 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335BB337B90;
-	Thu, 20 Nov 2025 11:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1373B32FA1F
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 11:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763637641; cv=none; b=U9+dHyzrgfXg6YtsvwlQkoJisF/Y0FndU3yYI6SORhxhTw4leGZlPVQVDZj0A7zjiioawDclA659nOHLbszW75On1hMwf7eOrCq8ggJrdqY46LniC0ozH1cUaQzh/m2l0mjyspk7R+4YPTn7TY3J+hLjjgjdDFxkjp+1L/dwuEs=
+	t=1763637782; cv=none; b=t5qN9LLPh71zgay9ofA3rJOuxJhoSMWboDjkn/o65bOLX9Agpmq2AzaORvttHnaDN2DYkmABdlJC3VPC3pHo6m3TwNJWQWPYfDxvqVsLabpCQ+tUIiMkaZ5jCB21hSdxUgUAKaMTu6gBGuNU/9QJyUTJcppfszh20PeiJnBrbNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763637641; c=relaxed/simple;
-	bh=NPis4lGIzRENwNC8RL+waJhQBAh3ydR+JSiZg+5KEmQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KfATtevQVwxdIPHAUSTcvk1M+jr8St4YnKRUZ38qupQney1tkR7Jn4rtO4N4Dyuf22qWTitj5GSZlupcGOjYEPLsMZNW5bmZJcT4Tu2atZ2Q2Xs/aHPhUdjBm8F/SrB2rzRcIVk6Qr1wZXWvwQ8gJXt1RYfSyPnM1orfZVONRfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k914ASyh; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k914ASyh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D605DC4CEF1;
-	Thu, 20 Nov 2025 11:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763637640;
-	bh=NPis4lGIzRENwNC8RL+waJhQBAh3ydR+JSiZg+5KEmQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=k914ASyhSFRSziz3mXQUxMBbObOSp4Gn4fZjLPNy2Sh91HYEDRmZMbeDpebR0JYnF
-	 Ooar61W0RXVXrMRPS3phcO+tZJzbGWK/bMKIwaF36G3kgqFh1pHD/kECWANX+I7o4Y
-	 I04pV34lpEBzxWllaVv+cMTRIv+gXXjT8wwcvo7Md9s/4oTU7iNTeNM+FScibo2RAb
-	 ImJbmQxaZoBHWsmRgyg/E3VYkqmQ5JzhcZYvX1Ip76fWcbErsswQO0wMcluzxIbg0B
-	 VMnulOLWXRuHJ4XlUK+5f49XSdqxisygq6VOYQrd04vD2/gLXKJf0MrlX0G6UF8r1Q
-	 b81jZEVZ3p0hw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70B2E39EFA6F;
-	Thu, 20 Nov 2025 11:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1763637782; c=relaxed/simple;
+	bh=lAaaANDENYGNByX/6L5SYl6YqxN2PBSxWCsn7d/pbWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TsBQeSqvlhyNXfaVtHLBfE+b01K02NmGLZWdCVzwbM/4iLIq0KvQFEP/pipbz82uErs9ZWzPKqNP2t1Xtdv5/vSCf41drPF6SYYGrvWaSg3zi72IA59kQM+zZzhcFSeSzQ/XXEJik7t8e5B8LNtFeyb9an2RDiu4kWuk/f5bhsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dBwtQ4KtWzHnH8Y;
+	Thu, 20 Nov 2025 19:22:22 +0800 (CST)
+Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3EFF51402ED;
+	Thu, 20 Nov 2025 19:22:57 +0800 (CST)
+Received: from [10.123.122.223] (10.123.122.223) by
+ mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 20 Nov 2025 14:22:56 +0300
+Message-ID: <ed1f533c-1fff-4bb2-b710-69f96ffa0ad2@huawei.com>
+Date: Thu, 20 Nov 2025 14:22:56 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] l2tp: reset skb control buffer on xmit
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176363760630.1581289.683888947957322970.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Nov 2025 11:20:06 +0000
-References: <20251118001619.242107-1-mail@david-bauer.net>
-In-Reply-To: <20251118001619.242107-1-mail@david-bauer.net>
-To: David Bauer <mail@david-bauer.net>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kaber@trash.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 iproute2-next 1/1] Support l2macnat in ip util
+To: Stephen Hemminger <stephen@networkplumber.org>
+CC: <netdev@vger.kernel.org>, <andrey.bokhanko@huawei.com>,
+	<edumazet@google.com>
+References: <20251118112347.2967577-1-skorodumov.dmitry@huawei.com>
+ <20251118080611.2e5bdec7@phoenix.local>
+Content-Language: en-US
+From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+In-Reply-To: <20251118080611.2e5bdec7@phoenix.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500004.china.huawei.com (7.188.26.250)
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+On 18.11.2025 19:06, Stephen Hemminger wrote:
+> On Tue, 18 Nov 2025 14:23:47 +0300
+> Dmitry Skorodumov <skorodumov.dmitry@huawei.com> wrote:
+>
+>> Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+>
+> Good start, but you need update ipvlan_print_opt as well.
+> The trigraph is getting long enough that it is time for a helper function.
+>
+> Also need to update man page.
 
-On Tue, 18 Nov 2025 01:16:18 +0100 you wrote:
-> The L2TP stack did not reset the skb control buffer before sending the
-> encapsulated package.
-> 
-> In a setup with an ath10k radio and batman-adv over an L2TP tunnel
-> massive fragmentations happen sporadically if the L2TP tunnel is
-> established over IPv4.
-> 
-> [...]
+Updating man will be tricky: ipvlan/ipvtap part is near totally missing in man... I'll try, but likely help with final editing will be appreciated.
 
-Here is the summary with links:
-  - [net] l2tp: reset skb control buffer on xmit
-    https://git.kernel.org/netdev/net/c/d70b592551ff
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Dmitry
 
