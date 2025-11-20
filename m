@@ -1,41 +1,40 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD38E2EAD10;
-	Thu, 20 Nov 2025 17:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4672F2605;
+	Thu, 20 Nov 2025 17:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763661063; cv=none; b=fyTPJk1buef8S008B6yfHURYZNfNWOD6icS5LyS1vzTLzIxsLmu3yvXh4UVbBmK4ySa3BjX2yNuAbWH4eYpwI57ZE/l2aIukB/Sl6FpcILP77qFWRSyxyBu9nnwzHy79+7XhzKdatdTltDZj0Os2T8zOXyavmS+ZGmKLac8yeRA=
+	t=1763661067; cv=none; b=t1DFuhaALX/CV+Oi5d7kI4ZvyKO2l+FH1HIeon8kom+dLUdXdtzMiA8GDGyJM95nuFxa1IpV717NOSMhjsJV1F0jZJLfHq7hDztHT04X3y3iwwiIF7DcCmGiLZ2Q+1PdO0P8zIVtBiJtOsW3Jg8xoOa3mt8j7knltfUEmQRI9ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763661063; c=relaxed/simple;
-	bh=hba8MrbAt8U1meXjPQUVTph4DHCCQrX66Bo9W1zNTio=;
+	s=arc-20240116; t=1763661067; c=relaxed/simple;
+	bh=JPBHcROMwmzK4r5daZEKPf3ZTdryr4sB8p1XMBuHVsY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iHKlzjtTl9zfagynZ5g+ABXpT5MxcM51pE30/++RmD2mcIDKM9JQRy/ApyfxfXOu8K3ryGyqDvQZgeXvciaEui/MVgUPVbgRM3O3D73bvPwjaxsUyILF0riD4FkvtwXxjylIrh8H1jUXTnfcS0QuEvyhvFX7YTMYp6jB0vkRLxc=
+	 MIME-Version:Content-Type; b=ZhSJgAM7+spVRNqwyGtpaR4eyBsXMohE/bqOKkehWrgFrAE6XJGOL8YEwtLe6262ntkjh/qck45vJXmhm4T0Wl3OVkxodKn39QYhjkZwW4a8jYGPwfg9Tb8ZcGG3GjV2MQn7Oh6gfeYVS2+usFBYFAAxWCS9pD0zzgLWdFzbsAM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dC5Tn3srYzJ467v;
-	Fri, 21 Nov 2025 01:50:05 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dC5Tw3NcfzJ46Bd;
+	Fri, 21 Nov 2025 01:50:12 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5D24C1402EF;
-	Fri, 21 Nov 2025 01:50:51 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 4E1011402FD;
+	Fri, 21 Nov 2025 01:50:58 +0800 (CST)
 Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 20 Nov 2025 20:50:50 +0300
+ 15.2.1544.11; Thu, 20 Nov 2025 20:50:57 +0300
 From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 To: <netdev@vger.kernel.org>, Dmitry Skorodumov
-	<skorodumov.dmitry@huawei.com>, Jakub Kicinski <kuba@kernel.org>, Stanislav
- Fomichev <sdf@fomichev.me>, Xiao Liang <shaw.leon@gmail.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, Etienne Champetier
-	<champetier.etienne@gmail.com>, <linux-kernel@vger.kernel.org>
-CC: <andrey.bokhanko@huawei.com>, <edumazet@google.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH net-next 09/12] ipvlan: Common code from v6/v4 validator_event
-Date: Thu, 20 Nov 2025 20:49:46 +0300
-Message-ID: <20251120174949.3827500-10-skorodumov.dmitry@huawei.com>
+	<skorodumov.dmitry@huawei.com>, Jakub Kicinski <kuba@kernel.org>, Ido
+ Schimmel <idosch@nvidia.com>, Eric Dumazet <edumazet@google.com>, Julian
+ Vetter <julian@outer-limits.org>, Guillaume Nault <gnault@redhat.com>,
+	<linux-kernel@vger.kernel.org>
+CC: <andrey.bokhanko@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 11/12] ipvlan: Ignore PACKET_LOOPBACK in handle_mode_l2()
+Date: Thu, 20 Nov 2025 20:49:48 +0300
+Message-ID: <20251120174949.3827500-12-skorodumov.dmitry@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251120174949.3827500-1-skorodumov.dmitry@huawei.com>
 References: <20251120174949.3827500-1-skorodumov.dmitry@huawei.com>
@@ -50,108 +49,38 @@ Content-Type: text/plain
 X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500004.china.huawei.com (7.188.26.250)
 
-Extract commond code for ipvlan_addr4_validator_event()/
-ipvlan_addr6_validator_event() to own function
+Packets with pkt_type == PACKET_LOOPBACK are captured by
+handle_frame() function, but they don't have L2 header.
+We should not process them in handle_mode_l2().
+
+This doesn't affect old L2 functionality, since handling
+was anyway incorrect.
+
+Handle them the same way as in br_handle_frame():
+just pass the skb.
+
+To observe invalid behaviour, just start "ping -b" on bcast address
+of port-interface.
 
 Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 67 +++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 36 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index 7be0722e688f..ff8f249bb32e 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -1153,6 +1153,33 @@ static int ipvlan_port_del_addr_event(struct ipvl_port *port,
- 	return NOTIFY_OK;
- }
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index ce6202667159..ba2bea5f0a1a 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -1157,6 +1157,9 @@ static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
+ 	struct sk_buff *skb = *pskb;
+ 	bool need_eth_fix;
  
-+static int ipvlan_addr_validator_event(struct net_device *dev,
-+				       unsigned long event,
-+				       struct netlink_ext_ack *extack,
-+				       const void *iaddr,
-+				       bool is_v6)
-+{
-+	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
++		return RX_HANDLER_PASS;
 +
-+	if (!ipvlan_is_valid_dev(dev))
-+		return NOTIFY_DONE;
-+
-+	if (ipvlan_is_macnat(ipvlan->port))
-+		return notifier_from_errno(-EADDRNOTAVAIL);
-+
-+	switch (event) {
-+	case NETDEV_UP:
-+		if (ipvlan_addr_busy(ipvlan->port, iaddr, is_v6)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Address already assigned to an ipvlan device");
-+			return notifier_from_errno(-EADDRINUSE);
-+		}
-+		break;
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
- #if IS_ENABLED(CONFIG_IPV6)
- static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
- {
-@@ -1221,25 +1248,9 @@ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
- {
- 	struct in6_validator_info *i6vi = (struct in6_validator_info *)ptr;
- 	struct net_device *dev = (struct net_device *)i6vi->i6vi_dev->dev;
--	struct ipvl_dev *ipvlan = netdev_priv(dev);
--
--	if (!ipvlan_is_valid_dev(dev))
--		return NOTIFY_DONE;
--
--	if (ipvlan_is_macnat(ipvlan->port))
--		return notifier_from_errno(-EADDRNOTAVAIL);
- 
--	switch (event) {
--	case NETDEV_UP:
--		if (ipvlan_addr_busy(ipvlan->port, &i6vi->i6vi_addr, true)) {
--			NL_SET_ERR_MSG(i6vi->extack,
--				       "Address already assigned to an ipvlan device");
--			return notifier_from_errno(-EADDRINUSE);
--		}
--		break;
--	}
--
--	return NOTIFY_OK;
-+	return ipvlan_addr_validator_event(dev, event, i6vi->extack,
-+					   &i6vi->i6vi_addr, true);
- }
- #endif
- 
-@@ -1315,25 +1326,9 @@ static int ipvlan_addr4_validator_event(struct notifier_block *unused,
- {
- 	struct in_validator_info *ivi = (struct in_validator_info *)ptr;
- 	struct net_device *dev = (struct net_device *)ivi->ivi_dev->dev;
--	struct ipvl_dev *ipvlan = netdev_priv(dev);
--
--	if (!ipvlan_is_valid_dev(dev))
--		return NOTIFY_DONE;
--
--	if (ipvlan_is_macnat(ipvlan->port))
--		return notifier_from_errno(-EADDRNOTAVAIL);
- 
--	switch (event) {
--	case NETDEV_UP:
--		if (ipvlan_addr_busy(ipvlan->port, &ivi->ivi_addr, false)) {
--			NL_SET_ERR_MSG(ivi->extack,
--				       "Address already assigned to an ipvlan device");
--			return notifier_from_errno(-EADDRINUSE);
--		}
--		break;
--	}
--
--	return NOTIFY_OK;
-+	return ipvlan_addr_validator_event(dev, event, ivi->extack,
-+					   &ivi->ivi_addr, false);
- }
- 
- static struct notifier_block ipvlan_addr4_notifier_block __read_mostly = {
+ 	/* Ignore already seen packets. */
+ 	if (ipvlan_is_skb_marked(skb, port->dev))
+ 		return RX_HANDLER_PASS;
 -- 
 2.25.1
 
