@@ -1,139 +1,160 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B22A372ADC
-	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A732FA0C
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763640430; cv=none; b=Y12xWJkjK1Nl9inLagdNVNRPHVEQbsjd5ucyVIe3X3bWo/WFqqGww9ctrboTX1CWF4u8lPtIAu13lIjykJsk0+vamUfX4au44alNH/bz4NKwCCX9Dc5EOfC+d4pz2vH22s8vZFcbmG9HC1mz4RUhiwG6BUlfkvov1x5p/1v6tXg=
+	t=1763640461; cv=none; b=NxjQrAwcd+VywnonOgUdT1zorqZ3Qu0EKguZEMCKrGLfDB0maUqOMXVoy86bDb1fXWKEBXNp/Ve4nHY2REb3+vIfpGGBB1rholk+oTgnPAGTF0Y8aqBM1rF9aRFe27i6n560icFG6MJpP02rqSFEjj5iDQa6NjUy0hAg7yH8H6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763640430; c=relaxed/simple;
-	bh=kHIRw9JtarZwa773c9rrA7Sh/ynBxdlTXwbJEgMPosU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sBG3uAYG3sX+mFB4a83KwdjjHImFK6KLQHXnjQmNWX1zO6B4ub8dpCdIXtZtmIZU82taYGQDYuHhVeos4I/MbsMbYFuhecoohJ994HKqwRAvrxv2M0DCfPspM+Ns64tqBQYG3LX+sfr3GqkxFBeJAPqX/QkG4HdGv3bedNS34ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mRK3WJ/S; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763640461; c=relaxed/simple;
+	bh=a/FYQGu4Dtd48mV2r2frvBl1FdBxmOYRbxt5tSGaUPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g1PQktI687LUaeRAA4RcswuiS9CaiN1StJXQ3WdGEbFKZWMcYYZZS+tvCxRvFVDUkJ9dRkTSIguQ/Ox4cEPoWO6pSAn8xteRLWdI9xeQJNPK3/+f2q9tz6F2BuBw1OY3eLoK8CKGRXZLNHCgB+e3/qXHYrPYRHUAlm4yiYMNxps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bSNFcJjz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UtzWR+dl; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mRK3WJ/S"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29845b06dd2so10228175ad.2
-        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 04:07:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bSNFcJjz";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UtzWR+dl"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AK9hLrZ473372
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:07:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	rocURVTpRm6dtP5iHBbr10ILRzx3pCec9r06uq4Mrmw=; b=bSNFcJjzfM2eSZVf
+	ap7LPSWqzx0iOfNw2FHgJl2e1XDcCHL5jQ095fGr6BUpn4yQtsw74Zz1t/eJrkUg
+	rxm35bhzhwyulCh2F3rGzLU5Sp0dV1nNgh3fC2bBs8miPZZtHjAN5BE3i1QmfJhJ
+	6TOD02J2KMYAqobOhBxlDtJSUa9xTflsIAUoVqNA2WOOzqWpWGf2EJY9nSCBEuRD
+	8c6AD/Mw2K7VSe3zGHvexXf7smHw6Mn7KqfcSJekKr3LHFbMVuD3xi8SMhRG1A3C
+	v4YSkkoXSjAXHqc2JAo2Xp3j++EYALsSDHZAWnJkfkbPpKSsYDRfqItZvw3/MhjJ
+	5c+f/Q==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4aj0kw0d7k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:07:38 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ed767bf637so1101311cf.1
+        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 04:07:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763640428; x=1764245228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X5oFycNEQQvwxiwtacy6vIh6YX/aGmQRlWzpW1R7bkA=;
-        b=mRK3WJ/S1MRudwFG8AUgCShC7G+2EkFT6tkbhy8rYSMggoLpq6lAJGKpIKH/V7ya2v
-         BHZlDwqcJyjMpTE4LVkQJd/Yq/uYXLRoo/h27kTWvhZDnnRUu6X6+f4LbllkzobmNCtm
-         0lB8VUhuWMCuWl4YAL79sJhJ2FObxY37YiEgnQ5GP5doYDoaCF063/9ugRnqUsN9ivxo
-         L5//TnIWZ4iZ19OF6HTq/vCiK4d4yem3V0EVAf/qk8XSiFR7nXwVdg71Be54ISKuecl2
-         iHZFSE36jTIXvm8zGnlpK6TRuKT1MjDLLRYdzekNJsOKEukxFe4CVK81ntBmjqADcxVV
-         yF9w==
+        d=oss.qualcomm.com; s=google; t=1763640458; x=1764245258; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rocURVTpRm6dtP5iHBbr10ILRzx3pCec9r06uq4Mrmw=;
+        b=UtzWR+dlJ4gebtcr7AIQ9yb/RS2kEbrQRICKCkXZUrQP/6QB9p9HF3jAOHBjU+I15t
+         S1ccYamPyW6dWQGdNbkq9JpQSjPqYapGMzp13X6wbsfM322+wwcBx/GTFSVxGRMFCyua
+         v7xpIaplMklF6WYZ6WQTw6Pq4JesJJCKjpYouPMEONEw0FrEZxVSB/MqRzIo4Hhs5Pwx
+         9o6rDD+pRO0+cuvynerRdmE/RUsg8OMmm27Zk3+0Q8UlBx1p3jQ0+JELn8g+BhyKpOXo
+         evR5VebfhDfeTaO9mvobVhg/n1ziZqTOvKvtwarpGhqGgYVUoYBxnTwHxJAjhSgEGhLe
+         Wb0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763640428; x=1764245228;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X5oFycNEQQvwxiwtacy6vIh6YX/aGmQRlWzpW1R7bkA=;
-        b=lD8sITWpscmLVIXir/k8WGe8YOlHp4wQOm1+ksEIP8Fi5KHXhcbHgOG+hvAywlpM/p
-         z0bxb+RZshtCFYAwI/7GNB8Dqz7g7ndYP/cLIdQX/MDh/GjCtfi9UukzMSlpqWq37SSq
-         Mtad1heusbBtaQvH3P8NWmAMofqCnWDk566HapVK051BUOTFTCVOLMhN8Bbf7dgmNdrh
-         SEV0DhJgomuKnAHPqVcM0i2sIaiZDb9w/FlD4PHYnXGXqfyT8paNItyViv4YwvDR/jYh
-         yyq02FMhvQGytfQJ5cDlFS3MY/b5uY48lq5zeupDGhCaoWosyzQ/TyUzM/N4cBd/Xz35
-         MfcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjiLyNtgqBHcYboE0zds1qQk6kEo3EW6XS0A705E/SlU4gpQitqBevSvdRULNUdHM7IJusPRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgULuMNq8i14hKRzFz6wI0o1aFe+Df82hNcwuO9GhM9Pnq3U0F
-	yaav5QMwYMXjXkPwq6nXsii+if6Ioap0yQjdAfrGYKhgSdMiwnGukxLt
-X-Gm-Gg: ASbGncswuK7oDjBE5n3AEPes/DEBeVZvkLw8xJQvLFnhTedBhN443LUtklySjd+xHLb
-	eVBgjPor+qcKjFz8g0JeUOS07MwFdWXrnW+dd+jIM1lsusN3oZPHZR3R4jLNagOEsPnSIwf9O8n
-	FcEBW8uNCPpLTIONbJZlMsVn3jB0+7kIwKhaIkEqu2CL5LVlDiYaxwIR2HgRTy2zQaghFup9oOR
-	96mLHuI2ULnhOYm5L+yP4wgKj1HwpreaPudfytKjyRs1NXLzqoxvEbAhuY8r0wa/HQUfzmIbJoG
-	E9/UdBkB4LhAV6lhpA81M+vyV9FyHX+UkfpmVXMSFVsAZS8d+ETaTFOEErqJmUSM9QQkWvvDGJu
-	h9Ee8CbD/J/GktqLEUBcJCJzXhqK/+yGyDb83hgfi7j5vupG3HT5PQahUvo0zbnV2jYForw8wne
-	HD1ZrA9zAQOqX1rlUfVfVULSsj2PND0Uri8Mjw
-X-Google-Smtp-Source: AGHT+IHFRDK28WOgfhLwyxo9fNDEJUyqOd57Tzt8s5kHu8siVkpXQv00/V1u5HV+EbRwk50S2r5gnA==
-X-Received: by 2002:a17:903:183:b0:298:45b1:6c30 with SMTP id d9443c01a7336-29b5b163032mr35372985ad.57.1763640428097;
-        Thu, 20 Nov 2025 04:07:08 -0800 (PST)
-Received: from localhost.localdomain ([1.203.169.140])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b111650sm24894815ad.8.2025.11.20.04.07.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 04:07:07 -0800 (PST)
-From: Gui-Dong Han <hanguidong02@gmail.com>
-To: 3chas3@gmail.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kuba@kernel.org
-Cc: linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] atm/fore200e: Fix possible data race in fore200e_open()
-Date: Thu, 20 Nov 2025 20:06:57 +0800
-Message-Id: <20251120120657.2462194-1-hanguidong02@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1763640458; x=1764245258;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rocURVTpRm6dtP5iHBbr10ILRzx3pCec9r06uq4Mrmw=;
+        b=MfcwFXFl0Se8kIlwg3ybkM9WqNLypCppRxd9OiZJvD8JNvKhHRDhMkp3+f/y8NUccO
+         BaVAjnrbY50nlYSALqY8YeGW3ZlOTSDlZ3KQfhsVQYSthEQFR1/mFxRR0Svl2a6h6xGO
+         EtqOvCgn+3Gepu5YC+sQPfgyfE+cecyXoRuiu64bBEXTyfQX2OXx0dkqWm+mDe/GOJjH
+         4mIhgONemynwrbiYSwOeXQjQXpoAoiVzW03RGCpV+zl1XWmAQkxGGOi6cDHEt4CcXimj
+         VRbfkyAvQM/sL6oP4g96pAU+D+q+x8F4mmrnWSEivWgsnJc6Geqe0yqz6+6DhScb4MZG
+         jNhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiYQcUocl6ghQ+DowO3detPjP540+xTbnuZrNR733w/AjqOLRCUelpzAXMwZ4zRlBIpPSqfe8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzK1AtqpX2cDRxSshORViyn4VOVU3n8XdcLsGHzyw35CjAo+Vzz
+	CZ92AvLDBPngy6hgQzU4Pj2weQ/dS0OGQrCrmLopYS1slNJoxC9BXZ7ZLZjIsm2Bi40QFdh90bX
+	ym3SyB7wakHjbmq5mhu/g07PfX8TNpz6ARKBdIhiCIoRMiZEipfhATZz1uJE=
+X-Gm-Gg: ASbGncun9YbDY5HWg1CvYoWlWPGcpl/noDfzjZH3pAYGgfMX1soxi2cxIJJRH2NCd06
+	24Z3BAxP5pn8o/W/Fcdyi4Y1ImhkI6/U2v9eaeCmKDSlHw7FO7kOU8ZFBakbEnGZCK4IgY4hILm
+	SIcw2He4Wux4OjhqAWV/5XQPQeJXj5FPWAQJxcWIx15Ek00ANrT0Ctaiz+/qYifdCYpdF+VQy7i
+	b1/INwb+mpugjhi1lWKZUQIyv+Fo6SfhvNp/F/BVgMAI58jAP+aZlDLmXkcZsbNGXmwrnkeDDWK
+	LZp2XErj3nQ9g2ZyJfavWDO3dusHbmp/nz5uy3h+YhEmcK3FeeogVOOiyFZ3SL+GkiFuoa6KDxc
+	KlBH4UAAsKzoAjzjhzleRX8T8ZewSGpArd1oAvuXovjkjI1GHqaoY9CQ09FYBBnboTf8=
+X-Received: by 2002:ac8:7f49:0:b0:4ee:1063:d0f3 with SMTP id d75a77b69052e-4ee4979d58amr22346571cf.11.1763640457821;
+        Thu, 20 Nov 2025 04:07:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7C0G7oIjRGR0HYITo/8aJIWfL6aczcG7wVEVYDZP+JyR4xosC6Jsi56JuaGBd1eQMFrosxw==
+X-Received: by 2002:ac8:7f49:0:b0:4ee:1063:d0f3 with SMTP id d75a77b69052e-4ee4979d58amr22346301cf.11.1763640457383;
+        Thu, 20 Nov 2025 04:07:37 -0800 (PST)
+Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cdac18sm189684666b.11.2025.11.20.04.07.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Nov 2025 04:07:36 -0800 (PST)
+Message-ID: <02b73243-f7a0-404d-913a-f95c0ce80632@oss.qualcomm.com>
+Date: Thu, 20 Nov 2025 13:07:34 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/3] net: stmmac: qcom-ethqos: add rgmii
+ set/clear functions
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
+References: <aR76i0HjXitfl7xk@shell.armlinux.org.uk>
+ <E1vM2mw-0000000FRTo-0End@rmk-PC.armlinux.org.uk>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <E1vM2mw-0000000FRTo-0End@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=WeUBqkhX c=1 sm=1 tr=0 ts=691f048a cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=PHq6YzTAAAAA:8 a=EUspDBNiAAAA:8
+ a=-t6nT1al7WGe8XWH3MkA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+ a=ZKzU8r6zoKMcqsNulkmm:22
+X-Proofpoint-GUID: kY-gFAg5NbPaYtaL-KtOctjNUy2EJy1Y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIwMDA3NiBTYWx0ZWRfX9A89V+1ORohR
+ TPGVL9qlEq6sJp+du2Lxsjw1+hp+cCGilxqpRSQi6C6sjsN9gb3DTTR85Mn3uTUSRh650MgBiq/
+ 1k5LOo9ZlbFrSioH+siNfanrcdETiEgBD9FW0kFph6bqPptgbFSse7i3Q03D+tJFCO271zTd0EK
+ /078LOAJgRveA/oupa6Cl4JS//+EWx/xF6QJMcpdiABz22QM+mS60MqdAlNfzXYNEZCq6YIU5iP
+ nN/tcpkpnJ/T061L2+koZTMT/JYzNt3tv4dDyX8yofgsMXsJbYlYXbpO/fu06JZWHkbmPQuJvBe
+ dTYlRCQuFTcNghscr/2QwhG8acmvB6QChIr7F8mgdYbYOb2+yna61OBm4r1ZB/CDa1kfctWckgX
+ VYUu5ZmYDlyfP9ggV2Y/9Ke/KQ/BCw==
+X-Proofpoint-ORIG-GUID: kY-gFAg5NbPaYtaL-KtOctjNUy2EJy1Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-20_04,2025-11-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 suspectscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511200076
 
-Protect access to fore200e->available_cell_rate with rate_mtx lock in the
-error handling path of fore200e_open() to prevent a data race.
+On 11/20/25 12:25 PM, Russell King (Oracle) wrote:
+> The driver has a lot of bit manipulation of the RGMII registers. Add
+> a pair of helpers to set bits and clear bits, converting the various
+> calls to rgmii_updatel() as appropriate.
+> 
+> Most of the change was done via this sed script:
+> 
+> /rgmii_updatel/ {
+> 	N
+> 	/,$/N
+> 	/mask, / ! {
+> 		s|rgmii_updatel\(([^,]*,\s+([^,]*),\s+)\2,\s+|rgmii_setmask(\1|
+> 		s|rgmii_updatel\(([^,]*,\s+([^,]*),\s+)0,\s+|rgmii_clrmask(\1|
+> 		s|^\s+$||
+> 	}
+> }
+> 
+> and then formatting tweaked where necessary.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
 
-The field fore200e->available_cell_rate is a shared resource used to track
-available bandwidth. It is concurrently accessed by fore200e_open(),
-fore200e_close(), and fore200e_change_qos().
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-In fore200e_open(), the lock rate_mtx is correctly held when subtracting
-vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
-However, if the subsequent call to fore200e_activate_vcin() fails, the
-function restores the reserved bandwidth by adding back to
-available_cell_rate without holding the lock.
-
-This introduces a race condition because available_cell_rate is a global
-device resource shared across all VCCs. If the error path in
-fore200e_open() executes concurrently with operations like
-fore200e_close() or fore200e_change_qos() on other VCCs, a
-read-modify-write race occurs.
-
-Specifically, the error path reads the rate without the lock. If another
-CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
-fore200e_close()) between this read and the subsequent write, the error
-path will overwrite the concurrent update with a stale value. This results
-in incorrect bandwidth accounting.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v3:
-* Expanded the commit message to describe the specific call paths causing
-the race, as suggested by Jakub Kicinski and Paolo Abeni.
-v2:
-* Added a description of the data race hazard in fore200e_open(), as
-suggested by Jakub Kicinski and Simon Horman.
----
- drivers/atm/fore200e.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
-index 4fea1149e003..f62e38571440 100644
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -1374,7 +1374,9 @@ fore200e_open(struct atm_vcc *vcc)
- 
- 	vcc->dev_data = NULL;
- 
-+	mutex_lock(&fore200e->rate_mtx);
- 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
-+	mutex_unlock(&fore200e->rate_mtx);
- 
- 	kfree(fore200e_vcc);
- 	return -EINVAL;
--- 
-2.34.1
-
+Konrad
