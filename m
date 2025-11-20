@@ -1,249 +1,128 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696FC3A1D03;
-	Thu, 20 Nov 2025 20:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1FF2D062F
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 20:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763672180; cv=none; b=t++27rw4F1gRLNIXhgrAZ6po9QWEXGoJOKy+5SkdWwpjqJAqOz3hb1liNhx2+2gX3QCjndT3K94tH13/jC0p+Buh+6eg4KspgqD80HVqZPBmokOZmE/2On2tK/u1lLY1g1laK4/p4cEGoGqfWkuHaXbltfgO9ZfzDAEoaDhg43k=
+	t=1763672314; cv=none; b=f0phDVzfFoRbl8y8AZPhXDtJ9ZGoTGS/dUnBlGbJ+k6+EoRVzsSfms4FS67fYWl7Mn25jFJbLH6y861hCkBiLjClcK3cJILSuGRoIPZvungr8+ViBOcAEOzVVHtq3WXzu5vYv2/agIhQA/bus67Tn/jl/ymFUuafKTjxzpoOXdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763672180; c=relaxed/simple;
-	bh=ygnMB0zO5n7LNWTLaftTf7mOpO0kT3kaJ+Cqfp3KG9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rfzfj6wG9pvQDapB+q53+uHA+/UBM6MyMznGdrANTBm5nUHjTSJsTyb3IN99xq6PDYTbq/Ak06r/p3CS/9109WiF/hQo1/2nh+ChsSmySAiEgVzvRc4VfV4U95zpLlv6w5tUpEnfL7H11U62zvNA4GC50RtaUaB2SIpzeCo6GwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PyGvrDcT; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PyGvrDcT"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 33EA41A1C5E;
-	Thu, 20 Nov 2025 20:56:17 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 021AD606F6;
-	Thu, 20 Nov 2025 20:56:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DAEF710371BCD;
-	Thu, 20 Nov 2025 21:56:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763672175; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=q5cHSdBiFQndzU4nTFiD7tW7FCwQQjMLgxuIBfRu/1k=;
-	b=PyGvrDcT7ypsyJNjzh+XF97vqWLiE8UgFZwD7LM7RTXeyL/4Df4ybgKbJIgSfHMiszYoBL
-	RfnisJjNgq3dKPJCUn7XNHa3V1ufBk7zvdiGLs4jfrCS6TfteYrpdnbZqXIldeMej/LavL
-	T7NtNIm7wrzUnuluFWffTovgBZQrO5kdnQ+W05WXlw52dR909gOg58d8+g+zu5kBwtVHEH
-	OwWlRLHVmeD40/q91gRspHwa+bDPPrQaf/OZLfPru6WG84weJYyQafqnPhtfzR1ZKsbla6
-	8cVAo7zOrWuBoUomfUFq/LGqUJyXQ/KiNqnCl5WgLjV9gJTkXCUkN4jgCFT+Yw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Antoine Tenart <atenart@kernel.org>,
-	devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next v18 15/15] Documentation: networking: Document the phy_port infrastructure
-Date: Thu, 20 Nov 2025 21:55:05 +0100
-Message-ID: <20251120205508.553909-16-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251120205508.553909-1-maxime.chevallier@bootlin.com>
-References: <20251120205508.553909-1-maxime.chevallier@bootlin.com>
+	s=arc-20240116; t=1763672314; c=relaxed/simple;
+	bh=U1JaPEvAFIFM5GBCerQtXTCxm6A+HV551Vy1xWavn0k=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=n5fX0vwyBLoHsd1yPuSH2/aqKTn6NqVjAtf8hLRQrIA2etW8c/2iB4UhaDyYV/LPQCrDv8DUiGifTyfUM4jU3Rc3mwVtAyU7wSRPpvFHOuwuWs+EL4CP81nsFWzKNnvQ42oTWwC7MfHK8NCBBxN7D03bwG7nWWxjbTTvExpy4ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-43470d72247so15319875ab.3
+        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 12:58:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763672309; x=1764277109;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JatGuBdz8ZGZO1wKcI2oQG5Aywx+T8e7anUEr9P78xU=;
+        b=iZvW36+6oBptTc8+D5YYGIqdueCTw9JpvIpjVTb84XgnmGdQd2Ahdql9zsuM8F0RzN
+         WMiNXKeTNDpeiqkZUj9K3Kw3Eo55SREpQfKn2plGaNW3VDqHXLCtiGuwX+o3m7qfbJVT
+         NMwum5KX71lW0ASYsp+qoVE1vcYgWr2orEnUL3+zfTHAcFzMotvJJNW9lrRMtz52nPM1
+         zIBy19UtQmds1RBGHD/znt0Hxc6X7+juH17bHn5pJNPYFU+PUZTudhJiEyzTpMFGnNMY
+         k9RZppSuo86bHLuVKje4y0j4WRyKQQYQu1w2aqvEdbGH4lP+/kl2HkHwaf3OgQUwMvoT
+         T3sA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcn8z6ZslSJbnBdoR2lH+nqcrZEjDh9AzJo5dExCOxypMeR9eiRL5YjURG//XiRjJdqQs387Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4IlZOrHzGPAehDOqzn424qfRO55wHYfVrtsgDxvQBZjky1iu/
+	tV56GlREGm7llOsS/7SNSbBuRfF5S4L8coDXxlN71iTqrP7EtpE+LVKlwHhIHHQFKaDxhYnXTFr
+	HBW29+ZTsppn0JueDvBQZt8akHAqe/FS5+Gq8rk9ocybuKuADaG2RmMvJcmk=
+X-Google-Smtp-Source: AGHT+IGYAvS2Z0gKNmabp2o3OeNbFYDd3Y5OgjHJ1mJxa32vG5Vaj/kFbBiY2n//s2+U8qQQLrQDSK3tsD2UqMZlARM9XD73lXM4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Received: by 2002:a05:6e02:18ce:b0:435:a148:cbe with SMTP id
+ e9e14a558f8ab-435b8e9da74mr783315ab.41.1763672308949; Thu, 20 Nov 2025
+ 12:58:28 -0800 (PST)
+Date: Thu, 20 Nov 2025 12:58:28 -0800
+In-Reply-To: <68a5c278.050a0220.3d78fd.0000.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <691f80f4.a70a0220.2ea503.003a.GAE@google.com>
+Subject: Re: [syzbot] [mptcp?] WARNING in subflow_data_ready (4)
+From: syzbot <syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, geliang@kernel.org, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	martineau@kernel.org, matttbe@kernel.org, mptcp@lists.linux.dev, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This documentation aims at describing the main goal of the phy_port
-infrastructure.
+syzbot has found a reproducer for the following issue on:
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+HEAD commit:    8e621c9a3375 Merge tag 'net-6.18-rc7' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12887a12580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cd7f786c0f5182f
+dashboard link: https://syzkaller.appspot.com/bug?extid=0ff6b771b4f7a5bce83b
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=133c9a12580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=117a2a12580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6be75789d60e/disk-8e621c9a.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/62e7a40cfe48/vmlinux-8e621c9a.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/3e523caa536d/bzImage-8e621c9a.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 15 at net/mptcp/subflow.c:1519 subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1519
+Modules linked in:
+CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1519
+Code: 89 ee e8 88 f8 72 f6 40 84 ed 75 21 e8 9e fd 72 f6 44 89 fe bf 07 00 00 00 e8 d1 f8 72 f6 41 83 ff 07 74 09 e8 86 fd 72 f6 90 <0f> 0b 90 e8 7d fd 72 f6 48 89 df e8 e5 ad ff ff 31 ff 89 c5 89 c6
+RSP: 0018:ffffc90000147380 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff888030aa72c0 RCX: ffffffff8b4959ef
+RDX: ffff88801d2cbc80 RSI: ffffffff8b4959fa RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
+R10: 0000000000000004 R11: 00000d230000000c R12: ffff888033463c00
+R13: 1ffff92000028e70 R14: ffff88802f9bbc00 R15: 0000000000000004
+FS:  0000000000000000(0000) GS:ffff888124a0d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f841c04df98 CR3: 0000000078b7e000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tcp_data_ready+0x110/0x550 net/ipv4/tcp_input.c:5355
+ tcp_data_queue+0x1aa6/0x5000 net/ipv4/tcp_input.c:5445
+ tcp_rcv_state_process+0xfb6/0x6490 net/ipv4/tcp_input.c:7159
+ tcp_v4_do_rcv+0x68e/0x10a0 net/ipv4/tcp_ipv4.c:1954
+ tcp_v4_rcv+0x3077/0x4db0 net/ipv4/tcp_ipv4.c:2374
+ ip_protocol_deliver_rcu+0xba/0x4c0 net/ipv4/ip_input.c:205
+ ip_local_deliver_finish+0x3f2/0x720 net/ipv4/ip_input.c:239
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ NF_HOOK include/linux/netfilter.h:312 [inline]
+ ip_local_deliver+0x18e/0x1f0 net/ipv4/ip_input.c:260
+ dst_input include/net/dst.h:474 [inline]
+ ip_rcv_finish net/ipv4/ip_input.c:453 [inline]
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ NF_HOOK include/linux/netfilter.h:312 [inline]
+ ip_rcv+0x2e0/0x600 net/ipv4/ip_input.c:573
+ __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:6079
+ __netif_receive_skb+0x1d/0x160 net/core/dev.c:6192
+ process_backlog+0x439/0x15e0 net/core/dev.c:6544
+ __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7594
+ napi_poll net/core/dev.c:7657 [inline]
+ net_rx_action+0x97f/0xef0 net/core/dev.c:7784
+ handle_softirqs+0x219/0x8e0 kernel/softirq.c:622
+ run_ksoftirqd kernel/softirq.c:1063 [inline]
+ run_ksoftirqd+0x3a/0x60 kernel/softirq.c:1055
+ smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x675/0x7d0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
- Documentation/networking/index.rst    |   1 +
- Documentation/networking/phy-port.rst | 111 ++++++++++++++++++++++++++
- MAINTAINERS                           |   2 +
- 3 files changed, 114 insertions(+)
- create mode 100644 Documentation/networking/phy-port.rst
-
-diff --git a/Documentation/networking/index.rst b/Documentation/networking/index.rst
-index 75db2251649b..49fcfa577711 100644
---- a/Documentation/networking/index.rst
-+++ b/Documentation/networking/index.rst
-@@ -96,6 +96,7 @@ Contents:
-    packet_mmap
-    phonet
-    phy-link-topology
-+   phy-port
-    pktgen
-    plip
-    ppp_generic
-diff --git a/Documentation/networking/phy-port.rst b/Documentation/networking/phy-port.rst
-new file mode 100644
-index 000000000000..6e28d9094bce
---- /dev/null
-+++ b/Documentation/networking/phy-port.rst
-@@ -0,0 +1,111 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. _phy_port:
-+
-+=================
-+Ethernet ports
-+=================
-+
-+This document is a basic description of the phy_port infrastructure,
-+introduced to represent physical interfaces of Ethernet devices.
-+
-+Without phy_port, we already have quite a lot of information about what the
-+media-facing interface of a NIC can do and looks like, through the
-+:c:type:`struct ethtool_link_ksettings <ethtool_link_ksettings>` attributes,
-+which includes :
-+
-+ - What the NIC can do through the :c:member:`supported` field
-+ - What the Link Partner advertises through :c:member:`lp_advertising`
-+ - Which features we're advertising through :c:member:`advertising`
-+
-+We also have info about the number of pairs and the PORT type. These settings
-+are built by aggregating together information reported by various devices that
-+are sitting on the link :
-+
-+  - The NIC itself, through the :c:member:`get_link_ksettings` callback
-+  - Precise information from the MAC and PCS by using phylink in the MAC driver
-+  - Information reported by the PHY device
-+  - Information reported by an SFP module (which can itself include a PHY)
-+
-+This model however starts showing its limitations when we consider devices that
-+have more than one media interface. In such a case, only information about the
-+actively used interface is reported, and it's not possible to know what the
-+other interfaces can do. In fact, we have very little information about whether
-+or not there are any other media interfaces.
-+
-+The goal of the phy_port representation is to provide a way of representing a
-+physical interface of a NIC, regardless of what is driving the port (NIC through
-+a firmware, SFP module, Ethernet PHY).
-+
-+Multi-port interfaces examples
-+==============================
-+
-+Several cases of multi-interface NICs have been observed so far :
-+
-+Internal MII Mux::
-+
-+  +------------------+
-+  | SoC              |
-+  |          +-----+ |           +-----+
-+  | +-----+  |     |-------------| PHY |
-+  | | MAC |--| Mux | |   +-----+ +-----+
-+  | +-----+  |     |-----| SFP |
-+  |          +-----+ |   +-----+
-+  +------------------+
-+
-+Internal Mux with internal PHY::
-+
-+  +------------------------+
-+  | SoC                    |
-+  |          +-----+ +-----+
-+  | +-----+  |     |-| PHY |
-+  | | MAC |--| Mux | +-----+   +-----+
-+  | +-----+  |     |-----------| SFP |
-+  |          +-----+       |   +-----+
-+  +------------------------+
-+
-+External Mux::
-+
-+  +---------+
-+  | SoC     |  +-----+  +-----+
-+  |         |  |     |--| PHY |
-+  | +-----+ |  |     |  +-----+
-+  | | MAC |----| Mux |  +-----+
-+  | +-----+ |  |     |--| PHY |
-+  |         |  +-----+  +-----+
-+  |         |     |
-+  |    GPIO-------+
-+  +---------+
-+
-+Double-port PHY::
-+
-+  +---------+
-+  | SoC     | +-----+
-+  |         | |     |--- RJ45
-+  | +-----+ | |     |
-+  | | MAC |---| PHY |   +-----+
-+  | +-----+ | |     |---| SFP |
-+  +---------+ +-----+   +-----+
-+
-+phy_port aims at providing a path to support all the above topologies, by
-+representing the media interfaces in a way that's agnostic to what's driving
-+the interface. the struct phy_port object has its own set of callback ops, and
-+will eventually be able to report its own ksettings::
-+
-+             _____      +------+
-+            (     )-----| Port |
-+ +-----+   (       )    +------+
-+ | MAC |--(   ???   )
-+ +-----+   (       )    +------+
-+            (_____)-----| Port |
-+                        +------+
-+
-+Next steps
-+==========
-+
-+As of writing this documentation, only ports controlled by PHY devices are
-+supported. The next steps will be to add the Netlink API to expose these
-+to userspace and add support for raw ports (controlled by some firmware, and directly
-+managed by the NIC driver).
-+
-+Another parallel task is the introduction of a MII muxing framework to allow the
-+control of non-PHY driver multi-port setups.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e0dc230df90e..219c04aab4a6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9283,6 +9283,7 @@ F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
- F:	Documentation/devicetree/bindings/net/ethernet-phy.yaml
- F:	Documentation/devicetree/bindings/net/mdio*
- F:	Documentation/devicetree/bindings/net/qca,ar803x.yaml
-+F:	Documentation/networking/phy-port.rst
- F:	Documentation/networking/phy.rst
- F:	drivers/net/mdio/
- F:	drivers/net/mdio/acpi_mdio.c
-@@ -17981,6 +17982,7 @@ F:	net/ethtool/phy.c
- NETWORKING [ETHTOOL PHY PORT]
- M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
- F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
-+F:	Documentation/networking/phy-port.rst
- F:	drivers/net/phy/phy_port.c
- F:	include/linux/phy_port.h
- K:	struct\s+phy_port|phy_port_
--- 
-2.49.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
