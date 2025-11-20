@@ -1,273 +1,170 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1536C0C2;
-	Thu, 20 Nov 2025 15:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72153A1CE5
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 15:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763652612; cv=none; b=YfkDFKvDz0MQ4Ij9c2Yg301CxtR7NGkXOIhSkttACUBLXVFJsGBrKbtyKROMRakOsMBW+zzpBoZlwN2JgD437jjPY1BgFzIGBkstmotLpzC4GYUe6e+kXJY0/w4QyfoX1IHpkYWu8cU2G0zqLygWKIrnLT/FoOSyP3/3ydhe9tI=
+	t=1763652676; cv=none; b=JZA1RouquVOxrRU3O0aIQES2wcsb5B2khjVaRjeenGyAAs5jPHkFOwaElB8Vctt+yfB0WYbyvLw+DjYE3Jluc7Vv0yVa6oPiTwbgVzpuApdnoJEwIPh7R2ve+z2T7AkvQcsSOnARGFo9uGeVGR8bT4e/Bq9eRt4m6PH4GRDz73g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763652612; c=relaxed/simple;
-	bh=k/tQZZTHDwqHfW5FcO+N2Hvs0IxAV0hy2fbsJrwuic4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecm920DYYLdBCvlhHzO6z2dpJz2d9MCuHCXTPOF4OlpkV6Gz/XIP+Z9Tfx3R/7P6/ZoRbfooLf8U/wbJr6dJaPGtyWKyXvgHsfgWxIffPUznPVgmXjm+hPqu3KOwHBom1dhOzIJwzpE+Sscm6BJc8bsMdo3mJck8XWtdvBS4Qpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.248])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 5AKFTu8C005406
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 20 Nov 2025 16:29:58 +0100 (CET)
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
-        eperezma@redhat.com, jon@nutanix.com, tim.gebauer@tu-dortmund.de,
-        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-Subject: [PATCH net-next v6 3/8] tun/tap: add synchronized ring produce/consume with queue management
-Date: Thu, 20 Nov 2025 16:29:08 +0100
-Message-ID: <20251120152914.1127975-4-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
-References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
+	s=arc-20240116; t=1763652676; c=relaxed/simple;
+	bh=wMnT47phEFuGfAdPalYZmpWGC6ln9kV4Q339Ib+0xuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YgdN0bbmMHuML/B3HayGYnLLccy89Hn4SOJm4S7MCenIvRa4EUA8pT07iavWSUHy2+JO3XYypR1XbhMAehemu1WqpZckLnmvAVxY9SPMybRD883R6F3DTImswg2XA+/Pu1ZvwdL/WgptiDlCdzRJEkmU9dpp/gbHn+0d2m28AGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbzlHOj7; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbzlHOj7"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-787e7aa1631so26496417b3.1
+        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 07:31:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763652673; x=1764257473; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PFiT8mQz2EeFfhAtckqnTM9BcNHX0xiz9tE4/FBhkTE=;
+        b=lbzlHOj7nNZO01ylI7WXU8F4o0tSysm4a2eWQsStUmqXbtFdoDctgJ9r196y/ZMHFF
+         CNCzckt38jO/1VY/nyuIvSSHn8iBArZd04LYVFofPSKZs1UrMIjgTSxZeU6nWwuqillY
+         wKbMquXENiQGkkXgKReO54LN5792IV1wxdaQZJV54+XqH8fEWqIcDw3XhyuPOK0KQ2WU
+         /nw3G188kAh61IeWc2FZ3Amig8SovI+FzqoQ56g8wSSD3owR+M9smjMLKHGkxG1d06ze
+         ftfV9xm1sZNsVIg/uUqmSJK9h6W2eSZ1gi7FBtIbjUhhMnvNkPSq6zX96irGDd2CE0jt
+         jRPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763652673; x=1764257473;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PFiT8mQz2EeFfhAtckqnTM9BcNHX0xiz9tE4/FBhkTE=;
+        b=oBY3mSD45vj1LO3dGnpP76nUPWTI8lm3mt6gBM4BQIq/x4HmgW6yrAnzGETC4x4RYg
+         Ncas0WYp7BA7lzyQZrF8BKqosZVr7TzZE9sARN8ClBmgnsQUgRYMoqLySTVMbFK3UdWl
+         +ESVA3jA5WTyRMd0xxT/bMTvFgFPgM4JMJpPUv5MYD7Xb1lm+PdlIrZOQgz+IZWnlPVZ
+         s5+zLT2pGhKegTqG+8DxUmwSgX5QJpOF+CppYVfhjisVF+HvyPspoGoJ40bBBsVGWIP4
+         UK4DV5VidAsoodxkzXxwgocwNSfX8VB45sOR7giGJrjYk9gvwXhuTmG2xWkLUDRRds3p
+         qKew==
+X-Forwarded-Encrypted: i=1; AJvYcCXDURd8fIZ+Z+dzcEdGB4pXce7WfnGSo7b7h/whJAOkIHLcrWSquOKBa1ANGd6Z68TTfKTNZAs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxJ+Z+mwU6khS3cXk7pGX1eoIr97Ah6KCXjsrzf1OXozBErgyK
+	cREZedI0BfjpmDZhOJEH2G7MsMONvDxs9NW9gROaKeA3jcLj2AePWVJ4
+X-Gm-Gg: ASbGncua6QnUIB1V64r8dWhJAbnvgGmNgd/F/e27GOyATKg+dho5v7LjAIXby6ClV8R
+	SaTkYO0Z2G7HFbW0tjKLideM6g0AMYq6UHjsr63k2q5BqwBuKVGmOc3ucyjiSf5BLGBekZcyNxG
+	WS2EeTQ3dCdV8WN0+1sjUebaG3Q0WQiNiFUPyhRT5+96MuX5u/GOwhM95/F/KuE8bhHY3IC99F2
+	qK7RPsdmcc9pK+nN9V1or/zHlTFNllAhM/Me3U8yW15IJu5eOIt2pl50pNrVrP7TilfugQE72gt
+	HDiJZ5J9TMWCi6IgBTs/E5EXe4ieREcVIsoc6daFds3GHcHqdqnB8XrKZDQhHTcIUwsWpu/GfjB
+	ZIk0TKE/6h8QmU0BDPvLs07E6Clh78zGRstbZJ7IXxlJ9psC4bs1p3RXlK8bht/pQbI/AFPYb4P
+	FrvqZpGzLFrXCy+2oKa+dHEys9UifMGiqYCRHwraxoLInipvQ=
+X-Google-Smtp-Source: AGHT+IGnxsv7O9k5uQ7ryneqkrnqq+cPJZPkqCvcNCDp+BprL3ACVr9C8SpKEUSItTS/dKmykTVJvA==
+X-Received: by 2002:a05:690e:12cc:b0:63f:b4b4:7758 with SMTP id 956f58d0204a3-642f8df4854mr2073800d50.11.1763652672604;
+        Thu, 20 Nov 2025 07:31:12 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:45::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-642f71787f3sm871532d50.16.2025.11.20.07.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Nov 2025 07:31:12 -0800 (PST)
+Date: Thu, 20 Nov 2025 07:31:10 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	David Ahern <dsahern@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v7 3/5] net: devmem: implement autorelease token
+ management
+Message-ID: <aR80PvXaX1+S/avE@devvm11784.nha0.facebook.com>
+References: <20251119-scratch-bobbyeshleman-devmem-tcp-token-upstream-v7-0-1abc8467354c@meta.com>
+ <20251119-scratch-bobbyeshleman-devmem-tcp-token-upstream-v7-3-1abc8467354c@meta.com>
+ <a0543467-df01-4486-9bac-d1a3446f44cc@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0543467-df01-4486-9bac-d1a3446f44cc@redhat.com>
 
-Implement new ring buffer produce and consume functions for tun and tap
-drivers that provide lockless producer-consumer synchronization and
-netdev queue management to prevent ptr_ring tail drop and permanent
-starvation.
+On Thu, Nov 20, 2025 at 01:19:54PM +0100, Paolo Abeni wrote:
+> On 11/20/25 4:37 AM, Bobby Eshleman wrote:
+> > @@ -2479,10 +2504,12 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> >  			      unsigned int offset, struct msghdr *msg,
+> >  			      int remaining_len)
+> >  {
+> > +	struct net_devmem_dmabuf_binding *binding = NULL;
+> >  	struct dmabuf_cmsg dmabuf_cmsg = { 0 };
+> >  	struct tcp_xa_pool tcp_xa_pool;
+> >  	unsigned int start;
+> >  	int i, copy, n;
+> > +	int refs = 0;
+> >  	int sent = 0;
+> >  	int err = 0;
+> >  
+> > @@ -2536,6 +2563,7 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> >  			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+> >  			struct net_iov *niov;
+> >  			u64 frag_offset;
+> > +			u32 token;
+> >  			int end;
+> >  
+> >  			/* !skb_frags_readable() should indicate that ALL the
+> > @@ -2568,13 +2596,32 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> >  					      start;
+> >  				dmabuf_cmsg.frag_offset = frag_offset;
+> >  				dmabuf_cmsg.frag_size = copy;
+> > -				err = tcp_xa_pool_refill(sk, &tcp_xa_pool,
+> > -							 skb_shinfo(skb)->nr_frags - i);
+> > -				if (err)
+> > +
+> > +				binding = net_devmem_iov_binding(niov);
+> > +
+> > +				if (!sk->sk_devmem_info.binding)
+> > +					sk->sk_devmem_info.binding = binding;
+> > +
+> > +				if (sk->sk_devmem_info.binding != binding) {
+> > +					err = -EFAULT;
+> >  					goto out;
+> > +				}
+> > +
+> > +				if (static_branch_unlikely(&tcp_devmem_ar_key)) {
+> 
+> Not a real/full review but the above is apparently causing kunit build
+> failures:
+> 
+> ERROR:root:ld: vmlinux.o: in function `tcp_recvmsg_dmabuf':
+> tcp.c:(.text+0x669b21): undefined reference to `tcp_devmem_ar_key'
+> ld: tcp.c:(.text+0x669b68): undefined reference to `tcp_devmem_ar_key'
+> ld: tcp.c:(.text+0x669c54): undefined reference to `tcp_devmem_ar_key'
+> make[3]: *** [../scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+> make[2]: *** [/home/kunit/testing/Makefile:1242: vmlinux] Error 2
+> make[1]: *** [/home/kunit/testing/Makefile:248: __sub-make] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+> 
+> see:
+> 
+> https://netdev-3.bots.linux.dev/kunit/results/393664/
 
-- tun_ring_produce(): Produces packets to the ptr_ring with proper memory
-  barriers and proactively stops the netdev queue when the ring is about
-  to become full.
+Thanks Paolo, I'll fix that for the next rev. And I'll have to add
+building kunit into my flow (currently using some custom stuff and nipa
+ingest_mdir, but don't think either has kunit).
+> 
+> > @@ -2617,6 +2664,7 @@ static int tcp_recvmsg_dmabuf(struct sock *sk,
+> > const struct sk_buff *skb,
+> >  
+> >  out: tcp_xa_pool_commit(sk, &tcp_xa_pool); +
+> 
+> [just because I stumbled upon the above while looking for the build
+> issue]: please do not mix unrelated whitespace-change only with
+> functional change.
 
-- __tun_ring_consume() / __tap_ring_consume(): Internal consume functions
-  that check if the netdev queue was stopped due to a full ring, and wake
-  it when space becomes available. Uses memory barriers to ensure proper
-  ordering between producer and consumer.
+Don't know how I missed that line, will definitely remove.
 
-- tun_ring_consume() / tap_ring_consume(): Wrapper functions that acquire
-  the consumer lock before calling the internal consume functions.
-
-Key features:
-- Proactive queue stopping using __ptr_ring_full_next() to stop the queue
-  before it becomes completely full.
-- Not stopping the queue when the ptr_ring is full already, because if
-  the consumer empties all entries in the meantime, stopping the queue
-  would cause permanent starvation.
-- Conditional queue waking using __ptr_ring_consume_created_space() to
-  wake the queue only when space is actually created in the ring.
-- Prevents permanent starvation by ensuring the queue is also woken when
-  the ring becomes empty, which can happen when racing the producer.
-
-NB: __always_unused on unused functions, to be removed later in the
-series to not break bisectability.
-
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Co-developed by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
----
- drivers/net/tap.c |  63 +++++++++++++++++++++++++++++
- drivers/net/tun.c | 101 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 164 insertions(+)
-
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 1197f245e873..c370a02789eb 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -753,6 +753,69 @@ static ssize_t tap_put_user(struct tap_queue *q,
- 	return ret ? ret : total;
- }
- 
-+/*
-+ * Consume a packet from the transmit ring. Callers must hold
-+ * the consumer_lock of the ptr_ring. If the ring was full and the
-+ * queue was stopped, this may wake up the queue if space is created.
-+ */
-+static void *__tap_ring_consume(struct tap_queue *q)
-+{
-+	struct ptr_ring *ring = &q->ring;
-+	struct netdev_queue *txq;
-+	struct net_device *dev;
-+	bool stopped;
-+	void *ptr;
-+
-+	ptr = __ptr_ring_peek(ring);
-+	if (!ptr)
-+		return ptr;
-+
-+	/* Paired with smp_wmb() in the ring producer path. Ensures we
-+	 * see any updated netdev queue state caused by a full ring.
-+	 * Needed for proper synchronization between the ring and the
-+	 * netdev queue.
-+	 */
-+	smp_rmb();
-+	rcu_read_lock();
-+	dev = rcu_dereference(q->tap)->dev;
-+	txq = netdev_get_tx_queue(dev, q->queue_index);
-+	stopped = netif_tx_queue_stopped(txq);
-+
-+	/* Ensures the read for a stopped queue completes before the
-+	 * discard, so that we don't miss the window to wake the queue if
-+	 * needed.
-+	 */
-+	smp_rmb();
-+	__ptr_ring_discard_one(ring);
-+
-+	/* If the queue was stopped (meaning the producer couldn't have
-+	 * inserted new entries just now), and we have actually created
-+	 * space in the ring, or the ring is now empty (due to a race
-+	 * with the producer), then it is now safe to wake the queue.
-+	 */
-+	if (unlikely(stopped &&
-+		     (__ptr_ring_consume_created_space(ring) ||
-+		      __ptr_ring_empty(ring)))) {
-+		/* Paired with smp_rmb() in tun_ring_produce. */
-+		smp_wmb();
-+		netif_tx_wake_queue(txq);
-+	}
-+	rcu_read_unlock();
-+
-+	return ptr;
-+}
-+
-+static __always_unused void *tap_ring_consume(struct tap_queue *q)
-+{
-+	void *ptr;
-+
-+	spin_lock(&q->ring.consumer_lock);
-+	ptr = __tap_ring_consume(q);
-+	spin_unlock(&q->ring.consumer_lock);
-+
-+	return ptr;
-+}
-+
- static ssize_t tap_do_read(struct tap_queue *q,
- 			   struct iov_iter *to,
- 			   int noblock, struct sk_buff *skb)
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 8192740357a0..3b9d8d406ff5 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -999,6 +999,107 @@ static unsigned int run_ebpf_filter(struct tun_struct *tun,
- 	return len;
- }
- 
-+/* Produce a packet into the transmit ring. If the ring becomes full, the
-+ * netdev queue is stopped until the consumer wakes it again.
-+ */
-+static __always_unused int tun_ring_produce(struct ptr_ring *ring,
-+					    struct netdev_queue *queue,
-+					    struct sk_buff *skb)
-+{
-+	int ret;
-+
-+	spin_lock(&ring->producer_lock);
-+
-+	/* Pairs with smp_wmb() in __tun_ring_consume/__tap_ring_consume.
-+	 * Ensures that freed space by the consumer is visible.
-+	 */
-+	smp_rmb();
-+
-+	/* Do not stop the netdev queue if the ptr_ring is full already.
-+	 * The consumer could empty out the ptr_ring in the meantime
-+	 * without noticing the stopped netdev queue, resulting in a
-+	 * stopped netdev queue and an empty ptr_ring. In this case the
-+	 * netdev queue would stay stopped forever.
-+	 */
-+	if (unlikely(!__ptr_ring_full(ring) &&
-+		     __ptr_ring_full_next(ring)))
-+		netif_tx_stop_queue(queue);
-+
-+	/* Note: __ptr_ring_produce has an internal smp_wmb() to synchronize the
-+	 * state with the consumer. This ensures that after adding an entry to
-+	 * the ring, any stopped queue state is visible to the consumer after
-+	 * dequeueing.
-+	 */
-+	ret = __ptr_ring_produce(ring, skb);
-+
-+	spin_unlock(&ring->producer_lock);
-+
-+	return ret;
-+}
-+
-+/*
-+ * Consume a packet from the transmit ring. Callers must hold
-+ * the consumer_lock of the ptr_ring. If the ring was full and the
-+ * queue was stopped, this may wake up the queue if space is created.
-+ */
-+static void *__tun_ring_consume(struct tun_file *tfile)
-+{
-+	struct ptr_ring *ring = &tfile->tx_ring;
-+	struct netdev_queue *txq;
-+	struct net_device *dev;
-+	bool stopped;
-+	void *ptr;
-+
-+	ptr = __ptr_ring_peek(ring);
-+	if (!ptr)
-+		return ptr;
-+
-+	/* Paired with smp_wmb() in the ring producer path. Ensures we
-+	 * see any updated netdev queue state caused by a full ring.
-+	 * Needed for proper synchronization between the ring and the
-+	 * netdev queue.
-+	 */
-+	smp_rmb();
-+	rcu_read_lock();
-+	dev = rcu_dereference(tfile->tun)->dev;
-+	txq = netdev_get_tx_queue(dev, tfile->queue_index);
-+	stopped = netif_tx_queue_stopped(txq);
-+
-+	/* Ensures the read for a stopped queue completes before the
-+	 * discard, so that we don't miss the window to wake the queue if
-+	 * needed.
-+	 */
-+	smp_rmb();
-+	__ptr_ring_discard_one(ring);
-+
-+	/* If the queue was stopped (meaning the producer couldn't have
-+	 * inserted new entries just now), and we have actually created
-+	 * space in the ring, or the ring is now empty (due to a race
-+	 * with the producer), then it is now safe to wake the queue.
-+	 */
-+	if (unlikely(stopped &&
-+		     (__ptr_ring_consume_created_space(ring) ||
-+		      __ptr_ring_empty(ring)))) {
-+		/* Paired with smp_rmb() in tun_ring_produce. */
-+		smp_wmb();
-+		netif_tx_wake_queue(txq);
-+	}
-+	rcu_read_unlock();
-+
-+	return ptr;
-+}
-+
-+static void __always_unused *tun_ring_consume(struct tun_file *tfile)
-+{
-+	void *ptr;
-+
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	ptr = __tun_ring_consume(tfile);
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+
-+	return ptr;
-+}
-+
- /* Net device start xmit */
- static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
- {
--- 
-2.43.0
-
+Thanks again,
+Bobby
