@@ -1,143 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5E0223DC0
-	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 00:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC8519B5A7;
+	Thu, 20 Nov 2025 00:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763600104; cv=none; b=Imkze40+5mCfmvzBFzeRPfd48CdySaEyroAoduxdYPk629DLgc2YCholy0k586wSynpF34e1lK0BSaX1sepHRVOp2SkNrAk1J4jsBT4AZSbzQpD06QXgG1eDZ2a1MR1BBeBoA4tjkPTDccP03miaZm8W/9U9Re/kqb3jt/NnC3c=
+	t=1763600154; cv=none; b=UpKMDdSitIpD4ncxuosWkqvyQGO6boiLShvZGhBRd4OXhBnrGYEYOTVb3PJstnVH79Lq0bwdpZ4FC99Vl/zra84NNl/rfXRyDA0WhegKol8x87i9E96MFuzqzBpBxKrvBAsWXdATdZcLzqG1mBm8mrR0jO7i5GkemdHEXv9c210=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763600104; c=relaxed/simple;
-	bh=vPH6Yy1uBNJbHoprMDZK+Zi5/Zu1im6iJecndrUoKk4=;
+	s=arc-20240116; t=1763600154; c=relaxed/simple;
+	bh=Q0DZZ/JxiekuSF1qvW3fJNjEeUh+Mh6kSzNDRLBQhZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q8WUbChWG6p5WdrrjO3tJczQWVr0PHKhWR0i+IFPy0vraShhT1AfrYTO6yTjv6dDH5yZz5I6pxoRtouisDZfBebSq5Yq1ai0qpEuMaRUf8y9jsoD35ao4cBOyvaq9vj6BlqhEOPJE/7sW2Bdw5YS+zYFk5zoZKXFFb2AsS7eh38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bI9g39ct; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=spNfDn0okd6hFF+l9a1dgJuz7RO6oEpyqmDrpskYQLNx7ZhWuHt8XlnutSTA3LmIGtkclPa4GwONlwa/yP5VGP3dNr3Mt+I8Ss1fueZoSwIoD0Ml41NL8jkLREzJtQ1MVfyYs5CRK9JzuOgJZU1ie1XQ4A0hJKiBgrOuucWAvLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=isUTSwDq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bI9g39ct"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763600103; x=1795136103;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vPH6Yy1uBNJbHoprMDZK+Zi5/Zu1im6iJecndrUoKk4=;
-  b=bI9g39ct3BrXJlJLgXDfJUcdpjC+R8ySZvEYoAjkPbRW380U47VmKJbs
-   fGrCTXPmdC6Q76ySffkLPU4OiiG6+ZgDrdQn1IlWVZi68tYsc0d2D+OQy
-   FXZ8IQYJ6HPiyv/HRjzZfR8xQF1rNeaSlekH7DxpdDUCVe7GGRdeqiRkM
-   cOyKdCzdr0y54YoFVmy1tXu3yhqUGxRr2f+5ZaqOWFkJSR41onSV/QnE9
-   MV7wKiXo3TeQhzOBcfR+XZN/Jvd7/szHe21TuBkdZiS4D0m9V9TfKI7iU
-   BN4ZTvvVgJvCwgz9MKnUNoRMvqrImTYAtMdM9VYyFD+a23XlsObguigqR
-   A==;
-X-CSE-ConnectionGUID: F1k8JAuCQ0WZbauNKTEtKA==
-X-CSE-MsgGUID: 09mQMJxHTSu8Xvk0LHpUhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65553043"
-X-IronPort-AV: E=Sophos;i="6.19,316,1754982000"; 
-   d="scan'208";a="65553043"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 16:55:02 -0800
-X-CSE-ConnectionGUID: aOq6aHVbRJGjbSO39R3BGw==
-X-CSE-MsgGUID: Rnghr5/BQkmFjOjuCOH0fw==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 19 Nov 2025 16:54:59 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vLswq-0003Sl-32;
-	Thu, 20 Nov 2025 00:54:56 +0000
-Date: Thu, 20 Nov 2025 08:54:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Alvaro Karsz <alvaro.karsz@solid-run.com>,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net v6 2/2] virtio-net: correct hdr_len handling for
- tunnel gso
-Message-ID: <202511200817.29vdvG8S-lkp@intel.com>
-References: <20251119055522.617-3-xuanzhuo@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="isUTSwDq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A554EC4CEF5;
+	Thu, 20 Nov 2025 00:55:52 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="isUTSwDq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1763600151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3WInqmEFbDY/RNTxo/ojAG1xVSL8xc4rSolc9zgV/Ec=;
+	b=isUTSwDqz/O9aQIVXmq8x3m8Q17M+ZNH3Boeq+6dsokl2bXo1wXUizy8q9SUvf26ogkeS2
+	vG6I9VH+DYdi9Cpg1Bba1VglO3Eqc71p6ffGMtgdmda3nh1pYVQgErf0vfKsymgh/N7Wz7
+	+R9bONq8+sgufWODyOZxyWhUEa9Eozc=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3c48548b (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 20 Nov 2025 00:55:50 +0000 (UTC)
+Date: Thu, 20 Nov 2025 01:55:46 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: =?utf-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jordan Rife <jordan@jrife.io>
+Subject: Re: [PATCH net-next v3 07/11] uapi: wireguard: generate header with
+ ynl-gen
+Message-ID: <aR5nEnP2PWJ7G7yp@zx2c4.com>
+References: <20251105183223.89913-1-ast@fiberby.net>
+ <20251105183223.89913-8-ast@fiberby.net>
+ <aRyOAYuWZE440WQ4@zx2c4.com>
+ <20251118165315.281a21ca@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251119055522.617-3-xuanzhuo@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251118165315.281a21ca@kernel.org>
 
-Hi Xuan,
+On Tue, Nov 18, 2025 at 04:53:15PM -0800, Jakub Kicinski wrote:
+> On Tue, 18 Nov 2025 16:17:21 +0100 Jason A. Donenfeld wrote:
+> > On Wed, Nov 05, 2025 at 06:32:16PM +0000, Asbjørn Sloth Tønnesen wrote:
+> > > Use ynl-gen to generate the UAPI header for wireguard.
+> > > diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+> > > index a2815f4f2910..dc3924d0c552 100644
+> > > --- a/include/uapi/linux/wireguard.h
+> > > +++ b/include/uapi/linux/wireguard.h
+> > > @@ -1,32 +1,28 @@
+> > > -/* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR MIT */
+> > > -/*
+> > > - * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+> > > - */
+> > > +/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
+> > > +/* Do not edit directly, auto-generated from: */
+> > > +/*	Documentation/netlink/specs/wireguard.yaml */
+> > > +/* YNL-GEN uapi header */  
+> > 
+> > Same desire here -- can this get auto generated at compile time (or in
+> > headers_install time).
+> 
+> IMHO generating uAPI on the fly has more downsides than benefits.
+> For one thing people grepping the code and looking and lxr will
+> never find the definition. All the user space code in tools/ is
+> generated at build time, but the amount of kernel code we generate
+> is not significant at this stage. Not significant enough to complicate
+> everyone's life..
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on net/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Xuan-Zhuo/virtio-net-correct-hdr_len-handling-for-VIRTIO_NET_F_GUEST_HDRLEN/20251119-135650
-base:   net/main
-patch link:    https://lore.kernel.org/r/20251119055522.617-3-xuanzhuo%40linux.alibaba.com
-patch subject: [PATCH net v6 2/2] virtio-net: correct hdr_len handling for tunnel gso
-config: arm-jornada720_defconfig (https://download.01.org/0day-ci/archive/20251120/202511200817.29vdvG8S-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 0bba1e76581bad04e7d7f09f5115ae5e2989e0d9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251120/202511200817.29vdvG8S-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511200817.29vdvG8S-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from net/packet/af_packet.c:86:
->> include/linux/virtio_net.h:218:7: error: use of undeclared identifier 'sinfo'
-     218 |                 if (sinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-         |                     ^~~~~
-   1 error generated.
-
-
-vim +/sinfo +218 include/linux/virtio_net.h
-
-   209	
-   210	static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
-   211						 struct virtio_net_hdr *hdr,
-   212						 bool little_endian,
-   213						 bool guest_hdrlen)
-   214	{
-   215		u16 hdr_len;
-   216	
-   217		if (guest_hdrlen) {
- > 218			if (sinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-   219					       SKB_GSO_UDP_TUNNEL_CSUM)) {
-   220				hdr_len = skb_inner_transport_offset(skb);
-   221	
-   222				if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-   223					hdr_len += sizeof(struct udphdr);
-   224				else
-   225					hdr_len += inner_tcp_hdrlen(skb);
-   226			} else {
-   227				hdr_len = skb_transport_offset(skb);
-   228	
-   229				if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-   230					hdr_len += sizeof(struct udphdr);
-   231				else
-   232					hdr_len += tcp_hdrlen(skb);
-   233			}
-   234		} else {
-   235			/* This is a hint as to how much should be linear. */
-   236			hdr_len = skb_headlen(skb);
-   237		}
-   238	
-   239		hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
-   240	}
-   241	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I was thinking that doing this automatically at compile-time or
+install-time would be _less_ complicated, not more, since everything
+would be kept in sync automatically and such. But alright, so be it.
