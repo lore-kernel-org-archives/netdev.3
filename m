@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAD62D8390;
-	Thu, 20 Nov 2025 04:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E500288520
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 04:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763613046; cv=none; b=JnwPvs3pYACZWShHBxDU2Xbj1WTK8jnIYnkfSeE2D5o7pGhdH+rhiyn4JL4ex9s91aLN79BnSCrrUcJi0vfVO7N+uQWiqfpZnU2unccMK2H/UoqvABp2bS3YO996I060Gn3lv+BwwznQT1jKBw5xSye3Ikr1nkpaQc85+hSRovM=
+	t=1763613664; cv=none; b=UBhmh9ebje2B9HhtX7vYsz+VApovDUmhUy9vlx7pTDUw5Ek1hFJJMHPP7TzyWDIVPpNA/6pVgEq/P+VKTCIn4ZuiloLPMTz3PK8SBJRwXyT6ZM0AugkvhFEdu1Ew4R2P7iCnJyPF7iI6xOZAfvvXK8vpOXW3MxRdrp5j2KpHvKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763613046; c=relaxed/simple;
-	bh=tS7P6H8B+YuojVQzJE5ST1n4eDvUBQ/gvdZbTMLecXI=;
+	s=arc-20240116; t=1763613664; c=relaxed/simple;
+	bh=HG6DoPY+1p4uvkldykkcbyjQrsKU7zwAkKrGTbsvekk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XqYgy2P3WjAwSz5SwmYvgzO5+rPjYDYl2pPnEivVwryXyNawRhrGWv1Tdj8fCddIsrn3ARmWeeJHm76YrXOzY+FynfwLbvceKW+I8q+ClDSEqbQ7HFm7N1XQvWicIKpmwvsOFesUJ8m8TXAzgdXT2H2zcY7nWR3fKao1qoPmg4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QztL9/1A; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hml7GsSH4j6zzPNUF3gy7d5Vjn+y2B44audPeVqf0HifM9LYWoF9QFcDK+bA4+tOpX9tSXrMS98ZNPr5uet4on/n8TjUNLAAAuEOogokk1dCHAdVaUwexMVnyczkNqZFfHIxK7VZ/XY0TT3i+15YLrdHuygx+N8oHqWoaCu2FI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jotC5qrH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QztL9/1A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32260C4CEF1;
-	Thu, 20 Nov 2025 04:30:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jotC5qrH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A3BC4CEF1;
+	Thu, 20 Nov 2025 04:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763613046;
-	bh=tS7P6H8B+YuojVQzJE5ST1n4eDvUBQ/gvdZbTMLecXI=;
+	s=k20201202; t=1763613663;
+	bh=HG6DoPY+1p4uvkldykkcbyjQrsKU7zwAkKrGTbsvekk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QztL9/1ArFCvpiNB+rexyvOGBkc2LxVlhAm/JJA/P2cUylk69G0ip0/nP83dqbk0o
-	 ZJa8J2zjSREO67ZYe3VicNXM3bfYSd7OXxqAy6q97u302MZYzkE6dJ+1ggrdRf4U+c
-	 wlz6ruwuK8dfGrdqLHl6K7jUHXAptfckHLI7TKxPA/f3vQ0YYsfEVkw+f5EGZdaYN1
-	 WNglGUoxN+76cs2X3U8R97CIWfiTx00ZTZJZIQuJNNiwYPBbvCkPjy8Hv8Vz4zZ3sF
-	 /cYzSMoJPTcnEWxpFaAkjJRBnzTNHeL/29oSMJ12reHVrfPP8PN0hMtYGRfymnzR1O
-	 SE8NnLBLbipsA==
+	b=jotC5qrHrAlcqKRX2sZLox5dG7a8nKTQYdavbqHpRgHdaSbBe9J/k1Rb5cGDwLI6Q
+	 Dff7jik2QU0/Jm8kGvt95to6DNCxiEjnv4azr/qS4n56j6tWs8ja5RKyWsg1Yo3Wi2
+	 +4DV+lXwaEF8ladoAQ+Lk3SnjkPgirIU4YVdh/A6xNNWgWucSCketFCHHx3quYI0Wo
+	 CB4SOHltFRZEAoI4soX3pzgRA9835dWgzVNEWpSlLlJR7SGn15xBDFRoHjLO19nAeO
+	 JdAmyUr/0tEg1XvYr7KV2X1x/M6dfuLRTSevfqc2U28QCpGOxF2cEbc/YO4mKNRNrC
+	 v+/o/NXgchCmA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB2C939EF974;
-	Thu, 20 Nov 2025 04:30:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBC3C39EF978;
+	Thu, 20 Nov 2025 04:40:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: vmxnet3: convert to use .get_rx_ring_count
+Subject: Re: [PATCH net-next 0/4] net: adjust conservative values around napi
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176361301150.1077848.1259415451565052907.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Nov 2025 04:30:11 +0000
-References: <20251118-vmxnet3_grxrings-v1-1-ed8abddd2d52@debian.org>
-In-Reply-To: <20251118-vmxnet3_grxrings-v1-1-ed8abddd2d52@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: ronak.doshi@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <176361362874.1080161.4423432545769385771.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Nov 2025 04:40:28 +0000
+References: <20251118070646.61344-1-kerneljasonxing@gmail.com>
+In-Reply-To: <20251118070646.61344-1-kerneljasonxing@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ kernelxing@tencent.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Nov 2025 01:44:56 -0800 you wrote:
-> Convert the vmxnet3 driver to use the new .get_rx_ring_count ethtool
-> operation instead of implementing .get_rxnfc solely for handling
-> ETHTOOL_GRXRINGS command. This simplifies the code by removing the
-> switch statement and replacing it with a direct return of the queue
-> count.
+On Tue, 18 Nov 2025 15:06:42 +0800 you wrote:
+> From: Jason Xing <kernelxing@tencent.com>
 > 
-> The new callback provides the same functionality in a more direct way,
-> following the ongoing ethtool API modernization.
+> This series keeps at least 96 skbs per cpu and frees 32 skbs at one
+> time in conclusion. More initial discussions with Eric can be seen at
+> the link [1].
+> 
+> [1]: https://lore.kernel.org/all/CAL+tcoBEEjO=-yvE7ZJ4sB2smVBzUht1gJN85CenJhOKV2nD7Q@mail.gmail.com/
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: vmxnet3: convert to use .get_rx_ring_count
-    https://git.kernel.org/netdev/net-next/c/672cb5c2a958
+  - [net-next,1/4] net: increase default NAPI_SKB_CACHE_SIZE to 128
+    https://git.kernel.org/netdev/net-next/c/3505730d9042
+  - [net-next,2/4] net: increase default NAPI_SKB_CACHE_BULK to 32
+    https://git.kernel.org/netdev/net-next/c/01d738561899
+  - [net-next,3/4] net: use NAPI_SKB_CACHE_FREE to keep 32 as default to do bulk free
+    https://git.kernel.org/netdev/net-next/c/2d67b5c5c67f
+  - [net-next,4/4] net: prefetch the next skb in napi_skb_cache_get()
+    https://git.kernel.org/netdev/net-next/c/5d7fc63ab841
 
 You are awesome, thank you!
 -- 
