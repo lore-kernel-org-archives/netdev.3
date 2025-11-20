@@ -1,235 +1,580 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C6634402C;
-	Thu, 20 Nov 2025 13:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763646752; cv=fail; b=tzHeGWUaDfpApYtinYQQUvxBzwSTyD158t/JPMY0h8Al9angezN4lBvyckc/bT/Y5TpZaJNdZOJkUe0Kq8gXBtzQjMKWo7+5wgKLKAZ8uXZQq/R2q6K85Xp3xi1puEou36e0F/IBPrkB/MtDgsSuQ2AsixFpxyfV8KfUqaXc+vA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763646752; c=relaxed/simple;
-	bh=hTWY8cVxK80xrdrRyzhKZdekRl7Rzftp/PSdSpOM1TE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cBeUHT/mGhVINgkW/C3d7tQ37FEKPR08VH/xq6rRd8th7beuKOYgvfyTHTdIrymaBTbNxnJnatAwmSecy3jhdJuzONaZBvoFA8i6G3dxS4eMWqJJc9VljzAM65g27niWUUw4qzSd1v76JSabs73lMAwLX0WRsKVV8647VAh6Gyk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=gJBAhP1K; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51A530ACFD
+	for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 13:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763646971; cv=none; b=ck/sFQF9A5pgM1GELlHf/Ye1mAXC3xQSXMeNMm0NLkk+fEx1CL9CL2g5TWm2RAyHpJTya+Bz1Fd3fIKCixsx9FgRkicZ7Tfzp9EqFMcypiheKbL5vGyDkT2Tz7ILPnAkH0dTf4CTFweDRRRsb0qnRRgWb0gY4uxEiEikElUqxZM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763646971; c=relaxed/simple;
+	bh=gaMaKSN/3KaHbVZ7MTuM/8elS4w/tEOl6ORpPmUi1nk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OZfMEGNOeWacr6R6u0Od0beZvFMANRsL05d4Kme1L1uakVSbf5UYCJPf1loeHG444rstRr0E3uw4759oZ7DB5MBvvHj7fDQs713lmEbPEvimKAoqhCDX+ckgc4ujei2BdYxXgZbwxZpPgFLF2EOSDT3Dy5vaq+JervJwmzvF/t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kPtjns+L; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="gJBAhP1K"
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AKA4Cxi2861888;
-	Thu, 20 Nov 2025 05:50:55 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=+vkCvKcLG9W9qtEUFHhS9aICCEuV6Jstz/slUMGmdns=; b=gJBAhP1KLmyB
-	9NgbmHA5GepxRyFwTpcG5YMTVo7stlQeQtXwN2enYElFTGy3a3bZZhsMNAfEcRGV
-	l5b7h7RRs8Hf5kqWNo103yuH+Y7PvdSYK9NOEBxvvBIEUG+/vQ5Jw0C6gelxOc9T
-	4kLrLv2qJZDydgddnE2P2YCAGsb76pD9v80wBLmaYHKK4gFeNezsvxng0uUYWRyT
-	ccOi6iGJESr7jMpD98GWvHkIlyPu1fBfGBHSeiURnvYtAVmH/khbyFtYkgdE513S
-	b9aT788Z2+EU5FSR+dP23XySMBkVFg3oEzfzTpeqHR98ylaYs8ijnY0vpIk/g/pu
-	yp64Li1c/A==
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013004.outbound.protection.outlook.com [40.93.196.4])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4aj0wk99d3-2
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 20 Nov 2025 05:50:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LhYSJXuRXQ6gQKYtn7+pyN/A22Ak1rHT0sc6kuhg+QmKwqCybbNx90OA8zeIruzHZqGc1eXb6FUl3xKEcyRV85sKt+7DKW1hUDQfg0loiZ02zj/AFd/LnJTnX2jV2vPFudxT4hDodQ4vzK1ty+4lvk59yIlTySOXEYNGL2fitGb7J6thtrJlEjAXDi9HF3j1V/I9+EyKZE5kooHEd+spehYQmX2h+URAg2WauvLtKe1HLXxBmszkTfWLNTeJJx3J7yNe7d7CsB5uOaarKUbqgddDkRfZIUDzXlOMH9kFa/IRDPD5uRTietu4kqYt811ZPOi5Fgctke4SSTcd4GVcdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+vkCvKcLG9W9qtEUFHhS9aICCEuV6Jstz/slUMGmdns=;
- b=rMc0MKCEO4pyumzokrsMfMYi7ataBZxSTGf2Oog5PGMfZ3StRcUQWilSxS264xOS4Bwiz6utjGowy73aqWibedrXbFbE2P7khFXbQToLSGnkUZ2rrz97+0CXd6oPE3VkI2MhbceZDb/ACkUk1xpjiopHbxtp1ssFDuZhV+ScSOv1IQzjFt6v1Kpf5CwiExJC1MIPRL+P5X7huSnyZqkCdSnE34g1pQCw/Tckgkh1yEtJr11rq7HhvqFg/SoOSX/YJziRzzSuEESaH2T6jUXnpC93hthqPhQqIJdhO5i6ksR823uUhoHCUlBuNhXKnE57jMThlpLZa6UAPiS4XfNrNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
- dkim=pass header.d=meta.com; arc=none
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
- by MW4PR15MB4443.namprd15.prod.outlook.com (2603:10b6:303:104::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 13:50:52 +0000
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::8102:bfca:2805:316e]) by LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::8102:bfca:2805:316e%5]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 13:50:52 +0000
-Message-ID: <15a1abe5-2b04-4f67-810d-9a9ab9e2dd6f@meta.com>
-Date: Thu, 20 Nov 2025 08:50:38 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/44] ipv6: __ip6_append_data() don't abuse max_t() casts
-To: David Laight <david.laight.linux@gmail.com>, bot+bpf-ci@kernel.org
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, dsahern@kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, ast@kernel.org, andrii@kernel.org,
-        daniel@iogearbox.net, martin.lau@kernel.org, eddyz87@gmail.com,
-        yonghong.song@linux.dev, ihor.solodrai@linux.dev
-References: <20251119224140.8616-10-david.laight.linux@gmail.com>
- <ddcd920ff99e0f97ed2c92cf650872d76a4b7404ea87a104e6ab061ee3005cf9@mail.kernel.org>
- <20251120111623.44ebfae7@pumpkin>
-From: Chris Mason <clm@meta.com>
-Content-Language: en-US
-In-Reply-To: <20251120111623.44ebfae7@pumpkin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BLAPR03CA0044.namprd03.prod.outlook.com
- (2603:10b6:208:32d::19) To LV3PR15MB6455.namprd15.prod.outlook.com
- (2603:10b6:408:1ad::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPtjns+L"
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-43376624a8fso4889565ab.0
+        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 05:56:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763646969; x=1764251769; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KB/GX97yMxHpcGOwuNbllN3LuskQK+dpqC/evipq6hs=;
+        b=kPtjns+LKyyIahwBqnURQUYD8EM/QtIHl+I0XKYVY+TZG0ixUiEcTrpJnbz4Gaha3E
+         e1oUwnipQVLkfgM3Kz0cuzXyeu4sV8w0Uu+G/GAVVaxuTQC1vitqmJ/gilEfJmbEr3ie
+         amjOeTZd5H9JeS8Qrq4OohAY87R3ASU7oWLX617XlT2vhO2oziyDcvB/VyVAo2vmMetu
+         LATj1Tf41KJHDglCRV/xduR4dD0qjysj5PIAaWgOb3qXo6jQIwnNLjcSN012qpurT++J
+         jJlHt0c5Kn2GtFq7wQCMKsOHbd+OUZQ15/X2dps6AD7lU4h7W+8WMS2IWgG98kiW5Ku5
+         rzlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763646969; x=1764251769;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KB/GX97yMxHpcGOwuNbllN3LuskQK+dpqC/evipq6hs=;
+        b=ExHdTs3s70uJjBHdqLe4AxCHnCsBuqXr2HSilN0iobc28fmZRvXjLa8l81lS8LjEPc
+         2Wm2iNPZdwILE5KDgGQAFjzfS6auZdQh8wXe6KnEo8AGMqGIlYaScDz3iVwuo36pluJB
+         HtPa05jWTkXRHU+Nb8OsPHtX39z1P6lgug7jd8Ok2CfZMPUtVkKJCTyTHd8NV1Ps70Jv
+         Xw8Vh874p1FXdqhFJR11zOdPMov2FqUgDuoHLT1bWSoDq8a811xdZl7JCdM+qp8d1t2K
+         FmUUrYqTVqDVmKTbXVUVqhB0nkOOjJMeuhZCI+2C7jR75JABb9vSSTeUxHd5cDV0MIM9
+         UtBQ==
+X-Gm-Message-State: AOJu0YzFr1o6M0JmW0SJDxFjxW3/s5dpmocNHvDSrAwWFEiaeNI4rwNO
+	+3NM0aKYQxi5K4oKL1kgBfkVDrwaEv2tfaOdRpWrQpLU1yN5CcUtS4wJdoNkh8e0WeAdvqYkymN
+	MogFFfjMaZ9TbUvNe9I6wsY/z422la0c=
+X-Gm-Gg: ASbGncummiv9TuF8OAJlSidJP1eUtiL1XrBRLFcCzOr4sju6K6tXSR8QRd+0Rgvwvfa
+	jsgaqLw37E4EbmHUVwosUashT+LX3Xk+gVDm0NKV/0/RBH2fw4K5TiM3+iXMwSC9sYT8txK3Etj
+	oQYYaxU6HUfqQytCcnmIzJQwskhnoWbh9zhAuPPK6TC1Qf+flmqw672PJKzr133Scp532kCrN/D
+	FuniQBlTeIsDVdN2K2/C9j61zLTk5RV3gN20Zcp5wac3E6vTzGDxiDwRx9IFcD13vqGPepRGwM=
+X-Google-Smtp-Source: AGHT+IHheGvKmtn5Pd6DBSl7YgWiqTB+jLCZF6SHQRZsVSL9OsdAFJTAF/NCNwD4L5Fv2PTTEau3pwatA9gmrAJogZU=
+X-Received: by 2002:a05:6e02:1fcd:b0:430:c90d:10ae with SMTP id
+ e9e14a558f8ab-435a90878f9mr35861065ab.32.1763646968704; Thu, 20 Nov 2025
+ 05:56:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|MW4PR15MB4443:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4601abf8-ab02-4401-7fc1-08de283bd19d
-X-LD-Processed: 8ae927fe-1255-47a7-a2af-5f3a069daaa2,ExtAddr
-X-FB-Source: Internal
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?UmhDUGV4VkE1alcwd3Fqb2tQSHRBUkJiUkVpL1dMRmpVQlFRV1ZHakxkUytZ?=
- =?utf-8?B?U1ZuMERoOFZjMjlSYnF5dzJnQTZaYTI5T2JWZ0hacllROUhvQ0JoNU5VKzll?=
- =?utf-8?B?WjZqT2xjUCtuUk94cjRieXUrSk1weWxuTUNSL2F5Wng5V0UzbTNqUkF6Nks4?=
- =?utf-8?B?WXZWSU9kZkx2YUlWL1NDdVI1Q1FON0lEeEFrWWowQjd5dHl0Q3pEbVk5aXJm?=
- =?utf-8?B?THlxRFBmVVVwTEdJcWJpZTdpRjNhdXA2R1ZvdU9jL1lWbE9YUEJacjBDbnk3?=
- =?utf-8?B?anpUNU9oc3E2VmIxYnl5MWZYK2pEMG94RGNlczRERDFCd2ZlMFp2SFkwNDhH?=
- =?utf-8?B?LzNPV282MkduK0UrOTV2dnlBb25aU1U4RFhVaEp4VkRDK3k4VmhYbDA4cmtp?=
- =?utf-8?B?S0g1S0RVWm00RjcwTjh0SUtzaHo4Q1FOaUxKcUpRS092WE1tZndpRGUrTWR2?=
- =?utf-8?B?Zi9hVStoMm8yQnpvS2w5MkJMcjNxRTFOUkdIMEJjNjkydlFQNkp5RGZsaFhR?=
- =?utf-8?B?U1I1NkUrSDVueWFXVjZtbmI0a0lERndZVmk0cHA3cXZmbFlnSXljYjlINzFr?=
- =?utf-8?B?dHJSSWljc2gzZG01dzE4eDEwOFFqd0RaU1d4V2RZdXNqL2JkOUhRTHdiUXhW?=
- =?utf-8?B?bjZuZlJUTzFBQlFFR2V2TWdLUjY5WnE2bG5yRHl1Yk1LSHBuekFaSWNOMDRm?=
- =?utf-8?B?ZU0rR0lXeHFkOXVoeGlvdk5xUzZuVUw3Zk1IY01hblFBVzVZRkJHb245ajFl?=
- =?utf-8?B?cFpiZEp2SmlKK3plOFBNZ3pXdkxRVEhFYWJxemtGNllrM0JueHdpYnArN0pL?=
- =?utf-8?B?RDZNQnVxSUc1M2VjSUF3czF2a0NIMU9hSzA0ODJ1akYyNGxJSUZENmpVUEpC?=
- =?utf-8?B?NmFlMFRrVGl6dTZxSng5YkpqazNYRGlVcXY1R3AwYjZ0dGdSZEFQc29SSnFp?=
- =?utf-8?B?b1RPRXd4MXEvZlRuYk5yZjVjWStwckNabVcwVDVnYTc3K0hMTGxZNUxxbGFE?=
- =?utf-8?B?dWRoWmpLazRUZ2FPdE5yM0FVZ01yeU5SK2EzTStuTHVEUnowQTBPNGlJYlZJ?=
- =?utf-8?B?SXBtMC9UVmZxK1FwVW1GMTlTaFRvT25tUkZtbExtc0hkSmNWdm1iM1VkdEFO?=
- =?utf-8?B?VzRIRlhFMXhkbUlzRm5NT2xyZ3E0LzFLTE4wU0VIR25SOHdOdjhDUVhPMWMr?=
- =?utf-8?B?bnQ2b3N5YmQ4UXJHRURrWkUzeFFLQXBPeDBneG1uUEEzVXA4dFdkZjZoYzNq?=
- =?utf-8?B?NG5VcXQvTi9MTUM0SUQ4Y1EyMW9nTVRraEtiTUExUVVpVHh6SmZRcGtpS3Vk?=
- =?utf-8?B?TmxDYW5rTk9xN3FNdjIyYTNtZkhKTm4xdE1xSmZweEROaEhsWkpSWE9XTHF3?=
- =?utf-8?B?dlYvU3pUQmc1Q29CM1VteElxdnJXTnNQdHBzSWora3Q0V2V2VlVyUXZObnV5?=
- =?utf-8?B?VGhIMSt5NHhLSkFFcDhQbW5hQ0dkWEIvdzQwZEdXZmpEMFpnaHJzZG1kQVJ1?=
- =?utf-8?B?cXZGM2FVakNtTlp1Q2F1TzI3WkV5RXVBYitwWFpMQW1tY0M2TjZWNjdKck1l?=
- =?utf-8?B?MGtOTkc2bXFmczA3c1RReHBydVhoR0gzZkMrQXdpbk1QejltSVd2YlFiZzBq?=
- =?utf-8?B?OW9NR2trb0dTclpqM05INU9oc0psWG5MVHhIVjROd2tzM0JlK3dteUpVTFBD?=
- =?utf-8?B?WFRTbmg3LzhFYWh6K1pCeGxyQU1qMVhabXZyZnNkcUFoWGhWeGx5aHRaa1Fn?=
- =?utf-8?B?K1BxNm1MZXgrcmF5bnZUM0E3UzJsemF5eGJiR2Y4QTZQVVhncDlBWkkyanJW?=
- =?utf-8?B?MklrZldtT3Z0K2JqRE9rS0pkeWpRekhMeGxFNUdNR0dMK1BhdlhIUEx5V2NY?=
- =?utf-8?B?a3F6K0Q5ZzVKa0dqU2RiQzNqTjFBM0F0SnJqNG5hUzVFYnRDRkVQQ1VPamF0?=
- =?utf-8?Q?n88gLthK4tW8VQ+sycH6EKN9E76K+Ohp?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?czBZME0xUWhud0JWZVFLV0JTdEcwVDRQT0hiQnpTMmJFVUozQ09zdjVsdWVC?=
- =?utf-8?B?cWE5blJYOXBQcHc1ZlpkOTE5MkFYOGF3bjJBbUpTMnBuSzdjZVdJU1J6b3dq?=
- =?utf-8?B?UzBFU0o5eXRXMTFuZVNFMjA3YUY4NGVEZjAxK2RjaTZtSTVoN202VDVDaWV1?=
- =?utf-8?B?V2Jra3N4Y2p5OVNJWTQ0c0VISys3S1l0TWttSkZyeGJ0eWx4WUtyeFh3T05K?=
- =?utf-8?B?dUNoNitKay8zNkJFWDdPd2pCUncvRDNiOVdXbnZFdUF5L1pMS0xyTXUwK1NP?=
- =?utf-8?B?ZTFWRWxmd01EQUgyWW9zUHBTelVnenVscFhyKzl1ZnA4ays2eFNwdzNpUzY4?=
- =?utf-8?B?dmpyM2tLdThidTU0YVI0T21SYnpZS1lPejc0akU3YlQwejJaYWZ5SHZXdFBy?=
- =?utf-8?B?MFZEeUhBQ2ZQWnI0Z25rZG1sRzYzZ2hFN1NsSmV3VTdzYVR4RXZoeFRTcjBS?=
- =?utf-8?B?VXFDcC83eUxUWTdxdmpZeFBMVE83S2F2L1FVYnVneGt1YTExeXhLdzRUbld6?=
- =?utf-8?B?QzBFbjV3bVE3c2ZuTTBhRkFPbEV3TFkrdmxlNzlNWnBJUGhGT0dJeDFvMkZT?=
- =?utf-8?B?VnVnbmhlSDdNdGtSRVJXeGgyU3R3aHNoTzhGSjExbWNncVoya1JtWFBmbFh6?=
- =?utf-8?B?eU4wMlpVNldRM1VsZTBUSTYxbENuUkZQaFl2MzVsSmVQVjkrM0RpZTQ1UUhZ?=
- =?utf-8?B?blN2Z1A3WFlxd0lmMFVkS3piMDdoS3paN1hwa1NCcVVMM3hBamI4R2JkNldB?=
- =?utf-8?B?Z3ZncWlHL1RVZ1hHRTZGc1Z1VW4zODBlMXoxdGhSWDRITlpjeGdFQ1Jsb2xy?=
- =?utf-8?B?NW11a1FPR3p1R1VMQnBFM1Z0ZEgwZTlUTjZXOWhLOTU5VGltTUZ5ZE9NcVBR?=
- =?utf-8?B?QTRqSjlpbE9Heno3R0dxU1lDUE53OW9mdTVkYkx3dmVzc04zVFNvZjRXY0pO?=
- =?utf-8?B?Y1NpdVBuUXFxRDA4dTE2Y1JuQ3I4OG5vR3FKR3FLTkNmaWFwWE1keEYwd2lm?=
- =?utf-8?B?MHpRU3k2NnpSbllaTkZKZUoveVZKUE9ITndTajdDOHd0UnpYa1pzSXpzUG5M?=
- =?utf-8?B?dk9uTC9haWFTZmNFQzhwUVY2NzgrVmM2YS83WVR3Y3dLM2QyQ1VOaStVdGc3?=
- =?utf-8?B?bGpmeG11alFLcjFYcFdxQTF2UU5aSWxwOUNwemEzSGhjOWxlMDNIcTdpTno1?=
- =?utf-8?B?dzBDM1BpUGorRjNvNXJTWENRYlBJeUl3NnBqRno1bEphbmZTTFM4aUhpUHdP?=
- =?utf-8?B?ckV6MVJEUnZZSWs1aFduTmd2TWJITlBkZm5MdWtaelpkZnJrM3RLZEVaSXJp?=
- =?utf-8?B?SW01SXlPc0ZZVXZCNEZtWEs1cnRBa205MXFFTHRXWGo3VFJDdnM4blFDTzlZ?=
- =?utf-8?B?TDE2eHRhZ2dsTWUzNnhQaW5qOEV0WVlHOTRzQzVoanFUL1FIM2Ewc3d4Mkt5?=
- =?utf-8?B?UFdTajZ2ZTJnenAyNXQ3aGNLV0Z6RlZidHZsSm83V2ZzRHgyM1pwaDl6OFln?=
- =?utf-8?B?MGFkaENnay93WlN2TlpEMmltTTZxN1l3RVpwQTRhSjBtbUEvL0tNMWl4MUJN?=
- =?utf-8?B?TTBMRWhXZU03MXlhU2QwbGtWUmgxYTRlV0hNenM3azk1elpzeDFmSWlEVmtE?=
- =?utf-8?B?VFJRcHVWeUlvbm5yTEpsTHRiVUM1N01SYUs1ZmFzRTkxVkRPRnpUK25Mbld1?=
- =?utf-8?B?SUZ0RmNCUVVDWWM3OEFCemtleWMyRGV5bUMrVDVNV25HUDBqOWhKOWdORm9z?=
- =?utf-8?B?MDRwRDZDa3dESTVJZkV2MEV2Z3E5K2l4dVFmN1UxZThjTDNxcm52N2VLSlcz?=
- =?utf-8?B?bXdjbHF4M3ZLY3NaYzFXaXdRTk4ybFdjMktaODZsMVZmcThRaWhhZkVvbFRM?=
- =?utf-8?B?UWtoNDAwTkxNTmFRYUN5S3ZiTGVwZEx3bmcwdWNCbDlOS0tFZnN5YnliTVp2?=
- =?utf-8?B?Smk3ZzQyekNEKzczZHBtRUdiN3kxUURrd2tpS0xVeE5FS1pkQVRRb3lTQlBX?=
- =?utf-8?B?TkVvV2tSdmViUDAydnozUjZ3QWs5SGJTQkZjYnh0Y21KYzU0eFJqTkRnOXpp?=
- =?utf-8?B?UFpsc1J3cWpYUGc0M0JydFlDUnIyb2Q5U3JGZGc2LzNTNFl4V0Z6bDJlUnpu?=
- =?utf-8?Q?tv9I=3D?=
-X-OriginatorOrg: meta.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4601abf8-ab02-4401-7fc1-08de283bd19d
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 13:50:52.1518
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oPNjsUM7hOF6EM24LffynP2lUhgH+ZIvUYb6iZRgliVGioIGVpp79/wkDOmGK2ao
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR15MB4443
-X-Authority-Analysis: v=2.4 cv=avK/yCZV c=1 sm=1 tr=0 ts=691f1cbf cx=c_pps
- a=pKtxidU6TXaQx3FGc3VI+g==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=mV3VBRlEExYSzgC-poAA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: uBU6vS5fSRJOApAyMXip9t1mPUTyTG90
-X-Proofpoint-GUID: uBU6vS5fSRJOApAyMXip9t1mPUTyTG90
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTIwMDA4OSBTYWx0ZWRfX1gzBBx/kf9ym
- 7dLauiyCPqFkxvPD2yMqCIf5rwU9PIb4tlmt44fAst63uBvnEHChnqeC/6vHMHHsiVQlBOwFLHn
- UbBp+Y+I4XBNY1KFNcNm0zsogtRm7Hfxm+haoKNotZ0c5PEvGvQ4vMGK56LWw3bGSpcZ9LkAor9
- wl3Z8evlbb5DXksmdBooSfRGIapaisId8p/y2hTH8hp76gqbXZr9F287BSyW9Ri3UyN92zEMAuL
- IaUvzg1SgdoCegtp0Wm0u26nVy3tYZ6ePp3yjKXeTdSZ+FFw/q5Np1XwquqFh4ZFpJky0KVUFAP
- bAu374YmzthNjltGW02Jq6noICGbijMkAEap0M/Ts9/LszwcmbolTmWpeDp2GELr47TaphB5umU
- Eo1lzTxeBBGYebPBQNP6Ltoz9d1pZQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-20_05,2025-11-20_01,2025-10-01_01
+References: <20251120110228.4288-1-fmancera@suse.de> <CAL+tcoDKxaOT7DiLg2=jQPLo+6OJqL7ZkDurXZAGXo-xbxoDWw@mail.gmail.com>
+ <01a09fe7-9f58-4fc5-a84d-12d5b4b92bbd@suse.de> <CAL+tcoBueigrGnKASad7XFybXMHvj5jAOcZS8_bY3J-7XVZShQ@mail.gmail.com>
+ <c68423d1-d4e6-4d13-973b-44a791a3c806@suse.de>
+In-Reply-To: <c68423d1-d4e6-4d13-973b-44a791a3c806@suse.de>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 20 Nov 2025 21:55:32 +0800
+X-Gm-Features: AWmQ_bnrWMgGoyi9meDKYCLp55F06CieFwcr3HmgH0bzXJCeZjtFNhQkhzBHSVI
+Message-ID: <CAL+tcoAE6_15tOjZFrdif1ixBja3_qeUKL2GUvOyypcimLFJXw@mail.gmail.com>
+Subject: Re: [PATCH net v5] xsk: avoid data corruption on cq descriptor number
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org, csmate@nop.hu, maciej.fijalkowski@intel.com, 
+	bpf@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, 
+	hawk@kernel.org, daniel@iogearbox.net, ast@kernel.org, 
+	john.fastabend@gmail.com, magnus.karlsson@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/20/25 6:16 AM, David Laight wrote:
-> On Thu, 20 Nov 2025 00:32:34 +0000 (UTC)
-> bot+bpf-ci@kernel.org wrote:
-> 
->>> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
->>> index f904739e9..6fecf2f2c 100644
->>> --- a/net/ipv6/ip6_output.c
->>> +++ b/net/ipv6/ip6_output.c
->>> @@ -1440,7 +1440,7 @@ static int __ip6_append_data(struct sock *sk,
->>>  	struct sk_buff *skb, *skb_prev = NULL;
->>>  	struct inet_cork *cork = &cork_full->base;
->>>  	struct flowi6 *fl6 = &cork_full->fl.u.ip6;
->>> -	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
->>> +	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu;  
->>
->> [ ... ]
->>
->>> @@ -1504,9 +1504,10 @@ static int __ip6_append_data(struct sock *sk,
->>>  		maxnonfragsize = mtu;
->>>
->>>  	if (cork->length + length > maxnonfragsize - headersize) {
->>> +		int pmtu;
->>>  emsgsize:
->>> -		pmtu = max_t(int, mtu - headersize + sizeof(struct ipv6hdr), 0);
->>> -		ipv6_local_error(sk, EMSGSIZE, fl6, pmtu);
->>> +		pmtu = mtu - headersize + (int)sizeof(struct ipv6hdr);
->>> +		ipv6_local_error(sk, EMSGSIZE, fl6, max(pmtu, 0));
->>>  		return -EMSGSIZE;
->>>  	}  
->>
->> Can the variable pmtu be used uninitialized here?
-> 
-> If your AI bot doesn't understand code don't run it.
+On Thu, Nov 20, 2025 at 9:47=E2=80=AFPM Fernando Fernandez Mancera
+<fmancera@suse.de> wrote:
+>
+> On 11/20/25 2:40 PM, Jason Xing wrote:
+> > On Thu, Nov 20, 2025 at 9:16=E2=80=AFPM Fernando Fernandez Mancera
+> > <fmancera@suse.de> wrote:
+> >>
+> >> On 11/20/25 1:56 PM, Jason Xing wrote:
+> >>> On Thu, Nov 20, 2025 at 7:02=E2=80=AFPM Fernando Fernandez Mancera
+> >>> <fmancera@suse.de> wrote:
+> >>>>
+> >>>> Since commit 30f241fcf52a ("xsk: Fix immature cq descriptor
+> >>>> production"), the descriptor number is stored in skb control block a=
+nd
+> >>>> xsk_cq_submit_addr_locked() relies on it to put the umem addrs onto
+> >>>> pool's completion queue.
+> >>>>
+> >>>> skb control block shouldn't be used for this purpose as after transm=
+it
+> >>>> xsk doesn't have control over it and other subsystems could use it. =
+This
+> >>>> leads to the following kernel panic due to a NULL pointer dereferenc=
+e.
+> >>>>
+> >>>>    BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >>>>    #PF: supervisor read access in kernel mode
+> >>>>    #PF: error_code(0x0000) - not-present page
+> >>>>    PGD 0 P4D 0
+> >>>>    Oops: Oops: 0000 [#1] SMP NOPTI
+> >>>>    CPU: 2 UID: 1 PID: 927 Comm: p4xsk.bin Not tainted 6.16.12+deb14-=
+cloud-amd64 #1 PREEMPT(lazy)  Debian 6.16.12-1
+> >>>>    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.=
+0-debian-1.17.0-1 04/01/2014
+> >>>>    RIP: 0010:xsk_destruct_skb+0xd0/0x180
+> >>>>    [...]
+> >>>>    Call Trace:
+> >>>>     <IRQ>
+> >>>>     ? napi_complete_done+0x7a/0x1a0
+> >>>>     ip_rcv_core+0x1bb/0x340
+> >>>>     ip_rcv+0x30/0x1f0
+> >>>>     __netif_receive_skb_one_core+0x85/0xa0
+> >>>>     process_backlog+0x87/0x130
+> >>>>     __napi_poll+0x28/0x180
+> >>>>     net_rx_action+0x339/0x420
+> >>>>     handle_softirqs+0xdc/0x320
+> >>>>     ? handle_edge_irq+0x90/0x1e0
+> >>>>     do_softirq.part.0+0x3b/0x60
+> >>>>     </IRQ>
+> >>>>     <TASK>
+> >>>>     __local_bh_enable_ip+0x60/0x70
+> >>>>     __dev_direct_xmit+0x14e/0x1f0
+> >>>>     __xsk_generic_xmit+0x482/0xb70
+> >>>>     ? __remove_hrtimer+0x41/0xa0
+> >>>>     ? __xsk_generic_xmit+0x51/0xb70
+> >>>>     ? _raw_spin_unlock_irqrestore+0xe/0x40
+> >>>>     xsk_sendmsg+0xda/0x1c0
+> >>>>     __sys_sendto+0x1ee/0x200
+> >>>>     __x64_sys_sendto+0x24/0x30
+> >>>>     do_syscall_64+0x84/0x2f0
+> >>>>     ? __pfx_pollwake+0x10/0x10
+> >>>>     ? __rseq_handle_notify_resume+0xad/0x4c0
+> >>>>     ? restore_fpregs_from_fpstate+0x3c/0x90
+> >>>>     ? switch_fpu_return+0x5b/0xe0
+> >>>>     ? do_syscall_64+0x204/0x2f0
+> >>>>     ? do_syscall_64+0x204/0x2f0
+> >>>>     ? do_syscall_64+0x204/0x2f0
+> >>>>     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> >>>>     </TASK>
+> >>>>    [...]
+> >>>>    Kernel panic - not syncing: Fatal exception in interrupt
+> >>>>    Kernel Offset: 0x1c000000 from 0xffffffff81000000 (relocation ran=
+ge: 0xffffffff80000000-0xffffffffbfffffff)
+> >>>>
+> >>>> Instead use the skb destructor_arg pointer along with pointer taggin=
+g.
+> >>>> As pointers are always aligned to 8B, use the bottom bit to indicate
+> >>>> whether this a single address or an allocated struct containing seve=
+ral
+> >>>> addresses.
+> >>>>
+> >>>> Fixes: 30f241fcf52a ("xsk: Fix immature cq descriptor production")
+> >>>> Closes: https://lore.kernel.org/netdev/0435b904-f44f-48f8-afb0-68868=
+474bf1c@nop.hu/
+> >>>> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> >>>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> >>>> ---
+> >>>> v2: remove some leftovers on skb_build and simplify fragmented traff=
+ic
+> >>>> logic
+> >>>>
+> >>>> v3: drop skb extension approach, instead use pointer tagging in
+> >>>> destructor_arg to know whether we have a single address or an alloca=
+ted
+> >>>> struct with multiple ones. Also, move from bpf to net as requested
+> >>>>
+> >>>> v4: repost after rebasing
+> >>>>
+> >>>> v5: fixed increase logic so -EOVERFLOW is handled correctly as
+> >>>> suggested by Jason. Also dropped the acks/reviewed tags as code chan=
+ged.
+> >>>> ---
+> >>>>    net/xdp/xsk.c | 141 ++++++++++++++++++++++++++++++---------------=
+-----
+> >>>>    1 file changed, 85 insertions(+), 56 deletions(-)
+> >>>>
+> >>>> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> >>>> index 7b0c68a70888..f87cc4c89339 100644
+> >>>> --- a/net/xdp/xsk.c
+> >>>> +++ b/net/xdp/xsk.c
+> >>>> @@ -36,20 +36,13 @@
+> >>>>    #define TX_BATCH_SIZE 32
+> >>>>    #define MAX_PER_SOCKET_BUDGET 32
+> >>>>
+> >>>> -struct xsk_addr_node {
+> >>>> -       u64 addr;
+> >>>> -       struct list_head addr_node;
+> >>>> -};
+> >>>> -
+> >>>> -struct xsk_addr_head {
+> >>>> +struct xsk_addrs {
+> >>>>           u32 num_descs;
+> >>>> -       struct list_head addrs_list;
+> >>>> +       u64 addrs[MAX_SKB_FRAGS + 1];
+> >>>>    };
+> >>>>
+> >>>>    static struct kmem_cache *xsk_tx_generic_cache;
+> >>>>
+> >>>> -#define XSKCB(skb) ((struct xsk_addr_head *)((skb)->cb))
+> >>>> -
+> >>>>    void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool)
+> >>>>    {
+> >>>>           if (pool->cached_need_wakeup & XDP_WAKEUP_RX)
+> >>>> @@ -558,29 +551,63 @@ static int xsk_cq_reserve_locked(struct xsk_bu=
+ff_pool *pool)
+> >>>>           return ret;
+> >>>>    }
+> >>>>
+> >>>> +static bool xsk_skb_destructor_is_addr(struct sk_buff *skb)
+> >>>> +{
+> >>>> +       return (uintptr_t)skb_shinfo(skb)->destructor_arg & 0x1UL;
+> >>>> +}
+> >>>> +
+> >>>> +static u64 xsk_skb_destructor_get_addr(struct sk_buff *skb)
+> >>>> +{
+> >>>> +       return (u64)((uintptr_t)skb_shinfo(skb)->destructor_arg & ~0=
+x1UL);
+> >>>> +}
+> >>>> +
+> >>>> +static void xsk_inc_num_desc(struct sk_buff *skb)
+> >>>> +{
+> >>>> +       struct xsk_addrs *xsk_addr;
+> >>>> +
+> >>>> +       if (!xsk_skb_destructor_is_addr(skb)) {
+> >>>
+> >>> It's the condition that causes the above issues. Please see the
+> >>> following comment.
+> >>>
+> >>>> +               xsk_addr =3D (struct xsk_addrs *)skb_shinfo(skb)->de=
+structor_arg;
+> >>>> +               xsk_addr->num_descs++;
+> >>>> +       }
+> >>>> +}
+> >>>> +
+> >>>> +static u32 xsk_get_num_desc(struct sk_buff *skb)
+> >>>> +{
+> >>>> +       struct xsk_addrs *xsk_addr;
+> >>>> +
+> >>>> +       if (xsk_skb_destructor_is_addr(skb))
+> >>>> +               return 1;
+> >>>> +
+> >>>> +       xsk_addr =3D (struct xsk_addrs *)skb_shinfo(skb)->destructor=
+_arg;
+> >>>> +
+> >>>> +       return xsk_addr->num_descs;
+> >>>> +}
+> >>>> +
+> >>>>    static void xsk_cq_submit_addr_locked(struct xsk_buff_pool *pool,
+> >>>>                                         struct sk_buff *skb)
+> >>>>    {
+> >>>> -       struct xsk_addr_node *pos, *tmp;
+> >>>> +       u32 num_descs =3D xsk_get_num_desc(skb);
+> >>>> +       struct xsk_addrs *xsk_addr;
+> >>>>           u32 descs_processed =3D 0;
+> >>>>           unsigned long flags;
+> >>>> -       u32 idx;
+> >>>> +       u32 idx, i;
+> >>>>
+> >>>>           spin_lock_irqsave(&pool->cq_lock, flags);
+> >>>>           idx =3D xskq_get_prod(pool->cq);
+> >>>>
+> >>>> -       xskq_prod_write_addr(pool->cq, idx,
+> >>>> -                            (u64)(uintptr_t)skb_shinfo(skb)->destru=
+ctor_arg);
+> >>>> -       descs_processed++;
+> >>>> +       if (unlikely(num_descs > 1)) {
+> >>>> +               xsk_addr =3D (struct xsk_addrs *)skb_shinfo(skb)->de=
+structor_arg;
+> >>>>
+> >>>> -       if (unlikely(XSKCB(skb)->num_descs > 1)) {
+> >>>> -               list_for_each_entry_safe(pos, tmp, &XSKCB(skb)->addr=
+s_list, addr_node) {
+> >>>> +               for (i =3D 0; i < num_descs; i++) {
+> >>>>                           xskq_prod_write_addr(pool->cq, idx + descs=
+_processed,
+> >>>> -                                            pos->addr);
+> >>>> +                                            xsk_addr->addrs[i]);
+> >>>>                           descs_processed++;
+> >>>> -                       list_del(&pos->addr_node);
+> >>>> -                       kmem_cache_free(xsk_tx_generic_cache, pos);
+> >>>>                   }
+> >>>> +               kmem_cache_free(xsk_tx_generic_cache, xsk_addr);
+> >>>> +       } else {
+> >>>> +               xskq_prod_write_addr(pool->cq, idx,
+> >>>> +                                    xsk_skb_destructor_get_addr(skb=
+));
+> >>>> +               descs_processed++;
+> >>>>           }
+> >>>>           xskq_prod_submit_n(pool->cq, descs_processed);
+> >>>>           spin_unlock_irqrestore(&pool->cq_lock, flags);
+> >>>> @@ -595,16 +622,6 @@ static void xsk_cq_cancel_locked(struct xsk_buf=
+f_pool *pool, u32 n)
+> >>>>           spin_unlock_irqrestore(&pool->cq_lock, flags);
+> >>>>    }
+> >>>>
+> >>>> -static void xsk_inc_num_desc(struct sk_buff *skb)
+> >>>> -{
+> >>>> -       XSKCB(skb)->num_descs++;
+> >>>> -}
+> >>>> -
+> >>>> -static u32 xsk_get_num_desc(struct sk_buff *skb)
+> >>>> -{
+> >>>> -       return XSKCB(skb)->num_descs;
+> >>>> -}
+> >>>> -
+> >>>>    static void xsk_destruct_skb(struct sk_buff *skb)
+> >>>>    {
+> >>>>           struct xsk_tx_metadata_compl *compl =3D &skb_shinfo(skb)->=
+xsk_meta;
+> >>>> @@ -621,27 +638,22 @@ static void xsk_destruct_skb(struct sk_buff *s=
+kb)
+> >>>>    static void xsk_skb_init_misc(struct sk_buff *skb, struct xdp_soc=
+k *xs,
+> >>>>                                 u64 addr)
+> >>>>    {
+> >>>> -       BUILD_BUG_ON(sizeof(struct xsk_addr_head) > sizeof(skb->cb))=
+;
+> >>>> -       INIT_LIST_HEAD(&XSKCB(skb)->addrs_list);
+> >>>>           skb->dev =3D xs->dev;
+> >>>>           skb->priority =3D READ_ONCE(xs->sk.sk_priority);
+> >>>>           skb->mark =3D READ_ONCE(xs->sk.sk_mark);
+> >>>> -       XSKCB(skb)->num_descs =3D 0;
+> >>>>           skb->destructor =3D xsk_destruct_skb;
+> >>>> -       skb_shinfo(skb)->destructor_arg =3D (void *)(uintptr_t)addr;
+> >>>> +       skb_shinfo(skb)->destructor_arg =3D (void *)((uintptr_t)addr=
+ | 0x1UL);
+> >>>>    }
+> >>>>
+> >>>>    static void xsk_consume_skb(struct sk_buff *skb)
+> >>>>    {
+> >>>>           struct xdp_sock *xs =3D xdp_sk(skb->sk);
+> >>>>           u32 num_descs =3D xsk_get_num_desc(skb);
+> >>>> -       struct xsk_addr_node *pos, *tmp;
+> >>>> +       struct xsk_addrs *xsk_addr;
+> >>>>
+> >>>>           if (unlikely(num_descs > 1)) {
+> >>>> -               list_for_each_entry_safe(pos, tmp, &XSKCB(skb)->addr=
+s_list, addr_node) {
+> >>>> -                       list_del(&pos->addr_node);
+> >>>> -                       kmem_cache_free(xsk_tx_generic_cache, pos);
+> >>>> -               }
+> >>>> +               xsk_addr =3D (struct xsk_addrs *)skb_shinfo(skb)->de=
+structor_arg;
+> >>>> +               kmem_cache_free(xsk_tx_generic_cache, xsk_addr);
+> >>>>           }
+> >>>>
+> >>>>           skb->destructor =3D sock_wfree;
+> >>>> @@ -701,7 +713,6 @@ static struct sk_buff *xsk_build_skb_zerocopy(st=
+ruct xdp_sock *xs,
+> >>>>    {
+> >>>>           struct xsk_buff_pool *pool =3D xs->pool;
+> >>>>           u32 hr, len, ts, offset, copy, copied;
+> >>>> -       struct xsk_addr_node *xsk_addr;
+> >>>>           struct sk_buff *skb =3D xs->skb;
+> >>>>           struct page *page;
+> >>>>           void *buffer;
+> >>>> @@ -727,16 +738,26 @@ static struct sk_buff *xsk_build_skb_zerocopy(=
+struct xdp_sock *xs,
+> >>>>                                   return ERR_PTR(err);
+> >>>>                   }
+> >>>>           } else {
+> >>>> -               xsk_addr =3D kmem_cache_zalloc(xsk_tx_generic_cache,=
+ GFP_KERNEL);
+> >>>> -               if (!xsk_addr)
+> >>>> -                       return ERR_PTR(-ENOMEM);
+> >>>> +               struct xsk_addrs *xsk_addr;
+> >>>> +
+> >>>> +               if (xsk_skb_destructor_is_addr(skb)) {
+> >>>> +                       xsk_addr =3D kmem_cache_zalloc(xsk_tx_generi=
+c_cache,
+> >>>> +                                                    GFP_KERNEL);
+> >>>> +                       if (!xsk_addr)
+> >>>> +                               return ERR_PTR(-ENOMEM);
+> >>>> +
+> >>>> +                       xsk_addr->num_descs =3D 1;
+> >>>
+> >>> At this point, actually @num_descs should be equal to 2. I know it
+> >>> will be incremented by one at the end of xsk_build_skb().My concern
+> >>
+> >> Why? if we reach this it means this is the first time we see fragmente=
+d
+> >> traffic therefore we allocate xsk_addrs struct, store the previous ume=
+m
+> >> address in addrs[0] and num_descs =3D 1 and finally if no -EOVERFLOW
+> >> happens then the new desc->addr is added to addrs[num_descs] (which is
+> >> addrs[1]).
+> >>
+> >> Later, at the end of xsk_build_skb() or if -EOVERFLOW happens we
+> >> increase num_descs so if xsk_cq_cancel_locked() or
+> >> xsk_cq_submit_addr_locked() is called we have the right number of
+> >> descriptors.
+> >>
+> >> If we set @num_descs to 2 here, then when do we increase? I do not
+> >> understand that.
+> >
+> > I'm not saying the above logic is not right :)
+> >
+> >>
+> >>> is when skb only carries one descriptor, I don't see any place settin=
+g
+> >>> @num_descs to 1?
+> >>>
+> >>
+> >> When skb carries only one descriptor i.e traffic isn't segmented then
+> >> xsk_addr struct isn't allocated and destructor_arg is carrying just an
+> >> umem address.
+> >>
+> >> This is why xsk_get_num_desc() returns 1 if destructor_arg is an umem
+> >> address, because it means there is just a single descriptor.
+> >
+> > Here, It's the case that I'm worried about.
+> >
+> > Ah, well, I see your point. I previously thought this function would
+> > return @num_descs directly.
+> >
+> > Surely it works. However, from my perspective I feel it's a bit weird
+> > because when the skb only carries one desc, the @num_descs remains
+> > zero which doesn't reflect the fact. I understand you use that
+> > function to return one instead of reading @num_descs in this case.
+> > Just a bit weird. I'm not sure what Maciej's opinion is here.
+> >
+>
+> FWIW, @num_descs isn't zero it just doesn't exist. num_descs is a field
+> of xsk_addr struct which is only allocated for fragmented traffic. This
+> is why xsk_get_num_desc() must be always used.
 
-I ran this locally three more times and this false positive didn't
-reproduce, but I'll see if the CI has enough logs to figure out where it
-got confused.
+Right, I'm totally fine with it. And I don't think you need to repost
+it with that minor change unless Maciej asked you to do so :)
 
-Regardless, I'm doing periodic checks for patterns of false positives
-and fine tuning the prompts.
+Thanks,
+Jason
 
--chris
+>
+> Thanks,
+> Fernando.
+>
+> > Anyway, thanks as always for fixing this:
+> > Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+> >
+> > Thanks,
+> > Jason
+> >
+> >
+> >>
+> >>>> +                       xsk_addr->addrs[0] =3D xsk_skb_destructor_ge=
+t_addr(skb);
+> >>>> +                       skb_shinfo(skb)->destructor_arg =3D (void *)=
+xsk_addr;
+> >>>> +               } else {
+> >>>> +                       xsk_addr =3D (struct xsk_addrs *)skb_shinfo(=
+skb)->destructor_arg;
+> >>>> +               }
+> >>>>
+> >>>>                   /* in case of -EOVERFLOW that could happen below,
+> >>>>                    * xsk_consume_skb() will release this node as who=
+le skb
+> >>>>                    * would be dropped, which implies freeing all lis=
+t elements
+> >>>>                    */
+> >>>> -               xsk_addr->addr =3D desc->addr;
+> >>>> -               list_add_tail(&xsk_addr->addr_node, &XSKCB(skb)->add=
+rs_list);
+> >>>> +               xsk_addr->addrs[xsk_addr->num_descs] =3D desc->addr;
+> >>>>           }
+> >>>>
+> >>>>           len =3D desc->len;
+> >>>> @@ -813,10 +834,25 @@ static struct sk_buff *xsk_build_skb(struct xd=
+p_sock *xs,
+> >>>>                           }
+> >>>>                   } else {
+> >>>>                           int nr_frags =3D skb_shinfo(skb)->nr_frags=
+;
+> >>>> -                       struct xsk_addr_node *xsk_addr;
+> >>>> +                       struct xsk_addrs *xsk_addr;
+> >>>>                           struct page *page;
+> >>>>                           u8 *vaddr;
+> >>>>
+> >>>> +                       if (xsk_skb_destructor_is_addr(skb)) {
+> >>>> +                               xsk_addr =3D kmem_cache_zalloc(xsk_t=
+x_generic_cache,
+> >>>> +                                                            GFP_KER=
+NEL);
+> >>>> +                               if (!xsk_addr) {
+> >>>> +                                       err =3D -ENOMEM;
+> >>>> +                                       goto free_err;
+> >>>> +                               }
+> >>>> +
+> >>>> +                               xsk_addr->num_descs =3D 1;
+> >>>
+> >>> same for here.
+> >>>
+> >>>> +                               xsk_addr->addrs[0] =3D xsk_skb_destr=
+uctor_get_addr(skb);
+> >>>> +                               skb_shinfo(skb)->destructor_arg =3D =
+(void *)xsk_addr;
+> >>>> +                       } else {
+> >>>> +                               xsk_addr =3D (struct xsk_addrs *)skb=
+_shinfo(skb)->destructor_arg;
+> >>>> +                       }
+> >>>> +
+> >>>>                           if (unlikely(nr_frags =3D=3D (MAX_SKB_FRAG=
+S - 1) && xp_mb_desc(desc))) {
+> >>>>                                   err =3D -EOVERFLOW;
+> >>>>                                   goto free_err;
+> >>>> @@ -828,13 +864,6 @@ static struct sk_buff *xsk_build_skb(struct xdp=
+_sock *xs,
+> >>>>                                   goto free_err;
+> >>>>                           }
+> >>>>
+> >>>> -                       xsk_addr =3D kmem_cache_zalloc(xsk_tx_generi=
+c_cache, GFP_KERNEL);
+> >>>> -                       if (!xsk_addr) {
+> >>>> -                               __free_page(page);
+> >>>> -                               err =3D -ENOMEM;
+> >>>> -                               goto free_err;
+> >>>> -                       }
+> >>>> -
+> >>>>                           vaddr =3D kmap_local_page(page);
+> >>>>                           memcpy(vaddr, buffer, len);
+> >>>>                           kunmap_local(vaddr);
+> >>>> @@ -842,12 +871,12 @@ static struct sk_buff *xsk_build_skb(struct xd=
+p_sock *xs,
+> >>>>                           skb_add_rx_frag(skb, nr_frags, page, 0, le=
+n, PAGE_SIZE);
+> >>>>                           refcount_add(PAGE_SIZE, &xs->sk.sk_wmem_al=
+loc);
+> >>>>
+> >>>> -                       xsk_addr->addr =3D desc->addr;
+> >>>> -                       list_add_tail(&xsk_addr->addr_node, &XSKCB(s=
+kb)->addrs_list);
+> >>>> +                       xsk_addr->addrs[xsk_addr->num_descs] =3D des=
+c->addr;
+> >>>>                   }
+> >>>>           }
+> >>>>
+> >>>> -       xsk_inc_num_desc(skb);
+> >>>> +       if (!xsk_skb_destructor_is_addr(skb))
+> >>>
+> >>> nit: duplicate if statement
+> >>>
+> >>> IIUC, I'm afraid you have to repost this patch after 24 hour...
+> >>>
+> >>
+> >> Thanks, yes this if statement isn't necessary. Thanks! I will repost
+> >> after 24 hours.
+> >>
+> >>> Thanks,
+> >>> Jason
+> >>>
+> >>>> +               xsk_inc_num_desc(skb);
+> >>>>
+> >>>>           return skb;
+> >>>>
+> >>>> @@ -1904,7 +1933,7 @@ static int __init xsk_init(void)
+> >>>>                   goto out_pernet;
+> >>>>
+> >>>>           xsk_tx_generic_cache =3D kmem_cache_create("xsk_generic_xm=
+it_cache",
+> >>>> -                                                sizeof(struct xsk_a=
+ddr_node),
+> >>>> +                                                sizeof(struct xsk_a=
+ddrs),
+> >>>>                                                    0, SLAB_HWCACHE_A=
+LIGN, NULL);
+> >>>>           if (!xsk_tx_generic_cache) {
+> >>>>                   err =3D -ENOMEM;
+> >>>> --
+> >>>> 2.51.1
+> >>>>
+> >>>
+> >>
+>
