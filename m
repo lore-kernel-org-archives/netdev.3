@@ -1,158 +1,224 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from localhost.localdomain (unknown [147.136.157.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BF834CFC4
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 14:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196CE258ECB;
+	Fri, 21 Nov 2025 14:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763735107; cv=none; b=CQ1TvVPa0l4YEglUdups4WrCd8AnaytqFxvln52ALU+EtTojIQb2ssGT/Z/MzG3D2WO5mmd3u782S+a0kvTOM3BT4a2IXWvOCtqg7+SMRCifWNjnFCFFo4ygA8ikFyN6ZPlWLmakojgqmG+86v/u3ASPY2HP+X5uWCZ/fG1fX8A=
+	t=1763735646; cv=none; b=L/gj7H63BWWnYyKujrQ61zzYZchi9gLv4oHtf+W46Ya3sRt0qvrSEkGOsmzwoV60jM2PQZYAexcwK/aR2EVO7SLjAcS3sr4I0hSMSISL+03/iVoouzCnzlbdh0yWOq+WyP+cVEEj+y+7KoqivOavhZW9bNkRabERnd6BOxYv91g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763735107; c=relaxed/simple;
-	bh=o9M2JHEbNISdyNlluS6kSN7Bd+fpVWxyCYhFzKhFfuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gGgtgdvlr1Pl4F4y58jVOf8LSdpL1n5FxmyOjbPQbuHzWIod6rjpzIEP7FmenyNz/9sRrmZmlnKt8IHZt5aNaB2TU41Q0v1BBHXuRRtFAZt6yYn/8YwXPMZvvahNF+H6T74YFeItJS9KSXlglPLBQR3uy9xl+HYuJ8sPtnVJItk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fpKudwSD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kcH+BBRB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fpKudwSD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kcH+BBRB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763735104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GTtpdEcKnjIG7GqKPBF/r/wV70DsgCEF4sphSKTj1uk=;
-	b=fpKudwSDD64ydN1EKHyS+yQWPzu2BQOo1IHHkT1TaW+8mlmVYjuooos7+LClzeoJVNDTGl
-	rO+vKCV5yLF8nnD7SHHDEaGA4hComt6BTZ+vh3RDsw698u4kdet+5taqYWPOiEo6N/LiBi
-	qyF9IFJ0uvtMqAJrMbmp638k7gDu+R4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-ifghojrZOuaKbEJ0XUaJ5A-1; Fri, 21 Nov 2025 09:25:02 -0500
-X-MC-Unique: ifghojrZOuaKbEJ0XUaJ5A-1
-X-Mimecast-MFC-AGG-ID: ifghojrZOuaKbEJ0XUaJ5A_1763735101
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b7178ad1a7dso310694566b.1
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 06:25:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1763735101; x=1764339901; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GTtpdEcKnjIG7GqKPBF/r/wV70DsgCEF4sphSKTj1uk=;
-        b=kcH+BBRBYUiOgCMbacpQE4N2AofhD9MFL4P5z7Cfmz5qwGEEM36KOW+GlcVB42wPhc
-         lnAxc5GkxxHb2yT4Pz4G5/zurVOqF4RlT/g6jPASiA6eI4eRaZwIheKw11L+J2UGgkSW
-         n49XFjxwuhZqSKO03kmcxzOvnhhMGHSeA98lJeZnKQ6sbsaf0sosB72MH1Rj5fmyhQCx
-         l6NrJaLUIrUJcUD8a8TL6e+BlkUbkUZJGRVG4+RT0aDqZ7tF0gdKVGFhQTKfn+DCDL9b
-         +yaxGXPH47GB/pf6g5kxXPx4wKGURjLGUh5HW2Noz3cVcVwWW970zFWjav6O4dz+aj7k
-         W33Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763735101; x=1764339901;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GTtpdEcKnjIG7GqKPBF/r/wV70DsgCEF4sphSKTj1uk=;
-        b=TfiTrliKNWSBk4S2B3yD4cvdEV+iEiWiabE/m/xGsG/H5ZWs1Fis/zWeHCSV0ioYEs
-         QoT72m1hPS3y2KM/AIa1z2T82sCrLqIQbhIp0QqVYLW6dHAnS9KsdrdDA3ZaK+B4j4gW
-         jIiQZLSk3LIDqVFwAfag0hBHWbdmzOrQyvY9N/gzZemoB4eGaxoMvkNUwrsfLqO5Disc
-         aGXvAw7PucHSaTRdIjQhh3SLXcYBE17taSqbUVpmRwfvrY2L/8HkEqVZFAq9VTAnxnea
-         KW4/jF7XV5iyMAAV3UlJiclw859AyHl8/8tFu/9DCyeZmN377DolhZ4/9fBZsllIm9nm
-         JDIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyjyIoD9KAt9mVBp2L32scdlR2vvzTN/a7HS+K06FiSQC4ZOPhgYXq67A6SV/fVx1J2TcvjMw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5gzrEVKcEDNgA+Vf2PiNsey3UWblIXGPlEuzHgT5woyh0gfBn
-	Z0RHhZvtf0ZF6Aok8xXvZ8u/gUbtKosWLaTehKmFb5yiviX43YPqLHHBY6CFaSEdCrCU9v527To
-	O9evJ2I1oIQzBxNu37kjdpe540xb9pm/QXJNwA+mRljpIGF6miSCOkIzurg==
-X-Gm-Gg: ASbGncvtpaXviqsZ7CfeIS8iLNUTBQKe24gnax/QmqNJJf1KeYeHzQh6o3Go5iSs9Wj
-	PrQhwgb1xHDNwdDxxFZuLcu1qKjAl8huSMpz5QkGefcA2FgUgUqmU+HYmrdRkodviknDVqETzsj
-	57NiZ7Qq7esi4Wh3mAYE/+viqXOtc4VUXSJp8Zm1yPuFPPSyon/7FUEIjc1ItXcBpw/uNNZsObs
-	kcKU0Lo8LIhnvJEgHEoLck7nC2QfsoQLi3y824W1Fm+GXYzJxqNoNbfapW+LRpWv8bDTbyJ/XAn
-	IdUT23nc9VqgeUQnFkvqZN1JdEeV264t7ViicBFuQ5X/OddGoof2fCf15+ofCCkZSS9pTQxeQgC
-	Ty9VnXFF5SoiSobjmPM6H48b5HX8pA6OdVXANxIMRsfHQrFjRgLeDnUeFVsP9Bg==
-X-Received: by 2002:a17:907:78a:b0:b73:7a44:b4d5 with SMTP id a640c23a62f3a-b767173160fmr270335566b.41.1763735101334;
-        Fri, 21 Nov 2025 06:25:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtSacfGCKQN2XL4Y7amUQs6PWLpmUaZtWzXvHpS37APdsI6uvQyTUfhHU+LqKi/Zo8NS2htQ==
-X-Received: by 2002:a17:907:78a:b0:b73:7a44:b4d5 with SMTP id a640c23a62f3a-b767173160fmr270330066b.41.1763735100857;
-        Fri, 21 Nov 2025 06:25:00 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-139-91.business.telecomitalia.it. [87.12.139.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654d73430sm477526366b.24.2025.11.21.06.24.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 06:25:00 -0800 (PST)
-Date: Fri, 21 Nov 2025 15:24:57 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, berrange@redhat.com, 
-	Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v11 04/13] virtio: set skb owner of
- virtio_transport_reset_no_sock() reply
-Message-ID: <zxusewvyolqclv247ezr4zflxkjmyo3jvxu2c3xxeggtsbgv5h@ocp6lxkerr6t>
-References: <20251120-vsock-vmtest-v11-0-55cbc80249a7@meta.com>
- <20251120-vsock-vmtest-v11-4-55cbc80249a7@meta.com>
+	s=arc-20240116; t=1763735646; c=relaxed/simple;
+	bh=AQADdyfLtOVxgA8NdEMOhMNPPleNcF5QRJU044YyD00=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aQ+9DxToneLh5Q9HoGJfWk9DxbLyylPB2ThRELdBOiPe6asopa72KHxB2kujiPlnS5cLQJtUTbD73DQhfdI/eKLXomE+WBxXVZRbAfzQavcG8+G1c5Z11CbTOUKipnXihKDuEgwGuo7wB6bF2fROeBtK5oP8liCTNKjEDzjWqeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
+Received: by localhost.localdomain (Postfix, from userid 1007)
+	id 8DF8A8B2A17; Fri, 21 Nov 2025 22:24:01 +0800 (+08)
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf-next v3 1/3] bpf, sockmap: Fix incorrect copied_seq calculation
+Date: Fri, 21 Nov 2025 22:23:22 +0800
+Message-ID: <20251121142352.297588-2-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251121142352.297588-1-jiayuan.chen@linux.dev>
+References: <20251121142352.297588-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20251120-vsock-vmtest-v11-4-55cbc80249a7@meta.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 20, 2025 at 09:44:36PM -0800, Bobby Eshleman wrote:
->From: Bobby Eshleman <bobbyeshleman@meta.com>
->
->Associate reply packets with the sending socket. When vsock must reply
->with an RST packet and there exists a sending socket (e.g., for
->loopback), setting the skb owner to the socket correctly handles
->reference counting between the skb and sk (i.e., the sk stays alive
->until the skb is freed).
->
->This allows the net namespace to be used for socket lookups for the
->duration of the reply skb's lifetime, preventing race conditions between
->the namespace lifecycle and vsock socket search using the namespace
->pointer.
->
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
->Changes in v11:
->- move before adding to netns support (Stefano)
->
->Changes in v10:
->- break this out into its own patch for easy revert (Stefano)
->---
-> net/vmw_vsock/virtio_transport_common.c | 6 ++++++
-> 1 file changed, 6 insertions(+)
+A socket using sockmap has its own independent receive queue: ingress_msg.
+This queue may contain data from its own protocol stack or from other
+sockets.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+The issue is that when reading from ingress_msg, we update tp->copied_seq
+by default. However, if the data is not from its own protocol stack,
+tcp->rcv_nxt is not increased. Later, if we convert this socket to a
+native socket, reading from this socket may fail because copied_seq might
+be significantly larger than rcv_nxt.
 
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index dcc8a1d5851e..675eb9d83549 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1165,6 +1165,12 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
-> 		.op = VIRTIO_VSOCK_OP_RST,
-> 		.type = le16_to_cpu(hdr->type),
-> 		.reply = true,
->+
->+		/* Set sk owner to socket we are replying to (may be NULL for
->+		 * non-loopback). This keeps a reference to the sock and
->+		 * sock_net(sk) until the reply skb is freed.
->+		 */
->+		.vsk = vsock_sk(skb->sk),
-> 	};
-> 	struct sk_buff *reply;
->
->
->-- 
->2.47.3
->
+This fix also addresses the syzkaller-reported bug referenced in the
+Closes tag.
+
+This patch marks the skmsg objects in ingress_msg. When reading, we update
+copied_seq only if the data is from its own protocol stack.
+
+                                                     FD1:read()
+                                                     --  FD1->copied_seq++
+                                                         |  [read data]
+                                                         |
+                                [enqueue data]           v
+                  [sockmap]     -> ingress to self ->  ingress_msg queue
+FD1 native stack  ------>                                 ^
+-- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
+                                       |                  |
+                                       |             ingress to FD1
+                                       v                  ^
+                                      ...                 |  [sockmap]
+                                                     FD2 native stack
+
+Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
+Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ include/linux/skmsg.h |  2 ++
+ net/core/skmsg.c      | 25 ++++++++++++++++++++++---
+ net/ipv4/tcp_bpf.c    |  5 +++--
+ 3 files changed, 27 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 49847888c287..0323a2b6cf5e 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -141,6 +141,8 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ 			     struct sk_msg *msg, u32 bytes);
+ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 		   int len, int flags);
++int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		     int len, int flags, int *from_self_copied);
+ bool sk_msg_is_readable(struct sock *sk);
+ 
+ static inline void sk_msg_check_to_free(struct sk_msg *msg, u32 i, u32 bytes)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2ac7731e1e0a..d73e03f7713a 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -409,14 +409,14 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
+ }
+ EXPORT_SYMBOL_GPL(sk_msg_memcopy_from_iter);
+ 
+-/* Receive sk_msg from psock->ingress_msg to @msg. */
+-int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+-		   int len, int flags)
++int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		     int len, int flags, int *from_self_copied)
+ {
+ 	struct iov_iter *iter = &msg->msg_iter;
+ 	int peek = flags & MSG_PEEK;
+ 	struct sk_msg *msg_rx;
+ 	int i, copied = 0;
++	bool to_self;
+ 
+ 	msg_rx = sk_psock_peek_msg(psock);
+ 	while (copied != len) {
+@@ -425,6 +425,7 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 		if (unlikely(!msg_rx))
+ 			break;
+ 
++		to_self = msg_rx->sk == sk;
+ 		i = msg_rx->sg.start;
+ 		do {
+ 			struct page *page;
+@@ -443,6 +444,9 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 			}
+ 
+ 			copied += copy;
++			if (to_self && from_self_copied)
++				*from_self_copied += copy;
++
+ 			if (likely(!peek)) {
+ 				sge->offset += copy;
+ 				sge->length -= copy;
+@@ -487,6 +491,14 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ out:
+ 	return copied;
+ }
++EXPORT_SYMBOL_GPL(__sk_msg_recvmsg);
++
++/* Receive sk_msg from psock->ingress_msg to @msg. */
++int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
++		   int len, int flags)
++{
++	return __sk_msg_recvmsg(sk, psock, msg, len, flags, NULL);
++}
+ EXPORT_SYMBOL_GPL(sk_msg_recvmsg);
+ 
+ bool sk_msg_is_readable(struct sock *sk)
+@@ -616,6 +628,12 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ 	if (unlikely(!msg))
+ 		return -EAGAIN;
+ 	skb_set_owner_r(skb, sk);
++
++	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
++	 * data originates from the socket's own protocol stack. No need to
++	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
++	 */
++	msg->sk = sk;
+ 	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
+ 	if (err < 0)
+ 		kfree(msg);
+@@ -909,6 +927,7 @@ int sk_psock_msg_verdict(struct sock *sk, struct sk_psock *psock,
+ 	sk_msg_compute_data_pointers(msg);
+ 	msg->sk = sk;
+ 	ret = bpf_prog_run_pin_on_cpu(prog, msg);
++	msg->sk = NULL;
+ 	ret = sk_psock_map_verd(ret, msg->sk_redir);
+ 	psock->apply_bytes = msg->apply_bytes;
+ 	if (ret == __SK_REDIRECT) {
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index a268e1595b22..6332fc36ffe6 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -226,6 +226,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 	int peek = flags & MSG_PEEK;
+ 	struct sk_psock *psock;
+ 	struct tcp_sock *tcp;
++	int from_self_copied = 0;
+ 	int copied = 0;
+ 	u32 seq;
+ 
+@@ -262,7 +263,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 	}
+ 
+ msg_bytes_ready:
+-	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
++	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &from_self_copied);
+ 	/* The typical case for EFAULT is the socket was gracefully
+ 	 * shutdown with a FIN pkt. So check here the other case is
+ 	 * some error on copy_page_to_iter which would be unexpected.
+@@ -277,7 +278,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 			goto out;
+ 		}
+ 	}
+-	seq += copied;
++	seq += from_self_copied;
+ 	if (!copied) {
+ 		long timeo;
+ 		int data;
+-- 
+2.43.0
 
