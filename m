@@ -1,239 +1,140 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2732F0C7E
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 11:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABBF346FDF
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 11:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763724399; cv=none; b=HPlpYTnxt5VjcqWx3JqU4809BcJHx190kyGe6oCDXIR/FsHR6tf1ifjfGUrZDxm33pM/c5hcTYRgjPG9XXAffdwOR4Q3lC87nVXvqb6LlsGRieKq/ZgIBuTBbPPdUB8xHsU7BfwIqVKnKXN4qnu+JgllLm3XoI3BjEPLkQhTUoc=
+	t=1763724967; cv=none; b=T6zJ905A3hP4/K6yaHnmWTQdE2ESvc5tstsG1IKt6KsPXbgR/yvVFp7eEhvLK2qJN2eJFdjeuDEUXUGlbmzSumdNfHEzRNmjT+SAJ5+Q46I3Mxtox5rL4Kn6BNMlXrJ+ckDCYBQa2KWjo4LYtYqb9SbqurEzM+lArSV8fZI4wqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763724399; c=relaxed/simple;
-	bh=Up/1xSeBkB0p2W4yVcqFz2y90IusIdqbhG7Z3DkQyOM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S3qRvcbASLQpwsp+Bdito7Aw1f8IuU+tjed3+C3Eje5KvyHu9U6zQ19hETdO7cRHz1/g4Y1y8BT61ValfbYqlIw5redrKnGg+LnID0I32xjOUclpliYnhGX+uhQcoGZGS2jJj4B3C9cZEqmMlbkC/WoOeFLVOtMD6uR/m6XWsVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1763724967; c=relaxed/simple;
+	bh=ftRTYtj+MIdNdrTL102wop7nvVmtJJk9dP87Q3JUdCo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aXAWIKeaGGmDRbpXzu4G4iqeqrCdWhZiTlVIqbgu5rN4hO9I01vtzXg5MbBpn/YYCNg7ei4fTVVdypGVybBou3c8lzMkZUwWmDhreCSXZwIklFmJIUXYMaWiERizQ+k8AXiYD3IdrkEFpCmjv1H0v2j7ypQFcXtLvWDGr/qyBUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dV6TiyO6; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-45085a4ab72so830614b6e.1
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:26:37 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dV6TiyO6"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4779d47be12so15055985e9.2
+        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763724964; x=1764329764; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L1iu1X2rkalrqKSnE+I8dJ8h9QZAQz7+DuxtVRZln6A=;
+        b=dV6TiyO6yeyYY0Zt5haoYB/ex7ipCl4ini7vVhbp1BNMcHOlxaxQMVEGEMNkWLbZZJ
+         x7iGB/2y1cfecRyA1/Y4MVvDGQA6Q73aDUk0JPQc29LIv+Q6eviUX5flNG7PjU1ymGD9
+         UYB4c3jdMzuwbVYEI9raDzTb/60Dn4ByKAXkgi4luHtYkLj8eC0pFgxwfeu5FVElOZVK
+         nL2QCmcItRxP1Lk9GCozzPbZiIsARMi2HEfqKHEMzfZG0cTDQhFGLApd/N+JGzb2wXxJ
+         k5R+hFlUQM85c9upG81eaY4uIbl5bw58dP1ACsCcUf51fah2NxZ0APS2S0yLlW5VYUgD
+         gxDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763724397; x=1764329197;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HeQ3fv25z6pOuPgCHIWGZAjgHMbUF84qDxUXEpKs5xA=;
-        b=ZJm5BnLpp4nSHv4wC2zlAKufs9A5idnuMGj4H5z/lHGPyyJLqbFY4kQkbZ6bhv1s8X
-         u30e7/ploVanQwnUFDsxzG0unPvGUZ02vyoarWw/vLOcMujqXwA5MJ9GH/HI8UjuGIUP
-         TI4zjUVg0wUyqC5nx0KsQ4SUM3wZ7eJ5XWMQ9VXDFKyOkQu/FAWU9KdCROs1SuaDFbt3
-         3qoFYsmPZnYZsR1jfIYd4I2ANVI1yL3/Y6jrZDUCIPWmr74hjIQ2Ji7PHPBWBUK6xDCs
-         M3axi38Qf9phTuG5p8S+D/7zHrk2szTVxXB6yhO8xzQQBpufQcxAPjIMLIGPfPTSvRCm
-         +MLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUM+jMv9W0Y29zQehrdlSgFTUTAEYYDR+V4PitOkiuq1qBJiK+HUbiBIGcba4Ka14s7n7y8x0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQeBYi7GrjPHdYXw0+ygXh2YkDRyPqxLJerkAjc4wS+Vvoh+Br
-	pm2sqxLSwJ13f0WzE+Gn6Tow8EdO78WzQg06p3jEryGR66FzDPK3rGgS
-X-Gm-Gg: ASbGnctznIw2EQKigqTONoaasGNKF3lZBqIkvLZZ37koTRi4F4C1y8jayh7iXEjGfBB
-	wtEvPHijVJehY7k1p632LA4rlMByNt6Dg2L9x6Im/v9eE1+avPNuL3ZKIT24aIgy58SNdiEooVG
-	mOzvKTIt0LNcgRz9p/oSdbtiQp6y02ZAivbU8ZMEP3Y2GH2HoAK2BbP4lyDpnE/SyWVHmDnF1UO
-	hiX9YyUC0qC7fDIaofPbTtC83K5/naebmr9t4f/MEMshNByh8J7FBqj43KgNl/R1f94kxQdG87r
-	KgogQJ9ua1pWv2bwYaSzaLBeDpL20g3/HEPzDFY38BqF8bE+lRBBJjtUMQXanwM6K0PCoR9ih27
-	IM3X3+oYrcGycILQ/OnNTjcO4m6gFc3+M2dD7RDTOUzoS1epMNQaaoamATbQz7yi8bwYVq0WNcp
-	AP9e/k5mJcLaAGHw==
-X-Google-Smtp-Source: AGHT+IFJloyur0rQ9obs1zwpoSsUNIFlCUAqnRwKRBTiMrW8I69Xl0Dp8rUnZV0AbBobB8c+GozWew==
-X-Received: by 2002:a05:6808:4fe5:b0:44f:6d6d:4a04 with SMTP id 5614622812f47-45112cf9e04mr777367b6e.58.1763724396661;
-        Fri, 21 Nov 2025 03:26:36 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:41::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65782a38456sm1567810eaf.3.2025.11.21.03.26.35
+        d=1e100.net; s=20230601; t=1763724964; x=1764329764;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L1iu1X2rkalrqKSnE+I8dJ8h9QZAQz7+DuxtVRZln6A=;
+        b=cDdFOEKCVV5uYhzIGVQldEvzEWriQSd57OrPYEaAOC+U374oVj+lzsnJjABU5n6m6k
+         xLFYEUKVDtqPIwoGSnw0VhvK7jJOg9yZaFtzCzlKmfvXj/LYPq0xOOvD7Xt2lss3E41J
+         IBMR6sFFEpwq28VXGFUzxLcbpKcf8j1wrh1dKbKJnYGWlmsIFkJbmDOs6pTtYCmMdoAF
+         YqUKo3GxcQWfbzGkYDTVEQuKrbCuH8UE7+iqtuKLXh/f8oi0hwjKf3MWMYAmCpMV5rry
+         v15Zhhux+EJ0qmWXiOnDxn3g9jZWHtQrruqPtEwXEwfLsb9Yjhh1DTHEoYQj8CUnQ8oY
+         PxZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIlcnYRdR3aL9eaJZx0JYvxX59xsYLBPsXSj6ETsUR3iRZxfGxCEWXniF9013LFSJJi6AbNJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUygxXLy8o+4WYed9kJQRN9VOx0IpzquNnIUs78gRl3ky1GMoD
+	bd276vxj2Y0Ro532p+00fzA84o3G8pM7M8eC0qsof00ZGPhuibpwckcG
+X-Gm-Gg: ASbGncvrzPicFyJeXaIeOiV6tK2PeSmCGzyaYuNJmvYZeflF4/IV5EV22zIOd1lon7K
+	v5vA4JgBAj6DIq0CJ/Mf9qRF0FBlxVOYlxvtx4QHdsQhnjbopJHBfpvohN03lbHH5esJNum1lm9
+	Ptli/NJ2YmTM/qdAqlhh6nC0yhEgdcQW7Je97FgkNhUpS1Rlv69IdI7bpAsXAlHmHjsadLXaahS
+	/gT9H9DHWhclKDIYZ44McpzYPWpPzjVK3oRo2XxuTU7ezKBHQfgtT8YvIpyc2SOP2jQE/gYNMtE
+	ed6KdOPp39Qq5ZTcy2pL+QWNtQsJZUqErN7FA8cxKBmF7TbZ/5OfhnTaW8LQV98hTHJNDOuSxAQ
+	xGR3nhpN6KBEL3cLpfYZdmroceJ19O7r065yuLAS05G2VKY/YWx3l850NoZpu9AIV6h1KmuVJJb
+	ICy9qddMe7IKB5hx3LgmZDbP5ds0jEOfiklNg=
+X-Google-Smtp-Source: AGHT+IENbIixTtlLAm9EX+vhw2xhihNg0J8d0rCtdFjldUByc3WPIQ755fW/IkVXGwQuhSLkmIA/DQ==
+X-Received: by 2002:a05:600c:354b:b0:46f:b327:ecfb with SMTP id 5b1f17b1804b1-477c0184c45mr19858395e9.9.1763724963551;
+        Fri, 21 Nov 2025 03:36:03 -0800 (PST)
+Received: from iku.Home ([2a06:5906:61b:2d00:9cce:8ab9:bc72:76cd])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf3558d5sm38732465e9.1.2025.11.21.03.36.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 03:26:36 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 21 Nov 2025 03:26:08 -0800
-Subject: [PATCH RFC net-next 2/2] netconsole: add CONFIG_NETCONSOLE_NBCON
- for nbcon support
+        Fri, 21 Nov 2025 03:36:03 -0800 (PST)
+From: Prabhakar <prabhakar.csengg@gmail.com>
+X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>
+Cc: linux-renesas-soc@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Prabhakar <prabhakar.csengg@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH net-next 00/11] Add ETHSW support for Renesas RZ/T2H and RZ/N2H SoCs
+Date: Fri, 21 Nov 2025 11:35:26 +0000
+Message-ID: <20251121113553.2955854-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251121-nbcon-v1-2-503d17b2b4af@debian.org>
-References: <20251121-nbcon-v1-0-503d17b2b4af@debian.org>
-In-Reply-To: <20251121-nbcon-v1-0-503d17b2b4af@debian.org>
-To: Breno Leitao <leitao@debian.org>, Jakub Kicinski <kuba@kernel.org>, 
- horms@kernel.org, efault@gmx.de, john.ogness@linutronix.de, 
- pmladek@suse.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, calvin@wbinvd.org, asml.silence@gmail.com, 
- kernel-team@meta.com, gustavold@gmail.com, asantostc@gmail.com
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4833; i=leitao@debian.org;
- h=from:subject:message-id; bh=Up/1xSeBkB0p2W4yVcqFz2y90IusIdqbhG7Z3DkQyOM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpIExoZ2WNk6LTQhAcz9lZEqVAXeRsGFwqZGYaR
- 1CcayasFTKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaSBMaAAKCRA1o5Of/Hh3
- bd+ZEACGDuzNg3IOH6RiePIP06/7OidbUKYcoTtMZY/n08GFE/EFxsXgvX3iJ1/5PJwz3gpLoi2
- 2xs0hlsJZLeBnU92MkeJJK2GcJ2XV/GzXewvnyKS048jlA9Z/FjfGL3IzR8IGeXnpJcmEPDkkyD
- lKZcUwc7niTGDkuwDMOHDhnH2L2NwOadwvENYdMOPtrblpYYmTYppty+7COcvPotD0Hw/uwBq65
- ibcRriGq2CNxinDXa3nRbvm8BPBAsFrMggnBhhLCAceg9i+RqPCpihIzat4eBjgPxR58rqexrAt
- 9F7tpL0yrU2NTMtdSHK1nuJ51soZUMV81QFhbsVxZ5cxOWko89JsAHDwzRiv6b0F9UnljiMqcfx
- elqhJRxJofnCS8ciStv34kwFFb9aiQBITUBeTz/vXZq4IHv7A/nPnCNCTLlHyCnZ0ZMQ56M2PlG
- kioZXGkLLTrKAdeN2LZKzBJfCMMxgEMb6g/mmOui7T0kP5m70eqYlexNz/JvVW7QDLD9x8Au8yy
- GEh0TZyUUDXS5jB9V/Un6VrOAwqPEIHHNwt8YF3Us6V1Cv0Z4s4ck4ZiGJbAqZtUeVz023BbNQY
- /kGuSCsVSjRG8owd/mhTH0GFMtBidGXTfNL/JGZ8HXDlbNnbDUaup4vBSCrXOdgp7p0ddSX+CS8
- sbihCqt0r79hccQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
 
-Add optional support for the nbcon infrastructure to netconsole via a new
-CONFIG_NETCONSOLE_NBCON compile-time option.
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-The nbcon infrastructure provides a lock-free, priority-based console
-system that supports atomic printing from any context including NMI,
-with safe handover mechanisms between different priority levels. This
-makes it particularly suitable for crash-safe kernel logging.
+Hi All,
 
-When disabled (default), netconsole uses the legacy console callbacks,
-maintaining full backward compatibility.
+This series of patches adds support for the Renesas RZ/T2H and RZ/N2H SoCs
+which integrate an Ethernet switch IP variant called ETHSW. The ETHSW is
+largely compatible with the A5PSW switch found on RZ/N1 SoCs, but has
+several key differences in register layout and hardware configuration. The
+series includes updates to the DSA driver, device tree bindings, and
+Kconfig to enable support for these SoCs.
 
-PS: .write_atomic and .write_thread uses the same callback, given that
-there is no safe .write_atomic, so .write_atomic is called as the last
-resource. This is what CON_NBCON_ATOMIC_UNSAFE is telling nbcon.
+Cheers,
+Prabhakar
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/Kconfig      | 14 ++++++++++
- drivers/net/netconsole.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 82 insertions(+)
+Lad Prabhakar (11):
+  net: dsa: tag_rzn1_a5psw: Drop redundant ETH_P_DSA_A5PSW definition
+  net: dsa: tag_rzn1_a5psw: Add RZ/T2H ETHSW tag protocol and register
+    ethsw tag driver
+  net: dsa: Kconfig: Expand config description to cover RZ/T2H and
+    RZ/N2H ETHSW
+  dt-bindings: net: dsa: renesas,rzn1-a5psw: Add RZ/T2H and RZ/N2H ETHSW
+    support
+  net: dsa: rzn1-a5psw: Add support for optional reset control
+  net: dsa: rzn1-a5psw: Add support for optional timestamp clock
+  net: dsa: rzn1-a5psw: Make switch topology configurable via OF data
+  net: dsa: rzn1-a5psw: Make DSA tag protocol configurable via OF data
+  net: dsa: rzn1-a5psw: Add support for management port frame length
+    adjustment
+  net: dsa: rzn1-a5psw: Add support for RZ/T2H Ethernet switch
+  net: dsa: Kconfig: Enable support for RZ/T2H and RZ/N2H SoCs
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index ac12eaf11755..aa8771b5b723 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -369,6 +369,20 @@ config NETCONSOLE_PREPEND_RELEASE
- 	  message.  See <file:Documentation/networking/netconsole.rst> for
- 	  details.
- 
-+config NETCONSOLE_NBCON
-+	bool "Use nbcon infrastructure (EXPERIMENTAL)"
-+	depends on NETCONSOLE
-+	default n
-+	help
-+	  Enable nbcon support for netconsole. This uses the new lock-free
-+	  console infrastructure which supports threaded and atomic printing.
-+	  Given that netconsole does not support atomic operations, the current
-+	  implementation focuses on threaded callbacks, unless the host is
-+	  crashing, then it uses an unsafe atomic callbacks. This feature is
-+	  available for both extended and non-extended consoles.
-+
-+	  If unsure, say N to use the legacy console infrastructure.
-+
- config NETPOLL
- 	def_bool NETCONSOLE
- 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index f4b1706fb081..2943f00b83f6 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1724,6 +1724,57 @@ static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
- 				   extradata_len);
- }
- 
-+#ifdef CONFIG_NETCONSOLE_NBCON
-+static void netcon_write_nbcon(struct console *con,
-+			       struct nbcon_write_context *wctxt,
-+			       bool extended)
-+{
-+	struct netconsole_target *nt;
-+
-+	lockdep_assert_held(&target_list_lock);
-+
-+	list_for_each_entry(nt, &target_list, list) {
-+		if (nt->extended != extended || !nt->enabled ||
-+		    !netif_running(nt->np.dev))
-+			continue;
-+
-+		if (!nbcon_enter_unsafe(wctxt))
-+			continue;
-+
-+		if (extended)
-+			send_ext_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+		else
-+			write_msg_target(nt, wctxt->outbuf, wctxt->len);
-+
-+		nbcon_exit_unsafe(wctxt);
-+	}
-+}
-+
-+static void netcon_write_nbcon_ext(struct console *con,
-+				   struct nbcon_write_context *wctxt)
-+{
-+	netcon_write_nbcon(con, wctxt, true);
-+}
-+
-+static void netcon_write_nbcon_basic(struct console *con,
-+				     struct nbcon_write_context *wctxt)
-+{
-+	netcon_write_nbcon(con, wctxt, false);
-+}
-+
-+static void netconsole_device_lock(struct console *con, unsigned long *flags)
-+{
-+	/* protects all the targets at the same time */
-+	spin_lock_irqsave(&target_list_lock, *flags);
-+}
-+
-+static void netconsole_device_unlock(struct console *con, unsigned long flags)
-+{
-+	spin_unlock_irqrestore(&target_list_lock, flags);
-+}
-+
-+#else
-+
- static void write_ext_msg(struct console *con, const char *msg,
- 			  unsigned int len)
- {
-@@ -1765,6 +1816,7 @@ static void write_msg(struct console *con, const char *msg, unsigned int len)
- 	}
- 	spin_unlock_irqrestore(&target_list_lock, flags);
- }
-+#endif
- 
- static int netconsole_parser_cmdline(struct netpoll *np, char *opt)
- {
-@@ -1923,14 +1975,30 @@ static void free_param_target(struct netconsole_target *nt)
- 
- static struct console netconsole_ext = {
- 	.name	= "netcon_ext",
-+#ifdef CONFIG_NETCONSOLE_NBCON
-+	.flags = CON_ENABLED | CON_EXTENDED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netcon_write_nbcon_ext,
-+	.write_atomic = netcon_write_nbcon_ext,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
-+#else
- 	.flags	= CON_ENABLED | CON_EXTENDED,
- 	.write	= write_ext_msg,
-+#endif
- };
- 
- static struct console netconsole = {
- 	.name	= "netcon",
-+#ifdef CONFIG_NETCONSOLE_NBCON
-+	.flags = CON_ENABLED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netcon_write_nbcon_basic,
-+	.write_atomic = netcon_write_nbcon_basic,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
-+#else
- 	.flags	= CON_ENABLED,
- 	.write	= write_msg,
-+#endif
- };
- 
- static int __init init_netconsole(void)
+ .../bindings/net/dsa/renesas,rzn1-a5psw.yaml  | 154 +++++++++++++++---
+ drivers/net/dsa/Kconfig                       |   9 +-
+ drivers/net/dsa/rzn1_a5psw.c                  |  58 +++++--
+ drivers/net/dsa/rzn1_a5psw.h                  |  25 ++-
+ include/net/dsa.h                             |   2 +
+ include/uapi/linux/if_ether.h                 |   2 +-
+ net/dsa/Kconfig                               |   6 +-
+ net/dsa/tag_rzn1_a5psw.c                      |  22 ++-
+ 8 files changed, 230 insertions(+), 48 deletions(-)
 
 -- 
-2.47.3
+2.52.0
 
