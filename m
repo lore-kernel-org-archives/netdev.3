@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F7C29B77C
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9C3278E63
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763695158; cv=none; b=iJTiPa+fLhFiJMp11ANBiUMXXNe1CaHOexJLIXuYJMFQZ1cL/iyMU/HAneA7qLYHkhebas20vRZYj0JERBIluEc0nQUex6e0hG2kwtR1JZsOtA8Uh5lCUgePRny8GJcUOwdS7DC6CYP/Hb4EgrpjfNdIRAW/sl0HA9+t5tHx7cw=
+	t=1763695246; cv=none; b=XTFnI5oLCRRtE4d6NsYeNfg1CBu40xQ+CBm5bji48w7+6S+X2C8B4Qy0W7tAAmFyXyf0ylI5OGs6NMIVG+oM03Q5FQt5he2BOYJ6yYER5xjITSqh9o763oFZXizP2+AcV36HHhK6uJjbL4I4XvNv8OlSK0UGBIeUPLAPXTHmUKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763695158; c=relaxed/simple;
-	bh=9I0gmZTrLdx10DkU1dpqUfFndZ0psjEPqNUij5ibGxE=;
+	s=arc-20240116; t=1763695246; c=relaxed/simple;
+	bh=+rG+L5j5N3GDoeJVFgrC8wy8B1Rq26PuY9fRDwwPTB8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jj2N4fnlLQ5SxULsEAOP1yKkQ99/lXEbMUlBdS4iteg4K6X1uBa7MGh5EfRrVm/CE9FZQ0CQy1oPOKhyiOJSGHY4yz3oOrw0bUCMmXWjZBgpX8pDEPH+jctmPod3FuqcYj35TjD1L7jIYlcyUyxXkjtF2MSjj7jCLlDj764LxME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEv6e7Us; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=oAK3QUlJDsONM71YjFY9VHSxepe3E16q3JO11K4FointqsH0n2NohC/1w8qfHYQWXpoFaAe8VRRoSiXhqcLi2m9zI2oWjIseMF2ndQH8iEwvsDyx7/DDnyKoJmhLswPn66a9yW0i4PcJqoTdZgRCYXzZQrQYel4niAl9YvLFOv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFc/+bu0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEv6e7Us"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A37C4CEF1;
-	Fri, 21 Nov 2025 03:19:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFc/+bu0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0979EC4CEF1;
+	Fri, 21 Nov 2025 03:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763695158;
-	bh=9I0gmZTrLdx10DkU1dpqUfFndZ0psjEPqNUij5ibGxE=;
+	s=k20201202; t=1763695246;
+	bh=+rG+L5j5N3GDoeJVFgrC8wy8B1Rq26PuY9fRDwwPTB8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KEv6e7Us+Qkum34IBevadL2Ll3TzsuootFBB66xhYXuAqdEB/jwsJZb6eg2dzGBcN
-	 NOwEDAOC6F8DGhW+OQBU9fi17+fyxYxoiwb39OOaJFpczzcaySsV6jEaFP2e435RAH
-	 mgCec1DomtI+P0D6CzzKmAawfpisdvao3edjGzW+0IqUwZGbWff6oZEGsSohWjsIlq
-	 qdH/JSEZYyl8S+LqYsU/iSvi0eFLncJmaZXtXBgiv7LZyU+8aPuayDWlnBcPa9Z1fZ
-	 6Zn06fVt7NCrDAo8Ib2DkukfkG3ZsuEwJFZog43a6C8SQiP6PJYosLtHIQhC/Xfgyd
-	 Xz6rwsUz5xOmA==
-Date: Thu, 20 Nov 2025 19:19:16 -0800
+	b=SFc/+bu0reyisEeSaZOBigbmkwpE1hWD7s3EZaDtXieuM10h36qd37RRIKYYOZsJZ
+	 yKmBDFS0zephWApVUx9184tuDx3rIEjSE4xwPvdVa086L4b+/E1YwBY6BQ4zaiH2K9
+	 KV6HWvGG+s8VpNdnq349vukhRfB3cfnKHo7o1pYNc6GcmMm/iH08sJqilt2ETSzI02
+	 EiD5gNKAb3RLC3keesSTS1sJkE5lMA3VRmfvdfLf2DeTSXQ6hxD+jFPny9JvAeevzq
+	 eKPmV6M/sZJ08UddO9BA8YAldunaF3ipH2z1TXxx1axn8JQL/ObERmB2qOBMI2Urz4
+	 thPsEFHJslo7w==
+Date: Thu, 20 Nov 2025 19:20:45 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: David Wei <dw@davidwei.uk>
 Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
  Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
  Abeni <pabeni@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>
-Subject: Re: [PATCH net-next v1 4/7] selftests/net: add rand_ifname() helper
-Message-ID: <20251120191916.4f91ee3a@kernel.org>
-In-Reply-To: <20251120033016.3809474-5-dw@davidwei.uk>
+Subject: Re: [PATCH net-next v1 5/7] selftests/net: add bpf skb forwarding
+ program
+Message-ID: <20251120192045.1eb4a9b0@kernel.org>
+In-Reply-To: <20251120033016.3809474-6-dw@davidwei.uk>
 References: <20251120033016.3809474-1-dw@davidwei.uk>
-	<20251120033016.3809474-5-dw@davidwei.uk>
+	<20251120033016.3809474-6-dw@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,9 +47,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 19 Nov 2025 19:30:13 -0800 David Wei wrote:
-> For upcoming netkit container datapath selftests I want to generate
-> randomised ifnames. Add a helper rand_ifname() to do this.
+On Wed, 19 Nov 2025 19:30:14 -0800 David Wei wrote:
+> This is needed for netkit container datapath selftests. Add two things:
+> 
+>   1. nk_forward.bpf.c, a bpf program that forwards skbs matching some
+>      IPv6 prefix received on eth0 ifindex to a specified netkit ifindex.
+>   2. nk_forward.c, a C loader program that accepts eth0/netkit ifindex
+>      and IPv6 prefix.
+> 
+> Selftests will load and unload this bpf program via the loader.
 
-The kernel will generate a name automatically, why do we need to create
-a specific one?
+Is the skel stuff necessary? For XDP we populate the map with bpftool.
