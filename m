@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347DB248F68;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5174D26059B;
 	Fri, 21 Nov 2025 04:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763697670; cv=none; b=ID0xututA0Htz29S3H+JgHjl1gMKESg+LGcF6SV/e9azbu1BiG6GPBmwjIWArvo43szrXObWFub+PPunjwGrjjbSsQb+5uE28HXlvS+F3o9Ffa6zFKd5IVF47638n/dKrEbt/8omKA+pnVs5Ig9QKdKqvhqYR+hsUz0RYmgti/A=
+	t=1763697670; cv=none; b=P7NZi9r7KfBcueH0WNsANnPwHjg57qDNDXz+0B1MMP0tVI7lM3v2JQZrTy5HSJCJxXh2SIta5M7Cfizq1xoyLpw/ZHc2A91F2aNdUAgV8inAjVBMO73oiW/t5RuQfhyyUdcWeVsXt5GWxxBntfuzCGOd7J6f8WCEC5lrSXCdfIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763697670; c=relaxed/simple;
-	bh=6qIHlhM+MCUdvVq4j3wN5PWzi4h0LIZ0znmf+vGPkR8=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=kFi6bs7+MXtdtMFiv1IZWacQmEv//fp8INYbXSnGhyD0TCMMvfZsCit1+6F1ICXZoMoxnyTGInRtvCQQGyf+x+oxl782BFrumoPxtmD8Al3sz9ee7Tpn/1ExZSiwu4kMYBynK+ATpF5BkKuAkJBkl5gcUYxjpz525PT94zyyMn0=
+	bh=0HzUDwXwMfMCeAP3d9l4+nBkDsbydg1O3czyM/voiz8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ISCO+gtKhiW2KZDTay1MGbjwnNu5w2oVm9uEuChXfJA6q4hmdSV8Js8qa7cSIk4eQ3Ksnjd5WVbLLYOY4itQDUonEn0X/QQahBxYv8ef/mbVFJMJYQqPCjNL3toyFbEbwdA+0I9vbHRMtvpXWPN5D8W2aazvcjE85TMMEcgui/s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-6d-691fe3faf41f
+X-AuditID: a67dfc5b-c2dff70000001609-7f-691fe3fa945c
 From: Byungchul Park <byungchul@sk.com>
 To: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -44,36 +44,39 @@ Cc: linux-kernel@vger.kernel.org,
 	dtatulea@nvidia.com,
 	shivajikant@google.com,
 	io-uring@vger.kernel.org
-Subject: [PATCH net-next 1/3] netmem, io_uring/zcrx: access pp fields through @desc in net_iov
-Date: Fri, 21 Nov 2025 13:00:45 +0900
-Message-Id: <20251121040047.71921-1-byungchul@sk.com>
+Subject: [PATCH net-next 3/3] netmem: remove the pp fields from net_iov
+Date: Fri, 21 Nov 2025 13:00:47 +0900
+Message-Id: <20251121040047.71921-3-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprBIsWRmVeSWpSXmKPExsXC9ZZnke6vx/KZBku28lus/lFhsfzBDlaL
+In-Reply-To: <20251121040047.71921-1-byungchul@sk.com>
+References: <20251121040047.71921-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHIsWRmVeSWpSXmKPExsXC9ZZnoe6vx/KZBgumilus/lFhsfzBDlaL
 	n2ueM1nMWbWN0WL13X42iznnW1gsvq7/xWyxblcrk8XOXc8ZLV7NWMtm8fTYI3aL+8uesVjs
 	ad/ObPGo/wSbxbvWcywWF7b1sVqcO7ySzWJ7wwN2i8u75rBZ3Fvzn9Xi5KyVLBYdd/ayWBxb
 	IGbx7fQbRourM3cxWSy8E29x6fAjFovZjX2MFr9/ANXPPnqP3UHOY8vKm0we12ZMZPG4se8U
 	k8fOWXfZPRZsKvXYvELL4/LZUo9NqzrZPDZ9msTusXPHZyaP3uZ3bB4fn95i8Xi/7yqbx5kF
-	R9g9Pm+SC+CP4rJJSc3JLEst0rdL4MpoXvKDreALT0XP7ZNMDYynuboYOTkkBEwkVi5/wAhj
-	f2tsZAex2QTUJW7c+MkMYosISEl83LEdKM7FwSywhlVi+YytYA3CAnESD38sAGtgEVCVWL92
-	MRuIzStgKtGxZznUUHmJ1RsOMIM0SwgcY5d4+vMPG0RCUuLgihssExi5FzAyrGIUyswry03M
-	zDHRy6jMy6zQS87P3cQIjK9ltX+idzB+uhB8iFGAg1GJh/cEp3ymEGtiWXFl7iFGCQ5mJRFe
-	VUeZTCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8Rt/KU4QE0hNLUrNTUwtSi2CyTBycUg2MVpsu
-	mxzp2FScyusT47rj7h/Jt9XWX17XSL5c+7j15fLtK1IiLjDMl6gXf+/YtTnnwISotbOcnslx
-	bjywIe38p6+714bZn92puMN8S+K+Az17XwufMLLdpxGvspnPqaYrceVTBc3uzQGXeLt/qKTp
-	XjSX13BcLrd/yxb2ks7y5eVdH8R/aq+3U2Ipzkg01GIuKk4EAKkE5lqrAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAwGRAm79CAMS/gMaCGludGVybmFsIgYKBApOO4Mt+uMfaTCOOjir+Hg4p+C4
-	BTj5rOcCOJyqtgE4q92PBjicz4QEOPWv+gM4rrqFAji5uucBOOqYrQY45cbiBzjfpuYEOLyH
-	twM44o/IBjjuhc4EOMOdyQU40LaOBTjOw6kGOLeA4Ac407qcBjjerP8FOMmaqQQ4iNy9BDjG
-	oBY49svsATjVmboCOKHcXzjSw+IEOJuBjgE4+/icBjibxd4HQB9ItKnZAkjWmJEESNi+ygJI
-	uZrdB0igsnVIs6gqSNPNdUiyqokGSLLykgdIubjzAkiNg+4GSPHl2gRI777VBkij6PACSMyg
-	xAdI87IeUBBaCjxkZWxpdmVyLz5gCmiDpPgGcPQMeIzbyQKAAcsKigEJCBgQNBj2gYEHigEJ
-	CAYQJxjY2PkDigEJCBQQGhjxuLcHigEKCAMQrAUYp5i1AYoBCQgTEF4Y4figB4oBCQgEECUY
-	r62jBooBCQgNEDUYiLynAYoBCQgYEB8Yq7DAA5ABCKABAKoBFGludm1haWw1LnNraHluaXgu
-	Y29tsgEGCgSmffyRuAH000fCARAIASIMDcgJH2kSBWF2c3ltwgEYCAMiFA0lQRxpEg1kYXl6
-	ZXJvX3J1bGVzwgEbCAQiFw1KV2VgEhBnYXRla2VlcGVyX3J1bGVzwgECCAkagAEAuSxiYklG
-	aIusnnStzTc8+QxM5e5ncem5ZVHeb2HzY8QvfOiwsiQCnYkGWFDtu8S2Ar5WHICr0h8eVG2M
-	n0ylQba81grQiQi1FX7kvPun43q8VverMW7mqYosZAjnp9DMwqkK7//qyr366Oew1XhNs8kw
-	HOSkVpsXN2KzXzeuHyIEc2hhMSoDcnNhp4l8S5ECAAA=
+	R9g9Pm+SC+CP4rJJSc3JLEst0rdL4Mpo3zCDtWC+YMWcH3kNjF95uxg5OSQETCRWXT7ODmO/
+	/76eCcRmE1CXuHHjJzOILSIgJfFxx3agGi4OZoE1rBLLZ2xl7GLk4BAWcJdo3O4HUsMioCox
+	b/4cRhCbV8BUYvu3RYwQM+UlVm84ADaHU8BMYt+jmWBxIaCaNZ0PmEBmSgg8Ypf4++oVG0SD
+	pMTBFTdYJjDyLmBkWMUolJlXlpuYmWOil1GZl1mhl5yfu4kRGIvLav9E72D8dCH4EKMAB6MS
+	D+8JTvlMIdbEsuLK3EOMEhzMSiK8qo4ymUK8KYmVValF+fFFpTmpxYcYpTlYlMR5jb6VpwgJ
+	pCeWpGanphakFsFkmTg4pRoY1/nc706e/3nipjNPImzEZxWny4Xqbz380KqyjPsXk+j23Y0B
+	p4r28EaceHbQYqvdQsH7nnXhodMNuud+z9ncfi/SxrGnwOnQm9UhG37/Nagv2FuzeNGVCudo
+	jv/+R0NvLnj39/eTS3M19bbuu+j5ILFkU7D/XIuJLY4zaps0Vtg4y140lWlgV2Ipzkg01GIu
+	Kk4EAL4K3ZPBAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRa0hTYQCG+87Ozs6Gq+OUPK1oMpBAyDQ0vi5YEeEhyIKiG5SuPOjBOW1z
+	y0vBxEQdpClFR525Fd5nrpXuUqlomualcBhL1GRiShfN21KLzBn9e3jfh/fPi3NE91ExzihS
+	aaVCJpdiAlQQfTB79+qEhAlljTxYv5wGq8dtXLhimkKgvq4ZwPrRQgzq391G4VLjKgc+ceQg
+	0O6YAvAL24DByS43D36q+ozCl7lWDnQXdmNwJmcAhR3lPVz4vrmACwc6ajFo1Y7zoNOhx+CY
+	aY0Le0prUZg38gqFXYat0NP7DcChEgcCjSMxcLDDjcKyrAIAfy2v+2WdY7wjEup57UeE+sAW
+	oZSr5S1C2UtHeZTBoqae1QRTzn41ZanLxyjLfDGPstsWEOpO9gxGzU0Oo9RsyxBGPZ7+gVB9
+	htc8asGy8zRxSXAojpYzGlq5JzJWkJBrZrkpFb5p+mWFFiwJdYCPk0Q4OfuzEfEyRuwiXa4V
+	jpf9CTE5Z7PydECAcwgTl6xmm4AO4LgfEUVmWaO9DkoEkQ8r9MDLQiKCtHoegX+bErLe3Lax
+	wyf2kS3uko1ctO6Y8seRu0BgAJvqgD+j0CTJGHlEiCoxIV3BpIVcS06ygPWzqm79LrKBRWdU
+	OyBwIPURdvMljIgr06jSk9oBiXOk/sKgozsYkTBOlp5BK5NjlGo5rWoH23FUGiA8cZ6OFRHx
+	slQ6kaZTaOX/FsH5Yi2I9432yYmZOHX8wp8HPg1nLjJbdJ0BhpqsVO1SZviarthjTLzOVrqs
+	TaETlb2V5Zm97GJ1xYHWw8nHXjjjptnN3zWKwKuWRWNko54zM2yP2rut7c2NMEN/q7Ds6+Q5
+	5VnPTXReHf+0/3Kf+QqZESgezHP67T9ZOD/CulPMZ8T3pKgqQRYWzFGqZH8BoGkrzagCAAA=
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,53 +84,70 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-Convert all the legacy code directly accessing the pp fields in net_iov
-to access them through @desc in net_iov.
+Now that the pp fields in net_iov have no users, remove them from
+net_iov and clean up.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- io_uring/zcrx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/net/netmem.h | 38 +-------------------------------------
+ 1 file changed, 1 insertion(+), 37 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index b1b723222cdb..f3ba04ce97ab 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -693,12 +693,12 @@ static void io_zcrx_return_niov(struct net_iov *niov)
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 9e10f4ac50c3..46def457dc65 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -93,23 +93,7 @@ enum net_iov_type {
+  *		supported.
+  */
+ struct net_iov {
+-	union {
+-		struct netmem_desc desc;
+-
+-		/* XXX: The following part should be removed once all
+-		 * the references to them are converted so as to be
+-		 * accessed via netmem_desc e.g. niov->desc.pp instead
+-		 * of niov->pp.
+-		 */
+-		struct {
+-			unsigned long _flags;
+-			unsigned long pp_magic;
+-			struct page_pool *pp;
+-			unsigned long _pp_mapping_pad;
+-			unsigned long dma_addr;
+-			atomic_long_t pp_ref_count;
+-		};
+-	};
++	struct netmem_desc desc;
+ 	struct net_iov_area *owner;
+ 	enum net_iov_type type;
+ };
+@@ -123,26 +107,6 @@ struct net_iov_area {
+ 	unsigned long base_virtual;
+ };
+ 
+-/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
+- * the page_pool can access these fields without worrying whether the
+- * underlying fields are accessed via netmem_desc or directly via
+- * net_iov, until all the references to them are converted so as to be
+- * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
+- *
+- * The non-net stack fields of struct page are private to the mm stack
+- * and must never be mirrored to net_iov.
+- */
+-#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
+-	static_assert(offsetof(struct netmem_desc, desc) == \
+-		      offsetof(struct net_iov, iov))
+-NET_IOV_ASSERT_OFFSET(_flags, _flags);
+-NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
+-NET_IOV_ASSERT_OFFSET(pp, pp);
+-NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
+-NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
+-NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+-#undef NET_IOV_ASSERT_OFFSET
+-
+ static inline struct net_iov_area *net_iov_owner(const struct net_iov *niov)
  {
- 	netmem_ref netmem = net_iov_to_netmem(niov);
- 
--	if (!niov->pp) {
-+	if (!niov->desc.pp) {
- 		/* copy fallback allocated niovs */
- 		io_zcrx_return_niov_freelist(niov);
- 		return;
- 	}
--	page_pool_put_unrefed_netmem(niov->pp, netmem, -1, false);
-+	page_pool_put_unrefed_netmem(niov->desc.pp, netmem, -1, false);
- }
- 
- static void io_zcrx_scrub(struct io_zcrx_ifq *ifq)
-@@ -800,7 +800,7 @@ static void io_zcrx_ring_refill(struct page_pool *pp,
- 		if (!page_pool_unref_and_test(netmem))
- 			continue;
- 
--		if (unlikely(niov->pp != pp)) {
-+		if (unlikely(niov->desc.pp != pp)) {
- 			io_zcrx_return_niov(niov);
- 			continue;
- 		}
-@@ -1074,8 +1074,8 @@ static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 		return io_zcrx_copy_frag(req, ifq, frag, off, len);
- 
- 	niov = netmem_to_net_iov(frag->netmem);
--	if (!niov->pp || niov->pp->mp_ops != &io_uring_pp_zc_ops ||
--	    io_pp_to_ifq(niov->pp) != ifq)
-+	if (!niov->desc.pp || niov->desc.pp->mp_ops != &io_uring_pp_zc_ops ||
-+	    io_pp_to_ifq(niov->desc.pp) != ifq)
- 		return -EFAULT;
- 
- 	if (!io_zcrx_queue_cqe(req, niov, ifq, off + skb_frag_off(frag), len))
+ 	return niov->owner;
 -- 
 2.17.1
 
