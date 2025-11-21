@@ -1,53 +1,35 @@
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C0634FF50
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 17:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4635292C;
+	Fri, 21 Nov 2025 17:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763744568; cv=none; b=ZUh5ylZqXRRXm8qRQnoeieERiDeaSalq9Fv4koRd5vsLqZkR337btPqfHnBES5kNmfODk3SDvZ9LqNG6UzgKMKcaqFn8i3QIpxwytIRIZyUarUyJSdMUlqrZsS0mfihT04nU2JfGofM+L0rW766WRGLq2BDyYlk4ESrMxGqzCP8=
+	t=1763744569; cv=none; b=PVUNCMGn+7pcNmK5l6ZV8zo3g1E9v4r561xIUf052kCmtMRKiEj8zqRuDWz9KfAsxJaX/4pSAfIo+M8B1kj0PyLSvSi+Nd9dswLh9xUulKAHIy87L6K9WZi5THelKruutQ57ShM49W1MM1j1zgquw7Qq476X61lwQXstN0/hwG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763744568; c=relaxed/simple;
-	bh=IqUF/HK4gJVFYzoYLBDPHccIpNGfcelRNDLIw+w0xjs=;
+	s=arc-20240116; t=1763744569; c=relaxed/simple;
+	bh=c1FiB03N4TjtbuLBNxU7XN7WYPiLFo1I2pUiGPKArCg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eJlfvib74wriEfjYqDQ8g8Ioc/D0tXt1ebnXgspjXeMvF/gicp3kQv4J9Eov4qDV/iXAillkv1AH4gqB9yuNBAp3fjEsIMea7L2CLrwkKSX03JZOfIkTY0RVCrrZD6ksUIWZK8A0TEeASe7Wng2J4U21KMbq8vXYvXXxVKWpPro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-450063be247so767923b6e.2
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 09:02:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763744565; x=1764349365;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ylAg57J0SB0BI+dqga55AJuGSMAFF65rjQsIaxnfJQI=;
-        b=pBBHMCqGPaI9SrgNFaLx29cDdf+kA0B7c/ovS5+87vk8KPRrZh6okfhO+duFJotXEH
-         ojaT44QrBDIoVKBipCf7X9wWIwVKnv9tUFgy0c4h3skY0W0joNykLHuaChnJx1bXQsSG
-         OfBn3SHCDaj1zmcYlLlgH1We4y+OUG792YVPlafDNXrTm+KoMoPIcxW5yBqcNsuF0cgk
-         0Z2NxzXwZO+obu8VcxrFC8x0pySij1bd6ivpR8/XJ6Bla5ar9PC8D5sYXDADL+J8sHXE
-         CucVrm7pW7ZZhkbjJmScMrtdgkGWVW0a8ZbKChPgshwx/1WwHCEmaRL8Ti+T9+I3alKT
-         U/iA==
-X-Gm-Message-State: AOJu0Yytf/Zhdu9FrrpFugEN2iVOE+R+hkrXrrQl1DkoEsZOiELwkRe+
-	7yYDn5WKAMdGT3XhbNRcQfG2lcmjfWILANeuBUOwCw1PHt3vt5jiLoMh0w9czw==
-X-Gm-Gg: ASbGncsPTKh3B3cgtLdWIdabw07A43ipa9kk26X0+zmxYFz15MrM7qL6AQ3YnhqnnPc
-	52aRmtuvQUhfnq3z2xAdWiIEU/7OrxAbRRtW2FXtn16J9B/glIxF5X43KmLZX8OQxiTpRi1RGLT
-	PtrODaPhKKovqGCdaGc6e2ONr/KurHPHxX1wSDTfJrFp+ccfT1es6ci28HvpyhV6FlY8HnWoOZc
-	glSJ1a6dVc7VjgOKwyewk1FguidqdO4ly5L2gQ/O0dWz+70xpnZdZ9l2mdyljAQlhizps56pXM6
-	Y1rvIjrJqOxZpCpIBgSGX7jgv5D/t/pnXEbcq4noANGwNXwtJSpqyZ/V2RuNCQIA9+SGsnY5Qpa
-	/96ynLRYeDKDjOZ1zh6RUUh/BQFMYwMvtYeEACfrSWesi1CFOsR87JVTJx4M5HKN9UGGnli2amE
-	5k4jEjdtIgX5Lhwg==
-X-Google-Smtp-Source: AGHT+IGHJhaBZAA3RiJ3OTGOaqmZaZzkmeK+A6Jqkbi79Gy+E0o6gK/s+ktcChXA1mRxLCd5upC8oA==
-X-Received: by 2002:a05:6808:1b13:b0:442:5fa:290d with SMTP id 5614622812f47-45112cdc1f8mr1195122b6e.43.1763744564640;
-        Fri, 21 Nov 2025 09:02:44 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:47::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-450fff8bd43sm1759174b6e.14.2025.11.21.09.02.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 09:02:44 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 21 Nov 2025 09:02:35 -0800
-Subject: [PATCH net-next 1/2] net: mvneta: convert to use
- .get_rx_ring_count
+	 In-Reply-To:To:Cc; b=PFNFxpSsokelUKGkxpp3Jq7BgO4+g+jpz3O59aNJhTDQwQla0qm/RVeZoJs1ruQeJkOhTxwbk7WF+6b53FLuP2Nt8qfkc3BEDfv0dlBaLeMbCOMe2ue4BGOYn07GvrG0ORRG75Uq4M743fp9KuH52XeQw44jKdV2/+l9KMKS4P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pjE5iKip; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pjE5iKip"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D19C19423;
+	Fri, 21 Nov 2025 17:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763744568;
+	bh=c1FiB03N4TjtbuLBNxU7XN7WYPiLFo1I2pUiGPKArCg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=pjE5iKip0xlBCQI3455FWo+6Y6iVwxeVwVT6Ca6K5BejKYbzWUyM8iEH49iaROXzo
+	 2sCYXuiVtSvXyLegLfMsIE0yxRwkHmNdHKwdUqG0cJMWXsHR8eI4a9i/K60s0jqix1
+	 ym/LOgZNNZoFxdfotVyphkPqFj1Taoo/x8bn9XB2LlPqAo7cTJq4q99hBWRQREODs2
+	 y4G3AcFPxOo114IL37YVfNQeSnCdCBWJZc/9CmvS7+M7pxOobodLHGibJ3diSQzUlo
+	 NaprwnlyO0zKJHjIC+mEb2SSYU5afHw7Go7Q7QEGBtOhQgE9iveyk1R/0vSYrdNt0z
+	 pgY2wkA2WmYxg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Fri, 21 Nov 2025 18:02:05 +0100
+Subject: [PATCH net-next 06/14] mptcp: cleanup fallback dummy mapping
+ generation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,82 +38,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251121-marvell-v1-1-8338f3e55a4c@debian.org>
-References: <20251121-marvell-v1-0-8338f3e55a4c@debian.org>
-In-Reply-To: <20251121-marvell-v1-0-8338f3e55a4c@debian.org>
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>
+Message-Id: <20251121-net-next-mptcp-memcg-backlog-imp-v1-6-1f34b6c1e0b1@kernel.org>
+References: <20251121-net-next-mptcp-memcg-backlog-imp-v1-0-1f34b6c1e0b1@kernel.org>
+In-Reply-To: <20251121-net-next-mptcp-memcg-backlog-imp-v1-0-1f34b6c1e0b1@kernel.org>
+To: Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ Peter Krystad <peter.krystad@linux.intel.com>, 
+ Florian Westphal <fw@strlen.de>, Christoph Paasch <cpaasch@apple.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1863; i=leitao@debian.org;
- h=from:subject:message-id; bh=IqUF/HK4gJVFYzoYLBDPHccIpNGfcelRNDLIw+w0xjs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpIJsyV48FTHnw7ROAS7cIzyC0Dr2/aWookYsTV
- Xlk4J47Vd+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaSCbMgAKCRA1o5Of/Hh3
- bRQdD/9tPgvXc85PkeatqMeTv/zS8V0NPPXsQ72P8OeXqssdoQATezGyDL6kFt48pW3h+fLX44N
- OAGowu3wgIgXicZNVFgrw+ShL7FMqHGcptNTCObkofhuIiu6wLoMBeJcn/7LoX7W/FmIMU7VdIq
- MtgBgY6dG2uew/G3rKH/vvrYqo7UrPcEDrvGGLPIj33TAjq72qfxZ5fVkLSAgmkR8EGobaYidwX
- /RVeCbGbzTzNkYP5mjJJWW07Bp/68r7heoggzhmy0IsjoxpTgWZ7NayzvAOUjJyMoKAcO7/5jRT
- cZUYn87DKD+qbjs3WpQ2iZNu1M8sarwhzG+tEnGTHjTJbxxpp7083Nss89NiJwEMwXsYskB91lv
- yEnm3sh7E3rdQHgSbkbaRF0BUlIv4P09IT7udRx0O+v7sIokk1x+YjMQZKv5tVr3FEqH2TbnUpo
- i7QKLdMHYrDv0Du5kGdhUEQkGvg+nkj9RwKuokgvCyQXoGhYe1pNAWD8QPs2SZaMWIj2waMu81N
- phelPHsYw5VMgCof9CWtzKmePiHyBJlzHiEQpohFCaa0NjmCOw1mlxM3+2ykf088cmZFKfknPSk
- DeCUvkKAH+IfYrfXH/uqWRNBcPDxyK3iy+WrHyp7dAgmeNzz3ImKOgeTInN16fV5VhtUgui6FX6
- m/YCkfn376DOofQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+ mptcp@lists.linux.dev, Davide Caratti <dcaratti@redhat.com>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2363; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=+D4DMCB5Vu2ppaXiUX6i79cxbGMbyyjuyyjizxfl+Qg=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDIVZouzrFzNGueWuFOe/dVJMcHiV43rvNJvKX/RFI3tE
+ 1jWvm1nRykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwEQSpRgZftwqEenO52Dl315x
+ 89vO3Ry77j3lnKQjPU9ml6Gxq31EDyNDz7repCT2KxeOH/zj27tdyHadc/DqncvNg1MtG+2eeZj
+ wAAA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Convert the mvneta driver to use the new .get_rx_ring_count ethtool
-operation instead of implementing .get_rxnfc solely for handling
-ETHTOOL_GRXRINGS command. This simplifies the code by removing the
-switch statement and replacing it with a direct return of the queue
-count.
+From: Paolo Abeni <pabeni@redhat.com>
 
-The new callback provides the same functionality in a more direct way,
-following the ongoing ethtool API modernization.
+MPTCP currently access ack_seq outside the msk socket log scope to
+generate the dummy mapping for fallback socket. Soon we are going
+to introduce backlog usage and even for fallback socket the ack_seq
+value will be significantly off outside of the msk socket lock scope.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Avoid relying on ack_seq for dummy mapping generation, using instead
+the subflow sequence number. Note that in case of disconnect() and
+(re)connect() we must ensure that any previous state is re-set.
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvneta.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ net/mptcp/protocol.c | 3 +++
+ net/mptcp/subflow.c  | 8 +++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 89ccb8eb82c7..7af44f858fa3 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -5012,17 +5012,9 @@ static u32 mvneta_ethtool_get_rxfh_indir_size(struct net_device *dev)
- 	return MVNETA_RSS_LU_TABLE_SIZE;
- }
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 67732d3c502c..df4be41ed3fe 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3274,6 +3274,9 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	msk->bytes_retrans = 0;
+ 	msk->rcvspace_init = 0;
  
--static int mvneta_ethtool_get_rxnfc(struct net_device *dev,
--				    struct ethtool_rxnfc *info,
--				    u32 *rules __always_unused)
-+static u32 mvneta_ethtool_get_rx_ring_count(struct net_device *dev)
- {
--	switch (info->cmd) {
--	case ETHTOOL_GRXRINGS:
--		info->data =  rxq_number;
--		return 0;
--	default:
--		return -EOPNOTSUPP;
--	}
-+	return rxq_number;
- }
++	/* for fallback's sake */
++	WRITE_ONCE(msk->ack_seq, 0);
++
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+ 	return 0;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 1f7311afd48d..86ce58ae533d 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -491,6 +491,9 @@ static void subflow_set_remote_key(struct mptcp_sock *msk,
+ 	mptcp_crypto_key_sha(subflow->remote_key, NULL, &subflow->iasn);
+ 	subflow->iasn++;
  
- static int  mvneta_config_rss(struct mvneta_port *pp)
-@@ -5356,7 +5348,7 @@ static const struct ethtool_ops mvneta_eth_tool_ops = {
- 	.get_ethtool_stats = mvneta_ethtool_get_stats,
- 	.get_sset_count	= mvneta_ethtool_get_sset_count,
- 	.get_rxfh_indir_size = mvneta_ethtool_get_rxfh_indir_size,
--	.get_rxnfc	= mvneta_ethtool_get_rxnfc,
-+	.get_rx_ring_count = mvneta_ethtool_get_rx_ring_count,
- 	.get_rxfh	= mvneta_ethtool_get_rxfh,
- 	.set_rxfh	= mvneta_ethtool_set_rxfh,
- 	.get_link_ksettings = mvneta_ethtool_get_link_ksettings,
++	/* for fallback's sake */
++	subflow->map_seq = subflow->iasn;
++
+ 	WRITE_ONCE(msk->remote_key, subflow->remote_key);
+ 	WRITE_ONCE(msk->ack_seq, subflow->iasn);
+ 	WRITE_ONCE(msk->can_ack, true);
+@@ -1435,9 +1438,12 @@ static bool subflow_check_data_avail(struct sock *ssk)
+ 
+ 	skb = skb_peek(&ssk->sk_receive_queue);
+ 	subflow->map_valid = 1;
+-	subflow->map_seq = READ_ONCE(msk->ack_seq);
+ 	subflow->map_data_len = skb->len;
+ 	subflow->map_subflow_seq = tcp_sk(ssk)->copied_seq - subflow->ssn_offset;
++	subflow->map_seq = __mptcp_expand_seq(subflow->map_seq,
++					      subflow->iasn +
++					      TCP_SKB_CB(skb)->seq -
++					      subflow->ssn_offset - 1);
+ 	WRITE_ONCE(subflow->data_avail, true);
+ 	return true;
+ }
 
 -- 
-2.47.3
+2.51.0
 
