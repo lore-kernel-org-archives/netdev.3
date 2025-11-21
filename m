@@ -1,123 +1,99 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9A2F1FE7
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 11:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAFD1494DB;
+	Fri, 21 Nov 2025 12:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763726141; cv=none; b=hCLoC82NNnpAE2sTeQNz/c/8J4xjPUMiPTte42h8MEKAe8sIq84BXMTPpX9AaH4vxeKPAcI7nUifUOvi3Zq4JgqRpHGmlkjU0hjSWAgVU21TaEwre3QIfwR0EGPn8EdRymsoEfI6OXY9kjWR/UbcGEZE09p+aPuYr3sLJihHKnQ=
+	t=1763726443; cv=none; b=FJbwd3fVtO1Lcfo6yKt9HFl5ir7TDffkGCXKbXdI9WxzXNQgjL+kg7AlCvGFWiq0I3b/SLooYjcuEme1jtEbltFRWLnDPWh8/dIka2A4j4h0weTiitVRfhSCgX+S00DyLopM9MtqWhwAeXa+51PMupdaAOx1uWX1m7vK9CR1Kbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763726141; c=relaxed/simple;
-	bh=BCuwsxN4wT9xb1KQ+7jRZodv0F6+z6Q1IawNA3LunJE=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=Gyh2pKo5DdxOJPhve6xPNM0tRrO50R1b5iUnT3ROMF4t3cJ4cqE0+Hy/uAUVR5eoY3tJ5ajZHshNgOn8Nn9fFQwrI8QFhYszSpkz9mEfu5xaF7s152jzy/XoNcJ66zYMuxEGx7COgIYhL8dBamGN0ORNhwx0yAcjDtgYFU1WasE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5x9E16Q; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763726443; c=relaxed/simple;
+	bh=ExbTU08QuKilLHZWqO5PHLLeHYoNecIov/BpiZeeVMs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rUiMxCxI/ugNMtn57y+KYNu/NSGlUxgOW2yClmhwcMlXlQsmUL+2+9w/0bPWvbPL580lhNWz6a2f8HH3X5YffxIIgDt4n3r7+iuERlDh9O+cf5lAucq9zzaR62as4tx6KmCSH5b9DKl+veskjHwHglQyRHWs1pzK5tdnAcdGwHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnaAjUST; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5x9E16Q"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42b379cd896so1143672f8f.3
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:55:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763726138; x=1764330938; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oDriZHKoYlumz0kyJ+iuC42fqsgc1CZpksWMuirWE2A=;
-        b=C5x9E16QbtpONLsKhXOr6T8ipoQ80MpBXXpx6SMwI0xySTR56AbMiv0ktergURdKJW
-         u3VsjlsCIaTERQQx6+s2XYDzyWZHXpWzsKBjLNhqihZqHu6xvtFNgA5ZcTjzNZjxE56b
-         Z8zAeMx4m+WKDGQLnwCfmTyF3qIEVkT0dPEfyi/2E/eFOdx7L4nbkQmJQhf2knTuxNlO
-         jtWdVLMmyoIQN85xE/vBtl5BxvcMWATfwKP8CCeYPiVhxTcd5WL6oIvc3RNrymyMlfTT
-         K16BzTGGZm3T3NNqkLPAV1wLZu3v3a3eZHcAlaLmICpWrNo6PkaU353gvNIyGbOmEaU3
-         k/ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763726138; x=1764330938;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oDriZHKoYlumz0kyJ+iuC42fqsgc1CZpksWMuirWE2A=;
-        b=iTkA27fvycD9zzSJRR31oisbJg7UECDnqZ3C54zxR1nPUhRzkRl1opVjsGF7EzgFYs
-         QpfloXNIjShv7ay6twlJiX1OXGcaA5A5U8bOxVNefJ99B+aAlH9mddUJ7Agmqg7kaSQc
-         taUXXXKqodXRDOKxSXbgQD3lKFztB8oG+Kfa2kLX2pwYNRDLfO/uel/Ljv56NJ1I5pzF
-         J1eXaf6gpYyzlIOvFeOAQwd1yNKGd0U9fMp3IZHOHS6W10VPrGxJ3QZoAGlaPN9Dia/j
-         IR8qBQC2EfddPZD9s4+9ZBJJepjXOnjVi4EYZy9Bh4HGklyjmgpdK+ImceNNMc/ndyFb
-         48zA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxlufwMVYXclL9NSxfjfiKzi0GZRQiZPJGfTB1YhL6HJq0Qi2JH7Pz8a1nxP/JcHAUlARp6AA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjAGVk5wYXHQkF/MQJ1jmL8mQNYXw/T0jAyUjzmNbSUFaeEbZ0
-	zsYL7sf3UqWcttlK71dHf2/oqVfm49PaMbmPv0aF9Z3ISPrmSnSvSytT
-X-Gm-Gg: ASbGncszWJGbn9gtzbOGiHqI835hLTL8+3yOMZdkaJu6bT5D0jVFF69Qn5ORPKrpJOw
-	75diK0lENKFXHHykRKVPl62L46onPJEkChxN2NC7gcIcZZk5+cmpKtJuceTtn+NHf1vbkhfPmb7
-	VMeTi+ZeY5a++paT6Uk7SwHU1ZaHYFBp3DQ7rz5rab6KjMMiOPQPCMglbX3KNwM+2vFXSQgi8uW
-	OSFypZVubYCU3ju4SKbFh51XDaUubqMR80v4TogBIcbpnhgx870hcDLVFcspzDfR6WcE9RKh+GP
-	H/R2HlYQq89sZIthhiuhTplNnTUJUyCwKomUkRAQU1CKovmVZfxozpzjTL8fASLbyuggXULjpcT
-	GXhmDVzS4D4HLybtoxqJRB8wwjqMobzWK+5dBZQfsqXXhM702DDAJJfzAHPibOESyP9Tjr8jDxT
-	zcGQoIezoceE6QwefMk0KHzItHdMf3qpRTOQ==
-X-Google-Smtp-Source: AGHT+IH0a0jaDfCVovpxy3z9csXD4B+JfYy/Q8r+BidsjxSKcegW0mK4p8CA8FZ7pwMUWQkuiKA/BQ==
-X-Received: by 2002:a05:6000:2507:b0:42b:52c4:6631 with SMTP id ffacd0b85a97d-42cc19f5797mr2076239f8f.0.1763726138266;
-        Fri, 21 Nov 2025 03:55:38 -0800 (PST)
-Received: from imac ([2a02:8010:60a0:0:f819:b939:9ed6:5114])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd8e54sm10802902f8f.40.2025.11.21.03.55.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 03:55:37 -0800 (PST)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: "Remy D. Farley" <one-d-wide@protonmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,  netdev@vger.kernel.org,  Pablo Neira
- Ayuso <pablo@netfilter.org>,  Jozsef Kadlecsik <kadlec@netfilter.org>,
-  Florian Westphal <fw@strlen.de>,  Phil Sutter <phil@nwl.cc>,
-  netfilter-devel@vger.kernel.org,  coreteam@netfilter.org
-Subject: Re: [PATCH v5 4/6] doc/netlink: nftables: Add sub-messages
-In-Reply-To: <20251120151754.1111675-5-one-d-wide@protonmail.com>
-Date: Fri, 21 Nov 2025 11:40:55 +0000
-Message-ID: <m2ecpr4nqw.fsf@gmail.com>
-References: <20251120151754.1111675-1-one-d-wide@protonmail.com>
-	<20251120151754.1111675-5-one-d-wide@protonmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnaAjUST"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8503C4CEF1;
+	Fri, 21 Nov 2025 12:00:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763726443;
+	bh=ExbTU08QuKilLHZWqO5PHLLeHYoNecIov/BpiZeeVMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pnaAjUSTgOpgJpfOBIbXCZVISB4uhddyW+UXk0+CiBPI/ojfeLugrVvJ3Smk9KfDh
+	 osGkC8jzTo0TUmAIHJFxJvo3Xnf60zkGu4DoP9iq25WKI/0V8bwwLowxX3QFywn/Vn
+	 ilsOxtPpsyEoNFkrpls+ML2pd0ruQSKNg4hXDGJz5KLFeTa/3SMBV9hpd+x4w0aEho
+	 3GlG+UDn4DXf0kl8qG69PWLrA7n6lgb5zISOYEpcy9Q1MAxr17wM4or59eScBQgJfb
+	 LrN8dLixwHp0v/+6/6Nv6UhBlSiWuR9hDro2Y2HQu1AVUiyTeiRWKoUvutjRNRrPv0
+	 EMAze6IVLkS/w==
+Date: Fri, 21 Nov 2025 12:00:37 +0000
+From: Lee Jones <lee@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 08/15] net: dsa: sja1105: transition OF-based
+ MDIO drivers to standalone
+Message-ID: <20251121120037.GA1117685@google.com>
+References: <20251118190530.580267-1-vladimir.oltean@nxp.com>
+ <20251118190530.580267-9-vladimir.oltean@nxp.com>
+ <20251120144046.GE661940@google.com>
+ <20251120151458.e5syoeay45fuajlt@skbuf>
+ <20251120163603.GK661940@google.com>
+ <20251120195941.qumgpiwvkxvfjkug@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251120195941.qumgpiwvkxvfjkug@skbuf>
 
-"Remy D. Farley" <one-d-wide@protonmail.com> writes:
+On Thu, 20 Nov 2025, Vladimir Oltean wrote:
 
-> New sub-messsages:
-> - match
-> - range
-> - numgen
-> - log
->
-> Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
-> ---
->  Documentation/netlink/specs/nftables.yaml | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/Documentation/netlink/specs/nftables.yaml b/Documentation/netlink/specs/nftables.yaml
-> index 01f44da90..3cad6f857 100644
-> --- a/Documentation/netlink/specs/nftables.yaml
-> +++ b/Documentation/netlink/specs/nftables.yaml
-> @@ -1471,6 +1471,21 @@ sub-messages:
->        -
->          value: tproxy
->          attribute-set: expr-tproxy-attrs
-> +      -
-> +        value: match
-> +        attribute-set: compat-match-attrs
+> On Thu, Nov 20, 2025 at 04:36:03PM +0000, Lee Jones wrote:
+> > The canonical answer goes 3 ways: If you want to use the MFD API, move
+> > the handling to drivers/mfd.
+> 
+> Wait, so now it's negotiable? What about "this device is not an MFD"
+> from the other patch? Move it to another folder and suddenly it's an MFD?
+> https://lore.kernel.org/netdev/20251120153622.p6sy77coa3de6srw@skbuf/
 
-Prefer to keep the sub-message list sorted please.
+The "canonical answer" is the general answer, the one that applies to
+everyone, not just your use-case.  I'm not (yet?) convinced that this is
+an MFD, so at the moment, option one is not on the table for you.
 
-> +      -
-> +        value: range
-> +        attribute-set: range-attrs
-> +      -
-> +        value: numgen
-> +        attribute-set: numgen-attrs
-> +      -
-> +        value: log
-> +        attribute-set: log-attrs
-> +        # There're more sub-messages to go:
-> +        #   grep -A10 nft_expr_type
-> +        # and look for .name\s*=\s*"..."
->    -
->      name: obj-data
->      formats:
+> > If it's possible, use one of the predetermined helpers like
+> > of_platform_populate() (and I think we authored another one that
+> > worked around some of its issues, but I forget where we put it!).
+> 
+> yay...
+> 
+> I don't need the code necessarily, just the overall idea if you remember it.
+
+It was an extension to "simple-bus".  Perhaps "simple-mfd"?
+
+Again, it might not work for you, but it's an avenue worth exploring.
+
+> > Or if all else fails, you have to register the device the old
+> > fashioned way with the platform_device_*() API.
+> 
+> Do you realize that by this, you are inviting me to waste time until the
+> next reviewer rightfully asks, why didn't you use MFD, then I'll point
+> them towards this discussion, but you didn't really answer?
+
+This is still an abuse of the MFD API.  Used outside of the subsystem
+for something that isn't an MFD.  I like the idea of not duplicating
+code, but the fact remains that this is a hack.
+
+Another more recent avenue you may explore is the Auxiliary Bus.
+
+-- 
+Lee Jones [李琼斯]
