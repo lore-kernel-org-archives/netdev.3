@@ -1,75 +1,75 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC19C334696
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 11:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771B9332EC8
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 11:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763725019; cv=none; b=GVWy4sORhYDUqw7rB6RLq6rbd7y4wq50BJwKe6IOAZYFbw5pcpTIb5EEtyqrUu4UeJHLA4UUkSxYM/5/QHcInBvyj9Fpy+CHXcGMhXaracaMF7Moxn/AkBLjtGDxZlrTL8sBGtP1XmvNN7Xbtafgbd1+RVpoQlu/NiF/xFZfPa0=
+	t=1763725019; cv=none; b=Zn8D55IVARrNxogx1hHrH6VWAAtVxIevOGjhW1H4G8t48lIeIDuhIfki1PFUD6MghYq9PgPD+2F7EO9VcQw7H+SUhyHYFX8CtgvQz3hGXF9z0wR82/8dvzWY3plipapte1GyhWL0bndb01RZkFXSfHq1n+vzJr7MTU1xOV62e9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763725019; c=relaxed/simple;
-	bh=2YhHun6h5TPZJPb5erjEIpsM643I39VH2RfBhKTc8MM=;
+	bh=LOYpujHQoJKoShOTqgQ9QJ9SHzwlbcEAO9ZGw/MItV8=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=izZwN0rxUa5GojBlgP/v0T0U0Kdr+iJCmrvkKgtPQ/y6RG73zdPM50Op6IUlEb0rfdK+xWM6h7tMWBz8DqXtOsO33yycdBpsarfINh8H2c9HkR6t9wZpz/hu+ps1NueteCvKZMctKGGeqzZiKdJst7EOKP89TLVmkaSnTIQnoG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k4JAN0gh; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version:Content-Type; b=PINEVnOh8k7YKJSdP0tSExtPHtVy0aYTzatKrCls9vQyQyqhGz2hbD5RpLzrExlG6sCqrzVm3/071RB4rACyRpdc99rXKUlBq/dX7hROHHU5Jm2zi/0i0g6+2O9ygoLtU/GfE9aU48hITNv+IjZeSenN3Ch2VtTcpUHqJ00JR3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOKE6M3W; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k4JAN0gh"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-477a1c28778so21882675e9.3
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:36:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOKE6M3W"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3c965cc4so1014742f8f.0
+        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 03:36:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763725011; x=1764329811; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763725013; x=1764329813; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fEL/unmTGTd7Hwoq2i5Bt8Vk37qtmt2aavwNGtQcKk0=;
-        b=k4JAN0ghN2HrJsm0n6OWj+TlyMhsOFDfy4duBR/1590P99RDYuI90jKderNxb07X+S
-         NNpfFhmyWebzua69RfKluGPM2d62pNRBMYWGRk+OUlGVjNX34HIvNULWLlF4YiVQQP13
-         0G7KnZfAW6AzANET9uZupmG3f9MePAJVUjrjprjyjmlx8hGQZ2D6ce14KjleSbbyOOjR
-         al5I/2oQNbgaP8Oj5wz5aBqVbr0F8WKlQ91FSZxSlcwD6S+Bla+89kuwMQF2PuMDfljX
-         mVSvk46GFCGUPY2sYID/kuCMmCiNwykILFY0ZvOO9RY9evgG3i5khmT9cpcI9d7liW09
-         hwMQ==
+        bh=CS8gyqFzkQ6r/Z2UVvHxbPt1ypXcs3FwemCtMOsmk8s=;
+        b=WOKE6M3WUK5qGH1nUZNItVGAOnBqI48n/Zlz95GC7nUDWdm0gjVuAVt0Ef/mSk6AGS
+         Ql+DZLVaN97BolVfxXna9T0lWeGeCpC5iDxEkufsI6hz7r2RzoqvzT1E0F4XNAbIzy0b
+         9L6jG/Oarxp6KUQ75V2TUgOU7KegL4jfR6rcNhtn0owvMbyjSx35oU7MV9CefL4aZeNT
+         5sH5MUSb3vGvGhmu6CZaBj3NfwqnasOFRKRPv1ebaVKJwEIQJF8EWDVFj0ihLCLnDhfg
+         rJk9mAMJMPXlTIM8PeOJVGk31LnCSr60KCKuxGtKHpMyEJM6IJy07Z7P5yBsQN15gpWP
+         0xcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763725011; x=1764329811;
+        d=1e100.net; s=20230601; t=1763725013; x=1764329813;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=fEL/unmTGTd7Hwoq2i5Bt8Vk37qtmt2aavwNGtQcKk0=;
-        b=VDg957OvPs0wQpgctXnFNIp4du1Zbx1XAjk0W039ixCNAHnYgZRXYZAEsA9S+aOX8n
-         7sv8H7/P80IDZtNwIEEbce2/ZZeBVIjpX+Wds7CjQ2j1ha4DOK6rlM1G45VTm/BCcQ3H
-         WdEZjttoqevg6P7CnQUXx3GaNZPTgOIhxQ8vrvVsrJXHsXmlVJQ2uGt3cAl/tRy0UZEy
-         ZPLhg9uZGdhKB61kQd7QKGD/NUltu7/8Ndhr4XxgE2Qjl2Idua/oe+HaFhvVVMhze8T9
-         DefxWRFhJ4yIe4i2wSFvkh2nBLmxuw002HzG+pyc5urukWTA/acie03IWA3Zz7q3ySfi
-         W4zA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWZzhMd3hJN615iPs5kRoF8JXoGe5cwfc3Ul1JWjn7VAveoYOPKnxoEH0yLCHjvnDkTHr6EDY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVkSuMMaeacqUMx2VKhRmbc7TKtQ4AtK05mWgpWo0vgtvYP2N2
-	oNb2dSO53JIaQ3DEiT6GBpEp7s4eMPCfiRh+4m7sRpWvIDBrDbXXgON9
-X-Gm-Gg: ASbGncvKtRHJZvHTPUTm+vpDbnJa0VMz+k2mI/a+GuSAWvj8pN1GXv57GnCnvX4zcjD
-	0rMqv/ys3uY3Pp0HzP4B71gBkO0iz8u0YwUS5RSegDKDznQTSWyEcuNgJfeqKKdMX5NTQJYMfeS
-	zOkE1IR+QZp2vq7zIFNMma5LHxW0iWe4JcjBHC+IpmWkd+EhRoC84gaMQz3tWS2IwfFpylsXZUZ
-	5GMIDCpo/vz1hXx/ZaBsN/7mPcTS4i2n4lKF5v/P0G8t56LkXwg9RdnvR51cbJeyShsVSroZ332
-	1hYNBf+JhIbjs9O+8ATc7AyIrIjmqw1KIYfOk92Pp0UYLBsveg2ccvBU9+qqp/EZEI4ql0vIZbN
-	kVHq+GO3g0wz8fHwrJSiNeAthukHZf3twQPmx1LQFSR40GXii6W1hGSDS/nkIJJOLyejLYdMYHu
-	ykHDn/64NB9ZPkr+wAhtdZ1Y4=
-X-Google-Smtp-Source: AGHT+IHiWl/LbQdLCaHamlI44jxsdkR7SpMvvFRZBQA37tgZFbQIG2lm/npPeeMv7MO4497KZLWILA==
-X-Received: by 2002:a05:600c:1c0d:b0:471:14b1:da13 with SMTP id 5b1f17b1804b1-477c018a12cmr23820885e9.14.1763725011008;
-        Fri, 21 Nov 2025 03:36:51 -0800 (PST)
+        bh=CS8gyqFzkQ6r/Z2UVvHxbPt1ypXcs3FwemCtMOsmk8s=;
+        b=cmcnDLB5WAGkmuTk+tz81jUEKULHyCy+TZ2TiMTyYOnN+DfGvrQvdcQlj6XO9OfR9K
+         i6fZqmisEoB9FqkV8qXBhi8gKhaq00dWKlsvzTOz2Dji/0L7s1nKB8n79S+/9a0QmSwZ
+         vHhznI6wmhgTtL2rsckFtSI83iELRQPMzLvOTu8IZBPXD6rMmLRhWvjcTO3o4RcD9Bqd
+         rBnO681snTkdwlHDofTA5V9Z5hxX/h9mdWOFrfL7AIINalnAWNSQf2+LGo0NCCG06gZ7
+         E0tRp0INWBPrNU+5GWwV2qk6B2SIp80dXQQsTGuMlFlNSLg0d0Fl4Fr+SPR6H9wvzZwf
+         DVLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrdwpl6dsZoSP8ZKFHbQhrkXMTLzsQgfjJHQJETdu2dcZiCWkNW5wydB7Btw4DfBAiXo8kIhI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcdJ3oVHoKq/nQP8MEQjCN9qkaqP2j3IAlC+9nI2jlweXLI9Ro
+	8fVOlHgZ7pKyBeRCYD/ywpzX4hTC961gsXfIMq3wwTWbw2Az/MNMI8lc
+X-Gm-Gg: ASbGncvk0d41snJP3UqCwHM3FB28XnbCNqHe7WprglOb9q1MWy9MR7n4O3nBMauIYf8
+	isILxVKD8QYpWqy38Ek49CYXQAZR84hlCVcuLEXP+d+TyLesWztAjhB+nNexA+U7x4qd52c02Kw
+	l5fu/y77PVkX1THatGzkJ4Uk338SW6M4KZDF2i+O4tKatMO28x/AwIpDBIBepvnYK7UXiAqSxhx
+	0+xIQwZK9dRyiOS9Cq3WXtIF128dBp6m2e75Oi8nkcxkSUjOsQ2tLQXDiOR+czFnirToWzxb7Ue
+	DznHqcOQYQoUo7hBSRFyhYOGO5Nvcbk+yvgBgwR1rrYVijtqfP3rhJngVsBNdIzoLzNQ8KplqQy
+	rHkgCN9t4L2RRY7esizGU/nRbgxWOwiB7BcSwxFMpDlrEHNsCAAGvbaYTEsV5gyW2oLBztBx+B5
+	QEe8djyBkV2leKS3WUM3pTi4U=
+X-Google-Smtp-Source: AGHT+IEOAgZmPr6L2R2ZTzAQtOA1RU1DqXWvah0GGKJQuxKtItTZR/EwGeyivvDwMsUN+Ewo3KC8EQ==
+X-Received: by 2002:a05:6000:4026:b0:425:7e33:b4a9 with SMTP id ffacd0b85a97d-42cc125247bmr2705819f8f.0.1763725012584;
+        Fri, 21 Nov 2025 03:36:52 -0800 (PST)
 Received: from imac ([2a02:8010:60a0:0:f819:b939:9ed6:5114])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf1f3e63sm39654205e9.7.2025.11.21.03.36.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd9061sm10506268f8f.41.2025.11.21.03.36.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 03:36:50 -0800 (PST)
+        Fri, 21 Nov 2025 03:36:52 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: "Remy D. Farley" <one-d-wide@protonmail.com>
 Cc: Jakub Kicinski <kuba@kernel.org>,  netdev@vger.kernel.org,  Pablo Neira
  Ayuso <pablo@netfilter.org>,  Jozsef Kadlecsik <kadlec@netfilter.org>,
   Florian Westphal <fw@strlen.de>,  Phil Sutter <phil@nwl.cc>,
   netfilter-devel@vger.kernel.org,  coreteam@netfilter.org
-Subject: Re: [PATCH v5 1/6] doc/netlink: netlink-raw: Add max check
-In-Reply-To: <20251120151754.1111675-2-one-d-wide@protonmail.com>
-Date: Fri, 21 Nov 2025 10:03:37 +0000
-Message-ID: <m2wm3j4s92.fsf@gmail.com>
+Subject: Re: [PATCH v5 2/6] doc/netlink: nftables: Add definitions
+In-Reply-To: <20251120151754.1111675-3-one-d-wide@protonmail.com>
+Date: Fri, 21 Nov 2025 11:33:06 +0000
+Message-ID: <m2qztr4o3x.fsf@gmail.com>
 References: <20251120151754.1111675-1-one-d-wide@protonmail.com>
-	<20251120151754.1111675-2-one-d-wide@protonmail.com>
+	<20251120151754.1111675-3-one-d-wide@protonmail.com>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,43 +81,102 @@ Content-Type: text/plain
 
 "Remy D. Farley" <one-d-wide@protonmail.com> writes:
 
-> Suggested-by: Donald Hunter <donald.hunter@gmail.com>
-> Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
-
-Missing description, therwise, LGTM.
-
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-
-> ---
->  Documentation/netlink/netlink-raw.yaml | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> New enums/flags:
+> - payload-base
+> - range-ops
+> - registers
+> - numgen-types
+> - log-level
+> - log-flags
 >
-> diff --git a/Documentation/netlink/netlink-raw.yaml b/Documentation/netlink/netlink-raw.yaml
-> index 0166a7e4a..dd98dda55 100644
-> --- a/Documentation/netlink/netlink-raw.yaml
-> +++ b/Documentation/netlink/netlink-raw.yaml
-> @@ -19,6 +19,12 @@ $defs:
->      type: [ string, integer ]
->      pattern: ^[0-9A-Za-z_-]+( - 1)?$
->      minimum: 0
-> +  len-or-limit:
-> +    # literal int, const name, or limit based on fixed-width type
-> +    # e.g. u8-min, u16-max, etc.
-> +    type: [ string, integer ]
-> +    pattern: ^[0-9A-Za-z_-]+$
-> +    minimum: 0
->  
->  # Schema for specs
->  title: Protocol
-> @@ -270,7 +276,10 @@ properties:
->                      type: string
->                    min:
->                      description: Min value for an integer attribute.
-> -                    type: integer
-> +                    $ref: '#/$defs/len-or-limit'
-> +                  max:
-> +                    description: Max value for an integer attribute.
-> +                    $ref: '#/$defs/len-or-limit'
->                    min-len:
->                      description: Min length for a binary attribute.
->                      $ref: '#/$defs/len-or-define'
+> Added missing enumerations:
+> - bitwise-ops
+>
+> Annotated with a doc comment:
+> - bitwise-ops
+>
+> Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
+> ---
+>  Documentation/netlink/specs/nftables.yaml | 147 +++++++++++++++++++++-
+>  1 file changed, 144 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/netlink/specs/nftables.yaml b/Documentation/netlink/specs/nftables.yaml
+> index cce88819b..e0c25af1d 100644
+> --- a/Documentation/netlink/specs/nftables.yaml
+> +++ b/Documentation/netlink/specs/nftables.yaml
+> @@ -66,9 +66,23 @@ definitions:
+>      name: bitwise-ops
+>      type: enum
+>      entries:
+> -      - bool
+> -      - lshift
+> -      - rshift
+> +      -
+> +        name: mask-xor  # aka bool (old name)
+> +        doc: |
+> +          mask-and-xor operation used to implement NOT, AND, OR and XOR
+> +            dreg = (sreg & mask) ^ xor
+> +          with these mask and xor values:
+> +                    mask    xor
+> +            NOT:    1       1
+> +            OR:     ~x      x
+> +            XOR:    1       x
+> +            AND:    x       0
+
+This does not render acceptably in the HTML docs and it deviates from
+the way the text is presented in nf_tables.h - the description makes
+sense in the context of the expression defined by expr-bitwise-attrs
+which bitwise-ops is part of.
+
+I suggest moving the doc to expr-bitwise-attrs, which has the advantage
+that the ynl doc generator already handles preformatted text for attr
+sets.
+
+This diff should be sufficient; note the :: and block indentation:
+
+diff --git a/Documentation/netlink/specs/nftables.yaml b/Documentation/netlink/specs/nftables.yaml
+index 136b2502a811..23106a68512f 100644
+--- a/Documentation/netlink/specs/nftables.yaml
++++ b/Documentation/netlink/specs/nftables.yaml
+@@ -68,15 +68,9 @@ definitions:
+     entries:
+       -
+         name: mask-xor  # aka bool (old name)
+-        doc: |
+-          mask-and-xor operation used to implement NOT, AND, OR and XOR
+-            dreg = (sreg & mask) ^ xor
+-          with these mask and xor values:
+-                    mask    xor
+-            NOT:    1       1
+-            OR:     ~x      x
+-            XOR:    1       x
+-            AND:    x       0
++        doc: >-
++          mask-and-xor operation used to implement NOT, AND, OR and XOR boolean
++          operations
+       # Spinx docutils display warning when interleaving attrsets with strings
+       - name: lshift
+       - name: rshift
+@@ -1014,6 +1008,22 @@ attribute-sets:
+         nested-attributes: hook-dev-attrs
+   -
+     name: expr-bitwise-attrs
++    doc: |
++      The bitwise expression supports boolean and shift operations. It
++      implements the boolean operations by performing the following
++      operation::
++
++          dreg = (sreg & mask) ^ xor
++
++          with these mask and xor values:
++
++          op      mask    xor
++          ----    ----    ---
++          NOT:     1       1
++          OR:     ~x       x
++          XOR:     1       x
++          AND:     x       0
++
+     attributes:
+       -
+         name: sreg
