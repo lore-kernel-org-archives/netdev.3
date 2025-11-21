@@ -1,773 +1,461 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5770A2F5301
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 05:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B29A2367CE;
+	Fri, 21 Nov 2025 06:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763703912; cv=none; b=XokanAalwW5OU9EkZB+2uFtPKfJWpdPrwdQyd6Zow8FsU2wVhNFhl9f7Deob1R5wHhJKFNjI1wTOcQdqyhh0Y/5Db5A0YUHoKrLo8P2jODGRzu/AcBElPKWFS27RHR6zsaxZHkJuXSq5j+h/jHL0JqZ4pPfEkfjSKOwudNWKPzA=
+	t=1763705149; cv=none; b=J8OrmCTCR9pnsWD6C1a+lTFnmP+JbDM6a1fhZU39S/Lrx3Lf4XE+A4fcb5nY4HYLm9ey0AdIu/42MtPStWhbLAMczGrAPpOmymQzh52omeGzswLE7wfc6+1qqZK5I1D5tQsSQQVPZuxUND7EBwPslBRknhgkOliDISgDm+LcviQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763703912; c=relaxed/simple;
-	bh=ElzwQ/Uk7+6/K3/0sD1a50qGoV8AgNqS88zz/fPpHYU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P70Bxy3hKLJG2OPYbSHJxxb4zjU4K0UufBy7jhbMzOl8PFUAHUxOa/qhJjwFoYm+6yMWvS8apJDV55dxobMVtyuOwPKaDImCKdkzKGAXTu56WXNI0pLp7Rcbg/0dVbtIPu+txOoZqZYdl/OBOhn2nXhoe/RMoKr/dx6WEGmH+8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cLVmYKf+; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763705149; c=relaxed/simple;
+	bh=BtABhcOcdNlGTfQETzoOMEIxMaNqTDIMj0HqqgzhN0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T/fIg22JbPA0fvPgu0myTUFOOLK4DcO10MQsMETkYpmjIzQVr/w7uh6pEDobgCopy2MoPQH3rEOTpq8vYP8RGNIaCqY2vP9EvZ5QmsFDP4JpH04NVoOzQUnQZl7SYTJaTmxZbgDewnLERDzF/sUB+dhmlwDZjSwbO+RcACSs3To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=XHLOG2BI; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cLVmYKf+"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-343774bd9b4so1318039a91.2
-        for <netdev@vger.kernel.org>; Thu, 20 Nov 2025 21:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763703903; x=1764308703; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M77mCllcJMbMpVR22bc4qHyCRYKpmXn6ys6/Up60Jxg=;
-        b=cLVmYKf+TdzYL3lfoKW7BgJt2h6emqrW+vPZ6cbBWPAVyyhmmLOkM+ZEIlg97cUmPN
-         iKQsCBgHfkwjOhNQNGBzhhACxn/FyQJDNe566FaC6w5UtbpCb8A91WOwM8KEwUkCYHY8
-         XM9cO8CNTtLCY5xMu3DWVg2cAyZ9WT7DWQDKK27UJsL2eiD1eYRHAtD+USLxyFRoEal7
-         Mj4eQzOWIlB2mYp73Yx0sY3zBUKw+xzucCDh8M5Q4cFpwXtRh71KvVoYJwXA7Kzi/5fh
-         bGL/2RIQkCd44anRxu5WopnhM3K/CXKU0u5yR872Wwey8jq3Mm+QRSYC2GkVYumHufP5
-         9vLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763703903; x=1764308703;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M77mCllcJMbMpVR22bc4qHyCRYKpmXn6ys6/Up60Jxg=;
-        b=MYDr/eyuOEESTP7ATPprt9Jqhpg281pwo7jwD6eEqNsS1bpFW+YfLQ5d5O0ThNqKuN
-         yetdI5VxcsgJUTUzKkBIJXGkwZbQTpi03jtpQ6gIoPcNz+0vTw10M3yQwXN+WHTq1mmc
-         zwU5RJ2PwPZcDPgZIk3ru9+ZPP2BW1Y+8RW2ggxeptKQWGUj8Ea6KuuCFVwRt64LJgIc
-         aUnxA8MM95VbxfKPowEdAwn2zdpID8GPpRw2oXtjUfkPX8Bb+hoqrgLRutUdFJk4cMaf
-         /000lqjH4lbLvcZ+pHwAtdCEDW7gCj/XQhsB0Cc2qvTCRIYeUJMKghO0LHu4bBiS37Ax
-         0L+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVvXvVVpust+gAGTNcufy6ny4u6wfIjQX4MrGmCiVBQgtHJHxY0GqhHWBAlm8X+YRal3pUPmIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy69xpOIpr5209CR7YPnke1nnv/Pj3fNi2ezT9im5mqcHTbOjJ5
-	ZazgPbTwRgyOAs1Xo0pD7brrIjIlKGm8uAFSD2J9TT3HyvlYJlXG7uPY
-X-Gm-Gg: ASbGnctNCoD8f12eEHFDe/9v8M2ZK1ntrnThKha2ZlKigrm8EYS5xZqyzNHRjDqXY9G
-	t1Oa+IXWZNFHZsZXlk8oUBxCqMgPqR0M0MAv57wkNvqNxcJ+xMQjo59bd4e/5l9KQzMMUT/JQBZ
-	FA4pdO78QbTHdEEAOhXEeaOO+i1Js6EX/pm/sOgbv1v3EAUpMSyjkcpQzwGeDIc5YKazbcGvCn6
-	XKarI6eH3Hvq1wn7vW/dxgVttZbgsbfLGfEtu5Bwg1BbiIWDrhmNZVT5yp5XjLIG1FLoIdyJvGw
-	1lCmXoV6e/lVfE+LP/r/F+XDpZQJGjiKk259ejDwy++e/CVXAxRBhK1pY5gYjXVgpgfB/UWjgwN
-	vHFvKkWbtC98LnfJAfdcEJRmHAPlWg5wvcH+kWrSgWUCIzNanHZ/YckLEze1ytoTba3V40MXhX7
-	86zkmkSOOYjS7j/Q4DjaxI
-X-Google-Smtp-Source: AGHT+IFiczZxqh/SzL68p8yHg4vkV1ClW3o7kQ11kfQfTKx98sbjec/c4UHBvDjgv7YTJ5BYR649kQ==
-X-Received: by 2002:a17:90b:580c:b0:341:8491:472a with SMTP id 98e67ed59e1d1-34733e4c8d9mr1458637a91.4.1763703902634;
-        Thu, 20 Nov 2025 21:45:02 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:4c::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f174c9dasm4610030b3a.65.2025.11.20.21.45.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 21:45:02 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Thu, 20 Nov 2025 21:44:44 -0800
-Subject: [PATCH net-next v11 12/13] selftests/vsock: add tests for host <->
- vm connectivity with namespaces
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="XHLOG2BI"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1763705137; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=WegXW2rrJonMdtr0Thc+XyPwa3nKRlWj0Gnxn+fEttc=;
+	b=XHLOG2BIoSQe0QNM4JtOEOzvbpoPzygq4ourPVeRq6+gxvOBjIo+be9uqvkoY4waPfpEDPyeyZFNYaYjcuRBEWQc/v1KQdOyCIUsZm7gQ9Avw9zSYXUb4K4+bOpD1k3nDSoER9rghreX5bi/oSqHTiUoO4SBu6h3EqZB5VDk3Es=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WszlXq7_1763705133 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 21 Nov 2025 14:05:36 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: mjambigi@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	wintera@linux.ibm.com,
+	dust.li@linux.alibaba.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	sidraya@linux.ibm.com,
+	jaka@linux.ibm.com
+Subject: [RFC PATCH net-next] net/smc: add full IPv6 support for SMC
+Date: Fri, 21 Nov 2025 14:05:33 +0800
+Message-ID: <20251121060533.92157-1-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251120-vsock-vmtest-v11-12-55cbc80249a7@meta.com>
-References: <20251120-vsock-vmtest-v11-0-55cbc80249a7@meta.com>
-In-Reply-To: <20251120-vsock-vmtest-v11-0-55cbc80249a7@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
- Vishnu Dasa <vishnu.dasa@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, berrange@redhat.com, 
- Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+The current SMC implementation is IPv4-centric. While it contains a
+workaround for IPv4-mapped IPv6 addresses, it lacks a functional path
+for native IPv6, preventing its use in modern dual-stack or IPv6-only
+networks.
 
-Add tests to validate namespace correctness using vsock_test and socat.
-The vsock_test tool is used to validate expected success tests, but
-socat is used for expected failure tests. socat is used to ensure that
-connections are rejected outright instead of failing due to some other
-socket behavior (as tested in vsock_test). Additionally, socat is
-already required for tunneling TCP traffic from vsock_test. Using only
-one of the vsock_test tests like 'test_stream_client_close_client' would
-have yielded a similar result, but doing so wouldn't remove the socat
-dependency.
+This patch introduces full, native IPv6 support by refactoring the
+address handling mechanism to be IP-version agnostic, which is
+achieved by:
 
-Additionally, check for the dependency socat. socat needs special
-handling beyond just checking if it is on the path because it must be
-compiled with support for both vsock and unix. The function
-check_socat() checks that this support exists.
+- Introducing a generic `struct smc_ipaddr` to abstract IP addresses.
+- Implementing an IPv6-specific route lookup function.
+- Extend GID matching logic for both IPv4 and IPv6 addresses
 
-Add more padding to test name printf strings because the tests added in
-this patch would otherwise overflow.
+With these changes, SMC can now discover RDMA devices and establish
+connections over both native IPv4 and IPv6 networks.
 
-Add vm_dmesg_start() and vm_dmesg_check() to encapsulate checking dmesg
-for oops and warnings.
-
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
 ---
-Changes in v11:
-- add 'sleep "${WAIT_PERIOD}"' after any non-TCP socat LISTEN cmd
-  (Stefano)
-- add host_wait_for_listener() after any socat TCP-LISTEN (Stefano)
-- reuse vm_dmesg_{oops,warn}_count() inside vm_dmesg_check()
-- fix copy-paste in test_ns_same_local_vm_connect_to_local_host_ok()
-  (Stefano)
+ net/smc/af_smc.c   |  47 +++++++++++----
+ net/smc/smc_core.h |  40 ++++++++++++-
+ net/smc/smc_ib.c   | 145 ++++++++++++++++++++++++++++++++++++++-------
+ net/smc/smc_ib.h   |   9 +++
+ net/smc/smc_llc.c  |   6 +-
+ 5 files changed, 208 insertions(+), 39 deletions(-)
 
-Changes in v10:
-- add vm_dmesg_start() and vm_dmesg_check()
-
-Changes in v9:
-- consistent variable quoting
----
- tools/testing/selftests/vsock/vmtest.sh | 557 +++++++++++++++++++++++++++++++-
- 1 file changed, 555 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index f84da1e8ad14..dfa895abfc7f 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -7,6 +7,7 @@
- #		* virtme-ng
- #		* busybox-static (used by virtme-ng)
- #		* qemu	(used by virtme-ng)
-+#		* socat
- #
- # shellcheck disable=SC2317,SC2119
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index e388de8dca09..1ba728d021b9 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1133,12 +1133,15 @@ static int smc_find_proposal_devices(struct smc_sock *smc,
  
-@@ -55,6 +56,19 @@ readonly TEST_NAMES=(
- 	ns_local_same_cid_ok
- 	ns_global_local_same_cid_ok
- 	ns_local_global_same_cid_ok
-+	ns_diff_global_host_connect_to_global_vm_ok
-+	ns_diff_global_host_connect_to_local_vm_fails
-+	ns_diff_global_vm_connect_to_global_host_ok
-+	ns_diff_global_vm_connect_to_local_host_fails
-+	ns_diff_local_host_connect_to_local_vm_fails
-+	ns_diff_local_vm_connect_to_local_host_fails
-+	ns_diff_global_to_local_loopback_local_fails
-+	ns_diff_local_to_global_loopback_fails
-+	ns_diff_local_to_local_loopback_fails
-+	ns_diff_global_to_global_loopback_ok
-+	ns_same_local_loopback_ok
-+	ns_same_local_host_connect_to_local_vm_ok
-+	ns_same_local_vm_connect_to_local_host_ok
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -86,6 +100,45 @@ readonly TEST_DESCS=(
+ 	/* check if there is an rdma v2 device available */
+ 	ini->check_smcrv2 = true;
+-	ini->smcrv2.saddr = smc->clcsock->sk->sk_rcv_saddr;
+-	if (!(ini->smcr_version & SMC_V2) ||
++
++	if (smc->clcsock->sk->sk_family == AF_INET)
++		smc_ipaddr_from_v4addr(&ini->smcrv2.saddr, smc->clcsock->sk->sk_rcv_saddr);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	    (smc->clcsock->sk->sk_family == AF_INET6 &&
+-	     !ipv6_addr_v4mapped(&smc->clcsock->sk->sk_v6_rcv_saddr)) ||
+-#endif
++	else
++		smc_ipaddr_from_v6addr(&ini->smcrv2.saddr, &smc->clcsock->sk->sk_v6_rcv_saddr);
++#endif /* CONFIG_IPV6 */
++
++	if (!(ini->smcr_version & SMC_V2) ||
+ 	    !smc_clc_ueid_count() ||
+ 	    smc_find_rdma_device(smc, ini))
+ 		ini->smcr_version &= ~SMC_V2;
+@@ -1231,11 +1234,27 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+ 		memcpy(ini->smcrv2.nexthop_mac, &aclc->r0.lcl.mac, ETH_ALEN);
+ 		ini->smcrv2.uses_gateway = false;
+ 	} else {
+-		if (smc_ib_find_route(net, smc->clcsock->sk->sk_rcv_saddr,
+-				      smc_ib_gid_to_ipv4(aclc->r0.lcl.gid),
+-				      ini->smcrv2.nexthop_mac,
+-				      &ini->smcrv2.uses_gateway))
++		struct smc_ipaddr peer_gid;
++
++		smc_ipaddr_from_gid(&peer_gid, aclc->r0.lcl.gid);
++		if (peer_gid.family == AF_INET) {
++			/* v4-mapped v6 address should also be treated as v4 address. */
++			if (smc_ib_find_route(net, smc->clcsock->sk->sk_rcv_saddr,
++					      peer_gid.addr,
++					      ini->smcrv2.nexthop_mac,
++					      &ini->smcrv2.uses_gateway))
++				return SMC_CLC_DECL_NOROUTE;
++		} else {
++#if IS_ENABLED(CONFIG_IPV6)
++			if (smc_ib_find_route_v6(net, &smc->clcsock->sk->sk_v6_rcv_saddr,
++						 &peer_gid.addr_v6,
++						 ini->smcrv2.nexthop_mac,
++						 &ini->smcrv2.uses_gateway))
++				return SMC_CLC_DECL_NOROUTE;
++#else
+ 			return SMC_CLC_DECL_NOROUTE;
++#endif /* CONFIG_IPV6 */
++		}
+ 		if (!ini->smcrv2.uses_gateway) {
+ 			/* mismatch: peer claims indirect, but its direct */
+ 			return SMC_CLC_DECL_NOINDIRECT;
+@@ -2308,8 +2327,14 @@ static void smc_find_rdma_v2_device_serv(struct smc_sock *new_smc,
+ 	memcpy(ini->peer_mac, pclc->lcl.mac, ETH_ALEN);
+ 	ini->check_smcrv2 = true;
+ 	ini->smcrv2.clc_sk = new_smc->clcsock->sk;
+-	ini->smcrv2.saddr = new_smc->clcsock->sk->sk_rcv_saddr;
+-	ini->smcrv2.daddr = smc_ib_gid_to_ipv4(smc_v2_ext->roce);
++	if (new_smc->clcsock->sk->sk_family == AF_INET)
++		smc_ipaddr_from_v4addr(&ini->smcrv2.saddr, new_smc->clcsock->sk->sk_rcv_saddr);
++#if IS_ENABLED(CONFIG_IPV6)
++	else
++		smc_ipaddr_from_v6addr(&ini->smcrv2.saddr, &new_smc->clcsock->sk->sk_v6_rcv_saddr);
++#endif /* CONFIG_IPV6 */
++	smc_ipaddr_from_gid(&ini->smcrv2.daddr, smc_v2_ext->roce);
++
+ 	rc = smc_find_rdma_device(new_smc, ini);
+ 	if (rc) {
+ 		smc_init_info_store_rc(rc, ini);
+diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
+index 5c18f08a4c8a..eafd7c86795b 100644
+--- a/net/smc/smc_core.h
++++ b/net/smc/smc_core.h
+@@ -283,6 +283,14 @@ struct smc_llc_flow {
+ 	struct smc_llc_qentry *qentry;
+ };
  
- 	# ns_local_global_same_cid_ok
- 	"Check QEMU successfully starts one VM in a local ns and then another VM in a global ns with the same CID."
++struct smc_ipaddr {
++	sa_family_t family;
++	union {
++		__be32          addr;
++		struct in6_addr addr_v6;
++	};
++};
 +
-+	# ns_diff_global_host_connect_to_global_vm_ok
-+	"Run vsock_test client in global ns with server in VM in another global ns."
-+
-+	# ns_diff_global_host_connect_to_local_vm_fails
-+	"Run socat to test a process in a global ns fails to connect to a VM in a local ns."
-+
-+	# ns_diff_global_vm_connect_to_global_host_ok
-+	"Run vsock_test client in VM in a global ns with server in another global ns."
-+
-+	# ns_diff_global_vm_connect_to_local_host_fails
-+	"Run socat to test a VM in a global ns fails to connect to a host process in a local ns."
-+
-+	# ns_diff_local_host_connect_to_local_vm_fails
-+	"Run socat to test a host process in a local ns fails to connect to a VM in another local ns."
-+
-+	# ns_diff_local_vm_connect_to_local_host_fails
-+	"Run socat to test a VM in a local ns fails to connect to a host process in another local ns."
-+
-+	# ns_diff_global_to_local_loopback_local_fails
-+	"Run socat to test a loopback vsock in a global ns fails to connect to a vsock in a local ns."
-+
-+	# ns_diff_local_to_global_loopback_fails
-+	"Run socat to test a loopback vsock in a local ns fails to connect to a vsock in a global ns."
-+
-+	# ns_diff_local_to_local_loopback_fails
-+	"Run socat to test a loopback vsock in a local ns fails to connect to a vsock in another local ns."
-+
-+	# ns_diff_global_to_global_loopback_ok
-+	"Run socat to test a loopback vsock in a global ns successfully connects to a vsock in another global ns."
-+
-+	# ns_same_local_loopback_ok
-+	"Run socat to test a loopback vsock in a local ns successfully connects to a vsock in the same ns."
-+
-+	# ns_same_local_host_connect_to_local_vm_ok
-+	"Run vsock_test client in a local ns with server in VM in same ns."
-+
-+	# ns_same_local_vm_connect_to_local_host_ok
-+	"Run vsock_test client in VM in a local ns with server in same ns."
- )
+ struct smc_link_group {
+ 	struct list_head	list;
+ 	struct rb_root		conns_all;	/* connection tree */
+@@ -363,7 +371,7 @@ struct smc_link_group {
+ 						/* rsn code for termination */
+ 			u8			nexthop_mac[ETH_ALEN];
+ 			u8			uses_gateway;
+-			__be32			saddr;
++			struct smc_ipaddr saddr;
+ 						/* net namespace */
+ 			struct net		*net;
+ 			u8			max_conns;
+@@ -397,9 +405,9 @@ struct smc_gidlist {
  
- readonly USE_SHARED_VM=(
-@@ -117,7 +170,7 @@ usage() {
- 	for ((i = 0; i < ${#TEST_NAMES[@]}; i++)); do
- 		name=${TEST_NAMES[${i}]}
- 		desc=${TEST_DESCS[${i}]}
--		printf "\t%-35s%-35s\n" "${name}" "${desc}"
-+		printf "\t%-55s%-35s\n" "${name}" "${desc}"
- 	done
- 	echo
+ struct smc_init_info_smcrv2 {
+ 	/* Input fields */
+-	__be32			saddr;
++	struct smc_ipaddr saddr;
+ 	struct sock		*clc_sk;
+-	__be32			daddr;
++	struct smc_ipaddr daddr;
  
-@@ -236,7 +289,7 @@ check_args() {
+ 	/* Output fields when saddr is set */
+ 	struct smc_ib_device	*ib_dev_v2;
+@@ -626,4 +634,30 @@ static inline struct smc_link_group *smc_get_lgr(struct smc_link *link)
+ {
+ 	return link->lgr;
+ }
++
++static inline void smc_ipaddr_from_v4addr(struct smc_ipaddr *ipaddr, __be32 v4_addr)
++{
++	ipaddr->family = AF_INET;
++	ipaddr->addr = v4_addr;
++}
++
++static inline void smc_ipaddr_from_v6addr(struct smc_ipaddr *ipaddr, const struct in6_addr *v6_addr)
++{
++	ipaddr->family = AF_INET6;
++	ipaddr->addr_v6 = *v6_addr;
++}
++
++static inline void smc_ipaddr_from_gid(struct smc_ipaddr *ipaddr, u8 gid[SMC_GID_SIZE])
++{
++	__be32 gid_v4 = smc_ib_gid_to_ipv4(gid);
++
++	if (gid_v4 != cpu_to_be32(INADDR_NONE)) {
++		ipaddr->family = AF_INET;
++		ipaddr->addr = gid_v4;
++	} else {
++		ipaddr->family = AF_INET6;
++		ipaddr->addr_v6 = *smc_ib_gid_to_ipv6(gid);
++	}
++}
++
+ #endif
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 1154907c5c05..5e2bbdcf623e 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -22,6 +22,7 @@
+ #include <linux/inetdevice.h>
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_cache.h>
++#include <net/ip6_route.h>
+ 
+ #include "smc_pnet.h"
+ #include "smc_ib.h"
+@@ -225,48 +226,148 @@ int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 	return -ENOENT;
  }
  
- check_deps() {
--	for dep in vng ${QEMU} busybox pkill ssh ss; do
-+	for dep in vng ${QEMU} busybox pkill ssh ss socat; do
- 		if [[ ! -x $(command -v "${dep}") ]]; then
- 			echo -e "skip:    dependency ${dep} not found!\n"
- 			exit "${KSFT_SKIP}"
-@@ -287,6 +340,20 @@ check_vng() {
- 	fi
+-static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
++#if IS_ENABLED(CONFIG_IPV6)
++int smc_ib_find_route_v6(struct net *net, struct in6_addr *saddr,
++			 struct in6_addr *daddr, u8 nexthop_mac[],
++			 u8 *uses_gateway)
++{
++	struct dst_entry *dst;
++	struct rt6_info *rt;
++	struct neighbour *neigh;
++	struct in6_addr *nexthop_addr;
++	int rc = -ENOENT;
++
++	struct flowi6 fl6 = {
++		.daddr = *daddr,
++		.saddr = *saddr,
++	};
++
++	if (ipv6_addr_any(daddr))
++		return -EINVAL;
++
++	dst = ip6_route_output(net, NULL, &fl6);
++	if (!dst || dst->error) {
++		rc = dst ? dst->error : -EINVAL;
++		goto out;
++	}
++	rt = (struct rt6_info *)dst;
++
++	if (ipv6_addr_type(&rt->rt6i_gateway) != IPV6_ADDR_ANY) {
++		*uses_gateway = 1;
++		nexthop_addr = &rt->rt6i_gateway;
++	} else {
++		*uses_gateway = 0;
++		nexthop_addr = daddr;
++	}
++
++	neigh = dst_neigh_lookup(dst, nexthop_addr);
++	if (!neigh)
++		goto out;
++
++	read_lock_bh(&neigh->lock);
++	if (neigh->nud_state & NUD_VALID) {
++		memcpy(nexthop_mac, neigh->ha, ETH_ALEN);
++		rc = 0;
++	}
++	read_unlock_bh(&neigh->lock);
++
++	neigh_release(neigh);
++out:
++	dst_release(dst);
++	return rc;
++}
++#endif /* CONFIG_IPV6 */
++
++static bool smc_ib_match_gid_rocev2(const struct net_device *ndev,
+ 				    const struct ib_gid_attr *attr,
+-				    u8 gid[], u8 *sgid_index,
+ 				    struct smc_init_info_smcrv2 *smcrv2)
+ {
+-	if (!smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE) {
+-		if (gid)
+-			memcpy(gid, &attr->gid, SMC_GID_SIZE);
+-		if (sgid_index)
+-			*sgid_index = attr->index;
+-		return 0;
+-	}
+-	if (smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP &&
+-	    smc_ib_gid_to_ipv4((u8 *)&attr->gid) != cpu_to_be32(INADDR_NONE)) {
++	struct net *net = dev_net(ndev);
++	bool subnet_match = false;
++
++	if (smc_ib_gid_to_ipv4((u8 *)&attr->gid) != cpu_to_be32(INADDR_NONE)) {
+ 		struct in_device *in_dev = __in_dev_get_rcu(ndev);
+-		struct net *net = dev_net(ndev);
+ 		const struct in_ifaddr *ifa;
+-		bool subnet_match = false;
+ 
+ 		if (!in_dev)
+-			goto out;
++			return false;
++
++		if (smcrv2->saddr.family != AF_INET)
++			return false;
++
+ 		in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-			if (!inet_ifa_match(smcrv2->saddr, ifa))
++			if (!inet_ifa_match(smcrv2->saddr.addr, ifa))
+ 				continue;
+ 			subnet_match = true;
+ 			break;
+ 		}
++
+ 		if (!subnet_match)
+-			goto out;
+-		if (smcrv2->daddr && smc_ib_find_route(net, smcrv2->saddr,
+-						       smcrv2->daddr,
+-						       smcrv2->nexthop_mac,
+-						       &smcrv2->uses_gateway))
+-			goto out;
++			return false;
++
++		if (smcrv2->daddr.addr &&
++		    smc_ib_find_route(net, smcrv2->saddr.addr,
++				      smcrv2->daddr.addr,
++				      smcrv2->nexthop_mac,
++				      &smcrv2->uses_gateway))
++			return false;
++#if IS_ENABLED(CONFIG_IPV6)
++	} else if (!(ipv6_addr_type(smc_ib_gid_to_ipv6((u8 *)&attr->gid)) & IPV6_ADDR_LINKLOCAL)) {
++		struct inet6_dev *in6_dev = __in6_dev_get(ndev);
++		const struct inet6_ifaddr *if6;
++
++		if (!in6_dev)
++			return false;
++
++		if (smcrv2->saddr.family != AF_INET6)
++			return false;
++
++		list_for_each_entry_rcu(if6, &in6_dev->addr_list, if_list) {
++			if (ipv6_addr_type(&if6->addr) & IPV6_ADDR_LINKLOCAL)
++				continue;
++			if (!ipv6_prefix_equal(&if6->addr, &smcrv2->saddr.addr_v6, if6->prefix_len))
++				continue;
++			subnet_match = true;
++			break;
++		}
+ 
++		if (!subnet_match)
++			return false;
++
++		if ((ipv6_addr_type(&smcrv2->daddr.addr_v6) != IPV6_ADDR_ANY) &&
++		    smc_ib_find_route_v6(net, &smcrv2->saddr.addr_v6,
++					 &smcrv2->daddr.addr_v6,
++					 smcrv2->nexthop_mac,
++					 &smcrv2->uses_gateway))
++			return false;
++#endif /* CONFIG_IPV6 */
++	} else {
++		return false;
++	}
++
++	return true;
++}
++
++static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
++				    const struct ib_gid_attr *attr,
++				    u8 gid[], u8 *sgid_index,
++				    struct smc_init_info_smcrv2 *smcrv2)
++{
++	bool gid_match = false;
++
++	if (!smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE)
++		gid_match = true;
++	else if (smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP)
++		gid_match = smc_ib_match_gid_rocev2(ndev, attr, smcrv2);
++
++	if (gid_match) {
+ 		if (gid)
+ 			memcpy(gid, &attr->gid, SMC_GID_SIZE);
+ 		if (sgid_index)
+ 			*sgid_index = attr->index;
+ 		return 0;
+ 	}
+-out:
++
+ 	return -ENODEV;
  }
  
-+check_socat() {
-+	local support_string
-+
-+	support_string="$(socat -V)"
-+
-+	if [[ "${support_string}" != *"WITH_VSOCK 1"* ]]; then
-+		die "err: socat is missing vsock support"
-+	fi
-+
-+	if [[ "${support_string}" != *"WITH_UNIX 1"* ]]; then
-+		die "err: socat is missing unix support"
-+	fi
-+}
-+
- handle_build() {
- 	if [[ ! "${BUILD}" -eq 1 ]]; then
- 		return
-@@ -335,6 +402,14 @@ terminate_pidfiles() {
- 	done
+diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
+index ef8ac2b7546d..7cbeb7350478 100644
+--- a/net/smc/smc_ib.h
++++ b/net/smc/smc_ib.h
+@@ -69,6 +69,12 @@ static inline __be32 smc_ib_gid_to_ipv4(u8 gid[SMC_GID_SIZE])
+ 	return cpu_to_be32(INADDR_NONE);
  }
  
-+terminate_pids() {
-+	local pid
-+
-+	for pid in "$@"; do
-+		kill -SIGTERM "${pid}" &>/dev/null || :
-+	done
++static inline struct in6_addr *smc_ib_gid_to_ipv6(u8 gid[SMC_GID_SIZE])
++{
++	struct in6_addr *addr6 = (struct in6_addr *)gid;
++	return addr6;
 +}
 +
- vm_start() {
- 	local pidfile=$1
- 	local ns=$2
-@@ -473,6 +548,28 @@ vm_dmesg_warn_count() {
- 	vm_ssh "${ns}" -- dmesg --level=warn 2>/dev/null | grep -c -i 'vsock'
- }
- 
-+vm_dmesg_check() {
-+	local pidfile=$1
-+	local ns=$2
-+	local oops_before=$3
-+	local warn_before=$4
-+	local oops_after warn_after
-+
-+	oops_after=$(vm_dmesg_oops_count "${ns}")
-+	if [[ "${oops_after}" -gt "${oops_before}" ]]; then
-+		echo "FAIL: kernel oops detected on vm in ns ${ns}" | log_host
-+		return 1
-+	fi
-+
-+	warn_after=$(vm_dmesg_warn_count "${ns}")
-+	if [[ "${warn_after}" -gt "${warn_before}" ]]; then
-+		echo "FAIL: kernel warning detected on vm in ns ${ns}" | log_host
-+		return 1
-+	fi
-+
-+	return 0
-+}
-+
- vm_vsock_test() {
- 	local ns=$1
- 	local host=$2
-@@ -597,6 +694,461 @@ test_ns_host_vsock_ns_mode_ok() {
- 	return "${KSFT_PASS}"
- }
- 
-+test_ns_diff_global_host_connect_to_global_vm_ok() {
-+	local oops_before warn_before
-+	local pids pid pidfile
-+	local ns0 ns1 port
-+	declare -a pids
-+	local unixfile
-+	ns0="global0"
-+	ns1="global1"
-+	port=1234
-+	local rc
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns0}"
-+	oops_before=$(vm_dmesg_oops_count "${ns0}")
-+	warn_before=$(vm_dmesg_warn_count "${ns0}")
-+
-+	unixfile=$(mktemp -u /tmp/XXXX.sock)
-+	ip netns exec "${ns1}" \
-+		socat TCP-LISTEN:"${TEST_HOST_PORT}",fork \
-+			UNIX-CONNECT:"${unixfile}" &
-+	pids+=($!)
-+	host_wait_for_listener "${ns1}" "${TEST_HOST_PORT}" "tcp"
-+
-+	ip netns exec "${ns0}" socat UNIX-LISTEN:"${unixfile}",fork \
-+		TCP-CONNECT:localhost:"${TEST_HOST_PORT}" &
-+	pids+=($!)
-+	host_wait_for_listener "${ns0}" "${unixfile}" "unix"
-+
-+	vm_vsock_test "${ns0}" "server" 2 "${TEST_GUEST_PORT}"
-+	vm_wait_for_listener "${ns0}" "${TEST_GUEST_PORT}" "tcp"
-+	host_vsock_test "${ns1}" "127.0.0.1" "${VSOCK_CID}" "${TEST_HOST_PORT}"
-+	rc=$?
-+
-+	vm_dmesg_check "${pidfile}" "${ns0}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pids "${pids[@]}"
-+	terminate_pidfiles "${pidfile}"
-+
-+	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_diff_global_host_connect_to_local_vm_fails() {
-+	local oops_before warn_before
-+	local ns0="global0"
-+	local ns1="local0"
-+	local port=12345
-+	local dmesg_rc
-+	local pidfile
-+	local result
-+	local pid
-+
-+	init_namespaces
-+
-+	outfile=$(mktemp)
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns1}"; then
-+		log_host "failed to start vm (cid=${VSOCK_CID}, ns=${ns0})"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns1}"
-+	oops_before=$(vm_dmesg_oops_count "${ns1}")
-+	warn_before=$(vm_dmesg_warn_count "${ns1}")
-+
-+	vm_ssh "${ns1}" -- socat VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" &
-+	vm_wait_for_listener "${ns1}" "${port}" "vsock"
-+	echo TEST | ip netns exec "${ns0}" \
-+		socat STDIN VSOCK-CONNECT:"${VSOCK_CID}":"${port}" 2>/dev/null
-+
-+	vm_dmesg_check "${pidfile}" "${ns1}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == "TEST" ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_diff_global_vm_connect_to_global_host_ok() {
-+	local oops_before warn_before
-+	local ns0="global0"
-+	local ns1="global1"
-+	local port=12345
-+	local unixfile
-+	local dmesg_rc
-+	local pidfile
-+	local pids
-+	local rc
-+
-+	init_namespaces
-+
-+	declare -a pids
-+
-+	log_host "Setup socat bridge from ns ${ns0} to ns ${ns1} over port ${port}"
-+
-+	unixfile=$(mktemp -u /tmp/XXXX.sock)
-+
-+	ip netns exec "${ns0}" \
-+		socat TCP-LISTEN:"${port}" UNIX-CONNECT:"${unixfile}" &
-+	pids+=($!)
-+	host_wait_for_listener "${ns0}" "${port}" "tcp"
-+
-+	ip netns exec "${ns1}" \
-+		socat UNIX-LISTEN:"${unixfile}" TCP-CONNECT:127.0.0.1:"${port}" &
-+	pids+=($!)
-+	host_wait_for_listener "${ns1}" "${unixfile}" "unix"
-+
-+	log_host "Launching ${VSOCK_TEST} in ns ${ns1}"
-+	host_vsock_test "${ns1}" "server" "${VSOCK_CID}" "${port}"
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		log_host "failed to start vm (cid=${cid}, ns=${ns0})"
-+		terminate_pids "${pids[@]}"
-+		rm -f "${unixfile}"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns0}"
-+
-+	oops_before=$(vm_dmesg_oops_count "${ns0}")
-+	warn_before=$(vm_dmesg_warn_count "${ns0}")
-+
-+	vm_vsock_test "${ns0}" "10.0.2.2" 2 "${port}"
-+	rc=$?
-+
-+	vm_dmesg_check "${pidfile}" "${ns0}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pids[@]}"
-+	rm -f "${unixfile}"
-+
-+	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+
-+}
-+
-+test_ns_diff_global_vm_connect_to_local_host_fails() {
-+	local ns0="global0"
-+	local ns1="local0"
-+	local port=12345
-+	local oops_before warn_before
-+	local dmesg_rc
-+	local pidfile
-+	local result
-+	local pid
-+
-+	init_namespaces
-+
-+	log_host "Launching socat in ns ${ns1}"
-+	outfile=$(mktemp)
-+
-+	ip netns exec "${ns1}" socat VSOCK-LISTEN:"${port}" STDOUT &> "${outfile}" &
-+	pid=$!
-+	host_wait_for_listener "${ns1}" "${port}" "vsock"
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		log_host "failed to start vm (cid=${cid}, ns=${ns0})"
-+		terminate_pids "${pid}"
-+		rm -f "${outfile}"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns0}"
-+
-+	oops_before=$(vm_dmesg_oops_count "${ns0}")
-+	warn_before=$(vm_dmesg_warn_count "${ns0}")
-+
-+	vm_ssh "${ns0}" -- \
-+		bash -c "echo TEST | socat STDIN VSOCK-CONNECT:2:${port}" 2>&1 | log_guest
-+
-+	vm_dmesg_check "${pidfile}" "${ns0}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pid}"
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]] && [[ "${dmesg_rc}" -eq 0 ]]; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_diff_local_host_connect_to_local_vm_fails() {
-+	local ns0="local0"
-+	local ns1="local1"
-+	local port=12345
-+	local oops_before warn_before
-+	local dmesg_rc
-+	local pidfile
-+	local result
-+	local pid
-+
-+	init_namespaces
-+
-+	outfile=$(mktemp)
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns1}"; then
-+		log_host "failed to start vm (cid=${cid}, ns=${ns0})"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns1}"
-+	oops_before=$(vm_dmesg_oops_count "${ns1}")
-+	warn_before=$(vm_dmesg_warn_count "${ns1}")
-+
-+	vm_ssh "${ns1}" -- socat VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" &
-+	vm_wait_for_listener "${ns1}" "${port}" "vsock"
-+
-+	echo TEST | ip netns exec "${ns0}" \
-+		socat STDIN VSOCK-CONNECT:"${VSOCK_CID}":"${port}" 2>/dev/null
-+
-+	vm_dmesg_check "${pidfile}" "${ns1}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]] && [[ "${dmesg_rc}" -eq 0 ]]; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_diff_local_vm_connect_to_local_host_fails() {
-+	local oops_before warn_before
-+	local ns0="local0"
-+	local ns1="local1"
-+	local port=12345
-+	local dmesg_rc
-+	local pidfile
-+	local result
-+	local pid
-+
-+	init_namespaces
-+
-+	log_host "Launching socat in ns ${ns1}"
-+	outfile=$(mktemp)
-+	ip netns exec "${ns1}" socat VSOCK-LISTEN:"${port}" STDOUT &> "${outfile}" &
-+	pid=$!
-+	host_wait_for_listener "${ns1}" "${port}" "vsock"
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		log_host "failed to start vm (cid=${cid}, ns=${ns0})"
-+		rm -f "${outfile}"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns0}"
-+	oops_before=$(vm_dmesg_oops_count "${ns0}")
-+	warn_before=$(vm_dmesg_warn_count "${ns0}")
-+
-+	vm_ssh "${ns0}" -- \
-+		bash -c "echo TEST | socat STDIN VSOCK-CONNECT:2:${port}" 2>&1 | log_guest
-+
-+	vm_dmesg_check "${pidfile}" "${ns0}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pid}"
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]] && [[ "${dmesg_rc}" -eq 0 ]]; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+__test_loopback_two_netns() {
-+	local ns0=$1
-+	local ns1=$2
-+	local port=12345
-+	local result
-+	local pid
-+
-+	modprobe vsock_loopback &> /dev/null || :
-+
-+	log_host "Launching socat in ns ${ns1}"
-+	outfile=$(mktemp)
-+
-+	ip netns exec "${ns1}" socat VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	host_wait_for_listener "${ns1}" "${port}" "vsock"
-+
-+	log_host "Launching socat in ns ${ns0}"
-+	echo TEST | ip netns exec "${ns0}" socat STDIN VSOCK-CONNECT:1:"${port}" 2>/dev/null
-+	terminate_pids "${pid}"
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == TEST ]]; then
-+		return 0
-+	fi
-+
-+	return 1
-+}
-+
-+test_ns_diff_global_to_local_loopback_local_fails() {
-+	init_namespaces
-+
-+	if ! __test_loopback_two_netns "global0" "local0"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_diff_local_to_global_loopback_fails() {
-+	init_namespaces
-+
-+	if ! __test_loopback_two_netns "local0" "global0"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_diff_local_to_local_loopback_fails() {
-+	init_namespaces
-+
-+	if ! __test_loopback_two_netns "local0" "local1"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_diff_global_to_global_loopback_ok() {
-+	init_namespaces
-+
-+	if __test_loopback_two_netns "global0" "global1"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_same_local_loopback_ok() {
-+	init_namespaces
-+
-+	if __test_loopback_two_netns "local0" "local0"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_same_local_host_connect_to_local_vm_ok() {
-+	local oops_before warn_before
-+	local ns="local0"
-+	local port=1234
-+	local dmesg_rc
-+	local pidfile
-+	local rc
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+
-+	if ! vm_start "${pidfile}" "${ns}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns}"
-+	oops_before=$(vm_dmesg_oops_count "${ns}")
-+	warn_before=$(vm_dmesg_warn_count "${ns}")
-+
-+	vm_vsock_test "${ns}" "server" 2 "${TEST_GUEST_PORT}"
-+	host_vsock_test "${ns}" "127.0.0.1" "${VSOCK_CID}" "${TEST_HOST_PORT}"
-+	rc=$?
-+
-+	vm_dmesg_check "${pidfile}" "${ns}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+
-+	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_same_local_vm_connect_to_local_host_ok() {
-+	local oops_before warn_before
-+	local ns="local0"
-+	local port=1234
-+	local dmesg_rc
-+	local pidfile
-+	local rc
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+
-+	if ! vm_start "${pidfile}" "${ns}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_wait_for_ssh "${ns}"
-+	oops_before=$(vm_dmesg_oops_count "${ns}")
-+	warn_before=$(vm_dmesg_warn_count "${ns}")
-+
-+	host_vsock_test "${ns}" "server" "${VSOCK_CID}" "${port}"
-+	vm_vsock_test "${ns}" "10.0.2.2" 2 "${port}"
-+	rc=$?
-+
-+	vm_dmesg_check "${pidfile}" "${ns}" "${oops_before}" "${warn_before}"
-+	dmesg_rc=$?
-+
-+	terminate_pidfiles "${pidfile}"
-+
-+	if [[ "${rc}" -ne 0 ]] || [[ "${dmesg_rc}" -ne 0 ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
- namespaces_can_boot_same_cid() {
- 	local ns0=$1
- 	local ns1=$2
-@@ -894,6 +1446,7 @@ fi
- check_args "${ARGS[@]}"
- check_deps
- check_vng
-+check_socat
- handle_build
- 
- echo "1..${#ARGS[@]}"
-
+ static inline struct net *smc_ib_net(struct smc_ib_device *smcibdev)
+ {
+ 	if (smcibdev && smcibdev->ibdev)
+@@ -114,6 +120,9 @@ int smc_ib_determine_gid(struct smc_ib_device *smcibdev, u8 ibport,
+ 			 struct smc_init_info_smcrv2 *smcrv2);
+ int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 		      u8 nexthop_mac[], u8 *uses_gateway);
++int smc_ib_find_route_v6(struct net *net, struct in6_addr *saddr,
++			 struct in6_addr *daddr, u8 nexthop_mac[],
++			 u8 *uses_gateway);
+ bool smc_ib_is_valid_local_systemid(void);
+ int smcr_nl_get_device(struct sk_buff *skb, struct netlink_callback *cb);
+ #endif
+diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+index f5d5eb617526..2f4827876706 100644
+--- a/net/smc/smc_llc.c
++++ b/net/smc/smc_llc.c
+@@ -1055,8 +1055,9 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
+ 	if (lgr->smc_version == SMC_V2) {
+ 		ini->check_smcrv2 = true;
+ 		ini->smcrv2.saddr = lgr->saddr;
+-		ini->smcrv2.daddr = smc_ib_gid_to_ipv4(llc->sender_gid);
++		smc_ipaddr_from_gid(&ini->smcrv2.daddr, llc->sender_gid);
+ 	}
++
+ 	smc_pnet_find_alt_roce(lgr, ini, link->smcibdev);
+ 	if (!memcmp(llc->sender_gid, link->peer_gid, SMC_GID_SIZE) &&
+ 	    (lgr->smc_version == SMC_V2 ||
+@@ -1438,8 +1439,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
+ 		if (send_req_add_link_resp) {
+ 			struct smc_llc_msg_req_add_link_v2 *req_add =
+ 				&req_qentry->msg.req_add_link;
+-
+-			ini->smcrv2.daddr = smc_ib_gid_to_ipv4(req_add->gid[0]);
++			smc_ipaddr_from_gid(&ini->smcrv2.daddr, req_add->gid[0]);
+ 		}
+ 	}
+ 	smc_pnet_find_alt_roce(lgr, ini, link->smcibdev);
 -- 
-2.47.3
+2.45.0
 
