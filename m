@@ -1,442 +1,299 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010009.outbound.protection.outlook.com [52.101.69.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422F3587D5;
-	Fri, 21 Nov 2025 17:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763744596; cv=none; b=qOWto9tr3nHditSfeitgzsEUUl1Q+F6GU5+MqfGIfFbbKR/cj1H7RUAE+iDFox+lPmcZvrgLd4xtoPD4XrdjYyRoesnUz8354ceVKPzLTqp9PdINvfHJzpo8Ucztp6AR6EAvjWngAdr9VQyoIyRXh/L7brfz2q6C6ZmTJktTf1Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763744596; c=relaxed/simple;
-	bh=yxIE8l3JZQR5JCywo+A5MPHo33+yYPDBOugaYFYC8vU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bfbEUnZTP2FbfZ5kZA5tf+7FK+hGxRpLbAuAhCiQRPHUEsjpXKzoYtGFUf2pGyELcZcV5Peg9JE2Y9XOKtBbfLXqZPSEuAdpnBnWnvKeYVxRNRNJiNTYwpx/s6TJKqj4SjDnwdsAppujj6L9Eaf+Baw5r6nLCpbXkUz1hi/ntCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8yJKG12; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0311134A76F;
+	Fri, 21 Nov 2025 17:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763744604; cv=fail; b=nGIFUOiWtVky1I8U1VehvsJcykoBevBT7raw1xzoaGTCuh5lM1cvEj2YrSt+Qj5VWsB2BCspbwvYYqFIulHsOLyJy5Qo0U9bdAEzRjMhVMqg8CC7WDaqiA8WzKTISIgi66IpBoxvt2FZX4P7kpEJGizrMAbA9MEIFz6H/I13ZYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763744604; c=relaxed/simple;
+	bh=GjhdhcGC1IgnYX/cVlomamMw696D2n0fRq58T8LbgNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ezamfGyh3uOurVX1Uh7JwxJm9MmLbrkxzJv+7wPrJ3NPM3+7H1FHGd+XOQ+pDnbsyEteUC27vPLaEln77LxLFhSkc61a5TEmabzMrOSAbfhIjLsDs8tLQ+l4MTrh7iaG0/DDDAh3ArAQKVboz0Q+k4eJUTnqvSuRVtuLjC/j10U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fBD4YFu6; arc=fail smtp.client-ip=52.101.69.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8yJKG12"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53308C116C6;
-	Fri, 21 Nov 2025 17:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763744596;
-	bh=yxIE8l3JZQR5JCywo+A5MPHo33+yYPDBOugaYFYC8vU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=h8yJKG12y7OUoUeypsziIg8Yxrgmvno2Uej5G5zLX/qleVWx/HMzRgfVzbciFYj1t
-	 tVUWpbRuZCQThIc983/MGYsMaUTeU+H2ud2iiHceBks09RNhZbEMlYdKsZT25mH+2Z
-	 a579Hsdu22e3RkynJB31u5Tzn0VrxbxC7YT7OZ8RRjZKJbBnrFxFnJiGhRGlWlLf3j
-	 UWht0gpn3pEbTAAHMYiCfeUs0npfO8TGze7ZyYEoPQl28XH/APWjzeatdPuf7KaIVY
-	 5Y6S3uThBr2SiAUs8aSearEUZg9e5Rxj08T4TOiIKMcpaurRU/k5ORZyr201RHXRV/
-	 qsal4Y8KXw09w==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 21 Nov 2025 18:02:13 +0100
-Subject: [PATCH net-next 14/14] mptcp: leverage the backlog for RX packet
- processing
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fBD4YFu6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tP5b7wJgzFtlGRfgIXOIFcyxaAKqVLiZ7DCwBICQ0LdCgfOaU0JDLq/i/d3LIkY15m58GbsF0It9Yul3VLP34TXz4WzWVv16YaIrnOp0AYiqRXww65ORb+VRKLFbygz3ZIfJVr+/tjX2lOPpfsgGq7HvF+vEe0X2h72Nv4f5Mf1ZirvVw13x7yEVXePya2QCcA5Qd8FLgrZsoCjCdFU30991F1SmgpBGAiG5HC2HnaNPhLFFK+nRI8AQdRe6etQ891VeEtAQ4Hs2jNrX8S8IJhKBCznpk57Y0ztWtMv0nsSprebjVuWy8lLWKP+qrGxbPARA4mfT+L0irGYyLlVfWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jJftMJSs7p9HvdyJ9J/t0WQTsF98z+TfylnczihT1ds=;
+ b=UnWfs0K7Q81Kz7QRaBHEr4zlvf2t2XWFMbhgCYrVexX2VbaAkk2CMNZCH8ZNZ8VvaP5ZBgpMlk/aKwn3CkObRSeC6v1NpqYdvdt8q5bAledX9u6KpZD/SlmP0UzQywwosMsXTUekU/zKGkJWQGdOdWpJkIiq00Nf1tGHWn8Amx1ttgkEiOKPXOuG8bwLBwEi7kejeXnv64OBs4+6VJfdpBoPM3ohjwVyJyNgdxul8ypaeo/sw7QFA3sb7DX29HhtFGcqTUXst7kykNf/Oj+xKae4iqBti/LL1NEZBp0TEH4eRZIyLcat0ZHrphNqjvB65zupOpFHs9SQqT46ge3lpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jJftMJSs7p9HvdyJ9J/t0WQTsF98z+TfylnczihT1ds=;
+ b=fBD4YFu60cbdU9ZHEuE1szCNdVyD+8V4bGTnurbnCOIKH+kaCTB7Vf+hWsIYyMePdH4o9PQB8ynDUTczl69/052hMdsYo6xjOT/M+GlfhZfhKN48Ay7bqRO6M1c4OQuSxF4NIlNWPdz1wsu6eXUDMY7KJOioCHVDLRutz33DwxGtCEMlV43G8byASv2kvNWapNrVO/snIdzc1ZifGzxDsnl+dhjg/TvTTO4lZhKSTRq/sDdydk8n3KuaOiVjofPh4LxFyxe9VckptUCvpsxIjmjvI3CSNuJvhgjAa8lN6FfB3TDn4bk/+toI5bu4wz+1eCUnDaB/8qabPv5DLzFVmw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB7491.eurprd04.prod.outlook.com (2603:10a6:20b:283::7)
+ by VI0PR04MB11865.eurprd04.prod.outlook.com (2603:10a6:800:2f8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
+ 2025 17:03:12 +0000
+Received: from AM9PR04MB7491.eurprd04.prod.outlook.com
+ ([fe80::3203:e51d:557b:a195]) by AM9PR04MB7491.eurprd04.prod.outlook.com
+ ([fe80::3203:e51d:557b:a195%5]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
+ 17:03:12 +0000
+Date: Fri, 21 Nov 2025 19:03:08 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Lee Jones <lee@kernel.org>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 07/15] mfd: core: add ability for cells to probe
+ on a custom parent OF node
+Message-ID: <20251121170308.tntvl2mcp2qwx6qz@skbuf>
+References: <20251118190530.580267-1-vladimir.oltean@nxp.com>
+ <20251118190530.580267-8-vladimir.oltean@nxp.com>
+ <20251120144136.GF661940@google.com>
+ <20251120153622.p6sy77coa3de6srw@skbuf>
+ <20251121120646.GB1117685@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251121120646.GB1117685@google.com>
+X-ClientProxiedBy: VI1PR06CA0090.eurprd06.prod.outlook.com
+ (2603:10a6:803:8c::19) To AM9PR04MB7491.eurprd04.prod.outlook.com
+ (2603:10a6:20b:283::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251121-net-next-mptcp-memcg-backlog-imp-v1-14-1f34b6c1e0b1@kernel.org>
-References: <20251121-net-next-mptcp-memcg-backlog-imp-v1-0-1f34b6c1e0b1@kernel.org>
-In-Reply-To: <20251121-net-next-mptcp-memcg-backlog-imp-v1-0-1f34b6c1e0b1@kernel.org>
-To: Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- Peter Krystad <peter.krystad@linux.intel.com>, 
- Florian Westphal <fw@strlen.de>, Christoph Paasch <cpaasch@apple.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- mptcp@lists.linux.dev, Davide Caratti <dcaratti@redhat.com>, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11951; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=EO6UaLraU7c+G3zNJSh1ZDma+EoTxHJngur0al91bNo=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDIVZiuseFX30OCNwvfLTRUXYjbzSXS/b6i5ekPicN+hg
- jq9W9sfdZSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzEqY2R4cIqbwPDCRUslaev
- LaouUT8h8Nf9y4WqR2zLVObqPatME2f4w5/00P76tGKb+/0eYt/8omwXuZw5bbt4ptJs+6fb0+X
- UuQE=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB7491:EE_|VI0PR04MB11865:EE_
+X-MS-Office365-Filtering-Correlation-Id: d21e1e77-54ae-4b7c-a10b-08de291fd9c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|10070799003|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?XWMjFYrFsz5TZX75AIJOXF7RN5yFz9qY4HmyS7x+thsU73U0SSBhkoJGj4D2?=
+ =?us-ascii?Q?PTVAt7tTfzx3ojGwu7krtc20LxZz4RyMcAMZelHBYIqtrh9Igto3/TzjU4oe?=
+ =?us-ascii?Q?85/FXh3VUuQ3/vHVNxPL0Jqt6ewVDErChldkhf/iu2kobK5Jij0HZ7UcKT3F?=
+ =?us-ascii?Q?UvVCJLSXNWm+KaFGLMCuNyJMlmR4Dm6OF3Deeo9OqNAR89O0OiVAKs+pGcZm?=
+ =?us-ascii?Q?SRO6CaHC6oFShkuA3oL4dVGug89jtGikiJqn1tXOlMuUeFW01ZCXhRi6+Dd3?=
+ =?us-ascii?Q?KXvt4/8BFOFu+lXZ03G3sYz1/77hbD+01TNTy+YfrljGk4lG7b1XDW4VvUd4?=
+ =?us-ascii?Q?9WTpCmm56+GlI/ljg34JTD/l0MyAuITO2FAg9U0V9/fGQaDbgNuMXjtRdCqy?=
+ =?us-ascii?Q?3dOuQuFhC8Gz/Y4ewdnnSZaGCZJyjY+8nlJEkHqojq87MzfckiQDrm0z/6KG?=
+ =?us-ascii?Q?oauNNwjqBvKV9VUe7RmRCjp6jy4yfG9dHkbTnmP8BpZGJXnJ76RnPfIMSnQz?=
+ =?us-ascii?Q?nS04pLNrSHG6sl1C3gymqcdsc2phojzw0m7W55kESPm5/yL4BeWv2bY6BQdn?=
+ =?us-ascii?Q?f1dKdmgBFWarwND44WqLEwhR/vMkXai8HSHm8cXi5HCDpMsQUyXEoxAtzRA8?=
+ =?us-ascii?Q?OZ0pLOTfIJovFFgQxOfGWN/0QJVTStJ4iiQt96FRGh1M+Be/Q/rf5k0nXlo1?=
+ =?us-ascii?Q?yZwh7LNORoAP6aytI4MPHh6iMLKdZXWerGr5gpE5hOr96e+VXrLFop0m5BIZ?=
+ =?us-ascii?Q?moGzuD5hEafvZ9GlZZ5M1wgU8WE6GB4CMpt6nbt3Xr4+xqDZfG6HKgXJB0Hd?=
+ =?us-ascii?Q?fRVJjNRtCpB6gjNVrMedvIH0DRiBsavsvKI6104g0tE2p2CFVRnUD5j/+yvP?=
+ =?us-ascii?Q?7ky0GN8qmjaa03LfbDgwAuMQ4lVvRelGxEYW5rTZie/v4R9jGtH1X9RnkQu4?=
+ =?us-ascii?Q?19hKoQO7Kc7Djn8n9TA7SY2v2ZOvZbCHcPhR/3XswdZ52KVyljMHceEHJGgv?=
+ =?us-ascii?Q?bc8Vb9/IylqokPgG/PHrDvznjdGHdZnbevtz2oUEQIeUdUfSbcEdWMYaxEzz?=
+ =?us-ascii?Q?KBUGWV1UlPkYRQI571g6PjyyLJ3pOPeyh1KwMYds4ESEV2Kn0Od7eMePSy+0?=
+ =?us-ascii?Q?yYOPy8cIpgGUkllWgG484gHr6cLgI8XBxujGyZr0WiuX7/+w8gxuJCl965v7?=
+ =?us-ascii?Q?RNL0unwftw3oHvRmdXTh1PrULHdoYOI72+X/ZNLBI3a+hD5dhbXQ4pOVzIil?=
+ =?us-ascii?Q?FrZ4mOlXOBTEitNtUAYZdkftW6l83kXEJMne2opdTFZeRPB9wkR4YgU9LLGv?=
+ =?us-ascii?Q?gtBvMMsXWEt33RPKcDpN2BI3bwjW4hq9DQU5z5v5vAgkwuWqR5L9hoG0y8qV?=
+ =?us-ascii?Q?eUuUBsdm7P3OdMv5Bmd+GYRDfd4AiMmQJPXxr6vuqH5bBFxwywkB2fPEDeI8?=
+ =?us-ascii?Q?JgXkTQKYwh83n5OXtCtM17v9R2flIYMEf9SIYo6BAkvoaLRORWeqnw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB7491.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(10070799003)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MyadW67/RiGJVX1okoOs1RlZexYEAUaSzBQR9/AOFEhZ1QQOYdcMOYEv5kgi?=
+ =?us-ascii?Q?qVtxhIsHHMGDdZOH1QtKQyAhMkmTGl6CBM/7vUyKAeiaWVc0Vm67mmRcu6D/?=
+ =?us-ascii?Q?1C+DXUEDYpxsX781yfDkUIJ4sxl/nXGg72cz+btcqpTCuT9TLxlx9IoOQvGx?=
+ =?us-ascii?Q?tvggCsOGmERgGAdxnfcUy0z/ftvLSKs1t6qc8SDQO3/is2l2vEJEWG4W3/Sl?=
+ =?us-ascii?Q?KhHoDUuHkJ6/2A9nizKaYYNb4QA+ZfMptvLJ/HkZh92dp/pEzdW5yf7T0nI6?=
+ =?us-ascii?Q?P31oH7C8nfkLDdSSZdNGTCY9qqrZN1gI3fv14u/c1tr19jC0b6mLFeZ6nnLV?=
+ =?us-ascii?Q?huaGWxkqL566yn+Lkw9DoVAL63zEO03rUKAAqHnrAQZzAijFnqRvblrHbx1V?=
+ =?us-ascii?Q?BujB2Tg2ftllFVZbS2TJm9b/kNiFd32nuAS7L23mlQzgdz6i+JnbOiX7htV9?=
+ =?us-ascii?Q?LomZ3WVkNfnPBbpGqE4yLzy3c1FD1lIBPGTINQcZITRwi4M8IZl2FLPxd+Zo?=
+ =?us-ascii?Q?38oYbWPqx7E9HZVfXRpBBz71A5bz7UJh4MvCYGq0y6A/YPEjktyZE0BgSKTg?=
+ =?us-ascii?Q?dVs2V90Kq1u2OalkJgsO6mQOEk4vw4vwhjXVfb4fmP2PYB0Uu4vnBTpoQlUl?=
+ =?us-ascii?Q?LCxf0TnKoMrpqC6gdHh/Vbz1oBxtTVsKPev5X7H0JsjMHlHkb9ohRHACza/p?=
+ =?us-ascii?Q?Z2ot6VVtvsTQuTBE5OucGR9DzBUOnDFbn40OwkEDzaV2xCPxLLZkVHEFm9w8?=
+ =?us-ascii?Q?CIZh7OVVQuZUzAuvo7uTPRwWhB5V7bol349l915gd6pit5HGasST10s0gux/?=
+ =?us-ascii?Q?JDGRQZzCObKM4G9FjBYLs7cTPpWue5NNbVh+SWwr9sBh2aOyaytsiyn/9mHM?=
+ =?us-ascii?Q?KzNE/STfJef+wbPXa6CLEbgOkkXxuIxgnbd3rG82/0BYytiBdDO+ek3gp9tA?=
+ =?us-ascii?Q?LgyAnYq+d2cUfgME+SRJogsXFLOtPkOB0RmOiFs+rXetJeOLymJWy1HHvvqf?=
+ =?us-ascii?Q?A+3HXdYhDeCBUwKdXL8vhDY9KUsLAT2L9HS6vunA+74DYlCFzHtrhyrQHhhf?=
+ =?us-ascii?Q?Ms3oekJyl6WhOsldkDaJANUg0PruiLFg9OATNKhVFzcXiMERy5RdXOieqc0f?=
+ =?us-ascii?Q?bvUaxQSG4AMXhbPZuhFsdQty+D6XB/KCFE1dCp/6B5G5TWWY5DK+sdF2VOzX?=
+ =?us-ascii?Q?bXfEhTnvPaj4cqtjrUdIY7d0jcfVDYNHaeuEL0C+guMCMpggLS2VYfetpF5y?=
+ =?us-ascii?Q?AdL1+wgVDZT6pe+V0Er2XrSIPq5ydeVEulvTXc0zc5pwNDghkMfpvPbbGlyi?=
+ =?us-ascii?Q?M8Uqd3H2bxpDDqc9IvxTnTrNAdW6SxHCTNRC4CP27tpmUzoUC0pue8m3TJad?=
+ =?us-ascii?Q?KOUljahiSeZAZtmcvzknK1UA1jH3HUOI+2tieSMyz7WDr047ax78RB/F6yF+?=
+ =?us-ascii?Q?yByBFvmu5N8DwtijZSWsIurRNh1EWjtKTc/XE6qURkMbbL69SqFxn1siswPS?=
+ =?us-ascii?Q?b1ybsCMv9fvJgI634d2fvbxgQC9v4QYDgykr/YDuDnO91xe2uWfuxfV083Mp?=
+ =?us-ascii?Q?GZvIcPK9w5E/EUC4csXCIeWYJXUyOXrSTTG3g5DdNUusiAhLRB7KfN68wpJq?=
+ =?us-ascii?Q?1KqFpxYTbnGgtwuxwdHne/FYsCBDKqtfzZtl+vpFDMVRsXPpjjbXxycRAYWE?=
+ =?us-ascii?Q?pe9rwA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d21e1e77-54ae-4b7c-a10b-08de291fd9c8
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB7491.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 17:03:12.1241
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MGD7K3PqpDCHxasWGz44BOgnuf1y5ENPsdfvJAHv23tbgzgU9jbkBXRHlRuMx5cROOBBNqa09gWzEYwPFiUEgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11865
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Fri, Nov 21, 2025 at 12:06:46PM +0000, Lee Jones wrote:
+> MFD is Linuxisum, simply used to split devices up such that each
+> component can be located it their own applicable subsystem and be
+> reviewed and maintained by the subject matter experts of those domains.
 
-When the msk socket is owned or the msk receive buffer is full,
-move the incoming skbs in a msk level backlog list. This avoid
-traversing the joined subflows and acquiring the subflow level
-socket lock at reception time, improving the RX performances.
+Perfect, so the SJA1110 fits the MFD bill perfectly.
 
-When processing the backlog, use the fwd alloc memory borrowed from
-the incoming subflow. skbs exceeding the msk receive space are
-not dropped; instead they are kept into the backlog until the receive
-buffer is freed. Dropping packets already acked at the TCP level is
-explicitly discouraged by the RFC and would corrupt the data stream
-for fallback sockets.
+I'm getting the impression that the more I write to explain, the fewer
+chances I have for you to read. I'll try to keep things as concise as I
+can, but please remember that:
+- We've had the exact same discussions with Colin Foster's VSC7512
+  work, which you ended up accepting
+- This email sent to you in 2022 and again in the other reply on patch 8:
+  https://lore.kernel.org/lkml/20221222134844.lbzyx5hz7z5n763n@skbuf/
+  already explains what is the kind of hardware I'm dealing with
 
-Special care is needed to avoid adding skbs to the backlog of a closed
-msk and to avoid leaving dangling references into the backlog
-at subflow closing time.
+> TL;DR: if your device only deals with Networking, that's where it should
+> live.  And from there, it should handle its own device registration and
+> instantiation without reaching into other, non-related subsystems.
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 191 +++++++++++++++++++++++++++++++++++----------------
- net/mptcp/protocol.h |   2 +-
- 2 files changed, 132 insertions(+), 61 deletions(-)
+Ok, you make a vague reference which I think I understand the point of.
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index dfed036e0591..e4ccc57b6f57 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -665,6 +665,7 @@ static void __mptcp_add_backlog(struct sock *sk,
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *tail = NULL;
-+	struct sock *ssk = skb->sk;
- 	bool fragstolen;
- 	int delta;
- 
-@@ -678,22 +679,30 @@ static void __mptcp_add_backlog(struct sock *sk,
- 		tail = list_last_entry(&msk->backlog_list, struct sk_buff, list);
- 
- 	if (tail && MPTCP_SKB_CB(skb)->map_seq == MPTCP_SKB_CB(tail)->end_seq &&
--	    skb->sk == tail->sk &&
-+	    ssk == tail->sk &&
- 	    __mptcp_try_coalesce(sk, tail, skb, &fragstolen, &delta)) {
- 		skb->truesize -= delta;
- 		kfree_skb_partial(skb, fragstolen);
- 		__mptcp_subflow_lend_fwdmem(subflow, delta);
--		WRITE_ONCE(msk->backlog_len, msk->backlog_len + delta);
--		return;
-+		goto account;
- 	}
- 
- 	list_add_tail(&skb->list, &msk->backlog_list);
- 	mptcp_subflow_lend_fwdmem(subflow, skb);
--	WRITE_ONCE(msk->backlog_len, msk->backlog_len + skb->truesize);
-+	delta = skb->truesize;
-+
-+account:
-+	WRITE_ONCE(msk->backlog_len, msk->backlog_len + delta);
-+
-+	/* Possibly not accept()ed yet, keep track of memory not CG
-+	 * accounted, mptcp_graft_subflows() will handle it.
-+	 */
-+	if (!mem_cgroup_from_sk(ssk))
-+		msk->backlog_unaccounted += delta;
- }
- 
- static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
--					   struct sock *ssk)
-+					   struct sock *ssk, bool own_msk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	struct sock *sk = (struct sock *)msk;
-@@ -709,9 +718,6 @@ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
- 		struct sk_buff *skb;
- 		bool fin;
- 
--		if (sk_rmem_alloc_get(sk) > sk->sk_rcvbuf)
--			break;
--
- 		/* try to move as much data as available */
- 		map_remaining = subflow->map_data_len -
- 				mptcp_subflow_get_map_offset(subflow);
-@@ -739,7 +745,7 @@ static bool __mptcp_move_skbs_from_subflow(struct mptcp_sock *msk,
- 
- 			mptcp_init_skb(ssk, skb, offset, len);
- 
--			if (true) {
-+			if (own_msk && sk_rmem_alloc_get(sk) < sk->sk_rcvbuf) {
- 				mptcp_subflow_lend_fwdmem(subflow, skb);
- 				ret |= __mptcp_move_skb(sk, skb);
- 			} else {
-@@ -863,7 +869,7 @@ static bool move_skbs_to_msk(struct mptcp_sock *msk, struct sock *ssk)
- 	struct sock *sk = (struct sock *)msk;
- 	bool moved;
- 
--	moved = __mptcp_move_skbs_from_subflow(msk, ssk);
-+	moved = __mptcp_move_skbs_from_subflow(msk, ssk, true);
- 	__mptcp_ofo_queue(msk);
- 	if (unlikely(ssk->sk_err))
- 		__mptcp_subflow_error_report(sk, ssk);
-@@ -896,7 +902,7 @@ void mptcp_data_ready(struct sock *sk, struct sock *ssk)
- 		if (move_skbs_to_msk(msk, ssk) && mptcp_epollin_ready(sk))
- 			sk->sk_data_ready(sk);
- 	} else {
--		__set_bit(MPTCP_DEQUEUE, &mptcp_sk(sk)->cb_flags);
-+		__mptcp_move_skbs_from_subflow(msk, ssk, false);
- 	}
- 	mptcp_data_unlock(sk);
- }
-@@ -2136,60 +2142,80 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
- 	msk->rcvq_space.time = mstamp;
- }
- 
--static struct mptcp_subflow_context *
--__mptcp_first_ready_from(struct mptcp_sock *msk,
--			 struct mptcp_subflow_context *subflow)
-+static bool __mptcp_move_skbs(struct sock *sk, struct list_head *skbs, u32 *delta)
- {
--	struct mptcp_subflow_context *start_subflow = subflow;
--
--	while (!READ_ONCE(subflow->data_avail)) {
--		subflow = mptcp_next_subflow(msk, subflow);
--		if (subflow == start_subflow)
--			return NULL;
--	}
--	return subflow;
--}
--
--static bool __mptcp_move_skbs(struct sock *sk)
--{
--	struct mptcp_subflow_context *subflow;
-+	struct sk_buff *skb = list_first_entry(skbs, struct sk_buff, list);
- 	struct mptcp_sock *msk = mptcp_sk(sk);
--	bool ret = false;
-+	bool moved = false;
- 
--	if (list_empty(&msk->conn_list))
--		return false;
--
--	subflow = list_first_entry(&msk->conn_list,
--				   struct mptcp_subflow_context, node);
--	for (;;) {
--		struct sock *ssk;
--		bool slowpath;
--
--		/*
--		 * As an optimization avoid traversing the subflows list
--		 * and ev. acquiring the subflow socket lock before baling out
--		 */
-+	*delta = 0;
-+	while (1) {
-+		/* If the msk recvbuf is full stop, don't drop */
- 		if (sk_rmem_alloc_get(sk) > sk->sk_rcvbuf)
- 			break;
- 
--		subflow = __mptcp_first_ready_from(msk, subflow);
--		if (!subflow)
-+		prefetch(skb->next);
-+		list_del(&skb->list);
-+		*delta += skb->truesize;
-+
-+		moved |= __mptcp_move_skb(sk, skb);
-+		if (list_empty(skbs))
- 			break;
- 
--		ssk = mptcp_subflow_tcp_sock(subflow);
--		slowpath = lock_sock_fast(ssk);
--		ret = __mptcp_move_skbs_from_subflow(msk, ssk) || ret;
--		if (unlikely(ssk->sk_err))
--			__mptcp_error_report(sk);
--		unlock_sock_fast(ssk, slowpath);
--
--		subflow = mptcp_next_subflow(msk, subflow);
-+		skb = list_first_entry(skbs, struct sk_buff, list);
- 	}
- 
- 	__mptcp_ofo_queue(msk);
--	if (ret)
-+	if (moved)
- 		mptcp_check_data_fin((struct sock *)msk);
--	return ret;
-+	return moved;
-+}
-+
-+static bool mptcp_can_spool_backlog(struct sock *sk, struct list_head *skbs)
-+{
-+	struct mptcp_sock *msk = mptcp_sk(sk);
-+
-+	/* After CG initialization, subflows should never add skb before
-+	 * gaining the CG themself.
-+	 */
-+	DEBUG_NET_WARN_ON_ONCE(msk->backlog_unaccounted && sk->sk_socket &&
-+			       mem_cgroup_from_sk(sk));
-+
-+	/* Don't spool the backlog if the rcvbuf is full. */
-+	if (list_empty(&msk->backlog_list) ||
-+	    sk_rmem_alloc_get(sk) > sk->sk_rcvbuf)
-+		return false;
-+
-+	INIT_LIST_HEAD(skbs);
-+	list_splice_init(&msk->backlog_list, skbs);
-+	return true;
-+}
-+
-+static void mptcp_backlog_spooled(struct sock *sk, u32 moved,
-+				  struct list_head *skbs)
-+{
-+	struct mptcp_sock *msk = mptcp_sk(sk);
-+
-+	WRITE_ONCE(msk->backlog_len, msk->backlog_len - moved);
-+	list_splice(skbs, &msk->backlog_list);
-+}
-+
-+static bool mptcp_move_skbs(struct sock *sk)
-+{
-+	struct list_head skbs;
-+	bool enqueued = false;
-+	u32 moved;
-+
-+	mptcp_data_lock(sk);
-+	while (mptcp_can_spool_backlog(sk, &skbs)) {
-+		mptcp_data_unlock(sk);
-+		enqueued |= __mptcp_move_skbs(sk, &skbs, &moved);
-+
-+		mptcp_data_lock(sk);
-+		mptcp_backlog_spooled(sk, moved, &skbs);
-+	}
-+	mptcp_data_unlock(sk);
-+	return enqueued;
- }
- 
- static unsigned int mptcp_inq_hint(const struct sock *sk)
-@@ -2255,7 +2281,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		copied += bytes_read;
- 
--		if (skb_queue_empty(&sk->sk_receive_queue) && __mptcp_move_skbs(sk))
-+		if (!list_empty(&msk->backlog_list) && mptcp_move_skbs(sk))
- 			continue;
- 
- 		/* only the MPTCP socket status is relevant here. The exit
-@@ -3556,8 +3582,7 @@ void __mptcp_check_push(struct sock *sk, struct sock *ssk)
- 
- #define MPTCP_FLAGS_PROCESS_CTX_NEED (BIT(MPTCP_PUSH_PENDING) | \
- 				      BIT(MPTCP_RETRANSMIT) | \
--				      BIT(MPTCP_FLUSH_JOIN_LIST) | \
--				      BIT(MPTCP_DEQUEUE))
-+				      BIT(MPTCP_FLUSH_JOIN_LIST))
- 
- /* processes deferred events and flush wmem */
- static void mptcp_release_cb(struct sock *sk)
-@@ -3567,9 +3592,12 @@ static void mptcp_release_cb(struct sock *sk)
- 
- 	for (;;) {
- 		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED);
--		struct list_head join_list;
-+		struct list_head join_list, skbs;
-+		bool spool_bl;
-+		u32 moved;
- 
--		if (!flags)
-+		spool_bl = mptcp_can_spool_backlog(sk, &skbs);
-+		if (!flags && !spool_bl)
- 			break;
- 
- 		INIT_LIST_HEAD(&join_list);
-@@ -3591,7 +3619,7 @@ static void mptcp_release_cb(struct sock *sk)
- 			__mptcp_push_pending(sk, 0);
- 		if (flags & BIT(MPTCP_RETRANSMIT))
- 			__mptcp_retrans(sk);
--		if ((flags & BIT(MPTCP_DEQUEUE)) && __mptcp_move_skbs(sk)) {
-+		if (spool_bl && __mptcp_move_skbs(sk, &skbs, &moved)) {
- 			/* notify ack seq update */
- 			mptcp_cleanup_rbuf(msk, 0);
- 			sk->sk_data_ready(sk);
-@@ -3599,6 +3627,8 @@ static void mptcp_release_cb(struct sock *sk)
- 
- 		cond_resched();
- 		spin_lock_bh(&sk->sk_lock.slock);
-+		if (spool_bl)
-+			mptcp_backlog_spooled(sk, moved, &skbs);
- 	}
- 
- 	if (__test_and_clear_bit(MPTCP_CLEAN_UNA, &msk->cb_flags))
-@@ -3856,7 +3886,7 @@ static int mptcp_ioctl(struct sock *sk, int cmd, int *karg)
- 			return -EINVAL;
- 
- 		lock_sock(sk);
--		if (__mptcp_move_skbs(sk))
-+		if (mptcp_move_skbs(sk))
- 			mptcp_cleanup_rbuf(msk, 0);
- 		*karg = mptcp_inq_hint(sk);
- 		release_sock(sk);
-@@ -4061,6 +4091,22 @@ static void mptcp_graft_subflows(struct sock *sk)
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
-+	if (mem_cgroup_sockets_enabled) {
-+		LIST_HEAD(join_list);
-+
-+		/* Subflows joining after __inet_accept() will get the
-+		 * mem CG properly initialized at mptcp_finish_join() time,
-+		 * but subflows pending in join_list need explicit
-+		 * initialization before flushing `backlog_unaccounted`
-+		 * or MPTCP can later unexpectedly observe unaccounted memory.
-+		 */
-+		mptcp_data_lock(sk);
-+		list_splice_init(&msk->join_list, &join_list);
-+		mptcp_data_unlock(sk);
-+
-+		__mptcp_flush_join_list(sk, &join_list);
-+	}
-+
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
-@@ -4072,10 +4118,35 @@ static void mptcp_graft_subflows(struct sock *sk)
- 		if (!ssk->sk_socket)
- 			mptcp_sock_graft(ssk, sk->sk_socket);
- 
-+		if (!mem_cgroup_sk_enabled(sk))
-+			goto unlock;
-+
- 		__mptcp_inherit_cgrp_data(sk, ssk);
- 		__mptcp_inherit_memcg(sk, ssk, GFP_KERNEL);
-+
-+unlock:
- 		release_sock(ssk);
- 	}
-+
-+	if (mem_cgroup_sk_enabled(sk)) {
-+		gfp_t gfp = GFP_KERNEL | __GFP_NOFAIL;
-+		int amt;
-+
-+		/* Account the backlog memory; prior accept() is aware of
-+		 * fwd and rmem only.
-+		 */
-+		mptcp_data_lock(sk);
-+		amt = sk_mem_pages(sk->sk_forward_alloc +
-+				   msk->backlog_unaccounted +
-+				   atomic_read(&sk->sk_rmem_alloc)) -
-+		      sk_mem_pages(sk->sk_forward_alloc +
-+				   atomic_read(&sk->sk_rmem_alloc));
-+		msk->backlog_unaccounted = 0;
-+		mptcp_data_unlock(sk);
-+
-+		if (amt)
-+			mem_cgroup_sk_charge(sk, amt, gfp);
-+	}
- }
- 
- static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index fe0dca4122f2..313da78e2b75 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -124,7 +124,6 @@
- #define MPTCP_FLUSH_JOIN_LIST	5
- #define MPTCP_SYNC_STATE	6
- #define MPTCP_SYNC_SNDBUF	7
--#define MPTCP_DEQUEUE		8
- 
- struct mptcp_skb_cb {
- 	u64 map_seq;
-@@ -360,6 +359,7 @@ struct mptcp_sock {
- 
- 	struct list_head backlog_list;	/* protected by the data lock */
- 	u32		backlog_len;
-+	u32		backlog_unaccounted;
- };
- 
- #define mptcp_data_lock(sk) spin_lock_bh(&(sk)->sk_lock.slock)
+I need to merge the discussion with the one from patch 8:
+https://lore.kernel.org/netdev/20251121120037.GA1117685@google.com/
+where you say:
 
--- 
-2.51.0
+| Another more recent avenue you may explore is the Auxiliary Bus.
 
+Excerpt from documentation here:
+https://docs.kernel.org/driver-api/auxiliary_bus.html
+
+  When Should the Auxiliary Bus Be Used
+
+  (...)
+  The emphasis here is on a common generic interface that keeps subsystem
+  customization out of the bus infrastructure.
+  (...)
+  A key requirement for utilizing the auxiliary bus is that there is no
+  dependency on a physical bus, device, register accesses or regmap
+  support. These individual devices split from the core cannot live on the
+  platform bus as they are not physical devices that are controlled by
+  DT/ACPI. The same argument applies for not using MFD in this scenario as
+  MFD relies on individual function devices being physical devices.
+
+The thesis I need to defend is that the SJA1110 usage is 100% fit for
+MFD and 0% auxiliary bus. In order to explain it I have to give a bit of
+history on DSA.
+
+DSA is a Linuxism for managing Ethernet switches. Key thing is they are
+a hardware IP with registers to configure them. There are many ways
+to integrate an Ethernet switch hardware IP in a chip that you sell.
+You can (a) sell the IP itself for SoC vendors to put in their address
+space and access using MMIO, or you can (b) sell them an entire chip
+with the switch IP in it, that they access over a bus like PCIe, SPI,
+I2C, MDIO, whatever, and integrate with their existing Linux SoC.
+
+DSA has started from a place where it didn't really understand that its
+core domain of expertise was the Ethernet switching IP itself. The first
+devices it supported were all of the (b) kind, discrete chips on buses.
+Thus, many drivers were written where DSA takes charge of the struct
+spi_device, mdio_device, i2c_client etc.
+
+These early drivers are simplistic, they configure the switch to pass
+traffic, and the PHYs through the internal MDIO bus to establish a link,
+and voila! They pass traffic, they're good to go.
+
+Then you start to want to develop these further. You want to avoid
+polling PHYs for link status every second.. well, you find there's an
+interrupt controller in that chip too, that you should be using with
+irqchip. You want to read the chip's temperature to prevent it from
+overheating - you find temperature sensors too, for which you register
+with hwmon. You find reset blocks, clock generation blocks, power
+management blocks, GPIO controllers, what have you.
+
+See, the more you look at the datasheet, the more you start to notice
+an entire universe of hardware IPs, and then.. you notice a microcontroller!
+Those hardware IPs are all also memory-mapped in the address space of
+that microcontroller, and when you from Linux are accessing them, you're
+just going through a SPI-to-AHB bridge.
+
+Things become really shitty when the DSA chip that you want to drive
+from drivers/net/dsa has a full-blown microprocessor capable of running
+Linux instead of that microcontroller! Then you have to support driving
+the same switch from the small Linux, using MMIO, or from the big Linux,
+over SPI.
+
+Out of a lack of expressivity that we as engineers have, we call both
+the SoC at large "a switch", and the switching IP "a switch". Hell,
+we even call the rack-mounted pizza box computer with many ports "a switch",
+no wonder nobody understands anything! We just name things after the
+most important thing that's in them.
+
+So unwind 100 steps from the rabbit hole and ask: what does DSA concern
+itself with?
+
+Ideally, the answer is "the Ethernet switch IP". This is always mapped
+in somebody's address space from address X to Y.
+
+Practically, legacy makes it that DSA concerns itself with the entire
+address space of SPI devices, MDIO devices, I2C devices etc. If you
+imagine a microprocessor in these discrete chips (which is architecturally
+almost always possible), the device tree of that would only describe a
+single region with the Ethernet switching IP, and Linux would probe a
+platform device for that. The rest is.. other stuff (of various degrees
+of functional relatedness, but nonetheless, other stuff) with *other*
+platform devices.
+
+So, DSA is in a process of trying to define a conversion model that is
+coherent, compatible with the past, minimal in its description,
+applicable to other devices, and not a pain in the butt.
+
+Fact of the matter is, we will always clash with the MFD maintainer in
+this process, and it simply doesn't scale for us to keep repeating the
+same stuff over and over. It is just too much friction. We went through
+this once, with Colin Foster who added the Microchip VSC7512 as MFD
+through your tree, and that marked the first time when a DSA driver over
+a SPI device concerned itself with just the switching IP, using MFD as
+the abstraction layer.
+
+The NXP SJA1110 is just another step in that journey, but this one is
+harder because it has legacy device tree bindings to maintain. However,
+if we are to accept that Colin Foster's work was not an architectural
+mistake, then the SJA1110 is not the end of the road either, and you
+have to be prepared for more devices to come and do the same thing.
+
+So practically speaking, the fact that DSA has these particular needs
+is just a fact. Treat the above description as a "global prompt", if you
+will :)
+
+So why not the auxiliary bus? That creates auxiliary_device structures,
+which are fake things that some core device wants to keep out to make
+things leaner. But what we want is a platform_device, because that is
+the common denominator between what kind of drivers the "small Linux"
+and the "big Linux" would use for the same hardware IPs. MFD gives us
+exactly that, and regmap provides the abstraction between MMIO and SPI.
+
+================================================================
+
+The above was the "global prompt" that you need to have in your context,
+now let's return to the patch at hand.
+
+SJA1110 is *not* capable of running Linux inside. This allows us to get
+away with partial conversions, where the DSA driver still remains in
+charge of the entire SPI device, but delegates the other stuff to MFD.
+
+The existing bindings cannot be broken. Hindsight is 20/20, but whatever
+stupid decisions I made in the past with this "mdios" container node are
+there to stay.
