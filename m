@@ -1,158 +1,198 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013064.outbound.protection.outlook.com [40.93.201.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED6A6FBF
-	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 08:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763714198; cv=none; b=HZtt3YeE7Udpl3j8DL4EG6QUJ5UoaOoqAhMP47O/uyse+UsN0H1XZDsFXhi3zxCN0avaVedpW1ov0Ny/QjZb5CDLXVYDy4psxDTtX2OCSBxol+9pZ3EdwqkNynI30U/bC75q4RmZVyKemZHYPPy3pbPPj1SNPbMzvCAohE2b8Qo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763714198; c=relaxed/simple;
-	bh=BGsYfoIXQOo7EBrCA+FKVvoWypNTWbTjqeI+vRCjzio=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uAlOwh8wGrOOTPd0KqiUDqjOAtZ3z8xS6G4Bsdz/fjL6jZn3OCO+1gOU4m3d1Q/800obhT2gIvxG3xqcQ0vbzmdRWUAddtECEYaSUTyq+Ql3z2vdBR5y3U01wdKZP9NOH2Bd941TQH5KzNPrQTQYoOSkmhgbGrctqnfKH612rN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TDSQcCtc; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E11B22A1D5
+	for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 08:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763715107; cv=fail; b=qCQ3CJcRWVzHph0fdx40i/I9niWDYvtjEJC/i8hpMhgAqjYZIT792/bLrBEvYmzh+CGDbFEFx6VMPoVt9GyAtr75ylRp4YKQJcJKP16tUeIEvgOw38zUQYW9fucB51dWHQ4E4McXacef4Vnt6HXAJIKNe7/eN0wRlz9Ye9IQg3g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763715107; c=relaxed/simple;
+	bh=kURbqG287N9KrxfAWygkFqdE2g0oWbijO+WStuF/wNE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pESlL2YGd+WtFCqNnLfVb7T3c6aUEz4sznXSdSOqVsvu4l/8UsqoyBfbJl+7t4P6t3lGr4cBJpz7zZWmCOzyzA4TZtSSfL+UEAGxjMEF+aXWHLW71Dr8kNFdbcvg5MdPvD0si0Iz9RGwvPVF3iEE+5eqKCwf/058aCzUzaal4sA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SDBj18+G; arc=fail smtp.client-ip=40.93.201.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TDSQcCtc"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8b1d8f56e24so510843785a.2
-        for <netdev@vger.kernel.org>; Fri, 21 Nov 2025 00:36:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763714195; x=1764318995; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J4iSXC6NdmEtBlxlmiqyi3eI5X/KgZ5Vd1ugbaI/ieQ=;
-        b=TDSQcCtcqxa/Z5E8OMFlD7X4fm7PiKauYWSbVN7/i8n6IOfc2MweSPi7oYlSiSuoDm
-         P41U6QHhd/38QnfQKMKtCxcaciC1mvLqaWHSjudByqbo6oX0BLp6HNWu2OzyQ0CITrEY
-         X/vMGr/04WO6h5jKgTd5Tvu7RsEL+Yevr/Gb9NkGNThv5Ykc5owqWr22TF8CSeQ7vsmb
-         LZpk7DVSRssWIzqQxl3MZ5iEAfWQbK8LEVsrizxKJcyjbR20jmBNS7FtRPPrRUya6nTO
-         SlKY3Tos1Palfk7Du6RyQ/gnSZZ4/Z/u3J9tiKWDuzBcpNtD2pDxtajp7/foBIW5oXZ/
-         ppig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763714195; x=1764318995;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J4iSXC6NdmEtBlxlmiqyi3eI5X/KgZ5Vd1ugbaI/ieQ=;
-        b=SI19AUGzwX+Xa3NVMyHY1vqtD2TZShK3zrUPaZiqV/+paKX0MaMTkz+A0/qW7yphKc
-         e82lQKXkbj//4JIYNKEQ1LttmUwqHWWe6iX3qlJGS6JtVDHvwr6nKjIfMwMBwKPeCbxL
-         zhyZZB7dmLYvw836079mRYPMjDUM1CyFf3HcGUB+IGTIJ8aW04VLVA5nulAKoA9NJNnW
-         2e3hR6VKRFf3UTGPYO7MI4YDxKO3kSsdtKt5FOxBGidJSpgunxjhI4ViwfnGU3j/HuJk
-         yOD694azSJm1FyY1QBLuF8lBhc/fbV+ieIZk+xAo1zGN+qgX8T8rpWxb18F+ZVygTWs+
-         2GAA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+EIMJs2XRhFe4/Q3vAH1/D/IAcID8Ys+jSb5sMuY5srxFK5BB9TtTQfE3vgkg6CudkK76X6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKkh4jp3HptNOrL8nLoOPJ6JpmsXgMXVFbZrDKUZ4pK0wQFJ7F
-	1/tlFEAxmgIX03MOW6hO3j3WCZrdBiBvz6z3SVDVfqAEpUbfpVecHyvUFglfA29/EBdOr0Wgeh9
-	pA/OK4kazB8Vn8Q==
-X-Google-Smtp-Source: AGHT+IGyr5xtYMHADzxbmuU97amgwP0zrAcVSuLUd083MPVCAdpV08IIQbZrkQYbR/YFb9CKPqRDyo5O2MofYw==
-X-Received: from qkbef2.prod.google.com ([2002:a05:620a:8082:b0:8b2:d765:51ef])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4411:b0:8b2:6121:5aff with SMTP id af79cd13be357-8b33d1e2eb0mr148748185a.8.1763714195473;
- Fri, 21 Nov 2025 00:36:35 -0800 (PST)
-Date: Fri, 21 Nov 2025 08:32:56 +0000
-In-Reply-To: <20251121083256.674562-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SDBj18+G"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hht6cWNQhMq1r/qeG2m1zVudQQnOCneVXFvDZY4cGScDAryVJwuvSM9GZiBiz0bTR1zlFRu1enw8zSFSCsqLfAYlEe3O+Oi25nXoU3kBuzwv0S0iE/y2y1Ju67bFbyzohYPskr+pqN99wrUedDXYnWenX+4JE4cFCWgd3xnyYQrvkv0gJXg+zbI21TYrjEQhdt3+5zqnf5a5YIIrCpzoGeEG13WJ5GnAjhhVPrtr8Us12x9vs0lbwVxkFN7qIUcJxAvxoUKp9lwsWKYQNBotUOQJt/SIQkZH0JaTEqW0PbEcmDlTAtKKlwIGUAzbe/YJ15yyrFYM7AvpGKmv5Owxvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kURbqG287N9KrxfAWygkFqdE2g0oWbijO+WStuF/wNE=;
+ b=jeR51q6nDWhLMVZMqiRIoOWf7xXW9VhC1jITHwtnVuiR5iVcmnlX1Z7qFcFONAOFb6/nlfzSQNtCJujjv6SaKS7qElQb0cpbWAZtSK1qbyf46119J+mvyCKW7/s5wuwtbsCo4Jt17WYP68YY/gAVBtpGKWwXgI1FTUM2mA2K+7xkUJ8SGuUowE2g38dQLeTVAJv53EuAscaubg2CPRORkEmDAPignBYo1nniVjpgPiBY+mPk4ZdKfHK+SaxRoMIDTBpLQifYeaYY98qp4jqlodFaRAPnsacPU3FbY6aW8B/7zter3VDiQN24oWCmV3I5cjcvzUONpk6UabEY/H89rw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kURbqG287N9KrxfAWygkFqdE2g0oWbijO+WStuF/wNE=;
+ b=SDBj18+Ghumulb2rqESvB+yzTZPhuiQDJbpkqeO7iJbRB4/AW/UtvBLE4BPIMfOXy0/n7laAyFlBC/DpiMgBO4hab6hYgs0cy02oU7F9dZOvtjJmmhJ25Eo+hqFNC3GBnrRtYqVXd9iSozfGXOtGKWyK2UEUC+4df2oMSG1XpIl6rc9t34T3phKxyFduqIvJttqp3rkN8qoVd920Xi/NOXGZpbDSc+WYcI9KSsCS8iPYOL7/jcHuSugUwmOwW39V9WCAqXroKqN9fcl9Jbz6XCts4r9zOdXLjcYMnvzhqTDsRko5DK20Z7q+crJJ7K8vgNuwx23P/bPOiJryAOMnPQ==
+Received: from CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11)
+ by DM4PR12MB5794.namprd12.prod.outlook.com (2603:10b6:8:61::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Fri, 21 Nov
+ 2025 08:51:43 +0000
+Received: from CY8PR12MB7195.namprd12.prod.outlook.com
+ ([fe80::e571:5f76:2b46:e0f8]) by CY8PR12MB7195.namprd12.prod.outlook.com
+ ([fe80::e571:5f76:2b46:e0f8%5]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
+ 08:51:43 +0000
+From: Parav Pandit <parav@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>
+CC: Jiri Pirko <jiri@nvidia.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>
+Subject: RE: [PATCH net-next v1] devlink: Notify eswitch mode changes to
+ devlink monitor
+Thread-Topic: [PATCH net-next v1] devlink: Notify eswitch mode changes to
+ devlink monitor
+Thread-Index: AQHcWXX7teMkj3OyeUyWgPTZckbpj7T6ztgAgACrToCAAC18gIABKQEAgAADUvA=
+Date: Fri, 21 Nov 2025 08:51:42 +0000
+Message-ID:
+ <CY8PR12MB719597CF0D93BE6091CBFC09DCD5A@CY8PR12MB7195.namprd12.prod.outlook.com>
+References: <20251119165936.9061-1-parav@nvidia.com>
+ <20251119175628.4fe6cd4d@kernel.org>
+ <32hbfvtxcn3okpylfcgfeuq7uvrufpij4y7w6au6vxrernwthb@pdxvc6r6jl5z>
+ <20251120065223.7c9d4462@kernel.org>
+ <q5n6ata2nhrtbkcnemyuiuhsf43365uqpdrbhm2qvpckxkyyuj@u3ugwpyqab6a>
+In-Reply-To: <q5n6ata2nhrtbkcnemyuiuhsf43365uqpdrbhm2qvpckxkyyuj@u3ugwpyqab6a>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|DM4PR12MB5794:EE_
+x-ms-office365-filtering-correlation-id: 61e4899a-5795-406e-1e54-08de28db31b8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?9SHJgXmj6oiON1VJOXeoZwd4eA2QnJfQ34gUqpYkwsotB7LfEdlid5YUZnLh?=
+ =?us-ascii?Q?1UP8NMDzVfI8OQ9wFQx9ptrRnvvInUglLKiUsRw0TDoKWYZLS5g7vsk70csn?=
+ =?us-ascii?Q?NsVbraAnCIiDLmCn1+kE48H/oINm/CDOyRcIYIAslr5sZ0HH96CdrHNYvTX6?=
+ =?us-ascii?Q?GEYt2Cvshs0nNiKXhdi7qpb/P5L2u9pLA66NvtkfOtNqdZpdTEMNHCKrEsY4?=
+ =?us-ascii?Q?QG1UzciCeEC/6E4vf/nBQ81ZpF3XGcBVegCmzJzBM2bYKUPayx6v5MXTyYw8?=
+ =?us-ascii?Q?tHHrDdvivGkgsKItg2XgQehFe3w5qrS2zxEsikF6XsmBX92VeKVGRah5Js0R?=
+ =?us-ascii?Q?U5rdRYwk7dpAmRahfYuO5jORaI/G6RSj6IkJjaw8/PXdpMarae3ZE0PeIlu2?=
+ =?us-ascii?Q?71GgqcdRTnc2gwSymoYDcah4uus9ezTAPgIg9aWc6R9ABWXQhc6JWQ5qcTl3?=
+ =?us-ascii?Q?yZXkLwNwnCLxjLD0bDlYcf+R7AExu7prMOwT7luISywPlLEx6iFTIlKsjlI+?=
+ =?us-ascii?Q?SrxH1/FvEDDqu/pwO4lYoh46gf7Jn/8UTGx8eD8N4M1/9LwfLB6ORtRmft3p?=
+ =?us-ascii?Q?XMWlRdiQE9dlXLqC75wS5GaRW0SBA4zxBKQw82zkAAFfLhPnVBzq1t86ARZF?=
+ =?us-ascii?Q?T/C+UPOm54EwhWY8ReDtwwr90z7HDuT5/jDCi3uTiHCv+sCdJJ3g8ImYbuQ/?=
+ =?us-ascii?Q?hFw1I0T9tQ1814YzN5BAt6bre35FGKgh+EMKMfjzyTCIFFeFsWKn1vSO6LHR?=
+ =?us-ascii?Q?jUxtgGctvcF+lQYfBkK3NpEw1hW5AS9ex3VJsv9KaZVxAJalydoGGcDf/tbk?=
+ =?us-ascii?Q?NaCEQ6qG23mPZyEQYAY23nsINHCYyQBnBR3aMmN8XTfplp9Ig+Ki8YI2OBdf?=
+ =?us-ascii?Q?hbYYkTr3TdLex1EzMAhhXK3opBZiYfpOkc5vy3bynBGy0vWO1klWHLImhrZb?=
+ =?us-ascii?Q?B5UZtgauIeEGZhXszTnxWTlYBeF6dnFDj0r25vOGAX8mtsaIh5E4nJcogKDU?=
+ =?us-ascii?Q?7eeLfAViMKVg2+UVgYfcv/GdICIotO3ar88n4P2urrx+UodbdUmjhSQijZ6k?=
+ =?us-ascii?Q?GinteJtKMNaOrJKUIsezJBqJXzSkIkVceo20q5e5ABzN5/+ouq5MfiVyWLZ3?=
+ =?us-ascii?Q?sCYKpTIDOvsUOkFsOmAuOLwIwAjMOBmzhXeS+T/WZ2fUf18TpSxEiHs7iCRN?=
+ =?us-ascii?Q?IzcbqcC4ZyQHhrlyyob2kpbzzi+WdVCnzP6XSfNSJOtOgzsdUVztEMT9clJ3?=
+ =?us-ascii?Q?hssyVm+PxkhOkGUWc+3gBUSM8x2WprkDqUuvKtTDX3irfxf8EzB6SkzGGvD2?=
+ =?us-ascii?Q?a0QtMKcstKjWcWZFhbe4kKQKpuVswTqLDB5nwSw9R5MIfEw8X5S1Zn/AG19Y?=
+ =?us-ascii?Q?y22LtcNV1GTcjeyYtz9j/f5TZ8ug/Byseb+RLHaU/WDkNjmdQmtBaNlUOTlz?=
+ =?us-ascii?Q?hqchVNstnfYaOO2J7MEUw2gSDFubdZzt83xC0aI0leKp0aTtOt5osYfDjBxV?=
+ =?us-ascii?Q?dcJJ4T+i1QLd9C89Bzq+mzzIR6P1fag0nnVD?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?5U5YsU69y8Jag25PRpY0t9Hnfdw/lIc4ED4pSxirsZrC4IEjtyICUvu9hFCd?=
+ =?us-ascii?Q?jfBp0+IbdL1iPkHRFUAfQ4wJAvdt7/cmKZ7HjS9ilR9bX/DBpOvSB1sGY3O+?=
+ =?us-ascii?Q?Eh2jqqZ339iYkeVvEgIZ/PCEyyKBxQysTZ8vnhYcfaaMEOjjsBsJFxMHOkES?=
+ =?us-ascii?Q?nu0swRejtyNtYK1LoFXMTmTZ10Xi3KfcSUprnuxWzMfEZ/FbS9mgvjUKtsf2?=
+ =?us-ascii?Q?v2D1kaaag5l26DxdEA/7cY5rhkLjRt7ydzg5cIXRQX0Wzq4xKIo6GB8vbb1D?=
+ =?us-ascii?Q?ynhFFX2s5i74SM+S/FFjtUJKdq6mpQt7ctNGE6Dsi2ilMhZIE0M/O0Qn3xZm?=
+ =?us-ascii?Q?prNv102cSHUH0hYC9dbAVLQL6dXbg+zhbe9/QqhdkIQvkQX6T30BpzFnfNBH?=
+ =?us-ascii?Q?dNLEUYIeZ+nwFKD8c3xFgUcZ/1C/X2DUotHcIGM/qa1vXVsdmXi+xBKBjJVW?=
+ =?us-ascii?Q?kpMCndItXz0PyTfPt8a0FSbX0uS9gklUnnI8iIcTavzqmR61JN/ElKvCpruc?=
+ =?us-ascii?Q?/8+OcQ+P7TvXIpn8NpiK3kz/fvRtoJHgUpWkRh9ePFP1HbiI4vkkopMRxoHf?=
+ =?us-ascii?Q?cYp9Nje5+R/3u4ZV7Newdp0gM2OPywC0dHDk7C+JX6rhWSlKCbv95UbSwYKy?=
+ =?us-ascii?Q?rHk/NPqTzJMSg2v7wKQHL+Qc1zjMJ6lDD+zE09eZsisieed7izDDKX/OT5fN?=
+ =?us-ascii?Q?d+XauSQjtSV0SumCt0ZjK2JlcNe4nhA8PYrCahyb4Z9p7VesyMckHJ+Xvu/k?=
+ =?us-ascii?Q?H+tcXVsA2TUqQ00Up3L49xheIoY3q2W2och1GVMLOUomhcq7bL3evYPqfwjL?=
+ =?us-ascii?Q?XnbXQapwzhLueKdKgea7pH0UV2SAFJi8zCXZXaN4W8MT/QVOIhqUMNlCulzG?=
+ =?us-ascii?Q?7Jt3Jw2IYIrteGht9PRDsgzGJ0UnIVX4/RhSCXttqjCuKot13NKLifEaVFWc?=
+ =?us-ascii?Q?vCdOiLZJmGc3dCuxIl+Q1Temv1ht+0a9Nq4HBZ88NVLy+eAGYSsrvxm/LPyE?=
+ =?us-ascii?Q?mZ/CXOJZy4efajjNA8WZkXbAna1MCnlkHlamzflSgibQqPnpsgeFZbXo9twR?=
+ =?us-ascii?Q?r+gtve76M/05I6KpJaD6up/anBr5mgDUDiY9z14SuwZZrEsXSQ94yVi3566M?=
+ =?us-ascii?Q?QXlICWEk8z4VlZCStjYG5kI2Z/JwYC4WQ2x173BuZQTJDh9pzpYJck2hOC4H?=
+ =?us-ascii?Q?czltFzIV0mf8KYVeCReeQ9qZ5p6ToJhRCzVNI31poL3iGXLk6BS7MZkx1LR4?=
+ =?us-ascii?Q?N6FgwuZWW7L2O4LI5EpPkalfYxtZaiD+7speF4VazRYGK6zy/H3fJxyQY/as?=
+ =?us-ascii?Q?zRGPDskJvl2dCct6/PbG05wwXom4jiaekG0tzAkX6hCiIl0afDJiyvptM9hQ?=
+ =?us-ascii?Q?87BKsQjA1N01n5qxGY0+MaTNKJmWmMTd2LP2ny+S04PH8y9c2cQJfyC779/Z?=
+ =?us-ascii?Q?C1a1ty2hh/Q72HeZ5+t+2B6Nv+sugEWmN01+6r30/PPm0psLeJEmK2Xg0gvf?=
+ =?us-ascii?Q?PtqQ600NQFWEk2JFgGprCPhwwb95IBTCF8ZJu+HY8coo3l380PLI4CzgypM1?=
+ =?us-ascii?Q?qqLz0B/3060YoQF7DOc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251121083256.674562-1-edumazet@google.com>
-X-Mailer: git-send-email 2.52.0.460.gd25c4c69ec-goog
-Message-ID: <20251121083256.674562-15-edumazet@google.com>
-Subject: [PATCH v3 net-next 14/14] net_sched: use qdisc_dequeue_drop() in
- cake, codel, fq_codel
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7195.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61e4899a-5795-406e-1e54-08de28db31b8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2025 08:51:42.9968
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EP7KKf51JWt/Ucl/Ca1NRxIiSRCHx9EnYj381D7LCz18GNMwhlmzMwL6TL4KNEOYKu+6PrqHvLgigQCx4PyDew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5794
 
-cake, codel and fq_codel can drop many packets from dequeue().
 
-Use qdisc_dequeue_drop() so that the freeing can happen
-outside of the qdisc spinlock scope.
+> From: Jiri Pirko <jiri@resnulli.us>
+> Sent: 21 November 2025 02:05 PM
+>=20
+> Thu, Nov 20, 2025 at 03:52:23PM +0100, kuba@kernel.org wrote:
+> >On Thu, 20 Nov 2025 13:09:35 +0100 Jiri Pirko wrote:
+> >> Thu, Nov 20, 2025 at 02:56:28AM +0100, kuba@kernel.org wrote:
+> >> >On Wed, 19 Nov 2025 18:59:36 +0200 Parav Pandit wrote:
+> >> >> When eswitch mode changes, notify such change to the devlink
+> >> >> monitoring process.
+> >> >>
+> >> >> After this notification, a devlink monitoring process can see
+> >> >> following output:
+> >> >>
+> >> >> $ devlink mon
+> >> >> [eswitch,get] pci/0000:06:00.0: mode switchdev inline-mode none
+> >> >> encap-mode basic [eswitch,get] pci/0000:06:00.0: mode legacy
+> >> >> inline-mode none encap-mode basic
+> >> >>
+> >> >> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+> >> >
+> >> >Jiri, did you have a chance to re-review this or the tag is stale?
+> >>
+> >> Nope, I reviewed internally, that's why the tag was taken.
+> >>
+> >> >I have a slight preference for a new command ID here but if you
+> >> >think GET is fine then so be it.
+> >>
+> >> Well, For the rest of the notifications, we have NEW/DEL commands.
+> >> However in this case, as "eswitch" is somehow a subobject, there is
+> >> no NEW/DEL value defined. I'm fine with using GET for notifications fo=
+r it.
+> >> I'm also okay with adding new ID, up to you.
+> >
+> >Let's add a DEVLINK_CMD_ESWITCH_NTF. Having a separate ID makes it
+> >easier / possible to use the same socket for requests and notifications.
+>=20
+> Well, you still can use the same socket with just ESWITCH_GET. Request
+> messages are going from userspace, notifications from kernel, there is no
+> mixup.
+>=20
+> For the sake of consistency, shouldn't the name be ESWITCH_NEW?
 
-Add TCQ_F_DEQUEUE_DROPS to sch->flags.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/sched/sch_cake.c     | 4 +++-
- net/sched/sch_codel.c    | 4 +++-
- net/sched/sch_fq_codel.c | 5 ++++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 5948a149129c6de041ba949e2e2b5b6b4eb54166..0ea9440f68c60ab69e9dd889b225c1a171199787 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2183,7 +2183,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		b->tin_dropped++;
- 		qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 		qdisc_qstats_drop(sch);
--		kfree_skb_reason(skb, reason);
-+		qdisc_dequeue_drop(sch, skb, reason);
- 		if (q->rate_flags & CAKE_FLAG_INGRESS)
- 			goto retry;
- 	}
-@@ -2724,6 +2724,8 @@ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
- 	int i, j, err;
- 
- 	sch->limit = 10240;
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	q->tin_mode = CAKE_DIFFSERV_DIFFSERV3;
- 	q->flow_mode  = CAKE_FLOW_TRIPLE;
- 
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index fa0314679e434a4f84a128e8330bb92743c3d66a..c6551578f1cf8d332ca20ea062e858ffb437966a 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -52,7 +52,7 @@ static void drop_func(struct sk_buff *skb, void *ctx)
- {
- 	struct Qdisc *sch = ctx;
- 
--	kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_CONGESTED);
-+	qdisc_dequeue_drop(sch, skb, SKB_DROP_REASON_QDISC_CONGESTED);
- 	qdisc_qstats_drop(sch);
- }
- 
-@@ -182,6 +182,8 @@ static int codel_init(struct Qdisc *sch, struct nlattr *opt,
- 	else
- 		sch->flags &= ~TCQ_F_CAN_BYPASS;
- 
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	return 0;
- }
- 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index a141423929394d7ebe127aa328dcf13ae67b3d56..dc187c7f06b10d8fd4191ead82e6a60133fff09d 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -275,7 +275,7 @@ static void drop_func(struct sk_buff *skb, void *ctx)
- {
- 	struct Qdisc *sch = ctx;
- 
--	kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_CONGESTED);
-+	qdisc_dequeue_drop(sch, skb, SKB_DROP_REASON_QDISC_CONGESTED);
- 	qdisc_qstats_drop(sch);
- }
- 
-@@ -519,6 +519,9 @@ static int fq_codel_init(struct Qdisc *sch, struct nlattr *opt,
- 		sch->flags |= TCQ_F_CAN_BYPASS;
- 	else
- 		sch->flags &= ~TCQ_F_CAN_BYPASS;
-+
-+	sch->flags |= TCQ_F_DEQUEUE_DROPS;
-+
- 	return 0;
- 
- alloc_failure:
--- 
-2.52.0.460.gd25c4c69ec-goog
-
+It's the change happening in the eswitch: mode or attribute or something el=
+se tomorrow.
+So it looks more like DPLL_CMD_DEVICE_CHANGE_NTF to me.
