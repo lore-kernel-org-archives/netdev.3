@@ -1,195 +1,110 @@
-Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [178.154.239.212])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B69F2D47E8;
-	Sun, 23 Nov 2025 18:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F093B1A8F97;
+	Sun, 23 Nov 2025 21:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763923503; cv=none; b=ZR8ObC8dthTyp14fTklyhTQlm0mCX5bXrOu/GJj5c3K+UCCj5xfZ5D0qqD2cbGcWRCBWLgkUCw8NtwqoUawXQf/QZkyNwYkHgE8HMsjUDOq2LNg69VVlp5DVCTVY7S/S9wiE2ScSf127UUQr14JxagQCAHS4VgwsrPv7Kdjt9U8=
+	t=1763934273; cv=none; b=V/6JlUhnAq6NSe66YjrrChhkSuOZqmxxUCUJrO7yhbRkzHglRBLPOZkmW9JUC/wtp4kO7FShiJhywIhWHplb4AYDdnSqcDgbA/r8O1fB/wNBzo0uf8mrDNu2x8LmIo4sj6khLd3DyByevV/m9VsU2vpwNak7e5jm1r+U5RTFlDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763923503; c=relaxed/simple;
-	bh=Qw6SRMwCYTDUM5jTvX+4vdEgLsMPPN6AalTGL5B2RV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E3V99AVRuTI3HYvv+2nn7rbu31iOO78m52HaeztVQP5FdLwpjoHafkd4BAvo1xhfXJqiw3srm0pwwGVCY5hxjYYR6jViwlV1dgV/S+Leske8vC298BUI+ab5kW2/rIRS/JUJCfiHXhyKUHkS0orYt4tc1X87m8Q5EJQptsx4Les=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=fpD21DuL; arc=none smtp.client-ip=178.154.239.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+	s=arc-20240116; t=1763934273; c=relaxed/simple;
+	bh=YnAqnVhefJQhHWyg4GDsHFfAzb/FVEajMMONO1WyS7g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PEItizjdGNKeZAAp/kzGf4U6uqb/aoJD4YxK6LtmZQbvL4Y+ibOKWfkZK605JVhldy5D6mMuednnMq8e9tu4a2XSIAcOiMcboEeeaFjsgjQiMjCcmX534fOKLB+4mOF0IPBjkM8SzzX2CoDqWFLsvYkoczT5VINoky7G/qKieck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=VWDrtqYF; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="fpD21DuL"
-Received: from mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:3d48:0:640:52d7:0])
-	by forward101d.mail.yandex.net (Yandex) with ESMTPS id 12954C0043;
-	Sun, 23 Nov 2025 21:44:49 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kifgd6WLIOs0-xt6qjILt;
-	Sun, 23 Nov 2025 21:44:48 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1763923488; bh=G/QArjWXicOLViqw7olPX1d+z2vm9ls5rdPoNmo76bo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=fpD21DuL5gGd/ytsT82Suwn7GUQMXL0QUuWghk3VABy2oDjt7UaV8sRP+e1x6XIbP
-	 wEI+3u5847snFUpYlxcaAfMH0rmDrI61nic18YDP42Hds+e9SGr/G1z5WxZ+3wCc8N
-	 IrTAvBzq4Eb625RqkeLO4+HdsWGVmNIA+UDbSarA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Bauer <mail@david-bauer.net>,
-	James Chapman <jchapman@katalix.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH net v3] l2tp: fix double dst_release() on sk_dst_cache race
-Date: Fri, 14 Nov 2025 04:06:42 +0300
-Message-ID: <20251114010644.452441-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="VWDrtqYF"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1vNHsf-001NcD-LY; Sun, 23 Nov 2025 22:44:25 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From;
+	bh=V9XciyjlPqOIODNDKT7LjWupfpjUN2cRjyKec+JBlfM=; b=VWDrtqYFUqaINJQB8CERFZ+0oQ
+	z/z/3QgZKEvH4nvQDP+0znA97SeCwshuFbgbxWouvEGXjFseVqH8BmcghuONbD8lf6MnO0sug34ka
+	J/O7FBmrKXaJmFSglZW9rw4hT/uH9Jtm68h3s8uSzpIX+IICxSViEkwUjvZ7Ke2/fcuk6ZU5a6RVg
+	pq/Lmk30HVlfnvcvQt1Y3SUJ7sOj8eeGZ7zUui2vbh8uLQqxjHTCjVZLKXrX3xHqq2yu8tw+GU2aA
+	0C6KFlcLZ+ELxTrI2bk2YXwc6StRf94xgkpefDvyNzXH8Q0eDszHzN1f/xVaTc/mAsN0S7x6IWVmP
+	VpZ1Fl4A==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1vNHsf-0005lR-6m; Sun, 23 Nov 2025 22:44:25 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vNHsX-006w0W-Ew; Sun, 23 Nov 2025 22:44:17 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Sun, 23 Nov 2025 22:43:59 +0100
+Subject: [PATCH net-next] vsock/test: Extend transport change
+ null-ptr-deref test
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251123-vsock_test-linger-lockdep-warn-v1-1-4b1edf9d8cdc@rbox.co>
+X-B4-Tracking: v=1; b=H4sIAB6AI2kC/x2NUQqDMBAFryL73QUTGii9SiklTV7bpbLKJqgg3
+ t3g57yBNxsVmKDQvdvIMEuRURu4S0fpF/ULltyYfO+Dc97xXMb0f1WUyoM0bzy0IWPiJZoyrim
+ 8bxkxoKd2Mhk+sp6BBykqK9ZKz30/AGGMtwt6AAAA
+X-Change-ID: 20251121-vsock_test-linger-lockdep-warn-e4c5b8dea5e0
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.3
 
-A reproducible rcuref - imbalanced put() warning is observed under
-IPv6 L2TP (pppol2tp) traffic with blackhole routes, indicating an
-imbalance in dst reference counting for routes cached in
-sk->sk_dst_cache and pointing to a subtle lifetime/synchronization
-issue between the helpers that validate and drop cached dst entries.
+syzkaller reported a lockdep lock order inversion warning[1] due to
+commit 687aa0c5581b ("vsock: Fix transport_* TOCTOU"). This was fixed in
+commit f7c877e75352 ("vsock: fix lock inversion in
+vsock_assign_transport()").
 
-rcuref - imbalanced put()
-WARNING: CPU: 0 PID: 899 at lib/rcuref.c:266 rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.>
-Modules linked in:
-CPSocket connected tcp:127.0.0.1:48148,server=on <-> 127.0.0.1:33750
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01>
-RIP: 0010:rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
+Redo syzkaller's repro by piggybacking on a somewhat related test
+implemented in commit 3a764d93385c ("vsock/test: Add test for null ptr
+deref when transport changes").
 
-Call Trace:
- <TASK>
- __rcuref_put include/linux/rcuref.h:97 [inline]
- rcuref_put include/linux/rcuref.h:153 [inline]
- dst_release+0x291/0x310 net/core/dst.c:167
- __sk_dst_check+0x2d4/0x350 net/core/sock.c:604
- __inet6_csk_dst_check net/ipv6/inet6_connection_sock.c:76 [inline]
- inet6_csk_route_socket+0x6ed/0x10c0 net/ipv6/inet6_connection_sock.c:104
- inet6_csk_xmit+0x12f/0x740 net/ipv6/inet6_connection_sock.c:121
- l2tp_xmit_queue net/l2tp/l2tp_core.c:1214 [inline]
- l2tp_xmit_core net/l2tp/l2tp_core.c:1309 [inline]
- l2tp_xmit_skb+0x1404/0x1910 net/l2tp/l2tp_core.c:1325
- pppol2tp_sendmsg+0x3ca/0x550 net/l2tp/l2tp_ppp.c:302
- sock_sendmsg_nosec net/socket.c:729 [inline]
- __sock_sendmsg net/socket.c:744 [inline]
- ____sys_sendmsg+0xab2/0xc70 net/socket.c:2609
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2663
- __sys_sendmmsg+0x188/0x450 net/socket.c:2749
- __do_sys_sendmmsg net/socket.c:2778 [inline]
- __se_sys_sendmmsg net/socket.c:2775 [inline]
- __x64_sys_sendmmsg+0x98/0x100 net/socket.c:2775
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe6960ec719
- </TASK>
+[1]: https://lore.kernel.org/netdev/68f6cdb0.a70a0220.205af.0039.GAE@google.com/
 
-The race occurs between the lockless UDPv6 transmit path
-(udpv6_sendmsg() -> sk_dst_check()) and the locked L2TP/pppol2tp
-transmit path (pppol2tp_sendmsg() -> l2tp_xmit_skb() ->
-... -> inet6_csk_xmit() → __sk_dst_check()), when both handle
-the same obsolete dst from sk->sk_dst_cache: the UDPv6 side takes
-an extra reference and atomically steals and releases the cached
-dst, while the L2TP side, using a stale cached pointer, still
-calls dst_release() on it, and together these updates produce
-an extra final dst_release() on that dst, triggering
-rcuref - imbalanced put().
-
-The Race Condition:
-
-Initial:
-  sk->sk_dst_cache = dst
-  ref(dst) = 1   
-
-Thread 1: sk_dst_check()                Thread 2: __sk_dst_check()
-------------------------               ----------------------------
-sk_dst_get(sk):
-  rcu_read_lock()
-  dst = rcu_dereference(sk->sk_dst_cache)
-  rcuref_get(dst) succeeds
-  rcu_read_unlock()
-  // ref = 2  
-
-                                            dst = __sk_dst_get(sk)
-                                    // reads same dst from sk_dst_cache
-                                    // ref still = 2 (no extra get)
-
-[both see dst obsolete & check() == NULL]
-
-sk_dst_reset(sk):
-  old = xchg(&sk->sk_dst_cache, NULL)
-    // old = dst
-  dst_release(old)
-    // drop cached ref
-    // ref: 2 -> 1 
-
-                                  RCU_INIT_POINTER(sk->sk_dst_cache, NULL)
-                                  // cache already NULL after xchg
-                                            dst_release(dst)
-                                              // ref: 1 -> 0
-
-  dst_release(dst)
-  // tries to drop its own ref after final put
-  // rcuref_put_slowpath() -> "rcuref - imbalanced put()"
-
-Make the IPv6 L2TP transmit path explicitly pre-validate
-the cached dst under the socket lock by reading sk->sk_dst_cache
-via __sk_dst_get() and, if dst is obsolete and
-dst->ops->check(dst, inet6_sk(tunnel->sock)->dst_cookie) == NULL, drop it
-from the cache with sk_dst_reset(tunnel->sock), so that the cache-owned
-reference is released exactly once via the xchg-based helper
-and later __sk_dst_check() inside inet6_csk_xmit() either
-sees a NULL cache or a still-valid dst and no longer races
-with the lockless sk_dst_check() to double-release the
-same cached dst.
-
-Fixes: b0270e91014d ("ipv4: add a sock pointer to ip_queue_xmit()")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
-v2: move fix to L2TP as suggested by Eric Dumazet.
-v3: dropped the lockless sk_dst_check() pre-validation
-and the extra sk_dst_get() reference; instead, under
-the socket lock, mirror __sk_dst_check()’s condition
-and invalidate the cached dst via sk_dst_reset(sk) so
-the cache-owned ref is released exactly once via the 
-xchg-based helper.
+ tools/testing/vsock/vsock_test.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
- net/l2tp/l2tp_core.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 0710281dd95a..b379b7e6470a 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1210,9 +1210,17 @@ static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, stru
- 	skb->ignore_df = 1;
- 	skb_dst_drop(skb);
- #if IS_ENABLED(CONFIG_IPV6)
--	if (l2tp_sk_is_v6(tunnel->sock))
-+	if (l2tp_sk_is_v6(tunnel->sock)) {
-+		struct dst_entry *dst = __sk_dst_get(tunnel->sock);
-+
-+		if (dst) {
-+			if (dst && READ_ONCE(dst->obsolete) &&
-+			    dst->ops->check(dst,
-+			    inet6_sk(tunnel->sock)->dst_cookie) == NULL)
-+				sk_dst_reset(tunnel->sock);
-+		}
- 		err = inet6_csk_xmit(tunnel->sock, skb, NULL);
--	else
-+	} else
- #endif
- 		err = ip_queue_xmit(tunnel->sock, skb, fl);
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index d4517386e551..9e1250790f33 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -2015,6 +2015,11 @@ static void test_stream_transport_change_client(const struct test_opts *opts)
+ 			exit(EXIT_FAILURE);
+ 		}
  
++		/* Although setting SO_LINGER does not affect the original test
++		 * for null-ptr-deref, it may trigger a lockdep warning.
++		 */
++		enable_so_linger(s, 1);
++
+ 		ret = connect(s, (struct sockaddr *)&sa, sizeof(sa));
+ 		/* The connect can fail due to signals coming from the thread,
+ 		 * or because the receiver connection queue is full.
+@@ -2352,7 +2357,7 @@ static struct test_case test_cases[] = {
+ 		.run_server = test_stream_nolinger_server,
+ 	},
+ 	{
+-		.name = "SOCK_STREAM transport change null-ptr-deref",
++		.name = "SOCK_STREAM transport change null-ptr-deref, lockdep warn",
+ 		.run_client = test_stream_transport_change_client,
+ 		.run_server = test_stream_transport_change_server,
+ 	},
+
+---
+base-commit: 73138ebe792b9af2954292cc5cfa780a5e796d97
+change-id: 20251121-vsock_test-linger-lockdep-warn-e4c5b8dea5e0
+
+Best regards,
 -- 
-2.47.2
+Michal Luczaj <mhal@rbox.co>
 
