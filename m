@@ -1,91 +1,118 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C0F2F363B
-	for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 21:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FD72F363B;
+	Mon, 24 Nov 2025 21:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764019409; cv=none; b=sXcvgifE3fvoM64dOU8XXLuLtNs/yAduBZ98l1zLiq4JX7zbuGe0BxbsatdWqBVNAeREQBHu4hoX1jhubxBJadGSHIQDRuRZaD7j2sArpfRtWdq0IH+AbUnp3XpSLBRPCW7IoKkHoNRAZWU5Xl7oyzSGa6UbtboYhKE+ClK+Lzs=
+	t=1764019676; cv=none; b=kXGntbdJ31l3ZnJfzoTMPOd0QNYE7mah1xmlljTV/rY0qpNxRxqEcZyUtaXUwjBLamHW5CFbvwBXC3fwITLfkxZ2RxXgbPA3ryaUNGZ4L7QjEZImjuRBD+3xMzCqyU20jt0opuc3UKIObrRtjGU8fZSL54W5T3/mZw4qBdXaAaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764019409; c=relaxed/simple;
-	bh=NrEvzC8nAllmRrnlb+ElGF95E78Q/2Mq2l3vtMmnHUM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JaaiqbYqhQu+jkb9E+zUek67ZpdqJJ2JMbSLnKpbPFiP0JkxuVpIgoKdkjD6ZcT2f7m1yU7+E5qP6GNp2AjQx0hTVaOUZzM/KMPq4JIeZsXno94lVL7aC74NnpjyofipjkWAz5hOYkVPE/7MCcCFnIWu3LJISJQ6xxB03/F/4L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KmSAlocZ; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1764019676; c=relaxed/simple;
+	bh=HSRYKWBW9pOroBohYQkSBsBpthFOGxhpexSq+GXtG8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=eeH8QltqlwpSJQtToKR/czEPnXfwkkheht0MkN+R3fqAGzhBwqXAhI/MtfMhHLAsfgoCSBoQ2Hzz6+Vo4+9jAs0CCkPpHasYtwUWIMXoo0nyI6brgS208NoZjL2YfP+QxwqDEJ75JiFgC040pfqBFsWCCP0zyw4EYi3TOOTNY4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5a7p2XY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KmSAlocZ"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b852bb31d9so5529643b3a.0
-        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 13:23:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764019408; x=1764624208; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NrEvzC8nAllmRrnlb+ElGF95E78Q/2Mq2l3vtMmnHUM=;
-        b=KmSAlocZ/bifjmAWS2Hg7NzW0R237yNQle6XRSV7QSgiqgWjmu+ggsQhFu+EZElZdX
-         TPoLHrptMJRxHqYuss2vEGViszDYTEAhYFztDR8RX7Jf9v6Ig95NaSKonSNJf5gXZRjb
-         h34RZrRwNZvzlZsx7hiCRN6pZyUdvBK2RGOuBAMJ6/G2dEj/g0n/KRoa5zNY56kPZrQE
-         0N3lYnNEAQOhdYxA6ZYpt/3KMA4nkqpCH5ffOSo6PjVpUxpKxKr8nYgay1PxGACD3l2m
-         fvSMYq11VPWjQvuujDfpLmKg+sK3TDoj0en5NVH2z6p2I8wSmg/zPJaGBr87K2Cv689p
-         DCEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764019408; x=1764624208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NrEvzC8nAllmRrnlb+ElGF95E78Q/2Mq2l3vtMmnHUM=;
-        b=YoMy2u+Pc4CE0lEjwIaRgcq+Yj2cgAaZp4YIjeShBqVREbQ+mW7yUKz4bNx4T1RgmV
-         DpZr6MMlEKM9O8yOi8rpu30elLB/VhitJ+brVVy3CG21aiyAL4ZrmveQMKgTDAcJtaVq
-         prSoNJL0bRtGJ/spFSiSnRh0KFLuUrjS8slgbbPDCEjIIo9SD4cwNIlkhhHMJuprPjX5
-         7o2yE4puB8JcpjzBjzapFGkKWLwbNc/Q8T63Proh76iqNNpz8nFUi6C/qIn5hdIf6/gi
-         C5neVgZGI604bRpfe7xC+w+8fnPr9BvedEZQu1Y38lSBfhvdjs5TzELfqwbJuInP+QkK
-         Jp5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUjK4QvNi3SpDmbb19euWQ8+/nSM1ndkKMEQWgEPvNmtResqlO4PQJ44TEGs9EosOC6p6qgGdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy7QlIRL0bZ8V5e8FADD+RWArepHH00tcLB9HBs4P+9gib56gL
-	Jq6oPdURZztcW6fYG7+DKl5kZwqlUprdikzWoOCSDQb48gdin+a0L+XRHRZcQE7KMYSw1ieJ/Ux
-	V5fuEEPFUhqiRMdEojvablYCZk50Bnmu7cQB3evpZ
-X-Gm-Gg: ASbGncvW0iFkjqBYGo92HyILyP7zgWQHYzPR13HVXHZDtDj4FLWy3YkmF7a/RMrqwPO
-	KAToLoOZVyDWNRQ3eGizSVOv6GQvvMGv4pF+U+kthpK8WdrL5N4em5Hzp1iZsxEgnvM1SGBWf09
-	82dOvwDLPJdtmknqtrJ6rgYvutL/7WQDAgSgO+ieiY6nXeACtdThV2qKEQE9gV8bJo8LFTJK3Uv
-	E0VZd5n+hal+yH/zymA5JumbOeffxTJLAaiwsQWa02HDayZsW9JlsSduBL36AW29ollyrZnvKTO
-	62aJn2RUoEwAx5TnM/8McehOCaep
-X-Google-Smtp-Source: AGHT+IE9mNP1lqecI80WW/isgDZDxFBb7pWsYrkWQzM+nweu9HOz1XwP7q9Rcxu1KY+Xzd68fGSI62e15+kG20cPMsQ=
-X-Received: by 2002:a05:7022:e80e:b0:119:e569:f624 with SMTP id
- a92af1059eb24-11c9d84bf9fmr6260329c88.29.1764019407203; Mon, 24 Nov 2025
- 13:23:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5a7p2XY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30539C4CEFB;
+	Mon, 24 Nov 2025 21:27:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764019675;
+	bh=HSRYKWBW9pOroBohYQkSBsBpthFOGxhpexSq+GXtG8c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=C5a7p2XYEWgnqtt6D6T0VdRdS3UNCMTPzV5RYVZFzJ4cmviKO0NRGOAhjzAaa1L8g
+	 m7Y89o/sTe7GSTjwjnxEWOHBlA7rY5XqMpA6o6AqelZ7+I5KR1WmtElWfAT6frqmaC
+	 zzn3fokF6Fm3LnpJI1cy2F0ZQgcOXXoL9WG3i2TCVxsrGFtKbUjQx/6Jnn0ibdETR2
+	 7nkjKPTRbh54NjaNIgPHJKaMmtxzwfMtD5bBC+vPoBjHoGC9Ih5HAkLm3VZf+MGs1b
+	 20ChU2xPL9Puh+KsuGFKVXyKasOU55A+/9Yu0jWnPR8L6tVy503Kqw3GIzfl+Sk8qC
+	 Ur4i+LRnKS8Qg==
+Date: Mon, 24 Nov 2025 15:27:53 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-rdma@vger.kernel.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [RFC 1/2] Set steering-tag directly for PCIe P2P memory access
+Message-ID: <20251124212753.GA2714985@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251124194424.86160-1-kuniyu@google.com> <20251124194424.86160-2-kuniyu@google.com>
- <20251124115145.0e6bb004@kernel.org> <CAAVpQUATnxEVBE8uNt01eih=CnonmnLwYSrEZEhDk_EEk7Pemg@mail.gmail.com>
- <20251124131228.1b26bb57@kernel.org>
-In-Reply-To: <20251124131228.1b26bb57@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 24 Nov 2025 13:23:15 -0800
-X-Gm-Features: AWmQ_bmbBZMgx41ViSzZ2smMusgRanv1yRmhwsv_L28K0Iulr9r8BZe6RCnDv5A
-Message-ID: <CAAVpQUDeFTSQURH0TnkkcVjzTw3vMQv2JyJp1N9YZrkVQVTK8w@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 1/2] selftest: af_unix: Create its own .gitignore.
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113213712.776234-2-zhipingz@meta.com>
 
-On Mon, Nov 24, 2025 at 1:12=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon, 24 Nov 2025 12:07:28 -0800 Kuniyuki Iwashima wrote:
-> > > nit: missing new line
-> >
-> > Will add in v2.
->
-> Feel free to skip the 24h wait. I'd like to get the netdev foundation CI
-> to a clean state so I can shut off the AWS one completely.
+On Thu, Nov 13, 2025 at 01:37:11PM -0800, Zhiping Zhang wrote:
+> PCIe: Add a memory type for P2P memory access
 
-Thanks, I'll respin shortly.
+This should be in the Subject: line.
+
+It should also start with "PCI/TPH: ..." (not "PCIe") to match
+previous history.
+
+> The current tph memory type definition applies for CPU use cases. For device
+> memory accessed in the peer-to-peer (P2P) manner, we need another memory
+> type.
+
+s/tph/TPH/
+
+Make this say what the patch does (not just that we *need* another
+memory type, that we actually *add* one).
+
+The subject line should also say what the patch does.  I don't think
+this patch actually changes the *setting* of the steering tag (I could
+be wrong, I haven't looked carefully).
+
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> ---
+>  drivers/pci/tph.c       | 4 ++++
+>  include/linux/pci-tph.h | 4 +++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index cc64f93709a4..d983c9778c72 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -67,6 +67,8 @@ static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
+>  			if (info->pm_st_valid)
+>  				return info->pm_st;
+>  			break;
+> +		default:
+> +			return 0;
+>  		}
+>  		break;
+>  	case PCI_TPH_REQ_EXT_TPH: /* 16-bit tag */
+> @@ -79,6 +81,8 @@ static u16 tph_extract_tag(enum tph_mem_type mem_type, u8 req_type,
+>  			if (info->pm_xst_valid)
+>  				return info->pm_xst;
+>  			break;
+> +		default:
+> +			return 0;
+>  		}
+>  		break;
+>  	default:
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index 9e4e331b1603..b989302b6755 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
+> @@ -14,10 +14,12 @@
+>   * depending on the memory type: Volatile Memory or Persistent Memory. When a
+>   * caller query about a target's Steering Tag, it must provide the target's
+>   * tph_mem_type. ECN link: https://members.pcisig.com/wg/PCI-SIG/document/15470.
+> + * Add a new tph type for PCI peer-to-peer access use case.
+>   */
+>  enum tph_mem_type {
+>  	TPH_MEM_TYPE_VM,	/* volatile memory */
+> -	TPH_MEM_TYPE_PM		/* persistent memory */
+> +	TPH_MEM_TYPE_PM,	/* persistent memory */
+> +	TPH_MEM_TYPE_P2P	/* peer-to-peer accessable memory */
+>  };
+>  
+>  #ifdef CONFIG_PCIE_TPH
+> -- 
+> 2.47.3
+> 
