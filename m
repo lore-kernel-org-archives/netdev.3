@@ -1,109 +1,217 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388C732E68D
-	for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 21:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3DC32ED21
+	for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 21:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764019694; cv=none; b=tUglMeu/R1dH7bkGkdRj2GQV0hnY+VF82VEwd1Vp0kWlw06Ftxzc6t5CftSCNAJq9xNRMi3wkw528v4ykMH5mFXCVv5YNXc7Ai3VA+OirhrQXq5ZW0KlCDRSU3agbpA4vdrZRN5GIMLYX9zPCWauh/szvXD0e3L/9bxN80pnUBc=
+	t=1764021128; cv=none; b=f+4EajNt4md/hO4OBYhLSYbu/ON9sYQUerXvgSmz60mu9CK7rfsy1RNz/rV9HRz7RsmHx/OBBAVcXfzaOyijY2hMsV1u81vg2pELVJe590k0amm7Uho9RM76bC1dhoao5cng5CGU9XWhbBrKR1/+P5PMI9yCGLCw2Tes9Xl4HhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764019694; c=relaxed/simple;
-	bh=LBbpFGRx25U3EjboDytduBUqzcGkLL9Zfgq4YEVNSDE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FnL4vrlro+BezKRZdI/HTNZf/zg4xgOW8/W/zuk59yPDU4Ysc9GR2BsZKaJaryS5DlNmJ/bceue+NdIJTOs5mVUU2aZKCwYvLBQ1fYGiSxFKh4IekW/ZKLiTmwMfIfBcNyhgmycglK47BRghswz6cvG3GPzrPh1ozCpx0U6DHUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lNlXkVwX; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1764021128; c=relaxed/simple;
+	bh=69dAMBVYbztyVdrlAwio7Tlwu8BnjSF7DoB7OI2TWQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qgl2ZsVbSlXnERN6RUOPaseKbolQr8vCqX/gq7vARC3N6Iq86fY0JYNFNmxk3xBv9cfdYf5jq3r17VzmPX06es1O0L5QQInDynhj9U6jimFKrT9YviMZDFhU5PmXAJ5sashcaNYiVqG1bOlM237pLF+lhuJDA0UNbkRh08mF0eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bRH2cE1D; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bJTv0dp6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lNlXkVwX"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-297fbfb4e53so73504285ad.1
-        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 13:28:12 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bRH2cE1D";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bJTv0dp6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764021125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e72N/nLYBkd3gASLyDGIbv2w/OuUmcz0uSrgBqx4nMM=;
+	b=bRH2cE1DV+gnUA8y5Y8zhhn7P19RXd2PlNW0n35Ox8gxW9ypGski0oXnkMYUBmyl0KXGWG
+	M64je4NQoEInQ8QRxL/uG5LTLMbLnXzs9IsqGiY/CqOARi4GN5/2nZ6QqkuX641ybeBx5W
+	sy2PMFlg1SW6IDvPovqykpiyqhTXzYs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-UTvYoBRdO4e1T8YhaQesaA-1; Mon, 24 Nov 2025 16:52:04 -0500
+X-MC-Unique: UTvYoBRdO4e1T8YhaQesaA-1
+X-Mimecast-MFC-AGG-ID: UTvYoBRdO4e1T8YhaQesaA_1764021123
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4779b3749a8so41534365e9.1
+        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 13:52:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764019692; x=1764624492; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UM/52Ll1lDwXA45TXkg/Z20IxHr9hxPwTnKe9jkP/Qg=;
-        b=lNlXkVwXeZrCBHIG5DpZDGqB5I01vk3hqCnlOjnYoCEKYSIivvoJ0Htq23bB8kH890
-         NiIK4voCNdYxc53YfNxlQbu0sg+0bmYBhzkgt1YjbYjZnIMyonK+DS8eOYZAD5upMChP
-         SInzDTDErOiPFWU3WuDj1AHC+TmCJVZPFQ+ji65tabl3V/LSFd5XkP/zPyQBEUudJqdB
-         foei2VkXCaJMZUt3+O+K/dok/3gG44dQd4/b/yAOhv/C5X13uyBDsi2xFzG/iGG7F3bD
-         KDfVKFX9BGTeYVsDDaDT74cZsNirg3sPRjv7HYHTLv6ebA9IVRzN1YBogb7Bd6SA1o+w
-         I7Gw==
+        d=redhat.com; s=google; t=1764021123; x=1764625923; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e72N/nLYBkd3gASLyDGIbv2w/OuUmcz0uSrgBqx4nMM=;
+        b=bJTv0dp6j9sEM9na0+7F4RnhsHrpm74xFkJJWxulojd2tCv+j4M+eLwoYulpsx3WdN
+         /GJ/Zw29dEJSDue2+S4FqzQct90mRDfW3Bf9QlYRmnuHCrTiKfJFnG1bBXujp0FTpjm6
+         pmvzz6wy2bk90ZZqa+7oM2bFYqhUXW/UARXp3+ZZsE04oas93W5NHv0VHQ5N9R6Ur0xR
+         +zJbIN0Yzl61hhv/v/tmYSLnMoXYU5gPTY6FpbC+CtE6eVCnhAPMtx6pizHdG1lv0OVK
+         fGQo4QH1wzbQAL3ok9cj9KMv7XRKRXvl6dTEVAA9XgeyaXTbfa5Je03t8Buw3gvvQcQ3
+         cdqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764019692; x=1764624492;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UM/52Ll1lDwXA45TXkg/Z20IxHr9hxPwTnKe9jkP/Qg=;
-        b=Gd4gxC6shcKFUmFzyowNtjn5PBpYucjg3a5kIcyl5Mk47pK5lfeOT98wt9BAw39UxK
-         yoNG/utMtKurVqmutK39nLTTPJMN0A7kvP68t6X8dOBQy4DCMK3fnLw69+myneC2oUrW
-         cv7TJvih5eKCxBbKu2ppbF+yrlY3UG0RkxA0bgJGkIUIP2LPVCgDpwPbLMIWjXMsGmjr
-         m81gQ4A1C9E8km9NssDVyezjwP8bu+8/dLrUz6ApfBg1zmmx52VyPSlOmtKUaXGJVDwM
-         6pJ7Juqqq041BjteN8M+C06ByZA43/QEsdawgeNkbem9kpMCu5/lWmiH8QGta/8qnLta
-         kFYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEfdabOImfHhqQfedsVxdnJDhkmBZykN4ZIYVDvPlmpA2pUoKLT3PVDkm49Ofj4zFVcxETDZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX7MK7MCGo6ID8MzngaaV95l2b06QafdNBrv6sykz8J+vNWMfW
-	9N4Be6b6IaMua6REWfYLRbjo81r6XehdlslcpLx2L1JUPbv2e99smPVxaf9HAuZfnqZwAXey6rV
-	kMOhNrQ==
-X-Google-Smtp-Source: AGHT+IEQu01RJH9TOnSIRypmmMUl63zES2j9oWPnLLzGYTWwrX/ul+yF+uxj5gJ7mdmE7DpjjYYfW527t2g=
-X-Received: from plbbb6.prod.google.com ([2002:a17:902:bc86:b0:298:6adf:5ad])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d491:b0:295:7f3f:b943
- with SMTP id d9443c01a7336-29bab149a85mr3515025ad.28.1764019692456; Mon, 24
- Nov 2025 13:28:12 -0800 (PST)
-Date: Mon, 24 Nov 2025 21:26:40 +0000
-In-Reply-To: <20251124212805.486235-1-kuniyu@google.com>
+        d=1e100.net; s=20230601; t=1764021123; x=1764625923;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e72N/nLYBkd3gASLyDGIbv2w/OuUmcz0uSrgBqx4nMM=;
+        b=GZNCh39d8lnIHfIfWr+Y2Xl41AIOIDfP+VribNLbMnaHpBOR0wm+Lk+v16yejQ8neP
+         a3qN45TrkV2fmm0IiW2zDsnbqnhsYD0THgqChw25hBqaVDCtWASPEtjnNHMWujDDX8od
+         DuvooIQ0A0/GboqWbWI8RjUjDgYGmD4csSUERKSySx6kKopJQcYAxLhP61ldSPc/12AU
+         Mp8/1JcjZHvUTcj3l7IqgLVCnCiuXnOIffGKWDjnYhyX6MroQqd3KIFB4KMSmbuYQzKc
+         0GODAlVQIOd7CXWh43FlDMzDjDbcaUbatZFS9JJxiV6YD/hF/oScTx88aZnfk1CC51Wh
+         79Bg==
+X-Gm-Message-State: AOJu0YwZ5/myCXPIzKcHsuWn8aKOmZtL8IxzLJBsUDMyU/1EoGN9uwYS
+	XBhCYiNwLTvHIA5Ke/f7YU+twxLC6yDXk3pZyf0rtvTEX0h4blmD6x89njYC06gS61SjVhG7FoS
+	wsk5JTAW/raK/1N0F3Fc8vN7uPmdt9KsFjeppn5mAYmRfoo4uPEncCarXgA==
+X-Gm-Gg: ASbGncv+X/zShsiB8995M8Nt8INre5rbxK5ZpJs13h6eJXRtL1Y0IbeXqWDysH9XUeI
+	lIuTd0VBQ6w1LVNrnBiuS8j+zWud40/PzBdF6j4OWr9fYP6GTzDb5mQHLOdSriUnRCkFcI2DA3G
+	WL+hSlz0gJiHusarDWj7BjnyboI/5FlDOvERL4eHZjDQGImRg1M+ByFFF3S2ny8lnOCeoRtWnst
+	Zl02KYcNQNG4bH4ArAUL2dSO/tuwwJkYZUTsNwico7LTlrctahxa4b+h9fHjCguwLGNAWdZIF8P
+	0oz3e8wcHqYsV+KX9mSMsvD4vY+dOuApbfRZzFfbsQ3lMqB2xlX9P792ZbKXX7C64GFLmbOP+h8
+	pA5hq1StJudXSvkt8lSn7JkImfnqkUw==
+X-Received: by 2002:a05:600c:3b05:b0:477:9a28:b09a with SMTP id 5b1f17b1804b1-477c00e7900mr151196295e9.0.1764021123261;
+        Mon, 24 Nov 2025 13:52:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG6hVPBmzcjYWA4CqHGLf4Muh92XaXgWBSJ5z9lrobTdgS5JPAenWyhhlTP0Vz5JFQJrG2rwg==
+X-Received: by 2002:a05:600c:3b05:b0:477:9a28:b09a with SMTP id 5b1f17b1804b1-477c00e7900mr151196065e9.0.1764021122799;
+        Mon, 24 Nov 2025 13:52:02 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-39-63.inter.net.il. [80.230.39.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790552c39dsm89035e9.1.2025.11.24.13.52.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 13:52:02 -0800 (PST)
+Date: Mon, 24 Nov 2025 16:51:59 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel Jurgens <danielj@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com,
+	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, jgg@ziepe.ca, kevin.tian@intel.com,
+	kuba@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com
+Subject: Re: [PATCH net-next v12 09/12] virtio_net: Implement IPv4 ethtool
+ flow rules
+Message-ID: <20251124164600-mutt-send-email-mst@kernel.org>
+References: <20251119191524.4572-1-danielj@nvidia.com>
+ <20251119191524.4572-10-danielj@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251124212805.486235-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.52.0.460.gd25c4c69ec-goog
-Message-ID: <20251124212805.486235-3-kuniyu@google.com>
-Subject: [PATCH v2 net-next 2/2] selftest: af_unix: Extend recv() timeout in so_peek_off.c.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119191524.4572-10-danielj@nvidia.com>
 
-so_peek_off.c is reported to be flaky on NIPA:
+On Wed, Nov 19, 2025 at 01:15:20PM -0600, Daniel Jurgens wrote:
+> Add support for IP_USER type rules from ethtool.
+> 
+> Example:
+> $ ethtool -U ens9 flow-type ip4 src-ip 192.168.51.101 action -1
+> Added rule with ID 1
+> 
+> The example rule will drop packets with the source IP specified.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> ---
+> v4:
+>     - Fixed bug in protocol check of parse_ip4
+>     - (u8 *) to (void *) casting.
+>     - Alignment issues.
+> 
+> v12
+>     - refactor calculate_flow_sizes to remove goto. MST
+>     - refactor build_and_insert to remove goto validate. MST
+>     - Move parse_ip4 l3_mask check to TCP/UDP patch. MST
+>     - Check saddr/daddr mask before copying in parse_ip4. MST
+>     - Remove tos check in setup_ip_key_mask.
 
-  # # so_peek_off.c:149:two_chunks_overlap_blocking:Expected -1 (-1) != bytes (-1)
-  # # two_chunks_overlap_blocking: Test terminated by assertion
-  # #          FAIL  so_peek_off.stream.two_chunks_overlap_blocking
+So if user attempts to set a filter by tos now, what blocks it?
+because parse_ip4 seems to ignore it ...
 
-The test fork()s a child process to send() data after 1ms to
-wake up the parent process being blocked (up to 3ms) on recv().
+>     - check l4_4_bytes mask is 0 in setup_ip_key_mask. MST
+>     - changed return of setup_ip_key_mask to -EINVAL.
+>     - BUG_ON if key overflows u8 size in calculate_flow_sizes. MST
+> ---
+> ---
+>  drivers/net/virtio_net.c | 119 +++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 113 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 5e49cd78904f..b0b9972fe624 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -5894,6 +5894,34 @@ static bool validate_eth_mask(const struct virtnet_ff *ff,
+>  	return true;
+>  }
+>  
+> +static bool validate_ip4_mask(const struct virtnet_ff *ff,
+> +			      const struct virtio_net_ff_selector *sel,
+> +			      const struct virtio_net_ff_selector *sel_cap)
+> +{
+> +	bool partial_mask = !!(sel_cap->flags & VIRTIO_NET_FF_MASK_F_PARTIAL_MASK);
+> +	struct iphdr *cap, *mask;
+> +
+> +	cap = (struct iphdr *)&sel_cap->mask;
+> +	mask = (struct iphdr *)&sel->mask;
+> +
+> +	if (mask->saddr &&
+> +	    !check_mask_vs_cap(&mask->saddr, &cap->saddr,
+> +			       sizeof(__be32), partial_mask))
+> +		return false;
+> +
+> +	if (mask->daddr &&
+> +	    !check_mask_vs_cap(&mask->daddr, &cap->daddr,
+> +			       sizeof(__be32), partial_mask))
+> +		return false;
+> +
+> +	if (mask->protocol &&
+> +	    !check_mask_vs_cap(&mask->protocol, &cap->protocol,
+> +			       sizeof(u8), partial_mask))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  static bool validate_mask(const struct virtnet_ff *ff,
+>  			  const struct virtio_net_ff_selector *sel)
+>  {
+> @@ -5905,11 +5933,36 @@ static bool validate_mask(const struct virtnet_ff *ff,
+>  	switch (sel->type) {
+>  	case VIRTIO_NET_FF_MASK_TYPE_ETH:
+>  		return validate_eth_mask(ff, sel, sel_cap);
+> +
+> +	case VIRTIO_NET_FF_MASK_TYPE_IPV4:
+> +		return validate_ip4_mask(ff, sel, sel_cap);
+>  	}
+>  
+>  	return false;
+>  }
+>  
+> +static void parse_ip4(struct iphdr *mask, struct iphdr *key,
+> +		      const struct ethtool_rx_flow_spec *fs)
+> +{
+> +	const struct ethtool_usrip4_spec *l3_mask = &fs->m_u.usr_ip4_spec;
+> +	const struct ethtool_usrip4_spec *l3_val  = &fs->h_u.usr_ip4_spec;
+> +
+> +	if (mask->saddr) {
+> +		mask->saddr = l3_mask->ip4src;
+> +		key->saddr = l3_val->ip4src;
+> +	}
 
-But, from the log, the parent woke up after 3ms timeout, so it
-could be too short when the host is overloaded.
+So if mast->saddr is already set you over-write it?
 
-Let's extend it to 5s.
+But what sets it? Don't you really mean l3_mask->ip4src maybe?
 
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netdev/20251124070722.1e828c53@kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- tools/testing/selftests/net/af_unix/so_peek_off.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/af_unix/so_peek_off.c b/tools/testing/selftests/net/af_unix/so_peek_off.c
-index 1a77728128e5..86e7b0fb522d 100644
---- a/tools/testing/selftests/net/af_unix/so_peek_off.c
-+++ b/tools/testing/selftests/net/af_unix/so_peek_off.c
-@@ -36,8 +36,8 @@ FIXTURE_VARIANT_ADD(so_peek_off, seqpacket)
- FIXTURE_SETUP(so_peek_off)
- {
- 	struct timeval timeout = {
--		.tv_sec = 0,
--		.tv_usec = 3000,
-+		.tv_sec = 5,
-+		.tv_usec = 0,
- 	};
- 	int ret;
- 
--- 
-2.52.0.460.gd25c4c69ec-goog
+
+> +
+> +	if (mask->daddr) {
+> +		mask->daddr = l3_mask->ip4dst;
+> +		key->daddr = l3_val->ip4dst;
+> +	}
+> +}
+
+
+Same question.
+
+
 
