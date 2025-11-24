@@ -1,129 +1,112 @@
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30C2314D07
-	for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 16:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DD4314B69
+	for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 16:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764000826; cv=none; b=IJJtWlQDPSCjtmUsCPjoRHe93cNiYgvNmNqsxaXX0SkOmIfXl75fnANEcdU7m4ylAjWZnW0ziIDOUz+NmavrIMj7yzf+PhyxIDPr4veRRR/s/2m6Bpl8D5f99i8rCnplcTjVOIiybTdLm1jrxPt12wggnqki3egbNj9pylZe9N4=
+	t=1764001754; cv=none; b=OR1hBqgmnAQ2qiX+UxrbSkGhX39k/NrX9Aj2WIfMMt2w/SqjqCJrM8Enp903k3s0rAjngxsMkTL0BqydwRogRbpNhgSj8ILtT6mdJ4YoqGcl9MSusWjovviB4eneUPvPEPBcldJWKvBjWNvWm7EWiWoZr2NPSbpHr71NAHRiDN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764000826; c=relaxed/simple;
-	bh=jjSP/LYJNyk9jWpRW8gGli2ejZT4h4Y4QXCFB+0nMY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZLor/0VNgPAgw1xnZszceHGU31ohH8g5K94H+Lx5bWRhJMomUo6pFS1TxJNdJsSM2OL4HVIuKmLXO3RQ2gzPVAlIVqUay8pSwnPbC5+rn/Li+uVEfy+bvH9Z6A1oymdl6WUzvPBZ5dXLyLSNKnWnCMfWd0PlUlrQhw1Sufp0leY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buAQ4PFk; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764001754; c=relaxed/simple;
+	bh=ODvPSeLFM8ZsDBxMc9y4w7KsW8ANKhLH35flBrsgLZk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=l/OQJGLnHJV23Nex/0D+q0I1Yb02B7ppEYnix237L6+0uijlQf0KzgYGkdBuzoVX1VE37vF7rO5FaCAEqgGx7o9ZanVPLej2bhZ2gBdkVeG3xMFy7/iUxRenOIZZltpX4FO8iGExY2owrNGE3AYivEqUl0lR5gOaL6IX3fasH8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=gCsag0yx; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buAQ4PFk"
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2953e415b27so53743155ad.2
-        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 08:13:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="gCsag0yx"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-644f90587e5so21504a12.0
+        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 08:29:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764000824; x=1764605624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JBGbhFp9ofE9mZ/RF8edJWFX3twAnfhW+YguioC3Mc8=;
-        b=buAQ4PFkBITu0j3pSM4PNcJqA1eSQZ/l1YJe3O6rdDkPpjC46JRNkQuLwCM9JyDbM9
-         fZLR5HndvCvd5jqFF6lsDToKlYQE2BFN8zMw80KcKzSDj6kb4X5YFDvvD+UpPK86D1cH
-         vEp78Ke5rfGMx/3vOpLL7da9/zuCQOZ4YDvDeBXsDKn83vC3PBSjfkjKkloRvUsFGiYS
-         D+4lfaf8nddHYlzbDkJD42lnAy+j1WQ2gS9oKAe6E+NO8/gJ37VU4rxPCYYEs3LhVaSS
-         HEbHxaSEs/Fw0KEzplilb82YA2SlE7/S4VIDWU+xuC0s/pz6b93I9y3j+16PQ4tmxbqc
-         jcTw==
+        d=cloudflare.com; s=google09082023; t=1764001751; x=1764606551; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N95V21IBNIbUG98EtbcsCf1tsPCMp3NjpmmsQKMdsbo=;
+        b=gCsag0yxlY35APICcy8GWcCfRQUUKo5n/AgdL6H6J+T2OiIXma4MIB78t9QorrqXyN
+         xtu7usJicH5s8BpFkn1VQ8Abdkt+ElDy4xHduj/fa4m3+8bBOtqpQfujBzYWmJ7XlLpm
+         r27NdNQtUnB5FIpZA/xiEM413XPsn2iBk9KZG2GzDmkScHQoDCiyn8viLkbFab+wHP8i
+         9LByi56iq+n6D5CFnyRB0rxMRW6TRGUCf2rK3cWzmxu+A/VNeBzuqf8uTdo4kFy/6sAz
+         bVIB6b+9deoi9jc1FTq3s76GYsbzLUfcPYUHlCUCL7q7M68mptGXxjJIeqY85qyKeqGd
+         b1kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764000824; x=1764605624;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JBGbhFp9ofE9mZ/RF8edJWFX3twAnfhW+YguioC3Mc8=;
-        b=Fnv/t78oLltxJ6j7r73FHjPgae7VspwG9UctQcKEhvXOpItCcs6n5oM/CAqK6cgf9J
-         ufy4fXrBcpVM2wl3Q+ZYU6zXwnPk1vYJWRVe1cuZQINvmsiMfTKUAaxUZj/MAz/+sFSv
-         k7HzvQ6sfC/6MswcBWJABDWWXVjuqfJr2H1qhgZbVexR++3mUqvF1gSFocf7cUlmepFy
-         VcLlOP6HOeIG2PABvZvwbKEoUtsTPBGQmn+3cJTbTHZTvhmZgdW+9ijGIpwzGCU+G2QA
-         3BUEHCwpm9WcJ9fkG/ZFMm5CFB6hsfobdLOt79GOzdQaNjDnJjjR2vyUr14fKNZ0iq9h
-         dBEg==
-X-Gm-Message-State: AOJu0Ywyi84PGL7Cv4YY4KdQWa2dIfZ4icOh3rpoKTqA1UgkcefNMXQk
-	cHTq0SKmAuRONHr4BsB/nb1zpRWKlXB2Gnwlkt7ug1cn65xvX6uqeYMa
-X-Gm-Gg: ASbGncvmv8aOOyxb02PCA/CvRIAO6ENI06S4tzDK+mlCd5fLhe7urHeOlSgBekT0D9c
-	73JAnhEC4lJ2M/tG9dchTsSBH1U3UP70Sj44yfkohqQcfhPbGxgq7M75lWD2tCFxYxgJ/Pmu2Q6
-	aQJJY82F0A1Jp4QCDoTCQzu+HPV57L1vHQ5GlZ3E081We6Jv4QgwHp9VNfTI8VKBtvE/Z1F5y77
-	tk7Sm1vYb3QjXizpu65Lc2bPzshZnFkj9buMExejmx7uLgjgnwJKJ7/ieDRW5o/34GX6NGe3Gpm
-	zhyz3X36dOki75vtmWPdVl9vnpQYQjlQlpYQtxlns6Z4RyCiLnGWe3jdW2qpCoQV97fCeCFFvWZ
-	s5m/WOVo92F4dWVKtowmcHo+yHGryzCfdiTfiHrcTxIMol0HAcb/GVsl7gSxzkwZS03mFhVCSqL
-	NXBD9md1FC+pm7LgCj1cNX3eTLVb1dGQ==
-X-Google-Smtp-Source: AGHT+IFyAWItYzJREMkeo/sQHkp6vA4cekHCSsVdluSIl/JP4S//ICISujXNC1QfyubZ0laErlhTCw==
-X-Received: by 2002:a17:903:2343:b0:295:68df:da34 with SMTP id d9443c01a7336-29b6bf5d332mr123003615ad.53.1764000819261;
-        Mon, 24 Nov 2025 08:13:39 -0800 (PST)
-Received: from fedora ([103.120.31.122])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b29b517sm138118745ad.82.2025.11.24.08.13.34
+        d=1e100.net; s=20230601; t=1764001751; x=1764606551;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=N95V21IBNIbUG98EtbcsCf1tsPCMp3NjpmmsQKMdsbo=;
+        b=olWliRGbfJLlKmXY/9xhZ0/VWO40D/+aldCvrNUTJ5ArCQLX6MJqklXesuiUE0AaeU
+         UiVdp0hTxHsrC5YnUhr4i6S3Xev9GZDeeCJvVLaBo4Rpwpu1Wd6msMi7UN+mR5QBKrQK
+         II99bWKEHzUHpS7GuMb/NPFSFqOQ5C2kbqhJHenCmAeIYGN/ZXXN5B4qXZGHHRa4RFXd
+         vVnJoIeFOg5QoXlsWPEQ5/PS7qbJIMGt8CGxd+xqyWihQynM7uBm03pU8QOCq1EFFtaG
+         MrzcNpSTDD4htwbZKChuzoXeSA8/HEa8YKTPdpK6bNNHwyHkwP38co5iGb0NaXwf7DDn
+         hbxA==
+X-Gm-Message-State: AOJu0YxhBcf6d97KPcLFodTWqZPGnhV5pRaVaYlvZeV+82h58TL9DDib
+	ISg1EMgS85yFxD+c5qt0FfNd/XA8gun2QjxpQCEMxwHnbNj04LHpUAMkixQ6Yt9CBaYQEdqorVK
+	hmQld
+X-Gm-Gg: ASbGncuuRUcHwDSJW+wIPT5gk9QztRTinsdZuj5hoHAL2huxgFvTW3X5M/KHz+sPoMz
+	EFtRu1Gk+x8XefnJJMb8cdhewrGKedI6cgHqEXgBNIC0awgYHT7m56ai8f4hlum39LpxdMq2E+b
+	0L6CD85GniUMnYIGQ4vs/UJ02eDb6Y2QWxkNw+ivgVN7YSc48xU7rN60MIpxZ9Oak1g4EIbsUcv
+	GWcYj+ddxxNJ6/NYIt6QZz8udnJ/QO3HiB5QPRVx3dIKw15QXRWlXwTtlwkBnNiZjlZyO4BG4bK
+	xpWfbP+SfLd9xcghRZI2rR+uQhZF+mbdX+4ouf88af783Q4aAUNeFYDBGq3hYK5L0+Ldozp6pL6
+	VSn/egwA3Wkv8HdOKUtnltumgZUgo4ptA942Zj1MRemhua7SzjhuBVDOouR+KOmh23CtiV2MjHB
+	PIV2pDdWVrULOQ9HiMlfLC07Wp4Uhf3fls0JYDOwLgNVZ2TqMBVIlZGcBN
+X-Google-Smtp-Source: AGHT+IGQhhyru0gVVmUUEDzO7cCLwI+nfgVhC781M5W/ItgC6K+XRDDi5fUxA9/voPjDkRBDTi5y9w==
+X-Received: by 2002:a05:6402:1e95:b0:640:b7f1:1ce0 with SMTP id 4fb4d7f45d1cf-64554677486mr9900740a12.23.1764001751062;
+        Mon, 24 Nov 2025 08:29:11 -0800 (PST)
+Received: from cloudflare.com (79.184.84.214.ipv4.supernova.orange.pl. [79.184.84.214])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-645363b5e97sm12524557a12.9.2025.11.24.08.29.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 08:13:38 -0800 (PST)
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Subject: [PATCH] selftests/net: initialize char variable to null
-Date: Mon, 24 Nov 2025 21:43:24 +0530
-Message-ID: <20251124161324.16901-1-ankitkhushwaha.linux@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        Mon, 24 Nov 2025 08:29:10 -0800 (PST)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Date: Mon, 24 Nov 2025 17:28:37 +0100
+Subject: [PATCH RFC bpf-next 01/15] bnxt_en: Call skb_metadata_set when
+ skb->data points at metadata end
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251124-skb-meta-safeproof-netdevs-rx-only-v1-1-8978f5054417@cloudflare.com>
+References: <20251124-skb-meta-safeproof-netdevs-rx-only-v1-0-8978f5054417@cloudflare.com>
+In-Reply-To: <20251124-skb-meta-safeproof-netdevs-rx-only-v1-0-8978f5054417@cloudflare.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, kernel-team@cloudflare.com, 
+ Martin KaFai Lau <martin.lau@linux.dev>
+X-Mailer: b4 0.15-dev-07fe9
 
-char variable in 'so_txtime.c' & 'txtimestamp.c' left uninitilized
-by when switch default case taken. raises following warning.
+Prepare to track skb metadata location independently of MAC header offset.
 
-	txtimestamp.c:240:2: warning: variable 'tsname' is used uninitialized
-	whenever switch default is taken [-Wsometimes-uninitialized]
+Following changes will make skb_metadata_set() record where metadata ends
+relative to skb->head. Hence the helper must be called when skb->data
+already points past the metadata area.
 
-	so_txtime.c:210:3: warning: variable 'reason' is used uninitialized
-	whenever switch default is taken [-Wsometimes-uninitialized]
+Adjust the driver to pull from skb->data before calling skb_metadata_set().
 
-initialize these variables to NULL to fix this.
-
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- tools/testing/selftests/net/so_txtime.c   | 2 +-
- tools/testing/selftests/net/txtimestamp.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/so_txtime.c b/tools/testing/selftests/net/so_txtime.c
-index 8457b7ccbc09..b76df1efc2ef 100644
---- a/tools/testing/selftests/net/so_txtime.c
-+++ b/tools/testing/selftests/net/so_txtime.c
-@@ -174,7 +174,7 @@ static int do_recv_errqueue_timeout(int fdt)
- 	msg.msg_controllen = sizeof(control);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index a625e7c311dd..93e05a0f1905 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1440,8 +1440,8 @@ static struct sk_buff *bnxt_copy_xdp(struct bnxt_napi *bnapi,
+ 		return skb;
+ 
+ 	if (metasize) {
+-		skb_metadata_set(skb, metasize);
+ 		__skb_pull(skb, metasize);
++		skb_metadata_set(skb, metasize);
+ 	}
+ 
+ 	return skb;
 
- 	while (1) {
--		const char *reason;
-+		const char *reason = NULL;
-
- 		ret = recvmsg(fdt, &msg, MSG_ERRQUEUE);
- 		if (ret == -1 && errno == EAGAIN)
-diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
-index dae91eb97d69..bcc14688661d 100644
---- a/tools/testing/selftests/net/txtimestamp.c
-+++ b/tools/testing/selftests/net/txtimestamp.c
-@@ -217,7 +217,7 @@ static void print_timestamp_usr(void)
- static void print_timestamp(struct scm_timestamping *tss, int tstype,
- 			    int tskey, int payload_len)
- {
--	const char *tsname;
-+	const char *tsname = NULL;
-
- 	validate_key(tskey, tstype);
-
---
-2.52.0
+-- 
+2.43.0
 
