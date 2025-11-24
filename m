@@ -1,99 +1,235 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E522F12BD;
-	Mon, 24 Nov 2025 08:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11792F6164;
+	Mon, 24 Nov 2025 09:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763974109; cv=none; b=JKvg8c5NDLp8S/X0E3p8WxZejgo42hLjCSDS9fsCYFCiyLe//2bWOMdMGaHRRXBTzR17gVQVkVEs0/dF/AKbU+vUqPAptH2Pl5wf3GdJY2cm3jt07lC0u1Zi/VF1Tzhsr3j32709fJ18i6sjEcIFayieqHw1drycftvwCkZcZjA=
+	t=1763976005; cv=none; b=aXpY4IIb7+cmlIKUqf6+qPMOkK4l8HirNYaKCoTq1d0mVltTQ+0RVRGy1wHQV2F0thP4e3lUMM4jmCoDT+dg1XBXON73KLbblyOPWJSD5rKfpE7VbdlWQbyRZsTWNCuLAP+eahiVLMpGDbvnYQNNVMPZ2FNPV8MOq01SM2Iw4x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763974109; c=relaxed/simple;
-	bh=16jY6OH6luP8crDYCxHQBYhqJL6CLIweYFPaai388f8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eg3bgIoJP8SEdFPLE/1u7RuD4tB9f02YqGSzoYsB8uUmHb8mGxEVcN5oToEGsi29PwmQJ6d4bdYWs5tseScYnk8aAjXEVUv+I06k89oc4Iy7dqZrlz5drSJOrx+D0e9lWvp3DmsgWCg13iQqcKY3ezwvRT6+dKARLqLi3M2SDA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UYuDI4Ag; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763976005; c=relaxed/simple;
+	bh=as0qPCSeuDey2UvPQNoA9nLR+sOxMbVOLPPIjyVNB8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lrrX6BvIMahdcTpojzpx9Y1iSj44NeMKCmiBPLiXv12JUPFjQBTm9i5TkrE/bBMdDPGNDgbS4QFb49w7npksLyz6Qi8/6W1/1R6kwOZYgQZWhhQAjXBOVIgWkw+IXkivYWJH/U2qbrpT2jUCmY10YTCxXZ2EbAti9CHZUZgusgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=W1phIZYm; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UYuDI4Ag"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763974107; x=1795510107;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=16jY6OH6luP8crDYCxHQBYhqJL6CLIweYFPaai388f8=;
-  b=UYuDI4Agge+Zu+MwEITRCD8fD+IqAYT+TJ2ZiRDx/NYEydfl5udm8wKE
-   v0g8m8armeLiU1E729DRykaHJgiN230zeCtSn03uqmyZmLXOD9aBq84VI
-   qD5ofmY70T0n5TrEoaLg5FFeiPhFVcB8aqnZH3KNPgW0p+BavuLC39UKL
-   Ka6VdbzhBgmacXt5Mesqbc5H3KOHb58fOOKUzG9ezLPGhpult112ViBRj
-   ImIjq/SHKGJqQ8u6hmYt6CnD59QMrxwPsusvnx0/3ZxWgudrC4mugomjh
-   I177MBrxhQmUbkb1IqLSh8EZqTIH/9T95jfIDLZGKRZ6Av4Nx9oP9lSDq
-   A==;
-X-CSE-ConnectionGUID: ZstoqgkyRSKdSiiOlprwgw==
-X-CSE-MsgGUID: X4Da5icGQ0+pBh0eNDkcBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="65918449"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="65918449"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:48:21 -0800
-X-CSE-ConnectionGUID: QN3BxsBXQ46vjVZcZaW1iw==
-X-CSE-MsgGUID: ELISTBZhRdy6cWL7ioSUhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="196729229"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa004.jf.intel.com with ESMTP; 24 Nov 2025 00:48:19 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id D91289A; Mon, 24 Nov 2025 09:48:17 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2 3/4] ptp: ocp: Apply standard pattern for cleaning up loop
-Date: Mon, 24 Nov 2025 09:45:47 +0100
-Message-ID: <20251124084816.205035-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251124084816.205035-1-andriy.shevchenko@linux.intel.com>
-References: <20251124084816.205035-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="W1phIZYm"
+Received: from [172.31.100.153] ([172.31.100.153])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 5AO9Jgah024669
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 24 Nov 2025 10:19:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1763975983;
+	bh=as0qPCSeuDey2UvPQNoA9nLR+sOxMbVOLPPIjyVNB8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W1phIZYmJpZ9so4FdeXZH7HrbyWdXUAcCWBSyenpYO87+ZxAWy8d2SK/FcQc4rYeQ
+	 m9Ehk6rvyCkip1BUGmpzw7On9HMBe7gHEUucQ1/sBi6eZaY8YWvylodRdwmmQzNQH+
+	 ZM0AuOMp2QlUp893dmm1DNXufipApdZX57xE+P60=
+Message-ID: <ebb431f9-fdd3-4db3-bfd5-70af703ef9b5@tu-dortmund.de>
+Date: Mon, 24 Nov 2025 10:19:42 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 0/8] tun/tap & vhost-net: netdev queue flow
+ control to avoid ptr_ring tail drop
+To: Jason Wang <jasowang@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        jon@nutanix.com, tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
+ <CACGkMEuboys8sCJFUTGxHUeouPFnVqVLGQBefvmxYDe4ooLfLg@mail.gmail.com>
+ <b9fff8e1-fb96-4b1f-9767-9d89adf31060@tu-dortmund.de>
+ <CACGkMEufNLjXj37NBVCW4xdSuVLLV4ZS4WTuRzdaBV-nYgKs8w@mail.gmail.com>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <CACGkMEufNLjXj37NBVCW4xdSuVLLV4ZS4WTuRzdaBV-nYgKs8w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The while (i--) is a standard pattern for the cleaning up loops.
-Apply this pattern where it makes sense in the driver.
+On 11/24/25 02:04, Jason Wang wrote:
+> On Fri, Nov 21, 2025 at 5:23 PM Simon Schippers
+> <simon.schippers@tu-dortmund.de> wrote:
+>>
+>> On 11/21/25 07:19, Jason Wang wrote:
+>>> On Thu, Nov 20, 2025 at 11:30 PM Simon Schippers
+>>> <simon.schippers@tu-dortmund.de> wrote:
+>>>>
+>>>> This patch series deals with tun/tap and vhost-net which drop incoming
+>>>> SKBs whenever their internal ptr_ring buffer is full. Instead, with this
+>>>> patch series, the associated netdev queue is stopped before this happens.
+>>>> This allows the connected qdisc to function correctly as reported by [1]
+>>>> and improves application-layer performance, see our paper [2]. Meanwhile
+>>>> the theoretical performance differs only slightly:
+>>>>
+>>>> +--------------------------------+-----------+----------+
+>>>> | pktgen benchmarks to Debian VM | Stock     | Patched  |
+>>>> | i5 6300HQ, 20M packets         |           |          |
+>>>> +-----------------+--------------+-----------+----------+
+>>>> | TAP             | Transmitted  | 195 Kpps  | 183 Kpps |
+>>>> |                 +--------------+-----------+----------+
+>>>> |                 | Lost         | 1615 Kpps | 0 pps    |
+>>>> +-----------------+--------------+-----------+----------+
+>>>> | TAP+vhost_net   | Transmitted  | 589 Kpps  | 588 Kpps |
+>>>> |                 +--------------+-----------+----------+
+>>>> |                 | Lost         | 1164 Kpps | 0 pps    |
+>>>> +-----------------+--------------+-----------+----------+
+>>>
+>>
+>> Hi Jason,
+>>
+>> thank you for your reply!
+>>
+>>> PPS drops somehow for TAP, any reason for that?
+>>
+>> I have no explicit explanation for that except general overheads coming
+>> with this implementation.
+> 
+> It would be better to fix that.
+> 
+>>
+>>>
+>>> Btw, I had some questions:
+>>>
+>>> 1) most of the patches in this series would introduce non-trivial
+>>> impact on the performance, we probably need to benchmark each or split
+>>> the series. What's more we need to run TCP benchmark
+>>> (throughput/latency) as well as pktgen see the real impact
+>>
+>> What could be done, IMO, is to activate tun_ring_consume() /
+>> tap_ring_consume() before enabling tun_ring_produce(). Then we could see
+>> if this alone drops performance.
+>>
+>> For TCP benchmarks, you mean userspace performance like iperf3 between a
+>> host and a guest system?
+> 
+> Yes,
+> 
+>>
+>>>
+>>> 2) I see this:
+>>>
+>>>         if (unlikely(tun_ring_produce(&tfile->tx_ring, queue, skb))) {
+>>>                 drop_reason = SKB_DROP_REASON_FULL_RING;
+>>>                 goto drop;
+>>>         }
+>>>
+>>> So there could still be packet drop? Or is this related to the XDP path?
+>>
+>> Yes, there can be packet drops after a ptr_ring resize or a ptr_ring
+>> unconsume. Since those two happen so rarely, I figured we should just
+>> drop in this case.
+>>
+>>>
+>>> 3) The LLTX change would have performance implications, but the
+>>> benmark doesn't cover the case where multiple transmission is done in
+>>> parallel
+>>
+>> Do you mean multiple applications that produce traffic and potentially
+>> run on different CPUs?
+> 
+> Yes.
+> 
+>>
+>>>
+>>> 4) After the LLTX change, it seems we've lost the synchronization with
+>>> the XDP_TX and XDP_REDIRECT path?
+>>
+>> I must admit I did not take a look at XDP and cannot really judge if/how
+>> lltx has an impact on XDP. But from my point of view, __netif_tx_lock()
+>> instead of __netif_tx_acquire(), is executed before the tun_net_xmit()
+>> call and I do not see the impact for XDP, which calls its own methods.
+> 
+> Without LLTX tun_net_xmit is protected by tx lock but it is not the
+> case of tun_xdp_xmit. This is because, unlike other devices, tun
+> doesn't have a dedicated TX queue for XDP, so the queue is shared by
+> both XDP and skb. So XDP xmit path needs to be protected with tx lock
+> as well, and since we don't have queue discipline for XDP, it means we
+> could still drop packets when XDP is enabled. I'm not sure this would
+> defeat the whole idea or not.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/ptp/ptp_ocp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Good point.
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 1fd2243e0f9f..63c73a5909f2 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4818,8 +4818,7 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	return 0;
- out_dpll:
--	while (i) {
--		--i;
-+	while (i--) {
- 		dpll_pin_unregister(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops, &bp->sma[i]);
- 		dpll_pin_put(bp->sma[i].dpll_pin);
- 	}
--- 
-2.50.1
+> 
+>>>
+>>> 5) The series introduces various ptr_ring helpers with lots of
+>>> ordering stuff which is complicated, I wonder if we first have a
+>>> simple patch to implement the zero packet loss
+>>
+>> I personally don't see how a simpler patch is possible without using
+>> discouraged practices like returning NETDEV_TX_BUSY in tun_net_xmit or
+>> spin locking between producer and consumer. But I am open for
+>> suggestions :)
+> 
+> I see NETDEV_TX_BUSY is used by veth:
+> 
+> static int veth_xdp_rx(struct veth_rq *rq, struct sk_buff *skb)
+> {
+>         if (unlikely(ptr_ring_produce(&rq->xdp_ring, skb)))
+>                 return NETDEV_TX_BUSY; /* signal qdisc layer */
+> 
+>         return NET_RX_SUCCESS; /* same as NETDEV_TX_OK */
+> }
+> 
+> Maybe it would be simpler to start from that (probably with a new tun->flags?).
+> 
+> Thanks
 
+Do you mean that this patchset could be implemented using the same
+approach that was used for veth in [1]?
+This could then also fix the XDP path.
+
+But is returning NETDEV_TX_BUSY fine in our case?
+
+Do you mean a flag that enables or disables the no-drop behavior?
+
+Thanks!
+
+[1] Link: https://lore.kernel.org/netdev/174559288731.827981.8748257839971869213.stgit@firesoul/T/#u
+
+> 
+>>
+>>>
+>>>>
+>>>> This patch series includes tun/tap, and vhost-net because they share
+>>>> logic. Adjusting only one of them would break the others. Therefore, the
+>>>> patch series is structured as follows:
+>>>> 1+2: new ptr_ring helpers for 3
+>>>> 3: tun/tap: tun/tap: add synchronized ring produce/consume with queue
+>>>> management
+>>>> 4+5+6: tun/tap: ptr_ring wrappers and other helpers to be called by
+>>>> vhost-net
+>>>> 7: tun/tap & vhost-net: only now use the previous implemented functions to
+>>>> not break git bisect
+>>>> 8: tun/tap: drop get ring exports (not used anymore)
+>>>>
+>>>> Possible future work:
+>>>> - Introduction of Byte Queue Limits as suggested by Stephen Hemminger
+>>>
+>>> This seems to be not easy. The tx completion depends on the userspace behaviour.
+>>
+>> I agree, but I really would like to reduce the buffer bloat caused by the
+>> default 500 TUN / 1000 TAP packet queue without losing performance.
+>>
+>>>
+>>>> - Adaption of the netdev queue flow control for ipvtap & macvtap
+>>>>
+>>>> [1] Link: https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffective-on-tun-device
+>>>> [2] Link: https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
+>>>>
+>>>
+>>> Thanks
+>>>
+>>
+>> Thanks! :)
+>>
+> 
