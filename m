@@ -1,78 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6E39FD9;
-	Tue, 25 Nov 2025 04:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAA31A08BC;
+	Tue, 25 Nov 2025 04:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764043244; cv=none; b=LVFBJvB4umKc8f4uPkdu+T6a/K55mTsOwMRaYW9z0qPQhSBbBpFesDs80R8wzSiO876T6alfUtlWzSlQO98PkexR0XCr3ZglRkFqDXdX1f2XT3LFsCI4j3ObZp+wmNwydULwnZVxSLvPjNV2Wlu8mf7RPlb3iAua29KAC3aOeM8=
+	t=1764043283; cv=none; b=Wk873pG87ldha0u4BZiyo93llx1H8pjTZ8up7yQ271+N18MQykzMTLqOTqW/QYgFmDrBaxqwEmIu/NQnygmErwcGcMq1WcPtX8Dwo3BwCvS/nfEEgTGZvqipwabSAWmBFsCQGK63Ve3grdHXEoyOnRxFe9FWFFRcWxjK2wk48+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764043244; c=relaxed/simple;
-	bh=wW40DeYPI08euhu6hMkmthD56BMfvMvbUuoigRl/LU8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mgTqEtNtTuhjihDNk4YLOvqwmET/rnavdIDHDHVgfcuIwRg3HURHjnm3zRYy6KGWHi0T4hcTNXY8YJc5SHyTIn7tNZ7PHApabM8qE48IUcnNnzDNGASVHj6OqSZvgV4FMsMq6fiwrgLVxiXPoR0vv5sURM0iu/ALDovAbs6auT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvG4FSRD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764043283; c=relaxed/simple;
+	bh=noWNmsId45ZeifrOlfH6mMR0VrmwkWZ6zYS8nnrBPoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=folqLJRNmjbDhysLkXkszUqBFVOZuPsQ0J1zDCJfDkG0WlT8EnCbwDgcm/RSRpeEUAjXeYyP5FGPbiqg56+b3NzyDqB9VRecIeP/Z8AW8zBeL/TZ3FS3ccbZ2w/jhDFASY8BOtMquS18pWFMzhs0q9DP4cOucufQHQVsRP7WO14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb4W4Rf6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvG4FSRD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B834FC4CEF1;
-	Tue, 25 Nov 2025 04:00:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb4W4Rf6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7257C4CEF1;
+	Tue, 25 Nov 2025 04:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764043243;
-	bh=wW40DeYPI08euhu6hMkmthD56BMfvMvbUuoigRl/LU8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BvG4FSRDAmVQdlRlDiV7zpL8uOI+W009GzJD0MR/4kAri+snuSltfA8slrU7BpOC6
-	 G1FPEPuz4DnzjhVU1hdpMIwWr568oDalc+EO2Nnr512pj5eTGVe8mJOn7musRErVQ9
-	 LPMSIrOs6lHwC92sJ/dfqMkudKrkq8T9t6pDuw260wBPmcBtCl6xcXCj/IJWaGfcux
-	 Ygouere+IjDk0y3LnxlMGnCgs8dDqH2RD/qkrW1QgD4dZjMJgodlA1c02bIANlUe6N
-	 ubSxa294HtcRVZ/twc4O0FtADKZUokUiNJzzuXgxMTgjHFykxPUzMqFxlADvLVECJQ
-	 oev7IOgvpcvrg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADEE03A8A3CC;
-	Tue, 25 Nov 2025 04:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1764043283;
+	bh=noWNmsId45ZeifrOlfH6mMR0VrmwkWZ6zYS8nnrBPoY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qb4W4Rf6dcMuhndBOCJQPmNvmiFZMdJBcyJv3vvyldUdON0Bmt6qM+LfgW6osuSNK
+	 U38o9WsY9lI+bUq53QM6ZZhTFAXLau8K1phukRoPrXJh2j/AXDyhQCinlBctfG+fgp
+	 6S7J3eOc7OTXdlvNipXaN54KCBAH/+DHl6mEblEiKXs386QpoqIH+69GBL7iIvfwwv
+	 kQrKSO/pGakH4jz2x2vIwvSFL9nExiGeiNvnlDkhu/OiCnbc8Dx/e1xam4Q99UFzsI
+	 LWTIgsAWsD4Ygh3O1/jyuBiot4F4fMU9uYSC/rAmw74hk3JAU+u70LTvAGmW38Obgk
+	 oTQqFyRbTDb/A==
+Date: Mon, 24 Nov 2025 20:01:21 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Daniel Golle <daniel@makrotopia.org>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Andrew Lunn <andrew@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham
+ I <kishon@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Eric
+ Woudstra <ericwouds@gmail.com>, Marek =?UTF-8?B?QmVow7pu?=
+ <kabel@kernel.org>, Lee Jones <lee@kernel.org>, Patrice Chotard
+ <patrice.chotard@foss.st.com>
+Subject: Re: [PATCH net-next 5/9] phy: add phy_get_rx_polarity() and
+ phy_get_tx_polarity()
+Message-ID: <20251124200121.5b82f09e@kernel.org>
+In-Reply-To: <20251122193341.332324-6-vladimir.oltean@nxp.com>
+References: <20251122193341.332324-1-vladimir.oltean@nxp.com>
+	<20251122193341.332324-6-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net-next] ipvlan: fix sparse warning about __be32 ->
- u32
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176404320651.181232.1752669675998121765.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Nov 2025 04:00:06 +0000
-References: <20251121155112.4182007-1-skorodumov.dmitry@huawei.com>
-In-Reply-To: <20251121155112.4182007-1-skorodumov.dmitry@huawei.com>
-To: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
- julian@outer-limits.org, gnault@redhat.com, linux-kernel@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, pabeni@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 21 Nov 2025 18:51:08 +0300 you wrote:
-> Fixed a sparse warning:
+On Sat, 22 Nov 2025 21:33:37 +0200 Vladimir Oltean wrote:
+> Add helpers in the generic PHY folder which can be used using 'select
+> GENERIC_PHY_COMMON_PROPS' from Kconfig, without otherwise needing to
+> enable GENERIC_PHY.
 > 
-> ipvlan_core.c:56: warning: incorrect type in argument 1
-> (different base types) expected unsigned int [usertype] a
-> got restricted __be32 const [usertype] s_addr
+> These helpers need to deal with the slight messiness of the fact that
+> the polarity properties are arrays per protocol, and with the fact that
+> there is no default value mandated by the standard properties, all
+> default values depend on driver and protocol (PHY_POL_NORMAL may be a
+> good default for SGMII, whereas PHY_POL_AUTO may be a good default for
+> PCIe).
 > 
-> Force cast the s_addr to u32
+> Push the supported mask of polarities to these helpers, to simplify
+> drivers such that they don't need to validate what's in the device tree
+> (or other firmware description).
 > 
-> [...]
+> The proposed maintainership model is joint custody between netdev and
+> linux-phy, because of the fact that these properties can be applied to
+> Ethernet PCS blocks just as well as Generic PHY devices. I've added as
+> maintainers those from "ETHERNET PHY LIBRARY", "NETWORKING DRIVERS" and
+> "GENERIC PHY FRAMEWORK".
 
-Here is the summary with links:
-  - [v3,net-next] ipvlan: fix sparse warning about __be32 -> u32
-    https://git.kernel.org/netdev/net-next/c/f296b73d17a4
+I dunno.. ain't no such thing as "joint custody" maintainership.
+We have to pick one tree. Given the set of Ms here, I suspect 
+the best course of action may be to bubble this up to its own tree.
+Ask Konstantin for a tree in k.org, then you can "co-post" the patches
+for review + PR link in the cover letter (e.g. how Tony from Intel
+submits their patches). This way not networking and PHY can pull
+the shared changes with stable commit IDs.
 
-You are awesome, thank you!
+We can do out-of-sequence netdev call tomorrow if folks want to talk
+this thru (8:30am Pacific)
+
+> +GENERIC PHY COMMON PROPERTIES
+> +M:	Andrew Lunn <andrew@lunn.ch>
+> +M:	"David S. Miller" <davem@davemloft.net>
+> +M:	Eric Dumazet <edumazet@google.com>
+> +M:	Heiner Kallweit <hkallweit1@gmail.com>
+> +M:	Jakub Kicinski <kuba@kernel.org>
+> +M:	Kishon Vijay Abraham I <kishon@kernel.org>
+> +M:	Paolo Abeni <pabeni@redhat.com>
+> +R:	Russell King <linux@armlinux.org.uk>
+> +M:	Vinod Koul <vkoul@kernel.org>
+
+checkpatch nit: apparently it wants all Ms first, then all Rs.
+
+> +L:	linux-phy@lists.infradead.org
+> +L:	netdev@vger.kernel.org
+> +S:	Maintained
+> +Q:	https://patchwork.kernel.org/project/linux-phy/list/
+> +Q:	https://patchwork.kernel.org/project/netdevbpf/list/
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
+> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy.git
+> +F:	Documentation/devicetree/bindings/phy/phy-common-props.yaml
+> +F:	drivers/phy/phy-common-props.c
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
