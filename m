@@ -1,84 +1,40 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E3732BF51
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 17:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AB0279918
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 18:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764093552; cv=none; b=ne1tZrZHD4kqyoXcKcw4chVH4fVlBm86bM7d0/cT8Iso72QoUfXi0n3tCexXQPF+g11jmCWJItLtqpAD6f98NZpgisolI0VUJH7YTixL7hDPO/t7HFA+IPvtQ/c/Mx5QgvmdNZUJGCdbxok+M5fREzgx9CGcsw+BpmT1AzGVra4=
+	t=1764093853; cv=none; b=FLho2JXZu00tyzY+KbMBXiNhzKel0ezFjO84DyJNmg1m6WDkcXmULpAngCqiF5qHjqcveGOeMJ+pr66Xr/uS6KK6C7s/2bGKa+OEnHJm4hqudvLF5C05/J++Mmx1qxa4GgiHPcVoG2UqxbZUVkGQhrRe7aYQytbOPvXnoAHhiLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764093552; c=relaxed/simple;
-	bh=RyhNmS2vGG3hvmsd5fJ7DzAZ9Xaj+bN/VVH47DtsSNk=;
+	s=arc-20240116; t=1764093853; c=relaxed/simple;
+	bh=MAN1Je7TPaDMLRdBr0droWaKityTEcsy8RZZnZZc6no=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ezN/YpNbH1a3Ja8K45tK3T6bPp5OW4GPXLCbnywGIy9SWgMUFu4m2Ew+J4dYWYX6gPrYPztvKobTJlSeBKfEvv0mS6XCEzUTdDuKS+pcHHwhVd1a4WR8swZ8wxyNK/qnEk9zkkT6QE19UdspLrQMrpdKMPc0MMXR0m6O3zrTxcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LV/7qJcu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GsefA0c7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=NvCvdPAoRSGoDGmKQxxFGci9fup7njHNJUVyFSkICrxrOkJ5q99Dp9XkEWbWEM3fu1k4y4T8S2xM9sz8LksEkHN6rOlHU7d92RdaeRv+mOm+VwuYGGDPtGAfGtPG3M/fMFuXi+yXoa29iWmk72FFpfqtYG0vMzVFI4wJNUvPnK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LMS3VTbW; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LV/7qJcu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GsefA0c7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764093549;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ggRdSNkElU+a399plx+DRkCBhOmqAokOxhar5O5tK68=;
-	b=LV/7qJcuw2i65oqxO9Zu7e1e/IY/UxMsoC0FZ+u9W+QPYNtJOgDt1jMYxXjFQO7lFb0P/4
-	4g/9vE9Eju2mtL9U/UgPMVZPE7qWhghhCRTCz0NNM5wWVZcxXncjopSBgmZC+TypXuIS3M
-	Lt2Pps4H1fSLxmiBeMjXf/ifvmB9XkI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-xsMThsgMOLqgGXX1fbJH5g-1; Tue, 25 Nov 2025 12:59:06 -0500
-X-MC-Unique: xsMThsgMOLqgGXX1fbJH5g-1
-X-Mimecast-MFC-AGG-ID: xsMThsgMOLqgGXX1fbJH5g_1764093545
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-477b8a667bcso59199765e9.2
-        for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 09:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764093545; x=1764698345; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ggRdSNkElU+a399plx+DRkCBhOmqAokOxhar5O5tK68=;
-        b=GsefA0c7tsKLzxKIXbCKZH+0eVBI7EiSpPW4QX+mwwgYVBgumGFXDNrnNh1D7qxVCW
-         ui+aVTXOtTZRP+QoDM19upoQAIVyPk3mhvY824tf2NmsYi/2R9x1fawiASrLTZZ8ZwhF
-         JRSlkMPU//KbQqeEK5UmbTF7EoWRIDlr3qSgT6e8rW3MFlATL6SK+haITfLa3sdx+VqE
-         Nx3lAdaZYb0vA6nWWFAv0JqvU3fTFP62dIGEiWAAoTugreOSSTaELXUcSDceecjOkpJO
-         sOaA64g32gtO/YXDxACOFgDA0XhVIw3Ims5roSlyjILEQY74yq3UxnwKthcg28j9pkoM
-         1ZEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764093545; x=1764698345;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ggRdSNkElU+a399plx+DRkCBhOmqAokOxhar5O5tK68=;
-        b=Lemavw5zCU9idgEjkxonr6Zg/lHw0f3ZFy3LCCBugTVEitJp/g3NZFmgmGzKHnfxrU
-         CYxbrxApELE5YklX52hZf4n8pHddjE/NhJIWUc0fJcQLkfntqyF56S/kdrHPn7agwGtr
-         k6qL/lNL+cbCbpiokEn7wyUUlggTI3yfwJDmo22tU7KgrrkzvJc7Og51whLPhRZmEcfw
-         wKJEvyW03Ehvo1WWtstBiK5Xma2PPILqfbjYN/okmGFr9lP4CrmjhD/gUHjdec9Mncrr
-         aRMVDyWRzmm7ESxhc5IWJvBw6zvM2itdjzI5VTBQKjxahBpvEQWfCP8aiW8C7tqSXodI
-         FRVw==
-X-Gm-Message-State: AOJu0YwdgyAJwF1KZizNkC2baNkOTnHL1MBiccfZ+3lYWV6dHZrtz/2Y
-	UheseWsTSbr6YMtF3Dqp+e+u+yQsXwzjxHyq0qpIXWrporjPL6TWCmSBxEfyZonONmD+TlUQFlL
-	/+yv5YCKJY+tJXO3IOZGtt9dP+BFThO/JARDglfvdR3ckoPU2biWJjJDfMg==
-X-Gm-Gg: ASbGncs/RQu+MGfFws59EPB7Yx/+W8Y/n/HDPu5QwvVDloCiOc81+RUA3nxOglSpAAh
-	rSSqW3rZzb7g+iouWwZw7blOmQYEKyfKK1UY3eqRzWl7Zu/zy6mf5DKGcWTvDbWCECfF6sCnjAT
-	zITCeAjKA+p1gWpcGGtY97wOz1c9SCveg21QZ8Fc5et7zsbD/2Q/9wTYpnBqT02JlnGZH173l9t
-	KgjcCJJw2hgqTbOz//X0p6wUQJ/kyhrxcZOxtMK9fiV24KbC6uZwgMWIA7Nz2Aoq1kRxKxteyoh
-	+n9avrTvXahs8wGMm2VXLF8epuiBc5j0koZGFU5vP47VLF+yiXJ56D24qV2WOodc4VwsqbXACMo
-	=
-X-Received: by 2002:a05:600c:354e:b0:477:fcb:2256 with SMTP id 5b1f17b1804b1-47904b12eb0mr32984045e9.17.1764093544982;
-        Tue, 25 Nov 2025 09:59:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7KQT3sUoiUAmwtj+59LzZJLLFJ+8j4a0ieDuHCTy3Ekk0Z4pUbgQyJD2REcyJfcjeD9yfHA==
-X-Received: by 2002:a05:600c:354e:b0:477:fcb:2256 with SMTP id 5b1f17b1804b1-47904b12eb0mr32983845e9.17.1764093544552;
-        Tue, 25 Nov 2025 09:59:04 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.153.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f363b0sm36115430f8f.13.2025.11.25.09.59.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Nov 2025 09:59:04 -0800 (PST)
-Message-ID: <8492bf2b-0fbc-4819-ab7a-dfe860cca412@redhat.com>
-Date: Tue, 25 Nov 2025 18:59:03 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LMS3VTbW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2D6F61A1D40;
+	Tue, 25 Nov 2025 18:04:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EDDBE606A1;
+	Tue, 25 Nov 2025 18:04:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EDE09102F08A7;
+	Tue, 25 Nov 2025 19:03:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764093846; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=dBBoz5z3l2BX+xX1UKTnTROr59ODxTu+uvr5PipWPkQ=;
+	b=LMS3VTbWslcD43lTwSyPemQzLhiEJ/0B+aQ8RYT7v2Eg7rvTdwgwlR7Eamh6nmajlk7sz+
+	W5gs66uK1UxLbzLD9igYvxLWBDQI9xC4Qg1ADUmJMKTWXVIlAkoybmFmF3bGLQmuvoH3/z
+	KZPDgsRup1QcH0cCxnIJFeMPB4jTgRpayW6yT9Ygoj6DVvGTT10Ek/hqcA+eQZkFq4SqZb
+	Dm4SIhvTH+wJbADNJMPGT/vPza7LPFZU8qcFdSOj1Cex94lkJ9808RJ5g2WlkGiFrXMIgk
+	2Fxi7WGo06gvCq/VP14pI1WDdjNvBIRuS71jygVDaAuqezW/2GLfBXChQWr44A==
+Message-ID: <bd6b9659-8721-43d0-be60-12af0342b500@bootlin.com>
+Date: Tue, 25 Nov 2025 19:03:58 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,76 +42,211 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] virtio-net: avoid unnecessary checksum
- calculation on guest RX
-From: Paolo Abeni <pabeni@redhat.com>
-To: Jon Kohler <jon@nutanix.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20251125175117.995179-1-jon@nutanix.com>
- <276828c5-72cb-4f5c-bc6f-7937aa6b6303@redhat.com>
+Subject: Re: [PATCH net-next] net: stmmac: dwmac: Disable flushing frames on
+ Rx Buffer Unavailable
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: rohan.g.thomas@altera.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Matthew Gerlach <matthew.gerlach@altera.com>
+References: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
+ <58ec46bb-5850-4dde-a1ea-d242f7d95409@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <276828c5-72cb-4f5c-bc6f-7937aa6b6303@redhat.com>
+In-Reply-To: <58ec46bb-5850-4dde-a1ea-d242f7d95409@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 11/25/25 6:57 PM, Paolo Abeni wrote:
-> On 11/25/25 6:51 PM, Jon Kohler wrote:
->> Commit a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP
->> GSO tunneling.") inadvertently altered checksum offload behavior
->> for guests not using UDP GSO tunneling.
+
+
+On 25/11/2025 18:15, Maxime Chevallier wrote:
+> Hi Rohan,
+> 
+> On 25/11/2025 17:37, Rohan G Thomas via B4 Relay wrote:
+>> From: Rohan G Thomas <rohan.g.thomas@altera.com>
 >>
->> Before, tun_put_user called tun_vnet_hdr_from_skb, which passed
->> has_data_valid = true to virtio_net_hdr_from_skb.
+>> In Store and Forward mode, flushing frames when the receive buffer is
+>> unavailable, can cause the MTL Rx FIFO to go out of sync. This results
+>> in buffering of a few frames in the FIFO without triggering Rx DMA
+>> from transferring the data to the system memory until another packet
+>> is received. Once the issue happens, for a ping request, the packet is
+>> forwarded to the system memory only after we receive another packet
+>> and hece we observe a latency equivalent to the ping interval.
 >>
->> After, tun_put_user began calling tun_vnet_hdr_tnl_from_skb instead,
->> which passes has_data_valid = false into both call sites.
+>> 64 bytes from 192.168.2.100: seq=1 ttl=64 time=1000.344 ms
 >>
->> This caused virtio hdr flags to not include VIRTIO_NET_HDR_F_DATA_VALID
->> for SKBs where skb->ip_summed == CHECKSUM_UNNECESSARY. As a result,
->> guests are forced to recalculate checksums unnecessarily.
+>> Also, we can observe constant gmacgrp_debug register value of
+>> 0x00000120, which indicates "Reading frame data".
 >>
->> Restore the previous behavior by ensuring has_data_valid = true is
->> passed in the !tnl_gso_type case.
+>> The issue is not reproducible after disabling frame flushing when Rx
+>> buffer is unavailable. But in that case, the Rx DMA enters a suspend
+>> state due to buffer unavailability. To resume operation, software
+>> must write to the receive_poll_demand register after adding new
+>> descriptors, which reactivates the Rx DMA.
 >>
->> Cc: Paolo Abeni <pabeni@redhat.com>
->> Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
->> Signed-off-by: Jon Kohler <jon@nutanix.com>
+>> This issue is observed in the socfpga platforms which has dwmac1000 IP
+>> like Arria 10, Cyclone V and Agilex 7. Issue is reproducible after
+>> running iperf3 server at the DUT for UDP lower packet sizes.
+>>
+>> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+>> Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+> 
+> Should this be a fix ?
+> 
+> Can you elaborate on how to reproduce this ? I've given this a try on
+> CycloneV and I can't see any difference in the ping results and iperf3
+> results.
+> 
+> From the DUT, I've tried :
+>  - iperf3 -c 192.168.X.X -u -b 0 -l 64
+>  - iperf3 -c 192.168.X.X -u -b 0 -l 64 -R
+
+Ah ! my iperf3 peer wasn't sending packets hard enough. I switched to a
+more powerful LP and I can now see the huge latencies by doing :
+
+1 - ping the CycloneV from test machine :
+
+PING 192.168.2.41 (192.168.2.41) 56(84) bytes of data.
+64 bytes from 192.168.2.41: icmp_seq=1 ttl=64 time=0.387 ms
+64 bytes from 192.168.2.41: icmp_seq=2 ttl=64 time=0.196 ms
+64 bytes from 192.168.2.41: icmp_seq=3 ttl=64 time=0.193 ms
+64 bytes from 192.168.2.41: icmp_seq=4 ttl=64 time=0.207 ms
+
+2 - on cycloneV, Run iperf3 -c 192.168.X.X -u -b 0 -l 64 -R
+
+3 - Re-ping :
+
+PING 192.168.2.41 (192.168.2.41) 56(84) bytes of data.
+64 bytes from 192.168.2.41: icmp_seq=1 ttl=64 time=1022 ms
+64 bytes from 192.168.2.41: icmp_seq=2 ttl=64 time=1024 ms
+64 bytes from 192.168.2.41: icmp_seq=3 ttl=64 time=1024 ms
+
+
+This behaviour disapears after your patch :)
+
+Maxime
+
+
+>  - iperf3 -c 192.168.X.X
+>  - iperf3 -c 192.168.X.X -R
+> 
+> I'm reading the same results with and without the patch
+> 
+> I've done ping tests as well, the latency seems to be the same with and
+> without this patch, at around 0.193ms RTT.
+> 
+> I'm not familiar with the SF_DMA_MODE though, any thing special to do to
+> enter that mode ?
+> 
+> Thanks,
+> 
+> Maxime
+> 
 >> ---
->>  include/linux/virtio_net.h | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>  drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c | 5 +++--
+>>  drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h     | 1 +
+>>  drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c     | 5 +++++
+>>  drivers/net/ethernet/stmicro/stmmac/hwif.h          | 3 +++
+>>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 2 ++
+>>  5 files changed, 14 insertions(+), 2 deletions(-)
 >>
->> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
->> index b673c31569f3..570c6dd1666d 100644
->> --- a/include/linux/virtio_net.h
->> +++ b/include/linux/virtio_net.h
->> @@ -394,7 +394,7 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
->>  	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
->>  						    SKB_GSO_UDP_TUNNEL_CSUM);
->>  	if (!tnl_gso_type)
->> -		return virtio_net_hdr_from_skb(skb, hdr, little_endian, false,
->> +		return virtio_net_hdr_from_skb(skb, hdr, little_endian, true,
->>  					       vlan_hlen);
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+>> index 6d9b8fac3c6d0fd76733ab4a1a8cce2420fa40b4..5877fec9f6c30ed18cdcf5398816e444e0bd0091 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+>> @@ -135,10 +135,10 @@ static void dwmac1000_dma_operation_mode_rx(struct stmmac_priv *priv,
 >>  
->>  	/* Tunnel support not negotiated but skb ask for it. */
+>>  	if (mode == SF_DMA_MODE) {
+>>  		pr_debug("GMAC: enable RX store and forward mode\n");
+>> -		csr6 |= DMA_CONTROL_RSF;
+>> +		csr6 |= DMA_CONTROL_RSF | DMA_CONTROL_DFF;
+>>  	} else {
+>>  		pr_debug("GMAC: disable RX SF mode (threshold %d)\n", mode);
+>> -		csr6 &= ~DMA_CONTROL_RSF;
+>> +		csr6 &= ~(DMA_CONTROL_RSF | DMA_CONTROL_DFF);
+>>  		csr6 &= DMA_CONTROL_TC_RX_MASK;
+>>  		if (mode <= 32)
+>>  			csr6 |= DMA_CONTROL_RTC_32;
+>> @@ -262,6 +262,7 @@ const struct stmmac_dma_ops dwmac1000_dma_ops = {
+>>  	.dma_rx_mode = dwmac1000_dma_operation_mode_rx,
+>>  	.dma_tx_mode = dwmac1000_dma_operation_mode_tx,
+>>  	.enable_dma_transmission = dwmac_enable_dma_transmission,
+>> +	.enable_dma_reception = dwmac_enable_dma_reception,
+>>  	.enable_dma_irq = dwmac_enable_dma_irq,
+>>  	.disable_dma_irq = dwmac_disable_dma_irq,
+>>  	.start_tx = dwmac_dma_start_tx,
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
+>> index d1c149f7a3dd9e472b237101666e11878707f0f2..054ecb20ce3f68bce5da3efaf36acf33e430d3f0 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
+>> @@ -169,6 +169,7 @@ static inline u32 dma_chan_base_addr(u32 base, u32 chan)
+>>  #define NUM_DWMAC4_DMA_REGS	27
+>>  
+>>  void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan);
+>> +void dwmac_enable_dma_reception(void __iomem *ioaddr, u32 chan);
+>>  void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
+>>  			  u32 chan, bool rx, bool tx);
+>>  void dwmac_disable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
+>> index 467f1a05747ecf0be5b9f3392cd3d2049d676c21..97a803d68e3a2f120beaa7c3254748cf404236df 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
+>> @@ -33,6 +33,11 @@ void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan)
+>>  	writel(1, ioaddr + DMA_CHAN_XMT_POLL_DEMAND(chan));
+>>  }
+>>  
+>> +void dwmac_enable_dma_reception(void __iomem *ioaddr, u32 chan)
+>> +{
+>> +	writel(1, ioaddr + DMA_CHAN_RCV_POLL_DEMAND(chan));
+>> +}
+>> +
+>>  void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
+>>  			  u32 chan, bool rx, bool tx)
+>>  {
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+>> index f257ce4b6c66e0bbd3180d54ac7f5be934153a6b..df6e8a567b1f646f83effbb38d8e53441a6f6150 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+>> @@ -201,6 +201,7 @@ struct stmmac_dma_ops {
+>>  	void (*dma_diagnostic_fr)(struct stmmac_extra_stats *x,
+>>  				  void __iomem *ioaddr);
+>>  	void (*enable_dma_transmission)(void __iomem *ioaddr, u32 chan);
+>> +	void (*enable_dma_reception)(void __iomem *ioaddr, u32 chan);
+>>  	void (*enable_dma_irq)(struct stmmac_priv *priv, void __iomem *ioaddr,
+>>  			       u32 chan, bool rx, bool tx);
+>>  	void (*disable_dma_irq)(struct stmmac_priv *priv, void __iomem *ioaddr,
+>> @@ -261,6 +262,8 @@ struct stmmac_dma_ops {
+>>  	stmmac_do_void_callback(__priv, dma, dma_diagnostic_fr, __args)
+>>  #define stmmac_enable_dma_transmission(__priv, __args...) \
+>>  	stmmac_do_void_callback(__priv, dma, enable_dma_transmission, __args)
+>> +#define stmmac_enable_dma_reception(__priv, __args...) \
+>> +	stmmac_do_void_callback(__priv, dma, enable_dma_reception, __args)
+>>  #define stmmac_enable_dma_irq(__priv, __args...) \
+>>  	stmmac_do_void_callback(__priv, dma, enable_dma_irq, __priv, __args)
+>>  #define stmmac_disable_dma_irq(__priv, __args...) \
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index 6cacedb2c9b3fefdd4c9ec8ba98d389443d21ebd..1ecca60baf74286da7f156b4c3c835b3cbabf1ba 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -4973,6 +4973,8 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
+>>  	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
+>>  			    (rx_q->dirty_rx * sizeof(struct dma_desc));
+>>  	stmmac_set_rx_tail_ptr(priv, priv->ioaddr, rx_q->rx_tail_addr, queue);
+>> +	/* Wake up Rx DMA from the suspend state if required */
+>> +	stmmac_enable_dma_reception(priv, priv->ioaddr, queue);
+>>  }
+>>  
+>>  static unsigned int stmmac_rx_buf1_len(struct stmmac_priv *priv,
+>>
+>> ---
+>> base-commit: e3daf0e7fe9758613bec324fd606ed9caa187f74
+>> change-id: 20251125-a10_ext_fix-5951805b9906
+>>
+>> Best regards,
 > 
-> virtio_net_hdr_tnl_from_skb() is used also by the virtio_net driver,
-> which in turn must not use VIRTIO_NET_HDR_F_DATA_VALID on tx.
 > 
-> I think you need to add another argument to
-> virtio_net_hdr_tnl_from_skb(), or possibly implement a separate helper
-> to take care of csum offload - the symmetric of
-> virtio_net_handle_csum_offload().
-> 
-> Also you need to CC netdev, otherwise the patch will not be processed by
-> patchwork.
-
-whoops... I almost forgot... this is 'net' material, the subj prefix
-should be adjusted accordingly.
-
-Thanks,
-
-Paolo
 
