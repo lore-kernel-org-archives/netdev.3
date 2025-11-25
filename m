@@ -1,59 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F20C3FFD;
-	Tue, 25 Nov 2025 03:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603F03FFD
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 03:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764040228; cv=none; b=DrIp7UyTuWo6dsIbL0kQ56CLE5lU4vI1nu5m/6coxJyLCEG6h4UavKr5TuPB8Y1QJCaucVAbUEoHtoEnog7SrxPBdHZ+U9EiJQER97EK+e1+btazel0dF99Eq9GqTtAqY1cq6H4x+F9I8I73wq4Gmbf1ieljQSyYllasNhEBHuk=
+	t=1764040244; cv=none; b=apyttDIllshBWOZDJ7a0m1fxYFyrfkDxjbwNSVtE+I96i0KDJjT3r3pEUb6bzQi5seCFrsPIQ1IU0f2ZAIEive41gitnSn83K5wgKw883VJH2Mj7+yQXl1aM4oTtEtbTLywBBuiPou9vFNTBJmzged08p4sL0APZlcuWuSJi5k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764040228; c=relaxed/simple;
-	bh=ZUG97EAaAxCmkWG0aHzQ8X/iKEpLZ0v41OhZOYC+580=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqHekyXt6+NIZNz0PIV2JZoMMs4kdq1poLZ8K2V0SyyuuYzvJlZnHDq/v7+NVLm/f+CYY3DR7fH2+VmB2dx5j8BJgjj3ALWqum0O/CvOVbZIMmNvcoZgz08Sy8GyJG3XhZzmGrqje0PaHbHlvfwvyn19K9XLS1V7bN2BuNpQ+Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p2eTr1Ej; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764040244; c=relaxed/simple;
+	bh=hq6uCJpnX4KyBh7kp/qg7eH9yGg2iuASpVsKxgQSxPc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HG9JaUyZWD8JTp4arlMs5UrGqk3svSXMMiuK/KvLnTzc+uMJ8VoMKZ/L/hHZqNXUsTMAepUpe+zBWwtcmwwbZDjm47TiqGQi6XzeG8vMUtcWDeCkNRG0HxSg0UHnEECkWRNE6Fwvgftx86UF/M2kCJ+7HiL7VUuiT0TMJBlcuzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVQnH2io; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2eTr1Ej"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FECC116C6;
-	Tue, 25 Nov 2025 03:10:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVQnH2io"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED08FC4CEF1;
+	Tue, 25 Nov 2025 03:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764040228;
-	bh=ZUG97EAaAxCmkWG0aHzQ8X/iKEpLZ0v41OhZOYC+580=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p2eTr1Ej19yEdwm7gdPV7ypmWPc6TLOJx9YmFSm0Yj3VLKEbrg2OVkf8IDmzBW7Lf
-	 UrI9J/AupXkLsttunkCquxJY3gUKJ5GeixzKiThga7mYyqfUa56RvC5Tktn0vv5rXf
-	 TDAl68g6leW5hBz29e0x/WhTolL5tOT1UKcwyZJlhwt53Nag3B5UAfqlmg+iPuhTM0
-	 FxfMHgB/3Z2QgfmSCWQm115vlUI3NnLgO6uPcvzwRqusbuKAKe8mzmmdqDogVG+UJP
-	 b6w6e6CliYZa244bOBHQmI2KU5UrC4IUfTNgnCsiFA46FJzZ+n+j8LfAta/jtooG/i
-	 C+4IGMcEEDBWw==
-Date: Mon, 24 Nov 2025 19:10:26 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Carolina Jubran <cjubran@nvidia.com>
-Cc: Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Gal Pressman
- <gal@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, "Cosmin Ratiu"
- <cratiu@nvidia.com>, Nimrod Oren <noren@nvidia.com>, Mark Bloch
- <mbloch@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next V2 0/6] selftests: drv-net: Fix issues in
- devlink_rate_tc_bw.py
-Message-ID: <20251124191026.1438551c@kernel.org>
-In-Reply-To: <20251123171015.3188514-1-cjubran@nvidia.com>
-References: <20251123171015.3188514-1-cjubran@nvidia.com>
+	s=k20201202; t=1764040244;
+	bh=hq6uCJpnX4KyBh7kp/qg7eH9yGg2iuASpVsKxgQSxPc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oVQnH2ioCwS3z5KsLNFivegN3EFNNPMEb2wGkLQnrr8VT/BbM+bd1zxdyxKfk8YlA
+	 PRopkXbY5y58iMnefcjuIX/TsSVapejYPq3AglW1YshCeRyeEPK22wX01oNMBU/ClK
+	 aGow8imcG04JmTzg1CEe4xj5EMqeGTqpDwMqctNwWbwLxDyvpWx+FX46MVlQ5ZOWh0
+	 zRA2wl/0DkmGBvZErFT1wQ5MzuK4TgNL0odH9/xtWRZfmPPfRS/OTkPqI1qXdj+tql
+	 T1f/9J+j1JjDME38fwYHqobZlGcMN66UO/qPu7nA3Zkwod+pMIDZ/UQuuI6jRi1Kml
+	 pFuKk93zqluvw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EC1613A8A3CA;
+	Tue, 25 Nov 2025 03:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: sched: fix TCF_LAYER_TRANSPORT handling in
+ tcf_get_base_ptr()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176404020676.167368.632588971771870032.git-patchwork-notify@kernel.org>
+Date: Tue, 25 Nov 2025 03:10:06 +0000
+References: <20251121154100.1616228-1-edumazet@google.com>
+In-Reply-To: <20251121154100.1616228-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+f3a497f02c389d86ef16@syzkaller.appspotmail.com
 
-On Sun, 23 Nov 2025 19:10:09 +0200 Carolina Jubran wrote:
-> This series fixes issues in the devlink_rate_tc_bw.py selftest and
-> introduces a new Iperf3Runner that helps with measurement handling.
+Hello:
 
-Sorry to report but patch 2 doesn't apply cleanly.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 21 Nov 2025 15:41:00 +0000 you wrote:
+> syzbot reported that tcf_get_base_ptr() can be called while transport
+> header is not set [1].
+> 
+> Instead of returning a dangling pointer, return NULL.
+> 
+> Fix tcf_get_base_ptr() callers to handle this NULL value.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: sched: fix TCF_LAYER_TRANSPORT handling in tcf_get_base_ptr()
+    https://git.kernel.org/netdev/net/c/4fe5a00ec707
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
