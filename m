@@ -1,103 +1,98 @@
-Received: from mail-244102.protonmail.ch (mail-244102.protonmail.ch [109.224.244.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6561512CDBE;
-	Tue, 25 Nov 2025 04:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D647422D4C8
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 04:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764044976; cv=none; b=TsOwfWzbAqw+S0mpjOC90uZrmCU/iKm0Bi32C33Fp+Go4J7rwfLEBSouPhXFTuCeWJ+TPPctJ3UeVIsrTqiYS2ecZX2HeYZcAU4lPRJShN146sUnc+TfqHJRss45lhSeGTEqhYUTpygf7oQTH0kryLVmafz7NYXvvzokRDfFgBc=
+	t=1764045200; cv=none; b=igZI+myKSEI23B625CNsiIxNu2JhSVJIr00uCoG5zHoDYxo+uh05cRkvZzNWdkVq8SWBpAh23IWhnjg6uALvXAn4d6+JxTaXlShtkxG/EfFXvNzxo9Yh2PrM6krVTR4Sdo41xFE0Z/AGdKcm85iMupd0uO9zclQeWNUunA14kg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764044976; c=relaxed/simple;
-	bh=+I/Q2o6Dsn3gHWDBmg2b0MganE6v/P6P0PtYU5JYcE8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ogU3EOwCaNI+xmMXwUQbMYlbjzP3a0MdVosnWIryC4abelDQ7ljxSdKdOxoq/jAxWvFXJZctFOa8PHWa1oj7MUyQFpsQy3Zx0WlprRLwBUC6h1WxfKwvpJkuQqjJghauklAOgTcaDdG2MK50SX/RbZZiMJ1x7cYW4/68kcCPiRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=EFxWzcF3; arc=none smtp.client-ip=109.224.244.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
+	s=arc-20240116; t=1764045200; c=relaxed/simple;
+	bh=0tfEFF31HO0p5AVtPB2m9wDnsam1+lKDH7iW1ZAWsmQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VoWutSbKsqyVWIsElOFnAJX3KT5DfHAFTKKcDv3zrK/cBWQS8nBrFNdI5lVY7nAHcYmh+ABU/78H11POwKO6g1b/k9Y2NAjC7Qq35RjjeTSBQlmoh8J4gcEQvQpzzDgKU4r8jC6mP7ny7gCuR7NVfGaqyVWrqIGvBWnMUT85vwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mnohj4AH; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="EFxWzcF3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
-	s=protonmail2; t=1764044416; x=1764303616;
-	bh=+I/Q2o6Dsn3gHWDBmg2b0MganE6v/P6P0PtYU5JYcE8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=EFxWzcF3adqBr87RcRLTU727hynIU0Wz4mD3ivvmchpSIEKpUah4RNS4Qs+UmzXAo
-	 Xhu6Eggm9KBV9VYCy5zgPget+YXtLc5dFoEtVcmagedSd8CY13yIKy2XozRKW2BkJC
-	 wfZEwDalSaErwL+PASYR8LGKLcC83rR+QB6RVbuFbkLqEGDOEROGXr68nk2kqKnVKO
-	 Wj6Gp60XXqa/5JS2NTSMVV8c+wbfmLYvRCRfV9+arm5ZQnS8BAhws4fuYB2/wTm+e3
-	 yiAfxOcJO1GzV7ConVhFaNegEj0L5FggO41b0qVFTRqZ2qKIN1453agwxOX/8qe4mN
-	 YJeclbBZZShfQ==
-Date: Tue, 25 Nov 2025 04:20:13 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: William Liu <will@willsroot.io>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>, Stephen Hemminger <stephen@networkplumber.org>, Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jschung2@proton.me, savy@syst3mfailure.io
-Subject: Re: [Bug 220774] New: netem is broken in 6.18
-Message-ID: <PKMd5btHYmJcKSiIJdtxQvZBEfuS4RQkBnE4M-TZkjUq_Rdj6Wgm8wDmX-p6rIkSRGDJN8ufn0HcDI6-r2lgibdSk7cn1mHIdbZEohJFKMg=@willsroot.io>
-In-Reply-To: <20251124191625.74569868@kernel.org>
-References: <20251110123807.07ff5d89@phoenix> <aR/qwlyEWm/pFAfM@pop-os.localdomain> <CAM0EoMkPdyqEMa0f4msEveGJxxd9oYaV4f3NatVXR9Fb=iCTcw@mail.gmail.com> <aSDdYoK7Vhw9ONzN@pop-os.localdomain> <20251121161322.1eb61823@phoenix.local> <20251121175556.26843d75@kernel.org> <aSH9mvol/++40XT0@pop-os.localdomain> <20251124191625.74569868@kernel.org>
-Feedback-ID: 42723359:user:proton
-X-Pm-Message-ID: ee86c3d61e813f6cff3aa12335b19592854ed931
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mnohj4AH"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-299d40b0845so82116035ad.3
+        for <netdev@vger.kernel.org>; Mon, 24 Nov 2025 20:33:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764045198; x=1764649998; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R+zjcbL0tDzyXVFIG46xwFstTpucFPpn3y7+gA5A08g=;
+        b=Mnohj4AHeZlOByBRoTEWRze1h3kZj5lPfowL/d2fWSZuigOeAnYZOEZdv6tOQNBNAh
+         2h8YUva70VTdfsDTrRbV9hRJJXTsGxVZxUZ2MspcO4IF3CcSYP720sJAYrDgSrECDUFH
+         v/Ojh3uxCU6vrVx4Y3XhlV7y95hSBtILYUQeBIhbT8u3KE1ol+7iq1XdrjFS+2tyZBcL
+         k92m2DQnaYlYKN1sad1uRWi0N8rOTZtU/G5Po4EaFC3s3zLIUkOzs6/lB0+a2grzX5CH
+         rWPJLGg1bb30eI8MqsQI5J5FTUOIUE/S+qy3oFBD22v4yuf9sW631XR3vz2z2qoToX91
+         dadA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764045198; x=1764649998;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R+zjcbL0tDzyXVFIG46xwFstTpucFPpn3y7+gA5A08g=;
+        b=q0KJoYv37A506n1gwsIZNJh4XBnkJ4UVvaX2ZtbP3TPjRZHOjegZz19MKr37jxfESH
+         YGXPZrFYttPzvGbILyLL7Gw4uSsjJXkx6rmBl1jf2A7AWOZMresdaY5WrCcDeHT8h1h0
+         K06co0IH6LEIBeDbIlyK10YoC3qkmIq1LJp6mk8zHblQwFTmLDBteEWoZnQyJVoFCWSI
+         dUq5XYhSjea6rg2G13KFS9whwNIPN+HWWogUAp/SxrwGGpWSfwctjm49GoJ4Gj9hX3Rh
+         Pdj4CXApVpLAoLjZYX/s0W+JN5Oe4PW/liaM2FJnZeB92ptny/HpBSIYTCOl5yGX3dec
+         ifmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOnVt/Ok/rbM3HP8CaPScK1GbPsfcjo2xpD2niTvi0NJLLgSdqc+EUWCX5h7qBcYDGR0l/NHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yybi2FFFOtwgqVx8Z9a2cFwDHJK0EqtLN7Z7M5A+x76E0CafQgF
+	3+hSOwMDsGIN0BjKu870Q5QSH1w0dkf/LjW9BlvYH2TBpfrluSS+RVdk
+X-Gm-Gg: ASbGnctdekfLHvrmYXNB7RAHKPAvJMHnnRrQKsAehr55BqZ8ZZ/lV6jopACZKo9lO7a
+	AxR1kcw+80/GCKPGiIT3TIY6N1JnqdObdHH0+Sw2RpyECAj2rGibnS/s872G4JR+ij7DS/SQ435
+	5TzY3h6YvzqC6pjcle7PpNYveJTsu3NE9UvdEgKOqgz4h3AP0p7713Wm9ycIqgizs2jqLl7QUgc
+	svH4mPNZPO81zxKOQMUHG6JE6gRCaSHM1wCtcmAHFnwlq+f7HD5vGwXAboy4qOL/IXgpmRN4lNu
+	S+VEB1dbBx8OrTwoc6Lo/v3u5UFR4VwTq7dvkDhPnm43m7BAGujK5rmx4PVKxtQbW0xaWBXfM5v
+	1USc7pMUCKlST2sP9j7rKFbrHpo31If2159RPNt+GgzdTTVnwBsxt+2gyZvNRx6WjfsNcBsoSf5
+	qmYhkUEPpq/r/CqcCCbxksjwsJ95bAAw==
+X-Google-Smtp-Source: AGHT+IG5wQiSA6DoLuqSdaHSi1FyIN7DulB2JAUjgDcIX0e3566wQM/LBnN9t0ZmEp/7FjsrZS6E7Q==
+X-Received: by 2002:a17:902:ebca:b0:295:9e4e:4092 with SMTP id d9443c01a7336-29bab1daa12mr16030285ad.56.1764045197941;
+        Mon, 24 Nov 2025 20:33:17 -0800 (PST)
+Received: from fedora ([103.120.31.122])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b2a6b22sm149678695ad.86.2025.11.24.20.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 20:33:17 -0800 (PST)
+Date: Tue, 25 Nov 2025 10:03:10 +0530
+From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Jason Xing <kernelxing@tencent.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/net: initialize char variable to null
+Message-ID: <aSUxhmqXmIPSdbHm@fedora>
+References: <20251124161324.16901-1-ankitkhushwaha.linux@gmail.com>
+ <willemdebruijn.kernel.6edcbeb29a45@gmail.com>
+ <aSSdH58ozNT-zWLM@fedora>
+ <willemdebruijn.kernel.1e69bae6de428@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.1e69bae6de428@gmail.com>
 
-Part of the original issue was that alternative proposed fixes did not work=
- and still allowed for local DOSes [1] [2].
+On Mon, Nov 24, 2025 at 01:15:33PM -0500, Willem de Bruijn wrote:
+> This does not reproduce for me.
+> 
+> Can you share the full clang command that V=1 outputs, as well as the
+> output oof clang --version.
 
-An easy fix that was suggested was to not enqueue from the root [3][4]. How=
-ever, this changes behavior that has existed since the beginning, immediate=
-ly caused a new bug, and Hemminger mentioned that the original behavior was=
- necessary for "trying to keep proper semantics and accounting especially w=
-hen doing rate limits." An argument can be made that Cong's change doesn't =
-violate manpage semantics, but that may still break user setups, just like =
-the current scenario.
+Hi Willem,
+I have added clang output in 
+https://gist.github.com/ankitkhushwaha/8e93e3d37917b3571a7ce0e9c9806f18
 
-Jamal had a good idea on using tc_skb_ext extensions, but I pointed out a f=
-ew implementation issues we would have to deal with [5]. From what I unders=
-tood though, that solution would preserve all the existing behaviors and av=
-oid the DOS bug. It's been a while so let me know if that is not the case. =
-Otherwise, I can try to implement it - I am quite busy though so it might t=
-ake a while.
-
-On Tuesday, November 25th, 2025 at 3:16 AM, Jakub Kicinski <kuba@kernel.org=
-> wrote:
-
->=20
->=20
-> On Sat, 22 Nov 2025 10:14:50 -0800 Cong Wang wrote:
->=20
-> > > I guess we forgot about mq.. IIRC mq doesn't come into play in
-> > > duplication, we should be able to just adjust the check to allow
-> >=20
-> > This is not true, I warned you and Jamal with precisely the mq+netem
-> > combination before applying the patch, both of you chose to ignore.
->=20
->=20
-> I'm curious why we did.. Link?
-
-The issue was due to filters redirecting packets iirc [6]. We decided to mo=
-ve with it and come back to it if someone did rely on this rare setup [7].
-
-If anyone wants a quick refresher on the bug, please take a read at [6] as =
-it contains all the details and issues.
-
-[1] https://lore.kernel.org/netdev/20250701231306.376762-1-xiyou.wangcong@g=
-mail.com/T/#u
-[2] https://lore.kernel.org/netdev/20250707195015.823492-1-xiyou.wangcong@g=
-mail.com/T/#u
-[3] https://lore.kernel.org/netdev/20250713214748.1377876-1-xiyou.wangcong@=
-gmail.com/T/#u
-[4] https://lore.kernel.org/netdev/CAM0EoMmTZon=3DnFmLsDPKhDEzHruw701iV9=3D=
-mq92At9oKo0LGpA@mail.gmail.com/T/#u
-[5] https://lore.kernel.org/netdev/pGE9OHWRSf4oJwC4gS0oPonBy8_0WsDthxgLzBYG=
-BtMVeT_EDc-HAz8NbhJxcWe0NEUrf_a7Fyq2op5FVFujfc2KyO-I38Yx_HlQhFwB0Cs=3D@will=
-sroot.io/
-[6] https://lore.kernel.org/netdev/CAM0EoMnd0nZxJW3zpEuBGWTwB3AnJSnj242f9hM=
-pcLdBWdcbfQ@mail.gmail.com/
-[7] https://lore.kernel.org/netdev/20250707142617.10849b9e@kernel.org/
+Thanks,
+Ankit
