@@ -1,81 +1,130 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668A0329383
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 17:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EBE273805;
+	Tue, 25 Nov 2025 17:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764090289; cv=none; b=DsAzqQuLyE7ueeVrutBtwQyGkdXKeU/KgfpTyMqkkNrBbjUGyudsXxuagWga2xK0oYb4SyMsbyE27UQuATOK8H3uZRl17xEdfZKxLidC3bBMc6OByskVNA3y5EL3Y/iVCooKVHlMH8eq+57iRgk6+tmXgR/atQ7GEnxA503g56k=
+	t=1764090669; cv=none; b=JXMQDpAahhdfaCRFOfM/5EYXXPPIKpWwp4oAQIYtPCIUJl4xZtKwai+eHiTndDiAHtQLekTdm/hvfJHSqGHR6csrKpl5DKJ+WtQLTEASyLpfJEE6pd4WZaDHGXs5XN4JK0CIrSXzCWwCNAsDjSU18uOGkwDHRJu7GxbcLc9Fm7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764090289; c=relaxed/simple;
-	bh=XXONSCwRsDMyg+20Vsv6cP1l8q0nebGsPyrrHf37CyY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V3QwAig1bbh09aw8cfepiq9qXQboy+2bWYkv76cLGZToB2UfGu+JAbJSrdMTjYMP5wMBYaeJ+9iFXe404NT75YK1kgbntDksxp8owdRoHPaoh5NBLoTp7hlJwKmKvvmBM+eGoLk0gH1E3Oi+QbCzu7OBowXnL3mtxyZK+H5qnjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=LwKuqZNZ; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1764090669; c=relaxed/simple;
+	bh=xZR8pJbbTDC36ucMzn1ejVJnyZlat8zJQi3cfsqTE/Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ygbn2Mmn8Arm1c/bjvE7LWdJHJA7hA0jtIa32xbq/FInHN5KFfWYIKUKJeFkPRqnklqw8gLUv4OTvVHSl0Md9xKHZv9FTiccr8aSzpAIPYmDVj6hayB0qGKOsKoLi244zo5viKH8A6S5vIyD3iTTKPtLkaI+GDEIuYLB9ONEgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmZHWh34; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="LwKuqZNZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1764090278;
-	bh=XXONSCwRsDMyg+20Vsv6cP1l8q0nebGsPyrrHf37CyY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LwKuqZNZk8ez//wQhXPM8JT+Z7A5QY9DzvSS3DRullfr4zKq7Zl0Nko5PNfykLHFT
-	 Fqgh1IhdpUh4LYxHsM7JI3R2hYCC+TS+EpkRbYkdbnokIGrQxy5YZM09UKtKwCWEDq
-	 EI0LjEcDo+7q2+IA5ZC7IsWznVIEwvsvXrCT5TR7Cb8DmtxJdjhijzqklZ3Uib5CwR
-	 Z8Jh+UOvoYk3t4b2hZ5bgU+CKQ9yfamvOX4zIMxUZ8mYo8V+FA4TGrC/nj49PuNN+S
-	 9hYvjL1j5Yc5ImnrXSgF+R/xm0CYmrBo/u5Q3Pn3MH8nD8aHLNHeUcJETydU7RBORs
-	 nDAVjxNE2u+pA==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id A3672600FF;
-	Tue, 25 Nov 2025 17:04:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by x201s (Postfix) with ESMTP id 98CE12012E7;
-	Tue, 25 Nov 2025 17:03:13 +0000 (UTC)
-Message-ID: <8564b02f-18f9-4132-ab69-5ee1babeb18c@fiberby.net>
-Date: Tue, 25 Nov 2025 17:03:13 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmZHWh34"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E85C4CEF1;
+	Tue, 25 Nov 2025 17:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764090669;
+	bh=xZR8pJbbTDC36ucMzn1ejVJnyZlat8zJQi3cfsqTE/Y=;
+	h=From:Date:Subject:To:Cc:From;
+	b=RmZHWh345UtOHdBBl2skqpaSIDD3vOfTkuKHrc3GGu+S/PZHOefZZ9aFDnhOEPF/5
+	 KfOHwaFc9xV6vyRZqK09ZPKnLIaNCAnB+nZ+CLNwEhwjCGjLYaanz1lWrQhrnnXWIq
+	 xIcQogKdUf0uOoYZkNA5KUiuJlc2z3MLLuDPC9H9Q4ND52fsH/+y1C5Dyi3wl3ngU0
+	 D6r8HTHyBaRlk7TcH1recUlaFxFUeHiOoE4LfuZJRSJMg9v8biKwiTiHZams2W11Co
+	 wisPQ08/UP1SMAUeEmEDGoEPuglhQuWcfbUu6liPCutxVkcq0jOIPefAWdu4vurgci
+	 2AOaj0JdL68hA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Tue, 25 Nov 2025 17:59:11 +0100
+Subject: [PATCH net] mptcp: clear scheduled subflows on retransmit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] netlink: specs: add big-endian byte-order for
- u32 IPv4 addresses
-To: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, "Matthieu Baerts (NGI0)"
- <matttbe@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Jacob Keller <jacob.e.keller@intel.com>,
- Yuyang Huang <yuyanghuang@google.com>, Daniel Borkmann <daniel@iogearbox.net>
-References: <20251125112048.37631-1-liuhangbin@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
-In-Reply-To: <20251125112048.37631-1-liuhangbin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAF7gJWkC/x3MQQrDIBBG4auEWXcgSiTQq4QurP5NBhojo5SA5
+ O6RLt/ie40KVFDoOTRS/KTIkXqYx0Bh82kFS+xNdrTOGOs4ofKea8gcvvDKJWyIrPVkP+HtZ0z
+ RwVD3WfGR8/9eqDN6XdcNiPIel3AAAAA=
+X-Change-ID: 20251125-net-mptcp-clear-sched-rtx-a4eba7e4d5e1
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Filip Pokryvka <fpokryvk@redhat.com>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2175; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=2hBOccHTvC3Ma2AnCdnY4gSmYbZkET0gScOy1lgMpdU=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJVH2tx7+2+kDdB/rDzuUJnn3UB871CJ53mZp763vUwn
+ /TVR32zOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACZip87wv7CKcZsJf8kC9/K9
+ E34dVys5mHNv2ubG/d78guGcpUrvhBkZZh53vi63+WBUhEvWpflPNLQazmho2kQd7juWq/qNccp
+ 8RgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On 11/25/25 11:20 AM, Hangbin Liu wrote:
-> The fix commit converted several IPv4 address attributes from binary
-> to u32, but forgot to specify byte-order: big-endian. Without this,
-> YNL tools display IPv4 addresses incorrectly due to host-endian
-> interpretation.
-> 
-> Add the missing byte-order: big-endian to all affected u32 IPv4
-> address fields to ensure correct parsing and display.
-> 
-> Fixes: 1064d521d177 ("netlink: specs: support ipv4-or-v6 for dual-stack fields")
-> Reported-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-LGTM
+When __mptcp_retrans() kicks-in, it schedules one or more subflows for
+retransmission, but such subflows could be actually left alone if there
+is no more data to retransmit and/or in case of concurrent fallback.
 
-Reviewed-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Scheduled subflows could be processed much later in time, i.e. when new
+data will be transmitted, leading to bad subflow selection.
 
-I also checked how consistently defined the fields using the ipv6 display helper are,
-and it looks like they could use some realignment too. Obviously not for this fix.
+Explicitly clear all scheduled subflows before leaving the
+retransmission function.
 
-git grep -C6 'display-hint.*ipv6$' Documentation/netlink/specs/
+Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
+Cc: stable@vger.kernel.org
+Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 33b5dce431c2..8abb425d8b5f 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2665,7 +2665,7 @@ static void __mptcp_retrans(struct sock *sk)
+ 		}
+ 
+ 		if (!mptcp_send_head(sk))
+-			return;
++			goto clear_scheduled;
+ 
+ 		goto reset_timer;
+ 	}
+@@ -2696,7 +2696,7 @@ static void __mptcp_retrans(struct sock *sk)
+ 			if (__mptcp_check_fallback(msk)) {
+ 				spin_unlock_bh(&msk->fallback_lock);
+ 				release_sock(ssk);
+-				return;
++				goto clear_scheduled;
+ 			}
+ 
+ 			while (info.sent < info.limit) {
+@@ -2728,6 +2728,15 @@ static void __mptcp_retrans(struct sock *sk)
+ 
+ 	if (!mptcp_rtx_timer_pending(sk))
+ 		mptcp_reset_rtx_timer(sk);
++
++clear_scheduled:
++	/* If no rtx data was available or in case of fallback, there
++	 * could be left-over scheduled subflows; clear them all
++	 * or later xmit could use bad ones
++	 */
++	mptcp_for_each_subflow(msk, subflow)
++		if (READ_ONCE(subflow->scheduled))
++			mptcp_subflow_set_scheduled(subflow, false);
+ }
+ 
+ /* schedule the timeout timer for the relevant event: either close timeout
+
+---
+base-commit: 4fe5a00ec70717a7f1002d8913ec6143582b3c8e
+change-id: 20251125-net-mptcp-clear-sched-rtx-a4eba7e4d5e1
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
