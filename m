@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3271523ED75
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 16:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E602236437
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 16:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764087105; cv=none; b=tzU/vtA5WuUVZ3vKoIf+wv40+1lkHo1ALNALtgKvxbz9pFINr6KV0rKUmv6x3gXNjopqZll5B4ZHPgQcnRa+b+kG5ocP5iqWMRpR7Vx+/qcFgtcYvItKUJDCTUdY7dEGGWODvYDHyZtRtM1u/XMAxAqyFrXwSnoX0xeOMV4gu3s=
+	t=1764087111; cv=none; b=AKGL5vT0o/a+p59pOIYayuApbTFJza3ah45byadVFjIeXYJ+2MG1gt/L9KrBLHRoumjY4G2f6NOaTu35QLJU1QkJt8I+uxrA56i33SuOpw4Zw1zrp5/2/MbymvPy+WtxQ4l9hchZ0dWoA0oUIj3JbmJcRdeQDBg45A7tLgy9C+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764087105; c=relaxed/simple;
-	bh=jTCuNBS4bByHDkBufa5Tn8yacqgAWm+muoWkmF00rqA=;
+	s=arc-20240116; t=1764087111; c=relaxed/simple;
+	bh=+rnGyX0aE4VCbIccboiZFZD6qx8LNpV9IJy0e2iMVfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RN4vD3MWJnxcyELbVYa7Ipu4b7z/gJ6/HjsBOy1PHecRwXUAAZIlh1Adoys6bZqDLp5FIv50YTusTWGcrryE9xbZ5j+Hh7PsrGSEGG1AtmoC0E4a5P2p5XehltNWEwkULm2s4rLrt1XKH+2ccHRh1M++SjoorYBNdi1joplVYBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L8HGHfQD; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Q1VdXL4l4yYMIIZoGUwrKkk37P7sTdurDwLXkWDsbNB42bdq6/YcOXhpgw2K7hvSHPzMYH/XaYSJlrPrOuwAk80yU16qDAZnpVcAh5ykWtzw+WSKC46S+OQXaHh5EqQ8wh1v1PCbKUz0GNjexqOZNc7mlzJ3Z9p6VYb6wM78DIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqO4vYC/; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L8HGHfQD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqO4vYC/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764087103;
+	s=mimecast20190719; t=1764087108;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cHa1b3luFbpymZa4vGHuerOU/i1ZmrQ1ilqUc3ptTWw=;
-	b=L8HGHfQDJakvm7iI0R3PpbLPDJHmIjkPBMqnfzwzIHMG8CuXS1awKV5hRZTIWlQRbmxOau
-	cbR/fjxOvmAqO3QbVHiJWWV+rOOt0rv6HsOapnI/e03SMO7CJAYj9SsbfbwTWIiACUS8z6
-	+17BduIwRtkDdDPHEVPVX7yWJ/MR03Y=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=1YZwwK0a/2D62ju8d0WRAzD6V0VatNAy6ft0uL0PDGw=;
+	b=fqO4vYC/RSEGpR7E26ZSRmZ/+DwYbL07cyOphl9a4mh6zZ2AESy4l7KTH1sbtGl5VuO3Yp
+	LMxk1jluF2SAbYDgKZB937h+eolFop4Yuey0KuvXiwA1S/UXfbk7/So7WaHgYK0t0aharN
+	aOpvleg1ynkCGLCT8EuFIOCvDZnUX1k=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-362-OYPS5N4-M0-KbgrVO24pKA-1; Tue,
- 25 Nov 2025 11:11:39 -0500
-X-MC-Unique: OYPS5N4-M0-KbgrVO24pKA-1
-X-Mimecast-MFC-AGG-ID: OYPS5N4-M0-KbgrVO24pKA_1764087095
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-HtCNy12NOLe_F3pLjzaMjQ-1; Tue,
+ 25 Nov 2025 11:11:43 -0500
+X-MC-Unique: HtCNy12NOLe_F3pLjzaMjQ-1
+X-Mimecast-MFC-AGG-ID: HtCNy12NOLe_F3pLjzaMjQ_1764087101
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F297B19560AD;
-	Tue, 25 Nov 2025 16:11:34 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8CA50195606D;
+	Tue, 25 Nov 2025 16:11:41 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.32.183])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 266531800451;
-	Tue, 25 Nov 2025 16:11:31 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD48C1800451;
+	Tue, 25 Nov 2025 16:11:38 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -52,9 +52,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Shuah Khan <shuah@kernel.org>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next 02/10] geneve: expose gso partial features for tunnel offload
-Date: Tue, 25 Nov 2025 17:11:07 +0100
-Message-ID: <89d04447bb9127c99f23ffc836cec3e47743c1c7.1764056123.git.pabeni@redhat.com>
+Subject: [PATCH net-next 04/10] geneve: add netlink support for GRO hint
+Date: Tue, 25 Nov 2025 17:11:09 +0100
+Message-ID: <b005cabfadf075e8d8bf0d133695c373d5c26c06.1764056123.git.pabeni@redhat.com>
 In-Reply-To: <cover.1764056123.git.pabeni@redhat.com>
 References: <cover.1764056123.git.pabeni@redhat.com>
 Precedence: bulk
@@ -66,117 +66,152 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-GSO partial features for tunnels do not require any kind of support from
-the underlying device: we can safely add them to the geneve UDP tunnel.
-
-The only point of attention is the skb required features propagation in
-the device xmit op: partial features must be stripped, except for
-UDP_TUNNEL*.
-
-Keep partial features disabled by default.
+Allow configuring and dumping the new device option, and cache its value
+into the geneve socket itself.
+The new option is not tie to it any code yet.
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/net/geneve.c     | 11 ++++++++++-
- include/net/udp_tunnel.h | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+), 1 deletion(-)
+ Documentation/netlink/specs/rt-link.yaml |  3 +++
+ drivers/net/geneve.c                     | 29 ++++++++++++++++++++----
+ include/uapi/linux/if_link.h             |  1 +
+ 3 files changed, 29 insertions(+), 4 deletions(-)
 
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index ca22c68ca691..2dfb4becd6d0 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -1913,6 +1913,9 @@ attribute-sets:
+         name: port-range
+         type: binary
+         struct: ifla-geneve-port-range
++      -
++        name: gro-hint
++        type: flag
+   -
+     name: linkinfo-hsr-attrs
+     name-prefix: ifla-hsr-
 diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 77b0c3d52041..64ea4b970376 100644
+index 64ea4b970376..9837df99de65 100644
 --- a/drivers/net/geneve.c
 +++ b/drivers/net/geneve.c
-@@ -774,6 +774,7 @@ static int geneve_build_skb(struct dst_entry *dst, struct sk_buff *skb,
- 	bool udp_sum = test_bit(IP_TUNNEL_CSUM_BIT, info->key.tun_flags);
- 	struct genevehdr *gnvh;
- 	__be16 inner_proto;
-+	bool double_encap;
- 	int min_headroom;
- 	int err;
+@@ -56,6 +56,7 @@ struct geneve_config {
+ 	bool			collect_md;
+ 	bool			use_udp6_rx_checksums;
+ 	bool			ttl_inherit;
++	bool			gro_hint;
+ 	enum ifla_geneve_df	df;
+ 	bool			inner_proto_inherit;
+ 	u16			port_min;
+@@ -84,6 +85,7 @@ struct geneve_dev {
  
-@@ -786,6 +787,7 @@ static int geneve_build_skb(struct dst_entry *dst, struct sk_buff *skb,
- 	if (unlikely(err))
- 		goto free_dst;
+ struct geneve_sock {
+ 	bool			collect_md;
++	bool			gro_hint;
+ 	struct list_head	list;
+ 	struct socket		*sock;
+ 	struct rcu_head		rcu;
+@@ -659,13 +661,15 @@ static void geneve_sock_release(struct geneve_dev *geneve)
  
-+	double_encap = udp_tunnel_handle_partial(skb);
- 	err = udp_tunnel_handle_offloads(skb, udp_sum);
- 	if (err)
- 		goto free_dst;
-@@ -793,7 +795,7 @@ static int geneve_build_skb(struct dst_entry *dst, struct sk_buff *skb,
- 	gnvh = __skb_push(skb, sizeof(*gnvh) + info->options_len);
- 	inner_proto = inner_proto_inherit ? skb->protocol : htons(ETH_P_TEB);
- 	geneve_build_header(gnvh, info, inner_proto);
--	skb_set_inner_protocol(skb, inner_proto);
-+	udp_tunnel_set_inner_protocol(skb, double_encap, inner_proto);
+ static struct geneve_sock *geneve_find_sock(struct geneve_net *gn,
+ 					    sa_family_t family,
+-					    __be16 dst_port)
++					    __be16 dst_port,
++					    bool gro_hint)
+ {
+ 	struct geneve_sock *gs;
+ 
+ 	list_for_each_entry(gs, &gn->sock_list, list) {
+ 		if (inet_sk(gs->sock->sk)->inet_sport == dst_port &&
+-		    geneve_get_sk_family(gs) == family) {
++		    geneve_get_sk_family(gs) == family &&
++		    gs->gro_hint == gro_hint) {
+ 			return gs;
+ 		}
+ 	}
+@@ -676,12 +680,14 @@ static int geneve_sock_add(struct geneve_dev *geneve, bool ipv6)
+ {
+ 	struct net *net = geneve->net;
+ 	struct geneve_net *gn = net_generic(net, geneve_net_id);
++	bool gro_hint = geneve->cfg.gro_hint;
+ 	struct geneve_dev_node *node;
+ 	struct geneve_sock *gs;
+ 	__u8 vni[3];
+ 	__u32 hash;
+ 
+-	gs = geneve_find_sock(gn, ipv6 ? AF_INET6 : AF_INET, geneve->cfg.info.key.tp_dst);
++	gs = geneve_find_sock(gn, ipv6 ? AF_INET6 : AF_INET,
++			      geneve->cfg.info.key.tp_dst, gro_hint);
+ 	if (gs) {
+ 		gs->refcnt++;
+ 		goto out;
+@@ -694,6 +700,7 @@ static int geneve_sock_add(struct geneve_dev *geneve, bool ipv6)
+ 
+ out:
+ 	gs->collect_md = geneve->cfg.collect_md;
++	gs->gro_hint = gro_hint;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (ipv6) {
+ 		rcu_assign_pointer(geneve->sock6, gs);
+@@ -1257,6 +1264,7 @@ static const struct nla_policy geneve_policy[IFLA_GENEVE_MAX + 1] = {
+ 	[IFLA_GENEVE_DF]		= { .type = NLA_U8 },
+ 	[IFLA_GENEVE_INNER_PROTO_INHERIT]	= { .type = NLA_FLAG },
+ 	[IFLA_GENEVE_PORT_RANGE]	= NLA_POLICY_EXACT_LEN(sizeof(struct ifla_geneve_port_range)),
++	[IFLA_GENEVE_GRO_HINT]		= { .type = NLA_FLAG },
+ };
+ 
+ static int geneve_validate(struct nlattr *tb[], struct nlattr *data[],
+@@ -1607,10 +1615,18 @@ static int geneve_nl2info(struct nlattr *tb[], struct nlattr *data[],
+ 		cfg->inner_proto_inherit = true;
+ 	}
+ 
++	if (data[IFLA_GENEVE_GRO_HINT]) {
++		if (changelink) {
++			attrtype = IFLA_GENEVE_GRO_HINT;
++			goto change_notsup;
++		}
++		cfg->gro_hint = true;
++	}
++
+ 	return 0;
+ change_notsup:
+ 	NL_SET_ERR_MSG_ATTR(extack, data[attrtype],
+-			    "Changing VNI, Port, endpoint IP address family, external, inner_proto_inherit, and UDP checksum attributes are not supported");
++			    "Changing VNI, Port, endpoint IP address family, external, inner_proto_inherit, gro_hint and UDP checksum attributes are not supported");
+ 	return -EOPNOTSUPP;
+ }
+ 
+@@ -1793,6 +1809,7 @@ static size_t geneve_get_size(const struct net_device *dev)
+ 		nla_total_size(sizeof(__u8)) + /* IFLA_GENEVE_TTL_INHERIT */
+ 		nla_total_size(0) +	 /* IFLA_GENEVE_INNER_PROTO_INHERIT */
+ 		nla_total_size(sizeof(struct ifla_geneve_port_range)) + /* IFLA_GENEVE_PORT_RANGE */
++		nla_total_size(0) +	 /* IFLA_GENEVE_GRO_HINT */
+ 		0;
+ }
+ 
+@@ -1865,6 +1882,10 @@ static int geneve_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	if (nla_put(skb, IFLA_GENEVE_PORT_RANGE, sizeof(ports), &ports))
+ 		goto nla_put_failure;
+ 
++	if (geneve->cfg.gro_hint &&
++	    nla_put_u8(skb, IFLA_GENEVE_GRO_HINT, geneve->cfg.gro_hint))
++		goto nla_put_failure;
++
  	return 0;
  
- free_dst:
-@@ -1211,9 +1213,16 @@ static void geneve_setup(struct net_device *dev)
- 	dev->features    |= NETIF_F_RXCSUM;
- 	dev->features    |= NETIF_F_GSO_SOFTWARE;
- 
-+	/* Partial features are disabled by default. */
- 	dev->hw_features |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
- 	dev->hw_features |= NETIF_F_RXCSUM;
- 	dev->hw_features |= NETIF_F_GSO_SOFTWARE;
-+	dev->hw_features |= UDP_TUNNEL_PARTIAL_FEATURES;
-+	dev->hw_features |= NETIF_F_GSO_PARTIAL;
-+
-+	dev->hw_enc_features = dev->hw_features;
-+	dev->gso_partial_features = UDP_TUNNEL_PARTIAL_FEATURES;
-+	dev->mangleid_features = NETIF_F_GSO_PARTIAL;
- 
- 	dev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
- 	/* MTU range: 68 - (something less than 65535) */
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 9acef2fbd2fd..d9c6d04bb3b5 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -10,6 +10,11 @@
- #include <net/ipv6_stubs.h>
- #endif
- 
-+#define UDP_TUNNEL_PARTIAL_FEATURES	NETIF_F_GSO_ENCAP_ALL
-+#define UDP_TUNNEL_STRIPPED_GSO_TYPES	((UDP_TUNNEL_PARTIAL_FEATURES |	\
-+					  NETIF_F_GSO_PARTIAL) >>	\
-+					 NETIF_F_GSO_SHIFT)
-+
- struct udp_port_cfg {
- 	u8			family;
- 
-@@ -145,6 +150,33 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
- 			  __be16 src_port, __be16 dst_port, bool nocheck,
- 			  u16 ip6cb_flags);
- 
-+static inline bool udp_tunnel_handle_partial(struct sk_buff *skb)
-+{
-+	bool double_encap = !!(skb_shinfo(skb)->gso_type & SKB_GSO_PARTIAL);
-+
-+	/*
-+	 * If the skb went through partial segmentation, lower devices
-+	 * will not need to offload the related features - except for
-+	 * UDP_TUNNEL, that will be re-added by the later
-+	 * udp_tunnel_handle_offloads().
-+	 */
-+	if (double_encap)
-+		skb_shinfo(skb)->gso_type &= ~UDP_TUNNEL_STRIPPED_GSO_TYPES;
-+	return double_encap;
-+}
-+
-+static inline void udp_tunnel_set_inner_protocol(struct sk_buff *skb,
-+						 bool double_encap,
-+						 __be16 inner_proto)
-+{
-+	/*
-+	 * The inner protocol has been set by the nested tunnel, don't
-+	 * overraid it.
-+	 */
-+	if (!double_encap)
-+		skb_set_inner_protocol(skb, inner_proto);
-+}
-+
- void udp_tunnel_sock_release(struct socket *sock);
- 
- struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ nla_put_failure:
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 3b491d96e52e..e9b5f79e1ee1 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1443,6 +1443,7 @@ enum {
+ 	IFLA_GENEVE_DF,
+ 	IFLA_GENEVE_INNER_PROTO_INHERIT,
+ 	IFLA_GENEVE_PORT_RANGE,
++	IFLA_GENEVE_GRO_HINT,
+ 	__IFLA_GENEVE_MAX
+ };
+ #define IFLA_GENEVE_MAX	(__IFLA_GENEVE_MAX - 1)
 -- 
 2.52.0
 
