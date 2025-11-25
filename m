@@ -1,100 +1,156 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D3923EAAB;
-	Tue, 25 Nov 2025 22:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB70C23EAAB;
+	Tue, 25 Nov 2025 22:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764110000; cv=none; b=F8vAAihbRyw32C1HpG6oY+htZSBx97j5vrwUvH95cibBU3yzwBq7bhieke/D6DmnBdLVcIRQXMZIwQlKV7cleCfIkMjgeoWYsCInbQLTFFGAjN31uMYCtOmhTMLXMq2nHQKnt2FiVX3Qfcc1mDQQGtKyhQFVpS0ItmXBuI64LxE=
+	t=1764110008; cv=none; b=cVfuu+2dA7nPFtQH1yOC3QERN792paVPic6mdvTRtQ1zpdW1fBGTGyTXlND0vIFiykb5tYFlbd8neve1TrWKK9y3WKGSBsGn0CnX4nio3av1rso71z+ebPm9LiFu5vDxDUmXjut11/cTnHgEXlrVRNjxGUgo+vVdgbrdHzl+tqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764110000; c=relaxed/simple;
-	bh=iHUHSpUALceRH7ctkYwwvR40VU2nqvVWdDJqkD/9SEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=asJw8LMIm3+D8QsZyZ9c497Ev3L7jrou6Y1cEgZmVePZHrDd9rlx6ys/PE4e9MZ+2T/Fd1jCqFjWT9HjgqbN+ydRzm3Ugr+NR2TRbmUTQ/knjRLBKfUDyOMDFHUl95XDXlMEEi1Tf9XOxl1nAZZWUVsG0KoNbR6HJayUNn0f4j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LCjZZPNN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1764110008; c=relaxed/simple;
+	bh=tWygIw+uEkUsKxeVbFx0r/s15aTal/KA40rz/GcyFsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sx84pDII1QafxvmihU/Jt9NMqhSVMLyYYORt+uCCTHAo7EAOMxm5sCcyzNnS03XCapI3h4zgQnHCXI4S6JKRh9AjBx/Rv+6Ytuf/c2mYQJvLVn1qIYUQt7S3DnOWLNPJ8kPm+Nh6YFjvIej3z4wjJiEJ6lUXV4dhWuAvt3mC1nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=cGEC7CZf; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LCjZZPNN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=H7pG8R0U/pnahoXJymPcP4KNsItn4TlRtbOwE4F9lRw=; b=LCjZZPNNMiWvKKVuIMq+NBWWVY
-	kj2//mzyNplsQdeFC+RyOKTf8t+MwaN0S14WCYwwiiI6YBOR6mPugvwt510BaAjc+urPg8HVK+ndP
-	jLLDH1e55AnEW9hdS6pnP/NPCWj63lVW1n+gslTWIa975faElFKixJwNT78z9QYPIPog=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vO1av-00F46S-5T; Tue, 25 Nov 2025 23:33:09 +0100
-Date: Tue, 25 Nov 2025 23:33:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Marek =?utf-8?B?QmVo4oia4oirbg==?= <kabel@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Patrice Chotard <patrice.chotard@foss.st.com>
-Subject: Re: [PATCH net-next 1/9] dt-bindings: phy: rename
- transmit-amplitude.yaml to phy-common-props.yaml
-Message-ID: <b4597333-e485-426d-975e-3082895e09f6@lunn.ch>
-References: <20251122193341.332324-1-vladimir.oltean@nxp.com>
- <20251122193341.332324-2-vladimir.oltean@nxp.com>
- <0faccdb7-0934-4543-9b7f-a655a632fa86@lunn.ch>
- <20251125214450.qeljlyt3d27zclfr@skbuf>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="cGEC7CZf"
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 7535D60265;
+	Tue, 25 Nov 2025 23:33:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1764109997;
+	bh=8ShfHaitAKrkd0xxHYvm+k/Oa1eNt+gzZXam5DiZQMc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cGEC7CZfo2Cl7ZIlpzgZk77G+xciidedcWRBI7Xi5Tnnd4vwp8Qz6ZI2Q2nIiDG/X
+	 mGvPEH4X1+sUEU6bRsIa6Z59pPkyZhVuR+EZly+oodv/4WFmb68/ADvOVn8mu0tM0B
+	 Nmq0gCclmWx3Mq/4F/7nan4fmHBvtILBCCRdoyJ2Xuv7SWZ9xQtK7U6Axe4s3ksKUG
+	 i/NuTvgxentzxwxKJ1I+b5Im5XRBaMeC96V9vyMa9TZRxVsDGW2Xyar5e74zS77tzw
+	 SvJ953fYbCW9a6KJvRz3rB0cJgp/q5oO10k84FtiL9R0TYVJe7YpPIHmbvN5M991XY
+	 Ey5SxKmDZ5Naw==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net-next 00/16] Netfilter updates for net-next
+Date: Tue, 25 Nov 2025 22:32:56 +0000
+Message-ID: <20251125223312.1246891-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125214450.qeljlyt3d27zclfr@skbuf>
+Content-Transfer-Encoding: 8bit
 
-> Yeah, although as things currently stand, I'd say that is the lesser of
-> problems. The only user (mv88e6xxx) does something strange: it says it
-> wants to configure the TX amplitude of SerDes ports, but instead follows
-> the phy-handle and applies the amplitude specified in that node.
-> 
-> I tried to mentally follow how things would work in 2 cases:
-> 1. PHY referenced by phy-handle is internal, then by definition it's not
->    a SerDes port.
-> 2. PHY referenced by phy-handle is external, then the mv88e6xxx driver
->    looks at what is essentially a device tree description of the PHY's
->    TX, and applies that as a mirror image to the local SerDes' TX.
-> 
-> I think the logic is used in mv88e6xxx through case #2, i.e. we
-> externalize the mv88e6xxx SerDes electrical properties to an unrelated
-> OF node, the connected Ethernet PHY.
+Hi,
 
-My understanding of the code is the same, #2. Although i would
-probably not say it is an unrelated node. I expect the PHY is on the
-other end of the SERDES link which is having the TX amplitudes
-set. This clearly will not work if there is an SFP cage on the other
-end, but it does for an SGMII PHY.
+The following batch contains Netfilter updates for net-next:
 
-I guess this code is from before the time Russell converted the
-mv88e6xxx SERDES code into PCS drivers. The register being set is
-within the PCS register set.  The mv88e6xxx also does not make use of
-generic phys to represent the SERDES part of the PCS. So there is no
-phys phandle to follow since there is no phy.
+1) Move the flowtable path discovery code to its own file, the
+   nft_flow_offload.c mixes the nf_tables evaluation with the path
+   discovery logic, just split this in two for clarity.
 
-	Andrew
+2) Consolidate flowtable xmit path by using dev_queue_xmit() and the
+   real device behind the layer 2 vlan/pppoe device. This allows to
+   inline encapsulation. After this update, hw_ifidx can be removed
+   since both ifidx and hw_ifidx now point to the same device.
 
+3) Support for IPIP encapsulation in the flowtable, extend selftest
+   to cover for this new layer 3 offload, from Lorenzo Bianconi.
+
+4) Push down the skb into the conncount API to fix duplicates in the
+   conncount list for packets with non-confirmed conntrack entries,
+   this is due to an optimization introduced in d265929930e2
+   ("netfilter: nf_conncount: reduce unnecessary GC").
+   From Fernando Fernandez Mancera.
+
+5) In conncount, disable BH when performing garbage collection 
+   to consolidate existing behaviour in the conncount API, also
+   from Fernando.
+
+6) A matching packet with a confirmed conntrack invokes GC if
+   conncount reaches the limit in an attempt to release slots.
+   This allows the existing extensions to be used for real conntrack
+   counting, not just limiting new connections, from Fernando.
+
+7) Support for updating ct count objects in nf_tables, from Fernando.
+
+8) Extend nft_flowtables.sh selftest to send IPv6 TCP traffic,
+   from Lorenzo Bianconi.
+
+9) Fixes for UAPI kernel-doc documentation, from Randy Dunlap.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git nf-next-25-11-25
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit 61e628023d79386e93d2d64f8b7af439d27617a6:
+
+  Merge branch 'net_sched-speedup-qdisc-dequeue' (2025-11-25 16:10:35 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git tags/nf-next-25-11-25
+
+for you to fetch changes up to b6300ae47df247e8294b4d0b1457bd318cf1011c:
+
+  netfilter: nf_tables: improve UAPI kernel-doc comments (2025-11-25 20:37:11 +0000)
+
+----------------------------------------------------------------
+netfilter pull request 25-11-25
+
+----------------------------------------------------------------
+Fernando Fernandez Mancera (4):
+      netfilter: nf_conncount: rework API to use sk_buff directly
+      netfilter: nf_conncount: make nf_conncount_gc_list() to disable BH
+      netfilter: nft_connlimit: update the count if add was skipped
+      netfilter: nft_connlimit: add support to object update operation
+
+Lorenzo Bianconi (4):
+      netfilter: flowtable: Add IPIP rx sw acceleration
+      netfilter: flowtable: Add IPIP tx sw acceleration
+      selftests: netfilter: nft_flowtable.sh: Add IPIP flowtable selftest
+      selftests: netfilter: nft_flowtable.sh: Add the capability to send IPv6 TCP traffic
+
+Pablo Neira Ayuso (6):
+      netfilter: flowtable: move path discovery infrastructure to its own file
+      netfilter: flowtable: consolidate xmit path
+      netfilter: flowtable: inline vlan encapsulation in xmit path
+      netfilter: flowtable: inline pppoe encapsulation in xmit path
+      netfilter: flowtable: remove hw_ifidx
+      netfilter: flowtable: use tuple address to calculate next hop
+
+Randy Dunlap (2):
+      netfilter: ip6t_srh: fix UAPI kernel-doc comments format
+      netfilter: nf_tables: improve UAPI kernel-doc comments
+
+ include/linux/netdevice.h                          |  13 +
+ include/net/netfilter/nf_conntrack_count.h         |  17 +-
+ include/net/netfilter/nf_flow_table.h              |  26 +-
+ include/uapi/linux/netfilter/nf_tables.h           |  14 +-
+ include/uapi/linux/netfilter_ipv6/ip6t_srh.h       |  40 +--
+ net/ipv4/ipip.c                                    |  25 ++
+ net/netfilter/Makefile                             |   1 +
+ net/netfilter/nf_conncount.c                       | 193 ++++++++----
+ net/netfilter/nf_flow_table_core.c                 |   5 +-
+ net/netfilter/nf_flow_table_ip.c                   | 293 ++++++++++++++++---
+ net/netfilter/nf_flow_table_offload.c              |   2 +-
+ net/netfilter/nf_flow_table_path.c                 | 323 +++++++++++++++++++++
+ net/netfilter/nft_connlimit.c                      |  54 ++--
+ net/netfilter/nft_flow_offload.c                   | 252 ----------------
+ net/netfilter/xt_connlimit.c                       |  14 +-
+ net/openvswitch/conntrack.c                        |  16 +-
+ .../selftests/net/netfilter/nft_flowtable.sh       | 116 +++++++-
+ 17 files changed, 954 insertions(+), 450 deletions(-)
+ create mode 100644 net/netfilter/nf_flow_table_path.c
