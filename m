@@ -1,175 +1,423 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AFB13AD05
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 14:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764082476; cv=none; b=RnYT4STFBQmNOCbG/miBAkp0k4oA/aaxedxPMJQN9T6MHKrbwD5vlpXkVg94kYOUM+IXTDtVh24KFxs9dz6jDKdNzn70OBVnSE3qPap2y8akDPgxytdvUBuJCxPZRDmUgtNs64Z9J/wI/4rODqhx3uRJGBDRBYfvcQWPXPv7GBg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764082476; c=relaxed/simple;
-	bh=8xC7HaADQYW3D+KtCunFe74uUCqkHpl2Q0DkBJIPChA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OEBL4sAwjIz6D2y7fdQhP/55Dvht/z3PO8FmOS2vD/64fHv0JtxnXt7T8aHLGBpAys+d4jw8SM0UO6bxnUMF05OrthmEYVWG/tF620JWH7BG0wW5/U3dOcP+SBbR0/pgw0WE4e0JoUFrl9H9AWsIIdFQbJdwO8sH4/xvkFFNvEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ABQRGpbL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cfcFu2mT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329A217C211
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 14:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764082731; cv=fail; b=PrOXIpWn97DsXEI5pnkKw6pNlptVTWMJePFYU2WZf4agBkJgzx/d0ICfZIXJpv/JM9zGw9CkwYpq+4QWjRMlQ0Ctes6b9HgZlZEne1q1U+T9K2MFFbfAkiyBsrqu9HTyOSGWhD6ituAtkF3V37pmJ1/SRRE5CXT02z4G5iZGVVU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764082731; c=relaxed/simple;
+	bh=EgD3AhjkXqjODUJEiK+4oYHljD+KIU2Tq9fUvgvKJAk=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AhzcuKuTKc/o2O0/IIBuwaqEyHd0gbX5HUkB/X1GbRuqNaMhuhGASFm5IbFwUEb0/cqN0qZXNnMKYn6pe4u18BMBepTwH8b9nCM72AX6/MEAEWmFJGqXxWcg4GekGMGW3Zn2TfWuFCTMf55TlhtOhENqTzFj01bGqY/JYo9eL1g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GluFSi1u; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ABQRGpbL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cfcFu2mT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764082474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vUrStbCWzacPZeRn/CeAW92WYQYkVd+P3AlUH3cXvno=;
-	b=ABQRGpbL3GrR1YpqoHIq879WeEhlpbPOgBwprtY8Zx00sZ7sqQ41oLSeMv3hvD7u3I9x+x
-	Ycdj40ZyZXboS+FzES+iSLZgYJKBN5/55lc6NF4x+mu/1QW2D1TEMLEV9111weofHbVkss
-	7b58/rVB0BSdf2M8zcsjQhBne/ECuBY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-WAoEv2GiMgW25xcD2TWODw-1; Tue, 25 Nov 2025 09:54:31 -0500
-X-MC-Unique: WAoEv2GiMgW25xcD2TWODw-1
-X-Mimecast-MFC-AGG-ID: WAoEv2GiMgW25xcD2TWODw_1764082469
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-42b3c965ce5so4602488f8f.2
-        for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 06:54:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764082469; x=1764687269; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vUrStbCWzacPZeRn/CeAW92WYQYkVd+P3AlUH3cXvno=;
-        b=cfcFu2mT/kKAEmorPEqCPxak8/pldhwbINDn/xrL4io3ji1L4N4klw8sgrqUATvU1f
-         HNN2w2V2bh9KiKb/yJj3csEINNzl+zAvXZF7vTPLzkmzVGygrT6biiEbATDCfXDSsRU3
-         qqz0wtqaSQoasNM+ScGRDNjv/jUB3Y9Ax8NhlSXiuo9eqIgwqkjrc+wGj+Tfkgf/bz4b
-         h7pRuAi+/cJE44PPQQNaBvDFOayQURYMhD2v9gR4vck0gj9yG7H+P6DJwuuF415S4n/S
-         yMbWSDwaDkK2xid8MWiFlSdlV8rbLrYOnK7cDKzFg53BcdYiB2Vt113w4wIEJ7WxzSF7
-         +jMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764082469; x=1764687269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vUrStbCWzacPZeRn/CeAW92WYQYkVd+P3AlUH3cXvno=;
-        b=K0M0fu1XFlWLR6xDUsyw/+tvELaYGexUySJ59WHRYmHq9AMnXRuWVmO8NF0vvRqg/C
-         Cvz78jOVxiOtLdxsG0eLjQ+1DE4Ga06KTWmTJmzP2t85dHGlKhiU04EyY1ilnWxPbSCS
-         jlDJpVf2OYOJ37kWb68kopPWDGpJ7QY1v6I2fEeJZBZVLdT2bTY22xSAacOHKBJ7CRNu
-         8+PKLTa+Rgg+njtKwNarZP6bWcjBd1Og4uVabZBIwXw6dEE46LlsQGwI1joxo3UMt+ZM
-         78i6jU3UjorncEi7VmdvBYVWxd4oi7+SJg/Ar7Mfx2WpDe5RIkHkHKB5R4krtnZrZxXK
-         iYNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMeTg0+b+v6S9et4G82iwRCieKP4EAKsHfDoSHg1+x+2bvMOaRKGjvkCX145C9i4396nfSfGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykG/pFVeiDipFTiQl6aSn8dcmFPPOde+R/jiFf2ylH/yECoO9A
-	4/eSm4ZcrAz/I6QRlnJadCtp4Eu3+D2TX70mVHVZLkx1NzpL9gcILtMT6Y3HDBEOXu0c6AiOAjO
-	SyFoNXcCoJZGvAsp1ijnlahjw+eQIvR7+EC/1Mkbuk2Xy7H/BWc7OW3Axvw==
-X-Gm-Gg: ASbGnct25bl8JKj0KzRmzJFtqaor4JuR3aebOYOv7v8a3SZxEym5Z59X5fujk3yUgPG
-	/23COgDjLkCOQ6ZiLlfMKPaZDqMMiA9TUXSqge7h2hnpejAR8XFcsNDvIwkrLgWZXYdbqbUhuA4
-	HeJvRmAPmZvMDq+FctdIoamop51r89qsgAZzzV2FHyjw4jCt42uSTnYUkd+4juzcX/Kf98f1mHB
-	7BBw80TDhJ+dK/1Os12S+abnnMRJfkGmxpDOV9Fyk5uEkj60hyJPWS8Uv/Esq4hhw1Hh/9nCpa/
-	BvFVXCKq5NTr+1+kGnGvM5WpH6IE7x8WZWJSYQ7aTb+HVP0+9T3FseYSWpXhmLR+yzcm6gD0Qgl
-	N1BoFOewJZKq+rrY=
-X-Received: by 2002:a05:6000:1841:b0:429:b525:6df5 with SMTP id ffacd0b85a97d-42e0f1fc3f8mr3305590f8f.3.1764082469383;
-        Tue, 25 Nov 2025 06:54:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF7rvJRNZU8Dcdx4PHJxDxhuM/oczmqfkFeajyK44cHiOkIrlaShhTGgJMJROx6QVQcGeq/5w==
-X-Received: by 2002:a05:6000:1841:b0:429:b525:6df5 with SMTP id ffacd0b85a97d-42e0f1fc3f8mr3305550f8f.3.1764082468871;
-        Tue, 25 Nov 2025 06:54:28 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-39-63.inter.net.il. [80.230.39.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f3635bsm35190453f8f.17.2025.11.25.06.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 06:54:28 -0800 (PST)
-Date: Tue, 25 Nov 2025 09:54:25 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	jon@nutanix.com, tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v6 1/8] ptr_ring: add __ptr_ring_full_next() to
- predict imminent fullness
-Message-ID: <20251125092904-mutt-send-email-mst@kernel.org>
-References: <20251120152914.1127975-1-simon.schippers@tu-dortmund.de>
- <20251120152914.1127975-2-simon.schippers@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GluFSi1u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764082730; x=1795618730;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=EgD3AhjkXqjODUJEiK+4oYHljD+KIU2Tq9fUvgvKJAk=;
+  b=GluFSi1uefXFdIQtj1liwC7ddAQEqnP6s0W6aCeA4VjYEt9UAsd27ZP2
+   cMmNFmyM20L5mww+ckRP55opsXh23XCDihKE3+wAza/tP4ZXgWiObAg9l
+   gJIvi7J73Yh4lTgJocJBTcOH/5pQI91w2Xug0fY/4wbDdoqxNtTRbOAQw
+   0vxdZrxiOUZEkHIgwBf89nqg0Ev0fbhH8PYFu+bmDepiXrh9tkBbOpWcD
+   aI0ceNHlhhwKNpGAvkvZv+Q3g1DMtQdrydKZNXKFxZ5lHL9S3TAeBuvid
+   FqtV+elMn8CUrjAyi8GHUVQimyFJW6qDv+V2MS1GfHGfeJnQz2JlPeZzh
+   A==;
+X-CSE-ConnectionGUID: D849jWmGQPuxVK0cQpJOuA==
+X-CSE-MsgGUID: 0shfflQiRZKWudAzrKYSCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="76786059"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="76786059"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 06:58:47 -0800
+X-CSE-ConnectionGUID: 49I1KemhSue8A6R055HMFQ==
+X-CSE-MsgGUID: JhlARpFsSD6z/2R0is/SYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="193463104"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 06:58:47 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 25 Nov 2025 06:58:46 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Tue, 25 Nov 2025 06:58:46 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.40) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 25 Nov 2025 06:58:46 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U6JBhVHrYfj10+FVG7u0a09o77PDS785FSfouf5BzRCwSvqYLCF3K/mJd67iOs1CG+Db+gXPI+ErlxzkAKiDxvXSLPYQkbtq9bcgn+EFgC2igUXKss2K9rQGFdEpb/MhXoX1K3DU2qsOYpJ00npLSuE9UFKJiEunRW4Ft6gWrPoP8rTzTD5w5n9rJokYiUx63Ec9sbgLG2/P+xHgrI6rgmsGrOf9ort1ouCGxbfjz5b08WxMT6pdRV3lIcigGBdqptKU8bvN407mj2d01iZM7aQa54quKfvGXT5+yXeVJd4LsPQR5GEjKTPtnfAxDprlge39WbaaZUrmlDVYkgvrSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PPtf9ugg5AnR+AF+qLjvt+B/9aE8Dwl5X0Q7cObl7BU=;
+ b=MJFpVMtxPqn7OUMM7IWQVUuUO7xbfwKgRvgFu9s2DZg1TNeusu6apYb2lzQ503ddptKXjhDW7g0al9nJGxdHBdJidbgPaDaUJz2fEEKfTMe9jNCu3hNZaAaNJ8K1f0ezS05xYjRToM1r0yv36PBO9sTGr8wueCG4JJ96BkWFBP3LaJ/PojNaC24BiCrCoB1+adUdap1x7gTrWFM4kel6wOKhJU823gsubWtmjTZHYfYGbJqFjn6tYQ/okOQoCNfJkccVce9lmcRwzJGPC1l0E1ga2gZHg1ZwDrhvKExJzVoZnvtm8km1kkRos8qz2pAqyoiTtw6u98YIFSVyLIn15g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW3PR11MB4538.namprd11.prod.outlook.com (2603:10b6:303:57::12)
+ by MW3PR11MB4764.namprd11.prod.outlook.com (2603:10b6:303:5a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
+ 2025 14:58:39 +0000
+Received: from MW3PR11MB4538.namprd11.prod.outlook.com
+ ([fe80::e117:2595:337:e067]) by MW3PR11MB4538.namprd11.prod.outlook.com
+ ([fe80::e117:2595:337:e067%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 14:58:39 +0000
+Message-ID: <3e9dc8fd-9052-4c53-ba40-5904306d09fb@intel.com>
+Date: Tue, 25 Nov 2025 06:58:37 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net v2 2/5] idpf: detach and close netdevs while
+ handling a reset
+To: Simon Horman <horms@kernel.org>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<Aleksandr.Loktionov@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<anthony.l.nguyen@intel.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<decot@google.com>, <willemb@google.com>, <joshua.a.hay@intel.com>,
+	<madhu.chittim@intel.com>, <aleksander.lobakin@intel.com>,
+	<larysa.zaremba@intel.com>, <iamvivekkumar@google.com>
+References: <20251121001218.4565-1-emil.s.tantilov@intel.com>
+ <20251121001218.4565-3-emil.s.tantilov@intel.com>
+ <aSWyYIsoXNlpsQn-@horms.kernel.org>
+Content-Language: en-US
+From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+In-Reply-To: <aSWyYIsoXNlpsQn-@horms.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0352.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::27) To MW3PR11MB4538.namprd11.prod.outlook.com
+ (2603:10b6:303:57::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251120152914.1127975-2-simon.schippers@tu-dortmund.de>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR11MB4538:EE_|MW3PR11MB4764:EE_
+X-MS-Office365-Filtering-Correlation-Id: e149d171-b53d-4cb7-78f4-08de2c331df4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UWxXZjJVcjRDR1k0UUluWEZFT1QxYTZOcUZQYnh1dTFsTU4wdVlLT1gxVit4?=
+ =?utf-8?B?c1Y5VGJkaUw3citPVUFwTExqdW54N0xmemhlU3FvZ1ZsN3ZucUV0OENzU0x6?=
+ =?utf-8?B?Y0VyNGpZTEt2TnZDMWlGQjl4dXJ6R0JscmtRVmNkYXFDdXNzRjdOWDNsWm5M?=
+ =?utf-8?B?dUlNMHNOMG9Ja1NvbWE3aVh3UzNUUUV2L1ZteG1qdjRhUE5lTE14bFpURjlx?=
+ =?utf-8?B?RU1aMjducXRtbVVYaStNa2czWTNuRU5vMWsxblNOTGJQVFFsODVWaVlQRFVG?=
+ =?utf-8?B?eXZpVnQ3S2owcUFkTFkrOHdlOURvN3pMSFBEbWVzOE5NbC9KVzZGaHlHTWlD?=
+ =?utf-8?B?TUVuWmg2QmFKWTNoZGNqNnBxNlhCUUsrdXRsU09zSnZldERRQThCTGFBL2Z0?=
+ =?utf-8?B?TkNtYnd6d3IvWWxRUUVZZHhlWDk4bG1wU3pqdkFUVjhjVGpEbW5nU2R3NE92?=
+ =?utf-8?B?MjFmN2loQlJzMzdkZ0xzUGcza2NMdTF2eFJDVzFRMHhBcy9nNk9iS1pHRjBL?=
+ =?utf-8?B?MmpHN3RqaUYzb3pLMkV5eHNONmovTHhhR296ejl3MUdoSDVxaXA3VWlhOGFH?=
+ =?utf-8?B?OHhRZWRwZVN0VTdNUmdLNXNvSldmcFkyQlp5eFlaTWpOTDZRTnM0eHNPbllE?=
+ =?utf-8?B?Rm1CRWlCaFBUNkNHb3E1T051UXJ0eGpmMUNiNHdqSU45ejR6eGYrcjFZYXNr?=
+ =?utf-8?B?NFB0aDZidFI5NUUwVTlNUTNZQmlaMFpJang4aVlUMTZGcGNlcEw2S1FXTmwz?=
+ =?utf-8?B?SWJ2RS9MUnFaMGNpaWxseUtjY3FnaGFZREhWa2lmejhJQ3B6NklzMGY2alNl?=
+ =?utf-8?B?blA0dHdYZ2hhMy9jTmNKcFllbUdRSHRyWGkxVHNHSHVmODF0L2I0R1VITWty?=
+ =?utf-8?B?bW5VL1Y2Q3RlZHpWZVlVZ05qRndnQWZmNmNMamdKUVVSa3A0Z1lZRG4zcDl1?=
+ =?utf-8?B?Q0hHdXoyVWU4NzkxMEh1aEtIQVRFaWtqaTZuRE8razM5dzZmZTk3SklSemZS?=
+ =?utf-8?B?ZjZlNzA2MkZxQW9vRWtSTVdIS1loVy9iTDZONmd5TDRNL3BjL2M2YzN3QldG?=
+ =?utf-8?B?b0dNc1RBUGh4SUgvVXduZjhhZi96dXVadHI0MmxKTVltQ2pkblpqcFZZdzkw?=
+ =?utf-8?B?MkRwdTZTZE9VSXY3bWFUYzN0RjRpYVNsR2srdytqTHE2d0JydHVMekZYN2Zr?=
+ =?utf-8?B?cDZ3bVhUM0hmRHZ3ZDZLWDNLYitkM1JnV2FPUjN5TFpTOFhlb2wwRTF4UjRN?=
+ =?utf-8?B?WGVvM1kwV2tLSndrODhlK2l5emhPN1lLZU04MW1UMXlPMzZpMHIwRnFkZDZy?=
+ =?utf-8?B?VVp3V0Y3UTJjM1I5M2VYaVV4SHBUREZJUVBJS0ZBck9SZHV2TWJOOG9BQW1a?=
+ =?utf-8?B?VVRGMWJsSGU5aWRRUk43TXBYUkxFMXlBTVg0Yi9lUG9QenNMYUpxZmlPYW1v?=
+ =?utf-8?B?RWJHSWdiODNsS1k4M0d3dGxPVnhxVm9HN2lkdGVSMGlwQzYrVC9Tam1wTUVS?=
+ =?utf-8?B?dnVmVXEzVlVkanBEdThvNGFwTUViWVFtc2NkMXI0bWtrTk1jSm8wMkIrb1J6?=
+ =?utf-8?B?d3ZRYTBlMTd0MmtJZEg4blZ2VDNtdXNsWWtzemV2L1FPazdaTGNGWEhocXRM?=
+ =?utf-8?B?cDZTTEpiUXhVempnWW11YmVZT1JlZFQrUUxCbVlKeDFMSWlOMjdzK0JZTzFH?=
+ =?utf-8?B?WG5oOGRQck1KcUQ1eHZISHVLaHlxWnl2UnlORVdqUk1kSGJSbHNObEV0alBM?=
+ =?utf-8?B?YzJpaU8rZkVPYzJDeXh2a1RGb2N1R1JCM0xWWUh6SlVhd2l4RFUvdElsUEc0?=
+ =?utf-8?B?MUNQTzdiSko5U0FmTkhSWk85WGlRWWFNUDJGdTFvMkFrL3NYakJCcU5CbTJD?=
+ =?utf-8?B?WkJWZ0x1THBqK2M3UmRDWmZON3Erb2VTZDQyT2ZVb2JiWS8zYjRYOHE0Y3dv?=
+ =?utf-8?B?Qy9xcWFVejJCZlNoNTk5TmtDZ1ZzVlZaK2NudlAvcEVDNHhBaGdGLzhTUVhq?=
+ =?utf-8?B?NFoyUHJtZ1l3PT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW3PR11MB4538.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RUhacGFyaTVhbzBHTktoS1NCeHFuWW9qeldEaG5qK0Y1cWdoVlFCVEgzallD?=
+ =?utf-8?B?ZDN5bUl6d2Jtbk0xNEk4T2JZQ3Qxa1hXNVpocHJoWGhPWjFtMmhGaG9zTFpt?=
+ =?utf-8?B?dWYzWER4RGFXeGxVOE84bmNiZmhUazQ1MGhNMjNzcy9sbmNSNVJyaW5rU3Vs?=
+ =?utf-8?B?UXgveVJFMlNiSndKUEx2emgrUk45UkNoY0FOeFRDNTBpS3F3U0trcDN4YUR1?=
+ =?utf-8?B?UmVuTEE0S09Vd09nVmVQUjNqUDhCd3FrNlA5Nittd1lKQ2lpMjNaVlY5dVh3?=
+ =?utf-8?B?dmJBZjJNenJBSjV3RTRxUG0vSWN6M1ljZGFFelZZdk81VTliN1VXblRvUVZy?=
+ =?utf-8?B?VEQyUnUraEFCSFp6UFl3eTV2cmU3eTJZdXp1QlNnVHcrMU00VGFycnRvTkZp?=
+ =?utf-8?B?di95UE9IbDg2TFNBb1F3L2pGL0JyVXdQN1RYSC82K05kQjg4TWZ4RnRYSnho?=
+ =?utf-8?B?MDNLL0M1eHdub2dHTWpWeDZzczdHeVBmcnpQUlI1UkorSlNoeCtzVmtpWkhJ?=
+ =?utf-8?B?OUh4ZFQ5bGNYbzkybWxCMmw0NlZTbEdTZUI4ekdhbkNtOTlZWld1NDBzZVp5?=
+ =?utf-8?B?Ym5IUXVDZjYyTC8vVzZWb3c2SWdrejRXekt5a2o5MjNtaGNIL0JRUk51T0ph?=
+ =?utf-8?B?UklsWENkanNzTXZQMVRXdDVuSkdYUmw2bkxIZmxWTDFiV0k5SWJ1VFBQRkx0?=
+ =?utf-8?B?T3pQZi9GeEJGMVBUVDBWZGU5V082YmdWdlRZOXF5SHBEeStna3ViWVBJY3JP?=
+ =?utf-8?B?YTh5VTNTZGJabytzbTZFZVMrUVdhQXMyMnY0RGpLRVNFbVJrc2ZReU11N05Q?=
+ =?utf-8?B?Z3grbVVseHZXMzhHbE9VOUx5YTRIUGxxLzM4cHlTSDhTNmlHOEdMVFR1bjFs?=
+ =?utf-8?B?eDhTd001ZzBCd05sTG81WkwvaDFxdlNYZ2FGTFNUQWg3WExZT1lsaEZ2RllZ?=
+ =?utf-8?B?R1IreDRFWEhnN3lobEpib0RCZy9HVEJqZWkrMHVYQnh3N0dVaW9kRjNIL0FW?=
+ =?utf-8?B?eW05OVUyajNFRUZMV3FHQ29nb2V3OUdYbDBvd2V4VWhKYnB3cm5tYU9NUy9D?=
+ =?utf-8?B?cFlUeXkrNnI5UlFleWlsQ2xjbko4TDMvWFN2Mzg1UnBpalRLQnVTSnI2YWZy?=
+ =?utf-8?B?cU1IWkNQY3l3Rmt1Z1k3Z2R2QktmWXFsWCs0dlR1eVByd2JVNnEvL1puL3RO?=
+ =?utf-8?B?OFBySjIxU2hpbGJOamtCblhpV2MwbDdhL3V4VVFKRDRrRW9ZbVBGUXNaeWlC?=
+ =?utf-8?B?ajVKb3U5Sm5pbFFDOWNpaFRMZkJzZ1c0QStadWhRZk54ZDdsVXpWOWFPSVhJ?=
+ =?utf-8?B?VjZoUk9QQTEzSW5BMFh2K3N1cEVPRGl5UkZLREs1ZkRFcUJRcGxjeVpDbDR3?=
+ =?utf-8?B?bHE0RzNwb0pLOTR5ajhlcHJhcEtPZGFROEM2NlU0WnZvaVJqU1dBWDhmNksx?=
+ =?utf-8?B?RkRLUDRMUUFXNkdOKzdMdmdSKzBRM3NjbFNQODVFdFV5R2hXcURsNTZQMkpq?=
+ =?utf-8?B?QzdPWW5jSnVmV0tWVlc0ZlNhb3J2dDl0aDRKcFFib0xpc29JWkk0b2ZCOVZP?=
+ =?utf-8?B?WWxsZ1dPcnZvV2tFVm1nMzlNaXZwZWZ2T2hsL2VVbWd1OTdzb3E2eFhJSFNI?=
+ =?utf-8?B?RDdyUFdkUkRVQW44UEM1VDdtc2MrMkxVMkpSMVFzdnRJMVJBSFNscUhLeGRJ?=
+ =?utf-8?B?Vkd0WHJUaHQyUFNEQ2hkMEVlRklKM1ZIUjF5cjFLaFY2M3dFQU9tdnNOY0U5?=
+ =?utf-8?B?WnZCTGMyK0ZlRVVzRGJqd1pTQUJjNFBqRzZHVHhlNzZ1dVZHT2g3NzI5cVpB?=
+ =?utf-8?B?OTRHNEVZRGRJdTRYdnQ1S2FyRFJWV3BuUUcvQVMzS2JPMkgwZ3Y5ZVlpTG5k?=
+ =?utf-8?B?c0ZKSWMzdnROSEdqNzNOak1qYVltMi9ZWUw5OXowZm4yeW9yOU9HRGN2MERW?=
+ =?utf-8?B?Ti81eGtkZFZMemd5b2VHaVdqREhLNDFYQWxnd2lVOE9CcVZ1WEZhcFBJTjJH?=
+ =?utf-8?B?b1BESHhDcGRmdkdmaXJ1Z29teFJPcmVFZWlwRXoydExiSjRUT1k2WXZGSjhL?=
+ =?utf-8?B?blM2Tm5GT3FiWHlMY0xDL3pSNHZQcHozWng2dkdNYzZ3ZUhBblk5OG9ua0d4?=
+ =?utf-8?B?dlFqYU9SU3U2WlNtaENOdmdBZ1pPV3NPcDZVWnREdVdINzJOUG1GTTJDM0ho?=
+ =?utf-8?B?dUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e149d171-b53d-4cb7-78f4-08de2c331df4
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4538.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 14:58:39.3672
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GPhZXjrwhAqh2lGLsSsbojHMIQlwqHJLm126ng9WISckBNlyxsq9Xw4YF+OrrfAAwfJ0dx8CBxq4QNovnIwR9dUeMFIlwDoNAM9K4QbGzXA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4764
+X-OriginatorOrg: intel.com
 
-On Thu, Nov 20, 2025 at 04:29:06PM +0100, Simon Schippers wrote:
-> Introduce the __ptr_ring_full_next() helper, which lets callers check
-> if the ptr_ring will become full after the next insertion. This is useful
-> for proactively managing capacity before the ring is actually full.
-> Callers must ensure the ring is not already full before using this
-> helper. This is because __ptr_ring_discard_one() may zero entries in
-> reverse order, the slot after the current producer position may be
-> cleared before the current one. This must be considered when using this
-> check.
+
+
+On 11/25/2025 5:42 AM, Simon Horman wrote:
+> On Thu, Nov 20, 2025 at 04:12:15PM -0800, Emil Tantilov wrote:
 > 
-> Note: This function is especially relevant when paired with the memory
-> ordering guarantees of __ptr_ring_produce() (smp_wmb()), allowing for
-> safe producer/consumer coordination.
+> ...
 > 
-> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Co-developed-by: Jon Kohler <jon@nutanix.com>
-> Signed-off-by: Jon Kohler <jon@nutanix.com>
-> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> ---
->  include/linux/ptr_ring.h | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> index 2a53f3d504d2..5c81f52db266 100644
+>> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> @@ -752,6 +752,65 @@ static int idpf_init_mac_addr(struct idpf_vport *vport,
+>>   	return 0;
+>>   }
+>>   
+>> +static void idpf_detach_and_close(struct idpf_adapter *adapter)
+>> +{
+>> +	int max_vports = adapter->max_vports;
+>> +
+>> +	for (int i = 0; i < max_vports; i++) {
+>> +		struct net_device *netdev = adapter->netdevs[i];
+>> +
+>> +		/* If the interface is in detached state, that means the
+>> +		 * previous reset was not handled successfully for this
+>> +		 * vport.
+>> +		 */
+>> +		if (!netif_device_present(netdev))
+>> +			continue;
+>> +
+>> +		/* Hold RTNL to protect racing with callbacks */
+>> +		rtnl_lock();
+>> +		netif_device_detach(netdev);
+>> +		if (netif_running(netdev)) {
+>> +			set_bit(IDPF_VPORT_UP_REQUESTED,
+>> +				adapter->vport_config[i]->flags);
+>> +			dev_close(netdev);
+>> +		}
+>> +		rtnl_unlock();
+>> +	}
+>> +}
+>> +
+>> +static void idpf_attach_and_open(struct idpf_adapter *adapter)
+>> +{
+>> +	int max_vports = adapter->max_vports;
+>> +
+>> +	for (int i = 0; i < max_vports; i++) {
+>> +		struct idpf_vport *vport = adapter->vports[i];
+>> +		struct idpf_vport_config *vport_config;
+>> +		struct net_device *netdev;
+>> +
+>> +		/* In case of a critical error in the init task, the vport
+>> +		 * will be freed. Only continue to restore the netdevs
+>> +		 * if the vport is allocated.
+>> +		 */
+>> +		if (!vport)
+>> +			continue;
+>> +
+>> +		/* No need for RTNL on attach as this function is called
+>> +		 * following detach and dev_close(). We do take RTNL for
+>> +		 * dev_open() below as it can race with external callbacks
+>> +		 * following the call to netif_device_attach().
+>> +		 */
+>> +		netdev = adapter->netdevs[i];
+>> +		netif_device_attach(netdev);
+>> +		vport_config = adapter->vport_config[vport->idx];
+>> +		if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED,
+>> +				       vport_config->flags)) {
+>> +			rtnl_lock();
+>> +			dev_open(netdev, NULL);
+>> +			rtnl_unlock();
+>> +		}
+>> +	}
+>> +}
+>> +
+>>   /**
+>>    * idpf_cfg_netdev - Allocate, configure and register a netdev
+>>    * @vport: main vport structure
 > 
-> diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
-> index 534531807d95..da141cc8b075 100644
-> --- a/include/linux/ptr_ring.h
-> +++ b/include/linux/ptr_ring.h
-> @@ -96,6 +96,31 @@ static inline bool ptr_ring_full_bh(struct ptr_ring *r)
->  	return ret;
->  }
->  
-> +/*
-> + * Checks if the ptr_ring will become full after the next insertion.
+> ...
+> 
+>> @@ -1807,27 +1860,6 @@ static int idpf_check_reset_complete(struct idpf_hw *hw,
+>>   	return -EBUSY;
+>>   }
+>>   
+>> -/**
+>> - * idpf_set_vport_state - Set the vport state to be after the reset
+>> - * @adapter: Driver specific private structure
+>> - */
+>> -static void idpf_set_vport_state(struct idpf_adapter *adapter)
+>> -{
+>> -	u16 i;
+>> -
+>> -	for (i = 0; i < adapter->max_vports; i++) {
+>> -		struct idpf_netdev_priv *np;
+>> -
+>> -		if (!adapter->netdevs[i])
+>> -			continue;
+>> -
+>> -		np = netdev_priv(adapter->netdevs[i]);
+>> -		if (np->state == __IDPF_VPORT_UP)
+>> -			set_bit(IDPF_VPORT_UP_REQUESTED,
+>> -				adapter->vport_config[i]->flags);
+>> -	}
+>> -}
+>> -
+>>   /**
+>>    * idpf_init_hard_reset - Initiate a hardware reset
+>>    * @adapter: Driver specific private structure
+> 
+>> @@ -1836,28 +1868,17 @@ static void idpf_set_vport_state(struct idpf_adapter *adapter)
+>>    * reallocate. Also reinitialize the mailbox. Return 0 on success,
+>>    * negative on failure.
+>>    */
+>> -static int idpf_init_hard_reset(struct idpf_adapter *adapter)
+>> +static void idpf_init_hard_reset(struct idpf_adapter *adapter)
+>>   {
+>>   	struct idpf_reg_ops *reg_ops = &adapter->dev_ops.reg_ops;
+>>   	struct device *dev = &adapter->pdev->dev;
+>> -	struct net_device *netdev;
+>>   	int err;
+>> -	u16 i;
+>>   
+>> +	idpf_detach_and_close(adapter);
+>>   	mutex_lock(&adapter->vport_ctrl_lock);
+>>   
+>>   	dev_info(dev, "Device HW Reset initiated\n");
+>>   
+>> -	/* Avoid TX hangs on reset */
+>> -	for (i = 0; i < adapter->max_vports; i++) {
+>> -		netdev = adapter->netdevs[i];
+>> -		if (!netdev)
+>> -			continue;
+> 
+> Hi Emil,
+> 
+> In this code that is removed there is a check for !netdev.
+> And also there is a similar check in idpf_set_vport_state().
+> But there is no such check in idpf_detach_and_close().
+> Is this intentional?
 
-Is this for the producer or the consumer? A better name would
-reflect that.
+This logic is a bit confusing because the reset path is executed on both
+driver load and a reset (since the initialization is identical it makes
+sense to re-use the code). This is what roughly happens on load and
+reset:
 
-> + *
-> + * Note: Callers must ensure that the ptr_ring is not full before calling
-> + * this function,
+driver load -> reset -> configure vports -> create netdevs
+reset -> de-allocate vports -> re-allocate vports
 
-how?
+The first patch:
+https://lore.kernel.org/intel-wired-lan/20251121001218.4565-2-emil.s.tantilov@intel.com/
 
-> as __ptr_ring_discard_one invalidates entries in
-> + * reverse order. Because the next entry (rather than the current one)
-> + * may be zeroed after an insertion, failing to account for this can
-> + * cause false negatives when checking whether the ring will become full
-> + * on the next insertion.
+makes sure that we never lose the netdev on a reset, following a
+successful driver load. Previously this could happen in the error path.
+In other words during a reset there is no need to check for a netdev as
+this is guaranteed, but we must make sure that vports are present as
+those can be freed.
 
-this part confuses more than it clarifies.
+The 5th patch:
+https://lore.kernel.org/intel-wired-lan/20251121001218.4565-6-emil.s.tantilov@intel.com/
 
-> + */
-> +static inline bool __ptr_ring_full_next(struct ptr_ring *r)
-> +{
-> +	int p;
-> +
-> +	if (unlikely(r->size <= 1))
-> +		return true;
-> +
-> +	p = r->producer + 1;
-> +
-> +	if (unlikely(p >= r->size))
-> +		p = 0;
-> +
-> +	return r->queue[p];
-> +}
-> +
->  /* Note: callers invoking this in a loop must use a compiler barrier,
->   * for example cpu_relax(). Callers must hold producer_lock.
->   * Callers are responsible for making sure pointer that is being queued
-> -- 
-> 2.43.0
+fixes another instance where we could fail in the reset error path by
+ensuring the service task, which handles resets is cancelled as at
+that point we have neither vports, nor netdevs, hence nothing to
+"serve". Hope this makes sense, but the gist of it is that with this
+series applied the reset can be protected by just making sure that
+the vports are allocated. If for whatever reason netdevs happen to
+be NULL, following this series it would be a bug introduced somewhere
+else in the code that will have to be addressed.
+
+Thanks,
+Emil
+
+> 
+> Likewise, is such a check needed in idpf_attach_and_open()?
+> 
+> My understanding is that netdevs[i] is populated asynchronously
+> via idpf_init_task. But I'm unsure if that is known to have
+> completed or not.
+> 
+> Flagged by Claude Code with https://github.com/masoncl/review-prompts/
+> 
+> 
+>> -
+>> -		netif_carrier_off(netdev);
+>> -		netif_tx_disable(netdev);
+>> -	}
+>> -
+>>   	/* Prepare for reset */
+>>   	if (test_and_clear_bit(IDPF_HR_DRV_LOAD, adapter->flags)) {
+>>   		reg_ops->trigger_reset(adapter, IDPF_HR_DRV_LOAD);
+>> @@ -1866,7 +1887,6 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
+>>   
+>>   		idpf_idc_issue_reset_event(adapter->cdev_info);
+>>   
+>> -		idpf_set_vport_state(adapter);
+>>   		idpf_vc_core_deinit(adapter);
+>>   		if (!is_reset)
+>>   			reg_ops->trigger_reset(adapter, IDPF_HR_FUNC_RESET);
+>> @@ -1913,11 +1933,14 @@ static int idpf_init_hard_reset(struct idpf_adapter *adapter)
+>>   unlock_mutex:
+>>   	mutex_unlock(&adapter->vport_ctrl_lock);
+>>   
+>> -	/* Wait until all vports are created to init RDMA CORE AUX */
+>> -	if (!err)
+>> -		err = idpf_idc_init(adapter);
+>> -
+>> -	return err;
+>> +	/* Attempt to restore netdevs and initialize RDMA CORE AUX device,
+>> +	 * provided vc_core_init succeeded. It is still possible that
+>> +	 * vports are not allocated at this point if the init task failed.
+>> +	 */
+>> +	if (!err) {
+>> +		idpf_attach_and_open(adapter);
+>> +		idpf_idc_init(adapter);
+>> +	}
+>>   }
+>>   
+>>   /**
+>> -- 
+>> 2.37.3
+>>
+>>
+> 
 
