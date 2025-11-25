@@ -1,202 +1,161 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE8F32C93B;
-	Tue, 25 Nov 2025 18:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3334632692F
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 18:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764093957; cv=none; b=XphZuKqStmpO7RNMwY2OryUv+zTZx4I0X7VHDpp9YTzETzyNgE1bgFyoSYKYCTencIQVOW4X0eP/lWFXVQhXazO9ky90vqBz1Qxi24IGwkfta5hGm6H11LdINOOvhCzwlKumIhW1l2pQfEUm8VbCatZDpUPJsZD2sszms+fHKwE=
+	t=1764095853; cv=none; b=N7KAXFGtpquoDjw2Y0G5J2Llj9qsVw0CiFOglYTV0Ko/5eqGAjj4fCGAmlLEb1/3mpqG3Hcqrm8mNHpwYqFN4U2/MuKkAbNVVtIfWcykb2/CVTlGib2p7VNQcHu5CIS3hY7KhbdRxexDDN60Q2e1bJlXr/8Bhs71K+dUas1M/u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764093957; c=relaxed/simple;
-	bh=5U/S5kssDGyaZEH+ttQKL5xYLbM+ySOM7z6cUAiJ8Tw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fR0VT6w9Q3QMpsB5UChmFiQigmbmugjM0sY++i5vjryukpfqZ3mrHdVAv8DfeP25J47WJd5Xrjk11Po0N/8SHKIcNjSFJ1xqL2n27USptf2PYlFPKtPfaLg1GEdAU0Xzc8QUjXl8eGJRF6odCX65XAJYRUE6cDYDzdyH7ac/XzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2MT85Y8W; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1764095853; c=relaxed/simple;
+	bh=UD6VqYDlbach/7UrxFe4s8icPPzP2bPG5uzZUSKRTzY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IZSoumup4OMDotFIo0b2zFpg4BsHtzDptLcqxMgaCI3CEZGm2KkJiFTemC4TDNlmwtX6G63wDP4fFLZsXp8S6Kq6hKUSIZdX0qcb/cKXlxeGj6jVeo2az3x2Bepa2E3C7XeBhyKb7mitLjr7t3/h04CqgZiIfueMGt2bFz2Wo6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iGA6LscB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8ounlTRH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iGA6LscB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8ounlTRH; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2MT85Y8W"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B748E4E418B9;
-	Tue, 25 Nov 2025 18:05:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 83FEF606A1;
-	Tue, 25 Nov 2025 18:05:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C31A102F08B4;
-	Tue, 25 Nov 2025 19:05:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764093951; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=lp+Mc2LjVyhDfZiwstCaChFpHcgAv27Nujzsi0u4HYw=;
-	b=2MT85Y8WbOH/m30D+UIp0mzIxbW0XIkxpgaKXoqNFqVjl+uJrbiMolxTm7BkcQ8ICAOtDc
-	lQoeSqDR/N+HxoZohW3agU9D8VRYd6MpLCAtXB1t82kHFtzMgcR8s9cE8U+o3Jclhgl1Ot
-	iRjxhH/2dY/9lyEZLceMytSCQ2THl5kCZmcWNIV3ehsEFcyBEi011lxuFp6cnQQIvE2EjI
-	Ijcd30oQ6zCON1gSoZMHi052SrixULQ2AUvBuzAQGpp6vPIKCPQTcQnssJVwknWhJcngGx
-	PPTWJEAFiKTJ6Z6Wa16J+lFLf5ZwMvUJuNF745DCtiAlv/iCGHKIetdBzZFPaA==
-Message-ID: <bcfcfcb1-33d3-4e03-95c7-565f6a76f3d8@bootlin.com>
-Date: Tue, 25 Nov 2025 19:05:47 +0100
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iGA6LscB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8ounlTRH";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iGA6LscB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8ounlTRH"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3F3185BE1B;
+	Tue, 25 Nov 2025 18:37:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764095850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ys75oXiV5yeKm6WL9VDM2GUYBUXOKxhgeSPtQerEL50=;
+	b=iGA6LscBLW/V9gb3blZgPWVnm1xIqYkju7yu2GJMXO2isw5DSezA0SkSGAM3xDi++KG1LD
+	ebrsNp6E5vuqams50NeTHDReNQ0EmJsfi3KnLe/uzKC1sladQk806f6T9fCpqFHDuTTt19
+	ioQYA5JcydktfFTkrAyf+LcKx9c+ITQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764095850;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ys75oXiV5yeKm6WL9VDM2GUYBUXOKxhgeSPtQerEL50=;
+	b=8ounlTRHLTWvXbJoy1GPsQuGAddpbmRa69Fmor4ucNQZfRM3lIFIL+uCHNb96DOiOqZp05
+	rs7Y8YMe3CVIHxDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iGA6LscB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8ounlTRH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764095850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ys75oXiV5yeKm6WL9VDM2GUYBUXOKxhgeSPtQerEL50=;
+	b=iGA6LscBLW/V9gb3blZgPWVnm1xIqYkju7yu2GJMXO2isw5DSezA0SkSGAM3xDi++KG1LD
+	ebrsNp6E5vuqams50NeTHDReNQ0EmJsfi3KnLe/uzKC1sladQk806f6T9fCpqFHDuTTt19
+	ioQYA5JcydktfFTkrAyf+LcKx9c+ITQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764095850;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ys75oXiV5yeKm6WL9VDM2GUYBUXOKxhgeSPtQerEL50=;
+	b=8ounlTRHLTWvXbJoy1GPsQuGAddpbmRa69Fmor4ucNQZfRM3lIFIL+uCHNb96DOiOqZp05
+	rs7Y8YMe3CVIHxDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E2ACF3EA63;
+	Tue, 25 Nov 2025 18:37:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dUf0L2n3JWlKWgAAD6G6ig
+	(envelope-from <krisman@suse.de>); Tue, 25 Nov 2025 18:37:29 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: Stefan Metzmacher <metze@samba.org>
+Cc: Jens Axboe <axboe@kernel.dk>,  netdev@vger.kernel.org,
+  io-uring@vger.kernel.org,  Jakub Kicinski <kuba@kernel.org>,  "David S.
+ Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
+  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,
+  Willem de Bruijn <willemb@google.com>,  Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH v3 3/3] io_uring: Introduce getsockname io_uring cmd
+In-Reply-To: <dc97cb0e-628c-4a97-98ca-06ececf32e1e@samba.org> (Stefan
+	Metzmacher's message of "Tue, 25 Nov 2025 13:36:26 +0100")
+Organization: SUSE
+References: <20251125002345.2130897-1-krisman@suse.de>
+	<20251125002345.2130897-4-krisman@suse.de>
+	<dc97cb0e-628c-4a97-98ca-06ececf32e1e@samba.org>
+Date: Tue, 25 Nov 2025 13:37:27 -0500
+Message-ID: <87y0nuhsbc.fsf@mailhost.krisman.be>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: dwmac: Disable flushing frames on
- Rx Buffer Unavailable
-To: rohan.g.thomas@altera.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Matthew Gerlach <matthew.gerlach@altera.com>
-References: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 3F3185BE1B
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
 
-Hi,
+Stefan Metzmacher <metze@samba.org> writes:
 
-On 25/11/2025 17:37, Rohan G Thomas via B4 Relay wrote:
-> From: Rohan G Thomas <rohan.g.thomas@altera.com>
-> 
-> In Store and Forward mode, flushing frames when the receive buffer is
-> unavailable, can cause the MTL Rx FIFO to go out of sync. This results
-> in buffering of a few frames in the FIFO without triggering Rx DMA
-> from transferring the data to the system memory until another packet
-> is received. Once the issue happens, for a ping request, the packet is
-> forwarded to the system memory only after we receive another packet
-> and hece we observe a latency equivalent to the ping interval.
-> 
-> 64 bytes from 192.168.2.100: seq=1 ttl=64 time=1000.344 ms
-> 
-> Also, we can observe constant gmacgrp_debug register value of
-> 0x00000120, which indicates "Reading frame data".
-> 
-> The issue is not reproducible after disabling frame flushing when Rx
-> buffer is unavailable. But in that case, the Rx DMA enters a suspend
-> state due to buffer unavailability. To resume operation, software
-> must write to the receive_poll_demand register after adding new
-> descriptors, which reactivates the Rx DMA.
-> 
-> This issue is observed in the socfpga platforms which has dwmac1000 IP
-> like Arria 10, Cyclone V and Agilex 7. Issue is reproducible after
-> running iperf3 server at the DUT for UDP lower packet sizes.
-> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-> Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+> Hi Gabriel,
+>
+>> +static int io_uring_cmd_getsockname(struct socket *sock,
+>> +				    struct io_uring_cmd *cmd,
+>> +				    unsigned int issue_flags)
+>> +{
+>> +	const struct io_uring_sqe *sqe = cmd->sqe;
+>> +	struct sockaddr __user *uaddr;
+>> +	unsigned int peer;
+>> +	int __user *ulen;
+>> +
+>> +	if (sqe->ioprio || sqe->__pad1 || sqe->len || sqe->rw_flags)
+>> +		return -EINVAL;
+>> +
+>> +	uaddr = u64_to_user_ptr(READ_ONCE(sqe->addr));
+>> +	ulen = u64_to_user_ptr(sqe->addr3);
+>> +	peer = READ_ONCE(sqe->optlen);
+>> +	if (peer > 1)
+>> +		return -EINVAL;
+>> +	return do_getsockname(sock, 0, uaddr, ulen);
+>
+> I guess this should actually pass down 'peer' instead of '0'?
 
-I'll let others comment on the correctness of the dwmac1000 part, but
-still :
+Thanks for the catch.  I guess two wrongs *do* make a right somethings.
+The getpeername test was peeking at the wrong socket, effectively
+testing the local port against itself, and it thus succeeded. Updated
+the test and will send a v4.
 
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c | 5 +++--
->  drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h     | 1 +
->  drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c     | 5 +++++
->  drivers/net/ethernet/stmicro/stmmac/hwif.h          | 3 +++
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 2 ++
->  5 files changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-> index 6d9b8fac3c6d0fd76733ab4a1a8cce2420fa40b4..5877fec9f6c30ed18cdcf5398816e444e0bd0091 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-> @@ -135,10 +135,10 @@ static void dwmac1000_dma_operation_mode_rx(struct stmmac_priv *priv,
->  
->  	if (mode == SF_DMA_MODE) {
->  		pr_debug("GMAC: enable RX store and forward mode\n");
-> -		csr6 |= DMA_CONTROL_RSF;
-> +		csr6 |= DMA_CONTROL_RSF | DMA_CONTROL_DFF;
->  	} else {
->  		pr_debug("GMAC: disable RX SF mode (threshold %d)\n", mode);
-> -		csr6 &= ~DMA_CONTROL_RSF;
-> +		csr6 &= ~(DMA_CONTROL_RSF | DMA_CONTROL_DFF);
->  		csr6 &= DMA_CONTROL_TC_RX_MASK;
->  		if (mode <= 32)
->  			csr6 |= DMA_CONTROL_RTC_32;
-> @@ -262,6 +262,7 @@ const struct stmmac_dma_ops dwmac1000_dma_ops = {
->  	.dma_rx_mode = dwmac1000_dma_operation_mode_rx,
->  	.dma_tx_mode = dwmac1000_dma_operation_mode_tx,
->  	.enable_dma_transmission = dwmac_enable_dma_transmission,
-> +	.enable_dma_reception = dwmac_enable_dma_reception,
->  	.enable_dma_irq = dwmac_enable_dma_irq,
->  	.disable_dma_irq = dwmac_disable_dma_irq,
->  	.start_tx = dwmac_dma_start_tx,
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
-> index d1c149f7a3dd9e472b237101666e11878707f0f2..054ecb20ce3f68bce5da3efaf36acf33e430d3f0 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_dma.h
-> @@ -169,6 +169,7 @@ static inline u32 dma_chan_base_addr(u32 base, u32 chan)
->  #define NUM_DWMAC4_DMA_REGS	27
->  
->  void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan);
-> +void dwmac_enable_dma_reception(void __iomem *ioaddr, u32 chan);
->  void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
->  			  u32 chan, bool rx, bool tx);
->  void dwmac_disable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-> index 467f1a05747ecf0be5b9f3392cd3d2049d676c21..97a803d68e3a2f120beaa7c3254748cf404236df 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac_lib.c
-> @@ -33,6 +33,11 @@ void dwmac_enable_dma_transmission(void __iomem *ioaddr, u32 chan)
->  	writel(1, ioaddr + DMA_CHAN_XMT_POLL_DEMAND(chan));
->  }
->  
-> +void dwmac_enable_dma_reception(void __iomem *ioaddr, u32 chan)
-> +{
-> +	writel(1, ioaddr + DMA_CHAN_RCV_POLL_DEMAND(chan));
-> +}
-> +
->  void dwmac_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
->  			  u32 chan, bool rx, bool tx)
->  {
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> index f257ce4b6c66e0bbd3180d54ac7f5be934153a6b..df6e8a567b1f646f83effbb38d8e53441a6f6150 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> @@ -201,6 +201,7 @@ struct stmmac_dma_ops {
->  	void (*dma_diagnostic_fr)(struct stmmac_extra_stats *x,
->  				  void __iomem *ioaddr);
->  	void (*enable_dma_transmission)(void __iomem *ioaddr, u32 chan);
-> +	void (*enable_dma_reception)(void __iomem *ioaddr, u32 chan);
->  	void (*enable_dma_irq)(struct stmmac_priv *priv, void __iomem *ioaddr,
->  			       u32 chan, bool rx, bool tx);
->  	void (*disable_dma_irq)(struct stmmac_priv *priv, void __iomem *ioaddr,
-> @@ -261,6 +262,8 @@ struct stmmac_dma_ops {
->  	stmmac_do_void_callback(__priv, dma, dma_diagnostic_fr, __args)
->  #define stmmac_enable_dma_transmission(__priv, __args...) \
->  	stmmac_do_void_callback(__priv, dma, enable_dma_transmission, __args)
-> +#define stmmac_enable_dma_reception(__priv, __args...) \
-> +	stmmac_do_void_callback(__priv, dma, enable_dma_reception, __args)
->  #define stmmac_enable_dma_irq(__priv, __args...) \
->  	stmmac_do_void_callback(__priv, dma, enable_dma_irq, __priv, __args)
->  #define stmmac_disable_dma_irq(__priv, __args...) \
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 6cacedb2c9b3fefdd4c9ec8ba98d389443d21ebd..1ecca60baf74286da7f156b4c3c835b3cbabf1ba 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -4973,6 +4973,8 @@ static inline void stmmac_rx_refill(struct stmmac_priv *priv, u32 queue)
->  	rx_q->rx_tail_addr = rx_q->dma_rx_phy +
->  			    (rx_q->dirty_rx * sizeof(struct dma_desc));
->  	stmmac_set_rx_tail_ptr(priv, priv->ioaddr, rx_q->rx_tail_addr, queue);
-> +	/* Wake up Rx DMA from the suspend state if required */
-> +	stmmac_enable_dma_reception(priv, priv->ioaddr, queue);
->  }
->  
->  static unsigned int stmmac_rx_buf1_len(struct stmmac_priv *priv,
-> 
-> ---
-> base-commit: e3daf0e7fe9758613bec324fd606ed9caa187f74
-> change-id: 20251125-a10_ext_fix-5951805b9906
-> 
-> Best regards,
-
+-- 
+Gabriel Krisman Bertazi
