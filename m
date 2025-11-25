@@ -1,103 +1,279 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7843E263F54;
-	Tue, 25 Nov 2025 09:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5788269B1C
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 09:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764062558; cv=none; b=PJOtjAQiuJxoE2XgptoTcxS6IVrxzQp5oS8GkukEdNBEptBG8wVp+Dy7uSLbV8gNALdCUf2QrgAaEjl/ArRbewfJwMxFXlpiG+yMq/RgzETHk/pW7rdG3853l4UnwGntLfElwH8zL5UyOl4/fX5wmTkd+3NcC+RJwGaPDYbi1zI=
+	t=1764062705; cv=none; b=p17RCKjWWVnyl+ZUnb1rPEyODyq0lGOOO2kxX7xS5t57QDEEKdp5OjAFmg+N4wfF34KbeRjp1k8YDHpcB0zzTLTEBImmRfwtUECEeP8PIMouMX1MdlCZK5Vgj5pp0lIkkAKr64EVztAzJ4elaWXXMfekPXSaujUa7KC6icGvEP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764062558; c=relaxed/simple;
-	bh=mJe8Ol5zu15ROz1lQUNhj0gcawQLQyowBXNhlhmGTcQ=;
+	s=arc-20240116; t=1764062705; c=relaxed/simple;
+	bh=hjHfVR6JY50I/PUS5QXDEWVC2vBDOcIlWiJtzvzvF00=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kb9M/4JGo93j346Nb5nmhhcXM5EdRmhtT/NzVYaPJdsUE+oLfwN/HwkQs8lGGwwczu4NOeeu+9taCUUhPPQKbP22T1Zcp8G5e+q4h+rM5+6IcMrJFfg5OlHhmb2JbKlydJApRIkkusApdKmxlyJncSZMNkX4AH5Bno5yaI8zSUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=C+oiZatp; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=IQRpMj3bIsufdJLVH0X56CND2PKCpryYnXp7g8VDL1AiRnXCkM8nQoxnqbAw/xltQebtF2Rf4MfQZ7piBbVVArFEpXfNTBCOg62sUxdTe6tcM+SDT6e7G2znp5pfhXLxsNCm5Oj13tVNmfmzYNUe4mFWuxJoSEXABWo4ks48Kq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LNsF2wHy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAf0C06b; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="C+oiZatp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Q7H8tjTTGIlQYy6DhRbnU03Mn/CHXGlMY016rFAkQ5A=; b=C+oiZatpl9yGNxOCzw33bIBnGr
-	UYgzm1d0p3reNz0/zF08nXVWdFT4/x1wxmBjPzznipxIt+bQ7zfJHjfLdUWRgXV1m/bq6vqGxHzMD
-	LCFNOiwZqr05sQgDG7bzkh7uumoUyMm1MKPPNOp5YLPeV6j6yxwpZPvJH6eVn+Whs6/ujXtQJkf9g
-	w6z8FpGethal/Y0S2U5PciJFzJ5GX3aj8ArzU3gQLroio4rnKKDqsqQ7/+Cb/snNmbxmtk1xPzfJB
-	tHwt8f1VvhQ128DSJGAuj7e5g761bOvIVXOjeR3S4iSFM6V/ss4OUgOE3NCneH0Ki19LRvfoD9ryI
-	aRVWMa2A==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vNpFf-003I1X-In; Tue, 25 Nov 2025 09:22:23 +0000
-Date: Tue, 25 Nov 2025 01:22:18 -0800
-From: Breno Leitao <leitao@debian.org>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: "Lobakin, Aleksander" <aleksander.lobakin@intel.com>, 
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LNsF2wHy";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAf0C06b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764062702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H+N/esHuq8L2QAewoJC5E7AAXPZDfyRFaWXpHRgQYro=;
+	b=LNsF2wHy/Yp9MBrDlAHtPUKD+xB4JdgrihTf8D5FNqXFVWGuTswPbH8WeY7venANFk/nXV
+	YxzmNcsDoIN8PllyBN9hW17eVmi7tn9g3h2WZMgzgm4ZOZr8pPepW7zlER932Rnb7MJLVL
+	2GrOThz3EtTI7nIv/H5636FZPVzor9M=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-qptBveCyM8CMFPrEC3mcAg-1; Tue, 25 Nov 2025 04:25:00 -0500
+X-MC-Unique: qptBveCyM8CMFPrEC3mcAg-1
+X-Mimecast-MFC-AGG-ID: qptBveCyM8CMFPrEC3mcAg_1764062700
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42b2c8fb84fso2789639f8f.2
+        for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 01:25:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764062699; x=1764667499; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H+N/esHuq8L2QAewoJC5E7AAXPZDfyRFaWXpHRgQYro=;
+        b=XAf0C06bcnZU5GQBpnYc/ujSfbP4jG6w/4pSicwNvfsYD41SZDdgNtSWBxEaO7GLyC
+         dAxnJgeH/qrnjHGZW3p+lFjvyfhH86XdG1JNTfujquhjICMEfbX7TUhhOsFjb0nI/jUx
+         tap79FJrryKktv5PcOQM0FmtAHgtlaOiiMy9jE/wYHVSOD1EzHao6fWUIoKg210233x5
+         OPNHn2X92FReS6CHDhyUUcrfZWglSBv8NcaW9ROB+agdwfufqZ08Q5YM3I/1NaQG1Tys
+         z/AvlIWfGDluYvXOQa26O3GC85VKHu/qJvoiqojKTNe/HtfwjthDGpxvr/BmS/mm/96p
+         +AQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764062699; x=1764667499;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H+N/esHuq8L2QAewoJC5E7AAXPZDfyRFaWXpHRgQYro=;
+        b=R7OvWKvmSXEUP2XCsfycexrDRC9tOxyYskunSsEV8JR6w9Yq8JsVyM52L52AgL2uNe
+         TChrt7/KwF5CNlvFB1bUrEyEygYrXH/PkHN++tQS9rvCC0mDFCiRE+CaZ66EKnG2GzHB
+         LqYEzVl0WouQ9Xks6TfcovDexOQtvlQwlnGkCjlZJflwZqrN/fJBUc58pdV02HonG3+W
+         BlYqVRUyEyT5vt6kqg/1kBAhjQ77jS1+majK3tFOiqFt9O5LnHqfAjwurpcgr5+/zm/9
+         2EBEjG6pUosqYhjw+nMOAUVY949Va13q2ihaomF1cY5OJaUbRXDpOZinPS5yRcUadQh/
+         kNng==
+X-Forwarded-Encrypted: i=1; AJvYcCX+9qYaCHq0KN26uK3Z/CFGojWR+Yfqg+DZSv1OD+d/OACid54bU+i95aKYW540/2eB/s5ySD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYI2ueBATqya1csJFnK+5bNqGaKIK3seWucTpWiOUHOK80H3a/
+	1b1PmrMO9102Oc3ehwshVmipYUuOl/nt1JuQuSpEQZZsBM+3QMo650q2jCUPQqZMx/8sgLVpWiM
+	R5jWqTawK/Squtf1kQSnt/k961e0dumjDpcW3iXKYZU8FnwGahHmp47NoHA==
+X-Gm-Gg: ASbGncvn4PujyzmAD9njyGqHMcbMdOZ/vJGDj2ahgg2E2FaSIRKf/9RjU3epUiYSJLH
+	MfyOwvLyWiWN3GbaUUvPTXZKl9BNR6xMrPJNH6/evGOm5NAu/4X4bRUk+rqOkGrq7JMq7WXpK07
+	IUeOv7jZLwU/HHqYCbfpN87KBzvT1Va0a4sL18a+zhD0MP2Y5eGEs6hVZr0npF1s++xMWLzX36X
+	Qar1jj+H7nbKYUVdyZSfvNqFHeZTcGk3olkCS9cnboInCvIeYrUUjS58Cif5FNtf5h7nMD2Jw/q
+	Gl2dQBLI1bfBdm8YlPo7BpEhR6205bIu/fZR6UWrczUvnFQ7ayQ3LS3UgkotK5xhy+WswnR+cy9
+	pJnavaFyhgETt60q5jyREt9zoOFEYJn2Pueh6Y42OU6OUcrrq+e1n+UlGk0/daQ==
+X-Received: by 2002:a05:6000:3109:b0:42b:3592:1b88 with SMTP id ffacd0b85a97d-42e0f350255mr1946066f8f.50.1764062699431;
+        Tue, 25 Nov 2025 01:24:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFOINmS8NH5yU9ZL8Nf4fEf6WMmOdQHifzU7OMqNv6Owof/NynMw2jUGB1PZoQSH+fj3xbBUw==
+X-Received: by 2002:a05:6000:3109:b0:42b:3592:1b88 with SMTP id ffacd0b85a97d-42e0f350255mr1946011f8f.50.1764062698849;
+        Tue, 25 Nov 2025 01:24:58 -0800 (PST)
+Received: from sgarzare-redhat (host-87-12-139-91.business.telecomitalia.it. [87.12.139.91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb91f4sm33924782f8f.31.2025.11.25.01.24.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 01:24:58 -0800 (PST)
+Date: Tue, 25 Nov 2025 10:24:35 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, 
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>, "michal.kubiak@intel.com" <michal.kubiak@intel.com>, 
-	"Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>, 
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kernel-team@meta.com" <kernel-team@meta.com>
-Subject: Re: [Intel-wired-lan] [PATCH net-next 4/8] idpf: extract GRXRINGS
- from .get_rxnfc
-Message-ID: <2ewdkayyhcjbf45v7laudrqjw3z443amelwwmnz5bzzcz7ogo4@qs6gwysc2kvk>
-References: <20251124-gxring_intel-v1-0-89be18d2a744@debian.org>
- <20251124-gxring_intel-v1-4-89be18d2a744@debian.org>
- <IA3PR11MB8986B2AF393FF9E3609C9DB0E5D1A@IA3PR11MB8986.namprd11.prod.outlook.com>
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, berrange@redhat.com, 
+	Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v11 03/13] vsock: reject bad
+ VSOCK_NET_MODE_LOCAL configuration for G2H
+Message-ID: <btejwapjdpapzk2jldxzffswbaqvsh4f5nb46otrghortyqbi2@2gdsthrxibjl>
+References: <20251120-vsock-vmtest-v11-0-55cbc80249a7@meta.com>
+ <20251120-vsock-vmtest-v11-3-55cbc80249a7@meta.com>
+ <swa5xpovczqucynffqgfotyx34lziccwpqomnm5a7iwmeyixfv@uehtzbdj53b4>
+ <aSC3IX81A3UhtD3N@devvm11784.nha0.facebook.com>
+ <g4xir3lupnjybh7fqig6xonp32ubotdf3emmrozdm52tpaxvxn@2t4ueynb7hqr>
+ <aSSV4RlRcW+uGy+n@devvm11784.nha0.facebook.com>
+ <qvu2mgxs7scbuwcb2ui7eh3qe3l7mlcjq6e2favd4aqcs52r2r@oqbrlp4gxdwl>
+ <aSSjNLrRmaOLkuBN@devvm11784.nha0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <IA3PR11MB8986B2AF393FF9E3609C9DB0E5D1A@IA3PR11MB8986.namprd11.prod.outlook.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aSSjNLrRmaOLkuBN@devvm11784.nha0.facebook.com>
 
-Hello Alex,
+On Mon, Nov 24, 2025 at 10:25:56AM -0800, Bobby Eshleman wrote:
+>On Mon, Nov 24, 2025 at 06:54:45PM +0100, Stefano Garzarella wrote:
+>> On Mon, Nov 24, 2025 at 09:29:05AM -0800, Bobby Eshleman wrote:
+>> > On Mon, Nov 24, 2025 at 11:10:19AM +0100, Stefano Garzarella wrote:
+>> > > On Fri, Nov 21, 2025 at 11:01:53AM -0800, Bobby Eshleman wrote:
+>> > > > On Fri, Nov 21, 2025 at 03:24:25PM +0100, Stefano Garzarella wrote:
+>> > > > > On Thu, Nov 20, 2025 at 09:44:35PM -0800, Bobby Eshleman wrote:
+>>
+>> [...]
+>>
+>> > > >
+>> > > > > Since I guess we need another version of this patch, can you check the
+>> > > > > commit description to see if it reflects what we are doing now
+>> > > > > (e.g vhost is not enabled)?
+>> > > > >
+>> > > > > Also I don't understand why for vhost we will enable it later, but for
+>> > > > > virtio_transport and vsock_loopback we are enabling it now, also if this
+>> > > > > patch is before the support on that transports. I'm a bit confused.
+>> > > > >
+>> > > > > If something is unclear, let's discuss it before sending a new version.
+>> > > > >
+>> > > > >
+>> > > > > What I had in mind was, add this patch and explain why we need this new
+>> > > > > callback (like you did), but enable the support in the patches that
+>> > > > > really enable it for any transport. But maybe what is not clear to me is
+>> > > > > that we need this only for G2H. But now I'm confused about the discussion
+>> > > > > around vmci H2G. We decided to discard also that one, but here we are not
+>> > > > > checking that?
+>> > > > > I mean here we are calling supports_local_mode() only on G2H IIUC.
+>> > > >
+>> > > > Ah right, VMCI broke my original mental model of only needing this check
+>> > > > for G2H (originally I didn't realize VMCI was H2G too).
+>> > > >
+>> > > > I think now, we actually need to do this check for all of the transports
+>> > > > no? Including h2g, g2h, local, and dgram?
+>> > > >
+>> > > > Additionally, the commit description needs to be updated to reflect that.
+>> > >
+>> > > Let's take a step back, though, because I tried to understand the problem
+>> > > better and I'm confused.
+>> > >
+>> > > For example, in vmci (G2H side), when a packet arrives, we always use
+>> > > vsock_find_connected_socket(), which only searches in GLOBAL. So connections
+>> > > originating from the host can only reach global sockets in the guest. In
+>> > > this direction (host -> guest), we should be fine, right?
+>> > >
+>> > > Now let's consider the other direction, from guest to host, so the
+>> > > connection should be generated via vsock_connect().
+>> > > Here I see that we are not doing anything with regard to the source
+>> > > namespace. At this point, my question is whether we should modify
+>> > > vsock_assign_transport() or transport->stream_allow() to do this for each
+>> > > stream, and not prevent loading a G2H module a priori.
+>> > >
+>> > > For example, stream_allow() could check that the socket namespace is
+>> > > supported by the assigned transport. E.g., vmci can check that if the
+>> > > namespace mode is not GLOBAL, then it returns false. (Same thing in
+>> > > virtio-vsock, I mean the G2H driver).
+>> > >
+>> > > This should solve the guest -> host direction, but at this point I wonder if
+>> > > I'm missing something.
+>> >
+>> > For the G2H connect case that is true, but the situation gets a little
+>> > fuzzier on the G2H RX side w/ VMADDR_CID_ANY listeners.
+>> >
+>> > Let's say we have a nested system w/ both virtio-vsock and vhost-vsock.
+>> > We have a listener in namespace local on VMADDR_CID_ANY. So far, no
+>> > transport is assigned, so we can't call t->stream_allow() yet.
+>> > virtio-vsock only knows of global mode, so its lookup will fail (unless
+>>
+>> What is the problem of failing in this case?
+>> I mean, we are documenting that G2H will not be able to reach socket in
+>> namespaces with "local" mode. Old (and default) behaviour is still allowing
+>> them, right?
+>>
+>> I don't think it conflicts with the definition of “local” either, because
+>> these connections are coming from outside, and the user doesn't expect to be
+>> able to receive them in a “local” namespace, unless there is a way to put
+>> the device in the namespace (as with net). But this method doesn't exist
+>> yet, and by documenting it sufficiently, we can say that it will be
+>> supported in the future, but not for now.
+>>
+>> > we hack in some special case to virtio_transport_recv_pkt() to scan
+>> > local namespaces). vhost-vsock will work as expected. Letting local mode
+>> > sockets be silently unreachable by virtio-vsock seems potentially
+>> > confusing for users. If the system were not nested, we can pre-resolve
+>> > VMADDR_CID_ANY in bind() and handle things upfront as well. Rejecting
+>> > local mode outright is just a broad guardrail.
+>>
+>> Okay, but in that case, we are not supporting “local” mode too, but we are
+>> also preventing “global” from being used on these when we are in a nested
+>> environment. What is the advantage of this approach?
+>>
+>> >
+>> > If we're trying to find a less heavy-handed option, we might be able to
+>> > do the following:
+>> >
+>> > - change bind(cid) w/ cid != VMADDR_CID_ANY to directly assign the
+>> > transport
+>> >  for all socket types (not just SOCK_DGRAM)
+>>
+>> That would be nice, but it wouldn't solve the problem with VMADDR_CID_ANY,
+>> which I guess is the use case in 99% of cases.
+>>
+>> >
+>> > - vsock_assign_transport() can outright fail if !t->supports_local_mode()
+>> >  and sock_net(sk) has mode local
+>>
+>> But in this case, why not reusing stream_allow() ?
+>>
+>> >
+>> > - bind(VMADDR_CID_ANY) can maybe print (once) to dmesg a warning that
+>> >  only the H2G transport will land on VMADDR_CID_ANY sockets.
+>>
+>> mmm, I'm not sure about that, we should ask net maintainer, but IMO
+>> documenting that in af_vsock.c and man pages should be fine, till G2H will
+>> support that.
+>>
+>> >
+>> > I'm certainly open to other suggestions.
+>>
+>> IMO we should avoid the failure when loading G2H, which is more confusing
+>> than just discard connection from the host to a "local" namespace. We should
+>> try at least to support the "global" namespace.
+>>
+>> Thanks,
+>> Stefano
+>
+>
+>I'm 100% fine with that approach. I just wanted to make sure we landed
+>in the right place for how users may encounter places that there is no
+>local mode support.
 
-On Tue, Nov 25, 2025 at 06:48:08AM +0000, Loktionov, Aleksandr wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Breno Leitao
-> > Sent: Monday, November 24, 2025 7:19 PM
-> > To: Lobakin, Aleksander <aleksander.lobakin@intel.com>; Nguyen,
-> > Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> > David S. Miller <davem@davemloft.net>; Eric Dumazet
-> > <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> > <pabeni@redhat.com>
-> > Cc: michal.swiatkowski@linux.intel.com; michal.kubiak@intel.com;
-> > Fijalkowski, Maciej <maciej.fijalkowski@intel.com>; intel-wired-
-> > lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; kernel-team@meta.com; Breno Leitao
-> > <leitao@debian.org>
-> > Subject: [Intel-wired-lan] [PATCH net-next 4/8] idpf: extract GRXRINGS
-> > from .get_rxnfc
-> > 
-> > Commit 84eaf4359c36 ("net: ethtool: add get_rx_ring_count callback to
-> > optimize RX ring queries") added specific support for GRXRINGS
-> > callback, simplifying .get_rxnfc.
-> > 
-> > Remove the handling of GRXRINGS in .get_rxnfc() by moving it to the
-> > new .get_rx_ring_count().
-> > 
-> > This simplifies the RX ring count retrieval and aligns idpf with the
-> > new ethtool API for querying RX ring parameters.
-> > 
-> > I was not totatly convinced I needed to have the lock, but, I decided
-> 
-> totatly -> totally
+Yeah, I see, thanks for that!
 
-Good catch, I will update and respin with your "Signed-off-by".
+>
+>So for next steps, we can drop this patch and add explicit logic in
+>->stream_allow() to allow local mode for vhost/loopback and reject for
+>others?
 
-Thanks for the review,
---breno
+Yep, I would add the logic in the "vsock: add netns to vsock core" 
+patch, including the changes to stream_allow(), supporting in all 
+transports only the global mode. In the next patches we can support 
+`local` mode in related transports (I guess for now just loopback and 
+vhost-vsock).
+
+> Plus, add documentation about what happens for VMADDR_CID_ANY
+>(will only receive vhost/loopback traffic in local mode)?
+
+I'd document that in af_vsock.c when we talk about "local". I'll make it 
+clear that not all transports support it, and we can mention that 
+example.
+
+When we will merge this series, we should also send a patch to the 
+vsock(7) manpage [1] to describe namespace support because I guess that 
+will be the entry point of the user.
+
+Thanks,
+Stefano
+
+[1] 
+https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/man/man7/vsock.7
+
