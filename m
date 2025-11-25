@@ -1,115 +1,141 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BB520A5F3
-	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 16:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF87B226D00
+	for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 16:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764086699; cv=none; b=h2tYxaLWdUeKgQboMYd8dZj6P4d9CJaOm29oh7PLsJfUEU8J91k58Ld+SlyW4fdGRpIfNuWeG2+odnuzzJcoArpf3J/0m2k3++WuZoCyZgwDPSFR2vE1uPOD3HVeriAkqHkUBPlogCrFP8RBDPIMRRREtJYsklmRbMEQXLHHmmw=
+	t=1764087099; cv=none; b=VB8sBId/bcNmClHX/tzryOQZXiqFW59+z3KqwIOOcEwMRsAhSbs5PByV8Jud3miO+Oz0054Zb0yHGAu9jiM4T/gCqcZylG3bH2oZlH6L34/B9uFPQ3H4tICQrKFnXXneSlUiMIjQZ4bLon9R6Zob5OlXl04kYpESuWCX6U46hAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764086699; c=relaxed/simple;
-	bh=UyyByTuY+3Pmfua0Po9WTijBQVKNAcXITMdPGJvxnzo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=NJVmmCiYY9demjdbT8qWB7bmlpyY/E4DndMCgW+SdFnUhW9Rd79wluajXCXv+9V06roso0eM6j804kGXn+u12TYQ5aLC4pGG1GMwHYZL2YRMG1NHLZOTrFguO9mlw4LbH34Gziot/GM9L9ORf446RNSTk6CmICOBOIchiW3c87Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gKJm/w5h; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764087099; c=relaxed/simple;
+	bh=3DgT2/YG4w/VQ1AKRc9qysEAmWbRLXr3/xneY/YsZiI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eAR8pQyej7EmS/GtwXOQ3TOegS2XkmNfDNR4z6feTR20ZOFwjRDB+BLez3t3ES/9jU1cOksW9J8EElfebRLiVo+obGw7wQbeukfBqGzy56Ue08nCrfHyyK3cpf9J4FfztaKp1IERwJd+iiI7blj5DqCy2WdREwqC3k8zYF/IEi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VlrRahej; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gKJm/w5h"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-640f88b8613so4386134d50.2
-        for <netdev@vger.kernel.org>; Tue, 25 Nov 2025 08:04:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764086695; x=1764691495; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ufovA9njBrcJJicKUMIOkwxg5WNvQhR6uFRYNHpjveE=;
-        b=gKJm/w5h8yNPbxByrDZvgfL6xjepOPMj/BlbvNPP4E/bWLms3gJvF+2EARCsHcjpfp
-         mDPqeeeiO/VJS3ZU5WUx9/nMwznv0d/9pNdjNE3EOrFPONpjEBPSiXXLCeS+hUc4ujCi
-         AvxjDbfYI+H4LUf5jKvpHhzaYZsjW0OXL3dRSWn9YoaKWKRYih0+UsWMDdhAQq4BcY0r
-         +XNj59OkYcNYMcNfO3sPpmZMWJ8hUsqJ9HV6r7HSoWFcUD0/JmWvRIpvhDBg9UJR19Ai
-         gqjLvd47/NbKWRGbW6Mvk4MXQ0ldOcEcPeGbVMZMvt/uslp/3vyL4oJq4uRhg7DkjQ9V
-         ZtFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764086695; x=1764691495;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ufovA9njBrcJJicKUMIOkwxg5WNvQhR6uFRYNHpjveE=;
-        b=pJcpbZPuSv5a8Yy8x0FurqQHTIrmX+NlTDTa6tnkUUDauOfj3wngBKVtcuKFCSlmEz
-         X6Dreh8kysCgznMQTewn9nMTadADhHbL8ti0ozqi8rJUcduz72xr6MrocNcb2aoJ4mmG
-         TwW/yG6BZRolteCWDwfKNLvXFyZKq8L+l/QT8HlNFkH9+/nVdkMBclB0kGUSHcS+KvEF
-         RJs1t01Qsqgga14blIFBW4TBpdq4KuK99o8cNuBibH6dDzbTo+iXyExsbxkAS3mtZowg
-         PnTZF8sqEgYiCQhJX4mjHKjES9eZUC9h/qmEV+xSFekI3DkwC6vTSLs644juhURNhEqB
-         5dFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNPC0t5HNjAZsAcUF7FDxO3075sSRqdrz9BrjjGtyftvyWQfF3MrpgDFAoM8ffPvqAEVRyCUA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxSVKkIazz1sq0RJvQ/+UPsPoGHdhRMV8LTMQMj8fMUqCTOxcY
-	QX9V1amUcRldkSgVshQJ8j4u0/B5DbloqG1JjJALac/Zwa9Rz5qvSpZ5
-X-Gm-Gg: ASbGncvSyZxk9L0wExj9sCpEwGuee9hqUSJtAd1LA290YqAizYBBfqRc6CcveteO1ac
-	BcpS3rlayp8wrzS4vLJWGL7Z87DHtGeADkSsWglGg+Glw45JSu8UI+qj0cQ0TbNUiPvCIMXhxyn
-	viSsSlXUGvTB3vW5mi0cNcQN3PpvsCQJmzCXTMPeLtZtR7uH0Bn2V/UeckYY8IjWflNYd9wVqQK
-	Vf2FGWuD7emipkrv3eLPO1V0otXEuTia84Axq90EQ8m6An6NKmn5x7IgFqE36q3WI79LpIcTQph
-	+MsBxid4oQCKdfqlbtUDpfpkdIWUa/eW/xTkjj+j7NcifLtxFu6SRioxYUdBtJ5x8t/UbExm4uk
-	sveDljLKox2z8w1xFzfBgEQ1D7CPT1CDkWERbwHz0DGvPFoljHMRKGQajxIhWNVNDeAt27SUmqi
-	RUv01yqvhIXdQ8jotFb1mVEOzeYSQnSCoxgopHd7XqQQ8EtaHRF6SEZHYVx5NhyXI/rgs=
-X-Google-Smtp-Source: AGHT+IFMsVqQio40MqwigTpnntui9rbl+ng5ZfDUQwZJ043z1MBQaQ5WaAyam/USMadKLWIPTN7vBA==
-X-Received: by 2002:a05:690e:214c:b0:63f:a06e:9a7d with SMTP id 956f58d0204a3-64302ad9f66mr8502542d50.64.1764086695379;
-        Tue, 25 Nov 2025 08:04:55 -0800 (PST)
-Received: from gmail.com (116.235.236.35.bc.googleusercontent.com. [35.236.235.116])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-78a798a77d0sm56497707b3.22.2025.11.25.08.04.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 08:04:54 -0800 (PST)
-Date: Tue, 25 Nov 2025 11:04:54 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Jason Xing <kernelxing@tencent.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, 
- netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.10c7edf4c3dd1@gmail.com>
-In-Reply-To: <aSUxhmqXmIPSdbHm@fedora>
-References: <20251124161324.16901-1-ankitkhushwaha.linux@gmail.com>
- <willemdebruijn.kernel.6edcbeb29a45@gmail.com>
- <aSSdH58ozNT-zWLM@fedora>
- <willemdebruijn.kernel.1e69bae6de428@gmail.com>
- <aSUxhmqXmIPSdbHm@fedora>
-Subject: Re: [PATCH] selftests/net: initialize char variable to null
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VlrRahej"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764087097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hPFWHC9cp3vUs4nylOIOc02i/zvHGqapnFsaE1DHwHc=;
+	b=VlrRahejlJ5zVgxy8yJm2OuUHGF1Cir6vv6hTF0gK544b24J8Of2KV6grntBSMRiXQ0vVe
+	4kfkGT2WWCcPbrgkjXPm2S1411Kb3pR0f7vP4tP2xGMjmnQOST+Fif2f+bvPWjszztFnyR
+	r+g2biapC6XlIu+/wnSNupkwlzvI3M0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-TzDGiZHvN4SIMw69ffo2JA-1; Tue,
+ 25 Nov 2025 11:11:33 -0500
+X-MC-Unique: TzDGiZHvN4SIMw69ffo2JA-1
+X-Mimecast-MFC-AGG-ID: TzDGiZHvN4SIMw69ffo2JA_1764087091
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A51B2195609F;
+	Tue, 25 Nov 2025 16:11:31 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.32.183])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 801EE1800451;
+	Tue, 25 Nov 2025 16:11:28 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Shuah Khan <shuah@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next 01/10] net: introduce mangleid_features
+Date: Tue, 25 Nov 2025 17:11:06 +0100
+Message-ID: <10db2e40fc6193c43793669f450b40166a48c5d1.1764056123.git.pabeni@redhat.com>
+In-Reply-To: <cover.1764056123.git.pabeni@redhat.com>
+References: <cover.1764056123.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Ankit Khushwaha wrote:
-> On Mon, Nov 24, 2025 at 01:15:33PM -0500, Willem de Bruijn wrote:
-> > This does not reproduce for me.
-> > 
-> > Can you share the full clang command that V=1 outputs, as well as the
-> > output oof clang --version.
-> 
-> Hi Willem,
-> I have added clang output in 
-> https://gist.github.com/ankitkhushwaha/8e93e3d37917b3571a7ce0e9c9806f18
-> 
-> Thanks,
-> Ankit
+Some/most devices implementing gso_partial need to disable the GSO partial
+features when the IP ID can't be mangled; to that extend each of them
+implements something alike the following:
 
-I see. This is with clang-21. It did not trigger for me with clang-19.
+	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
+		features &= ~NETIF_F_TSO;
 
-I was able to reproduce with Ubuntu 25.10.
+in the ndo_features_check() op, which leads to a bit of duplicate code.
 
-Okay, good to suppress these false positives with normal builds.
+Later patch in the series will implement GSO partial support for virtual
+device, and the current status quo will require more duplicate code and
+a new indirect call in the TX path for such devices.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Introduce the mangleid_features mask, allowing the core to disable NIC
+features based on/requiring MANGLEID, without any further intervention
+from the driver.
+
+The same functionality could be alternatively implemented adding a single
+boolean flag to the struct net_device, but would require an additional
+checks in ndo_features_check().
+
+Also note that the above mentioned action is incorrect if the NIC
+additionally implements NETIF_F_GSO_UDP_L4, mangleid_features
+transparently handle even such a case.
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+ include/linux/netdevice.h | 5 ++++-
+ net/core/dev.c            | 4 +++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index e808071dbb7d..92ff602d8f30 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1817,7 +1817,9 @@ enum netdev_reg_state {
+  *				and drivers will need to set them appropriately.
+  *
+  *	@mpls_features:	Mask of features inheritable by MPLS
+- *	@gso_partial_features: value(s) from NETIF_F_GSO\*
++ *	@gso_partial_features: value(s) from NETIF_F_GSO
++ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
++ *				disabled together with the latter.
+  *
+  *	@ifindex:	interface index
+  *	@group:		The group the device belongs to
+@@ -2206,6 +2208,7 @@ struct net_device {
+ 	netdev_features_t	vlan_features;
+ 	netdev_features_t	hw_enc_features;
+ 	netdev_features_t	mpls_features;
++	netdev_features_t	mangleid_features;
+ 
+ 	unsigned int		min_mtu;
+ 	unsigned int		max_mtu;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 69515edd17bc..9d3bbc0529d5 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3789,8 +3789,10 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 		struct iphdr *iph = skb->encapsulation ?
+ 				    inner_ip_hdr(skb) : ip_hdr(skb);
+ 
+-		if (!(iph->frag_off & htons(IP_DF)))
++		if (!(iph->frag_off & htons(IP_DF))) {
+ 			features &= ~NETIF_F_TSO_MANGLEID;
++			features &= ~dev->mangleid_features;
++		}
+ 	}
+ 
+ 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
+-- 
+2.52.0
 
