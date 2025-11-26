@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0A533D6C7
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 15:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEF433D6E7
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 15:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172651; cv=none; b=BMWMihkQUf6/eIlCou+d7F8+NAdYzhCcJcgSkWTYoiOb5oBzIhUiLkTl0zTlgHKa9i8pPD0rIsXUBuILCyv9cY0VmRhj28/HQT/UoLAppYcTcsSiGtSi6qNUS8PbnoUcexot9sEV52PKmrY2vzCXV0oNK8PK8tXgPYZraNpKjew=
+	t=1764172651; cv=none; b=bb0tBBZh0t4N+MHBi4cOGjv38EjXqvosKOQJ6rJMyxGw5S5ymspoILtQjBktha2z7xIq1jRv70CN4xo3hfzIbrSvDy+WS3WOqLKttDh1IP8JxXiFm3gy6lBTJRyxUjJhn3erwup3IypHn7xzZ8En7xUMUd9nqAQdOTlvQpsu2rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764172651; c=relaxed/simple;
-	bh=2ucNE8fa7lQi1c5DHPHvU2+JR3IPBRd36Kp9pqxu5VA=;
+	bh=5K2shWIi4ZIOaKtu/+d9B6vxPEUqBRi9MTPtHlXZErU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZy0Vw3tXnPTR2auyheKQBz2CSiv8obKdHUteLyYYDy3T5wXP1fs19RJ6ffhDqj1rNCKUkGP2iP7ePZgRU4FbPVdzLA3cf66Uq+2Wxr/UceFBuwClUwI6QueT6zUa3djL3MIXFya5jMiq5JXGkC0h1zTgaEf4d2+o4fL3Xtpc00=
+	 MIME-Version:Content-Type; b=ew2zE45wPAXURcWczSCniZwwxGAVxkaQvzOx4EG9UE+eY6kJVZGjma1qWc8OC7YotvvTZrlxr4tjNptjdvhAekmfLVd/yDYiQ4/9R8g2/xKmoeBDOKQmsW8luZOeUUKPBjvOsDvrDsyOqiBf8pISygMhjVtxItT8ePR/2KpCBzM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtP-000650-EK; Wed, 26 Nov 2025 16:57:19 +0100
+	id 1vOHtP-000654-EM; Wed, 26 Nov 2025 16:57:19 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtN-002dLe-3A;
+	id 1vOHtO-002dLl-0R;
 	Wed, 26 Nov 2025 16:57:18 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A91D94A8E32;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D8A284A8E36;
 	Wed, 26 Nov 2025 15:57:17 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,13 +38,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	stable@vger.kernel.org,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 2/8] can: sja1000: fix max irq loop handling
-Date: Wed, 26 Nov 2025 16:41:12 +0100
-Message-ID: <20251126155713.217105-3-mkl@pengutronix.de>
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: [PATCH net 6/8] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
+Date: Wed, 26 Nov 2025 16:41:16 +0100
+Message-ID: <20251126155713.217105-7-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126155713.217105-1-mkl@pengutronix.de>
 References: <20251126155713.217105-1-mkl@pengutronix.de>
@@ -61,42 +61,40 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
+to be reset. If we ever reach the condition of handling more than
+`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop body.
 
-Reading the interrupt register `SJA1000_IR` causes all of its bits to be
-reset. If we ever reach the condition of handling more than
-`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop
-body.
+This may, among other issues, cause us to never `netif_wake_queue()` again
+after a transmission interrupt.
 
-This may, among other issues, cause us to never `netif_wake_queue()`
-again after a transmission interrupt.
-
-Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
 Cc: stable@vger.kernel.org
+Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/sja1000/sja1000.c | 4 ++--
+ drivers/net/can/sun4i_can.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index 4d245857ef1c..83476af8adb5 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, void *dev_id)
- 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
- 		goto out;
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index 53bfd873de9b..0a7ba0942839 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(int irq, void *dev_id)
+ 	u8 isrc, status;
+ 	int n = 0;
  
--	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
--	       (n < SJA1000_MAX_IRQ)) {
-+	while ((n < SJA1000_MAX_IRQ) &&
-+	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
+-	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
+-	       (n < SUN4I_CAN_MAX_IRQ)) {
++	while ((n < SUN4I_CAN_MAX_IRQ) &&
++	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
+ 		n++;
+ 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
  
- 		status = priv->read_reg(priv, SJA1000_SR);
- 		/* check for absent controller due to hw unplug */
 -- 
 2.51.0
 
