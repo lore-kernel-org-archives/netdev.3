@@ -1,106 +1,97 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2A4312829;
-	Wed, 26 Nov 2025 17:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2B4281376
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 17:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764178602; cv=none; b=DG8EZJrV8yC3y/CwRwVojoX+y8dsIlwlw65VMjzY6qKTfCWeG+/ecAGE2bss2CH6HpaKWb8n2kgsM0bVSJssXqpIsk+K+2DsXEgWi1LV//VOyj9FEHqS4CATQEE77zzTJhiH0QoTb4epOUZKiEIooTQi81X3pbJuRgvyOU4YiEs=
+	t=1764178756; cv=none; b=MMyI/IshhkyP6YMQB+gz4fEPmAWPDGWq8fXLVkyTMv1Got/MVOZzq/fTY7umgFB1hlgF1li9y+vh31snuf6ToYw9cOEAhlF9yaS3YQ/9HACU7fVLPtfxOh47uat6rXCa532inyYD7htyesQhnUoJ+yyuQyvZNNPY/VcPXormTRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764178602; c=relaxed/simple;
-	bh=Q4Z3868li/A6eo5IRbSWBw0t5W/8hZllqn00nGowgW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6EvcpILjptznD1erTVYDk9Fo4+Fm3BdgPIhSA9yg7XrqjJ5Op9rCCCaRG+JiJ8kxJE7ENe+FIsPrNj09hLMhPAY9e7MLx486tBSd+AOCPISjBEBv174Ato3nOGdyY2tum1UkVMwK/Ba/jGkXpzbDfozKagS6ycbT2N5D91aH5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=VFfT63/p; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1764178756; c=relaxed/simple;
+	bh=R1I+uJ/sne3ODi0I5rhgl1VBy+mSK7EuH1XFyAWlLB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oJReAk/ZxqxESupBuCTITksf/L/bIlD1PJ10d0EfNA1ndXdYYnl4wtbi8euTOGo+uVPhWoc/cFi7wDXSO8ug3STF3qzkLYZfbHGgFQncCkU8sYs87t83Ru48k6/JD5sik9crf3J2Z9yJCRlBz/rLqEwN2xhs0u99QD68a4UYBfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k2+SQ6Dc; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="VFfT63/p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1764178585;
-	bh=Q4Z3868li/A6eo5IRbSWBw0t5W/8hZllqn00nGowgW0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFfT63/ph1wB57vgLEqoDxil+r+c6Z08EeLhSUQ4Mvfk4X31y8n0CW8zVtdLCuJyC
-	 5lyCCrUG5ybGLd+tbPxR5OpFzXEhFE7LdP0ZR14jQYnm+FWyDYjDwiWuIB++aaR9Pm
-	 K+TWIFZY0E98RCCjJUKFkASStPApH14ZsA7xZ8bC5aK/mJ9TVK3Phe/z6+Tr6PUEdr
-	 P0redFdjRLzc/WOpIXnA7H9jlsyQloRJ2tWA/cCJQafpxgjUp0Z1HwTRZxcbapvnMP
-	 KUAN8jIEYcpHRn2/ur7qtJ2ywvk4Ub3GXNtW0yVdVFJXz5TuOhf7zlG8VBxQQOqVJw
-	 p4BwI8KAo+/KQ==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id A590360112;
-	Wed, 26 Nov 2025 17:36:25 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id EFB392032B7; Wed, 26 Nov 2025 17:35:50 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jordan Rife <jordan@jrife.io>
-Subject: [PATCH wireguard v4 04/10] wireguard: netlink: lower .maxattr for WG_CMD_GET_DEVICE
-Date: Wed, 26 Nov 2025 17:35:36 +0000
-Message-ID: <20251126173546.57681-5-ast@fiberby.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251126173546.57681-1-ast@fiberby.net>
-References: <20251126173546.57681-1-ast@fiberby.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k2+SQ6Dc"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-643165976dcso13465a12.1
+        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 09:39:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764178753; x=1764783553; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R1I+uJ/sne3ODi0I5rhgl1VBy+mSK7EuH1XFyAWlLB4=;
+        b=k2+SQ6Dc8hGrR0q6RPFdvI4iy4AHoJTDHaBldo9JmaMw+QiQDBf4C2uGnbHK3HBCgj
+         BgEfTW9DDykZag9YW+CjzUaK5RMW0H5pYaECG2s3oNxXwAeZojvOLv1ruqh+P4Als6ee
+         AGLqIPBFkf5k604QE2c+VLekI/c81Hbn9MMkwTl9X7OyALb3H8S5dTZVYwkZumCmjBZj
+         cyRbGuVdYrUNXUubW9nQhYE9WIPeMaiABDtCDreOK2GtJMSe32vHirqu/BVXAvwaQ2lh
+         nnHYDyyjwTdzkQZQlXS1x8MUw85lCGqi+v3iek4D1+ujGHq5t46vRPkBn0GJ5eU89F3r
+         0ZEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764178753; x=1764783553;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R1I+uJ/sne3ODi0I5rhgl1VBy+mSK7EuH1XFyAWlLB4=;
+        b=Idv5P7Rro9w1r2JKQ9Lxeop9Sn9OaRX2EUg7NHKg2NNc0R9yHUhjt+Dc84fPP/YpbS
+         atOzDO88KfsEMLoP1VX8W4kDPm0RzT13Jr4yJxRCoVBca2GVk9/pP5dirUF0DxFg4ZtL
+         vu4csUj0Xb5fst3BpoH81MxzpWUpd077gl5uO3JEKDlPxvCnTj2WZmKb2lQSU8nSSKVE
+         WBjguhG0eABzIlsSG8CQeudteKacb+zsq9z6ILPCd4F3aJGZgldm+SGXRf0bVgyNkN9g
+         BMyFGidNlnqoAxoszWdwngn8xzaPY/Y7cL2/aiM8CbrL873guh6DyER7NWvsuj4UwQtQ
+         eukQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcyH2rFneOhL1j6kz6cv0aC5gqVLCTxH86KMH+0RQt3Wo11JcrDSSfPZB2SpvzuZJbCEOSw48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrSBcqS7g/hxYfLqwJ6xkc0005c9ICIaQhzJox6Vq7US6Oz2kj
+	85iESEM+/SCB2TaW7ytgEaUYovepSkusTu4HLk+UgmMKObwIv9kV5ekoCpL+cyHJYaXpqiB2a0D
+	bNYtIKCIOyRfmnyjNFq2zZEMbwS9m9ix7u7BLO5wd
+X-Gm-Gg: ASbGncteri8USyANLmAK84UclLyBt6+Icj0MXJMuZosC/2HBktJJC5fnMlZp0od4sGU
+	g/A80D2fQuYBm4r0hQiu+oWCc3Biqt+5lHccyfGiRifg+mVKr4XO4+OE9TYtvg7XCDO1W9w10iY
+	bpb31nRwT1BTFzxMQ4b5/iTv3UiUqVzQ3YQft0ztMVepnt4FHTWL/g4SdxDMaNfgyRzr8t6IRYN
+	EmFIw7vn6b9lBdpUpAeSMBWXvWKQ6c7+6JEoKiY/5hGAJXfWe3fRlPR4vJpIlXtG5tGsKi+ulrm
+	fKMTkm0=
+X-Google-Smtp-Source: AGHT+IEkGK/VHxp1lm1rvuHJf0EzAfe7zdVnaY0ne4s+608bQz6lFzGkrtc5jOoeA5Aed/P/aq8jpGwwN4k9ODR79Fk=
+X-Received: by 2002:aa7:c458:0:b0:643:bfa:62d0 with SMTP id
+ 4fb4d7f45d1cf-646014fd34dmr33248a12.10.1764178752509; Wed, 26 Nov 2025
+ 09:39:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251126094850.2842557-1-mschmidt@redhat.com>
+In-Reply-To: <20251126094850.2842557-1-mschmidt@redhat.com>
+From: Tim Hostetler <thostet@google.com>
+Date: Wed, 26 Nov 2025 09:39:01 -0800
+X-Gm-Features: AWmQ_bnwtAMUJOIKVfMGtvWBZahdFkBhWMQmC9LHTDnDUnFiDtU2cq_7mHmDfEc
+Message-ID: <CAByH8Uu3ZBa1Zux=TLAGR2+VAHT+AoS0oHvqaMmgCHWVfmZhUA@mail.gmail.com>
+Subject: Re: [PATCH net] iavf: Implement settime64 with -EOPNOTSUPP
+To: Michal Schmidt <mschmidt@redhat.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, 
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>, Sai Krishna <saikrishnag@marvell.com>, 
+	Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, 
+	Ahmed Zaki <ahmed.zaki@intel.com>, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Previously .maxattr was shared for both WG_CMD_GET_DEVICE and
-WG_CMD_SET_DEVICE. Now that it is split, then we can lower it
-for WG_CMD_GET_DEVICE to follow the documentation which defines
-.maxattr as WGDEVICE_A_IFNAME for WG_CMD_GET_DEVICE.
+On Wed, Nov 26, 2025 at 1:49=E2=80=AFAM Michal Schmidt <mschmidt@redhat.com=
+> wrote:
+>
+> ptp_clock_settime() assumes every ptp_clock has implemented settime64().
+> Stub it with -EOPNOTSUPP to prevent a NULL dereference.
+>
+> The fix is similar to commit 329d050bbe63 ("gve: Implement settime64
+> with -EOPNOTSUPP").
+>
+> Fixes: d734223b2f0d ("iavf: add initial framework for registering PTP clo=
+ck")
+> Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
 
-$ grep -hC5 'one but not both of:' include/uapi/linux/wireguard.h
- * WG_CMD_GET_DEVICE
- * -----------------
- *
- * May only be called via NLM_F_REQUEST | NLM_F_DUMP. The command
- * should contain one but not both of:
- *
- *    WGDEVICE_A_IFINDEX: NLA_U32
- *    WGDEVICE_A_IFNAME: NLA_NUL_STRING, maxlen IFNAMSIZ - 1
- *
- * The kernel will then return several messages [...]
-
-While other attributes weren't rejected previously, the consensus
-is that nobody sends those attributes, so nothing should break.
-
-Link: https://lore.kernel.org/r/aRyLoy2iqbkUipZW@zx2c4.com/
-Suggested-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- drivers/net/wireguard/netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index e7efe5f8465dc..c2d0576e96f5f 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -623,7 +623,7 @@ static const struct genl_split_ops wireguard_nl_ops[] = {
- 		.dumpit = wg_get_device_dump,
- 		.done = wg_get_device_done,
- 		.policy = device_policy,
--		.maxattr = WGDEVICE_A_PEERS,
-+		.maxattr = WGDEVICE_A_IFNAME,
- 		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DUMP,
- 	}, {
- 		.cmd = WG_CMD_SET_DEVICE,
--- 
-2.51.0
-
+Reviewed-by: Tim Hostetler <thostet@google.com>
