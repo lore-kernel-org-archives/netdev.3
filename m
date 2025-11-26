@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C96327BE1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD1B2D9EF4
 	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764158492; cv=none; b=Bq1lbUftmb7WM3C1YNzOF/+mhp8SWVfnyBUkCima0TXqEecEUkHPHO+ejb/r+RwRaM6hb/cClRYYu6Y08abJaXbDh8vpORt3onLCwla54zHP9yCvUm45dbjudQlowCHO5jQBeqkhAFsZJAXOu536KkTv35OxuAp7gX18A0cexHM=
+	t=1764158493; cv=none; b=BKRzt6jk2GK+d9e9givWv9xy3NXJjZt4a1rj69Gemfzzhp7BeXQDhnwFQNBgqRWSZ6WkixZFX/xZzvpaslm/cHrR/wDvzJn/VQspdLV+4c4PZcDCby8W9Jm80E25S4q0/cogVPZxjZs9VLsFqUW8Sz8p/WgkxkHJbt22lUc/qS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764158492; c=relaxed/simple;
-	bh=i8AIbrbz/DP4nFHK3H0/128yTfvwYqnj140H+qDs7YY=;
+	s=arc-20240116; t=1764158493; c=relaxed/simple;
+	bh=ANh2IPE0TMIwHGoOqjHdvw2uqjOkYU5ZclzXbt7txa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKhCyg7OE+FPMRRe8lFrdEif9xiamnGyYevSN8kiF942NsKVyBS0gITs+XDStka8j0wE4TZnfzZcHTO84jGwLZerLeuz6pnIsKTbq3HswYIUW4d1zxU4w7YnZk4m9tVutlYIXWdZ8quaHhaAjZsZoC/r9/CsA+AndjncK6uU9dU=
+	 MIME-Version; b=NBay0GVQCF8HSJ+IxxpS9b0L6aEfqnEiFa2izRkflwFglc1MSqOIBMX1o59PKfTEyxPrQHAj4QOs/pRAHuYkUjgLdz/arSkEwcu1KwkZaZPNvfU6KFz51pQoXFLJDIv/CaAEwaxnQ4S6Z0sd4pTQo8MkdJtxBzImtPjj1JnLVm4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOECu-0004Uq-4H; Wed, 26 Nov 2025 13:01:12 +0100
+	id 1vOECu-0004V3-4H; Wed, 26 Nov 2025 13:01:12 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOECs-002bFA-39;
+	id 1vOECt-002bFK-0W;
 	Wed, 26 Nov 2025 13:01:11 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B85B14A8A9F;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E589C4A8AA2;
 	Wed, 26 Nov 2025 12:01:10 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Biju Das <biju.das.jz@bp.renesas.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 20/27] can: rcar_canfd: Use devm_clk_get_optional() for RAM clk
-Date: Wed, 26 Nov 2025 12:57:09 +0100
-Message-ID: <20251126120106.154635-21-mkl@pengutronix.de>
+Subject: [PATCH net-next 23/27] can: rcar_canfd: Convert to DEFINE_SIMPLE_DEV_PM_OPS()
+Date: Wed, 26 Nov 2025 12:57:12 +0100
+Message-ID: <20251126120106.154635-24-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126120106.154635-1-mkl@pengutronix.de>
 References: <20251126120106.154635-1-mkl@pengutronix.de>
@@ -59,92 +59,58 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Replace devm_clk_get_optional_enabled()->devm_clk_get_optional() as the
-RAM clk needs to be enabled in resume for proper operation in STR mode
-for RZ/G3E SoC.
+Convert the Renesas R-Car CAN-FD driver from SIMPLE_DEV_PM_OPS() to
+DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr().  This lets us drop the
+__maybe_unused annotations from its suspend and resume callbacks, and
+reduces kernel size in case CONFIG_PM or CONFIG_PM_SLEEP is disabled.
 
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251124102837.106973-4-biju.das.jz@bp.renesas.com
+Link: https://patch.msgid.link/20251124102837.106973-7-biju.das.jz@bp.renesas.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/net/can/rcar/rcar_canfd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 15358eefa8fa..3f71adce6f56 100644
+index 9550f1e74994..1d6b2f7efa8c 100644
 --- a/drivers/net/can/rcar/rcar_canfd.c
 +++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -468,6 +468,7 @@ struct rcar_canfd_global {
- 	struct platform_device *pdev;	/* Respective platform device */
- 	struct clk *clkp;		/* Peripheral clock */
- 	struct clk *can_clk;		/* fCAN clock */
-+	struct clk *clk_ram;		/* Clock RAM */
- 	unsigned long channels_mask;	/* Enabled channels mask */
- 	bool extclk;			/* CANFD or Ext clock */
- 	bool fdmode;			/* CAN FD or Classical CAN only mode */
-@@ -1975,7 +1976,6 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 	u32 rule_entry = 0;
- 	bool fdmode = true;			/* CAN FD only mode - default */
- 	char name[9] = "channelX";
--	struct clk *clk_ram;
- 	int i;
+@@ -2255,18 +2255,18 @@ static void rcar_canfd_remove(struct platform_device *pdev)
+ 	rcar_canfd_global_deinit(gpriv, true);
+ }
  
- 	info = of_device_get_match_data(dev);
-@@ -2065,10 +2065,10 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 		gpriv->extclk = gpriv->info->external_clk;
- 	}
+-static int __maybe_unused rcar_canfd_suspend(struct device *dev)
++static int rcar_canfd_suspend(struct device *dev)
+ {
+ 	return 0;
+ }
  
--	clk_ram = devm_clk_get_optional_enabled(dev, "ram_clk");
--	if (IS_ERR(clk_ram))
--		return dev_err_probe(dev, PTR_ERR(clk_ram),
--				     "cannot get enabled ram clock\n");
-+	gpriv->clk_ram = devm_clk_get_optional(dev, "ram_clk");
-+	if (IS_ERR(gpriv->clk_ram))
-+		return dev_err_probe(dev, PTR_ERR(gpriv->clk_ram),
-+				     "cannot get ram clock\n");
+-static int __maybe_unused rcar_canfd_resume(struct device *dev)
++static int rcar_canfd_resume(struct device *dev)
+ {
+ 	return 0;
+ }
  
- 	addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(addr)) {
-@@ -2134,10 +2134,18 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 		goto fail_reset;
- 	}
+-static SIMPLE_DEV_PM_OPS(rcar_canfd_pm_ops, rcar_canfd_suspend,
+-			 rcar_canfd_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(rcar_canfd_pm_ops, rcar_canfd_suspend,
++				rcar_canfd_resume);
  
-+	/* Enable RAM clock  */
-+	err = clk_prepare_enable(gpriv->clk_ram);
-+	if (err) {
-+		dev_err(dev, "failed to enable RAM clock: %pe\n",
-+			ERR_PTR(err));
-+		goto fail_clk;
-+	}
-+
- 	err = rcar_canfd_reset_controller(gpriv);
- 	if (err) {
- 		dev_err(dev, "reset controller failed: %pe\n", ERR_PTR(err));
--		goto fail_clk;
-+		goto fail_ram_clk;
- 	}
- 
- 	/* Controller in Global reset & Channel reset mode */
-@@ -2189,6 +2197,8 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 		rcar_canfd_channel_remove(gpriv, ch);
- fail_mode:
- 	rcar_canfd_disable_global_interrupts(gpriv);
-+fail_ram_clk:
-+	clk_disable_unprepare(gpriv->clk_ram);
- fail_clk:
- 	clk_disable_unprepare(gpriv->clkp);
- fail_reset:
-@@ -2213,6 +2223,7 @@ static void rcar_canfd_remove(struct platform_device *pdev)
- 
- 	/* Enter global sleep mode */
- 	rcar_canfd_set_bit(gpriv->base, RCANFD_GCTR, RCANFD_GCTR_GSLPR);
-+	clk_disable_unprepare(gpriv->clk_ram);
- 	clk_disable_unprepare(gpriv->clkp);
- 	reset_control_assert(gpriv->rstc2);
- 	reset_control_assert(gpriv->rstc1);
+ static const __maybe_unused struct of_device_id rcar_canfd_of_table[] = {
+ 	{ .compatible = "renesas,r8a779a0-canfd", .data = &rcar_gen4_hw_info },
+@@ -2283,7 +2283,7 @@ static struct platform_driver rcar_canfd_driver = {
+ 	.driver = {
+ 		.name = RCANFD_DRV_NAME,
+ 		.of_match_table = of_match_ptr(rcar_canfd_of_table),
+-		.pm = &rcar_canfd_pm_ops,
++		.pm = pm_sleep_ptr(&rcar_canfd_pm_ops),
+ 	},
+ 	.probe = rcar_canfd_probe,
+ 	.remove = rcar_canfd_remove,
 -- 
 2.51.0
 
