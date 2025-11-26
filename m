@@ -1,326 +1,233 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012040.outbound.protection.outlook.com [52.101.66.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA8C31D36B;
-	Wed, 26 Nov 2025 10:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764154238; cv=none; b=RzPf0W+GFj0Wi953/llx4w0d7gTMjNZCymNjt0GRRl1+60H8anKj/Hx1BTdbhp2O5z8ZO7prIoUadHCu8mzoBvPkucjMiaCuFr1YQECMFFR1rCJLQSu/tic6e7o0SY+9X4iwvtLwyEZ693cXSCo7QZ1tsB4RiAjGESBrTS8F5AE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764154238; c=relaxed/simple;
-	bh=QxCGD4pKjByIIfmJwEvbaaZVShRxQoVC2zIHaFUBsT8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iHo0ygf9Itwk9vYTLaaQ+LhUnq00z164L4lxPgsCEBed8zYTNoGAR9q5UB5WkKl5ABbmeRALrLf49MlrlYj9kw8/GEt60XWFYI9/5mop3trkumNLadY8LZA7Ws/NkS9y+yXm/QvgBoEoK3fyl39tFmj1W1LO3ep2+sD/nPABN/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=s1X1CRQO; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED1C248F7C;
+	Wed, 26 Nov 2025 10:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764154289; cv=fail; b=T94fQC1wN9CLVfhXOhrMqTt5LsS6qoB3cNFNu8MQHNhjZROpxij2CMkvdPOE/3a7L7Q+UEWxrGTObb8Aqlsh4vdkmknFg7f5R2aa9cTv0PkpdoxIm9hdSMmanDZ3E83nhDzKnJOyY1Jq8KJ6Xt+V9z+A7cAcrys08ZMS64/q940=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764154289; c=relaxed/simple;
+	bh=5FUvYX/9P78O9tB9+LyGvOCbzpnOQuLWWi5IwdHuHBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=l2Uh+Z5ITN4ZaFU/mSZaPExSOhmEl5gcwKRjWo7vGxvm8JCqTuwzLe9fgl7OkHLX5myH3uLRZzUiOHhiAs3TGndB1Bgzi2WTMAl6GZVIqs3Qw5clkYVC4skq5FWw98bq9WxCHZoSV/gKwPEQ0Caf70eTFco+y6ue/YDAOwZBtxI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mV1h5D5y; arc=fail smtp.client-ip=52.101.66.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="s1X1CRQO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1764154236; x=1795690236;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QxCGD4pKjByIIfmJwEvbaaZVShRxQoVC2zIHaFUBsT8=;
-  b=s1X1CRQO4ASVLAvkUwNUXzMMTFrU67jpjpITFqgcTQgHFe3/STH1iQmz
-   QUDdhmPnwdAY2ir44Pb6f0RABzKtWF7ldTeyd7Y5Y/dqCaedFtlLQmiCU
-   HJD4tqUFCFc+jaDOczxAwscdSDrlbBmjDTLtdazqNL7hP6ecz+gjACR/x
-   h3Rm/Re4B8gJPMkhmq9aIn8utOTgKoloiFv+l4xu5SRkHMKkhDf3VvDiq
-   LOijMMjxr2LJqgUmpQqQsWX/tjhOtQ/32+cqFTj6PnrGXmjpzkMcWAVK3
-   pLKtRwur1s5ek935Nv/8ukY9CDmLRMI/Jktz1cjIpGFBaQEAm4giL0cf9
-   A==;
-X-CSE-ConnectionGUID: tMjMCUkbTjK0Gq0hYCWfYA==
-X-CSE-MsgGUID: aEjO81fpTciBg8wWTMeZ1w==
-X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
-   d="scan'208";a="50191394"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Nov 2025 03:50:34 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 26 Nov 2025 03:50:08 -0700
-Received: from che-ll-i17164.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 26 Nov 2025 03:50:04 -0700
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-To: <Parthiban.Veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
-	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Parthiban
- Veerasooran" <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next v3 1/2] net: phy: phy-c45: add SQI and SQI+ support for OATC14 10Base-T1S PHYs
-Date: Wed, 26 Nov 2025 16:19:54 +0530
-Message-ID: <20251126104955.61215-2-parthiban.veerasooran@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251126104955.61215-1-parthiban.veerasooran@microchip.com>
-References: <20251126104955.61215-1-parthiban.veerasooran@microchip.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mV1h5D5y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aTNweeZchf8OS2uHAbyCJMx0kaJQFuf4mGEmWf3+dgzyHmVBWnb9gh4ZlVHcrDrDCW1Hqz6ZPonsYgPFN+CYhlQBwagdATtzwMC4x1W4Osdq/+Dz6ZW8Bk8RvhSsI9I8arkw/bA4dlnUK4U9j7fZE11ET2ndHQ+DAngjS+KXGCnVV39UNdb4UDnV8FV/8mFOK2C+nReOA6HF4rxa+yTP9KzzikR6OJH3wbcV/WmtZ5A3vx0hHd12Js7J1Bxf0if11djBsMwo9/hkwcM3xgu4d/DWw8YmrRkccO3S5zqxo240t22hYqbGwYxMmTc35b9IfCJi7eSUql7zuzT3IEkH2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7z8mFHElAJ8hjCpkCtKNJ7XS9m9mK64ZspRldRGXfV8=;
+ b=OkN28qaApY/a4xQm4p0M9tVLCDgTfrjh8D/hZ7gqjgsRKVkHZTu9gS7cRiUAjsJo43MoPGbhvGBLn6qq3tVM5GLjtwUNecMGc3d+l5Nym4Z2Vc0aC8FTB7zu8AG8KkFqNzIRZ94FHD0NdFfAXHvLF+harLEm8HmqKyAer9zVEKSKmHLq8wTDAF8qzc/ufNU3UOhSrCBYdgKkfDI2wUfmOz0MMF/QwN3cTml0JgholYP15rsqIMEM5tCkD9HjPcjzBxaLMt9A5HbhbtwdRzer24ppTEt2YJPOmkLYmDK0ng25ewtsTxRojwSiTQzRR0Lyafbq0a98KLKlTUGkI12fwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7z8mFHElAJ8hjCpkCtKNJ7XS9m9mK64ZspRldRGXfV8=;
+ b=mV1h5D5yjmkVWD1VDbxBwKpE0JhHoeXZmsc8KZGapwZkme8aQCrWWWihVWhxZb35myvsMd70LGHU2M0l6+nI9cHPSHd+avrTfsXZMf8w17ma7iX6WaTWT9qGkckkxa1TbqtThpwF0JPcW/iv4K3cI04AsiX/YAIeRVHuP/xLb0kzWtL+pQjJwS0uW+Dwqq4X2sfPPhWNWNN3tMisXZntI4HtH2/SbpsUIWkgE72HxqlVQ4jeRj9AHe1dsa1Ye11ULgmyoCe7Hxb+B1CUUjCZ5hpsfV7oXC9VAjSSmQFhobJBq+gcF8WlbklZB8t6MuSdtbAnA05UNM6ug1oaK748Sw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by VI0PR04MB10463.eurprd04.prod.outlook.com (2603:10a6:800:238::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
+ 2025 10:51:24 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::8063:666f:9a2e:1dab]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::8063:666f:9a2e:1dab%5]) with mapi id 15.20.9366.009; Wed, 26 Nov 2025
+ 10:51:24 +0000
+Date: Wed, 26 Nov 2025 12:51:20 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Holger Brunck <holger.brunck@hitachienergy.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-phy@lists.infradead.org" <linux-phy@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Marek =?utf-8?B?QmVo4oia4oirbg==?= <kabel@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next 1/9] dt-bindings: phy: rename
+ transmit-amplitude.yaml to phy-common-props.yaml
+Message-ID: <20251126105120.c7jtuy7rvbu4pqnv@skbuf>
+References: <20251122193341.332324-1-vladimir.oltean@nxp.com>
+ <20251122193341.332324-2-vladimir.oltean@nxp.com>
+ <0faccdb7-0934-4543-9b7f-a655a632fa86@lunn.ch>
+ <20251125214450.qeljlyt3d27zclfr@skbuf>
+ <b4597333-e485-426d-975e-3082895e09f6@lunn.ch>
+ <20251126072638.wqwbhhab3afxvm7x@skbuf>
+ <AM0PR06MB10396D06E6F06F6B8AB3CFCBEF7DEA@AM0PR06MB10396.eurprd06.prod.outlook.com>
+ <20251126103350.el6mzde47sg5v6od@skbuf>
+ <AM0PR06MB10396E5D3A14C7B32BFAEB264F7DEA@AM0PR06MB10396.eurprd06.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM0PR06MB10396E5D3A14C7B32BFAEB264F7DEA@AM0PR06MB10396.eurprd06.prod.outlook.com>
+X-ClientProxiedBy: BE1P281CA0175.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:66::8) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|VI0PR04MB10463:EE_
+X-MS-Office365-Filtering-Correlation-Id: e24d93d9-283d-41db-26d9-08de2cd9bdea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|19092799006|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7E8xz0QMs65wLZxVpyK3I9KkXG3oMw+rX7zr6mlt/daqS7bc0yqxYvHrjrCC?=
+ =?us-ascii?Q?nzq0VP7es7jb9VR8nMbiXSyCpZfaFpmZBaANZm0cfjroOWG4UWNQC5vCaBnV?=
+ =?us-ascii?Q?3Nt1bb6YU8jEMIj7ULVUAw7J4TK8dTALTL9lIkALc7uZszAxmgxnnODKv/6N?=
+ =?us-ascii?Q?xppmIGoi3f8W9GO3Oc7SF5Nmf5fTi2/7lY9+/5HjeIoxAnXFRJpxxM1H6IkH?=
+ =?us-ascii?Q?J2rECMKx+NrTwgQgutWs7Ogu1bLw+7bjmXE4wPgtc1+nIXvxebCNYxcR3MuZ?=
+ =?us-ascii?Q?uxKXDN3XBIoCCSyS36H0DhXoH6DWYpE7ZDeTmFbYWlBxgH0cvQk1SXnz8HGm?=
+ =?us-ascii?Q?GTgawCZYEtNa4YgvCudoL//A9plyn8KKkou5R7vtd359DZYCzxiR4aFlPYTT?=
+ =?us-ascii?Q?hHebba1r5iSOmSZ6lG1itlo2PakKpUmTew3D35Br/GhG9m8p8V9gjAbhANQF?=
+ =?us-ascii?Q?jYYstGX3mxQEOceJvEzGhUbcMpjR6/FdL5KESvNUCNi7jlelvlNNe3CVNMGM?=
+ =?us-ascii?Q?hI5HE3R9BNuUIXM9YZDmoKd6sp6x3flsU4hhIY3vh6bJaejJ7bu57mu3i6dj?=
+ =?us-ascii?Q?OGI29q8xQHrQXwcYjc1HI5hIr6k3fXJxbzyRif4qtNHKH/pO6fjhAeu5DWnA?=
+ =?us-ascii?Q?rqn7vascWLRdzlrafiP1roIyf9aOV5hgSvriXLFBV/Fck+H6J/Mjn7TdqPL8?=
+ =?us-ascii?Q?iasLpeF7tAZJdJsGPRkcwX1owDmrHALKqznYVZDWB8BtQ9OyoOAfaN6XEUMX?=
+ =?us-ascii?Q?uDf979xgrlfcKr5t9h//bapFthhvAUaOg4nWKwgv5kqdM9b7BmVfRipw9MA6?=
+ =?us-ascii?Q?oLSd+31Z+xbw5y00Euy9OwI9jzWRhj/fHnSobhROksxF7IVmpjJEjdXxfLU8?=
+ =?us-ascii?Q?e5lm1c6qH5OXvM6dIa5hrtMF6nm2WGMCqkT+78zr9ge9ddfHDbAsm0alg46i?=
+ =?us-ascii?Q?bsoiPmO3EPyhcFuof3cwPSkZkFfxzl5CEuTjYNKx6bwUcDoFoSJLD4VHMPNu?=
+ =?us-ascii?Q?3x9C3snXovkNfr6xvw4QnflCsUshUaRKiVqx7nQmXP8Nmn+o0JugV3BTy2al?=
+ =?us-ascii?Q?IjCP+xQJE3DX+QRqZQ3q6kSgSXqKxi+U0e+dhLErbbFxIbrcLEordmGlNkxL?=
+ =?us-ascii?Q?L4mrOlEdm83zUSvS+3+4uNRIztDe5w2AWzIn/asEqPzCn6R9i0rPJqlH1UeJ?=
+ =?us-ascii?Q?WHd48wCsg3DHvdFJaN06Gc5OeOj/Ft76IlsU97E4uJyuk8vCL/zi8d9TPIyn?=
+ =?us-ascii?Q?puDHQ68vrZBQvt96swev+VDYjLXuz+Dw3xJHwg3nEq3batFfsC8pl9IFIyZe?=
+ =?us-ascii?Q?jpvqZUjWaE0lTxwoRF9zrPSyLKlkdoa5Cr6/EbhDYZ1g4+t0tIFFeDrTu1bn?=
+ =?us-ascii?Q?JCXlj/hzYdixzK3Gz1vIBFIb+dtutgKPGLNQxQOU8qJKX+FKFcUUE9prJlEJ?=
+ =?us-ascii?Q?bLSC7RN0+zUUXGHj24EkCb6w7jMdBvz/?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(19092799006)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vIUShrnQW2bHkorpdBjNhGvYfxj2/op+IWpQY2oMMpsGiZ4qreyYKGvSKEQQ?=
+ =?us-ascii?Q?YqOikEai4YwKZMCX4M/fSe6r5gKF+THep0p/wvwtKLptcUrkkIvdzTZ4sbBM?=
+ =?us-ascii?Q?O6IvEFd/ZbpaOfdj6MeC4JPdSMZQO95fYbOHyaPQt1wLgOQmGpLWELRLxYJZ?=
+ =?us-ascii?Q?Rp+PSPhGJRcoG3QilQex7l3u7zzXjVHbMz3XMi7EdIye4p/1YdfvNhvNCeFU?=
+ =?us-ascii?Q?cxzzSKPuBR/i5d85JxGuQqU1xiKBW+ak6ZhaNGqbFd1sZiPdRelLfKQUoBZD?=
+ =?us-ascii?Q?7s1xoS7cRVZbi5PqVxhTnV5ssgzXf4tOo40w90Hu+OhjjSL7xI+/sQwPjanj?=
+ =?us-ascii?Q?bUub/gKZcmi+PKZWoHcphn128L0ozhXV4N8MHCQ5s06N53eCMvvP5oSeS+jV?=
+ =?us-ascii?Q?noGlw8/JBaOca/J5axLFT40iKCa/EHYlMzwBz+xfqliQgcgC1aCLsA5VRfuC?=
+ =?us-ascii?Q?FPXXL13jAefzLy+O8ljbrFw3sbbQL0kRg0+RxHs5QfsHXSjDzXpy26d/4QHk?=
+ =?us-ascii?Q?+HhQh/wdp6YiAzkTGZiHDlZxGvHbW6kV1tUOr91sgHTewvC9iliWe8BvYgnU?=
+ =?us-ascii?Q?20WathWD2g8DmKGf1FbFsWW97EhFJZoK8b/ljWE5GWOucU+Q7e0kuT7lTadS?=
+ =?us-ascii?Q?XzEh9qg37RHEv9jGI3BtGHzxqlhu17yCu4hWjSrevkK9Mfqxt3rG67RiLDux?=
+ =?us-ascii?Q?g7vyKZAantXQihfOla+4fBx8QMnNSQu0fydoftmN7kqdOFJFPA4Yz65j1m35?=
+ =?us-ascii?Q?tDLciCc7mX9FFYR44KgrEBpny5Uu8Tc4ieOrngSQT7fxAY+M4zJuS+o37u+n?=
+ =?us-ascii?Q?tpJEzZQ/Vb+QhApOCuMBaZKRIQyw3xGSAYlJgBSLRJvoCkAlmmqLwV8+GgV7?=
+ =?us-ascii?Q?PSCJV8Pb0etdC6g/eMnwmXVIxnBZCpY3d1TovnXSBuSTEd0IKVw2rzhZbcRc?=
+ =?us-ascii?Q?8lTlfHBPIsdKb0y9TynkIGZ4bbPZaBYHNhMZZOa5UFcYWKmozM8So31j2BGM?=
+ =?us-ascii?Q?7M4Er97DhmyBM0L8p6aDdXyujir7r22UFGRtsxv7rDOLW808A5dNHFEQufZ6?=
+ =?us-ascii?Q?u+9cvaDkyUyiu34D9sNZ7aNnWHJOiOle0dphCXFFu8EWqMQ/p/GyQG1FkBdx?=
+ =?us-ascii?Q?iw8IimJCRUpTfTDWZRq6kE6Mkpt2Sj30YlF4R+/4HRYvfKRrq8OmNKiVsdv/?=
+ =?us-ascii?Q?TXlsKmo9R3ZiVTvdgAZ3bxFsmF7jOf69ZRJdQK0VenVUIsaV2gbjap8ADLdl?=
+ =?us-ascii?Q?3st123eFzJAin0gdpoqcf2A00PKBG34eSKJ3ueTHk1zTgmUA3H12w4GIhKAx?=
+ =?us-ascii?Q?sLoXBWF+vshvmKwtsi+vDtMFMqo3vCxsMx+Ho2Kg9DPXfF48n2fhX9lHGuPf?=
+ =?us-ascii?Q?ePW3Ngam4Xy+P56K+XedorXFkq9RGSSZBeAgQaGKk2ZcIipw1g1QYHqu7lUx?=
+ =?us-ascii?Q?5//7zgRZRTwBjFIzwJ13HT+OxgyIcZKbZFZXI47qde1KAIn5pgd4eGqsyn4N?=
+ =?us-ascii?Q?Qbvc6Xi+hsCQg2/8kBbvoIM1mrSUcy5h9dA7gAR+Aoa9CCKlODMGe1xLud84?=
+ =?us-ascii?Q?TLcjOLb/wsffHqLtownRsp/2n0cmMQuGYCFz/VAVFcYuv2ztUOvbUglViiRe?=
+ =?us-ascii?Q?MFSeRRuKdRoKFTab945/8ML6oKqj+G9GjOgDshiMViTXonTvd5376H04JwNB?=
+ =?us-ascii?Q?Oqq14w=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e24d93d9-283d-41db-26d9-08de2cd9bdea
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 10:51:24.0247
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eSgIMhOBSRrq/C7i/OsNirS44R8I2FthBAptGmsWrhzD0S8Q7SPWbMzwqGNSJMSdjIT2SE00r3ONe0EOw5bX8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10463
 
-Add support for reading Signal Quality Indicator (SQI) and enhanced SQI+
-from OATC14 10Base-T1S PHYs.
+On Wed, Nov 26, 2025 at 10:45:31AM +0000, Holger Brunck wrote:
+> the Kirkwood based board in question was OOT. Due to the patch we were
+> able to use the mainline driver without patching it to configure the value we
+> wanted.
+> 
+> The DTS node looked like this:
+> 
+> &mdio {
+>         status = "okay";
+> 
+>         switch@10 {
+>                 compatible = "marvell,mv88e6085";
+>                 #address-cells = <1>;
+>                 #size-cells = <0>;
+>                 reg = <0x10>;
+>                 ports {
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+>                         port@4 {
+>                                 reg = <4>;
+>                                 label = "port4";
+>                                 phy-connection-type = "sgmii";
+>                                 tx-p2p-microvolt = <604000>;
+>                                 fixed-link {
+>                                         speed = <1000>;
+>                                         full-duplex;
+>                                 };
+>                         };
+> 	};
+> };
 
-- Introduce MDIO register definitions for DCQ_SQI and DCQ_SQIPLUS.
-- Add `genphy_c45_oatc14_get_sqi_max()` to return the maximum supported
-  SQI/SQI+ level.
-- Add `genphy_c45_oatc14_get_sqi()` to return the current SQI or SQI+
-  value.
-- Update `include/linux/phy.h` to expose the new APIs.
+Perhaps there is some bit I'm missing, but let me try and run the code
+on your sample device tree.
 
-SQI+ capability is read from the Advanced Diagnostic Features Capability
-register (ADFCAP). If SQI+ is supported, the driver calculates the value
-from the MSBs of the DCQ_SQIPLUS register; otherwise, it falls back to
-basic SQI (0-7 levels). This enables ethtool to report the SQI value for
-OATC14 10Base-T1S PHYs.
+mv88e6xxx_setup_port()
+	if (chip->info->ops->serdes_set_tx_amplitude) {
+		dp = dsa_to_port(ds, port);
+		if (dp)
+			phy_handle = of_parse_phandle(dp->dn, "phy-handle", 0);
 
-Open Alliance TC14 10BASE-T1S Advanced Diagnostic PHY Features
-Specification ref:
-https://opensig.org/wp-content/uploads/2025/06/OPEN_Alliance_10BASE-T1S_Advanced_PHY_features_for-automotive_Ethernet_V2.1b.pdf
+		if (phy_handle && !of_property_read_u32(phy_handle,
+							"tx-p2p-microvolt",
+							&tx_amp))
+			err = chip->info->ops->serdes_set_tx_amplitude(chip,
+								port, tx_amp);
+		if (phy_handle) {
+			of_node_put(phy_handle);
+			if (err)
+				return err;
+		}
+	}
 
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
----
- drivers/net/phy/mdio-open-alliance.h |  13 +++
- drivers/net/phy/phy-c45.c            | 137 +++++++++++++++++++++++++++
- include/linux/phy.h                  |  28 ++++++
- 3 files changed, 178 insertions(+)
+dp->dn is the "port@4" node.
+phy_handle is NULL, because the "port@4" node has no "phy-handle" property.
+of_property_read_u32(phy_handle, "tx-p2p-microvolt") does not run
+so chip->info->ops->serdes_set_tx_amplitude() is never called
 
-diff --git a/drivers/net/phy/mdio-open-alliance.h b/drivers/net/phy/mdio-open-alliance.h
-index 6850a3f0b31e..449d0fb67093 100644
---- a/drivers/net/phy/mdio-open-alliance.h
-+++ b/drivers/net/phy/mdio-open-alliance.h
-@@ -56,6 +56,8 @@
- /* Advanced Diagnostic Features Capability Register*/
- #define MDIO_OATC14_ADFCAP		0xcc00
- #define OATC14_ADFCAP_HDD_CAPABILITY	GENMASK(10, 8)
-+#define OATC14_ADFCAP_SQIPLUS_CAPABILITY	GENMASK(4, 1)
-+#define OATC14_ADFCAP_SQI_CAPABILITY	BIT(0)
- 
- /* Harness Defect Detection Register */
- #define MDIO_OATC14_HDD			0xcc01
-@@ -65,6 +67,17 @@
- #define OATC14_HDD_VALID		BIT(2)
- #define OATC14_HDD_SHORT_OPEN_STATUS	GENMASK(1, 0)
- 
-+/* Dynamic Channel Quality SQI Register */
-+#define MDIO_OATC14_DCQ_SQI		0xcc03
-+#define OATC14_DCQ_SQI_VALUE		GENMASK(2, 0)
-+
-+/* Dynamic Channel Quality SQI Plus Register */
-+#define MDIO_OATC14_DCQ_SQIPLUS		0xcc04
-+#define OATC14_DCQ_SQIPLUS_VALUE	GENMASK(7, 0)
-+
-+/* SQI is supported using 3 bits means 8 levels (0-7) */
-+#define OATC14_SQI_MAX_LEVEL		7
-+
- /* Bus Short/Open Status:
-  * 0 0 - no fault; everything is ok. (Default)
-  * 0 1 - detected as an open or missing termination(s)
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index e8e5be4684ab..52090ee2e997 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -1695,3 +1695,140 @@ int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev)
- 				OATC14_HDD_START_CONTROL);
- }
- EXPORT_SYMBOL(genphy_c45_oatc14_cable_test_start);
-+
-+/**
-+ * oatc14_update_sqi_capability - Read and update OATC14 10Base-T1S PHY SQI/SQI+
-+ *                                capability
-+ * @phydev: Pointer to the PHY device structure
-+ *
-+ * This helper reads the OATC14 ADFCAP capability register to determine whether
-+ * the PHY supports SQI or SQI+ reporting.
-+ *
-+ * SQI+ capability is detected first. The SQI+ field indicates the number of
-+ * valid MSBs (3–8), corresponding to 8–256 SQI+ levels. When present, the
-+ * function stores the number of SQI+ bits and computes the maximum SQI+ value
-+ * as (2^bits - 1).
-+ *
-+ * If SQI+ is not supported, the function checks for basic SQI capability,
-+ * which provides 0–7 SQI levels.
-+ *
-+ * On success, the capability information is stored in
-+ * @phydev->oatc14_sqi_capability and marked as updated.
-+ *
-+ * Return:
-+ * * 0        - capability successfully read and stored
-+ * * -EOPNOTSUPP - SQI/SQI+ not supported by this PHY
-+ * * Negative errno on read failure
-+ */
-+static int oatc14_update_sqi_capability(struct phy_device *phydev)
-+{
-+	u8 bits;
-+	int ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_ADFCAP);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Check for SQI+ capability
-+	 * 0 - SQI+ is not supported
-+	 * (3-8) bits for (8-256) SQI+ levels supported
-+	 */
-+	bits = FIELD_GET(OATC14_ADFCAP_SQIPLUS_CAPABILITY, ret);
-+	if (bits) {
-+		phydev->oatc14_sqi_capability.sqiplus_bits = bits;
-+		/* Max sqi+ level supported: (2 ^ bits) - 1 */
-+		phydev->oatc14_sqi_capability.sqi_max = BIT(bits) - 1;
-+		goto update_done;
-+	}
-+
-+	/* Check for SQI capability
-+	 * 0 - SQI is not supported
-+	 * 1 - SQI is supported (0-7 levels)
-+	 */
-+	if (ret & OATC14_ADFCAP_SQI_CAPABILITY) {
-+		phydev->oatc14_sqi_capability.sqi_max = OATC14_SQI_MAX_LEVEL;
-+		goto update_done;
-+	}
-+
-+	return -EOPNOTSUPP;
-+
-+update_done:
-+	phydev->oatc14_sqi_capability.updated = true;
-+	return 0;
-+}
-+
-+/**
-+ * genphy_c45_oatc14_get_sqi_max - Get maximum supported SQI or SQI+ level of
-+ *				   OATC14 10Base-T1S PHY
-+ * @phydev: pointer to the PHY device structure
-+ *
-+ * This function returns the maximum supported Signal Quality Indicator (SQI) or
-+ * SQI+ level. The SQI capability is updated on first invocation if it has not
-+ * already been updated.
-+ *
-+ * Return:
-+ * * Maximum SQI/SQI+ level supported
-+ * * Negative errno on capability read failure
-+ */
-+int genphy_c45_oatc14_get_sqi_max(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	if (!phydev->oatc14_sqi_capability.updated) {
-+		ret = oatc14_update_sqi_capability(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return phydev->oatc14_sqi_capability.sqi_max;
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_get_sqi_max);
-+
-+/**
-+ * genphy_c45_oatc14_get_sqi - Get Signal Quality Indicator (SQI) from an OATC14
-+ *			       10Base-T1S PHY
-+ * @phydev: pointer to the PHY device structure
-+ *
-+ * This function reads the SQI+ or SQI value from an OATC14-compatible
-+ * 10Base-T1S PHY. If SQI+ capability is supported, the function returns the
-+ * extended SQI+ value; otherwise, it returns the basic SQI value. The SQI
-+ * capability is updated on first invocation if it has not already been updated.
-+ *
-+ * Return:
-+ * * SQI/SQI+ value on success
-+ * * Negative errno on read failure
-+ */
-+int genphy_c45_oatc14_get_sqi(struct phy_device *phydev)
-+{
-+	u8 shift;
-+	int ret;
-+
-+	if (!phydev->oatc14_sqi_capability.updated) {
-+		ret = oatc14_update_sqi_capability(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Calculate and return SQI+ value if supported */
-+	if (phydev->oatc14_sqi_capability.sqiplus_bits) {
-+		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2,
-+				   MDIO_OATC14_DCQ_SQIPLUS);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* SQI+ uses N MSBs out of 8 bits, left-aligned with padding 1's
-+		 * Calculate the right-shift needed to isolate the N bits.
-+		 */
-+		shift = 8 - phydev->oatc14_sqi_capability.sqiplus_bits;
-+
-+		return (ret & OATC14_DCQ_SQIPLUS_VALUE) >> shift;
-+	}
-+
-+	/* Read and return SQI value if SQI+ capability is not supported */
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_DCQ_SQI);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ret & OATC14_DCQ_SQI_VALUE;
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_get_sqi);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 65b0c3ca6a2b..6e99c152b794 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -530,6 +530,30 @@ struct phy_c45_device_ids {
- struct macsec_context;
- struct macsec_ops;
- 
-+/**
-+ * struct phy_oatc14_sqi_capability - SQI capability information for OATC14
-+ *                                    10Base-T1S PHY
-+ * @updated: Indicates whether the SQI capability fields have been updated.
-+ * @sqi_max: Maximum supported Signal Quality Indicator (SQI) level reported by
-+ *           the PHY.
-+ * @sqiplus_bits: Bits for SQI+ levels supported by the PHY.
-+ *                0 - SQI+ is not supported
-+ *                3 - SQI+ is supported, using 3 bits (8 levels)
-+ *                4 - SQI+ is supported, using 4 bits (16 levels)
-+ *                5 - SQI+ is supported, using 5 bits (32 levels)
-+ *                6 - SQI+ is supported, using 6 bits (64 levels)
-+ *                7 - SQI+ is supported, using 7 bits (128 levels)
-+ *                8 - SQI+ is supported, using 8 bits (256 levels)
-+ *
-+ * This structure is used by the OATC14 10Base-T1S PHY driver to store the SQI
-+ * and SQI+ capability information retrieved from the PHY.
-+ */
-+struct phy_oatc14_sqi_capability {
-+	bool updated;
-+	int sqi_max;
-+	u8 sqiplus_bits;
-+};
-+
- /**
-  * struct phy_device - An instance of a PHY
-  *
-@@ -772,6 +796,8 @@ struct phy_device {
- 	/* MACsec management functions */
- 	const struct macsec_ops *macsec_ops;
- #endif
-+
-+	struct phy_oatc14_sqi_capability oatc14_sqi_capability;
- };
- 
- /* Generic phy_device::dev_flags */
-@@ -2257,6 +2283,8 @@ int genphy_c45_an_config_eee_aneg(struct phy_device *phydev);
- int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev);
- int genphy_c45_oatc14_cable_test_get_status(struct phy_device *phydev,
- 					    bool *finished);
-+int genphy_c45_oatc14_get_sqi_max(struct phy_device *phydev);
-+int genphy_c45_oatc14_get_sqi(struct phy_device *phydev);
- 
- /* The gen10g_* functions are the old Clause 45 stub */
- int gen10g_config_aneg(struct phy_device *phydev);
--- 
-2.34.1
-
+I'm unable to reconcile the placement of the "tx-p2p-microvolt" property
+in the port OF node with the code that searches for it exclusively in
+the network PHY node.
