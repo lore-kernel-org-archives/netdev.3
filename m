@@ -1,97 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BF6326D6E
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 16:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C484A29B204
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 16:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764174385; cv=none; b=Dl587hUIsHqt+SeBp9vZ4BD8NefUfJbtMIptzgrYeDE/MqEztRBiBiuQECYQgcz4q79inPyeuRDOBY+4JeFOU/U0DMX9kJZ4jY9Oaf8k5zD3kLetUMrYmskdC9a1W96bXlqr+eqZnPgfEd0QhFO/37QVK3NPufSG2jcrO239IqY=
+	t=1764174421; cv=none; b=socPk8inaSnlRtsrM61pTH7mlA4fTq5SwNR/jino1j1KXxFPHQpn5aM9umaq+G4nd+LV/0KZ4HeVgyrLJ0P75EyQT2KkINTqtfs/SsQaFJCcQNvIqrj3prJcAMERB+cKxx5dBAW2YLo9yPsTdCRJohMctjMWyPW0UhAv2lKKU3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764174385; c=relaxed/simple;
-	bh=k+PV/+w3GwC962tCLSEXCASPhFHz0jqYZzGEAcQNDho=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lTXXqcxp2XXodcCZsmXTqVcV/eyv/xKpjPjfG9t7OMRrnB53vQbayMswxjwGHAJ70bf4pG0Irj7XbHMCvMoEwmd+YIOlhpM/VMKsQU6jdq4mRYowSvCYL9vEJpw61nlCF0ehBfNAh8E1za6BT660yhsCTZDOy+BlFmP57nyDMgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=PgIbDxLx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764174421; c=relaxed/simple;
+	bh=L+PYLEg2c7RuySHWZyUigZ3QXYcF5wMa5NkODsxLMlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a66R28APgBmqIC++hluRaNst7nhDrDTZ4VS9gVFe7Mrvt9DDYtJ9KZT6C56itsHKcAfnfNC3/9EXO1qY5WIjcXu0phXd62uZhge7wcns9UYYig5Dv2AshtO5qMxEMqBFkDiEi47hIW4/ZyikgVhaRDGi/2X9zrVfP3UCk2uc8yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VIHMarr3; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="PgIbDxLx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E67C113D0
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 16:26:24 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="PgIbDxLx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1764174381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0qgrp8ZiZmWwsVN3KOkzcx4XHl7+XVN+AKrWgb6Xt0U=;
-	b=PgIbDxLxjZXMCcafDa4KB1LEZEzc5CBaryGcWylBb8m1YiZ4HZNptnEjpGKnkUGLZ+x7lZ
-	CxV9HWsIi6qrWxZuII811mVb77/7vyGEe9AZCSy9s8WWExPcxEvZT1H1a9qLlz+CviNxIl
-	1ZvRFP0UXQVfN1cD1NMYsq5NIRHSPGM=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5639fea8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <netdev@vger.kernel.org>;
-	Wed, 26 Nov 2025 16:26:20 +0000 (UTC)
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7c77fc7c11bso824363a34.1
-        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 08:26:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUHiRxD3C8mEQuCYI6TVkRxbKwN3bM40vatCQiBdmO+0fpNPW8AuEwAzX5uqp4CJl1Of3W3Nsk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyscfvJa58MjJ/Kn6d3z6obDbFr6+2Qga923bslkgOpFLjb20+W
-	NoVubJsMi6wstymvcj6v1yK3V8zyvRiesvyFEwWkdFz0luPGonZ3TFiif4oWtY1PN+7sB4iNAYm
-	1EWosG5I8aeHLAMnlzicY5GnvTHOnX80=
-X-Google-Smtp-Source: AGHT+IG1x6fZtqxKvZTtAuueGJIXHh6boeEFjB536/oD1ZvnaG1RS42xrXQwomgnDlloFJSGha0dxhrca9MI+NZ5Nl0=
-X-Received: by 2002:a05:6830:6d85:b0:7c7:6a56:cfb5 with SMTP id
- 46e09a7af769-7c798b6cc17mr9283452a34.11.1764174378875; Wed, 26 Nov 2025
- 08:26:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIHMarr3"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47798f4059fso8350795e9.2
+        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 08:26:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764174418; x=1764779218; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EpAyOKJ6Yz2Bai7wo0vq2pKge/BoDT3YbbpyLjfi24o=;
+        b=VIHMarr3xxC2MyDMxx6Lc1L+237Tgd6kvaOO4OOGiQ8/9FRx7LWU7M1aJxUoHvDB3z
+         gISMV4BFpB8OJBbnnxoUO6dotKIUz+e6MTje3Q7tY0ow/P7xze4lS+RgKhQMWI2Jalr5
+         /TJ9ZyhDacjLOslRcHwhcq3NxFEy8khl9lX8HxVNRdeKn+ZOuiHJXve+06dB2mK5dfYX
+         +CJoFGQ92koEZR3PaeHRvMX1bjiw7TCGntwwnTwyK0DfrJoITLXhBYFmQmFFOy0X3KPP
+         z21z/jDEtAzJ7PiP/u469g8VtBiJ7KEvF7R3ahxs6NiR1+Q86aQV3CEmIQ7QVcXOF9Wa
+         nmvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764174418; x=1764779218;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EpAyOKJ6Yz2Bai7wo0vq2pKge/BoDT3YbbpyLjfi24o=;
+        b=ItzBHR1h6UZLUEgxJUZpHPIFKsulT6lx08gviA/ZswtbdWwdpFnkVzSFzd5ItBT5kj
+         dmqgwiyQYDAUof3K7iktdd2f1Hu3xDi7Eu9A741/NyPerCyMAa9lOYMVf3D+vIVE7TsZ
+         BBf+qc4mffFLdy+lS+htD4KtvslQSWBUXzVslMZpbHsYijbQ+qNG6ZMbOmZNjMeJkSaH
+         OylempvkttnufDTCex3Ro8fT/UI6xWKoNBqaZW2nX4nzevhNXDfh2YcSSlaweN/Nz3EU
+         g7DWy2Vxo6WKJI48gDZ+ksIH7+DE6qiiOA1B71XcsQIO2oGG/AnOKVNckbAvv/QOqySv
+         dCaA==
+X-Gm-Message-State: AOJu0Yxgo96b5si5EFdDPjXl4pMekhnfO/HcMVICrftoCoV3JuB1ywcG
+	ygd8dmR9Oxix9FKrO6mr59LM5u5vkjJwRCTc2PvF9eL4OQLmhyEY/BEN
+X-Gm-Gg: ASbGncs8tJFICN9lVIUOzuAB8arY8oWDwy7u7brJ3ecTZrhM16DpMW1M3zMOBFPdLVl
+	TcI/yufOP0KXWz1JksKyknq+XnZnxBALzROwUhFJN/AhCOn747Qo2QMDcFAwLQqrPs+1hL3l08b
+	WJ/RSH34+ZcDnxiXiIMCyeIbwChtEbeW0KOXzqbxWUuGZbAkcBdz+1bPoTSI2MxdKurcvY5KM1L
+	Olx7iUbL0WlE+NwQCVlNg6/WvsKHP+ocaLfj5LsLhvD0X/rAga2Ca5DjIq/mZcs8zp7wWwAzX7V
+	A0g3+lcnMEORCA6wymIgC2o57PjD6wKINXjWWB1YR9hFBZvJizz2ezG98CrJ1Vv9mu7pGzqhZC+
+	S+de3pggW3is7bU5piV+SiJNQaxKqNDPT5hnT7PFh63em8svElwjTF6he2aEgKsBldUeEO1YHpc
+	nNiTo=
+X-Google-Smtp-Source: AGHT+IGkdeqnD9yqbzrAoeydZNYIWHAMmCvdoKJOZqbNkiAFeEcyG+FQDxy2mbwwlCwcRB6Wqs6rYQ==
+X-Received: by 2002:a5d:5885:0:b0:42b:3d45:22dd with SMTP id ffacd0b85a97d-42cc1d2443cmr12237765f8f.8.1764174417590;
+        Wed, 26 Nov 2025 08:26:57 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d106:d600:a04c:7112:155f:2ee5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f34fddsm42129300f8f.14.2025.11.26.08.26.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 08:26:56 -0800 (PST)
+Date: Wed, 26 Nov 2025 18:26:54 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/4] net: dsa: yt921x: Add HSR offloading
+ support
+Message-ID: <20251126162654.ajcwikzh4vijspxf@skbuf>
+References: <20251126093240.2853294-1-mmyangfl@gmail.com>
+ <20251126093240.2853294-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251105183223.89913-1-ast@fiberby.net> <20251105183223.89913-4-ast@fiberby.net>
- <CAHmME9pYvUZ8b9dzWi-XBk9N6A04MzSLELgnBezHUF7FHz-maA@mail.gmail.com> <66b74e25-dfbf-4542-9067-cc38b56dbf6e@fiberby.net>
-In-Reply-To: <66b74e25-dfbf-4542-9067-cc38b56dbf6e@fiberby.net>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Wed, 26 Nov 2025 17:26:08 +0100
-X-Gmail-Original-Message-ID: <CAHmME9qeutDAYXVCgP5fh5gyOimX4iWvDjUszdm_Gny+Yk9H4w@mail.gmail.com>
-X-Gm-Features: AWmQ_bl35qjZo2Wa1FfaZ448Mcfkf-D_fX7DT2US7bopJNJWmspW90thmSQ7Lwg
-Message-ID: <CAHmME9qeutDAYXVCgP5fh5gyOimX4iWvDjUszdm_Gny+Yk9H4w@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 03/11] wireguard: netlink: enable strict
- genetlink validation
-To: =?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	wireguard@lists.zx2c4.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jordan Rife <jordan@jrife.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126093240.2853294-4-mmyangfl@gmail.com>
 
-On Wed, Nov 26, 2025 at 5:25=E2=80=AFPM Asbj=C3=B8rn Sloth T=C3=B8nnesen <a=
-st@fiberby.net> wrote:
->
-> On 11/18/25 5:10 PM, Jason A. Donenfeld wrote:
-> > On Wed, Nov 5, 2025 at 7:32=E2=80=AFPM Asbj=C3=B8rn Sloth T=C3=B8nnesen=
- <ast@fiberby.net> wrote:
-> >>   static struct genl_family genl_family __ro_after_init =3D {
-> >>          .ops =3D genl_ops,
-> >>          .n_ops =3D ARRAY_SIZE(genl_ops),
-> >> -       .resv_start_op =3D WG_CMD_SET_DEVICE + 1,
-> >>          .name =3D WG_GENL_NAME,
-> >>          .version =3D WG_GENL_VERSION,
-> >>          .maxattr =3D WGDEVICE_A_MAX,
-> >
-> > This patch is fine and standalone enough, that I merged it into my
-> > wireguard.git devel branch:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/zx2c4/wireguard-linux.g=
-it/commit/?h=3Ddevel&id=3Dfbd8c752a8e3d00341fa7754d6e45e60d6b45490
-> >
-> > If you wind up rerolling the rest of these, you can do it against that =
-branch.
->
-> If you update it, so it includes the 2 new net-next commits, then
-> I can send v4 based on your tree.
+On Wed, Nov 26, 2025 at 05:32:36PM +0800, David Yang wrote:
+> Add offloading for packet duplication supported by the YT921x switches.
+> 
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> ---
 
-Done.
+I like the idea behind this patch from a purely technical perspective,
+but there's an important question. Do you, or people you know or have
+interacted with, use HSR/PRP on the YT921x switches, in order to find
+this change useful?
+
+If NETIF_F_HW_HSR_DUP is the only offload that the switch supports, then
+one can hardly say that the switch was designed to be an HSR accelerator.
+I'm working on some patches to make this feature generically available
+to most DSA switch drivers, rather than being arbitrarily implemented
+here and there. The usefulness of having this single offload generally
+available is where I am lacking some data points.
