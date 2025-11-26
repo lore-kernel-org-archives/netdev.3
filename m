@@ -1,100 +1,94 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEF433D6E7
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 15:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AFB33BBCB
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 16:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172651; cv=none; b=bb0tBBZh0t4N+MHBi4cOGjv38EjXqvosKOQJ6rJMyxGw5S5ymspoILtQjBktha2z7xIq1jRv70CN4xo3hfzIbrSvDy+WS3WOqLKttDh1IP8JxXiFm3gy6lBTJRyxUjJhn3erwup3IypHn7xzZ8En7xUMUd9nqAQdOTlvQpsu2rs=
+	t=1764172820; cv=none; b=p3FlHKjGD9fGWv0S3BL++4xhHAYFFLBfcmvBlkZZo9xk5RUT12H2NesiwvOay3L0LyLY2/CoduQZgF+G9pN/Eb/gDy5tjTLWbn5QJPdorDYCNSaAhtnuoJTllN95tfPFHqCqHp4xv013q80dJIjR0sMkv0jtH0BHK+6OVfrf31Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764172651; c=relaxed/simple;
-	bh=5K2shWIi4ZIOaKtu/+d9B6vxPEUqBRi9MTPtHlXZErU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ew2zE45wPAXURcWczSCniZwwxGAVxkaQvzOx4EG9UE+eY6kJVZGjma1qWc8OC7YotvvTZrlxr4tjNptjdvhAekmfLVd/yDYiQ4/9R8g2/xKmoeBDOKQmsW8luZOeUUKPBjvOsDvrDsyOqiBf8pISygMhjVtxItT8ePR/2KpCBzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtP-000654-EM; Wed, 26 Nov 2025 16:57:19 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtO-002dLl-0R;
-	Wed, 26 Nov 2025 16:57:18 +0100
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D8A284A8E36;
-	Wed, 26 Nov 2025 15:57:17 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH net 6/8] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
-Date: Wed, 26 Nov 2025 16:41:16 +0100
-Message-ID: <20251126155713.217105-7-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251126155713.217105-1-mkl@pengutronix.de>
-References: <20251126155713.217105-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1764172820; c=relaxed/simple;
+	bh=4dgOQdSFe09BlSpQ0D1vPz7WGtU4dRgFVV4sE/+Zdqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aua/FEQoTcPVDXJCLuRfabQW63m+v0g/FAOfNuitt0Z/CrFSZ0SyOQNGmfq3kgnZTXtq874bnBrp73p70oBkzFzK6CVeNKX2JQe53TSV+FHWFgZqYNiuNDdiYMNBZwax3qcR73yPG8GAAQlfTEyogREg4EZt1LpRTmbFt125IvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HAlYW5Lh; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HAlYW5Lh"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2984dfae0acso107575785ad.0
+        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 08:00:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764172818; x=1764777618; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4dgOQdSFe09BlSpQ0D1vPz7WGtU4dRgFVV4sE/+Zdqs=;
+        b=HAlYW5Lhcboo78KItzOwz+aTvGc5Xq9JLJZyN8W0i9VWBNHSfJwIfh5vHPd61ALkkv
+         K6SUDzMW/ZuqSiqru/JyI+mKFAtSc89cx+6cWPLk0lRu8HvRxvybPz8cIJDOVUOROqfP
+         dLwZfBf72FsOMZ6IRi13oc4Z9kMFtaNHBZuiPq+W/wIRk0jTO8k4fOcBEh81Qmi+68LQ
+         1efMOZlj0RqNGRDNSIxvmkWDIdaJVbZ8jYVb+KuEk5+XxvoSEulhI6fNLSo0navcUge+
+         hLYCcat74ouESqp+n7wjxO8gi4vLkrvJZAMsUXhV+A0CU28qV+R4ebCh1+WCP5yanwZf
+         cNVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764172818; x=1764777618;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4dgOQdSFe09BlSpQ0D1vPz7WGtU4dRgFVV4sE/+Zdqs=;
+        b=qnEpW0VITRGr/3GbEjcAPZXC/m32NE8OwuZbd/jcNZfKesNH8HmFe+g6q6hwssDkVf
+         Whue0id4AYfBK6o9aDjdxAFjFTHjXwQiY7Rx3R1vZp5vUhEP4Tu/pPFjA2umBtnh7wKI
+         mIh7qjKb3kwb+EFPAjw1ZrAS9ls4OtmPqtGsnuqS/fyUpgzKkyUmSYuXfvAplX0t7KS+
+         gSnXfsKmbITG0HGtUFz0qmVX99ANQSJ8jXi4tnrXB7bjlPTOBBamjF7V+yPf88o3LDzs
+         D4oKUcdZAT9ewp88AXQmzZbJooe/aFhUpgxBcM1ycXZjYuFX/WuKyauWXFUBwXb+vpB+
+         vOSQ==
+X-Gm-Message-State: AOJu0YzWdReJNPFpfE5N0/5uoOAWwmEzJUuFQTYLKytp//17wwNE5Th/
+	aitAI8WaTK+9rqZJyb1Uh3MT4r5OFOiNGISAC6p9bc9pZ3TNB6krFece
+X-Gm-Gg: ASbGncsScFqeS+8/9M6g8C/i28Etdqt47KdqhlCrPSI5ss0PgmP5LJM5fZORfVkLmKW
+	okwFCrmFnooxvwQI7VasfVmdnx/UI8a0qqAf7yd0v8RIjP/vTqR+uMeJAwkXIH8+k1LuZJNthhT
+	nEGrsKiwc2dDgJ99se+oC8c0HSrKpxlIHi/jrBdqKD7+5Ry3e14GhCWzc4EtYCKeCr85d+v3ReP
+	t9FJoo1QHemz8QrequH3Djf7g1bmkQRIF03aup//tzgpx629XdURqPyZvQyqyHTlNWyVu8v2+ft
+	XixQ35JK3DMgN0+Qp+iKV3h27mFFu0w7ENUVpvbRvAqpzBYm4kAMTtLgT2PiY5HCbxzatxkHJxh
+	lDE47L/6DYltp3o2C4w5pnAP2V4r4GM+/gInk0hOXIgqoH9qXQFK7gBThas1l5OwQHSGRpmG39Q
+	fZnkqCNpH5ymw=
+X-Google-Smtp-Source: AGHT+IEN1dnseFjkRSCWJHAPzUAmJSqbWO1TSqAeJU/WodrPxU70FYq+iY4Tb9PGAoya/kU9IBj2tw==
+X-Received: by 2002:a17:903:b07:b0:297:e231:f40c with SMTP id d9443c01a7336-29baaf75e00mr80206245ad.19.1764172816526;
+        Wed, 26 Nov 2025 08:00:16 -0800 (PST)
+Received: from fedora ([2401:4900:1f33:7df3:345:fd38:cbe7:7234])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b29d706sm199432785ad.80.2025.11.26.08.00.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 08:00:16 -0800 (PST)
+Date: Wed, 26 Nov 2025 21:30:09 +0530
+From: ShiHao <i.shihao.999@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+	pabeni@redhat.com, horms@kernel.org, pablo@netfilter.org,
+	kadlec@netfilter.org, fw@strlen.de
+Subject: Re: [PATCH v2] net: ipv4: fix spelling typos in commentsending
+ commands without the SCSI layer which eventually helped me understand Linux
+ USB subsystem
+Message-ID: <aSckCffx4DnQlGtz@fedora>
+References: <20251121104425.44527-1-i.shihao.999@gmail.com>
+ <20251124193121.6f9eab3d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251124193121.6f9eab3d@kernel.org>
 
-Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
-to be reset. If we ever reach the condition of handling more than
-`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop body.
+On Mon, Nov 24, 2025 at 07:31:21PM -0800, Jakub Kicinski wrote:
+> Please don't add any more files.
+> But in the files you touch you should fix _all_ the typos.
+> --
 
-This may, among other issues, cause us to never `netif_wake_queue()` again
-after a transmission interrupt.
+Hi
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Cc: stable@vger.kernel.org
-Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/sun4i_can.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I have not added any more files in the v2 patch. I will send a new
+patch for ipv6 directory.As for the v2 patch if There is anything wrong
+or need some improvment please let me know.
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 53bfd873de9b..0a7ba0942839 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(int irq, void *dev_id)
- 	u8 isrc, status;
- 	int n = 0;
- 
--	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
--	       (n < SUN4I_CAN_MAX_IRQ)) {
-+	while ((n < SUN4I_CAN_MAX_IRQ) &&
-+	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
- 		n++;
- 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
- 
--- 
-2.51.0
-
+thank you all
