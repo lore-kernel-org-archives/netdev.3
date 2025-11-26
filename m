@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1276329C70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC28329C6B
 	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 12:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764158499; cv=none; b=jVM8KpCsieLUr8n7VOtqYWjD3RaTUD4bRqgOE0b65ZAsg9oBOl+MOjS5Ek29I5D/kmMWWt6I1L6KD9bscTdifvW2IWRe9uOGis0LQz9E7sHRW8BgwdRytKbt3XQy714rn1RpFBkoFQAbjKN85Jdc3qSp2iKHhzVudvgncQHmRTc=
+	t=1764158498; cv=none; b=DsVTTupEIJw7G9eldtJxlDPem3VQmer/zFLLEVdc9WpbYNJVSM6AT6/Sk4YVyDD75fuCWFV9iJFPOhC66+Vx9/l9XQvMbDQylK1HyuJXQL7kulxVPR7qlGHJyN8AgZWenvF5fCNR6dVtoZm4BjXpHC/HASxv5qd9rxrYJPL/XQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764158499; c=relaxed/simple;
-	bh=Y6gkgFCyJ7mlx+2AT4QZ1M7yvI5edBOG9qAOAgMkrLA=;
+	s=arc-20240116; t=1764158498; c=relaxed/simple;
+	bh=QaRAEJr47bK97XST+06dwhGdZ98/JVd9GMWN0oJaELo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPSu+e3JIPVgP09cqtg31R07pj/je073yS5eyMEG0zGwDiiX0Q4Di89QCSWvIRLt0Z9YmM/sDrmpCmAtHlXK4xM6YZ2TAosG+0Voma5ZfGJZbeETSGmwnLMEAH8xOYCPYOtmeA73xD/uDmyuJ3fvSPHdj23mhJsoAZm9eM5Dyuc=
+	 MIME-Version; b=sdfXPeAN1c+j8662B49mMvsPEzmzBGrwnmAV/DS9uDT9TD7Eu1Ej1jL3Bs2jKc6xVNbR2nzzlE2WS1G0y/gKTiCKyS8scY/jUqDwoKbnZDmGSIq7azi6FL6mBUCYRGVNCsMcWGMtB5pta2RwkhbbcBTRVf8DawLBiO0DQJAk/5k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOECt-0004TD-2G; Wed, 26 Nov 2025 13:01:11 +0100
+	id 1vOECu-0004Ug-4N; Wed, 26 Nov 2025 13:01:12 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOECs-002bEf-1i;
+	id 1vOECs-002bF3-2m;
 	Wed, 26 Nov 2025 13:01:10 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 481DC4A8A98;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 966974A8A9D;
 	Wed, 26 Nov 2025 12:01:10 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Vincent Mailhol <mailhol@kernel.org>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 13/27] can: calc_bittiming: add can_calc_sample_point_nrz()
-Date: Wed, 26 Nov 2025 12:57:02 +0100
-Message-ID: <20251126120106.154635-14-mkl@pengutronix.de>
+Subject: [PATCH net-next 18/27] can: rcar_canfd: Invert reset assert order
+Date: Wed, 26 Nov 2025 12:57:07 +0100
+Message-ID: <20251126120106.154635-19-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126120106.154635-1-mkl@pengutronix.de>
 References: <20251126120106.154635-1-mkl@pengutronix.de>
@@ -59,71 +60,45 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-CAN XL optimal sample point for PWM encoding (when TMS is on) differs
-from the NRZ optimal one. There is thus a need to calculate a
-different sample point depending whether TMS is on or off.
+The two resets are asserted during cleanup in the same order as they
+were deasserted during probe.  Invert the order to restore symmetry.
 
-This is a preparation change: move the sample point calculation from
-can_calc_bittiming() into the new can_calc_sample_point_nrz()
-function.
-
-In an upcoming change, a function will be added to calculate the
-sample point for PWM encoding.
-
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20251126-canxl-v8-13-e7e3eb74f889@pengutronix.de
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251124102837.106973-2-biju.das.jz@bp.renesas.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/calc_bittiming.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/net/can/rcar/rcar_canfd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/dev/calc_bittiming.c b/drivers/net/can/dev/calc_bittiming.c
-index c8c166b383cd..bacdf3b218d3 100644
---- a/drivers/net/can/dev/calc_bittiming.c
-+++ b/drivers/net/can/dev/calc_bittiming.c
-@@ -10,6 +10,18 @@
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index 49ab65274b51..cbcc971cda9a 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -2192,8 +2192,8 @@ static int rcar_canfd_probe(struct platform_device *pdev)
+ fail_clk:
+ 	clk_disable_unprepare(gpriv->clkp);
+ fail_reset:
+-	reset_control_assert(gpriv->rstc1);
+ 	reset_control_assert(gpriv->rstc2);
++	reset_control_assert(gpriv->rstc1);
+ fail_dev:
+ 	return err;
+ }
+@@ -2214,8 +2214,8 @@ static void rcar_canfd_remove(struct platform_device *pdev)
+ 	/* Enter global sleep mode */
+ 	rcar_canfd_set_bit(gpriv->base, RCANFD_GCTR, RCANFD_GCTR_GSLPR);
+ 	clk_disable_unprepare(gpriv->clkp);
+-	reset_control_assert(gpriv->rstc1);
+ 	reset_control_assert(gpriv->rstc2);
++	reset_control_assert(gpriv->rstc1);
+ }
  
- #define CAN_CALC_MAX_ERROR 50 /* in one-tenth of a percent */
- 
-+/* CiA recommended sample points for Non Return to Zero encoding. */
-+static int can_calc_sample_point_nrz(const struct can_bittiming *bt)
-+{
-+	if (bt->bitrate > 800 * KILO /* BPS */)
-+		return 750;
-+
-+	if (bt->bitrate > 500 * KILO /* BPS */)
-+		return 800;
-+
-+	return 875;
-+}
-+
- /* Bit-timing calculation derived from:
-  *
-  * Code based on LinCAN sources and H8S2638 project
-@@ -79,17 +91,10 @@ int can_calc_bittiming(const struct net_device *dev, struct can_bittiming *bt,
- 	u64 v64;
- 	int err;
- 
--	/* Use CiA recommended sample points */
--	if (bt->sample_point) {
-+	if (bt->sample_point)
- 		sample_point_reference = bt->sample_point;
--	} else {
--		if (bt->bitrate > 800 * KILO /* BPS */)
--			sample_point_reference = 750;
--		else if (bt->bitrate > 500 * KILO /* BPS */)
--			sample_point_reference = 800;
--		else
--			sample_point_reference = 875;
--	}
-+	else
-+		sample_point_reference = can_calc_sample_point_nrz(bt);
- 
- 	/* tseg even = round down, odd = round up */
- 	for (tseg = (btc->tseg1_max + btc->tseg2_max) * 2 + 1;
+ static int __maybe_unused rcar_canfd_suspend(struct device *dev)
 -- 
 2.51.0
 
