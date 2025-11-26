@@ -1,134 +1,62 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F83C30AAD7
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 02:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1D722339;
+	Wed, 26 Nov 2025 02:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764124784; cv=none; b=mC50s2Cw6crgoGFDtHEgwcTjqiHB0Af0yXkSrWl/J1/HKNj4vfDI/soaj4oNyKMY3QxMS2f9Je245iTO3qLsO8S0HkmMM3xrHb2Ame0cEkcrhWKcxr6ksdRcZ1fs87uXtZCLF9H11VP6xY2H9HdMDhWLL8Dqhz/RCFB6bsCpHE0=
+	t=1764125017; cv=none; b=r4zGSpUwIvQi4swDf4j46JWH06yRrb2P3+UOM6Q7kUMR+Yz7yTdwKtfcO+66U6yeM0dqy1ieGW8w8UkO+FiAUtfubYCsy8xp2BiRgZcP2r/b1h9/8NgtOeoKcXDkOxUhsUfN8cGkNLgC84mZJs253R/rw1a8dmuTQXn2ymMfX34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764124784; c=relaxed/simple;
-	bh=DHpD9bb1h3vp1g+XeQh/hpEhuKm5Pv+vFfPtg4Urudc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GC6UbYHQuw884Y6Ezypy6Xkj0uCynVSG98z2fzaLTBXPoME6lFAx9yLVTEKOQLkNcxOfNM9a1a/xkwZmywFC16YNnCYOGeAT3iiSTU1N+4+yDnR3kFftb8c/tA2yDUX41JNKW6eNpwmVtCcImg2Lmo+ZzaPfjh6866SqV66NOiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
-X-QQ-mid: zesmtpgz1t1764124765t306b1f9e
-X-QQ-Originating-IP: WaECX9YYXZWuzMDNGv/XzVfa5592WLm6RCNTACG0SCU=
-Received: from localhost.localdomain ( [111.204.182.99])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 26 Nov 2025 10:39:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14428042333653094087
-EX-QQ-RecipientCnt: 13
-From: Tonghao Zhang <tonghao@bamaicloud.com>
-To: netdev@vger.kernel.org
-Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH net-next v2 4/5] net: bonding: add the READ_ONCE/WRITE_ONCE for outside lock accessing
-Date: Wed, 26 Nov 2025 10:38:28 +0800
-Message-Id: <20251126023829.44946-5-tonghao@bamaicloud.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20251126023829.44946-1-tonghao@bamaicloud.com>
-References: <20251126023829.44946-1-tonghao@bamaicloud.com>
+	s=arc-20240116; t=1764125017; c=relaxed/simple;
+	bh=+FMkMP9YZSzBOEBewlWn/akecndzrde6rgtdkYm5p00=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sPjkaXpIV9o/zhnJJX5CFFRdRW/2KA9OT7l9xgTlHmw45k60GsQFAAGUaf51ncu9ijuuQHuQHIH6zPpiQItFKwZ7gVffk3aJYTncIVgIBZXwyGJMNEj30gZ4dfkgEuTt8FtMK/Z1bKdFn1Wyxwgx51YgjV2EKXU468gyYcaSrME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFv84XcV; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFv84XcV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F5EC4CEF1;
+	Wed, 26 Nov 2025 02:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764125016;
+	bh=+FMkMP9YZSzBOEBewlWn/akecndzrde6rgtdkYm5p00=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RFv84XcVDz3HUczfoDn3j3wzmZyr/x6Ad1BhvzqD9Z/dKaSsRmf8IPXkAsPJW2xuE
+	 RUhvJQBDEXh1AYkqlQmfjDqJ8kvL6+7HZrbLcRSNsRzzdEPC+EyiHohH9tN5Pa7oBB
+	 j23ndLA6TGOIg/H5jtydGu1P3ora8QXoFnRYjSkMylSm4+80z0zmtLA/+Oixg+N6m4
+	 9WXgbL3PJvN6WA28axAuBtnvP1Ea3juI6pBK8HrBATflVNXYDo8azydocmTsPbUahf
+	 8s18Ab7LqjC12V8uCXUG71NrEbQm7BXBXHmJpZXVLmfQKYXHANeoaAWC7YbdwQZEpJ
+	 1MHVWQsi9Ozww==
+Date: Tue, 25 Nov 2025 18:43:35 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/1] net: mdio: reset PHY before attempting to
+ access ID register
+Message-ID: <20251125184335.040f015e@kernel.org>
+In-Reply-To: <6cb97b7bfd92d8dc1c1c00662114ece03b6d2913.1764069248.git.buday.csaba@prolan.hu>
+References: <6cb97b7bfd92d8dc1c1c00662114ece03b6d2913.1764069248.git.buday.csaba@prolan.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: MI8wNaO5eJcQgQt+7GwXYm7znIOJpURXGpSTaljzKvUMM3+qpEuQXfkE
-	ydjWdxACmU5BvIMhuvElen1lQCu987Y4UWp7PO3V3B6BPvxSHHGN9sgGDg8YNcNUX0Hvcri
-	k3k3VpCPuzavN80Xig8EJf4WTAsgON8Ypjs8MUYvTE7UDhs5OjxlJryUA8cxQp8BE+v2bnw
-	qFy9N3DQe+FANPYWPU+v55IPiYnICKBEcvx7Wo0BDFctg/p1WX3up3DE9Em8sN0G25YIv9s
-	rRkOyAneGh/WWWx97VDHuTk0KsU5CHLsGnFhgu/wjWRBEJf5syeqxVbAvGxXXAybAldKqzI
-	SnfSFP8Ht/x1holpGIAp7rMO1pCIOcMw2hzGpxaR19fFpaNfp7iRorff0nmqc25qsujj2xx
-	J1f2XDpyBaPGtNb1VHfVVpJqQ2Qr3gYD59oJ0E+Ag827e0U4BZQxy4JdgA6ahoHCJ9xLt8u
-	5pfWg0vw0cz6UVjfIarKMJ+1c9cMUrJJbh1iaKTT5/6qSHopZNP54R0lqkXXC9yBSCvI0Pl
-	K6813MMWjYJMir03X1eAOCC2sv0TPRh+Pn3wz6eK7mkeWRT0HM5U9OQEfi6nZvIw+iemCV8
-	Kz1SW4Ltn2IC539YP+hxY7qBUcWB+1dHBInc0tjrC5OYvmuswD4YWFqHwWkMma8uUb9Or4M
-	uURI8pMEd1y1+SQYZLV5pzbSOSAkq/L/R/ebcKIPNHWnzclNk3i9UNidOU6CFQYmp9i7iZx
-	e0MzORBlyVsBiI8V6GKjEE/HkChHiJn3AWoTywoEvblQawfHDrryaqEjVuWDiCGSs5sWj9J
-	sxIz9faM36Sn/uaSBjoowDyEMgybGsSh/Rwr0wDcSrManHjrszNuW2Zz3awoDz6hxibmFV3
-	OIjNL6qJ/IzshgsIFLIDfOiNGfISJyPuboMxYzw7g46wLXrypKXqJFpJb5PuNnf7w2jpiBS
-	q5/a2HDUiRpjcnq4zPhpcBPE4BK+N9jUzJQ5y9Gjih0vy512ktGSQ8bkwTDYyNoF5FMy58o
-	n8seeoD0f9AHj0hPp8K37Ale62Ndxe0VRU6ABSqcmNGx1L43QxnlDWsOsQptLzt687eYUkg
-	m7DjVXnjmBSFZgXokX8sK0=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Although operations on the variable send_peer_notif are already within
-a lock-protected critical section, there are cases where it is accessed
-outside the lock. Therefore, READ_ONCE() and WRITE_ONCE() should be
-added to it.
+On Tue, 25 Nov 2025 12:15:51 +0100 Buday Csaba wrote:
+> When the ID of an Ethernet PHY is not provided by the 'compatible'
+> string in the device tree, its actual ID is read via the MDIO bus.
+> For some PHYs this could be unsafe, since a hard reset may be
+> necessary to safely access the MDIO registers.
 
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>
-Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
----
-v2: fix compilation errors
----
- drivers/net/bonding/bond_main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+You may be missing exports because it doesn't build with allmodconfig:
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 025ca0a45615..14396e39b1f0 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1204,8 +1204,9 @@ void bond_peer_notify_work_rearm(struct bonding *bond, unsigned long delay)
- /* Peer notify update handler. Holds only RTNL */
- static void bond_peer_notify_reset(struct bonding *bond)
- {
--	bond->send_peer_notif = bond->params.num_peer_notif *
--		max(1, bond->params.peer_notif_delay);
-+	WRITE_ONCE(bond->send_peer_notif,
-+		   bond->params.num_peer_notif *
-+		   max(1, bond->params.peer_notif_delay));
- }
- 
- static void bond_peer_notify_handler(struct work_struct *work)
-@@ -2825,7 +2826,7 @@ static void bond_mii_monitor(struct work_struct *work)
- 
- 	rcu_read_unlock();
- 
--	if (commit || bond->send_peer_notif) {
-+	if (commit || READ_ONCE(bond->send_peer_notif)) {
- 		/* Race avoidance with bond_close cancel of workqueue */
- 		if (!rtnl_trylock()) {
- 			delay = 1;
-@@ -3784,7 +3785,7 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
- 	should_notify_rtnl = bond_ab_arp_probe(bond);
- 	rcu_read_unlock();
- 
--	if (bond->send_peer_notif || should_notify_rtnl) {
-+	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
- 		if (!rtnl_trylock()) {
- 			delta_in_ticks = 1;
- 			goto re_arm;
+ERROR: modpost: "mdio_device_register_reset" [drivers/net/mdio/fwnode_mdio.ko] undefined!
+ERROR: modpost: "mdio_device_unregister_reset" [drivers/net/mdio/fwnode_mdio.ko] undefined!
 -- 
-2.34.1
-
+pw-bot: cr
