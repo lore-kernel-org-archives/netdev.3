@@ -1,27 +1,27 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91566308F3E
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 02:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DABA3081AB
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 02:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764124778; cv=none; b=nYeytVjqqx0kgnQdCulBqyucEvhGLfQbNqNjCFIvcmb18ATSYGFv86ygxPMvl8Ypme//UxM9L3tCsxpsy202+YkHjpI8jQcg9pAyLc9/m3UvgZraV8PNbVLCSTk/VoSMd3+EftJHtLipRoM4BHcntPPx9ndxa1sZIOtrBT0yk3s=
+	t=1764124782; cv=none; b=qFn0f/VntmFARiFGXv2DvpAyV+YuuVVZ/+MOJi/eH7PT0hYmtYoDPhMfmNm82zRB2hCCHhhiYy977omI84ROzYxlwx+fL+zHOxQwm103dYO0T1Tw2BPWeAIPjU0jxXrf/BVfU1RkmrKO5T5O+NatxtVGh+kuj/J8zMcXHG8wEqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764124778; c=relaxed/simple;
-	bh=Z30wU3mOTjQ75JyO/CuuHKcEdD9qBqqXx6OefOh//OU=;
+	s=arc-20240116; t=1764124782; c=relaxed/simple;
+	bh=zDyTgfxIPkdBTyQUqwcldfvtlQnuhS3qeGcanb9FDc4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=byfgW+maYk1IHjqU9KLgEX5ybDLsGLY05hBDo5Ew9XtzPeA/dXa0256+E6nyfJOu+ZtSt3/JLD478G8VbTR9Idd32KU/jSXzFg8AzFqPc+U75x5Ln9Sm1aeOiKj5949SYAvh23SDuKqSo2/VU1wkramfw3se2lE5fNoUxob18lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=18.194.254.142
+	 MIME-Version; b=HuKuSfcYLtRc43MQPzUmEKk9RnRmeiWCsa1sw8XDy/X6fNN7KMGWDlyzpqnntC0/SUYCgEfpJld+TW0BTvN2VhRKbo2Lg7HgzLUcLdNztEJDfvoph2XhPc1h4McyE+ukuNLqV3uSLGVWBwfGisp7BNQo38DZFYlZnFeB1gA8s1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
-X-QQ-mid: zesmtpgz1t1764124762t5ff5936b
-X-QQ-Originating-IP: tAtPKygqTPDC5AqjIHV9yW4/sW/Q+AsTVa93nH+Tb4w=
+X-QQ-mid: zesmtpgz1t1764124769t72516d15
+X-QQ-Originating-IP: QGjTb0P1gKZuNUBEl8HW+usnk/nODLxXJtA2c2+jTlM=
 Received: from localhost.localdomain ( [111.204.182.99])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 26 Nov 2025 10:39:21 +0800 (CST)
+	id ; Wed, 26 Nov 2025 10:39:27 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5659905734882288333
+X-BIZMAIL-ID: 16654287111525162691
 EX-QQ-RecipientCnt: 13
 From: Tonghao Zhang <tonghao@bamaicloud.com>
 To: netdev@vger.kernel.org
@@ -37,9 +37,9 @@ Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH net-next v2 3/5] net: bonding: skip the 2nd trylock when first one fail
-Date: Wed, 26 Nov 2025 10:38:27 +0800
-Message-Id: <20251126023829.44946-4-tonghao@bamaicloud.com>
+Subject: [PATCH net-next v2 5/5] net: bonding: combine rtnl lock block for arp monitor in activebackup mode
+Date: Wed, 26 Nov 2025 10:38:29 +0800
+Message-Id: <20251126023829.44946-6-tonghao@bamaicloud.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20251126023829.44946-1-tonghao@bamaicloud.com>
 References: <20251126023829.44946-1-tonghao@bamaicloud.com>
@@ -52,29 +52,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: OanpiDkno5AWt/FNenlmP6cI87wJ1ZdXYlIjI4em4ybFSI8a1BPpNP/K
-	hVx9JsXAR7QHSGBC611Gd2D3jdV6bEL+j/v5w+mrBaYrR0K4ZKxAEOkceHufSJ3jGTVYSMZ
-	tpxGa1QqVcu8rvcOWr8DFnzdK1Bz7S1Z8JUcVrWqyTb01RL99re8Xz80yRT7m13kRRMMfqE
-	TEzg7oicRr9g/sIS8ooQreJ1L6i3mQYVN4dFkH83wiCJMxAAuRsMKkzNxpmbMd9bm7v1J6e
-	A/2/v6f2qrWRdCe1mEx3DfSqcMRpSFjuI2FMVsywGKiVq/YO4SXI1LLLOM+Cb0zrHWlL4hc
-	it0OcgX7+H/6K/W7AEu2eJxcUB9KgLcXDccDb7kiFl5j8Yba31z/7Ta2F90b+hUfgnLcwGx
-	MXsTYvqcOn2CgbfrNLuIhwmsRdwEfD7MSKjvdLtcJthOwpnw9/x0daWLR1RucTNAsdfPEPI
-	LFnoC/mtsmfBOiYKFj4DjC9rEIRfkOTJoO6oJAZtj5XoiPTS/RLkHjnAER/aI9uxTMqPVOk
-	3QXPqA7IZ11YT37E3M52vt2I+AxKu4/ElpHVpHrawdldbSOsjlWMjrfPiV0Uc8Tr/YxHXje
-	1/AnUoZZ63VraJTYF4Md3Oejuqar8YJl2YArJcW5Dee3QuLv3kotdaxdgMOiiTA9hPoOjE/
-	NC5c5cPeyn5KTIJ80Jpd08FPD+26rNhMDRBIG/gGGaCUAcTQqlCLk01UYdzckynD7DC+CkU
-	F8jcBCX6+YF6dE+s3IptmpELkzon2ovyseUR+Ki/vVjqi6tLOQkgPGMvqXDI8mqLO8CWoCf
-	uOJz+ZpRYMdtQ8ECzvYLl1gUeSBFQQh4muV+/dUbDpaiA8YadvD2F0OZvz+nRevymB/jgIv
-	W2g74wb/K1/k3lsyMUzyj2BwawNRaJl6c50Szuv89EWG0Sk1swTu1iR7SNexDblCQffMw5N
-	+uOPRageg3GphwKk/ttOeVPJm5a5UsTHvN/PDxpqp/6bBr/YoiiJlPD9sJkn/5EJJjCiO2F
-	wEfnBQDFCCTCmThPfBBOsEW1Q8ANoy5zAX0icjBl8fugHOcXNI5aV5MsyJpUr42XtoYqmnS
-	Q==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: OeLwzUnLeZjMgbJJjxFEBxZzEb8Pa47fCUTD8KmKiIBolOEVwfidecp4
+	b1zhKscqkyB11e1Lwt4irKTwbbeL1erjJIfZXOMwqhM9Y8aZxqID2BiIl2QwMLEvfz4XNUa
+	smUoae0KvAT39IR7CcNQzTNk6/hVpbWJdjRrHNwm9hgufVM5X46S8GZPOLjC8Y9Z6qdNsc4
+	SIRfJMHm1dcQkZnmiON8y69F+MFS0yHuPP7sWuoa7tXOeHwXpJnW1EC8h2wm8cJj00BIUxw
+	GbRZKFchZQIgGsOY0MkbNS6dsbAUwsGxn66foao4xrukyJggzspY96sU2gcXvAtoVMD+Srx
+	OC3yEfdPOiG9j6V3W4+4m+CkI5fBvF3ubJ0rCwxYFx0/Lfs5B8V5OhTT8iwLpVWeDRBEOb7
+	0kl1zazNcLJYQQ2OvSft4i+xhZdzLtWZgcQ2Dp6LsBSoyY2OEmDRC9gRN4myDESt2OXzJcI
+	Yy3SZ/QfamU8B2cfA0JgpbkDdaG85wZoRTotNVBignM4aZGL9yVZRSeVPb2ZE1Y2ap6ACTo
+	9i3ZHwUfjV1o3O9gLuA62K4g8klLiN8dJ4CdNN32cXdOHjldJ+xUI51Wn1wj6Ls5HFw9qJw
+	fId/Zh3w8iqT+F2k+NwYQk+heDjRLJb5cCxAZxcptWWmM5Vmb7dKx2O9yJedFZzLuDMUM61
+	28eHABlC60LSNSZuRKT116NiTUWAaGvODODRLiLmoQAILyVj/X0v8e7um9utkfyX2Cp533v
+	vmtgQdYEcceELMEFlQxJfxXH24nh3ewEXiRqJ44IPr5IhqrZGnQ/BOA/DqoDODM07iZf9HZ
+	4wL2CGZWbltUl/FfPr3sEis8MK7ckIxuYnNr8aKtTlZEvCUIOdAlTmsT5XgpmDDMRPc4i2U
+	yQMdKxd9XGnBenOdj5hULEXt+xyg4eQUI2XygpO9C8FguNRDQi2mpB/ERVsnRe5c+FWkNfx
+	+ctsFy5kGuyd7fvpCbKUnLC0TF0cu1w2mPKNWn6++GBvrHvSxuW3W30acwniAdz2cLLiJJv
+	fuJuzj4u1PZtKjiUclnrdGkaqjEXY=
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
 X-QQ-RECHKSPAM: 0
 
-After the first trylock fail, retrying immediately is
-not advised as there is a high probability of failing
-to acquire the lock again. This optimization makes sense.
+Place all the arp monitor in a common critical section, to avoid requesting
+rtnl lock frequently. Note that mii monitor also use the common critical
+section. It should be noted that the bond_ab_arp_probe() sending probe arp
+may be lost in this cycle, when committing link changed state. It is acceptable.
 
 Cc: Jay Vosburgh <jv@jvosburgh.net>
 Cc: "David S. Miller" <davem@davemloft.net>
@@ -89,56 +89,67 @@ Cc: Hangbin Liu <liuhangbin@gmail.com>
 Cc: Jason Xing <kerneljasonxing@gmail.com>
 Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
 ---
-v1:
-- splitted from: https://patchwork.kernel.org/project/netdevbpf/patch/20251118090431.35654-1-tonghao@bamaicloud.com/
-- this patch only skip the 2nd rtnl lock.
-- add this patch to series
----
- drivers/net/bonding/bond_main.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/bonding/bond_main.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 1b16c4cd90e0..025ca0a45615 100644
+index 14396e39b1f0..2cfaac3edde0 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -3756,7 +3756,7 @@ static bool bond_ab_arp_probe(struct bonding *bond)
+@@ -3757,7 +3757,7 @@ static bool bond_ab_arp_probe(struct bonding *bond)
  
  static void bond_activebackup_arp_mon(struct bonding *bond)
  {
--	bool should_notify_rtnl = false;
-+	bool should_notify_rtnl;
+-	bool should_notify_rtnl;
++	bool should_notify_rtnl, commit;
  	int delta_in_ticks;
  
  	delta_in_ticks = msecs_to_jiffies(bond->params.arp_interval);
-@@ -3784,13 +3784,11 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
+@@ -3767,36 +3767,28 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
+ 
+ 	rcu_read_lock();
+ 
+-	if (bond_ab_arp_inspect(bond)) {
+-		rcu_read_unlock();
+-
+-		/* Race avoidance with bond_close flush of workqueue */
+-		if (!rtnl_trylock()) {
+-			delta_in_ticks = 1;
+-			goto re_arm;
+-		}
+-
+-		bond_ab_arp_commit(bond);
+-
+-		rtnl_unlock();
+-		rcu_read_lock();
+-	}
+-
++	commit = !!bond_ab_arp_inspect(bond);
  	should_notify_rtnl = bond_ab_arp_probe(bond);
++
  	rcu_read_unlock();
  
--re_arm:
--	if (bond->params.arp_interval)
--		queue_delayed_work(bond->wq, &bond->arp_work, delta_in_ticks);
--
- 	if (bond->send_peer_notif || should_notify_rtnl) {
--		if (!rtnl_trylock())
--			return;
-+		if (!rtnl_trylock()) {
-+			delta_in_ticks = 1;
-+			goto re_arm;
-+		}
+-	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
++	if (commit || READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
++		/* Race avoidance with bond_close flush of workqueue */
+ 		if (!rtnl_trylock()) {
+ 			delta_in_ticks = 1;
+ 			goto re_arm;
+ 		}
  
++		if (commit)
++			bond_ab_arp_commit(bond);
++
  		if (bond->send_peer_notif) {
  			if (bond_should_notify_peers(bond))
-@@ -3805,6 +3803,10 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
- 
- 		rtnl_unlock();
- 	}
+ 				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
+ 							 bond->dev);
+ 			bond->send_peer_notif--;
+ 		}
 +
-+re_arm:
-+	if (bond->params.arp_interval)
-+		queue_delayed_work(bond->wq, &bond->arp_work, delta_in_ticks);
- }
- 
- static void bond_arp_monitor(struct work_struct *work)
+ 		if (should_notify_rtnl) {
+ 			bond_slave_state_notify(bond);
+ 			bond_slave_link_notify(bond);
 -- 
 2.34.1
 
