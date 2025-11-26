@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D379233C1A5
-	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 15:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0A533D6C7
+	for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 15:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172649; cv=none; b=cRWvCkrx31qto71w3E8j7AQCCxIRRaseV9jlVz9t7mc1OlffrigrIdv4jdgwMSAjEN7dLxtEteSORAZAjzOTYZlX/WYDxJcomSv/VstoggBZvphPQ/LhXKDF6lHBVfi2EvNVUxSr4C5AFG2mc8Tm2qYLdE7OpQiG/627DPTmSQM=
+	t=1764172651; cv=none; b=BMWMihkQUf6/eIlCou+d7F8+NAdYzhCcJcgSkWTYoiOb5oBzIhUiLkTl0zTlgHKa9i8pPD0rIsXUBuILCyv9cY0VmRhj28/HQT/UoLAppYcTcsSiGtSi6qNUS8PbnoUcexot9sEV52PKmrY2vzCXV0oNK8PK8tXgPYZraNpKjew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764172649; c=relaxed/simple;
-	bh=GgJYMrl3kZrhxnfKvPSqKK81uGUKc2/9Yx16n2syiXY=;
+	s=arc-20240116; t=1764172651; c=relaxed/simple;
+	bh=2ucNE8fa7lQi1c5DHPHvU2+JR3IPBRd36Kp9pqxu5VA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJ0M9K1Pc2d+rXWGlIKja9gIA0H8mJSb6w1mCvb9bgr9VDrb+vDvke1Se+2y77oyapIxkxJRpOV1eY8YRBjIY8Ss5H3QxdL/EUSlBcShQczpl/i3wVTRAd3XQufUKiLy18zo8VtlyxVVVikKtGzUGUvTgV/NY2DhU/A/uxadelE=
+	 MIME-Version:Content-Type; b=mZy0Vw3tXnPTR2auyheKQBz2CSiv8obKdHUteLyYYDy3T5wXP1fs19RJ6ffhDqj1rNCKUkGP2iP7ePZgRU4FbPVdzLA3cf66Uq+2Wxr/UceFBuwClUwI6QueT6zUa3djL3MIXFya5jMiq5JXGkC0h1zTgaEf4d2+o4fL3Xtpc00=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtO-000655-OM; Wed, 26 Nov 2025 16:57:18 +0100
+	id 1vOHtP-000650-EK; Wed, 26 Nov 2025 16:57:19 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vOHtO-002dLn-0a;
+	id 1vOHtN-002dLe-3A;
 	Wed, 26 Nov 2025 16:57:18 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E7AC04A8E37;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A91D94A8E32;
 	Wed, 26 Nov 2025 15:57:17 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
 	stable@vger.kernel.org,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 7/8] can: rcar_canfd: Fix CAN-FD mode as default
-Date: Wed, 26 Nov 2025 16:41:17 +0100
-Message-ID: <20251126155713.217105-8-mkl@pengutronix.de>
+Subject: [PATCH net 2/8] can: sja1000: fix max irq loop handling
+Date: Wed, 26 Nov 2025 16:41:12 +0100
+Message-ID: <20251126155713.217105-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251126155713.217105-1-mkl@pengutronix.de>
 References: <20251126155713.217105-1-mkl@pengutronix.de>
@@ -53,126 +54,49 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 
-The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
-has aligned with the flow mentioned in the hardware manual for all SoCs
-except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
-the wrong logic in the commit[1] sets the default mode to FD-Only mode
-instead of CAN-FD mode.
+Reading the interrupt register `SJA1000_IR` causes all of its bits to be
+reset. If we ever reach the condition of handling more than
+`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop
+body.
 
-This patch sets the CAN-FD mode as the default for all SoCs by dropping
-the rcar_canfd_set_mode() as some SoC requires mode setting in global
-reset mode, and the rest of the SoCs in channel reset mode and update the
-rcar_canfd_reset_controller() to take care of these constraints. Moreover,
-the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
-R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
-simplify the code later to support FD-only mode.
+This may, among other issues, cause us to never `netif_wake_queue()`
+again after a transmission interrupt.
 
-[1]
-commit 45721c406dcf ("can: rcar_canfd: Add support for r8a779a0 SoC")
-
-Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251118123926.193445-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 53 ++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 22 deletions(-)
+ drivers/net/can/sja1000/sja1000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 45d36adb51b7..4c0d7d26df9f 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -709,6 +709,11 @@ static void rcar_canfd_set_bit_reg(void __iomem *addr, u32 val)
- 	rcar_canfd_update(val, val, addr);
- }
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index 4d245857ef1c..83476af8adb5 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, void *dev_id)
+ 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
+ 		goto out;
  
-+static void rcar_canfd_clear_bit_reg(void __iomem *addr, u32 val)
-+{
-+	rcar_canfd_update(val, 0, addr);
-+}
-+
- static void rcar_canfd_update_bit_reg(void __iomem *addr, u32 mask, u32 val)
- {
- 	rcar_canfd_update(mask, val, addr);
-@@ -755,25 +760,6 @@ static void rcar_canfd_set_rnc(struct rcar_canfd_global *gpriv, unsigned int ch,
- 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLCFG(w), rnc);
- }
+-	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
+-	       (n < SJA1000_MAX_IRQ)) {
++	while ((n < SJA1000_MAX_IRQ) &&
++	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
  
--static void rcar_canfd_set_mode(struct rcar_canfd_global *gpriv)
--{
--	if (gpriv->info->ch_interface_mode) {
--		u32 ch, val = gpriv->fdmode ? RCANFD_GEN4_FDCFG_FDOE
--					    : RCANFD_GEN4_FDCFG_CLOE;
--
--		for_each_set_bit(ch, &gpriv->channels_mask,
--				 gpriv->info->max_channels)
--			rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg, val);
--	} else {
--		if (gpriv->fdmode)
--			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
--					   RCANFD_GRMCFG_RCMC);
--		else
--			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
--					     RCANFD_GRMCFG_RCMC);
--	}
--}
--
- static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- {
- 	struct device *dev = &gpriv->pdev->dev;
-@@ -806,6 +792,16 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 	/* Reset Global error flags */
- 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
- 
-+	/* Set the controller into appropriate mode */
-+	if (!gpriv->info->ch_interface_mode) {
-+		if (gpriv->fdmode)
-+			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
-+					   RCANFD_GRMCFG_RCMC);
-+		else
-+			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
-+					     RCANFD_GRMCFG_RCMC);
-+	}
-+
- 	/* Transition all Channels to reset mode */
- 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
- 		rcar_canfd_clear_bit(gpriv->base,
-@@ -823,10 +819,23 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 			dev_dbg(dev, "channel %u reset failed\n", ch);
- 			return err;
- 		}
--	}
- 
--	/* Set the controller into appropriate mode */
--	rcar_canfd_set_mode(gpriv);
-+		/* Set the controller into appropriate mode */
-+		if (gpriv->info->ch_interface_mode) {
-+			/* Do not set CLOE and FDOE simultaneously */
-+			if (!gpriv->fdmode) {
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_FDOE);
-+				rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+						       RCANFD_GEN4_FDCFG_CLOE);
-+			} else {
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_FDOE);
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_CLOE);
-+			}
-+		}
-+	}
- 
- 	return 0;
- }
+ 		status = priv->read_reg(priv, SJA1000_SR);
+ 		/* check for absent controller due to hw unplug */
 -- 
 2.51.0
 
