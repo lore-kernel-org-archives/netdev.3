@@ -1,132 +1,102 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A979A2773DE;
-	Thu, 27 Nov 2025 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764267462; cv=pass; b=mQrkinFpyYsJ05Fk51I9hKp1Ml/+WS74Q/077Rg+39i+KvNZW5rjPLPSX11EOm/MI6FiVTky0S+q8mzQEUmg52u2tocgRYOJv7MjL+fDYq3CBN15FmGbutPgHOqysxdrDF64QyN15pHRAuslk6AOzp+vt2m8kIC0AwyajSLtSC4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764267462; c=relaxed/simple;
-	bh=Am9z6NB1hWcUKAtK2Wd4vEeA4UQDmYpPUuhYvTNI8BM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QqhvkhWz17105av0MafZHeOXNp8bBso5CfWJbj+x9agrq/3QNgQ28EklmDcAbW1OQkA6QcGbs4DKbTdLLtugV0BEshl2pMAdfNwncEAJYMbzMz9eyovTxbqhCC+mJJ6pa+Ee2mui5xbQR3j51tef3kKNTo9aq62bUd3/+YH0v3w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b=MrrmR/Eb; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699BD24886A
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 18:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764267700; cv=none; b=XV7LjGNCwyeOqjZLbj3sE55942wmI4OToJth1EOy7PhtccSvVjcAqyeb5Z8H9NiXRASt2xovngLqEhsLEVqzs+VX5VIjNF/fY9DbFWcEbNz2xkI7k8swI91OOiu29k4VKHcDlXsaoha+VWMEfShqog0wpdu+ZEe6orRk0g/CKbY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764267700; c=relaxed/simple;
+	bh=igWAjH0xNQvJLP11ckoZjjC7ciLsokNpa7VjOwFJSMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YFvQ/GvWjhUjeYBg/mRGqWiiL1R1x9ntDixNUmCr0b5/LyJ78ObDWec6gAXSgabblgfpClPwEcPvqek/EhDu/y0U/QY76SL61KZHU9OWSit4yuuhm3mTuWykWuWqImLz8oFkR5nZbWmrDnTBTZ1q7Vg/RE7cmZ5BkSfkunnFqhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ry8hthPc; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b="MrrmR/Eb"
-ARC-Seal: i=1; a=rsa-sha256; t=1764267379; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VHNPgFqZa0o6809/T+8jHJoMCBYjd2yZiYvEH43ecdDw0RDEoZBASvS8GXIRjf443u9HWsC87weywb65C5DIBcudiiLSfw66tyl4FaLNKaejlEIJIohOY954WwUx+6cfKsQdPDjAUxOAHUCJW2JVa5BuwC53SzyModibprg79Xg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764267379; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GA9FTV2ejX5xguOwyiDUL1hpvKOTwyB0xhI2crLeIWM=; 
-	b=VzgCDjp9rcRegJe18G1VoZpp248pQnSYb2nnPRvNYWxHUdyyrlHItaUgv2yGSNf+L6cT0ioGjEOUEpK+K0iTAkjcNQ9RhPc7ICm06mhWm7aOWDC7aTqGKcy/QGw9e2DvPfDfeB5pm0C9OwDjdwtPltUGw2ChGO1r7cznhhdiZRQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=ariel.dalessandro@collabora.com;
-	dmarc=pass header.from=<ariel.dalessandro@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764267379;
-	s=zohomail; d=collabora.com; i=ariel.dalessandro@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=GA9FTV2ejX5xguOwyiDUL1hpvKOTwyB0xhI2crLeIWM=;
-	b=MrrmR/EbOR0f5Gb5Xbhy3YhzRySSoWvRdfWRmCgcQVrMezcKplDmR9LS92M5F8YU
-	44hmR7lvwMtOD/5nw3ELxQb8PadU5cfnfMx7ngMJ02a3mou1wD1bDW4FltRjo9ZXijV
-	BVrAa/6yr4xsF2CvbF/50U6ILU5JghWfinyStD5c=
-Received: by mx.zohomail.com with SMTPS id 1764267377521567.410213066609;
-	Thu, 27 Nov 2025 10:16:17 -0800 (PST)
-Message-ID: <2dd059f5-96d4-44a1-84be-b14dce28cf06@collabora.com>
-Date: Thu, 27 Nov 2025 15:15:47 -0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ry8hthPc"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29845b06dd2so14865095ad.2
+        for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 10:21:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764267699; x=1764872499; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S832dEXRRuljnsRC8l5OHuN+DNSJW8AFtuJhBdXtnKQ=;
+        b=Ry8hthPcoRaxhU5rUfrj0+ggSPuvHjYR9cfw3AGrRRuYyRLWTLMDggAT+x4Z4H87ID
+         Ls0pYZ8FCbgzaJ+VMy0z6ddbiAoCmzv0D5EwhtieocNtpzPOQzsjdZ6nAQ8aLcMoPSfc
+         os24/nqVPxwl6uP+cKZHj+zrFVHrOa+XFAHJxem1wOB4R+Bed5JntYyY6nlXm5JkE8Y+
+         pONmS+ahw/JoBYPZ8evCn3VYUvl83Gbt/da4/Jvos61WKhXnVHNQAIwMQbSfnJP6gc1m
+         prjc4LTYr/qWO//5wFFdMeocsmU8BPUbx6ERs+1gyMZ2bMaUeG5nDQpddooMsQb4dzVY
+         v9mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764267699; x=1764872499;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S832dEXRRuljnsRC8l5OHuN+DNSJW8AFtuJhBdXtnKQ=;
+        b=ISQOqr64SsOGLqAYEiPI+zBg3DpWD/gs0Xw28XoTC2pMXLVRO9cq7ohHS4bptkh2XC
+         k7PB5zYz9lGa/H7gcUNl2MAUCYpGqH+ZYL9jFYmd9SPyGM7aae1LimZTzAhx38IyQRUH
+         rICDKWmarbLrltWWRDvTDbOnsTigN0Ud6mgW0BIOjEL+9m/X23vTcObxgYwnzu9F6jPO
+         1GPIZPwNWhVWvuqTQrT+M0AuMN+gtJvSjVdWxcOmjKjf1FVdXepoNqdmHxV8leTow3It
+         gG9LHUhAKGlmlPIgI5D93J+ogfwoolTpBwSyzk8yJiU03arwTOAvGI4929vhiWB429It
+         2MXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW41JGcWyhUi2Vlw0O+GKagMBcjG3RFgNEAxO2QccF4cvud6p475p4nl2PDIDXk+/1/CowQJ3g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1iiK1QYnmrQyrY8weLU/K8ijs/cQPqPG6p3nuU5i3HJ7EQAup
+	V5Y2p00tkAFYhvs+ZVOyHycFR/FYUMHNP1cSkxc28yFL2CcmXMoWgnhnguEJ3LRg
+X-Gm-Gg: ASbGncuGYBXRoN+hZxRrXrjTOTXECY+Af8XBd2fs/Di9gY63ZsXfHS5DKsWS74KbJT9
+	GtvXqHd9LoNUuSUM3bcrHeTv1jhROll0e3xZa3QZ2hfeszPjv9k+xAPrcVF4X+5oZPls1w/U91r
+	98i2YzShshitLKPQC+aTAB0IlQh7A3CnKXXeaGr3aQTHa4zWyWsE4FPf1qKBXfyV4vV6O53HppF
+	LNMRWRU3qpOk2QE1BqWEiqTEa0qaYcVkuVvl4CLH7C6CZtyQtZKgkzEQrywHe/54UqJF4uZ3GYR
+	PQbdC8zYheiNgFDAdAtQg9u8rxyUSWllQEqGoBIjK/liIECz/K0QFwtSoXrv7vjYuHProauJEh2
+	om2JnArZRaV3J+nBrUNu8M4zPKC9Fh4PnKtk81OdKbcbfBHXSaxCP36KkNTg/mQtypoYicIxxhm
+	aeyd3fe+0b0RnYkEVJFQ==
+X-Google-Smtp-Source: AGHT+IFQ4/2Vr/mxY0n+SqNV37TuiRIhfMDvknz5AL9lBvrVetHKItz/kUdW0miXU+pEjIjEpFDdWQ==
+X-Received: by 2002:a17:903:2c06:b0:290:94ed:184c with SMTP id d9443c01a7336-29b6c3e86acmr242338025ad.15.1764267698678;
+        Thu, 27 Nov 2025 10:21:38 -0800 (PST)
+Received: from localhost ([2601:647:6802:dbc0:ef22:445e:1e79:6b9a])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-be508b06867sm2467380a12.23.2025.11.27.10.21.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Nov 2025 10:21:38 -0800 (PST)
+Date: Thu, 27 Nov 2025 10:21:36 -0800
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: security@kernel.org, netdev@vger.kernel.org, toke@toke.dk,
+	cake@lists.bufferbloat.net, bestswngs@gmail.com
+Subject: Re: [PATCH net v7 1/2] net/sched: sch_cake: Fix incorrect qlen
+ reduction in cake_drop
+Message-ID: <aSiWsNrWQ8PDhk29@pop-os.localdomain>
+References: <20251126194513.3984722-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/12] dt-bindings: net: Convert Marvell 8897/8997
- bindings to DT schema
-To: Rob Herring <robh@kernel.org>
-Cc: airlied@gmail.com, amergnat@baylibre.com, andrew+netdev@lunn.ch,
- andrew-ct.chen@mediatek.com, angelogioacchino.delregno@collabora.com,
- broonie@kernel.org, chunkuang.hu@kernel.org, conor+dt@kernel.org,
- davem@davemloft.net, dmitry.torokhov@gmail.com, edumazet@google.com,
- flora.fu@mediatek.com, heiko@sntech.de, houlong.wei@mediatek.com,
- jeesw@melfas.com, kernel@collabora.com, krzk+dt@kernel.org, kuba@kernel.org,
- lgirdwood@gmail.com, linus.walleij@linaro.org,
- louisalexis.eyraud@collabora.com, luiz.dentz@gmail.com,
- maarten.lankhorst@linux.intel.com, marcel@holtmann.org,
- matthias.bgg@gmail.com, mchehab@kernel.org, minghsiu.tsai@mediatek.com,
- mripard@kernel.org, p.zabel@pengutronix.de, pabeni@redhat.com,
- sean.wang@kernel.org, simona@ffwll.ch, support.opensource@diasemi.com,
- tiffany.lin@mediatek.com, tzimmermann@suse.de, yunfei.dong@mediatek.com,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-sound@vger.kernel.org, netdev@vger.kernel.org
-References: <20250911151001.108744-1-ariel.dalessandro@collabora.com>
- <20250911151001.108744-4-ariel.dalessandro@collabora.com>
- <20250912140619.GA1293647-robh@kernel.org>
- <fb20e4fe-df0a-4089-a7cf-e82bfe1f8e00@collabora.com>
- <CAL_Jsq+eeiw9oaqQPWt2=rZSX98Pak_oB=tfQFvEehwLZ=S52g@mail.gmail.com>
-Content-Language: en-US
-From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-In-Reply-To: <CAL_Jsq+eeiw9oaqQPWt2=rZSX98Pak_oB=tfQFvEehwLZ=S52g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126194513.3984722-1-xmei5@asu.edu>
 
-Hi Rob,
-
-On 11/24/25 3:54 PM, Rob Herring wrote:
-> On Wed, Oct 1, 2025 at 12:28 PM Ariel D'Alessandro
-> <ariel.dalessandro@collabora.com> wrote:
->>
->> Rob,
->>
->> On 9/12/25 11:06 AM, Rob Herring wrote:
->>> On Thu, Sep 11, 2025 at 12:09:52PM -0300, Ariel D'Alessandro wrote:
->>>> Convert the existing text-based DT bindings for Marvell 8897/8997
->>>> (sd8897/sd8997) bluetooth devices controller to a DT schema.
->>>>
->>>> While here:
->>>>
->>>> * bindings for "usb1286,204e" (USB interface) are dropped from the DT
->>>>     schema definition as these are currently documented in file [0].
->>>> * DT binding users are updated to use bluetooth generic name
->>>>     recommendation.
->>>>
->>>> [0] Documentation/devicetree/bindings/net/btusb.txt
->>>>
->>>> Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
->>>> ---
->>>>    .../net/bluetooth/marvell,sd8897-bt.yaml      | 79 ++++++++++++++++++
->>>>    .../devicetree/bindings/net/btusb.txt         |  2 +-
->>>>    .../bindings/net/marvell-bt-8xxx.txt          | 83 -------------------
->>>
->>>>    .../dts/rockchip/rk3288-veyron-fievel.dts     |  2 +-
->>>>    .../boot/dts/rockchip/rk3288-veyron-jaq.dts   |  2 +-
->>>>    arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi  |  2 +-
->>>
->>> .dts files should be separate patches. Please send the bindings patches
->>> separately per subsystem so subsystem maintainers can apply them. All
->>> the Mediatek dts changes can be 1 series.
->>
->> Ack, will fix in v3.
+On Wed, Nov 26, 2025 at 12:45:12PM -0700, Xiang Mei wrote:
+> In cake_drop(), qdisc_tree_reduce_backlog() is used to update the qlen
+> and backlog of the qdisc hierarchy. Its caller, cake_enqueue(), assumes
+> that the parent qdisc will enqueue the current packet. However, this
+> assumption breaks when cake_enqueue() returns NET_XMIT_CN: the parent
+> qdisc stops enqueuing current packet, leaving the tree qlen/backlog
+> accounting inconsistent. This mismatch can lead to a NULL dereference
+> (e.g., when the parent Qdisc is qfq_qdisc).
 > 
-> Are you going to send v3 still?
+> This patch computes the qlen/backlog delta in a more robust way by
+> observing the difference before and after the series of cake_drop()
+> calls, and then compensates the qdisc tree accounting if cake_enqueue()
+> returns NET_XMIT_CN.
+> 
+> To ensure correct compensation when ACK thinning is enabled, a new
+> variable is introduced to keep qlen unchanged.
+> 
+> Fixes: 15de71d06a40 ("net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit")
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
 
-Yes, will be sending out v3 asap, with the remaining changes.
-Sorry for the delay.
+Acked-by: Cong Wang <cwang@multikernel.io>
 
--- 
-Ariel D'Alessandro
-Software Engineer
-
-Collabora Ltd.
-Platinum Building, St John's Innovation Park, Cambridge CB4 0DS, UK 
-Registered in England & Wales, no. 5513718
-
+Thanks for your patience!
