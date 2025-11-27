@@ -1,109 +1,368 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692C4334682;
-	Thu, 27 Nov 2025 14:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56526336EC4
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 15:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764255290; cv=none; b=WuQ0mxXMZyIitp9godKSFSSsNbf3udbqnxO7F+lId1fl0wABW68+o/+66IKr7NXB/pBRu332wjZUzADJz2GegZqJiw6+mbD6vXFd7Ux5e3C4bAFqPaEl2A3GKU1hk1qnMQfIQ7i6iVrDjoOqB3jUmdypUqlux7hyGaGi/QpiAsA=
+	t=1764256079; cv=none; b=DS0T5Q+FiiMWJrZjuMgiyYrh7BhiOn9j5g3Fa7QdoBIN9LJGsvhrTCm94FU6oeP95yx/zJ/MioyHS2+EaoUrVT1up/V/lEWPjvYstPpp5WRtFyONKOecwNIYphlK0k7DqogLdrQvznD9M5CdVXin1tvbxB0pVcDth7i8kBxzjpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764255290; c=relaxed/simple;
-	bh=0omifDIQ9EQQ9hAte5EAHzlbV87m/Usi07cZUQL4yv4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZXCTfiTx+2UdZKQN4GI+1yERFhKFTUWXpE7dNcrnJTiEc1+9oxcPEaJWfyF6SGEI/mZV9ZHdXmVjdmqiDfRVttmp+Ny8PUuoa60tXwc7twT1esGuiGnj+FcH6RCof+T1xqI5htOyOkdCxHvt5+W34aLJ7BdQVi/C/fXAiqIdU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XO6uO4Ov; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764256079; c=relaxed/simple;
+	bh=8ZvzTTRNEAfD2sAgx5JDxlXB/DDOqQnXLAzKFzy8HA8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=R9b10sOgmQUEms2xicf6ilLr4B4xVf5i/jvFx0dPbfn/kXTV49QV2/kV6wZSb8aGstQMKCWLBixs5Zj60Q/Nu4PGLsRoIa1xqynuv6xw+TNLrQNcmtnLUMVLcvMnAEDBD29eDUg6fIIHmYSKhYHYBRB3ouwlBgV/jOPFkx99hQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yEy+UqOI; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XO6uO4Ov"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABFDC4AF09;
-	Thu, 27 Nov 2025 14:54:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764255290;
-	bh=0omifDIQ9EQQ9hAte5EAHzlbV87m/Usi07cZUQL4yv4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XO6uO4Ovm9hKNa2MtDJa9+NN4aM3dtpSBNjrizD+yapUB2fJPJN2qCLuFamMJJ8rp
-	 Jngm+vt1zFp5CbAbGh3Gvwb+pg+id6wHvamoOBmbfcWTHC7GXEnbpS6ozZbFfyjICD
-	 LviKrsUGAdTEtrFQCkhkqeSskUusBESFKqI7C5YK+cyimEc35H8hyvGT1YnPh7ZuHS
-	 3Qvzdk3uZhvXF613V0KfPXgnO3X8ZqJgry1h8T6w8/JRj+TRfsqCgpA4xfTG3wPMYn
-	 NsZJbLwuvRkjdTLtklvJvB4J74qTnIuBXMXOWoNxgGKpXsiWgXsMOz7ZqplO32bBAT
-	 UpBdSDfGQawoQ==
-Date: Thu, 27 Nov 2025 14:54:44 +0000
-From: Simon Horman <horms@kernel.org>
-To: ssrane_b23@ee.vjti.ac.in
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Jaakko Karrenpalo <jkarrenpalo@gmail.com>,
-	Arvid Brodin <arvid.brodin@alten.se>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Subject: Re: [PATCH] hsr: fix NULL pointer dereference in skb_clone with hw
- tag insertion
-Message-ID: <aShmNNgam3bJ2yMO@horms.kernel.org>
-References: <20251125210158.224431-1-ssranevjti@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yEy+UqOI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E9B1D1A1DB0;
+	Thu, 27 Nov 2025 15:07:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BEC7C6068C;
+	Thu, 27 Nov 2025 15:07:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6C7C3102F218C;
+	Thu, 27 Nov 2025 16:07:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764256075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=8crqLJchFkTj6DCWTiXRlQ+eBQ+IUxM75HJ4UnuadO4=;
+	b=yEy+UqOILIThkQwW4lG2nRqI94Nv3mR8rRFdSZNLO3DgJfk022PoXtFZrPHVjtdie9iNVF
+	wpp0q/qSNztOYEg4ixeafn0+s5hc7O1CR3hlj3lyqGhHTUxOA4wxsI6tV/yTampL47UfOj
+	scsOA0/txjf1z9KFRIsGQR6NUtMdcCjp7N6KImhom0S3XLrTpjeHtfeR4F+zLnOzv3hrCS
+	CG4I2XJoGvMx9N1iBx6Ej/MVu/MOPS6zJ+HLHeB3wgSt6fsdB+ptI9dqPJyagyISZ9XG+M
+	NEUnD9foBhxXGcBfjuekmH2g3Y9HyBJWL/FFMwNqjW88U34/hLCOXqFslhtb9g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125210158.224431-1-ssranevjti@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 27 Nov 2025 16:07:52 +0100
+Message-Id: <DEJKKYXTM4TH.2MK2CNLW7L5D3@bootlin.com>
+Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Lorenzo Bianconi" <lorenzo@kernel.org>
+To: "Paolo Valerio" <pvalerio@redhat.com>, <netdev@vger.kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH RFC net-next 6/6] cadence: macb/gem: introduce xmit
+ support
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251119135330.551835-1-pvalerio@redhat.com>
+ <20251119135330.551835-7-pvalerio@redhat.com>
+In-Reply-To: <20251119135330.551835-7-pvalerio@redhat.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 26, 2025 at 02:31:58AM +0530, ssrane_b23@ee.vjti.ac.in wrote:
-> From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-> 
-> When hardware HSR tag insertion is enabled (NETIF_F_HW_HSR_TAG_INS) and
-> frame->skb_std is NULL, both hsr_create_tagged_frame() and
-> prp_create_tagged_frame() will call skb_clone() with a NULL skb pointer,
-> causing a kernel crash.
-> 
-> Fix this by adding NULL checks for frame->skb_std before calling
-> skb_clone() in the functions.
+Hello Paolo, netdev,
 
-I think it would be worth including the trace reported by syzcaller here.
-(Say, up to but not including the "Modules linked in" line.)
-I can see it at the link. But maybe the link will go away some day.
-
-> 
-> Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-> Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-> Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-
-As a fix Networking code present in the net tree, this should be
-targeted at the net tree. Like this.
-
-[PATCH net] ...
-
+On Wed Nov 19, 2025 at 2:53 PM CET, Paolo Valerio wrote:
+> Add XDP_TX verdict support, also introduce ndo_xdp_xmit function for
+> redirection, and update macb_tx_unmap() to handle both skbs and xdp
+> frames advertising NETDEV_XDP_ACT_NDO_XMIT capability and the ability
+> to process XDP_TX verdicts.
+>
+> Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
 > ---
->  net/hsr/hsr_forward.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 339f0d220212..4c1a311b900f 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -211,6 +211,9 @@ struct sk_buff *prp_get_untagged_frame(struct hsr_frame_info *frame,
->  				  __FILE__, __LINE__, port->dev->name);
->  			return NULL;
->  		}
+>  drivers/net/ethernet/cadence/macb_main.c | 166 +++++++++++++++++++++--
+>  1 file changed, 153 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index eeda1a3871a6..bd62d3febeb1 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -969,6 +969,17 @@ static int macb_halt_tx(struct macb *bp)
+>  					bp, TSR);
+>  }
+> =20
+> +static void release_buff(void *buff, enum macb_tx_buff_type type, int bu=
+dget)
+> +{
+> +	if (type =3D=3D MACB_TYPE_SKB) {
+> +		napi_consume_skb(buff, budget);
+> +	} else if (type =3D=3D MACB_TYPE_XDP_TX) {
+> +		xdp_return_frame_rx_napi(buff);
+> +	} else {
+> +		xdp_return_frame(buff);
+> +	}
+> +}
 > +
-> +		if (!frame->skb_std)
-> +			return NULL;
-
-I think this can only occur if __pskb_copy() returns NULL.
-So, for clarity, I think this condition should be moved to immediately
-after the call to __pskb_copy().
-
+>  static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
+>  			  int budget)
+>  {
+> @@ -983,10 +994,7 @@ static void macb_tx_unmap(struct macb *bp, struct ma=
+cb_tx_buff *tx_buff,
 >  	}
->  
->  	return skb_clone(frame->skb_std, GFP_ATOMIC);
+> =20
+>  	if (tx_buff->data) {
+> -		if (tx_buff->type !=3D MACB_TYPE_SKB)
+> -			netdev_err(bp->dev, "BUG: Unexpected tx buffer type while unmapping (=
+%d)",
+> -				   tx_buff->type);
+> -		napi_consume_skb(tx_buff->data, budget);
+> +		release_buff(tx_buff->data, tx_buff->type, budget);
+>  		tx_buff->data =3D NULL;
+>  	}
+>  }
+> @@ -1076,8 +1084,8 @@ static void macb_tx_error_task(struct work_struct *=
+work)
+>  		tx_buff =3D macb_tx_buff(queue, tail);
+> =20
+>  		if (tx_buff->type !=3D MACB_TYPE_SKB)
+> -			netdev_err(bp->dev, "BUG: Unexpected tx buffer type (%d)",
+> -				   tx_buff->type);
+> +			goto unmap;
+> +
+>  		skb =3D tx_buff->data;
+> =20
+>  		if (ctrl & MACB_BIT(TX_USED)) {
+> @@ -1118,6 +1126,7 @@ static void macb_tx_error_task(struct work_struct *=
+work)
+>  			desc->ctrl =3D ctrl | MACB_BIT(TX_USED);
+>  		}
+> =20
+> +unmap:
+>  		macb_tx_unmap(bp, tx_buff, 0);
+>  	}
+> =20
+> @@ -1196,6 +1205,7 @@ static int macb_tx_complete(struct macb_queue *queu=
+e, int budget)
+>  	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+>  	head =3D queue->tx_head;
+>  	for (tail =3D queue->tx_tail; tail !=3D head && packets < budget; tail+=
++) {
+> +		void			*data =3D NULL;
+>  		struct macb_tx_buff	*tx_buff;
+>  		struct sk_buff		*skb;
+>  		struct macb_dma_desc	*desc;
+> @@ -1218,11 +1228,16 @@ static int macb_tx_complete(struct macb_queue *qu=
+eue, int budget)
+>  		for (;; tail++) {
+>  			tx_buff =3D macb_tx_buff(queue, tail);
+> =20
+> -			if (tx_buff->type =3D=3D MACB_TYPE_SKB)
+> -				skb =3D tx_buff->data;
+> +			if (tx_buff->type !=3D MACB_TYPE_SKB) {
+> +				data =3D tx_buff->data;
+> +				goto unmap;
+> +			}
+> =20
+>  			/* First, update TX stats if needed */
+> -			if (skb) {
+> +			if (tx_buff->type =3D=3D MACB_TYPE_SKB && tx_buff->data) {
+> +				data =3D tx_buff->data;
+> +				skb =3D tx_buff->data;
+> +
+>  				if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+>  				    !ptp_one_step_sync(skb))
+>  					gem_ptp_do_txstamp(bp, skb, desc);
+> @@ -1238,6 +1253,7 @@ static int macb_tx_complete(struct macb_queue *queu=
+e, int budget)
+>  				bytes +=3D skb->len;
+>  			}
+> =20
+> +unmap:
+>  			/* Now we can safely release resources */
+>  			macb_tx_unmap(bp, tx_buff, budget);
+> =20
+> @@ -1245,7 +1261,7 @@ static int macb_tx_complete(struct macb_queue *queu=
+e, int budget)
+>  			 * WARNING: at this point skb has been freed by
+>  			 * macb_tx_unmap().
+>  			 */
+> -			if (skb)
+> +			if (data)
+>  				break;
+>  		}
+>  	}
+> @@ -1357,8 +1373,124 @@ static void discard_partial_frame(struct macb_que=
+ue *queue, unsigned int begin,
+>  	 */
+>  }
+> =20
+> +static int macb_xdp_submit_frame(struct macb *bp, struct xdp_frame *xdpf=
+,
+> +				 struct net_device *dev, dma_addr_t addr)
+> +{
+> +	enum macb_tx_buff_type buff_type;
+> +	struct macb_tx_buff *tx_buff;
+> +	int cpu =3D smp_processor_id();
+> +	struct macb_dma_desc *desc;
+> +	struct macb_queue *queue;
+> +	unsigned long flags;
+> +	dma_addr_t mapping;
+> +	u16 queue_index;
+> +	int err =3D 0;
+> +	u32 ctrl;
+> +
+> +	queue_index =3D cpu % bp->num_queues;
+> +	queue =3D &bp->queues[queue_index];
+> +	buff_type =3D !addr ? MACB_TYPE_XDP_NDO : MACB_TYPE_XDP_TX;
 
-...
+I am not the biggest fan of piggy-backing on !!addr to know which
+codepath called us. If the macb_xdp_submit_frame() call in gem_xdp_run()
+ever gives an addr=3D0 coming from macb_get_addr(bp, desc), then we will
+be submitting NDO typed frames and creating additional DMA mappings
+which would be a really hard to debug bug.
 
--- 
-pw-bot: changes-requested
+> +	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+> +
+> +	/* This is a hard error, log it. */
+> +	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
+> +		       bp->tx_ring_size) < 1) {
+
+Hard wrapped line is not required, it fits in one line.
+
+> +		netif_stop_subqueue(dev, queue_index);
+> +		netdev_dbg(bp->dev, "tx_head =3D %u, tx_tail =3D %u\n",
+> +			   queue->tx_head, queue->tx_tail);
+> +		err =3D -ENOMEM;
+> +		goto unlock;
+> +	}
+> +
+> +	if (!addr) {
+> +		mapping =3D dma_map_single(&bp->pdev->dev,
+> +					 xdpf->data,
+> +					 xdpf->len, DMA_TO_DEVICE);
+> +		if (unlikely(dma_mapping_error(&bp->pdev->dev, mapping))) {
+> +			err =3D -ENOMEM;
+> +			goto unlock;
+> +		}
+> +	} else {
+> +		mapping =3D addr;
+> +		dma_sync_single_for_device(&bp->pdev->dev, mapping,
+> +					   xdpf->len, DMA_BIDIRECTIONAL);
+> +	}
+> +
+> +	unsigned int tx_head =3D queue->tx_head + 1;
+
+Middle scope variable definition. Weirdly named as it isn't storing the
+current head offset but the future head offset.
+
+> +	ctrl =3D MACB_BIT(TX_USED);
+> +	desc =3D macb_tx_desc(queue, tx_head);
+> +	desc->ctrl =3D ctrl;
+> +
+> +	desc =3D macb_tx_desc(queue, queue->tx_head);
+> +	tx_buff =3D macb_tx_buff(queue, queue->tx_head);
+> +	tx_buff->data =3D xdpf;
+> +	tx_buff->type =3D buff_type;
+> +	tx_buff->mapping =3D mapping;
+> +	tx_buff->size =3D xdpf->len;
+> +	tx_buff->mapped_as_page =3D false;
+> +
+> +	ctrl =3D (u32)tx_buff->size;
+> +	ctrl |=3D MACB_BIT(TX_LAST);
+> +
+> +	if (unlikely(macb_tx_ring_wrap(bp, queue->tx_head) =3D=3D (bp->tx_ring_=
+size - 1)))
+> +		ctrl |=3D MACB_BIT(TX_WRAP);
+> +
+> +	/* Set TX buffer descriptor */
+> +	macb_set_addr(bp, desc, tx_buff->mapping);
+> +	/* desc->addr must be visible to hardware before clearing
+> +	 * 'TX_USED' bit in desc->ctrl.
+> +	 */
+> +	wmb();
+> +	desc->ctrl =3D ctrl;
+> +	queue->tx_head =3D tx_head;
+> +
+> +	/* Make newly initialized descriptor visible to hardware */
+> +	wmb();
+> +
+> +	spin_lock(&bp->lock);
+> +	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+> +	spin_unlock(&bp->lock);
+> +
+> +	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
+> +		netif_stop_subqueue(dev, queue_index);
+
+The above 30~40 lines are super similar to macb_start_xmit() &
+macb_tx_map(). They implement almost the same logic; can we avoid the
+duplication?
+
+> +
+> +unlock:
+> +	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+> +
+> +	if (err)
+> +		release_buff(xdpf, buff_type, 0);
+> +
+> +	return err;
+> +}
+> +
+> +static int
+> +macb_xdp_xmit(struct net_device *dev, int num_frame,
+> +	      struct xdp_frame **frames, u32 flags)
+> +{
+> +	struct macb *bp =3D netdev_priv(dev);
+> +	u32 xmitted =3D 0;
+> +	int i;
+> +
+> +	if (!macb_is_gem(bp))
+> +		return -EOPNOTSUPP;
+> +
+> +	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+> +		return -EINVAL;
+> +
+> +	for (i =3D 0; i < num_frame; i++) {
+> +		if (macb_xdp_submit_frame(bp, frames[i], dev, 0))
+> +			break;
+> +
+> +		xmitted++;
+> +	}
+> +
+> +	return xmitted;
+> +}
+> +
+>  static u32 gem_xdp_run(struct macb_queue *queue, struct xdp_buff *xdp,
+> -		       struct net_device *dev)
+> +		       struct net_device *dev, dma_addr_t addr)
+>  {
+>  	struct bpf_prog *prog;
+>  	u32 act =3D XDP_PASS;
+> @@ -1379,6 +1511,12 @@ static u32 gem_xdp_run(struct macb_queue *queue, s=
+truct xdp_buff *xdp,
+>  			break;
+>  		}
+>  		goto out;
+> +	case XDP_TX:
+> +		struct xdp_frame *xdpf =3D xdp_convert_buff_to_frame(xdp);
+> +
+> +		if (!xdpf || macb_xdp_submit_frame(queue->bp, xdpf, dev, addr))
+> +			act =3D XDP_DROP;
+> +		goto out;
+>  	default:
+>  		bpf_warn_invalid_xdp_action(dev, prog, act);
+>  		fallthrough;
+> @@ -1467,7 +1605,7 @@ static int gem_rx(struct macb_queue *queue, struct =
+napi_struct *napi,
+>  				 false);
+>  		xdp_buff_clear_frags_flag(&xdp);
+> =20
+> -		ret =3D gem_xdp_run(queue, &xdp, bp->dev);
+> +		ret =3D gem_xdp_run(queue, &xdp, bp->dev, addr);
+>  		if (ret =3D=3D XDP_REDIRECT)
+>  			xdp_flush =3D true;
+> =20
+> @@ -4546,6 +4684,7 @@ static const struct net_device_ops macb_netdev_ops =
+=3D {
+>  	.ndo_hwtstamp_get	=3D macb_hwtstamp_get,
+>  	.ndo_setup_tc		=3D macb_setup_tc,
+>  	.ndo_bpf		=3D macb_xdp,
+> +	.ndo_xdp_xmit		=3D macb_xdp_xmit,
+
+I'd expect macb_xdp_xmit() to be called gem_xdp_xmit() as well.
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
