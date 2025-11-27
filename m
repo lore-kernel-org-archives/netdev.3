@@ -1,158 +1,112 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A0F26CE20
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 13:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A2D157480
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 13:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764249141; cv=none; b=dXkj5yRx+c04gGU/aarohScWGfmW671X5d6aK0lnKG/YvfvHuJ9HR+cx7QV0QO++J7YyvUQCRkGh1kkIH1iOW1J340xIFayryX1LhdpVlipP7g0fk7WJwL5SyQsEMk/z5IG4YGM6s7+sil27+O21fFI71DYQhoqXAK8XIvSqy6A=
+	t=1764249327; cv=none; b=QSVG3I/VK+FCGlktVlfV+rIU5WPUDstNacQ4mFAg8JMjydLGY3BjJNyVPxu6sE0zQFQItlNlSCAezG0RdgNH27G3t+ppavT/pk84rse7ZlAOC75ZQnuldGsYx804WwNAFyshTco/nIF9H1vJrWvkRyN9a0AwAqmlvWmv3Byot2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764249141; c=relaxed/simple;
-	bh=k/wtGNkoBswZG5c+ttQTy9CE/ckOgp8Wd5qCrYhXrj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qAB++hrX+X/4WfKYBDBm8PUzsmQJl/32UNx7fMFNRIZZ15wvYjcDi5K52Tb2OvQNS79gZXeDheq3i5Nujgs0Z3CAwZtaOH5odTvTPHGopsFDoau6358ViStdmGyq1yGeryq7pD2TnKjE+vSihwGtRFstRgM7CzRfDajmPWpCZvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Q7LZT069; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KqxWqbxC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iwwxgqLh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sEtM4pKd; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1764249327; c=relaxed/simple;
+	bh=7jM1UtncRIoXqwjpezsk+5Fa42ngJjTjGo1vsyQ0C/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TZHpjDdFyzLbmHD3rYzf9q+DSjjDpmJKdXXA2ua0pj+Zd6wIVoGBfz1CxE3NacWJprvLB0x/y7yGGbsqhrdiNQirjHtWtxPqdBDPS1YwPrfM8BfGB0DdMXI2dGH/ZlA2iSnzuWocNLYoElZTWix9vRiaPPGeAuoDTwqbj2chEY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S6vqAOtA; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Q7LZT069";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KqxWqbxC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iwwxgqLh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sEtM4pKd"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7F222336F2;
-	Thu, 27 Nov 2025 13:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764249137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P8UOz1lx4bQABnsPJotRzictXM7dsqgfz1cF/UHESVg=;
-	b=Q7LZT069FGyDoauMgZjTpX8sfA0cmHnyhroJrgnuIMgAqej0qJ0QcmTT0uTZYWQDT5rj/K
-	1osMPlbrxbqvRnErpCN3fRop7u871wW9q6XO0t0nfKA6z17NrJZqZEVoQWp+zVoyOcTDAL
-	3yiS+DqdppC1LpqoH6kJ2BDgraETCeE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764249137;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P8UOz1lx4bQABnsPJotRzictXM7dsqgfz1cF/UHESVg=;
-	b=KqxWqbxC3GMWFx+kNR0xS0/5PUETZtYhGNkDMkvUq8sJH5JzzIJ2noF8Abm6rKMstgm0YX
-	TQCBAQBS19K/D9BQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764249136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P8UOz1lx4bQABnsPJotRzictXM7dsqgfz1cF/UHESVg=;
-	b=iwwxgqLhraQyZbIG2ojZtyTwjTMPJrNHf/cJSiCsF3PeF5J4lFZ1owgZUY1/9kQN5EwLEi
-	UHnbwUKh+4XUC9UuKyiGMz1XMZHjmdV5PqHZ/I1SZbsaeHbDLaUA6YOtXmxxvZDriCz3tN
-	i82P0paxlmFoRxCNDp2L8OKm1aNS5MM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764249136;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P8UOz1lx4bQABnsPJotRzictXM7dsqgfz1cF/UHESVg=;
-	b=sEtM4pKdE4gTvSNTpa3lJ+45lyyhG2KI9X/2BVsaIUCBIKdmzX3/5fKEf/I/Pg5azosv2B
-	hCF9MEtAQJOHqoBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3CD163EA63;
-	Thu, 27 Nov 2025 13:12:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PqFPDjBOKGl3PgAAD6G6ig
-	(envelope-from <hare@suse.de>); Thu, 27 Nov 2025 13:12:16 +0000
-Message-ID: <bd570dbc-2844-4720-8a19-a9d508a1e365@suse.de>
-Date: Thu, 27 Nov 2025 14:12:15 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S6vqAOtA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764249325; x=1795785325;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=7jM1UtncRIoXqwjpezsk+5Fa42ngJjTjGo1vsyQ0C/o=;
+  b=S6vqAOtAIRgJeN3gIfRXk/kDAlJbkXzE+JsGLxQsNbWVZKgUzEgeJcKR
+   Z+V3t0qWoSXlmsnjZdvJUScO2IOlo00AGUzqrB3OnTewymdtYj/qqh04O
+   Z1oghPmwzydrVUCMUuIrD/f9NK5WbmNLOxXB5bvsLRGc1psEBaWQD6mpV
+   TRzEoc1vBnP5wxvd6K2qJNrdku4AZ54nRTVJgto4iI/+159x5fwXsO2JF
+   ck8KEaCRR1AEtysm4B///M5VjxPBRU2Y2O/NJiAuXrLBtbTUeT6s/u1Cs
+   zcdxRSiZNRj0jtBldYqqxTrrlJJ25kX8jhe3wOEd27nHRm339nonTwx0q
+   A==;
+X-CSE-ConnectionGUID: xWTwLwqFQZyFbv3fcUCWJw==
+X-CSE-MsgGUID: M+16KgrkQW2hio8OhGNK1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="70157515"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="70157515"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 05:15:24 -0800
+X-CSE-ConnectionGUID: B6gBEf/uQUWn1i7pyGO6/Q==
+X-CSE-MsgGUID: YrFjJkF0ScytUHzQB7QBcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; 
+   d="scan'208";a="192892759"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa007.fm.intel.com with ESMTP; 27 Nov 2025 05:15:22 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 49148A2; Thu, 27 Nov 2025 14:15:21 +0100 (CET)
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: netdev@vger.kernel.org
+Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Ian MacDonald <ian@netstatz.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH net-next 2/3] net: thunderbolt: Allow changing MTU of the device
+Date: Thu, 27 Nov 2025 14:15:20 +0100
+Message-ID: <20251127131521.2580237-3-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251127131521.2580237-1-mika.westerberg@linux.intel.com>
+References: <20251127131521.2580237-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/6] net/handshake: Support KeyUpdate message types
-To: alistair23@gmail.com, chuck.lever@oracle.com, hare@kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
-Cc: kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me,
- kch@nvidia.com, Alistair Francis <alistair.francis@wdc.com>
-References: <20251112042720.3695972-1-alistair.francis@wdc.com>
- <20251112042720.3695972-5-alistair.francis@wdc.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20251112042720.3695972-5-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_TO(0.00)[gmail.com,oracle.com,kernel.org,lists.linux.dev,vger.kernel.org,lists.infradead.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
 
-On 11/12/25 05:27, alistair23@gmail.com wrote:
-> From: Alistair Francis <alistair.francis@wdc.com>
-> 
-> When reporting the msg-type to userspace let's also support reporting
-> KeyUpdate events. This supports reporting a client/server event and if
-> the other side requested a KeyUpdateRequest.
-> 
-> Link: https://datatracker.ietf.org/doc/html/rfc8446#section-4.6.3
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> ---
-> v5:
->   - Drop clientkeyupdaterequest and serverkeyupdaterequest
-> v4:
->   - Don't overload existing functions, instead create new ones
-> v3:
->   - Fixup yamllint and kernel-doc failures
-> 
->   Documentation/netlink/specs/handshake.yaml | 16 ++++-
->   drivers/nvme/host/tcp.c                    | 15 +++-
->   drivers/nvme/target/tcp.c                  | 10 ++-
->   include/net/handshake.h                    |  6 ++
->   include/uapi/linux/handshake.h             | 11 +++
->   net/handshake/tlshd.c                      | 83 +++++++++++++++++++++-
->   6 files changed, 133 insertions(+), 8 deletions(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+In some cases it is useful to be able to use different MTU than the
+default one. Especially when dealing against non-Linux networking stack.
+For this reason add possibility to change the MTU of the device.
 
-Cheers,
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/net/thunderbolt/main.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Hannes
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index 57b226afeb84..20bac55a3e20 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -1257,12 +1257,23 @@ static void tbnet_get_stats64(struct net_device *dev,
+ 	stats->rx_missed_errors = net->stats.rx_missed_errors;
+ }
+ 
++static int tbnet_change_mtu(struct net_device *dev, int new_mtu)
++{
++	/* Keep the MTU within supported range */
++	if (new_mtu < 68 || new_mtu > (TBNET_MAX_MTU - ETH_HLEN))
++		return -EINVAL;
++
++	dev->mtu = new_mtu;
++	return 0;
++}
++
+ static const struct net_device_ops tbnet_netdev_ops = {
+ 	.ndo_open = tbnet_open,
+ 	.ndo_stop = tbnet_stop,
+ 	.ndo_start_xmit = tbnet_start_xmit,
+ 	.ndo_set_mac_address = eth_mac_addr,
+ 	.ndo_get_stats64 = tbnet_get_stats64,
++	.ndo_change_mtu	= tbnet_change_mtu,
+ };
+ 
+ static void tbnet_generate_mac(struct net_device *dev)
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+2.50.1
+
