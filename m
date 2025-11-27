@@ -1,165 +1,151 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C30A21C9FD
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 03:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7761F224AF7;
+	Thu, 27 Nov 2025 03:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764212517; cv=none; b=RhWAZCk9ff2Klid+bdLnup5l9+hmaGFOg3JKx2w8WT8w684CR9ztgV+E3cYaJ4GOqeBvAbS1ETXF6s5VpLZaRgtiHQyUQkdMx+sh4CKAwTzSlSFY48pPFvuq94gby6JiXse0GKN0dmIKVmWfKg5tlz5aHfEfTJ6cw/dHQmgD5Ak=
+	t=1764213132; cv=none; b=E2uQgCrrn74fX0f9F+Jf5ng7ECH+Yvrb60WPTl8+g9BQ7AdV8eZWQjtakO3n+FT2rmgduEp504shwCVqeuwLjQ48xCeRHL0Tk4v44mlrvW834oY8KgLpHpVqMqSUyNkM/IuT129llYHMDf7Znc7tVZc6EISZ1MJ417JfMlW6jqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764212517; c=relaxed/simple;
-	bh=KzPpgh5+14+7GwvfLEQbhhcnSH2NyLCUhtNfZjc19D4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMiNMzDXYXEiXqZDPQXp8Uq2UFn10VC2V2IRbxce2R8brt64Bl50Hzi8iTjer4o+aiHxReIDMR2GrpdVpmDglZM+VX7s5eBrnZ0oxbCdP3Y0QjGX9p5ppWn0UqWkUVQZZvPdJZlhBqap8dUCuufrx/FnU0BgwL8GO8ByCf+iUGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EyBe4L7K; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764213132; c=relaxed/simple;
+	bh=RiG8ocl+oskfHKP1fdxflSJbEMY4ORST7J8gciT7bkA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Q2Icv7MuhEMnvzSuBOzKr3tNDx38Yl7p4Q6LwtwH3DQbiUliD4slMjKc80TUxQZG5I1/8JbPwgTU9m0ExisGczOHyPBFdizxxUjEQnywKXXOcLP0SIxtffm6JKpdCEWWZeo5rio17Bt8Qelw3rA9QgLQH2rC+QNTuR76GhmtGpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mK0hwf7f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EyBe4L7K"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2980d9b7df5so4781695ad.3
-        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 19:01:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764212515; x=1764817315; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IGvTCI861DqWFwZLbgubWBCCfl7KjeqeuprB8SsYcFc=;
-        b=EyBe4L7K42PtIyzYH/NK7aR37CKZn+bSjv4r4Tk1JZturIqeNc2TUyBXBZB5W6HzlJ
-         TpHL1FKrqKGV6NGEqYErwDYVTxv4hZdLCmoJuJcfj0fkd6OlZ49NSLE9Ih6kSDQjtm/C
-         XPt+LquF+3h5o/LRVfIaEVDoBpFP7wRsYcbusawPTAhDxkhoal6UXiiuM0bkE7Yn3k11
-         84UVgd8Yiw+fn48fy16W0q0uN4rwbAjiQDER56r7UML7xlhHZQHZHpz6FxJvU4PWyZ2C
-         sKAJ545jx2W2YzE0vJx/GME4bqa0yIGVk2QcMHXdL4iENsohUxwgTSMigERyUcbgkSKx
-         aQOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764212515; x=1764817315;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IGvTCI861DqWFwZLbgubWBCCfl7KjeqeuprB8SsYcFc=;
-        b=jFk1LqeMntnl7F4Kmd7GZiVG91BtRQYd/opKHA2BafFJ9k/Q/T1INI7A+bNvlviZhx
-         mO1RsRP6FN/PAT9fXwCWlfDhvOmRcwM4CNLd1Gi620PnbLJzdAaSZ+CSuPAOlI3fW6IA
-         KiCSyOwsC923BUJaeW7OOAUnHqoIRyu3+3S61dIkP5iqeJowa8Ka3sq4dKX8vGUw5NAZ
-         8iNwWK9EaXkkp4klNwduUtjIcVe3DvqsMfeVA1ZGgQbNO9FBM+wUsbPcts9ymXZPR4tq
-         r/rkHeSWGXC0UqMRQ0PtVtUIBrfsGy5kcUB5fnXbSV3+8rkKMdo2o3pE4awghaxqC9iT
-         33hQ==
-X-Gm-Message-State: AOJu0YwWCZp/dRCK/H/ysMG2J45zbCC2AQXF1+w+gYKwY9Tgvxd+dxor
-	Eft84KkWVQ8O5ebyA7DEcY34fxK4OCHp6XKGsWAlGUMiD1VuE1fybFFSD3f6yGdt
-X-Gm-Gg: ASbGnct4igr+/30/quGLZ+chTopTj2STSoHqOxwHXYQFaRwZufZKkKxUo05QbUv8LEh
-	Y6L2MubA21NdDLi5y6drFsm/ZTsBTGl/P6fmS0jhXj6MkTbUpDCiJenMC83MQH4f9B4cc7tLGdC
-	IXvNOBAvmrcuI8z0/WQEpLaepY8khMoC7Hbyc8pCM26gMFcFjYU98KcBsGMDIjt1lMYcMj0p56m
-	CKXVVpSTOeC1gzY6+PNv4BfRACgursaxUrAWr8NsqTpO6iu/SSbz+gVxlWyKvfH/hGVcm2qdT+M
-	wn/Ddn3cx5lgHQtmTjesYnkXsoxR7dm8NJ1XjnF+niQ3gKBwJRInBLwugKnTDOeSO1x7s3uzhl2
-	njFPIQDu8t9l9gntu+S5XPXSYoanty+Jqkeq1DmxDXgeErkaQ361zvRGlvLnbHURPfaGpWQ6trU
-	TcDSrnykKMTLT40Aj1
-X-Google-Smtp-Source: AGHT+IGRT0rPXgavR5Wlc5N3Ac510ixjKoVAdH3gBMYR1YeQFR/jNjnUOn1IKiwsu9HYhU/lPchdXQ==
-X-Received: by 2002:a05:7300:bc83:b0:2a4:3593:6461 with SMTP id 5a478bee46e88-2a7191414e4mr15840472eec.17.1764212515102;
-        Wed, 26 Nov 2025 19:01:55 -0800 (PST)
-Received: from localhost ([2601:647:6802:dbc0:91b6:79f3:c6c8:a62])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a9653ca11esm1960959eec.0.2025.11.26.19.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 19:01:54 -0800 (PST)
-Date: Wed, 26 Nov 2025 19:01:53 -0800
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: William Liu <will@willsroot.io>
-Cc: netdev@vger.kernel.org, stephen@networkplumber.org, kuba@kernel.org,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: Re: [Patch net v5 3/9] net_sched: Implement the right netem
- duplication behavior
-Message-ID: <aSe/IfNSZBTTAfTA@pop-os.localdomain>
-References: <20251126195244.88124-1-xiyou.wangcong@gmail.com>
- <20251126195244.88124-4-xiyou.wangcong@gmail.com>
- <dEmtK-Tj-bnNJVo0mNwP1vJ1cj9g0hqnoi-0HJdZeTittbRmmzE4wBRIjapBAFQNZDWgE4hcR27UrTSuiGj_-yRFntfX4Tuv4QP6asVecZQ=@willsroot.io>
- <aSd6dM38CXchhmJd@pop-os.localdomain>
- <JgkxCYimi4ZuZPHfXoMUgiecvZ0AKYxbIhqPQZwXcE4yC9nYnfproH5yrmQETZUo55NOjj5Q9_bOFJbWI351PFvc9wv3xiY_0Ic9AAsO1Ak=@willsroot.io>
- <aSeJo5C9tA93ICcy@pop-os.localdomain>
- <mz8HnpeShmNHFgeE6yoGG_gb5l1mHqvNee9aRtGX6yTz5zDvf2I4U1wKtH9k5qkfz0SfUfhsonzrzDSgvyM9vRRyvktvYwtTHvfmcZK_Sp8=@willsroot.io>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mK0hwf7f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD0DC4CEF7;
+	Thu, 27 Nov 2025 03:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764213128;
+	bh=RiG8ocl+oskfHKP1fdxflSJbEMY4ORST7J8gciT7bkA=;
+	h=Date:From:To:Cc:Subject:From;
+	b=mK0hwf7f8lFRIv5+es/aYemkjY0hb5VlC3ROc4uBKNtpTM7lR+DcDHn4XE9QhsbJe
+	 GSDVMQC68wkZQvBgDaS+10C2YKL398zPpBwuoQnmge1O+XxAlMPxJ4HVC2Ie11odCL
+	 sdMzOIcgPumd0+IZq4ec7nTU9gJTtUcyzK7l5ECYMEHhMkkUKwNxqo6kZT02OouHym
+	 W4Wvah0uEbGUge/A31k1ZK/JQAdDOeHLTOqZQoXHcOPovJZ5A1APL8ZUAxSWXlZgIa
+	 jQlGShAnqPXOx7gpS9Qiss+19Ad8LfAfl/jMvlkr1tK4Rs5rDHXln5sgfeCzY5MB/P
+	 YhTr/d5IMwULw==
+Date: Thu, 27 Nov 2025 12:12:03 +0900
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v3][next] net: wwan: mhi_wwan_mbim: Avoid
+ -Wflex-array-member-not-at-end warning
+Message-ID: <aSfBgwYhRvMe6ip7@kspp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <mz8HnpeShmNHFgeE6yoGG_gb5l1mHqvNee9aRtGX6yTz5zDvf2I4U1wKtH9k5qkfz0SfUfhsonzrzDSgvyM9vRRyvktvYwtTHvfmcZK_Sp8=@willsroot.io>
 
-On Thu, Nov 27, 2025 at 02:09:58AM +0000, William Liu wrote:
-> On Wednesday, November 26th, 2025 at 11:13 PM, Cong Wang <xiyou.wangcong@gmail.com> wrote:
-> 
-> > Again, it does not violate the man page. What standard are you referring
-> > to when you say "expected user behavior"? Please kindly point me to the
-> > standard you refer here, I am happy to look into it.
-> 
-> I meant long-time existing user-observable behavior (since 2005).
+Use DEFINE_RAW_FLEX() to avoid a -Wflex-array-member-not-at-end warning.
 
-If you believe this does not violate man page, then it is safe.
+Remove fixed-size array struct usb_cdc_ncm_dpe16 dpe16[2]; from struct
+mbim_tx_hdr, so that flex-array member struct mbim_tx_hdr::ndp16.dpe16[]
+ends last in this structure.
 
-Otherwise, please be specific on how it violates man page. There is only
-one sentence in the man page: "creates a copy of the packet before queuing."
-Let's reduce it down to two words: "before queuing", please kindly point out
-which word my patch violates. I am happy to consider your opinion, but
-only when you are willing to help.
+Compensate for this by using the DEFINE_RAW_FLEX() helper to declare the
+on-stack struct instance that contains struct usb_cdc_ncm_ndp16 as a
+member. Adjust the rest of the code, accordingly.
 
-Keep saying long-time or user-expected does not help anything here, man
-page is the only "contract" we have with the users.
+So, with these changes fix the following warning:
 
-> 
-> If you were just trying to fix the bug, then a fix that prevents DOS and changes no existing observable behavior is better imo.
+drivers/net/wwan/mhi_wwan_mbim.c:81:34: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-The problematic behavior of duplication is the root cause. So, we can't
-fix the bug without fixing the root cause.
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+Changes in v3:
+ - Avoid 80+ char line.
+ - Add RB tag.
 
-Let's put security aside, it is still problematic logically. There is no
-way to define a logiclly correct behavior with queuing back to root.
+Changes in v2:
+ - Add code comment to prevent people from adding new members after
+   flex struct member `struct usb_cdc_ncm_ndp16 ndp16;`
+ - Link: https://lore.kernel.org/linux-hardening/aSUwOtiDMYA8aSC3@kspp/
 
-Since you ignored my 3-page long changelog, let me copy-n-paste it for
-your convenience:
+v1:
+ - Link: https://lore.kernel.org/linux-hardening/aSUubvYfGJ-BIeDq@kspp/
 
-   Single netem hierarchy (prio + netem):
-      tc qdisc add dev lo root handle 1: prio bands 3 priomap 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-      tc filter add dev lo parent 1:0 protocol ip matchall classid 1:1
-      tc qdisc add dev lo parent 1:1 handle 10: netem limit 4 duplicate 100%
+ drivers/net/wwan/mhi_wwan_mbim.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-    Result: 2x packet multiplication (1→2 packets)
-      2 echo requests + 4 echo replies = 6 total packets
-
-    Expected behavior: Only one netem stage exists in this hierarchy, so
-    1 ping becomes 2 packets (100% duplication). The 2 echo requests generate
-    2 echo replies, which also get duplicated to 4 replies, yielding the
-    predictable total of 6 packets (2 requests + 4 replies).
-
-    Nest netem hierarchy (netem + netem):
-      tc qdisc add dev lo root handle 1: netem limit 1000 duplicate 100%
-      tc qdisc add dev lo parent 1: handle 2: netem limit 1000 duplicate 100%
-
-    Result: 4x packet multiplication (1→2→4 packets)
-      4 echo requests + 16 echo replies = 20 total packets
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index c814fbd756a1..daf07ef86b2b 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -78,8 +78,9 @@ struct mhi_mbim_context {
  
-If a netem clone is reinjected at the root, then each duplicate enters the
-entire qdisc hierarchy again, so the clone becomes
-an input to netem again, producing: 1 → 2 → 4 → 8 → …
+ struct mbim_tx_hdr {
+ 	struct usb_cdc_ncm_nth16 nth16;
++
++	/* Must be last as it ends in a flexible-array member. */
+ 	struct usb_cdc_ncm_ndp16 ndp16;
+-	struct usb_cdc_ncm_dpe16 dpe16[2];
+ } __packed;
+ 
+ static struct mhi_mbim_link *mhi_mbim_get_link_rcu(struct mhi_mbim_context *mbim,
+@@ -107,20 +108,20 @@ static int mhi_mbim_get_link_mux_id(struct mhi_controller *cntrl)
+ static struct sk_buff *mbim_tx_fixup(struct sk_buff *skb, unsigned int session,
+ 				     u16 tx_seq)
+ {
++	DEFINE_RAW_FLEX(struct mbim_tx_hdr, mbim_hdr, ndp16.dpe16, 2);
+ 	unsigned int dgram_size = skb->len;
+ 	struct usb_cdc_ncm_nth16 *nth16;
+ 	struct usb_cdc_ncm_ndp16 *ndp16;
+-	struct mbim_tx_hdr *mbim_hdr;
+ 
+ 	/* Only one NDP is sent, containing the IP packet (no aggregation) */
+ 
+ 	/* Ensure we have enough headroom for crafting MBIM header */
+-	if (skb_cow_head(skb, sizeof(struct mbim_tx_hdr))) {
++	if (skb_cow_head(skb, __struct_size(mbim_hdr))) {
+ 		dev_kfree_skb_any(skb);
+ 		return NULL;
+ 	}
+ 
+-	mbim_hdr = skb_push(skb, sizeof(struct mbim_tx_hdr));
++	mbim_hdr = skb_push(skb, __struct_size(mbim_hdr));
+ 
+ 	/* Fill NTB header */
+ 	nth16 = &mbim_hdr->nth16;
+@@ -133,12 +134,11 @@ static struct sk_buff *mbim_tx_fixup(struct sk_buff *skb, unsigned int session,
+ 	/* Fill the unique NDP */
+ 	ndp16 = &mbim_hdr->ndp16;
+ 	ndp16->dwSignature = cpu_to_le32(USB_CDC_MBIM_NDP16_IPS_SIGN | (session << 24));
+-	ndp16->wLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_ndp16)
+-					+ sizeof(struct usb_cdc_ncm_dpe16) * 2);
++	ndp16->wLength = cpu_to_le16(struct_size(ndp16, dpe16, 2));
+ 	ndp16->wNextNdpIndex = 0;
+ 
+ 	/* Datagram follows the mbim header */
+-	ndp16->dpe16[0].wDatagramIndex = cpu_to_le16(sizeof(struct mbim_tx_hdr));
++	ndp16->dpe16[0].wDatagramIndex = cpu_to_le16(__struct_size(mbim_hdr));
+ 	ndp16->dpe16[0].wDatagramLength = cpu_to_le16(dgram_size);
+ 
+ 	/* null termination */
+@@ -584,7 +584,8 @@ static void mhi_mbim_setup(struct net_device *ndev)
+ {
+ 	ndev->header_ops = NULL;  /* No header */
+ 	ndev->type = ARPHRD_RAWIP;
+-	ndev->needed_headroom = sizeof(struct mbim_tx_hdr);
++	ndev->needed_headroom =
++			struct_size_t(struct mbim_tx_hdr, ndp16.dpe16, 2);
+ 	ndev->hard_header_len = 0;
+ 	ndev->addr_len = 0;
+ 	ndev->flags = IFF_POINTOPOINT | IFF_NOARP;
+-- 
+2.43.0
 
-This is no longer a single probability distribution; it becomes a cascade
-of netem stages, even if you only configured one.
-
-The behavior becomes structural, not probabilistic. Which is not what users
-expect when they set duplicate 100%.
-
-They intuitively expect:
-- One duplication,
-- One netem pass,
-- No recursion.
-
-This matches same-qdisc enqueueing.
-
-This is why the right behavior matters for users, regardless of security
-concern. Hence it must be corrected.
-
-If any part of it is not clear, please let me know. I am very happy to
-explain to you. If you need, we can have a video meeting too, happy to
-walk you through this step-by-step.
-
-Thanks,
-Cong
