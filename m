@@ -1,106 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9A13009FA;
-	Thu, 27 Nov 2025 18:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764267388; cv=none; b=c8vhVCmDOhErE6MDvJrTcq/XFxYB/PNcEyXGuJSTa1+BUGFvgxKttglLwVlZHifXevDrPtSPxwjm1jqIImE+yzdQP5tVJ81QvPJshXUxQHgq1rCrjn/depGP+XxYLxvX4kliXhSpP3P/ligDvMXz9/3dwRAbmxXqrP5UZ+v6KQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764267388; c=relaxed/simple;
-	bh=6ixq0XVWHVxLUr4aT6Reqy57r8vKO5cAra3hnoC7JMQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Z5iUUBTDB6hsr4QyODnZqECC5XeqEFoHofelb3xDrLrBxN5DM0xIeGMKA3ST+m71OdTZKWlVo0Iqwra0DpyRpoDuKewWdGZ7QpdVt35TVTR8uPDxFMcm7SVt7KilZ/qbtkbBd/oKkLH1pSSzc6idPqQSYXVdhuukVlhq3KS9XQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMR64hqa; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A979A2773DE;
+	Thu, 27 Nov 2025 18:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764267462; cv=pass; b=mQrkinFpyYsJ05Fk51I9hKp1Ml/+WS74Q/077Rg+39i+KvNZW5rjPLPSX11EOm/MI6FiVTky0S+q8mzQEUmg52u2tocgRYOJv7MjL+fDYq3CBN15FmGbutPgHOqysxdrDF64QyN15pHRAuslk6AOzp+vt2m8kIC0AwyajSLtSC4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764267462; c=relaxed/simple;
+	bh=Am9z6NB1hWcUKAtK2Wd4vEeA4UQDmYpPUuhYvTNI8BM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QqhvkhWz17105av0MafZHeOXNp8bBso5CfWJbj+x9agrq/3QNgQ28EklmDcAbW1OQkA6QcGbs4DKbTdLLtugV0BEshl2pMAdfNwncEAJYMbzMz9eyovTxbqhCC+mJJ6pa+Ee2mui5xbQR3j51tef3kKNTo9aq62bUd3/+YH0v3w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b=MrrmR/Eb; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMR64hqa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192D6C113D0;
-	Thu, 27 Nov 2025 18:16:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764267388;
-	bh=6ixq0XVWHVxLUr4aT6Reqy57r8vKO5cAra3hnoC7JMQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=rMR64hqauCjp4BzhYr2pOBC069zTXW83KN4sAup5rfoMam4U6MkiRoDbOpmMTykcL
-	 wMx3rh02Y7h06GdOoMFicOdMHAhrScZeoEUFCF3HhcRRMkpwwWHkHYzm3Qx33vs/FZ
-	 scjjUOe58oJ5nohzrvlkm7H2yT5KuvhwgQ65MDoZR9ReYE7SaNz6Uu+VQimUTYgKIs
-	 dmPPeKJXMrdqPe80mvKvYNB2M7AdlV+2ADzWQChzJTWO5DrZewQcwrBaBw05EJCaoj
-	 X/Xia8twSpEkjujQ8WAzIl/JhSt3q/ZONbOxpbtOhSRL4/mAu+/7rtFlFgNmR4ULfL
-	 G05jma+lwJ+Lw==
-Date: Thu, 27 Nov 2025 12:16:27 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b="MrrmR/Eb"
+ARC-Seal: i=1; a=rsa-sha256; t=1764267379; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VHNPgFqZa0o6809/T+8jHJoMCBYjd2yZiYvEH43ecdDw0RDEoZBASvS8GXIRjf443u9HWsC87weywb65C5DIBcudiiLSfw66tyl4FaLNKaejlEIJIohOY954WwUx+6cfKsQdPDjAUxOAHUCJW2JVa5BuwC53SzyModibprg79Xg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764267379; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GA9FTV2ejX5xguOwyiDUL1hpvKOTwyB0xhI2crLeIWM=; 
+	b=VzgCDjp9rcRegJe18G1VoZpp248pQnSYb2nnPRvNYWxHUdyyrlHItaUgv2yGSNf+L6cT0ioGjEOUEpK+K0iTAkjcNQ9RhPc7ICm06mhWm7aOWDC7aTqGKcy/QGw9e2DvPfDfeB5pm0C9OwDjdwtPltUGw2ChGO1r7cznhhdiZRQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=ariel.dalessandro@collabora.com;
+	dmarc=pass header.from=<ariel.dalessandro@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764267379;
+	s=zohomail; d=collabora.com; i=ariel.dalessandro@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=GA9FTV2ejX5xguOwyiDUL1hpvKOTwyB0xhI2crLeIWM=;
+	b=MrrmR/EbOR0f5Gb5Xbhy3YhzRySSoWvRdfWRmCgcQVrMezcKplDmR9LS92M5F8YU
+	44hmR7lvwMtOD/5nw3ELxQb8PadU5cfnfMx7ngMJ02a3mou1wD1bDW4FltRjo9ZXijV
+	BVrAa/6yr4xsF2CvbF/50U6ILU5JghWfinyStD5c=
+Received: by mx.zohomail.com with SMTPS id 1764267377521567.410213066609;
+	Thu, 27 Nov 2025 10:16:17 -0800 (PST)
+Message-ID: <2dd059f5-96d4-44a1-84be-b14dce28cf06@collabora.com>
+Date: Thu, 27 Nov 2025 15:15:47 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Romain Gantois <romain.gantois@bootlin.com>, 
- linux-arm-msm@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
- Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
- Florian Fainelli <f.fainelli@gmail.com>, mwojtas@chromium.org, 
- devicetree@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>, 
- thomas.petazzoni@bootlin.com, Conor Dooley <conor+dt@kernel.org>, 
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
- Simon Horman <horms@kernel.org>, 
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Eric Dumazet <edumazet@google.com>, Herve Codina <herve.codina@bootlin.com>, 
- linux-arm-kernel@lists.infradead.org, Paolo Abeni <pabeni@redhat.com>, 
- Daniel Golle <daniel@makrotopia.org>, 
- =?utf-8?q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, 
- Antoine Tenart <atenart@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
- =?utf-8?q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20251127171800.171330-6-maxime.chevallier@bootlin.com>
-References: <20251127171800.171330-1-maxime.chevallier@bootlin.com>
- <20251127171800.171330-6-maxime.chevallier@bootlin.com>
-Message-Id: <176426738519.367608.14469073626442288770.robh@kernel.org>
-Subject: Re: [PATCH net-next v20 05/14] dt-bindings: net: dp83822:
- Deprecate ti,fiber-mode
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/12] dt-bindings: net: Convert Marvell 8897/8997
+ bindings to DT schema
+To: Rob Herring <robh@kernel.org>
+Cc: airlied@gmail.com, amergnat@baylibre.com, andrew+netdev@lunn.ch,
+ andrew-ct.chen@mediatek.com, angelogioacchino.delregno@collabora.com,
+ broonie@kernel.org, chunkuang.hu@kernel.org, conor+dt@kernel.org,
+ davem@davemloft.net, dmitry.torokhov@gmail.com, edumazet@google.com,
+ flora.fu@mediatek.com, heiko@sntech.de, houlong.wei@mediatek.com,
+ jeesw@melfas.com, kernel@collabora.com, krzk+dt@kernel.org, kuba@kernel.org,
+ lgirdwood@gmail.com, linus.walleij@linaro.org,
+ louisalexis.eyraud@collabora.com, luiz.dentz@gmail.com,
+ maarten.lankhorst@linux.intel.com, marcel@holtmann.org,
+ matthias.bgg@gmail.com, mchehab@kernel.org, minghsiu.tsai@mediatek.com,
+ mripard@kernel.org, p.zabel@pengutronix.de, pabeni@redhat.com,
+ sean.wang@kernel.org, simona@ffwll.ch, support.opensource@diasemi.com,
+ tiffany.lin@mediatek.com, tzimmermann@suse.de, yunfei.dong@mediatek.com,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-sound@vger.kernel.org, netdev@vger.kernel.org
+References: <20250911151001.108744-1-ariel.dalessandro@collabora.com>
+ <20250911151001.108744-4-ariel.dalessandro@collabora.com>
+ <20250912140619.GA1293647-robh@kernel.org>
+ <fb20e4fe-df0a-4089-a7cf-e82bfe1f8e00@collabora.com>
+ <CAL_Jsq+eeiw9oaqQPWt2=rZSX98Pak_oB=tfQFvEehwLZ=S52g@mail.gmail.com>
+Content-Language: en-US
+From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+In-Reply-To: <CAL_Jsq+eeiw9oaqQPWt2=rZSX98Pak_oB=tfQFvEehwLZ=S52g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
+Hi Rob,
 
-On Thu, 27 Nov 2025 18:17:48 +0100, Maxime Chevallier wrote:
-> The newly added ethernet-connector binding allows describing an Ethernet
-> connector with greater precision, and in a more generic manner, than
-> ti,fiber-mode. Deprecate this property.
+On 11/24/25 3:54 PM, Rob Herring wrote:
+> On Wed, Oct 1, 2025 at 12:28 PM Ariel D'Alessandro
+> <ariel.dalessandro@collabora.com> wrote:
+>>
+>> Rob,
+>>
+>> On 9/12/25 11:06 AM, Rob Herring wrote:
+>>> On Thu, Sep 11, 2025 at 12:09:52PM -0300, Ariel D'Alessandro wrote:
+>>>> Convert the existing text-based DT bindings for Marvell 8897/8997
+>>>> (sd8897/sd8997) bluetooth devices controller to a DT schema.
+>>>>
+>>>> While here:
+>>>>
+>>>> * bindings for "usb1286,204e" (USB interface) are dropped from the DT
+>>>>     schema definition as these are currently documented in file [0].
+>>>> * DT binding users are updated to use bluetooth generic name
+>>>>     recommendation.
+>>>>
+>>>> [0] Documentation/devicetree/bindings/net/btusb.txt
+>>>>
+>>>> Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+>>>> ---
+>>>>    .../net/bluetooth/marvell,sd8897-bt.yaml      | 79 ++++++++++++++++++
+>>>>    .../devicetree/bindings/net/btusb.txt         |  2 +-
+>>>>    .../bindings/net/marvell-bt-8xxx.txt          | 83 -------------------
+>>>
+>>>>    .../dts/rockchip/rk3288-veyron-fievel.dts     |  2 +-
+>>>>    .../boot/dts/rockchip/rk3288-veyron-jaq.dts   |  2 +-
+>>>>    arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi  |  2 +-
+>>>
+>>> .dts files should be separate patches. Please send the bindings patches
+>>> separately per subsystem so subsystem maintainers can apply them. All
+>>> the Mediatek dts changes can be 1 series.
+>>
+>> Ack, will fix in v3.
 > 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->  Documentation/devicetree/bindings/net/ti,dp83822.yaml | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
+> Are you going to send v3 still?
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Yes, will be sending out v3 asap, with the remaining changes.
+Sorry for the delay.
 
-yamllint warnings/errors:
+-- 
+Ariel D'Alessandro
+Software Engineer
 
-dtschema/dtc warnings/errors:
-
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251127171800.171330-6-maxime.chevallier@bootlin.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Collabora Ltd.
+Platinum Building, St John's Innovation Park, Cambridge CB4 0DS, UK 
+Registered in England & Wales, no. 5513718
 
