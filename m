@@ -1,195 +1,309 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB9D31ED6F;
-	Thu, 27 Nov 2025 07:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDCB271443
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 07:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764228694; cv=none; b=E/Kc7Yzy+zzwwiR1HwQzZd0s/NLOLNRpATb2XFtdar4jIbEEGAuakTvyKttt4FOheeNG/2nxu7MP8nnz/ir//0Aqy9lXMkrHFKuZF7Yu4871rcAeXPDnEQoS5s2S5B4iQoi06vNcLltihjngudmUtwjf3TIu4TwLu6aLBjkfCyA=
+	t=1764229366; cv=none; b=gteC76c8jka575mlI8aqMVh2GjO3S5WntTFd0J9nzK7CSjARzbmaRm1vEB/n/9Liw8bxP3awJvE206Px0PcptA1z8bzLGOakQI3TliGUGdMtCScYsqh+HpWAUMg+9wP/2ZpX7gajqTJzlIf34cGtecca2phQyxMBFt6gpGUH4Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764228694; c=relaxed/simple;
-	bh=djXtYfwiJE1XkDQF2b0MRN7mvLoJ5ybRSLF+cotldH8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fk5HqDPnE3mQOGQzf3qYXpSjYhYY1PT0rpTJrWWOgA33HNXfuNsdFWtSU6cD4H6akGhIpoaC6PpIOiOKj6xShNLo8gM0S4UPQ3bh75KjS66ksRCWOWfFTpqyGCApoczIJ9RPDV0bnnDEFnKrUx+eWBwe4PxnoY0sjwFtgycgjdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SxkGDK4n; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764229366; c=relaxed/simple;
+	bh=fHAFSqYrWymrIMhWT1z391H9KRyY231aWvYby8ijFgc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ViFxfRs+7X7UHUYGbV4mNWQafg6W03FnHULKi7ehb/P8xOKO7dvaCHc81PSLBXAiC9QxAG5KPsOVVfIu5mV3qsJ2Z8jX8W0jPo+7r0qq2l9sYgHZLN8b7tAiRwt2bUhh3VfHDQS3z7c/yA/MPtWSvGU/oEpPuO/GUIqpqx8BpBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XR2pw/zp; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SxkGDK4n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764228693; x=1795764693;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=djXtYfwiJE1XkDQF2b0MRN7mvLoJ5ybRSLF+cotldH8=;
-  b=SxkGDK4nj2bK4w9oKeVGbC94AxfUTL1iFD+Gsg1UpsaBnZYJMIo6tIK5
-   YzmBIP4nqEvnmGYr7KV0zqriJd7WN7z4mdt36U+QQHGGM/D4yO/+5yeRP
-   tzoLS9bXhqqnOgBGcmgZp1/7it2MHNIa+RdNYjmEEEAaQp0IbJSIECdoj
-   NvVnGmZigi9QKIQR6m+YDvN78PIlC6czRyjDgtGjatUrnXVBqXAMUn+Yp
-   ViEWfGcvMIv9O18JQnx7ipFke2RHHJFAvbQ1JEzMaTkwma/0lwkS7ndno
-   2mWwe5dDz2n0d1EVBXlabzT3vDnTvNChOjD6LGDeOFgAm5mbl/fOw5KTq
-   Q==;
-X-CSE-ConnectionGUID: OMwVApq2T6Gf8hKmfADQ+g==
-X-CSE-MsgGUID: 1gc2rQ4XSXuVqHX50h4kpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="70133702"
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="70133702"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 23:31:31 -0800
-X-CSE-ConnectionGUID: H9TNPFCSSpiXQUhEiAlhAQ==
-X-CSE-MsgGUID: dLEH+f6zSG26Rkgtl16qQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
-   d="scan'208";a="197487869"
-Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
-  by fmviesa005.fm.intel.com with ESMTP; 26 Nov 2025 23:31:23 -0800
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Avi Shalev <avi.shalev@intel.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>
-Subject: [PATCH iwl-net v3] igc: fix race condition in TX timestamp read for register 0
-Date: Thu, 27 Nov 2025 23:11:37 +0800
-Message-ID: <20251127151137.2883-1-chwee.lin.choong@intel.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XR2pw/zp"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78a7af9fe4fso5553677b3.2
+        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 23:42:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764229364; x=1764834164; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0s+lGtq/FjwF9TG7daW93flP5eOXaX9Z6GsP51FKsX8=;
+        b=XR2pw/zp6cM4pEUg+jLjYC/NxVQh3Ijq1MBH1kTUBBYBZSYCDLXhzhk25Lbpc2Xa2m
+         F1uvpLaQp0w6ZmqzKu8wosdZAEa6KmlR67Ihwiy4B+AzMNc/Nd3BuqRaNbaZ5BuTHhf0
+         AoaoIZwVltpIgrZjoajw52AuF41VWtduvHBNc+D4Faq5kAZRcz8S1xPRda0L1DpB7gxG
+         /lz3NQxX+7wFaZW7g3ehL/PwrqpNA7DDrRd61tocJ5Jk8+qoTNEtvAg84ec8EfCyHfnp
+         lIWvQBw71S8VIEgG+/h2RUho7PjK5DQocOsLFwVdspJyZekTr8BAftK8/yVKMVRHKpjf
+         rbAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764229364; x=1764834164;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0s+lGtq/FjwF9TG7daW93flP5eOXaX9Z6GsP51FKsX8=;
+        b=P560LWGNkn3lnBjpDAU2qHy3/+7THMgOn3mOONHMywI3zknXpB8bNvo91u7x1aBllm
+         RXAEYOSbz+Xv+2oTmYgj0TBaPe3TdK3bfIq4rr96MTXoilmCFiIkVuA3zgM0gdXVBLs2
+         QOzMz8hYi8W9Qxf7A6X3dnvSmSbAK10b3jyl9KgQ8EftxYtLN3ZcAePT88a6jUvntL+B
+         seWEDlt84XOwqcyc4grZwM1LmlFmXrf3HJYh207tI/1c1BNIb26Sl3cF76A+nTLNLjtz
+         Z4lIGJkmD4avZNJU/soBk5cu1ZphrhWRVObYnFkltEa+OX/dS6i71Ishp5fzWTLrdkxc
+         SxGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWWizOXyNgpLik9g1+H2LaaX5FpYisBXe0SFqU9V5crsHs1VVkFtqcjjxonLR92FXGqKVX+Y0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOEc3Hz54n8xANJTuKVyVAJLkGvL3gRdDTDUbSEijt9uapmvfy
+	cvzzWVIZELmBqrzSqHYCjqKLuxoc3Z0PfSZRkllrssKU2iQ/Pta+DW7JC3mjqldoWYHTRp14Y8e
+	pVqfH9KaOaVout915q/zheKAaI2OjQSQ=
+X-Gm-Gg: ASbGncsTWI9zM8BbWujMFmfFXNlbI805pPtkzb8HbjhURFfsGWHHAgqBZXZCsGorHqV
+	ArPvbkYdc+jt53pcrK9tqsnq95v+HETmhuat0N29blnugEREAbRrx+nYq7DOrBDmA6u9qP1TeNj
+	je5jwBbfNdkhD1FXbDAcygUqJ4EpfZImrCsP6MIJC0iJya1pWBfmANKDZyOmnAq+BHwRnqGBIK/
+	+IrIS/V75NFtUl7495ioruS9eIBlt2rbl8uvX1HPlSeKruELXd7tkI8lLgrjoRSdewi2A==
+X-Google-Smtp-Source: AGHT+IGT6CGsB7Usnzyfxo67b+IkZOsMuFPTHSRIn2T6WhwEk4p8Wl8HKysJF49vHWu54pqPWxQMGpKildwftGtDYJ8=
+X-Received: by 2002:a05:690c:6201:b0:788:20ec:c17f with SMTP id
+ 00721157ae682-78a8b539269mr197005357b3.39.1764229363950; Wed, 26 Nov 2025
+ 23:42:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251125075150.13879-1-jonas.gorski@gmail.com>
+ <20251125075150.13879-8-jonas.gorski@gmail.com> <20251125203119.fw746rr3ootunqts@skbuf>
+In-Reply-To: <20251125203119.fw746rr3ootunqts@skbuf>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Thu, 27 Nov 2025 08:42:33 +0100
+X-Gm-Features: AWmQ_bm7NXXuqwG60hqOZozOV1vet_6FzLZaSS2Ikfny8B3_mVNRnhztOw7cjwg
+Message-ID: <CAOiHx==e3ZiFmA4XJe+6V02r0Wszrcy+v_DFRtMBPYrkNkqkjA@mail.gmail.com>
+Subject: Re: [PATCH net-next 7/7] net: dsa: b53: allow VID 0 for BCM5325/65
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, Andrew Lunn <andrew@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	=?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The current HW bug workaround checks the TXTT_0 ready bit first,
-then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
-to detect whether a new timestamp was captured by timestamp
-register 0 during the workaround.
+On Tue, Nov 25, 2025 at 9:31=E2=80=AFPM Vladimir Oltean <olteanv@gmail.com>=
+ wrote:
+>
+> Hi Jonas,
+>
+> On Tue, Nov 25, 2025 at 08:51:50AM +0100, Jonas Gorski wrote:
+> > Now that writing ARL entries works properly, we can actually use VID 0
+> > as the default untagged VLAN for BCM5325 and BCM5365 as well, so use 0
+> > as default PVID always.
+> >
+> > Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+> > ---
+> >  drivers/net/dsa/b53/b53_common.c | 49 +++++++++++---------------------
+> >  1 file changed, 17 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53=
+_common.c
+> > index ac995f36ed95..4eff64204897 100644
+> > --- a/drivers/net/dsa/b53/b53_common.c
+> > +++ b/drivers/net/dsa/b53/b53_common.c
+> > @@ -870,14 +870,6 @@ static void b53_enable_stp(struct b53_device *dev)
+> >       b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
+> >  }
+> >
+> > -static u16 b53_default_pvid(struct b53_device *dev)
+> > -{
+> > -     if (is5325(dev) || is5365(dev))
+> > -             return 1;
+> > -     else
+> > -             return 0;
+> > -}
+> > -
+>
+> I am in favour of a more minimal change, where b53_default_pvid()
+> returns 0, and its call sites are kept unmodified, if only and for
+> code documentation purposes. Other drivers use a macro to avoid
+> hardcoding the 0 everywhere the default VLAN is meant. This driver
+> doesn't have a macro but it already has b53_default_pvid().
 
-This sequence has a race: if a new timestamp is captured after
-checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
-detection fails because both the “old” and “new” values come from
-the same timestamp.
+Sure, I can do that.
 
-Fix by reading TXSTMPL_0 first to establish a baseline, then
-checking the TXTT_0 bit. This ensures any timestamp captured
-during the race window will be detected.
+> >  static bool b53_vlan_port_needs_forced_tagged(struct dsa_switch *ds, i=
+nt port)
+> >  {
+> >       struct b53_device *dev =3D ds->priv;
+> > @@ -906,14 +898,12 @@ int b53_configure_vlan(struct dsa_switch *ds)
+> >       struct b53_device *dev =3D ds->priv;
+> >       struct b53_vlan vl =3D { 0 };
+> >       struct b53_vlan *v;
+> > -     int i, def_vid;
+> >       u16 vid;
+> > -
+> > -     def_vid =3D b53_default_pvid(dev);
+> > +     int i;
+> >
+> >       /* clear all vlan entries */
+> >       if (is5325(dev) || is5365(dev)) {
+> > -             for (i =3D def_vid; i < dev->num_vlans; i++)
+> > +             for (i =3D 0; i < dev->num_vlans; i++)
+> >                       b53_set_vlan_entry(dev, i, &vl);
+> >       } else {
+> >               b53_do_vlan_op(dev, VTA_CMD_CLEAR);
+> > @@ -927,7 +917,7 @@ int b53_configure_vlan(struct dsa_switch *ds)
+> >        * entry. Do this only when the tagging protocol is not
+> >        * DSA_TAG_PROTO_NONE
+> >        */
+> > -     v =3D &dev->vlans[def_vid];
+> > +     v =3D &dev->vlans[0];
+> >       b53_for_each_port(dev, i) {
+> >               if (!b53_vlan_port_may_join_untagged(ds, i))
+> >                       continue;
+> > @@ -935,16 +925,15 @@ int b53_configure_vlan(struct dsa_switch *ds)
+> >               vl.members |=3D BIT(i);
+> >               if (!b53_vlan_port_needs_forced_tagged(ds, i))
+> >                       vl.untag =3D vl.members;
+> > -             b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(i),
+> > -                         def_vid);
+> > +             b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(i),=
+ 0);
+> >       }
+> > -     b53_set_vlan_entry(dev, def_vid, &vl);
+> > +     b53_set_vlan_entry(dev, 0, &vl);
+> >
+> >       if (dev->vlan_filtering) {
+> >               /* Upon initial call we have not set-up any VLANs, but up=
+on
+> >                * system resume, we need to restore all VLAN entries.
+> >                */
+> > -             for (vid =3D def_vid + 1; vid < dev->num_vlans; vid++) {
+> > +             for (vid =3D 1; vid < dev->num_vlans; vid++) {
+> >                       v =3D &dev->vlans[vid];
+> >
+> >                       if (!v->members)
+> > @@ -1280,7 +1269,6 @@ static int b53_setup(struct dsa_switch *ds)
+> >       struct b53_device *dev =3D ds->priv;
+> >       struct b53_vlan *vl;
+> >       unsigned int port;
+> > -     u16 pvid;
+> >       int ret;
+> >
+> >       /* Request bridge PVID untagged when DSA_TAG_PROTO_NONE is set
+> > @@ -1310,8 +1298,7 @@ static int b53_setup(struct dsa_switch *ds)
+> >       }
+> >
+> >       /* setup default vlan for filtering mode */
+> > -     pvid =3D b53_default_pvid(dev);
+> > -     vl =3D &dev->vlans[pvid];
+> > +     vl =3D &dev->vlans[0];
+> >       b53_for_each_port(dev, port) {
+> >               vl->members |=3D BIT(port);
+> >               if (!b53_vlan_port_needs_forced_tagged(ds, port))
+> > @@ -1740,7 +1727,7 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
+> >       if (pvid)
+> >               new_pvid =3D vlan->vid;
+> >       else if (!pvid && vlan->vid =3D=3D old_pvid)
+> > -             new_pvid =3D b53_default_pvid(dev);
+> > +             new_pvid =3D 0;
+> >       else
+> >               new_pvid =3D old_pvid;
+> >       dev->ports[port].pvid =3D new_pvid;
+> > @@ -1790,7 +1777,7 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+> >       vl->members &=3D ~BIT(port);
+> >
+> >       if (pvid =3D=3D vlan->vid)
+> > -             pvid =3D b53_default_pvid(dev);
+> > +             pvid =3D 0;
+> >       dev->ports[port].pvid =3D pvid;
+> >
+> >       if (untagged && !b53_vlan_port_needs_forced_tagged(ds, port))
+> > @@ -2269,7 +2256,7 @@ int b53_br_join(struct dsa_switch *ds, int port, =
+struct dsa_bridge bridge,
+> >       struct b53_device *dev =3D ds->priv;
+> >       struct b53_vlan *vl;
+> >       s8 cpu_port =3D dsa_to_port(ds, port)->cpu_dp->index;
+> > -     u16 pvlan, reg, pvid;
+> > +     u16 pvlan, reg;
+> >       unsigned int i;
+> >
+> >       /* On 7278, port 7 which connects to the ASP should only receive
+> > @@ -2278,8 +2265,7 @@ int b53_br_join(struct dsa_switch *ds, int port, =
+struct dsa_bridge bridge,
+> >       if (dev->chip_id =3D=3D BCM7278_DEVICE_ID && port =3D=3D 7)
+> >               return -EINVAL;
+> >
+> > -     pvid =3D b53_default_pvid(dev);
+> > -     vl =3D &dev->vlans[pvid];
+> > +     vl =3D &dev->vlans[0];
+> >
+> >       if (dev->vlan_filtering) {
+> >               /* Make this port leave the all VLANs join since we will =
+have
+> > @@ -2295,9 +2281,9 @@ int b53_br_join(struct dsa_switch *ds, int port, =
+struct dsa_bridge bridge,
+> >                                   reg);
+> >               }
+> >
+> > -             b53_get_vlan_entry(dev, pvid, vl);
+> > +             b53_get_vlan_entry(dev, 0, vl);
+> >               vl->members &=3D ~BIT(port);
+> > -             b53_set_vlan_entry(dev, pvid, vl);
+> > +             b53_set_vlan_entry(dev, 0, vl);
+> >       }
+> >
+> >       b53_read16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), &pvlan=
+);
+> > @@ -2336,7 +2322,7 @@ void b53_br_leave(struct dsa_switch *ds, int port=
+, struct dsa_bridge bridge)
+> >       struct b53_vlan *vl;
+> >       s8 cpu_port =3D dsa_to_port(ds, port)->cpu_dp->index;
+> >       unsigned int i;
+> > -     u16 pvlan, reg, pvid;
+> > +     u16 pvlan, reg;
+> >
+> >       b53_read16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), &pvlan=
+);
+> >
+> > @@ -2361,8 +2347,7 @@ void b53_br_leave(struct dsa_switch *ds, int port=
+, struct dsa_bridge bridge)
+> >       b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan=
+);
+> >       dev->ports[port].vlan_ctl_mask =3D pvlan;
+> >
+> > -     pvid =3D b53_default_pvid(dev);
+> > -     vl =3D &dev->vlans[pvid];
+> > +     vl =3D &dev->vlans[0];
+> >
+> >       if (dev->vlan_filtering) {
+> >               /* Make this port join all VLANs without VLAN entries */
+> > @@ -2374,9 +2359,9 @@ void b53_br_leave(struct dsa_switch *ds, int port=
+, struct dsa_bridge bridge)
+> >                       b53_write16(dev, B53_VLAN_PAGE, B53_JOIN_ALL_VLAN=
+_EN, reg);
+> >               }
+> >
+> > -             b53_get_vlan_entry(dev, pvid, vl);
+> > +             b53_get_vlan_entry(dev, 0, vl);
+> >               vl->members |=3D BIT(port);
+> > -             b53_set_vlan_entry(dev, pvid, vl);
+> > +             b53_set_vlan_entry(dev, 0, vl);
+> >       }
+> >  }
+> >  EXPORT_SYMBOL(b53_br_leave);
+> > --
+> > 2.43.0
+> >
+>
+> Not covered in this patch, but I wonder whether it should have been.
+>
+> This test in b53_vlan_prepare() seems obsolete and a good candidate for
+> removal:
+>
+>         if ((is5325(dev) || is5365(dev)) && vlan->vid =3D=3D 0)
+>                 return -EOPNOTSUPP;
 
-Old sequence:
-  1. Check TXTT_0 ready bit
-  2. Read TXSTMPL_0 (baseline)
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
+Ah, good catch. Yeah, that should/can be removed.
 
-New sequence:
-  1. Read TXSTMPL_0 (baseline)
-  2. Check TXTT_0 ready bit
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
+>
+> especially since we already have the same check below in b53_vlan_add()
+> for all chip IDs:
+>
+>         if (vlan->vid =3D=3D 0)
+>                 return 0;
 
-Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-Suggested-by: Avi Shalev <avi.shalev@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
----
-v1: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20250918183811.31270-1-chwee.lin.choong@intel.com/
-v2: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20251127134927.2133-1-chwee.lin.choong@intel.com/
+Arguably the 5325/65 check could have already been dropped at that
+time I added this.
 
-changelog:
-v1 -> v2 
-- Added detailed comments explaining the hardware bug workaround and race
-    detection mechanism
-v2 -> v3
-- Removed extra export file added by mistake	
----
- drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+I'll send a v2 later.
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index b7b46d863bee..7aae83c108fd 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -774,36 +774,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
- static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 txstmpl_old;
- 	u64 regval;
- 	u32 mask;
- 	int i;
- 
-+	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
-+	 * This baseline is used to detect if a new timestamp arrives in
-+	 * register 0 during the hardware bug workaround below.
-+	 */
-+	txstmpl_old = rd32(IGC_TXSTMPL);
-+
- 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
- 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
- 		regval = rd32(IGC_TXSTMPL);
- 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
- 	} else {
--		/* There's a bug in the hardware that could cause
--		 * missing interrupts for TX timestamping. The issue
--		 * is that for new interrupts to be triggered, the
--		 * IGC_TXSTMPH_0 register must be read.
-+		/* TXTT_0 not set - register 0 has no new timestamp initially.
-+		 *
-+		 * Hardware bug: Future timestamp interrupts won't fire unless
-+		 * TXSTMPH_0 is read, even if the timestamp was captured in
-+		 * registers 1-3.
- 		 *
--		 * To avoid discarding a valid timestamp that just
--		 * happened at the "wrong" time, we need to confirm
--		 * that there was no timestamp captured, we do that by
--		 * assuming that no two timestamps in sequence have
--		 * the same nanosecond value.
-+		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
-+		 * However, this read clears TXTT_0. If a timestamp arrives in
-+		 * register 0 after checking TXTT_0 but before this read, it
-+		 * would be lost.
- 		 *
--		 * So, we read the "low" register, read the "high"
--		 * register (to latch a new timestamp) and read the
--		 * "low" register again, if "old" and "new" versions
--		 * of the "low" register are different, a valid
--		 * timestamp was captured, we can read the "high"
--		 * register again.
-+		 * To detect this race: We saved a baseline read of TXSTMPL_0
-+		 * before TXTT_0 check. After performing the workaround read of
-+		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
-+		 * timestamps never share the same nanosecond value, a change
-+		 * between the baseline and new TXSTMPL_0 indicates a timestamp
-+		 * arrived during the race window. If so, read the complete
-+		 * timestamp.
- 		 */
--		u32 txstmpl_old, txstmpl_new;
-+		u32 txstmpl_new;
- 
--		txstmpl_old = rd32(IGC_TXSTMPL);
- 		rd32(IGC_TXSTMPH);
- 		txstmpl_new = rd32(IGC_TXSTMPL);
- 
-@@ -818,7 +825,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- 
- done:
- 	/* Now that the problematic first register was handled, we can
--	 * use retrieve the timestamps from the other registers
-+	 * retrieve the timestamps from the other registers
- 	 * (starting from '1') with less complications.
- 	 */
- 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
--- 
-2.43.0
-
+Best regards,
+Jonas
