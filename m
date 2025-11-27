@@ -1,104 +1,90 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152E432AADA;
-	Thu, 27 Nov 2025 11:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0D632C31C
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 11:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764243726; cv=none; b=p+3+9h3zALJJzARK6y6LR5DG+9kl3OQn676mGc9x+uxMeldQUFO+b3SPUTd3fPOQ0MZTzJQiszWyVXLlZMjDs6bAsGFNNL7JFm7hCBWwPHZDRHljeEvW/T4z4e50g+KYtk3e/QQDNZZvBGllcZoxkenStbMVk9GjKBu2QDJRFeI=
+	t=1764243882; cv=none; b=SQHcMOb0Fd/BAfL/LJkXp6QUcGqRh87ZMT1dx4N1Z4UA7Toz7vjln/gtOwHpZhXRDfavoTlHPJTI5sz7KaaoOQflWlD9z+p/dXPZdZtcHoqXUhY5Udz2fAeoqYWQHai1gQDUD3wkq5YPtkmjMPxgUdhxrGQp2a0DbFY3N37gu9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764243726; c=relaxed/simple;
-	bh=ix0pW9f0iMFgYnYlk3CZAe+tQ8zn1uG9c6QLdGIS2mI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VAcqpfVTtZISUTdw5aHOaH/K7oPV3mt1d7CG1PBkRTS0Oj5QPA4ouxShUSXYaQ+5DwZeA9Okwlk9rQNpvetUc31pvHiF25A/dTx3rQVSNRqmaj7MaecNwd7AO2Dsaw4oy5scv7ut5Z4Qo7Gz9TadIq9i6Ak27CgOlo1R9frPUd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dHDym53CtzJ46sQ;
-	Thu, 27 Nov 2025 19:41:04 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8135114020C;
-	Thu, 27 Nov 2025 19:42:01 +0800 (CST)
-Received: from [10.123.122.223] (10.123.122.223) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 27 Nov 2025 14:42:00 +0300
-Message-ID: <d67662fc-cdd1-4f48-87b6-40da838fea32@huawei.com>
-Date: Thu, 27 Nov 2025 14:42:00 +0300
+	s=arc-20240116; t=1764243882; c=relaxed/simple;
+	bh=8B3PWkcneEp8j4f+naDD6Gjqui7eqqG/efW5UvE2XH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUce50ugJ2u3F7cE76YUbR7VmZPPHEh/oe+t89Xnht0U2IP5H2YPaAXmIwCKA1p7OUcSfayKZCejBgGBE5PLS6kePcG1BGu34mhDuJ7so5yVMqe/z5YBY0E2D7u2kbc2ZXb/rmd/hov1gAgHZa6nSmuLPE95xv2z+/OszYsAKtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCLe2OIu; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCLe2OIu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D691CC4CEF8;
+	Thu, 27 Nov 2025 11:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764243882;
+	bh=8B3PWkcneEp8j4f+naDD6Gjqui7eqqG/efW5UvE2XH4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QCLe2OIuIK9wjKClO/r9uyaeQ15V7N/qN6sDhYFWeDI2Z4Zp4gK4FPsONwLX2rwcH
+	 tfzYe44SX9LSCUgFA2ov2A6XZkPitg2cUqReAIFJTKI4A0miQkv0MvTki1qmW589xU
+	 VI2y2WMVHhOdmyEvY/IiTPxKxJRQvVaxWP6g417Yxuila1C5k6D4KfdGBGm6mcLU5C
+	 WuIG38jrSYsix3D1s3TXIcupJ1xXainImFuTwRLcD/xXwKUG7vTL24qOIHF58NWwM3
+	 MqtfMovzdV99mCiWKOg1zJIlWcLzS51EHBRLzV+Kyb85OQWObyeG+kZ7PoftguOMHx
+	 9Zb/34wrUnRRQ==
+Date: Thu, 27 Nov 2025 11:44:38 +0000
+From: Simon Horman <horms@kernel.org>
+To: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>
+Subject: Re: [PATCH iwl-net v2 2/3] idpf: Fix RSS LUT configuration on down
+ interfaces
+Message-ID: <aSg5pg9aLwmiVR6G@horms.kernel.org>
+References: <20251124184750.3625097-1-sreedevi.joshi@intel.com>
+ <20251124184750.3625097-3-sreedevi.joshi@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 07/12] ipvlan: Don't allow children to use IPs of
- main
-To: Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>, Kuniyuki
- Iwashima <kuniyu@google.com>, Xiao Liang <shaw.leon@gmail.com>, Jakub
- Kicinski <kuba@kernel.org>, Julian Vetter <julian@outer-limits.org>, Ido
- Schimmel <idosch@nvidia.com>, Guillaume Nault <gnault@redhat.com>, Eric
- Dumazet <edumazet@google.com>, Stanislav Fomichev <sdf@fomichev.me>, Etienne
- Champetier <champetier.etienne@gmail.com>, <linux-kernel@vger.kernel.org>
-CC: <andrey.bokhanko@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-References: <20251120174949.3827500-1-skorodumov.dmitry@huawei.com>
- <20251120174949.3827500-8-skorodumov.dmitry@huawei.com>
- <12d4a794-24f4-4201-8671-38851edb7942@redhat.com>
-Content-Language: en-US
-From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
-In-Reply-To: <12d4a794-24f4-4201-8671-38851edb7942@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500004.china.huawei.com (7.188.26.250)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124184750.3625097-3-sreedevi.joshi@intel.com>
 
+On Mon, Nov 24, 2025 at 12:47:49PM -0600, Sreedevi Joshi wrote:
+> RSS LUT provisioning and queries on a down interface currently return
+> silently without effect. Users should be able to configure RSS settings
+> even when the interface is down.
+> 
+> Fix by maintaining RSS configuration changes in the driver's soft copy and
+> deferring HW programming until the interface comes up.
+> 
+> Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
+> Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+> ---
+>  drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
 
-On 25.11.2025 17:26, Paolo Abeni wrote:
-> On 11/20/25 6:49 PM, Dmitry Skorodumov wrote:
->> Remember all ip-addresses on main iface and check
->> in ipvlan_addr_busy() that addr is not used on main.
-> Why?
->
-> Why using in_dev_for_each_ifa_rcu()/in6_dev->addr_list is not good enough?
->
-> Note that IP addtion on the main interface can race with
-> ipvlan_addr_busy() even with the code you are proposing.
->
-Hm.. I don't see lt:
+...
 
+> @@ -424,7 +429,7 @@ static int idpf_get_rxfh(struct net_device *netdev,
+>  
+>  	if (rxfh->indir) {
+>  		for (i = 0; i < rss_data->rss_lut_size; i++)
+> -			rxfh->indir[i] = rss_data->rss_lut[i];
+> +			rxfh->indir[i] = rxhash_ena ? rss_data->rss_lut[i] : 0;
 
-the ipvlan_port_add_addr_event(addr) does { ipvlan_port_add_addr(addr); ipvlan_port_del_addr_ipvlans(addr); }
+Hi,
 
-ipvlan_port_add_addr(addr) { lock(addrs_lock); list_add(addr); unlock(addrs_lock);}
+I feel that I am missing something here.
+But I would have expected rxfh->indir to be populated by rss_data->rss_lut
+regardless of the port is up or down. IOW, I'm unclear on why
+0 is reported for the indirection table if the interface is down.
 
-ipvlan_port_del_addr_ipvlans(addr) { lock(addrs_lock); for_each_ipvlan ipvlan_del_addr(ipvlan, addr); unlock(addrs_lock);}
+>  	}
+>  
+>  unlock_mutex:
 
-
-ipvlan_macnat_addr_learn(addr); { lock(addrs_lock); if !ipvlan_addr_busy(): ipvlan_remember(addr); unlock(addrs_lock); }
-
-
-There is a small window when addr can be remembered on ipvlan. But with the next step in ipvlan_port_add_addr_event(), it will be cleaned up with ipvlan_port_del_addr_ipvlans()
-
-The idea is "it is ok to allow few packets to pass the protection, but don't allow this address be white-listed for forever"
-
-===
-
-I tried first in_dev_for_each_ifa_rcu(), instead of remembering on main iface, but it's not easy to invent synchronization mechanic for this..
-
-if in ipvlan_macnat_addr_learn() we Start -> (1) iterated through in_dev_for_each_ifa_rcu(); found that address is not used and (2) remembered it on ipvlan -> (3) End
-
-there is no way how ipvlan_port_add_addr() can ensure without locks: we can be in the [1-2] stage in addr_learn. And if we try to call ipvlan_del_addr() - again,  we can be in the [1-2] stage in addr_learn
-
-
-may be we could
-
-in ipvlan_macnat_addr_learn() 
-
-Start -> (1) iterated through in_dev_for_each_ifa_rcu(); found that address is not used and (2) remembered it on ipvlan -> (3) reiterate again through in_dev_for_each_ifa_rcu() -> End
-
-but I think the code becomes overcomplicated with this
-
-Dmitry
-
+...
