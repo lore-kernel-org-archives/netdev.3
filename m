@@ -1,103 +1,266 @@
-Received: from mail-yx1-f67.google.com (mail-yx1-f67.google.com [74.125.224.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2AF327202
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 09:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE93327214
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 09:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764234897; cv=none; b=k+Reh3zFiq7YZ3l9g0hAO9b073wAr4KbyR6txAA/7CDtZmyDpMy4Dd0GkKdz7hVd+8/hIpwuBmecgb0P86kJ2afDMXNIgW9ausjlIX5I1NXP4VTOGcmpqgYegx4TWJNIBBpK2ayh6P1uTlqZuN8PxejGaO77gSV6VRcc8cJ0jl8=
+	t=1764235302; cv=none; b=A7RHHNra6+olbOXaL1WA3DZ2vIXN2HK7vS5OaRWLyb0cnjfdHLk2vSC3LJZbGuBVlkyw+/BZKuIK6wRdlpwzHbkFnYfQOLH6c2kNf8W38bID7WjUH1J9jl2zeFC62t/6TMsBcIW5+BR2HXSPCXo6W3tZy44A70aFDgc9lalO1oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764234897; c=relaxed/simple;
-	bh=cgHpqrZbI7wadn/9AB8KDZigrsTNXpK3vQS9cFm+Ukw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay/jK9Qbx5y1wSu96Ve4EmbdyovRfUjGeC1obS7doFRKH+GAGb9q/SuNFBlwe/IUyDRp8xLZWDrPrbiw0wl+p/7hoXtzIQorsgoBZAh5TngeHUJjr0uqJepjxuEgReI0O2efFHJbphbs2IjCmlteZwlTOt3C0ntmSV5cyBKobRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c2ZplBEM; arc=none smtp.client-ip=74.125.224.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c2ZplBEM"
-Received: by mail-yx1-f67.google.com with SMTP id 956f58d0204a3-63fa19e296eso78327d50.2
-        for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 01:14:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764234895; x=1764839695; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3iekvLV4GZhbQrqzl8gpCeak19Q2/nq+IQ13jDYga+c=;
-        b=c2ZplBEMns+eqGykKV+Pp2MzSAKXuuEFMpNUQzS+CC+k2AzwHWS/J3O+G9I5vUIWif
-         pP5Miy0OUQz6gvWh0c+lCUgZx1vFcJ4QpZ3Bip0QIrRBUffVsfgsVxVLQVKhsIVf/lZ2
-         ZxmU4GRa66uX8xaXybfshziVyDJdwg216LykWGap2aVNZSQMsZ51lESaasT8bDeFmj3w
-         padi25QoL5zuPodqRqeXf6fVsOokcnOFi7b1btIagW4XXn/2cnlSYXWcU6U5OqwvoFlR
-         8d+G7MwVkV6pzgP12gZr7Q/BJZTXy/aIVy/NbG5oqV7xAuaaKpfAaayx4z17CH2PqaRh
-         oQOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764234895; x=1764839695;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3iekvLV4GZhbQrqzl8gpCeak19Q2/nq+IQ13jDYga+c=;
-        b=tQGHvKJ6gKmL3rnNxQjlG0Uo4PNgFPw0j889RsfWQ/aYyWR/afdkdd0y0k/KToGuLE
-         nt8ncIF9r0qi3hYosCBw8MHQbifpcS6oyM8A2Nag58zkSGSSrue+BKNMJveheLZDkoWr
-         ldQ4B72zABBszXzUrzPfyC63jvlUjMOVOdq1XAwEJA5HCipVJq7U3Oab5yk7q43KT52g
-         AQTbbe/ZyWO0gXhtN8Df2oa5vXZXssXaDaIjVOFSTKAObcXfFr9iUjcq/WlJsTu/q1A0
-         XcWP56yF80YpItbpNlsMShDAY8QofdeovqK/JmzMJFmm10VuxloG2DFnk9CeUT35s9TB
-         izKw==
-X-Gm-Message-State: AOJu0Yyz7FTqbWWwOyoK3hJo0lptFY7bxv6VxzZqLsE0Efx56DTeN76p
-	PfVh0nvXvewLuVnemgVImlkH3b/f0EG+N1ZCzFfB1H2ESExEAMBlgIA16orztRel
-X-Gm-Gg: ASbGnctouoJxX2QOxnLNXdoBIcviZH4ZJ/4cOyKyytcIM1SAuVRoq0xfVcrf6C3Svkd
-	vWwxqUw4efjxt86lJ2VtkkYCDB6qCzPOdoUIkbGZXVb8jPQfFsuI2Cpg1SCLmCO3LesA+lYo/vx
-	39ARZ7qidg2zjqMmTWe3Feq2eT0gxDO+s649qDmX/CwE/x8qjewqsENdDnk5z3/2YJxyrRiCnco
-	vYzlQwqdgdmpsg9eLuRgXgOp4oYTygfNlp+XrSTu+k4ASlAHGDl1mDiscWjaDbW3tmQa3lFZSGa
-	AmaAjNu4WmD1RAxLIddFSh/FjhaYAkyICQpdsRjkzBbJQPZJz6wtRlExES6IwgFA2tCq9Xpg08c
-	PzHINpzAmhpAQ1eeQXrieEWb0xnESxNmkPOD4AKX4AWL6AdUn3f4LLXUjZI3+zvYV03iI6Z8EFR
-	33dqFY1aFn
-X-Google-Smtp-Source: AGHT+IEr5JkFLPfjdgCyrCavk8W4Izakf54mFY1zsnd6VXjAobrhtuUcJCxS7doA1D6JXz9uD/g2oQ==
-X-Received: by 2002:a53:c04e:0:20b0:641:51:ede0 with SMTP id 956f58d0204a3-64302adf399mr11135340d50.4.1764234894767;
-        Thu, 27 Nov 2025 01:14:54 -0800 (PST)
-Received: from localhost ([104.28.225.185])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad0d3f5bbsm3796167b3.7.2025.11.27.01.14.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 01:14:54 -0800 (PST)
-From: Mariusz Klimek <maklimek97@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Mariusz Klimek <maklimek97@gmail.com>
-Subject: [PATCH net-next 3/3] selftests/net: remove unnecessary MTU config in big_tcp.sh
-Date: Thu, 27 Nov 2025 10:13:25 +0100
-Message-ID: <20251127091325.7248-4-maklimek97@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127091325.7248-1-maklimek97@gmail.com>
-References: <20251127091325.7248-1-maklimek97@gmail.com>
+	s=arc-20240116; t=1764235302; c=relaxed/simple;
+	bh=A0HcuvS3enGtvNZBODhFcT6q0rpdD61OZWee+KavudM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IbikUE1iiAQ9zgSIktGo9ARvVxRaZvMfPlCtVWb6HELqGFo0TgKlqL5f091PlkBsf6396Fn/k0SHmE1eHJ+i4Z3DBS/kf13W/mSGD7CB2w+QATpa4+rDxHT5iqNqx/DzVTi65ijGb2Cqae2WjtEihDLlRALFULERtknRmw9fwBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vOYBN-0003tH-UX; Thu, 27 Nov 2025 10:20:57 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vOYBL-002lPv-0C;
+	Thu, 27 Nov 2025 10:20:55 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vOYBK-009dxy-2x;
+	Thu, 27 Nov 2025 10:20:54 +0100
+Date: Thu, 27 Nov 2025 10:20:54 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Eric Dumazet <edumazet@google.com>, Rob Herring <robh@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Lukasz Majewski <lukma@denx.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Divya.Koppera@microchip.com,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
+	Sabrina Dubroca <sd@queasysnail.net>, linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [PATCH net-next v8 1/1] Documentation: net: add flow control
+ guide and document ethtool API
+Message-ID: <aSgX9ue6uUheX4aB@pengutronix.de>
+References: <20251119140318.2035340-1-o.rempel@pengutronix.de>
+ <20251125181957.5b61bdb3@kernel.org>
+ <aSa8Gkl1AP1U2C9j@pengutronix.de>
+ <20251126144225.3a91b8cc@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251126144225.3a91b8cc@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This patch removes the manual lowering of the client MTU in big_tcp.sh. The
-MTU lowering was previously required as a work-around due to a bug in the
-MTU validation of BIG TCP jumbograms. The MTU was lowered to 1442, but note
-that 1492 (1500 - 8) would of worked just as well. Now that the bug has
-been fixed, the manual client MTU modification can be removed entirely.
+On Wed, Nov 26, 2025 at 02:42:25PM -0800, Jakub Kicinski wrote:
+> On Wed, 26 Nov 2025 09:36:42 +0100 Oleksij Rempel wrote:
+> > On Tue, Nov 25, 2025 at 06:19:57PM -0800, Jakub Kicinski wrote:
+> > > On Wed, 19 Nov 2025 15:03:17 +0100 Oleksij Rempel wrote:  
+> > > > + * @get_pauseparam: Report the configured policy for link-wide PAUSE
+> > > > + *      (IEEE 802.3 Annex 31B). Drivers must fill struct ethtool_pauseparam
+> > > > + *      such that:
+> > > > + *      @autoneg:
+> > > > + *              This refers to **Pause Autoneg** (IEEE 802.3 Annex 31B) only
+> > > > + *              and is part of the link autonegotiation process.
+> > > > + *              true  -> the device follows the negotiated result of pause
+> > > > + *                       autonegotiation (Pause/Asym);
+> > > > + *              false -> the device uses a forced MAC state independent of
+> > > > + *                       negotiation.
+> > > > + *      @rx_pause/@tx_pause:
+> > > > + *              represent the desired policy (preferred configuration).
+> > > > + *              In autoneg mode they describe what is to be advertised;
+> > > > + *              in forced mode they describe the MAC state to apply.  
+> > > 
+> > > How is the user supposed to know what ended up getting configured?  
+> > 
+> > My current understanding is that get_pauseparam() is mainly a
+> > configuration API. It seems to be designed symmetric to
+> > set_pauseparam(): it reports the requested policy (autoneg flag and
+> > rx/tx pause), not the resolved MAC state.
+> > 
+> > In autoneg mode this means the user sees what we intend to advertise
+> > or force, but not necessarily what the MAC actually ended up with
+> > after resolution.
+> > 
+> > The ethtool userspace tool tries to fill this gap by showing
+> > "RX negotiated" and "TX negotiated" fields, for example:
+> > 
+> >   Pause parameters for lan1:
+> >     Autonegotiate:  on
+> >     RX:             off
+> >     TX:             off
+> >     RX negotiated:  on
+> >     TX negotiated:  on
+> > 
+> > As far as I can see, these "negotiated" values are not read from hardware or
+> > kernel. They are guessed in userspace from the local and link partner
+> > advertisements, assuming that the kernel follows the same pause resolution
+> > rules as ethtool does. If the kernel or hardware behaves differently, these
+> > values can be wrong.
+> > 
+> > So, with the current API, the user gets:
+> > - the configured policy via get_pauseparam(), and
+> > - an ethtool-side guess of the resolved state via
+> >   "RX negotiated"/"TX negotiated",
+> 
+> Again, that's all well and good for autoneg, but in DC use cases with
+> integrated NICs autoneg is usually off. And in that case having get
+> report "desired" config of some sort makes much less sense, when we also
+> recommend that drivers reject unsupported configurations.
+> 
+> > > Why do we need to configure autoneg via this API and not link modes directly?  
+> > 
+> > I am not aware of a clear reason. This documentation aims to describe
+> > the current behavior and capture the rationale of the existing API.
+> 
+> To spell it out more forcefully I think it describes the current
+> behavior for certain devices. I could be wrong but the expectations
+> for when autoneg is off should be different.
+> 
+> > Configuring it via link modes directly would likely resolve some of this
+> > confusion, but for now we focus on documenting how the current API is
+> > expected to behave.
+> 
+> You say current API - is setting Pause and Asym_Pause via link modes
+> today rejected? I don't see an explicit check by grepping but I haven't
+> really tried..
 
-Signed-off-by: Mariusz Klimek <maklimek97@gmail.com>
----
- tools/testing/selftests/net/big_tcp.sh | 1 -
- 1 file changed, 1 deletion(-)
+Haw about following wording:
+Kernel Policy: Administrative vs. Operational State
+===================================================
 
-diff --git a/tools/testing/selftests/net/big_tcp.sh b/tools/testing/selftests/net/big_tcp.sh
-index 2db9d15cd45f..b5d9145296d3 100755
---- a/tools/testing/selftests/net/big_tcp.sh
-+++ b/tools/testing/selftests/net/big_tcp.sh
-@@ -32,7 +32,6 @@ setup() {
- 	ip -net $ROUTER_NS link add link2 type veth peer name link3 netns $SERVER_NS
- 
- 	ip -net $CLIENT_NS link set link0 up
--	ip -net $CLIENT_NS link set link0 mtu 1442
- 	ip -net $CLIENT_NS addr add $CLIENT_IP4/24 dev link0
- 	ip -net $CLIENT_NS addr add $CLIENT_IP6/64 dev link0 nodad
- 	ip -net $CLIENT_NS route add $SERVER_IP4 dev link0 via $CLIENT_GW4
+The ethtool pause API configures the **administrative state** of the network
+device. The **operational state** (the actual pause behavior active on the
+wire) depends on the active link mode and the link partner.
+
+The semantics of the configuration depend on the ``autoneg`` parameter:
+
+1. **Autonegotiation Mode** (``autoneg on``)
+   In this mode, the ``rx`` and ``tx`` parameters specify the **advertisement**
+   (the "wish").
+
+   - The driver configures the PHY to advertise these capabilities.
+   - The actual Flow Control mode is determined by the standard resolution
+     truth table (see "Link-wide PAUSE Autonegotiation Details") based on the
+     link partner's advertisement.
+   - ``get_pauseparam`` reports the advertisement policy, not the resolved
+     outcome.
+
+2. **Forced Mode** (``autoneg off``)
+   In this mode, the ``rx`` and ``tx`` parameters constitute a direct
+   **command** to the interface.
+
+   - The system bypasses advertisement and forces the MAC into the specified
+     configuration.
+   - Drivers should reject configurations that the hardware cannot support in
+     forced mode.
+   - ``get_pauseparam`` reports the forced configuration.
+
+**Common Constraints**
+Regardless of the mode, the following constraints apply:
+
+- Link-wide PAUSE is not valid on half-duplex links.
+- Link-wide PAUSE cannot be used together with Priority-based Flow Control
+  (PFC).
+
+
+/**
+ * ...
+ * @get_pauseparam: Report the configured administrative policy for link-wide
+ *	PAUSE (IEEE 802.3 Annex 31B). Drivers must fill struct ethtool_pauseparam
+ *	such that:
+ *	@autoneg:
+ *		This refers to **Pause Autoneg** (IEEE 802.3 Annex 31B) only
+ *		and is part of the link autonegotiation process.
+ *		true  -> the device follows the negotiated result of pause
+ *			 autonegotiation (Pause/Asym);
+ *		false -> the device uses a forced configuration independent
+ *			 of negotiation.
+ *	@rx_pause/@tx_pause:
+ *		represent the desired policy (administrative state).
+ *		In autoneg mode they describe what is to be advertised;
+ *		in forced mode they describe the MAC configuration to be forced.
+ *
+ * @set_pauseparam: Apply a policy for link-wide PAUSE (IEEE 802.3 Annex 31B).
+ *	@rx_pause/@tx_pause:
+ *		Desired state. If @autoneg is true, these define the
+ *		advertisement. If @autoneg is false, these define the
+ *		forced MAC configuration.
+ *	@autoneg:
+ *		Select autonegotiation or forced mode.
+ *
+ *	**Constraint Checking:**
+ *	Drivers should reject a non-zero setting of @autoneg when
+ *	autonegotiation is disabled (or not supported) for the link.
+ *	Drivers should reject unsupported rx/tx combinations with -EINVAL.
+ * ...
+ */
+
+Open Questions:
+
+Pre-link Configuration (Administrative UP, Physical DOWN) How should drivers
+handle set_pauseparam when the link is physically down?
+
+ Fully Forced: If speed/duplex are forced, we can validate the pause request
+ immediately.
+
+ Parallel Detection: If the link comes up later (e.g., as Half Duplex via
+ parallel detection), a previously accepted "forced pause" configuration might
+ become invalid. Should we block forced pause settings until the link is
+ physically up?
+
+State Persistence and Toggling When toggling autoneg (e.g., autoneg on -> off
+-> on), should the kernel or driver cache the previous advertisement?
+
+  Currently, if a user switches to forced mode and back, the previous
+  advertisement preferences might be lost or reset to defaults depending on the
+  driver.
+
+  Similarly, if no administrative configuration has ever been set, what should
+  get_pauseparam report? Should it read the current hardware state (which might
+  be default) or return zero/empty?
+
+Synchronization with Link Modes Configuring pause via set_pauseparam vs.
+link_ksettings can lead to desynchronization.
+
+  My testing shows that set_pauseparam often updates the driver's internal
+  pause state but may not trigger the necessary link reset/re-advertisement
+  that link_ksettings does.
+
+  This results in the reported "Advertised" pause modes in ethtool output being
+  out of sync with the actual Pause API settings.
+
+  Combining configuration over different interfaces sometimes will avoid
+  link reset, so new configuration is not advertised.
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
