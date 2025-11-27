@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7C32ABEF;
-	Thu, 27 Nov 2025 12:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E8A32E156
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 12:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764245445; cv=none; b=dFeFAv42Re+B7Qf/P8hcmNzpiK632whWs2AyFzB1VOYD/jImuqxPMh+u24lDV8XBL3vN85VxO6XDTbTeOQZutjSrAT6OGyP0iuOUwrDkXWhFnBbowRu3lO6qKagGcT/+KUhHWYDOsIuzAdtO1+d9u1qdTYHL81Qf4bI/3kz4/pc=
+	t=1764246046; cv=none; b=KD4Mk0cgJi6wv9BCqVjY5CwLYfq3JtIHWqwPwCoLCgxIR86sywT6KMgJowmTtTnuSY5UIDScmZ2KRAbOyu3o3mOAX88aXEj0JiQNoVY9cz8RkZnko62j/PiK7K4eQkTWfws5smht7+VLu2hOw1iJCZeAde2Xf5hPbQTGkjzUhek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764245445; c=relaxed/simple;
-	bh=uhnsNrqtMtQkysk9EvtLzQf+itpVm8Usek2r6BnT+ak=;
+	s=arc-20240116; t=1764246046; c=relaxed/simple;
+	bh=3ERbXbzNJtuwcEyji1irl/PUVl+PwRw7QXzK6uwGFo0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kBw+adTTueb2eW6Z2ZC5BsjzQbumQe4FhUIgQRrN3ecTHWjx068wTRPRzz+1WXtpEwYjtwv7EHPM5PJg90jWIgxuEUrKH0j7mr9E18rtAVlII1msd7oeIx38Li26D2HNnrTz/yyWDUX3ZXJQKpY0j75jsYJUw3OrGvsvfBJqg9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RO0NRAZl; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tz77WuzI0FEO1pc3ypyHH524An49M7Etczhk06gk4h+WWy8xYtc88w6O7Pv0zTMctKkWSuWslA5AwKAMU/onK7R3IdHv98nLuq9RLPGHnNOnRn9HOaqJ1h07KY6jav9Ldkcbw5AWGUaR3Edx6v70rDF+9FHSnDiFySrCcZDSjPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UROH+dL1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RO0NRAZl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802DC4CEF8;
-	Thu, 27 Nov 2025 12:10:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UROH+dL1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0048C4CEF8;
+	Thu, 27 Nov 2025 12:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764245444;
-	bh=uhnsNrqtMtQkysk9EvtLzQf+itpVm8Usek2r6BnT+ak=;
+	s=k20201202; t=1764246045;
+	bh=3ERbXbzNJtuwcEyji1irl/PUVl+PwRw7QXzK6uwGFo0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RO0NRAZl45XA5ot75mAHnDowIjR04X6kevxTP/ht/X0iW+aJV/HSqd1DkqPUzJ/38
-	 fgQjlsjNIbmzTKhnimVO/Q4XPHv+9aOkw4qaBvEhSfjfRSKhGp9awCsJls/EpcBN//
-	 0wkqkJQhuGucl1fTvtcmKfQaJovPFZWhWvsqnEH+Ibw64NhrYhNTHCVTGSIvhqQLEo
-	 bM6DopBszbn9uoufcaoFKgkt25IZ3o8eR7khWLioY+8QJxSjMJRT9Ew2DA4SXydBKQ
-	 CIoq1Ylo/saAP8rponTA2pcglH4509X+vLM0zaAk3aH5Raam+16WKfpx2KmYSXlmVm
-	 1qQALIu6z0POQ==
+	b=UROH+dL1BT98VjAR40MCm23j6PODqjZ5JQ4KW8sKHwkhGPxeC2UjF94/ujC7CVjz3
+	 YqnOoxWUU7JcLbcWNyZu6+R4UQ6DzYH5ERyntC9Iu1bUOD7R/HysBIP+h29wC2/4uU
+	 fo2DzACTvAwp6rfhYmH/zeAWaV/ibQV68KZrmECP21bQ7m/MtjOdHZ59PuH106OcIx
+	 mu/0e9HOHXPyXlkTwp614n8EQchIAarud8LGPIGw3+yS35WtuctbHw/YoUGoIWm/t3
+	 IDPjJbJM5ZVt/VL9ZtpQbe1MJaLZZJMaNEeqlAaHl4S5RoxlqP43FecGwoYLE9/rNA
+	 dxctHziIp2bXQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710E4380CFEF;
-	Thu, 27 Nov 2025 12:10:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E0D380CFEF;
+	Thu, 27 Nov 2025 12:20:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: dwmac: Disable flushing frames on
- Rx
- Buffer Unavailable
+Subject: Re: [PATCH v1 net-next] mptcp: Initialise rcv_mss before calling
+ tcp_send_active_reset() in mptcp_do_fastclose().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176424540625.2550562.3416257212075007570.git-patchwork-notify@kernel.org>
-Date: Thu, 27 Nov 2025 12:10:06 +0000
-References: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
-In-Reply-To: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
-To: G@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Thomas@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Rohan <rohan.g.thomas@altera.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- matthew.gerlach@altera.com
+ <176424600726.2553841.2265045087455449510.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Nov 2025 12:20:07 +0000
+References: <20251125195331.309558-1-kuniyu@google.com>
+In-Reply-To: <20251125195331.309558-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: matttbe@kernel.org, martineau@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, geliang@kernel.org,
+ horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
+ syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed, 26 Nov 2025 00:37:12 +0800 you wrote:
-> From: Rohan G Thomas <rohan.g.thomas@altera.com>
+On Tue, 25 Nov 2025 19:53:29 +0000 you wrote:
+> syzbot reported divide-by-zero in __tcp_select_window() by
+> MPTCP socket. [0]
 > 
-> In Store and Forward mode, flushing frames when the receive buffer is
-> unavailable, can cause the MTL Rx FIFO to go out of sync. This results
-> in buffering of a few frames in the FIFO without triggering Rx DMA
-> from transferring the data to the system memory until another packet
-> is received. Once the issue happens, for a ping request, the packet is
-> forwarded to the system memory only after we receive another packet
-> and hece we observe a latency equivalent to the ping interval.
+> We had a similar issue for the bare TCP and fixed in commit
+> 499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
+> of 0").
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: stmmac: dwmac: Disable flushing frames on Rx Buffer Unavailable
-    https://git.kernel.org/netdev/net-next/c/45d100ee0d6e
+  - [v1,net-next] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
+    https://git.kernel.org/netdev/net/c/f07f4ea53e22
 
 You are awesome, thank you!
 -- 
