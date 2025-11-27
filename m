@@ -1,80 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0EB32B987;
-	Thu, 27 Nov 2025 12:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7C32ABEF;
+	Thu, 27 Nov 2025 12:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764245418; cv=none; b=Rg9qJNtfPCNwBSzqWas4C6FUZUw7LLe6vu23SowV8QVqVzXqoXW2/HAobtA20hVAHhBEth/Br2NeEtnH86NpFCWXnAjgZTW6iTU9K75v9kKkP+tBOk4MazkSL5D8DedOQk8LpCJsZqBLdmmJnQCiwaK4zZo4w7vu8HswRR7dLAk=
+	t=1764245445; cv=none; b=dFeFAv42Re+B7Qf/P8hcmNzpiK632whWs2AyFzB1VOYD/jImuqxPMh+u24lDV8XBL3vN85VxO6XDTbTeOQZutjSrAT6OGyP0iuOUwrDkXWhFnBbowRu3lO6qKagGcT/+KUhHWYDOsIuzAdtO1+d9u1qdTYHL81Qf4bI/3kz4/pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764245418; c=relaxed/simple;
-	bh=Tw8ZxnDtRksKWjLeoEr5RzNFz3CSj5Rza0zXH0X5J5M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=j+FTxr6aruk5RIgMtAMUXa1lyN8GHInYIYWqxyWoD7UQSBwQ45bGIu3mnurWDsdXtbEacmq+GU3VmGEXhJuH2btlGTqDnxlRrTu4rR3LzNKFDOEfdLtdZEDRkva59DOYNJi8Kvaquup8+dzFfCmGUqkdkaTHUYi9AOuqi3OrN1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbjjwRHk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764245445; c=relaxed/simple;
+	bh=uhnsNrqtMtQkysk9EvtLzQf+itpVm8Usek2r6BnT+ak=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kBw+adTTueb2eW6Z2ZC5BsjzQbumQe4FhUIgQRrN3ecTHWjx068wTRPRzz+1WXtpEwYjtwv7EHPM5PJg90jWIgxuEUrKH0j7mr9E18rtAVlII1msd7oeIx38Li26D2HNnrTz/yyWDUX3ZXJQKpY0j75jsYJUw3OrGvsvfBJqg9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RO0NRAZl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbjjwRHk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED71C4CEF8;
-	Thu, 27 Nov 2025 12:10:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RO0NRAZl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802DC4CEF8;
+	Thu, 27 Nov 2025 12:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764245417;
-	bh=Tw8ZxnDtRksKWjLeoEr5RzNFz3CSj5Rza0zXH0X5J5M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=dbjjwRHkGDr/xSfPV+oueR8C+iPyK0ofE2v34nPYeEkigq+An5mE52EZncusXmWke
-	 pKpbHiVfke2kKhb9NkQ4u9KNB6PsFPDhQ8LOAJExIO6/JlIeXoQ8IO/9iUPwKlQs34
-	 2aSZqAGy/zbPFJNQq0bkR1F2W2IKrQhmanXcrS28zDqmPw3L/qM2wsbwdvyC3q+qDC
-	 2FftQMSslX1pNYY5TqubWnyF/FtiPdT+ZGYL5TmZoeaXRoks8rSrepkqqlPthkjB04
-	 RxUPF1AGQBnKD0pf34V35CiL4x0DkRWJVC8AjO8aq6GLHXrYEsQ5GSain6TgDjCJ38
-	 DOxaEV6JgmMzg==
-From: Leon Romanovsky <leon@kernel.org>
-To: linux-rdma@vger.kernel.org, Stefan Metzmacher <metze@samba.org>
-Cc: Zhu Yanjun <zyjzyj2000@gmail.com>, Zhu Yanjun <yanjun.zhu@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, netdev@vger.kernel.org, 
- linux-cifs@vger.kernel.org
-In-Reply-To: <20251127105614.2040922-1-metze@samba.org>
-References: <20251127105614.2040922-1-metze@samba.org>
-Subject: Re: [PATCH v3] RDMA/rxe: reclassify sockets in order to avoid
- false positives from lockdep
-Message-Id: <176424541467.1853134.8527838747212328732.b4-ty@kernel.org>
-Date: Thu, 27 Nov 2025 07:10:14 -0500
+	s=k20201202; t=1764245444;
+	bh=uhnsNrqtMtQkysk9EvtLzQf+itpVm8Usek2r6BnT+ak=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RO0NRAZl45XA5ot75mAHnDowIjR04X6kevxTP/ht/X0iW+aJV/HSqd1DkqPUzJ/38
+	 fgQjlsjNIbmzTKhnimVO/Q4XPHv+9aOkw4qaBvEhSfjfRSKhGp9awCsJls/EpcBN//
+	 0wkqkJQhuGucl1fTvtcmKfQaJovPFZWhWvsqnEH+Ibw64NhrYhNTHCVTGSIvhqQLEo
+	 bM6DopBszbn9uoufcaoFKgkt25IZ3o8eR7khWLioY+8QJxSjMJRT9Ew2DA4SXydBKQ
+	 CIoq1Ylo/saAP8rponTA2pcglH4509X+vLM0zaAk3aH5Raam+16WKfpx2KmYSXlmVm
+	 1qQALIu6z0POQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710E4380CFEF;
+	Thu, 27 Nov 2025 12:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a6db3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: stmmac: dwmac: Disable flushing frames on
+ Rx
+ Buffer Unavailable
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176424540625.2550562.3416257212075007570.git-patchwork-notify@kernel.org>
+Date: Thu, 27 Nov 2025 12:10:06 +0000
+References: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
+In-Reply-To: <20251126-a10_ext_fix-v1-1-d163507f646f@altera.com>
+To: G@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Thomas@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
+	Rohan <rohan.g.thomas@altera.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ matthew.gerlach@altera.com
 
+Hello:
 
-On Thu, 27 Nov 2025 11:56:14 +0100, Stefan Metzmacher wrote:
-> While developing IPPROTO_SMBDIRECT support for the code
-> under fs/smb/common/smbdirect [1], I noticed false positives like this:
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 26 Nov 2025 00:37:12 +0800 you wrote:
+> From: Rohan G Thomas <rohan.g.thomas@altera.com>
 > 
-> [+0,003927] ============================================
-> [+0,000532] WARNING: possible recursive locking detected
-> [+0,000611] 6.18.0-rc5-metze-kasan-lockdep.02+ #1 Tainted: G           OE
-> [+0,000835] --------------------------------------------
-> [+0,000729] ksmbd:r5445/3609 is trying to acquire lock:
-> [+0,000709] ffff88800b9570f8 (k-sk_lock-AF_INET){+.+.}-{0:0},
->                               at: inet_shutdown+0x52/0x360
-> [+0,000831]
->             but task is already holding lock:
-> [+0,000684] ffff88800654af78 (k-sk_lock-AF_INET){+.+.}-{0:0},
->                            at: smbdirect_sk_close+0x122/0x790 [smbdirect]
-> [+0,000928]
->             other info that might help us debug this:
-> [+0,005552]  Possible unsafe locking scenario:
+> In Store and Forward mode, flushing frames when the receive buffer is
+> unavailable, can cause the MTL Rx FIFO to go out of sync. This results
+> in buffering of a few frames in the FIFO without triggering Rx DMA
+> from transferring the data to the system memory until another packet
+> is received. Once the issue happens, for a ping request, the packet is
+> forwarded to the system memory only after we receive another packet
+> and hece we observe a latency equivalent to the ping interval.
 > 
 > [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - [net-next] net: stmmac: dwmac: Disable flushing frames on Rx Buffer Unavailable
+    https://git.kernel.org/netdev/net-next/c/45d100ee0d6e
 
-[1/1] RDMA/rxe: reclassify sockets in order to avoid false positives from lockdep
-      https://git.kernel.org/rdma/rdma/c/80a85a771deb11
-
-Best regards,
+You are awesome, thank you!
 -- 
-Leon Romanovsky <leon@kernel.org>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
