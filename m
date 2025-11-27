@@ -1,143 +1,192 @@
-Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80943258EFB
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 06:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77A73C1F;
+	Thu, 27 Nov 2025 06:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764223711; cv=none; b=B815VO4EQe4aV/BHZ+e2zMQ4rgZWuKdNMVzZXIONeRr2mfgH0DLb7x44hgcRxblJzS4XWk26OiiFsC/ihRPB2GohR0BzN4Iv0ohvyw7+YnWOvaTbuEkoVC+4AVZvswwFBqhMQ33++MunOcERnnAkXjPWK3SREgOxG+hEzsqu/Ko=
+	t=1764223758; cv=none; b=mMUAxfl6u7YBq+4EuopSO/YJXCVC39gI+fye89SDjFgu+hn8u/jXUVBT6Ru49VohFha/ZHFTz7NCLmdW6OBv63I1K8IUC3kY5TOjv0v92EdXEsS6QLpoOE5DKDFA3I9Aq0osGIW/fUDWImj9C97Hv0b03rR4A16N0Bnve1egX6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764223711; c=relaxed/simple;
-	bh=08Hd5rD81Quc+8M/4WmMVmqKdYZHuyxo3wb8LH7jeKY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVCOvTgXTuigqDQFBYW8G3lXQ/lYyKupgMb8yx86mnQH+fKukiwKcnCPKuUPmQphUsB4JZ38nMxzI5VvEUe+TFPXg27qC5eJyreRM/hb09ieLlmXNdmAy/P7YRADYzKOFELPA7QZP49SdzafvVsCjXDhtu6AEVRHJm3XFbSVISI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=fail smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=im9e9ddc; arc=none smtp.client-ip=51.83.17.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=proton.me
+	s=arc-20240116; t=1764223758; c=relaxed/simple;
+	bh=aHUC8nU4inAMF0lcxnfBXRfDJnB0i8imv9buU6Z9arU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oYmWj+ESk38QR4oEwdemhDjjkSxbzzNqX4O5xjmoGIScfbUGEkDhOmqe8F60qiuw58xxGW4ZMuWDqo2Es6+W5KL2rmnM60qtOrMeR3pshB7Burk+5FiNn48h2iVy07N8IdSugKSuivGsJgDd4ovJSNThjWV7AhKuYetAp25B11U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FF2+OwUF; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="im9e9ddc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=fmkahaajpzg5jdicaadshb2fvy.protonmail; t=1764223698; x=1764482898;
-	bh=08Hd5rD81Quc+8M/4WmMVmqKdYZHuyxo3wb8LH7jeKY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=im9e9ddc9y+uSapR/rLRrzKkJObxkvH3vtEVY6U2CkNSMhYUCIB6PNWFVXNZYLt/4
-	 6loQBnF5X+cGB0MwaQl29Sw4sJWNrJR/jhOMQ1kz4x/hcdGzJYf68Lqc20nCxm7vf1
-	 Ps3/9TZ+tmIf4qLlgg3Gf58z9DZVEyW+M8x9G6xyznluhej9Ih1jN+LRNQRqU2cVPK
-	 HWNfYXYKkTSnL7acuF9sxSk1fr2nQMX6tfxxhnkqfPdppOMy6sN4rl8BOmzPHWgl0F
-	 NYWg9NU30WkhvnMtJsC50grXTdalQarZNsJup0ky7sN7D/7UewXY55X03jhEYiGx+u
-	 e0Le11O4BGE2g==
-Date: Thu, 27 Nov 2025 06:08:13 +0000
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-From: =?utf-8?B?7KCV7KeA7IiY?= <jschung2@proton.me>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>, Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, will@willsroot.io, savy@syst3mfailure.io
-Subject: Re: Fw: [Bug 220774] New: netem is broken in 6.18
-Message-ID: <ASx87MmTb79KImWwsBhstFGoue2UNiX4l0Y0NXCSob-VNrOsz05jh8lG76DbQ7FWjGABCdc45LY6vQ3VI7UIv4KzI5LI2mB65eje2PwlHrE=@proton.me>
-In-Reply-To: <CAM0EoM=i6MsHeBYu6d-+bkxVWWHcj9b9ibM+dHr3w27mUMMhBw@mail.gmail.com>
-References: <20251110123807.07ff5d89@phoenix> <aR/qwlyEWm/pFAfM@pop-os.localdomain> <CAM0EoMkPdyqEMa0f4msEveGJxxd9oYaV4f3NatVXR9Fb=iCTcw@mail.gmail.com> <oXMTlZ5OaURBe0X3RZCO7zyNf6JJFPYvDW0AiXEg0bXJwXXYJutLhhjmUbetBUD_pGChlN7hDCCx9xFOtj8Hke5G7SM3-u5FQFC5e4T1wPY=@proton.me> <CAM0EoM=i6MsHeBYu6d-+bkxVWWHcj9b9ibM+dHr3w27mUMMhBw@mail.gmail.com>
-Feedback-ID: 167072316:user:proton
-X-Pm-Message-ID: a77bbff09d9bc9bec0c745682ac547eabea15c9b
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FF2+OwUF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764223755; x=1795759755;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aHUC8nU4inAMF0lcxnfBXRfDJnB0i8imv9buU6Z9arU=;
+  b=FF2+OwUFOESEXZNx2Jn7B8qy7YUx2pw5w2ybC1rWbrqwnwDU9Ykj0o3i
+   LjLm68eAanGhGWi/rV+oBPfDXkk5JRxxOHl7snewZZzS2+Ga9A1jGj69u
+   lRLM2ew9YwZc1W6pZYMVTjOj4i1yYWxlqnvsSQA+/GladxYxHLgnAjJy5
+   /7ZQj+6TeRgjtJuJHFuMUnEncBWW9SLRu7Yyv7SNn9RKd/UD9vDEDko4J
+   MGd12ZuSuHh7pQ6DZai1oQqMvTueNd1TsQYrgCNjEqTVOlrFYub3BNvPX
+   tiiunHOFvsIMyGSIQ7zoAV7uQ2NzQk+N6IBh1P1q4KoNPpN2Y1jDSq1sp
+   A==;
+X-CSE-ConnectionGUID: icfDowFGQHOErcKHZwOayQ==
+X-CSE-MsgGUID: buc4KkmwSYei0ycXhGPl0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66152496"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="66152496"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 22:09:14 -0800
+X-CSE-ConnectionGUID: EVF9C2O+SjiFGmSG7wL5Cw==
+X-CSE-MsgGUID: vE3Dx5+ZRZOttXv2lq5bAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; 
+   d="scan'208";a="193956120"
+Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
+  by fmviesa010.fm.intel.com with ESMTP; 26 Nov 2025 22:09:12 -0800
+From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Avi Shalev <avi.shalev@intel.com>,
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Chwee-Lin Choong <chwee.lin.choong@intel.com>
+Subject: [PATCH iwl-net v2] igc: fix race condition in TX timestamp read for register 0
+Date: Thu, 27 Nov 2025 21:49:27 +0800
+Message-ID: <20251127134927.2133-1-chwee.lin.choong@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Mr Salim,
+The current HW bug workaround checks the TXTT_0 ready bit first,
+then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
+to detect whether a new timestamp was captured by timestamp
+register 0 during the workaround.
 
-I do not understand what your saying. You provide a bash script, and I can =
-test
+This sequence has a race: if a new timestamp is captured after
+checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
+detection fails because both the “old” and “new” values come from
+the same timestamp.
 
-- Ji-Soo
+Fix by reading TXSTMPL_0 first to establish a baseline, then
+checking the TXTT_0 bit. This ensures any timestamp captured
+during the race window will be detected.
 
-=EC=97=90 2025=EB=85=84 11=EC=9B=94 22=EC=9D=BC =ED=86=A0=EC=9A=94=EC=9D=
-=BC 17:24 Jamal Hadi Salim <jhs@mojatatu.com> =EB=8B=98=EC=9D=B4 =EC=9E=
-=91=EC=84=B1=ED=95=A8:
+Old sequence:
+  1. Check TXTT_0 ready bit
+  2. Read TXSTMPL_0 (baseline)
+  3. Read TXSTMPH_0 (interrupt workaround)
+  4. Read TXSTMPL_0 (detect changes vs baseline)
 
->=20
->=20
-> Hi =EC=A0=95=EC=A7=80=EC=88=98,
->=20
-> On Sat, Nov 22, 2025 at 1:56=E2=80=AFAM =EC=A0=95=EC=A7=80=EC=88=98 jschu=
-ng2@proton.me wrote:
->=20
-> > #!/bin/bash
-> >=20
-> > set -euo pipefail
-> >=20
-> > DEV=3D"wlo0"
-> > QUEUE=3D"1"
-> > RTP_DST_PORT=3D"5004"
-> > DUP_PCT=3D"25%"
-> > CORR_PCT=3D"60%"
-> > DELAY=3D"1ms"
-> > VERIFY_SECONDS=3D15
-> >=20
-> > usage(){ echo "Usage: sudo $0 [-d DEV] [-q QUEUE] [-P UDP_PORT]"; exit =
-1; }
-> > while [[ $# -gt 0 ]]; do
-> > case "$1" in
-> > -d) DEV=3D"$2"; shift 2;;
-> > -q) QUEUE=3D"$2"; shift 2;;
-> > -P) RTP_DST_PORT=3D"$2"; shift 2;;
-> > *) usage;;
-> > endac
-> > done || true
-> >=20
-> > [[ -d /sys/class/net/$DEV ]] || { echo "No such dev $DEV"; exit 1; }
-> >=20
-> > if ! tc qdisc show dev "$DEV" | grep -q ' qdisc mq '; then
-> > echo "Setting root qdisc to mq.."
-> > tc qdisc replace dev "$DEV" root handle 1: mq
-> > fi
-> >=20
-> > echo "Adding ntuple to steer UDP dport $RTP_DST_PORT -> tx-queue $QUEUE=
-..."
-> > ethtool -N "$DEV" flow-type udp4 dst-port $RTP_DST_PORT action $QUEUE |=
-| {
-> > echo "some flows will still land on :$QUEUE"
-> > }
-> >=20
-> > echo "Attaching netem duplicate=3D$DUP_PCT corr=3D$CORR_PCT delay=3D$DE=
-LAY on parent :$QUEUE.."
-> > tc qdisc replace dev "$DEV" parent :$QUEUE handle ${QUEUE}00: \
-> > netem duplicate "$DUP_PCT" "$CORR_PCT" delay "$DELAY"
-> >=20
-> > tc qdisc show dev "$DEV"
-> >=20
-> > echo
-> > echo "Start an RTP/WebRTC/SFU downlink to a test client on UDP port $RT=
-P_DST_PORT."
-> > echo "Capturing for $VERIFY_SECONDS s to observe duplicates by RTP seqn=
-o.."
-> > timeout "$VERIFY_SECONDS" tcpdump -ni "$DEV" "udp and dst port $RTP_DST=
-_PORT" -vv -c 0 2>/dev/null | head -n 3 || true
-> >=20
-> > if command -v tshark >/dev/null 2>&1; then
-> > echo "tshark live RTP view :"
-> > timeout "$VERIFY_SECONDS" tshark -i "$DEV" -f "udp dst port $RTP_DST_PO=
-RT" -q -z rtp,streams || true
-> > fi
-> >=20
-> > echo
-> > echo "Netem stats, see duplicated counters under handle ${QUEUE}00:):"
-> > tc -s qdisc show dev "$DEV" | sed -n '1,200p'
->=20
->=20
-> Thanks for the config.
->=20
-> If you can talk about it: I was more interested in what your end goal is.
-> From the dev name it seems $DEV is a wireless device? Are you
-> replicating these RTP packets across different ssids mapped to
-> different hw queues? Are you forwarding these packets? The ethtool
-> config indicates the RX direction but the netem replication is on the
-> tx.
-> And in the short term if a tc action could achieve what you are trying
-> to achieve - would that work for you?
->=20
-> cheers,
-> jamal
+New sequence:
+  1. Read TXSTMPL_0 (baseline)
+  2. Check TXTT_0 ready bit
+  3. Read TXSTMPH_0 (interrupt workaround)
+  4. Read TXSTMPL_0 (detect changes vs baseline)
+
+Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
+Suggested-by: Avi Shalev <avi.shalev@intel.com>
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+---
+v2: Added detailed comments explaining the hardware bug workaround and race
+    detection mechanism
+---
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
+ export                                   |  0
+ 2 files changed, 25 insertions(+), 18 deletions(-)
+ create mode 100644 export
+
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index b7b46d863bee..7aae83c108fd 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -774,36 +774,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
+ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
++	u32 txstmpl_old;
+ 	u64 regval;
+ 	u32 mask;
+ 	int i;
+ 
++	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
++	 * This baseline is used to detect if a new timestamp arrives in
++	 * register 0 during the hardware bug workaround below.
++	 */
++	txstmpl_old = rd32(IGC_TXSTMPL);
++
+ 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
+ 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
+ 		regval = rd32(IGC_TXSTMPL);
+ 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
+ 	} else {
+-		/* There's a bug in the hardware that could cause
+-		 * missing interrupts for TX timestamping. The issue
+-		 * is that for new interrupts to be triggered, the
+-		 * IGC_TXSTMPH_0 register must be read.
++		/* TXTT_0 not set - register 0 has no new timestamp initially.
++		 *
++		 * Hardware bug: Future timestamp interrupts won't fire unless
++		 * TXSTMPH_0 is read, even if the timestamp was captured in
++		 * registers 1-3.
+ 		 *
+-		 * To avoid discarding a valid timestamp that just
+-		 * happened at the "wrong" time, we need to confirm
+-		 * that there was no timestamp captured, we do that by
+-		 * assuming that no two timestamps in sequence have
+-		 * the same nanosecond value.
++		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
++		 * However, this read clears TXTT_0. If a timestamp arrives in
++		 * register 0 after checking TXTT_0 but before this read, it
++		 * would be lost.
+ 		 *
+-		 * So, we read the "low" register, read the "high"
+-		 * register (to latch a new timestamp) and read the
+-		 * "low" register again, if "old" and "new" versions
+-		 * of the "low" register are different, a valid
+-		 * timestamp was captured, we can read the "high"
+-		 * register again.
++		 * To detect this race: We saved a baseline read of TXSTMPL_0
++		 * before TXTT_0 check. After performing the workaround read of
++		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
++		 * timestamps never share the same nanosecond value, a change
++		 * between the baseline and new TXSTMPL_0 indicates a timestamp
++		 * arrived during the race window. If so, read the complete
++		 * timestamp.
+ 		 */
+-		u32 txstmpl_old, txstmpl_new;
++		u32 txstmpl_new;
+ 
+-		txstmpl_old = rd32(IGC_TXSTMPL);
+ 		rd32(IGC_TXSTMPH);
+ 		txstmpl_new = rd32(IGC_TXSTMPL);
+ 
+@@ -818,7 +825,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ 
+ done:
+ 	/* Now that the problematic first register was handled, we can
+-	 * use retrieve the timestamps from the other registers
++	 * retrieve the timestamps from the other registers
+ 	 * (starting from '1') with less complications.
+ 	 */
+ 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
+diff --git a/export b/export
+new file mode 100644
+index 000000000000..e69de29bb2d1
+-- 
+2.43.0
+
