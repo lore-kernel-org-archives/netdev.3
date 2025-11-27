@@ -1,216 +1,167 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8922A336ECA;
-	Thu, 27 Nov 2025 15:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C19028A3F2
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 15:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764256080; cv=none; b=C+hB2reW84YZdc6nH5Id9WL+gUpZjYumtkoqCgYSykd34hgB3EFdUMcTYxl0iXTxSp/Ut71zDFOEF6qxyKomT6y2wsDEAerLbT7d3mgHtFki0IlsuLeB/L66PaD7NKPD/i+VryUwSmLyS6GTFPsi0LrrIboRf56WlNStLQeaEiA=
+	t=1764256137; cv=none; b=e3HI9lvmbg9aomSpEDpYbZsKloHT0ZVpVF2nB7ADiM6zLI6gfHyaTRFsEd/isn9Ou2bhwvU7Q1/skwsPJrOgeT4CyLL4w/J7k3hLz4w5ppodbmBCznDMa2pS8uPUmtxTILmbvyGPwW1v7XDrV/YpVJu1/JaosuR96pmUEXfR7Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764256080; c=relaxed/simple;
-	bh=SKl7N/vatZhz32UkCiL+rrjstFLT9YkXItDjPdV7/Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XkWrQgaGHlrmXcPFZJ4PLuArzZFZNwVuZ/89D8MSvazZe2f+nFzD8POHgA/lk5eVjT2LptQw0OWPzM7zu3orK97XsnOI7+pa2zYw+1YOCxheGKuda7ZdWr6491U4/XbdngIFEgYZAOnfrO4hYLh7pgQj5XChUu1S6kZOW/RUcd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=re5ZTWIQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1764256137; c=relaxed/simple;
+	bh=r4ZzWf622tsNVtnWwIdu20nyqNsXO5bOWbpImO2ygDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WTEsMS+oDWvvQ0c43OaOfZEVEGgzYHBKbJRo+P9/Yu2kb2q+6q5qCBQLYADJvw20gNjcegrw9HcI/4cNkHy5M15XWggTd3o5szu2rcHfIWLvMqIKSVF1OKjHQ71tkK+Ph9ikM2GKrO9B6xYOqnEkcN7YBZubx+BdukyLvDAZo0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=izeMkxUc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4p5nSWA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="re5ZTWIQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=b2eRslw/HX549zCYLSeLWEyOjDTk+74w7WJ3XR4XnVI=; b=re5ZTWIQeEKdA7XH21vxqv2/mR
-	U9ghc36TB/R6HC6BoD70XJIr1thXxuL+ycx7JotBHSibqVxYgU3k/uyaixvjiXH6YHbARaf4qv2Go
-	fsFI1MR2ol49No2Oqt5781Whhi8MyDnVJ07pHltid4LrJgncaVjOi6vRqSq7G0lvtKDY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vOdaZ-00FGy8-QU; Thu, 27 Nov 2025 16:07:19 +0100
-Date: Thu, 27 Nov 2025 16:07:19 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Eric Dumazet <edumazet@google.com>, Rob Herring <robh@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Lukasz Majewski <lukma@denx.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Divya.Koppera@microchip.com,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
-	Sabrina Dubroca <sd@queasysnail.net>, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH net-next v8 1/1] Documentation: net: add flow control
- guide and document ethtool API
-Message-ID: <7a5a9201-4c26-42f8-94f2-02763f26e8c1@lunn.ch>
-References: <20251119140318.2035340-1-o.rempel@pengutronix.de>
- <20251125181957.5b61bdb3@kernel.org>
- <aSa8Gkl1AP1U2C9j@pengutronix.de>
- <20251126144225.3a91b8cc@kernel.org>
- <aSgX9ue6uUheX4aB@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="izeMkxUc";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4p5nSWA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764256135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=975phbBgu5VyA1MivZ3ZkCvdliAL8o8g367hqsGdYL0=;
+	b=izeMkxUcEpi9N2BZ/ZRKCw3A8n/LBtjZ1oriu7joYBpRVZ1AWhqG3Jr/DmUnq4SxOShRyR
+	hgASRRI0x9TZsVZvrp+7AMOiCZuU0zGf91+TCyVCisVDRYzMMBalQG7QVRLClyF6mQzTdJ
+	Vxc/0+WiHGL8MQoPJ4XH+30oF7eeLrU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-0MeI-0xGM6e-Zxq9J0g_hg-1; Thu, 27 Nov 2025 10:08:53 -0500
+X-MC-Unique: 0MeI-0xGM6e-Zxq9J0g_hg-1
+X-Mimecast-MFC-AGG-ID: 0MeI-0xGM6e-Zxq9J0g_hg_1764256133
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b71043a0e4fso90399066b.2
+        for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 07:08:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764256132; x=1764860932; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=975phbBgu5VyA1MivZ3ZkCvdliAL8o8g367hqsGdYL0=;
+        b=E4p5nSWANwxuXM8zq0rhGoqCVu6E6wrGVYyPMolnMCdFHSm2SKcji8uTCGMxMgN/3U
+         3mHa5sfewNpy5Xy3jfBbTPTSRzVacaAFqSNyyTeZyJ8iQhdhPq11pkJGKO9FxPGE/7vu
+         jsTHo5QIDeYNEAkSTW5BqFYs6IUXIGUUqpHkJB5dYZTpIYJT05We0FxHO7vJc1fEi676
+         CP4eN3deWXznE2e+ilxFWkbZPoXnV3F6SvnOakuIzJKZDKsyAEYfk616WlnMbttdMB77
+         1tV43w76464HznRlaf3zNAL2AD8U0eeoscXnMuxlG6QX4kyMlB7FXzl/QSDgSImyOTt8
+         QP2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764256132; x=1764860932;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=975phbBgu5VyA1MivZ3ZkCvdliAL8o8g367hqsGdYL0=;
+        b=VB5dSsH5srVwmLrzMvDU9aDm8pD3frIM0UDdWr2IEPPAkKJBznqkO25e+K3Rdu7zLT
+         iJOGHQ4JuJD3wItdRl2HlrwixnjakTBeovETltaschDTArSbx0cgRgb8N5vFpAm36n+0
+         +qs3NsSNeE2vsEZduZ+0DU1pEqofp9Sm2kkAHeuIdyeiu9IUdJSIQUKWEzMWFDkoayFc
+         n1+sAHBTIMrcburAcfOMgx0s4QInAe7z7twrPbFCcimEYS6k48jt5qK5eXwJTClHH9cE
+         ELt990w1am13YsiWjKvBRIZjRjHm7KKUpesoMvPJaosTWxB0aHv4oOrJRxvs8B7b0Gkm
+         a1Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCVY/E3LK+Gn0nKIIMSDmqt6ER4z3L4JVG1aBFbnJYnNCUQrsb9QYjkUoTIF2uadRnXU3QN17hs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwQJEiiaUo6VKVXPBXqi73mnx3DzlJ+LbM5hBH1wil2mogTJUs
+	rrwUMvOecGnr620aKsDt3HvCtuSXQrpRRDT3AozZPlJ6bDjo6MhQvmFVAWDTvJ138afOYR/gX0L
+	5MTNBN4vY0o+Bjfh+LyRKX9K4lVtU6miJKAVMtTv66tODpGKZkd54M9Om3g==
+X-Gm-Gg: ASbGnctRUAVz3gYhcZX6EcX2Ov50CJDu06MgPhbJWq3N2GgJ8gFNOka81BkaC8OV639
+	LePAa5Ql+s31mLK7idvPefMfkKi38c2QIRqIDJ0SmAh228Tp4K9MNd7BdqcoTvNKLBqglxlE3DQ
+	8b2Y55SgSX8ffqxV4XwpPtgW4QxKtzl0sHpJ32U6coPjUI1nP6PvT4+pkawihRqZLMh1qY+Tc5E
+	J36fg5yq42fEcDTaOEyYQ1YdEV/EBgR8Vkbf9NX6ea9JYDsgArqp8qBNVwfkQc3h8MBxS8w2IwQ
+	2DXCxfts+kwfzx4Msxhe9oRiNdPWBLHu8W/KT3h8xLocLwygMtqLM9Ft93G+76HzK+dda1csMMy
+	xd4ndYMmYn4gTlA==
+X-Received: by 2002:a17:907:1b0c:b0:b76:3dbe:7bf0 with SMTP id a640c23a62f3a-b767150b850mr2168751866b.2.1764256132443;
+        Thu, 27 Nov 2025 07:08:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGb4ULpaNMWei1hmL/IxRSlagWdzmISZEpog2WtfT3XFsalNSmZPmRvV9TSFmgMpjPfhmMZ7w==
+X-Received: by 2002:a17:907:1b0c:b0:b76:3dbe:7bf0 with SMTP id a640c23a62f3a-b767150b850mr2168747466b.2.1764256131941;
+        Thu, 27 Nov 2025 07:08:51 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.212])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f5163903sm195890366b.7.2025.11.27.07.08.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Nov 2025 07:08:51 -0800 (PST)
+Message-ID: <4362bcbe-4e82-4198-955f-e64b3ff2d9c9@redhat.com>
+Date: Thu, 27 Nov 2025 16:08:49 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aSgX9ue6uUheX4aB@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next,v2 00/16] Netfilter updates for net-next
+To: Pablo Neira Ayuso <pablo@netfilter.org>, netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
+ edumazet@google.com, fw@strlen.de, horms@kernel.org
+References: <20251126205611.1284486-1-pablo@netfilter.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251126205611.1284486-1-pablo@netfilter.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Haw about following wording:
-> Kernel Policy: Administrative vs. Operational State
-> ===================================================
+On 11/26/25 9:55 PM, Pablo Neira Ayuso wrote:
+> v2: - Move ifidx to avoid adding a hole, per Eric Dumazet.
+>     - Update pppoe xmit inline patch description, per Qingfang Deng.
 > 
-> The ethtool pause API configures the **administrative state** of the network
-> device. The **operational state** (the actual pause behavior active on the
-> wire) depends on the active link mode and the link partner.
+> -o-
 > 
-> The semantics of the configuration depend on the ``autoneg`` parameter:
+> Hi,
 > 
-> 1. **Autonegotiation Mode** (``autoneg on``)
->    In this mode, the ``rx`` and ``tx`` parameters specify the **advertisement**
->    (the "wish").
+> The following batch contains Netfilter updates for net-next:
+>  
+> 1) Move the flowtable path discovery code to its own file, the
+>    nft_flow_offload.c mixes the nf_tables evaluation with the path
+>    discovery logic, just split this in two for clarity.
+>  
+> 2) Consolidate flowtable xmit path by using dev_queue_xmit() and the
+>    real device behind the layer 2 vlan/pppoe device. This allows to
+>    inline encapsulation. After this update, hw_ifidx can be removed
+>    since both ifidx and hw_ifidx now point to the same device.
+>  
+> 3) Support for IPIP encapsulation in the flowtable, extend selftest
+>    to cover for this new layer 3 offload, from Lorenzo Bianconi.
+>  
+> 4) Push down the skb into the conncount API to fix duplicates in the
+>    conncount list for packets with non-confirmed conntrack entries,
+>    this is due to an optimization introduced in d265929930e2
+>    ("netfilter: nf_conncount: reduce unnecessary GC").
+>    From Fernando Fernandez Mancera.
+>  
+> 5) In conncount, disable BH when performing garbage collection 
+>    to consolidate existing behaviour in the conncount API, also
+>    from Fernando.
+>  
+> 6) A matching packet with a confirmed conntrack invokes GC if
+>    conncount reaches the limit in an attempt to release slots.
+>    This allows the existing extensions to be used for real conntrack
+>    counting, not just limiting new connections, from Fernando.
+>  
+> 7) Support for updating ct count objects in nf_tables, from Fernando.
+>  
+> 8) Extend nft_flowtables.sh selftest to send IPv6 TCP traffic,
+>    from Lorenzo Bianconi.
+>  
+> 9) Fixes for UAPI kernel-doc documentation, from Randy Dunlap.
 > 
->    - The driver configures the PHY to advertise these capabilities.
->    - The actual Flow Control mode is determined by the standard resolution
->      truth table (see "Link-wide PAUSE Autonegotiation Details") based on the
->      link partner's advertisement.
->    - ``get_pauseparam`` reports the advertisement policy, not the resolved
->      outcome.
+> Please, pull these changes from:
 > 
-> 2. **Forced Mode** (``autoneg off``)
->    In this mode, the ``rx`` and ``tx`` parameters constitute a direct
->    **command** to the interface.
+>   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git nf-next-25-11-26
 > 
->    - The system bypasses advertisement and forces the MAC into the specified
->      configuration.
->    - Drivers should reject configurations that the hardware cannot support in
->      forced mode.
->    - ``get_pauseparam`` reports the forced configuration.
+> Thanks.
 
-There is one additional thing which plays into this, link
-autonegotiation, ethtool -s autoneg on|off.
+The AI review tool found a few possible issue on this PR:
 
-If link auto negotiation is on, you can then have both of the two
-cases above, negotiated pause, or forced pause. If link auto
-negotiation is off, you can only have forced mode. The text you have
-below does however cover this. But this is one of the areas developers
-get wrong, they don't consider how the link autoneg affects the pause
-autoneg.
+https://netdev-ai.bots.linux.dev/ai-review.html?id=fd5a6706-c2f8-4cf2-a220-0c01492fdb90
 
-But i do agree that get_pauseparam is rather odd. It returns the
-current configuration, not necessarily how the MAC hardware has been
-programmed.
+I'm still digging the report, but I think that at least first item
+reported (possibly wrong ifidx used in nf_flow_offload_ipv6_hook() by
+patch "netfilter: flowtable: consolidate xmit path") makes sense.
 
-> **Common Constraints**
-> Regardless of the mode, the following constraints apply:
-> 
-> - Link-wide PAUSE is not valid on half-duplex links.
-> - Link-wide PAUSE cannot be used together with Priority-based Flow Control
->   (PFC).
-> 
-> 
-> /**
->  * ...
->  * @get_pauseparam: Report the configured administrative policy for link-wide
->  *	PAUSE (IEEE 802.3 Annex 31B). Drivers must fill struct ethtool_pauseparam
->  *	such that:
->  *	@autoneg:
->  *		This refers to **Pause Autoneg** (IEEE 802.3 Annex 31B) only
->  *		and is part of the link autonegotiation process.
->  *		true  -> the device follows the negotiated result of pause
->  *			 autonegotiation (Pause/Asym);
->  *		false -> the device uses a forced configuration independent
->  *			 of negotiation.
->  *	@rx_pause/@tx_pause:
->  *		represent the desired policy (administrative state).
->  *		In autoneg mode they describe what is to be advertised;
->  *		in forced mode they describe the MAC configuration to be forced.
->  *
->  * @set_pauseparam: Apply a policy for link-wide PAUSE (IEEE 802.3 Annex 31B).
->  *	@rx_pause/@tx_pause:
->  *		Desired state. If @autoneg is true, these define the
->  *		advertisement. If @autoneg is false, these define the
->  *		forced MAC configuration.
->  *	@autoneg:
->  *		Select autonegotiation or forced mode.
->  *
->  *	**Constraint Checking:**
->  *	Drivers should reject a non-zero setting of @autoneg when
->  *	autonegotiation is disabled (or not supported) for the link.
->  *	Drivers should reject unsupported rx/tx combinations with -EINVAL.
+I *think* that at least for that specific point it would be better to
+follow-up on net (as opposed to a v3 and possibly miss the cycle), but
+could you please have a look at that report, too?
 
-I'm not so keen on this last little section. What we actually want is
-the drivers use phylink, and let phylink implement all the 'business
-logic'. phylink will then tell the MAC driver the two bits it needs to
-program the hardware. phylink does all the validation, so all a MAC
-driver needs to do is call phylink_ethtool_get_pauseparam() and
-phylink_ethtool_set_pauseparam(). If we say the driver reject some
-combinations, we might have developers implementing that before
-calling phylink_ethtool_set_pauseparam(), which is pointless, and
-maybe getting it wrong.
+Thanks,
 
-So i would prefer something more like:
+Paolo
 
- *	**Constraint Checking:**
-
- *	 Ideally, drivers should simply call phylink_ethtool_get_pauseparam()
- *       and phylink_ethtool_set_pauseparam(). phylink will then perform
- *       all the needed validation, and perform all the actions based on
- *	 the current **Pause Autoneg** and link Autoneg.
- *
- *       If phylink is not being used, the driver most perform validation,
- *       reject a non-zero setting of @autoneg when autonegotiation is disabled
- *       (or not supported) for the link. Drivers should reject unsupported rx/tx
- *       combinations with -EINVAL.
-
-> Open Questions:
-> 
-> Pre-link Configuration (Administrative UP, Physical DOWN) How should drivers
-> handle set_pauseparam when the link is physically down?
-
-You can program the PHY/PCS with what you want it to negotiate. Once
-the link comes up, you can then look if you are in a half duplex mode
-when determining how to program the MAC hardware.
-
->  Parallel Detection: If the link comes up later (e.g., as Half Duplex via
->  parallel detection), a previously accepted "forced pause" configuration might
->  become invalid. Should we block forced pause settings until the link is
->  physically up?
-
-Forced is forced. Forced is always a potential foot gun, since you can
-end up with the link peers having different ideas about what is being
-used on the link. autoneg of half duplex link is just one of the
-scenarios where you gain a hole in your foot.
-
-> State Persistence and Toggling When toggling autoneg (e.g., autoneg on -> off
-> -> on), should the kernel or driver cache the previous advertisement?
-
-This has been discussed in the past, and i _think_ phylink does.
-
-But before we go too far into edge causes, my review experience is
-that MAC drivers get the basics wrong. What we really want to do here
-is:
-
-1) Push driver developers towards phylink
-2) For those who don't use phylink give clear documentation of the
-   basics.
-
-We can look at edge cases, but i would only do it in the context of
-phylink. Its one central implementation means we can add complexity
-there and not overload developers who get the basics wrong.
-
-	Andrew
