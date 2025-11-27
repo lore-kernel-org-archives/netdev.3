@@ -1,70 +1,90 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DE1304BCA
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 20:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99E9314D03
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 20:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764276061; cv=none; b=fivZ3Ec4HMqN5O0Sc5q04ObeYxNItHhoWBJhpUfiUS1b7MH1cMIOfQT5nQEEmDAjrQO8qy5PlFfpvMu2buxYzg2xX1WRNUDAhOsdtXb5UGi2UngcKNCoAzYvq41KjzjnbH9M+Ppmqs6r1V1pnXNJ8qxr8SLmWyILapXIBHo18uk=
+	t=1764276274; cv=none; b=MUThsuZRKGA+9DzsStJhGprwxw45M5RGmz5VE9wcjRLaKtFl0L6csxAZImifg7yISDI/LYfcludxZL61qBQ+Z/I2Ra3C3NDjLjc7ikItmyWyUWs8Yy4KMK1PtDRn6PIFj7qFGlKC/HLR9Lx+GZbKNRjTUZwqA9+lJEZK8oIGGD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764276061; c=relaxed/simple;
-	bh=Mnn9wb9sRTkIJLXCShYMZgz7pZo/y5Y+Ja2/AUVncu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ID+aabQRX1ZwvmKmOwI1ejo8//BPlRb1MuJXZaq4SCNqNTboWgZ476kU9K/KkAcVtzhvLtRFtRUBr+k6XmWxmEjM3xmEjonYR8Ndsx8L8zJQ5jSQC0UpyH5BbsVWuLO5m/soueE9s7rD2lF7odP8Mfg2SDxN9CHST2gSKW/OE0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLjFcnh6; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1764276274; c=relaxed/simple;
+	bh=wKLX50upMBXTkaYsn5OUPjFxWSff+rFLBPN8t4x3gXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YzKQcr51NO+jVoEOHsezmtodOqv8TnbmEBIKjZnfz63tMR57NXGFPF/EcpY3S+abOPFwRpFOibcTSySJ55FRCON7mLuiwcu0hiGyMLfoNh7Yv0kccilECBLTSXXRL0XIcRnuNc/7HfcS/NKlFM+hRygz+rCKIfvUgoc1dOkRJpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aUPfxoq0; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLjFcnh6"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b3ac40ae4so801810f8f.0
-        for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 12:40:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aUPfxoq0"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42b566859ecso1157049f8f.2
+        for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 12:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764276058; x=1764880858; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZrDwUzk1jhJojipsQHKrfyEq2t/8kD+pLesRqPqbM4=;
-        b=kLjFcnh65TVvNis9UzA5QyzAMXh9A9nOmmEnsGJirYIiQjtpOXnbKZP6PGAgiboaw4
-         7YWspoKxfR1ICz6b0akDzUW0Awf/KZwH5r8+HKWt234Rm2YTMGsTMOxSIuROehWE2iqD
-         f/fbVY1/d64W679sRX66AqfSE6iyeRnZm5T7Qzio/akBtgYTPhBEKfWyadXF/9E1mrXI
-         ATDc2a9O3JQFa/0nFV1G0GVAVTYf2lXqLeicH3P1AqWFgxhkQbhZ7UtR1qM7otsQOftj
-         uupoSZP/aOEhaVb7uBg8tLwO4LaMj8Uw+9+5yKxYufUkMJWPzMkOig8WgG4T0Exs7Kfc
-         uXCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764276058; x=1764880858;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764276271; x=1764881071; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TZrDwUzk1jhJojipsQHKrfyEq2t/8kD+pLesRqPqbM4=;
-        b=C/rBtXPYl3rMwAQlHqTQZQYN1mLSXi7RYCdaKP/GZamkCFjLA1VCJPxU4JbMgzLO6C
-         xfpsu6pR5jxR7AIusI5pfvezDZXKh+X9xzb0DPSmKmf8j4+PVG3I4NB+gX+rY3jsCP+z
-         +etFrMw2Qz9LGR3hRrx7SwfZuQISIdQ4zR1kkG2uOthw6f7sPmFrIXnsAHsACkzdkO7m
-         LOJsdMfr4qJv2kDUbMAzSTOEJoW+E3Vs3WzSDcYaBVzyLMjXSYGnKB6B3NDyeMDoiA9d
-         7/Wa3T4G3w2tkpyEK6q411ja6RaMpLxEI1OhasldrByjCmrOZZqh9NPdfZPvWeUK/Q2L
-         Zd7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXX93OO9Rt3IWZK+1uzACRBIXAHP6jQWDQVyJq1poBPHgliIe26ytYbKhUN3Bs+QqPZqTJprYw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbEapL1VlTOTpxJwNQkDvS2IQNEgrPB8GW2Zc9Z/BWRRXL9Qs+
-	YqYBlXis0Ii8u1cw1DkocTBZ6phL3ReFhRVrIpfnziMJTvJ+mOh0iSF65Z8MFQ==
-X-Gm-Gg: ASbGncvfHejWaxa8WkNdtdvTyQQLKMkF/vpO2pTbL+PIgqJExxsALV6aeaILOzL4L8J
-	12e71pEUiULbZkpiSryef11c0TTo2nfQ8d3QSxPXLZaJlNcGP7jIEEA1SpYHsPn4Pq8GMWINQ9M
-	g8/3ZxNXO9bTKUQ7uUbEd4dWNHEneAS301wu5v1Flx8zYfdFpkmr7jwlHsAVnODF09cvX0tWs+/
-	VWc3H3ysL/wo4+YZ8pPxmSSqK+MmpM8yZlKdPej4poToz9iKdT0zwc2yOyPoUDerh37JVsCIwlI
-	iNSvtjAkfGRDFI/3ZXV1fB2rx8WVEBedAyIJyIrlGBBmuRjDVoUVCSYyt4B3WBbs3PBLw6a19eN
-	EhHygJ4oGK8cqmk0HBzKfhY1+PR6i03awJlPfFHBK89gh/he/AxdbIJAGUt6UxP82dBUrDy6OQM
-	dvKdixQMuYjmcfOQ==
-X-Google-Smtp-Source: AGHT+IGBTqkssyUQXy37QRTA7vMYiUC3UhkdYS3Gn35v/sgqJjvtbjsODVx5dVN3kGxZDzZmup4B9w==
-X-Received: by 2002:a05:6000:2084:b0:42b:3cc6:a4d7 with SMTP id ffacd0b85a97d-42cc1cf825bmr27330752f8f.37.1764276058065;
-        Thu, 27 Nov 2025 12:40:58 -0800 (PST)
+        bh=QqckiZGHf3bNG1zTutRGSVS8PaQ4OMxeAJnwQy2/Q0I=;
+        b=aUPfxoq0Hio5ZQS2G2fSjo0D2AbYa5RAD/3sviTaZmeuhfDe4kUhhkqG2F9uicqq0T
+         8NM/Iw5A++YZYbDOWzRar66j0C11LjMgtJQF7Dr5fk1sihqoS+x+sa3pvL9OeooNkjq7
+         KrYdJIji7Lnlis05CvAHPwGc33gcPaQFQmFnwH5+zLPNn5KYaumjEHhuj4TqR6GZeilF
+         a2i7co6DnN73ELuYq1t1Tdl9td/uKBKv3Ggw3Oe6Cfv+n5nxpVI/CpOmzwBx9XMxr2O9
+         V0o5xHOiytQhzFticuvKM+PxRrxyhK1ykMRjt0+y7fkSOZcr6gq1zdHtYoW0onuSX8wI
+         iyWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764276271; x=1764881071;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QqckiZGHf3bNG1zTutRGSVS8PaQ4OMxeAJnwQy2/Q0I=;
+        b=FS49JNArRHexEE+b1lgz7TPn26ZgoEDMzzCkFS5jySQ0G9FHHnSFSHFz0mCQRcAsNm
+         ZUXbBJe4dxgTuWQbZGK4Uvwka0uyfBtlBXP+J9QzF+2Z/ENkdp1NC02JPsaMVrHdTfS8
+         /H8iw73egFK466qDYzckp+f/9vZeyECrm1kcx7l85fWCoVGWyLBKwsluurYIrUSLNowx
+         Q86pGTDzs6FxmTbWKOQ9ERxSO9Cy8AvRCIkEq6HZAZE3VcgP5H8HQbr1HnM/BOSXFeZc
+         +z37GlyDOo/j+iGOJ8lKL0ZJP5NtmTn/YphsSgTzKKQAY/aEEFS6p7AvGUpDnIUjYC0v
+         FwcQ==
+X-Gm-Message-State: AOJu0YxfhBYPNZjPB7+g7aaL0hl5OKdYyGd+ght4kn21CyJaEdYhiqBM
+	DCFAmdimzQ4aCLmx8Pcgqh9386Vn2Tn3m0ivy0wxVIrEFMzVIBvIlnnYjfAhrQ==
+X-Gm-Gg: ASbGncvtmXgh82iFAytKVfLiJHA64Hct8LpQnIXljoK6Wo/TCkv3SDzdadTcfnj8P+S
+	hM71Km34/IWOFwsqLASOsPqaF9n8n4mCaHmR7NzmGT2PybF/UjEZirQNmZFGkUOTVJG082WpW1z
+	kZXyPRQ+D7UQEdCWvblovT6O8a2oPs1dYTYH2h8A4eSo49xGv1PVioaVvW3h0okrHekN1v18MGx
+	vHQ58xtiVBTXFk+b1NQvbXi2jZCmupVXqtEAK+dQTXkHyCPsvVFEa9m/pzjlbYIHYSpQdx9qr5J
+	9ra88sNdYaoidxRENoInoLpDvSILmSQQ+doL/i34Qo591pCOm0vbwHEQVwVSq1/h3nCwDRFgbpd
+	2xCXe3hLnOuuZnvMHpRz7DbXY5YXEs8smgC+Ee84j01x4u8j7MjHp7D6teWHCaUW80WS8bx56pP
+	q1rq+u/ZS2ufTYxmAOpIxUmjQI
+X-Google-Smtp-Source: AGHT+IG8xP4HJO4DnqjJPYdufQcB54g2uija30UcXEQTiQoRe6u8ZY63WY3zQ9RB9/Vh8e5LOItojw==
+X-Received: by 2002:a05:6000:2c0c:b0:42b:2c61:86f1 with SMTP id ffacd0b85a97d-42e0f34a082mr13136672f8f.35.1764276270574;
+        Thu, 27 Nov 2025 12:44:30 -0800 (PST)
 Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1ca1a2easm5757423f8f.23.2025.11.27.12.40.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1c5d614asm5346105f8f.12.2025.11.27.12.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 12:40:57 -0800 (PST)
+        Thu, 27 Nov 2025 12:44:29 -0800 (PST)
 From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH review-only] io_uring/zcrx: implement large rx buffer support
-Date: Thu, 27 Nov 2025 20:40:52 +0000
-Message-ID: <7486ab32e99be1f614b3ef8d0e9bc77015b173f7.1764265323.git.asml.silence@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Simon Horman <horms@kernel.org>,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	dtatulea@nvidia.com,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Mina Almasry <almasrymina@google.com>
+Subject: [PATCH net-next v6 1/8] net: page_pool: sanitise allocation order
+Date: Thu, 27 Nov 2025 20:44:14 +0000
+Message-ID: <337ee90a6464e9b9ab09d1850fd9aedcb0e13679.1764264798.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1764264798.git.asml.silence@gmail.com>
+References: <cover.1764264798.git.asml.silence@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,139 +93,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are network cards that support receive buffers larger than 4K, and
-that can be vastly beneficial for performance, and benchmarks for this
-patch showed up to 30% CPU util improvement for 32K vs 4K buffers.
+We're going to give more control over rx buffer sizes to user space, and
+since we can't always rely on driver validation, let's sanitise it in
+page_pool_init() as well. Note that we only need to reject over
+MAX_PAGE_ORDER allocations for normal page pools, as current memory
+providers don't need to use the buddy allocator and must check the order
+on init.i
 
-Allows zcrx users to specify the size in struct
-io_uring_zcrx_ifq_reg::rx_buf_len. If set to zero, zcrx will use a
-default value. zcrx will check and fail if the memory backing the area
-can't be split into physically contiguous chunks of the required size.
-It's more restrictive as it only needs dma addresses to be contig, but
-that's beyond this series.
-
+Suggested-by: Stanislav Fomichev <stfomichev@gmail.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
+ net/core/page_pool.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Depends on networking patches
-
- include/uapi/linux/io_uring.h |  2 +-
- io_uring/zcrx.c               | 39 ++++++++++++++++++++++++++++++-----
- 2 files changed, 35 insertions(+), 6 deletions(-)
-
-diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
-index b5b23c0d5283..3184f7e7f1f2 100644
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -1082,7 +1082,7 @@ struct io_uring_zcrx_ifq_reg {
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..635c77e8050b 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -301,6 +301,9 @@ static int page_pool_init(struct page_pool *pool,
+ 		}
  
- 	struct io_uring_zcrx_offsets offsets;
- 	__u32	zcrx_id;
--	__u32	__resv2;
-+	__u32	rx_buf_len;
- 	__u64	__resv[3];
- };
- 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index b99cf2c6670a..30dbdf1cff13 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -15,6 +15,7 @@
- #include <net/netlink.h>
- #include <net/netdev_queues.h>
- #include <net/netdev_rx_queue.h>
-+#include <net/netdev_queues.h>
- #include <net/tcp.h>
- #include <net/rps.h>
- 
-@@ -55,6 +56,18 @@ static inline struct page *io_zcrx_iov_page(const struct net_iov *niov)
- 	return area->mem.pages[net_iov_idx(niov) << niov_pages_shift];
- }
- 
-+static int io_area_max_shift(struct io_zcrx_mem *mem)
-+{
-+	struct sg_table *sgt = mem->sgt;
-+	struct scatterlist *sg;
-+	unsigned shift = -1U;
-+	unsigned i;
-+
-+	for_each_sgtable_dma_sg(sgt, sg, i)
-+		shift = min(shift, __ffs(sg->length));
-+	return shift;
-+}
-+
- static int io_populate_area_dma(struct io_zcrx_ifq *ifq,
- 				struct io_zcrx_area *area)
- {
-@@ -416,12 +429,21 @@ static int io_zcrx_append_area(struct io_zcrx_ifq *ifq,
- }
- 
- static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
--			       struct io_uring_zcrx_area_reg *area_reg)
-+			       struct io_uring_zcrx_area_reg *area_reg,
-+			       struct io_uring_zcrx_ifq_reg *reg)
- {
-+	int buf_size_shift = PAGE_SHIFT;
- 	struct io_zcrx_area *area;
- 	unsigned nr_iovs;
- 	int i, ret;
- 
-+	if (reg->rx_buf_len) {
-+		if (!is_power_of_2(reg->rx_buf_len) ||
-+		     reg->rx_buf_len < PAGE_SIZE)
-+			return -EINVAL;
-+		buf_size_shift = ilog2(reg->rx_buf_len);
-+	}
-+
- 	ret = -ENOMEM;
- 	area = kzalloc(sizeof(*area), GFP_KERNEL);
- 	if (!area)
-@@ -432,7 +454,12 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
- 	if (ret)
- 		goto err;
- 
--	ifq->niov_shift = PAGE_SHIFT;
-+	if (buf_size_shift > io_area_max_shift(&area->mem)) {
-+		ret = -ERANGE;
-+		goto err;
-+	}
-+
-+	ifq->niov_shift = buf_size_shift;
- 	nr_iovs = area->mem.size >> ifq->niov_shift;
- 	area->nia.num_niovs = nr_iovs;
- 
-@@ -742,8 +769,7 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 		return -EINVAL;
- 	if (copy_from_user(&reg, arg, sizeof(reg)))
- 		return -EFAULT;
--	if (!mem_is_zero(&reg.__resv, sizeof(reg.__resv)) ||
--	    reg.__resv2 || reg.zcrx_id)
-+	if (!mem_is_zero(&reg.__resv, sizeof(reg.__resv)) || reg.zcrx_id)
- 		return -EINVAL;
- 	if (reg.flags & ZCRX_REG_IMPORT)
- 		return import_zcrx(ctx, arg, &reg);
-@@ -800,10 +826,11 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 	}
- 	get_device(ifq->dev);
- 
--	ret = io_zcrx_create_area(ifq, &area);
-+	ret = io_zcrx_create_area(ifq, &area, &reg);
- 	if (ret)
- 		goto netdev_put_unlock;
- 
-+	mp_param.rx_buf_len = 1U << ifq->niov_shift;
- 	mp_param.mp_ops = &io_uring_pp_zc_ops;
- 	mp_param.mp_priv = ifq;
- 	ret = __net_mp_open_rxq(ifq->netdev, reg.if_rxq, &mp_param, NULL);
-@@ -821,6 +848,8 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 			goto err;
+ 		static_branch_inc(&page_pool_mem_providers);
++	} else if (pool->p.order > MAX_PAGE_ORDER) {
++		err = -EINVAL;
++		goto free_ptr_ring;
  	}
  
-+	reg.rx_buf_len = 1U << ifq->niov_shift;
-+
- 	if (copy_to_user(arg, &reg, sizeof(reg)) ||
- 	    copy_to_user(u64_to_user_ptr(reg.region_ptr), &rd, sizeof(rd)) ||
- 	    copy_to_user(u64_to_user_ptr(reg.area_ptr), &area, sizeof(area))) {
+ 	return 0;
 -- 
 2.52.0
 
