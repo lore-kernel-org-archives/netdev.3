@@ -1,111 +1,136 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D682A2FB622;
-	Thu, 27 Nov 2025 18:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3362D060C;
+	Thu, 27 Nov 2025 18:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764266701; cv=none; b=i8nHWO1e//HpZBzDkg5WrNyo76MtJRLGxWhoxicez29IJKNrt7cKD71x6gQu8Y43g61OP7jVKAf8VltzoJKNIuuTNTI4SbK0yPpanJnuucpB2Q2cyp6GmY2BMVmJL6tptC1+MvMDndZKYqdWgYb20J/O/S1As+Sb/CleWoOzQOQ=
+	t=1764267387; cv=none; b=VIGd8reg8b6zj1Yi8mKZB/e6x/Ge5T9rdjMAYbdlCN2eGa4jNyCczFkoV6BLl13jvLRVaDzMFEgkbtDLEHwu08zPxd7ymPoBQWOW+vh3TfQQdfpdExh2o2v0+VTNmyrd356+Vg24HPU/oODujPcuRQe52UFDZhde0s1CCAopWXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764266701; c=relaxed/simple;
-	bh=eh6GptPit+DQZ6AAi34iOts1zR/PLLDsa0LMxGdRvcM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6FKFfO4M4fImhYfGg7cwm0aPVlc6PD7TJaRNB025pCGzS4boSC/mKBykLi+VRmI8wWZUb1KxnhoAulbUIzcZh2Xf4uqNRphCJsbmdisT9QgIw/H6nxCyBQrwDlNE2E56ZNfea8wGo1uaXFJqM1oBm6CvFPxuY2c0zPNf2q2Kck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=E/WGvUO0; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1764267387; c=relaxed/simple;
+	bh=RflXuShl1SRrOVIWtn7ZMy5clte/Mu7DfNNyZaXZk10=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=ikD+oOnXU8BqOcGu0XR/u/xrSxEgHwoqec8XD1mHv6ORFUqLksezdZehapjx5i186QfNWNqazQL9GGBwwbeY8o4xtSyRtB+maDzCUw56XmNLIJ9fxdF90iCrbvs6MtGf9jrgISwdGuDmPwPZUkTBG3pbxekJM+bGsdgjCzrKIOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4GL01Qe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="E/WGvUO0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EvV1w4cAULv5qSHvIlf1UNf4JtPT19KI5eOxlCJ4tWA=; b=E/WGvUO0zODvpejzuuJAosSxXI
-	iFqcj14LgqeI5b4CMhcAFYvNJNtPr/B8w3KNcBxAZqcXP+XFkZpLwQrhkmhgLcGYNjUdnkqzt12Dk
-	5CBA+U+vk0kdLeeWzH9zoHUJsqicpqOa9iJv8NQhieYPif5d8/MauMU9LlOu8xAMTqbNC1l/qX4Fu
-	fym+Npr21c7gk+4bn9CLtZ4o0h5qvf7hWxMHInKycDIBXnwA34CxjWBLrzV2SWwAjmV07If9JBQxW
-	mNb21q0UHBKtVyPyXgE80fwKVYLKTjrXgJHs9/wrKzip3pvC5vXHEd/quSFNJ3d4fZh+ToXqlOcdB
-	h9Deqrtg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55118)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vOgMS-000000005bY-30fO;
-	Thu, 27 Nov 2025 18:04:56 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vOgMP-000000002rV-16BZ;
-	Thu, 27 Nov 2025 18:04:53 +0000
-Date: Thu, 27 Nov 2025 18:04:53 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
-	Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Tariq Toukan <tariqt@nvidia.com>
-Subject: Re: [PATCH net-next v20 03/14] net: phy: Introduce PHY ports
- representation
-Message-ID: <aSiSxbE-XY_zxMBC@shell.armlinux.org.uk>
-References: <20251127171800.171330-1-maxime.chevallier@bootlin.com>
- <20251127171800.171330-4-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4GL01Qe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76AEC4CEF8;
+	Thu, 27 Nov 2025 18:16:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764267387;
+	bh=RflXuShl1SRrOVIWtn7ZMy5clte/Mu7DfNNyZaXZk10=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=j4GL01QeOprmmJSFmPd2dZFMiM0pK6izCKVWFTOE++RtSa0S5Lf2PeduLh5wH5U1v
+	 8PbfXD9YuMGE0twIhs/58Hkoh3gmWEEKT5mNJTajY5lxJ6nsYaVzW+j44krTJ0+aeX
+	 //l6AyVF44R0mYell3wFGt6lieXoB9Fl/liAl8epT/guyO40whCtTRga1ogkFAqZsO
+	 GGhUeDt2tlWXchuVtmsqaM2WgLp7dg4rqRHw/leCmWo7+QTbc3TZ3jJwKSflyIsh8j
+	 L0ukfXmx2mAgSIyeUPrqjE03Wi1zPl6vSZNQvHzhgFb1GYkMIlCZzrXiNYKW2l44sb
+	 +gKNhGghLsOkQ==
+Date: Thu, 27 Nov 2025 12:16:25 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251127171800.171330-4-maxime.chevallier@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, davem@davemloft.net, 
+ Daniel Golle <daniel@makrotopia.org>, 
+ Florian Fainelli <f.fainelli@gmail.com>, 
+ Romain Gantois <romain.gantois@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Herve Codina <herve.codina@bootlin.com>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, mwojtas@chromium.org, 
+ Antoine Tenart <atenart@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ =?utf-8?q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>, 
+ thomas.petazzoni@bootlin.com, Russell King <linux@armlinux.org.uk>, 
+ Simon Horman <horms@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ Eric Dumazet <edumazet@google.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ devicetree@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20251127171800.171330-2-maxime.chevallier@bootlin.com>
+References: <20251127171800.171330-1-maxime.chevallier@bootlin.com>
+ <20251127171800.171330-2-maxime.chevallier@bootlin.com>
+Message-Id: <176426738405.367554.14295793625592890396.robh@kernel.org>
+Subject: Re: [PATCH net-next v20 01/14] dt-bindings: net: Introduce the
+ ethernet-connector description
 
-On Thu, Nov 27, 2025 at 06:17:46PM +0100, Maxime Chevallier wrote:
-> Ethernet provides a wide variety of layer 1 protocols and standards for
-> data transmission. The front-facing ports of an interface have their own
-> complexity and configurability.
-> 
-> Introduce a representation of these front-facing ports. The current code
-> is minimalistic and only support ports controlled by PHY devices, but
-> the plan is to extend that to SFP as well as raw Ethernet MACs that
-> don't use PHY devices.
-> 
-> This minimal port representation allows describing the media and number
-> of pairs of a BaseT port. From that information, we can derive the
-> linkmodes usable on the port, which can be used to limit the
-> capabilities of an interface.
-> 
-> For now, the port pairs and medium is derived from devicetree, defined
-> by the PHY driver, or populated with default values (as we assume that
-> all PHYs expose at least one port).
-> 
-> The typical example is 100M ethernet. 100BaseT can work using only 2
-> pairs on a Cat 5 cables.
 
-Correction: 100BASE-TX. 100BASE-T, which covers the family of 100BASE-T
-media, includes 100BASE-T4 which is over all four pairs of the cable.
+On Thu, 27 Nov 2025 18:17:44 +0100, Maxime Chevallier wrote:
+> The ability to describe the physical ports of Ethernet devices is useful
+> to describe multi-port devices, as well as to remove any ambiguity with
+> regard to the nature of the port.
+> 
+> Moreover, describing ports allows for a better description of features
+> that are tied to connectors, such as PoE through the PSE-PD devices.
+> 
+> Introduce a binding to allow describing the ports, for now with 2
+> attributes :
+> 
+>  - The number of pairs, which is a quite generic property that allows
+>    differentating between multiple similar technologies such as BaseT1
+>    and "regular" BaseT (which usually means BaseT4).
+> 
+>  - The media that can be used on that port, such as BaseT for Twisted
+>    Copper, BaseC for coax copper, BaseS/L for Fiber, BaseK for backplane
+>    ethernet, etc. This allows defining the nature of the port, and
+>    therefore avoids the need for vendor-specific properties such as
+>    "micrel,fiber-mode" or "ti,fiber-mode".
+> 
+> The port description lives in its own file, as it is intended in the
+> future to allow describing the ports for phy-less devices.
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  .../bindings/net/ethernet-connector.yaml      | 57 +++++++++++++++++++
+>  .../devicetree/bindings/net/ethernet-phy.yaml | 18 ++++++
+>  MAINTAINERS                                   |  1 +
+>  3 files changed, 76 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/ethernet-connector.yaml
+> 
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/thermal/thermal-zones.example.dtb: /example-0/soc/thermal-sensor@c263000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-zones.example.dtb: /example-0/soc/thermal-sensor@c263000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-zones.example.dtb: /example-0/soc/thermal-sensor@c265000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-zones.example.dtb: /example-0/soc/thermal-sensor@c265000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-sensor.example.dtb: /example-0/soc/thermal-sensor@c263000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-sensor.example.dtb: /example-0/soc/thermal-sensor@c263000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-sensor.example.dtb: /example-0/soc/thermal-sensor@c265000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+Documentation/devicetree/bindings/thermal/thermal-sensor.example.dtb: /example-0/soc/thermal-sensor@c265000: failed to match any schema with compatible: ['qcom,sdm845-tsens', 'qcom,tsens-v2']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251127171800.171330-2-maxime.chevallier@bootlin.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
