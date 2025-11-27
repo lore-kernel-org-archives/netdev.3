@@ -1,81 +1,82 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2442C2D948F
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 06:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B903F313E1B
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 06:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764225636; cv=none; b=SYzNElG8nkF77+5f41PLC4ql94fc6XJSssVzGloRg223i2URFAYMeyiWsFUAmJqa2LiYI9GZ0LAdIfQkUy45MLbRpGosliix7oRh3NGNnPLPlCQOym9ZYi2eMhk+RPoZZWY6+jxdqSJKi9AAsi6Wn0wO5LzOri7yk9gzS39h0iA=
+	t=1764225641; cv=none; b=C6VCJo/Sp2AB7h94AeKGX3in6kNFIk6mruQ0G1yD2/r5MAud0bOE4yiPjw8OxspBIUbM2+MVHUtBtteDZyuElA1ZXB7NpE0TyuhM6YXOTKbdIQRXWvKKAGNVLpGkIuMoEY3mLuQfPA5KRX/hDX3wPZzQ0LNPwa4EFXm8BcgVIts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764225636; c=relaxed/simple;
-	bh=xBu9C98zr/V8IIqIfOuYV/Prmm6s8GMzcQJGTf+3eXY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=IQsd6Ip4i9VKYziOY4josLApDcQFK6J3jtmzhYqO0eEPeebKQjuRsS/+N/7oslL8l7lus4ytQE/zA3jQnvRmnmUKTogIulvop928ItVxrz5uXmWZB1kl6XHrs51ZrfcFdTbkDQyrYLx9isaoHEU30IxAYq8TIWzQHlgqYt9EkRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PzIlZMvX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qaRbcBwi; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1764225641; c=relaxed/simple;
+	bh=p4zBspV0umYpwlxraVSt9LbhsuCRfZnCfl2fUmVODfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z1ue6/YRQFUT5MURbZubAxiZu0AJ5soQhJvu3V0X7tlw8ByVc3wyR2Q05j+k+D5tvUQ6fHXuW+0FkUI7f3f1IJt79IqTiuthldB6VEcRlR8qb5qWNxdiYAhLi3YVv47t2//EVsjNb6/+QDa0PixBpKQ7rajdEKkbzVu3f5N7ReM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TRs7XW13; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hw6jYxpx; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PzIlZMvX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qaRbcBwi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TRs7XW13";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hw6jYxpx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764225634;
+	s=mimecast20190719; t=1764225638;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=wuT94p1p5YoZPXiJ9LxCEueq/01SlG2osUN2E2cz8Ic=;
-	b=PzIlZMvX8qb8l+Nw6ziw9yMj49wY7fiVf+jqGP6AC/10SoMXRNic+SuZX1V1AKJ9eWWeeK
-	56BFGFglBb2d/pT2DYSsQnW8nNf6wxg+HVIysG75rxAKfTj8LxM3PNEVgydP2HRuztO96D
-	AwgVGM4AbfleVjH5MB5Hl8RQi+Foj/4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kFZFceCxodv+sVrwXshrWOSA01PvSJh54J0xHtV2LxM=;
+	b=TRs7XW13eC58qfJksEUlVhEjIW1ZuQMPCThb1IvL6dFy1iIsihkt2MdhzndUs3pS56Qp8s
+	S64COeVqtzTFZCNvL7an3Tfl4gm5+fxTfnRJCdLdHcrsJAPZTjR4ninld3ZcVR+/H5lIss
+	WgmdXq1ROfpDujq7ZqptuYpNHPw1AvU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-dOmTeC7aPjywoMvbqXcYZA-1; Thu, 27 Nov 2025 01:40:32 -0500
-X-MC-Unique: dOmTeC7aPjywoMvbqXcYZA-1
-X-Mimecast-MFC-AGG-ID: dOmTeC7aPjywoMvbqXcYZA_1764225631
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477964c22e0so2903935e9.0
-        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 22:40:32 -0800 (PST)
+ us-mta-453-038iJJyBO6ue72NJ78J4Gg-1; Thu, 27 Nov 2025 01:40:37 -0500
+X-MC-Unique: 038iJJyBO6ue72NJ78J4Gg-1
+X-Mimecast-MFC-AGG-ID: 038iJJyBO6ue72NJ78J4Gg_1764225636
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-477212937eeso2793115e9.2
+        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 22:40:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764225631; x=1764830431; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wuT94p1p5YoZPXiJ9LxCEueq/01SlG2osUN2E2cz8Ic=;
-        b=qaRbcBwii+olRp/ACl+F6Nhfm90dGGEjdgyoZVKmuVYpuOP8b6Ur+yYcHnGvxfZYmz
-         lUblTXrA0JISONiiJCfMWO8uEy20wHLoad+xr/X3B/ExWStCvqQTmGq4pw5FcFymliyJ
-         PMpDHn/8JGd/GJddM2J7imd5GUCp4dLZDMiWsOPhaNG4e3rdwrdQzWHul4NlYjvwXTCD
-         L+S4l5ONJmA/Qvk4AKMWFGwkIPYZiJxDqAj67vixnOjU9m9FeMbzKccrpLkZr9Qv9FvG
-         UwnhZRizX6ej+BWMj913o5jsLtNJRo4NR99XvbBCfSvuFWtNM0zpVOSySG09FTMyWyZ/
-         nZiA==
+        d=redhat.com; s=google; t=1764225636; x=1764830436; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kFZFceCxodv+sVrwXshrWOSA01PvSJh54J0xHtV2LxM=;
+        b=hw6jYxpxwPKIFKJGvab+MkvyWyCbd827Ljgf6Dmmt8Hn0CT7rL62onmKBUd1VdHnAo
+         YI3iylFQxACvau8rTBkosao51et2ddJBigJo1nTvpDc//3olZ3rQ801CGtD0TKVs/tb9
+         eX05AFNGoP3FLX/gpXgPkH2LHie0hflArld1mja6rZGRMmKGZo0fs+9ikG6g+14KXqd+
+         k5B29FvaR3vNimVFKMlOkk5bl8VMCJTDk42l6HNaWhQczgcHAly+X+FeRGpPhf+zxFiZ
+         fkHQfI+81lEFGXyWG2WJmpgIdmCO3kSAIu8tB/E049IYipx3Yp3iKsFc/cXhCx5iXHLl
+         Me6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764225631; x=1764830431;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wuT94p1p5YoZPXiJ9LxCEueq/01SlG2osUN2E2cz8Ic=;
-        b=pAzL5jUWCXnRuAq4xmBx3IABNZbkjqLSl3JA+41BXhpbZuEsCDzJwBXSzw60oS5b/5
-         vFBzXbH3UfaZGCtjxMo+khsX6xYR8DpNjJzGLb43GSSLfkzhHxldVgDGm8h4eySkS/5a
-         QoTbimkE/HfJNLk2EEpdgyIrL2sQ1YOZkSFKn7TGSXv2wcs3E4yGV6gVHqN9Wz1ZBTGD
-         862/rns6vuXgLTKqilRwMbYuvRh+4BbKa/yQ3P7r1zxJI3UTex9ULSOz5D0IuFXyC7pN
-         V7A4vCDTxRhJ1bEHnx8pB8LAYf5NU7kE4DnEfvtU4F82noGVMo7EHeWJIRC2BMem1FH8
-         JkzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcuIiSCD1d4DYaKfoaX3qt5WH/0XwMBntVCdDs0+S8OQfOrDtVTxsEQHdzznVR9OmLP212LUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2TeUUAJJa0zNrGe2E223n8Wrfh6oriuxS79j6D7tyhTmEqyOG
-	aVQq9PqvRxy8mzhv13W521uY9ngF4l4M6DuLqP/B0JOFN0BBRV7ZcCUw2znMk5KPYMNrM7Gxekm
-	EPXAxAZYDfHq31yC+wD3PL5GTQh3oQKVfRzAryePoOV3/b4jwhQDL0BwHvA==
-X-Gm-Gg: ASbGncuukLLO+dNblbK6d+YHUHPA6bUtAQhE57z2RCMNTr5Ta/uxfwvaRPjG15PlRi+
-	OHT44UBUR79akR5DRk8xm0i2GKzBYIKTPv0AdIZ0XqzKpMCkVxWsD4lUXXg085X980qTu07NEFA
-	BSsd1FJVXmaVPyCTV/kDqc2L6fN8Uno+w/7QF/M7sX3Mh0Y2+UMb7EVsiKqwQAP0Bg9iue1WTmM
-	HdF3l/TnKfrJrQF9gVWP3sPi/Jy8vxb99qO+Fy8TLpYhSbvp0u4exMW5h7rDX/4lIttGJ/KdDla
-	8XziTHXYaSGOD+86dIl4z9Ghz+uOOfOmv9Ss1UsuhUCD8l+uuBPxAQRgIUqvVHbD2ErvOfEJCP1
-	gPEkTS0qBYabCG5EHVAR60A+XGieX+A==
-X-Received: by 2002:a05:600c:1f85:b0:471:793:e795 with SMTP id 5b1f17b1804b1-477b9e61f7cmr222173725e9.0.1764225630967;
-        Wed, 26 Nov 2025 22:40:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF76KdhGXjY5ZtkUCvZbpceqilnQQdcgRmkvzsAfI7e3ekqqLFi6fdFkjz6br0cokEu+iwVsw==
-X-Received: by 2002:a05:600c:1f85:b0:471:793:e795 with SMTP id 5b1f17b1804b1-477b9e61f7cmr222173475e9.0.1764225630563;
-        Wed, 26 Nov 2025 22:40:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764225636; x=1764830436;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kFZFceCxodv+sVrwXshrWOSA01PvSJh54J0xHtV2LxM=;
+        b=dneGiRU2dtlbcY/42NBDImMRHjfJ6Rq9aXpWwNKo+tUH09rbS7x3hwyZk27mALlYER
+         a3JrRmC0IP8xMPUa4IBWWFZ3iksZqTZEfg10nq4R48+fRsQGOFYzASPM8nZpp01hupp3
+         bmIIwjebedxv7EweLugjhcuM25ppjsYNjlXLOftGaoYE2kU7LVwCd7MsjTURrArkUWwA
+         Dwk2ps26VwVDOQxVrieN3Rfqps1bPuSbmtw/iRKh4lJS5Jp6rS/DRNYQEzhN3f67qYnf
+         x8WUnW6JMU3r9BEQRc1S8IsXfSvgwx66mUP3kWJaKCSaHRf5Ju8RwU4MGJZ5hMJMHBp3
+         qUoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhwkPL9Fc9FsweN5re1M5Je+hIogkju1dzdIyt133lafa9en6uAgtlYT8Al99pGQKhC+jeASA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYgmWa1/bYV6Ogme2KMq0K595lbViIaH/+InOFca5sJ4LfLwyq
+	AfFkAVy+OoBKRtpZ7GpbNArpw8dio0IUJE07sYwCbTft9aznEuwmPcEGyZkG0HntK7nTy25LuK4
+	SK6a0GWjrGFf75Yz3JWgeDbyqFzdZo34FEZveIxvUhRaK7FEuYdk0rxgcBg==
+X-Gm-Gg: ASbGncu5KXMGKHkz9N1Oggxs7ht+BnHV/x+hlH9YcqdvPUFG0QbVk9gmGSp2hf6RGPQ
+	p+SZvejAAgEdESZixtJ4htoyy+2D8KLbTcOPgmKhXkAEe6U08LP3FLUhKfUWyeZePrc18iMlnml
+	wwHpNkEdXidS6nDmEdM8e2r2HsoWonVE8n23FnzxWxq6cOFeM2nKK4bcjzPtrv73mts1RRPwn+g
+	k9YKdV6x5o0kG5jqechn84H9jTqqfpKZPzjLGk+A7j9nxTfbPeoY2W1ZNRiODLdFVwNuebaJ+3u
+	i0vD5kSu/LX3vQ/mZNkD3QZd3TY9MdWM133x9891cG/hZzgaWmOEbXOtFrM97iF1ylA9/BKev+k
+	jZpQ8hbHvpWa111XaN015zX2i/zn1hw==
+X-Received: by 2002:a05:600c:3543:b0:477:1ae1:fa5d with SMTP id 5b1f17b1804b1-477c1142268mr180867305e9.20.1764225635775;
+        Wed, 26 Nov 2025 22:40:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHmaKJl3GPl1IrG9e+lyxemKaHO0wPm9ET8yhjMSTC9B7Xozmw3CvG5GdadD3czzW5PwSFbkA==
+X-Received: by 2002:a05:600c:3543:b0:477:1ae1:fa5d with SMTP id 5b1f17b1804b1-477c1142268mr180867165e9.20.1764225635290;
+        Wed, 26 Nov 2025 22:40:35 -0800 (PST)
 Received: from redhat.com (IGLD-80-230-39-63.inter.net.il. [80.230.39.63])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790b0cc186sm76113625e9.13.2025.11.26.22.40.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790b0c44dcsm78642495e9.11.2025.11.26.22.40.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 22:40:30 -0800 (PST)
-Date: Thu, 27 Nov 2025 01:40:28 -0500
+        Wed, 26 Nov 2025 22:40:34 -0800 (PST)
+Date: Thu, 27 Nov 2025 01:40:33 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
@@ -85,8 +86,9 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>, kvm@vger.kernel.org,
 	virtualization@lists.linux.dev, netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org
-Subject: [PATCH v6 0/3] virtio: feature related cleanups
-Message-ID: <cover.1764225384.git.mst@redhat.com>
+Subject: [PATCH v6 2/3] vhost/test: add test specific macro for features
+Message-ID: <23ca04512a800ee8b3594482492e536020931340.1764225384.git.mst@redhat.com>
+References: <cover.1764225384.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,48 +97,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1764225384.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 
+test just uses vhost features with no change,
+but people tend to copy/paste code, so let's
+add our own define.
 
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ drivers/vhost/test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Cleanup around handling of feature bits:
-- address word/dword/qword confusion
-- simplify interfaces so callers do not need to
-  remember in which 64 bit chunk each bit belongs
-
-changes from v5:
-  rename variables in vhost to make the diff much smaller
-changes from v4: address comments by Jason
-  move features variable to beginning of block
-  unsigned long -> u64 - they are not the same
-changes from v3:
-  drop an out of date unnecessary kdoc parser change
-
-changes from v2:
-- drop unnecessary casts
-- rework the interface to use array of bits not
-
-
-Michael S. Tsirkin (3):
-  virtio: clean up features qword/dword terms
-  vhost/test: add test specific macro for features
-  vhost: switch to arrays of feature bits
-
- drivers/vhost/net.c                    | 29 +++++++++---------
- drivers/vhost/scsi.c                   |  9 ++++--
- drivers/vhost/test.c                   | 10 ++++--
- drivers/vhost/vhost.h                  | 42 +++++++++++++++++++++-----
- drivers/vhost/vsock.c                  | 10 +++---
- drivers/virtio/virtio.c                | 12 ++++----
- drivers/virtio/virtio_debug.c          | 10 +++---
- drivers/virtio/virtio_pci_modern_dev.c |  6 ++--
- include/linux/virtio.h                 |  2 +-
- include/linux/virtio_config.h          |  2 +-
- include/linux/virtio_features.h        | 29 +++++++++---------
- include/linux/virtio_pci_modern.h      |  8 ++---
- 12 files changed, 104 insertions(+), 65 deletions(-)
-
+diff --git a/drivers/vhost/test.c b/drivers/vhost/test.c
+index 42c955a5b211..94cd09f36f59 100644
+--- a/drivers/vhost/test.c
++++ b/drivers/vhost/test.c
+@@ -28,6 +28,8 @@
+  */
+ #define VHOST_TEST_PKT_WEIGHT 256
+ 
++#define VHOST_TEST_FEATURES VHOST_FEATURES
++
+ enum {
+ 	VHOST_TEST_VQ = 0,
+ 	VHOST_TEST_VQ_MAX = 1,
+@@ -328,14 +330,14 @@ static long vhost_test_ioctl(struct file *f, unsigned int ioctl,
+ 			return -EFAULT;
+ 		return vhost_test_set_backend(n, backend.index, backend.fd);
+ 	case VHOST_GET_FEATURES:
+-		features = VHOST_FEATURES;
++		features = VHOST_TEST_FEATURES;
+ 		if (copy_to_user(featurep, &features, sizeof features))
+ 			return -EFAULT;
+ 		return 0;
+ 	case VHOST_SET_FEATURES:
+ 		if (copy_from_user(&features, featurep, sizeof features))
+ 			return -EFAULT;
+-		if (features & ~VHOST_FEATURES)
++		if (features & ~VHOST_TEST_FEATURES)
+ 			return -EOPNOTSUPP;
+ 		return vhost_test_set_features(n, features);
+ 	case VHOST_RESET_OWNER:
 -- 
 MST
 
