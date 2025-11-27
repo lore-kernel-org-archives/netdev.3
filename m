@@ -1,125 +1,60 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3389225416
-	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 03:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341C51391
+	for <netdev@vger.kernel.org>; Thu, 27 Nov 2025 03:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764214322; cv=none; b=qo1yJmxaINouqUbg+ucUmmUiaYemjWx0py9oorL/pfOE1L0yV9DqsiLOQiI0GSOfdhQuxN/AFfilyZIMEHUQeKuMwq1Oj+3f3DOjTb4nGKJ3XPRODQ3y/5D7WeEdsozLqLULF2REHk4sfPOpEpvSpVPmvscCDdf1oiLv0aYNjH8=
+	t=1764214988; cv=none; b=hKfaxalJVhqdJMGqgRJ+mk5YWAr7Zf2KNSch9RCk9TCDFhSsI61rOyIbV67PankjemZwUCPgFukbetYTAfSct6IzV6X84/746xEUHT8FLqODsmIHxBohIG2OlSy7Fo22lQ4oIvFxkUbz4OjAmFTTpN68WQvEf5Jiy69kXbu9aE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764214322; c=relaxed/simple;
-	bh=nT/7FpNKVxlkNX/0BE0ZS0c76peMlAFGMA7mJQm9fYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fX7xjhnL9Ht9qgYuSw8zRLqQSCO8q9Myi8M7Hl9Pq4esZBiQrpe9wqv2zq3u+ijVxcK2KeBmcn7JAoX8rQzu5phULgvb6qEHBjUiZT/UWBVgko87elbuK1gulom6qFd6b58R0Ykp1BSWMj7Kh/a6oYCvExBrmvVBk2DoSNAECxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkRF1lCd; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764214988; c=relaxed/simple;
+	bh=n9n3yGRDHka3SDIZ8zG0ckFrHUiNrWlkVL4RqQb4kmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hTAA32F6fRsQMlSMex96Ld3CYTPcZWxNNIJ7GYm0PfhVI55cYDTWgtgKbr2k0+1oHdq54q1BqnFfxAcCzYhwJ7k9jqGDGlYBgysNWKnIhrIiabA5eSYI86+wQGOi78t40PsullPGfmVDi89M1Ls8cLzAgtUpYWXMylNw3syo2K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kxrf74cC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkRF1lCd"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b75e366866so167052b3a.2
-        for <netdev@vger.kernel.org>; Wed, 26 Nov 2025 19:32:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764214320; x=1764819120; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QUFNUJWqhYYw/xBj2z5KmwgDhZilUoWRmrncYuADH7U=;
-        b=GkRF1lCd85guXJQrAIAVYjg1KtChOIJk+gYuuBEeVa6jyPErt0zTO3/ZKdb9J4zuxW
-         QToJS8Lc1jwBZK6U3sEpUszoo/RcSVA8FiQ3IqaCHbzaJ7uYzQdmaPRPQ1GOERp45wgd
-         od4E7KwsEghz5oAKM5F8BBi7f7AYDgZ0GSMabEWig+934qc7DRl32AC+ZSardcNi/2Qq
-         XFel6OWJ7pivf5BMJoFir1BgK+IEfDmbtDaOSSaQkL1TJ0gVvO0CzXK3Y6IsKYUnxE3k
-         /o0ZbhfrC4bVRG4NE7Ypajmcswajg+2rzeKXo01LQVi3E4SwWpMjxqUm6EpyUS/bRwhK
-         A6AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764214320; x=1764819120;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUFNUJWqhYYw/xBj2z5KmwgDhZilUoWRmrncYuADH7U=;
-        b=Cnf9qAeL6WrdHanPF8E5AREVt3QrvSUfS9ZIhre4ope1umEWc9SYUBfG/cvv0g5bHo
-         XkRskMCu/8gHJlhfu9FEPgriykMNUZVISxrd/9zy5j+pZs8vSmUVfw1bKoZl+mNXPg1o
-         K2wIzmOTnkSzBdWM49+kx6gda9GMK7+uekAN9rDNCOfx/uLfF3+lpiJv+11kB0isXGiU
-         NUj79nmnazPGtKEGnuwpPta+GwbwTrgr8JhQJp3RimxHzWKcOFdUkxzOGE88FObNAjJh
-         TzO3tDTm2Nr+3/eaNvvry35VYP9H6lyazZCSxcLjKFP0B6VT2FREXgLLFv+Hyn0lDFqw
-         gREw==
-X-Gm-Message-State: AOJu0Yy9aun+Ry1secfCo/G7J4nnTqBDophBEWw6zdzYDmiNaYF+SR5U
-	Al+X7wjhM+H/KKnF+UmbSMbkfATkPt4xvhTHqlpv2aVDBs8tmQvEpPMy
-X-Gm-Gg: ASbGncs+v6jyV+vram7IaFF3JFzIo0JEIsBmoXJuzmi37SQ7iATHac1fPUXAXz+b25+
-	TgYYxLl+mqZo5Cx5XhbrSBoEXyeDH5LscgXaaw3a6hNNhJC3VG6hVbholXJRWF/qHAQk/4PuXTU
-	nqcbNAhn8ZHo8xS4hyNR6I6cPu034C7chLvZcJuVhNDrtBbZiaBN/RZXYjFSIwuRSjLwrGt9EJd
-	WG12/s8P6tTHHc6D0u2U3RpM4yHiGdcaw5ADpB6kRzGDKA74Y58OK5Mf8LIdothdh48dVFoSYJQ
-	CeB9Ss65HRTzzWxJTq8HtgAVVGHXfQXtZkcmMnXqlWSE05d8YyD7Vd+/9zGbyt+u8Yjttpt/RZ9
-	TNAMR2rhmAQMZZjDqL/ThBPDQy3fQdueyiEuTXBlliX03/8aPDOmyrTjgHM0gXdjEKd4RbFcihm
-	1nps6Qo1q7klqU6IY=
-X-Google-Smtp-Source: AGHT+IHPlo75bfwll7Gp40Mn24GSQvzhAn4nMBC9jRuod5hISEC66YhruUuUAH/dbGo5n4FDiU24Zw==
-X-Received: by 2002:a05:6a20:3ca6:b0:35d:ce99:cc23 with SMTP id adf61e73a8af0-3637e0b49cemr10657154637.49.1764214319671;
-        Wed, 26 Nov 2025 19:31:59 -0800 (PST)
-Received: from fedora ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15e9c40a2sm80452b3a.32.2025.11.26.19.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 19:31:59 -0800 (PST)
-Date: Thu, 27 Nov 2025 03:31:50 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
-Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Yuyang Huang <yuyanghuang@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: Re: [PATCH net-next] netlink: specs: add big-endian byte-order for
- u32 IPv4 addresses
-Message-ID: <aSfGJpUFz9A_xFtz@fedora>
-References: <20251125112048.37631-1-liuhangbin@gmail.com>
- <8564b02f-18f9-4132-ab69-5ee1babeb18c@fiberby.net>
- <aSaf1D-N5ONmnys8@fedora>
- <43630b97-4dd4-423a-97e3-ca6aa3b56ad4@fiberby.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kxrf74cC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E832C4CEF8;
+	Thu, 27 Nov 2025 03:43:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764214986;
+	bh=n9n3yGRDHka3SDIZ8zG0ckFrHUiNrWlkVL4RqQb4kmw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kxrf74cCmUAwvrhSqC3+oIkwm20Zh8Fq+Q8cmPEfOyF1E1nX1++myYJ2qkRgUCTCb
+	 oIYg74skYLzxxF98VssOSKUKeINiNNwqlkBaEIAmFM7lJLXvUU8skebZ/53hjWkoYL
+	 CvM/WrSOFvFgdapAZ7ifouoBY4kz9D2JHeAfs875CkIHWnWYUq3rE7LnDJS7n9mtu9
+	 hfuk26MVddvvxEQlmYtgfXuNnpPMH+/qsKqKEPIg/7m35lPanaRRkV5wxRHje5o7ZP
+	 JmOqp4Jr/lzSFGAt8zw0yJ1dcoHvmqAUTC6YV2G+DY/rn17+5uBgN32C/v5lpGJZfy
+	 WydEqk8ts7uEA==
+Date: Wed, 26 Nov 2025 19:43:05 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>
+Cc: Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@toke.dk>, Jamal Hadi
+ Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko
+ <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jonas =?UTF-8?B?S8O2cHBlbGVy?=
+ <j.koeppeler@tu-berlin.de>, cake@lists.bufferbloat.net,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 0/4] Multi-queue aware sch_cake
+Message-ID: <20251126194305.31ebd8e7@kernel.org>
+In-Reply-To: <20251124-mq-cake-sub-qdisc-v1-0-a2ff1dab488f@redhat.com>
+References: <20251124-mq-cake-sub-qdisc-v1-0-a2ff1dab488f@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <43630b97-4dd4-423a-97e3-ca6aa3b56ad4@fiberby.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 26, 2025 at 01:32:22PM +0000, Asbjørn Sloth Tønnesen wrote:
-> I prefer exact-len over min-len. The current tally is:
-> 
-> $ git grep 'len.*: 16' Documentation/netlink/specs/ | cut -d: -f2- | sed -e 's/^ *//' | sort | uniq -c
->       7 exact-len: 16
->       5 len: 16
->       6 min-len: 16
-> (assuming that only IPv6 has a length of 16)
-> 
-> "len: 16" as used in ovs_flow's ipv6-src and ipv6-dst only works because they
-> are struct members, not attributes.
+On Mon, 24 Nov 2025 15:59:31 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> This series adds a multi-queue aware variant of the sch_cake scheduler,
+> called 'cake_mq'. Using this makes it possible to scale the rate shaper
+> of sch_cake across multiple CPUs, while still enforcing a single global
+> rate on the interface.
 
-
-Talking about the ovs, it's looks like that the struct members are used in
-flow metadata, like in ip_tun_from_nlattr():
-
-                case OVS_TUNNEL_KEY_ATTR_IPV6_SRC:
-                        SW_FLOW_KEY_PUT(match, tun_key.u.ipv6.src,
-                                        nla_get_in6_addr(a), is_mask);
-                        ipv6 = true;
-                        break;
-
-While attributes are used in __ip_tun_to_nlattr():
-
-        case AF_INET6:
-                if (!ipv6_addr_any(&output->u.ipv6.src) &&
-                    nla_put_in6_addr(skb, OVS_TUNNEL_KEY_ATTR_IPV6_SRC,
-                                     &output->u.ipv6.src))
-                        return -EMSGSIZE;
-
-So I think we can also convert the ipv6-src/ipv6-dst using exact-len? WDYT?
-
-Thanks
-Hangbin
+Looks like this needs a respin after Eric's recent changes.
+--=20
+pw-bot: cr
