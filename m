@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8132F1C861A;
-	Fri, 28 Nov 2025 01:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA061D9346
+	for <netdev@vger.kernel.org>; Fri, 28 Nov 2025 02:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764295129; cv=none; b=IbeCIPG0mazxmziFzHpRjyxuUW7xPUfJ8CDo0MVCZoBSiVmH0xL3+BwkQzy+vEqSemskJSsJ+HFqI6rplsPFFX8+ev+Ci4B0ay+NgcyiVVkaqiPWIT8WVFPAykjnWnAMSrmGDIwuC+ZVvvuAygtKTxhi1k+unPi1/7eCooejBaU=
+	t=1764295889; cv=none; b=B98nZFFLY4xXSZFXk7DKKz5pfjXR0FyObRrJT/aGME9eqn5Wwfg726bFv01alnMSaRmpHj/Ue6afyFXYqAIre1R3A6lV9Qr/q82zzo9D2J9Zu2EwmgHuRg1jhnFrcwA80GXVAwzbG0fG0bMLmto+J9NYy7uXmU1CGVN7D4qdYSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764295129; c=relaxed/simple;
-	bh=2MjLmqxKrSGxN8OTCCPOkPEDfO/fHISTuhyX8eizPaE=;
+	s=arc-20240116; t=1764295889; c=relaxed/simple;
+	bh=TkmPFlH4dLbLupR99jE6HJGld/tA3KOdzlC3Zw+aUVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GPX2ATEiR7XRIXyxn3tCwCQhWCjkMEY6S6S9V3bMzQQK3vNBZ4CBikTYpltndqdsDp1C1vcy3o1yN2DX7wPFNRtHWWJrMSDOSit52I41oTWe5jVaK2w3kfngZkyXPXIbkBFV3GO6gPyNhHiHe8uhZ+IysIGOAqNsOOz0gdi9Q5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tOTwRGyG; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=di16vp9eBQrQ7DLhNQNicBAL9/y/SCvE2b+U3jHYrI6qOCng0eHxRXC/2ttmGkgOmmyweecy3odSad0oK2NV8SOa7030NMkOKpneKBj+3QmX0yCMqeGlElRgktG16/buMsvxEmiTSksr4X11AmoaXlkMPUXD+hiN48eGYGZV+oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjMCBhTR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tOTwRGyG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6CCC4CEF8;
-	Fri, 28 Nov 2025 01:58:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjMCBhTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5AEC4CEF8;
+	Fri, 28 Nov 2025 02:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764295127;
-	bh=2MjLmqxKrSGxN8OTCCPOkPEDfO/fHISTuhyX8eizPaE=;
+	s=k20201202; t=1764295889;
+	bh=TkmPFlH4dLbLupR99jE6HJGld/tA3KOdzlC3Zw+aUVg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tOTwRGyGOVo8BOF9z2qPnYS6l6JikPqLp+uQDMdUZClHcmCRnXUo/rv8wnmVsCqVi
-	 ITF0CEnYhfcyhcCzolvqshPiQOCra7ko7Kv49HKTYI37Q6JI5uUdEw3dvVSs7CgnoF
-	 TM5b2aVtcIhlXrp6H/+FBcc7Rcr6Daa0Xx6gDTGUAzp9dh+4zm3gMtLqpAmPynlRnm
-	 s7n0mZ0QlgXB1d6pfqDh7MR82naD0XQZ8sAgArFylYxXGwzwWm28YiX2iYJpRqaG3v
-	 ijHT1Ha7UkJAxrW+Ag3EEWWNrj/ozO2nrOq6XnGIy21OQZzdM2LjOCjxFs1pmjtLZq
-	 jiB+DMD5/l+aQ==
-Date: Thu, 27 Nov 2025 17:58:45 -0800
+	b=tjMCBhTRHP0wGjCRE/bejtH8pwNgI7LLuHSPa6tU4s6YR3231kKQIngu8rFDhOZSF
+	 gJXPco2rRzyGApBjI91gRgedDW5WIxu63bQd4HPUb9Imp5NvYM589p+AiWtECMJEBJ
+	 ZqoiWYQb/oyq84EjtoqgoF2hd4++T6ooI+Ppsiqo1vaJUMUYvqfkHIphlQAiEOHsPs
+	 JmpNwP/uxGYJVF4QDIbgnURuB5j7bKS2qWaVd2SH7RkRhN75076KkrMhMdGzRj2F1z
+	 RCoDC/+9SZdby94ffMNlJcz6PzxqOvnh26cbuNMvnmV4WzCxxnTtO+rdwSiuE4tKA6
+	 SRG1edvR3An4Q==
+Date: Thu, 27 Nov 2025 18:11:27 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
- <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/4] net: dsa: yt921x: Use *_ULL bitfield
- macros for VLAN_CTRL
-Message-ID: <20251127175845.3db1b0fb@kernel.org>
-In-Reply-To: <20251126093240.2853294-2-mmyangfl@gmail.com>
-References: <20251126093240.2853294-1-mmyangfl@gmail.com>
-	<20251126093240.2853294-2-mmyangfl@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik
+ <kadlec@netfilter.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Florian Westphal
+ <fw@strlen.de>, "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li
+ <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>,
+ Wenjia Zhang <wenjia@linux.ibm.com>, Alexandra Winter
+ <wintera@linux.ibm.com>, Thorsten Winkler <twinkler@linux.ibm.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: Remove KMSG_COMPONENT macro
+Message-ID: <20251127181127.5f89447b@kernel.org>
+In-Reply-To: <20251126140705.1944278-1-hca@linux.ibm.com>
+References: <20251126140705.1944278-1-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,9 +51,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Nov 2025 17:32:34 +0800 David Yang wrote:
-> VLAN_CTRL should be treated as a 64-bit register. GENMASK and BIT
-> macros use unsigned long as the underlying type, which will result in a
-> build error on architectures where sizeof(long) == 32.
+On Wed, 26 Nov 2025 15:07:05 +0100 Heiko Carstens wrote:
+>  net/iucv/af_iucv.c                      | 3 +--
+>  net/iucv/iucv.c                         | 3 +--
+>  net/netfilter/ipvs/ip_vs_app.c          | 3 +--
+>  net/netfilter/ipvs/ip_vs_conn.c         | 3 +--
 
-nit: sizeof(long) == 4 ?
+Jozsef, Pablo, should we ask the author to split this up or just apply as is?
