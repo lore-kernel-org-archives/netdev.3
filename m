@@ -1,66 +1,50 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E964288B1
-	for <netdev@vger.kernel.org>; Fri, 28 Nov 2025 08:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4965C29E0E6;
+	Fri, 28 Nov 2025 08:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764320152; cv=none; b=CP2+yzS5sYRT3j7ZQeViSLt4OEU/mBJubW1KCFWb1KzkbXmstKxw55PhSMvwlaQEK59xvc532R9BmAxEY9SeXXeUSI493v8DGPkQJOoNSHPHD/IttE4VSqzhI99J7+/dnBFgPljJc2OdBGXP0pFI8GvDGO5UuV+bfskpVon5zT0=
+	t=1764320342; cv=none; b=L5dZ953b4+iUhPsEJmlExzXWj1+DUWIrA93GjHAkqtC29wjGuFZbAL9jubj3+IPNtm1BxBMqPzI7IxIp7TqApc7GsvM6HWXOWbFVPLpuEjea2553pXCj1Xg8lvdFuoyx0jPxtmuYKtgGfBySczMFe4piFYEfupmywFm+CpNQMgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764320152; c=relaxed/simple;
-	bh=wmX3gPnpy65zBgCRFHUTOTzrjtNfIm2hU2YxVXTd/OU=;
+	s=arc-20240116; t=1764320342; c=relaxed/simple;
+	bh=YAM74eKyEhCV+5y8iMMdd/s1oJmYepKSWrFYbusRBrM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DRQGAtsHqHbMK7zjZ8s5uwDF2KawHq6dtdBXwy/5x//qTikUYkKggZI+uc4DcFCGPY+Mr8ojBlzZjBI02qYhrmnhewBdGIH28fAoMt9y6v4mTiFYEgHMwOEA0Bqsy9XLIudEzBVCj2QdiVj7GKIMIHi3DRss4O+3lmpRySdVyOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vOuGE-0004V8-AT; Fri, 28 Nov 2025 09:55:26 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vOuGA-002vV3-3C;
-	Fri, 28 Nov 2025 09:55:23 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vOuGA-00BZR3-2i;
-	Fri, 28 Nov 2025 09:55:22 +0100
-Date: Fri, 28 Nov 2025 09:55:22 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Rob Herring <robh@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Lukasz Majewski <lukma@denx.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Divya.Koppera@microchip.com,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
-	Sabrina Dubroca <sd@queasysnail.net>, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH net-next v8 1/1] Documentation: net: add flow control
- guide and document ethtool API
-Message-ID: <aSljeggP5UHYhFaP@pengutronix.de>
-References: <20251119140318.2035340-1-o.rempel@pengutronix.de>
- <20251125181957.5b61bdb3@kernel.org>
- <aSa8Gkl1AP1U2C9j@pengutronix.de>
- <aSj6gM_m-7ZXGchw@shell.armlinux.org.uk>
- <aSj_OxBzq_gJOb4q@shell.armlinux.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qh/aCJ+EKn+HSqczfFWA+hYbaGZjeq5yglCAJLSEszroLTBWeaaBKC48jSWmVeF8ssZvijisOR2loG4yo2axeVUcLlr8pRWy/1zGUL8QH2YT5vCFVfUqLhuf9TVNaqwpo7AqudwkblPM2ec+tBHjvZFvyLTNvO/i03meZ772LFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=CtP0t7ZO; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="CtP0t7ZO"
+Received: from localhost (unknown [10.10.165.15])
+	by mail.ispras.ru (Postfix) with UTF8SMTPSA id 2067B40D3C55;
+	Fri, 28 Nov 2025 08:50:20 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2067B40D3C55
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1764319820;
+	bh=YAM74eKyEhCV+5y8iMMdd/s1oJmYepKSWrFYbusRBrM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CtP0t7ZODyDAMXPrQBDIuDlL8R4pW+xRr1N5PIJY54/JpA/crdhfqI3LaLNFe6MiY
+	 YWfGk5lAlDyI8tSI4TbwYvWjJ72sJ1f7eKOk6Wl7SANbJJDPu3WVFF1BeuUL2YgJl2
+	 lo8m3H08hzF9NXfHXH+yIDjwtD409VIGhAyghWbg=
+Date: Fri, 28 Nov 2025 11:50:20 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexey Panov <apanov@astralinux.ru>
+Cc: stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Song Liu <songliubraving@fb.com>, 
+	Martin KaFai Lau <kafai@fb.com>, lvc-project@linuxtesting.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, Nikolay Aleksandrov <nikolay@cumulusnetworks.com>, 
+	Jay Vosburgh <j.vosburgh@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	John Fastabend <john.fastabend@gmail.com>, linux-kernel@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	netdev@vger.kernel.org, Veaceslav Falico <vfalico@gmail.com>, 
+	Moni Shoua <monis@voltaire.com>, KP Singh <kpsingh@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Andy Gospodarek <andy@greyhouse.net>
+Subject: Re: [PATCH 5.10 1/2] bonding: restore IFF_MASTER/SLAVE flags on bond
+ enslave ether type change
+Message-ID: <20251128114704-2369311bf17518b70a95dcb7-pchelkin@ispras>
+References: <20251127190140.346-1-apanov@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,120 +53,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aSj_OxBzq_gJOb4q@shell.armlinux.org.uk>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <20251127190140.346-1-apanov@astralinux.ru>
 
-Hi all,
+On Thu, 27. Nov 22:01, Alexey Panov wrote:
+> [ Upstream commit 9ec7eb60dcbcb6c41076defbc5df7bbd95ceaba5 ]
 
-Before sending v9, I would like to summarize the discussion and validate
-the intended logic one last time.
+c484fcc058ba ("bonding: Fix memory leak when changing bond type to
+Ethernet") has a Fixes tag pointing to the above-mentioned commit so
+should be ported as well I think.
 
-Based on the feedback (specifically Russell's clarification on API
-semantics and Phylink behavior), I will document the following logic.
-
-Proposed Text: Documentation/networking/flow_control.rst
---------------------------------------------------------
-
-Kernel Policy: User Intent & Resolution
-=======================================
-
-The ethtool pause API ('ethtool -A' or '--pause') configures the **User
-Intent** for **Link-wide PAUSE** (IEEE 802.3 Annex 31B). The
-**Operational State** (what actually happens on the wire) is derived
-from this intent, the active link mode, and the link partner.
-
-**Disambiguation: Pause Autoneg vs. Link Autoneg**
-In this section, "autonegotiation" refers exclusively to the **Pause
-Autonegotiation** parameter ('ethtool -A / --pause ... autoneg <on|off>').
-This is distinct from, but interacts with, **Generic Link
-Autonegotiation** ('ethtool -s / --change ... autoneg <on|off>').
-
-The semantics of the Pause API depend on the 'autoneg' parameter:
-
-1. **Resolution Mode** ('ethtool -A ... autoneg on')
-   The user intends for the device to **respect the negotiated result**.
-
-   - **Advertisement:** The system updates the PHY advertisement
-     (Symmetric/Asymmetric pause bits if the link medium supports
-     advertisement) to match the ``rx`` and ``tx`` parameters.
-   - **Resolution:** The system configures the MAC to follow the standard
-     IEEE 802.3 Resolution Truth Table based on the Local Advertisement
-     vs. Link Partner Advertisement.
-   - **Constraint:** If Link Autonegotiation ('ethtool -s / --change')
-     is disabled, the resolution cannot occur. The Operational State
-     effectively becomes **Disabled** (as negotiation is impossible)
-     regardless of the advertisement. However, the system **MUST**
-     accept this configuration as a valid stored intent for future use.
-
-2. **Forced Mode** ('ethtool -A ... autoneg off')
-   The user intends to **override negotiation** and force a specific
-   state (if the link mode permits).
-
-   - **Advertisement:** The system should update the PHY advertisement
-     (if the link medium supports advertisement) to match the ``rx`` and
-     ``tx`` parameters, ensuring the link partner is aware of the forced
-     configuration.
-   - **Resolution:** The system configures the MAC according to the
-     specified ``rx`` and ``tx`` parameters, ignoring the link partner's
-     advertisement.
-
-**Global Constraint: Full-Duplex Only**
-Link-wide PAUSE (Annex 31B) is strictly defined for **Full-Duplex** links.
-If the link mode is **Half-Duplex** (whether forced or negotiated),
-Link-wide PAUSE is operationally **disabled** regardless of the
-parameters set above.
-
-**Summary of "autoneg" Flag Meaning:**
-- true  -> **Delegate decision:** "Use the IEEE 802.3 logic to decide."
-- false -> **Force decision:** "Do exactly what I say (if the link supports it)."
-
-Proposed Text: include/linux/ethtool.h
---------------------------------------
-
-/**
- * @get_pauseparam: Report the configured administrative policy for
- * link-wide PAUSE (IEEE 802.3 Annex 31B). Drivers must fill struct
- * ethtool_pauseparam such that:
- * @autoneg:
- *   This refers to **Pause Autoneg** (IEEE 802.3 Annex 31B) only.
- *   true  -> the device follows the negotiated result of pause
- *     autonegotiation (Pause/Asym) when the link allows it;
- *   false -> the device uses a forced configuration.
- * @rx_pause/@tx_pause:
- *   Represent the desired policy (Administrative State).
- *   In autoneg mode they describe what is to be advertised;
- *   in forced mode they describe the MAC configuration to be forced.
- *
- * @set_pauseparam: Apply a policy for link-wide PAUSE (IEEE 802.3 Annex 31B).
- * @rx_pause/@tx_pause:
- *   Desired state. If @autoneg is true, these define the
- *   advertisement. If @autoneg is false, these define the
- *   forced MAC configuration (and preferably the advertisement too).
- * @autoneg:
- *   Select Resolution Mode (true) or Forced Mode (false).
- *
- * **Constraint Checking:**
- *   Drivers MUST accept a setting of @autoneg (true) even if generic
- *   link autonegotiation ('ethtool -s / --change') is currently disabled.
- *   This allows the user to pre-configure the desired policy for future
- *   link modes.
- *
- * New drivers are strongly encouraged to use phylink_ethtool_get_pauseparam()
- * and phylink_ethtool_set_pauseparam() which implement this logic
- * correctly.
- */
-
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+Fedor
