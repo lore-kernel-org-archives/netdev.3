@@ -1,117 +1,107 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9212ED87F;
-	Fri, 28 Nov 2025 08:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0A2FD668
+	for <netdev@vger.kernel.org>; Fri, 28 Nov 2025 08:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764319513; cv=none; b=fPnFwuIV6PEHJ/FJnzyvC/2D2Sg7uicGeghisOjkkxRc9cghvxRXLxXwB5AYezo9lcl0eY5Wljpxx2zZB42FBhEt1qmLHPRe8oRsLnkBsKFj20ZyrOiSSg+PiXMOsgUzpqb4PA7fbshwYt59eBKIhRWslHSlHDkhPv1HAlB1vyA=
+	t=1764320026; cv=none; b=hXCJn3NcDXmMveqpbKh73HMx0yJFQ6OhewaYW3KBbporhvqgl0NGOSjB/v2uGs9kVtn60IVOt+dcepmMPHAUINhNojb37pe5IU+DW7WVmWk13cl7Fnkrjd5alZqd1i9bCxpNGR0xk0wSe3/CTiqtUat6pF4V7HpUooEOnK0CPjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764319513; c=relaxed/simple;
-	bh=0X/ydzoWDB4ZtJE0RBBBD7ONqrPxkKp/vJTWLZBq2/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pjk8UyGrC5gwH7KBnTqkN3mP2eIRWpMqO/lqykwUg8gVAQxggcFl1kuxn3y1XytRxqjiaLAe8Ao7JoRUGcVv5I1Jy7zf+4tQLzpLoClt50SKdoN/TKC2io9XESnVX+VLVWc+ImH5By0xxqoy409uqcIDIvsWxIvhVmCDbtrI8Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BBTHcI0a; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1764320026; c=relaxed/simple;
+	bh=OBSmjV+7meHP1rGMO9tDjTk4DyTM4GEeiQCa9XdkFe4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g6aw7YD4PkbH80f0zs+rYVIhuYx/FbK39meno8bfXGMm+X6qdLO5eX4BhaMPTSmM8/+9f3Zin96xOtDNvqD1AYrMlNKgJDiEUBB2qpKCQI/u6grnRDMIWTfqxrhk4uIIfKu6Ksw289Tm769TuTGvEqkYiSzhGmX+SqYaPcKZD6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KKhtqKl7; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BBTHcI0a"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4F494C16A36;
-	Fri, 28 Nov 2025 08:44:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F9C460706;
-	Fri, 28 Nov 2025 08:45:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E6FCF103C8F20;
-	Fri, 28 Nov 2025 09:45:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764319507; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=P0+e6XTu3A6o5AA0Sdf7CPZ+DssyTSsdo2j6rOigGDU=;
-	b=BBTHcI0acimD4Z+tf+m+ZYYQA+zUHulwmzzRJl76h86HdO/UEPydJHf53ev70bfY4aiIby
-	QuEkZFbcYpZU7rQRtod433l/ajomrZ1uWGCGGr0l2SO47MVJUcvI1kR5L970OEDTluHjI3
-	pEnCGUJI2MMc3t/PnM4WWvL+BFtbp0iGLF7aSAtnWpCqyQDi+E5Kaj+ze9PK4QNAHccyAH
-	ac8AAZKSGrBDmlX2aKRaPiA/E1xPCoBhK5pDjL4OpzQZL+XYsWWIg/QioPv7f2ih3dBrZK
-	hzJIAu0eoVuAonbYRSOcYMQOgmDLjKqaEfceDzdP04sLoN84YN+sIGr8YyG2oA==
-Message-ID: <e18d4197-b06e-493a-a843-e195fbc46d6c@bootlin.com>
-Date: Fri, 28 Nov 2025 09:45:00 +0100
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KKhtqKl7"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AS7uQoq2925758;
+	Fri, 28 Nov 2025 08:53:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=kKDgTC21y3fyx/3WZzRX19j1BCz5K
+	ppprJg1KGFen1c=; b=KKhtqKl7OjXmiL8B1m+0sLlmT6kdzqlPhpzpymsrxrDrY
+	fV0mqTun9rsmEkZFEdNK1S9JGQZn5VkxCUug6ntUW0qHw+/ZeIpuqTug06hXn1KX
+	IZejntDrpy/8qh7+XELKV9b8nZ0ZrH2NWyKBAaa/nr2pO+Cu7L7zWwbk5XSiHteo
+	3tPjDXwDKmXCmHzMVglebspTzSSWWVFnfOWcdiwEXet437Voju+mtND0SzCypfkH
+	URPlAJ/YxsljO9wewqgVMjqCfEwNMnGO3N1IvXoUcIBZfb41xyEvwGR4myDzsBnP
+	PNf3NdIaviE53c7xIiLTGzBpwXGmlGTKRqA1/crXg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aq3s28a8p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Nov 2025 08:53:32 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AS7pIrK019718;
+	Fri, 28 Nov 2025 08:53:31 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3md1w4p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Nov 2025 08:53:31 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5AS8rUaw026427;
+	Fri, 28 Nov 2025 08:53:30 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ak3md1w43-1;
+	Fri, 28 Nov 2025 08:53:30 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org
+Cc: alok.a.tiwarilinux@gmail.com, alok.a.tiwari@oracle.com
+Subject: [PATCH net-next] l2tp: correct debugfs label for tunnel tx stats
+Date: Fri, 28 Nov 2025 00:52:57 -0800
+Message-ID: <20251128085300.3377210-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v20 03/14] net: phy: Introduce PHY ports
- representation
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
- Tariq Toukan <tariqt@nvidia.com>
-References: <20251127171800.171330-1-maxime.chevallier@bootlin.com>
- <20251127171800.171330-4-maxime.chevallier@bootlin.com>
- <aSiSxbE-XY_zxMBC@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aSiSxbE-XY_zxMBC@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_03,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0 spamscore=0
+ bulkscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511280064
+X-Proofpoint-ORIG-GUID: vY10kv64-KCeDhbUzZJOuS2JDUurPjxw
+X-Proofpoint-GUID: vY10kv64-KCeDhbUzZJOuS2JDUurPjxw
+X-Authority-Analysis: v=2.4 cv=SLJPlevH c=1 sm=1 tr=0 ts=6929630c cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=Lxq-UBtxJWYXIj6hXk0A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI4MDA2NCBTYWx0ZWRfX8cLMUoBeyIKk
+ u7yjtFhKltp+2SAkLGQbS76hlHIgTUG8KM75iMMxfSoyerCUh36YwC7QmhElmjzURX/Xfqjj20X
+ bbsIk/HznKB2IXo9RKAeBx2KIKwUKnuZ4BvHLOgFs0ROoa0rLwVHhYfKlzWGbM0sQ6c2ha1hT6F
+ B+8YSTP0dLySfY/XZAlIeGKwyYpWpBj/liHoOkrg1Ll6Qx/PNcDU+ZuO6K8okrDATrfjSsK74W6
+ kVotA+gwhFQagdpNKEXMBzyD3xwpdBdrlSG/zw9dAVSYIu+nxOZUnroGHd/zyTQDChAV4GAbizt
+ QSBHCESN3pMFwcvmXmEM4bBaUBgyss9iWVCp7s6HfrfQm0Olkd7YqaMbLb3YBPh/d/lRwDl7B4M
+ cVfQrdBdWWC4g7eDzC52RsbSapgX0g==
 
-Hi Russell,
+l2tp_dfs_seq_tunnel_show prints two groups of tunnel statistics. The
+first group reports transmit counters, but the code labels it as rx.
+Set the label to "tx" so the debugfs output reflects the actual meaning.
 
-On 27/11/2025 19:04, Russell King (Oracle) wrote:
-> On Thu, Nov 27, 2025 at 06:17:46PM +0100, Maxime Chevallier wrote:
->> Ethernet provides a wide variety of layer 1 protocols and standards for
->> data transmission. The front-facing ports of an interface have their own
->> complexity and configurability.
->>
->> Introduce a representation of these front-facing ports. The current code
->> is minimalistic and only support ports controlled by PHY devices, but
->> the plan is to extend that to SFP as well as raw Ethernet MACs that
->> don't use PHY devices.
->>
->> This minimal port representation allows describing the media and number
->> of pairs of a BaseT port. From that information, we can derive the
->> linkmodes usable on the port, which can be used to limit the
->> capabilities of an interface.
->>
->> For now, the port pairs and medium is derived from devicetree, defined
->> by the PHY driver, or populated with default values (as we assume that
->> all PHYs expose at least one port).
->>
->> The typical example is 100M ethernet. 100BaseT can work using only 2
->> pairs on a Cat 5 cables.
-> 
-> Correction: 100BASE-TX. 100BASE-T, which covers the family of 100BASE-T
-> media, includes 100BASE-T4 which is over all four pairs of the cable.
-> 
- As Rob's bot made what appears at a first glance to be incorrect
-comments, I'm not sure a resend is on the table yet. Do you want me to
-send a v21 with the updated description ? I have the same question about
-your comment on patch 2 :)
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+ net/l2tp/l2tp_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'll gladly resend, but that'll be after the 24h cooldown.
+diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
+index 2d0c8275a3a8..5cfaab7d0890 100644
+--- a/net/l2tp/l2tp_debugfs.c
++++ b/net/l2tp/l2tp_debugfs.c
+@@ -163,7 +163,7 @@ static void l2tp_dfs_seq_tunnel_show(struct seq_file *m, void *v)
+ 	seq_printf(m, " %d sessions, refcnt %d/%d\n", session_count,
+ 		   tunnel->sock ? refcount_read(&tunnel->sock->sk_refcnt) : 0,
+ 		   refcount_read(&tunnel->ref_count));
+-	seq_printf(m, " %08x rx %ld/%ld/%ld rx %ld/%ld/%ld\n",
++	seq_printf(m, " %08x tx %ld/%ld/%ld rx %ld/%ld/%ld\n",
+ 		   0,
+ 		   atomic_long_read(&tunnel->stats.tx_packets),
+ 		   atomic_long_read(&tunnel->stats.tx_bytes),
+-- 
+2.50.1
 
-Thanks a lot for taking a look a this,
-
-Maxime
