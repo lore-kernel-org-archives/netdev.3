@@ -1,129 +1,81 @@
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E4E14F125
-	for <netdev@vger.kernel.org>; Sat, 29 Nov 2025 00:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5D83B2BA;
+	Sat, 29 Nov 2025 01:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764377782; cv=none; b=tyuNEy0xmRz3fgkgnemNBWuP54WJ/bf2zHvCXw6LaT2IhdhQFZexdNkhFc19NS7ZweRNpxVnkEBanXCSt4bbb1IxohTN9wmR5jAsFJTuvDBlPtznhpccO/DSG+BR+MUa9Ndw3/f022nWRKkdXilW5j3nbm3Qp/qL3nrdQAzqVrI=
+	t=1764379598; cv=none; b=rsABnOPCj29SqYAlqL+F2/1RVLKKkuTkwgazmUc3i3NqdH15KH8NelLj67H+XWKhjqZ3GiFaE/q4AA1rRo0YseHjw6G5vfXuH/iMCVwiJQeaXxKdLT+Hw/A8jXY056HP+Y+pmRH4qc1nPpgJ+sGqvO6//FzQwiYtS/oCUodbZd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764377782; c=relaxed/simple;
-	bh=4MTjHcSRUlbHrOJ+f9Ulvhi4iA2FkdPdg3sEPmZy/jo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XUxF39G7/DW0T4bM8xyElep3B/AiD4dTt/qE3vxq0toASRMpt8CWgwbcTnyLJHfgNQiscSRu+PynE4kBCL8WSCnmQBIIDl4WvDieR3ErjwlXWAWyxGq/v/BUOqq6Kf49p42IXclLejTH4nj0bgXKjZOCN6mPh9vHFN4FmgwMg6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MtCYJ9NV; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764379598; c=relaxed/simple;
+	bh=ewOzqBKwdXP2n5uFK7vR5ZffAKyeil1Qzl64Ul+4IRI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KFRyoPId8PpzKrUO4z9Apm/soN2rYY0zKU59suEx1XxoUZyKnaeAW09/lXYl/uWtJDTZFAvkJhlUM/+hGTl8OcZcC/lTB4quEcIvhAT/zGkiBiz66m75/er84v6qOO/IzArj5UMH7qR0G8Q+TgRcAFO1LJfDVZ4H6+z5tCVii34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LrE6FJBV; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MtCYJ9NV"
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-43377ee4825so11435775ab.2
-        for <netdev@vger.kernel.org>; Fri, 28 Nov 2025 16:56:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764377780; x=1764982580; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4MTjHcSRUlbHrOJ+f9Ulvhi4iA2FkdPdg3sEPmZy/jo=;
-        b=MtCYJ9NV6OJlVgIqy/QbqPEU21+oOQM824YkZNIFao6qTp2iiRjFeNh/i7/BGtK/YB
-         i61xQfqJlhOcl2j/+T28s4j2B/kL86Hs8jy6Oflmk0wlYlP7y7eZnwkLiSJC47H3Q6rN
-         IS9H2jAeYxFAm/XXtqfPF/dCVwiM2NuvE1tE9oKx8K0mfuntMS4KbD1VBq2DYeqxHxfl
-         j2jFBSDaS/Urxd1qM++LiCcuGU9H3P5DFjYpIfWezeCpG4tNmedxqSirXqW56jwNbihl
-         FaDdcQ9KSTdEjQ6XmRmjf1U8aP25JBOj0oRjw0upB24WPKsvF5WcQdzbtnbsTcO41PRm
-         1jOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764377780; x=1764982580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4MTjHcSRUlbHrOJ+f9Ulvhi4iA2FkdPdg3sEPmZy/jo=;
-        b=V0cJ6wqIYmsShZnwshbH3CA+ywOJioztFkFvHiMBglNIyV3a1Cd8+Gto1c5KaUGHP/
-         zgiBQ+iC6+7+HHfkyNG1rUCGedW80d4haExuVV/3wTPqrKZtKafJU7D5dIU0hiUONCB9
-         Y6eEldnZiEVgIrkV/2dJn3xIMkxNtWN+A47mK7s6Ddnn4IVlWxJ6ZNIoPfZtdrpd3tEz
-         TP4qHYmprfhg3sbR/PoW331vpzdxnND4fgMDP2xcPq5UcIddhqPIdiqkL0xlup7KOO0h
-         YNDaAodzyVKn52cLJ/xXRGA1i7/nQ4PBAfeaP9iItFOdMISGbL3YCZwclkeEtphIGKb9
-         eAZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXA8Xw92JP+NLR/dP+jOjY4YxC968X8HpjaDb6BspAHlWAf33icJ5BTGOXP0eBhLKRgz6XxYKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyncracS3a67WkPAE8E5uDeiUSOI4QnIUY7bV/k6rkUDr7NChi
-	3TyWrlslZLsxJczvnJx1nZB+GVc3leruueCAZ2feVOlIZuohe/9L2tF/MJzIFA8i+U5R2vVRg/F
-	aOEjuyXtDh+V+Z2R7w9nWnfIw3QlsOpQ=
-X-Gm-Gg: ASbGncu7lvefTWWMaEkhT1z5uwErR4ypzI7adBG8Wec+dQCwLSaPa+u/NlUMa3SHWeO
-	O0aysrR/g0yj+dCW6HB3DQF83voaLjegvphAyLMCjOVKRyWO2KhnRelVhZQ+BQFEeoGg0Xcu5f8
-	plviMDVzAERq5rwEWQ3UvkIngH0az0KJDL+FW6NgguFDskYNr+P7KAQY6IYvlMUkqmCJjtrLQcs
-	bFnE9xMc09WdYTJDJlnw0v4qmQUvv8OnK9OIpmWrk/SbJesXJDEOx+nb12GfbrRXMXcWDQ=
-X-Google-Smtp-Source: AGHT+IHPjbVAykb9MFmYGfmY7NmyQ1c7NjGqXVwVjBgP4bb5koTULIIqFOMtmlAggPYv8GKzUVTstIoTjsVyXn2Czp4=
-X-Received: by 2002:a05:6e02:1521:b0:433:8347:2e80 with SMTP id
- e9e14a558f8ab-435dd06e961mr119740435ab.10.1764377779669; Fri, 28 Nov 2025
- 16:56:19 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LrE6FJBV"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GiqVXD80ZeUaSSf/XrxvOWEFSml7KvNySEMk5eirPLE=;
+	b=LrE6FJBVlzSyrlV6Q6dSkv9nTgGYqLICTUB2vkWq1U+3jCxQa5Am2ycQKP5ntdLfd8vVc3CjJ
+	OL4aeAipKEbERHZdq+Ct1iKPLFtfgiz4BcVtrhSbAdqjaJa502jySZGPms/cWPU1b+cATx776wL
+	wU3R2fOLAL/dqem+9dMS4ho=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dJCBk5ZBCz1T4G3;
+	Sat, 29 Nov 2025 09:24:46 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id 44B42180481;
+	Sat, 29 Nov 2025 09:26:33 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 29 Nov
+ 2025 09:26:32 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
+	<kuba@kernel.org>, <linux-hams@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <syzkaller-bugs@googlegroups.com>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>
+Subject: Re: [syzbot] [hams?] memory leak in nr_sendmsg
+Date: Sat, 29 Nov 2025 09:47:43 +0800
+Message-ID: <20251129014743.1368452-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <692a2462.a70a0220.d98e3.0152.GAE@google.com>
+References: <692a2462.a70a0220.d98e3.0152.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251128134601.54678-1-kerneljasonxing@gmail.com>
- <20251128134601.54678-3-kerneljasonxing@gmail.com> <8fa70565-0f4a-4a73-a464-5530b2e29fa5@redhat.com>
-In-Reply-To: <8fa70565-0f4a-4a73-a464-5530b2e29fa5@redhat.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 29 Nov 2025 08:55:43 +0800
-X-Gm-Features: AWmQ_bl2KUotuXts1CzGyhn6XYDGMJ3tNHO-0829YWUwnVp1JfoAvn-7jJwUIqE
-Message-ID: <CAL+tcoDk0f+p2mRV=2auuYfTLA-cPPe-1az7NfEnw+FFaPR5kA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/3] xsk: use atomic operations around
- cached_prod for copy mode
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	bjorn@kernel.org, magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
-	jonathan.lemon@gmail.com, sdf@fomichev.me, ast@kernel.org, 
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	horms@kernel.org, andrew+netdev@lunn.ch, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
-On Fri, Nov 28, 2025 at 10:20=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wr=
-ote:
->
-> On 11/28/25 2:46 PM, Jason Xing wrote:
-> > From: Jason Xing <kernelxing@tencent.com>
-> >
-> > Use atomic_try_cmpxchg operations to replace spin lock. Technically
-> > CAS (Compare And Swap) is better than a coarse way like spin-lock
-> > especially when we only need to perform a few simple operations.
-> > Similar idea can also be found in the recent commit 100dfa74cad9
-> > ("net: dev_queue_xmit() llist adoption") that implements the lockless
-> > logic with the help of try_cmpxchg.
-> >
-> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
-> > ---
-> > Paolo, sorry that I didn't try to move the lock to struct xsk_queue
-> > because after investigation I reckon try_cmpxchg can add less overhead
-> > when multiple xsks contend at this point. So I hope this approach
-> > can be adopted.
->
-> I still think that moving the lock would be preferable, because it makes
-> sense also from a maintenance perspective.
+#syz test
 
-I can see your point here. Sure, moving the lock is relatively easier
-to understand. But my take is that atomic changes here are not that
-hard to read :) It has the same effect as spin lock because it will
-atomically check, compare and set in try_cmpxchg().
+diff --git a/net/netrom/nr_out.c b/net/netrom/nr_out.c
+index 5e531394a724..2b3cbceb0b52 100644
+--- a/net/netrom/nr_out.c
++++ b/net/netrom/nr_out.c
+@@ -43,8 +43,10 @@ void nr_output(struct sock *sk, struct sk_buff *skb)
+ 		frontlen = skb_headroom(skb);
+ 
+ 		while (skb->len > 0) {
+-			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL)
++			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL) {
++				kfree_skb(skb);
+ 				return;
++			}
+ 
+ 			skb_reserve(skbn, frontlen);
+ 
+-- 
+2.34.1
 
-> Can you report the difference
-> you measure atomics vs moving the spin lock?
-
-No problem, hopefully I will give a detailed report next week because
-I'm going to apply it directly in production where we have multiple
-xsk sharing the same umem.
-
-IMHO, in theory, atomics is way better than spin lock in contended
-cases since the protected area is small and fast.
-
->
-> Have you tried moving cq_prod_lock, too?
-
-Not yet, thanks for reminding me. It should not affect the sending
-rate but the tx completion time, I think.
-
-I'll also test this as well next week :)
-
-Thanks,
-Jason
