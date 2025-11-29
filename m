@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5D13C17
-	for <netdev@vger.kernel.org>; Sat, 29 Nov 2025 04:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D54226D02;
+	Sat, 29 Nov 2025 04:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764388991; cv=none; b=G9UxDM7qGEbO3s8XVx4/Nfj7JFEyTu9mDFz462ipsZ5Pnj5lisoCMMmpQW7z/LZUjLTYpS1v38zMSZV2GMagcraM5pWPXCaW7JBHP1GoYwxMTvkLL+0/VP8sYL7G3+ZMclN1NgIf0CBdQZIqo95cbPz1/lWhB0d/cZcgh5OK61Q=
+	t=1764389608; cv=none; b=GCwI8cQWqnXDyh7W1S/7JgFN8fow+1wi4Ut0gtDDXppE6Z4mCu52qMgaqvR6yeQQTE7FlJrAPSSTCiMhdDPyW2C+HznExIJ/8M4aOStwhV9rvEMfm35wmJYcMcVzzAnYJHqCdi2c3veGb+OnZtmSKxLWRCaIq0arrvvyceHVxN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764388991; c=relaxed/simple;
-	bh=4S31z0xBDs/RgGCpfUZeuBWF6Syx+n0tLhqRAEuQ+k4=;
+	s=arc-20240116; t=1764389608; c=relaxed/simple;
+	bh=jVt2VZrxSvr4OBx8ByQS9DhjVELgdDft9Gv+fjiNEMc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UphsIXycgdY7pFxnmkf13HO7i+UZMxl0uC8KVQ3oiN9u6eq+CblvC/7ZUtcuPpVaQFVa+B7z6Jm2A5q8h62re75ropyRcvZ0IOGliHpdYopO2b95LIcP95rRDM40rQGw4vx9lHXb5YTYAkBmh6446D63I+glutEHtJ8rBF+8zMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUO6gEK8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=lCJKmT59XZNs3y0fDWlw1+yzkwuhgBsJ7crrmL72CiJ0rUgZzQiDCZ2I/HOZFv56pLNZic9rs2BjNLIgToMYf37PWEyeZIn5uiy3zQQhXqC0T25we2XzUnR79Sy+wNG1PjvNyXnjlDYL/b7hLUw4T8F7sE2TG2hkRJcQkbVMxwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ch2N2R2i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUO6gEK8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07D0C4CEFB;
-	Sat, 29 Nov 2025 04:03:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ch2N2R2i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8CDFC4CEF7;
+	Sat, 29 Nov 2025 04:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764388990;
-	bh=4S31z0xBDs/RgGCpfUZeuBWF6Syx+n0tLhqRAEuQ+k4=;
+	s=k20201202; t=1764389607;
+	bh=jVt2VZrxSvr4OBx8ByQS9DhjVELgdDft9Gv+fjiNEMc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iUO6gEK8sbz1o2UH099T/MJp6+FJppHGvO/rYKtqaBLSR2nA6XPQVlvvOAA9u4WlB
-	 rVxBX8BMQnliUGURqMSFwDmZYzDx78M+LwYT+1Qa1uc472fbWyleJ+Mnlywuq+2aQK
-	 z0p10Iz3URxA80sMNomSKr3lMU4XMkwZa0gAp6fG6cOHG6gGshQv1pyleiwlylq0c1
-	 fQOIzLNi6eK9pBhneOIiUixDq8O0TWw5N+5lpPDL+9R/KxzpnlZOhvkfd1u0eW/3D5
-	 K8pwKJPBiNCm/oKYQsil8UfYegAJKz43oZp//mLFbCH9U0VTCHidGWPVH0CsUSIV3H
-	 p5QLGSmr0Nx1A==
+	b=ch2N2R2iF2KrK0IGpW2AlE2RI5VVft01ynxAybUgtLurY+YcyOXgYe4E4TyRimhz2
+	 g1RAAnhPuxs2Gve0HMoMYMfUd8+rGoLIzQ7UKQvT5rLzvLLk3q9Lew4G2c3gq3Uxtf
+	 PlbO37fiapVgKJvy/ThqxLPtplBjjPVwF1oHnnSNEzakoZ+wH/HG/vY9o/q5g9S9I5
+	 dTWB7yt7PAFaL4bWNeWGYz57rRuXowcX8B2bxaSCKIOOTcnsCBSzNWTOQUa+mJ6QN0
+	 VuLBZ9fICY5Eus3YretVQvRoyRQTt4OqLQmdrSs9GuHSZqPOUh7PBQQFSncd381ywO
+	 PZKz5kyRUVqKA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B591B380692B;
-	Sat, 29 Nov 2025 04:00:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AA5C9380692B;
+	Sat, 29 Nov 2025 04:10:30 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v1 0/4] tools: ynl: add schema checking
+Subject: Re: [PATCH net-next 00/15] Introduce the dsa_xmit_port_mask() tagging
+ protocol helper
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176438881254.889338.1213232869745501312.git-patchwork-notify@kernel.org>
-Date: Sat, 29 Nov 2025 04:00:12 +0000
-References: <20251127123502.89142-1-donald.hunter@gmail.com>
-In-Reply-To: <20251127123502.89142-1-donald.hunter@gmail.com>
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, andrew@lunn.ch, matttbe@kernel.org,
- chuck.lever@oracle.com, fw@strlen.de, one-d-wide@protonmail.com,
- kory.maincent@bootlin.com, gal@nvidia.com, o.rempel@pengutronix.de,
- sdf@fomichev.me, jstancek@redhat.com, liuhangbin@gmail.com, noren@nvidia.com,
- netdev@vger.kernel.org
+ <176438942956.896171.5589128104353485627.git-patchwork-notify@kernel.org>
+Date: Sat, 29 Nov 2025 04:10:29 +0000
+References: <20251127120902.292555-1-vladimir.oltean@nxp.com>
+In-Reply-To: <20251127120902.292555-1-vladimir.oltean@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ alsi@bang-olufsen.dk, clement.leger@bootlin.com, daniel@makrotopia.org,
+ mmyangfl@gmail.com, dqfext@gmail.com, florian.fainelli@broadcom.com,
+ george.mccollister@gmail.com, hauke@hauke-m.de, jonas.gorski@gmail.com,
+ kurt@linutronix.de, linus.walleij@linaro.org,
+ linux-renesas-soc@vger.kernel.org, sean.wang@mediatek.com,
+ UNGLinuxDriver@microchip.com, woojung.huh@microchip.com
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 27 Nov 2025 12:34:58 +0000 you wrote:
-> Add schema checking and yaml linting for the YNL specs.
+On Thu, 27 Nov 2025 14:08:47 +0200 you wrote:
+> What
+> ----
 > 
-> Patch 1 adds a schema_check make target using a pyynl --validate option
-> Patch 2 adds a lint make target using yamllint
-> Patches 3,4 fix issues reported by make -C tools/net/ynl lint schema_check
-> 
-> Donald Hunter (4):
->   tools: ynl: add schema checking
->   tools: ynl: add a lint makefile target
->   ynl: fix a yamllint warning in ethtool spec
->   ynl: fix schema check errors
+> Some DSA tags have just the port number in the TX header format, others
+> have a bit field where in theory, multiple bits can be set, even though
+> DSA only sets one.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v1,1/4] tools: ynl: add schema checking
-    https://git.kernel.org/netdev/net-next/c/362d051c90b6
-  - [net-next,v1,2/4] tools: ynl: add a lint makefile target
-    https://git.kernel.org/netdev/net-next/c/129dc6075a15
-  - [net-next,v1,3/4] ynl: fix a yamllint warning in ethtool spec
-    https://git.kernel.org/netdev/net-next/c/acce9d7200e2
-  - [net-next,v1,4/4] ynl: fix schema check errors
-    https://git.kernel.org/netdev/net-next/c/1adc241f3940
+  - [net-next,01/15] net: dsa: introduce the dsa_xmit_port_mask() tagging protocol helper
+    https://git.kernel.org/netdev/net-next/c/6f2e1c75bc5e
+  - [net-next,02/15] net: dsa: tag_brcm: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/621d06a40e47
+  - [net-next,03/15] net: dsa: tag_gswip: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/e094428fb40c
+  - [net-next,04/15] net: dsa: tag_hellcreek: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/f59e44cc0d6c
+  - [net-next,05/15] net: dsa: tag_ksz: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/ea659a9292b1
+  - [net-next,06/15] net: dsa: tag_mtk: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/84a60bbec503
+  - [net-next,07/15] net: dsa: tag_mxl_gsw1xx: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/a4a00d9e365a
+  - [net-next,08/15] net: dsa: tag_ocelot: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/5733fe2a7ad1
+  - [net-next,09/15] net: dsa: tag_qca: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/48afabaf4aaa
+  - [net-next,10/15] net: dsa: tag_rtl4_a: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/4abf39c8aef5
+  - [net-next,11/15] net: dsa: tag_rtl8_4: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/5afe4ccc33f4
+  - [net-next,12/15] net: dsa: tag_rzn1_a5psw: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/b33aa90e68b4
+  - [net-next,13/15] net: dsa: tag_trailer: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/3c1975bbdf92
+  - [net-next,14/15] net: dsa: tag_xrs700x: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/24099389a63f
+  - [net-next,15/15] net: dsa: tag_yt921x: use the dsa_xmit_port_mask() helper
+    https://git.kernel.org/netdev/net-next/c/64b0d2edb61a
 
 You are awesome, thank you!
 -- 
