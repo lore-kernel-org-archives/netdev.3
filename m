@@ -1,84 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5098C233D88;
-	Sat, 29 Nov 2025 04:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC601922FD;
+	Sat, 29 Nov 2025 04:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764389609; cv=none; b=RnckWRbw+XAD2OQcxsye+yxU0K1+bZO/bYngkuuoUX4jjddHH1WM3j80t2KTJ1V+NM5+zMIwSr35h3aqjnw04/lIAScqM3Z2SZlHszUHWS8q5mSP5dVfllvg2RNJMoFJ/mktA2RHs6hALNbf4u8OuMJ3J+ExcQFZJoclmFYxCFQ=
+	t=1764389731; cv=none; b=YzZs/kttzhlkrOlOcDJXgSNNG/SS/evUeL0/oVzSZMt2aHh2UOH4cJYTmNtgQo5gm39XhL05ksmpIeg70Nfk6Rxrw0ilNPcg0jxXsdaRJUGZAChieTksBIp/NamFnsyCZ2sWY1HFrAVuD+kEJhoM75SDRBId337dPWaHh/C/xrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764389609; c=relaxed/simple;
-	bh=16CWBlAjMnObwnvBeLCcvrZwKLKX1E3MHiTXKgkowVc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TLjfF9tyYTdoruVb79QjE/L4MFnLhbs9iGRu6KLyheamHxWE5sjPBdMDeQln7m26xz4rDmcBXf25x4bC9ZBevp4Tb1zeOjYOHKTkm5RTUVcBAeRws8XwlyYUVznwooY2FZ+GB67UMmhrZD+ITAOVCA7J113gzp41hJrRiYw9YPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9zs4T6/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764389731; c=relaxed/simple;
+	bh=8WexRr1xKoDFh0h6dwKD2VYjaGgi8tX/eVJj97/fOGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nM0ztH1RvMky7kL+DiKIlN902F2r9TcrtKGfEqNy2IxJGkCLJ9IOvGVWn6yjygW/SWOzGZgtcoaGQiRMdB+Cyiqf6d2c63W5i5gRoI3iA7GWgCFEMX6Esr77hG4pyzuotaL+PVpNY9jJav99/pa69Tf7t9Q0brrYszI8YtvQIVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgtTFEct; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9zs4T6/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FF0C4CEFB;
-	Sat, 29 Nov 2025 04:13:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgtTFEct"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D0FC4CEF7;
+	Sat, 29 Nov 2025 04:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764389609;
-	bh=16CWBlAjMnObwnvBeLCcvrZwKLKX1E3MHiTXKgkowVc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=u9zs4T6/2ZR7ree9yxOE9MV/kx2v+QiYIvGzc8lI3rOt92Nc/Ip7arN6zQf11N+4F
-	 UnEnEjkNIbJz4hMblezjNwgof9PTL96e6l2grFuULwuN1z/XHo9jLJ9Yyi2F9UEaAX
-	 nOE5rVD/ssl8iI75mSAvM3t3ISj+f/muX3Y99FPHhbX41mpngYU29MI3rtJI1VLpPq
-	 FCxpOjLS7Ugez/v8KXauwl8beXoFo8cXRPDBQER2Joeq3Iis79TVkRp8Z5tmO60rzD
-	 za3wIt7jCL1MDBeWMQp5z+s/lCbD2DVcm2Gbs55Wi7+cQILNToqUIU1NBTXA39pMme
-	 tCfgxDJ7mim2w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 01B34380692B;
-	Sat, 29 Nov 2025 04:10:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1764389731;
+	bh=8WexRr1xKoDFh0h6dwKD2VYjaGgi8tX/eVJj97/fOGY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OgtTFEctARdVOawgLjHO5RGFxmT3IKYXA4HCj5WnCeoyn1Kdg2XIiT3/C5qJxPQWA
+	 BvbaGzh1USIt+f8jGv77JjW9oi3RgqZooQOZCk4tdOQ2ff/4vMZAE4eVdXNyeF/pAo
+	 bGLjJ5twNPf5JMO6kAI+wOTfK1pAchA5t4Baz4KMBX0s8VtjIV5A3J1okp8CKiYJUs
+	 YZ1clarns9/IrIaE1bt7VTXtr/rJjG/2RRjcNWd88rjjdHbuiRN2hNQsvXj6bjeShM
+	 uOlW4tRWOeN6pCfOKesxqEpRV/G0LlbxjmlCUURf9TqM9NrvppNXe0sTTz26M1wslD
+	 6bsT5q1ykp7NQ==
+Date: Fri, 28 Nov 2025 20:15:30 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ fw@strlen.de, horms@kernel.org
+Subject: Re: [PATCH net-next 11/17] netfilter: nf_conncount: rework API to
+ use sk_buff directly
+Message-ID: <20251128201530.10e5c3c2@kernel.org>
+In-Reply-To: <20251128002345.29378-12-pablo@netfilter.org>
+References: <20251128002345.29378-1-pablo@netfilter.org>
+	<20251128002345.29378-12-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] net: broadcom: migrate to
- .get_rx_ring_count() ethtool callback
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176438943073.896171.9965500132545324533.git-patchwork-notify@kernel.org>
-Date: Sat, 29 Nov 2025 04:10:30 +0000
-References: <20251127-grxrings_broadcom-v1-0-b0b182864950@debian.org>
-In-Reply-To: <20251127-grxrings_broadcom-v1-0-b0b182864950@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, opendmb@gmail.com,
- florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 28 Nov 2025 00:23:38 +0000 Pablo Neira Ayuso wrote:
+>  static int __nf_conncount_add(struct net *net,
+> -			      struct nf_conncount_list *list,
+> -			      const struct nf_conntrack_tuple *tuple,
+> -			      const struct nf_conntrack_zone *zone)
+> +			      const struct sk_buff *skb,
+> +			      u16 l3num,
+> +			      struct nf_conncount_list *list)
+>  {
+> +	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+>  	const struct nf_conntrack_tuple_hash *found;
+>  	struct nf_conncount_tuple *conn, *conn_n;
+> +	struct nf_conntrack_tuple tuple;
+> +	struct nf_conn *ct = NULL;
+>  	struct nf_conn *found_ct;
+>  	unsigned int collect = 0;
+> +	bool refcounted = false;
+> +
+> +	if (!get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted))
+> +		return -ENOENT;
+> +
+> +	if (ct && nf_ct_is_confirmed(ct)) {
+> +		if (refcounted)
+> +			nf_ct_put(ct);
+> +		return 0;
+> +	}
+>  	if ((u32)jiffies == list->last_gc)
+>  		goto add_new_node;
+> @@ -144,10 +194,10 @@ static int __nf_conncount_add(struct net *net,
+>  		if (IS_ERR(found)) {
+>  			/* Not found, but might be about to be confirmed */
+>  			if (PTR_ERR(found) == -EAGAIN) {
+> -				if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
+> +				if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+>  				    nf_ct_zone_id(&conn->zone, conn->zone.dir) ==
+>  				    nf_ct_zone_id(zone, zone->dir))
+> -					return 0; /* already exists */
+> +					goto out_put; /* already exists */
+>  			} else {
+>  				collect++;
+>  			}
+> @@ -156,7 +206,7 @@ static int __nf_conncount_add(struct net *net,
+>  
+>  		found_ct = nf_ct_tuplehash_to_ctrack(found);
+>  
+> -		if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
+> +		if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+>  		    nf_ct_zone_equal(found_ct, zone, zone->dir)) {
+>  			/*
+>  			 * We should not see tuples twice unless someone hooks
+> @@ -165,7 +215,7 @@ static int __nf_conncount_add(struct net *net,
+>  			 * Attempt to avoid a re-add in this case.
+>  			 */
+>  			nf_ct_put(found_ct);
+> -			return 0;
+> +			goto out_put;
+>  		} else if (already_closed(found_ct)) {
+>  			/*
+>  			 * we do not care about connections which are
+> @@ -188,31 +238,35 @@ static int __nf_conncount_add(struct net *net,
+>  	if (conn == NULL)
+>  		return -ENOMEM;
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 27 Nov 2025 02:17:14 -0800 you wrote:
-> This series migrates Broadcom ethernet drivers to use the new
-> .get_rx_ring_count() ethtool callback introduced in commit 84eaf4359c36
-> ("net: ethtool: add get_rx_ring_count callback to optimize RX ring
-> queries").
-> 
-> This change simplifies the .get_rxnfc() implementation by
-> extracting the ETHTOOL_GRXRINGS case handling into a dedicated callback,
-> making the code cleaner and aligning these drivers with the updated
-> ethtool API.
-> 
-> [...]
+The AI review tool points out this an another direct return missing a put(ct).
 
-Here is the summary with links:
-  - [net-next,1/2] net: bnxt: extract GRXRINGS from .get_rxnfc
-    https://git.kernel.org/netdev/net-next/c/bba18f3ba7cc
-  - [net-next,2/2] net: bcmgenet: extract GRXRINGS from .get_rxnfc
-    https://git.kernel.org/netdev/net-next/c/335d78c6161b
+Similar issue in count_tree(). Please take a look and follow up where
+appropriate:
+https://netdev-ai.bots.linux.dev/ai-review.html?id=348ddc42-0343-4832-9047-0c62767f074f
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> -	conn->tuple = *tuple;
+> +	conn->tuple = tuple;
+>  	conn->zone = *zone;
+>  	conn->cpu = raw_smp_processor_id();
+>  	conn->jiffies32 = (u32)jiffies;
+>  	list_add_tail(&conn->node, &list->head);
+>  	list->count++;
+>  	list->last_gc = (u32)jiffies;
+> +
+> +out_put:
+> +	if (refcounted)
+> +		nf_ct_put(ct);
+>  	return 0;
+>  }
