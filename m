@@ -1,32 +1,32 @@
 Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642A825785E
-	for <netdev@vger.kernel.org>; Sat, 29 Nov 2025 19:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED0326E711
+	for <netdev@vger.kernel.org>; Sat, 29 Nov 2025 19:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764446051; cv=none; b=hViTeHxfMU+iDNLWt8A4vI81lOgpQiHDBdvejupjKsWSwOd6x/7n1TgoRJ5yUvid6dw0kXDZuadtngZ0UKad20xcwyRLZk3ubfVhbvGbjmXRPOGU11op8UC6B6YKZO8bifHNe9CUZlqrwJrJcrT7c5H7TKpQHGEWk2Fgd2r2+Gs=
+	t=1764446052; cv=none; b=gjsLUyByOSCWnvYjerF2w64BNudyXgCNTBRNNVZY4phNSJ+NexYDc5kW5luPuEsDx1OeTpRtEsstOC+tuCg8UCBJi85idqOFQJpX7IEyHqcvyHoqhB7DTG4NysTCx1A/QFf765RdLBwEPfUtAN6x3RwY0kHfBw+z/gFdyDVDvtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764446051; c=relaxed/simple;
-	bh=E7cjfeGaOHv4Mf5QCfOdlz3oaLPwFFV3vSARJ4ltYDM=;
+	s=arc-20240116; t=1764446052; c=relaxed/simple;
+	bh=AmKvzSrZMLoYFXE1Fy5H9Wnevpnwg5FbcPZFBZB4YEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBte+MKuCTH59FucQljiG5wK+QDF35nKjE+Z+gMLGU+lkbV6OdNi2cdx8Yz9X0V+YYv+XETTFkE5dnogCmjddRrwPaU86rDM3mIyVnmFoAU6f7LuGpZvO/BiO8vK/qLEhoCyb1LvhBerJVfN04Dl9dxKuRcWlVWqZ+caX7JRCWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DE7BHWxg; arc=none smtp.client-ip=95.215.58.189
+	 MIME-Version; b=KOX2xW01iLmLrQNkr9fE5t/Sabpl/3RMQYbd11xcHCIIiMHXm7g6NoMSHL0Qu9Ad8nIRH/KOP2eu8I57Sbnqv+C110z+tu4mCD/vbTONzkPph4oBxwvWpMKqv1MRMhuKQMIE0JMICHMpoANYEcMqBeij+SAQ2TK7BAjbMQ6l9JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yh/JE6to; arc=none smtp.client-ip=95.215.58.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DE7BHWxg"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yh/JE6to"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764446044;
+	t=1764446047;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wge4fy7tJX3DK8sLoAtd+IXpgr85J4lMoyiSBOOzL/k=;
-	b=DE7BHWxgamjq/D26yBEFyXwU0/a8V5jqz73qiecNHofsv6IRUxMg1/3nmh4qyoM02JpJXH
-	OhPLMwCzGM2KZC7CfE5f3EICOG/dEKySjPXYQu5wq12uBwihfS87bC/7wwKj9hbq60tUv0
-	Df7b8No20NejC8BS5kY6PPEZ5sKezO4=
+	bh=CqKCE32SGizJk4C0icBjZnPZNNH7EEizmFaB3Bn5xHs=;
+	b=Yh/JE6to4IG0omnfuK9kTOroC1cADuONg1NTCw7jZV7/d4mJ5zCIlQB9feqjiWm4Gv9sgh
+	gmxCMTVDKbmy5x5zyQ3jNUvSkJRYDYvx7kCBhIQogs76JiYTMpmOXOkuQlkozZncIY8cmQ
+	KcZZwvSOp3/cu1r76PkxpRTl/hQ2kXo=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Russell King <linux@armlinux.org.uk>,
@@ -43,9 +43,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	Kory Maincent <kory.maincent@bootlin.com>,
 	netdev@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v2 1/4] net: phy: micrel: improve HW timestamping config logic
-Date: Sat, 29 Nov 2025 19:53:31 +0000
-Message-ID: <20251129195334.985464-2-vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v2 3/4] net: phy: microchip_rds_ptp: improve HW ts config logic
+Date: Sat, 29 Nov 2025 19:53:33 +0000
+Message-ID: <20251129195334.985464-4-vadim.fedorenko@linux.dev>
 In-Reply-To: <20251129195334.985464-1-vadim.fedorenko@linux.dev>
 References: <20251129195334.985464-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
@@ -57,68 +57,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The driver was adjusting stored values independently of what was
-actually supported and configured. Improve logic to store values
-once all checks are passing
+The driver stores new HW timestamping configuration values
+unconditionally and may create inconsistency with what is actually
+configured in case of error. Improve the logic to store new values only
+once everything is configured.
 
 Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- drivers/net/phy/micrel.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/net/phy/microchip_rds_ptp.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 05de68b9f719..1ada05dd305c 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3157,9 +3157,6 @@ static int lan8814_hwtstamp_set(struct mii_timestamper *mii_ts,
- 	int txcfg = 0, rxcfg = 0;
- 	int pkt_ts_enable;
+diff --git a/drivers/net/phy/microchip_rds_ptp.c b/drivers/net/phy/microchip_rds_ptp.c
+index 4c6326b0ceaf..6a7a0bb95301 100644
+--- a/drivers/net/phy/microchip_rds_ptp.c
++++ b/drivers/net/phy/microchip_rds_ptp.c
+@@ -488,9 +488,6 @@ static int mchp_rds_ptp_hwtstamp_set(struct mii_timestamper *mii_ts,
+ 	unsigned long flags;
+ 	int rc;
  
--	ptp_priv->hwts_tx_type = config->tx_type;
--	ptp_priv->rx_filter = config->rx_filter;
+-	clock->hwts_tx_type = config->tx_type;
+-	clock->rx_filter = config->rx_filter;
 -
  	switch (config->rx_filter) {
  	case HWTSTAMP_FILTER_NONE:
- 		ptp_priv->layer = 0;
-@@ -3187,6 +3184,18 @@ static int lan8814_hwtstamp_set(struct mii_timestamper *mii_ts,
+ 		clock->layer = 0;
+@@ -518,6 +515,15 @@ static int mchp_rds_ptp_hwtstamp_set(struct mii_timestamper *mii_ts,
  		return -ERANGE;
  	}
  
 +	switch (config->rx_filter) {
-+	case HWTSTAMP_TX_OFF:
-+	case HWTSTAMP_TX_ON:
 +	case HWTSTAMP_TX_ONESTEP_SYNC:
++	case HWTSTAMP_TX_ON:
++	case HWTSTAMP_TX_OFF:
 +		break;
 +	default:
 +		return -ERANGE;
 +	}
 +
-+	ptp_priv->hwts_tx_type = config->tx_type;
-+	ptp_priv->rx_filter = config->rx_filter;
-+
- 	if (ptp_priv->layer & PTP_CLASS_L2) {
- 		rxcfg = PTP_RX_PARSE_CONFIG_LAYER2_EN_;
- 		txcfg = PTP_TX_PARSE_CONFIG_LAYER2_EN_;
-@@ -5051,9 +5060,6 @@ static int lan8841_hwtstamp_set(struct mii_timestamper *mii_ts,
- 	int txcfg = 0, rxcfg = 0;
- 	int pkt_ts_enable;
- 
--	ptp_priv->hwts_tx_type = config->tx_type;
--	ptp_priv->rx_filter = config->rx_filter;
--
- 	switch (config->rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		ptp_priv->layer = 0;
-@@ -5081,6 +5087,9 @@ static int lan8841_hwtstamp_set(struct mii_timestamper *mii_ts,
- 		return -ERANGE;
- 	}
- 
-+	ptp_priv->hwts_tx_type = config->tx_type;
-+	ptp_priv->rx_filter = config->rx_filter;
-+
  	/* Setup parsing of the frames and enable the timestamping for ptp
  	 * frames
  	 */
+@@ -553,7 +559,7 @@ static int mchp_rds_ptp_hwtstamp_set(struct mii_timestamper *mii_ts,
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	if (clock->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
++	if (config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
+ 		/* Enable / disable of the TX timestamp in the SYNC frames */
+ 		rc = mchp_rds_phy_modify_mmd(clock, MCHP_RDS_PTP_TX_MOD,
+ 					     MCHP_RDS_PTP_PORT,
+@@ -587,8 +593,13 @@ static int mchp_rds_ptp_hwtstamp_set(struct mii_timestamper *mii_ts,
+ 	/* Now enable the timestamping interrupts */
+ 	rc = mchp_rds_ptp_config_intr(clock,
+ 				      config->rx_filter != HWTSTAMP_FILTER_NONE);
++	if (rc < 0)
++		return rc;
+ 
+-	return rc < 0 ? rc : 0;
++	clock->hwts_tx_type = config->tx_type;
++	clock->rx_filter = config->rx_filter;
++
++	return 0;
+ }
+ 
+ static int mchp_rds_ptp_ts_info(struct mii_timestamper *mii_ts,
 -- 
 2.47.3
 
