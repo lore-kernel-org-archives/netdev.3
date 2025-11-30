@@ -1,131 +1,88 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BF31B87C9
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 14:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A037936D51D;
+	Sun, 30 Nov 2025 15:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764514589; cv=none; b=Jw0d8D1i6U6DKDPHJwu7h0JMmygZoGYq+Sn7rGjNPzZcM0yAPgI8ORsJTucQR7LC/Eo014IYIjDVMQD+IC9+mJuJh19CutjQKe3iG1wO9ZClIAvtUdUC4MNUmnmxs/kSLdYRaxdrp7e9ruxWOioQOdP2ZRmiGz0FzHpF4SLu+0k=
+	t=1764515199; cv=none; b=Cpz+s2bAwQOpOBGwWDLRz3C9VhWqABDqs72EIlE5nf4kbfgWmlC6vMIVwnBCmSgxAekxQfh7O5yWwRNh3/91LNejdjohfrY4FQi8X2Wr83E9grOTiDxT5xBI6R2+9t9joTnCXexdxdT9oVnhGm40pmFTJ0cC9XMzfEHQvZG+uVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764514589; c=relaxed/simple;
-	bh=GR6tHVaNjyWFmD9BnnZ/bbyTDVzDet1oGY/woy6wm/I=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=mcpbN1KSKgZ9g0RmYtk0Dzgn1XveDxQdxzX4L3AwIjCPPwEU8QQRQhTTpp822KyKERTHAjpGLAJQ3KxYkN1HGLgEh+pi/ejj4Cz6iIL2Egw3Fz+R4fuBpTuhDcGgp7GOzzFuMEhEsJ3R/wfHy+1WhkJ+eCTvlZFUChjUnAJvpG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dXKYdgPn; arc=none smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764515199; c=relaxed/simple;
+	bh=kxzlO8QnX9kMXsyJ8mRRd9RYkVk15ZtIoOfMniqz8YU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LF0S2Dtp/Lz1VLDw8ZlERtkn0FpdOqa3oosQ4lBsIsCsNGDN5Bp+rk2TfBPenxQNyBVUDc3lkwfQrzZVQmMKW04JE6oMVHF2MYP4zd/1D1E+SqiuFFNFmySqMjg0n4piyx8hxgMkJbS8QZ2T+Ni13aG5WhEzG+VgJq1qBK3LHUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SOQC3lbi; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dXKYdgPn"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-640c857ce02so2874906d50.0
-        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 06:56:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764514587; x=1765119387; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1VeJ8/WfZFL17L4UeNYaUU9mvWGExfRheoQkSxnLxjw=;
-        b=dXKYdgPnPeWFqNPdyrmIijzOLgeeWxkKTQpe05+k2OBe23Ft3q6dTfGa3dZt8Pid9x
-         IKZb5qbWmtQ1A8YWeca2TyuidGOm+aU8WByUwI/isZ6Z5a70StkZ2MJlGCVjfhpu8Io4
-         PQsMsourjeYpEujsZEuF+mNn78g4CR469TSPQOjIKpcuFHb1S7SpoWEJhOS2+2/+49XX
-         S20ThOb7VhLDkxLt6OpnEtgDSyf1QjkTapyP5R9UWcUooq2y9NLTZx52RUYLuZ1zvDo8
-         CbdlyYx14Dpz9w44BVkt1PpdVvT+wc7vUGcgAZJhwmsJfHQUjFYxtcMnwLFiuzvkyn9d
-         O8/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764514587; x=1765119387;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1VeJ8/WfZFL17L4UeNYaUU9mvWGExfRheoQkSxnLxjw=;
-        b=QVyt/vAdmWs1ilwVYGLuiChw/85kkdI0zSSiqjfthfNzxR0iLhqH3dfrfhYiOtIV8m
-         qzlDzZrRx3gCHuVjcLMm6WpFFMxfLNrnKq6ecDwgxquYPr8TrKdjggwJHkci25p2Qe0r
-         F2lOeR+dh+TEJNBcdRkvOYF6xv65zJlBKKV+wWcgOtc6zI7Cr7IjqSMMza4gXwda/eP/
-         CvdPK/4mWcGU+sB77wIxE/o8quKM7aD1MgubupIoTUjETVK/fF0kD1ZTngrZOcDR75gU
-         4SoNn07Ey17QWnI3F93m1WB5AHGZct64b6ndh7/o7b1AZtFJIURQXq+lzFc0oar4q6je
-         TayQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdr4GmWd+MCdHTs7z8wpJpARbh28m1Mkoq59xgdAhBxlLuQhHcNk9uz5xJVV0VigJQtYVR0XE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDkA9ylZ9v2dBWnQQMO3Pbh1wJv+kZlieIJxzCftmClSTIuWG5
-	segnVQ3sXmC6t1LFGDu9mSki2gdI/uZA7bhCFcKk8QcsOmy1XuC79qQc
-X-Gm-Gg: ASbGncujldd/e7Bd4awPj7puYuwx/ETzI0n37oYjxdJVGyPwY9tB0WKRG0p+CUp8+w4
-	DR1fa6okYMaRrs+7eTLkb+eHukmvXTDrc/tzsknqGl+whKTEF1mbmmA/8BTEyC01KH7a8q83r+8
-	f7uAbgQJP4+RLLSgb6W7H6GRRAZerMIuSRr+g10WI4+H+ShfbX1nTcINQtpJ8+ONxlSd7KU98/m
-	RZZf+ke5rwgHn/2vNqTvxP+nrRYIGYneswNrMS1GuN2ygp1Po8pK334c1+gM8NqdcsSvl9LpCWd
-	ODk05DxAiLLfJROPLbeDJmMk0aH1MZWu9+vBhRyyXuFIzOo1k2faT/H4oqlUS4BELQW2B4Cztm1
-	Hu2p1f9eGU7UBgwu5y3rRO10dQfEUfahOZ1CwzGKTIfvokZWYAzkkrZ5shtYUW+4JfN+LAk7sD3
-	ELCIjQ/yLYIXV+DfLPvP64Cjy1IF1ZUinMO9umc+Qy1h8/oNSgSa/pA4HppleDke4/+bs=
-X-Google-Smtp-Source: AGHT+IFPTqVQtufaeZBavUnDte8BHq8WTWpsbSj/iVUJTbGeRuuu6YTMufZeCzPk/5Xh4ok7CA1Nsw==
-X-Received: by 2002:a05:690e:10c9:b0:641:f5bc:698a with SMTP id 956f58d0204a3-64302b1a261mr18403516d50.70.1764514586729;
-        Sun, 30 Nov 2025 06:56:26 -0800 (PST)
-Received: from gmail.com (116.235.236.35.bc.googleusercontent.com. [35.236.235.116])
-        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-6433c07530dsm3706754d50.7.2025.11.30.06.56.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 06:56:25 -0800 (PST)
-Date: Sun, 30 Nov 2025 09:56:24 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: davem@davemloft.net, 
- netdev@vger.kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- andrew+netdev@lunn.ch, 
- horms@kernel.org, 
- shuah@kernel.org, 
- sdf@fomichev.me, 
- linux-kselftest@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.3877052beef72@gmail.com>
-In-Reply-To: <20251129173851.56cf3b18@kernel.org>
-References: <20251128005242.2604732-1-kuba@kernel.org>
- <20251128005242.2604732-2-kuba@kernel.org>
- <willemdebruijn.kernel.468ae2cb7a74@gmail.com>
- <20251129173851.56cf3b18@kernel.org>
-Subject: Re: [PATCH net-next 2/2] selftests: drv-net: gro: run the test
- against HW GRO and LRO
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SOQC3lbi"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dK9NT6RXXz9t0f;
+	Sun, 30 Nov 2025 16:06:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764515193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EyJhDAbMx6xwxzSdUmwUcgyIzZx8XzLfe0/ngP8XM3k=;
+	b=SOQC3lbibkVKt2Da2RTZHQWeEEA0wSrst2Cg/Qr92V237NdFX8b6CMrvAHuzsDy3/Mj2Qu
+	i2oCDLi/aGI3GDep5tIOEaocoY4JAvbJKRDCK+cWNiy8/hkJUtpBB7F8t9DabXDVrNyOvC
+	rjkmRLkcV6FY5x7D0UX2g4WXvb93oB2cpi0wdTbxp2npc1JdTjDdUHANRB/T2bHchDvjR1
+	AoAyG2K+c17/g+UKRYNYHRDp38bP9Mb23/3HXG4rFtK3kX8ptMX/EwcJxlXU49Fjzp3Bfr
+	Hv+RZqnr3jG0fC+P2QJdSXf9/pIWS8xvYwi217kow2xSZdux3PIMKR9HERNDhA==
+Message-ID: <a861aa24-e350-4955-be5a-f6d2f4bc058f@mailbox.org>
+Date: Sun, 30 Nov 2025 14:41:10 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Subject: Re: [net-next,PATCH 2/3] dt-bindings: net: realtek,rtl82xx: Document
+ realtek,ssc-enable property
+To: Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
+ Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, devicetree@vger.kernel.org
+References: <20251130005843.234656-1-marek.vasut@mailbox.org>
+ <20251130005843.234656-2-marek.vasut@mailbox.org>
+ <f3046826-a44c-4aa9-8a94-351e7fe83f06@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <f3046826-a44c-4aa9-8a94-351e7fe83f06@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: c5ac8564a35001ead55
+X-MBO-RS-META: mqc4gudz7d3qrkyuq1jhoygz8frtgxko
 
-Jakub Kicinski wrote:
-> On Fri, 28 Nov 2025 15:42:40 -0500 Willem de Bruijn wrote:
-> > > +    elif mode == "lro":
-> > > +        _set_ethtool_feat(cfg.ifname, cfg.feat,
-> > > +                          {"generic-receive-offload": False,  
-> > 
-> > So GRO off disables HW_GRO, but not LRO? That difference is behavior
-> > is confusing. Could we still see this as a regression and make the
-> > ethtool HW_GRO feature equally independent from SW_GRO?
+On 11/30/25 9:20 AM, Krzysztof Kozlowski wrote:
+
+Hello Krzysztof,
+
+>> diff --git a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+>> index eafcc2f3e3d66..f1bd0095026be 100644
+>> --- a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+>> +++ b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+>> @@ -50,6 +50,11 @@ properties:
+>>       description:
+>>         Disable CLKOUT clock, CLKOUT clock default is enabled after hardware reset.
+>>   
+>> +  realtek,ssc-enable:
+>> +    type: boolean
+>> +    description:
+>> +      Enable SSC mode, SSC mode default is disabled after hardware reset.
 > 
-> I couldn't convince myself that it's justified. Of course it would have
-> made testing a lot easier. But apart from that - what's your reading of
-> the status quo? Working backwards from were we ended up (and I
-> haven't dug into the git history) I'm guessing that LRO disable is used
-> to prevent changing geometry of the packets. GRO would presumably be
-> disabled when user knows that it will be ineffective, to save the cost.
-> Or when some portion of the stack (XDP?) can't deal with super frames.
-> 
-> If those are the reasons, practically, I don't see why user would want
-> HW GRO without SW. Ever since we allowed SW GRO to re-GRO HW GRO'ed
-> frames it's always better to leave SW enabled. HW leaves a lot of
-> aggregation opportunities on the table.
-> 
-> I concluded that changing the current behavior would not help any real
-> life scenario, just testing. LMK if you see one or the inconsistency
-> is a big enough reason.
-
-I think that's fair.
-
-But from reading the code I don't see how disabling NETIF_F_GRO also
-disables NETIF_F_GRO_HW. And indeed I just tested on one (admittedly
-not latest upstream) IDPF driver and it does not.
-
-Also, the XDP limitation is perhaps vestigial and could go away, since
-generic XDP appears to support XDP frags (AKA multibuffer XDP), as of
-commit e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in
-generic mode").
-
-
+> I don't want more SSC properties. We already had a big discussions about
+> it - one person pushing vendor property and only shortly after we learnt
+> that more vendors want it and they are actually working on this.
+What kind of a property would you propose I use for this ?
