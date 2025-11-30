@@ -1,27 +1,27 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAA223C39A
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 07:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2249ED27E
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 07:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764488965; cv=none; b=p6U447+sc2W3o1py6UjIlHQ2f2hIKjzyY5p8htVnTxGvwcYVNFjnxuy7OlNSZhwtsuY1ZGNAPasoC+i86EEkm9QDvmp2NYq1ycBIEVGIUG1IlCZjEiNTGp+uio2p/lON8Lw3E4urXBllp6HMkrXuBl7TC/YhZ3CFO7fVgu4Cjzo=
+	t=1764488965; cv=none; b=s6YaJAlbS2nJkwF+2dqeDOOVmd/e3Twt468OBQy7R3saHy7sRPBmbvkg8XWkFTnjkjMUOCObWrRRkAtbwAVPP1MKb8Ob833fSIdM5f3T1rfddnZV6D1MDG3LK+xs/RSilGCK6ndQ/A2mE/GEXh8kNWpqPzFWWFt1nttjMGm3R7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764488965; c=relaxed/simple;
-	bh=8vEsK/XbZ2MJRpQuHS4XQXwzf5SUGVIRFtaOkxgT2LY=;
+	bh=DHpD9bb1h3vp1g+XeQh/hpEhuKm5Pv+vFfPtg4Urudc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XIKuc7pZWiUePhEEQ0I8pGQCIKg4d611E0/tEVoMu6AVcpw8ppL8yGtuHpLCcz3oGDbi9bo3gmD4+sENWLatmY49ATokYdSsoOLCI9RLleq9LA93vFVBCFqi5D8+52omYKZtqUvQ1EqYSoHr3sJDFPlVbX3Zi65iKtRwHYTz1mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.206.16.166
+	 MIME-Version; b=nKDaKLUwlqrU4TFLEhAx0fDJNyRChLf46FOZAQdR8TUP+UtVGLKAftWsNLqojpQzj/2J5dJec6nz6+iWif4bvbE3oexDYCdZpHW/T8I1uUSeH38449GixvWw1CGFF+F2T7FgFavi3/mma6ZIquDgUWktN7a9yTM9mWEURD0eho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=54.204.34.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
-X-QQ-mid: esmtpsz20t1764488934tec0ee2c9
-X-QQ-Originating-IP: LNOty+hlswd9Q74lexwp68gzV7ECCaMLDg8VF0aHkK8=
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
+X-QQ-mid: esmtpsz20t1764488944t4c9b4f18
+X-QQ-Originating-IP: NLjzU+xxJnLRJlln/Emw3qZ3Dj9C6UhQm1Q82jzb0GA=
 Received: from MacBook-Pro-022.xiaojukeji.com ( [183.241.14.219])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 30 Nov 2025 15:48:53 +0800 (CST)
+	id ; Sun, 30 Nov 2025 15:49:02 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6046624825331481328
+X-BIZMAIL-ID: 12441560744698570349
 EX-QQ-RecipientCnt: 13
 From: Tonghao Zhang <tonghao@bamaicloud.com>
 To: netdev@vger.kernel.org
@@ -37,9 +37,9 @@ Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH net-next v3 1/4] net: bonding: use workqueue to make sure peer notify updated in lacp mode
-Date: Sun, 30 Nov 2025 15:48:43 +0800
-Message-Id: <20251130074846.36787-2-tonghao@bamaicloud.com>
+Subject: [PATCH net-next v3 4/4] net: bonding: add the READ_ONCE/WRITE_ONCE for outside lock accessing
+Date: Sun, 30 Nov 2025 15:48:46 +0800
+Message-Id: <20251130074846.36787-5-tonghao@bamaicloud.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20251130074846.36787-1-tonghao@bamaicloud.com>
 References: <20251130074846.36787-1-tonghao@bamaicloud.com>
@@ -52,40 +52,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: MOfwHzgDpc8ILM8KD/PYw+xt/RluraSRUS/7skYKt41xT2kqLnyeaS+h
-	mKtan85KpXbhBBYomPFUtlXnP7qMw7qhsDDKD08+Tj/bd53mnuOXhRGYmyZCgXm4N3A9Fhk
-	IYkdUbAKxMQgtdJP9dh7gpwW+R/8KjPZ0w5yWYUUjkMO4HGcdaqtc8hsjwfUHk9mHc9JNja
-	XjMNp8wejw3HDydwPrnZ8r0XLv+2r4stjx4Ei1Mau/otRlNLUgLis9nrsXa5YfzaqtyTe6O
-	sPStu38x6owAcg6ZL5UU5TLjWHzVbRNKmozv5vzg0qPmsIGa1F2uu3FlD+F55PlDzk549lG
-	g+5gNyxFkUh+KQ3vErrlxrzkJdCq8AETsA9Y58g4V+F3kkYE8To0GjIlnZKNoTlhUP8LEai
-	zeXF2ueMZa660YhzzeHVY2llRTlmjGnmKmTPT9bHTPF5BCELLe7nCy38mo3eAxdg8Zg+CN7
-	q6aZH6WL6yufHbQtVigQqK/WbieRrLGWfee3Ld6jnmksUSZPnb8umVK4dN3IRD0rMCs2oOy
-	IEUoQgkNh9P4F3vyPNXS8XoJmPFo2HtgFJJ/wRcRzvZ9bvai4HhRdamdBpO534c5Px58Six
-	twJKbYT+Us8HN+V1K1EbAhP+tvcx1Anog/hhENbpArguFcl3s/C2HzJ1UmVvavzkNrPRFNm
-	QlCgsWtN1CKBSsjrJwM77ZZ4O2hTjHMoXIqy8Jaa2yQsvXf8r++4lP5NPgR1C9JeqFXuTKv
-	5lAHXOBG0ZFlj5Z4+6lZpws/lvMRdGo+43PVLOWAuiZe5JT3dClOh4HyOazOtVPn2+Y50zW
-	lpBAi5dxURSR3471Bk4MclhppXBf+QqSMk6U5sjtj3LQo6rm/00Bk5D/RzK0g2jCZinygJy
-	tbaOpzx5fpgFzQHtKoXhxJoqiKnLk/GWEtp3772bj9Lhhbt1j4e4R8Z5145LHVR7XFaewuI
-	jwNRO8tNvjYW0Ydy1OC7ZBcp3DRMiAXjeN7kh1ERF3wvvL6bPThNMP6wJvcWvjmr5V3CmSh
-	dtwxakUIdYvRrYvui0dKS/jXKZJBMsDzkEV/Qrjw==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-XMAILINFO: MDQLqEGrgYqnqvugY2B0Na2LLvDEcqREINzqrsMnkkfuoJAjH3RW6aE/
+	v1DKTqZDAA3j0drvuK9bPb4t783i/7QBKA82PLywPcUpA8423jhuaaCtwN66c8Mxt5SAsg4
+	rTz4/0ja2ovn8//oztphQlW1Y8KFKSuUXmrzVogOg+Yc5kHE+XlbpK//+h7J7rfDNiYaJ69
+	aOWNeu3n9hCNSowwysNQIkmZkUfSld8D30ALfe/3eJjhQa3KZfMMaajA8hglg4tpMHskAYt
+	jYAJj3Uswbynn/uBf8b4w+Ahs5bujteUsS3LC8UgNEq2Te0yhOnjRZSPneFcSUFCuxR9Sk8
+	9bdJHA+lzdiPiI/NPrnP/cJPdjXyBajm9qYjn8mnRRHVwBG2ndGXhgmYH/WmgSqhqOY8rh/
+	gj8MeP1biWP+GYZntBOIWGiIAsrV6YW8sNp7n8xIu+3a+Ge5TQcfSEV4MoatXirKJZkZW4w
+	Lml+uCOPbO8hulvoMOr7jaz7hmhh6pxVbdixWUPBjOtj/1Ou6+2ss00V7FAz88hCrRZErBP
+	mxJKIFEwZ87qEe7wNKP/nJImSyxqfVSs6svnfGZw8F/3KSRBg+yhVaxm+AKZF+PA2i5bDfk
+	b7K+W5/SDAE1kimFClvuhU2x1qmx1FEiL7jFIJbdLHfdR8oBfhpleTbJNJLXODmHln5mQ+j
+	AHQoiac4lKDHK3HhyCLREFRazz8ar/wc7mMwgUopYUrwl6yLMacX71aKabD/3dVPtHAnYcy
+	90+QTz6Xf6gMJbNVjUGjXxopFVZ89ql5BB/o+tJ9pKZ8r2++4hfkiT5QflnIEcGvXblzejX
+	4RuXNBF7otvHP4i0pGHgsCuz+I9JzofRTcJI0DFhZoUksUovOxpG+O6e/xIhmCL/c6sB3lw
+	RAX1tadH7/jlES2KRMHgDjqx9JeIlKP73Cf9P3ChERyt6mWF4pC/p/0tH4tUgus/k8so6bg
+	+U/X7Sb3hzLczbl1hNPLCsvKbumTNJ/Wms2RGeT6awxs0ccQ1DrGEAJq3PLUPSxcY8pZXcS
+	hYrMQVRQpoy1rzZwoGhfQjs9VeFXoV3kECCK3bP9LwX0zmWXz+U5ia8T1ztkv5Kc7OupQsY
+	iWrGKHVXZf+
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
 X-QQ-RECHKSPAM: 0
 
-The rtnl lock might be locked, preventing ad_cond_set_peer_notif() from
-acquiring the lock and updating send_peer_notif. This patch addresses
-the issue by using a workqueue. Since updating send_peer_notif does
-not require high real-time performance, such delayed updates are entirely
-acceptable.
-
-In fact, checking this value and using it in multiple places, all operations
-are protected at the same time by rtnl lock, such as
-- read send_peer_notif
-- send_peer_notif--
-- bond_should_notify_peers
-
-By the way, rtnl lock is still required, when accessing bond.params.* for
-updating send_peer_notif. In lacp mode, resetting send_peer_notif in
-workqueue is safe, simple and effective way.
+Although operations on the variable send_peer_notif are already within
+a lock-protected critical section, there are cases where it is accessed
+outside the lock. Therefore, READ_ONCE() and WRITE_ONCE() should be
+added to it.
 
 Cc: Jay Vosburgh <jv@jvosburgh.net>
 Cc: "David S. Miller" <davem@davemloft.net>
@@ -98,161 +88,47 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: Nikolay Aleksandrov <razor@blackwall.org>
 Cc: Hangbin Liu <liuhangbin@gmail.com>
 Cc: Jason Xing <kerneljasonxing@gmail.com>
-Suggested-by: Hangbin Liu <liuhangbin@gmail.com>
 Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
 ---
-v1:
-- This patch is actually version v3, https://patchwork.kernel.org/project/netdevbpf/patch/20251118090305.35558-1-tonghao@bamaicloud.com/
-- add a comment why we use the trylock.
-- add this patch to series
+v2: fix compilation errors
 ---
- drivers/net/bonding/bond_3ad.c  |  7 ++---
- drivers/net/bonding/bond_main.c | 55 ++++++++++++++++++++++++++-------
- include/net/bonding.h           |  2 ++
- 3 files changed, 47 insertions(+), 17 deletions(-)
+ drivers/net/bonding/bond_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index 1a8de2bf8655..01ae0269a138 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -1008,11 +1008,8 @@ static void ad_cond_set_peer_notif(struct port *port)
- {
- 	struct bonding *bond = port->slave->bond;
- 
--	if (bond->params.broadcast_neighbor && rtnl_trylock()) {
--		bond->send_peer_notif = bond->params.num_peer_notif *
--			max(1, bond->params.peer_notif_delay);
--		rtnl_unlock();
--	}
-+	if (bond->params.broadcast_neighbor)
-+		bond_peer_notify_work_rearm(bond, 0);
- }
- 
- /**
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 3d56339a8a10..811ced7680c1 100644
+index 025ca0a45615..14396e39b1f0 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -1195,6 +1195,35 @@ static bool bond_should_notify_peers(struct bonding *bond)
- 	return true;
- }
- 
-+/* Use this to update send_peer_notif when RTNL may be held in other places. */
-+void bond_peer_notify_work_rearm(struct bonding *bond, unsigned long delay)
-+{
-+	queue_delayed_work(bond->wq, &bond->peer_notify_work, delay);
-+}
-+
-+/* Peer notify update handler. Holds only RTNL */
-+static void bond_peer_notify_reset(struct bonding *bond)
-+{
-+	bond->send_peer_notif = bond->params.num_peer_notif *
-+		max(1, bond->params.peer_notif_delay);
-+}
-+
-+static void bond_peer_notify_handler(struct work_struct *work)
-+{
-+	struct bonding *bond = container_of(work, struct bonding,
-+					    peer_notify_work.work);
-+
-+	if (!rtnl_trylock()) {
-+		bond_peer_notify_work_rearm(bond, 1);
-+		return;
-+	}
-+
-+	bond_peer_notify_reset(bond);
-+
-+	rtnl_unlock();
-+	return;
-+}
-+
- /**
-  * bond_change_active_slave - change the active slave into the specified one
-  * @bond: our bonding struct
-@@ -1270,8 +1299,6 @@ void bond_change_active_slave(struct bonding *bond, struct slave *new_active)
- 						      BOND_SLAVE_NOTIFY_NOW);
- 
- 		if (new_active) {
--			bool should_notify_peers = false;
--
- 			bond_set_slave_active_flags(new_active,
- 						    BOND_SLAVE_NOTIFY_NOW);
- 
-@@ -1280,19 +1307,17 @@ void bond_change_active_slave(struct bonding *bond, struct slave *new_active)
- 						      old_active);
- 
- 			if (netif_running(bond->dev)) {
--				bond->send_peer_notif =
--					bond->params.num_peer_notif *
--					max(1, bond->params.peer_notif_delay);
--				should_notify_peers =
--					bond_should_notify_peers(bond);
-+				bond_peer_notify_reset(bond);
-+
-+				if (bond_should_notify_peers(bond)) {
-+					bond->send_peer_notif--;
-+					call_netdevice_notifiers(
-+							NETDEV_NOTIFY_PEERS,
-+							bond->dev);
-+				}
- 			}
- 
- 			call_netdevice_notifiers(NETDEV_BONDING_FAILOVER, bond->dev);
--			if (should_notify_peers) {
--				bond->send_peer_notif--;
--				call_netdevice_notifiers(NETDEV_NOTIFY_PEERS,
--							 bond->dev);
--			}
- 		}
- 	}
- 
-@@ -4213,6 +4238,10 @@ static u32 bond_xmit_hash_xdp(struct bonding *bond, struct xdp_buff *xdp)
- 
- void bond_work_init_all(struct bonding *bond)
+@@ -1204,8 +1204,9 @@ void bond_peer_notify_work_rearm(struct bonding *bond, unsigned long delay)
+ /* Peer notify update handler. Holds only RTNL */
+ static void bond_peer_notify_reset(struct bonding *bond)
  {
-+	/* .ndo_stop(), bond_close() will try to flush the work under
-+	 * the rtnl lock. The workqueue must not block on rtnl lock
-+	 * to avoid deadlock.
-+	 */
- 	INIT_DELAYED_WORK(&bond->mcast_work,
- 			  bond_resend_igmp_join_requests_delayed);
- 	INIT_DELAYED_WORK(&bond->alb_work, bond_alb_monitor);
-@@ -4220,6 +4249,7 @@ void bond_work_init_all(struct bonding *bond)
- 	INIT_DELAYED_WORK(&bond->arp_work, bond_arp_monitor);
- 	INIT_DELAYED_WORK(&bond->ad_work, bond_3ad_state_machine_handler);
- 	INIT_DELAYED_WORK(&bond->slave_arr_work, bond_slave_arr_handler);
-+	INIT_DELAYED_WORK(&bond->peer_notify_work, bond_peer_notify_handler);
+-	bond->send_peer_notif = bond->params.num_peer_notif *
+-		max(1, bond->params.peer_notif_delay);
++	WRITE_ONCE(bond->send_peer_notif,
++		   bond->params.num_peer_notif *
++		   max(1, bond->params.peer_notif_delay));
  }
  
- void bond_work_cancel_all(struct bonding *bond)
-@@ -4230,6 +4260,7 @@ void bond_work_cancel_all(struct bonding *bond)
- 	cancel_delayed_work_sync(&bond->ad_work);
- 	cancel_delayed_work_sync(&bond->mcast_work);
- 	cancel_delayed_work_sync(&bond->slave_arr_work);
-+	cancel_delayed_work_sync(&bond->peer_notify_work);
- }
+ static void bond_peer_notify_handler(struct work_struct *work)
+@@ -2825,7 +2826,7 @@ static void bond_mii_monitor(struct work_struct *work)
  
- static int bond_open(struct net_device *bond_dev)
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 49edc7da0586..63d08056a4a4 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -254,6 +254,7 @@ struct bonding {
- 	struct   delayed_work ad_work;
- 	struct   delayed_work mcast_work;
- 	struct   delayed_work slave_arr_work;
-+	struct   delayed_work peer_notify_work;
- #ifdef CONFIG_DEBUG_FS
- 	/* debugging support via debugfs */
- 	struct	 dentry *debug_dir;
-@@ -709,6 +710,7 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
- 					      int level);
- int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave);
- void bond_slave_arr_work_rearm(struct bonding *bond, unsigned long delay);
-+void bond_peer_notify_work_rearm(struct bonding *bond, unsigned long delay);
- void bond_work_init_all(struct bonding *bond);
- void bond_work_cancel_all(struct bonding *bond);
+ 	rcu_read_unlock();
  
+-	if (commit || bond->send_peer_notif) {
++	if (commit || READ_ONCE(bond->send_peer_notif)) {
+ 		/* Race avoidance with bond_close cancel of workqueue */
+ 		if (!rtnl_trylock()) {
+ 			delay = 1;
+@@ -3784,7 +3785,7 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
+ 	should_notify_rtnl = bond_ab_arp_probe(bond);
+ 	rcu_read_unlock();
+ 
+-	if (bond->send_peer_notif || should_notify_rtnl) {
++	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
+ 		if (!rtnl_trylock()) {
+ 			delta_in_ticks = 1;
+ 			goto re_arm;
 -- 
 2.34.1
 
