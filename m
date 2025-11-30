@@ -1,88 +1,89 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21EF2C2369
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 20:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7156C2C3258
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 20:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764535056; cv=none; b=HgG1wJudFkHuTNcbCdq9K28dwTlGFuoOEWfQdYESpmawpDigoTu/2DF+HXJj7ne+hvg8cyFJBdZ10nsDea1fX6wnAD9+zp6sTCvpoSU9rH4iSin+8oyQT4Tdc2iZeMxnaAz8WznNhuSpv+5S4hPJbXljCSduZDx3IJFPbrZRJ98=
+	t=1764535057; cv=none; b=J1NWodRQ0gDv0zDfXL69nt7zaZ/K5O/UKHqDB+CB8hW7KVCYp8wtyXYtAQhe7xUlAK583s5DHzxnpFFIyQtqX/LIDwXzLUWDnR8CnNBUaoEAs2ZOddRzMtmCsUbXKZ0KgTipf22/x5lNbj26pBvc5xGB4nZTzK7NhuBRzEVYCdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764535056; c=relaxed/simple;
-	bh=T+HuXpkVGkt6IOnP2E84wTEldx0mMIWs5fysjgmICTY=;
+	s=arc-20240116; t=1764535057; c=relaxed/simple;
+	bh=JBbjB0Fhxan1TBRrFuySth2Pq1vgLUJM/cv1Zq4IOSU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Soh+nCHV5BULN7IHIL6lFdVbn/8QWuT5T1LgN3usJggbaBA4vRwl6bSOrM1Dt6bQ9tNy18zwFonqSCj3XwyV2yZpYAJYYDI93lpuBsH11wFfX9JzzyDUCKUCueInRxPCXmSaJxxb/jnW9ZfSZJUlRk8NSHAe8O3IJ8WNwNA+YlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LSV1Jr4X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aCiUmrzA; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:To:Cc; b=Glqa/+NWj4JvLXFYCN5jbbbfMRY3VSNwIhImxv1kfnJ+LGqDj2Jdgsh5JHLxBup4Uwn7inkH9Azu0HLagKq38x06eFzT17uL7GIrV2KZchNhbEEHMPe3824DyHA8lH/dSqMwAdkRDc++QzPPRbyKTcwdVNd+/uJyXfrnM9xwfb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TuYrJmar; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IhaBtHs6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LSV1Jr4X";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aCiUmrzA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TuYrJmar";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IhaBtHs6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764535052;
+	s=mimecast20190719; t=1764535054;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XuaBOxVGfv3i0x8OoHvnBN3obdERZLRjIu9QG7xhJvM=;
-	b=LSV1Jr4XxcPaBN1mgachIiSX2l1HCArdOa56r88TcFVZyyUtw1f47MKB/whYYB6P3X6mWZ
-	cE4CaNlg9nDIsPqwGdlV5Pbsn11N0/sFRAzek3L0Ta3Ibsaiyiaj0vfJ6xu3t6MNcgaBft
-	w69e7KzIEFbvX/v8T2eCMVq58SWhkt8=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=wUMJiYZXKqtanBIyLbqRVm5kHc14zllivwQv0Kw91JA=;
+	b=TuYrJmarooY4hwmuXNtW5q5KDTMvQFdKtipAENrrOp0hraffd5gLMJwksGROmKyaxTWVS/
+	GPAH2FZhBgxRw+zpYMGEhSsJsV8zWGiwdpk9FFYSbyYVT8Av8ALJUNonQ95kx3DciXQ3pB
+	lewuUhGRdhVu0enrxEtiga6yfaIzSkQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-578-4WX6UWviOuGbVddbs5xOTQ-1; Sun, 30 Nov 2025 15:37:30 -0500
-X-MC-Unique: 4WX6UWviOuGbVddbs5xOTQ-1
-X-Mimecast-MFC-AGG-ID: 4WX6UWviOuGbVddbs5xOTQ_1764535049
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6407bd092b6so4450522a12.1
-        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 12:37:30 -0800 (PST)
+ us-mta-360-i2tETAMaMgyCglKnScDeJg-1; Sun, 30 Nov 2025 15:37:33 -0500
+X-MC-Unique: i2tETAMaMgyCglKnScDeJg-1
+X-Mimecast-MFC-AGG-ID: i2tETAMaMgyCglKnScDeJg_1764535052
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b73599315adso255083866b.2
+        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 12:37:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764535049; x=1765139849; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1764535052; x=1765139852; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XuaBOxVGfv3i0x8OoHvnBN3obdERZLRjIu9QG7xhJvM=;
-        b=aCiUmrzA30vpZppkt2TF9gO57Ag9u1fBZF6mZyW/LJywQdb7q1wc+YHkEVhmB5+teS
-         Vqvfr6Fm9Dc1rZie66+Ba8dPaSBA9dNIibAgRosvx2RSTUQreLDiDWMSwG3uz75PAXSa
-         6b72NYXcJegpUWECIe0aT9DIwTKQ6JCWzCwpGnR57Ixx99axs75cRzoaRdb/Dnb3631i
-         OqbWuvW1LOAwBZgJ8HWM9DuwLqF1SmkHotg542ObGO9c8Wvd2H5Zo/gtsa2KiDwZu2m+
-         Vd9xdaleRRF9kARVTu+B67HXTS7QnJwBBfuhBV95QTgp7HB/vB9y/PZLoD3TB+izMnlb
-         JOzQ==
+        bh=wUMJiYZXKqtanBIyLbqRVm5kHc14zllivwQv0Kw91JA=;
+        b=IhaBtHs6TnYunlCvL05/nqJYnJJF1kbwlKrtmlMSEOdf0hp89xHiq97EGcVc4V3Z32
+         enUy6LXleuK1dnxiFONlTWZBtQ4MXpJ63G2+BG2bxnjUYTGjrzA4AvZdHzAQV+3zEIM5
+         FRm3ES/LeFgEDV318bSU+nly7oeUL00qd9yz17/aAh90ZwjDDflWKMrqeMkOh2YYVm77
+         O1CepVEisxcLzRmR+jIO6AbbC73zDwzypc69WABqAkr9WOyeyMFoWd78CqBuPudnZr26
+         vmsawUojk33A8FOu2ElzPvaCNTVhkTpK/1Iw8biIq82om+YQ7f4iSMZs9Nwn9J1N9hfr
+         LysQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764535049; x=1765139849;
+        d=1e100.net; s=20230601; t=1764535052; x=1765139852;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XuaBOxVGfv3i0x8OoHvnBN3obdERZLRjIu9QG7xhJvM=;
-        b=RjdgSt5EaIzku9eFnU5JAQfuXV4OvGQbsAnt4/U4K5EbR5AMZHB6vwdQGGi36v672k
-         NQuUt4xRXg6pGCEMa7rb8xO1ROulYKmnljZFseMP9jubF52FLX7GhwI4P3augwolWz9x
-         cM1PqojpL04oVRmfxNKTf9AwlalogD0Nmv8YSCrWB9ZeJrv1eh31U77nEqaq9HFNyOdF
-         BQ2AZmD75+EP+W4UYdWFgDSLW2TfcorYoa0IxqC/9YiUC3lCLli1uBIsmm0BVORvt6yh
-         PUY7qCfNnT75wN//V07yHZ+8+E/gD1guXd6PS1oOF/VTqjk5Iscw4McyKIWM7edoda3R
-         c/pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXPfL1MX3YXeRRjuKJWSdAyNlcVi0sGfxKJ/PWS6B3FVzCQvYIG3RVUQaNodQ1+xfs4qrHn+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSdShimOnEp3UtORiFxgCvAJaYO1hkJnGQWC8eFjDWDQDGQcQw
-	3IXHle8srdk6yND+P1YR/H+IaHfrW1SkY9uYTfB/U/nJf9eXWycQlUkREHzul0oZFYJHuFnzKra
-	2ynITRTfyy79ry8xEsVuY9UpIpJMslBZOiLDnkx7elYVgkc+5BFOxN5XncQ==
-X-Gm-Gg: ASbGncvR0pbAKOQz5fdqYka/Q3AysunyxKGb+WC6YId3twSMqqtswj31X+1RCkubnxh
-	0UbrQ36B5EyibSL410z6O3qedwM+JWAQq0msH+6p7WgDVpPd03AZ69ZWhixquHm5QamccHStK27
-	Hm8mB7MsNasBP1Oj4arLZWY+Ib927wT2tmOKMJS5rtodZLhWCzW1ivn2zk9S6bSY5BrmD3vvuWv
-	lUs+x8lHnHiDBjFY+T+njO6dg6EB5hENsSbbV5T97NgHJ/6N2O7gOeXRd6lZgIRF9MAB+95SWoY
-	eUB8GGzF5SFenD4UaFd0sdgVNG8hoLxacmQPCE5sp69JqVt+idQnP2XDeZR0C6D1DTnTGkaaQpJ
-	ECg41QdEYZy6292zMxylOgCofncJMH03usw==
-X-Received: by 2002:a05:6402:1d54:b0:647:57d5:6af6 with SMTP id 4fb4d7f45d1cf-64757d56b0amr9589871a12.6.1764535049166;
-        Sun, 30 Nov 2025 12:37:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFkDApVv3/OcM+GvAVWyG75ZHChEZkM3/EWGsMTy10NmN4iMuN+sJGSVZjWBaMvmIsd7NWGwA==
-X-Received: by 2002:a05:6402:1d54:b0:647:57d5:6af6 with SMTP id 4fb4d7f45d1cf-64757d56b0amr9589856a12.6.1764535048791;
-        Sun, 30 Nov 2025 12:37:28 -0800 (PST)
+        bh=wUMJiYZXKqtanBIyLbqRVm5kHc14zllivwQv0Kw91JA=;
+        b=QWgq6eoIwF2SMnWZ1MdJkcqbgTX5nzYP1Fl3/I6JOVUmwilaQVyZ+VOQX3ugAiXf6n
+         GITeCc7Q/Fp+9pzZEbG5B06iVmfGIgH/WUlg5wjgYm0L8z9IeDaDsV6o2Nd1a47n/+xP
+         IYvGRD1162bUf1uz2TTIJkh1l2WNZwM0oKrbC8M0HxVxcnYeUAXtrPPdsnTVkyxr5WJs
+         PCTRX+nzzM5GDi7zz55VqzqARuI6i3GDTC4lZ1a+xyKfJLeafTNR1jWKUmGrp6CXzga9
+         2wGQUSCLogkcEaMx2Ug2gYVaTsnEVGilugESPY5RhNRPkPPKMKakWVQmhoHtTUOr7Fi1
+         z09A==
+X-Forwarded-Encrypted: i=1; AJvYcCWxYAn774Ri2SaxZhxCtf5mwuJToelpJAYMp62SixKjquGuXXqMNzlP2w4Zj861CzP0apnMFMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB+V+ti+SLNAtLPIAwRj/I586vPM3srS/pQa7b8hcIz7AbAeHc
+	MSyU5xREzD+ZGiGembebf5qi8CBapPSZsczPTQrlJx4nAc3F5mBqYO513ytB3PXGE95DmlGN8+H
+	U+n2YqKX52sai8PURL2LOEq7S+H2MCy+0uGcf17Gn8bZvc6VxAnlPa3kqdQ==
+X-Gm-Gg: ASbGncvJVfeLldIgRrJS0Jwnl3o2JCu8G8XZUoPuqhsh8iuO+P5GpQ1LA8p0ebdA5kZ
+	O+zxBeVVKFI90qKpngCM7p2Y5qHEZsMHrAjBIqlpTYg9IAArP5F5w+lDyS5YAkI3ujyJbxE+ZSH
+	RX0BGjDL2MkIgGLbS7eiTIZzv0PmbppN8/gA7D0u+secyCO6704eIwmGplVSm1ViIsBIHnVhcG0
+	QebxJ/H+cNwSLW5EF6Ob6p+r2p8vFceKlSYj3yKpeJ9O9oPt0PXhP6cIvQrU6njTWrHqbNiCLl7
+	/4E8q3Ywh+T33DbMwBEu1cTa46H7uv5yUnWewoBx1e34Ni5Q24uIuaOyzp4M25UA9W7KMNDRrY2
+	tfTHbOQdPXjfkwYJnRf6QcohQfFvp0gqGAg==
+X-Received: by 2002:a17:907:a909:b0:b70:ac7a:2a93 with SMTP id a640c23a62f3a-b76c555d858mr2668957166b.43.1764535051840;
+        Sun, 30 Nov 2025 12:37:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFC0uIo/B+vhvY1UWwpUh6CZ6e9j1wR3D1muobhNkd83nwguyT69Tu6y/GHPktGwYHGkAPBSw==
+X-Received: by 2002:a17:907:a909:b0:b70:ac7a:2a93 with SMTP id a640c23a62f3a-b76c555d858mr2668955166b.43.1764535051418;
+        Sun, 30 Nov 2025 12:37:31 -0800 (PST)
 Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64750a90c93sm10255087a12.9.2025.11.30.12.37.26
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59aece0sm1002613766b.32.2025.11.30.12.37.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 12:37:28 -0800 (PST)
+        Sun, 30 Nov 2025 12:37:30 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 3B44F395C23; Sun, 30 Nov 2025 21:37:26 +0100 (CET)
+	id 48901395C2B; Sun, 30 Nov 2025 21:37:26 +0100 (CET)
 From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Sun, 30 Nov 2025 21:37:18 +0100
-Subject: [PATCH net-next v3 1/5] net/sched: Export mq functions for reuse
+Date: Sun, 30 Nov 2025 21:37:22 +0100
+Subject: [PATCH net-next v3 5/5] net/sched: sch_cake: share shaper state
+ across sub-instances of cake_mq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,7 +92,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251130-mq-cake-sub-qdisc-v3-1-5f66c548ecdc@redhat.com>
+Message-Id: <20251130-mq-cake-sub-qdisc-v3-5-5f66c548ecdc@redhat.com>
 References: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
 In-Reply-To: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
 To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
@@ -104,238 +105,178 @@ Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
  =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 X-Mailer: b4 0.14.3
 
-To enable the cake_mq qdisc to reuse code from the mq qdisc, export a
-bunch of functions from sch_mq. Split common functionality out from some
-functions so it can be composed with other code, and export other
-functions wholesale.
+From: Jonas Köppeler <j.koeppeler@tu-berlin.de>
 
-No functional change intended.
+This commit adds shared shaper state across the cake instances beneath a
+cake_mq qdisc. It works by periodically tracking the number of active
+instances, and scaling the configured rate by the number of active
+queues.
 
+The scan is lockless and simply reads the qlen and the last_active state
+variable of each of the instances configured beneath the parent cake_mq
+instance. Locking is not required since the values are only updated by
+the owning instance, and eventual consistency is sufficient for the
+purpose of estimating the number of active queues.
+
+The interval for scanning the number of active queues is set to 200 us.
+We found this to be a good tradeoff between overhead and response time.
+For a detailed analysis of this aspect see the Netdevconf talk:
+
+https://netdevconf.info/0x19/docs/netdev-0x19-paper16-talk-paper.pdf
+
+Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
- include/net/sch_generic.h | 19 +++++++++++++
- net/sched/sch_mq.c        | 69 ++++++++++++++++++++++++++++++++---------------
- 2 files changed, 67 insertions(+), 21 deletions(-)
+ Documentation/netlink/specs/tc.yaml |  3 +++
+ include/uapi/linux/pkt_sched.h      |  1 +
+ net/sched/sch_cake.c                | 51 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index c3a7268b567e..f2281914d962 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1419,7 +1419,26 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
- 				struct tcf_block *block);
- 
-+struct mq_sched {
-+	struct Qdisc		**qdiscs;
-+};
+diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
+index b398f7a46dae..2e663333a279 100644
+--- a/Documentation/netlink/specs/tc.yaml
++++ b/Documentation/netlink/specs/tc.yaml
+@@ -2207,6 +2207,9 @@ attribute-sets:
+       -
+         name: blue-timer-us
+         type: s32
++      -
++        name: active-queues
++        type: u32
+   -
+     name: cake-tin-stats-attrs
+     name-prefix: tca-cake-tin-stats-
+diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
+index c2da76e78bad..66e8072f44df 100644
+--- a/include/uapi/linux/pkt_sched.h
++++ b/include/uapi/linux/pkt_sched.h
+@@ -1036,6 +1036,7 @@ enum {
+ 	TCA_CAKE_STATS_DROP_NEXT_US,
+ 	TCA_CAKE_STATS_P_DROP,
+ 	TCA_CAKE_STATS_BLUE_TIMER_US,
++	TCA_CAKE_STATS_ACTIVE_QUEUES,
+ 	__TCA_CAKE_STATS_MAX
+ };
+ #define TCA_CAKE_STATS_MAX (__TCA_CAKE_STATS_MAX - 1)
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 51184f308387..5392e8fbe34b 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -201,6 +201,7 @@ struct cake_sched_config {
+ 	u64		rate_bps;
+ 	u64		interval;
+ 	u64		target;
++	u64		sync_time;
+ 	u32		buffer_config_limit;
+ 	u32		fwmark_mask;
+ 	u16		fwmark_shft;
+@@ -257,6 +258,11 @@ struct cake_sched_data {
+ 	u16		max_adjlen;
+ 	u16		min_netlen;
+ 	u16		min_adjlen;
 +
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops);
-+void mq_destroy_common(struct Qdisc *sch);
-+void mq_attach(struct Qdisc *sch);
- void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb);
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm);
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl);
-+unsigned long mq_find(struct Qdisc *sch, u32 classid);
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm);
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d);
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg);
++	/* mq sync state */
++	u64		last_checked_active;
++	u64		last_active;
++	u32		active_queues;
+ };
  
- int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
+ enum {
+@@ -383,6 +389,8 @@ static const u32 inv_sqrt_cache[REC_INV_SQRT_CACHE] = {
+ 	1239850263, 1191209601, 1147878294, 1108955788
+ };
  
-diff --git a/net/sched/sch_mq.c b/net/sched/sch_mq.c
-index c860119a8f09..0bcabdcd1f44 100644
---- a/net/sched/sch_mq.c
-+++ b/net/sched/sch_mq.c
-@@ -17,10 +17,6 @@
- #include <net/pkt_sched.h>
- #include <net/sch_generic.h>
++static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
++			  u64 target_ns, u64 rtt_est_ns);
+ /* http://en.wikipedia.org/wiki/Methods_of_computing_square_roots
+  * new_invsqrt = (invsqrt / 2) * (3 - count * invsqrt^2)
+  *
+@@ -1997,6 +2005,40 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 	u64 delay;
+ 	u32 len;
  
--struct mq_sched {
--	struct Qdisc		**qdiscs;
--};
--
- static int mq_offload(struct Qdisc *sch, enum tc_mq_command cmd)
- {
- 	struct net_device *dev = qdisc_dev(sch);
-@@ -49,23 +45,29 @@ static int mq_offload_stats(struct Qdisc *sch)
- 	return qdisc_offload_dump_helper(sch, TC_SETUP_QDISC_MQ, &opt);
- }
- 
--static void mq_destroy(struct Qdisc *sch)
-+void mq_destroy_common(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
- 	unsigned int ntx;
- 
--	mq_offload(sch, TC_MQ_DESTROY);
--
- 	if (!priv->qdiscs)
- 		return;
- 	for (ntx = 0; ntx < dev->num_tx_queues && priv->qdiscs[ntx]; ntx++)
- 		qdisc_put(priv->qdiscs[ntx]);
- 	kfree(priv->qdiscs);
- }
-+EXPORT_SYMBOL(mq_destroy_common);
- 
--static int mq_init(struct Qdisc *sch, struct nlattr *opt,
--		   struct netlink_ext_ack *extack)
-+static void mq_destroy(struct Qdisc *sch)
-+{
-+	mq_offload(sch, TC_MQ_DESTROY);
-+	mq_destroy_common(sch);
-+}
++	if (q->config->is_shared &&
++	    now - q->last_checked_active >= q->config->sync_time) { //check every 1ms is the default
++		struct net_device *dev = qdisc_dev(sch);
++		struct cake_sched_data *other_priv;
++		u64 new_rate = q->config->rate_bps;
++		u64 other_qlen, other_last_active;
++		struct Qdisc *other_sch;
++		u32 num_active_qs = 1;
++		unsigned int ntx;
 +
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -87,7 +89,8 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
- 		dev_queue = netdev_get_tx_queue(dev, ntx);
--		qdisc = qdisc_create_dflt(dev_queue, get_default_qdisc_ops(dev, ntx),
-+		qdisc = qdisc_create_dflt(dev_queue,
-+					  qdisc_ops ?: get_default_qdisc_ops(dev, ntx),
- 					  TC_H_MAKE(TC_H_MAJ(sch->handle),
- 						    TC_H_MIN(ntx + 1)),
- 					  extack);
-@@ -98,12 +101,24 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 	}
- 
- 	sch->flags |= TCQ_F_MQROOT;
-+	return 0;
-+}
-+EXPORT_SYMBOL(mq_init_common);
++		for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
++			other_sch = rtnl_dereference(netdev_get_tx_queue(dev, ntx)->qdisc_sleeping);
++			other_priv = qdisc_priv(other_sch);
 +
-+static int mq_init(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack)
-+{
-+	int ret;
++			if (other_priv == q)
++				continue;
 +
-+	ret = mq_init_common(sch, opt, extack, NULL);
-+	if (ret)
-+		return ret;
++			other_qlen = READ_ONCE(other_sch->q.qlen);
++			other_last_active = READ_ONCE(other_priv->last_active);
++
++			if (other_qlen || other_last_active > q->last_checked_active)
++				num_active_qs++;
++		}
++
++		if (num_active_qs > 1)
++			new_rate = div64_u64(q->config->rate_bps, num_active_qs);
++
++		/* mtu = 0 is used to only update the rate and not mess with cobalt params */
++		cake_set_rate(b, new_rate, 0, 0, 0);
++		q->last_checked_active = now;
++		q->rate_ns = b->tin_rate_ns;
++		q->rate_shft = b->tin_rate_shft;
++	}
++
+ begin:
+ 	if (!sch->q.qlen)
+ 		return NULL;
+@@ -2196,6 +2238,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
  
- 	mq_offload(sch, TC_MQ_CREATE);
+ 	b->tin_ecn_mark += !!flow->cvars.ecn_marked;
+ 	qdisc_bstats_update(sch, skb);
++	q->last_active = now;
+ 
+ 	/* collect delay stats */
+ 	delay = ktime_to_ns(ktime_sub(now, cobalt_get_enqueue_time(skb)));
+@@ -2296,6 +2339,9 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+ 	b->tin_rate_ns   = rate_ns;
+ 	b->tin_rate_shft = rate_shft;
+ 
++	if (mtu == 0)
++		return;
++
+ 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
+ 
+ 	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
+@@ -2758,6 +2804,7 @@ static void cake_config_init(struct cake_sched_config *q, bool is_shared)
+ 			       */
+ 	q->rate_flags |= CAKE_FLAG_SPLIT_GSO;
+ 	q->is_shared = is_shared;
++	q->sync_time = 200 * NSEC_PER_USEC;
+ }
+ 
+ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
+@@ -2831,6 +2878,9 @@ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
+ 	qd->avg_peak_bandwidth = q->rate_bps;
+ 	qd->min_netlen = ~0;
+ 	qd->min_adjlen = ~0;
++	qd->active_queues = 0;
++	qd->last_checked_active = 0;
++
  	return 0;
- }
+ err:
+ 	kvfree(qd->config);
+@@ -2963,6 +3013,7 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	PUT_STAT_U32(MAX_ADJLEN, q->max_adjlen);
+ 	PUT_STAT_U32(MIN_NETLEN, q->min_netlen);
+ 	PUT_STAT_U32(MIN_ADJLEN, q->min_adjlen);
++	PUT_STAT_U32(ACTIVE_QUEUES, q->active_queues);
  
--static void mq_attach(struct Qdisc *sch)
-+void mq_attach(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -124,8 +139,9 @@ static void mq_attach(struct Qdisc *sch)
- 	kfree(priv->qdiscs);
- 	priv->qdiscs = NULL;
- }
-+EXPORT_SYMBOL(mq_attach);
- 
--static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct Qdisc *qdisc;
-@@ -152,7 +168,12 @@ static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
- 
- 		spin_unlock_bh(qdisc_lock(qdisc));
- 	}
-+}
-+EXPORT_SYMBOL(mq_dump_common);
- 
-+static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+{
-+	mq_dump_common(sch, skb);
- 	return mq_offload_stats(sch);
- }
- 
-@@ -166,11 +187,12 @@ static struct netdev_queue *mq_queue_get(struct Qdisc *sch, unsigned long cl)
- 	return netdev_get_tx_queue(dev, ntx);
- }
- 
--static struct netdev_queue *mq_select_queue(struct Qdisc *sch,
--					    struct tcmsg *tcm)
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm)
- {
- 	return mq_queue_get(sch, TC_H_MIN(tcm->tcm_parent));
- }
-+EXPORT_SYMBOL(mq_select_queue);
- 
- static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 		    struct Qdisc **old, struct netlink_ext_ack *extack)
-@@ -198,14 +220,15 @@ static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 	return 0;
- }
- 
--static struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
- 	return rtnl_dereference(dev_queue->qdisc_sleeping);
- }
-+EXPORT_SYMBOL(mq_leaf);
- 
--static unsigned long mq_find(struct Qdisc *sch, u32 classid)
-+unsigned long mq_find(struct Qdisc *sch, u32 classid)
- {
- 	unsigned int ntx = TC_H_MIN(classid);
- 
-@@ -213,9 +236,10 @@ static unsigned long mq_find(struct Qdisc *sch, u32 classid)
- 		return 0;
- 	return ntx;
- }
-+EXPORT_SYMBOL(mq_find);
- 
--static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
--			 struct sk_buff *skb, struct tcmsg *tcm)
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -224,9 +248,10 @@ static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
- 	tcm->tcm_info = rtnl_dereference(dev_queue->qdisc_sleeping)->handle;
- 	return 0;
- }
-+EXPORT_SYMBOL(mq_dump_class);
- 
--static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
--			       struct gnet_dump *d)
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -236,8 +261,9 @@ static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 		return -1;
- 	return 0;
- }
-+EXPORT_SYMBOL(mq_dump_class_stats);
- 
--static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	unsigned int ntx;
-@@ -251,6 +277,7 @@ static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- 			break;
- 	}
- }
-+EXPORT_SYMBOL(mq_walk);
- 
- static const struct Qdisc_class_ops mq_class_ops = {
- 	.select_queue	= mq_select_queue,
+ #undef PUT_STAT_U32
+ #undef PUT_STAT_U64
 
 -- 
 2.52.0
