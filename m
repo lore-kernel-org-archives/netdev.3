@@ -1,89 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D375728F5
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 20:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BF321E098
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 20:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764535053; cv=none; b=Uv+4Zps8cHdAlnZTSrKfPwk2P3w35ZHGai1TN/QELRq7aaIpXMz9q87eN8t9nWqyp8H2EP51Kk6A5/lUsrn7xX7c1GI71mHUewHTIbRy9RQI34nsKtInQxkrO4ZhxfxTGakGUZyAWAc0RP7WQx2oxTPxOmnHzaX/hQT1Zh0tzmk=
+	t=1764535054; cv=none; b=bJmgNBKKqCsPmcuTi0OYS39excepyaabifaRhjiA59bWbguhoDF/7a4m591MfDkrkL5brahtnqDE1y+Gzk7Y/b/0TzNhLpNp4iO9AbdpmtuEGdmadAMcLvvRoA6gHK2P/h9vm/bA2DEDa2GdVvq05PqzJSPGIFXJhPqbfbYoYSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764535053; c=relaxed/simple;
-	bh=4AuPxE/QDI6IITye9LtzQvtxgdORRTZ2wsxFFmDACUA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oxn1hOgcOYAkL1jAIzAznJus8DJHu5YPrBARq7F3Wr8cw5kLHQoH8i4LmptPeYtlWSBVkf2Da+nHnLO5+lncfVGkMgkqKCtYmys0xUoeW4nDaPk6tRMdXBwuyucDTw7lY4vCNrNJPibSEiFUiT5/XXsljPFLyuc3VpFM0jFMtvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EWXnBA3u; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oG3IAeoY; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1764535054; c=relaxed/simple;
+	bh=YwvRLmvf8g4chDxRz9C6auQvbO+2SRo81WRaUQE6B6Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lh/aqqSQXhwUvgf6xT7qC31wzK0GbTKODwpmRwYRQ8yyW34BG4Q/hNrvwVvw0xSQZHhviCPO9aA3uH8CHC5A3lOSDhHwqLGQP/g3r4s7GO6/u6141swziCoB55PTHaydaAx3CCTFHfIVrFEbw3URB5v/fdFfitCrsgqRB3mmUec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QHNLoidb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=odq9Ib0+; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EWXnBA3u";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oG3IAeoY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QHNLoidb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="odq9Ib0+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764535050;
+	s=mimecast20190719; t=1764535051;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5CKwso0sYMJQqO4VfFGMWxTfY6Mo/xzbtN9lClbYs88=;
-	b=EWXnBA3undkKRMHUeXcsr10IkVZ2Dxv0WoDvCb6socWPO/SovPSeFvKH6d8FqWZsXDQ8Kp
-	gSuburqacQ+2MSS5K+ORztg7SrbCye0Y+u5IFpFt+9GMb5lCG72xfjuOQrB052CW7uvu1f
-	aYOW2HHiA8plyYADpkL1UOXwYIq/xV0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+aQZT4b2Nu/IBd7NvYkGdOpZxCNL6++4JZQfNH7Vtno=;
+	b=QHNLoidb4Jtq723F342Fnefgrg1wNgHmQjqJ0jQ2ErlLzcd9FzVPzO3cHXgHptbbuXxUf6
+	IkB8mWMl1+7XegPtHrMsOPgzLiWSeLhXRvOeL0gEzqqyHlz9h2Tlo0sdPUcwGbgjrOg2GM
+	0IATcUtiI7Xo5XkOHs2aPdOTDjiD0qs=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-147-cwML6jOLNcmjIgL82HWk1w-1; Sun, 30 Nov 2025 15:37:29 -0500
-X-MC-Unique: cwML6jOLNcmjIgL82HWk1w-1
-X-Mimecast-MFC-AGG-ID: cwML6jOLNcmjIgL82HWk1w_1764535048
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b73586b1195so391960666b.3
+ us-mta-280-8iObUitgOaeLlJugkbtyKQ-1; Sun, 30 Nov 2025 15:37:30 -0500
+X-MC-Unique: 8iObUitgOaeLlJugkbtyKQ-1
+X-Mimecast-MFC-AGG-ID: 8iObUitgOaeLlJugkbtyKQ_1764535049
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6409f6d6800so5177741a12.0
         for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 12:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764535048; x=1765139848; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5CKwso0sYMJQqO4VfFGMWxTfY6Mo/xzbtN9lClbYs88=;
-        b=oG3IAeoY9ij/uWWJfUKcA0P3DFlDpfRcpU68aFQGbbEk71EHbF9NshALwlQlZKOth8
-         l6bwgkt8tfKu0SYb2C1fjPzKK8g9cwm4gkXxX0vcYd6IkqT4yvFggGoLhw7FNCGn5eP1
-         2+IZTDKwk11+EfzhEdtnA3tB7O7G7afGVhpUIdzoHAm8I1qYLNoutca8oq1gDxgKd0Bn
-         e9pQNNrmymcaXwrmYbdfndcWLYcLchEsM2ocqQiDz30niScTld2Aj4AKp3eB32h5i+fS
-         5eZIbLDbZtn2XoASTwNUTrvQiZn6Vs9EOD+WZ0eI1FSz8B7kXiSzC7mNWi0aOH51MA1l
-         BxBw==
+        d=redhat.com; s=google; t=1764535049; x=1765139849; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+aQZT4b2Nu/IBd7NvYkGdOpZxCNL6++4JZQfNH7Vtno=;
+        b=odq9Ib0+21xZEaWV+onF712ivlUUo8A0d4svl0MYa7qzBNKbwMINu8rQWtDh6y+iWB
+         JCE+XMKQ37BF7RhiQtJR+Qq3w+SBYkI+qtIuee1WVC59xM5AmvgPXwbsPt7CPEdn+KZC
+         7Ye3CuV0lz6v4SnmB2Bh9wfIbFm2K+84d3SU7ScjmqzqU+hyEB+aZ0QbD+CUbmPYuHaM
+         xe1+q0FOEyHrTPnsLWvEaHgXw3ZXYDRS+zksAbh7nOKkjKUUoH6YbEf1RO/GVHCONsuv
+         yeEJkvRlFgY1RXJPqOqG4O4hRcck7p/7QQBsCbWgxtKPxzCct8SQFz2Qn4h/CHFxVVr1
+         UIYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764535048; x=1765139848;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5CKwso0sYMJQqO4VfFGMWxTfY6Mo/xzbtN9lClbYs88=;
-        b=A04sTHRkRyG4ooefZqcmu7ravq/YR+UcepPXapaGMuIvbcscu06h3OK5sXlXAoBOrK
-         D8QdAjMmlS+CcA9/xOoHCce7k2wf81I/EykbU3uKPj/5nTNjbnV2I4UqX9TWDZSP37O8
-         TrVWMKKBcsald1sbIbmpEC2EbzolFhiRhJE0FTZcfrfd5fVqVHgHgfFb9QM1xPkDAwdx
-         xAymhiBt7n+5cSdU4m8xRyuxHQ+VcSLfdvHPOch2kgbc9aMrVpJBRDtWaUjceQzXCFZd
-         iezxgmrw2BDSAr18XeZEhV8bvT+JanRG65rNMmCk1aQeu3yy9OIT0Gld/RBNQNN/FS+6
-         X9zw==
-X-Forwarded-Encrypted: i=1; AJvYcCX96zgER1E/W963ynmC1muKS0mthEXj6MByL9cyRlfyhb93w0U7nKEQTVNa9idtc5sAf4blpVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8Gad+E9zeGahYmvg03bdTScF9qetZMvoLZURf3pF5JVb3SLKl
-	wf//IB8DMinJ7Z8nUEjF3XQEDky0TvoyB0RjcDHEzH01kG/oqVdrbw1wVAukG59lAnozvdwbuvz
-	JkNd+nqrtVnX3HaQdETGpyemfkxcUO4H0HR34M+3Lki9kquU/iYeQk92e2A==
-X-Gm-Gg: ASbGncuY9y838MYn7utaTWh+JCiAQkeilkTgmlNoayPFg0MlN9KkEWUVoDyGBOG81sh
-	ziqmvSc96Yw+cSr3/uLfl3hotYA2fJ/sHm36Z0t+ZuAqk9kW8oow6n6IDxJ0EwAgbMwWISIGqmH
-	xkLAs9yayEhYR7NHXN9qziRz192+5qFq/KfEMxJA6LcYjsWuy0jpJhBBiafARLdcf5bybGWRHPp
-	GIrbm1S2ySi6kZbHmStofFblSEulGM1pVL4b38togENPQzZi85bWs30jjksOSpzzxzbp9eJQu1d
-	Ln5zQcC5HD2Nu/+YlTia1LIpAPE2AddhzsS7n/B7lwgocRCIP4K4d7Id2TVm3OQxHx0F8ylwfjC
-	ad3KTlIyLvCZGo8nAXW/2nFAGfsDbGHbRbw==
-X-Received: by 2002:a17:907:d92:b0:b72:588:2976 with SMTP id a640c23a62f3a-b76719d749bmr3522248966b.60.1764535048048;
+        d=1e100.net; s=20230601; t=1764535049; x=1765139849;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+aQZT4b2Nu/IBd7NvYkGdOpZxCNL6++4JZQfNH7Vtno=;
+        b=Nv0rbnOdHQX+stnH5wuamm1syMnuEcR0HP42JYxNJuc2MF5mq8WZPO0TaqabP1luKG
+         vWAEp8DZJe4v2uXGyWepDiuZ+utzVrUT90OlNxQPGNU6bCIXKlK4oIXrLwPi1ktmkH4Q
+         Jw8CGA30mYFOzjjWPl0d1ErrG/Vm8q3GQxLZscec2URDGwXvMf5tFKV5y7/L2YTfs+zZ
+         9vcJDQCittq3R3CWpn9M2hM/JJ3Aef+7otKc9PvA2UBosBhiJC6D0pAmsX/NbHZlQBkd
+         HH1nTA4LQe1bv//EqNHg48tLtqihi+j2pZ6Vgb4QQ2Q9Aaxdl1DEDS8dv5C+JltjtmjP
+         0dbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWck4BHSlpdnzQIX82N3/e663S5g/DHj8IetsGS7toOi7apdSRQDI8JeS1ioYDAZ9hIl8MNJtU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEL0sUDHYMuVEibT+yYd/Y3L3FVAjk28F1QefC4hUj1ZvAUOAw
+	C9RnRml3eBl7+omDgc8DOxPCLeTT27KQPVdUrT1zacHe5tve4jXLroB54RjvlIVeAk2M79Swdzq
+	n4BArPMtG46gjAJOakHBmc06wjkq+aX/4ACA7HbLpgPT0bL+JYp6xv4g1Rg==
+X-Gm-Gg: ASbGncvPPP5Fbt/FC1pu6QDbmeMP24GMkOVTUuFZovCbZTmPjH9CCqzSl0AbvOuURfQ
+	vhfCSW+bTHNwytSSFA0JCKCcj18yQakjaNKh7lCEbIYkTv0I2ecPaTo8FM8RiW+O5OUJgKBLLlw
+	i72+DPI3FlSvclWalo6kbcxjqoxGTAgqmQz0v5w9gNsqYHUpujS92W70jr1q9TN+MMBiBsKbcU4
+	bcKqzk/3RoBnpdrukagUg6onYZ1bxqwpfabCE3Fw2rd/NHjZvZ8M6dCnUlCSiOwNXNIKmVk4ECp
+	HR4S/fghAOzhuCEYd7iNK01Ejx8CKBbMUgFd+/5AgCZGksmJ3m6BrEDPKxGVT33aWoYtLEvvydO
+	l8ktHiDmJSb74BwdIoJCMA1eVaIf3dcX+ig==
+X-Received: by 2002:a05:6402:5246:b0:62f:8274:d6bd with SMTP id 4fb4d7f45d1cf-64555b965e5mr31799458a12.8.1764535048858;
         Sun, 30 Nov 2025 12:37:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IElmJmo4hg/2Kqg0PjWd9+E58vVUyFL8EW5kQTkceKQlL14rTfVMDP34XY640Yj4moSIuKAZw==
-X-Received: by 2002:a17:907:d92:b0:b72:588:2976 with SMTP id a640c23a62f3a-b76719d749bmr3522247166b.60.1764535047683;
-        Sun, 30 Nov 2025 12:37:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+MHlVb+HXR1Syt7OiQv3LYgQRsQyXTTIn3F85nqKzPRN8lUMKxM5xLTDLbFxEpo1vxAa8mA==
+X-Received: by 2002:a05:6402:5246:b0:62f:8274:d6bd with SMTP id 4fb4d7f45d1cf-64555b965e5mr31799443a12.8.1764535048454;
+        Sun, 30 Nov 2025 12:37:28 -0800 (PST)
 Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f59aea78sm988661166b.36.2025.11.30.12.37.26
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64751062709sm10284515a12.35.2025.11.30.12.37.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 30 Nov 2025 12:37:26 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 41FB0395C27; Sun, 30 Nov 2025 21:37:26 +0100 (CET)
+	id 390B2395C21; Sun, 30 Nov 2025 21:37:26 +0100 (CET)
 From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Sun, 30 Nov 2025 21:37:20 +0100
-Subject: [PATCH net-next v3 3/5] net/sched: sch_cake: Add cake_mq qdisc for
- using cake on mq devices
+Subject: [PATCH net-next v3 0/5] Multi-queue aware sch_cake
+Date: Sun, 30 Nov 2025 21:37:17 +0100
+Message-Id: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,9 +89,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251130-mq-cake-sub-qdisc-v3-3-5f66c548ecdc@redhat.com>
-References: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
-In-Reply-To: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAP2qLGkC/3XNQQrCMBAF0KtI1o4kY6rWlSB4ALfiIs1MbJC2m
+ tSiSO9uqCCKuvz8+W/uInLwHMVydBeBOx99U6cwHY+ELU19YPCUskCJmcwlQnUGa44M8VLAmXy
+ 0YMnJIssJHWci7U6Bnb8O5k7U3ELN11bsU1P62DbhNjzbbtbDwRNG/QPuFEjQUyNnkpRSaFaBq
+ TTtxDbV4HXqRaT6L2HQOUWm0IuF+yLwnZj/IjARqClnQ1LPi/yD6Pv+AVGxSYlEAQAA
+X-Change-ID: 20250902-mq-cake-sub-qdisc-cdf0b59d2fe5
 To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
  Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
  Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
@@ -105,105 +104,84 @@ Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
  =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 X-Mailer: b4 0.14.3
 
-Add a cake_mq qdisc which installs cake instances on each hardware
-queue on a multi-queue device.
+This series adds a multi-queue aware variant of the sch_cake scheduler,
+called 'cake_mq'. Using this makes it possible to scale the rate shaper
+of sch_cake across multiple CPUs, while still enforcing a single global
+rate on the interface.
 
-This is just a copy of sch_mq that installs cake instead of the default
-qdisc on each queue. Subsequent commits will add sharing of the config
-between cake instances, as well as a multi-queue aware shaper algorithm.
+The approach taken in this patch series is to implement a separate qdisc
+called 'cake_mq', which is based on the existing 'mq' qdisc, but differs
+in a couple of aspects:
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+- It will always install a cake instance on each hardware queue (instead
+  of using the default qdisc for each queue like 'mq' does).
+
+- The cake instances on the queues will share their configuration, which
+  can only be modified through the parent cake_mq instance.
+
+Doing things this way simplifies user configuration by centralising
+all configuration through the cake_mq qdisc (which also serves as an
+obvious way of opting into the multi-queue aware behaviour). The cake_mq
+qdisc takes all the same configuration parameters as the cake qdisc.
+
+An earlier version of this work was presented at this year's Netdevconf:
+https://netdevconf.info/0x19/sessions/talk/mq-cake-scaling-software-rate-limiting-across-cpu-cores.html
+
+The patch series is structured as follows:
+
+- Patch 1 exports the mq qdisc functions for reuse.
+
+- Patch 2 factors out the sch_cake configuration variables into a
+  separate struct that can be shared between instances.
+
+- Patch 3 adds the basic cake_mq qdisc, reusing the exported mq code
+
+- Patch 4 adds configuration sharing across the cake instances installed
+  under cake_mq
+
+- Patch 5 adds the shared shaper state that enables the multi-core rate
+  shaping
+
+A selftest, and a patch to iproute2 to make it aware of the cake_mq
+qdisc, will be submitted separately.
+
 ---
- net/sched/sch_cake.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+Changes in v3:
+- Export the functions from sch_mq and reuse them instead of copy-pasting
+- Dropped Jamal's reviewed-by on the patches that changed due to the above
+- Fixed a crash if cake_mq_init is called with a NULL opt parameter
+- Link to v2: https://lore.kernel.org/r/20251127-mq-cake-sub-qdisc-v2-0-24d9ead047b9@redhat.com
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 545b9b830cce..d360ade6ca26 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -3151,14 +3151,80 @@ static struct Qdisc_ops cake_qdisc_ops __read_mostly = {
- };
- MODULE_ALIAS_NET_SCH("cake");
- 
-+struct cake_mq_sched {
-+	struct mq_sched mq_priv; /* must be first */
-+};
-+
-+static void cake_mq_destroy(struct Qdisc *sch)
-+{
-+	mq_destroy_common(sch);
-+}
-+
-+static int cake_mq_init(struct Qdisc *sch, struct nlattr *opt,
-+			struct netlink_ext_ack *extack)
-+{
-+	int ret;
-+
-+	ret = mq_init_common(sch, opt, extack, &cake_qdisc_ops);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int cake_mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+{
-+	mq_dump_common(sch, skb);
-+	return 0;
-+}
-+
-+static int cake_mq_change(struct Qdisc *sch, struct nlattr *opt,
-+			  struct netlink_ext_ack *extack)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int cake_mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
-+			 struct Qdisc **old, struct netlink_ext_ack *extack)
-+{
-+	NL_SET_ERR_MSG(extack, "can't replace cake_mq sub-qdiscs");
-+	return -EOPNOTSUPP;
-+}
-+
-+static const struct Qdisc_class_ops cake_mq_class_ops = {
-+	.select_queue	= mq_select_queue,
-+	.graft		= cake_mq_graft,
-+	.leaf		= mq_leaf,
-+	.find		= mq_find,
-+	.walk		= mq_walk,
-+	.dump		= mq_dump_class,
-+	.dump_stats	= mq_dump_class_stats,
-+};
-+
-+static struct Qdisc_ops cake_mq_qdisc_ops __read_mostly = {
-+	.cl_ops		=	&cake_mq_class_ops,
-+	.id		=	"cake_mq",
-+	.priv_size	=	sizeof(struct cake_mq_sched),
-+	.init		=	cake_mq_init,
-+	.destroy	=	cake_mq_destroy,
-+	.attach		=	mq_attach,
-+	.change		=	cake_mq_change,
-+	.change_real_num_tx = mq_change_real_num_tx,
-+	.dump		=	cake_mq_dump,
-+	.owner		=	THIS_MODULE,
-+};
-+MODULE_ALIAS_NET_SCH("cake_mq");
-+
- static int __init cake_module_init(void)
- {
--	return register_qdisc(&cake_qdisc_ops);
-+	return register_qdisc(&cake_qdisc_ops) ?:
-+		register_qdisc(&cake_mq_qdisc_ops);
- }
- 
- static void __exit cake_module_exit(void)
- {
- 	unregister_qdisc(&cake_qdisc_ops);
-+	unregister_qdisc(&cake_mq_qdisc_ops);
- }
- 
- module_init(cake_module_init)
+Changes in v2:
+- Rebase on top of net-next, incorporating Eric's changes
+- Link to v1: https://lore.kernel.org/r/20251124-mq-cake-sub-qdisc-v1-0-a2ff1dab488f@redhat.com
 
--- 
-2.52.0
+Changes in v1 (since RFC):
+- Drop the sync_time parameter for now and always use the 200 us value.
+  We are planning to explore auto-configuration of the sync time, so
+  this is to avoid committing to a UAPI. If needed, a parameter can be
+  added back later.
+- Keep the tc yaml spec in sync with the new stats member
+- Rebase on net-next
+- Link to RFC: https://lore.kernel.org/r/20250924-mq-cake-sub-qdisc-v1-0-43a060d1112a@redhat.com
+
+---
+Jonas Köppeler (1):
+      net/sched: sch_cake: share shaper state across sub-instances of cake_mq
+
+Toke Høiland-Jørgensen (4):
+      net/sched: Export mq functions for reuse
+      net/sched: sch_cake: Factor out config variables into separate struct
+      net/sched: sch_cake: Add cake_mq qdisc for using cake on mq devices
+      net/sched: sch_cake: Share config across cake_mq sub-qdiscs
+
+ Documentation/netlink/specs/tc.yaml |   3 +
+ include/net/sch_generic.h           |  19 ++
+ include/uapi/linux/pkt_sched.h      |   1 +
+ net/sched/sch_cake.c                | 476 ++++++++++++++++++++++++++----------
+ net/sched/sch_mq.c                  |  69 ++++--
+ 5 files changed, 422 insertions(+), 146 deletions(-)
+---
+base-commit: f93505f35745637b6d94efe8effa97ef26819784
+change-id: 20250902-mq-cake-sub-qdisc-cdf0b59d2fe5
 
