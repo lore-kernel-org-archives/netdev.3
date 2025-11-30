@@ -1,175 +1,131 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010043.outbound.protection.outlook.com [52.101.84.43])
+Received: from smtp.blochl.de (mail.blochl.de [151.80.40.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DC328506B
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 13:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764508673; cv=fail; b=Pm3wupoiJ92c6ZLFAaW68wloAOw5oLaI3t7V/ji6x9RnC8yJsepUuExL9Dn9DTao7M5VL1aUyUxb70cTAxX9h5/FBPR/SmWn4lLdLKEjiuyhF2NZ6uogmfIvbgjILvv12pRVe+55USKWOzSZCRd17slGdJy+kuKnVs8yCz4CanI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764508673; c=relaxed/simple;
-	bh=1ItFRJLCJfstVPwYNxEDheSPD3paEc2/Wx7dPlIlJ+s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bF2sogCW3g7HYyboExy+fYsojDCtdkBTzOpO4AdydE8fx4OLt98k2iS4bOXtHhwHbRpKFEUfWmg+ObACU1Oy5G/N1R8UeSSdCGdeCrV03drjXqOCIqsQvsSWM4HfZLTd2vfDLCZOku1HMu6PjelXq0p41Uj5Lf7RkZecppWnfVY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=izhT6vN8; arc=fail smtp.client-ip=52.101.84.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="izhT6vN8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K4xX28HMpT5zG05aiXB7OUTXGHS7GBoqWdjD/VBlIVao870MgpXVnlfLdC0LiWoODXcsJOcBWgPxKprkOXxo7conjw+PYLVeuUUzk9ZRdHUQ329DZmsiPaF8VM/Tk3mNioH753Lx1t/vCxi9jyK+s+KxWxTCnYFAGsqUmJQaje+VYlWVf787vUBY5USQyvcjY3DrqlsFeBCecopZV0HidgYc9s6+cSrLgDZFdYpMvmFokeit3eXjREkJJrn6XQM9t4CKe8Cbyn8+/+WvX3xuqUjts/vVHRxafUNPSp9Ouni+n8JRnfFohRx4WBaosij0QUKbX4ZerX6FNisQPrdO0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=38s5IkkcOXHO+WVud8GCENyJqZPPoWiM4oyT0Jc9iPU=;
- b=xoZ8znLl3C1GRTbUfob9HpKbEacp/3whn/BEqsZYw7OFi5vt1dPppDzbYKTuRK7M3N9JwcqSCTR4Ha13LLEavuWUQiTJ8z8AANNjwZdse4Le9R2WQIoy740x79BVK1aD3NBBhGdsGvsjBHwreK1JVhmn2ow7W6bh3BYYAdJrXEdmvHSwqZHVEVvipwgdq8a96k1v3asfVdQymLTrU9+XpdPD1hu6I1OJ4IuGKJODZ/ViamRbmKIeYXXzaR4xRe6b2fIvY+Dsh0X9tda0f02JIq/XAs6GBhgbszA5Y2fo7Ds0O5OijdwJHs6viFbG4LjLR9JjSynoOxAkfohxk7yJRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=38s5IkkcOXHO+WVud8GCENyJqZPPoWiM4oyT0Jc9iPU=;
- b=izhT6vN8CqnQg496TCR354VzouIS0mS90hwvwpx0Y1kHd6hZzpnqwpZi0JOlRiEjE6WI32PJEDzgJeZ8MKDwCQ2zUXpL8Jp+hDOqGUvliovH+myxhGlPsKXAbp6Bo4TpnOV+YzIl9DKeacGaTkajJfL7dcjsF4M0WJ896HCQnf2UBKMVb//8hqbE8bLvLymJ4ekBuMHzLz9o/V4Aw93KA/ek/L7p5NCFSREgTM4UauT2PnDW6K0I0TSRRYH/AqyetlJdl/MAwJdHeMB8dhmrRSjP0CewAwv/xf6SYG76/8+kvF8c7KswKK6DpaRd2nQ1FRXNlKaVbWRLIWC3OTVI8Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by AM0PR04MB12034.eurprd04.prod.outlook.com (2603:10a6:20b:743::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Sun, 30 Nov
- 2025 13:17:40 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::8063:666f:9a2e:1dab]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::8063:666f:9a2e:1dab%5]) with mapi id 15.20.9366.012; Sun, 30 Nov 2025
- 13:17:40 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next 14/15] Documentation: net: dsa: mention availability of RedBox
-Date: Sun, 30 Nov 2025 15:16:56 +0200
-Message-Id: <20251130131657.65080-15-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251130131657.65080-1-vladimir.oltean@nxp.com>
-References: <20251130131657.65080-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR06CA0128.eurprd06.prod.outlook.com
- (2603:10a6:803:a0::21) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBC91373;
+	Sun, 30 Nov 2025 14:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.40.192
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764513388; cv=none; b=eV2qMXy2cmZ0ybsN8VrOe3X6k+QJPO2isdaN41LwDdC41uLVRFAFxg4kOAsx7FxkOVAFPuec0eXTvcuhFxhKS+Jvqmrfbyzz0AqxcXmII/t+p9fVWZKWvjXj8hMEWaepnuHyyyzw3+NzBgFnWn4N0U9213fMPp32XsN3ouUtIQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764513388; c=relaxed/simple;
+	bh=XmnQM8sZ9HzvhVQ5Q3tBbO/m5wUKCrvEKKj3bunjzJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NVQ/6u7LyoXih7qoYGMIcelcNZY4zVejn4zvofSuziA1rRWC0lU6AQ7u8wqlSzj1o42uFrkAg/g9ch09sK4dnOxqAjtBkevbZb7abeHopwv3HCHDqV2T32K2y30DWT9ZhjaEgLr47g9ny7QKwluRtkHkz1p4s2uIDyVZXuclWvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blochl.de; spf=pass smtp.mailfrom=blochl.de; arc=none smtp.client-ip=151.80.40.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blochl.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blochl.de
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.blochl.de 446E14641E8A
+Authentication-Results: mail.blochl.de; dmarc=none (p=none dis=none) header.from=blochl.de
+Authentication-Results: mail.blochl.de; spf=fail smtp.mailfrom=blochl.de
+Received: from WorkKnecht (ppp-93-104-7-227.dynamic.mnet-online.de [93.104.7.227])
+	by smtp.blochl.de (Postfix) with ESMTPSA id 446E14641E8A;
+	Sun, 30 Nov 2025 14:28:39 +0000 (UTC)
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 1.4.3 at 449b6f9d6baf
+Date: Sun, 30 Nov 2025 15:28:35 +0100
+From: Markus =?utf-8?Q?Bl=C3=B6chl?= <markus@blochl.de>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Markus =?utf-8?Q?Bl=C3=B6chl?= <markus.bloechl@ipetronik.com>, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i40e: fix ptp time increment while link is down
+Message-ID: <zmw3whfzcipegeyxpydgctio62q3vlpktddhidu4lskffgr3uk@irzoprznarmd>
+References: <20251119-i40e_ptp_link_down-v1-1-b351fed254b3@blochl.de>
+ <5b824df7-205e-4356-a33b-9937a1367517@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|AM0PR04MB12034:EE_
-X-MS-Office365-Filtering-Correlation-Id: d098a7e1-9b6e-4ddb-1740-08de3012d691
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Cv9os6rCuIQFKq6k1P6cUMSSKpDNuwKIxQzVhuLBtfwx3oAKUQakrspOpSL+?=
- =?us-ascii?Q?gOr/BC/5pKdqqYwP6iURF7yBA9WjCFgPXOD8cz26VrycqHHRFSuxITfYzgu5?=
- =?us-ascii?Q?1UsBWPDpQJrZMhEO2w4Klg9ABt9KzteCLwpkylfatZRJyUX4o7+8TGfldRQS?=
- =?us-ascii?Q?+ehO7MnSnzzbh6gsZLou4yU+/CYgBlzFjDenc8EutecXLR5v2HviP+FjrLMi?=
- =?us-ascii?Q?y/vjebRZkPxKCKSbutt0EaVJFXdZO2ZrE1UYLewgSszwyaNaBbIyTd7eg9KZ?=
- =?us-ascii?Q?FwShoGY/g8Quo9BQdQrZ3a26SYWoZosYEwl2S6gmuZnkl4vYFcaCHsgxpRPc?=
- =?us-ascii?Q?EYmCrDFgX5Lzpi96zK70nvEs+Z890z1NZmjUPVgbeENB4O0jQBe9OwIVwUo+?=
- =?us-ascii?Q?DBgqwUyZXnwfihc/baxk6b9HQZPB2tLNFhsXLO70vogb32nKOnhjAxB6uHzI?=
- =?us-ascii?Q?+mbTiRKFaSou0Tv/hPErkTpjywZf4aMl+YyntsrEkqbixiKTRrg+/F5x/bs9?=
- =?us-ascii?Q?TUMGQeuv+dA/DWisS3qyDLDW5fzwTQgjBK29LM2T68aJur58fcnKpwzWDH2M?=
- =?us-ascii?Q?ilkMoomZGaP2cFwL10v9uHul3vU4LWD174C9FcZiAyXMDKZsYNp2wZXKoI8Z?=
- =?us-ascii?Q?TDXacLEqm0i4c8807li0iZpLAVoUbMeJ0Cjt7IkseIfpgLX7+jeYD+lFiH4Q?=
- =?us-ascii?Q?c5hBMQDx+/cl/k4qkJoS4z48J8SbGDs1ytEQcQeSkVAXXTV0uqxZmaXF7WFI?=
- =?us-ascii?Q?ZZdo+isvDbXNLB9EWsIcuGDQd8ucvVrPhfSidBOkYSEnoy0m46X0c0AU6/RW?=
- =?us-ascii?Q?Z4DNKfeQF9b7SwmMPnoGsWRKb6fGdhBTGY4PQtuHC+KTa/whz40PRHEWHc2I?=
- =?us-ascii?Q?Sk4UtKk9/hJEqF45XHAyHbtdOxJQ97Mcs8ofOGb4aM4AjE0cCCsPpZE5vdN6?=
- =?us-ascii?Q?aPH044H0r4o3DGwtVLSwvJ0UGVNzAcDL5KJ0+HbnuS31e8spXShtsfPzyn64?=
- =?us-ascii?Q?Efg+2AGuEx4LKhD7+IRsUaj+PfiZkmjwheqoyfIOhLMOnwQEa4hhqw/bPEbn?=
- =?us-ascii?Q?LiGsK75t3P2XeWWDjFxfbVJIJNVy8B1edQEk/iIXMgIJ4riFFw2Mug9j3Otc?=
- =?us-ascii?Q?RCpajF4DShQhcT+lY+3d7plE+AJWHk8hHEg8fm9eF3XokkvuzJmmN2lWvw3T?=
- =?us-ascii?Q?S3bFET/k932IeTYJmmKjq5ysEXNg3hZcJQI8zIdzl5yFE/H/50iKusrWj3Yd?=
- =?us-ascii?Q?mAP1NMA3+Euq8qNFnvHOZODeV7xRRByZt0pf/W77trljfzmIcrmZmM0C70Tk?=
- =?us-ascii?Q?4BOcrHBMY0Z348lngoHQD1WIiNUJIfbtZUFL92Y4NdEdXWHKptIrwinbY+CN?=
- =?us-ascii?Q?qg6AcgJ97riJIg1w03P8epGhvQCCNrobY8AJ9+BjvBDW6yX2jVyFjw54A5Bm?=
- =?us-ascii?Q?Dhyc3fvUnp/lSK02tYqrurbuypRUnbGuaEz4nXsR6RHsV9fyKoeyQPTXMXat?=
- =?us-ascii?Q?lX8ob6H6Kzm60NWrRPlFpe0pQmrr7wVi6Gv7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?N77RUPU8hUc4/NBhWubBQeNy3xkYb8Gg1DdEStMqatpH1n1pexvjMFTooj5V?=
- =?us-ascii?Q?44dvmI7PgnfcLNvKcJ4lmePpK4Y/Em4rVfYk1ht0Ybop7tCh8XbkAtjfASTR?=
- =?us-ascii?Q?RCyA5rY3wWxo3buZAtt1aPXZebYukuN9UmI9q5tUCS1vHvUIe1OL71hc/jQx?=
- =?us-ascii?Q?HCUFmWHTuCBbR+zaeggnsji942iOBVAiJI1KkOShqYOl31WkaQqWQQbzZ7KS?=
- =?us-ascii?Q?pDZUze4oo88VUqruzivH3uSUk/EbsJptOL9uti4aKAydrnrHWZUnQZHVLSDg?=
- =?us-ascii?Q?5wgbwfBBthO73bH6uaPf0bgd9jijhvmWHhQ0gfeGU6rSP/grOqwMe58eBdaU?=
- =?us-ascii?Q?s8S5yef4N5zNDCGfNwD8am2u5UnI/klSLaxglwqmgSKQstbMBRFhA3IJOG59?=
- =?us-ascii?Q?kF1fZ+VL+uCZnCD9KTXuC3Y/O4ePIJCno1LYzOgU01dyl0Dqs0FD90Hsjpw6?=
- =?us-ascii?Q?1hnGV162xaTCS1tt5k+UXHApultj4tjafjgYeWd4efdT1Cw5/ejY3yu4xMPi?=
- =?us-ascii?Q?R9nCPnJVkLNC0qlnMTXda0yt7XzbB72kQ6rLUdCxriqECDuBy8o37XXLXmc5?=
- =?us-ascii?Q?NntvkE0TuQPzxYWmi1E+pnHtAoAozQg7BtV/F31gYTGrAf7JkmTNh6gYwEaO?=
- =?us-ascii?Q?nq260QUAFAX4qS24aYazRTIWaJSn67ia7zTeoP5SGtZWuUXEHgfdpvsGQ/Pe?=
- =?us-ascii?Q?csKelIiK1Sg5ZZvWQwFnQuL+bmNLFnurvcYmT3FhG2Vx/5YCJXE0CNHZ3gSg?=
- =?us-ascii?Q?LaGf+Z7FRRUcsvndNvnYWi7HBQgezos6icb+3IIKJ53b4DWvRjjDANVQ28EA?=
- =?us-ascii?Q?icZjLw1f7vV6p7k/nfiUT7cef9JkANTOzqufjy4Zf0R3qaCbbwYmBKmxIY6s?=
- =?us-ascii?Q?Pu/6d72jd7dIaDhCvRbwgvRWWRw+Bj1guahSdTxkRH7LSdBlRY+KVrmR79th?=
- =?us-ascii?Q?l70s0ZJy3JJ+d9i/OGyGGY7i+14L/x+dIE8oa7B/ktd/p9ZCNZrL5uFd+ojn?=
- =?us-ascii?Q?JP7AtorNqgubmtHT+hXlkujn4VhyXB3Zl+zxjf//naN29B5n+4cn3fjNlU3T?=
- =?us-ascii?Q?BboHprSl/qdClfirqq38gpINFahSpSW3tdEJg6CVUQGQ4tvW4LPalTbY47pG?=
- =?us-ascii?Q?UcKVIKQq3zLgXB5hgRIt1WBnule6416vh1MQeDIczcx5+T+fg+sy0BdJ3PeT?=
- =?us-ascii?Q?hHoD4u0A8sD6kFs4YHojG3MWk6SvoTQOpKDpVKTArJUMkByLoXBg/zJDh3d7?=
- =?us-ascii?Q?vvJCMKvSK1XuQA22LMA/yixreMO+sG1DM5xCwmkZ8f2zU8D8NWSfBBb0ye2O?=
- =?us-ascii?Q?JHFa+4/ZtnO4S2YQTnbK8nHEeYHZUe8JQPg+1kYP4/d3V8Mz9/GtA/UatU/W?=
- =?us-ascii?Q?DECpfiIYogr3+vjQIxjsEwyvRa/5XbHc477lrTjcoEb2mgqZXVtPtqTDS5vG?=
- =?us-ascii?Q?Zo75AJhI2nNADSlcoblKZh+VHnAddAAH4Zkkp8mCLUj/wmiOuFb01+mF64yg?=
- =?us-ascii?Q?w9P/1YpY2DS/87W0TqgDpc21fEogRVxnwU3dV+3uPrswoaSVMyWQyBmK0AZR?=
- =?us-ascii?Q?Dz1LolvrA2eka8L/WeDqhlQDH4IlH3bu+eZDZ1cYW44VIlSqfyM/uyzN6MXM?=
- =?us-ascii?Q?0A=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d098a7e1-9b6e-4ddb-1740-08de3012d691
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2025 13:17:40.2232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VpkXjc6jmPQJquFLJwLJhIxSTsHsQnyKo12n0/ULYb6gs1Dhx4Ue12vvc10vjqmab5hN1TIxs6Ht9LqUeKeqbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12034
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5b824df7-205e-4356-a33b-9937a1367517@intel.com>
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.4 (smtp.blochl.de [0.0.0.0]); Sun, 30 Nov 2025 14:28:39 +0000 (UTC)
 
-Since commit 5055cccfc2d1 ("net: hsr: Provide RedBox support
-(HSR-SAN)"), RedBox is available (including for offload in DSA).
+On Tue, Nov 25, 2025 at 02:48:20PM -0800, Tony Nguyen wrote:
+> 
+> 
+> On 11/19/2025 8:09 AM, Markus Blöchl wrote:
+> > When an X710 ethernet port with an active ptp daemon (like the ptp4l and phc2sys combo)
+> > suddenly loses its link and regains it after a while, the ptp daemon has a hard time
+> > to recover synchronization and sometimes entirely fails to do so.
+> > 
+> > The issue seems to be related to a wrongly configured increment while the link is down.
+> > This could not be observed with the Intel reference driver. We identified the fix to appear in
+> > Intels official ethernet-linux-i40e release version 2.17.4.
+> > 
+> > Include the relevant changes in the kernel version of this driver.
+> > 
+> > Fixes: beb0dff1251d ("i40e: enable PTP")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Markus Blöchl <markus@blochl.de>
+> > ---
+> 
+> ...
+> 
+> > --- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> > +++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+> > @@ -847,6 +847,65 @@ void i40e_ptp_rx_hwtstamp(struct i40e_pf *pf, struct sk_buff *skb, u8 index)
+> >   	i40e_ptp_convert_to_hwtstamp(skb_hwtstamps(skb), ns);
+> >   }
+> > +/**
+> > + * i40e_ptp_get_link_speed_hw - get the link speed
+> > + * @pf: Board private structure
+> > + *
+> > + * Calculate link speed depending on the link status.
+> > + * Return the link speed.
+> 
+> Can you make this 'Return:' to conform with kdoc expectations?
+> 
+> > + **/
+> > +static enum i40e_aq_link_speed i40e_ptp_get_link_speed_hw(struct i40e_pf *pf)
+> > +{
+> > +	bool link_up = pf->hw.phy.link_info.link_info & I40E_AQ_LINK_UP;
+> > +	enum i40e_aq_link_speed link_speed = I40E_LINK_SPEED_UNKNOWN;
+> > +	struct i40e_hw *hw = &pf->hw;
+> > +
+> > +	if (link_up) {
+> > +		struct i40e_link_status *hw_link_info = &hw->phy.link_info;
+> > +
+> > +		i40e_aq_get_link_info(hw, true, NULL, NULL);
+> > +		link_speed = hw_link_info->link_speed;
+> > +	} else {
+> > +		enum i40e_prt_mac_link_speed prtmac_linksta;
+> > +		u64 prtmac_pcs_linksta;
+> > +
+> > +		prtmac_linksta = (rd32(hw, I40E_PRTMAC_LINKSTA(0))
+> > +			& I40E_PRTMAC_LINKSTA_MAC_LINK_SPEED_MASK)
+> > +			>> I40E_PRTMAC_LINKSTA_MAC_LINK_SPEED_SHIFT;
+> 
+> I believe operators are supposed to end the line rather than start a new
+> one.
+> 
+> > +		if (prtmac_linksta == I40E_PRT_MAC_LINK_SPEED_40GB) {
+> > +			link_speed = I40E_LINK_SPEED_40GB;
+> > +		} else {
+> > +			i40e_aq_debug_read_register(hw,
+> > +						    I40E_PRTMAC_PCS_LINK_STATUS1(0),
+> > +						    &prtmac_pcs_linksta,
+> > +						    NULL);
+> > +
+> > +			prtmac_pcs_linksta = (prtmac_pcs_linksta
+> > +			& I40E_PRTMAC_PCS_LINK_STATUS1_LINK_SPEED_MASK)
+> > +			>> I40E_PRTMAC_PCS_LINK_STATUS1_LINK_SPEED_SHIFT;
+> 
+> Same operator comment. Also, indentation looks off here.
+> 
+> Thanks,
+> Tony
+> 
 
-Update the DSA documentation that states it isn't.
+Thanks for the close look, Tony.
+Will be fixed in v2.
+I needed a reason to reroll anyway, since I forgot to base this on
+net...
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- Documentation/networking/dsa/dsa.rst | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/networking/dsa/dsa.rst b/Documentation/networking/dsa/dsa.rst
-index 7b2e69cd7ef0..89dc15bcf271 100644
---- a/Documentation/networking/dsa/dsa.rst
-+++ b/Documentation/networking/dsa/dsa.rst
-@@ -1104,12 +1104,11 @@ health of the network and for discovery of other nodes.
- In Linux, both HSR and PRP are implemented in the hsr driver, which
- instantiates a virtual, stackable network interface with two member ports.
- The driver only implements the basic roles of DANH (Doubly Attached Node
--implementing HSR) and DANP (Doubly Attached Node implementing PRP); the roles
--of RedBox and QuadBox are not implemented (therefore, bridging a hsr network
--interface with a physical switch port does not produce the expected result).
-+implementing HSR), DANP (Doubly Attached Node implementing PRP) and RedBox
-+(allows non-HSR devices to connect to the ring via Interlink ports).
- 
--A driver which is able of offloading certain functions of a DANP or DANH should
--declare the corresponding netdev features as indicated by the documentation at
-+A driver which is able of offloading certain functions of should declare the
-+corresponding netdev features as indicated by the documentation at
- ``Documentation/networking/netdev-features.rst``. Additionally, the following
- methods must be implemented:
- 
 -- 
-2.34.1
-
