@@ -1,52 +1,52 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011043.outbound.protection.outlook.com [52.101.70.43])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010044.outbound.protection.outlook.com [52.101.69.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114CC27C84E
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 13:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD3D27F171
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 13:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764508665; cv=fail; b=uwt3yr+wuQVKIMo9qlCckGNTMkd/X3sc2UnSvYSytpZq5W/WHSdRw2vXD1+qYMiCWtRtEi3i6wC3aoI2GAzDEw3PKY5zcjaD9zx5cl3rkm8jMr+Iz20NVd7aFnenp7CKlYd1g73RO2qJGEGiieaSEZAyDpCgN+2OehKw0F77iuc=
+	t=1764508666; cv=fail; b=bbZ7aYLML/v8KfjUyfiELwIgBmT2w0QBwc9ckVZYOlt9awYo6u8lYbav4r+E+8VYI/K3oneR8L52n0XZSquGttzkQtonXDjgRyxqhriSj+ByK/IwBkWbLaLqJyw7OdRvaN3BAESXhQVb6q/I7d8XSINiuR+wpePn3V4HczCSRwI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764508665; c=relaxed/simple;
-	bh=X3/5Ulyb5EcseMjpLGFCP9TfnUyql3AObJInjpdNLVI=;
+	s=arc-20240116; t=1764508666; c=relaxed/simple;
+	bh=GRPfxhO5czwkZtIFVEmlLN+24xYpb8PRvtiYiJnV7CQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KvOSMw6royv2exRQ/iwPu+CZi44DzpbecdvEcY/IVhqmvCivJspfFuJykZX2+UGoOSrwXqGl3NGACMqzIpR2NIkPfCIIiOuDbxb99OMhUY5+w7erEO/YCqdHrHkpA+C+gVhYLuV/LFadoERDRABSv9N+ydadYb5xSp3kI9G8Pbc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mUC/NDHG; arc=fail smtp.client-ip=52.101.70.43
+	 Content-Type:MIME-Version; b=i5zkxdrKGWtsg+FWxjycBIPA/WCMJmwWmHMM3EwUpaBl1thIbYvrb5cJfp5O16UTwNkHU2KSuC5vEjy+VRByxRpWwvFSqJzCiqzMuQeEx8wmJGbNOEb9VkE8FPee/KDwk+Qp2HQ0+0DV0ghbwe79nrPpQVWdQDxdMFNBIv//zM0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UXC/QzNb; arc=fail smtp.client-ip=52.101.69.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mUC/NDHG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UXC/QzNb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wyXeFFfyHNhP3Nw4MqGDHzRTEiWNwCP8jrOfaDT6sNIIPcIKsR0csfU1Yeo6HbGZWUVxsllcM4nGbhw1Z/HISgcdjTIFUhzPW7r6qn9oB3uwn2fQod3TGESt/zBnH7vie4hrc0PbRIJq7K06uxpYNfi2YZeiwT5PDkfsv5E99csf0yNCzWbl69OU3gx+wtPxsLD8V6Byny0DldmPjPEidpkBXjUPY9OsYotqJDdCbYBbd72lweNdaGNtfkWSzw+mbQ8h22/om7DXn/lMNmVviEwnALil1tMUyRNPQf2r05gThUgsz07QTsTAtDq+MwG8K9GCg7OU5cSn9v3Pjj0OrQ==
+ b=wh0HT8vXlRXavNpjauX3H0Za7bubrK2q3ve/vHS+GkVg9b93iUFs+Uq1gc2Hjj7gKjvwtpE4vWnUZ+00XhpSDGaogoItKyyUi9Fjjv0T6pvUv8+ml3eB77mOUHO3pk1h0Vce1zCOXQ/smDPZGXwp2jFWPH3WJqOnQeeWkH1LfGsHZTyn2OozmPzpwhvW7k4Y7wSo0UI3BlmqE4raxrjI9U2dUvutL3tOQV6kBaZot8ZPKoIB0qSQj8DQrEDEgnOY3M8mh9hM3xp8ON4htQ9Bgi6AF2aoxYcNaK9dOFU3YjncVg/AXF7MLkyMkef+IgWM/yvpMzKeYdDJx/qNwTbFqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bBnDcSKPVKlLpvOpK1FMOIjqo2hHeBXPsXnqBVG8D4g=;
- b=ERmjxfXSDShvQPQlP0aEvBG3Iqre2XiAbzyZnYYKSFQnzuzhR1xsh3/btA8xZi+BfT20OMqUVapfFjVnHCjkZeV9HQCMJBT0Rh7V4o2ws/JvVNyQRCZCe5s/fFNRzkgX2sB8h+XjvBjI3tEEZumshvZKWNISpRKHmf8ovUfvP/0SAqqCu698e9AHQDwgozVN3pYHbNTvKfeJsPaxmIh65QELl1ZVE+HIoF80IAO6poOcAOym67Jog1AUY5pGUuZQmbfEKPNd2nRe9cLffRCZCGQzWDP8Yj6y2HLmGJh53Jj+pa3iV7rM6Yji/P792K81d0JwtQVvIDsFi7zZvk77CQ==
+ bh=TNyEMf2HlbO6RWXZwDFR4Sti4oWAxXr7igLNBquG6G0=;
+ b=SgACCnpDNRWinr5vEixkDe0UvqjmybSKudNl+Qpf2U7rNxvdcD0ZgtCdGXi7yOXX63y/HjrpyShck2BM2CY5T0rlX3sr6cyNHgtrZ3wS3QSH0xSdHwI8Haf41EKGu4PPHRFBHxWNXMvJkgdXPVLMPTkscaM8hcA9LC/Un+GOPfbtNdA7oKhNR6ReeYRgpu9JHHai+hNfMVrFueqZqkeraIncSQR9p+ycPJG6pBrf+iREn0I8nW9vBrP/9IIIwcuVsUbxgNbggWmxqbVf7JXfFjB7qn8abxPgEMXEytgfj56Gm4E55rD7IgGByocP/tcXDJHyLej+5SRShnx6nt8XmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bBnDcSKPVKlLpvOpK1FMOIjqo2hHeBXPsXnqBVG8D4g=;
- b=mUC/NDHGny6hOzD/PoMJubv8HdZOmwrdqYFaWfCJuEdDncA7xhBHqATeiuzZzVLxMkm5aIMzuv7o6b0hJaqYa9pqP/Af3nDf/30JFzpYEVpwonvCqTeaNZRMYt9GUSONPijNZ3zKpfAwNvBHy/9JJTSuQVkWjkh0ys/evQnUjvpemx41HQ61q8G7FwUhzA+wGmBkCKMGSZO6rvri1hGphPArNvbiaNVVXSS1dU9h4s1cOUX7pj6rq7OlfPrJ3Y86IbQ6ApoSWA++a/6kRSYvaEoaHcF5UYnNM4OFZix9i56rW0KKIv8gOmqcIoopXV6kbGy5vjQgSg9zoewftjkH9Q==
+ bh=TNyEMf2HlbO6RWXZwDFR4Sti4oWAxXr7igLNBquG6G0=;
+ b=UXC/QzNbfF+eIzb9y5H/t296Mbh231OXwIldSRxI4wd2ZP96FgSqP+Apq8iy1XD4MWpNmtG1tzOnbxTnOfM5FoVeWUoBez56M5ji7WyhvmEFHRbbxzrKdEulGue4LQxa/DUUa0sfTmFMhfZsH1+xsFzz80MgbeJxaGHsMy+JIZQDCfMN8oOpeEPPYyJoviI2nYfux5ROZKtfaz6etWLHOb7LiwMf/T4k4vajTGBGiCZ4rxu32pdSLKMpW1Z8wx9MoF8WnsxWIQXs846DI/LTlpKKwSH5Rx4rtogQWEBRwJylFxlfWNtaBQjPiuzT6DfZD8ZeUfKoLem9C6vorH9SxQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by PR3PR04MB7434.eurprd04.prod.outlook.com (2603:10a6:102:8e::22) with
+ by AM0PR04MB12034.eurprd04.prod.outlook.com (2603:10a6:20b:743::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Sun, 30 Nov
- 2025 13:17:41 +0000
+ 2025 13:17:35 +0000
 Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
  ([fe80::8063:666f:9a2e:1dab]) by AM9PR04MB8585.eurprd04.prod.outlook.com
  ([fe80::8063:666f:9a2e:1dab%5]) with mapi id 15.20.9366.012; Sun, 30 Nov 2025
- 13:17:40 +0000
+ 13:17:35 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next 15/15] Documentation: net: dsa: mention simple HSR offload helpers
-Date: Sun, 30 Nov 2025 15:16:57 +0200
-Message-Id: <20251130131657.65080-16-vladimir.oltean@nxp.com>
+Subject: [PATCH net-next 07/15] net: dsa: ocelot: use simple HSR offload helpers
+Date: Sun, 30 Nov 2025 15:16:49 +0200
+Message-Id: <20251130131657.65080-8-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251130131657.65080-1-vladimir.oltean@nxp.com>
 References: <20251130131657.65080-1-vladimir.oltean@nxp.com>
@@ -62,109 +62,221 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PR3PR04MB7434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4530574f-4cc1-4a1d-5125-08de3012d6eb
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|AM0PR04MB12034:EE_
+X-MS-Office365-Filtering-Correlation-Id: 229f3c63-24ea-4d22-8f13-08de3012d3bb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|1800799024|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VxVJZhrz+GDQ1ipB+WYosbDxbDSvSS1dq4tcN0JUSEqH4dlOLhVbZ0A4LSVv?=
- =?us-ascii?Q?1VM6x6rBK2+27CtMfKxMp4h24rLI+DKUbzhfnyYwaxAmoeipuOfC0nnXFfVb?=
- =?us-ascii?Q?+O69UehLtvDEKzTh7M2+flnxDHvcNOCzyqbonA7Q03M6elyALwUwYZpvuou/?=
- =?us-ascii?Q?TLCWouMuKuDhD+MyLpo1uF6D4NRJxZrzQ0fr/CADMP6KFMlxG9LdoCEnppim?=
- =?us-ascii?Q?IfufDtAfUwSpg2UMcFGwS5tQbfl9Wwnix2tP1je6VTDpVgFk/TDK6yH068rE?=
- =?us-ascii?Q?2oX5mRXiVVSIBtkrYaW5qL3z846mQC5WzjVaz7m2ru1enItgfnh1tgHrePkU?=
- =?us-ascii?Q?XVONQyqS2UKRpjyDBG+FBKmCMZJWk80s5ooJ2fcfyxs1YZwrlQeCcNgFX+Hf?=
- =?us-ascii?Q?oUsC0cSLlvkmgKsdLpKE48ox2PmwJAkcp5G7rqIZb00MY9tYwNqb4WPFHrbI?=
- =?us-ascii?Q?MLokdK4mxPNU8bp+2nBLnDScDeok5elxofDyh+tRLQIP1SwkLbT430awtl2f?=
- =?us-ascii?Q?EkIWAtXDhNBzezld1t4LrIG67hydcjXJ74RSjIv8UcXQpUGLb8UQR1Q0mY2c?=
- =?us-ascii?Q?LKg/z7/Z5Vb+JyjNyiU+PAp3D179PxpXU+1X27Is0/ttKJt3ujtZKrkf4bd3?=
- =?us-ascii?Q?VxWV7EVGTlHDfTtRAsidbYVJrsYclxBifNa+OazYDjBIGcmn3KqOzNbIEwPW?=
- =?us-ascii?Q?ANzOyM5HHFC8t2e32QtOsG5L7JkZKeVUsphbS3rfYbTqWXdAQiQjTGilxG4J?=
- =?us-ascii?Q?LAO31O86KSpbC8uEsqpOyfn01sN76epTcy/eHzUzor+c4hpujZm10VIQjLNO?=
- =?us-ascii?Q?08E3Sv4Qvq0cwpbkKawq/PAZ8EHONhcITuffl0eHa7qBn9nHzn2Yka86RjMS?=
- =?us-ascii?Q?2fXucwVnIyKz1CIZDBmQ3Md+a3BPbGE8E/NNHI7rwRxr/uhwZj/aHRZuJEqV?=
- =?us-ascii?Q?6yqpcxQSLjLWJdWctYXumNowNMT/VVdwB7UClnLG9tFu1eS1TlHMU8cZ9U4c?=
- =?us-ascii?Q?NWDrXTrvvf3R/n70mBchSQlOliJM/WC+XyKsl/zGdrpbUVDyqH0svHgiDGtf?=
- =?us-ascii?Q?fkPiLWmSL3ZSQSXyw22WqMkzW4ikRe5V2tWZuDqSTaVt0n32tkwo0biP1ykZ?=
- =?us-ascii?Q?oMi5w6bS2ajaZ9YlptISrfQ1rP8TqTTJI+1p1Zz2u3xsBlNwQRNCG3kU6q8X?=
- =?us-ascii?Q?aWyGqI+kMIlkvNf6207LqrP9Kb0i1/lvwzXvB7Zem/siblFcPTJ+/96D3yY3?=
- =?us-ascii?Q?lx7RDpf2d3FTvyvh45jhEjxwHm7PjRQYh4qco9BztfWf6l1EEp1e2FKJgt/q?=
- =?us-ascii?Q?PdV8F783PJSORmnuN1/MOwMay+Oh8TEcoDuDkRlYlt0kMZpVvOsYeW5sQzlU?=
- =?us-ascii?Q?DDFNIwaNtCIxrpj9dhoFrJMUznyzDF+QnW5KnIYoEuqkxyrAVdGv+ZFp4SJ5?=
- =?us-ascii?Q?AJtxtJDivckNIbvbs2FO+e5CQGb1i71ML6Wdg2o/Qf0+Om+2ILIJ6yuG/wiN?=
- =?us-ascii?Q?cGN9cgmlu1RQAgNps2iNhKUVbBxZ9rD8JXKN?=
+	=?us-ascii?Q?xZ23Y/7HsjShxW1K9PZgycKHIiXY5e0rmwQ7IEkblFcmB+noQjBNctvut1Jr?=
+ =?us-ascii?Q?Ee8ldPMeByMZu+32ef6JHpXJqpNW4bd8KvYnaCMj/RNOY+QyvBjcZu6F06gQ?=
+ =?us-ascii?Q?vheR4Kp6Todtm21YiSGL2JbBwemajqGqqrSM4dZY37ks9Ggp4k/+NC8XMPJQ?=
+ =?us-ascii?Q?cMe4wi/uNxCKfRFDCk22iXI1jd65cNDwCgXSwgHU0Dsz6ZGWNWl+kUoSSxY9?=
+ =?us-ascii?Q?n/nnbmDoihnwHqYegL03K99GpjfXN0XONi3W/N8RuyS+YpkDIMXj8M6TSGSc?=
+ =?us-ascii?Q?H9Gg1C0ZYj7tqklapAVPADMX8zd3JOQ0aGo4yUF7IVygUMUbUM7qdEgpPPC8?=
+ =?us-ascii?Q?HKt/dGohg3xVow+kZZMMfSBD7MtJuDSkErgYmv7jqqsBIopAlEerYWKgJeMQ?=
+ =?us-ascii?Q?D5vUkfSEXN5WL+pWv0DN25xYN/5bMu2kTHIvMpi3oMUl4TQwLt5AV5YcOtTh?=
+ =?us-ascii?Q?xezfKZgWK5GMb19R6x31Z+J5ivuUvSLp/0gXCLaTo1MWN1DgpE+tkTAxCYMl?=
+ =?us-ascii?Q?vY1YgS/ME7MyYq8zjCYtAH8NkvGi3whqP0k5gvoXaaMmBEXWApRfzSSAx4FP?=
+ =?us-ascii?Q?z4ZnGKRY0DHfnrYu8kUBBbmRbPN4BVlHq8gm6vvk43cb41uwS3JwxWHXtvhs?=
+ =?us-ascii?Q?zRy4PHkjyGFoWYXhbUwJAfHt1iq8xEDSnfm5ZrTDdjyygrill1yKLjnjsr8p?=
+ =?us-ascii?Q?YhqwNOvj7EbBA9Iy/Q63Xgd9SEOoo9cotRzR0cZJh0lJ+6MHlrYlKYaEOM9t?=
+ =?us-ascii?Q?Hll9si23lj3RFeSwrBE2oOca/2BVi6VWAYT+x5vTPmn+xUM7nXKuFbJ9jc/N?=
+ =?us-ascii?Q?91cPkqjveDNW/waYFJTkU+j8mFU9mwWKGHOSpLZ5xQhXxC4/BOx6KI9xAror?=
+ =?us-ascii?Q?aUL8J1HlzYWR2b048XlQhQ256+/NiCeDJZ8lvTG/FjoD5SYD/sxGiSZNgElu?=
+ =?us-ascii?Q?oM6a8T249KyWMhyqwIM3SN2/TAsUQzTb9U33JPFbsrUJx89qaaWGMyo+Nm0m?=
+ =?us-ascii?Q?BhMzktK/T25vET3AEbtkdyV7q0yCSrn7dnVZP2ddMAyitg2fOGRf87kyGKWm?=
+ =?us-ascii?Q?rEtFzR4nFmpRQkt+PH3HQI8yk2l0QjJd241RexLdLmZZ3YNvfR4lOJa95WqL?=
+ =?us-ascii?Q?UeDnoearxBJts0iI6fTGHp8jCdEK4OjX0QApjnHL8vcvz7u/oqqzCpsrmVaq?=
+ =?us-ascii?Q?ecAFxoy+oKD4T79q2YnTzQaNwR9rAV75JVyQYqays2pm53YMsZmJUArN/k8E?=
+ =?us-ascii?Q?kE3BBu8HGtXc9miH3Hi0PYideQbtmhGcxArKM+KyfvJlHtmaRMkKr77aomTT?=
+ =?us-ascii?Q?F+Aixzmp0xfqGzCRIhg3yYw7wiCF9ncMO/xO7XXxlTvd5UcVZksax23dqhWX?=
+ =?us-ascii?Q?XRUWesw/JoB1GVGdZC0fLaA3/WlgZXm6mkEF0GaDEMy1c3jPmzHhlpy0XlKA?=
+ =?us-ascii?Q?xYYmM2maIGcak+3MGd8LemTppvqKct6YYCHI2rZyVptMR7XAGGI/NbZDocfR?=
+ =?us-ascii?Q?wWZn+M4Mzd9ld92W59fNZrY1GDrm2XNl4RyY?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/IkOLRnUrrKGRiscFNoLVc4frCoW8VijojmKYnzIiYij0xi2Q0akv9TSh4Gr?=
- =?us-ascii?Q?1xSdvMQfFra9nSTfcFDRjSOwGBEMpUm4ZsyVSD5/GFxyRNOHEzIg8fk6xDMj?=
- =?us-ascii?Q?6uj4GnISpuCNA/SbYHlkOerAd0iCAqVYlD27b9Hs6LqaN/3yTPw/+R0uGblK?=
- =?us-ascii?Q?VC9G6+R+D3UToI3VwLqPs6LJtq5ApdjHKKo7hwweXP6bPHzvOjiGzbaPg6N9?=
- =?us-ascii?Q?EWuG3rFFOn+t7w6n/JACriWsuBQ8fbXaNDn0XyLCu76LmjENEoq+HeNCbHfH?=
- =?us-ascii?Q?il73X4Hcr89jHgEHE+lvoBj2ujHcNdoCJk0xW1DHKv9YCC7aRDql2i5/fwns?=
- =?us-ascii?Q?kw42bE0MjKkbPElOyD2iN5V+I+77KwHJa37ArPKVMEsY0/0kh5ugLCvv2x8P?=
- =?us-ascii?Q?uQueu+8sYx9XIIImjvBV9KZK1/jwv1SFNoNXGg/sngKc1MbY3M75sG9QH4EX?=
- =?us-ascii?Q?Y7v6eBKJe+htYQ5eAG3nVELi10jhrXmvJX8voWER7U3zhvfqlAKACyjSjgL6?=
- =?us-ascii?Q?uFKDIujmGjXPSWDmIuyM7jrYa9Y446AbTRh4PZgn8LX87dfRuoIGAswbKWzx?=
- =?us-ascii?Q?UkS1ZXET6vUj96Xl+c6VaV5Y3fZmGIUpqdfEPXVz4A3Gc/Rv+DHPHBgHvIoJ?=
- =?us-ascii?Q?xfIQ8XLwZN0RN7919CcdRV+ZQqSQ6j5d6VUgp7tmt3kSSsaL4qNZ8yDqPoYo?=
- =?us-ascii?Q?vke+EGdJ4Yf7MDmGXkcXNFYxSgXZGPhJnVDlnroBrPP2Lsp/vME8PjLcp75t?=
- =?us-ascii?Q?2Hi83e1uXnWR1liN04sgtd4tQyf05cTf8Tw9oLLRpGY9VJ/9U3wHEOqERZCr?=
- =?us-ascii?Q?uB7F8E9jUW5O4GNNAav5g3X6LfTxXvFt5C3Zg00qltpZYY367S2sfYX+lnlS?=
- =?us-ascii?Q?ouv9Q7KT/k3YUy/Pq938kqEDXQtCfGaLAB9VmJCSfIy36wUoFrAdU9+7zR7X?=
- =?us-ascii?Q?gxx/n5fKRZjeXWhRf8t6WSp6V/vGJYfOSC16emgG6zzokyY5JupYU1/oPy/q?=
- =?us-ascii?Q?VwFb2zAyVVFomCjZK+pS29B2XV+RJniLs5sqBVcGSoxddfVg2SADHr6CyvwU?=
- =?us-ascii?Q?jy7qJ1wbZggm6uD5ly1EV9CTQiXI4Xyvwv2Iedgq+Tshzhghz9JgzNmx2/Uc?=
- =?us-ascii?Q?zfKKFeFIbW1KSTBIwch+QFjpJPvUStRvUKntqSdcJHCNa6bkGbn6reCfyIzm?=
- =?us-ascii?Q?hm9vZVhhrXTvuUwYqg8uLKuB3gt7qa9c7eQtlVEbIzZzkRCRy5aDFdt6Hw3O?=
- =?us-ascii?Q?bfczCk8j7hN9ZzS35o4fqAbqyNDF257RXkAsaF7rW8GTZ+jCmBh2IYqRqSTe?=
- =?us-ascii?Q?ICidI3IblyxrZm3YvJmN04KWJFM1rqw12xV3ETOgswfi9vDAxps7ezoIemTC?=
- =?us-ascii?Q?xzUB+sPlSV01+DmjlRBw9D2hhQ4+NWCU/NcWntH8uy4VPo151RSYvnCMUT3x?=
- =?us-ascii?Q?jvPWGq2p70f4LeL7QXgnvEGh0coVqpmyRCwNrQrUjDw/GjwNCFvjVoVECe0p?=
- =?us-ascii?Q?BGpQE94gloT3L8q4x1d2v8EgpddeyLNvorH84E/KZaja5r71n+mb94ib43x8?=
- =?us-ascii?Q?aX2vAO5VQG7vrIfkyoBahe6J/RV/Q1zuq5S23rXDITg87hoVp0pKXntb2vjV?=
- =?us-ascii?Q?Vg=3D=3D?=
+	=?us-ascii?Q?f6qMoZnNIX10jz4UpzOQxmWsnEixMB57XebM1u69RrL4EP0259iRqvAJuBXJ?=
+ =?us-ascii?Q?5qhzm+p6D6/oYyLUh105dPmzQto19L3YiOehzz0Pp/zP8/qVBE4JHGPCpQGC?=
+ =?us-ascii?Q?8s0Jk1XtU9YE56I+izc10ESTOIpSlhCcMkh5mS1d/Ypilzwqm4xnUc/UHjOJ?=
+ =?us-ascii?Q?PSqFOLSftpYF/jSpazh7kQvbnibuNHN4Hd4/fmpES94hKHTEmhNWUkLeMl00?=
+ =?us-ascii?Q?V/aJ5UCNCHjuToHgOaGpDnXIYI6YD0Lrna1socBxSSFvuns5BzD+P+Ww2YXg?=
+ =?us-ascii?Q?ZC8XWfA9ve/KQ1xLXwFf1pSKwC8UBKTUffiR873jTjUVgdnM7yFiBwBiyBBZ?=
+ =?us-ascii?Q?LE4y36UCsEZAwnQ/BJxodU1/pO4tZi/Ax1RuZLsmGcskqxmgim8sh4qEsuNj?=
+ =?us-ascii?Q?lPzbtrVys/Fo5SVBJg0tfeLRD4gTImiM/blmMDnzFtGwBOM+ygLRNAMm3mEX?=
+ =?us-ascii?Q?8jfDHIVJ64wOF1tIgJ22kkGSPj9VYD8u5ei3tKR1yHAY9KR2IT9UOdM9KNxD?=
+ =?us-ascii?Q?6bS+pbqig4BmpVAjnpomTEFAtPxhvqa4TdHImdVHdhjTG8dH3mXFcfDt5PiS?=
+ =?us-ascii?Q?qQB3OUt4bSM0bBGBlIRp4xdn4uGIZ77PGMt9gtHKzSvaQmgT2CXog7DkyhNQ?=
+ =?us-ascii?Q?oGJJhe67Zuwvg/O7t2YBnWdKhCoLlmFjmzdHgpatp/6hn4gFCoru32eQLGTF?=
+ =?us-ascii?Q?IY+Ic25nz8ZxmIT+ZozWbTex874scVEzJDZjgf/xN2gfJKljHJhLDZVYqUFt?=
+ =?us-ascii?Q?sCVsVudzDwq0mTj64yRNJZ2N1oiXjphXCToH3l1VaP/6Naz1ILmSjStLDPfS?=
+ =?us-ascii?Q?zHvf98rtg2LTaECz/UAoZXkGuiG7Z8EpKe5qlFnVqirccVjJT4Tr9N70BnSm?=
+ =?us-ascii?Q?gh37PKT6YGV8kWnP7uLBY/ocYHsYSQX7Kg9aSIxFeL5kJgOryK4S01UpSWDZ?=
+ =?us-ascii?Q?yW5QIa12cSws7Ken/Q1exkDBUVfuK8SvfrGaNrw1cN6JE9vWWLx6t/6xHrqt?=
+ =?us-ascii?Q?wD7MM2chwVLtIzIXJtK+0SDpW3Et3yh9gKKN3a7PyeFHyE/i63MxyklO0Zak?=
+ =?us-ascii?Q?/nRtUyyHaX9eDSSGvb7D23k3StL+79KOWni+v2r0fhxzcVW9KLCOlgq7XuHC?=
+ =?us-ascii?Q?12Mk+sdMZwO4FreQoUmFvF8o555HplP5KtPEaOavm0bqGCCxrTzNvSHfdnGk?=
+ =?us-ascii?Q?eS9obII4et4Yezh0lv94AYSdU67cjUaWA9K3JQL0xciz62zExvDZufMCa0IJ?=
+ =?us-ascii?Q?TGPNzxhYOQPk5ZgLFY7OBcNgz7OKx3X2jHTcIM3O9N5FUQk951vBKhNcdMfW?=
+ =?us-ascii?Q?/Nd0M8m72n1wa2HtCoIKyPcH+vWvFmmyqHZfJQo4+/74yWj8LZM92xOca4Qj?=
+ =?us-ascii?Q?WKZrO6uH7Bc/ZsZlISk2C2fROMvfqIzTx29NuhqOnR1IhWNHZJnmazCVpV1c?=
+ =?us-ascii?Q?3a1fpQe/bTSWZimganBMs255dxYUO1fpSNy+VJM9UMZcQHLzNpPuF7aR7Jid?=
+ =?us-ascii?Q?uRzw6fVzOMSX3Uxztdex7ZjFHbiy34PuFBgQItU2xalQSfg1IvtxXae0B6pc?=
+ =?us-ascii?Q?3v5zGz/L4t83Kd/XIBHt3M2Tq22dhsD4An6NF2qK2pDElNeP/BIHhG7B5lBq?=
+ =?us-ascii?Q?tQ=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4530574f-4cc1-4a1d-5125-08de3012d6eb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 229f3c63-24ea-4d22-8f13-08de3012d3bb
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2025 13:17:40.8207
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2025 13:17:35.4235
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NZtbRnIBjd42jhpyc+BskCZVZWI1bqCtiS91rAWLdcXA3vDh18QGwotxiafSgWfC4GpAy+VN02bD6p+JXEA28w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7434
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6vZY2r1AiViuine19sg/Dfdaq/GheB2ueWM6BIWX4mb9YA+D5StsrxfBymc/EkQ84DIAUxviE7didTPMoPnPBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12034
 
-Keep the documentation up to date.
+Accelerate TX packet duplication with HSR rings.
+
+This is only possible with the NPI-based "ocelot" tagging protocol, not
+with "ocelot-8021q", because the latter does not use dsa_xmit_port_mask().
+
+This has 2 implications:
+- Depending on tagging protocol, we should set (or not set) the offload
+  feature flags. Switching tagging protocols is done with ports down, by
+  design. Additional calls to dsa_port_simple_hsr_join() can be put in
+  the ds->ops->change_tag_protocol() path, as I had originally tried,
+  but this would not work: dsa_user_setup_tagger() would later clear
+  the feature flag that we just set. So the additional call to
+  dsa_port_simple_hsr_join() should sit in the ds->ops->port_enable()
+  call.
+
+- When joining a HSR ring and we are currently using "ocelot-8021q",
+  there are cases when we should return -EOPNOTSUPP (pessimistic) and
+  cases when we shouldn't (optimistic). In the pessimistic case, it is a
+  configuration that the port won't support even with the right tagging
+  protocol. Distinguishing between these 2 cases matters because if we
+  just return -EOPNOTSUPP regardless, we lose the dp->hsr_dev pointer
+  and can no longer replay the offload later for the optimistic case,
+  from felix_port_enable().
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- Documentation/networking/dsa/dsa.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/dsa/ocelot/felix.c | 70 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 69 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/dsa/dsa.rst b/Documentation/networking/dsa/dsa.rst
-index 89dc15bcf271..378f089f84b5 100644
---- a/Documentation/networking/dsa/dsa.rst
-+++ b/Documentation/networking/dsa/dsa.rst
-@@ -1119,6 +1119,14 @@ methods must be implemented:
- - ``port_hsr_leave``: function invoked when a given switch port leaves a
-   DANP/DANH and returns to normal operation as a standalone port.
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 20ab558fde24..9e5ede932b42 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -1233,6 +1233,7 @@ static int felix_port_enable(struct dsa_switch *ds, int port,
+ {
+ 	struct dsa_port *dp = dsa_to_port(ds, port);
+ 	struct ocelot *ocelot = ds->priv;
++	struct felix *felix = ocelot_to_felix(ocelot);
  
-+Note that the ``NETIF_F_HW_HSR_DUP`` feature relies on transmission towards
-+multiple ports, which is generally available whenever the tagging protocol uses
-+the ``dsa_xmit_port_mask()`` helper function. If the helper is used, the HSR
-+offload feature should also be set. The ``dsa_port_simple_hsr_join()`` and
-+``dsa_port_simple_hsr_leave()`` methods can be used as generic implementations
-+of ``port_hsr_join`` and ``port_hsr_leave``, if this is the only supported
-+offload feature.
+ 	if (!dsa_port_is_user(dp))
+ 		return 0;
+@@ -1246,7 +1247,25 @@ static int felix_port_enable(struct dsa_switch *ds, int port,
+ 		}
+ 	}
+ 
+-	return 0;
++	if (!dp->hsr_dev || felix->tag_proto == DSA_TAG_PROTO_OCELOT_8021Q)
++		return 0;
 +
- TODO
- ====
++	return dsa_port_simple_hsr_join(ds, port, dp->hsr_dev, NULL);
++}
++
++static void felix_port_disable(struct dsa_switch *ds, int port)
++{
++	struct dsa_port *dp = dsa_to_port(ds, port);
++	struct ocelot *ocelot = ds->priv;
++	struct felix *felix = ocelot_to_felix(ocelot);
++
++	if (!dsa_port_is_user(dp))
++		return;
++
++	if (!dp->hsr_dev || felix->tag_proto == DSA_TAG_PROTO_OCELOT_8021Q)
++		return;
++
++	dsa_port_simple_hsr_leave(ds, port, dp->hsr_dev);
+ }
  
+ static void felix_port_qos_map_init(struct ocelot *ocelot, int port)
+@@ -2232,6 +2251,52 @@ static void felix_get_mm_stats(struct dsa_switch *ds, int port,
+ 	ocelot_port_get_mm_stats(ocelot, port, stats);
+ }
+ 
++/* Depending on port type, we may be able to support the offload later (with
++ * the "ocelot"/"seville" tagging protocols), or never.
++ * If we return 0, the dp->hsr_dev reference is kept for later; if we return
++ * -EOPNOTSUPP, it is cleared (which helps to not bother
++ * dsa_port_simple_hsr_leave() with an offload that didn't pass validation).
++ */
++static int felix_port_hsr_join(struct dsa_switch *ds, int port,
++			       struct net_device *hsr,
++			       struct netlink_ext_ack *extack)
++{
++	struct ocelot *ocelot = ds->priv;
++	struct felix *felix = ocelot_to_felix(ocelot);
++
++	if (felix->tag_proto == DSA_TAG_PROTO_OCELOT_8021Q) {
++		int err;
++
++		err = dsa_port_simple_hsr_validate(ds, port, hsr, extack);
++		if (err)
++			return err;
++
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Offloading not supported with \"ocelot-8021q\"");
++		return 0;
++	}
++
++	if (!(dsa_to_port(ds, port)->user->flags & IFF_UP))
++		return 0;
++
++	return dsa_port_simple_hsr_join(ds, port, hsr, extack);
++}
++
++static int felix_port_hsr_leave(struct dsa_switch *ds, int port,
++				struct net_device *hsr)
++{
++	struct ocelot *ocelot = ds->priv;
++	struct felix *felix = ocelot_to_felix(ocelot);
++
++	if (felix->tag_proto == DSA_TAG_PROTO_OCELOT_8021Q)
++		return 0;
++
++	if (!(dsa_to_port(ds, port)->user->flags & IFF_UP))
++		return 0;
++
++	return dsa_port_simple_hsr_leave(ds, port, hsr);
++}
++
+ static const struct phylink_mac_ops felix_phylink_mac_ops = {
+ 	.mac_select_pcs		= felix_phylink_mac_select_pcs,
+ 	.mac_config		= felix_phylink_mac_config,
+@@ -2262,6 +2327,7 @@ static const struct dsa_switch_ops felix_switch_ops = {
+ 	.get_ts_info			= felix_get_ts_info,
+ 	.phylink_get_caps		= felix_phylink_get_caps,
+ 	.port_enable			= felix_port_enable,
++	.port_disable			= felix_port_disable,
+ 	.port_fast_age			= felix_port_fast_age,
+ 	.port_fdb_dump			= felix_fdb_dump,
+ 	.port_fdb_add			= felix_fdb_add,
+@@ -2318,6 +2384,8 @@ static const struct dsa_switch_ops felix_switch_ops = {
+ 	.port_del_dscp_prio		= felix_port_del_dscp_prio,
+ 	.port_set_host_flood		= felix_port_set_host_flood,
+ 	.port_change_conduit		= felix_port_change_conduit,
++	.port_hsr_join			= felix_port_hsr_join,
++	.port_hsr_leave			= felix_port_hsr_leave,
+ };
+ 
+ int felix_register_switch(struct device *dev, resource_size_t switch_base,
 -- 
 2.34.1
 
