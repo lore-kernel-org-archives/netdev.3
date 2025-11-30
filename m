@@ -1,89 +1,232 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13F120102B;
-	Sun, 30 Nov 2025 15:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE4E273F9
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 15:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764515207; cv=none; b=QNVixuZXSGZyHjhS6QaPKuLaKcx4pL7IS5cpY4KjGn+1yMOfXMDHH1nLuyuwBOJeC4JodUMFj7ORMavFf3GQQsQhS1NQGPim9xYxMTupPtcGsJYhbTxFIrEKbFtc7BCSJfMbyBEw5HzLW0kyNkvDUGTNsFGcZ96B11dqMiJz4HE=
+	t=1764515241; cv=none; b=UXOHxim4oJ5n63tlwZw9RSHe7kgGlecUOwf1Cl8BO3EVIxOmmZrKvFVBsaGl9p634+nTT4qpWQnfCI9JFKnP65J1rOwYa05gCH9mRQirzrJ61Zex06VedjybgwTdfY1yszDcHtObZKI+PcmL0byj9vJ0iN+2vQOiGaSY3UcEY/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764515207; c=relaxed/simple;
-	bh=8NkleLSJyu3K6P2pyhAUZfOAhBzqzPgbJxzHtjzFIi8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ai+26uiGfRUNH2851PW7KIRVSH6tbnxn/McK5Z9qgzbAhasaGsNEh3VtV3NSIQqhjbLZK85+pibBHsZCM/0HIl+RruCsORD6ub8SCCSODqcl6sdTjLeYZxRbkui/E+zCnE1jSMcLrXHu8qIzFrU4sjCojl/3ALkBmb1MMatBdR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=tcpivgYv; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1764515241; c=relaxed/simple;
+	bh=HFjCbhBOxNOYKPrlVIuMLZXavKBeUXNAPzUNniUGaO4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=peW+Ndv+/y/7Q+oIWopGpshp8smkP3yNeBkYG2cSnzMgk/64fp/Eg2HNQa10Ub4Uk4+ptvZtvA1Jnl/MIiqfsOoFGfd/yzMyfQdWF5EH+5C0Wzh8lEDGkeIe2AHbsdKECuo2Sfq4FoSXUBhMuiBEZNAqiJY03nIQbsN1chGdXbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koOX+Ar3; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="tcpivgYv"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dK9NX4NW1z9skw;
-	Sun, 30 Nov 2025 16:06:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764515196;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0R7sIdDzMoYc9IlPupimaflVi4E9vAHoqacC89Z98uw=;
-	b=tcpivgYv7ZVGrTb8235/AcurwAZ5HRfprTh8o6nj/PfB9qPyPYONLEeY6NEqf1n0z0sX/j
-	WsHQey9gm4FM0gHCvDq2yLrckTtuhDeEhg6g5pGbrzIa0ufKfGba9s8cmXETvfMP8fGtcu
-	sLN0sfV+nac3T1I6bIBWKJ57RvFgo2ncHbFIZCghPz+7b3m6RfnOeL/8ORSoFCPoi+iXpA
-	TSGOmeeLcIvhf2CUlKw2rPS7hu/z15Jt/3vtnUim8XGjfMue5EedtVAd+yt9n6d2arU7w7
-	J9QSuey1AQsRwmWEi/0DOREFcp5K7bv4RQGuZ/rnZgyq8IHzrlDhmfmgNUXvwQ==
-Message-ID: <67f96fd7-d2f7-444a-b448-55883f8e7fc2@mailbox.org>
-Date: Sun, 30 Nov 2025 14:43:08 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koOX+Ar3"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-787e84ceaf7so30204817b3.2
+        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 07:07:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764515238; x=1765120038; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=itd4PosqC2kQ6zrsIqy/TPRszeArCm4Xh6ukzxPw+Yo=;
+        b=koOX+Ar3FfrhxH+nQNhVcOSyzBPRK9eebi/OsIX0mgCaoUuABw6U+y7lNgPeDz3teX
+         7926uok2aysMO0/z44Z/uwQSSh/AY7FfDb9J18dIXin4o10Cp7JlKprSE0LmzYwhg90W
+         uUxi+g2iPjhnXerHx7vjqxvcQDfWjWB5q8cxgwofdQwNrZVmV76hn4b660mImDlcv5QP
+         70evPtU5Mq6LgYittByqsnkF+3Ugf8xqIM1zaxMeuYo3lTDGDoxd+Ius8mhn34pQseFR
+         ZcEzBEjPSXbadBgrR3RFznSplP7kl2yP4xzMcpw6UBg/zs+fRI5bHBiYvQWKWgNWawLz
+         XvJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764515238; x=1765120038;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=itd4PosqC2kQ6zrsIqy/TPRszeArCm4Xh6ukzxPw+Yo=;
+        b=whdyiGFW1vsVp86dhQmrRJE7xrVf3UiKmIy4HGlJeilNY0R+5If59Y6H/DHyg9cAci
+         vAbYkV+XLhdta9Us0P2SaLDGdajD5kvJ0Tvu9HFIM12tqPae7JmJhFHyLsjQ4DNZ5KGd
+         ZrB4SdLTY2gEYe8qKHT/1zho3njAEb/HEeh4TpqxjRjO3bjnjNXHXMwkmUg6FJMgs8p5
+         1FASNlEZw0pLZpKTXXvgcT/FhoXXGvu7UDlKtGnZny8IQ6ohSqGnwD3qKg5EB6SYGmEF
+         P8vbZkxXK55Z2QuzIO2jcS7hMH37I1lY/Y3/bNzpQoRzklLnFzwHyklEPkJEkSVJr6ze
+         r4MA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXgnsM8Avh5M32NxK5I4IugMc3BwiljmYPRxc/sEfrM20tvXvyBuw5C/cfz6ZsYM464DOkhvE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrLc+fDYkGSaxkdNYXY8g23kPI6EV2lSvuCKVxUC52sHvsBUmj
+	cxtwJ3KcPQFb9mGT8g+Mh7JODZPsucBiLdpUz91e6X75FRrC3HPdNqtw
+X-Gm-Gg: ASbGncswdENZiWvhVgFo20pyPNNxquCD3djblgnwOKmJC+7WJUvJ9dKVqIeDhRDyAsr
+	XGabsAzZogNI1/zyUeOqcrU1XK+jYt42P2Q/hbGZIN0xOTrgpObk8FYJ0BInALbjQIVo5KiejyI
+	J3oi1Cslz/DDmFmmVy0X3+8JKBW/h10D4tfy4GnsL/dyzVbtonhNYRBPEQMUqGLVW1AYj6TUsXh
+	FCi5U9mZJsBfP2Mkx1d0WrxoOOU8E58Ihdw9zORWzPR8sgNZMSFt1JdCj0bUKxIZGcQwzI8esO7
+	6i7d/9JGc0Te7GsI6QCm86sdwA/4I6vyReZmSeAFDaN8cE5pmM22q+WUYcHrxhTe8HCZD8DaM2X
+	03X5WkBboi4k8/QhTOwoc1ixIdAq0MWvrNcuM5JqbYWYk/2S8Fb8qbEenG9j+JegIVXWDbNIHRj
+	n9IxQzxFSp3LxaxPD8qjGianCIIuX2gmKLqdwwz2fAxKABo3oMlDBRRJtdUuF0svIgxF9JDsY5R
+	Kyqvw==
+X-Google-Smtp-Source: AGHT+IG60qUorMUgYcasY4EIKb1vnjohAXAd1P97tCZqWlM1nclAgl4uc4LJSWiAP/p0TAS5iyCAsg==
+X-Received: by 2002:a05:690c:6c0e:b0:788:1cde:cad4 with SMTP id 00721157ae682-78a8b4720c1mr290681297b3.19.1764515238523;
+        Sun, 30 Nov 2025 07:07:18 -0800 (PST)
+Received: from gmail.com (116.235.236.35.bc.googleusercontent.com. [35.236.235.116])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-78ad0d3f600sm37931137b3.9.2025.11.30.07.07.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Nov 2025 07:07:17 -0800 (PST)
+Date: Sun, 30 Nov 2025 10:07:17 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Cong Wang <xiyou.wangcong@gmail.com>, 
+ Jiri Pirko <jiri@resnulli.us>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: =?UTF-8?B?Sm9uYXMgS8O2cHBlbGVy?= <j.koeppeler@tu-berlin.de>, 
+ cake@lists.bufferbloat.net, 
+ netdev@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.12cce168f29d0@gmail.com>
+In-Reply-To: <87zf84ab2d.fsf@toke.dk>
+References: <20251127-mq-cake-sub-qdisc-v2-0-24d9ead047b9@redhat.com>
+ <20251127-mq-cake-sub-qdisc-v2-2-24d9ead047b9@redhat.com>
+ <willemdebruijn.kernel.2e44851dd8b26@gmail.com>
+ <87a505b3dt.fsf@toke.dk>
+ <willemdebruijn.kernel.352b3243bf88@gmail.com>
+ <87zf84ab2d.fsf@toke.dk>
+Subject: Re: [PATCH net-next v2 2/4] net/sched: sch_cake: Add cake_mq qdisc
+ for using cake on mq devices
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [net-next,PATCH 2/3] dt-bindings: net: realtek,rtl82xx: Document
- realtek,ssc-enable property
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Aleksander Jan Bajkowski <olek2@wp.pl>, Conor Dooley <conor+dt@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, devicetree@vger.kernel.org
-References: <20251130005843.234656-1-marek.vasut@mailbox.org>
- <20251130005843.234656-2-marek.vasut@mailbox.org>
- <a7f83059-76aa-44df-aeb5-41b5072dd0d1@lunn.ch>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <a7f83059-76aa-44df-aeb5-41b5072dd0d1@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: b96559a7e2a9fed2306
-X-MBO-RS-META: 9p54kwky9h81iqehjhniun8d7tksef5s
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 11/30/25 2:43 AM, Andrew Lunn wrote:
+Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> Willem de Bruijn <willemdebruijn.kernel@gmail.com> writes:
+> =
 
-Hello Andrew,
+> > Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> >> Willem de Bruijn <willemdebruijn.kernel@gmail.com> writes:
+> >> =
 
->> diff --git a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
->> index eafcc2f3e3d66..f1bd0095026be 100644
->> --- a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
->> +++ b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
->> @@ -50,6 +50,11 @@ properties:
->>       description:
->>         Disable CLKOUT clock, CLKOUT clock default is enabled after hardware reset.
->>   
->> +  realtek,ssc-enable:
->> +    type: boolean
->> +    description:
->> +      Enable SSC mode, SSC mode default is disabled after hardware reset.
-> 
-> Spread Spectrum Clocking is a generic concept, applicable to more than
-> Ethernet PHYs. Do we really need a vendor property for this? Or is
-> there a generic property already?
-Let's see what Krzysztof has to say about this, I am fine with generic 
-property ... unless it would be desirable to control the RXC and SYSCLK 
-spread spectrum separately ?
+> >> > Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> >> >> Add a cake_mq qdisc which installs cake instances on each hardwar=
+e
+> >> >> queue on a multi-queue device.
+> >> >> =
+
+> >> >> This is just a copy of sch_mq that installs cake instead of the d=
+efault
+> >> >> qdisc on each queue. Subsequent commits will add sharing of the c=
+onfig
+> >> >> between cake instances, as well as a multi-queue aware shaper alg=
+orithm.
+> >> >> =
+
+> >> >> Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> >> >> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>=
+
+> >> >> ---
+> >> >>  net/sched/sch_cake.c | 214 +++++++++++++++++++++++++++++++++++++=
++++++++++++++-
+> >> >>  1 file changed, 213 insertions(+), 1 deletion(-)
+> >> >
+> >> > Is this code duplication unavoidable?
+> >> >
+> >> > Could the same be achieved by either
+> >> >
+> >> > extending the original sch_mq to have a variant that calls the
+> >> > custom cake_mq_change.
+> >> >
+> >> > Or avoid hanging the shared state off of parent mq entirely. Have =
+the
+> >> > cake instances share it directly. E.g., where all but the instance=
+ on
+> >> > netdev_get_tx_queue(dev, 0) are opened in a special "shared" mode =
+(a
+> >> > bit like SO_REUSEPORT sockets) and lookup the state from that
+> >> > instance.
+> >> =
+
+> >> We actually started out with something like that, but ended up with =
+the
+> >> current variant for primarily UAPI reasons: Having the mq variant be=
+ a
+> >> separate named qdisc is simple and easy to understand ('cake' gets y=
+ou
+> >> single-queue, 'cake_mq' gets you multi-queue).
+> >> =
+
+> >> I think having that variant live with the cake code makes sense. I
+> >> suppose we could reuse a couple of the mq callbacks by exporting the=
+m
+> >> and calling them from the cake code and avoid some duplication that =
+way.
+> >> I can follow up with a patch to consolidate those if you think it is=
+
+> >> worth it to do so?
+> >
+> > Since most functions are identical, I do think reusing them is
+> > preferable over duplicating them.
+> =
+
+> Sure, that's fair. Seems relatively straight forward too:
+> =
+
+> https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/commit/?=
+h=3Dmq-cake-sub-qdisc&id=3Dfdb6891cc584a22d4823d771a602f9f1ee56eeae
+
+Great. That's good enough for me.
+ =
+
+> > I'm not fully convinced that mq_cake + cake is preferable over
+> > mq + cake (my second suggestion). We also do not have a separate
+> > mq_fq, say. But mine is just one opinion from the peanut gallery.
+> =
+
+> Right, I do see what you mean; as I said we did consider this initially=
+,
+> but went with this implementation from a configuration simplicity
+> consideration. =
+
+
+Then admins have only to install one qdisc, rather than what we do for
+FQ today which is one MQ + a loop over the FQs.
+
+I don't know if we have to coddle admins like that.
+
+> If we were to implement this as an option when running
+> under the existing mq, we'd have to add an option to cake itself to opt=
+
+> in to this behaviour, and then deal with the various combinations of
+> sub-qdiscs being added and removed (including mixing cake and non-cake
+> sub-qdiscs of the same mq). And userspace would have to setup the mq,
+> then manually add the cake instances with the shared flag underneath it=
+.
+
+One question is whether the kernel needs to protect admins from doing
+the unexpected thing, which would be mixing mq children of different
+type when using shared cake state between children.
+
+Honestly, I don't think so. But it could be done. For instance by
+adding an mq option that requires all children to be of the same kind,
+or even by silently setting this if the first child added is a cake
+instance with shared option set.
+
+As for shared state, in cake_init the qdisc could check that the dev
+root is mq and it is a direct child of this qdisc, and then scan the
+mq children for the existence of a cake child. If one exists, take a
+ref on a shared state struct. If not, create the struct. Again, like
+SO_REUSEPORT.
+
+All easier said than implemented, of course, but seems doable?
+
+> Whereas with this cake_mq qdisc the user interface is as simple as
+> possible: just substitute 'cake_mq' for 'cake' if you want the
+> multi-queue behaviour on a device; everything else stays the same. Sinc=
+e
+> configuration simplicity is an explicit goal of cake, I think this is
+> appropriate; although it may not be for other qdiscs.
+> =
+
+> Hope that makes sense?
+> =
+
+> -Toke
+
+
