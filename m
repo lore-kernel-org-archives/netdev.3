@@ -1,738 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF582D0267
-	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 20:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9292023ABA0
+	for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 22:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764535058; cv=none; b=IKMoipJPbu7T3thG9VrTdmLLXCuDsZGmxQSC/aGPNoW34jCfVPfinKy2WrcCYWOBPX2joQuQcY0ZN8Dn5+O/QF+wNQSCsZ/X7BWYPvszHUBFz1iufBNJdNoYZqmP2odWTBvQpPMJ9yLSmMzI+OoOu0ww/bDFPRgO3PoSNMNyZ0I=
+	t=1764540552; cv=none; b=Un1Y+MIt+HdselIT1oN8rXRBRhjJY79Xj+Fjg9/rbVPpWMh7b3Rp166cEaim1L8+vL4BVldTiwVLai9skXgV/ha2C17bjTLq5w6el5HSVxBSg/ztpixTpcATcd7HDTbfpOKd9VRxLDLN2kBMoAqnTzZk+dFrkjWd0D27h9ydWL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764535058; c=relaxed/simple;
-	bh=TLV5VucvMYih+sZw0+hLm4SBAhHw/z1ZBO/bGeK01Z0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ix6kNz3ChEd3vx04cxNHkREAylRVLIbuE7CW08yEKR1AhQdJlXw9qyAZxl5cLQATDkCyCiuScup0FuY/kp1vk6AtkkPYRIWc9UMDTZovC07HNSDzJLKBgqfnPRs/Ua7/1AfNmlv9XklpcYVEBFdjUtTXZdJlt/q1OtuKQf08PGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W35Fz6xo; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ByJScnC8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1764540552; c=relaxed/simple;
+	bh=7UyXH1OibHihHsfxK+HIDtkjBuSa+kOQpcxSnt5Whf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jDn8ugCGX2rMYz2hVxaGHaigzZXf3+9OzdkQpy2/f8ejJstamt9azbkZFPW/Cjn4k2iDC8wbeys0hIqp3K2qmuxG9s12/fnyXQdeEJjLJerQEWd52f5+mLjIvmHMtQLxprLJdaUioqfB5hHvVWuaIISg0TBza03ADosDV8RU1q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWR3+ccX; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W35Fz6xo";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ByJScnC8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764535054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fYsNtpO1R5U2YmXQRCyrPnN4Zbs126tMuztWKlbGgA0=;
-	b=W35Fz6xoJ97XslsB98pyiafadK5BKNhFvPqlasev2/nLm+2lgzuoudrKVZnETthy9cDtVX
-	ALvxJRW215AfoAeJoT53ndrStlWc84PKHMQhAClL3zWCuW47wnv4Qgow6F6Eiu9P8W93+U
-	YG3H/6iIfOICkFgLciDg8nzCYShQikI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-zPjYu_ioOLWKtWaTgM0xrw-1; Sun, 30 Nov 2025 15:37:32 -0500
-X-MC-Unique: zPjYu_ioOLWKtWaTgM0xrw-1
-X-Mimecast-MFC-AGG-ID: zPjYu_ioOLWKtWaTgM0xrw_1764535051
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6411e349b73so3867135a12.2
-        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 12:37:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWR3+ccX"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7bab7c997eeso4118336b3a.0
+        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 14:09:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764535051; x=1765139851; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fYsNtpO1R5U2YmXQRCyrPnN4Zbs126tMuztWKlbGgA0=;
-        b=ByJScnC8ba93WQvrxmWHZUjXehFu6v4mhybeBF3EY1gMsJ0X4VuN0v/ieaKHTI642t
-         +Yjlb0xnJFI4luanQ3St3y0cez/Kq1d9QIjcG5a6Zck6sitrMUWjK5qE+xhtMsmZS6+q
-         sB7njlpgxpvXPXpGthdGLEmAQ9bhzZURQ7hQxOHpr8J7kXOe12zNThXsf9TV1wClCQ/D
-         BwdzSPtRn8IZ2bQg0ilKCzGJyLV2o9PPr4q4zPdEdFtcXxdoOyVWIRwGpcMpyuo69/iu
-         UbeSHxuXm3NZjm6GsFJ1IG6qr0bYsNULFIpXC+A2Mgdfe39a/4mIQXeKTfy3ctWsAnWJ
-         KZzg==
+        d=gmail.com; s=20230601; t=1764540550; x=1765145350; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lY+FYjtGW5ykqh5YAGibXlqGGD5x3PdZ9VnTxQxivXE=;
+        b=FWR3+ccXoefcBHHr06MnLH+yzgh11awLuSpZj8Fxs2IbfqFSydFsTu1o+M1dYYxTPe
+         JKWC+TvGXRvj6NV6zPUeHIzxjeJM0PbAcO6LBAvqOhr4QbbGpjnhNX6uLLJVCMlYSn8E
+         DNS2PLVfyc/mIwOK/E4xGId91rnh1WBtKdIiwFT86Qd2FY3I9kU/QLbAoxczYDDmxOJk
+         9tcWzzCFa3GN7QpSlCAvxpsbq3bNBwxgR7ot/5mxpusvAqQ6bVQnnvka4uTE/S9dB4VM
+         +hIlhJSvJytwy4Rx3+MAH1k+cq/mIffhdnDz+htKWttpivJTtd9se8i8bwVAFmBoGaTb
+         rqsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764535051; x=1765139851;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fYsNtpO1R5U2YmXQRCyrPnN4Zbs126tMuztWKlbGgA0=;
-        b=EpoIFysW2QjtWY/iBcAbrDRCfmUadNAxh8ZQMcLedou5oRUuNPLvrBa6ivpprSFQ0f
-         Q27ouvZ8IftHelEMmKhTuMbZiNQRQxTdgPdD2Dyn9kF9pzVgxX5pMZwwTsGCcCzvT4C7
-         RMXlFaB0Lp3pLNjxIjwW6F9UxQpfgsrSPAuhTZj3/BULOmAGmJYXTOM4nsb1wpUHD2SZ
-         Igaz/PtjjBqXG0AEIhkgSEdYnqG6tB6e7A6Qm1jbwLJA0t+X19GyAnvMPB7VppaKEojg
-         FMlk5lTdBljOgTPRgsZiHDz524j19jH7hASwJyx5Uc+iuTsQn5mxLVIskx4kCib58Nf/
-         sv7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVq0mf/z6oUQpIrgD1j9QkEYf/5LQMTT8lEcfvT3xrzbIofobSyjtEumCXw+RJaGciBriOUDTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMwdYClm3qsdKfjBCe5ce/DAEY+DgQDTXP/pSnXAUHwtYdtcMK
-	4SltG83DC9A00aR9wsKNf2IftdgNFtBTXBKVEpSTKuXTjwNFXao9BRDkaQ7WI/FLZirJNvWz7m5
-	lQBjaSfbA3NX+UqJ1KLng1OBk7k47BJS2BVYtev4w6IYo22x4jQTvgcFMIA==
-X-Gm-Gg: ASbGnct44+CI5V68munOUTEudNZkWfGBeuXX8KXbixq8KSFCI6nO+Ulbo3u2ZaCuOXF
-	Pno+xn6//WRwkQPXoIOA9SyL0ETZsAeL1lT4PW3vYGjMmt0RBUWb2aMN+CwDJk2dizBCYChEQQ3
-	fNlRPnxpV6j4kbGAonmusYvjdxqLtOfOQqtsgtOKb0akhg9rXJu4yQBNKk1MD/dR7M9VGYvcmhm
-	S11AyTqNMMT/BA0XYW4vZSZIyMtz8Z34wF3ciUqZwgWJNGcrYhmXGxDoAdXCYyeNlBTD+eLYK7c
-	pbanlakdv8OMd6aqHfat1a+PELp0Bw5ZR3LtvMrxRdnXvRRaCotSvFti2gJWKsYxJuHRq66HJYX
-	FNdOYSoicC/k8yUoOZSK61jO4Hdf/PG8gLYrg
-X-Received: by 2002:a05:6402:1ecb:b0:641:1cd6:fee9 with SMTP id 4fb4d7f45d1cf-64555b86ce3mr29210524a12.1.1764535051260;
-        Sun, 30 Nov 2025 12:37:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFxOfaoqvoYfp6P2ho9aljjHNFAA0kQOUoL9+L6XHZJn7Wk2Y6nJg6RagtAu32/zeC8HXKATQ==
-X-Received: by 2002:a05:6402:1ecb:b0:641:1cd6:fee9 with SMTP id 4fb4d7f45d1cf-64555b86ce3mr29210503a12.1.1764535050799;
-        Sun, 30 Nov 2025 12:37:30 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-647510519efsm10272313a12.29.2025.11.30.12.37.26
+        d=1e100.net; s=20230601; t=1764540550; x=1765145350;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lY+FYjtGW5ykqh5YAGibXlqGGD5x3PdZ9VnTxQxivXE=;
+        b=cgYC6hlYQHeLxRg0/lJifBOZPUBRqHMliqqVQDGsPsf+gARzBAvqxZHbVf8m7AmddW
+         nb6waltylUy5DwYTD00X5KNKmIDum4mnMaekeaatYsvaRrzaF/tjHEffVKIiHyUFYO9V
+         Jfm9FL4zndO2+VLBPtQOmzqmgV4W0Jrq75nBr1fhrF4YeJsaagGxXHeQREU9t/sXWUyk
+         qE7g0x1C5BASIiMs4viIN/0jt57vKhqi0Lj9b4l9TMxQwxs0i5IbskrdBswSZVwkRlEX
+         Gf/HJb2CtHjSk/7C4sNrFqwc++3XbGBmxK3lO+wWjEdTZVZONVbVUNPL+LRzwaxvlpsQ
+         1GyA==
+X-Gm-Message-State: AOJu0Yw1uHJUNuO0rBxaCE5tCk6Kb1rCq19SGUDBf6h+gpEJQyw7JtaQ
+	wL2TOKyPz3zsWlN6ktqO1iPAz/uFvq/9FIwZHAcXAOFTTmatnVFvmUXS
+X-Gm-Gg: ASbGnctfmhy9PDN7CMINqLt5gY910qQigvHzmQ8MH5krPJ8lTbiV8+ShYwI67q9QqWD
+	RZEp3Pt1IRhnlf1ipkPFKj0DRK8BoIwbw4+e74zMsQ/oxvLBPaa/wDW0y9bCRWbVR/ObdidzRKI
+	UrYxQLt7G1kgL1jHzI4C+r0AKOjPjTfFH66yLsmn8hbPSRJ4qTXwY9bjdc+P0dvqhw57xCBEGi5
+	fQkVTcWt80HdL92BDqg+cH6RZkof8c4P+UtuFc0l46faR0/ISXDAs2XdsdOyUWMY1l5maBwEt3G
+	yqxWAYrA77dVHwdn6oEuIPCixDzzjS1sDqBU5pzG1TASFV3+6NLc70gq7LQjLSGBW47AkaqFJbt
+	Kvh7V3uvQFBNUHSkp3um+IJJHipU52tRGIfwaJ4WKtkChEkv9gsFoySNte0BM/ZE+YMSURkXYhA
+	nFmm0lvfBTUA==
+X-Google-Smtp-Source: AGHT+IG9XV6p7fvzODxQnAeD/YIp/e5YYdbUr0GokoWU5aY6Eq553IU6lpwWLkcue1f4C2T7QngAgg==
+X-Received: by 2002:a05:6a00:2e9c:b0:7a1:68b2:5341 with SMTP id d2e1a72fcca58-7c58c7a71ddmr32821344b3a.11.1764540549731;
+        Sun, 30 Nov 2025 14:09:09 -0800 (PST)
+Received: from mythos-cloud ([220.85.157.77])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15e9c3f79sm11063183b3a.42.2025.11.30.14.09.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Nov 2025 12:37:28 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 3E4D4395C25; Sun, 30 Nov 2025 21:37:26 +0100 (CET)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Sun, 30 Nov 2025 21:37:19 +0100
-Subject: [PATCH net-next v3 2/5] net/sched: sch_cake: Factor out config
- variables into separate struct
+        Sun, 30 Nov 2025 14:09:08 -0800 (PST)
+From: Yeounsu Moon <yyyynoom@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yeounsu Moon <yyyynoom@gmail.com>
+Subject: [PATCH net-next] net: dlink: fix several spelling mistakes in comments
+Date: Mon,  1 Dec 2025 07:06:53 +0900
+Message-ID: <20251130220652.5425-2-yyyynoom@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251130-mq-cake-sub-qdisc-v3-2-5f66c548ecdc@redhat.com>
-References: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
-In-Reply-To: <20251130-mq-cake-sub-qdisc-v3-0-5f66c548ecdc@redhat.com>
-To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
- Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, 
- cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-X-Mailer: b4 0.14.3
 
-Factor out all the user-configurable variables into a separate struct
-and embed it into struct cake_sched_data. This is done in preparation
-for sharing the configuration across multiple instances of cake in an mq
-setup.
+This patch fixes multiple spelling mistakes in dl2k driver comments:
 
-No functional change is intended with this patch.
+- "deivices" -> "devices"
+- "Ttransmit" -> "Transmit"
+- "catastronphic" -> "catastrophic"
+- "Extened" -> "Extended"
 
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Also fix incorrect unit description: `rx_timeout` uses 640ns increments,
+not 64ns.
+- "64ns" -> "640ns"
+
+These are comment-only changes and do not affect runtime behavior.
+
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
 ---
- net/sched/sch_cake.c | 245 ++++++++++++++++++++++++++++-----------------------
- 1 file changed, 133 insertions(+), 112 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 8 ++++----
+ drivers/net/ethernet/dlink/dl2k.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 0ea9440f68c6..545b9b830cce 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -197,40 +197,42 @@ struct cake_tin_data {
- 	u32	way_collisions;
- }; /* number of tins is small, so size of this struct doesn't matter much */
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 6e4f17142519..846d58c769ea 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -41,7 +41,7 @@ module_param(tx_flow, int, 0);
+ module_param(rx_flow, int, 0);
+ module_param(copy_thresh, int, 0);
+ module_param(rx_coalesce, int, 0);	/* Rx frame count each interrupt */
+-module_param(rx_timeout, int, 0);	/* Rx DMA wait time in 64ns increments */
++module_param(rx_timeout, int, 0);  /* Rx DMA wait time in 640ns increments */
+ module_param(tx_coalesce, int, 0); /* HW xmit count each TxDMAComplete */
  
-+struct cake_sched_config {
-+	u64		rate_bps;
-+	u64		interval;
-+	u64		target;
-+	u32		buffer_config_limit;
-+	u32		fwmark_mask;
-+	u16		fwmark_shft;
-+	s16		rate_overhead;
-+	u16		rate_mpu;
-+	u16		rate_flags;
-+	u8		tin_mode;
-+	u8		flow_mode;
-+	u8		atm_mode;
-+	u8		ack_filter;
-+};
-+
- struct cake_sched_data {
- 	struct tcf_proto __rcu *filter_list; /* optional external classifier */
- 	struct tcf_block *block;
- 	struct cake_tin_data *tins;
-+	struct cake_sched_config *config;
  
- 	struct cake_heap_entry overflow_heap[CAKE_QUEUES * CAKE_MAX_TINS];
--	u16		overflow_timeout;
--
--	u16		tin_cnt;
--	u8		tin_mode;
--	u8		flow_mode;
--	u8		ack_filter;
--	u8		atm_mode;
--
--	u32		fwmark_mask;
--	u16		fwmark_shft;
- 
- 	/* time_next = time_this + ((len * rate_ns) >> rate_shft) */
--	u16		rate_shft;
- 	ktime_t		time_next_packet;
- 	ktime_t		failsafe_next_packet;
- 	u64		rate_ns;
--	u64		rate_bps;
--	u16		rate_flags;
--	s16		rate_overhead;
--	u16		rate_mpu;
--	u64		interval;
--	u64		target;
-+	u16		rate_shft;
-+	u16		overflow_timeout;
-+	u16		tin_cnt;
- 
- 	/* resource tracking */
- 	u32		buffer_used;
- 	u32		buffer_max_used;
- 	u32		buffer_limit;
--	u32		buffer_config_limit;
- 
- 	/* indices for dequeue */
- 	u16		cur_tin;
-@@ -1198,7 +1200,7 @@ static bool cake_tcph_may_drop(const struct tcphdr *tcph,
- static struct sk_buff *cake_ack_filter(struct cake_sched_data *q,
- 				       struct cake_flow *flow)
- {
--	bool aggressive = q->ack_filter == CAKE_ACK_AGGRESSIVE;
-+	bool aggressive = q->config->ack_filter == CAKE_ACK_AGGRESSIVE;
- 	struct sk_buff *elig_ack = NULL, *elig_ack_prev = NULL;
- 	struct sk_buff *skb_check, *skb_prev = NULL;
- 	const struct ipv6hdr *ipv6h, *ipv6h_check;
-@@ -1358,15 +1360,17 @@ static u64 cake_ewma(u64 avg, u64 sample, u32 shift)
- 	return avg;
- }
- 
--static u32 cake_calc_overhead(struct cake_sched_data *q, u32 len, u32 off)
-+static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- {
-+	struct cake_sched_config *q = qd->config;
-+
- 	if (q->rate_flags & CAKE_FLAG_OVERHEAD)
- 		len -= off;
- 
--	if (q->max_netlen < len)
--		q->max_netlen = len;
--	if (q->min_netlen > len)
--		q->min_netlen = len;
-+	if (qd->max_netlen < len)
-+		qd->max_netlen = len;
-+	if (qd->min_netlen > len)
-+		qd->min_netlen = len;
- 
- 	len += q->rate_overhead;
- 
-@@ -1385,10 +1389,10 @@ static u32 cake_calc_overhead(struct cake_sched_data *q, u32 len, u32 off)
- 		len += (len + 63) / 64;
- 	}
- 
--	if (q->max_adjlen < len)
--		q->max_adjlen = len;
--	if (q->min_adjlen > len)
--		q->min_adjlen = len;
-+	if (qd->max_adjlen < len)
-+		qd->max_adjlen = len;
-+	if (qd->min_adjlen > len)
-+		qd->min_adjlen = len;
- 
- 	return len;
- }
-@@ -1586,7 +1590,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	flow->dropped++;
- 	b->tin_dropped++;
- 
--	if (q->rate_flags & CAKE_FLAG_INGRESS)
-+	if (q->config->rate_flags & CAKE_FLAG_INGRESS)
- 		cake_advance_shaper(q, b, skb, now, true);
- 
- 	qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
-@@ -1657,7 +1661,8 @@ static u8 cake_handle_diffserv(struct sk_buff *skb, bool wash)
- static struct cake_tin_data *cake_select_tin(struct Qdisc *sch,
- 					     struct sk_buff *skb)
- {
--	struct cake_sched_data *q = qdisc_priv(sch);
-+	struct cake_sched_data *qd = qdisc_priv(sch);
-+	struct cake_sched_config *q = qd->config;
- 	u32 tin, mark;
- 	bool wash;
- 	u8 dscp;
-@@ -1674,24 +1679,24 @@ static struct cake_tin_data *cake_select_tin(struct Qdisc *sch,
- 	if (q->tin_mode == CAKE_DIFFSERV_BESTEFFORT)
- 		tin = 0;
- 
--	else if (mark && mark <= q->tin_cnt)
--		tin = q->tin_order[mark - 1];
-+	else if (mark && mark <= qd->tin_cnt)
-+		tin = qd->tin_order[mark - 1];
- 
- 	else if (TC_H_MAJ(skb->priority) == sch->handle &&
- 		 TC_H_MIN(skb->priority) > 0 &&
--		 TC_H_MIN(skb->priority) <= q->tin_cnt)
--		tin = q->tin_order[TC_H_MIN(skb->priority) - 1];
-+		 TC_H_MIN(skb->priority) <= qd->tin_cnt)
-+		tin = qd->tin_order[TC_H_MIN(skb->priority) - 1];
- 
- 	else {
- 		if (!wash)
- 			dscp = cake_handle_diffserv(skb, wash);
--		tin = q->tin_index[dscp];
-+		tin = qd->tin_index[dscp];
- 
--		if (unlikely(tin >= q->tin_cnt))
-+		if (unlikely(tin >= qd->tin_cnt))
- 			tin = 0;
- 	}
- 
--	return &q->tins[tin];
-+	return &qd->tins[tin];
- }
- 
- static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
-@@ -1747,7 +1752,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	u32 idx, tin;
- 
- 	/* choose flow to insert into */
--	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
-+	idx = cake_classify(sch, &b, skb, q->config->flow_mode, &ret);
- 	if (idx == 0) {
- 		if (ret & __NET_XMIT_BYPASS)
- 			qdisc_qstats_drop(sch);
-@@ -1782,7 +1787,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	if (unlikely(len > b->max_skblen))
- 		b->max_skblen = len;
- 
--	if (qdisc_pkt_segs(skb) > 1 && q->rate_flags & CAKE_FLAG_SPLIT_GSO) {
-+	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
- 		struct sk_buff *segs, *nskb;
- 		netdev_features_t features = netif_skb_features(skb);
- 		unsigned int slen = 0, numsegs = 0;
-@@ -1822,7 +1827,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		get_cobalt_cb(skb)->adjusted_len = cake_overhead(q, skb);
- 		flow_queue_add(flow, skb);
- 
--		if (q->ack_filter)
-+		if (q->config->ack_filter)
- 			ack = cake_ack_filter(q, flow);
- 
- 		if (ack) {
-@@ -1831,7 +1836,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			b->bytes += qdisc_pkt_len(ack);
- 			len -= qdisc_pkt_len(ack);
- 			q->buffer_used += skb->truesize - ack->truesize;
--			if (q->rate_flags & CAKE_FLAG_INGRESS)
-+			if (q->config->rate_flags & CAKE_FLAG_INGRESS)
- 				cake_advance_shaper(q, b, ack, now, true);
- 
- 			qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(ack));
-@@ -1854,7 +1859,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		cake_heapify_up(q, b->overflow_idx[idx]);
- 
- 	/* incoming bandwidth capacity estimate */
--	if (q->rate_flags & CAKE_FLAG_AUTORATE_INGRESS) {
-+	if (q->config->rate_flags & CAKE_FLAG_AUTORATE_INGRESS) {
- 		u64 packet_interval = \
- 			ktime_to_ns(ktime_sub(now, q->last_packet_time));
- 
-@@ -1886,7 +1891,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			if (ktime_after(now,
- 					ktime_add_ms(q->last_reconfig_time,
- 						     250))) {
--				q->rate_bps = (q->avg_peak_bandwidth * 15) >> 4;
-+				q->config->rate_bps = (q->avg_peak_bandwidth * 15) >> 4;
- 				cake_reconfigure(sch);
- 			}
+@@ -262,7 +262,7 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	np->link_status = 0;
+ 	/* Set media and reset PHY */
+ 	if (np->phy_media) {
+-		/* default Auto-Negotiation for fiber deivices */
++		/* default Auto-Negotiation for fiber devices */
+ 	 	if (np->an_enable == 2) {
+ 			np->an_enable = 1;
  		}
-@@ -1906,7 +1911,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		flow->set = CAKE_SET_SPARSE;
- 		b->sparse_flow_count++;
- 
--		flow->deficit = cake_get_flow_quantum(b, flow, q->flow_mode);
-+		flow->deficit = cake_get_flow_quantum(b, flow, q->config->flow_mode);
- 	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
- 		/* this flow was empty, accounted as a sparse flow, but actually
- 		 * in the bulk rotation.
-@@ -1915,8 +1920,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		b->sparse_flow_count--;
- 		b->bulk_flow_count++;
- 
--		cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
--		cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
-+		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-+		cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -887,7 +887,7 @@ tx_error (struct net_device *dev, int tx_status)
+ 	frame_id = (tx_status & 0xffff0000);
+ 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
+ 		dev->name, tx_status, frame_id);
+-	/* Ttransmit Underrun */
++	/* Transmit Underrun */
+ 	if (tx_status & 0x10) {
+ 		dev->stats.tx_fifo_errors++;
+ 		dw16(TxStartThresh, dr16(TxStartThresh) + 0x10);
+@@ -1083,7 +1083,7 @@ rio_error (struct net_device *dev, int int_status)
+ 		get_stats (dev);
  	}
  
- 	if (q->buffer_used > q->buffer_max_used)
-@@ -2098,8 +2103,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 				b->sparse_flow_count--;
- 				b->bulk_flow_count++;
+-	/* PCI Error, a catastronphic error related to the bus interface
++	/* PCI Error, a catastrophic error related to the bus interface
+ 	   occurs, set GlobalReset and HostReset to reset. */
+ 	if (int_status & HostError) {
+ 		printk (KERN_ERR "%s: HostError! IntStatus %4.4x.\n",
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 4788cc94639d..9ebf7a6db93e 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -270,7 +270,7 @@ enum _pcs_reg {
+ 	PCS_ESR = 15,
+ };
  
--				cake_inc_srchost_bulk_flow_count(b, flow, q->flow_mode);
--				cake_inc_dsthost_bulk_flow_count(b, flow, q->flow_mode);
-+				cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-+				cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
- 
- 				flow->set = CAKE_SET_BULK;
- 			} else {
-@@ -2111,7 +2116,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 			}
- 		}
- 
--		flow->deficit += cake_get_flow_quantum(b, flow, q->flow_mode);
-+		flow->deficit += cake_get_flow_quantum(b, flow, q->config->flow_mode);
- 		list_move_tail(&flow->flowchain, &b->old_flows);
- 
- 		goto retry;
-@@ -2135,8 +2140,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 				if (flow->set == CAKE_SET_BULK) {
- 					b->bulk_flow_count--;
- 
--					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
--					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
-+					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-+					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
- 
- 					b->decaying_flow_count++;
- 				} else if (flow->set == CAKE_SET_SPARSE ||
-@@ -2154,8 +2159,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 				else if (flow->set == CAKE_SET_BULK) {
- 					b->bulk_flow_count--;
- 
--					cake_dec_srchost_bulk_flow_count(b, flow, q->flow_mode);
--					cake_dec_dsthost_bulk_flow_count(b, flow, q->flow_mode);
-+					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-+					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
- 				} else
- 					b->decaying_flow_count--;
- 
-@@ -2166,14 +2171,14 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 
- 		reason = cobalt_should_drop(&flow->cvars, &b->cparams, now, skb,
- 					    (b->bulk_flow_count *
--					     !!(q->rate_flags &
-+					     !!(q->config->rate_flags &
- 						CAKE_FLAG_INGRESS)));
- 		/* Last packet in queue may be marked, shouldn't be dropped */
- 		if (reason == SKB_NOT_DROPPED_YET || !flow->head)
- 			break;
- 
- 		/* drop this packet, get another one */
--		if (q->rate_flags & CAKE_FLAG_INGRESS) {
-+		if (q->config->rate_flags & CAKE_FLAG_INGRESS) {
- 			len = cake_advance_shaper(q, b, skb,
- 						  now, true);
- 			flow->deficit -= len;
-@@ -2184,7 +2189,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 		qdisc_qstats_drop(sch);
- 		qdisc_dequeue_drop(sch, skb, reason);
--		if (q->rate_flags & CAKE_FLAG_INGRESS)
-+		if (q->config->rate_flags & CAKE_FLAG_INGRESS)
- 			goto retry;
- 	}
- 
-@@ -2306,7 +2311,7 @@ static int cake_config_besteffort(struct Qdisc *sch)
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	struct cake_tin_data *b = &q->tins[0];
- 	u32 mtu = psched_mtu(qdisc_dev(sch));
--	u64 rate = q->rate_bps;
-+	u64 rate = q->config->rate_bps;
- 
- 	q->tin_cnt = 1;
- 
-@@ -2314,7 +2319,7 @@ static int cake_config_besteffort(struct Qdisc *sch)
- 	q->tin_order = normal_order;
- 
- 	cake_set_rate(b, rate, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	b->tin_quantum = 65535;
- 
- 	return 0;
-@@ -2325,7 +2330,7 @@ static int cake_config_precedence(struct Qdisc *sch)
- 	/* convert high-level (user visible) parameters into internal format */
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	u32 mtu = psched_mtu(qdisc_dev(sch));
--	u64 rate = q->rate_bps;
-+	u64 rate = q->config->rate_bps;
- 	u32 quantum = 256;
- 	u32 i;
- 
-@@ -2336,8 +2341,8 @@ static int cake_config_precedence(struct Qdisc *sch)
- 	for (i = 0; i < q->tin_cnt; i++) {
- 		struct cake_tin_data *b = &q->tins[i];
- 
--		cake_set_rate(b, rate, mtu, us_to_ns(q->target),
--			      us_to_ns(q->interval));
-+		cake_set_rate(b, rate, mtu, us_to_ns(q->config->target),
-+			      us_to_ns(q->config->interval));
- 
- 		b->tin_quantum = max_t(u16, 1U, quantum);
- 
-@@ -2414,7 +2419,7 @@ static int cake_config_diffserv8(struct Qdisc *sch)
- 
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	u32 mtu = psched_mtu(qdisc_dev(sch));
--	u64 rate = q->rate_bps;
-+	u64 rate = q->config->rate_bps;
- 	u32 quantum = 256;
- 	u32 i;
- 
-@@ -2428,8 +2433,8 @@ static int cake_config_diffserv8(struct Qdisc *sch)
- 	for (i = 0; i < q->tin_cnt; i++) {
- 		struct cake_tin_data *b = &q->tins[i];
- 
--		cake_set_rate(b, rate, mtu, us_to_ns(q->target),
--			      us_to_ns(q->interval));
-+		cake_set_rate(b, rate, mtu, us_to_ns(q->config->target),
-+			      us_to_ns(q->config->interval));
- 
- 		b->tin_quantum = max_t(u16, 1U, quantum);
- 
-@@ -2458,7 +2463,7 @@ static int cake_config_diffserv4(struct Qdisc *sch)
- 
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	u32 mtu = psched_mtu(qdisc_dev(sch));
--	u64 rate = q->rate_bps;
-+	u64 rate = q->config->rate_bps;
- 	u32 quantum = 1024;
- 
- 	q->tin_cnt = 4;
-@@ -2469,13 +2474,13 @@ static int cake_config_diffserv4(struct Qdisc *sch)
- 
- 	/* class characteristics */
- 	cake_set_rate(&q->tins[0], rate, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	cake_set_rate(&q->tins[1], rate >> 4, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	cake_set_rate(&q->tins[2], rate >> 1, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	cake_set_rate(&q->tins[3], rate >> 2, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 
- 	/* bandwidth-sharing weights */
- 	q->tins[0].tin_quantum = quantum;
-@@ -2495,7 +2500,7 @@ static int cake_config_diffserv3(struct Qdisc *sch)
-  */
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	u32 mtu = psched_mtu(qdisc_dev(sch));
--	u64 rate = q->rate_bps;
-+	u64 rate = q->config->rate_bps;
- 	u32 quantum = 1024;
- 
- 	q->tin_cnt = 3;
-@@ -2506,11 +2511,11 @@ static int cake_config_diffserv3(struct Qdisc *sch)
- 
- 	/* class characteristics */
- 	cake_set_rate(&q->tins[0], rate, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	cake_set_rate(&q->tins[1], rate >> 4, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 	cake_set_rate(&q->tins[2], rate >> 2, mtu,
--		      us_to_ns(q->target), us_to_ns(q->interval));
-+		      us_to_ns(q->config->target), us_to_ns(q->config->interval));
- 
- 	/* bandwidth-sharing weights */
- 	q->tins[0].tin_quantum = quantum;
-@@ -2522,7 +2527,8 @@ static int cake_config_diffserv3(struct Qdisc *sch)
- 
- static void cake_reconfigure(struct Qdisc *sch)
- {
--	struct cake_sched_data *q = qdisc_priv(sch);
-+	struct cake_sched_data *qd = qdisc_priv(sch);
-+	struct cake_sched_config *q = qd->config;
- 	int c, ft;
- 
- 	switch (q->tin_mode) {
-@@ -2548,36 +2554,37 @@ static void cake_reconfigure(struct Qdisc *sch)
- 		break;
- 	}
- 
--	for (c = q->tin_cnt; c < CAKE_MAX_TINS; c++) {
-+	for (c = qd->tin_cnt; c < CAKE_MAX_TINS; c++) {
- 		cake_clear_tin(sch, c);
--		q->tins[c].cparams.mtu_time = q->tins[ft].cparams.mtu_time;
-+		qd->tins[c].cparams.mtu_time = qd->tins[ft].cparams.mtu_time;
- 	}
- 
--	q->rate_ns   = q->tins[ft].tin_rate_ns;
--	q->rate_shft = q->tins[ft].tin_rate_shft;
-+	qd->rate_ns   = qd->tins[ft].tin_rate_ns;
-+	qd->rate_shft = qd->tins[ft].tin_rate_shft;
- 
- 	if (q->buffer_config_limit) {
--		q->buffer_limit = q->buffer_config_limit;
-+		qd->buffer_limit = q->buffer_config_limit;
- 	} else if (q->rate_bps) {
- 		u64 t = q->rate_bps * q->interval;
- 
- 		do_div(t, USEC_PER_SEC / 4);
--		q->buffer_limit = max_t(u32, t, 4U << 20);
-+		qd->buffer_limit = max_t(u32, t, 4U << 20);
- 	} else {
--		q->buffer_limit = ~0;
-+		qd->buffer_limit = ~0;
- 	}
- 
- 	sch->flags &= ~TCQ_F_CAN_BYPASS;
- 
--	q->buffer_limit = min(q->buffer_limit,
--			      max(sch->limit * psched_mtu(qdisc_dev(sch)),
--				  q->buffer_config_limit));
-+	qd->buffer_limit = min(qd->buffer_limit,
-+			       max(sch->limit * psched_mtu(qdisc_dev(sch)),
-+				   q->buffer_config_limit));
- }
- 
- static int cake_change(struct Qdisc *sch, struct nlattr *opt,
- 		       struct netlink_ext_ack *extack)
- {
--	struct cake_sched_data *q = qdisc_priv(sch);
-+	struct cake_sched_data *qd = qdisc_priv(sch);
-+	struct cake_sched_config *q = qd->config;
- 	struct nlattr *tb[TCA_CAKE_MAX + 1];
- 	u16 rate_flags;
- 	u8 flow_mode;
-@@ -2631,19 +2638,19 @@ static int cake_change(struct Qdisc *sch, struct nlattr *opt,
- 			   nla_get_s32(tb[TCA_CAKE_OVERHEAD]));
- 		rate_flags |= CAKE_FLAG_OVERHEAD;
- 
--		q->max_netlen = 0;
--		q->max_adjlen = 0;
--		q->min_netlen = ~0;
--		q->min_adjlen = ~0;
-+		qd->max_netlen = 0;
-+		qd->max_adjlen = 0;
-+		qd->min_netlen = ~0;
-+		qd->min_adjlen = ~0;
- 	}
- 
- 	if (tb[TCA_CAKE_RAW]) {
- 		rate_flags &= ~CAKE_FLAG_OVERHEAD;
- 
--		q->max_netlen = 0;
--		q->max_adjlen = 0;
--		q->min_netlen = ~0;
--		q->min_adjlen = ~0;
-+		qd->max_netlen = 0;
-+		qd->max_adjlen = 0;
-+		qd->min_netlen = ~0;
-+		qd->min_adjlen = ~0;
- 	}
- 
- 	if (tb[TCA_CAKE_MPU])
-@@ -2699,7 +2706,7 @@ static int cake_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	WRITE_ONCE(q->rate_flags, rate_flags);
- 	WRITE_ONCE(q->flow_mode, flow_mode);
--	if (q->tins) {
-+	if (qd->tins) {
- 		sch_tree_lock(sch);
- 		cake_reconfigure(sch);
- 		sch_tree_unlock(sch);
-@@ -2715,14 +2722,20 @@ static void cake_destroy(struct Qdisc *sch)
- 	qdisc_watchdog_cancel(&q->watchdog);
- 	tcf_block_put(q->block);
- 	kvfree(q->tins);
-+	kvfree(q->config);
- }
- 
- static int cake_init(struct Qdisc *sch, struct nlattr *opt,
- 		     struct netlink_ext_ack *extack)
- {
--	struct cake_sched_data *q = qdisc_priv(sch);
-+	struct cake_sched_data *qd = qdisc_priv(sch);
-+	struct cake_sched_config *q;
- 	int i, j, err;
- 
-+	q = kvcalloc(1, sizeof(struct cake_sched_config), GFP_KERNEL);
-+	if (!q)
-+		return -ENOMEM;
-+
- 	sch->limit = 10240;
- 	sch->flags |= TCQ_F_DEQUEUE_DROPS;
- 
-@@ -2736,33 +2749,36 @@ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
- 			       * for 5 to 10% of interval
- 			       */
- 	q->rate_flags |= CAKE_FLAG_SPLIT_GSO;
--	q->cur_tin = 0;
--	q->cur_flow  = 0;
-+	qd->cur_tin = 0;
-+	qd->cur_flow  = 0;
-+	qd->config = q;
- 
--	qdisc_watchdog_init(&q->watchdog, sch);
-+	qdisc_watchdog_init(&qd->watchdog, sch);
- 
- 	if (opt) {
- 		err = cake_change(sch, opt, extack);
- 
- 		if (err)
--			return err;
-+			goto err;
- 	}
- 
--	err = tcf_block_get(&q->block, &q->filter_list, sch, extack);
-+	err = tcf_block_get(&qd->block, &qd->filter_list, sch, extack);
- 	if (err)
--		return err;
-+		goto err;
- 
- 	quantum_div[0] = ~0;
- 	for (i = 1; i <= CAKE_QUEUES; i++)
- 		quantum_div[i] = 65535 / i;
- 
--	q->tins = kvcalloc(CAKE_MAX_TINS, sizeof(struct cake_tin_data),
--			   GFP_KERNEL);
--	if (!q->tins)
--		return -ENOMEM;
-+	qd->tins = kvcalloc(CAKE_MAX_TINS, sizeof(struct cake_tin_data),
-+			    GFP_KERNEL);
-+	if (!qd->tins) {
-+		err = -ENOMEM;
-+		goto err;
-+	}
- 
- 	for (i = 0; i < CAKE_MAX_TINS; i++) {
--		struct cake_tin_data *b = q->tins + i;
-+		struct cake_tin_data *b = qd->tins + i;
- 
- 		INIT_LIST_HEAD(&b->new_flows);
- 		INIT_LIST_HEAD(&b->old_flows);
-@@ -2778,22 +2794,27 @@ static int cake_init(struct Qdisc *sch, struct nlattr *opt,
- 			INIT_LIST_HEAD(&flow->flowchain);
- 			cobalt_vars_init(&flow->cvars);
- 
--			q->overflow_heap[k].t = i;
--			q->overflow_heap[k].b = j;
-+			qd->overflow_heap[k].t = i;
-+			qd->overflow_heap[k].b = j;
- 			b->overflow_idx[j] = k;
- 		}
- 	}
- 
- 	cake_reconfigure(sch);
--	q->avg_peak_bandwidth = q->rate_bps;
--	q->min_netlen = ~0;
--	q->min_adjlen = ~0;
-+	qd->avg_peak_bandwidth = q->rate_bps;
-+	qd->min_netlen = ~0;
-+	qd->min_adjlen = ~0;
- 	return 0;
-+err:
-+	kvfree(qd->config);
-+	qd->config = NULL;
-+	return err;
- }
- 
- static int cake_dump(struct Qdisc *sch, struct sk_buff *skb)
- {
--	struct cake_sched_data *q = qdisc_priv(sch);
-+	struct cake_sched_data *qd = qdisc_priv(sch);
-+	struct cake_sched_config *q = qd->config;
- 	struct nlattr *opts;
- 	u16 rate_flags;
- 	u8 flow_mode;
-
+-/* IEEE Extened Status Register */
++/* IEEE Extended Status Register */
+ enum _mii_esr {
+ 	MII_ESR_1000BX_FD = 0x8000,
+ 	MII_ESR_1000BX_HD = 0x4000,
 -- 
 2.52.0
 
