@@ -1,192 +1,185 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011046.outbound.protection.outlook.com [40.107.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C22305043
-	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 15:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764601435; cv=none; b=TfViAdC8puCkiqBNKudODCWWioNWWzCZCX9fNm/dsNZlhV20LC3apTF+E/EtWEzImHezp3hr3UgkJF48FqaGNEXi3TlNoNMRcGmuFFWZIJRKPgZLLzs/mTE8LT669ZAhXW27FHWkMdlg3JHYJB7M9hOtBwXeT91FoMluIKRcs2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764601435; c=relaxed/simple;
-	bh=EXzDcH+w5Jl6eGdL/1XTbFsMDWschXz87blxBSftkBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c/Y7673RWu31HrUgnG2/Kb+jU3fQAkU+q8qkoo8ClFeTscIKCFxl46Lh3Z5qsNrn65Y1rMPc4M4UOTSsxGK74B1gaBvQ5jJS5m7SEef7r0GweIjonMQIW/UrcXyDXACkacop4sMKAFx97rELbG1uFlusx/srGsdz5pVjA8wT9lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTmeSQeU; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070B31CA5F;
+	Mon,  1 Dec 2025 15:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764602073; cv=fail; b=A8g000VnyBCdyThC/XvOH7UfyY6fC/zJ5Bs9A8Rj3mNWJDHDIajqv1oVYzAzYjzXalsZG8+dSHjdP73DDxy85AcTdJxSIMw4HYI2f5Drocdp7K3Xdmx5gz/exQOi550RNDiBOQ6b5g0FnUjcY+HwRz8vvC/mfgor4p1Febj0dW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764602073; c=relaxed/simple;
+	bh=lbC319sX0AGaMRm8Ye6PnAP1t4wssweWUQ7qBCDOuFs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FS0dc+SOWrwzWeD2gYCqA4IdTKO1/0pmbBhWGbxxOtDLBLC7SLLMQrMIjKTJqzLpVhtDoD0T0eGEcS8kLQfgnrJ/xR0gPpJSPtcUy7TMeEBgIcqo9r5qz9din+7Y/IgYQd11I00P590sKyl9/IINYxhpmEx/XNdH+w1cakRvq1Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JsMsGqwS; arc=fail smtp.client-ip=40.107.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTmeSQeU"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b9c17dd591so3787003b3a.3
-        for <netdev@vger.kernel.org>; Mon, 01 Dec 2025 07:03:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764601433; x=1765206233; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tpw8LHvPdU6zlHMAMXTfZPDQrMbxfwldCPC5wqMja1s=;
-        b=mTmeSQeUZ0NrsnUYmshCon0vaDA5QJpjJ1fpawYxxKzT9Uv7wl3Ufi6yagGfTciolq
-         bfg9n+u/MViOgORULSRBWSPg99vIJe89NEAFNafQ7JMbpcF3UTzLnv8jR/paHRr3bznJ
-         0lxQfb5J520sr1CGeY5B78PzEc0EhqoHKGy+7zIwEMG0lGS0+FnxQLH4eT9NLhhIH2BN
-         3vsYriktRFP5Hb6EW0QncZ34gJOWKVtu77Cy3ymoQAXiXUgjm7X4UT3bsyIeK1vpWSNk
-         Mfbe6mXY69IIwgB0R8FWckc+pbqRa215ZYfY6C/oFQBkAVzJ30dEMKQG/NC+EmG01r6T
-         eURw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764601433; x=1765206233;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tpw8LHvPdU6zlHMAMXTfZPDQrMbxfwldCPC5wqMja1s=;
-        b=itarl6Kaek+iNlKlxGFyHDl/uounKC7Yh/OgdabxXr4Nfi72II+1h9t4tLQfoP6RPB
-         fcAbXoCAS1qtaLkxAqUF3VjoAgQJgaaCfTHmhHM7tL4ztuH+qmOgJW3YFr+bGf5T6etc
-         95zgMK+PhjJKJwU/2O6Mz4FtDWh1L5dpp2EPaL/9/cZftwbhbaypmz/6Wnjrx8pQYtjO
-         J/EydeX8QsXXSSNRjrZQiXa/RZg5YNFvIWfijPvWBYZ+YS07OSYAYg2QCwbFFjpcnTnv
-         ytyoPxrqZgupThSzElqSFzT74qeJ6e+FG07T8zSxOLcU0m1IRykGVOVAvF/imbBN5V/3
-         4AdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtkaeIqHLRX7XBifk8gYyX8FD5iCc8lRLdp1Xh06+ayNv0TBY6Koho1OX8m12xof+OBq67P/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXKZ2dZF7lhW7J7av5lapR47Y/xBUnPp4Uz6VeUV6LvXoeBqer
-	LtQYq7PqdqCKnNf5cRzvSkw0NC4yXcqllsw8XMu1D8ygYIql1VPvt5Mx
-X-Gm-Gg: ASbGnctGus96qUx2tNdTvTrUayRq4O6EefINbP9UAThzc6H3v58cH7nZpbgytHywbWR
-	nrxH5wkj27AjmPQ4hPIPLrh5Yv9gg+o2vJOQuE4mG6ZkvCgKsb0S2qM8vyQoGSqBHaw32UzGFg6
-	ucGAYn6aBbxELFoLKAZp+gGWQlU0yeylP5avJMQYySQRkqewAZepBisYt7rJUQgd+0yzpPtuvUx
-	JHXtJMXBSb88CGq8yTxKdPdQFfEh5Pj0qXhQEDdP5am0h74lRRFM5fefoRBiRuqNnCKEmA4/Y2/
-	l4br6UqUj7HWHUbt4Y8oGWL2zgpfIbrGq4cQHJF49OtWjsJEnWQlzxWgVJLD7/BYoqAzZAffm6S
-	671XEbamzwoUy4COc+Iz4SyVynFnp60+4W128HiEgqfOlLmAfJng6QK90QsDRvd8bRa8uPPnSV/
-	R1hmfQ8y9l92H2927LQXlF0iYMwnSsK5GqyuUE8dj3e2iatHXnsJtRGS36xkVIYw==
-X-Google-Smtp-Source: AGHT+IHmv0QxInfFB/jZapSApAINRmF451TKrxhW5iPzZqBDqwn6NRIZ2O7dcTdimLEG9yOOxzaRZQ==
-X-Received: by 2002:a05:6a20:548d:b0:2d5:264c:e4a1 with SMTP id adf61e73a8af0-3637daaa237mr27333954637.8.1764601430946;
-        Mon, 01 Dec 2025 07:03:50 -0800 (PST)
-Received: from ?IPV6:2001:ee0:4f4c:210:adfb:c7fd:bfdc:f0bb? ([2001:ee0:4f4c:210:adfb:c7fd:bfdc:f0bb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d1516f6621sm13760828b3a.16.2025.12.01.07.03.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Dec 2025 07:03:50 -0800 (PST)
-Message-ID: <a9718b11-76d5-4228-9256-6a4dee90c302@gmail.com>
-Date: Mon, 1 Dec 2025 22:03:42 +0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JsMsGqwS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tjJRqQ9pGuGm+qAZOfiAZJyfg1ZYX6esW1qVS+/+G+ScZPg738C+GSRrYQcfKYKgeJnJAfUpxZWzqkKsbwKFf+jR3sC2AfqPBn8HJsEX97hxFidHWCC9dAmTxkVG8UAaaj0KrtQuih0D/5t20qxU9xHY5cQRMdIyYIBi9E44LFXA9mj2aZePYcdA/SGDXNNYFZOHCcf3jTrKmHUjH/ZYDFpjj8OFOuf5hZcg8YffGGBKUP09yciDmAlr+x1heljyOf5+Bv2A0BLN+aO8PVdRmpRXr1BjwFRNIJKTLl3hTwrhE+GkNxAPDtmklxvMpZ6xk/VDENTB7cUTpZ6CCocGvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yU0Q1ApmwsiN8YGCTI3sVlBJJtP8zX2NYbUJIDBG/uA=;
+ b=aUydl3dFnsxzN9fc8RVN8wA5aczbsgryrQqXmIHROZBhX15APEQPtdv+nU/oRDDRLtVlyS1UNThkPJyZBw5v1DK3FvEQ61sloNUAerSV1F+HL7UL1Kdka8jqwVa9hndleY3AT3lWB46vY9DgHPfz9Yu1NKZcsmjXl6Pn1v5omgkYKxrAmE8eL5PcuHiAfs04t59NNsSsBMRw3AH47+HbvMJBPmf2bGBxGBunwgcSBd3cOAAp7edcxCRc8CTDaLygUvLX/5GkIm0iF2asazK2ngqSnhBEKo2FdaZsdzIaHyPDg450bzcJqRBYEFAvXuIc69Xe5kMtN7C22Nd1Bn8bMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yU0Q1ApmwsiN8YGCTI3sVlBJJtP8zX2NYbUJIDBG/uA=;
+ b=JsMsGqwSEPTTTWRVQngfke9nZEFwawbgBbIseukCmq6tfuK7xUfhkja4PtpGbJy2iHHm/mJTArBbWQA2reFawip4QIp6iEu/PDsxiMQ6FsBBs2zAkuEf8bzVdrcGZI2qmvVw4P99bxt4oGYu8a1bnmsLx1t8OgXVfQO4Q2mDJeWxDOKy0GkN0qEvEOejAiBEGvFI1onpxfd5FU8wheNvjRuud7nhS9U9lFw4y4vvBWQ9i8TYmIhCds0dbxNekvskggyw9QBztf2sMyJ67vDQ1DVG78vpxdLiQqJeWXJTPzuFDSbQS+7gN6u0gIZOa/UuKrHHmhHVwzf1aRnUj863ZA==
+Received: from DS7PR06CA0054.namprd06.prod.outlook.com (2603:10b6:8:54::34) by
+ SA1PR12MB8094.namprd12.prod.outlook.com (2603:10b6:806:336::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
+ 2025 15:14:28 +0000
+Received: from DS1PEPF00017092.namprd03.prod.outlook.com
+ (2603:10b6:8:54:cafe::82) by DS7PR06CA0054.outlook.office365.com
+ (2603:10b6:8:54::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Mon,
+ 1 Dec 2025 15:14:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS1PEPF00017092.mail.protection.outlook.com (10.167.17.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.8 via Frontend Transport; Mon, 1 Dec 2025 15:14:27 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
+ 2025 07:14:06 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
+ 2025 07:14:06 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 1 Dec
+ 2025 07:14:01 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+	"Mark Bloch" <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>
+Subject: [PATCH net 2/2] net/mlx5e: Avoid unregistering PSP twice
+Date: Mon, 1 Dec 2025 17:13:28 +0200
+Message-ID: <1764602008-1334866-3-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
+In-Reply-To: <1764602008-1334866-1-git-send-email-tariqt@nvidia.com>
+References: <1764602008-1334866-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] virtio_net: gate delayed refill scheduling
-To: Jason Wang <jasowang@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, bpf@vger.kernel.org
-References: <40af2b73239850e7bf1a81abb71ee99f1b563b9c.1764226734.git.mst@redhat.com>
- <a61dc7ee-d00b-41b4-b6fd-8a5152c3eae3@gmail.com>
- <CACGkMEuJFVUDQ7SKt93mCVkbDHxK+A74Bs9URpdGR+0mtjxmAg@mail.gmail.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <CACGkMEuJFVUDQ7SKt93mCVkbDHxK+A74Bs9URpdGR+0mtjxmAg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017092:EE_|SA1PR12MB8094:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f46389c-3e8e-4a93-9be9-08de30ec5211
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9wsxzjex/vHvJVGBq5kIH07IjVQWcyFuv+9phZ2oXc0swSrEYgyJ5TKiL8c9?=
+ =?us-ascii?Q?N3BrCdnJ9Ga9P1JyMOlv+Lh9fp0yWCvTndmYk6fJA8Frl0Zhghk8GyBx3/lM?=
+ =?us-ascii?Q?zr3XXlK+debflUPTVVcxSm2vZekFLk2knD4aTF50vTFPLGscBr8QJF7whnMo?=
+ =?us-ascii?Q?249AQTEdZ9bXQl3o4imbM+8pWWK2RB5vIQN1Rp3fFLUn7VVD2IyRQekiEbQk?=
+ =?us-ascii?Q?Pov4Gq5jVEjlOM5//mjpKivjIM1Ki/+nCr8OzJdVqfkwwKM2H8m8+ANEKtwa?=
+ =?us-ascii?Q?aD4ZD9qHc2zR39WH6VVCJyUUNE0zRNujuVQgGwG2ThNeTwMlD2aohryJgDU/?=
+ =?us-ascii?Q?VOj+ZQQAQ/KFamIbuTpiPbjapdH8djgZRWTzKy3yw0vyDVrZ9kSwimMsiSKO?=
+ =?us-ascii?Q?GdKAsjveXEgSsWrRT9G5mH6j5cr6hQznY2gPEmhImeOM5Db/Iu7xWDpUVA97?=
+ =?us-ascii?Q?KpQP4nFSHv9KJ9icRWMS3bP0T4SRJrlk8rEwWUb8DbtC6kkNeBbzw2wlETvl?=
+ =?us-ascii?Q?WUZQwGq93QZCtJLhIm7LTKe0F05rupnH/8jRJ5SIWYD3HB4U/e6eJ/W46kX2?=
+ =?us-ascii?Q?80dkEmv7gnpDqpjyN5ohDpjJrHU5T7ypTUliXizPwobcByfYSuXhFmGKHFul?=
+ =?us-ascii?Q?eKpmQOjMwHAJhAdvULtSiD4Sx0bxL5YTw3Ki1UAg72OpZCR7iHjyVhb8c9qC?=
+ =?us-ascii?Q?pZ48wQlZgotwTXuci5u4lmd2+BHXszOE0Um0oCLF0DO+7hJhc7zH5mn4iyuJ?=
+ =?us-ascii?Q?AAt3Z8t83K8H+rvxHn1clCqlbTE2Xs5tfrETiM6YqdcH5Yh9vjDM7bhaiZAm?=
+ =?us-ascii?Q?7i2+9SPmL+82iYKvgJbKJ01ZovpcmRYR9pN3tJfrnAgBxXSrwjRJp7ueDYmp?=
+ =?us-ascii?Q?vEbGjhSZeFypwqcyQDC/hnUb88M/ynE2FFAUhjwLu6KuSEuqwLGtRJTLHWBp?=
+ =?us-ascii?Q?9j2/egiBUkU+X2UD/ETFawPuZvknIIC3m1+e1bDg0cBWGogc4C7o7VbnLGNq?=
+ =?us-ascii?Q?pGgRlK12WseF2rkKUDJ7bIKKr429Wvbi5FyEvL0g0LAvKnZH+MdAqoi/aDo4?=
+ =?us-ascii?Q?D3e3g9lXrKxZD+tXgdS3LUT9mTNl2B5+GYIL+JceGEHohsnYiWy6tFMvtxmN?=
+ =?us-ascii?Q?vWeCju4Mx1HEcn6Md9bKVP2Z1AYHWxnl0hWsG2Nkmktnt5mWoit6o/pc3M+y?=
+ =?us-ascii?Q?O6TX5+Qvuh7ws3QszsiF+h8elvgKdF3Ej+8A00Zp9K9mtubyzIa4PI34y4Kj?=
+ =?us-ascii?Q?RAoGlQnccMXtzg4gnhSNYX1e5v4Ww9cgp/CYMNoJjhzPi6QjFmIXTH+vi2g4?=
+ =?us-ascii?Q?eIW5FGOL/nOXsIw/E2pwdmq9+aodLPtIz98RFmugYqalt1ZllHpELIkQOYtf?=
+ =?us-ascii?Q?PIPASJqomIy97RvRCY1GbAVF0GVaL5xzkRYzsFWCvzcRrQQKLMkv5RBIVxYd?=
+ =?us-ascii?Q?ZvpRfXXufLTJyRgpZL4RU0oVeDjovTtDeiF++A4D570OeaeDc2VIp94OgoeK?=
+ =?us-ascii?Q?DB3GkNZOXGk2CS/rtklzaxBtP05cfIkp4p6xIl5QnSTzHclbf/VRcNZvLXxB?=
+ =?us-ascii?Q?vGtbLc8RMxmWDHn15eY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 15:14:27.9015
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f46389c-3e8e-4a93-9be9-08de30ec5211
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017092.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8094
 
-On 11/28/25 09:20, Jason Wang wrote:
-> On Fri, Nov 28, 2025 at 1:47 AM Bui Quang Minh <minhquangbui99@gmail.com> wrote:
->> I think the the requeue in refill_work is not the problem here. In
->> virtnet_rx_pause[_all](), we use cancel_work_sync() which is safe to
->> use "even if the work re-queues itself". AFAICS, cancel_work_sync()
->> will disable work -> flush work -> enable again. So if the work requeue
->> itself in flush work, the requeue will fail because the work is already
->> disabled.
-> Right.
->
->> I think what triggers the deadlock here is a bug in
->> virtnet_rx_resume_all(). virtnet_rx_resume_all() calls to
->> __virtnet_rx_resume() which calls napi_enable() and may schedule
->> refill. It schedules the refill work right after napi_enable the first
->> receive queue. The correct way must be napi_enable all receive queues
->> before scheduling refill work.
-> So what you meant is that the napi_disable() is called for a queue
-> whose NAPI has been disabled?
->
-> cpu0] enable_delayed_refill()
-> cpu0] napi_enable(queue0)
-> cpu0] schedule_delayed_work(&vi->refill)
-> cpu1] napi_disable(queue0)
-> cpu1] napi_enable(queue0)
-> cpu1] napi_disable(queue1)
->
-> In this case cpu1 waits forever while holding the netdev lock. This
-> looks like a bug since the netdev_lock 413f0271f3966 ("net: protect
-> NAPI enablement with netdev_lock()")?
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-Yes, I've tried to fix it in 4bc12818b363 ("virtio-net: disable delayed 
-refill when pausing rx"), but it has flaws.
+PSP is unregistered twice in:
+_mlx5e_remove -> mlx5e_psp_unregister
+mlx5e_nic_cleanup -> mlx5e_psp_unregister
 
->> The fix is like this (there are quite duplicated code, I will clean up
->> and send patches later if it is correct)
->>
->> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
->> index 8e04adb57f52..892aa0805d1b 100644
->> --- a/drivers/net/virtio_net.c
->> +++ b/drivers/net/virtio_net.c
->> @@ -3482,20 +3482,25 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
->>    static void virtnet_rx_resume_all(struct virtnet_info *vi)
->>    {
->>        int i;
->> +    bool schedule_refill = false;
->> +
->> +    for (i = 0; i < vi->max_queue_pairs; i++)
->> +        __virtnet_rx_resume(vi, &vi->rq[i], false);
->>
->>        enable_delayed_refill(vi);
->> -    for (i = 0; i < vi->max_queue_pairs; i++) {
->> -        if (i < vi->curr_queue_pairs)
->> -            __virtnet_rx_resume(vi, &vi->rq[i], true);
->> -        else
->> -            __virtnet_rx_resume(vi, &vi->rq[i], false);
->> -    }
->> +
->> +    for (i = 0; i < vi->curr_queue_pairs; i++)
->> +        if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
->> +            schedule_refill = true;
->> +
->> +    if (schedule_refill)
->> +        schedule_delayed_work(&vi->refill, 0);
->>    }
->>
->>    static void virtnet_rx_resume(struct virtnet_info *vi, struct receive_queue *rq)
->>    {
->> -    enable_delayed_refill(vi);
->>        __virtnet_rx_resume(vi, rq, true);
->> +    enable_delayed_refill(vi);
-> This seems to be odd. I think at least we need to move this before:
->
->> +    if (schedule_refill)
->> +        schedule_delayed_work(&vi->refill, 0);
-> ?
+This leads to a refcount underflow in some conditions:
+------------[ cut here ]------------
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 2 PID: 1694 at lib/refcount.c:28 refcount_warn_saturate+0xd8/0xe0
+[...]
+ mlx5e_psp_unregister+0x26/0x50 [mlx5_core]
+ mlx5e_nic_cleanup+0x26/0x90 [mlx5_core]
+ mlx5e_remove+0xe6/0x1f0 [mlx5_core]
+ auxiliary_bus_remove+0x18/0x30
+ device_release_driver_internal+0x194/0x1f0
+ bus_remove_device+0xc6/0x130
+ device_del+0x159/0x3c0
+ mlx5_rescan_drivers_locked+0xbc/0x2a0 [mlx5_core]
+[...]
 
-Yes, I think helper __virtnet_rx_resume does not work well, because 
-virtnet_rx_resume_all and virtnet_rx_resume have slightly different 
-logic. So I think it's better to open-code the helper and do the logic 
-directly in virtnet_rx_resume_all and virtnet_rx_resume.
+Do not directly remove psp from the _mlx5e_remove path, the PSP cleanup
+happens as part of profile cleanup.
 
->>    }
->>
->>    static int virtnet_rx_resize(struct virtnet_info *vi,
->>
->> I also move the enable_delayed_refill() after we __virtnet_rx_resume()
->> to ensure no refill is scheduled before napi_enable().
->>
->> What do you think?
-> This has been implemented in your patch or I may miss something.
+Fixes: 89ee2d92f66c ("net/mlx5e: Support PSP offload functionality")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Yes, I move the enable_delayed_refill after the call __virtnet_rx_resume 
-in the above diff because I see it creates a window where delayed refill 
-is enabled before napi is enabled. However, AFAICS, other places that 
-schedule the delayed refill work must acquire the rtnl_lock and/or 
-netdev_lock, so it cannot happen while we are in virtnet_rx_resume[_all].
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 5e17eae81f4b..1545f9c008f4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6805,7 +6805,6 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ 	 * is already unregistered before changing to NIC profile.
+ 	 */
+ 	if (priv->netdev->reg_state == NETREG_REGISTERED) {
+-		mlx5e_psp_unregister(priv);
+ 		unregister_netdev(priv->netdev);
+ 		_mlx5e_suspend(adev, false);
+ 	} else {
+-- 
+2.31.1
 
-Thanks,
-Quang Minh.
