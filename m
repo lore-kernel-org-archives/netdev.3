@@ -1,64 +1,64 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F033043DA
-	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 10:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2F63054DE
+	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 10:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764584934; cv=none; b=cVCW3t+u5pBfYcUR+fE1wc1sVqtyikJ1NiOZfZNKyZmalJzo4vqtjcnte1oqfzXmndKpT7xDW3gt4aQCWTfvmqPzmU9LwM2gs4e6zQkuupU4us2IDIFF5PykxtTZYtyf6cHDJM10oKPUWgMlqcOWAIR23fDPGXsql50n1zqQ1bM=
+	t=1764584935; cv=none; b=aAtefwBW2BOcFk2Y0SZ/SaxWOXZ71iJdqHhLV+ctXv2jgAMzYj9pgvjjrkQUaiHdlAw108Xkw/lM77j+OZVgiID/MKQRDSPCHZgg6SMghp+rQa2tFTUpSTXFntXrPrxfhED19XVRe5e3tNO6a9xSsICpcnhlvtqR3gZUCYcrLGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764584934; c=relaxed/simple;
-	bh=bpfHyyspFf7vI7NmB9tWN+VXQOjDBGy/ulV1bMwtwkw=;
+	s=arc-20240116; t=1764584935; c=relaxed/simple;
+	bh=kcdB10IAw2gkJ9lGc1YtDOyMNEKD6+NwmKs07aM43cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbISKnE4l0mIS/GXsVE4DFXlx3js6jLic8miUtJGCUlyb0m6vKH80MdkkXh5u7ehDXIroABplKUBc3nL2MvvQaeE2mwkxuECX0ZYAmZ+dmsv/X7fxahRUH89FgKHxpuJLEJRGFwVyE9NKl3A3Y7t/WhGLiKDTvti0FStCYRNG5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MIE/ozVX; arc=none smtp.client-ip=209.85.218.47
+	 MIME-Version; b=S6d7OMlf7vqxsJbVpWoGyE2sUe22FxR8xl9y0pvf8iKTqPcJOYO1txIwhEIUqJLJSz4PBuiJIRpfX3Wzs18gtibzmlSPxPa3pJMV8V7qr6qeVfqsdHkPTLH2pfg85v54uUb+Ay+uQ3m0Akw5MShwCYEt3bn40S8wrkdAx9v5iNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCOiDo1L; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MIE/ozVX"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b736cd741c1so622394366b.0
-        for <netdev@vger.kernel.org>; Mon, 01 Dec 2025 02:28:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCOiDo1L"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b735487129fso565018866b.0
+        for <netdev@vger.kernel.org>; Mon, 01 Dec 2025 02:28:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764584930; x=1765189730; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764584932; x=1765189732; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r62uAAysvOeF+TQvBPK+HmpxuJJtN8BAOCCbeSMPZRw=;
-        b=MIE/ozVXkW9Dqz28uyOPT9368AzPdlgymcW3jVzdu2V3Jk0VxYodGB/4EMVZkYSAW4
-         SDXe/KZtHP5SlGzyE1LL/dkdqLDUCW9g0ahNAT/jhqfePnrX2QhdRfs8eJriShq145u+
-         op+5DCZH3DDavteR3RwxZgeceZYdsVxxqAQHxuZE0QI4diHq/+lPBVaxdbWakOJfwOeR
-         zOadRjKnfE5ykehZ7ezAWLa8b3J3WM3vAPca+bfx+QIIGSQHPv1yOcCnKRLgUnTrjTRt
-         d4csxEt8XPsT7G7iA5uxF6woxLZSQSDuS+xr+WtVOEEAN7OJLAIRaWyMRblgQJ8Nw0dh
-         uRVw==
+        bh=0KJH3bXmMEwxHSCHbGbfUAmcdLYGbe7hL6mo3kE3l6g=;
+        b=GCOiDo1LLa6TgM+5ydT0JcPvC3RG84l0r40UBeAlxYOXjPxU+IjFEgQDPyA8YzF6D1
+         ms4VhtF/URWTGYTvOfUYZVccyUwWGOFdKB2osXNvCIhrdpaDiRsaCFVZr1X01jTpI4SN
+         UVYGCaSpu0PLNPCv8pg2ty/R28302bUuXotgzlpZQvPYBH61+iJcWkPtpakjvv3L5/9v
+         IPKDaBxfvr98ogYFvlF7y+0YH5MAgOVDXf4jdTVx17W0wLs2OmyIbaxtimS0cecQImF+
+         LgY/r007mJamH5cEgiRAxe2vVWLhxY7eTtuwLVcVA+bLO+/3KEXsYnuD3YqI6IU2+f7F
+         U0zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764584930; x=1765189730;
+        d=1e100.net; s=20230601; t=1764584932; x=1765189732;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=r62uAAysvOeF+TQvBPK+HmpxuJJtN8BAOCCbeSMPZRw=;
-        b=jN6cJDkF4wK/N46e1+tAmPJIScaHfA1NwvbkoZb6t12YhtccvaIFuzV0wn8+Xhu0ps
-         R+6mvvZV+VLi5y0MhjS50Uxd+gXUWGIoeCgW/j+qEE43rxzwWnYhqV6lrgjzJ6AimI0w
-         ePmWSy9nHSPXG0eahNY1yN6YMK9zAYtS889RNSFYt6MN5dDqAehLiPA+x0xbmFAqJEQa
-         zeX39VDjghdYJk0GuxrEcSwUZ+QYE1RA6JSJodykDfMsgrk5X+/7GGKS6lPv+qw4DZFw
-         gB1OWE9uTwOJH0jOlxPe/s94rHao0kpmkJX7pGzonr2ur2Wi7Nmfipk5DzlvIgXgaU0I
-         rKYA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3cBYkddgOmw7RgEzv8noi5GJTOvs1OH49L2iu4Q8QIH1jlQQAoR03h0qk5m94VwPKrwxTTd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDGv7L6JMfMaiIjKd7aVw9EL8ro6lcQMFdMPOaMORRR3o/+10+
-	InsqdS7i7FTe4y8JMAgkTSSUA8dMKPDDXab0OJ0Tz850WaR8iMhhwmt1
-X-Gm-Gg: ASbGncu8pvINwYr4aKzSWeKGlv1eDqQMSAMMB6+LI4VEZADsE5uAoMA9/D3alZN2/gO
-	7uQ5MFXivY8MiTXeLXZfUB9lM6ZotiUP4DijHuKMrh8m+uGic6Xlu1whApsrcPjxo2r5OyumNJi
-	g7YvP3g5RfiOYudVBeQRdYUl9huPYYXyNoiwAane2xmhYFHY3F7CgtE4aAJzVprSyFzIHQC6oQu
-	ExgbJE1BS08HsrB70VHGUVPjoGLQayfArhQ9TkPAgLUBG0QtHUfISnol3CGGkVBARrMeojZEve4
-	HakfmGv3v7AMICWDNWp3kVQG9enzxICWEa0Wuh/pYEOUVcoPbxQpuoaLqHOil+9DqeKflwGgYVP
-	r9dbTcMNx8IueI0jywmez7ZP2RKJVXHu5fZit3qnXtkbwJ2AtRTZpsYIdIPywLFfeJURCcMvnPP
-	fQkD4wJP0N65gKeiivmIHyqkRC6aNzJP+Xa9MwCrrPU8v3nZj8Fh0+zStlwcx7qPhGnXY=
-X-Google-Smtp-Source: AGHT+IFUMDNzleZaysdDaOIWKCLnv0W/7ORsWcveP6WOewtMC3bsi4ve1+dw0mBPOzG6hzY3eCvx5w==
-X-Received: by 2002:a17:907:3f25:b0:b72:aaae:1b22 with SMTP id a640c23a62f3a-b767150b109mr4455364166b.12.1764584930328;
-        Mon, 01 Dec 2025 02:28:50 -0800 (PST)
+        bh=0KJH3bXmMEwxHSCHbGbfUAmcdLYGbe7hL6mo3kE3l6g=;
+        b=HlbrY4eeLX9Dd1/EdtGwtSwoxXEFYhy5d+LZddwphpV2g3NWGwcQFI5VlWSe8iXVGb
+         2n5GP8V1y4Efb3nBp625nb726UVcSCc0jMPstq3OkThfnyKbE/pI3DOz6T4kx9pvVnYZ
+         HYRfepYhpW89CEpANU5dEBms41EIcE4QDsR6+m19UWcbt89UE5JmcUt7wvkUaDFtbdbz
+         0yZCByrmSumaHVMmoec1bvsmjJe+1x2ePYzFXURE3q+dF9JXkEv/QQGNbNJ8dXE0kfl3
+         FPzgDebb89jzznfwtF3K/OWuZaNKUPwxTljgxqa+9NEtXyxeCTBrNplxeOfRL0PMq4T0
+         KDwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDxCqF/wl+/+ysSBmtBf/IA6pJBNmEUBFMfulRCqfWP0+lXCyiqS78k/YyBF5q/ClGAT+vjM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRUek547birgMB07L+UtFbDwmjMCcodYGC82EjsYVj7DbK2nYO
+	T7h8n2LXws9JUgy4IrJyAIOmgb3chCInJG4LNwvcX0Pjq0eNKSMHirg2
+X-Gm-Gg: ASbGncsGi1rEzmUFWZ5Xg9bRtLJkk8hd4RWl0A/iylM1fy0QG0Iqb9KuivOnLFEfz0w
+	/f+8E0O3ixW3rBbR6bbS8JOdOfWuhFMHz0n0mFbCTIIDg0CXq5zqzlpkoRl1pG5eZVnp+W+Y6gF
+	BHwQbtdFkyBjuOLzA2Jv+ZUqM0OrKy0FyDWpR619Q7ROJCSobiL+xx3NyWRsDoV0g/mw1O/7rcO
+	HxghR+Hb7YMcG/03AWobB3jHaKtdHetEyCmy7wlGj0ClHbQVCnXFtTYeiOOLCbWELhHSx6jAC2l
+	LYccTLHB5au+haauacXgju5G0nbg+N6CAMEJcykHG8sRc2OlalQaY3lAwPZQsPdQHnkhRP78Qtg
+	qK4MeFK4fgUM65xHPMuAMZMdee/glRzZoSYCDobd6IoLeGKY8liiDffUSM/jbffUfdxMs+Eel+o
+	BnPA1BOEVXm7SncgctPdtjlRJ/z2ibW+MoILcCpUIISm+hHvzOnBlLUrNwgHP1XzYlFrs=
+X-Google-Smtp-Source: AGHT+IH8UzIXZ+P9m8fEUgF681BNGjOYCjDIaz/r0htVxM1wr+pTCtgffVG0RJhGTTYN5l3Ys9Se2Q==
+X-Received: by 2002:a17:907:3e0b:b0:b74:f827:b886 with SMTP id a640c23a62f3a-b767170bfcfmr4074321666b.32.1764584931481;
+        Mon, 01 Dec 2025 02:28:51 -0800 (PST)
 Received: from localhost (dslb-002-205-018-238.002.205.pools.vodafone-ip.de. [2.205.18.238])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f5162d3esm1199021666b.8.2025.12.01.02.28.49
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f519d883sm1183492566b.17.2025.12.01.02.28.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 02:28:49 -0800 (PST)
+        Mon, 01 Dec 2025 02:28:50 -0800 (PST)
 From: Jonas Gorski <jonas.gorski@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -73,9 +73,9 @@ Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH RFC/RFT net-next v2 3/5] selftests: no_forwarding: test VLAN uppers on VLAN aware bridged ports
-Date: Mon,  1 Dec 2025 11:28:15 +0100
-Message-ID: <20251201102817.301552-4-jonas.gorski@gmail.com>
+Subject: [PATCH RFC/RFT net-next v2 4/5] net: dsa: deny 8021q uppers on vlan unaware bridged ports
+Date: Mon,  1 Dec 2025 11:28:16 +0100
+Message-ID: <20251201102817.301552-5-jonas.gorski@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251201102817.301552-1-jonas.gorski@gmail.com>
 References: <20251201102817.301552-1-jonas.gorski@gmail.com>
@@ -87,168 +87,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a test (mainly for switchdev implementors) to test that multiple
-VLAN uppers on a VLAN aware bridge for the same VLAN do not enable
-forwarding of that VLAN between those ports.
+Documentation/networking/switchdev.rst says:
 
-Since we are testing VLAN uppers, skip checking untagged traffic in
-those cases.
+- with VLAN filtering turned off, the bridge will process all ingress
+  traffic for the port, except for the traffic tagged with a VLAN ID
+  destined for a VLAN upper.
 
-Disallowing VLAN uppers on bridge ports is a valid choice for switchdev
-drivers, so test if we can create them first and skip the tests if not.
+But DSA currently does not notify drivers about uppers on bridge ports
+of a VLAN unaware bridge: Bridged ports on a VLAN unaware bridge will
+usually not have filtering enabled and thus do not have
+NETIF_F_HW_VLAN_CTAG_FILTER so dsa_user_vlan_rx_add_vid() is never
+called.
+
+And if filtering is always on for a driver, then DSA will just call
+dsa_port_vlan_add(), in the same way it would for VLANs added to the
+bridge. And VLANs programmed to the bridge are supposed to be ignored
+while filtering is disabled, so drivers would still not act upon it.
+
+Therefore traffic tagged with the VID will continue to be forwarded to
+other ports, and therefore we cannot support VLAN uppers on ports of a
+VLAN unaware bridges.
+
+So reject any VLAN uppers for bridged ports of VLAN unaware bridges, and
+reject disabling filtering as long as any VLAN uppers on bridged ports
+exist.
 
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
 v1 -> v2:
-* new patch
+* actually deny VLAN uppers on VLAN-unware bridges
+* fix DSA behaviour description for non-filtering bridge ports
 
- .../selftests/net/forwarding/no_forwarding.sh | 89 ++++++++++++++-----
- 1 file changed, 67 insertions(+), 22 deletions(-)
+ net/dsa/port.c | 23 ++++-------------------
+ net/dsa/user.c |  9 ++++++++-
+ 2 files changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/no_forwarding.sh b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-index 694ece9ba3a7..c8adf04e1328 100755
---- a/tools/testing/selftests/net/forwarding/no_forwarding.sh
-+++ b/tools/testing/selftests/net/forwarding/no_forwarding.sh
-@@ -1,7 +1,7 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
--ALL_TESTS="standalone two_bridges one_bridge_two_pvids"
-+ALL_TESTS="standalone two_bridges one_bridge_two_pvids bridge_aware_vlan_uppers"
- NUM_NETIFS=4
- 
- source lib.sh
-@@ -90,6 +90,7 @@ check_rcv()
- run_test()
+diff --git a/net/dsa/port.c b/net/dsa/port.c
+index 082573ae6864..d7746885f7e0 100644
+--- a/net/dsa/port.c
++++ b/net/dsa/port.c
+@@ -728,35 +728,20 @@ static bool dsa_port_can_apply_vlan_filtering(struct dsa_port *dp,
  {
- 	local test_name="$1"
-+	local swp_uppers=${2:0}
- 	local smac=$(mac_get $h1)
- 	local dmac=$(mac_get $h2)
- 	local h1_ipv6_lladdr=$(ipv6_lladdr_get $h1)
-@@ -99,16 +100,24 @@ run_test()
+ 	struct dsa_switch *ds = dp->ds;
+ 	struct dsa_port *other_dp;
+-	int err;
  
- 	tcpdump_start $h2
+-	/* VLAN awareness was off, so the question is "can we turn it on".
++	/* VLAN awareness was on, so the question is "can we turn it off".
+ 	 * We may have had 8021q uppers, those need to go. Make sure we don't
+ 	 * enter an inconsistent state: deny changing the VLAN awareness state
+ 	 * as long as we have 8021q uppers.
+ 	 */
+-	if (vlan_filtering && dsa_port_is_user(dp)) {
+-		struct net_device *br = dsa_port_bridge_dev_get(dp);
++	if (!vlan_filtering && dsa_port_is_user(dp)) {
+ 		struct net_device *upper_dev, *user = dp->user;
+ 		struct list_head *iter;
  
--	send_non_ip $h1 $smac $dmac
--	send_non_ip $h1 $smac $NON_IP_MC
--	send_non_ip $h1 $smac $BC
--	send_uc_ipv4 $h1 $dmac
--	send_mc_ipv4 $h1
--	send_uc_ipv6 $h1 $dmac
--	send_mc_ipv6 $h1
-+	if [ "$swp_uppers" -eq 0 ]; then
-+		send_non_ip $h1 $smac $dmac
-+		send_non_ip $h1 $smac $NON_IP_MC
-+		send_non_ip $h1 $smac $BC
-+		send_uc_ipv4 $h1 $dmac
-+		send_mc_ipv4 $h1
-+		send_uc_ipv6 $h1 $dmac
-+		send_mc_ipv6 $h1
-+	fi
+ 		netdev_for_each_upper_dev_rcu(user, upper_dev, iter) {
+-			struct bridge_vlan_info br_info;
+-			u16 vid;
+-
+-			if (!is_vlan_dev(upper_dev))
+-				continue;
+-
+-			vid = vlan_dev_vlan_id(upper_dev);
+-
+-			/* br_vlan_get_info() returns -EINVAL or -ENOENT if the
+-			 * device, respectively the VID is not found, returning
+-			 * 0 means success, which is a failure for us here.
+-			 */
+-			err = br_vlan_get_info(br, vid, &br_info);
+-			if (err == 0) {
++			if (is_vlan_dev(upper_dev)) {
+ 				NL_SET_ERR_MSG_MOD(extack,
+-						   "Must first remove VLAN uppers having VIDs also present in bridge");
++						   "Must first remove VLAN uppers from bridged ports");
+ 				return false;
+ 			}
+ 		}
+diff --git a/net/dsa/user.c b/net/dsa/user.c
+index e8c6452780b0..442cf3b2dc30 100644
+--- a/net/dsa/user.c
++++ b/net/dsa/user.c
+@@ -3167,10 +3167,17 @@ dsa_user_check_8021q_upper(struct net_device *dev,
+ 	int err = NOTIFY_DONE;
+ 	u16 vid;
  
- 	for vid in "${vids[@]}"; do
- 		vlan_create $h1 $vid
-+		if [  "$swp_uppers" -ge 1 ]; then
-+			vlan_create $swp1 $vid
-+		fi
-+		if [  "$swp_uppers" -ge 2 ]; then
-+			vlan_create $swp2 $vid
-+		fi
- 		simple_if_init $h1.$vid $H1_IPV4/24 $H1_IPV6/64
+-	if (!br || !br_vlan_enabled(br))
++	if (!br)
+ 		return NOTIFY_DONE;
  
- 		send_non_ip $h1.$vid $smac $dmac
-@@ -120,6 +129,12 @@ run_test()
- 		send_mc_ipv6 $h1.$vid
- 
- 		simple_if_fini $h1.$vid $H1_IPV4/24 $H1_IPV6/64
-+		if [  "$swp_uppers" -ge 2 ]; then
-+			vlan_destroy $swp2 $vid
-+		fi
-+		if [  "$swp_uppers" -ge 1 ]; then
-+			vlan_destroy $swp1 $vid
-+		fi
- 		vlan_destroy $h1 $vid
- 	done
- 
-@@ -129,26 +144,28 @@ run_test()
- 
- 	tcpdump_stop $h2
- 
--	check_rcv $h2 "$test_name: Unicast non-IP untagged" \
--		"$smac > $dmac, 802.3, length 4:"
-+	if [ "$swp_uppers" -eq 0 ]; then
-+		check_rcv $h2 "$test_name: Unicast non-IP untagged" \
-+			"$smac > $dmac, 802.3, length 4:"
- 
--	check_rcv $h2 "$test_name: Multicast non-IP untagged" \
--		"$smac > $NON_IP_MC, 802.3, length 4:"
-+		check_rcv $h2 "$test_name: Multicast non-IP untagged" \
-+			"$smac > $NON_IP_MC, 802.3, length 4:"
- 
--	check_rcv $h2 "$test_name: Broadcast non-IP untagged" \
--		"$smac > $BC, 802.3, length 4:"
-+		check_rcv $h2 "$test_name: Broadcast non-IP untagged" \
-+			"$smac > $BC, 802.3, length 4:"
- 
--	check_rcv $h2 "$test_name: Unicast IPv4 untagged" \
--		"$smac > $dmac, ethertype IPv4 (0x0800)"
-+		check_rcv $h2 "$test_name: Unicast IPv4 untagged" \
-+			"$smac > $dmac, ethertype IPv4 (0x0800)"
- 
--	check_rcv $h2 "$test_name: Multicast IPv4 untagged" \
--		"$smac > $MACV4_ALLNODES, ethertype IPv4 (0x0800).*: $H1_IPV4 > $IPV4_ALLNODES"
-+		check_rcv $h2 "$test_name: Multicast IPv4 untagged" \
-+			"$smac > $MACV4_ALLNODES, ethertype IPv4 (0x0800).*: $H1_IPV4 > $IPV4_ALLNODES"
- 
--	check_rcv $h2 "$test_name: Unicast IPv6 untagged" \
--		"$smac > $dmac, ethertype IPv6 (0x86dd).*8: $H1_IPV6 > $H2_IPV6"
-+		check_rcv $h2 "$test_name: Unicast IPv6 untagged" \
-+			"$smac > $dmac, ethertype IPv6 (0x86dd).*8: $H1_IPV6 > $H2_IPV6"
- 
--	check_rcv $h2 "$test_name: Multicast IPv6 untagged" \
--		"$smac > $MACV6_ALLNODES, ethertype IPv6 (0x86dd).*: $h1_ipv6_lladdr > $IPV6_ALLNODES"
-+		check_rcv $h2 "$test_name: Multicast IPv6 untagged" \
-+			"$smac > $MACV6_ALLNODES, ethertype IPv6 (0x86dd).*: $h1_ipv6_lladdr > $IPV6_ALLNODES"
-+	fi
- 
- 	for vid in "${vids[@]}"; do
- 		check_rcv $h2 "$test_name: Unicast non-IP VID $vid" \
-@@ -209,6 +226,34 @@ one_bridge_two_pvids()
- 	ip link del br0
- }
- 
-+bridge_aware_vlan_uppers()
-+{
-+	ip link add br0 type bridge vlan_filtering 1 vlan_default_pvid 0
-+	ip link set br0 up
-+	ip link set $swp1 master br0
-+	ip link set $swp2 master br0
+ 	extack = netdev_notifier_info_to_extack(&info->info);
 +
-+	if ! ip link add name $swp1.10 link $swp1 type vlan id 10 2>/dev/null; then
-+		ip link del br0
-+		echo "SKIP: vlan-aware bridge does not allow vlan uppers on bridge ports"
-+		exit "$ksft_skip"
-+	fi
++	if (!br_vlan_enabled(br)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "VLAN uppers not supported with non filtering bridges");
++		return notifier_from_errno(-EBUSY);
++	}
 +
-+	if ! ip link add name $swp2.10 link $swp2 type vlan id 10 2>/dev/null; then
-+		vlan_destroy $swp1 10
-+		ip link del br0
-+		echo "SKIP: vlan-aware bridge does not allow multiple vlan uppers per VLAN on bridge ports"
-+		exit "$ksft_skip"
-+	fi
-+
-+	vlan_destroy $swp1 10
-+	vlan_destroy $swp2 10
-+
-+	run_test "Switch ports in VLAN-aware bridge with VLAN uppers" 2
-+
-+	ip link del br0
-+}
-+
- h1_create()
- {
- 	simple_if_init $h1 $H1_IPV4/24 $H1_IPV6/64
+ 	vid = vlan_dev_vlan_id(info->upper_dev);
+ 
+ 	/* br_vlan_get_info() returns -EINVAL or -ENOENT if the
 -- 
 2.43.0
 
