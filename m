@@ -1,192 +1,149 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E5133985
-	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 08:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DF22E03EC;
+	Mon,  1 Dec 2025 08:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764578315; cv=none; b=gWqh6bUzRUDcxSnR4NO+ZlJDs1+tk9xED14iA2nVpOBLt+VuAv3qEA8VfEnoDDFTs118EwSPmvzrdcyvjg9jWWGNed+xEaNm0BNW3yty+DUGePTfwKLiprUEuQ1Q+DXUDzcWwPxDvj6L1UrcEMPCyI0CJH8zGbMomzCx8dpyUqs=
+	t=1764578489; cv=none; b=GeT3m/yeRdG3z2eyQ2xXzYdxTmwOBTnBTpp+zHtNXXOpHml3wgHFlr1vp6izhNmuUjlslBFsNseBPJPUWDJ1tEd5mJbiDKNFjmUtlkOeKTwZpPnLaSYRLYVRdTVxdheIXJ/VBFEb2RBprPmAHoVVU4CN1+sC+pFVZQZhLh6KKDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764578315; c=relaxed/simple;
-	bh=CJnutFptugJawrpk4Y7mfOU6178M/8C7migrWyu0RfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LtY1cZ0qt+doXDIWM//p6gVotO84GEHPtog4k946U4u6p6h9saIkkw3LBFkb7z6EBHA2yhHS1ftS6wD9J1YIPzz4cHl76iakl7272pf3xszwxPWnzrFsmVsIj69LRs4EIXtt2KzfNDrHUw1H9uG49XFqhyqB8M36E4TVYLYhVmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=W3yrse+E; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1764578489; c=relaxed/simple;
+	bh=v+yCxwlFxYI14pBVd31MgYREpNYNwNZTvNpJJjjaPW4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ERbK01DhE0TGHYUCoEL6nbXcYFisT4glbv4QNRglvV25sUCggpmIq3x/9ldlfUP3uRsOu6eJnOLsTsARWmweYlJJIvZZlYPlDOwvZsWiuSzd0a+BIpfNywOaRZ/PKH12Qf5vCe16r2TKwJE+E0thsiui80AbZx1NyL7OoFunbOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRjT83xc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="W3yrse+E"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB86210BF57;
-	Mon,  1 Dec 2025 09:32:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1764577974;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=hDUgK3FrA3cw6we1m81JE8n0/Zv8w6BEiv2ox618I5k=;
-	b=W3yrse+EttJ/hgfOEpySt2K7goITfa5Lj8kCkN0/1OY7rg8mqF71sj6vMMVChmFTl6i+1/
-	FtSmTQYO1FeW/nr9lNTby69ii4+bMhAKoTx9E9lmepes28ORIfHbgrCK13jPXIrsiW+mGv
-	OVZEIjYb6+NhRosdis2spdmk8TCy3/cu95dsUrcjh22Ytls+8H9fIij3xe/KJ2k61t3od6
-	lxNnkJrhrzVMwUpwP1zeC5iYVm2U+A6SoBcDuK0JWX2IfdZf1YnLrFcxT3ptK2YrbTxFmO
-	xfhqTau6MmNpZJQaT1JzoDnaiYvNti5ig4p4uygW9ZMAuL4PqFEKEsTQ5iKO7w==
-Date: Mon, 1 Dec 2025 09:32:49 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, Xiaoliang
- Yang <xiaoliang.yang_1@nxp.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>
-Subject: Re: [PATCH net-next 02/15] net: hsr: create an API to get hsr port
- type
-Message-ID: <20251201093249.6e451e07@wsk>
-In-Reply-To: <20251130131657.65080-3-vladimir.oltean@nxp.com>
-References: <20251130131657.65080-1-vladimir.oltean@nxp.com>
-	<20251130131657.65080-3-vladimir.oltean@nxp.com>
-Organization: Nabla
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRjT83xc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DF6C116D0;
+	Mon,  1 Dec 2025 08:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764578489;
+	bh=v+yCxwlFxYI14pBVd31MgYREpNYNwNZTvNpJJjjaPW4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LRjT83xcGYmrpYVFVrOIsJkyQ6Z+APb2rA+3iJHISOx0fz+7j6ChLNDfGn1i0dXCk
+	 9T4zcU0a6iA8+d6Owa3DrPz8f282VLYP0Xa3KPXvNCpkW97xidgNqS9Di4AOaoNhnl
+	 UsJAbB/DbhR5haVz6111xPvBLtsLDTtDpN7trtkcevOXu/vip+l5uAyR2XjVSzRhgm
+	 eJDG9mWZujBHzHpVoraKxldJ7Ui75qg0KJewUEdWb0IztC+Pjn07dT0QkPSt7tIn6j
+	 Gg3ykVXJnay7A3YtM4kI2Tp6tSomwBhaXaAxdA/xuS2OimS+7egHxVlgvb+jJ5H6wq
+	 KghG6uGo53Iog==
+Message-ID: <69ac21ea-eed2-449a-b231-c43e3cd0bdc0@kernel.org>
+Date: Mon, 1 Dec 2025 09:41:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/9] phy: add phy_get_rx_polarity() and
+ phy_get_tx_polarity()
+To: Vinod Koul <vkoul@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Daniel Golle <daniel@makrotopia.org>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Eric Woudstra <ericwouds@gmail.com>, =?UTF-8?Q?Marek_Beh=C3=BAn?=
+ <kabel@kernel.org>, Lee Jones <lee@kernel.org>,
+ Patrice Chotard <patrice.chotard@foss.st.com>
+References: <20251122193341.332324-1-vladimir.oltean@nxp.com>
+ <20251122193341.332324-6-vladimir.oltean@nxp.com>
+ <20251124200121.5b82f09e@kernel.org> <aS1T5i3pCHsNVql6@vaman>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aS1T5i3pCHsNVql6@vaman>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7bit
 
-Hi Vladimir,
+On 01/12/2025 09:37, Vinod Koul wrote:
+> On 24-11-25, 20:01, Jakub Kicinski wrote:
+>> On Sat, 22 Nov 2025 21:33:37 +0200 Vladimir Oltean wrote:
+>>> Add helpers in the generic PHY folder which can be used using 'select
+>>> GENERIC_PHY_COMMON_PROPS' from Kconfig, without otherwise needing to
+>>> enable GENERIC_PHY.
+>>>
+>>> These helpers need to deal with the slight messiness of the fact that
+>>> the polarity properties are arrays per protocol, and with the fact that
+>>> there is no default value mandated by the standard properties, all
+>>> default values depend on driver and protocol (PHY_POL_NORMAL may be a
+>>> good default for SGMII, whereas PHY_POL_AUTO may be a good default for
+>>> PCIe).
+>>>
+>>> Push the supported mask of polarities to these helpers, to simplify
+>>> drivers such that they don't need to validate what's in the device tree
+>>> (or other firmware description).
+>>>
+>>> The proposed maintainership model is joint custody between netdev and
+>>> linux-phy, because of the fact that these properties can be applied to
+>>> Ethernet PCS blocks just as well as Generic PHY devices. I've added as
+>>> maintainers those from "ETHERNET PHY LIBRARY", "NETWORKING DRIVERS" and
+>>> "GENERIC PHY FRAMEWORK".
+>>
+>> I dunno.. ain't no such thing as "joint custody" maintainership.
+>> We have to pick one tree. Given the set of Ms here, I suspect 
+>> the best course of action may be to bubble this up to its own tree.
+>> Ask Konstantin for a tree in k.org, then you can "co-post" the patches
+>> for review + PR link in the cover letter (e.g. how Tony from Intel
+>> submits their patches). This way not networking and PHY can pull
+>> the shared changes with stable commit IDs.
+> 
+> How much is the volume of the changes that we are talking about, we can
+> always ack and pull into each other trees..?
 
-> From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
->=20
-> Since the introduction of HSR_PT_INTERLINK in commit 5055cccfc2d1
-> ("net: hsr: Provide RedBox support (HSR-SAN)"), we see that different
-> port types require different settings for hardware offload, which was
-> not the case before when we only had HSR_PT_SLAVE_A and
-> HSR_PT_SLAVE_B. But there is currently no way to know which port is
-> which type, so create the hsr_get_port_type() API function and export
-> it.
->=20
-> When hsr_get_port_type() is called from the device driver, the port
-> can must be found in the HSR port list. An important use case is for
-^^^^^^^^^^ - I think that can is redundant here.
+That's just one C file, isn't it? Having dedicated tree for one file
+feels like huge overhead.
 
-> this function to work from offloading drivers' NETDEV_CHANGEUPPER
-> handler, which is triggered by hsr_portdev_setup() ->
-> netdev_master_upper_dev_link(). Therefore, we need to move the
-> addition of the hsr_port to the HSR port list prior to calling
-> hsr_portdev_setup(). This makes the error restoration path also more
-> similar to hsr_del_port(), where kfree_rcu(port) is already used.
->=20
-> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Cc: Lukasz Majewski <lukma@denx.de>
-> Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
->  include/linux/if_hsr.h |  9 +++++++++
->  net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
->  net/hsr/hsr_slave.c    |  7 ++++---
->  3 files changed, 33 insertions(+), 3 deletions(-)
->=20
-> diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-> index d7941fd88032..f4cf2dd36d19 100644
-> --- a/include/linux/if_hsr.h
-> +++ b/include/linux/if_hsr.h
-> @@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
->  extern int hsr_get_version(struct net_device *dev, enum hsr_version
-> *ver); struct net_device *hsr_get_port_ndev(struct net_device *ndev,
->  				     enum hsr_port_type pt);
-> +int hsr_get_port_type(struct net_device *hsr_dev, struct net_device
-> *dev,
-> +		      enum hsr_port_type *type);
->  #else
->  static inline bool is_hsr_master(struct net_device *dev)
->  {
-> @@ -59,6 +61,13 @@ static inline struct net_device
-> *hsr_get_port_ndev(struct net_device *ndev, {
->  	return ERR_PTR(-EINVAL);
->  }
-> +
-> +static inline int hsr_get_port_type(struct net_device *hsr_dev,
-> +				    struct net_device *dev,
-> +				    enum hsr_port_type *type)
-> +{
-> +	return -EINVAL;
-> +}
->  #endif /* CONFIG_HSR */
-> =20
->  #endif /*_LINUX_IF_HSR_H_*/
-> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-> index 492cbc78ab75..d1bfc49b5f01 100644
-> --- a/net/hsr/hsr_device.c
-> +++ b/net/hsr/hsr_device.c
-> @@ -690,6 +690,26 @@ struct net_device *hsr_get_port_ndev(struct
-> net_device *ndev, }
->  EXPORT_SYMBOL(hsr_get_port_ndev);
-> =20
-> +int hsr_get_port_type(struct net_device *hsr_dev, struct net_device
-> *dev,
-> +		      enum hsr_port_type *type)
-> +{
-> +	struct hsr_priv *hsr =3D netdev_priv(hsr_dev);
-> +	struct hsr_port *port;
-> +
-> +	rcu_read_lock();
-> +	hsr_for_each_port(hsr, port) {
-> +		if (port->dev =3D=3D dev) {
-> +			*type =3D port->type;
-> +			rcu_read_unlock();
-> +			return 0;
-> +		}
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return -EINVAL;
-> +}
-> +EXPORT_SYMBOL(hsr_get_port_type);
-> +
->  /* Default multicast address for HSR Supervision frames */
->  static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2)
-> =3D { 0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index 8177ac6c2d26..afe06ba00ea4 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
-> @@ -207,14 +207,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct
-> net_device *dev, port->type =3D type;
->  	ether_addr_copy(port->original_macaddress, dev->dev_addr);
-> =20
-> +	list_add_tail_rcu(&port->port_list, &hsr->ports);
-> +
->  	if (type !=3D HSR_PT_MASTER) {
->  		res =3D hsr_portdev_setup(hsr, dev, port, extack);
->  		if (res)
->  			goto fail_dev_setup;
->  	}
-> =20
-> -	list_add_tail_rcu(&port->port_list, &hsr->ports);
-> -
->  	master =3D hsr_port_get_hsr(hsr, HSR_PT_MASTER);
->  	netdev_update_features(master->dev);
->  	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
-> @@ -222,7 +222,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct
-> net_device *dev, return 0;
-> =20
->  fail_dev_setup:
-> -	kfree(port);
-> +	list_del_rcu(&port->port_list);
-> +	kfree_rcu(port, rcu);
->  	return res;
->  }
-> =20
 
-Reviewed-by: =C5=81ukasz Majewski <lukma@nabladev.com>
-
---=20
 Best regards,
-
-Lukasz Majewski
-
---
-Nabla Software Engineering GmbH
-HRB 40522 Augsburg
-Phone: +49 821 45592596
-E-Mail: office@nabladev.com
-Managing Director : Stefano Babic
+Krzysztof
