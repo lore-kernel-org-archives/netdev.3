@@ -1,338 +1,199 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011033.outbound.protection.outlook.com [52.101.65.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A222913959D
-	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 16:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764606758; cv=none; b=t3zg1B2u8FfDbv7ydPSQatIGLeeOncwT+gHKvlaNrmIjZqBPA2OXBJFNcB+36LgBEiSprSvgL4Nx4rI8zNQWEpQa8HsNku0ToGaxz4k/I0RhOUB/8MQSxPeTht28SY2lNRY5X6M7Bnf8epBjQYsh5g5gRXwRH8GuCRHu1AJVLEw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764606758; c=relaxed/simple;
-	bh=a9mFx9bciWWt4mGYo4A/uV3VTz1rKfm4a0G/86d4dfk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=ReOnXudOyj0ZgVpvO47/QKQj/0h8nyKkWc4H9+Yp+IJf5O6DIis9QkomDo55ML/X91vIZlxcaDpMoSyg17D5MruQIjuha+0OKsP7ur6Kkbbs7z7Y8d0EjIj1i62wqg+H35OJ1x88ZOsJc/ZSHb/snWxOlZlcimhYQG5BE5O9EJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=WfYY0af6; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6430FC12;
+	Mon,  1 Dec 2025 16:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764607109; cv=fail; b=UWVbjmvny+h/mGOaDwV83mAXAYngI8O0HQNpruIDqmpCpwiCOHDXLPSYEv13ZlM0VsOB9GzDKPn7Lj3ojYIKVAbV/q3evAf3nO76Evuzf9+JZN8TuO+5sagJ5etJkWAM3P5L2YMzy3/wahTf4jKDAzKYIJ55FV+beK/SSutVpqc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764607109; c=relaxed/simple;
+	bh=Q49lg1ygR5li/7gImh7zFQzfI3h2ISG+4HsdDeihcTE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=usYh3fKKBA1YmJ0zLuXsklJLDDEFT12gbbfYKszHszI2CcqtB88J7eGaUia7cjZ2bENQL7tsoFolJxpimc5XG5ngigTCcrX9t8ZwSVn416p66RRkhxgv56esH6Q/CC5Afr6f6dikaleLme3Huz9w5sbf/e6yxEyoW16UxrrEda0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=PPQyyGvA; arc=fail smtp.client-ip=52.101.65.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="WfYY0af6"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso49374055e9.3
-        for <netdev@vger.kernel.org>; Mon, 01 Dec 2025 08:32:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1764606754; x=1765211554; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=np9sPAP1vbi6M9Sj8Z4L220V4fGnXykh9GTyl5g58Eo=;
-        b=WfYY0af6bpi5EydAISTzNwZa9s6H9s3SQ6iiuDSDeO8TN5Jgfd0NBitSNMfInlhISw
-         AJHQCpzH2dLd1sjI9z8Co5SYC6I87kMYHb7+KsWQELKZz8gIMo4MtIQXK6oX2SHp1EcP
-         /Wt6jk4GVV5pzCt+VG/x00S1CGY3YSa6v+9qzUtU/3hA9n/sCrAPD01J76+JXsXLFXZB
-         7VtI4hCjV01b2flliiAoFG1zotpYZZlX+vmO9Bdr1fKgUoLvUZqSTWV+W+HF3cRiNWFz
-         ZxWZZC8QAWp9oedf+qTMSVeTvJxlfU+XNBB6R7DjjlDPiKagK4gy+SH0jIV0o3BZ8nnu
-         DPWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764606754; x=1765211554;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=np9sPAP1vbi6M9Sj8Z4L220V4fGnXykh9GTyl5g58Eo=;
-        b=iWDOS2KBT29Nn/3Qs27jWzFknvTYvG17+F4UTPXqeVP/iCPIrKUkquB+Gpu9cK7Yvj
-         HiiAETNkqc/TfpubRV+dzGnjaWX7cVvNvZeKfol/sqNLintoI4lYAYDhsiut2BjZsYmx
-         88OXEWg/O6VFWDHrWQnw02O5w4CawFNak2/nMShtCx1L7TZI2+GquXQfof+GHAZ4N1+k
-         EDsYNTlJguEPtDMWkwSiyCY6+vLjHuGjXKKRcIaveMx81UQkAgjgzkxOC/FtR1Oa7E/u
-         a+fwi/oMthp88bCWQYkuNxdC/r/+PVYVN8p1uI9jCgiHDXg4HPrcnsJMvBmysBY9ORTw
-         OAVg==
-X-Gm-Message-State: AOJu0YyI9CuuhFChULp53sctCADVUdUWmFB7oAtc9x377FyPn7Wqdn2w
-	31Ow4QTiX4rOSfmE/cAiuyZTdGapR9vgmuAugI2KhDhx+CvlUJnHO1bweb6Xmm6M7YMfRmZcXFX
-	NQ7lR
-X-Gm-Gg: ASbGncsPf68q8ReH3Fk+SNGve2DQBDDHmENpB+1vzhWZgbGo0YyI8dxP2WjBVqnJg37
-	XG4HdxrVGu9rZAbHrr4hlngGVGnyt1wECfYwk8Wm89jato8I4ZpeoAjxq50ZOd8q3WtGucmijH+
-	hJ3Cu+DAU0SwytoD6zR88z6GZoDQ7UruPtbxjdjlbnOKgpbBEG0muoy7JXsDdIlYPuLEVqqSf82
-	49KQn9jKDbMFeriYp1cNnGLNrwEDLh/DE6PrI1eN6jgIAL2beJJsbZfOKmLq8tcQtcmFsc8bcAL
-	Kinu2dnYC7hsWdxzePAHm9f4iU2r+aWHYaHg/DTmcj38N3tpsgoLmAlS6UEN0C0RWNzb2LEs5tR
-	4tE06r8RGqBX+WGDzzl6cM0wHfTpw4ZFldpU6hAoh9yZK5RT5Zsiz2/0vhff1Be/h2YxPMMSUIB
-	sxecuzuDPoZol0kdvj4DtdmZHunnskUqLl8YZmlDzNiOMWP761yBOE
-X-Google-Smtp-Source: AGHT+IFCKFo8S/ilqlPMQtExLAOh92SlFULuQ/k2FwkuIQTV2pRuH8SbaT+DbssrOYzQhGXbq4bgZQ==
-X-Received: by 2002:a05:600c:a01:b0:477:7b72:bf9a with SMTP id 5b1f17b1804b1-477c112f5c2mr375494925e9.28.1764606753542;
-        Mon, 01 Dec 2025 08:32:33 -0800 (PST)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790b0c3a28sm325717315e9.9.2025.12.01.08.32.32
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 08:32:33 -0800 (PST)
-Date: Mon, 1 Dec 2025 08:32:28 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Subject: Fw: [Bug 220820] New: net: tcp: avoid division by zero in
- __tcp_select_window
-Message-ID: <20251201083228.70b70181@phoenix.local>
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="PPQyyGvA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T3FqPqKlyBWeTekUc3XUhmP1Gitgnqyo67t6MQLSvPWlHel1ml7yRKYn/JbjqQgcHwjvFkvyJICP7ikzFroNJJRnVmzCChcNELOCP45B00xnaWLH+F+ybadSsTzLCSkgLCQdeEB0TpDPDToQhFYWsWXZCJFdFNUUVPd+neeSsuHnku34Zjc8MgpLhCS1UDKbTCtQCF4Q6+wuijOHML1V7/S5l0gpfqawLgsoOPxrxiKo6ka6qQSKF6L4+Kcc9raR/ha9mnjbs6fvzukoEZEtMSXGbdlNaLZESwoTCoojxOySSb4dI/ugn0UMzc/aDMEfT0VoKlGGIBe4jIhhy7FepA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+kuB7eRxeMGDNwXVB8pJvlHLKjUPv3X1qilnfBJ6Mdw=;
+ b=WZRujJHUToy+T6S2j8BWlOoHd8UIK9K9tMb4zsPqzoM9h4PvvpDLAFbIAqwA/DbLxzcPuXP3FH9aPdQtoKJYS0YmLQeg5nZ3Zf0Iz5sa7cYM2crJzS240o6q5sdOfVCr0mGu8aYAvBsolS5n43b6In+TJc4cBsfi7ddnRbfDQWFgWNhW/UE05vrB5HS0zwv0B0kdZHSpZIzhLzRxDQeIw4R02qevFsN8MhzEdAq/9qHLNuQxfKDL2oYLDY0huQHfg8ut0cdGiWAqH9ZFR1mNLCVxTq7tu1AMv1mhOlewOYRE+7FCC4UF3R9M6wDqxFATCL1cR1lg6aAWH3qzRJ1pBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.6.100) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+kuB7eRxeMGDNwXVB8pJvlHLKjUPv3X1qilnfBJ6Mdw=;
+ b=PPQyyGvAL8IRkZffsvdNU5UjW2aB/tu932Cz7VjLu0E80yZRGag2wKpsJch1qbS9yoLPfRpnvmzFWmh/m/Zsmy5NvMAf+yN8SqOtoOIFXkzrC2U5agiTMshyk8K5XLHP2CBodIOytnPCTUjOydDHC6UNXdv5quMwCO2ExGVlwRzG+v6C5oe21KpptifRmTiusaRPIBfk5x6KRVHVnCYj3+bffFwo0YRP9/BLCDahl7PRAgElo6VmIxUcz0WlWnUr2jqHOEhrwuNLtQUJQewS8c8uFY/xx2uV2hbY5Dk2NbkyeGYwGyB9Je/BlIwUgtPMJsq36R3DkU6PGcKXs/YoOg==
+Received: from AS4P192CA0006.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5da::7)
+ by VI1PR07MB9828.eurprd07.prod.outlook.com (2603:10a6:800:1d0::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
+ 2025 16:38:21 +0000
+Received: from AM3PEPF00009B9C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5da:cafe::b) by AS4P192CA0006.outlook.office365.com
+ (2603:10a6:20b:5da::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Mon,
+ 1 Dec 2025 16:38:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.6.100)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.6.100 as permitted sender)
+ receiver=protection.outlook.com; client-ip=131.228.6.100;
+ helo=fr711usmtp2.zeu.alcatel-lucent.com; pr=C
+Received: from fr711usmtp2.zeu.alcatel-lucent.com (131.228.6.100) by
+ AM3PEPF00009B9C.mail.protection.outlook.com (10.167.16.21) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.8
+ via Frontend Transport; Mon, 1 Dec 2025 16:38:21 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fr711usmtp2.zeu.alcatel-lucent.com (Postfix) with ESMTP id BDA18680033;
+	Mon,  1 Dec 2025 18:38:19 +0200 (EET)
+From: chia-yu.chang@nokia-bell-labs.com
+To: pabeni@redhat.com,
+	edumazet@google.com,
+	parav@nvidia.com,
+	linux-doc@vger.kernel.org,
+	corbet@lwn.net,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	kuniyu@google.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	dave.taht@gmail.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	liuhangbin@gmail.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v7 net-next 02/13] gro: flushing when CWR is set negatively affects AccECN
+Date: Mon,  1 Dec 2025 17:37:49 +0100
+Message-Id: <20251201163800.3965-3-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251201163800.3965-1-chia-yu.chang@nokia-bell-labs.com>
+References: <20251201163800.3965-1-chia-yu.chang@nokia-bell-labs.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009B9C:EE_|VI1PR07MB9828:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2548178b-c24b-4d24-367b-08de30f80a2b
+X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?K0dydENBemdxU0pFbGZiOGVQVlBWMGJ3YWUwRWJCWGxZODRQMy8xVmx3KzU1?=
+ =?utf-8?B?SWVTWlZzeTFNWWZNMTNiN3Frbk1sTHRNSUxhWWx4UDJDdWczYnptY1A2ZGZN?=
+ =?utf-8?B?S2dKVjZnMHVtN1A2MUpiZS9seGJPSlpOWDBXb1UyMGNCZ0MxaXdBY0xoTlhN?=
+ =?utf-8?B?WFFHa0s4cC9qajBoR3FOWnNrYmEwelYyZDd5Q2FnMG5CVmhWbUFlZGJjb1BR?=
+ =?utf-8?B?eE9zY1o0MUN1RCt2cTJaRWNSTkswNnZNd0svT3Q4N082ZW5KQVNWcy8rY09V?=
+ =?utf-8?B?TkF1ajRFMTdMR1cxSDFITzZMYytyaVNxOGVuSjk4UE44aFBCODAyVFU2S003?=
+ =?utf-8?B?TE9GQkRUMXBxR1dyUVlyL0M3dHBKRnVCckFxa29ROTVNdGVJcFJEM1BpaEhQ?=
+ =?utf-8?B?VVluWlBFRk5ic0NZanZLK2ZaOEM1dlNJbzI3a2lTM1ZEVGdyaVBONEs1bHlk?=
+ =?utf-8?B?bVJxTExtM1RoR3R4amlVWms5L1ZQNnEzN3B2RGZ5azFkUHBGbEdxRjI4a2xz?=
+ =?utf-8?B?VnN2UHNsWWw5VWtLSnEwN1B1UGlac0dVZTRpcUNPeUwycWdNN0Y4UkplSy9Q?=
+ =?utf-8?B?eVkyTmQ0cDllOWZQcEFZbS9zakd1ZWR2UVZYZ0VUb2JSQmlYZHkxTWdodWlE?=
+ =?utf-8?B?OUsrc1ZGdmhRUHNrcnIyNjJMckNNZmtIRzBBRzhQc3ROVzUyNVhDcGpPWjYz?=
+ =?utf-8?B?enFXUjdnazRBVC9SK1ROYTFBZUwraGprVUt1RGVVaGFwemo1UkI0MGgwekJx?=
+ =?utf-8?B?elNDcEJDTlh4S3BaRXcxaERRK3FqZUtYS2hpOVBWRUJmNU5kMHpHVGUyTDlW?=
+ =?utf-8?B?V3dDRXdCY0V5M3RWQjVMdnAzdjRLQUR6NzV6WGlSUCtTNy9GdG1idFhYWW9v?=
+ =?utf-8?B?ekU2TnExejJMODJJa2g2NXNySmgzUFV4RVdpVGtFdVVPY01yRXZOaXBpdlQ3?=
+ =?utf-8?B?R2Y5aWNuTlZGcTVTVTFpMzVjbk5BZVUyblVnQklqT2NncTVUSFBKVFQ2ZXpy?=
+ =?utf-8?B?eFV0b3hLNGM1K2I3M2xxRDJhTXFMNUFXRUVNRlpWOXdZZ1RGZ09CSzZJUTgy?=
+ =?utf-8?B?aDA5MjBLQ3k0QldFY0tnQ1RxaktTVDIvQ2NYdS82MWFTdTUreC8rYStiYTNp?=
+ =?utf-8?B?YU5PbTJFUkdYMHNjR2lmU0ErRDZQSTJqRWVBR3ZaeWJWT0pmWG1Za2ovSTJl?=
+ =?utf-8?B?cUtDL1FDZVk0UlpwUWZwLzd3M1RLY1o0R0gxMGRsRFhQQ3Z4NkRRV2hiS3pj?=
+ =?utf-8?B?YVZlc21jeXdwMmd0TTl5cXBZSEx2bzMwZ29hV0tIeDR5MlUxRHgxZ1VRQTB4?=
+ =?utf-8?B?YUVobTh3akZ2UjVHSnJYUVJmMXNTSVMwd2pBMVVXSTBBMXNkYVRjRm95cXRD?=
+ =?utf-8?B?UWpvQUNSYU0xMmVEazJrakxmblliOXh5aWVwa0x4T0duMTVFUWtISmxrOVBj?=
+ =?utf-8?B?S0ZERnpNRWQzVDNVcGJSUUpoUmlaMzVNNDdHSmFSTW03YUsraVlNbnJWU1U0?=
+ =?utf-8?B?QzNnZ2V6c3Q4bElpL0V6L2o0Z1dWREwwMmhvVThzdUlEWDFWbno3VnZhT25s?=
+ =?utf-8?B?NGx2TUFZSFpiY3VGSnFNVjdNbEVJb1prUGZsd3VUKzlXSVR0Vy9xWUo0Z0hM?=
+ =?utf-8?B?cjJZUHRNSGp5clJpMHhWUGR3L2RRdnN0MXZheHY1N3ZlQ1dncmRDUktSOUI3?=
+ =?utf-8?B?aVdzREVZUmRZbXNNdGE3MVZQTFN5aTMrRnZxNkF4dklEdzgrNzlaMDV0SWVX?=
+ =?utf-8?B?a2ROTU1ycStQakUyc0Q0MHJEMkpLZi9nOXRWVTEzL1Y5RU4yWmxDZmdma0xa?=
+ =?utf-8?B?RnFSbVgzVEppZkgvNzg4dnQwRTUrZ3Z5ODV1QUhWbUkyV2JMUnVqZitidHlk?=
+ =?utf-8?B?VlYvNm1nemo2cU9zNEdNS2tTdW1OWDh3enpmZ3hSZ1JIcCt3b2cxeG1pYlRs?=
+ =?utf-8?B?Unhwekk3aHM5amJMMFI5ZFR5Uk8rWHVVb0VCVUNKMEFraVRsRG9hbTVpSnB6?=
+ =?utf-8?B?dUpFb1VxT0xXVENpU2tUU3hUSGJiTlltMG5sRExRamlvUU1zek00UDlycWtt?=
+ =?utf-8?B?RnBoWEwvQ1ZYdTFtczhKc0dHYUsrdGxheTg0S1ptWFFCUUYwRlNFL3NLWnky?=
+ =?utf-8?Q?x3jOc0+pvbaHe6hRmEZHqaWqL?=
+X-Forefront-Antispam-Report:
+ CIP:131.228.6.100;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fr711usmtp2.zeu.alcatel-lucent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 16:38:21.3089
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2548178b-c24b-4d24-367b-08de30f80a2b
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.6.100];Helo=[fr711usmtp2.zeu.alcatel-lucent.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-AM3PEPF00009B9C.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR07MB9828
 
+From: Ilpo Järvinen <ij@kernel.org>
 
+As AccECN may keep CWR bit asserted due to different
+interpretation of the bit, flushing with GRO because of
+CWR may effectively disable GRO until AccECN counter
+field changes such that CWR-bit becomes 0.
 
-Begin forwarded message:
+There is no harm done from not immediately forwarding the
+CWR'ed segment with RFC3168 ECN.
 
-Date: Mon, 01 Dec 2025 10:26:14 +0000
-From: bugzilla-daemon@kernel.org
-To: stephen@networkplumber.org
-Subject: [Bug 220820] New: net: tcp: avoid division by zero in __tcp_select_window
+Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+---
+ net/ipv4/tcp_offload.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-
-https://bugzilla.kernel.org/show_bug.cgi?id=220820
-
-            Bug ID: 220820
-           Summary: net: tcp: avoid division by zero in
-                    __tcp_select_window
-           Product: Networking
-           Version: 2.5
-          Hardware: All
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: IPV4
-          Assignee: stephen@networkplumber.org
-          Reporter: kitta@linux.alibaba.com
-        Regression: No
-
-In the following kernel version:
-
-name:linux
-url:http://github.com/gregkh/linux.git
-branch: master
-commit: ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
-
-bug report:
-------------[ cut here ]------------
-UBSAN: division-overflow in net/ipv4/tcp_output.c:3333:13
-division by zero
-CPU: 0 UID: 0 PID: 4151 Comm: syz.0.268 Not tainted 6.18.0-rc7 #1 PREEMPT(none) 
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x168/0x1f0 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:233 [inline]
- __ubsan_handle_divrem_overflow lib/ubsan.c:351 [inline]
- __ubsan_handle_divrem_overflow+0x1ae/0x2a0 lib/ubsan.c:333
- __tcp_select_window.cold+0x16/0x35 net/ipv4/tcp_output.c:3333
- tcp_select_window net/ipv4/tcp_output.c:280 [inline]
- __tcp_transmit_skb+0xca3/0x38b0 net/ipv4/tcp_output.c:1565
- tcp_transmit_skb net/ipv4/tcp_output.c:1646 [inline]
- tcp_send_active_reset+0x422/0x7e0 net/ipv4/tcp_output.c:3828
- mptcp_do_fastclose.part.0+0x158/0x1e0 net/mptcp/protocol.c:2792
- mptcp_do_fastclose net/mptcp/protocol.c:2779 [inline]
- mptcp_disconnect+0x2c6/0x9b0 net/mptcp/protocol.c:3252
- inet_shutdown+0x270/0x440 net/ipv4/af_inet.c:937
- __sys_shutdown_sock net/socket.c:2470 [inline]
- __sys_shutdown_sock net/socket.c:2464 [inline]
- __sys_shutdown+0x117/0x1b0 net/socket.c:2486
- __do_sys_shutdown net/socket.c:2491 [inline]
- __se_sys_shutdown net/socket.c:2489 [inline]
- __x64_sys_shutdown+0x54/0x80 net/socket.c:2489
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x6e/0x940 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7ff5e46fb4dd
-Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48
-89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01
-c3 48 8b 0d 6b 89 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ff5e31f0cb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00000000005c5fa0 RCX: 00007ff5e46fb4dd
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00000000005c5fa0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00000000005c6038 R14: 0000000000000000 R15: 00007ff5e31f1640
- </TASK>
----[ end trace ]---
-Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 4151 Comm: syz.0.268 Not tainted 6.18.0-rc7 #1 PREEMPT(none) 
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-RIP: 0010:__tcp_select_window+0x58a/0x1240 net/ipv4/tcp_output.c:3333
-Code: e3 0f 8c 8a 02 00 00 e8 34 dc a3 fd 8b 5c 24 0c 31 ff 89 de e8 c7 d5 a3
-fd 85 db 0f 84 6c 9d 36 fd e8 1a dc a3 fd 44 89 f0 99 <f7> 7c 24 0c 41 29 d6 45
-89 f4 e9 2a ff ff ff e8 02 dc a3 fd 48 89
-RSP: 0018:ffff88800b5f7ae0 EFLAGS: 00010283
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90000d11000
-RDX: 0000000000000000 RSI: ffffffff83f30a16 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff888028a9f400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007ff5e31f1640(0000) GS:ffff8880e70ab000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f711faa0 CR3: 000000001de2e003 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-PKRU: 80000000
-Call Trace:
- <TASK>
- tcp_select_window net/ipv4/tcp_output.c:280 [inline]
- __tcp_transmit_skb+0xca3/0x38b0 net/ipv4/tcp_output.c:1565
- tcp_transmit_skb net/ipv4/tcp_output.c:1646 [inline]
- tcp_send_active_reset+0x422/0x7e0 net/ipv4/tcp_output.c:3828
- mptcp_do_fastclose.part.0+0x158/0x1e0 net/mptcp/protocol.c:2792
- mptcp_do_fastclose net/mptcp/protocol.c:2779 [inline]
- mptcp_disconnect+0x2c6/0x9b0 net/mptcp/protocol.c:3252
- inet_shutdown+0x270/0x440 net/ipv4/af_inet.c:937
- __sys_shutdown_sock net/socket.c:2470 [inline]
- __sys_shutdown_sock net/socket.c:2464 [inline]
- __sys_shutdown+0x117/0x1b0 net/socket.c:2486
- __do_sys_shutdown net/socket.c:2491 [inline]
- __se_sys_shutdown net/socket.c:2489 [inline]
- __x64_sys_shutdown+0x54/0x80 net/socket.c:2489
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x6e/0x940 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7ff5e46fb4dd
-Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48
-89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01
-c3 48 8b 0d 6b 89 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ff5e31f0cb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00000000005c5fa0 RCX: 00007ff5e46fb4dd
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00000000005c5fa0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00000000005c6038 R14: 0000000000000000 R15: 00007ff5e31f1640
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__tcp_select_window+0x58a/0x1240 net/ipv4/tcp_output.c:3333
-Code: e3 0f 8c 8a 02 00 00 e8 34 dc a3 fd 8b 5c 24 0c 31 ff 89 de e8 c7 d5 a3
-fd 85 db 0f 84 6c 9d 36 fd e8 1a dc a3 fd 44 89 f0 99 <f7> 7c 24 0c 41 29 d6 45
-89 f4 e9 2a ff ff ff e8 02 dc a3 fd 48 89
-RSP: 0018:ffff88800b5f7ae0 EFLAGS: 00010283
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90000d11000
-RDX: 0000000000000000 RSI: ffffffff83f30a16 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff888028a9f400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007ff5e31f1640(0000) GS:ffff8880e70ab000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f711faa0 CR3: 000000001de2e003 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-PKRU: 80000000
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:   0f 8c 8a 02 00 00       jl     0x290
-   6:   e8 34 dc a3 fd          callq  0xfda3dc3f
-   b:   8b 5c 24 0c             mov    0xc(%rsp),%ebx
-   f:   31 ff                   xor    %edi,%edi
-  11:   89 de                   mov    %ebx,%esi
-  13:   e8 c7 d5 a3 fd          callq  0xfda3d5df
-  18:   85 db                   test   %ebx,%ebx
-  1a:   0f 84 6c 9d 36 fd       je     0xfd369d8c
-  20:   e8 1a dc a3 fd          callq  0xfda3dc3f
-  25:   44 89 f0                mov    %r14d,%eax
-  28:   99                      cltd
-* 29:   f7 7c 24 0c             idivl  0xc(%rsp) <-- trapping instruction
-  2d:   41 29 d6                sub    %edx,%r14d
-  30:   45 89 f4                mov    %r14d,%r12d
-  33:   e9 2a ff ff ff          jmpq   0xffffff62
-  38:   e8 02 dc a3 fd          callq  0xfda3dc3f
-  3d:   48                      rex.W
-  3e:   89                      .byte 0x89
-
-<<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
-
-division by zero
-CPU: 0 UID: 0 PID: 4151 Comm: syz.0.268 Not tainted 6.18.0-rc7 #1 PREEMPT(none) 
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x168/0x1f0
- __ubsan_handle_divrem_overflow+0x1ae/0x2a0
- __tcp_select_window.cold+0x16/0x35
- __tcp_transmit_skb+0xca3/0x38b0
- tcp_send_active_reset+0x422/0x7e0
- mptcp_do_fastclose.part.0+0x158/0x1e0
- mptcp_disconnect+0x2c6/0x9b0
- inet_shutdown+0x270/0x440
- __sys_shutdown+0x117/0x1b0
- __x64_sys_shutdown+0x54/0x80
- do_syscall_64+0x6e/0x940
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7ff5e46fb4dd
-Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48
-89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01
-c3 48 8b 0d 6b 89 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ff5e31f0cb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00000000005c5fa0 RCX: 00007ff5e46fb4dd
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00000000005c5fa0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00000000005c6038 R14: 0000000000000000 R15: 00007ff5e31f1640
- </TASK>
----[ end trace ]---
-Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 4151 Comm: syz.0.268 Not tainted 6.18.0-rc7 #1 PREEMPT(none) 
-Hardware name: Red Hat KVM, BIOS 1.16.0-4.al8 04/01/2014
-RIP: 0010:__tcp_select_window+0x58a/0x1240
-Code: e3 0f 8c 8a 02 00 00 e8 34 dc a3 fd 8b 5c 24 0c 31 ff 89 de e8 c7 d5 a3
-fd 85 db 0f 84 6c 9d 36 fd e8 1a dc a3 fd 44 89 f0 99 <f7> 7c 24 0c 41 29 d6 45
-89 f4 e9 2a ff ff ff e8 02 dc a3 fd 48 89
-RSP: 0018:ffff88800b5f7ae0 EFLAGS: 00010283
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90000d11000
-RDX: 0000000000000000 RSI: ffffffff83f30a16 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff888028a9f400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007ff5e31f1640(0000) GS:ffff8880e70ab000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f711faa0 CR3: 000000001de2e003 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-PKRU: 80000000
-Call Trace:
- <TASK>
- __tcp_transmit_skb+0xca3/0x38b0
- tcp_send_active_reset+0x422/0x7e0
- mptcp_do_fastclose.part.0+0x158/0x1e0
- mptcp_disconnect+0x2c6/0x9b0
- inet_shutdown+0x270/0x440
- __sys_shutdown+0x117/0x1b0
- __x64_sys_shutdown+0x54/0x80
- do_syscall_64+0x6e/0x940
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7ff5e46fb4dd
-Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48
-89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01
-c3 48 8b 0d 6b 89 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007ff5e31f0cb8 EFLAGS: 00000246 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00000000005c5fa0 RCX: 00007ff5e46fb4dd
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00000000005c5fa0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00000000005c6038 R14: 0000000000000000 R15: 00007ff5e31f1640
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__tcp_select_window+0x58a/0x1240
-Code: e3 0f 8c 8a 02 00 00 e8 34 dc a3 fd 8b 5c 24 0c 31 ff 89 de e8 c7 d5 a3
-fd 85 db 0f 84 6c 9d 36 fd e8 1a dc a3 fd 44 89 f0 99 <f7> 7c 24 0c 41 29 d6 45
-89 f4 e9 2a ff ff ff e8 02 dc a3 fd 48 89
-RSP: 0018:ffff88800b5f7ae0 EFLAGS: 00010283
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc90000d11000
-RDX: 0000000000000000 RSI: ffffffff83f30a16 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff888028a9f400 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007ff5e31f1640(0000) GS:ffff8880e70ab000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f711faa0 CR3: 000000001de2e003 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-PKRU: 80000000
-
-<<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
-
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index fdda18b1abda..9bd710c7bc95 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -303,8 +303,7 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
+ 		goto out_check_final;
+ 
+ 	th2 = tcp_hdr(p);
+-	flush = (__force int)(flags & TCP_FLAG_CWR);
+-	flush |= (__force int)((flags ^ tcp_flag_word(th2)) &
++	flush = (__force int)((flags ^ tcp_flag_word(th2)) &
+ 		  ~(TCP_FLAG_FIN | TCP_FLAG_PSH));
+ 	flush |= (__force int)(th->ack_seq ^ th2->ack_seq);
+ 	for (i = sizeof(*th); i < thlen; i += 4)
 -- 
-You may reply to this email to add a comment.
+2.34.1
 
-You are receiving this mail because:
-You are the assignee for the bug.
