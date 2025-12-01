@@ -1,47 +1,48 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B6463CF;
-	Mon,  1 Dec 2025 03:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3974719C542;
+	Mon,  1 Dec 2025 03:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764559459; cv=none; b=HYRRyQvalSJjSRpYzV7YAr5i998IAY/vmzPeVd74A1/VBPzvMIsei4IfKEjQP54dxOFBKAbza7o6Opx1V0S7GkrF8A6xNZKyDJPHYqnJD4QDTuCosEp4m0vpkPylzFzSpJQBbsONzXRdbC40oSlyjnLdXRFbhTddN0qkRm5d8u8=
+	t=1764559460; cv=none; b=bxuWXyCPR2kWxMPyIWYMj5XoyGEBbqKHoiyanfp8IwRDzZLQGO6oZTWucGO2eQBJQPkjPrDYkld/Dvncb/l0swD0cZyjUtiVqhfLMZXpDPq+uGcjxvxxFMT8iO6dMEE8Mc0vsHuQhGbR06DeC809atu6yQ8aiOHk5uTWfpJmoSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764559459; c=relaxed/simple;
-	bh=L0Va06MhdT78s3CnnqaoAkGMxzlx0FOX+Lm4zGUg+/Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IlXB+oLdxK1DYIY0vdPGhy6scuD+ecoRWEwoRb3YoD5CFErsLRKwjvBpPMYHKbc/BiZCRoyb6yrZZjC3EM3Ykhi7+EMKwx0PFV0wLlCzqXk9FzelInMp2oZQd7kPxi/jZett2Qgny/pYk0wE4/4LvG4PksbsU8F2NFlXnt4oDds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=YLNXUHNH; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1764559460; c=relaxed/simple;
+	bh=9u6G1uRxPermdv4TCk/mWsUbTEfeHI/uhloFW7LMPPQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=clsICol1y6pLU7MlVAfZRNGrUDcDewDYmM46/EG6jl2c7m1AWd9GN8IE1/ghWILLrIGytX4rGQ7MkBrKjo6BowEFWyO/5Kb16jmB8CLS3HwwiQwgxXPeSgNi4atLsFbgZxZ+NzEdrUy6y+eoOvDNhcAlrB7RRqXtSuJwqGvIAj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=EbR9201B; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="YLNXUHNH"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="EbR9201B"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1764559457; x=1796095457;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=L0Va06MhdT78s3CnnqaoAkGMxzlx0FOX+Lm4zGUg+/Y=;
-  b=YLNXUHNHaLA9HyIW6yztrAC1w7nERJr0BjIb2bzN9Jw0Fj5o4UfUfP6z
-   AmiGBiGW6Q3keZ52Xg6lXICHLjTy4fKN7ABqgyKxO2CC6mlxTzfXN0PdW
-   z5px+oHC1lhKW8I++NvUziCBSY6WXNx3DzZgK2ANxOJ5ICerbrOtWwc3L
-   6vwKtYwiVjFpdfR2YdVSWxQcuRfnZNtmWm4rpQnAkpQE9S0Bv6foR0uuP
-   p0TusQvO+KyjIhX0kI3wPP3sKwxkZyolR1CBAyXAVgDkH2gKXUzHliukl
-   0H+dpzmx2rMAj7fN5UQrkNEV4O/vZQi8apBENwHglfRlmsGpxaBQiffS/
+  t=1764559458; x=1796095458;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9u6G1uRxPermdv4TCk/mWsUbTEfeHI/uhloFW7LMPPQ=;
+  b=EbR9201BzZTHeLq8fz+5ZeYROertE4DXOzb0fA7RJ/NiEygskJw0wrak
+   nx50J8U63MCGhHWH64mCLDDb1qATp5vhSk4BcvftgPaXV1TSrvtUIPIzg
+   LaAeU8ZV0/YlAz71yPi6L5cgbYw2CnIHLxfHc5D2UUJkeWsrXVtfmGUJe
+   +VbgurofmOrhOUqKyv81INQ100maPIuchbcNXLmZtY7NSJSnsgfMmIPy8
+   1Z/4o59RDbF6bygZIiU1xeiSbBBTkilOKjh2ede6wzwfIbEiX1V3kI7pa
+   NJS9QWq8Y1duAHWTOhOQlDjJbGG9ofPzWlF/Q1qw5iI5NWTyrATJsBwsN
    A==;
-X-CSE-ConnectionGUID: lRLhGS1/QleSDXijaJpBXQ==
-X-CSE-MsgGUID: qsbBkjooTCGMvAGfXF3ZTg==
+X-CSE-ConnectionGUID: 1XGbcUZ+QfelIecK6MTplQ==
+X-CSE-MsgGUID: 3D7Uo0clSd28zOu8RZf/Hw==
 X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; 
-   d="scan'208";a="217188627"
+   d="scan'208";a="217188630"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2025 20:24:08 -0700
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2025 20:24:09 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Sun, 30 Nov 2025 20:23:52 -0700
+ 15.2.2562.29; Sun, 30 Nov 2025 20:24:01 -0700
 Received: from che-ll-i17164.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Sun, 30 Nov 2025 20:23:48 -0700
+ 15.1.2507.58 via Frontend Transport; Sun, 30 Nov 2025 20:23:57 -0700
 From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 To: <Parthiban.Veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
 	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
@@ -49,76 +50,50 @@ To: <Parthiban.Veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
 	<pabeni@redhat.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Parthiban
  Veerasooran" <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next v4 0/2] Add SQI and SQI+ support for OATC14 10Base-T1S PHYs and Microchip T1S driver
-Date: Mon, 1 Dec 2025 08:53:44 +0530
-Message-ID: <20251201032346.6699-1-parthiban.veerasooran@microchip.com>
+Subject: [PATCH net-next v4 2/2] net: phy: microchip_t1s: add SQI support for LAN867x Rev.D0 PHYs
+Date: Mon, 1 Dec 2025 08:53:46 +0530
+Message-ID: <20251201032346.6699-3-parthiban.veerasooran@microchip.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251201032346.6699-1-parthiban.veerasooran@microchip.com>
+References: <20251201032346.6699-1-parthiban.veerasooran@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-This patch series adds Signal Quality Indicator (SQI) and enhanced SQI+
-support for OATC14 10Base-T1S PHYs, along with integration into the
-Microchip T1S PHY driver. This enables ethtool to report the SQI value for
-OATC14 10Base-T1S PHYs.
+Add support for Signal Quality Index (SQI) reporting in the
+Microchip T1S PHY driver for LAN867x Rev.D0 (OATC14-compliant) PHYs.
 
-Patch Summary:
-1. add SQI and SQI+ support for OATC14 10Base-T1S PHYs
-   - Introduces MDIO register definitions for DCQ_SQI and DCQ_SQIPLUS.
-   - Adds genphy_c45_oatc14_get_sqi_max() to report the maximum SQI/SQI+
-     level.
-   - Adds genphy_c45_oatc14_get_sqi() to return the current SQI or SQI+
-     value.
-   - Updates include/linux/phy.h to expose the new APIs.
-   - SQI+ capability is read from the Advanced Diagnostic Features
-     Capability register (ADFCAP). If unsupported, the driver falls back
-     to basic SQI (0–7 levels).
-   - If SQI+ capability is supported, the function returns the extended
-     SQI+ value; otherwise, it returns the basic SQI value.
-   - Open Alliance TC14 10BASE-T1S Advanced Diagnostic PHY Features.
-     https://opensig.org/wp-content/uploads/2025/06/OPEN_Alliance_10BASE-T1S_Advanced_PHY_features_for-automotive_Ethernet_V2.1b.pdf
-	
-2. add SQI support for LAN867x Rev.D0 PHYs
-   - Registers .get_sqi and .get_sqi_max callbacks in the Microchip T1S
-     driver.
-   - Enables network drivers and diagnostic tools to query link signal
-     quality for LAN867x Rev.D0 PHYs.
-   - Existing PHY functionality remains unchanged.
+This patch registers the following callbacks in the microchip_t1s driver
+structure:
 
-v2:
- - Updated cover letter description for better clarity.
- - Added oatc14_sqiplus_bits variable to cache the SQI+ capability in the
-   phy device structure.
- - Fixed function description comment style warnings reported by the
-   kernel test robot.
+- .get_sqi      - returns the current SQI value
+- .get_sqi_max  - returns the maximum SQI value
 
-v3:
- - Reworked SQI/SQI+ update sequencing to address the issue,
-   oatc14_sqiplus_bits being 0 until after
-   genphy_c45_oatc14_get_sqi_max() is called.
+This enables ethtool to report the SQI value for LAN867x Rev.D0 PHYs.
 
-v4:
- - Added the missing description for the  member
-    to fix the kernel-doc warning.
+Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+---
+ drivers/net/phy/microchip_t1s.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-Parthiban Veerasooran (2):
-  net: phy: phy-c45: add SQI and SQI+ support for OATC14 10Base-T1S PHYs
-  net: phy: microchip_t1s: add SQI support for LAN867x Rev.D0 PHYs
-
- drivers/net/phy/mdio-open-alliance.h |  13 +++
- drivers/net/phy/microchip_t1s.c      |   2 +
- drivers/net/phy/phy-c45.c            | 137 +++++++++++++++++++++++++++
- include/linux/phy.h                  |  29 ++++++
- 4 files changed, 181 insertions(+)
-
-
-base-commit: 0177f0f07886e54e12c6f18fa58f63e63ddd3c58
+diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
+index 5a0a66778977..e601d56b2507 100644
+--- a/drivers/net/phy/microchip_t1s.c
++++ b/drivers/net/phy/microchip_t1s.c
+@@ -575,6 +575,8 @@ static struct phy_driver microchip_t1s_driver[] = {
+ 		.get_plca_status    = genphy_c45_plca_get_status,
+ 		.cable_test_start   = genphy_c45_oatc14_cable_test_start,
+ 		.cable_test_get_status = genphy_c45_oatc14_cable_test_get_status,
++		.get_sqi            = genphy_c45_oatc14_get_sqi,
++		.get_sqi_max        = genphy_c45_oatc14_get_sqi_max,
+ 	},
+ 	{
+ 		PHY_ID_MATCH_EXACT(PHY_ID_LAN865X_REVB),
 -- 
 2.34.1
 
