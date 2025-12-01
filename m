@@ -1,61 +1,76 @@
-Received: from wilbur.contactoffice.com (wilbur.contactoffice.com [212.3.242.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7391E3DED;
-	Mon,  1 Dec 2025 21:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.3.242.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3AA26F476;
+	Mon,  1 Dec 2025 21:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764624957; cv=none; b=g3JyTBSfPrCCSI3frbjxPDjVLEkXcRIvMhWcXkl1B/9xEEwumHJP4acxDm2KuzSrhErO749lMkYPjioHW1AIQ15DYt6YaSzSUkKdaVPQYQxqDE7IrIFT8yuhflWqnL5okiRV+/6a7qeZLdFZX5U9DGvJmYysqt19vQLn41XMm2c=
+	t=1764625094; cv=none; b=Ft/BdGufo05vo9Xoxuphwe788fI61/cZJz+3kl8a+3pAQ1qKzCZqUvYygP+/I48ZLw7So3lSCrBiqtpI53z1PGZzD63LRjuXiSieIPY1ZnIQGXF1oUZcP5Up8kGyXE7MoFqcUNYRh0FDjSzirpCZYSwNi4GqWNCTkEMpTJYSQ9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764624957; c=relaxed/simple;
-	bh=GdjaPXWV3ue/nmxT7gBPKUaIdb7nZYUxca2XfeKI1hM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8TJ9JtLvi3X/TN5YQ5AHR+ovKyiQhqmQ3yg9gWs+7A9W4sGP3tVf66CfvAlEsLhPrWil1RWEE1Q9ktPCJW8rivjaCgs6adOeHfMo8YDXzulpsNsnNaQ6LMcfDmF16KxBu4uWBnvyMJrcOPpqMnuGfeGSXmPGu3FxdD6BZm0Mio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cve.cx; spf=pass smtp.mailfrom=cve.cx; dkim=pass (1024-bit key) header.d=cve.cx header.i=cve@cve.cx header.b=C0rKoo9Y; arc=none smtp.client-ip=212.3.242.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cve.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cve.cx
+	s=arc-20240116; t=1764625094; c=relaxed/simple;
+	bh=e1V01lKz5AU9gCi6d5SJsdrP6BcX4ltNaDCw2bIE/00=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tBa8TMkWh1WYppxe38SgzlhxPQ+/GA/LTXaepk52bGoRAm2Mk+peO8dt5tK1KA2Ms1Eq6PO7OpKASdHpJxbSmn70pSuhDJJDVIGqWOrXE/3CVUAY80D5d37NObcz3q13Fgs4OH1Po6fXvQqYRt3xcmeLvy/4uaYvSMqxw0+CIt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6XrzaOr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cve.cx header.i=cve@cve.cx header.b="C0rKoo9Y"
-Received: from smtpauth1.co-bxl (smtpauth1.co-bxl [10.2.0.15])
-	by wilbur.contactoffice.com (Postfix) with ESMTP id EE4FDE7D;
-	Mon,  1 Dec 2025 22:35:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764624951;
-	s=20250923-2z95; d=cve.cx; i=cve@cve.cx;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To;
-	bh=VHi2Hr4GrF1rqu59ax7ERJ3TpoC4BxHIGd0SiRUEKvM=;
-	b=C0rKoo9Yt2TNzr93AQwpsx0NeDcu63Zc2RSYtM1DHESisEJ4Hi6Y236UHkn52Ok6
-	tQ/ZzFrksrDmdvY1dV4Ie8Rsxqt/i8Nn+2DlWCEscCRp04qk1ALJa8xyh6drFWz5Fjg
-	75vbRwJZkvTGeZK/lWxCWNT8/lova2lr4fnQMNcM=
-Received: by smtp.mailfence.com with ESMTPSA ; Mon, 1 Dec 2025 22:35:48 +0100 (CET)
-Date: Mon, 1 Dec 2025 22:35:46 +0100
-From: Clara Engler <cve@cve.cx>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, horms@kernel.org
-Subject: Re: [PATCH] ipv4: Fix log message for martian source
-Message-ID: <aS4KMnhel3KKSbw5@8ce485d24aa0f711>
-References: <aSd4Xj8rHrh-krjy@4944566b5c925f79>
- <20251127181743.2bdf214b@kernel.org>
- <aSnSJZpC8ddH7ZN0@c83cfd0f4f41d48a>
- <20251128104712.28f8fa7c@kernel.org>
- <aS3kX7DApnSfJtT9@3f40c99ffb840b3b>
- <20251201114025.1e6aa795@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6XrzaOr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA28C116C6;
+	Mon,  1 Dec 2025 21:38:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764625094;
+	bh=e1V01lKz5AU9gCi6d5SJsdrP6BcX4ltNaDCw2bIE/00=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=V6XrzaOrIPktJYW1rEn9r/avEy6se9NUQHyYLL/4eS24naGOi1xDhBDQHXqC3NfE0
+	 cz+67xCbzlfQpb2r5yzlm0iNTIvTTvwncfViYbEzsLS/A61wBe/iueQy8o9tJwnmlz
+	 KxlmL0nozpLRqFe7EaWpfFgY1AcjlBm8CVqNAXv5h24t+bSPwpzGEgnRr+QW3FK9TD
+	 JKU2uoQ4OEXmgkOxRcLcHyv9RNqzl68R6JTxUbAjxLpNGHGTsjWLxE+s0g6bHLutja
+	 c94brx1deiSJ6meDtZE3Z0fAeIGkU9w+XhPBj09Wnm3I8eRGNzr9SzQ7Lp9p3N030Q
+	 y/5QpbYb2Dj9w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B581D381196A;
+	Mon,  1 Dec 2025 21:35:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201114025.1e6aa795@kernel.org>
-X-ContactOffice-Account: com:620022785
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] bluetooth 2025-11-11
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <176462491427.2545331.7721394115979070560.git-patchwork-notify@kernel.org>
+Date: Mon, 01 Dec 2025 21:35:14 +0000
+References: <20251111141357.1983153-1-luiz.dentz@gmail.com>
+In-Reply-To: <20251111141357.1983153-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
-On Mon, Dec 01, 2025 at 11:40:25AM -0800, Jakub Kicinski wrote:
-> I see. Sounds legit, we can adjust the error msg per you suggestion.
-> Unfortunately, we just entered a merge window and then there will be 
-> an end-of-year shutdown period so you'll need to post v2 in around a
-> month :(
+Hello:
 
-Alright, will come back to it at the start of next year!
+This pull request was applied to bluetooth/bluetooth-next.git (master)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 11 Nov 2025 09:13:57 -0500 you wrote:
+> The following changes since commit 96a9178a29a6b84bb632ebeb4e84cf61191c73d5:
+> 
+>   net: phy: micrel: lan8814 fix reset of the QSGMII interface (2025-11-07 19:00:38 -0800)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2025-11-11
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] bluetooth 2025-11-11
+    https://git.kernel.org/bluetooth/bluetooth-next/c/27bcc05b8869
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
