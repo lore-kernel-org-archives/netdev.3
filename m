@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFAB313529;
-	Mon,  1 Dec 2025 13:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8483F3148B7;
+	Mon,  1 Dec 2025 13:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764595575; cv=none; b=E3/heTtZ2emnQNIB9ovpqs9QkKj5pXZKx3cRj2xH+OytbuR++GOumGXoaIjAlWdffJEfpMgLPM573CRc9uC/5ZwV73atBrYiUcKFXE/pVDK4QvZsOe1eeojJ7UCA9Rm+xmPUB8SGxEl6rgIp8PKJ8qe9Hdm3pDCNbbwFajzgT4A=
+	t=1764595814; cv=none; b=Ekq49EYaaMd0ZsL1BMlnCU7s8wIs7FioL4FwFlTawK1DsOnJB6aLWZsBgDiBLwW0C3ePTqG7W7zB/+J9jfxJ2mUULDsClI+XjOgfRrfx11Yy1JahhupUmpaUuCgRARIexYvEODk8u6N4EjhLMy3o3c7tl/lu+3eYYHw+Y4g5lH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764595575; c=relaxed/simple;
+	s=arc-20240116; t=1764595814; c=relaxed/simple;
 	bh=5QxcHOM5qy8cvYfXCqki44Y2Ts06+G98XfmKNatDr/8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAD4uY5QEhfSoiVq6R2vQthC2tl18eGEdYTHiQYF7QJ4bybh1gbw/qD7pAqj8vuTGV7gkQq7eaAKb2aX3CyS8b1K0vhu36TlKgMDvBWdn4ar3MdbJ519Gefb8XZV4TiB9b4LXVrGrZKnBt5GkZXcZYLDDN3eJ1gxidI7tGmSjRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XE1A3w8B; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=KJX5bDI7HEXpzUxbEvvmN9xcVVgwipZkXrmfbWWpzO5BzBKynt1DXHWQxqUHdI/hPvhEMpNXK5MpHIUx1qumNRh0SSLgp+KMOXSaRR5D+gIloAzGr/tEuhpZAfHvpR00hdDlEjpTYAToylzFVnOR4Gui3PqjDuW/Lib4n021dt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MVCv7hWt; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XE1A3w8B"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MVCv7hWt"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yH49gsrsFp3aMWFvP4HFzSisqz+FpfUVe2zxx9d3lsE=; b=XE1A3w8ByEpxGgyRYWqkhVHhXS
-	tx36hBjuSjMV60CItPD2oAr5qnnhsdulnHKn82egUsam8zqi5yLR4aoGfssELKNQBadLUzvDBrJTz
-	bK0D61NoaRhEDe/kgPCRmoat1g9Kh43R/pGz8BQQH8KPCJb53ZsnGTMKBg4QVmDF6vbg=;
+	bh=yH49gsrsFp3aMWFvP4HFzSisqz+FpfUVe2zxx9d3lsE=; b=MVCv7hWtq5fX+k7DbMhGHQ5vlN
+	gVJ2bXoqHQRGiYh6SD4cOfEjCORhMxDXoyfYWK7T2e1uOKlnMFmjT5Z0EegE3eGOAS3eX1WQnnbRY
+	uLjNYCUMNxqnNHME1FSy8WhhymftxEds8B8rvAViRcphCp1pSF2HcASFIGhyvKckEVvU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vQ3up-00FZha-Nf; Mon, 01 Dec 2025 14:26:07 +0100
-Date: Mon, 1 Dec 2025 14:26:07 +0100
+	id 1vQ3yd-00FZj1-H6; Mon, 01 Dec 2025 14:30:03 +0100
+Date: Mon, 1 Dec 2025 14:30:03 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: David Yang <mmyangfl@gmail.com>
 Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
@@ -37,7 +37,7 @@ Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
 	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next v4 1/2] net: dsa: yt921x: Use *_ULL bitfield
  macros for VLAN_CTRL
-Message-ID: <5fb9e799-6250-43a5-8d0e-a5f5adb69cd2@lunn.ch>
+Message-ID: <cd9bb054-968c-4b7f-8ad0-fa9f7b9c25f9@lunn.ch>
 References: <20251201094232.3155105-1-mmyangfl@gmail.com>
  <20251201094232.3155105-2-mmyangfl@gmail.com>
 Precedence: bulk
