@@ -1,334 +1,205 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BD41E2858;
-	Mon,  1 Dec 2025 03:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24313FEE
+	for <netdev@vger.kernel.org>; Mon,  1 Dec 2025 03:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764559462; cv=none; b=BFzl5Y3wmUL91SRs1tNrWJIHB5Ig7id7JJaNpC+cXASb+ShdrjgtV9aQeno6N3Xx08oIjpxlzwfxcQTDOm2E19yRb7spgoOfK3sglOIfBNZnimNH5+468TsWkhe6QKDz2weoHYZTTaxFMh+jQkgB/nHPhdMd0xUb3eG5vMO0TUU=
+	t=1764560480; cv=none; b=SLzgvvnjppFsq56SFohPZXBfMHlv3kElZA72ZYOKMzCe0rGJ46w2RgqTgb1+3jAD5/bondyVA9TwsRdCnV2Zq/bufpoDn/DpOie7L7deyIeStfORmGUClslGNdcNmk2JQhCpeQXIwt9onsrur2NiSlnNC54V1qlhCqCLoaH5CGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764559462; c=relaxed/simple;
-	bh=lpC8e9e5Vu5989bnb6Xqk8L5N0ezOEc1i+zzZ2AEqm8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=laMh2sByuCfBlrWQw8d2z2sLiicspgTtjN4F4xwkCk8vCNSiZ2wCXKEx0NQexwiZsHnOB7r9NMfAJAtfEiPdpumeOditUux2sYI9lhRseebwVTqgYjZP5Mb13YH3AtBkf2SYTY09fNyqohnerv/NIpmAQU1i7/TrzZ8GavSnRLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=U4AHexdY; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1764560480; c=relaxed/simple;
+	bh=RavPoON2AtHEgnR4R9qerJUek3jo4iZpBSvZeJXyzvE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FfvQXUScwtk2297af/tnUHxtnD883VtTKL3f0MzPMGs3twWmKqiRB3Ru6xkEO5cB/oAU91ZsfmFSgcLD05wMpSSivmkMy12ZoCG+eA8ADNymTKU3HPKfMsMlF2tvIy2gyKqOgXIGQf3I6CFvJS151FUp2tGh/gKivLbrCOFmXNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PPUrpxgY; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="U4AHexdY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1764559460; x=1796095460;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lpC8e9e5Vu5989bnb6Xqk8L5N0ezOEc1i+zzZ2AEqm8=;
-  b=U4AHexdYnuMc3Ery36lC7Ti/xZX4suLfhPd7+zI9DhPiFpocQh8jA/3z
-   +k6pfzaqoixvqXWqU39DJdTYLJzEstr1QASKc6GmXn1Lvi0f7WKK9ImTT
-   cIjZ29umGzhL1SchaBbAlbu98FFO/1RFWOUY+ehlrU7QQw5lkogn1f+31
-   dUNVO3zrIlsQWr9kVwPZbXnuz21QNmn691megEO2TA75NoxQe1GfC5JEZ
-   lG+aZuqQNnXdpue9FDa7VSYKU8Y7ddEPZE8K/D8xjmIXikx1NKQnu5TNX
-   YlLYo74sfIH7Hi/XZNHaeiWhceOSkqyG+A8JQnEhXVLlFvNo2tWHA5zh8
-   Q==;
-X-CSE-ConnectionGUID: Rp+FM40qQ/yigmL/eX55kQ==
-X-CSE-MsgGUID: mZ02YIBpQ4SLLTRVwIb5Og==
-X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; 
-   d="scan'208";a="217188648"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Nov 2025 20:24:18 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Sun, 30 Nov 2025 20:23:57 -0700
-Received: from che-ll-i17164.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Sun, 30 Nov 2025 20:23:53 -0700
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-To: <Parthiban.Veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
-	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Parthiban
- Veerasooran" <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next v4 1/2] net: phy: phy-c45: add SQI and SQI+ support for OATC14 10Base-T1S PHYs
-Date: Mon, 1 Dec 2025 08:53:45 +0530
-Message-ID: <20251201032346.6699-2-parthiban.veerasooran@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251201032346.6699-1-parthiban.veerasooran@microchip.com>
-References: <20251201032346.6699-1-parthiban.veerasooran@microchip.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PPUrpxgY"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-341988c720aso3153018a91.3
+        for <netdev@vger.kernel.org>; Sun, 30 Nov 2025 19:41:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764560478; x=1765165278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TlbI/qoSd0f2lsToeVKQSag9wuEwJhaMlP4r36cW0BM=;
+        b=PPUrpxgYrpaX90LD48YuM6xotaZEmHqwXMMt1hwTLHFQ7x61brAaWHOzL11BzJnlb8
+         N3+VbrmvqXKgdKlmJiyZavG92//rD0agmRySD8PD88LhoYJdFR+MEgH8u2QsN323/Q2q
+         twuZXAT1NngguFy0ZBgwBlDIREwlybBW/GnSEahEscj2ZctidtOY997cVi8hbEpJTKSE
+         3QEfVB7kl2/WjfRNAfJ0sWKtgBnnvmriAAARhxCPvCQ/MDl1JVwOM+LvBHZEm96YeVmI
+         j2vXpfQdXjVXXWxDKW9tBe6RRklH3pKjq7c38d+BcutTXEjHCmQ9vOFvYfWQEyqhkdpN
+         LLaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764560478; x=1765165278;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TlbI/qoSd0f2lsToeVKQSag9wuEwJhaMlP4r36cW0BM=;
+        b=oUCgvCmfvou5MVcbskQs08NdajpYjqvZYHTZijY7PKfRoM3PBryVwuCaeRX2Xkp6PO
+         tvCQvPOtuQm5JT+IjuHwWpL8a8FvoygbD7fgx4Hm1rZqOvokp0iWrWrlnwFfnDKAOoxz
+         9fylrP9Pb7g+TH6eHqFKAZQA01YbGEnlzcmy/60c0hkB67b+vJvPbM12eT4Kz9bToyou
+         pwCGVn7BxLgTZfqQyTJYnI7Zp0Wl/jqiWEh1XpA5f8+I+8lnBM/4pJpR9LiXh4Rd8QB9
+         FlJqKxLlQ0cW4vO4yQEdSfsVELiIWLsZwBsTD0cCdmSQc/s2DH9CB6QVwVJoVvU6AL3m
+         omxA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3hUwkqw8RyJ+QW/In/TFMFhuOWfzqzMu+RKDMDoO1IL3vNksHz7hDsvtayO5YR50sXnOuqAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPYDGmj/saTLij3qKj0HPOFQTA7u/Zb9aEl/cZbZeoJMJouckG
+	MBf7JbLuPCAJJxgsFjbarx4/tVIMwASPAp6ozTrheHpwEAKftBlGJaei
+X-Gm-Gg: ASbGncvmc4e2LZDtBZh0w70FYaNQDLfQuzK0bv5bxAjAjb1CQbDY0OyiPlyAtqGpU32
+	aLF5bQSECs/aywvo1CFNz3uhrFJWPGX7GQtmjkOiHMXQ5y6KonjdYf9gD11FDKYqab1WPzOLOET
+	+5yuKEJu+S0xVfOduR8+XvIaffd6T8rGiroJT9AbxkwGceuSmwLjZWy853KKuCJV5MoAS4ey68h
+	jrK8kPpLHeNXd3F54vLujb2gF5yDwce55ngQbTQXqfzVpVqDCjD6NP++IV5Np7R9wStgzevgv7v
+	RfRn7uDkBazlBEZSxdjSjyOvGE8LH6GhdVnndVEjaepbXNxDBzBC32GLVChZCNcdCT+P+w5zNx7
+	iYrtef9rh0LZUsqfp24fIV+JS+eufPQ5SDNK8+5CJ3m0DnCL3LacJ2rAlszkmlrd4JtpHAhgpSa
+	+Kts1tg+/VEQ==
+X-Google-Smtp-Source: AGHT+IGjCSLiARwPj8LvgAmdlmw2aNw3T8jAZxFgCchMsS69HaOtffJUKXMOBrtZkx6OdtgHTwqqnw==
+X-Received: by 2002:a17:90b:1f88:b0:343:5f43:9359 with SMTP id 98e67ed59e1d1-34733f4d280mr36959812a91.31.1764560478201;
+        Sun, 30 Nov 2025 19:41:18 -0800 (PST)
+Received: from lgs.. ([101.76.246.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3476a55ed00sm15065740a91.5.2025.11.30.19.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Nov 2025 19:41:17 -0800 (PST)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org,
+	Tony Nguyen <tony.nguyen@intel.com>
+Subject: [PATCH v2] e1000: fix OOB in e1000_tbi_should_accept()
+Date: Mon,  1 Dec 2025 11:40:58 +0800
+Message-ID: <20251201034058.263839-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-Add support for reading Signal Quality Indicator (SQI) and enhanced SQI+
-from OATC14 10Base-T1S PHYs.
+In e1000_tbi_should_accept() we read the last byte of the frame via
+'data[length - 1]' to evaluate the TBI workaround. If the descriptor-
+reported length is zero or larger than the actual RX buffer size, this
+read goes out of bounds and can hit unrelated slab objects. The issue
+is observed from the NAPI receive path (e1000_clean_rx_irq):
 
-- Introduce MDIO register definitions for DCQ_SQI and DCQ_SQIPLUS.
-- Add `genphy_c45_oatc14_get_sqi_max()` to return the maximum supported
-  SQI/SQI+ level.
-- Add `genphy_c45_oatc14_get_sqi()` to return the current SQI or SQI+
-  value.
-- Update `include/linux/phy.h` to expose the new APIs.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in e1000_tbi_should_accept+0x610/0x790
+Read of size 1 at addr ffff888014114e54 by task sshd/363
 
-SQI+ capability is read from the Advanced Diagnostic Features Capability
-register (ADFCAP). If SQI+ is supported, the driver calculates the value
-from the MSBs of the DCQ_SQIPLUS register; otherwise, it falls back to
-basic SQI (0-7 levels). This enables ethtool to report the SQI value for
-OATC14 10Base-T1S PHYs.
+CPU: 0 PID: 363 Comm: sshd Not tainted 5.18.0-rc1 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x5a/0x74
+ print_address_description+0x7b/0x440
+ print_report+0x101/0x200
+ kasan_report+0xc1/0xf0
+ e1000_tbi_should_accept+0x610/0x790
+ e1000_clean_rx_irq+0xa8c/0x1110
+ e1000_clean+0xde2/0x3c10
+ __napi_poll+0x98/0x380
+ net_rx_action+0x491/0xa20
+ __do_softirq+0x2c9/0x61d
+ do_softirq+0xd1/0x120
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xfe/0x130
+ ip_finish_output2+0x7d5/0xb00
+ __ip_queue_xmit+0xe24/0x1ab0
+ __tcp_transmit_skb+0x1bcb/0x3340
+ tcp_write_xmit+0x175d/0x6bd0
+ __tcp_push_pending_frames+0x7b/0x280
+ tcp_sendmsg_locked+0x2e4f/0x32d0
+ tcp_sendmsg+0x24/0x40
+ sock_write_iter+0x322/0x430
+ vfs_write+0x56c/0xa60
+ ksys_write+0xd1/0x190
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f511b476b10
+Code: 73 01 c3 48 8b 0d 88 d3 2b 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d f9 2b 2c 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 8e 9b 01 00 48 89 04 24
+RSP: 002b:00007ffc9211d4e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000004024 RCX: 00007f511b476b10
+RDX: 0000000000004024 RSI: 0000559a9385962c RDI: 0000000000000003
+RBP: 0000559a9383a400 R08: fffffffffffffff0 R09: 0000000000004f00
+R10: 0000000000000070 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc9211d57f R14: 0000559a9347bde7 R15: 0000000000000003
+ </TASK>
+Allocated by task 1:
+ __kasan_krealloc+0x131/0x1c0
+ krealloc+0x90/0xc0
+ add_sysfs_param+0xcb/0x8a0
+ kernel_add_sysfs_param+0x81/0xd4
+ param_sysfs_builtin+0x138/0x1a6
+ param_sysfs_init+0x57/0x5b
+ do_one_initcall+0x104/0x250
+ do_initcall_level+0x102/0x132
+ do_initcalls+0x46/0x74
+ kernel_init_freeable+0x28f/0x393
+ kernel_init+0x14/0x1a0
+ ret_from_fork+0x22/0x30
+The buggy address belongs to the object at ffff888014114000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 1620 bytes to the right of
+ 2048-byte region [ffff888014114000, ffff888014114800]
+The buggy address belongs to the physical page:
+page:ffffea0000504400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14110
+head:ffffea0000504400 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x100000000010200(slab|head|node=0|zone=1)
+raw: 0100000000010200 0000000000000000 dead000000000001 ffff888013442000
+raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+==================================================================
 
-Open Alliance TC14 10BASE-T1S Advanced Diagnostic PHY Features
-Specification ref:
-https://opensig.org/wp-content/uploads/2025/06/OPEN_Alliance_10BASE-T1S_Advanced_PHY_features_for-automotive_Ethernet_V2.1b.pdf
+This happens because the TBI check unconditionally dereferences the last
+byte without validating the reported length first:
 
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+	u8 last_byte = *(data + length - 1);
+
+Fix by rejecting the frame early if the length is zero, or if it exceeds
+adapter->rx_buffer_len. This preserves the TBI workaround semantics for
+valid frames and prevents touching memory beyond the RX buffer.
+
+Fixes: 2037110c96d5 ("e1000: move tbi workaround code into helper function")
+Cc: stable@vger.kernel.org
+Suggested-by: Tony Nguyen <tony.nguyen@intel.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/net/phy/mdio-open-alliance.h |  13 +++
- drivers/net/phy/phy-c45.c            | 137 +++++++++++++++++++++++++++
- include/linux/phy.h                  |  29 ++++++
- 3 files changed, 179 insertions(+)
+changelog:
+v2:
+- Keep declarations at the beginning of e1000_tbi_should_accept().
+- Move the last_byte assignment after the length bounds checks (suggested by Tony Nguyen)
+---
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mdio-open-alliance.h b/drivers/net/phy/mdio-open-alliance.h
-index 6850a3f0b31e..449d0fb67093 100644
---- a/drivers/net/phy/mdio-open-alliance.h
-+++ b/drivers/net/phy/mdio-open-alliance.h
-@@ -56,6 +56,8 @@
- /* Advanced Diagnostic Features Capability Register*/
- #define MDIO_OATC14_ADFCAP		0xcc00
- #define OATC14_ADFCAP_HDD_CAPABILITY	GENMASK(10, 8)
-+#define OATC14_ADFCAP_SQIPLUS_CAPABILITY	GENMASK(4, 1)
-+#define OATC14_ADFCAP_SQI_CAPABILITY	BIT(0)
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index 3f5feb55cfba..cb49ec49f836 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -4091,7 +4091,14 @@ static bool e1000_tbi_should_accept(struct e1000_adapter *adapter,
+ 				    u32 length, const u8 *data)
+ {
+ 	struct e1000_hw *hw = &adapter->hw;
+-	u8 last_byte = *(data + length - 1);
++	u8 last_byte;
++	/* Guard against OOB on data[length - 1] */
++	if (unlikely(!length))
++		return false;
++	/* Upper bound: length must not exceed rx_buffer_len */
++	if (unlikely(length > adapter->rx_buffer_len))
++		return false;
++	last_byte = *(data + length - 1);
  
- /* Harness Defect Detection Register */
- #define MDIO_OATC14_HDD			0xcc01
-@@ -65,6 +67,17 @@
- #define OATC14_HDD_VALID		BIT(2)
- #define OATC14_HDD_SHORT_OPEN_STATUS	GENMASK(1, 0)
- 
-+/* Dynamic Channel Quality SQI Register */
-+#define MDIO_OATC14_DCQ_SQI		0xcc03
-+#define OATC14_DCQ_SQI_VALUE		GENMASK(2, 0)
-+
-+/* Dynamic Channel Quality SQI Plus Register */
-+#define MDIO_OATC14_DCQ_SQIPLUS		0xcc04
-+#define OATC14_DCQ_SQIPLUS_VALUE	GENMASK(7, 0)
-+
-+/* SQI is supported using 3 bits means 8 levels (0-7) */
-+#define OATC14_SQI_MAX_LEVEL		7
-+
- /* Bus Short/Open Status:
-  * 0 0 - no fault; everything is ok. (Default)
-  * 0 1 - detected as an open or missing termination(s)
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index f5e23b53994f..d48aa7231b37 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -1695,3 +1695,140 @@ int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev)
- 				OATC14_HDD_START_CONTROL);
- }
- EXPORT_SYMBOL(genphy_c45_oatc14_cable_test_start);
-+
-+/**
-+ * oatc14_update_sqi_capability - Read and update OATC14 10Base-T1S PHY SQI/SQI+
-+ *                                capability
-+ * @phydev: Pointer to the PHY device structure
-+ *
-+ * This helper reads the OATC14 ADFCAP capability register to determine whether
-+ * the PHY supports SQI or SQI+ reporting.
-+ *
-+ * SQI+ capability is detected first. The SQI+ field indicates the number of
-+ * valid MSBs (3–8), corresponding to 8–256 SQI+ levels. When present, the
-+ * function stores the number of SQI+ bits and computes the maximum SQI+ value
-+ * as (2^bits - 1).
-+ *
-+ * If SQI+ is not supported, the function checks for basic SQI capability,
-+ * which provides 0–7 SQI levels.
-+ *
-+ * On success, the capability information is stored in
-+ * @phydev->oatc14_sqi_capability and marked as updated.
-+ *
-+ * Return:
-+ * * 0        - capability successfully read and stored
-+ * * -EOPNOTSUPP - SQI/SQI+ not supported by this PHY
-+ * * Negative errno on read failure
-+ */
-+static int oatc14_update_sqi_capability(struct phy_device *phydev)
-+{
-+	u8 bits;
-+	int ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_ADFCAP);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Check for SQI+ capability
-+	 * 0 - SQI+ is not supported
-+	 * (3-8) bits for (8-256) SQI+ levels supported
-+	 */
-+	bits = FIELD_GET(OATC14_ADFCAP_SQIPLUS_CAPABILITY, ret);
-+	if (bits) {
-+		phydev->oatc14_sqi_capability.sqiplus_bits = bits;
-+		/* Max sqi+ level supported: (2 ^ bits) - 1 */
-+		phydev->oatc14_sqi_capability.sqi_max = BIT(bits) - 1;
-+		goto update_done;
-+	}
-+
-+	/* Check for SQI capability
-+	 * 0 - SQI is not supported
-+	 * 1 - SQI is supported (0-7 levels)
-+	 */
-+	if (ret & OATC14_ADFCAP_SQI_CAPABILITY) {
-+		phydev->oatc14_sqi_capability.sqi_max = OATC14_SQI_MAX_LEVEL;
-+		goto update_done;
-+	}
-+
-+	return -EOPNOTSUPP;
-+
-+update_done:
-+	phydev->oatc14_sqi_capability.updated = true;
-+	return 0;
-+}
-+
-+/**
-+ * genphy_c45_oatc14_get_sqi_max - Get maximum supported SQI or SQI+ level of
-+ *				   OATC14 10Base-T1S PHY
-+ * @phydev: pointer to the PHY device structure
-+ *
-+ * This function returns the maximum supported Signal Quality Indicator (SQI) or
-+ * SQI+ level. The SQI capability is updated on first invocation if it has not
-+ * already been updated.
-+ *
-+ * Return:
-+ * * Maximum SQI/SQI+ level supported
-+ * * Negative errno on capability read failure
-+ */
-+int genphy_c45_oatc14_get_sqi_max(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	if (!phydev->oatc14_sqi_capability.updated) {
-+		ret = oatc14_update_sqi_capability(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return phydev->oatc14_sqi_capability.sqi_max;
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_get_sqi_max);
-+
-+/**
-+ * genphy_c45_oatc14_get_sqi - Get Signal Quality Indicator (SQI) from an OATC14
-+ *			       10Base-T1S PHY
-+ * @phydev: pointer to the PHY device structure
-+ *
-+ * This function reads the SQI+ or SQI value from an OATC14-compatible
-+ * 10Base-T1S PHY. If SQI+ capability is supported, the function returns the
-+ * extended SQI+ value; otherwise, it returns the basic SQI value. The SQI
-+ * capability is updated on first invocation if it has not already been updated.
-+ *
-+ * Return:
-+ * * SQI/SQI+ value on success
-+ * * Negative errno on read failure
-+ */
-+int genphy_c45_oatc14_get_sqi(struct phy_device *phydev)
-+{
-+	u8 shift;
-+	int ret;
-+
-+	if (!phydev->oatc14_sqi_capability.updated) {
-+		ret = oatc14_update_sqi_capability(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Calculate and return SQI+ value if supported */
-+	if (phydev->oatc14_sqi_capability.sqiplus_bits) {
-+		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2,
-+				   MDIO_OATC14_DCQ_SQIPLUS);
-+		if (ret < 0)
-+			return ret;
-+
-+		/* SQI+ uses N MSBs out of 8 bits, left-aligned with padding 1's
-+		 * Calculate the right-shift needed to isolate the N bits.
-+		 */
-+		shift = 8 - phydev->oatc14_sqi_capability.sqiplus_bits;
-+
-+		return (ret & OATC14_DCQ_SQIPLUS_VALUE) >> shift;
-+	}
-+
-+	/* Read and return SQI value if SQI+ capability is not supported */
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_DCQ_SQI);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ret & OATC14_DCQ_SQI_VALUE;
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_get_sqi);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 059a104223c4..fbbe028cc4b7 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -530,6 +530,30 @@ struct phy_c45_device_ids {
- struct macsec_context;
- struct macsec_ops;
- 
-+/**
-+ * struct phy_oatc14_sqi_capability - SQI capability information for OATC14
-+ *                                    10Base-T1S PHY
-+ * @updated: Indicates whether the SQI capability fields have been updated.
-+ * @sqi_max: Maximum supported Signal Quality Indicator (SQI) level reported by
-+ *           the PHY.
-+ * @sqiplus_bits: Bits for SQI+ levels supported by the PHY.
-+ *                0 - SQI+ is not supported
-+ *                3 - SQI+ is supported, using 3 bits (8 levels)
-+ *                4 - SQI+ is supported, using 4 bits (16 levels)
-+ *                5 - SQI+ is supported, using 5 bits (32 levels)
-+ *                6 - SQI+ is supported, using 6 bits (64 levels)
-+ *                7 - SQI+ is supported, using 7 bits (128 levels)
-+ *                8 - SQI+ is supported, using 8 bits (256 levels)
-+ *
-+ * This structure is used by the OATC14 10Base-T1S PHY driver to store the SQI
-+ * and SQI+ capability information retrieved from the PHY.
-+ */
-+struct phy_oatc14_sqi_capability {
-+	bool updated;
-+	int sqi_max;
-+	u8 sqiplus_bits;
-+};
-+
- /**
-  * struct phy_device - An instance of a PHY
-  *
-@@ -626,6 +650,7 @@ struct macsec_ops;
-  * @link_down_events: Number of times link was lost
-  * @shared: Pointer to private data shared by phys in one package
-  * @priv: Pointer to driver private data
-+ * @oatc14_sqi_capability: SQI capability information for OATC14 10Base-T1S PHY
-  *
-  * interrupts currently only supports enabled or disabled,
-  * but could be changed in the future to support enabling
-@@ -772,6 +797,8 @@ struct phy_device {
- 	/* MACsec management functions */
- 	const struct macsec_ops *macsec_ops;
- #endif
-+
-+	struct phy_oatc14_sqi_capability oatc14_sqi_capability;
- };
- 
- /* Generic phy_device::dev_flags */
-@@ -2257,6 +2284,8 @@ int genphy_c45_an_config_eee_aneg(struct phy_device *phydev);
- int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev);
- int genphy_c45_oatc14_cable_test_get_status(struct phy_device *phydev,
- 					    bool *finished);
-+int genphy_c45_oatc14_get_sqi_max(struct phy_device *phydev);
-+int genphy_c45_oatc14_get_sqi(struct phy_device *phydev);
- 
- /* The gen10g_* functions are the old Clause 45 stub */
- int gen10g_config_aneg(struct phy_device *phydev);
+ 	if (TBI_ACCEPT(hw, status, errors, length, last_byte)) {
+ 		unsigned long irq_flags;
 -- 
-2.34.1
+2.43.0
 
