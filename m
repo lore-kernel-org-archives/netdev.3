@@ -1,172 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69EA218827;
-	Tue,  2 Dec 2025 21:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F0D2E40E
+	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 21:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764711101; cv=none; b=D+CMv4VLcwnnbiKLk82FGeWAr/XwpAPlnvnMish+qGXIuQevj+cWlLJ0V+Ksa+PU6t6iJBsElP3S+eHg+aWzCAltbNaaXkdrDRhadQ9rDbba1uZveBCeLe1B6C2cbSnXoiqMePKpwjD2wYyRMVgo+iGKj6lQ82M3cMnPHGNwiS8=
+	t=1764711258; cv=none; b=pUis4j6fXYosSDm37yT6Pqliffke7JXz0Nezh8cK30XvaFjO1wMCZIWcCieOVCcjtCN9iBwnyEmfC3pK+hdwWbSJlEpXLnuWqUjLhPlVPLlcLKqBbPkXcUFmH0EGlyftQuukXrj/b3FkHHtZgEpxTE//mpLnH7NTR1pYQbjugYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764711101; c=relaxed/simple;
-	bh=LIsUpX46nz8hXTPl3ASkyok9wqGryCPo8iyJRm2nQFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mA3AGohg11jlhBjRbqeZJOuSZu1ILiSc75voGFsF+2Aciqo5u4WEZwDYKLXdL3YaLLWcklvOoNTJMMpBl5JYWPLkyPNjWxNfWc15kMIHXbMdBhFJ7+Rym6LTQiWSYCsuO4s3mgdw6a5/W6d9lMUv8WR4f2hGitlQPwzpHqO/3Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qZpOAkdr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764711258; c=relaxed/simple;
+	bh=EmsEwczpiaola5ElXtwfAQVzqSInkvOEzVpRacRlODU=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=W6jA8BvflnZmXaeaF7Bn9AKRG8QlmYYC1HiPD4Bx+79QJm9AQggm+M+25GjIDSklgdeZE4+RMWk+EkmIbzZlUsKsRIeuNFoO+Ja/N2sFvcoOxqey0seXzOhkUCFsB9kpXaCDbcR4JCIbRHVsRNqvDi/4ZtVNmuUQ6+pGXdqvpFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C6EVjm4C; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qZpOAkdr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88AAC4CEF1;
-	Tue,  2 Dec 2025 21:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764711101;
-	bh=LIsUpX46nz8hXTPl3ASkyok9wqGryCPo8iyJRm2nQFw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qZpOAkdrwJACnUdpSzBSxrBly0k1US5uT5Ymfi9n9+1mFsYFyzlLYBsIsi9UpS1mN
-	 fGIzYhpWlYKpBnwleO7L8b7Z0UvRdyuFsmX7ELNxfFGU7eL9RLi4+fEeTAIxaGlzDF
-	 SHNLcW47XrKMVLhSWJ+bNXakkZSeLRENfdA5NJijFV95B/n1n5c2FRByp4wRQO7yrV
-	 KW8Yf9cdElo4G89A2o3mQdHTiZusBL0Zp009LTvd1fa+4NnTbe0kVAN4/But40i6nN
-	 OiQF8BJKJ0giZObUop6+rMJMXMmMmiBGbGwfhnhFmtm+UKjUvqeXvM96F11YGIv0VB
-	 mXUpj1nq9//hQ==
-Date: Tue, 2 Dec 2025 15:37:43 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, 
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>, 
-	Oded Gabbay <ogabbay@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org, 
-	ath11k@lists.infradead.org, ath12k@lists.infradead.org, netdev@vger.kernel.org, 
-	mayank.rana@oss.qualcomm.com, quic_vbadigan@quicinc.com, vivek.pernamitta@oss.qualcomm.com
-Subject: Re: [PATCH 3/4] net: mhi_net: Implement runtime PM support
-Message-ID: <nj4ovttt4i7hsqfdv5zhdotxrx3upxfq4ozuligwuheubnsmkd@e6bwzgkn55kl>
-References: <20251201-mhi_runtimepm-v1-0-fab94399ca75@oss.qualcomm.com>
- <20251201-mhi_runtimepm-v1-3-fab94399ca75@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C6EVjm4C"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6432842cafdso5479761d50.2
+        for <netdev@vger.kernel.org>; Tue, 02 Dec 2025 13:34:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764711255; x=1765316055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g6hK9g+p/96n31OO0B26q4tuOLGZA8/pIAPxrIeRCzA=;
+        b=C6EVjm4C+u+NzFg06wkBmy1KyggR4/SAhzSIPth28RiWlELyWI7qTZGD5NooCpRcrc
+         jnmwPptH84aVuMIESKdGpuXfpxb5JQeAho0z//qeqVURrx4Q60t8+x6is70NX5AI+bqM
+         rmKo4ld/vKr6LI2YhOqPkHXcP02VfISUXE2SRXYv+6+5+ZTdI2Bh7QY3pAe93s1iVgln
+         F5VgAnoW4UFK7IhaF56tDcWG5SQf7AT6RLGxGoxzQhsEXxiOZkTeNi/HBpzv7ZgRaRvI
+         xLOlqqPNruGDZ4KBOwx5yGR/RZJEpQBWO/qmqdq+5QL0AztjfrIO0luXfkKHIm61yGZi
+         Brsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764711255; x=1765316055;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g6hK9g+p/96n31OO0B26q4tuOLGZA8/pIAPxrIeRCzA=;
+        b=VwMfkmMpQ8VITuCkEDmHFHQkR0dILPAj/JubOodPkrT5VTmFvwu9xFdiD5UlgV7Wh4
+         UmRRdrU0YYLXokQB4PkoGF0CfuAh4na5gEuMXEvotOp8+iJ8VYNk0Oj3lNw+gRaud90u
+         JNwJiW8CWR/jZ+DnzVjZRGg3YxAEvAigM6CWfSqcCGFC8QBy8qRsa4H4UuhM2NwtjlUU
+         whIGCfLy7ukgp7wtrH97XgstBgm9rpTM3QStuUPmOW/gVquAzDiZtN2FKmSQIhZq35Jm
+         ursxR/cE8ZQJQVzdzJj9CMS1Zg879TIs1MjGxqL1jjvJTFC+84y5BXFY+28ZVmFB/SnW
+         GVVA==
+X-Gm-Message-State: AOJu0Yz31Y1V3jyAZJDsheggH6uPgRKlkeCA8dEbZn7Rb7QYPLLFfnFD
+	obC8vrzrlsIB+DVXitJSyFdwuHNFmNDDxkP6iHN1bCzO2JOLbXn0jPO5
+X-Gm-Gg: ASbGncthiBK9EPtA0KUsqfz2lO3vSZU1GyyBsfsSFEWEJoWJEzz0UUall0ifrqDRRiv
+	Bmsn/KmkKaST5HTVXS7vE39IGLSFpnTh8JW+Tq4A32V1P5A/DwDM0q1MsEu/iqZBiouhQTLe0CV
+	MlnA357ymq+ARCfL1Er0lHqMPrj8peGyzXgLbFvVe+65qCtTw73w7Jmh0U8nyeHv1ci/v7pjz3p
+	mKcBSox2gTOWmjrxLgMyCd3OOfp9sIazcOJt1ud5rLrBjy27VwdAUU4Maox/WXyUYNZ1dsYiYZG
+	URex4TRzkX2o8NVtIc8uEZ/egdj5H/13mbIED9feLZHyIotMC00OIUTBFjVEj+T0SWH8Ul21fDm
+	0JrioGM+sKtDAUWszVold7/B9Y1u7SrpbMi/8QwJv/OmsZXlfV0RzooYEwPFmfqKfKMm3TC5pio
+	6yP49sCKn1ETXjZxPFiMX1qusndNjASkyb5AFEN9FUTIy4XcRqN9FAh+fPuRBsA0Dei74=
+X-Google-Smtp-Source: AGHT+IHPXxH0QF+SOImMEvLWKUCEjNm+rj/AdZon1NUTUlPU12GKLqZILkKfyLi49mbAqJ0CdLkdXA==
+X-Received: by 2002:a05:690e:1387:b0:63f:bb1b:b617 with SMTP id 956f58d0204a3-64436faf39bmr162816d50.8.1764711255492;
+        Tue, 02 Dec 2025 13:34:15 -0800 (PST)
+Received: from gmail.com (116.235.236.35.bc.googleusercontent.com. [35.236.235.116])
+        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-6433c4692a2sm6541931d50.17.2025.12.02.13.34.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 13:34:14 -0800 (PST)
+Date: Tue, 02 Dec 2025 16:34:13 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jon Kohler <jon@nutanix.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+ Jason Wang <jasowang@redhat.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ open list <linux-kernel@vger.kernel.org>
+Message-ID: <willemdebruijn.kernel.42db6f47db6d@gmail.com>
+In-Reply-To: <F48BA9F9-7E15-49B3-896A-5AE367DAD060@nutanix.com>
+References: <20251125200041.1565663-1-jon@nutanix.com>
+ <20251125200041.1565663-4-jon@nutanix.com>
+ <willemdebruijn.kernel.1c90f25a9b9a9@gmail.com>
+ <F48BA9F9-7E15-49B3-896A-5AE367DAD060@nutanix.com>
+Subject: Re: [PATCH net-next v2 3/9] tun: correct drop statistics in
+ tun_put_user
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201-mhi_runtimepm-v1-3-fab94399ca75@oss.qualcomm.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 01, 2025 at 06:13:19PM +0530, Krishna Chaitanya Chundru wrote:
-> Add runtime power management support to the mhi_net driver to align with
-> the updated MHI framework, which expects runtime PM to be enabled by client
-> drivers. This ensures the controller remains active during data transfers
-> and can autosuspend when idle.
+Jon Kohler wrote:
+> =
 
-This last sentence hints at there being an actual problem with the
-current code. Perhaps we do this because it's the right thing to do,
-perhaps we're making this change because devices are crashing and
-burning?
+> =
 
-Start your commit message with making the reason for your change clear.
+> > On Nov 28, 2025, at 10:07=E2=80=AFPM, Willem de Bruijn <willemdebruij=
+n.kernel@gmail.com> wrote:
+> > =
 
-Ask yourself https://en.wikipedia.org/wiki/Five_whys when you come up
-with your problem description.
+> > Jon Kohler wrote:
+> >> Fold kfree_skb and consume_skb for tun_put_user into tun_put_user an=
+d
+> >> rework kfree_skb to take a drop reason. Add drop reason to all drop
+> >> sites and ensure that all failing paths properly increment drop
+> >> counter.
+> >> =
 
-> 
-> The driver now uses pm_runtime_get() and pm_runtime_put() around
-> transmit, receive, and buffer refill operations. Runtime PM is initialized
-> during probe with autosuspend enabled and a 100ms delay. The device is
-> marked with pm_runtime_no_callbacks() to notify PM framework that there
-> are no callbacks for this driver.
+> >> Signed-off-by: Jon Kohler <jon@nutanix.com>
+> >> ---
+> >> drivers/net/tun.c | 51 +++++++++++++++++++++++++++++++--------------=
+--
+> >> 1 file changed, 34 insertions(+), 17 deletions(-)
+> >> =
 
-This looks like an AI prompt, does it add value to the commit message?
+> >> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> >> index 68ad46ab04a4..e0f5e1fe4bd0 100644
+> >> --- a/drivers/net/tun.c
+> >> +++ b/drivers/net/tun.c
+> >> @@ -2035,6 +2035,7 @@ static ssize_t tun_put_user(struct tun_struct =
+*tun,
+> >>     struct sk_buff *skb,
+> >>     struct iov_iter *iter)
+> >> {
+> >> + enum skb_drop_reason drop_reason =3D SKB_DROP_REASON_NOT_SPECIFIED=
+;
+> >> struct tun_pi pi =3D { 0, skb->protocol };
+> >> ssize_t total;
+> >> int vlan_offset =3D 0;
+> >> @@ -2051,8 +2052,11 @@ static ssize_t tun_put_user(struct tun_struct=
+ *tun,
+> >> total =3D skb->len + vlan_hlen + vnet_hdr_sz;
+> >> =
 
-It can mostly be summarized as "Implement pm_runtime in the driver". The
-only part that's not obvious is the 100ms autosuspend delay, but you
-skipped explaining why you did choose this number.
+> >> if (!(tun->flags & IFF_NO_PI)) {
+> >> - if (iov_iter_count(iter) < sizeof(pi))
+> >> - return -EINVAL;
+> >> + if (iov_iter_count(iter) < sizeof(pi)) {
+> >> + ret =3D -EINVAL;
+> >> + drop_reason =3D SKB_DROP_REASON_PKT_TOO_SMALL;
+> > =
 
-> 
-> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> ---
->  drivers/net/mhi_net.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
-> index ae169929a9d8e449b5a427993abf68e8d032fae2..c5c697f29e69e9bc874b6cfff4699de12a4af114 100644
-> --- a/drivers/net/mhi_net.c
-> +++ b/drivers/net/mhi_net.c
-> @@ -9,6 +9,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/netdevice.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/skbuff.h>
->  #include <linux/u64_stats_sync.h>
->  
-> @@ -76,6 +77,7 @@ static netdev_tx_t mhi_ndo_xmit(struct sk_buff *skb, struct net_device *ndev)
->  	struct mhi_device *mdev = mhi_netdev->mdev;
->  	int err;
->  
-> +	pm_runtime_get(&mdev->dev);
+> > PI counts as SKB_DROP_REASON_DEV_HDR?
+> =
 
-What happened to your error handling?
+> Are you saying I should change this use case to DEV_HDR?
+> =
 
-Regards,
-Bjorn
+> This one seemed like a pretty straight forward =E2=80=9CIt=E2=80=99s to=
+o small=E2=80=9D case,
+> no? Or am I misreading into what you=E2=80=99re saying here?
+> =
 
->  	err = mhi_queue_skb(mdev, DMA_TO_DEVICE, skb, skb->len, MHI_EOT);
->  	if (unlikely(err)) {
->  		net_err_ratelimited("%s: Failed to queue TX buf (%d)\n",
-> @@ -94,6 +96,7 @@ static netdev_tx_t mhi_ndo_xmit(struct sk_buff *skb, struct net_device *ndev)
->  	u64_stats_inc(&mhi_netdev->stats.tx_dropped);
->  	u64_stats_update_end(&mhi_netdev->stats.tx_syncp);
->  
-> +	pm_runtime_put_autosuspend(&mdev->dev);
->  	return NETDEV_TX_OK;
->  }
->  
-> @@ -261,6 +264,7 @@ static void mhi_net_ul_callback(struct mhi_device *mhi_dev,
->  	}
->  	u64_stats_update_end(&mhi_netdev->stats.tx_syncp);
->  
-> +	pm_runtime_put_autosuspend(&mdev->dev);
->  	if (netif_queue_stopped(ndev) && !mhi_queue_is_full(mdev, DMA_TO_DEVICE))
->  		netif_wake_queue(ndev);
->  }
-> @@ -277,6 +281,7 @@ static void mhi_net_rx_refill_work(struct work_struct *work)
->  
->  	size = mhi_netdev->mru ? mhi_netdev->mru : READ_ONCE(ndev->mtu);
->  
-> +	pm_runtime_get_sync(&mdev->dev);
->  	while (!mhi_queue_is_full(mdev, DMA_FROM_DEVICE)) {
->  		skb = netdev_alloc_skb(ndev, size);
->  		if (unlikely(!skb))
-> @@ -296,6 +301,7 @@ static void mhi_net_rx_refill_work(struct work_struct *work)
->  		cond_resched();
->  	}
->  
-> +	pm_runtime_put_autosuspend(&mdev->dev);
->  	/* If we're still starved of rx buffers, reschedule later */
->  	if (mhi_get_free_desc_count(mdev, DMA_FROM_DEVICE) == mhi_netdev->rx_queue_sz)
->  		schedule_delayed_work(&mhi_netdev->rx_refill, HZ / 2);
-> @@ -362,12 +368,19 @@ static int mhi_net_probe(struct mhi_device *mhi_dev,
->  
->  	SET_NETDEV_DEV(ndev, &mhi_dev->dev);
->  
-> +	pm_runtime_no_callbacks(&mhi_dev->dev);
-> +	devm_pm_runtime_set_active_enabled(&mhi_dev->dev);
-> +	pm_runtime_set_autosuspend_delay(&mhi_dev->dev, 100);
-> +	pm_runtime_use_autosuspend(&mhi_dev->dev);
-> +	pm_runtime_get(&mhi_dev->dev);
->  	err = mhi_net_newlink(mhi_dev, ndev);
->  	if (err) {
->  		free_netdev(ndev);
-> +		pm_runtime_put_autosuspend(&mhi_dev->dev);
->  		return err;
->  	}
->  
-> +	pm_runtime_put_autosuspend(&mhi_dev->dev);
->  	return 0;
->  }
->  
-> 
-> -- 
-> 2.34.1
-> 
-> 
+> Happy to take a suggestion if I=E2=80=99ve got the drop reason wired
+> wrong (or if we need to cook up a brand new drop reason for any of
+> these)
+
+I agree that it's a clear case of the buffer being too small. But I
+consider PI not part of the packet itself, but bad device headers.
+It's borderline nitpicking. With that context, pick which you see fits
+best.=
