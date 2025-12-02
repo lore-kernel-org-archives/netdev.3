@@ -1,101 +1,128 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7773229E0E7
-	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 17:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB161F91E3
+	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 17:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764695255; cv=none; b=SS19eqLt9QRchC5TN9mYeu/o9laNY50DT2c84frAFAFdKteA6G6NSaJRzVoi+wTUCpYVt+ykZYygRLCquj87nw+FoTPTiTD01aTg+Oeqk9q068Y/Krc0BRZXR0mtbrzipn/RtWntjfXhfl5uDDYRR7oxeK6587B3OHNb0FMfLD4=
+	t=1764695779; cv=none; b=kDct/DwRFz7yrp+aUub2Aj9JIMGYtqknIcYsGtqBULwXgQ1zkuhA37CzNHWsEEUXFS6d5Tr57iXYnBV/6svevKGh4zzcHV4riZGHt25UYmSy+XTurFUrBtnqyEU04WEUZK2qbbM/x00q7spZmWjZ/LKSzvdggPz0LO/Lv362EIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764695255; c=relaxed/simple;
-	bh=cp8i1yF+Ggk9bXhjIIcBncOO67Nj5gsbJm9VUwveP3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MpZBB/KqRBpfLeWwscBbmYSdWLD7jK0djnss9t5ZSTJ6U+ES56R+Yp82pVxuPVVuRWF842ICvpaJTNyXl++4iW2gYF15oeD9FVdfdTwv9I8KNF/T2HPnNnYtbD4zYJSjDUTbhksq0YsaIym71+gSGWjUPV7somIL1dqVPV+FXjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=QR0U3OTX; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1764695779; c=relaxed/simple;
+	bh=17Y0XO27mmu/toiuHtUHAQq4bly4uft3m6Xn1TFd0uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rLvMRnmth6ROTZJsHovYsZ60x/Q+4AIZlyJyMQCjY151YYkdEs0PiVqkdOMjsbu0ac6LX4x4MPnx+YO10ybv6nB5VtyDCM4xKXLk6IY0xcPRAVZ+yh4gGALhxgCR+99wV4z5jSlB3HIdUq7yMnyd7MZTtKPm4mwl1f3gnx6s3GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vjmu1rLz; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="QR0U3OTX"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47798ded6fcso34548095e9.1
-        for <netdev@vger.kernel.org>; Tue, 02 Dec 2025 09:07:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vjmu1rLz"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-297d4a56f97so83060955ad.1
+        for <netdev@vger.kernel.org>; Tue, 02 Dec 2025 09:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1764695252; x=1765300052; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cfTv1XAcFgxTl+WmVWdNcnymzQHB1oIiqmKPoSjXU6o=;
-        b=QR0U3OTXen5aMwpeSVcPMi4Oczi8nEwIIP+aXjxoZY9cmcg+cup1jhMWwBXt9purgd
-         ayqJqKuab6ZZ1toGQNGntQFCvnzFXeHwyzfpJHHyP3K4/P7nPTzgw0zFwxGhYbu9Uhgf
-         t5jdZtq6ntmwRC5SwwSdHR6XS9PGbpPIx5o0AoC1k/VhjQuGtzVVcdLqnXhThhNyNF0h
-         UIUKupdonIaWrqTMNUN7gBUGlKYt+L9ep62D1mUc0cTZe2ERkr8ZZU2Mo+GQB9LNoSu7
-         DYxBF5j5HK/uO4jOcFCdSctTr2DdOMpgENVQTJCCCwNPr8tmAIdZdA0UlQ4rGbqtWyzq
-         bBXA==
+        d=gmail.com; s=20230601; t=1764695777; x=1765300577; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KX1cJ0mYzITSZGbbk27b8/+sceC0x3Oa5gy+iqIrAiY=;
+        b=Vjmu1rLzdmS9MJWUSL5EgiBheJyaCrjLmL/Jg/hLKDaU7c3hFZLchi7P/ReiByTApZ
+         mZBbVqUZETrcGbWlKMVhoeyMa/RJZWXSBK90fK4Wfc9n1dEdeGqhBAg3GDhTq4eAi12G
+         1AELN6WuZaR10VHPlTAwwnma7hiniGfUNN5MraiEC+v0SYBv+wGmqUevN/EPqsVAyBGe
+         8l0OGaNWSSPOde+NQSdMircaUAfTEZF4IcjK10lJADcbITDyrdbfHulJ/YUM3tebw3Q6
+         PwfUy+nfAKnSTpLyLWtZmmAM8DlBRr/3Yb56YbRYpSX4L5abhrZBArdA7ZAyQAIcKWU3
+         2Yfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764695252; x=1765300052;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cfTv1XAcFgxTl+WmVWdNcnymzQHB1oIiqmKPoSjXU6o=;
-        b=BfH5sO6wo9fGhflLVVJ56nlF7rcfIThOnlxeJUHb8J7YsufOSih6I//e9Ijiy+cZCw
-         638NYjIYyMxFZ2vIcvGsF6pyuxqKkUzq31zcq0kefCsIdluoWeQgfwPuXOOmoIbiUs5H
-         s7bacyEamwiU1VmSLn11VBhfoAMBpiiv6Wn+MYa7JW4MFgP1IVKfsxJrYDwqZjkidGUH
-         ZPmIeoa8drMbrNxRMryqgTaYjXGyRDfCMPm/riMlP67Fqqm47zXL5wsc8b2bpDGGLV4x
-         VdltPNsYhbqeFsZE1hxLNQ8SYbv1LfhLvjaNq3SbIlrxEqXZ254WCoXh+LT623OpUMyp
-         vAPA==
-X-Gm-Message-State: AOJu0YyAPKExox6LK1UV8jxmoWYjKCdKEoj5ie+V52OmgFwLrhxkX6dz
-	kYNWGYdik93cTvfLD6VNpTM1JMDaVmtKk3SupbtdM8jb1DYDRPhQ+ib3+155aLoQpHCKhOSY3sP
-	Dy+mZ
-X-Gm-Gg: ASbGncu4LwhBQ5Flh6CHayL5pcwsPZfHzUqsn+WFvKUcKWMsoZNjjor1Ob+nd3/q2nO
-	EYKkGaU5ZXpEYkCTcQ2jQttNqEfOiF3EwKMuStuhSSOftuR+iIKWsi6WztpDpkpi/h5uOubElBz
-	QGM49eLI0bJN6LpTnMh6xQ8CW2dv+aKcaUTULhVZE7Y7C2881dYQ3Rw67xlYNPLfwKD9p2xH/DF
-	b0ebt8upjL8i09ao2ocsWUtfUegDbR61Tp2zzOIyY6aCOjYLnMLNnCmS8CUifA42KMrgjHxdKCs
-	aq763TAz6I4c4+rq3HVH9z6ZRdQxbb1WsF9XBlFuouuXQoX8GFoD+ySpE25HyD6dc1ko2eTCmBr
-	ZTeuFPnYgL4fJ8jhgto4dYrwsBrjBmo1Vk5daEpJgaiQP97bCuIuiJoOVELbWTped2zqygCy/lS
-	TvUkBglfiKo0hpID8xLZ5R4FapgBi4V6sLWMIFAeBNVj4T4IT77N7sRXKGlh5Z66g=
-X-Google-Smtp-Source: AGHT+IH/5MYyyeGBp89UTRNbmm7Y1ex4hohSGmEHPr+zFpm1RDb1E8/O+wmRQcJJBX+hT1zUpEujAw==
-X-Received: by 2002:a05:600c:3592:b0:477:9671:3a42 with SMTP id 5b1f17b1804b1-4792a61e75dmr2387015e9.35.1764695251583;
-        Tue, 02 Dec 2025 09:07:31 -0800 (PST)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479111438b9sm350462895e9.2.2025.12.02.09.07.30
+        d=1e100.net; s=20230601; t=1764695777; x=1765300577;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KX1cJ0mYzITSZGbbk27b8/+sceC0x3Oa5gy+iqIrAiY=;
+        b=VMGzii+/KQOwGq2eisbaSL8A6tljtCU36QE9hF9M+yc/VtoEAemfUAMt2q1lJ4VnD0
+         8vrQY+Qavj1524xavd3rBBSSTXv7f9XLNPUVjJJMdcCbwhiu+a4Y9wVNVUeyiXfjd/4N
+         FRTYWJ+WM7XDpNtrYybidNimD6yFz/9IL7Bb4XerXKCriLO043H7oSgMawU+IJp2Ys2M
+         t90yxhBHIliiVDvwOOF2joPAI2tfzG+3y2eX5aaqCD/RJdZHhzo6TPMiNTYTL/wYc0KA
+         Jf0SAd3rL+SUWhp3heRcb4EtFn4MwD8wntt9k3Gz1zPcm9ENSxuDY+ZXBRcRLlDjutHd
+         KUXg==
+X-Gm-Message-State: AOJu0Yy0F4bPDeTNRDW7dhQ+nHpBAzbtldRHw87V9Xxphnj+D175t2XF
+	umgSG5Rj9ETBDVNlTTKlPQ1XF4syUNPUioFlbmN3CH7CVdBPN+i9YRAA
+X-Gm-Gg: ASbGncsZQVjNMPGdCmuEuxr4DOO8oGlM7AQ+82OH1hkNQ+6DyNS60YWmjEEgxMeIX6Z
+	Vl4bddDj1df49hsOwnCN1PM7/ylCDWNg7y9kFIDABDG30msLecXfe94hWyR6/dDqyQh9aqF1+2X
+	fKwWlT0rN3SaaxreaaX1SfyiRcBEoR8fu1lrZ9fG+QY2B6r8nC2O70fi4avQQp2519/gQhvLkVT
+	FC+VN8voddTbguP8ZkN47XGs+P39a7fIWM/dy/Ljt+FuSxCuaw+cp7b/OYPlFl9/YH/naX/0dmT
+	ym66EcM2LEelSe3Xk9hc5s3fqVtMdWapEAECaWktMURrazkrKM7ZH7Uo4wyLkMHTmoN48uNrqNP
+	kk4gN4RY+ZPvt6zGRXwmphzNqFBWFFSZ7xINnguVTANKAaXPiwGbL829Vr6hYmOXF/1D7N7sm59
+	AagNn3j6ed+0PYZw==
+X-Google-Smtp-Source: AGHT+IGQ4S51Vrai9feiSZx3qMe+rSfhtsa7eVXTEMovritIaLvnqt55H9woOkQykXHGkDwIEWy92g==
+X-Received: by 2002:a17:902:c94a:b0:295:fe17:83e with SMTP id d9443c01a7336-29d65d0912cmr470515ad.19.1764695776677;
+        Tue, 02 Dec 2025 09:16:16 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:19::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb276a7sm158074465ad.48.2025.12.02.09.16.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 09:07:31 -0800 (PST)
-Date: Mon, 1 Dec 2025 16:40:53 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, Cong Wang
- <cwang@multikernel.io>
-Subject: Re: [Patch net v5 4/9] net_sched: Prevent using netem duplication
- in non-initial user namespace
-Message-ID: <20251201164042.5ef12ced@phoenix.local>
-In-Reply-To: <20251126195244.88124-5-xiyou.wangcong@gmail.com>
-References: <20251126195244.88124-1-xiyou.wangcong@gmail.com>
-	<20251126195244.88124-5-xiyou.wangcong@gmail.com>
+        Tue, 02 Dec 2025 09:16:16 -0800 (PST)
+From: Amery Hung <ameryhung@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	martin.lau@kernel.org,
+	eddyz87@gmail.com,
+	ameryhung@gmail.com,
+	kernel-team@meta.com
+Subject: [PATCH bpf v2 1/2] bpf: Disallow tail call to programs that use cgroup storage
+Date: Tue,  2 Dec 2025 09:16:14 -0800
+Message-ID: <20251202171615.1027536-1-ameryhung@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 26 Nov 2025 11:52:39 -0800
-Cong Wang <xiyou.wangcong@gmail.com> wrote:
+Mitigate a possible NULL pointer dereference in bpf_get_local_storage()
+by disallowing tail call to programs that use cgroup storage. Cgroup
+storage is allocated lazily when attaching a cgroup bpf program. With
+tail call, it is possible for a callee BPF program to see a NULL
+storage pointer if the caller prorgam does not use cgroup storage.
 
-> From: Cong Wang <cwang@multikernel.io>
-> 
-> The netem qdisc has a known security issue with packet duplication
-> that makes it unsafe to use in unprivileged contexts. While netem
-> typically requires CAP_NET_ADMIN to load, users with "root" privileges
-> inside a user namespace also have CAP_NET_ADMIN within that namespace,
-> allowing them to potentially exploit this feature.
-> 
-> To address this, we need to restrict the netem duplication to only the
-> initial user namespace.
-> 
-> Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
-> Signed-off-by: Cong Wang <cwang@multikernel.io>
-> ---
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Closes: https://lore.kernel.org/bpf/c9ac63d7-73be-49c5-a4ac-eb07f7521adb@hust.edu.cn/
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+---
+ kernel/bpf/arraymap.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Duplication logic should be fixed rather than trying to build
-a wall around it.
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 1eeb31c5b317..9c3f86ef9d16 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -884,8 +884,9 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
+ 				 void *key, void *value, u64 map_flags)
+ {
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
++	u32 i, index = *(u32 *)key, ufd;
+ 	void *new_ptr, *old_ptr;
+-	u32 index = *(u32 *)key, ufd;
++	struct bpf_prog *prog;
+ 
+ 	if (map_flags != BPF_ANY)
+ 		return -EINVAL;
+@@ -898,6 +899,14 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
+ 	if (IS_ERR(new_ptr))
+ 		return PTR_ERR(new_ptr);
+ 
++	if (map->map_type == BPF_MAP_TYPE_PROG_ARRAY) {
++		prog = (struct bpf_prog *)new_ptr;
++
++		for_each_cgroup_storage_type(i)
++			if (prog->aux->cgroup_storage[i])
++				return -EINVAL;
++	}
++
+ 	if (map->ops->map_poke_run) {
+ 		mutex_lock(&array->aux->poke_mutex);
+ 		old_ptr = xchg(array->ptrs + index, new_ptr);
+-- 
+2.47.3
+
