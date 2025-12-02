@@ -1,111 +1,130 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C64F3115AE;
-	Tue,  2 Dec 2025 12:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF41313270
+	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 12:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764678046; cv=none; b=UITR4z2FSjeMbaUcFD2tIYrPu/u3Jfvl6GJzba7cPmqmZwycO1U5ylEJqsH6mNMbiaWCR3+lIVlwakqG1yM9zplB048fKoJRsJ6c8VhRgZCPRIheejj6Nf7t7l7EwPrKsI2TOKVukIcbUzVNDYM4BuAi7H45PNeVYKv32btME9o=
+	t=1764679108; cv=none; b=FpCyLc+NA/uG9UGfEMzA6EDtYThkmiv6daUotmWZbiqAKv4C3XQHd28T/lgokUaT5PrGdCrBlPrh7Un4C0gnJjRg9JIog9SDKXoIDaMcKIWWWJswW5tezmf9d/sS7UEM1T3HBZJcfn0MVmv8RJt9XtcUmnQ6M61HHT+NVhIStZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764678046; c=relaxed/simple;
-	bh=OYfRnc2di6Z+Dw8sV99ux4ggwX+NZchU2DuAjPn1uHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gq0VzxbW/YGJbNybKAUG7sUQUKGjdjqcgeRZZv3fzIUze0yB8LyXqwWxb+MxyveY4JUkdMjtC6sqok7XojQyswnvBMjKSKwyiPULPGttFebk15xmlVDWoQSx5GgcUGJYqjWnUzPczHM7n0AySERt8Fss2vjDVocEs3fnonmppwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vQPMx-000000003vh-2FsH;
-	Tue, 02 Dec 2025 12:20:35 +0000
-Date: Tue, 2 Dec 2025 12:20:31 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Frank Wunderlich <frankwu@gmx.de>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Chen Minqiang <ptpt52@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] net: dsa: mt7530: Use GPIO polarity to generate
- correct reset sequence
-Message-ID: <aS7Zj3AFsSp2CTNv@makrotopia.org>
-References: <20251129234603.2544-1-ptpt52@gmail.com>
- <20251129234603.2544-2-ptpt52@gmail.com>
- <0675b35f-217d-4261-9e3f-2eb24753d43c@lunn.ch>
- <20251130080731.ty2dlxaypxvodxiw@skbuf>
- <3fbc4e67-b931-421c-9d83-2214aaa2f6ed@lunn.ch>
- <0d85e1e6-ea75-4f20-aef1-90d446b4bfa1@kernel.org>
- <00f308a1-a4b1-4f20-8d8e-459ddf4c39b1@gmx.de>
+	s=arc-20240116; t=1764679108; c=relaxed/simple;
+	bh=uV2yKzrBnqbLp8nyRPDUN46vL0tWE3xD6CqzQmunFNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Z21dhVwLIch4W3Z7Y8xS1qyD938SvRnyOR3SU49lUSGlP3e7U+O80Pia+mGJXO01K2leq3yMKA8lj6uneqMG5XK1Q2MSJIvUBLIbjli5anBIFHnD1CoRO09cUtusIXrEqMCjyu8Z6Im8xG4BJIq4/biO2r596ie+lDQg+7y7IFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AjBQackm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KF/VO+1d; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AjBQackm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KF/VO+1d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764679105;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PV3JdNWJLnF3OTTD+K5SeEhcg1ng/+g4E+BqW+0ykII=;
+	b=AjBQackmVOOW0H3EoOdtHjn83MTPsgvvLF6Ow4UoQSz2yKxbPcPHTxCYyBSqzT1ZNHZtUQ
+	60lGmBCWZVS7JofOma+pMIAwXwLArOEuYZQ1eIkT7EJdBbJl7fpU8tmqWv3eGys4ltIeKp
+	UVD336ezEIgQdRabOji0BcjL4kfjkAE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-90-wLAcSRHLMYqfqmQZRM-h0A-1; Tue, 02 Dec 2025 07:38:24 -0500
+X-MC-Unique: wLAcSRHLMYqfqmQZRM-h0A-1
+X-Mimecast-MFC-AGG-ID: wLAcSRHLMYqfqmQZRM-h0A_1764679103
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477b8a667bcso60882315e9.2
+        for <netdev@vger.kernel.org>; Tue, 02 Dec 2025 04:38:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764679103; x=1765283903; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PV3JdNWJLnF3OTTD+K5SeEhcg1ng/+g4E+BqW+0ykII=;
+        b=KF/VO+1dWxhe2UX8a9sXNqXBNgtn70i2/rLjd5IpSDzHuPjf7iqU6A7HFvvYR362vE
+         yBmQjqN5UjhlgJ2uiDPmEZpdNY+njrEk6BR87a2qFhttAF+8j8gurcLyPQH2aTTBTNhm
+         P+S8h/x1/osPia9hdmEVz+Ht6oR4+9Jg/Vly+3sj2dEUoafYCqGCVOkwIYg7nRgcgTYN
+         JpwTqUQ0Kc9Dct5x3jvs0HjCat00tffhbrqS8n61jeveL6kBxm5fzrsleavbA4fd7Q29
+         M4uXkRsYezRk2K/Inh3mnWdb1VnMI6b5AHvwumpWPeb14bPm6ULXexe+klylMUR2KmSG
+         qvTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764679103; x=1765283903;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PV3JdNWJLnF3OTTD+K5SeEhcg1ng/+g4E+BqW+0ykII=;
+        b=wN1Tf5G6NYaLnTyZWV9fpTspUtawDrmTYL0M0lM5S5mx3XNOCtkQeh9IrSMOxoTRGg
+         edjH4tq8FAAwkTUrV1zaCKWty7oUwWV/qNvKzxrIZdDs4eI13aKoTGDPXF/9GSSEIR94
+         VG5a/vLIOaj8eQI2mUHPnTUqC08e/NtHoOGW4m/ECaDLYHs3sKLImMX5PfqtZIqgB87A
+         k71QM917xucJ5FBn4Y5E3TOxR8V2PS0ParjtXvy+2TZpV6cLhwgyyyF1qBq3zmjhMQWj
+         MCh++XezBw2SeQ2iAfSwY8tplRJ9fGp6Tc0iVrr9JcfrXnQXmxJGNOum6DfizJz441Ww
+         jeHw==
+X-Forwarded-Encrypted: i=1; AJvYcCX7Gz7KB5QlG7GEABXU2sNVqM0c/ArGUyJydexnMaGzszENloUU2bxlXcq3INqTpgY61HfPc+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOjZvz1m2mPnkppMhR5HTYEtfYBu/kF/z8bWMRoQ2sE0zSjtEv
+	EPt5pHATWaiiENQg3/he7RcIqTcNtAHKhRntDkDKmzfcopdlY0jbSh69W4jRXrA95Urrv6Oz8sY
+	okHiXe6282pB6EQqrM0LpJRMMN1Q1Y53CXvbpzzGkKlPd7teYurzpE5lfTg==
+X-Gm-Gg: ASbGnct3DQICPy2d9p6pnx3fFHK2pGDcgUzCy0u2ct0ZjHkf2gv4fPXyxk9CrZBO7rO
+	nU3JaTJWhAyG+MLt5cHhgUzgf2A8Adi0QyWtb6u0NV7aQOJHvZzj/EgUXgLYUS4efgIwPjni2Gd
+	CzB6jXAb13OqYD70J5o9HHjJoZge8OYwam8Sk0g0XaP+hG1u/3+iJ94DTlynCq3ZbJ/lIhfa1mz
+	3aEgfZWJoTmWVAdRQut6O4miox6cKJpkqG9TvxCYNssO8FnRch4GPE0g36ko/mXFX2yef/FOyn0
+	yN7AQvDMV0Kak+awqtBONU1YtePMQj9/lLyh5iNlMwgvjHypfDemRX50s9YGsTdwVLRpW51wxnL
+	nkX6Ecvijtxuc6A==
+X-Received: by 2002:a05:600c:5252:b0:477:89d5:fdac with SMTP id 5b1f17b1804b1-47904b26093mr348084845e9.31.1764679103394;
+        Tue, 02 Dec 2025 04:38:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFhY65J2KcZC7O5uPXBux2WRLGgbkP2OaDQQoHDloa+Y0pfFZ8qz7Pom+8kc+ipJeiPz/8PxA==
+X-Received: by 2002:a05:600c:5252:b0:477:89d5:fdac with SMTP id 5b1f17b1804b1-47904b26093mr348084515e9.31.1764679102987;
+        Tue, 02 Dec 2025 04:38:22 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.136])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479279baac2sm14218335e9.4.2025.12.02.04.38.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Dec 2025 04:38:22 -0800 (PST)
+Message-ID: <37ecfff6-19da-4b0d-9623-129431d5a218@redhat.com>
+Date: Tue, 2 Dec 2025 13:38:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00f308a1-a4b1-4f20-8d8e-459ddf4c39b1@gmx.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/1] net: mdio: reset PHY before attempting to
+ access ID register
+To: Buday Csaba <buday.csaba@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <5701a9faafd1769b650b79c2d0c72cc10b5bdbc8.1764337894.git.buday.csaba@prolan.hu>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <5701a9faafd1769b650b79c2d0c72cc10b5bdbc8.1764337894.git.buday.csaba@prolan.hu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 02, 2025 at 12:52:44PM +0100, Frank Wunderlich wrote:
-> Hi,
+On 11/28/25 2:53 PM, Buday Csaba wrote:
+> When the ID of an Ethernet PHY is not provided by the 'compatible'
+> string in the device tree, its actual ID is read via the MDIO bus.
+> For some PHYs this could be unsafe, since a hard reset may be
+> necessary to safely access the MDIO registers.
 > 
-> Am 01.12.25 um 08:48 schrieb Krzysztof Kozlowski:
-> > On 30/11/2025 21:17, Andrew Lunn wrote:
-> > > On Sun, Nov 30, 2025 at 10:07:31AM +0200, Vladimir Oltean wrote:
-> > > > On Sun, Nov 30, 2025 at 02:11:05AM +0100, Andrew Lunn wrote:
-> > > > > > -		gpiod_set_value_cansleep(priv->reset, 0);
-> > > > > > +		int is_active_low = !!gpiod_is_active_low(priv->reset);
-> > > > > > +		gpiod_set_value_cansleep(priv->reset, is_active_low);
-> > > > > I think you did not correctly understand what Russell said. You pass
-> > > > > the logical value to gpiod_set_value(). If the GPIO has been marked as
-> > > > > active LOW, the GPIO core will invert the logical values to the raw
-> > > > > value. You should not be using gpiod_is_active_low().
-> > > > > 
-> > > > > But as i said to the previous patch, i would just leave everything as
-> > > > > it is, except document the issue.
-> > > > > 
-> > > > > 	Andrew
-> > > > > 
-> > > > It was my suggestion to do it like this (but I don't understand why I'm
-> > > > again not in CC).
-> > > > 
-> > > > We _know_ that the reset pin of the switch should be active low. So by
-> > > > using gpiod_is_active_low(), we can determine whether the device tree is
-> > > > wrong or not, and we can work with a wrong device tree too (just invert
-> > > > the logical values).
-> > > Assuming there is not a NOT gate placed between the GPIO and the reset
-> > > pin, because the board designer decided to do that for some reason?
-> jumping in because i prepare mt7987 / BPI-R4Lite dts for upstreaming when
-> driver-changes are in.
-> With current driver i need to define the reset-gpio for mt7531 again wrong
-> to get it
-> working. So to have future dts correct, imho this (or similar) change to
-> driver is needed.
+> Add a fallback mechanism for such devices: when reading the ID
+> fails, the reset will be asserted, and the ID read is retried.
 > 
-> Of course we cannot simply say that current value is wrong and just invert
-> it because of
-> possible "external" inversion of reset signal between SoC and switch.
-> I have to look on schematics for the boards i have (BPI-R64, BPI-R3,
-> BPI-R2Pro) if there is such circuit.
+> This allows such devices to be used with an autodetected ID.
+> 
+> The fallback mechanism is activated in the error handling path, and
+> the return code of fwnode_mdiobus_register_phy() is unaltered, except
+> when the reset fails with -EPROBE_DEFER, which is propagated to the
+> caller.
+> 
+> Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
 
-I'm also not aware of any board which doesn't directly connect the
-reset of the MT7530 to a GPIO pin of the SoC. For MediaTek's designs
-there is often even a specific pin desginated for this purpose and
-most vendors do follow this. If they deviate at all, then it's just
-that a different pin is used for the switch reset, but I've never
-seen any logic between the SoC's GPIO pin and the switch reset.
+IMHO this deserves an explicit ack from phy maintainers. Unless such ack
+is going to land on the ML very soon, I suggest to defer this patch to
+the next cycle, as Jakub is wrapping the net-next PR.
 
-> Maybe the mt7988 (mt7530-mmio) based boards also affected?
+Thanks,
 
-There is no GPIO reset for switches which are integrated in the SoC,
-so this only matters for external MT7530 and MT7531 ICs for which an
-actual GPIO line connected to the SoC is used to reset the switch.
+Paolo
+
