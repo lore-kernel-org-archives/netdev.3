@@ -1,445 +1,136 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail03.siengine.com (mail03.siengine.com [43.240.192.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E891D242D84
-	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 01:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8562B1EB5CE
+	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 01:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.240.192.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764639337; cv=none; b=XdfKdAZ+MifB0dSUM0OteiBFRwAr5kVLKzuK8W79sa6PIKmH7xrcBUy0wCcb/7MlfoQPJVzC/0vUV9vowlX3KBw2LXuGTZt03qDgMM1auB++S49kWj3CIqpU/TljO4vSo6kLuXwgmnLnSoSp8AvRrS98YIUJ8Q7XFtq2CHJaFcc=
+	t=1764640280; cv=none; b=KFaaE+glSpY+9YdgjVTVoaFgeWHKZcluBZLHz1DKpXkTnxt9HlTu9DFgltbwkMvX/ofVCp3MIVUrWV4VuFn7ORyy6fO9BlJsr/SAKhXaPS1GyBTTdC094rGZucN6DgE0T8Tlc//01H9UNgWKBxlkYIq200x25Z9JDDYj0qNhuDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764639337; c=relaxed/simple;
-	bh=aX4b/dtOJbU7+H1rQfMiZQtLMAdUZ1mamd1Fipz5Mhc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9EAefpl8UcH5fEZkzEP8cmnSWTlrEEfIzXjH7lzK5Gh6n7YlNdXuE9Wv6teCfwPvB/qA2yucsUpZNyw1J32xHqeb4sJyZ11sdl+btNBU75tC53t7Lm5kg9asnTt95pThAb1RTpU+RstkQePXmodVYEuZR7EKD0zLHIEeOo9srA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVQJ0xCV; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVQJ0xCV"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-297ef378069so48994775ad.3
-        for <netdev@vger.kernel.org>; Mon, 01 Dec 2025 17:35:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764639335; x=1765244135; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P/I0auzUVkVcxbH70BIVYr6yUr92WLMw+xrjecYcacA=;
-        b=QVQJ0xCVxeIp4RsWB3gy57tU3EvfGIUOpHBKVZE9Uujn4wc2Lx34NMCm166iFJV04R
-         hGNTWmYqpuQG0KfJ4sTfRw22jPJyONeMvbmldMn2LUqI5RVSHKs0HU50Gq4lMbHejlp0
-         zMIf8znfHfFwRtjLxZFM0Oxm7ajZUpA9DOAFEiT7fRDHtB9m9+bJw+YhitK2mbN5pMsb
-         x8bd449toAq7D13nCbPirUHwmRiY7RKgjVC9u2eYWzgNafN13gvu9/e/UIap5ecFn2NG
-         grPF3Ob973ZB1S0bPPIe5Z+GzAlVzPqr8/9+jmAKJ0dow/KdYGWMKC7EtyBk/dOtH8qv
-         0GkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764639335; x=1765244135;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P/I0auzUVkVcxbH70BIVYr6yUr92WLMw+xrjecYcacA=;
-        b=LsHMo7NU9diUZrcdaRA/KCjXeEshvSuu7B9fT4Q6h8WwZNN5ZAcJ1vvFlyZpXpgR17
-         NXjdRgie8bvzRH5L403iSiIjtXdhmkV6FoM/1Biq9hzqUtGO4K4utu+1FDF0RSl1enIx
-         fSocj71McBXF/nH4FD9fjO0Bpw2ozyN3qP69z/4SJyyGPgnfcz+xafgGnKkyU2pJwzC/
-         TOSd+yWyVG0boQpfVJqbO00Kg4af85hgB6nYeI4K50yIVKazV85G9aYI2u9dYcUcav5m
-         3/H5L5sSlAbHeNNtPOJ65h+TAs5ad6PYVB5851J6HG3UjrZ0lQc+fJsNHoJj/AL1Y9nk
-         EViQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW/rJ4BJ4K4Y8slNP7dged02QqNNGHWunXJwhPsyUC+CT/6Nksd0JMsdBg1NN/IPzDcvNAENoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTzA/swaEBrq5tw9MqHm6D6hnsxOTt95a8jl9jhHrDKdLfEsms
-	VRA2Ique3WMUVDsbCQt6Ap+fIlcC5qissdIVUgVgt2TI+GFXucaof4zA
-X-Gm-Gg: ASbGnct0nNDloRprX8Zquck873D+zPMbjKdtuP6rfsrZfzIFhLRxGbLpBCn8m8wmWuz
-	CnO+eftlDCAdWuXj98cYmFAxey+TZURZkP8EBpjJVMsBSwHUzDtaK1hWNADhNvm9lEvfpAZi+Ck
-	/2nKWslX1xr+TW/pSG/IkI3M7E4rmbaBG3AxgAcS2Us0r6qYNygJruba1sb+hcR0UG6bcsT1VLw
-	oM566oyYOmzifDeGa8Rh5M4fZfyDaw5CA5SjhdgrLtnfWUGyi6LY95ctRtatl6y9/WRy6xc4mUQ
-	17L4+RwrTZpn2mh3+1BpxmIKFc3vltXf5GxWtszzWeLMsh383kJdgIkSu+pKBOw9X5vyNqXC02u
-	BLOqf06lKy0ZQ+8frzmd6b5w0x9jDkTardyb8/aFaJH1juABY7MbJQMSfhLYqbMRDqg5wypT6Vu
-	NrtRuCeCey55Lz6PYO25lxt+PzHwkHrjOhoBSEbP4kn/SyFCO75gLxS7Kait1N+OCSK+38yh7h2
-	sBG1CUeg2BusjC+ALQ=
-X-Google-Smtp-Source: AGHT+IGQK/nb9FASk2chWpg9Ni/OJR5AgPXn3/ZK8ZXqfQ8nOYrkMVsl+JxFYgH88N7Fd3k6akiHDQ==
-X-Received: by 2002:a17:903:1670:b0:295:3ad7:948a with SMTP id d9443c01a7336-29baaf9a961mr298440265ad.16.1764639335372;
-        Mon, 01 Dec 2025 17:35:35 -0800 (PST)
-Received: from toolbx.alistair23.me (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net. [2403:580b:97e8:0:82ce:f179:8a79:69f4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb54563sm132378575ad.89.2025.12.01.17.35.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 17:35:34 -0800 (PST)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: chuck.lever@oracle.com,
-	hare@kernel.org,
-	kernel-tls-handshake@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-nvme@lists.infradead.org,
-	linux-nfs@vger.kernel.org
-Cc: kbusch@kernel.org,
-	axboe@kernel.dk,
-	hch@lst.de,
-	sagi@grimberg.me,
-	kch@nvidia.com,
-	hare@suse.de,
-	alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v6 5/5] nvmet-tcp: Support KeyUpdate
-Date: Tue,  2 Dec 2025 11:34:29 +1000
-Message-ID: <20251202013429.1199659-6-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251202013429.1199659-1-alistair.francis@wdc.com>
-References: <20251202013429.1199659-1-alistair.francis@wdc.com>
+	s=arc-20240116; t=1764640280; c=relaxed/simple;
+	bh=VIfGqIfpXLoJAz7hvPPvJWHOonux85R6g8kYnsR9WDE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HZO0qlwo+0Xn15aHKZbB7Uxpjr7OVreQyf12tJ6IfeFS17itxZQOWhzm8PKt+63CkAh/aAd+b3t+4qAymyBXuNxn1/3LKZLr6q8QSUmNGMwG1uTA7vNqoKN1b6zTtdcO2XqGE8RDCTiolejpIThyckYtI5KUimNHXyK6/pUXiLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com; spf=pass smtp.mailfrom=siengine.com; arc=none smtp.client-ip=43.240.192.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siengine.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siengine.com
+Received: from mail03.siengine.com (localhost [127.0.0.2] (may be forged))
+	by mail03.siengine.com with ESMTP id 5B21Puq3029461
+	for <netdev@vger.kernel.org>; Tue, 2 Dec 2025 09:25:56 +0800 (+08)
+	(envelope-from hailong.fan@siengine.com)
+Received: from dsgsiengine01.siengine.com ([10.8.1.61])
+	by mail03.siengine.com with ESMTPS id 5B21OaiF029191
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Tue, 2 Dec 2025 09:24:36 +0800 (+08)
+	(envelope-from hailong.fan@siengine.com)
+Received: from SEEXMB03-2019.siengine.com (SEEXMB03-2019.siengine.com [10.8.1.33])
+	by dsgsiengine01.siengine.com (SkyGuard) with ESMTPS id 4dL31G0TrJz5pX1;
+	Tue,  2 Dec 2025 09:22:58 +0800 (CST)
+Received: from SEEXMB03-2019.siengine.com (10.8.1.33) by
+ SEEXMB03-2019.siengine.com (10.8.1.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.1748.39; Tue, 2 Dec 2025 09:24:35 +0800
+Received: from SEEXMB03-2019.siengine.com ([fe80::23e0:1bbb:3ec9:73fe]) by
+ SEEXMB03-2019.siengine.com ([fe80::23e0:1bbb:3ec9:73fe%16]) with mapi id
+ 15.02.1748.039; Tue, 2 Dec 2025 09:24:35 +0800
+From: =?utf-8?B?RmFuIEhhaWxvbmcv6IyD5rW36b6Z?= <hailong.fan@siengine.com>
+To: Eric Dumazet <edumazet@google.com>,
+        "2694439648@qq.com"
+	<2694439648@qq.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "mcoquelin.stm32@gmail.com"
+	<mcoquelin.stm32@gmail.com>,
+        "alexandre.torgue@foss.st.com"
+	<alexandre.torgue@foss.st.com>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        "linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "inux-kernel@vger.kernel.org"
+	<inux-kernel@vger.kernel.org>
+Subject: =?utf-8?B?5Zue5aSNOiBbUEFUQ0hdIG5ldDogc3RtbWFjOiBNb2RpZnkgdGhlIGp1ZGdt?=
+ =?utf-8?Q?ent_condition_of_"tx=5Favail"_from_1_to_2?=
+Thread-Topic: [PATCH] net: stmmac: Modify the judgment condition of "tx_avail"
+ from 1 to 2
+Thread-Index: AQHcYm4w5U5uVlzf+UqD24zBtjcj6LUMLvyAgAFf1+A=
+Date: Tue, 2 Dec 2025 01:24:35 +0000
+Message-ID: <addd14c84f164e4e90e35e8dc4121dd4@siengine.com>
+References: <tencent_22959DC8315158E23D77C14B9B33C97EA60A@qq.com>
+ <CANn89iLW+68YE9s9dChEcQYbmwXSBzWRPzFH50+--Kw3XNZXEQ@mail.gmail.com>
+In-Reply-To: <CANn89iLW+68YE9s9dChEcQYbmwXSBzWRPzFH50+--Kw3XNZXEQ@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-DKIM-Results: [10.8.1.61]; dkim=none;
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:mail03.siengine.com 5B21Puq3029461
 
-From: Alistair Francis <alistair.francis@wdc.com>
-
-If the nvmet_tcp_try_recv() function return EKEYEXPIRED or if we receive
-a KeyUpdate handshake type then the underlying TLS keys need to be
-updated.
-
-If the NVMe Host (TLS client) initiates a KeyUpdate this patch will
-allow the NVMe layer to process the KeyUpdate request and forward the
-request to userspace. Userspace must then update the key to keep the
-connection alive.
-
-This patch allows us to handle the NVMe host sending a KeyUpdate
-request without aborting the connection. At this time we don't support
-initiating a KeyUpdate.
-
-Link: https://datatracker.ietf.org/doc/html/rfc8446#section-4.6.3
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
----
-v6:
- - Simplify the nvmet_tls_key_expired() check
-v5:
- - No change
-v4:
- - Restructure code to avoid #ifdefs and forward declarations
- - Use a helper function for checking -EKEYEXPIRED
- - Remove all support for initiating KeyUpdate
- - Use helper function for restoring callbacks
-v3:
- - Use a write lock for sk_user_data
- - Fix build with CONFIG_NVME_TARGET_TCP_TLS disabled
- - Remove unused variable
-v2:
- - Use a helper function for KeyUpdates
- - Ensure keep alive timer is stopped
- - Wait for TLS KeyUpdate to complete
-
- drivers/nvme/target/tcp.c | 200 ++++++++++++++++++++++++++------------
- 1 file changed, 139 insertions(+), 61 deletions(-)
-
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 818efdeccef1..0458a9691cbc 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -175,6 +175,7 @@ struct nvmet_tcp_queue {
- 
- 	/* TLS state */
- 	key_serial_t		tls_pskid;
-+	key_serial_t		handshake_session_id;
- 	struct delayed_work	tls_handshake_tmo_work;
- 
- 	unsigned long           poll_end;
-@@ -186,6 +187,8 @@ struct nvmet_tcp_queue {
- 	struct sockaddr_storage	sockaddr_peer;
- 	struct work_struct	release_work;
- 
-+	struct completion       tls_complete;
-+
- 	int			idx;
- 	struct list_head	queue_list;
- 
-@@ -214,6 +217,10 @@ static struct workqueue_struct *nvmet_tcp_wq;
- static const struct nvmet_fabrics_ops nvmet_tcp_ops;
- static void nvmet_tcp_free_cmd(struct nvmet_tcp_cmd *c);
- static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd);
-+#ifdef CONFIG_NVME_TARGET_TCP_TLS
-+static int nvmet_tcp_tls_handshake(struct nvmet_tcp_queue *queue,
-+				   enum handshake_key_update_type keyupdate);
-+#endif
- 
- static inline u16 nvmet_tcp_cmd_tag(struct nvmet_tcp_queue *queue,
- 		struct nvmet_tcp_cmd *cmd)
-@@ -832,6 +839,20 @@ static int nvmet_tcp_try_send_one(struct nvmet_tcp_queue *queue,
- 	return 1;
- }
- 
-+#ifdef CONFIG_NVME_TARGET_TCP_TLS
-+static bool nvmet_tls_key_expired(struct nvmet_tcp_queue *queue, int ret)
-+{
-+	return ret == -EKEYEXPIRED &&
-+		queue->state != NVMET_TCP_Q_DISCONNECTING &&
-+		queue->state != NVMET_TCP_Q_TLS_HANDSHAKE;
-+}
-+#else
-+static bool nvmet_tls_key_expired(struct nvmet_tcp_queue *queue, int ret)
-+{
-+	return false;
-+}
-+#endif
-+
- static int nvmet_tcp_try_send(struct nvmet_tcp_queue *queue,
- 		int budget, int *sends)
- {
-@@ -1106,6 +1127,103 @@ static inline bool nvmet_tcp_pdu_valid(u8 type)
- 	return false;
- }
- 
-+static void nvmet_tcp_release_queue(struct kref *kref)
-+{
-+	struct nvmet_tcp_queue *queue =
-+		container_of(kref, struct nvmet_tcp_queue, kref);
-+
-+	WARN_ON(queue->state != NVMET_TCP_Q_DISCONNECTING);
-+	queue_work(nvmet_wq, &queue->release_work);
-+}
-+
-+static void nvmet_tcp_schedule_release_queue(struct nvmet_tcp_queue *queue)
-+{
-+	spin_lock_bh(&queue->state_lock);
-+	if (queue->state == NVMET_TCP_Q_TLS_HANDSHAKE) {
-+		/* Socket closed during handshake */
-+		tls_handshake_cancel(queue->sock->sk);
-+	}
-+	if (queue->state != NVMET_TCP_Q_DISCONNECTING) {
-+		queue->state = NVMET_TCP_Q_DISCONNECTING;
-+		kref_put(&queue->kref, nvmet_tcp_release_queue);
-+	}
-+	spin_unlock_bh(&queue->state_lock);
-+}
-+
-+static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
-+{
-+	struct socket *sock = queue->sock;
-+
-+	if (!queue->state_change)
-+		return;
-+
-+	write_lock_bh(&sock->sk->sk_callback_lock);
-+	sock->sk->sk_data_ready =  queue->data_ready;
-+	sock->sk->sk_state_change = queue->state_change;
-+	sock->sk->sk_write_space = queue->write_space;
-+	sock->sk->sk_user_data = NULL;
-+	write_unlock_bh(&sock->sk->sk_callback_lock);
-+}
-+
-+#ifdef CONFIG_NVME_TARGET_TCP_TLS
-+static void nvmet_tcp_tls_handshake_timeout(struct work_struct *w)
-+{
-+	struct nvmet_tcp_queue *queue = container_of(to_delayed_work(w),
-+			struct nvmet_tcp_queue, tls_handshake_tmo_work);
-+
-+	pr_warn("queue %d: TLS handshake timeout\n", queue->idx);
-+	/*
-+	 * If tls_handshake_cancel() fails we've lost the race with
-+	 * nvmet_tcp_tls_handshake_done() */
-+	if (!tls_handshake_cancel(queue->sock->sk))
-+		return;
-+	spin_lock_bh(&queue->state_lock);
-+	if (WARN_ON(queue->state != NVMET_TCP_Q_TLS_HANDSHAKE)) {
-+		spin_unlock_bh(&queue->state_lock);
-+		return;
-+	}
-+	queue->state = NVMET_TCP_Q_FAILED;
-+	spin_unlock_bh(&queue->state_lock);
-+	nvmet_tcp_schedule_release_queue(queue);
-+	kref_put(&queue->kref, nvmet_tcp_release_queue);
-+}
-+
-+static int update_tls_keys(struct nvmet_tcp_queue *queue)
-+{
-+	int ret;
-+
-+	cancel_work(&queue->io_work);
-+	queue->state = NVMET_TCP_Q_TLS_HANDSHAKE;
-+
-+	nvmet_tcp_restore_socket_callbacks(queue);
-+
-+	INIT_DELAYED_WORK(&queue->tls_handshake_tmo_work,
-+			  nvmet_tcp_tls_handshake_timeout);
-+
-+	ret = nvmet_tcp_tls_handshake(queue, HANDSHAKE_KEY_UPDATE_TYPE_RECEIVED);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = wait_for_completion_interruptible_timeout(&queue->tls_complete,
-+							10 * HZ);
-+
-+	if (ret <= 0) {
-+		tls_handshake_cancel(queue->sock->sk);
-+		return ret;
-+	}
-+
-+	queue->state = NVMET_TCP_Q_LIVE;
-+
-+	return 0;
-+}
-+#else
-+static int update_tls_keys(struct nvmet_tcp_queue *queue)
-+{
-+	return -EPFNOSUPPORT;
-+}
-+#endif
-+
- static int nvmet_tcp_tls_record_ok(struct nvmet_tcp_queue *queue,
- 		struct msghdr *msg, char *cbuf)
- {
-@@ -1131,6 +1249,9 @@ static int nvmet_tcp_tls_record_ok(struct nvmet_tcp_queue *queue,
- 			ret = -EAGAIN;
- 		}
- 		break;
-+	case TLS_RECORD_TYPE_HANDSHAKE:
-+		ret = -EAGAIN;
-+		break;
- 	default:
- 		/* discard this record type */
- 		pr_err("queue %d: TLS record %d unhandled\n",
-@@ -1340,6 +1461,8 @@ static int nvmet_tcp_try_recv(struct nvmet_tcp_queue *queue,
- 	for (i = 0; i < budget; i++) {
- 		ret = nvmet_tcp_try_recv_one(queue);
- 		if (unlikely(ret < 0)) {
-+			if (nvmet_tls_key_expired(queue, ret))
-+					goto done;
- 			nvmet_tcp_socket_error(queue, ret);
- 			goto done;
- 		} else if (ret == 0) {
-@@ -1351,29 +1474,6 @@ static int nvmet_tcp_try_recv(struct nvmet_tcp_queue *queue,
- 	return ret;
- }
- 
--static void nvmet_tcp_release_queue(struct kref *kref)
--{
--	struct nvmet_tcp_queue *queue =
--		container_of(kref, struct nvmet_tcp_queue, kref);
--
--	WARN_ON(queue->state != NVMET_TCP_Q_DISCONNECTING);
--	queue_work(nvmet_wq, &queue->release_work);
--}
--
--static void nvmet_tcp_schedule_release_queue(struct nvmet_tcp_queue *queue)
--{
--	spin_lock_bh(&queue->state_lock);
--	if (queue->state == NVMET_TCP_Q_TLS_HANDSHAKE) {
--		/* Socket closed during handshake */
--		tls_handshake_cancel(queue->sock->sk);
--	}
--	if (queue->state != NVMET_TCP_Q_DISCONNECTING) {
--		queue->state = NVMET_TCP_Q_DISCONNECTING;
--		kref_put(&queue->kref, nvmet_tcp_release_queue);
--	}
--	spin_unlock_bh(&queue->state_lock);
--}
--
- static inline void nvmet_tcp_arm_queue_deadline(struct nvmet_tcp_queue *queue)
- {
- 	queue->poll_end = jiffies + usecs_to_jiffies(idle_poll_period_usecs);
-@@ -1404,8 +1504,12 @@ static void nvmet_tcp_io_work(struct work_struct *w)
- 		ret = nvmet_tcp_try_recv(queue, NVMET_TCP_RECV_BUDGET, &ops);
- 		if (ret > 0)
- 			pending = true;
--		else if (ret < 0)
-+		else if (ret < 0) {
-+			if (ret == -EKEYEXPIRED)
-+				break;
-+
- 			return;
-+		}
- 
- 		ret = nvmet_tcp_try_send(queue, NVMET_TCP_SEND_BUDGET, &ops);
- 		if (ret > 0)
-@@ -1415,6 +1519,11 @@ static void nvmet_tcp_io_work(struct work_struct *w)
- 
- 	} while (pending && ops < NVMET_TCP_IO_WORK_BUDGET);
- 
-+	if (ret == -EKEYEXPIRED) {
-+		update_tls_keys(queue);
-+		pending = true;
-+	}
-+
- 	/*
- 	 * Requeue the worker if idle deadline period is in progress or any
- 	 * ops activity was recorded during the do-while loop above.
-@@ -1517,21 +1626,6 @@ static void nvmet_tcp_free_cmds(struct nvmet_tcp_queue *queue)
- 	kfree(cmds);
- }
- 
--static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
--{
--	struct socket *sock = queue->sock;
--
--	if (!queue->state_change)
--		return;
--
--	write_lock_bh(&sock->sk->sk_callback_lock);
--	sock->sk->sk_data_ready =  queue->data_ready;
--	sock->sk->sk_state_change = queue->state_change;
--	sock->sk->sk_write_space = queue->write_space;
--	sock->sk->sk_user_data = NULL;
--	write_unlock_bh(&sock->sk->sk_callback_lock);
--}
--
- static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
- {
- 	struct nvmet_tcp_cmd *cmd = queue->cmds;
-@@ -1794,6 +1888,7 @@ static void nvmet_tcp_tls_handshake_done(void *data, int status,
- 	}
- 	if (!status) {
- 		queue->tls_pskid = peerid;
-+		queue->handshake_session_id = handshake_session_id;
- 		queue->state = NVMET_TCP_Q_CONNECTING;
- 	} else
- 		queue->state = NVMET_TCP_Q_FAILED;
-@@ -1809,28 +1904,7 @@ static void nvmet_tcp_tls_handshake_done(void *data, int status,
- 	else
- 		nvmet_tcp_set_queue_sock(queue);
- 	kref_put(&queue->kref, nvmet_tcp_release_queue);
--}
--
--static void nvmet_tcp_tls_handshake_timeout(struct work_struct *w)
--{
--	struct nvmet_tcp_queue *queue = container_of(to_delayed_work(w),
--			struct nvmet_tcp_queue, tls_handshake_tmo_work);
--
--	pr_warn("queue %d: TLS handshake timeout\n", queue->idx);
--	/*
--	 * If tls_handshake_cancel() fails we've lost the race with
--	 * nvmet_tcp_tls_handshake_done() */
--	if (!tls_handshake_cancel(queue->sock->sk))
--		return;
--	spin_lock_bh(&queue->state_lock);
--	if (WARN_ON(queue->state != NVMET_TCP_Q_TLS_HANDSHAKE)) {
--		spin_unlock_bh(&queue->state_lock);
--		return;
--	}
--	queue->state = NVMET_TCP_Q_FAILED;
--	spin_unlock_bh(&queue->state_lock);
--	nvmet_tcp_schedule_release_queue(queue);
--	kref_put(&queue->kref, nvmet_tcp_release_queue);
-+	complete(&queue->tls_complete);
- }
- 
- static int nvmet_tcp_tls_handshake(struct nvmet_tcp_queue *queue,
-@@ -1852,11 +1926,15 @@ static int nvmet_tcp_tls_handshake(struct nvmet_tcp_queue *queue,
- 	args.ta_data = queue;
- 	args.ta_keyring = key_serial(queue->port->nport->keyring);
- 	args.ta_timeout_ms = tls_handshake_timeout * 1000;
-+	args.ta_handshake_session_id = queue->handshake_session_id;
-+
-+	init_completion(&queue->tls_complete);
- 
- 	if (keyupdate == HANDSHAKE_KEY_UPDATE_TYPE_UNSPEC)
- 		ret = tls_server_hello_psk(&args, GFP_KERNEL);
- 	else
- 		ret = tls_server_keyupdate_psk(&args, GFP_KERNEL, keyupdate);
-+
- 	if (ret) {
- 		kref_put(&queue->kref, nvmet_tcp_release_queue);
- 		pr_err("failed to start TLS, err=%d\n", ret);
--- 
-2.51.1
-
+SGkgRXJpYw0KDQpZb3UgYXJlIHJpZ2h0LCBJIHdpbGwgZm9sbG93IHlvdXIgYWR2aWNlIHRvIG1v
+ZGlmeSB0aGUgcmVsZXZhbnQgY29kZS4NCg0KUmVnYXJkcw0KSGFpbG9uZw0KDQoNCi0tLS0t6YKu
+5Lu25Y6f5Lu2LS0tLS0NCuWPkeS7tuS6ujogRXJpYyBEdW1hemV0IDxlZHVtYXpldEBnb29nbGUu
+Y29tPiANCuWPkemAgeaXtumXtDogMjAyNeW5tDEy5pyIMeaXpSAyMDoyMQ0K5pS25Lu25Lq6OiAy
+Njk0NDM5NjQ4QHFxLmNvbQ0K5oqE6YCBOiBhbmRyZXcrbmV0ZGV2QGx1bm4uY2g7IGRhdmVtQGRh
+dmVtbG9mdC5uZXQ7IGt1YmFAa2VybmVsLm9yZzsgcGFiZW5pQHJlZGhhdC5jb207IG1jb3F1ZWxp
+bi5zdG0zMkBnbWFpbC5jb207IGFsZXhhbmRyZS50b3JndWVAZm9zcy5zdC5jb207IEZhbiBIYWls
+b25nL+iMg+a1t+m+mSA8aGFpbG9uZy5mYW5Ac2llbmdpbmUuY29tPjsgbmV0ZGV2QHZnZXIua2Vy
+bmVsLm9yZzsgbGludXgtc3RtMzJAc3QtbWQtbWFpbG1hbi5zdG9ybXJlcGx5LmNvbTsgbGludXgt
+YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
+cmcNCuS4u+mimDogUmU6IFtQQVRDSF0gbmV0OiBzdG1tYWM6IE1vZGlmeSB0aGUganVkZ21lbnQg
+Y29uZGl0aW9uIG9mICJ0eF9hdmFpbCIgZnJvbSAxIHRvIDINCg0KT24gU3VuLCBOb3YgMzAsIDIw
+MjUgYXQgNjo1N+KAr1BNIDwyNjk0NDM5NjQ4QHFxLmNvbT4gd3JvdGU6DQo+DQo+IEZyb206ICJo
+YWlsb25nLmZhbiIgPGhhaWxvbmcuZmFuQHNpZW5naW5lLmNvbT4NCj4NCj4gICAgIFVuZGVyIGNl
+cnRhaW4gY29uZGl0aW9ucywgYSBXQVJOX09OIHdpbGwgYmUgdHJpZ2dlcmVkDQo+ICAgICBpZiBh
+dmFpbCBlcXVhbHMgMS4NCj4NCj4gICAgIEZvciBleGFtcGxlLCB3aGVuIGEgVkxBTiBwYWNrZXQg
+aXMgdG8gc2VuZCwNCj4gICAgIHN0bW1hY192bGFuX2luc2VydCBjb25zdW1lcyBvbmUgdW5pdCBv
+ZiBzcGFjZSwNCj4gICAgIGFuZCB0aGUgZGF0YSBpdHNlbGYgY29uc3VtZXMgYW5vdGhlci4NCj4g
+ICAgIGFjdHVhbGx5IHJlcXVpcmluZyAyIHVuaXRzIG9mIHNwYWNlIGluIHRvdGFsLg0KPg0KPiBT
+aWduZWQtb2ZmLWJ5OiBoYWlsb25nLmZhbiA8aGFpbG9uZy5mYW5Ac2llbmdpbmUuY29tPg0KPiAt
+LS0NCj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0bW1hY19tYWluLmMg
+fCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkN
+Cj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0
+bW1hY19tYWluLmMgDQo+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3Rt
+bWFjX21haW4uYw0KPiBpbmRleCA3YjkwZWNkM2EuLmI1NzUzODRjZCAxMDA2NDQNCj4gLS0tIGEv
+ZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4uYw0KPiArKysg
+Yi9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1tYWNfbWFpbi5jDQo+IEBA
+IC00NTI5LDcgKzQ1MjksNyBAQCBzdGF0aWMgbmV0ZGV2X3R4X3Qgc3RtbWFjX3htaXQoc3RydWN0
+IHNrX2J1ZmYgKnNrYiwgc3RydWN0IG5ldF9kZXZpY2UgKmRldikNCj4gICAgICAgICAgICAgICAg
+IH0NCj4gICAgICAgICB9DQo+DQo+IC0gICAgICAgaWYgKHVubGlrZWx5KHN0bW1hY190eF9hdmFp
+bChwcml2LCBxdWV1ZSkgPCBuZnJhZ3MgKyAxKSkgew0KPiArICAgICAgIGlmICh1bmxpa2VseShz
+dG1tYWNfdHhfYXZhaWwocHJpdiwgcXVldWUpIDwgbmZyYWdzICsgMikpIHsNCj4gICAgICAgICAg
+ICAgICAgIGlmICghbmV0aWZfdHhfcXVldWVfc3RvcHBlZChuZXRkZXZfZ2V0X3R4X3F1ZXVlKGRl
+diwgcXVldWUpKSkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICBuZXRpZl90eF9zdG9wX3F1
+ZXVlKG5ldGRldl9nZXRfdHhfcXVldWUocHJpdi0+ZGV2LA0KPiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQo+IHF1ZXVlKSk7
+DQoNCkRyaXZlcnMgc2hvdWxkIHN0b3AgdGhlaXIgcXVldWVzIGVhcmxpZXIuDQoNCk5FVERFVl9U
+WF9CVVNZIGlzIGFsbW9zdCBhbHdheXMgd3JvbmcuDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25l
+dC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1tYWNfbWFpbi5jDQpiL2RyaXZlcnMvbmV0L2V0
+aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0bW1hY19tYWluLmMNCmluZGV4IDdiOTBlY2QzYTU1ZTYw
+MDQ1OGIwYzg3ZDYxMjU4MzE2MjZmNDY4M2QuLjZkY2M3Yjg0YTg3NTk3NjNiNjQ3MWE0OGE2Yzgw
+YjFmMTdjZDkzN2MNCjEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9z
+dG1tYWMvc3RtbWFjX21haW4uYw0KKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9z
+dG1tYWMvc3RtbWFjX21haW4uYw0KQEAgLTQ2NzUsNyArNDY3NSw3IEBAIHN0YXRpYyBuZXRkZXZf
+dHhfdCBzdG1tYWNfeG1pdChzdHJ1Y3Qgc2tfYnVmZiAqc2tiLCBzdHJ1Y3QgbmV0X2RldmljZSAq
+ZGV2KQ0KICAgICAgICAgICAgICAgIHByaW50X3BrdChza2ItPmRhdGEsIHNrYi0+bGVuKTsNCiAg
+ICAgICAgfQ0KDQotICAgICAgIGlmICh1bmxpa2VseShzdG1tYWNfdHhfYXZhaWwocHJpdiwgcXVl
+dWUpIDw9IChNQVhfU0tCX0ZSQUdTICsgMSkpKSB7DQorICAgICAgIGlmICh1bmxpa2VseShzdG1t
+YWNfdHhfYXZhaWwocHJpdiwgcXVldWUpIDw9IChNQVhfU0tCX0ZSQUdTICsgDQorIDIpKSkgew0K
+ICAgICAgICAgICAgICAgIG5ldGlmX2RiZyhwcml2LCBodywgcHJpdi0+ZGV2LCAiJXM6IHN0b3Ag
+dHJhbnNtaXR0ZWQgcGFja2V0c1xuIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgX19mdW5j
+X18pOw0KICAgICAgICAgICAgICAgIG5ldGlmX3R4X3N0b3BfcXVldWUobmV0ZGV2X2dldF90eF9x
+dWV1ZShwcml2LT5kZXYsIHF1ZXVlKSk7DQo=
