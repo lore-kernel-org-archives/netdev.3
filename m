@@ -1,119 +1,112 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CFF3242D0;
-	Tue,  2 Dec 2025 14:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF441DF74F
+	for <netdev@vger.kernel.org>; Tue,  2 Dec 2025 14:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764684749; cv=none; b=t19Bt69b5tH7i6nGDL+oXZNwkgnyl0qNvbgm6zLb0MSUgMHJ96wl5//3oL40R4esh7MoH8lCG/LA71ycJH8e26X+EpoDwE++d52PrybsSfgh8ttKRTNNjajAcgZWNSkQ2VBs9CUnssKJnufD7FPG1yoVkQtaE01rYsxFihe5c10=
+	t=1764685133; cv=none; b=dgahnw9vYawg/fHf43ow1Hlp1rTrSKc7KNwB0yTgIt/PN84HIIxxZUkSgPT0L2yYmFrH7OLrW/e5rPK9IMZc6RdT1TRda9stW5jkHQTQORqO7HnF1N9BCPii3e1L9UuS3yBFbKJ3P2D7OD3a9wTusRCGggVAXQBwOE36/ZPCqu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764684749; c=relaxed/simple;
-	bh=Opau1lbwtXaKHB0UFeBhFz3Jn34wsDPxA+9RsH25iaY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BgKjvKzBx+YOD5mp3127oLV10ysxOumSlYAvM5CskdS5exCBeyP/XPRtPnPpJcuB61zQnuClrijreDkOowmsOMqXgsV9jqXKBk7+LSo03n+l/EAuorAqXzUNzdCQI+RvdgxoQEuxchm3ybKNuVN3C5ri4+RUZlUPIJ5SjcacMFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dLN4z5XZVzJ46bZ;
-	Tue,  2 Dec 2025 22:12:19 +0800 (CST)
-Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id C2B8040565;
-	Tue,  2 Dec 2025 22:12:24 +0800 (CST)
-Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
- mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Dec 2025 17:12:24 +0300
-From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
-To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Kuniyuki
- Iwashima <kuniyu@google.com>, Xiao Liang <shaw.leon@gmail.com>, Stanislav
- Fomichev <sdf@fomichev.me>, Dmitry Skorodumov <skorodumov.dmitry@huawei.com>,
-	Etienne Champetier <champetier.etienne@gmail.com>, "David S. Miller"
-	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
-	<linux-kernel@vger.kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net 2/2] ipvlan: Take addr_lock in ipvlan_open()
-Date: Tue, 2 Dec 2025 17:11:49 +0300
-Message-ID: <20251202141149.4144248-3-skorodumov.dmitry@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251202141149.4144248-1-skorodumov.dmitry@huawei.com>
-References: <20251202141149.4144248-1-skorodumov.dmitry@huawei.com>
+	s=arc-20240116; t=1764685133; c=relaxed/simple;
+	bh=oZkdykvJtHXWigOXU8GpVM5RcFKAy2Fn60LRXWVBZDw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Cy5GJBXSDcxf2N2MfkqZgWu/e97TabEvqc7KanJANzTkwl+UTv9u7Xxx+Wim9KAwxYElh4MoUffc0Ey1j7I1zkCvQVJeO9OHSpvA902qvbkNJv/CJZNaLj0L0p7PPS3xW7q7iRgqyFnZw9fZLuYpfNePTVxKt/HYdO5f5olWooo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VnwioI+m; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VnwioI+m"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-298287a26c3so65529425ad.0
+        for <netdev@vger.kernel.org>; Tue, 02 Dec 2025 06:18:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764685132; x=1765289932; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oZkdykvJtHXWigOXU8GpVM5RcFKAy2Fn60LRXWVBZDw=;
+        b=VnwioI+m3KpJIRXOhyeu8kHtXQ8DCRfaSMIcy/AJc1QSS5kwYhxKLuxwNtEKIAU7DZ
+         l0ybGHFmE857N5gU8iOaGIFnSC0NB9syOBwO24e5Anyc9WuJoGSj8NJA3riWtEqQRm4C
+         J0ACOdgzc0jnWc5iIkhYiDqj0cDogAYafaGCxXjlT+hB1eIq4KKOMcr5SXddUurOwqbT
+         zpF1T+QCNB0e61lrmyk8qFOLG+a82XBjLOC+2Dbmz8JKB7eTs+VkX/tdZKvZVuS5uPAm
+         7CYVWDbuERPwSzzFRlVNfosaycQHJZc1kmvQFJ/teO4I+nJkoSmIRQR5So8aTrmfS+kv
+         iHIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764685132; x=1765289932;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oZkdykvJtHXWigOXU8GpVM5RcFKAy2Fn60LRXWVBZDw=;
+        b=JO/Av/ajsfWSGVsAAvnE+uFWA/vxnBWsRg5wqIcCmTs9Otc8HT6gaLnwH+wVg06ZlS
+         kIXNhZaVJ6IqtWwIBQ1XEVQnVYG+oAlQIN6aJToYDnoRD9DofSpjeFOZ+7gy9Yg+pm5I
+         5XdiaDaX+Zdhd5wdSQCvia7V2D3wLvxyYixp8qX0uwTPLdgzUc5LL+A6qa29xD8KzrIv
+         luKVJKDJcwF73Z7J3SWJNk97VRJdFTyGh3shub3pUUEdlSvz7zhbq86JFsk3YGUgXux2
+         vDniFJKL3PPQP30JLDqT9jympikj4KwZRmbisW122Z9uwpmZeu1qSP62elw+Gg++arQZ
+         +pbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdW73BTucqJidbDVvgGwpe1gCaTZwNsJowswi/M/pP0vDx6qeRLLfTJQX3zq9FOpq1raI9P7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyBPpr7qghl/w7DKUkjFEdy22rkMESl8rygRRemaYd90mkL+nX
+	gN44M/UMqIWtLw1iNTvsq1j/onwxyW4xKfsH/TxdHWGv+L6552UV1gbN
+X-Gm-Gg: ASbGncvpajDb87pi5TCTnPueiAL/XLMI5D+k+qiTfJi112hsGHHepqOOepdyk561hwO
+	tVY77Kkk4hsFBnP/kqNQ1+1+XvuxYMAScwZZEiqS4eBVQCTtooNUPSaOJJb7aiqm0po6XWrP01X
+	02Ru838prtD5hWHYQEEE0+VEcfniv7fgWjGQIHmEe8oLZDgf/yvIQZpYdHVePy38J4tcjvpO+Yj
+	4gRZDbrOaECyC7bFYjD5uYzVbaz2bTdnTMuUf1i5jf2XSQMfl7Ry9+6MZ8ohg/XJ5BBVHCHl8t/
+	blOOKptqUS1QcXmpliovh7gSH7Sf7xaa2rjwqLNiNybUb3cCLpLylpxUy2IyrOCVl+ekNI/aE/d
+	ScyROD/GuJbTfMOGsc/CGNXG+zBICV5M531Byk7Ot3GgqkAbfC9oaQofBCioFEANNRelxbwifJQ
+	02kxXhHBR1H9c5
+X-Google-Smtp-Source: AGHT+IEXVjMF/gLtu0SpMkt//7+TIhu+AKR4+RCT2p7BygOrI2of0LrhuPfsmy4VQRAuo+vTWYeMvg==
+X-Received: by 2002:a17:902:f60f:b0:295:5864:8009 with SMTP id d9443c01a7336-29b6bf5c885mr447803385ad.44.1764685131733;
+        Tue, 02 Dec 2025 06:18:51 -0800 (PST)
+Received: from [192.168.1.4] ([106.215.171.188])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-be4fbde2350sm15354312a12.9.2025.12.02.06.18.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 06:18:51 -0800 (PST)
+Message-ID: <ec570c6f8c041f60f1de0b002e61e5a2971633c5.camel@gmail.com>
+Subject: Re: [RFT net-next PATCH RESEND 0/2] ethernet: intel: fix freeing
+ uninitialized pointers with __free
+From: ally heev <allyheev@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel	
+ <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Alexander
+ Lobakin <aleksander.lobakin@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, Dan
+ Carpenter	 <dan.carpenter@linaro.org>
+Date: Wed, 03 Dec 2025 01:17:13 +0530
+In-Reply-To: <81053279-f2da-420c-b7a1-9a81615cd7ca@intel.com>
+References: 
+	<20251124-aheev-fix-free-uninitialized-ptrs-ethernet-intel-v1-0-a03fcd1937c0@gmail.com>
+	 <81053279-f2da-420c-b7a1-9a81615cd7ca@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500004.china.huawei.com (7.188.26.250)
 
-It was forgotten to lock addrs in ipvlan_open().
+On Mon, 2025-12-01 at 13:40 -0800, Tony Nguyen wrote:
+>=20
+> On 11/23/2025 11:40 PM, Ally Heev wrote:
+> > Uninitialized pointers with `__free` attribute can cause undefined
+> > behavior as the memory assigned randomly to the pointer is freed
+> > automatically when the pointer goes out of scope.
+> >=20
+> > We could just fix it by initializing the pointer to NULL, but, as usage=
+ of
+> > cleanup attributes is discouraged in net [1], trying to achieve cleanup
+> > using goto
+>=20
+> These two drivers already have multiple other usages of this. All the=20
+> other instances initialize to NULL; I'd prefer to see this do the same=
+=20
+> over changing this single instance.
+>=20
 
-Seems that code was initially written in assumption
-that any address change occurs under rtnl_lock(). But
-it's not true for the ipv6 case. So, we have to
-take addr_lock in ipvlan_open().
+Other usages are slightly complicated to be refactored and might need
+good testing. Do you want me to do it in a different series?
 
-Also, take the addrs_lock in ipvlan_close()
 
-Fixes: 8230819494b3 ("ipvlan: use per device spinlock to protect addrs list updates")
-Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
-CC: Paolo Abeni <pabeni@redhat.com>
----
- drivers/net/ipvlan/ipvlan_main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index c390f4241621..53d311af2f44 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -182,18 +182,18 @@ static void ipvlan_uninit(struct net_device *dev)
- static int ipvlan_open(struct net_device *dev)
- {
- 	struct ipvl_dev *ipvlan = netdev_priv(dev);
-+	struct ipvl_port *port = ipvlan->port;
- 	struct ipvl_addr *addr;
- 
--	if (ipvlan->port->mode == IPVLAN_MODE_L3 ||
--	    ipvlan->port->mode == IPVLAN_MODE_L3S)
-+	if (port->mode == IPVLAN_MODE_L3 || port->mode == IPVLAN_MODE_L3S)
- 		dev->flags |= IFF_NOARP;
- 	else
- 		dev->flags &= ~IFF_NOARP;
- 
--	rcu_read_lock();
-+	spin_lock_bh(&port->addrs_lock);
- 	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
- 		ipvlan_ht_addr_add(ipvlan, addr);
--	rcu_read_unlock();
-+	spin_unlock_bh(&port->addrs_lock);
- 
- 	return 0;
- }
-@@ -207,10 +207,10 @@ static int ipvlan_stop(struct net_device *dev)
- 	dev_uc_unsync(phy_dev, dev);
- 	dev_mc_unsync(phy_dev, dev);
- 
--	rcu_read_lock();
-+	spin_lock_bh(&ipvlan->port->addrs_lock);
- 	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
- 		ipvlan_ht_addr_del(addr);
--	rcu_read_unlock();
-+	spin_unlock_bh(&ipvlan->port->addrs_lock);
- 
- 	return 0;
- }
-@@ -817,6 +817,8 @@ static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
- {
- 	struct ipvl_addr *addr;
- 
-+	assert_spin_locked(&ipvlan->port->addrs_lock);
-+
- 	addr = kzalloc(sizeof(struct ipvl_addr), GFP_ATOMIC);
- 	if (!addr)
- 		return -ENOMEM;
--- 
-2.25.1
-
+Regards,
+Ally
