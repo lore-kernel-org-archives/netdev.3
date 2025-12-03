@@ -1,51 +1,53 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A482D0636;
-	Wed,  3 Dec 2025 21:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC05482EB;
+	Wed,  3 Dec 2025 21:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764796034; cv=none; b=pQpOSKBW8dnsgTZtJV0D0wi4hCN42dy8zs3U5pesTI8Ak3WEfiK22XZO3pX4e8ORMSu8fGaioM5A3GDyxcEEHVKhQVMeso9GcMDc64ZUo4FQ+qDOEAna1e8KiUJl2YFv9Jya9jPiL0yFHV9CUOQC+NP3GnTspaNaC6dG7+xcN/4=
+	t=1764796034; cv=none; b=DjmBxtLZB53kpk27QpVb2DibRAywfpcgkrsA/G16J1HUHVtT0NYUMa4ni1hRuvu0Z28L7VxojtXH+2xlsrtrRiTUs0TgBJ1I6o7X2xKQXcvuUb8WcQZX8m63nYJVWEUoB/gHE0IV5V6nykOxrO2mPf9401d79xMVCaNatBogGjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764796034; c=relaxed/simple;
-	bh=qVDJVAb7m8LhZF55QvKoiTvZ29MfCyKYtS45an5OrSc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UIsdWrrf2buBrbjl9YdMBNw8+LvtGN36gAZh1nyFKdwvTeOUipSQNxEJGEPkms/DXchOYP0g/YT9KxF9GOcP3qDXTmXXJp/GHjWYEN8qwi/nEDTT4dy8yo1wlwpUZZVN4Pp4jfX1byj7KDVMZuhZToQRh3aYWy7IHBPDmKRzqoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KYuv9aX5; arc=none smtp.client-ip=80.241.56.171
+	bh=bnDq6d3jQ6FKKUfqKegdgJFbk/YWJWrWX2lE2cHa9Dc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=a1fafvgaUpt76onZpC12MAbm4i+AuUtX6YipeKJ9z8fzOZeNf2X8Mmf+pnFB+p9t4YKW+8j/fPywqdiZDpS02odzcqwC/gUorjPU0S+LIKl3lHLKvMGz2KBzo4bLJQlp4tI/O4q62JBNsXFv8IGiuRgE2KDPZ5/+Dhqi+LoUrts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sQ1hQhRi; arc=none smtp.client-ip=80.241.56.161
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KYuv9aX5"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sQ1hQhRi"
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4dM9F24YD6z9tyH;
-	Wed,  3 Dec 2025 22:07:02 +0100 (CET)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dM9F955twz9t9P;
+	Wed,  3 Dec 2025 22:07:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764796022;
+	t=1764796029;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eAh1SlQBuHPbEjaVW+h37YQVPv85RZ8746aPTiKpCV0=;
-	b=KYuv9aX5XxgxY4N92efD75JwR8wamPSYFb7hskD2qwoCt7XgyHZJtHTUnPIoMZE2A3ElPo
-	xpGmn5fxjYc06h327VzMb8Slv82Y13gOiirLboMtOUUyAgEg33cei36SpHHbd6NjydeNr3
-	aVnqKeSWAyRq6vOtCusemZ7eSmMz5/6ZW5mfg+SJN6ARCmUbh6OcDO9Nvu+atf7SS0ltgk
-	Y1DcAMyJmR5A62x6eQRGuuff1o/nU790BJgGB34moaQG62D4zgb1NhDPCjfZnDDy/qlpKu
-	rnjg0I5DeB1A47O7otMCcOXgIm0q3lj/kBgjw+dvJCrhOUq4fKh1/uhksi8TOw==
-Message-ID: <c52624fb-9d5f-4eb7-af3f-e2cef872a2ba@mailbox.org>
-Date: Wed, 3 Dec 2025 20:21:00 +0100
+	bh=fV9rty4MhOWTsXWsKMyQGwT6zFis69PObb8cZsb5NPU=;
+	b=sQ1hQhRiQSuD2/PqyDmiI12tl/COqXjPbF+wVB2AEtBetacW5T/Q1UZ0Vh/QreIgVGFxz1
+	cyy/uHz/Hr2EQYB6OSdSOMTSonQG16NfXCS0ypa0W3Rgr+hKtDqjmc8pnFuZJOn2EHrG/2
+	kdF9eJd0jz9hauPmEe9gUyYC0KjBuhW6hET88Zfjb0rMJ2nvo3FsqlX2hepDRPMGTcHCCL
+	fthXZgPhqRxGMU0ewxgpSAfcbWV+x2V47pN2xyzNYWDouYczzPD6Qf4m8Es1yaXaHmPu2A
+	kd1PNRppE4OGw+Zv5MPOMKjD8Im+n6A6fe8YsrC5E2fNK56Vt8orl+eR2Ssl5A==
+Message-ID: <acbbef86-9f8a-45fd-8643-24c8efcbbb01@mailbox.org>
+Date: Wed, 3 Dec 2025 21:17:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Marek Vasut <marek.vasut@mailbox.org>
 Subject: Re: [net-next,PATCH 3/3] net: phy: realtek: Add property to enable
  SSC
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Ivan Galkin <ivan.galkin@axis.com>,
+ Christophe Roullier <christophe.roullier@foss.st.com>
 Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
  Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
  Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
@@ -53,49 +55,46 @@ Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
  Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+ Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ devicetree@vger.kernel.org
 References: <20251130005843.234656-1-marek.vasut@mailbox.org>
  <20251130005843.234656-3-marek.vasut@mailbox.org>
- <aTAOe4c48zyIjVcb@shell.armlinux.org.uk>
- <20251203123430.zq7sjxfwb5kkff7q@skbuf>
- <aTB0x6JGcGUM04UX@shell.armlinux.org.uk>
+ <20251203094224.jelvaizfq7h6jzke@skbuf>
 Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <aTB0x6JGcGUM04UX@shell.armlinux.org.uk>
+In-Reply-To: <20251203094224.jelvaizfq7h6jzke@skbuf>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: c43c75a9ce634b39c52
-X-MBO-RS-META: sj3uknpc7hwyhgtqrd79d6rqrmm4d475
+X-MBO-RS-ID: 15e7d574e6c419c1153
+X-MBO-RS-META: fn53akxmsfk4bwrohczmkekqwfywhdya
 
-On 12/3/25 6:35 PM, Russell King (Oracle) wrote:
-> On Wed, Dec 03, 2025 at 02:34:30PM +0200, Vladimir Oltean wrote:
->> On Wed, Dec 03, 2025 at 10:18:35AM +0000, Russell King (Oracle) wrote:
->>> On Sun, Nov 30, 2025 at 01:58:34AM +0100, Marek Vasut wrote:
->>>> Add support for spread spectrum clocking (SSC) on RTL8211F(D)(I)-CG,
->>>> RTL8211FS(I)(-VS)-CG, RTL8211FG(I)(-VS)-CG PHYs. The implementation
->>>> follows EMI improvement application note Rev. 1.2 for these PHYs.
->>>>
->>>> The current implementation enables SSC for both RXC and SYSCLK clock
->>>> signals. Introduce new DT property 'realtek,ssc-enable' to enable the
->>>> SSC mode.
->>>
->>> Should there be separate properties for CLKOUT SSC enable and RXC SSC
->>> enable?
->>
->> That's what we're trying to work out. I was going to try and give an
->> example (based on stmmac) why you wouldn't want RXC SSC but you'd still
->> want CLKOUT SSC, but it doesn't seem to hold water based on your feedback.
->> Having one device tree property to control both clocks is a bit simpler.
+On 12/3/25 10:42 AM, Vladimir Oltean wrote:
+
+Hello Vladimir,
+
+>> +       ret = phy_write_paged(phydev, RTL8211F_SSC_PAGE, RTL8211F_SSC_RXC, 0x5f00);
+>> +       if (ret < 0) {
+>> +               dev_err(dev, "RXC SCC configuration failed: %pe\n", ERR_PTR(ret));
+>> +               return ret;
+>> +       }
 > 
-> The problem I see is that if we introduce a single property for both,
-> we then need to maintain this single property ad infinitum. If we
-> later find that we need separate control, we could end up with three
-> properties - the combined one, and two for individual controls.
-> 
-> If we are to go with a single property, then I think we should have at
-> least discussed what we would do if we need separate control.
-> 
-> If we go with two properties now, then we don't have to consider this,
-> and we will only ever have the two properties rather than three.
-It seems the CLKOUT and RXC SSC can be enabled entirely separately, so I 
-think two properties are the way to go ?
+> I'm going to show a bit of lack of knowledge, but I'm thinking in the context
+> of stmmac (user of phylink_config :: mac_requires_rxc), which I don't exactly
+> know what it requires it for. Does it use the RGMII RXC as a system clock?
+
+I believe dwmac (stmmac) uses RXC to drive at least (part of) its DMA.
+
++CC Christophe
+
+> If so, I guess intentionally introducing jitter (via the spread spectrum
+> feature) would be disastrous for it. In that case we should seriously consider
+> separating the "spread spectrum for CLKOUT" and "spread spectrum for RGMII"
+> device tree control properties.
+
+I can split this into realtek,clkout-ssc-enable and realtek,rxc-ssc-enable.
+
+Note that I use this exact configuration with both STM32MP13xx and 
+STM32MP25xx RGMII / stmmac .
+
+-- 
+Best regards,
+Marek Vasut
