@@ -1,48 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2CB21CC5B;
-	Wed,  3 Dec 2025 20:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0882BE05E
+	for <netdev@vger.kernel.org>; Wed,  3 Dec 2025 20:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764792567; cv=none; b=dZp0uMeLRKM3zllZ0VYG/rwfjXnqlEAfeIoV4LCbE5M+L0RfYsILoAiNE1lOIWmUGnZAcIgmqyWJ6XSPDMdO7D2t91QReXZXtsy3fQYxqvfImsVUdNR8pQ90vY1iNL67ypeSIGgViF0I2aJ2HzpX3Ig4iI3a/Mfc/UsRjhjIggI=
+	t=1764793574; cv=none; b=f4oNlA/mp6dmVjwJVmRiyeFffUxGdKoQeTURz5KkctSm9oB3vorIJpvU5ECsP0CbGE+LmuVqjxnMgYUt6CuSSzpohqQiCVHUJroYFTe3CT1YTKTPvQbvv+BqZLbQ3ERPunAsvjMJxlzMl7mA6bHJ92M1QLKyz7ngQn2YoA4sSRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764792567; c=relaxed/simple;
-	bh=Tkpa3ZDNlIFMTNN72l1+UBz8f+B42zjoI6nZRZ7cyAE=;
+	s=arc-20240116; t=1764793574; c=relaxed/simple;
+	bh=YEqoF5SzZx116Sccpcvt4hXy3j1TYKypmL6WYWEBLec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZrRkLd6U4gcTCpcx/jkuxySFgP2A2KdTglf9m062jOm5to/q5VC+vbGBwaOepLdFIzeh0YFa2wd8TwQHyKw9sAJNPxGTtn7ntT2OxMUnPFVeqgRcMyGXq0jO+Aft/HxcHipvlucxM0P8TcgwOxwycL0HWyPanQTYDTMDvG3CcR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+N2dYNd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTdbI9ZpU8b435OY+xS7jAO6AcC3x4L/0Bs5SAZFHXkjPnc/QwKV4H/dJCIgRGpG6++zB0Fpg+s8eRd0gTMg2AzjbBkvdDT5gc4DbkzI+OpNk2xF6kzQ+4N0VvocykSofSp8LTcjUYAMFZjD9SIZHLXXkGps5hxnb+3mT2/sgj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PZgKVjFh; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+N2dYNd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48219C4CEF5;
-	Wed,  3 Dec 2025 20:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764792566;
-	bh=Tkpa3ZDNlIFMTNN72l1+UBz8f+B42zjoI6nZRZ7cyAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D+N2dYNdWknkStyxm2NNptErFpk/W5s8hw2mcAx/uGf5oIDOSdqrb7iPzz1cO3+9W
-	 or1w2Ay27WCW76L84UTmg9Me4TgoZMy035CPJdigK3FVdQRS6MhC6swbsLfcmX320R
-	 JoEAf7Xugy4vs7Asx5VNgPGbKBh43kNyP2a7CeqmhhnNxxbYG5a9rwcHLda99OlQfJ
-	 s7ijNGRSr4IwykLUu0KVyvWJYm5Z9OOl9M9SULx3XJyFiNDuGORTIx/6HdvjrK3nfS
-	 P1c2IKeC8pprirIb15cn16JfFFcLEncjPQekCBDdNfA+ZnzxkjYsA0VVt3zCDbzpAq
-	 IVZymug4blqgw==
-Date: Wed, 3 Dec 2025 20:09:21 +0000
-From: Simon Horman <horms@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Daniel Jurgens <danielj@nvidia.com>, netdev@vger.kernel.org,
-	jasowang@redhat.com, pabeni@redhat.com,
-	virtualization@lists.linux.dev, parav@nvidia.com,
-	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, jgg@ziepe.ca, kevin.tian@intel.com,
-	kuba@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com,
-	Chris Mason <clm@meta.com>
-Subject: Re: [PATCH net-next v13 11/12] virtio_net: Add support for TCP and
- UDP ethtool rules
-Message-ID: <aTCY8ZlV8Zw8_7FD@horms.kernel.org>
-References: <20251126193539.7791-1-danielj@nvidia.com>
- <20251126193539.7791-12-danielj@nvidia.com>
- <aS8L--z0ezhkywT_@horms.kernel.org>
- <20251203083305-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZgKVjFh"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47798f4059fso249405e9.2
+        for <netdev@vger.kernel.org>; Wed, 03 Dec 2025 12:26:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764793571; x=1765398371; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=D4U+z8diuyXhssitIdfr3VF+3PrEfPEyJkTdI0+umjk=;
+        b=PZgKVjFhY7XC2vIqYC5Ntqfen3siC8/LLbsfiK3a9SYyF/9ypYQTq07sV2eI6HBb5Y
+         EPQ6/Tj4wZA+kNRwM3qeSeHdCAQOCXzDmeiaaoXWJ4y6kgalbZMuX5EhZI9ZvTz30FMU
+         5BsfN8wRnu2Hd9nQke/DLJCIdSqXK6qNTOz5j0HFhVLyUAu/nvZkXyO2yWkImb/VpIsl
+         Q0Vis5lGoP/mG1iMRwoBe3UdZxcfrdnWRulzOyJlwu34j2e2m2pzipW5VLWzUXwhMuxb
+         J52kKYzI6HZQz1tfS7Bf0LHrOIS30tsdBmHKQqJ7TKdclTTv1uhCnUWg6AbegcB1Lhru
+         Aluw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764793571; x=1765398371;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D4U+z8diuyXhssitIdfr3VF+3PrEfPEyJkTdI0+umjk=;
+        b=A5ABv3MJBvaeg+GTtzAHF+mz+L7/lTkaySs5iKEACVk4Q2ahxS0na/YcBLOu9vAqM3
+         QxhixGTOaZwRm51noQzEZWPxuhoNLZf3vzRboiDcp4HLDKZ0L89Fj6xiOeW37fGxGMzA
+         UUoXdXA1t9MVJEAg7qOlchMmAO/568/6dFybmnBEvYO5HtsHTeCxchBiatTKKy/aE3wt
+         uf0hthOfSSwcfE+83/GBY4kZTNVsmkpGOby0DEg79QmnZ9Ews67/h6zCROg3rfzCZ1t9
+         b7228LiUmFQ9ECKBr0CH0HPXJsJYhF1OhI7lX74ZojQlFVUO+9CEliY231oWC+Jw5Qe6
+         TJWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyJd+xJ9hmA0uNp0MrmGB2ml8D/Yi/lkiqs5RgxkODTJNBE34OMwM4AOfbZLPl8eDglvjxbIU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRNwG0JSGk/rAbbziv9QGnMhhRDS5/ZkPgEPRxUiYjjOOMyN6C
+	urlgmZo3lnm6S1gly122hB5jL5P6CrSMTKFSq5SBY34S9sX2GhmRYT/Z
+X-Gm-Gg: ASbGnculJz3KDDM1P5j9tiRhfoiR1uG4lOQLoSmKjNjA7Mc3BryBi1igEhq6K3dJwHK
+	ZjqD0W63ivrZiy5I9tQztwjpPF4kP/3YHmnKD5v5gTWm2qeMGaJuVgAr3cLNessonWE/GtJXaao
+	1XAzTL1n5wpFSb4LyEplM3my+jFmPlO275hY9t4sgX7ssjQ/ANXnllFQDi+1mRo8YzJfn4mq5IR
+	/ReVD066HgZviIQ/DZiM0FWXPIduFApCdAKuOFzzf35WtAHVBdTtB01aV+IcZJyw70jATs7KF0i
+	0yg9TDmkjafzB54vuyJl8Yq1O8VGQLEAD5m5nfttV8SneOzdFNjeeU8LRWlaiuyn4ohO1FyRasp
+	t0ELJUs1dSdq3/Jsh74ptMDC9Y1a/KRdI8JRJVq4F0VdaPg34ULIzoM5zCsWeC6cn04ZcKzrLuR
+	JPIv0=
+X-Google-Smtp-Source: AGHT+IGQX4FBRFi6oZxQ8snoDehTEr++YiEbkXccxBzPY9CWH/aUFpQkryVpXYyT9Si1SaWtVfs3fg==
+X-Received: by 2002:a05:600c:1c27:b0:477:a203:66dd with SMTP id 5b1f17b1804b1-4792c8ac743mr18376385e9.2.1764793570705;
+        Wed, 03 Dec 2025 12:26:10 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d106:d600:bbd5:36b7:a569:69aa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b157783sm26556215e9.5.2025.12.03.12.26.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 12:26:09 -0800 (PST)
+Date: Wed, 3 Dec 2025 22:26:05 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH RFC net-next 0/3] net: dsa: initial support for MaxLinear
+ MxL862xx switches
+Message-ID: <20251203202605.t4bwihwscc4vkdzz@skbuf>
+References: <cover.1764717476.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,49 +89,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251203083305-mutt-send-email-mst@kernel.org>
+In-Reply-To: <cover.1764717476.git.daniel@makrotopia.org>
 
-+ Chris
+Hi Daniel,
 
-On Wed, Dec 03, 2025 at 08:33:53AM -0500, Michael S. Tsirkin wrote:
-> On Tue, Dec 02, 2025 at 03:55:39PM +0000, Simon Horman wrote:
-> > On Wed, Nov 26, 2025 at 01:35:38PM -0600, Daniel Jurgens wrote:
-> > 
-> > ...
-> > 
-> > > @@ -6005,6 +6085,11 @@ static void parse_ip4(struct iphdr *mask, struct iphdr *key,
-> > >  		mask->tos = l3_mask->tos;
-> > >  		key->tos = l3_val->tos;
-> > >  	}
-> > > +
-> > > +	if (l3_mask->proto) {
-> > > +		mask->protocol = l3_mask->proto;
-> > > +		key->protocol = l3_val->proto;
-> > > +	}
-> > >  }
-> > 
-> > Hi Daniel,
-> > 
-> > Claude Code with review-prompts flags an issue here,
-> > which I can't convince myself is not the case.
-> > 
-> > If parse_ip4() is called for a IP_USER_FLOW, which use ethtool_usrip4_spec,
-> > as does this function, then all is well.
-> > 
-> > However, it seems that it may also be called for TCP_V4_FLOW and UDP_V4_FLOW
-> > flows, in which case accessing .proto will overrun the mask and key which
-> > are actually struct ethtool_tcpip4_spec.
-> > 
-> > https://netdev-ai.bots.linux.dev/ai-review.html?id=51d97b85-5ca3-4cb8-a96a-0d6eab5e7196#patch-10
+On Tue, Dec 02, 2025 at 11:37:13PM +0000, Daniel Golle wrote:
+> Hi,
 > 
+> This series adds very basic DSA support for the MaxLinear MxL86252
+> (5 PHY ports) and MxL86282 (8 PHY ports) switches. The intent is to
+> validate and get feedback on the overall approach and driver structure,
+> especially the firmware-mediated host interface.
 > 
-> Oh I didn't know about this one. Is there any data on how does it work?
-> Which model/prompt/etc?
+> MxL862xx integrates a firmware running on an embedded processor (Zephyr
+> RTOS). Host interaction uses a simple API transported over MDIO/MMD.
+> This series includes only what's needed to pass traffic between user
+> ports and the CPU port: relayed MDIO to internal PHYs, basic port
+> enable/disable, and CPU-port special tagging.
+> 
+> Thanks for taking a look.
 
-Hi Michael,
+I see no phylink_mac_ops in your patches.
 
-I believe these prompts are used:
-
-https://github.com/masoncl/review-prompts/
-
-...
+How does this switch architecture deal with SFP cages? I see the I2C
+controllers aren't accessible through the MDIO relay protocol
+implemented by the microcontroller. So I guess using the sfp-bus code
+isn't going to be possible. The firmware manages the SFP cage and you
+"just" have to read the USXGMII Status Register (reg 30.19) from the
+host? How does that work out in practice?
