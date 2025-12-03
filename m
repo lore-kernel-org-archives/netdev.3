@@ -1,217 +1,326 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward201a.mail.yandex.net (forward201a.mail.yandex.net [178.154.239.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B97301471
-	for <netdev@vger.kernel.org>; Wed,  3 Dec 2025 18:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC427707;
+	Wed,  3 Dec 2025 18:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764785319; cv=none; b=q+K4s78byjc+Vf9BLO6wD6JBmu+WX9sC3Jekz6G5GofxlQ0jXDbG1fxhsPhf83sV1mlUUTtf9aGrWmr31g363sLxwIDAXKGj6xqyIWdolBBxNWZQXMwvhSP8CtBRimn5ssTd2MsvHfFPtW4s8R3VHMehb5MLQdgCeU/80tycywc=
+	t=1764786334; cv=none; b=SS/j89se+eTZcE+5FlzTm1GGMV/zl/S1tvGI4rgulePUtrbURpKwi8V0Jn98O5XgSrkxqXk5Xe7jXMMlsGV6kLmI/71bDJMU1xo84IUJ8zaZG+sFXUA4gU2pCA+d8ypqIGldE3XRZmXUYk0KHscVoVz056LE+H/9SsjlgcDCuxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764785319; c=relaxed/simple;
-	bh=5jRrBA6CAZndQPZV3Us9+ZC5wzxN9fOkcbS0Noz1Wo0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VI6bx/UD+VfDSNQ3jsEbxh+inkPE177UwA+Wy3YMCck+rgkYGQErsqiPrIVA2likQlxhBZ12G2Ji+uCFVUljjVw0udf88BN9MjuOsvMvQ2CUwGUzWBFsIWMUQ1dd0Fq2Buj2+/yx6spQ+BlWJqIRpMx6Rg01DQlk6w0q3n+qeeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exOZFkqi; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764786334; c=relaxed/simple;
+	bh=L1A9NAiXOYrgYuNI44MiQ20RO8XF27u319AIKCjyFUs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M8s964H8u06mlKYGO6VkCfEW9wl+37aLjzHVPte2tQMJLy/RFsPFXq99Bl9H8razInosRViiS5MUoQ/0xaO7DbQ9kLYTJIW2MnGulT+EM/n1KMMggzVaiUXnUsC7gBe9jcjT4D7T7YJ0JvuFYndVViLnmhs/vbnoZTXI6V0SKpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=GCt3HT1K; arc=none smtp.client-ip=178.154.239.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exOZFkqi"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-340e525487eso5830393a91.3
-        for <netdev@vger.kernel.org>; Wed, 03 Dec 2025 10:08:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764785317; x=1765390117; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GofhpDmA3kuMABKH76nE8pV99jzh1HFP7UqmhwVcaVc=;
-        b=exOZFkqiFRWcTXzfix5rHKnpg+SEnj4tlotLLzJtW81caMyBTiPdTK2TH+c9rLwt8i
-         27y9sO6ZDzle6LbCvrnz+K6m/hnTqFI3F/bgn29BiqtDzNwMytrTiRLWWydfeR7sMSbr
-         U5yXvhPV5+0qC60uLCJjIkN0Opyyl5zOmIOeMeMMrO1KQOWu4MoDqElRLzAsuBB4+GBV
-         0Kal2yFKsL/42Sw61/7+3hDR9zl+G/gnMQnEo0j/zHSy9/zJfQUu945ktlmLfUi3wpvR
-         zdmBs9OaMF2UhpYTW90YP8mzrzvXLiihYHT5ZeJtQcIpon+AFORb1ps0Ij07eUTUD7sK
-         ynZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764785317; x=1765390117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GofhpDmA3kuMABKH76nE8pV99jzh1HFP7UqmhwVcaVc=;
-        b=O0y+tZ7zJEJn1N+eQb01XZvs3uLGnXFJ2B2nFpz6uozPSvtpkkGETJnUt9kkvVOB0/
-         NAss/7wqlljML59QY4UsCBEUMRcinnFd3426RPhI8naln86OyHk57f9PEiHY7GWCrKkH
-         aD1c9l9IvKQLK7ya9/xYfFjgXXY4BZhWLVvmchjUUs6SyG6bLBgtGeaOKy8vB7Ym50YB
-         gjM20XkFadIlgMM55cZ9OpeYrfW7uHdAWAL1+DHdf/OAHBw6bhBOO1xYv1v6hFbNiNhK
-         bH7TgJMAKAEhitCUrTZMUQQvcO9xUG0wWxj0FLY0Ic0xGkMWSJHerN1LGCdXGG07uuyb
-         s15Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXTIbIASmXq9p9F8ZHOejm8NwCRJfa2otHg39Q3VIx4R9fD19JIdn91SrdaUe/V4ocyjzFGgxE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbyvCSuJ26hbf+WgSvAYHvWmQHHLJiTeV8hrlD5P/my+8VMz34
-	jN2u3XjqXlaFNGptxJ0E49mzseHerYxW6QMdy/JSV9dtjXFl8UFjEq6ajLW6K3wIJPigKb4znRO
-	Px2mpzmWacALD99jWJxhgXjoyhTwyRHA=
-X-Gm-Gg: ASbGnculY/MnWzQT09JparxNie59bhKKxo2NMKSYQ74DTFPAOjlvtep57Xm/gMvoT7D
-	xWmtWMKyGu9jaILVWwjRb6x6b1xXqvUy33+HkjSQhUfjPw0lwDGuub7IVLKjzh9ccSmh/UhKpbV
-	BkHCcMs5eJZkaSO9vLmdbleChnMbh6PdqcgzMxhLM+iObHJhhJbjJyBR1WGLQwYnmz3YonwwBZT
-	nIV2igaowqosshZCfn2l+01U0JxQLNZGIDRnCAiiwK+gXaqiJscMFG0hHbKFKhMGHBjdsY=
-X-Google-Smtp-Source: AGHT+IHGznhelPwKgdPOtpIE7u08vw3jm14atDXVn66Erhhaksa/6LYDtrqkXqGm7zWDplH+0e5xN6Ib8bNcjdNIzPk=
-X-Received: by 2002:a17:90b:53c4:b0:340:d1a1:af8e with SMTP id
- 98e67ed59e1d1-3491270ef84mr3755821a91.37.1764785316786; Wed, 03 Dec 2025
- 10:08:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="GCt3HT1K"
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+	by forward201a.mail.yandex.net (Yandex) with ESMTPS id C82EB883BB;
+	Wed, 03 Dec 2025 21:25:19 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:251b:0:640:cb7f:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 6AA33C0096;
+	Wed, 03 Dec 2025 21:25:10 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7PpY6S1LDCg0-V6teTaou;
+	Wed, 03 Dec 2025 21:25:09 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1764786309; bh=/3SCeREgCwTswWMQPIMsSO1vCPZ84hRvDXhRCZ6VDOY=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=GCt3HT1KW/cgbGADFaCxTjPsq6fX93GBE4e5Eo5PfQQYj+YGzBLMbq7Ynjv4H8cCJ
+	 pgI+or/8Cf2WcP0mqQqnMBSkZKJIrm+I7s9ZtfRsfmZ0UW8L8qPtWy7UUfkTfgrxtP
+	 wE8wKVYwyRkucmV5ILP2pxrOMCBUCadK+c18hFoM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: "David S. Miller" <davem@davemloft.net>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Bauer <mail@david-bauer.net>,
+	James Chapman <jchapman@katalix.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [RFC PATCH net-next v7] l2tp: fix double dst_release() on sk_dst_cache race
+Date: Wed,  3 Dec 2025 21:24:32 +0300
+Message-ID: <20251203182434.327964-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
- <CAHC9VhQfrMe7EY3_bvW6PcLdaW7tPMgv6WZuePxd1RrbhyZv-g@mail.gmail.com>
- <CAHC9VhQyDX+NgWipgm5DGMewfVTBe3DkLbe_AANRiuAj40bA1w@mail.gmail.com>
- <6797b694-6c40-4806-9541-05ce6a0b07fc@oracle.com> <CAHC9VhQsK_XpJ-bbt6AXM4fk30huhrPvvMSEuHHTPb=eJZwoUA@mail.gmail.com>
- <CAHC9VhQnR6TKzzzpE9XQqiFivV0ECbVx7GH+1fQmz917-MAhsw@mail.gmail.com>
- <CAEjxPJ7_7_Uru3dwXzNLSj5GdBTzdPDQr5RwXtdjvDv9GjmVAQ@mail.gmail.com> <CAHC9VhQDHTNkrB4YuNoafM0bhAav=CP5Ux6ZZGY9+WF0+0_9ww@mail.gmail.com>
-In-Reply-To: <CAHC9VhQDHTNkrB4YuNoafM0bhAav=CP5Ux6ZZGY9+WF0+0_9ww@mail.gmail.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Wed, 3 Dec 2025 13:08:24 -0500
-X-Gm-Features: AWmQ_bk8AJKB1D_utiPsmnzq48mAqxnxmRMWIq7jwXCZe5n9tvCfux9dhWFG1TQ
-Message-ID: <CAEjxPJ6e8z__=MP5NfdUxkOMQ=EnUFSjWFofP4YPwHqK=Ki5nw@mail.gmail.com>
-Subject: Re: [PATCH v2] security,fs,nfs,net: update security_inode_listsecurity()
- interface
-To: Paul Moore <paul@paul-moore.com>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Casey Schaufler <casey@schaufler-ca.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Simon Horman <horms@kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 3, 2025 at 10:55=E2=80=AFAM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> On Wed, Dec 3, 2025 at 10:35=E2=80=AFAM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> > On Wed, Jul 23, 2025 at 10:10=E2=80=AFPM Paul Moore <paul@paul-moore.co=
-m> wrote:
-> > > On Thu, Jun 19, 2025 at 5:18=E2=80=AFPM Paul Moore <paul@paul-moore.c=
-om> wrote:
-> > > > On Tue, May 27, 2025 at 5:03=E2=80=AFPM Anna Schumaker
-> > > > <anna.schumaker@oracle.com> wrote:
-> > > > > On 5/20/25 5:31 PM, Paul Moore wrote:
-> > > > > > On Tue, Apr 29, 2025 at 7:34=E2=80=AFPM Paul Moore <paul@paul-m=
-oore.com> wrote:
-> > > > > >> On Mon, Apr 28, 2025 at 4:15=E2=80=AFPM Stephen Smalley
-> > > > > >> <stephen.smalley.work@gmail.com> wrote:
-> > > > > >>>
-> > > > > >>> Update the security_inode_listsecurity() interface to allow
-> > > > > >>> use of the xattr_list_one() helper and update the hook
-> > > > > >>> implementations.
-> > > > > >>>
-> > > > > >>> Link: https://lore.kernel.org/selinux/20250424152822.2719-1-s=
-tephen.smalley.work@gmail.com/
-> > > > > >>>
-> > > > > >>> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.co=
-m>
-> > > > > >>> ---
-> > > > > >>> This patch is relative to the one linked above, which in theo=
-ry is on
-> > > > > >>> vfs.fixes but doesn't appear to have been pushed when I looke=
-d.
-> > > > > >>>
-> > > > > >>>  fs/nfs/nfs4proc.c             | 10 ++++++----
-> > > > > >>>  fs/xattr.c                    | 19 +++++++------------
-> > > > > >>>  include/linux/lsm_hook_defs.h |  4 ++--
-> > > > > >>>  include/linux/security.h      |  5 +++--
-> > > > > >>>  net/socket.c                  | 17 +++++++----------
-> > > > > >>>  security/security.c           | 16 ++++++++--------
-> > > > > >>>  security/selinux/hooks.c      | 10 +++-------
-> > > > > >>>  security/smack/smack_lsm.c    | 13 ++++---------
-> > > > > >>>  8 files changed, 40 insertions(+), 54 deletions(-)
-> > > > > >>
-> > > > > >> Thanks Stephen.  Once we get ACKs from the NFS, netdev, and Sm=
-ack
-> > > > > >> folks I can pull this into the LSM tree.
-> > > > > >
-> > > > > > Gentle ping for Trond, Anna, Jakub, and Casey ... can I get som=
-e ACKs
-> > > > > > on this patch?  It's a little late for the upcoming merge windo=
-w, but
-> > > > > > I'd like to merge this via the LSM tree after the merge window =
-closes.
-> > > > >
-> > > > > For the NFS change:
-> > > > >     Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
-> > > >
-> > > > Hi Anna,
-> > > >
-> > > > Thanks for reviewing the patch.  Unfortunately when merging the pat=
-ch
-> > > > today and fixing up some merge conflicts I bumped into an odd case =
-in
-> > > > the NFS space and I wanted to check with you on how you would like =
-to
-> > > > resolve it.
-> > > >
-> > > > Commit 243fea134633 ("NFSv4.2: fix listxattr to return selinux
-> > > > security label")[1] adds a direct call to
-> > > > security_inode_listsecurity() in nfs4_listxattr(), despite the
-> > > > existing nfs4_listxattr_nfs4_label() call which calls into the same
-> > > > LSM hook, although that call is conditional on the server supportin=
-g
-> > > > NFS_CAP_SECURITY_LABEL.  Based on a quick search, it appears the on=
-ly
-> > > > caller for nfs4_listxattr_nfs4_label() is nfs4_listxattr() so I'm
-> > > > wondering if there isn't some room for improvement here.
-> > > >
-> > > > I think there are two obvious options, and I'm curious about your
-> > > > thoughts on which of these you would prefer, or if there is another
-> > > > third option that you would like to see merged.
-> > > >
-> > > > Option #1:
-> > > > Essentially back out commit 243fea134633, removing the direct LSM c=
-all
-> > > > in nfs4_listxattr() and relying on the nfs4_listxattr_nfs4_label() =
-for
-> > > > the LSM/SELinux xattrs.  I think we would want to remove the
-> > > > NFS_CAP_SECURITY_LABEL check and build nfs4_listxattr_nfs4_label()
-> > > > regardless of CONFIG_NFS_V4_SECURITY_LABEL.
-> > > >
-> > > > Option #2:
-> > > > Remove nfs4_listxattr_nfs4_label() entirely and keep the direct LSM
-> > > > call in nfs4_listxattr(), with the required changes for this patch.
-> > > >
-> > > > Thoughts?
-> > > >
-> > > > [1] https://lore.kernel.org/all/20250425180921.86702-1-okorniev@red=
-hat.com/
-> > >
-> > > A gentle ping on the question above for the NFS folks.  If I don't
-> > > hear anything I'll hack up something and send it out for review, but =
-I
-> > > thought it would nice if we could sort out the proper fix first.
-> >
-> > Raising this thread back up again to see if the NFS folks have a
-> > preference on option #1 or #2 above, or
-> > something else altogether. Should returning of the security.selinux
-> > xattr name from listxattr() be dependent on
-> > NFS_CAP_SECURITY_LABEL being set by the server and should it be
-> > dependent on CONFIG_NFS_V4_SECURITY_LABEL?
->
-> Thanks for bringing this back up Stephen, it would be good to get this re=
-solved.
+A reproducible rcuref - imbalanced put() warning is observed under
+IPv6 L2TP (pppol2tp) traffic with blackhole routes, indicating an
+imbalance in dst reference counting for routes cached in
+sk->sk_dst_cache and pointing to a subtle lifetime/synchronization
+issue between the helpers that validate and drop cached dst entries.
 
-On second look, I realized that commit 243fea134633 ("NFSv4.2: fix
-listxattr to return selinux security label") was likely motivated by
-the same issue as commit 8b0ba61df5a1c44e2b3cf6 ("fs/xattr.c: fix
-simple_xattr_list to always include security.* xattrs"), i.e. the
-coreutils change that switched ls -Z from unconditionally calling
-getxattr("security.selinux") (via libselinux getfilecon(3)) to only
-doing so if listxattr() returns the "security.selinux" xattr name.
-Hence, we want the call to security_inode_listsecurity() to be
-unconditional, which favors option #2. My only residual question
-though is that commit 243fea134633 put the call _after_ fetching the
-user.* xattr names, whereas the nfs4_listxattr_nfs4_label() returns it
-_before_ any user.* xattrs are appended. I'd be inclined to move up
-the security_inode_listsecurity() call to replace the
-nfs4_listxattr_nfs4_label() call along with option #2.
+rcuref - imbalanced put()
+WARNING: CPU: 0 PID: 899 at lib/rcuref.c:266 rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.>
+Modules linked in:
+CPSocket connected tcp:127.0.0.1:48148,server=on <-> 127.0.0.1:33750
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01>
+RIP: 0010:rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
+
+Call Trace:
+ <TASK>
+ __rcuref_put include/linux/rcuref.h:97 [inline]
+ rcuref_put include/linux/rcuref.h:153 [inline]
+ dst_release+0x291/0x310 net/core/dst.c:167
+ __sk_dst_check+0x2d4/0x350 net/core/sock.c:604
+ __inet6_csk_dst_check net/ipv6/inet6_connection_sock.c:76 [inline]
+ inet6_csk_route_socket+0x6ed/0x10c0 net/ipv6/inet6_connection_sock.c:104
+ inet6_csk_xmit+0x12f/0x740 net/ipv6/inet6_connection_sock.c:121
+ l2tp_xmit_queue net/l2tp/l2tp_core.c:1214 [inline]  
+ l2tp_xmit_core net/l2tp/l2tp_core.c:1309 [inline]
+ l2tp_xmit_skb+0x1404/0x1910 net/l2tp/l2tp_core.c:1325
+ pppol2tp_sendmsg+0x3ca/0x550 net/l2tp/l2tp_ppp.c:302
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg net/socket.c:744 [inline]
+ ____sys_sendmsg+0xab2/0xc70 net/socket.c:2609
+ ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2663
+ __sys_sendmmsg+0x188/0x450 net/socket.c:2749
+ __do_sys_sendmmsg net/socket.c:2778 [inline]
+ __se_sys_sendmmsg net/socket.c:2775 [inline]
+ __x64_sys_sendmmsg+0x98/0x100 net/socket.c:2775
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe6960ec719
+ </TASK>
+
+The race occurs between the lockless UDPv6 transmit path
+(udpv6_sendmsg() -> sk_dst_check()) and the locked L2TP/pppol2tp
+transmit path (pppol2tp_sendmsg() -> l2tp_xmit_skb() ->
+... -> inet6_csk_xmit() → __sk_dst_check()), when both handle
+the same obsolete dst from sk->sk_dst_cache: the UDPv6 side takes
+an extra reference and atomically steals and releases the cached
+dst, while the L2TP side, using a stale cached pointer, still
+calls dst_release() on it, and together these updates produce
+an extra final dst_release() on that dst, triggering
+rcuref - imbalanced put().
+
+The Race Condition:
+
+Initial:
+  sk->sk_dst_cache = dst
+  ref(dst) = 1   
+
+Thread 1: sk_dst_check()                Thread 2: __sk_dst_>
+------------------------               -------------------->
+sk_dst_get(sk):
+  rcu_read_lock()
+  dst = rcu_dereference(sk->sk_dst_cache)
+  rcuref_get(dst) succeeds
+  rcu_read_unlock()
+  // ref = 2  
+
+                                            dst = __sk_dst_>
+                                    // reads same dst from >
+                                    // ref still = 2 (no ex>
+
+[both see dst obsolete & check() == NULL]
+
+sk_dst_reset(sk):
+  old = xchg(&sk->sk_dst_cache, NULL)
+    // old = dst
+  dst_release(old)
+    // drop cached ref
+    // ref: 2 -> 1 
+
+                                  RCU_INIT_POINTER(sk->sk_d>
+                                  // cache already NULL aft>
+                                            dst_release(dst)
+                                              // ref: 1 -> 0
+
+  dst_release(dst)
+  // tries to drop its own ref after final put
+  // rcuref_put_slowpath() -> "rcuref - imbalanced put()"
+
+Make L2TP’s IPv6 transmit path stop using inet6_csk_xmit()
+(and thus __sk_dst_check()) and instead open-code the same
+routing and transmit sequence using ip6_sk_dst_lookup_flow()
+and ip6_xmit(). The new code builds a flowi6 from the socket
+fields in the same way as inet6_csk_route_socket(), then ca>
+ip6_sk_dst_lookup_flow(), which internally relies on the lo>
+sk_dst_check()/sk_dst_reset() pattern shared with UDPv6, and
+attaches the resulting dst to the skb before invoking ip6_x>
+This makes both the UDPv6 and L2TP IPv6 paths use the same
+dst-cache handling logic for a given socket and removes the
+possibility that sk_dst_check() and __sk_dst_check() concur>
+drop the same cached dst and trigger the rcuref - imbalance>
+warning under concurrent traffic.
+
+Use a helper to pre-route IPv4 L2TP packets via sk_dst_check()
+and ip_route_output_ports(), attach the resulting dst to the
+skb, and then hand the skb to ip_queue_xmit(). With skb->dst
+already set, __ip_queue_xmit() skips its __sk_dst_check()-based
+dst cache handling, so IPv4 L2TP uses the same lockless
+sk_dst_check() helper as UDPv4 for a given socket. This avoids
+mixed sk_dst_check()/__sk_dst_check() users of sk->sk_dst_cache
+and closes the same class of double dst_release() race on IPv4.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b0270e91014d ("ipv4: add a sock pointer to ip_queue_xmit()")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+---
+v2: move fix to L2TP as suggested by Eric Dumazet.
+v3: dropped the lockless sk_dst_check() pre-validation
+and the extra sk_dst_get() reference; instead, under
+the socket lock, mirror __sk_dst_check()’s condition
+and invalidate the cached dst via sk_dst_reset(sk) so
+the cache-owned ref is released exactly once via the 
+xchg-based helper.
+v4: switch L2TP IPv6 xmit to open-coded (using sk_dst_check()) 
+and test with tools/testing/selftests/net/l2tp.sh.
+https://lore.kernel.org/netdev/a601c049-0926-418b-aa54-31686eea0a78@redhat.com/T/#t
+v5: use sk_uid(sk) and add READ_ONCE() for sk_mark and
+sk_bound_dev_if as suggested by Eric Dumazet.
+v6: move IPv6 L2TP xmit into an open-coded helper using
+ip6_sk_dst_lookup_flow() and sk_dst_check(), and add an
+analogous open-coded IPv4 helper mirroring __ip_queue_xmit()
+but using sk_dst_check() so both IPv4 and IPv6 L2TP paths
+stop calling __sk_dst_check() and share the UDP-style dst
+cache handling.
+v7: Rework IPv4 L2TP xmit to pre-route via sk_dst_check()
+and hand pre-routed skb to ip_queue_xmit(), avoiding
+__sk_dst_check() on this socket and keeping IP options
+handling in the core IPv4 stack.
+https://lore.kernel.org/lkml/20251202110805.765fa71d@kernel.org/
+
+ net/l2tp/l2tp_core.c | 101 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 98 insertions(+), 3 deletions(-)
+
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 0710281dd95a..342e65db6eb8 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1202,19 +1202,114 @@ static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
+ 	return bufp - optr;
+ }
+ 
++#if IS_ENABLED(CONFIG_IPV6)
++static int l2tp_xmit_ipv6(struct sock *sk, struct sk_buff *skb)
++{
++	struct ipv6_pinfo *np = inet6_sk(sk);
++	struct inet_sock *inet = inet_sk(sk);
++	struct in6_addr *final_p, final;
++	struct ipv6_txoptions *opt;
++	struct dst_entry *dst;
++	struct flowi6 fl6;
++	int err;
++
++	memset(&fl6, 0, sizeof(fl6));
++	fl6.flowi6_proto = sk->sk_protocol;
++	fl6.daddr        = sk->sk_v6_daddr;
++	fl6.saddr        = np->saddr;
++	fl6.flowlabel    = np->flow_label;
++	IP6_ECN_flow_xmit(sk, fl6.flowlabel);
++
++	fl6.flowi6_oif   = READ_ONCE(sk->sk_bound_dev_if);
++	fl6.flowi6_mark  = READ_ONCE(sk->sk_mark);
++	fl6.fl6_sport    = inet->inet_sport;
++	fl6.fl6_dport    = inet->inet_dport;
++	fl6.flowi6_uid   = sk_uid(sk);
++
++	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
++
++	rcu_read_lock();
++	opt = rcu_dereference(np->opt);
++	final_p = fl6_update_dst(&fl6, opt, &final);
++
++	dst = ip6_sk_dst_lookup_flow(sk, &fl6, final_p, true);
++	if (IS_ERR(dst)) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return NET_XMIT_DROP;
++	}
++
++	skb_dst_set(skb, dst);
++	fl6.daddr = sk->sk_v6_daddr;
++
++	err = ip6_xmit(sk, skb, &fl6, READ_ONCE(sk->sk_mark),
++		       opt, np->tclass,
++		       READ_ONCE(sk->sk_priority));
++	rcu_read_unlock();
++	return err;
++}
++#endif
++
++static int l2tp_xmit_ipv4(struct sock *sk, struct sk_buff *skb, struct flowi *fl)
++{
++	struct inet_sock *inet = inet_sk(sk);
++	struct net *net = sock_net(sk);
++	struct ip_options_rcu *inet_opt;
++	struct flowi4 *fl4;
++	struct rtable *rt;
++	__u8 tos;
++	int err;
++
++	rcu_read_lock();
++	inet_opt = rcu_dereference(inet->inet_opt);
++	fl4 = &fl->u.ip4;
++	tos = READ_ONCE(inet->tos);
++
++	rt = dst_rtable(sk_dst_check(sk, 0));
++	if (!rt) {
++		__be32 daddr = inet->inet_daddr;
++
++		if (inet_opt && inet_opt->opt.srr)
++			daddr = inet_opt->opt.faddr;
++
++		rt = ip_route_output_ports(net, fl4, sk,
++					   daddr, inet->inet_saddr,
++					   inet->inet_dport,
++					   inet->inet_sport,
++					   sk->sk_protocol,
++					   tos & INET_DSCP_MASK,
++					   READ_ONCE(sk->sk_bound_dev_if));
++		if (IS_ERR(rt)) {
++			rcu_read_unlock();
++			IP_INC_STATS(net, IPSTATS_MIB_OUTNOROUTES);
++			kfree_skb_reason(skb, SKB_DROP_REASON_IP_OUTNOROUTES);
++			return -EHOSTUNREACH;
++		}
++
++		sk_setup_caps(sk, &rt->dst);
++	}
++
++	skb_dst_set_noref(skb, &rt->dst);
++	rcu_read_unlock();
++
++	err = ip_queue_xmit(sk, skb, fl);
++	return err;
++}
++
+ /* Queue the packet to IP for output: tunnel socket lock must be held */
+ static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, struct flowi *fl)
+ {
+ 	int err;
++	struct sock *sk = tunnel->sock;
+ 
+ 	skb->ignore_df = 1;
+ 	skb_dst_drop(skb);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (l2tp_sk_is_v6(tunnel->sock))
+-		err = inet6_csk_xmit(tunnel->sock, skb, NULL);
++	if (l2tp_sk_is_v6(sk))
++		err = l2tp_xmit_ipv6(sk, skb);
+ 	else
+ #endif
+-		err = ip_queue_xmit(tunnel->sock, skb, fl);
++		err = l2tp_xmit_ipv4(sk, skb, fl);
+ 
+ 	return err >= 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
+ }
+-- 
+2.47.2
+
