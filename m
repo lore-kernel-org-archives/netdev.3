@@ -1,100 +1,120 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC05482EB;
-	Wed,  3 Dec 2025 21:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3967F2C15B8;
+	Wed,  3 Dec 2025 21:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764796034; cv=none; b=DjmBxtLZB53kpk27QpVb2DibRAywfpcgkrsA/G16J1HUHVtT0NYUMa4ni1hRuvu0Z28L7VxojtXH+2xlsrtrRiTUs0TgBJ1I6o7X2xKQXcvuUb8WcQZX8m63nYJVWEUoB/gHE0IV5V6nykOxrO2mPf9401d79xMVCaNatBogGjE=
+	t=1764796038; cv=none; b=lIRULxIX3AM/yhd6RNWco0skvUZq5EZ20vwzxQhAOXBrNThPcvS8tHAkGkYvfivxArUmQK0wSigOVC1TefGmOAJ5FAWrsB0gdHjKO6mANF8bHjdqeAc67pgYG4tMZnmlpms6Lhd2GpsmZlmAxIC4B3/6n1baWXqiZu+hfKNfhG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764796034; c=relaxed/simple;
-	bh=bnDq6d3jQ6FKKUfqKegdgJFbk/YWJWrWX2lE2cHa9Dc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=a1fafvgaUpt76onZpC12MAbm4i+AuUtX6YipeKJ9z8fzOZeNf2X8Mmf+pnFB+p9t4YKW+8j/fPywqdiZDpS02odzcqwC/gUorjPU0S+LIKl3lHLKvMGz2KBzo4bLJQlp4tI/O4q62JBNsXFv8IGiuRgE2KDPZ5/+Dhqi+LoUrts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sQ1hQhRi; arc=none smtp.client-ip=80.241.56.161
+	s=arc-20240116; t=1764796038; c=relaxed/simple;
+	bh=L/KwpKfetHVAKb2bucO4m2g5XMw3lWzNapYxHsLa+XU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uF9dJdaSmunwfL6f0bNPCUcfZN/pwuEiOxUI253HbEbW5Uh1Fu3q03T9KQYheXrkUyl0teGpcmHgF5vklnQKPFtxKf/fCYeNDfBdHIwV3e+x+OL/XHd2psalDtrBPeuSLT/p5YDR6Q+GpCv3PYPkkKqhH2KEFCQMx9mt0PK2NvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=iLBQU1Gv; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sQ1hQhRi"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="iLBQU1Gv"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dM9F955twz9t9P;
-	Wed,  3 Dec 2025 22:07:09 +0100 (CET)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dM9FD4VdTz9sjn;
+	Wed,  3 Dec 2025 22:07:12 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764796029;
+	t=1764796032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fV9rty4MhOWTsXWsKMyQGwT6zFis69PObb8cZsb5NPU=;
-	b=sQ1hQhRiQSuD2/PqyDmiI12tl/COqXjPbF+wVB2AEtBetacW5T/Q1UZ0Vh/QreIgVGFxz1
-	cyy/uHz/Hr2EQYB6OSdSOMTSonQG16NfXCS0ypa0W3Rgr+hKtDqjmc8pnFuZJOn2EHrG/2
-	kdF9eJd0jz9hauPmEe9gUyYC0KjBuhW6hET88Zfjb0rMJ2nvo3FsqlX2hepDRPMGTcHCCL
-	fthXZgPhqRxGMU0ewxgpSAfcbWV+x2V47pN2xyzNYWDouYczzPD6Qf4m8Es1yaXaHmPu2A
-	kd1PNRppE4OGw+Zv5MPOMKjD8Im+n6A6fe8YsrC5E2fNK56Vt8orl+eR2Ssl5A==
-Message-ID: <acbbef86-9f8a-45fd-8643-24c8efcbbb01@mailbox.org>
-Date: Wed, 3 Dec 2025 21:17:24 +0100
+	bh=+7vdX3foJCovPIDuNWvdkmUlaoRsPiNhWMj+vm0lHGk=;
+	b=iLBQU1Gvu38mHyjwDxuhCe6THSKQ3j5YrMFBvirzHUzCOoMOBelZr0qGiGwKwVuFrlzlT9
+	PXHoWWPf212b26oTY6fR4Z9iwCoZO+JeMogQQ5BebyT7ddffrH8yInmM6E0hgV0HEsdAMk
+	3mq2Nd2JIZ8WD9duaCft/RWJHv2UYDhw2/iynGzFZ5tA+QXKcQO8WQd8VhDzgINWh0+c3i
+	H2MJ2BFwvsN6G5/Y9Jyt6XvW3aQtmH0SZyW+s7pE/ePVSUHp/NgF3bkqXFFvBSk05wLVn1
+	Y0WZ3jC0cebxIp5zfCyhlZUD7A3zfmHgQ2BKPFKuua5fecRbW7sxeOSPEmJxaw==
+Message-ID: <ddefca55-0f5f-4ba9-ac13-06bcfd59ee95@mailbox.org>
+Date: Wed, 3 Dec 2025 21:46:38 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Marek Vasut <marek.vasut@mailbox.org>
 Subject: Re: [net-next,PATCH 3/3] net: phy: realtek: Add property to enable
  SSC
-To: Vladimir Oltean <vladimir.oltean@nxp.com>,
- Ivan Galkin <ivan.galkin@axis.com>,
- Christophe Roullier <christophe.roullier@foss.st.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Ivan Galkin <ivan.galkin@axis.com>, netdev@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
  Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
  Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
  Florian Fainelli <f.fainelli@gmail.com>,
  Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- devicetree@vger.kernel.org
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
 References: <20251130005843.234656-1-marek.vasut@mailbox.org>
  <20251130005843.234656-3-marek.vasut@mailbox.org>
  <20251203094224.jelvaizfq7h6jzke@skbuf>
+ <aTAN5lX_OgwQh7E8@shell.armlinux.org.uk>
 Content-Language: en-US
-In-Reply-To: <20251203094224.jelvaizfq7h6jzke@skbuf>
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aTAN5lX_OgwQh7E8@shell.armlinux.org.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 15e7d574e6c419c1153
-X-MBO-RS-META: fn53akxmsfk4bwrohczmkekqwfywhdya
+X-MBO-RS-ID: 4c30b459ba8ffe44b93
+X-MBO-RS-META: m6rgzpyqkniqtbwd7i61gjqfo56hmtr4
 
-On 12/3/25 10:42 AM, Vladimir Oltean wrote:
-
-Hello Vladimir,
-
->> +       ret = phy_write_paged(phydev, RTL8211F_SSC_PAGE, RTL8211F_SSC_RXC, 0x5f00);
->> +       if (ret < 0) {
->> +               dev_err(dev, "RXC SCC configuration failed: %pe\n", ERR_PTR(ret));
->> +               return ret;
->> +       }
+On 12/3/25 11:16 AM, Russell King (Oracle) wrote:
+> On Wed, Dec 03, 2025 at 11:42:24AM +0200, Vladimir Oltean wrote:
+>>> +
+>>> +       ret = phy_write_paged(phydev, RTL8211F_SSC_PAGE, RTL8211F_SSC_RXC, 0x5f00);
+>>> +       if (ret < 0) {
+>>> +               dev_err(dev, "RXC SCC configuration failed: %pe\n", ERR_PTR(ret));
+>>> +               return ret;
+>>> +       }
+>>
+>> I'm going to show a bit of lack of knowledge, but I'm thinking in the context
+>> of stmmac (user of phylink_config :: mac_requires_rxc), which I don't exactly
+>> know what it requires it for.
 > 
-> I'm going to show a bit of lack of knowledge, but I'm thinking in the context
-> of stmmac (user of phylink_config :: mac_requires_rxc), which I don't exactly
-> know what it requires it for. Does it use the RGMII RXC as a system clock?
-
-I believe dwmac (stmmac) uses RXC to drive at least (part of) its DMA.
-
-+CC Christophe
-
-> If so, I guess intentionally introducing jitter (via the spread spectrum
-> feature) would be disastrous for it. In that case we should seriously consider
-> separating the "spread spectrum for CLKOUT" and "spread spectrum for RGMII"
-> device tree control properties.
-
-I can split this into realtek,clkout-ssc-enable and realtek,rxc-ssc-enable.
-
-Note that I use this exact configuration with both STM32MP13xx and 
-STM32MP25xx RGMII / stmmac .
-
--- 
-Best regards,
-Marek Vasut
+> stmmac requires _all_ clocks to be running in order to complete reset,
+> as the core is made up of multiple modules, all of which are
+> synchronously clocked by their respective clocks. So, e.g. for the
+> receive sections to complete their reset activity, clk_rx_i must be
+> running. In RGMII mode, this means that the RGMII RXC from the PHY must
+> be running when either the stmmac core is subject to hardware or
+> software reset.
+> 
+>> Does it use the RGMII RXC as a system clock?
+>> If so, I guess intentionally introducing jitter (via the spread spectrum
+>> feature) would be disastrous for it. In that case we should seriously consider
+>> separating the "spread spectrum for CLKOUT" and "spread spectrum for RGMII"
+>> device tree control properties.
+> 
+> I don't think it will affect stmmac - as long as the clock is toggling
+> so that the synchronous components in stmmac can change state, that's
+> all that the stmmac reset issue cares about.
+> 
+> However, looking at the RTL8211FS(I)(-VS) datasheet, CLKOUT and RXC
+> are two different clocks.
+> 
+> CLKOUT can be:
+> - reference clock generated from internal PLL.
+> - UTP recovery receive clock (for SyncE)
+> - Fibre recovery receive clock (for SyncE)
+> - PTP synchronised clock output
+> 
+> This can't be used for clocking the RGMII data, because it won't be
+> guaranteed to have the clock edges at the correct point, nor does it
+> switch clock speed according to the negotiated data rate. In SyncE
+> modes, the recovered clock is either 125MHz or 25MHz, whereas RXC
+> is 125, 25 or 2.5MHz.
+> 
+> There is a separate bit for enabling SSC on RXC - PHYCR2 bit 3 vs
+> CLKOUT SSC in bit 7.
+Uh ... and sadly, the "EMI improvement parameters application note 1.2 
+fails to mention this big when enabling CLK_OUT SSC. Also, there is 
+PHYCR2 CLKOUT SSC capability bits 13:12 , which does who knows what ?
