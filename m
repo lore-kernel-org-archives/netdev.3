@@ -1,107 +1,101 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F768482EB;
-	Wed,  3 Dec 2025 21:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A482D0636;
+	Wed,  3 Dec 2025 21:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764796031; cv=none; b=WHYM8lTQ5bAe5aEjTrThoh8QyiFyhvuUTX8G6X6m4A7+qPR0oVacBX06mG3yAjiiSG7/nxu8+sWZwUsIFy/5kmzKnL9auubEe7n+9D/LZTaMqGkutpnWjcWVfeT02mDozVE0tsAoPkychAMvBnglY+65hL3IeXwywM4zPgBwbzo=
+	t=1764796034; cv=none; b=pQpOSKBW8dnsgTZtJV0D0wi4hCN42dy8zs3U5pesTI8Ak3WEfiK22XZO3pX4e8ORMSu8fGaioM5A3GDyxcEEHVKhQVMeso9GcMDc64ZUo4FQ+qDOEAna1e8KiUJl2YFv9Jya9jPiL0yFHV9CUOQC+NP3GnTspaNaC6dG7+xcN/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764796031; c=relaxed/simple;
-	bh=FHr/8rEkE0/9LGy3++0mrMsHjoBIwdrl7vb54gvell0=;
+	s=arc-20240116; t=1764796034; c=relaxed/simple;
+	bh=qVDJVAb7m8LhZF55QvKoiTvZ29MfCyKYtS45an5OrSc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B4O7LfqROE5vA7UwE6T3lfS0F4Skqe9s0SyAfeMH/17svtM7kiFsLVcOlpSFSufwvp/Ii0/5S3ORRJWn9PkdifNm9m6q05O1RQqlUASvJU1N6azMDmnGSOB6mHwIxbbhari9orkbfdFLQ29AoY2Oy4DpsSLy64L8/KhdSzqCl0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gFTF6Sgp; arc=none smtp.client-ip=80.241.56.161
+	 In-Reply-To:Content-Type; b=UIsdWrrf2buBrbjl9YdMBNw8+LvtGN36gAZh1nyFKdwvTeOUipSQNxEJGEPkms/DXchOYP0g/YT9KxF9GOcP3qDXTmXXJp/GHjWYEN8qwi/nEDTT4dy8yo1wlwpUZZVN4Pp4jfX1byj7KDVMZuhZToQRh3aYWy7IHBPDmKRzqoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KYuv9aX5; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gFTF6Sgp"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KYuv9aX5"
 Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dM9F55Fk4z9tjp;
-	Wed,  3 Dec 2025 22:07:05 +0100 (CET)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4dM9F24YD6z9tyH;
+	Wed,  3 Dec 2025 22:07:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764796025;
+	t=1764796022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yJO4QFCGFgBLcxSYA3azxaNJyI+4wMLsFkxHrpPR0Fs=;
-	b=gFTF6SgpByU/LyApdiThEtzPkr0azSt39iR1JNK7MIsYLuf3YHAUrPbbUMT4FSJ2i+JvpU
-	jX/fGXDejP2tXo1CwUFZ2Okv464gGLgOkhDAeb5Hxjsadz0f3oARPRbHMalRZrf9oaTMf8
-	GwmABGZRIHzx446zCIuUPu2CHym4TXaQ3DGyEWQeTDG7ThGkCxAbLkOXVijAL6vMeczDl4
-	xSe1TTVGDjCohmG9Ik6EpAVGSFCZL5OW0w8kFSAQcUzRbxakSm8fCAgQziGS3/q0eacFXF
-	MXvSGJhWX4o7AFm4pfU5dOLx7SQFR5RGfRtyN8R+UCctUa7TY8BxLD66Rfo5aQ==
-Message-ID: <f0ecb69c-9163-49fd-b74c-0893d9b95593@mailbox.org>
-Date: Wed, 3 Dec 2025 21:16:13 +0100
+	bh=eAh1SlQBuHPbEjaVW+h37YQVPv85RZ8746aPTiKpCV0=;
+	b=KYuv9aX5XxgxY4N92efD75JwR8wamPSYFb7hskD2qwoCt7XgyHZJtHTUnPIoMZE2A3ElPo
+	xpGmn5fxjYc06h327VzMb8Slv82Y13gOiirLboMtOUUyAgEg33cei36SpHHbd6NjydeNr3
+	aVnqKeSWAyRq6vOtCusemZ7eSmMz5/6ZW5mfg+SJN6ARCmUbh6OcDO9Nvu+atf7SS0ltgk
+	Y1DcAMyJmR5A62x6eQRGuuff1o/nU790BJgGB34moaQG62D4zgb1NhDPCjfZnDDy/qlpKu
+	rnjg0I5DeB1A47O7otMCcOXgIm0q3lj/kBgjw+dvJCrhOUq4fKh1/uhksi8TOw==
+Message-ID: <c52624fb-9d5f-4eb7-af3f-e2cef872a2ba@mailbox.org>
+Date: Wed, 3 Dec 2025 20:21:00 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net-next,PATCH 2/3] dt-bindings: net: realtek,rtl82xx: Document
- realtek,ssc-enable property
-To: Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
+Subject: Re: [net-next,PATCH 3/3] net: phy: realtek: Add property to enable
+ SSC
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
  Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
  Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
  Florian Fainelli <f.fainelli@gmail.com>,
  Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, devicetree@vger.kernel.org
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
 References: <20251130005843.234656-1-marek.vasut@mailbox.org>
- <20251130005843.234656-2-marek.vasut@mailbox.org>
- <f3046826-a44c-4aa9-8a94-351e7fe83f06@kernel.org>
- <a861aa24-e350-4955-be5a-f6d2f4bc058f@mailbox.org>
- <043053ec-0f57-45e9-9767-be9b518dea4d@kernel.org>
- <4aaa73b4-3a2a-44f6-ad81-74c30be13431@mailbox.org>
- <67b5f5b5-caf9-4dcc-b84d-a7ce338fc25d@kernel.org>
+ <20251130005843.234656-3-marek.vasut@mailbox.org>
+ <aTAOe4c48zyIjVcb@shell.armlinux.org.uk>
+ <20251203123430.zq7sjxfwb5kkff7q@skbuf>
+ <aTB0x6JGcGUM04UX@shell.armlinux.org.uk>
 Content-Language: en-US
 From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <67b5f5b5-caf9-4dcc-b84d-a7ce338fc25d@kernel.org>
+In-Reply-To: <aTB0x6JGcGUM04UX@shell.armlinux.org.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: cb227c3bb80474b9cae
-X-MBO-RS-META: 36kjr4f8q3yoth5wffbqci1todbhw1z4
+X-MBO-RS-ID: c43c75a9ce634b39c52
+X-MBO-RS-META: sj3uknpc7hwyhgtqrd79d6rqrmm4d475
 
-On 12/3/25 8:56 AM, Krzysztof Kozlowski wrote:
-
->>> I don't know, please look at existing work around SSC from Peng. If
->>> nothing is applicable, this should be explained somewhere.
+On 12/3/25 6:35 PM, Russell King (Oracle) wrote:
+> On Wed, Dec 03, 2025 at 02:34:30PM +0200, Vladimir Oltean wrote:
+>> On Wed, Dec 03, 2025 at 10:18:35AM +0000, Russell King (Oracle) wrote:
+>>> On Sun, Nov 30, 2025 at 01:58:34AM +0100, Marek Vasut wrote:
+>>>> Add support for spread spectrum clocking (SSC) on RTL8211F(D)(I)-CG,
+>>>> RTL8211FS(I)(-VS)-CG, RTL8211FG(I)(-VS)-CG PHYs. The implementation
+>>>> follows EMI improvement application note Rev. 1.2 for these PHYs.
+>>>>
+>>>> The current implementation enables SSC for both RXC and SYSCLK clock
+>>>> signals. Introduce new DT property 'realtek,ssc-enable' to enable the
+>>>> SSC mode.
+>>>
+>>> Should there be separate properties for CLKOUT SSC enable and RXC SSC
+>>> enable?
 >>
->> The work from Peng you refer to (I guess) is this "assigned-clock-sscs"
->> property ? This is not applicable, because this is a boolean property of
->> the PHY here, the clock does not expose those clock via the clock API.
+>> That's what we're trying to work out. I was going to try and give an
+>> example (based on stmmac) why you wouldn't want RXC SSC but you'd still
+>> want CLKOUT SSC, but it doesn't seem to hold water based on your feedback.
+>> Having one device tree property to control both clocks is a bit simpler.
 > 
-> OK, please mention this in the commit msg - that assigned-clock-sscs is
-> not applicable, because these are clocks not exposed outside.
-
-OK
-
-> I saw already brcm,enable-ssc property, so use rather "realtek,enable-ssc".
-
-The realtek PHY bindings use realtek,<feature>-{enable,disable} already, 
-so I would like to be at least consistent here ?
-
->> However, I can call the property "ssc-enable" without the realtek,
->> vendor prefix ?
+> The problem I see is that if we introduce a single property for both,
+> we then need to maintain this single property ad infinitum. If we
+> later find that we need separate control, we could end up with three
+> properties - the combined one, and two for individual controls.
 > 
-> I think no, I am not so sure how generic it would be to cover all
-> existing cases. Some devices, e.g. cdns, defines the mode of SSC, so
-> uses an enum.
+> If we are to go with a single property, then I think we should have at
+> least discussed what we would do if we need separate control.
 > 
->>
->> The remaining question is, should I have one property "ssc-enable" to
->> control all SSC in the PHY or one for each bit "realtek,ssc-enable-rxc"
->> / "realtek,ssc-enable-clkout" ?
-> 
-> I don't know. Can they be enabled independently? Does it make sense for
-> the hardware to have different choices?
-The hardware can turn SSC on separate on either signal, and the netdev 
-discussion seem to be veering in that direction, so I will split them 
-and create two properties.
+> If we go with two properties now, then we don't have to consider this,
+> and we will only ever have the two properties rather than three.
+It seems the CLKOUT and RXC SSC can be enabled entirely separately, so I 
+think two properties are the way to go ?
