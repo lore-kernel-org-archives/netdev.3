@@ -1,100 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDD523ABAA;
-	Wed,  3 Dec 2025 20:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F768482EB;
+	Wed,  3 Dec 2025 21:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764793957; cv=none; b=AOWA4v5P0QA3xmTEsiDnBRr+9eXRHLMOe+KqjVbBX2rnpuw0FAh32G8/TBl0KZI9wzyv27tzvKFE7uY3CwNJyVbzWbC8V0vuTLssp8rx3et+Szc8yaBfw9uFYX7ZJCNIGWT0SsVLp/MW2xej1QJh58chxSZo8ACdZdgAtV664Co=
+	t=1764796031; cv=none; b=WHYM8lTQ5bAe5aEjTrThoh8QyiFyhvuUTX8G6X6m4A7+qPR0oVacBX06mG3yAjiiSG7/nxu8+sWZwUsIFy/5kmzKnL9auubEe7n+9D/LZTaMqGkutpnWjcWVfeT02mDozVE0tsAoPkychAMvBnglY+65hL3IeXwywM4zPgBwbzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764793957; c=relaxed/simple;
-	bh=tsSaRr99CRPI1+FO8kt26rUX633ovCV5eBM115B8HsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XUK8kEgoS9w6/tz/nsyxZFzTh3kvKaREYa5aGi2dI/SjNNHJ/5ka9eArbdtJJ6RAK/RUhtHzJjlyaQbHm6sivOshKBSI7LxnAMnzknzso53rySVJz+gaBdcmu51n8WthnasdqqujseTJeLomrlCdcFfHQfAeQjSM6bRVbhmNLb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W1O2Q4TL; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764796031; c=relaxed/simple;
+	bh=FHr/8rEkE0/9LGy3++0mrMsHjoBIwdrl7vb54gvell0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B4O7LfqROE5vA7UwE6T3lfS0F4Skqe9s0SyAfeMH/17svtM7kiFsLVcOlpSFSufwvp/Ii0/5S3ORRJWn9PkdifNm9m6q05O1RQqlUASvJU1N6azMDmnGSOB6mHwIxbbhari9orkbfdFLQ29AoY2Oy4DpsSLy64L8/KhdSzqCl0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gFTF6Sgp; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W1O2Q4TL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764793956; x=1796329956;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tsSaRr99CRPI1+FO8kt26rUX633ovCV5eBM115B8HsM=;
-  b=W1O2Q4TL47cqtcgEOF0QGT/oX51Wc/ZYaCLDHNTEEaR5M5YQKvFOfcEZ
-   Z5LxX1N7Ppq+FCRv9a47GlopKHTtPaVaQ3TwJtOsf8LEqMbC7lqZlCvyK
-   7udvXq3Fxqa1SuRPIRQB4fe+SvkdvrY8fskA6ZFilxgSSZroiKWjcpUNa
-   JLk8Yk2Fefq5JvTPaphEdw3nHZVEx+CdW+7VEh0Hl6NVXJA7C3eoYr/Dy
-   UhX8bPOI+Fr6jGN5G7Wk1d6AihAvmPPbNI0KQ5SqxGgcI7RXNypWWOUpf
-   w/sPOq1UNzowysASfkVhfe+iw4Imb3DwGcvw5ztKkrK8pxxHPvDGy/NJO
-   Q==;
-X-CSE-ConnectionGUID: swUYcmceRBKj6vNupnEHyA==
-X-CSE-MsgGUID: s+wyI1fIQDOU2Yi7mFueEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77911038"
-X-IronPort-AV: E=Sophos;i="6.20,247,1758610800"; 
-   d="scan'208";a="77911038"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 12:32:34 -0800
-X-CSE-ConnectionGUID: HDhMarZ1QxGHZfzz+a1Jmg==
-X-CSE-MsgGUID: iGAmmzcsRoOgwvduB7pe2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,247,1758610800"; 
-   d="scan'208";a="199737567"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 03 Dec 2025 12:32:31 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vQtWX-00000000D7d-0yuD;
-	Wed, 03 Dec 2025 20:32:29 +0000
-Date: Thu, 4 Dec 2025 04:31:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Bauer <mail@david-bauer.net>,
-	James Chapman <jchapman@katalix.com>, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH net-next v6] l2tp: fix double dst_release() on
- sk_dst_cache race
-Message-ID: <202512040433.TgRZXwYf-lkp@intel.com>
-References: <20251202180545.18974-1-m.lobanov@rosa.ru>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gFTF6Sgp"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dM9F55Fk4z9tjp;
+	Wed,  3 Dec 2025 22:07:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764796025;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yJO4QFCGFgBLcxSYA3azxaNJyI+4wMLsFkxHrpPR0Fs=;
+	b=gFTF6SgpByU/LyApdiThEtzPkr0azSt39iR1JNK7MIsYLuf3YHAUrPbbUMT4FSJ2i+JvpU
+	jX/fGXDejP2tXo1CwUFZ2Okv464gGLgOkhDAeb5Hxjsadz0f3oARPRbHMalRZrf9oaTMf8
+	GwmABGZRIHzx446zCIuUPu2CHym4TXaQ3DGyEWQeTDG7ThGkCxAbLkOXVijAL6vMeczDl4
+	xSe1TTVGDjCohmG9Ik6EpAVGSFCZL5OW0w8kFSAQcUzRbxakSm8fCAgQziGS3/q0eacFXF
+	MXvSGJhWX4o7AFm4pfU5dOLx7SQFR5RGfRtyN8R+UCctUa7TY8BxLD66Rfo5aQ==
+Message-ID: <f0ecb69c-9163-49fd-b74c-0893d9b95593@mailbox.org>
+Date: Wed, 3 Dec 2025 21:16:13 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251202180545.18974-1-m.lobanov@rosa.ru>
+Subject: Re: [net-next,PATCH 2/3] dt-bindings: net: realtek,rtl82xx: Document
+ realtek,ssc-enable property
+To: Krzysztof Kozlowski <krzk@kernel.org>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Aleksander Jan Bajkowski <olek2@wp.pl>, Andrew Lunn <andrew@lunn.ch>,
+ Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, devicetree@vger.kernel.org
+References: <20251130005843.234656-1-marek.vasut@mailbox.org>
+ <20251130005843.234656-2-marek.vasut@mailbox.org>
+ <f3046826-a44c-4aa9-8a94-351e7fe83f06@kernel.org>
+ <a861aa24-e350-4955-be5a-f6d2f4bc058f@mailbox.org>
+ <043053ec-0f57-45e9-9767-be9b518dea4d@kernel.org>
+ <4aaa73b4-3a2a-44f6-ad81-74c30be13431@mailbox.org>
+ <67b5f5b5-caf9-4dcc-b84d-a7ce338fc25d@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <67b5f5b5-caf9-4dcc-b84d-a7ce338fc25d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: cb227c3bb80474b9cae
+X-MBO-RS-META: 36kjr4f8q3yoth5wffbqci1todbhw1z4
 
-Hi Mikhail,
+On 12/3/25 8:56 AM, Krzysztof Kozlowski wrote:
 
-kernel test robot noticed the following build errors:
+>>> I don't know, please look at existing work around SSC from Peng. If
+>>> nothing is applicable, this should be explained somewhere.
+>>
+>> The work from Peng you refer to (I guess) is this "assigned-clock-sscs"
+>> property ? This is not applicable, because this is a boolean property of
+>> the PHY here, the clock does not expose those clock via the clock API.
+> 
+> OK, please mention this in the commit msg - that assigned-clock-sscs is
+> not applicable, because these are clocks not exposed outside.
 
-[auto build test ERROR on net-next/main]
+OK
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mikhail-Lobanov/l2tp-fix-double-dst_release-on-sk_dst_cache-race/20251203-021549
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20251202180545.18974-1-m.lobanov%40rosa.ru
-patch subject: [PATCH net-next v6] l2tp: fix double dst_release() on sk_dst_cache race
-config: x86_64-buildonly-randconfig-002-20251203 (https://download.01.org/0day-ci/archive/20251204/202512040433.TgRZXwYf-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251204/202512040433.TgRZXwYf-lkp@intel.com/reproduce)
+> I saw already brcm,enable-ssc property, so use rather "realtek,enable-ssc".
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512040433.TgRZXwYf-lkp@intel.com/
+The realtek PHY bindings use realtek,<feature>-{enable,disable} already, 
+so I would like to be at least consistent here ?
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "ip_options_build" [net/l2tp/l2tp_core.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>> However, I can call the property "ssc-enable" without the realtek,
+>> vendor prefix ?
+> 
+> I think no, I am not so sure how generic it would be to cover all
+> existing cases. Some devices, e.g. cdns, defines the mode of SSC, so
+> uses an enum.
+> 
+>>
+>> The remaining question is, should I have one property "ssc-enable" to
+>> control all SSC in the PHY or one for each bit "realtek,ssc-enable-rxc"
+>> / "realtek,ssc-enable-clkout" ?
+> 
+> I don't know. Can they be enabled independently? Does it make sense for
+> the hardware to have different choices?
+The hardware can turn SSC on separate on either signal, and the netdev 
+discussion seem to be veering in that direction, so I will split them 
+and create two properties.
