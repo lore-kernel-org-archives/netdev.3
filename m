@@ -1,326 +1,119 @@
-Received: from forward201a.mail.yandex.net (forward201a.mail.yandex.net [178.154.239.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABC427707;
-	Wed,  3 Dec 2025 18:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0124D314B8A;
+	Wed,  3 Dec 2025 18:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764786334; cv=none; b=SS/j89se+eTZcE+5FlzTm1GGMV/zl/S1tvGI4rgulePUtrbURpKwi8V0Jn98O5XgSrkxqXk5Xe7jXMMlsGV6kLmI/71bDJMU1xo84IUJ8zaZG+sFXUA4gU2pCA+d8ypqIGldE3XRZmXUYk0KHscVoVz056LE+H/9SsjlgcDCuxY=
+	t=1764786354; cv=none; b=FWKyv3G0MWBT1nmXPzQ6bNyi2rkj1d6TJQT1vs0/wPVlT5xPVHrL87AgroL0f3x6eMCDuAItbfeMg6bzAfHxB0kyPZx/J8la7uEPNzNyS0oTBdcjRa97xpXLbkQLcs7tcPy+eNhI1NY8qId9Kdc3eFnVuWBBNazOQ8mz6W2+ET4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764786334; c=relaxed/simple;
-	bh=L1A9NAiXOYrgYuNI44MiQ20RO8XF27u319AIKCjyFUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M8s964H8u06mlKYGO6VkCfEW9wl+37aLjzHVPte2tQMJLy/RFsPFXq99Bl9H8razInosRViiS5MUoQ/0xaO7DbQ9kLYTJIW2MnGulT+EM/n1KMMggzVaiUXnUsC7gBe9jcjT4D7T7YJ0JvuFYndVViLnmhs/vbnoZTXI6V0SKpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=GCt3HT1K; arc=none smtp.client-ip=178.154.239.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+	s=arc-20240116; t=1764786354; c=relaxed/simple;
+	bh=k1XqMR/MfZi4V/PExqNXtDjOhZZ2W9JTvNV+qxbIOh4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dulNCxr6nn4/r1xlOE1R0iRjYs2MxvIrbiSNLT1eocTlI02pj2K7oeAr6sHGFI6xlZDvQa8QHBnGgbunQHoYvuANs0CrOKWMJAOKiVDGRFnWPIg2wkVfmXkiE5Tvf72hX3AcWifjxDqGghxTmL1J0aUN5HeIhn1dsY8nfaZup5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/ue4qte; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="GCt3HT1K"
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
-	by forward201a.mail.yandex.net (Yandex) with ESMTPS id C82EB883BB;
-	Wed, 03 Dec 2025 21:25:19 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:251b:0:640:cb7f:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 6AA33C0096;
-	Wed, 03 Dec 2025 21:25:10 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 7PpY6S1LDCg0-V6teTaou;
-	Wed, 03 Dec 2025 21:25:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1764786309; bh=/3SCeREgCwTswWMQPIMsSO1vCPZ84hRvDXhRCZ6VDOY=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=GCt3HT1KW/cgbGADFaCxTjPsq6fX93GBE4e5Eo5PfQQYj+YGzBLMbq7Ynjv4H8cCJ
-	 pgI+or/8Cf2WcP0mqQqnMBSkZKJIrm+I7s9ZtfRsfmZ0UW8L8qPtWy7UUfkTfgrxtP
-	 wE8wKVYwyRkucmV5ILP2pxrOMCBUCadK+c18hFoM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-92.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Bauer <mail@david-bauer.net>,
-	James Chapman <jchapman@katalix.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [RFC PATCH net-next v7] l2tp: fix double dst_release() on sk_dst_cache race
-Date: Wed,  3 Dec 2025 21:24:32 +0300
-Message-ID: <20251203182434.327964-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/ue4qte"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E401AC4CEF5;
+	Wed,  3 Dec 2025 18:25:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764786353;
+	bh=k1XqMR/MfZi4V/PExqNXtDjOhZZ2W9JTvNV+qxbIOh4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=o/ue4qte235+FhH3o5nMWImZoWSw+TP8j/7mv//Q8tGA+Z+tgAN+AlOeTk01QNphx
+	 kQ0jObtPjU8HF7SmcgvI44Rzqpq+sNvB0VEorgmMqj62CFtXTWpiatqs+TfB/Bj4WR
+	 ldCbmOxRdKZbHXLf8GID43rX7cBT38IFO6B8eDs7AWMon4Q3ePS3aLjB5YnNqNDZqh
+	 mjz0i1fMWv0edRj3HrPXqklGLrZ6BwP0j89nWlULtB7UVFJoyilj95Hl1OxDo0oQF3
+	 CBsWbmfyf7QaZHXzjZgnt7KWkuUBvsMSp4tOrOAD9QBWa6jYraluKYiG6iWCMgl3GP
+	 B0pTcgjues6ug==
+From: Vincent Mailhol <mailhol@kernel.org>
+Subject: [PATCH iproute2-next v3 0/7] iplink_can: add CAN XL support
+Date: Wed, 03 Dec 2025 19:24:27 +0100
+Message-Id: <20251203-canxl-netlink-v3-0-999f38fae8c2@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFuAMGkC/12OQQ6CMBBFr0K6tqYziIAr72FcNO0ADaSQtjYYw
+ t2t3RhZ/vz/3szGPDlDnt2KjTmKxpvZplCeCqYGaXviRqfMUGAlWgSupF0nbilMxo5ca6gllZD
+ ahiVmcdSZNfsezCxufgXCtF4De6Z6MD7M7p2vRcijrxgA24M4Ahe8vXaohKouAuA+krM0nWfXZ
+ 1XEH47i+FfEhGupO6kagKbGP3zf9w9N8ys5+QAAAA==
+X-Change-ID: 20250921-canxl-netlink-dd17ae310258
+To: netdev@vger.kernel.org, Stephen Hemminger <stephen@networkplumber.org>, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, David Ahern <dsahern@kernel.org>
+Cc: Rakuram Eswaran <rakuram.e96@gmail.com>, 
+ =?utf-8?q?St=C3=A9phane_Grosjean?= <stephane.grosjean@free.fr>, 
+ linux-kernel@vger.kernel.org, linux-can@vger.kernel.org, 
+ Vincent Mailhol <mailhol@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1941; i=mailhol@kernel.org;
+ h=from:subject:message-id; bh=k1XqMR/MfZi4V/PExqNXtDjOhZZ2W9JTvNV+qxbIOh4=;
+ b=owGbwMvMwCV2McXO4Xp97WbG02pJDJkGDZPFGW3ZtTVTV+ryfJl+/739s6qvaV1/nByz/23fu
+ C3yyvzyjlIWBjEuBlkxRZZl5ZzcCh2F3mGH/lrCzGFlAhnCwMUpABMxucfwz97Tcm9yo8jC3omm
+ X3fWrTv57FeMU+/+ZsbeaV2r3xTcm8Lwv+QSh82a01ODNlYV726aIyc9OXFCvKJEn6N3/AYOuW2
+ v+QE=
+X-Developer-Key: i=mailhol@kernel.org; a=openpgp;
+ fpr=ED8F700574E67F20E574E8E2AB5FEB886DBB99C2
 
-A reproducible rcuref - imbalanced put() warning is observed under
-IPv6 L2TP (pppol2tp) traffic with blackhole routes, indicating an
-imbalance in dst reference counting for routes cached in
-sk->sk_dst_cache and pointing to a subtle lifetime/synchronization
-issue between the helpers that validate and drop cached dst entries.
+Support for CAN XL was added to the kernel in [1]. This series is the
+iproute2 counterpart.
 
-rcuref - imbalanced put()
-WARNING: CPU: 0 PID: 899 at lib/rcuref.c:266 rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.>
-Modules linked in:
-CPSocket connected tcp:127.0.0.1:48148,server=on <-> 127.0.0.1:33750
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01>
-RIP: 0010:rcuref_put_slowpath+0x1ce/0x240 lib/rcuref.c:266
+Patches #1 to #3 are clean-ups. They refactor iplink_can's
+print_usage()'s function.
 
-Call Trace:
- <TASK>
- __rcuref_put include/linux/rcuref.h:97 [inline]
- rcuref_put include/linux/rcuref.h:153 [inline]
- dst_release+0x291/0x310 net/core/dst.c:167
- __sk_dst_check+0x2d4/0x350 net/core/sock.c:604
- __inet6_csk_dst_check net/ipv6/inet6_connection_sock.c:76 [inline]
- inet6_csk_route_socket+0x6ed/0x10c0 net/ipv6/inet6_connection_sock.c:104
- inet6_csk_xmit+0x12f/0x740 net/ipv6/inet6_connection_sock.c:121
- l2tp_xmit_queue net/l2tp/l2tp_core.c:1214 [inline]  
- l2tp_xmit_core net/l2tp/l2tp_core.c:1309 [inline]
- l2tp_xmit_skb+0x1404/0x1910 net/l2tp/l2tp_core.c:1325
- pppol2tp_sendmsg+0x3ca/0x550 net/l2tp/l2tp_ppp.c:302
- sock_sendmsg_nosec net/socket.c:729 [inline]
- __sock_sendmsg net/socket.c:744 [inline]
- ____sys_sendmsg+0xab2/0xc70 net/socket.c:2609
- ___sys_sendmsg+0x11d/0x1c0 net/socket.c:2663
- __sys_sendmmsg+0x188/0x450 net/socket.c:2749
- __do_sys_sendmmsg net/socket.c:2778 [inline]
- __se_sys_sendmmsg net/socket.c:2775 [inline]
- __x64_sys_sendmmsg+0x98/0x100 net/socket.c:2775
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe6960ec719
- </TASK>
+Patches #4 to #7 add the CAN XL interface to iplink_can.
 
-The race occurs between the lockless UDPv6 transmit path
-(udpv6_sendmsg() -> sk_dst_check()) and the locked L2TP/pppol2tp
-transmit path (pppol2tp_sendmsg() -> l2tp_xmit_skb() ->
-... -> inet6_csk_xmit() → __sk_dst_check()), when both handle
-the same obsolete dst from sk->sk_dst_cache: the UDPv6 side takes
-an extra reference and atomically steals and releases the cached
-dst, while the L2TP side, using a stale cached pointer, still
-calls dst_release() on it, and together these updates produce
-an extra final dst_release() on that dst, triggering
-rcuref - imbalanced put().
+[1] commit 113aa9101a91 ("Merge patch series "can: netlink: add CAN XL support")
+Link: https://git.kernel.org/netdev/net-next/c/113aa9101a91
 
-The Race Condition:
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
 
-Initial:
-  sk->sk_dst_cache = dst
-  ref(dst) = 1   
-
-Thread 1: sk_dst_check()                Thread 2: __sk_dst_>
-------------------------               -------------------->
-sk_dst_get(sk):
-  rcu_read_lock()
-  dst = rcu_dereference(sk->sk_dst_cache)
-  rcuref_get(dst) succeeds
-  rcu_read_unlock()
-  // ref = 2  
-
-                                            dst = __sk_dst_>
-                                    // reads same dst from >
-                                    // ref still = 2 (no ex>
-
-[both see dst obsolete & check() == NULL]
-
-sk_dst_reset(sk):
-  old = xchg(&sk->sk_dst_cache, NULL)
-    // old = dst
-  dst_release(old)
-    // drop cached ref
-    // ref: 2 -> 1 
-
-                                  RCU_INIT_POINTER(sk->sk_d>
-                                  // cache already NULL aft>
-                                            dst_release(dst)
-                                              // ref: 1 -> 0
-
-  dst_release(dst)
-  // tries to drop its own ref after final put
-  // rcuref_put_slowpath() -> "rcuref - imbalanced put()"
-
-Make L2TP’s IPv6 transmit path stop using inet6_csk_xmit()
-(and thus __sk_dst_check()) and instead open-code the same
-routing and transmit sequence using ip6_sk_dst_lookup_flow()
-and ip6_xmit(). The new code builds a flowi6 from the socket
-fields in the same way as inet6_csk_route_socket(), then ca>
-ip6_sk_dst_lookup_flow(), which internally relies on the lo>
-sk_dst_check()/sk_dst_reset() pattern shared with UDPv6, and
-attaches the resulting dst to the skb before invoking ip6_x>
-This makes both the UDPv6 and L2TP IPv6 paths use the same
-dst-cache handling logic for a given socket and removes the
-possibility that sk_dst_check() and __sk_dst_check() concur>
-drop the same cached dst and trigger the rcuref - imbalance>
-warning under concurrent traffic.
-
-Use a helper to pre-route IPv4 L2TP packets via sk_dst_check()
-and ip_route_output_ports(), attach the resulting dst to the
-skb, and then hand the skb to ip_queue_xmit(). With skb->dst
-already set, __ip_queue_xmit() skips its __sk_dst_check()-based
-dst cache handling, so IPv4 L2TP uses the same lockless
-sk_dst_check() helper as UDPv4 for a given socket. This avoids
-mixed sk_dst_check()/__sk_dst_check() users of sk->sk_dst_cache
-and closes the same class of double dst_release() race on IPv4.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: b0270e91014d ("ipv4: add a sock pointer to ip_queue_xmit()")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
 ---
-v2: move fix to L2TP as suggested by Eric Dumazet.
-v3: dropped the lockless sk_dst_check() pre-validation
-and the extra sk_dst_get() reference; instead, under
-the socket lock, mirror __sk_dst_check()’s condition
-and invalidate the cached dst via sk_dst_reset(sk) so
-the cache-owned ref is released exactly once via the 
-xchg-based helper.
-v4: switch L2TP IPv6 xmit to open-coded (using sk_dst_check()) 
-and test with tools/testing/selftests/net/l2tp.sh.
-https://lore.kernel.org/netdev/a601c049-0926-418b-aa54-31686eea0a78@redhat.com/T/#t
-v5: use sk_uid(sk) and add READ_ONCE() for sk_mark and
-sk_bound_dev_if as suggested by Eric Dumazet.
-v6: move IPv6 L2TP xmit into an open-coded helper using
-ip6_sk_dst_lookup_flow() and sk_dst_check(), and add an
-analogous open-coded IPv4 helper mirroring __ip_queue_xmit()
-but using sk_dst_check() so both IPv4 and IPv6 L2TP paths
-stop calling __sk_dst_check() and share the UDP-style dst
-cache handling.
-v7: Rework IPv4 L2TP xmit to pre-route via sk_dst_check()
-and hand pre-routed skb to ip_queue_xmit(), avoiding
-__sk_dst_check() on this socket and keeping IP options
-handling in the core IPv4 stack.
-https://lore.kernel.org/lkml/20251202110805.765fa71d@kernel.org/
+Changes in v3:
 
- net/l2tp/l2tp_core.c | 101 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 98 insertions(+), 3 deletions(-)
+  - Patch #5: only use string literals in print_uint(). To achieve
+    this, remove the "is_xl" parameter from can_print_xtdc_opt() and
+    instead add can_print_xtdc_opt().
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 0710281dd95a..342e65db6eb8 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1202,19 +1202,114 @@ static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
- 	return bufp - optr;
- }
- 
-+#if IS_ENABLED(CONFIG_IPV6)
-+static int l2tp_xmit_ipv6(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct ipv6_pinfo *np = inet6_sk(sk);
-+	struct inet_sock *inet = inet_sk(sk);
-+	struct in6_addr *final_p, final;
-+	struct ipv6_txoptions *opt;
-+	struct dst_entry *dst;
-+	struct flowi6 fl6;
-+	int err;
-+
-+	memset(&fl6, 0, sizeof(fl6));
-+	fl6.flowi6_proto = sk->sk_protocol;
-+	fl6.daddr        = sk->sk_v6_daddr;
-+	fl6.saddr        = np->saddr;
-+	fl6.flowlabel    = np->flow_label;
-+	IP6_ECN_flow_xmit(sk, fl6.flowlabel);
-+
-+	fl6.flowi6_oif   = READ_ONCE(sk->sk_bound_dev_if);
-+	fl6.flowi6_mark  = READ_ONCE(sk->sk_mark);
-+	fl6.fl6_sport    = inet->inet_sport;
-+	fl6.fl6_dport    = inet->inet_dport;
-+	fl6.flowi6_uid   = sk_uid(sk);
-+
-+	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
-+
-+	rcu_read_lock();
-+	opt = rcu_dereference(np->opt);
-+	final_p = fl6_update_dst(&fl6, opt, &final);
-+
-+	dst = ip6_sk_dst_lookup_flow(sk, &fl6, final_p, true);
-+	if (IS_ERR(dst)) {
-+		rcu_read_unlock();
-+		kfree_skb(skb);
-+		return NET_XMIT_DROP;
-+	}
-+
-+	skb_dst_set(skb, dst);
-+	fl6.daddr = sk->sk_v6_daddr;
-+
-+	err = ip6_xmit(sk, skb, &fl6, READ_ONCE(sk->sk_mark),
-+		       opt, np->tclass,
-+		       READ_ONCE(sk->sk_priority));
-+	rcu_read_unlock();
-+	return err;
-+}
-+#endif
-+
-+static int l2tp_xmit_ipv4(struct sock *sk, struct sk_buff *skb, struct flowi *fl)
-+{
-+	struct inet_sock *inet = inet_sk(sk);
-+	struct net *net = sock_net(sk);
-+	struct ip_options_rcu *inet_opt;
-+	struct flowi4 *fl4;
-+	struct rtable *rt;
-+	__u8 tos;
-+	int err;
-+
-+	rcu_read_lock();
-+	inet_opt = rcu_dereference(inet->inet_opt);
-+	fl4 = &fl->u.ip4;
-+	tos = READ_ONCE(inet->tos);
-+
-+	rt = dst_rtable(sk_dst_check(sk, 0));
-+	if (!rt) {
-+		__be32 daddr = inet->inet_daddr;
-+
-+		if (inet_opt && inet_opt->opt.srr)
-+			daddr = inet_opt->opt.faddr;
-+
-+		rt = ip_route_output_ports(net, fl4, sk,
-+					   daddr, inet->inet_saddr,
-+					   inet->inet_dport,
-+					   inet->inet_sport,
-+					   sk->sk_protocol,
-+					   tos & INET_DSCP_MASK,
-+					   READ_ONCE(sk->sk_bound_dev_if));
-+		if (IS_ERR(rt)) {
-+			rcu_read_unlock();
-+			IP_INC_STATS(net, IPSTATS_MIB_OUTNOROUTES);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_OUTNOROUTES);
-+			return -EHOSTUNREACH;
-+		}
-+
-+		sk_setup_caps(sk, &rt->dst);
-+	}
-+
-+	skb_dst_set_noref(skb, &rt->dst);
-+	rcu_read_unlock();
-+
-+	err = ip_queue_xmit(sk, skb, fl);
-+	return err;
-+}
-+
- /* Queue the packet to IP for output: tunnel socket lock must be held */
- static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, struct flowi *fl)
- {
- 	int err;
-+	struct sock *sk = tunnel->sock;
- 
- 	skb->ignore_df = 1;
- 	skb_dst_drop(skb);
- #if IS_ENABLED(CONFIG_IPV6)
--	if (l2tp_sk_is_v6(tunnel->sock))
--		err = inet6_csk_xmit(tunnel->sock, skb, NULL);
-+	if (l2tp_sk_is_v6(sk))
-+		err = l2tp_xmit_ipv6(sk, skb);
- 	else
- #endif
--		err = ip_queue_xmit(tunnel->sock, skb, fl);
-+		err = l2tp_xmit_ipv4(sk, skb, fl);
- 
- 	return err >= 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
- }
+  - Reword patch #4 to #7 subjects.
+
+Link to v2: https://lore.kernel.org/r/20251201-canxl-netlink-v2-0-dadfac811872@kernel.org
+
+Changes in v2:
+
+  - add the "iproute2-next" prefix to the patches
+
+  - s/matches/strcmp/g in can_parse_opt()
+
+  - Patch #3: "s/milli second/millisecond/g" and "s/nano second/nanosecond/g"
+
+  - Patch #6: s/XL-TMS/TMS/g in print_ctrlmode()
+
+  - Patch #7: Remove a double space in patch description
+
+Link to v1: https://lore.kernel.org/r/20251129-canxl-netlink-v1-0-96f2c0c54011@kernel.org
+
+---
+Vincent Mailhol (7):
+      iplink_can: print_usage: fix the text indentation
+      iplink_can: print_usage: change unit for minimum time quanta to mtq
+      iplink_can: print_usage: describe the CAN bittiming units
+      iplink_can: add RESTRICTED operation mode support
+      iplink_can: add initial CAN XL support
+      iplink_can: add CAN XL transceiver mode setting (TMS) support
+      iplink_can: add CAN XL TMS PWM configuration support
+
+ ip/iplink_can.c | 349 +++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 331 insertions(+), 18 deletions(-)
+---
+base-commit: 1a909dbde03c3f53612cd16dc1c8cb8d58931364
+change-id: 20250921-canxl-netlink-dd17ae310258
+
+Best regards,
 -- 
-2.47.2
+Vincent Mailhol <mailhol@kernel.org>
 
