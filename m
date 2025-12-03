@@ -1,136 +1,230 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D503342146
-	for <netdev@vger.kernel.org>; Wed,  3 Dec 2025 16:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34BC3A1CF4;
+	Wed,  3 Dec 2025 16:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777845; cv=none; b=C7aK5yM/7+aMvG+HNA7KbZFp+j1F7vhrW+gmDQQ/Y0hDNBBPZbvQ9MUl40XDFt25ng5OzjZItYFkhus5D4PHh2sYX6zNgf6nmanPOFlpYOKRRFR4Mq129ir8MqyvUhsGyCH2zQht+I5qA7ECSLlQJbOAKr/8K02ZaY9cVjuyf7U=
+	t=1764780730; cv=none; b=f7hdYpxS0TZlRyJ6Y3mN5WSN1+MgV9OsHdG6qRKI31wArpUWLaENjk+Le4yx0yNISpkbnz/76FFUESy/FVOAMSomYNB6hW3hriak8NOzEWqoHc66cOttBQhBC4t3ahgYNkJC1OZLd58gRo+NnZcHmLG3qS27jsKsQumrwP2NFWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777845; c=relaxed/simple;
-	bh=7KkKG378b9JRT4tvDmQ33QUe8ZhTeAld66ZSp25iBfE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HhbGs0Fc0LS3rpgaFvoHk7dkU+Ht51pXebudXfnkzl2HqU3RKVycCZ6F0uZncLhyrJNCACT6puy9Yy/XG2S8XQpCSLR+it/8wt5Nn9CpeE5+4UclKmT9aOulWGHsiQ3sKm9eLTJW9rDx2fwauzgaDdNasIay85LargKgKwNvs5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=q41PqCVO; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1764780730; c=relaxed/simple;
+	bh=ff1r0JEDWO5jjpC/c+fKlQRpnYmkS32GNPsAKhRV5+I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EgUKj6ENb/92crAaHvQ3Oudk0vBoJBvRCxvChTfH7ChFES/LcAEk4tLpjOnHF1hy+2fX7RjlieChJQRDC9GXEnJdsh1hxGPNB0Ampi/qlacYtYKIKYpLWO/V5yCfQsDZJ5tuu8vJqlewrag57P3iAWjyH/72CPZHHUPaCZklnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lf8cmMZ6; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="q41PqCVO"
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B3FX3gP3744841;
-	Wed, 3 Dec 2025 08:03:46 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=775/ur+2F/qbl+aiP52Hbr40OQpK7M+56CdVzCXg/yo=; b=q41PqCVO1SiG
-	8d3DnVo/hMi5MIumHoLfWugBsYDTUDF5P+aArAcuzqP4G9cepuFLcFYm3tk+kg3M
-	gGgRGk6X4lrD9gurd+Smefo9KJRGC5HOm8udItpbh7RCetqzPb5XiXQkGzL2a/oJ
-	7lUhvq7xqmcc4BLOIj/DR85cQWq4OkIBEGrQvnpA/mwbr4ceOaxhW6Yl8SuICSrp
-	WnS3/XxDfl7qJotmR+IzjbBlLWwyF8XNBwtybukG5DZ1kE4mO3/QPkDJobRrdGCV
-	R0rArpdyAsOzyo1Z5kxJFox7N4oFSalcRWKRmwatTUItxe/9aBphOoXq/YWBvhnL
-	1UiEbNO3hQ==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4atf69un7q-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 03 Dec 2025 08:03:46 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Wed, 3 Dec 2025 16:03:44 +0000
-From: Chris Mason <clm@meta.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: Chris Mason <clm@meta.com>, Simon Horman <horms@kernel.org>,
-        "Daniel
- Jurgens" <danielj@nvidia.com>, <netdev@vger.kernel.org>,
-        <jasowang@redhat.com>, <pabeni@redhat.com>,
-        <virtualization@lists.linux.dev>, <parav@nvidia.com>,
-        <shshitrit@nvidia.com>, <yohadt@nvidia.com>,
-        <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>, <jgg@ziepe.ca>,
-        <kevin.tian@intel.com>, <kuba@kernel.org>, <andrew+netdev@lunn.ch>,
-        <edumazet@google.com>
-Subject: Re: [PATCH net-next v13 11/12] virtio_net: Add support for TCP and UDP ethtool rules
-Date: Wed, 3 Dec 2025 08:02:48 -0800
-Message-ID: <20251203160252.516141-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251203083305-mutt-send-email-mst@kernel.org>
-References:
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lf8cmMZ6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=N+716RPxYHPXubi1V1mW79jwZ+pLhTxJhm/MCCVNO+g=; b=lf8cmMZ6desTb8fFA5NDu9QpcU
+	3UmLE9XGSZw7HofiRmkj5oPDHLhY6Gvh6IQihDYGJPSe81AbCozJieBCXPek9FJAoCQn0f5cAMtjz
+	JXE7HYWw3O6pzCd6a4GXvd81sNPcAZcBiPYCco93khu0AI5TaFcKwZ+E/9d2hXoW88ID8slplQCxa
+	oTSAdYn9LLHBPt2orLhdvZdGMcEQDxTYRhi7HFU7VtMylbE5tPRPRUYupyxJ/PK7CZdLk2Cq48xQq
+	KZHbNLl6QZN3+PbMIUp7YOd8E/wArs03ia2nF+c639lQnP4J5I9CZT7nPbZfcB7KPdLCMoqF46KjZ
+	stVMs6uA==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vQpDf-00000002Xsn-0QUF;
+	Wed, 03 Dec 2025 15:56:43 +0000
+Message-ID: <da92811ade53edfa1ced7995fc4344f557a4d431.camel@infradead.org>
+Subject: Re: [PATCH v3 2/4] ptp: vmclock: support device notifications
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Chalios, Babis" <bchalios@amazon.es>, "robh@kernel.org"
+ <robh@kernel.org>,  "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,  "richardcochran@gmail.com"
+ <richardcochran@gmail.com>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>,  "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,  "kuba@kernel.org"
+ <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+ "netdev@vger.kernel.org"
+	 <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	 <linux-kernel@vger.kernel.org>, "Graf (AWS), Alexander" <graf@amazon.de>, 
+ "mzxreary@0pointer.de"
+	 <mzxreary@0pointer.de>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Date: Wed, 03 Dec 2025 16:52:02 +0000
+In-Reply-To: <20251203123539.7292-3-bchalios@amazon.es>
+References: <20251203123539.7292-1-bchalios@amazon.es>
+	 <20251203123539.7292-3-bchalios@amazon.es>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-bX2ckaGjDK0VfcyzH9jR"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjAzMDEyNyBTYWx0ZWRfX/wRHnxwjtw0/
- pJx0R2uGJAylMH7GIJ9/s860XWCwysrp5A547tHfUecO2eYJWd/S+fp6YOKHKUX+tt7dbHWOIWf
- 2CFTz1Z32bR6BL/9uaO+jWdmaFDft6aOiuBxd7iGrb+NInQJ8wEmvJ0rZA0lJAdlF3e2a0CBqgm
- cH0+6EZQeJRxs6rVkzb2+pn6EQUmpg+Nqoq4LAHvCJc1LBp/BiEdAgD8ArIHpOZ+who0Lipwc04
- mOZXVWpXMyb+766AjGx0L2a4/VIAw7xEkG+tSMDb+qVdxQWRRfaG2yK2NuTvfpg6GXuj6o08Ncl
- 3VwP3USbN+4TgT6wGXpzDohmX78CEFqYFt1BQZXl/dyQ9AbNBa7XBS5kQ8WP4rjya+TGtpMwUpz
- 0MoL5qatpvwafx061uQWp+j4bUCAvA==
-X-Proofpoint-GUID: DHimFOAyM1mpklZCE5b7PZFA_n2XuQNQ
-X-Authority-Analysis: v=2.4 cv=IrYTsb/g c=1 sm=1 tr=0 ts=69305f62 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=9R54UkLUAAAA:8 a=NEAV23lmAAAA:8
- a=20KFwNOVAAAA:8 a=NvQyTCM08Br6FijgrkcA:9 a=5hNPEnYuNAgA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22
-X-Proofpoint-ORIG-GUID: DHimFOAyM1mpklZCE5b7PZFA_n2XuQNQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-03_02,2025-11-27_02,2025-10-01_01
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, 3 Dec 2025 08:33:53 -0500 "Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-> On Tue, Dec 02, 2025 at 03:55:39PM +0000, Simon Horman wrote:
-> > On Wed, Nov 26, 2025 at 01:35:38PM -0600, Daniel Jurgens wrote:
-> > 
-> > ...
-> > 
-> > > @@ -6005,6 +6085,11 @@ static void parse_ip4(struct iphdr *mask, struct iphdr *key,
-> > >  		mask->tos = l3_mask->tos;
-> > >  		key->tos = l3_val->tos;
-> > >  	}
-> > > +
-> > > +	if (l3_mask->proto) {
-> > > +		mask->protocol = l3_mask->proto;
-> > > +		key->protocol = l3_val->proto;
-> > > +	}
-> > >  }
-> > 
-> > Hi Daniel,
-> > 
-> > Claude Code with review-prompts flags an issue here,
-> > which I can't convince myself is not the case.
-> > 
-> > If parse_ip4() is called for a IP_USER_FLOW, which use ethtool_usrip4_spec,
-> > as does this function, then all is well.
-> > 
-> > However, it seems that it may also be called for TCP_V4_FLOW and UDP_V4_FLOW
-> > flows, in which case accessing .proto will overrun the mask and key which
-> > are actually struct ethtool_tcpip4_spec.
-> > 
-> > https://netdev-ai.bots.linux.dev/ai-review.html?id=51d97b85-5ca3-4cb8-a96a-0d6eab5e7196#patch-10
-> 
-> 
-> Oh I didn't know about this one. Is there any data on how does it work?
-> Which model/prompt/etc?
+--=-bX2ckaGjDK0VfcyzH9jR
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm not actually sure if the netdev usage is written up somewhere?
+On Wed, 2025-12-03 at 12:36 +0000, Chalios, Babis wrote:
+> From: "Chalios, Babis" <bchalios@amazon.es>
+>=20
+> Add optional support for device notifications in VMClock. When
+> supported, the hypervisor will send a device notification every time it
+> updates the seq_count to a new even value.
+>=20
+> Moreover, add support for poll() in VMClock as a means to propagate this
+> notification to user space. poll() will return a POLLIN event to
+> listeners every time seq_count changes to a value different than the one
+> last seen (since open() or last read()/pread()). This means that when
+> poll() returns a POLLIN event, listeners need to use read() to observe
+> what has changed and update the reader's view of seq_count. In other
+> words, after a poll() returned, all subsequent calls to poll() will
+> immediately return with a POLLIN event until the listener calls read().
+>=20
+> The device advertises support for the notification mechanism by setting
+> flag VMCLOCK_FLAG_NOTIFICATION_PRESENT in vmclock_abi flags field. If
+> the flag is not present the driver won't setup the ACPI notification
+> handler and poll() will always immediately return POLLHUP.
+>=20
+> Signed-off-by: Babis Chalios <bchalios@amazon.es>
 
-The automation is running claude, but (hopefully) there's nothing specific to
-claude in the prompts, it's just what I've been developing against.
+Mostly looks good to me; thanks. However...=20
 
-The prompts are:
+> +static __poll_t vmclock_miscdev_poll(struct file *fp, poll_table *wait)
+> +{
+> +	struct vmclock_file_state *fst =3D fp->private_data;
+> +	struct vmclock_state *st =3D fst->st;
+> +	uint32_t seq;
+> +
+> +	/*
+> +	 * Hypervisor will not send us any notifications, so fail immediately
+> +	 * to avoid having caller sleeping for ever.
+> +	 */
+> +	if (!(st->clk->flags & VMCLOCK_FLAG_NOTIFICATION_PRESENT))
+> +		return POLLHUP;
 
-https://github.com/masoncl/review-prompts
+Missing le64_to_cpu() there. And I guess *strictly* speaking we should
+do the seq_lock dance=C2=A0whenever we read the dynamic fields, although
+that only ever matters if a hypervisor were to bump seq_count to an odd
+value, *then* set the VMCLOCK_FLAG_NOTIFICATION_PRESENT flag, then
+clear the flag again before bumping seq_count to even, and blame the
+*guest* for looking at the wrong time. Which is frankly insane, and I
+don't think I care.
 
-Jakub also wired up semcode indexing, which isn't required but does
-make it easier for claude to find code:
+So with the le64_to_cpu() added,=20
 
-https://github.com/facebookexperimental/semcode
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-I'm still working on docs and easy setup for semcode and the review prompts,
-but please feel free to send questions.
+Don't post again for a few days though; three versions in 48 hours is
+enough :)
 
--chris
+
+> +static int vmclock_miscdev_release(struct inode *inode, struct file *fp)
+> +{
+> +	kfree(fp->private_data);
+> +	return 0;
+> +}
+
+Still bugs me a little. I note simple_attr_release() is exported and
+does the same, but I guess we'd want to move and rename that before we
+try to use it from places like this.
+
+
+--=-bX2ckaGjDK0VfcyzH9jR
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIwMzE2NTIw
+MlowLwYJKoZIhvcNAQkEMSIEIAURSECWM7VcxRHSAqPLllzMIyy2HG+Ch+Xh9F5uKDJnMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAnX47dBwbtnYP
+9CIOj9Hww5zKhJNt0mioEYFrUgqO84dc9mJbSD2l7jsSIkUkP2TOjE52qQQ9BY1kFELCsk5I5TkW
+xl+0ZiQjAbIOTIvOf33KNloawj9hv9+MBQQVS9PlkBK1zIS7/LPE6egVk/DeOUfwPuo9CTpzjI7r
+YTzJdcnDFT2gXmdRirclVCivK5npBORRFzcj6sVFqygmN+diT+ovWbpjYUBw7HNg4zFqNPR2SWXu
+TJfs2SpM1TGthJwYl7SS5sBHtchTHp3KiD7nND1V1sCOCBFiMyY9zYqru6VsJfEaY7o4tN5ROuZA
+ol0/lQqPLC3rBMmnUKyBZIYRC1h1xIAJ4G6R/tyB/1k39mAMligDAr537WgeCfdsk6zYawmBwL8U
+3+AROKxM6gzYDLCtoQquEP3kQDdPZ521q5mqEmUlRhcFHei9iiinOPSvvN88cjzopdfPXInz0Ikp
+3GKkQn4NV8UnAWnPiQFS/D2I5gxLDzx/otLAy0heQQwRTUaPmC9vvAi0UKofs1hHAYLlTZVgShML
+2AkML5psoMEqJj5NR+7L6GJR8HCI9hi4cOLDKuEdE/rscnG4C9YYtAQPPZCHVZJauljbzC58685k
+3WEZVQOgqqMoUccTsB++uSCe0ldupqghpLHGPoi/RZDbK4keY4R/5KYJqOMQcHQAAAAAAAA=
+
+
+--=-bX2ckaGjDK0VfcyzH9jR--
