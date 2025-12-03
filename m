@@ -1,156 +1,161 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5C632F740;
-	Wed,  3 Dec 2025 15:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A85342146;
+	Wed,  3 Dec 2025 16:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777583; cv=none; b=VW3YvNzDsOk6hRvagRhVwGCrjJko8O6LkP53fMpGnz8CcTrXOVGtN3Q6QvBjKpfUoEMQkPW2KCNltQU4dlYThPvrTYnxcxRebTjrv89gQr0IvhNVzoJJmKndj9LkDHmSH9QvJ+FS5/lBg8FSvNyVp3Obk+GSICh29bgBQLNOl4Y=
+	t=1764777838; cv=none; b=TPt5IbLRSEhyE18tBa4y1+px6tUo5CDsvnfELxHNffhjALEG8WCnKESTyD1lbkm3Vs39msFVMCm0CBXhblPaSv8i07uh6rw5LceZV/4qu1JOgml/krvygkdsW6V/uJl4EkJRxVo00mN8/0SSGTNbpFi3A8KrZtwQrm+9HdxhEtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777583; c=relaxed/simple;
-	bh=B36oONp39GILfEjUDrc8cwOGYq7/3VDI4lJqgOUo/wo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VrLO5GydSuf9iTgmOhwIZDtcy9no/543EIyUfTihjqDD7Ca1NgT7OnKEpVjr/eLfMGLzolitV9k2h227YIn4GhVXDVYZtymtcjhhjaoIC6y/wsLUpX/xgAd4DNOPI+6HgvdmOt98hmW+XqRtt1gzWa+WR11mgFfDn6SiYgCcH44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=RxRfiM+l; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1764777838; c=relaxed/simple;
+	bh=44aWoO0xgrbCYwAvNjJ2HHKTl5rnXStHKGkAwNTZeOE=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=RmoVYI5qjg6+QA0uoA29qi5lGL3ZpGpFk46K2PDFhKkife5+piXELcBpLRQl7WHunnRuguqC12ieXEe97yDiq5ydyBLOjosAZUUIV4gn2kcr1fzPwh9wV1ZoQzrngNLrah9P/xr/xBc0so++CTJXav7wX76ZEwWpGorECEYd8zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=QbyG//lT; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="RxRfiM+l"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BNrEYDusoPa2vxOXWr4+YH72hzHIHGHZr3/9V5K71zA=; b=RxRfiM+lTeAys3fOXt5OoysDpH
-	9ZMEtXQ3T4m+ypoByBoNGmLIUCadTXiUafGbNPX6gtNXPWLd+iNsqX0lT+Mk6CT1hLlmwRygJ17I1
-	3hgxUPaEcHvoi+v7RlUzp7y/+S2b4dp/4TzAfWW1B1p22jIalYck3OlK/UFuq1KH9VlQmBUz5cYJN
-	cxBd1vB950ZTP2x2N91yI4JQ4EXGyWt3xJlMObs8pqwJXoyxco2Y9V6dmz+Uo2G7mAgutDKmv7zCH
-	bN7q6WVHyRK8YCoVSgKKEeOtJN0ouZ/NkTxEeDFS7OgQt4DiW09coueoDEBiC3gBET5fZXQG5RV1r
-	sxw9SC+g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33336)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vQpGE-000000002hx-414A;
-	Wed, 03 Dec 2025 15:59:23 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vQpG9-0000000008C-3Psp;
-	Wed, 03 Dec 2025 15:59:17 +0000
-Date: Wed, 3 Dec 2025 15:59:17 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Buday Csaba <buday.csaba@prolan.hu>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/1] net: mdio: reset PHY before attempting
- to access ID register
-Message-ID: <aTBeVTlsElGXUCSN@shell.armlinux.org.uk>
-References: <5701a9faafd1769b650b79c2d0c72cc10b5bdbc8.1764337894.git.buday.csaba@prolan.hu>
- <79c050e9-83e7-4cc5-979e-457f098024bf@lunn.ch>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="QbyG//lT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1764777825; bh=e1cr7cB9gHoKGVQYhIC4CvFypTqIWDD1zmvqi8c+6Rc=;
+	h=From:To:Cc:Subject:Date;
+	b=QbyG//lTMa/9UlMzl/F1rT2VpRekrhDi140zrwXsEFxSKLzxa82XPIV0xdSy1JvuV
+	 bO5FZCFlHkFc9agzjEY451ZKMoNH3jguHqx6tQpBDlF0SaZg+fFDzz43GdFxpasXEX
+	 pr8ot8bgWs+Vjuy0jUeOXEqaABpgHX7sV7wKiFX4=
+Received: from lxu-ped-host.. ([111.201.7.117])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id E81C8F7; Thu, 04 Dec 2025 00:03:40 +0800
+X-QQ-mid: xmsmtpt1764777820t4qo7i2do
+Message-ID: <tencent_3C86DFD37A0374496263BE24483777D76305@qq.com>
+X-QQ-XMAILINFO: Mm3lGEhJcF5GES4dJXmrXXeRjVFRK9xLrz1OHc0rxpoLA+afC7a9iXoooZhjj4
+	 toWUN1AVx0njlGItEE030M4WPQN5zD05g7mji1EtYEXqIvgYiceXGF7lBPga5KuJop7VY/csunpw
+	 n2LJ/6GtcJRCEpr823xHzkTC6Q5RgZC1XWtWOS6H0jtRkvL3ay52VuS+u4wJ1S435fLZVVv/7Mu/
+	 cVhsURbGNz7iuExHYBBmYMG25EpCXsjX2UpzDnxXWEOLJTOtIEEULHxbFD+H7pu4fhzAoUop9GUH
+	 yDkzV3exGXX3+LiywTimz3dNggCqva4d87NBkzSVKBgWR8LP3n4SoOjBLEYU6omP1gYGBmyl0Kvz
+	 NLVhxD5q0/3u71Xezsrzc0XJXTvv+dtLfMayITb+kDdRQkr/fS8ZTHh8QqrG34Pcbae0IuyYwmpS
+	 08HRuFluYAN2RXO0pBFXowJAU34Jil1EICUaAXnJwQi080+5duxZgAkamoW4WHevkyLr6rsSZSnL
+	 lc+SvJdMxm5DPavd5Pf2N6MoZX1zneLIggVimp2Gomd3CM+liSpm4muW8dkIwFe3u4e3B4ePg12A
+	 gE/6BZ96kh7bLL3UVSZwsIRDHg+RpQVcaijqYDUnK4bxwXxLPXhwWKS/YCscJnrG21XjLv4fIS8i
+	 EBA94xZpH6iX590So0Y8/Mnoj2GJAmNQ+b+z68xoheAu8OfCEA7daMTs/iQsEdeRtI3xtaUF1dBF
+	 aQmpYmLNBLFUqmeh1JOd5joAXAY+oJfOZqIN4lO/bFQtOotbtKa+gUYdm6HEg5okqsNs6IZflCSN
+	 Jq2E7ATchHPTHBPck3p//zYnyrK2cTommDsZ+jZq60vDXSxpaWTesZ04UouE5JNA5fjMfivzJo1a
+	 aGwIl6CAvj4v2Rz0MP0F97iZRP13Id7lZpkJg3CVlZlQLHpqWceqXuECwPiap7kKbWUeE8HSqdNu
+	 53Uud1bGVJ0H7r3jI9zBhdEG7Nkvv3WmQrwMfJ+D8Ru1LJMeI/Xo65X7eiXSinrZSKl+tdfAazZ8
+	 KPIbRkZQ==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: Edward Adam Davis <eadavis@qq.com>
+To: kuba@kernel.org
+Cc: davem@davemloft.net,
+	eadavis@qq.com,
+	edumazet@google.com,
+	eperezma@redhat.com,
+	horms@kernel.org,
+	jasowang@redhat.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mst@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	sgarzare@redhat.com,
+	stefanha@redhat.com,
+	syzbot+ci3edb9412aeb2e703@syzkaller.appspotmail.com,
+	syzbot@lists.linux.dev,
+	syzbot@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	virtualization@lists.linux.dev,
+	xuanzhuo@linux.alibaba.com
+Subject: [PATCH net-next V3] net: restore the iterator to its original state when an error occurs
+Date: Thu,  4 Dec 2025 00:03:39 +0800
+X-OQ-MSGID: <20251203160339.303720-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <79c050e9-83e7-4cc5-979e-457f098024bf@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 02, 2025 at 02:46:42PM +0100, Andrew Lunn wrote:
-> > @@ -13,9 +13,12 @@
-> >  #include <linux/phy.h>
-> >  #include <linux/pse-pd/pse.h>
-> >  
-> > +#include "../phy/mdio-private.h"
-> 
-> Relative imports are generally not allowed. It sometimes suggests
-> layering violations.
-> 
-> I'm not convinced the complexity and ugliness of partially registering
-> a device in order to be able to reset it, is worth the effort when we
-> have a simpler solution of just using the ID values in DT.
-> 
-> Give the merge window, i will mark this as change request for the
-> moment.
+In zerocopy_fill_skb_from_iter(), if two copy operations are performed
+and the first one succeeds while the second one fails, it returns a
+failure but the count in iterator has already been decremented due to
+the first successful copy. This ultimately affects the local variable
+rest_len in virtio_transport_send_pkt_info(), causing the remaining
+count in rest_len to be greater than the actual iterator count. As a
+result, packet sending operations continue even when the iterator count
+is zero, which further leads to skb->len being 0 and triggers the warning
+reported by syzbot [1].
 
-It seems to me that PHY clocks and resets are a never-ending source of
-problems, so I'm wondering whether we need to consider a radically
-different solution, rather than keeping trying to put sticky plasters
-over this in various different forms.
+Therefore, if the zerocopy operation fails, we should revert the iterator
+to its original state.
 
-__mdiobus_register() is a path where deferred probing is possible,
-and this is responsible for doing the bus scan, which is one source
-of the problems.
+The iov_iter_revert() in skb_zerocopy_iter_stream() is no longer needed
+and has been removed.
 
-If we add a new ops structure for firmware methods:
+[1]
+'send_pkt()' returns 0, but 4096 expected
+WARNING: net/vmw_vsock/virtio_transport_common.c:430 at virtio_transport_send_pkt_info+0xd1e/0xef0 net/vmw_vsock/virtio_transport_common.c:428, CPU#1: syz.0.17/5986
+Call Trace:
+ virtio_transport_stream_enqueue net/vmw_vsock/virtio_transport_common.c:1113 [inline]
+ virtio_transport_seqpacket_enqueue+0x143/0x1c0 net/vmw_vsock/virtio_transport_common.c:841
+ vsock_connectible_sendmsg+0xabf/0x1040 net/vmw_vsock/af_vsock.c:2158
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:746
 
-struct mii_bus_fw_ops {
-	int (*init)(struct mii_bus *bus);
-	int (*prescan)(struct mii_bus *bus);
-	void (*postscan)(struct mii_bus *bus);
-	void (*release)(struct mii_bus *bus);
-};
+Reported-by: syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+v3:
+  - fix test tcp_zerocopy_maxfrags timeout
+v2: https://lore.kernel.org/all/tencent_BA768766163C533724966E36344AAE754709@qq.com/
+  - Remove iov_iter_revert() in skb_zerocopy_iter_stream()
+v1: https://lore.kernel.org/all/tencent_387517772566B03DBD365896C036264AA809@qq.com/
 
-This would be provided when we have e.g. a MII bus described in DT.
+ net/core/datagram.c | 9 ++++++++-
+ net/core/skbuff.c   | 1 -
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-The init() method would be called by __mdiobus_register() before:
-
-        err = device_register(&bus->dev);
-
-and this method would:
-- walk the sub-nodes of the bus, looking for reset and clock resources.
-- it gets the reset and clock resources that are found.
-- any that return deferred probe can safely propagate that error code.
-
-__mdiobus_register() would then do its reset stuff, and then before
-doing the scans, call the prescan() method. This will:
-
-- walk the resources found in the init() method, noting the initial
-  state of resets, then enabling clocks and finally releasing any
-  resets.
-
-During the scan, if a device is probed, then we need to consider how
-to handle a potential updated reset state. Unlike clocks, which are
-nestable, resets aren't. We don't want to re-assert a reset signal
-if the PHY driver has specifically asked for it to be deasserted in
-its probe() method.
-
-After the bus scans have completed, then the postscan() op would be
-called, and this will:
-
-- walk the resources again, restoring the reset state (note the
-  comment above concerning PHY driver probe()) and disabling
-  any clocks (if the clock has already been "got" by something, e.g.
-  a driver that probed as a result of successful scan, this doesn't
-  affect it.)
-
-The release() method would be called whenever we are unregistering
-the bus (after device_del(&bus->dev) in __mdiobus_register() and
-mdiobus_unregister()).
-
-Maybe we should also consider whether phylib should have functions
-for PHY drivers to call to control these resources that it has
-obtained for each PHY device too?
-
-Yes, this is a bigger change, but I think it should put a stop to
-the dribble of problems that seem to be cropping up around the bus
-scanning. It can be easily extended for other resources (e.g.
-regulators) that are needed to scan and probe, and should also
-avoid the need for relative-path includes.
-
-If there are buses that we need to actively assert the reset, then
-I feel that this should itself be a firmware property of the device,
-as there are likely platforms that come up with the PHY already
-released from reset and in a functional state, and causing their
-link to drop by forcing a reset of the PHY could be undesirable.
-
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index c285c6465923..3a612ebbbe80 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -748,9 +748,13 @@ int __zerocopy_sg_from_iter(struct msghdr *msg, struct sock *sk,
+ 			    size_t length,
+ 			    struct net_devmem_dmabuf_binding *binding)
+ {
++	struct iov_iter_state state;
+ 	unsigned long orig_size = skb->truesize;
+ 	unsigned long truesize;
+-	int ret;
++	int ret, orig_len;
++
++	iov_iter_save_state(from, &state);
++	orig_len = skb->len;
+ 
+ 	if (msg && msg->msg_ubuf && msg->sg_from_iter)
+ 		ret = msg->sg_from_iter(skb, from, length);
+@@ -759,6 +763,9 @@ int __zerocopy_sg_from_iter(struct msghdr *msg, struct sock *sk,
+ 	else
+ 		ret = zerocopy_fill_skb_from_iter(skb, from, length);
+ 
++	if (ret == -EFAULT || (ret == -EMSGSIZE && skb->len == orig_len))
++		iov_iter_restore(from, &state);
++
+ 	truesize = skb->truesize - orig_size;
+ 	if (sk && sk->sk_type == SOCK_STREAM) {
+ 		sk_wmem_queued_add(sk, truesize);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index a00808f7be6a..7b8836f668b7 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1908,7 +1908,6 @@ int skb_zerocopy_iter_stream(struct sock *sk, struct sk_buff *skb,
+ 		struct sock *save_sk = skb->sk;
+ 
+ 		/* Streams do not free skb on error. Reset to prev state. */
+-		iov_iter_revert(&msg->msg_iter, skb->len - orig_len);
+ 		skb->sk = sk;
+ 		___pskb_trim(skb, orig_len);
+ 		skb->sk = save_sk;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
