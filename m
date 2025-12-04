@@ -1,105 +1,112 @@
-Received: from 6.mo581.mail-out.ovh.net (6.mo581.mail-out.ovh.net [188.165.39.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98F22ECE9E
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 20:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.39.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55E431ED77
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 20:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764879337; cv=none; b=Ms3z/7FvnVDKBOqDYsEkjTtHeXMEYUHRfN28ag1vbAD0KRmlysQ771t9XQqiMRWEHl1ONckhXKC9tfZ9j4hy6eB6dmicKFzb7DJhEHmuEVGQ1u4IEk/lD+ZZ0sdk4qrbIXkK2FI+bacMxjPiUtrIiEVagenmUDyw37u2LQYAEW8=
+	t=1764879544; cv=none; b=Q8xoUqN2nc5nrQdl8AUg686F+V/qsvTB+A94hj3u5493fT3vVip2KaoncHxf1R41Z+kaZxt+8KiA4fkB18wkw1AEST+eGJwTNV7E60wlpuhT741x/ehodpe1kkHqSn/3LxLmWB+a5v4Suq0K5QpSqkTtumGLvfTseraMoYcrgg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764879337; c=relaxed/simple;
-	bh=WpIiSH4GxU7onEE+2ezX9gvDAfdCzI+wz8TInd5GTu0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rik6WhBTjaJLjalLWsEdlqNjsaO+vtI9w7KfS2FnNowVUbHOgZw9BkgM5p0aEBiYAgtwe2vEh1oZjE+Vz/I9TM4voUKjTZWAJk7rdYDT1SxfLIGxBa/8oL5YOPt+2YSvgKXnKlcJRbh+HaScUGKqpoPLhTVlXBGrLISwpddPLN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com; spf=fail smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=188.165.39.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=bp.renesas.com
-Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.167])
-	by mo581.mail-out.ovh.net (Postfix) with ESMTP id 4dMgDT6KG1z6THL
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:38:17 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-m4nfg (unknown [10.111.174.111])
-	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 5E190C4796;
-	Thu,  4 Dec 2025 16:38:16 +0000 (UTC)
-Received: from labcsmart.com ([37.59.142.114])
-	by ghost-submission-7d8d68f679-m4nfg with ESMTPSA
-	id naCeNve4MWmh+AYArq+dVg
-	(envelope-from <john.madieu.xa@bp.renesas.com>); Thu, 04 Dec 2025 16:38:16 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-114S008dea8ec6f-3573-4234-b91e-57f82739fe4c,
-                    E90FA267686E4F2ED65044873A5FD8D85CF2A6B0) smtp.auth=john.madieu@labcsmart.com
-X-OVh-ClientIp:141.94.163.193
-From: John Madieu <john.madieu.xa@bp.renesas.com>
-To: prabhakar.mahadev-lad.rj@bp.renesas.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	geert+renesas@glider.be
-Cc: biju.das.jz@bp.renesas.com,
-	claudiu.beznea@tuxon.dev,
-	linux@armlinux.org.uk,
-	magnus.damm@gmail.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	John Madieu <john.madieu.xa@bp.renesas.com>
-Subject: [PATCH net-next 0/3]  net: stmmac: add physical port identification support
-Date: Thu,  4 Dec 2025 16:37:26 +0000
-Message-Id: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1764879544; c=relaxed/simple;
+	bh=FqECIFzimQFLDo553Kuio3LnpAOxlwgFBuOe37zk2r0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MmM94PiRXkBu/fRdWBRIFgOYk6FGJ/pdpj8NgohlADX5VZH+l0VRlncTvIKFZRW4vw+AqDw0x1aGo0RSLSOkHJW5QnTyu18/AViBzHKxLUiMm2d5TxgxX5r4sBkxiv/JfG8i/sF3/eyPtu9uHnO7SszhK4Y2FlfWz3IlkBHOhfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRXAcEVk; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRXAcEVk"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477632b0621so9653045e9.2
+        for <netdev@vger.kernel.org>; Thu, 04 Dec 2025 12:19:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764879541; x=1765484341; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LpCDQ/db8LJcYR39Q7NPIwmJrDQEsN3xPH9fje0B20g=;
+        b=JRXAcEVkSUtNSVDYDhYuZhqCje8ROMg0CeS3X2xE+XSE6ATPW/1+ehinWYgE1/abTW
+         WqdS76IczL4Cw2fBRVZMmbjMKNgeZspMn7F8AX/yxI+8KH7uolEjK8KwXiYjlyQhdmMT
+         aHGXQdrl/VuS5fhFfYralrWL2/KW9zp+pkYZi365ACUH9B5oDA013gf2jWp6z4NQRl2a
+         HND6cxXfLPvFcEeno1pEsGSYYl4bMNcwlt4iK5aWvd3XyiQqcPg4+M8/fjl0oHPNgBdg
+         eDSJTbhHi3G9asKzOqMDmj5SeLlP7Zsapn1QV5K9wk0U7xndOBFuvAIZeGcFnBPX5KfK
+         sj+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764879541; x=1765484341;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LpCDQ/db8LJcYR39Q7NPIwmJrDQEsN3xPH9fje0B20g=;
+        b=SmRI1BE5ELjqVyvQ/r8s+6Cl1vR2UpnWSiK+gl/wHmR87nm/ydtqrkqOK29qI2kIJf
+         /kXFZ3AMdVWDcIQpOJIzsahPIRFzdbHt99jlOVR/q5WJoEwK7N4OgzTxmysBKSAhclQy
+         F2e7AWz+QPnmodE2dHgbnkAtXEKfXWkGgswFqzszGPr5SViMQwoOgYA3phzLALf36vIx
+         QX/rsfW1tHsh/P190WIl9Q+H+Nd1utJqIx87Wy3mRjBZxWeCpQ2cW5C3PY7lTLVwniDc
+         2ItH89HCog4zw+45agP47lGSr1cE2EpaAfkZsr/IcgMieAoi3LPobmZrnD0OyBpT+vPb
+         7Ubg==
+X-Forwarded-Encrypted: i=1; AJvYcCU39pT8GjFMuIo2k5qT/W4pFJYZsdVa8cw3tXI6UPzWpLHc5vLZ9JPDB8KP9DXjp4XrHe4DIB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbxUCHkaUPJGRI5XfujG89mgnUaUwMsluAkUeaqq3vTu0Rs9fk
+	W33pbGfS2PjxHkADrIXakkE8JQKNKu0kBW6aCa+chku9lZvAaGB6xaBB
+X-Gm-Gg: ASbGncsO+Rb7jY16W4gSTQcPuQpbZ/PD9jmqLa3oipwdVqGLq07xWhLC3JlfzaueXgw
+	cgWlDF5fOTVfcRQMeOgHE9xnJU3hvf7nV3g21k3Iyp54OCi0VII9EzaWR2fzQ66NeYwWJ/Ki3YS
+	C611cUzkKajm4pqI+HwHbZk9E551/N4htQiSBB68In3baz0yghFtYCcrPtp/UQEglIuGHkDLoK3
+	+rZ1wEVvdxxrrvVqSQu4AO2mMsDZdoo+Stq/WucWxq6iU9K/OpuOu5Ze3Afhy9Vui8iiPk7kXvc
+	KYXOWddtSn2Q9uNrbr+gdrn2RXONv6JFosc//hJwzOwyHg7HXROcCMhZHtPrRBnbq7mHg5ooODY
+	lf2i3LGRXCOfZxCxy2GwA29sQiPeshMzH7KnnK/ckg4T07IYBLEHLfnecfWC0LdFrpjLBSVZnpQ
+	bLt4zJ6wiJDdbQ7bkcokfMmXDyiQbJDBuZxaN1lQ9Kx85Nsw2pgNUoAy1bx1UlKj8gUWaj7RwvA
+	uIndP5WE1U8ESVS7dBmVsnoSWqFiJONkiCPTj+A76qAQIxBGp/Vvw==
+X-Google-Smtp-Source: AGHT+IHrNC9OdUQrhQ8nBiv9qzQ+KjxxeXpPSuxWRiF6f+odXex6LxY097hRNZmDyfbc9xuawp6mSg==
+X-Received: by 2002:a05:6000:26cd:b0:42b:3ded:298d with SMTP id ffacd0b85a97d-42f7319b321mr8106325f8f.32.1764879540953;
+        Thu, 04 Dec 2025 12:19:00 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f3b:8b00:ac52:b5ce:438d:dc86? (p200300ea8f3b8b00ac52b5ce438ddc86.dip0.t-ipconnect.de. [2003:ea:8f3b:8b00:ac52:b5ce:438d:dc86])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbe90f0sm4938840f8f.9.2025.12.04.12.19.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Dec 2025 12:19:00 -0800 (PST)
+Message-ID: <b9e48b10-6654-4239-a170-8cd7bf77fe0b@gmail.com>
+Date: Thu, 4 Dec 2025 21:18:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] r8169: fix RTL8117 Wake-on-Lan in DASH mode
+To: Phil Sutter <phil@nwl.cc>, =?UTF-8?Q?Ren=C3=A9_Rebe?= <rene@exactco.de>,
+ netdev@vger.kernel.org, nic_swsd@realtek.com
+References: <20251202.161642.99138760036999555.rene@exactco.de>
+ <8b3098e0-8908-46cc-8565-a28e071d77eb@gmail.com>
+ <20251202.184507.229081049189704462.rene@exactco.de>
+ <b25d0f31-94ef-4baa-9cbb-a949494ac9a7@gmail.com>
+ <aTGpceAK0CRgKDPG@orbyte.nwl.cc>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <aTGpceAK0CRgKDPG@orbyte.nwl.cc>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 13328684574918870405
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: dmFkZTF0g3R1pdQ6JLW75+mTBMFpIdpDzonyTfcnxVjUvtlRne6WFvO7QcVphjo3Xa9L2ro/D3yhhzJtc1dfPWja+6BCm1dEuB/2aTBXeKb11fPLLcNr7WgrUiSnUVGskVo7wSZo1kEpwEJ3OeosKSnIPHuezU4mhVIVpLFWLP+s9PVZOXmzmayuD7fbemwm7J6Vl6fTZMyvtDSASIdtIRrh6QhZs8p8lX/f/c7Fl6ZDOj9oLvRh/iLUDTQFV3XqFl6bvFcJxSpsCvT7/PXlrMHklHos/J2hGQPxAH/ucC2BVOt1U5GtUn/5StnFDm7GSQoMkqwsL8cQ4WP9Mmk80Wy6/yKRdPaO+UO7vscqoFAYDfUnNBe8hRmT2gszV7DMQ6mKwvO1Tt3MlPPxUtpcbSffjyvOhjF/pq7tIiaGva/CRqzxFtqZJlr5UNd9GVNsaU8qu3ec+QgvrU7v+4NzFjGrNdRA5Ro4PXdEJYsBUrLUhT6WThIQ3S3wZ3OnDskoZ0Y65pTfmvUDtR4n5r5Fm1ocWU/RvUz22QS+QTEzKrRlXw+KQ/EPFLBXiJX4Tly1oHxvpM5Ik38pUTsPppQGfxRPF7GGFtHC/wOFX0H2zbVQSNtYnuWoFDx8aCOZ3sTj8mDIvWEgnJ+SBh1KsrBn4QiRijrbI91rISt52yQRsTT1mqSkKw
 
-This series adds physical port identification support to the stmmac driver,
-enabling userspace to query hardware-stable identifiers for network interfaces
-via ndo_get_phys_port_id() and ndo_get_phys_port_name().
+On 12/4/2025 4:32 PM, Phil Sutter wrote:
+> On Tue, Dec 02, 2025 at 07:06:02PM +0100, Heiner Kallweit wrote:
+>> On 12/2/2025 6:45 PM, René Rebe wrote:
+>>> On Tue, 2 Dec 2025 18:19:02 +0100, Heiner Kallweit <hkallweit1@gmail.com> wrote:
+> [...]
+>>>> - cc stable
+>>>
+>>> I was under the impression this is automatic when patches are merged
+>>> with Fixes:, no? Do I need to manually cc stable? Nobody ever asked me
+>>> for that before.
+>>>
+>> https://docs.kernel.org/process/maintainer-netdev.html
+>> See 1.5.7
+> 
+> Which points to
+> https://docs.kernel.org/process/stable-kernel-rules.html#stable-kernel-rules
+> and the Option 1 instructions read: "Note, such tagging is unnecessary
+> if the stable team can derive the appropriate versions from Fixes:
+> tags."
+> 
+This is about something different. "such tagging" refers to providing
+applicable kernel versions like in the example:
+Cc: <stable@vger.kernel.org> # 3.3.x
 
-On systems with multiple ethernet controllers sharing the same driver,
-physical port identification provides stable identifiers that persist
-across reboots and are independent of interface enumeration order.
-This is particularly useful for predictable network interface naming
-and for correlating interfaces with physical connectors.
-
-The implementation follows a two-tier approach:
-
-1. Generic stmmac support: Default implementations use the permanent MAC
-   address as port ID and bus_id for port naming. This provides immediate
-   benefit for all stmmac-based platforms.
-
-2. Glue driver override: Platform drivers can provide custom callbacks
-   for hardware-specific identification schemes. The Renesas GBETH driver
-   implements this to support device tree-based port identification,
-   addressing cases where hardware lacks unique identification registers.
-
-The Renesas implementation constructs an 8-byte port identifier from:
-- Permanent MAC address (if available) or Renesas OUI (74:90:50) as fallback
-- Port index from device tree property or ethernet alias
-
-
-John Madieu (3):
-  net: stmmac: add physical port identification support
-  dt-bindings: net: renesas-gbeth: Add port-id property
-  net: stmmac: dwmac-renesas-gbeth: add physical port identification
-
- .../bindings/net/renesas,rzv2h-gbeth.yaml     | 19 +++++++
- .../stmicro/stmmac/dwmac-renesas-gbeth.c      | 56 +++++++++++++++++++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 54 ++++++++++++++++++
- include/linux/stmmac.h                        |  5 ++
- 4 files changed, 134 insertions(+)
-
--- 
-2.25.1
+> Cheers, Phil
 
