@@ -1,117 +1,118 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 18.mo550.mail-out.ovh.net (18.mo550.mail-out.ovh.net [46.105.35.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD3B2ECE83
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 17:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336229C321
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 17:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.35.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764868330; cv=none; b=qLAl0HIg29e0As0MTIAAqGqsmaPuy5gO3EgLwefYcqFXMqt/G24ijQEsQzHd2ZNzqrK+oAbktIhHbD6D4ghH5XOBy2B4eSE4CTlCPOF7c8rCR5hsy1cjlBd2DWI+Ja464yI2IqPYZ+2mJPAE4UEmkWiP6T2QLhZ+mAKCpIOrhB0=
+	t=1764868509; cv=none; b=Dl3Q5Jztj6pPiIDsZ5MBhwathVQLWpXYzGb5OaIDyyVGcu11HXhzErdDAzt2JTTb2E8cv5FBkGpoOhy7NDOhGLhYXXe9Nm1c8KlG0KgZXcGuxzBlfPcRTq7hv2fROZBIo3+TcOETSb+5uiTCJ6pXItmsGcBoY3uMsA03wvgWtvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764868330; c=relaxed/simple;
-	bh=H0npc7pt+fWzWwL2KKJ68bLEJsgHQoGWt8OwzE015tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JOrAxrQHqxR6RwUzmlvul6eHjJ8eKbdUbbjvKz29Bn6ckY+rCuSDJzehXUsnyEN78NNxPFZcI0RRqwtPUCl8DEFFbo+O+DdrWzXVlecOVsZIskyUSvdxK0oTmOvPQGtFY30uf0Z2gBoZRLBwEKBGDhG2hUT51iZmWIR4x5CG4TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mon+il9C; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mon+il9C"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42b2de74838so71487f8f.2
-        for <netdev@vger.kernel.org>; Thu, 04 Dec 2025 09:12:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764868323; x=1765473123; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uGUWJRfLEGG5MQjirrXoFGblqtB6v7zhyuKgj/1LsZ8=;
-        b=mon+il9ClZyaXPsE4GzldZaDECYDFr5jnsCHFpbCNnhfOH8r4UDm2MsD9eP8OCNzDt
-         zqRj7p21tEDHAc7pwulNnBaqFDnV6/RwURG4T4K8+o7X3uw5XYb647CTvBoQf0tDOQ/m
-         lJukzY3TQSd6DiEpgmv/uyLnsEvHXzCtJTWfyavCk/OBGRaOer+7oggOAln/0QD2sNIm
-         5j+NNMArPCrhqS5PY0LkBNiz6xk9T1tyhzM0YNbm6W+QvWiYZ7iVHexQ46SekJGnb+OZ
-         pc7rkqt22KsaCC5jFWpECm1t9jd27gFBQZtI74EPdKcb5GxPyyD+wlp0QxyXMiQPcbFk
-         ie3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764868323; x=1765473123;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uGUWJRfLEGG5MQjirrXoFGblqtB6v7zhyuKgj/1LsZ8=;
-        b=gIbK5wvmKOdzpn6tAyB8z1oE5SW7/V2SK0k9PmAO9WO8TrLCImoz+tN++sc+V/OlHh
-         Xa2mEMePepb0nnc/vlQ96x68DzBiRiuRnfnmQK/z+MIQfvKnsYew0iR+kdp4vrTI6jYd
-         31Igw8afDISNao6eo+2lHy+ce60CimKjR9IlhHdwU43yRC4X0Az3w6Z2rs6bYYtuo6q1
-         TiRrtHZ0L1NYR5JVIEc70r/Nfem1oLsFhS3Y7l5crxgAap+QAWUgBJ/PD3ijmz1WB0qT
-         GbPdu2MjWRm/p4cuX4oiPXaC7+GucB4xf1REJUWTdtgututZooP0G39BVHw/TtLajgqb
-         +5qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFw3rjBz4qeTkPimp98VvivBs6lUnyM07RAQOTX9eXxt+5H6fvpKkcI0RrkeQQVgQ5YTo6NoE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX0NMAgrD/YPjtaWaDL2LTYWSrNHJFEDgd4KE9GVNl3ij/i1/T
-	L8khfWBYBfmkiU4JvbBcyeJpaIptfb2wlCMTn8Y05gmqxPGpp1draoEI
-X-Gm-Gg: ASbGncvzkxz7ZCaKwS/qL758kzE6MibzoSiq5K898mCFeUbmYaIQcy5ufzRD53feq8b
-	sgj85LOkLhW0uCvroNaOYtXgIS8CT5GQyTZWDGsFnBG/LEjzgZS3yWTw2RG1gl5fIFguF9OYQdr
-	YX8yqZNuB2qXCZ64LOPrCVofjF4oXH2MaVTwKLGtbRcuJiyE8q4qeNUO4gwhY3VRk9oVOMcHktQ
-	yekesqQnlmThpQcYfdwLgLcfpiHK0IgpTpXD6z3tr80ZTloo5WHvIUKfR8hFq+qQDWgkg+wJ9eM
-	DWPclNtg9LjhUX4357t8uiTC/vCCv9YtOMR9Ej/TwQO8HRcElXIvfYSNRezp/n+CUKktgJjLf99
-	LWc6NITNbTYjlzXt+jxNCvLe0wx+ITMQ4R+chBnszkzzrQNqO09WLEEMGrOdZaQ2OuFOe0GIsol
-	tBp4w=
-X-Google-Smtp-Source: AGHT+IGxkkIvEqrKzXYEjrd610hQ5Joilqojfn2sZR57wWJ4rYVFOquGZdhrsExO4Zfqp1zUdehCbA==
-X-Received: by 2002:a05:6000:2f83:b0:42b:2dff:d394 with SMTP id ffacd0b85a97d-42f731e6940mr4153566f8f.8.1764868322949;
-        Thu, 04 Dec 2025 09:12:02 -0800 (PST)
-Received: from skbuf ([2a02:2f04:d106:d600:dbb2:245d:2cf5:21d3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7cbe9065sm4190267f8f.8.2025.12.04.09.12.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 09:12:02 -0800 (PST)
-Date: Thu, 4 Dec 2025 19:11:59 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Daniel Golle <daniel@makrotopia.org>, Frank Wunderlich <frankwu@gmx.de>,
-	Andrew Lunn <andrew@lunn.ch>, Chen Minqiang <ptpt52@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] net: dsa: mt7530: Use GPIO polarity to generate
- correct reset sequence
-Message-ID: <20251204171159.yy3nkvzttxecmhfo@skbuf>
-References: <0675b35f-217d-4261-9e3f-2eb24753d43c@lunn.ch>
- <20251130080731.ty2dlxaypxvodxiw@skbuf>
- <3fbc4e67-b931-421c-9d83-2214aaa2f6ed@lunn.ch>
- <0d85e1e6-ea75-4f20-aef1-90d446b4bfa1@kernel.org>
- <00f308a1-a4b1-4f20-8d8e-459ddf4c39b1@gmx.de>
- <aS7Zj3AFsSp2CTNv@makrotopia.org>
- <20251204131626.upw77jncqfwxydww@skbuf>
- <4170c560-1edd-4ff8-96af-a479063be4a5@kernel.org>
- <20251204160247.yz42mnxvzhxas5jc@skbuf>
- <66d080f1-e989-451f-9d5e-34460e5eb1b0@kernel.org>
+	s=arc-20240116; t=1764868509; c=relaxed/simple;
+	bh=YgsFnZuDSq0GL2hrNLtRnqJd46AcXwGsEsQYq7gDQkc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=crqss2yn5w1p9IoveQQQ62abJTJH5JkGRew98XzbQ0irWE4C3UpG37wZTT8N1HWF5Yght76vcLsWCfKdRE9VHACpk1qHOoekqbX8rZdk18XRLufXpo0OYArBZbsCYFlunUvS9pqaY3rZRyhWFn+B52SbAKNryuX6mAZX02mcEzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com; spf=fail smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=46.105.35.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=bp.renesas.com
+Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.167])
+	by mo550.mail-out.ovh.net (Postfix) with ESMTP id 4dMgDY1zwzz6WTT
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:38:21 +0000 (UTC)
+Received: from ghost-submission-7d8d68f679-m4nfg (unknown [10.111.174.111])
+	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 04E91C0F78;
+	Thu,  4 Dec 2025 16:38:18 +0000 (UTC)
+Received: from labcsmart.com ([37.59.142.114])
+	by ghost-submission-7d8d68f679-m4nfg with ESMTPSA
+	id naCeNve4MWmh+AYArq+dVg:T3
+	(envelope-from <john.madieu.xa@bp.renesas.com>); Thu, 04 Dec 2025 16:38:18 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-114S008793e570e-a212-4f79-af68-c8066b7fc938,
+                    E90FA267686E4F2ED65044873A5FD8D85CF2A6B0) smtp.auth=john.madieu@labcsmart.com
+X-OVh-ClientIp:141.94.163.193
+From: John Madieu <john.madieu.xa@bp.renesas.com>
+To: prabhakar.mahadev-lad.rj@bp.renesas.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	geert+renesas@glider.be
+Cc: biju.das.jz@bp.renesas.com,
+	claudiu.beznea@tuxon.dev,
+	linux@armlinux.org.uk,
+	magnus.damm@gmail.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	John Madieu <john.madieu.xa@bp.renesas.com>
+Subject: [PATCH net-next 2/3] dt-bindings: net: renesas-gbeth: Add port-id property
+Date: Thu,  4 Dec 2025 16:37:28 +0000
+Message-Id: <20251204163729.3036329-3-john.madieu.xa@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
+References: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66d080f1-e989-451f-9d5e-34460e5eb1b0@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 13329247523704702341
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: dmFkZTEu+nYVGdKAM5Z4fRCahVsKa2293LslcWxb1bPv0VwvKAw4M2lzxFwSiYWyoi8P91kaARVtqRb0TEZugqk151vG6gIa0T8/eMLyQlgXgekuNCovF3oUZXA+1rwXo63BkqJASKkP5gU8IoA87wcA/TO0Ph+fl/DQpe69I3zCmGsjyVbncOpBygjWz8/Yy7gMkNUFW8dDXP8zvg68QKUY6qwmiiy37NULBWsnm3XricYEgaSBjtLZmBDTkXW6nxmK8G0J4ei9hx77c7C+ADH2hdZ/e74/zgW2UTxkZiq5jopASfj1bfSDjAZfY4mQzOW2NNYEGlMaSoN0BD7KB3j9+Yx8GE8zVZP6pFQfZLx+koU74jQOfx1yJBvLbSymvZ4wXLd9oNiOe9TSs+BJ+dgcMcJK1kL6jYPQRl9LWtN2nBRLIygYd8mElHWeKarWkP2XEMPZG8foFpDLOpQnh0u5+c7oCySo9eVOtxOyYJa3RpEYGbdvgh49Snk/Hj2eqGb3faleAJs8TaOyQPwzdzZ5DY2y6o33mSgk0HowwP42CjWNlFd3XInen29yBKU/g5CMyJukvizAzoTZEnCRis9zeNxf44vtGFk1qJ2hShhlwGGelby//PwcX/fmXS8nuez0hsqiBn+oZ2eCImgqGy/+BpWMt+ZyXk1oOIeBYQ16QwMbQw
 
-On Thu, Dec 04, 2025 at 05:48:07PM +0100, Krzysztof Kozlowski wrote:
-> Both are the same - inverter or NOT gate, same stuff. It is just
-> connecting wire to pull up, not actual component on the board (although
-> one could make and buy such component as well...). We never describe
-> these inverters in the DTS, these are just too trivial circuits, thus
-> the final GPIO_ACTIVE_XXX should already include whatever is on the wire
-> between SoC and device.
+Add optional port-id property to identify ethernet ports on RZ/V2H
+SoCs. The hardware doesn't provide unique identification registers
+for multiple ethernet instances, so this property allows explicit
+port identification from the device tree.
 
-Please read what Andrew said:
-https://lore.kernel.org/netdev/3fbc4e67-b931-421c-9d83-2214aaa2f6ed@lunn.ch/
+Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
+---
+ .../bindings/net/renesas,rzv2h-gbeth.yaml     | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-  Assuming there is not a NOT gate placed between the GPIO and the reset
-  pin, because the board designer decided to do that for some reason?
-                   ~~~~~~~~~~~~~~
+diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+index bd53ab300f500..bb59c6a925d3f 100644
+--- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
++++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+@@ -117,6 +117,23 @@ properties:
+           - description: AXI power-on system reset
+           - description: AHB reset
+ 
++  renesas,port-id:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Optional unique port identifier for this ethernet interface.
++      Used for physical port identification (phys_port_id, phys_port_name).
++      If not specified, the ethernet alias index is used as fallback.
++    minimum: 0
++    maximum: 255
++
++  renesas,port-name:
++    $ref: /schemas/types.yaml#/definitions/string
++    description:
++      Optional custom name for the physical port. Used by
++      ndo_get_phys_port_name() for interface naming.
++      If not specified, "p<N>" format is used where N is the port-id
++      or ethernet alias index.
++
+   pcs-handle:
+     description:
+       phandle pointing to a PCS sub-node compatible with
+@@ -230,6 +247,8 @@ examples:
+         snps,txpbl = <32>;
+         snps,rxpbl = <32>;
+         phy-handle = <&phy0>;
++        renesas,port-id = <0>;
++        renesas,port-name = "mgmt";
+ 
+         stmmac_axi_setup: stmmac-axi-config {
+             snps,lpi_en;
+-- 
+2.25.1
 
-You two are *not* talking about the same thing. I dismissed the
-probability of there being a NOT gate in the form of a discrete chip on
-the PCB, *exactly because* you can most likely invert the signal in the
-GPIO pin itself.
