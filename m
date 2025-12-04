@@ -1,126 +1,118 @@
-Received: from r9110.ps.combzmail.jp (r9110.ps.combzmail.jp [49.212.36.116])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A621EACD
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 03:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.36.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D5019E968;
+	Thu,  4 Dec 2025 04:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764820480; cv=none; b=shZBK5QtgsddD/KPmD+JcLUjj6QmICTCDvEJrgD/yqLSzEarmiGRmv+a98Q17QMQv0oDoTBKmjJElK3UUTrGnPLO2XTilkdm92ITfefiwkj7b/Fnk3SeAmg6zbATvgi03CwC7PMGxZJqAUCxyxO+Pz2VJzXDGq8C7iL2d1CA1a8=
+	t=1764823292; cv=none; b=X4HNuWoEL7QL+jy7TRJD7ADTz3cyEH9YBF3CtF4k5DLKbMYFBV78m07EIPua+otA7wVYnEUteKazpKgw2C5iMpKsIfLNLUL58Cd3puufUShNCqBlHW+rd78luD7BXdSB3FzRply+KvspZ7wVzZJc2n+CG9vWnayDpgtEJt7zOdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764820480; c=relaxed/simple;
-	bh=Vu5PrLD4RQ5eWFvr+angYeZXt2Je9sHjY5obgTHQDJE=;
-	h=To:From:Subject:Mime-Version:Content-Type:Message-Id:Date; b=my5ACAk8CyXiXJka2Qq2C94AT53loCTQQ+kkWpXpxbn4EKryD98CzA/9XoxumQut9NzJeOxu/JkaPJc+OZRlCJbUtZwXtPt4q01rW+bwf9esCyfjG1GqQaMmADNEmvhunNH7iGZelcXPR7DQg2CAi9hkfBOm7BpwOgf46x9soi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=k-villageinc.jp; spf=pass smtp.mailfrom=magerr.combzmail.jp; arc=none smtp.client-ip=49.212.36.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=k-villageinc.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=magerr.combzmail.jp
-Received: by r9110.ps.combzmail.jp (Postfix, from userid 99)
-	id A38B3188793; Thu,  4 Dec 2025 12:40:24 +0900 (JST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 r9110.ps.combzmail.jp A38B3188793
-To: netdev@vger.kernel.org
-From: =?ISO-2022-JP?B?GyRCM3Q8MDJxPFIbKEI=?= K Village<info@k-villageinc.jp>
-X-Ip: 218975311502309
-X-Ip-source: k85gj7ri48dnsax5u0p6gd
-Precedence: bulk
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Subject: =?ISO-2022-JP?B?GyRCMk4hJiVAJXMlOUV5JE4lOSUvITwlazt2GyhC?=
- =?ISO-2022-JP?B?GyRCNkgbKEIgRkMbJEJAYkxAMnEbKEI=?=
+	s=arc-20240116; t=1764823292; c=relaxed/simple;
+	bh=wj1zTlmxZ6w8p5WL1TQZ0TATfR58M5u70uppx+bZhRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kjDxHemycYNSvh8Un0JYrOAuZbq5JJ+wML7BNwps5jRrAUqvQXs3UFVlmrlq32sfaKSLXNXpfC93BTHJuN8loZY6TOmNpJIk1vdfhQPD7+Pe4ry5O2Ltrs7sytC2G1dm/mnu4gtPXL8b7aY0WHpy8s6m4AXXyrcdL95fK2iQiQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RNCmO7oB; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RNCmO7oB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764823291; x=1796359291;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wj1zTlmxZ6w8p5WL1TQZ0TATfR58M5u70uppx+bZhRs=;
+  b=RNCmO7oBJmmH+sWasDhbtsM+gJJ8J6GjXlrXTTJf2DNyclugXuvU8YUX
+   pkzDtWUooXMV92VDsCDBupKhY4gIutPe4S1mbuAkRO7mQnFNeHBP/JWEX
+   mMMd5iffw/kwTBNYKIwM3gOYaLy2IT1tkY62h3wIcm7sbuIsPxb8I8r8a
+   NkvRS10ULq87nHRgLs2JK4pazHMYQKN5b5V1HQh9kQWPyTlabo6TYA/Ar
+   Dj8gAsOdpRtyATp9nNM2Ac9Wu2Sc0vK8k5Tgb6ncbrCj+WBefXQZbxrLI
+   /0k6Fp6oTGBz6g+zj76MPXdnWj0KYMCcEQwJmItmtWBKV30+Zk6CVb2S+
+   Q==;
+X-CSE-ConnectionGUID: Qd6++P+IRyW+KXnBhS6V/w==
+X-CSE-MsgGUID: NsA5iNaIQ9ySnh3Rg+BYcQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="65830529"
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="65830529"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 20:41:30 -0800
+X-CSE-ConnectionGUID: tY188lS6TIWhEgQ7hypAlA==
+X-CSE-MsgGUID: VNU1mn/lQXiGpuqnF1h2ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="194703060"
+Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
+  by orviesa009.jf.intel.com with ESMTP; 03 Dec 2025 20:41:26 -0800
+From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zdenek Bouska <zdenek.bouska@siemens.com>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH iwl-net v2] igc: Reduce TSN TX packet buffer from 7KB to 5KB per queue
+Date: Thu,  4 Dec 2025 20:21:50 +0800
+Message-ID: <20251204122150.23853-1-chwee.lin.choong@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-MagazineId: rix5
-X-uId: 6763334240485968574188171034
-X-Sender: CombzMailSender
-X-Url: http://www.combzmail.jp/
-Message-Id: <20251204034040.A38B3188793@r9110.ps.combzmail.jp>
-Date: Thu,  4 Dec 2025 12:40:24 +0900 (JST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-$B!!(B
-$B!!$*@$OC$K$J$j$^$9!#(B
-$B!!(B
-$B!!?7$?$J;v6HE83+$r$*9M$($N7P1D<TMM$X!"(B
-$B!!MD;y$+$i3X@8!"<R2q?M!"%7%K%"$^$G(B
-$B!!I}9-$$@$Be$rBP>]$K$7$?%\%$%H%l!&%@%s%9%9%/!<%k;v6H$N(B
-$B!!%U%i%s%A%c%$%:%7%9%F%`@bL@2q$r$40FFb?=$7>e$2$^$9!#(B
+The previous 7 KB per queue caused TX unit hangs under heavy
+timestamping load. Reducing to 5 KB avoids these hangs and matches
+the TSN recommendation in I225/I226 SW User Manual Section 7.5.4.
 
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
-$B!!!!!!(B
-$B!!!!!!(B12$B7n(B6$BF|!JEZ!K(B13:00$B!A(B14:00
-$B!!!!!!(B12$B7n(B10$BF|!J?e!K(B13:00$B!A(B14:00
-$B!!!!!!(B12$B7n(B17$BF|!J?e!K(B13:00$B!A(B14:00
+The 8 KB “freed” by this change is currently unused. This reduction
+is not expected to impact throughput, as the i226 is PCIe-limited
+for small TSN packets rather than TX-buffer-limited.
 
-$B!!"!!!%U%i%s%A%c%$%:@bL@2q(B
-$B!!!!!!MD;y$+$i3X@8!"<R2q?M!"%7%K%"$^$G!*(B
+Fixes: 0d58cdc902da ("igc: optimize TX packet buffer utilization for TSN mode")
+Reported-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+Closes: https://lore.kernel.org/netdev/AS1PR10MB5675DBFE7CE5F2A9336ABFA4EBEAA@AS1PR10MB5675.EURPRD10.PROD.OUTLOOK.COM/
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+---
+v1: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20250918183811.31270-1-chwee.lin.choong@intel.com/
 
-$B!!!!!!%\%$%H%l!&%@%s%9$N%^%s%D!<%^%s@)%9%/!<%k;v6H(B
-$B!!!!!!!H!!(BNAYUTAS$B!J%J%f%?%9!K!!!I(B
+changelog:
+v1 -> v2 
+- Elaborated commit message
+---
+ drivers/net/ethernet/intel/igc/igc_defines.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-$B!!"(!!%*!<%J!<MM$K%\%$%H%l$d6H3&CN<1$J$I$OITMW$G!"(B
-$B!!!!!!L$7P83$+$i3+6H$9$k$3$H$,$G$-$^$9!#(B
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index 498ba1522ca4..9482ab11f050 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -443,9 +443,10 @@
+ #define IGC_TXPBSIZE_DEFAULT ( \
+ 	IGC_TXPB0SIZE(20) | IGC_TXPB1SIZE(0) | IGC_TXPB2SIZE(0) | \
+ 	IGC_TXPB3SIZE(0) | IGC_OS2BMCPBSIZE(4))
++/* TSN value following I225/I226 SW User Manual Section 7.5.4 */
+ #define IGC_TXPBSIZE_TSN ( \
+-	IGC_TXPB0SIZE(7) | IGC_TXPB1SIZE(7) | IGC_TXPB2SIZE(7) | \
+-	IGC_TXPB3SIZE(7) | IGC_OS2BMCPBSIZE(4))
++	IGC_TXPB0SIZE(5) | IGC_TXPB1SIZE(5) | IGC_TXPB2SIZE(5) | \
++	IGC_TXPB3SIZE(5) | IGC_OS2BMCPBSIZE(4))
+ 
+ #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
+ #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
+-- 
+2.43.0
 
-$B!!"!!!>\:Y!u?=9~$O$3$A$i(B
-$B!!!!!!(Bhttps://nayutas-voice.biz/2500/
-
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
-
-------------------------------------------------
-
-$B!!(BNAYUTAS$B!J%J%f%?%9!K$O%\%$%H%l$r$O$8$a!"(B
-$B!!3Z4o$d%@%s%9!"%W%m%0%i%_%s%0!"F02hJT=8$J$I!"(B
-$B!!9%$-$J$3$H!&6=L#$,$"$k$3$H$rK\3JE*$K3X$Y$k(B
-$B!!40A4%^%s%D!<%^%s@)%l%C%9%s$N%9%/!<%k;v6H$G$9!#(B
-
-------------------------------------------------
-
-$B!!3X=,=N$N$h$&$K;R$I$b$d3X@8$N$_$,BP>]$K$J$k$N$G$O$J$/!"(B
-$B!!<R2q?M$d%7%K%"$b4^$a!"(B3$B:P!A(B80$B:P$NJ}$,@8EL$H$7$FDL$o$l$F$$$^$9!#(B
-
-$B!!<}1W%b%G%k$O!V@8EL?t!_7n3[<x6HNA!W$,Gd>e$K$J$k%5%V%9%/7?$G!"(B
-$B!!@8EL?t$,A}$($k$3$H$K$h$C$F!"Gd>e!&Mx1W$,3HBg$7$F$$$-$^$9!#(B
-
-$B!!9V;U$N:NMQ$d!"3+9;8e$N@8EL=85R$N3N$+$J%N%&%O%&$b$"$k$?$a!"%*!<%J!<MM$K(B
-$B!!%\%$%H%l$d6H3&CN<1$,L5$/$H$b!"L$7P83$+$i3+6H$9$k$3$H$,2DG=$G$9!#(B
-
-$B!!%U%i%s%A%c%$%:@bL@2q$r3+:E$$$?$7$^$9$N$G!"(B
-$B!!$46=L#$,$"$j$^$7$?$i$4;22C$/$@$5$$$^$;!#(B
-
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
-
-$B!!"#!!3+:EF|Dx(B
-$B!!!!!!(B12$B7n(B6$BF|!JEZ!K(B13:00$B!A(B14:00
-$B!!!!!!(B12$B7n(B10$BF|!J?e!K(B13:00$B!A(B14:00
-$B!!!!!!(B12$B7n(B17$BF|!J?e!K(B13:00$B!A(B14:00
-
-$B!!"#!!3+:EJ}<0(B
-$B!!!!!!!&%*%s%i%$%s3+:E(B
-
-$B!!"#!!%3%s%F%s%D(B
-$B!!!!!!!&F~2q<T?t$N?d0\(B
-$B!!!!!!!&%J%f%?%9$NFCD'$HA*$P$l$k(B3$B$D$NM}M3(B
-$B!!!!!!!&%U%i%s%A%c%$%:%7%9%F%`>\:Y(B
-$B!!!!!!!&3+6HHqMQNc!?<}1WNc(B
-
-$B!!"#!!<g:E(B
-$B!!!!!!!&3t<02q<R(B K Village$B!J%J%f%?%91?1DK\It!K(B
-
-$B!!"#!!Dj0w(B
-$B!!!!!!!&(B5$B<R!?3F2s(B
-
-$B!!"#!!;22CHq(B
-$B!!!!!!!&ITMW$G$9(B
-
-$B!!"#!!>\:Y!u?=9~$O$3$A$i(B
-$B!!!!!!(Bhttps://nayutas-voice.biz/2500/
-
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
-$BK\%a!<%k$,ITMW$NJ}$K$OBgJQ<:Ni$7$^$7$?!#(B
-$B:#8e$40FFb$,ITMW$J:]$O!"2<5-(BURL$B$K$FG[?.Dd;_$r>5$C$F$$$^$9!#(B
-https://nayutas-voice.biz/mail/
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
-$B3t<02q<R(B K Village$B!J%J%f%?%91?1DK\It!K(B
-$BEl5~ET?7=I6h@>?7=I(B2-4-1 $B?7=I(BNS$B%S%k(B7F
-$B(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(,(B
