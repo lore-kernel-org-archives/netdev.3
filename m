@@ -1,59 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB132572B;
-	Thu,  4 Dec 2025 10:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE0335574;
+	Thu,  4 Dec 2025 10:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764843122; cv=none; b=oUduyiL80iGndIUsy8UKukV5Wzt66dTFpfGCby+kWAbP2urS5UULG/QxgqytjtZkI07UGEO47ecGMRJCU7IEHhCk2UqLPQ4EaE/U/kw4rdoqmKPVwec3p7XOCL4IBgrThE67SYzYbG1gsZk0C6a4lAB897q6uMAtbRoABiumvkw=
+	t=1764843188; cv=none; b=TtIOSuFVtm4pl52JOke9wlvcZs7J/eFANoAdM/QJd1ToblSyM+p0EBDSjIWDlC50HAYhmQ1koHdU9bhuZ3VAYn5TEGWYR74rWOCjrfRHyhVXqIYCtUi+MlHXbKHtc6jlZy/OYC6RbjluF26/AFAb3i8z1wsZt6Feryvpzz5DBm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764843122; c=relaxed/simple;
-	bh=zJENULdxlhI8gfPr4TEwrhirO/FILicaVKggLKcIUFM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZxtGeZKY14tQ6rXnKHuz2DGYGaBK9j6Pd8/feMUeu9iyXclO2UbRi+fWhjgnq07BJv+Lyk2LDPeqNawi7qKtinhuu+0lkAF4eZPG9VZ934QzM7GzCJgqbFkBCZ45GaZIFv2bkm4eOVFgnb7JXY2hzzuSbBXhYSIohZLTYXc5m2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TGUgG6yF; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764843188; c=relaxed/simple;
+	bh=PJtYn+wfEO54GKOyH+nLn8yJzebo8sY3af1DHLU07no=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GTVua0LC0qR0CzVEnmHZRTvbF+ArJUyf7WrDpx3gZBi3OyJzVYZttH6OQkOILTbvVkQU2eOoGgiPlAWayawIhb3p2blYOupiyuf4tH25/XpAx8EizK6jQwYG032xUti7eAGU8qliOza/2vWEwNytcrRcIStgacBlpConGC7WSG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7Lug+Ex; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TGUgG6yF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764843120; x=1796379120;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zJENULdxlhI8gfPr4TEwrhirO/FILicaVKggLKcIUFM=;
-  b=TGUgG6yFVQ4elSwoopR8EmtLeswCgwH0DPJWbpXcKSuS/jctV0u16PBt
-   0eWn4k/nw4mOmoizzhSSnA8T+gnc3UprvjB9x5s0hldNscqFLCipbTBvI
-   1dqH+INFMGn1HbXaqkCFj+z/k9n5lhuRrDglpkpqLO7ylKqld+TB0BlVF
-   /Ao7ghuFmG2LltppQPcJsIWnjGJmNy1Crkrwss6F+Nh89Tl+KsPzPm/ze
-   kmGtG+397IAyAbgi3ee15q+4SC+o0sY2IuNpTrFbRCnnLLs6/SH9gp1i0
-   dV747pc65NespdYTusmj9b8APk+2bc9ot4nNppxYsRYSsDRQIDRTfIzVL
-   Q==;
-X-CSE-ConnectionGUID: SytZhw1aSMe0Avt3/cvcSg==
-X-CSE-MsgGUID: /FBs17KqSLCFjHqvEsiH6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66744379"
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="66744379"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 02:12:00 -0800
-X-CSE-ConnectionGUID: eTBcSIe6Q7yNpiqqYezRxA==
-X-CSE-MsgGUID: lzwrxaFmS7OxcM0Z/aOQ1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="232274531"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa001.jf.intel.com with ESMTP; 04 Dec 2025 02:11:59 -0800
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Subject: [PATCH iwl-net v1] ixgbevf: fix link setup issue
-Date: Thu,  4 Dec 2025 10:53:23 +0100
-Message-Id: <20251204095323.149902-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7Lug+Ex"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5788C4CEFB;
+	Thu,  4 Dec 2025 10:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764843187;
+	bh=PJtYn+wfEO54GKOyH+nLn8yJzebo8sY3af1DHLU07no=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T7Lug+Ex6TpWLnO1AkmYT+4MLAPE+7giJKRrK3/ra6ki4b6mRH7BDtz7GEBLC9bed
+	 4wavgxy+kJAAhchlLovSXV3V3etYu8DXOksJqAG1R4/nyRH8xmyXBBYoXB4R6HMifb
+	 iZSVQY+NJ5zssVPFSZ1xW5uE+TcGTZ+SRZKuVDy5dimNWUApJCaONnkVxOcx1eiCIp
+	 gWj9lkLCuD/f+gQliEMwDP3kIfXED1P67YmSgsC6y+wbwMjk0yEtI/+7SqAyVryci3
+	 +1+IBWMBnNQwFDg0thXbbt8mzvoyyp8U3kNUV8W/bsMpWNkuLuv0U1ZvCxX+QnUiPh
+	 VaTeQoKV566rw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 788AA3AA9A97;
+	Thu,  4 Dec 2025 10:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,42 +37,68 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] netrom: Fix memory leak in nr_sendmsg()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176484300630.715175.16155719972689096623.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Dec 2025 10:10:06 +0000
+References: <20251129041315.1550766-1-wangliang74@huawei.com>
+In-Reply-To: <20251129041315.1550766-1-wangliang74@huawei.com>
+To: Wang Liang <wangliang74@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-hams@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com
 
-It may happen that VF spawned for E610 adapter has problem with setting
-link up. This happens when ixgbevf supporting mailbox API 1.6 coopearates
-with PF driver which doesn't support this version of API, and hence
-doesn't support new approach for getting PF link data.
+Hello:
 
-In that case VF asks PF to provide link data but as PF doesn't support
-it, returns -EOPNOTSUPP what leads to early bail from link configuration
-sequence.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Avoid such situation by using legacy VFLINKS approach whenever negotiated
-API version is less than 1.6.
+On Sat, 29 Nov 2025 12:13:15 +0800 you wrote:
+> syzbot reported a memory leak [1].
+> 
+> When function sock_alloc_send_skb() return NULL in nr_output(), the
+> original skb is not freed, which was allocated in nr_sendmsg(). Fix this
+> by freeing it before return.
+> 
+> [1]
+> BUG: memory leak
+> unreferenced object 0xffff888129f35500 (size 240):
+>   comm "syz.0.17", pid 6119, jiffies 4294944652
+>   hex dump (first 32 bytes):
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 10 52 28 81 88 ff ff  ..........R(....
+>   backtrace (crc 1456a3e4):
+>     kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+>     slab_post_alloc_hook mm/slub.c:4983 [inline]
+>     slab_alloc_node mm/slub.c:5288 [inline]
+>     kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5340
+>     __alloc_skb+0x203/0x240 net/core/skbuff.c:660
+>     alloc_skb include/linux/skbuff.h:1383 [inline]
+>     alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
+>     sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
+>     sock_alloc_send_skb include/net/sock.h:1859 [inline]
+>     nr_sendmsg+0x287/0x450 net/netrom/af_netrom.c:1105
+>     sock_sendmsg_nosec net/socket.c:727 [inline]
+>     __sock_sendmsg net/socket.c:742 [inline]
+>     sock_write_iter+0x293/0x2a0 net/socket.c:1195
+>     new_sync_write fs/read_write.c:593 [inline]
+>     vfs_write+0x45d/0x710 fs/read_write.c:686
+>     ksys_write+0x143/0x170 fs/read_write.c:738
+>     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>     do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+>     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> [...]
 
-Fixes: 53f0eb62b4d2 ("ixgbevf: fix getting link speed data for E610 devices")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- drivers/net/ethernet/intel/ixgbevf/vf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Here is the summary with links:
+  - [net] netrom: Fix memory leak in nr_sendmsg()
+    https://git.kernel.org/netdev/net/c/613d12dd794e
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index 29c5ce967938..8af88f615776 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -846,7 +846,8 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 	if (!mac->get_link_status)
- 		goto out;
- 
--	if (hw->mac.type == ixgbe_mac_e610_vf) {
-+	if (hw->mac.type == ixgbe_mac_e610_vf &&
-+	    hw->api_version >= ixgbe_mbox_api_16) {
- 		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
- 		if (ret_val)
- 			goto out;
+You are awesome, thank you!
 -- 
-2.31.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
