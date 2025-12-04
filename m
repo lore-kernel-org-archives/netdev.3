@@ -1,104 +1,75 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFD1346795
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 13:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEFB33ADB2;
+	Thu,  4 Dec 2025 13:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764855617; cv=none; b=Oz+acfx5pqStczZBaPS09Z0hN6WK4ZhEKx0ocUlkPSr+r0YKDKjV1mLejpKmUaS26+KfCD+hBbUrJRN8T1t8SbJnC/oI56LeirZU3bcAPaoi3qCNwmq5ts+w+HEinSHJmEL4jMtxhf7iiwIAfrxhz8w/6zVgvC4bESQhwkZCMxk=
+	t=1764855745; cv=none; b=L1y6eqcyCzrdgU9+GnOHCaxCZFLHGAvT1T5bAwChnflpXQRqaxyYPpcx876MM13E3AhyhXJ0nfFMxFocrGQ4khkMUX3P6aTHNG20qlAM50oRUR/Q7FVGNBGS5WF1fawEL4Scoch5I5ILUnGjcRCymoVMOjYw7wgB4o+2bU87qgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764855617; c=relaxed/simple;
-	bh=b656+3o2nJ5GnHJZDti0zbUqGxm3s0FMxvBJSY9YqBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BdoiM8DMSvQOROfhM9n7hj8N4UOiNI96xWrS88SAGXboccCslt7FtfLVNgmrbsVy4+Gf2MrNkGx50w/juW5uvoJIPAir6t3L7tz0lSbjWEqjceZKDZpjpJGbIDng+7EKH+SvUdGmHyBQF/wFMXsE5nQCSgs5Allq/rMIjaIJ+CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wq+/j84N; arc=none smtp.client-ip=209.85.217.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764855745; c=relaxed/simple;
+	bh=0QBIxkornRAYl1QNH+6I9sOdWSDJjkgjCRwRR8R3Ins=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMM5OT+QEKVsKTkhMQaNtHs3TmO0fPz9Vwf9R6WKO2Ee/vMaKpuhbkzU7D8RmUYAoAcfLzhl8xJa+dvYYMWXIzrj9q6fuFAWgILbINwTxlvgQuv++qkXdGTv8AWtwnQIulOU55gCtQvyPButWO99T0sejf5OnKhngUiILEb9Ofw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MnqPnWcL; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wq+/j84N"
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5e1fde1f014so320282137.0
-        for <netdev@vger.kernel.org>; Thu, 04 Dec 2025 05:40:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764855614; x=1765460414; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y/57pqJ4nq/b2568hFFEN34aRWvKmwLOKfrziMnDDx4=;
-        b=Wq+/j84NqZZxcJEdkr1ErdYmnNefbZ/vJ4OKrlTQMGpvO3hnJxMt9TIj0VPVCnNb/L
-         DbFrWOEeEbmUVXYYKyR9kZ0kyGWj2nc+kF9lHcZHRfsNp9fxgGCYH8u0NaM5Do8d/z63
-         i8JZlsMsaKFDv7uMDpPGW+xn4HJe8RyW/yoGlw/cXpqMC5VvGbiCmjxy9ji9YdmYBjDW
-         0SpglcSF3apxY20Vj7W3EIir3yABI3dtffPCPDw9wsoYstQsCtRU+EgIKVdV3ZDcL0Cp
-         9raM1s5b2yEGZNmh+BYXR8leWhRxwYigKKnsaI1nMBIz9KGsrQo28s8AgvtUZb/+Yn1l
-         9rlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764855614; x=1765460414;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=y/57pqJ4nq/b2568hFFEN34aRWvKmwLOKfrziMnDDx4=;
-        b=L+6HEO0SetM3Y1+i8+rp5WBjfMiumvHKmoGvSS9LmC+0vPMsQJWUFVQOP7pVFTTfHR
-         tWkkSxHVhcaKJkPlBTmDCfsxaCQOUMOIzzj4cRVGChoirGN6B2O5OdlHfexNS4A2qjk/
-         Obp25BKyhy0gn3D7scPIuzSpsPODHO8FO2AcFOqzw/yKF9PH59Cbrtw04kGiPTAbBHBT
-         VtTAVG6Of1+r6dy9N+SfmprooV71DnI5qgaz3BSPSBoUw+D80/ZRkQCMlrgqM/yIMihr
-         7vtNoyJl9FMFLFoWjR/eKmc4asWxTvsy25KNK4Tv3yCHs7USXitQ8rvcsqC4qfuwxpsM
-         666g==
-X-Forwarded-Encrypted: i=1; AJvYcCULeCK96s5ldjxax6gnKlo3SVXlQqrEnTAT4iJL9o0/vTw6tu6l4E4sruZKC6TbNikB+PX2GiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyW20uxhN1bBdGQakKyeSS2I8Xt6qhakE5VzCa5OhZ4n7vRJlgW
-	YyJxn/cYVqtT2fASmy9fTBsqr6Tbm7l8hCIKaDdUU719aCGuqk3ilDLqmX7qB5KQvCJZIJ/j4dF
-	CJZm3Zgc7h0vlpb6jezeK8rywKonQ0gI=
-X-Gm-Gg: ASbGnct3KbAWrkMYrfnV7QvpTyhPM8MJdiLMXCllDls0q23hiswvkAizaUQZd4iG1yt
-	NN5LNyUNGmg8orK8RLqcUZhZl+F9XqQ4jlXsZFImXehyewfaWu1lxdTUZZoGvgfevQrIyNrjYE6
-	UdUJMq0hi4q6JlWAedMRKgBcYOFVc7Zaahr+nSz+0UWfO9+uxF+7OCgSm4IjDsvQmwhwb5eMmmN
-	otFS+/iNKUNsZBXJrEPbmaDyJoylq75fFZR1/x9r65iFpbPHs7FYpAZ9cTYmT84bqBSIdHh8w==
-X-Google-Smtp-Source: AGHT+IEiG3TFmn+PeIE/qNJK9+RlwTlGpblyxtxU8XwyCFKW1BqcARhgFhck17Ael69Nt54OW5t7mAIgcmRbl25ggoE=
-X-Received: by 2002:a05:6102:e0b:b0:5db:3111:9330 with SMTP id
- ada2fe7eead31-5e48e34b9eamr2036600137.27.1764855614363; Thu, 04 Dec 2025
- 05:40:14 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MnqPnWcL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GxyximWtzVRSV0MiEQri65zT5T31mjqG9SdGu/HuZGs=; b=MnqPnWcLRdXTqSJtfPfW/Tsq0n
+	cx+gGlKkAMJA5bCbH0Sc2quPHtfAfmjCR3/vhuYfmsV0q/5jxO7ulYTHQaIxnLjwG8w/fgTouEEYU
+	VbiWEclAqzpHlAbA04dsPede3qQmeOvR4VITOFad7ERzpSmUtk2A98lPvnNmfb6JGxPU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vR9b5-00FyQJ-4W; Thu, 04 Dec 2025 14:42:15 +0100
+Date: Thu, 4 Dec 2025 14:42:15 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Cc: Alexey Simakov <bigalex934@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michael Buesch <mb@bu3sch.de>,
+	"John W. Linville" <linville@tuxdriver.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
+Subject: Re: [PATCH net] broadcom: b44: prevent uninitialized value usage
+Message-ID: <fddbad2c-8274-43c7-9b9f-e4b304a1b77b@lunn.ch>
+References: <20251204052243.5824-1-bigalex934@gmail.com>
+ <a5236fe2-4e9b-49ef-9734-f3b60746896d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204062421.96986-1-ii4gsp@gmail.com> <aTGMX7FddV4zgEgY@horms.kernel.org>
-In-Reply-To: <aTGMX7FddV4zgEgY@horms.kernel.org>
-From: Minseong Kim <ii4gsp@gmail.com>
-Date: Thu, 4 Dec 2025 22:35:58 +0900
-X-Gm-Features: AWmQ_bl-s1sTeWNvsYp3uGB8S5aWjAfWMJ3ZkDfiQRX0HBapu4nLNEpbVKgd3E4
-Message-ID: <CAKrymDR3DPTxeaKYmz-wxcOf4byt_Xyx3k7ZJz6tJ6_NftmbhA@mail.gmail.com>
-Subject: Re: [PATCH net v3 0/1] atm: mpoa: Fix UAF on qos_head list in procfs
-To: Simon Horman <horms@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a5236fe2-4e9b-49ef-9734-f3b60746896d@gmail.com>
 
-Hi Simon,
+> > +++ b/drivers/net/ethernet/broadcom/b44.c
+> > @@ -1789,6 +1789,9 @@ static int b44_nway_reset(struct net_device *dev)
+> >  	u32 bmcr;
+> >  	int r;
+> >  
+> > +	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
+> > +		return 0;
+> 
+> Wouldn't the right fix here to call phy_ethtool_nway_reset(dev->phydev); instead
+> of just returning 0? That way it properly restarts auto-negotiation even in this
+> case.
 
-Thanks for the reminder, and sorry for the quick repost.
-I understand the 24h minimum interval rule and will follow it for
-future revisions.
+Actually, yes. ksettings_set() etc do exactly that. Let me change my
+Reviewed by into a Change Request.
 
-Best regards,
-Minseong Kim
+Thanks
+    Andrew
 
-2025=EB=85=84 12=EC=9B=94 4=EC=9D=BC (=EB=AA=A9) PM 10:28, Simon Horman <ho=
-rms@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On Thu, Dec 04, 2025 at 03:24:20PM +0900, Minseong Kim wrote:
-> > Changes since v2:
-> >   - Replace atm_mpoa_search_qos() with atm_mpoa_get_qos() to avoid
-> >     returning an unprotected pointer.
-> >   - Add atm_mpoa_delete_qos_by_ip() so search+unlink+free is atomic
-> >     under qos_mutex, preventing double-free/UAF.
-> >   - Update all callers accordingly.
-> >
-> > Minseong Kim (1):
-> >   atm: mpoa: Fix UAF on qos_head list in procfs
->
-> Please slow down a bit and allow at least 24h between posting
-> updated patches. This is to allow time for review to occur.
-> And reduce load on shared CI infrastructure.
->
-> Please see: https://docs.kernel.org/process/maintainer-netdev.html
+---
+pw-bot: cr
