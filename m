@@ -1,30 +1,29 @@
-Received: from 5.mo560.mail-out.ovh.net (5.mo560.mail-out.ovh.net [87.98.181.248])
+Received: from 9.mo584.mail-out.ovh.net (9.mo584.mail-out.ovh.net [46.105.40.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4B33CEB2
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.98.181.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447C83446BC
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.40.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764866309; cv=none; b=EQDOhZMaeJFOjtiW9LUs+yVQkI4xCkitfIF59NlHyaioOYLLLgw+hVeL5SFnoSnvUQLrOFfRilIh/SZXQeLL8O8dn6ojlXW+safIGcWUMmk04qohPVJwZ6dAZYARb8ZvMCTxrz1OIfXh7+ZH3nCSYUrtf9Ps92BI7y/SaIj5ZHo=
+	t=1764866358; cv=none; b=BcAud7+1XrNdzBgnRFFBntJTrv/7sZBjGdIzCwAUiaRZz1gNiBXyaHr2vDRWYX+QMxxnhgtFy+bbD/RIXoaWFpRHTNaSV2MYRck7f8mHixOfEIpj5SEBugRMEn2GPdp4cD8Bm8ZgXeqxz+5Mj2rzdp29qB9dQmBwQ6puM/rQS4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764866309; c=relaxed/simple;
-	bh=ps7X22mJaepfHJwvepPsYAMOu2GaY4KcdCKbf+NP7HU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HQ6ly0sVOTM1DGfTLgQHr0SWuuFhSBlHe1BeK4Bvsd/Y4lHunW2xEfkmZumcBXH3AN3lzsV7PG7b6ChSnaJDk7aOJehzwcladB+EwnMsrbkwXm+UIc/lmynFASubxhiDwVw4mEmUKERuhj4Pu8l7Wh1BZx69LUc+qvvHxPjTrP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com; spf=fail smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=87.98.181.248
+	s=arc-20240116; t=1764866358; c=relaxed/simple;
+	bh=WpIiSH4GxU7onEE+2ezX9gvDAfdCzI+wz8TInd5GTu0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F/mpQWgXhVV5NTqDe3Y915jfg3zbKoh3rdK8uick1osXY08e+xe4xnoNgA8Rc4N9cEhJulvxjrEBK9beMKWpL1FTV7+HAqkIbZkJTEYCDSCj6fZm+FaufbuqyH2Kf6huWCnDiRz8nUp44XnL+5rhs1FP3CF7Bi35ICDJeTQtuxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com; spf=fail smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=46.105.40.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=bp.renesas.com
-Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.167])
-	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4dMgDV6cFWzBT2m
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:38:18 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-m4nfg (unknown [10.111.174.111])
-	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id D1F43C47AC;
-	Thu,  4 Dec 2025 16:38:17 +0000 (UTC)
-Received: from labcsmart.com ([37.59.142.114])
-	by ghost-submission-7d8d68f679-m4nfg with ESMTPSA
-	id naCeNve4MWmh+AYArq+dVg:T2
-	(envelope-from <john.madieu.xa@bp.renesas.com>); Thu, 04 Dec 2025 16:38:17 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-114S008ba00bc96-4cf0-4bc5-aa84-d8d1c79fd6a9,
+Received: from director6.ghost.mail-out.ovh.net (unknown [10.110.37.191])
+	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4dMg4j5sB6z8QPn
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:31:33 +0000 (UTC)
+Received: from ghost-submission-7d8d68f679-mkpf7 (unknown [10.111.182.250])
+	by director6.ghost.mail-out.ovh.net (Postfix) with ESMTPS id B198E802DF;
+	Thu,  4 Dec 2025 16:31:31 +0000 (UTC)
+Received: from labcsmart.com ([37.59.142.99])
+	by ghost-submission-7d8d68f679-mkpf7 with ESMTPSA
+	id GduLDmO3MWnQjQQATXHgnQ
+	(envelope-from <john.madieu.xa@bp.renesas.com>); Thu, 04 Dec 2025 16:31:31 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-99G003ce1f1467-d897-4cfe-b3a4-acac0f5cccc0,
                     E90FA267686E4F2ED65044873A5FD8D85CF2A6B0) smtp.auth=john.madieu@labcsmart.com
 X-OVh-ClientIp:141.94.163.193
 From: John Madieu <john.madieu.xa@bp.renesas.com>
@@ -48,12 +47,10 @@ Cc: biju.das.jz@bp.renesas.com,
 	linux-renesas-soc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	John Madieu <john.madieu.xa@bp.renesas.com>
-Subject: [PATCH net-next 1/3] net: stmmac: add physical port identification support
-Date: Thu,  4 Dec 2025 16:37:27 +0000
-Message-Id: <20251204163729.3036329-2-john.madieu.xa@bp.renesas.com>
+Subject: [PATCH net-next 0/3]  net: stmmac: add physical port identification support
+Date: Thu,  4 Dec 2025 16:31:19 +0000
+Message-Id: <20251204163122.3032995-1-john.madieu.xa@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
-References: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,112 +58,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 13328966050949662085
+X-Ovh-Tracer-Id: 13214968683322836357
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: dmFkZTGyOzcx+i5D+RoEmiI2Xuggx23MYjBICg9oiI2Zq9BF2uW8MJQrPSElw0m4ZFQiaIY25Dbo2mdTUPfHjVlTfnS3dFIf9T0Jfgm+5GB6nJIUWeKnYN5CBw+QU5sFTRET0YYcpyWMZunBi0tGGENOgirH8NZji7daG2R+BP4hnVGF+L88+T8Trsv1BkhysvLvIZplM+Wqxb1m3KPtqPz6cgfNh0O+egC1GQ6cz0WZOqaDaZzU+fMPRHFx0YV4aN24S6HsxVyvXhfc2dFIOYTPUq+ZgmRBFRSQJTa+O4llclnrHxIq4NyOxy4nBaJuHKoMkfvQxc7gKKl794+Dt5Uspk/mB1Z3VpQmOBNOM8c12SaxW7yzUVKpjhVCZz8SbqudOswUd0+9j6j/Hu2Ni3ZmVLOi3TyB2rq82mjzO+s7QD/reiC/dQW8IJ5Kv5HncaCfoMWjM44eTqrodFTv1DcRYdLmjGt2i/Veb/Ae9/IsZufK0VawgsoAOiIojHtqKXw0T8GG75QuKEuxs5aiIKkSpns0brZojczszV2m/qdg54bZVbERAlqHKfsxz4gliTrjduwTOIy8IGe991NvY1ABe4aV0AwoeSQm4tf6QNDNW4khc5wUo8hozikUnDQ0pUMfEeL+RjXNsKThlFMkut4vcXFSDcRyj67OgefMLiZZtZlXqA
+X-VR-SPAMCAUSE: dmFkZTFOYzd0u1tNIc5d1riAAD2SoA/rdbCRt2LqIsB4pVCHc9rrIYG6guZEVgyAXXl5qDEbDm5DIpC0OrCuxFdfXi0y49xplqCwDslxZfmG8AsZNeX+aPUxcaNxfHrUme5Ifwd7HskEkA5JpoPc3SYZyku6YrH4qiWo0bhMuvhkFiMsKV/q0vWmA7rgdl6EEEm+16ZrRiPZN0AwgkeBQlkc7/obc+uSAZg5JJolwLZSrXcfBUW6gc5R+pVGtyHvalKubb3uEDI10AY1883y3oDkXlAQLG3vlc3e/xhtkSHPKHNAsHH90Su1rXzwwdYA4vpLWfceOUXdT96WXrg9Ekt+rK1eC6WOqeN859LsEOWPI15XARa597p04BUF6Ik7oDNv2uz4w5quka4hU62FXvGpRrhjhTuYTdWR2SysrgwAyzrn0IBjvrZQWKMg2cKS0L4NW0EQPNdJ8oi5oQ2jvVq4mN4AvdjPIFmMrLWxObSGO1dUqRc5qsvodkor6H3ZfoPAge20RQnBHD0CVHUuc9UJn515vZ5DibS7im1tEKnpCti10n9SXH+lmm4448lApnJOE6RVwUfPKugCPWKU3Hg8ioNhaO9KbHqowdCEzo10ZlikrJemuAc2nDE6BxftvTqg+NHDfssRJn9H1EJDY6xDHESuvMGN6HVdx50QTQkE6EzGtQ
 
-Implement ndo_get_phys_port_id and ndo_get_phys_port_name callbacks
-to provide physical port identification for all stmmac-based devices.
+This series adds physical port identification support to the stmmac driver,
+enabling userspace to query hardware-stable identifiers for network interfaces
+via ndo_get_phys_port_id() and ndo_get_phys_port_name().
 
-Default implementations use the permanent MAC address for port ID and
-bus_id for port name. Glue drivers can override these by setting
-get_phys_port_id and get_phys_port_name callbacks in plat_stmmacenet_data.
+On systems with multiple ethernet controllers sharing the same driver,
+physical port identification provides stable identifiers that persist
+across reboots and are independent of interface enumeration order.
+This is particularly useful for predictable network interface naming
+and for correlating interfaces with physical connectors.
 
-Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 54 +++++++++++++++++++
+The implementation follows a two-tier approach:
+
+1. Generic stmmac support: Default implementations use the permanent MAC
+   address as port ID and bus_id for port naming. This provides immediate
+   benefit for all stmmac-based platforms.
+
+2. Glue driver override: Platform drivers can provide custom callbacks
+   for hardware-specific identification schemes. The Renesas GBETH driver
+   implements this to support device tree-based port identification,
+   addressing cases where hardware lacks unique identification registers.
+
+The Renesas implementation constructs an 8-byte port identifier from:
+- Permanent MAC address (if available) or Renesas OUI (74:90:50) as fallback
+- Port index from device tree property or ethernet alias
+
+
+John Madieu (3):
+  net: stmmac: add physical port identification support
+  dt-bindings: net: renesas-gbeth: Add port-id property
+  net: stmmac: dwmac-renesas-gbeth: add physical port identification
+
+ .../bindings/net/renesas,rzv2h-gbeth.yaml     | 19 +++++++
+ .../stmicro/stmmac/dwmac-renesas-gbeth.c      | 56 +++++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 54 ++++++++++++++++++
  include/linux/stmmac.h                        |  5 ++
- 2 files changed, 59 insertions(+)
+ 4 files changed, 134 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 15b0c08ebd877..e8f642c9941b6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7151,6 +7151,58 @@ static void stmmac_get_stats64(struct net_device *dev, struct rtnl_link_stats64
- 	stats->rx_missed_errors = priv->xstats.rx_missed_cntr;
- }
- 
-+/**
-+ * stmmac_get_phys_port_id - Get physical port identification
-+ * @dev: net device structure
-+ * @ppid: pointer to physical port id structure
-+ *
-+ * Returns a unique physical port identifier. If the platform provides
-+ * a custom callback, it is used. Otherwise, the permanent MAC address
-+ * serves as the default identifier.
-+ *
-+ * Return: 0 on success, negative error code otherwise
-+ */
-+static int stmmac_get_phys_port_id(struct net_device *dev,
-+				   struct netdev_phys_item_id *ppid)
-+{
-+	struct stmmac_priv *priv = netdev_priv(dev);
-+
-+	/* Allow glue driver to override */
-+	if (priv->plat->get_phys_port_id)
-+		return priv->plat->get_phys_port_id(dev, ppid);
-+
-+	/* Default: use permanent MAC address as port ID */
-+	ppid->id_len = ETH_ALEN;
-+	memcpy(ppid->id, dev->perm_addr, ETH_ALEN);
-+
-+	return 0;
-+}
-+
-+/**
-+ * stmmac_get_phys_port_name - Get physical port name
-+ * @dev: net device structure
-+ * @name: buffer to store the port name
-+ * @len: length of the buffer
-+ *
-+ * Returns a human-readable physical port name. If the platform provides
-+ * a custom callback, it is used. Otherwise, a default name based on
-+ * the bus_id is generated.
-+ *
-+ * Return: 0 on success, negative error code otherwise
-+ */
-+static int stmmac_get_phys_port_name(struct net_device *dev,
-+				     char *name, size_t len)
-+{
-+	struct stmmac_priv *priv = netdev_priv(dev);
-+
-+	/* Allow glue driver to override */
-+	if (priv->plat->get_phys_port_name)
-+		return priv->plat->get_phys_port_name(dev, name, len);
-+
-+	/* Default: use bus_id as port identifier */
-+	return snprintf(name, len, "p%d", priv->plat->bus_id) >= len ? -EINVAL : 0;
-+}
-+
- static const struct net_device_ops stmmac_netdev_ops = {
- 	.ndo_open = stmmac_open,
- 	.ndo_start_xmit = stmmac_xmit,
-@@ -7172,6 +7224,8 @@ static const struct net_device_ops stmmac_netdev_ops = {
- 	.ndo_xsk_wakeup = stmmac_xsk_wakeup,
- 	.ndo_hwtstamp_get = stmmac_hwtstamp_get,
- 	.ndo_hwtstamp_set = stmmac_hwtstamp_set,
-+	.ndo_get_phys_port_id = stmmac_get_phys_port_id,
-+	.ndo_get_phys_port_name = stmmac_get_phys_port_name,
- };
- 
- static void stmmac_reset_subtask(struct stmmac_priv *priv)
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 4f70a6551e68c..2b98c2d354804 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -277,6 +277,11 @@ struct plat_stmmacenet_data {
- 	void (*pcs_exit)(struct stmmac_priv *priv);
- 	struct phylink_pcs *(*select_pcs)(struct stmmac_priv *priv,
- 					  phy_interface_t interface);
-+	/* Physical port identification callbacks (optional, for glue driver override) */
-+	int (*get_phys_port_id)(struct net_device *ndev,
-+				struct netdev_phys_item_id *ppid);
-+	int (*get_phys_port_name)(struct net_device *ndev,
-+				  char *name, size_t len);
- 	void *bsp_priv;
- 	struct clk *stmmac_clk;
- 	struct clk *pclk;
 -- 
 2.25.1
 
