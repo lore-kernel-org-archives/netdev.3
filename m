@@ -1,82 +1,86 @@
-Received: from cmccmta2.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342B433B6D8;
-	Thu,  4 Dec 2025 09:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BFC33123C;
+	Thu,  4 Dec 2025 09:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839502; cv=none; b=ELM83qaM8naDaULkYfQGLG+796fi/euYKhz0fkwtR93qxFhfY7Gu9WLZg4j3hAU8RNVI/HODPszUUceDBLsaiDSEN+6GCzMpdg0cHz1fpOOn8ueZypNiUVozMtmsAfpj5tsdlza2qdgPNB3xag6VfdpW9azntYW/ot+qaRpuY/Q=
+	t=1764840022; cv=none; b=gZlbAu2VhVUS+qF/k5O1ZVBdNR+vwWkUCWELx84FBEoUwgYV1DexZAHPGDrh8d6cdi3NpfX2LvhPju5yHoGPrySi5eMl/Je7GBmQVt6/tp9vXELnDpMwUrkwN1S8+ypxe38mGTzKGGpsiNfHEXC7wdg+m7HLsvnd6MqJVoGAZY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839502; c=relaxed/simple;
-	bh=viIUBCUxUrQIU+KRE+rcobyjD9sts35NOjZEYvyj3fA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BtdMiKD2mvhQ5/Xt5qtPQhqXvR7Q1Ifl+iHp+yzo5Rn6Anl2U+iwtRAulxVd08NlKeaFAdcSJsSU9POlY7Jt7vYWDDFFd+7KLnAxGg+GJl1KqrUW4qTlfR87HP6OtigBOHkJmaN2V5ErpRujhUY8Gyte2gimBtwHmzncJ3zvOlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee569315049525-ac64e;
-	Thu, 04 Dec 2025 17:11:37 +0800 (CST)
-X-RM-TRANSID:2ee569315049525-ac64e
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee169315046302-d1b52;
-	Thu, 04 Dec 2025 17:11:37 +0800 (CST)
-X-RM-TRANSID:2ee169315046302-d1b52
-From: caoping <caoping@cmss.chinamobile.com>
-To: chuck.lever@oracle.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kernel-tls-handshake@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	caoping <caoping@cmss.chinamobile.com>
-Subject: [PATCH v3] net/handshake: restore destructor on submit failure
-Date: Thu,  4 Dec 2025 01:10:58 -0800
-Message-ID: <20251204091058.1545151-1-caoping@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1764840022; c=relaxed/simple;
+	bh=V0IRAvSLDYnvAlMVrD2CIW5BHSLS2cFC5afmQhU8h1I=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:MIME-Version:
+	 Message-Id:Content-Type; b=d9g2le8gG5SdZzSGXym+3SFOGmzqQEetUZELn9C7dJYHR5S0TbBNFiqHHS9n6W9W7Y0c0hvDKwtNVhjGR7dHt9Ros1nOKHn7osHBm/rWSYhKxBmndu912VgtzYIQIJ3etwnX4CEq09DNttgubxyM2ez9T3EUuD1Brtbe087oF+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id AAD8A4923B;
+	Thu, 04 Dec 2025 10:20:10 +0100 (CET)
+Date: Thu, 04 Dec 2025 10:20:06 +0100
+From: Fabian =?iso-8859-1?q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>
+Subject: Re: [PATCH net-next] net: veth: Disable netpoll support
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Breno Leitao
+	<leitao@debian.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: leit@meta.com, open list <linux-kernel@vger.kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+References: <20240805094012.1843247-1-leitao@debian.org>
+In-Reply-To: <20240805094012.1843247-1-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.17.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1764839728.p54aio6507.astroid@yuna.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1764839963466
 
-handshake_req_submit() replaces sk->sk_destruct but never restores it when
-submission fails before the request is hashed. handshake_sk_destruct() then
-returns early and the original destructor never runs, leaking the socket.
-Restore sk_destruct on the error path.
+On August 5, 2024 11:40 am, Breno Leitao wrote:
+> The current implementation of netpoll in veth devices leads to
+> suboptimal behavior, as it triggers warnings due to the invocation of
+> __netif_rx() within a softirq context. This is not compliant with
+> expected practices, as __netif_rx() has the following statement:
+>=20
+> 	lockdep_assert_once(hardirq_count() | softirq_count());
+>=20
+> Given that veth devices typically do not benefit from the
+> functionalities provided by netpoll, Disable netpoll for veth
+> interfaces.
 
-Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: caoping <caoping@cmss.chinamobile.com>
----
- net/handshake/request.c | 2 ++
- 1 file changed, 2 insertions(+)
+this patch seems to have broken combining netconsole and bridges with
+veth ports:
 
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 274d2c89b6b2..89435ed755cd 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -276,6 +276,8 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- out_unlock:
- 	spin_unlock(&hn->hn_lock);
- out_err:
-+	/* Restore original destructor so socket teardown still runs on failure */
-+	req->hr_sk->sk_destruct = req->hr_odestruct;
- 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
- 	handshake_req_destroy(req);
- 	return ret;
+https://bugzilla.proxmox.com/show_bug.cgi?id=3D6873
 
-base-commit: 4a26e7032d7d57c998598c08a034872d6f0d3945
--- 
-2.47.3
+any chance this is solvable?
 
-
+>=20
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/veth.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index 426e68a95067..34499b91a8bd 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -1696,6 +1696,7 @@ static void veth_setup(struct net_device *dev)
+>  	dev->priv_flags |=3D IFF_LIVE_ADDR_CHANGE;
+>  	dev->priv_flags |=3D IFF_NO_QUEUE;
+>  	dev->priv_flags |=3D IFF_PHONY_HEADROOM;
+> +	dev->priv_flags |=3D IFF_DISABLE_NETPOLL;
+> =20
+>  	dev->netdev_ops =3D &veth_netdev_ops;
+>  	dev->xdp_metadata_ops =3D &veth_xdp_metadata_ops;
+> --=20
+> 2.43.0
+>=20
+>=20
+>=20
+>=20
 
