@@ -1,118 +1,112 @@
-Received: from 18.mo550.mail-out.ovh.net (18.mo550.mail-out.ovh.net [46.105.35.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336229C321
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 17:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.35.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F22FF67C
+	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 17:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764868509; cv=none; b=Dl3Q5Jztj6pPiIDsZ5MBhwathVQLWpXYzGb5OaIDyyVGcu11HXhzErdDAzt2JTTb2E8cv5FBkGpoOhy7NDOhGLhYXXe9Nm1c8KlG0KgZXcGuxzBlfPcRTq7hv2fROZBIo3+TcOETSb+5uiTCJ6pXItmsGcBoY3uMsA03wvgWtvw=
+	t=1764868583; cv=none; b=o8Hq7QW1tvOu/wR4EBEHURG5PjT9zrX2iwGLnSKEM0zWZwC10Eh0PfRbxLXgyXKlPNXCbnQTvFiDekgDDrEXi5472mafo7GYqM7Y40AtZSGe/VK2gcw4+qEvmQEcetbTYwsDqyHDTGRen/hM0CakQDnUnTnxNQ6qyv+oo/Z9ZUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764868509; c=relaxed/simple;
-	bh=YgsFnZuDSq0GL2hrNLtRnqJd46AcXwGsEsQYq7gDQkc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=crqss2yn5w1p9IoveQQQ62abJTJH5JkGRew98XzbQ0irWE4C3UpG37wZTT8N1HWF5Yght76vcLsWCfKdRE9VHACpk1qHOoekqbX8rZdk18XRLufXpo0OYArBZbsCYFlunUvS9pqaY3rZRyhWFn+B52SbAKNryuX6mAZX02mcEzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com; spf=fail smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=46.105.35.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=bp.renesas.com
-Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.37.167])
-	by mo550.mail-out.ovh.net (Postfix) with ESMTP id 4dMgDY1zwzz6WTT
-	for <netdev@vger.kernel.org>; Thu,  4 Dec 2025 16:38:21 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-m4nfg (unknown [10.111.174.111])
-	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 04E91C0F78;
-	Thu,  4 Dec 2025 16:38:18 +0000 (UTC)
-Received: from labcsmart.com ([37.59.142.114])
-	by ghost-submission-7d8d68f679-m4nfg with ESMTPSA
-	id naCeNve4MWmh+AYArq+dVg:T3
-	(envelope-from <john.madieu.xa@bp.renesas.com>); Thu, 04 Dec 2025 16:38:18 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-114S008793e570e-a212-4f79-af68-c8066b7fc938,
-                    E90FA267686E4F2ED65044873A5FD8D85CF2A6B0) smtp.auth=john.madieu@labcsmart.com
-X-OVh-ClientIp:141.94.163.193
-From: John Madieu <john.madieu.xa@bp.renesas.com>
-To: prabhakar.mahadev-lad.rj@bp.renesas.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	geert+renesas@glider.be
-Cc: biju.das.jz@bp.renesas.com,
-	claudiu.beznea@tuxon.dev,
-	linux@armlinux.org.uk,
-	magnus.damm@gmail.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	John Madieu <john.madieu.xa@bp.renesas.com>
-Subject: [PATCH net-next 2/3] dt-bindings: net: renesas-gbeth: Add port-id property
-Date: Thu,  4 Dec 2025 16:37:28 +0000
-Message-Id: <20251204163729.3036329-3-john.madieu.xa@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
-References: <20251204163729.3036329-1-john.madieu.xa@bp.renesas.com>
+	s=arc-20240116; t=1764868583; c=relaxed/simple;
+	bh=km4Dh9hQxInKzZx/6CVtSmfiE01GeOx+hzC3RItzZCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BZ0+qhbHZqNLaS/wHNpEUTcc/ZDHeGlwkzeSM1caTpX72W8+lV+DZ9vV+tU0yFhzcJoUe3gbXMdTowPHKOEjPPueOA2fRj+5e3k/o0Zok6k5t443WFiyjT0f5D+4iqe0Aie8FIKgWtvU3+/4YSLOVPeIwE+Rz625n0oQCwypBls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BiA+oq9p; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BiA+oq9p"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so1224724b3a.0
+        for <netdev@vger.kernel.org>; Thu, 04 Dec 2025 09:16:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764868579; x=1765473379; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9as9K2dHITRu6IU+yIjl4J9GL6vgxblmI/uo3LDmiDA=;
+        b=BiA+oq9pF4b6fLwzzpFCXc3BWr2q7jmMqSh7Y1G3BALUyBhaEmta8HkkX3qUHa4H9Y
+         oI1s5FC66uKaW3k42HXLHdqG46JyjGZunzg2oLW/K+bPSuzy8xapjecNrnPBs36TocvU
+         Dda+FuY7i5Ti6TinHUN95K2A27UkuBy6HBtwflNYQDyeAzzvh3PyqakZRmjx7jsUWKv/
+         OhCy7DGnm92V1HCzfcRyas5gImTgQkXm8t1iFW4TcZTHcJLWRzwn2u+GerHMs5QaCHsW
+         PNr3lCrasUwnrxNv43Fr3223E3yh55PFoxRmR+hkl/1T6QS8yMqm2ham5i+fXwetIaIy
+         CUFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764868579; x=1765473379;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9as9K2dHITRu6IU+yIjl4J9GL6vgxblmI/uo3LDmiDA=;
+        b=NR546jPnbRqgi6K7SmzVCZLlrJQzzqSPXD/6Ev5HDQJ95CwgIA3DbynoWxXFMQGYga
+         KO/rh24nYGELVEEBP7iqfbLSFNcDKhBEsT+74QahatiGL0euGJi85NAUaCmL3MUQfAMY
+         uIWoCJ1aj+jOCDg7fYYaYCBYHuAVK/iUvcf7gkuUTo5B7i6JyWw6Yj82/KUfonvLYTOX
+         St2wV8EniUCWx590CHnDlr3scxrmI3MnAFIWR+CHjR0QOJBaY+GXOFMsdn5N3Tjf490i
+         kJnj0C2SVlY3teLwxu0PIBD9v5g8jj3b7O3bk3YO9Izi8gxQkmW6TCdVK43PkcGSCTUc
+         G/ow==
+X-Forwarded-Encrypted: i=1; AJvYcCVEorg/Kw4FGO/MI5no8hlbz5XdtPubuSozI0279yXQfckCmMr9NSIgtvV+XLagwjFeaKfJfZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcE3yCMknKM/HN2055SkEobG8iYasPbbIRBJSibeZzyjZ3x583
+	pOQYqGsCdx5QaJEsfYsvr4149FBwT2cfnYALoChHgtCs5ksUE+UoND3t
+X-Gm-Gg: ASbGncvNZqTs/M0mJzL7KpplPeE5BtPjvsDwZ1kqfwLALBRs8XftHdP64XFkNv8UV5j
+	XKDOeurIMlfeZ/6taWXRPavnOfQnWkUmRJGNSKRtLQuf7WvWSqCrej8SxHjRnkVY8XiHzuXborx
+	ZRhgSRMuSH7OCl5QEQ6DUxabzawQvgNlC+oRboPwBpCvbugbTM/a3fcOaxD3wo95bg1YNyuN2lF
+	20PqzmV76tUyIx1YTHKD8cfDDzyOTr/IZgg7514TOIDpsRRLAFj4+ONo/Xjr/se/TV0/5mJOSlA
+	Po3emdpD9lj51mRE5k5bkJeivbi2y66x8/l++t/4b5J8jY0BU882lhMTImD05LSaIiEAVnI+moU
+	2P/VTvaftS9RLihaOzs1XLvlq5ChWrtJmIejt1u0IIiLYIAF7I4sOtNPhAvW81A2R6B8gy68lf2
+	ThDDxlx9T2d/98CbHQ/d7iTB0=
+X-Google-Smtp-Source: AGHT+IHAXVYFQ4q367vSeW5sz0uxGvn2ZjIkZaA1NzUcPpPtZ5Mf5JbmRDgnfViVXo5wuRHDOwdH8g==
+X-Received: by 2002:a05:6a20:958e:b0:350:1a0e:7fc5 with SMTP id adf61e73a8af0-363f5ed53c9mr8451647637.60.1764868578709;
+        Thu, 04 Dec 2025 09:16:18 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf686b3bad4sm2375297a12.10.2025.12.04.09.16.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 09:16:18 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 4 Dec 2025 09:16:16 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Elizabeth Figura <zfigura@codeweavers.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Eric Dumazet <edumazet@google.com>, Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	wine-devel@winehq.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH 00/13] selftests: Fix problems seen when building with
+ -Werror
+Message-ID: <536d47f4-25b1-430a-820d-c22eb8a92c80@roeck-us.net>
+References: <20251204161729.2448052-1-linux@roeck-us.net>
+ <20251204082754.66daa1c3@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 13329247523704702341
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: dmFkZTEu+nYVGdKAM5Z4fRCahVsKa2293LslcWxb1bPv0VwvKAw4M2lzxFwSiYWyoi8P91kaARVtqRb0TEZugqk151vG6gIa0T8/eMLyQlgXgekuNCovF3oUZXA+1rwXo63BkqJASKkP5gU8IoA87wcA/TO0Ph+fl/DQpe69I3zCmGsjyVbncOpBygjWz8/Yy7gMkNUFW8dDXP8zvg68QKUY6qwmiiy37NULBWsnm3XricYEgaSBjtLZmBDTkXW6nxmK8G0J4ei9hx77c7C+ADH2hdZ/e74/zgW2UTxkZiq5jopASfj1bfSDjAZfY4mQzOW2NNYEGlMaSoN0BD7KB3j9+Yx8GE8zVZP6pFQfZLx+koU74jQOfx1yJBvLbSymvZ4wXLd9oNiOe9TSs+BJ+dgcMcJK1kL6jYPQRl9LWtN2nBRLIygYd8mElHWeKarWkP2XEMPZG8foFpDLOpQnh0u5+c7oCySo9eVOtxOyYJa3RpEYGbdvgh49Snk/Hj2eqGb3faleAJs8TaOyQPwzdzZ5DY2y6o33mSgk0HowwP42CjWNlFd3XInen29yBKU/g5CMyJukvizAzoTZEnCRis9zeNxf44vtGFk1qJ2hShhlwGGelby//PwcX/fmXS8nuez0hsqiBn+oZ2eCImgqGy/+BpWMt+ZyXk1oOIeBYQ16QwMbQw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204082754.66daa1c3@kernel.org>
 
-Add optional port-id property to identify ethernet ports on RZ/V2H
-SoCs. The hardware doesn't provide unique identification registers
-for multiple ethernet instances, so this property allows explicit
-port identification from the device tree.
+On Thu, Dec 04, 2025 at 08:27:54AM -0800, Jakub Kicinski wrote:
+> On Thu,  4 Dec 2025 08:17:14 -0800 Guenter Roeck wrote:
+> > This series fixes build errors observed when trying to build selftests
+> > with -Werror.
+> 
+> If your intention is to make -Werror the default please stop.
+> Defaulting WERROR to enabled is one of the silliest things we have done
+> in recent past.
+> 
 
-Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
----
- .../bindings/net/renesas,rzv2h-gbeth.yaml     | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+No, that is not the idea, and not the intention.
 
-diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-index bd53ab300f500..bb59c6a925d3f 100644
---- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-+++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-@@ -117,6 +117,23 @@ properties:
-           - description: AXI power-on system reset
-           - description: AHB reset
- 
-+  renesas,port-id:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Optional unique port identifier for this ethernet interface.
-+      Used for physical port identification (phys_port_id, phys_port_name).
-+      If not specified, the ethernet alias index is used as fallback.
-+    minimum: 0
-+    maximum: 255
-+
-+  renesas,port-name:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      Optional custom name for the physical port. Used by
-+      ndo_get_phys_port_name() for interface naming.
-+      If not specified, "p<N>" format is used where N is the port-id
-+      or ethernet alias index.
-+
-   pcs-handle:
-     description:
-       phandle pointing to a PCS sub-node compatible with
-@@ -230,6 +247,8 @@ examples:
-         snps,txpbl = <32>;
-         snps,rxpbl = <32>;
-         phy-handle = <&phy0>;
-+        renesas,port-id = <0>;
-+        renesas,port-name = "mgmt";
- 
-         stmmac_axi_setup: stmmac-axi-config {
-             snps,lpi_en;
--- 
-2.25.1
+The Google infrastructure builds the kernel, including selftests, with
+-Werror enabled. This triggers a number of build errors when trying to
+build selftests with the 6.18 kernel. That means I have three options:
+1) Disable -Werror in selftest builds and accept that some real problems
+   will slip through. Not really a good option, and not acceptable.
+2) Fix the problems in the upstream kernel and backport.
+3) Fix the problems downstream only. Not really a good option but I guess
+   we'll have to do it if this series (and/or follow-up patches needed to
+   support glibc older than 2.36) is rejected.
 
+We'll have to carry the patches downstream if 2) is rejected, but at
+the very least I wanted to give it a try.
+
+Guenter
