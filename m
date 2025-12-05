@@ -1,225 +1,136 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8A5327C02;
-	Fri,  5 Dec 2025 12:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56D3148C8;
+	Fri,  5 Dec 2025 13:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764938709; cv=none; b=mR8VhWQO8bWXBi08K3/vFRn1YFjOj2t0xC/HWavf3HASfmff1oW1k18c0QO24XbfwiNDxRy+ZCL+5GIkPUVi+DNht7ij1yNqF18YVI6gG0WC1NeYqaQDYVlM96UaPEXJsuQViq+WbTdQrmZzxcdcfYwpEmjuHGhof3+73Qj+jic=
+	t=1764940917; cv=none; b=bQVUYxL/PwxWwAO15pdexr+AI10d3bR5ycJ4JLNLh8v60jcru8pAzBCy+f2S+yAkFK6oFcZxj09q5wN1gITvoKGLrRQNk4FAHXX9wuFt2QvfVz2ijlowhq/jv5FgJvoTzcaBLTP59iCZyWHc5Z9BilmNGd9HAO4bRZQAheW47KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764938709; c=relaxed/simple;
-	bh=qdQVx2AD6BXOPLogEc/qoTnI8fpvI+0OD8ivP1PBcSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=llI/4uQd3oRWgamiH+WWxuqDRYgoJKygTW5+GXvh4l6JNbBNcBNR0yc63zVD3TytvT2hUker4lHzBRHVIqZ3uCIZrIYmPSDk0XeAR+c7Ns/jtmQA0SSVUMkH99T1e4LECav3Rlf1yLkL5cA22syY8hxnIw2jkEwrpXwzw1REZDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=Qtm/3JgC; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1764940917; c=relaxed/simple;
+	bh=F4G2ALAFTX74mjT8Mnsa8PAikqRo6bnZ3MjRvVzVAl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IMl6MUsNm1mxVCrsSMsdePGSl4ydL4CdxbdPnxVuZIiOjT4RNodhx1m44fPxePDeUiINyK7U8VbbBjyVNjEQ8eG3tS/mJtHPg1PsPuQiqA46bT8Nmh8WlCT+nSA7LGCh/3Z1hqF2XRUL/bzmN8UDt27NBG5gyj6iYkYzICnr9dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y34QAvM/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="Qtm/3JgC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
-	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=4Z3iKes0VYNH4cz5tQkWvyb4vz1NggDVhpBNY1BIFcc=; b=Qtm/3JgCcndHoSRTKrKxgTXKrI
-	YVLgWpCdiULTdTPiuS3ehGeJ52xG2FPBHBiREouoOV/MDxnAs7x5/vvb68vqb63dpbMns9V4bYVhN
-	8WeMxl39BBmH3r/pGm2M6dNR6vInDd8RtbBIv2GMSOJRh6cItUHUVmHle6W9AQD58XMe6Rr7Lddv0
-	OgBFeltbsE853Ft/lR1NO1yjSuxGg+/iTAPqa0jEVzJI5wjaUbs1qI0SnqkEK56vHF87hk1H7W1vi
-	NGBIe0pusLuBz9+ZRAvUfRVbV7rBPBXeBdfAm44VMtuAzzD67WmDZ+KFpfTtjzEczlQ0GVJRCd1do
-	bdNbYXHg==;
-Received: from [122.175.9.182] (port=9516 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1vRUzI-00000003o4B-0xyR;
-	Fri, 05 Dec 2025 07:32:40 -0500
-From: Parvathi Pudi <parvathi@couthit.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	danishanwar@ti.com,
-	parvathi@couthit.com,
-	rogerq@kernel.org,
-	pmohan@couthit.com,
-	basharath@couthit.com,
-	afd@ti.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	alok.a.tiwari@oracle.com,
-	horms@kernel.org,
-	pratheesh@ti.com,
-	j-rameshbabu@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com
-Subject: [RFC PATCH net-next v9 0/3] STP/RSTP SWITCH support for PRU-ICSSM Ethernet driver
-Date: Fri,  5 Dec 2025 17:59:10 +0530
-Message-ID: <20251205123146.462397-1-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y34QAvM/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A750AC4CEF1;
+	Fri,  5 Dec 2025 13:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764940917;
+	bh=F4G2ALAFTX74mjT8Mnsa8PAikqRo6bnZ3MjRvVzVAl0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y34QAvM/tsXlzuWqm3qmgnj1otltWMGL79GebBkGGC09sd4uI7u3e/Gn80pIovhn7
+	 KEMRLwPbsCpG9zotiBi2hf/jTPOsLIkaBWjtrq6lsTXzy8lprHvbedfz9aIp7SXubP
+	 FHAEtQA0BWxNO+1dgS9DkyNd/A9cTLYaka1eHi1HiY9ZMja68/s77lEARhTPQHtHhK
+	 xujE+fT2VV2apQk++1cFY/YRdh+uTlyCTmIuX1W5dnf9b+cmsw3H0elBgH0Q4bgKlP
+	 0tBewWgx9/X1L0cHVGu7no9quXDSxhDPfjqlYaMawbgp/XnMWlAGC39y8D8Vg7kGBJ
+	 NT9zVxMzEwpXg==
+Message-ID: <3c1dac33-424f-4eda-83a9-60fb7f4b6c52@kernel.org>
+Date: Fri, 5 Dec 2025 14:21:51 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 5/9] tun: use bulk NAPI cache allocation in
+ tun_xdp_one
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Jon Kohler <jon@nutanix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ open list <linux-kernel@vger.kernel.org>, bpf@vger.kernel.org,
+ Alexander Lobakin <aleksander.lobakin@intel.com>
+References: <20251125200041.1565663-1-jon@nutanix.com>
+ <20251125200041.1565663-6-jon@nutanix.com>
+ <CACGkMEsDCVKSzHSKACAPp3Wsd8LscUE0GO4Ko9GPGfTR0vapyg@mail.gmail.com>
+ <CF8FF91A-2197-47F7-882B-33967C9C6089@nutanix.com>
+ <c04b51c6-bc03-410e-af41-64f318b8960f@kernel.org>
+ <20251203084708.FKvfWWxW@linutronix.de>
+ <CA37D267-2A2F-47FD-8BAF-184891FE1B7E@nutanix.com>
+ <20251205075805.vW4ShQvN@linutronix.de>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20251205075805.vW4ShQvN@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-Hi,
 
-The DUAL-EMAC patch series for Megabit Industrial Communication Sub-system
-(ICSSM), which provides the foundational support for Ethernet functionality
-over PRU-ICSS on the TI SOCs (AM335x, AM437x, and AM57x), was merged into
-net-next recently [1].
 
-This patch series enhances the PRU-ICSSM Ethernet driver to support bridge
-(STP/RSTP) SWITCH mode, which has been implemented using the "switchdev"
-framework and interacts with the "mstp daemon" for STP and RSTP management
-in userspace.
+On 05/12/2025 08.58, Sebastian Andrzej Siewior wrote:
+> On 2025-12-03 15:35:24 [+0000], Jon Kohler wrote:
+>> Thanks, Sebastian - so if I’m reading this correct, it *is* fine to do
+>> the two following patterns, outside of NAPI:
+>>
+>>     local_bh_disable();
+>>     skb = napi_build_skb(buf, len);
+>>     local_bh_enable();
+>>
+>>     local_bh_disable();
+>>     napi_consume_skb(skb, 1);
+>>     local_bh_enable();
+>>
+>> If so, I wonder if it would be cleaner to have something like
+>>     build_skb_bh(buf, len);
+>>
+>>     consume_skb_bh(skb, 1);
+>>
+>> Then have those methods handle the local_bh enable/disable, so that
+>> the toggle was a property of a call, not a requirement of the call?
+> 
+> Having budget = 0 would be for non-NAPI users. So passing the 1 is
+> superfluous. You goal seems to be to re-use napi_alloc_cache. Right? And
+> this is better than skb_pool?
+> 
+> There is already napi_alloc_skb() which expects BH to be disabled and
+> netdev_alloc_skb() (and friends) which do disable BH if needed. I don't
+> see an equivalent for non-NAPI users. Haven't checked if any of these
+> could replace your napi_build_skb().
+> 
+> Historically non-NAPI users would be IRQ users and those can't do
+> local_bh_disable(). Therefore there is dev_kfree_skb_irq_reason() for
+> them. You need to delay the free for two reasons.
+> It seems pure software implementations didn't bother so far.
+> 
+> It might make sense to do napi_consume_skb() similar to
+> __netdev_alloc_skb() so that also budget=0 users fill the pool if this
+> is really a benefit.
 
-When the  SWITCH mode is enabled, forwarding of Ethernet packets using
-either the traditional store-and-forward mechanism or via cut-through is
-offloaded to the two PRU based Ethernet interfaces available within the
-ICSSM. The firmware running on the PRU inspects the bridge port states and
-performs necessary checks before forwarding a packet. This improves the
-overall system performance and significantly reduces the packet forwarding
-latency.
+I'm not convinced that this "optimization" will be an actual benefit on
+a busy system.  Let me explain the side-effect of local_bh_enable().
 
-Protocol switching from Dual-EMAC to bridge (STP/RSTP) SWITCH mode can be
-done as follows.
+Calling local_bh_enable() is adding a re-scheduling opportunity, e.g.
+for processing softirq.  For a benchmark this might not be noticeable as
+this is the main workload.  If there isn't any pending softirq this is
+also not noticeable.  In a more mixed workload (or packet storm) this
+re-scheduling will allow others to "steal" CPU cycles from you.
 
-Assuming eth2 and eth3 are the two physical ports of the ICSS2 instance:
+Thus, you might not actually save any cycles via this short BH-disable
+section.  I remember that I was saving around 19ns / 68cycles on a
+3.6GHz E5-1650 CPU, by using this SKB recycle cache.  The cost of a re-
+scheduling event is like more.
 
->> brctl addbr br0
->> ip maddr add 01:80:c2:00:00:00 dev br0
->> ip link set dev br0 address $(cat /sys/class/net/eth2/address)
->> brctl addif br0 eth2
->> brctl addif br0 eth3
->> mstpd
->> brctl stp br0 on
-# STP to RSTP mode
->> mstpctl setforcevers br0 rstp
->> ip link set dev br0 up
+My advice is to use the napi_* function when already running within a
+  BH-disabled section, as it makes sense to save those cycles
+(essentially reducing the time spend with BH-disabled).  Wrapping these
+napi_* function with BH-disabled just to use them outside NAPI feels
+wrong in so many ways.
 
-To revert back to the default dual EMAC mode, the steps are as follows:
+The another reason why these napi_* functions belongs with NAPI is that
+netstack NIC drivers will (almost) always do TX completion first, that
+will free/consume some SKBs, and afterwards do RX processing that need
+to allocate SKBs for the incoming data frames.  Thus, keeping a cache of
+SKBs just released/consumed makes sense.  (p.s. in the past we always
+bulk free'ed all SKBs in the napi cache when exiting NAPI, as they would
+not be cache hot for next round).
 
->> ip link set dev br0 down
->> brctl delif br0 eth2
->> brctl delif br0 eth3
->> brctl delbr br0
-
-The patches presented in this series have gone through the patch verification
-tools and no warnings or errors are reported.
-
-Sample test logs obtained from AM33x, AM43x and AM57x verifying the
-functionality on Linux next kernel are available here:
-
-[Interface up Testing](https://gist.github.com/ParvathiPudi/dec8bd097ae1bc2670eae3018ecf2706)
-
-[Ping Testing](https://gist.github.com/ParvathiPudi/8ca7d7a6e58df812dd31cbd0bd51696d)
-
-[Iperf Testing](https://gist.github.com/ParvathiPudi/49687cb411f1459cf1ab7eb82b359e6f)
-
-[1] https://lore.kernel.org/all/20250912104741.528721-1-parvathi@couthit.com/
-
-This is the v9 of the patch series [v1]. This version of the patchset
-addresses the comments made on [v8] of the series.
-
-Changes from v8 to v9:
-
-*) Added RFC tag as net-next is closed now.
-*) Addressed  Jakub Kicinski comments on patch 1 and 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v7 to v8:
-
-*) Modified dev_hold/dev_put reference to netdev_hold/netdev_put in patch 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v6 to v7:
-
-*) Addressed Jakub Kicinski comments on patch 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v5 to v6:
-
-*) Addressed Simon Horman comments on patch 1, 2 and 3 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v4 to v5:
-
-*) Addressed ALOK TIWARI comments on patch 1 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v3 to v4:
-
-*) Addressed Andrew Lunn comments on patch 1 and 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v2 to v3:
-
-*) Dropped the RFC tag.
-*) Addressed  MD Danish Anwar comments on patch 3 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v1 to v2 :
-
-*) Added RFC tag as net-next is closed now.
-*) Updated the cover letter of the series to generalize and indicate support for
-both STP and RSTP along with subject change as per Andrew Lunn's suggestion.
-*) Addressed the Andrew Lunn's comments on patch 1 of the series.
-*) Rebased the series on latest net-next.
-
-[v1] https://lore.kernel.org/all/20250925141246.3433603-1-parvathi@couthit.com/
-[v2] https://lore.kernel.org/all/20251006104908.775891-1-parvathi@couthit.com/
-[v3] https://lore.kernel.org/all/20251014124018.1596900-1-parvathi@couthit.com/
-[v4] https://lore.kernel.org/all/20251110125539.31052-1-parvathi@couthit.com/
-[v5] https://lore.kernel.org/all/20251113101229.675141-1-parvathi@couthit.com/
-[v6] https://lore.kernel.org/all/20251124135800.2219431-1-parvathi@couthit.com/
-[v7] https://lore.kernel.org/all/20251126124602.2624264-1-parvathi@couthit.com/
-[v8] https://lore.kernel.org/all/20251126163056.2697668-1-parvathi@couthit.com/
-
-Thanks and Regards,
-Parvathi.
-
-Roger Quadros (3):
-  net: ti: icssm-prueth: Add helper functions to configure and maintain
-    FDB
-  net: ti: icssm-prueth: Add switchdev support for icssm_prueth driver
-  net: ti: icssm-prueth: Add support for ICSSM RSTP switch
-
- drivers/net/ethernet/ti/Makefile              |    2 +-
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  |  517 +++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   20 +-
- .../ethernet/ti/icssm/icssm_prueth_fdb_tbl.h  |   76 ++
- .../ethernet/ti/icssm/icssm_prueth_switch.c   | 1060 +++++++++++++++++
- .../ethernet/ti/icssm/icssm_prueth_switch.h   |   37 +
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |  103 ++
- .../net/ethernet/ti/icssm/icssm_switchdev.c   |  333 ++++++
- .../net/ethernet/ti/icssm/icssm_switchdev.h   |   13 +
- .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   |  120 ++
- 10 files changed, 2258 insertions(+), 23 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-
--- 
-2.43.0
-
+--Jesper
