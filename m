@@ -1,77 +1,69 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013022.outbound.protection.outlook.com [40.107.201.22])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0286C32C936;
-	Fri,  5 Dec 2025 11:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764935631; cv=fail; b=ihbaqbMVtLQVwnvD9PA6ple6hhb1kemRugo+fk4CzlGLne7pMWJpOcvjhSgOAfnhDaT16V2dijn7Fyq9NScy5aezHMkGLDC5HpnjD9SG5gSXdMcDJTbXy0dJRS3U+VNQMPRyWjJNC8G4rOxQmg/IC8mys0QdnQ9Cu/rbf7EoLvY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764935631; c=relaxed/simple;
-	bh=LZt+FAn4lIFWBgXPL3ToS0bMB6gF5GFV8BjX1trDXUY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pm8H8JvGivDJDuhSVtaWoHg6MDonVCyXGUT5paoO0BvJLfRhfFjDxigPBuk1Fei0XI9zjH6mA/yLL6UwGAOye7bdiS3huREHw6uqOV79HTDY6RRm7C0t960969OvzJznvOHqSsWyMzdVaOFdaUmmpu+il08Xl1PeOM216rTQgZg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NmjNWoB+; arc=fail smtp.client-ip=40.107.201.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3532BD00C;
+	Fri,  5 Dec 2025 12:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764937986; cv=none; b=EVcLvIvEghUMt1UaK56fcOl1gOJgqG/DAdlDqWAjILK1IwEq4k3Str66ViYWokCy9niEYEDu4/4+u4sYHCpvSCXNSWePQ1okVk0je8cGHuZ+iwJoKy/LOFVGeIsausYitmPdEpe6+UQXpKPVOqovWyDoRXK9rIn93SD4wVrKO1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764937986; c=relaxed/simple;
+	bh=tWRa8oyjUvpRsRdslinBFOdREKp5S/3MTxZX6fSdDQg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TgkEnAdYsfwydQH06b4LFQEZemyBxxRT9dzsB5MZpj91cGSNYEZ5mmaidHacdK8Icie5gEH+ObNNyyv8qRtOQOfQZ5qXNV6JH+8/gpJgkFhySyFvYupT6US/TK3rQ96GxYzPG3w2VJdjzOY0F0PKyiW1hlMbJRTf9d+6YrKeOiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=bWBLRCF4; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NmjNWoB+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oqw4BR+U/zYbAC4Wwab0jWkgeN+n5KWquiq/Rfl5x6qZoVTi3htUJMpVFWoqkyYUok4lbGL/GTWSmOQxfFh3XpRm+CSuUJasTjI/XTq5jfGvX6An9YXI2XJRPLlAhk901GNfk7nk6lOzrIHys9F5uozhz8IPcirJI28nVSypAWj5YbSZNNaZKhww9JdRbGP1YDD5CiDu9yenyhOSARBLRZU0RW+UQzngJt4N01AlVjUwcHD97CNb/DcQFyGDwEaAeOI/wgnydxRJbZceEsllfdStWmAiNo5qZ9zKrMbAJHzzWlxWlOdpoQCjbC6e5WNSK8f7K1tKKISafcZC0XMNOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rD2GMa7asjD5eDACsvxutaMxsFeXGv7s58CX8RcGUGE=;
- b=UjbobaLddS4MEdytZaZYwEX9DqtVM+CtoPMPjg041uL8uRkuTHBvIUAyMzjvR/qGCsbAeFpOn9mjug1hk5rqNIW2ILGHAI98CdD/5+dcsQF3BvhMThuU7R0C0+E7heBEJYcVvxqRHdLmuxrdAS9jLYurLkDY2pVwg/D+iECwZRtLIbxme9l6ZjtB2qeFH60Xvsi5Ejh0EZOLul+2+LIG105NquXk9X7SbVZIArjx5SmgxJtXy5iZAm5XIuKBNKm5s2Y4PzzbPKqLNUsKIEnYv208d8YvAJ6sJ8xQvk/9va9/qKVO039r/k2m0G76G9DNW48I54OLdn//7MTQZJ9cxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rD2GMa7asjD5eDACsvxutaMxsFeXGv7s58CX8RcGUGE=;
- b=NmjNWoB+VzxWjRdzZLiPQGEzyap8qIeAiXVG55YLZbbvwQmHyb9JQzC/4PAB3SnmVRwH7W5bQ7cyEmSk2wOmVUoTd/LwxVqbkoJPqUaVJoCDxXzMPqvx9Sf4EybYjN3Cd2qJgT11u0+3tDaBUqAcSCiUpvpU01/SJHtRlWP00s0=
-Received: from SA0PR12CA0011.namprd12.prod.outlook.com (2603:10b6:806:6f::16)
- by MW4PR12MB5628.namprd12.prod.outlook.com (2603:10b6:303:185::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
- 2025 11:53:37 +0000
-Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
- (2603:10b6:806:6f:cafe::eb) by SA0PR12CA0011.outlook.office365.com
- (2603:10b6:806:6f::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.11 via Frontend Transport; Fri,
- 5 Dec 2025 11:53:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Fri, 5 Dec 2025 11:53:37 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 5 Dec
- 2025 05:53:35 -0600
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Fri, 5 Dec 2025 03:53:34 -0800
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>
-CC: Alejandro Lucero <alucerop@amd.com>, Jonathan Cameron
-	<Jonathan.Cameron@huawei.com>
-Subject: [PATCH v22 25/25] sfc: support pio mapping based on cxl
-Date: Fri, 5 Dec 2025 11:52:48 +0000
-Message-ID: <20251205115248.772945-26-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251205115248.772945-1-alejandro.lucero-palau@amd.com>
-References: <20251205115248.772945-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="bWBLRCF4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=oA0frL3VJZ0rF8taJyj3GSzziInjx5sYT3Kkvtv08QE=; b=bWBLRCF48oB7XQCMQoZMoCGPm1
+	hS+MVEhM3fjSlZbq/m/2R0ZivzbnTB5p5dCy80M6mBHQSJM+dyig+DBI7x9oZlaZsJDOuKQi41Dzd
+	sai8+IYJZXHfuO+8PvUIIiZOs3smpBjo36/j+MPRShvzThJgxXqtNlkO3riMMjo7l9P0dP2OKlSJw
+	T+Mk4+Z+P18DPS344hW/0mM7hUC9suYEyjYVU0J1PsvjuHer6lxh69aBIi4zd732874qqAlg7aRPb
+	pJha33HBf0SOy4kXSwTYd5IJckGPNVRMemefiqFgr8qlCq58Ki2i7N4YmLn0Wf2VINVWIdmh551fF
+	PtJek/tA==;
+Received: from [122.175.9.182] (port=9516 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vRUzb-00000003o4B-32hV;
+	Fri, 05 Dec 2025 07:32:59 -0500
+From: Parvathi Pudi <parvathi@couthit.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	parvathi@couthit.com,
+	rogerq@kernel.org,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	afd@ti.com
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	alok.a.tiwari@oracle.com,
+	horms@kernel.org,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com
+Subject: [RFC PATCH net-next v9 1/3] net: ti: icssm-prueth: Add helper functions to configure and maintain FDB
+Date: Fri,  5 Dec 2025 17:59:11 +0530
+Message-ID: <20251205123146.462397-2-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251205123146.462397-1-parvathi@couthit.com>
+References: <20251205123146.462397-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,305 +71,856 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|MW4PR12MB5628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9481d331-85f9-4244-8ece-08de33f4ece4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vUqSMiNSHDxd3Z7mC9TyAerL3eengzac80ZU9k+cVGFJSFpXTOZe4ocg4apq?=
- =?us-ascii?Q?YVIOKOvhPcME3PXKjUang16rolLwNG50Gpypv+3sjtQ6+bQrNyCDBXssu9YX?=
- =?us-ascii?Q?UGEk/yOXTfBqBvZ+qT2rfHeMGmLnXehkZchrC2zU4YES3VCOi7ylESqgiRsj?=
- =?us-ascii?Q?XDNuLSg9w6CHgBKs29gocKX8ETD7G7MAgrWG4NmCP0u+8Ahz1BjmgBzS5IpZ?=
- =?us-ascii?Q?NZBidqmO9fieI6MOgdwiesPmzfveycT0tjo3/ibwhIbp64AtrF5MnwCCUhnr?=
- =?us-ascii?Q?rV0+BmfODPVfSrINxdfrQfHsk9h4CzYlGl+VqsMfuvg9MFGhJAgiia/+Y/tp?=
- =?us-ascii?Q?zvFAh1fncDaRYfzNTwf4BBAv5ynceOZM2wA3Bh8MlgDnIWb4ODP88lX4VHj9?=
- =?us-ascii?Q?ysJViza05Po3fFjJD+BhrBXqwrlFqe+OjaJ+AKvSeEVgwiP6yVEuLPvBc1oU?=
- =?us-ascii?Q?1c/JTLCG1zYm9YvdJUo/XhtDaumWHJA33Yemf2BhM3lWAphjlRajjic6TQ/S?=
- =?us-ascii?Q?Rao0buOX2fN+2FvPRh6h9q2HToiCaG58hr+7RICh21BD15dPxyNPoEni+tjr?=
- =?us-ascii?Q?UDo8V+3CmuniQmzjel6YgTLDEqhLZefMOKk7F7wDJIrwbu1gNEDLnBvdNbgz?=
- =?us-ascii?Q?Gsc5xt1HyJFfl+p2QW6V2pfD7os0NbwwFTOJaYeXjd240UCX1oqMyTp34XFS?=
- =?us-ascii?Q?MCoHWJ0i3LPnOd+jzqbtY+JO97RiTsbYpY2Nw3b7iyxLP2g+XlFH4PqGBhzc?=
- =?us-ascii?Q?2dTmFGKwG8CNhc+byc9BgzqPgTwePRnfn9/l+t1CtQ+bRQKpiAmn0HsCerOW?=
- =?us-ascii?Q?KDbGdpquvfMu1UUWrj/MZEJ7xiT0rtnWr7BrnBwkGwkoBqeNzijKYZDBXzaw?=
- =?us-ascii?Q?/iFVPjLu/iYWyXrn0EBhKKeSq6FomOrRUKw1JtklmTVsp8emM9Rmg+4u0dpC?=
- =?us-ascii?Q?egcuQui825zNehHgZQishSiBsMtpsImeWQQxB8J5K8Yy9O9qgsyb0nRdRdqo?=
- =?us-ascii?Q?CEhc8++nETJ6X1hM1g7dePk/lkql6KUx9R4SVH62h+SAS0hyokT7r8U1JD8M?=
- =?us-ascii?Q?Fwg9rkwSGmVWRQXIF8DCAEhizxB9JxaToyZe8w+5BAdVzt5xLdMVTmzqnAkv?=
- =?us-ascii?Q?ApnBDxLejkJjQLoQJl0VxqGmoXC0d/Gen6GR9/nJYAc8LbwU/T0c8aro8gPE?=
- =?us-ascii?Q?+Zye8AZAQJmvPY8QSig2UYlCrfa4b8iyUlGb2uEtzi0KRAXwSBi33AmVQ3GY?=
- =?us-ascii?Q?9JpMM52I7wtdAKksAleTSEktWYqbhkeNzjGbnw3kT5Ekg0uNIjYr3a56UOcA?=
- =?us-ascii?Q?OwoeWV5Qtgv+KCqj7RdgF1AHvnSKMlGhl7RnyaPP70MPd00E9oeZeqzkb9JF?=
- =?us-ascii?Q?cSmpevk3o82qKQAix68vI99AJ+lUVTu3fLjwbe+xULhU3pBH18CglFW3nR3w?=
- =?us-ascii?Q?3TXPGgh9jdyKL+UP0C+hzwJ1pXzryW8MDICs2kATFLhVsYIBVu0cmZ0MAePH?=
- =?us-ascii?Q?BLmmVTMZOHJ7JmFT94v6JF3lojOPAjb50qggSFE7GYkOlf+sMCSxgt3+VX7u?=
- =?us-ascii?Q?qp2+THUbaZ27hOEz8SA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 11:53:37.1979
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9481d331-85f9-4244-8ece-08de33f4ece4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5628
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-From: Alejandro Lucero <alucerop@amd.com>
+From: Roger Quadros <rogerq@ti.com>
 
-A PIO buffer is a region of device memory to which the driver can write a
-packet for TX, with the device handling the transmit doorbell without
-requiring a DMA for getting the packet data, which helps reducing latency
-in certain exchanges. With CXL mem protocol this latency can be lowered
-further.
+Introduce helper functions to configure and maintain Forwarding
+Database (FDB) tables to aid with the switch mode feature for PRU-ICSS
+ports. The PRU-ICSS FDB is maintained such that it is always in sync with
+the Linux bridge driver FDB.
 
-With a device supporting CXL and successfully initialised, use the cxl
-region to map the memory range and use this mapping for PIO buffers.
+The FDB is used by the driver to determine whether to flood a packet,
+received from the user plane, to both ports or direct it to a specific port
+using the flags in the FDB table entry.
 
-Add the disabling of those CXL-based PIO buffers if the callback for
-potential cxl endpoint removal by the CXL code happens.
+The FDB is implemented in two main components: the Index table and the
+MAC Address table. Adding, deleting, and maintaining entries are handled
+by the PRUETH driver. There are two types of entries:
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Dynamic: created from the received packets and are subject to aging.
+Static: created by the user and these entries never age out.
+
+8-bit hash value obtained using the source MAC address is used to identify
+the index to the Index/Hash table. A bucket-based approach is used to
+collate source MAC addresses with the same hash value. The Index/Hash table
+holds the bucket index (16-bit value) and the number of entries in the
+bucket with the same hash value (16-bit value). This table can hold up to
+256 entries, with each entry consuming 4 bytes of memory. The bucket index
+value points to the MAC address table indicating the start of MAC addresses
+having the same hash values.
+
+Each entry in the MAC Address table consists of:
+1. 6 bytes of the MAC address,
+2. 2-byte aging time, and
+3. 1-byte each for port information and flags respectively.
+
+When a new entry is added to the FDB, the hash value is calculated using an
+XOR operation on the 6-byte MAC address. The result is used as an index
+into the Hash/Index table to check if any entries exist. If no entries are
+present, the first available empty slot in the MAC Address table is
+allocated to insert this MAC address. If entries with the same hash value
+are already present, the new MAC address entry is added to the MAC Address
+table in such a way that it ensures all entries are grouped together and
+sorted in ascending MAC address order. This approach helps efficiently
+manage FDB entries.
+
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 ---
- drivers/net/ethernet/sfc/ef10.c       | 50 +++++++++++++++++++++++----
- drivers/net/ethernet/sfc/efx_cxl.c    | 39 +++++++++++++++------
- drivers/net/ethernet/sfc/net_driver.h |  2 ++
- drivers/net/ethernet/sfc/nic.h        |  3 ++
- 4 files changed, 77 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/ti/Makefile              |   2 +-
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   3 +
+ .../ethernet/ti/icssm/icssm_prueth_fdb_tbl.h  |  76 +++
+ .../ethernet/ti/icssm/icssm_prueth_switch.c   | 598 ++++++++++++++++++
+ .../ethernet/ti/icssm/icssm_prueth_switch.h   |  20 +
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  26 +
+ 6 files changed, 724 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
 
-diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
-index fcec81f862ec..2bb6d3136c7c 100644
---- a/drivers/net/ethernet/sfc/ef10.c
-+++ b/drivers/net/ethernet/sfc/ef10.c
-@@ -24,6 +24,7 @@
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <net/udp_tunnel.h>
-+#include "efx_cxl.h"
+diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
+index 93c0a4d0e33a..1fd149dd6115 100644
+--- a/drivers/net/ethernet/ti/Makefile
++++ b/drivers/net/ethernet/ti/Makefile
+@@ -4,7 +4,7 @@
+ #
  
- /* Hardware control for EF10 architecture including 'Huntington'. */
+ obj-$(CONFIG_TI_PRUETH) += icssm-prueth.o
+-icssm-prueth-y := icssm/icssm_prueth.o
++icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_prueth_switch.o
  
-@@ -106,7 +107,7 @@ static int efx_ef10_get_vf_index(struct efx_nic *efx)
+ obj-$(CONFIG_TI_CPSW) += cpsw-common.o
+ obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+index 8e7e0af08144..4b50133c5a72 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+@@ -15,6 +15,7 @@
  
- static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- {
--	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V4_OUT_LEN);
-+	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V7_OUT_LEN);
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	size_t outlen;
- 	int rc;
-@@ -177,6 +178,12 @@ static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- 			  efx->num_mac_stats);
- 	}
+ #include "icssm_switch.h"
+ #include "icssm_prueth_ptp.h"
++#include "icssm_prueth_fdb_tbl.h"
  
-+	if (outlen < MC_CMD_GET_CAPABILITIES_V7_OUT_LEN)
-+		nic_data->datapath_caps3 = 0;
+ /* ICSSM size of redundancy tag */
+ #define ICSSM_LRE_TAG_SIZE	6
+@@ -248,6 +249,8 @@ struct prueth {
+ 	struct prueth_emac *emac[PRUETH_NUM_MACS];
+ 	struct net_device *registered_netdevs[PRUETH_NUM_MACS];
+ 
++	struct fdb_tbl *fdb_tbl;
++
+ 	unsigned int eth_type;
+ 	size_t ocmc_ram_size;
+ 	u8 emac_configured;
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h b/drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
+new file mode 100644
+index 000000000000..9089259d96ea
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
+@@ -0,0 +1,76 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2019-2021 Texas Instruments Incorporated - https://www.ti.com */
++#ifndef __NET_TI_PRUSS_FDB_TBL_H
++#define __NET_TI_PRUSS_FDB_TBL_H
++
++#include <linux/kernel.h>
++#include <linux/debugfs.h>
++#include "icssm_prueth.h"
++
++/* 4 bytes */
++struct fdb_index_tbl_entry {
++	/* Bucket Table index of first Bucket with this MAC address */
++	u16 bucket_idx;
++	u16 bucket_entries; /* Number of entries in this bucket */
++};
++
++/* 4 * 256 = 1024 = 0x200 bytes */
++struct fdb_index_array {
++	struct fdb_index_tbl_entry index_tbl_entry[FDB_INDEX_TBL_MAX_ENTRIES];
++};
++
++/* 10 bytes */
++struct fdb_mac_tbl_entry {
++	u8  mac[ETH_ALEN];
++	u16 age;
++	u8  port; /* 0 based: 0=port1, 1=port2 */
++	union {
++		struct {
++			u8  is_static:1;
++			u8  active:1;
++		};
++		u8 flags;
++	};
++};
++
++/* 10 * 256 = 2560 = 0xa00 bytes */
++struct fdb_mac_tbl_array {
++	struct fdb_mac_tbl_entry mac_tbl_entry[FDB_MAC_TBL_MAX_ENTRIES];
++};
++
++/* 1 byte */
++struct fdb_stp_config {
++	u8  state; /* per-port STP state (defined in FW header) */
++};
++
++/* 1 byte */
++struct fdb_flood_config {
++	u8 host_flood_enable:1;
++	u8 port1_flood_enable:1;
++	u8 port2_flood_enable:1;
++};
++
++/* 2 byte */
++struct fdb_arbitration {
++	u8  host_lock;
++	u8  pru_locks;
++};
++
++struct fdb_tbl {
++	/* fdb index table */
++	struct fdb_index_array __iomem *index_a;
++	/* fdb MAC table */
++	struct fdb_mac_tbl_array __iomem *mac_tbl_a;
++	/* port 1 stp config */
++	struct fdb_stp_config __iomem *port1_stp_cfg;
++	/* port 2 stp config */
++	struct fdb_stp_config __iomem *port2_stp_cfg;
++	/* per-port flood enable */
++	struct fdb_flood_config __iomem *flood_enable_flags;
++	/* fdb locking mechanism */
++	struct fdb_arbitration __iomem *locks;
++	/* total number of entries in hash table */
++	u16 total_entries;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
+new file mode 100644
+index 000000000000..82851d38cd46
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
+@@ -0,0 +1,598 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Texas Instruments PRUETH Switch Driver
++ *
++ * Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com
++ */
++#include <linux/etherdevice.h>
++#include <linux/kernel.h>
++#include <linux/remoteproc.h>
++#include <net/switchdev.h>
++#include "icssm_prueth.h"
++#include "icssm_prueth_switch.h"
++#include "icssm_prueth_fdb_tbl.h"
++
++#define FDB_IDX_TBL_ENTRY(n) (&prueth->fdb_tbl->index_a->index_tbl_entry[n])
++
++#define FDB_MAC_TBL_ENTRY(n) (&prueth->fdb_tbl->mac_tbl_a->mac_tbl_entry[n])
++
++#define FLAG_IS_STATIC	BIT(0)
++#define FLAG_ACTIVE	BIT(1)
++
++void icssm_prueth_sw_free_fdb_table(struct prueth *prueth)
++{
++	if (prueth->emac_configured)
++		return;
++
++	kfree(prueth->fdb_tbl);
++	prueth->fdb_tbl = NULL;
++}
++
++void icssm_prueth_sw_fdb_tbl_init(struct prueth *prueth)
++{
++	struct fdb_tbl *t = prueth->fdb_tbl;
++	void __iomem *sram_base;
++	u8 val;
++
++	sram_base = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
++
++	t->index_a = sram_base + V2_1_FDB_TBL_OFFSET;
++	t->mac_tbl_a = sram_base + FDB_MAC_TBL_OFFSET;
++	t->port1_stp_cfg = sram_base + FDB_PORT1_STP_CFG_OFFSET;
++	t->port2_stp_cfg = sram_base + FDB_PORT2_STP_CFG_OFFSET;
++	t->flood_enable_flags = sram_base + FDB_FLOOD_ENABLE_FLAGS_OFFSET;
++	t->locks = sram_base + FDB_LOCKS_OFFSET;
++
++	val = readb(t->flood_enable_flags);
++	/* host_flood_enable = 1 */
++	val |= BIT(0);
++	/* port1_flood_enable = 1 */
++	val |= BIT(1);
++	/* port2_flood_enable = 1 */
++	val |= BIT(2);
++	writeb(val, t->flood_enable_flags);
++
++	writeb(0, &t->locks->host_lock);
++	t->total_entries = 0;
++}
++
++static u8 icssm_pru_lock_done(struct fdb_tbl *fdb_tbl)
++{
++	return readb(&fdb_tbl->locks->pru_locks);
++}
++
++static int icssm_prueth_sw_fdb_spin_lock(struct fdb_tbl *fdb_tbl)
++{
++	u8 done;
++	int ret;
++
++	/* Take the host lock */
++	writeb(1, &fdb_tbl->locks->host_lock);
++
++	/* Wait for the PRUs to release their locks */
++	ret = read_poll_timeout(icssm_pru_lock_done, done, done == 0,
++				1, 10, false, fdb_tbl);
++	return ret;
++}
++
++static void icssm_prueth_sw_fdb_spin_unlock(struct fdb_tbl *fdb_tbl)
++{
++	writeb(0, &fdb_tbl->locks->host_lock);
++}
++
++static u8 icssm_prueth_sw_fdb_hash(const u8 *mac)
++{
++	return (mac[0] ^ mac[1] ^ mac[2] ^ mac[3] ^ mac[4] ^ mac[5]);
++}
++
++static int
++icssm_prueth_sw_fdb_search(struct fdb_mac_tbl_array __iomem *mac_tbl,
++			   struct fdb_index_tbl_entry __iomem *bucket_info,
++			   const u8 *mac)
++{
++	unsigned int bucket_entries, mac_tbl_idx;
++	u8 tmp_mac[ETH_ALEN];
++	int i;
++
++	mac_tbl_idx = readw(&bucket_info->bucket_idx);
++	bucket_entries = readw(&bucket_info->bucket_entries);
++	for (i = 0; i < bucket_entries; i++, mac_tbl_idx++) {
++		memcpy_fromio(tmp_mac, mac_tbl->mac_tbl_entry[mac_tbl_idx].mac,
++			      ETH_ALEN);
++		if (ether_addr_equal(mac, tmp_mac))
++			return mac_tbl_idx;
++	}
++
++	return -ENODATA;
++}
++
++static int icssm_prueth_sw_fdb_find_open_slot(struct fdb_tbl *fdb_tbl)
++{
++	unsigned int i;
++	u8 flags;
++
++	for (i = 0; i < FDB_MAC_TBL_MAX_ENTRIES; i++) {
++		flags = readb(&fdb_tbl->mac_tbl_a->mac_tbl_entry[i].flags);
++		if (!(flags & FLAG_ACTIVE))
++			break;
++	}
++
++	return i;
++}
++
++static int
++icssm_prueth_sw_find_fdb_insert(struct fdb_tbl *fdb, struct prueth *prueth,
++				struct fdb_index_tbl_entry __iomem *bkt_info,
++				const u8 *mac, const u8 port)
++{
++	struct fdb_mac_tbl_array __iomem *mac_tbl = fdb->mac_tbl_a;
++	unsigned int bucket_entries, mac_tbl_idx;
++	struct fdb_mac_tbl_entry __iomem *e;
++	u8 mac_from_hw[ETH_ALEN];
++	s8 cmp;
++	int i;
++
++	mac_tbl_idx = readw(&bkt_info->bucket_idx);
++	bucket_entries = readw(&bkt_info->bucket_entries);
++
++	for (i = 0; i < bucket_entries; i++, mac_tbl_idx++) {
++		e = &mac_tbl->mac_tbl_entry[mac_tbl_idx];
++		memcpy_fromio(mac_from_hw, e->mac, ETH_ALEN);
++		cmp = memcmp(mac, mac_from_hw, ETH_ALEN);
++		if (cmp < 0) {
++			return mac_tbl_idx;
++		} else if (cmp == 0) {
++			if (readb(&e->port) != port) {
++				/* MAC is already in FDB, only port is
++				 * different. So just update the port.
++				 * Note: total_entries and bucket_entries
++				 * remain the same.
++				 */
++				writeb(port, &e->port);
++			}
++
++			/* MAC and port are the same, touch the fdb */
++			writew(0, &e->age);
++			return -EEXIST;
++		}
++	}
++
++	return mac_tbl_idx;
++}
++
++static int
++icssm_prueth_sw_fdb_empty_slot_left(struct fdb_mac_tbl_array __iomem *mac_tbl,
++				    unsigned int mac_tbl_idx)
++{
++	u8 flags;
++	int i;
++
++	for (i = mac_tbl_idx - 1; i > -1; i--) {
++		flags = readb(&mac_tbl->mac_tbl_entry[i].flags);
++		if (!(flags & FLAG_ACTIVE))
++			break;
++	}
++
++	return i;
++}
++
++static int
++icssm_prueth_sw_fdb_empty_slot_right(struct fdb_mac_tbl_array __iomem *mac_tbl,
++				     unsigned int mac_tbl_idx)
++{
++	u8 flags;
++	int i;
++
++	for (i = mac_tbl_idx; i < FDB_MAC_TBL_MAX_ENTRIES; i++) {
++		flags = readb(&mac_tbl->mac_tbl_entry[i].flags);
++		if (!(flags & FLAG_ACTIVE))
++			return i;
++	}
++
++	return -1;
++}
++
++static void icssm_prueth_sw_fdb_move_range_left(struct prueth *prueth,
++						u16 left, u16 right)
++{
++	struct fdb_mac_tbl_entry entry;
++	u32 sz = 0;
++	u16 i;
++
++	sz = sizeof(struct fdb_mac_tbl_entry);
++	for (i = left; i < right; i++) {
++		memcpy_fromio(&entry, FDB_MAC_TBL_ENTRY(i + 1), sz);
++		memcpy_toio(FDB_MAC_TBL_ENTRY(i), &entry, sz);
++	}
++}
++
++static void icssm_prueth_sw_fdb_move_range_right(struct prueth *prueth,
++						 u16 left, u16 right)
++{
++	struct fdb_mac_tbl_entry entry;
++	u32 sz = 0;
++	u16 i;
++
++	sz = sizeof(struct fdb_mac_tbl_entry);
++	for (i = right; i > left; i--) {
++		memcpy_fromio(&entry, FDB_MAC_TBL_ENTRY(i - 1), sz);
++		memcpy_toio(FDB_MAC_TBL_ENTRY(i), &entry, sz);
++	}
++}
++
++static void icssm_prueth_sw_fdb_update_index_tbl(struct prueth *prueth,
++						 u16 left, u16 right)
++{
++	unsigned int hash, hash_prev;
++	u8 mac[ETH_ALEN];
++	unsigned int i;
++
++	/* To ensure we don't improperly update the
++	 * bucket index, initialize with an invalid
++	 * hash in case we are in leftmost slot
++	 */
++	hash_prev = 0xff;
++
++	if (left > 0) {
++		memcpy_fromio(mac, FDB_MAC_TBL_ENTRY(left - 1)->mac, ETH_ALEN);
++		hash_prev = icssm_prueth_sw_fdb_hash(mac);
++	}
++
++	/* For each moved element, update the bucket index */
++	for (i = left; i <= right; i++) {
++		memcpy_fromio(mac, FDB_MAC_TBL_ENTRY(i)->mac, ETH_ALEN);
++		hash = icssm_prueth_sw_fdb_hash(mac);
++
++		/* Only need to update buckets once */
++		if (hash != hash_prev)
++			writew(i, &FDB_IDX_TBL_ENTRY(hash)->bucket_idx);
++
++		hash_prev = hash;
++	}
++}
++
++static struct fdb_mac_tbl_entry __iomem *
++icssm_prueth_sw_find_free_mac(struct prueth *prueth, struct fdb_index_tbl_entry
++			      __iomem *bucket_info, u8 suggested_mac_tbl_idx,
++			      bool *update_indexes, const u8 *mac)
++{
++	s16 empty_slot_idx = 0, left = 0, right = 0;
++	unsigned int mti = suggested_mac_tbl_idx;
++	struct fdb_mac_tbl_array __iomem *mt;
++	struct fdb_tbl *fdb;
++	u8 flags;
++
++	fdb = prueth->fdb_tbl;
++	mt = fdb->mac_tbl_a;
++
++	flags = readb(&FDB_MAC_TBL_ENTRY(mti)->flags);
++	if (!(flags & FLAG_ACTIVE)) {
++		/* Claim the entry */
++		flags |= FLAG_ACTIVE;
++		writeb(flags, &FDB_MAC_TBL_ENTRY(mti)->flags);
++
++		return FDB_MAC_TBL_ENTRY(mti);
++	}
++
++	if (fdb->total_entries == FDB_MAC_TBL_MAX_ENTRIES)
++		return NULL;
++
++	empty_slot_idx = icssm_prueth_sw_fdb_empty_slot_left(mt, mti);
++	if (empty_slot_idx == -1) {
++		/* Nothing available on the left. But table isn't full
++		 * so there must be space to the right,
++		 */
++		empty_slot_idx = icssm_prueth_sw_fdb_empty_slot_right(mt, mti);
++
++		/* Shift right */
++		left = mti;
++		right = empty_slot_idx;
++		icssm_prueth_sw_fdb_move_range_right(prueth, left, right);
++
++		/* Claim the entry */
++		flags = readb(&FDB_MAC_TBL_ENTRY(mti)->flags);
++		flags |= FLAG_ACTIVE;
++		writeb(flags, &FDB_MAC_TBL_ENTRY(mti)->flags);
++
++		memcpy_toio(FDB_MAC_TBL_ENTRY(mti)->mac, mac, ETH_ALEN);
++
++		/* There is a chance we moved something in a
++		 * different bucket, update index table
++		 */
++		icssm_prueth_sw_fdb_update_index_tbl(prueth, left, right);
++
++		return FDB_MAC_TBL_ENTRY(mti);
++	}
++
++	if (empty_slot_idx == mti - 1) {
++		/* There is space immediately left of the open slot,
++		 * which means the inserted MAC address
++		 * must be the lowest-valued MAC address in bucket.
++		 * Update bucket pointer accordingly.
++		 */
++		writew(empty_slot_idx, &bucket_info->bucket_idx);
++
++		/* Claim the entry */
++		flags = readb(&FDB_MAC_TBL_ENTRY(mti)->flags);
++		flags |= FLAG_ACTIVE;
++		writeb(flags, &FDB_MAC_TBL_ENTRY(mti)->flags);
++
++		return FDB_MAC_TBL_ENTRY(empty_slot_idx);
++	}
++
++	/* There is empty space to the left, shift MAC table entries left */
++	left = empty_slot_idx;
++	right = mti - 1;
++	icssm_prueth_sw_fdb_move_range_left(prueth, left, right);
++
++	/* Claim the entry */
++	flags = readb(&FDB_MAC_TBL_ENTRY(mti - 1)->flags);
++	flags |= FLAG_ACTIVE;
++	writeb(flags, &FDB_MAC_TBL_ENTRY(mti - 1)->flags);
++
++	memcpy_toio(FDB_MAC_TBL_ENTRY(mti - 1)->mac, mac, ETH_ALEN);
++
++	/* There is a chance we moved something in a
++	 * different bucket, update index table
++	 */
++	icssm_prueth_sw_fdb_update_index_tbl(prueth, left, right);
++
++	return FDB_MAC_TBL_ENTRY(mti - 1);
++}
++
++static int icssm_prueth_sw_insert_fdb_entry(struct prueth_emac *emac,
++					    const u8 *mac, u8 is_static)
++{
++	struct fdb_index_tbl_entry __iomem *bucket_info;
++	struct fdb_mac_tbl_entry __iomem *mac_info;
++	struct prueth *prueth = emac->prueth;
++	unsigned int hash_val, mac_tbl_idx;
++	struct prueth_emac *other_emac;
++	enum prueth_port other_port_id;
++	int total_fdb_entries;
++	struct fdb_tbl *fdb;
++	u8 flags;
++	s16 ret;
++	int err;
++	u16 val;
++
++	fdb = prueth->fdb_tbl;
++	other_port_id = (emac->port_id == PRUETH_PORT_MII0) ?
++			 PRUETH_PORT_MII1 : PRUETH_PORT_MII0;
++
++	other_emac = prueth->emac[other_port_id - 1];
++
++	err = icssm_prueth_sw_fdb_spin_lock(fdb);
++	if (err) {
++		dev_err(prueth->dev, "PRU lock timeout %d\n", err);
++		return err;
++	}
++
++	if (fdb->total_entries == FDB_MAC_TBL_MAX_ENTRIES) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		return -ENOMEM;
++	}
++
++	if (ether_addr_equal(mac, emac->mac_addr) ||
++	    ether_addr_equal(mac, other_emac->mac_addr)) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		/* Don't insert fdb of own mac addr */
++		return -EINVAL;
++	}
++
++	/* Get the bucket that the mac belongs to */
++	hash_val = icssm_prueth_sw_fdb_hash(mac);
++	bucket_info = FDB_IDX_TBL_ENTRY(hash_val);
++
++	if (!readw(&bucket_info->bucket_entries)) {
++		mac_tbl_idx = icssm_prueth_sw_fdb_find_open_slot(fdb);
++		writew(mac_tbl_idx, &bucket_info->bucket_idx);
++	}
++
++	ret = icssm_prueth_sw_find_fdb_insert(fdb, prueth, bucket_info, mac,
++					      emac->port_id - 1);
++	if (ret < 0) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		/* mac is already in fdb table */
++		return 0;
++	}
++
++	mac_tbl_idx = ret;
++
++	mac_info = icssm_prueth_sw_find_free_mac(prueth, bucket_info,
++						 mac_tbl_idx, NULL,
++						 mac);
++	if (!mac_info) {
++		/* Should not happen */
++		dev_warn(prueth->dev, "OUT of FDB MEM\n");
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		return -ENOMEM;
++	}
++
++	memcpy_toio(mac_info->mac, mac, ETH_ALEN);
++	writew(0, &mac_info->age);
++	writeb(emac->port_id - 1, &mac_info->port);
++
++	flags = readb(&mac_info->flags);
++	if (is_static)
++		flags |= FLAG_IS_STATIC;
 +	else
-+		nic_data->datapath_caps3 = MCDI_DWORD(outbuf,
-+						      GET_CAPABILITIES_V7_OUT_FLAGS3);
++		flags &= ~FLAG_IS_STATIC;
 +
- 	return 0;
- }
- 
-@@ -919,6 +926,9 @@ static void efx_ef10_forget_old_piobufs(struct efx_nic *efx)
- static void efx_ef10_remove(struct efx_nic *efx)
- {
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-+#ifdef CONFIG_SFC_CXL
-+	struct efx_probe_data *probe_data;
-+#endif
- 	int rc;
- 
- #ifdef CONFIG_SFC_SRIOV
-@@ -949,7 +959,12 @@ static void efx_ef10_remove(struct efx_nic *efx)
- 
- 	efx_mcdi_rx_free_indir_table(efx);
- 
-+#ifdef CONFIG_SFC_CXL
-+	probe_data = container_of(efx, struct efx_probe_data, efx);
-+	if (nic_data->wc_membase && !probe_data->cxl_pio_in_use)
-+#else
- 	if (nic_data->wc_membase)
-+#endif
- 		iounmap(nic_data->wc_membase);
- 
- 	rc = efx_mcdi_free_vis(efx);
-@@ -1140,6 +1155,9 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	unsigned int channel_vis, pio_write_vi_base, max_vis;
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	unsigned int uc_mem_map_size, wc_mem_map_size;
-+#ifdef CONFIG_SFC_CXL
-+	struct efx_probe_data *probe_data;
-+#endif
- 	void __iomem *membase;
- 	int rc;
- 
-@@ -1263,8 +1281,25 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	iounmap(efx->membase);
- 	efx->membase = membase;
- 
--	/* Set up the WC mapping if needed */
--	if (wc_mem_map_size) {
-+	if (!wc_mem_map_size)
-+		goto skip_pio;
++	/* bit 1 - active */
++	flags |= FLAG_ACTIVE;
++	writeb(flags, &mac_info->flags);
 +
-+	/* Set up the WC mapping */
++	val = readw(&bucket_info->bucket_entries);
++	val++;
++	writew(val, &bucket_info->bucket_entries);
 +
-+#ifdef CONFIG_SFC_CXL
-+	probe_data = container_of(efx, struct efx_probe_data, efx);
-+	if ((nic_data->datapath_caps3 &
-+	    (1 << MC_CMD_GET_CAPABILITIES_V7_OUT_CXL_CONFIG_ENABLE_LBN)) &&
-+	    probe_data->cxl_pio_initialised) {
-+		/* Using PIO through CXL mapping? */
-+		nic_data->pio_write_base = probe_data->cxl->ctpio_cxl +
-+					   (pio_write_vi_base * efx->vi_stride +
-+					    ER_DZ_TX_PIOBUF - uc_mem_map_size);
-+		probe_data->cxl_pio_in_use = true;
-+	} else
-+#endif
-+	{
-+		/* Using legacy PIO BAR mapping */
- 		nic_data->wc_membase = ioremap_wc(efx->membase_phys +
- 						  uc_mem_map_size,
- 						  wc_mem_map_size);
-@@ -1279,12 +1314,13 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 			nic_data->wc_membase +
- 			(pio_write_vi_base * efx->vi_stride + ER_DZ_TX_PIOBUF -
- 			 uc_mem_map_size);
--
--		rc = efx_ef10_link_piobufs(efx);
--		if (rc)
--			efx_ef10_free_piobufs(efx);
- 	}
- 
-+	rc = efx_ef10_link_piobufs(efx);
-+	if (rc)
-+		efx_ef10_free_piobufs(efx);
++	fdb->total_entries++;
 +
-+skip_pio:
- 	netif_dbg(efx, probe, efx->net_dev,
- 		  "memory BAR at %pa (virtual %p+%x UC, %p+%x WC)\n",
- 		  &efx->membase_phys, efx->membase, uc_mem_map_size,
-diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-index 18b487d0cac3..024a92632c56 100644
---- a/drivers/net/ethernet/sfc/efx_cxl.c
-+++ b/drivers/net/ethernet/sfc/efx_cxl.c
-@@ -11,6 +11,7 @@
- #include <cxl/pci.h>
- #include "net_driver.h"
- #include "efx_cxl.h"
-+#include "efx.h"
- 
- #define EFX_CTPIO_BUFFER_SIZE	SZ_256M
- 
-@@ -140,15 +141,35 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
- 		cxl->efx_region = cxl_create_region(cxl->cxlrd, &cxl->cxled, 1);
- 		if (IS_ERR(cxl->efx_region)) {
- 			pci_err(pci_dev, "CXL accel create region failed");
--			cxl_put_root_decoder(cxl->cxlrd);
--			cxl_dpa_free(cxl->cxled);
--			return PTR_ERR(cxl->efx_region);
-+			rc = PTR_ERR(cxl->efx_region);
-+			goto err_dpa;
++	total_fdb_entries = fdb->total_entries;
++
++	icssm_prueth_sw_fdb_spin_unlock(fdb);
++
++	dev_dbg(prueth->dev, "added fdb: %pM port=%d total_entries=%u\n",
++		mac, emac->port_id, total_fdb_entries);
++
++	return 0;
++}
++
++static int icssm_prueth_sw_delete_fdb_entry(struct prueth_emac *emac,
++					    const u8 *mac, u8 is_static)
++{
++	struct fdb_index_tbl_entry __iomem *bucket_info;
++	struct fdb_mac_tbl_entry __iomem *mac_info;
++	struct fdb_mac_tbl_array __iomem *mt;
++	unsigned int hash_val, mac_tbl_idx;
++	unsigned int idx, entries;
++	struct prueth *prueth;
++	int total_fdb_entries;
++	s16 ret, left, right;
++	struct fdb_tbl *fdb;
++	u8 flags;
++	int err;
++	u16 val;
++
++	prueth = emac->prueth;
++	fdb = prueth->fdb_tbl;
++	mt = fdb->mac_tbl_a;
++
++	err = icssm_prueth_sw_fdb_spin_lock(fdb);
++	if (err) {
++		dev_err(prueth->dev, "PRU lock timeout %d\n", err);
++		return err;
++	}
++
++	if (fdb->total_entries == 0) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		return 0;
++	}
++
++	/* Get the bucket that the mac belongs to */
++	hash_val = icssm_prueth_sw_fdb_hash(mac);
++	bucket_info = FDB_IDX_TBL_ENTRY(hash_val);
++
++	ret = icssm_prueth_sw_fdb_search(mt, bucket_info, mac);
++	if (ret < 0) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		return ret;
++	}
++
++	mac_tbl_idx = ret;
++	mac_info = FDB_MAC_TBL_ENTRY(mac_tbl_idx);
++
++	/* Shift all elements in bucket to the left. No need to
++	 * update index table since only shifting within bucket.
++	 */
++	left = mac_tbl_idx;
++	idx = readw(&bucket_info->bucket_idx);
++	entries = readw(&bucket_info->bucket_entries);
++	right = idx + entries - 1;
++	icssm_prueth_sw_fdb_move_range_left(prueth, left, right);
++
++	/* Remove end of bucket from table */
++	mac_info = FDB_MAC_TBL_ENTRY(right);
++	flags = readb(&mac_info->flags);
++	/* active = 0 */
++	flags &= ~FLAG_ACTIVE;
++	writeb(flags, &mac_info->flags);
++	val = readw(&bucket_info->bucket_entries);
++	val--;
++	writew(val, &bucket_info->bucket_entries);
++	fdb->total_entries--;
++
++	total_fdb_entries = fdb->total_entries;
++
++	icssm_prueth_sw_fdb_spin_unlock(fdb);
++
++	dev_dbg(prueth->dev, "del fdb: %pM total_entries=%u\n",
++		mac, total_fdb_entries);
++
++	return 0;
++}
++
++int icssm_prueth_sw_do_purge_fdb(struct prueth_emac *emac)
++{
++	struct fdb_index_tbl_entry __iomem *bucket_info;
++	struct prueth *prueth = emac->prueth;
++	u8 flags, mac[ETH_ALEN];
++	unsigned int hash_val;
++	struct fdb_tbl *fdb;
++	int ret, i;
++	u16 val;
++
++	fdb = prueth->fdb_tbl;
++
++	ret = icssm_prueth_sw_fdb_spin_lock(fdb);
++	if (ret) {
++		dev_err(prueth->dev, "PRU lock timeout %d\n", ret);
++		return ret;
++	}
++
++	if (fdb->total_entries == 0) {
++		icssm_prueth_sw_fdb_spin_unlock(fdb);
++		return 0;
++	}
++
++	for (i = 0; i < FDB_MAC_TBL_MAX_ENTRIES; i++) {
++		flags = readb(&fdb->mac_tbl_a->mac_tbl_entry[i].flags);
++		if ((flags & FLAG_ACTIVE) && !(flags & FLAG_IS_STATIC)) {
++			/* Get the bucket that the mac belongs to */
++			memcpy_fromio(mac, FDB_MAC_TBL_ENTRY(i)->mac,
++				      ETH_ALEN);
++			hash_val = icssm_prueth_sw_fdb_hash(mac);
++			bucket_info = FDB_IDX_TBL_ENTRY(hash_val);
++			flags &= ~FLAG_ACTIVE;
++			writeb(flags,
++			       &fdb->mac_tbl_a->mac_tbl_entry[i].flags);
++			val = readw(&bucket_info->bucket_entries);
++			val--;
++			writew(val, &bucket_info->bucket_entries);
++			fdb->total_entries--;
 +		}
++	}
 +
-+		rc = cxl_get_region_range(cxl->efx_region, &range);
-+		if (rc) {
-+			pci_err(pci_dev, "CXL getting regions params failed");
-+			goto err_detach;
-+		}
++	icssm_prueth_sw_fdb_spin_unlock(fdb);
++	return 0;
++}
 +
-+		cxl->ctpio_cxl = ioremap(range.start, range.end - range.start + 1);
-+		if (!cxl->ctpio_cxl) {
-+			pci_err(pci_dev, "CXL ioremap region (%pra) failed", &range);
-+			rc = -ENOMEM;
-+			goto err_detach;
- 		}
- 	}
- 
- 	probe_data->cxl = cxl;
-+	probe_data->cxl_pio_initialised = true;
- 
- 	return 0;
++int icssm_prueth_sw_init_fdb_table(struct prueth *prueth)
++{
++	if (prueth->emac_configured)
++		return 0;
 +
-+err_detach:
-+	cxl_decoder_detach(NULL, cxl->cxled, 0, DETACH_INVALIDATE);
-+err_dpa:
-+	cxl_put_root_decoder(cxl->cxlrd);
-+	cxl_dpa_free(cxl->cxled);
-+	return rc;
- }
- 
- void efx_cxl_exit(struct efx_probe_data *probe_data)
-@@ -156,13 +177,11 @@ void efx_cxl_exit(struct efx_probe_data *probe_data)
- 	if (!probe_data->cxl)
- 		return;
- 
--	if (probe_data->cxl->hdm_was_committed) {
--		iounmap(probe_data->cxl->ctpio_cxl);
--		cxl_decoder_detach(NULL, probe_data->cxl->cxled, 0,
--				   DETACH_INVALIDATE);
--	} else {
--		cxl_decoder_detach(NULL, probe_data->cxl->cxled, 0,
--				   DETACH_INVALIDATE);
-+	iounmap(probe_data->cxl->ctpio_cxl);
-+	cxl_decoder_detach(NULL, probe_data->cxl->cxled, 0,
-+			   DETACH_INVALIDATE);
++	prueth->fdb_tbl = kmalloc(sizeof(*prueth->fdb_tbl), GFP_KERNEL);
++	if (!prueth->fdb_tbl)
++		return -ENOMEM;
 +
-+	if (!probe_data->cxl->hdm_was_committed) {
- 		cxl_dpa_free(probe_data->cxl->cxled);
- 		cxl_put_root_decoder(probe_data->cxl->cxlrd);
- 	}
-diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
-index 3964b2c56609..bea4eecdf842 100644
---- a/drivers/net/ethernet/sfc/net_driver.h
-+++ b/drivers/net/ethernet/sfc/net_driver.h
-@@ -1207,6 +1207,7 @@ struct efx_cxl;
-  * @efx: Efx NIC details
-  * @cxl: details of related cxl objects
-  * @cxl_pio_initialised: cxl initialization outcome.
-+ * @cxl_pio_in_use: PIO using CXL mapping
-  */
- struct efx_probe_data {
- 	struct pci_dev *pci_dev;
-@@ -1214,6 +1215,7 @@ struct efx_probe_data {
- #ifdef CONFIG_SFC_CXL
- 	struct efx_cxl *cxl;
- 	bool cxl_pio_initialised;
-+	bool cxl_pio_in_use;
- #endif
- };
++	icssm_prueth_sw_fdb_tbl_init(prueth);
++
++	return 0;
++}
++
++/**
++ * icssm_prueth_sw_fdb_add - insert fdb entry
++ *
++ * @emac: EMAC data structure
++ * @fdb: fdb info
++ *
++ */
++void icssm_prueth_sw_fdb_add(struct prueth_emac *emac,
++			     struct switchdev_notifier_fdb_info *fdb)
++{
++	icssm_prueth_sw_insert_fdb_entry(emac, fdb->addr, 1);
++}
++
++/**
++ * icssm_prueth_sw_fdb_del - delete fdb entry
++ *
++ * @emac: EMAC data structure
++ * @fdb: fdb info
++ *
++ */
++void icssm_prueth_sw_fdb_del(struct prueth_emac *emac,
++			     struct switchdev_notifier_fdb_info *fdb)
++{
++	icssm_prueth_sw_delete_fdb_entry(emac, fdb->addr, 1);
++}
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
+new file mode 100644
+index 000000000000..fd013ecdc707
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com
++ */
++
++#ifndef __NET_TI_PRUETH_SWITCH_H
++#define __NET_TI_PRUETH_SWITCH_H
++
++#include "icssm_prueth.h"
++#include "icssm_prueth_fdb_tbl.h"
++
++void icssm_prueth_sw_fdb_tbl_init(struct prueth *prueth);
++int icssm_prueth_sw_init_fdb_table(struct prueth *prueth);
++void icssm_prueth_sw_free_fdb_table(struct prueth *prueth);
++int icssm_prueth_sw_do_purge_fdb(struct prueth_emac *emac);
++void icssm_prueth_sw_fdb_add(struct prueth_emac *emac,
++			     struct switchdev_notifier_fdb_info *fdb);
++void icssm_prueth_sw_fdb_del(struct prueth_emac *emac,
++			     struct switchdev_notifier_fdb_info *fdb);
++
++#endif /* __NET_TI_PRUETH_SWITCH_H */
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
+index 8b494ffdcde7..4200ccb1b425 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_switch.h
++++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
+@@ -254,4 +254,30 @@
+ #define P0_COL_BUFFER_OFFSET	0xEE00
+ #define P0_Q1_BUFFER_OFFSET	0x0000
  
-diff --git a/drivers/net/ethernet/sfc/nic.h b/drivers/net/ethernet/sfc/nic.h
-index 9fa5c4c713ab..c87cc9214690 100644
---- a/drivers/net/ethernet/sfc/nic.h
-+++ b/drivers/net/ethernet/sfc/nic.h
-@@ -152,6 +152,8 @@ enum {
-  *	%MC_CMD_GET_CAPABILITIES response)
-  * @datapath_caps2: Further Capabilities of datapath firmware (FLAGS2 field of
-  * %MC_CMD_GET_CAPABILITIES response)
-+ * @datapath_caps3: Further Capabilities of datapath firmware (FLAGS3 field of
-+ * %MC_CMD_GET_CAPABILITIES response)
-  * @rx_dpcpu_fw_id: Firmware ID of the RxDPCPU
-  * @tx_dpcpu_fw_id: Firmware ID of the TxDPCPU
-  * @must_probe_vswitching: Flag: vswitching has yet to be setup after MC reboot
-@@ -186,6 +188,7 @@ struct efx_ef10_nic_data {
- 	bool must_check_datapath_caps;
- 	u32 datapath_caps;
- 	u32 datapath_caps2;
-+	u32 datapath_caps3;
- 	unsigned int rx_dpcpu_fw_id;
- 	unsigned int tx_dpcpu_fw_id;
- 	bool must_probe_vswitching;
++#define V2_1_FDB_TBL_LOC          PRUETH_MEM_SHARED_RAM
++#define V2_1_FDB_TBL_OFFSET       0x2000
++
++#define FDB_INDEX_TBL_MAX_ENTRIES     256
++#define FDB_MAC_TBL_MAX_ENTRIES       256
++
++#define FDB_INDEX_TBL_OFFSET    V2_1_FDB_TBL_OFFSET
++#define FDB_INDEX_TBL_SIZE      (FDB_INDEX_TBL_MAX_ENTRIES * \
++				 sizeof(struct fdb_index_tbl_entry))
++
++#define FDB_MAC_TBL_OFFSET      (FDB_INDEX_TBL_OFFSET + FDB_INDEX_TBL_SIZE)
++#define FDB_MAC_TBL_SIZE        (FDB_MAC_TBL_MAX_ENTRIES * \
++				 sizeof(struct fdb_mac_tbl_entry))
++
++#define FDB_PORT1_STP_CFG_OFFSET        (FDB_MAC_TBL_OFFSET + FDB_MAC_TBL_SIZE)
++#define FDB_PORT_STP_CFG_SIZE           sizeof(struct fdb_stp_config)
++#define FDB_PORT2_STP_CFG_OFFSET        (FDB_PORT1_STP_CFG_OFFSET + \
++					 FDB_PORT_STP_CFG_SIZE)
++
++#define FDB_FLOOD_ENABLE_FLAGS_OFFSET   (FDB_PORT2_STP_CFG_OFFSET + \
++					FDB_PORT_STP_CFG_SIZE)
++#define FDB_FLOOD_ENABLE_FLAGS_SIZE     sizeof(struct fdb_flood_config)
++
++#define FDB_LOCKS_OFFSET        (FDB_FLOOD_ENABLE_FLAGS_OFFSET + \
++				 FDB_FLOOD_ENABLE_FLAGS_SIZE)
++
+ #endif /* __ICSS_SWITCH_H */
 -- 
-2.34.1
+2.43.0
 
