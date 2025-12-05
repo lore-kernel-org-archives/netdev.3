@@ -1,320 +1,1150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8F8302CD8;
-	Fri,  5 Dec 2025 08:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764921939; cv=fail; b=t80azUywouClZh2vzDSjVEATX2nqM04QCt894wqRpHWSfsjyBYe605oBcSAuAwkRn92hEMaZ66uw1HGre49AqgPh5cR3dkHnUnL3tri9b4BgOTY0CfLcvuKGFs+5l9zzh1bpJwguthaUZU0yBUnBSANPHjku7/iYhB0O0KFXQ5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764921939; c=relaxed/simple;
-	bh=Y5yVxxAIo32Ec6LVVw1KVDeckGlkN9wd3reB72KBMXQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FzZfwiH+fs0+Wq7aSONNniY+1X8NFRey8luJ/fcvIhUvHdVg8qG2fbPlIu7s1HX8sgnNBe83wSkp1cAF058AMnfKMb/PRJdbqQdfrkDfyefW7M9YqLfmJzwm0yhcqka1CQJ67QKzMcMkK3+DUmsggSx51UYLoFpWBIWaARN1mEI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=du0B71uJ; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045BF30EF76
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 08:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764922284; cv=none; b=Y3WcdkN2TGyuVvD0AjIAxqt9doN3Mbcy5IbFXXVIf8Z8W5ejjAn565RE9om35kp4vDJtC3oLV9DFlSwuhX+3BxcgjYZeKmmKqn17KKUTLXSlio0r+g0aNOP7M+CGc4mp/wU9TfNGuB8AXWqhlEzOT7gFM+lfuyLUlZQtjlNEGYM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764922284; c=relaxed/simple;
+	bh=4PAoHJiKHnT0v/bHAvIyEEdWGFmH4gbKJ0KdnSbc9I0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JnJDbN3jfZtl+EzIsBS/VyM61usYrwHsml5pMWRgcChdf844jLngeFfIigMxDUOZkGs0NjK88v3Fpz1d5waKlvIB3tIOTW2peSBBLQ/bShth7213qJZgZvSQOmF4K2cDgJQaJ6M5PiyMJWWemAZrSVMWciHueiV9MI8BJBwNuyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WyeFAFec; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="du0B71uJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WyeFAFec"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764921920; x=1796457920;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Y5yVxxAIo32Ec6LVVw1KVDeckGlkN9wd3reB72KBMXQ=;
-  b=du0B71uJyvzUaJlfFsuG/WCnTN/HEZj9N7Pnj8nUd6xc/leI3bJv7c+G
-   YCDtioHFbLQ1FpEvGdOB8eOEmoo7ZxvzEUTaBqowCiCuoBVD3AFMbMjel
-   qnT2n4whTPbHaQM8HFBtJXV5TwcvpVL5rsFUVI01JUSeye1nrBMhdp6Lh
-   0wECzhBI2xgLtJfNsNJCf1KB4cr3FukmauwpTHuKsyGHHyGhsktPJ2Coi
-   4UzfCwSxPJeDUYcAwcMNNWJW6oGYM+v/rMrKkVmEl1vTwZKqLZNeW3D00
-   j8q4B7bFjTEtx3oBeGQAS2DEEHFJ6a7clIph1KQ+VH9EQjk6V6DrcvtU5
-   A==;
-X-CSE-ConnectionGUID: OdAyn0LrSCWcdGyK+MNdMA==
-X-CSE-MsgGUID: mZT2N6UhQr6MlDKfJhGI7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66990241"
+  t=1764922271; x=1796458271;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4PAoHJiKHnT0v/bHAvIyEEdWGFmH4gbKJ0KdnSbc9I0=;
+  b=WyeFAFeclkMaSGkoo9EQOZLYsSVqr/AOdBil2zrcFTZGDVkZIEw2W7ws
+   ldYfRBZ+hZlNbypTf06F/qZFz8ZtdUuRw0oi8oHIhqn6DYMNwEEa4oHJg
+   E8gbPn29yqrZkKOz8+tcXenwH1E1iHq34RXeEAWTXsgE/5GsPBnJSAv12
+   q1M42aXFuEUTp4gEGPFHeAVxgoN45qw3HBst/Cfepmo7FUZiJae8Fhega
+   5HqDYyOD6mH9Kd44141esJ0YJtmumNBviBosrxXfVSnWbcc7Gkvgqi8Tb
+   n2Z0TmA6/4TkOx8RX7FpRGtDKLzC/GM2K0ScA7OYgUzt4p4U/hdGAH5rP
+   g==;
+X-CSE-ConnectionGUID: O1vrf8lHTPaEfQ7Robnplg==
+X-CSE-MsgGUID: j0mBoWNzT1a8MeL2NGI+KA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="77571982"
 X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; 
-   d="scan'208";a="66990241"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 00:05:13 -0800
-X-CSE-ConnectionGUID: Cs4x9uI4SceoOU2RsMV34g==
-X-CSE-MsgGUID: bgJ1RS75QQWj8jP/PRRVJw==
+   d="scan'208";a="77571982"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 00:11:06 -0800
+X-CSE-ConnectionGUID: iGkCcFe9QhC0nXRaHm6cYA==
+X-CSE-MsgGUID: GA8qsXwKR/KHDIWcQE7KzA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; 
-   d="scan'208";a="232598100"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 00:05:13 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 5 Dec 2025 00:05:12 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 5 Dec 2025 00:05:12 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.13) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 5 Dec 2025 00:05:12 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tVUfqbFaLX64pP+IyE4gZYXZFbmbxVWY37eN2xJ4ACcOjh+NpUN3RhqnUDm3nXT/y1AStBR3R3FaSX+Vi30xbdEy1F9tIb4sEmATHmBGgd5edwUQDJom22XXcRxqN7ISqiSyybckxRGe31rsjYKoA5Tfpzg7s2u+wgjrvfAJc8OrMmJ0j30P1IJVyLRuZ60uggQgcY5NSGxv80XwumIzn91FnG5ONdPquTc2t8ZwUHyoRIkoauOazR4U7vTeOZ4cZqaBVwixlD4GeT3rxY3pXC1S/lnz1nGVEAvsOAx7xIr3CYXOnQB9roKwQHyexcyNkrdZTB/MaMtTYLk1e6832g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y5yVxxAIo32Ec6LVVw1KVDeckGlkN9wd3reB72KBMXQ=;
- b=a6wAbq9OCibL3imyyu5JRMo5szeGH8B5zRNydWXq7QFH28E7YlvQ5y8SEuYnQW26/58w1tNs+EMRRbNLCTWeMt7JGJShNxTV9NVJUP2XL43Ro9j90GBPNKwvp+Do04iUiiow7u00eTJ7PR/1nfvQdfnDcZAEUvn2Z7K1K2ZGu7ABIbdR+ePj36Ubets8i7Jd7y1sWwgTHCNCy5k55wdVOn5EUx+3mj8+5qftAJsTjGv4mrKEYiNFOhKFR/nKZyska8ybT0TqYKwcwp+9c0GIpmigEnADPrD2HFiu87eBVhUs/BfB/zBlhDApiRdVPRWib1+Lkw12QygLtrmHazvgNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by PH8PR11MB6952.namprd11.prod.outlook.com (2603:10b6:510:224::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
- 2025 08:05:09 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408%3]) with mapi id 15.20.9388.011; Fri, 5 Dec 2025
- 08:05:09 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Aaron, Ma" <aaron.ma@canonical.com>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH 1/2] ice: Fix NULL pointer dereference
- in ice_vsi_set_napi_queues
-Thread-Topic: [Intel-wired-lan] [PATCH 1/2] ice: Fix NULL pointer dereference
- in ice_vsi_set_napi_queues
-Thread-Index: AQHcZZEB+Q4u3sE4H0e3BVkVM6zPC7USoaUggAAL0QCAAAKrEA==
-Date: Fri, 5 Dec 2025 08:05:09 +0000
-Message-ID: <IA3PR11MB898663E108AB393828E468B9E5A7A@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20251205023757.1541228-1-aaron.ma@canonical.com>
- <IA3PR11MB8986E3F5CD6666035875A112E5A7A@IA3PR11MB8986.namprd11.prod.outlook.com>
- <CAJ6xRxV41ijkGmQycdiK4Miu8sQGvo3sQt17azCqZFJOQv5fVQ@mail.gmail.com>
-In-Reply-To: <CAJ6xRxV41ijkGmQycdiK4Miu8sQGvo3sQt17azCqZFJOQv5fVQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|PH8PR11MB6952:EE_
-x-ms-office365-filtering-correlation-id: cf5976da-7339-4a67-cb24-08de33d50275
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?Q29OTmZUYmtyanMreEI5VTJEelB5d1dWdG5aaEJCT3o2S0x0UndiTGpIVkpx?=
- =?utf-8?B?MmNJbnRoYnJVL2lBRUl3bXU0blZPYkJZUWx0ZHE1ODJsSWFwcCtJbUZpZnpZ?=
- =?utf-8?B?UCtYeWJPVkxaT0hxaHRKTk5XbVcvWGlnMGlSeVpTNGRuaGVaWWYxT0xicnhJ?=
- =?utf-8?B?TThlTHdBTVZkRFlMUjVCSjRKM0NZR0RVaEphTkpoajUvS1RNNWNxaFdHcHlt?=
- =?utf-8?B?SitNZG9taUVXQ2E2TXN6cGc2RmlrTGYrdTFLZmR4aFZHcDgxZWxWSE9PZExj?=
- =?utf-8?B?UStFN0xSclFHbVRzTTR6VExuRGUrdGdja2JkaS8yL3ZXTkdkRjhYMGdTQm85?=
- =?utf-8?B?RmhIa1VJZHE1aVR5andvemJ3b2NTcWlGR1FGeUM0VXhCWUxUMGNkUWZOYWt2?=
- =?utf-8?B?bEpLYS92b0pzci9CWTJqRXVOaXN3ZkZadkZuSGQyblh4aTNmL3ljVDJoNDdi?=
- =?utf-8?B?RlE2TmZaL2RXQjZmb0dsTEwzRVN5aEN1TXQ5YkJZMVcyTWJuaGI4WnFaMEVL?=
- =?utf-8?B?WFo2bVFlVG1JNUFvQjJtM053bHpkcUtJYmN0TzBQMlNSNURqdnR6eUxtNWU3?=
- =?utf-8?B?RHhoV2RYWjdUVitSRmVjNjY0MUpReVRBeGxOLy9henhiZEpianF3OTFtZC9n?=
- =?utf-8?B?Z2FDU1FrZCtUZy80WUZQcHZvTnN4NW9EdWhmYkdUN1JRbHYrTWVjY3pKTHVv?=
- =?utf-8?B?bXhqWHBRbC95TENGeW5Xa3hvY25lYzRFeldjU0tUUVdjbkVZKzB1TUhIMHEv?=
- =?utf-8?B?b1ArZzJwNGNwdGR6WVdKajNySHh5bzZvV0kvUkFFcUlXZjNJRkpMN3hkYmtV?=
- =?utf-8?B?RDJENC8vVkd1YXQwTWlCSVdpdlN0UkF0cm9sY01SQWFab2FoaU4zbzhaN2RR?=
- =?utf-8?B?VDZyd2lMKzJSOENwMXh1TWlwcm51MlFEQUc3VGV5WXdaWjA2UzgyTzdHSmox?=
- =?utf-8?B?NENWK3Jhb05kczJ6SW5zL3NiMVd5Z0FvbnZqNDVqcVc1UFVKZXdWeHJ2RWNq?=
- =?utf-8?B?dzJzWUllTjFvMFk1Q2I0dk4yTU5IVzg3RmFnUWxvT2g2aDRsZEhRV3ZsQytx?=
- =?utf-8?B?YW9haU0wRjJodTRxWEx4NkFzYnFrbFNBWjJaMDAwc3hxK3F6WlJ3Wm5RemZH?=
- =?utf-8?B?UTMwTXNVdkZHcE44aUVnRzM0WjJ1WW5neWlOVEpEbCs4Rm15Wk9LTERlOWpn?=
- =?utf-8?B?eWVsWjRxb2RhbW9qRnNGNkZhTzRtZlUzYzNmaEI4ZGEyMklKZForU0JsdVRO?=
- =?utf-8?B?VGE1YUltWjRycGU5UkRaZXFKU2tyd1JJamtKdGd1NFVLVUNyTUxOMThoQmVX?=
- =?utf-8?B?SHNsNHRQV05MQkxHbWNHQ1lvWGpCL0Zwbit5YnZuTjlETE0xVnNqcGN1Q3l5?=
- =?utf-8?B?dUpvMm9vR2p2UEcxcXlaWHBhYWNzZ3FEcldYNWxQb0NrY2hBeXN5cGhmTkFI?=
- =?utf-8?B?Mm5iaUhOdWdIcm05MlpNMnlCNnJVa3Jsb0I1M0NVWklLYVh2MklEUHROZVdU?=
- =?utf-8?B?YzY2LzkyRVBBNWVHY1B2amUzRzdmdDZWWW1ZaUpRYjdiSlk3S3I5NTNUc2w0?=
- =?utf-8?B?QnBHbGkwRHVYZkFTYktOMml1T0pCUDJEaUZVS0RZcllUUnZvbDE4MVFRZ1dU?=
- =?utf-8?B?cmlML1crK2VON2cwa2NSM0FSblZteGFXNWFCQnI1ZkVCc2lOUXJFZEE3TFg0?=
- =?utf-8?B?TllZRDg0SnoybmNaZzY1UUJ3TGtOOHdLamZydng3NnVpTXk1SytlSzNEb0sv?=
- =?utf-8?B?MUg5TFdhcmtoczdMbE9hQXlMTHpvcTFYdDNVOUlZUWF4aGk2ZSs2ajhOYUha?=
- =?utf-8?B?M0FMMk80clBVWUNZV1FxakNoL0NaNHNqL3FBYU9nSWRlMSs2SWFmM2dsV0Fl?=
- =?utf-8?B?TUJWMTBIYnM0NVV6aDJ1OW1ENU1TNWNobjJBcGJRMXBVK09JSWFNMjZEbEdF?=
- =?utf-8?B?ekdpdmszblNCOFdaZlNzTzJpQW1MME9FY3ZjYXNEWjQxV1lWK1FqcTJIak5B?=
- =?utf-8?B?ZnF4YmNxZTZJUXhNVGoyVnJ3QXJpakpuMEF4ejgxUnlDRFFxZlNGVkczaXp4?=
- =?utf-8?Q?NJ4Efp?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TnUrMWJGM2kxVTFHd3B1Tlp1NjZGNTVDMVVIbWt5K3c3TE1idnhXaEpudGN0?=
- =?utf-8?B?R3k1bW9MYlhBd2ZwMW54eTVKTTRvTkhBTUV6M043UE4yZEhmZ2taaXVqeWFH?=
- =?utf-8?B?REdoakdzTDduRjBZVGlzVkRZeXVXQ1BTR0x5MjF1c245bFY0SzVlZ2hmdnhp?=
- =?utf-8?B?SHpjcTdRK2NVVy9KOXhWQ3J2ZEJsaFdZa2lubmlDZ3I1RHE1N3VPdmFQSUsw?=
- =?utf-8?B?VEJ2S0YyMXgwbnRnUzM1c0NweHJ5WGkvb0xzWlJGQXE5S3hpKzFtLy9sUFli?=
- =?utf-8?B?TmgzQ1p5aXlqd2hRY2ZrcHl1Q2hsdkJHOXpZNWtxaGZzemVCc2M1dDN1ZXJk?=
- =?utf-8?B?ekJUQ2hsbWpsbkpxUVVybGx4K09QZ2N5eDFha0JpQkJLc0pmN0Ftb1JzVTZL?=
- =?utf-8?B?M1Y2VURNODFtN2JXaEMreU16L3pSWkJ3am5oc3diMmJtZ2pRUFQ0ODBqSHk3?=
- =?utf-8?B?cERHYlRSZnJqYUxaTUgxNzZoZm9LK3QxUkhvV21YSFNLVnZRYWI0TVR6SVJJ?=
- =?utf-8?B?aVZ1NUpZTElvK3VpNHgzeFhWZFVzT3hSQnErdnFrU0VHZlowR0VzeEtudGFJ?=
- =?utf-8?B?d3g0Vm1TdFF1MGZuWnFkbk5SaXdTcFVadGFwOGQ1TlBnOTNNV0VkdzQ4Y0xh?=
- =?utf-8?B?dFdURVZVUXhlUTNUdWl3UytjZVR5ZCtYMWZzbEcwTmZxd0Q4ZkpqRm93QWhk?=
- =?utf-8?B?TEJEYVpiNk9oU28yQ3E0K0kvcitFUU8zWHZPSTY1SHJzT2ZLM0EzVitFMzNM?=
- =?utf-8?B?Vzd6bHdSMktJSjJmQkVpcGt5d3pqRkxOTzRvOUQveE9UOS9sWUFqR3lvdnpI?=
- =?utf-8?B?dVVIQlMyVlVzQzNiYytVU2RON3lyZW9UL09qWi91RVJQdXhUQnN6eU5uQzNl?=
- =?utf-8?B?VGx2V1dkVHZublR6c2hldnhqclFNT01DN3Jra2pmclRFRGdLeFNHeUJOSnNV?=
- =?utf-8?B?OUZiaGQzbGdKOVlORm83VTV2dWpUNnlscDczS3Z2RFNPU2pxL3BySDZXVjRn?=
- =?utf-8?B?RGphNGNubHBlWEhwbmtEZENGV1hyUFNWczFwcGxPOFBEamZqeTJYV21aQUFq?=
- =?utf-8?B?clg4Z09SQzRVVTBZOTBOMXc5UVNrRFJ3RUdwWURtek5pcDNFNGhNSkY4bUlt?=
- =?utf-8?B?OHp0LzJQNFh1M1NxclNLZ0tkSCt2MVIyQjZqcGFGRjN5cUdkQ0JWZndNSFlv?=
- =?utf-8?B?YmJVcVBoakRSRHFvSENQaUdDdGg3OFV2R0QxNzFYdWJpNWhZTVU1bWdiODR0?=
- =?utf-8?B?VjYzRlczNUxGSHNPOXI0cWVJRlVwTUZXa1dkU2xBcStydGltZVpuaEcvT3hj?=
- =?utf-8?B?R1ZSRDUxdTQ4NEpEdXJPTUIvNUZiZk5JcFBkaHJDVDlncFN3N0hVSnZXVzJH?=
- =?utf-8?B?Rjd6dlUvV2pUT1BNcHBDeElrdzN0VzRoRFV1UEJOb3F4OUc4TzB4eTdQLzdW?=
- =?utf-8?B?L2owNWh3c1lGcHNtcG8ra1IxMHZIYkcwbmRZdU50aFFNbWZhbEljQkpZTEpX?=
- =?utf-8?B?NU5ubFJ2U0IzUHNsbWN1WXRuckhjUjdYM3Jnb2lBSmF2MkNpWU1pcG4vakFD?=
- =?utf-8?B?Rk5YempPd2duUGkyWVNQdjVOZjB2U2pXelRUN3A4VGJzZjR5WndSdTV1RGJw?=
- =?utf-8?B?Q0lYdVhTMlY3bVNmY3VLSjZXY1ZISzdWM2VrVHQ3dGRjOHdZNmRSZE9NaXQy?=
- =?utf-8?B?TEQzNVVOQnFTVWFES2lISnVKOGcwY3BsR3I2emVxSmRPZGVtL21QSTNjNlUy?=
- =?utf-8?B?aVEyN2ppL1BnUDdxMFZYT1Q1L2RnaUZ2dDhDcHBscStWRFFKeDVhNUo2S3BP?=
- =?utf-8?B?bVI0bDFjcENka2J5VklmRVRvUnloM3prMmdzM1g2anBqcmcrTUR3QXB4bU90?=
- =?utf-8?B?SjlVdXRGL1Faa2xJY2hoeW1qRkZYQzZxUUtNVUcrQUxCK3pWVXRaanlXNmdv?=
- =?utf-8?B?dDY4RllkcTBjUlhQNWhhWjVsd0RtNDh3ck1oMm1qOSs3bm4wcTI4dER5L1kx?=
- =?utf-8?B?YkxRN1A3QTQwUU5UR0RQZklGNXdSM1JBWWF4SnpaTGtqMEJxT2FLblhTU1l2?=
- =?utf-8?B?eDY0UFkvWmlBWkY1V25UR2FWc0R4TmJwZUcwcDlmeSt5QTIxM1hkYkh1VDVk?=
- =?utf-8?B?TjNtbmxBKzNTaWxuY1FVLzFnaFo1VmdKVkZxZ1dXd3ZuUDIzQTBrVFVkdmRy?=
- =?utf-8?B?d3c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+   d="scan'208";a="225890137"
+Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 00:11:00 -0800
+From: Riana Tauro <riana.tauro@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com,
+	rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com,
+	lukas@wunner.de,
+	simona.vetter@ffwll.ch,
+	airlied@gmail.com,
+	pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com,
+	ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com,
+	Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	netdev@vger.kernel.org,
+	Riana Tauro <riana.tauro@intel.com>
+Subject: [PATCH v3 1/4] drm/ras: Introduce the DRM RAS infrastructure over generic netlink
+Date: Fri,  5 Dec 2025 14:09:33 +0530
+Message-ID: <20251205083934.3602030-7-riana.tauro@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20251205083934.3602030-6-riana.tauro@intel.com>
+References: <20251205083934.3602030-6-riana.tauro@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf5976da-7339-4a67-cb24-08de33d50275
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Dec 2025 08:05:09.5493
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4/5KF/NQxbekd/kILRmRgUeD4pNz/wTc+sftBrVveook+OVfWR7cIyHKfr9hL/YTb1lONXjwZuUzdgkFMVUi6t1rukBksQlSaXyg32IuJWY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6952
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQWFyb24gTWEgPGFhcm9u
-Lm1hQGNhbm9uaWNhbC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgRGVjZW1iZXIgNSwgMjAyNSA4OjU0
-IEFNDQo+IFRvOiBMb2t0aW9ub3YsIEFsZWtzYW5kciA8YWxla3NhbmRyLmxva3Rpb25vdkBpbnRl
-bC5jb20+DQo+IENjOiBOZ3V5ZW4sIEFudGhvbnkgTCA8YW50aG9ueS5sLm5ndXllbkBpbnRlbC5j
-b20+OyBLaXRzemVsLA0KPiBQcnplbXlzbGF3IDxwcnplbXlzbGF3LmtpdHN6ZWxAaW50ZWwuY29t
-PjsgYW5kcmV3K25ldGRldkBsdW5uLmNoOw0KPiBkYXZlbUBkYXZlbWxvZnQubmV0OyBlZHVtYXpl
-dEBnb29nbGUuY29tOyBrdWJhQGtlcm5lbC5vcmc7DQo+IHBhYmVuaUByZWRoYXQuY29tOyBpbnRl
-bC13aXJlZC1sYW5AbGlzdHMub3N1b3NsLm9yZzsNCj4gbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsg
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW0ludGVsLXdpcmVk
-LWxhbl0gW1BBVENIIDEvMl0gaWNlOiBGaXggTlVMTCBwb2ludGVyDQo+IGRlcmVmZXJlbmNlIGlu
-IGljZV92c2lfc2V0X25hcGlfcXVldWVzDQo+IA0KPiBPbiBGcmksIERlYyA1LCAyMDI1IGF0IDM6
-MTPigK9QTSBMb2t0aW9ub3YsIEFsZWtzYW5kcg0KPiA8YWxla3NhbmRyLmxva3Rpb25vdkBpbnRl
-bC5jb20+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPg0KPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdl
-LS0tLS0NCj4gPiA+IEZyb206IEludGVsLXdpcmVkLWxhbiA8aW50ZWwtd2lyZWQtbGFuLWJvdW5j
-ZXNAb3N1b3NsLm9yZz4gT24NCj4gQmVoYWxmDQo+ID4gPiBPZiBBYXJvbiBNYQ0KPiA+ID4gU2Vu
-dDogRnJpZGF5LCBEZWNlbWJlciA1LCAyMDI1IDM6MzggQU0NCj4gPiA+IFRvOiBOZ3V5ZW4sIEFu
-dGhvbnkgTCA8YW50aG9ueS5sLm5ndXllbkBpbnRlbC5jb20+OyBLaXRzemVsLA0KPiA+ID4gUHJ6
-ZW15c2xhdyA8cHJ6ZW15c2xhdy5raXRzemVsQGludGVsLmNvbT47IGFuZHJldytuZXRkZXZAbHVu
-bi5jaDsNCj4gPiA+IGRhdmVtQGRhdmVtbG9mdC5uZXQ7IGVkdW1hemV0QGdvb2dsZS5jb207IGt1
-YmFAa2VybmVsLm9yZzsNCj4gPiA+IHBhYmVuaUByZWRoYXQuY29tOyBpbnRlbC13aXJlZC1sYW5A
-bGlzdHMub3N1b3NsLm9yZzsNCj4gPiA+IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtl
-cm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+IFN1YmplY3Q6IFtJbnRlbC13aXJlZC1sYW5dIFtQ
-QVRDSCAxLzJdIGljZTogRml4IE5VTEwgcG9pbnRlcg0KPiA+ID4gZGVyZWZlcmVuY2UgaW4gaWNl
-X3ZzaV9zZXRfbmFwaV9xdWV1ZXMNCj4gPiA+DQo+ID4gPiBBZGQgTlVMTCBwb2ludGVyIGNoZWNr
-cyBpbiBpY2VfdnNpX3NldF9uYXBpX3F1ZXVlcygpIHRvIHByZXZlbnQNCj4gPiA+IGNyYXNoZXMg
-ZHVyaW5nIHJlc3VtZSBmcm9tIHN1c3BlbmQgd2hlbiByaW5nc1txX2lkeF0tPnFfdmVjdG9yIGlz
-DQo+ID4gPiBOVUxMLg0KPiA+ID4NCj4gPiA+IDwxPlsgIDIzMS40NDM2MDddIEJVRzoga2VybmVs
-IE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSwgYWRkcmVzczoNCj4gPiA+IDAwMDAwMDAwMDAwMDAw
-NDAgPDE+WyAgMjMxLjQ0NDA1Ml0gI1BGOiBzdXBlcnZpc29yIHJlYWQgYWNjZXNzIGluDQo+ID4g
-PiBrZXJuZWwgbW9kZSA8MT5bICAyMzEuNDQ0NDg0XSAjUEY6IGVycm9yX2NvZGUoMHgwMDAwKSAt
-IG5vdC0NCj4gcHJlc2VudA0KPiA+ID4gcGFnZSA8Nj5bICAyMzEuNDQ0OTEzXSBQR0QgMCBQNEQg
-MCA8ND5bICAyMzEuNDQ1MzQyXSBPb3BzOiBPb3BzOg0KPiA+ID4gMDAwMCBbIzFdIFNNUCBOT1BU
-SSA8ND5bICAyMzEuNDQ2NjM1XSBSSVA6DQo+ID4gPiAwMDEwOm5ldGlmX3F1ZXVlX3NldF9uYXBp
-KzB4YS8weDE3MA0KPiA+ID4gPDQ+WyAgMjMxLjQ0NzA2N10gQ29kZTogMzEgZjYgMzEgZmYgYzMg
-Y2MgY2MgY2MgY2MgMGYgMWYgODAgMDAgMDANCj4gMDANCj4gPiA+IDAwIDkwIDkwIDkwIDkwIDkw
-IDkwIDkwIDkwIDkwIDkwIDkwIDkwIDkwIDkwIDkwIDkwIDBmIDFmIDQ0IDAwIDAwDQo+IDQ4DQo+
-ID4gPiA4NSBjOSA3NCAwYiA8NDg+IDgzIDc5IDMwIDAwIDBmIDg0IDM5IDAxIDAwIDAwIDU1IDQx
-IDg5IGQxIDQ5IDg5DQo+IGY4DQo+ID4gPiA4OQ0KPiA+ID4gZjIgNDggODkgPDQ+WyAgMjMxLjQ0
-NzUxM10gUlNQOiAwMDE4OmZmZmZjYzc4MGZjMDc4YzAgRUZMQUdTOg0KPiA+ID4gMDAwMTAyMDIg
-PDQ+WyAgMjMxLjQ0Nzk2MV0gUkFYOiBmZmZmOGI4NDhjYTMwNDAwIFJCWDoNCj4gZmZmZjhiODQ4
-Y2FmMjAyOCBSQ1g6DQo+ID4gPiAwMDAwMDAwMDAwMDAwMDEwIDw0PlsgIDIzMS40NDg0NDNdIFJE
-WDogMDAwMDAwMDAwMDAwMDAwMCBSU0k6DQo+ID4gPiAwMDAwMDAwMDAwMDAwMDAwIFJESTogZmZm
-ZjhiODQ4ZGJkNDAwMCA8ND5bICAyMzEuNDQ4ODk2XSBSQlA6DQo+ID4gPiBmZmZmY2M3ODBmYzA3
-OGU4IFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IDAwMDAwMDAwMDAwMDAwMDAgPDQ+Ww0KPiA+
-ID4gMjMxLjQ0OTM0NV0gUjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDAw
-MCBSMTI6DQo+ID4gPiAwMDAwMDAwMDAwMDAwMDAxIDw0PlsgIDIzMS40NDk4MTddIFIxMzogZmZm
-ZjhiODQ4ZGJkNDAwMCBSMTQ6DQo+ID4gPiBmZmZmOGI4NDgzMzM5MGM4IFIxNTogMDAwMDAwMDAw
-MDAwMDAwMCA8ND5bICAyMzEuNDUwMjY1XSBGUzoNCj4gPiA+IDAwMDA3YzdiMjllOWQ3NDAoMDAw
-MCkgR1M6ZmZmZjhiOGMwNjhlMjAwMCgwMDAwKQ0KPiA+ID4ga25sR1M6MDAwMDAwMDAwMDAwMDAw
-MCA8ND5bICAyMzEuNDUwNzE1XSBDUzogIDAwMTAgRFM6IDAwMDAgRVM6DQo+IDAwMDANCj4gPiA+
-IENSMDogMDAwMDAwMDA4MDA1MDAzMyA8ND5bICAyMzEuNDUxMTc5XSBDUjI6IDAwMDAwMDAwMDAw
-MDAwNDAgQ1IzOg0KPiA+ID4gMDAwMDAwMDMwNjI2ZjAwNCBDUjQ6IDAwMDAwMDAwMDBmNzJlZjAg
-PDQ+WyAgMjMxLjQ1MTYyOV0gUEtSVToNCj4gPiA+IDU1NTU1NTU0IDw0PlsgIDIzMS40NTIwNzZd
-IENhbGwgVHJhY2U6DQo+ID4gPiA8ND5bICAyMzEuNDUyNTQ5XSAgPFRBU0s+DQo+ID4gPiA8ND5b
-ICAyMzEuNDUyOTk2XSAgPyBpY2VfdnNpX3NldF9uYXBpX3F1ZXVlcysweDRkLzB4MTEwIFtpY2Vd
-IDw0PlsNCj4gPiA+IDIzMS40NTM0ODJdICBpY2VfcmVzdW1lKzB4ZmQvMHgyMjAgW2ljZV0gPDQ+
-WyAgMjMxLjQ1Mzk3N10gID8NCj4gPiA+IF9fcGZ4X3BjaV9wbV9yZXN1bWUrMHgxMC8weDEwIDw0
-PlsgIDIzMS40NTQ0MjVdDQo+ID4gPiBwY2lfcG1fcmVzdW1lKzB4OGMvMHgxNDAgPDQ+WyAgMjMx
-LjQ1NDg3Ml0gID8NCj4gPiA+IF9fcGZ4X3BjaV9wbV9yZXN1bWUrMHgxMC8weDEwIDw0PlsgIDIz
-MS40NTUzNDddDQo+ID4gPiBkcG1fcnVuX2NhbGxiYWNrKzB4NWYvMHgxNjAgPDQ+WyAgMjMxLjQ1
-NTc5Nl0gID8NCj4gPiA+IGRwbV93YWl0X2Zvcl9zdXBlcmlvcisweDEwNy8weDE3MCA8ND5bICAy
-MzEuNDU2MjQ0XQ0KPiA+ID4gZGV2aWNlX3Jlc3VtZSsweDE3Ny8weDI3MCA8ND5bICAyMzEuNDU2
-NzA4XQ0KPiBkcG1fcmVzdW1lKzB4MjA5LzB4MmYwDQo+ID4gPiA8ND5bICAyMzEuNDU3MTUxXSAg
-ZHBtX3Jlc3VtZV9lbmQrMHgxNS8weDMwIDw0PlsgIDIzMS40NTc1OTZdDQo+ID4gPiBzdXNwZW5k
-X2RldmljZXNfYW5kX2VudGVyKzB4MWRhLzB4MmIwDQo+ID4gPiA8ND5bICAyMzEuNDU4MDU0XSAg
-ZW50ZXJfc3RhdGUrMHgxMGUvMHg1NzANCj4gPiA+DQo+ID4gPiBBZGQgZGVmZW5zaXZlIGNoZWNr
-cyBmb3IgYm90aCB0aGUgcmluZyBwb2ludGVyIGFuZCBpdHMgcV92ZWN0b3INCj4gPiA+IGJlZm9y
-ZSBkZXJlZmVyZW5jaW5nLCBhbGxvd2luZyB0aGUgc3lzdGVtIHRvIHJlc3VtZSBzdWNjZXNzZnVs
-bHkNCj4gPiA+IGV2ZW4gd2hlbiBxX3ZlY3RvcnMgYXJlIHVubWFwcGVkLg0KPiA+ID4NCj4gPg0K
-PiA+IFBsZWFzZSBhZGQgbWluaW1hbCB0ZXN0IHN5c3RlbSBkZXRhaWxzIGFsb25nc2lkZSB0aGUg
-Y2FsbCB0cmFjZToNCj4gPiAgIC0gQWRhcHRlciBtb2RlbCAoRTgxMC9FODIyLi4uIFBGL1ZGPyBT
-Ui1JT1Ygc3RhdGUpDQo+IA0KPiBBZGFwdGVyIG1vZGVsOg0KPiA2MDowMC4wIEV0aGVybmV0IGNv
-bnRyb2xsZXIgWzAyMDBdOiBJbnRlbCBDb3Jwb3JhdGlvbiBFdGhlcm5ldA0KPiBDb250cm9sbGVy
-IEU4MTAtWFhWIGZvciBTRlAgWzgwODY6MTU5Yl0gKHJldiAwMikNCj4gICAgICAgIFN1YnN5c3Rl
-bTogSW50ZWwgQ29ycG9yYXRpb24gRXRoZXJuZXQgTmV0d29yayBBZGFwdGVyDQo+IEU4MTAtWFhW
-LTIgWzgwODY6NDAwM10NCj4gDQo+IEJvdGggZGlzYWJsZWQgYW5kIGVuYWJsZWQgU1ItSU9WIGNh
-biByZXByb2R1Y2UgdGhlIGlzc3VlLg0KPiANCj4gPiAgIC0gS2VybmVsIHZlcnNpb24gKGFuZCB3
-aGV0aGVyIG5ldC1uZXh0IG9yIHN0YWJsZSBiYWNrcG9ydCkNCj4gDQo+IFRlc3RlZCBrZXJuZWwg
-dmVyc2lvbjogdXBzdHJlYW0gNi4xOC4NCj4gDQo+ID4gICAtIFJlcHJvIHN0ZXBzIChTMyBzZXF1
-ZW5jZSwgdGltaW5nLCBpZiBOQVBJIG9wcyBhcmUgY2FsbGVkIGR1cmluZw0KPiA+IHJlc3VtZSkN
-Cj4gDQo+IEJvb3R1cCBhbmQgZXhlY3V0ZSBzdXNwZW5kIGxpa2Ugc3lzdGVtY3RsIHN1c3BlbmQg
-b3IgcnRjd2FrZS4NCj4gDQo+IFNob3VsZCBJIHNlbmQgYSB2Mj8NCkkgaG9wZSB5ZXMuIElmIHlv
-dSB3aWxsIGVtYmVkIHRoZSBpbmZvIGludG8gY29tbWl0IG1lc3NhZ2UuDQpZb3UgY2FuIGFkZCBt
-eQ0KUmV2aWV3ZWQtYnk6IEFsZWtzYW5kciBMb2t0aW9ub3YgPGFsZWtzYW5kci5sb2t0aW9ub3ZA
-aW50ZWwuY29tPg0KDQpUaGFuayB5b3UgaW4gYWR2YW5jZQ0KQWxleA0KDQoNCj4gDQo+IFRoYW5r
-cyBmb3IgeW91ciByZXZpZXcuDQo+IEFhcm9uDQo+IA0KPiA+IEl0IGhlbHBzIHZhbGlkYXRlIHRo
-ZSBmaXggZm9yIE5BUEkgcXVldWUtdG8tSVJRIG1hcHBpbmcgb24gdmFyaW91cw0KPiBwbGF0Zm9y
-bXMuDQo+ID4NCj4gPiA+IEZpeGVzOiAyYTVkYzA5MGI5MmNmICgiaWNlOiBtb3ZlIG5ldGlmX3F1
-ZXVlX3NldF9uYXBpIHRvIHJ0bmwtDQo+ID4gPiBwcm90ZWN0ZWQgc2VjdGlvbnMiKQ0KPiA+ID4g
-U2lnbmVkLW9mZi1ieTogQWFyb24gTWEgPGFhcm9uLm1hQGNhbm9uaWNhbC5jb20+DQo+ID4gPiAt
-LS0NCj4gPiA+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2xpYi5jIHwgNiAr
-KysrLS0NCj4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQ0KPiA+ID4NCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRl
-bC9pY2UvaWNlX2xpYi5jDQo+ID4gPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2ljZS9p
-Y2VfbGliLmMNCj4gPiA+IGluZGV4IDE1NjIxNzA3ZmJmODEuLjlkMTE3OGJkZTQ0OTUgMTAwNjQ0
-DQo+ID4gPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2xpYi5jDQo+
-ID4gPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX2xpYi5jDQo+ID4g
-PiBAQCAtMjc3OSwxMSArMjc3OSwxMyBAQCB2b2lkIGljZV92c2lfc2V0X25hcGlfcXVldWVzKHN0
-cnVjdA0KPiBpY2VfdnNpDQo+ID4gPiAqdnNpKQ0KPiA+ID4NCj4gPiA+ICAgICAgIEFTU0VSVF9S
-VE5MKCk7DQo+ID4gPiAgICAgICBpY2VfZm9yX2VhY2hfcnhxKHZzaSwgcV9pZHgpDQo+ID4gPiAt
-ICAgICAgICAgICAgIG5ldGlmX3F1ZXVlX3NldF9uYXBpKG5ldGRldiwgcV9pZHgsDQo+ID4gPiBO
-RVRERVZfUVVFVUVfVFlQRV9SWCwNCj4gPiA+ICsgICAgICAgICAgICAgaWYgKHZzaS0+cnhfcmlu
-Z3NbcV9pZHhdICYmIHZzaS0+cnhfcmluZ3NbcV9pZHhdLQ0KPiA+ID4gPnFfdmVjdG9yKQ0KPiA+
-ID4gKyAgICAgICAgICAgICAgICAgICAgIG5ldGlmX3F1ZXVlX3NldF9uYXBpKG5ldGRldiwgcV9p
-ZHgsDQo+ID4gPiBORVRERVZfUVVFVUVfVFlQRV9SWCwNCj4gPiA+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgJnZzaS0+cnhfcmluZ3NbcV9pZHhdLQ0KPiA+cV92ZWN0b3ItDQo+
-ID4gPiA+bmFwaSk7DQo+ID4gPg0KPiA+ID4gICAgICAgaWNlX2Zvcl9lYWNoX3R4cSh2c2ksIHFf
-aWR4KQ0KPiA+ID4gLSAgICAgICAgICAgICBuZXRpZl9xdWV1ZV9zZXRfbmFwaShuZXRkZXYsIHFf
-aWR4LA0KPiA+ID4gTkVUREVWX1FVRVVFX1RZUEVfVFgsDQo+ID4gPiArICAgICAgICAgICAgIGlm
-ICh2c2ktPnR4X3JpbmdzW3FfaWR4XSAmJiB2c2ktPnR4X3JpbmdzW3FfaWR4XS0NCj4gPiA+ID5x
-X3ZlY3RvcikNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICBuZXRpZl9xdWV1ZV9zZXRfbmFw
-aShuZXRkZXYsIHFfaWR4LA0KPiA+ID4gTkVUREVWX1FVRVVFX1RZUEVfVFgsDQo+ID4gPiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZ2c2ktPnR4X3JpbmdzW3FfaWR4XS0NCj4g
-PnFfdmVjdG9yLQ0KPiA+ID4gPm5hcGkpOw0KPiA+ID4gICAgICAgLyogQWxzbyBzZXQgdGhlIGlu
-dGVycnVwdCBudW1iZXIgZm9yIHRoZSBOQVBJICovDQo+ID4gPiAgICAgICBpY2VfZm9yX2VhY2hf
-cV92ZWN0b3IodnNpLCB2X2lkeCkgew0KPiA+ID4gLS0NCj4gPiA+IDIuNDMuMA0KPiA+DQo=
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+Introduces the DRM RAS infrastructure over generic netlink.
+
+The new interface allows drivers to expose RAS nodes and their
+associated error counters to userspace in a structured and extensible
+way. Each drm_ras node can register its own set of error counters, which
+are then discoverable and queryable through netlink operations. This
+lays the groundwork for reporting and managing hardware error states
+in a unified manner across different DRM drivers.
+
+Currently is only supports error-counter nodes. But it can be
+extended later.
+
+The registration is also no tied to any drm node, so it can be
+used by accel devices as well.
+
+It uses the new and mandatory YAML description format stored in
+Documentation/netlink/specs/. This forces a single generic netlink
+family namespace for the entire drm: "drm-ras".
+But multiple-endpoints are supported within the single family.
+
+Any modification to this API needs to be applied to
+Documentation/netlink/specs/drm_ras.yaml before regenerating the
+code:
+
+$ tools/net/ynl/pyynl/ynl_gen_c.py --spec \
+ Documentation/netlink/specs/drm_ras.yaml --mode uapi --header \
+ > include/uapi/drm/drm_ras.h
+
+$ tools/net/ynl/pyynl/ynl_gen_c.py --spec \
+ Documentation/netlink/specs/drm_ras.yaml --mode kernel --header \
+ > include/drm/drm_ras_nl.h
+
+$ tools/net/ynl/pyynl/ynl_gen_c.py --spec \
+ Documentation/netlink/specs/drm_ras.yaml --mode kernel --source \
+ > drivers/gpu/drm/drm_ras_nl.c
+
+Cc: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org
+Co-developed-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+Signed-off-by: Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+---
+v2: fix doc and memory leak
+    use xe_for_each_start
+    use standard genlmsg_iput (Jakub Kicinski)
+
+v3: add documentation to index
+    modify documentation to mention uAPI requirements (Rodrigo)
+---
+ Documentation/gpu/drm-ras.rst            | 109 +++++++
+ Documentation/gpu/index.rst              |   1 +
+ Documentation/netlink/specs/drm_ras.yaml | 130 +++++++++
+ drivers/gpu/drm/Kconfig                  |   9 +
+ drivers/gpu/drm/Makefile                 |   1 +
+ drivers/gpu/drm/drm_drv.c                |   6 +
+ drivers/gpu/drm/drm_ras.c                | 351 +++++++++++++++++++++++
+ drivers/gpu/drm/drm_ras_genl_family.c    |  42 +++
+ drivers/gpu/drm/drm_ras_nl.c             |  54 ++++
+ include/drm/drm_ras.h                    |  76 +++++
+ include/drm/drm_ras_genl_family.h        |  17 ++
+ include/drm/drm_ras_nl.h                 |  24 ++
+ include/uapi/drm/drm_ras.h               |  49 ++++
+ 13 files changed, 869 insertions(+)
+ create mode 100644 Documentation/gpu/drm-ras.rst
+ create mode 100644 Documentation/netlink/specs/drm_ras.yaml
+ create mode 100644 drivers/gpu/drm/drm_ras.c
+ create mode 100644 drivers/gpu/drm/drm_ras_genl_family.c
+ create mode 100644 drivers/gpu/drm/drm_ras_nl.c
+ create mode 100644 include/drm/drm_ras.h
+ create mode 100644 include/drm/drm_ras_genl_family.h
+ create mode 100644 include/drm/drm_ras_nl.h
+ create mode 100644 include/uapi/drm/drm_ras.h
+
+diff --git a/Documentation/gpu/drm-ras.rst b/Documentation/gpu/drm-ras.rst
+new file mode 100644
+index 000000000000..cec60cf5d17d
+--- /dev/null
++++ b/Documentation/gpu/drm-ras.rst
+@@ -0,0 +1,109 @@
++.. SPDX-License-Identifier: GPL-2.0+
++
++============================
++DRM RAS over Generic Netlink
++============================
++
++The DRM RAS (Reliability, Availability, Serviceability) interface provides a
++standardized way for GPU/accelerator drivers to expose error counters and
++other reliability nodes to user space via Generic Netlink. This allows
++diagnostic tools, monitoring daemons, or test infrastructure to query hardware
++health in a uniform way across different DRM drivers.
++
++Key Goals:
++
++* Provide a standardized RAS solution for GPU and accelerator drivers, enabling
++  data center monitoring and reliability operations.
++* Implement a single drm-ras Generic Netlink family to meet modern Netlink YAML
++  specifications and centralize all RAS-related communication in one namespace.
++* Support a basic error counter interface, addressing the immediate, essential
++  monitoring needs.
++* Offer a flexible, future-proof interface that can be extended to support
++  additional types of RAS data in the future.
++* Allow multiple nodes per driver, enabling drivers to register separate
++  nodes for different IP blocks, sub-blocks, or other logical subdivisions
++  as applicable.
++
++Nodes
++=====
++
++Nodes are logical abstractions representing an error source or block within
++the device. Currently, only error counter nodes is supported.
++
++Drivers are responsible for registering and unregistering nodes via the
++`drm_ras_node_register()` and `drm_ras_node_unregister()` APIs.
++
++Node Management
++-------------------
++
++.. kernel-doc:: drivers/gpu/drm/drm_ras.c
++   :doc: DRM RAS Node Management
++.. kernel-doc:: drivers/gpu/drm/drm_ras.c
++   :internal:
++
++Generic Netlink Usage
++=====================
++
++The interface is implemented as a Generic Netlink family named ``drm-ras``.
++User space tools can:
++
++* List registered nodes with the ``get-nodes`` command.
++* List all error counters in an node with the ``get-error-counters`` command.
++* Query error counters using the ``query-error-counter`` command.
++
++YAML-based Interface
++--------------------
++
++The interface is described in a YAML specification:
++
++:ref:`Documentation/netlink/specs/drm_ras.yaml`
++
++This YAML is used to auto-generate user space bindings via
++``tools/net/ynl/pyynl/ynl_gen_c.py``, and drives the structure of netlink
++attributes and operations.
++
++Usage Notes
++-----------
++
++* User space must first enumerate nodes to obtain their IDs.
++* Node IDs or Node names can be used for all further queries, such as error counters.
++* Error counters can be queried by either the Error ID or Error name.
++* Query Parameters should be defined as part of the uAPI to ensure user interface stability.
++* The interface supports future extension by adding new node types and
++  additional attributes.
++
++Example: List nodes using ynl
++
++.. code-block:: bash
++
++    sudo ynl --family drm_ras  --dump list-nodes
++    [{'device-name': '0000:03:00.0',
++    'node-id': 0,
++    'node-name': 'correctable-errors',
++    'node-type': 'error-counter'},
++    {'device-name': '0000:03:00.0',
++     'node-id': 1,
++    'node-name': 'nonfatal-errors',
++    'node-type': 'error-counter'},
++    {'device-name': '0000:03:00.0',
++    'node-id': 2,
++    'node-name': 'fatal-errors',
++    'node-type': 'error-counter'}]
++
++Example: List all error counters using ynl
++
++.. code-block:: bash
++
++
++   sudo ynl --family drm_ras  --dump get-error-counters --json '{"node-id":1}'
++   [{'error-id': 1, 'error-name': 'error_name_1', 'error-value': 0},
++   {'error-id': 2, 'error-name': 'error_name_2', 'error-value': 0}]
++
++
++Example: Query an error counter for a given node
++
++.. code-block:: bash
++
++   sudo ynl --family drm_ras --do query-error-counter  --json '{"node-id":2, "error-id":1}'
++   {'error-id': 1, 'error-name': 'error_name_1', 'error-value': 0}
++
+diff --git a/Documentation/gpu/index.rst b/Documentation/gpu/index.rst
+index 7dcb15850afd..60c73fdcfeed 100644
+--- a/Documentation/gpu/index.rst
++++ b/Documentation/gpu/index.rst
+@@ -9,6 +9,7 @@ GPU Driver Developer's Guide
+    drm-mm
+    drm-kms
+    drm-kms-helpers
++   drm-ras
+    drm-uapi
+    drm-usage-stats
+    driver-uapi
+diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+new file mode 100644
+index 000000000000..be0e379c5bc9
+--- /dev/null
++++ b/Documentation/netlink/specs/drm_ras.yaml
+@@ -0,0 +1,130 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++---
++name: drm-ras
++protocol: genetlink
++uapi-header: drm/drm_ras.h
++
++doc: >-
++  DRM RAS (Reliability, Availability, Serviceability) over Generic Netlink.
++  Provides a standardized mechanism for DRM drivers to register "nodes"
++  representing hardware/software components capable of reporting error counters.
++  Userspace tools can query the list of nodes or individual error counters
++  via the Generic Netlink interface.
++
++definitions:
++  -
++    type: enum
++    name: node-type
++    value-start: 1
++    entries: [error-counter]
++    doc: >-
++         Type of the node. Currently, only error-counter nodes are
++         supported, which expose reliability counters for a hardware/software
++         component.
++
++attribute-sets:
++  -
++    name: node-attrs
++    attributes:
++      -
++        name: node-id
++        type: u32
++        doc: >-
++             Unique identifier for the node.
++             Assigned dynamically by the DRM RAS core upon registration.
++      -
++        name: device-name
++        type: string
++        doc: >-
++             Device name chosen by the driver at registration.
++             Can be a PCI BDF, UUID, or module name if unique.
++      -
++        name: node-name
++        type: string
++        doc: >-
++             Node name chosen by the driver at registration.
++             Can be an IP block name, or any name that identifies the
++             RAS node inside the device.
++      -
++        name: node-type
++        type: u32
++        doc: Type of this node, identifying its function.
++        enum: node-type
++  -
++    name: error-counter-attrs
++    attributes:
++      -
++        name: node-id
++        type: u32
++        doc:  Node ID targeted by this error counter operation.
++      -
++        name: error-id
++        type: u32
++        doc: Unique identifier for a specific error counter within an node.
++      -
++        name: error-name
++        type: string
++        doc: Name of the error.
++      -
++        name: error-value
++        type: u32
++        doc: Current value of the requested error counter.
++
++operations:
++  list:
++    -
++      name: list-nodes
++      doc: >-
++           Retrieve the full list of currently registered DRM RAS nodes.
++           Each node includes its dynamically assigned ID, name, and type.
++           **Important:** User space must call this operation first to obtain
++           the node IDs. These IDs are required for all subsequent
++           operations on nodes, such as querying error counters.
++      attribute-set: node-attrs
++      flags: [admin-perm]
++      dump:
++        reply:
++          attributes:
++            - node-id
++            - device-name
++            - node-name
++            - node-type
++    -
++      name: get-error-counters
++      doc: >-
++           Retrieve the full list of error counters for a given node.
++           The response include the id, the name, and even the current
++           value of each counter.
++      attribute-set: error-counter-attrs
++      flags: [admin-perm]
++      dump:
++        request:
++          attributes:
++            - node-id
++        reply:
++          attributes:
++            - error-id
++            - error-name
++            - error-value
++    -
++      name: query-error-counter
++      doc: >-
++           Query the information of a specific error counter for a given node.
++           Users must provide the node ID and the error counter ID.
++           The response contains the id, the name, and the current value
++           of the counter.
++      attribute-set: error-counter-attrs
++      flags: [admin-perm]
++      do:
++        request:
++          attributes:
++            - node-id
++            - error-id
++        reply:
++          attributes:
++            - error-id
++            - error-name
++            - error-value
++
++kernel-family:
++  headers: ["drm/drm_ras_nl.h"]
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 7e6bc0b3a589..5cfb23b80441 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -130,6 +130,15 @@ config DRM_PANIC_SCREEN_QR_VERSION
+ 	  Smaller QR code are easier to read, but will contain less debugging
+ 	  data. Default is 40.
+ 
++config DRM_RAS
++	bool "DRM RAS support"
++	depends on DRM
++	help
++	  Enables the DRM RAS (Reliability, Availability and Serviceability)
++	  support for DRM drivers. This provides a Generic Netlink interface
++	  for error reporting and queries.
++	  If in doubt, say "N".
++
+ config DRM_DEBUG_DP_MST_TOPOLOGY_REFS
+         bool "Enable refcount backtrace history in the DP MST helpers"
+ 	depends on STACKTRACE_SUPPORT
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index 4b3f3ad5058a..cd19573b2d9f 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -95,6 +95,7 @@ drm-$(CONFIG_DRM_ACCEL) += ../../accel/drm_accel.o
+ drm-$(CONFIG_DRM_PANIC) += drm_panic.o
+ drm-$(CONFIG_DRM_DRAW) += drm_draw.o
+ drm-$(CONFIG_DRM_PANIC_SCREEN_QR_CODE) += drm_panic_qr.o
++drm-$(CONFIG_DRM_RAS) += drm_ras.o drm_ras_nl.o drm_ras_genl_family.o
+ obj-$(CONFIG_DRM)	+= drm.o
+ 
+ obj-$(CONFIG_DRM_PANEL_ORIENTATION_QUIRKS) += drm_panel_orientation_quirks.o
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index 2915118436ce..6b965c3d3307 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -53,6 +53,7 @@
+ #include <drm/drm_panic.h>
+ #include <drm/drm_print.h>
+ #include <drm/drm_privacy_screen_machine.h>
++#include <drm/drm_ras_genl_family.h>
+ 
+ #include "drm_crtc_internal.h"
+ #include "drm_internal.h"
+@@ -1223,6 +1224,7 @@ static const struct file_operations drm_stub_fops = {
+ 
+ static void drm_core_exit(void)
+ {
++	drm_ras_genl_family_unregister();
+ 	drm_privacy_screen_lookup_exit();
+ 	drm_panic_exit();
+ 	accel_core_exit();
+@@ -1261,6 +1263,10 @@ static int __init drm_core_init(void)
+ 
+ 	drm_privacy_screen_lookup_init();
+ 
++	ret = drm_ras_genl_family_register();
++	if (ret < 0)
++		goto error;
++
+ 	drm_core_init_complete = true;
+ 
+ 	DRM_DEBUG("Initialized\n");
+diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
+new file mode 100644
+index 000000000000..32f3897ce580
+--- /dev/null
++++ b/drivers/gpu/drm/drm_ras.c
+@@ -0,0 +1,351 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
++#include <linux/xarray.h>
++#include <net/genetlink.h>
++
++#include <drm/drm_ras.h>
++
++/**
++ * DOC: DRM RAS Node Management
++ *
++ * This module provides the infrastructure to manage RAS (Reliability,
++ * Availability, and Serviceability) nodes for DRM drivers. Each
++ * DRM driver may register one or more RAS nodes, which represent
++ * logical components capable of reporting error counters and other
++ * reliability metrics.
++ *
++ * The nodes are stored in a global xarray `drm_ras_xa` to allow
++ * efficient lookup by ID. Nodes can be registered or unregistered
++ * dynamically at runtime.
++ *
++ * A Generic Netlink family `drm_ras` exposes two main operations to
++ * userspace:
++ *
++ * 1. LIST_NODES: Dump all currently registered RAS nodes.
++ *    The user receives an array of node IDs, names, and types.
++ *
++ * 2. GET_ERROR_COUNTERS: Dump all error counters of a given node.
++ *    The user receives an array of error IDs, names, and current value.
++ *
++ * 3. QUERY_ERROR_COUNTER: Query a specific error counter for a given node.
++ *    Userspace must provide the node ID and the counter ID, and
++ *    receives the ID, the error name, and its current value.
++ *
++ * Node registration:
++ * - drm_ras_node_register(): Registers a new node and assigns
++ *   it a unique ID in the xarray.
++ * - drm_ras_node_unregister(): Removes a previously registered
++ *   node from the xarray.
++ *
++ * Node type:
++ * - ERROR_COUNTER:
++ *     + Currently, only error counters are supported.
++ *     + The driver must implement the query_error_counter() callback to provide
++ *       the name and the value of the error counter.
++ *     + The driver must provide a error_counter_range.last value informing the
++ *       last valid error ID.
++ *     + The driver can provide a error_counter_range.first value informing the
++ *       frst valid error ID.
++ *     + The error counters in the driver doesn't need to be contiguous, but the
++ *       driver must return -ENOENT to the query_error_counter as an indication
++ *       that the ID should be skipped and not listed in the netlink API.
++ *
++ * Netlink handlers:
++ * - drm_ras_nl_list_nodes_dumpit(): Implements the LIST_NODES
++ *   operation, iterating over the xarray.
++ * - drm_ras_nl_get_error_counters_dumpit(): Implements the GET_ERROR_COUNTERS
++ *   operation, iterating over the know valid error_counter_range.
++ * - drm_ras_nl_query_error_counter_doit(): Implements the QUERY_ERROR_COUNTER
++ *   operation, fetching a counter value from a specific node.
++ */
++
++static DEFINE_XARRAY_ALLOC(drm_ras_xa);
++
++/*
++ * The netlink callback context carries dump state across multiple dumpit calls
++ */
++struct drm_ras_ctx {
++	/* Which xarray id to restart the dump from */
++	unsigned long restart;
++};
++
++/**
++ * drm_ras_nl_list_nodes_dumpit() - Dump all registered RAS nodes
++ * @skb: Netlink message buffer
++ * @cb: Callback context for multi-part dumps
++ *
++ * Iterates over all registered RAS nodes in the global xarray and appends
++ * their attributes (ID, name, type) to the given netlink message buffer.
++ * Uses @cb->ctx to track progress in case the message buffer fills up, allowing
++ * multi-part dump support. On buffer overflow, updates the context to resume
++ * from the last node on the next invocation.
++ *
++ * Return: 0 if all nodes fit in @skb, number of bytes added to @skb if
++ *          the buffer filled up (requires multi-part continuation), or
++ *          a negative error code on failure.
++ */
++int drm_ras_nl_list_nodes_dumpit(struct sk_buff *skb,
++				 struct netlink_callback *cb)
++{
++	const struct genl_info *info = genl_info_dump(cb);
++	struct drm_ras_ctx *ctx = (void *)cb->ctx;
++	struct drm_ras_node *node;
++	struct nlattr *hdr;
++	unsigned long id;
++	int ret;
++
++	xa_for_each_start(&drm_ras_xa, id, node, ctx->restart) {
++		hdr = genlmsg_iput(skb, info);
++		if (!hdr) {
++			ret = -EMSGSIZE;
++			break;
++		}
++
++		ret = nla_put_u32(skb, DRM_RAS_A_NODE_ATTRS_NODE_ID, node->id);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		ret = nla_put_string(skb, DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
++				     node->device_name);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		ret = nla_put_string(skb, DRM_RAS_A_NODE_ATTRS_NODE_NAME,
++				     node->node_name);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		ret = nla_put_u32(skb, DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
++				  node->type);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		genlmsg_end(skb, hdr);
++	}
++
++	if (ret == -EMSGSIZE)
++		ctx->restart = id;
++
++	return ret;
++}
++
++static int get_node_error_counter(u32 node_id, u32 error_id,
++				  const char **name, u32 *value)
++{
++	struct drm_ras_node *node;
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node || !node->query_error_counter)
++		return -ENOENT;
++
++	if (error_id < node->error_counter_range.first ||
++	    error_id > node->error_counter_range.last)
++		return -EINVAL;
++
++	return node->query_error_counter(node, error_id, name, value);
++}
++
++static int msg_reply_value(struct sk_buff *msg, u32 error_id,
++			   const char *error_name, u32 value)
++{
++	int ret;
++
++	ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID, error_id);
++	if (ret)
++		return ret;
++
++	ret = nla_put_string(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
++			     error_name);
++	if (ret)
++		return ret;
++
++	return nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
++			   value);
++}
++
++static int doit_reply_value(struct genl_info *info, u32 node_id,
++			    u32 error_id)
++{
++	struct sk_buff *msg;
++	struct nlattr *hdr;
++	const char *error_name;
++	u32 value;
++	int ret;
++
++	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
++	if (!msg)
++		return -ENOMEM;
++
++	hdr = genlmsg_iput(msg, info);
++	if (!hdr) {
++		nlmsg_free(msg);
++		return -EMSGSIZE;
++	}
++
++	ret = get_node_error_counter(node_id, error_id,
++				     &error_name, &value);
++	if (ret)
++		return ret;
++
++	ret = msg_reply_value(msg, error_id, error_name, value);
++	if (ret) {
++		genlmsg_cancel(msg, hdr);
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	genlmsg_end(msg, hdr);
++
++	return genlmsg_reply(msg, info);
++}
++
++/**
++ * drm_ras_nl_get_error_counters_dumpit() - Dump all Error Counters
++ * @skb: Netlink message buffer
++ * @cb: Callback context for multi-part dumps
++ *
++ * Iterates over all error counters in a given Node and appends
++ * their attributes (ID, name, value) to the given netlink message buffer.
++ * Uses @cb->ctx to track progress in case the message buffer fills up, allowing
++ * multi-part dump support. On buffer overflow, updates the context to resume
++ * from the last node on the next invocation.
++ *
++ * Return: 0 if all errors fit in @skb, number of bytes added to @skb if
++ *          the buffer filled up (requires multi-part continuation), or
++ *          a negative error code on failure.
++ */
++int drm_ras_nl_get_error_counters_dumpit(struct sk_buff *skb,
++					 struct netlink_callback *cb)
++{
++	const struct genl_info *info = genl_info_dump(cb);
++	struct drm_ras_ctx *ctx = (void *)cb->ctx;
++	struct drm_ras_node *node;
++	struct nlattr *hdr;
++	const char *error_name;
++	u32 node_id, error_id, value;
++	int ret;
++
++	if (!info->attrs || !info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID])
++		return -EINVAL;
++
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID]);
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node)
++		return -ENOENT;
++
++	for (error_id = max(node->error_counter_range.first, ctx->restart);
++	     error_id <= node->error_counter_range.last;
++	     error_id++) {
++		ret = get_node_error_counter(node_id, error_id,
++					     &error_name, &value);
++		/*
++		 * For non-contiguous range, driver return -ENOENT as indication
++		 * to skip this ID when listing all errors.
++		 */
++		if (ret == -ENOENT)
++			continue;
++		if (ret)
++			return ret;
++
++		hdr = genlmsg_iput(skb, info);
++
++		if (!hdr) {
++			ret = -EMSGSIZE;
++			break;
++		}
++
++		ret = msg_reply_value(skb, error_id, error_name, value);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		genlmsg_end(skb, hdr);
++	}
++
++	if (ret == -EMSGSIZE)
++		ctx->restart = error_id;
++
++	return ret;
++}
++
++/**
++ * drm_ras_nl_query_error_counter_doit() - Query an error counter of an node
++ * @skb: Netlink message buffer
++ * @info: Generic Netlink info containing attributes of the request
++ *
++ * Extracts the node ID and error ID from the netlink attributes and
++ * retrieves the current value of the corresponding error counter. Sends the
++ * result back to the requesting user via the standard Genl reply.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_query_error_counter_doit(struct sk_buff *skb,
++					struct genl_info *info)
++{
++	u32 node_id, error_id;
++
++	if (!info->attrs ||
++	    !info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID] ||
++	    !info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID])
++		return -EINVAL;
++
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID]);
++	error_id = nla_get_u32(info->attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID]);
++
++	return doit_reply_value(info, node_id, error_id);
++}
++
++/**
++ * drm_ras_node_register() - Register a new RAS node
++ * @node: Node structure to register
++ *
++ * Adds the given RAS node to the global node xarray and assigns it
++ * a unique ID. Both @node->name and @node->type must be valid.
++ *
++ * Return: 0 on success, or negative errno on failure:
++ */
++int drm_ras_node_register(struct drm_ras_node *node)
++{
++	if (!node->device_name || !node->node_name)
++		return -EINVAL;
++
++	/* Currently, only Error Counter Endpoinnts are supported */
++	if (node->type != DRM_RAS_NODE_TYPE_ERROR_COUNTER)
++		return -EINVAL;
++
++	/* Mandatorty entries for Error Counter Node */
++	if (node->type == DRM_RAS_NODE_TYPE_ERROR_COUNTER &&
++	    (!node->error_counter_range.last || !node->query_error_counter))
++		return -EINVAL;
++
++	return xa_alloc(&drm_ras_xa, &node->id, node, xa_limit_32b, GFP_KERNEL);
++}
++EXPORT_SYMBOL(drm_ras_node_register);
++
++/**
++ * drm_ras_node_unregister() - Unregister a previously registered node
++ * @node: Node structure to unregister
++ *
++ * Removes the given node from the global node xarray using its ID.
++ */
++void drm_ras_node_unregister(struct drm_ras_node *node)
++{
++	xa_erase(&drm_ras_xa, node->id);
++}
++EXPORT_SYMBOL(drm_ras_node_unregister);
+diff --git a/drivers/gpu/drm/drm_ras_genl_family.c b/drivers/gpu/drm/drm_ras_genl_family.c
+new file mode 100644
+index 000000000000..2d818b8c3808
+--- /dev/null
++++ b/drivers/gpu/drm/drm_ras_genl_family.c
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#include <drm/drm_ras_genl_family.h>
++#include <drm/drm_ras_nl.h>
++
++/* Track family registration so the drm_exit can be called at any time */
++static bool registered;
++
++/**
++ * drm_ras_genl_family_register() - Register drm-ras genl family
++ *
++ * Only to be called one at drm_drv_init()
++ */
++int drm_ras_genl_family_register(void)
++{
++	int ret;
++
++	registered = false;
++
++	ret = genl_register_family(&drm_ras_nl_family);
++	if (ret)
++		return ret;
++
++	registered = true;
++	return 0;
++}
++
++/**
++ * drm_ras_genl_family_unregister() - Unregister drm-ras genl family
++ *
++ * To be called one at drm_drv_exit() at any moment, but only once.
++ */
++void drm_ras_genl_family_unregister(void)
++{
++	if (registered) {
++		genl_unregister_family(&drm_ras_nl_family);
++		registered = false;
++	}
++}
+diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+new file mode 100644
+index 000000000000..fcd1392410e4
+--- /dev/null
++++ b/drivers/gpu/drm/drm_ras_nl.c
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/drm_ras.yaml */
++/* YNL-GEN kernel source */
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include <uapi/drm/drm_ras.h>
++#include <drm/drm_ras_nl.h>
++
++/* DRM_RAS_CMD_GET_ERROR_COUNTERS - dump */
++static const struct nla_policy drm_ras_get_error_counters_nl_policy[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID + 1] = {
++	[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID] = { .type = NLA_U32, },
++};
++
++/* DRM_RAS_CMD_QUERY_ERROR_COUNTER - do */
++static const struct nla_policy drm_ras_query_error_counter_nl_policy[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID + 1] = {
++	[DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID] = { .type = NLA_U32, },
++	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID] = { .type = NLA_U32, },
++};
++
++/* Ops table for drm_ras */
++static const struct genl_split_ops drm_ras_nl_ops[] = {
++	{
++		.cmd	= DRM_RAS_CMD_LIST_NODES,
++		.dumpit	= drm_ras_nl_list_nodes_dumpit,
++		.flags	= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
++	},
++	{
++		.cmd		= DRM_RAS_CMD_GET_ERROR_COUNTERS,
++		.dumpit		= drm_ras_nl_get_error_counters_dumpit,
++		.policy		= drm_ras_get_error_counters_nl_policy,
++		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
++	},
++	{
++		.cmd		= DRM_RAS_CMD_QUERY_ERROR_COUNTER,
++		.doit		= drm_ras_nl_query_error_counter_doit,
++		.policy		= drm_ras_query_error_counter_nl_policy,
++		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
++	},
++};
++
++struct genl_family drm_ras_nl_family __ro_after_init = {
++	.name		= DRM_RAS_FAMILY_NAME,
++	.version	= DRM_RAS_FAMILY_VERSION,
++	.netnsok	= true,
++	.parallel_ops	= true,
++	.module		= THIS_MODULE,
++	.split_ops	= drm_ras_nl_ops,
++	.n_split_ops	= ARRAY_SIZE(drm_ras_nl_ops),
++};
+diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
+new file mode 100644
+index 000000000000..bba47a282ef8
+--- /dev/null
++++ b/include/drm/drm_ras.h
+@@ -0,0 +1,76 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef __DRM_RAS_H__
++#define __DRM_RAS_H__
++
++#include "drm_ras_nl.h"
++
++/**
++ * struct drm_ras_node - A DRM RAS Node
++ */
++struct drm_ras_node {
++	/** @id: Unique identifier for the node. Dynamically assigned. */
++	u32 id;
++	/**
++	 * @device_name: Human-readable name of the device. Given by the driver.
++	 */
++	const char *device_name;
++	/** @node_name: Human-readable name of the node. Given by the driver. */
++	const char *node_name;
++	/** @type: Type of the node (enum drm_ras_node_type). */
++	enum drm_ras_node_type type;
++
++	/* Error-Counter Related Callback and Variables */
++
++	/** @error_counter_range: Range of valid Error IDs for this node. */
++	struct {
++		/** @first: First valid Error ID. */
++		u32 first;
++		/** @last: Last valid Error ID. Mandatory entry. */
++		u32 last;
++	} error_counter_range;
++
++	/**
++	 * @query_error_counter:
++	 *
++	 * This callback is used by drm-ras to query a specific error counter.
++	 * counters supported by this node. Used for input check and to
++	 * iterate in all counters.
++	 *
++	 * Driver should expect query_error_counters() to be called with
++	 * error_id from `error_counter_range.first` to
++	 * `error_counter_range.last`.
++	 *
++	 * The @query_error_counter is a mandatory callback for
++	 * error_counter_node.
++	 *
++	 * Returns: 0 on success,
++	 *          -ENOENT when error_id is not supported as an indication that
++	 *                  drm_ras should silently skip this entry. Used for
++	 *                  supporting non-contiguous error ranges.
++	 *                  Driver is responsible for maintaining the list of
++	 *                  supported error IDs in the range of first to last.
++	 *          Other negative values on errors that should terminate the
++	 *          netlink query.
++	 */
++	int (*query_error_counter)(struct drm_ras_node *ep, u32 error_id,
++				   const char **name, u32 *val);
++
++	/** @priv: Driver private data */
++	void *priv;
++};
++
++struct drm_device;
++
++#if IS_ENABLED(CONFIG_DRM_RAS)
++int drm_ras_node_register(struct drm_ras_node *ep);
++void drm_ras_node_unregister(struct drm_ras_node *ep);
++#else
++static inline int drm_ras_node_register(struct drm_ras_node *ep) { return 0; }
++static inline void drm_ras_node_unregister(struct drm_ras_node *ep) { }
++#endif
++
++#endif
+diff --git a/include/drm/drm_ras_genl_family.h b/include/drm/drm_ras_genl_family.h
+new file mode 100644
+index 000000000000..5931b53429f1
+--- /dev/null
++++ b/include/drm/drm_ras_genl_family.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++#ifndef __DRM_RAS_GENL_FAMILY_H__
++#define __DRM_RAS_GENL_FAMILY_H__
++
++#if IS_ENABLED(CONFIG_DRM_RAS)
++int drm_ras_genl_family_register(void);
++void drm_ras_genl_family_unregister(void);
++#else
++static inline int drm_ras_genl_family_register(void) { return 0; }
++static inline void drm_ras_genl_family_unregister(void) { }
++#endif
++
++#endif
+diff --git a/include/drm/drm_ras_nl.h b/include/drm/drm_ras_nl.h
+new file mode 100644
+index 000000000000..9613b7d9ffdb
+--- /dev/null
++++ b/include/drm/drm_ras_nl.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/drm_ras.yaml */
++/* YNL-GEN kernel header */
++
++#ifndef _LINUX_DRM_RAS_GEN_H
++#define _LINUX_DRM_RAS_GEN_H
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include <uapi/drm/drm_ras.h>
++#include <drm/drm_ras_nl.h>
++
++int drm_ras_nl_list_nodes_dumpit(struct sk_buff *skb,
++				 struct netlink_callback *cb);
++int drm_ras_nl_get_error_counters_dumpit(struct sk_buff *skb,
++					 struct netlink_callback *cb);
++int drm_ras_nl_query_error_counter_doit(struct sk_buff *skb,
++					struct genl_info *info);
++
++extern struct genl_family drm_ras_nl_family;
++
++#endif /* _LINUX_DRM_RAS_GEN_H */
+diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
+new file mode 100644
+index 000000000000..3415ba345ac8
+--- /dev/null
++++ b/include/uapi/drm/drm_ras.h
+@@ -0,0 +1,49 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/drm_ras.yaml */
++/* YNL-GEN uapi header */
++
++#ifndef _UAPI_LINUX_DRM_RAS_H
++#define _UAPI_LINUX_DRM_RAS_H
++
++#define DRM_RAS_FAMILY_NAME	"drm-ras"
++#define DRM_RAS_FAMILY_VERSION	1
++
++/*
++ * Type of the node. Currently, only error-counter nodes are supported, which
++ * expose reliability counters for a hardware/software component.
++ */
++enum drm_ras_node_type {
++	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
++};
++
++enum {
++	DRM_RAS_A_NODE_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
++
++	__DRM_RAS_A_NODE_ATTRS_MAX,
++	DRM_RAS_A_NODE_ATTRS_MAX = (__DRM_RAS_A_NODE_ATTRS_MAX - 1)
++};
++
++enum {
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
++
++	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
++};
++
++enum {
++	DRM_RAS_CMD_LIST_NODES = 1,
++	DRM_RAS_CMD_GET_ERROR_COUNTERS,
++	DRM_RAS_CMD_QUERY_ERROR_COUNTER,
++
++	__DRM_RAS_CMD_MAX,
++	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
++};
++
++#endif /* _UAPI_LINUX_DRM_RAS_H */
+-- 
+2.47.1
+
