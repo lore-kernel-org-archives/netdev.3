@@ -1,17 +1,18 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF4D333438;
-	Fri,  5 Dec 2025 07:21:11 +0000 (UTC)
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477B2335BD5;
+	Fri,  5 Dec 2025 07:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764919294; cv=none; b=uefiky2h9b9Esk5d5rPzJBpHINPumljRTecsX8hpSwDwG4t7Htu6nvgHGOvoK4wCuoF+6wlpoWwmM9dxStEn3EPpnLOSjt3Ki14zDg9f+SeDA8Jwejb7nXFS8SvX6PrxEJZbBdqKmzaCtLNcJt3Zt6ULnVpeH8/A8YmdPLAHZ/E=
+	t=1764919298; cv=none; b=mw+ND7GUw4cOK5W1K/rmzUWclKwOjnRwCll9hv8o2vCp4IN7+E4Y9qlSJvLaAwDXg4diTn/7MLhXlHDj1ez9mLT+qcxdr2nPdhZICieK+JWe8DRb5+yzLKWm8oSzd4qgBeV/40F/qzfDT61VT6AaT3t/bMn0X5e8mpzAVnTpASI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764919294; c=relaxed/simple;
-	bh=Maxqvp8M2/Mbhj5qDNZmaX54vuIa2E/KjRgY0LGmkyY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=P4HIPWxODzvvt7uuPEXqic7nvjQDyas2C3v4wHqEwFnBa9CfwPJ+niZcbMHzI2C1zx/9hQyamhMmmHJCSOCSg8jIO5GQMBeWPcxgVmq+XruWI0ohiMYpEraUJWt6fXBtRIe3syOU8DFDXZcQobdNIoIaZbGdRdKeTNiIDiLfCv8=
+	s=arc-20240116; t=1764919298; c=relaxed/simple;
+	bh=jhmrpwTM08yBA9ZoPplcfQMQcK3SVeR5SdyXR0h1+Bo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lL6ZgAIFB9x8L+O39eYeEm31ulBiSmR2mXU0xJo87LkCXgOpiYeOQGm+D0PEvur7yWJptXoK7PuOZI7fXqU65pu6XrCT5puldA9Ta898RARljhI+hGxJrqlr0kYZ/gANm1APi+nL0NR9Xsvdu92d7iXNJYPGNpGEr7EMTkllYW4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-5f-69328773bffd
+X-AuditID: a67dfc5b-c2dff70000001609-de-693287767d46
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -178,109 +179,113 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 37/42] dept: call dept_hardirqs_off() in local_irq_*() regardless of irq state
-Date: Fri,  5 Dec 2025 16:18:50 +0900
-Message-Id: <20251205071855.72743-38-byungchul@sk.com>
+Subject: [PATCH v18 41/42] SUNRPC: relocate struct rcu_head to the first field of struct rpc_xprt
+Date: Fri,  5 Dec 2025 16:18:54 +0900
+Message-Id: <20251205071855.72743-42-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTH97v3dx+tVO+qkasmapoYDfjCV84favxj0esfJhqdfzgN1nGV
-	G8oj5SXTZWAhIPNRG8HUirSInQEMpLW61tXU6piIVVknVESEiTDGQ0UEedYLxn9OPud8z/nm
-	nOSwpLqJms9KSWmiPkmr09BKrOyLsK1Iy18jrS45xUPLqw4KGnN8GD4OFmCYsNxioMBhpuBB
-	0wkMw2MWEvLcYVkw1TJQlIMg7K1F8KFmkoaeewMIito7aLjQnYPhrf0UgoudFga6/9wGTUO9
-	COwdkwR0+PIRTBQnQGmZUx4qfkfDWOAJCbb2lyQMdLchuFHbiuCN0UVCX8MlAvpraLCe8FLQ
-	8KgHQYnFhKCz2UuA4Uo1De42DwMNPeMEtBSbCKh07IB6Yxkhr0CD5YKBkMN/BIzYKxh4dKUF
-	gz17CVgCQQrG22MgbE2G2souBupaGym4ld0m3+r5iMHbHA3myy00/OGtw1AwMYgg6LlEQ2tV
-	mIK/K59iqO4KEfAicJaBJ57r1JY4YTjvDBYqnDcJoepyFRLGRk1IGLxqIIU8o5ze631LCrnO
-	TME7ZMXCwzJeKD85SgjnAisE98WXjJB7p5kRrI50Ifd+H7Vz1T7lxjhRJ2WI+lWbDyrjw74b
-	VErOrKN5twdwNuqbUYgULM+t4wvqS5ivbHY8w1NMc0v5UGiEnOI53GLeebqTKkRKluSCi/j8
-	kTOywLKzuUN8XeOeqR7MLeH9rmpiilXcBt4wGiC+eC7iK2t80z4KuV7UNDrNam49X1o4PO3J
-	c78peEP5XfrLwDz+7rUQNiKVFX1TgdRSUkaiVtKtWxmflSQdXfljcqIDye9m/3n8h9/RwNPd
-	fsSxSBOh8mXGSGpKm5GalehHPEtq5qh6dasltSpOm/WTqE+O1afrxFQ/WsBiTaRqzVBmnJo7
-	ok0TE0QxRdR/VQlWMT8bnV3u2hKRYjy09fWDaFO0Y/Lb0nnbk6O+j1nY43ab/n/W7J+5lF5b
-	74o1fNqE+xM3/HPc3PD+yGP3NufaSLT/8f3XCTf32p6bG2t+6Z/pDbVJ/9qCu5wRlHT7WGTa
-	6X63xXM9/F2X669l5Znc4V9tUfHB5RvT2+ceV5xn18eWHlhc1qnBqfHamChSn6r9DDZAbnpq
-	AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqvlbQldCioGPZA0LYvTkwqiS+8XFUWPW150OK02tSyi
-	5lqamdhiE12mWQ6bmjYtM1mNVfYwy0epVKbSWplbhrnETbNZ9M/hc873e76cPw6NS6vIybQ8
-	Ll5QxvEKGSUmxBuXaEJUKfPkYe6GOZCqPQ0fOhwktKhtBHj6Uwm4UlZCwbCxSgSplmwSnrUm
-	E9BwqxhBhycVwYDPiIO2eoSAYV2tCPoH34tAr0YwYq1FYGjU4dDW8BCHkko1Bj/Lf1PQ86gP
-	gb7LQUFWt5qAXlM6ghynUQTdT9aAu6OGhJH2Lxi0/nIhMDl+Y+CwpSAYNsRAXkGFf93wgwJf
-	/WscsvQNCK51tePQ192JoLL2IwJrUTIFnzPv4NDsGA9vPL0UPNdfoMDdeAWD7+UU5CdbSWh8
-	2YMg16hD4HxnxUBzvYwCQ66FgOrO+yJo7BnC4INBh0GxZQN0mJwE1GUWYP5z/a7bk8CYpcH8
-	5SsG+tIaDAZNZtGKQsQNaDMIzlxxF+O0TcMUV3K1BHE+rw5x/YUanNNm+ttHrl6cO1txjCus
-	c1Gc1/OW4qy/8gnuRQHL3TjvxbhL9SFcdU67aPPK3eKlkYJCnigo5y4/II4esVWSR9SBx7U1
-	fcQZ5B6bhgJololgsy1viVGmmFlsW9sgPspBzHS24qKTTENiGmeap7Epgxl+gaYnMgfZ5y3b
-	Rz0EM4O13ynDRlnCLGQ13nrsX+Y0trjc9jcnwD/Xt3r/spRZwOalDZCZSJyPxphRkDwuMZaX
-	KxaEqmKik+Lkx0MPHY61IP87mU4NXbqH+pvX2BFDI9k4ie1YuFxK8omqpFg7YmlcFiRxKcLk
-	Ukkkn3RCUB7er0xQCCo7mkITskmStTuFA1Imio8XYgThiKD8r2J0wOQz6OTq+C2eg/ZSuOFb
-	fLSyKKpzU/jp9Ii6wPW8OjBy9bjHl29+Z51jkiPOlT8NnJlR01SUrndVWc2+hNzZ13OGaMUy
-	R9OivWfN3K6y9SH8g31hp9zRWz/t3zC1YO+q4Hsts9flvaya8e2upvXEvoTbn9/N3zNxQpG2
-	a5smKupV8I5v08NeyQhVNB8ejCtV/B+AnKgLSgMAAA==
-X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTZxSA9373NjT5rIa90hhJE7fMCxN15mCMqfv1xfljyf7skmV+kS+0
+	saApNzEzQ6GldorYBRqKl8IGIpdRqxDF1gEiCYS6ggoMLZdoqggFbLEKQ7GFLPPPm+c95zzn
+	nLx5OVJZySRwuowsyZAh6tWMnJIH4yq35BRt021dbPwEzMZf4HxTAwNmVzkNvj/rEYy+MiMw
+	3lyi4K21i4UlTxeCsj4rCZN3QghsEycomKk5jSA4eouGJf8zAp62FSGYLJtlwFbqQ1A57ich
+	NDGG4HrXCAJP7UkGukt/ZWDaycCFCiuCx2VWAipsBbHjOQHzNXUsVHjv07A4ngxzD8YJMLe+
+	osD1ZIAGz/AmqDT9QYHb001Bf72Pgkfesyz83dpIQ/VgHwG+c2doaJyuYmAyUkNCf5uDgNqX
+	NhoCD00EXPF4GehyxIM1EGKh+S8jAlP4HQ23zWMENAXukFBdG6Thmf0CAT3+MAvXXKUkDFgv
+	MbBw+W70JU7PR7W7r1lwvrzMwInwKILpkjlaoxGM/W8ZoeFiAxL+XbAiYa66gBSMJdGrJ+Kg
+	hJ4qLJzzbhFu2v2sUHh7mBUcrmyhsDNIC7+7JwjBVXeKER4PuBlh+t499mv19/LdqZJelyMZ
+	Pt9zQK7tvbL3iGfV0ULrj/loRmFBHIf5HXj4icaCZMv4wjlMxJjhP8VDQ/NkjNfwifjamQBt
+	QXKO5O+vx0XzxcuJ1byIJ8JTTIwpfgMOjYxTMVbwO/E/v80RK03X43pn23K9LBovHVxYZiX/
+	Bb5keU2v1K/C3eVPqdg+ZHRw00VlLExG1YLmCjI2F/MjMuzubyFXeq7F7bVDVAni7R/o9v91
+	+we6A5F1SKnLyEkXdfodSdq8DN3RpIOH010o+nFrji/+cAOFfN90IJ5D6jhFW26yTkmLOZl5
+	6R0Ic6R6jWJKv1WnVKSKecckw+GfDNl6KbMDqThK/bFiWyQ3VcmniVnSIUk6Ihn+yxKcLCEf
+	OU8pzN/t7lMKadlVxQ9f5G8Oth+f2eBvT7J3BtdFNsYnfRspmC3LTXG8+dnUMmBbbdHzg729
+	gZQ9zds7zPtUyabWAzwd2jTYmRAfHnPnB7/UvJv1PppKO1a+a6Zxv+ozLd6vuqqVyTWJidd7
+	io0p8izD+a+K/XFOUWXpbdn3kZrK1IrJG0lDpvgeQnsaDLQDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTVxjHPffce3tpvHrtSLhTo67GuJjoZBnLE3VGv+h1UdRkyYzZJo29
+	SkMB0zKERaNQKxXUYJcWvbWIKI2WbmDxDU21gQ3n1AyGGy8TgaQyC8VOaMHyIt5iFv1y8jvP
+	8/uf83x4GKyaoOYyuqwc0ZCl0atpJalMXW1anlv0qW5lo5MCi/kQPOkOUPB3gZ+EaMRCwtka
+	Dw2TjhsKsHjPUPBbWyEJzT9XI+iOWhCMjjswmOunSJi0NikgEvtHAbYCBFO+JgT2FiuG9ua7
+	GDxXCwgYrn1Nw0DjEAJbb4CGsmABCWHXcQRSn0MBwV83wmD3bQqmuv4loG0khMAVeE1AwF+E
+	YNKeAecq6+S4/T8axh/9gaHM1ozgfG8XhqFgD4KrTU8R+C4V0vCs9BqG1sAseBwN03DfVkLD
+	YMtZAl7U0lBR6KOg5eEAAqfDiqCv00eA6UINDXanl4T6nlsKaBmYIOCJ3UpAtXcLdLv6SHhQ
+	WknI48rWlSRwlJkI+XhOgO2n2wTEXG7FuiokjJpPkoK77johmP+cpAVPuQcJ42NWJESqTFgw
+	l8rXxlAYC0fq9gtVD0K0MBb9ixZ8IxWk8HslL1w8NkYIpx4tF+qlLsW29TuVa7SiXpcrGj5Z
+	m6ZMf3h5/T7fnLwj1m8PozBbjBIYnvuM76/tJOJMc0v59vYYjnMit4ivO9FHFSMlg7nWhXxR
+	7OR04wNOwweHQ3ScSW4JP/S0l4wzy33Od/wYId4+upCvrvVP+wly3dY2Ns0qLoU/VzxKvfXn
+	8PfPBOQsI3+wlK8pV8XLWI6arjlwKWKl9yzpnSW9Z1Ug7EaJuqzcTI1On7LCmJGen6XLW7E7
+	O9OL5J10HZw4dRNFWjc2II5B6pmsf3+yTkVpco35mQ2IZ7A6kQ3pV+pUrFaT/4NoyN5l+F4v
+	GhvQPIZUJ7Fffi2mqbi9mhwxQxT3iYb/uwSTMPcw6nyV8UV2dJOpavTjjus7FvRfvPO415oz
+	Q5JubnC+7J+f73U74cqqxJLsj/Zou0La4VUWIe/Od4de+ljX7JgntXzmL5ulo+7kA5sstxbv
+	Zi8ot4bX4CTvV3vd1L00NlV6Vfbssn173uDd537tYOuinmPf6MV789pHSj48vTiYXjnUqCaN
+	6ZrkZdhg1LwBtNOU7o8DAAA=
+X-CFilter-Loop: Reflected
 
-For dept to function properly, dept_task()->hardirqs_enabled must be set
-correctly.  If it fails to set this value to false, for example, dept
-may mistakenly think irq is still enabled even when it's not.
+While compiling Linux kernel with DEPT on, the following error was
+observed:
 
-Do dept_hardirqs_off() regardless of irq state not to miss any
-unexpected cases by any chance e.g. changes of the state by asm code.
+   ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
+   ‘BUILD_BUG_ON’
+   1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);	\
+        | ^~~~~~~~~~~~
+   ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
+   'kvfree_rcu_arg_2'
+   1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
+        |                             ^~~~~~~~~~~~~~~~
+   net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
+   1856 | kfree_rcu(xprt, rcu);
+        | ^~~~~~~~~
+    CC net/kcm/kcmproc.o
+   make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
 
+Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
+struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
+not exceed 4096 but does, due to the debug information added by DEPT.
+
+Relocate struct rcu_head to the first field of struct rpc_xprt from an
+arbitrary location to avoid the issue and meet the assumption.
+
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/irqflags.h | 14 ++++++++++++++
- kernel/dependency/dept.c |  1 +
- 2 files changed, 15 insertions(+)
+ include/linux/sunrpc/xprt.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index d8b9cf093f83..586f5bad4da7 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -214,6 +214,13 @@ extern void warn_bogus_irq_restore(void);
- 		raw_local_irq_disable();		\
- 		if (!was_disabled)			\
- 			trace_hardirqs_off();		\
-+		/*					\
-+		 * Just in case that C code has missed	\
-+		 * trace_hardirqs_off() at the first	\
-+		 * place e.g. disabling irq at asm code.\
-+		 */					\
-+		else					\
-+			dept_hardirqs_off();		\
- 	} while (0)
+diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
+index f46d1fb8f71a..666e42a17a31 100644
+--- a/include/linux/sunrpc/xprt.h
++++ b/include/linux/sunrpc/xprt.h
+@@ -211,6 +211,14 @@ enum xprt_transports {
  
- #define local_irq_save(flags)				\
-@@ -221,6 +228,13 @@ extern void warn_bogus_irq_restore(void);
- 		raw_local_irq_save(flags);		\
- 		if (!raw_irqs_disabled_flags(flags))	\
- 			trace_hardirqs_off();		\
-+		/*					\
-+		 * Just in case that C code has missed	\
-+		 * trace_hardirqs_off() at the first	\
-+		 * place e.g. disabling irq at asm code.\
-+		 */					\
-+		else					\
-+			dept_hardirqs_off();		\
- 	} while (0)
- 
- #define local_irq_restore(flags)			\
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 0f4464657288..a17b185d6a6a 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -2248,6 +2248,7 @@ void noinstr dept_hardirqs_off(void)
- 	 */
- 	dept_task()->hardirqs_enabled = false;
- }
-+EXPORT_SYMBOL_GPL(dept_hardirqs_off);
- 
- void noinstr dept_update_cxt(void)
- {
+ struct rpc_sysfs_xprt;
+ struct rpc_xprt {
++	/*
++	 * Place struct rcu_head within the first 4096 bytes of struct
++	 * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
++	 * kfree_rcu() can simply work assuming that.  See the comment
++	 * in kfree_rcu().
++	 */
++	struct rcu_head		rcu;
++
+ 	struct kref		kref;		/* Reference count */
+ 	const struct rpc_xprt_ops *ops;		/* transport methods */
+ 	unsigned int		id;		/* transport id */
+@@ -317,7 +325,6 @@ struct rpc_xprt {
+ #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+ 	struct dentry		*debugfs;		/* debugfs directory */
+ #endif
+-	struct rcu_head		rcu;
+ 	const struct xprt_class	*xprt_class;
+ 	struct rpc_sysfs_xprt	*xprt_sysfs;
+ 	bool			main; /*mark if this is the 1st transport */
 -- 
 2.17.1
 
