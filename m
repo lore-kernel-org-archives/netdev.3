@@ -1,186 +1,108 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A132B32FA33;
-	Fri,  5 Dec 2025 14:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1A530AAD7
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 14:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764944991; cv=none; b=FIjNPJOoq80xTjSSE7rjAZGtMQwUfqiRkHet6XJxb7YCZFkA3FzNrtt6vZN4OWfm6Jc0BRmWosNcWTQ4QUgUBGj2rd7pS2gDvVhR3QCjQscKVe66iyoJraFREoo8RcEoAvuTV9bivPQylL+kqMu5B75V3McqNpx8H1KFM9YYcr0=
+	t=1764945491; cv=none; b=HFDbH+Ct80f6kvmzfTz0Cgtjej605XLR/HsIaW45rixL33Dj12Oh+y/3cH98sQrzfzdCmXfGpJRXeY/a6d8dzTvAOcNNJc33M17UnV2Uow9XCeOOJdiX+eavxvdETwmJvTh4ffIfg1sgNIRKkZXcXhafKp4KWZ8vNj/tVSJLB98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764944991; c=relaxed/simple;
-	bh=5ChspuaYcYtUvxmdLX9ecS+PM8u32enfiRWW7RaPn8A=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Mge85S0MmMOQ4SaAkb81yMezB3UaxQxW9iC8K/roQKCFcE7ElIKUVVdKGfIViIybSA9m7QM0oXXEHc03xxxKn57jKD/S3LhUy1gKWSOB6FUOfquhr61PS+q/oZEwQcN6eshKLbBKCoZy/RiIs2Qm8MSd23OiU+HN32CeaZpPD5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1vRWNM-000ICM-25;
-	Fri, 05 Dec 2025 15:01:36 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1vRWNM-000I4e-1q;
-	Fri, 05 Dec 2025 15:01:36 +0100
-Message-ID: <672ab222-db78-4cad-821b-19256a7a4078@hetzner-cloud.de>
-Date: Fri, 5 Dec 2025 15:01:34 +0100
+	s=arc-20240116; t=1764945491; c=relaxed/simple;
+	bh=tn+3B6R/RgOoCp4dm+NVRcArD/KACN8EfOP1kLRRy64=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EA3dEoqdrjJCC2rekQWcFkQQ4wHm2heMwg8p35AlAjg0oEomsG/QJUL+Q6RDI36v6rngM4Vtgo2+ci8FKsk/n/ZrrPzzWAVBil/V5P6bgyCd/7tuC9wJwkJJd8g6bCsIpxFtqhLiMSiO1sLugCqhab5fzEpuAm6BrGV5JrD1jAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vqc62u/b; arc=none smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vqc62u/b"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-640e065991dso1638852d50.3
+        for <netdev@vger.kernel.org>; Fri, 05 Dec 2025 06:38:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764945485; x=1765550285; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rZeX/t9XBIstd9pSBZ5++UMA+6ZEbyBEMYNpSCQ2HHE=;
+        b=Vqc62u/bDEjcS+dAYdKP8nOg1c5jcic0EOqiQmX2dm2zZCR/tFQlCBQtj5qyzyJqvV
+         dgi5ZieEqPZEM6SrzYWjY5dLEIv42E1+PWDxeKJxZvsPkBpUSZQFR6cPuCt2v4mAuJxW
+         8axMqUhLfXNwip3DMeEkKRs2siLif6uHYE0+oH+gvyh8waYGHoINpYiFko4e6gB7fl5K
+         roGREroimV4LXBXswH+stzkepiRUZUa4WSlCyA0zEs8vTsY5Fm8eQcFao54UDlhfPS94
+         wjmBZ8fzIKGLApitfI3YxZdkS3KHIiyTndBUAY6Ps/MQ2zgOrNGRE1fw0/GkWBS+6n/d
+         QB5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764945485; x=1765550285;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rZeX/t9XBIstd9pSBZ5++UMA+6ZEbyBEMYNpSCQ2HHE=;
+        b=eVLJY2VYdGtGP0bWu9pY5hp8LJ1xQMCC+EzzfVLfm7STQ37K/7ZYHJ6ubMrZ3EsZEF
+         YtcGDadtlxpi+pIhLWL4mub/lYF95DGpVDUw1eT8XwYYtf+M1sOz9rv3MVgJmqCNtxSr
+         l3zhvCMfgUie/yBuHjgfYiIm/OtCjlr6gLVZzVGXbw9cIs48L7aCvbrAUIfPEhVRAis0
+         A7C6CF3YyTSUCt9SiFvUKApXGt9ibbR5cv8NV/RSwUqIKdHtsHxLQYeCINjGoureNDlX
+         Q3lfqnFWevcFsJV8mEQsx+3yuUKDeP+m77OcjiA8YM6vILJr8i2FapzKyOAUYBJ7VcMa
+         Lnbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjCz3JQM/kv/yQCC5XVANFxKDHMrAinG+l6NGkhY7L/OWCkfmYhMCoSLPahFYRHaK6DZ3BNkI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqpbklP4LlS1S9dgXCa15g9EEGYcFI1TByh/oYJSFUbE2tMNsR
+	bG5+ITcSXTFoVRpRE2e7C2KLJWKHaTCJO6tfcSGU6EomqVaWBCfTewjw
+X-Gm-Gg: ASbGncuGYopt10qk0atijWi7UyOYnPaSL44edMnZEw/p5K/7Hh1s3kh71ncJEQvsh6o
+	kuggViRtAchH/fudiLdxAo7VGAdeEIAzc1KCwkgWkdOJeEE9lQydQ6YWvu8t6M6HpvFtw2lRLpU
+	W5EDXC+17D13LFYm02ksLn6R3QnKZlPZ9cpIYYZqqiVpGTmpHIOf6+/zy/9asjon/QPS/KS44Db
+	Ze4DFIZMAcIj7fEOIvqYYcFjCvAYkQTBoZn7FlJhzLpmGdVFrJsJa7txzbqyGaYB4z/VDvE0M2f
+	BB+Y+5pnyfPcLnYkIQKG4Ck+c1WoVUM2wzMCSFPcFQvVQSv1MISq5AroPXXgjwLkiidIm7URzX+
+	S0/OZsyfa0qmMkd9fbB1oOxQiKeMTYkpwGxh+sAMUwAFalFtwmsx7jFDMk3kNCD21ioFvZPcRRd
+	9MWpZ91uzMN3Qu719qvLpimn1EMZzLuA==
+X-Google-Smtp-Source: AGHT+IHZolp98udP+u1AjHHX7nPNhJRkfNJpkP0YtwmKdcia0YfdLvMiUF1UHkN2//HLsO8YP+Ij8g==
+X-Received: by 2002:a05:690e:12ca:b0:640:d038:faf9 with SMTP id 956f58d0204a3-64436fab5f7mr7781946d50.25.1764945484906;
+        Fri, 05 Dec 2025 06:38:04 -0800 (PST)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b4ae638sm17499737b3.4.2025.12.05.06.38.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 06:38:04 -0800 (PST)
+Date: Fri, 5 Dec 2025 06:38:01 -0800
+From: Richard Cochran <richardcochran@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <Jose.Abreu@synopsys.com>,
+	Fugang Duan <fugang.duan@nxp.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: stmmac: Fix E2E delay mechanism
+Message-ID: <aTLuSZugpZDNCRzf@hoboy.vegasvil.org>
+References: <20251129-ext-ptp-2v-v2-1-d23aca3e694f@altera.com>
+ <26656845-d9d6-4fd2-bfff-99996cf03741@redhat.com>
+ <aTFuJUiLMnHrnpW5@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- intel-wired-lan@lists.osuosl.org, Netdev <netdev@vger.kernel.org>,
- linux-kernel@vger.kernel.org
-Cc: sdn@hetzner-cloud.de
-Subject: [BUG] ice: Temporary packet processing overload causes permanent RX
- drops
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27841/Fri Dec  5 10:23:11 2025)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTFuJUiLMnHrnpW5@shell.armlinux.org.uk>
 
-Hi there, I broke some network cards again. This time I noticed continuous RX packet drops with an Intel E810-XXV.
+On Thu, Dec 04, 2025 at 11:19:01AM +0000, Russell King (Oracle) wrote:
 
-When such a card temporarily (just for a few seconds) receives a large flood of packets and the kernel cannot keep
-up with processing them, the following appears in the Kernel log:
+> Basically, the conclusion I am coming to is that Synopsys's idea
+> of "lets tell the hardware what _kind_ of PTP clock we want to be,
+> whether we're master, etc" is subject to multiple revisions in
+> terms of which messages each mode selects, and it would have been
+> _far_ simpler and easier to understand had they just provided a
+> 16-bit bitfield of message types to accept.
 
-kernel: ice 0000:c7:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x002b address=0x4000180000 flags=0x0020]
-kernel: ice 0000:c7:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x002b address=0x4000180000 flags=0x0020]
-kernel: workqueue: ice_rx_dim_work [ice] hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
-kernel: workqueue: drm_fb_helper_damage_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
-kernel: workqueue: drm_fb_helper_damage_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
-kernel: workqueue: ice_rx_dim_work [ice] hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
-kernel: workqueue: psi_avgs_work hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
-kernel: ice 0000:c7:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x002b address=0x4000180000 flags=0x0020]
-kernel: workqueue: drm_fb_helper_damage_work hogged CPU for >10000us 7 times, consider switching to WQ_UNBOUND
-kernel: workqueue: ice_rx_dim_work [ice] hogged CPU for >10000us 7 times, consider switching to WQ_UNBOUND
-kernel: workqueue: psi_avgs_work hogged CPU for >10000us 5 times, consider switching to WQ_UNBOUND
-kernel: ice 0000:c7:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x002b address=0x4000180000 flags=0x0020]
-...
-
-After that, the NIC seems to be in a permanently broken state and continues to drop a few percent of the received
-packets, even at low data rates. When reducing the incoming packet rate to just 10.000 pps, I can see over 500 pps
-of that being dropped. After reinitializing the NIC (e.g. by changing the channel count using ethtool), the error
-goes away and it's rock solid again. Until the next packet flood.
-
-We have reproduced this with:
-  Linux 6.8.0-88-generic (Ubuntu 24.04)
-  Linux 6.14.0-36-generic (Ubuntu 24.04 HWE)
-  Linux 6.18.0-061800-generic (Ubuntu Mainline PPA)
-
-CPU: AMD EPYC 9825 144-Core Processor (288 threads)
-
-lspci | grep Ethernet
-  c7:00.0 Ethernet controller: Intel Corporation Ethernet Controller E810-XXV for SFP (rev 02)
-  c7:00.1 Ethernet controller: Intel Corporation Ethernet Controller E810-XXV for SFP (rev 02)
-
-ethtool -i eth0
-  driver: ice
-  version: 6.18.0-061800-generic
-  firmware-version: 4.90 0x80020ef6 1.3863.0
-  expansion-rom-version: 
-  bus-info: 0000:c7:00.0
-  supports-statistics: yes
-  supports-test: yes
-  supports-eeprom-access: yes
-  supports-register-dump: yes
-  supports-priv-flags: yes
-
-ethtool -l eth0
-  Channel parameters for eth0:
-  Pre-set maximums:
-  RX:		288
-  TX:		288
-  Other:		1
-  Combined:	288
-  Current hardware settings:
-  RX:		0
-  TX:		32
-  Other:		1
-  Combined:	256
-These are the defaults after boot.
-
-ethtool -S eth0 | grep rx_dropped
-  rx_dropped: 7206525
-  rx_dropped.nic: 0
-ethtool -S eth1 | grep rx_dropped
-  rx_dropped: 6889634
-  rx_dropped.nic: 0
-
-How to reproduce:
-
-1. Use another host to flood the host with the E810 NIC with 64 byte large UDP packets. I used trafgen for that and
-made sure, that the source ports are randomized to make RSS spread the load over all channels. The packet rate must
-be high enough to overload the packet processing on the receiving host.
-In my case, 4 Mpps was already enough to make the errors show up in the kernel log and trigger the permanent packet
-loss, but the needed packet rate may depend on how CPU intensive the processing of each packet is. Dropping packets
-early (e.g. using iptables) makes reproducing harder.
-
-2. Monitor the rx_dropped counter and the kernel log. After a few seconds, above warnings/errors should show up in
-the kernel log.
-
-3. Stop the traffic generator and re-run it with a way lower packet rate, e.g. 10.000 pps. Now it can be seen that
-a good part of these packets is being dropped, even though the kernel could easily keep up with this small packet rate.
-
-In my case the two ports of the E810 NIC were part of a bonding, but I don't think this is required to reproduce the
-issue.
-
-Please let me know, if there is more information I could provide.
+Encoding the PTP role in the hardware is a fundamentally stupid idea,
+because it makes changing roles (which is a normal and expected)
+impossible without losing time stamps during the transition.  Some
+early PTP hardware designs had this defect, but vendors figured it out
+in the second generation of cards.
 
 Thanks,
-Marcus
+Richard
