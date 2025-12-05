@@ -1,99 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D211A32B998;
-	Fri,  5 Dec 2025 16:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746002253AB;
+	Fri,  5 Dec 2025 16:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764951373; cv=none; b=XVjYQK4ACMSm/YylBk8kFUtkHaSxf/yf3RguzLX7VtIsRbhvtHvWxLaFNs2KtUUp2LQKdKop2Wl1RcDKZGwMAGGBvkT8DwPhY3IyqFaMgqAOJOstJWGHF5zyHaHbrjRkS/iIQJmTIUt3GuNgoDEXERUZT3HIljpyR+dXmv9/qvs=
+	t=1764951833; cv=none; b=OwDnpVw2QrTlQ12RIVMRIhx+9iP3qrtjlbm74Fj+evJJSqXEyVPoRuGo+CRuaJDf6bDJ8SpayXb7umJk9gRQ61P5myn5gY1yXR2QYlqS7cbMXIccojo4MV7vzES10wCU6wRRFjOaNP5uSRQunPZN8FQn3HIwQoN88eSaCAbwR7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764951373; c=relaxed/simple;
-	bh=ZdEQEkqkc+Ag6znUyPweT6q9aTx5i6UmppHhWOoNMvs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYd5yW1mT8x8b8hvanaXMJ+e9UM8+7qs+Re8MfTkZ7yOV1bBBvvrBRyIRRP/aIzIZugJ9UpoOpwUPIowKB0WwxniTmNrRMBHDHXNxKm1Kq77PTlOIU9gmm6sXvibqVuDGPhMj42o4e480nQvJg4KUbiGCN3jtG07kugpY0Tr3TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCCv/XhL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764951833; c=relaxed/simple;
+	bh=IGeh/QjE02HaR6TT8oVnPhDryAYch2kRD9pZXoFncaE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KcHsOWEbvCDyqQmofo8oXypyLl+srJOqzA79qYPa7xhJeQH/wro8KXmtiBT2XKxi0sbCt2JLjEsqe0xaiOH5vTn3I9tYWpQ4R2QVuUzPokDmaQscOsyVbCGA+ZpucfsrB7tahRDHJA2FQI3W6KEL1uz7m5Le74YvPfMU3QqejNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fYnxVp+2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCCv/XhL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDCBC4CEF1;
-	Fri,  5 Dec 2025 16:16:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fYnxVp+2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A73C4CEF1;
+	Fri,  5 Dec 2025 16:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764951371;
-	bh=ZdEQEkqkc+Ag6znUyPweT6q9aTx5i6UmppHhWOoNMvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QCCv/XhLhrC/32IZLIuYyb2e7GttsSUPQxwa2w4kQKU5LhieM/N2c40m6gb/f1RJJ
-	 WGxJOerIHFub+uiFtiWuFTQJb9eMKwa2qkTfYd/bVNap6A9Hk4vFHZI6NL96IIehdC
-	 nRSoXQZMBLivop+cZ2pF7vWZOgnSMliVjcoXn4m8cr7cfF2AsEEWlixHJAFFJiuu7/
-	 Wx/sOwI8kpUQU6DsupW/BWZ32uOSrhzq0ZPZGhbM4U3L7+KlwtJjdREoAlqjsuhVQh
-	 W0+kCbKgjVCy4j/op51yfc6l19Vx554ZsZ+xWBY4Wat+ukSuWjfoTVedCJT7mguobh
-	 oLgDJ7BWjEXag==
-Date: Fri, 5 Dec 2025 16:16:06 +0000
-From: Simon Horman <horms@kernel.org>
-To: Ding Hui <dinghui@sangfor.com.cn>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, jacob.e.keller@intel.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] ice: Fix incorrect timeout in ice_release_res()
-Message-ID: <aTMFRkYZGtk3a_EP@horms.kernel.org>
-References: <20251205081609.23091-1-dinghui@sangfor.com.cn>
+	s=k20201202; t=1764951831;
+	bh=IGeh/QjE02HaR6TT8oVnPhDryAYch2kRD9pZXoFncaE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fYnxVp+2VoNGlZfw9oo1vfGro5sRrpgCX+fEJlhGOVOgLzCwG1i83SzY5FPOK/0E+
+	 qXHXThQegIarn1GF27zz1qE1kCEFx1o1Qyiwp/Frvg7sRUskwp8oQMNKcWcHJiyCeK
+	 +l8WvxvHlz5Y0k7OU0c1EnCmLdawjQLqNqE26kQ9E3gh9FQyLLoIsPR6nIOSeL3y3L
+	 yppCDG26Qv6bbrWU52+NgRu6BwsDGFRaNV9MD4hZNIfH0RnLSVDNJ3Ggmvy4HEntHt
+	 8CqvCc1HlYQOXN0t/AQ9TybQTwtyWOOUxeM4rVIA7nnGnDxdnLIdbD+ajPHsgPSvOz
+	 ccBc5asyVMDCw==
+Message-ID: <c38966ab-4a3c-4a72-a3c1-5c0301408609@kernel.org>
+Date: Fri, 5 Dec 2025 17:23:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251205081609.23091-1-dinghui@sangfor.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf-next RFC 1/3] xt_statistic: taking GRO/GSO into account
+ for nth-match
+To: Florian Westphal <fw@strlen.de>
+Cc: netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>,
+ netdev@vger.kernel.org, phil@nwl.cc, Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, kernel-team@cloudflare.com,
+ mfleming@cloudflare.com, matt@readmodwrite.com, nwood@cloudflare.com,
+ aforster@cloudflare.com
+References: <176424680115.194326.6611149743733067162.stgit@firesoul>
+ <176424683595.194326.16910514346485415528.stgit@firesoul>
+ <aShi608hEPxDLvsr@strlen.de>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <aShi608hEPxDLvsr@strlen.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 05, 2025 at 04:16:08PM +0800, Ding Hui wrote:
-> The commit 5f6df173f92e ("ice: implement and use rd32_poll_timeout for
-> ice_sq_done timeout") converted ICE_CTL_Q_SQ_CMD_TIMEOUT from jiffies
-> to microseconds.
+
+
+On 27/11/2025 15.40, Florian Westphal wrote:
+> Jesper Dangaard Brouer <hawk@kernel.org> wrote:
+>> The iptables statistic nth mode is documented to match one packet every nth
+>> packets. When packets gets GRO/GSO aggregated before traversing the statistic
+>> nth match, then they get accounted as a single packet.
+>>
+>> This patch takes into account the number of packet frags a GRO/GSO packet
+>> contains for the xt_statistic match.
 > 
-> But the ice_release_res() function was missed, and its logic still
-> treats ICE_CTL_Q_SQ_CMD_TIMEOUT as a jiffies value.
+> I doubt we can do this upstream.  Two reasons that come to mind, in no
+> particular order:
 > 
-> So correct the issue by usecs_to_jiffies().
+> 1. It introduces asymmetry.  All matches use "skb == packet" design.
+>     Examples that come to mind: xt_limit, xt_length.
+> 2. This adds a compat issue with nftables:
+>      iptables-translate -A INPUT -m statistic --mode nth --packet 0  --every 10
+>      nft 'add rule ip filter INPUT numgen inc mod 10 0 counter'
 > 
-> Fixes: 5f6df173f92e ("ice: implement and use rd32_poll_timeout for ice_sq_done timeout")
-> Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+> 'numgen' increments a counter for every skb, i.e. reg := i++;.
+> But, after this patch -m statistics doesn't work this way anymore
+> and the two rules no longer do the same thing.
 
-Thanks,
+At some point we do want to move from iptables to nftables, so we do
+need to come up with a solution for nft.
 
-I agree with the analysis above and that the problem was introduced
-by the cited commit.
+I wonder what nft building block we need if we want something like this,
+e.g. based on the number of GRO/GSO segments.  We could have an inc_segs
+and a greater-than-and-reset (gt_limit / gt_mod) with a counter limit
+modifier that wraps increments. Like the C code does, it matches when we
+overrun 'nth.every' and resets it back.  For existing iptables code this
+is reset to zero, and new code take into account how much we overshot.
 
-As a fix for code present in net this should probably be targeted
-at net (or iwl-net?) rather than net-next. But perhaps there is
-no need to repost just to address that.
 
-> ---
->  drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> But even if we'd ignore this or add a flag to control behavior, I don't
+> see how this could be implemented in nft.
 > 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-> index 6fb0c1e8ae7c..5005c299deb1 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_common.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
-> @@ -1885,7 +1885,7 @@ void ice_release_res(struct ice_hw *hw, enum ice_aq_res_ids res)
->  	/* there are some rare cases when trying to release the resource
->  	 * results in an admin queue timeout, so handle them correctly
->  	 */
-> -	timeout = jiffies + 10 * ICE_CTL_Q_SQ_CMD_TIMEOUT;
-> +	timeout = jiffies + 10 * usecs_to_jiffies(ICE_CTL_Q_SQ_CMD_TIMEOUT);
->  	do {
->  		status = ice_aq_release_res(hw, res, 0, NULL);
->  		if (status != -EIO)
+> And last but not least, I'm not sure the premise is correct.
+> Yes, when you think of 'packet sampling', then we don't 'match'
+> often enough for gro/gso case.
+> 
+> However, when doing '-m statistic ... -j LOG' (or whatever), then the
+> entire GSO superpacket is logged, i.e. several 'packets' got matched
+> at once.
+> 
+> So the existing algorithm works correctly even when considering
+> aggregation because on average the correct amount of segments gets
+> matched (logged).
+> 
 
-I agree this minimal change is appropriate as a bug fix.
+No, this is where the "on average" assumption fails.  Packets with many
+segments gets statistically under-represented. As far as I'm told people
+noticed that the bandwidth estimate based on sampled packets were too
+far off (from other correlating stats like interface stats).
 
-But I think that it would be good to provide a follow-up
-that reworks this code a bit to to use read_poll_timeout().
-As per the aim of the cited commit.
+I'm told (Cc Nick Wood) the statistically correct way with --probability
+setting would be doing a Bernoulli trial[1] or a "binomial experiment".
+  This is how our userspace code (that gets all GRO/GSO packets) does
+statistical sampling based on the number of segments (to get the correct
+statistical probability):
 
-This should be targeted at net-next (or iwl-next?).
-Once this bug fix propagates to in net-next.
+The Rust code does this:
+  let probability = 1.0 / sample_interval as f64;
+  let adjusted_probability = nr_packets * probability * (1.0 - 
+probability).powf(nr_packets - 1.0);
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+  [1] https://en.wikipedia.org/wiki/Bernoulli_trial
+
+We could (also) update the kernel code for --probability to do this, but
+as you can see the Rust code uses floating point calculations.
+
+It was easier to change the nth code (and easier for me to reason about)
+than dealing with converting the the formula to use an integer
+approximation (given we don't have floating point calc in kernel).
+
+
+> With this proposed new algo, we can now match 100% of skbs / aggregated
+> segments, even for something like '--every 10'.  And that seems fishy to
+> me.
+> 
+> As far as I understood its only 'more correct' in your case because the
+> logging backend picks one individual segment out from the NFLOG'd
+> superpacket.
+> 
+> But if it would NOT do that, then you now sample (almost) all segments
+> seen on wire.  Did I misunderstand something here?
+
+See above explanation about Bernoulli trial[1].
+
+--Jesper
+
