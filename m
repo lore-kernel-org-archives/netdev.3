@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D032F5A2C;
-	Fri,  5 Dec 2025 07:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0173271ED;
+	Fri,  5 Dec 2025 07:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764919286; cv=none; b=Du83Mem3c6hPZqfRX9GDTO1lZUaESvLBT4w9xmN9436BVYnCvPIUo2xynE69IJkOyx9oi5Ea7u3l8n0SYQRNgVW5vagzUyShgWh5gAuE+t2yiCFD1CxrojZdYLL2EAOOBua0p620nH+OP1b9sNDp7hsQSMYvccsSx4zK34tTPgg=
+	t=1764919300; cv=none; b=pPd+PiKqzeOOSvcxdUKw4BiTjaEvOj8d61POjE7uPj9Vryb4TIE6WliHE1FQUdXrYfGHgQo0q23ylLRJcX9UuL0fOuZKbWAv2T0zUkubmJnj43b2RH+rPovvEvfz+S0Yaj6SWo7JlJ3EzIHKssr4KoXx/JnUuIRSAkk6OMeApIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764919286; c=relaxed/simple;
-	bh=WkwOYApaGg3/M39sydY8TnrOsGAaoUUQ67vebZbS0wQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=deWsGOii+wqWlEwFcAFSHBNJu5m6AuYWcZ4NtnmwnlLbHX5rYss+jwP1W3PKKaN2Jd+vClzVUKB+rEGCzzptviFC2+nJA/fvXzLUZMR+MBn/XzHe//M7dN7oMkMrs8ZLP2r+Mm0B1dEDp4s6ivnl4VbXeYtGnx3daHXP+GKg2C4=
+	s=arc-20240116; t=1764919300; c=relaxed/simple;
+	bh=AaEy5ZLg/iuY0kANSq4E0z3GYTuvShw7zb+zRcBRAcs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=rR+d7I3EGbaV7OON6Y2a2d6jxPU2FHjnS2aP+X9ER5d0ax+pvgQFBbl9oUNlLzZ5rqcIYNGeSeKjQ0gvSllSaGIW9Ds8qQ6Yk9LcCEQyf38nsDqdfCNkpumGHTFJD27A8OQqHxUy8NKTklw8W5R+3KTgpdlDgOR1CH3E/lzqTXk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-41-693287730e8e
+X-AuditID: a67dfc5b-c45ff70000001609-81-693287750bc6
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -178,45 +178,45 @@ Cc: kernel_team@skhynix.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v18 36/42] dept: implement a basic unit test for dept
-Date: Fri,  5 Dec 2025 16:18:49 +0900
-Message-Id: <20251205071855.72743-37-byungchul@sk.com>
+Subject: [PATCH v18 38/42] rcu/update: fix same dept key collision between various types of RCU
+Date: Fri,  5 Dec 2025 16:18:51 +0900
+Message-Id: <20251205071855.72743-39-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251205071855.72743-1-byungchul@sk.com>
 References: <20251205071855.72743-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTZxjG/c75zoWGmmOn8aAxurpLQqYCweWNTreZmJ1pzC5mWcKyuGY9
-	jiMFTEEKZhrEC6VDygilscVRGDS1IHSteCE064jiiDJkMGnQOiBFxgqOKZRQKAxq9t8vz/O+
-	z/PPw5KKQWoDK2XlitoslUZJy7BsMr5uW25xipQ0aoyHh2d8GGam9RiqW5poiFpvMKB3X6Lg
-	14EiDA+aGxGcv7WEIVrRycCStxPBC9ciDebxMxgsT63LWmCMgIHwBAJ7cJGAoK8YQbQqA0JV
-	UzTUDgdIeD4+hMDrKKJhtLyVhL7gauif+YeGLtN3NEz2VhPwzEWDrchLQe/9EILe0AIBj6sq
-	CLhXXkcsV9FgNZ8lYM7uZMDa3UfBiMPCwMJwMizZsqGzcYyBgNGEoXmyh4KuJw8p+PPuBQpu
-	FA4xMN0/TIC+bQZD7YV6DO3eLgz66DSCUlcrBYXWWQpaxvwEdFmuYHjUbWSgp+0qBQ0DvQR4
-	uu+TEC7bCP7yUQRXn9XREArbSXD8a6beUwuz58uw4PRcJ4SmH5qQMB+pQMI5j05ouDdBC5GZ
-	P2jBG7Zhob4kQgi3LAFGsLlPCB5HovBj+zghDIb2CG5nCS3Uzv9FfpyYJntHLWqkPFG7Y+9X
-	svS/7fPk8coP8pt7hshCdGe3AbEsz6Xyzql0A4qLoTsaYlaY5t7k/f45coXXclt4z8WnlAHJ
-	WJLr28wXz5XFjFe4/bx5cJRaYcy9zo/c/R2vsJx7m28qWqRfhm7mG12+2H3csm4aiMRYwe3k
-	awyzsVCeq4njb7eamJcPCfwvDj8uR3IbWuVECikrL1MlaVK3pxdkSfnbv87OdKPlxdlPLXxx
-	Ez1/cLgDcSxSxst9umRJQanycgoyOxDPksq18glNkqSQq1UFJ0Vt9hHtCY2Y04E2sli5Xp4S
-	1qkV3DeqXDFDFI+L2v9dgo3bUIgOV0uH2velDWUYDV/erDTNpRavDui27fvt9lL3wV3fv1vx
-	kfzVHbo1loSWt3bVnz7nuqLI5nfu9h5brw5+XvpTsM53+tPU9xdN4ZQ1I5suH7jccfGzT/qT
-	JttLzUdOLpSckq9LaDAYjU+OXjuW+Fpaf35katMbH6Lcbz3Xt1Zeq/5Zf7StRolz0lXJiaQ2
-	R/Ufv5ccA20DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0iTcRTG+7+3zdHiZQm9GJKMIggqtYwTVhiRvhRl5YfIL7rqpQ2nxZa3
-	IErX8tZFR5vkKs1ylS612U1tJdPMNMmppWi2GXNlzgxTl1vTptGXw++c5zkP58Ph46LnZBBf
-	lnKaU6RI5GJKQAj2R6rWK3PCZaGPrgZDrvocfLI5SPiY1UTA9FQuATdqjBT49M94kGu6TkJb
-	XzYBXdVVCGzTuQjcXj0O6vp5AnyaVh5MzQ7yQJuFYN7cikBn1eDQ3/UKB+PjLAx+1c5RMNY8
-	iUA77KCgeDSLgAnDJQQlTj0PRl/HwLitkYT5oa8Y9M24EBgccxg4mnIQ+HRJUFpe51/X/aTA
-	2/keh2JtF4Lbw0M4TI7aETxu/YzAfD+bgpHCJzj0OJZB7/QEBW+1BRSMW29g8KOWgrJsMwnW
-	d2MIbuo1CJwDZgxUd2oo0N00EVBvb+CBdewPBp90GgyqTPvAZnAS0FFYjvnP9bserQB9sQrz
-	l28YaB82YjBrqORFVSDWrb5CsJV1TzFW3e2jWOMtI2K9Hg1ipypUOKsu9LfNrgmcvVCXzlZ0
-	uCjWM/2BYs0zZQTbXs6wd/M8GFvUuZ6tLxniHdgZL9h2nJPL0jjFxh2JAul3gxc/dS0mo/q9
-	HT+PXkfmowA+Q29mTL4x3gJT9Fqmv38WX+BAOoSpu+wk85GAj9M9q5ic2SuLwnJ6N1M8MEIu
-	MEGvYb686SYWWEhvYYzZc9S/0FVMVW3Toj/AP9f2eRZZREcwpflushAJytCSShQoS0lLlsjk
-	ERuUSdLMFFnGhmMnk03I/0+Gs3+KnqOpnhgLovlIvFTYlB4mE5GSNGVmsgUxfFwcKHTJQ2Ui
-	4XFJ5hlOcTJBkSrnlBa0kk+IVwj3HOYSRfQJyWkuieNOcYr/KsYPCDqPSowZMfFtR4PO9TVq
-	HDlzNULVxWB7EX31d4E0YfJQ+B3HcFt/nG2v27W8RHhpbcvq+yPt1W9NEW40E5p6tAHt6UJS
-	Z+rB2MjWn3pHwomIe7HWhryM+FhvHDXYe+zljmUqz64DO6NfGEMCLFH2Zx2qBy2W6Hp92vZd
-	sDW9pvLIJjGhlErC1uEKpeQvv2O8gEsDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSb0xbZRTGfe9933svlZpr3cKVxcw0khkiCPtjzgdd+GJ8TdSYqDFxH7Cu
+	N1JXuqXlz5gOO2i3igUBZQt0GwxZrbQgFJNtzHYbbB2EEboBrpvMwlzAWWARKJWygYVlX05+
+	53nOeT49AqsKkVRBZyiQjQaNXs0psGIm+VRG0ZGtuqzeegw269cwFr5HILpgw/DIcYYHm7ee
+	QN/NMgyxZQcL1nOrCaM2wEMoeIEFz6+HGJjvWOEg0juH4IHTjmD1zhQDznsrDDw6ugeWB4dY
+	mLs/jsDnKuOgv+5bDmY7OGgq8xG4fi2C4ISjFsHkbR8Dbu+7EHZOYhiobmbg2H0OjnamgONY
+	OZMYfzNQ13aegSVnKw+OwWECd10NPDycyIaAe4qH9pkhAuGrhwmcMY/z4L11BcHCyAQDHvsk
+	C7buKAbvX78TOHW4BUP9yTEOfvP1YwicvcvAcPdxDv70rBIwO2IEbriDGH6ZCjEwEOjD0N/w
+	M4ah7jYCE+MhAl2D11hYrNoEwZpKAm2zzVyOlsasVZh6TnoQXY7XIrpwupyl1urE2jv9gKWW
+	rmJ6emCao/HoKEdbvokztGYwg55ruMNTi/82T5u8hdRyeYbQLlf6+698onhdK+t1RbLx1Z2f
+	KvL+i7fz+0Z27v938RkzGsqqQEmCJG6X2tpj+AnbO4NkjTlxixQKLbFrvEF8UeqqnEzoCoEV
+	hzdLR5aq1o3nxFypdawPrTEW06Qr5xsSLAhK8TXJ/Ufp48zNkrvj4vp5UkKuuxlfZ5W4Q2qs
+	iK1nSuKPSdK0+Sf+8cPz0iVXCFcjZRN6qhWpdIaifI1Ovz0zr8Sg25+5e2++FyX65jz4cNdZ
+	NBf8oAeJAlInKy8WZ+tURFNkKsnvQZLAqjcop/VZOpVSqyk5IBv35hoL9bKpB20SsDpFuXWx
+	WKsSP9cUyHtkeZ9sfOIyQlKqGW3bMrsy/4OMTqjT/bnU8DYdrS+NFOQGCr/IeO+rlzYa3tBH
+	Fu3NOz4svZrdqK70d3ycc6ORhsMGzjJiqtvme6t8V0X02ac92E7m/NGc499HvnzTYjKqDnzn
+	Shst3+3PHHmBb2EOpWrn/7mVZq1IzkqxHfysc6Hm5Z53Ppp1qK4r1diUp8lOZ40mzf9YmInF
+	awMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTcRTG+997d+91NL0soZt9qAZRBJlFxYFMDHq5Fb1AbxBRjrzlcJux
+	laWQNW1pZTFHm+QqdeaKaeVLWSarpWSWWTOrWWkqLF9wZdmmbrbsavTl8DvP85zD+XBoXFoj
+	iqIV6qO8Ri1XykgxId66KmvxsexlipjR59MhR38KOro8IvigcxLg9+UQcPVuOQkhywMKcqqu
+	iKDJnUmA604Zgi5/DoLRcQsO+toJAkLGRgp8gc8UmHQIJhyNCMytRhzaXU9wKL+nw+BXxR8S
+	BhuGEZh6PCTkD+gIGLLlIijotVAw8GwDfOuqE8FEZx8G7hEvApvnDwYeZzaCkDkZCq3Vwrj5
+	BwnjLW9wyDe5EBT3dOIwPNCN4F7jFwSOW5kkfDXcx6HNEw7v/EMkvDBdIOFb61UMvleQUJTp
+	EEHrq0EE1yxGBL2fHBhkldwlwXytioDa7kcUtA7+xqDDbMSgrGoLdNl6CWg2WDHhXCFVORMs
+	+VmYUPoxMN2uwyBgs1PxpYgb1V8iOHt1Dcbp34ZIrvx6OeLGg0bE+UqzcE5vENoG7xDOnak+
+	zpU2e0ku6H9Pco6RIoJ7aWW5G+eCGJfXspirLeiktq/ZK45N5JWKVF6zJC5BnDQWvEMdeRd3
+	4udI+Gn0JuY8CqNZZjmbW+kSTTLJLGDb2wP4JEcyc9nqi72CLqZxpm0Omx24NGXMYA6w9o4m
+	NMkEM599VlcgME1LmJVs2eeMfzvnsGUVzql4mCCb3MEpljIr2MLzoyIDEhehaXYUqVCnquQK
+	5YpobXJSmlpxIvpgiqoKCd9kO/k77yHytW2oRwyNZNMlzuNLFVKRPFWbpqpHLI3LIiVeZYxC
+	KkmUp6XzmpQDmmNKXluPZtOEbKZk0x4+Qcoclh/lk3n+CK/572J0WNRp9LRvy6sWkyN9s7Rv
+	7ay+1Y9vmfE4dbJV4nbVDE87tWm/lBnbvMMYEb7GsHDb5YW3x/iP0XnuWEnHoTNNexfIXhz2
+	Xdbpetqw/bPiI/YtL1mnyldtPEet25nNFjfgduv8wUwmN4X8Htj1pb95d/cu3vk6kc7I8M6L
+	jV8fezPkP9ssI7RJ8qWLcI1W/heZU/cPSQMAAA==
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -224,350 +224,230 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-Implement CONFIG_DEPT_UNIT_TEST introducing a kernel module that runs
-basic unit test for dept.
+From: Yunseong Kim <ysk@kzalloc.com>
 
+The current implementation shares the same dept key for multiple
+synchronization points, which can lead to false positive reports in
+dependency tracking and potential confusion in debugging.  For example,
+both normal RCU and tasks trace RCU synchronization points use the same
+dept key.  Specifically:
+
+   1. synchronize_rcu() uses a dept key embedded in __wait_rcu_gp():
+
+      synchronize_rcu()
+         synchronize_rcu_normal()
+            _wait_rcu_gp()
+               __wait_rcu_gp() <- the key as static variable
+
+   2. synchronize_rcu_tasks_trace() uses the dept key, too:
+
+      synchronize_rcu_tasks_trace()
+         synchronize_rcu_tasks_generic()
+            _wait_rcu_gp()
+               __wait_rcu_gp() <- the key as static variable
+
+Since the both rely on the same dept key, dept may report false positive
+circular dependency.  To resolve this, separate dept keys and maps
+should be assigned to each struct rcu_synchronize.
+
+   ===================================================
+   DEPT: Circular dependency has been detected.
+   6.15.0-rc6-00042-ged94bafc6405 #2 Not tainted
+   ---------------------------------------------------
+   summary
+   ---------------------------------------------------
+   *** DEADLOCK ***
+
+   context A
+      [S] lock(cpu_hotplug_lock:0)
+      [W] __wait_rcu_gp(<sched>:0)
+      [E] unlock(cpu_hotplug_lock:0)
+
+   context B
+      [S] (unknown)(<sched>:0)
+      [W] lock(cpu_hotplug_lock:0)
+      [E] try_to_wake_up(<sched>:0)
+
+   [S]: start of the event context
+   [W]: the wait blocked
+   [E]: the event not reachable
+   ---------------------------------------------------
+   context A's detail
+   ---------------------------------------------------
+   context A
+      [S] lock(cpu_hotplug_lock:0)
+      [W] __wait_rcu_gp(<sched>:0)
+      [E] unlock(cpu_hotplug_lock:0)
+
+   [S] lock(cpu_hotplug_lock:0):
+   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
+   stacktrace:
+         percpu_down_read.constprop.0+0x88/0x2ec
+         cpus_read_lock+0x14/0x20
+         cgroup_procs_write_start+0x164/0x634
+         __cgroup_procs_write+0xdc/0x4d0
+         cgroup_procs_write+0x34/0x74
+         cgroup_file_write+0x25c/0x670
+         kernfs_fop_write_iter+0x2ec/0x498
+         vfs_write+0x574/0xc30
+         ksys_write+0x124/0x244
+         __arm64_sys_write+0x70/0xa4
+         invoke_syscall+0x88/0x2e0
+         el0_svc_common.constprop.0+0xe8/0x2e0
+         do_el0_svc+0x44/0x60
+         el0_svc+0x50/0x188
+         el0t_64_sync_handler+0x10c/0x140
+         el0t_64_sync+0x198/0x19c
+
+   [W] __wait_rcu_gp(<sched>:0):
+   [<ffff8000804ce88c>] __wait_rcu_gp+0x324/0x498
+   stacktrace:
+         schedule+0xcc/0x348
+         schedule_timeout+0x1a4/0x268
+         __wait_for_common+0x1c4/0x3f0
+         __wait_for_completion_state+0x20/0x38
+         __wait_rcu_gp+0x35c/0x498
+         synchronize_rcu_normal+0x200/0x218
+         synchronize_rcu+0x234/0x2a0
+         rcu_sync_enter+0x11c/0x300
+         percpu_down_write+0xb4/0x3e0
+         cgroup_procs_write_start+0x174/0x634
+         __cgroup_procs_write+0xdc/0x4d0
+         cgroup_procs_write+0x34/0x74
+         cgroup_file_write+0x25c/0x670
+         kernfs_fop_write_iter+0x2ec/0x498
+         vfs_write+0x574/0xc30
+         ksys_write+0x124/0x244
+
+   [E] unlock(cpu_hotplug_lock:0):
+   (N/A)
+   ---------------------------------------------------
+   context B's detail
+   ---------------------------------------------------
+   context B
+      [S] (unknown)(<sched>:0)
+      [W] lock(cpu_hotplug_lock:0)
+      [E] try_to_wake_up(<sched>:0)
+
+   [S] (unknown)(<sched>:0):
+   (N/A)
+
+   [W] lock(cpu_hotplug_lock:0):
+   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
+   stacktrace:
+         percpu_down_read.constprop.0+0x6c/0x2ec
+         cpus_read_lock+0x14/0x20
+         check_all_holdout_tasks_trace+0x90/0xa30
+         rcu_tasks_wait_gp+0x47c/0x938
+         rcu_tasks_one_gp+0x75c/0xef8
+         rcu_tasks_kthread+0x180/0x1dc
+         kthread+0x3ac/0x74c
+         ret_from_fork+0x10/0x20
+
+   [E] try_to_wake_up(<sched>:0):
+   [<ffff8000804233b8>] complete+0xb8/0x1e8
+   stacktrace:
+         try_to_wake_up+0x374/0x1164
+         complete+0xb8/0x1e8
+         wakeme_after_rcu+0x14/0x20
+         rcu_tasks_invoke_cbs+0x218/0xaa8
+         rcu_tasks_one_gp+0x834/0xef8
+         rcu_tasks_kthread+0x180/0x1dc
+         kthread+0x3ac/0x74c
+         ret_from_fork+0x10/0x20
+   (wait to wake up)
+   stacktrace:
+         __schedule+0xf64/0x3614
+         schedule+0xcc/0x348
+         schedule_timeout+0x1a4/0x268
+         __wait_for_common+0x1c4/0x3f0
+         __wait_for_completion_state+0x20/0x38
+         __wait_rcu_gp+0x35c/0x498
+         synchronize_rcu_tasks_generic+0x14c/0x220
+         synchronize_rcu_tasks_trace+0x24/0x8c
+         rcu_init_tasks_generic+0x168/0x194
+         do_one_initcall+0x174/0xa00
+         kernel_init_freeable+0x744/0x7dc
+         kernel_init+0x78/0x220
+         ret_from_fork+0x10/0x20
+
+Separating the dept key and map for each of struct rcu_synchronize,
+ensuring proper tracking for each execution context.
+
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+[ Rewrote the changelog. ]
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/dept_unit_test.h     |  67 +++++++++++
- kernel/dependency/Makefile         |   1 +
- kernel/dependency/dept.c           |  12 ++
- kernel/dependency/dept_unit_test.c | 173 +++++++++++++++++++++++++++++
- lib/Kconfig.debug                  |  12 ++
- 5 files changed, 265 insertions(+)
- create mode 100644 include/linux/dept_unit_test.h
- create mode 100644 kernel/dependency/dept_unit_test.c
+ include/linux/rcupdate_wait.h | 13 ++++++++-----
+ kernel/rcu/rcu.h              |  1 +
+ kernel/rcu/update.c           |  5 +++--
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/dept_unit_test.h b/include/linux/dept_unit_test.h
-new file mode 100644
-index 000000000000..7612b4e97e69
---- /dev/null
-+++ b/include/linux/dept_unit_test.h
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
-+ */
-+
-+#ifndef __LINUX_DEPT_UNIT_TEST_H
-+#define __LINUX_DEPT_UNIT_TEST_H
-+
-+#if defined(CONFIG_DEPT_UNIT_TEST) || defined(CONFIG_DEPT_UNIT_TEST_MODULE)
-+struct dept_ut {
-+	bool circle_detected;
-+	bool recover_circle_detected;
-+
-+	int ecxt_stack_total_cnt;
-+	int wait_stack_total_cnt;
-+	int evnt_stack_total_cnt;
-+	int ecxt_stack_valid_cnt;
-+	int wait_stack_valid_cnt;
-+	int evnt_stack_valid_cnt;
-+};
-+
-+extern struct dept_ut dept_ut_results;
-+
-+static inline void dept_ut_circle_detect(void)
-+{
-+	dept_ut_results.circle_detected = true;
-+}
-+static inline void dept_ut_recover_circle_detect(void)
-+{
-+	dept_ut_results.recover_circle_detected = true;
-+}
-+static inline void dept_ut_ecxt_stack_account(bool valid)
-+{
-+	dept_ut_results.ecxt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.ecxt_stack_valid_cnt++;
-+}
-+static inline void dept_ut_wait_stack_account(bool valid)
-+{
-+	dept_ut_results.wait_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.wait_stack_valid_cnt++;
-+}
-+static inline void dept_ut_evnt_stack_account(bool valid)
-+{
-+	dept_ut_results.evnt_stack_total_cnt++;
-+
-+	if (valid)
-+		dept_ut_results.evnt_stack_valid_cnt++;
-+}
-+#else
-+struct dept_ut {};
-+
-+#define dept_ut_circle_detect() do { } while (0)
-+#define dept_ut_recover_circle_detect() do { } while (0)
-+#define dept_ut_ecxt_stack_account(v) do { } while (0)
-+#define dept_ut_wait_stack_account(v) do { } while (0)
-+#define dept_ut_evnt_stack_account(v) do { } while (0)
-+
-+#endif
-+#endif /* __LINUX_DEPT_UNIT_TEST_H */
-diff --git a/kernel/dependency/Makefile b/kernel/dependency/Makefile
-index 92f165400187..fc584ca87124 100644
---- a/kernel/dependency/Makefile
-+++ b/kernel/dependency/Makefile
-@@ -2,3 +2,4 @@
+diff --git a/include/linux/rcupdate_wait.h b/include/linux/rcupdate_wait.h
+index 4c92d4291cce..ee598e70b4bc 100644
+--- a/include/linux/rcupdate_wait.h
++++ b/include/linux/rcupdate_wait.h
+@@ -19,17 +19,20 @@ struct rcu_synchronize {
  
- obj-$(CONFIG_DEPT) += dept.o
- obj-$(CONFIG_DEPT) += dept_proc.o
-+obj-$(CONFIG_DEPT_UNIT_TEST) += dept_unit_test.o
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 3c3ec2701bd6..0f4464657288 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -78,8 +78,12 @@
- #include <linux/workqueue.h>
- #include <linux/irq_work.h>
- #include <linux/vmalloc.h>
-+#include <linux/dept_unit_test.h>
- #include "dept_internal.h"
+ 	/* This is for debugging. */
+ 	struct rcu_gp_oldstate oldstate;
++	struct dept_map dmap;
++	struct dept_key dkey;
+ };
+ void wakeme_after_rcu(struct rcu_head *head);
  
-+struct dept_ut dept_ut_results;
-+EXPORT_SYMBOL_GPL(dept_ut_results);
-+
- static int dept_stop;
- static int dept_per_cpu_ready;
+ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
+-		   struct rcu_synchronize *rs_array);
++		   struct rcu_synchronize *rs_array, struct dept_key *dkey);
  
-@@ -826,6 +830,10 @@ static void print_dep(struct dept_dep *d)
- 			pr_warn("(wait to wake up)\n");
- 			print_ip_stack(0, e->ewait_stack);
- 		}
-+
-+		dept_ut_ecxt_stack_account(valid_stack(e->ecxt_stack));
-+		dept_ut_wait_stack_account(valid_stack(w->wait_stack));
-+		dept_ut_evnt_stack_account(valid_stack(e->event_stack));
- 	}
- }
+ #define _wait_rcu_gp(checktiny, state, ...) \
+-do {												\
+-	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };					\
+-	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];				\
+-	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array);	\
++do {													\
++	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };						\
++	static struct dept_key __key;									\
++	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];					\
++	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array, &__key);	\
+ } while (0)
  
-@@ -920,6 +928,8 @@ static void print_circle(struct dept_class *c)
- 	dump_stack();
+ #define wait_rcu_gp(...) _wait_rcu_gp(false, TASK_UNINTERRUPTIBLE, __VA_ARGS__)
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index 9cf01832a6c3..c0d8ea139596 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -12,6 +12,7 @@
  
- 	dept_outworld_exit();
-+
-+	dept_ut_circle_detect();
- }
+ #include <linux/slab.h>
+ #include <trace/events/rcu.h>
++#include <linux/dept_sdt.h>
  
  /*
-@@ -1021,6 +1031,8 @@ static void print_recover_circle(struct dept_event_site *es)
- 	dump_stack();
+  * Grace-period counter management.
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index dfeba9b35395..6b7ede219433 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -409,7 +409,7 @@ void wakeme_after_rcu(struct rcu_head *head)
+ EXPORT_SYMBOL_GPL(wakeme_after_rcu);
  
- 	dept_outworld_exit();
-+
-+	dept_ut_recover_circle_detect();
- }
- 
- static void bfs_init_recover(void *node, void *in, void **out)
-diff --git a/kernel/dependency/dept_unit_test.c b/kernel/dependency/dept_unit_test.c
-new file mode 100644
-index 000000000000..88e846b9f876
---- /dev/null
-+++ b/kernel/dependency/dept_unit_test.c
-@@ -0,0 +1,173 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * DEPT unit test
-+ *
-+ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
-+ *
-+ *  Copyright (c) 2025 SK hynix, Inc., Byungchul Park
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <linux/mutex.h>
-+#include <linux/dept.h>
-+#include <linux/dept_unit_test.h>
-+
-+MODULE_DESCRIPTION("DEPT unit test");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Byungchul Park <max.byungchul.park@sk.com>");
-+
-+struct unit {
-+	const char *name;
-+	bool (*func)(void);
-+	bool result;
-+};
-+
-+static DEFINE_SPINLOCK(s1);
-+static DEFINE_SPINLOCK(s2);
-+static bool test_spin_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	spin_lock(&s1);
-+	spin_lock(&s2);
-+	spin_unlock(&s2);
-+	spin_unlock(&s1);
-+
-+	spin_lock(&s2);
-+	spin_lock(&s1);
-+	spin_unlock(&s1);
-+	spin_unlock(&s2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static DEFINE_MUTEX(m1);
-+static DEFINE_MUTEX(m2);
-+static bool test_mutex_lock_deadlock(void)
-+{
-+	dept_ut_results.circle_detected = false;
-+
-+	mutex_lock(&m1);
-+	mutex_lock(&m2);
-+	mutex_unlock(&m2);
-+	mutex_unlock(&m1);
-+
-+	mutex_lock(&m2);
-+	mutex_lock(&m1);
-+	mutex_unlock(&m1);
-+	mutex_unlock(&m2);
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static bool test_wait_event_deadlock(void)
-+{
-+	struct dept_map dmap1;
-+	struct dept_map dmap2;
-+
-+	sdt_map_init(&dmap1);
-+	sdt_map_init(&dmap2);
-+
-+	dept_ut_results.circle_detected = false;
-+
-+	sdt_request_event(&dmap1); /* [S] */
-+	sdt_wait(&dmap2); /* [W] */
-+	sdt_event(&dmap1); /* [E] */
-+
-+	sdt_request_event(&dmap2); /* [S] */
-+	sdt_wait(&dmap1); /* [W] */
-+	sdt_event(&dmap2); /* [E] */
-+
-+	return dept_ut_results.circle_detected;
-+}
-+
-+static void dummy_event(void)
-+{
-+	/* Do nothing. */
-+}
-+
-+static DEFINE_DEPT_EVENT_SITE(es1);
-+static DEFINE_DEPT_EVENT_SITE(es2);
-+static bool test_recover_deadlock(void)
-+{
-+	dept_ut_results.recover_circle_detected = false;
-+
-+	dept_recover_event(&es1, &es2);
-+	dept_recover_event(&es2, &es1);
-+
-+	event_site(&es1, dummy_event);
-+	event_site(&es2, dummy_event);
-+
-+	return dept_ut_results.recover_circle_detected;
-+}
-+
-+static struct unit units[] = {
-+	{
-+		.name = "spin lock deadlock test",
-+		.func = test_spin_lock_deadlock,
-+	},
-+	{
-+		.name = "mutex lock deadlock test",
-+		.func = test_mutex_lock_deadlock,
-+	},
-+	{
-+		.name = "wait event deadlock test",
-+		.func = test_wait_event_deadlock,
-+	},
-+	{
-+		.name = "event recover deadlock test",
-+		.func = test_recover_deadlock,
-+	},
-+};
-+
-+static int __init dept_ut_init(void)
-+{
-+	int i;
-+
-+	lockdep_off();
-+
-+	dept_ut_results.ecxt_stack_valid_cnt = 0;
-+	dept_ut_results.ecxt_stack_total_cnt = 0;
-+	dept_ut_results.wait_stack_valid_cnt = 0;
-+	dept_ut_results.wait_stack_total_cnt = 0;
-+	dept_ut_results.evnt_stack_valid_cnt = 0;
-+	dept_ut_results.evnt_stack_total_cnt = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(units); i++)
-+		units[i].result = units[i].func();
-+
-+	pr_info("\n");
-+	pr_info("******************************************\n");
-+	pr_info("DEPT unit test results\n");
-+	pr_info("******************************************\n");
-+	for (i = 0; i < ARRAY_SIZE(units); i++) {
-+		pr_info("(%s) %s\n", units[i].result ? "pass" : "fail",
-+				units[i].name);
-+	}
-+	pr_info("ecxt stack valid count = %d/%d\n",
-+			dept_ut_results.ecxt_stack_valid_cnt,
-+			dept_ut_results.ecxt_stack_total_cnt);
-+	pr_info("wait stack valid count = %d/%d\n",
-+			dept_ut_results.wait_stack_valid_cnt,
-+			dept_ut_results.wait_stack_total_cnt);
-+	pr_info("event stack valid count = %d/%d\n",
-+			dept_ut_results.evnt_stack_valid_cnt,
-+			dept_ut_results.evnt_stack_total_cnt);
-+	pr_info("******************************************\n");
-+	pr_info("\n");
-+
-+	lockdep_on();
-+
-+	return 0;
-+}
-+
-+static void dept_ut_cleanup(void)
-+{
-+	/*
-+	 * Do nothing for now.
-+	 */
-+}
-+
-+module_init(dept_ut_init);
-+module_exit(dept_ut_cleanup);
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 540583425d8e..86e26b9708fa 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1404,6 +1404,18 @@ config DEPT_AGGRESSIVE_TIMEOUT_WAIT
- 	  that timeout is used to avoid a deadlock. Say N if you'd like
- 	  to avoid verbose reports.
- 
-+config DEPT_UNIT_TEST
-+	tristate "unit test for DEPT"
-+	depends on DEBUG_KERNEL && DEPT
-+	default n
-+	help
-+	  This option provides a kernel module that runs unit test for
-+	  DEPT.
-+
-+	  Say Y if you want DEPT unit test to be built into the kernel.
-+	  Say M if you want DEPT unit test to build as a module.
-+	  Say N if you are unsure.
-+
- config LOCK_DEBUGGING_SUPPORT
- 	bool
- 	depends on TRACE_IRQFLAGS_SUPPORT && STACKTRACE_SUPPORT && LOCKDEP_SUPPORT
+ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
+-		   struct rcu_synchronize *rs_array)
++		   struct rcu_synchronize *rs_array, struct dept_key *dkey)
+ {
+ 	int i;
+ 	int j;
+@@ -426,7 +426,8 @@ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *c
+ 				break;
+ 		if (j == i) {
+ 			init_rcu_head_on_stack(&rs_array[i].head);
+-			init_completion(&rs_array[i].completion);
++			sdt_map_init_key(&rs_array[i].dmap, dkey);
++			init_completion_dmap(&rs_array[i].completion, &rs_array[i].dmap);
+ 			(crcu_array[i])(&rs_array[i].head, wakeme_after_rcu);
+ 		}
+ 	}
 -- 
 2.17.1
 
