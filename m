@@ -1,91 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCEF2E974D
-	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 14:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6A329AB15
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 14:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764943618; cv=none; b=naMC+M4AO5ZHaX1avNuBpFRYsk1c2aN2q7Mlw0wXVu++ci+q8aYF7JxlxdG80507bywxO2UK3SZMyNFr2WT+zjoa56iPYq+e5imGHP5AGW7uG/hcVp3sUxqZ8U6GUcXki2CvUFDmQDevya8NejCpLXfxWjP7uugwKPlSTrzNpjc=
+	t=1764943627; cv=none; b=k2hXvzzNB/bP3d3XBLpDlaAbHQV7yy2bVzE7d6HMEVGOgF03kAI/mF2nGtlBVGwzlih89/lGKQ7JQ/G3LxazMF2fgE85SSCtyibjcqQTkJttBOOpsoRh6DyJ4gIKsCFq2yX2OHb+t5sOVMSrGVgru/2rS1+Sc1P7nUjzMcRCNmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764943618; c=relaxed/simple;
-	bh=VSstG9zcCfh9eV9IiT0zbtVD+JSCl+s8oOgqm0VMmjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kms15gdZRRI7EvkXcqFMhulPIZ0lRBD8OU7ekHqjnsiJfWLjM2UjFnYmZ3ItTOqzYl5G6ePzpjnf1baoIevyeBiLxOVUpy02GshDRxG0a0v6ZQtUMC3ijivuoSC+krTDUXoiVN6S/QrakOFhIpti7X0Z9LYgdveLjiy/Chz51b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZbE7AXPQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1764943627; c=relaxed/simple;
+	bh=v0aLSz6eztCCXc5Q60HoWtsEgndbijRcO8K/h9nqE18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZrCX9gB/sgeoEUigG5/duMectzuUepQa5thchbAFXQJMBXj8nqBjROpuK1OZqoITzjrVj2H7WRt3iRei2iTa+G8UQUyr2STWpWsJh/+HkMgQoG1vNArBdgILKFCgRQ7Fz+ekvoMF2g39Z3maTMuxXjQcrUtxrSSR0bFKVoUAJ/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TI0qeUry; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZbE7AXPQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764943584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+iMTeVc+7sO/2YkTfilp2vysDjDsIEE82XFegn4CvsE=;
-	b=ZbE7AXPQgtFF9BcYmo+7Cla+6bXzVZ6w3fw/PRX8K95WtgBdUgWRsMqUkDCh3OJgo7UyaI
-	/f6AsDCg7XO9wH6tW2Ky7T83CJGtwDYFwk0pAkpCIKyQngecyx65gcPLlPZWg8+WGlYnwD
-	lcPpGSYTdcXG9h8Tman6V7fXZ7LAo1E=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-Eo7eiYGoMmGdWKYpU8BILQ-1; Fri,
- 05 Dec 2025 09:04:58 -0500
-X-MC-Unique: Eo7eiYGoMmGdWKYpU8BILQ-1
-X-Mimecast-MFC-AGG-ID: Eo7eiYGoMmGdWKYpU8BILQ_1764943465
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 003BB19560A5;
-	Fri,  5 Dec 2025 14:04:23 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.45.224.159])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D70D219560B4;
-	Fri,  5 Dec 2025 14:04:19 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TI0qeUry"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4775dbde730so2875025e9.3
+        for <netdev@vger.kernel.org>; Fri, 05 Dec 2025 06:07:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764943621; x=1765548421; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9++XxvnUn686kk2ddDofJD+D0ZU/VRf4pIN8y4vJ3I=;
+        b=TI0qeUrypK/wyM0Fqaq91N5G4cxxF+ZjIB5JRJFIlGtmU21c5xWpjDtVb90bUPMVEs
+         u6CqwaXs+MKG5uW94Qpy59OI0ffkL1SV/fWT6oU9xaiKtQ4Gu1piS5df8LBw/YG85PuI
+         BPRgmgOdwvtXL07tXfIaADWXamxIurrr9skDhE8u4iRYZGVLmnQgyGkfFSo4NpQihOu2
+         RpyPlimWZwQRrGJ66pjSTBWSGed9bHJBPTHGa3ERL0lxwhZ0awqKPNOiw31VZhROXQQs
+         n7952aJwZqEOfV5SeyFJl/zylhXlM6COV4TgHnotxDCcvoScv28ZcXHHgLwv9cNrWFWU
+         uGsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764943621; x=1765548421;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q9++XxvnUn686kk2ddDofJD+D0ZU/VRf4pIN8y4vJ3I=;
+        b=Kj78bKcFjDuKzzo/JIyjkHN6TFOCLGsbgfWub6rceA6bnnpXNr51WWrrj+d68fyYPU
+         bQKtgPfaYU8aK7xWs60xkTetnPVCqrJvfiMNBAjckgS0O6LbyAzAJuCAyHhxAG8wtpIx
+         Gtf2UfI8h2unR8Ng709pRoyP+bqGKM5l2Mw3elx0/VUyfGH/9tqufLEt6UEtCTCNbfAy
+         8ntJ5t6fV4It0q8OT47QbVHToUniHQjYjGJqkTG0ZO7SafMPq7blLYvQxLdSdCLQ4ZVk
+         CR1Rfn2mWFZCYPO+oKhzb/x2MzOi67TEcnkrgotnKP4naZBqu8HoLJMcilwaLBqlqdhj
+         GouQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSyEAWkhUPi2lu2AlFXKXkM+v085sLuDtZZ2QYRPiu1BS4jYr6+NyqLuLwOeWpQJZBxMPueNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyImfKdH26U2wOtrrgVKqfbbGZNxKSXTaA1qDaTrxq58Mo9oBd
+	eBk4ipvsFX5hMzukTU8b+AomI7Cj0UF/voQLxB/VD5O2OgexdIEUT2qz
+X-Gm-Gg: ASbGncvGzbNPCoc0d+I+RdxOKL/ECG6hM3FD/OqOW/l9prJEXQqnIUZDO5QzCNrCTGa
+	SwL7zWAlwnWcITOGih2OHUMyoHMP2EmoQXNaL1lYUTt7a+G38aer2Nu+YBoEo5sEPn9IeRHJdQU
+	IOWZn4BdXmIz+ETESDjRvWZEiDO1L7247OS1jIKg7ahCIZYOL97aDKI8sq4DIyaRzlJpUaB8s/k
+	1OM800UClPAZaRgQ8q6hN0GA89YZammEyFI88sSrqsHtzC5HiKJUx+49JTQhucTsbcmP+RPW3Rp
+	xoUITNfCdVfGgPTHumjWGwihtW1vRnywcrdtgVZQHkdBBMWWknD3+smc4g79aAh5SFrtPAinLPZ
+	UnGUyCKi2pvmHaEI84YVdUAb7L7QLfdJ3H/PTN3gcOBi6bd5nboMfKHGgGnS4fYoRBqrSq/QpB+
+	32kw==
+X-Google-Smtp-Source: AGHT+IG0wT+8z7qTds8v5+fhOTpqMvzgVhp1qMAUU1xLhi0SRHqu+YGYMW+KXhxXqSyk0JI3SZhWpQ==
+X-Received: by 2002:a05:600c:630e:b0:477:9c40:2fa1 with SMTP id 5b1f17b1804b1-4792c8f9e58mr46567795e9.4.1764943621044;
+        Fri, 05 Dec 2025 06:07:01 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d106:d600:456d:8d57:7a7:f1e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b17588asm60066835e9.17.2025.12.05.06.06.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 06:06:58 -0800 (PST)
+Date: Fri, 5 Dec 2025 16:06:55 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Hauke Mehrtens <hauke@hauke-m.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>
-Subject: [RFC PATCH 0/2] net: gro: avoid touching transport header
-Date: Fri,  5 Dec 2025 15:03:29 +0100
-Message-ID: <cover.1764943231.git.pabeni@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Rasmus Villemoes <ravi@prevas.dk>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net] net: dsa: mxl-gsw1xx: manually clear RANEG bit
+Message-ID: <20251205140655.mxe32abnagpvjuri@skbuf>
+References: <ab836f5d36e3f00cd8e2fb3e647b7204b5b6c990.1764898074.git.daniel@makrotopia.org>
+ <97389f24-d900-4ff0-8a80-f75e44163499@lunn.ch>
+ <aTLkl0Zey4u4P8x6@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTLkl0Zey4u4P8x6@makrotopia.org>
 
-This series is basically a pre-req for GRO support for double UDP
-encapsulation:
+On Fri, Dec 05, 2025 at 01:56:39PM +0000, Daniel Golle wrote:
+> On Fri, Dec 05, 2025 at 02:45:35PM +0100, Andrew Lunn wrote:
+> > On Fri, Dec 05, 2025 at 01:32:20AM +0000, Daniel Golle wrote:
+> > > Despite being documented as self-clearing, the RANEG bit sometimes
+> > > remains set, preventing auto-negotiation from happening.
+> > > 
+> > > Manually clear the RANEG bit after 10ms as advised by MaxLinear, using
+> > > delayed_work emulating the asynchronous self-clearing behavior.
+> > 
+> > Maybe add some text why the complexity of delayed work is used, rather
+> > than just a msleep(10)?
+> > 
+> > Calling regmap_read_poll_timeout() to see if it clears itself could
+> > optimise this, and still be simpler.
+> 
+> Is the restart_an() operation allowed to sleep?
 
-https://lore.kernel.org/netdev/cover.1764056123.git.pabeni@redhat.com/
-
-that otherwise would requiring explicitly disabling gro on the outer
-geneve device.
-
-I *think* it should also help plain TCP GRO performances, even if don't
-have a very high speed, full zero-copy, big TCP testbed handy to
-actually prove it - see patch 1 for the gory details.
-
-Paolo Abeni (2):
-  net: gro: avoid relaying on skb->transport_header at receive time
-  net: gro: set the transport header later
-
- include/net/gro.h        | 26 ++++++++++++++++++++++++++
- include/net/tcp.h        |  3 ++-
- net/ipv4/af_inet.c       |  2 +-
- net/ipv4/tcp_offload.c   | 16 +++++++++-------
- net/ipv4/udp_offload.c   |  8 ++++++--
- net/ipv6/ip6_offload.c   |  3 +--
- net/ipv6/tcpv6_offload.c |  2 +-
- 7 files changed, 46 insertions(+), 14 deletions(-)
-
--- 
-2.52.0
-
+Isn't regmap_set_bits() already sleeping? Your gsw1xx_regmap_bus
+accesses __mdiobus_write() and __mdiobus_read() which are sleepable
+operations and there's no problem with that.
