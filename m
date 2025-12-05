@@ -1,478 +1,212 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010027.outbound.protection.outlook.com [52.101.56.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC10A1397;
-	Fri,  5 Dec 2025 16:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764952801; cv=none; b=c2MRhow9nAjGLqDkXHdj0YUUY2zjgIPFbpqMIR+cZivm+jvH3BZja1mDKi/dw7TvchtLc7oISTY28HzC6avf7ZbGM6saZ69jZzUiruODcq0kXngvL5RNYFBOJwtrr74DC9i6m/TNcnzut19oxbn87z1xakO8BdXOdxRi27LrLvk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764952801; c=relaxed/simple;
-	bh=6w28E7ainKujFwd66eIL3EljHzx3KE/Li7q3fyuQugk=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GIZGVbIE5zso/cr6quc8h+t//Cu86iq/DqZ3ykXf0SJWNrGhjEFRF0Vmli5uBLnvTE9tREsW3Txd6yCakCKghsIZuRokggkTiLbtQ4ndeExv1+t2F+3u6xrGhUvfRLTH/6SJ/39yYVL3uW5OoYi+2JtT0eq5CDHnst52IaNktUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=J8Q0vB6w; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A3A341AC5
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 16:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764953210; cv=fail; b=VKQiLqayMoYBCtIH9IhcSpu7tVbTmR3vOaCKFXpWvyHKC3engsOjQlo3l2gXGBrYu13h9a+qR/rcj3ZVX5w8OrMCuxLu1s0Fp6KOmTiFbATOxE7TmE0ux0Cadw0aAkOTggNCQO5u2KCQ3sbmaKHdH+zHW29eVnIMXHdDyJ0hrSI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764953210; c=relaxed/simple;
+	bh=9muxJOC0ISis8B0fLcOKR+3zi4oy1zHacDvqq3ZEUX0=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=f+4+h+xOWooBOMUAJ7zlQ4Jwn0JfLUKiccnWKJTH5LKPAC5aye1J2ccK7IhP4cIHdEUHmp/c4JBmWViPqv7XiwKLRDLFVfXV/fjCoHW99P5zO3IOh8MoePZ1xG/iqeDinB5yI/W1JPYZM1nTDVi28DUlIMkgM/nvX8JAZ09qOUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CVqzuX2I; arc=fail smtp.client-ip=52.101.56.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="J8Q0vB6w"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vSjA3LsvzRnVJv7HESY2bgCSLnmFxximUy5O0wMCEh4=; b=J8Q0vB6wcQq80bpncvaXQpD2qh
-	cFCP6J49RaBg56lLPcsfDdkrkbOYDbOD8kwMiiNvmH69S169YhbUAN2rGx/BVwxoaN+s9iAn+59Zx
-	wWs9NbJ4MeLD/UHpIQweStkpOlZ4jQNVBSfXIGlPFESH9De3P7g4zCWj+WS4EMKeVuZxSdEpVtBIf
-	NT1nGtqIgWmnLCeSDTi+wkJkE3k11g7uPnYg9SLGZuGRoF+fvEKwAH3Qs4zwb57Bnyw7uI7SRj+Ft
-	dt10dosI5z15Uo/J3ZaHTSO4i2YxkheoCyghosjEy84ORnwv7ZYr8CLKa64VG/0QmHgnnkDt9xowc
-	UoKVF9Ag==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vRYqA-00412q-LQ; Fri, 05 Dec 2025 16:39:31 +0000
-Date: Fri, 5 Dec 2025 08:39:25 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, hch@infradead.org, 
-	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, gustavold@gmail.com, asantostc@gmail.com, 
-	calvin@wbinvd.org, kernel-team@meta.com
-Subject: Re: [PATCH RFC 1/2] configfs: add kernel-space item registration API
-Message-ID: <ecmqj4utxhgaq5pp2mwb7g6kx6lmc4wx2dtsiusrsij5fihkw5@ptp55nqquget>
-References: <20251202-configfs_netcon-v1-0-b4738ead8ee8@debian.org>
- <20251202-configfs_netcon-v1-1-b4738ead8ee8@debian.org>
- <aTCTAqEh0qppzVPn@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CVqzuX2I"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iO3zhRtFRo+HZeNY9r/nFgjI13w76StW4cj0969HYeNne+ZhlO7BbsfKewWjaotvhBtV5b1RHBcD+5ru3vQxYNWl6/TSjiN8oTjmlchw0SNjyMyitb6w0yk1RU68TIb98DsB5aSDTMgGmS/8gOrkZ3MxTZU1BpR/yX2gkwbgjVwBlwmYr/GsRz0ziaiZnHNmLHbpDeDee5q3pDkyXl0TYVXauMyeISqipih2MC3r7uMv0uG1JqLyUwVoyNUXcKtjb0vFcwOQI/yZyOosRwp46RQa+nvxJW/LoeFR3UxDZ88IbScbFA/+mueeVOQiCbtuATJt5Mr/Op5l2n/MkAge8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TS8g8jtCdc2rwx+OtA5wQPe3Ybgr8ZyTOhJy+JKSciI=;
+ b=aaJkMdP5L8Yd2l+wNUHHsYnmyrtjCRjZAn7b2HuGzLiyBU/o2s+74LM4C+UYHaqBmGpm2W+8j062rOpAtYB2HbKwtVv4PfzVnYBTAWw48kmoFas54FOD1m2GxrEJuPpAe76WqbMpne15noJ4GPIhClqjSorQ00LbDm4eTPF/orOXBjucK1uIipOHCCGSCCmbByo5ae691IOI6dW2s/U2VsyqVVTBzSXQMQQ3RNXJK9TTNbdICrTprlI/WgQ/5b+YF65KFstbHRFcoANugoI007Q5MHHPyHMFJ25ZaLG63l5BNm27+pLXHKgP4PEXqV0C573BXmMWPoePs7AO0cyKSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TS8g8jtCdc2rwx+OtA5wQPe3Ybgr8ZyTOhJy+JKSciI=;
+ b=CVqzuX2IvQVcuaoRKzXUcU44EFtzB/OuAdo0W9WNGPZf46vnl8d8WZNZHMt8db0OwUEviJV3OAsjKzEo+gkUSN/M7LWNNANnBN2ordBli89gu1W5fL6GlU8TzygcbUGCRacoq00xOedJ3KTQEcPpTmtpt1cg2cHPsD6iDu7p85AtliDfqSGLGYzlbK+OLcUWawg/qdlR3aQtImb9kwF1Fsi1W4GuEFQ+0/3haEZdc+mtnUL2iSHLNA99RS6qnisX+1N67K4m1YeKGAgyOwywISBckP0OhUYn34OeHvnGFoIeb8YR+JNY0111m/YMVnNTqxt4R0A3MOQ/Rfy+vmn5lA==
+Received: from BY5PR16CA0009.namprd16.prod.outlook.com (2603:10b6:a03:1a0::22)
+ by PH0PR12MB8799.namprd12.prod.outlook.com (2603:10b6:510:28e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
+ 2025 16:46:31 +0000
+Received: from SJ5PEPF000001D7.namprd05.prod.outlook.com
+ (2603:10b6:a03:1a0:cafe::b7) by BY5PR16CA0009.outlook.office365.com
+ (2603:10b6:a03:1a0::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.11 via Frontend Transport; Fri,
+ 5 Dec 2025 16:46:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ5PEPF000001D7.mail.protection.outlook.com (10.167.242.59) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9412.4 via Frontend Transport; Fri, 5 Dec 2025 16:46:31 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 5 Dec
+ 2025 08:46:15 -0800
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 5 Dec
+ 2025 08:46:12 -0800
+References: <20251203095055.3718f079@kernel.org> <87bjkexhhr.fsf@nvidia.com>
+ <20251204104337.7edf0a31@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Petr Machata <petrm@nvidia.com>, <netdev@vger.kernel.org>
+Subject: Re: [TEST] vxlan brige test flakiness
+Date: Fri, 5 Dec 2025 17:16:56 +0100
+In-Reply-To: <20251204104337.7edf0a31@kernel.org>
+Message-ID: <87345oyizz.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTCTAqEh0qppzVPn@google.com>
-X-Debian-User: leitao
-
-Hello Joel,
-
-First of all, thanks for thre review,
-
-On Wed, Dec 03, 2025 at 11:44:02AM -0800, Joel Becker wrote:
-> On Tue, Dec 02, 2025 at 07:29:01AM -0800, Breno Leitao wrote:
-> > Add configfs_register_item() and configfs_unregister_item() functions
-> > to allow kernel modules to register configfs items whose lifecycle is
-> > controlled by kernel space rather than userspace.
-> > 
-> > This is useful for subsystems that need to expose configuration items
-> > that are created based on kernel events (like boot parameters) rather
-> > than explicit userspace mkdir operations. The items registered this
-> > way are marked as default items (CONFIGFS_USET_DEFAULT) and cannot be
-> > removed via rmdir.
-> > 
-> > The API follows the same pattern as configfs_register_group() but for
-> > individual items:
-> > - configfs_register_item() links the item into the parent group's
-> >   hierarchy and creates the filesystem representation
-> > - configfs_unregister_item() reverses the registration, removing the
-> >   item from configfs
-> > 
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >  fs/configfs/dir.c        | 134 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/configfs.h |   4 +++
-> >  2 files changed, 138 insertions(+)
-> > 
-> > diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-> > index 81f4f06bc87e..f7224bc51826 100644
-> > --- a/fs/configfs/dir.c
-> > +++ b/fs/configfs/dir.c
-> > @@ -1866,6 +1866,140 @@ void configfs_unregister_default_group(struct config_group *group)
-> >  }
-> >  EXPORT_SYMBOL(configfs_unregister_default_group);
-> >  
-> > +/**
-> > + * configfs_register_item() - registers a kernel-created item with a parent group
-> > + * @parent_group: parent group for the new item
-> > + * @item: item to be registered
-> > + *
-> > + * This function allows kernel code to register configfs items whose lifecycle
-> > + * is controlled by kernel space rather than userspace (via mkdir/rmdir).
-> > + * The item must be already initialized with config_item_init_type_name().
-> > + *
-> > + * Return: 0 on success, negative errno on failure
-> > + */
-> > +int configfs_register_item(struct config_group *parent_group,
-> > +			   struct config_item *item)
-> > +{
-> > +	struct configfs_subsystem *subsys = parent_group->cg_subsys;
-> > +	struct configfs_fragment *frag;
-> > +	struct dentry *parent, *child;
-> > +	struct configfs_dirent *sd;
-> > +	int ret;
-> > +
-> > +	if (!subsys || !item->ci_name)
-> > +		return -EINVAL;
-> > +
-> > +	frag = new_fragment();
-> > +	if (!frag)
-> > +		return -ENOMEM;
-> > +
-> > +	parent = parent_group->cg_item.ci_dentry;
-> > +	/* Allocate dentry for the item */
-> > +	child = d_alloc_name(parent, item->ci_name);
-> > +	if (!child) {
-> > +		put_fragment(frag);
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	mutex_lock(&subsys->su_mutex);
-> > +	link_obj(&parent_group->cg_item, item);
-> > +	mutex_unlock(&subsys->su_mutex);
-> > +
-> > +	inode_lock_nested(d_inode(parent), I_MUTEX_PARENT);
-> > +	d_add(child, NULL);
-> > +
-> > +	/* Attach the item to the filesystem */
-> > +	ret = configfs_attach_item(&parent_group->cg_item, item, child, frag);
-> > +	if (ret)
-> > +		goto err_out;
-> 
-> The behavior here is significantly different than the flow in
-> configfs_mkdir().  How do we a) ensure we're getting the right outcome
-> b) make sure that commensurate changes in one are propagated to the
-> other?
-> 
-> For example, we take pains to get module pinning right in
-> configfs_mkdir(), both for the parent_item and the child item.  I see no
-> pinning here.
-
-You're absolutely right about the missing module pinning and race
-protection. 
-
-On my example (netconsole), the items were added during module
-initialization and removed during device tear down, which is not an
-excuse, given the interface should be generic enough.
-
-I suppose I want to try_module_get(subsys_owner) and
-try_module_get(type->ct_owner) at the beginning of
-configfs_register_item(), and then put them back in
-configfs_unregister_item(). Would it be enough?
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D7:EE_|PH0PR12MB8799:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5321929a-b212-4409-9aa0-08de341dd7f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zDz/YP/IuqflSQ1zPpzgsg20oJ8DOS8t9yjVRKItmA4TzpCWAe3I12LcuBcF?=
+ =?us-ascii?Q?4lAKn8VMcQWUMYPrlIhvtlbSn5IVOMVb+dZvOFZNhr/F1tZ55lVACmyo4SWh?=
+ =?us-ascii?Q?oR/JV00xCnfrdILPRkqJ3RkXqFS+Jyy/ib5WNkr734/oER7TTc3Vo1cuUbcR?=
+ =?us-ascii?Q?FRELdVP2JtWNc2md/onB41d5P2wNMQlQX+Gvt4qPozzeCBlDts4eVdQtmkoJ?=
+ =?us-ascii?Q?SPyxIL0eBJAcvGTo8N/hdIxSncikb9dtV7/rsZoQUQ/QXWfDhCw+td1ons+b?=
+ =?us-ascii?Q?fKy5ikq5xy1+2VPRpFy2W7uz/nHULUnq4FUrcB8LPf8kelYKQC7MuB67CQD8?=
+ =?us-ascii?Q?kYn6Z7kxs3sLoU5LYpZqXuABGW0/Ac5YAb8fmHY07VAf0y7gc51K/SEF4qz3?=
+ =?us-ascii?Q?YWIBUZEVG9lFtX42w7tnVzZR/U0piWhK+FLxXJtuCitGNpmGmIyKkdyUcWi6?=
+ =?us-ascii?Q?oTCXmSI09Mbr9uku8LLC052/HkaNRMpNIrCq5xO3f2/GVIAxrvemMrMHWsqe?=
+ =?us-ascii?Q?XRnTJftay368H/VNoz9e6RNfSjkzp0+7iCS4cYrI6m235+pZFSB2U4x2V7xj?=
+ =?us-ascii?Q?GEBtkrQLi3mojl1zaxtWSkRLMrGyQAdOSZ/zZfvcU5kZ3qaSqSpP+fkdZiQC?=
+ =?us-ascii?Q?xrBvb0pN/vo/VhjiPQL3yupVmKOLYTeVVgaai98guxwGno7piau1E04A+r7y?=
+ =?us-ascii?Q?tuwhptkMHcxxfJ623qalnszXYF9lx9JJ9bjDiTFvXfIZ9M89CpJ33UHRxuic?=
+ =?us-ascii?Q?eUansVnpgA1ZeS/BQTEGAsFyY4QwOqi7lPwQtRK7F3swVTqmM14InXMdeCVW?=
+ =?us-ascii?Q?cV5TXOb+1DGY3Xm6Z+Nadb7JX2MWpNjnYoW6fwAl+zstIsf2OIUjFE3uGsu3?=
+ =?us-ascii?Q?X4A++UTPLT+RuLd5Le33lAy4oqMnjVVvnKZa7aQCirAEc5K0uT8D1Sd0V2j6?=
+ =?us-ascii?Q?E7lAB0MkfYSSs6J3k07L1G9/FM2NMMLrbRNTlPkCDRt+yTJGePSfp0SY7AAH?=
+ =?us-ascii?Q?jSyM8LwRAqYuW3cgvCNq2uVkQ3GHKVXSBJ0UZzcEoWSs1SZ2Qul04EyKXq4M?=
+ =?us-ascii?Q?lW6A0Phet/w6ntMjP2t7dguHtczU5OfP0kF64Au+27VozsN1uMbGrh85UPNh?=
+ =?us-ascii?Q?IMaOxxxZKM2h0xf6prsMrcIB8Ok74sldtB6COZ6ElzOvX8/qlyW6+DTgsRz1?=
+ =?us-ascii?Q?dB1mWK/Y/ZS4Nw3fBj0G4MVmmZ1PqmFcpTRo09L87V+UNq3rb/HZ6PULqyvi?=
+ =?us-ascii?Q?AMPbgJyzxoWGCMoDt1HgAmrlZ3lx8JM9nJ0USe9ewWYvJcspXsDHPq4UfJa2?=
+ =?us-ascii?Q?oGK+w6wx+Hlb8+I2CKcGHuYfkmonjM0e7bX7VB+M2b9FV/GZhrL+BEyVJ/7K?=
+ =?us-ascii?Q?3F3pfJZ2wdCrJfNahA6Fe5FdifccPicAxKo6DqApDU6vQ4dkns4+3F/MSLBx?=
+ =?us-ascii?Q?URxh///Cr5ajPy4zmNsPWIF33son/lE5D972hg3x2A3lrMMau9/4ZOtYxWMl?=
+ =?us-ascii?Q?ITTfA3jGDf63oPVX1oS2t9BRv+5ZAWubk39fOkpAb3+4I0xDu5FF6kyGJ6Fm?=
+ =?us-ascii?Q?FfTPWKQPGB+aEy8wnII=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 16:46:31.3878
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5321929a-b212-4409-9aa0-08de341dd7f7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8799
 
 
-  int configfs_register_item(struct config_group *parent_group,
-                             struct config_item *item)
-	...
-         /*
-           * Pin the subsystem module first. The subsystem may belong to a
-           * different module than the item being registered. We need to pin
-           * both to prevent the subsystem from being unloaded while the item
-           * exists.
-           */
-          if (!subsys->su_group.cg_item.ci_type) {
-                  ret = -EINVAL;
-                  goto out;
-          }
-          subsys_owner = subsys->su_group.cg_item.ci_type->ct_owner;
-          if (!try_module_get(subsys_owner)) {
-                  ret = -EINVAL;
-                  goto out;
-          }
+Jakub Kicinski <kuba@kernel.org> writes:
 
-          /*
-           * Pin the item's module. This prevents the module providing the
-           * item's type (and its operations) from being unloaded.
-           */
-          item_owner = type->ct_owner;
-          if (!try_module_get(item_owner)) {
-                  ret = -EINVAL;
-                  goto out_subsys_put;
-          }
+> On Thu, 4 Dec 2025 18:46:30 +0100 Petr Machata wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> > We're seeing a few more flakes on vxlan-bridge-1q-mc-ul-sh and
+>> > vxlan-bridge-1q-mc-ul-sh in the new setup than we used to (tho
+>> > the former was always relatively flaky).  
+>> 
+>> You listed the same test twice, so that's the one that I'm looking into now.
+>
+> Ah, I thought one of them was 1d but indeed the CI was just reporting
+> it twice because of different machine running the test. It's just one
+> test case that's flaking on two setups.
 
-> I see no handling of races with unregister (like the
-> teardown races with rmdir).
-> Some of these things are just different with kernel-registered items.
+OK, cool.
 
-Would CONFIGFS_USET_IN_MKDIR be enought in this case?
+I think the following patch would fix the issue. But I think it should
+be thematically split into two parts, the lib.sh fix needs its own
+explanation. Then there is a third patch to get rid of the
+now-unnecessary vx_wait() helper.
 
-> I presume you are declaring the child item must be fully created, which is
-> why this code doesn't call ->make_item().  But there is no documentation
-> of that requirement.
+I think it makes sense to send it all as next material after you open it
+in January. But if the issue is super annoying, I can send the two-part
+fix now for net, and the cleanup in January for next.
 
-Right, do you think a kdoc would be enough in this case?
+Let me know what you prefer.
 
-This is the new functions I am coming up with, in case you want to read the full functions.
-
-Thanks for the review!!
-
--- 
-
-diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-index 81f4f06bc87e..73aa4e4a0966 100644
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -1866,6 +1866,248 @@ void configfs_unregister_default_group(struct config_group *group)
+diff --git a/tools/testing/selftests/net/forwarding/config b/tools/testing/selftests/net/forwarding/config
+index ce64518aaa11..93a61c217cc3 100644
+--- a/tools/testing/selftests/net/forwarding/config
++++ b/tools/testing/selftests/net/forwarding/config
+@@ -28,6 +28,7 @@ CONFIG_NET_ACT_TUNNEL_KEY=m
+ CONFIG_NET_ACT_VLAN=m
+ CONFIG_NET_CLS_BASIC=m
+ CONFIG_NET_CLS_FLOWER=m
++CONFIG_NET_CLS_U32=m
+ CONFIG_NET_CLS_MATCHALL=m
+ CONFIG_NET_EMATCH=y
+ CONFIG_NET_EMATCH_META=m
+diff --git a/tools/testing/selftests/net/forwarding/vxlan_bridge_1q_mc_ul.sh b/tools/testing/selftests/net/forwarding/vxlan_bridge_1q_mc_ul.sh
+index 6a570d256e07..5ce19ca08846 100755
+--- a/tools/testing/selftests/net/forwarding/vxlan_bridge_1q_mc_ul.sh
++++ b/tools/testing/selftests/net/forwarding/vxlan_bridge_1q_mc_ul.sh
+@@ -138,13 +138,18 @@ install_capture()
+ 	defer tc qdisc del dev "$dev" clsact
+ 
+ 	tc filter add dev "$dev" ingress proto ip pref 104 \
+-	   flower skip_hw ip_proto udp dst_port "$VXPORT" \
+-	   action pass
++	   u32 match ip protocol 0x11 0xff \
++	       match u16 "$VXPORT" 0xffff at 0x16 \
++	       match u16 0x0800 0xffff at 0x30 \
++	       action pass
+ 	defer tc filter del dev "$dev" ingress proto ip pref 104
+ 
+ 	tc filter add dev "$dev" ingress proto ipv6 pref 106 \
+-	   flower skip_hw ip_proto udp dst_port "$VXPORT" \
+-	   action pass
++	   u32 match ip6 protocol 0x11 0xff \
++	       match u16 "$VXPORT" 0xffff at 0x2a \
++	       match u16 0x86dd 0xffff at 0x44 \
++	       match u8 0x11 0xff at 0x4c \
++	       action pass
+ 	defer tc filter del dev "$dev" ingress proto ipv6 pref 106
  }
- EXPORT_SYMBOL(configfs_unregister_default_group);
  
-+/**
-+ * configfs_register_item() - registers a kernel-created item with a parent group
-+ * @parent_group: parent group for the new item
-+ * @item: item to be registered
-+ *
-+ * This function allows kernel code to register configfs items whose lifecycle
-+ * is controlled by kernel space rather than userspace (via mkdir/rmdir).
-+ *
-+ * Unlike configfs_mkdir(), which creates the item via ->make_item() callback,
-+ * this function expects the item to be FULLY INITIALIZED by the caller before
-+ * registration. This means:
-+ *  - The item must be initialized with config_item_init_type_name()
-+ *  - The item->ci_type must be set and valid
-+ *  - The item->ci_type->ct_owner (module) must be valid
-+ *  - Any item-specific initialization must be complete
-+ *
-+ * This function follows the same module pinning and locking semantics as
-+ * configfs_mkdir() to ensure proper synchronization with rmdir and module
-+ * unloading.
-+ *
-+ * Return: 0 on success, negative errno on failure
-+ */
-+int configfs_register_item(struct config_group *parent_group,
-+			   struct config_item *item)
-+{
-+	struct configfs_subsystem *subsys = parent_group->cg_subsys;
-+	struct module *subsys_owner = NULL, *item_owner = NULL;
-+	const struct config_item_type *type;
-+	struct configfs_fragment *frag;
-+	struct dentry *parent, *child;
-+	struct configfs_dirent *sd;
-+	int ret;
-+
-+	if (!subsys || !item->ci_name)
-+		return -EINVAL;
-+
-+	/*
-+	 * Validate that the item is fully initialized. Unlike configfs_mkdir(),
-+	 * we don't call ->make_item(), so the caller must provide a complete
-+	 * item with a valid type.
-+	 */
-+	type = item->ci_type;
-+	if (!type) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Pin the subsystem module first. The subsystem may belong to a
-+	 * different module than the item being registered. We need to pin
-+	 * both to prevent the subsystem from being unloaded while the item
-+	 * exists.
-+	 */
-+	if (!subsys->su_group.cg_item.ci_type) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+	subsys_owner = subsys->su_group.cg_item.ci_type->ct_owner;
-+	if (!try_module_get(subsys_owner)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Pin the item's module. This prevents the module providing the
-+	 * item's type (and its operations) from being unloaded.
-+	 */
-+	item_owner = type->ct_owner;
-+	if (!try_module_get(item_owner)) {
-+		ret = -EINVAL;
-+		goto out_subsys_put;
-+	}
-+
-+	frag = new_fragment();
-+	if (!frag) {
-+		ret = -ENOMEM;
-+		goto out_item_put;
-+	}
-+
-+	parent = parent_group->cg_item.ci_dentry;
-+	/* Allocate dentry for the item */
-+	child = d_alloc_name(parent, item->ci_name);
-+	if (!child) {
-+		ret = -ENOMEM;
-+		put_fragment(frag);
-+		goto out_item_put;
-+	}
-+
-+	/*
-+	 * Link the item into the parent group's hierarchy under the subsystem
-+	 * mutex. This must be done before attaching to the filesystem.
-+	 */
-+	mutex_lock(&subsys->su_mutex);
-+	link_obj(&parent_group->cg_item, item);
-+	mutex_unlock(&subsys->su_mutex);
-+
-+	/*
-+	 * From here on, errors must unlink the item since link_obj() has
-+	 * been called.
-+	 */
-+	inode_lock_nested(d_inode(parent), I_MUTEX_PARENT);
-+
-+	/*
-+	 * Protect against racing with configfs_unregister_item() or rmdir.
-+	 * The CONFIGFS_USET_IN_MKDIR flag will cause configfs_detach_prep()
-+	 * to fail, preventing concurrent teardown.
-+	 */
-+	sd = parent->d_fsdata;
-+	spin_lock(&configfs_dirent_lock);
-+	sd->s_type |= CONFIGFS_USET_IN_MKDIR;
-+	spin_unlock(&configfs_dirent_lock);
-+
-+	d_add(child, NULL);
-+
-+	/* Attach the item to the filesystem */
-+	ret = configfs_attach_item(&parent_group->cg_item, item, child, frag);
-+	/* if ret > 0, it will end up in err_unlink after unlocking everything */
-+
-+	spin_lock(&configfs_dirent_lock);
-+	sd->s_type &= ~CONFIGFS_USET_IN_MKDIR;
-+	if (!ret) {
-+		struct configfs_dirent *child_sd = child->d_fsdata;
-+		/*
-+		 * Mark as CONFIGFS_USET_DEFAULT to indicate this is a
-+		 * kernel-created item that cannot be removed via rmdir.
-+		 */
-+		child_sd->s_type |= CONFIGFS_USET_DEFAULT;
-+		configfs_dir_set_ready(child_sd);
-+	}
-+	spin_unlock(&configfs_dirent_lock);
-+	inode_unlock(d_inode(parent));
-+
-+	/* in case configfs_attach_item() has failed */
-+	if (ret)
-+		goto err_unlink;
-+
-+	put_fragment(frag);
-+	return 0;
-+
-+err_unlink:
-+	/* Tear down everything we built up */
-+	d_drop(child);
-+	dput(child);
-+	mutex_lock(&subsys->su_mutex);
-+	unlink_obj(item);
-+	mutex_unlock(&subsys->su_mutex);
-+	put_fragment(frag);
-+
-+out_item_put:
-+	module_put(item_owner);
-+out_subsys_put:
-+	module_put(subsys_owner);
-+out:
-+	return ret;
-+}
-+EXPORT_SYMBOL(configfs_register_item);
-+
-+/**
-+ * configfs_unregister_item() - unregisters a kernel-created item
-+ * @item: item to be unregistered
-+ *
-+ * This function reverses the effect of configfs_register_item(), removing
-+ * the item from the configfs filesystem and releasing associated resources.
-+ * The item must have been previously registered with configfs_register_item().
-+ *
-+ * This function releases the module references acquired during registration,
-+ * following the same teardown semantics as configfs_rmdir().
-+ */
-+void configfs_unregister_item(struct config_item *item)
-+{
-+	struct config_group *group = item->ci_group;
-+	struct dentry *dentry = item->ci_dentry;
-+	struct configfs_subsystem *subsys;
-+	struct configfs_fragment *frag;
-+	struct configfs_dirent *sd;
-+	struct dentry *parent;
-+	struct module *subsys_owner = NULL, *item_owner = NULL;
-+
-+	if (!group || !dentry)
-+		return;
-+
-+	subsys = group->cg_subsys;
-+	if (!subsys)
-+		return;
-+
-+	parent = item->ci_parent->ci_dentry;
-+	sd = dentry->d_fsdata;
-+	frag = get_fragment(sd->s_frag);
-+
-+	if (WARN_ON(!(sd->s_type & CONFIGFS_USET_DEFAULT))) {
-+		put_fragment(frag);
-+		return;
-+	}
-+
-+	/*
-+	 * Retrieve module owners before detaching. These were pinned during
-+	 * configfs_register_item() and must be released.
-+	 */
-+	if (subsys->su_group.cg_item.ci_type)
-+		subsys_owner = subsys->su_group.cg_item.ci_type->ct_owner;
-+	if (item->ci_type)
-+		item_owner = item->ci_type->ct_owner;
-+
-+	/* Mark fragment as dead */
-+	down_write(&frag->frag_sem);
-+	frag->frag_dead = true;
-+	up_write(&frag->frag_sem);
-+
-+	inode_lock_nested(d_inode(parent), I_MUTEX_PARENT);
-+	/*
-+	 * Take configfs_symlink_mutex to prevent racing with symlink
-+	 * creation/removal, matching the locking in configfs_rmdir().
-+	 */
-+	mutex_lock(&configfs_symlink_mutex);
-+	spin_lock(&configfs_dirent_lock);
-+	configfs_detach_prep(dentry, NULL);
-+	spin_unlock(&configfs_dirent_lock);
-+	mutex_unlock(&configfs_symlink_mutex);
-+
-+	configfs_detach_item(item);
-+	d_inode(dentry)->i_flags |= S_DEAD;
-+	dont_mount(dentry);
-+	d_drop(dentry);
-+	fsnotify_rmdir(d_inode(parent), dentry);
-+	dput(dentry);
-+	inode_unlock(d_inode(parent));
-+
-+	mutex_lock(&subsys->su_mutex);
-+	unlink_obj(item);
-+	mutex_unlock(&subsys->su_mutex);
-+
-+	put_fragment(frag);
-+
-+	/*
-+	 * Release module references that were acquired during registration.
-+	 * This mirrors the cleanup in configfs_rmdir().
-+	 */
-+	module_put(item_owner);
-+	module_put(subsys_owner);
-+}
-+EXPORT_SYMBOL(configfs_unregister_item);
-+
- int configfs_register_subsystem(struct configfs_subsystem *subsys)
- {
- 	int err;
-diff --git a/include/linux/configfs.h b/include/linux/configfs.h
-index 698520b1bfdb..70f2d113b4b3 100644
---- a/include/linux/configfs.h
-+++ b/include/linux/configfs.h
-@@ -244,6 +244,10 @@ int configfs_register_group(struct config_group *parent_group,
- 			    struct config_group *group);
- void configfs_unregister_group(struct config_group *group);
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index a48f29b5f3b2..b7179b01b546 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -280,7 +280,8 @@ tc_rule_stats_get()
+ 	local selector=${1:-.packets}; shift
  
-+int configfs_register_item(struct config_group *parent_group,
-+			   struct config_item *item);
-+void configfs_unregister_item(struct config_item *item);
-+
- void configfs_remove_default_groups(struct config_group *group);
+ 	tc -j -s filter show dev $dev $dir pref $pref \
+-	    | jq ".[1].options.actions[].stats$selector"
++	    | jq ".[] | select(.options.actions) |
++		  .options.actions[].stats$selector"
+ }
  
- struct config_group *
+ tc_rule_handle_stats_get()
