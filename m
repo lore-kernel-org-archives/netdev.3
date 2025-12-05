@@ -1,82 +1,91 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6E9319616;
-	Fri,  5 Dec 2025 14:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCEF2E974D
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 14:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764943617; cv=none; b=os3CRVGQ12mhyAHOJk9QTjDB+xWyl6V3VnZQqFki30AYPNv4C1PI5lglRB4cgjIjuoWHV4NgC0uWXUYjUY0k8rXcCcvc5JRG5XlU4hFqC7S/MVWCjwS4VnUllVh//a44eTVqz2z6q+vEQcS0io2PNcj9jLZugW5g02AW28JwDMM=
+	t=1764943618; cv=none; b=naMC+M4AO5ZHaX1avNuBpFRYsk1c2aN2q7Mlw0wXVu++ci+q8aYF7JxlxdG80507bywxO2UK3SZMyNFr2WT+zjoa56iPYq+e5imGHP5AGW7uG/hcVp3sUxqZ8U6GUcXki2CvUFDmQDevya8NejCpLXfxWjP7uugwKPlSTrzNpjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764943617; c=relaxed/simple;
-	bh=UOqH8Pgv3EzTvbTukbx9fZOecEB6mrh7kK4nDWEJni8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tdYAgpkUXP6UbeODmU4ooM34j9UB/Zi+Mekv5nUXHvt/QiwoCslY3XGlL+kffcS9POrMh0eUXfRdide6t5R9snYF2EuA1eTGjRVwo4/PktdEVh3dvIKlOORvWlhh1aYLa7SGwElWjOQyZyv88MMcltDgujmPqx43zd9gsX1a/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZiHuQbX/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1764943618; c=relaxed/simple;
+	bh=VSstG9zcCfh9eV9IiT0zbtVD+JSCl+s8oOgqm0VMmjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kms15gdZRRI7EvkXcqFMhulPIZ0lRBD8OU7ekHqjnsiJfWLjM2UjFnYmZ3ItTOqzYl5G6ePzpjnf1baoIevyeBiLxOVUpy02GshDRxG0a0v6ZQtUMC3ijivuoSC+krTDUXoiVN6S/QrakOFhIpti7X0Z9LYgdveLjiy/Chz51b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZbE7AXPQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZiHuQbX/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/EvESmofZY44K41THRYIfRe9NSFRKf7LEDzNSzxwtCA=; b=ZiHuQbX/LCxe+MDXq656Q0uRPX
-	RYkVP/VFC0rHOg4rmw07enXvLrPOQDbbkw979m4KBlJT4lk4Kcv7XY44iXOZLjTuRLD2ofdW0ZPep
-	yRnmyvScZ6PggQ7+o9ZX4Kt1VIyHwI/Msgk3yefWDI3hAM/N/QvUZkWcJ1d7BhiX6ENw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vRWSA-00G5zS-9c; Fri, 05 Dec 2025 15:06:34 +0100
-Date: Fri, 5 Dec 2025 15:06:34 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZbE7AXPQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764943584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+iMTeVc+7sO/2YkTfilp2vysDjDsIEE82XFegn4CvsE=;
+	b=ZbE7AXPQgtFF9BcYmo+7Cla+6bXzVZ6w3fw/PRX8K95WtgBdUgWRsMqUkDCh3OJgo7UyaI
+	/f6AsDCg7XO9wH6tW2Ky7T83CJGtwDYFwk0pAkpCIKyQngecyx65gcPLlPZWg8+WGlYnwD
+	lcPpGSYTdcXG9h8Tman6V7fXZ7LAo1E=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-Eo7eiYGoMmGdWKYpU8BILQ-1; Fri,
+ 05 Dec 2025 09:04:58 -0500
+X-MC-Unique: Eo7eiYGoMmGdWKYpU8BILQ-1
+X-Mimecast-MFC-AGG-ID: Eo7eiYGoMmGdWKYpU8BILQ_1764943465
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 003BB19560A5;
+	Fri,  5 Dec 2025 14:04:23 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.45.224.159])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D70D219560B4;
+	Fri,  5 Dec 2025 14:04:19 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Rasmus Villemoes <ravi@prevas.dk>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net] net: dsa: mxl-gsw1xx: manually clear RANEG bit
-Message-ID: <fe18129d-6194-4172-a0bf-36fed13721cb@lunn.ch>
-References: <ab836f5d36e3f00cd8e2fb3e647b7204b5b6c990.1764898074.git.daniel@makrotopia.org>
- <97389f24-d900-4ff0-8a80-f75e44163499@lunn.ch>
- <aTLkl0Zey4u4P8x6@makrotopia.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>
+Subject: [RFC PATCH 0/2] net: gro: avoid touching transport header
+Date: Fri,  5 Dec 2025 15:03:29 +0100
+Message-ID: <cover.1764943231.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTLkl0Zey4u4P8x6@makrotopia.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, Dec 05, 2025 at 01:56:39PM +0000, Daniel Golle wrote:
-> On Fri, Dec 05, 2025 at 02:45:35PM +0100, Andrew Lunn wrote:
-> > On Fri, Dec 05, 2025 at 01:32:20AM +0000, Daniel Golle wrote:
-> > > Despite being documented as self-clearing, the RANEG bit sometimes
-> > > remains set, preventing auto-negotiation from happening.
-> > > 
-> > > Manually clear the RANEG bit after 10ms as advised by MaxLinear, using
-> > > delayed_work emulating the asynchronous self-clearing behavior.
-> > 
-> > Maybe add some text why the complexity of delayed work is used, rather
-> > than just a msleep(10)?
-> > 
-> > Calling regmap_read_poll_timeout() to see if it clears itself could
-> > optimise this, and still be simpler.
-> 
-> Is the restart_an() operation allowed to sleep?
+This series is basically a pre-req for GRO support for double UDP
+encapsulation:
 
-This would typically be an MDIO operations, since PCS are often on an
-MDIO bus. And MDIO is expected to sleep. Also, regmap is using a lock
-to prevent parallel access, and i expect that is a sleeping lock, not
-a spinlock.
+https://lore.kernel.org/netdev/cover.1764056123.git.pabeni@redhat.com/
 
-If you want to be sure, put in a might_sleep() call, and build the
-kernel will sleep in atomic debug enabled. You will get a splat if i'm
-wrong.
+that otherwise would requiring explicitly disabling gro on the outer
+geneve device.
 
-	Andrew
+I *think* it should also help plain TCP GRO performances, even if don't
+have a very high speed, full zero-copy, big TCP testbed handy to
+actually prove it - see patch 1 for the gory details.
+
+Paolo Abeni (2):
+  net: gro: avoid relaying on skb->transport_header at receive time
+  net: gro: set the transport header later
+
+ include/net/gro.h        | 26 ++++++++++++++++++++++++++
+ include/net/tcp.h        |  3 ++-
+ net/ipv4/af_inet.c       |  2 +-
+ net/ipv4/tcp_offload.c   | 16 +++++++++-------
+ net/ipv4/udp_offload.c   |  8 ++++++--
+ net/ipv6/ip6_offload.c   |  3 +--
+ net/ipv6/tcpv6_offload.c |  2 +-
+ 7 files changed, 46 insertions(+), 14 deletions(-)
+
+-- 
+2.52.0
+
