@@ -1,64 +1,62 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6FF345CB2
-	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 17:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CC23451A6
+	for <netdev@vger.kernel.org>; Fri,  5 Dec 2025 17:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764954744; cv=none; b=USdSGxM7R1dcO48blGvX3YgWPhXKrzbF/yr/Q0NcDiAA7tvuikAWyf9oJus9hqztfTl9jkfLmL4brtF66k8mR3GLVGKA8SeZNTcvhAMKRnkXs5n8VKYtMZt+G9oUXY/5WUzYtIzkLo/CxaNgpGV7vSC9C+ZNT+xsThdVOOfppj4=
+	t=1764954740; cv=none; b=q09UmhQaAjl0/LTjQ3r7fSFtIsQt9df2dNAlCazR1NEA0aQAa9uiaE0jh6hu75h2kNrF6XyzWned1jh8Aw/+fC2A4wVw0RtWpdkBEGy+JEBRW9P5/B95eue4Y87idzRJUhehQM5WgLzhCFqz75bSOmy+ZCFOAs59Xc5A6lEsoo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764954744; c=relaxed/simple;
-	bh=pgJ6ff8paldt7V+cFG947O9X9Ylktw6h4GCVRLqVB2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGDNgIqvDjX8TNX3jqpgByRpx0g33bm6ctCCYCctlJMZd/Tn6uIOGhaHObRKSJJgKWFyNAAL5Iefp/6zWHjCy/kiDO5klfJ5hoO6In1FQ0NcZXmJ3b6n677o2UWIN1QPcPOP4/cswcBtt3yUtb3L9Y3U1CZwTGwikSl6mtrMAPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qx3s/rzO; arc=none smtp.client-ip=74.125.82.46
+	s=arc-20240116; t=1764954740; c=relaxed/simple;
+	bh=Ke9Hk/U1tAD95iE3yn3zf2OpEhZ/z0cUps2pNlkpgN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uzEoBS4g1ymrMq848eSl9tQpvpsyUJ20u/zzq5y6XVaCSJSvRCB1S9IyRcYFO+b+e3t63e2o6LGBAfWEBTu9W/Sqi+tJnO4tfXpNikWqUoyu9aMGDnNgGgMkxL+xGcOqtqyIPE8cbMDXERFrWJClcuNCBs60buCvZgx2QSNi04A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6DYlxzK; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qx3s/rzO"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-11beb0a7bd6so4118772c88.1
-        for <netdev@vger.kernel.org>; Fri, 05 Dec 2025 09:12:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6DYlxzK"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7b9a98b751eso1993555b3a.1
+        for <netdev@vger.kernel.org>; Fri, 05 Dec 2025 09:12:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764954735; x=1765559535; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zvo6P+4Y0aHWjG3Dbxy/Vth64KyTxoqjK/aQ5O3LvqQ=;
-        b=Qx3s/rzOxetlefVCd/9b0e6fuf9Fxcyhf4+Un+8WtZbK3GehiKSpqlVaskjOGKoh24
-         wHwCCa6SGkX88GU3x0ydtAcq8CyMECYfCUPwW6TJVZQp2tsSAHGaUCnICmM+qOXmfpk1
-         uwN7IcFLC5587uRO6q79Qm6CF184uWBz7SzZKFwi4KAIrlnwbLeLAzW2GzlPIHxPmoVL
-         Mcaz0CBx+iYDUDGdZd1bM+9DtOSWYzSayQdbswTFCtI86ifHelQnBh6SHPeb35b9cT6K
-         MZfYEZakBTlHh0P68RNSk1209SP631YXS2Ik2jeaaY9tNuErPKzvd6THNdLe0eZRf7gB
-         RvSg==
+        d=gmail.com; s=20230601; t=1764954729; x=1765559529; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qORTeh1RcK0OLbEB6J4TCs98golUP6RBmjRH7IZnXsA=;
+        b=S6DYlxzKruzDfBHIyj/heAqkkyMEmdAfW3L9vPdmwoamBke00Z/laqgNYOsutGWAdT
+         pjzvi2xxee3wUmzepkOB570WTwyyRLsUrhUh9Ad9OZ6kURalpPG66IaCY1N/y6zX/xhf
+         OfHZSpCjzM/nN9ZMQRjKiXf4S+0gsQXmNVWQNG7/do+yxT2C9Rd165VAMA5D/tzB8TJ7
+         UT5/5e0zejwtA8UwbYQzy0KOcNMdDDOxAfXKGFUO+PEV1RP7GvC3hT7mLkAPBahbWYTC
+         R0qhxeRXPefvCAQhF0M9gBJUDwKyGItQjcJDO1E4cazifF33ayaxOBoUQcxSx2BESR/p
+         /qlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764954735; x=1765559535;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvo6P+4Y0aHWjG3Dbxy/Vth64KyTxoqjK/aQ5O3LvqQ=;
-        b=Dpqb97kWWOkuXsghoXPslWHk9nXCpNM//Q03LYsCgEljJWWdk4fIU1uOkM3kUqPKxB
-         vPADi4T5JXZEh+TV485z89cMWKFX/yohLucSZJrWyPy5ABdKpdjvU2Sj6NRmKCLEDZYY
-         qQlcApybkA+D4yDWn3Q44KfMj4kUx79kAvw/IB2gUJwGS8KNR8yR6/9ZgtPtu1AyZ+CX
-         XHI6PdBYPra0qFKCwgacuO0Z/9DKz++G2ewiLO/PoXnlRQZEnaCi4sjl3Vf7PhJKbhzT
-         zPObFdEoA9y4EWyUAAOD6Es6pG6nRcJxHtvDJZK2PwtVzviZCcfmwyHTtKRlyaXNtxU9
-         NPSA==
-X-Forwarded-Encrypted: i=1; AJvYcCXEjR47IHU4oG43I868M3EJDCyjAFoh+9jtmfp7VD+CaBSj1QEuPUe90wLdxnh0wu0dpD01pf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl/Q1V3s/FZbAGjXG31epZ3B9dy3swL6RgCJu30ul3uRT9stjy
-	k0moF1SKkrajSAL2WLlOF+v2EyYyrhyDlBMQWrsx04DI8B/23CQ/Q06j
-X-Gm-Gg: ASbGncvyochHI/9ooC/khVxpzA9NUSPVAu0rQ5jErxEsIj+HC3b4b5VAl+714LbPUBG
-	JO6azCSwAktsWevdQ1GUodCnX6N/7GT9Rz0+yxHCiopY/02MbknhqHzEoBZxJQGBaTWiRHzsHnN
-	knOdsCfrzfHRf+Ni8Mw9rLIsfWah48s4eJceZnIniAwRuG38aBBBHOGSHBaPaiTfts3iae7Fy+W
-	ZuvlDlhEK2mXSlfRu+q/JPdHsnbvp4iVPHvUdHVmymEiwlpWRC257isubC3pryslozxDBQtXCDL
-	2SfFIo/ICxf//vz+Qkysm0K4KdqXGqg+9gWntMSmT/gh3bDOMoWLL4oR4QJ8Kt7WVYTq1T9rIWd
-	u9x+JySbX964PzihYNPz4JdKlXtV7mcbgWR15jK3o3HuvqiQ0gE//NO6lFK0swyBPCz2z1/zjVS
-	LuF9QPHR5Up7OiKpjsFkb+kK8=
-X-Google-Smtp-Source: AGHT+IFCC9u36dpszL8LHl6yuqSwEshH6IcGGz8u5zeSSUuddfN+n2v1mO2/tmCjMeVOnHnvUljNXg==
-X-Received: by 2002:a05:7022:249a:b0:11b:ca88:c4f1 with SMTP id a92af1059eb24-11df600e305mr6401788c88.20.1764954734841;
-        Fri, 05 Dec 2025 09:12:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764954729; x=1765559529;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qORTeh1RcK0OLbEB6J4TCs98golUP6RBmjRH7IZnXsA=;
+        b=YguZOczotc+LMnhZp9f4rMf9RAWeh+GeB2PbiRXezqIeL37rha7mVZdLf2hEtj9N56
+         rZ09Tj1Dv8ni7Qh2BFnxKdyvE8vFniiLnGQgPpZ4e6GAR5HsWSM/Q7RULSkWDJt08aM1
+         dil5C3Vf1X6X76KS12zxjxVZX0bO+yaDi4W5uLC7LrQyKUGkh6uPDZfqcoq+oPj8qSC2
+         WElzECWMYeX/OJS0VCkSBH4+y1XWJxHk1E9nCTK6tcROrcNtD81DsSL217AHX1Kfc1TT
+         zWsqtCeBYSlRBIIQtwg7z6liBKE0Q1LAUFTKAw6f/3+6Wplasgu/eOnUofo5m1i05jxo
+         hp2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWE0EM5JV41qiyKyZGeZtpJ4Zos5vX4S2l9K/Yq/uWi1R59WrpbuLb09hljtAvEYjDfkAimsLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz79/fS9x/0wah31H5JECMtHJ/nHFkrwNvs/TZGzvZup2LTQJ3U
+	50UkNQouHXrmVu8UtXQZIcpoTubIi00PQMlY3d83aIcx6rsDbYaKezgP
+X-Gm-Gg: ASbGnctS8qJ/VE3U0mdhWzi+n5QDxHVYCTBYK8CUrUG4+ooOjdi23qNGWhEebXQvMoT
+	pxZX9zFrU/gXxAx0wqpzQiVFPWfKrphnYwafehvY/E0U8Yc7SdxzcVldVwRY/RI5IT2Q3xJ2ezr
+	YzM7UdhcvULcqDblzb0XjbsghJL3duAFOvgKDpa9Hzc/9bIdHW06qXkH0mcH59eccD2uxyacvVQ
+	ry0EhLEIUdp0SpKR8m+1h/k5LlukU4fAALt1qJPicWI3YIxzxEnqJQbKIUQuFzVrGXM04EJ6vKZ
+	uHEGSMsP/3bd5u9FYjlVZ93xjiBkBfX61DDch80Ohb+ym7camDYcpw9CkbfdoIdF30dz+4KHV3i
+	aYQTH+C3spEM+0hYQac/8rqDL+5pN6ormH7/ZYu0YFC2DHX2pv4MfazV/2MNclzKnVRSbsHykwA
+	RKbHZWh0Zku6FuCAMgv55RaSs=
+X-Google-Smtp-Source: AGHT+IHG9Ub9xshsdF6kH5/FAkq+jq1T/rEVFAM65Ag5B1+pgNhqA3GKA+rpXsrwIeGzgMXlNvHVmg==
+X-Received: by 2002:a05:7022:609f:b0:11b:ade6:45a7 with SMTP id a92af1059eb24-11df643be88mr5146019c88.1.1764954729409;
+        Fri, 05 Dec 2025 09:12:09 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76ff44asm20698013c88.9.2025.12.05.09.12.14
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df7552defsm20336959c88.2.2025.12.05.09.12.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 09:12:14 -0800 (PST)
+        Fri, 05 Dec 2025 09:12:08 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
 From: Guenter Roeck <linux@roeck-us.net>
 To: Shuah Khan <shuah@kernel.org>
@@ -74,12 +72,10 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
 	bpf@vger.kernel.org,
 	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH v2 04/13] selftests/filesystems: file_stressor: Fix build warning
-Date: Fri,  5 Dec 2025 09:09:58 -0800
-Message-ID: <20251205171010.515236-5-linux@roeck-us.net>
+Subject: [PATCH v2 00/13] selftests: Fix build warnings and errors
+Date: Fri,  5 Dec 2025 09:09:54 -0800
+Message-ID: <20251205171010.515236-1-linux@roeck-us.net>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20251205171010.515236-1-linux@roeck-us.net>
-References: <20251205171010.515236-1-linux@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,35 +84,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix
+This series fixes build warnings and errors observed when trying to build
+selftests.
 
-file_stressor.c:112:9: warning: unused variable 'pid_self'
+v2: Emphasize that the patch series fixes build warnings and errors
+    which are seen even if -Werror is not provided.
+    Fix usage of cc-option.
+    For "ignoring return value" warnings, use perror() to display an error
+    message if the affected function returns an error.
 
-by dropping the unused variable.
+----------------------------------------------------------------
+Guenter Roeck (13):
+      clone3: clone3_cap_checkpoint_restore: Fix build warnings
+      selftests: ntsync: Fix build warnings
+      selftests/filesystems: fclog: Fix build warnings and errors
+      selftests/filesystems: file_stressor: Fix build warning
+      selftests/filesystems: anon_inode_test: Fix build warning
+      selftest: af_unix: Support compilers without flex-array-member-not-at-end support
+      selftest/futex: Comment out test_futex_mpol
+      selftests: net: netlink-dumps: Avoid uninitialized variable warning
+      selftests/seccomp: Fix build warning
+      selftests: net: Fix build warnings
+      selftests/fs/mount-notify: Fix build warning
+      selftests/fs/mount-notify-ns: Fix build warning
+      selftests: net: tfo: Fix build warning
 
-Fixes: aab154a442f9b ("selftests: add file SLAB_TYPESAFE_BY_RCU recycling stressor")
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-v2: Update subject and description to reflect that the patch fixes a build
-    warning. 
-
- tools/testing/selftests/filesystems/file_stressor.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/tools/testing/selftests/filesystems/file_stressor.c b/tools/testing/selftests/filesystems/file_stressor.c
-index 01dd89f8e52f..4f314270298d 100644
---- a/tools/testing/selftests/filesystems/file_stressor.c
-+++ b/tools/testing/selftests/filesystems/file_stressor.c
-@@ -109,8 +109,6 @@ FIXTURE_TEARDOWN(file_stressor)
- TEST_F_TIMEOUT(file_stressor, slab_typesafe_by_rcu, 900 * 2)
- {
- 	for (int i = 0; i < self->nr_procs; i++) {
--		pid_t pid_self;
--
- 		self->pids_openers[i] = fork();
- 		ASSERT_GE(self->pids_openers[i], 0);
- 
--- 
-2.45.2
-
+ tools/testing/selftests/clone3/clone3_cap_checkpoint_restore.c     | 4 ----
+ tools/testing/selftests/drivers/ntsync/ntsync.c                    | 4 ++--
+ tools/testing/selftests/filesystems/anon_inode_test.c              | 1 +
+ tools/testing/selftests/filesystems/fclog.c                        | 1 +
+ tools/testing/selftests/filesystems/file_stressor.c                | 2 --
+ .../testing/selftests/filesystems/mount-notify/mount-notify_test.c | 3 ++-
+ .../selftests/filesystems/mount-notify/mount-notify_test_ns.c      | 3 ++-
+ tools/testing/selftests/futex/functional/futex_numa_mpol.c         | 2 ++
+ tools/testing/selftests/net/af_unix/Makefile                       | 7 ++++++-
+ tools/testing/selftests/net/lib/ksft.h                             | 6 ++++--
+ tools/testing/selftests/net/netlink-dumps.c                        | 2 +-
+ tools/testing/selftests/net/tfo.c                                  | 3 ++-
+ tools/testing/selftests/seccomp/seccomp_bpf.c                      | 3 ++-
+ 13 files changed, 25 insertions(+), 16 deletions(-)
