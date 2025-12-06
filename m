@@ -1,78 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m3298.qiye.163.com (mail-m3298.qiye.163.com [220.197.32.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CE913AA2F;
-	Sat,  6 Dec 2025 15:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FFB4C81;
+	Sat,  6 Dec 2025 15:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765033310; cv=none; b=Vnr09pna4klaGuGMnLXHysCrxaTLJPJsy/Dt5vKuhJNvdEljpi9PGwNaLOpnyPZTF+vR2zCSimYOir21ItFVtUeYavCEhLRVW4qfxcP3blCNIFefcjQ//WO1F/NFD5xZOIbFXo/oyqdaMoYY9tJSsDCMdXvwiabvJ1Q5PDKN+tI=
+	t=1765033350; cv=none; b=HpjH/b4TCKiXazIR5uwoAAJ+k8qu/esErMehuS3PbPHs0oz/RdKVLzRIEH+sdMtjevT0wUu3EZfw39jdJlPFPTFTX+lAHIRtTjShh/JnDLmLi2aveNKbrR3wedum5gL9Ht+iYGxjlzKYDnlTkxDAQsT72+m14cFWR0jRWmttWs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765033310; c=relaxed/simple;
-	bh=7zQZp9gSG5slwJhE/n6/Q6eXVElwKEeuSY5VlUi3fVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDRdDswKJQzBqXBPOkpRtC9xili3APBLMKPV8zik4KBQ1QeHKZ1VrR2rVOxVO1D5c7sclGkrECc+46s2tfpSZEOzIkouj7xfxlgaSDC/Sk3LHbO4KQema469VcSDWe6u2/EJSbybc9BwIiQg64sJbibR2YwdJmO2HZ6l/0nBKRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFFdYhqO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFFdYhqO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CED8C4CEF5;
-	Sat,  6 Dec 2025 15:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765033308;
-	bh=7zQZp9gSG5slwJhE/n6/Q6eXVElwKEeuSY5VlUi3fVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dFFdYhqOhxcPxNpZWOtmX/NmCda/sPfjTmddspnbjYpMgfg/dIvJ+iRWnYfwVHmZr
-	 aFn4CCtqfKwItFY/yL5D7eQPqAZKVke8j6BLhh0tUgrohO0j498qWYCyKZSbwyr9M/
-	 JNB7QnKcJ9nEnEc5GETJaJvIfmngGTWbV/XafjMXNO2w8pJ4WaQ62GsRBsEiLA8gyD
-	 sfdA3Eubnu6ObpHEYzZ7CE5jlwF1GieX8A1jkEuEfC2YMVAOBKMuyRZGQUztBvxE8e
-	 6G3RqZn1gnhc4CEESxATCqxy+wpVLxKlY8t58o/zbotGzLxd4y3QTy1jH8PsHN0Eo8
-	 c7tSz8/ypwptQ==
-Date: Sat, 6 Dec 2025 15:01:44 +0000
-From: Simon Horman <horms@kernel.org>
-To: Yao Zi <ziyao@disroot.org>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub
- for MVM/MLD PTP
-Message-ID: <aTRFWCGHO-eU6_JV@horms.kernel.org>
-References: <20251204123204.9316-1-ziyao@disroot.org>
+	s=arc-20240116; t=1765033350; c=relaxed/simple;
+	bh=1CJ19Jg+woksabWb5XtLozeGdxdd9MQkH7jE9FAz8j8=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Eqc5Jij481T1MetkKaPGSFF0OOMPqvoGTvlkLsf9YO6YusWeAH7v+zKi+hAPSCbZ+DlDM5Hgbl5Zhlyi6KeVwwHmPobr4VQiaFN8PPkV79KXkGjrXND4eOaWzBWJl5UBQT/z4ZG6RV4t4dc2CiaB63D8o4dWbena/Rbu3mFREV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn; spf=pass smtp.mailfrom=sangfor.com.cn; arc=none smtp.client-ip=220.197.32.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sangfor.com.cn
+Received: from localhost.localdomain (unknown [113.92.158.29])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2c3ac3254;
+	Sat, 6 Dec 2025 21:46:33 +0800 (GMT+08:00)
+From: Ding Hui <dinghui@sangfor.com.cn>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jacob.e.keller@intel.com,
+	intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ding Hui <dinghui@sangfor.com.cn>
+Subject: [Patch net v2] ice: Fix incorrect timeout ice_release_res()
+Date: Sat,  6 Dec 2025 21:46:09 +0800
+Message-Id: <20251206134609.10565-1-dinghui@sangfor.com.cn>
+X-Mailer: git-send-email 2.17.1
+X-HM-Tid: 0a9af3ea0cab09d9kunm9ddc210f18cfd28
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCS0MZVkJOGhlNTxlNH0IaH1YVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSkhVQklVSk5DVUlCWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251204123204.9316-1-ziyao@disroot.org>
 
-On Thu, Dec 04, 2025 at 12:32:04PM +0000, Yao Zi wrote:
-> Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
-> required ops are NULL"), PTP clock registered through ptp_clock_register
-> is required to have ptp_clock_info.settime64 set, however, neither MVM
-> nor MLD's PTP clock implementation sets it, resulting in warnings when
-> the interface starts up, like
-> 
-> WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
-> CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
-> ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
-> ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
-> iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
-> 
-> I don't find an appropriate firmware interface to implement settime64()
-> for iwlwifi MLD/MVM, thus instead create a stub that returns
-> -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
-> be registered.
-> 
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
-> Signed-off-by: Yao Zi <ziyao@disroot.org>
+The commit 5f6df173f92e ("ice: implement and use rd32_poll_timeout for
+ice_sq_done timeout") converted ICE_CTL_Q_SQ_CMD_TIMEOUT from jiffies
+to microseconds.
 
+But the ice_release_res() function was missed, and its logic still
+treats ICE_CTL_Q_SQ_CMD_TIMEOUT as a jiffies value.
+
+So correct the issue by usecs_to_jiffies().
+
+Found by inspection of the DDP downloading process.
+Compile and modprobe tested only.
+
+Fixes: 5f6df173f92e ("ice: implement and use rd32_poll_timeout for ice_sq_done timeout")
+Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
 Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+---
+v1->v2: rebase to net branch and add commit log.
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index 046bc9c65c51..785bf5cc1b25 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -2251,7 +2251,7 @@ void ice_release_res(struct ice_hw *hw, enum ice_aq_res_ids res)
+ 	/* there are some rare cases when trying to release the resource
+ 	 * results in an admin queue timeout, so handle them correctly
+ 	 */
+-	timeout = jiffies + 10 * ICE_CTL_Q_SQ_CMD_TIMEOUT;
++	timeout = jiffies + 10 * usecs_to_jiffies(ICE_CTL_Q_SQ_CMD_TIMEOUT);
+ 	do {
+ 		status = ice_aq_release_res(hw, res, 0, NULL);
+ 		if (status != -EIO)
+-- 
+2.17.1
 
