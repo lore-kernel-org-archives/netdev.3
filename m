@@ -1,42 +1,42 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0C62FC86B
-	for <netdev@vger.kernel.org>; Tue,  9 Dec 2025 10:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1E2301474;
+	Tue,  9 Dec 2025 10:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765274618; cv=none; b=oIy/zcWQnDSlQ42xrsNb9LSPZPLa/60gwlc1DIM2h3y4ZVheNeBomVAEUIbnmpEoFti7zUju+S5tkDw6/66jkO6Ka5w8NAOuIKcMl8b/RZ/11iTX3eiJMNA2KZVUTjTrWY+FfVUe5aiSeR9VU7rtXgiZVpRtxCeY2qpyR+gU4io=
+	t=1765274628; cv=none; b=ZLf1KsD4Tkpiv5XgA+iflROpeUuQe+GuaVLw2TUr7Hs01F3fBbJEq+wHca/Y/SRXm/LQF+9kRaZBO59D6MRJHEiJSHL/JqS6KyoLca231inUmA/jMvj2b9cmdwlG0VvqKCG+obvy9So1xT44wLjEq5i45JlgMoJWEjHkfzgurLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765274618; c=relaxed/simple;
-	bh=r0JyqLB5s8BUcwpuoP7IpOoZ4xhcyEvbalDSYeF1rWU=;
+	s=arc-20240116; t=1765274628; c=relaxed/simple;
+	bh=9GEZ1qcQcq+OU+/HJx1o4UIA998BTTxrtDXBo1mZRD4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jYSFF+O47yAvWS1Gy9hAWGbIY+HaX87+AcfMGCKjYGrWfRRFM9T8uiR5lhzF7lpDzve1gpR7gkqGMRjN0EnTtwZExteJEW0EebLT20G2bkMsR1dM5Nvb4AWXMzeY3rY4CwWaQpH0NT9ty/nO233qYCnQlJGdqb8MAVDTQa6Wd7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=S3lbH9Q/; arc=none smtp.client-ip=185.226.149.38
+	 MIME-Version; b=IsyM9bkmCK2ttfW0dVf72ndAeYQw2gHasXksiytouBZpp82VnSroyPcQBrQ6pPEprMyT6XM6m6P2lrDbZaJA7CF0pVhnvYVKgJwmx4PIRgVq2Tt152f3S0yEhlojulEgAAy1/snn/2Xag2xJFAC/ti58GJvbmfI8cdvafB35RDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=mUrpEN13; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="S3lbH9Q/"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="mUrpEN13"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vSuZ7-00Gyzi-VO; Tue, 09 Dec 2025 11:03:30 +0100
+	id 1vSuZ7-00HD4s-8r; Tue, 09 Dec 2025 11:03:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector2; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
 	:Message-Id:Date:Subject:Cc:To:From;
-	bh=KikFFrDxLsLsfdxtpsUWRZaSixAcB7BcUoyENyDfy4k=; b=S3lbH9Q/Yl+VFXGmEwPyKtPYEz
-	77WjtnVzjVmxMyudQgjI4elVjnc5hHMLe5PAB0Z2/jDfXid7Db6ytvRIQew2bJymKwQZScV8OdgtT
-	AF3Rqm2dMKEhDVxFnqq4+eKWMn+6WBNa3raHvqITS0kdq6SGqgOMTvfvB4Glfsbi7dnzBVjOZpMIS
-	afZ4CaJngiCWsxSX5gkKmgcuP/JN3SX+92z2ifHFj7+UxPOn8CIviP6UJ7zkMXSJ55FtAizxJ3ChO
-	EHFgkS5dg6LHc+TbFGn4K6QtAX9P+zt7Vs+ka7eZEg+7qR68sf/V34gYafO6cnGVOkBBMXzACccmC
-	wAXN02ZQ==;
+	bh=YGnBBG9ZzprxJLEp94vtepq3lcPSfdeE6BD41wIj1gg=; b=mUrpEN13REkNMaUzxXJy60b3ra
+	lR3EJczQGfp6BhxvZmLKXwOJRG4Cjf58rrzBDK1tRGJheVUlF3nI/pVTnGrLV0b5VXs99f1YboTU1
+	TppUIsxBWefpljsR+brKOkzToAxRqku61ZAY0Y/+z9uQxq/LwIprA+6oNSq0Kp424/KkHow+kLK3h
+	LZ17mF3czhqWsCVWxRMvhaU3Fk6i8SThjEFQTxi/E6+0XStJwrBf/j5rCrUm6hnWJFgIkuHTkTH/Y
+	Ffl1xT6d90VvW3bJuyR/5T4KDHqAxwPsZWx4p1zgCWXdO8N96DB9wPxob5uAylZqs0pucEMj8wlel
+	fmJMdaiQ==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vSuZ7-0000E4-5L; Tue, 09 Dec 2025 11:03:29 +0100
+	id 1vSuZ5-00074w-Vv; Tue, 09 Dec 2025 11:03:28 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1vSuZ5-00CND9-TL; Tue, 09 Dec 2025 11:03:28 +0100
+	id 1vSuZ3-00CND9-Jl; Tue, 09 Dec 2025 11:03:25 +0100
 From: david.laight.linux@gmail.com
 To: Yury Norov <yury.norov@gmail.com>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
@@ -59,9 +59,9 @@ To: Yury Norov <yury.norov@gmail.com>,
 	Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 Cc: David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH 5/9] bitfield: FIELD_MODIFY: Only do a single read/write on the target
-Date: Tue,  9 Dec 2025 10:03:09 +0000
-Message-Id: <20251209100313.2867-6-david.laight.linux@gmail.com>
+Subject: [PATCH 3/9] bitmap: Use FIELD_PREP() in expansion of FIELD_PREP_WM16()
+Date: Tue,  9 Dec 2025 10:03:07 +0000
+Message-Id: <20251209100313.2867-4-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251209100313.2867-1-david.laight.linux@gmail.com>
 References: <20251209100313.2867-1-david.laight.linux@gmail.com>
@@ -75,31 +75,44 @@ Content-Transfer-Encoding: 8bit
 
 From: David Laight <david.laight.linux@gmail.com>
 
-Replace the:
-        *reg &= ~mask; *reg |= new_value;
-with a single assignment.
-While the compiler will usually optimise the extra access away
-it isn't guaranteed.
+Instead of directly expanding __BF_FIELD_CHECK() (which really ought
+not be used outside bitfield) and open-coding the generation of the
+masked value, just call FIELD_PREP() and add an extra check for
+the mask being at most 16 bits.
 
 Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
- include/linux/bitfield.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/linux/hw_bitfield.h | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
-index 3e013da9ea12..3e0e8533bb66 100644
---- a/include/linux/bitfield.h
-+++ b/include/linux/bitfield.h
-@@ -200,8 +200,7 @@
- 		__auto_type _val = 1 ? (val) : _mask;					\
- 		typecheck_pointer(_reg_p);						\
- 		__BF_FIELD_CHECK(_mask, *_reg_p, _val, "FIELD_MODIFY: ");		\
--		*_reg_p &= ~_mask;							\
--		*_reg_p |= ((_val << __bf_shf(_mask)) & _mask);				\
-+		*_reg_p = (*_reg_p & ~_mask) | ((_val << __bf_shf(_mask)) & _mask);	\
- 	})
+diff --git a/include/linux/hw_bitfield.h b/include/linux/hw_bitfield.h
+index df202e167ce4..d7f21b60449b 100644
+--- a/include/linux/hw_bitfield.h
++++ b/include/linux/hw_bitfield.h
+@@ -23,15 +23,14 @@
+  * register, a bit in the lower half is only updated if the corresponding bit
+  * in the upper half is high.
+  */
+-#define FIELD_PREP_WM16(_mask, _val)					     \
+-	({								     \
+-		typeof(_val) __val = _val;				     \
+-		typeof(_mask) __mask = _mask;				     \
+-		__BF_FIELD_CHECK(__mask, ((u16)0U), __val,		     \
+-				 "HWORD_UPDATE: ");			     \
+-		(((typeof(__mask))(__val) << __bf_shf(__mask)) & (__mask)) | \
+-		((__mask) << 16);					     \
+-	})
++#define FIELD_PREP_WM16(mask, val)				\
++({								\
++	__auto_type _mask = mask;				\
++	u32 _val = FIELD_PREP(_mask, val);			\
++	BUILD_BUG_ON_MSG(_mask > 0xffffu,			\
++			 "FIELD_PREP_WM16: mask too large");	\
++	_val | (_mask << 16);					\
++})
  
- extern void __compiletime_error("value doesn't fit into mask")
+ /**
+  * FIELD_PREP_WM16_CONST() - prepare a constant bitfield element with a mask in
 -- 
 2.39.5
 
