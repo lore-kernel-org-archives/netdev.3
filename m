@@ -1,48 +1,35 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006602D738B;
-	Tue,  9 Dec 2025 11:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7929521D3CC;
+	Tue,  9 Dec 2025 11:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765280300; cv=none; b=OKZ+ZuWwEWuCFtKfM1DgM9l8yhgglWj4/pBlcohlny955oumFv0U+VtWL703zoBIbTA2/Tcxe5Ay/9Jc9XHqpgvkBrQF7Xdfi8PpBJIkqPTEeh+YSKTVa/lCBlPEAS5PLfuAf2+mrK2qBrorxXknpYFJzgsmoXUpPwVAvCqMNqo=
+	t=1765281199; cv=none; b=FOtpdpxGfljgCusaNuEhiSk0njBsP/Ncdkg+PJg7tZ3fjFcGlPubk7UWn+o3biV5GRl5fjq9sdbIsIeNSLQMB0eanCtzsgoMWjrYwNkpSyoTzEcckdBv6za/ITR7IxBZrbtEKsH8Yj8c//AIB3mkJHiL8zmzlQfBa4OQxFIgAHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765280300; c=relaxed/simple;
-	bh=tWrBG8HAv0xv5TTDtzEEhPMb5d2qvR5a95M0Ni6dfvs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vDP6vm8d5MR/tOJvOhPfqO6Ipmoc1v7U3xhDsqZ/oKrGWWiBSQtZ3UhKTf13KrPqs2auTL3bi2HWtPxtse0Xqif2rAjwRfTkXT3KTZ9WDrEXubQAs7ZaJn/tG06umzWNjue6lkDF1tJLvrJIe+Nyxbs/ERG1YxVhDqk35+f3564=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JiPcUjo4; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1765281199; c=relaxed/simple;
+	bh=L0g662WB0mVl+WAkbemEVpXhr6ChDipHoLJVsRbGaPc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=krFhl4zwig7tkI6o87+TZieiAz5FoBr14iGEBdVunYgZx2H0VV1iHwW9k1GnpoixaupRBFtGcEcTMGcjLQ/TZsKmGoNS87VUGXNuF/BYSy2dV+BdpNDDCZrPZHLz0Qyxr+Q3gA02xv8NRyC+NvlPjKdQFwILC/TwGu9U6/Q02J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJ0ReMh4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JiPcUjo4"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=XSAMW90pfyJ5RaZXgdjgyCtrW3u7NkuwZweC/h83jIk=;
-	b=JiPcUjo4XSCIlajYQL9o0wr7Ve3qQNxypagTYPO4cAjdTvk/yeaFZEVUaBFLL9FctNDAccxOj
-	+L4kcJYPHGmubSYSJjsUisB8Dtv6K9yjDBsJCmDopNLBYoy/nhf/ZyFFVw3qZwsKOb3zYMLVy+A
-	nw6LLnRvGNMRBHNN3u3Tpo4=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dQcHd61rhzRhRm;
-	Tue,  9 Dec 2025 19:36:13 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id EA8E514034D;
-	Tue,  9 Dec 2025 19:38:09 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 9 Dec
- 2025 19:38:09 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <chuck.lever@oracle.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<brauner@kernel.org>
-CC: <kernel-tls-handshake@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <wangliang74@huawei.com>
-Subject: [PATCH net] net/handshake: Fix null-ptr-deref in handshake_complete()
-Date: Tue, 9 Dec 2025 19:58:52 +0800
-Message-ID: <20251209115852.3827876-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJ0ReMh4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12252C4CEF5;
+	Tue,  9 Dec 2025 11:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765281199;
+	bh=L0g662WB0mVl+WAkbemEVpXhr6ChDipHoLJVsRbGaPc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=mJ0ReMh4GUErEMC2XYEcSamkeS0rELjBZjfI6Y7kOzQ1/WlzGNGXarqFNJt83Y33H
+	 xf/RlYFOA0j86PtSMgwY1hzVQzWKUkRqyABakTKrB49+EpEIrUpw5zEs+rEg+lltv7
+	 2wEWcgYxFl13fsZoAv8WO6bl+A7GCBPjndKOHYr/2dbx31CqgzkKGGsrcJ5VQnpC62
+	 n3kyetk+uujbrQDhtJ8DwSqUY7eJWrVSCV8FoS5bCALCXzOymJ49Rdb/ECn9mqNGkp
+	 Ydt7bZ4YlnpS0Ygo3/Ps9TvyqbNyndt3b5HB+f3BOxGG9OPDmS5HXHsOVnE2oUNbS6
+	 FMaH+BMnv6Gsw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7888C3808200;
+	Tue,  9 Dec 2025 11:50:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,94 +37,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+Subject: Re: [PATCH net 0/4] mptcp: misc fixes for v6.19-rc1
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176528101428.3919807.13662926558612296874.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Dec 2025 11:50:14 +0000
+References: 
+ <20251205-net-mptcp-misc-fixes-6-19-rc1-v1-0-9e4781a6c1b8@kernel.org>
+In-Reply-To: 
+ <20251205-net-mptcp-misc-fixes-6-19-rc1-v1-0-9e4781a6c1b8@kernel.org>
+To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, kuniyu@google.com, dmytro@shytyi.net,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
 
-A null pointer dereference in handshake_complete() was observed [1].
+Hello:
 
-When handshake_req_next() return NULL in handshake_nl_accept_doit(),
-function handshake_complete() will be called unexpectedly which triggers
-this crash. Fix it by goto out_status when req is NULL.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[1]
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN PTI
-RIP: 0010:handshake_complete+0x36/0x2b0 net/handshake/request.c:288
-Call Trace:
- <TASK>
- handshake_nl_accept_doit+0x32d/0x7e0 net/handshake/netlink.c:129
- genl_family_rcv_msg_doit+0x204/0x300 net/netlink/genetlink.c:1115
- genl_family_rcv_msg+0x436/0x670 net/netlink/genetlink.c:1195
- genl_rcv_msg+0xcc/0x170 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x14c/0x430 net/netlink/af_netlink.c:2550
- genl_rcv+0x2d/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x878/0xb20 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x897/0xd70 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa39/0xbf0 net/socket.c:2592
- ___sys_sendmsg+0x121/0x1c0 net/socket.c:2646
- __sys_sendmsg+0x155/0x200 net/socket.c:2678
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x5f/0x350 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- </TASK>
+On Fri, 05 Dec 2025 19:55:13 +0100 you wrote:
+> Here are various unrelated fixes:
+> 
+> - Patches 1-2: ignore unknown in-kernel PM endpoint flags instead of
+>   pretending they are supported. A fix for v5.7.
+> 
+> - Patch 3: avoid potential unnecessary rtx timer expiration. A fix for
+>   v5.15.
+> 
+> [...]
 
-Fixes: fe67b063f687 ("net/handshake: convert handshake_nl_accept_doit() to FD_PREPARE()")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- net/handshake/netlink.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+Here is the summary with links:
+  - [net,1/4] mptcp: pm: ignore unknown endpoint flags
+    https://git.kernel.org/netdev/net/c/0ace3297a730
+  - [net,2/4] selftests: mptcp: pm: ensure unknown flags are ignored
+    https://git.kernel.org/netdev/net/c/29f4801e9c8d
+  - [net,3/4] mptcp: schedule rtx timer only after pushing data
+    https://git.kernel.org/netdev/net/c/2ea6190f42d0
+  - [net,4/4] mptcp: avoid deadlock on fallback while reinjecting
+    https://git.kernel.org/netdev/net/c/ffb8c27b0539
 
-diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
-index 1d33a4675a48..cdaea8b8d004 100644
---- a/net/handshake/netlink.c
-+++ b/net/handshake/netlink.c
-@@ -106,25 +106,26 @@ int handshake_nl_accept_doit(struct sk_buff *skb, struct genl_info *info)
- 
- 	err = -EAGAIN;
- 	req = handshake_req_next(hn, class);
--	if (req) {
--		sock = req->hr_sk->sk_socket;
--
--		FD_PREPARE(fdf, O_CLOEXEC, sock->file);
--		if (fdf.err) {
--			err = fdf.err;
--			goto out_complete;
--		}
--
--		get_file(sock->file); /* FD_PREPARE() consumes a reference. */
--		err = req->hr_proto->hp_accept(req, info, fd_prepare_fd(fdf));
--		if (err)
--			goto out_complete; /* Automatic cleanup handles fput */
--
--		trace_handshake_cmd_accept(net, req, req->hr_sk, fd_prepare_fd(fdf));
--		fd_publish(fdf);
--		return 0;
-+	if (!req)
-+		goto out_status;
-+
-+	sock = req->hr_sk->sk_socket;
-+
-+	FD_PREPARE(fdf, O_CLOEXEC, sock->file);
-+	if (fdf.err) {
-+		err = fdf.err;
-+		goto out_complete;
- 	}
- 
-+	get_file(sock->file); /* FD_PREPARE() consumes a reference. */
-+	err = req->hr_proto->hp_accept(req, info, fd_prepare_fd(fdf));
-+	if (err)
-+		goto out_complete; /* Automatic cleanup handles fput */
-+
-+	trace_handshake_cmd_accept(net, req, req->hr_sk, fd_prepare_fd(fdf));
-+	fd_publish(fdf);
-+	return 0;
-+
- out_complete:
- 	handshake_complete(req, -EIO, NULL);
- out_status:
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
