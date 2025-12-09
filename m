@@ -1,64 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D782221D96;
-	Tue,  9 Dec 2025 13:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1B1320A3B;
+	Tue,  9 Dec 2025 13:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765287431; cv=none; b=Uzs54JWhkAF7PkBw5WpQ/sC/+t7aNTwirrFG4bzv5u07DDPKDawdHAwWn8KYKrZpyp+qdJfc41v6jsu9qpsenx6WtJn/QbPJhjxDn1LQxJoFfXnqZ+b2Ed1ZIyqjDiHj/EsyLleFf1XhKUHvkpEHDpB41JcygcMVP6IVeveH9vw=
+	t=1765287578; cv=none; b=Y04OVq2yVVNdeJcYFz5vrkXp2eapSWhHUmpZfOhYO8jZaTvmSF7Coo576D1gwXuESyM64WAVnpb51apcfNUZYp/57FNikP57PU7/mbOmHwgU4oXdAX8a2BBaEgbwTP0YFi/8tDcWYvFC0pkZxOo5E7U8f40DcXI/tWQqgyctAGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765287431; c=relaxed/simple;
-	bh=muuB0RdQ1Ps1jrTh03xzMRZ51ve6oMC3M/a6DjHI4uc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gslwAFCjLxuqr7myZ9lqEb9pokLjvG/n/O0rmNOQmZUlh3UijIdisSpjuNetnji4O14ouwx20x7l44NXYMsk5CT4PnTzL/EUQ8OEp/sA/OnIq0ocoOk6SJh9XNG/+1zCXstduyzif/3lqogsOUxILGZ2oeN5VcKZueRHe9/iSUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jdnI/NN4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1765287578; c=relaxed/simple;
+	bh=VB8+cxSqfMtpQil+MMBj+qqbZ0Icly7VPQpiKSY7rVU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hvE9dJXkgetaMzWFg2XHFKgwjYYoE7iNSmODePVh8uOOkwytCocCQuP5d6oomiLueNkfHy6pYTnUQthgx3RifZaYNgEAjZLcaAgvk2NaOO8Wxk9edtrlKIuU5AaNJ9aed8+gk2dicHSJyM/G/y8OISGpdg9AYxDLoH1Q/1DoD6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Y0cjGTio; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jdnI/NN4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=s9MvnYuP6roOHf+OO0pXHIi0RkgGQOPsyaTOJ7Yh0y4=; b=jdnI/NN4SuhC0Gc4N/ZGAbLm8i
-	i00p/vJBNR0aybwvEaOf/7i+MjovUrg/H0BFHaxCmv96xunzyn+er8WnKLpUeUXasPrd/bhUP/xQb
-	va3NQm+1y+68hhZfnE+k+iaEfk9Dv+YGL2nfEau0EcjCuphANAW/epf4XGHSPoR+s/QI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vSxth-00GTIF-8M; Tue, 09 Dec 2025 14:36:57 +0100
-Date: Tue, 9 Dec 2025 14:36:57 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Manivannan Sadhasivam <mani@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] net: mhi: Enable Ethernet interface support
-Message-ID: <5a137b11-fa08-40b5-b4b4-79d10844a5b7@lunn.ch>
-References: <20251209-vdev_next-20251208_eth_v6-v6-0-80898204f5d8@quicinc.com>
- <20251209-vdev_next-20251208_eth_v6-v6-1-80898204f5d8@quicinc.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Y0cjGTio"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=MdH3++3W4bys0UrCphvQHTDq/H/Rp7gzPD0YSU9c3aU=;
+	b=Y0cjGTio/6hEb24YhPZ0waB0U+HeYf2gIDdlWuonL8UCtGukzIpehl0VLoF5dJ8HX5Rp5+a4X
+	1/pCBz4SvsEngb7i2CP9DIMHw4E3wBRhEJU4TDWoMI44izJb64bjcoqXg0218dWJQzWcyws0UwT
+	IprWK2PukuGJCtVFkhqL4/0=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dQfzj5blgz1cyPb;
+	Tue,  9 Dec 2025 21:37:37 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0E18C14013B;
+	Tue,  9 Dec 2025 21:39:34 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 9 Dec 2025 21:39:33 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net 2/3] net: hns3: using the num_tqps to check whether tqp_index is out of range when vf get ring info from mbx
+Date: Tue, 9 Dec 2025 21:38:24 +0800
+Message-ID: <20251209133825.3577343-3-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20251209133825.3577343-1-shaojijie@huawei.com>
+References: <20251209133825.3577343-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209-vdev_next-20251208_eth_v6-v6-1-80898204f5d8@quicinc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
->  	ndev = alloc_netdev(sizeof(struct mhi_net_dev), info->netname,
-> -			    NET_NAME_PREDICTABLE, mhi_net_setup);
-> +			    NET_NAME_PREDICTABLE, info->ethernet_if ?
-> +			    mhi_ethernet_setup : mhi_net_setup);
+From: Jian Shen <shenjian15@huawei.com>
 
-Is the name predictable? I thought "eth%d" was considered
-NET_NAME_ENUM?
+Currently, rss_size = num_tqps / tc_num. If tc_num is 1, then num_tqps
+equals rss_size. However, if the tc_num is greater than 1, then rss_size
+will be less than num_tqps, causing the tqp_index check for subsequent TCs
+using rss_size to always fail.
 
-https://elixir.bootlin.com/linux/v6.18/source/net/ethernet/eth.c#L382
+This patch uses the num_tqps to check whether tqp_index is out of range,
+instead of rss_size.
 
-	Andrew
+Fixes: 326334aad024 ("net: hns3: add a check for tqp_index in hclge_get_ring_chain_from_mbx()")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index c7ff12a6c076..b7d4e06a55d4 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -193,10 +193,10 @@ static int hclge_get_ring_chain_from_mbx(
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < ring_num; i++) {
+-		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.rss_size) {
++		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.num_tqps) {
+ 			dev_err(&hdev->pdev->dev, "tqp index(%u) is out of range(0-%u)\n",
+ 				req->msg.param[i].tqp_index,
+-				vport->nic.kinfo.rss_size - 1U);
++				vport->nic.kinfo.num_tqps - 1U);
+ 			return -EINVAL;
+ 		}
+ 	}
+-- 
+2.33.0
+
