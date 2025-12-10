@@ -1,167 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BD82848A8;
-	Wed, 10 Dec 2025 23:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C8886352
+	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 00:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765409959; cv=none; b=uoxiVchnLIxQ8/uZ/toUOjW/6ARx/IcuN6F9rVv2uK8cNmbFRHiVWDBCLox9qTnRdHrrZAWsOU21PkkA/KGJwJ6H3ZdXiH5JsH/I0rlTJW/gQg+w8SoorMdoD7lmZVCxD7DHF8sLZAKch/eQ1VBzd6kBTdGByYmbZtW1GfpDwdo=
+	t=1765412558; cv=none; b=fGmWDplVnEGVdGLErepHprRUO2vSLEYN65fwjbWHF2vsHRKuAFi3qI12eNKc2RgQ/vGZx3Z6bKCSfMnH3KqxhHMUiUExdIiXmmKzbFUSBfT6JlDPqncHeRAuMxgENXjHESRseBmGPTG5qUGIPkZgmwITR/zLj0rIAEuCVGdMuu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765409959; c=relaxed/simple;
-	bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PZmRTjJHaz1B0jrhMQkqZysQfb7ZKUp6oIQduM0PeiHUPgYDRck/uIisKwM3HB56L+U+yemsnDrmiQP4Y9x5IbydrxrNGbpRinWD7cM5nB687Gci2pTTLwIv8t9zp2eDNngKRaEXyY4KzriyKu+MaRWtgacjpAIvz8hjW6GbPv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZYTEsN5S; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765412558; c=relaxed/simple;
+	bh=Zm++eM/Y4Y4Mw3cr2RFaF779TF5CMVf3HozqFbdbsqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F20vhwucqoQyoXa2MpT+Tx8vD82cB9LM4ialzP/Tw9sDtebaUQOxeBvFetSLxT0v2aKdTRmTO5CU6zf0jfeB93rqsNL35ZatGgM8YEpb6tYVRj9JoTCGThEKgC5tmZqCSweIVRHgutkeIh6oaKmxnEqY+txGXj4mBamyZBPEFwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlvJdnpL; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZYTEsN5S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765409956; x=1796945956;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
-  b=ZYTEsN5SiaidcSqZX9Tq2+WvNn/zYHI5f244hKKIdKJr629VnK12288V
-   ZwqdUrCjNmxZZ3j0R2zqDlwzjPYj3jn3Ulq6ebyAaanftyiaL6K/9p6el
-   bVerDZOXX1DJcSRPdeXzO9JOQRRhmj40TOQqIUnzNAJiz+AY5aBaG/oXy
-   NzElMZSlrw64IH4KFh0R5dGqzZw2JHrgZd92xmu0jwHmR2pTvrff4LVY1
-   tVaijqafRCJDqGVe5iPmDCEltggQOQiaEuhlxHRd81PeH2vYGfFz6Nbro
-   K2nxeRa4Z51qIQ4kgyLlglXZ9XUpn+4wvcNb9vYMW/p6/6iklhZ98Wumb
-   Q==;
-X-CSE-ConnectionGUID: EpL6Ze05TZqbZMR5qqWOwQ==
-X-CSE-MsgGUID: fhe0vTfdReeU+R4MK8yAmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78501420"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="78501420"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 15:39:12 -0800
-X-CSE-ConnectionGUID: KpQ53LaCR92a/lE3dY93+A==
-X-CSE-MsgGUID: yM9OGlZbRkmqVgjyMNGu0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="227300278"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 15:39:04 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTTlu-000000003sH-0itl;
-	Wed, 10 Dec 2025 23:39:02 +0000
-Date: Thu, 11 Dec 2025 07:38:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 8/8] crypto: atmel: Use
- dmaengine_prep_slave_single_config() API
-Message-ID: <202512110702.EhO0gmFG-lkp@intel.com>
-References: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlvJdnpL"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7636c96b9aso56030166b.2
+        for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 16:22:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765412555; x=1766017355; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B5IMWQm5sz3Fn5h8gxR9KjhSHgtxoVBDtTdmB7LD/rY=;
+        b=DlvJdnpLd51riV0LRYbCt2CnEXYE2Io7mnPwfhdoAh9bOcaoWAaBV/jr80dFyUiWVP
+         voNTCHdTCXYsOMy1HcHrAUKHi9TFkMbBJIKmxClYwRt9rsi99MO1qLAput4Y1iEhcmS6
+         ZjP+O/J+vd67SiOt0IGXtIgq0ELjc9Mk4DjK00me0IEdHG2Qi+mUDIelh0JfkOIBTHdS
+         mX/b3ebS3kGgY/SJbVsW8FGIl0ya74gAKiCDSmKqU+2svI77UA3d3H/Bl8LDbeFhwhaU
+         sqnTGXg5Tn4txePHwT+NhJq/AZD2uusxqTBdRAsqsk7JxP4JdDc7il8Drd+bbp0AS6Wj
+         90oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765412555; x=1766017355;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=B5IMWQm5sz3Fn5h8gxR9KjhSHgtxoVBDtTdmB7LD/rY=;
+        b=RUsQk9F3yL5ekDybcf4H21JRK7D5WaP1FPHc03vA+MDgjDTZaCvE8gOutgICN5qk2e
+         1KW0Loy6kzy2HcRo7rYL/jTvyRZj8inLIBD28Qm2xhbLb5KtxafJYwMXPqJmbZY884xa
+         5AbOE5GuzL6izCVzXTet9tZiybyiXD559oTD2BkaAP/eCqtySNwoxohtorO9mBd1l34n
+         gQ3XA5+oxTDll72Mdues0iKK7y2QTQc6Daz7ZStXBIupDGmewzavaKuoScDgM/y/EpoW
+         v/yl+uugRnK+LEx8zSp+hoB04yfW0+0jrSL4XMCiDbcmKXkvl1dAIQUk6xbnSLS1MpF5
+         f4Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8oHsL14XCrAMv13FCw6CNZDtCgIVU8ljkYFpke17VeRSp8bXGFVD+mJB0X/adx80aO9n5oBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBeDq1PVftynR/9X03b4BA4t+ZpgCAra46V3ZGfGrleHG2nuYE
+	5cQj7LeBT8JJhSgf6DY/KQP7a3Z+Phzk9pCbv5hR9IGbYHbWOSXdUlvd/uQ2aQ==
+X-Gm-Gg: AY/fxX64qNr224l59RbJRzvHO7x+Jyq8slkjKILPGHHLykhFiQMPc+uu1ragUrly4FF
+	/XReGYGMp/C9Bx66E8F0rx/KdThPROyD0J+XNRYMA/nK5CFk7iEoULaWG2GzorPKGWcWAxkmTH4
+	pmGcmD2SLNSmAlNo0+u18szFo4ZOMEXVSGsxz8JdFunMbWe74cYgpevly9lGbb7OE2thPCKHSE9
+	HxdORjNK7HM0RFAdKih1clXBVIQc9IWZfQdydSwnY7ykua3tWRfeuAlR1BKmnY8qXUQdigk6qGn
+	HlWMAjMdJI1dVlAQc7vIaA+R1NxJ8q+sIYi1oey4I8pWJl74mgzxGMEI8nGdWQpm7Ddcb902OBI
+	n012Fsb4ORMtkKcxFLbwKqlpLrKOF17EdY1T2qlmTCOwL0eTeUtNcLlWXiqolBgCFqYvEKAapod
+	D95MsAUG6lRGIWq7ua+52KpzAoz1twSPno64BeERg1vhSZWE2Y08rJ1ZWaMD9iRAw=
+X-Google-Smtp-Source: AGHT+IHJ5unPIP4qklvnNP+tvcAVqaSk7cuFkEwR0o5WYQPqgnyOEHIo7FqFLamdSrbYRL5Ra9cg8w==
+X-Received: by 2002:a05:6000:2901:b0:429:b8e2:1064 with SMTP id ffacd0b85a97d-42fa3b05105mr4387383f8f.47.1765406443112;
+        Wed, 10 Dec 2025 14:40:43 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8a66b1fsm1691501f8f.9.2025.12.10.14.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 14:40:42 -0800 (PST)
+Date: Wed, 10 Dec 2025 22:40:41 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Crt Mori <cmo@melexis.com>, Richard Genoud
+ <richard.genoud@bootlin.com>, Andy Shevchenko
+ <andriy.shevchenko@intel.com>, Luo Jie <quic_luoj@quicinc.com>, Peter
+ Zijlstra <peterz@infradead.org>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Simon
+ Horman <simon.horman@netronome.com>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, Andreas Noever
+ <andreas.noever@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Subject: Re: [PATCH 0/9] bitfield: tidy up bitfield.h
+Message-ID: <20251210224041.36bbde25@pumpkin>
+In-Reply-To: <aTm54HCyCTm5k5ci@yury>
+References: <20251209100313.2867-1-david.laight.linux@gmail.com>
+	<aTm54HCyCTm5k5ci@yury>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
+On Wed, 10 Dec 2025 13:20:16 -0500
+Yury Norov <yury.norov@gmail.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Tue, Dec 09, 2025 at 10:03:04AM +0000, david.laight.linux@gmail.com wrote:
+> > From: David Laight <david.laight.linux@gmail.com>
+> > 
+> > Re-send with patches going to everyone.
+> > (I'd forgotten I'd set 'ccCover = 0'.)  
+> 
+> And this one again appeared in my spambox. Have you any ideas why?
 
-[auto build test WARNING on bc04acf4aeca588496124a6cf54bfce3db327039]
+I'm getting the copies sent to my gmail account, but gmail has a mind of its own.
+It bounces and spams a lot of list emails (never might the emails/minute limit
+that meany you only get 'some of' lkml).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-Add-API-to-combine-configuration-and-preparation-sg-and-single/20251209-011820
-base:   bc04acf4aeca588496124a6cf54bfce3db327039
-patch link:    https://lore.kernel.org/r/20251208-dma_prep_config-v1-8-53490c5e1e2a%40nxp.com
-patch subject: [PATCH 8/8] crypto: atmel: Use dmaengine_prep_slave_single_config() API
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/reproduce)
+The email headers are a slight lie, the From: doesn't match the 'envelope from'.
+Basically you can't send more than 100 emails/day (count of To: and Cc:) from a
+'free' gmail address, so they are sent from elsewhere (with a 500/day limit).
+But I don't want that address appearing in the emails - hence the subterfuge.
+But the 'envelope from' is correct for where the emails come from.
+(A test email to xxx.gmail.com with an envelope from of xxx.gmail.com sent
+from a different smtp server confused gmail! The mail was errored, but it sent
+the bounce to itself!)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512110702.EhO0gmFG-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/crypto/atmel-aes.c: In function 'atmel_aes_dma_transfer_start':
->> drivers/crypto/atmel-aes.c:798:13: warning: unused variable 'err' [-Wunused-variable]
-     798 |         int err;
-         |             ^~~
-
-
-vim +/err +798 drivers/crypto/atmel-aes.c
-
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  788  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  789  static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  790  					enum dma_slave_buswidth addr_width,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  791  					enum dma_transfer_direction dir,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  792  					u32 maxburst)
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  793  {
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  794  	struct dma_async_tx_descriptor *desc;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  795  	struct dma_slave_config config;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  796  	dma_async_tx_callback callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  797  	struct atmel_aes_dma *dma;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17 @798  	int err;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  799  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  800  	memset(&config, 0, sizeof(config));
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  801  	config.src_addr_width = addr_width;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  802  	config.dst_addr_width = addr_width;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  803  	config.src_maxburst = maxburst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  804  	config.dst_maxburst = maxburst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  805  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  806  	switch (dir) {
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  807  	case DMA_MEM_TO_DEV:
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  808  		dma = &dd->src;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  809  		callback = NULL;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  810  		config.dst_addr = dd->phys_base + AES_IDATAR(0);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  811  		break;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  812  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  813  	case DMA_DEV_TO_MEM:
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  814  		dma = &dd->dst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  815  		callback = atmel_aes_dma_callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  816  		config.src_addr = dd->phys_base + AES_ODATAR(0);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  817  		break;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  818  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  819  	default:
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  820  		return -EINVAL;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  821  	}
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  822  
-c8695132080931 Frank Li        2025-12-08  823  	desc = dmaengine_prep_slave_sg_config(dma->chan, dma->sg, dma->sg_len,
-c8695132080931 Frank Li        2025-12-08  824  					      dir,
-c8695132080931 Frank Li        2025-12-08  825  					      DMA_PREP_INTERRUPT | DMA_CTRL_ACK,
-c8695132080931 Frank Li        2025-12-08  826  					      &config);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  827  	if (!desc)
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  828  		return -ENOMEM;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  829  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  830  	desc->callback = callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  831  	desc->callback_param = dd;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  832  	dmaengine_submit(desc);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  833  	dma_async_issue_pending(dma->chan);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  834  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  835  	return 0;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  836  }
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  837  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+	David
