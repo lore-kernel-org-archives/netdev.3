@@ -1,53 +1,35 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F10306B39
-	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 08:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96B7242D60;
+	Wed, 10 Dec 2025 08:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765355707; cv=none; b=ehLEewJgNn/WMfUt/TrO9AFJrQhnOX/7tdLU8Btde6vsEswZwk+/WhUn6b2mC7NF2I/BlzGcsG8swmDNSAPD4Z/c9euTW6/ToFY0iwkPue78txAt/Gu17j+UCn0iDFPouFIAU+8q8GtDispn2lwbEHYyN4AKhUc5VRe/ri14y+c=
+	t=1765356792; cv=none; b=hpnA/qsotX9JdBb5pnIhz9qFHLLH5WESJBxeGR3LI0sr9VxhuYrva/ILxgzvxBXSJVNgTTETRGvu1897a6otpkdsHeSd+7pzkg/J5KuIU0SEV6OkMXjQ7eUVPkoKx/B7X5yDGwZ3Qj5fe5ecOd6OY0xMMOgaNvAFmN7FH+Hr8sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765355707; c=relaxed/simple;
-	bh=o0capNAfJqtCk2BjzNo4EZWTWOUUc8nBwgQCMyr38nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKK2K1mZj60iHO5YMnYJqCW5D3WzrS2/bz/ETc/0cjdG9hFRhN/2UfxhnVkhfutUjuOpuyVU4pt27gIEMzHujWPPVj7bKDKE+tGOQHTAq48VUu1qYA8MBen2/LpJiV9yFod2cMkgs71Xay4QrLOBID0f8jm3t1CrsEmrNiaE9bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFeu-0007fY-6x; Wed, 10 Dec 2025 09:34:52 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFes-004vMh-2J;
-	Wed, 10 Dec 2025 09:34:50 +0100
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 605114B3B24;
-	Wed, 10 Dec 2025 08:34:50 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Arnd Bergmann <arnd@arndb.de>,
-	kernel test robot <lkp@intel.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 1/2] can: fix build dependency
-Date: Wed, 10 Dec 2025 09:32:23 +0100
-Message-ID: <20251210083448.2116869-2-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251210083448.2116869-1-mkl@pengutronix.de>
-References: <20251210083448.2116869-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1765356792; c=relaxed/simple;
+	bh=qDoGNCAWf0schiIM49QK83nRwlPkw6VFdS9o9n6aVxE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=D8pclmPxHlepgJ6htQtsEI0HzxRlxeagrGfDu67lV3HYQWxP01FRJ+wS5WSga85JLrecv+j0x4giqTJorTwx5tUm+ehDnbqKv3gBACQIUFprxhgA0B1lGay8O8nwwsubex1XdvchWQ5tD4EKtczf8iy+IbhiGq1l0jbXKpsvOHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrxgVk8J; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrxgVk8J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AB5C4CEF1;
+	Wed, 10 Dec 2025 08:53:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765356792;
+	bh=qDoGNCAWf0schiIM49QK83nRwlPkw6VFdS9o9n6aVxE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JrxgVk8JnZhTB9JlhdOSG9CMgt6QfDEM53yavRekh/ZjZbOFCkY+p55WeZUivMrZC
+	 HRTWc3LIgjPQVmGt0SlFZ+TpzHtZvvJubTDo8+LDyDSXrOvzth6hDmKmcvg1NVgvDX
+	 3k7K+M5X5OOkn2tmYV/+yS+YXX87FNQvPU+ML3tREK4XH/NIR+vEviliGwceth+jeI
+	 AO/tAn9rLt6VyETOL5ZlU/SYDpSnebileohUdRAitUZA7om21UShFITWA135ht+qjT
+	 ZauARhCB/ulkZwqTVvC3KH6QPLF2LKgkk4yZolCdkmJ+lK48DoUfIOhDyLt1oRmZcT
+	 iWHPnpFBq9cig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3BA423809A18;
+	Wed, 10 Dec 2025 08:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,110 +37,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: openvswitch: fix middle attribute validation in
+ push_nsh() action
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176535660704.514912.11425837372382255386.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Dec 2025 08:50:07 +0000
+References: <20251204105334.900379-1-i.maximets@ovn.org>
+In-Reply-To: <20251204105334.900379-1-i.maximets@ovn.org>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org, echaudro@redhat.com,
+ aconole@redhat.com, w@1wt.eu, kwqcheii@proton.me, zhuque@tencent.com
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello:
 
-A recent bugfix introduced a new problem with Kconfig dependencies:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-WARNING: unmet direct dependencies detected for CAN_DEV
-  Depends on [n]: NETDEVICES [=n] && CAN [=m]
-  Selected by [m]:
-  - CAN [=m] && NET [=y]
+On Thu,  4 Dec 2025 11:53:32 +0100 you wrote:
+> The push_nsh() action structure looks like this:
+> 
+>  OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
+> 
+> The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
+> nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
+> OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
+> inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
+> in the middle is OK.  We don't even check that this attribute is the
+> OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
+> calls - first time directly while calling validate_push_nsh() and the
+> second time as part of the nla_for_each_nested() macro, which isn't
+> safe, potentially causing invalid memory access if the size of this
+> attribute is incorrect.  The failure may not be noticed during
+> validation due to larger netlink buffer, but cause trouble later during
+> action execution where the buffer is allocated exactly to the size:
+> 
+> [...]
 
-Since the CAN core code now links into the CAN device code, that
-particular function needs to be available, though the rest of it
-does not.
+Here is the summary with links:
+  - [net] net: openvswitch: fix middle attribute validation in push_nsh() action
+    https://git.kernel.org/netdev/net/c/5ace7ef87f05
 
-Revert the incomplete fix and instead use Makefile logic to avoid
-the link failure.
-
-Fixes: cb2dc6d2869a ("can: Kconfig: select CAN driver infrastructure by default")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512091523.zty3CLmc-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20251204100015.1033688-1-arnd@kernel.org
-[mkl: removed module option from CAN_DEV help text (thanks Vincent)]
-[mkl: removed '&& CAN' from Kconfig dependency (thanks Vincent)]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/Kconfig      | 5 +----
- drivers/net/can/Makefile     | 2 +-
- drivers/net/can/dev/Makefile | 5 ++---
- net/can/Kconfig              | 1 -
- 4 files changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
-index e15e320db476..460a74ae6923 100644
---- a/drivers/net/can/Kconfig
-+++ b/drivers/net/can/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
- menuconfig CAN_DEV
--	tristate "CAN Device Drivers"
-+	bool "CAN Device Drivers"
- 	default y
- 	depends on CAN
- 	help
-@@ -17,9 +17,6 @@ menuconfig CAN_DEV
- 	  virtual ones. If you own such devices or plan to use the virtual CAN
- 	  interfaces to develop applications, say Y here.
- 
--	  To compile as a module, choose M here: the module will be called
--	  can-dev.
--
- if CAN_DEV
- 
- config CAN_VCAN
-diff --git a/drivers/net/can/Makefile b/drivers/net/can/Makefile
-index d7bc10a6b8ea..37e2f1a2faec 100644
---- a/drivers/net/can/Makefile
-+++ b/drivers/net/can/Makefile
-@@ -7,7 +7,7 @@ obj-$(CONFIG_CAN_VCAN)		+= vcan.o
- obj-$(CONFIG_CAN_VXCAN)		+= vxcan.o
- obj-$(CONFIG_CAN_SLCAN)		+= slcan/
- 
--obj-y				+= dev/
-+obj-$(CONFIG_CAN_DEV)		+= dev/
- obj-y				+= esd/
- obj-y				+= rcar/
- obj-y				+= rockchip/
-diff --git a/drivers/net/can/dev/Makefile b/drivers/net/can/dev/Makefile
-index 633687d6b6c0..64226acf0f3d 100644
---- a/drivers/net/can/dev/Makefile
-+++ b/drivers/net/can/dev/Makefile
-@@ -1,9 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-$(CONFIG_CAN_DEV) += can-dev.o
--
--can-dev-y += skb.o
-+obj-$(CONFIG_CAN) += can-dev.o
- 
-+can-dev-$(CONFIG_CAN_DEV) += skb.o
- can-dev-$(CONFIG_CAN_CALC_BITTIMING) += calc_bittiming.o
- can-dev-$(CONFIG_CAN_NETLINK) += bittiming.o
- can-dev-$(CONFIG_CAN_NETLINK) += dev.o
-diff --git a/net/can/Kconfig b/net/can/Kconfig
-index e4ccf731a24c..af64a6f76458 100644
---- a/net/can/Kconfig
-+++ b/net/can/Kconfig
-@@ -5,7 +5,6 @@
- 
- menuconfig CAN
- 	tristate "CAN bus subsystem support"
--	select CAN_DEV
- 	help
- 	  Controller Area Network (CAN) is a slow (up to 1Mbit/s) serial
- 	  communications protocol. Development of the CAN bus started in
-
-base-commit: 186468c67fc687650b7fb713d8c627d5c8566886
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
