@@ -1,66 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6214E3B8D60;
-	Wed, 10 Dec 2025 09:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D547302159;
+	Wed, 10 Dec 2025 09:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765358003; cv=none; b=myTOYDfv94YJS9kHNLKGNwg+GpPKj0AtWcQJG3i+dSOzfr3Ha5Ra+yCfrOFaKX8K3gPEnr/a14ymrqoqN3Zu0IRQf0EE4S+2IbocUWYhPL0KShvxODIjId9boIKfVv0/XMJF+1GU7h2d+z964j+7vOOaQI7bD/PGOGeehvUl29w=
+	t=1765358587; cv=none; b=a2qXtTD7TGPfYrWGB1k0jjiyx4F3zsSppJVRomjpXUIpiSLtCywZMFRqLRKdx1Z/NsJPsfLZ/ur4Ddhwqfn5CufJ1mwjWzrZr/SpauAulrvccs33A2grqyp4S599GrFHkueI0hQyN4lGcznE9wucsMbpcxP2nc2M40U4YJ1IAxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765358003; c=relaxed/simple;
-	bh=oPU0AhvyU7XFAxzbw3MaEzplrvP8zU2pVCfuZ1hVhaM=;
+	s=arc-20240116; t=1765358587; c=relaxed/simple;
+	bh=Wqbff4s4GyZOnqiHaxwSXqM1T/Tp1LWJaVCaUfT7reQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nYmGvkCtTGJA2lSSBUnUNHmiH5UYjxo1ObXOSCo/LjW+554LlOF9MFdMIH9YBJpDV4lodzpFC0GKRl1PT+4Wl9WbYeVviKRJ/n+MO8X7GPB/fiJZm9FTFs08LRIhr8BPS6thMccUeYYvd3z/T+bg+lLhS0XEFG+Bbosx4jCzOvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QA3OXfKS; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YQkdNGgeAc8HnEdCEyyy0p58wlpVp1qDwSUypywggLfSpL/q+Z4pMeXd0LFD5k6IQAKDk2a7iX0lZn7AZ6xbjregwSJQNmlIG6dioX69MOjqicAmj1JXGNQ3HsRdzkC5hnEZ+HVJJsF6/QuBSthLwAzv+HTSFSpojGDy4HgClYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ck7jynYc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QA3OXfKS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6DFC4CEF1;
-	Wed, 10 Dec 2025 09:13:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ck7jynYc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55B4C4CEF1;
+	Wed, 10 Dec 2025 09:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765358003;
-	bh=oPU0AhvyU7XFAxzbw3MaEzplrvP8zU2pVCfuZ1hVhaM=;
+	s=k20201202; t=1765358586;
+	bh=Wqbff4s4GyZOnqiHaxwSXqM1T/Tp1LWJaVCaUfT7reQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QA3OXfKSYWRf3eeZyknnUI8/skeBA9H9nwF1GzaR5nhH7FztO20QA1rrh8iniiA9h
-	 oyCFoPwAzbNV5erWjUpeJQFrxJkq/GaiKzDiqhScrLGxX/yAxSIApeeSc8VXGw45T6
-	 ND5GRoIxKj2ekDxXcXptgk6s9ammiJw/CnMGQkzyevKsfCN/lYupFWGzZ0sVxeGCeZ
-	 Jmu1SeP2OTmHZMO0Z1lCn8y629cyLli67qkGf/ZCjOX0zSPaBg1ufw8bFuq23ooyhG
-	 EH73Y9QkbFXa290lgbX3lXLMGT/VGT1/pSr7+j0ZOF84C+t9zbZaJZl4UzTvd2dLxw
-	 F5BC5VEAnMhTg==
-Date: Wed, 10 Dec 2025 18:13:18 +0900
+	b=Ck7jynYcQnyLWZLEUD7PNgZSw+bdu4ssH7dPDXD9ir5pfJluO7RCNsfgN1R0lrrAY
+	 Hyhg73btUHUGRRKOozSob3Mvd3ss/VDtiwcXDQOtbWsK5rNBaBTQkOy91DCx9as0Fg
+	 CLuYoYgPJATtrxasLJmiVLqCvLT4Kh9FiDzcu8xkvQNVI+MiKCQI2R8wWsJBx8CjJt
+	 Rc7b6EziLpa4SIUuzDbRDq8BIHgoY3TPhN2DKzEXkRm1G/tT3mVyQNad1KpLGdym1b
+	 yLahrKDfelNf7P1yzt8kVt6ZU2OmLzpB0sTFXpOXBZFHziQGkddQwCOYgTF1OgsNxn
+	 WcReObqryMZaQ==
+Date: Wed, 10 Dec 2025 18:23:00 +0900
 From: Jakub Kicinski <kuba@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Eric
- Dumazet <edumazet@google.com>, Kees Cook <kees@kernel.org>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- wine-devel@winehq.org, netdev@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 08/13] selftests: net: netlink-dumps: Avoid
- uninitialized variable warning
-Message-ID: <20251210181318.73075886@kernel.org>
-In-Reply-To: <20251205171010.515236-9-linux@roeck-us.net>
-References: <20251205171010.515236-1-linux@roeck-us.net>
-	<20251205171010.515236-9-linux@roeck-us.net>
+To: david.laight.linux@gmail.com
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Crt Mori <cmo@melexis.com>, Richard Genoud
+ <richard.genoud@bootlin.com>, Andy Shevchenko
+ <andriy.shevchenko@intel.com>, Luo Jie <quic_luoj@quicinc.com>, Peter
+ Zijlstra <peterz@infradead.org>, netdev@vger.kernel.org, "David S . Miller"
+ <davem@davemloft.net>, Simon Horman <simon.horman@netronome.com>, Mika
+ Westerberg <mika.westerberg@linux.intel.com>, Andreas Noever
+ <andreas.noever@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Subject: Re: [PATCH 8/9] bitfield: Add comment block for the host/fixed
+ endian functions
+Message-ID: <20251210182300.3fabcf74@kernel.org>
+In-Reply-To: <20251209100313.2867-9-david.laight.linux@gmail.com>
+References: <20251209100313.2867-1-david.laight.linux@gmail.com>
+	<20251209100313.2867-9-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri,  5 Dec 2025 09:10:02 -0800 Guenter Roeck wrote:
-> The following warning is seen when building netlink-dumps.
->=20
-> netlink-dumps.c: In function =E2=80=98dump_extack=E2=80=99:
-> ../kselftest_harness.h:788:35: warning: =E2=80=98ret=E2=80=99 may be used=
- uninitialized
->=20
-> Problem is that the loop which initializes 'ret' may exit early without
-> initializing the variable if recv() returns an error. Always initialize
-> 'ret' to solve the problem.
+On Tue,  9 Dec 2025 10:03:12 +0000 david.laight.linux@gmail.com wrote:
+> + * * u32 le32_get_bits(__le32 val, u32 field) extracts the contents of the
+> + *   bitfield specified by @field in little-endian 32bit object @val and
+> + *   converts it to host-endian.
 
-Are you sure you're working off the latest tree? I think this should
-already be fixed by 13cb6ac5b50
-
-I applied the other 3 networking changes.
+possibly also add declarations for these? So that ctags and co. sees
+them?
