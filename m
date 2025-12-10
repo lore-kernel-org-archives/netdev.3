@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C703064B7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EA8305E33
 	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 08:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765355699; cv=none; b=MsM+RXbR61rDpr2JfVbXZn6bqwoLR2JpqUEW2wEGAZH2JDm+TEOdpkqb24PIKyUwOGLTVlQeFA7yQ4KiL+OdAS9+aNKPqOhhZYPUAYryIPoArtveRyvsYCoGKDS2Mkuo4JcbobWrxtssPiiOCexTdjhZPJZt5wz/51x2b642Eb4=
+	t=1765355699; cv=none; b=U7ECrVKhg65HWHojBlp0hqHRL/XZr2Wg3kP7wEjXLsoa5hAhIs7yYJf2qwREjmAzzlak5QpHSOs6AMbyin3xvdyoQuWdZlpNg4+4/1gAMb2+kz/mDzQw13uqTrIbsm2bjs5c7IoOCeEe3gHPwPuKbp/uzEvdhf4KrjTym7eOtAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765355699; c=relaxed/simple;
-	bh=h66wVx+pDZR9CBJkShCYbUTT6AFbZOddLraapcW4ung=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkE8Wvtz/90NzxR2GZgryXNGwVhl+8vxkAua4tGyokkv8b6PRbjJdl//gETbGXvLgIuUizs2SREx3OTY6IwqOAIkqagX6ZmFlnPkrrxfszCvQoaRpo+vLuBKvAMjBC7WxaxBYvrn2YQrwcPw7VR0SbNgvuRJX7rydsyYzCi8iGo=
+	bh=y2rpGwsg8I3wMX4m0DRN6Qta/4zB9uRoDvZ6Mb2z6l0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pJbtkrORxJN1eneTevq9kIaa01AdUHL8+pgs8E7GxW+lAEPkk0e7bvRKsoHhlBcBdSr8GnrcBgoIREyY6Bl+EB2yaTIcWT0GbiO7v624lfkLFOSrG79SCeQmEoVFfrgTW6r4SbcDRnuWswJ/J5wmeuePUrYktHmg/Lwg0vonC3o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,34 +17,30 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFet-0007fZ-N1; Wed, 10 Dec 2025 09:34:51 +0100
+	id 1vTFet-0007fX-N0; Wed, 10 Dec 2025 09:34:51 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFes-004vMi-2X;
+	id 1vTFes-004vMg-23;
 	Wed, 10 Dec 2025 09:34:50 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6EF164B3B25;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 564AB4B3B23;
 	Wed, 10 Dec 2025 08:34:50 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] can: gs_usb: gs_can_open(): fix error handling
-Date: Wed, 10 Dec 2025 09:32:24 +0100
-Message-ID: <20251210083448.2116869-3-mkl@pengutronix.de>
+	kernel@pengutronix.de
+Subject: [PATCH net 0/2] pull-request: can 2025-12-10
+Date: Wed, 10 Dec 2025 09:32:22 +0100
+Message-ID: <20251210083448.2116869-1-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251210083448.2116869-1-mkl@pengutronix.de>
-References: <20251210083448.2116869-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,41 +53,46 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Commit 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-added missing error handling to the gs_can_open() function.
+Hello netdev-team,
 
-The driver uses 2 USB anchors to track the allocated URBs: the TX URBs in
-struct gs_can::tx_submitted for each netdev and the RX URBs in struct
-gs_usb::rx_submitted for the USB device. gs_can_open() allocates the RX
-URBs, while TX URBs are allocated during gs_can_start_xmit().
+this is a pull request of 2 patches for net/main.
 
-The cleanup in gs_can_open() kills all anchored dev->tx_submitted
-URBs (which is not necessary since the netdev is not yet registered), but
-misses the parent->rx_submitted URBs.
+Arnd Bergmann's patch fixes a build dependency with the CAN protocols
+and drivers introduced in the current development cycle.
 
-Fix the problem by killing the rx_submitted instead of the tx_submitted.
+The last patch is by me and fixes the error handling cleanup in the
+gs_usb driver.
 
-Fixes: 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251210-gs_usb-fix-error-handling-v1-1-d6a5a03f10bb@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+regards,
+Marc
+
 ---
+
+The following changes since commit 186468c67fc687650b7fb713d8c627d5c8566886:
+
+  Merge branch 'mptcp-misc-fixes-for-v6-19-rc1' (2025-12-08 23:54:06 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.19-20251210
+
+for you to fetch changes up to 3e54d3b4a8437b6783d4145c86962a2aa51022f3:
+
+  can: gs_usb: gs_can_open(): fix error handling (2025-12-10 09:30:31 +0100)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.19-20251210
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      can: fix build dependency
+
+Marc Kleine-Budde (1):
+      can: gs_usb: gs_can_open(): fix error handling
+
+ drivers/net/can/Kconfig      | 5 +----
+ drivers/net/can/Makefile     | 2 +-
+ drivers/net/can/dev/Makefile | 5 ++---
  drivers/net/can/usb/gs_usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index e29e85b67fd4..a0233e550a5a 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1074,7 +1074,7 @@ static int gs_can_open(struct net_device *netdev)
- 	usb_free_urb(urb);
- out_usb_kill_anchored_urbs:
- 	if (!parent->active_channels) {
--		usb_kill_anchored_urbs(&dev->tx_submitted);
-+		usb_kill_anchored_urbs(&parent->rx_submitted);
- 
- 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 			gs_usb_timestamp_stop(parent);
--- 
-2.51.0
-
+ net/can/Kconfig              | 1 -
+ 5 files changed, 5 insertions(+), 10 deletions(-)
