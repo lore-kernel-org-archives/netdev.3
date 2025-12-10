@@ -1,83 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EC7225415;
-	Wed, 10 Dec 2025 08:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839232E7BC2
+	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 08:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765353794; cv=none; b=LukU2AtgORC02nq6Y3VB/UaQUfSKaQHoFXhez0btaRqC2/D5onZ7cl6xeDDY7IThVMHnDIZOwc0cQxZXGWlQTn2qcOpLWDFfv/apygsQ3OZxvHek/THt7DZmoZiZ6RHcPImltWbYe48cAKCx6m3IAKTlLCj2gZGp+CJhd0Rf6fA=
+	t=1765354332; cv=none; b=uOlwTDDfjjkD9hANzJP19xA8LnMrf+uQTW0t0UR7s7fIU2+U3VLzR/sTqNvc4pMd+AZ86CsOtQsWyzTkI54Zx93mRFoQwnDb8HHNy/yQP6zn+gidKg38CqEQN/TC/XX219Zz2mOy4nCB5NeOe915YEaWLNH0/T2+Vy2m39zwnPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765353794; c=relaxed/simple;
-	bh=eg6sqIrjSFRwMqCDvFPFBp9XRD0Q6ZvFkT/9lBl/LWU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WR0zZM5tQNvDyQvFLNUpUpN448s3KxXsZWNdCVr+9t8sjQXrcgGGuHQUVFTEcIo0xWlHlmdGDZWsiKau/7OMS2k3eqEKr/kSQg/pYEmvuP845XzeTZKjrdavuEWvyG0tChFFXGCctU5nYxnvW3vUBw4b/w6ZI/U9PUTgHbxqWgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlqPFuBV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765354332; c=relaxed/simple;
+	bh=zkYwwnO+7cXKZcweWqFpkato3KlNNC21QTlOCxnRJT4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Ehrxd7Eevf1qG+5stQuL1xb7zEE29+mR4NEgmOBNW4MZqkAkINVYJEiYTAUNkjQOUqXaHllOPzJJE4GTC1tuZHgbKNOdeWzbCfsjNYpADo2NgHdxNvdgc5PmIhtDgeA79CptiCtc7+KTEcL9qswBJspKofWOuR4zL/rgPGyiioo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1ap1eOLn; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlqPFuBV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F95C4CEF1;
-	Wed, 10 Dec 2025 08:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765353794;
-	bh=eg6sqIrjSFRwMqCDvFPFBp9XRD0Q6ZvFkT/9lBl/LWU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qlqPFuBVKxzX/8TshxI44AbH7EEOyBEGQ95nU8/aj3Zc+UfXfDbsEwaQW5amF/Dms
-	 okS0ljkM8eVlTrk6MY1U4DWcKcmug8RGfSgqxGi2/5y/sl1RU2FssP4jNAOvoM6T8l
-	 xKxq+FWLqLmc57gZKTwnwYn6MDt7PBjJz00oYTFZJYWj4jfPQmmUsstg3souF2q8k5
-	 tp6t766SvInbxo+/UA7ls6sF5t+6+pw+T9/oxp+kQPUB2u8Fh89cfZiE8GZZvSdejd
-	 M0asV6o4d0mUQ0CctQtOuV3yNAF2dbG5m/XZ1ItD6Rxk/AuONsjWFSgwzICfQjD6wV
-	 FxIMnkmYhSRYw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3BB693809A18;
-	Wed, 10 Dec 2025 08:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1ap1eOLn"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34374bfbcccso5644209a91.0
+        for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 00:12:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765354331; x=1765959131; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AsDtsYq8bUtx92v4bel0qxLiksscz8X27Roskuj+FHE=;
+        b=1ap1eOLnfnkf3GmTt3fmDcbNr93oT9/QuKw5MlhkXyjIWsbC/2aK1Edo5PPp6fV6U3
+         3pA/6TEQii1Z+fHvpSgZS2zkcnZVz7k+NtTf99WpgA8XFMhvnWJiZrpHQ3Nzgh4n2XGb
+         sLHC9MhK5WrVxDvo9d/zyQVu7TR5vu3WbQlSPI8ZwRjVH9KCtwKLXfd6HLaFpRAAFAeZ
+         ym5KyMxs/V9AriORMnNO7hSrXklwaDBLI5r9sLQSY8WMw0QHdCTGzcU1gdP43ADOY5pI
+         M3SUt1Bz5jIsqH8/4SNGVz1hIG9gSMxfs/NCNo3oBMj00GzydMruJ+xPH+orMjlB5yhq
+         NjMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765354331; x=1765959131;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AsDtsYq8bUtx92v4bel0qxLiksscz8X27Roskuj+FHE=;
+        b=IcfV+RItY/6Vpj/CdLpykxll+KG15XG2C8bjkVijfjyLK1umrrkgL2IhySM5dr7cqc
+         stPoPTqZDFKOEZP6pfq3hErDqfjOQjlAlirN1vJadPoy4AXYP6wVsO9xydrpdPqmPMCm
+         wI9MUya5KPJW09sdJ3Agt05xYhhTjAoSIhytmIgF41dG5VbDpF/Quh6oQH+t9bQDX0zQ
+         eYRFSw0FCGfFAVC3e7Cgb4R5wml/BmCpK3huavgQgov2q661O80dusTpaZ2z43AmqApm
+         /ekpOQwfUOy7sfl6WsYH/X8YQ3qZJ4/Wf1lDi1zFXBnAen8Uyg/fbpR4kROGeKJU+VvX
+         gYKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcRy1yYd/ySvwJMUpQOggrQo5seBLht7nPx3rtJ8bH4A5CDwFeLprtKWXJ5kGd7WHijsGSams=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM/v9S97pti9mgYdHSkd1AUKFS6uT7v7FyScYp8agknDhgNZY2
+	/mJ2PBqzxOC+nE5aZL1EMWqpBAgLman+xb4pETPaITklAcPnpZSB6/2STk4SrkvYvcyI91fXdEx
+	twGCsAg==
+X-Google-Smtp-Source: AGHT+IGJBOyt514lO+ckd7evCrEmAl2lrqnNRaWWuBi5s4sOT+i2pQJX22fn2/IrhOfNkKZiRNWK1pHn7Xk=
+X-Received: from pjut15.prod.google.com ([2002:a17:90a:d50f:b0:343:6849:31ae])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1e51:b0:341:194:5e7d
+ with SMTP id 98e67ed59e1d1-34a72879dcdmr1609543a91.24.1765354330821; Wed, 10
+ Dec 2025 00:12:10 -0800 (PST)
+Date: Wed, 10 Dec 2025 08:11:11 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v2 0/2] bpf: cpumap: improve error propagation in
- cpu_map_update_elem()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176535360904.496554.15981377214035277789.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Dec 2025 08:00:09 +0000
-References: <20251208131449.73036-1-enjuk@amazon.com>
-In-Reply-To: <20251208131449.73036-1-enjuk@amazon.com>
-To: Kohei Enju <enjuk@amazon.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, kpsingh@kernel.org, haoluo@google.com,
- jolsa@kernel.org, shuah@kernel.org, toke@kernel.org, kohei.enju@gmail.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+Message-ID: <20251210081206.1141086-1-kuniyu@google.com>
+Subject: [PATCH v2 net 0/2] sctp: Fix two issues in sctp_clone_sock().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+syzbot reported two issues in sctp_clone_sock().
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+This series fixes the issues.
 
-On Mon, 8 Dec 2025 22:14:30 +0900 you wrote:
-> This series improves error propagation in cpumap and adds selftests that
-> cover the failure cases.
-> 
-> Currently, failures returned from __cpu_map_entry_alloc() are ignored
-> and always converted to -ENOMEM by cpu_map_update_elem(). This series
-> ensures the correct error propagation and adds selftests.
-> 
-> [...]
 
-Here is the summary with links:
-  - [bpf-next,v2,1/2] bpf: cpumap: propagate underlying error in cpu_map_update_elem()
-    https://git.kernel.org/bpf/bpf-next/c/48e11bad9a1f
-  - [bpf-next,v2,2/2] selftests/bpf: add tests for attaching invalid fd
-    https://git.kernel.org/bpf/bpf-next/c/18352f8fae91
+Changes:
+  v2:
+    Patch 2: Clear inet_opt instead of pktoptions and rxpmtu
 
-You are awesome, thank you!
+  v1: https://lore.kernel.org/netdev/20251208133728.157648-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (2):
+  sctp: Fetch inet6_sk() after setting ->pinet6 in sctp_clone_sock().
+  sctp: Clear inet_opt in sctp_v6_copy_ip_options().
+
+ net/sctp/ipv6.c   | 2 ++
+ net/sctp/socket.c | 7 ++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0.223.gf5cc29aaa4-goog
 
