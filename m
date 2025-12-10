@@ -1,150 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14C31F3FE9;
-	Wed, 10 Dec 2025 08:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C703064B7
+	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 08:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765355491; cv=none; b=HmMkVrGojpdDrnyHqj5hhcj769m0hPou+0Hxb8hBV2xrG2sF8Jil+P76ftsC00q3h0y3GKQWtOICFF289cEnN94a62F1a9cHP4PkM29j2IKu+KUT5ejnH4xLwHEQXMMTpIK9uiGcWGJwiLgCr4YOfymss260PrRjfh3oXw8geMs=
+	t=1765355699; cv=none; b=MsM+RXbR61rDpr2JfVbXZn6bqwoLR2JpqUEW2wEGAZH2JDm+TEOdpkqb24PIKyUwOGLTVlQeFA7yQ4KiL+OdAS9+aNKPqOhhZYPUAYryIPoArtveRyvsYCoGKDS2Mkuo4JcbobWrxtssPiiOCexTdjhZPJZt5wz/51x2b642Eb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765355491; c=relaxed/simple;
-	bh=n7nCUlTV4fyFUAsZSXKYvC743HHeyUkFmbdCcDsWo+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C+7dfwcDwUy/3V9k2FtU/ucJshDWx8Ltf7NOZiR3GoGj+GSvvkXVXFAxwtD/nPrp0WRst3OIaJ3DKxmUyK4lAW/KEC8+PzdA6q0NhrCbJl0IVofPoN3kIeZK/05aU9z1GhaS4k26GvnuBu5dFDj12tR5kmTFptJW82ZkJhoklbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghM+4o8r; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghM+4o8r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96596C4CEF1;
-	Wed, 10 Dec 2025 08:31:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765355491;
-	bh=n7nCUlTV4fyFUAsZSXKYvC743HHeyUkFmbdCcDsWo+M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ghM+4o8rF/F5mw+FOs2evBq07uS5QT/UaWbrA7+lu1nYQkS5toqOZTcnqNon7wus7
-	 cOZaVW7XoNseG15YkvjZ/xlc0GXNUFMmgGzb7pOAXQ3ll/nqMbPeVkg3jB2/N4SN0K
-	 a3AEA7zme/jWHTUguYbNpeKwQ1oo3Q+RXqJh7R4aoh8LDdiApAA7dUNoIdEmq2ETNj
-	 Ql1U/X/DTdeyAm8HcITheEW0pZaeRnG4u4S8RYGhatSD4Jr30Mu2c8rPD+fgCNaJqS
-	 pH2Ivxkdj4Db9Fn8nYf2I9fBDZytufzrx+nVoaXDRXLi3OwqkejLArsrq7HituzOG3
-	 ndBKO/RRsHI4w==
-Date: Wed, 10 Dec 2025 17:31:25 +0900
-From: Jakub Kicinski <kuba@kernel.org>
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: davem@davemloft.net, edumazet@google.com, eperezma@redhat.com,
- horms@kernel.org, jasowang@redhat.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org,
- pabeni@redhat.com, sgarzare@redhat.com, stefanha@redhat.com,
- syzbot+ci3edb9412aeb2e703@syzkaller.appspotmail.com,
- syzbot@lists.linux.dev, syzbot@syzkaller.appspotmail.com,
- syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev,
- xuanzhuo@linux.alibaba.com, will@kernel.org
-Subject: Re: [PATCH net-next V3] net: restore the iterator to its original
- state when an error occurs
-Message-ID: <20251210173125.281dc808@kernel.org>
-In-Reply-To: <tencent_3C86DFD37A0374496263BE24483777D76305@qq.com>
-References: <tencent_3C86DFD37A0374496263BE24483777D76305@qq.com>
+	s=arc-20240116; t=1765355699; c=relaxed/simple;
+	bh=h66wVx+pDZR9CBJkShCYbUTT6AFbZOddLraapcW4ung=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QkE8Wvtz/90NzxR2GZgryXNGwVhl+8vxkAua4tGyokkv8b6PRbjJdl//gETbGXvLgIuUizs2SREx3OTY6IwqOAIkqagX6ZmFlnPkrrxfszCvQoaRpo+vLuBKvAMjBC7WxaxBYvrn2YQrwcPw7VR0SbNgvuRJX7rydsyYzCi8iGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vTFet-0007fZ-N1; Wed, 10 Dec 2025 09:34:51 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vTFes-004vMi-2X;
+	Wed, 10 Dec 2025 09:34:50 +0100
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6EF164B3B25;
+	Wed, 10 Dec 2025 08:34:50 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 2/2] can: gs_usb: gs_can_open(): fix error handling
+Date: Wed, 10 Dec 2025 09:32:24 +0100
+Message-ID: <20251210083448.2116869-3-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251210083448.2116869-1-mkl@pengutronix.de>
+References: <20251210083448.2116869-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-CC: Will, as this looks like ZC side of 7fb1291257ea1e27
+Commit 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+added missing error handling to the gs_can_open() function.
 
-On Thu,  4 Dec 2025 00:03:39 +0800 Edward Adam Davis wrote:
-> In zerocopy_fill_skb_from_iter(), if two copy operations are performed
-> and the first one succeeds while the second one fails, it returns a
-> failure but the count in iterator has already been decremented due to
-> the first successful copy. This ultimately affects the local variable
-> rest_len in virtio_transport_send_pkt_info(), causing the remaining
-> count in rest_len to be greater than the actual iterator count. As a
-> result, packet sending operations continue even when the iterator count
-> is zero, which further leads to skb->len being 0 and triggers the warning
-> reported by syzbot [1].
-> 
-> Therefore, if the zerocopy operation fails, we should revert the iterator
-> to its original state.
-> 
-> The iov_iter_revert() in skb_zerocopy_iter_stream() is no longer needed
-> and has been removed.
-> 
-> [1]
-> 'send_pkt()' returns 0, but 4096 expected
-> WARNING: net/vmw_vsock/virtio_transport_common.c:430 at virtio_transport_send_pkt_info+0xd1e/0xef0 net/vmw_vsock/virtio_transport_common.c:428, CPU#1: syz.0.17/5986
-> Call Trace:
->  virtio_transport_stream_enqueue net/vmw_vsock/virtio_transport_common.c:1113 [inline]
->  virtio_transport_seqpacket_enqueue+0x143/0x1c0 net/vmw_vsock/virtio_transport_common.c:841
->  vsock_connectible_sendmsg+0xabf/0x1040 net/vmw_vsock/af_vsock.c:2158
->  sock_sendmsg_nosec net/socket.c:727 [inline]
->  __sock_sendmsg+0x21c/0x270 net/socket.c:746
-> 
-> Reported-by: syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> ---
-> v3:
->   - fix test tcp_zerocopy_maxfrags timeout
-> v2: https://lore.kernel.org/all/tencent_BA768766163C533724966E36344AAE754709@qq.com/
->   - Remove iov_iter_revert() in skb_zerocopy_iter_stream()
-> v1: https://lore.kernel.org/all/tencent_387517772566B03DBD365896C036264AA809@qq.com/
+The driver uses 2 USB anchors to track the allocated URBs: the TX URBs in
+struct gs_can::tx_submitted for each netdev and the RX URBs in struct
+gs_usb::rx_submitted for the USB device. gs_can_open() allocates the RX
+URBs, while TX URBs are allocated during gs_can_start_xmit().
 
-Have you investigated the other callers? Given problems with previous
-version of this patch I'm worried you have not. If you did please extend
-the commit message with the appropriate explanation.
+The cleanup in gs_can_open() kills all anchored dev->tx_submitted
+URBs (which is not necessary since the netdev is not yet registered), but
+misses the parent->rx_submitted URBs.
 
-Alternative would be to add a _full() flavor of this API, but not sure
-if other callers actually care.
+Fix the problem by killing the rx_submitted instead of the tx_submitted.
 
-> diff --git a/net/core/datagram.c b/net/core/datagram.c
-> index c285c6465923..3a612ebbbe80 100644
-> --- a/net/core/datagram.c
-> +++ b/net/core/datagram.c
-> @@ -748,9 +748,13 @@ int __zerocopy_sg_from_iter(struct msghdr *msg, struct sock *sk,
->  			    size_t length,
->  			    struct net_devmem_dmabuf_binding *binding)
->  {
-> +	struct iov_iter_state state;
+Fixes: 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251210-gs_usb-fix-error-handling-v1-1-d6a5a03f10bb@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/usb/gs_usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-nit: if you respin move this one line down
-
->  	unsigned long orig_size = skb->truesize;
->  	unsigned long truesize;
-> -	int ret;
-> +	int ret, orig_len;
-> +
-> +	iov_iter_save_state(from, &state);
-> +	orig_len = skb->len;
->  
->  	if (msg && msg->msg_ubuf && msg->sg_from_iter)
->  		ret = msg->sg_from_iter(skb, from, length);
-> @@ -759,6 +763,9 @@ int __zerocopy_sg_from_iter(struct msghdr *msg, struct sock *sk,
->  	else
->  		ret = zerocopy_fill_skb_from_iter(skb, from, length);
->  
-> +	if (ret == -EFAULT || (ret == -EMSGSIZE && skb->len == orig_len))
-
-I'd think that for the purpose of reverting iter the second part of
-this condition is completely moot. If skb len didn't change there should
-be nothing to revert?
-
-> +		iov_iter_restore(from, &state);
-> +
->  	truesize = skb->truesize - orig_size;
->  	if (sk && sk->sk_type == SOCK_STREAM) {
->  		sk_wmem_queued_add(sk, truesize);
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index a00808f7be6a..7b8836f668b7 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1908,7 +1908,6 @@ int skb_zerocopy_iter_stream(struct sock *sk, struct sk_buff *skb,
->  		struct sock *save_sk = skb->sk;
->  
->  		/* Streams do not free skb on error. Reset to prev state. */
-> -		iov_iter_revert(&msg->msg_iter, skb->len - orig_len);
->  		skb->sk = sk;
->  		___pskb_trim(skb, orig_len);
->  		skb->sk = save_sk;
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index e29e85b67fd4..a0233e550a5a 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -1074,7 +1074,7 @@ static int gs_can_open(struct net_device *netdev)
+ 	usb_free_urb(urb);
+ out_usb_kill_anchored_urbs:
+ 	if (!parent->active_channels) {
+-		usb_kill_anchored_urbs(&dev->tx_submitted);
++		usb_kill_anchored_urbs(&parent->rx_submitted);
+ 
+ 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 			gs_usb_timestamp_stop(parent);
 -- 
-pw-bot: cr
+2.51.0
+
