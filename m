@@ -1,41 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81E930DD17;
-	Wed, 10 Dec 2025 10:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F6E279346;
+	Wed, 10 Dec 2025 10:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765362536; cv=none; b=tV7Eiz1apAEhUZdZp1NacssJCZwr1w7W6QRvZvHdEKN2ZwQMSemqcfO7CwwA3ACw8LhMEiBfqOli7ZzZql0FwAO7hzoVMUEz4SmEGAScmHbMmKocwDS8PgYjnGjtHdVrCWb7zMYKDKK9hhF+MD4YGZyT9tH88mYcjlEFSGbDRkk=
+	t=1765362699; cv=none; b=Do//idyaHdYFlFVhHkj3/0a4qdg1go26p47RoaK4SCz1fMODhJracwExn5WRyIrY8AAC1jDSgg2gzTZxw+sgY7+4J0/k+ps/VD5CshLSTv+4LXqMnJJoAeMzTol0oHkrpi0PrF6wr5U6DQRZVnx30IwPG9+1PjicBWJksqsAD3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765362536; c=relaxed/simple;
-	bh=KNlp4Q7w9bDK5wq68w+K+ndS1ohZaT8XBbYvXvshsMA=;
+	s=arc-20240116; t=1765362699; c=relaxed/simple;
+	bh=Z/rC3XU/U+sDX/Cs5ckZ5TyErgthZXeTjo5S7A7/m88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RjKXHOJfFMTEdbNpo3aTtF6SuXG0JL9obXhtFfhI1Ajjl/6XsK1NJMac5fxMq9zPuIRdNAaTSaIJaGSvJcscEY2TcpzPK+2PvRWeuC4WVt+yDAPu5yn59FOYSE4/1UQUXxJG7YG1UZ5LQIjleG4FvXHpvAVUxxPCcJHfvsA97ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmXvr6dZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJQ9h3ulCwid7OLZbilmx85D8Qwb5TAfNFInJrvjUubx9V1Tf4WPRKcYTWW5iWkZmTxwOvcyRxUCwFHEHPG1+p45okiOuQwrxOCoLflr99+5U8WDizzTyIW8HfoXDw5KaLZ7SmraiIeQeG6WaxRehqp/KZzNmUYsy9au1UMx5Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lENO83pr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmXvr6dZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7C0C4CEF1;
-	Wed, 10 Dec 2025 10:28:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lENO83pr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BBCC4CEF1;
+	Wed, 10 Dec 2025 10:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765362536;
-	bh=KNlp4Q7w9bDK5wq68w+K+ndS1ohZaT8XBbYvXvshsMA=;
+	s=k20201202; t=1765362699;
+	bh=Z/rC3XU/U+sDX/Cs5ckZ5TyErgthZXeTjo5S7A7/m88=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bmXvr6dZLGRPHG5XDKhjVj83w5/xGC//hN+7yNSvhLUEgAbR2uULmxC2F9KUUtCfA
-	 ahNXKkF01oi59I2Dw7Q30Q3MI5cBzY17+GSVZpNJF15vnwyimEZpY3jJWMSlm2UCIu
-	 2qBKr8lc0IvH3fju5ubNjPW4rck6IF+wvcCqPsirlLKMSkcV6+goFJI72Yi26v+gcz
-	 nyN28fPEBHghSyRG97j1oFy5XFMM4HS9UvVQr21sMvBqdSQrkeQhcJT11GODGmJULr
-	 y6Ifr5ulqLT+5UzQ8ooWMgstM6NWrYYKCjk6Enx+3Uksg/H7mkSNlHoNXglZ4+hFaY
-	 gJJVE0J1W6b2A==
-Date: Wed, 10 Dec 2025 10:28:53 +0000
+	b=lENO83pr14cQluDUX4T+W+fuYrIVfJEyLNtaEqZkJB1BAP4xqqOfuFyxD8ccoHyii
+	 xOEl+6EMFpRHODuRv24B3sSA8lHh8FSdea8WtUg87cDfezuFVt26/kfIp+177HnPfQ
+	 KwpMo2F6AIfhtJ6FWk/dIbJWJ6WlRQ6loA7A8bgR+l1cor0TXXHYcY5ZQWaEAcqEnM
+	 LbWoF52RPGARVXHDuS3HppT3aoMniURLzMqBYdvJzE3fnQglSa8lwHMIKLu1Xr51Eu
+	 ZSCUcKWG8SX/TigjXCRO6GZq7EWeQYPXMIYOmqHYsk+XpkbQDy2TAIieq6bE7uN+eU
+	 p6XCVQAnPFUog==
+Date: Wed, 10 Dec 2025 10:31:34 +0000
 From: Simon Horman <horms@kernel.org>
-To: Dharanitharan R <dharanitharan725@gmail.com>
-Cc: syzbot+5dd615f890ddada54057@syzkaller.appspotmail.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Edward Adam Davis <eadavis@qq.com>
-Subject: Re: [PATCH v3] net: atm: lec: add pre_send validation to avoid
- uninitialized
-Message-ID: <aTlLZUDphWwZGaGS@horms.kernel.org>
-References: <20251210035354.17492-2-dharanitharan725@gmail.com>
+To: Edward Adam Davis <eadavis@qq.com>
+Cc: pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	syzbot+5dd615f890ddada54057@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	Dharanitharan R <dharanitharan725@gmail.com>
+Subject: Re: [PATCH net v3] net: atm: implement pre_send to check input
+ before sending
+Message-ID: <aTlMBiGNH7ZChSit@horms.kernel.org>
+References: <tencent_4312C2065549BCEEF0EECACCA467F446F406@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,95 +47,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251210035354.17492-2-dharanitharan725@gmail.com>
+In-Reply-To: <tencent_4312C2065549BCEEF0EECACCA467F446F406@qq.com>
 
-+ Edward
++ Dharanitharan
 
-On Wed, Dec 10, 2025 at 03:53:55AM +0000, Dharanitharan R wrote:
-> syzbot reported a KMSAN uninitialized-value crash caused by reading
-> fields from struct atmlec_msg before validating that the skb contains
-> enough linear data. A malformed short skb can cause lec_arp_update()
-> and other handlers to access uninitialized memory.
+On Thu, Dec 04, 2025 at 07:17:22PM +0800, Edward Adam Davis wrote:
+> syzbot found an uninitialized targetless variable. The user-provided
+> data was only 28 bytes long, but initializing targetless requires at
+> least 44 bytes. This discrepancy ultimately led to the uninitialized
+> variable access issue reported by syzbot [1].
 > 
-> Add a pre_send() validator that ensures the message header and optional
-> TLVs are fully present. This prevents all lec message types from reading
-> beyond initialized skb data.
+> Besides the issues reported by syzbot regarding targetless messages
+> [1], similar problems exist in other types of messages as well. We will
+> uniformly add input data checks to pre_send to prevent uninitialized
+> issues from recurring.
+> 
+> Additionally, for cases where sizeoftlvs is greater than 0, the skb
+> requires more memory, and this will also be checked.
+> 
+> [1]
+> BUG: KMSAN: uninit-value in lec_arp_update net/atm/lec.c:1845 [inline]
+>  lec_arp_update net/atm/lec.c:1845 [inline]
+>  lec_atm_send+0x2b02/0x55b0 net/atm/lec.c:385
+>  vcc_sendmsg+0x1052/0x1190 net/atm/common.c:650
 > 
 > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 > Reported-by: syzbot+5dd615f890ddada54057@syzkaller.appspotmail.com
-> Tested-by: syzbot+5dd615f890ddada54057@syzkaller.appspotmail.com
 > Closes: https://syzkaller.appspot.com/bug?extid=5dd615f890ddada54057
-> Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
-
-As pointed out elsewhere, this patch largely duplicates the following by
-Edward (CCed).
-
-- [PATCH] net: atm: targetless need more input msg
-  https://lore.kernel.org/netdev/tencent_B31D1B432549BA28BB5633CB9E2C1B124B08%40qq.com/
-
-Ideally there would be some collaboration between you and him on this.
-
-Also, as a fix for Networking code, please explicitly target the patch
-at net-next.
-
-Subject: [PATCH net] ...
-
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 > ---
->  net/atm/lec.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/net/atm/lec.c b/net/atm/lec.c
-> index afb8d3eb2185..c893781a490a 100644
-> --- a/net/atm/lec.c
-> +++ b/net/atm/lec.c
-> @@ -489,8 +489,33 @@ static void lec_atm_close(struct atm_vcc *vcc)
->  	module_put(THIS_MODULE);
->  }
->  
-> +static int lec_atm_pre_send(struct atm_vcc *vcc, struct sk_buff *skb)
-> +{
-> +	struct atmlec_msg *mesg;
-> +	u32 sizeoftlvs;
-> +	unsigned int msg_size = sizeof(struct atmlec_msg);
+> v3:
+>   - update coding style and practices
+> v2: https://lore.kernel.org/all/tencent_E83074AB763967783C9D36949674363C4A09@qq.com/
+>   - update subject and comments for pre_send
+> v1: https://lore.kernel.org/all/tencent_B31D1B432549BA28BB5633CB9E2C1B124B08@qq.com
 
-Please use reverse xmas tree order - longest line to shortest -
-for Networking code.
+FTR, a similar patch has been posted by Dharanitharan (CCed)
 
-> +
-> +	/* Must contain the base message */
-> +	if (skb->len < msg_size)
-> +		return -EINVAL;
-> +
-> +   	/* Must have at least msg_size bytes in linear data */
-> +   	if (!pskb_may_pull(skb, msg_size))
-> +   		return -EINVAL;
+- [PATCH v3] net: atm: lec: add pre_send validation to avoid uninitialized
+  https://lore.kernel.org/all/20251210035354.17492-2-dharanitharan725@gmail.com/
 
-As you pointed out off-list, this check seems to be the main difference
-between your patch and Edward's. I agree it seems relevant. But if so I
-believe it duplicates the skb->len check above which can be dropped.
+The main difference between that patch and this one is
+a check for msg_size being present in linear data.
 
-Also The indentation of the three above is not correct.
-It should only use tabs.  checkpatch.pl points this out.
+I would appreciate some collaboration between the authors of these patches.
 
-> +
-> +	mesg = (struct atmlec_msg *)skb->data;
-> +	sizeoftlvs = mesg->sizeoftlvs;
-> +
-> +	/* Validate TLVs if present */
-> +	if (sizeoftlvs && !pskb_may_pull(skb, msg_size + sizeoftlvs))
-> +       	return -EINVAL;
-
-Tabs only for indentation on the like above too.
-
-> +
-> +	return 0;
-> +}
-> +
->  static const struct atmdev_ops lecdev_ops = {
->  	.close = lec_atm_close,
-> +	.pre_send = lec_atm_pre_send,
->  	.send = lec_atm_send
->  };
+Thanks!
 
 -- 
-pw-bot: changes requested
+pw-bot: changes-requested
