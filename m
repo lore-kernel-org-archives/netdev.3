@@ -1,77 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4EA3161AB;
-	Wed, 10 Dec 2025 09:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359392701D1;
+	Wed, 10 Dec 2025 09:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765358605; cv=none; b=PDxrmLx97HO5Si8iL25uI28olfCj6cnrUpEO/Cjjzod9FRiXYhld3/hLv8iolgxI9KNtCA8PTHFlJZsKNPTko7J/rB+9X66hPIeCv2QSySB0mEHdLVR9ivf7aRHcKc3mZhDAnOWF6Zhg9hAkigE/oK+5pBb/vIoCVpUB+8nYBlk=
+	t=1765358993; cv=none; b=cm5/T5897jF3qbbo1tpdJB3uk9jXa8SCTs4//8YQoqgep6IofGB43B3x2xo+8FGT02IhRo5jArsW8fGLkI4lzELXI/FvptrmR6Ydf4pfP3XweK5pcBIWDp7MMNHk+LwUscCppUlleEFBrTFryuAqEnsU/EJIXYRN1zVXpDKCLjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765358605; c=relaxed/simple;
-	bh=yud9d7xRRnKX8Z4cx9pFS4r5N3vOMdRhh2r+w6h4r0g=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XkXGVWobTYsZKV9IsqAOnYpBdKplFvqxHo6bISK68/LSHUujzvIVrgtyfn4zVfaI9Afs/szo458EXydvRkNHuFr76QkfzSUAk1jbZV0QQesQ1CdtrcPvenjoFD/Uo69TfLg9buiMfFlvFAlqThcbJFa4hmsIxD4sUvuylh1B99c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pQN0zC3S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765358993; c=relaxed/simple;
+	bh=AynZBjv1eSG1MhPauC7nKqm3Up3b7E1eGgP/VWwx9KM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q1wMj7R3unOnTldr9gUrLCEiQpFRNan47yzxP9o3yIOfAfqL8XUJ8h4VSPOHAUyF/OgOB5uKesjoJyDkCd/yv18nyM42dQCZgSj+tDswR+WVYxlwyL4YfdYxUsaFfL88GkRT81AV8EL6TJPajTbDj2Ji/P1hHCU/DKI8dEc3frQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FL5i5bE2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQN0zC3S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13223C4CEF1;
-	Wed, 10 Dec 2025 09:23:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FL5i5bE2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C156BC4CEF1;
+	Wed, 10 Dec 2025 09:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765358605;
-	bh=yud9d7xRRnKX8Z4cx9pFS4r5N3vOMdRhh2r+w6h4r0g=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pQN0zC3S9zrGrOvf7QUmb3ZzVJ6p8BOktQI4ELDyjoq7LPcyZzc8rwxNW/gNO1mOC
-	 //XwugSUqSXGd/76uz1jtXP8y/9CNymj49jIPFz1D74q+l0H7OG/9cDwnYZI/WdaX3
-	 9n3QXWHjNC7WhPuJ8Tj/Bs0NiKq8pogEqQv1AHaRZGL88fWNvV9JwKlMSknGJo5HAV
-	 cQbG1aPNmVpdh50G7h7CDlm7R0M7UbmiOIE+FI/PMAa+xCOLLssRSxvQ9EGc1T19Zn
-	 pYTV9wxN8UwCQuvsaY5dNAnmJNETXBABMNwfZXVD9m8M5hV0GOSM5R088m1gj2lKBa
-	 O9QCqdk0u6Q2Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F38F03809A18;
-	Wed, 10 Dec 2025 09:20:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1765358992;
+	bh=AynZBjv1eSG1MhPauC7nKqm3Up3b7E1eGgP/VWwx9KM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FL5i5bE2SR/jbZ1e33g3aMnHrXfI0346A9r4E/T3tLdiH4fyFTSMnXstwdnM/MEt7
+	 z476/Q/Oq63J8L0lmJlQ0wOCdVtG4Qaz1Ez2NNykENtC1/kZeHcV7jqEqqUVqCTUIl
+	 LWUsMMkXHVk9PBQgnEAZGkwZtMZkPAdFjeMc1LppRRhvW3CM0GYxoANB2/fGOGlZ+p
+	 aYTVpMzbekBcizxZq6dxp97NUES0g2wwLIZfTSF2H6tVbpJde1CwV/AzmPvwrtq+cg
+	 SB38PcBmNiVLIR0e6B/PfIafnKTz0brh+RFkJ6eJ4yIpdq3HipB5tZo0GOzPHJX6NT
+	 k+OWrm9sabPlg==
+Date: Wed, 10 Dec 2025 18:29:47 +0900
+From: Jakub Kicinski <kuba@kernel.org>
+To: david.laight.linux@gmail.com
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Crt Mori <cmo@melexis.com>, Richard Genoud
+ <richard.genoud@bootlin.com>, Andy Shevchenko
+ <andriy.shevchenko@intel.com>, Luo Jie <quic_luoj@quicinc.com>, Peter
+ Zijlstra <peterz@infradead.org>, netdev@vger.kernel.org, "David S . Miller"
+ <davem@davemloft.net>, Simon Horman <simon.horman@netronome.com>, Mika
+ Westerberg <mika.westerberg@linux.intel.com>, Andreas Noever
+ <andreas.noever@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Subject: Re: [PATCH 1/9] nfp: Call FIELD_PREP() in NFP_ETH_SET_BIT_CONFIG()
+ wrapper
+Message-ID: <20251210182947.3f628953@kernel.org>
+In-Reply-To: <20251209100313.2867-2-david.laight.linux@gmail.com>
+References: <20251209100313.2867-1-david.laight.linux@gmail.com>
+	<20251209100313.2867-2-david.laight.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] broadcom: b44: prevent uninitialized value usage
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176535841952.523551.15948127440248355186.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Dec 2025 09:20:19 +0000
-References: <20251205155815.4348-1-bigalex934@gmail.com>
-In-Reply-To: <20251205155815.4348-1-bigalex934@gmail.com>
-To: Alexey Simakov <bigalex934@gmail.com>
-Cc: michael.chan@broadcom.com, andrew+netdev@lunn.ch, jonas.gorski@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linville@tuxdriver.com, mb@bu3sch.de, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew@lunn.ch
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri,  5 Dec 2025 18:58:16 +0300 you wrote:
-> On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
-> leaves bmcr value uninitialized and it is used later in the code.
+On Tue,  9 Dec 2025 10:03:05 +0000 david.laight.linux@gmail.com wrote:
+> Rather than use a define that should be internal to the implementation
+> of FIELD_PREP(), pass the shifted 'val' to nfp_eth_set_bit_config()
+> and change the test for 'value unchanged' to match.
 > 
-> Add check of this flag at the beginning of the b44_nway_reset() and
-> exit early of the function with restarting autonegotiation if an
-> external PHY is used.
-> 
-> [...]
+> This is a simpler change than the one used to avoid calling both
+> FIELD_GET() and FIELD_PREP() with non-constant mask values.
 
-Here is the summary with links:
-  - [net,v3] broadcom: b44: prevent uninitialized value usage
-    https://git.kernel.org/netdev/net/c/50b3db3e1186
+I'd like this code to be left out of the subjective churn please.
+I like it the way I wrote it. I also liked the bitfield.h the way
+I wrote it but I guess that part "belongs" to the community at large.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+FWIW - thumbs up for patch 8, no opinion on the rest.
