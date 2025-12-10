@@ -1,222 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B082FFFAC
-	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 23:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765408939; cv=fail; b=Ch2d+oxukmWpCELbMsepL0aeDQhBSfHGoIIXdWT4xtJGmgxI5nmwLSMDnRu7VUjN4zZ05LkDRZaVOMJRTqZp6nUBtGcfVLv0DLeh8ommvn32y4eQ8hVSTO623B1bJjbDZRe16EU2SLU9OdotQRFGhBz0F+wTlwojjVw6CHrKh1o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765408939; c=relaxed/simple;
-	bh=wRR4vlAmLResuWMctyJeiUkyAfXoLKujTrngz3RlOME=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OMv5J0VypgccJLgCC0DkekvBuHTlzk2NEzdUZfS2dkcODF6HHvpgEwiy4YdfLEHQSTrss8GaIPwhPy6RTVY5TF2ivy69BvfU5niGmWiCPA/AbdsHLRm/VYjfGVDA5DuKl80GtEARZX/1K/pdMZPoBX7VF8yCYoY0F3spsZjJR6s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Upo4arry; arc=fail smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BD82848A8;
+	Wed, 10 Dec 2025 23:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765409959; cv=none; b=uoxiVchnLIxQ8/uZ/toUOjW/6ARx/IcuN6F9rVv2uK8cNmbFRHiVWDBCLox9qTnRdHrrZAWsOU21PkkA/KGJwJ6H3ZdXiH5JsH/I0rlTJW/gQg+w8SoorMdoD7lmZVCxD7DHF8sLZAKch/eQ1VBzd6kBTdGByYmbZtW1GfpDwdo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765409959; c=relaxed/simple;
+	bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PZmRTjJHaz1B0jrhMQkqZysQfb7ZKUp6oIQduM0PeiHUPgYDRck/uIisKwM3HB56L+U+yemsnDrmiQP4Y9x5IbydrxrNGbpRinWD7cM5nB687Gci2pTTLwIv8t9zp2eDNngKRaEXyY4KzriyKu+MaRWtgacjpAIvz8hjW6GbPv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZYTEsN5S; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Upo4arry"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZYTEsN5S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765408933; x=1796944933;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=wRR4vlAmLResuWMctyJeiUkyAfXoLKujTrngz3RlOME=;
-  b=Upo4arryTpKjF7Ml29uiFif4fWTCVRnuhx0FWRbhvyV0+93W1OUyV0FB
-   zzoSk/QMu07GVUYfwkSMal9qlnSPUnzFxN/4WL56MqTyFUdBgqG68o+p/
-   BSQY3LxhgIj1CyvWNJT04143fgJY5xCmtXaFqrba+cYHrS5aXHKlr7Ac2
-   7wWOhwTveghBsyXRvg9nemuoeD6MxsISHsUOGuztmawHmECpowjkYBL14
-   n0eBVlUU9wPPHqH+COkNlPOuiX5iXMVTyfrXMyMRXnlZ+o6L7WAryVx4T
-   kv6pSBtPY8eSG/c9ahYhCsjrkEZ4K8fVu4QuAfZ/9UG4iC+fTxB0Pnhc+
+  t=1765409956; x=1796945956;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
+  b=ZYTEsN5SiaidcSqZX9Tq2+WvNn/zYHI5f244hKKIdKJr629VnK12288V
+   ZwqdUrCjNmxZZ3j0R2zqDlwzjPYj3jn3Ulq6ebyAaanftyiaL6K/9p6el
+   bVerDZOXX1DJcSRPdeXzO9JOQRRhmj40TOQqIUnzNAJiz+AY5aBaG/oXy
+   NzElMZSlrw64IH4KFh0R5dGqzZw2JHrgZd92xmu0jwHmR2pTvrff4LVY1
+   tVaijqafRCJDqGVe5iPmDCEltggQOQiaEuhlxHRd81PeH2vYGfFz6Nbro
+   K2nxeRa4Z51qIQ4kgyLlglXZ9XUpn+4wvcNb9vYMW/p6/6iklhZ98Wumb
    Q==;
-X-CSE-ConnectionGUID: UZoNg0PYTFu9NjW6J2O0kQ==
-X-CSE-MsgGUID: OJwP0YMESk2iBvWORNQhVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78088373"
+X-CSE-ConnectionGUID: EpL6Ze05TZqbZMR5qqWOwQ==
+X-CSE-MsgGUID: fhe0vTfdReeU+R4MK8yAmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78501420"
 X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="78088373"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 15:22:07 -0800
-X-CSE-ConnectionGUID: lNK0KjJBR2+anfwYic07xg==
-X-CSE-MsgGUID: Aq2Mlun0Qa+I8McRTsUNKQ==
+   d="scan'208";a="78501420"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 15:39:12 -0800
+X-CSE-ConnectionGUID: KpQ53LaCR92a/lE3dY93+A==
+X-CSE-MsgGUID: yM9OGlZbRkmqVgjyMNGu0g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="197129148"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 15:22:07 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 10 Dec 2025 15:22:07 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 10 Dec 2025 15:22:07 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.18) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 10 Dec 2025 15:22:07 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oD87mM9rAHGJ5Oa90rwCr3dQpEgTwqDNXkTdEqIeXjETMIm/hxR6IkmwkdaEszALkocnv6wlxgjDjXZgeHYP4BLqSr2Gv+SlA9IC+Mm8/bA6a1fhKB65EL4ao62H0wY/M9nveCXxq+GrUTrvb+CwJZaVLGfudqaFz+YI1zwskCoD+9yMPZI3K3Pp5EcLYhtGLK6Jb6A0bMVY2k02oefoXMDfa/7ln0+3pZBTr1TM3M+XCooqTH5j1juPUW7uYT0tPB5PsBccdQFQG9H1nPa6HGv/WLYH3SEm+DMvZdXw+77j8hSu0ecsdoDXBJh9C2DLCJfbjtWJw97vh54+TkXYEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wRR4vlAmLResuWMctyJeiUkyAfXoLKujTrngz3RlOME=;
- b=mcy9P6gZn6rdyV02tsBp6o1SZfgCC2I8eLr5hdMdiQjj1x2awc2NlpixpDpKexTx2gX7+FLwSsqjoa0+rmxOlqiANoAiUSemdz3/LQPWPyPpzumOlQzdlZKDd73hZ2mfBEQ84b6+jmaLOvNY1TqM6Ukp/0zOuGSPlRs+y3Ym8EvY71JsUKbcjoaH0XJ1ZXoQObfdNBl7AaK+vIX3BLtv5Gj53srk6Yzs0i0c9nKGnbYx5bQh94HTLw0icMZSXlIg4kzzknGEvL8Fr19xM+5IkJnV8m0XBORAMRdgYgsp+5wL/ZaJc0ZZj8I3dC9WOR5twcj9rG7MGTojpM1KsePHiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6297.namprd11.prod.outlook.com (2603:10b6:a03:458::8)
- by SJ2PR11MB8451.namprd11.prod.outlook.com (2603:10b6:a03:56e::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.6; Wed, 10 Dec
- 2025 23:22:04 +0000
-Received: from SJ1PR11MB6297.namprd11.prod.outlook.com
- ([fe80::dc50:edbf:3882:abf7]) by SJ1PR11MB6297.namprd11.prod.outlook.com
- ([fe80::dc50:edbf:3882:abf7%5]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
- 23:22:04 +0000
-From: "Salin, Samuel" <samuel.salin@intel.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, "Hay, Joshua A"
-	<joshua.a.hay@intel.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v10 05/10] idpf: reshuffle
- idpf_vport struct members to avoid holes
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v10 05/10] idpf: reshuffle
- idpf_vport struct members to avoid holes
-Thread-Index: AQHcVDTegYO+JTEUsECGRogTaUxgHrTwLwyAgCt+nUA=
-Date: Wed, 10 Dec 2025 23:22:04 +0000
-Message-ID: <SJ1PR11MB6297245099634A18E77770B39BA0A@SJ1PR11MB6297.namprd11.prod.outlook.com>
-References: <20251113004143.2924761-1-joshua.a.hay@intel.com>
- <20251113004143.2924761-6-joshua.a.hay@intel.com>
- <IA3PR11MB89869DF357B3E046C9AE0BCCE5CDA@IA3PR11MB8986.namprd11.prod.outlook.com>
-In-Reply-To: <IA3PR11MB89869DF357B3E046C9AE0BCCE5CDA@IA3PR11MB8986.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6297:EE_|SJ2PR11MB8451:EE_
-x-ms-office365-filtering-correlation-id: 0bd95ad8-c119-4c1a-902c-08de3842ee23
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700021|7053199007;
-x-microsoft-antispam-message-info: =?us-ascii?Q?NXqvkFFnSpOnAoMKcqnMj8bqvVNMjG7DppF16QXTbsriUH2edFrTVOX2Yn+j?=
- =?us-ascii?Q?Uaewbqpu4K9WILnhmO1RAcZUMk1tBdI0Sp/Iw9ZDWNNx9sODw7DNaQ0lUOhU?=
- =?us-ascii?Q?bIoXYVvrUtvK+eRRMz93NNWctnHlYSyTblLBt0YpzYmQodZB3G1hRIarb2vi?=
- =?us-ascii?Q?mDaU5N/TwH4k5+PFRY7ufwG5IaIlcnAwxwj3lIhyHOiWO+lAumlKueV9XM9s?=
- =?us-ascii?Q?vgoHzjzDDzSwlWHZAeY1GdKNqNGowAoB/FKrBWcPM0m8mMP0y8lTVlTCSbqz?=
- =?us-ascii?Q?ilu7JW4XsEARsRk5ijt8OdX1MglNd5urh+ILe+Sqd7tl72SNuIs9+LjS9wDX?=
- =?us-ascii?Q?5M5cjLru2eX8wc+OsKkPFNiJVrxMa3MlhCe6UlYrJajnP54E2R9fzDcDzSlt?=
- =?us-ascii?Q?kS+J5ZM9vmrRQ5sFhxOQbVzPmQoxp/S/amc0ndZU2wRQY5HB17T68ikyZKqh?=
- =?us-ascii?Q?FJ4jIxLBzryWLjtMVpkUxBFYX+/0yrGDSVBpmq9+IRNuPZkrtszgtuEt+Kxt?=
- =?us-ascii?Q?3dzxJFUdWbwiIBT6N7AVOOBlqVPG/Z17DdvtNV+vIe51ox46gHAsrYjTrJUE?=
- =?us-ascii?Q?I77DRfyzRThxZl9vTrbPfMtI2BG3QXz98xd1X1OZOpWESjELwoEEDf/RoDtf?=
- =?us-ascii?Q?KFgUZUceT5DZK62W8pjs4S0lKIgo6Ibt9Y6wG2GNTYC3I4ONKiY+fyjIEkya?=
- =?us-ascii?Q?LmNtrnFEsRkM8LyHn45WgI+1n+LLtLnNGbm9jR5/j2wbeHoQIZCGhraBd/Mc?=
- =?us-ascii?Q?PQgRgO8Z/vk15NfLzPy95TWFZ/voRM81BR6+g1O4I+iXuMdmdq+G+fIC9co+?=
- =?us-ascii?Q?K9srJlXS8Y/kF2Fpr/7iNYr+820pq86EmLMOKiQtyzjzugudrNm0jeMv1FPQ?=
- =?us-ascii?Q?S7l7+MQ2Wtl8hMSCj7hgNCnKnoArcqBmU/hCr7nY1+MCJrzR5F+sOD1Np9kh?=
- =?us-ascii?Q?Kj276Euz4zY1oKOZx5GmBiSgclXGPfC/QjSl8SivQIdoskQVUSDCLk6enR2B?=
- =?us-ascii?Q?kvWXVlupRo4rv/AZsLRyDe9QujzOPpx/ASPLsPLw6/18+fyg6o08UfIdWIoK?=
- =?us-ascii?Q?FoHrB1QCZiX5ABpc+nV2zbPL6UTh9vCmQ/zjC2Sp89dILtMvwGCkmxkM8oY4?=
- =?us-ascii?Q?vLu1jsD/qkIHoWnHqol4F6tdeLH/HS/0tTQ5fnkAcy+RtJUjxINI/q98FER7?=
- =?us-ascii?Q?V5JFjY6dquZJltl8lUHhE0uuITROQK/Ye1tlTgVg3NMZ6FoEKsApTFQ61h5Q?=
- =?us-ascii?Q?ux4C5UmSxMIm1/IXkUYWVDcMxCYWYHxc3rW/bJyhAQsg7CI/pauxEyOgjIOm?=
- =?us-ascii?Q?Lj4KWvFQTJyBA+g5nJbDzClTq9FmsMh16CXxgbu3xciPVs+TgY+ONdum7oR3?=
- =?us-ascii?Q?DJNXtg1t96YuGj7adjP1dvJcF01KjA7V0PKc9WbKGKZrp17uWauhFsYggBgl?=
- =?us-ascii?Q?ycmLmHx7ZRJ89lIvZH2kpNQ+zDl7NciWf+hzAdpKWqp+3l6lOf/rSUp/GVvz?=
- =?us-ascii?Q?rJZOW7mYptQ1OPVNJh+JaXoTCQSw9ZdyXk6H?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6297.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700021)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?/vYvgdqEqM6f5BlvmQllT8bg27mOpwFgRNvwry33OhGxglBezx0Pxngk+eqw?=
- =?us-ascii?Q?DVR11X0hVKd+vFhLj75fcgZENSqUcGV2seOeteXCHKvbQ4F/G/BIGrEboMp2?=
- =?us-ascii?Q?qKEac4k4kltH9ZDDWdd33hA1wnFIDtgX9k7xmmDVHAZxHJRwxgnmQs44WU/w?=
- =?us-ascii?Q?EU456wocZ82FihNPZHM/LhB3szDLCe5mpA4y9oVGFCKWHBJp4GKIrnjkBweV?=
- =?us-ascii?Q?YkosHfgNgM472WtLAh99HsZlNd2MXNtDZkBNZyWF27JmcTnvPa05bl/5WRPP?=
- =?us-ascii?Q?jYsvHzrRhoZHA+YNSZHz8SPOtOKPEFJePNo4Eh/xG9t66mQ0hDFQFFr77ZfX?=
- =?us-ascii?Q?3McvLVXCWU7++mjWDjMscpQoIvzvGsRz3KTc0Dfrgd1Mzd3FAKFbjfK8K6vp?=
- =?us-ascii?Q?p3IqHJuGkZIIdBFIj/QR79Ufurdoe3WiPpthxCnLu5cSPtd6RS5RsnqCvvR7?=
- =?us-ascii?Q?RauNyB+mU3q2KlxrM81/NihBImxs2UUo0yAB8dmVlRPy/sGLLQrkhQPVftKE?=
- =?us-ascii?Q?5xXkUWXvW35CoO0G0IFm3qDyUrqDDNZ5VHdch4bvLVDjp/AuH3Bl4vEYIAkt?=
- =?us-ascii?Q?zfMU55LAgzU0iCLiucn/YToFixRHo+qSJQeKF5apa2oFNUZGaFFo2tG3Ivyb?=
- =?us-ascii?Q?uT8Ezz4dz0cC220wIxwQ7VzAwPjN6Y70nLPtG1we6/lX8O6RiH43/EQ6FWTM?=
- =?us-ascii?Q?owisYQ6scSBxRw1jLZlsNikdvbpfrOnJQ0eCIy5mkFBYveVz9kJIOBM06xM5?=
- =?us-ascii?Q?CNLhTeyXxbLOp8nZpf9XykuFY9jpsXZbYcVKLtsuSYqG4eBWmqo/tL5M5vsr?=
- =?us-ascii?Q?03NGbiYj54cigOz8UtjpyHIBaZwT8bKokyyqYn6tff98T4+UFx3g8mm/2hnK?=
- =?us-ascii?Q?AxNVeUbnX2C/PZcATrmhPKiyw9ifSl9XeL7jOccqBZ/Oj+YEBjW7MexeFqNZ?=
- =?us-ascii?Q?UK4uGvL0cUOyqpKvmJE/fId/mSFvQPZYRnvWp0Sjst6SJomwuvTQsA+r19Wj?=
- =?us-ascii?Q?GfSL+wRXNmwRotpaujfTmZbzOhTMXOmQXzmuSn8sDmT1UcNlKpwCJopD/tnU?=
- =?us-ascii?Q?CTLvqmygecRjXC1AiWLF9lBB4PrMmOBQVez2CL07IF7gSdxcAloTPxSs9fRP?=
- =?us-ascii?Q?Ua1J78zasZGslTIN1RM51kdTEi8vT7g1zyeorSZ5LKUy1xNTHxtbFC0EWcmd?=
- =?us-ascii?Q?HanBZN5IpY+VDuSJBLTeAi29/0fb+Sj3/FzAPyaofkaZAGK4/PLMdlaCQZoz?=
- =?us-ascii?Q?zyoe+Vv/sX9FAtyldKs3u3ebsclYka9EIeXAhGD0Ho8vp3pkI2NC6+YJ0n2j?=
- =?us-ascii?Q?UsBBfCb8O9qTA4fNK3aT09lx305j6hE2sG9XwOMMUg6TOJl73YBdgb+YffkB?=
- =?us-ascii?Q?qHjZo8EP/GNPnEDecxQrrOgyvZWQ5u8LaaFR+eaIv0HZxg23jYY5EJsTt2NV?=
- =?us-ascii?Q?QN7vK295X54UpsB7TaVXmwpsvwDgUyM4+Uls5coPKHl3A2aaeYb7jtiWLdsm?=
- =?us-ascii?Q?QOVolyzknaXxF80+IzRPXwkAumddoIPpDOjcXVsJBEgd9YfNNuenknU+m2RJ?=
- =?us-ascii?Q?6K+DX8ai8miK8QAACdmQ/suA1hLMlbFBeGsOe5FX?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="227300278"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 15:39:04 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vTTlu-000000003sH-0itl;
+	Wed, 10 Dec 2025 23:39:02 +0000
+Date: Thu, 11 Dec 2025 07:38:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 8/8] crypto: atmel: Use
+ dmaengine_prep_slave_single_config() API
+Message-ID: <202512110702.EhO0gmFG-lkp@intel.com>
+References: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6297.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bd95ad8-c119-4c1a-902c-08de3842ee23
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2025 23:22:04.6907
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1pjNBmwJQBAlOeL8rhRn3kAd/MIxIN4FlE0+mlxVbRxgLctLBV2MBNB9lzFbySbusIl1vTEraXFHTAmP8YFp6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8451
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
+
+Hi Frank,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on bc04acf4aeca588496124a6cf54bfce3db327039]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-Add-API-to-combine-configuration-and-preparation-sg-and-single/20251209-011820
+base:   bc04acf4aeca588496124a6cf54bfce3db327039
+patch link:    https://lore.kernel.org/r/20251208-dma_prep_config-v1-8-53490c5e1e2a%40nxp.com
+patch subject: [PATCH 8/8] crypto: atmel: Use dmaengine_prep_slave_single_config() API
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512110702.EhO0gmFG-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/crypto/atmel-aes.c: In function 'atmel_aes_dma_transfer_start':
+>> drivers/crypto/atmel-aes.c:798:13: warning: unused variable 'err' [-Wunused-variable]
+     798 |         int err;
+         |             ^~~
 
 
+vim +/err +798 drivers/crypto/atmel-aes.c
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Loktionov, Aleksandr
-> Sent: Wednesday, November 12, 2025 11:04 PM
-> To: Hay, Joshua A <joshua.a.hay@intel.com>; intel-wired-lan@lists.osuosl.=
-org
-> Cc: netdev@vger.kernel.org
-> Subject: Re: [Intel-wired-lan] [PATCH iwl-next v10 05/10] idpf: reshuffle
-> idpf_vport struct members to avoid holes
->=20
->=20
->=20
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Joshua Hay
-> > Sent: Thursday, November 13, 2025 1:42 AM
-> > To: intel-wired-lan@lists.osuosl.org
-> > Cc: netdev@vger.kernel.org
-> > Subject: [Intel-wired-lan] [PATCH iwl-next v10 05/10] idpf: reshuffle
-> > idpf_vport struct members to avoid holes
-> >
-> > From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> >
-> > The previous refactor of moving queue and vector resources out of the
-> > idpf_vport structure, created few holes. Reshuffle the existing
-> > members to avoid holes as much as possible.
-> >
-> > Reviewed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
-> > Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> > ---
-> > v8: rebase on AF_XDP series
-> > ---
->=20
-> ...
->=20
-> > --
-> > 2.39.2
->=20
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  788  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  789  static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  790  					enum dma_slave_buswidth addr_width,
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  791  					enum dma_transfer_direction dir,
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  792  					u32 maxburst)
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  793  {
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  794  	struct dma_async_tx_descriptor *desc;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  795  	struct dma_slave_config config;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  796  	dma_async_tx_callback callback;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  797  	struct atmel_aes_dma *dma;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17 @798  	int err;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  799  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  800  	memset(&config, 0, sizeof(config));
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  801  	config.src_addr_width = addr_width;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  802  	config.dst_addr_width = addr_width;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  803  	config.src_maxburst = maxburst;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  804  	config.dst_maxburst = maxburst;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  805  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  806  	switch (dir) {
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  807  	case DMA_MEM_TO_DEV:
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  808  		dma = &dd->src;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  809  		callback = NULL;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  810  		config.dst_addr = dd->phys_base + AES_IDATAR(0);
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  811  		break;
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  812  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  813  	case DMA_DEV_TO_MEM:
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  814  		dma = &dd->dst;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  815  		callback = atmel_aes_dma_callback;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  816  		config.src_addr = dd->phys_base + AES_ODATAR(0);
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  817  		break;
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  818  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  819  	default:
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  820  		return -EINVAL;
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  821  	}
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  822  
+c8695132080931 Frank Li        2025-12-08  823  	desc = dmaengine_prep_slave_sg_config(dma->chan, dma->sg, dma->sg_len,
+c8695132080931 Frank Li        2025-12-08  824  					      dir,
+c8695132080931 Frank Li        2025-12-08  825  					      DMA_PREP_INTERRUPT | DMA_CTRL_ACK,
+c8695132080931 Frank Li        2025-12-08  826  					      &config);
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  827  	if (!desc)
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  828  		return -ENOMEM;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  829  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  830  	desc->callback = callback;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  831  	desc->callback_param = dd;
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  832  	dmaengine_submit(desc);
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  833  	dma_async_issue_pending(dma->chan);
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  834  
+bbe628ed897d72 Cyrille Pitchen 2015-12-17  835  	return 0;
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  836  }
+cadc4ab8f6f737 Nicolas Royer   2013-02-20  837  
 
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
