@@ -1,183 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002E5322B70;
-	Wed, 10 Dec 2025 19:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF4F155C97
+	for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 19:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765393555; cv=none; b=AMBoUA9Z8OHj8iRo7BzAmH7Ond2YdTW7iq5nDH++/TJ5N3mFF7iZRt91IRe/2jX/k5pvwRU7vsZ1oNrKGe9RI+BRrTRGyd0LYcw1G1sEa4pCtJfVXVZr+RCSYwTZCyISBRAI0cLU3aTy/c/25jX6Mguyd58fwF/+uSn+VRNmbLA=
+	t=1765393746; cv=none; b=CIIjPUeeDVJQMTAgO79XC16lv36mnPFadp0stOq1fkSQVwJwRlrlOJvb5nWElMuCVSEk/L80Fr9FYu7EPn47+YvwuUjYiauGMVVj73hzQHle+DyoliRgwUipvsjkYyEqjMHCEkaz15/YZaEGrc6BFA6zLtDWpo5MuQbKeBM2Cxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765393555; c=relaxed/simple;
-	bh=boHYArrLfilo5Sv64y0CaCmooWdnIhESwdLtZzAruxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tcxFAs0PcwvyClifw9u0BNVFWVrt24cGQ1bO93C5jFMvZv2xJY5lEg+TzeqPKXDYnboD+mYuKJqRxHT4jOz6hX73eNyYfnCO6OvvvKXsZWUFuMg6UatkvZDMFQXZsJhD3yL2zbZHnLlIItnogCiWLNiaoEl1Fmd4WNTpT28NjSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kRryjixB; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765393746; c=relaxed/simple;
+	bh=calyCJn7HCzDIZJYHFyyjL6bDhg5HBlqUnJKtZ4SEy8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WMojTomUcxCSNFP1tWSpH31VLtdgefFN5lto25EobtAAB0HumU6dTJ7o5L8PL/Cog7xWCXWCkSACRs+lHnIi/bqKGTV3iXDzh+Ha3QFmNGSxMtukUVkWkUjVV0xVsDdDCnDNlEKE24wfpdiAHGO+PsW5sR3gNw5hTlyStsi0Tfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdseGsrC; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kRryjixB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765393554; x=1796929554;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=boHYArrLfilo5Sv64y0CaCmooWdnIhESwdLtZzAruxg=;
-  b=kRryjixBx4Lyl7USgenNJp/9MqGyhQlolc/mC8xpfkEOnPv8ll6LL+3m
-   JugCuq5xsu7ZAI0DPeWrDoMDoH4G7VoLzzSvmAcNB+J78wawa4YvGepsS
-   jJtyM51cLDjhrLYkocDP8Gqbc+PEwXbZXiRialRQf2eYVv6YuDZs/tkjs
-   W8Sc773J/X0gDEGB6tDiSqOZqQx6TTuUTp9Ba+I/4GIAutsVWbR5Ix0vf
-   CVPWBjYbBk0D8VCBkRHtuqTczvUma1el0ivsVn3BF8LfGa+fMLDSRwakQ
-   xZ06ML+QGyucrwdU6M5f/t8E0NRy6NHQTrdxQWeh+tSpQbNRxG4uMlbC+
-   g==;
-X-CSE-ConnectionGUID: kTjcXKyJSMOEYdeBEmMDjQ==
-X-CSE-MsgGUID: nBa5C+UTSWKCVL6MPO3NtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="54917266"
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="54917266"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 11:05:53 -0800
-X-CSE-ConnectionGUID: Etk4k57vSziwm/yZiYAtjg==
-X-CSE-MsgGUID: h4VcFQvCTOSLNUrttT2hvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="201029660"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Dec 2025 11:05:48 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTPVR-000000003fJ-2YeN;
-	Wed, 10 Dec 2025 19:05:45 +0000
-Date: Thu, 11 Dec 2025 03:05:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 6/8] nvmet: pci-epf: Use
- dmaengine_prep_slave_single_config() API
-Message-ID: <202512110249.kCiMC4sb-lkp@intel.com>
-References: <20251208-dma_prep_config-v1-6-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdseGsrC"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso139227b3a.2
+        for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 11:09:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765393743; x=1765998543; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ALnH7xZXyoaaX5d2lzICEZFSc7BpSTyBsbMHtfdCwVg=;
+        b=OdseGsrCSDM17b91kRYpWg7MASTMjNySzWplWVxy8WXB3GCDlgd4rQ/LuFxo0i+xH4
+         ySZXvvGhSgL4ndMO+kzoWwT3DuYz/e3Gdlr5wAn2PhHdA0fkKO6uTH3toxOH8+ZFK5Bj
+         SP+I0NaqGoBIHmwixgLgrzwL8DVlBFxq0IXThbONLUOGvdDelPgA5Tl19P6UIvMV32YS
+         +hv0cbteRuuZ4WslZLi7iq8u54GooPSuGXktig7kGMrO7pVZmp7LWqzs9gJhUBHZjcAt
+         GS3uckjv8FSjnJAStA/3Bmeco8HPMw1f5I7+HsTus34SfmQ1vCmAZsk1g5OjFtApTdoB
+         npTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765393743; x=1765998543;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ALnH7xZXyoaaX5d2lzICEZFSc7BpSTyBsbMHtfdCwVg=;
+        b=IO68HwrVKp3fJpjwYOgryIwvnzINsYnZoiat7MVIA781hvswqWDI/btdjUaSTZloKH
+         phGqCjEHw+fr0uM5yfaCnE9PfvjKu9pdxmb/oem/0hDmABondZX8YnuvoFBCBhjEUel/
+         kMX6XJuvbTubcstEaQ7Ca5bBkStqIQIWc50NxuYL7D6+L3IQd8QqHszoWH6rpVfhlY2n
+         EMO9n4fZhREmLP45uxSPt5uxBc26dCWM+555X9Z7hUKT2roEQeinz5pusJvmMaqG/PGT
+         Gk2xRe6ccQg2t9lz84rrPsW0XARFe9+rygZwip7kFpzaz+BHqO9PAzwQJkhJdyOdypJE
+         ugfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXiUZ5H40zmv6lZY0ltW0q2RwOBylksGizrJ/Jx9D9pO3WyU2PeOrgVHRaMo78B+IF90jrqYew=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtzqvdr0+OQ1rqb8kKA2mTcVoPzZJcDd8CsfbqF4LHRdOAm0/t
+	L4SPBui6KxKERG6ZYZb170P48nBSPuA5aUX5BJWAg0E9E/jQk0FCw4MP
+X-Gm-Gg: ASbGncvh6CuoQ7KOVKEsZf50oio401QFmV55dRUfX1Wbce6itYwvq/0BFT+goGvqqWy
+	m3Slm02gXixCFYQEEsZ2+W+8ypEQETUsPHcDEmHr+R/+0vZrO7d6w3u8G4iOZBGo7Sd0Q+eOyao
+	tWhqRoDrIp42FZg+G3jfKcyb8T3+3TM1Ng5Zd5a2bj8N2/TjH9+fF4k50ryp683xJP4Jdmjpaue
+	h8FfzlRtvjtVV+HIO3qU5YxhmSWR9mur/fdeAa9y2kbroY7SHm6wTZT9vEIfHI/725lVXoiwha1
+	dEnNOsNHv6wOdMZkNFPG6aijnzlqVgmjH0chc4SgpV29bfeSo2Ugvk+BZF1lQQAOOOhoZ3wCOAd
+	cXU7VynG0a+IkQAUx415HQtbyXBcUQ1kZy6k9/ADbBESpQNEBn/xixU6do9oolWnmStsMUmKo2r
+	ujCI2NZSztroaFJFvnPOPEgGfQ8Jnuo0xZU0BfK1+CFGCkB3WYt604HEeIwcw=
+X-Google-Smtp-Source: AGHT+IFkBdc4L7W2yURiGuumsGT4dEWPci/s+wZEabce7HtaPIrwKqnYk/48B/cwUZ1Bk5R/h+PAYg==
+X-Received: by 2002:a05:6a20:3d82:b0:304:313a:4bcd with SMTP id adf61e73a8af0-366e120ef6fmr3658096637.30.1765393743391;
+        Wed, 10 Dec 2025 11:09:03 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c25b7d59dsm248321a12.6.2025.12.10.11.09.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Dec 2025 11:09:02 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <3682159f-05ff-417c-95e9-976f0a504c09@roeck-us.net>
+Date: Wed, 10 Dec 2025 11:09:01 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-6-53490c5e1e2a@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/13] selftests: net: netlink-dumps: Avoid
+ uninitialized variable warning
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ wine-devel@winehq.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+References: <20251205171010.515236-1-linux@roeck-us.net>
+ <20251205171010.515236-9-linux@roeck-us.net>
+ <20251210181318.73075886@kernel.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20251210181318.73075886@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+On 12/10/25 01:13, Jakub Kicinski wrote:
+> On Fri,  5 Dec 2025 09:10:02 -0800 Guenter Roeck wrote:
+>> The following warning is seen when building netlink-dumps.
+>>
+>> netlink-dumps.c: In function ‘dump_extack’:
+>> ../kselftest_harness.h:788:35: warning: ‘ret’ may be used uninitialized
+>>
+>> Problem is that the loop which initializes 'ret' may exit early without
+>> initializing the variable if recv() returns an error. Always initialize
+>> 'ret' to solve the problem.
+> 
+> Are you sure you're working off the latest tree? I think this should
+> already be fixed by 13cb6ac5b50
+> 
 
-kernel test robot noticed the following build warnings:
+Sorry for missing the fix. I was working off v6.18, which was the tip of
+the tree when I wrote the patch.
 
-[auto build test WARNING on bc04acf4aeca588496124a6cf54bfce3db327039]
+> I applied the other 3 networking changes.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-Add-API-to-combine-configuration-and-preparation-sg-and-single/20251209-011820
-base:   bc04acf4aeca588496124a6cf54bfce3db327039
-patch link:    https://lore.kernel.org/r/20251208-dma_prep_config-v1-6-53490c5e1e2a%40nxp.com
-patch subject: [PATCH 6/8] nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251211/202512110249.kCiMC4sb-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251211/202512110249.kCiMC4sb-lkp@intel.com/reproduce)
+Thanks a lot!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512110249.kCiMC4sb-lkp@intel.com/
+Guenter
 
-All warnings (new ones prefixed by >>):
-
-   drivers/nvme/target/pci-epf.c: In function 'nvmet_pci_epf_dma_transfer':
->> drivers/nvme/target/pci-epf.c:369:23: warning: variable 'lock' set but not used [-Wunused-but-set-variable]
-     369 |         struct mutex *lock;
-         |                       ^~~~
-
-
-vim +/lock +369 drivers/nvme/target/pci-epf.c
-
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  357  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  358  static int nvmet_pci_epf_dma_transfer(struct nvmet_pci_epf *nvme_epf,
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  359  		struct nvmet_pci_epf_segment *seg, enum dma_data_direction dir)
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  360  {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  361  	struct pci_epf *epf = nvme_epf->epf;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  362  	struct dma_async_tx_descriptor *desc;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  363  	struct dma_slave_config sconf = {};
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  364  	struct device *dev = &epf->dev;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  365  	struct device *dma_dev;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  366  	struct dma_chan *chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  367  	dma_cookie_t cookie;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  368  	dma_addr_t dma_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04 @369  	struct mutex *lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  370  	int ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  371  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  372  	switch (dir) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  373  	case DMA_FROM_DEVICE:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  374  		lock = &nvme_epf->dma_rx_lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  375  		chan = nvme_epf->dma_rx_chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  376  		sconf.direction = DMA_DEV_TO_MEM;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  377  		sconf.src_addr = seg->pci_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  378  		break;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  379  	case DMA_TO_DEVICE:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  380  		lock = &nvme_epf->dma_tx_lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  381  		chan = nvme_epf->dma_tx_chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  382  		sconf.direction = DMA_MEM_TO_DEV;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  383  		sconf.dst_addr = seg->pci_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  384  		break;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  385  	default:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  386  		return -EINVAL;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  387  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  388  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  389  	dma_dev = dmaengine_get_dma_device(chan);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  390  	dma_addr = dma_map_single(dma_dev, seg->buf, seg->length, dir);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  391  	ret = dma_mapping_error(dma_dev, dma_addr);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  392  	if (ret)
-f9f42a84df49d9 Frank Li       2025-12-08  393  		return ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  394  
-f9f42a84df49d9 Frank Li       2025-12-08  395  	desc = dmaengine_prep_slave_single_config(chan, dma_addr, seg->length,
-f9f42a84df49d9 Frank Li       2025-12-08  396  						  sconf.direction,
-f9f42a84df49d9 Frank Li       2025-12-08  397  						  DMA_CTRL_ACK,
-f9f42a84df49d9 Frank Li       2025-12-08  398  						  &sconf);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  399  	if (!desc) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  400  		dev_err(dev, "Failed to prepare DMA\n");
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  401  		ret = -EIO;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  402  		goto unmap;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  403  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  404  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  405  	cookie = dmaengine_submit(desc);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  406  	ret = dma_submit_error(cookie);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  407  	if (ret) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  408  		dev_err(dev, "Failed to do DMA submit (err=%d)\n", ret);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  409  		goto unmap;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  410  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  411  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  412  	if (dma_sync_wait(chan, cookie) != DMA_COMPLETE) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  413  		dev_err(dev, "DMA transfer failed\n");
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  414  		ret = -EIO;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  415  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  416  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  417  unmap:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  418  	dma_unmap_single(dma_dev, dma_addr, seg->length, dir);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  419  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  420  	return ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  421  }
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  422  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
