@@ -1,117 +1,125 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C8886352
-	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 00:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B890978F4F
+	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 01:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765412558; cv=none; b=fGmWDplVnEGVdGLErepHprRUO2vSLEYN65fwjbWHF2vsHRKuAFi3qI12eNKc2RgQ/vGZx3Z6bKCSfMnH3KqxhHMUiUExdIiXmmKzbFUSBfT6JlDPqncHeRAuMxgENXjHESRseBmGPTG5qUGIPkZgmwITR/zLj0rIAEuCVGdMuu8=
+	t=1765416675; cv=none; b=IlwRudgKWIJ00HKZAbyIwepRCxFAlYAsds4ur9k9wUm7VWtOoKKhREtr9G7dHZ/N9wMYipr2hUGKk4kVAR9hMOQwXffxqci7Rj2gEVoTopej0ONPe/9m922j85cYVOwS7KPzrXEbJSjlRg7FLHud3GaffCmt8proX/YbTDoPuOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765412558; c=relaxed/simple;
-	bh=Zm++eM/Y4Y4Mw3cr2RFaF779TF5CMVf3HozqFbdbsqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F20vhwucqoQyoXa2MpT+Tx8vD82cB9LM4ialzP/Tw9sDtebaUQOxeBvFetSLxT0v2aKdTRmTO5CU6zf0jfeB93rqsNL35ZatGgM8YEpb6tYVRj9JoTCGThEKgC5tmZqCSweIVRHgutkeIh6oaKmxnEqY+txGXj4mBamyZBPEFwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlvJdnpL; arc=none smtp.client-ip=209.85.218.46
+	s=arc-20240116; t=1765416675; c=relaxed/simple;
+	bh=WTGcFCS6w7nlAaqkBZ3n6Gv7wFcX8BfAhcm/JFIe5Lk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DbNO2UGTrmlk0YU7nikYmuD7QZEN5kXDk9v1ZM8QXBD2VB9VuV+5gb6BvJiEWNBeaIkbimry9Ig2CfEAGJ8YqxyPFWjT0Yxpwjyn+MeJ/n754n/uOMICURmki0pKeZyhKOS6ZwkrQhS6oJiQhjbJJXIJo6I0ESOlJ4Q+Z4y9sO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeYXdFQK; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlvJdnpL"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7636c96b9aso56030166b.2
-        for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 16:22:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeYXdFQK"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7b9387df58cso639286b3a.3
+        for <netdev@vger.kernel.org>; Wed, 10 Dec 2025 17:31:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765412555; x=1766017355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B5IMWQm5sz3Fn5h8gxR9KjhSHgtxoVBDtTdmB7LD/rY=;
-        b=DlvJdnpLd51riV0LRYbCt2CnEXYE2Io7mnPwfhdoAh9bOcaoWAaBV/jr80dFyUiWVP
-         voNTCHdTCXYsOMy1HcHrAUKHi9TFkMbBJIKmxClYwRt9rsi99MO1qLAput4Y1iEhcmS6
-         ZjP+O/J+vd67SiOt0IGXtIgq0ELjc9Mk4DjK00me0IEdHG2Qi+mUDIelh0JfkOIBTHdS
-         mX/b3ebS3kGgY/SJbVsW8FGIl0ya74gAKiCDSmKqU+2svI77UA3d3H/Bl8LDbeFhwhaU
-         sqnTGXg5Tn4txePHwT+NhJq/AZD2uusxqTBdRAsqsk7JxP4JdDc7il8Drd+bbp0AS6Wj
-         90oQ==
+        d=gmail.com; s=20230601; t=1765416673; x=1766021473; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fZdCO/Mv9RBE0LHZ0bjkyPo+ciEfdxSfUwGGq9Yh/c0=;
+        b=IeYXdFQKWk7t+QfhJqDOEqv0XEjreRqj+MI3d6Je3A12CgF4LpScw8LH8F1RG7zmUO
+         JDm06TPyDoqBHiKEZoh9TGOFeAvZ9dpQC46DDNtSEY5VqcktDvLdTtZ9dFj+UNW7Js2F
+         TnM61m83TBAWje3XUfVC2rABiD1Zp53TavlIFhJwson7M0/WEnLdqFBcCXpjCBNos6RA
+         tsO483vypG3w1MhDgmKNYdMsnFQAbonE3ibAxD0NwV8VoSnLVZ5C9Jang1AuMhNA92r9
+         2npaDjbBCEYe1fdrTg4bS5OYlCJhPTy+CoKQpuedqBpFCo5pGA94jJoXUjwUoVfoWxe+
+         Zqtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765412555; x=1766017355;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=B5IMWQm5sz3Fn5h8gxR9KjhSHgtxoVBDtTdmB7LD/rY=;
-        b=RUsQk9F3yL5ekDybcf4H21JRK7D5WaP1FPHc03vA+MDgjDTZaCvE8gOutgICN5qk2e
-         1KW0Loy6kzy2HcRo7rYL/jTvyRZj8inLIBD28Qm2xhbLb5KtxafJYwMXPqJmbZY884xa
-         5AbOE5GuzL6izCVzXTet9tZiybyiXD559oTD2BkaAP/eCqtySNwoxohtorO9mBd1l34n
-         gQ3XA5+oxTDll72Mdues0iKK7y2QTQc6Daz7ZStXBIupDGmewzavaKuoScDgM/y/EpoW
-         v/yl+uugRnK+LEx8zSp+hoB04yfW0+0jrSL4XMCiDbcmKXkvl1dAIQUk6xbnSLS1MpF5
-         f4Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCV8oHsL14XCrAMv13FCw6CNZDtCgIVU8ljkYFpke17VeRSp8bXGFVD+mJB0X/adx80aO9n5oBM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBeDq1PVftynR/9X03b4BA4t+ZpgCAra46V3ZGfGrleHG2nuYE
-	5cQj7LeBT8JJhSgf6DY/KQP7a3Z+Phzk9pCbv5hR9IGbYHbWOSXdUlvd/uQ2aQ==
-X-Gm-Gg: AY/fxX64qNr224l59RbJRzvHO7x+Jyq8slkjKILPGHHLykhFiQMPc+uu1ragUrly4FF
-	/XReGYGMp/C9Bx66E8F0rx/KdThPROyD0J+XNRYMA/nK5CFk7iEoULaWG2GzorPKGWcWAxkmTH4
-	pmGcmD2SLNSmAlNo0+u18szFo4ZOMEXVSGsxz8JdFunMbWe74cYgpevly9lGbb7OE2thPCKHSE9
-	HxdORjNK7HM0RFAdKih1clXBVIQc9IWZfQdydSwnY7ykua3tWRfeuAlR1BKmnY8qXUQdigk6qGn
-	HlWMAjMdJI1dVlAQc7vIaA+R1NxJ8q+sIYi1oey4I8pWJl74mgzxGMEI8nGdWQpm7Ddcb902OBI
-	n012Fsb4ORMtkKcxFLbwKqlpLrKOF17EdY1T2qlmTCOwL0eTeUtNcLlWXiqolBgCFqYvEKAapod
-	D95MsAUG6lRGIWq7ua+52KpzAoz1twSPno64BeERg1vhSZWE2Y08rJ1ZWaMD9iRAw=
-X-Google-Smtp-Source: AGHT+IHJ5unPIP4qklvnNP+tvcAVqaSk7cuFkEwR0o5WYQPqgnyOEHIo7FqFLamdSrbYRL5Ra9cg8w==
-X-Received: by 2002:a05:6000:2901:b0:429:b8e2:1064 with SMTP id ffacd0b85a97d-42fa3b05105mr4387383f8f.47.1765406443112;
-        Wed, 10 Dec 2025 14:40:43 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8a66b1fsm1691501f8f.9.2025.12.10.14.40.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 14:40:42 -0800 (PST)
-Date: Wed, 10 Dec 2025 22:40:41 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, Geert Uytterhoeven
- <geert+renesas@glider.be>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Crt Mori <cmo@melexis.com>, Richard Genoud
- <richard.genoud@bootlin.com>, Andy Shevchenko
- <andriy.shevchenko@intel.com>, Luo Jie <quic_luoj@quicinc.com>, Peter
- Zijlstra <peterz@infradead.org>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Simon
- Horman <simon.horman@netronome.com>, Mika Westerberg
- <mika.westerberg@linux.intel.com>, Andreas Noever
- <andreas.noever@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
- Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Subject: Re: [PATCH 0/9] bitfield: tidy up bitfield.h
-Message-ID: <20251210224041.36bbde25@pumpkin>
-In-Reply-To: <aTm54HCyCTm5k5ci@yury>
-References: <20251209100313.2867-1-david.laight.linux@gmail.com>
-	<aTm54HCyCTm5k5ci@yury>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1765416673; x=1766021473;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fZdCO/Mv9RBE0LHZ0bjkyPo+ciEfdxSfUwGGq9Yh/c0=;
+        b=ViGnEAP0YwNIOrxOduhIdEFnq/TVY2wX2wXCv9UhrAz456O+haqoFx4ufBMxsbzs6J
+         8WLPToCv/aFy3fS6qGStGaYxMysemxhO7tLSjPcpnsGD6DqIP1m6jnHR3c673Njdz76C
+         su3VuXMriEttR8GYqFxTpb4O/hqzhsAv5EA13Qr7vjH3+UpwHgLwnZ57ionadUgGk/IK
+         5c7ZW2K3D5JxPtdJKiZLCuHZCfLKSn1l4ncbW1HsdUn04Cr3suBJbGFgLHn90dUq0J49
+         ug2VqF87NLUhTd+XIA6HKb7zWFfyd4+VEbdhWsRckIJ9MNYV2Itqiq/RHcbZ1RmGrRNQ
+         ScqA==
+X-Gm-Message-State: AOJu0YwEPIhkjdw3vle/NX7mIuq/OS2bBY3rLJhZtbs7dL6/jEDFHnab
+	2nrQnD5OEdZ74caiiRM2wuZ8Kr7IZNRJj9FEk12SoGs44QS6fjGdJbBE
+X-Gm-Gg: ASbGnctmpGPSVosv4GGzeh/Ys1hGByMq/Ld6PEccy97wPB1i0Qr1ccng2C/UR+L9zlN
+	Euxns9tjkITi1kYEyR7v5HAMDLHRFOrYsSqkjznz9MiFyQt1eVzvGNWzuxo22B8qfxq5LQoEEu5
+	FChWQyV6QDCEC2aDOll+vKkvz3WWaNxDT6KwK0iSrnbS2+F3MrG9h8gpz06bFrSyRl/ck/9MtFP
+	anuhxle7+bSNDbetvjYDQt0KJzDgcusqgDrXDHU7hMqeQAbt5HDfn+qLwQAMS6yYoXMO3pHFLth
+	EVOKJSDZT5ZjCqYAfsY+dyFwKYJV3l97sJELT/AKawezEEcsEEKkJ6br/SJUh+/2RkZeVXlMtBo
+	BjIun4TYuq9DV3q3sYhXZYHAzjjOengLNKKew+nvZGypOdYbXM5qR28zqeBSzJiwM0cazbAi+dq
+	TW3M+7E0qzEURPIb7ARL8/odysRVkbfblxp+KzwaL0nM7yp9KlAofCfCcVDyfRqY/roVNmbDSdn
+	At0FihDKZVnmEdMSEDubhdpCq5Xi5lWQqyiHIpDsJJKbvJJVMOZmno+WCJHVA==
+X-Google-Smtp-Source: AGHT+IGVt+ykzKwUkvlI66EhGPLEJT0k2WcMqC7wbWNtFp2WzvnzQClEU8G0uA4bJZHHBv9Er2SFdw==
+X-Received: by 2002:a05:6a20:3d25:b0:366:14b0:1a37 with SMTP id adf61e73a8af0-366e33be8e5mr4459913637.69.1765416673027;
+        Wed, 10 Dec 2025 17:31:13 -0800 (PST)
+Received: from [10.200.8.97] (fs98a57d9d.tkyc007.ap.nuro.jp. [152.165.125.157])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2bfa0845sm618391a12.28.2025.12.10.17.31.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Dec 2025 17:31:12 -0800 (PST)
+Message-ID: <878759ec-f630-4961-a17f-6355df26507f@gmail.com>
+Date: Thu, 11 Dec 2025 01:31:09 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 4/9] net: let pp memory provider to specify rx
+ buf len
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, Shuah Khan
+ <shuah@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Yue Haibing <yuehaibing@huawei.com>,
+ David Wei <dw@davidwei.uk>, Haiyue Wang <haiyuewa@163.com>,
+ Jens Axboe <axboe@kernel.dk>, Joe Damato <jdamato@fastly.com>,
+ Simon Horman <horms@kernel.org>, Vishwanath Seshagiri <vishs@fb.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ io-uring@vger.kernel.org, dtatulea@nvidia.com
+References: <cover.1764542851.git.asml.silence@gmail.com>
+ <0364ec97cc65b7b7b7376b98438c2630fa2e003c.1764542851.git.asml.silence@gmail.com>
+ <20251202110431.376dc793@kernel.org>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20251202110431.376dc793@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Dec 2025 13:20:16 -0500
-Yury Norov <yury.norov@gmail.com> wrote:
-
-> On Tue, Dec 09, 2025 at 10:03:04AM +0000, david.laight.linux@gmail.com wrote:
-> > From: David Laight <david.laight.linux@gmail.com>
-> > 
-> > Re-send with patches going to everyone.
-> > (I'd forgotten I'd set 'ccCover = 0'.)  
+On 12/2/25 19:04, Jakub Kicinski wrote:
+> On Sun, 30 Nov 2025 23:35:19 +0000 Pavel Begunkov wrote:
+>> +enum {
+>> +	/* queue restart support custom rx buffer sizes */
+>> +	NDO_QUEUE_RX_BUF_SIZE		= 0x1,
 > 
-> And this one again appeared in my spambox. Have you any ideas why?
+> If you have to respin -- let's drop the NDO from this define.
+> To suggest something specific - QCFG_ is a better prefix?
+> IDK why we ended up with ndo_ prefix on the queue ops..
 
-I'm getting the copies sent to my gmail account, but gmail has a mind of its own.
-It bounces and spams a lot of list emails (never might the emails/minute limit
-that meany you only get 'some of' lkml).
+QCFG_ sounds better indeed
 
-The email headers are a slight lie, the From: doesn't match the 'envelope from'.
-Basically you can't send more than 100 emails/day (count of To: and Cc:) from a
-'free' gmail address, so they are sent from elsewhere (with a 500/day limit).
-But I don't want that address appearing in the emails - hence the subterfuge.
-But the 'envelope from' is correct for where the emails come from.
-(A test email to xxx.gmail.com with an envelope from of xxx.gmail.com sent
-from a different smtp server confused gmail! The mail was errored, but it sent
-the bounce to itself!)
+> Also RX_PAGE_SIZE is a better name for the fields? RX_BUF_SIZE
+> is easy to confuse with RX_BUF_LEN which we are no longer trying
+> to modify.
 
-	David
+It's not "page" because there are no struct page's, and those are
+just buffers. Maybe it's also some net/driver specific term?
+I don't get the difference here b/w "size" and "len" either, but
+in any case I don't really have any real opinion about the name,
+and it can always be changed later.
+
+-- 
+Pavel Begunkov
+
