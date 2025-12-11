@@ -1,38 +1,38 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152B7223705;
-	Thu, 11 Dec 2025 02:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CE9236437;
+	Thu, 11 Dec 2025 02:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765420742; cv=none; b=mxVXq11aLULWEjuvWmYj1lIk6Y59dX9L1BIMTsIgRjdNwGSdcQESo7YblOKirw/MweFPJ3Bl2SY0xj62cjq3joGPFIdYP9sh1pwqAtd6MUq/qlZiww05rRvVN9T3ddYgchydaf2FCPv+r67ixtHUIoCXpivFLvCAPtZ2FNQZOXk=
+	t=1765420743; cv=none; b=Zw4LJ1YbeECP5okgO8IFtcwyyZWGa0bsRpWdMg/0fqJhRvn20KZHQBqIzwlV4AR5F+0IA671NGiHjIzbUR8pm4+sSUMY1V4pl+0I3jVgaCvgRDKWNzdzVRCsuwPvdwEHH6zrDSPw7JcC/wJlutOp4kthqR50jI5n6ZF3Yqz/qyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765420742; c=relaxed/simple;
-	bh=Fs/ETSAwP5WSaxBg1LqvBTkcXyLghTmKNoognJyWMBw=;
+	s=arc-20240116; t=1765420743; c=relaxed/simple;
+	bh=91UxQk5iVHvQ5j5NE2xvcTvOlNQnIZuHWSgJLSg6LIE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GxMpAzWv1YWvMBoLogY6+4tjN1jPD9Wh0WikFTwgsFO1u5jnWhhuk1h2idAUI40tV5z/8yS3CPNM46nWAazE/A3YELesFqdmcvSQCDots76dh2TVfOXRubYTtK32BkO//YRkFJ9VudcJygR59g9uNlNyRgceuqBCg6Z5dhlEkt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iRRSdWon; arc=none smtp.client-ip=113.46.200.222
+	 MIME-Version:Content-Type; b=BA/uKFj2Q93v5MPN3P9+st+spRacLmMNhy4UiFXZREWX4Cfg9mLLbOk6+4bRxloc9nxQUIXbeVBE6TaBHlFu9JH+wS4H6RTyPUbgyJLu4MOfajnlH9qgt+6TSia1bpnmJL5PEm5dsBHS7JWY0rl83bo9YD32sIt8GOKljUfjmZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Za3vyaqZ; arc=none smtp.client-ip=113.46.200.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iRRSdWon"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Za3vyaqZ"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=79uTi9ykoKshWNVQ9n4i3+AsUlVwH3rbZnGTwyENPyw=;
-	b=iRRSdWonB1XD+0l1q9310kZHNFVhRM1zTds3ZJ7ygF7aWBwBxlPJ/HePWMmFPgpdKIBCVOcUz
-	t25ZDHdC0d0crM5/RMa5tAvprTxjVkO/KbY+2gJJPSDrZcPf1byMeYJ3STHGAdhmR4FheoUx64G
-	ph1YpyW9nzVpornt71bao78=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dRcDY1qYpzLlVn;
-	Thu, 11 Dec 2025 10:37:01 +0800 (CST)
+	bh=OMmqpjmMHhG/Mn4T7EXrUFgAMC8swBEd5sHzAzs21aA=;
+	b=Za3vyaqZHzmQMFO4N3ggM8A4yTb+1DMsQNOpglRH/8pX3PsOZ/oPG+42v5jbbTt6RhYOd9pnY
+	PBwWsiwZ6PDxXAR7R2a236Jaq9fOvcPbZRJNOJmdFRH1eW3Eg1xR+rLSG56xSC/cTph2VkJZ+tK
+	g1iMLH5yTqjXbSlbT/B8mTc=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dRcDX6NTGz1prKr;
+	Thu, 11 Dec 2025 10:37:00 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id BA6D6140143;
-	Thu, 11 Dec 2025 10:38:57 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 14D97180471;
+	Thu, 11 Dec 2025 10:38:59 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 11 Dec 2025 10:38:56 +0800
+ 15.2.1544.11; Thu, 11 Dec 2025 10:38:58 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -42,9 +42,9 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH V2 net 1/3] net: hns3: using the num_tqps in the vf driver to apply for resources
-Date: Thu, 11 Dec 2025 10:37:35 +0800
-Message-ID: <20251211023737.2327018-2-shaojijie@huawei.com>
+Subject: [PATCH V2 net 3/3] net: hns3: add VLAN id validation before using
+Date: Thu, 11 Dec 2025 10:37:37 +0800
+Message-ID: <20251211023737.2327018-4-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20251211023737.2327018-1-shaojijie@huawei.com>
 References: <20251211023737.2327018-1-shaojijie@huawei.com>
@@ -61,43 +61,41 @@ X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
 
 From: Jian Shen <shenjian15@huawei.com>
 
-Currently, hdev->htqp is allocated using hdev->num_tqps, and kinfo->tqp
-is allocated using kinfo->num_tqps. However, kinfo->num_tqps is set to
-min(new_tqps, hdev->num_tqps);  Therefore, kinfo->num_tqps may be smaller
-than hdev->num_tqps, which causes some hdev->htqp[i] to remain
-uninitialized in hclgevf_knic_setup().
+Currently, the VLAN id may be used without validation when
+receive a VLAN configuration mailbox from VF. The length of
+vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
+out-of-bounds memory access once the VLAN id is bigger than
+or equal to VLAN_N_VID.
 
-Thus, this patch allocates hdev->htqp and kinfo->tqp using hdev->num_tqps,
-ensuring that the lengths of hdev->htqp and kinfo->tqp are consistent
-and that all elements are properly initialized.
+Therefore, VLAN id needs to be checked to ensure it is within
+the range of VLAN_N_VID.
 
-Fixes: e2cb1dec9779 ("net: hns3: Add HNS3 VF HCL(Hardware Compatibility Layer) Support")
+Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
 Signed-off-by: Jian Shen <shenjian15@huawei.com>
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v1-> v2:
+  - Mentioning vlan_del_fail_bmap in commit message, suggested by Simon Horman.
+  v1: https://lore.kernel.org/all/20251209133825.3577343-4-shaojijie@huawei.com/
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 8fcf220a120d..70327a73dee3 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -368,12 +368,12 @@ static int hclgevf_knic_setup(struct hclgevf_dev *hdev)
- 	new_tqps = kinfo->rss_size * num_tc;
- 	kinfo->num_tqps = min(new_tqps, hdev->num_tqps);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index cf8abbe01840..c589baea7c77 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10555,6 +10555,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	bool writen_to_tbl = false;
+ 	int ret = 0;
  
--	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, kinfo->num_tqps,
-+	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, hdev->num_tqps,
- 				  sizeof(struct hnae3_queue *), GFP_KERNEL);
- 	if (!kinfo->tqp)
- 		return -ENOMEM;
- 
--	for (i = 0; i < kinfo->num_tqps; i++) {
-+	for (i = 0; i < hdev->num_tqps; i++) {
- 		hdev->htqp[i].q.handle = &hdev->nic;
- 		hdev->htqp[i].q.tqp_index = i;
- 		kinfo->tqp[i] = &hdev->htqp[i].q;
++	if (vlan_id >= VLAN_N_VID)
++		return -EINVAL;
++
+ 	/* When device is resetting or reset failed, firmware is unable to
+ 	 * handle mailbox. Just record the vlan id, and remove it after
+ 	 * reset finished.
 -- 
 2.33.0
 
