@@ -1,74 +1,160 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f78.google.com (mail-ot1-f78.google.com [209.85.210.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5B0284672;
-	Thu, 11 Dec 2025 13:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE430F93D
+	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 13:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765460091; cv=none; b=V1tetUy6qhPo3K3UJRmlfC84aXFxreq4RyJQfTrEzRba+fLqbcqYqaAalXb5VGHOu5R7V8KD5cs/Z5N19GmVTjsXiwKgt4psxmEYOSm3M9Y/bQWAaTVsFvo2IJmNXyqBvgq8ugz8Utnx8MfrlrU+i/aCznhY4x4ZGZkL+34xBsM=
+	t=1765460486; cv=none; b=bHtPSxP5QwQZxn46JTRTFCBGY45+SEz3Q83dIy3Q3JhTnd5BwOqI/p8r4a1wLF/mKZpnx5If66ttr98gYdMNhrEGx+BCKOAaPPLgOpBPh0rVmc3aiUh/cJX78ZjGqt2hEsr06KYoGGTG2bi007ixgrJrDcrhvLE4USqi5ZYVn/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765460091; c=relaxed/simple;
-	bh=PX2xeICFOc8hwopXuENr+xB8Wmni5RPfx5e5kh/PRBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O84UqtAlJdvBTnkmpkJZF1jpBkLMXGLLt+yIhYCKr7omFdX9Tw2t+odgI+o43cX3yRR32mDtgi0xdCMzf+dMJEeZoO/NKXK64Q9uz7mQPbKLddkk5jYR/WPeO8pVwu7riTC98i7aIy8Z/S3Op9zTuu/1R80coixx2wplmByahcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Y+pMqO07; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Y+pMqO07"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=87k6ZOPMZjikEVuPQMcOElrCO2sbaSMGE+CuXeuUymE=; b=Y+pMqO07thAfXDflKjPCaw9UDH
-	cefJt4/vw4yCPrfXRYr0yVTO9QDamI9Q7/ELHXhBojx8USvqA/wAKy4Wj3LWuZsrQr1kg6fVHFia+
-	Qx/kGfFBWcY26PbDF4mP6ek5z7u7h7/GSRT+h2gCgOAF5n5q+BItTusLN5f3G4ErqhV4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vTgoQ-00GeC8-MV; Thu, 11 Dec 2025 14:34:30 +0100
-Date: Thu, 11 Dec 2025 14:34:30 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Daniel Golle <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: phy: mediatek: fix nvmem cell reference leak in
- mt798x_phy_calibration
-Message-ID: <57437939-6983-4db8-9178-dd19f1c7b971@lunn.ch>
-References: <20251211081313.2368460-1-linmq006@gmail.com>
+	s=arc-20240116; t=1765460486; c=relaxed/simple;
+	bh=CDE1ttNTa5AMSgjBBmBwDvE2XcaWTCNIO92rjWyj8sE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ah4CWjRjg1YAs1hptY0MK4tJSfJ0jbKpkRYfZjdxsumsFDrItEiD9LPwpMxs9yNWvxSgTiJ2vX151jsoyO+4ashUKSvqcVTs61oAU+Q/ttbcMA74eenJpK7mpTaeWuGNe9fl4RkT7VcGOT6efe23acx7TzC1jQqNre0aAKTthrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f78.google.com with SMTP id 46e09a7af769-7c702d1a4f7so127960a34.3
+        for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 05:41:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765460484; x=1766065284;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZdhV1m8aeGU2YokLDtNvPFAfeUluHSpx/80Pd07MRPc=;
+        b=cdwQQDyJlSogYRe2ojMEoLlx/YMHYvdem83SLPa7R9gWM9PxtydjfWE/FZ/1JJiOVE
+         bfTNxiyxH8+RC3ezRf7/wSxY+bsqZN48vyvVwsVkzi2/5e9jG/DHGMqfl5M84ISjeuU5
+         i6qatQl5XfWJKXFsWUuaYTdoz48+94mUtdQU4SnHeYlxhhLtKxdRkUpJKr4BRqjyF1zk
+         khMOP/aok6tnYTzZHYLpYvyiVfgDU+eMq4w7zR6JhjHeJJOYjpC2nwDsfMkKIJdvuaoh
+         zAIPrJTz1d2cxMYytgCMlU+5EYu8wdL/AMFwRPKzjQQMpsQNaeWVj5WTBHdvz5mtQ8/+
+         2YDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPSm2FkHh/HuyrN/tRshFSeufhwKwlKISJDP6U/WBvaZO9/A3pXjmIOdGVPf0y6pnIqUXdLe0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3yX0raqwVdtEgz7XCRWGbOwyOxXdjK6mnYbKlPdwCqGZMsq5C
+	4vIRjiVtAlIDMIYYcbdp4Ad7rCHGlVNYwooiEgyuvSnGkppPUgMnubk3er8+MK48BMiWCSp6+6h
+	Ht1v9+Hg/RY+5t9cjZJSu6LJF5AOV637dqnHSX0rrKM0WUATCkFMP+jUoZ8k=
+X-Google-Smtp-Source: AGHT+IGNnZYJRKkVKEoqr1aOebOWcitP/eJc29wiPAqSj9kqrQC8LVU+8N0bc9k787UTSjA5rJaWEWXkMS8eEhLrT67SHYwSjOZO
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211081313.2368460-1-linmq006@gmail.com>
+X-Received: by 2002:a05:6820:3084:b0:659:9a49:8ff5 with SMTP id
+ 006d021491bc7-65b2accaa61mr3088477eaf.34.1765460484238; Thu, 11 Dec 2025
+ 05:41:24 -0800 (PST)
+Date: Thu, 11 Dec 2025 05:41:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <693aca04.050a0220.4004e.0346.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in __alloc_workqueue
+From: syzbot <syzbot+392a2c3f461094707435@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, pkshih@realtek.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Dec 11, 2025 at 12:13:13PM +0400, Miaoqian Lin wrote:
-> When nvmem_cell_read() fails in mt798x_phy_calibration(), the function
-> returns without calling nvmem_cell_put(), leaking the cell reference.
-> 
-> Move nvmem_cell_put() right after nvmem_cell_read() to ensure the cell
-> reference is always released regardless of the read result.
-> 
-> Found via static analysis and code review.
-> 
-> Fixes: 98c485eaf509 ("net: phy: add driver for MediaTek SoC built-in GE PHYs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Hello,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+syzbot found the following issue on:
 
-    Andrew
+HEAD commit:    37bb2e7217b0 Merge tag 'staging-6.19-rc1' of git://git.ker..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=125bceb4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e79f218bc0cd167b
+dashboard link: https://syzkaller.appspot.com/bug?extid=392a2c3f461094707435
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1046f21a580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b9521a580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/26124775173b/disk-37bb2e72.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bd4182168b83/vmlinux-37bb2e72.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a78be0ee345d/bzImage-37bb2e72.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+392a2c3f461094707435@syzkaller.appspotmail.com
+
+usb 3-1: SerialNumber: syz
+usb 3-1: config 0 descriptor??
+------------[ cut here ]------------
+WARNING: kernel/workqueue.c:5701 at __alloc_workqueue+0x114c/0x1810 kernel/workqueue.c:5701, CPU#0: kworker/0:2/121
+Modules linked in:
+CPU: 0 UID: 0 PID: 121 Comm: kworker/0:2 Not tainted syzkaller #0 PREEMPT(voluntary) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:__alloc_workqueue+0x114c/0x1810 kernel/workqueue.c:5701
+Code: e9 de fc ff ff 48 c7 44 24 08 e8 55 e8 88 e9 8f f6 ff ff 41 be 08 00 00 00 41 bd 00 04 00 00 e9 53 f1 ff ff e8 a5 9a 34 00 90 <0f> 0b 90 31 ed e9 af fc ff ff e8 95 9a 34 00 90 0f 0b 90 31 ed e9
+RSP: 0018:ffffc900014aedf8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000002 RCX: ffffffff814b4179
+RDX: ffff88810caa9d40 RSI: ffffffff814b527b RDI: 0000000000000005
+RBP: ffffc900014aef60 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000002 R11: ffff88810caaa7e8 R12: 0000000000000003
+R13: 0000000000000000 R14: ffffffff87e3cc20 R15: ffffc900014aeea0
+FS:  0000000000000000(0000) GS:ffff888268bf5000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8d89852a60 CR3: 0000000117746000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ alloc_workqueue_noprof+0xd2/0x200 kernel/workqueue.c:5820
+ rtw_usb_init_rx drivers/net/wireless/realtek/rtw88/usb.c:968 [inline]
+ rtw_usb_probe+0x13bf/0x2d10 drivers/net/wireless/realtek/rtw88/usb.c:1295
+ usb_probe_interface+0x303/0xa80 drivers/usb/core/driver.c:396
+ call_driver_probe drivers/base/dd.c:581 [inline]
+ really_probe+0x241/0xb20 drivers/base/dd.c:659
+ __driver_probe_device+0x1de/0x470 drivers/base/dd.c:801
+ driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
+ __device_attach_driver+0x1df/0x350 drivers/base/dd.c:959
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4e0 drivers/base/dd.c:1031
+ device_initial_probe+0xaa/0xc0 drivers/base/dd.c:1086
+ bus_probe_device+0x64/0x150 drivers/base/bus.c:574
+ device_add+0x116e/0x1980 drivers/base/core.c:3689
+ usb_set_configuration+0x1187/0x1e50 drivers/usb/core/message.c:2210
+ usb_generic_driver_probe+0xb1/0x110 drivers/usb/core/generic.c:250
+ usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
+ call_driver_probe drivers/base/dd.c:581 [inline]
+ really_probe+0x241/0xb20 drivers/base/dd.c:659
+ __driver_probe_device+0x1de/0x470 drivers/base/dd.c:801
+ driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
+ __device_attach_driver+0x1df/0x350 drivers/base/dd.c:959
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
+ __device_attach+0x1e4/0x4e0 drivers/base/dd.c:1031
+ device_initial_probe+0xaa/0xc0 drivers/base/dd.c:1086
+ bus_probe_device+0x64/0x150 drivers/base/bus.c:574
+ device_add+0x116e/0x1980 drivers/base/core.c:3689
+ usb_new_device+0xd07/0x1a90 drivers/usb/core/hub.c:2695
+ hub_port_connect drivers/usb/core/hub.c:5567 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
+ port_event drivers/usb/core/hub.c:5871 [inline]
+ hub_event+0x31bf/0x5420 drivers/usb/core/hub.c:5953
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x74f/0xa30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
