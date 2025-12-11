@@ -1,38 +1,48 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CE9236437;
-	Thu, 11 Dec 2025 02:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00CE28C84D;
+	Thu, 11 Dec 2025 02:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765420743; cv=none; b=Zw4LJ1YbeECP5okgO8IFtcwyyZWGa0bsRpWdMg/0fqJhRvn20KZHQBqIzwlV4AR5F+0IA671NGiHjIzbUR8pm4+sSUMY1V4pl+0I3jVgaCvgRDKWNzdzVRCsuwPvdwEHH6zrDSPw7JcC/wJlutOp4kthqR50jI5n6ZF3Yqz/qyY=
+	t=1765420750; cv=none; b=bD+6Fhg006ejuVPGWyG6KyYxiontv3HRdwyB9yrFP6kw8qjhj52hJxG5TrsxkUdn8/Df+2wS1dlpZHsB2ZE/LWk7GqOjHnjDo7WXbJ50IPSBrBmoNY6FdWMXz6iupOnVNW6t7tXni1uKGMc3ys9K6iGB/Qzhmlyuf1U5dBIuuCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765420743; c=relaxed/simple;
-	bh=91UxQk5iVHvQ5j5NE2xvcTvOlNQnIZuHWSgJLSg6LIE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BA/uKFj2Q93v5MPN3P9+st+spRacLmMNhy4UiFXZREWX4Cfg9mLLbOk6+4bRxloc9nxQUIXbeVBE6TaBHlFu9JH+wS4H6RTyPUbgyJLu4MOfajnlH9qgt+6TSia1bpnmJL5PEm5dsBHS7JWY0rl83bo9YD32sIt8GOKljUfjmZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Za3vyaqZ; arc=none smtp.client-ip=113.46.200.219
+	s=arc-20240116; t=1765420750; c=relaxed/simple;
+	bh=Zp0Pr4N/37r/YAgWiAT6epd+gmIdHQmJw9AvGx4czCI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XNjLnKE31rXog9c6xXMAqLUYlS7QjIXKbIJkvHKuuyOLxc5c5F8IyUMcjyMg36q97XfxzwGm0jIDASNlsBFMtwFtItrix0rU061+1SJ4my1awMxsIkoW4yKs6zZrdMi/J4pQekw+1AhHBEerrpv6ALXvA2wNBvE0rPKo2fAztxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=kcSkgsaJ; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=kcSkgsaJ; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Za3vyaqZ"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="kcSkgsaJ";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="kcSkgsaJ"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=OMmqpjmMHhG/Mn4T7EXrUFgAMC8swBEd5sHzAzs21aA=;
-	b=Za3vyaqZHzmQMFO4N3ggM8A4yTb+1DMsQNOpglRH/8pX3PsOZ/oPG+42v5jbbTt6RhYOd9pnY
-	PBwWsiwZ6PDxXAR7R2a236Jaq9fOvcPbZRJNOJmdFRH1eW3Eg1xR+rLSG56xSC/cTph2VkJZ+tK
-	g1iMLH5yTqjXbSlbT/B8mTc=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dRcDX6NTGz1prKr;
-	Thu, 11 Dec 2025 10:37:00 +0800 (CST)
+	bh=rJrtuABW4FVkqAMHKhBPK/0KROz+PdPZF4hhgxrlpWg=;
+	b=kcSkgsaJf+gMDy+ygCDwSmjVhTwmioBZE+uXB9HXUm06IvmTiS5KHfNk3NCAg41lExCFKSDYf
+	nkOZCbTdUP0Ry+mx+go3XyL7GtziAoq27zpQXiWgRlZtOB257hlsv82m6JZcLrdZPDqXHln9Kqv
+	ygAsS7T4H6GFK2I+DLzEsjw=
+Received: from canpmsgout09.his.huawei.com (unknown [172.19.92.135])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4dRcGc3sCrz1BG4v;
+	Thu, 11 Dec 2025 10:38:48 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=rJrtuABW4FVkqAMHKhBPK/0KROz+PdPZF4hhgxrlpWg=;
+	b=kcSkgsaJf+gMDy+ygCDwSmjVhTwmioBZE+uXB9HXUm06IvmTiS5KHfNk3NCAg41lExCFKSDYf
+	nkOZCbTdUP0Ry+mx+go3XyL7GtziAoq27zpQXiWgRlZtOB257hlsv82m6JZcLrdZPDqXHln9Kqv
+	ygAsS7T4H6GFK2I+DLzEsjw=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dRcDW603wz1cyPb;
+	Thu, 11 Dec 2025 10:36:59 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 14D97180471;
-	Thu, 11 Dec 2025 10:38:59 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 0BEF51A016C;
+	Thu, 11 Dec 2025 10:38:57 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 11 Dec 2025 10:38:58 +0800
+ 15.2.1544.11; Thu, 11 Dec 2025 10:38:56 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -42,12 +52,10 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH V2 net 3/3] net: hns3: add VLAN id validation before using
-Date: Thu, 11 Dec 2025 10:37:37 +0800
-Message-ID: <20251211023737.2327018-4-shaojijie@huawei.com>
+Subject: [PATCH V2 net 0/3] There are some bugfix for the HNS3 ethernet driver
+Date: Thu, 11 Dec 2025 10:37:34 +0800
+Message-ID: <20251211023737.2327018-1-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20251211023737.2327018-1-shaojijie@huawei.com>
-References: <20251211023737.2327018-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,43 +67,19 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-From: Jian Shen <shenjian15@huawei.com>
+There are some bugfix for the HNS3 ethernet driver
 
-Currently, the VLAN id may be used without validation when
-receive a VLAN configuration mailbox from VF. The length of
-vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
-out-of-bounds memory access once the VLAN id is bigger than
-or equal to VLAN_N_VID.
+Jian Shen (3):
+  net: hns3: using the num_tqps in the vf driver to apply for resources
+  net: hns3: using the num_tqps to check whether tqp_index is out of
+    range when vf get ring info from mbx
+  net: hns3: add VLAN id validation before using
 
-Therefore, VLAN id needs to be checked to ensure it is within
-the range of VLAN_N_VID.
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 3 +++
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c    | 4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v1-> v2:
-  - Mentioning vlan_del_fail_bmap in commit message, suggested by Simon Horman.
-  v1: https://lore.kernel.org/all/20251209133825.3577343-4-shaojijie@huawei.com/
----
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index cf8abbe01840..c589baea7c77 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10555,6 +10555,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
- 	bool writen_to_tbl = false;
- 	int ret = 0;
- 
-+	if (vlan_id >= VLAN_N_VID)
-+		return -EINVAL;
-+
- 	/* When device is resetting or reset failed, firmware is unable to
- 	 * handle mailbox. Just record the vlan id, and remove it after
- 	 * reset finished.
 -- 
 2.33.0
 
