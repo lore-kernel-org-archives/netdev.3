@@ -1,142 +1,82 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3511721FF33
-	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 09:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077B22F5322
+	for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 09:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765445929; cv=none; b=PRQ6sLUbuHk2JLdYoHnuZYvtMHoYq3zW5pczsouL322taNN71LDCRO5rkuUCFptZtINslNb+YvBcpW1TwvcxE+XY+O657NXDa+0Wqd6F2JH1d8OtnbDOUvzEZ1DShLtto4v72MuB22WIMEVh2B6QbLQ5t3B55LsnSuuqdAEEMpk=
+	t=1765446200; cv=none; b=NjfQ/C8cKx9EWOvWHgSfuycKkjSXdQ0FRdgQPLLoikcD1DrL3Ax22JDPPlFZl9JCv5NC2bs3oJTMVcccpx+52gwvWY7+KLZgmefPZZZG54hv7IcXm13VeHSxqFme/isbXTI4BOEe5oEJYid6YuameOqBzM+OisNHbqWdH2VQZAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765445929; c=relaxed/simple;
-	bh=XU70a7FbHIID1lPxChrNrgm+U0s8j1JYpkTV4aDyf38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xeo47gh8H5FAVZe+Gdg9AVYwohoLdPafGCqB9atJfDuEBFvuqQacwwEPZGovkPxrgF4k3SYrJZC84EsBJMT3Ff1fKn78EkSbagzjVKETom6XuCghm4x9t+G58P0dapLXAeF5W8bGpuctBZRbttVDONfXl0d+AJnRbUlRr//DFDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=HXwO3gwA; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1765446200; c=relaxed/simple;
+	bh=79LqOU9AE+pSmw6FX1NVsgN2Bq/2RE5BjyWeTSD1af8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=XLudR1sEY1BrfqD7DdM719Jgr2rMSVZVsFdoLncvxNu4TtqdfTWycw8bEOoxuZvdfSM2dCI4xZYN9/pNTj+QDnblb3CFJw7kutu7RW9ad9Gs1J67p//mvtlHDXWYTXwwxEiUE5/Zqcas91ByeSXVLCowx9s0pyoyc20qXQtuqr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnh5oMIk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="HXwO3gwA"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42e2e239ec0so420223f8f.0
-        for <netdev@vger.kernel.org>; Thu, 11 Dec 2025 01:38:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1765445925; x=1766050725; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W+ujfgkaGFD17NnPfs71eaPuRIxFTNVHHONeVIjDE7E=;
-        b=HXwO3gwAN1l+zdpmCOSGVnGmnlaB7jgK5jVk5JxESVHOG2eJYnMWw1RRNs64tveIbL
-         fcKHe/IfiwEAsBFaDyz8yIT/y/+o7SPUspc9l29QTKGR49k+CIBxITVgo/qiBGOh09df
-         rPkBxdB8v0OgS2KTkUVg1yIrqJ2QOLYH3VP63fx0L4bdT6ZPJYBvG3xTC/aTLP51fB8n
-         JaYFxCgB7W9hlTNWVQhiMDFjqdP0t1AUn4sayoTXB7TUbQd9paIlTA3DE//8MsuJBbqV
-         41FRgemmNytAuQ++eC1CeOkROicRrWdqM2gS6ZQzzoIU2XWVLQNWCuLzu+NFePZhFJMA
-         v8QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765445925; x=1766050725;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+ujfgkaGFD17NnPfs71eaPuRIxFTNVHHONeVIjDE7E=;
-        b=bXp481VpkS5styP5/nUkUI2k3VnfS217YZONFZwPRf0kJ/x6EUp71gxBGpGSuol4x2
-         mxiwS/sZBRTq2a6NSKxwkTzF91KOyluy7qhq7D1v6iNutPPs9qy0AHpWapxCVireLnyl
-         9wI5b5VlFaIWpF/C8ABAk2lMMsdZ0yCXHSTptlXdOR8CypGtg4FXAeNYTaJ1xE7QLDnf
-         1wlaJeEw9eyxfN1qUpbK9awdWCRj0dsvVBTugRKvUHBYQpiNFytGl+dhvB7Mlut6BCmy
-         w1bbSAmT8zm8tBHOp04QyilKIkjBRUxBq7THuFT4ZV7Mg3yx2S+yqabGu2MpNj4dSuuV
-         Z+rg==
-X-Forwarded-Encrypted: i=1; AJvYcCVmMowIQPKm6sdN6Plbjr6PBuczA2x+arT2/2l+YJGfYeaBxk9NU5c0I1BjKjnIJvLav0nOjLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaVo7tgiFqZOSC0NJeRhGi/VuSiLTyQjh5J1TtwctjzspKkGhf
-	VKrg1shnl0ktBAz0aAE/7O2OChR+S88kq56fDruR8nz672NNLFh8R64EU5Wi3qP3fok=
-X-Gm-Gg: AY/fxX7TwvoDkFEIT3luLl69nvQ5Q2C7t0SyvzZks2wudPUVOK6Bz2Bo6MP1rq6R/Gk
-	xaTn7cw62bTUL7slL1j34P8KyCoQ9y5ECJh19UepDxjmBbYmXEwhGV99ilBcuYWqa89KyvnlPyG
-	9RjHSQMtBfMp76rl6df1nO/3/vFjG42DujYf/q758Srk5/2/Y4qNFF4UI0nYbKQul3ZEiTFASmo
-	OI8Jf46mH5R0KPO2/5zZ8lcuKU18td7hMYcjNnKaATAusZtSb133kHchKWjGRte37A0KHHnBqwV
-	HIETOANn1vVeIk1zJlIH+vFeU4nY2rcIjtCMUEijo/wVfbLqfBVLwiPT/59sINqvqY2hrwNkJuv
-	kqWEU2CCF9cRj0XaCZcOv+1b+t5C/I2NwNEnuC3NYkhNTMKlj4T++Fc7sInDiiJvRx9X4+F1NUj
-	u6LI5KUl9oHX0lDrHTyb0=
-X-Google-Smtp-Source: AGHT+IEcVQHnl5nlVmDwHCHtf8GeroB9zS/N6wnPtae2Cjhrr5b2qK8zazpvYP7ori6Ryg/NLT03aA==
-X-Received: by 2002:a05:6000:2382:b0:42f:9f4d:a490 with SMTP id ffacd0b85a97d-42fa39cee26mr5647287f8f.12.1765445924890;
-        Thu, 11 Dec 2025 01:38:44 -0800 (PST)
-Received: from FV6GYCPJ69 ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8a67832sm4529063f8f.8.2025.12.11.01.38.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 01:38:44 -0800 (PST)
-Date: Thu, 11 Dec 2025 10:38:43 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Simon Horman <horms@kernel.org>
-Cc: Dharanitharan R <dharanitharan725@gmail.com>, 
-	syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] team: fix qom_list corruption by using
- list_del_init_rcu()
-Message-ID: <pyaaf6vhfvkab4rpsgkojguixnp5vdxgzle6i6p3shuxgzwwaw@rdwgw47rgvzb>
-References: <20251210053104.23608-2-dharanitharan725@gmail.com>
- <aTls21jR6BvTaV-k@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnh5oMIk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFA4C19421;
+	Thu, 11 Dec 2025 09:43:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765446199;
+	bh=79LqOU9AE+pSmw6FX1NVsgN2Bq/2RE5BjyWeTSD1af8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jnh5oMIkspgfTUY7ZfDO3oDAqUs1O3NGTYwp7xU1HdeijeAXWO6WdQR5hjwpEc/lb
+	 /6W4x/HuPVRBoeR5tALdz3LW+Iemm3nNSYxP6+R+ozCLg9qTRfDGkglmlHp3PRhpgg
+	 3AYGhMCNRDcq5WaVwt9CDsTnCmj6DPzNoXXZ0H38fRqMuw7VRCoAmVK2K7m4pI4urF
+	 e5+83VTthLqzVKSNswr5UeMjyTtTaB4bESS7FGOEcPxbWS4dOdYRbthqD7m7m374d1
+	 3Bme0V9j3grPFYCt0eYQQmB/jz5ZiLOQ3lqH6Dn843GylGWQB7QEGkIa8lok9xs8/n
+	 0U0B2pOf6uNoQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5A3A3809A35;
+	Thu, 11 Dec 2025 09:40:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTls21jR6BvTaV-k@horms.kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/2] net/sched: ets: Remove drr class from the active
+ list
+ if it changes to strict
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176544601354.1308621.17954090130242300432.git-patchwork-notify@kernel.org>
+Date: Thu, 11 Dec 2025 09:40:13 +0000
+References: <20251208190125.1868423-1-victor@mojatatu.com>
+In-Reply-To: <20251208190125.1868423-1-victor@mojatatu.com>
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, jhs@mojatatu.com, jiri@resnulli.us,
+ xiyou.wangcong@gmail.com, horms@kernel.org, dcaratti@redhat.com,
+ petrm@nvidia.com, netdev@vger.kernel.org
 
-Wed, Dec 10, 2025 at 01:51:39PM +0100, horms@kernel.org wrote:
->On Wed, Dec 10, 2025 at 05:31:05AM +0000, Dharanitharan R wrote:
->> In __team_queue_override_port_del(), repeated deletion of the same port
->> using list_del_rcu() could corrupt the RCU-protected qom_list. This
->> happens if the function is called multiple times on the same port, for
->> example during port removal or team reconfiguration.
->> 
->> This patch replaces list_del_rcu() with list_del_init_rcu() to:
->> 
->>   - Ensure safe repeated deletion of the same port
->>   - Keep the RCU list consistent
->>   - Avoid potential use-after-free and list corruption issues
->> 
->> Testing:
->>   - Syzbot-reported crash is eliminated in testing.
->>   - Kernel builds and runs cleanly
->> 
->> Fixes: 108f9405ce81 ("team: add queue override configuration mechanism")
->> Reported-by: syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=422806e5f4cce722a71f
->> Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
->
->Thanks for addressing my review of v1.
->The commit message looks much better to me.
->
->However, I am unable to find the cited commit in net.
->
->And I am still curious about the cause: are you sure it is repeated deletion?
+Hello:
 
-It looks like it is. But I believe we need to fix the root cause, why
-the list_del is called twice and don't blindly take AI made fix with AI
-made patch description :O
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-I actually think that following path might the be problematic one:
-1) Port is enabled, queue_id != 0, in qom_list
-2) Port gets disabled
-	-> team_port_disable()
-        -> team_queue_override_port_del()
-        -> del (removed from list)
-3) Port is disabled, queue_id != 0, not in any list
-4) Priority changes
-        -> team_queue_override_port_prio_changed()
-	-> checks: port disabled && queue_id != 0
-        -> calls del - hits the BUG as it is removed already
+On Mon,  8 Dec 2025 16:01:24 -0300 you wrote:
+> Whenever a user issues an ets qdisc change command, transforming a
+> drr class into a strict one, the ets code isn't checking whether that
+> class was in the active list and removing it. This means that, if a
+> user changes a strict class (which was in the active list) back to a drr
+> one, that class will be added twice to the active list [1].
+> 
+> Doing so with the following commands:
+> 
+> [...]
 
-Will test the fix and submit shortly.
+Here is the summary with links:
+  - [net,1/2] net/sched: ets: Remove drr class from the active list if it changes to strict
+    https://git.kernel.org/netdev/net/c/b1e125ae425a
+  - [net,2/2] selftests/tc-testing: Create tests to exercise ets classes active list misplacements
+    https://git.kernel.org/netdev/net/c/5914428e0e44
 
-#syz test
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 4d5c9ae8f221..c08a5c1bd6e4 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -878,7 +878,7 @@ static void __team_queue_override_enabled_check(struct team *team)
- static void team_queue_override_port_prio_changed(struct team *team,
- 						  struct team_port *port)
- {
--	if (!port->queue_id || team_port_enabled(port))
-+	if (!port->queue_id || !team_port_enabled(port))
- 		return;
- 	__team_queue_override_port_del(team, port);
- 	__team_queue_override_port_add(team, port);
+
