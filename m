@@ -1,61 +1,63 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F984212550
-	for <netdev@vger.kernel.org>; Fri, 12 Dec 2025 08:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E622D592D
+	for <netdev@vger.kernel.org>; Fri, 12 Dec 2025 08:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765529222; cv=none; b=QWa22+eWz8me8x2/pGx+YrfQTx6xd2lvB/wXp5mDMTNS/K4T14qfaJ3QOH7jioqw2pKNFLZwKhggtW6KcsWasDPfFA5nbKYH5CCz8yempTxnTWm9081Ezl56aXfTKK3bAOgW8cC4ZLcNkSyCDwvljyA8i4hfb1lh5XIjd5MQ+A4=
+	t=1765529229; cv=none; b=EQKZl8F6B0xYqk2y0BnmZMqKt9/U7NaoJg03lUURDgErQvRPeqbyGSM7CZsIlYgc5rSyJjl9Js7O179kXP2ZEiF3J98aiNJ7Wb4hBI5MIxGzfcfjXxD0WbuQJKBZAMF9aAj3eqg8eReEMexWFxhuts0vPW97RQXdsnK9kHEFXek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765529222; c=relaxed/simple;
-	bh=8E5+Kpt25qMxuVFtPp98+FzLKsx7X8CnYqgMNjiMvQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jZgI1J6Ovup5WY/2gx2T88oz+0AsZ9i5bKiY5+7Ox8KqhCspbS4qwpfz0FnvrwHex1OVfVhhgkSTre57JJLqgzRkuBhGuZbY7nzLchUOXOa1FhvmhUMHXGpSSIx0wbLtAIM80urQDS4TC7+Gh/Egh7XWeZmM5cAbnB5UJVVdbnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwQ+HP1a; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1765529229; c=relaxed/simple;
+	bh=O4j1WHeYWmlVfXspPLornML/5pfXlu4tDPMIixs7c1k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YFXa2URnePVM0Wpc6oORIx9tEFl5LMMAUOz92zD69meUN9b20PsenM+NaySrLAsgaOii3Wh0puID1pPSzUS/Tol5mzzwED5cScwvLATk9sB5DnNm1k6i4tV0qphSqxO/TD8nmEKRYHDaFvT3a512m0DOBFjJrnLBIiimx6Ody90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TeMM++tL; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwQ+HP1a"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so178333f8f.0
-        for <netdev@vger.kernel.org>; Fri, 12 Dec 2025 00:47:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TeMM++tL"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb3801f7eso241427f8f.3
+        for <netdev@vger.kernel.org>; Fri, 12 Dec 2025 00:47:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765529219; x=1766134019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IpScSZouW48AySITqAmVJ4AMB6de2gL0dmg8n9rDANs=;
-        b=UwQ+HP1a/DY40Cg0YQ4FjYJSepvrsmHE6YcLc8GYgeIDYwDElow/k7/meJ2jLjjhOU
-         fASH9ooFUu8frUdr01lN17bT1UkdEbeJ17mCTCsr/r+A6c65k7XgrLX+/xtiWVxv+FC+
-         Xgl5xeISf7e1M4E+Vko/y02HBg6DTIZQiJdqmKnWelK6JBY2GXmEAl6k21DJdYweWlrW
-         jnG46qWziaq2E/6/tzBpQy56hiqEqL4ZmTNskOxBKNLSY0e/QvjuJjjCirTeVS66Uv58
-         xL7Y+thEjJRW8eNUCrwMeBo8czaO0KJohRe/+hsGmthFNNs7NbcnZsjOUM4YtL0WJYZp
-         jFlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765529219; x=1766134019;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1765529226; x=1766134026; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IpScSZouW48AySITqAmVJ4AMB6de2gL0dmg8n9rDANs=;
-        b=klKeq0yahJq5MJVVvOgdGo0NXDEkzvZyknuwzIKh+BInSOcfuKO9K72Qs6MN/ywcCK
-         daeqSSx+afx+dAQydaXl/ijnxBVf+ta6ePSOsB9yi0QIT5eJSQ1dXKwQx6vhBtpO1zQz
-         FknaDW6yuRAkpSVd8TEWqQnvwchVubUE5vODLFHGlK3p3KMegcgjWuguq3crElMgNpS3
-         kZwmaSMKqP2qjsAmGnFL80oqblANRxDR0V9bQpsC62yoDFIxplkn3nTHaGNV0z2okyzl
-         7F+gJh5T3Z0oDADrqj/4PVUPA5HJGhLqyR64MKCMr9Y8svp2Gl4/6EoERpJKpBn0uDqo
-         b57g==
-X-Gm-Message-State: AOJu0YxmYgnjEfxxA/JW6inQouKUgbA2dtT005ogDB9scm0Bl9j4iLCW
-	dWlpmJccJlqaaWVb4WxJSpAD0DrB2SVjsGLdRfAiRlJT7g6hIqk/VF2d
-X-Gm-Gg: AY/fxX40xLhZQ/pHFMB6KPvr2HnkPhucKIxU+HLQtv/jOluEpHpJCwwruoYNq3Vo/7f
-	MaLPVgewLstoYDtw3SdvlBLMEfi64wH8G4yrIFxYWgIYB+nkh4i3O6smeeXWp6pFvUJ/KxLutFh
-	nCpE0KfzcuAVZ5LEqnAttejU/98IVIkGseTLLt6lKJ12OXezVjOUFr7RVbe5GXWZZmxkjH62xTo
-	t7/Ejnu3oai4Mo0FE7fh3AYpiDYu2n37uCzFDvLNOfH/2yDOUy/6o4V/eJmwv5SOaGIr/VjFWef
-	dKeBUsEoIPw4Qlu14sQB9rAJWE4/h0o6qU660v48T40HUXF9lH1TwOBLfoaSTncih5TV506rreX
-	yJ2CaB1cIcevJId4UDXVQcR/qthNoZZMgOEoz9GF8BkKSZ1MoRBRLtz8z1ddiLCcIKHqXknykDg
-	Z6R7NDaROuNyVRgnbNmY6OEp1ZH0Q=
-X-Google-Smtp-Source: AGHT+IEJLrxF4ZhjOxvjryGu5iXxEkpqiLi9xidSHfaDTvccGpMAdBouCofvvVm8bTWQArd3I3G9Tg==
-X-Received: by 2002:a5d:5550:0:b0:42f:b683:b3bf with SMTP id ffacd0b85a97d-42fb683b57amr765197f8f.19.1765529218779;
-        Fri, 12 Dec 2025 00:46:58 -0800 (PST)
+        bh=vwFLBwyOTuUthLXbUsz0YRPUpQojC489N0xdVPk0niY=;
+        b=TeMM++tLA8hpwY46H1QO7EESvifooEfCaYQH+rpOx8L/FB+ZJs47J2TGTbyt91Dsvj
+         dx29r6JbBlBy1xB8Wv63Hv6+0Pxe3zarY9UHpYgL9BIUcQGeD2vH/NyD7Fm4ul6RgwLn
+         XgWCtO0/81wj9szIPtnB4TF0GBczKL4GILQZiQDrqhoPAGi+mYC0Skzu3n+XcaQ3x4Mo
+         GE7AQXvRi31QlTji5f/sdXV7s6wcytoVZxFmqlTLo7ZFKaEblcqj3U/wVF0R2riIT7Vw
+         cHEYuJvbatcLQYc27r9M/dDHpYHm7AKPEtxanfMbY2fjog4XwncsaahsAer4aGlmAKZr
+         NW6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765529226; x=1766134026;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vwFLBwyOTuUthLXbUsz0YRPUpQojC489N0xdVPk0niY=;
+        b=LRhkuWhY982wbPRSSnL0WDaQjFXZu8yhaZlxEUPcEYaIzVwUJZ2D770usVHPb3e98h
+         sNSglJYKVN3vaLNcAM4ET2I70M2UmiIiFZPqh8BqLboHPO6mr9MlOmi39IWmrwvAu7gz
+         5BkpBCsYbctL4zH0HfvT9F6ETAmdyyBXbfNaF8CMvcOStvlrFSttdwf/UJv4KABnZdoN
+         KyJeOpyIgTCcTAQM21I/thGIT1Mc6ZqG798K01Jfjq45ZKmwYyGADTSFKo3DzIIrepOy
+         JqSbPxb3lQZY6FISYc0KzdG7na7hg+OI3cMp98KYSAelp6sDwheN7PeFwKkREwn28Sfk
+         OlUA==
+X-Gm-Message-State: AOJu0YxI9zMHEN9vdk/9GYJyHOOmCQJuviliDQlnIFpTbreyyZJdb9JP
+	ByXWD9BGgWNhIB5Qr4GK56b4vP5G0Ke4PNiMyxoyQ5f/K4jGyFggXNyj
+X-Gm-Gg: AY/fxX6cijZO+xTY1ShkMvj8Vrl3kohoFSZtu3IBZcoPoalPyOBfXsqj5wMtmD5yEwp
+	k7rg1IL5N/YJLlRPbt+5ZoiMM0gp0YwG+U3QOptSLt/vxI8ZEY5W3BWwq8LY3WPDGXsrFJ1gVvs
+	Tdtx/bpp6mTkEkb3BbHWT9RaGNiRUGNIhvybak0pI5DGh4/gdmcChWyvekAtt9SqnuQzzCKS4RM
+	SNWeJrmtl2UOii6qWw8ar0z8mHLwJTcBj2JR3RPH26t9j1MdAD2FRn6vSzTN3H3rRncHVn7jXMQ
+	eodltr3tQHvTQlR3xNPRGRjXz7qIGxNFApSTJNHNItJxqkiDmb+iT3risRni5AMKoPu0q+N7xiN
+	s9hEGsL+2qXn5jrkdwiI4WCcQnF7q4Wm5uty5m886do3MZPi1wI8iqPTM1Rkx8Jir7dRXQhsWzb
+	8YykjIgLJlAh6Ttiyy
+X-Google-Smtp-Source: AGHT+IGBiLjGhGraX7AWtHZ+w7lR3FUkHC9JwB8Wfe+B+to3J6OlMkVqdEcn4aprm0IQnWmS9b5gaw==
+X-Received: by 2002:a05:6000:26ca:b0:42c:a4e7:3975 with SMTP id ffacd0b85a97d-42fb48fc26fmr1135644f8f.30.1765529226102;
+        Fri, 12 Dec 2025 00:47:06 -0800 (PST)
 Received: from eichest-laptop.lan ([2a02:168:af72:0:9f18:aff4:897a:cb50])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8a09fbesm10456076f8f.0.2025.12.12.00.46.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8a09fbesm10456076f8f.0.2025.12.12.00.47.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 00:46:58 -0800 (PST)
+        Fri, 12 Dec 2025 00:47:05 -0800 (PST)
 From: Stefan Eichenberger <eichest@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -73,11 +75,14 @@ Cc: netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	francesco.dolcini@toradex.com,
-	rafael.beims@toradex.com
-Subject: [PATCH net-next v1 0/3] Convert Micrel bindings to YAML, add keep-preamble-before-sfd
-Date: Fri, 12 Dec 2025 09:46:15 +0100
-Message-ID: <20251212084657.29239-1-eichest@gmail.com>
+	rafael.beims@toradex.com,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [PATCH net-next v1 2/3] dt-bindings: net: micrel: Add keep-preamble-before-sfd
+Date: Fri, 12 Dec 2025 09:46:17 +0100
+Message-ID: <20251212084657.29239-3-eichest@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251212084657.29239-1-eichest@gmail.com>
+References: <20251212084657.29239-1-eichest@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,32 +91,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series converts the Micrel Ethernet PHY device tree bindings to
-YAML format. After the conversion, a new property is added that allows
-to keep the preamble bytes before the start frame delimiter (SFD). This
-helps to work around some issues with the EQOS Ethernet Controller used
-on the i.MX8MP which would otherwise not receive frames from the PHY in
-10MBit/s mode. The full description of the issue can be found in the
-patch messages adding the new property.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Andrew Lunn I added you and myself as a maintainer to the micrel.yaml
-file. Please let me know if you do not agree and if I should change
-that.
+Add a property to activate a Micrel PHY feature that keeps the preamble
+enabled before the SFD (Start Frame Delimiter) is transmitted.
 
-Stefan Eichenberger (3):
-  dt-bindings: net: micrel: Convert to YAML schema
-  dt-bindings: net: micrel: Add keep-preamble-before-sfd
-  net: phy: micrel: Add keep-preamble-before-sfd property
+This allows to workaround broken Ethernet controllers as found on the
+NXP i.MX8MP. Specifically, errata ERR050694 that states:
+ENET_QOS: MAC incorrectly discards the received packets when Preamble
+Byte does not precede SFD or SMD.
 
- .../bindings/net/micrel-ksz90x1.txt           | 228 --------
- .../devicetree/bindings/net/micrel.txt        |  57 --
- .../devicetree/bindings/net/micrel.yaml       | 540 ++++++++++++++++++
- drivers/net/phy/micrel.c                      |  29 +
- 4 files changed, 569 insertions(+), 285 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/net/micrel-ksz90x1.txt
- delete mode 100644 Documentation/devicetree/bindings/net/micrel.txt
- create mode 100644 Documentation/devicetree/bindings/net/micrel.yaml
+The bit which disables this feature is not documented in the datasheet
+from Micrel, but has been found by NXP and Micrel following this
+discussion:
+https://community.nxp.com/t5/i-MX-Processors/iMX8MP-eqos-not-working-for-10base-t/m-p/2151032
 
+It has been tested on Verdin iMX8MP from Toradex by forcing the PHY to
+10MBit. Withouth this property set, no packets are received. With this
+property set, reception works fine.
+
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+---
+ Documentation/devicetree/bindings/net/micrel.yaml | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
+index f48e9b9120ca0..6d6136014cd62 100644
+--- a/Documentation/devicetree/bindings/net/micrel.yaml
++++ b/Documentation/devicetree/bindings/net/micrel.yaml
+@@ -165,6 +165,19 @@ allOf:
+             supported clocks:
+               - The RMII reference input clock. Used to determine the XI
+                 input clock.
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: ethernet-phy-id0022.1640
++    then:
++      properties:
++        micrel,keep-preamble-before-sfd:
++          type: boolean
++          description: |
++            If set, the PHY keeps sending preamble bits before SFD in
++            10BASE-T mode. By default, the PHY removes preamble bits
++            before SFD.
+   - if:
+       properties:
+         compatible:
 -- 
 2.51.0
 
