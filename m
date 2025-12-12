@@ -1,42 +1,42 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C130130BF6B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C141730BF70
 	for <netdev@vger.kernel.org>; Fri, 12 Dec 2025 19:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765568298; cv=none; b=JmTkmwpKGtSFOxxYrAdeP3o9VP2dzdDJj3HbG2Et8MnDCrRb6K8YXIRo/iCEMawyQ2OztOFMs3Oi/C60dGwPNwAq36FcnYEiFMjTRAZnNCPayy1Vs2zXhfIGrrOWwyEof0ZeZ9hDj2LB1o9X/xDEEOujHMwKwD4CkQAs6+h6l5g=
+	t=1765568299; cv=none; b=Eh1jZJekLotzqHWhjauHVn+hTaqKi2wY2K3Y2fY1erkkKGzp0cbkwmTqdNsMqONhjS3Lb0Pn5OzApchXs6CPf+Y6nr3sXpn9hHoYPt8T12YaZJjfmiTi0bpWF6bvTvuQaWQBIt523OIVS9eOzzB7dHzXCKv7NCbSg09Ne+g3y3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765568298; c=relaxed/simple;
-	bh=28J+8dq1JwHHdPRLjgx9Ss18YMj9ZMQlOdRW9yK1NrU=;
+	s=arc-20240116; t=1765568299; c=relaxed/simple;
+	bh=mdnK2kiWxTdEx/+91SA8fwSY8LOjWRmnEoBNvu4GgTo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XyTPscKQ+9FQ1KUc93ip8nnNtzAna0i8iNnHglKzy94O/iy1IRC+1Dfgpj4r0472KNYCL5gleX6qF5yeWI5SOUQqUf2oQgay62FwpehACnx6dkzIQTpuK5YdgGPpqEubZBON9b29+D7zKRtxvp5GiAzS+fn5BxyqmGvQpHY4YLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=ecTP+qUr; arc=none smtp.client-ip=185.226.149.37
+	 MIME-Version; b=aUiHxNZFYSZxa0g3soR01TJ8D2LDRfyuKdbObCE5B3X9rMtxu8zT2dZyw3CoQi0xCfHMo4fbLMNSRjfECInJc7stukotv6CCFHAhNANV2TUFuVzwIPmAx9nTTHLzYRUVyfEJbekRlTZ/Upr3pjsh2DisVL9rSPWz4yg6GgYE2PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=QplppzQp; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="ecTP+qUr"
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="QplppzQp"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vU8xs-0087al-JL; Fri, 12 Dec 2025 20:38:08 +0100
+	id 1vU8xy-0087gG-BE; Fri, 12 Dec 2025 20:38:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
 	 s=selector2; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
 	:Message-Id:Date:Subject:Cc:To:From;
-	bh=6U3T9tjd/hVxKlBQ0Q6ToH9Df4rvaTpY6G/EvE5x9HY=; b=ecTP+qUrIFB7nUlZrQifCzIq+n
-	UKiolkrWT5d3gGeSpYi/PeVGFMp0uTGd3Bmmt5ic+m6Pyutg3SOfNJJFWZkwD2T/oTasjzwVEpf/B
-	v7Onb8w/CEmif23SAVNc/T5so81RbyAM58ORTSFcIJIK7QQACPH2BVzT3mplgqxMng3gDpcgHEzyQ
-	5O2njuu5uNBsjmZGteluX0uhTMdgXKqA8C64uC57gsm1ux771BkGZ/uC0QeyM/Gk932w+fA1zbyyc
-	cHab4Xb959FgaleyYwDNUo1vuCfACcBsHXLiedmguLJiAG8/6XUl6g7ps59u+Sk+oo3cHjha+Huib
-	bUPbL6xQ==;
+	bh=EpuO6aktcY35Crl1/oH5q0fVnrQzqVc0Xwk2TPe0MdA=; b=QplppzQpA8/Dxc7Uq6VAJ/ILsl
+	3yaEZTvZmj+KOmEU79gZ1jjhPdXH7ySjnjbkltgHhR/LVwislitHw3/29Wap7FSEU/FaoTwfdrtbD
+	SUh484Q1LnHqXXAz3i/IYKf4ccA7j8yJEaNYkfmRWGBYcSe72xarh/TRjiOGUIG09rYqNmXUNnqrl
+	7B2XIgWDVD/jZ53Zjwjw6TWhkkdUrcIjKmMv77t9IYoj4ojVDEXr//wySm2gvKkqsHq0y+b4br8CB
+	f8cJB2Ljl5ctXZhCyp/UM0mhUGbRl5ElZ+YyKwXAReEg77cXtGMCIeNaU79f6VTLMOotWhWCFPtls
+	Bojl+3/w==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1vU8xs-00039g-8N; Fri, 12 Dec 2025 20:38:08 +0100
+	id 1vU8xx-0003AW-Oq; Fri, 12 Dec 2025 20:38:13 +0100
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1vU8xj-0030pR-0B; Fri, 12 Dec 2025 20:37:59 +0100
+	id 1vU8xd-0030pR-Pb; Fri, 12 Dec 2025 20:37:53 +0100
 From: david.laight.linux@gmail.com
 To: Yury Norov <yury.norov@gmail.com>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
@@ -58,9 +58,9 @@ To: Yury Norov <yury.norov@gmail.com>,
 	Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 Cc: David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH v2 10/16] bitfield: Split the 'val' check out of __BF_FIELD_CHECK_MASK()
-Date: Fri, 12 Dec 2025 19:37:15 +0000
-Message-Id: <20251212193721.740055-11-david.laight.linux@gmail.com>
+Subject: [PATCH v2 05/16] bitfield: Merge __field_prep/get() into field_prep/get()
+Date: Fri, 12 Dec 2025 19:37:10 +0000
+Message-Id: <20251212193721.740055-6-david.laight.linux@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251212193721.740055-1-david.laight.linux@gmail.com>
 References: <20251212193721.740055-1-david.laight.linux@gmail.com>
@@ -74,128 +74,88 @@ Content-Transfer-Encoding: 8bit
 
 From: David Laight <david.laight.linux@gmail.com>
 
-Three of the five calls to __BF_FIELD_CHECK_MASK() don't have a 'value'
-to check, separate out as was done to __BF_FIELD_CHECK_REG().
+field_prep() calls __FIELD_PREP() which really wants the parameters
+copied to 'locals' - but this is done later in __field_prep().
 
-Since __BF_FIELD_CHECK_MASK() doesn't return a value, use
-do { ... } while (0) rather than ({ ... }).
+Move the 'auto_type' lines to the outer function.
+This only leaves the shift calculation and final expression inside
+__field_prep(), move the shift calculation to a new define __BF_SHIFT()
+and just inline the final expression into  field_prep().
+Use a common #define for the shift expression.
 
-There is no point checking a 'val' of zero or a 'reg' of 0ULL (both
-are placeholders) - remove/change the calls.
-
-There should be a check of __BF_FIELD_CHECK_REG() when __BF_FIELD_GET()
-is called from field_get().
-Move the check from FIELD_GET() into __BF_FIELD_GET().
-
-Delete the now-unused __BF_FIELD_CHECK().
+Do the same for field_get().
 
 Signed-off-by: David Laight <david.laight.linux@gmail.com>
 ---
- include/linux/bitfield.h | 38 +++++++++++++++++---------------------
- 1 file changed, 17 insertions(+), 21 deletions(-)
+ include/linux/bitfield.h | 42 ++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
 
 diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
-index ed5735c13a64..138f4c14786d 100644
+index 3800744281c7..c30120535680 100644
 --- a/include/linux/bitfield.h
 +++ b/include/linux/bitfield.h
-@@ -45,39 +45,36 @@
+@@ -251,23 +251,9 @@ __MAKE_OP(64)
+ #undef __MAKE_OP
+ #undef ____MAKE_OP
  
- #define __bf_shf(x) (__builtin_ffsll(x) - 1)
- 
--#define __BF_FIELD_CHECK_MASK(_mask, _val, _pfx)			\
+-#define __field_prep(mask, val)						\
 -	({								\
-+#define __BF_FIELD_CHECK_MASK(_mask, _pfx)				\
-+	do {								\
- 		BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask),		\
- 				 _pfx "mask is not constant");		\
- 		BUILD_BUG_ON_MSG((_mask) == 0, _pfx "mask is zero");	\
--		BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
--				 ~((_mask) >> __bf_shf(_mask)) &	\
--					(0 + (_val)) : 0,		\
--				 _pfx "value too large for the field"); \
- 		__BUILD_BUG_ON_NOT_POWER_OF_2((_mask) +			\
- 					      (1ULL << __bf_shf(_mask))); \
--	})
-+	} while (0)
-+
-+#define __BF_FIELD_CHECK_VAL(mask, val, pfx)			\
-+	BUILD_BUG_ON_MSG(__builtin_constant_p(val) &&		\
-+			 ~((mask) >> __bf_shf(mask)) & (val),	\
-+			 pfx "value too large for the field")
- 
- #define __BF_FIELD_CHECK_REG(mask, reg, pfx)				\
- 	BUILD_BUG_ON_MSG((mask) + 0U + 0UL + 0ULL >			\
- 			 ~0ULL >> (64 - 8 * sizeof (reg)),		\
- 			 pfx "type of reg too small for mask")
- 
--#define __BF_FIELD_CHECK(mask, reg, val, pfx)				\
--	({								\
--		__BF_FIELD_CHECK_MASK(mask, val, pfx);			\
--		__BF_FIELD_CHECK_REG(mask, reg, pfx);			\
+-		__auto_type __mask = (mask);				\
+-		typeof(__mask) __val = (val);				\
+-		unsigned int __shift = BITS_PER_TYPE(__mask) <= 32 ?	\
+-				       __ffs(__mask) : __ffs64(__mask);	\
+-		(__val << __shift) & __mask;				\
 -	})
 -
- #define __BF_FIELD_PREP(mask, val, pfx)					\
- 	({								\
--		__BF_FIELD_CHECK_MASK(mask, val, pfx);			\
-+		__BF_FIELD_CHECK_MASK(mask, pfx);			\
-+		__BF_FIELD_CHECK_VAL(mask, val, pfx);			\
- 		((val) << __bf_shf(mask)) & (mask);			\
- 	})
+-#define __field_get(mask, reg)						\
+-	({								\
+-		__auto_type __mask = (mask);				\
+-		typeof(__mask) __reg =  (reg);				\
+-		unsigned int __shift = BITS_PER_TYPE(__mask) <= 32 ?	\
+-				       __ffs(__mask) : __ffs64(__mask);	\
+-		(__reg & __mask) >> __shift;				\
+-	})
++/* As __bf_shf() but for non-zero variables */
++#define __BF_SHIFT(mask) \
++	(BITS_PER_TYPE(mask) <= 32 ? __ffs(mask) : __ffs64(mask))
  
- #define __BF_FIELD_GET(mask, reg, pfx)					\
- 	({								\
--		__BF_FIELD_CHECK_MASK(mask, 0U, pfx);			\
-+		__BF_FIELD_CHECK_MASK(mask, pfx);			\
-+		__BF_FIELD_CHECK_REG(mask, reg, pfx);			\
- 		((reg) & (mask)) >> __bf_shf(mask);			\
- 	})
+ /**
+  * field_prep() - prepare a bitfield element
+@@ -285,9 +271,14 @@ __MAKE_OP(64)
+  * If you want to ensure that @mask is a compile-time constant, please use
+  * FIELD_PREP() directly instead.
+  */
+-#define field_prep(mask, val)						\
+-	(__builtin_constant_p(mask) ? __FIELD_PREP(mask, val, "field_prep: ") \
+-				    : __field_prep(mask, val))
++#define field_prep(mask, val)					\
++({								\
++	__auto_type _mask = mask;				\
++	__auto_type _val = 1 ? (val) : _mask;			\
++	__builtin_constant_p(_mask) ?				\
++		__FIELD_PREP(_mask, _val, "field_prep: ") :	\
++		(_val << __BF_SHIFT(_mask)) & _mask;		\
++})
  
-@@ -91,7 +88,7 @@
- #define FIELD_MAX(mask)							\
- 	({								\
- 		__auto_type _mask = mask;				\
--		__BF_FIELD_CHECK(_mask, 0ULL, 0ULL, "FIELD_MAX: ");	\
-+		__BF_FIELD_CHECK_MASK(_mask, "FIELD_MAX: ");		\
- 		(_mask >> __bf_shf(_mask));				\
- 	})
+ /**
+  * field_get() - extract a bitfield element
+@@ -305,8 +296,13 @@ __MAKE_OP(64)
+  * If you want to ensure that @mask is a compile-time constant, please use
+  * FIELD_GET() directly instead.
+  */
+-#define field_get(mask, reg)						\
+-	(__builtin_constant_p(mask) ? __FIELD_GET(mask, reg, "field_get: ") \
+-				    : __field_get(mask, reg))
++#define field_get(mask, reg)					\
++({								\
++	__auto_type _mask = mask;				\
++	__auto_type _reg = reg;					\
++	__builtin_constant_p(_mask) ?				\
++		__FIELD_GET(_mask, _reg, "field_get: ") :	\
++		(_reg & _mask) >> __BF_SHIFT(_mask);		\
++})
  
-@@ -106,7 +103,7 @@
- 	({								\
- 		__auto_type _mask = mask;				\
- 		__auto_type _val = 1 ? (val) : _mask;			\
--		__BF_FIELD_CHECK(_mask, 0ULL, 0ULL, "FIELD_FIT: ");	\
-+		__BF_FIELD_CHECK_MASK(_mask, "FIELD_FIT: ");		\
- 		!((_val << __bf_shf(_mask)) & ~_mask);			\
- 	})
- 
-@@ -122,7 +119,6 @@
- 	({								\
- 		__auto_type _mask = mask;				\
- 		__auto_type _val = 1 ? (val) : _mask;			\
--		__BF_FIELD_CHECK_REG(_mask, 0ULL, "FIELD_PREP: ");	\
- 		__BF_FIELD_PREP(_mask, _val, "FIELD_PREP: ");		\
- 	})
- 
-@@ -164,7 +160,6 @@
- 	({								\
- 		__auto_type _mask = mask;				\
- 		__auto_type _reg = reg;					\
--		__BF_FIELD_CHECK_REG(_mask, _reg, "FIELD_GET: ");	\
- 		__BF_FIELD_GET(_mask, _reg, "FIELD_GET: ");		\
- 	})
- 
-@@ -182,8 +177,9 @@
- 		__auto_type _mask = mask;						\
- 		__auto_type _reg_p = reg_p;						\
- 		__auto_type _val = 1 ? (val) : _mask;					\
--		typecheck_pointer(_reg_p);						\
--		__BF_FIELD_CHECK(_mask, *(_reg_p), _val, "FIELD_MODIFY: ");		\
-+		__BF_FIELD_CHECK_MASK(_mask, "FIELD_MODIFY: ");				\
-+		__BF_FIELD_CHECK_VAL(_mask, _val, "FIELD_MODIFY: ");			\
-+		__BF_FIELD_CHECK_REG(_mask, *_reg_p, "FIELD_MODIFY: ");			\
- 		*_reg_p = (*_reg_p & ~_mask) | ((_val << __bf_shf(_mask)) & _mask);	\
- 	})
- 
+ #endif
 -- 
 2.39.5
 
