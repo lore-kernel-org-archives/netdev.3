@@ -1,132 +1,191 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxout2.routing.net (mxout2.routing.net [134.0.28.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA351155389
-	for <netdev@vger.kernel.org>; Sun, 14 Dec 2025 10:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AE91D6194;
+	Sun, 14 Dec 2025 11:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765708176; cv=none; b=HyGOam6R29y84Oe7wemGD65Z9ak6TJ+SIAmZToNUwVxpPo98Q5lmW8rJRnbuHzJpgk5+zYYey57gOTD0Ue1hZVbX3ks/iY+uCVXGFilUn+JHZB9SQs4rDq1yD0/g8uYJ53DKQoV4XAnpk+SKB8daH3Vj6JE4FT2/gCfexNJlx4g=
+	t=1765710597; cv=none; b=MJW30F2uWlroUMDvEMxsyfnlBfmGxGKiqRDWuvZsAgV6zPxvlDkQpt+UjNbcNz9U9WsTkBAuqYBdz8xzIjrVfkrKw4aN5TBYtOfF2T4Av8M5MmEQZVnFixmr7I1LY7UqrrHUD/vsnwy760vzGCcQj66pcclQ/hbu0IwHF1GBWUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765708176; c=relaxed/simple;
-	bh=C6l1ufEOemw8wDjqnO0b4oa6vhXSfwQ33CIk4d9RKuA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VrArqTgQEYG/UBlhYm0m3qZOJPVTiMzccArcp4kcaoydifbu3yC0ll1Uj8fnP0KJpC+xBBnham49+uuwT/j2YAPbcMO7D9ak/AQoP8tNTfRcv6u6rWTLjAxaqyuHVVJrO6L/VoTe/nDKEPbTOw42myLfOnXM7AWhXMmhT+KejFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f1gH0XsH; arc=none smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765710597; c=relaxed/simple;
+	bh=ygHtWh8Gf175iMMJEadWemEqEwdp+GnKr3z3qXMSWNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Mid9ftkCq6k6/fXlkYzw65LvxXXm3agT4BClAk4WQyv7DksFyOxINWPDNk4bQYqx8YE3r0xjn2nTeZO2wgBGIJYQ2dDeZ7IEtfLI/qjv4oG2mJ4FeheJdFsVD1806ZtNCephdEqTJ6K5XsLWu8uWl4G5CE4oPhaW3qKi3SVJCp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=A4+x8qX7; arc=none smtp.client-ip=134.0.28.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f1gH0XsH"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6455a60c12bso1388662d50.3
-        for <netdev@vger.kernel.org>; Sun, 14 Dec 2025 02:29:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765708173; x=1766312973; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=APUZ/fpPVqueV9oc4vPO3W1N5VqnQjnZ6bozLKKB4IQ=;
-        b=f1gH0XsH/iWjY9o1V4MoEFNIQ+t7ueGDT3Y/IuMeSfB9zhYtaH3/gLv0G64+pkiKlO
-         mnqtwEwkJkWjibZ4q8F/8XoES3yd0UtbTwvN96e8tqlFm/FLUacPiWmXirawM0YLuCPV
-         IApa1QVjc/NPnKWAQA6C2zYH3Ol3HmhbKyfLvu8MH3qQsJnByTZj676DMYnJCsxAl2U2
-         oiQRKWyXpHN5ogYX0RLw8DQHa76VKkA82WgiXLT5tu7j/CDqeo0HATmblXl1OKmv9U5U
-         pN5a0AwU7D4z353xTqWlA8Zd1SslePUkEYok+/fqYLYJ1UCgp+9MSRRlNT1pyxfDlnX+
-         5jag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765708173; x=1766312973;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=APUZ/fpPVqueV9oc4vPO3W1N5VqnQjnZ6bozLKKB4IQ=;
-        b=qL128NVmPcTdCsepk1Iv1ssB7yOn12a8PzkrIrEwSawSCpJoqA1iKV1g1P4uG0INw6
-         f5YjJPMaPXFrA4dOUbiQhzRPPk6eQeEaVVRYuvhs0bELAB9CpHXSw8reJ4PXyZDZ832Z
-         Zez1RUwOXnaORxMxtxkzk6HZKAtCvfDwANzevRFxVZxLPGWQt/9sFM+aLsh7RjQxWrPn
-         jx6w9hUmwiDGsvqnXJ6FzZSMVlpoWVCg9Ycf0gh6SE9LtLwUB+kavkB8BwKS1C0/Zr37
-         DnZn8mF9DxBTCBApzV9pAYdCPE2DEVt9jIHJGhOqy2F7GkhuDt/yCrg/Wt5WH9vCXrwG
-         GK4g==
-X-Gm-Message-State: AOJu0YzPi/K0CuTKwePsbauf6+/IDYqsDSWMCRlfC3sua1LI2qcEizm1
-	+UH0Qi8waIZNCtPNbtyQBvn4Hc0ZslrQnnqHDwa+sSV/3n/xn0jbOQAuj6iSc5VUQHsIrmWHN9w
-	dF0Vy3Rn+tCBXPm0PV8qIzI3+TC+/N6Y/EDLCw9g=
-X-Gm-Gg: AY/fxX6Is7+Q784HPiFpiUcIjC0FXe+T85yrRc83zRlP+UA8mRoVZXqC2bX42QRE7I2
-	hb+PxZ44KRULtXTQcRvNqOrMmogWnFgcm/IdBB6BExwRxWTbwBVTqZPc6YSygwDg2dpOhLf8NbB
-	/cAOlrfp+RZ6eEZmR/v70IRpECBqzuSVes6gxyIH29pm/mEMVIfGXNYWrsrmcGp/29AKyFiVMqF
-	JG+OYy9mw+ByY7tfBvwYV3kLfeejhB9+rrFPRY0sN/JrIgzpGvv7k4nTR8hoVPOaOWpFevzwumP
-	KVAQRA==
-X-Google-Smtp-Source: AGHT+IHWM0wLbnNx0jcHZQuSLepq0Mvn6Fta5xO8cU9QkuFapBBoQpQUqTNX3qWiyLQKPXX8KvCRgc2UGbSWdCbRdxg=
-X-Received: by 2002:a05:690e:1206:b0:63f:9979:2f9e with SMTP id
- 956f58d0204a3-645555cdb95mr6343827d50.17.1765708173577; Sun, 14 Dec 2025
- 02:29:33 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="A4+x8qX7"
+Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
+	by mxout2.routing.net (Postfix) with ESMTP id 3E94B600F6;
+	Sun, 14 Dec 2025 11:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=routing; t=1765710198;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6Y9Ch57tOKhVufF9cmzjO6tWSgN0ZIChZXqQm0qwLh4=;
+	b=A4+x8qX72vLBs4wsjkZHhq/SgF8kHlBC0q/ktiMxFCkbuG7MRKzLBJCruk+x7moT5jQB8W
+	XYOui/4c3PrWrVMow7ShBx2CJB7iZOLvwN1Pz/1YEqu1KyeMO+EyrvGHu1y4rFSAMpIAAU
+	5BClmENmvzudMEnytknN/PADV23XUOI=
+Received: from frank-u24.. (fttx-pool-194.15.85.205.bambit.de [194.15.85.205])
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id ED89B122700;
+	Sun, 14 Dec 2025 11:03:17 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: Felix Fietkau <nbd@nbd.name>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Mason Chang <mason-cw.chang@mediatek.com>
+Subject: [RFC net-next v3 1/3] net: ethernet: mtk_eth_soc: Add register definitions for RSS and LRO
+Date: Sun, 14 Dec 2025 12:03:02 +0100
+Message-ID: <20251214110310.7009-2-linux@fw-web.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251214110310.7009-1-linux@fw-web.de>
+References: <20251214110310.7009-1-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251213121024.219353-1-mahdifrmx@gmail.com> <CANn89iJnV=ea+bP3LCF7FKVAXrvc5qHd9j9yrgv50-rFaPO0ig@mail.gmail.com>
-In-Reply-To: <CANn89iJnV=ea+bP3LCF7FKVAXrvc5qHd9j9yrgv50-rFaPO0ig@mail.gmail.com>
-From: Mahdi Faramarzpour <mahdifrmx@gmail.com>
-Date: Sun, 14 Dec 2025 13:59:22 +0330
-X-Gm-Features: AQt7F2rNdfQfa8AknrZ4WxSZT2zCPtgwOMzclM-EDjxbp73eUTID5q213-LKsvQ
-Message-ID: <CA+KdSGO_KoQBR0OOa7N7-5d=iRRNbfynundh53zsz-wvzOt-5g@mail.gmail.com>
-Subject: Re: [PATCH net] udp: remove obsolete SNMP TODO
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Dec 13, 2025 at 5:06=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Sat, Dec 13, 2025 at 1:11=E2=80=AFPM Mahdi Faramarzpour <mahdifrmx@gma=
-il.com> wrote:
-> >
-> > The TODO comment demands SNMP counters be increased, and that
-> > is already implemented by the callers of __udp_enqueue_schedule_skb()
-> > which are __udp_queue_rcv_skb() and __udpv6_queue_rcv_skb().
-> >
-> > That makes the TODO obsolete.
->
-> This is not true.
->
-> Please carefully read commit b650bf0977d3 ("udp: remove busylock and
-> add per NUMA queues")
-> And perhaps you will see what needs to be changed, thus the TODO .
->
-> hint : to_drop can contain more than one skb.
->
-> >
-> > Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
-> > ---
-> >  net/ipv4/udp.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> > index ffe074cb5..60d549a24 100644
-> > --- a/net/ipv4/udp.c
-> > +++ b/net/ipv4/udp.c
-> > @@ -1797,7 +1797,6 @@ int __udp_enqueue_schedule_skb(struct sock *sk, s=
-truct sk_buff *skb)
-> >                         skb =3D to_drop;
-> >                         to_drop =3D skb->next;
-> >                         skb_mark_not_on_list(skb);
-> > -                       /* TODO: update SNMP values. */
-> >                         sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PRO=
-TO_MEM);
-> >                 }
-> >                 numa_drop_add(&udp_sk(sk)->drop_counters, nb);
-> > --
-> > 2.34.1
-> >
+From: Mason Chang <mason-cw.chang@mediatek.com>
 
-Hi Eric, thanks for your response. Yes I read that commit and now
-one thing remains: SNMP stats are per-cpu. Is it necessary that
-the counter corresponding to the original cpu which put the skb in
-the prod queue be increased? Or can we just do with increasing that
-of the cpu which drops them?
-The only place that I saw we use those counters is net/ipv4/proc.c
-which calculates their sum with snmp_get_cpu_field_batch_cnt, so
-their individual values does not seem to concern us at this point.
-Sorry if the question sounds noobie, it's actually my first time
-contributing.
-If you're positive with that, I'll submit another patch.
+Add definitions for Receive Side Scaling and Large Receive Offload support.
 
-cheers
-Mahdi
+Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 23 +++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h | 32 +++++++++++++++------
+ 2 files changed, 46 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index e68997a29191..243ff16fd15e 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -50,13 +50,18 @@ static const struct mtk_reg_map mtk_reg_map = {
+ 		.rx_ptr		= 0x0900,
+ 		.rx_cnt_cfg	= 0x0904,
+ 		.pcrx_ptr	= 0x0908,
++		.lro_ctrl_dw0   = 0x0980,
+ 		.glo_cfg	= 0x0a04,
+ 		.rst_idx	= 0x0a08,
+ 		.delay_irq	= 0x0a0c,
+ 		.irq_status	= 0x0a20,
+ 		.irq_mask	= 0x0a28,
+ 		.adma_rx_dbg0	= 0x0a38,
++		.lro_alt_score_delta	= 0x0a4c,
+ 		.int_grp	= 0x0a50,
++		.lro_rx1_dly_int	= 0x0a70,
++		.lro_ring_dip_dw0	= 0x0b04,
++		.lro_ring_ctrl_dw1	= 0x0b28,
+ 	},
+ 	.qdma = {
+ 		.qtx_cfg	= 0x1800,
+@@ -113,6 +118,7 @@ static const struct mtk_reg_map mt7986_reg_map = {
+ 	.tx_irq_mask		= 0x461c,
+ 	.tx_irq_status		= 0x4618,
+ 	.pdma = {
++		.rss_glo_cfg    = 0x2800,
+ 		.rx_ptr		= 0x4100,
+ 		.rx_cnt_cfg	= 0x4104,
+ 		.pcrx_ptr	= 0x4108,
+@@ -123,6 +129,12 @@ static const struct mtk_reg_map mt7986_reg_map = {
+ 		.irq_mask	= 0x4228,
+ 		.adma_rx_dbg0	= 0x4238,
+ 		.int_grp	= 0x4250,
++		.int_grp3	= 0x422c,
++		.lro_ctrl_dw0	= 0x4180,
++		.lro_alt_score_delta	= 0x424c,
++		.lro_rx1_dly_int	= 0x4270,
++		.lro_ring_dip_dw0	= 0x4304,
++		.lro_ring_ctrl_dw1	= 0x4328,
+ 	},
+ 	.qdma = {
+ 		.qtx_cfg	= 0x4400,
+@@ -170,10 +182,21 @@ static const struct mtk_reg_map mt7988_reg_map = {
+ 		.glo_cfg	= 0x6a04,
+ 		.rst_idx	= 0x6a08,
+ 		.delay_irq	= 0x6a0c,
++		.rx_cfg		= 0x6a10,
+ 		.irq_status	= 0x6a20,
+ 		.irq_mask	= 0x6a28,
+ 		.adma_rx_dbg0	= 0x6a38,
+ 		.int_grp	= 0x6a50,
++		.int_grp3	= 0x6a58,
++		.tx_delay_irq	= 0x6ab0,
++		.rx_delay_irq	= 0x6ac0,
++		.lro_ctrl_dw0	= 0x6c08,
++		.lro_alt_score_delta	= 0x6c1c,
++		.lro_ring_dip_dw0	= 0x6c14,
++		.lro_ring_ctrl_dw1	= 0x6c38,
++		.lro_alt_dbg	= 0x6c40,
++		.lro_alt_dbg_data	= 0x6c44,
++		.rss_glo_cfg	= 0x7000,
+ 	},
+ 	.qdma = {
+ 		.qtx_cfg	= 0x4400,
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+index 0168e2fbc619..334625814b97 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+@@ -1143,16 +1143,30 @@ struct mtk_reg_map {
+ 	u32	tx_irq_mask;
+ 	u32	tx_irq_status;
+ 	struct {
+-		u32	rx_ptr;		/* rx base pointer */
+-		u32	rx_cnt_cfg;	/* rx max count configuration */
+-		u32	pcrx_ptr;	/* rx cpu pointer */
+-		u32	glo_cfg;	/* global configuration */
+-		u32	rst_idx;	/* reset index */
+-		u32	delay_irq;	/* delay interrupt */
+-		u32	irq_status;	/* interrupt status */
+-		u32	irq_mask;	/* interrupt mask */
++		u32	rx_ptr;			/* rx base pointer */
++		u32	rx_cnt_cfg;		/* rx max count configuration */
++		u32	pcrx_ptr;		/* rx cpu pointer */
++		u32	pdrx_ptr;		/* rx dma pointer */
++		u32	glo_cfg;		/* global configuration */
++		u32	rst_idx;		/* reset index */
++		u32	rx_cfg;			/* rx dma configuration */
++		u32	delay_irq;		/* delay interrupt */
++		u32	irq_status;		/* interrupt status */
++		u32	irq_mask;		/* interrupt mask */
+ 		u32	adma_rx_dbg0;
+-		u32	int_grp;
++		u32	int_grp;		/* interrupt group1 */
++		u32	int_grp3;		/* interrupt group3 */
++		u32	tx_delay_irq;		/* tx delay interrupt */
++		u32	rx_delay_irq;		/* rx delay interrupt */
++		u32	lro_ctrl_dw0;		/* lro ctrl dword0 */
++		u32	lro_alt_score_delta;	/* lro auto-learn score delta */
++		u32	lro_rx1_dly_int;	/* lro rx ring1 delay interrupt */
++		u32	lro_ring_dip_dw0;	/* lro ring dip dword0 */
++		u32	lro_ring_ctrl_dw1;	/* lro ring ctrl dword1 */
++		u32	lro_alt_dbg;		/* lro auto-learn debug */
++		u32	lro_alt_dbg_data;	/* lro auto-learn debug data */
++		u32	rss_glo_cfg;		/* rss global configuration */
++
+ 	} pdma;
+ 	struct {
+ 		u32	qtx_cfg;	/* tx queue configuration */
+-- 
+2.43.0
+
