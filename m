@@ -1,42 +1,42 @@
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596CE31AA90;
-	Mon, 15 Dec 2025 03:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EECC30DEA7;
+	Mon, 15 Dec 2025 03:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765770614; cv=none; b=A6fksek+PUO4NNvXOhesJIwF0lOddmXqEkgN7dYaQ2KCtAk6s7RW5hIiHYpHbUbGI4DZzpx3QiN8u887mI6cDPXDbayTuPBUwLpyyblpHgN8fEw4iBRRHBzjLhHF0Xs8t8aDWsBZ/OxSShXa8VhgjQJJSAJ+JTBPPBEMV23FmHs=
+	t=1765770613; cv=none; b=fT9SFkf5zXQoYoTWyvjx3LoHd76n/mG4MAQXTn8EdUEsEFLiFHB/ZfMNjlJ+/IzdPaBhOsl1PkLLSYpZ52A3YUCH2ardd5E4deIuWoNofOtegtetkTZBk+46LBuhmiKyskmIi2LB+Gdg88nOkGuCaqgczoERGlSiE4sMg3I2/dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765770614; c=relaxed/simple;
-	bh=ExabTfvufJYYYF54f75jhr4UmQM/BjZCUFJnV/vfs2o=;
+	s=arc-20240116; t=1765770613; c=relaxed/simple;
+	bh=ZuhAFjw3r9p2Rj5ErNmfBpyoPVHHBkdB1OkaKnCgHL0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d0MoCBXODI0MB6i1dfuqhcD427Dl0l2VlOVl1/bZJIaKCGifKRGM0y5PXJil4aNEwjg3s4e/hXNqDgwOFLy24Jro+tXhF4fIEtYq1V0bEfes0MknkgqKrc3umKAVRLrZ7b3jkIJbpkec7G6aP2Y2crNO0JWA0TNrvGm4PHxuFms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=nUb1eFVe; arc=none smtp.client-ip=60.244.123.138
+	 MIME-Version:Content-Type; b=kCCA5xLgoanjVXO4cNw1HX41gerXUX7ehTKiLRwiuGdLYqYjlkpfJZATcgl/0ErXjwWSdHHo+Z2KeWNHpRHnwooUAZfUl+xqqTzX4iZu06Afr/kjv0j/MZqi5k1MQQJPWRGLrrTZvUGlIcj/WTrZ8EaPYQuveIY7um60naK+qGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=VaXCRXv9; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="nUb1eFVe"
-X-UUID: 1ccb6f0ad96911f0b2bf0b349165d6e0-20251215
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="VaXCRXv9"
+X-UUID: 1ccfd5c2d96911f0b2bf0b349165d6e0-20251215
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=664X88Min7o7BhAKE8ENKkPIR4qPjxTNDKZjylr7adw=;
-	b=nUb1eFVeMCercJ0ZGQGqa+/vVcVTjworgSHlIM1MESz83X6vsWm++CcJJCQ+IgXHBhiQgO3dP03z5noa+ZL9ojI+SdVDlN+NXgVCsu6oFI1Dl1vGeWw0Ctxxj/hcYLqt4Dt4DuBo4H1LgdICWt5vLdnicEqkKJoOTxO9qj2crNQ=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=4yGHi5jPRoh2Dkxp5p8dlzIS7c/JB+Xd1pLjgAw4TJ0=;
+	b=VaXCRXv9bvYlQg/IbCyFNMyk0j1Jqm+/2i2rIQFxz/Uq+qayPxnYvyPdVJrg6Sfys2HCurY6hNvSSAxKqSG/9EvGkzvjOG1er3yeVm8lPVQ4neTWHzRwCdI86lm0Wv/nlJBK0DP7LmoxdpNnDNdvImI3peDlAsIrjGnX49uphiU=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:11b3afb8-1c61-40c1-bb88-6eb4a7111c2d,IP:0,UR
-	L:25,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:25
-X-CID-META: VersionHash:a9d874c,CLOUDID:ebf430aa-6421-45b1-b8b8-e73e3dc9a90f,B
+X-CID-O-INFO: VERSION:1.3.6,REQID:cc886fa0-fe5e-4c5e-8454-6d6930907ef6,IP:0,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-25
+X-CID-META: VersionHash:a9d874c,CLOUDID:ae6970c6-8a73-4871-aac2-7b886d064f36,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:-3,IP:nil,URL:11|97|99|83|106|1,File:130,RT:0,Bulk:nil,QS:nil,
-	BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
+	I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1ccb6f0ad96911f0b2bf0b349165d6e0-20251215
+X-UUID: 1ccfd5c2d96911f0b2bf0b349165d6e0-20251215
 Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
 	(envelope-from <irving-ch.lin@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1296615074; Mon, 15 Dec 2025 11:49:52 +0800
+	with ESMTP id 1609500720; Mon, 15 Dec 2025 11:49:52 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
  MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -58,9 +58,9 @@ CC: Qiqi Wang <qiqi.wang@mediatek.com>, <linux-clk@vger.kernel.org>,
 	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
 	<sirius.wang@mediatek.com>, <vince-wl.liu@mediatek.com>,
 	<jh.hsu@mediatek.com>, <irving-ch.lin@mediatek.com>
-Subject: [PATCH v4 01/21] dt-bindings: clock: mediatek: Add MT8189 clock definitions
-Date: Mon, 15 Dec 2025 11:49:10 +0800
-Message-ID: <20251215034944.2973003-2-irving-ch.lin@mediatek.com>
+Subject: [PATCH v4 05/21] clk: mediatek: Add MT8189 topckgen clock support
+Date: Mon, 15 Dec 2025 11:49:14 +0800
+Message-ID: <20251215034944.2973003-6-irving-ch.lin@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20251215034944.2973003-1-irving-ch.lin@mediatek.com>
 References: <20251215034944.2973003-1-irving-ch.lin@mediatek.com>
@@ -75,764 +75,1055 @@ Content-Type: text/plain
 
 From: Irving-CH Lin <irving-ch.lin@mediatek.com>
 
-Add device tree bindings for the clock of MediaTek MT8189 SoC.
+Add support for the MT8189 topckgen clock controller, which provides
+muxes and dividers for clock selection in other IP blocks.
 
 Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
 ---
- .../bindings/clock/mediatek,mt8189-clock.yaml |  90 +++
- .../clock/mediatek,mt8189-sys-clock.yaml      |  58 ++
- .../dt-bindings/clock/mediatek,mt8189-clk.h   | 580 ++++++++++++++++++
- 3 files changed, 728 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
- create mode 100644 include/dt-bindings/clock/mediatek,mt8189-clk.h
+ drivers/clk/mediatek/Makefile              |    2 +-
+ drivers/clk/mediatek/clk-mt8189-topckgen.c | 1020 ++++++++++++++++++++
+ 2 files changed, 1021 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/mediatek/clk-mt8189-topckgen.c
 
-diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
+diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
+index 66577ccb9b93..9d3d2983bfb2 100644
+--- a/drivers/clk/mediatek/Makefile
++++ b/drivers/clk/mediatek/Makefile
+@@ -123,7 +123,7 @@ obj-$(CONFIG_COMMON_CLK_MT8188_VDOSYS) += clk-mt8188-vdo0.o clk-mt8188-vdo1.o
+ obj-$(CONFIG_COMMON_CLK_MT8188_VENCSYS) += clk-mt8188-venc.o
+ obj-$(CONFIG_COMMON_CLK_MT8188_VPPSYS) += clk-mt8188-vpp0.o clk-mt8188-vpp1.o
+ obj-$(CONFIG_COMMON_CLK_MT8188_WPESYS) += clk-mt8188-wpe.o
+-obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o
++obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o clk-mt8189-topckgen.o
+ obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
+ obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
+ obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
+diff --git a/drivers/clk/mediatek/clk-mt8189-topckgen.c b/drivers/clk/mediatek/clk-mt8189-topckgen.c
 new file mode 100644
-index 000000000000..d21e02df36a1
+index 000000000000..dcc3c21bf3a4
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
-@@ -0,0 +1,90 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/mediatek,mt8189-clock.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MediaTek Functional Clock Controller for MT8189
-+
-+maintainers:
-+  - Qiqi Wang <qiqi.wang@mediatek.com>
-+
-+description: |
-+  The clock architecture in MediaTek like below
-+  PLLs -->
-+          dividers -->
-+                      muxes -->
-+                               clock gate
-+
-+  The devices provide clock gate control in different IP blocks.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - mediatek,mt8189-camsys-main
-+          - mediatek,mt8189-camsys-rawa
-+          - mediatek,mt8189-camsys-rawb
-+          - mediatek,mt8189-dbg-ao
-+          - mediatek,mt8189-dem
-+          - mediatek,mt8189-dispsys
-+          - mediatek,mt8189-dvfsrc-top
-+          - mediatek,mt8189-gce-d
-+          - mediatek,mt8189-gce-m
-+          - mediatek,mt8189-iic-wrap-e
-+          - mediatek,mt8189-iic-wrap-en
-+          - mediatek,mt8189-iic-wrap-s
-+          - mediatek,mt8189-iic-wrap-ws
-+          - mediatek,mt8189-imgsys1
-+          - mediatek,mt8189-imgsys2
-+          - mediatek,mt8189-infra-ao
-+          - mediatek,mt8189-ipesys
-+          - mediatek,mt8189-mdpsys
-+          - mediatek,mt8189-mfgcfg
-+          - mediatek,mt8189-mm-infra
-+          - mediatek,mt8189-peri-ao
-+          - mediatek,mt8189-scp-clk
-+          - mediatek,mt8189-scp-i2c-clk
-+          - mediatek,mt8189-ufscfg-ao
-+          - mediatek,mt8189-ufscfg-pdn
-+          - mediatek,mt8189-vdec-core
-+          - mediatek,mt8189-venc
-+      - const: syscon
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#clock-cells':
-+    const: 1
-+
-+  '#reset-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#clock-cells'
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - mediatek,mt8189-peri-ao
-+              - mediatek,mt8189-ufscfg-ao
-+              - mediatek,mt8189-ufscfg-pdn
-+
-+    then:
-+      required:
-+        - '#reset-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    clock-controller@11b21000 {
-+        compatible = "mediatek,mt8189-iic-wrap-ws", "syscon";
-+        reg = <0x11b21000 0x1000>;
-+        #clock-cells = <1>;
-+    };
-diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
-new file mode 100644
-index 000000000000..c94de207e289
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/mediatek,mt8189-sys-clock.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MediaTek System Clock Controller for MT8189
-+
-+maintainers:
-+  - Qiqi Wang <qiqi.wang@mediatek.com>
-+
-+description: |
-+  The clock architecture in MediaTek like below
-+  PLLs -->
-+          dividers -->
-+                      muxes -->
-+                               clock gate
-+
-+  The apmixedsys provides most of PLLs which generated from SoC 26m.
-+  The topckgen provides dividers and muxes which provide the clock source to other IP blocks.
-+  The infracfg_ao provides clock gate in peripheral and infrastructure IP blocks.
-+  The mcusys provides mux control to select the clock source in AP MCU.
-+  The device nodes also provide the system control capacity for configuration.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - mediatek,mt8189-apmixedsys
-+          - mediatek,mt8189-topckgen
-+          - mediatek,mt8189-vlpckgen
-+          - mediatek,mt8189-vlp-ao
-+          - mediatek,mt8189-vlpcfg-ao
-+      - const: syscon
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#clock-cells':
-+    const: 1
-+
-+  '#reset-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#clock-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    clock-controller@10000000 {
-+        compatible = "mediatek,mt8189-topckgen", "syscon";
-+        reg = <0x10000000 0x1000>;
-+        #clock-cells = <1>;
-+    };
-diff --git a/include/dt-bindings/clock/mediatek,mt8189-clk.h b/include/dt-bindings/clock/mediatek,mt8189-clk.h
-new file mode 100644
-index 000000000000..139db869a3ec
---- /dev/null
-+++ b/include/dt-bindings/clock/mediatek,mt8189-clk.h
-@@ -0,0 +1,580 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)  */
++++ b/drivers/clk/mediatek/clk-mt8189-topckgen.c
+@@ -0,0 +1,1020 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2025 MediaTek Inc.
 + * Author: Qiqi Wang <qiqi.wang@mediatek.com>
 + */
 +
-+#ifndef _DT_BINDINGS_CLK_MT8189_H
-+#define _DT_BINDINGS_CLK_MT8189_H
++#include <linux/clk.h>
++#include <linux/delay.h>
++#include <linux/mfd/syscon.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/of_device.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
 +
-+/* TOPCKGEN */
-+#define CLK_TOP_AXI_SEL					0
-+#define CLK_TOP_AXI_PERI_SEL				1
-+#define CLK_TOP_AXI_U_SEL				2
-+#define CLK_TOP_BUS_AXIMEM_SEL				3
-+#define CLK_TOP_DISP0_SEL				4
-+#define CLK_TOP_MMINFRA_SEL				5
-+#define CLK_TOP_UART_SEL				6
-+#define CLK_TOP_SPI0_SEL				7
-+#define CLK_TOP_SPI1_SEL				8
-+#define CLK_TOP_SPI2_SEL				9
-+#define CLK_TOP_SPI3_SEL				10
-+#define CLK_TOP_SPI4_SEL				11
-+#define CLK_TOP_SPI5_SEL				12
-+#define CLK_TOP_MSDC_MACRO_0P_SEL			13
-+#define CLK_TOP_MSDC50_0_HCLK_SEL			14
-+#define CLK_TOP_MSDC50_0_SEL				15
-+#define CLK_TOP_AES_MSDCFDE_SEL				16
-+#define CLK_TOP_MSDC_MACRO_1P_SEL			17
-+#define CLK_TOP_MSDC30_1_SEL				18
-+#define CLK_TOP_MSDC30_1_HCLK_SEL			19
-+#define CLK_TOP_MSDC_MACRO_2P_SEL			20
-+#define CLK_TOP_MSDC30_2_SEL				21
-+#define CLK_TOP_MSDC30_2_HCLK_SEL			22
-+#define CLK_TOP_AUD_INTBUS_SEL				23
-+#define CLK_TOP_ATB_SEL					24
-+#define CLK_TOP_DISP_PWM_SEL				25
-+#define CLK_TOP_USB_TOP_P0_SEL				26
-+#define CLK_TOP_USB_XHCI_P0_SEL				27
-+#define CLK_TOP_USB_TOP_P1_SEL				28
-+#define CLK_TOP_USB_XHCI_P1_SEL				29
-+#define CLK_TOP_USB_TOP_P2_SEL				30
-+#define CLK_TOP_USB_XHCI_P2_SEL				31
-+#define CLK_TOP_USB_TOP_P3_SEL				32
-+#define CLK_TOP_USB_XHCI_P3_SEL				33
-+#define CLK_TOP_USB_TOP_P4_SEL				34
-+#define CLK_TOP_USB_XHCI_P4_SEL				35
-+#define CLK_TOP_I2C_SEL					36
-+#define CLK_TOP_SENINF_SEL				37
-+#define CLK_TOP_SENINF1_SEL				38
-+#define CLK_TOP_AUD_ENGEN1_SEL				39
-+#define CLK_TOP_AUD_ENGEN2_SEL				40
-+#define CLK_TOP_AES_UFSFDE_SEL				41
-+#define CLK_TOP_U_SEL					42
-+#define CLK_TOP_U_MBIST_SEL				43
-+#define CLK_TOP_AUD_1_SEL				44
-+#define CLK_TOP_AUD_2_SEL				45
-+#define CLK_TOP_VENC_SEL				46
-+#define CLK_TOP_VDEC_SEL				47
-+#define CLK_TOP_PWM_SEL					48
-+#define CLK_TOP_AUDIO_H_SEL				49
-+#define CLK_TOP_MCUPM_SEL				50
-+#define CLK_TOP_MEM_SUB_SEL				51
-+#define CLK_TOP_MEM_SUB_PERI_SEL			52
-+#define CLK_TOP_MEM_SUB_U_SEL				53
-+#define CLK_TOP_EMI_N_SEL				54
-+#define CLK_TOP_DSI_OCC_SEL				55
-+#define CLK_TOP_AP2CONN_HOST_SEL			56
-+#define CLK_TOP_IMG1_SEL				57
-+#define CLK_TOP_IPE_SEL					58
-+#define CLK_TOP_CAM_SEL					59
-+#define CLK_TOP_CAMTM_SEL				60
-+#define CLK_TOP_DSP_SEL					61
-+#define CLK_TOP_SR_PKA_SEL				62
-+#define CLK_TOP_DXCC_SEL				63
-+#define CLK_TOP_MFG_REF_SEL				64
-+#define CLK_TOP_MDP0_SEL				65
-+#define CLK_TOP_DP_SEL					66
-+#define CLK_TOP_EDP_SEL					67
-+#define CLK_TOP_EDP_FAVT_SEL				68
-+#define CLK_TOP_ETH_250M_SEL				69
-+#define CLK_TOP_ETH_62P4M_PTP_SEL			70
-+#define CLK_TOP_ETH_50M_RMII_SEL			71
-+#define CLK_TOP_SFLASH_SEL				72
-+#define CLK_TOP_GCPU_SEL				73
-+#define CLK_TOP_MAC_TL_SEL				74
-+#define CLK_TOP_VDSTX_DG_CTS_SEL			75
-+#define CLK_TOP_PLL_DPIX_SEL				76
-+#define CLK_TOP_ECC_SEL					77
-+#define CLK_TOP_APLL_I2SIN0_MCK_SEL			78
-+#define CLK_TOP_APLL_I2SIN1_MCK_SEL			79
-+#define CLK_TOP_APLL_I2SIN2_MCK_SEL			80
-+#define CLK_TOP_APLL_I2SIN3_MCK_SEL			81
-+#define CLK_TOP_APLL_I2SIN4_MCK_SEL			82
-+#define CLK_TOP_APLL_I2SIN6_MCK_SEL			83
-+#define CLK_TOP_APLL_I2SOUT0_MCK_SEL			84
-+#define CLK_TOP_APLL_I2SOUT1_MCK_SEL			85
-+#define CLK_TOP_APLL_I2SOUT2_MCK_SEL			86
-+#define CLK_TOP_APLL_I2SOUT3_MCK_SEL			87
-+#define CLK_TOP_APLL_I2SOUT4_MCK_SEL			88
-+#define CLK_TOP_APLL_I2SOUT6_MCK_SEL			89
-+#define CLK_TOP_APLL_FMI2S_MCK_SEL			90
-+#define CLK_TOP_APLL_TDMOUT_MCK_SEL			91
-+#define CLK_TOP_MFG_SEL_MFGPLL				92
-+#define CLK_TOP_APLL12_CK_DIV_I2SIN0			93
-+#define CLK_TOP_APLL12_CK_DIV_I2SIN1			94
-+#define CLK_TOP_APLL12_CK_DIV_I2SOUT0			95
-+#define CLK_TOP_APLL12_CK_DIV_I2SOUT1			96
-+#define CLK_TOP_APLL12_CK_DIV_FMI2S			97
-+#define CLK_TOP_APLL12_CK_DIV_TDMOUT_M			98
-+#define CLK_TOP_APLL12_CK_DIV_TDMOUT_B			99
-+#define CLK_TOP_MAINPLL_D3				100
-+#define CLK_TOP_MAINPLL_D4				101
-+#define CLK_TOP_MAINPLL_D4_D2				102
-+#define CLK_TOP_MAINPLL_D4_D4				103
-+#define CLK_TOP_MAINPLL_D4_D8				104
-+#define CLK_TOP_MAINPLL_D5				105
-+#define CLK_TOP_MAINPLL_D5_D2				106
-+#define CLK_TOP_MAINPLL_D5_D4				107
-+#define CLK_TOP_MAINPLL_D5_D8				108
-+#define CLK_TOP_MAINPLL_D6				109
-+#define CLK_TOP_MAINPLL_D6_D2				110
-+#define CLK_TOP_MAINPLL_D6_D4				111
-+#define CLK_TOP_MAINPLL_D6_D8				112
-+#define CLK_TOP_MAINPLL_D7				113
-+#define CLK_TOP_MAINPLL_D7_D2				114
-+#define CLK_TOP_MAINPLL_D7_D4				115
-+#define CLK_TOP_MAINPLL_D7_D8				116
-+#define CLK_TOP_MAINPLL_D9				117
-+#define CLK_TOP_UNIVPLL_D2				118
-+#define CLK_TOP_UNIVPLL_D3				119
-+#define CLK_TOP_UNIVPLL_D4				120
-+#define CLK_TOP_UNIVPLL_D4_D2				121
-+#define CLK_TOP_UNIVPLL_D4_D4				122
-+#define CLK_TOP_UNIVPLL_D4_D8				123
-+#define CLK_TOP_UNIVPLL_D5				124
-+#define CLK_TOP_UNIVPLL_D5_D2				125
-+#define CLK_TOP_UNIVPLL_D5_D4				126
-+#define CLK_TOP_UNIVPLL_D6				127
-+#define CLK_TOP_UNIVPLL_D6_D2				128
-+#define CLK_TOP_UNIVPLL_D6_D4				129
-+#define CLK_TOP_UNIVPLL_D6_D8				130
-+#define CLK_TOP_UNIVPLL_D6_D16				131
-+#define CLK_TOP_UNIVPLL_D7				132
-+#define CLK_TOP_UNIVPLL_D7_D2				133
-+#define CLK_TOP_UNIVPLL_D7_D3				134
-+#define CLK_TOP_LVDSTX_DG_CTS				135
-+#define CLK_TOP_UNIVPLL_192M				136
-+#define CLK_TOP_UNIVPLL_192M_D2				137
-+#define CLK_TOP_UNIVPLL_192M_D4				138
-+#define CLK_TOP_UNIVPLL_192M_D8				139
-+#define CLK_TOP_UNIVPLL_192M_D10			140
-+#define CLK_TOP_UNIVPLL_192M_D16			141
-+#define CLK_TOP_UNIVPLL_192M_D32			142
-+#define CLK_TOP_APLL1_D2				143
-+#define CLK_TOP_APLL1_D4				144
-+#define CLK_TOP_APLL1_D8				145
-+#define CLK_TOP_APLL1_D3				146
-+#define CLK_TOP_APLL2_D2				147
-+#define CLK_TOP_APLL2_D4				148
-+#define CLK_TOP_APLL2_D8				149
-+#define CLK_TOP_APLL2_D3				150
-+#define CLK_TOP_MMPLL_D4				151
-+#define CLK_TOP_MMPLL_D4_D2				152
-+#define CLK_TOP_MMPLL_D4_D4				153
-+#define CLK_TOP_VPLL_DPIX				154
-+#define CLK_TOP_MMPLL_D5				155
-+#define CLK_TOP_MMPLL_D5_D2				156
-+#define CLK_TOP_MMPLL_D5_D4				157
-+#define CLK_TOP_MMPLL_D6				158
-+#define CLK_TOP_MMPLL_D6_D2				159
-+#define CLK_TOP_MMPLL_D7				160
-+#define CLK_TOP_MMPLL_D9				161
-+#define CLK_TOP_TVDPLL1_D2				162
-+#define CLK_TOP_TVDPLL1_D4				163
-+#define CLK_TOP_TVDPLL1_D8				164
-+#define CLK_TOP_TVDPLL1_D16				165
-+#define CLK_TOP_TVDPLL2_D2				166
-+#define CLK_TOP_TVDPLL2_D4				167
-+#define CLK_TOP_TVDPLL2_D8				168
-+#define CLK_TOP_TVDPLL2_D16				169
-+#define CLK_TOP_ETHPLL_D2				170
-+#define CLK_TOP_ETHPLL_D8				171
-+#define CLK_TOP_ETHPLL_D10				172
-+#define CLK_TOP_MSDCPLL_D2				173
-+#define CLK_TOP_VOWPLL                                  174
-+#define CLK_TOP_UFSPLL_D2				175
-+#define CLK_TOP_F26M_CK_D2				176
-+#define CLK_TOP_OSC_D2					177
-+#define CLK_TOP_OSC_D4					178
-+#define CLK_TOP_OSC_D8					179
-+#define CLK_TOP_OSC_D16					180
-+#define CLK_TOP_OSC_D3					181
-+#define CLK_TOP_OSC_D7					182
-+#define CLK_TOP_OSC_D10					183
-+#define CLK_TOP_OSC_D20					184
-+#define CLK_TOP_FMCNT_P0_EN				185
-+#define CLK_TOP_FMCNT_P1_EN				186
-+#define CLK_TOP_FMCNT_P2_EN				187
-+#define CLK_TOP_FMCNT_P3_EN				188
-+#define CLK_TOP_FMCNT_P4_EN				189
-+#define CLK_TOP_USB_F26M_CK_EN				190
-+#define CLK_TOP_SSPXTP_F26M_CK_EN			191
-+#define CLK_TOP_USB2_PHY_RF_P0_EN			192
-+#define CLK_TOP_USB2_PHY_RF_P1_EN			193
-+#define CLK_TOP_USB2_PHY_RF_P2_EN			194
-+#define CLK_TOP_USB2_PHY_RF_P3_EN			195
-+#define CLK_TOP_USB2_PHY_RF_P4_EN			196
-+#define CLK_TOP_USB2_26M_CK_P0_EN			197
-+#define CLK_TOP_USB2_26M_CK_P1_EN			198
-+#define CLK_TOP_USB2_26M_CK_P2_EN			199
-+#define CLK_TOP_USB2_26M_CK_P3_EN			200
-+#define CLK_TOP_USB2_26M_CK_P4_EN			201
-+#define CLK_TOP_F26M_CK_EN				202
-+#define CLK_TOP_AP2CON_EN				203
-+#define CLK_TOP_EINT_N_EN				204
-+#define CLK_TOP_TOPCKGEN_FMIPI_CSI_UP26M_CK_EN		205
-+#define CLK_TOP_DRAMULP_CK_EN				206
-+#define CLK_TOP_EINT_E_EN				207
-+#define CLK_TOP_EINT_W_EN				208
-+#define CLK_TOP_EINT_S_EN				209
++#include "clk-mtk.h"
++#include "clk-mux.h"
++#include "clk-gate.h"
 +
-+/* INFRACFG_AO */
-+#define CLK_IFRAO_CQ_DMA_FPC				0
-+#define CLK_IFRAO_DEBUGSYS				1
-+#define CLK_IFRAO_DBG_TRACE				2
-+#define CLK_IFRAO_CQ_DMA				3
++#include <dt-bindings/clock/mediatek,mt8189-clk.h>
 +
-+/* APMIXEDSYS */
-+#define CLK_APMIXED_ARMPLL_LL				0
-+#define CLK_APMIXED_ARMPLL_BL				1
-+#define CLK_APMIXED_CCIPLL				2
-+#define CLK_APMIXED_MAINPLL				3
-+#define CLK_APMIXED_UNIVPLL				4
-+#define CLK_APMIXED_MMPLL				5
-+#define CLK_APMIXED_MFGPLL				6
-+#define CLK_APMIXED_APLL1				7
-+#define CLK_APMIXED_APLL2				8
-+#define CLK_APMIXED_EMIPLL				9
-+#define CLK_APMIXED_APUPLL2				10
-+#define CLK_APMIXED_APUPLL				11
-+#define CLK_APMIXED_TVDPLL1				12
-+#define CLK_APMIXED_TVDPLL2				13
-+#define CLK_APMIXED_ETHPLL				14
-+#define CLK_APMIXED_MSDCPLL				15
-+#define CLK_APMIXED_UFSPLL				16
++static DEFINE_SPINLOCK(mt8189_clk_lock);
 +
-+/* PERICFG_AO */
-+#define CLK_PERAO_UART0					0
-+#define CLK_PERAO_UART1					1
-+#define CLK_PERAO_UART2					2
-+#define CLK_PERAO_UART3					3
-+#define CLK_PERAO_PWM_H					4
-+#define CLK_PERAO_PWM_B					5
-+#define CLK_PERAO_PWM_FB1				6
-+#define CLK_PERAO_PWM_FB2				7
-+#define CLK_PERAO_PWM_FB3				8
-+#define CLK_PERAO_PWM_FB4				9
-+#define CLK_PERAO_DISP_PWM0				10
-+#define CLK_PERAO_DISP_PWM1				11
-+#define CLK_PERAO_SPI0_B				12
-+#define CLK_PERAO_SPI1_B				13
-+#define CLK_PERAO_SPI2_B				14
-+#define CLK_PERAO_SPI3_B				15
-+#define CLK_PERAO_SPI4_B				16
-+#define CLK_PERAO_SPI5_B				17
-+#define CLK_PERAO_SPI0_H				18
-+#define CLK_PERAO_SPI1_H				19
-+#define CLK_PERAO_SPI2_H				20
-+#define CLK_PERAO_SPI3_H				21
-+#define CLK_PERAO_SPI4_H				22
-+#define CLK_PERAO_SPI5_H				23
-+#define CLK_PERAO_AXI					24
-+#define CLK_PERAO_AHB_APB				25
-+#define CLK_PERAO_TL					26
-+#define CLK_PERAO_REF					27
-+#define CLK_PERAO_I2C					28
-+#define CLK_PERAO_DMA_B					29
-+#define CLK_PERAO_SSUSB0_REF				30
-+#define CLK_PERAO_SSUSB0_FRMCNT				31
-+#define CLK_PERAO_SSUSB0_SYS				32
-+#define CLK_PERAO_SSUSB0_XHCI				33
-+#define CLK_PERAO_SSUSB0_F				34
-+#define CLK_PERAO_SSUSB0_H				35
-+#define CLK_PERAO_SSUSB1_REF				36
-+#define CLK_PERAO_SSUSB1_FRMCNT				37
-+#define CLK_PERAO_SSUSB1_SYS				38
-+#define CLK_PERAO_SSUSB1_XHCI				39
-+#define CLK_PERAO_SSUSB1_F				40
-+#define CLK_PERAO_SSUSB1_H				41
-+#define CLK_PERAO_SSUSB2_REF				42
-+#define CLK_PERAO_SSUSB2_FRMCNT				43
-+#define CLK_PERAO_SSUSB2_SYS				44
-+#define CLK_PERAO_SSUSB2_XHCI				45
-+#define CLK_PERAO_SSUSB2_F				46
-+#define CLK_PERAO_SSUSB2_H				47
-+#define CLK_PERAO_SSUSB3_REF				48
-+#define CLK_PERAO_SSUSB3_FRMCNT				49
-+#define CLK_PERAO_SSUSB3_SYS				50
-+#define CLK_PERAO_SSUSB3_XHCI				51
-+#define CLK_PERAO_SSUSB3_F				52
-+#define CLK_PERAO_SSUSB3_H				53
-+#define CLK_PERAO_SSUSB4_REF				54
-+#define CLK_PERAO_SSUSB4_FRMCNT				55
-+#define CLK_PERAO_SSUSB4_SYS				56
-+#define CLK_PERAO_SSUSB4_XHCI				57
-+#define CLK_PERAO_SSUSB4_F				58
-+#define CLK_PERAO_SSUSB4_H				59
-+#define CLK_PERAO_MSDC0					60
-+#define CLK_PERAO_MSDC0_H				61
-+#define CLK_PERAO_MSDC0_FAES				62
-+#define CLK_PERAO_MSDC0_MST_F				63
-+#define CLK_PERAO_MSDC0_SLV_H				64
-+#define CLK_PERAO_MSDC1					65
-+#define CLK_PERAO_MSDC1_H				66
-+#define CLK_PERAO_MSDC1_MST_F				67
-+#define CLK_PERAO_MSDC1_SLV_H				68
-+#define CLK_PERAO_MSDC2					69
-+#define CLK_PERAO_MSDC2_H				70
-+#define CLK_PERAO_MSDC2_MST_F				71
-+#define CLK_PERAO_MSDC2_SLV_H				72
-+#define CLK_PERAO_SFLASH				73
-+#define CLK_PERAO_SFLASH_F				74
-+#define CLK_PERAO_SFLASH_H				75
-+#define CLK_PERAO_SFLASH_P				76
-+#define CLK_PERAO_AUDIO0				77
-+#define CLK_PERAO_AUDIO1				78
-+#define CLK_PERAO_AUDIO2				79
-+#define CLK_PERAO_AUXADC_26M				80
++static const struct mtk_fixed_factor top_divs[] = {
++	FACTOR(CLK_TOP_MAINPLL_D3, "mainpll_d3", "mainpll", 1, 3),
++	FACTOR(CLK_TOP_MAINPLL_D4, "mainpll_d4", "mainpll", 1, 4),
++	FACTOR(CLK_TOP_MAINPLL_D4_D2, "mainpll_d4_d2", "mainpll", 1, 8),
++	FACTOR(CLK_TOP_MAINPLL_D4_D4, "mainpll_d4_d4", "mainpll", 1, 16),
++	FACTOR(CLK_TOP_MAINPLL_D4_D8, "mainpll_d4_d8", "mainpll", 43, 1375),
++	FACTOR(CLK_TOP_MAINPLL_D5, "mainpll_d5", "mainpll", 1, 5),
++	FACTOR(CLK_TOP_MAINPLL_D5_D2, "mainpll_d5_d2", "mainpll", 1, 10),
++	FACTOR(CLK_TOP_MAINPLL_D5_D4, "mainpll_d5_d4", "mainpll", 1, 20),
++	FACTOR(CLK_TOP_MAINPLL_D5_D8, "mainpll_d5_d8", "mainpll", 1, 40),
++	FACTOR(CLK_TOP_MAINPLL_D6, "mainpll_d6", "mainpll", 1, 6),
++	FACTOR(CLK_TOP_MAINPLL_D6_D2, "mainpll_d6_d2", "mainpll", 1, 12),
++	FACTOR(CLK_TOP_MAINPLL_D6_D4, "mainpll_d6_d4", "mainpll", 1, 24),
++	FACTOR(CLK_TOP_MAINPLL_D6_D8, "mainpll_d6_d8", "mainpll", 1, 48),
++	FACTOR(CLK_TOP_MAINPLL_D7, "mainpll_d7", "mainpll", 1, 7),
++	FACTOR(CLK_TOP_MAINPLL_D7_D2, "mainpll_d7_d2", "mainpll", 1, 14),
++	FACTOR(CLK_TOP_MAINPLL_D7_D4, "mainpll_d7_d4", "mainpll", 1, 28),
++	FACTOR(CLK_TOP_MAINPLL_D7_D8, "mainpll_d7_d8", "mainpll", 1, 56),
++	FACTOR(CLK_TOP_MAINPLL_D9, "mainpll_d9", "mainpll", 1, 9),
++	FACTOR(CLK_TOP_UNIVPLL_D2, "univpll_d2", "univpll", 1, 2),
++	FACTOR(CLK_TOP_UNIVPLL_D3, "univpll_d3", "univpll", 1, 3),
++	FACTOR(CLK_TOP_UNIVPLL_D4, "univpll_d4", "univpll", 1, 4),
++	FACTOR(CLK_TOP_UNIVPLL_D4_D2, "univpll_d4_d2", "univpll", 1, 8),
++	FACTOR(CLK_TOP_UNIVPLL_D4_D4, "univpll_d4_d4", "univpll", 1, 16),
++	FACTOR(CLK_TOP_UNIVPLL_D4_D8, "univpll_d4_d8", "univpll", 1, 32),
++	FACTOR(CLK_TOP_UNIVPLL_D5, "univpll_d5", "univpll", 1, 5),
++	FACTOR(CLK_TOP_UNIVPLL_D5_D2, "univpll_d5_d2", "univpll", 1, 10),
++	FACTOR(CLK_TOP_UNIVPLL_D5_D4, "univpll_d5_d4", "univpll", 1, 20),
++	FACTOR(CLK_TOP_UNIVPLL_D6, "univpll_d6", "univpll", 1, 6),
++	FACTOR(CLK_TOP_UNIVPLL_D6_D2, "univpll_d6_d2", "univpll", 1, 12),
++	FACTOR(CLK_TOP_UNIVPLL_D6_D4, "univpll_d6_d4", "univpll", 1, 24),
++	FACTOR(CLK_TOP_UNIVPLL_D6_D8, "univpll_d6_d8", "univpll", 1, 48),
++	FACTOR(CLK_TOP_UNIVPLL_D6_D16, "univpll_d6_d16", "univpll", 1, 96),
++	FACTOR(CLK_TOP_UNIVPLL_D7, "univpll_d7", "univpll", 1, 7),
++	FACTOR(CLK_TOP_UNIVPLL_D7_D2, "univpll_d7_d2", "univpll", 1, 14),
++	FACTOR(CLK_TOP_UNIVPLL_D7_D3, "univpll_d7_d3", "univpll", 1, 21),
++	FACTOR(CLK_TOP_LVDSTX_DG_CTS, "lvdstx_dg_cts", "univpll", 1, 21),
++	FACTOR(CLK_TOP_UNIVPLL_192M, "univpll_192m", "univpll", 1, 13),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D2, "univpll_192m_d2", "univpll", 1, 26),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D4, "univpll_192m_d4", "univpll", 1, 52),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D8, "univpll_192m_d8", "univpll", 1, 104),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D10, "univpll_192m_d10", "univpll", 1, 130),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D16, "univpll_192m_d16", "univpll", 1, 208),
++	FACTOR(CLK_TOP_UNIVPLL_192M_D32, "univpll_192m_d32", "univpll", 1, 416),
++	FACTOR(CLK_TOP_APLL1_D2, "apll1_d2", "apll1", 1, 2),
++	FACTOR(CLK_TOP_APLL1_D4, "apll1_d4", "apll1", 1, 4),
++	FACTOR(CLK_TOP_APLL1_D8, "apll1_d8", "apll1", 1, 8),
++	FACTOR(CLK_TOP_APLL1_D3, "apll1_d3", "apll1", 1, 3),
++	FACTOR(CLK_TOP_APLL2_D2, "apll2_d2", "apll2", 1, 2),
++	FACTOR(CLK_TOP_APLL2_D4, "apll2_d4", "apll2", 1, 4),
++	FACTOR(CLK_TOP_APLL2_D8, "apll2_d8", "apll2", 1, 8),
++	FACTOR(CLK_TOP_APLL2_D3, "apll2_d3", "apll2", 1, 3),
++	FACTOR(CLK_TOP_MMPLL_D4, "mmpll_d4", "mmpll", 1, 4),
++	FACTOR(CLK_TOP_MMPLL_D4_D2, "mmpll_d4_d2", "mmpll", 1, 8),
++	FACTOR(CLK_TOP_MMPLL_D4_D4, "mmpll_d4_d4", "mmpll", 1, 16),
++	FACTOR(CLK_TOP_VPLL_DPIX, "vpll_dpix", "mmpll", 1, 16),
++	FACTOR(CLK_TOP_MMPLL_D5, "mmpll_d5", "mmpll", 1, 5),
++	FACTOR(CLK_TOP_MMPLL_D5_D2, "mmpll_d5_d2", "mmpll", 1, 10),
++	FACTOR(CLK_TOP_MMPLL_D5_D4, "mmpll_d5_d4", "mmpll", 1, 20),
++	FACTOR(CLK_TOP_MMPLL_D6, "mmpll_d6", "mmpll", 1, 6),
++	FACTOR(CLK_TOP_MMPLL_D6_D2, "mmpll_d6_d2", "mmpll", 1, 12),
++	FACTOR(CLK_TOP_MMPLL_D7, "mmpll_d7", "mmpll", 1, 7),
++	FACTOR(CLK_TOP_MMPLL_D9, "mmpll_d9", "mmpll", 1, 9),
++	FACTOR(CLK_TOP_TVDPLL1_D2, "tvdpll1_d2", "tvdpll1", 1, 2),
++	FACTOR(CLK_TOP_TVDPLL1_D4, "tvdpll1_d4", "tvdpll1", 1, 4),
++	FACTOR(CLK_TOP_TVDPLL1_D8, "tvdpll1_d8", "tvdpll1", 1, 8),
++	FACTOR(CLK_TOP_TVDPLL1_D16, "tvdpll1_d16", "tvdpll1", 92, 1473),
++	FACTOR(CLK_TOP_TVDPLL2_D2, "tvdpll2_d2", "tvdpll2", 1, 2),
++	FACTOR(CLK_TOP_TVDPLL2_D4, "tvdpll2_d4", "tvdpll2", 1, 4),
++	FACTOR(CLK_TOP_TVDPLL2_D8, "tvdpll2_d8", "tvdpll2", 1, 8),
++	FACTOR(CLK_TOP_TVDPLL2_D16, "tvdpll2_d16", "tvdpll2", 92, 1473),
++	FACTOR(CLK_TOP_ETHPLL_D2, "ethpll_d2", "ethpll", 1, 2),
++	FACTOR(CLK_TOP_ETHPLL_D8, "ethpll_d8", "ethpll", 1, 8),
++	FACTOR(CLK_TOP_ETHPLL_D10, "ethpll_d10", "ethpll", 1, 10),
++	FACTOR(CLK_TOP_MSDCPLL_D2, "msdcpll_d2", "msdcpll", 1, 2),
++	FACTOR(CLK_TOP_UFSPLL_D2, "ufspll_d2", "ufspll", 1, 2),
++	FACTOR(CLK_TOP_F26M_CK_D2, "f26m_d2", "clk26m", 1, 2),
++	FACTOR(CLK_TOP_OSC_D2, "osc_d2", "ulposc", 1, 2),
++	FACTOR(CLK_TOP_OSC_D4, "osc_d4", "ulposc", 1, 4),
++	FACTOR(CLK_TOP_OSC_D8, "osc_d8", "ulposc", 1, 8),
++	FACTOR(CLK_TOP_OSC_D16, "osc_d16", "ulposc", 61, 973),
++	FACTOR(CLK_TOP_OSC_D3, "osc_d3", "ulposc", 1, 3),
++	FACTOR(CLK_TOP_OSC_D7, "osc_d7", "ulposc", 1, 7),
++	FACTOR(CLK_TOP_OSC_D10, "osc_d10", "ulposc", 1, 10),
++	FACTOR(CLK_TOP_OSC_D20, "osc_d20", "ulposc", 1, 20),
++};
 +
-+/* UFSCFG_AO_REG */
-+#define CLK_UFSCFG_AO_REG_UNIPRO_TX_SYM			0
-+#define CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM0		1
-+#define CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM1		2
-+#define CLK_UFSCFG_AO_REG_UNIPRO_SYS			3
-+#define CLK_UFSCFG_AO_REG_U_SAP_CFG			4
-+#define CLK_UFSCFG_AO_REG_U_PHY_TOP_AHB_S_BUS		5
++static const char * const ap2conn_host_parents[] = {
++	"clk26m",
++	"mainpll_d7_d4"
++};
 +
-+/* UFSCFG_PDN_REG */
-+#define CLK_UFSCFG_REG_UFSHCI_UFS			0
-+#define CLK_UFSCFG_REG_UFSHCI_AES			1
-+#define CLK_UFSCFG_REG_UFSHCI_U_AHB			2
-+#define CLK_UFSCFG_REG_UFSHCI_U_AXI			3
++static const char * const apll_m_parents[] = {
++	"aud_1_sel",
++	"aud_2_sel"
++};
 +
-+/* IMP_IIC_WRAP_WS */
-+#define CLK_IMPWS_I2C2					0
++static const char * const aud_1_parents[] = {
++	"clk26m",
++	"apll1"
++};
 +
-+/* IMP_IIC_WRAP_E */
-+#define CLK_IMPE_I2C0					0
-+#define CLK_IMPE_I2C1					1
++static const char * const aud_2_parents[] = {
++	"clk26m",
++	"apll2"
++};
 +
-+/* IMP_IIC_WRAP_S */
-+#define CLK_IMPS_I2C3					0
-+#define CLK_IMPS_I2C4					1
-+#define CLK_IMPS_I2C5					2
-+#define CLK_IMPS_I2C6					3
++static const char * const mfg_sel_mfgpll_parents[] = {
++	"mfg_ref_sel",
++	"mfgpll"
++};
 +
-+/* IMP_IIC_WRAP_EN */
-+#define CLK_IMPEN_I2C7					0
-+#define CLK_IMPEN_I2C8					1
++static const char * const pwm_parents[] = {
++	"clk26m",
++	"univpll_d4_d8"
++};
 +
-+/* MFG */
-+#define CLK_MFG_BG3D					0
++static const char * const snps_eth_250m_parents[] = {
++	"clk26m",
++	"ethpll_d2"
++};
 +
-+/* DISPSYS_CONFIG */
-+#define CLK_MM_DISP_OVL0_4L				0
-+#define CLK_MM_DISP_OVL1_4L				1
-+#define CLK_MM_VPP_RSZ0					2
-+#define CLK_MM_VPP_RSZ1					3
-+#define CLK_MM_DISP_RDMA0				4
-+#define CLK_MM_DISP_RDMA1				5
-+#define CLK_MM_DISP_COLOR0				6
-+#define CLK_MM_DISP_COLOR1				7
-+#define CLK_MM_DISP_CCORR0				8
-+#define CLK_MM_DISP_CCORR1				9
-+#define CLK_MM_DISP_CCORR2				10
-+#define CLK_MM_DISP_CCORR3				11
-+#define CLK_MM_DISP_AAL0				12
-+#define CLK_MM_DISP_AAL1				13
-+#define CLK_MM_DISP_GAMMA0				14
-+#define CLK_MM_DISP_GAMMA1				15
-+#define CLK_MM_DISP_DITHER0				16
-+#define CLK_MM_DISP_DITHER1				17
-+#define CLK_MM_DISP_DSC_WRAP0				18
-+#define CLK_MM_VPP_MERGE0				19
-+#define CLK_MMSYS_0_DISP_DVO				20
-+#define CLK_MMSYS_0_DISP_DSI0				21
-+#define CLK_MM_DP_INTF0					22
-+#define CLK_MM_DPI0					23
-+#define CLK_MM_DISP_WDMA0				24
-+#define CLK_MM_DISP_WDMA1				25
-+#define CLK_MM_DISP_FAKE_ENG0				26
-+#define CLK_MM_DISP_FAKE_ENG1				27
-+#define CLK_MM_SMI_LARB					28
-+#define CLK_MM_DISP_MUTEX0				29
-+#define CLK_MM_DIPSYS_CONFIG				30
-+#define CLK_MM_DUMMY					31
-+#define CLK_MMSYS_1_DISP_DSI0				32
-+#define CLK_MMSYS_1_LVDS_ENCODER			33
-+#define CLK_MMSYS_1_DPI0				34
-+#define CLK_MMSYS_1_DISP_DVO				35
-+#define CLK_MM_DP_INTF					36
-+#define CLK_MMSYS_1_LVDS_ENCODER_CTS			37
-+#define CLK_MMSYS_1_DISP_DVO_AVT			38
++static const char * const snps_eth_50m_rmii_parents[] = {
++	"clk26m",
++	"ethpll_d10"
++};
 +
-+/* IMGSYS1 */
-+#define CLK_IMGSYS1_LARB9				0
-+#define CLK_IMGSYS1_LARB11				1
-+#define CLK_IMGSYS1_DIP					2
-+#define CLK_IMGSYS1_GALS				3
++static const char * const uart_parents[] = {
++	"clk26m",
++	"univpll_d6_d8"
++};
 +
-+/* IMGSYS2 */
-+#define CLK_IMGSYS2_LARB9				0
-+#define CLK_IMGSYS2_LARB11				1
-+#define CLK_IMGSYS2_MFB					2
-+#define CLK_IMGSYS2_WPE					3
-+#define CLK_IMGSYS2_MSS					4
-+#define CLK_IMGSYS2_GALS				5
++static const char * const atb_parents[] = {
++	"clk26m",
++	"mainpll_d4_d2",
++	"mainpll_d5_d2"
++};
 +
-+/* VDEC_CORE */
-+#define CLK_VDEC_CORE_LARB_CKEN				0
-+#define CLK_VDEC_CORE_VDEC_CKEN				1
-+#define CLK_VDEC_CORE_VDEC_ACTIVE			2
++static const char * const aud_intbus_parents[] = {
++	"clk26m",
++	"mainpll_d4_d4",
++	"mainpll_d7_d4"
++};
 +
-+/* VENC_GCON */
-+#define CLK_VEN1_CKE0_LARB				0
-+#define CLK_VEN1_CKE1_VENC				1
-+#define CLK_VEN1_CKE2_JPGENC				2
-+#define CLK_VEN1_CKE3_JPGDEC				3
-+#define CLK_VEN1_CKE4_JPGDEC_C1				4
-+#define CLK_VEN1_CKE5_GALS				5
-+#define CLK_VEN1_CKE6_GALS_SRAM				6
++static const char * const msdc5hclk_parents[] = {
++	"clk26m",
++	"mainpll_d4_d2",
++	"mainpll_d6_d2"
++};
 +
-+/* VLPCFG_REG */
-+#define CLK_VLPCFG_REG_SCP				0
-+#define CLK_VLPCFG_REG_RG_R_APXGPT_26M			1
-+#define CLK_VLPCFG_REG_DPMSRCK_TEST			2
-+#define CLK_VLPCFG_REG_RG_DPMSRRTC_TEST			3
-+#define CLK_VLPCFG_REG_DPMSRULP_TEST			4
-+#define CLK_VLPCFG_REG_SPMI_P_MST			5
-+#define CLK_VLPCFG_REG_SPMI_P_MST_32K			6
-+#define CLK_VLPCFG_REG_PMIF_SPMI_P_SYS			7
-+#define CLK_VLPCFG_REG_PMIF_SPMI_P_TMR			8
-+#define CLK_VLPCFG_REG_PMIF_SPMI_M_SYS			9
-+#define CLK_VLPCFG_REG_PMIF_SPMI_M_TMR			10
-+#define CLK_VLPCFG_REG_DVFSRC				11
-+#define CLK_VLPCFG_REG_PWM_VLP				12
-+#define CLK_VLPCFG_REG_SRCK				13
-+#define CLK_VLPCFG_REG_SSPM_F26M			14
-+#define CLK_VLPCFG_REG_SSPM_F32K			15
-+#define CLK_VLPCFG_REG_SSPM_ULPOSC			16
-+#define CLK_VLPCFG_REG_VLP_32K_COM			17
-+#define CLK_VLPCFG_REG_VLP_26M_COM			18
++static const char * const pcie_mac_tl_parents[] = {
++	"clk26m",
++	"mainpll_d4_d4",
++	"univpll_d5_d4"
++};
 +
-+/* VLP_CKSYS */
-+#define CLK_VLP_CK_SCP_SEL				0
-+#define CLK_VLP_CK_PWRAP_ULPOSC_SEL			1
-+#define CLK_VLP_CK_SPMI_P_MST_SEL			2
-+#define CLK_VLP_CK_DVFSRC_SEL				3
-+#define CLK_VLP_CK_PWM_VLP_SEL				4
-+#define CLK_VLP_CK_AXI_VLP_SEL				5
-+#define CLK_VLP_CK_SYSTIMER_26M_SEL			6
-+#define CLK_VLP_CK_SSPM_SEL				7
-+#define CLK_VLP_CK_SSPM_F26M_SEL			8
-+#define CLK_VLP_CK_SRCK_SEL				9
-+#define CLK_VLP_CK_SCP_SPI_SEL				10
-+#define CLK_VLP_CK_SCP_IIC_SEL				11
-+#define CLK_VLP_CK_SCP_SPI_HIGH_SPD_SEL			12
-+#define CLK_VLP_CK_SCP_IIC_HIGH_SPD_SEL			13
-+#define CLK_VLP_CK_SSPM_ULPOSC_SEL			14
-+#define CLK_VLP_CK_APXGPT_26M_SEL			15
-+#define CLK_VLP_CK_VADSP_SEL				16
-+#define CLK_VLP_CK_VADSP_VOWPLL_SEL			17
-+#define CLK_VLP_CK_VADSP_UARTHUB_BCLK_SEL		18
-+#define CLK_VLP_CK_CAMTG0_SEL				19
-+#define CLK_VLP_CK_CAMTG1_SEL				20
-+#define CLK_VLP_CK_CAMTG2_SEL				21
-+#define CLK_VLP_CK_AUD_ADC_SEL				22
-+#define CLK_VLP_CK_KP_IRQ_GEN_SEL			23
-+#define CLK_VLP_CK_VADSYS_VLP_26M_EN			24
-+#define CLK_VLP_CK_SEJ_13M_EN				25
-+#define CLK_VLP_CK_SEJ_26M_EN				26
-+#define CLK_VLP_CK_FMIPI_CSI_UP26M_CK_EN		27
++static const char * const pll_dpix_parents[] = {
++	"clk26m",
++	"vpll_dpix",
++	"mmpll_d4_d4"
++};
 +
-+/* SCP_IIC */
-+#define CLK_SCP_IIC_I2C0_W1S				0
-+#define CLK_SCP_IIC_I2C1_W1S				1
++static const char * const usb_parents[] = {
++	"clk26m",
++	"univpll_d5_d4",
++	"univpll_d6_d4"
++};
 +
-+/* SCP */
-+#define CLK_SCP_SET_SPI0				0
-+#define CLK_SCP_SET_SPI1				1
++static const char * const vdstx_dg_cts_parents[] = {
++	"clk26m",
++	"lvdstx_dg_cts",
++	"univpll_d7_d3"
++};
 +
-+/* CAMSYS_MAIN */
-+#define CLK_CAM_M_LARB13				0
-+#define CLK_CAM_M_LARB14				1
-+#define CLK_CAM_M_CAMSYS_MAIN_CAM			2
-+#define CLK_CAM_M_CAMSYS_MAIN_CAMTG			3
-+#define CLK_CAM_M_SENINF				4
-+#define CLK_CAM_M_CAMSV1				5
-+#define CLK_CAM_M_CAMSV2				6
-+#define CLK_CAM_M_CAMSV3				7
-+#define CLK_CAM_M_FAKE_ENG				8
-+#define CLK_CAM_M_CAM2MM_GALS				9
-+#define CLK_CAM_M_CAMSV4				10
-+#define CLK_CAM_M_PDA					11
++static const char * const audio_h_parents[] = {
++	"clk26m",
++	"univpll_d7_d2",
++	"apll1",
++	"apll2"
++};
 +
-+/* CAMSYS_RAWA */
-+#define CLK_CAM_RA_CAMSYS_RAWA_LARBX			0
-+#define CLK_CAM_RA_CAMSYS_RAWA_CAM			1
-+#define CLK_CAM_RA_CAMSYS_RAWA_CAMTG			2
++static const char * const aud_engen1_parents[] = {
++	"clk26m",
++	"apll1_d2",
++	"apll1_d4",
++	"apll1_d8"
++};
 +
-+/* CAMSYS_RAWB */
-+#define CLK_CAM_RB_CAMSYS_RAWB_LARBX			0
-+#define CLK_CAM_RB_CAMSYS_RAWB_CAM			1
-+#define CLK_CAM_RB_CAMSYS_RAWB_CAMTG			2
++static const char * const aud_engen2_parents[] = {
++	"clk26m",
++	"apll2_d2",
++	"apll2_d4",
++	"apll2_d8"
++};
 +
-+/* IPESYS */
-+#define CLK_IPE_LARB19					0
-+#define CLK_IPE_LARB20					1
-+#define CLK_IPE_SMI_SUBCOM				2
-+#define CLK_IPE_FD					3
-+#define CLK_IPE_FE					4
-+#define CLK_IPE_RSC					5
-+#define CLK_IPESYS_GALS					6
++static const char * const axi_peri_parents[] = {
++	"clk26m",
++	"mainpll_d4_d4",
++	"mainpll_d7_d2",
++	"osc_d4"
++};
 +
-+/* VLPCFG_AO_REG */
-+#define CLK_VLPCFG_AO_APEINT_RX				0
++static const char * const axi_u_parents[] = {
++	"clk26m",
++	"mainpll_d4_d8",
++	"mainpll_d7_d4",
++	"osc_d8"
++};
 +
-+/* DVFSRC_TOP */
-+#define CLK_DVFSRC_TOP_DVFSRC_EN			0
++static const char * const camtm_parents[] = {
++	"clk26m",
++	"osc_d2",
++	"univpll_d6_d2",
++	"univpll_d6_d4"
++};
 +
-+/* MMINFRA_CONFIG */
-+#define CLK_MMINFRA_GCE_D				0
-+#define CLK_MMINFRA_GCE_M				1
-+#define CLK_MMINFRA_SMI					2
-+#define CLK_MMINFRA_GCE_26M				3
++static const char * const dsi_occ_parents[] = {
++	"clk26m",
++	"univpll_d6_d2",
++	"univpll_d5_d2",
++	"univpll_d4_d2"
++};
 +
-+/* GCE_D */
-+#define CLK_GCE_D_TOP					0
++static const char * const dxcc_parents[] = {
++	"clk26m",
++	"mainpll_d4_d8",
++	"mainpll_d4_d4",
++	"mainpll_d4_d2"
++};
 +
-+/* GCE_M */
-+#define CLK_GCE_M_TOP					0
++static const char * const i2c_parents[] = {
++	"clk26m",
++	"mainpll_d4_d8",
++	"univpll_d5_d4",
++	"mainpll_d4_d4"
++};
 +
-+/* MDPSYS_CONFIG */
-+#define CLK_MDP_MUTEX0					0
-+#define CLK_MDP_APB_BUS					1
-+#define CLK_MDP_SMI0					2
-+#define CLK_MDP_RDMA0					3
-+#define CLK_MDP_RDMA2					4
-+#define CLK_MDP_HDR0					5
-+#define CLK_MDP_AAL0					6
-+#define CLK_MDP_RSZ0					7
-+#define CLK_MDP_TDSHP0					8
-+#define CLK_MDP_COLOR0					9
-+#define CLK_MDP_WROT0					10
-+#define CLK_MDP_FAKE_ENG0				11
-+#define CLK_MDPSYS_CONFIG				12
-+#define CLK_MDP_RDMA1					13
-+#define CLK_MDP_RDMA3					14
-+#define CLK_MDP_HDR1					15
-+#define CLK_MDP_AAL1					16
-+#define CLK_MDP_RSZ1					17
-+#define CLK_MDP_TDSHP1					18
-+#define CLK_MDP_COLOR1					19
-+#define CLK_MDP_WROT1					20
-+#define CLK_MDP_RSZ2					21
-+#define CLK_MDP_WROT2					22
-+#define CLK_MDP_RSZ3					23
-+#define CLK_MDP_WROT3					24
-+#define CLK_MDP_BIRSZ0					25
-+#define CLK_MDP_BIRSZ1					26
++static const char * const mcupm_parents[] = {
++	"clk26m",
++	"univpll_d6_d2",
++	"mainpll_d5_d2",
++	"mainpll_d6_d2"
++};
 +
-+/* DBGAO */
-+#define CLK_DBGAO_ATB_EN				0
++static const char * const mfg_ref_parents[] = {
++	"clk26m",
++	"mainpll_d6_d2",
++	"mainpll_d6",
++	"mainpll_d5_d2"
++};
 +
-+/* DEM */
-+#define CLK_DEM_ATB_EN					0
-+#define CLK_DEM_BUSCLK_EN				1
-+#define CLK_DEM_SYSCLK_EN				2
++static const char * const msdc30_h_parents[] = {
++	"clk26m",
++	"msdcpll_d2",
++	"mainpll_d4_d4",
++	"mainpll_d6_d4"
++};
 +
-+#endif /* _DT_BINDINGS_CLK_MT8189_H */
++static const char * const msdc_macro_p_parents[] = {
++	"clk26m",
++	"msdcpll",
++	"mmpll_d5_d4",
++	"univpll_d4_d2"
++};
++
++static const char * const snps_eth_62p4m_ptp_parents[] = {
++	"clk26m",
++	"ethpll_d8",
++	"apll1_d3",
++	"apll2_d3"
++};
++
++static const char * const ufs_mbist_parents[] = {
++	"clk26m",
++	"mainpll_d4_d2",
++	"univpll_d4_d2",
++	"ufspll_d2"
++};
++
++static const char * const aes_msdcfde_parents[] = {
++	"clk26m",
++	"mainpll_d4_d2",
++	"mainpll_d6",
++	"mainpll_d4_d4",
++	"msdcpll"
++};
++
++static const char * const bus_aximem_parents[] = {
++	"clk26m",
++	"mainpll_d7_d2",
++	"mainpll_d5_d2",
++	"mainpll_d4_d2",
++	"mainpll_d6"
++};
++
++static const char * const dp_parents[] = {
++	"clk26m",
++	"tvdpll1_d16",
++	"tvdpll1_d8",
++	"tvdpll1_d4",
++	"tvdpll1_d2"
++};
++
++static const char * const msdc30_parents[] = {
++	"clk26m",
++	"univpll_d6_d2",
++	"mainpll_d6_d2",
++	"mainpll_d7_d2",
++	"msdcpll_d2"
++};
++
++static const char * const ecc_parents[] = {
++	"clk26m",
++	"univpll_d6_d2",
++	"univpll_d4_d2",
++	"univpll_d6",
++	"mainpll_d4",
++	"univpll_d4"
++};
++
++static const char * const emi_n_parents[] = {
++	"clk26m",
++	"osc_d2",
++	"mainpll_d9",
++	"mainpll_d6",
++	"mainpll_d5",
++	"emipll"
++};
++
++static const char * const sr_pka_parents[] = {
++	"clk26m",
++	"mainpll_d4_d4",
++	"mainpll_d4_d2",
++	"mainpll_d7",
++	"mainpll_d6",
++	"mainpll_d5"
++};
++
++static const char * const aes_ufsfde_parents[] = {
++	"clk26m",
++	"mainpll_d4",
++	"mainpll_d4_d2",
++	"mainpll_d6",
++	"mainpll_d4_d4",
++	"univpll_d4_d2",
++	"univpll_d6"
++};
++
++static const char * const axi_parents[] = {
++	"clk26m",
++	"mainpll_d4_d4",
++	"mainpll_d7_d2",
++	"mainpll_d4_d2",
++	"mainpll_d5_d2",
++	"mainpll_d6_d2",
++	"osc_d4"
++};
++
++static const char * const disp_pwm_parents[] = {
++	"clk26m",
++	"univpll_d6_d4",
++	"osc_d2",
++	"osc_d4",
++	"osc_d16",
++	"univpll_d5_d4",
++	"mainpll_d4_d4"
++};
++
++static const char * const edp_parents[] = {
++	"clk26m",
++	"tvdpll2_d16",
++	"tvdpll2_d8",
++	"tvdpll2_d4",
++	"tvdpll2_d2"
++};
++
++static const char * const gcpu_parents[] = {
++	"clk26m",
++	"mainpll_d6",
++	"mainpll_d4_d2",
++	"univpll_d4_d2",
++	"univpll_d5_d2",
++	"univpll_d5_d4",
++	"univpll_d6"
++};
++
++static const char * const msdc50_0_parents[] = {
++	"clk26m",
++	"msdcpll",
++	"msdcpll_d2",
++	"mainpll_d6_d2",
++	"mainpll_d4_d4",
++	"mainpll_d6",
++	"univpll_d4_d4"
++};
++
++static const char * const ufs_parents[] = {
++	"clk26m",
++	"mainpll_d4_d8",
++	"mainpll_d4_d4",
++	"mainpll_d5_d2",
++	"mainpll_d6_d2",
++	"univpll_d6_d2",
++	"msdcpll_d2"
++};
++
++static const char * const dsp_parents[] = {
++	"clk26m",
++	"osc_d4",
++	"osc_d3",
++	"osc_d2",
++	"univpll_d7_d2",
++	"univpll_d6_d2",
++	"mainpll_d6",
++	"univpll_d5"
++};
++
++static const char * const mem_sub_peri_u_parents[] = {
++	"clk26m",
++	"univpll_d4_d4",
++	"mainpll_d5_d2",
++	"mainpll_d4_d2",
++	"mainpll_d6",
++	"mainpll_d5",
++	"univpll_d5",
++	"mainpll_d4"
++};
++
++static const char * const seninf_parents[] = {
++	"clk26m",
++	"osc_d2",
++	"univpll_d6_d2",
++	"mainpll_d4_d2",
++	"univpll_d4_d2",
++	"mmpll_d7",
++	"univpll_d6",
++	"univpll_d5"
++};
++
++static const char * const sflash_parents[] = {
++	"clk26m",
++	"mainpll_d7_d8",
++	"univpll_d6_d8",
++	"mainpll_d7_d4",
++	"mainpll_d6_d4",
++	"univpll_d6_d4",
++	"univpll_d7_d3",
++	"univpll_d5_d4"
++};
++
++static const char * const spi_parents[] = {
++	"clk26m",
++	"univpll_d6_d2",
++	"univpll_192m",
++	"mainpll_d6_d2",
++	"univpll_d4_d4",
++	"mainpll_d4_d4",
++	"univpll_d5_d4",
++	"univpll_d6_d4"
++};
++
++static const char * const img1_parents[] = {
++	"clk26m",
++	"univpll_d4",
++	"mmpll_d5",
++	"mmpll_d6",
++	"univpll_d6",
++	"mmpll_d7",
++	"mmpll_d4_d2",
++	"univpll_d4_d2",
++	"mainpll_d4_d2",
++	"mmpll_d6_d2",
++	"mmpll_d5_d2"
++};
++
++static const char * const ipe_parents[] = {
++	"clk26m",
++	"univpll_d4",
++	"mainpll_d4",
++	"mmpll_d6",
++	"univpll_d6",
++	"mainpll_d6",
++	"mmpll_d4_d2",
++	"univpll_d4_d2",
++	"mainpll_d4_d2",
++	"mmpll_d6_d2",
++	"mmpll_d5_d2"
++};
++
++static const char * const mem_sub_parents[] = {
++	"clk26m",
++	"univpll_d4_d4",
++	"mainpll_d6_d2",
++	"mainpll_d5_d2",
++	"mainpll_d4_d2",
++	"mainpll_d6",
++	"mmpll_d7",
++	"mainpll_d5",
++	"univpll_d5",
++	"mainpll_d4",
++	"univpll_d4"
++};
++
++static const char * const cam_parents[] = {
++	"clk26m",
++	"mainpll_d4",
++	"mmpll_d4",
++	"univpll_d4",
++	"univpll_d5",
++	"mmpll_d7",
++	"mmpll_d6",
++	"univpll_d6",
++	"univpll_d4_d2",
++	"mmpll_d9",
++	"mainpll_d4_d2",
++	"osc_d2"
++};
++
++static const char * const mmsys_parents[] = {
++	"clk26m",
++	"mainpll_d5_d2",
++	"univpll_d5_d2",
++	"mainpll_d4_d2",
++	"univpll_d4_d2",
++	"mainpll_d6",
++	"univpll_d6",
++	"mmpll_d6",
++	"tvdpll1",
++	"tvdpll2",
++	"univpll_d4",
++	"mmpll_d4"
++};
++
++static const char * const mminfra_parents[] = {
++	"clk26m",
++	"osc_d2",
++	"mainpll_d5_d2",
++	"mmpll_d6_d2",
++	"mainpll_d4_d2",
++	"mmpll_d4_d2",
++	"mainpll_d6",
++	"mmpll_d7",
++	"univpll_d6",
++	"mainpll_d5",
++	"mmpll_d6",
++	"univpll_d5",
++	"mainpll_d4",
++	"univpll_d4",
++	"mmpll_d4",
++	"emipll"
++};
++
++static const char * const vdec_parents[] = {
++	"clk26m",
++	"univpll_192m_d2",
++	"univpll_d5_d4",
++	"mainpll_d5",
++	"mainpll_d5_d2",
++	"mmpll_d6_d2",
++	"univpll_d5_d2",
++	"mainpll_d4_d2",
++	"univpll_d4_d2",
++	"univpll_d7",
++	"mmpll_d7",
++	"mmpll_d6",
++	"univpll_d6",
++	"mainpll_d4",
++	"univpll_d4",
++	"mmpll_d5_d2"
++};
++
++static const char * const venc_parents[] = {
++	"clk26m",
++	"mmpll_d4_d2",
++	"mainpll_d6",
++	"univpll_d4_d2",
++	"mainpll_d4_d2",
++	"univpll_d6",
++	"mmpll_d6",
++	"mainpll_d5_d2",
++	"mainpll_d6_d2",
++	"mmpll_d9",
++	"mmpll_d4",
++	"mainpll_d4",
++	"univpll_d4",
++	"univpll_d5",
++	"univpll_d5_d2",
++	"mainpll_d5"
++};
++
++static const struct mtk_mux top_muxes[] = {
++	/* CLK_CFG_0 */
++	MUX_CLR_SET_UPD(CLK_TOP_AXI_SEL, "axi_sel",
++			axi_parents, 0x010, 0x014, 0x018, 0, 3, 0x04, 0),
++	MUX_CLR_SET_UPD(CLK_TOP_AXI_PERI_SEL, "axi_peri_sel",
++			axi_peri_parents, 0x010, 0x014, 0x018,
++			8, 2, 0x04, 1),
++	MUX_CLR_SET_UPD(CLK_TOP_AXI_U_SEL, "axi_u_sel",
++			axi_u_parents, 0x010, 0x014, 0x018,
++			16, 2, 0x04, 2),
++	MUX_CLR_SET_UPD(CLK_TOP_BUS_AXIMEM_SEL, "bus_aximem_sel",
++			bus_aximem_parents, 0x010, 0x014, 0x018,
++			24, 3, 0x04, 3),
++	/* CLK_CFG_1 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DISP0_SEL, "disp0_sel",
++			     mmsys_parents, 0x020, 0x024, 0x028,
++			     0, 4, 7, 0x04, 4),
++	MUX_CLR_SET_UPD(CLK_TOP_MMINFRA_SEL, "mminfra_sel",
++			mminfra_parents, 0x020, 0x024, 0x028,
++			8, 4, 0x04, 5),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_UART_SEL, "uart_sel",
++			     uart_parents, 0x020, 0x024, 0x028,
++			     16, 1, 23, 0x04, 6),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI0_SEL, "spi0_sel",
++			     spi_parents, 0x020, 0x024, 0x028,
++			     24, 3, 31, 0x04, 7),
++	/* CLK_CFG_2 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI1_SEL, "spi1_sel",
++			     spi_parents, 0x030, 0x034, 0x038,
++			     0, 3, 7, 0x04, 8),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI2_SEL, "spi2_sel",
++			     spi_parents, 0x030, 0x034, 0x038,
++			     8, 3, 15, 0x04, 9),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI3_SEL, "spi3_sel",
++			     spi_parents, 0x030, 0x034, 0x038,
++			     16, 3, 23, 0x04, 10),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI4_SEL, "spi4_sel",
++			     spi_parents, 0x030, 0x034, 0x038,
++			     24, 3, 31, 0x04, 11),
++	/* CLK_CFG_3 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SPI5_SEL, "spi5_sel",
++			     spi_parents, 0x040, 0x044, 0x048,
++			     0, 3, 7, 0x04, 12),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC_MACRO_0P_SEL, "msdc_macro_0p_sel",
++			     msdc_macro_p_parents, 0x040, 0x044, 0x048,
++			     8, 2, 15, 0x04, 13),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC50_0_HCLK_SEL, "msdc5hclk_sel",
++			     msdc5hclk_parents, 0x040, 0x044, 0x048,
++			     16, 2, 23, 0x04, 14),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC50_0_SEL, "msdc50_0_sel",
++			     msdc50_0_parents, 0x040, 0x044, 0x048,
++			     24, 3, 31, 0x04, 15),
++	/* CLK_CFG_4 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AES_MSDCFDE_SEL, "aes_msdcfde_sel",
++			     aes_msdcfde_parents, 0x050, 0x054, 0x058,
++			     0, 3, 7, 0x04, 16),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC_MACRO_1P_SEL, "msdc_macro_1p_sel",
++			     msdc_macro_p_parents, 0x050, 0x054, 0x058,
++			     8, 2, 15, 0x04, 17),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC30_1_SEL, "msdc30_1_sel",
++			     msdc30_parents, 0x050, 0x054, 0x058,
++			     16, 3, 23, 0x04, 18),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC30_1_HCLK_SEL, "msdc30_1_h_sel",
++			     msdc30_h_parents, 0x050, 0x054, 0x058,
++			     24, 2, 31, 0x04, 19),
++	/* CLK_CFG_5 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC_MACRO_2P_SEL, "msdc_macro_2p_sel",
++			     msdc_macro_p_parents, 0x060, 0x064, 0x068,
++			     0, 2, 7, 0x04, 20),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC30_2_SEL, "msdc30_2_sel",
++			     msdc30_parents, 0x060, 0x064, 0x068,
++			     8, 3, 15, 0x04, 21),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MSDC30_2_HCLK_SEL, "msdc30_2_h_sel",
++			     msdc30_h_parents, 0x060, 0x064, 0x068,
++			     16, 2, 23, 0x04, 22),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUD_INTBUS_SEL, "aud_intbus_sel",
++			     aud_intbus_parents, 0x060, 0x064, 0x068,
++			     24, 2, 31, 0x04, 23),
++	/* CLK_CFG_6 */
++	MUX_CLR_SET_UPD(CLK_TOP_ATB_SEL, "atb_sel",
++			atb_parents, 0x070, 0x074, 0x078, 0, 2, 0x04, 24),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DISP_PWM_SEL, "disp_pwm_sel",
++			     disp_pwm_parents, 0x070, 0x074, 0x078,
++			     8, 3, 15, 0x04, 25),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_TOP_P0_SEL, "usb_p0_sel",
++			     usb_parents, 0x070, 0x074, 0x078,
++			     16, 2, 23, 0x04, 26),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_XHCI_P0_SEL, "ssusb_xhci_p0_sel",
++			     usb_parents, 0x070, 0x074, 0x078,
++			     24, 2, 31, 0x04, 27),
++	/* CLK_CFG_7 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_TOP_P1_SEL, "usb_p1_sel",
++			     usb_parents, 0x080, 0x084, 0x088,
++			     0, 2, 7, 0x04, 28),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_XHCI_P1_SEL, "ssusb_xhci_p1_sel",
++			     usb_parents, 0x080, 0x084, 0x088,
++			     8, 2, 15, 0x04, 29),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_TOP_P2_SEL, "usb_p2_sel",
++			     usb_parents, 0x080, 0x084, 0x088,
++			     16, 2, 23, 0x04, 30),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_XHCI_P2_SEL, "ssusb_xhci_p2_sel",
++			     usb_parents, 0x080, 0x084, 0x088,
++			     24, 2, 31, 0x08, 0),
++	/* CLK_CFG_8 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_TOP_P3_SEL, "usb_p3_sel",
++			     usb_parents, 0x090, 0x094, 0x098,
++			     0, 2, 7, 0x08, 1),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_XHCI_P3_SEL, "ssusb_xhci_p3_sel",
++			     usb_parents, 0x090, 0x094, 0x098,
++			     8, 2, 15, 0x08, 2),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_TOP_P4_SEL, "usb_p4_sel",
++			     usb_parents, 0x090, 0x094, 0x098,
++			     16, 2, 23, 0x08, 3),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_USB_XHCI_P4_SEL, "ssusb_xhci_p4_sel",
++			     usb_parents, 0x090, 0x094, 0x098,
++			     24, 2, 31, 0x08, 4),
++	/* CLK_CFG_9 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_I2C_SEL, "i2c_sel",
++			     i2c_parents, 0x0a0, 0x0a4, 0x0a8,
++			     0, 2, 7, 0x08, 5),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SENINF_SEL, "seninf_sel",
++			     seninf_parents, 0x0a0, 0x0a4, 0x0a8,
++			     8, 3, 15, 0x08, 6),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SENINF1_SEL, "seninf1_sel",
++			     seninf_parents, 0x0a0, 0x0a4, 0x0a8,
++			     16, 3, 23, 0x08, 7),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUD_ENGEN1_SEL, "aud_engen1_sel",
++			     aud_engen1_parents, 0x0a0, 0x0a4, 0x0a8,
++			     24, 2, 31, 0x08, 8),
++	/* CLK_CFG_10 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUD_ENGEN2_SEL, "aud_engen2_sel",
++			     aud_engen2_parents, 0x0b0, 0x0b4, 0x0b8,
++			     0, 2, 7, 0x08, 9),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AES_UFSFDE_SEL, "aes_ufsfde_sel",
++			     aes_ufsfde_parents, 0x0b0, 0x0b4, 0x0b8,
++			     8, 3, 15, 0x08, 10),
++	MUX_CLR_SET_UPD(CLK_TOP_U_SEL, "ufs_sel",
++			ufs_parents, 0x0b0, 0x0b4, 0x0b8,
++			16, 3, 0x08, 11),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_U_MBIST_SEL, "ufs_mbist_sel",
++			     ufs_mbist_parents, 0x0b0, 0x0b4, 0x0b8,
++			     24, 2, 31, 0x08, 12),
++	/* CLK_CFG_11 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUD_1_SEL, "aud_1_sel",
++			     aud_1_parents, 0x0c0, 0x0c4, 0x0c8,
++			     0, 1, 7, 0x08, 13),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUD_2_SEL, "aud_2_sel",
++			     aud_2_parents, 0x0c0, 0x0c4, 0x0c8,
++			     8, 1, 15, 0x08, 14),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_VENC_SEL, "venc_sel",
++			     venc_parents, 0x0c0, 0x0c4, 0x0c8,
++			     16, 4, 23, 0x08, 15),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_VDEC_SEL, "vdec_sel",
++			     vdec_parents, 0x0c0, 0x0c4, 0x0c8,
++			     24, 4, 31, 0x08, 16),
++	/* CLK_CFG_12 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_PWM_SEL, "pwm_sel",
++			     pwm_parents, 0x0d0, 0x0d4, 0x0d8,
++			     0, 1, 7, 0x08, 17),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_AUDIO_H_SEL, "audio_h_sel",
++			     audio_h_parents, 0x0d0, 0x0d4, 0x0d8,
++			     8, 2, 15, 0x08, 18),
++	MUX_CLR_SET_UPD(CLK_TOP_MCUPM_SEL, "mcupm_sel",
++			mcupm_parents, 0x0d0, 0x0d4, 0x0d8,
++			16, 2, 0x08, 19),
++	MUX_CLR_SET_UPD(CLK_TOP_MEM_SUB_SEL, "mem_sub_sel",
++			mem_sub_parents, 0x0d0, 0x0d4, 0x0d8,
++			24, 4, 0x08, 20),
++	/* CLK_CFG_13 */
++	MUX_CLR_SET_UPD(CLK_TOP_MEM_SUB_PERI_SEL, "mem_sub_peri_sel",
++			mem_sub_peri_u_parents, 0x0e0, 0x0e4, 0x0e8,
++			0, 3, 0x08, 21),
++	MUX_CLR_SET_UPD(CLK_TOP_MEM_SUB_U_SEL, "mem_sub_u_sel",
++			mem_sub_peri_u_parents, 0x0e0, 0x0e4, 0x0e8,
++			8, 3, 0x08, 22),
++	MUX_CLR_SET_UPD(CLK_TOP_EMI_N_SEL, "emi_n_sel",
++			emi_n_parents, 0x0e0, 0x0e4, 0x0e8,
++			16, 3, 0x08, 23),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DSI_OCC_SEL, "dsi_occ_sel",
++			     dsi_occ_parents, 0x0e0, 0x0e4, 0x0e8,
++			     24, 2, 31, 0x08, 24),
++	/* CLK_CFG_14 */
++	MUX_CLR_SET_UPD(CLK_TOP_AP2CONN_HOST_SEL, "ap2conn_host_sel",
++			ap2conn_host_parents, 0x0f0, 0x0f4, 0x0f8,
++			0, 1, 0x08, 25),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_IMG1_SEL, "img1_sel",
++			     img1_parents, 0x0f0, 0x0f4, 0x0f8,
++			     8, 4, 15, 0x08, 26),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_IPE_SEL, "ipe_sel",
++			     ipe_parents, 0x0f0, 0x0f4, 0x0f8,
++			     16, 4, 23, 0x08, 27),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_CAM_SEL, "cam_sel",
++			     cam_parents, 0x0f0, 0x0f4, 0x0f8,
++			     24, 4, 31, 0x08, 28),
++	/* CLK_CFG_15 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_CAMTM_SEL, "camtm_sel",
++			     camtm_parents, 0x100, 0x104, 0x108,
++			     0, 2, 7, 0x08, 29),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DSP_SEL, "dsp_sel",
++			     dsp_parents, 0x100, 0x104, 0x108,
++			     8, 3, 15, 0x08, 30),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_SR_PKA_SEL, "sr_pka_sel",
++			     sr_pka_parents, 0x100, 0x104, 0x108,
++			     16, 3, 23, 0x0c, 0),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DXCC_SEL, "dxcc_sel",
++			     dxcc_parents, 0x100, 0x104, 0x108,
++			     24, 2, 31, 0x0c, 1),
++	/* CLK_CFG_16 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MFG_REF_SEL, "mfg_ref_sel",
++			     mfg_ref_parents, 0x110, 0x114, 0x118,
++			     0, 2, 7, 0x0c, 2),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MDP0_SEL, "mdp0_sel",
++			     mmsys_parents, 0x110, 0x114, 0x118,
++			     8, 4, 15, 0x0c, 3),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_DP_SEL, "dp_sel",
++			     dp_parents, 0x110, 0x114, 0x118,
++			     16, 3, 23, 0x0c, 4),
++	MUX_CLR_SET_UPD(CLK_TOP_EDP_SEL, "edp_sel",
++			edp_parents, 0x110, 0x114, 0x118,
++			24, 3, 0x0c, 5),
++	/* CLK_CFG_17 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_EDP_FAVT_SEL, "edp_favt_sel",
++			     edp_parents, 0x180, 0x184, 0x188,
++			     0, 3, 7, 0x0c, 6),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_ETH_250M_SEL, "snps_eth_250m_sel",
++			     snps_eth_250m_parents, 0x180, 0x184, 0x188,
++			     8, 1, 15, 0x0c, 7),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_ETH_62P4M_PTP_SEL,
++			     "snps_eth_62p4m_ptp_sel",
++			     snps_eth_62p4m_ptp_parents,
++			     0x180, 0x184, 0x188, 16, 2, 23, 0x0c, 8),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_ETH_50M_RMII_SEL,
++			     "snps_eth_50m_rmii_sel",
++			     snps_eth_50m_rmii_parents,
++			     0x180, 0x184, 0x188, 24, 1, 31, 0x0c, 9),
++	/* CLK_CFG_18 */
++	MUX_CLR_SET_UPD(CLK_TOP_SFLASH_SEL, "sflash_sel",
++			sflash_parents, 0x190, 0x194, 0x198,
++			0, 3, 0x0c, 10),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_GCPU_SEL, "gcpu_sel",
++			     gcpu_parents, 0x190, 0x194, 0x198,
++			     8, 3, 15, 0x0c, 11),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_MAC_TL_SEL, "pcie_mac_tl_sel",
++			     pcie_mac_tl_parents, 0x190, 0x194, 0x198,
++			     16, 2, 23, 0x0c, 12),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_VDSTX_DG_CTS_SEL, "vdstx_dg_cts_sel",
++			     vdstx_dg_cts_parents, 0x190, 0x194, 0x198,
++			     24, 2, 31, 0x0c, 13),
++	/* CLK_CFG_19 */
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_PLL_DPIX_SEL, "pll_dpix_sel",
++			     pll_dpix_parents, 0x240, 0x244, 0x248,
++			     0, 2, 7, 0x0c, 14),
++	MUX_GATE_CLR_SET_UPD(CLK_TOP_ECC_SEL, "ecc_sel",
++			     ecc_parents, 0x240, 0x244, 0x248,
++			     8, 3, 15, 0x0c, 15),
++	/* CLK_MISC_CFG_3 */
++	GATE_CLR_SET_UPD_FLAGS(CLK_TOP_MFG_SEL_MFGPLL, "mfg_sel_mfgpll",
++			       mfg_sel_mfgpll_parents,
++			       0x510, 0x514, 0x0518, 16, 1, 0, -1, -1,
++			       CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT,
++			       mtk_mux_clr_set_upd_ops)
++};
++
++static const struct mtk_composite top_composites[] = {
++	/* CLK_AUDDIV_0 */
++	MUX(CLK_TOP_APLL_I2SIN0_MCK_SEL, "apll_i2sin0_m_sel",
++	    apll_m_parents, 0x0320, 16, 1),
++	MUX(CLK_TOP_APLL_I2SIN1_MCK_SEL, "apll_i2sin1_m_sel",
++	    apll_m_parents, 0x0320, 17, 1),
++	MUX(CLK_TOP_APLL_I2SIN2_MCK_SEL, "apll_i2sin2_m_sel",
++	    apll_m_parents, 0x0320, 18, 1),
++	MUX(CLK_TOP_APLL_I2SIN3_MCK_SEL, "apll_i2sin3_m_sel",
++	    apll_m_parents, 0x0320, 19, 1),
++	MUX(CLK_TOP_APLL_I2SIN4_MCK_SEL, "apll_i2sin4_m_sel",
++	    apll_m_parents, 0x0320, 20, 1),
++	MUX(CLK_TOP_APLL_I2SIN6_MCK_SEL, "apll_i2sin6_m_sel",
++	    apll_m_parents, 0x0320, 21, 1),
++	MUX(CLK_TOP_APLL_I2SOUT0_MCK_SEL, "apll_i2sout0_m_sel",
++	    apll_m_parents, 0x0320, 22, 1),
++	MUX(CLK_TOP_APLL_I2SOUT1_MCK_SEL, "apll_i2sout1_m_sel",
++	    apll_m_parents, 0x0320, 23, 1),
++	MUX(CLK_TOP_APLL_I2SOUT2_MCK_SEL, "apll_i2sout2_m_sel",
++	    apll_m_parents, 0x0320, 24, 1),
++	MUX(CLK_TOP_APLL_I2SOUT3_MCK_SEL, "apll_i2sout3_m_sel",
++	    apll_m_parents, 0x0320, 25, 1),
++	MUX(CLK_TOP_APLL_I2SOUT4_MCK_SEL, "apll_i2sout4_m_sel",
++	    apll_m_parents, 0x0320, 26, 1),
++	MUX(CLK_TOP_APLL_I2SOUT6_MCK_SEL, "apll_i2sout6_m_sel",
++	    apll_m_parents, 0x0320, 27, 1),
++	MUX(CLK_TOP_APLL_FMI2S_MCK_SEL, "apll_fmi2s_m_sel",
++	    apll_m_parents, 0x0320, 28, 1),
++	MUX(CLK_TOP_APLL_TDMOUT_MCK_SEL, "apll_tdmout_m_sel",
++	    apll_m_parents, 0x0320, 29, 1),
++	/* CLK_AUDDIV_2 */
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_I2SIN0, "apll12_div_i2sin0",
++		 "apll_i2sin0_m_sel", 0x0320, 0, 0x0328, 8, 0),
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_I2SIN1, "apll12_div_i2sin1",
++		 "apll_i2sin1_m_sel", 0x0320, 1, 0x0328, 8, 8),
++	/* CLK_AUDDIV_3 */
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_I2SOUT0, "apll12_div_i2sout0",
++		 "apll_i2sout0_m_sel", 0x0320, 6, 0x0334, 8, 16),
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_I2SOUT1, "apll12_div_i2sout1",
++		 "apll_i2sout1_m_sel", 0x0320, 7, 0x0334, 8, 24),
++	/* CLK_AUDDIV_5 */
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_FMI2S, "apll12_div_fmi2s",
++		 "apll_fmi2s_m_sel", 0x0320, 12, 0x033c, 8, 0),
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_TDMOUT_M, "apll12_div_tdmout_m",
++		 "apll_tdmout_m_sel", 0x0320, 13, 0x033c, 8, 8),
++	DIV_GATE(CLK_TOP_APLL12_CK_DIV_TDMOUT_B, "apll12_div_tdmout_b",
++		 "apll12_div_tdmout_m", 0x0320, 14, 0x033c, 8, 16),
++};
++
++static const struct mtk_gate_regs top_cg_regs = {
++	.set_ofs = 0x514,
++	.clr_ofs = 0x518,
++	.sta_ofs = 0x510,
++};
++
++#define GATE_TOP_FLAGS(_id, _name, _parent, _shift, _flag) {	\
++		.id = _id,				\
++		.name = _name,				\
++		.parent_name = _parent,			\
++		.regs = &top_cg_regs,			\
++		.shift = _shift,			\
++		.flags = _flag,				\
++		.ops = &mtk_clk_gate_ops_setclr_inv,	\
++	}
++
++#define GATE_TOP(_id, _name, _parent, _shift)		\
++	GATE_TOP_FLAGS(_id, _name, _parent, _shift, 0)
++
++static const struct mtk_gate top_clks[] = {
++	GATE_TOP_FLAGS(CLK_TOP_FMCNT_P0_EN, "fmcnt_p0_en", "univpll_192m_d4", 0, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_FMCNT_P1_EN, "fmcnt_p1_en", "univpll_192m_d4", 1, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_FMCNT_P2_EN, "fmcnt_p2_en", "univpll_192m_d4", 2, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_FMCNT_P3_EN, "fmcnt_p3_en", "univpll_192m_d4", 3, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_FMCNT_P4_EN, "fmcnt_p4_en", "univpll_192m_d4", 4, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_USB_F26M_CK_EN, "ssusb_f26m", "clk26m", 5, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_SSPXTP_F26M_CK_EN, "sspxtp_f26m", "clk26m", 6, CLK_IS_CRITICAL),
++	GATE_TOP(CLK_TOP_USB2_PHY_RF_P0_EN, "usb2_phy_rf_p0_en", "clk26m", 7),
++	GATE_TOP(CLK_TOP_USB2_PHY_RF_P1_EN, "usb2_phy_rf_p1_en", "clk26m", 10),
++	GATE_TOP(CLK_TOP_USB2_PHY_RF_P2_EN, "usb2_phy_rf_p2_en", "clk26m", 11),
++	GATE_TOP(CLK_TOP_USB2_PHY_RF_P3_EN, "usb2_phy_rf_p3_en", "clk26m", 12),
++	GATE_TOP(CLK_TOP_USB2_PHY_RF_P4_EN, "usb2_phy_rf_p4_en", "clk26m", 13),
++	GATE_TOP_FLAGS(CLK_TOP_USB2_26M_CK_P0_EN, "usb2_26m_p0_en", "clk26m", 14, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_USB2_26M_CK_P1_EN, "usb2_26m_p1_en", "clk26m", 15, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_USB2_26M_CK_P2_EN, "usb2_26m_p2_en", "clk26m", 18, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_USB2_26M_CK_P3_EN, "usb2_26m_p3_en", "clk26m", 19, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_USB2_26M_CK_P4_EN, "usb2_26m_p4_en", "clk26m", 20, CLK_IS_CRITICAL),
++	GATE_TOP(CLK_TOP_F26M_CK_EN, "pcie_f26m", "clk26m", 21),
++	GATE_TOP_FLAGS(CLK_TOP_AP2CON_EN, "ap2con", "clk26m", 24, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_EINT_N_EN, "eint_n", "clk26m", 25, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_TOPCKGEN_FMIPI_CSI_UP26M_CK_EN,
++		       "TOPCKGEN_fmipi_csi_up26m", "osc_d10", 26, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_EINT_E_EN, "eint_e", "clk26m", 28, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_EINT_W_EN, "eint_w", "clk26m", 30, CLK_IS_CRITICAL),
++	GATE_TOP_FLAGS(CLK_TOP_EINT_S_EN, "eint_s", "clk26m", 31, CLK_IS_CRITICAL),
++};
++
++/* Register mux notifier for MFG mux */
++static int clk_mt8189_reg_mfg_mux_notifier(struct device *dev,
++					   struct clk *clk)
++{
++	struct mtk_mux_nb *mfg_mux_nb;
++
++	mfg_mux_nb = devm_kzalloc(dev, sizeof(*mfg_mux_nb), GFP_KERNEL);
++	if (!mfg_mux_nb)
++		return -ENOMEM;
++
++	mfg_mux_nb->ops = &mtk_mux_clr_set_upd_ops;
++	mfg_mux_nb->bypass_index = 0; /* Bypass to CLK_TOP_MFG_REF_SEL */
++
++	return devm_mtk_clk_mux_notifier_register(dev, clk, mfg_mux_nb);
++}
++
++static const struct mtk_clk_desc topck_desc = {
++	.factor_clks = top_divs,
++	.num_factor_clks = ARRAY_SIZE(top_divs),
++	.mux_clks = top_muxes,
++	.num_mux_clks = ARRAY_SIZE(top_muxes),
++	.composite_clks = top_composites,
++	.num_composite_clks = ARRAY_SIZE(top_composites),
++	.clks = top_clks,
++	.num_clks = ARRAY_SIZE(top_clks),
++	.clk_notifier_func = clk_mt8189_reg_mfg_mux_notifier,
++	.mfg_clk_idx = CLK_TOP_MFG_SEL_MFGPLL,
++	.clk_lock = &mt8189_clk_lock,
++};
++
++static const struct of_device_id of_match_clk_mt8189_topck[] = {
++	{ .compatible = "mediatek,mt8189-topckgen", .data = &topck_desc },
++	{ /* sentinel */ }
++};
++
++static struct platform_driver clk_mt8189_topck_drv = {
++	.probe = mtk_clk_simple_probe,
++	.remove = mtk_clk_simple_remove,
++	.driver = {
++		.name = "clk-mt8189-topck",
++		.of_match_table = of_match_clk_mt8189_topck,
++	},
++};
++
++module_platform_driver(clk_mt8189_topck_drv);
++MODULE_DESCRIPTION("MediaTek MT8189 topckgen clocks driver");
++MODULE_LICENSE("GPL");
 -- 
 2.45.2
 
