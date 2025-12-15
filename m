@@ -1,66 +1,66 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C969A330B01
-	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 11:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D7A330B11
+	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 11:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765798755; cv=none; b=u5e8BNGN/f91kCzGPMV0WLdaNZgpuXmE8Ic+ioUkYF2PjthKhPrcjlnotL+dApHd9gk7mh52lM0nIDaUm3u6czy2Y9GSHz8T6U0VHYDiL1710Bzwy4kdhOtBxxsI8uxNNk3KUXZoTrPdkzHebTz9qN4UL+0YAksilT6CYkCzpXQ=
+	t=1765798755; cv=none; b=VeJWn3lOqTfyufwjSiQTLnJa7QqArZyGUSkgaIkUAfPQwbfsqx3FB2tbPhpWBepEQ0JbOhKc+77wS5SwRwi++23OFzLLnLoIv89rDKpkROxcnmuA/BwJlImytbibrVhisdKoDFFweeYju0xng0t8PKjemn7yp4pykTLH1pzQb0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765798755; c=relaxed/simple;
-	bh=1tOY86lhWOCbSHsqmK/tuDEilXGPwKXl/15tM3wSixs=;
+	bh=mcnZ1soLgF/JTT1YuxC/XOQhVy9SZYDoshinxHejwDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMvWu8vFsYIRar9VnJoxurFnTDlH7shEQjvZszmT23pkbPIkyEAax+hTY6vHnnEwyGJcG8eyYNqEHKf7GUaHsJtv5uQLN5QUAAVRepdPLREp8WhNhMM1goqjv7C1rTzLA7UL2gLCtQb+tUA/0V8KFnPxXwxD3i4ptFLy5CJ0gJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tojwlwse; arc=none smtp.client-ip=209.85.216.47
+	 MIME-Version; b=uWmpeFOkjN27ha1Mq1QR4n3U7/fyIhSW+QylccWVIbwjRw7jpZfT47p48fQG0rbEew30DZVNXRfPBxcL3cvje+GUO5VC8Z8GdOB0/9XXfGTK6zgpdwBmHBHeQSELpXIplnAbu81laPlTPr6NSoILPXiVYOcP+Wdz3twyn+laqhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dvrDFpz5; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tojwlwse"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34c213f7690so1777864a91.2
-        for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 03:39:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dvrDFpz5"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso3579468b3a.2
+        for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 03:39:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765798752; x=1766403552; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765798753; x=1766403553; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TWXueLrhDneeDmCGizpSHzMSgAg8yMgxTmeT/qXEn+I=;
-        b=TojwlwseVX+yx8hiv6n42hswCsaChjgYL7PZiLWeal4LB2weD0075dxOBQbjM2/VH3
-         LbQuoXw+owmioB9Y1rSG4HbW/yf2TRUTHH8DKIRA9EbKUZF9HKtEE/09znZ8i49Z2wvY
-         IsouIW+CiFxgM/HujW+0dJeaPdSx983d0AAmLFtrYEO/a5gtleSWwPmTPr1Ky5NHHNm6
-         ennU+kXIpbuvsUaEd5FbjPMEQJpoSRYOHN506DBFi+vp3gexG9caYgTxYlwvobzYrfBe
-         +s/5okQ5trSeDdrw2d+5mHJOsXxuO64dtKvi9mxaXjM7mayzWPr1E2NUzjlU3q40K4IW
-         LFMg==
+        bh=lORwJoeOdmqWvp6Gaq9g1tKkad6KEP5mAC3mejLEu6E=;
+        b=dvrDFpz59wUBAQj8mWk3dRETxpnBYFVsfn1kb2lz+IM9uRySwAiZd3SIwFvwBX5gEW
+         jqUrf9C94sp6be2ivLljvjYd3OGkbYZBMKK0ebKge94fbdIVk+nWAEHGdTC/RaAF7KED
+         kzbvDSqJMnjGmSuBWxyeokl21bELVCdKyfXYC/8hRsBBftYXaETMa7WSku6MIUCriAL6
+         Hm/AI+wsn1WNk8maXf515OzgdeS9Xmuc4WM/xTSlVeK2VCCaMI/YTZof5ENPVWjh9eTo
+         GF2n2QaFq/Q40woBy95lVKLwE0TjSYJtdXJtDUYKVkZmLUvSshxKR6/cnO2jcvONw5tq
+         K0jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765798752; x=1766403552;
+        d=1e100.net; s=20230601; t=1765798753; x=1766403553;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=TWXueLrhDneeDmCGizpSHzMSgAg8yMgxTmeT/qXEn+I=;
-        b=U3pbD8BoKBB9CPl/nloFWAnCZtxzSM9GuryWZ8cax9EiltysrYBc0EzxqOM055JNsI
-         9TuH0iZLC/UteS1rwIJA12IT05RGwRPRwThisKmnvQq+38jqco+11L+MQkJUDnhX2iP4
-         lE6qK37AaE5yfUXCPBOSmz0Iy0SUoBMLcR+gPO/BE8m2yRD6kiTx6zLvv8MPkBFfyJiu
-         4WldZTbeLQaJTdILvKLxRrgEh3mSdtBU1CbokeehqAqZoSLhZJML7RSKbfu/0SoO64r/
-         VkP9e6sQ1LlIZPf7BRUQlhmxHVWxxOScP5+NXmEvNQ0hM8CF7YkpuZ/1dlZCGeaxAjbK
-         NJHw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjJk3eHQdH5NM8kB/m1YaQKh0HA6muVZhx7pq6RWUpxjSVGTnfmOnCzxxlOP7tifHDe/QSnDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFDAnBqo2Nsn4mAXQyYeY1cTSCTmaaqMMHJYDUtEGHJlahwM2f
-	wNdYJLgLQaqa6YHkU6Ew90XW/VmPhfrEqSmUDSgDI19+Q3K6S6pzFZT/
-X-Gm-Gg: AY/fxX6jK1k4egO+0YaUMUUp5ZBFGACuSppsc1VuWeyc8zyHungaGDS2n3RR3SEmLBT
-	rBH/agbrYOul2KW3y+AYRxatSdAjuegL7L48Ny7fEVxc5g0j2OxK5sTEoNyD2wmNNU69jHQkqXl
-	cgk4Q9st0QkPrhs5MUyMImgPXgJVp+W0x6uWPi+Q5H4bGRPq4Z8x/VEyMj0s6sIrcBqestvJcnF
-	v1cvRi7+fkRLJ60HFTT96ipHEn2iUhT/hYLbE/hqbsasrPxic1nTlxAGNYUgbgKuaLUi8r2mcFU
-	aGWyel7SpSlJrDI5UfSkgT+UJGZp8ziTVLaG2Q16LB5TYdoZ3HnLmmbAdLuMKZUBKMSipboPFBA
-	95B3ZimWQXusmsno0DBe05CSuT+WEOWuZdJgh1WRHHkaXZhoqsevyCj4eGn00osQjxyfo6TPGv2
-	l9RhWacS7EPFQ=
-X-Google-Smtp-Source: AGHT+IHBwyvn37cMWft6XaLu78i521F3TitB1ZgZCjrLkgz/dWJXwkRq1mT1+qz6m/LgaTgF4rxTDQ==
-X-Received: by 2002:a17:903:3d10:b0:2a0:a4b7:44af with SMTP id d9443c01a7336-2a0a4b74893mr49683665ad.26.1765798752075;
+        bh=lORwJoeOdmqWvp6Gaq9g1tKkad6KEP5mAC3mejLEu6E=;
+        b=hy9VumqR0grHpZwMTFX0+XK4D0VO050MlqCjPmHuMsSbNso5c1pQxY36SkUZ72GNIB
+         6lGEb3UXVooD2nFlk7WP7G8Fn+yu2C4r9mILxREoyXJ0wZ2HcmxRsoYQYMR4HIlFzkWB
+         Oq5e1suTRQVa6bJ9dpK6hFbzfeiAaakwoL6z6dI/xV5/hKoKYTXLvpUHw/fzstK1E1lI
+         EwlT3a5MfSE9Vasc7AAgNloKu2GttU/+UlHheLeBKumNMCpvBOZrQU6eGckBA8CjJ+97
+         f1hYElnCUkJVBs6NlXGZ0tlMW5zKrU7HX/BoxUEsusBiODOF/fm7xMbOUm+OVWedIZXa
+         rR6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUaVgQ1h0V7lLPT+0PXQo5ukfHHxfG2slqkXCLb0d4Vb7d8KNG74lz18WiYNsE/HW7XpHwQIpU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLU+TB7YVSzNwoNahS7dVaJgn+9ckxPacjGDIu5wgQwPf+b5rr
+	H93uvFBePgedfqvoEbz/APA+cmU5L5evMIr37W/fswBr3GP5BrLMUZEy
+X-Gm-Gg: AY/fxX6Ymi63RXURwVMrH5nIZbKW/UFFrWgEI4/8KHpRRXfRCPqw5GhNOF3R1pmXtIu
+	MMKKhaOioJLSXxpq0SLBO8gme9+JlxafLlKNfhzUbtVpjHZt3saGAy7jiTvM6GhgkeSXAeBT6sS
+	eo6wvGhd9tBdEcXtAnzcDof3jv/GAv378lKvK/Ekr2S+tJLsnTYVXNccTn8VWJoL32XZP3PU2H0
+	PPexRMHsyDobyi/8c4B/z0uVQoPkWockDtnCoSSLE/mVwe0ScgfcdbUffgZ6SEwTu9eNgYndjgV
+	qGGceBN4LqdnQ0a/qCCdMXHD4P6cuIfgzpyRoNvfiTCCOn2ZE6kxPdSCmilEMXuFtcqIngfgi4H
+	p3PMBZR+SXrqnPybZ/ADY5gob4LjaebHhP2N/kaQqAku7QJmaG0SFsNhMfU5vRwt1AFTX+sHvn5
+	6HNX3rAksutv0=
+X-Google-Smtp-Source: AGHT+IH43ZxDlO+sXZpKsRY9ws0CLb4ZSMlMGi8iin8W4Uc9EL2/AE6hhR6bEKC++ztievLapVcsEA==
+X-Received: by 2002:a05:6a20:6a28:b0:364:387:8f4e with SMTP id adf61e73a8af0-369ae490337mr10620715637.34.1765798752795;
         Mon, 15 Dec 2025 03:39:12 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d36ddcsm132733715ad.32.2025.12.15.03.39.10
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2ae4e3casm12755809a12.21.2025.12.15.03.39.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 03:39:11 -0800 (PST)
+        Mon, 15 Dec 2025 03:39:12 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id 504F3444B392; Mon, 15 Dec 2025 18:39:05 +0700 (WIB)
+	id 811FA444B394; Mon, 15 Dec 2025 18:39:06 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
@@ -147,11 +147,10 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	Charles Han <hanchunchao@inspur.com>,
 	Jilin Yuan <yuanjilin@cdjrlc.com>,
 	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	George Anthony Vernon <contact@gvernon.com>,
-	Thomas Graf <tgraf@suug.ch>
-Subject: [PATCH 03/14] textsearch: Describe @list member in ts_ops search
-Date: Mon, 15 Dec 2025 18:38:51 +0700
-Message-ID: <20251215113903.46555-4-bagasdotme@gmail.com>
+	George Anthony Vernon <contact@gvernon.com>
+Subject: [PATCH 05/14] mm, kfence: Describe @slab parameter in __kfence_obj_info()
+Date: Mon, 15 Dec 2025 18:38:53 +0700
+Message-ID: <20251215113903.46555-6-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215113903.46555-1-bagasdotme@gmail.com>
 References: <20251215113903.46555-1-bagasdotme@gmail.com>
@@ -161,36 +160,34 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=896; i=bagasdotme@gmail.com; h=from:subject; bh=1tOY86lhWOCbSHsqmK/tuDEilXGPwKXl/15tM3wSixs=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4Mqzx7cbGl2s1Xb5iYDm7bLkws+2881173X3pa/f UbeT2+PjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAEzk0hqGfzoRZw50iXbWS+pV RRyxzVGfNT/eQV3w9+MclUw9PumMlYwMO5cdc7i131P/rrG85octa1tun66WP3rW6W/Ropnr7E6 G8AIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=849; i=bagasdotme@gmail.com; h=from:subject; bh=mcnZ1soLgF/JTT1YuxC/XOQhVy9SZYDoshinxHejwDU=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJn2n4P0Tdf6vI2dt8iwUrrPLU6ToytxCmtRXso3wY/50 fGG9Ws6SlkYxLgYZMUUWSYl8jWd3mUkcqF9rSPMHFYmkCEMXJwCMBHZKwz/nVbIB4ee2zunpOHQ vBz35Ga7xwYL3V6/ES+tt/jmsMTsOCPDXNsiGd24sMjVrB9Z5rD2NZvPm8/+bp/rS8/i2IdH8rc yAgA=
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
 Sphinx reports kernel-doc warning:
 
-WARNING: ./include/linux/textsearch.h:49 struct member 'list' not described in 'ts_ops'
+WARNING: ./include/linux/kfence.h:220 function parameter 'slab' not described in '__kfence_obj_info'
 
-Describe @list member to fix it.
+Fix it by describing @slab parameter.
 
-Cc: Thomas Graf <tgraf@suug.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Fixes: 2de4ff7bd658c9 ("[LIB]: Textsearch infrastructure.")
+Fixes: 2dfe63e61cc31e ("mm, kfence: support kmem_dump_obj() for KFENCE objects")
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- include/linux/textsearch.h | 1 +
+ include/linux/kfence.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/textsearch.h b/include/linux/textsearch.h
-index 6673e4d4ac2e1b..4933777404d618 100644
---- a/include/linux/textsearch.h
-+++ b/include/linux/textsearch.h
-@@ -35,6 +35,7 @@ struct ts_state
-  * @get_pattern: return head of pattern
-  * @get_pattern_len: return length of pattern
-  * @owner: module reference to algorithm
-+ * @list: list to search
-  */
- struct ts_ops
- {
+diff --git a/include/linux/kfence.h b/include/linux/kfence.h
+index 0ad1ddbb8b996a..e5822f6e7f2794 100644
+--- a/include/linux/kfence.h
++++ b/include/linux/kfence.h
+@@ -211,6 +211,7 @@ struct kmem_obj_info;
+  * __kfence_obj_info() - fill kmem_obj_info struct
+  * @kpp: kmem_obj_info to be filled
+  * @object: the object
++ * @slab: the slab
+  *
+  * Return:
+  * * false - not a KFENCE object
 -- 
 An old man doll... just what I always wanted! - Clara
 
