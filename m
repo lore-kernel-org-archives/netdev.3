@@ -1,131 +1,145 @@
-Received: from mail1.out.flockmail.com (mail1.out.flockmail.com [35.175.0.24])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1478299923
-	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 03:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.175.0.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE4F2D1303;
+	Mon, 15 Dec 2025 03:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765770157; cv=none; b=Oqc3SK36Uw9lFC23n2DVVQfK+2ATMIkKZ2l9miO8k2HzQb8wwzAK9rhyavhuD1jTdVTCzLXtrDh3LdGUjtuSXtuEENsQ6Qb1luIbLIuMyTzMQQ15baJ4a2yd8rqaYLReRE+YoCSmYZRDe3Zrmu+fH3RW1TnZAkOTUMJwdk88EPc=
+	t=1765770608; cv=none; b=UnfUyxfDSRSksNxMw2k7vrhxW8DBbOoy+LMH23fMgfnl0acc1FmNZ3xPBia68fKTRXwLJ9xLrYrRZjcxyIhTRFdLgWhJO7FvcKanuQBT5zeI7lSNGdFREMbA81pQz7NpENidAYoZJyJhJUkwlGBI0r8nWkFeh3ZTgxgPCPLss8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765770157; c=relaxed/simple;
-	bh=J18Jw5H9RPUchSnE0svQUKBZBIqeUdP4PUjtGE7O8Wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kVuaPIOQExyzR3F4UIfxvXY0hga50BuXfEMJWpBRckgAOPvvXO+OBqh5CNsaUuORsPoA1N6dT7AtONdfLaz2DR5p0hzLYZCHM0eyVJmdmlRuC4MFJkzsL6Vn43UFzpkOXv0CjZ/fR3SoZYFFLUq+Z27XmveB+QyLwR5hAoWJoY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b=SpArnzPt; arc=none smtp.client-ip=35.175.0.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	s=arc-20240116; t=1765770608; c=relaxed/simple;
+	bh=qpCHQwk5EAwlgwVvvAIKWkbsUDUiVBaoGuPGzjzVT/4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EIX3fgMU0Nz6gGZKuBJ9Fxq4Q73sYs0B+jw7jgfP9j/g8aC53eA8OANEqjUUc6NDgG92UgFJM6Gg+QDv1ZJU38ZlA1FI5pWCdyHNKeYbE3xd6LjqmLDmJrRSZtuvZsRgafsmpWLho6HyOH0C/X4zwsh/SAHTcOsfn6fgnKVlBeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=qwoQzAkc; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b="SpArnzPt"
-Received: from localhost (localhost [127.0.0.1])
-	by smtp-out.flockmail.com (Postfix) with ESMTP id 4dV5VF1n63z2xBK;
-	Mon, 15 Dec 2025 03:42:29 +0000 (UTC)
-DKIM-Signature: a=rsa-sha256; bh=bKCrOiA7/P+MZsTh36bLrFTi2l+0P02csnPywnMu9Xg=;
-	c=relaxed/relaxed; d=ziyao.cc;
-	h=from:cc:message-id:to:in-reply-to:date:references:subject:mime-version:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
-	q=dns/txt; s=titan1; t=1765770149; v=1;
-	b=SpArnzPtGR+gmQFp9upU0+tvZNQLhbhEhkIHW65IPvqideBGFZeY6JqgmPNywozHVBiOrjJh
-	deVfVmvu+zVYhu3g5X7f/e+4GvBMf/EykstgPEEvJ9xXoRuMRXoC4WAv9hQEjZIJ4nyvwQQwqgv
-	YHSonP3FxumyFpYuQsYVcNI8=
-Received: from pie (unknown [117.171.66.90])
-	by smtp-out.flockmail.com (Postfix) with ESMTPA id 4dV5V874j5z2x9X;
-	Mon, 15 Dec 2025 03:42:24 +0000 (UTC)
-Date: Mon, 15 Dec 2025 03:42:17 +0000
-Feedback-ID: :me@ziyao.cc:ziyao.cc:flockmailId
-From: Yao Zi <me@ziyao.cc>
-To: David Wang <00107082@163.com>, thostet@google.com
-Cc: daniel.gabay@intel.com, jeffbai@aosc.io, johannes.berg@intel.com,
-	kexybiscuit@aosc.io, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com,
-	nathan@kernel.org, netdev@vger.kernel.org,
-	pagadala.yesu.anjaneyulu@intel.com, richardcochran@gmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: Re: [PATCH iwlwifi-fixes] wifi: iwlwifi: Implement settime64 as stub
- for MVM/MLD PTP
-Message-ID: <aT-DmZTh_8I13Mg1@pie>
-References: <20251204123204.9316-1-ziyao@disroot.org>
- <20251214101257.4190-1-00107082@163.com>
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="qwoQzAkc"
+X-UUID: 1ccda784d96911f0b2bf0b349165d6e0-20251215
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=ky1zZSMuLCXdFrRW4pfETufvBbUtfeJ1wcUYAYF3cTY=;
+	b=qwoQzAkcABgQCvCuC1SARkY5n+LJDldmlX2f/GvC5bIc4Q8rFNjSy0AjG06XMXfBAcWeqrVtbGMtKArQcigOcDREX0ij5Oeq0peRCcxMdxWGPd31ZCc5uu078pKP/bLQ07V5SVr1VWxNAnCTfFzwn6c8Nb3a75cn/G5nZJvdmLI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:a80e4931-6da7-4ae7-890f-e8fedf162106,IP:0,UR
+	L:0,TC:0,Content:-5,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:a9d874c,CLOUDID:bc078528-e3a2-4f78-a442-8c73c4eb9e9d,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
+	0|15|50,EDM:1,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI
+	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 1ccda784d96911f0b2bf0b349165d6e0-20251215
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <irving-ch.lin@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1460289980; Mon, 15 Dec 2025 11:49:52 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 15 Dec 2025 11:49:51 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Mon, 15 Dec 2025 11:49:51 +0800
+From: irving.ch.lin <irving-ch.lin@mediatek.com>
+To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Ulf Hansson
+	<ulf.hansson@linaro.org>, Richard Cochran <richardcochran@gmail.com>
+CC: Qiqi Wang <qiqi.wang@mediatek.com>, <linux-clk@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-pm@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
+	<sirius.wang@mediatek.com>, <vince-wl.liu@mediatek.com>,
+	<jh.hsu@mediatek.com>, <irving-ch.lin@mediatek.com>
+Subject: [PATCH v4 02/21] dt-bindings: power: mediatek: Add MT8189 power domain definitions
+Date: Mon, 15 Dec 2025 11:49:11 +0800
+Message-ID: <20251215034944.2973003-3-irving-ch.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20251215034944.2973003-1-irving-ch.lin@mediatek.com>
+References: <20251215034944.2973003-1-irving-ch.lin@mediatek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251214101257.4190-1-00107082@163.com>
-X-F-Verdict: SPFVALID
-X-Titan-Src-Out: 1765770149083250194.27573.1538939435451385954@prod-use1-smtp-out1001.
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=TPG/S0la c=1 sm=1 tr=0 ts=693f83a5
-	a=rBp+3XZz9uO5KTvnfbZ58A==:117 a=rBp+3XZz9uO5KTvnfbZ58A==:17
-	a=kj9zAlcOel0A:10 a=MKtGQD3n3ToA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8
-	a=QyXUC8HyAAAA:8 a=LpNgXrTXAAAA:8 a=SYGaFrxvNFvLGzGqgu4A:9
-	a=CjuIK1q_8ugA:10 a=LqOpv0_-CX5VL_7kjZO3:22 a=3z85VNIBY5UIEeAh_hcH:22
-	a=NWVoK91CQySWRX1oVYDe:22
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sun, Dec 14, 2025 at 06:12:57PM +0800, David Wang wrote:
-> On Thu, Dec 04, 2025 at 12:32:04PM +0000, Yao Zi wrote:
-> > Since commit dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if
-> > required ops are NULL"), PTP clock registered through ptp_clock_register
-> > is required to have ptp_clock_info.settime64 set, however, neither MVM
-> > nor MLD's PTP clock implementation sets it, resulting in warnings when
-> > the interface starts up, like
-> > 
-> > WARNING: drivers/ptp/ptp_clock.c:325 at ptp_clock_register+0x2c8/0x6b8, CPU#1: wpa_supplicant/469
-> > CPU: 1 UID: 0 PID: 469 Comm: wpa_supplicant Not tainted 6.18.0+ #101 PREEMPT(full)
-> > ra: ffff800002732cd4 iwl_mvm_ptp_init+0x114/0x188 [iwlmvm]
-> > ERA: 9000000002fdc468 ptp_clock_register+0x2c8/0x6b8
-> > iwlwifi 0000:01:00.0: Failed to register PHC clock (-22)
-> > 
-> > I don't find an appropriate firmware interface to implement settime64()
-> > for iwlwifi MLD/MVM, thus instead create a stub that returns
-> > -EOPTNOTSUPP only, suppressing the warning and allowing the PTP clock to
-> > be registered.
-> 
-> This seems disturbing....If a null settime64 deserve a kernel WARN dump, so should
-> a settime64 which returns error.
+From: Irving-CH Lin <irving-ch.lin@mediatek.com>
 
-They're separate things. A ptp clock implementing not provinding
-settime64() or gettime64()/gettimex64() callback will crash when
-userspace tries to call clock_gettime()/clock_settime() on it, since
-either ptp_clock_settime() or ptp_clock_gettime() invokes these
-callbacks unconditionally.
+Add device tree bindings for the power domains of MediaTek MT8189 SoC.
 
-However, failing with -ENOTSUPP/-EOPNOTSUPP when clock_settime() isn't
-supported by a dynamic POSIX clock device is a documented behavior, see
-man-page clock_getres(2).
+Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
+---
+ .../power/mediatek,power-controller.yaml      |  1 +
+ .../dt-bindings/power/mediatek,mt8189-power.h | 38 +++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+ create mode 100644 include/dt-bindings/power/mediatek,mt8189-power.h
 
-> Before fixing the warning, the expected behavior of settime64 should be specified clearly,
+diff --git a/Documentation/devicetree/bindings/power/mediatek,power-controller.yaml b/Documentation/devicetree/bindings/power/mediatek,power-controller.yaml
+index f8a13928f615..443c227c0e51 100644
+--- a/Documentation/devicetree/bindings/power/mediatek,power-controller.yaml
++++ b/Documentation/devicetree/bindings/power/mediatek,power-controller.yaml
+@@ -31,6 +31,7 @@ properties:
+       - mediatek,mt8183-power-controller
+       - mediatek,mt8186-power-controller
+       - mediatek,mt8188-power-controller
++      - mediatek,mt8189-power-controller
+       - mediatek,mt8192-power-controller
+       - mediatek,mt8195-power-controller
+       - mediatek,mt8196-hwv-hfrp-power-controller
+diff --git a/include/dt-bindings/power/mediatek,mt8189-power.h b/include/dt-bindings/power/mediatek,mt8189-power.h
+new file mode 100644
+index 000000000000..70a8c2113457
+--- /dev/null
++++ b/include/dt-bindings/power/mediatek,mt8189-power.h
+@@ -0,0 +1,38 @@
++/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
++/*
++ * Copyright (c) 2025 MediaTek Inc.
++ * Author: Qiqi Wang <qiqi.wang@mediatek.com>
++ */
++
++#ifndef _DT_BINDINGS_POWER_MT8189_POWER_H
++#define _DT_BINDINGS_POWER_MT8189_POWER_H
++
++/* SPM */
++#define MT8189_POWER_DOMAIN_CONN			0
++#define MT8189_POWER_DOMAIN_AUDIO			1
++#define MT8189_POWER_DOMAIN_ADSP_TOP_DORMANT		2
++#define MT8189_POWER_DOMAIN_ADSP_INFRA			3
++#define MT8189_POWER_DOMAIN_ADSP_AO			4
++#define MT8189_POWER_DOMAIN_MM_INFRA			5
++#define MT8189_POWER_DOMAIN_ISP_IMG1			6
++#define MT8189_POWER_DOMAIN_ISP_IMG2			7
++#define MT8189_POWER_DOMAIN_ISP_IPE			8
++#define MT8189_POWER_DOMAIN_VDE0			9
++#define MT8189_POWER_DOMAIN_VEN0			10
++#define MT8189_POWER_DOMAIN_CAM_MAIN			11
++#define MT8189_POWER_DOMAIN_CAM_SUBA			12
++#define MT8189_POWER_DOMAIN_CAM_SUBB			13
++#define MT8189_POWER_DOMAIN_MDP0			14
++#define MT8189_POWER_DOMAIN_DISP			15
++#define MT8189_POWER_DOMAIN_DP_TX			16
++#define MT8189_POWER_DOMAIN_CSI_RX			17
++#define MT8189_POWER_DOMAIN_SSUSB			18
++#define MT8189_POWER_DOMAIN_MFG0			19
++#define MT8189_POWER_DOMAIN_MFG1			20
++#define MT8189_POWER_DOMAIN_MFG2			21
++#define MT8189_POWER_DOMAIN_MFG3			22
++#define MT8189_POWER_DOMAIN_EDP_TX_DORMANT		23
++#define MT8189_POWER_DOMAIN_PCIE			24
++#define MT8189_POWER_DOMAIN_PCIE_PHY			25
++
++#endif /* _DT_BINDINGS_POWER_MT8189_POWER_H */
+-- 
+2.45.2
 
-I think failing with -EOPNOTSUPP (which is the same as -ENOTSUPP on
-Linux) when the operation isn't supported is well-documented, and is
-suitable for this case.
-
-One may argue that it'd be helpful for ptp_clock_register() to provide
-a default implementation of settime64() that always fails with
--EOPNOTSUPP when the driver doesn't provide one.
-
-However, it's likely a programming bug when gettime64()/settime64() is
-missing, so the current behavior of warning sounds reasonable to me.
-
-> hence why the dfb073d32cac ("ptp: Return -EINVAL on ptp_clock_register if required ops are NULL")?
-
-You may be interested in the original series[1] where the idea of
-warning for missing settime64/gettime64/gettimex64 callbacks came up.
-
-Also cc Kuniyuki, in case that I missed something or got it wrong.
-
-> 
-> David
-
-Best regards,
-Yao Zi
-
-> > 
-> > Reported-by: Nathan Chancellor <nathan@kernel.org>
-> > Closes: https://lore.kernel.org/all/20251108044822.GA3262936@ax162/
-> > Signed-off-by: Yao Zi <ziyao@disroot.org>
-> > ---
-> 
-
-[1]: https://lore.kernel.org/all/20251028095143.396385-1-junjie.cao@intel.com/
