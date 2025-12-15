@@ -1,122 +1,42 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CF232F765
-	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 16:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0597E2E7F27;
+	Mon, 15 Dec 2025 16:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765816768; cv=none; b=KBX4W8ZxDyLju2ZDQs7SClgttccLwQy7/ogmonmpQG75bxNbCw6HXkWmOGJke7AYhrciFu9DUWkxMO7B6jJ/i/rDWBpS6k9hYjDtb7l8FbUgjvI9PYQRwHy6nrXYgM3s/G83sIhPD8Z86ieu8wYmBXchE/k1BrBlfeWSD9LFoCo=
+	t=1765817802; cv=none; b=Gb3pHQ8Pg7+V7szWUHwZODcnCqQIJsVywwpoMrMBQl8DL8FW3B+oWtWY8J8UguwWSQZdupW5UpiX1i6xCB+UkneMA/pc2pCnIAm1eASj7PWO4iPmH3uiFbLiA8CqqYeXkEdoGrHrtqYnzG2RgA2mKP6Y+4bnCXLPr3VDfPMoqic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765816768; c=relaxed/simple;
-	bh=zNw09kOsPbEJayoOghWFNDJf8HFgX3f+gFhYXhvRe7k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftE46xPUMTAxHcskn8aTDEb4ySDyhPoF9M7Yil6bJ/6wp3GuzCThwV3o9x2uNKNMQOh4aFnXaUJHOKJm75vZB3szRbvp2/bAkg9cMLoD30xqpl1zG2YUv/6JdqTgbuqV9PqXKdeHPpBV97H6GQGw6XCfI67iXthaEUfSfvYxx8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=kRZNdhI7; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="kRZNdhI7"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47aa03d3326so5336935e9.3
-        for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 08:39:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1765816747; x=1766421547; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b/34UGaq9v643aeXJRAvLRyUNbZhdcO0qFb5NQcEAoQ=;
-        b=kRZNdhI7um/1xRWaezpDXyQa4S+18TTiz/dd9gU0vELfItpxYtOkepGcXvbm1Jm3sJ
-         IH95ZN+s0UADR4EnuivkEvJ6q3aHjIV4HfQpsNHiiKAQ5lUEqfL8wU1HrVOz+6XQZcow
-         m1I1c1LPIvlfJOmiHuqe3AtW5sZtVzDS4RjHVG5lCP7q8OSSKhjEDs73atNvUnxeMUeN
-         Li1nYaknzXrjvDX0tg/uzi/ajtEvRxKttJEmBPxEr/HhxXOuloDqdSsFgwJoniMopb0m
-         lEF6mA61yjRyWdj6jMiyrKmS3Qqgg8JEHYNhMEvyiAdp2rr1KQ8dzq6HMmYjpYf4ewar
-         eoGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765816747; x=1766421547;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b/34UGaq9v643aeXJRAvLRyUNbZhdcO0qFb5NQcEAoQ=;
-        b=suA/PMIcXE9rgLlx5q3FyrddgsDB263M9VAlsedCxSfEWI729nscaypLjG7D3ieLWY
-         dnRG58LCBcwLTdGwWxi4Qa/M0y6g6Ny0FKIoUdD4B2ML9r2BQiM0EwCSgKUirCwbM0wK
-         VjDrYEaMIrV3l8KrotZSMIamwSAKKOpnYLZLMNGj7SZfrNwcQjiv80ZADNRPqvx+jgmy
-         0QINk7fayg5O8K1kHEKYEiNM2NdIb80CxJId0rlwEeAV6lI8PoyALnurCkfbZ3pBudMP
-         evbvTab/RNFsRVOknT9BHbBuLO0WSxKOjshWaLYo+sOXQFxvXb9L1/Hz4+uKIX2dlh9R
-         uXMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0PADqJ6w4en4CKcL8nPztmuJlHHGfsBVMD8uo54541JFHyOjHUY4CLFLl33Wy1CAINmI3leQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlA9uTRVzBiJjq+On/FVLHWiVR4ukTWMS1lqfIyyzfSOkTfJG+
-	iyaLdF6rhBLpQXmQPZpFeZq2fWBJemmq0DEGPFK0+iGc58ey4ZRYvDMBwo30sVRHtBM=
-X-Gm-Gg: AY/fxX5amAJ/6kma3PzmkIeh1jnmK+MfmmghxeNIVy1cz1WDE7JtGxRIU87UPWlkJbL
-	8iIIpYl0AjYmCjUJvPAkvmeQuIUddk2DnK8mdiO0vfiuAOnWGdMTvi66z8OArqZq7FH7dhd97hb
-	c8v84QMKw10cy75cmzJ8JK9ji3qvXt1KOQNqr+O3PzQstxPCnXswoCeCB+ti6TeNyxC2uayc7Ry
-	DYaN0eZLwuzpVBBVGPROfbAiyeSR84+iby9J4WgxuyN46RNHLWa8EzAGuWLGNSRxEZPu7RTvywt
-	L8++Jfuc0ArJovEyZqMlYF8fbZaATFKNvg1VlF2boGZyDpQORqAOH5y7tXE11D8pMQDgbj/UXzc
-	U7RiSGuYe3Cb6I/D4Ft3Sb4ECKbjVkBf5AHzUTIHkfOYMhZGKMnhtMlo64OhTlLPCBnfW764x+r
-	87m4WDNKR+ACt7RWQ/7lrZwtWaGWIC+PNd8EuYvZ3kpGQ3
-X-Google-Smtp-Source: AGHT+IELsClHkobrZVkV4DH8X5CX6hHOjfzlKDiKhXVHNJtHRVvLO1MbKag14T7uws5CKFtzBM+m3w==
-X-Received: by 2002:a05:600c:1ca4:b0:475:dd9a:f791 with SMTP id 5b1f17b1804b1-47bd466125cmr4165215e9.28.1765816747126;
-        Mon, 15 Dec 2025 08:39:07 -0800 (PST)
-Received: from fedora (cpezg-94-253-146-254-cbl.xnet.hr. [94.253.146.254])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47a8f74b44csm192209725e9.3.2025.12.15.08.39.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 08:39:06 -0800 (PST)
-From: Robert Marko <robert.marko@sartura.hr>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	vkoul@kernel.org,
-	linux@roeck-us.net,
-	andi.shyti@kernel.org,
-	lee@kernel.org,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linusw@kernel.org,
-	olivia@selenic.com,
-	radu_nicolae.pirea@upb.ro,
-	richard.genoud@bootlin.com,
-	gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	richardcochran@gmail.com,
-	wsa+renesas@sang-engineering.com,
-	romain.sioen@microchip.com,
-	Ryan.Wanner@microchip.com,
-	lars.povlsen@microchip.com,
-	tudor.ambarus@linaro.org,
-	charan.pedumuru@microchip.com,
-	kavyasree.kotagiri@microchip.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	mwalle@kernel.org
-Cc: luka.perkov@sartura.hr,
-	Robert Marko <robert.marko@sartura.hr>
-Subject: [PATCH v2 17/19] arm64: dts: microchip: add LAN969x support
-Date: Mon, 15 Dec 2025 17:35:34 +0100
-Message-ID: <20251215163820.1584926-17-robert.marko@sartura.hr>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251215163820.1584926-1-robert.marko@sartura.hr>
-References: <20251215163820.1584926-1-robert.marko@sartura.hr>
+	s=arc-20240116; t=1765817802; c=relaxed/simple;
+	bh=+uja6Ajxs+eNWyLshdphoXTFDrhj7cDFAql14wuwdio=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f58mhY5kOtC/kOBgVdQOr5FHBiHcqXXpxRs9F7lfgGF5hgAfDGF06zuBfj5N91F9ZcydoJtDYlbr28nXY6vKo940KRvgp9ny95O1JIQeNTuFpCW/AO3Uiz8wSfJdTjxXI39FTVGe4mjL4ukoald1/ksgNRYwC+Ae3/ViIW7pHhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dVR671ChBzHnH5c;
+	Tue, 16 Dec 2025 00:56:15 +0800 (CST)
+Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
+	by mail.maildlp.com (Postfix) with ESMTPS id BC97240539;
+	Tue, 16 Dec 2025 00:56:36 +0800 (CST)
+Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
+ mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 15 Dec 2025 19:56:36 +0300
+From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+To: <netdev@vger.kernel.org>, Dmitry Skorodumov
+	<skorodumov.dmitry@huawei.com>, Xiao Liang <shaw.leon@gmail.com>, Jakub
+ Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Guillaume
+ Nault <gnault@redhat.com>, Julian Vetter <julian@outer-limits.org>, Eric
+ Dumazet <edumazet@google.com>, Stanislav Fomichev <sdf@fomichev.me>, Etienne
+ Champetier <champetier.etienne@gmail.com>, "David S. Miller"
+	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-kernel@vger.kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>
+Subject: [PATCH net] ipvlan: Make the addrs_lock be per port
+Date: Mon, 15 Dec 2025 19:54:46 +0300
+Message-ID: <20251215165457.752634-1-skorodumov.dmitry@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -124,515 +44,304 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500004.china.huawei.com (7.188.26.250)
 
-Add support for Microchip LAN969x switch SoC series by adding the SoC DTSI.
+Make the addrs_lock be per port, not per ipvlan dev.
 
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Initial code seems to be written in the assumption,
+that any address change must occur under RTNL.
+But it is not so for the case of IPv6. So
+
+1) Introduce per-port addrs_lock.
+
+2) It was needed to fix places where it was forgotten
+to take lock (ipvlan_open/ipvlan_close)
+
+3) Fix places, where list_for_each_entry_rcu()
+was used to iterate the list while holding a lock
+
+This appears to be a very minor problem though.
+Since it's highly unlikely that ipvlan_add_addr() will
+be called on 2 CPU simultaneously. But nevertheless,
+this could cause:
+
+1) False-negative of ipvlan_addr_busy(): one interface
+iterated through all port->ipvlans + ipvlan->addrs
+under some ipvlan spinlock, and another added IP
+under its own lock. Though this is only possible
+for IPv6, since looks like only ipvlan_addr6_event() can be
+called without rtnl_lock.
+
+2) Race since ipvlan_ht_addr_add(port) is called under
+different ipvlan->addrs_lock locks
+
+This should not affect performance, since add/remove IP
+is a rare situation and spinlock is not taken on fast
+paths.
+
+Fixes: 8230819494b3 ("ipvlan: use per device spinlock to protect addrs list updates")
+Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+CC: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 ---
-Changes in v2:
-* Rename to lan9691
-* Split SoC DTSI and evaluation board commits
-* Use SoC specific compatibles for devices
-* Alphanumerically sort remaining nodes
-* Apply DTS coding style
+ drivers/net/ipvlan/ipvlan.h      |  2 +-
+ drivers/net/ipvlan/ipvlan_core.c | 12 ++++----
+ drivers/net/ipvlan/ipvlan_main.c | 52 ++++++++++++++++++--------------
+ 3 files changed, 37 insertions(+), 29 deletions(-)
 
- arch/arm64/boot/dts/microchip/lan9691.dtsi | 487 +++++++++++++++++++++
- 1 file changed, 487 insertions(+)
- create mode 100644 arch/arm64/boot/dts/microchip/lan9691.dtsi
-
-diff --git a/arch/arm64/boot/dts/microchip/lan9691.dtsi b/arch/arm64/boot/dts/microchip/lan9691.dtsi
-new file mode 100644
-index 000000000000..afe8c59ee79d
---- /dev/null
-+++ b/arch/arm64/boot/dts/microchip/lan9691.dtsi
-@@ -0,0 +1,487 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2025 Microchip Technology Inc. and its subsidiaries.
-+ */
+diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
+index 50de3ee204db..80f84fc87008 100644
+--- a/drivers/net/ipvlan/ipvlan.h
++++ b/drivers/net/ipvlan/ipvlan.h
+@@ -69,7 +69,6 @@ struct ipvl_dev {
+ 	DECLARE_BITMAP(mac_filters, IPVLAN_MAC_FILTER_SIZE);
+ 	netdev_features_t	sfeatures;
+ 	u32			msg_enable;
+-	spinlock_t		addrs_lock;
+ };
+ 
+ struct ipvl_addr {
+@@ -90,6 +89,7 @@ struct ipvl_port {
+ 	struct net_device	*dev;
+ 	possible_net_t		pnet;
+ 	struct hlist_head	hlhead[IPVLAN_HASH_SIZE];
++	spinlock_t		addrs_lock; /* guards hash-table and addrs */
+ 	struct list_head	ipvlans;
+ 	u16			mode;
+ 	u16			flags;
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index 2efa3ba148aa..22cb5ee7a231 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -109,14 +109,14 @@ struct ipvl_addr *ipvlan_find_addr(const struct ipvl_dev *ipvlan,
+ {
+ 	struct ipvl_addr *addr, *ret = NULL;
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode) {
++	assert_spin_locked(&ipvlan->port->addrs_lock);
 +
-+#include <dt-bindings/clock/microchip,lan9691.h>
-+#include <dt-bindings/dma/at91.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/mfd/at91-usart.h>
-+#include <dt-bindings/mfd/atmel-flexcom.h>
++	list_for_each_entry(addr, &ipvlan->addrs, anode) {
+ 		if (addr_equal(is_v6, addr, iaddr)) {
+ 			ret = addr;
+ 			break;
+ 		}
+ 	}
+-	rcu_read_unlock();
+ 	return ret;
+ }
+ 
+@@ -125,14 +125,14 @@ bool ipvlan_addr_busy(struct ipvl_port *port, void *iaddr, bool is_v6)
+ 	struct ipvl_dev *ipvlan;
+ 	bool ret = false;
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(ipvlan, &port->ipvlans, pnode) {
++	assert_spin_locked(&port->addrs_lock);
 +
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++	list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
+ 		if (ipvlan_find_addr(ipvlan, iaddr, is_v6)) {
+ 			ret = true;
+ 			break;
+ 		}
+ 	}
+-	rcu_read_unlock();
+ 	return ret;
+ }
+ 
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 660f3db11766..b0b4f747f162 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -75,6 +75,7 @@ static int ipvlan_port_create(struct net_device *dev)
+ 	for (idx = 0; idx < IPVLAN_HASH_SIZE; idx++)
+ 		INIT_HLIST_HEAD(&port->hlhead[idx]);
+ 
++	spin_lock_init(&port->addrs_lock);
+ 	skb_queue_head_init(&port->backlog);
+ 	INIT_WORK(&port->wq, ipvlan_process_multicast);
+ 	ida_init(&port->ida);
+@@ -181,18 +182,18 @@ static void ipvlan_uninit(struct net_device *dev)
+ static int ipvlan_open(struct net_device *dev)
+ {
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	struct ipvl_port *port = ipvlan->port;
+ 	struct ipvl_addr *addr;
+ 
+-	if (ipvlan->port->mode == IPVLAN_MODE_L3 ||
+-	    ipvlan->port->mode == IPVLAN_MODE_L3S)
++	if (port->mode == IPVLAN_MODE_L3 || port->mode == IPVLAN_MODE_L3S)
+ 		dev->flags |= IFF_NOARP;
+ 	else
+ 		dev->flags &= ~IFF_NOARP;
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
++	spin_lock_bh(&port->addrs_lock);
++	list_for_each_entry(addr, &ipvlan->addrs, anode)
+ 		ipvlan_ht_addr_add(ipvlan, addr);
+-	rcu_read_unlock();
++	spin_unlock_bh(&port->addrs_lock);
+ 
+ 	return 0;
+ }
+@@ -206,10 +207,10 @@ static int ipvlan_stop(struct net_device *dev)
+ 	dev_uc_unsync(phy_dev, dev);
+ 	dev_mc_unsync(phy_dev, dev);
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
++	spin_lock_bh(&ipvlan->port->addrs_lock);
++	list_for_each_entry(addr, &ipvlan->addrs, anode)
+ 		ipvlan_ht_addr_del(addr);
+-	rcu_read_unlock();
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 
+ 	return 0;
+ }
+@@ -579,7 +580,6 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
+ 	if (!tb[IFLA_MTU])
+ 		ipvlan_adjust_mtu(ipvlan, phy_dev);
+ 	INIT_LIST_HEAD(&ipvlan->addrs);
+-	spin_lock_init(&ipvlan->addrs_lock);
+ 
+ 	/* TODO Probably put random address here to be presented to the
+ 	 * world but keep using the physical-dev address for the outgoing
+@@ -657,13 +657,13 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
+ 	struct ipvl_addr *addr, *next;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	list_for_each_entry_safe(addr, next, &ipvlan->addrs, anode) {
+ 		ipvlan_ht_addr_del(addr);
+ 		list_del_rcu(&addr->anode);
+ 		kfree_rcu(addr, rcu);
+ 	}
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 
+ 	ida_free(&ipvlan->port->ida, dev->dev_id);
+ 	list_del_rcu(&ipvlan->pnode);
+@@ -817,6 +817,8 @@ static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
+ {
+ 	struct ipvl_addr *addr;
+ 
++	assert_spin_locked(&ipvlan->port->addrs_lock);
 +
-+	model = "Microchip LAN969x";
-+	compatible = "microchip,lan9691";
-+	interrupt-parent = <&gic>;
-+
-+	clocks {
-+		fx100_clk: fx100-clk {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <320000000>;
-+		};
-+
-+		cpu_clk: cpu-clk {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <1000000000>;
-+		};
-+
-+		ddr_clk: ddr-clk {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <600000000>;
-+		};
-+
-+		fabric_clk: fabric-clk {
-+			compatible = "fixed-clock";
-+			#clock-cells = <0>;
-+			clock-frequency = <250000000>;
-+		};
-+	};
-+
-+	cpus {
-+		#address-cells = <2>;
-+		#size-cells = <0>;
-+
-+		cpu0: cpu@0 {
-+			compatible = "arm,cortex-a53";
-+			device_type = "cpu";
-+			reg = <0x0 0x0>;
-+			next-level-cache = <&l2_0>;
-+		};
-+
-+		l2_0: l2-cache {
-+			compatible = "cache";
-+			cache-level = <2>;
-+			cache-unified;
-+		};
-+	};
-+
-+	psci {
-+		compatible = "arm,psci-1.0";
-+		method = "smc";
-+	};
-+
-+	pmu {
-+		compatible = "arm,cortex-a53-pmu";
-+		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
-+	};
-+
-+	timer {
-+		compatible = "arm,armv8-timer";
-+		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>, /* Secure Phys IRQ */
-+			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>, /* Non-secure Phys IRQ */
-+			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>, /* Virt IRQ */
-+			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>; /* Hyp IRQ */
-+	};
-+
-+	axi: axi {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		usb: usb@300000 {
-+			compatible = "microchip,lan9691-dwc3", "snps,dwc3";
-+			reg = <0x300000 0x80000>;
-+			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks GCK_GATE_USB_DRD>,
-+				 <&clks GCK_ID_USB_REFCLK>;
-+			clock-names = "bus_early", "ref";
-+			assigned-clocks = <&clks GCK_ID_USB_REFCLK>;
-+			assigned-clock-rates = <60000000>;
-+			maximum-speed = "high-speed";
-+			dr_mode = "host";
-+			status = "disabled";
-+		};
-+
-+		flx0: flexcom@e0040000 {
-+			compatible = "microchip,lan9691-flexcom", "atmel,sama5d2-flexcom";
-+			reg = <0xe0040000 0x100>;
-+			ranges = <0x0 0xe0040000 0x800>;
-+			clocks = <&clks GCK_ID_FLEXCOM0>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			status = "disabled";
-+
-+			usart0: serial@200 {
-+				compatible = "microchip,lan9691-usart", "atmel,at91sam9260-usart";
-+				reg = <0x200 0x200>;
-+				interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "usart";
-+				atmel,fifo-size = <32>;
-+				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
-+				status = "disabled";
-+			};
-+
-+			spi0: spi@400 {
-+				compatible = "microchip,lan9691-spi", "atmel,at91rm9200-spi";
-+				reg = <0x400 0x200>;
-+				interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "spi_clk";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				atmel,fifo-size = <32>;
-+				status = "disabled";
-+			};
-+
-+			i2c0: i2c@600 {
-+				compatible = "microchip,lan9691-i2c", "microchip,sam9x60-i2c";
-+				reg = <0x600 0x200>;
-+				interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
-+
-+		flx1: flexcom@e0044000 {
-+			compatible = "microchip,lan9691-flexcom", "atmel,sama5d2-flexcom";
-+			reg = <0xe0044000 0x100>;
-+			ranges = <0x0 0xe0044000 0x800>;
-+			clocks = <&clks GCK_ID_FLEXCOM1>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			status = "disabled";
-+
-+			usart1: serial@200 {
-+				compatible = "microchip,lan9691-usart", "atmel,at91sam9260-usart";
-+				reg = <0x200 0x200>;
-+				interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "usart";
-+				atmel,fifo-size = <32>;
-+				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@400 {
-+				compatible = "microchip,lan9691-spi", "atmel,at91rm9200-spi";
-+				reg = <0x400 0x200>;
-+				interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "spi_clk";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				atmel,fifo-size = <32>;
-+				status = "disabled";
-+			};
-+
-+			i2c1: i2c@600 {
-+				compatible = "microchip,lan9691-i2c", "microchip,sam9x60-i2c";
-+				reg = <0x600 0x200>;
-+				interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(3)>,
-+				       <&dma AT91_XDMAC_DT_PERID(2)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
-+
-+		trng: rng@e0048000 {
-+			compatible = "microchip,lan9691-trng", "atmel,at91sam9g45-trng";
-+			reg = <0xe0048000 0x100>;
-+			clocks = <&fabric_clk>;
-+			status = "disabled";
-+		};
-+
-+		aes: crypto@e004c000 {
-+			compatible = "microchip,lan9691-aes", "atmel,at91sam9g46-aes";
-+			reg = <0xe004c000 0x100>;
-+			interrupts = <GIC_SPI 51 IRQ_TYPE_LEVEL_HIGH>;
-+			dmas = <&dma AT91_XDMAC_DT_PERID(12)>,
-+			       <&dma AT91_XDMAC_DT_PERID(13)>;
-+			dma-names = "tx", "rx";
-+			clocks = <&fabric_clk>;
-+			clock-names = "aes_clk";
-+			status = "disabled";
-+		};
-+
-+		flx2: flexcom@e0060000 {
-+			compatible = "microchip,lan9691-flexcom", "atmel,sama5d2-flexcom";
-+			reg = <0xe0060000 0x100>;
-+			ranges = <0x0 0xe0060000 0x800>;
-+			clocks = <&clks GCK_ID_FLEXCOM2>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			status = "disabled";
-+
-+			usart2: serial@200 {
-+				compatible = "microchip,lan9691-usart", "atmel,at91sam9260-usart";
-+				reg = <0x200 0x200>;
-+				interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(7)>,
-+				       <&dma AT91_XDMAC_DT_PERID(6)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "usart";
-+				atmel,fifo-size = <32>;
-+				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
-+				status = "disabled";
-+			};
-+
-+			spi2: spi@400 {
-+				compatible = "microchip,lan9691-spi", "atmel,at91rm9200-spi";
-+				reg = <0x400 0x200>;
-+				interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(7)>,
-+				       <&dma AT91_XDMAC_DT_PERID(6)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "spi_clk";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				atmel,fifo-size = <32>;
-+				status = "disabled";
-+			};
-+
-+			i2c2: i2c@600 {
-+				compatible = "microchip,lan9691-i2c", "microchip,sam9x60-i2c";
-+				reg = <0x600 0x200>;
-+				interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(7)>,
-+				       <&dma AT91_XDMAC_DT_PERID(6)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
-+
-+		flx3: flexcom@e0064000 {
-+			compatible = "microchip,lan9691-flexcom", "atmel,sama5d2-flexcom";
-+			reg = <0xe0064000 0x100>;
-+			ranges = <0x0 0xe0064000 0x800>;
-+			clocks = <&clks GCK_ID_FLEXCOM3>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			status = "disabled";
-+
-+			usart3: serial@200 {
-+				compatible = "microchip,lan9691-usart", "atmel,at91sam9260-usart";
-+				reg = <0x200 0x200>;
-+				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(9)>,
-+				       <&dma AT91_XDMAC_DT_PERID(8)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "usart";
-+				atmel,fifo-size = <32>;
-+				atmel,usart-mode = <AT91_USART_MODE_SERIAL>;
-+				status = "disabled";
-+			};
-+
-+			spi3: spi@400 {
-+				compatible = "microchip,lan9691-spi", "atmel,at91rm9200-spi";
-+				reg = <0x400 0x200>;
-+				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(9)>,
-+				       <&dma AT91_XDMAC_DT_PERID(8)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				clock-names = "spi_clk";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				atmel,fifo-size = <32>;
-+				status = "disabled";
-+			};
-+
-+			i2c3: i2c@600 {
-+				compatible = "microchip,lan9691-i2c", "microchip,sam9x60-i2c";
-+				reg = <0x600 0x200>;
-+				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma AT91_XDMAC_DT_PERID(9)>,
-+				       <&dma AT91_XDMAC_DT_PERID(8)>;
-+				dma-names = "tx", "rx";
-+				clocks = <&fabric_clk>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
-+
-+		dma: dma-controller@e0068000 {
-+			compatible = "microchip,lan9691-dma", "microchip,sama7g5-dma";
-+			reg = <0xe0068000 0x1000>;
-+			interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
-+			dma-channels = <16>;
-+			#dma-cells = <1>;
-+			clocks = <&fabric_clk>;
-+			clock-names = "dma_clk";
-+		};
-+
-+		sha: crypto@e006c000 {
-+			compatible = "microchip,lan9691-sha", "atmel,at91sam9g46-sha";
-+			reg = <0xe006c000 0xec>;
-+			interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-+			dmas = <&dma AT91_XDMAC_DT_PERID(14)>;
-+			dma-names = "tx";
-+			clocks = <&fabric_clk>;
-+			clock-names = "sha_clk";
-+			status = "disabled";
-+		};
-+
-+		timer: timer@e008c000 {
-+			compatible = "snps,dw-apb-timer";
-+			reg = <0xe008c000 0x400>;
-+			clocks = <&fabric_clk>;
-+			clock-names = "timer";
-+			interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled";
-+		};
-+
-+		watchdog: watchdog@e0090000 {
-+			compatible = "snps,dw-wdt";
-+			reg = <0xe0090000 0x1000>;
-+			interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&fabric_clk>;
-+		};
-+
-+		cpu_ctrl: syscon@e00c0000 {
-+			compatible = "microchip,lan966x-cpu-syscon", "syscon";
-+			reg = <0xe00c0000 0x350>;
-+		};
-+
-+		switch: switch@e00c0000 {
-+			compatible = "microchip,lan9691-switch";
-+			reg = <0xe00c0000 0x0010000>,
-+			      <0xe2010000 0x1410000>;
-+			reg-names = "cpu", "devices";
-+			interrupt-names = "xtr", "fdma", "ptp";
-+			interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI  9 IRQ_TYPE_LEVEL_HIGH>;
-+			resets = <&reset 0>;
-+			reset-names = "switch";
-+			status = "disabled";
-+		};
-+
-+		clks: clock-controller@e00c00b4 {
-+			compatible = "microchip,lan9691-gck";
-+			reg = <0xe00c00b4 0x30>, <0xe00c0308 0x4>;
-+			#clock-cells = <1>;
-+			clocks = <&cpu_clk>, <&ddr_clk>, <&fx100_clk>;
-+			clock-names = "cpu", "ddr", "sys";
-+		};
-+
-+		reset: reset-controller@e201000c {
-+			compatible = "microchip,lan9691-switch-reset",
-+				     "microchip,lan966x-switch-reset";
-+			reg = <0xe201000c 0x4>;
-+			reg-names = "gcb";
-+			#reset-cells = <1>;
-+			cpu-syscon = <&cpu_ctrl>;
-+		};
-+
-+		gpio: pinctrl@e20100d4 {
-+			compatible = "microchip,lan9691-pinctrl";
-+			reg = <0xe20100d4 0xd4>,
-+			      <0xe2010370 0xa8>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&gpio 0 0 66>;
-+			interrupt-controller;
-+			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
-+			#interrupt-cells = <2>;
-+		};
-+
-+		mdio0: mdio@e20101a8 {
-+			compatible = "microchip,lan9691-miim", "mscc,ocelot-miim";
-+			reg = <0xe20101a8 0x24>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			clocks = <&fx100_clk>;
-+			status = "disabled";
-+		};
-+
-+		mdio1: mdio@e20101cc {
-+			compatible = "microchip,lan9691-miim", "mscc,ocelot-miim";
-+			reg = <0xe20101cc 0x24>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			clocks = <&fx100_clk>;
-+			status = "disabled";
-+		};
-+
-+		sgpio: gpio@e2010230 {
-+			compatible = "microchip,lan9691-sgpio", "microchip,sparx5-sgpio";
-+			reg = <0xe2010230 0x118>;
-+			clocks = <&fx100_clk>;
-+			resets = <&reset 0>;
-+			reset-names = "switch";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+
-+			sgpio_in: gpio@0 {
-+				compatible = "microchip,lan9691-sgpio-bank",
-+					     "microchip,sparx5-sgpio-bank";
-+				reg = <0>;
-+				gpio-controller;
-+				#gpio-cells = <3>;
-+				interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-controller;
-+				#interrupt-cells = <3>;
-+			};
-+
-+			sgpio_out: gpio@1 {
-+				compatible = "microchip,lan9691-sgpio-bank",
-+					     "microchip,sparx5-sgpio-bank";
-+				reg = <1>;
-+				gpio-controller;
-+				#gpio-cells = <3>;
-+			};
-+		};
-+
-+		tmon: hwmon@e2020100 {
-+			compatible = "microchip,lan9691-temp", "microchip,sparx5-temp";
-+			reg = <0xe2020100 0xc>;
-+			clocks = <&fx100_clk>;
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		serdes: serdes@e3410000 {
-+			compatible = "microchip,lan9691-serdes";
-+			reg = <0xe3410000 0x150000>;
-+			#phy-cells = <1>;
-+			clocks = <&fabric_clk>;
-+		};
-+
-+		gic: interrupt-controller@e8c11000 {
-+			compatible = "arm,gic-400";
-+			reg = <0xe8c11000 0x1000>, /* Distributor GICD_ */
-+			      <0xe8c12000 0x2000>, /* CPU interface GICC_ */
-+			      <0xe8c14000 0x2000>, /* Virt interface control */
-+			      <0xe8c16000 0x2000>; /* Virt CPU interface */
-+			#interrupt-cells = <3>;
-+			interrupt-controller;
-+			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
-+		};
-+	};
-+};
+ 	addr = kzalloc(sizeof(struct ipvl_addr), GFP_ATOMIC);
+ 	if (!addr)
+ 		return -ENOMEM;
+@@ -847,16 +849,16 @@ static void ipvlan_del_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
+ {
+ 	struct ipvl_addr *addr;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	addr = ipvlan_find_addr(ipvlan, iaddr, is_v6);
+ 	if (!addr) {
+-		spin_unlock_bh(&ipvlan->addrs_lock);
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		return;
+ 	}
+ 
+ 	ipvlan_ht_addr_del(addr);
+ 	list_del_rcu(&addr->anode);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	kfree_rcu(addr, rcu);
+ }
+ 
+@@ -878,14 +880,14 @@ static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
+ {
+ 	int ret = -EINVAL;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	if (ipvlan_addr_busy(ipvlan->port, ip6_addr, true))
+ 		netif_err(ipvlan, ifup, ipvlan->dev,
+ 			  "Failed to add IPv6=%pI6c addr for %s intf\n",
+ 			  ip6_addr, ipvlan->dev->name);
+ 	else
+ 		ret = ipvlan_add_addr(ipvlan, ip6_addr, true);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	return ret;
+ }
+ 
+@@ -924,21 +926,24 @@ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
+ 	struct in6_validator_info *i6vi = (struct in6_validator_info *)ptr;
+ 	struct net_device *dev = (struct net_device *)i6vi->i6vi_dev->dev;
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	int ret = NOTIFY_OK;
+ 
+ 	if (!ipvlan_is_valid_dev(dev))
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
++		spin_lock_bh(&ipvlan->port->addrs_lock);
+ 		if (ipvlan_addr_busy(ipvlan->port, &i6vi->i6vi_addr, true)) {
+ 			NL_SET_ERR_MSG(i6vi->extack,
+ 				       "Address already assigned to an ipvlan device");
+-			return notifier_from_errno(-EADDRINUSE);
++			ret = notifier_from_errno(-EADDRINUSE);
+ 		}
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		break;
+ 	}
+ 
+-	return NOTIFY_OK;
++	return ret;
+ }
+ #endif
+ 
+@@ -946,14 +951,14 @@ static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
+ {
+ 	int ret = -EINVAL;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	if (ipvlan_addr_busy(ipvlan->port, ip4_addr, false))
+ 		netif_err(ipvlan, ifup, ipvlan->dev,
+ 			  "Failed to add IPv4=%pI4 on %s intf.\n",
+ 			  ip4_addr, ipvlan->dev->name);
+ 	else
+ 		ret = ipvlan_add_addr(ipvlan, ip4_addr, false);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	return ret;
+ }
+ 
+@@ -995,21 +1000,24 @@ static int ipvlan_addr4_validator_event(struct notifier_block *unused,
+ 	struct in_validator_info *ivi = (struct in_validator_info *)ptr;
+ 	struct net_device *dev = (struct net_device *)ivi->ivi_dev->dev;
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	int ret = NOTIFY_OK;
+ 
+ 	if (!ipvlan_is_valid_dev(dev))
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
++		spin_lock_bh(&ipvlan->port->addrs_lock);
+ 		if (ipvlan_addr_busy(ipvlan->port, &ivi->ivi_addr, false)) {
+ 			NL_SET_ERR_MSG(ivi->extack,
+ 				       "Address already assigned to an ipvlan device");
+-			return notifier_from_errno(-EADDRINUSE);
++			ret = notifier_from_errno(-EADDRINUSE);
+ 		}
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		break;
+ 	}
+ 
+-	return NOTIFY_OK;
++	return ret;
+ }
+ 
+ static struct notifier_block ipvlan_addr4_notifier_block __read_mostly = {
 -- 
-2.52.0
+2.25.1
 
