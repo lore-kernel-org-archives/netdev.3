@@ -1,38 +1,38 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AB728D850;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9869F10957;
 	Mon, 15 Dec 2025 12:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765803600; cv=none; b=ISowDzhamX00a8iLtqjSGSszPXsJsfQmcuer+cFkrx4O4kGkYabZ2nluaCI7AOe744aOQwl1vPSILvJ2/aFgLu1HBfwDkrtrqZQW1QgNcL8Yir+mFs/Q7gmbL98d1cx1gHTaYEJtDtcO73CpLPrlkFFKA9/VwSgymUFsjBTcnu0=
+	t=1765803601; cv=none; b=sgolEaH1oda0jJu1fuCONhx002UT7b7EU1REq1Eg8DQr4O/UBoNQ09xyMx2MsKDEITLnj4m0dSmWnsPOIfen6CCD+6SS2OlHeEdyG3NZfPHLzrrSnrhTcU/CicDSgAkrqxSGUaKqdjL2S4eU5zKkFdPK2I7X/GPoU+pMokXtJOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765803600; c=relaxed/simple;
-	bh=8sIdV1vSPUwp0OuguQeVcd+qoz7KzJoL8HsTzLVh7EI=;
+	s=arc-20240116; t=1765803601; c=relaxed/simple;
+	bh=Si6RvWyw94wYHTyp4BE0LyHi1xMMrfcs0bHNwGU8Nbw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WyVlhO98pVS+hQWG1TyqON5NSIPos4x66e3z8cvvIzhXs41YM9WQkuPwpHJl8kLubuxtSUlVsXL66O3iIx/S3n9EDEzg80rbZ0jjbUpi1aC6jzGAmfiYdrPABNdlGX1RaegVvCQo/MCzHfaOpe+qfQJwGSntPj1N53GFi4KlkrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=DxZVX2jl; arc=none smtp.client-ip=113.46.200.220
+	 MIME-Version:Content-Type; b=hFsIFSy8XjFt7jxwIgiL2ePPu6ybtrcqZ4q6QJeH13bP27vwtP0KSfwfGrFqm4NdnS5vH3isTVQ9bn7X/8q817H/cBK/XgJWG3abYy+U7flEzSTErNLVxjPxQV6ArCH4TmxDJvel2+lMZezbhM8q4pfYpBgWn15c/JHv/6HhDZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PjNGwJCd; arc=none smtp.client-ip=113.46.200.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="DxZVX2jl"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PjNGwJCd"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=5U6BHLA8ULqFPpbl15/Pen372oWN+BOp1QgNe1s7QOQ=;
-	b=DxZVX2jlI92jmiO9UDFckb4GThu0dO3LrPm+6lMGvvbPvUwKBZvDTzY57h+sZ5lN75BZXPF34
-	zj4f/HD1fw20eS1gTMm5aJXHARvbuv2ydcq4F60/P5B27HqC3rX0mUvYThTXfKtAUiapPIqZ+BF
-	nHz4e1FlstWjlZXeHI+Pp8U=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dVKpl1j5cz12LDf;
-	Mon, 15 Dec 2025 20:57:35 +0800 (CST)
+	bh=gvv806IIngKsCS+RthrpGnKcpWnhs1K6eyI0UEm1pBY=;
+	b=PjNGwJCddisb0aHJPTWim/JL5CyLy6PiGZ+ue1fTqbdWEfpDlTpd+QF90qnpFZlmO3YXWDYKh
+	s0NtLTVc6vAJCBMSYAFsAI+D2jxb8IvPgnrrMXfUjLxOfYvNmbwpe/fd03X62vCOKR2UHBu6uG0
+	0OnEnZROUb3HXZLAoTI6Wpg=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dVKp26H3tzcb1N;
+	Mon, 15 Dec 2025 20:56:58 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 08D6E140133;
-	Mon, 15 Dec 2025 20:59:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id E17BD140203;
+	Mon, 15 Dec 2025 20:59:48 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 15 Dec 2025 20:59:49 +0800
+ 15.2.1544.11; Mon, 15 Dec 2025 20:59:48 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
@@ -41,9 +41,9 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
 	<salil.mehta@huawei.com>, <shiyongbang@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH RFC net-next 3/6] net: hibmcge: create a software node for phy_led
-Date: Mon, 15 Dec 2025 20:57:02 +0800
-Message-ID: <20251215125705.1567527-4-shaojijie@huawei.com>
+Subject: [PATCH RFC net-next 1/6] net: phy: change of_phy_leds() to fwnode_phy_leds()
+Date: Mon, 15 Dec 2025 20:57:00 +0800
+Message-ID: <20251215125705.1567527-2-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20251215125705.1567527-1-shaojijie@huawei.com>
 References: <20251215125705.1567527-1-shaojijie@huawei.com>
@@ -58,212 +58,116 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-Currently, phy_led supports of node, acpi node, and software node.
-The hibmcge hardware(including leds) is on the BMC side, while
-the driver runs on the host side.
+Change of_phy_leds() to fwnode_phy_leds(), to support
+of node, acpi node, and software node together.
 
-An apic or of node needs to be created on the host side to
-support phy_led; otherwise, phy_led will not be supported.
-
-Therefore, in order to support phy_led, this patch will create
-a software node when it detects that the phy device is not
-bound to any fwnode.
-
-Closes: https://lore.kernel.org/all/023a85e4-87e2-4bd3-9727-69a2bfdc4145@lunn.ch/
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- .../ethernet/hisilicon/hibmcge/hbg_common.h   |  11 ++
- .../net/ethernet/hisilicon/hibmcge/hbg_mdio.c | 120 +++++++++++++++++-
- 2 files changed, 124 insertions(+), 7 deletions(-)
+ drivers/net/phy/phy_device.c | 37 +++++++++++++++++-------------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 8e134da3e217..d20dd324e129 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -5,8 +5,10 @@
- #define __HBG_COMMON_H
- 
- #include <linux/ethtool.h>
-+#include <linux/fwnode.h>
- #include <linux/netdevice.h>
- #include <linux/pci.h>
-+#include <linux/property.h>
- #include <net/page_pool/helpers.h>
- #include "hbg_reg.h"
- 
-@@ -130,6 +132,9 @@ struct hbg_vector {
- 	u32 info_array_len;
- };
- 
-+#define HBG_LED_MAX_NUM			(sizeof(u32) / sizeof(u8))
-+#define HBG_LED_SOFTWARE_NODE_MAX_NUM	(HBG_LED_MAX_NUM + 2)
-+
- struct hbg_mac {
- 	struct mii_bus *mdio_bus;
- 	struct phy_device *phydev;
-@@ -140,6 +145,12 @@ struct hbg_mac {
- 	u32 autoneg;
- 	u32 link_status;
- 	u32 pause_autoneg;
-+
-+	struct software_node phy_node;
-+	struct software_node leds_node;
-+	struct software_node led_nodes[HBG_LED_MAX_NUM];
-+	struct property_entry leds_props[HBG_LED_MAX_NUM][4];
-+	const struct software_node *nodes[HBG_LED_SOFTWARE_NODE_MAX_NUM + 1];
- };
- 
- struct hbg_mac_table_entry {
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-index b6f0a2780ea8..edd8ccefbb62 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
-@@ -263,11 +263,119 @@ static int hbg_fixed_phy_init(struct hbg_priv *priv)
- 	return hbg_phy_connect(priv);
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 81984d4ebb7c..c5ce057f88ff 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3208,8 +3208,8 @@ static void phy_leds_unregister(struct phy_device *phydev)
+ 	}
  }
  
--int hbg_mdio_init(struct hbg_priv *priv)
-+static void hbg_phy_device_free(void *data)
-+{
-+	phy_device_free((struct phy_device *)data);
-+}
-+
-+static void hbg_phy_device_remove(void *data)
-+{
-+	phy_device_remove((struct phy_device *)data);
-+}
-+
-+static void hbg_software_node_unregister_group(void *data)
-+{
-+	const struct software_node **node = data;
-+
-+	software_node_unregister_node_group(node);
-+}
-+
-+static void hbg_device_remove_software_node(void *data)
-+{
-+	device_remove_software_node((struct device *)data);
-+}
-+
-+static int hbg_register_phy_leds_software_node(struct hbg_priv *priv,
-+					       struct phy_device *phydev)
+-static int of_phy_led(struct phy_device *phydev,
+-		      struct device_node *led)
++static int fwnode_phy_led(struct phy_device *phydev,
++			  struct fwnode_handle *led)
  {
-+	struct fwnode_handle *fwnode = dev_fwnode(&phydev->mdio.dev);
- 	struct device *dev = &priv->pdev->dev;
- 	struct hbg_mac *mac = &priv->mac;
-+	u32 node_index = 0, i;
-+	const char *label;
-+	int ret;
-+
-+	if (fwnode) {
-+		dev_dbg(dev, "phy fwnode is already exists\n");
-+		return 0;
-+	}
-+
-+	mac->phy_node.name = devm_kasprintf(dev, GFP_KERNEL, "%s-%s-%u",
-+					    "mii", dev_name(dev),
-+					    mac->phy_addr);
-+	mac->nodes[node_index++] = &mac->phy_node;
-+
-+	mac->leds_node.name = devm_kasprintf(dev, GFP_KERNEL, "leds");
-+	mac->leds_node.parent = &mac->phy_node;
-+	mac->nodes[node_index++] = &mac->leds_node;
-+
-+	for (i = 0; i < HBG_LED_MAX_NUM; i++) {
-+		mac->leds_props[i][0] = PROPERTY_ENTRY_U32("reg", i);
-+		label = devm_kasprintf(dev, GFP_KERNEL, "%u", i);
-+		mac->leds_props[i][1] = PROPERTY_ENTRY_STRING("label", label);
-+
-+		mac->led_nodes[i].name = devm_kasprintf(dev, GFP_KERNEL,
-+							"led@%u", i);
-+		mac->led_nodes[i].properties = mac->leds_props[i];
-+		mac->led_nodes[i].parent = &mac->leds_node;
-+
-+		mac->nodes[node_index++] = &mac->led_nodes[i];
-+	}
-+
-+	ret = software_node_register_node_group(mac->nodes);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to register software node\n");
-+
-+	ret = devm_add_action_or_reset(dev, hbg_software_node_unregister_group,
-+				       mac->nodes);
-+	if (ret)
-+		return ret;
-+
-+	ret = device_add_software_node(&phydev->mdio.dev, &mac->phy_node);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to add software node\n");
-+
-+	return devm_add_action_or_reset(dev, hbg_device_remove_software_node,
-+					&phydev->mdio.dev);
-+}
-+
-+static int hbg_find_phy_device(struct hbg_priv *priv, struct mii_bus *mdio_bus)
-+{
-+	struct device *dev = &priv->pdev->dev;
- 	struct phy_device *phydev;
-+	int ret;
-+
-+	phydev = get_phy_device(mdio_bus, priv->mac.phy_addr, false);
-+	if (IS_ERR(phydev))
-+		return dev_err_probe(dev, -ENODEV,
-+				     "failed to get phy device\n");
-+
-+	ret = devm_add_action_or_reset(dev, hbg_phy_device_free, phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = hbg_register_phy_leds_software_node(priv, phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_device_register(phydev);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to register phy device\n");
-+
-+	ret = devm_add_action_or_reset(dev, hbg_phy_device_remove, phydev);
-+	if (ret)
-+		return ret;
-+
-+	priv->mac.phydev = phydev;
-+	return 0;
-+}
-+
-+int hbg_mdio_init(struct hbg_priv *priv)
-+{
-+	struct device *dev = &priv->pdev->dev;
-+	struct hbg_mac *mac = &priv->mac;
- 	struct mii_bus *mdio_bus;
- 	int ret;
+ 	struct device *dev = &phydev->mdio.dev;
+ 	struct led_init_data init_data = {};
+@@ -3226,17 +3226,17 @@ static int of_phy_led(struct phy_device *phydev,
+ 	cdev = &phyled->led_cdev;
+ 	phyled->phydev = phydev;
  
-@@ -281,7 +389,7 @@ int hbg_mdio_init(struct hbg_priv *priv)
+-	err = of_property_read_u32(led, "reg", &index);
++	err = fwnode_property_read_u32(led, "reg", &index);
+ 	if (err)
+ 		return err;
+ 	if (index > U8_MAX)
+ 		return -EINVAL;
  
- 	mdio_bus->parent = dev;
- 	mdio_bus->priv = priv;
--	mdio_bus->phy_mask = ~(1 << mac->phy_addr);
-+	mdio_bus->phy_mask = 0xFFFFFFFF; /* not scan phy device */
- 	mdio_bus->name = "hibmcge mii bus";
- 	mac->mdio_bus = mdio_bus;
+-	if (of_property_read_bool(led, "active-high"))
++	if (fwnode_property_read_bool(led, "active-high"))
+ 		set_bit(PHY_LED_ACTIVE_HIGH, &modes);
+-	if (of_property_read_bool(led, "active-low"))
++	if (fwnode_property_read_bool(led, "active-low"))
+ 		set_bit(PHY_LED_ACTIVE_LOW, &modes);
+-	if (of_property_read_bool(led, "inactive-high-impedance"))
++	if (fwnode_property_read_bool(led, "inactive-high-impedance"))
+ 		set_bit(PHY_LED_INACTIVE_HIGH_IMPEDANCE, &modes);
  
-@@ -293,12 +401,10 @@ int hbg_mdio_init(struct hbg_priv *priv)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to register MDIO bus\n");
+ 	if (WARN_ON(modes & BIT(PHY_LED_ACTIVE_LOW) &&
+@@ -3273,7 +3273,7 @@ static int of_phy_led(struct phy_device *phydev,
+ #endif
+ 	cdev->max_brightness = 1;
+ 	init_data.devicename = dev_name(&phydev->mdio.dev);
+-	init_data.fwnode = of_fwnode_handle(led);
++	init_data.fwnode = led;
+ 	init_data.devname_mandatory = true;
  
--	phydev = mdiobus_get_phy(mdio_bus, mac->phy_addr);
--	if (!phydev)
--		return dev_err_probe(dev, -ENODEV,
--				     "failed to get phy device\n");
-+	ret = hbg_find_phy_device(priv, mdio_bus);
-+	if (ret)
-+		return ret;
- 
--	mac->phydev = phydev;
- 	hbg_mdio_init_hw(priv);
- 	return hbg_phy_connect(priv);
+ 	err = led_classdev_register_ext(dev, cdev, &init_data);
+@@ -3285,19 +3285,16 @@ static int of_phy_led(struct phy_device *phydev,
+ 	return 0;
  }
+ 
+-static int of_phy_leds(struct phy_device *phydev)
++static int fwnode_phy_leds(struct phy_device *phydev)
+ {
+-	struct device_node *node = phydev->mdio.dev.of_node;
+-	struct device_node *leds;
++	struct fwnode_handle *fwnode = dev_fwnode(&phydev->mdio.dev);
++	struct fwnode_handle *leds, *led;
+ 	int err;
+ 
+-	if (!IS_ENABLED(CONFIG_OF_MDIO))
+-		return 0;
+-
+-	if (!node)
++	if (!fwnode)
+ 		return 0;
+ 
+-	leds = of_get_child_by_name(node, "leds");
++	leds = fwnode_get_named_child_node(fwnode, "leds");
+ 	if (!leds)
+ 		return 0;
+ 
+@@ -3311,17 +3308,17 @@ static int of_phy_leds(struct phy_device *phydev)
+ 		goto exit;
+ 	}
+ 
+-	for_each_available_child_of_node_scoped(leds, led) {
+-		err = of_phy_led(phydev, led);
++	fwnode_for_each_available_child_node(leds, led) {
++		err = fwnode_phy_led(phydev, led);
+ 		if (err) {
+-			of_node_put(leds);
++			fwnode_handle_put(leds);
+ 			phy_leds_unregister(phydev);
+ 			return err;
+ 		}
+ 	}
+ 
+ exit:
+-	of_node_put(leds);
++	fwnode_handle_put(leds);
+ 	return 0;
+ }
+ 
+@@ -3516,7 +3513,7 @@ static int phy_probe(struct device *dev)
+ 	 * LEDs for them.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
+-		err = of_phy_leds(phydev);
++		err = fwnode_phy_leds(phydev);
+ 
+ out:
+ 	/* Re-assert the reset signal on error */
 -- 
 2.33.0
 
