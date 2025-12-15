@@ -1,49 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF0C2E5B32
-	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 12:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C01032ABC1
+	for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 12:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765800680; cv=none; b=bohUFy2lUjYyKJm8NkYnc3fgJujMH/JrGkMsbSlThH1PKKGVEdYSxboM7CvcDFjF1D47UeekutHmUeY+oJ+003oZWr3LeXriaUpCqoJ4Icrd9J9C0GdZp3EoOsp6opimsEO2ZddomS2wyKUCWPNJKruYpTARm8dANmnua5G6tsk=
+	t=1765800681; cv=none; b=SjdC7CmBRyAu1IlYgGka8pQEeqRFC8r2+1kULpBEqsStE71J8+7RcB1Bzc/aRfyOvDBLipvvlKYivC5+1eeAamq1n8t9ybSsp6kfDQoE0eOzW+3VNmeHXna+Dfinc7bU1UqV3PqW12ZqqUmfVr2RwXxY3tQAuOxXZhaliP+XwZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765800680; c=relaxed/simple;
-	bh=d7iob4gGau0WK+LVToF1McoKKdAcKi6dxyGl5gt9KNk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VtGeOt3/ddg6KBNMar6x2EH/ccKd2a5bXG2jG4FWi1OSyf3Ztz/SkrACxpk4pu5HtFZ/NrTM+1nsoVMZ43dGvooWfZne4nU5eAL7+DTEwZikhrqa0aRthXafHlu6CEK9ni83okYcVYLjebLhylIUn/bXZqcVe2xXD4GJz3xKrc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z6YQJWAl; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1765800681; c=relaxed/simple;
+	bh=obuskN0VLM0RsO7b1MxxqOgZpp++YKGXBy4gGTPNifQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UPvq2ndRN8V1uxXdQl+3sXeNKe3sRU/3/3ADPKDSLOwf/sGhVsDXHOdEC/n9XP+t1M0oey5cKNwYRCbhEyvBDKlqK3vPHolrd/9/1S4FheAaPW3imwZUcKekrZN2Qox0P7nEfHCd9Qw7kj8Zrg2823krpEaAHn8TDuqapDIf268=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JvFr0kBx; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z6YQJWAl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JvFr0kBx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765800678; x=1797336678;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=d7iob4gGau0WK+LVToF1McoKKdAcKi6dxyGl5gt9KNk=;
-  b=Z6YQJWAlzBuUrEp+oLQSXaHIq1IIRx2ahXNI8VKQpcF7tcMIlSAdP0T0
-   mCRbxpDJPEFp+EkHvT3SX4ym5l2NKEETjixRXrYksi79we/V7drIuurKw
-   ZDcP61FnmR87KrpuNhjUPCuLwQwBV7nX99zKwzK6c49ogT3nbUAMUwtRy
-   BB7p30oa0jZlo3bD96ajQWVz/o5FiBeZwFbHT8X6jB6plvbdN/JNf2fxs
-   r5KnkeXcOj+TjaRuOrpfUiwIL0J45lnx+3DilJ+wA3CW7BDLmwaZfLdog
-   NsF/VBiiUC++VxSuXKwUFF4bOBbOFW3TNL5gH0YBwM4ux4z+OMfCmrrk0
+  t=1765800679; x=1797336679;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=obuskN0VLM0RsO7b1MxxqOgZpp++YKGXBy4gGTPNifQ=;
+  b=JvFr0kBxawJlWrBubZ3dXBKhs3MpoozKicj0pDRy3YcSJjuKbLvqVW0j
+   9dECX4l4oNxuBUrORjY1zrebY8FZ+rhKgK1OotQvqE1/HJktJrdu7WGX1
+   8UOFoR1CcsAHOQBaZSdvwavW5SHqvVlp9D1YSl7Wvs11S9RYbXZ3o4bka
+   AHCnxP+Ly6cHNu9Vl3dSajgbNYAezPYnkKiRmvzR/pnMhSMS3YtnklL8f
+   FW0BHO0eJHgTy1PbZn5ScZpdcoS46QDR470SfMLGpcv/CPh/B5M2HjeE1
+   HQE8NSDeRD8FqnAgqGpEa2GfERQuD+hUc5yEBAwLAwXKvDaq60/dowO31
    A==;
-X-CSE-ConnectionGUID: a6HXQjUyTZyE7/s/2ETNQw==
-X-CSE-MsgGUID: txRHE61IRNmd5o7l2fthjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="78815372"
+X-CSE-ConnectionGUID: ormU6e7SSwWsXp4gSsCMLw==
+X-CSE-MsgGUID: +Nf/B7gzQIaFQQ6FRp32jA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="78815396"
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="78815372"
+   d="scan'208";a="78815396"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 04:11:13 -0800
-X-CSE-ConnectionGUID: bzS/E5SXRHWDsPXdoHV+zA==
-X-CSE-MsgGUID: W7Ooh8qpQi+R8Yd3A9ucbw==
+X-CSE-ConnectionGUID: SLQFCu9pTIWGaYF/4F6fUw==
+X-CSE-MsgGUID: IzgaerHyTPy5TWsLr18/tg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="202214141"
+   d="scan'208";a="202214143"
 Received: from black.igk.intel.com ([10.91.253.5])
   by orviesa004.jf.intel.com with ESMTP; 15 Dec 2025 04:11:10 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 6EFF993; Mon, 15 Dec 2025 13:11:09 +0100 (CET)
+	id 7AF3E9E; Mon, 15 Dec 2025 13:11:09 +0100 (CET)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: netdev@vger.kernel.org
 Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
@@ -56,10 +57,12 @@ Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Jay Vosburgh <jv@jvosburgh.net>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH net-next v2 0/5] net: thunderbolt: Various improvements
-Date: Mon, 15 Dec 2025 13:11:04 +0100
-Message-ID: <20251215121109.4042218-1-mika.westerberg@linux.intel.com>
+Subject: [PATCH net-next v2 4/5] bonding: 3ad: Add support for SPEED_80000
+Date: Mon, 15 Dec 2025 13:11:08 +0100
+Message-ID: <20251215121109.4042218-5-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20251215121109.4042218-1-mika.westerberg@linux.intel.com>
+References: <20251215121109.4042218-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,41 +71,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+Add support for ethtool SPEED_80000. This is needed to allow
+Thunderbolt/USB4 networking driver to be used with the bonding driver.
 
-This series improves the Thunderbolt networking driver so that it should
-work with the bonding driver. I added also possibility of channing MTU
-which is sometimes needed, and was part of the original driver.
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/net/bonding/bond_3ad.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-The discussion that started this patch series can be read below:
-
-  https://lore.kernel.org/netdev/CAFJzfF9N4Hak23sc-zh0jMobbkjK7rg4odhic1DQ1cC+=MoQoA@mail.gmail.com/
-
-The previous version of the series can be seen here:
-
-  v1: https://lore.kernel.org/netdev/20251127131521.2580237-1-mika.westerberg@linux.intel.com/
-
-Changes from the previous version:
-
-  - Add SPEED_80000
-  - Add support for SPEED_80000 for ethtool and 3ad bonding driver
-  - Use SPEED_80000 with the USB4 v2 symmetric link
-  - Fill blank for supported and advertising.
-
-Ian MacDonald (1):
-  net: thunderbolt: Allow reading link settings
-
-Mika Westerberg (4):
-  net: thunderbolt: Allow changing MAC address of the device
-  net: thunderbolt: Allow changing MTU of the device
-  net: ethtool: Add define for SPEED_80000
-  bonding: 3ad: Add support for SPEED_80000
-
- drivers/net/bonding/bond_3ad.c |  6 ++++
- drivers/net/thunderbolt/main.c | 64 ++++++++++++++++++++++++++++++++++
- include/uapi/linux/ethtool.h   |  1 +
- 3 files changed, 71 insertions(+)
-
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index 1a8de2bf8655..e5e9c7207309 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -72,6 +72,7 @@ enum ad_link_speed_type {
+ 	AD_LINK_SPEED_40000MBPS,
+ 	AD_LINK_SPEED_50000MBPS,
+ 	AD_LINK_SPEED_56000MBPS,
++	AD_LINK_SPEED_80000MBPS,
+ 	AD_LINK_SPEED_100000MBPS,
+ 	AD_LINK_SPEED_200000MBPS,
+ 	AD_LINK_SPEED_400000MBPS,
+@@ -297,6 +298,7 @@ static inline int __check_agg_selection_timer(struct port *port)
+  *     %AD_LINK_SPEED_40000MBPS
+  *     %AD_LINK_SPEED_50000MBPS
+  *     %AD_LINK_SPEED_56000MBPS
++ *     %AD_LINK_SPEED_80000MBPS
+  *     %AD_LINK_SPEED_100000MBPS
+  *     %AD_LINK_SPEED_200000MBPS
+  *     %AD_LINK_SPEED_400000MBPS
+@@ -365,6 +367,10 @@ static u16 __get_link_speed(struct port *port)
+ 			speed = AD_LINK_SPEED_56000MBPS;
+ 			break;
+ 
++		case SPEED_80000:
++			speed = AD_LINK_SPEED_80000MBPS;
++			break;
++
+ 		case SPEED_100000:
+ 			speed = AD_LINK_SPEED_100000MBPS;
+ 			break;
 -- 
 2.50.1
 
