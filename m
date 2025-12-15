@@ -1,29 +1,36 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC0F288C2C;
-	Mon, 15 Dec 2025 00:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BD720C461;
+	Mon, 15 Dec 2025 01:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765758415; cv=none; b=PGn8EHLYN/BZf+7W+ObCvFvZwnmfh9arvNzs5nyxN4Hh0Kz2XhaVYEA3iHMQknd4rTzH/ajpdNWiuk0ltbGx0EGVnp0ut8OlFlAD3mM/XZsE2DPQ5kIsk63g1ZrXAsH8sNaISYZkqB0WZHpO0UGad1n3GlS36HZiSuuOEt5beuM=
+	t=1765763196; cv=none; b=o5O2yux+0Z0Vfgok6caT3pAnpq3Q+n+W402iVvvL0Ao4kRdpvSlDVRlKpVEzq6TxDEyzHU4XQmR0KMLd3vBva42vW54KZNDOoyXzjwNzHg9wr3/3oSK1rFOqY7TWX6sAIXBRmULfhQ8uCFCrb/YQHolptjCNpjBBRYnQvtZJYdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765758415; c=relaxed/simple;
-	bh=u35lqsNDh0hGEaRE+XE6Hhfpn4HUkb37YMhZXeV8vMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=CF7YTnJV2rQPbajP2fIVk9mxkUK07LYe7CDEyXBfL+68WYlJgOfTalCmv6bthQzDP1Nn4JWETti5spLo3TQcPn1Nr9hgALYdjdrK+ABf5tKRCCtyHOTTGWte5xzxoAhvSeff4JHIj4upnzqbSZLrz56OphWVNaqEvYziMHCaMqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vUwBG-000000002IO-2Ysp;
-	Mon, 15 Dec 2025 00:11:14 +0000
-Date: Mon, 15 Dec 2025 00:11:10 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	s=arc-20240116; t=1765763196; c=relaxed/simple;
+	bh=XRC3yl673LmIMW7GZmh0iB+sUGK/S/yb57gGlGX0EBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpQFstJ0JbARUqoaRH57b5qGN/hOTgAb0V6WtallraGMz1yoGiC8n/qRSLWtwI8zNxEFQB7BtJNguHBQDqoSCbF1G6IybapeomxBfl7nl44240ej9CdySeKxiqIUjWOxfqKXlcIiqUGOUnOqLR5U09Ub45tCzBuqPKL7qYVTTJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Cf3ENENk; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Cf3ENENk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=LTBoGWcRgSF0H/r01p4IjSgGUzmL4jidq3/URe7sdCY=; b=Cf3ENENk4so979idjMr+2ewvDF
+	YPxpATX3V2kqIuKO0z4SIuH1lfLosvtXq3v+8XBQOs6+dr81YLVg1t5O771bEHSJb4El/01DpIkw2
+	X/T+m5dziJTgVLn6P2S1IstcJ48+3xqDiO9y89LLwG9Ss6+ziMOHh96wC7s8N5QpcruU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vUxfG-00Gx9d-8r; Mon, 15 Dec 2025 02:46:18 +0100
+Date: Mon, 15 Dec 2025 02:46:18 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -33,8 +40,8 @@ To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
 	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
 	Avinash Jayaraman <ajayaraman@maxlinear.com>,
 	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
@@ -43,9 +50,11 @@ Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
 	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
 	"Livia M. Rosu" <lrosu@maxlinear.com>,
 	John Crispin <john@phrozen.org>
-Subject: [PATCH RFC net-next v3 0/4] net: dsa: initial support for MaxLinear
+Subject: Re: [PATCH RFC net-next v3 2/4] net: dsa: add tag formats for
  MxL862xx switches
-Message-ID: <cover.1765757027.git.daniel@makrotopia.org>
+Message-ID: <32d0845c-4d89-4904-986d-b7438104cf5c@lunn.ch>
+References: <cover.1765757027.git.daniel@makrotopia.org>
+ <de01f08a3c99921d439bc15eeafd94e759688554.1765757027.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,90 +63,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <de01f08a3c99921d439bc15eeafd94e759688554.1765757027.git.daniel@makrotopia.org>
 
-Hi,
+> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+> index f86b30742122f..c897d62326f5b 100644
+> --- a/net/dsa/Kconfig
+> +++ b/net/dsa/Kconfig
+> @@ -145,6 +145,13 @@ config NET_DSA_TAG_QCA
+>  	  Say Y or M if you want to enable support for tagging frames for
+>  	  the Qualcomm Atheros QCA8K switches.
+>  
+> +config NET_DSA_TAG_MXL862
+> +	tristate "Tag driver for MxL862xx switches"
+> +	help
+> +	  Say Y or M if you want to enable support for tagging frames for the
+> +	  Maxlinear MxL86252 and MxL86282 switches using their native 8-byte
+> +	  tagging protocol.
+> +
 
-This series adds very basic DSA support for the MaxLinear MxL86252
-(5 PHY ports) and MxL86282 (8 PHY ports) switches. The intent is to
-validate and get feedback on the overall approach and driver structure,
-especially the firmware-mediated host interface.
+This file is mostly sorted. So this entry should be between
+NET_DSA_TAG_MTK and NET_DSA_TAG_MXL_GSW1XX. It would also be good to
+try to make it more uniform with the NET_DSA_TAG_MXL_GSW1XX. Maybe
+NET_DSA_TAG_MXL_862xx?
 
-MxL862xx integrates a firmware running on an embedded processor (Zephyr
-RTOS). Host interaction uses a simple API transported over MDIO/MMD.
-This series includes only what's needed to pass traffic between user
-ports and the CPU port: relayed MDIO to internal PHYs, basic port
-enable/disable, and CPU-port special tagging.
-
-Thanks for taking a look.
-
-Changes since RFC v2
-1/4, 2/4, 3/4: unchanged
-
-4/4 net: dsa: add basic initial driver for MxL862xx switches
- * fix return value being uninitialized on error in mxl862xx_api_wrap()
- * add missing description in kerneldoc comment of
-   struct mxl862xx_ss_sp_tag
-
-Changes since initial RFC
-
-1/4 dt-bindings: net: dsa: add bindings for MaxLinear MxL862xx
- * better description in dt-bindings doc
-
-2/4 net: dsa: add tag formats for MxL862xx switches
- * make sure all tag fields are initialized
-
-3/4 net: mdio: add unlocked mdiodev C45 bus accessors
- * new patch
-
-4/4 net: dsa: add basic initial driver for MxL862xx switches
- * make use of struct mdio_device
- * add phylink_mac_ops stubs
- * drop leftover nonsense from mxl862xx_phylink_get_caps()
- * fix endian conversions
- * use __le32 instead of enum types in over-the-wire structs
- * use existing MDIO_* macros whenever possible
- * simplify API constants to be more readable
- * use readx_poll_timeout instead of open-coding poll timeout loop
- * add mxl862xx_reg_read() and mxl862xx_reg_write() helpers
- * demystify error codes returned by the firmware
- * add #defines for mxl862xx_ss_sp_tag member values
- * move reset to dedicated function, clarify magic number being the
-   reset command ID
-
-Daniel Golle (4):
-  dt-bindings: net: dsa: add bindings for MaxLinear MxL862xx
-  net: dsa: add tag formats for MxL862xx switches
-  net: mdio: add unlocked mdiodev C45 bus accessors
-  net: dsa: add basic initial driver for MxL862xx switches
-
- .../bindings/net/dsa/maxlinear,mxl862xx.yaml  | 162 ++++++++
- MAINTAINERS                                   |   8 +
- drivers/net/dsa/Kconfig                       |   2 +
- drivers/net/dsa/Makefile                      |   1 +
- drivers/net/dsa/mxl862xx/Kconfig              |  12 +
- drivers/net/dsa/mxl862xx/Makefile             |   3 +
- drivers/net/dsa/mxl862xx/mxl862xx-api.h       | 118 ++++++
- drivers/net/dsa/mxl862xx/mxl862xx-cmd.h       |  28 ++
- drivers/net/dsa/mxl862xx/mxl862xx-host.c      | 230 +++++++++++
- drivers/net/dsa/mxl862xx/mxl862xx-host.h      |   4 +
- drivers/net/dsa/mxl862xx/mxl862xx.c           | 361 ++++++++++++++++++
- drivers/net/dsa/mxl862xx/mxl862xx.h           |  24 ++
- include/linux/mdio.h                          |  13 +
- include/net/dsa.h                             |   2 +
- net/dsa/Kconfig                               |   7 +
- net/dsa/Makefile                              |   1 +
- net/dsa/tag_mxl862xx.c                        | 113 ++++++
- 17 files changed, 1089 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/dsa/maxlinear,mxl862xx.yaml
- create mode 100644 drivers/net/dsa/mxl862xx/Kconfig
- create mode 100644 drivers/net/dsa/mxl862xx/Makefile
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-api.h
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-cmd.h
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-host.c
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-host.h
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx.c
- create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx.h
- create mode 100644 net/dsa/tag_mxl862xx.c
-
--- 
-2.52.0
+	Andrew
