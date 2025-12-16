@@ -1,277 +1,202 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98527330646;
-	Tue, 16 Dec 2025 15:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5032D34E25C;
+	Tue, 16 Dec 2025 15:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765900704; cv=none; b=ahPRJAzvNxm6LBk70UTtbU9WdBEC9tm9VcTZahnf5AJzkAo/zeSfrhXC8VBoQmA5FeCnKJZSIRoJdZ3t+9V8szbWVOOEzIdSxMuLQeeDWZtbMh6m0t5HZCiZrtnOukjTNh0JKwrgdERVf0b01ssM0GSjYAYIm2CN7kB44AHuK6g=
+	t=1765900717; cv=none; b=MATSwdlDe3jVeu3YScRJfn278oQOJ12kZGwMHZ6dZalHsSHnIXzwd7YsshAmVksxxQaGNLOYO2fQgvrgBModXvJmSXmD0IhjIvCzrFJn42zx4HIeSBqTrhBfEjVssKoWbgVncelAYYf02Pkp8P43nureW6bRPcgdjzUifttIIr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765900704; c=relaxed/simple;
-	bh=XowZTd2mQEZTrab8yUt35vDdm0ayAgxkKMoP5IySFuw=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=uQgBqmMgmJDLPk2eSjU026H8BkTXQKxEfBjqDJdvSDaYBKxZVvFnP4VGWQKRU2So34tPJjwq/3UZHl+9xdErOX6TVUYUBwKMSrnXy469EaN2hWY/fFNXcpTog414NNu9MRGzFixVfpUP/eHpihCOkEeM6REC+KYERfSxk7I+jQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PzoVB5KM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1765900717; c=relaxed/simple;
+	bh=FoGkFvPI30UFCJ36SpXYyzKXdoONF4L7CQ41Dk+tn9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=haQ/+1cH1tBZHqgxTcIYBvVoajasgCgdOtjFZbxcXW3IXtCkRxPFk+95ouzqq+eqeNy8byGGoZfY6Cy0+P/DfZuX+fEpXdfL0YDZRqKHzAt4b0MAO7hrOSRQu1jG1ZkZ74oOLfv5r/GI6OArTQAhkeHz+YUtvXsWTqu+wi6RGdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzvgoXSx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PzoVB5KM"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id 14B33200D634; Tue, 16 Dec 2025 07:58:22 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 14B33200D634
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1765900702;
-	bh=GnoEUkMiB9Khm77EWJmo+0d7HBPDrUmiG7jx0eDwXBI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PzoVB5KMNaq/Cyu9QandoRLmVtbZEkHEQbv2pIxfdbBbx+GcDs5OV62+rWGgzrvrn
-	 nsdMxHAoTVk63PKPDBxC3ESjDQb1mZ6oqv+svBYNkRI4jwrEg3NCdb58kjqUq1SFzu
-	 sOY728BopNrT+izZV1a27ller4dAIBud/nrDjs3M=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: paulros@microsoft.com
-Subject: [PATCH RFC 1/2] net: mana: Add support for coalesced RX packets on CQE
-Date: Tue, 16 Dec 2025 07:57:54 -0800
-Message-Id: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzvgoXSx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5480C113D0;
+	Tue, 16 Dec 2025 15:58:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765900717;
+	bh=FoGkFvPI30UFCJ36SpXYyzKXdoONF4L7CQ41Dk+tn9M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uzvgoXSx+bQiqW2zigAwzmKLzfTX85z5JXu5vVz4bZQbUQj4TTBICPj5+11WX7QCj
+	 6RvGZXC9LX49G6wsI1gOHCNVOUBCF4dVzdrCFWDQo1U2OLw1/zEBoKVUwT7VxxlfEx
+	 cTUzLYJGJQZRbZhBMFIbx6Hvu2YsxnTufoEdDTvd77JfuvsfDkPLZZOvAR9SRz+Fsg
+	 iHhFnJlDgdWjRucKNaDF3cRI6FzuIyAmgrVw8wgNAelQwwWf0B6ZJn/rggR2JsCerd
+	 /0swZqAarPBkyic7/CvbJCqJcvfWndmKYfGTbCEpQHJy2EbHFUlaqvdvPp2GWibM0A
+	 JhBko8CxoacWw==
+Message-ID: <fe15fcce-865a-4969-9b6f-95920fcaa5c7@kernel.org>
+Date: Tue, 16 Dec 2025 16:58:25 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/19] dt-bindings: arm: microchip: move SparX-5 to
+ generic Microchip binding
+To: Robert Marko <robert.marko@sartura.hr>, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, nicolas.ferre@microchip.com,
+ alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
+ Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ UNGLinuxDriver@microchip.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, vkoul@kernel.org, linux@roeck-us.net,
+ andi.shyti@kernel.org, lee@kernel.org, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, linusw@kernel.org,
+ olivia@selenic.com, radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, mturquette@baylibre.com,
+ sboyd@kernel.org, richardcochran@gmail.com,
+ wsa+renesas@sang-engineering.com, romain.sioen@microchip.com,
+ Ryan.Wanner@microchip.com, lars.povlsen@microchip.com,
+ tudor.ambarus@linaro.org, charan.pedumuru@microchip.com,
+ kavyasree.kotagiri@microchip.com, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+ netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-clk@vger.kernel.org, mwalle@kernel.org
+Cc: luka.perkov@sartura.hr
+References: <20251215163820.1584926-1-robert.marko@sartura.hr>
+ <20251215163820.1584926-5-robert.marko@sartura.hr>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251215163820.1584926-5-robert.marko@sartura.hr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+On 15/12/2025 17:35, Robert Marko wrote:
+> Now that we have a generic Microchip binding, lets move SparX-5 as well as
+> there is no reason to have specific binding file for each SoC series.
+> 
+> The check for AXI node was dropped.
 
-Our NIC can have up to 4 RX packets on 1 CQE. To support this feature,
-check and process the type CQE_RX_COALESCED_4. The default setting is
-disabled, to avoid possible regression on latency.
+Why?
 
-And add ethtool handler to switch this feature. To turn it on, run:
-  ethtool -C <nic> rx-frames 4
-To turn it off:
-  ethtool -C <nic> rx-frames 1
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> ---
+>  .../bindings/arm/microchip,sparx5.yaml        | 67 -------------------
+>  .../devicetree/bindings/arm/microchip.yaml    | 22 ++++++
+>  2 files changed, 22 insertions(+), 67 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/arm/microchip,sparx5.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/microchip,sparx5.yaml b/Documentation/devicetree/bindings/arm/microchip,sparx5.yaml
+> deleted file mode 100644
+> index 9a0d54e9799c..000000000000
+> --- a/Documentation/devicetree/bindings/arm/microchip,sparx5.yaml
+> +++ /dev/null
+> @@ -1,67 +0,0 @@
+> -# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> -%YAML 1.2
+> ----
+> -$id: http://devicetree.org/schemas/arm/microchip,sparx5.yaml#
+> -$schema: http://devicetree.org/meta-schemas/core.yaml#
+> -
+> -title: Microchip Sparx5 Boards
+> -
+> -maintainers:
+> -  - Lars Povlsen <lars.povlsen@microchip.com>
+> -
+> -description: |+
+> -   The Microchip Sparx5 SoC is a ARMv8-based used in a family of
+> -   gigabit TSN-capable gigabit switches.
+> -
+> -   The SparX-5 Ethernet switch family provides a rich set of switching
+> -   features such as advanced TCAM-based VLAN and QoS processing
+> -   enabling delivery of differentiated services, and security through
+> -   TCAM-based frame processing using versatile content aware processor
+> -   (VCAP)
+> -
+> -properties:
+> -  $nodename:
+> -    const: '/'
+> -  compatible:
+> -    oneOf:
+> -      - description: The Sparx5 pcb125 board is a modular board,
+> -          which has both spi-nor and eMMC storage. The modular design
+> -          allows for connection of different network ports.
+> -        items:
+> -          - const: microchip,sparx5-pcb125
+> -          - const: microchip,sparx5
+> -
+> -      - description: The Sparx5 pcb134 is a pizzabox form factor
+> -          gigabit switch with 20 SFP ports. It features spi-nor and
+> -          either spi-nand or eMMC storage (mount option).
+> -        items:
+> -          - const: microchip,sparx5-pcb134
+> -          - const: microchip,sparx5
+> -
+> -      - description: The Sparx5 pcb135 is a pizzabox form factor
+> -          gigabit switch with 48+4 Cu ports. It features spi-nor and
+> -          either spi-nand or eMMC storage (mount option).
+> -        items:
+> -          - const: microchip,sparx5-pcb135
+> -          - const: microchip,sparx5
+> -
+> -  axi@600000000:
+> -    type: object
+> -    description: the root node in the Sparx5 platforms must contain
+> -      an axi bus child node. They are always at physical address
+> -      0x600000000 in all the Sparx5 variants.
+> -    properties:
+> -      compatible:
+> -        items:
+> -          - const: simple-bus
+> -
+> -    required:
+> -      - compatible
+> -
+> -required:
+> -  - compatible
+> -  - axi@600000000
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 32 ++++++-----
- .../ethernet/microsoft/mana/mana_ethtool.c    | 55 +++++++++++++++++++
- include/net/mana/mana.h                       |  2 +
- 3 files changed, 74 insertions(+), 15 deletions(-)
+Nothing explains the rationale for doing this.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 1ad154f9db1a..a46a1adf83bc 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1330,7 +1330,7 @@ static int mana_cfg_vport_steering(struct mana_port_context *apc,
- 	req->update_hashkey = update_key;
- 	req->update_indir_tab = update_tab;
- 	req->default_rxobj = apc->default_rxobj;
--	req->cqe_coalescing_enable = 0;
-+	req->cqe_coalescing_enable = apc->cqe_coalescing_enable;
- 
- 	if (update_key)
- 		memcpy(&req->hashkey, apc->hashkey, MANA_HASH_KEY_SIZE);
-@@ -1864,11 +1864,12 @@ static struct sk_buff *mana_build_skb(struct mana_rxq *rxq, void *buf_va,
- }
- 
- static void mana_rx_skb(void *buf_va, bool from_pool,
--			struct mana_rxcomp_oob *cqe, struct mana_rxq *rxq)
-+			struct mana_rxcomp_oob *cqe, struct mana_rxq *rxq,
-+			int i)
- {
- 	struct mana_stats_rx *rx_stats = &rxq->stats;
- 	struct net_device *ndev = rxq->ndev;
--	uint pkt_len = cqe->ppi[0].pkt_len;
-+	uint pkt_len = cqe->ppi[i].pkt_len;
- 	u16 rxq_idx = rxq->rxq_idx;
- 	struct napi_struct *napi;
- 	struct xdp_buff xdp = {};
-@@ -1912,7 +1913,7 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
- 	}
- 
- 	if (cqe->rx_hashtype != 0 && (ndev->features & NETIF_F_RXHASH)) {
--		hash_value = cqe->ppi[0].pkt_hash;
-+		hash_value = cqe->ppi[i].pkt_hash;
- 
- 		if (cqe->rx_hashtype & MANA_HASH_L4)
- 			skb_set_hash(skb, hash_value, PKT_HASH_TYPE_L4);
-@@ -2047,9 +2048,11 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 	struct mana_recv_buf_oob *rxbuf_oob;
- 	struct mana_port_context *apc;
- 	struct device *dev = gc->dev;
-+	bool coalesced = false;
- 	void *old_buf = NULL;
- 	u32 curr, pktlen;
- 	bool old_fp;
-+	int i = 0;
- 
- 	apc = netdev_priv(ndev);
- 
-@@ -2064,9 +2067,8 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 		goto drop;
- 
- 	case CQE_RX_COALESCED_4:
--		netdev_err(ndev, "RX coalescing is unsupported\n");
--		apc->eth_stats.rx_coalesced_err++;
--		return;
-+		coalesced = true;
-+		break;
- 
- 	case CQE_RX_OBJECT_FENCE:
- 		complete(&rxq->fence_event);
-@@ -2079,14 +2081,10 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 		return;
- 	}
- 
--	pktlen = oob->ppi[0].pkt_len;
--
--	if (pktlen == 0) {
--		/* data packets should never have packetlength of zero */
--		netdev_err(ndev, "RX pkt len=0, rq=%u, cq=%u, rxobj=0x%llx\n",
--			   rxq->gdma_id, cq->gdma_id, rxq->rxobj);
-+nextpkt:
-+	pktlen = oob->ppi[i].pkt_len;
-+	if (pktlen == 0)
- 		return;
--	}
- 
- 	curr = rxq->buf_index;
- 	rxbuf_oob = &rxq->rx_oobs[curr];
-@@ -2097,12 +2095,15 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 	/* Unsuccessful refill will have old_buf == NULL.
- 	 * In this case, mana_rx_skb() will drop the packet.
- 	 */
--	mana_rx_skb(old_buf, old_fp, oob, rxq);
-+	mana_rx_skb(old_buf, old_fp, oob, rxq, i);
- 
- drop:
- 	mana_move_wq_tail(rxq->gdma_rq, rxbuf_oob->wqe_inf.wqe_size_in_bu);
- 
- 	mana_post_pkt_rxq(rxq);
-+
-+	if (coalesced && (++i < MANA_RXCOMP_OOB_NUM_PPI))
-+		goto nextpkt;
- }
- 
- static void mana_poll_rx_cq(struct mana_cq *cq)
-@@ -3276,6 +3277,7 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	apc->port_handle = INVALID_MANA_HANDLE;
- 	apc->pf_filter_handle = INVALID_MANA_HANDLE;
- 	apc->port_idx = port_idx;
-+	apc->cqe_coalescing_enable = 0;
- 
- 	mutex_init(&apc->vport_mutex);
- 	apc->vport_use_count = 0;
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 0e2f4343ac67..1b9ed5c9bbff 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -397,6 +397,58 @@ static void mana_get_channels(struct net_device *ndev,
- 	channel->combined_count = apc->num_queues;
- }
- 
-+static int mana_get_coalesce(struct net_device *ndev,
-+			     struct ethtool_coalesce *ec,
-+			     struct kernel_ethtool_coalesce *kernel_coal,
-+			     struct netlink_ext_ack *extack)
-+{
-+	struct mana_port_context *apc = netdev_priv(ndev);
-+
-+	ec->rx_max_coalesced_frames =
-+		apc->cqe_coalescing_enable ? MANA_RXCOMP_OOB_NUM_PPI : 1;
-+
-+	return 0;
-+}
-+
-+static int mana_set_coalesce(struct net_device *ndev,
-+			     struct ethtool_coalesce *ec,
-+			     struct kernel_ethtool_coalesce *kernel_coal,
-+			     struct netlink_ext_ack *extack)
-+{
-+	struct mana_port_context *apc = netdev_priv(ndev);
-+	u8 saved_cqe_coalescing_enable;
-+	int err;
-+
-+	if (ec->rx_max_coalesced_frames != 1 &&
-+	    ec->rx_max_coalesced_frames != MANA_RXCOMP_OOB_NUM_PPI) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "rx-frames must be 1 or %u, got %u",
-+				   MANA_RXCOMP_OOB_NUM_PPI,
-+				   ec->rx_max_coalesced_frames);
-+		return -EINVAL;
-+	}
-+
-+	saved_cqe_coalescing_enable = apc->cqe_coalescing_enable;
-+	apc->cqe_coalescing_enable =
-+		ec->rx_max_coalesced_frames == MANA_RXCOMP_OOB_NUM_PPI;
-+
-+	if (!apc->port_is_up)
-+		return 0;
-+
-+	err = mana_config_rss(apc, TRI_STATE_TRUE, false, false);
-+
-+	if (err) {
-+		netdev_err(ndev, "Set rx-frames to %u failed:%d\n",
-+			   ec->rx_max_coalesced_frames, err);
-+		NL_SET_ERR_MSG_FMT(extack, "Set rx-frames to %u failed:%d\n",
-+				   ec->rx_max_coalesced_frames, err);
-+
-+		apc->cqe_coalescing_enable = saved_cqe_coalescing_enable;
-+	}
-+
-+	return err;
-+}
-+
- static int mana_set_channels(struct net_device *ndev,
- 			     struct ethtool_channels *channels)
- {
-@@ -517,6 +569,7 @@ static int mana_get_link_ksettings(struct net_device *ndev,
- }
- 
- const struct ethtool_ops mana_ethtool_ops = {
-+	.supported_coalesce_params = ETHTOOL_COALESCE_RX_MAX_FRAMES,
- 	.get_ethtool_stats	= mana_get_ethtool_stats,
- 	.get_sset_count		= mana_get_sset_count,
- 	.get_strings		= mana_get_strings,
-@@ -527,6 +580,8 @@ const struct ethtool_ops mana_ethtool_ops = {
- 	.set_rxfh		= mana_set_rxfh,
- 	.get_channels		= mana_get_channels,
- 	.set_channels		= mana_set_channels,
-+	.get_coalesce		= mana_get_coalesce,
-+	.set_coalesce		= mana_set_coalesce,
- 	.get_ringparam          = mana_get_ringparam,
- 	.set_ringparam          = mana_set_ringparam,
- 	.get_link_ksettings	= mana_get_link_ksettings,
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index d7e089c6b694..51d26ebeff6c 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -556,6 +556,8 @@ struct mana_port_context {
- 	bool port_is_up;
- 	bool port_st_save; /* Saved port state */
- 
-+	u8 cqe_coalescing_enable;
-+
- 	struct mana_ethtool_stats eth_stats;
- 
- 	struct mana_ethtool_phy_stats phy_stats;
--- 
-2.34.1
-
+Best regards,
+Krzysztof
