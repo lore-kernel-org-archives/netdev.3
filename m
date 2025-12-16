@@ -1,136 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6AA357733
-	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 15:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72376345732
+	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 15:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765898060; cv=none; b=r9hW4trN7zyzYRWtl9SvjPqdAexDyAycnU5+hgBo1zlKrZVPktuhOjhB73LZQYeYiSkIkqOSy8HMoqpipcOE8cRKj8ka3j255b3DnFeQ2Q24GncgTMIIWr1ktIZ96LELcAIyTBGGUdB9c9AbE3bdSmsdUTTjHyb5f6Y2sfP9ePI=
+	t=1765898423; cv=none; b=mnCx744w/QL2IMBNJk8r9egLkJooSBcRaqcoMDbY5T66Vzi8+GW/0a5mAQffjtgo6L5yfiyuIC3PtU93F4A2bCr8M0OO4gpFkpGLJT4uBMi/ctDCU8Y9XKmRDSzApqbKOVAGAj1tqA9+YLzBjeEBiPUhIREkq2OBp7x5/YJIc+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765898060; c=relaxed/simple;
-	bh=l3aFcFIb/rETTTHoywtwScOBMd14d3C/McfXoy+MH7g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFYFTJ29kt/hf71uiNTmgzIsyt3hqSi+CPAv3/ZnnvlfMf0perV94zcQerC8qGniarP5g7HsUxmKZL5GOEnUpg/a9sUlS5JkIRWkLm7kHrRowC3LJlf+3uyD/Ps2Gls92Wd1kHRHylvW0h6DdxLpVK/IeEfXhHqPYCjlu6Lf3b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iSLdp/M/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=O2Rp3LTE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1765898423; c=relaxed/simple;
+	bh=2h3WBnEQJKctPY2asYyEGA7td2QJtLLqP+/9R300ga8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qBSYbAjqDMDFymdRnv7ISC1xeVNgTCGNYTnSNPl7bIXqBe0qpE4UNU5tU+YM3qQAYx+lPBNeejxZweLDWXJnskjEmFyMM7TWcRZbqwtD1/YF/Ar0WY71qMa3jwojx2+tgmb+fFJkbKyBEugIDCT8mIFfYbwoPXmtNipv+xS7E9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFjcEzt9; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iSLdp/M/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="O2Rp3LTE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765898057;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KGroo1FRQJLcCV21iN/HVdCn1Y2Qr7NjzdMpGVOhIKQ=;
-	b=iSLdp/M/yZA/QDdLjwC6OIgbJXuZWv5pkYdUiGl20ijtFgbnMNoIccJpsIxiYzZolGGJT6
-	Ii7EhmkBqQmy6Ra8sWKvg1+2PZlKiGGjMjB+JHrXNMib79yl/Ytblv7EYD+S0EYYnJkrG8
-	41yvKPX4OmkH9D3QJcMD/TVTVHOrZqA=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-1QH-IUFFM4eviMlkCrWspw-1; Tue, 16 Dec 2025 10:14:15 -0500
-X-MC-Unique: 1QH-IUFFM4eviMlkCrWspw-1
-X-Mimecast-MFC-AGG-ID: 1QH-IUFFM4eviMlkCrWspw_1765898054
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-29da1ea0b97so120293655ad.3
-        for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:14:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFjcEzt9"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a110548f10so4216345ad.1
+        for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:20:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1765898054; x=1766502854; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KGroo1FRQJLcCV21iN/HVdCn1Y2Qr7NjzdMpGVOhIKQ=;
-        b=O2Rp3LTEPAPHfbrnLQhN/g4LZBnNRN/U/p1rPmAb4+C+7HuX5CbY9P4LsbxtY1LrN9
-         h5nHwT17bgW0pQbhmd0lZE/l9ZZSGtqLFduV8pOpReyFegvHW1cGmFf/euuyTmIXc9Ow
-         ++wWt1yqoywvVzDf4QAGY+DoFFXudpJRcKzC+XHJPlnEVs/4h3FLL0tktoTYmtOpPelf
-         LeLST5uf4L02LKFkg9fNkvaeZvirQoOF35MGTQ+ZwVojGQAF68cdSLcKKfsVDNmgp+JO
-         Ky9yICpi3zlrRV/PbtgkCQlPTN3eY70mrKGr/iWB2sgbhanVxbMYORfkEkmfMrG1/3Ri
-         SlRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765898054; x=1766502854;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1765898421; x=1766503221; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KGroo1FRQJLcCV21iN/HVdCn1Y2Qr7NjzdMpGVOhIKQ=;
-        b=o/DftDCrt9YzEXjDYIr0OJRMoJGvC4K0pcDLszZ4JITXma99H+2Vy//7GXG5LR4uxT
-         v3NpoJxerFLA+Ar79oT+lX2gkaGShUyjBEeO1DA/7F5Jjl/nuxMzCUCCLtmzE3EDRKhm
-         TWe4B11mkL07kNlxmTEKV1mjqhXvvFcKTjaOeicYBxNpIzXHEKF8VlSXaG/gHZdj2fuS
-         niqI/7Rjk0/dMWyV+86YWVvr94/U28ZRsJUGE/hVaxel7qZyCimxNBaPOi9VO6qIkvlo
-         Zh35npacgtEbgULCALNnoikKML3NWTXbJrqAL6k8muAfQKxPJY6OLGBIAYK+1serc9VP
-         5FEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvBLDrL8nIZzY1mevXYgZM36DaIx5i7M8JDKm6rgAa4jUfkjSE4PR1ZC59EwRbeGkklqQF2UU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBl7zPkvwwSkqY3n2IB1rxOi6QlfnySBFVTEEQlVp3xhq8vt4L
-	ybBYA/r3CEJNyGQxVNH08Hns5GeFHj3StcE2nGpDVoT6R/jwGSmQfO3ldjDmNEWNJAH2n1hO5FI
-	lRsi5aWqXgm3/jEnh84JI/PvpUc1dYrTCHg5HjCOvv9OmG2J0Wi47xfBo
-X-Gm-Gg: AY/fxX71ZavTjGxQZW7DMItQmWJjZib4bAykiaml9XaTNSj/JInZdVM3qhb/EjqJqQ8
-	cimlhuAT0G/QjA2JZreg3LQxRR5Y+fDlfANt8sGNk1vVucolJ4zYMqMmrNLIH4WsX9mUkyInFu6
-	DMGOcgXbveMPzX2UaHHIfnutYoKfCeCwMw5gQ3ITv/B1TOMHQhDkA6QcH9v8afqB9Kh1QnIkZG+
-	8KH6Ho+4dewaj7cwYGV16XrBQGbNJKJwcR+Ek4r/93fMyeO/j4wV2CzLXn2FRCrVLXl3cxLlWIM
-	cbR86Pi2iYkpqS+i/HeE4/9kTjL2wPztxatUKweavrnRWcmTTGBNMUM3pdrLtQh9rYWLDlF4nld
-	U9CBKymXsm4w1hV6dSP9WtmiE9H29kh/6oPLUfQ==
-X-Received: by 2002:a17:902:e947:b0:2a0:f488:24e with SMTP id d9443c01a7336-2a0f488039cmr72599015ad.28.1765898054349;
-        Tue, 16 Dec 2025 07:14:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHreRegPQkGmWbCVch5XFt0fM9KZJ4HiBSvqPfGMq3/Z86mPrICGllWYxJgnaXN7I+HROG0mA==
-X-Received: by 2002:a17:902:e947:b0:2a0:f488:24e with SMTP id d9443c01a7336-2a0f488039cmr72598365ad.28.1765898053897;
-        Tue, 16 Dec 2025 07:14:13 -0800 (PST)
-Received: from dkarn-thinkpadp16vgen1.punetw6.csb ([2402:e280:3e0d:a45:3861:8b7f:6ae1:6229])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29f177ff327sm137688045ad.101.2025.12.16.07.14.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 07:14:13 -0800 (PST)
-From: Deepakkumar Karn <dkarn@redhat.com>
-To: petkan@nucleusys.com,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com,
-	Deepakkumar Karn <dkarn@redhat.com>
-Subject: [PATCH] net: usb: rtl8150: fix memory leak on usb_submit_urb() failure
-Date: Tue, 16 Dec 2025 20:43:05 +0530
-Message-ID: <20251216151304.59865-2-dkarn@redhat.com>
-X-Mailer: git-send-email 2.52.0
+        bh=Um9j1NvhAvuOmXHqodLfor6UadH2pWBjGMeLJlrrYrA=;
+        b=BFjcEzt9N/sUxLsL1YXXjS4rMHkP65c8YUcNCtRkmt9uJj/mjYdqpUqB0TYE6H+73g
+         bYjLM13S9SVHd8XBqDS9BwC53oSw+T6nakevm+1zQEkIsL1U+xOvV6WLtZHEfxVg/ah2
+         c4HN+rK+UAT5ozClxJB1l4fVbw16AOcyV9GCYAUCUfWHPto70ZWgTHcDeBqPgQ/vEXz5
+         V67njGbW1YHRXsPGTksAsJULlyShbvQrgrgW8w9uw3ql5ayUJRWbHjLM9VMxnDDljXfg
+         5QO24DMH8lEFwP1P1D9RRwYMQtFT/W6eZiMaAiiGM7MUg+MRmMtgLY4XS2b9pfXvdIVm
+         R8kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765898421; x=1766503221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Um9j1NvhAvuOmXHqodLfor6UadH2pWBjGMeLJlrrYrA=;
+        b=D28uRLtP9oUq0Hv6lck7L1ToRhG8KnHZV3pBaZhJXXdVTJoVsb2V291Hw/EEqbjSoJ
+         vslCzFKNlpJL9hC8zSREZGJiSZ/uvaXLEy2Zcn9gMmoYJpNCWdN/JPANSJb14CI4FSaq
+         oHwc6Oc5+aGVXuN2JLGEEhR6YtiRQQ5pWL11GjJecl0vFwkjnjcSgpI5UQPtkukVg+fi
+         GZqusAZA+9bDKvDf+1/e1+DM4MhJVnSTMkvclJoYt+jUeA7I0vuu4zpCv4LJKmvcYhnp
+         ZlWKWpM2drz7+huZCri6pqGcV8bbbH0mf1/NH2tH8mesPOSlPlMlcKZW4RhM62SVAOmF
+         gb4g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/72qyDINpIUT6dzsST2IU1sYzhlrBxjinXv3ZI9CW48iUN6c9frvNq+V8OV/kVeyw3TsjKLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzow04ogCt0xtHgVBdWTXCUqF4lsNHR4JdD3gkxjLfVIvXt9fLU
+	Kih+PjsyD8D/ccyVn2URfFcCEh3kzj5/yf7P5m+pvroenacgNSbQtsZjmquHZdahU1hNFZoBe2y
+	/rVfdhOAt+3lOD0tiwxeGBhqMqKpUvG8=
+X-Gm-Gg: AY/fxX7QjJPAa4DaThJxIM/Q57RDmtNDA9oRvzDiq612D9XXZaOb6+lx8m9RaTgfvBA
+	6IIy67yxZfKVBVIXAvZQd2ijxGA1a+tVApbltxWC3756K+RLf41HbXmlDnG8vIt4vo6uoiDSdLS
+	aY+3jcKsrS3PYxZV735NM8ygdrIDcqsS+ern0eHtEsSmMv9/JDdefl7L9S8HsWN0Qo5O8TfB5t6
+	4AeMeUXj9/p+xqEp9+9t1+RreHXKJuy5nNWlPSzDLeWviYlqydADtwtlHwHkbzPfEdfOvxsl8Bw
+	pQvfO2g=
+X-Google-Smtp-Source: AGHT+IGYJpLwVd3WmfTCVN6vD/x/9T3gUFCIaNjQX2AnDfzywCiHaDROcEgCyN90fYOeDZvtNwbDXrs4JcvDTNG1WwM=
+X-Received: by 2002:a05:7022:3a0d:b0:11e:3e9:3ea4 with SMTP id
+ a92af1059eb24-11f34c52cc5mr5906109c88.6.1765898419103; Tue, 16 Dec 2025
+ 07:20:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251215113903.46555-1-bagasdotme@gmail.com> <20251215113903.46555-11-bagasdotme@gmail.com>
+In-Reply-To: <20251215113903.46555-11-bagasdotme@gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 16 Dec 2025 10:20:06 -0500
+X-Gm-Features: AQt7F2ra4W4DJMCA0k4t80_q2saRqZRxc2HY97wTRTVoyOkAEkAv1EtqbtLiuMo
+Message-ID: <CADnq5_P04522xETHty9hn5JO=mNbKSg3Pa68=u8cZ+JgNLt1Jg@mail.gmail.com>
+Subject: Re: [PATCH 10/14] drm/amdgpu: Describe @AMD_IP_BLOCK_TYPE_RAS in
+ amd_ip_block_type enum
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux AMDGPU <amd-gfx@lists.freedesktop.org>, 
+	Linux DRI Development <dri-devel@lists.freedesktop.org>, 
+	Linux Filesystems Development <linux-fsdevel@vger.kernel.org>, Linux Media <linux-media@vger.kernel.org>, 
+	linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com, 
+	Linux Virtualization <virtualization@lists.linux.dev>, 
+	Linux Memory Management List <linux-mm@kvack.org>, Linux Network Bridge <bridge@lists.linux.dev>, 
+	Linux Networking <netdev@vger.kernel.org>, Harry Wentland <harry.wentland@amd.com>, 
+	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Matthew Brost <matthew.brost@intel.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Alexander Potapenko <glider@google.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>, Alex Hung <alex.hung@amd.com>, 
+	Aurabindo Pillai <aurabindo.pillai@amd.com>, Dillon Varone <Dillon.Varone@amd.com>, 
+	George Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>, 
+	Cruise Hung <Cruise.Hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Sunil Khatri <sunil.khatri@amd.com>, Dominik Kaszewski <dominik.kaszewski@amd.com>, 
+	David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Max Kellermann <max.kellermann@ionos.com>, 
+	"Nysal Jan K.A." <nysal@linux.ibm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Alexey Skidanov <alexey.skidanov@intel.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Vitaly Wool <vitaly.wool@konsulko.se>, 
+	Harry Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, NeilBrown <neil@brown.name>, 
+	Amir Goldstein <amir73il@gmail.com>, Jeff Layton <jlayton@kernel.org>, 
+	Ivan Lipski <ivan.lipski@amd.com>, Tao Zhou <tao.zhou1@amd.com>, 
+	YiPeng Chai <YiPeng.Chai@amd.com>, Hawking Zhang <Hawking.Zhang@amd.com>, 
+	Lyude Paul <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Luben Tuikov <luben.tuikov@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	Roopa Prabhu <roopa@cumulusnetworks.com>, Mao Zhu <zhumao001@208suo.com>, 
+	Shaomin Deng <dengshaomin@cdjrlc.com>, Charles Han <hanchunchao@inspur.com>, 
+	Jilin Yuan <yuanjilin@cdjrlc.com>, Swaraj Gaikwad <swarajgaikwad1925@gmail.com>, 
+	George Anthony Vernon <contact@gvernon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  In async_set_registers(), when usb_submit_urb() fails, the allocated
-  async_req structure and URB are not freed, causing a memory leak.
+On Mon, Dec 15, 2025 at 6:48=E2=80=AFAM Bagas Sanjaya <bagasdotme@gmail.com=
+> wrote:
+>
+> Sphinx reports kernel-doc warning:
+>
+> WARNING: ./drivers/gpu/drm/amd/include/amd_shared.h:113 Enum value 'AMD_I=
+P_BLOCK_TYPE_RAS' not described in enum 'amd_ip_block_type'
+>
+> Describe the value to fix it.
+>
+> Fixes: 7169e706c82d7b ("drm/amdgpu: Add ras module ip block to amdgpu dis=
+covery")
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> ---
+>  drivers/gpu/drm/amd/include/amd_shared.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/a=
+md/include/amd_shared.h
+> index 17945094a13834..d8ed3799649172 100644
+> --- a/drivers/gpu/drm/amd/include/amd_shared.h
+> +++ b/drivers/gpu/drm/amd/include/amd_shared.h
+> @@ -89,6 +89,7 @@ enum amd_apu_flags {
+>  * @AMD_IP_BLOCK_TYPE_VPE: Video Processing Engine
+>  * @AMD_IP_BLOCK_TYPE_UMSCH_MM: User Mode Scheduler for Multimedia
+>  * @AMD_IP_BLOCK_TYPE_ISP: Image Signal Processor
+> +* @AMD_IP_BLOCK_TYPE_RAS: RAS
 
-  The completion callback async_set_reg_cb() is responsible for freeing
-  these allocations, but it is only called after the URB is successfully
-  submitted and completes (successfully or with error). If submission
-  fails, the callback never runs and the memory is leaked.
+Reliability, Availability, Serviceability.  I've fixed this up locally
+and applied the patch.
 
-  Fix this by freeing both the URB and the request structure in the error
-  path when usb_submit_urb() fails.
+Thanks,
 
-Reported-by: syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8dd915c7cb0490fc8c52
-Fixes: 4d12997a9bb3 ("drivers: net: usb: rtl8150: concurrent URB bugfix")
-Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
----
- drivers/net/usb/rtl8150.c | 2 ++
- 1 file changed, 2 insertions(+)
+Alex
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 278e6cb6f4d9..e40b0669d9f4 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -211,6 +211,8 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
- 		if (res == -ENODEV)
- 			netif_device_detach(dev->netdev);
- 		dev_err(&dev->udev->dev, "%s failed with %d\n", __func__, res);
-+		kfree(req);
-+		usb_free_urb(async_urb);
- 	}
- 	return res;
- }
--- 
-2.52.0
-
+>  * @AMD_IP_BLOCK_TYPE_NUM: Total number of IP block types
+>  */
+>  enum amd_ip_block_type {
+> --
+> An old man doll... just what I always wanted! - Clara
+>
