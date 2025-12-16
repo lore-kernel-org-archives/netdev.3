@@ -1,89 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail102.out.titan.email (mail102.out.titan.email [52.45.239.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3911632ABFE;
-	Tue, 16 Dec 2025 18:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0A233554B
+	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 18:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.45.239.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765908229; cv=none; b=ZD2/mMcOhQEXTqljtBbctW2gQMxOvcfbtM1JL4hp/+G85pS1q5QXIwKlbo1Fs1RA2H0EB5cWRScEiPZlkhKzuYu9vKYHkTMu9TONdgguZAWi7l7O20W8nPXEZ9Y0aTcxFDERcmjb112Sq/gg6pblZz9/KsVqplDwp+T1M3P20fw=
+	t=1765908237; cv=none; b=ssZiYsmQSX90zSGHofl2QQWq/QALnDFGTscCe2SuMWRkH10RrgfkRpDTJMQA3xskSG2ZcMPT/5U3tsHWzxik/pSgWxZ3d+MhVmnjoMVXwyiXImoZT38Pml0wgc7BfxOtI80c1hFgQ4UFzxqWHPFJVwwGpN5d5y6FYv9I4PM/UZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765908229; c=relaxed/simple;
-	bh=uw9UEE73Oa47vY+WaW3IP3rQLFkIq6VPLGolGwYjMaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lyA04XMTHVam5inUs08KEqyZlY4Yc74usXVkWl85gQqlSf2LhYOCFMwAihmRu4kI19C0SgT2jmxUZrvuLpDB0j0GRAMkEnYFSQdlRnl9iO32zOAlFq9Q0yt7SRDxnhjLDz3vEPECZzH8Iwmx33Qigd4fSCD8q0wCmi1NncvqFrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sGZhLxNX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765908237; c=relaxed/simple;
+	bh=6NJ4QGWQlriE4UJw51AEavMvHJyyg9wuWwNA/m2aGOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k+utsQPVFHJSJR0vgnhTNAI/sSWWZz9F4KPffHrgoRtNT42TcB05YwO/gNQ810kxpO+zk43vIn3BJZyFFkAb4o7PY4SX6nLSgyiug8OCCj2Fjh994+BvZb/WC8M4o84W2CRjbLSSd36wgmT33ute83p+o/rWoS0WXw+/PtnD9o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b=i5nHNCah; arc=none smtp.client-ip=52.45.239.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sGZhLxNX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7ACC4CEF1;
-	Tue, 16 Dec 2025 18:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765908228;
-	bh=uw9UEE73Oa47vY+WaW3IP3rQLFkIq6VPLGolGwYjMaI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sGZhLxNX9Ydu6dthlTe18VJTZkswMmwuPGkq35ZKGKMYjSInCx4uEalEGIllueAnW
-	 eO5fnqFPsYKuEVuv/Rn9h3kFNzG45YYo5pb2hnG7qMf7awzTl4cpM++VOaTlpr631r
-	 TJWa7f5mb+zU81nvDWJ3SZrnJZ/pPEQ6sNRmrqThtnHD9KmFK2NbUAA6YVSx5f/ATa
-	 KLD3CbsOBnNuDQqgE2YzKrodUkyxap82DZfBii0zXy6YHmdgnwyEAd+ucX8eGKR65c
-	 Y29DZ/Ar1sex+yf3CrCXybPb+WEZOi5bQvnGSV1tXXda8CKbnRiWczD02rnzrsVsJK
-	 BB3sxiayVAXPw==
-Date: Tue, 16 Dec 2025 18:03:37 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org,
-	linux@roeck-us.net, andi.shyti@kernel.org, lee@kernel.org,
-	andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linusw@kernel.org, olivia@selenic.com,
-	radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
-	gregkh@linuxfoundation.org, jirislaby@kernel.org,
-	mturquette@baylibre.com, sboyd@kernel.org, richardcochran@gmail.com,
-	wsa+renesas@sang-engineering.com, romain.sioen@microchip.com,
-	Ryan.Wanner@microchip.com, lars.povlsen@microchip.com,
-	tudor.ambarus@linaro.org, charan.pedumuru@microchip.com,
-	kavyasree.kotagiri@microchip.com, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-clk@vger.kernel.org,
-	mwalle@kernel.org, luka.perkov@sartura.hr
-Subject: Re: [PATCH v2 12/19] dt-bindings: crypto: atmel,at91sam9g46-sha: add
- microchip,lan9691-sha
-Message-ID: <20251216-cozily-taking-b35950730d69@spud>
-References: <20251215163820.1584926-1-robert.marko@sartura.hr>
- <20251215163820.1584926-12-robert.marko@sartura.hr>
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=@ziyao.cc header.b="i5nHNCah"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp-out.flockmail.com (Postfix) with ESMTP id 4dW4Yk5vxnz2xMn;
+	Tue, 16 Dec 2025 18:03:54 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=CDawo+fF0LESR9TpJ+UYGDKMkCrwqrs00DCR3DiPQws=;
+	c=relaxed/relaxed; d=ziyao.cc;
+	h=references:date:in-reply-to:mime-version:from:cc:to:subject:message-id:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
+	q=dns/txt; s=titan1; t=1765908234; v=1;
+	b=i5nHNCahqOiglhBMjW/L3/G1AmyioAfYDdeDmrHwWMLYev/ESTtK4dQmRdKubF2b72ZWs5T2
+	o1cvbh3wbJ2Tm638uU2VRfoVBlTg/8nY8/q5ipZt60YhITIqMCegI3smXAvI28Sydihxnv96E7L
+	Bbk7OsvETr4U524QfkAzzpEU=
+Received: from ketchup (unknown [117.171.66.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp-out.flockmail.com (Postfix) with ESMTPSA id 4dW4Yd2Mx5z2xNX;
+	Tue, 16 Dec 2025 18:03:49 +0000 (UTC)
+Feedback-ID: :me@ziyao.cc:ziyao.cc:flockmailId
+From: Yao Zi <me@ziyao.cc>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Yao Zi <me@ziyao.cc>
+Subject: [RFC PATCH net-next v4 1/3] net: phy: motorcomm: Support YT8531S PHY in YT6801 Ethernet controller
+Date: Tue, 16 Dec 2025 18:03:29 +0000
+Message-ID: <20251216180331.61586-2-me@ziyao.cc>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251216180331.61586-1-me@ziyao.cc>
+References: <20251216180331.61586-1-me@ziyao.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RCIzIz+3EuWNz1kl"
-Content-Disposition: inline
-In-Reply-To: <20251215163820.1584926-12-robert.marko@sartura.hr>
+Content-Transfer-Encoding: 8bit
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1765908234689110305.27573.9134173884844574602@prod-use1-smtp-out1001.
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=a8/K9VSF c=1 sm=1 tr=0 ts=69419f0a
+	a=rBp+3XZz9uO5KTvnfbZ58A==:117 a=rBp+3XZz9uO5KTvnfbZ58A==:17
+	a=MKtGQD3n3ToA:10 a=1oJP67jkp3AA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8
+	a=NfpvoiIcAAAA:8 a=uCHZyEKV_PbTw5-4gUMA:9 a=HwjPHhrhEcEjrsLHunKI:22
+	a=3z85VNIBY5UIEeAh_hcH:22 a=NWVoK91CQySWRX1oVYDe:22
 
+YT6801's internal PHY is confirmed as a GMII-capable variant of YT8531S
+by a previous series[1] and reading PHY ID. Add support for
+PHY_INTERFACE_MODE_GMII for YT8531S to allow the Ethernet driver to
+reuse the PHY code for its internal PHY.
 
---RCIzIz+3EuWNz1kl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Link: https://lore.kernel.org/all/a48d76ac-db08-46d5-9528-f046a7b541dc@motor-comm.com/ # [1]
+Co-developed-by: Frank Sae <Frank.Sae@motor-comm.com>
+Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
+Signed-off-by: Yao Zi <me@ziyao.cc>
+---
+ drivers/net/phy/motorcomm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 89b5b19a9bd2..b751fbc6711a 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -910,6 +910,10 @@ static int ytphy_rgmii_clk_delay_config(struct phy_device *phydev)
+ 		val |= FIELD_PREP(YT8521_RC1R_RX_DELAY_MASK, rx_reg) |
+ 		       FIELD_PREP(YT8521_RC1R_GE_TX_DELAY_MASK, tx_reg);
+ 		break;
++	case PHY_INTERFACE_MODE_GMII:
++		if (phydev->drv->phy_id != PHY_ID_YT8531S)
++			return -EOPNOTSUPP;
++		break;
+ 	default: /* do not support other modes */
+ 		return -EOPNOTSUPP;
+ 	}
+-- 
+2.51.2
 
---RCIzIz+3EuWNz1kl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaUGe+QAKCRB4tDGHoIJi
-0oFzAQCd0B8fI/kWrW+YgnhlZzsAK++wCY88Dj3KIOSLAh08lQEAz65r/pWKhVdX
-rH7pB3H/kWDCyp5zEG3tgkZnZbZRrQg=
-=1r2y
------END PGP SIGNATURE-----
-
---RCIzIz+3EuWNz1kl--
