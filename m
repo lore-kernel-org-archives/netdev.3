@@ -1,248 +1,211 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE701624DF
-	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8877338580
+	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765870734; cv=none; b=bBfCSVDYjJ/XfqVKepsOOuJ/oKJWGkt6rYNKg9v/dWJ816FfSo1X+Ofm6v8ULP9Wwjwo3Jr/Gbm8VM8Lm/0n+wOm551d6J78LbA9H6jmKmuHxN/CmCR+xob+CePf5qllADtAhIVy6fMlYDwTz3sCZNIcH33Wtt37/EuEa8cNhvE=
+	t=1765871780; cv=none; b=TP2G9Y5ZuXxGxYDdonEGHhlW8E+EPCDm4CrdQdMos4ptVsA48uV9Y1UI+QbiS+48x/tslA5tLpuNXzioDNTgUkSPkG90VK4NOK6+pVcA5NujvKk+vHN9NVFFRzjtf+jqSEaFomra6/rKuWvdyjJqGPXe4zMym1WRkNZmVxwGQ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765870734; c=relaxed/simple;
-	bh=EVtYPoSK83Vy1+h2LJvKFGGxMbDwlr5oVrnogUjKJi4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QuB7As1G731Ah3NPeQlqJgdP5bH9UQfQnwRZLKSWvGYP796QR1Bsw1wArNeSavJGV7Bg4s77+xRT1WQdr1yq7/6QOQb9cVfLX/w83CnMLwmUOCXvo8bb20nFtrM1rdN7GkdzFVb96xsPhRaZ/x9V+e8wxE83gLFTSUfX/cViBC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XTFIjUfv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y2IlkbVO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1765871780; c=relaxed/simple;
+	bh=UvaxdPuzE9cHgjQPNN5Yc11mBV2d86BG3I765ToiYLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YcJag3db3p47nvq6lYIrQifNGvMczC9Qr7vfQ1aaGrgF+tAiYryk1lxZ1TOP5VlxYY/V+oXi88ZFSub6V1TsE4BA/7XJ4sD3QIL218mY/dB2Rk7E4gPdddnzcPjirrOwI23zcgv68w95IB1057gLzyMz8DVsDQHePosuvVnDBX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kKL4AC78; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XTFIjUfv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y2IlkbVO"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG2aiKT1204878
-	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:38:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=; b=XTFIjUfvzx+0WxwS
-	dxYZGhHRtRb7qI1JBA4pcqy6vbKSOyzJdExYWJot4nyNC5bP1PQTwaol4/9nrFRR
-	cNpfYq+0xplBniApzuR6QM64JR4xlSIG1ySWQmd+F+q6RI4c/HRYUQu+unYmDuNv
-	ovH/RzLAz31fw6dCPurnScEOA3yMEOiKC7huhtgQOpmNCpjlfq4Dztq5qNeiqYLY
-	jHTLvHGqClBMGi7s6HFS3MNm4vkXZAJdCNq/6X4u1Sqy1Q4F4BpI2jYe9sKTsM8i
-	1uZY0wuJCCs9kowVxYLa+FqZz23OiYWlzDcNPQ/wsbuvItrhExVtvoTS5xD/yNst
-	ibD+sw==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b2pdajpun-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 07:38:51 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b99763210e5so8451448a12.3
-        for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 23:38:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kKL4AC78"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4779a4fc95aso15046215e9.1
+        for <netdev@vger.kernel.org>; Mon, 15 Dec 2025 23:56:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765870731; x=1766475531; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=;
-        b=Y2IlkbVOZfKbmsmiUf21URSRg7ynnteK+KhpgS3bYxSgc9IrUARfongdPfiSez9o2i
-         /TSF2dTtYlztiimvLDhH41ux18V6DMvVZsUgU8mfoehTZwOwNToMghR8w4QU4m7m2agn
-         XAbF5r0+Ko9LN5UTcj4PMz8fL0mRvXaWmccqOT0vaSG77pnaj0+1RPp1WI/d1NRjdgA6
-         G3tvfFfKx26EKigXqtSzGA5bwZ4GXeMpEytgk0aYIJLtRpugnVNv+tAT1QH4Q2hQQPJ6
-         RDNI1NNyzuLultZCuAEqQ55l6bxvnl3Rm+crEUfJCoUFQLUgCAo/px54SsX+9EzjuL6P
-         eSCQ==
+        d=linaro.org; s=google; t=1765871767; x=1766476567; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dgLiR9L5wEhCMccIYV392PBhORkDXeC6wYlSh2crOgg=;
+        b=kKL4AC788ZGK7hbbd+EIUBXOOeZA3iigMdC1aw6LkK+PSmvbQIwrR87cyEwETDgDSH
+         hKbJI4VrZnCpnroLWGyHQe2iT5i8IjXwG4CigDh4c7PG5UsoKDWvPdyM27Q6eIXpcNAg
+         YUaVS6J0O3LY3xuU6PU4fqg/9NFffcntId8Aj09azJ3Zce3uVKeU4dJ7Bls1L8w1hXH8
+         br0i69YJ/GNnZJaYIgBU6mr38Hp9CJUIrqr7RCp3mIC7nRK7h7jxbFEV9lYuWPTuMgK/
+         KKTYatLaS/hZF5weJQeohBEtOlE8zymH/uaoDxui0T81ZjhISFVXBHZGrbSrYnKrSV88
+         H69Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765870731; x=1766475531;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7YmBFkv7BIT1XO2FEXzhMg2xQ1XFzff8WD9iA8ZhYH0=;
-        b=H7UXchYzqZfwRdCNwvH//PCjjOqc24PFYe4n8HX0BQUew6COljD4/FJ9W3YyHJTbmt
-         BCKlUULAZcJJPI6pyfDqyOspTI/OpvfzkjcK8Nwh9hIukcwiRcN5KIiIqTGDl0ZwdgZt
-         /D6Q6SaBMVuhtIHecBY+pFRpuyTphKBUSA9aT9L6/1Csct7c7lnhqwMb6uxWmzOkAchl
-         BUFmrDqogvstTuXGe3eZqKYGfe5rT9HpAKgqywmvW7ACVYjijSuapkABjsiCV/ABg/UH
-         TAshI4nYgvejpa7gzzXKQlsX58CBCPS/9c5Bpo5oN2E8dGQfNHZiWb+hsUtFvY85XpmC
-         TquQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWH/9YXpJWzeZzcvyfRF4uO991CLwSxULe6dkoaSGv0U4+3un6nrdfSensipC/EYNrPY14kNHQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeseNXHSIcY40LggiY7Wa3w7+o/PlkuHqwr2lCkqRnl6g4hNpi
-	WNHCF7FMxQN8hL1hNLYQjdbIhgsfKJAgZSBPoJ1kcV56pdQZxKBUyBHzMKWGOQLtIgUISL0c2EF
-	72oRsd4IMZaw++KXU45wclAjvic9xm5BDbtwm4TJXMJhRnSsB9ybFg1RoaKcG/LCZqjzHFQWO4L
-	XTIx8gOMHbkmnpd0f9fngmSw5LNdUNwzz7vQ==
-X-Gm-Gg: AY/fxX4r62TfovgMVGipDAVo+++IwJyKfkYPdR8jkO3AgINEp32OlALkrDE0XqvcCuw
-	Z+3p/fIlpWFKBhxQsk5aAowLeOSaHA3DlNnQRiiMGJOfp9e/D1/F1yf0TBGRnTM5A9Lt0PsPkuw
-	w2AJj1irS/kg90ljM+6nvttuBkn2x+EhWZbZ1xMkg+ViyH9z7+5r200LAkHW9tb4icmeA=
-X-Received: by 2002:a05:7300:2a9b:b0:2a4:3593:6453 with SMTP id 5a478bee46e88-2ac2f85e872mr8049914eec.3.1765870731071;
-        Mon, 15 Dec 2025 23:38:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgAxeScCHPFScnumP+kyrXe4heJGwYVQRSxj+hObliMSDxJWWHv5hYUxaMExJMrxhceQO+g6cVj0vLQa5OEdY=
-X-Received: by 2002:a05:7300:2a9b:b0:2a4:3593:6453 with SMTP id
- 5a478bee46e88-2ac2f85e872mr8049887eec.3.1765870730525; Mon, 15 Dec 2025
- 23:38:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765871767; x=1766476567;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dgLiR9L5wEhCMccIYV392PBhORkDXeC6wYlSh2crOgg=;
+        b=ujDzAVDQf6bMxKIx3H52EHDC8NZaQ1sYspbQo10oyP4RGMfdcA8txcxvQd19tnTztQ
+         fyA02i0uAdGgKdmsZTm5rV81RqRxF1Qw9iyF7DQzWhdeFKFbNg+Of/LSeckXVKwmPr/L
+         wvnm+8/uPP/hpqTc6D1Zz7rEThWZHZJPvrfulMw0/iWrHb7dEoi7jR25M22nikoV7qmK
+         DS25EQtpY7cACLLycGyWyr6vUyIY8Z5G+qDkhiuREJB7rf9rCPegDfJWZ+abpSIpSICi
+         TUwpeDmW6brzk0l4dUv+Hzua+8gK4ak6VGbA7c4TwC1ou7eNpf/0BlXWdMI8Nfn4PGAu
+         XLYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWBqY3FU+hkQTvACkkpU2x+3IBwgThyhDTAKDoUYoRuSkPyRrsbhFqiorophT1upG7aBTCzQfQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb67c4ouKB5elRNuWRAqcr58kkfCRsDWX0rJ3NPjaemUbKCcxL
+	uQN7Ekz/JRqAMJaz4OISgS1PSW187EB76uUWjKnR6dqqNKRFqxCQbkQaaBZ9GmhH7DM=
+X-Gm-Gg: AY/fxX5QPTp2NBenfeSB3AxlplsPfEoAVgvuieLfL1zBuj2Y3OXbBs+4aJHMLChGFqt
+	nE+52pZptqMoRrDgPxCKhfr/LFS7VdWnU2BpIbvdu5xwMOjiev6R5PTLKK15GwqK3BeHZrS/aLr
+	5GmmOfHjm6O1Z9FGlN0VqcEQqJ+h25pyadu1OLzuyRrZNNIJSyb8n7ymuRV+UaKEMlEkhB6PRAo
+	4IOY46yWv0RuZ4ODrfFT18KjqoXvgDXeJoc3PXa3klMQJI5O9welRF3kmdqL8/JFBzgfyAiwsjh
+	e1tGIjDIbj7etmiRggaXGElHwQ1ltOcObm9RU9Ywm8p68+2sWRMGpKVeIgmKpiZEqQNFdwcJXh2
+	2WzgcwVVWczg7dTT/AOg2KSFy3KHUxL6GpbUvsdwWK2kHxi4/QwLVGnQvmDAteXccSlMwHeGuCe
+	3tmPnPu06HhyVeKLpy
+X-Google-Smtp-Source: AGHT+IG+piBYJp8yRE0JaiL0XBKJcrLuB82TEEFiVQtz41FJiO/E2QY1ciGNs20Cvz2Woq6tSTEwTw==
+X-Received: by 2002:a05:6000:26d0:b0:430:f74d:6e9f with SMTP id ffacd0b85a97d-430f74d6ef6mr8155517f8f.14.1765871766545;
+        Mon, 15 Dec 2025 23:56:06 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f1fa232csm19824386f8f.6.2025.12.15.23.56.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 23:56:06 -0800 (PST)
+Date: Tue, 16 Dec 2025 10:56:02 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Matthias Brugger <mbrugger@suse.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
+Subject: Re: [PATCH v2 0/4] s32g: Use a syscon for GPR
+Message-ID: <aUEQkuzSZXFs5nqr@stanley.mountain>
+References: <cover.1765806521.git.dan.carpenter@linaro.org>
+ <aUAvwRmIZBC0W6ql@lizhi-Precision-Tower-5810>
+ <aUBUkuLf7NHtLSl1@stanley.mountain>
+ <aUBha2/xiZsIF/o5@lizhi-Precision-Tower-5810>
+ <aUBrV2_Iv4oTPkC4@stanley.mountain>
+ <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
- <aT--ox375kg2Mzh-@sumit-X1> <dhunzydod4d7vj73llpuqemxb5er2ja4emxusr66irwf77jhhb@es4yd2axzl25>
-In-Reply-To: <dhunzydod4d7vj73llpuqemxb5er2ja4emxusr66irwf77jhhb@es4yd2axzl25>
-From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Date: Tue, 16 Dec 2025 13:08:38 +0530
-X-Gm-Features: AQt7F2pIGEo3k7l40jiSNtQzSXPgQLv36wLttu_75OXJz9aTmVe9GGZBfjh5ELU
-Message-ID: <CAGptzHOOqLhBnAXDURAzkgckUvRr__UuF1S_7MLV0u-ZxYEdyA@mail.gmail.com>
-Subject: Re: [PATCH v1 00/17] tee: Use bus callbacks instead of driver callbacks
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Sumit Garg <sumit.garg@kernel.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Olivia Mackall <olivia@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
-        Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org,
-        linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org,
-        netdev@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: cSKWvTM8xUzAPrEv8kL7-zs90GvNrGRj
-X-Proofpoint-ORIG-GUID: cSKWvTM8xUzAPrEv8kL7-zs90GvNrGRj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDA2MiBTYWx0ZWRfXw7dZ4BmiEt8s
- 5xBv76EWX4vzkitzaKCHXo3zblLo131U8IfGh+Xt32pffmuGsjVm3Y6iAqnm5P4zGERd7a770lf
- LjWuF5z0kXaNJhtWeaRbew3ZQoKoeU/Dq0Oo6++3tzNmEvvWGpZVvzy35q1FXo5RCNiXu+Oyjrf
- 3PMNvu/MwqZevMsJ6P8nf98G5LWUORko6iKMKrQZCOguhHwTxoX+d+yTr9bY6C+Djj1VPSKVI5n
- 9ogHU5GSmFdmUjfnmtul53XxOvGjgs/t+kxluFUM0ujPZ2anNh5tyOwuwJoslE8UD3b0zwskdEN
- 75XIPqJ4cDLEu4ZrseKYSAlcMAR/CKvCBg+AAtCidbek4G/ws8dSbax+FyLmdvxo+I0yXsZWpj0
- fOjE5luGY15SGOZvJuozBXp7yhOkdQ==
-X-Authority-Analysis: v=2.4 cv=JYqxbEKV c=1 sm=1 tr=0 ts=69410c8b cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=IpJZQVW2AAAA:8
- a=sfbzD7rgGHNppxHmi9UA:9 a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22
- a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_01,2025-12-15_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 priorityscore=1501 impostorscore=0 spamscore=0
- phishscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512160062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
 
-Hi Uwe,
+On Mon, Dec 15, 2025 at 04:07:48PM -0500, Frank Li wrote:
+> On Mon, Dec 15, 2025 at 11:11:03PM +0300, Dan Carpenter wrote:
+> > On Mon, Dec 15, 2025 at 02:28:43PM -0500, Frank Li wrote:
+> > > On Mon, Dec 15, 2025 at 09:33:54PM +0300, Dan Carpenter wrote:
+> > > > On Mon, Dec 15, 2025 at 10:56:49AM -0500, Frank Li wrote:
+> > > > > On Mon, Dec 15, 2025 at 05:41:43PM +0300, Dan Carpenter wrote:
+> > > > > > The s32g devices have a GPR register region which holds a number of
+> > > > > > miscellaneous registers.  Currently only the stmmac/dwmac-s32.c uses
+> > > > > > anything from there and we just add a line to the device tree to
+> > > > > > access that GMAC_0_CTRL_STS register:
+> > > > > >
+> > > > > >                         reg = <0x4033c000 0x2000>, /* gmac IP */
+> > > > > >                               <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+> > > > > >
+> > > > > > We still have to maintain backwards compatibility to this format,
+> > > > > > of course, but it would be better to access these through a syscon.
+> > > > > > First of all, putting all the registers together is more organized
+> > > > > > and shows how the hardware actually is implemented.  Secondly, in
+> > > > > > some versions of this chipset those registers can only be accessed
+> > > > > > via SCMI, if the registers aren't grouped together each driver will
+> > > > > > have to create a whole lot of if then statements to access it via
+> > > > > > IOMEM or via SCMI,
+> > > > >
+> > > > > Does SCMI work as regmap? syscon look likes simple, but missed abstract
+> > > > > in overall.
+> > > > >
+> > > >
+> > > > The SCMI part of this is pretty complicated and needs discussion.  It
+> > > > might be that it requires a vendor extension.  Right now, the out of
+> > > > tree code uses a nvmem vendor extension but that probably won't get
+> > > > merged upstream.
+> > > >
+> > > > But in theory, it's fairly simple, you can write a regmap driver and
+> > > > register it as a syscon and everything that was accessing nxp,phy-sel
+> > > > accesses the same register but over SCMI.
+> > >
+> > > nxp,phy-sel is not standard API. Driver access raw register value. such
+> > > as write 1 to offset 0x100.
+> > >
+> > > After change to SCMI, which may mapped to difference command. Even change
+> > > to other SOC, value and offset also need be changed. It is not standilzed
+> > > as what you expected.
+> >
+> > We're writing to an offset in a syscon.  Right now the device tree
+> > says that the syscon is an MMIO syscon.  But for SCMI devices we
+> > would point the phandle to a custom syscon.  The phandle and the offset
+> > would stay the same, but how the syscon is implemented would change.
+> 
+> Your SCMI syscon driver will convert some private hard code to some
+> function, such previous example's '1' as SEL_RGMII. It is hard maintained
+> in long term.
+> 
 
-On Mon, Dec 15, 2025 at 3:02=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
->
-> Hello Sumit,
->
-> On Mon, Dec 15, 2025 at 04:54:11PM +0900, Sumit Garg wrote:
-> > On Thu, Dec 11, 2025 at 06:14:54PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > Hello,
-> > >
-> > > the objective of this series is to make tee driver stop using callbac=
-ks
-> > > in struct device_driver. These were superseded by bus methods in 2006
-> > > (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
-> > > methods.")) but nobody cared to convert all subsystems accordingly.
-> > >
-> > > Here the tee drivers are converted. The first commit is somewhat
-> > > unrelated, but simplifies the conversion (and the drivers). It
-> > > introduces driver registration helpers that care about setting the bu=
-s
-> > > and owner. (The latter is missing in all drivers, so by using these
-> > > helpers the drivers become more correct.)
-> > >
-> > > The patches #4 - #17 depend on the first two, so if they should be
-> > > applied to their respective subsystem trees these must contain the fi=
-rst
-> > > two patches first.
+No, there isn't any conversion needed.  It's exactly the same as writing
+to the register except it goes through SCMI.
+
 > >
-> > Thanks Uwe for your efforts to clean up the boilerplate code for TEE bu=
-s
-> > drivers.
->
-> Thanks for your feedback. I will prepare a v2 and address your comments
-> (whitespace issues and wrong callback in the shutdown method).
->
-> > > Note that after patch #2 is applied, unconverted drivers provoke a
-> > > warning in driver_register(), so it would be good for the user
-> > > experience if the whole series goes in during a single merge window.
-> >
-> > +1
-> >
-> > I suggest the whole series goes via the Jens tree since there shouldn't
-> > be any chances for conflict here.
-> >
-> > > So
-> > > I guess an immutable branch containing the frist three patches that c=
-an
-> > > be merged into the other subsystem trees would be sensible.
 > > >
-> > > After all patches are applied, tee_bus_type can be made private to
-> > > drivers/tee as it's not used in other places any more.
+> > > >
+> > > > > You still use regmap by use MMIO. /* GMAC_0_CTRL_STS */
+> > > > >
+> > > > > regmap = devm_regmap_init_mmio(dev, sts_offset, &regmap_config);
+> > > > >
+> > > >
+> > > > You can use have an MMIO syscon, or you can create a custom driver
+> > > > and register it as a syscon using of_syscon_register_regmap().
+> > >
+> > > My means is that it is not necessary to create nxp,phy-sel, especially
+> > > there already have <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
 > > >
 > >
-> > Feel free to make the tee_bus_type private as the last patch in the ser=
-ies
-> > such that any followup driver follows this clean approach.
->
-> There is a bit more to do for that than I'm willing to invest. With my
-> patch series applied `tee_bus_type` is still used in
-> drivers/tee/optee/device.c and drivers/tee/tee_core.c.
+> > Right now the out of tree dwmac-s32cc.c driver does something like
+> > this:
+> >
+> >     89          if (gmac->use_nvmem) {
+> >     90                  ret = write_nvmem_cell(gmac->dev, "gmac_phy_intf_sel", intf_sel);
+> >     91                  if (ret)
+> >     92                          return ret;
+> >     93          } else {
+> >     94                  writel(intf_sel, gmac->ctrl_sts);
+> >     95          }
+> >
+> > Which is quite complicated, but with a syscon, then it's just:
+> >
+> > 	regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
+> >
+> > Even without SCMI, the hardware has all these registers grouped together
+> > it just feels cleaner to group them together in the device tree as well.
+> 
+> Why not implement standard phy interface,
+> phy_set_mode_ext(PHY_MODE_ETHERNET, RGMII);
+> 
+> For example:  drivers/pci/controller/dwc/pci-imx6.c
+> 
+> In legency platform, it use syscon to set some registers. It becomes mess
+> when more platform added.  And it becomes hard to convert because avoid
+> break compatibltiy now.
+> 
+> It doesn't become worse since new platforms switched to use standard
+> inteface, (phy, reset ...).
+> 
 
-Oh I see, I guess we need to come with some helpers around device
-register/unregister from TEE subsystem as well. Let's plan that for a
-followup patch-set, I don't want this patch-set to be bloated more.
+This happens below that layer, this is just saying where the registers
+are found.  The GMAC_0_CTRL_STS is just one register in the GPR region,
+most of the others are unrelated to PHY.
 
-> Maybe it's
-> sensible to merge these two files into a single one.
+regards,
+dan carpenter
 
-It's not possible as the design for TEE bus is to have TEE
-implementation drivers like OP-TEE, AMD-TEE, TS-TEE, QTEE and so on to
-register devices on the bus.
-
->
-> The things I wonder about additionally are:
->
->  - if CONFIG_OPTEE=3Dn and CONFIG_TEE=3Dy|m the tee bus is only used for
->    drivers but not devices.
-
-Yeah since the devices are rather added by the TEE implementation driver.
-
->
->  - optee_register_device() calls device_create_file() on
->    &optee_device->dev after device_register(&optee_device->dev).
->    (Attention half-knowledge!) I think device_create_file() should not
->    be called on an already registered device (or you have to send a
->    uevent afterwards). This should probably use type attribute groups.
->    (Or the need_supplicant attribute should be dropped as it isn't very
->    useful. This would maybe be considered an ABI change however.)
-
-The reasoning for this attribute should be explained by commit:
-7269cba53d90 ("tee: optee: Fix supplicant based device enumeration").
-In summary it's due to a weird dependency for devices we have with the
-user-space daemon: tee-supplicant.
-
->
->  - Why does optee_probe() in drivers/tee/optee/smc_abi.c unregister all
->    optee devices in its error path (optee_unregister_devices())?
-
-This is mostly to take care of if any device got registered before the
-failure occured. Let me know if you have a better way to address that.
-
--Sumit
