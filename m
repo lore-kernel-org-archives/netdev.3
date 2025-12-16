@@ -1,94 +1,78 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BAD3446C0
-	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 11:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB2634676E;
+	Tue, 16 Dec 2025 11:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765884496; cv=none; b=CqS68Nf7qqSD0H1AR2rkDxIMcIpUZnC6Uc1jpFUsS70fdz7AAd0JIH9zkNODdhUs7KyFR8S6B9jBGTQBhUQSTAepDdopmJdi17bMwaACzzcpA4pOcorV29CqtpHnCbCN0sEdYxQQw9NyRHf53kQpt9unRmQcTWNH48Kh14+5e/o=
+	t=1765885080; cv=none; b=RizkMsTCgv0v9gX1rXbhe9gooppquuwWYri81GfQ4ZT2SPp7Cdm7uANkR6Kd4TxPC2xxWbGEmqlcwQNAuGilpXnBt/Ixrgxx0ISGASTmFomIcxbc9sVLK8/blIv3eqD3ZWogM2rILPImWF6miF9c2sG+5RQHAwbNQe/yohOB+A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765884496; c=relaxed/simple;
-	bh=UGFWnCxFcjrh2fiNCYLsDLnIcmo9rYQmXNxZfEskWq8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=t6c5hb0vsHPnWqOZyuSPyamtTqRPylq4cRxm525wZAdKN/xS1zo0dn8N1kPSmSqzrSQZPqV0eOFL+zP8kw7Le/9+C9VLQ44UPVeJPzN8LTZNRKMAodeU688orZOZemCk1RstC240tFBoFHcybkBPe6Rc04lH2A3BnXP/Gy81fsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 5BGBSAD3015761;
-	Tue, 16 Dec 2025 20:28:10 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 5BGBSAu0015755
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 16 Dec 2025 20:28:10 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <13f54775-7a36-48f2-b9cd-62ab9f15a82b@I-love.SAKURA.ne.jp>
-Date: Tue, 16 Dec 2025 20:28:08 +0900
+	s=arc-20240116; t=1765885080; c=relaxed/simple;
+	bh=CrdABhYBrcF6U9Ho9bznYsHpDGaFvExEHwYjF1QfUr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qo9hmVD7/D08E9RrN4UmgqVk2smXC41tTfokldz41lzn6zQe7Kbov5nFxvjr10EebehwnFMTWiZ88xwstkU/lybqy2oVky3ou4cl8gMmnxDyFw/RA3iWrSL6/gzZIyCzuPOcLvrZ5upyErk0/EB+omfH6wgfuOnfUEN/EuW+K5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=on4ijzMY; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="on4ijzMY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139D0C4CEF1;
+	Tue, 16 Dec 2025 11:37:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765885079;
+	bh=CrdABhYBrcF6U9Ho9bznYsHpDGaFvExEHwYjF1QfUr0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=on4ijzMYJ6VhEonLk+l2ceSnk9+dqO3/eUemiwMfoNJ7iX1UA2P2ixbtQAp0XhBYp
+	 UbNt9dXw8RO1q542aFQC7hA9MZLZl+crLhFXXpI4pILSC6mtiE3Xhd82u/0u9nxHdS
+	 QPUiVIRlPw8cf6lNlDmcxxA4eucBonHi5S19lTB3eR2qjAoSPyMOp7JF6Kwn0pkEoY
+	 1/NlGmfCdUKV5P31V5SE9bUZZMNSgtRKPomcJCJFB8g9+K/nT0Efez8V0zarHj8cZy
+	 /q8lbyzJX4rX9N859W2I2y8bjH60askOmKtFta0y8cCrwVRpQtQdOPJMkPZh8vrxWz
+	 Z4WSLMlrqtrFA==
+Date: Tue, 16 Dec 2025 11:37:55 +0000
+From: Simon Horman <horms@kernel.org>
+To: bestswngs@gmail.com
+Cc: security@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, xmei5@asu.edu
+Subject: Re: [PATCH net v4] net: skbuff: add usercopy region to
+ skbuff_fclone_cache
+Message-ID: <aUFEk8QPIAIEHcsF@horms.kernel.org>
+References: <20251216084449.973244-5-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [not-yet-signed PATCH] RDMA/core: flush gid_cache_wq WQ from
- disable_device()
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To: Leon Romanovsky <leon@kernel.org>, Majd Dibbiny <majd@mellanox.com>,
-        Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
-        Yuval Shaia <yshaia@marvell.com>
-Cc: Bernard Metzler <bernard.metzler@linux.dev>,
-        OFED mailing list <linux-rdma@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>
-References: <30ec01df-6c32-490c-aa26-c41653f5a257@I-love.SAKURA.ne.jp>
- <8f90fba8-60b9-46e2-8990-45311c7b1540@I-love.SAKURA.ne.jp>
- <1722eff3-14c1-408b-999b-1be3e8fbfe5a@I-love.SAKURA.ne.jp>
- <9b4ce0df-1fbf-4052-9eb9-1f3d6ad6a685@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-In-Reply-To: <9b4ce0df-1fbf-4052-9eb9-1f3d6ad6a685@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav403.rs.sakura.ne.jp
-X-Virus-Status: clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216084449.973244-5-bestswngs@gmail.com>
 
-Hello, Jason Gunthorpe.
-
-Commit 0df91bb67334 ("RDMA/devices: Use xarray to store the client_data")
-says
-
-    Since xarray can store 'going_down' using a mark just entirely eliminate
-    the struct ib_client_data and directly store the client_data value in the
-    xarray. However this does require a special iterator as we must still
-    iterate over any NULL client_data values.
-
-and started using DEVICE_REGISTERED mark. But It seems to me that that commit
-has missed that ib_enum_roce_netdev() from ib_enum_all_roce_netdevs() is called
-asynchronously from WQ context. Due to that commit, ib_enum_roce_netdev() became
-no longer being called as soon as DEVICE_REGISTERED is cleared in
-ib_unregister_device(); I guess that that commit needed to wait for pending
-work items in gid_cache_wq WQ to complete. What do you think?
-
-On 2025/12/15 23:09, Tetsuo Handa wrote:
-> On 2025/12/11 22:24, Tetsuo Handa wrote:
->> Since a reproducer for this bug is not available, I haven't verified
->> whether this is a bug syzbot is currently reporting in
->> https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84 .
->> But I'd like to add Reported-by: syzbot if netdevice_event_work_handler()
->> is supposed to be called for releasing GID entry upon NETDEV_UNREGISTER
->> event. Thus, please review this change.
+On Tue, Dec 16, 2025 at 04:44:53PM +0800, bestswngs@gmail.com wrote:
+> From: Weiming Shi <bestswngs@gmail.com>
 > 
-> I can observe using simple atomic_t counters that there are sometimes pending
-> netdevice_event() works as of immediately before clearing DEVICE_REGISTERED flag.
-> That is, clearing DEVICE_REGISTERED flag without flushing pending netdevice_event()
-> works results in failing to process some of netdev events.
-> 
-> I considered resolving DEVICE_REGISTERED flag inside netdevice_event() and then
-> flush pending netdevice_event() works after clearing DEVICE_REGISTERED flag (diff
-> is shown below). But I immediately got circular locking dependency problem by just
-> executing "rdma link add siw0 type siw netdev lo" command line. Therefore, I guess
-> that the reason RDMA code defers netdevice_event() handling to WQ context is to
-> avoid circular locking dependency problem. But I guess that due to lack of reliable
-> flushing mechanism when clearing DEVICE_REGISTERED flag, sometimes operations for
-> deleting GID entry are not invoked, and syzbot is reporting refcount leak...
+> skbuff_fclone_cache was created without defining a usercopy region, [1]
+> unlike skbuff_head_cache which properly whitelists the cb[] field.  [2]
+> This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is enabled
+> and the kernel attempts to copy sk_buff.cb data to userspace via
+> sock_recv_errqueue() -> put_cmsg().
+
+...
+
+Hi Weiming Shi,
+
+Please slow down.
+
+When posting patches to the Netdev ML please allow 24h to 24h should elapse
+between versions. This is to allow time for review. And reduce load on
+shared CI infrastructure.
+
+See: https://docs.kernel.org/process/maintainer-netdev.html
+
+Also, I do not believe it is appropriate to involve security@kernel.org
+in reports that are made public. As there is nothing left for the security
+officers to do.
+
+See:
+- https://lore.kernel.org/netdev/CANn89i+3_50FX1RWutvipTMROD3FnK-nBeG4L+br86W85fzRdQ@mail.gmail.com/
+- https://www.kernel.org/doc/Documentation/process/security-bugs.rst
+
+Thanks!
