@@ -1,236 +1,190 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1746734E251;
-	Tue, 16 Dec 2025 15:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D46328B7A
+	for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 16:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765900718; cv=none; b=FpS0rAO0AS8Jk1NHamWfxX5i08Wngf9jEaKdCcVC6EVijjWn85Gsx2Hzynkm+3XW/5SpEcoTU3EK3IE9p8ELrNRttLZ6VnN3L6lyUVyprdJ+3lPx3rfBcM7rz229AZyQrv87oSzNEgVGlxAQvunct5cj1gKmHYZpuLsFJTYjVz4=
+	t=1765902197; cv=none; b=UaiYJtWUk5FsQlXoZq5AtvNZ+Boae8spIOu9oHT1nP854c+yJRlxWO+C1mllOgjY5qOPU8maTs6jY8DiovkeiWwXixU81YMoFF0fjoU8Tgnye+sQ6tfQH5IyCQJ9P+ABqSLa4fv1lFnD9yz+RGFQLNOCzwVuW7q+XP8ltXUb7lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765900718; c=relaxed/simple;
-	bh=8Cr7i59W/Y6MXosiPPE0ImJKXNOb4XIlNH3R+d6Ws88=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=OJJ8JWhPpvG44MhffLM9uFFgUAo/YAeFwNjcy8x1xPo1BENaexyhbUSzLgpp38yeiY9uCQPU7oA/BC9W+/6TmlYjwdX54MtdIgC3148qB4sqTtCbid5p+o21x2D5BI4nNEcHZH8H8rTfzFkiCIJpZQRZjdX8gFnSpEsKaq+sFQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kuzj30AF; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1765902197; c=relaxed/simple;
+	bh=SLX1m3nU08SsL41tzHOdEaPGIcnB60w6kwnMIe7g1D8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U+p/6mUxhcQDq+zkNGxumTgOoAYxbAeHDpVZjmJzLyhYJ6iNvXQHtRqDIGbQJpO5+wHyhLs5aK3CCssFroceyrdvrcgSrUdCdwvVbX6fVaai0VEbGtouq0vna4YQsxKCUX3Y0m2qOzKQnz0buitgnKnkclL5Xy2+dMdKazq2tRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AJjVGTM7; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kuzj30AF"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id CBBCF200D62A; Tue, 16 Dec 2025 07:58:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CBBCF200D62A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1765900716;
-	bh=HEP60+8Vo7T50Jr3+kbQqaia7d5ZTn5s1mTO0BUZpR8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kuzj30AFXuD3vUqIteLbDvVIvAF5XxaYkqFpbhKpyza6x31Wk6k4diYvGeDGClwHA
-	 VH69EQVO6kzSisJaKFVWsTR7T9E2C4Zfn8rcmkeMLLyI7yQCHo9bifHoURQKLrMSVz
-	 c0drALHa8rR5vSMNfXiZnKv4aP7PKDtSTXeiTnaU=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: paulros@microsoft.com
-Subject: [PATCH RFC 2/2] net: mana: Add ethtool counters for RX CQEs in coalesced type
-Date: Tue, 16 Dec 2025 07:57:55 -0800
-Message-Id: <1765900682-22114-2-git-send-email-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
-References: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AJjVGTM7"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b9387df58cso7308393b3a.3
+        for <netdev@vger.kernel.org>; Tue, 16 Dec 2025 08:23:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765902192; x=1766506992; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j5vCKhasJ1Ig30OHsuQK/Y6r0bPzjGj3HFYq+PgtrOQ=;
+        b=AJjVGTM7XpDfXWGy0gPq7xS3kaZ2fKALIguR6VN2mi058QrVFEYoi59Z7BnP/4TX54
+         HCgDd59buA1cVTH542lXEnG3OrHAi0WwXFP/MLXGLnwNP8ti27qM02q9/URdoonjemds
+         x61nixnZ0dtld20k1G7twYBB19fcvhB1mId070eKqOgQpd38N8DrAx0n7VxjJcImp9u0
+         ty6ckOp0h92tBSRmKbd1o7yFwjcaIOjOQLyllJxbxyS98woZ/QQEaSzY5qjfsBfVF65c
+         sZwEbTf2XNbsT11nkXSUebU2xkaA3bD7PMXZrqhECzClF9n6/pGmgjLdCPodEQ6nS4A6
+         Dvsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765902192; x=1766506992;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j5vCKhasJ1Ig30OHsuQK/Y6r0bPzjGj3HFYq+PgtrOQ=;
+        b=hf32ka/8/N/DvjyrCWrlBjL/0a4gupSJkG3R7XxqiARkQIlr0V5EYpIODqMUJcz5zt
+         RHsjkPEIijgO2cbxWr3jahGKtW0imVUgHCADvppCQkjAYA5SjM5+cjXUeCTWHa1TY0Ov
+         Y7YvWB8nzAB+GAk0B6BgdS3ZIrq/rLF6JeJFvHxatxHdUmai4n09zgSbAWYODqzsU62d
+         +D0a1iUc+TRo6rY9PeKli4RVwJaF27E3OFf6Ceg9wKO99OXSSr9dHqad0yAyjcj+726T
+         MCpegodIui0bqEs0fh4J9zCdWs9yrRu0iNpamZ6MUPOzZBAthzcENuJM43JRYsER8bwm
+         Om3A==
+X-Gm-Message-State: AOJu0YzqXqBdAZPqfpYW+eQYvS/YZqbGcsWqO6kNBPdkowr0U1rK38Ay
+	l+yrfJx1kdVDxBZhfR8D3jIDaFaL72MVYthNxGBIaQIDpiEh0qPGPDgS
+X-Gm-Gg: AY/fxX4mXHIW79ATmFPN5zs/HqhAluCe0KyAhGr4XnGP3lr+KuSLFX1zSGw43ocI7Zq
+	71p2g5raeF9cxN2iX5UMRfKF1WHKHlsPekXZa/oZLKmORR9gHihm7+bsHByKvI2cPNhi60B2w7x
+	qH1gXqVlnY+yBmW+BjzavxhzuvVukXSxp0u1JOwJtT3aF9LqRAk51tMFxoCAij4TRGy5Vv9OZNz
+	AX4GIoSGFTFgaFPphtF8iJmCu1MjhtSK7s6mI3Ch3xMtFVPuqfVAL/EWqPQHTRjlvrU9KBa5l5h
+	UiUjY5OeADBIoqFqt4U3Nz4Mwaqjd/zc2bMoxM8OeqBEv1S+bdgju7Gfn5sDL+q7G4tQ3+KVLXf
+	UjMTuZJE6w1Kvi4Y6myTyUkoNfYUVc1ywIeEqx8rgwjahYGZ/spZQy2l/tQsxBPQnE0K7WQzU8/
+	ZRcdjUkaDKHfiAOIlGc35sRN3jpzFSVQAJpBd2lRSBYUF2BKMBVed1x3CI+U8=
+X-Google-Smtp-Source: AGHT+IECYfe/OWkP+h6xwdXpAJwtn05ZsuE/m7/iUcw3NPvb9j7sxFVFBX2c8mmvByjxd+djfC6elw==
+X-Received: by 2002:a05:6a00:1d0a:b0:7b7:6f69:e9ba with SMTP id d2e1a72fcca58-7f667447030mr15140623b3a.1.1765902191527;
+        Tue, 16 Dec 2025 08:23:11 -0800 (PST)
+Received: from ?IPV6:2001:ee0:4f4c:210:aa6d:57b:2df9:35ae? ([2001:ee0:4f4c:210:aa6d:57b:2df9:35ae])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c4e9d9e3sm15921893b3a.45.2025.12.16.08.23.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Dec 2025 08:23:11 -0800 (PST)
+Message-ID: <3f5613e9-ccd0-4096-afc3-67ee94f6f660@gmail.com>
+Date: Tue, 16 Dec 2025 23:23:04 +0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] virtio-net: enable all napis before scheduling
+ refill work
+To: Jason Wang <jasowang@redhat.com>
+Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+References: <20251212152741.11656-1-minhquangbui99@gmail.com>
+ <CACGkMEtzXmfDhiQiq=5qPGXG+rJcxGkWk0CZ4X_2cnr2UVH+eQ@mail.gmail.com>
+Content-Language: en-US
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <CACGkMEtzXmfDhiQiq=5qPGXG+rJcxGkWk0CZ4X_2cnr2UVH+eQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+On 12/16/25 11:16, Jason Wang wrote:
+> On Fri, Dec 12, 2025 at 11:28 PM Bui Quang Minh
+> <minhquangbui99@gmail.com> wrote:
+>> Calling napi_disable() on an already disabled napi can cause the
+>> deadlock. In commit 4bc12818b363 ("virtio-net: disable delayed refill
+>> when pausing rx"), to avoid the deadlock, when pausing the RX in
+>> virtnet_rx_pause[_all](), we disable and cancel the delayed refill work.
+>> However, in the virtnet_rx_resume_all(), we enable the delayed refill
+>> work too early before enabling all the receive queue napis.
+>>
+>> The deadlock can be reproduced by running
+>> selftests/drivers/net/hw/xsk_reconfig.py with multiqueue virtio-net
+>> device and inserting a cond_resched() inside the for loop in
+>> virtnet_rx_resume_all() to increase the success rate. Because the worker
+>> processing the delayed refilled work runs on the same CPU as
+>> virtnet_rx_resume_all(), a reschedule is needed to cause the deadlock.
+>> In real scenario, the contention on netdev_lock can cause the
+>> reschedule.
+>>
+>> This fixes the deadlock by ensuring all receive queue's napis are
+>> enabled before we enable the delayed refill work in
+>> virtnet_rx_resume_all() and virtnet_open().
+>>
+>> Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
+>> Reported-by: Paolo Abeni <pabeni@redhat.com>
+>> Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>> ---
+>> Changes in v2:
+>> - Move try_fill_recv() before rx napi_enable()
+>> - Link to v1: https://lore.kernel.org/netdev/20251208153419.18196-1-minhquangbui99@gmail.com/
+>> ---
+>>   drivers/net/virtio_net.c | 71 +++++++++++++++++++++++++---------------
+>>   1 file changed, 45 insertions(+), 26 deletions(-)
+>>
+>> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+>> index 8e04adb57f52..4e08880a9467 100644
+>> --- a/drivers/net/virtio_net.c
+>> +++ b/drivers/net/virtio_net.c
+>> @@ -3214,21 +3214,31 @@ static void virtnet_update_settings(struct virtnet_info *vi)
+>>   static int virtnet_open(struct net_device *dev)
+>>   {
+>>          struct virtnet_info *vi = netdev_priv(dev);
+>> +       bool schedule_refill = false;
+>>          int i, err;
+>>
+>> -       enable_delayed_refill(vi);
+>> -
+>> +       /* - We must call try_fill_recv before enabling napi of the same receive
+>> +        * queue so that it doesn't race with the call in virtnet_receive.
+>> +        * - We must enable and schedule delayed refill work only when we have
+>> +        * enabled all the receive queue's napi. Otherwise, in refill_work, we
+>> +        * have a deadlock when calling napi_disable on an already disabled
+>> +        * napi.
+>> +        */
+>>          for (i = 0; i < vi->max_queue_pairs; i++) {
+>>                  if (i < vi->curr_queue_pairs)
+>>                          /* Make sure we have some buffers: if oom use wq. */
+>>                          if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
+>> -                               schedule_delayed_work(&vi->refill, 0);
+>> +                               schedule_refill = true;
+>>
+>>                  err = virtnet_enable_queue_pair(vi, i);
+>>                  if (err < 0)
+>>                          goto err_enable_qp;
+>>          }
+> So NAPI could be scheduled and it may want to refill but since refill
+> is not enabled, there would be no refill work.
+>
+> Is this a problem?
 
-For RX CQEs with type CQE_RX_COALESCED_4, to measure the coalescing
-efficiency, add counters to count how many CQEs contain 2, 3, 4 packets
-respectively.
-Also, add a counter for the error case of first packet with lenth == 0.
+You are right. It is indeed a problem.
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 25 +++++++++++++++++--
- .../ethernet/microsoft/mana/mana_ethtool.c    | 17 ++++++++++---
- include/net/mana/mana.h                       | 10 +++++---
- 3 files changed, 42 insertions(+), 10 deletions(-)
+I think we can unconditionally schedule the delayed refill after 
+enabling all the RX NAPIs (don't check the boolean schedule_refill 
+anymore) to ensure that we will have refill work. We can still keep the 
+try_fill_recv here to fill the receive buffer earlier in normal case. 
+What do you think?
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index a46a1adf83bc..78824567d80b 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2083,8 +2083,22 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 
- nextpkt:
- 	pktlen = oob->ppi[i].pkt_len;
--	if (pktlen == 0)
-+	if (pktlen == 0) {
-+		/* Collect coalesced CQE count based on packets processed.
-+		 * Coalesced CQEs have at least 2 packets, so index is i - 2.
-+		 */
-+		if (i > 1) {
-+			u64_stats_update_begin(&rxq->stats.syncp);
-+			rxq->stats.coalesced_cqe[i - 2]++;
-+			u64_stats_update_end(&rxq->stats.syncp);
-+		} else if (i == 0) {
-+			/* Error case stat */
-+			u64_stats_update_begin(&rxq->stats.syncp);
-+			rxq->stats.pkt_len0_err++;
-+			u64_stats_update_end(&rxq->stats.syncp);
-+		}
- 		return;
-+	}
- 
- 	curr = rxq->buf_index;
- 	rxbuf_oob = &rxq->rx_oobs[curr];
-@@ -2102,8 +2116,15 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 
- 	mana_post_pkt_rxq(rxq);
- 
--	if (coalesced && (++i < MANA_RXCOMP_OOB_NUM_PPI))
-+	if (!coalesced)
-+		return;
-+
-+	if (++i < MANA_RXCOMP_OOB_NUM_PPI)
- 		goto nextpkt;
-+
-+	u64_stats_update_begin(&rxq->stats.syncp);
-+	rxq->stats.coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 2]++;
-+	u64_stats_update_end(&rxq->stats.syncp);
- }
- 
- static void mana_poll_rx_cq(struct mana_cq *cq)
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 1b9ed5c9bbff..773f50b1a4f4 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -20,8 +20,6 @@ static const struct mana_stats_desc mana_eth_stats[] = {
- 					tx_cqe_unknown_type)},
- 	{"tx_linear_pkt_cnt", offsetof(struct mana_ethtool_stats,
- 				       tx_linear_pkt_cnt)},
--	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
--					rx_coalesced_err)},
- 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
- 					rx_cqe_unknown_type)},
- };
-@@ -151,7 +149,7 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	unsigned int num_queues = apc->num_queues;
--	int i;
-+	int i, j;
- 
- 	if (stringset != ETH_SS_STATS)
- 		return;
-@@ -170,6 +168,9 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- 		ethtool_sprintf(&data, "rx_%d_xdp_drop", i);
- 		ethtool_sprintf(&data, "rx_%d_xdp_tx", i);
- 		ethtool_sprintf(&data, "rx_%d_xdp_redirect", i);
-+		ethtool_sprintf(&data, "rx_%d_pkt_len0_err", i);
-+		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+			ethtool_sprintf(&data, "rx_%d_coalesced_cqe_%d", i, j + 2);
- 	}
- 
- 	for (i = 0; i < num_queues; i++) {
-@@ -203,6 +204,8 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 xdp_xmit;
- 	u64 xdp_drop;
- 	u64 xdp_tx;
-+	u64 pkt_len0_err;
-+	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
- 	u64 tso_packets;
- 	u64 tso_bytes;
- 	u64 tso_inner_packets;
-@@ -211,7 +214,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 short_pkt_fmt;
- 	u64 csum_partial;
- 	u64 mana_map_err;
--	int q, i = 0;
-+	int q, i = 0, j;
- 
- 	if (!apc->port_is_up)
- 		return;
-@@ -241,6 +244,9 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 			xdp_drop = rx_stats->xdp_drop;
- 			xdp_tx = rx_stats->xdp_tx;
- 			xdp_redirect = rx_stats->xdp_redirect;
-+			pkt_len0_err = rx_stats->pkt_len0_err;
-+			for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+				coalesced_cqe[j] = rx_stats->coalesced_cqe[j];
- 		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
- 
- 		data[i++] = packets;
-@@ -248,6 +254,9 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 		data[i++] = xdp_drop;
- 		data[i++] = xdp_tx;
- 		data[i++] = xdp_redirect;
-+		data[i++] = pkt_len0_err;
-+		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+			data[i++] = coalesced_cqe[j];
- 	}
- 
- 	for (q = 0; q < num_queues; q++) {
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 51d26ebeff6c..f8dd19860103 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -61,8 +61,11 @@ enum TRI_STATE {
- 
- #define MAX_PORTS_IN_MANA_DEV 256
- 
-+/* Maximum number of packets per coalesced CQE */
-+#define MANA_RXCOMP_OOB_NUM_PPI 4
-+
- /* Update this count whenever the respective structures are changed */
--#define MANA_STATS_RX_COUNT 5
-+#define MANA_STATS_RX_COUNT (6 + MANA_RXCOMP_OOB_NUM_PPI - 1)
- #define MANA_STATS_TX_COUNT 11
- 
- #define MANA_RX_FRAG_ALIGNMENT 64
-@@ -73,6 +76,8 @@ struct mana_stats_rx {
- 	u64 xdp_drop;
- 	u64 xdp_tx;
- 	u64 xdp_redirect;
-+	u64 pkt_len0_err;
-+	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
- 	struct u64_stats_sync syncp;
- };
- 
-@@ -227,8 +232,6 @@ struct mana_rxcomp_perpkt_info {
- 	u32 pkt_hash;
- }; /* HW DATA */
- 
--#define MANA_RXCOMP_OOB_NUM_PPI 4
--
- /* Receive completion OOB */
- struct mana_rxcomp_oob {
- 	struct mana_cqe_header cqe_hdr;
-@@ -378,7 +381,6 @@ struct mana_ethtool_stats {
- 	u64 tx_cqe_err;
- 	u64 tx_cqe_unknown_type;
- 	u64 tx_linear_pkt_cnt;
--	u64 rx_coalesced_err;
- 	u64 rx_cqe_unknown_type;
- };
- 
--- 
-2.34.1
+>
+>
+>> +       enable_delayed_refill(vi);
+>> +       if (schedule_refill)
+>> +               schedule_delayed_work(&vi->refill, 0);
+>> +
+>>          if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STATUS)) {
+>>                  if (vi->status & VIRTIO_NET_S_LINK_UP)
+>>                          netif_carrier_on(vi->dev);
+>> @@ -3463,39 +3473,48 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
+>>          __virtnet_rx_pause(vi, rq);
+>>   }
+>>
+> Thanks
+>
+
+Thanks,
+Quang Minh.
 
