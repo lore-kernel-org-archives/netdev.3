@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7A3596F5;
-	Wed, 17 Dec 2025 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6444434FF7A;
+	Wed, 17 Dec 2025 13:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765979405; cv=none; b=Z6EIPho4sie98dTP46OEQCzSmovTHloxsAVYjyEp6CIwo13DybLWR6BWYxojHv49pJCxM0Wg9v2MyklUn6kOCvvyw3ryarJc9txSM9UJaWnzQX+3Vj1c+t30QDs/l6MiSYXX94Z2lj9/MbTkZOj0ynR5H+SRSLykBVNU4JGEB9o=
+	t=1765979638; cv=none; b=neaeAlE30k9RjUAxX8syFJYXAa5nIOP3/7/+oY/nPgm4xrvps7Wlsq54605bKR1dEZB8iuwElDCHSlOlSV+5M9NDWQvHCYm37864VmkSAy+gt2/dkzOTXzLoMIn00yl2LNEQfKfgyQvz0cQGwBW6V0Zec/l3bi71telQOWYLS+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765979405; c=relaxed/simple;
-	bh=MTTb8HlNJVO4UB4+QRj3v9hrUpMADXFxOGApeUa6NXM=;
+	s=arc-20240116; t=1765979638; c=relaxed/simple;
+	bh=1UpAV83OpKNjjc4ByCa2HOBtLC9gCAtyfjTfRDKh2vQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2YQQkUOiViwUARWrM1X0G2xTJ7tY3Y4rGW0B/DGRamf/PASUeTBtE9rYZhlF0SCbU4rz3zzMyt4m/jHMXdemvUnWBRIljDP3gFKj7tUSMJkok9g+gGoHvO5ZMz18eiAGTFigK6PLJv3DMhKoX4zrvveN/gkr0U3DdiRH3BXiMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FJ6LimZd; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=nyX++CrB0X23mS8HVw3HS8OxHx5YRRilVSkRFq7mdI6TKoUd7icVTGSy7js0lkMGV00Ig9M3nS6GiGDavohHHA3dOOfI9rQ+TEVvzrX9yOLURNIO2f41G+zKCU7d0TP3492R8n7JQiR4w8R9pUilfbXbRhNhvi2pZXYu6RvIK2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qhOrnQOd; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FJ6LimZd"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qhOrnQOd"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2+WwBYYEeiXPhF+PDs3ijujEDaGJ6KDELIkS+mXjOB4=; b=FJ6LimZdyOBJ4Cs9CTvqf0pW87
-	CglzRwzFM4UmrRrvpr+bXw6f21Bmerx0LxBhUeUVbHeQTwLJm/AC7OIEDY+YBlnSMVNlUck20Al/f
-	eTULE/Q6sJK/GVygmxgbV84kemZVjsVQ0DSQhZsuJR/NTIQvQD2w0VEcukn8LBQ0WP9M=;
+	bh=yfpuFUIIdzDvqAVnHULPTZrjOHsB1IDrDwe7OdEgiT0=; b=qhOrnQOdSGklUExbLgo+E2wqU2
+	G2XxSwC7uHjFCcCfKooalEfsNF+4p1W0bc3FALEBpq1Brmni5+6mZ1qpMQuag8V4qcYSL2LJShXSl
+	HQ2kqFnjlhFkO8OJwl3Zc0zMZq9SzEgp/FrHbXzpCR4Si8gU+7HoyKt8DbWqqbZVRIB0=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vVruT-00HDSE-Tf; Wed, 17 Dec 2025 14:49:45 +0100
-Date: Wed, 17 Dec 2025 14:49:45 +0100
+	id 1vVryN-00HDTt-1u; Wed, 17 Dec 2025 14:53:47 +0100
+Date: Wed, 17 Dec 2025 14:53:47 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Jijie Shao <shaojijie@huawei.com>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
@@ -38,13 +38,13 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
 	jonathan.cameron@huawei.com, salil.mehta@huawei.com,
 	shiyongbang@huawei.com, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 6/6] net: phy: motorcomm: fix duplex setting
- error for phy leds
-Message-ID: <0bb9d5a1-e01c-4d7d-b668-3bf81e98447b@lunn.ch>
+Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
+ rules
+Message-ID: <4e884fc2-9f64-48dd-b0be-e9bb6ec0582d@lunn.ch>
 References: <20251215125705.1567527-1-shaojijie@huawei.com>
- <20251215125705.1567527-7-shaojijie@huawei.com>
- <d8b3a059-d877-4db6-8afb-3023b8ee5fa3@lunn.ch>
- <143514a2-e538-47e2-920c-f223667cb900@huawei.com>
+ <20251215125705.1567527-3-shaojijie@huawei.com>
+ <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
+ <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,30 +53,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <143514a2-e538-47e2-920c-f223667cb900@huawei.com>
+In-Reply-To: <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
 
-On Wed, Dec 17, 2025 at 09:05:20PM +0800, Jijie Shao wrote:
-> 
-> on 2025/12/16 15:21, Andrew Lunn wrote:
-> > On Mon, Dec 15, 2025 at 08:57:05PM +0800, Jijie Shao wrote:
-> > > fix duplex setting error for phy leds
-> > > 
-> > > Fixes: 355b82c54c12 ("net: phy: motorcomm: Add support for PHY LEDs on YT8521")
-> > > Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> > Please don't mix new development and fixes in one patchset. Please
-> > base this patch on net, and send it on its own.
-> > 
-> > https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-> > 
-> > Fixes are accepted any time, it does not matter about the merge
-> > window.
-> > 
-> > 	Andrew
-> 
-> Yes, this is RFC, just for code review.
-> I sent it to net when requesting a merge.
+> Some of our boards have only one LED, and we want to indicate both
+> link and active(TX and RX) status simultaneously.
 
-This is however a real fix. The motorcomm driver is broken. Why wait
-to fix it?
+Configuration is generally policy, which is normally done in
+userspace. I would suggest a udev rule.
 
 	Andrew
+
