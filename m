@@ -1,154 +1,94 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A4E33710E
-	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 08:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACE0288D6;
+	Wed, 17 Dec 2025 08:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765959708; cv=none; b=guab9D4akxuxVaiTKKDNujvYuR5tle5NF5b651DDni278F3yM7/teL4BpFaLWb1qHTpLuye7c0E67j5QVYuJ7iDeTocO+ZrOcds1J/ZjB8VR+FNwmQRecFPKGwvlJLLBqzSz8uAzuepGSpWjI/1CYWXfXB7VJpPL90+FrbZH4TE=
+	t=1765960625; cv=none; b=LxzLr9RufuZZsiL/uMCzDzH/wGc1yAd67fEcW4mia2nfW+W/cmHSZKWua6n20q0DHr97MhdTrYIdVhNiO6VMTpPzQwpNmv6UNYj7r93FEuJHQASlgqu0Vd5y9FXtQmZt2aeC7SC/CU1mK7OVUmxQc2oPQ2s1hufPw9fgCBeNaD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765959708; c=relaxed/simple;
-	bh=WuQeI+WkXQSWQInmvdcHjxfQ36N4wXa/UmX/Y1u7BWc=;
+	s=arc-20240116; t=1765960625; c=relaxed/simple;
+	bh=KAQs8LiC0Yfd4rW28C195gtmvQ2iLTjhXonSSp4r1+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jg3Q2oKpfeP2BCrFZJMCNVpUM9Zvk5JYT6S/OexJSdp1c6s1NDJxDDG1bDCgi2EqCSvZ0eNvgqfh6KJZT6A0Bgtd5EF2fd1crAHkKhsKHLtWgRmCq6TAoCV5/WJFbYq7sflQre7KqT79W2vT8dDeJNFk/ZN2K6JOpqv4DnPzUZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tKg28GRE; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2WYlIIjKDoPcnRi70xQ7j9rqanSrFX3dlILdozpvIjcLpcD/AkGNECB6q1V0rFiQav5inAlE2d43am/ZFMPJmasuhHLNXjzyn1pmPLTq0dg4gkLI6QeqKcettx2EcQSzRKFiXMchX0Daa6Sf91/V4NqtYiXrNpQoPI5Epk65Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W47vCtRc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tKg28GRE"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b736ffc531fso1069534966b.1
-        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 00:21:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765959703; x=1766564503; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b+Q8ghXVyCQDXjBoffiftwRpwO3ivtFGMCLgHbR9KKc=;
-        b=tKg28GREQe5lulh5QpQRqYXGF/NStwtvQV/wsg7RPUMi5PZwIT8kfVKdqo83NPM54J
-         1KerTy2h4+3tvbMX8ysqEA7rUpVCC+Ii+aDny/tIB6E3QUNXTCPCSew0Bs/F2hQ3ojUx
-         aF3DQIaaywmS8xePYp9DtxBHL9pw6W9uP3eatkQX25U+n9FHWnGDVW2lcsgbhjGWeEpF
-         n0KxcxSvPydtKAIeuCAW20YFG48YVsH0oDpFE3MVarShjFIfbgi34+LQzIgHH2cTuh+t
-         SElz7H4lJ8YbuprC3vrWpJjTR5p8zh4i+hzMb58wcNU/mrHDS917566dJsiSsgzEYmMB
-         /XVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765959703; x=1766564503;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b+Q8ghXVyCQDXjBoffiftwRpwO3ivtFGMCLgHbR9KKc=;
-        b=fRnvYOWO+uzTOTXuKBYTIrtkwKGGkgUuCNqfWIeoRgN6rmqX+JQbA6jLndUePh72oZ
-         g3HRnPbfrTnntZ3DnUX+xzw3QesVXxV2RyDOGmRT8/ju0YOTTbIl5nPKMFbVYiDe+mif
-         b3Sz6GzVhLq8sEdOv3UtpHRnUzXqMlZxBjNHtMAshPf23CQn7ojpj66Ad51Yr9bCrDyB
-         uMbfk3mND2oYdfN30SiBYefk55gaGhGh22HTmxivdW9J2ivhRqO2pJO7Qe+gRLyHvWZ2
-         FrNaXytV0T90E0Q/vNPPsxDCAMi6H9vjMNjtwdibiS6WVlBPeZDWCt9zJbczbdtamgfR
-         mBFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwiWAc3MNWx4ONmX/C6kh/xIRjXzXY2wPGGK0cuwxr5i/gE1rnNxLw2tEOi/kpGXqEQ5js/hE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmkaO/Guu9x5BdQU3TvxKm4Q/oq3iK1lYHuo9izmRBJBSGLreO
-	XM5FG/hI9E0TaK82ZWOMFlwj5+MyNOrtT8JT+x92b/DD+HjHNa+GomKivfp9HdJWRqo=
-X-Gm-Gg: AY/fxX5dp05JyNVIWNnVtxjmsMxh0b5Ut1gOO7trdRR9yG5fvDCni8rHrUwzIw1g5c3
-	kz2Fx3Pe+ns+GA5Z//+kblHdFVADR/3ZQKiE8AA5SbWedGL3+qjtQ/NcaTuTz13OJ+zjRxgrSIy
-	RDDH8u1YLiwKlJEOFXb0lbTn30KahIzLe+aaqo/N5LBN0xNplcAGovrfCsx9KmuIH872zS01JrT
-	jOqFrPJ2nwIUs/1QX8N4pzw/JjC3s2dNOFodQpUNwuY14vXHNG+tp510WiwcWNEeT5euFugjORq
-	UhptvFGvYRQzzP22MdmxsgHuJfWxGI8xkciYfFLjBgM00X+kg6owpQGHfBAStFZqRGg6P2i0gtY
-	wF7wi4se/CW7surUuQRVhA/LFxQ8PJvbnfNVkxdvjx0qCuUcAJuBZrDsuDYrL5z0YZTMvUGlA81
-	j42URMTNtOHsveBK7q
-X-Google-Smtp-Source: AGHT+IFCoak6awfsvNzuanPNEFvtnm4npy82/7GDiD4hlE+WRwlv0VOch5efQB3V/p3Rq/g2NEI9Nw==
-X-Received: by 2002:a17:907:d94:b0:b73:5f5e:574d with SMTP id a640c23a62f3a-b7d23a89c52mr1790501866b.59.1765959703434;
-        Wed, 17 Dec 2025 00:21:43 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b7ffacd9192sm337793366b.70.2025.12.17.00.21.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 00:21:42 -0800 (PST)
-Date: Wed, 17 Dec 2025 09:21:41 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: Sumit Garg <sumit.garg@oss.qualcomm.com>, 
-	Jens Wiklander <jens.wiklander@linaro.org>, Olivia Mackall <olivia@selenic.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
-	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
-	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-rtc@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v1 00/17] tee: Use bus callbacks instead of driver
- callbacks
-Message-ID: <max5wxkcjjvnftwfwgymybwbnvf5s3ytwpy4oo5i74kfvnav4m@m2wasqyxsf4h>
-References: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
- <aT--ox375kg2Mzh-@sumit-X1>
- <dhunzydod4d7vj73llpuqemxb5er2ja4emxusr66irwf77jhhb@es4yd2axzl25>
- <CAGptzHOOqLhBnAXDURAzkgckUvRr__UuF1S_7MLV0u-ZxYEdyA@mail.gmail.com>
- <ayebinxqpcnl7hpa35ytrudiy7j75u5bdk3enlirkp5pevppeg@6mx6a5fwymwf>
- <aUJh--HGVeJWIilS@sumit-xelite>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W47vCtRc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6569BC4CEF5;
+	Wed, 17 Dec 2025 08:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765960625;
+	bh=KAQs8LiC0Yfd4rW28C195gtmvQ2iLTjhXonSSp4r1+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W47vCtRc2fjZpQe/DRm+pPSRqT8FgIjIIRf2fcHiNzSfRwfN9FSNmNhfSNsomcwSZ
+	 shUz34HPQQt6QsrC72mdmgJ2kAOKPXTU5yvT2bf9EzQAoeKTAwi+8Z9q4l5/IyaHJE
+	 w0dIZZ61skCOa1af9EcoK4jlfs4frthhbXwFQbcpYbmYBzCiUmU+0V7dpZFs2FhzY6
+	 Ilw2aNq9h0FBq/T2glswF071hRUoOSkhuY6XwfXZcgpqHZYa1NLC9lrxsvdjf+MbsY
+	 NZ7Hm3zKDEO1+/DWE3pz6PmJZOwopgc3zT/AoM7n9Uo3WbCAQBW0TGMgCLrxbFD0xn
+	 VWQhHJVoQolrA==
+Date: Wed, 17 Dec 2025 09:37:02 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linaro-s32@linaro.org
+Subject: Re: [PATCH v2 3/4] dt-bindings: net: nxp,s32-dwmac: Use the GPR
+ syscon
+Message-ID: <20251217-elated-vicugna-of-whirlwind-23d6bc@quoll>
+References: <cover.1765806521.git.dan.carpenter@linaro.org>
+ <1ecafee4bd7dc3577adfc4ada8bcc50b5eb3e863.1765806521.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="p6kfp3quyfb6lwgz"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aUJh--HGVeJWIilS@sumit-xelite>
+In-Reply-To: <1ecafee4bd7dc3577adfc4ada8bcc50b5eb3e863.1765806521.git.dan.carpenter@linaro.org>
 
+On Mon, Dec 15, 2025 at 05:41:57PM +0300, Dan Carpenter wrote:
+> The S32 chipsets have a GPR region which has a miscellaneous registers
+> including the GMAC_0_CTRL_STS register.  Originally, this code accessed
+> that register in a sort of ad-hoc way, but it's cleaner to use a
+> syscon interface to access these registers.
+> 
+> We still need to maintain the old method of accessing the GMAC register
+> but using a syscon will let us access other registers more cleanly.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+> v2: Add the vendor prefix to the phandle
+>     Fix the documentation
+> 
+>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml         | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> index 2b8b74c5feec..a65036806d60 100644
+> --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> @@ -32,6 +32,15 @@ properties:
+>        - description: Main GMAC registers
+>        - description: GMAC PHY mode control register
+>  
+> +  nxp,phy-sel:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    items:
+> +      - description: phandle to the GPR syscon node
+> +      - description: offset of PHY selection register
+> +    description:
+> +      This is a phandle/offset pair.  The phandle points to the
+> +      GPR region and the offset is the GMAC_0_CTRL_STS register.
 
---p6kfp3quyfb6lwgz
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 00/17] tee: Use bus callbacks instead of driver
- callbacks
-MIME-Version: 1.0
+Do not repeat description twice. The GMAC_0_CTRL_STS should be explained
+in description of individual item. This description should only say what
+is the purpose of it, why the hardware needs to poke in other devices.
 
-Hello Sumit,
+Best regards,
+Krzysztof
 
-On Wed, Dec 17, 2025 at 01:25:39PM +0530, Sumit Garg wrote:
-> On Tue, Dec 16, 2025 at 12:08:38PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > On Tue, Dec 16, 2025 at 01:08:38PM +0530, Sumit Garg wrote:
-> > > On Mon, Dec 15, 2025 at 3:02=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > > <u.kleine-koenig@baylibre.com> wrote:
-> > > >  - Why does optee_probe() in drivers/tee/optee/smc_abi.c unregister=
- all
-> > > >    optee devices in its error path (optee_unregister_devices())?
-> > >=20
-> > > This is mostly to take care of if any device got registered before the
-> > > failure occured. Let me know if you have a better way to address that.
-> >=20
-> > Without understanding the tee stuff, I'd say: Don't bother and only undo
-> > the things that probe did before the failure.
->=20
-> True, but this is special case where if there is any leftover device
-> registered from the TEE implementation then it is likely going to cause
-> the corresponding kernel client driver crash.
-
-You are aware that this is racy? So if a driver crashes e.g. after
-teedev_close_context() it might happen that it is registered just after
-optee_unregister_devices() returns.
-
-Best regards
-Uwe
-
---p6kfp3quyfb6lwgz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlCaBIACgkQj4D7WH0S
-/k7jZwf/S32gHxmpuL9ts6Dq9pI9CDW9KNDwfTzIptzaNQEofHnz2Ph9Ejs/bZAl
-1skNWxxt2vGIVP016BxUqi9V0RyKNUV0GCk23ZMdeGE09A47y9N0bT00HDJrrZYp
-FYCoNNwL8vICQzfAti/0+DHGI1uHwrXCwQWf/VaNggCAhb3eTCfcmUtogT7hhbtH
-+6bLk0/LEYmrIg1pkq6m4Y4vxBOEwnSZVDa4/15mxJ7jExJeoQmha2Y2whq5WZtY
-TEMgHL6KNg7ifbee+/Y0HUJizQ45rf4pJo2bvrbwXc+3KaEqfzNpD3jKVcKJSNBx
-jL7uprws5c1kFtHG4vp8QjaZRNJtpw==
-=trcC
------END PGP SIGNATURE-----
-
---p6kfp3quyfb6lwgz--
