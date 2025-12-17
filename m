@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1667531B132;
-	Wed, 17 Dec 2025 08:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF0C338596;
+	Wed, 17 Dec 2025 08:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765958781; cv=none; b=tu0by82xOHEs1jZMwpgzJ+bfYy8B+BplBKQMWI66RYmqkbjIC+Eh4afjPKXIa9nvv5G/ZiEjsp8zVlD67LxbMZsOdi1SSsMd9yRU8J+Q0LtozkEbTXY+z3m2DIImPcvyMUdgSPjZQwhYas6qLG4l4YpBFYgLNz+y0LFLmsLVU1E=
+	t=1765958811; cv=none; b=iOaXCSPA2bPBfDAgZc8XQqIVlv+1zMHmkhu+G1XpQKKC2QoIdyFbJ2/CnHBfhCpHshM9QJfj3WVpbPMNswLHS8cGepl9Fj11bYSqL7Idcx0u+qcci5fi7glnPACA13Nxhy9f7FiNgt1fe3/dBj0wCA9DaF2dAulrAoEz8II5axA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765958781; c=relaxed/simple;
+	s=arc-20240116; t=1765958811; c=relaxed/simple;
 	bh=teKl12skUfQQro3PHPU2N2B6t59q3ign6XHwsZogJDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keNHWEeBTWMEFFj7zQJ6arxLWFNeZRWdWyZe/Zw02HSUaBjj4zougGOYI6relspVojhN9Gx3rcFHDXWG5uGWCvQN2cRNoMMnxyVb42BRPe+JMl7RvQVvEZtobRslJ8FRS03vyn3NQUK9ehtvJNeixsTUcds0L0LGlxbhqoGQbtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Q1uJETpe; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=Iy3f/s3nJiIzvMOQqGIUfv6YorLMuShyByrYAPREA1IG28NqAMMURRMrZhT+GFRsP1sexnVBqUcoAfu04AVEv5cmfGz2Gv4efYeVpGeDc/fHO3urjoPgBmAUlAp955jYrAvKBTzwk2uzCBntB3f5zasRH/cAPauHu7gKpv8CWYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JcQ44Z5H; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Q1uJETpe"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JcQ44Z5H"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=XW
-	5wK1noLKWpZQP3WA1XwqbvHY8mX+e3T/od0cfU7Ko=; b=Q1uJETpeMkjDYFGynn
-	SDf1hwuV1GsJHlz8ew3FMihocFv0x9xqtwPqaj0YyU3W51HGPCJ01S6i1R8gHFeo
-	kcA9WIXUzAMs4xArpKFtpOePPoC6ke2m/mVONBCVP25uWCQzrRCTsbOR5CmM6P55
-	6+3zadh7HVEc5a2oa9Eb3G/B8=
+	5wK1noLKWpZQP3WA1XwqbvHY8mX+e3T/od0cfU7Ko=; b=JcQ44Z5HR4adZrQUEJ
+	QuMQc8nDHDg10FmHaDM2hSUWz0E7QVxdUM8gAtDqvX1T9iANbdx18vYiXZGSspXC
+	6C8EceTkNysUIz6fx3THpxvFX9HyU4YiZOgF3gN2r5zdUhfQWc7yuBP1hwG15Eci
+	BFHcHnx/eazKvmRdPfo3FTu1Q=
 Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgCXfVolZEJpON3RHw--.154S5;
-	Wed, 17 Dec 2025 16:05:18 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXPv1zZEJpCHbGAw--.5008S5;
+	Wed, 17 Dec 2025 16:06:14 +0800 (CST)
 From: 15927021679@163.com
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -37,11 +37,11 @@ Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	xiongweimin <xiongweimin@kylinos.cn>
 Subject: [PATCH 02/14] examples/vhost_user_rdma: implement device and port query commands
-Date: Wed, 17 Dec 2025 16:03:55 +0800
-Message-ID: <20251217080451.38337-4-15927021679@163.com>
+Date: Wed, 17 Dec 2025 16:05:13 +0800
+Message-ID: <20251217080605.38473-4-15927021679@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251217080451.38337-1-15927021679@163.com>
-References: <20251217080451.38337-1-15927021679@163.com>
+In-Reply-To: <20251217080605.38473-1-15927021679@163.com>
+References: <20251217080605.38473-1-15927021679@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,12 +49,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgCXfVolZEJpON3RHw--.154S5
+X-CM-TRANSID:_____wDXPv1zZEJpCHbGAw--.5008S5
 X-Coremail-Antispam: 1Uf129KBjvJXoWxZry3GFW5KrW7Cw1rCry8Xwb_yoWrKw15pa
 	4j93savr9rK3WxJwn3XwnF9F1FgrnYyrW7GFs7WFna93W5Jwn5Aay8C3W8KF17GFW2yFyx
 	JF1jqF93GF1ay37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jvYLkUUUUU=
-X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC9B8Tm2lCZD-kUAAA3n
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jv1vsUUUUU=
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0RYhqWlCZHY-OgAA3z
 
 From: xiongweimin <xiongweimin@kylinos.cn>
 
