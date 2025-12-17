@@ -1,118 +1,89 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA9B34D933
-	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 12:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3601A9FAC;
+	Wed, 17 Dec 2025 12:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765975681; cv=none; b=dMPGCkfTmBxCIJQqYyuBV3zmyw5UOU61Fg5DCtbA9cfBHsMXNzDCJvhtcawf2qZUiPWTJZksghlHmOZxzAjGliW6B3s5q79j5Ko9wIHZ5K0nm3LWEP6i2sK+ipbEJEikufqRzScPYJSramDKsLfO02/yFFo5e9iHDd+DNPrfyRs=
+	t=1765976111; cv=none; b=gmzjsfl10eePbqLs5vEuQ2aJeE6FQ5378z7txqNKndV1u2S0SeAApo0Zo1kMpks0SaSBgpOZcxdixoKzQMJwGvxpVlupmEyLFFXB0384tQGfvEQ/WIOAXQVGf+Y/FaPi5LjaP7ON41nZlea6YTAGkM0+OrR8B0m0lvYZq9i5BhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765975681; c=relaxed/simple;
-	bh=CloEhhB+uejblLuhuXn8n5zkfy2FIPc3okx6zsJmi1A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Rp/gVqr3IaE45obIYjalc3TKVZCmOK1NzyGqZHo0b5UsMkVQt87Ouzu2Uf0hEGGNYIERLY/GT3XzR8AIIeP6tTIgAUjt+TjZtinCNeFUXkVCj8KF8jmuCQM20Z/vt/oBDZ+++ukhNMaX8rQH+YHcO1VWMB3e+xrPaYEFh76OV5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJ0PqQuO; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765976111; c=relaxed/simple;
+	bh=9OYJu7NQ6Jyui/nscSQIbad7plIfuJIL8N+ZEqAkeEs=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=GocS+s2d9APcnJ+GYMA3WUwwe3wv0oYSc8teX4BFWo+GpZN4OyC2yTi2Khuj4YIwtzBh3b5YqQXswPdIuQh2ec5bM5WaUgp/HyHQtjtgLBAHMck126yiX2ZjNxfpQg66NW28IICkpB1axZarq4DPE/N7IBs5vWMg3tgC5HzJJ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HuygHyOC; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJ0PqQuO"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0a8c2e822so8994455ad.1
-        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 04:48:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765975679; x=1766580479; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UdG/M5hQwjEekQuQim1OPFLT3tKylIxu+drVZWp4rT8=;
-        b=SJ0PqQuOT8SqXAGLb9+o/DM6zUMldgQqK8bCYMo81spEUwNHXWAy8D6qTjwNtVWmqj
-         cw+Y4GKOxZb1vf06pfAG1GxUhj2co9p5cyG8X+NCr5YEtE99KVKPKzv/qO/6zHpeS/wG
-         aGogedoWZ4g8HvboRop60nSZxClakXLAlQOWR5WiXpqgozGM+OYFTjcyoda07s98S/7U
-         3teP6soWWe+HBIXBIiPaduK70tgqWVqRDNR0UtMUSMKDPVqxJ4PLbTFxymN/HVOZPu9A
-         Q7e6s41f+F52HExeyYgtBlZ/IaxHJtNfNlZI8r3u40kuhi7MrgHCaYuls6g34F2zr1jP
-         Jh9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765975679; x=1766580479;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UdG/M5hQwjEekQuQim1OPFLT3tKylIxu+drVZWp4rT8=;
-        b=F4/9ar3sLqoy2Th+nV4qfUtVYXyLp+SiKLgbBIIoHSTpsacwQvz2dHtjfnWSMYqmLr
-         7pHyLO/ian+ekWE8K/BHXJkktBqQvcWGO5GO2pzb8g22fwr5taStszvEPuIQorkMZ5x0
-         9EU0IniUcnEVhCeOsVpb88ROgvhMI1RGyi7qK48TpWTaAlymQPjnmf0Ho+DgvrRP1nJe
-         xn//OCGQPl5187WZDWNOm5aZja4y7RIP/ftP7GIOLntlY9CAFjGgMy3UT84CJagVhOaJ
-         jB9e8DDPZTGj11Up1+0kdfNVTotb2nLcEwDL+kx4yFlVolPH0KcXrdDjeSxusWEcr8aG
-         pXZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZpfWCEXH9U4dxRbcaMVsX0paFvAThqWwIT/ehj3+kB/d8pRGtsX2LM3oBAYGSAKjW/yD1OXc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuzCUcAUvKqwQxzY/6na/Vpp9mQ6nJG4njYIy85tjBGDoj3BPq
-	7yBEMHX0vthXCytdO++1ZvSqPCalCXkHKcmCET5m1CbRPM9sfzlo4v1/
-X-Gm-Gg: AY/fxX40jA6GUicBg5psrz4+bqDZL1IzRtR5gzgHlmC8e6dQEoL6Bi0yk/0IpnZ/5VQ
-	RxIfiFdScGCL3DwZfzY3VbvxAHIFSjNATskqmCiDaJlZHsgyvlct2wmdsC7HtuwaY9eRijg5HNV
-	DoWaLX4at7PTUKqdP3hGBdttvum8MDot0/TGI+3AmE7PiaAKbZh9bLA/IJjzf4jgz8OpriVrtSI
-	XGOQ+uti+9mOgXab3ujNVIfhHHoEmD2PvG+F3bA+Lph1uo4RlPYBBi4zDwd4gNPczbv2WzhyjAX
-	NsL+dMQijPN5FcCCvra/O9htfsMEiJVydKHi+WT4x0VHJRhGQLNXbBe3r0QAyfP71yMGsuQ3CPn
-	bTQDPR1Q2SnG2RZuc102sudUBLkmrWFTchOeGvd0paifRja+4Xp9RfIypTFryqR0JmaS/SdfSOT
-	9aWk3/uN88vKoDHU+VSRWjKeBu6gEhEysW8K1EHkR5SM5xONW0ZPZx5NmiQsPjmrtiJTvBglzc
-X-Google-Smtp-Source: AGHT+IGAXhwbqTK5yKjjJjEQNH9nBsZ0/MaiWTq2DcL4eJq8GaPME1nJ9eOJPHG9ddGopCMjl+fKkQ==
-X-Received: by 2002:a17:902:d48b:b0:295:70b1:edd6 with SMTP id d9443c01a7336-29f23b36299mr135474865ad.3.1765975679523;
-        Wed, 17 Dec 2025 04:47:59 -0800 (PST)
-Received: from poi.localdomain (KD118158218050.ppp-bb.dion.ne.jp. [118.158.218.50])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0e96df1c9sm98306795ad.39.2025.12.17.04.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 04:47:59 -0800 (PST)
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-To: linux-nfc@lists.01.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Qianchang Zhao <pioooooooooip@gmail.com>
-Subject: [PATCH v2 2/2] nfc: llcp: stop processing on LLCP_CLOSED in nfc_llcp_recv_hdlc()
-Date: Wed, 17 Dec 2025 21:46:59 +0900
-Message-Id: <20251217124659.19274-3-pioooooooooip@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251217124659.19274-1-pioooooooooip@gmail.com>
-References: <20251217124659.19274-1-pioooooooooip@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HuygHyOC"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=vGKscwXMKJ29Xox2XUVNkSMhP5dbp3pjHaG4+qsnogI=;
+	b=HuygHyOC493r6mlc8PJXTT4eWnSwS6BOA5dIbWyGiGZB1M01Xx7wsW9VI4Eewb8Boeq8xi69Y
+	GhSdNonlWK141CZlFzkESJxo3R4vWGEwYcHVmRVtalOFZSDLyiIQkEu9bwVQC24LNM3AxkKXwaj
+	D3wzIszoaWMPduRPRKRfzBo=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4dWYcH3xV2z12LDy;
+	Wed, 17 Dec 2025 20:52:47 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2EFCB18048C;
+	Wed, 17 Dec 2025 20:55:01 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Dec 2025 20:55:00 +0800
+Message-ID: <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
+Date: Wed, 17 Dec 2025 20:54:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+	<horms@kernel.org>, <Frank.Sae@motor-comm.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<salil.mehta@huawei.com>, <shiyongbang@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
+ rules
+To: Andrew Lunn <andrew@lunn.ch>
+References: <20251215125705.1567527-1-shaojijie@huawei.com>
+ <20251215125705.1567527-3-shaojijie@huawei.com>
+ <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold().
 
-In nfc_llcp_recv_hdlc(), the LLCP_CLOSED branch releases the socket lock and
-drops the reference, but the function continues to operate on llcp_sock/sk and
-later runs release_sock() and nfc_llcp_sock_put() again on the common exit path.
+on 2025/12/16 15:09, Andrew Lunn wrote:
+> On Mon, Dec 15, 2025 at 08:57:01PM +0800, Jijie Shao wrote:
+>> The node of led need add new property: rules,
+>> and rules can be set as:
+>> BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_RX)
+> Please could you expand this description. It is not clear to my why it
+> is needed. OF systems have not needed it so far. What is special about
+> your hardware?
 
-Return immediately after the CLOSED cleanup to avoid refcount/lock imbalance and
-to avoid using the socket after dropping the reference.
+I hope to configure the default rules.
+Currently, the LED does not configure rules during initialization; it uses the default rules in the PHY registers.
+I would like to change the default rules during initialization.
 
-Fixes: d646960f7986fefb460a2b062d5ccc8ccfeacc3a ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
----
- net/nfc/llcp_core.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index ed37604ed..f6c1d79f9 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1089,6 +1089,7 @@ static void nfc_llcp_recv_hdlc(struct nfc_llcp_local *local,
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
- 	}
- 
- 	/* Pass the payload upstream */
--- 
-2.34.1
+Some of our boards have only one LED, and we want to indicate both link and active(TX and RX) status simultaneously.
 
+Thanks,
+Jijie Shao
+
+>
+> Also, it looks like you are expanding the DT binding, so you need to
+> update the binding .yaml file.
+>
+> 	Andrew
