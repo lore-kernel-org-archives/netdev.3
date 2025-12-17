@@ -1,42 +1,78 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5AA34107D;
-	Wed, 17 Dec 2025 08:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFDB33B6F3
+	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 08:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765961272; cv=none; b=lFM90v/FARfCMsK21yLEsoo2Gemliu6bvnYBco2Ma3mo5bcUXJZ27ghkFdA+oA89XSf1KhiCQFQBY/6b2qbuNLW3Ovy0X9Q6j3+L37gnQy9gIP1bqse2UyIaK65aw9TIrWHKoKXI6fywP+DRmSMTZM1Q3Q1PwHNnXfgrtEm1v5Y=
+	t=1765961473; cv=none; b=I5CtwF3VpnYs0I7xAYj7inGEk99il1PX5Ja1RyIoAtxYv0Teub3abN35S7Q6LNz/HF+jFuGvODTeT9vT6Wh/qpOeYIG55shr6nwD3FvRl2ZI56UPbyFHDdNEoQ531efFW9QMeR0WQt4ERCb7XX7c4dLFNGTX+h+BWZ5n4K3mVZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765961272; c=relaxed/simple;
-	bh=x/E/deY9vTVLTGF3py+vQE2us8+WcHa4e2RC0cgnHTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XTmKjPK1UTHiVbf3AvHZizAWynnjreUgkpi0//l1MdtrKCsgsrQMJy/sG8gauO5iPNi7YDbOJFh+lNdnHN+dNptv0TOgXao0qkKymXfPBDy5Ro/pW6d7ZaN+3W/ZjtMg510dF/gC8IVTthblucD+vf/TWu/hWQHPFtbwYZmk0mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=qSke9S8Y; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1765961473; c=relaxed/simple;
+	bh=dpOQWuBh0QYcp41epU4bOBn1YkCEX2RBE5dAA6qahPU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ETg1yS2eC5uad+KKPXcu3QfTy4nUt5NKxt1wqqw3od7J8zIxvbiL2FmU/CJ7nLK0bAgMBuwvwsmofxSsb34A5B+h9VrTkXR7taR/vR6rIE2Xwx7DHrRu+5xiH7Z7M30AUBuBARKX7fDvky+MHUvjJAJem/Aay/tlhMY4qW/czss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=htG3QTef; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="qSke9S8Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
-	Content-Type; bh=UseiUIzWQ5jcCpGWT2FDdMdJpS00Sb35hFZExtBF5UM=;
-	b=qSke9S8YKLzrxKkkx5Ssz3Bwqxl7JEoHSYdWGsJnessY95j3taTVaq4nOwJdl1
-	yrhiQAkSEg/Ui+5r/G5oul0FnH/MABvTIHRBJrJHxTSwCB2RvsMUE8OXeoTraH2d
-	KHYcUJcfABqcVI6xbgjVxQ9rR0JPBHZd7qHINu4X7vPDs=
-Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wC3Ms0UbkJpr5KYAw--.48364S4;
-	Wed, 17 Dec 2025 16:47:17 +0800 (CST)
-From: Xiong Weimin <15927021679@163.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Implement initial driver for virtio-RDMA devices(kernel), virtio-rdma device model(qemu) and vhost-user-RDMA backend device(dpdk)
-Date: Wed, 17 Dec 2025 16:45:32 +0800
-Message-ID: <20251217084640.5060-2-15927021679@163.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="htG3QTef"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b75e366866so2342055b3a.2
+        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 00:51:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765961471; x=1766566271; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=InBMy9THL/+AKttWz10fgYUD/zq8kVUZDf3eTuw65J8=;
+        b=htG3QTef0iXqh5jPkxxW1NF4xyts36wIELh65mN2+VxJG8nTMO2+fA7pGnNQyndHYB
+         /Lt1vfDzr2FwKL+oDPGts88BRjJJav3kKOFkE+z3y52S7SG51rB3BsrSt46jyiNpCiQi
+         A4kL8dLjQ+qKzirSBp8/g//ARqiCh8nyX79uAVFlb6YozlB8g6jsXFICIsZ27Ny6AZm2
+         H49+o1rxK+IOj9Yw4ycs77fzpkRvJ11bj0c408IY0yWbfPQWdqDtAZyGtm0ntnjV0uRw
+         ylM8dkOjOa7Hu8TfVfyHLUgusypglH5N4it/ULbZq+gtydgBFvhNMsDAP7/70M5VHfDv
+         rp9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765961471; x=1766566271;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=InBMy9THL/+AKttWz10fgYUD/zq8kVUZDf3eTuw65J8=;
+        b=Z2G5HOFgbHct/mrfJx/hg3kTbvaNo5uVV9oYpED4iY9MxnAs5seOdJx1gA2MrqKPH8
+         wMbdrU3sKGaDTWhGJ488u/LOveKUtkVP5hiE0IH+WEcWOqwoBUoLojeJzYxPlPDodD4f
+         odfWg9oYOTOeCor/yl9b56UV/l6tgPeQs9byQF2E0zR7aziBDTckYzvEIs390SgKdlP2
+         xcUoWmA9rE/t1ji77QJ1meMdBfcKoD+ixzyw+726LCtYIYfQYVsA6WLmHQ4EJjQmjANo
+         1nFCVI4dWIEfICOyYJLqUwv7vQJ9po1rYPUBroV5JAHBe9xE4x5a55VY5vioQUSvC8mo
+         qvAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSuoA/CTXSTe1MqtQbUbxIE+82nqCXoxxvW2gA1PZGTkPIvHr+knM65ppJrk4Qy7sHLYXcAis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD+ZKHni3ozidraDUm/sw8n4O2lnqgn7+u+yDLRhRaKxlJ5hRG
+	O4cj52pCjCs1ds5b+xZtM/h860ybvlbVCMsCdWCrF/gYkXOLeIZRPWqK
+X-Gm-Gg: AY/fxX72pT8DhJnQi1B+Amx2hRmxgyB/QT4DcbNOL/hBEoaY7h83bWwf9gkMttatN1B
+	f5/GkWC3ZBm4K9OfpFWaGCeskYcKRTklgQjJWtwxmhBa8YZuXhpLhAldAdI2OQTVx9tW5Smijv/
+	RVov+U6qbotONoYQi2SGY6l94RSDYrFq7XA8Hx+/x6Fr8F5WDN7j1nL8xZZ5sTbh+KQFc2b2Lx5
+	bobZ613YV5XnSQ60ImC0zIOs6HTRxKFxNH/4JgW97yrbuOx/1e7dNT5gG9ChlIkSAgtA1BAs141
+	BQgOrrWI4OoZbeTn2tUlDS2F23hHXqguwqL/qPK06S23gz1ortbLG1Rp1sPVaES5x10U/owuRtC
+	vq/M8reDQTOZqGQcfPxnDExRN15mHLzVMHrARekYYQf7vAiH6fu/kTbAlyigTbly6Ak473J6ZmP
+	oM/aRs6KwMJ23RBp+6/S68z7DBUe/2tp2ECGOjj8iK/+KWW2H5KMlxp3s7DPkni8BgqRg=
+X-Google-Smtp-Source: AGHT+IEZIbsXjRYAzwthqUL9izCT0P/bBYc6ctvrcCaiRWG4w6M0LZKqWuthurxHYK2J2E0kB/Ip2Q==
+X-Received: by 2002:a05:6a21:6d96:b0:35f:5896:85a4 with SMTP id adf61e73a8af0-369ad5e9564mr16560809637.5.1765961471020;
+        Wed, 17 Dec 2025 00:51:11 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:d95a:1e5e:256b:2761])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2b8e0fb4sm17531670a12.25.2025.12.17.00.51.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 00:51:10 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	khalasa@piap.pl
+Cc: o.rempel@pengutronix.de,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Subject: [PATCH] net: usb: asix: validate PHY address before use
+Date: Wed, 17 Dec 2025 14:20:57 +0530
+Message-ID: <20251217085057.270704-1-kartikey406@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -44,114 +80,43 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3Ms0UbkJpr5KYAw--.48364S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXr4rKrWDGF1DAF4UGw4rKrg_yoW5tFy8pr
-	W2gF9rCrZ8Gr43G3yUW345uF42gFZ3A3y3Crn8G348K3Z5Xr9YvF1q9F15Way7GrZxAF18
-	XFy8Jr92ka4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jU-B_UUUUU=
-X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0hWLFGlCbhWIIQAA3h
 
-Hi all,
+The ASIX driver reads the PHY address from the USB device via
+asix_read_phy_addr(). A malicious or faulty device can return an
+invalid address (>= PHY_MAX_ADDR), which causes a warning in
+mdiobus_get_phy():
 
-This testing instructions aims to introduce an emulating a soft ROCE 
-device with normal NIC(no RDMA), we have finished a vhost-user RDMA
-device demo, which can work with RDMA features such as CM, QP type of 
-UC/UD and so on.
+  addr 207 out of range
+  WARNING: drivers/net/phy/mdio_bus.c:76
 
-There are testing instructions of the demo:
+Validate the PHY address before returning it from asix_read_phy_addr().
 
-1.Test Environment Configuration
-Hardware Environment
-Servers: 1 identically configured servers
+Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
+Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ drivers/net/usb/asix_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-CPU: HUAWEI Kunpeng 920 (96 cores)
-
-Memory: 3T DDR4
-
-NIC: TAP (paired virtio-net device for RDMA)
-
-Software Environment
-Server Host OS: 6.4.0-10.1.0.20.oe2309.aarch64
-
-Kernel: linux-6.16.8 (with kernel-vrdma module)
-
-QEMU: 9.0.2 (compiled with vhost-user-rdma virtual device support)
-
-DPDK: 24.07.0-rc2
-
-Dependencies:
-
-	rdma-core
-	
-	rdma_rxe
-
-	libibverbs-dev
-	
-2. Test Procedures
-a. Starting DPDK with vhost-user-rdma first: 
-1). Configure Hugepages
-   echo 2048 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-2). app start  
-  /DPDKDIR/build/examples/dpdk-vhost_user_rdma -l 1-4 -n 4 --vdev "net_tap0" -- --socket-file /tmp/vhost-rdma0
-
-b. Booting guest kernel with qemu, command line: 
-...
--netdev tap,id=hostnet1,ifname=tap1,script=no,downscript=no 
--device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:14:72:30,bus=pci.3,addr=0x0.0,multifunction=on 
--chardev socket,path=/tmp/vhost-rdma0,id=vurdma 
--device vhost-user-rdma-pci,bus=pci.3,addr=0x0.1,page-per-vq=on,disable-legacy=on,chardev=vurdma
-...
-
-c. Guest Kernel Module Loading and Validation
-# Load vhost_rdma kernel module
-sudo modprobe vrdma
-
-# Verify module loading
-lsmod | grep vrdma
-
-# Check kernel logs
-dmesg | grep vhost_rdma
-
-# Expected output:
-[    4.935473] vrdma_init_device: Initializing vRDMA device with max_cq=64, max_qp=64
-[    4.949888] [vrdma_init_device]: Successfully initialized, last qp_vq index=192
-[    4.949907] [vrdma_init_netdev]: Found paired net_device 'enp3s0f0' (on 0000:03:00.0)
-[    4.949924] Bound vRDMA device to net_device 'enp3s0f0'
-[    5.026032] vrdma virtio2: vrdma_alloc_pd: allocated PD 1
-[    5.028006] Successfully registered vRDMA device as 'vrdma0'
-[    5.028020] [vrdma_probe]: Successfully probed VirtIO RDMA device (index=2)
-[    5.028104] VirtIO RDMA driver initialized successfully
-
-d. Inside VM, one rdma device fs node will be generated in /dev/infiniband: 
-[root@localhost ~]# ll -h /dev/infiniband/
-total 0
-drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-ibdev
-drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-path
-crw-rw-rw-. 1 root root  10, 259 Dec 17 11:24 rdma_cm
-crw-rw-rw-. 1 root root 231, 192 Dec 17 11:24 uverbs0
-
-e. The following are to be done in the future version: 
-1). SRQ support
-2). DPDK support for physical RDMA NIC for handling the datapath between front and backend
-3). Reset of VirtQueue
-4). Increase size of VirtQueue for PCI transport
-5). Performance Testing
-
-f. Test Results
-1). Functional Test Results:
-Kernel module loading	PASS	Module loaded without errors
-DPDK startup	        PASS	vhost-user-rdma backend initialized
-QEMU VM launch	        PASS	VM booted using RDMA device
-Network connectivity	PASS	Host-VM communication established
-RDMA device detection	PASS	Virtual RDMA device recognized
-
-f.Test Conclusion
-1). Full functional compliance with specifications
-2). Stable operation under extended stress conditions
-
-Recommendations:
-1). Optimize memory copy paths for higher throughput
-2). Enhance error handling and recovery mechanisms
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 7fd763917ae2..6ab3486072cb 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -335,6 +335,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
+ 	offset = (internal ? 1 : 0);
+ 	ret = buf[offset];
+ 
++	if (ret >= PHY_MAX_ADDR) {
++		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
++		return -ENODEV;
++	}
++
+ 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
+ 		   internal ? "internal" : "external", ret);
+ 
+-- 
+2.43.0
 
