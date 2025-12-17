@@ -1,202 +1,197 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013023.outbound.protection.outlook.com [40.93.196.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0842F83C3
-	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 02:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766024995; cv=none; b=nJA+YH60aEal/+END1HnK6yPq0LA65sYkVLOcvb3qip8Y96K79EgKI5Oeb/tSiWjwPt2TC6nk+ISxA2F0hIPcO0IsaODuwpHtAht2h4A3GepxlWWyCj1w4x9cemd1Qp101o+fbF4hvN+wtZ2ygKktpsYwjCGn1qKLXKIOOrQriM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766024995; c=relaxed/simple;
-	bh=zlziAxvPwJj8HgeZzSpcXhPCekluk2rCReJ0Fw/8umI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UVjfrtdeIuEsl5MVGiNcyr9Ai3uYe3Em1rNUwo7b7ZLK0o0RIyZ4aUdnWxFfDVy48HrEgk51pa1G+Va7XJvkVq7E9XMvwQqKZMAdkMFQb5jW31KcJM22NmNwSIMbLN7Xi7o3/StFtnNJ6vogdZ8oCtoqhETNK4o++wlhuqko8ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=auPdLCaL; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B43C23D7FC
+	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 02:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766026387; cv=fail; b=kgPhnlrvCrPAEWSN6imavLYsblc3RNzZYxmj7qBkKEARKl1zjortjmlMgAW9qe98OhEe11F+BIm0NL9cndY9jNDkRWL8GhBRvyVX+//K/N+kvVg5gJYfewRi4I+Ec4NcrFk5dt9f5Q9DK2i9Crm4/QsJnAAmYh+KGckB4P1qC4c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766026387; c=relaxed/simple;
+	bh=fiIfwaJiRk18ahb14r6BbGgt+y+kKLBSFj7e8fTGh9k=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gqqrBAZri1KmS+u4hEqQkRAU1+y8ae7+xb60LX7VU+tmzjJaAX12Qm+U0y13GQXbrxvXOZnERV+2NW5ocl/fDDtC9WQLrO4pUlycEP9Nh/OLCzJ9PWhR8GPBmFNoL6qnR5dRlB2q7kNrXUcTJRlnBVHvweneozFYCfcPBk9Vzps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RuI0qkfK; arc=fail smtp.client-ip=40.93.196.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="auPdLCaL"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7d481452732so381991b3a.1
-        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 18:29:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766024993; x=1766629793; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Mbkt/LgClY9Ed+U/AqFg7ozVmIhVbSqVhAx0YrbLQGM=;
-        b=auPdLCaLlkQy1M/9nZdm6uFAKeS7L18O3gf6MxeCrUa3GCPDKcnXGec8Dgx0IUN+2h
-         JF7sGTiJqVE9U4QSixNOhow+OX+Q3vrxmJZgsgga1GQRplD7VxCtvFe/sB1uE47fPL83
-         +ra7aEqWsQ1RSVWi4zFov6YuI8wlJwXCtGp0C/Wvp0pEzDyt1e1Im6bM/QwRrBS9qaYB
-         zD540uwf/HPJqlWxgJ39x+cACzJVOvT0f4i4ap0EbJQmRjbD3njiBiphGi73th6rsq0w
-         Xh5+pRXwCNCpT1IPTU8HKQgEXOXlonyPE+dfoX5KTLI2FxNdnC9wfVTuhsBSGDJg7PiJ
-         mE+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766024993; x=1766629793;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mbkt/LgClY9Ed+U/AqFg7ozVmIhVbSqVhAx0YrbLQGM=;
-        b=xJ/t5RTbfDyXLsE9Olq+ArC4KF/vm/wvN9VLED2cDzWbS+Mx+cGBVC5SezJxEmcLOU
-         rXrss/1tvCRjMCg1L1c2eeJQpibXQn7Lh0y+rFp+0PEV1iEtsjSJfOdlTxLANPgSi35o
-         YvI8VFz6KrW4it0tcwgR3x1IGS3IMnEruXZjuiokGdQ4iC0lmQAq2+ubVI5zAZ87seuk
-         maVJXDzg5DUpemVJcO68qsqigZhVHQPWQoUIX24WNaqAqDyLUObcRSJlmUq/zO52wwDG
-         KuOcncU9Xe6biwPZ+YgoT1ynq4Sn/8l6nekaWS0Reh3nkAWTfRJuDzSc/U9O9J4fCGe9
-         mSWw==
-X-Gm-Message-State: AOJu0YzT4LgYHu1aCEgpIrsFG1EcGFIQz+kSFaeOnS5C+qC6SwJlkv3P
-	kqKwBrbI8YRFXRlYO+lYesd4fQiS6SnEGbgQTlf1ilG+5Pi65l+mGbCxAdSOF4wioqd7R1JYeNe
-	wVMX9FZd/DGLSoVuZXeOXjRDkX2yfN+BUOYnGUesUOaXNQ1X3DDpgPxlh61DVnBNuEuOGnGEx1M
-	78sI/JeFn+cn1JcnoiGg8qRZXM12QujsJ79cku28jDbdcXeSZ8KYZ7p0uFLEHi4l8=
-X-Google-Smtp-Source: AGHT+IFE6xajScfzbLpRFiQQS67W5ZN8gStF0mO1QPIpwdD4OiKSevZ12bwmQxwPQs3VZazL0vtBUS/b7RY63UwVGw==
-X-Received: from dlbrj5.prod.google.com ([2002:a05:7022:f405:b0:11f:2e2e:de3])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:2902:b0:11b:8f02:a876 with SMTP id a92af1059eb24-11f354cce50mr11251803c88.23.1766024992932;
- Wed, 17 Dec 2025 18:29:52 -0800 (PST)
-Date: Thu, 18 Dec 2025 02:29:36 +0000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RuI0qkfK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uSA0/BdwFE9Yz/tuytwekc4UZ0u67D4BjTpz/GJFDv4clX0ivZUsm7uX8UzRR8U0xK+i7SLJJrr7u+u9Qi3+UiSTTyvtlbvr4b7HoBWbf4EHjsvfK5EzlwiGP4xYsHOnf1guIJoZugEGVYL+d2Kvi7UVd3XIRNJACg+2lYZR6rEx8rZs/FlqJVpjzbO+Nkvcc8/JSI8m5IDeeXiUxvo2iHHw8nxLinhKeCg9FJHusm9LEDgtGxAQFMZc89AouDZMnPa+crdHaVSp46V5/73QkZUfUJoD3dpejfjcQmhq5DD/SGsrD1tL6tKi7L3hz77iV0cmK8HbhIueBTGU5Pkq2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hrNXaPQIrT/FkiyfnYwfdaNCnBCKYSKGUzDpp9Q6pk8=;
+ b=chhqPjG5Wcdko3Ywc4+qWBSpyDaWm2Vb9ZlEymW52md0KPVM6XNGffqqB9pJ4Hoa+MNqRSPN4Y0KqVDkN6sOXgm0vBCspt0cX6ZbLl6Z8m9ja2twuAz4KbZtuZDZl1hoQBhM8n99me7t//tYFasReZTa3xnzIVMCcqJGio4aHafoZMwosaZSmuYW/L9rD3mPIRN6yiF2opn0AMXYsI0dUySfWKZIyjpBzXkRj2oeDq53s58eeVADnnkuIi/Whq6SLydjzR0crD8GA7aiktx4ZqaHXcNBNsOHfMhuP8FWQKhfXTLYzWR9/xZKup4RZESmwGqlQIdnKRXk8JvBEeSBLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hrNXaPQIrT/FkiyfnYwfdaNCnBCKYSKGUzDpp9Q6pk8=;
+ b=RuI0qkfKjm5mkpJqQjMRx58Xsuz9SIkNlQSKBLgAifMzeI/vp80RZYdiX83EPk73SCOOZGxB+E6Ze6cwxEUMy2E9FkooQiG2j43ISERmLc5ULzBv7Jn18usZYl3AabWtGita5VG3iSBIvbV7brdS5a7E7K7JKZg3K/ENht5XPK8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH0PR12MB7982.namprd12.prod.outlook.com (2603:10b6:510:28d::5)
+ by MW5PR12MB5683.namprd12.prod.outlook.com (2603:10b6:303:1a0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
+ 2025 21:16:03 +0000
+Received: from PH0PR12MB7982.namprd12.prod.outlook.com
+ ([fe80::bfd5:ffcf:f153:636a]) by PH0PR12MB7982.namprd12.prod.outlook.com
+ ([fe80::bfd5:ffcf:f153:636a%5]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
+ 21:16:03 +0000
+Message-ID: <e39f4e4c-3b60-496f-9142-85b1570de3eb@amd.com>
+Date: Wed, 17 Dec 2025 13:16:01 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/6] i40e: validate ring_len parameter against
+ hardware-specific values
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org
+Cc: Gregory Herrero <gregory.herrero@oracle.com>,
+ Rafal Romanowski <rafal.romanowski@intel.com>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+References: <20251217194947.2992495-1-anthony.l.nguyen@intel.com>
+ <20251217194947.2992495-3-anthony.l.nguyen@intel.com>
+Content-Language: en-US
+From: "Creeley, Brett" <bcreeley@amd.com>
+In-Reply-To: <20251217194947.2992495-3-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR05CA0052.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::29) To PH0PR12MB7982.namprd12.prod.outlook.com
+ (2603:10b6:510:28d::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.313.g674ac2bdf7-goog
-Message-ID: <20251218022948.3288897-1-almasrymina@google.com>
-Subject: [PATCH net-next v2] idpf: export RX hardware timestamping information
- to XDP
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: YiFei Zhu <zhuyifei@google.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
-	Richard Cochran <richardcochran@gmail.com>, intel-wired-lan@lists.osuosl.org, 
-	Mina Almasry <almasrymina@google.com>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7982:EE_|MW5PR12MB5683:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d5442d6-1931-4e66-ff4a-08de3db17c0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QnlzQS9lOUMrRnlwQllzVEVNYktEUkZTUWxFczJlNzdIWFY2K0Q0Y0Q3cW9v?=
+ =?utf-8?B?cnhKa3VBWFVkUUhCc1pqK0J4SG9aWFJYdk9ldjYwT1JJRTVFc0F3anFYQUsv?=
+ =?utf-8?B?KzYxa3lkeUdFdGY0MWdzOUlKMlFWZHU2NGtiN0RsVzZIaDN1OVBEbTYySTJS?=
+ =?utf-8?B?L0NlNStFQVk0U3Bsc1pnemdmUHkvSkFHMnpDL1o1b3dTTVMvRmdjcGpxTVNF?=
+ =?utf-8?B?WFZ2OU5RRnVMRytwTS9LMmkrbVJFTG95RWVaaGJkL2YrNXppYW9rTkkzOGhk?=
+ =?utf-8?B?UmZselZEMXl5RlZZWjZsY01zclVKMjl3S1J0ZzcxSGw5MTFPWDBOZVpkSW1M?=
+ =?utf-8?B?Y0haaWpJZnBTUTByNjhQaHJzTzQrclo4eStDRlhJRVE1amIvZU9xOXJJdVUy?=
+ =?utf-8?B?NVUrUlFQaEswWFMrZWNWTGlCT09WaEFCUWxyZG5HbVptL2UzMGNTUklYZlg5?=
+ =?utf-8?B?clFiWGZrNStRUjczYmxVb2kvdWhsY1g1TmR4ZnZ0Zm5QeHU0REFGU0lLTlpG?=
+ =?utf-8?B?c3NmZUY3WXJLT3drc2dZWGYvT05KWEhVd21CNVo0OFY4dWRUYk5WN2pDN3cv?=
+ =?utf-8?B?bzlBend5M0tjTk1SK2lkSWE2b2dQT1NhRnpmRUl1MnF6UmFCRkRrRWlRSmZB?=
+ =?utf-8?B?T2dESkF6a25Wam5ybzFJUGQ5Yk95OGRCR1RRb3BTeEZJbVZwc3pYdGhPVUZC?=
+ =?utf-8?B?MnVzS1RBV0x4QllaSEg0aVN6dkdkUWl6R1U3eFM5K3E5QmpWRzFsSFhhS3Nj?=
+ =?utf-8?B?RHdLdGxqbWtwcjBBbE91YlNHZnJVd21MZHhJVDRmeUxrZmIvRmU3L1JPTElY?=
+ =?utf-8?B?ZlZZTEFaRUVjNnVtYVM0OG9IbVZaMmxzSmpEUlJteGxSUkNzcndSRThpeC9q?=
+ =?utf-8?B?bE9KSmFRZDU3KzBOSlJUWjJLYUJmQ2F4OUZma3EremlnNHI4UElGdVdvaThy?=
+ =?utf-8?B?bmY3NENtZ2EwSHJtUXJwNkRFcnpoRDdYZHN0VUM4cHluYnRWOXloMlllZXdw?=
+ =?utf-8?B?bmdXbmRtb3BIRHJtT3VOZ1JYdzljdjJiNWt5Sk84cGIvN0hxY2IrMEU2TzFC?=
+ =?utf-8?B?UTBmUHNQR3VlcHRBUXpKbGV4bUFPUTJsRXNrM2Y2ZHNPRmJNZytjdW9tTFU1?=
+ =?utf-8?B?U04xZmVZZHpFdS9KWDFCS0JIMllKZ2FwYTVRbUlwV1VKakdiTEdjVHhCbEVH?=
+ =?utf-8?B?MWJIRlpEcWRtM3BXYXRTT0tLc2lDMGlaN2ZEMFVqYkZYcHN0KzE4KytPYjJO?=
+ =?utf-8?B?eTdJNm1MWUpGTjFQakwrZ3BOYmJ4WHI3SWtPaU56alZNYnFHY0lDbytHTkV1?=
+ =?utf-8?B?QzBITGxBZGl3MjM2T2plckRObG9EcWRoLzdzOEFEa05lR2o2bmluOXZCcEdZ?=
+ =?utf-8?B?S0trc25kMUpNbzdvdlloS05CbTZWaTJtV2FYV0o5U2JhajhOV0QzSXpEZllG?=
+ =?utf-8?B?UE5HSklwYkZhUzZnc1ZFdFFtZVNRcHl0VGtrdVJGNkdObU1vcWJBTkEvSDVT?=
+ =?utf-8?B?aEZpWUJhNkt0SSs0ZGF3NUxNbFh5dlVLTEJVK21kZUNrcGlxL0NMQ3QzWkNn?=
+ =?utf-8?B?TEtWN1Bpbm5vdlZ2WmJjMGRYRGk2T29XdWlTeE4xdVU3cnUwK2lmV2E4MzZX?=
+ =?utf-8?B?L0Ftd1RJaWpid25tOFo5M29LUTNjTEViV2dYMEhYM3FXQW9naW5BKzJpRmVy?=
+ =?utf-8?B?REg3dW9JUFFqOGN1WTFWTnhHM0VteVB6dmJLTkp1UWlwU3NaTm82TEZRVVdn?=
+ =?utf-8?B?cDBKSmh6MzFNVzN1aTBXdnN4elJta1RROFpoYkVQWmgxaEx0QzJmRWlYTEJu?=
+ =?utf-8?B?dUxsckhTOVFsdTBpR3Fjd1ZTWE85d0haV3daZFNWWkFPNnJ0eHBNY3FFQ0NL?=
+ =?utf-8?B?REQ4Zk1nZ2lybWpXQWxDL1ZCWFhVd3NOS3JENEV6M2tzNnJmSVh2OW5FclpG?=
+ =?utf-8?Q?R2pWKFThHCM0XpyRRBDSoXtqpOAzI5Tj?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7982.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QVorSUEwQ3NnVmRZa0QxcDkycWhkMStoRnZ1T3NEN05jZlBvbjI5dXZiWVRi?=
+ =?utf-8?B?UFNreC91QkZ1Z3N5bG1UN3g1RG9aV2g2WG5XTFZ6UVBxbFJUWU1tSGNsYkg0?=
+ =?utf-8?B?WFVmVUQ3U1U3VTFxZzRhZUVaVng3N2xTSFBldXNWQUZGckc0VDc1Z0hiNXR3?=
+ =?utf-8?B?UjhrWUFuUWlXak5PZDRwYjU5RjhaRlErOWk2Z2F1QlcrT0txS25jSVdQN3pw?=
+ =?utf-8?B?R3poUlJGSytaQks2MjJKV2FjdzdoM2NVQzRlUDEvZ3VDUEZrb0F5OGtvQUQ0?=
+ =?utf-8?B?clpyOCtsa3ZLeWpYZUxNeXpMalpYUFJlWFN3QVArZTlZS0dqczB3Y3N0T2JS?=
+ =?utf-8?B?TW9vSzd4WmdwTDB6T2YxV21vZGlGQXdmSnNIRk1HVlVYZUkwMDRmdnNtalJX?=
+ =?utf-8?B?ai9UOFc2N1huNC9TR29CUTJJOHJCWUNBSVRZZ2tOb0l4dEpxWGtNa1NjM3ZI?=
+ =?utf-8?B?c01PMUg0bW5NN1hTSk9CZEgycVdHRG1mMVUrTGFjQUxPNTVnS0NCVC9heUEr?=
+ =?utf-8?B?QytpTFNpTnoxV1Zod1VRdGtidnpBVmo4Z25NTmxzMUR6Rko1cmpZSVlEb1dD?=
+ =?utf-8?B?QmNsODVreW1ZVHBOYnlDQTUwa0hkTWY0NG1QaVZOL3d3N2djM1JXQVcxYnQ2?=
+ =?utf-8?B?NEIrUXlhOE14Z2twbS9OQlNOakk3WStwZU9TWC9PUFVTdTk5Q3FFbnEzRFlD?=
+ =?utf-8?B?Y1NVa0UxS0l1Q1RrTnp4OFJoZlNqOVNJa2JxNnhzUTdJM0dVQzBTb3FSNWd1?=
+ =?utf-8?B?V0pKRm00WTdhckFlb2hKZ0p4T0I3UVRJdURaWUxwbGZWSm1GRmxuZXE2L0Rt?=
+ =?utf-8?B?M200TzNtNzVRdVRQQndUSzl6Y3hBUFNwMzZ1THdhQmNjRTd5V1hxblF4bDlZ?=
+ =?utf-8?B?L3hpVUxZdE44NDZqV2pHSEZ0RmY5bUUrN1VIdU9qTGQrMEhzYXNCRUJsMS9Q?=
+ =?utf-8?B?RzVQZGNrTGVIczVGQVhxRlNoNW1CTlNsa3NzSmNTWFRmeXJNdWhLWGxKUjJE?=
+ =?utf-8?B?RlJFcURHQzAxZnBBSXZJMW1tMmVhY2tXNkRnMDlxTXJPSDhjaE0xMjdOUHpR?=
+ =?utf-8?B?eUxYOXlqRGwrOW44SVNqbmtBblIwMnoxaEFGakY1K0c1MEVrbFVnR2QyZllG?=
+ =?utf-8?B?Yjk5STM0dnYrc2RMWkoyVVgycGxleXh6aVhnLzJFYW1EUzgzdXNIdnRiZzIx?=
+ =?utf-8?B?TVZNMjVINi9hSjFrRXlsMytKU1BxLzdDeTBIdzRoRkxsL0FNWGZNZDlJNVV0?=
+ =?utf-8?B?Z2JuaVNjeVVJWVJpQlBOMkpFRDhjMm1NWndjUWRyQ3Joc2JZSkpCNDl2NnI4?=
+ =?utf-8?B?bDFLd1E0YzFYYk5GSFVWV3ZLRGdMeDBLbzRKZThwSXM4RFlIc0xwSVFvWlR6?=
+ =?utf-8?B?d1ppKy9nS1B3SUlNMU96MVprbEVhVjBPUkk0YkkweW5qTGJOaDB5cFVMU3dX?=
+ =?utf-8?B?Nmw4cWY4N003WThuN2c3dHRqQWVZZWhyK2dORnBJZzVXWXlqczJUSU9IS3Ft?=
+ =?utf-8?B?WXloR3Q2UE5uT2M3a1Q3Ymc5UnBKYnVwN3BoRzJBaDFQV255ekcrWkxkSmdz?=
+ =?utf-8?B?NGlkcjV0Z20wRUtHRUJEK2tHNkx6YXdxVVIrRjNRSkZkUUpnWUIyeVZjUzRv?=
+ =?utf-8?B?L01YMGFya0k5eHhZTFJGVUMvdk9VMVV3MjBRRnpVTFdkZDQrMzEyZVJ6ZWE3?=
+ =?utf-8?B?aExEd3VEMERTWVpJYzBxcllQWjBUUnQ2aGR1NllaZC9uM2tMczdJRm1PQ3dH?=
+ =?utf-8?B?aE1oUkp5a1JUU2tNTHNPeUd5dEczKzlIdjVpaHcwc213RytoK09WV2VHTHBG?=
+ =?utf-8?B?MVN1TlM2dUVDZlFsZXJGcm55VVVLaFRjbnBhRTBTSlJLOXUwVUtyaGFvK01G?=
+ =?utf-8?B?em9GTFVoQ0x0ZTdrVmE3dXB1RkRxaXd2VUZQejNYWGY1d0JaMDdFNmV0ZDZ2?=
+ =?utf-8?B?NmlONEFQRnV2M0poUHNzZVU2bHZML2diR3R5TjBaN3hzYUZRMEZ4QlZLZVV2?=
+ =?utf-8?B?ZHkrUERlTmxNQU9jSXRXa2tGdS85TGw1NUJIa2V3RkpCTHFlWWxNemZkbXRN?=
+ =?utf-8?B?OVM5M0pNY0xiMTdEcTVITFE5VlJXMnNNUzJlTjhVR2pGcHZBTDh6VTFvb1ZC?=
+ =?utf-8?Q?XwshZ9t4AVQfZV0Ac4/wIQjtG?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d5442d6-1931-4e66-ff4a-08de3db17c0d
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7982.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 21:16:03.4267
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fsUXcaMr6SQtmK4hodKL/OaltS4kLYF0jltp9Q9/FiTrG2LPav9qzjSqVIy+tkKilq3C8TgXvk/A/NVtCtl8Ag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5683
 
-From: YiFei Zhu <zhuyifei@google.com>
 
-The logic is similar to idpf_rx_hwtstamp, but the data is exported
-as a BPF kfunc instead of appended to an skb.
 
-A idpf_queue_has(PTP, rxq) condition is added to check the queue
-supports PTP similar to idpf_rx_process_skb_fields.
+On 12/17/2025 11:49 AM, Tony Nguyen wrote:
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+>
+>
+> From: Gregory Herrero <gregory.herrero@oracle.com>
+>
+> The maximum number of descriptors supported by the hardware is
+> hardware-dependent and can be retrieved using
+> i40e_get_max_num_descriptors(). Move this function to a shared header
+> and use it when checking for valid ring_len parameter rather than using
+> hardcoded value.
+>
+> By fixing an over-acceptance issue, behavior change could be seen where
+> ring_len could now be rejected while configuring rx and tx queues if its
+> size is larger than the hardware-dependent maximum number of
+> descriptors.
+>
+> Fixes: 55d225670def ("i40e: add validation for ring_len param")
+> Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
+> Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> ---
+>   drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
+>   drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
+>   drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
+>   3 files changed, 13 insertions(+), 14 deletions(-)
 
-Cc: intel-wired-lan@lists.osuosl.org
+LGTM.
 
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
----
-
-v2: https://lore.kernel.org/netdev/20251122140839.3922015-1-almasrymina@google.com/
-- Fixed alphabetical ordering
-- Use the xdp desc type instead of virtchnl one (required some added
-  helpers)
-
----
- drivers/net/ethernet/intel/idpf/xdp.c | 29 +++++++++++++++++++++++++++
- drivers/net/ethernet/intel/idpf/xdp.h | 17 ++++++++++++++++
- 2 files changed, 46 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index 958d16f87424..7744d6898f74 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -2,6 +2,7 @@
- /* Copyright (C) 2025 Intel Corporation */
- 
- #include "idpf.h"
-+#include "idpf_ptp.h"
- #include "idpf_virtchnl.h"
- #include "xdp.h"
- #include "xsk.h"
-@@ -391,8 +392,36 @@ static int idpf_xdpmo_rx_hash(const struct xdp_md *ctx, u32 *hash,
- 				    pt);
- }
- 
-+static int idpf_xdpmo_rx_timestamp(const struct xdp_md *ctx, u64 *timestamp)
-+{
-+	const struct libeth_xdp_buff *xdp = (typeof(xdp))ctx;
-+	struct idpf_xdp_rx_desc desc __uninitialized;
-+	const struct idpf_rx_queue *rxq;
-+	u64 cached_time, ts_ns;
-+	u32 ts_high;
-+
-+	idpf_xdp_get_qw1(&desc, xdp->desc);
-+	rxq = libeth_xdp_buff_to_rq(xdp, typeof(*rxq), xdp_rxq);
-+
-+	if (!idpf_queue_has(PTP, rxq))
-+		return -ENODATA;
-+	if (!(idpf_xdp_rx_ts_low(&desc) & VIRTCHNL2_RX_FLEX_TSTAMP_VALID))
-+		return -ENODATA;
-+
-+	cached_time = READ_ONCE(rxq->cached_phc_time);
-+
-+	idpf_xdp_get_qw3(&desc, xdp->desc);
-+
-+	ts_high = idpf_xdp_rx_ts_high(&desc);
-+	ts_ns = idpf_ptp_tstamp_extend_32b_to_64b(cached_time, ts_high);
-+
-+	*timestamp = ts_ns;
-+	return 0;
-+}
-+
- static const struct xdp_metadata_ops idpf_xdpmo = {
- 	.xmo_rx_hash		= idpf_xdpmo_rx_hash,
-+	.xmo_rx_timestamp	= idpf_xdpmo_rx_timestamp,
- };
- 
- void idpf_xdp_set_features(const struct idpf_vport *vport)
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.h b/drivers/net/ethernet/intel/idpf/xdp.h
-index 479f5ef3c604..86be6cae9689 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.h
-+++ b/drivers/net/ethernet/intel/idpf/xdp.h
-@@ -112,11 +112,13 @@ struct idpf_xdp_rx_desc {
- 	aligned_u64		qw1;
- #define IDPF_XDP_RX_BUF		GENMASK_ULL(47, 32)
- #define IDPF_XDP_RX_EOP		BIT_ULL(1)
-+#define IDPF_XDP_RX_TS_LOW	GENMASK_ULL(31, 24)
- 
- 	aligned_u64		qw2;
- #define IDPF_XDP_RX_HASH	GENMASK_ULL(31, 0)
- 
- 	aligned_u64		qw3;
-+#define IDPF_XDP_RX_TS_HIGH	GENMASK_ULL(63, 32)
- } __aligned(4 * sizeof(u64));
- static_assert(sizeof(struct idpf_xdp_rx_desc) ==
- 	      sizeof(struct virtchnl2_rx_flex_desc_adv_nic_3));
-@@ -128,6 +130,8 @@ static_assert(sizeof(struct idpf_xdp_rx_desc) ==
- #define idpf_xdp_rx_buf(desc)	FIELD_GET(IDPF_XDP_RX_BUF, (desc)->qw1)
- #define idpf_xdp_rx_eop(desc)	!!((desc)->qw1 & IDPF_XDP_RX_EOP)
- #define idpf_xdp_rx_hash(desc)	FIELD_GET(IDPF_XDP_RX_HASH, (desc)->qw2)
-+#define idpf_xdp_rx_ts_low(desc)	FIELD_GET(IDPF_XDP_RX_TS_LOW, (desc)->qw1)
-+#define idpf_xdp_rx_ts_high(desc)	FIELD_GET(IDPF_XDP_RX_TS_HIGH, (desc)->qw3)
- 
- static inline void
- idpf_xdp_get_qw0(struct idpf_xdp_rx_desc *desc,
-@@ -166,6 +170,19 @@ idpf_xdp_get_qw2(struct idpf_xdp_rx_desc *desc,
- #endif
- }
- 
-+static inline void
-+idpf_xdp_get_qw3(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw3 = ((const typeof(desc))rxd)->qw3;
-+#else
-+	desc->qw3 = ((u64)le32_to_cpu(rxd->ts_high) << 32) |
-+		    ((u64)le16_to_cpu(rxd->fmd6) << 16) |
-+		    le16_to_cpu(rxd->l2tag1);
-+#endif
-+}
-+
- void idpf_xdp_set_features(const struct idpf_vport *vport);
- 
- int idpf_xdp(struct net_device *dev, struct netdev_bpf *xdp);
-
-base-commit: 8f7aa3d3c7323f4ca2768a9e74ebbe359c4f8f88
--- 
-2.52.0.313.g674ac2bdf7-goog
-
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+<snip>
