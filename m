@@ -1,91 +1,100 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011052.outbound.protection.outlook.com [40.107.74.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F73215ADB4;
-	Wed, 17 Dec 2025 15:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB3C22FDEC;
+	Wed, 17 Dec 2025 15:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765983745; cv=fail; b=aZ7H6PGsKmvyh4mj0nNulGlRDA3gN6VjseFTgLB07HKK0XY3dDvYqWINEzIY9lpHhKm0TNOmjOvlhMg4j0d0XXDWXRAu7StKvijssWygAn4y1uIxouWtzpfLmTP2b4l+mkRAlKGEQjXq9gVEnJyYWY1qIWTn8lzvbJOjO9QNo9I=
+	t=1765984580; cv=fail; b=VJ4bkBHcmF2Y4obgETEyJaXwn7gF7cu1ed7pjhoMrgtGl3vVZe4hdbtOZwsUqrTTjpem2EY6vRkVXlvTr7sqRhcQQwQ7EYo+KzQbFXhvcfjj2x53aO1JtLla+9/oC3R2vcEZDhAeKZwCaRgUepZD7n9W/xKATjTN0QOLr+kbp6Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765983745; c=relaxed/simple;
-	bh=FhnjEwTPcdJji2oqg2gJhij9YkfRtdzI+TW2Wx/PZgE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=f7jeMNJhbvZJRlbIdiaiyjh1D9dCnnzW4eNiJVSCg+SDGeIx3QfNhRB/yoatmsnisSqU++2Ap6u9V30LO19DcIF4MHBmgxvlnMB7wrhd8BCAigf7drchj2EvWDty+AySN0h3OkyQjQKM+hlEuUOVwNbmPGEu75pIUrf3R/NM5ro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ezH/7BJw; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=qsjaAH7B; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1765984580; c=relaxed/simple;
+	bh=giXGEvXD2Ai+O5YhLmkxdNq8aD5ZZAyzGWCbggeYxOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KbIqkyabP4URjQVQqIDzT9woTwG/sW63EFi3HSvUmo2S0w4ZLQZwvBaxMmNbHQXdIWFaCJpV0hIMuDhvfvKpj8eLEM5VavcCHVkLSJZGS+IgKhsPA6IQtH3FB0KkrXwyVY+jVFT8h4BJ4nfvboMUVkKIOOLoXREGqOVV3Dwrlz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=cEHu0fo5; arc=fail smtp.client-ip=40.107.74.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ezH/7BJw";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="qsjaAH7B"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BH6Nd3h2183654;
-	Wed, 17 Dec 2025 15:02:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=JNQbhP0qZ0RZeQUoEO6hdp+btpLg1C1wc97WGvI04Uc=; b=
-	ezH/7BJwQqohOq5kByjInuGv99MnB3kiIxAoYNzfZhtT4sC6OxPVESpNhZl/l/eD
-	pHxjq+i+YF/s+0tzeewfawk55aOU9qPf6dJ3esZGxsRJzKBy+6bFbviRrW4YbOyC
-	ltGJ2InC7W/Z1sDH0LCkTNwMY7Oj9qWsZNentLdX14fpC8yT4m8/t2Hj11jXsp4w
-	lnpKS/itx0iVrz3xWKERd09I5IAlunZ7x0wt9wE2qrXaIuUbOfVyNBkBfkM3qQR/
-	i4/ZeoKqZecsdIEc7srVIOE4oTxfLQ/sqJpeDtMLOqtl5S00orwswUOlJA/IMb98
-	VH9YJKVeGp+zuAoyR7ehuw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4b1015x0jk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 15:02:10 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHDUY3H016413;
-	Wed, 17 Dec 2025 15:02:09 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012029.outbound.protection.outlook.com [40.93.195.29])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4b0xkn5ptn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 15:02:09 +0000
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="cEHu0fo5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=odv7YfNB2mE23WGpCByZEakRHfJgh2/W2NlGRdY/WdvExEsNZ1uJWW/8qpLvJsUDjT17Ayra96kGZ59jqZMrabsDUoryYVYOr4DRuYP8LdBKja20GpvJDc/xrf8CX4LsH402/p8SudyxaOap9Vp5WiqlGUPWPfb4LmA6BJ6jLPaKnvurNjwPdJ3buelnUJWPhopjtWLz2PaHoDTiezGCu6j/EQ8htIi9Ynj+5JNRoEl/N6GB5ZtDKDm2/AuehVnPv8c57kR1DMZPsSNcLGzmMg+gMfpcvCLrMT6j0ETNKGeuxsMEP0/31vKn8BA5o0QKhz+zJm7YG2ZXYGFk5kmZVQ==
+ b=VLYOJbcX5S7prkWdidI6qhIEDvBYlBNaxQqBVk0rsO6jbmdXH2yLeH4uEsqaeBv+nw2Kbhza80K6D7BJ2fxBG9QCatKhQAoRTXhVs4V8G6ql1s0tlV0UNf82Abvrua8KheD8rUTmOvpOCHLg8aVkncXxxZlC5l333gHmKtArrLKvo+093sRdzyPOaoBF82fMWj+kFIUP4X35avFWmARyB+mVjZBTU/7+rycM9bQaaX07hxGb3eqoP1ieHpek9jNQ68Tfn8rCZhzQO1cpKigsqKABnboZgDVSbDQyk8FYX7kB20Hz7VrL+zR1IEoM7Ev+dvhBTvngWJfnNQUu/UligQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JNQbhP0qZ0RZeQUoEO6hdp+btpLg1C1wc97WGvI04Uc=;
- b=SBC3z/I/l/gMCPKlOMQt27zEIaLeZ3ptXDdY9whvwECQ6zWaBmpIqwNG7HgLJneSNmg/FIZ9f+p2Gk5ciuzcVnQuK24ef+8TjJoXFp4OGiXcxkr7cVAVpJKEENWAFGC4WbmKdMNLFlT3XZijePnvuzSDf0E6/3tBbYFJlvHNUqd3ajkqVorOQwagKH/7pEPkCTYd6DQdl4dcG68unkp4ZeALsBojkcGhZjQgtuk/JYbt6lYK+71hfjLwVKoSweEmIC9+zMl54gA1+46lM3OGDHop76zKoh69OQ7/xDMWYAbZuhRqzITFDRrCpEOXZ8riZdxr3jT94yw9YPc/4wSuVQ==
+ bh=VD6NCTTJahO4Rf1Dji0OqiYFqVU8dPDbvWQgpvSQdFQ=;
+ b=wmv2j7/BIFtQpB2Lmdld/wf5zll3nWfBAmEJKVvovSWOL8eIkvzeDRrLiAddVWo1a6nNJmT2sV57atJ5i45w9usFe6c1b1giEOB6I/rqYmSpa0wLJ08koLpBH68A0IEPKFX2jsKxPu/WeLab7m1NBjt0DMxUTwEJGrKLR4/U5i3vv4atGC7/w+7JzRIIDgw6FK33U2ygwpWyibNym9qgdqmp/OEXRlfvg0oHc97RLrT9bUThdnbSYYrXfIcw7dujjmkYjuTs+stfMtLYZdJ0w958qbVji/w7/wHbIZcpbSBqiYkAmYv+dYCjfLnHdr5jE+W7y8kPfsRNMhv04ruJRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JNQbhP0qZ0RZeQUoEO6hdp+btpLg1C1wc97WGvI04Uc=;
- b=qsjaAH7BF+hRXEMoEBrpfW7BQ+fB1eT/ZQ/rccAe9mSZo1OWpLJ33OKrD+9/7FCQNBk5o4Daa1+0PT1RF/7XzhYSIZBqK5GalD57VkbPPiUjikYkkyHDO5OIfXSEzQI71EvYOqKrZYMNuDbkkDlRSMNiNzzL8oL+Ljz5i2fF+gk=
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com (2603:10b6:5:3a6::12)
- by CY8PR10MB6467.namprd10.prod.outlook.com (2603:10b6:930:61::19) with
+ bh=VD6NCTTJahO4Rf1Dji0OqiYFqVU8dPDbvWQgpvSQdFQ=;
+ b=cEHu0fo5SZttzWLNZ2M5LOJaHQGp0CAkGyy3rY5NGnRQ672VRa/i70JIZq8SSnZZ8wlhW2gcPypd5/XXa7kTNonRvtlz3B0SEC5CO824NTHql2AxTHJFF0dfxAiR6SWOH402/p+dvjH2BU4PThFyrtR37jeC83KNRFLimcquJ/w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:24c::11)
+ by OS9P286MB4633.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:2fc::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
- 2025 15:02:03 +0000
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c]) by DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c%6]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
- 15:02:03 +0000
-Message-ID: <6d508d6a-6d4f-4b78-96e0-65e5dfe4e8f0@oracle.com>
-Date: Wed, 17 Dec 2025 20:31:57 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] : Re: [REPORT] Null pointer deref in net/core/dev.c on
- PowerPC
-To: Eric Dumazet <edumazet@google.com>, Aditya Gupta <adityag@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <q3j7p3zkhipxleesykpfrfhznasqnn6mnfqlcphponzvsyavxf@a6ko6obdpso3>
- <CANn89i+8hX9SjbhR2GOe+RfEkeksKCtPbkz-6pQhCA=pjnr5zg@mail.gmail.com>
- <CANn89iKUQXmR6uaxVJDi=c3iTgtHbVaTQfRZ_w-YsPywS-fHaw@mail.gmail.com>
- <CANn89iJj_Vyt2g6QewwaNAXAZ+0iso=4yj0t3U11V_nuUk4ThQ@mail.gmail.com>
-Content-Language: en-US
-From: ALOK TIWARI <alok.a.tiwari@oracle.com>
-In-Reply-To: <CANn89iJj_Vyt2g6QewwaNAXAZ+0iso=4yj0t3U11V_nuUk4ThQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ 2025 15:16:16 +0000
+Received: from TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::fb7e:f4ed:a580:9d03]) by TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::fb7e:f4ed:a580:9d03%5]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
+ 15:16:15 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Frank.Li@nxp.com,
+	dave.jiang@intel.com,
+	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: mani@kernel.org,
+	kwilczynski@kernel.org,
+	kishon@kernel.org,
+	bhelgaas@google.com,
+	corbet@lwn.net,
+	geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	vkoul@kernel.org,
+	joro@8bytes.org,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	jdmason@kudzu.us,
+	allenbh@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Basavaraj.Natikar@amd.com,
+	Shyam-sundar.S-k@amd.com,
+	kurt.schwemmer@microsemi.com,
+	logang@deltatee.com,
+	jingoohan1@gmail.com,
+	lpieralisi@kernel.org,
+	utkarsh02t@gmail.com,
+	jbrunet@baylibre.com,
+	dlemoal@kernel.org,
+	arnd@arndb.de,
+	elfring@users.sourceforge.net,
+	den@valinux.co.jp
+Subject: [RFC PATCH v3 02/35] NTB: epf: Add mwN_offset support and config region versioning
+Date: Thu, 18 Dec 2025 00:15:36 +0900
+Message-ID: <20251217151609.3162665-3-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251217151609.3162665-1-den@valinux.co.jp>
+References: <20251217151609.3162665-1-den@valinux.co.jp>
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0275.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e6::17) To DS7PR10MB5328.namprd10.prod.outlook.com
- (2603:10b6:5:3a6::12)
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0242.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:456::9) To TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:24c::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,261 +102,444 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR10MB5328:EE_|CY8PR10MB6467:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59bfb5e9-07b1-4dbc-6a6c-08de3d7d3ccf
+X-MS-TrafficTypeDiagnostic: TYWP286MB2697:EE_|OS9P286MB4633:EE_
+X-MS-Office365-Filtering-Correlation-Id: d65ab6f4-0778-4b29-fb53-08de3d7f3887
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UFp2YW42c2N5ZlpDbVU2VDZYc2VhSllrbEdPK0JLQkZLcjkrMW50ZEJHKzB1?=
- =?utf-8?B?d3U3MEJtM3NkZmgydGh4L05zMStvZE5RWTdOWGtadSswSCtzcWFuNUt3bkdq?=
- =?utf-8?B?TjhXdnlsRlVaSUE0cmp4YVBsL3NpTm95MDVVMHkvYXNXUS9CMWoraGZ0MitK?=
- =?utf-8?B?YVBmMENNL0lJcHN6U05wdnFZQ1ZTVFY0bTBQVTFGeGJWa0wwTGVrTHYwT2tK?=
- =?utf-8?B?cFl5cVlTclJGSDZ5UFR6UWZsZnlxZlRVZTdIUUZHb3k1eW5MRWNwN3k2bE9P?=
- =?utf-8?B?ZGllUDBHdElrVVBxMDA2WXFqOEtQcWNFZlY4andoeVNUdExNaVo0bjAvbDdZ?=
- =?utf-8?B?VEwrY0FvVTJNTlNOclliVnVVQW1nV3RtaVBrRnZRTWF3RDZTRVl3RDM2NFk0?=
- =?utf-8?B?SzVvRTdIRGxIM1JVMWtCMkUwVXlLUDVkTE9YaE94NUtLaWJtVEtFTEtnOFhC?=
- =?utf-8?B?S1NCVE9KWWl6L3ZTcitLTURlUktIdnBBbitOOTRaTzBrNTBtZTFrT1RwZ2Ex?=
- =?utf-8?B?LzhGOS9zQnJRSi9kbStKVTM2aStjNzNxTUx6Zmw0V0wvdEdWYTZ6bS9TcC82?=
- =?utf-8?B?dUt5NVVvdUd6ZzErQy93aFRYeFkvMEZDR1JUTHM5b2h1Njd4YURPSGpKbjhF?=
- =?utf-8?B?azNBNEVSTWVWeUlqNzBVSkY3UWRQWlliK2VVUjNZWEw1Wm12SXpiTTk0SHdR?=
- =?utf-8?B?Ti92c2MzTGpXMWFIRWpHeVJpWkg4bmRuRUdwbStIMHh2cXZvQUhzSEk2a3JY?=
- =?utf-8?B?NkxzNjQ5aElVL3JmYnZBMzl0NldiMHJYbHgvMjV0cE4rd2lDS3oyL1RyR0Vs?=
- =?utf-8?B?SXRjYnNCQnpYTTZKMUovL2RqVlhlczA0bFpXVUdXeGROWlplR2dKVDh4bGtZ?=
- =?utf-8?B?QXpwRnpvbW4vUHpCbWNlSkpxMXhEN3lmdVNSNnV0ZjY1bXZoYUdhKzIvQzE4?=
- =?utf-8?B?c1creTRDZEE1bHEzamFCSHMrWkJuZk1Gb0Jjd2dVNGlIWmlaTC9BKytLQVln?=
- =?utf-8?B?L3I2VXBrQmRRWnBvTktmdDlRWmNGTlQwa2tNWm1EcTNrZjZHNGNRcEVOcENL?=
- =?utf-8?B?NmV4YXBvS0NhV1FNRElpRE9ZYndFb003UG80TzFVbEgzRVFxdVV1RlZPYTJ2?=
- =?utf-8?B?OTRQOGl5WWs5eGFLeWc2OE15ZHNGS1VuM3NkYnVkZWdIMW5UdW52NjBQREtP?=
- =?utf-8?B?M0JWeGZYYzJQU2FMdXFvdGJqNkNmMVFWNkJwZ05ob3FOTldtZXBFZTlPVWZ3?=
- =?utf-8?B?cVZaelFpVkxvem1Idk5jbUxVTkhNSDVZRlJBbmtkeDAycUt4ZHZlNXJZOVR1?=
- =?utf-8?B?dnZ6cmdFM0tEamM0Z1RKeTc4NzRQM1BvTFJSNERxYVFqVmRBWTN0MGR1UGV1?=
- =?utf-8?B?Yjc4ZGtvS2JWV0NMVUh6bzZNMzZvOHA5bUJ0YkdrT1JJR21MN3l1Z0JPd3dY?=
- =?utf-8?B?aEk2cUFIOC9Nd2Z6NzFLUTJmeERxd1J5VTJkRmZSajIzbmxkdjlkSmNMYWw1?=
- =?utf-8?B?VWVMbDZ0cXNOVGNOK0Jvc0llQ1FqQzk5bkt0dWlLTmpMM0MxSk9CVEZRZTQv?=
- =?utf-8?B?NTI0UnRNZlcxRTd3TmxrMFByTjMwTkRPc0V2TFhHd1V0QmNMd0F3bTJKZ3Fh?=
- =?utf-8?B?aGJtOWVGNm11cWdzUENObHNqS1RIK1B0azFweWk3cDBpUmZzQTd2VUFSWklD?=
- =?utf-8?B?b2JsSlU1U1VCWFNCdk9HZWk5NlEwV1ZMRjUvUzNHT3o1Q3FEclZKRXBNeDJL?=
- =?utf-8?B?eHBzM3gzYUdaODFOV0tXU1VENWx2MlNrT0doSVFEekI2OWRoeWZTaXV1Vk5T?=
- =?utf-8?B?NGJKR0lxOVI4b3M3T3dPTEE1ZUlZaEEramZBbXJYK1BDMlhZNkhIZk8wRjBu?=
- =?utf-8?B?UmExYnRJaEJXeVZGeDA4NktER3ZkY3lrMHNpbmxFYkVWL1E9PQ==?=
+	=?us-ascii?Q?dzw3konwxBm3fLxgM2I58wZW3SLkl1IQW9FAXFUZgRsoYiRmkSaqCBzk2ZEn?=
+ =?us-ascii?Q?3uQojSpCH5QbkiQMSmhkSLuX5AH3kemfZ3jlFu9CB5BUXAV4iIvxo8Q9/+Ul?=
+ =?us-ascii?Q?H7oQpBKVnxmLyDY11R7isS1jrydljFMGsE4Ss318r1p88ny5Pw+eHTGTAlRy?=
+ =?us-ascii?Q?21Gj8ii2h5MTCu040b/NywjMS0ZuY+Yby8mtN/RFlHZ1knzucoOhhJvM3BnV?=
+ =?us-ascii?Q?uO8bdz0fnHLo/Z2R7x3uyDPpAzGsrYVY2ycEWxeO2cEbHKB67x2FxHAGJau7?=
+ =?us-ascii?Q?dUzAg2BbFQRbN6V6okgHqwrdObQGbjswT+TX7ftbTImT1OiBnyCqTndS/23/?=
+ =?us-ascii?Q?FnhypMx9nx38vqkzYfwAymq+JwcKdDm/qhqrimBV3A0nDNw0yzJ+xd7Zf0ki?=
+ =?us-ascii?Q?ia56CIXT3xvyc2uNZHnvkqCwDsbT0/lH/7EZJRZd3pr0FYn4PdYbVjEEruJM?=
+ =?us-ascii?Q?IQ5qnN1r8yfkidFnzcuXQhskN6bxMAHcDggr9kdj5L4DHpL5o0htnAw9/7vE?=
+ =?us-ascii?Q?yNI11vG4wucvHS921hv4wwMV4s1ZxaXCgCy0Gav1UA2l62EwnxQZDK25IvtU?=
+ =?us-ascii?Q?62TjkOf2W7mseJJJXWNiiBl55X/PJps+NQq5olCgUz5ZZ1RSqZkBMINZupgQ?=
+ =?us-ascii?Q?yTGPqMC93J34i42v3M3FdYH8iTxdlv1vFdceswxuqRbIIYz3amudMm9gzh3+?=
+ =?us-ascii?Q?L7z7V69ilnOxR94eqSO+2r0zmn6Lza0XgtX0PxT6jblEz+0bWZnJuV7nrjWZ?=
+ =?us-ascii?Q?THLREo9X5WBs4Q+RjjaPLMOuV3AIzYb1HLUoiVOshL5iB/Xc3vRjzb/egbT9?=
+ =?us-ascii?Q?Rg6wd21g/ko+auyMFZeHmXmNdq+AJ5mlmt5are1c01kpxOnd1J7MmyOv6jMU?=
+ =?us-ascii?Q?n8CsXu8maspGXG5czriw8Xr3WMjEs3y6DDUnLbazRPXpvSui6iTWQVWcJjys?=
+ =?us-ascii?Q?PJ2kGbxp7FTDyTnrKIadDaodno75BG8Kjm51jApFuY1bv8CMNiNNm8jL0nmO?=
+ =?us-ascii?Q?4DAt/HwNFOYFdHQP6offerwslcfMlrsM1D9WRfecv1NrS2d6rtPO2daEYyak?=
+ =?us-ascii?Q?RPxX2Q3HnOy7J2jmabeBarGQtRtXKqUC8e3pvsg7HoP7Rb5nPwAGqljIDpDL?=
+ =?us-ascii?Q?EEzrBXaWSZ/3eKsDscLwD/pu1BjLUKetv9uTDPjE13cjTjqVPEWkwkPitxJH?=
+ =?us-ascii?Q?e1JLO51g8zGWJ8NkmNN8I+59du+ngyN1jaOiDkWnNUmhl6Agj7jGnOyCYF5r?=
+ =?us-ascii?Q?fW/vZbJCJttB4SRcfSazE+QBVNlZllrEiK4MzzpgIiuvcfB0VdNVStPYiYx8?=
+ =?us-ascii?Q?lHO5XipI6KTVyoGdncs1tN+K9z/Zzr8Wy2ilHm8xSvCm2P5er/p2VBiK0S9W?=
+ =?us-ascii?Q?oes62iXUBrK1BlYWTf+QYdwDOcXGUu4lJvbmuIiHL3zkoA0+eUB7v9uoERC7?=
+ =?us-ascii?Q?LlG8n8ChRcV5lIy+8BsSI5mWEuAcjrDg?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5328.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0pta3JrZEtscjZFbVcwU1VVcXF2a0hzelNmdjlFM055ekd5eVQ1N1I2QWJ3?=
- =?utf-8?B?NXp4RnNqbmo0bEw1NDVtSCtoQjdOWDN4Nm5qcG9GZk1lSjkxdnUrRTZ1K0FF?=
- =?utf-8?B?YnU3NndieGYzZEY0VTMwU3BzdFppYkluY2NuL3FrbDRMQ1JlcDRVdHJPRklI?=
- =?utf-8?B?UUd5WVVDR3FMNUNJSzNlR2tGRlBpT3VaeTZ1djBiVFFpSDlPbktNY1RQbTFT?=
- =?utf-8?B?dkJXdDg0RFNQRUtET0REeWQ2dm16N2FyNlVVUW55N01YUzAvbWt0YU1XdFNa?=
- =?utf-8?B?OGJDaGtiSEJUcnZWekVnSXl2Z3VjK1RSUVJlbnN4cWYremsvY3lWWlFYUnQ0?=
- =?utf-8?B?YkNzWWtLbjRIMnV6SHNsRkU2dlNQd0thSmozbEJab2xhVVFnTW9JenRURWVt?=
- =?utf-8?B?L201NXJ6ZFV2U3VydllRYVNzM3IwTmpJZ3FVTCtlNWRmUDBZb2dsMTZzcEta?=
- =?utf-8?B?SG5IcDZuOFZNOGl6RFJ0dVdRUjNycFhmV0duell2YmlUbVJMTUpjWFpMekZt?=
- =?utf-8?B?NzJFNmtRQkdvSlpjUFR4aUQyNDVyMTBpRVQwZFRqVDl1SEx5RDBLRi9oRmlu?=
- =?utf-8?B?Z1NMc1pUbThZbENjN3lrcFhqVVRlSTF3VmZZblJqVFdtdzhFYjF3YnI5Y3di?=
- =?utf-8?B?a083b3ZBUHRYLzAzKzRqSnJqU0RtbG9VVG9Yczc5T2dFT1RJa2J2SVMvbkRa?=
- =?utf-8?B?RTM3ellKMS9VK3ZobUFRNlZMbXFRczBCY3pOdWJhRTVNcEw2QWlZZGdDRWxl?=
- =?utf-8?B?SGorWHp4OWNLNGZ3S0V5T0ZNMXFKYUh4RTZmYzVBQlF6eFBmQ0JDVFhKenBr?=
- =?utf-8?B?ZVA0cEpkWWh1UHlRejlhcjBJeEJ1THJ4c05xWHFoL2h3dFM0RzZoc2NKTjc1?=
- =?utf-8?B?SDVtVTBoVS90WjhyeUwvZ3hvV0Q5WU1kb0NCd3hxNldhQzZVOTRyOG1tOEJx?=
- =?utf-8?B?aEoyWlJGR29GZDc2V0dnaUYvR1pvbFJVOEJyMW92WjF0YTNBQnhYUEpLbW9j?=
- =?utf-8?B?cy9CZFFQZEtHcXBhVHJVVHVaaE5ncy9BaU0wNExwbi9kcUEwZUxuWCtVTjJB?=
- =?utf-8?B?eXVYVnhPeVAwcnI0bTc0eklOWlB3ZXNQOE5ibjFNVUNzYzJQOW5DenQrZzRM?=
- =?utf-8?B?QjNPeTRmZFU0dTgreHM4T0VyRVRzVVFDbVNpb0w5NXpjR3gyNzlTVjNoL1Vh?=
- =?utf-8?B?MnB3a1lwMm5PRnpGM3R5eGJkMHc5UU93Z0hFUVd2Ykxkc25QcXhNN3pxWERM?=
- =?utf-8?B?aGhCREhieElTb05LWmdWZ3ZKMmNJa0hBR2ZOcHFwWWdyQ1NXUUNEQkxhRjV3?=
- =?utf-8?B?bzc0TU15VG5DbkxTRFlWT05Qdk0weHhka2Y5UjNDSlFsVDJJY2xxNm1ZVm84?=
- =?utf-8?B?anRkRkNwWHAvMWJIbDRDejl4ZkxObk1UdGQrb05NZGR4a0ZscEg2ZjA3WWxx?=
- =?utf-8?B?UUkrbDg3a3dXaFNzb01GRS9saTIvc3RNaGtiUk5PSk9tcHFKQTdVV3pEblpH?=
- =?utf-8?B?dFRBM3dvZHh3OTRqUDc0WHBIVkw2VGlVKzVpc0EvVVVJM0dnM21xKytRRlBD?=
- =?utf-8?B?dnp1UmNPTnpYYy9kR2RPbWNGeExwZE5hY3dLS0Z2TUVTdGM4YmE1c1lsZkI5?=
- =?utf-8?B?RzVkRzUycEJJb2RyQkVhN3RuSkpYTnBiNnNPWm1RZnZGaFlaaUJqR1pvMFlP?=
- =?utf-8?B?L29KZE1zYjRIK0lYdXpMK1dXamhVU09pNWtvR0lwOFM1TzFxY0U1MkdOVCtn?=
- =?utf-8?B?Yzc0WDFYYTA0U0tYREtpOTVxS0tvN3dNSXNEK3JzY2xDbzN3UzZvM1hLZ014?=
- =?utf-8?B?b2RtaWQvaURFVFJGVHFRWGhmcEJuUGl1UU92emJ2am5uNkdObHVwMHBLS1ZE?=
- =?utf-8?B?MkQ0UUkzV08zNVFGQTRvTGE4TS9XNmFNQzhKTTQwamVtb1dLMTEyNjVZaFVy?=
- =?utf-8?B?M0loU0Vwcmdhcno3UDE5RUpjWThWZTFrcTZRbTY1UW5HZG14VUVoTnR6QmNi?=
- =?utf-8?B?aXAySlJHdjRQVjFyWHRWemdVRkh3TmJEc2Y2cDdmUU9tMTdyUUE3OXJxNGRK?=
- =?utf-8?B?SExscmVFTy9lVkMwcmtHMmI4emQ1cWNuM2ZCR3F4NDNIcExjU0p5bGN1NGty?=
- =?utf-8?B?MUpuTkpEci9SOEVhM0c0S0NlR2tQMmp5NW9vTzVYWVduSnl0M2lxQVFTR2Iz?=
- =?utf-8?B?bmc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	6BZoJ7XybqvtNQBH8DSWknv6wcRqH6sXTaQ+nddzj+jCZj2i4/C2K13Yh0/QAit3pbgZ9lvrxLyTqqBrFdUdQQs4WzaHpBUuDnQX7sZ5uRX/Hq4h0OId/i2vtq+gXyHrMAXj+XCISsUzi6ZfSUPe6zjxBfxttSxo7B8a1QMUr4y3pItLGECq/Y9intZgvv6WSUnfwHoljZ5+Xs04OdTQ1oDsplEkfDN73kt5Q6MHbIFVafNzU8zZEukH25NcZMxx8ODS47uu6Ar9NFeOs0Do+RJpICV0aZkwcTQeDN2kI78Yd85ZE+BFyxpfTtA08KjVXhuQ5NOnUHnnXsJTKADTY6Ld+mGpwUq0efC9kHg+xNWgeQNeKDXBtDvrMWiZaRsG/8IBfkRT6YEC5aGkc/4IFi3zWCHwx391EO+f8ZxUUw24KjwcKbkE4XUbdfLiHTtzFVZJm5jOsjcGxj6zvOx1eDdOdvYbvg/XhpVuw2Zm4oclvozJNWpfDO67CCapd82V6hfvszHuoGkKsYT1pqqhAGHTAwauDUVTLvTegwyuGtchOSbe3ejRz0FK1infdcgipS3K6JXEcFjZH89PMo5kT5tybJa8Ytecy6i8tUBT9LQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59bfb5e9-07b1-4dbc-6a6c-08de3d7d3ccf
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5328.namprd10.prod.outlook.com
+	=?us-ascii?Q?Z1KHKf8tupxcm6iFB720xRivOmnD6mKBrDTiRX3e/j2TQK9toVuOVCjFlktP?=
+ =?us-ascii?Q?7l+QlFIA5qH/LyKZqUCv8C3PeGVbWG3c+qzXGgT/+xXvg62+SnxeQkpMlM+o?=
+ =?us-ascii?Q?Psf2wmQqj8Hz12DpcaIU3OwcyhKBS1Bf0bnbFvQ9RIKBZAzbODvLGv8CltND?=
+ =?us-ascii?Q?47MKI44JKXFDbGeCIiMAH9h2dk2DS8Tu0MRck76URfZBn2qwCb/AeBXXGckq?=
+ =?us-ascii?Q?sAID8KwLo6fblFIONe04zvSVE7RCT/gfukB22qjJbZaHSW9TGUeGMdMXgLoL?=
+ =?us-ascii?Q?YsOkCqrxQhr+5P5/HTxh4taxwgX+bO9uXcOaGHBKwKGTlImI61uWVbsYH9m1?=
+ =?us-ascii?Q?aJlh1doKUbbAhylwh8NBDmzdsf0XOV72Z6xm2IAHQTtsoU1WHQsxsqM+XBKC?=
+ =?us-ascii?Q?gFy4SKgntogU6JL2FBlJJlDRGJni25tJ+2NZf/I81ZFkLSP/J7m0S3nlJ15F?=
+ =?us-ascii?Q?UbAgfAXZqRluFTDNNwiAU0XEmI4bmF+MDNy+jPDpa5xutHBhJUk43qDMtAy+?=
+ =?us-ascii?Q?gzRVVosNrQcBOXpA470bub3EWhbHNO2lGU4oJi7Zv/MP1n1uSVQ4HF8j/5IK?=
+ =?us-ascii?Q?A77iRy/8XkhsW488FdVD06Q7vRnOo78YhBC6jNH0+CghX0uPVmbxe/aoMO6I?=
+ =?us-ascii?Q?0v5XfcasumZCzvzTvTZJ4GkNIiZLT4x/OpBukW6jlR8tE5/cDs5ERdb88jQk?=
+ =?us-ascii?Q?/q0Ulq0TYpdwMdszhuYibT6CZxh1Wpgt4UzbGNyq6UhBf5G6hcx+dkF+Sz9X?=
+ =?us-ascii?Q?FTAFuLfW/9lN1erIJEVXgF/xlFbsEf+/1JctatR/KDs1KWcwW0FciNsmEMx2?=
+ =?us-ascii?Q?Ez+WBFwlabIALwWy7SDTBsVVGYA8FeBpdWwzYbKUtVD2o9aOpRYeH6J6ooNC?=
+ =?us-ascii?Q?sfmnzJR8GGz5U6irD1T15Vi90ruT6G0rFpGGyhc+QUInP6ps8oHeSKFd63r1?=
+ =?us-ascii?Q?b0U0iUD8GsohT9LxnqooWCn0mjNrb37VIkDsXPgFX1xtCi17LtlJ8yuvArl9?=
+ =?us-ascii?Q?8gy45HmpW7spW5UkgCqmiD8+Vj1JhrvDRgH2ZHuajt15gzTf9x93DnV0ZlOc?=
+ =?us-ascii?Q?Gb1OHgvq/U8RhBHRDWOzasMAT1vOkWjtoHIs7Ctwvsp2qMA/gzZrcXpvvA8T?=
+ =?us-ascii?Q?ur4uGNQIqu7P9xcDBSIhGCeIwF17Q5iEFILKMqkl9P7zJVoUY4d4ddb6dOMr?=
+ =?us-ascii?Q?JW3BDQKdofNMDUG9yDECwDx2gQIINez6kRMz0jEupi8MXirGNzhiuh+E95Pa?=
+ =?us-ascii?Q?l3VDY/RP2ptaq0G6Fbp/GpDgMHO4XaWjtuTnwD6r0M4j2L9n8mX3VA9mtWog?=
+ =?us-ascii?Q?JWd5UuewRQJk6b/Bx1ExDIgAEx6K9BMzKOzkC0N1ON+VKrNHN+oTukWQqBXj?=
+ =?us-ascii?Q?sQ56rKjQTPPqSQE4wM3PMko7W5pdEdvkyS10ZalQENkUZ0Mrg6HjAfM9H3wv?=
+ =?us-ascii?Q?PzDefDKqjZBMod0Tsr4r9rOQN25R7Q86HYMh+FgHA/aUAENzwXAvhVJxKr2z?=
+ =?us-ascii?Q?ugElCkn/kXH0Ik/QhYZjhTdnL/z37dhEOgH4TG3IHbsa84EAA6RMi5NynV/I?=
+ =?us-ascii?Q?FZ4yocLBEeuoa5RoGwGY9JK96jDQI6NYh6SECOUDJHadyyAJTBmLGLGMNjok?=
+ =?us-ascii?Q?wTWlTzAM/kQpt7ErKxfgEks=3D?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: d65ab6f4-0778-4b29-fb53-08de3d7f3887
+X-MS-Exchange-CrossTenant-AuthSource: TYWP286MB2697.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 15:02:03.6440
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 15:16:15.2411
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BOpqLrN4bETHcbJn+51LNyEzfow0sIadEYHi8kK/YkyVSxrssCJefXN2a/Fe/V7zytTmpRrI3WzAnuroWMGt8Y7uLmfG1IXIKCdkyQEtBdI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6467
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_02,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 mlxscore=0
- suspectscore=0 phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2512170117
-X-Proofpoint-GUID: Q-eGUF9Slv2a5YZkeL9P_MDvhvUddTWF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDExOCBTYWx0ZWRfX7wba+yoVIs/o
- ROsVZd9th05I3WUpmPSgu4wvzLE3SBkVR88v7lp3tji2TxXcU2eyP9B67MsICR5WOHhQp/Pw2vg
- AeswhODeHdjJfh4P7Hm8NjtBbAUscCk2KTV+qf/LPw9OhV8RgXGO2TNQSFYSGA43MmacIokLDp0
- A1uvYmWWZDh6P3Tb6rHzqWkrJqBXZIyDaUCsfMKKv+Qj5kQmLkW1nmvewv/SxqrPNxTvdMyHtj4
- wwqLuWz5rN0fkvfawOQV4/tkX3y+4TI3eUmI5GcMq7ebhUPL83ZmsivY7KouA4Vb1Hr4N3FnRPp
- WO2z4zYPzMgNiHgKrTxWEArhtmkWLON7Dox9xTt6Ctd+A429LI6AZUfW5hjZ6AsWIDNC60vc8Yu
- JBsbeILtT1e72+yaFMA+2ALbfrEprHveWm7xUcZz5jqV0+9JqaQ=
-X-Authority-Analysis: v=2.4 cv=GbUaXAXL c=1 sm=1 tr=0 ts=6942c5f2 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=DeCs8sHeAAAA:20 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=km0P1Smguf672J0ZGYAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:12110
-X-Proofpoint-ORIG-GUID: Q-eGUF9Slv2a5YZkeL9P_MDvhvUddTWF
+X-MS-Exchange-CrossTenant-UserPrincipalName: skeYbzjyWzARUN/MamArF/U6DWVowgswXkylL1C7egc6tYVKDZykfQDQr0bEWD7ZBn/6wg6wa6gMyagCgrpK4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB4633
 
+Introduce new mwN_offset configfs attributes to specify memory window
+offsets. This enables mapping multiple windows into a single BAR at
+arbitrary offsets, improving layout flexibility.
 
+Extend the control register region and add a 32-bit config version
+field. Reuse NTB_EPF_TOPOLOGY (0x0C), which is currently unused, as the
+version register. The endpoint function driver writes 1
+(NTB_EPF_CTRL_VERSION_V1), and ntb_hw_epf reads it at probe time and
+refuses to bind to unknown versions.
 
-On 12/17/2025 8:11 PM, Eric Dumazet wrote:
-> On Wed, Dec 17, 2025 at 2:58 PM Eric Dumazet <edumazet@google.com> wrote:
->>
->> On Wed, Dec 17, 2025 at 2:49 PM Eric Dumazet <edumazet@google.com> wrote:
->>>
->>> On Wed, Dec 17, 2025 at 1:10 PM Aditya Gupta <adityag@linux.ibm.com> wrote:
->>>>
->>>> Hello,
->>>>
->>>> I see a null pointer dereference in 'net/core/dev.c', with 6.19.0-rc1,
->>>> when using e1000e device in qemu.
->>>>
->>>> I am able to reproduce the issue on PowerNV and PSeries machines on Power
->>>> architecture, though this might be possible on other architectures also.
->>>>
->>>> Console log
->>>> -----------
->>>>
->>>>          ...
->>>>          Starting network: udhcpc: started, v1.35.0
->>>>          udhcpc: broadcasting discover
->>>>          [    6.389648] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)
->>>>          [    6.394166] BUG: Kernel NULL pointer dereference on read at 0x00000000
->>>>          [    6.394262] Faulting instruction address: 0xc00000000166e080
->>>>          [    6.395253] Oops: Kernel access of bad area, sig: 11 [#1]
->>>>          [    6.398372] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=2048 NUMA pSeries
->>>>          [    6.398647] Modules linked in:
->>>>          [    6.399553] CPU: 0 UID: 0 PID: 203 Comm: udhcpc Not tainted 6.19.0-rc1+ #3 PREEMPT(voluntary)
->>>>          [    6.399757] Hardware name: IBM pSeries (emulated by qemu) POWER9 (architected) 0x4e1202 0xf000005 of:SLOF,git-6b6c16 pSeries
->>>>          [    6.400002] NIP:  c00000000166e080 LR: c00000000166e080 CTR: 0000000000000000
->>>>          [    6.400148] REGS: c00000000c67b4f0 TRAP: 0300   Not tainted  (6.19.0-rc1+)
->>>>          [    6.400275] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 44022860  XER: 20040147
->>>>          [    6.400544] CFAR: c00000000165ef0c DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0
->>>>          [    6.400544] GPR00: c00000000166e080 c00000000c67b790 c0000000028ca300 0000000000000002
->>>>          [    6.400544] GPR04: c00000000324a568 000000000001a560 0000000000000020 0000000000000000
->>>>          [    6.400544] GPR08: 0000000000000000 0000000000000000 0000000000000201 0000000028022862
->>>>          [    6.400544] GPR12: 0000000000000001 c0000000041a0000 0000000000000000 0000000000000000
->>>>          [    6.400544] GPR16: 0000000000000000 0000000000000010 0000000000000148 0000000000000148
->>>>          [    6.400544] GPR20: 0000000000000000 0000000000000008 00000000000005dc c000000003ea5e98
->>>>          [    6.400544] GPR24: c000000003ea5e94 0000000000000000 c000000005b7e200 0000000000000001
->>>>          [    6.400544] GPR28: 0000000000000000 0000000000000000 0000000000000000 c000000003ea5d80
->>>>          [    6.401178] NIP [c00000000166e080] __dev_xmit_skb+0x484/0xb88
->>>>          [    6.401697] LR [c00000000166e080] __dev_xmit_skb+0x484/0xb88
->>>>          [    6.401843] Call Trace:
->>>>          [    6.401938] [c00000000c67b790] [c00000000166e080] __dev_xmit_skb+0x484/0xb88 (unreliable)
->>>>          [    6.402060] [c00000000c67b810] [c0000000016738a4] __dev_queue_xmit+0x4b4/0xa94
->>>>          [    6.402122] [c00000000c67b970] [c00000000192748c] packet_xmit+0x10c/0x1b0
->>>>          [    6.402190] [c00000000c67b9f0] [c00000000192af6c] packet_snd+0x784/0xa04
->>>>          [    6.402278] [c00000000c67bad0] [c00000000162a91c] __sys_sendto+0x1dc/0x250
->>>>          [    6.402340] [c00000000c67bc20] [c00000000162a9c4] sys_sendto+0x34/0x44
->>>>          [    6.402400] [c00000000c67bc40] [c000000000031870] system_call_exception+0x170/0x360
->>>>          [    6.402468] [c00000000c67be50] [c00000000000cedc] system_call_vectored_common+0x15c/0x2ec
->>>>          ...
->>>>
->>>> Git Blame
->>>> ---------
->>>>
->>>> Debugging with GDB points to this code in 'net/core/dev.c':
->>>>
->>>>          static inline int __dev_xmit_skb(struct sk_buff *skb, struct Qdisc *q,
->>>>                                           struct net_device *dev,
->>>>                                           struct netdev_queue *txq)
->>>>          {
->>>>          ...
->>>>                          llist_for_each_entry_safe(skb, next, ll_list, ll_node) {
->>>>                                  prefetch(next);
->>>>                                  prefetch(&next->priority);                                              <----------
->>>>                                  skb_mark_not_on_list(skb);
->>>>                                  rc = dev_qdisc_enqueue(skb, q, &to_free, txq);
->>>>                                  count++;
->>>>                          }
->>>>
->>>> Git blame points to this commit which introduced the use of 'next->priority':
->>>>
->>>>          commit b2e9821cff6c3c9ac107fce5327070f4462bf8a7
->>>>          Date:   Fri Nov 21 08:32:52 2025 +0000
->>>>
->>>>              net: prefech skb->priority in __dev_xmit_skb()
->>>>
->>>> Reproducing the issue
->>>> ---------------------
->>>>
->>>> To reproduce the issue:
->>>> 1. Attaching config as attachment
->>>> 2. Kernel commit I built: 'commit 40fbbd64bba6 ("Merge tag 'pull-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")'
->>>> 3. Initramfs (it's buildroot): https://urldefense.com/v3/__https://ibm.box.com/s/x70ducx9cxl9tz4abh97d9b508ildync__;!!ACWV5N9M2RV99hQ!JFK4bRaMJqtwI1HPrt0RUtQ-Ti5RfIOMf_XvhccLjHCtWhOgpn4WF1qglGxo1Z0nXM_TcGB7PehRPosqE_4L$
->>>> 4. QEMU command line: 'qemu-system-ppc64 -M pseries -m 10G -kernel ~/some-path/zImage -append "init=/bin/sh noreboot debug" -nographic -initrd ~/some-path/rootfs-with-ssh.cpio -netdev user,id=net0 -device e1000e,netdev=net0
->>>>
->>>> Thanks,
->>>> - Aditya G
->>>>
->>>
->>> This seems to be a platform issue.
->>>
->>> prefetch(NULL) (or prefetch (amount < PAGE_SIZE)) is not supposed to fault.
->>
->> Special casing of NULL was added in :
->>
->> commit e63f8f439de010b6227c0c9c6f56e2c44dbe5dae
->> Author: Olof Johansson <olof@austin.ibm.com>
->> Date:   Sat Apr 16 15:24:38 2005 -0700
->>
->>      [PATCH] ppc64: no prefetch for NULL pointers
-> 
-> I will send the following fix, thanks.
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 9094c0fb8c68..36dc5199037e 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4241,9 +4241,11 @@ static inline int __dev_xmit_skb(struct sk_buff
-> *skb, struct Qdisc *q,
->                  int count = 0;
-> 
->                  llist_for_each_entry_safe(skb, next, ll_list, ll_node) {
-> -                       prefetch(next);
-> -                       prefetch(&next->priority);
-> -                       skb_mark_not_on_list(skb);
-> +                       if (next) {
-> +                               prefetch(next);
-> +                               prefetch(&next->priority);
-> +                               skb_mark_not_on_list(skb);
-> +                       }
->                          rc = dev_qdisc_enqueue(skb, q, &to_free, txq);
->                          count++;
->                  }
-> 
+Endpoint running with an older kernel that do not program
+NTB_EPF_CTRL_VERSION will be rejected early by host with newer kernel,
+instead of misbehaving at runtime.
 
-why not only ?
-if (likely(next)) {
-     prefetch(next);
-     prefetch(&next->priority);
-}
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+---
+ drivers/ntb/hw/epf/ntb_hw_epf.c               |  44 +++++-
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 136 ++++++++++++++++--
+ 2 files changed, 160 insertions(+), 20 deletions(-)
 
-Thanks,
-Alok
-
+diff --git a/drivers/ntb/hw/epf/ntb_hw_epf.c b/drivers/ntb/hw/epf/ntb_hw_epf.c
+index d3ecf25a5162..126ba38e32ea 100644
+--- a/drivers/ntb/hw/epf/ntb_hw_epf.c
++++ b/drivers/ntb/hw/epf/ntb_hw_epf.c
+@@ -30,18 +30,22 @@
+ #define NTB_EPF_LINK_STATUS	0x0A
+ #define LINK_STATUS_UP		BIT(0)
+ 
+-#define NTB_EPF_TOPOLOGY	0x0C
++/* 0x24 (32bit) is unused */
++#define NTB_EPF_CTRL_VERSION	0x0C
+ #define NTB_EPF_LOWER_ADDR	0x10
+ #define NTB_EPF_UPPER_ADDR	0x14
+ #define NTB_EPF_LOWER_SIZE	0x18
+ #define NTB_EPF_UPPER_SIZE	0x1C
+ #define NTB_EPF_MW_COUNT	0x20
+-#define NTB_EPF_MW1_OFFSET	0x24
+ #define NTB_EPF_SPAD_OFFSET	0x28
+ #define NTB_EPF_SPAD_COUNT	0x2C
+ #define NTB_EPF_DB_ENTRY_SIZE	0x30
+ #define NTB_EPF_DB_DATA(n)	(0x34 + (n) * 4)
+ #define NTB_EPF_DB_OFFSET(n)	(0xB4 + (n) * 4)
++#define NTB_EPF_MW_OFFSET(n)	(0x134 + (n) * 4)
++#define NTB_EPF_MW_SIZE(n)	(0x144 + (n) * 4)
++
++#define NTB_EPF_CTRL_VERSION_V1	1
+ 
+ #define NTB_EPF_MIN_DB_COUNT	3
+ #define NTB_EPF_MAX_DB_COUNT	31
+@@ -451,11 +455,12 @@ static int ntb_epf_peer_mw_get_addr(struct ntb_dev *ntb, int idx,
+ 				    phys_addr_t *base, resource_size_t *size)
+ {
+ 	struct ntb_epf_dev *ndev = ntb_ndev(ntb);
+-	u32 offset = 0;
++	resource_size_t bar_sz;
++	u32 offset, sz;
+ 	int bar;
+ 
+-	if (idx == 0)
+-		offset = readl(ndev->ctrl_reg + NTB_EPF_MW1_OFFSET);
++	offset = readl(ndev->ctrl_reg + NTB_EPF_MW_OFFSET(idx));
++	sz = readl(ndev->ctrl_reg + NTB_EPF_MW_SIZE(idx));
+ 
+ 	bar = ntb_epf_mw_to_bar(ndev, idx);
+ 	if (bar < 0)
+@@ -464,8 +469,11 @@ static int ntb_epf_peer_mw_get_addr(struct ntb_dev *ntb, int idx,
+ 	if (base)
+ 		*base = pci_resource_start(ndev->ntb.pdev, bar) + offset;
+ 
+-	if (size)
+-		*size = pci_resource_len(ndev->ntb.pdev, bar) - offset;
++	if (size) {
++		bar_sz = pci_resource_len(ndev->ntb.pdev, bar);
++		*size = sz ? min_t(resource_size_t, sz, bar_sz - offset)
++			   : (bar_sz > offset ? bar_sz - offset : 0);
++	}
+ 
+ 	return 0;
+ }
+@@ -547,6 +555,24 @@ static inline void ntb_epf_init_struct(struct ntb_epf_dev *ndev,
+ 	ndev->ntb.ops = &ntb_epf_ops;
+ }
+ 
++static int ntb_epf_check_version(struct ntb_epf_dev *ndev)
++{
++	struct device *dev = ndev->dev;
++	u32 ver;
++
++	ver = readl(ndev->ctrl_reg + NTB_EPF_CTRL_VERSION);
++
++	switch (ver) {
++	case NTB_EPF_CTRL_VERSION_V1:
++		break;
++	default:
++		dev_err(dev, "Unsupported NTB EPF version %u\n", ver);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int ntb_epf_init_dev(struct ntb_epf_dev *ndev)
+ {
+ 	struct device *dev = ndev->dev;
+@@ -695,6 +721,10 @@ static int ntb_epf_pci_probe(struct pci_dev *pdev,
+ 		return ret;
+ 	}
+ 
++	ret = ntb_epf_check_version(ndev);
++	if (ret)
++		return ret;
++
+ 	ret = ntb_epf_init_dev(ndev);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to init device\n");
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 56aab5d354d6..4dfb3e40dffa 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -39,6 +39,7 @@
+ #include <linux/atomic.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
++#include <linux/log2.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ 
+@@ -61,6 +62,7 @@ static struct workqueue_struct *kpcintb_workqueue;
+ 
+ #define LINK_STATUS_UP			BIT(0)
+ 
++#define CTRL_VERSION			1
+ #define SPAD_COUNT			64
+ #define DB_COUNT			4
+ #define NTB_MW_OFFSET			2
+@@ -107,7 +109,7 @@ struct epf_ntb_ctrl {
+ 	u32 argument;
+ 	u16 command_status;
+ 	u16 link_status;
+-	u32 topology;
++	u32 version;
+ 	u64 addr;
+ 	u64 size;
+ 	u32 num_mws;
+@@ -117,6 +119,8 @@ struct epf_ntb_ctrl {
+ 	u32 db_entry_size;
+ 	u32 db_data[MAX_DB_COUNT];
+ 	u32 db_offset[MAX_DB_COUNT];
++	u32 mw_offset[MAX_MW];
++	u32 mw_size[MAX_MW];
+ } __packed;
+ 
+ struct epf_ntb {
+@@ -128,6 +132,7 @@ struct epf_ntb {
+ 	u32 db_count;
+ 	u32 spad_count;
+ 	u64 mws_size[MAX_MW];
++	u64 mws_offset[MAX_MW];
+ 	atomic64_t db;
+ 	u32 vbus_number;
+ 	u16 vntb_pid;
+@@ -454,10 +459,13 @@ static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
+ 	ntb->reg = base;
+ 
+ 	ctrl = ntb->reg;
++	ctrl->version = CTRL_VERSION;
+ 	ctrl->spad_offset = ctrl_size;
+ 
+ 	ctrl->spad_count = spad_count;
+ 	ctrl->num_mws = ntb->num_mws;
++	memset(ctrl->mw_offset, 0, sizeof(ctrl->mw_offset));
++	memset(ctrl->mw_size, 0, sizeof(ctrl->mw_size));
+ 	ntb->spad_size = spad_size;
+ 
+ 	ctrl->db_entry_size = sizeof(u32);
+@@ -689,15 +697,31 @@ static void epf_ntb_db_bar_clear(struct epf_ntb *ntb)
+  */
+ static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
+ {
++	struct device *dev = &ntb->epf->dev;
++	u64 bar_ends[BAR_5 + 1] = { 0 };
++	unsigned long bars_used = 0;
++	enum pci_barno barno;
++	u64 off, size, end;
+ 	int ret = 0;
+ 	int i;
+-	u64 size;
+-	enum pci_barno barno;
+-	struct device *dev = &ntb->epf->dev;
+ 
+ 	for (i = 0; i < ntb->num_mws; i++) {
+-		size = ntb->mws_size[i];
+ 		barno = ntb->epf_ntb_bar[BAR_MW1 + i];
++		off = ntb->mws_offset[i];
++		size = ntb->mws_size[i];
++		end = off + size;
++		if (end > bar_ends[barno])
++			bar_ends[barno] = end;
++		bars_used |= BIT(barno);
++	}
++
++	for (barno = BAR_0; barno <= BAR_5; barno++) {
++		if (!(bars_used & BIT(barno)))
++			continue;
++		if (bar_ends[barno] < SZ_4K)
++			size = SZ_4K;
++		else
++			size = roundup_pow_of_two(bar_ends[barno]);
+ 
+ 		ntb->epf->bar[barno].barno = barno;
+ 		ntb->epf->bar[barno].size = size;
+@@ -713,8 +737,12 @@ static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
+ 				      &ntb->epf->bar[barno]);
+ 		if (ret) {
+ 			dev_err(dev, "MW set failed\n");
+-			goto err_alloc_mem;
++			goto err_set_bar;
+ 		}
++	}
++
++	for (i = 0; i < ntb->num_mws; i++) {
++		size = ntb->mws_size[i];
+ 
+ 		/* Allocate EPC outbound memory windows to vpci vntb device */
+ 		ntb->vpci_mw_addr[i] = pci_epc_mem_alloc_addr(ntb->epf->epc,
+@@ -723,19 +751,31 @@ static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
+ 		if (!ntb->vpci_mw_addr[i]) {
+ 			ret = -ENOMEM;
+ 			dev_err(dev, "Failed to allocate source address\n");
+-			goto err_set_bar;
++			goto err_alloc_mem;
+ 		}
+ 	}
+ 
++	for (i = 0; i < ntb->num_mws; i++) {
++		ntb->reg->mw_offset[i] = (u32)ntb->mws_offset[i];
++		ntb->reg->mw_size[i] = (u32)ntb->mws_size[i];
++	}
++
+ 	return ret;
+ 
+-err_set_bar:
+-	pci_epc_clear_bar(ntb->epf->epc,
+-			  ntb->epf->func_no,
+-			  ntb->epf->vfunc_no,
+-			  &ntb->epf->bar[barno]);
+ err_alloc_mem:
+-	epf_ntb_mw_bar_clear(ntb, i);
++	while (--i >= 0)
++		pci_epc_mem_free_addr(ntb->epf->epc,
++				      ntb->vpci_mw_phy[i],
++				      ntb->vpci_mw_addr[i],
++				      ntb->mws_size[i]);
++err_set_bar:
++	while (--barno >= BAR_0)
++		if (bars_used & BIT(barno))
++			pci_epc_clear_bar(ntb->epf->epc,
++					  ntb->epf->func_no,
++					  ntb->epf->vfunc_no,
++					  &ntb->epf->bar[barno]);
++
+ 	return ret;
+ }
+ 
+@@ -1040,6 +1080,60 @@ static ssize_t epf_ntb_##_name##_store(struct config_item *item,	\
+ 	return len;							\
+ }
+ 
++#define EPF_NTB_MW_OFF_R(_name)						\
++static ssize_t epf_ntb_##_name##_show(struct config_item *item,		\
++				      char *page)			\
++{									\
++	struct config_group *group = to_config_group(item);		\
++	struct epf_ntb *ntb = to_epf_ntb(group);			\
++	struct device *dev = &ntb->epf->dev;				\
++	int win_no, idx;						\
++									\
++	if (sscanf(#_name, "mw%d_offset", &win_no) != 1)		\
++		return -EINVAL;						\
++									\
++	idx = win_no - 1;						\
++	if (idx < 0 || idx >= ntb->num_mws) {				\
++		dev_err(dev, "MW%d out of range (num_mws=%d)\n",	\
++			win_no, ntb->num_mws);				\
++		return -EINVAL;						\
++	}								\
++									\
++	idx = array_index_nospec(idx, ntb->num_mws);			\
++	return sprintf(page, "%llu\n", ntb->mws_offset[idx]);		\
++}
++
++#define EPF_NTB_MW_OFF_W(_name)						\
++static ssize_t epf_ntb_##_name##_store(struct config_item *item,	\
++				       const char *page, size_t len)	\
++{									\
++	struct config_group *group = to_config_group(item);		\
++	struct epf_ntb *ntb = to_epf_ntb(group);			\
++	struct device *dev = &ntb->epf->dev;				\
++	int win_no, idx;						\
++	u64 val;							\
++	int ret;							\
++									\
++	ret = kstrtou64(page, 0, &val);					\
++	if (ret)							\
++		return ret;						\
++									\
++	if (sscanf(#_name, "mw%d_offset", &win_no) != 1)		\
++		return -EINVAL;						\
++									\
++	idx = win_no - 1;						\
++	if (idx < 0 || idx >= ntb->num_mws) {				\
++		dev_err(dev, "MW%d out of range (num_mws=%d)\n",	\
++			win_no, ntb->num_mws);				\
++		return -EINVAL;						\
++	}								\
++									\
++	idx = array_index_nospec(idx, ntb->num_mws);			\
++	ntb->mws_offset[idx] = val;					\
++									\
++	return len;							\
++}
++
+ #define EPF_NTB_BAR_R(_name, _id)					\
+ 	static ssize_t epf_ntb_##_name##_show(struct config_item *item,	\
+ 					      char *page)		\
+@@ -1110,6 +1204,14 @@ EPF_NTB_MW_R(mw3)
+ EPF_NTB_MW_W(mw3)
+ EPF_NTB_MW_R(mw4)
+ EPF_NTB_MW_W(mw4)
++EPF_NTB_MW_OFF_R(mw1_offset)
++EPF_NTB_MW_OFF_W(mw1_offset)
++EPF_NTB_MW_OFF_R(mw2_offset)
++EPF_NTB_MW_OFF_W(mw2_offset)
++EPF_NTB_MW_OFF_R(mw3_offset)
++EPF_NTB_MW_OFF_W(mw3_offset)
++EPF_NTB_MW_OFF_R(mw4_offset)
++EPF_NTB_MW_OFF_W(mw4_offset)
+ EPF_NTB_BAR_R(ctrl_bar, BAR_CONFIG)
+ EPF_NTB_BAR_W(ctrl_bar, BAR_CONFIG)
+ EPF_NTB_BAR_R(db_bar, BAR_DB)
+@@ -1130,6 +1232,10 @@ CONFIGFS_ATTR(epf_ntb_, mw1);
+ CONFIGFS_ATTR(epf_ntb_, mw2);
+ CONFIGFS_ATTR(epf_ntb_, mw3);
+ CONFIGFS_ATTR(epf_ntb_, mw4);
++CONFIGFS_ATTR(epf_ntb_, mw1_offset);
++CONFIGFS_ATTR(epf_ntb_, mw2_offset);
++CONFIGFS_ATTR(epf_ntb_, mw3_offset);
++CONFIGFS_ATTR(epf_ntb_, mw4_offset);
+ CONFIGFS_ATTR(epf_ntb_, vbus_number);
+ CONFIGFS_ATTR(epf_ntb_, vntb_pid);
+ CONFIGFS_ATTR(epf_ntb_, vntb_vid);
+@@ -1148,6 +1254,10 @@ static struct configfs_attribute *epf_ntb_attrs[] = {
+ 	&epf_ntb_attr_mw2,
+ 	&epf_ntb_attr_mw3,
+ 	&epf_ntb_attr_mw4,
++	&epf_ntb_attr_mw1_offset,
++	&epf_ntb_attr_mw2_offset,
++	&epf_ntb_attr_mw3_offset,
++	&epf_ntb_attr_mw4_offset,
+ 	&epf_ntb_attr_vbus_number,
+ 	&epf_ntb_attr_vntb_pid,
+ 	&epf_ntb_attr_vntb_vid,
+-- 
+2.51.0
 
