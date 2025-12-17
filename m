@@ -1,121 +1,158 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8E6343D76;
-	Wed, 17 Dec 2025 08:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75466343D67;
+	Wed, 17 Dec 2025 08:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765961482; cv=none; b=WcIrCKM7QDxMYZRYxF794Xv7bDa7vCIOVpbcvaGzb4vzJRCHaVMShUtnI5ypaaAT6qcv1F1juqwGCxTnpEGPp7EJSboyBk2mhVHKEF2VBKWuhJtaOG7Hq/0RehK7r3ti5xKdSd9mLTNcrXE1wVHQ36ygGdzNcIERcCyCc5iKzMI=
+	t=1765961485; cv=none; b=likZwACnyabHrY6251ib1MvA5YkZURSjfexFe4qY+AmBQXn0bvSoJIOVfHfadfQV5nlZ97EfGU1UTQyKLqqAmLL3V3SeMV6o7AWXcFdo2ONMKAGflWbBS3AXXtL/1IzlLsXHafz3uqpzerZ44hvCtrKYmkGkDREch16+YNePgYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765961482; c=relaxed/simple;
-	bh=A7N5NDvI6ISdPckRnCurYiKkVOINMm1iWlitFhGoPbM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u6TM5LOBZmmo7i5JfE8y3SEtbaRAXiaxSK2FQbSIenbWOAL3HWJmbLPboeLUC8ELbI2iW+4x6afoDdnzUNTiA8bqzy+SCviF6uF2cm9nvrXsGij4d4rjc/PLq1Cujuu9rWBkWHMbZXEAFpHkNYn0c9m7hMST6bNhi8LT/yPxVuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB49414BF;
-	Wed, 17 Dec 2025 00:51:12 -0800 (PST)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9B9D93F73F;
-	Wed, 17 Dec 2025 00:51:17 -0800 (PST)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: nico@fluxnic.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	dongdong.deng@windriver.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH net v3] smc91x: fix broken irq-context in PREEMPT_RT
-Date: Wed, 17 Dec 2025 08:51:15 +0000
-Message-Id: <20251217085115.1730036-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765961485; c=relaxed/simple;
+	bh=0tmXTPJ+lz7iao3w5yv2UowUDIC552iZY/Wt523QSHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sYYYAg4rHUYZ5gzbJAxEkSEhs7ySEp/YafceIKqhXOO6q4SxKfdLnYd2VZiTYkbig/Tj+TF5eBV6JkcWRwSUERj2xBYVyNTY3PFlWegoEigIiQsn+cAoHFAzgpdPuNHekr6DGSHTVrcuK9uUmf7zuRpCiASUailO64J0m6GbtZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iSSgci50; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iSSgci50"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=UseiUIzWQ5jcCpGWT2FDdMdJpS00Sb35hFZExtBF5UM=;
+	b=iSSgci50fvxNoZ24pGz4HbNJ7XmKjF8tHBqr/Dh3RxQnKol/eE3iYlgcmBQi5J
+	XrmY0/YIqAYviu52mZ+Psfi7SYLIiKdx0kTLDMZ1v53SzPNpAzt+R7/p90Ymrwd4
+	Dp8y07l4ACfZMxdYcS0N0vsfzwVyebu1iqTXKMpl6jO2o=
+Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wAXSZ7lbkJp2ZeZAw--.42656S4;
+	Wed, 17 Dec 2025 16:50:47 +0800 (CST)
+From: Xiong Weimin <15927021679@163.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Implement initial driver for virtio-RDMA devices(kernel), virtio-rdma device model(qemu) and vhost-user-RDMA backend device(dpdk)
+Date: Wed, 17 Dec 2025 16:49:47 +0800
+Message-ID: <20251217085044.5432-1-15927021679@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXSZ7lbkJp2ZeZAw--.42656S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr4rKrWDGF1DAF4UGw4rKrg_yoW5tFy8pr
+	W2gF9rCrZ8Gr43G3yUW345uF42gFZ3A3y3Crn8G348K3Z5Xr9YvF1q9F15Way7GrZxAF18
+	XFy8Jr92ka4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jU739UUUUU=
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0ge-SGlCbuehtgAA3X
 
-When smc91x.c is built with PREEMPT_RT, the following splat occurs
-in FVP_RevC:
+Hi all,
 
-[   13.055000] smc91x LNRO0003:00 eth0: link up, 10Mbps, half-duplex, lpa 0x0000
-[   13.062137] BUG: workqueue leaked atomic, lock or RCU: kworker/2:1[106]
-[   13.062137]      preempt=0x00000000 lock=0->0 RCU=0->1 workfn=mld_ifc_work
-[   13.062266] C
-** replaying previous printk message **
-[   13.062266] CPU: 2 UID: 0 PID: 106 Comm: kworker/2:1 Not tainted 6.18.0-dirty #179 PREEMPT_{RT,(full)}
-[   13.062353] Hardware name:  , BIOS
-[   13.062382] Workqueue: mld mld_ifc_work
-[   13.062469] Call trace:
-[   13.062494]  show_stack+0x24/0x40 (C)
-[   13.062602]  __dump_stack+0x28/0x48
-[   13.062710]  dump_stack_lvl+0x7c/0xb0
-[   13.062818]  dump_stack+0x18/0x34
-[   13.062926]  process_scheduled_works+0x294/0x450
-[   13.063043]  worker_thread+0x260/0x3d8
-[   13.063124]  kthread+0x1c4/0x228
-[   13.063235]  ret_from_fork+0x10/0x20
+This testing instructions aims to introduce an emulating a soft ROCE 
+device with normal NIC(no RDMA), we have finished a vhost-user RDMA
+device demo, which can work with RDMA features such as CM, QP type of 
+UC/UD and so on.
 
-This happens because smc_special_trylock() disables IRQs even on PREEMPT_RT,
-but smc_special_unlock() does not restore IRQs on PREEMPT_RT.
-The reason is that smc_special_unlock() calls spin_unlock_irqrestore(),
-and rcu_read_unlock_bh() in __dev_queue_xmit() cannot invoke
-rcu_read_unlock() through __local_bh_enable_ip() when current->softirq_disable_cnt becomes zero.
+There are testing instructions of the demo:
 
-To address this issue, replace smc_special_trylock() with spin_trylock_irqsave().
+1.Test Environment Configuration
+Hardware Environment
+Servers: 1 identically configured servers
 
-Fixes: 342a93247e08 ("locking/spinlock: Provide RT variant header: <linux/spinlock_rt.h>")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
+CPU: HUAWEI Kunpeng 920 (96 cores)
 
-History
-========
-From v2 to v3:
-  - rebased to linux-net tree.
-  - modify patch title & add r-b tags
-  - https://lore.kernel.org/all/20251212190338.2318843-1-yeoreum.yun@arm.com/
+Memory: 3T DDR4
 
-From v1 to v2:
-  - remove debug log.
-  - https://lore.kernel.org/all/20251212185818.2209573-1-yeoreum.yun@arm.com/
+NIC: TAP (paired virtio-net device for RDMA)
 
----
- drivers/net/ethernet/smsc/smc91x.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+Software Environment
+Server Host OS: 6.4.0-10.1.0.20.oe2309.aarch64
 
-diff --git a/drivers/net/ethernet/smsc/smc91x.c b/drivers/net/ethernet/smsc/smc91x.c
-index 9d1a83a5fa7e..d16c178d1034 100644
---- a/drivers/net/ethernet/smsc/smc91x.c
-+++ b/drivers/net/ethernet/smsc/smc91x.c
-@@ -516,15 +516,7 @@ static inline void  smc_rcv(struct net_device *dev)
-  * any other concurrent access and C would always interrupt B. But life
-  * isn't that easy in a SMP world...
-  */
--#define smc_special_trylock(lock, flags)				\
--({									\
--	int __ret;							\
--	local_irq_save(flags);						\
--	__ret = spin_trylock(lock);					\
--	if (!__ret)							\
--		local_irq_restore(flags);				\
--	__ret;								\
--})
-+#define smc_special_trylock(lock, flags)	spin_trylock_irqsave(lock, flags)
- #define smc_special_lock(lock, flags)		spin_lock_irqsave(lock, flags)
- #define smc_special_unlock(lock, flags) 	spin_unlock_irqrestore(lock, flags)
- #else
---
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+Kernel: linux-6.16.8 (with kernel-vrdma module)
+
+QEMU: 9.0.2 (compiled with vhost-user-rdma virtual device support)
+
+DPDK: 24.07.0-rc2
+
+Dependencies:
+
+	rdma-core
+	
+	rdma_rxe
+
+	libibverbs-dev
+	
+2. Test Procedures
+a. Starting DPDK with vhost-user-rdma first: 
+1). Configure Hugepages
+   echo 2048 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+2). app start  
+  /DPDKDIR/build/examples/dpdk-vhost_user_rdma -l 1-4 -n 4 --vdev "net_tap0" -- --socket-file /tmp/vhost-rdma0
+
+b. Booting guest kernel with qemu, command line: 
+...
+-netdev tap,id=hostnet1,ifname=tap1,script=no,downscript=no 
+-device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:14:72:30,bus=pci.3,addr=0x0.0,multifunction=on 
+-chardev socket,path=/tmp/vhost-rdma0,id=vurdma 
+-device vhost-user-rdma-pci,bus=pci.3,addr=0x0.1,page-per-vq=on,disable-legacy=on,chardev=vurdma
+...
+
+c. Guest Kernel Module Loading and Validation
+# Load vhost_rdma kernel module
+sudo modprobe vrdma
+
+# Verify module loading
+lsmod | grep vrdma
+
+# Check kernel logs
+dmesg | grep vhost_rdma
+
+# Expected output:
+[    4.935473] vrdma_init_device: Initializing vRDMA device with max_cq=64, max_qp=64
+[    4.949888] [vrdma_init_device]: Successfully initialized, last qp_vq index=192
+[    4.949907] [vrdma_init_netdev]: Found paired net_device 'enp3s0f0' (on 0000:03:00.0)
+[    4.949924] Bound vRDMA device to net_device 'enp3s0f0'
+[    5.026032] vrdma virtio2: vrdma_alloc_pd: allocated PD 1
+[    5.028006] Successfully registered vRDMA device as 'vrdma0'
+[    5.028020] [vrdma_probe]: Successfully probed VirtIO RDMA device (index=2)
+[    5.028104] VirtIO RDMA driver initialized successfully
+
+d. Inside VM, one rdma device fs node will be generated in /dev/infiniband: 
+[root@localhost ~]# ll -h /dev/infiniband/
+total 0
+drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-ibdev
+drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-path
+crw-rw-rw-. 1 root root  10, 259 Dec 17 11:24 rdma_cm
+crw-rw-rw-. 1 root root 231, 192 Dec 17 11:24 uverbs0
+
+e. The following are to be done in the future version: 
+1). SRQ support
+2). DPDK support for physical RDMA NIC for handling the datapath between front and backend
+3). Reset of VirtQueue
+4). Increase size of VirtQueue for PCI transport
+5). Performance Testing
+
+f. Test Results
+1). Functional Test Results:
+Kernel module loading	PASS	Module loaded without errors
+DPDK startup	        PASS	vhost-user-rdma backend initialized
+QEMU VM launch	        PASS	VM booted using RDMA device
+Network connectivity	PASS	Host-VM communication established
+RDMA device detection	PASS	Virtual RDMA device recognized
+
+f.Test Conclusion
+1). Full functional compliance with specifications
+2). Stable operation under extended stress conditions
+
+Recommendations:
+1). Optimize memory copy paths for higher throughput
+2). Enhance error handling and recovery mechanisms
+ 
 
