@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67BD2F6160
-	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 19:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B024F2F6907
+	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 19:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766001005; cv=none; b=PjY/a9/gUvgs9ULTyB4msq+bvQJP+f7aeiqpbAFBQ4aiLn+VW3EFsmcluNrRgKoq/rwKz4AuMmFvYMQBvk9VMEzW1y9Xd9+rt+QfP0Sd3O/H5Q79uBR5d/tDvmPP4BFAGWFRUArpUD1Arr0teVXc85KUeQKkw4jgIlPRG9XDcvQ=
+	t=1766001006; cv=none; b=B9zOCnbdINl+O4EgQUogO+FVBM2bHdMoCJqkrOdS0oyMAWJNrS7JBarcuipeRhLNhZMbvLbEojIPZAPYhQy8kulq+x1vZJ0kAceudzUgMX075JFUeCFSWyJVm30nT/8zEt45+rCZjGVVtybfrkBZfIEboNBJEZIgBtPEtInIkqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766001005; c=relaxed/simple;
-	bh=ZyRWIS+MLqrmp2PIwo8i2PObLL513/QCKO+TdjwVCG4=;
+	s=arc-20240116; t=1766001006; c=relaxed/simple;
+	bh=8+LMSFy8gKb1Gy0xiWDQ5E66KC9CwAY4G+f5ES/gbr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdNt6TofQ5jQg5v7a+BwehwltFUGpkdjyAWgGzh7UrdWR2zZe7mMhX9ff2/FMJlWxMJeLxV0vBni9nWp+0OR3wodTwKq5IUzJbnOKxvFLLQqNezkkeSOS8EqrW72VIUfV9qsFBu5AJGdncp6P7EiacO5nq1lMbm25zKNu66ZMyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WqzdLUhM; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=pZi//UA5tAXi7w+PDDb2bj62++qtAEeduDD2WzmRNSIGPm6VbHYEBz0Wo51Qt+6Y4sl/L3Yqc22boWg4ZnYKZOfsU/XPyMECKqNfAhTndr2P/+fUll0TqfnILp7HBNOiXucrbwbwS0aJSJxstSXV6Ve08o0yH7unRxxFki6yo/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mHWQK98y; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WqzdLUhM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mHWQK98y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766001004; x=1797537004;
+  t=1766001005; x=1797537005;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZyRWIS+MLqrmp2PIwo8i2PObLL513/QCKO+TdjwVCG4=;
-  b=WqzdLUhM7ZT5iLvhxcdL9sXYDGD+DTf+1ws7YwFKxkRijNObuSqNh9hh
-   iaLeOvjROT1xdXIzXdfTy6Vp1KrBaQBEi8dncy3LQANFwb/eb2YGzOyCS
-   V5xshVis3ajgQ68mXgEKav0p8nuTDfRt/vhyaLcxrWcKLrV8QDD89s+sw
-   FNzmeNvKD59fGkabHQ/bv5mIFHzWtAcVYbkb9LfVrCLaLixPeNm6Zb71R
-   CPs8lLynB65zKgTaLhbKfl8IsBaxRDYX7epcAx0nBNgpLRWPtnadaIkOb
-   o7/Wy24NPdmPC0sQYRkCfep7hJbLKWGG2+ldjzy2C9fUzo8FGpzDL0kR6
-   g==;
-X-CSE-ConnectionGUID: bL/BpiU2S06+OmIHwNP76w==
-X-CSE-MsgGUID: Wfv9sE9sTyq3KtO1W2PVpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67841424"
+  bh=8+LMSFy8gKb1Gy0xiWDQ5E66KC9CwAY4G+f5ES/gbr0=;
+  b=mHWQK98yE17q9/TFXoXnUALbEoKSD7qx5LdPSax9oQnq/I3koOECYotX
+   aeJFf2ESpgD0ilRprDqBs5WcNIVMTcjBgNKh9NaJgpg7YZxiegVuUrth8
+   98GZ/MtgifddSQkKx07A8iVwV30l+pez2mrqakIr1Dyl+kMbHLe27vTiJ
+   8tXk7Dln7QNlqAd4KK1kKjD7HdDiW+Hb5BiPnxdF51GCKSWM34ObVVW+A
+   Yy4sGDZst+EhZ1DnfvrfC+RCKFysqGi3cFkBMEGYPZBWge/i6B1TVMVQD
+   OYBYSHa9mfZ/aX3KbQ+bjCGA/Wjl6rFCtQ+g0W0Ppn4rvcojwDVJtSA3a
+   w==;
+X-CSE-ConnectionGUID: 0SnkYqc5RlmofIIS16BYhA==
+X-CSE-MsgGUID: E/2cD1bwSeCVpXrVPBqCvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67841440"
 X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="67841424"
+   d="scan'208";a="67841440"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
   by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2025 11:50:02 -0800
-X-CSE-ConnectionGUID: K5+ZjnbbSEW4tIyozlpw/A==
-X-CSE-MsgGUID: LXqFzQsrRQ6BVjFcaNwGAg==
+X-CSE-ConnectionGUID: aqBXnwzyTYaYtkj97jvqSQ==
+X-CSE-MsgGUID: WY2DjFE+RT2YJcN7/dm4pg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; 
-   d="scan'208";a="202898039"
+   d="scan'208";a="202898046"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa004.jf.intel.com with ESMTP; 17 Dec 2025 11:50:02 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,14 +50,16 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Gregory Herrero <gregory.herrero@oracle.com>,
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	anthony.l.nguyen@intel.com,
-	bcreeley@amd.com,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net 2/6] i40e: validate ring_len parameter against hardware-specific values
-Date: Wed, 17 Dec 2025 11:49:41 -0800
-Message-ID: <20251217194947.2992495-3-anthony.l.nguyen@intel.com>
+	joshua.a.hay@intel.com,
+	tatyana.e.nikolova@intel.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>
+Subject: [PATCH net 4/6] idpf: fix LAN memory regions command on some NVMs
+Date: Wed, 17 Dec 2025 11:49:43 -0800
+Message-ID: <20251217194947.2992495-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251217194947.2992495-1-anthony.l.nguyen@intel.com>
 References: <20251217194947.2992495-1-anthony.l.nguyen@intel.com>
@@ -69,95 +71,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gregory Herrero <gregory.herrero@oracle.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-The maximum number of descriptors supported by the hardware is
-hardware-dependent and can be retrieved using
-i40e_get_max_num_descriptors(). Move this function to a shared header
-and use it when checking for valid ring_len parameter rather than using
-hardcoded value.
+IPU SDK versions 1.9 through 2.0.5 require send buffer to contain a single
+empty memory region. Set number of regions to 1 and use appropriate send
+buffer size to satisfy this requirement.
 
-By fixing an over-acceptance issue, behavior change could be seen where
-ring_len could now be rejected while configuring rx and tx queues if its
-size is larger than the hardware-dependent maximum number of
-descriptors.
-
-Fixes: 55d225670def ("i40e: add validation for ring_len param")
-Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: 6aa53e861c1a ("idpf: implement get LAN MMIO memory regions")
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index d2d03db2acec..dcb50c2e1aa2 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1422,4 +1422,15 @@ static inline struct i40e_veb *i40e_pf_get_main_veb(struct i40e_pf *pf)
- 	return (pf->lan_veb != I40E_NO_VEB) ? pf->veb[pf->lan_veb] : NULL;
- }
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 44cd4b466c48..5bbe7d9294c1 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -1016,6 +1016,9 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+ 	struct idpf_vc_xn_params xn_params = {
+ 		.vc_op = VIRTCHNL2_OP_GET_LAN_MEMORY_REGIONS,
+ 		.recv_buf.iov_len = IDPF_CTLQ_MAX_BUF_LEN,
++		.send_buf.iov_len =
++			sizeof(struct virtchnl2_get_lan_memory_regions) +
++			sizeof(struct virtchnl2_mem_region),
+ 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
+ 	};
+ 	int num_regions, size;
+@@ -1028,6 +1031,8 @@ static int idpf_send_get_lan_memory_regions(struct idpf_adapter *adapter)
+ 		return -ENOMEM;
  
-+static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
-+{
-+	const struct i40e_hw *hw = &pf->hw;
-+
-+	switch (hw->mac.type) {
-+	case I40E_MAC_XL710:
-+		return I40E_MAX_NUM_DESCRIPTORS_XL710;
-+	default:
-+		return I40E_MAX_NUM_DESCRIPTORS;
-+	}
-+}
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index f2c2646ea298..6a47ea0927e9 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2013,18 +2013,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
- 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
- }
- 
--static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
--{
--	struct i40e_hw *hw = &pf->hw;
--
--	switch (hw->mac.type) {
--	case I40E_MAC_XL710:
--		return I40E_MAX_NUM_DESCRIPTORS_XL710;
--	default:
--		return I40E_MAX_NUM_DESCRIPTORS;
--	}
--}
--
- static void i40e_get_ringparam(struct net_device *netdev,
- 			       struct ethtool_ringparam *ring,
- 			       struct kernel_ethtool_ringparam *kernel_ring,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 8b30a3accd31..1fa877b52f61 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 8 */
- 	if (!IS_ALIGNED(info->ring_len, 8) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_context;
- 	}
-@@ -726,7 +726,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 32 */
- 	if (!IS_ALIGNED(info->ring_len, 32) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_param;
- 	}
+ 	xn_params.recv_buf.iov_base = rcvd_regions;
++	rcvd_regions->num_memory_regions = cpu_to_le16(1);
++	xn_params.send_buf.iov_base = rcvd_regions;
+ 	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
+ 	if (reply_sz < 0)
+ 		return reply_sz;
 -- 
 2.47.1
 
