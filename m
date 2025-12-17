@@ -1,29 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2003385BE;
-	Wed, 17 Dec 2025 08:45:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4034533A9C6;
+	Wed, 17 Dec 2025 08:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765961104; cv=none; b=PKhmAaLuyM36dBhzKQHmG0ILhfh9phGLO1JTMY/uJ0IAJCDEzS789AiCyTkb4Ird0kkrgaVG/UP+yvOOszragfDHEhJscbJ+o51meCqE0BOO+b8WXYUOWsArSb2CV1EH4ee/LMIteJy2XnPFcvGivvamGBiV2KnKeBCId75Vahg=
+	t=1765961108; cv=none; b=F5bVHwH7SldHWC9xESwDrkfkIisT74p0Ss0Gc0jHsA+pf0uv2nUGz61AVDfyZ70szOACwA6O5j+lO0L07bBg8jeo+d4TUzgS6sZqmM/iYgnEwKE0UfFTfg1QVOeUY0mfGOmr5x0iwM4Bh8TuocIi6nznL6ZOHE8WVjyTpZWuBak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765961104; c=relaxed/simple;
-	bh=x/E/deY9vTVLTGF3py+vQE2us8+WcHa4e2RC0cgnHTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UXidaFjMRAZuBcfKjCzkwcBM2BIxauOzfcVRGfcD13Eme0/7OSvl1uFvuVzRQA1Txiry8FKYQ6JqlVBQH8SSrh760ykjmslqT7r9rc1+zUUMt7LM04LyEuOsRPWcR7t5ItUk5Kcq9iu/hVfuGnVWYlPU0Qs4IDB4anqjy3FyCjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UO9Zhr8b; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1765961108; c=relaxed/simple;
+	bh=teKl12skUfQQro3PHPU2N2B6t59q3ign6XHwsZogJDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b39FCMCFds0dsZD48WAcuBhgRVJBotLoz5kIo6p1akNgamZ4bRKcT9MDPtdeXYYvFwHJW4/du6z4hbUiCubK1xeSUqgSEFAqua4tbrZ/T0d2YYgQ4EVBMFoYTIcFcvB2qsB5W9MeVhUwzX3pUjhqRUrYhQgTz+t4DLVW6DcTvkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WH+8tc6/; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UO9Zhr8b"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WH+8tc6/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
-	Content-Type; bh=UseiUIzWQ5jcCpGWT2FDdMdJpS00Sb35hFZExtBF5UM=;
-	b=UO9Zhr8brIQSYJAa6fSNHG4yBSQ1Uz+9Cvmgqnq4g2kQe2Lg7fmgdHhttc0/xf
-	/2aeK+r25mBRPa4efYWYDYQFMJ7D30v2AwjxwELNFog583zHukMPx6JZFEpi4XDv
-	p8TIZ+ZQNNlAFVYp6ebBUPAc+9DoRrAQgtCyFG95NVy2o=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=XW
+	5wK1noLKWpZQP3WA1XwqbvHY8mX+e3T/od0cfU7Ko=; b=WH+8tc6/7o/HdN892y
+	LYW39Zk5dLUQBZz769BSDrsMX16EZiSbXCv4wH/DatAb8ZFsY6bM7aFmtkoJDx3d
+	7XX+UbyTDv3eXoC0Jwu0OG//n6zEkUDuABSg1wRUxRbuzp5HbYr+l0MftXhaRlt2
+	R3d7kTGl7jH/jTKo2SfJYTf2A=
 Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnwYJnbUJpSC+YAw--.48902S4;
-	Wed, 17 Dec 2025 16:44:24 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnwYJnbUJpSC+YAw--.48902S7;
+	Wed, 17 Dec 2025 16:44:25 +0800 (CST)
 From: Xiong Weimin <15927021679@163.com>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -33,125 +34,177 @@ To: Alexei Starovoitov <ast@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Stanislav Fomichev <sdf@fomichev.me>
 Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Implement initial driver for virtio-RDMA devices(kernel), virtio-rdma device model(qemu) and vhost-user-RDMA backend device(dpdk)
-Date: Wed, 17 Dec 2025 16:43:25 +0800
-Message-ID: <20251217084422.4875-1-15927021679@163.com>
+	netdev@vger.kernel.org,
+	xiongweimin <xiongweimin@kylinos.cn>
+Subject: [PATCH 02/14] examples/vhost_user_rdma: implement device and port query commands
+Date: Wed, 17 Dec 2025 16:43:28 +0800
+Message-ID: <20251217084422.4875-4-15927021679@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251217084422.4875-1-15927021679@163.com>
+References: <20251217084422.4875-1-15927021679@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnwYJnbUJpSC+YAw--.48902S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXr4rKrWDGF1DAF4UGw4rKrg_yoW5tFy8pr
-	W2gF9rCrZ8Gr43G3yUW345uF42gFZ3A3y3Crn8G348K3Z5Xr9YvF1q9F15Way7GrZxAF18
-	XFy8Jr92ka4UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUhLnUUUUU=
-X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0ghg6GlCbWhyVAAA3a
+X-CM-TRANSID:_____wDnwYJnbUJpSC+YAw--.48902S7
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZry3GFW5KrW7Cw1rCry8Xwb_yoWrKw15pa
+	4j93savr9rK3WxJwn3XwnF9F1FgrnYyrW7GFs7WFna93W5Jwn5Aay8C3W8KF17GFW2yFyx
+	JF1jqF93GF1ay37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jq89_UUUUU=
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC8wlg6GlCbWkSRAAA3L
 
-Hi all,
+From: xiongweimin <xiongweimin@kylinos.cn>
 
-This testing instructions aims to introduce an emulating a soft ROCE 
-device with normal NIC(no RDMA), we have finished a vhost-user RDMA
-device demo, which can work with RDMA features such as CM, QP type of 
-UC/UD and so on.
+Added RDMA control command handlers for:
+- VHOST_RDMA_CTRL_ROCE_QUERY_DEVICE
+- VHOST_RDMA_CTRL_ROCE_QUERY_PORT
 
-There are testing instructions of the demo:
+Key features:
+1. Device capability reporting:
+   - Maximum MR size and page size capabilities
+   - Queue Pair (QP) limits (max WR, SGE, CQE)
+   - Resource limits (MR, PD, AH counts)
+   - RDMA protocol capabilities
 
-1.Test Environment Configuration
-Hardware Environment
-Servers: 1 identically configured servers
+2. Port attribute reporting:
+   - GID table length and port state
+   - MTU settings (active, physical, maximum)
+   - Link speed and width capabilities
+   - Error counters and security attributes
 
-CPU: HUAWEI Kunpeng 920 (96 cores)
+3. Response validation:
+   - CHK_IOVEC macro ensures response buffer safety
+   - Fixed attribute values for standard RDMA v2 compliance
+   - Structured response formats matching IB specification
 
-Memory: 3T DDR4
+Signed-off-by: Xiong Weimin <xiongweimin@kylinos.cn>
+Change-Id: I17ac65a0801ebf5e0b0d83a50877004a54840365
+---
+ examples/vhost_user_rdma/vhost_rdma_ib.c | 27 ++++++++++++
+ examples/vhost_user_rdma/vhost_rdma_ib.h | 56 +++++++++++++++++++++++-
+ 2 files changed, 82 insertions(+), 1 deletion(-)
 
-NIC: TAP (paired virtio-net device for RDMA)
-
-Software Environment
-Server Host OS: 6.4.0-10.1.0.20.oe2309.aarch64
-
-Kernel: linux-6.16.8 (with kernel-vrdma module)
-
-QEMU: 9.0.2 (compiled with vhost-user-rdma virtual device support)
-
-DPDK: 24.07.0-rc2
-
-Dependencies:
-
-	rdma-core
-	
-	rdma_rxe
-
-	libibverbs-dev
-	
-2. Test Procedures
-a. Starting DPDK with vhost-user-rdma first: 
-1). Configure Hugepages
-   echo 2048 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-2). app start  
-  /DPDKDIR/build/examples/dpdk-vhost_user_rdma -l 1-4 -n 4 --vdev "net_tap0" -- --socket-file /tmp/vhost-rdma0
-
-b. Booting guest kernel with qemu, command line: 
-...
--netdev tap,id=hostnet1,ifname=tap1,script=no,downscript=no 
--device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:14:72:30,bus=pci.3,addr=0x0.0,multifunction=on 
--chardev socket,path=/tmp/vhost-rdma0,id=vurdma 
--device vhost-user-rdma-pci,bus=pci.3,addr=0x0.1,page-per-vq=on,disable-legacy=on,chardev=vurdma
-...
-
-c. Guest Kernel Module Loading and Validation
-# Load vhost_rdma kernel module
-sudo modprobe vrdma
-
-# Verify module loading
-lsmod | grep vrdma
-
-# Check kernel logs
-dmesg | grep vhost_rdma
-
-# Expected output:
-[    4.935473] vrdma_init_device: Initializing vRDMA device with max_cq=64, max_qp=64
-[    4.949888] [vrdma_init_device]: Successfully initialized, last qp_vq index=192
-[    4.949907] [vrdma_init_netdev]: Found paired net_device 'enp3s0f0' (on 0000:03:00.0)
-[    4.949924] Bound vRDMA device to net_device 'enp3s0f0'
-[    5.026032] vrdma virtio2: vrdma_alloc_pd: allocated PD 1
-[    5.028006] Successfully registered vRDMA device as 'vrdma0'
-[    5.028020] [vrdma_probe]: Successfully probed VirtIO RDMA device (index=2)
-[    5.028104] VirtIO RDMA driver initialized successfully
-
-d. Inside VM, one rdma device fs node will be generated in /dev/infiniband: 
-[root@localhost ~]# ll -h /dev/infiniband/
-total 0
-drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-ibdev
-drwxr-xr-x. 2 root root       60 Dec 17 11:24 by-path
-crw-rw-rw-. 1 root root  10, 259 Dec 17 11:24 rdma_cm
-crw-rw-rw-. 1 root root 231, 192 Dec 17 11:24 uverbs0
-
-e. The following are to be done in the future version: 
-1). SRQ support
-2). DPDK support for physical RDMA NIC for handling the datapath between front and backend
-3). Reset of VirtQueue
-4). Increase size of VirtQueue for PCI transport
-5). Performance Testing
-
-f. Test Results
-1). Functional Test Results:
-Kernel module loading	PASS	Module loaded without errors
-DPDK startup	        PASS	vhost-user-rdma backend initialized
-QEMU VM launch	        PASS	VM booted using RDMA device
-Network connectivity	PASS	Host-VM communication established
-RDMA device detection	PASS	Virtual RDMA device recognized
-
-f.Test Conclusion
-1). Full functional compliance with specifications
-2). Stable operation under extended stress conditions
-
-Recommendations:
-1). Optimize memory copy paths for higher throughput
-2). Enhance error handling and recovery mechanisms
+diff --git a/examples/vhost_user_rdma/vhost_rdma_ib.c b/examples/vhost_user_rdma/vhost_rdma_ib.c
+index 5535a8696b..edb6e3fea3 100644
+--- a/examples/vhost_user_rdma/vhost_rdma_ib.c
++++ b/examples/vhost_user_rdma/vhost_rdma_ib.c
+@@ -537,12 +537,39 @@ vhost_rdma_query_device(struct vhost_rdma_device *dev, CTRL_NO_CMD,
+ 	return 0;
+ }
+ 
++static int
++vhost_rdma_query_port(__rte_unused struct vhost_rdma_device *dev,
++					CTRL_NO_CMD,
++					struct iovec *out)
++{
++	struct vhost_rdma_ack_query_port *rsp;
++
++	CHK_IOVEC(rsp, out);
++
++	rsp->gid_tbl_len = VHOST_MAX_GID_TBL_LEN;
++	rsp->max_msg_sz = 0x800000;
++	rsp->active_mtu = VHOST_RDMA_IB_MTU_256;
++	rsp->phys_mtu = VHOST_RDMA_IB_MTU_256;
++	rsp->port_cap_flags = 65536UL;
++	rsp->bad_pkey_cntr = 0UL;
++	rsp->phys_state = VHOST_RDMA_IB_PORT_PHYS_STATE_POLLING;
++	rsp->pkey_tbl_len = 1UL;
++	rsp->qkey_viol_cntr = 0UL;
++	rsp->state = VHOST_RDMA_IB_PORT_DOWN;
++	rsp->active_speed = 1UL;
++	rsp->active_width = VHOST_RDMA_IB_WIDTH_1X;
++	rsp->max_mtu = VHOST_RDMA_IB_MTU_4096;
++
++	return 0;
++}
++
+ /* Command handler table declaration */
+ struct {
+ 	int (*handler)(struct vhost_rdma_device *dev, struct iovec *in, struct iovec *out);
+ 	const char *name;  /* Name of the command (for logging) */
+ } cmd_tbl[] = {
+ 	DEFINE_VIRTIO_RDMA_CMD(VHOST_RDMA_CTRL_ROCE_QUERY_DEVICE, vhost_rdma_query_device),
++	DEFINE_VIRTIO_RDMA_CMD(VHOST_RDMA_CTRL_ROCE_QUERY_PORT, vhost_rdma_query_port),
+ };
+ 
+ /**
+diff --git a/examples/vhost_user_rdma/vhost_rdma_ib.h b/examples/vhost_user_rdma/vhost_rdma_ib.h
+index 4ac896d82e..664067b024 100644
+--- a/examples/vhost_user_rdma/vhost_rdma_ib.h
++++ b/examples/vhost_user_rdma/vhost_rdma_ib.h
+@@ -204,7 +204,44 @@ enum vhost_user_rdma_request {
+ 	VHOST_USER_SET_CONFIG = 25,
+ 	VHOST_USER_MAX
+ };
+-/** @} */
++
++enum vhost_rdma_ib_port_state {
++	VHOST_RDMA_IB_PORT_NOP		= 0,
++	VHOST_RDMA_IB_PORT_DOWN		= 1,
++	VHOST_RDMA_IB_PORT_INIT		= 2,
++	VHOST_RDMA_IB_PORT_ARMED		= 3,
++	VHOST_RDMA_IB_PORT_ACTIVE		= 4,
++	VHOST_RDMA_IB_PORT_ACTIVE_DEFER	= 5
++};
++
++enum vhost_rdma_ib_port_phys_state {
++	VHOST_RDMA_IB_PORT_PHYS_STATE_SLEEP = 1,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_POLLING = 2,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_DISABLED = 3,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_PORT_CONFIGURATION_TRAINING = 4,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_LINK_UP = 5,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_LINK_ERROR_RECOVERY = 6,
++	VHOST_RDMA_IB_PORT_PHYS_STATE_PHY_TEST = 7,
++};
++
++enum ib_port_width {
++	VHOST_RDMA_IB_WIDTH_1X	= 1,
++	VHOST_RDMA_IB_WIDTH_2X	= 16,
++	VHOST_RDMA_IB_WIDTH_4X	= 2,
++	VHOST_RDMA_IB_WIDTH_8X	= 4,
++	VHOST_RDMA_IB_WIDTH_12X	= 8
++};
++
++enum ib_port_speed {
++	VHOST_RDMA_IB_SPEED_SDR	= 1,
++	VHOST_RDMA_IB_SPEED_DDR	= 2,
++	VHOST_RDMA_IB_SPEED_QDR	= 4,
++	VHOST_RDMA_IB_SPEED_FDR10 = 8,
++	VHOST_RDMA_IB_SPEED_FDR	= 16,
++	VHOST_RDMA_IB_SPEED_EDR	= 32,
++	VHOST_RDMA_IB_SPEED_HDR	= 64,
++	VHOST_RDMA_IB_SPEED_NDR	= 128,
++};
+ 
+ /**
+  * @brief QP capabilities structure
+@@ -622,6 +659,23 @@ struct vhost_rdma_ctrl_hdr {
+ 	uint8_t cmd;
+ };
+ 
++struct vhost_rdma_ack_query_port {
++	enum vhost_rdma_ib_port_state	state;
++	enum vhost_rdma_ib_mtu		    max_mtu;
++	enum vhost_rdma_ib_mtu		    active_mtu;
++	uint32_t			phys_mtu;
++	int			        gid_tbl_len;
++	uint32_t			port_cap_flags;
++	uint32_t			max_msg_sz;
++	uint32_t			bad_pkey_cntr;
++	uint32_t			qkey_viol_cntr;
++	uint16_t			pkey_tbl_len;
++	uint16_t			active_speed;
++	uint8_t			    active_width;
++	uint8_t			    phys_state;
++	uint32_t			reserved[32];	/* For future extensions */
++}__rte_packed;
++
+ /**
+  * @brief Convert IB MTU enum to byte size
+  * @param mtu The MTU enum value
+-- 
+2.43.0
 
