@@ -1,189 +1,142 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365A634FF56
-	for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 13:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFB3359FB8;
+	Wed, 17 Dec 2025 13:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765976742; cv=none; b=SDk2bUw6xhoZudfqGz16Bb8fZNJplc3EoVpa1MOqRBnCnCBLp5L/7x9z/SwBjCFVQQFDCb+hnRQYqkUI4MQrdR7vEfJtZDsjwBDfon/gCE/B4ndN06zEdRrqFchp1Mdjl7pJLkEwL2N6iLHn+cHBr3Cd7exwmP8SuK8r8oFaEr8=
+	t=1765976879; cv=none; b=FKohPsrYw+pDl+0V9RhuxFRtaOayo60O0GXKsSrQdn95yuR5OxfnUAK4l/xmNV3aGym2c1lGJAI2pJ7lma3vqtjdFXgjHjkz6XXliCwwtFCUZb071ukJSqQoOBXxCujtjHVf+rgCyLKpQaldM1DfBal+hKhVEXrvUtZ0MXvNSa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765976742; c=relaxed/simple;
-	bh=+w1uTCwONcBVyp5eI2/M7TmQteqZQCqAMEPWafZNv+U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SJ5zblGu8HdCToeejSfpF+P1YaKFp8v8jLvleIl65P6KIZDXr2/+gBUq/XWCOernJxG/E6dF3clknSOz8HiwOBOcLGuZn+CmcD2xmezz5f9zNDjkAFEJ9a1kbQJRzQXoPRImpqegtoHiQGHIw49tr+oVWjeRpBU9jCDY7CKOf7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DY29QPkB; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765976879; c=relaxed/simple;
+	bh=lP4PhQCxCm6BBgsF/P7b1oNE6B09HGWn+J/scX2pYVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fi+FnbPTVWd2yqPPORBPr02pwaSDslARU93o7XCmnPirLEZohUKBgdcA+rmJPPoFSzGkNV46hnNZ47lrpyJRS74dVnvWpzEZX7xqmovVjkQgeCFRQG2Tfdh2hjoR0aEZEkOKAtpVMhqlyMTjV7RTnPQ3XTQGBqQnhw5KAh6U1Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=wHgMmUg2; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DY29QPkB"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b79f698aa91so108654766b.1
-        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 05:05:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765976738; x=1766581538; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TypY7h1/+sYivtFKhfjf73cUHfAF4nkZLmlfMoZ28/Q=;
-        b=DY29QPkBGOfzm45hNEpcicqlHoTjKAsaKLzTdCfE1pr006gY5KrgDQ3gpU5qApZX7M
-         Vhv+F29Kmy1FAvxxZbmZisOz12JtJI88pZkabiznk5Z0VszYsuPeT92TTwKP5DgpmWhF
-         h2YsbiF+WIrAFft2aokYNJHPUe02wI3xoDJiwHNziR1MMLJDoCwuPrEG5m14CDT02IZV
-         +uDd3/VNMjGS0OHnQ0KtpKoRyJz6pSklFttu49PIfhJTX7lVj4UQwUlSWxuMhh/cHMd6
-         wX9dNKqGX2gWmJhTS83+aQEwTKZD3pxoYAA/VvqKvClABRKnKSVGqVjceSgbhJ5qk/Ts
-         F/KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765976738; x=1766581538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TypY7h1/+sYivtFKhfjf73cUHfAF4nkZLmlfMoZ28/Q=;
-        b=DqdhwkKG2am1wDjBJrC3oRxTQDHiHwFumm1tIl8v71CN1keqH4+tUumlr1o0p2V9f5
-         G1miRiJtGCpEfojtf+8TF+l1UOK1quM8pTqr1AkxL0IpYwzxdfyp4ezli/oxT1yopzuu
-         uWN7nQCm/ZskRG9aLqJIjjMjY0OHH59mEH9oMhOr4KmKjAIQN2zxQchcK52BsK0UUdiu
-         S6ZVt9Eb+279MmFg/KrD7gUDPA8lEbSrXYSwkrGs4+nHkFFG3Jy8LKm4QgKqjsfXG0Jr
-         u/J2KgLDxA9QVNTlZloyUmTc7F0uaO/Q4eS3Irs2vR44FGDiVwI3KeC2IihrytB7hvxv
-         /MYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmGUmPtjgwnzzJkG9aKiLRYtC8BthOot16iPoRzHrRiSXoLeLIVIlDxP0ACvj/3vj6FzG9FyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfmIl5ipRk8tKrJ7DrD9uwv1uq5JIxrDtCR8RA7u7mwY7R2FtG
-	pCjHMNPv/J5YbfUc2N6e+Pd0/y3gZp+JSY1o1LgNVqveOCpNvNDDyEs8NyzeuS5kM70ZTLtfvmR
-	Ooy0nd3chAkLVqh65yC7cyy/bP+um5MA=
-X-Gm-Gg: AY/fxX7E/lifzxZliH+622C1x8fY4ZtmLytVUGXD2RmoMSIgbMxWqak4icwPt3s8st+
-	w6H560MGbDoeBnjHBq6ux/YoTErLmXsuQDOhNVcr9FwZS1bBpzva+XoCMLpevweW3v5UExirtCr
-	SJPpOyHI3qh7QRIi3M5vNfAk+XqzLxA+vDcUOcM+qf3gy/5LRtfEvzmRjhHHmUH+GAviXcnbfYN
-	HpDEf9f26gmipzcIzHR5krd3N58xt1uUPexGVrs5mSj+najSW7xhie3a0kNWTzbiUBxXHUm
-X-Google-Smtp-Source: AGHT+IFazB3f4/1bhVy2oXsu6BrlIpTYELoVLleyYFPAoLjBMbc2b6in36ubjUTMEhmfp5i3UoCkHuCsyiXdhN/7b88=
-X-Received: by 2002:a17:907:9689:b0:b73:8bdb:9608 with SMTP id
- a640c23a62f3a-b7d235b1605mr1000580666b.2.1765976738187; Wed, 17 Dec 2025
- 05:05:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="wHgMmUg2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=hrA26kJxYisBVzZPyZptSjyhMEOXDeL2AaDHESx8+qw=; b=wHgMmUg2/vORK81JwuoyhzjOEZ
+	bx7IEfQy4kElFdCWLfY87m85atAtQluQSanj3fLodg5dZbhLhc+jI4b+RbyKXUlULvzPMc8IONZbm
+	IJESalaZun0iXmt220jwIfKgCMK1SL6NmvIp8pmxo9KcQt1GReRn5f9J7Y55tiTiRWCk5V6uqIBul
+	dpv/QF1mWZPogKNiddx7kTdq7kcjP/WA66hJhpq2LkK7gKvw3GbfoD7CAroFQDMhUiVrGO1R99lEy
+	te6bhguRhYgMKLHAXEMbdjXGzIRH6nCNwNJ6diR+DDPK2gBxdiY6rmc/3T6RnCcVeTQgZsloiv06i
+	Gzq/E5jQ==;
+Received: from [122.175.9.182] (port=62422 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vVrFx-0000000FG2C-0TAi;
+	Wed, 17 Dec 2025 08:07:53 -0500
+From: Parvathi Pudi <parvathi@couthit.com>
+To: nm@ti.com,
+	vigneshr@ti.com,
+	afd@ti.com,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info
+Cc: andrew@lunn.ch,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	danishanwar@ti.com,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	parvathi@couthit.com
+Subject: [RESEND PATCH v3 0/2] Add support for ICSSM Ethernet on AM57x, AM437x, and AM335x
+Date: Wed, 17 Dec 2025 18:34:37 +0530
+Message-ID: <20251217130715.1327138-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217124659.19274-1-pioooooooooip@gmail.com>
- <20251217124659.19274-2-pioooooooooip@gmail.com> <ebb7cb16-781b-4f33-b7c0-3c5dd383913c@kernel.org>
-In-Reply-To: <ebb7cb16-781b-4f33-b7c0-3c5dd383913c@kernel.org>
-From: =?UTF-8?B?44GP44GV44GC44GV?= <pioooooooooip@gmail.com>
-Date: Wed, 17 Dec 2025 22:05:27 +0900
-X-Gm-Features: AQt7F2qrW6VynHp9kFV2IJSZxuez5PtnNmmRyq0ft-lTrP3B_4NuH3Kwr9fcVq4
-Message-ID: <CAFgAp7gP_yk7nF_AN+B_DRDJW--ytCKKQToG2m6y4h_SLBBaLA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] nfc: llcp: avoid double release/put on LLCP_CLOSED
- in nfc_llcp_recv_disc()
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-nfc@lists.01.org, Paolo Abeni <pabeni@redhat.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Krzysztof,
+Hi,
 
-Sorry about that =E2=80=94 my previous response might not have made it to t=
-he
-list/thread.
-Replying here to address your concerns before sending v3.
+This series adds support for ICSSM Ethernet on Texas Instruments AM57x,
+AM437x and AM335x platforms.
 
-1) DM_DISC reply after LLCP_CLOSED
-This is not a new behavior introduced by my change. In the old code, the
-LLCP_CLOSED branch did release_sock() and nfc_llcp_sock_put(), but it did n=
-ot
-return/goto, so execution continued and still reached nfc_llcp_send_dm(...,
-LLCP_DM_DISC) afterwards. The disc patch only removes the redundant
-CLOSED-branch
-cleanup so release_sock()/nfc_llcp_sock_put() are performed exactly once vi=
-a the
-common exit path, while keeping the existing DM_DISC reply behavior.
+The AM57x and AM437x IDKs support two PRU-ICSS instances, each consisting
+of two PRU cores, with each PRU-ICSS instance capable of handling two
+Ethernet ports. For the AM57x platforms, the PRU-ICSS2 node has been added
+to the am57xx-idk-common.dtsi, while for the AM437x platform, the PRU-ICSS1
+node has been added to the am437x-idk-evm.dts.
 
-2) Initial refcount / double free concern
-nfc_llcp_recv_disc()/recv_hdlc() take an extra reference via nfc_llcp_sock_=
-get()
-(sock_hold()). The issue is the mismatched put/unlock: the CLOSED branch dr=
-ops
-the reference and releases the lock, and then the common exit path does the=
- same
-again. This is a refcount/locking imbalance regardless of whether it immedi=
-ately
-frees the object, and it may become a UAF depending on timing/refcounting.
+The AM335x ICE features a single PRU-ICSS instance. A new device tree overlay
+source file, am335x-icev2-prueth-overlay.dtso, has been introduced to define the
+PRU-ICSS node for the AM335x platform.
 
-Regarding your formatting notes: I will wrap commit messages per
-submitting-patches,
-use a 12-char sha in Fixes, and run scripts/checkpatch.pl (and --strict) an=
-d fix
-reported warnings before sending v3.
+This is v3 of the patch series [v1]. It addresses comments made on [v2].
+This series is based on the latest next-20251217 linux-next.
 
-Best regards,
-Qianchang
+Changes from v2 to v3 :
 
-On Wed, Dec 17, 2025 at 9:57=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 17/12/2025 13:46, Qianchang Zhao wrote:
-> > nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold(=
-).
-> >
-> > In nfc_llcp_recv_disc(), when the socket is already in LLCP_CLOSED stat=
-e, the
-> > code used to perform release_sock() and nfc_llcp_sock_put() in the CLOS=
-ED branch
-> > but then continued execution and later performed the same cleanup again=
- on the
-> > common exit path. This results in refcount imbalance (double put) and u=
-nbalanced
->
-> Please wrap commit message according to Linux coding style / submission
-> process (neither too early nor over the limit):
-> https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/su=
-bmitting-patches.rst#L597
->
-> > lock release.
-> >
-> > Remove the redundant CLOSED-branch cleanup so that release_sock() and
-> > nfc_llcp_sock_put() are performed exactly once via the common exit path=
-, while
-> > keeping the existing DM_DISC reply behavior.
-> >
-> > Fixes: d646960f7986fefb460a2b062d5ccc8ccfeacc3a ("NFC: Initial LLCP sup=
-port")
->
-> 12 char sha.
->
-> Please run scripts/checkpatch.pl on the patches and fix reported
-> warnings. After that, run also 'scripts/checkpatch.pl --strict' on the
-> patches and (probably) fix more warnings. Some warnings can be ignored,
-> especially from --strict run, but the code here looks like it needs a
-> fix. Feel free to get in touch if the warning is not clear.
->
->
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-> > ---
-> >  net/nfc/llcp_core.c | 5 -----
-> >  1 file changed, 5 deletions(-)
-> >
-> > diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> > index beeb3b4d2..ed37604ed 100644
-> > --- a/net/nfc/llcp_core.c
-> > +++ b/net/nfc/llcp_core.c
-> > @@ -1177,11 +1177,6 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_l=
-ocal *local,
-> >
-> >       nfc_llcp_socket_purge(llcp_sock);
-> >
-> > -     if (sk->sk_state =3D=3D LLCP_CLOSED) {
-> > -             release_sock(sk);
-> > -             nfc_llcp_sock_put(llcp_sock);
->
-> You did not answer my previous review. You also did not answer my
-> concerns from earlier private report. Please respond before you send
-> again v3.
->
-> > -     }
-> > -
-> >       if (sk->sk_state =3D=3D LLCP_CONNECTED) {
-> >               nfc_put_device(local->dev);
-> >               sk->sk_state =3D LLCP_CLOSED;
->
->
-> Best regards,
-> Krzysztof
+*) Addressed Andrew Davis's comment by placing PRUETH nodes in a new overlay file
+am335x-icev2-prueth-overlay.dtso.
+*) Rebased the series on latest linux-next.
+
+Changes from v1 to v2 :
+
+*) Addressed Andrew Lunn's comment on patch 1 of the series.
+*) Addressed MD Danish Anwar comment on patch 1 of the series.
+*) Rebased the series on latest linux-next.
+
+[v1] https://lore.kernel.org/all/20251013125401.1435486-1-parvathi@couthit.com/
+[v2] https://lore.kernel.org/all/20251103124820.1679167-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Roger Quadros (2):
+  arm: dts: ti: Adds device tree nodes for PRU Cores, IEP and eCAP
+    modules of PRU-ICSS2 Instance.
+  arm: dts: ti: Adds support for AM335x and AM437x
+
+ arch/arm/boot/dts/ti/omap/Makefile            |   5 +
+ .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 190 ++++++++++++++++++
+ arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 +
+ arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 +
+ arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 137 ++++++++++++-
+ arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     |  11 +
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts      |   8 +-
+ arch/arm/boot/dts/ti/omap/am572x-idk.dts      |  10 +-
+ arch/arm/boot/dts/ti/omap/am574x-idk.dts      |  10 +-
+ .../boot/dts/ti/omap/am57xx-idk-common.dtsi   |  61 ++++++
+ 10 files changed, 444 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+
+-- 
+2.43.0
+
