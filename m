@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19B432826F
-	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 11:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D19832C94D;
+	Thu, 18 Dec 2025 12:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766058797; cv=none; b=HXSvQemHMkwuFK1DfnyCNAt2FitdbqUX3zDbws5n3CHxjl2AJIEUFP9Ywt3aHnVC/r/qEemkoNhfxYjzG1TBE6cvoBvyYXD92Nhe/Zine86mKnFOOpu5C7sbDuCJBf2QyB7mCfTBxCJ8NJDkAzW58Rar8UbqIjXW1XO2lJtaicI=
+	t=1766059406; cv=none; b=gtFDYUTVW2hEoxiXEhwuqcIPAq0Z8eoOJUyAtGxlAMSYYIbI6ozG64uDk5jSX9ckr7EDuOnRKAzDMS3EdFKy5TCeRNRabgA/uy96BsPWhSS3/iceud1LNyaIHIX1lwqxvnEzwDYH3WfyDWjAcl0qDzxhT0GJVTg3G5NxCTFcRmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766058797; c=relaxed/simple;
-	bh=CBMSe7oWkvz04hoVz9hhsfhH+MQq8eHNt2suhlpqMbU=;
+	s=arc-20240116; t=1766059406; c=relaxed/simple;
+	bh=thOk0/zAMLrDRHBxo9vDLTeHTD3U0lOGd/me0VBpiso=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=k+1eqg820pvbVYcwWHkyxZcBWkpE/ztJzPDFe/3sdSYsgC1NGrT65iLhWNZJNwgsR5rqOxeu0C9Isq8vyZfhKBgvOvZtce0tHegAEpVMeaE2cDwoklF5q9hn+WZTEhKfj8m0ueyKMdn+LQ7juopmJheuTQMbCzdaHuwhxuyUGTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UH0Q066l; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=oRmEX/T/N0qC29NrHV5xSnjgQaEvWPIPy2DW9IBX2VEgRlWUACO5JdmgQyxCeFAUkp/ZpGYuHkvTL9C/C50kAQ2FEcowf8D3gulu5Hw4EMxm4AnmBX4PO8MaUYj+AP7VWNOLC3DLLjy5iwiSWS5R3T+sYtuZ4WUMr6zET0xnfAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA+EwHw5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UH0Q066l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4472EC4CEFB;
-	Thu, 18 Dec 2025 11:53:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA+EwHw5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0745C4CEFB;
+	Thu, 18 Dec 2025 12:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766058797;
-	bh=CBMSe7oWkvz04hoVz9hhsfhH+MQq8eHNt2suhlpqMbU=;
+	s=k20201202; t=1766059405;
+	bh=thOk0/zAMLrDRHBxo9vDLTeHTD3U0lOGd/me0VBpiso=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UH0Q066lLVb/GgLPa/2jqs97WVjonztwz/CfHhu3axkRsddDtT+BuJ5ocawhJuNpd
-	 gscin6oN8E3fnvbS/TrZzo6s8DBKHQKTuRypYZJHvvT1/J61O5WATcvwE9JqChqMCl
-	 i56ekFnfUiul9Q/tkXzf9Qf6brd07k1L92A7ezChPrc4WL19QWgC72oGy2qNq2ViXZ
-	 aTKHZCZIQSdRBpO4nEdGQ1crAsyL0niQf3/qA1EGu9rl90UfinO9NLSDS9eLCQ83Js
-	 aR+gSFI4eY8AtPTemxhbVWUucMoSkv9IO0i8CYpxFb4oRPrqu6yf81OS/VEzoF9RiY
-	 eKdhm+jKTcIqw==
+	b=nA+EwHw5bQPFx7L/l2WzYpc5pmQDvYGTcTDp9Xi8OfIzUU0j7/CE9s294tsDG1n4p
+	 n0szxpP3mJzQTNImgAf5fhEU3LpIHRxYHAmb37cDNFek5aqZKGmfZHgBYDU5q3JNPO
+	 07+REwT79EDhbyEB2cpLjMdxgKVW6Zzz3LrQavU3yCV/NrbuOUuzZSHZ1izz9W+cxu
+	 cpKcKEAKkDbFsNscam89j74UvD1zuq4K2mMTVcieJpIhp9yvqBWI3PzF4xJhzaCEUh
+	 Kj8O6pwZCqSL5mtQ8QQMPfp+TvEvwbTasWxzBmlhlj1HpIQXzP6UxFvAnTD0k7R00p
+	 rzqFi97n1jOZQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2BCB380A945;
-	Thu, 18 Dec 2025 11:50:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 791F8380A945;
+	Thu, 18 Dec 2025 12:00:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ethtool: Avoid overflowing userspace buffer on stats
- query
+Subject: Re: [PATCH net v4 0/4] net: dsa: lantiq: a bunch of fixes
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176605860680.2917136.4856127251413117124.git-patchwork-notify@kernel.org>
-Date: Thu, 18 Dec 2025 11:50:06 +0000
-References: <20251208121901.3203692-1-gal@nvidia.com>
-In-Reply-To: <20251208121901.3203692-1-gal@nvidia.com>
-To: Gal Pressman <gal@nvidia.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- andrew@lunn.ch, horms@kernel.org, dtatulea@nvidia.com, tariqt@nvidia.com
+ <176605921530.2920417.8697174687622339766.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Dec 2025 12:00:15 +0000
+References: <cover.1765241054.git.daniel@makrotopia.org>
+In-Reply-To: <cover.1765241054.git.daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: hauke@hauke-m.de, andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ravi@prevas.dk, yweng@maxlinear.com, john@phrozen.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Mon, 8 Dec 2025 14:19:01 +0200 you wrote:
-> The ethtool -S command operates across three ioctl calls:
-> ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
-> ETHTOOL_GSTATS for the values.
+On Tue, 9 Dec 2025 01:27:42 +0000 you wrote:
+> This series is the continuation and result of comments received for a fix
+> for the SGMII restart-an bit not actually being self-clearing, which was
+> reported by by Rasmus Villemoes.
 > 
-> If the number of stats changes between these calls (e.g., due to device
-> reconfiguration), userspace's buffer allocation will be incorrect,
-> potentially leading to buffer overflow.
+> A closer investigation and testing the .remove and the .shutdown paths
+> of the mxl-gsw1xx.c and lantiq_gswip.c drivers has revealed a couple of
+> existing problems, which are also addressed in this series.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ethtool: Avoid overflowing userspace buffer on stats query
-    https://git.kernel.org/netdev/net/c/7b07be1ff1cb
+  - [net,v4,1/4] net: dsa: lantiq_gswip: fix order in .remove operation
+    https://git.kernel.org/netdev/net/c/377d66fa8665
+  - [net,v4,2/4] net: dsa: mxl-gsw1xx: fix order in .remove operation
+    https://git.kernel.org/netdev/net/c/8e4c0f08f6be
+  - [net,v4,3/4] net: dsa: mxl-gsw1xx: fix .shutdown driver operation
+    https://git.kernel.org/netdev/net/c/651b253b8037
+  - [net,v4,4/4] net: dsa: mxl-gsw1xx: manually clear RANEG bit
+    https://git.kernel.org/netdev/net/c/7b103aaf0d56
 
 You are awesome, thank you!
 -- 
