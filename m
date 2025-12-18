@@ -1,133 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12427332ECB;
-	Thu, 18 Dec 2025 21:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D440113D539
+	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 21:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766094206; cv=none; b=T6Y3n3Xw+dMXhcwINqF8IWJd8JQnZDqdURCnnxJuJNOeHS64HOyharvZYL1x6DfnLSMDt+afAKjC+T1y+sjLIAKABD13kFHCOS5uqh0ntPXyyr/Ul7DMKxgUTQv5ZwtTfoqZr4ANQsWAAjFuSVqNJdZKypRB/ZnArDyCAKK6LqQ=
+	t=1766095196; cv=none; b=F6Nory7i0wrfX+ViGLaursHHEUetTME/aY4/FLcypbfqiZBZXiQQcS/WJkfHGpgFbZApEsR0kIXlkpgL/zeH8rsDX2Nv2VwDDYV+kzAvujcR5aEc8KhqJ/vhLWa4/6tz2KlHGst4hbNs5T3SkagBmm5YLKifXiG920ESNv9OTlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766094206; c=relaxed/simple;
-	bh=BRaSFUALDAenYjZvPbVGgRX4WEahlNYz80Rfl+B6ISc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RrxBrvPJ36d6U2YZD205BVxlmqUR4MF5C0AzqPcqq7UAisYHU9bbbxO8UcX5OfjrLSQLeqoZEHnQG8H1NihY5TIhlCiSHAXZnUWJwGStOLY9jL4U2c93ZVuXZN+ZvWxwOL2IADceu3KpVbch9JZW2v3r1giJUKkw8x0MWbyRMGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7eNDPVP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766095196; c=relaxed/simple;
+	bh=XKkT2tZz7eWrLkWjuPs0kYDLhUmTVv+sxfAAI2qI3aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NgEX3AHGZXLYCrf1u+zQ6LIJfh1wGQuowjFp2hL6BmySIYgRrhEA3KI3KibABPgihmO0WBo9JcKs0DX6cxjkvgU/9SZQOgQcr/Ratuan8NA5DkdF2rXnEe3GqCW6BWWodPU52kEXZKCOz3lR6Lh0dNphn7eILU9cLHXuhA8nbO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDSEvCwo; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7eNDPVP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E02C116D0;
-	Thu, 18 Dec 2025 21:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766094205;
-	bh=BRaSFUALDAenYjZvPbVGgRX4WEahlNYz80Rfl+B6ISc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K7eNDPVPaqNxeefb6xOXgXi9Yy/aRTOhC2ntsaCci5BB7i5sM/pwxs2lxPTpUZXcq
-	 MXFhUD0Yit1Yzj8f4P7yDpOtRDq22j987ViSEQjGQSeLVamvBBrKHpAo5kUZQ1VNnJ
-	 fnRj1TcxvBh5TPJ2j2BpA5UxJfRaa0q8Fm5GN80sXcIgq7wPWATSY8D7m/tFP0ontb
-	 zo8on1RSiRmTwG9lNS7RmZmS244/KvbUBUxTh8/4xjfulQB/vRycoDPq3tGPZ+hKae
-	 FvRxZct9zOs1h9Y6WH7sxaXMNrr2xs9TQXkwlOI0kHcy1Dc5npFC5EVIhMzM+H9Nq0
-	 nBMkmPvz74Cvw==
-Date: Thu, 18 Dec 2025 22:43:20 +0100
-From: Alejandro Colomar <alx@kernel.org>
-To: Alyssa Ross <hi@alyssa.is>
-Cc: linux-man@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] man/man7/rtnetlink.7: document ifi_change
-Message-ID: <pni77nbzp4wi5p6yhe6j25bnyynebp66gujb2h5hknox3rlcwp@wz3smeklju22>
-References: <20251218185452.88205-1-hi@alyssa.is>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDSEvCwo"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38107fadda2so8873791fa.1
+        for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 13:59:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766095193; x=1766699993; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t/sjp0jU275es5lIyrSH+clAsUhfyndmb5HbMmt8PNE=;
+        b=CDSEvCwo/RmhvQBSD8MBhkABZQrRU5MH1ISYQPvmoA/6IpisOCDm+l9tjrnSs9Bygf
+         JWIfSpTu7APfUU4qyOihTtWOyrnLuETicJLfYaddKRXCg9UW9tdkFg2Ta164NC/e5yHb
+         0bdVVXVzfJU8knNwmAur+CVYHfdJY6A9aL8OIpqmCH0Pk5WhBxFx2h1OzWhEJPOIlnIE
+         iWLFp7M7ff/pnuKGJWom/nPusu9uH+2JB+meiQ1EGy2sDCdVSpO29ITYvRY7U+FFAO+7
+         KFmAjgk52hXzliC7zwO9WNdehg+xlpDJVv7oKBtvIYoC3yFWpBwSZ0Y3RUg8ZKIpj5HE
+         Zp0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766095193; x=1766699993;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=t/sjp0jU275es5lIyrSH+clAsUhfyndmb5HbMmt8PNE=;
+        b=TIa542+p7700I2doFwGzO4KZbcqsq+e/3wWrI6qlM04QsUjrDRslVEBjkz2z8fAJ0Y
+         mHHSQP9jc6+ebqsHe6KNm8OXIxeJKV616/yd2PgxdjJx8spcdRffQvcMrMZ+nMfAzjea
+         Xi3oB/NKXVIymtc61pNzOi4iAkEnSumZCbHfB0661CWrgcQDlkItAAX2hYUseho34a6A
+         oq/rVi6lDJ0OnjZO65XibQpIVEvVeRYt9bWIGBhIgvnp0r2k9c6QsvKHN3vZqvZHMVul
+         XJbg7UD9J1g8ghQG0m/CQPnvVR7x4635IeLNnYCWg0WHIzWPszKaGhu4LWflnq7i5XAv
+         7+4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXeOlzlUA264aRpc33FUvgFfMhrgpQbk+OiGs7hVa73MET8nP6xzGsuZVtfwfgTbxM2DhEnPRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywb79iCld/B930ZJ0wlOAVE4EpNZqUg+UJjd0/p+qOVwYKcbUF6
+	PJvtQS008BCDcRkfyjZ4vlY8GhVQ/WcuiHh+d8f13j/K/JxJsDFiOXnh5NJBQw==
+X-Gm-Gg: AY/fxX6XSV96DeBXpnYTfuPcNphbATkResCWgX/vrcud+HoTXrWnoyYkdZ6f5Z04GAQ
+	5e6gMhHpUmPC6eM1gCfrh7DiaDLOYYnC8ETPXFwnY759dEfmkeaWTy2AsikYuCCJe6y5sw9HTLA
+	n2Wzu91cphHP+0jSzALNavhl5zUpMQAyKYaHaK6gUnjwZ0Tg+uNvzbUL4FqjnM6czg72dfBJEeP
+	y9pd7OE4dTIkkM3PLn1LTjJ9HAlXjS7mMU0i4T3gX1FGKZTkYljRrYgoEvr6Wfx7tbTQrJRmtv6
+	bbZdGwcVxHkrjYhEta9d5vnPlGSfs1tKpHIqi3Y8jUJHWH/D+hLffQKYRFW9UA9VDFC2XRLGMk6
+	Qt/sNn8uk16Sk+uAA+aWEr2bsf12wmZKTE/Vm5wt6ihNJtdu+TIbv4855vzAMGzqZ8kjuHHW5Bp
+	cSnfpUTAPixXStO0ZKJ03kB6UgIQZTUrBcOY1WhtXUr0ayw8hQU2QV
+X-Google-Smtp-Source: AGHT+IHQbU+iOqzaiFiPp8MK9D9JLLWz5I3nysW2I9Q92SyiIPFWBxMnrn97EMLGECK7bx8NAmxYpg==
+X-Received: by 2002:a05:600c:4fc6:b0:465:a51d:d4 with SMTP id 5b1f17b1804b1-47d1953b768mr4547825e9.6.1766088919259;
+        Thu, 18 Dec 2025 12:15:19 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be27c2260sm56813515e9.15.2025.12.18.12.15.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 12:15:18 -0800 (PST)
+Date: Thu, 18 Dec 2025 20:15:17 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: linux-kernel@vger.kernel.org, mptcp@lists.linux.dev,
+ netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Mat
+ Martineau <martineau@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH 44/44] net/mptcp: Change some dubious min_t(int, ...) to
+ min()
+Message-ID: <20251218201517.2f2d91d4@pumpkin>
+In-Reply-To: <cd5d45f7-0d76-4f82-849e-2f2c1544d907@kernel.org>
+References: <20251119224140.8616-1-david.laight.linux@gmail.com>
+	<20251119224140.8616-45-david.laight.linux@gmail.com>
+	<cd5d45f7-0d76-4f82-849e-2f2c1544d907@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="25amakqgzrurdo4e"
-Content-Disposition: inline
-In-Reply-To: <20251218185452.88205-1-hi@alyssa.is>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 18 Dec 2025 18:33:26 +0100
+Matthieu Baerts <matttbe@kernel.org> wrote:
 
---25amakqgzrurdo4e
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: Alyssa Ross <hi@alyssa.is>
-Cc: linux-man@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] man/man7/rtnetlink.7: document ifi_change
-Message-ID: <pni77nbzp4wi5p6yhe6j25bnyynebp66gujb2h5hknox3rlcwp@wz3smeklju22>
-References: <20251218185452.88205-1-hi@alyssa.is>
-MIME-Version: 1.0
-In-Reply-To: <20251218185452.88205-1-hi@alyssa.is>
+> Hi David,
+> 
+> On 19/11/2025 23:41, david.laight.linux@gmail.com wrote:
+> > From: David Laight <david.laight.linux@gmail.com>
+> > 
+> > There are two:
+> > 	min_t(int, xxx, mptcp_wnd_end(msk) - msk->snd_nxt);
+> > Both mptcp_wnd_end(msk) and msk->snd_nxt are u64, their difference
+> > (aka the window size) might be limited to 32 bits - but that isn't
+> > knowable from this code.
+> > So checks being added to min_t() detect the potential discard of
+> > significant bits.
+> > 
+> > Provided the 'avail_size' and return of mptcp_check_allowed_size()
+> > are changed to an unsigned type (size_t matches the type the caller
+> > uses) both min_t() can be changed to min().  
+> 
+> Thank you for the patch!
+> 
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> 
+> I'm not sure what the status on your side: I don't know if you still
+> plan to send a specific series for all the modifications in the net, but
+> just in case, I just applied your patch in the MPTCP tree. I removed the
+> "net/" prefix from the subject. I will send this patch with others for
+> including in the net-next tree later on if you didn't do that in between.
 
-Hi Alyssa,
+I'll go through them again at some point.
+I'll check against 'next' (but probably not net-next).
+I actually need to look at the ones that seemed like real bugs when I
+did an allmodconfig build - that got to over 200 patches to get 'clean'.
 
-On Thu, Dec 18, 2025 at 07:54:52PM +0100, Alyssa Ross wrote:
-> This hasn't been "reserved for future use" since Linux 2.6.22 (commit
+It would be nice to get rid of a lot of the min_t(), but I might try
+to attack the dubious ones rather than the ones that appear to make
+no difference.
 
-lol!
+I might propose some extra checks in minmax.h that would break W=1 builds.
+Detecting things like min_t(u8, u32_value, 0xff) where the cast makes the
+comparison always succeed.
+In reality any calls with casts to u8 and u16 are 'dubious'.
 
-> 83b496e928db ("[RTNETLINK]: Allow changing of subsets of netdevice
-> flags in rtnl_setlink")), and it's used by iproute2.
->=20
-> Signed-off-by: Alyssa Ross <hi@alyssa.is>
+That and changing checkpatch.pl to not suggest min_t() at all, and
+to reject the more dubious uses.
+After all with:
+	min(x, (int)y)
+it is clear to the reader that 'y' is being possibly truncated and converted
+to a signed value, but with:
+	min_t(int, x, y)
+you don't know which value needed the cast (and the line isn't even shorter).
+But what I've found all to often is actually:
+	a = min_t(typeof(a), x, y);
+and the similar:
+	x = min_t(typeof(x), x, y);
+where the type of the result is used and high bits get discarded.
 
-Thanks!  I've applied the patch.
+I've just been trying to build with #define clamp_val clamp.
+That requires a few minor changes and I'm pretty sure shows up
+a real bug.
 
+	David
 
-Have a lovely night!
-Alex
+> 
+> Cheers,
+> Matt
 
-> ---
->  man/man7/rtnetlink.7 | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/man/man7/rtnetlink.7 b/man/man7/rtnetlink.7
-> index 56cb79bca..6e873dc71 100644
-> --- a/man/man7/rtnetlink.7
-> +++ b/man/man7/rtnetlink.7
-> @@ -83,7 +83,9 @@ is the unique interface index
->  message, thus creating a link with the given
->  .IR ifindex );
->  .I ifi_change
-> -is reserved for future use and should be always set to 0xFFFFFFFF.
-> +is a mask specifying which bits of
-> +.I ifi_flags
-> +should be applied to the device.
->  .TS
->  tab(:);
->  c s s
->=20
-> base-commit: 46950a0845de91c422efe6c639091ace42cb92f8
-> --=20
-> 2.51.0
->=20
-
---=20
-<https://www.alejandro-colomar.es>
-
---25amakqgzrurdo4e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmlEdXgACgkQ64mZXMKQ
-wqkgHRAAn/b9/PPmVRYjMmhTyLKTP2d+oTgDGYH0RPTYf7aZH0NcMPd7ui+KssFa
-Z1oXx/GUu/IqF8kjQNgHjtwHW6YrADOHoUMqbTrq4STRrNuXkfpBUcbKY77+Frl5
-OHOwLhZ2wXTitR0TSlmJEtfiUob0RFSTkWjvK/BovdVguwMaVx6L0KfKQtYc25MP
-QUR7n8kcITbOSJ6QGQCCJu2Z1mb7FouZmQIyWq2S5zXOBFGfS0NupKAwIGl3v3jR
-PDdtM4UjmEHdBbkMqrp/+L1HglRIYALAn5+gT7N6cRE2qg2c/wF5yhGfeutHkzBG
-U+4EwwcEyG+9B1dyQHXfVEXVZjiJaeH5dq3C0p0Feb7PxFCWED5MzxCJNFrdd57e
-9SegmnSTj2aku91dyeZFm3FeBwZXo+CL4iXiTkdtrsCuvzKON0nugKGsZW1V20Ll
-m4BIyd2aiadNEZjAXIlNqwAsNJHWxpK0yn/9lFqEX4CPIL6nR3HL9ShlIiLuGLvM
-EeGgnWGfUMm7pGNIPD0gJKu9T+gbjlCXIls5lRYPOxrcQBwo58bE823ui8faAsaZ
-JHRUwZTIeinjQYHkESzwrdOJchVNVK6GqwRYp4zNgfEPBDd07h29dHP4M2AcyTC7
-AqPYzVoAY8Gh1dXku41lnrP+Bog+Pw+mzRi7yB/0ZCokZstDxaA=
-=eLOH
------END PGP SIGNATURE-----
-
---25amakqgzrurdo4e--
