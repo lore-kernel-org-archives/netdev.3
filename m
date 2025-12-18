@@ -1,186 +1,141 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D3923314B
-	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 03:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C36315CD7E
+	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 04:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766027698; cv=none; b=h7+DTtAcTyNvCUkageLfitoxWFYKPJ9eMfo/QqmYcG7nsUfoiaoPFw3UzOrur0JMsidwjYDZZ0hDNzy/XKu3XzShkoafat6RGdx4ZOfJFXBsgI2GL+1rOlpRyNDzaOBJHoCXf1H5nAbr1omD/scupXBxPJSODziyveFszEaHvdY=
+	t=1766033488; cv=none; b=Ax40J8yaNkNH0gARRGFjRev/sQsApIk3NbEaTC00HaqYJseqAKdy/S2uzRGtxsqoVJXl1gKey6eld7YdUuDQkiBjix4BuMRzhjwt9dwvZDXKrcVxtD3DxbMeTqhnE7DWMwJgsmUMqvFse5kAVil/mX4PSY8lR/JZL+zgOhghFsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766027698; c=relaxed/simple;
-	bh=aMmDsg6PeqY3yDJKla0eomYe6OESw8tJFHAPUF0WDJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SyZ1VWDlkMIX/M7IInd/7BaqFzB4Dii1qUhQGOetYRFXN7/5r1MXa8rg0cqbKvnoU8vMZlAf9Ly1dIy/l46G0L1PYS2npvWQB9qHAQ53ULZgUJqCnxV8dE4pnAV24GhV5ZRllNrJ+MI8prR9gkrQuZoHUfr0GWDHO/wH+bXhHsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QXEPt/gr; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766033488; c=relaxed/simple;
+	bh=QvxlFRwO1KIHzUk2uGdbBVUqHnxfYVK2vrVz2h27E30=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=efZZXBq02ewvAgMVOQzm4T00n/QKkJEQtwxWmHs/QvQZjS398O+F1yekXLtw8ljII8oUY2x5gcOPR+eAOhr6ez8XlhB5EDjgoirpxJwTEu+6lwmpw9/8YPQ0FyWVAIvylGShxp+OgbGU9TnMIn7se0YhZHJXL/56sF8eFJlvSSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=guEYJvje; arc=none smtp.client-ip=85.9.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QXEPt/gr"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-34c902f6845so249773a91.2
-        for <netdev@vger.kernel.org>; Wed, 17 Dec 2025 19:14:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766027696; x=1766632496; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aMmDsg6PeqY3yDJKla0eomYe6OESw8tJFHAPUF0WDJQ=;
-        b=QXEPt/grP1RxRSJs74ehc+MGsdQwN+PTKJtkgEmF6rzpHk9j7YsWbDK43KCa6v10/b
-         zHSWNU865ZcdamHE4xXK2yrwc0G6rb5cEnAr/NImt/ec0G/O6Nz7RQICiLeILzfNFnUx
-         6yylT4RgkSLrsDGhxmGn7Jii5Kjiw/xvAFbH5avxoVTBmoyP7VNhq4WO/CfPAnmJiwi9
-         NKCkUxjL3ML4N1dwzBCdLnr8q/cvgA0pgnOHqRHX6iwhcvw6on0y0fO8l4m0r7dDJFYZ
-         DdVXOtY1JIUC3LPglQIHZAzyA6oKP0+e4uLtMsDzFqGLbMbtZwDbxvwmQxOzCDwdLHKM
-         s7Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766027696; x=1766632496;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aMmDsg6PeqY3yDJKla0eomYe6OESw8tJFHAPUF0WDJQ=;
-        b=dcxgb9s/u+vc2yrUOZ8cbsRugQPKuq+waDrj6Ojft5dkatmskI4eQhx8fXYLVcK+M+
-         0efkAl8rqe/COIrihP8Cu+2wQ1wZhNAtkvtEs2boy9gKOP4bwnsCIkVBlRiB9/W855lT
-         IqBUbPQF/IdMLbU5CwnvrL1q0FFpoCspoz3crW/ZIhfD2wbePY6Onhioo5EyAhQLNMfi
-         tQHl5WUpyZyMjrnw7/hx5ga50OVpLKprg6lSJ2EHAkYYqQalTXsR61F0459O4BCHpj17
-         M1orenLduATpPifHV2A5mPZQRJQN2AZvVGr1NNvXwGmgM1v7czpYB+H8FiNtza9GJSN3
-         ZiUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXN2QKJdxpS2ugAKLxKlIn0LOhKYXHjfyHkmaN7/T+eYBXwPEqGnEnrdZ8XQhlyh8BNv6BuVBw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy61CY/T8gpZKPZ5o4jOqZxFv94JZVih+PB+nOGpxv41nFgzICW
-	1t211QQ2eHYabVC/QJb/6P4cDTfPPYKzmoqV0Ekb3g7hLfP778mVTQuc
-X-Gm-Gg: AY/fxX7n3AIjcovCjnvVd5vS6GMuPWJX3hAfXD4KF+s28sI1p4ikDh0jWE6DJrB2uc0
-	kutX+rjcMdu2FV4j3fON/9gkgO0biQsPNS5PhJ6VShAJrq0Ozf2Z/OWAe4tBOwOib6swLZ1FMTQ
-	MsdMdTXDEBvtNPrs9HJKeHypLaYqFhCY0ZCWegwv8LxYMyNk0SIf7yBwBVNPQszk8iKNlyJU1FX
-	HjcHkIeZ1+mjziJSWADIZBmTh7I157EU4N78t2qvvNICJRkakZX6CUHDL+vL7Hz3LUCOzhDQI0P
-	JxLvWOGarp3iGksnx2Y1hbqgBTrXU+1XexChGgih/SA1+l6tf9oOOMr+g0iFBaB1WmLiMOKofZI
-	4eoi9XnWPaeJXMH2nmbOTFuuZ4skYo6NrLwqifYMAqCPMZ1gVzzobMFV5rndw/6RzIOUB4ehqTH
-	2zMryA5qwdriRU5Mq+lEnWiQ==
-X-Google-Smtp-Source: AGHT+IHSjhEce/oXMOW5vM6ZF5lLLUz2/oBcTOMxDFFo21mOBhpjs2cfzbOckN+Zo7VcHVKH3Yx+8g==
-X-Received: by 2002:a17:90b:2ccf:b0:340:cb18:922 with SMTP id 98e67ed59e1d1-34abd71f7e6mr19045388a91.14.1766027695922;
-        Wed, 17 Dec 2025 19:14:55 -0800 (PST)
-Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1d2d9ae134sm730773a12.1.2025.12.17.19.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 19:14:55 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 75FB1420A930; Thu, 18 Dec 2025 10:14:51 +0700 (WIB)
-Date: Thu, 18 Dec 2025 10:14:51 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux AMDGPU <amd-gfx@lists.freedesktop.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Filesystems Development <linux-fsdevel@vger.kernel.org>,
-	Linux Media <linux-media@vger.kernel.org>,
-	linaro-mm-sig@lists.linaro.org, kasan-dev@googlegroups.com,
-	Linux Virtualization <virtualization@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Network Bridge <bridge@lists.linux.dev>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>, Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Philipp Stanner <phasta@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Taimur Hassan <Syed.Hassan@amd.com>, Wayne Lin <Wayne.Lin@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	George Shen <george.shen@amd.com>, Aric Cyr <aric.cyr@amd.com>,
-	Cruise Hung <Cruise.Hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Dominik Kaszewski <dominik.kaszewski@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Alexey Skidanov <alexey.skidanov@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Harry Yoo <harry.yoo@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>,
-	NeilBrown <neil@brown.name>, Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>, Ivan Lipski <ivan.lipski@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>, YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Roopa Prabhu <roopa@cumulusnetworks.com>,
-	Mao Zhu <zhumao001@208suo.com>,
-	Shaomin Deng <dengshaomin@cdjrlc.com>,
-	Charles Han <hanchunchao@inspur.com>,
-	Jilin Yuan <yuanjilin@cdjrlc.com>,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>,
-	George Anthony Vernon <contact@gvernon.com>
-Subject: Re: [PATCH 00/14] Assorted kernel-doc fixes
-Message-ID: <aUNxq6Xk2bGzeBVO@archie.me>
-References: <20251215113903.46555-1-bagasdotme@gmail.com>
- <20251216140857.77cf0fb3@kernel.org>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="guEYJvje"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1766033475; x=1766292675;
+	bh=QvxlFRwO1KIHzUk2uGdbBVUqHnxfYVK2vrVz2h27E30=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=guEYJvje+jnmVQcPrx25fS5x3Y3rHDHi1krZdp3Z6T5pprjo4S4D3fdLpUcMHs5Fs
+	 YsnDCR3Kum16SSg/uAemSs06pPPg4k0QjLCT2H4Kn2KIjTt+4MqnaLBtmY45ctsRJD
+	 ta8Sbz9GNC58Yl2W6gYBEuk+jliJdqrAY7OpXBPElHBDyBiLXYxIw+KexYtqVsdh7z
+	 6zxCAxEkUPMjDR8v1C4USgn80g+ImsUh8bzq+Cocu9R4ofuCOY2C5yaorZvIkXin1x
+	 UfWCAmTV1UoFyJwJRJgqZZ88C90Y+pd5MKEtMFcXHtqmY5ZzQv+5piir/kHwI2xFNh
+	 XC0sbExKOvuZg==
+Date: Thu, 18 Dec 2025 04:51:11 +0000
+To: Linux Networking <netdev@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: Advanced Persistent Threat (APT) hackers had hacked into my Virtualmin Linux Virtual Private Server (VPS) on 15 Dec 2025 Monday around noon time
+Message-ID: <p6q1ZcmyQr1jf50qb0CTkQWCLEYt3BTyG_sNxtXAqj-Y40eMBWBjRueCvSmnXt3w6FSBYOBC4f5ck2-KinfmHiLsE_lklsrGZWlAJhPrHhI=@protonmail.com>
+Feedback-ID: 39510961:user:proton
+X-Pm-Message-ID: b20c0e316072974d925ef4a5fe1b497faf09a745
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="V23DYTy9ofvlaB8B"
-Content-Disposition: inline
-In-Reply-To: <20251216140857.77cf0fb3@kernel.org>
-
-
---V23DYTy9ofvlaB8B
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 16, 2025 at 02:08:57PM -0800, Jakub Kicinski wrote:
-> On Mon, 15 Dec 2025 18:38:48 +0700 Bagas Sanjaya wrote:
-> > Here are assorted kernel-doc fixes for 6.19 cycle. As the name
-> > implies, for the merging strategy, the patches can be taken by
-> > respective maintainers to appropriate fixes branches (targetting
-> > 6.19 of course) (e.g. for mm it will be mm-hotfixes).
->=20
-> Please submit just the relevant changes directly to respective
-> subsystems. Maintainers don't have time to sort patches for you.
-> You should know better.
+Subject: Advanced Persistent Threat (APT) hackers had hacked into my Virtua=
+lmin Linux Virtual Private Server (VPS) on 15 Dec 2025 Monday around noon t=
+ime
 
-OK, thanks!
+Good day from Singapore,
 
---=20
-An old man doll... just what I always wanted! - Clara
+Today 17 Dec 2025 Wednesday around 12.30 PM, I was trying to use GMail (Goo=
+gle Mail) to send email to my email accounts hosted in Virtualmin Linux Vir=
+tual Private Server (VPS) (aka web hosting control panel). GMail reported t=
+he error "554 5.7.1 Relay access denied". Which means all of my email accou=
+nts hosted in Virtualmin Linux VPS could no longer receive emails.
 
---V23DYTy9ofvlaB8B
-Content-Type: application/pgp-signature; name=signature.asc
+Advanced Persistent Threat (APT) hackers must have hacked into my Virtualmi=
+n Linux VPS and changed my server configuration.
 
------BEGIN PGP SIGNATURE-----
+Webmin version: 2.520
+Virtualmin version: 7.50.0 GPL
+Operating system: AlmaLinux 9.6
+Usermin version: 2.420
+Authentic theme version: 25.20
+Linux Kernel and CPU: Linux 5.14.0-570.51.1.el9_6.x86_64 on x86_64
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaUNxpwAKCRD2uYlJVVFO
-o1nDAP9D8xQeBKhU5vgUY1uZdEmdnOr8lzFR748Q3fszwHYA2AD+Lmk5pycZlTp2
-pDdOJDlTqJohju9NNAPmvm1zT37zzwE=
-=Ar/g
------END PGP SIGNATURE-----
+When I logged in to Roundcube Webmail, I noticed that I had stopped receivi=
+ng emails with the email accounts hosted in Virtualmin Linux VPS since 15 D=
+ec 2025 Monday around 12 noon Singapore Time.
 
---V23DYTy9ofvlaB8B--
+When I checked /var/log/maillog in Virtualmin Linux VPS, I observed that I =
+had started getting "554 5.7.1 Relay access denied" errors since 15 Dec 202=
+5 Monday around 12.28 PM (for my email accounts hosted in Virtualmin Linux =
+VPS).
+
+Advanced Persistent Threat (APT) hackers must have hacked into my Virtualmi=
+n Linux VPS and changed my server configuration.
+
+When I checked /etc/postfix/main.cf on my Virtualmin Linux VPS, Advanced Pe=
+rsistent Threat (APT) hackers had changed the following line to:
+
+mydestination =3D $myhostname, localhost.$mydomain, localhost, ns1.turritop=
+sis-dohrnii-teo-en-ming.com
+
+I had to change the above line back to:
+
+mydestination =3D $myhostname, localhost.$mydomain, localhost, ns1.turritop=
+sis-dohrnii-teo-en-ming.com, teo-en-ming.com, teo-en-ming-corp.com
+
+And then restart Postfix daemon/service (systemctl restart postfix).
+
+For Virtual Server teo-en-ming-corp.com in Virtualmin Linux VPS:
+
+Advanced Persistent Threat (APT) hackers had changed my email account user'=
+s Login access to Database, FTP and SSH. I had to change it back to Databas=
+e, Email, FTP and SSH.
+
+Advanced Persistent Threat (APT) hackers had also changed "Primary email ad=
+dress enabled" to No. I had to change it back to Yes.
+
+For Virtual Server teo-en-ming.com in Virtualmin Linux VPS:
+
+Advanced Persistent Threat (APT) hackers had changed my email account user'=
+s Login access to FTP and SSH. I had to change it back to Email, FTP and SS=
+H.
+
+Advanced Persistent Threat (APT) hackers had also changed "Primary email ad=
+dress enabled" to No. I had to change it back to Yes.
+
+After making all of the above changes, I am able to start receiving emails =
+with my email accounts hosted in Virtualmin Linux VPS since 1.15 PM today 1=
+7 Dec 2025 Wednesday.
+
+When I checked OpenSSH server logins and Virtualmin logins, only public IPv=
+4 addresses belonging to me were present. There were no traces of Advanced =
+Persistent Threat (APT) hackers gaining unauthorized entry into my Virtualm=
+in Linux VPS at all. Of course, if they are Advanced Persistent Threat (APT=
+) hackers, they must be very smart and intelligent (their intelligence quot=
+ient IQ sure way above me) to remove all traces of their unauthorized intru=
+sions into my Virtualmin Linux VPS.
+
+How can I make a request to Advanced Persistent Threat (APT) hackers so tha=
+t they will stop playing pranks on my Android (Linux) phones, home desktop =
+computer, laptops, Virtualmin and Webmin Linux servers and other various nu=
+merous online accounts not secured with 2FA / MFA?
+
+Please advise.
+
+Thank you very much.
+
+Regards,
+
+Mr. Turritopsis Dohrnii Teo En Ming
+Extremely Democratic People's Republic of Singapore
+17 Dec 2025 Wednesday 3.50 PM Singapore Time
+
+
+
+
+
