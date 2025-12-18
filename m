@@ -1,115 +1,168 @@
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+Received: from mail-yx1-f66.google.com (mail-yx1-f66.google.com [74.125.224.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552D929D270
-	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 20:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF64238D27
+	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 20:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766088748; cv=none; b=AhnhAGLlF3skWOHWvhPJLgvXyF60baqdjp4l1isjGY2lBsiFP1w6094y88b/ayZo8KrE1UU/ql4+UQtNtgztTZiMO/b+GSz7iBLuFhFg8IJms5BTYKFwD34VwwXuswi3nQ5N7hEVXX2pcOMsKVuyZVwFqdUuUc8KXKVeGv2fg0I=
+	t=1766090122; cv=none; b=P+mpinlfCJyA/skjkxDGP/d/Ff/RFmr0cqCiEx+u0rvN6+Jc9t6TgXvXX8wrUP65mocJUJ+nOskNfbls1QR2yNb0TBXPDXagtScgNhwXAxZtGblmwWXkxUhf9oUWgJe6ZeiVffy6EXMnXW6B1mWVX9sK0nqZr9x9WWZ8xw46MYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766088748; c=relaxed/simple;
-	bh=SCmrBCTDFD5ubTjkA56SqENcQgdXvnofAPhlNZPj5ic=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NlVjC2ly92wqmNJbj7nqB3/IjiP6BxfnY38CMQwhYJLsmraazb+CuyEdlDroRpSGeWP18J78WzW0x41JAzMgVL4byl1rp5BlkDKvWKQh2mvLod73M9KCc+iODTbIuERyppza/zhwh9RuM6GjygbET0FWeW7ZZW8kuzLqAJ35WYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-657486eb435so1323291eaf.1
-        for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 12:12:26 -0800 (PST)
+	s=arc-20240116; t=1766090122; c=relaxed/simple;
+	bh=SV/yxfA6ffFKpwbHoj2MuZU5tIDRHrG3GNh8PCpiVG0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Dv6GNZ2yxc/XaAXSJiHMdCF4RDGZtYs7xAqZVZduwEyeVhagY7xt+WRrpesfgl7U1DJiMEjEVheyfzPUUN0KAg555Pz/LNJZHHUVUTVnGVtFMfSMprZCXHCwbah7zrFcLPrd2mS2lgzTaNqsNnn5mya1Nuz98BijZ058Hx/qz+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVxV79I6; arc=none smtp.client-ip=74.125.224.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVxV79I6"
+Received: by mail-yx1-f66.google.com with SMTP id 956f58d0204a3-64471fcdef0so830717d50.1
+        for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 12:35:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766090119; x=1766694919; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M0/cZFBKqjjJFvInhQlzAavQ+9hRc0yhLfJNykw1dYM=;
+        b=jVxV79I6hdgdTcTPA2YTIW5LM6U8g9jLKTGMf0qbspazzS14PYSFKb63rNmYB5iyso
+         B4ZwbnsHAxp8hxjDtG3kaO+1ulpadHG31BfqcF4GjuQrFR138QDl4aYFp+lZfq+jnXf7
+         aHJk5hKmobeBgizu0veatAdaF5FV47Pm9acHyF6O1J97DdDaREPMSMS4KnE7/itlxyd8
+         irfS1+wCzcMFZnJ2aS7Cb9UbMCB6pNGOqaOGsna+0yndq/Aekvkb/PVlXf1tpV9/k7QJ
+         0bAdRiZ2xuen8fvkWe8nlzPpX1RX3tk33S3gMPeEwVDodZ/pN7uEUfj0O8jEejAH1+CM
+         D4Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766088745; x=1766693545;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        d=1e100.net; s=20230601; t=1766090119; x=1766694919;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tfr7FL5pZakXGk7tny8jsZuMcDvYO9J0q/4MvmwyG2E=;
-        b=fTnaJZnpRB3S7EUT/Qqfk4Y/moie1vFnyieufegvBlXjAOguiqPAHEPXvstuV0q+a2
-         LaSW/EKNTXZE/KQg+drUaL7xaL6C75A2/K0UluiSTC8pKcX2EsQGo+rXOjbwvBRiLueM
-         I1g6ej6nZYoHEZ0EZ4T5QTxVbErJXUQyNl1ymtzz8yYl1CzVrDUoCxGbgfT8cNR0R9dw
-         P4qBVHaK62wtG7Rgq3c9Fy8P7uIo0G+q2z6FbvFra+wTwRQXxV7LgoPajFNw6CYkwmNv
-         hqQb5uf3DPQtuCuhpFIHlCDQPUkMa4qn+wvH61kxM9B3VnuJkv/UpMWOLHHeT9WIOwlI
-         jvFg==
-X-Forwarded-Encrypted: i=1; AJvYcCV3ieKhzSB8nDer5+KuDnsA47dIAA1opZljK/1sKq7iW/SL2Fgcisc/NigiqV6+umhnsTSQyyQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaEn/rRi8cr92NbubrSAHymzfR+VJMBmXdBgZRP4WU7uGo3YHt
-	1ozaCWVyk+ZK6WKfOiLagkzEJt8W6emTmhlxJ+oTrSejIDNO70Df3x9XtFLVv9/32/gTSjWXzGA
-	OEzt3qE1Eekex3EBsW5//QRGzIhm3C+RaSWGr269t8buCaevLpgKnpOlcQDg=
-X-Google-Smtp-Source: AGHT+IFDkWTsNoL3eU9I8Uu1JnhOI/l/+UygD1nN4dlXSN/0peBnV6HtRg2gNSDhC8VnFI3q2nIbSMXl8S0hJ/OeGZGikFDiCT6M
+        bh=M0/cZFBKqjjJFvInhQlzAavQ+9hRc0yhLfJNykw1dYM=;
+        b=GjI4mdCQgSeyI2NBvcY4chrvtfdsI3ybyFD3Rfu5JbvH7KmYTgH6a+dGkkFy2rOWzT
+         Db+0SVSn0z83IHQ8fLOpupUXZQAKlhebhkBUm887SHxTyc/ViOjfwedhjoMXfeMDqH2v
+         fw9I215Ncwo4obfht7u1v83xUjv0sZXHRixO5RA5d/QOaxysgpe03iPCt+vUDYvxbQjf
+         W0/WegsAJD59YpeyWpmWuqjp5lbcz3fhAqCyomGg7ONn1y4MBNb3SXqDO1HuOjze6AcA
+         rbkH+OksBuwIetL7S1CvzFcbVWdoXG5EcIuMv6Vl04T80Y6s892n0FxNFNHwBDEQ0T42
+         S91Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX3nR8YIr2rdvG9DCktTdJ0DNkRrYxWBn+lMFvLU7ZSUbCOCn7RGwtc5lr/79tv5NUi9ZsjILE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXwjFDfWRG3/Qu+nLHJpSLXOg/iq8csetEv7h1utq9KA4pSELl
+	IfOA52i82tiw/5+Kp+2jFOb2w/oI0HTDkEi9GddiVbA1qHvb/+EpskReqYbkqo07
+X-Gm-Gg: AY/fxX7yJg6alnCUq8vVxX6sKMFU2dqG4YJqV4CNqOGo0rNKX9ua+JpbIQ18ByfyXkc
+	5GaTmSyoV5tqqL2c596+U5JW25ctPJnRyJsgZyejr4biuvrbd8msrY+OSpRM0U9FfhJt1Mikdh2
+	s5XQN4mLuauU+ohQD2S9Wm7lsSL3VKKVtAn32sgT9InawcwKQgAYous3fhnT1gpDS1yAeVOo3AC
+	vbH5TGxO8sRgARCkih6OJvu6FGmdnDPp3x7oxmkV9ta1drwk79gY50lAU1KvbuliO+xNgdL8Gni
+	XwUtc/D8rH6i1tNPzmIr3YwB7UFuNalTuq/eR7OTBa5mgVJXaqjaRTkEjoPN8m5vkHbSCIOGUN+
+	4EuHO3/hghYUNNa+kmCQGLzrYXr8ZUdCUeUUbRl+n61YBRCaWROwvNt5t4wvRBghpfLKHKX82ip
+	O1UQ7KNJT1ybh6R02+K2VJVjSGxiydvXOekmhEzIm7vfHiymX2c0W2sfCN+Njn8kNetfWtMZDZm
+	5pMiw==
+X-Google-Smtp-Source: AGHT+IE/PTz7lwoVk2d92IkLpCT58pSQHfpqtjhEn+V5RE7UzfgDmzH8g5VVaZONxYWcBA3jIdntKQ==
+X-Received: by 2002:a05:690c:6e06:b0:787:e3c0:f61f with SMTP id 00721157ae682-78fb40915a6mr11136217b3.57.1766090119475;
+        Thu, 18 Dec 2025 12:35:19 -0800 (PST)
+Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-78fb43bb8d9sm1751087b3.20.2025.12.18.12.35.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 12:35:18 -0800 (PST)
+Date: Thu, 18 Dec 2025 15:35:17 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jens Axboe <axboe@kernel.dk>, 
+ netdev@vger.kernel.org
+Cc: io-uring@vger.kernel.org, 
+ kuba@kernel.org, 
+ kuniyu@google.com, 
+ willemb@google.com, 
+ Jens Axboe <axboe@kernel.dk>, 
+ stable@vger.kernel.org, 
+ Julian Orth <ju.orth@gmail.com>
+Message-ID: <willemdebruijn.kernel.2e22e5d8453bd@gmail.com>
+In-Reply-To: <20251218150114.250048-2-axboe@kernel.dk>
+References: <20251218150114.250048-1-axboe@kernel.dk>
+ <20251218150114.250048-2-axboe@kernel.dk>
+Subject: Re: [PATCH 1/2] af_unix: don't post cmsg for SO_INQ unless explicitly
+ asked for
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4289:b0:657:4733:dde with SMTP id
- 006d021491bc7-65d0e94d6c4mr252189eaf.8.1766088745350; Thu, 18 Dec 2025
- 12:12:25 -0800 (PST)
-Date: Thu, 18 Dec 2025 12:12:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69446029.a70a0220.207337.00f1.GAE@google.com>
-Subject: [syzbot] [can?] INFO: task hung in cangw_pernet_exit_batch (5)
-From: syzbot <syzbot+6461a4c663b104fd1169@syzkaller.appspotmail.com>
-To: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mkl@pengutronix.de, netdev@vger.kernel.org, socketcan@hartkopp.net, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Jens Axboe wrote:
+> A previous commit added SO_INQ support for AF_UNIX (SOCK_STREAM), but
+> it posts a SCM_INQ cmsg even if just msg->msg_get_inq is set. This is
+> incorrect, as ->msg_get_inq is just the caller asking for the remainder
+> to be passed back in msg->msg_inq, it has nothing to do with cmsg. The
+> original commit states that this is done to make sockets
+> io_uring-friendly", but it's actually incorrect as io_uring doesn't
+> use cmsg headers internally at all, and it's actively wrong as this
+> means that cmsg's are always posted if someone does recvmsg via
+> io_uring.
+> 
+> Fix that up by only posting cmsg if u->recvmsg_inq is set.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: df30285b3670 ("af_unix: Introduce SO_INQ.")
+> Reported-by: Julian Orth <ju.orth@gmail.com>
+> Link: https://github.com/axboe/liburing/issues/1509
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> ---
+>  net/unix/af_unix.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index 55cdebfa0da0..110d716087b5 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -3086,12 +3086,16 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+>  
+>  	mutex_unlock(&u->iolock);
+>  	if (msg) {
+> +		bool do_cmsg;
+> +
+>  		scm_recv_unix(sock, msg, &scm, flags);
+>  
+> -		if (READ_ONCE(u->recvmsg_inq) || msg->msg_get_inq) {
+> +		do_cmsg = READ_ONCE(u->recvmsg_inq);
+> +		if (do_cmsg || msg->msg_get_inq) {
+>  			msg->msg_inq = READ_ONCE(u->inq_len);
+> -			put_cmsg(msg, SOL_SOCKET, SCM_INQ,
+> -				 sizeof(msg->msg_inq), &msg->msg_inq);
+> +			if (do_cmsg)
+> +				put_cmsg(msg, SOL_SOCKET, SCM_INQ,
+> +					 sizeof(msg->msg_inq), &msg->msg_inq);
 
-syzbot found the following issue on:
+Is it intentional that msg_inq is set also if msg_get_inq is not set,
+but do_cmsg is?
 
-HEAD commit:    8f7aa3d3c732 Merge tag 'net-next-6.19' of git://git.kernel..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=175489b4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9e5198eaf003f1d1
-dashboard link: https://syzkaller.appspot.com/bug?extid=6461a4c663b104fd1169
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=139e99c2580000
+It just seems a bit surprising behavior.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/5fe312c4cf90/disk-8f7aa3d3.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c7a1f54ef730/vmlinux-8f7aa3d3.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/64a3779458bb/bzImage-8f7aa3d3.xz
+That is an entangling of two separate things.
+- msg_get_inq sets msg_inq, and
+- cmsg_flags & TCP_CMSG_INQ inserts TCP_CM_INQ cmsg
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6461a4c663b104fd1169@syzkaller.appspotmail.com
+The original TCP patch also entangles them, but in another way.
+The cmsg is written only if msg_get_inq is requested.
 
-INFO: task syz.0.17:6104 blocked for more than 148 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.0.17        state:D stack:25440 pid:6104  tgid:6104  ppid:5956   task_flags:0x400140 flags:0x00080002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6960
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7017
- __mutex_lock_common kernel/locking/mutex.c:692 [inline]
- __mutex_lock+0x7e6/0x1350 kernel/locking/mutex.c:776
- cangw_pernet_exit_batch+0x20/0x90 net/can/gw.c:1288
- ops_exit_list net/core/net_namespace.c:205 [inline]
- ops_undo_list+0x525/0x990 net/core/net_namespace.c:252
+	-       if (cmsg_flags && ret >= 0) {
+	+       if ((cmsg_flags || msg->msg_get_inq) && ret >= 0) {
+			if (cmsg_flags & TCP_CMSG_TS)
+				tcp_recv_timestamp(msg, sk, &tss);
+	-               if (cmsg_flags & TCP_CMSG_INQ) {
+	-                       inq = tcp_inq_hint(sk);
+	-                       put_cmsg(msg, SOL_TCP, TCP_CM_INQ, sizeof(inq), &inq);
+	+               if (msg->msg_get_inq) {
+	+                       msg->msg_inq = tcp_inq_hint(sk);
+	+                       if (cmsg_flags & TCP_CMSG_INQ)
+	+                               put_cmsg(msg, SOL_TCP, TCP_CM_INQ,
+	+                                        sizeof(msg->msg_inq), &msg->msg_inq);
+
+With this patch the two are still not entirely consistent.
+
+>  		}
+>  	} else {
+>  		scm_destroy(&scm);
+> -- 
+> 2.51.0
+> 
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
