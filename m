@@ -1,172 +1,259 @@
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05B422AE45
-	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 21:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52282F3622
+	for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 21:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766092735; cv=none; b=LV5o8B693XE0mqnm+Xl2DkYXb97A/FFLYZncly2tCOTnL2cIv9yiVlBLevf7c4SHrROjDAl7N6iPCl021Mg6kD/yBBpIiTOu7CFS10YkBYwG6dLt14HnCowBtQRfNjw6Nxa+f1kNR6Dez5lYhufKJhNOOSUnZf12Jy5Qpc56TCg=
+	t=1766093720; cv=none; b=IelupeoqGatXocCEMlzdpMnd8djBM6vX6bQiavuOyZbkYZziaXhq2GjmCqRHooABGnDcQ+KjR5LKTybsqMmQSRMgqeur67O2OAvOxfnOc/+s81CLW6tjCKnyFWbj0bmqbcSkWnUnSJrhmdsome/8+QP9wpBiNHHPlW9Dzp9KNpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766092735; c=relaxed/simple;
-	bh=RhOEEMWeBR2NrmvwByQcIXLGBf3QLOVJPYB7vjo3TAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jwwdcM8guRdQTn6GbXKMIoIGKh1IFqaGwgFHuHifW4bSLC8crezyXmmY3pWzt5ZLB74LsHYfmEYQUctDAkuRpLdFN4xrN8w9wWwnYrWRcUXYvbB33mV21BLWUBEgteFvacz1pv7aJMX9YIuFMGtkzCdqYXxgh1uKOpicaAXIxuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Hmc1ZZRx; arc=none smtp.client-ip=209.85.167.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1766093720; c=relaxed/simple;
+	bh=GQN+laEnjKV1etZy2XOiYUJmcjexQ5SNBo3MDTPTC0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Az/h189D504NFHr9Bag9JmI6QJNyaGM1ry9ne9Nu+RWdOq6//L1lnM2doBuKgVUx8Ou0Y8O69uTFbnJMsJDi3ZgHn4EK14tqGdfNhG/dzSZWZtY1wJErkxedGXvAAl2AOtdn4uSrd6imvJ/5dcCvdd6rvGHvxjiiVU1kS/hKnaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NlF+wcxf; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Hmc1ZZRx"
-Received: by mail-oi1-f195.google.com with SMTP id 5614622812f47-450c9057988so686068b6e.1
-        for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 13:18:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NlF+wcxf"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37a2dcc52aeso10482601fa.0
+        for <netdev@vger.kernel.org>; Thu, 18 Dec 2025 13:35:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1766092732; x=1766697532; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZhC2CbqMJRNT4ZU/m5rZ+f9MoR9/53yP9aHufxjViRE=;
-        b=Hmc1ZZRxaAkPwdMEmQ0P9SNdZ2RAaF3oU8GbfR8kvl4QzuRe8wDlUFWBu8b3m6L4yc
-         q4fFeLemYOSbT0U3NUNw1Kk7ozDS79Fl9U/x2deXKHVUNCxSyG5a/lZ1xu2wOANRRX63
-         XLzw8mU1QtsXnG/3BmTq3gbDB2lp1JKejf88nsXeqQ8PE3049HjJYXgDrQgn0iQoLrZP
-         n3JqbODcHbZ6nPq/scpWyPrBCZvur4VHxxcChEgfRndD+wsFcWHTgMZz0T3KdsL30DGw
-         4VAwazATlTjpdA4CtOVummTWN9EmcouFaoWu6rk4yY9gQs3BnFR1JXwjAcUcMH+F6rQ2
-         KdcA==
+        d=gmail.com; s=20230601; t=1766093716; x=1766698516; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=LoEaEPqer7trL7hEB1F0pzjRs0IVfQzmh9nvm3m1CgU=;
+        b=NlF+wcxfy06kY3K/+3YoIHT6gWNCOzsnDp9ikfk7rk0RfcCSoGbd3vCdvVgHbw2Z/e
+         c3PPJOSMsRl0/bqhQPk+ZVS0sF6sHBu1fDLLhGWTD06UbIJ80GiWUDBHRVmS1N/nO1Cf
+         mPxD3GcXnAEVAmYwyQ5w8w00jgjEZOR0V/cW4KJzjwB/vOVoEUyKEGdyosJVMWpL+Drq
+         Lx3UyvKES9wNpE6cqATuZHPIQr8qCa9FZ4UUql0FD2dYPPSAm25cl5CxI0+EdnGtWQrV
+         jmkspkirGDlEwUSOScVqf3sZHQTf6NW4zX0BZ8HNpO+2A5FI/LuYpudlKBncgxvo3LBq
+         LwVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766092732; x=1766697532;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZhC2CbqMJRNT4ZU/m5rZ+f9MoR9/53yP9aHufxjViRE=;
-        b=pc6e6ja24oMePxoi15pNvpuZdqpN3RyRGUI5pUdS5SBNpQ0i+Nn4VZ2PxbLUA5k8IQ
-         YbY4hozTMkzh0CNT810BvvQfNweZj6JOPWr/5wtFMyof1JKCawVpxUN7Z7XJTxyl9uJ5
-         DFxekkwTIAfBcwGdLciftBfFcp88ImQ0bE4hmF+N0EzaJb7Vd0tX3h+39BURJdIWkwN5
-         14y7CWFR5JYsPOoOWA6HLpgY0voyP9JSdg610ULd9UV3BbyZK3O9yGAcyyUvHzsWxFUw
-         3eEuz8sfuWzW1YQzIW19OvI8w1QXW2tupbJP+PCRMASWx6+QricdAUkflaD6OMZma2Ei
-         80zg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZnQadcWyWahcBH5e7IQhb27fpsXfaxaUhIDYGZ52RcHS0q8ALNY8lznjlJrIDxeciMT8Tz9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo035l9+OIAr4ClOmy5ko4rkQyYU/xqSckBSqVGnpXy6RYsCp/
-	Ib39R73xrIcQ33tQfRVA730eppJU71Vnq0Gl7iADypCVsHYhzBZ6+iATW2kjs+KRbGo=
-X-Gm-Gg: AY/fxX6/hnELZgrGySWD8ax8SzsP5+l0phLeqnm+4ukqDTj36Te79BL2Po3TC6tZ+mL
-	21Q9bo8bbACDMBecAD0KQa0AVxml3LtAkY0yQeLkJTacmDTPqoxyx6f2JJxD9sO06YSZUKGMbIs
-	Ln3jhA4t9reOQQQE7fqAlxgPx5d5lmxUApZbd9ZpOvzxW5KB9WrKQuD57ynji5jeB+/fWgrx7Kx
-	Kcld0QLrO/39ZviSpgKmSeqkx+x3I0KmYdtWEhgzlYWtKHGJ5jBwX9OJqPMW7Ik9LVgwL5ZNWlm
-	9akXNgpVmi53LVIMps573B0csF+q1AohDVZsIX/0ds13FKku33e4ykC2kRRoQBbLRmpbmUFcOjv
-	aIrwtUOTBa2SESkU9u4XVuH01tDgFUQkNRSwT5bLOkmlbe1vGE+41dT/BggFt3OCCEHtSFAMQTC
-	dd1BhTIo+CO7m2zJ7gWYc=
-X-Google-Smtp-Source: AGHT+IFMNG6QuMm04WSPEQ+o5Wdf5snjMsZNR47hVm1DJmrERY17Z8C2J7I/9B/wSXr1tvKICfXRtg==
-X-Received: by 2002:a05:6808:1591:b0:450:474b:2736 with SMTP id 5614622812f47-457b2261c78mr539829b6e.45.1766092731801;
-        Thu, 18 Dec 2025 13:18:51 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-457b3edb117sm160663b6e.16.2025.12.18.13.18.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Dec 2025 13:18:50 -0800 (PST)
-Message-ID: <77e0636b-b7d4-4bbc-b4bf-a05bccb343d0@kernel.dk>
-Date: Thu, 18 Dec 2025 14:18:49 -0700
+        d=1e100.net; s=20230601; t=1766093716; x=1766698516;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LoEaEPqer7trL7hEB1F0pzjRs0IVfQzmh9nvm3m1CgU=;
+        b=xS+WDXyTgDpDtCP+E8BfEY24dDKF+iikwG2aSbluIt1+RXnelMAv1A8dMR2zq7Z24N
+         4gC78gfRZ+hOtRo/YFVxm96R8YYhqt9mdjSpUl5qpfBdKF9r38qZlviKn8qykND2Mkrl
+         EoS5brpul8xhT4jTBrc9wYUnjXETTwtS2s/wlgOaxZfzoHZp+O6pltRQiQaZZJ/OgNyX
+         06ywT5/A9zRbUJ5CoTWD/eEKWKMUzeEepQr1tLfKL8xZPZaKxTkhs30JsPgPrDiCZEfu
+         nLxTh5G0TaED3mJH+djM4V+eAe8ANTNdi6HZCJ/mmcPRtxcb93g/7dw6khH+Wx/vz63P
+         DNlw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfhBPTrbYYyF4dmYQEFCIOTJtSL6p6wuFSP14NF3JgBK4NZTM+Gb7d7ISo1QnVruvCQz8IC64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybYdUN4q0DMGzS6qOEc5ZhZt9IqW3dTCAUa6T/DQLTj58kNfbj
+	8MDcMmGrk/NEPqYqAz0cZSrdoFXvtEQ5SoBrQvLWsSexr5T4xX3hjTqPcj6YcgZJ
+X-Gm-Gg: AY/fxX433P9nzzPEAwRnnF1DhWU3Qt7lQt5wfGkrZCidqaARtHfbIwyNF73rqc2ghyU
+	0qBgvJ3ha8u2Zc1EEY1NAEBERAOSXxDR0SGmsLPjWDbEI4oUrmwwvLJ6rWDcrjHOTCofYUBGImf
+	mOxTAdmJakGnUqdO/IbFn5PMtAT9Qldl5EAHIvam+aiNeX9sUKmJJ6wbbkbz8nqYJevyYabgm+2
+	TZS9XiVoMaGZeMvyWH4bH8HbzvdsrQPKLZNp6y+mhxlsBRWgp4lyrnD9qfvaAoHr9I/Mw5wH0ih
+	UIYn5Tq17JNlgzJRJAR8NjXRloQBykSI2TJrmOupq76Pr95YRhfgiOPhajuV70DlS2Fh5jiEz/D
+	efW5qZ9xs88igA8gGxFmdwYjJ/ziKDfLfujcswT0CyXvTWKlJOLWA3O5qktd3c2ho+u1835sNXh
+	M4mvk+3O0CCeRPzajSB45YivXMZHe55VfRzzBiyDrzX14p
+X-Google-Smtp-Source: AGHT+IG3cf/+juHMev1aCrHLNdhdXhWEaNe+diRLQkCcLaCevLb5Y5ayIN8a1Ev6mf8ozquz4VLrCA==
+X-Received: by 2002:a05:6000:2892:b0:42f:b683:b3ce with SMTP id ffacd0b85a97d-4324e4c70f0mr705017f8f.3.1766087445416;
+        Thu, 18 Dec 2025 11:50:45 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea82fddsm602195f8f.25.2025.12.18.11.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 11:50:44 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id E6232BE2EE7; Thu, 18 Dec 2025 20:50:43 +0100 (CET)
+Date: Thu, 18 Dec 2025 20:50:43 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Cc: debian-kernel@lists.debian.org, Ben Hutchings <benh@debian.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: [regression 5.10.y] Libvirt can no longer delete macvtap devices
+ after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
+ flag") to 5.10.y series (Debian 11)
+Message-ID: <176608738558.457059.16166844651150713799@eldamar.lan>
+Mail-Followup-To: Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
+	Ben Hutchings <benh@debian.org>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
+ <aUMEVm1vb7bdhlcK@eldamar.lan>
+ <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] af_unix: don't post cmsg for SO_INQ unless explicitly
- asked for
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: io-uring@vger.kernel.org, kuba@kernel.org, kuniyu@google.com,
- willemb@google.com, stable@vger.kernel.org, Julian Orth <ju.orth@gmail.com>
-References: <20251218150114.250048-1-axboe@kernel.dk>
- <20251218150114.250048-2-axboe@kernel.dk>
- <willemdebruijn.kernel.2e22e5d8453bd@gmail.com>
- <2ed38b2d-6f87-4878-b988-450cd95f8679@kernel.dk>
- <willemdebruijn.kernel.164466b751181@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <willemdebruijn.kernel.164466b751181@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
 
-On 12/18/25 2:15 PM, Willem de Bruijn wrote:
-> Jens Axboe wrote:
->> On 12/18/25 1:35 PM, Willem de Bruijn wrote:
->>> Jens Axboe wrote:
->>>> A previous commit added SO_INQ support for AF_UNIX (SOCK_STREAM), but
->>>> it posts a SCM_INQ cmsg even if just msg->msg_get_inq is set. This is
->>>> incorrect, as ->msg_get_inq is just the caller asking for the remainder
->>>> to be passed back in msg->msg_inq, it has nothing to do with cmsg. The
->>>> original commit states that this is done to make sockets
->>>> io_uring-friendly", but it's actually incorrect as io_uring doesn't
->>>> use cmsg headers internally at all, and it's actively wrong as this
->>>> means that cmsg's are always posted if someone does recvmsg via
->>>> io_uring.
->>>>
->>>> Fix that up by only posting cmsg if u->recvmsg_inq is set.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: df30285b3670 ("af_unix: Introduce SO_INQ.")
->>>> Reported-by: Julian Orth <ju.orth@gmail.com>
->>>> Link: https://github.com/axboe/liburing/issues/1509
->>>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->>>> ---
->>>>  net/unix/af_unix.c | 10 +++++++---
->>>>  1 file changed, 7 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
->>>> index 55cdebfa0da0..110d716087b5 100644
->>>> --- a/net/unix/af_unix.c
->>>> +++ b/net/unix/af_unix.c
->>>> @@ -3086,12 +3086,16 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
->>>>  
->>>>  	mutex_unlock(&u->iolock);
->>>>  	if (msg) {
->>>> +		bool do_cmsg;
->>>> +
->>>>  		scm_recv_unix(sock, msg, &scm, flags);
->>>>  
->>>> -		if (READ_ONCE(u->recvmsg_inq) || msg->msg_get_inq) {
->>>> +		do_cmsg = READ_ONCE(u->recvmsg_inq);
->>>> +		if (do_cmsg || msg->msg_get_inq) {
->>>>  			msg->msg_inq = READ_ONCE(u->inq_len);
->>>> -			put_cmsg(msg, SOL_SOCKET, SCM_INQ,
->>>> -				 sizeof(msg->msg_inq), &msg->msg_inq);
->>>> +			if (do_cmsg)
->>>> +				put_cmsg(msg, SOL_SOCKET, SCM_INQ,
->>>> +					 sizeof(msg->msg_inq), &msg->msg_inq);
->>>
->>> Is it intentional that msg_inq is set also if msg_get_inq is not set,
->>> but do_cmsg is?
->>
->> It doesn't really matter, what matters is the actual cmsg posting be
->> guarded. The msg_inq should only be used for a successful return anyway,
->> I think we're better off reading it unconditionally than having multiple
->> branches.
->>
->> Not really important, if you prefer to keep them consistent, that's fine
->> with me too.
->>
->>>
->>> It just seems a bit surprising behavior.
->>>
->>> That is an entangling of two separate things.
->>> - msg_get_inq sets msg_inq, and
->>> - cmsg_flags & TCP_CMSG_INQ inserts TCP_CM_INQ cmsg
->>>
->>> The original TCP patch also entangles them, but in another way.
->>> The cmsg is written only if msg_get_inq is requested.
->>
->> The cmsg is written iff TCP_CMSG_INQ is set, not if ->msg_get_inq is the
->> only thing set. That part is important.
->>
->> But yes, both need the data left.
+Hi all,
+
+Roland Schwarzkopf reported to the Debian mailing list a problem which
+he encountered once updating in Debian from 5.10.244 to 5.10.247. The
+report is quoted below and found in
+https://lists.debian.org/debian-kernel/2025/12/msg00223.html
+
+Roland did bisect the changes between 5.10.244 to 5.10.247 and found
+that the issue is introduced with 1550f3673972 ("net: rtnetlink: add
+bulk delete support flag") which is the backport to the 5.10.y series.
+
+On Thu, Dec 18, 2025 at 02:59:55PM +0100, Roland Schwarzkopf wrote:
+> Hi Salvatore,
 > 
-> I see, writing msg_inq if not requested is benign indeed. The inverse
-> is not true.
+> On 12/17/25 20:28, Salvatore Bonaccorso wrote:
+> > Hi Roland,
+> > 
+> > I'm CC'ing Ben Hutchings directly as well as he takes care of the
+> > Debian LTS kernel updates. Idellly we make this as well a proper bug
+> > for easier tracking.
+> > 
+> > On Wed, Dec 17, 2025 at 01:35:54PM +0100, Roland Schwarzkopf wrote:
+> > > Hi there,
+> > > 
+> > > after upgrading to the latest kernel on Debian 11
+> > > (linux-image-5.10.0-37-amd64) I have an issue using libvirt with qemu/kvm
+> > > virtual machines and macvtap networking. When a machine is shut down,
+> > > libvirt can not delete the corresponding macvtap device. Thus, starting the
+> > > machine again is not possible. After manually removing the macvtap device
+> > > using `ip link delete` the vm can be started again.
+> > > 
+> > > In the journal the following message is shown:
+> > > 
+> > > Dec 17 13:19:27 iblis libvirtd[535]: error destroying network device macvtap0: Operation not supported
+> > > 
+> > > After downgrading the kernel to linux-image-5.10.0-36-amd64, the problem
+> > > disappears. I tested this on a fresh minimal install of Debian 11 - to
+> > > exclude that anything else on my production machines is causing this issue.
+> > > 
+> > > Since the older kernel does not have this issue, I assume this is related to
+> > > the kernel and not to libvirt?
+> > > 
+> > > I tried to check for bug reports of the kernel package, but the bug tracker
+> > > finds no reports and even states that the package does not exist (I used the
+> > > "Bug reports" link on
+> > > https://packages.debian.org/bullseye/linux-image-5.10.0-37-amd64). This left
+> > > me a bit puzzled. Since I don't have experience with the debian bug
+> > > reporting process, I had no other idea than writing to this list.
+> > You would need to search for inhttps://bugs.debian.org/src:linux ,
+> > but that said I'm not aware of any bug reports in that direction.
+> > 
+> > Would you be in the position of bisecting the problem as you can say
+> > that 5.10.244 is good and 5.10.247 is bad and regressed? If you can do
+> > that that would involve compiling a couple of kernels to narrow down
+> > where the problem is introduced:
+> > 
+> >      git clone --single-branch -b linux-5.10.yhttps://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+> >      cd linux-stable
+> >      git checkout v5.10.244
+> >      cp /boot/config-$(uname -r) .config
+> >      yes '' | make localmodconfig
+> >      make savedefconfig
+> >      mv defconfig arch/x86/configs/my_defconfig
+> > 
+> >      # test 5.10.244 to ensure this is "good"
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install the resulting .deb package and confirm it successfully boots / problem does not exist
+> > 
+> >      # test 5.10.247 to ensure this is "bad"
+> >      git checkout v5.10.247
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install the resulting .deb package and confirm it fails to boot / problem exists
+> > 
+> > With that confirmed, the bisection can start:
+> > 
+> >      git bisect start
+> >      git bisect good v5.10.244
+> >      git bisect bad v5.10.247
+> > 
+> > In each bisection step git checks out a state between the oldest
+> > known-bad and the newest known-good commit. In each step test using:
+> > 
+> >      make my_defconfig
+> >      make -j $(nproc) bindeb-pkg
+> >      ... install, try to boot / verify if problem exists
+> > 
+> > and if the problem is hit run:
+> > 
+> >      git bisect bad
+> > 
+> > and if the problem doesn't trigger run:
+> > 
+> >      git bisect good
+> > 
+> > . Please pay attention to always select the just built kernel for
+> > booting, it won't always be the default kernel picked up by grub.
+> > 
+> > Iterate until git announces to have identified the first bad commit.
+> > 
+> > Then provide the output of
+> > 
+> >      git bisect log
+> > 
+> > In the course of the bisection you might have to uninstall previous
+> > kernels again to not exhaust the disk space in /boot. Also in the end
+> > uninstall all self-built kernels again.
 > 
-> Ok. I do think it would be good to have the protocols consistent.
-> Simpler to reason about the behavior and intent long term.
+> I just did my first bisection \o/ (sorry)
+> 
+> Here are the results:
+> 
+> git bisect start
+> # bad: [f964b940099f9982d723d4c77988d4b0dda9c165] Linux 5.10.247
+> git bisect bad f964b940099f9982d723d4c77988d4b0dda9c165
+> # good: [863b76df7d1e327979946a2d3893479c3275bfa4] Linux 5.10.244
+> git bisect good f52ee6ea810273e527a5d319e5f400be8c8424c1
+> # good: [dc9fdb7586b90e33c766eac52b6f3d1c9ec365a1] net: usb: lan78xx: Add error handling to lan78xx_init_mac_address
+> git bisect good dc9fdb7586b90e33c766eac52b6f3d1c9ec365a1
+> # bad: [2272d5757ce5d3fb416d9f2497b015678eb85c0d] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+> git bisect bad 2272d5757ce5d3fb416d9f2497b015678eb85c0d
+> # bad: [547539f08b9e3629ce68479889813e58c8087e70] ALSA: usb-audio: fix control pipe direction
+> git bisect bad 547539f08b9e3629ce68479889813e58c8087e70
+> # bad: [3509c748e79435d09e730673c8c100b7f0ebc87c] most: usb: hdm_probe: Fix calling put_device() before device initialization
+> git bisect bad 3509c748e79435d09e730673c8c100b7f0ebc87c
+> # bad: [a6ebcafc2f5ff7f0d1ce0c6dc38ac09a16a56ec0] net: add ndo_fdb_del_bulk
+> git bisect bad a6ebcafc2f5ff7f0d1ce0c6dc38ac09a16a56ec0
+> # good: [b8a72692aa42b7dcd179a96b90bc2763ac74576a] hfsplus: fix KMSAN uninit-value issue in __hfsplus_ext_cache_extent()
+> git bisect good b8a72692aa42b7dcd179a96b90bc2763ac74576a
+> # good: [2b42a595863556b394bd702d46f4a9d0d2985aaa] m68k: bitops: Fix find_*_bit() signatures
+> git bisect good 2b42a595863556b394bd702d46f4a9d0d2985aaa
+> # good: [9d9f7d71d46cff3491a443a3cf452cecf87d51ef] net: rtnetlink: use BIT for flag values
+> git bisect good 9d9f7d71d46cff3491a443a3cf452cecf87d51ef
+> # bad: [1550f3673972c5cfba714135f8bf26784e6f2b0f] net: rtnetlink: add bulk delete support flag
+> git bisect bad 1550f3673972c5cfba714135f8bf26784e6f2b0f
+> # good: [c8879afa24169e504f78c9ca43a4d0d7397049eb] net: netlink: add NLM_F_BULK delete request modifier
+> git bisect good c8879afa24169e504f78c9ca43a4d0d7397049eb
+> # first bad commit: [1550f3673972c5cfba714135f8bf26784e6f2b0f] net: rtnetlink: add bulk delete support flag
+> 
+> Is there anything else I can do to help?
 
-Sure, I can do that. Would you prefer patch 1 and 2 folded as well, or
-keep them separate? If we're mirroring the logic, seems like 1 patch
-would be better.
+Is there soemthing missing?
 
--- 
-Jens Axboe
+Roland I think it would be helpful if you can test as well more recent
+stable series versions to confirm if the issue is present there as
+well or not, which might indicate a 5.10.y specific backporting
+problem.
+
+#regzbot introduced: 1550f3673972c5cfba714135f8bf26784e6f2b0f
+
+Regards,
+Salvatore
