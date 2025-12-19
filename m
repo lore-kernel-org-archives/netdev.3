@@ -1,86 +1,133 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from r9110.ps.combzmail.jp (r9110.ps.combzmail.jp [49.212.36.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C9E17BA6;
-	Fri, 19 Dec 2025 02:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A432BB17
+	for <netdev@vger.kernel.org>; Fri, 19 Dec 2025 03:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.36.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766111290; cv=none; b=UXnosE11xu/UwIT4oZfYInsvoZl+ZXwpUAE+mFSjVGF6BUpW2us73wI5nNdRQnQB1+wDozsvz+861rIO46HGFrbdU9mq+wFPhGHE1CqAFfvZkMCXo5HkHyZ1GzgnkqV+gtg69MuPJ+DEj5VHlCR/NyTr97em7t8kmEpr9n14psw=
+	t=1766113403; cv=none; b=WGTi3rvqOfGOmeCGpDpjEbwaVOM3A0so3qSsFw1SXT/uV0RL5MjZt6kr4OvwyQltrH32D+v/Zt4YAKqj3XtbMLtgAzpf3B5PputZvxS/bI1ZtZsOX+iDmpV7nQhD2fhQ7Izy2K9p57G4lh5J53RADdreNKY4VAhhbDDAjO0UY0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766111290; c=relaxed/simple;
-	bh=zzWTfLen8COuX/q/sKLUzJAtj9cSvrwCqbBUYVz6l10=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=I5G29TdC8gOZBDnC68qr5FIncKImMIi+EDXI3W59NThfcjLpkimx27qrQr3ZEFSBafrLu9PfhbF17nAsjClV+crIl2N6H08/4eLo6Fm5irUPMJ5irElG3Qi7ccO8qG5bhUVhcxMkD0XqGvK0MZbd/qLXX2upzNF4J29FRUihEGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=f9b6Yn9l; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="f9b6Yn9l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=zzWTfLen8COuX/q/sKLUzJAtj9cSvrwCqbBUYVz6l10=; b=f
-	9b6Yn9lpfldBIebFac8ZhjCAfipn5whg40ODcftNj/pMJAS2/R1nEXKECOUF7mwa
-	7En0Kk5Lg4n9rU5PPO6f68NY4XANcZg8Fzn5k6pqs6vSexPCUr0vRBgls48z1Tnh
-	g5amu67ah9mCP9PLJqN6C0uL0XSMwEiycAExhK7HFg=
-Received: from 15927021679$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-107 (Coremail) ; Fri, 19 Dec 2025 10:27:09 +0800
- (CST)
-Date: Fri, 19 Dec 2025 10:27:09 +0800 (CST)
-From: =?GBK?B?0NzOsMPxICA=?= <15927021679@163.com>
-To: "Leon Romanovsky" <leon@kernel.org>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	"David Hildenbrand" <david@redhat.com>,
-	"Jason Wang" <jasowang@redhat.com>,
-	"Stefano Garzarella" <sgarzare@redhat.com>,
-	"Thomas Monjalon" <thomas@monjalon.net>,
-	"David Marchand" <david.marchand@redhat.com>,
-	"Luca Boccassi" <bluca@debian.org>,
-	"Kevin Traynor" <ktraynor@redhat.com>,
-	"Christian Ehrhardt" <christian.ehrhardt@canonical.com>,
-	"Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
-	=?GBK?Q?Eugenio_P=A8=A6rez?= <eperezma@redhat.com>,
-	"Xueming Li" <xuemingl@nvidia.com>,
-	"Maxime Coquelin" <maxime.coquelin@redhat.com>,
-	"Chenbo Xia" <chenbox@nvidia.com>,
-	"Bruce Richardson" <bruce.richardson@intel.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	"RDMA mailing list" <linux-rdma@vger.kernel.org>
-Subject: Re:Re: Implement initial driver for virtio-RDMA device(kernel)
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <20251218163008.GH400630@unreal>
-References: <20251218091050.55047-1-15927021679@163.com>
- <20251218163008.GH400630@unreal>
-X-NTES-SC: AL_Qu2dBP2avkop7yKcYukfmU0VgOc9XsWwu/Uk2YRXc+AEvhn91i0NcGBfB13x3/C3Cw2orgSHdD9v4+NFc5ZjnscnuIaIph6uoKKQX33d3Q==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1766113403; c=relaxed/simple;
+	bh=rxdtig4WuSuZp/vzyTbggKH9HEirYly2qrtPpy17VQw=;
+	h=To:From:Subject:Mime-Version:Content-Type:Message-Id:Date; b=uJmJxGdQ7vFTbvBhWrGLdTKHW6cqByCntHAXQLsLuHgAXIc5V+aMlNIvGK3v3irTGCY3DzL/1T8O46SPnh4eypE9o0GjkWA59xGlIaGq68TvSfnr/k3/uRHUcmPIl5+V+U57jMj3H21JpOcX0FYvj6UIyLAppi9VTNSOsGB6xNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onelife-lab.jp; spf=pass smtp.mailfrom=magerr.combzmail.jp; arc=none smtp.client-ip=49.212.36.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onelife-lab.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=magerr.combzmail.jp
+Received: by r9110.ps.combzmail.jp (Postfix, from userid 99)
+	id F25351892BD; Fri, 19 Dec 2025 12:02:47 +0900 (JST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 r9110.ps.combzmail.jp F25351892BD
+To: netdev@vger.kernel.org
+From: =?ISO-2022-JP?B?GyRCJVolQyVISl04bjtZMWclOyVfJUohPBsoQg==?= <info@onelife-lab.jp>
+X-Ip: 950673425849124
+X-Ip-source: k85gj77948dnsa46u0p6gd
+Precedence: bulk
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Subject: =?ISO-2022-JP?B?GyRCIVYlWiVDJUgwJiFXMG4kbCRrISI3UDFEGyhC?=
+ =?ISO-2022-JP?B?GyRCPFRNTSRYGyhC?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <7076944c.4ac4.19b346eb549.Coremail.15927021679@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:aygvCgBnhST9t0Rps8U_AA--.11607W
-X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0R2YIWlEt-1cmgAA3U
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+X-MagazineId: 7946
+X-uId: 6763335740485968724370211011
+X-Sender: CombzMailSender
+X-Url: http://www.combzmail.jp/
+Message-Id: <20251219030313.F25351892BD@r9110.ps.combzmail.jp>
+Date: Fri, 19 Dec 2025 12:02:47 +0900 (JST)
 
-CgoKCgoKCgoKCgoKCgoKCgoKQXQgMjAyNS0xMi0xOSAwMDozMDowOCwgIkxlb24gUm9tYW5vdnNr
-eSIgPGxlb25Aa2VybmVsLm9yZz4gd3JvdGU6Cj5PbiBUaHUsIERlYyAxOCwgMjAyNSBhdCAwNTow
-OTo0MFBNICswODAwLCBYaW9uZyBXZWltaW4gd3JvdGU6Cj4+IEhpIGFsbCwKPj4gCj4+IFRoaXMg
-dGVzdGluZyBpbnN0cnVjdGlvbnMgYWltcyB0byBpbnRyb2R1Y2UgYW4gZW11bGF0aW5nIGEgc29m
-dCBST0NFIAo+PiBkZXZpY2Ugd2l0aCBub3JtYWwgTklDKG5vIFJETUEpLCB3ZSBoYXZlIGZpbmlz
-aGVkIGEgdmhvc3QtdXNlciBSRE1BCj4+IGRldmljZSBkZW1vLCB3aGljaCBjYW4gd29yayB3aXRo
-IFJETUEgZmVhdHVyZXMgc3VjaCBhcyBDTSwgUVAgdHlwZSBvZiAKPj4gVUMvVUQgYW5kIHNvIG9u
-Lgo+Cj5TYW1lIHF1ZXN0aW9uIGFzIG9uIHlvdXIgUUVNVSBwYXRjaGVzLgo+aHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvYWxsLzIwMjUxMjE4MTYyMDI4LkdHNDAwNjMwQHVucmVhbC8KPgo+QW5kIGFz
-IGEgYmFyZSBtaW5pbXVtLCB5b3Ugc2hvdWxkIHJ1biBnZXRfbWFpbnRhaW5lcnMucGwgc2NyaXB0
-IG9uIHlvdXIKPnBhdGNoZXMgYW5kIGFkZCB0aGUgcmlnaHQgcGVvcGxlIGFuZCBNTCB0byB0aGUg
-Q0MvVE8gZmllbGRzLgo+Cgo+VGhhbmtzCgoKU2luY2UgdGhpcyBmZWF0dXJlIGludm9sdmVzIGNv
-b3JkaW5hdGVkIGNoYW5nZXMgYWNyb3NzIFFFTVUsIERQREssIGFuZCB0aGUga2VybmVsLCAKSSBo
-YXZlIHN1Ym1pdHRlZCBwYXRjaGVzIGZvciBhbGwgdGhyZWUgY29tcG9uZW50cyB0byBldmVyeSBt
-YWludGFpbmVyLiBUaGlzIGlzIHRvIAplbnN1cmUgdGhhdCBzZW5pb3IgZGV2ZWxvcGVycyBjYW4g
-cmV2aWV3IHRoZSBjb21wbGV0ZSBhcmNoaXRlY3R1cmUgYW5kIGNvZGUuCgoKVGhhbmtzLg==
+　「ペット愛」溢れる、経営者様へ
+　
+　動物の尊い命を救い、働く喜びを支援する
+　革新的な新規事業を始めませんか？
+
+−−−−−−−−−−−−−−−−−−−−−−−
+　■ フランチャイズシステム説明会 ■
+
+　社会貢献と高収益を両立！
+
+　ペット保護×就労継続支援B型事業
+　”ONEPET（ワンペット）”
+
+　※本部が徹底サポート！「経験や資格が無くても」
+　　リスクを抑えて安心して始められます。
+
+　■ 開催方式
+　　オンライン（申込後に参加方法をご案内）
+
+　■ 日程
+　　12月17日（水）17：00〜18：30　満席
+　　12月19日（金）16：00〜17：30　受付終了
+　　12月26日（金）17：00〜18：30　残2枠
+　
+　■ 定員
+　　各回4名 ／ 1社2名まで
+
+　■ 視聴予約はこちら
+   　https://onelife-pet.jp/onepet/
+−−−−−−−−−−−−−−−−−−−−−−−
+　
+　お世話になります。
+　
+　この度は、「保護犬・猫」と「就労支援」を組み合わせた、
+　革新的なフランチャイズ事業の説明会をご案内いたします。
+
+　私たちがご提供する ONEPET（ワンペット） は、
+　　「殺処分を待つ命を救う」
+　　「働きたいと願う人々の自立を支援する」
+
+　という、二つの大きな社会課題を同時に
+　解決するビジネスモデルです。
+　
+　社会貢献事業は、収益がイマイチ。と、思わないでください。
+　
+　
+　ONEPETでは、“動物と関わる”という圧倒的な差別化コンテンツを持つことで
+　利用者から「やってみたい」と選ばれ、極めて高い集客力を誇ります。
+　（オープン2ヶ月で400件超の問合せを達成）
+　
+　さらに、国の給付金によるストック型収益と
+　ペット事業による店舗収益の二本柱で、
+　景気に左右されにくい安定経営を実現しています。
+　
+　事実、年商7,000万円／営業利益率40％を目指せる高収益事業として、
+　多くの経営者様にご注目いただいています。
+　
+　
+　ここまでこの文章を読まれたということは、
+　あなたも動物への深い愛情と、社会に貢献したいという
+　強い意志をお持ちなのではないでしょうか。
+　
+　先輩FCオーナー様も福祉業界の経験がなくても、
+　「定員満員までWeb広告費本部負担」
+　「稼働率50％までロイヤリティ無料」
+　
+　といった、本部の手厚いサポートのもと
+　事業を成功させています。
+　
+　この革新的なビジネスモデルの詳細を聞き逃さないよう、
+　新規事業を探している経営者様は、この機会にぜひご視聴ください。
+　
+　
+　「社会課題解決」と「安定収益」を両立する、
+　新しい社会貢献のカタチを一緒につくっていきましょう。
+
+■ 視聴予約はこちら
+    https://onelife-pet.jp/onepet/
+
++++++++++++++++++++++++++++++++++++++++
+
+本メールのご不要な方には大変ご迷惑をおかけいたしました。
+お手数お掛けしますが、メール解除のお手続きは
+下記よりお願いいたします。
+<依頼フォーム>
+https://onelife-pet.jp/mail/
+
++++++++++++++++++++++++++++++++++++++++
+
+ONEPET（ワンペット）　フランチャイズ本部　
+群馬県前橋市広瀬町3-18-15
+TEL：080-7723-6089
