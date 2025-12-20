@@ -1,98 +1,264 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E123313E;
-	Sat, 20 Dec 2025 08:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C853262D27
+	for <netdev@vger.kernel.org>; Sat, 20 Dec 2025 09:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766220495; cv=none; b=tTTDsK153RwctMvpkezVEsfeO/2JeXfMY2DlHM1omAAbD2P94KcqDlWnEfgJpc8vElbDZROhFlqpfFF8/H5cvu2su2tylBpjEu8v3fDrkBHTtSn22PwkWszP1+T1m1zWRY6JoPCPmlgFyrp0UL6QJ74B+bIO/P2iwV8TkSo4GB0=
+	t=1766221302; cv=none; b=awWpBrN+urQ/AXKQmw/3t9VmWERDQtuOiXIhfFJEhDN7PcDfy1L5b+TmSrAf9vmhygBcfeW1NJhC6acuduQuqIXZEMosUVjGKfvtn7AZL8biwSjOd9BxW4kaPzOjxa9q0zi5VaN/h9CAqkFZQLlqnWzqtJooIORMpyJ5767Abys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766220495; c=relaxed/simple;
-	bh=18qrj7yg+u8XLv0nD5iwxa5zywxEGxn2/r6db/iLYss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PZvAtRqwoESYkur7MGEv7+7bZBCIupIbqldYgt5SWlEmNOJWk4eDaK1q6REarD+lPZkvdG6WreHwK/e4S4ralTs8JWX/adfzhi4qFX9UyRIw34dgihrEM9YnSuuxYUQf6ffcNT8Mq294U2rn3elRzFKs0Rr9wFC5VourGNpgj/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZK2YNnU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766221302; c=relaxed/simple;
+	bh=4d+O9OuZ4RRNCWdOVZ0WRa+EtjazEcsVoEBPPFfY6zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hUKx0rqnb+Q4LWzTOtBZRkoUSLmot5hQarKIJ8/H70SmdU5dViLcHG3W24aGKA8lx6esqeOdhLpR+/Wr99iPK8hU6g/OWpOOb3PHQlB0athM/xJvZDyzbK7zwSPmaj7wGP2n2FfVxPBy0TMReNPPF8Eh0KwPbuB3yU/byNAra+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aUfj1HTV; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZK2YNnU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A18C4CEF5;
-	Sat, 20 Dec 2025 08:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766220494;
-	bh=18qrj7yg+u8XLv0nD5iwxa5zywxEGxn2/r6db/iLYss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pZK2YNnUaWn4dEJxlhskLRLooxac+p0uhMtIX0u2IGB063em/I4qic9nj32KHxwYL
-	 n5H3ygVyfsMxF9JRjGM+zodtf9rMgT+ZFL4RHvhVY13VjQHFIw6gTSyAVYr2daGPwO
-	 JYpspcMQNs4Ccd0CuHbSt/ZtE3GdkZznCBxqkBkeMixJ7FcnFzbip/QBzBGpI128Ir
-	 PnO+ummT309J/jMPFiP3tsJY+qOxsIutRgvo4QFcYXjgqX8MVPftY+uBXX8zkyxqCU
-	 ep57SFzIbCJ5R+HBRH0+YFl7OVfA9YXDW/Sc7HVSAHgRfZpvFrrz/hev/mku3UM3n7
-	 ftJPGM6g+0R5w==
-Date: Sat, 20 Dec 2025 09:48:10 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Keguang Zhang <keguang.zhang@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Shuang Liang <liangshuang@eswincomputing.com>, Zhi Li <lizhi2@eswincomputing.com>, 
-	Shangjuan Wei <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	David Wu <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v6 1/7] dt-bindings: net: qcom: document the ethqos
- device for SCMI-based systems
-Message-ID: <20251220-spiritual-barracuda-of-champagne-34eb91@quoll>
-References: <20251219-qcom-sa8255p-emac-v6-0-487f1082461e@oss.qualcomm.com>
- <20251219-qcom-sa8255p-emac-v6-1-487f1082461e@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aUfj1HTV"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766221287;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WR8YAfzmmuv6Sn9sLH28S4YXG3HmYocRCaop46ntYtM=;
+	b=aUfj1HTVKbxAWoFKoFpJ3kIxoY+ntKqEQ2fy/+eA1MtuV/ycA0jvGrhKAbiuDLwz5mrBHB
+	LUzbgAptu8kvzMQVzjuSexV7Zt988XqydaxraPo8T9Xbu4JczIHxA0fzxPLPRFbb/N3kET
+	MMdf9vP+JUFvdBx3WOAEY3/EWqCCeCk=
+From: Menglong Dong <menglong.dong@linux.dev>
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Menglong Dong <menglong8.dong@gmail.com>, ast@kernel.org,
+ andrii@kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ daniel@iogearbox.net, martin.lau@linux.dev, eddyz87@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
+ kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v4 0/9] bpf: tracing session supporting
+Date: Sat, 20 Dec 2025 17:01:06 +0800
+Message-ID: <6114986.MhkbZ0Pkbq@7950hx>
+In-Reply-To: <2393471.ElGaqSPkdT@7950hx>
+References:
+ <20251217095445.218428-1-dongml2@chinatelecom.cn>
+ <CAEf4BzYm3=zzmCRg3zr1F99sBkxEZ_pDgjtKMBurb9LGu6JJKQ@mail.gmail.com>
+ <2393471.ElGaqSPkdT@7950hx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251219-qcom-sa8255p-emac-v6-1-487f1082461e@oss.qualcomm.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Dec 19, 2025 at 12:42:16PM +0100, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> Describe the firmware-managed variant of the QCom DesignWare MAC. As the
-> properties here differ a lot from the HLOS-managed variant, lets put it
-> in a separate file. Since we need to update the maximum number of power
-> domains, let's update existing bindings referencing the top-level
-> snps,dwmac.yaml and limit their maxItems for power-domains to 1.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
+On 2025/12/20 09:12, Menglong Dong wrote:
+> On 2025/12/20 00:55, Andrii Nakryiko wrote:
+> > On Thu, Dec 18, 2025 at 5:18=E2=80=AFPM Menglong Dong <menglong.dong@li=
+nux.dev> wrote:
+> > >
+> > > On 2025/12/19 08:55 Andrii Nakryiko <andrii.nakryiko@gmail.com> write:
+> > > > On Wed, Dec 17, 2025 at 1:54=E2=80=AFAM Menglong Dong <menglong8.do=
+ng@gmail.com> wrote:
+> > > > >
+> > > > > Hi, all.
+> > > > >
+> > > > > In this version, I combined Alexei and Andrii's advice, which mak=
+es the
+> > > > > architecture specific code much simpler.
+> > > > >
+> > > > > Sometimes, we need to hook both the entry and exit of a function =
+with
+> > > > > TRACING. Therefore, we need define a FENTRY and a FEXIT for the t=
+arget
+> > > > > function, which is not convenient.
+> > > > >
+> > > > > Therefore, we add a tracing session support for TRACING. Generally
+> > > > > speaking, it's similar to kprobe session, which can hook both the=
+ entry
+> > > > > and exit of a function with a single BPF program. Session cookie =
+is also
+> > > > > supported with the kfunc bpf_fsession_cookie(). In order to limit=
+ the
+> > > > > stack usage, we limit the maximum number of cookies to 4.
+> > > > >
+> > > > > The kfunc bpf_fsession_is_return() and bpf_fsession_cookie() are =
+both
+> > > > > inlined in the verifier.
+> > > >
+> > > > We have generic bpf_session_is_return() and bpf_session_cookie() (t=
+hat
+> > > > currently works for ksession), can't you just implement them for the
+> > > > newly added program type instead of adding type-specific kfuncs?
+> > >
+> > > Hi, Andrii. I tried and found that it's a little hard to reuse them. =
+The
+> > > bpf_session_is_return() and bpf_session_cookie() are defined as kfunc=
+, which
+> > > makes we can't implement different functions for different attach typ=
+e, like
+> > > what bpf helper does.
+> >=20
+> > Are you sure? We certainly support kfunc implementation specialization
+> > for sleepable vs non-sleepable BPF programs. Check specialize_kfunc()
+> > in verifier.c
+>=20
+> Ah, I remember it now. We do can use different kfunc version
+> for different case in specialize_kfunc().
+>=20
+> >=20
+> > >
+> > > The way we store "is_return" and "cookie" in fsession is different wi=
+th
+> > > ksession. For ksession, it store the "is_return" in struct bpf_sessio=
+n_run_ctx.
+> > > Even if we move the "nr_regs" from stack to struct bpf_tramp_run_ctx,
+> > > it's still hard to reuse the bpf_session_is_return() or bpf_session_c=
+ookie(),
+> > > as the way of storing the "is_return" and "cookie" in fsession and ks=
+ession
+> > > is different, and it's a little difficult and complex to unify them.
+> >=20
+> > I'm not saying we should unify the implementation, you have to
+> > implement different version of logically the same kfunc, of course.
+>=20
+> I see. The problem now is that the prototype of bpf_session_cookie()
+> or bpf_session_is_return() don't satisfy our need. For bpf_session_cookie=
+(),
+> we at least need the context to be the argument. However, both
+> of them don't have any function argument. After all, the prototype of
+> different version of logically the same kfunc should be the same.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Hi, Andrii. I see that you want to make the API consistent between
+ksession and fsession, which is more friendly for the user.
 
-Best regards,
-Krzysztof
+After my analysis, I think we have following approach:
+1. change the function prototype of bpf_session_cookie and bpf_session_is_r=
+eturn
+to:
+    bool bpf_session_is_return(void *ctx);
+    bool bpf_session_cookie(void *ctx);
+And we do the fix up in specialize_kfunc(), which I think is the easiest
+way. The defect is that it will break existing users.
+
+2. We define a fixup_kfunc_call_early() and call it in add_subprog_and_kfun=
+c.
+In the fixup_kfunc_call_early(), we will change the target kfunc(which is i=
+nsn->imm)
+from bpf_session_cookie() to bpf_fsession_cookie(). For the bpf_session_coo=
+kie(),
+we make its prototype to:
+    __bpf_kfunc __u64 *bpf_session_cookie(void *ctx__ign)
+Therefore, it won't break the existing users. For the ksession that uses the
+old prototype, it can pass the verifier too. Following is a demo patch of t=
+his
+approach. In this way, we can allow a extension in the prototype for a kfunc
+in the feature too.
+
+What do you think?
+
+Thanks!
+Menglong Dong
+
+>patch<
+
++static int fixup_kfunc_call_early(struct bpf_verifier_env *env, struct bpf=
+_insn *insn)
++{
++       struct bpf_prog *prog =3D env->prog;
++
++       if (prog->expected_attach_type =3D=3D BPF_TRACE_FSESSION) {
++               if (insn->imm =3D=3D special_kfunc_list[KF_bpf_session_cook=
+ie])
++                       insn->imm =3D special_kfunc_list[KF_bpf_fsession_co=
+okie];
++               else if (insn->imm =3D=3D special_kfunc_list[KF_bpf_session=
+_is_return])
++                       insn->imm =3D special_kfunc_list[KF_bpf_fsession_is=
+_return];
++       }
++
++       return 0;
++}
+
+@@ -3489,10 +3490,12 @@ static int add_subprog_and_kfunc(struct bpf_verifie=
+r_env *env)
+                        return -EPERM;
+                }
+=20
+=2D               if (bpf_pseudo_func(insn) || bpf_pseudo_call(insn))
++               if (bpf_pseudo_func(insn) || bpf_pseudo_call(insn)) {
+                        ret =3D add_subprog(env, i + insn->imm + 1);
+=2D               else
+=2D                       ret =3D add_kfunc_call(env, insn->imm, insn->off);
++               } else {
++                       ret =3D fixup_kfunc_call_early(env, insn);
++                       ret =3D ret ?: add_kfunc_call(env, insn->imm, insn-=
+>off);
++               }
+
+@@ -3316,7 +3321,7 @@ static u64 bpf_uprobe_multi_entry_ip(struct bpf_run_c=
+tx *ctx)
+=20
+ __bpf_kfunc_start_defs();
+=20
+=2D__bpf_kfunc bool bpf_session_is_return(void)
++__bpf_kfunc bool bpf_session_is_return(void *ctx__ign)
+ {
+        struct bpf_session_run_ctx *session_ctx;
+=20
+@@ -3324,7 +3329,7 @@ __bpf_kfunc bool bpf_session_is_return(void)
+        return session_ctx->is_return;
+ }
+=20
+=2D__bpf_kfunc __u64 *bpf_session_cookie(void)
++__bpf_kfunc __u64 *bpf_session_cookie(void *ctx__ign)
+ {
+        struct bpf_session_run_ctx *session_ctx;
+
+>=20
+> I think it's not a good idea to modify the prototype of existing kfunc,
+> can we?
+>=20
+> >=20
+> > >
+> > > What's more, we will lose the advantage of inline bpf_fsession_is_ret=
+urn
+> > > and bpf_fsession_cookie in verifier.
+> > >
+> >=20
+> > I'd double check that either. BPF verifier and JIT do know program
+> > type, so you can pick how to inline
+> > bpf_session_is_return()/bpf_session_cookie() based on that.
+>=20
+> Yeah, we can inline it depend on the program type if we can solve
+> the prototype problem.
+>=20
+> Thanks!
+> Menglong Dong
+>=20
+>=20
+> >=20
+> > > I'll check more to see if there is a more simple way to reuse them.
+> > >
+> > > Thanks!
+> > > Menglong Dong
+> > >
+> > > >
+> [...]
+> > >
+> > >
+> > >
+> > >
+>=20
+>=20
+>=20
+>=20
+>=20
+
+
+
 
