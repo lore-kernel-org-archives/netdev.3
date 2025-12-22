@@ -1,125 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED94730FC05
-	for <netdev@vger.kernel.org>; Mon, 22 Dec 2025 22:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD843346E6B;
+	Mon, 22 Dec 2025 22:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766443352; cv=none; b=FH085Pl86nwvww0wUy1xzUuXgtVw2HbdYHLjkDab9VBZ4iI8VNhqkChdNosDx31QsF9zDU2HvuOIzlZK8DsUnDVVHIkNMBkXnqmm8H7Q5EDaJFSkj8MtBnED9heJYCiUsB15KfyL4GDOo5eUmB2AeCtTPpVgjvclb7XYGsaq/I4=
+	t=1766444245; cv=none; b=rtznN3wjsYQc53bSK/Q1UJl7athPjG3ydHMN4ikxRJyLbhXYmyBYxsWT+CCRN8acva82a8d3mJKK6u0sTa1Bqq6UES4ewUFPYIe5Bt4E5McES6PSX6lTDdAlfL2G6VxakVAkn+YPNJoUFWfO0G4QI33xGlnu1LJfNfxb/tNJDc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766443352; c=relaxed/simple;
-	bh=nbvAp9lGgmeAHI82ou9Vpof0xEI/gJTFJ/RcmIgs90M=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=S9CrqytFjp1JudTn/HCwvDkJGcBWwVlDfxZ7PATqrD3v2VRch1NXBw4xBBOUlGLQ7eviGiYQGJYCRAV+aHbu4dzsgxFOuFw3fkXrteegDXKoFxKM2G6nhlNwignXCPG2oDISqFNDsXs5xuNDIuJ+iMUc035/m5W/zmQfOxwgibA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JAry3Sag; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1766444245; c=relaxed/simple;
+	bh=mnu/65nkOLYVGKJLRJS1wFV3oVaFZSvkIiASImiT1og=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rOnKXtsmJ3Hz83xSoCB0Ci2tRNnHyK9hoK2q+rlYFPXDmn2gOu+huvM0fm1AbLIBvMI4zU1ZuJUFOM8EyL6E5pypGqjQQIH9oAHBRE88O5dJ8zFwI9eDedwoiGqcVY5NPtntiAxUgbCRV7uvyh/D7/ig8RcPLOxXZMgChIPu6fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQ0QEB3l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JAry3Sag"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766443350;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Nf8Y09hX+6ivSEyGT21ZNlAYEnQHEoRA/5t14BpHSg=;
-	b=JAry3SagyoOVvsnTl596xylzozAXIfSv14JTXVGBsPekOr/j0s07a34lBMn6UrnhX1AxcQ
-	26BLIov4JPN/ZW76VUYJwc8qzly5oTXqmL0BrSVX0iiX6LMXv7q9NFVeZ2UYEwyCgosC0h
-	BFSri4UTIFsmBvuxpmIVdDfupWA2UoU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-KbwvaoBrNy6oUzT24nfA5g-1; Mon,
- 22 Dec 2025 17:42:26 -0500
-X-MC-Unique: KbwvaoBrNy6oUzT24nfA5g-1
-X-Mimecast-MFC-AGG-ID: KbwvaoBrNy6oUzT24nfA5g_1766443345
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A1A6418002DE;
-	Mon, 22 Dec 2025 22:42:25 +0000 (UTC)
-Received: from localhost (unknown [10.64.240.82])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 48DD8180049F;
-	Mon, 22 Dec 2025 22:42:23 +0000 (UTC)
-Date: Tue, 23 Dec 2025 07:42:22 +0900 (JST)
-Message-Id: <20251223.074222.1040526801542772515.yamato@redhat.com>
-To: stephen@networkplumber.org
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH iproute2 1/2] man: explain the naming convention of
- files under .d dir
-From: Masatake YAMATO <yamato@redhat.com>
-In-Reply-To: <20251222103209.0f9e03bd@phoenix.local>
-References: <20251217154354.2410098-1-yamato@redhat.com>
-	<20251222103209.0f9e03bd@phoenix.local>
-Organization: Red Hat Japan, K.K.
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQ0QEB3l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4872C16AAE;
+	Mon, 22 Dec 2025 22:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766444245;
+	bh=mnu/65nkOLYVGKJLRJS1wFV3oVaFZSvkIiASImiT1og=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TQ0QEB3llvXAyckXQmubfldaQrQ/csmppSFOSSlpGBk4qEAlD2qQhcdcqRSTd0l5t
+	 OcpltpjhtTKqQGXD+Irtukm3nkIS85gGFKaWQruo6rftavzlfsfzUU535K4NwX83cN
+	 qiKeOy4IKX3B9Uf13S4/qM2fsaDI3y56i+W9698stA6FvVL+9A67AoG7CyJiRNRsCP
+	 9cvMutU3rP6BvuFmerXle16EIDf2BiVEVk8yrzN6U6nqXGZcOQv6vHDVZkjNOZwKa9
+	 bPcIwPtRF74baqJNgZuxTmrS4ejxHQTp283yzy5bnWrZ8hoccfnUjkDqqWSJ2FqPpY
+	 y6XdxRMdfzs9w==
+From: Namhyung Kim <namhyung@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-perf-users@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 10/11] tools headers: Sync linux/socket.h with kernel sources
+Date: Mon, 22 Dec 2025 14:57:15 -0800
+Message-ID: <20251222225716.3565649-10-namhyung@kernel.org>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+In-Reply-To: <20251222225716.3565649-1-namhyung@kernel.org>
+References: <20251222225716.3565649-1-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Stephen Hemminger <stephen@networkplumber.org>
-Subject: Re: [PATCH iproute2 1/2] man: explain the naming convention of files under .d dir
-Date: Mon, 22 Dec 2025 10:32:09 -0800
+To pick up changes from:
 
-> On Thu, 18 Dec 2025 00:43:53 +0900
-> Masatake YAMATO <yamato@redhat.com> wrote:
-> 
->> Signed-off-by: Masatake YAMATO <yamato@redhat.com>
->> ---
->>  man/man8/ip-address.8.in | 7 +++++++
->>  man/man8/ip-link.8.in    | 7 +++++--
->>  2 files changed, 12 insertions(+), 2 deletions(-)
->> 
->> diff --git a/man/man8/ip-address.8.in b/man/man8/ip-address.8.in
->> index 79942c1a..e88a114f 100644
->> --- a/man/man8/ip-address.8.in
->> +++ b/man/man8/ip-address.8.in
->> @@ -331,6 +331,13 @@ values have a fixed interpretation. Namely:
->>  The rest of the values are not reserved and the administrator is free
->>  to assign (or not to assign) protocol tags.
->>  
->> +When scanning
->> +.BR rt_addrprotos.d
->> +directory, only files ending
->> +.BR .conf
->> +are considered.
->> +Files beginning with a dot are ignored.
->> +
->>  .SS ip address delete - delete protocol address
->>  .B Arguments:
->>  coincide with the arguments of
->> diff --git a/man/man8/ip-link.8.in b/man/man8/ip-link.8.in
->> index ef45fe08..67f9e2f0 100644
->> --- a/man/man8/ip-link.8.in
->> +++ b/man/man8/ip-link.8.in
->> @@ -2315,8 +2315,11 @@ down on the switch port.
->>  .BR "protodown_reason PREASON on " or " off"
->>  set
->>  .B PROTODOWN
->> -reasons on the device. protodown reason bit names can be enumerated under
->> -/etc/iproute2/protodown_reasons.d/. possible reasons bits 0-31
->> +reasons on the device. protodown reason bit names can be enumerated in the
->> +.BR *.conf
->> +files under
->> +.BR @SYSCONF_USR_DIR@/protodown_reasons.d " or " @SYSCONF_ETC_DIR@/protodown_reasons.d "."
->> +possible reasons bits 0-31
->>  
->>  .TP
->>  .BR "dynamic on " or " dynamic off"
-> 
-> 
-> The man page is slightly redundant here. Already have a README file in the
-> directory.
-> 
+  d73c167708739137 ("socket: Split out a getsockname helper for io_uring")
+  4677e78800bbde62 ("socket: Unify getsockname and getpeername implementation")
+  bf33247a90d3e85d ("net: Add struct sockaddr_unsized for sockaddr of unknown length")
 
-I didn't know the README files. I would like to withdraw the proposal of
-this change.
+This should be used to beautify socket syscall arguments and it addresses
+these tools/perf build warnings:
 
-Masatake YAMATO
+  Warning: Kernel ABI header differences:
+    diff -u tools/perf/trace/beauty/include/linux/socket.h include/linux/socket.h
+
+Please see tools/include/README.kernel-copies.
+
+Cc: netdev@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ .../perf/trace/beauty/include/linux/socket.h  | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/tools/perf/trace/beauty/include/linux/socket.h b/tools/perf/trace/beauty/include/linux/socket.h
+index 77d7c59f5d8b1cb2..ec715ad4bf25f5f7 100644
+--- a/tools/perf/trace/beauty/include/linux/socket.h
++++ b/tools/perf/trace/beauty/include/linux/socket.h
+@@ -32,11 +32,29 @@ typedef __kernel_sa_family_t	sa_family_t;
+  *	1003.1g requires sa_family_t and that sa_data is char.
+  */
+ 
++/* Deprecated for in-kernel use. Use struct sockaddr_unsized instead. */
+ struct sockaddr {
+ 	sa_family_t	sa_family;	/* address family, AF_xxx	*/
+ 	char		sa_data[14];	/* 14 bytes of protocol address	*/
+ };
+ 
++/**
++ * struct sockaddr_unsized - Unspecified size sockaddr for callbacks
++ * @sa_family: Address family (AF_UNIX, AF_INET, AF_INET6, etc.)
++ * @sa_data: Flexible array for address data
++ *
++ * This structure is designed for callback interfaces where the
++ * total size is known via the sockaddr_len parameter. Unlike struct
++ * sockaddr which has a fixed 14-byte sa_data limit or struct
++ * sockaddr_storage which has a fixed 128-byte sa_data limit, this
++ * structure can accommodate addresses of any size, but must be used
++ * carefully.
++ */
++struct sockaddr_unsized {
++	__kernel_sa_family_t	sa_family;	/* address family, AF_xxx */
++	char			sa_data[];	/* flexible address data */
++};
++
+ struct linger {
+ 	int		l_onoff;	/* Linger active		*/
+ 	int		l_linger;	/* How long to linger for	*/
+@@ -450,10 +468,10 @@ extern int __sys_connect(int fd, struct sockaddr __user *uservaddr,
+ 			 int addrlen);
+ extern int __sys_listen(int fd, int backlog);
+ extern int __sys_listen_socket(struct socket *sock, int backlog);
++extern int do_getsockname(struct socket *sock, int peer,
++			  struct sockaddr __user *usockaddr, int __user *usockaddr_len);
+ extern int __sys_getsockname(int fd, struct sockaddr __user *usockaddr,
+-			     int __user *usockaddr_len);
+-extern int __sys_getpeername(int fd, struct sockaddr __user *usockaddr,
+-			     int __user *usockaddr_len);
++			     int __user *usockaddr_len, int peer);
+ extern int __sys_socketpair(int family, int type, int protocol,
+ 			    int __user *usockvec);
+ extern int __sys_shutdown_sock(struct socket *sock, int how);
+-- 
+2.52.0.351.gbe84eed79e-goog
 
