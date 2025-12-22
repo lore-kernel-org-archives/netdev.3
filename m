@@ -1,145 +1,77 @@
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6B52C2349
-	for <netdev@vger.kernel.org>; Mon, 22 Dec 2025 17:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5917A2FE589;
+	Mon, 22 Dec 2025 17:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766423948; cv=none; b=D4bO9IYWCe5niRIcfIyDsBEjQW794ifmJekdAYSOpEdUzkAXVJ9hwQ2RQfzojdXr0LemwDmycXbR2DIm52iYkUFZWBJ1cUtXay9RIvxQtCbpUmMLIYeZ75+7zUVCkn9yNXfMtHBVAj2Iw6rDGrztAU3+chMsRdbU6WGujz/UxM0=
+	t=1766424293; cv=none; b=nWkACNLVCFjFRLRjS67aiHNtO6+k/7FrRV2nj0/sw/8e3Y4VsIyWzi49WvS6kZFDrjZN8ioMnggQRZvvpxQk/rd4Uu/qSUF2J7DA0mhu/8wWw44OpCibSc3iuesghLd80fFF9OID69qXwStN8dLCfy4ixdZ+FWwTviXIvJzlbS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766423948; c=relaxed/simple;
-	bh=gDHcVBesdJ+KunYJqvKRQ0vvFy1npOXd0mzBeC82qN8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V7NRRRtax81pYMNMvIUvOBN2nezgeQj7mkHuzTQ0xwbRfdHgiFVT3O8nr+u9uiXMC1yAS1318vwDQaIq4BitggPo4IvKUwX/hLbducMTSdctKl+pzdma878HNG2WEmJeHrd4LU69Um8CdxyqfCscPr/Ek4qj8B5B+Y1ytO+YpVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-65d132240acso1824901eaf.1
-        for <netdev@vger.kernel.org>; Mon, 22 Dec 2025 09:19:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766423945; x=1767028745;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GNOGBZBt88jv4v0AtYq0+nFJt47TAA0rfIE++XFuplg=;
-        b=Tgkv1wjBV8XfA9E2gwyNddqrKBz9tU0Pq0cCSZ6mI3r4VpxPXk6WkzTEmu8+Z5iV4B
-         mJ6EwWUOwO7NLj/51/L2/wETbQwswL8iuZvRp601LbkzxaCYp2w0Ayp9UgF18l1xxE4l
-         V39Yzj4SRzid0j+Wp6eJ5Q4X9oon76YNl2qYlpjzP8DX3TOushW5yWSDQcmmrfSv49IM
-         VwxKdlkqak0Nqi8PN3KV4ey/Hu0b5ijEF1cRuNdmBaTreD97Goai6gut/7JJRZKOdo5G
-         5tYdFPyJNxItQYTDrainQj2fu+RZORFreYD0soYbYBnITBguI9UnyhkTyiFKgFpnqwPG
-         AwhA==
-X-Gm-Message-State: AOJu0YwXonhLSockQurCOrfNYocpWCEaUGrL2zXteInVAHVBXAEKBPXm
-	+grO9/3a6IflOIhuPpy7eTalVP/9spBwcnLB5I5Q+v4LSdLHbCzcXz6udwk4nA==
-X-Gm-Gg: AY/fxX769v8PmWY6LX4ygfN5AEtQ1QS5vH9rTArNnrVPwqlRkdE0qSXB5P4hQmVhrvL
-	de6bYYwWRHkvLSCabW/lLWaYQIo6VZMGYxlLxTHqCmhqZEMy5Z6ICRn+/FFwsTjGaompNCh1vJ2
-	VyVzh8TbjDHic0Vq9rVRSodRDyJ7Xx6ZaUcPTXDp3tp3yFUkc79j3zluhmVNLeXQnFnN1L5gwRj
-	ruk9tuTXwepGswU7qHOrVQj841SrGMKKnBuyM+ciWgxH0b3nl441OjCOwlEtVLw7lydVXfwdExP
-	SDMZQyx4k1JghhutFqJ6cLuXG/qLi3rJ3XU0S9AVV2DCMeboNm6/+hsW/8sRyvk36CmIfIZKzY9
-	KRV/D/JvmfUtry9DR/n/9mApXUrM9wUGSoAuS/BcHoGiE918lk1pP1QGZX3dqjoFN/BOauLoAZq
-	emLaBo+irJgm9Q
-X-Google-Smtp-Source: AGHT+IF8yxdw6xh070ezMfkl08boNT6UWoJhqLuGRUSRtE7GfnCzCdk8aKuj3NOsHR8zpn69CG0PQA==
-X-Received: by 2002:a05:6820:2d4c:b0:659:9a49:907c with SMTP id 006d021491bc7-65d0eafd622mr3326688eaf.71.1766423945506;
-        Mon, 22 Dec 2025 09:19:05 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:6::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65d0f69b9e9sm7014544eaf.12.2025.12.22.09.19.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 09:19:05 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 22 Dec 2025 09:16:27 -0800
-Subject: [PATCH net-next] net: gve: convert to use .get_rx_ring_count
+	s=arc-20240116; t=1766424293; c=relaxed/simple;
+	bh=Lv1tifWSSAu97WJmWQDHDADcPhJWieLqs0WZxgRO3xI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F7e/641ELGnMlEh440eKp2/lUdqQqyaR1+LPHo5kEMmdXxMr7pxOynZ64YzeMU21NtIR3OvaB+kLZK0NEoLAKdsk+6xC7HmJlqkS7VIfCdRYe9tiZxaDlnLT7S28SPOkwbRISUvqv0XKwxSCbaC071Mx5/9XkILueSRxKZp4WEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A1A81A026B;
+	Mon, 22 Dec 2025 17:24:43 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 96E1E2000F;
+	Mon, 22 Dec 2025 17:24:40 +0000 (UTC)
+Date: Mon, 22 Dec 2025 12:26:28 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
+ syzbot+9b35e9bc0951140d13e6@syzkaller.appspotmail.com, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net v2] ipv6: fix a BUG in rt6_get_pcpu_route() under
+ PREEMPT_RT
+Message-ID: <20251222122628.38e9bc89@gandalf.local.home>
+In-Reply-To: <20251222121639.3953ea08@gandalf.local.home>
+References: <20251219025140.77695-1-jiayuan.chen@linux.dev>
+	<CANn89iLeASUZyonYSLX0AG5mbC=gxux0efehkBc_j1bbj6xrvA@mail.gmail.com>
+	<20251222121639.3953ea08@gandalf.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-gxring_google-v1-1-35e7467e5c1a@debian.org>
-X-B4-Tracking: v=1; b=H4sIAOt8SWkC/yXMQQrCMBAF0KuEv27ATjGBXEVENJ3GEZlIEiVQe
- veirh+8FZWLcEUwKwp/pEpWBDMOBvF+1cRWZgQDOtBxJCKbehFNl5RzerKdXfQuTp4W7zAYvAo
- v0n/fCcrNKveG81/q+/bg2L4dtm0H1DxUk3sAAAA=
-X-Change-ID: 20251222-gxring_google-d6c76c372f76
-To: Joshua Washington <joshwash@google.com>, 
- Harshitha Ramamurthy <hramamurthy@google.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1973; i=leitao@debian.org;
- h=from:subject:message-id; bh=gDHcVBesdJ+KunYJqvKRQ0vvFy1npOXd0mzBeC82qN8=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpSX2IZFhqVD9O0mvVv4YHFlsGb2ofvH01xfbSn
- uKFnwcWhvmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaUl9iAAKCRA1o5Of/Hh3
- bcSeD/9f7TDE/HG7QSVew332yEkSsmeze9zDzatyqLLVG//q1NTD62fkJxvQvfmWoE9V+bbVXP3
- peSrtt9BiHGUVrCOzxo4nLiDwljCn09IGXce9uT8VUQsFTuXRMOc6409/OZ6SRGAC59cACoOvdy
- UgeS8HoyDwAfWqePeIALtlT2QOzyKymPdeyciE527uc7OsQmlB9oU8yiqmAtKn8IRj+CyMJ9zpO
- JSxBCZPsTwN6N64wPKvGp2PgcVA8kn9xBXhlBGcNT1BV+OyN7/tto3nYzDxgBH4MHZ0Bx9oVBvW
- EutxmaE1XRY9eBGzIShl7oOgXV1g8NmfRCZvflPlMGQYJb0AvGxOW6pk/gKgAeRGEcfy2e1C4v/
- dGaZN3x3FwCO2rodpksibbumaaCNruTs9Qv9pensbqy5vfw2VCdGoTcBFJIwbfUur49Tcqrb9Rz
- EwADLfrpTDRpJYSOJ19ZBDGAyyZSaIWLdLDarlkJwmov3pOVpMFUJcxhZBnqgj7PWZ6fyT+x5CC
- xY2ZVBgR9s8n3aQTmnGMrRtEmRdSeeOH3czCsLtGzF5Dup9uRt3xZkGPnc9XZV+wES7fOoOoHaZ
- /8C1CNpiwVGsFrsybw0iAaCwtfaVNwedUaJU/mvjPR7tGJi13GteoAhXvnyzmkFQ/pWnbIdgBjX
- xjSC7k/CsjaKgTA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Rspamd-Queue-Id: 96E1E2000F
+X-Stat-Signature: 9i3hpyxor4p4sb7rzgjh6mcpxdefcgga
+X-Rspamd-Server: rspamout08
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19qDrVqYSa0iEs6XcszNqiIWakCG1vHKeY=
+X-HE-Tag: 1766424280-938894
+X-HE-Meta: U2FsdGVkX1//i2lGNRX/XANnKqiYMMBVA+zbELtJSIzCY62u8nwLmyETToVIkmc4gsZJAIsI+/u2ueorbztRO2o5Mx5QlY9pMXYQ+HVhaRB7C6OIm4HTWOsUa5YbFwLfBEqJhWKZEhc/2uR+UTJJbsN6P4VMb1bqJI4Y/sMrza+/ZP9VTfJK4zu+wzPH59Vq0wFlXZ9HQRbFiWsutRxU2oRlr/14ZafD65Aq3FrboudtKyG0sSVqiQu7NXOikLctZUHdMyBKfRgoIjsyx0eb3WheytPbZmiJvi8xt92NoAEmEASR5larMP5vdqhGcIZgO0YfPIkW06kGHttULL+3wAL26qJupM6ujNEVRyUcAxB53Ow8o73PEi++8tVM9kVKRlvFLRcelNGTWIMsfxEOrybq8ucQ7q8EoyvLsgiq7w0RTFdjQp13WyAZk6HPmMXUcsSzMuWHA4Yv5y4M9+cVCg==
 
-Convert the Google Virtual Ethernet (GVE) driver to use the new
-.get_rx_ring_count ethtool operation instead of handling
-ETHTOOL_GRXRINGS in .get_rxnfc. This simplifies the code by moving the
-ring count query to a dedicated callback.
+On Mon, 22 Dec 2025 12:16:39 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-The new callback provides the same functionality in a more direct way,
-following the ongoing ethtool API modernization.
+> On Mon, 22 Dec 2025 09:50:58 +0100
+> Eric Dumazet <edumazet@google.com> wrote:
+> 
+> > > Link: https://syzkaller.appspot.com/bug?extid=9b35e9bc0951140d13e6
+> > > Fixes: 951f788a80ff ("ipv6: fix a BUG in rt6_get_pcpu_route()")    
+> > 
+> > I would rather find when PREEMPT_RT was added/enabled, there is no
+> > point blaming such an old commit
+> > which was correct at the time, and forcing pointless backports to old
+> > linux kernels.  
+> 
+> Ack!
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-PS: This was compile-tested only.
----
- drivers/net/ethernet/google/gve/gve_ethtool.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
 
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index 52500ae8348e..9ed1d4529427 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -815,15 +815,19 @@ static int gve_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
- 	return err;
- }
- 
-+static u32 gve_get_rx_ring_count(struct net_device *netdev)
-+{
-+	struct gve_priv *priv = netdev_priv(netdev);
-+
-+	return priv->rx_cfg.num_queues;
-+}
-+
- static int gve_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd, u32 *rule_locs)
- {
- 	struct gve_priv *priv = netdev_priv(netdev);
- 	int err = 0;
- 
- 	switch (cmd->cmd) {
--	case ETHTOOL_GRXRINGS:
--		cmd->data = priv->rx_cfg.num_queues;
--		break;
- 	case ETHTOOL_GRXCLSRLCNT:
- 		if (!priv->max_flow_rules)
- 			return -EOPNOTSUPP;
-@@ -966,6 +970,7 @@ const struct ethtool_ops gve_ethtool_ops = {
- 	.get_channels = gve_get_channels,
- 	.set_rxnfc = gve_set_rxnfc,
- 	.get_rxnfc = gve_get_rxnfc,
-+	.get_rx_ring_count = gve_get_rx_ring_count,
- 	.get_rxfh_indir_size = gve_get_rxfh_indir_size,
- 	.get_rxfh_key_size = gve_get_rxfh_key_size,
- 	.get_rxfh = gve_get_rxfh,
+That was the first commit to enable PREEMPT_RT on any architecture (just
+happened to be x86).
 
----
-base-commit: 7b8e9264f55a9c320f398e337d215e68cca50131
-change-id: 20251222-gxring_google-d6c76c372f76
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- Steve
