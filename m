@@ -1,120 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F132833FE08;
-	Mon, 22 Dec 2025 20:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527B730BF5C;
+	Mon, 22 Dec 2025 20:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766435868; cv=none; b=CV+MfgxfMkVPB8pYXw1/q8oUbD0TZSfDwapFtE6jFsccWfUNjOjDoOmZfRkd35jlpRBAUm8uhLmaLO3x40mBZNeRjasNvZ4iqQa5sv6h/EEzFdbAtBWLm4wKpaTrT0jGXUlWDUiQGXOZjoFis7GWyQHX+OMc3LIUCj55w8WfzbM=
+	t=1766436748; cv=none; b=P4vZu9OzXvxjPxH6Jf6FjB+EbGZJVdO096TXlQsXJvJ2sFu9ze2kiD3ebkVxbf05ljSda9crU2djaTw24ZMGXPkMKDiiMYEKdh5od/bhrRCxq22KJIuDDFxnpctSWIm7s42y8gC0LeNirJuVS7QpQXs23PDQnkuKyeRuLA4cgd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766435868; c=relaxed/simple;
-	bh=M3n/TDkey/QlyxKHfVbIIRj+b5l8o9KrKfVk2WzbzE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qsB062d7ISkUtzZUJHCLC6kLPI1g+Xhmug41e85FNrhWoYRTltCp9HjOSb+5r/EBWpPzvh1F9wunW4PCz8iVYgMwJzLjINNw6cMhQV09wkInEjC/d7nlU7zMCsZk6Oe3AHxQGpvdnEHhmroB6sTWZihYj9JFqtVe8e5iU8/yf4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkSiwkeN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766436748; c=relaxed/simple;
+	bh=OdmgDnlZXoaijslX7KX93Y/AqjvNgxBPHYAqXwXXxdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nG8DZIUFjajf0kCx5hBZ6Qz6Wx0FzHeuEPfWo657KjHhAz+vM+0RaiKtBNLR7NduQx0tbi5C6i7M9pzpac+w//aM8sXB/XywFXnwkpRbbPugpwfTGHBdNCaKWxG08P6xnyF0sSEPG36ZKtTwa7JMS4ZbE4NC1ax0hAmeS8wLaK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LP7gtx86; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkSiwkeN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1365C4CEF1;
-	Mon, 22 Dec 2025 20:37:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LP7gtx86"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B847C4CEF1;
+	Mon, 22 Dec 2025 20:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766435867;
-	bh=M3n/TDkey/QlyxKHfVbIIRj+b5l8o9KrKfVk2WzbzE4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkSiwkeNZ5/5bz5nZTrZWSSaA8s0bHhW9NQQ/suAUjS7eiUV5xvsT94TUPNmK9QDI
-	 kXfatPbMQBzxwdSVdyM1Qoba+EH3TFpztMdaOemwFCpn6Y6f9GaAcPAQJX7h8yFZGc
-	 f0sJzs5aGZK0+dxXMfWB240cWRnmPvW+ygbV+GagQst6weYtvQGcTRaWdUUgpuEOeB
-	 d5LzjJgC6tlsPuvcMFDD3ejPXm4aRKIKu8CCn7mT/4BkyLJppcAP/mEURMmXHfo3GD
-	 XEXhsPH8iGaeMyi9/R9xPjw8FDPzfM9irL+yiyi3xh974PwkPElPE12jP8SNCSfEX7
-	 XurIixMLBz/9A==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Brian Norris <briannorris@chromium.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
- netdev@vger.kernel.org
-Subject:
- [PATCH v1 10/23] net: ethernet: ti: am65-cpsw: Discard pm_runtime_put()
- return value
-Date: Mon, 22 Dec 2025 21:11:42 +0100
-Message-ID: <3608967.QJadu78ljV@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
-References: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
+	s=k20201202; t=1766436747;
+	bh=OdmgDnlZXoaijslX7KX93Y/AqjvNgxBPHYAqXwXXxdU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LP7gtx86RAzVh7qT2KAGSn+4voGagDkW1iJjRP9zR2DHX1Gkye0aa7mpl26h01aLY
+	 H2ymWDiTnXueFfgNVtKqlSkXS3TPx+LDfNTXfBMQCR5+AyeKuceONQCA+7M1D/CETo
+	 zgAZsfuTEvRrpGhJrnS+4BxU0KPY2+iMpNcwxLtgQlgKR5okQBc39yUbWU5nA4UTUT
+	 Fr1dPchs/v3bABcoZw4cFOcs/pTPumX0qg+2AvJQ8s94UU7LiPaGtyu+vR+WioKhgt
+	 jMT5X+3diCmXjtgC9rKh7oo7GK+Kvksd4oiGgF3KVkaEGPCMlSL7rgkIt+AEzkCf3M
+	 kYXgPlKyAUR/A==
+Date: Mon, 22 Dec 2025 20:52:15 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev, Steen.Hegelund@microchip.com,
+	daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, vkoul@kernel.org,
+	linux@roeck-us.net, andi.shyti@kernel.org, lee@kernel.org,
+	andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linusw@kernel.org, olivia@selenic.com,
+	radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
+	gregkh@linuxfoundation.org, jirislaby@kernel.org,
+	mturquette@baylibre.com, sboyd@kernel.org, richardcochran@gmail.com,
+	wsa+renesas@sang-engineering.com, romain.sioen@microchip.com,
+	Ryan.Wanner@microchip.com, lars.povlsen@microchip.com,
+	tudor.ambarus@linaro.org, charan.pedumuru@microchip.com,
+	kavyasree.kotagiri@microchip.com, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+	netdev@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-clk@vger.kernel.org,
+	mwalle@kernel.org, luka.perkov@sartura.hr
+Subject: Re: [PATCH v2 16/19] dt-bindings: pinctrl: pinctrl-microchip-sgpio:
+ add LAN969x
+Message-ID: <20251222-outsell-demotion-97b03a1bf42e@spud>
+References: <20251215163820.1584926-1-robert.marko@sartura.hr>
+ <20251215163820.1584926-16-robert.marko@sartura.hr>
+ <20251216-payback-ceremony-cfb7adad8ef1@spud>
+ <CA+HBbNESUZ6KB0BbpZUMfh1rjZTZMgY1SwmFQbx+CRP+a_1x9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Printing error messages on pm_runtime_put() returning negative values
-is not particularly useful.
- 
-Returning an error code from pm_runtime_put() merely means that it has
-not queued up a work item to check whether or not the device can be
-suspended and there are many perfectly valid situations in which that
-can happen, like after writing "on" to the devices' runtime PM "control"
-attribute in sysfs for one example.
-
-Accordingly, update am65_cpsw_ethtool_op_begin() and cpsw_ethtool_op_begin()
-to simply discard the return value of pm_runtime_put().
-
-This will facilitate a planned change of the pm_runtime_put() return
-type to void in the future.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-This patch is part of a series, but it doesn't depend on anything else
-in that series.  The last patch in the series depends on it.
-
-It can be applied by itself and if you decide to do so, please let me
-know.
-
-Otherwise, an ACK or equivalent will be appreciated, but also the lack
-of specific criticism will be eventually regarded as consent.
-
----
- drivers/net/ethernet/ti/am65-cpsw-ethtool.c |    5 +----
- drivers/net/ethernet/ti/cpsw_ethtool.c      |    5 +----
- 2 files changed, 2 insertions(+), 8 deletions(-)
-
---- a/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
-@@ -391,11 +391,8 @@ static int am65_cpsw_ethtool_op_begin(st
- static void am65_cpsw_ethtool_op_complete(struct net_device *ndev)
- {
- 	struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
--	int ret;
- 
--	ret = pm_runtime_put(common->dev);
--	if (ret < 0 && ret != -EBUSY)
--		dev_err(common->dev, "ethtool complete failed %d\n", ret);
-+	pm_runtime_put(common->dev);
- }
- 
- static void am65_cpsw_get_drvinfo(struct net_device *ndev,
---- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-+++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-@@ -374,11 +374,8 @@ int cpsw_ethtool_op_begin(struct net_dev
- void cpsw_ethtool_op_complete(struct net_device *ndev)
- {
- 	struct cpsw_priv *priv = netdev_priv(ndev);
--	int ret;
- 
--	ret = pm_runtime_put(priv->cpsw->dev);
--	if (ret < 0)
--		cpsw_err(priv, drv, "ethtool complete failed %d\n", ret);
-+	pm_runtime_put(priv->cpsw->dev);
- }
- 
- void cpsw_get_channels(struct net_device *ndev, struct ethtool_channels *ch)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="JhIlysxRG7haAr0O"
+Content-Disposition: inline
+In-Reply-To: <CA+HBbNESUZ6KB0BbpZUMfh1rjZTZMgY1SwmFQbx+CRP+a_1x9g@mail.gmail.com>
 
 
+--JhIlysxRG7haAr0O
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Dec 22, 2025 at 08:57:14PM +0100, Robert Marko wrote:
+> On Tue, Dec 16, 2025 at 6:34=E2=80=AFPM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > On Mon, Dec 15, 2025 at 05:35:33PM +0100, Robert Marko wrote:
+> > > Document LAN969x compatibles for SGPIO.
+> > >
+> > > Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> > > ---
+> > >  .../pinctrl/microchip,sparx5-sgpio.yaml       | 20 ++++++++++++++---=
+--
+> > >  1 file changed, 15 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/pinctrl/microchip,spar=
+x5-sgpio.yaml b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-=
+sgpio.yaml
+> > > index fa47732d7cef..9fbbafcdc063 100644
+> > > --- a/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpi=
+o.yaml
+> > > +++ b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpi=
+o.yaml
+> > > @@ -21,10 +21,15 @@ properties:
+> > >      pattern: '^gpio@[0-9a-f]+$'
+> > >
+> > >    compatible:
+> > > -    enum:
+> > > -      - microchip,sparx5-sgpio
+> > > -      - mscc,ocelot-sgpio
+> > > -      - mscc,luton-sgpio
+> > > +    oneOf:
+> > > +      - enum:
+> > > +          - microchip,sparx5-sgpio
+> > > +          - mscc,ocelot-sgpio
+> > > +          - mscc,luton-sgpio
+> > > +      - items:
+> > > +          - enum:
+> > > +              - microchip,lan9691-sgpio
+> > > +          - const: microchip,sparx5-sgpio
+> > >
+> > >    '#address-cells':
+> > >      const: 1
+> > > @@ -80,7 +85,12 @@ patternProperties:
+> > >      type: object
+> > >      properties:
+> > >        compatible:
+> > > -        const: microchip,sparx5-sgpio-bank
+> >
+> > This should just be able to become "compatible: contains: const: microc=
+hip,sparx5-sgpio-bank.
+> > pw-bot: changes-requested
+>=20
+> Hi Conor,
+> I have tried using contains, but it would fail to match with the
+> following error:
+> arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dtb:
+> /axi/gpio@e2010230/gpio@0: failed to match any schema with compatible:
+> ['microchip,lan9691-sgpio-bank', 'microchip,sparx5-sgpio-bank']
+> arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dtb:
+> /axi/gpio@e2010230/gpio@1: failed to match any schema with compatible:
+> ['microchip,lan9691-sgpio-bank', 'microchip,sparx5-sgpio-bank']
+
+Oh, I think I cocked up here and thought this was some restriction
+imposition but it's a child with a compatible. My bad.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--JhIlysxRG7haAr0O
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaUmvfgAKCRB4tDGHoIJi
+0tRXAP9gzDqYdpyBkIGlCjn7mhzBtUAutbY+XxoO8Nlc7hwxmwEAkw67FpKyZJTF
+kOylRNmtyQKnS0TafkT2Y8FTAU67FwU=
+=dRXc
+-----END PGP SIGNATURE-----
+
+--JhIlysxRG7haAr0O--
