@@ -1,142 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B310357736;
-	Tue, 23 Dec 2025 10:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4D435CB82;
+	Tue, 23 Dec 2025 10:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484334; cv=none; b=JgAMDvL3R8/zJcyC4n4+cmYYIH00qkKvGuyst/JaorAcmBJtq2Q3GhT/OcU+kqqRe6Ua/DjcaavC5/4L6N+/LSkU1U5tlVYMEPNlYsd0jvbCeRm1fT8G7ZcyBfg6dSJk2LvbXXodFazgC4H0CJHwRCR0QfylhPZHq+3TiOybnwg=
+	t=1766484511; cv=none; b=sscjdms8iPZ4id1SbStR7ukBATZy7IUaB1fvpyJ443IMs7YZHj4nN9bTWwkz0NEK+wblpdmCQHyIKBJkbFheai/kNqUN2WdaQzZSnANrtV2McjZVOAvOkLgXAHgpqjueqizub/i7/VhzeLq2n48gJ74auVTDFSYo/QR93PIbwIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484334; c=relaxed/simple;
-	bh=ooUhopMYufXyAl/z2LDIuz1qbAKdAy+jWWrh58kah7E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KLJANotiSitrjsC4Yq+VfKV/h0R8p4QDcyl+jasFs9ik7dgxDvIbb12WFW6AC/ohA/ckfuM5TIQDGK+F0WU14ZY7HYrIwPVvdtgEsihnFucj5IU1MYs/6fQJtw4zonz66YlW3JtAZE/oLArkJ6uNcGu+lG2/8QdgdxoNZja/aUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgS9t4gl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766484511; c=relaxed/simple;
+	bh=JNGiNAGvu5BeFX13l01Mg+QJwFGQAeRiT43tDf7fHNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEQVU7/Jr3Ok67rXIXGiqyOUxa/6LArq7qnguhz4f2VLxv/rmHlE7MphZ5AYAX+hpa5l000XiMST4B+iqLtJxm1Q0bvkl7+DT0DiIoPGBFkcylwGP1zOST6UKq/FKWNjQ4CqIpKwqidqETLJHgLg5K4AmeB0YVlUZA9XuLnX6MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=IhFgqHP1; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgS9t4gl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AFBC19425;
-	Tue, 23 Dec 2025 10:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766484333;
-	bh=ooUhopMYufXyAl/z2LDIuz1qbAKdAy+jWWrh58kah7E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgS9t4glFL32JT6hXoJYPCGgS0xk4nWiOkYQ9aHEAbJtzHojprOCT+gAkoUsqddoZ
-	 x7NmmX60JPBqYmKjpCmBKBO0x6V2401JiM7aCAAjIdUsRxS1DugQrW7HAaxPVJJqDq
-	 OYqta96g0YrT0OKJEQv5/OzUNnvQb1CZyGVUBqIkkl5YwZ2u3TpcA0wYNL0SMXbdVD
-	 W20RKpZUPCX5Q1ATpP2ffYDimfj8hD3DbC8dwAA/fMvELsLzC0Yeo014oVZetMay1C
-	 1QqPnBIEXonP3C6g0u/iEwk1IL3KbooMmnqQUziLId9Vb1GsfmaoMN50WNzXR9Fjho
-	 o6TNTTHi2sIzQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Marcus Hughes <marcus.hughes@betterinternet.ltd>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] net: sfp: extend Potron XGSPON quirk to cover additional EEPROM variant
-Date: Tue, 23 Dec 2025 05:05:15 -0500
-Message-ID: <20251223100518.2383364-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251223100518.2383364-1-sashal@kernel.org>
-References: <20251223100518.2383364-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="IhFgqHP1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=7vz8auM+jcUc2hAYGsMLStFhz1D3Y7UaPxjnMI5s8Xs=; b=IhFgqHP1GUyUXw2e2WppA8sT5A
+	E2e/bg8r/zpzLgdXJ9wyP1cEAHajzOcod8xvXX4kZ6Fmj8vv2amU3I+dYWnAdz9o1zrtYr/vL28cI
+	cJASb8hag5BtrC2UvUlW4GMBN/iZMopzoegLHOzZpRla6AeO2fllyUfGD01u+4c3v+8CEma/rnw4g
+	eCuqkgX9WPlPYAoYnxRbZHQS8sXSjD2a6Jz+fVur63geVM1p8fLMcG7UviiVR5ocdX82H9rAkCRPE
+	lJxfFfqOBxrZwz6ZcoWZrSUtY1XusdH34oBCWnOB7QLmfmvYUMYFPhDLPHnczPI96U8Siw1l8eyqK
+	caPnpUnA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vXywo-006KW7-6n; Tue, 23 Dec 2025 09:44:53 +0000
+Date: Tue, 23 Dec 2025 01:44:48 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, 
+	jv@jvosburgh.net, kernel-team@meta.com, Petr Mladek <pmladek@suse.com>, 
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
+ infrastructure
+Message-ID: <zj3ypkmghcvlo44taf6t2vl55bpsozezltl3myytqlhzddvhai@ccncziu5a4f6>
+References: <20251222-nbcon-v1-0-65b43c098708@debian.org>
+ <b7b10bf1-5294-4515-8d82-31c870525ff7@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7b10bf1-5294-4515-8d82-31c870525ff7@redhat.com>
+X-Debian-User: leitao
 
-From: Marcus Hughes <marcus.hughes@betterinternet.ltd>
+On Tue, Dec 23, 2025 at 08:12:08AM +0100, Paolo Abeni wrote:
+> On 12/22/25 3:52 PM, Breno Leitao wrote:
+> > This series adds support for the nbcon (new buffer console) infrastructure
+> > to netconsole, enabling lock-free, priority-based console operations that
+> > are safer in crash scenarios.
+> > 
+> > The implementation is introduced in three steps:
+> > 
+> > 1) Refactor the message fragmentation logic into a reusable helper function
+> > 2) Extend nbcon support to non-extended (basic) consoles using the same
+> > infrastructure.
+> > 
+> > The initial discussion about it appeared a while ago in [1], in order to
+> > solve Mike's HARDIRQ-safe -> HARDIRQ-unsafe lock order warning, and the root
+> > cause is that some hosts were calling IRQ unsafe locks from inside console
+> > lock.
+> > 
+> > At that time, we didn't have the CON_NBCON_ATOMIC_UNSAFE yet. John
+> > kindly implemented CON_NBCON_ATOMIC_UNSAFE in 187de7c212e5 ("printk:
+> > nbcon: Allow unsafe write_atomic() for panic"), and now we can
+> > implement netconsole on top of nbcon.
+> > 
+> > Important to note that netconsole continues to call netpoll and the
+> > network TX helpers with interrupt disable, given the TX are called with
+> > target_list_lock.
+> > 
+> > Link:
+> > https://lore.kernel.org/all/b2qps3uywhmjaym4mht2wpxul4yqtuuayeoq4iv4k3zf5wdgh3@tocu6c7mj4lt/
+> > [1]
+> > 
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> 
+> ## Form letter - net-next-closed
+> 
+> The net-next tree is closed for new drivers, features, code refactoring
+> and optimizations due to the merge window and the winter break. We are
+> currently accepting bug fixes only.
+> 
+> Please repost when net-next reopens after Jan 2nd.
+> 
+> RFC patches sent for review only are obviously welcome at any time.
+> ---
+> To save me a few moments, I will not send the same messages in reply to
+> the others pending  net-next patches of yours, but this still applies :-P
 
-[ Upstream commit 71cfa7c893a05d09e7dc14713b27a8309fd4a2db ]
+Shame on me! I haven't paid attention to the announcement emails. Fixed
+it now.
 
-Some Potron SFP+ XGSPON ONU sticks are shipped with different EEPROM
-vendor ID and vendor name strings, but are otherwise functionally
-identical to the existing "Potron SFP+ XGSPON ONU Stick" handled by
-sfp_quirk_potron().
-
-These modules, including units distributed under the "Better Internet"
-branding, use the same UART pin assignment and require the same
-TX_FAULT/LOS behaviour and boot delay. Re-use the existing Potron
-quirk for this EEPROM variant.
-
-Signed-off-by: Marcus Hughes <marcus.hughes@betterinternet.ltd>
-Link: https://patch.msgid.link/20251207210355.333451-1-marcus.hughes@betterinternet.ltd
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## SUMMARY
-
-**What the commit does**: Adds a single entry to the SFP quirks array
-for hardware that has a different vendor/part ID ("BIDB"/"X-ONU-SFPP")
-but requires identical handling to already-supported Potron modules.
-
-**Does it meet stable kernel rules?**
-
-1. ✅ **Obviously correct**: It's a one-line addition using existing,
-   proven quirk infrastructure
-2. ✅ **Fixes a real bug**: Without this quirk, the hardware doesn't work
-   properly (TX_FAULT/LOS pins are misinterpreted)
-3. ✅ **Important issue**: Hardware that users have purchased doesn't
-   function
-4. ✅ **Small and contained**: Single line addition to an array
-5. ✅ **No new features**: Just extends existing quirk to another device
-   ID
-
-**Dependency check**: The `sfp_fixup_potron()` function was introduced
-in commit `dfec1c14aece` (June 2025) and has already been backported to
-stable trees (confirmed by seeing backport commit `34a890983183`). This
-commit requires that parent commit to be present.
-
-**Risk vs Benefit**:
-- **Risk**: Near zero - only affects specific hardware identified by
-  exact vendor/part match
-- **Benefit**: High for affected users - enables hardware to work
-  properly
-
-## CONCLUSION
-
-This commit is a textbook example of a hardware quirk addition that IS
-appropriate for stable backporting. It:
-- Uses existing, tested infrastructure
-- Has minimal code change (1 line)
-- Enables real hardware that users have in the field
-- Has zero risk of regression for anyone else
-- The parent quirk function is already in stable trees
-
-The only caveat is that stable kernels must have the original Potron
-quirk commit (`dfec1c14aece`) first, which based on the git history
-appears to have already been backported.
-
-**YES**
-
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 0401fa6b24d2..6166e9196364 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -497,6 +497,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
- 		  sfp_fixup_nokia),
- 
-+	SFP_QUIRK_F("BIDB", "X-ONU-SFPP", sfp_fixup_potron),
-+
- 	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
- 	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
- 
--- 
-2.51.0
-
+Sorry for the noise,
+--breno
