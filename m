@@ -1,181 +1,122 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D3F340A59;
-	Tue, 23 Dec 2025 12:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1492C11E2;
+	Tue, 23 Dec 2025 12:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766493497; cv=none; b=iqNq9SBkwPW1Pv+YCOra8HrRChGvR/dh4nPPGYkLg7wpuzGugDOl1xDuMEt9YmeYWL+ABgrj5WfyobvruCG0jcI6wM2B9zbhwdEMlTSSD4W132H5dcroX6qLowfcNV+AUXn3dI9jkMqYztbzqcUqhaTh/Tz16Z9ijtsgWTFnHIY=
+	t=1766493629; cv=none; b=F8919LIYj+pKFG5C3t2I2Q+ShtyDW5kB3XyNxzetGP6t3nEpoO46xyZ1zppo7eIMAGdxrpiLSfzTuVunzQwaCcU9nE1WjTPT1vOwyzfyvWFuHxXpqsYUzvpPRhohgahfJyH65gZ3ZroCUUu3r+L/ojiUb7LboAz5ThFqUnQZwo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766493497; c=relaxed/simple;
-	bh=+MPOm9EbZoAuq0w8gI0k842S88Dz+otbPBU7WGGFbtU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SQaDUopa4jLrMREHc+PDzdGIhERV42sH877F5rOtjlEvxjnRVj9Yx1DqO5pMqgW0tvtHirbvTahTwPQ4Y6gsuUsEypOjsVy5zecT+JwnBn+lcoBdWKqwWLF0xU6PnArRjWox+8yfTxEaUugWlR9bMrgKr7b0TaR5JAfEtHnn6Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Fb5nTZ6N; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1766493629; c=relaxed/simple;
+	bh=iHZkWUprqi5MDi+sdCv+B6RvA6q+yXVB+agqsq30lvw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=DYS0xvJqC6SjJzOyXNUkHOYqbid0f7WZxlB1BuZ7EMB4eC0dAug0LMbfiKaW1vf24XePGEGFS+LdUz3sB3xfvVyX1e14fnlxWvjzOICXJf4NU16613EVb8bU8WtiAVacuMCPMO1IptLl/qbcZm1sffqxfBH1ni5u+m/xe+2vZIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=dsap1GJ1; arc=none smtp.client-ip=148.6.0.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Fb5nTZ6N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1766493489;
-	bh=+MPOm9EbZoAuq0w8gI0k842S88Dz+otbPBU7WGGFbtU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Fb5nTZ6N4+jCD50Qv9E3DYmAG+vt8kRbruQGNvXyM9vFI7XuGkPQgRv01bMediG6U
-	 ZhlrYEf5Zz/mPVrcoE5hQ+QL8NCnVSI4W9flvXH02zi0A4SAZKvNOsQIqJebogv7ia
-	 f2jeEYJpVaYXucTKm+RaACgObcOvEMEW/HdE++pUjZN6aGPb5X69rYciAxb16YZ9Xy
-	 JN6vHjTUC28AhXX8qqFicPcCXWRNGSRD1UyNdcTvAQgjopPIkNglN/IXsJA7I3IER5
-	 ayfP4fxK9hhWNKa9BjP3PWW0eTuPYwPdxVpsKGPwPhVIFMyx5yZrSmubtj/z4Qq3tF
-	 Q2GGmGzw47UMQ==
-Received: from beast.luon.net (unknown [IPv6:2a10:3781:2531:0:f337:3245:2545:b505])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sjoerd)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C9AC417E1523;
-	Tue, 23 Dec 2025 13:38:09 +0100 (CET)
-Received: by beast.luon.net (Postfix, from userid 1000)
-	id 5C796117A0677; Tue, 23 Dec 2025 13:38:08 +0100 (CET)
-From: Sjoerd Simons <sjoerd@collabora.com>
-Date: Tue, 23 Dec 2025 13:37:55 +0100
-Subject: [PATCH v5 5/8] arm64: dts: mediatek: mt7981b-openwrt-one: Enable
- Ethernet
+	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="dsap1GJ1"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp0.kfki.hu (Postfix) with ESMTP id 4dbDsn5wZWz3sb8d;
+	Tue, 23 Dec 2025 13:32:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	blackhole.kfki.hu; h=mime-version:references:message-id
+	:in-reply-to:from:from:date:date:received:received:received
+	:received; s=20151130; t=1766493131; x=1768307532; bh=Z72d/b1Axk
+	BiRXZajisn1BNLwwoimbxFqXF2IWlBu8k=; b=dsap1GJ1tJ3MKGoWHvug74GYQl
+	i0FiGu2hIWQBJqYxF/dSHOspNRmlvxfvK2AL335DU6EfYu5GVr5RfTDLarPBXcJ4
+	CQiBij38WLYu9p//KQZpqgRb+7nBL0V6Pmsh5gv1Z26Donf3epMh4FSRfBWRcdLh
+	xr781vV1z4JkJcgZE=
+X-Virus-Scanned: Debian amavis at smtp0.kfki.hu
+Received: from smtp0.kfki.hu ([127.0.0.1])
+ by localhost (smtp0.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id bCBjsIHCtwVJ; Tue, 23 Dec 2025 13:32:11 +0100 (CET)
+Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [IPv6:2001:738:5001:1::240:2])
+	by smtp0.kfki.hu (Postfix) with ESMTP id 4dbDsl1br9z3sb7m;
+	Tue, 23 Dec 2025 13:32:10 +0100 (CET)
+Received: by blackhole.kfki.hu (Postfix, from userid 1000)
+	id 9CFC434316A; Tue, 23 Dec 2025 13:32:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by blackhole.kfki.hu (Postfix) with ESMTP id 9B66C340D75;
+	Tue, 23 Dec 2025 13:32:10 +0100 (CET)
+Date: Tue, 23 Dec 2025 13:32:10 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+To: Florian Westphal <fw@strlen.de>
+cc: syzbot <syzbot+ff16b505ec9152e5f448@syzkaller.appspotmail.com>, 
+    coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+    horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+    netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
+    pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [netfilter?] possible deadlock in
+ nf_tables_dumpreset_obj
+In-Reply-To: <aUh_3mVRV8OrGsVo@strlen.de>
+Message-ID: <42671512-7b14-57ac-7722-a5739bb59976@blackhole.kfki.hu>
+References: <6945f4b4.a70a0220.207337.0121.GAE@google.com> <aUh_3mVRV8OrGsVo@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-openwrt-one-network-v5-5-7d1864ea3ad5@collabora.com>
-References: <20251223-openwrt-one-network-v5-0-7d1864ea3ad5@collabora.com>
-In-Reply-To: <20251223-openwrt-one-network-v5-0-7d1864ea3ad5@collabora.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Ryder Lee <ryder.lee@mediatek.com>, 
- Jianjun Wang <jianjun.wang@mediatek.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Manivannan Sadhasivam <mani@kernel.org>, 
- Chunfeng Yun <chunfeng.yun@mediatek.com>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Lee Jones <lee@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>
-Cc: kernel@collabora.com, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-pci@vger.kernel.org, 
- linux-phy@lists.infradead.org, netdev@vger.kernel.org, 
- Daniel Golle <daniel@makrotopia.org>, Bryan Hinton <bryan@bryanhinton.com>, 
- Sjoerd Simons <sjoerd@collabora.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 
-Enable the Ethernet subsystem on OpenWrt One board with dual-MAC
-configuration:
-- GMAC0: Connected to external Airoha EN8811H 2.5GbE PHY via SGMII
-  (2500base-x mode) for WAN connectivity with LED indicators
-- GMAC1: Connected to internal MT7981 1GbE PHY (GMII mode) for LAN
+Hi,
 
-Ethernet aliases are defined to provide consistent network interface
-naming (ethernet0 = LAN, ethernet1 = WAN).
+On Mon, 22 Dec 2025, Florian Westphal wrote:
 
-Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
----
-V1 -> V2:
-  - Switch gmac0 phy irq to Level
-  - Update mac nvmem label name
----
- .../boot/dts/mediatek/mt7981b-openwrt-one.dts      | 58 ++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+> syzbot <syzbot+ff16b505ec9152e5f448@syzkaller.appspotmail.com> wrote:
+> > syz.3.970/9330 is trying to acquire lock:
+> > ffff888012d4ccd8 (&nft_net->commit_mutex){+.+.}-{4:4}, at: nf_tables_dumpreset_obj+0x6f/0xa0 net/netfilter/nf_tables_api.c:8491
+> > 
+> > but task is already holding lock:
+> > ffff88802bce36f0 (nlk_cb_mutex-NETFILTER){+.+.}-{4:4}, at: __netlink_dump_start+0x150/0x990 net/netlink/af_netlink.c:2404
+> > 
+> > which lock already depends on the new lock.
+> 
+> I think this is a real bug:
+> 
+> CPU0: 'nft reset'.
+> CPU1: 'ipset list' (anything in ipset doing a netlink dump op)
+> CPU2: 'iptables-nft -A ... -m set ...'
+> 
+> ... can result in:
+> 
+> CPU0                    CPU1                            CPU2
+> ----                    ----                            ----
+> lock(nlk_cb_mutex-NETFILTER);
+>                         lock(nfnl_subsys_ipset);
+>                                                        lock(&nft_net->commit_mutex);
+>                         lock(nlk_cb_mutex-NETFILTER);
+>                                                        lock(nfnl_subsys_ipset);
+> lock(&nft_net->commit_mutex);
+> 
+> CPU0 is waiting for CPU2 to release transaction mutex.
+> CPU1 is waiting for CPU0 to release the netlink dump mutex
+> CPU2 is waiting for CPU1 to release the ipset subsys mutex
+> 
+> This bug was added when 'nft reset' started to grab the transaction
+> mutex from the dump callback path in nf_tables.
+> 
+> Not yet sure how to avoid it.
+> Maybe we could get rid of 'lock(nfnl_subsys_ipset);'
+> from the xt_set module call paths.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts b/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-index 7382599cfea2..2aea89900645 100644
---- a/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-@@ -12,6 +12,8 @@ / {
- 	model = "OpenWrt One";
- 
- 	aliases {
-+		ethernet0 = &gmac1;
-+		ethernet1 = &gmac0;
- 		serial0 = &uart0;
- 	};
- 
-@@ -87,6 +89,58 @@ reg_5v: regulator-5v {
- 	};
- };
- 
-+&eth {
-+	status = "okay";
-+
-+	/* WAN interface */
-+	gmac0: mac@0 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <0>;
-+		nvmem-cells = <&wan_factory_mac 0>;
-+		nvmem-cell-names = "mac-address";
-+		phy-mode = "2500base-x";
-+		phy-handle = <&phy15>;
-+	};
-+
-+	/* LAN interface */
-+	gmac1: mac@1 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <1>;
-+		phy-mode = "gmii";
-+		phy-handle = <&int_gbe_phy>;
-+	};
-+};
-+
-+&mdio_bus {
-+	phy15: ethernet-phy@f {
-+		compatible = "ethernet-phy-id03a2.a411";
-+		reg = <0xf>;
-+		interrupt-parent = <&pio>;
-+		interrupts = <38 IRQ_TYPE_LEVEL_LOW>;
-+		reset-gpios = <&pio 39 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <20000>;
-+		airoha,pnswap-rx;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@0 {
-+				reg = <0>;
-+				function = LED_FUNCTION_WAN;
-+				color = <LED_COLOR_ID_AMBER>;
-+			};
-+
-+			led@1 {
-+				reg = <1>;
-+				function = LED_FUNCTION_WAN;
-+				color = <LED_COLOR_ID_GREEN>;
-+			};
-+		};
-+	};
-+};
-+
- &pcie {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie_pins>;
-@@ -191,6 +245,10 @@ partition@180000 {
- 	};
- };
- 
-+&sgmiisys0 {
-+	mediatek,pnswap;
-+};
-+
- &uart0 {
- 	status = "okay";
- };
+I don't know how calling it could be avoided: userspace commands (ipset + 
+iptables checkentry using ipset match/target) are serialized by 
+nfnl_subsys_ipset.
 
+Is there a way to force acquiring nlk_cb_mutex-NETFILTER first and then 
+nfnl_subsys_ipset when doing a netlink dump?
+
+> Or add a new lock (spinlock?) to protect the 'reset' object info
+> instead of using the transaction mutex.
+> 
+> I haven't given it much thought yet and will likely not
+> investigate further for the next two weeks.
+
+Best regards,
+Jozsef
 -- 
-2.51.0
-
+E-mail : kadlec@netfilter.org, kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+Address: Wigner Research Centre for Physics
+          H-1525 Budapest 114, POB. 49, Hungary
