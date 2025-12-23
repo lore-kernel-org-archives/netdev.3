@@ -1,88 +1,142 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AF232E753;
-	Tue, 23 Dec 2025 10:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B310357736;
+	Tue, 23 Dec 2025 10:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484255; cv=none; b=YEkF/8/tSGO1GpqVE2J/yhPgm8qAxH/HFrAPP1FwrUPp/tbG6wM/8pIpPOUc9pEXi+moVJftBrtWQR2zs/+S2eXCoHW1Nf5u633lWwB3Z7YzR6ZCP3M+DwcERS3LPJvFBYpHtkftr6+DyvoKrp3GT60A9CaHBlGHROYnMVuNWgM=
+	t=1766484334; cv=none; b=JgAMDvL3R8/zJcyC4n4+cmYYIH00qkKvGuyst/JaorAcmBJtq2Q3GhT/OcU+kqqRe6Ua/DjcaavC5/4L6N+/LSkU1U5tlVYMEPNlYsd0jvbCeRm1fT8G7ZcyBfg6dSJk2LvbXXodFazgC4H0CJHwRCR0QfylhPZHq+3TiOybnwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484255; c=relaxed/simple;
-	bh=Rye7TKeLjENQUoWynF0+eXw1TJYyJDFqMbxiRLqWSno=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FhKEuJuUqQ8fPTK9QVn0ZQs4+jYE/ZUvhCuYbnBxW9VoRRSK+C6QXNwOpKoOES/O3JAuWT2muuSbxm2iJ7H0DY0U5HZUmMBj9QSwAJu7Rm7EwpEt0Yc1RNmsAtwPmhbeerNx6jnAliq4PG/SGiNAcHb91rhMkSQdTdI9cN4AY1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=cmTpNtD4; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1766484334; c=relaxed/simple;
+	bh=ooUhopMYufXyAl/z2LDIuz1qbAKdAy+jWWrh58kah7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KLJANotiSitrjsC4Yq+VfKV/h0R8p4QDcyl+jasFs9ik7dgxDvIbb12WFW6AC/ohA/ckfuM5TIQDGK+F0WU14ZY7HYrIwPVvdtgEsihnFucj5IU1MYs/6fQJtw4zonz66YlW3JtAZE/oLArkJ6uNcGu+lG2/8QdgdxoNZja/aUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgS9t4gl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="cmTpNtD4"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1vXyUm-00B31j-JB; Tue, 23 Dec 2025 10:15:56 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=ZAOAR3B/TVl8MoENDSu7BqSrLt+X6o9NJAyEvC2RqqE=; b=cmTpNtD4aXSsP1XPJo2kgiHP2f
-	h52+Xyw9W73l0Op9w52hI+aGFd0DW0gX+dbw8hymhxelTvad/zCNjatpzA4IFfevHEortR44mh+n5
-	ntfGQJLyeN5FYeCk2O0RoKEJqnjTJVQklTG8PST6zHE8Q+TfC4poCA+rEQJ7ED58ZZAQtAAkSM43o
-	v0+0mE0zVphhVC225KZJmDvevgM2lVNeqoRDFe/yezmjwaAZva9cqLIiNIbfAaW3qA1kM+II0DU9T
-	aVNmezd07CyCHXqMSULIlQDl8nBjjY15ypDygkrNDd8O42c8PtRAPXLqLldulv3HTZ89PePFKh0Lb
-	+FCClZ/g==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1vXyUm-0001S4-9j; Tue, 23 Dec 2025 10:15:56 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vXyUg-009MHY-F6; Tue, 23 Dec 2025 10:15:50 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 23 Dec 2025 10:15:28 +0100
-Subject: [PATCH net 1/2] vsock: Make accept()ed sockets use custom
- setsockopt()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgS9t4gl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AFBC19425;
+	Tue, 23 Dec 2025 10:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766484333;
+	bh=ooUhopMYufXyAl/z2LDIuz1qbAKdAy+jWWrh58kah7E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dgS9t4glFL32JT6hXoJYPCGgS0xk4nWiOkYQ9aHEAbJtzHojprOCT+gAkoUsqddoZ
+	 x7NmmX60JPBqYmKjpCmBKBO0x6V2401JiM7aCAAjIdUsRxS1DugQrW7HAaxPVJJqDq
+	 OYqta96g0YrT0OKJEQv5/OzUNnvQb1CZyGVUBqIkkl5YwZ2u3TpcA0wYNL0SMXbdVD
+	 W20RKpZUPCX5Q1ATpP2ffYDimfj8hD3DbC8dwAA/fMvELsLzC0Yeo014oVZetMay1C
+	 1QqPnBIEXonP3C6g0u/iEwk1IL3KbooMmnqQUziLId9Vb1GsfmaoMN50WNzXR9Fjho
+	 o6TNTTHi2sIzQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Marcus Hughes <marcus.hughes@betterinternet.ltd>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] net: sfp: extend Potron XGSPON quirk to cover additional EEPROM variant
+Date: Tue, 23 Dec 2025 05:05:15 -0500
+Message-ID: <20251223100518.2383364-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251223100518.2383364-1-sashal@kernel.org>
+References: <20251223100518.2383364-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-vsock-child-sock-custom-sockopt-v1-1-4654a75d0f58@rbox.co>
-References: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
-In-Reply-To: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.3
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SO_ZEROCOPY handling in vsock_connectible_setsockopt() does not get called
-on accept()ed sockets due to a missing flag. Flip it.
+From: Marcus Hughes <marcus.hughes@betterinternet.ltd>
 
-Fixes: e0718bd82e27 ("vsock: enable setting SO_ZEROCOPY")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
+[ Upstream commit 71cfa7c893a05d09e7dc14713b27a8309fd4a2db ]
+
+Some Potron SFP+ XGSPON ONU sticks are shipped with different EEPROM
+vendor ID and vendor name strings, but are otherwise functionally
+identical to the existing "Potron SFP+ XGSPON ONU Stick" handled by
+sfp_quirk_potron().
+
+These modules, including units distributed under the "Better Internet"
+branding, use the same UART pin assignment and require the same
+TX_FAULT/LOS behaviour and boot delay. Re-use the existing Potron
+quirk for this EEPROM variant.
+
+Signed-off-by: Marcus Hughes <marcus.hughes@betterinternet.ltd>
+Link: https://patch.msgid.link/20251207210355.333451-1-marcus.hughes@betterinternet.ltd
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/af_vsock.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index adcba1b7bf74..c093db8fec2d 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1787,6 +1787,7 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
- 		} else {
- 			newsock->state = SS_CONNECTED;
- 			sock_graft(connected, newsock);
-+			set_bit(SOCK_CUSTOM_SOCKOPT, &newsock->flags);
- 			if (vsock_msgzerocopy_allow(vconnected->transport))
- 				set_bit(SOCK_SUPPORT_ZC,
- 					&connected->sk_socket->flags);
+LLM Generated explanations, may be completely bogus:
 
+## SUMMARY
+
+**What the commit does**: Adds a single entry to the SFP quirks array
+for hardware that has a different vendor/part ID ("BIDB"/"X-ONU-SFPP")
+but requires identical handling to already-supported Potron modules.
+
+**Does it meet stable kernel rules?**
+
+1. ✅ **Obviously correct**: It's a one-line addition using existing,
+   proven quirk infrastructure
+2. ✅ **Fixes a real bug**: Without this quirk, the hardware doesn't work
+   properly (TX_FAULT/LOS pins are misinterpreted)
+3. ✅ **Important issue**: Hardware that users have purchased doesn't
+   function
+4. ✅ **Small and contained**: Single line addition to an array
+5. ✅ **No new features**: Just extends existing quirk to another device
+   ID
+
+**Dependency check**: The `sfp_fixup_potron()` function was introduced
+in commit `dfec1c14aece` (June 2025) and has already been backported to
+stable trees (confirmed by seeing backport commit `34a890983183`). This
+commit requires that parent commit to be present.
+
+**Risk vs Benefit**:
+- **Risk**: Near zero - only affects specific hardware identified by
+  exact vendor/part match
+- **Benefit**: High for affected users - enables hardware to work
+  properly
+
+## CONCLUSION
+
+This commit is a textbook example of a hardware quirk addition that IS
+appropriate for stable backporting. It:
+- Uses existing, tested infrastructure
+- Has minimal code change (1 line)
+- Enables real hardware that users have in the field
+- Has zero risk of regression for anyone else
+- The parent quirk function is already in stable trees
+
+The only caveat is that stable kernels must have the original Potron
+quirk commit (`dfec1c14aece`) first, which based on the git history
+appears to have already been backported.
+
+**YES**
+
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 0401fa6b24d2..6166e9196364 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -497,6 +497,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
+ 		  sfp_fixup_nokia),
+ 
++	SFP_QUIRK_F("BIDB", "X-ONU-SFPP", sfp_fixup_potron),
++
+ 	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
+ 	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
+ 
 -- 
-2.52.0
+2.51.0
 
