@@ -1,22 +1,22 @@
-Received: from out28-92.mail.aliyun.com (out28-92.mail.aliyun.com [115.124.28.92])
+Received: from out198-48.us.a.mail.aliyun.com (out198-48.us.a.mail.aliyun.com [47.90.198.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31251A08BC;
-	Tue, 23 Dec 2025 03:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765792D9496;
+	Tue, 23 Dec 2025 03:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766461927; cv=none; b=qxB2//MA8zcYnxoARbSTP7+KHoL3vyFOU29DileyAgWs+O77mqKA1l+XHFQJIxE+dNhbaGToM6VacXTGj1Z5b4pidZdsdXTddE+TPlL1tPduWQlDYIjNs3pgHroa2NGaMcTraOK4y/KSK+pCzXbDFQDe8tIXehmmErgPXDh7gsI=
+	t=1766461928; cv=none; b=gLcKLCVivuf8bgsCMGYH79jWQVCayFU1lYPAzU+zcJ1cn27tHfF1PrvtK6o23YL1kgY6mvvxcXKP19eZ4m/CTST5kCfGxKD2PuqwcVO8uZycnUMiBRg+Zk5R7c3P5z1lqF0eD8q/hIwZweBlusO/Tgr0z4B3hjHEPZoE7TeLuG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766461927; c=relaxed/simple;
-	bh=8cTMMM5iioN7C5D97OJRfxbwYi6xTfFJaaSGH6poz+A=;
+	s=arc-20240116; t=1766461928; c=relaxed/simple;
+	bh=QhfyeSBGTV1tniKMz/7fx8oK/LMDrni3x6FHzf5XYfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2bwXYIhDMBR/hNZDSZ6BxVdEd6tKlgWdg3LvR+kkJ9t2RoqrnFnozj1MYdqtPpkOv99AjXu6doUGcfGJ9leTuKoDHQM7SLzaj5a0rIbMrPQh2Hd5OCSDOCa/uM0NQKVnci2x2FLSjNJIC3zWNU1YuH02t//D1bWYW2nSVjjJjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.92
+	 MIME-Version; b=JIxofLnrdOhJMja75Wr86fgWIvxk79qS+odDc4USZTzm+PldSkfYwmAhWnfGvk2ZfTefxqv+3pwbCCF1m5Yx59lJZU8Q4L6y3/NNKogqxTRgvJEJJ0ctUDLJJASHtbWVSW/1IYjvVM30hR+kv6GpFrwIrxmWp969Y8FCjC5yrFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxX7O_1766461916 cluster:ay29)
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxWzQ_1766461908 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 23 Dec 2025 11:51:58 +0800
+          Tue, 23 Dec 2025 11:51:50 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -24,9 +24,9 @@ To: dimon.zhao@nebula-matrix.com,
 	sam.chen@nebula-matrix.com,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1 net-next 14/15] net/nebula-matrix: fully support ndo operations
-Date: Tue, 23 Dec 2025 11:50:37 +0800
-Message-ID: <20251223035113.31122-15-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v1 net-next 11/15] net/nebula-matrix: add Service layer definitions and implementation
+Date: Tue, 23 Dec 2025 11:50:34 +0800
+Message-ID: <20251223035113.31122-12-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
 References: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
@@ -38,733 +38,645 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fully support ndo operations
+Service Layer functions include:
+1.queue and Ring Management
+2.Network Device Operations
+3.VLAN and SubMAC Management
+4.Interrupt and IRQ Management
+5.Flow and Filter Management
+6.VF management
+7.link state and SFP Management
+8.Statistics and Monitoring
+9.Firmware and Device Management
 
 Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
-Change-Id: Icb1ed852da1d28f563efdf2b6431ff7bc80f58e3
+Change-Id: I8655cefee2167e85069d5f0897e03e18c429c2b0
 ---
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 211 ++++++++-
- .../nebula-matrix/nbl/nbl_core/nbl_service.c  | 423 +++++++++++++++++-
- 2 files changed, 631 insertions(+), 3 deletions(-)
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  16 +
+ .../nebula-matrix/nbl/nbl_core/nbl_service.c  | 128 ++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_service.h  | 281 ++++++++++++++++++
+ .../nbl/nbl_include/nbl_def_service.h         |  27 ++
+ .../nbl/nbl_include/nbl_include.h             |  37 +++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   7 +
+ 7 files changed, 497 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_service.h
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-index d97651c5daa0..45b75e1c4f53 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -1399,6 +1399,33 @@ static void nbl_dev_netdev_get_stats64(struct net_device *netdev, struct rtnl_li
- 	serv_ops->get_stats64(netdev, stats);
- }
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+index a4b7672a1972..bb324feb5cc3 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -18,6 +18,7 @@ nbl_core-objs +=       nbl_common/nbl_common.o \
+ 				nbl_hw/nbl_vsi.o \
+ 				nbl_hw/nbl_adminq.o \
+ 				nbl_core/nbl_dispatch.o \
++				nbl_core/nbl_service.o \
+ 				nbl_main.o
  
-+static void nbl_dev_netdev_set_rx_mode(struct net_device *netdev)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	serv_ops->set_rx_mode(netdev);
-+}
-+
-+static void nbl_dev_netdev_change_rx_flags(struct net_device *netdev, int flag)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	serv_ops->change_rx_flags(netdev, flag);
-+}
-+
-+static int nbl_dev_netdev_set_mac(struct net_device *netdev, void *p)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_mac(netdev, p);
-+}
-+
- static int nbl_dev_netdev_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
- {
- 	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-@@ -1417,14 +1444,190 @@ static int nbl_dev_netdev_rx_kill_vid(struct net_device *netdev, __be16 proto, u
- 	return serv_ops->rx_kill_vid(netdev, proto, vid);
- }
+ # Do not modify include path, unless you are adding a new file which needs some headers in its
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+index 0263426b4e09..12d9fef345b6 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -12,6 +12,7 @@
+ #include "nbl_def_hw.h"
+ #include "nbl_def_resource.h"
+ #include "nbl_def_dispatch.h"
++#include "nbl_def_service.h"
+ #include "nbl_def_common.h"
  
-+static int
-+nbl_dev_netdev_set_features(struct net_device *netdev, netdev_features_t features)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_features(netdev, features);
-+}
-+
-+static netdev_features_t
-+nbl_dev_netdev_features_check(struct sk_buff *skb, struct net_device *netdev,
-+			      netdev_features_t features)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->features_check(skb, netdev, features);
-+}
-+
-+static int
-+nbl_dev_netdev_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_spoofchk(netdev, vf_id, ena);
-+}
-+
-+static void nbl_dev_netdev_tx_timeout(struct net_device *netdev, u32 txqueue)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	serv_ops->tx_timeout(netdev, txqueue);
-+}
-+
-+static int nbl_dev_netdev_bridge_setlink(struct net_device *netdev, struct nlmsghdr *nlh,
-+					 u16 flags, struct netlink_ext_ack *extack)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->bridge_setlink(netdev, nlh, flags, extack);
-+}
-+
-+static int nbl_dev_netdev_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
-+					 struct net_device *netdev, u32 filter_mask, int nlflags)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->bridge_getlink(skb, pid, seq, netdev, filter_mask, nlflags);
-+}
-+
-+static int nbl_dev_netdev_set_vf_link_state(struct net_device *netdev, int vf_id, int link_state)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_link_state(netdev, vf_id, link_state);
-+}
-+
-+static int nbl_dev_netdev_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_mac(netdev, vf_id, mac);
-+}
-+
-+static int
-+nbl_dev_netdev_set_vf_rate(struct net_device *netdev, int vf_id, int min_rate, int max_rate)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_rate(netdev, vf_id, min_rate, max_rate);
-+}
-+
-+static int
-+nbl_dev_netdev_set_vf_vlan(struct net_device *netdev, int vf_id, u16 vlan, u8 pri, __be16 proto)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_vlan(netdev, vf_id, vlan, pri, proto);
-+}
-+
-+static int
-+nbl_dev_netdev_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->set_vf_trust(netdev, vf_id, trusted);
-+}
-+
-+static int
-+nbl_dev_netdev_get_vf_config(struct net_device *netdev, int vf_id, struct ifla_vf_info *ivi)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->get_vf_config(netdev, vf_id, ivi);
-+}
-+
-+static int
-+nbl_dev_netdev_get_vf_stats(struct net_device *netdev, int vf_id, struct ifla_vf_stats *vf_stats)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->get_vf_stats(netdev, vf_id, vf_stats);
-+}
-+
-+static u16
-+nbl_dev_netdev_select_queue(struct net_device *netdev, struct sk_buff *skb,
-+			    struct net_device *sb_dev)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->select_queue(netdev, skb, sb_dev);
-+}
-+
-+static int nbl_dev_netdev_change_mtu(struct net_device *netdev, int new_mtu)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->change_mtu(netdev, new_mtu);
-+}
-+
-+static int nbl_dev_ndo_get_phys_port_name(struct net_device *netdev, char *name, size_t len)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
-+	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
-+	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
-+
-+	return serv_ops->get_phys_port_name(netdev, name, len);
-+}
-+
- static const struct net_device_ops netdev_ops_leonis_pf = {
- 	.ndo_open = nbl_dev_netdev_open,
- 	.ndo_stop = nbl_dev_netdev_stop,
- 	.ndo_start_xmit = nbl_dev_start_xmit,
- 	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_get_stats64 = nbl_dev_netdev_get_stats64,
-+	.ndo_set_rx_mode = nbl_dev_netdev_set_rx_mode,
-+	.ndo_change_rx_flags = nbl_dev_netdev_change_rx_flags,
-+	.ndo_set_mac_address = nbl_dev_netdev_set_mac,
- 	.ndo_vlan_rx_add_vid = nbl_dev_netdev_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid = nbl_dev_netdev_rx_kill_vid,
-+	.ndo_set_features = nbl_dev_netdev_set_features,
-+	.ndo_features_check = nbl_dev_netdev_features_check,
-+	.ndo_set_vf_spoofchk = nbl_dev_netdev_set_vf_spoofchk,
-+	.ndo_tx_timeout = nbl_dev_netdev_tx_timeout,
-+	.ndo_bridge_getlink = nbl_dev_netdev_bridge_getlink,
-+	.ndo_bridge_setlink = nbl_dev_netdev_bridge_setlink,
-+	.ndo_set_vf_link_state = nbl_dev_netdev_set_vf_link_state,
-+	.ndo_set_vf_mac = nbl_dev_netdev_set_vf_mac,
-+	.ndo_set_vf_rate = nbl_dev_netdev_set_vf_rate,
-+	.ndo_get_vf_config = nbl_dev_netdev_get_vf_config,
-+	.ndo_get_vf_stats = nbl_dev_netdev_get_vf_stats,
-+	.ndo_select_queue = nbl_dev_netdev_select_queue,
-+	.ndo_set_vf_vlan = nbl_dev_netdev_set_vf_vlan,
-+	.ndo_set_vf_trust = nbl_dev_netdev_set_vf_trust,
-+	.ndo_change_mtu = nbl_dev_netdev_change_mtu,
-+	.ndo_get_phys_port_name = nbl_dev_ndo_get_phys_port_name,
+ #define NBL_ADAPTER_TO_PDEV(adapter)		((adapter)->pdev)
+@@ -22,10 +23,12 @@
+ #define NBL_ADAPTER_TO_HW_MGT(adapter)		((adapter)->core.hw_mgt)
+ #define NBL_ADAPTER_TO_RES_MGT(adapter)		((adapter)->core.res_mgt)
+ #define NBL_ADAPTER_TO_DISP_MGT(adapter)	((adapter)->core.disp_mgt)
++#define NBL_ADAPTER_TO_SERV_MGT(adapter)	((adapter)->core.serv_mgt)
+ #define NBL_ADAPTER_TO_CHAN_MGT(adapter)	((adapter)->core.chan_mgt)
+ #define NBL_ADAPTER_TO_HW_OPS_TBL(adapter)	((adapter)->intf.hw_ops_tbl)
+ #define NBL_ADAPTER_TO_RES_OPS_TBL(adapter)	((adapter)->intf.resource_ops_tbl)
+ #define NBL_ADAPTER_TO_DISP_OPS_TBL(adapter)	((adapter)->intf.dispatch_ops_tbl)
++#define NBL_ADAPTER_TO_SERV_OPS_TBL(adapter)	((adapter)->intf.service_ops_tbl)
+ #define NBL_ADAPTER_TO_CHAN_OPS_TBL(adapter)	((adapter)->intf.channel_ops_tbl)
  
+ #define NBL_ADAPTER_TO_RES_PT_OPS(adapter)	(&(NBL_ADAPTER_TO_SERV_OPS_TBL(adapter)->pt_ops))
+@@ -34,6 +37,18 @@
+ 
+ #define NBL_NETDEV_TO_ADAPTER(netdev) \
+ 	(NBL_NETDEV_PRIV_TO_ADAPTER((struct nbl_netdev_priv *)netdev_priv(netdev)))
++
++#define NBL_NETDEV_TO_SERV_MGT(netdev) \
++	(NBL_ADAPTER_TO_SERV_MGT(NBL_NETDEV_PRIV_TO_ADAPTER(\
++		(struct nbl_netdev_priv *)netdev_priv(netdev))))
++
++#define NBL_NETDEV_TO_DEV_MGT(netdev) \
++	(NBL_ADAPTER_TO_DEV_MGT(NBL_NETDEV_TO_ADAPTER(netdev)))
++
++#define NBL_NETDEV_TO_COMMON(netdev) \
++	(NBL_ADAPTER_TO_COMMON(NBL_NETDEV_PRIV_TO_ADAPTER(\
++		(struct nbl_netdev_priv *)netdev_priv(netdev))))
++
+ #define NBL_CAP_SET_BIT(loc)			(1 << (loc))
+ #define NBL_CAP_TEST_BIT(val, loc)		(((val) >> (loc)) & 0x1)
+ 
+@@ -72,6 +87,7 @@ struct nbl_interface {
+ 	struct nbl_hw_ops_tbl *hw_ops_tbl;
+ 	struct nbl_resource_ops_tbl *resource_ops_tbl;
+ 	struct nbl_dispatch_ops_tbl *dispatch_ops_tbl;
++	struct nbl_service_ops_tbl *service_ops_tbl;
+ 	struct nbl_channel_ops_tbl *channel_ops_tbl;
  };
  
-@@ -1434,9 +1637,15 @@ static const struct net_device_ops netdev_ops_leonis_vf = {
- 	.ndo_start_xmit = nbl_dev_start_xmit,
- 	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_get_stats64 = nbl_dev_netdev_get_stats64,
-+	.ndo_set_rx_mode = nbl_dev_netdev_set_rx_mode,
-+	.ndo_set_mac_address = nbl_dev_netdev_set_mac,
- 	.ndo_vlan_rx_add_vid = nbl_dev_netdev_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid = nbl_dev_netdev_rx_kill_vid,
--
-+	.ndo_features_check = nbl_dev_netdev_features_check,
-+	.ndo_tx_timeout = nbl_dev_netdev_tx_timeout,
-+	.ndo_select_queue = nbl_dev_netdev_select_queue,
-+	.ndo_change_mtu = nbl_dev_netdev_change_mtu,
-+	.ndo_get_phys_port_name = nbl_dev_ndo_get_phys_port_name,
- };
- 
- static int nbl_dev_setup_netops_leonis(void *priv, struct net_device *netdev,
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
-index 89d3cf0f1bd4..60d17b12e364 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
+new file mode 100644
+index 000000000000..bedb6283a891
+--- /dev/null
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
-@@ -564,6 +564,36 @@ void nbl_serv_cpu_affinity_init(void *priv, u16 rings_num)
- 	}
- }
- 
-+static int nbl_serv_ipv6_exthdr_num(struct sk_buff *skb, int start, u8 nexthdr)
+@@ -0,0 +1,128 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#include "nbl_service.h"
++#include <crypto/hash.h>
++
++static void nbl_serv_setup_flow_mgt(struct nbl_serv_flow_mgt *flow_mgt)
 +{
-+	int exthdr_num = 0;
-+	struct ipv6_opt_hdr _hdr, *hp;
-+	unsigned int hdrlen;
-+
-+	while (ipv6_ext_hdr(nexthdr)) {
-+		if (nexthdr == NEXTHDR_NONE)
-+			return -1;
-+
-+		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
-+		if (!hp)
-+			return -1;
-+
-+		exthdr_num++;
-+
-+		if (nexthdr == NEXTHDR_FRAGMENT)
-+			hdrlen = 8;
-+		else if (nexthdr == NEXTHDR_AUTH)
-+			hdrlen = ipv6_authlen(hp);
-+		else
-+			hdrlen = ipv6_optlen(hp);
-+
-+		nexthdr = hp->nexthdr;
-+		start += hdrlen;
-+	}
-+
-+	return exthdr_num;
-+}
-+
- static void nbl_serv_set_sfp_state(void *priv, struct net_device *netdev, u8 eth_id,
- 				   bool open, bool is_force)
- {
-@@ -1410,6 +1440,73 @@ static int nbl_serv_change_mtu(struct net_device *netdev, int new_mtu)
- 	return 0;
- }
- 
-+static int nbl_serv_set_mac(struct net_device *dev, void *p)
-+{
-+	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(dev);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
-+	struct nbl_common_info *common = NBL_ADAPTER_TO_COMMON(adapter);
-+	struct nbl_serv_flow_mgt *flow_mgt = NBL_SERV_MGT_TO_FLOW_MGT(serv_mgt);
-+	struct nbl_serv_vlan_node *vlan_node;
-+	struct sockaddr *addr = p;
-+	struct nbl_netdev_priv *priv = netdev_priv(dev);
-+	int ret = 0;
-+
-+	if (!is_valid_ether_addr(addr->sa_data)) {
-+		netdev_err(dev, "Temp to change a invalid mac address %pM\n", addr->sa_data);
-+		return -EADDRNOTAVAIL;
-+	}
-+
-+	if (ether_addr_equal(flow_mgt->mac, addr->sa_data))
-+		return 0;
-+
-+	list_for_each_entry(vlan_node, &flow_mgt->vlan_list, node) {
-+		if (!vlan_node->primary_mac_effective)
-+			continue;
-+		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
-+				      vlan_node->vid, priv->data_vsi);
-+		ret = disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
-+					    vlan_node->vid, priv->data_vsi);
-+		if (ret) {
-+			netdev_err(dev, "Fail to cfg macvlan on vid %u", vlan_node->vid);
-+			goto fail;
-+		}
-+	}
-+
-+	if (flow_mgt->promisc & BIT(NBL_USER_FLOW)) {
-+		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
-+				      0, priv->user_vsi);
-+		ret = disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
-+					    0, priv->user_vsi);
-+		if (ret) {
-+			netdev_err(dev, "Fail to cfg macvlan on vid %u for user", 0);
-+			goto fail;
-+		}
-+	}
-+
-+	disp_ops->set_spoof_check_addr(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
-+				       priv->data_vsi, addr->sa_data);
-+
-+	ether_addr_copy(flow_mgt->mac, addr->sa_data);
-+	eth_hw_addr_set(dev, addr->sa_data);
-+
-+	if (!NBL_COMMON_TO_VF_CAP(common))
-+		disp_ops->set_eth_mac_addr(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
-+					   addr->sa_data, NBL_COMMON_TO_ETH_ID(common));
-+
-+	return 0;
-+fail:
-+	list_for_each_entry(vlan_node, &flow_mgt->vlan_list, node) {
-+		if (!vlan_node->primary_mac_effective)
-+			continue;
-+		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
-+				      vlan_node->vid, priv->data_vsi);
-+		disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
-+				      vlan_node->vid, priv->data_vsi);
-+	}
-+	return -EAGAIN;
-+}
-+
- static int nbl_serv_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
- {
- 	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(dev);
-@@ -1752,6 +1849,195 @@ static void nbl_modify_promisc_mode(struct nbl_serv_net_resource_mgt *net_resour
- 	rtnl_unlock();
- }
- 
-+static void nbl_serv_set_rx_mode(struct net_device *dev)
-+{
-+	struct nbl_adapter *adapter;
-+	struct nbl_service_mgt *serv_mgt;
-+	struct nbl_serv_net_resource_mgt *net_resource_mgt;
-+
-+	adapter = NBL_NETDEV_TO_ADAPTER(dev);
-+	serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	net_resource_mgt = NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
-+
-+	nbl_common_queue_work(&net_resource_mgt->rx_mode_async, false);
-+}
-+
-+static void nbl_serv_change_rx_flags(struct net_device *dev, int flag)
-+{
-+	struct nbl_adapter *adapter;
-+	struct nbl_service_mgt *serv_mgt;
-+	struct nbl_serv_net_resource_mgt *net_resource_mgt;
-+
-+	adapter = NBL_NETDEV_TO_ADAPTER(dev);
-+	serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	net_resource_mgt = NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
-+
-+	nbl_common_queue_work(&net_resource_mgt->rx_mode_async, false);
-+}
-+
-+static netdev_features_t
-+nbl_serv_features_check(struct sk_buff *skb, struct net_device *dev, netdev_features_t features)
-+{
-+	u32 l2_l3_hrd_len = 0, l4_hrd_len = 0, total_hrd_len = 0;
-+	u8 l4_proto = 0;
-+	__be16 protocol, frag_off;
-+	int ret;
-+	unsigned char *exthdr;
-+	unsigned int offset = 0;
-+	int nexthdr = 0;
-+	int exthdr_num = 0;
-+	union {
-+		struct iphdr *v4;
-+		struct ipv6hdr *v6;
-+		unsigned char *hdr;
-+	} ip;
-+	union {
-+		struct tcphdr *tcp;
-+		struct udphdr *udp;
-+		unsigned char *hdr;
-+	} l4;
-+
-+	/* No point in doing any of this if neither checksum nor GSO are
-+	 * being requested for this frame. We can rule out both by just
-+	 * checking for CHECKSUM_PARTIAL.
-+	 */
-+	if (skb->ip_summed != CHECKSUM_PARTIAL)
-+		return features;
-+
-+	/* We cannot support GSO if the MSS is going to be less than
-+	 * 256 bytes or bigger than 16383 bytes. If it is then we need to drop support for GSO.
-+	 */
-+	if (skb_is_gso(skb) && (skb_shinfo(skb)->gso_size < NBL_TX_TSO_MSS_MIN ||
-+				skb_shinfo(skb)->gso_size > NBL_TX_TSO_MSS_MAX))
-+		features &= ~NETIF_F_GSO_MASK;
-+
-+	l2_l3_hrd_len = (u32)(skb_transport_header(skb) - skb->data);
-+
-+	ip.hdr = skb_network_header(skb);
-+	l4.hdr = skb_transport_header(skb);
-+	protocol = vlan_get_protocol(skb);
-+
-+	if (protocol == htons(ETH_P_IP)) {
-+		l4_proto = ip.v4->protocol;
-+	} else if (protocol == htons(ETH_P_IPV6)) {
-+		exthdr = ip.hdr + sizeof(*ip.v6);
-+		l4_proto = ip.v6->nexthdr;
-+		if (l4.hdr != exthdr) {
-+			ret = ipv6_skip_exthdr(skb, exthdr - skb->data, &l4_proto, &frag_off);
-+			if (ret < 0)
-+				goto out_rm_features;
-+		}
-+
-+		/* IPV6 extension headers
-+		 * (1) donot support routing and destination extension headers
-+		 * (2) support 2 extension headers mostly
-+		 */
-+		nexthdr = ipv6_find_hdr(skb, &offset, NEXTHDR_ROUTING, NULL, NULL);
-+		if (nexthdr == NEXTHDR_ROUTING) {
-+			netdev_info(dev, "skb contain ipv6 routing ext header\n");
-+			goto out_rm_features;
-+		}
-+
-+		nexthdr = ipv6_find_hdr(skb, &offset, NEXTHDR_DEST, NULL, NULL);
-+		if (nexthdr == NEXTHDR_DEST) {
-+			netdev_info(dev, "skb contain ipv6 routing dest header\n");
-+			goto out_rm_features;
-+		}
-+
-+		exthdr_num = nbl_serv_ipv6_exthdr_num(skb, exthdr - skb->data, ip.v6->nexthdr);
-+		if (exthdr_num < 0 || exthdr_num > 2) {
-+			netdev_info(dev, "skb ipv6 exthdr_num:%d\n", exthdr_num);
-+			goto out_rm_features;
-+		}
-+	} else {
-+		goto out_rm_features;
-+	}
-+
-+	switch (l4_proto) {
-+	case IPPROTO_TCP:
-+		l4_hrd_len = (l4.tcp->doff) * 4;
-+		break;
-+	case IPPROTO_UDP:
-+		l4_hrd_len = sizeof(struct udphdr);
-+		break;
-+	case IPPROTO_SCTP:
-+		l4_hrd_len = sizeof(struct sctphdr);
-+		break;
-+	default:
-+		goto out_rm_features;
-+	}
-+
-+	total_hrd_len = l2_l3_hrd_len + l4_hrd_len;
-+
-+	// TX checksum offload support total header len is [0, 255]
-+	if (total_hrd_len > NBL_TX_CHECKSUM_OFFLOAD_L2L3L4_HDR_LEN_MAX)
-+		goto out_rm_features;
-+
-+	// TSO support total header len is [42, 128]
-+	if (total_hrd_len < NBL_TX_TSO_L2L3L4_HDR_LEN_MIN ||
-+	    total_hrd_len > NBL_TX_TSO_L2L3L4_HDR_LEN_MAX)
-+		features &= ~NETIF_F_GSO_MASK;
-+
-+	if (skb->encapsulation)
-+		goto out_rm_features;
-+
-+	return features;
-+
-+out_rm_features:
-+	return features & ~(NETIF_F_IP_CSUM |
-+			    NETIF_F_IPV6_CSUM |
-+			    NETIF_F_SCTP_CRC |
-+			    NETIF_F_GSO_MASK);
-+}
-+
-+static int nbl_serv_config_rxhash(void *priv, bool enable)
-+{
-+	struct nbl_service_mgt *serv_mgt = (struct nbl_service_mgt *)priv;
-+	struct nbl_common_info *common = NBL_SERV_MGT_TO_COMMON(serv_mgt);
-+	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
-+	struct device *dev = NBL_SERV_MGT_TO_DEV(serv_mgt);
-+	struct nbl_serv_ring_mgt *ring_mgt = NBL_SERV_MGT_TO_RING_MGT(serv_mgt);
-+	struct nbl_serv_ring_vsi_info *vsi_info = &ring_mgt->vsi_info[NBL_VSI_DATA];
-+	u32 rxfh_indir_size = 0;
-+	u32 *indir = NULL;
 +	int i = 0;
 +
-+	disp_ops->get_rxfh_indir_size(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
-+				NBL_COMMON_TO_VSI_ID(common), &rxfh_indir_size);
-+	indir = devm_kcalloc(dev, rxfh_indir_size, sizeof(u32), GFP_KERNEL);
-+	if (!indir)
++	INIT_LIST_HEAD(&flow_mgt->vlan_list);
++	for (i = 0; i < NBL_SUBMAC_MAX; i++)
++		INIT_LIST_HEAD(&flow_mgt->submac_list[i]);
++}
++
++static struct nbl_service_ops serv_ops = {
++};
++
++/* Structure starts here, adding an op should not modify anything below */
++static int nbl_serv_setup_serv_mgt(struct nbl_common_info *common,
++				   struct nbl_service_mgt **serv_mgt)
++{
++	struct device *dev;
++
++	dev = NBL_COMMON_TO_DEV(common);
++	*serv_mgt = devm_kzalloc(dev, sizeof(struct nbl_service_mgt), GFP_KERNEL);
++	if (!*serv_mgt)
 +		return -ENOMEM;
-+	if (enable) {
-+		if (ring_mgt->rss_indir_user) {
-+			memcpy(indir, ring_mgt->rss_indir_user, rxfh_indir_size * sizeof(u32));
-+		} else {
-+			for (i = 0; i < rxfh_indir_size; i++)
-+				indir[i] = i % vsi_info->active_ring_num;
-+		}
-+	}
-+	disp_ops->set_rxfh_indir(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
-+					NBL_COMMON_TO_VSI_ID(common),
-+					indir, rxfh_indir_size);
-+	devm_kfree(dev, indir);
++
++	NBL_SERV_MGT_TO_COMMON(*serv_mgt) = common;
++	nbl_serv_setup_flow_mgt(NBL_SERV_MGT_TO_FLOW_MGT(*serv_mgt));
++
 +	return 0;
 +}
 +
-+static int nbl_serv_set_features(struct net_device *netdev, netdev_features_t features)
++static void nbl_serv_remove_serv_mgt(struct nbl_common_info *common,
++				     struct nbl_service_mgt **serv_mgt)
 +{
-+	struct nbl_netdev_priv *priv = netdev_priv(netdev);
-+	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	netdev_features_t changed = netdev->features ^ features;
-+	bool enable = false;
++	struct device *dev = NBL_COMMON_TO_DEV(common);
++	struct nbl_serv_ring_mgt *ring_mgt = NBL_SERV_MGT_TO_RING_MGT(*serv_mgt);
 +
-+	if (changed & NETIF_F_RXHASH) {
-+		enable = !!(features & NETIF_F_RXHASH);
-+		nbl_serv_config_rxhash(serv_mgt, enable);
-+	}
++	if (ring_mgt->rss_indir_user)
++		devm_kfree(dev, ring_mgt->rss_indir_user);
++	devm_kfree(dev, *serv_mgt);
++	*serv_mgt = NULL;
++}
++
++static void nbl_serv_remove_ops(struct device *dev, struct nbl_service_ops_tbl **serv_ops_tbl)
++{
++	devm_kfree(dev, *serv_ops_tbl);
++	*serv_ops_tbl = NULL;
++}
++
++static int nbl_serv_setup_ops(struct device *dev, struct nbl_service_ops_tbl **serv_ops_tbl,
++			      struct nbl_service_mgt *serv_mgt)
++{
++	*serv_ops_tbl = devm_kzalloc(dev, sizeof(struct nbl_service_ops_tbl), GFP_KERNEL);
++	if (!*serv_ops_tbl)
++		return -ENOMEM;
++
++	NBL_SERV_OPS_TBL_TO_OPS(*serv_ops_tbl) = &serv_ops;
++	NBL_SERV_OPS_TBL_TO_PRIV(*serv_ops_tbl) = serv_mgt;
 +
 +	return 0;
 +}
 +
- static int nbl_serv_set_vf_mac(struct net_device *dev, int vf_id, u8 *mac)
- {
- 	struct nbl_service_mgt *serv_mgt = NBL_NETDEV_TO_SERV_MGT(dev);
-@@ -1987,6 +2273,31 @@ static int nbl_serv_set_vf_vlan(struct net_device *dev, int vf_id, u16 vlan, u8
- 	return ret;
- }
++int nbl_serv_init(void *p, struct nbl_init_param *param)
++{
++	struct nbl_adapter *adapter = (struct nbl_adapter *)p;
++	struct device *dev;
++	struct nbl_common_info *common;
++	struct nbl_service_mgt **serv_mgt;
++	struct nbl_service_ops_tbl **serv_ops_tbl;
++	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
++	struct nbl_dispatch_ops *disp_ops;
++	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	int ret = 0;
++
++	dev = NBL_ADAPTER_TO_DEV(adapter);
++	common = NBL_ADAPTER_TO_COMMON(adapter);
++	serv_mgt = (struct nbl_service_mgt **)&NBL_ADAPTER_TO_SERV_MGT(adapter);
++	serv_ops_tbl = &NBL_ADAPTER_TO_SERV_OPS_TBL(adapter);
++	disp_ops_tbl = NBL_ADAPTER_TO_DISP_OPS_TBL(adapter);
++	chan_ops_tbl = NBL_ADAPTER_TO_CHAN_OPS_TBL(adapter);
++	disp_ops = disp_ops_tbl->ops;
++
++	ret = nbl_serv_setup_serv_mgt(common, serv_mgt);
++	if (ret)
++		goto setup_mgt_fail;
++
++	ret = nbl_serv_setup_ops(dev, serv_ops_tbl, *serv_mgt);
++	if (ret)
++		goto setup_ops_fail;
++
++	NBL_SERV_MGT_TO_DISP_OPS_TBL(*serv_mgt) = disp_ops_tbl;
++	NBL_SERV_MGT_TO_CHAN_OPS_TBL(*serv_mgt) = chan_ops_tbl;
++	disp_ops->get_resource_pt_ops(disp_ops_tbl->priv, &(*serv_ops_tbl)->pt_ops);
++
++	return 0;
++
++setup_ops_fail:
++	nbl_serv_remove_serv_mgt(common, serv_mgt);
++setup_mgt_fail:
++	return ret;
++}
++
++void nbl_serv_remove(void *p)
++{
++	struct nbl_adapter *adapter = (struct nbl_adapter *)p;
++	struct device *dev;
++	struct nbl_common_info *common;
++	struct nbl_service_mgt **serv_mgt;
++	struct nbl_service_ops_tbl **serv_ops_tbl;
++
++	if (!adapter)
++		return;
++
++	dev = NBL_ADAPTER_TO_DEV(adapter);
++	common = NBL_ADAPTER_TO_COMMON(adapter);
++	serv_mgt = (struct nbl_service_mgt **)&NBL_ADAPTER_TO_SERV_MGT(adapter);
++	serv_ops_tbl = &NBL_ADAPTER_TO_SERV_OPS_TBL(adapter);
++
++	nbl_serv_remove_ops(dev, serv_ops_tbl);
++	nbl_serv_remove_serv_mgt(common, serv_mgt);
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.h
+new file mode 100644
+index 000000000000..f230b11cf4bc
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.h
+@@ -0,0 +1,281 @@
++/* SPDX-License-Identifier: GPL-2.0*/
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#ifndef _NBL_SERVICE_H_
++#define _NBL_SERVICE_H_
++
++#include <linux/mm.h>
++#include <linux/ptr_ring.h>
++#include "nbl_core.h"
++
++#define NBL_SERV_MGT_TO_COMMON(serv_mgt)	((serv_mgt)->common)
++#define NBL_SERV_MGT_TO_DEV(serv_mgt)		NBL_COMMON_TO_DEV(NBL_SERV_MGT_TO_COMMON(serv_mgt))
++#define NBL_SERV_MGT_TO_RING_MGT(serv_mgt)	(&(serv_mgt)->ring_mgt)
++#define NBL_SERV_MGT_TO_FLOW_MGT(serv_mgt)	(&(serv_mgt)->flow_mgt)
++#define NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt)	((serv_mgt)->net_resource_mgt)
++#define NBL_SERV_MGT_TO_ST_MGT(serv_mgt)	((serv_mgt)->st_mgt)
++
++#define NBL_SERV_MGT_TO_DISP_OPS_TBL(serv_mgt)	((serv_mgt)->disp_ops_tbl)
++#define NBL_SERV_MGT_TO_DISP_OPS(serv_mgt)	(NBL_SERV_MGT_TO_DISP_OPS_TBL(serv_mgt)->ops)
++#define NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt)	(NBL_SERV_MGT_TO_DISP_OPS_TBL(serv_mgt)->priv)
++
++#define NBL_SERV_MGT_TO_CHAN_OPS_TBL(serv_mgt)	((serv_mgt)->chan_ops_tbl)
++#define NBL_SERV_MGT_TO_CHAN_OPS(serv_mgt)	(NBL_SERV_MGT_TO_CHAN_OPS_TBL(serv_mgt)->ops)
++#define NBL_SERV_MGT_TO_CHAN_PRIV(serv_mgt)	(NBL_SERV_MGT_TO_CHAN_OPS_TBL(serv_mgt)->priv)
++
++#define NBL_DEFAULT_VLAN_ID				0
++#define NBL_HW_STATS_PERIOD_SECONDS			5
++#define NBL_HW_STATS_RX_RATE_THRESHOLD			(1000) /* 1k pps */
++
++#define NBL_TX_TSO_MSS_MIN				(256)
++#define NBL_TX_TSO_MSS_MAX				(16383)
++#define NBL_TX_TSO_L2L3L4_HDR_LEN_MIN			(42)
++#define NBL_TX_TSO_L2L3L4_HDR_LEN_MAX			(128)
++#define NBL_TX_CHECKSUM_OFFLOAD_L2L3L4_HDR_LEN_MAX	(255)
++
++#define NBL_EEPROM_LENGTH				(0)
++
++/* input set */
++#define NBL_MAC_ADDR_LEN_U8				6
++
++#define NBL_FLOW_IN_PORT_TYPE_ETH			0x0
++#define NBL_FLOW_IN_PORT_TYPE_LAG			0x400
++#define NBL_FLOW_IN_PORT_TYPE_VSI			0x800
++
++#define NBL_FLOW_OUT_PORT_TYPE_VSI			0x0
++#define NBL_FLOW_OUT_PORT_TYPE_ETH			0x10
++#define NBL_FLOW_OUT_PORT_TYPE_LAG			0x20
++
++#define SET_DPORT_TYPE_VSI_HOST				(0)
++#define SET_DPORT_TYPE_VSI_ECPU				(1)
++#define SET_DPORT_TYPE_ETH_LAG				(2)
++#define SET_DPORT_TYPE_SP_PORT				(3)
++
++#define NBL_MAX_BURST					524287
++
++#define NBL_VLAN_PCP_SHIFT				13
++
++/* primary vlan in vlan list */
++#define NBL_NO_TRUST_MAX_VLAN				9
++/* primary mac not in submac list */
++#define NBL_NO_TRUST_MAX_MAC				12
++
++#define NBL_DEVLINK_FLASH_COMPONENT_CRC_SIZE		4
++
++/* For customized P4 */
++#define NBL_P4_ELF_IDENT				"\x7F\x45\x4C\x46\x01\x01\x01\x00"
++#define NBL_P4_ELF_IDENT_LEN				8
++#define NBL_P4_VERIFY_CODE_LEN				9
++#define NBL_P4_PRODUCT_INFO_SECTION_NAME		"product_info"
++#define NBL_MD5SUM_LEN					16
++
++struct nbl_serv_ring {
++	dma_addr_t dma;
++	u16 index;
++	u16 local_queue_id;
++	u16 global_queue_id;
++	bool need_recovery;
++	u32 tx_timeout_count;
++};
++
++struct nbl_serv_vector {
++	char name[32];
++	cpumask_t cpumask;
++	struct net_device *netdev;
++	struct nbl_napi_struct *nbl_napi;
++	struct nbl_serv_ring *tx_ring;
++	struct nbl_serv_ring *rx_ring;
++	u8 __iomem *irq_enable_base;
++	u32 irq_data;
++	u16 local_vector_id;
++	u16 global_vector_id;
++	u16 intr_rate_usecs;
++	u16 intr_suppress_level;
++};
++
++struct nbl_serv_ring_vsi_info {
++	u16 vsi_index;
++	u16 vsi_id;
++	u16 ring_offset;
++	u16 ring_num;
++	u16 active_ring_num;
++	bool itr_dynamic;
++	bool started;
++};
++
++struct nbl_serv_ring_mgt {
++	struct nbl_serv_ring *tx_rings;
++	struct nbl_serv_ring *rx_rings;
++	struct nbl_serv_vector *vectors;
++	struct nbl_serv_ring_vsi_info vsi_info[NBL_VSI_MAX];
++	u32 *rss_indir_user;
++	u16 tx_desc_num;
++	u16 rx_desc_num;
++	u16 tx_ring_num;
++	u16 rx_ring_num;
++	u16 active_ring_num;
++	bool net_msix_mask_en;
++};
++
++struct nbl_serv_vlan_node {
++	struct list_head node;
++	u16 vid;
++	// primary_mac_effective means base mac + vlan ok
++	u16 primary_mac_effective;
++	// sub_mac_effective means sub mac + vlan ok
++	u16 sub_mac_effective;
++	u16 ref_cnt;
++};
++
++struct nbl_serv_submac_node {
++	struct list_head node;
++	u8 mac[ETH_ALEN];
++	// effective means this submac + allvlan flowrule effective
++	u16 effective;
++};
++
++enum {
++	NBL_PROMISC = 0,
++	NBL_ALLMULTI = 1,
++	NBL_USER_FLOW = 2,
++	NBL_MIRROR = 3,
++};
++
++enum {
++	NBL_SUBMAC_UNICAST = 0,
++	NBL_SUBMAC_MULTI = 1,
++	NBL_SUBMAC_MAX = 2
++};
++
++struct nbl_serv_flow_mgt {
++	struct list_head vlan_list;
++	struct list_head submac_list[NBL_SUBMAC_MAX];
++	u16 vid;
++	u8 mac[ETH_ALEN];
++	u8 eth;
++	bool trusted_en;
++	bool trusted_update;
++	u16 vlan_list_cnt;
++	u16 active_submac_list;
++	u16 submac_list_cnt;
++	u16 unicast_mac_cnt;
++	u16 multi_mac_cnt;
++	u16 promisc;
++	bool force_promisc;
++	bool unicast_flow_enable;
++	bool multicast_flow_enable;
++	bool pending_async_work;
++};
++
++struct nbl_mac_filter {
++	struct list_head list;
++	u8 macaddr[ETH_ALEN];
++};
++
++enum nbl_adapter_flags {
++	/* p4 flags must be at the start */
++	NBL_FLAG_P4_DEFAULT,
++	NBL_FLAG_LINK_DOWN_ON_CLOSE,
++	NBL_FLAG_NRZ_RS_FEC_544_SUPPORT,
++	NBL_FLAG_HIGH_THROUGHPUT,
++	NBL_ADAPTER_FLAGS_MAX
++};
++
++struct nbl_serv_netdev_ops {
++	void *pf_netdev_ops;
++};
++
++struct nbl_serv_vf_info {
++	struct kobject kobj;
++	struct kobject meters_kobj;
++	struct kobject rx_kobj;
++	struct kobject tx_kobj;
++	struct kobject rx_bps_kobj;
++	struct kobject tx_bps_kobj;
++	void *priv;
++	u16 vf_id;
++
++	int state;
++	int spoof_check;
++	int max_tx_rate;
++	int meter_tx_rate;
++	int meter_rx_rate;
++	int meter_tx_burst;
++	int meter_rx_burst;
++	u8 mac[ETH_ALEN];
++	u16 vlan;
++	u16 vlan_proto;
++	u8 vlan_qos;
++	bool trusted;
++};
++
++struct nbl_serv_net_resource_mgt {
++	struct nbl_service_mgt *serv_mgt;
++	struct net_device *netdev;
++	struct work_struct rx_mode_async;
++	struct work_struct tx_timeout;
++	struct work_struct update_link_state;
++	struct work_struct update_vlan;
++	struct delayed_work watchdog_task;
++	struct timer_list serv_timer;
++	unsigned long serv_timer_period;
++
++	struct list_head tmp_add_filter_list;
++	struct list_head tmp_del_filter_list;
++	struct list_head indr_dev_priv_list;
++	struct nbl_serv_netdev_ops netdev_ops;
++	u16 curr_promiscuout_mode;
++	u16 num_net_msix;
++	bool update_submac;
++	int num_vfs;
++	int total_vfs;
++
++	/* stats for netdev */
++	u64 get_stats_jiffies;
++	struct nbl_stats stats;
++	struct nbl_hw_stats hw_stats;
++	unsigned long hw_stats_jiffies;
++	unsigned long hw_stats_period;
++	struct nbl_priv_stats priv_stats;
++	struct nbl_serv_vf_info *vf_info;
++	struct kobject *sriov_kobj;
++	u32 configured_speed;
++	u32 configured_fec;
++	u16 bridge_mode;
++	int link_forced;
++
++	u16 vlan_tci;
++	u16 vlan_proto;
++	int max_tx_rate;
++	u32 dump_flag;
++	u32 dump_perf_len;
++};
++
++struct nbl_service_mgt {
++	struct nbl_common_info *common;
++	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
++	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	struct nbl_serv_ring_mgt ring_mgt;
++	struct nbl_serv_flow_mgt flow_mgt;
++	struct nbl_serv_net_resource_mgt *net_resource_mgt;
++	unsigned long old_flags;
++	unsigned long flags;
++};
++
++struct nbl_serv_notify_vlan_param {
++	u16 vlan_tci;
++	u16 vlan_proto;
++};
++
++int nbl_serv_netdev_open(struct net_device *netdev);
++int nbl_serv_netdev_stop(struct net_device *netdev);
++int nbl_serv_vsi_open(void *priv, struct net_device *netdev, u16 vsi_index,
++		      u16 real_qps, bool use_napi);
++int nbl_serv_vsi_stop(void *priv, u16 vsi_index);
++void nbl_serv_cpu_affinity_init(void *priv, u16 rings_num);
++u16 nbl_serv_get_vf_function_id(void *priv, int vf_id);
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_service.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_service.h
+new file mode 100644
+index 000000000000..d5dd7b6726cc
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_service.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0*/
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#ifndef _NBL_DEF_SERVICE_H_
++#define _NBL_DEF_SERVICE_H_
++
++#include "nbl_include.h"
++
++#define NBL_SERV_OPS_TBL_TO_OPS(serv_ops_tbl) ((serv_ops_tbl)->ops)
++#define NBL_SERV_OPS_TBL_TO_PRIV(serv_ops_tbl) ((serv_ops_tbl)->priv)
++
++struct nbl_service_ops {
++};
++
++struct nbl_service_ops_tbl {
++	struct nbl_resource_pt_ops pt_ops;
++	struct nbl_service_ops *ops;
++	void *priv;
++};
++
++int nbl_serv_init(void *priv, struct nbl_init_param *param);
++void nbl_serv_remove(void *priv);
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+index ad359e95d206..9341ed6d59fa 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -189,6 +189,11 @@ struct nbl_queue_cfg_param {
+ 	u16 half_offload_en;
+ };
  
-+static int nbl_serv_get_vf_config(struct net_device *dev, int vf_id, struct ifla_vf_info *ivi)
-+{
-+	struct nbl_netdev_priv *priv = netdev_priv(dev);
-+	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	struct nbl_serv_net_resource_mgt *net_resource_mgt =
-+					NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
-+	struct nbl_serv_vf_info *vf_info = net_resource_mgt->vf_info;
++struct nbl_msix_info_param {
++	u16 msix_num;
++	struct msix_entry *msix_entries;
++};
 +
-+	if (vf_id >= net_resource_mgt->total_vfs || !net_resource_mgt->vf_info)
-+		return -EINVAL;
-+
-+	ivi->vf = vf_id;
-+	ivi->spoofchk = vf_info[vf_id].spoof_check;
-+	ivi->linkstate = vf_info[vf_id].state;
-+	ivi->max_tx_rate = vf_info[vf_id].max_tx_rate;
-+	ivi->vlan = vf_info[vf_id].vlan;
-+	ivi->vlan_proto = htons(vf_info[vf_id].vlan_proto);
-+	ivi->qos = vf_info[vf_id].vlan_qos;
-+	ivi->trusted = vf_info[vf_id].trusted;
-+	ether_addr_copy(ivi->mac, vf_info[vf_id].mac);
-+
-+	return 0;
-+}
-+
- static int nbl_serv_get_vf_stats(struct net_device *dev, int vf_id, struct ifla_vf_stats *vf_stats)
- {
- 	struct nbl_service_mgt *serv_mgt = NBL_NETDEV_TO_SERV_MGT(dev);
-@@ -2021,6 +2332,98 @@ static int nbl_serv_get_vf_stats(struct net_device *dev, int vf_id, struct ifla_
- 	return 0;
- }
+ struct nbl_queue_stats {
+ 	u64 packets;
+ 	u64 bytes;
+@@ -251,6 +256,22 @@ struct nbl_stats {
+ 	u64 rx_bytes;
+ };
  
-+static u16
-+nbl_serv_select_queue(struct net_device *netdev, struct sk_buff *skb,
-+		      struct net_device *sb_dev)
-+{
-+	return netdev_pick_tx(netdev, skb, sb_dev);
-+}
++struct nbl_priv_stats {
++	u64 total_dvn_pkt_drop_cnt;
++	u64 total_uvn_stat_pkt_drop;
++};
 +
-+static void nbl_serv_tx_timeout(struct net_device *netdev, unsigned int txqueue)
-+{
-+	struct nbl_netdev_priv *priv = netdev_priv(netdev);
-+	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	struct nbl_common_info *common = NBL_SERV_MGT_TO_COMMON(serv_mgt);
-+	struct nbl_serv_ring_mgt *ring_mgt = NBL_SERV_MGT_TO_RING_MGT(serv_mgt);
-+	struct nbl_serv_ring_vsi_info *vsi_info;
++struct nbl_vf_stats {
++	u64 rx_packets;
++	u64 tx_packets;
++	u64 rx_bytes;
++	u64 tx_bytes;
++	u64 broadcast;
++	u64 multicast;
++	u64 rx_dropped;
++	u64 tx_dropped;
++};
 +
-+	vsi_info = &ring_mgt->vsi_info[NBL_VSI_DATA];
-+
-+	ring_mgt->tx_rings[vsi_info->ring_offset + txqueue].need_recovery = true;
-+	ring_mgt->tx_rings[vsi_info->ring_offset + txqueue].tx_timeout_count++;
-+
-+	nbl_warn(common, NBL_DEBUG_QUEUE, "TX timeout on queue %d", txqueue);
-+
-+	nbl_common_queue_work(&NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt)->tx_timeout, false);
-+}
-+
-+static int nbl_serv_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
-+				   struct net_device *netdev, u32 filter_mask, int nlflags)
-+{
-+	struct nbl_netdev_priv *priv = netdev_priv(netdev);
-+	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	struct nbl_serv_net_resource_mgt *net_resource_mgt = serv_mgt->net_resource_mgt;
-+	u16 bmode;
-+
-+	bmode = net_resource_mgt->bridge_mode;
-+
-+	return ndo_dflt_bridge_getlink(skb, pid, seq, netdev, bmode, 0, 0, nlflags,
-+				       filter_mask, NULL);
-+}
-+
-+static int nbl_serv_bridge_setlink(struct net_device *netdev, struct nlmsghdr *nlh,
-+				   u16 flags, struct netlink_ext_ack *extack)
-+{
-+	struct nbl_netdev_priv *priv = netdev_priv(netdev);
-+	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
-+	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
-+	struct nbl_serv_net_resource_mgt *net_resource_mgt = serv_mgt->net_resource_mgt;
-+	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
-+	struct nlattr *attr, *br_spec;
-+	u16 mode;
-+	int ret, rem;
-+
-+	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
-+
-+	nla_for_each_nested(attr, br_spec, rem) {
-+		if (nla_type(attr) != IFLA_BRIDGE_MODE)
-+			continue;
-+
-+		mode = nla_get_u16(attr);
-+		if (mode != BRIDGE_MODE_VEPA && mode != BRIDGE_MODE_VEB)
-+			return -EINVAL;
-+
-+		if (mode == net_resource_mgt->bridge_mode)
-+			continue;
-+
-+		ret = disp_ops->set_bridge_mode(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), mode);
-+		if (ret) {
-+			netdev_info(netdev, "bridge_setlink failed 0x%x", ret);
-+			return ret;
-+		}
-+
-+		net_resource_mgt->bridge_mode = mode;
-+	}
-+
-+	return 0;
-+}
-+
-+static int nbl_serv_get_phys_port_name(struct net_device *dev, char *name, size_t len)
-+{
-+	struct nbl_common_info *common = NBL_NETDEV_TO_COMMON(dev);
-+	u8 pf_id;
-+
-+	pf_id = common->eth_id;
-+	if ((NBL_COMMON_TO_ETH_MODE(common) == NBL_TWO_ETHERNET_PORT) && common->eth_id == 2)
-+		pf_id = 1;
-+
-+	if (snprintf(name, len, "p%u", pf_id) >= len)
-+		return -EOPNOTSUPP;
-+	return 0;
-+}
-+
- static int nbl_serv_register_net(void *priv, struct nbl_register_net_param *register_param,
- 				 struct nbl_register_net_result *register_result)
- {
-@@ -4256,11 +4659,27 @@ static struct nbl_service_ops serv_ops = {
- 	.netdev_open = nbl_serv_netdev_open,
- 	.netdev_stop = nbl_serv_netdev_stop,
- 	.change_mtu = nbl_serv_change_mtu,
--
-+	.set_mac = nbl_serv_set_mac,
- 	.rx_add_vid = nbl_serv_rx_add_vid,
- 	.rx_kill_vid = nbl_serv_rx_kill_vid,
- 	.get_stats64 = nbl_serv_get_stats64,
--
-+	.set_rx_mode = nbl_serv_set_rx_mode,
-+	.change_rx_flags = nbl_serv_change_rx_flags,
-+	.set_features = nbl_serv_set_features,
-+	.features_check = nbl_serv_features_check,
-+	.get_phys_port_name = nbl_serv_get_phys_port_name,
-+	.tx_timeout = nbl_serv_tx_timeout,
-+	.bridge_setlink = nbl_serv_bridge_setlink,
-+	.bridge_getlink = nbl_serv_bridge_getlink,
-+	.set_vf_spoofchk = nbl_serv_set_vf_spoofchk,
-+	.set_vf_link_state = nbl_serv_set_vf_link_state,
-+	.set_vf_mac = nbl_serv_set_vf_mac,
-+	.set_vf_rate = nbl_serv_set_vf_rate,
-+	.set_vf_vlan = nbl_serv_set_vf_vlan,
-+	.get_vf_config = nbl_serv_get_vf_config,
-+	.get_vf_stats = nbl_serv_get_vf_stats,
-+	.select_queue = nbl_serv_select_queue,
-+	.set_vf_trust = nbl_serv_set_vf_trust,
- 	.get_rep_queue_info = nbl_serv_get_rep_queue_info,
- 	.get_user_queue_info = nbl_serv_get_user_queue_info,
+ struct nbl_ustore_stats {
+ 	u64 rx_drop_packets;
+ 	u64 rx_trun_packets;
+@@ -266,6 +287,15 @@ struct nbl_notify_param {
+ 	u16 tail_ptr;
+ };
  
++struct nbl_common_irq_num {
++	int mbx_irq_num;
++};
++
++struct nbl_ctrl_irq_num {
++	int adminq_irq_num;
++	int abnormal_irq_num;
++};
++
+ enum nbl_flow_ctrl {
+ 	NBL_PORT_TX_PAUSE = 0x1,
+ 	NBL_PORT_RX_PAUSE = 0x2,
+@@ -514,6 +544,13 @@ enum nbl_performance_mode {
+ 	NBL_QUIRKS_UVN_PREFETCH_ALIGN,
+ };
+ 
++struct nbl_vsi_param {
++	u16 vsi_id;
++	u16 queue_offset;
++	u16 queue_num;
++	u8 index;
++};
++
+ struct nbl_ring_param {
+ 	u16 tx_ring_num;
+ 	u16 rx_ring_num;
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+index 4d2c787b8f7a..a67f6ce75a93 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -74,7 +74,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev, struct nbl_init_param *p
+ 	ret = nbl_disp_init(adapter, param);
+ 	if (ret)
+ 		goto disp_init_fail;
++
++	ret = nbl_serv_init(adapter, param);
++	if (ret)
++		goto serv_init_fail;
+ 	return adapter;
++serv_init_fail:
++	nbl_disp_remove(adapter);
+ disp_init_fail:
+ 	product_base_ops->res_remove(adapter);
+ res_init_fail:
+@@ -97,6 +103,7 @@ void nbl_core_remove(struct nbl_adapter *adapter)
+ 
+ 	dev = NBL_ADAPTER_TO_DEV(adapter);
+ 	product_base_ops = NBL_ADAPTER_TO_RPDUCT_BASE_OPS(adapter);
++	nbl_serv_remove(adapter);
+ 	nbl_disp_remove(adapter);
+ 	product_base_ops->res_remove(adapter);
+ 	product_base_ops->chan_remove(adapter);
 -- 
 2.43.0
 
