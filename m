@@ -1,46 +1,44 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A0C329C7D;
-	Tue, 23 Dec 2025 09:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF59156F45;
+	Tue, 23 Dec 2025 10:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766483883; cv=none; b=ifiHMu+HIapqz8tc64hhylHb5eaV9jbdJ/a4M0py7zFg3t9yJGEB4+OGPcrwU6g8YLtjkQKhXkDILPhLsWunjXtQu9GOZ3EQWNDlFM+5gjVVCXnFlRYtvVucoscflcxX5a6KA0a84wfd/+q2qSwZl1+71MSycJwMBkEy4jDK/dI=
+	t=1766484142; cv=none; b=AiHgds3ohxqC/yvM3EWEyjz0uZfQdeMDFVgUThQUPzTzYRuRngiKGsjfUhHs/Q+2vxquw9atDAEK/xQrFDNsii1mxjIi7b/ubQnQDgCqZ6T8/3Cko1IoMohAovLqT/8QocOG5aTWTMcWTMFUL9lz/Oa2dnpdlLxBoKtHagrywCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766483883; c=relaxed/simple;
-	bh=TrxUyFZPlQjs7e0r6ueVJONGzRevZ/FhmjWNmIsGNLU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GrBPQGe1YKiafc4vpDIZrVnCKW1OXRj9BPaHpTPdo95zi9gUR1Z4JaOPVK5jqakEyXA9N4k9pANkmRlLDGRUPweyt9Y503hoxRsw8zmV3GwXvwyTZk78OrUEhtu/n9WxFXDWdh9YsQqihO0uwS3cSxP4SUODTIy/VYQ/ywi78eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=RjSEVC+a; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1766484142; c=relaxed/simple;
+	bh=M6m9ZR3gOJPB/c8SonAHbP9mPbovYQRt2g2HwOhudqQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cmA5n8TFuK/3FGxOiZUbIurhr2TWyMu+btWziWKoN3EjG7/ZJOUZu+XH3ivK4W80H+sRAbm7Kg1Oyo8cRzLSxnsk1FdmIyvw2iCLc0xyHgPIHaqFUdqSC06qCPu1ow/Em4zNEIdurBRYTh8ry7F7884n4qghAor1WvDu5FG7Ihk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=icKlT9vO; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="RjSEVC+a"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="icKlT9vO"
 Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1vXyUn-00B31q-No; Tue, 23 Dec 2025 10:15:57 +0100
+	id 1vXyUl-00ABjr-U1; Tue, 23 Dec 2025 10:15:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=yDGrqLXmWU2pboYhTkpP5V/0hwt+4F3zcefRl6mlCig=; b=RjSEVC+aSVs9CyZGTamDeiH6SK
-	1xCz2YGJIbayG8+A25tYAqbwg4Id6+EyD9pRxqtzT1Idda3wwavCBVlygZOBjYwXIPkkXpPtUUFvC
-	09UL56Qy/M2fce84PLQqbnV8K1c/2Ml6sIwgTeunSf+2WJVpsiUx4tKFCxq9RHJhcABfWpDMkq3Hg
-	xdr7/heDH9WFIiT3jZl7jSL6gp6BxuGlwBCwkTLt5iyy36OPeIphhW7qdk6OKGDssnwHE/eTdsVX7
-	yEodPXoCoDjapBfvKuvqdIqdX0d1HtBSmjRGvCHipYPFKxvXeWoqTySZlhVBnO2/Fm7+KODqOhO2F
-	X3CLfXtQ==;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=2Vj52tMb4Pb2xJ6Ddbf2pSKXvFqOetVFjgvNEJ55Rl8=
+	; b=icKlT9vOZXDroFI6HFVTJfNSadoeWyAnIUu/TgYFJsWiajFS4u+/UfJ6kuuojSr7AjIZ/HMVa
+	U8Sn5ObzbrSAls0UHLKaw+v3zJpimT8Qw49dmqotulEdRFMDRxsrSLikMsWTJb9avd3S5FRHp4EeA
+	94cq6B1UY6dEHJqfljXXuU8ujEIPa/lDLGobQRbi3iHyZ1pBkiV5mLunJPEs3lBuEVT3iKLqNi0rS
+	D3H8JDKtW9Ix1kGMobz2Ctttib7Gw0ghcy3Kt9L52DY0wHwiFHbk3Fnvee2fRHXCzWDtc4XZMhEQc
+	AS96uCxkdnTfCro5nnVHucNM1U7SHJrctfiYXw==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
 	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1vXyUn-0005Ke-9c; Tue, 23 Dec 2025 10:15:57 +0100
+	id 1vXyUl-0005KW-33; Tue, 23 Dec 2025 10:15:55 +0100
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1vXyUh-009MHY-5f; Tue, 23 Dec 2025 10:15:51 +0100
+	id 1vXyUf-009MHY-Pb; Tue, 23 Dec 2025 10:15:49 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 23 Dec 2025 10:15:29 +0100
-Subject: [PATCH net 2/2] vsock/test: Test setting SO_ZEROCOPY on accept()ed
- socket
+Subject: [PATCH net 0/2] vsock: Fix SO_ZEROCOPY on accept()ed vsocks
+Date: Tue, 23 Dec 2025 10:15:27 +0100
+Message-Id: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,9 +47,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-vsock-child-sock-custom-sockopt-v1-2-4654a75d0f58@rbox.co>
-References: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
-In-Reply-To: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
+X-B4-Tracking: v=1; b=H4sIAK9dSmkC/yWNQQqDQAwAvyI5G9BIsfoV8aAx1mC7K5tVCuLfu
+ 9jbzGXmBJOgYtBmJwQ51NS7JGWeAS+DewnqlByooEdJRHiY5xV50feEf9wt+s/NfotI1VjXDVc
+ FP2dIlS3IrN/70IGTCP11/QBQl6XxdgAAAA==
+X-Change-ID: 20251222-vsock-child-sock-custom-sockopt-23b779c30c8f
 To: Stefano Garzarella <sgarzare@redhat.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -61,66 +60,25 @@ Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.3
 
-Make sure setsockopt(SOL_SOCKET, SO_ZEROCOPY) on an accept()ed socket is
-handled by vsock's implementation.
+vsock has its own handling of setsockopt(SO_ZEROCOPY). Which works just
+fine unless socket comes from a call to accept(). Because
+SOCK_CUSTOM_SOCKOPT flag is missing, attempting to set the option always
+results in errno EOPNOTSUPP.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
+Michal Luczaj (2):
+      vsock: Make accept()ed sockets use custom setsockopt()
+      vsock/test: Test setting SO_ZEROCOPY on accept()ed socket
+
+ net/vmw_vsock/af_vsock.c         |  1 +
  tools/testing/vsock/vsock_test.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ 2 files changed, 34 insertions(+)
+---
+base-commit: 5e7365b5a1ac8f517a7a84442289d7de242deb76
+change-id: 20251222-vsock-child-sock-custom-sockopt-23b779c30c8f
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 9e1250790f33..8ec8f0844e22 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -2192,6 +2192,34 @@ static void test_stream_nolinger_server(const struct test_opts *opts)
- 	close(fd);
- }
- 
-+static void test_stream_accepted_setsockopt_client(const struct test_opts *opts)
-+{
-+	int fd;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	vsock_wait_remote_close(fd);
-+	close(fd);
-+}
-+
-+static void test_stream_accepted_setsockopt_server(const struct test_opts *opts)
-+{
-+	int fd;
-+
-+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	enable_so_zerocopy_check(fd);
-+	close(fd);
-+}
-+
- static struct test_case test_cases[] = {
- 	{
- 		.name = "SOCK_STREAM connection reset",
-@@ -2371,6 +2399,11 @@ static struct test_case test_cases[] = {
- 		.run_client = test_seqpacket_unread_bytes_client,
- 		.run_server = test_seqpacket_unread_bytes_server,
- 	},
-+	{
-+		.name = "SOCK_STREAM accept()ed socket custom setsockopt()",
-+		.run_client = test_stream_accepted_setsockopt_client,
-+		.run_server = test_stream_accepted_setsockopt_server,
-+	},
- 	{},
- };
- 
-
+Best regards,
 -- 
-2.52.0
+Michal Luczaj <mhal@rbox.co>
 
