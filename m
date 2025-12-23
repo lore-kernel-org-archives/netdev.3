@@ -1,84 +1,174 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF59156F45;
-	Tue, 23 Dec 2025 10:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D9D33893E;
+	Tue, 23 Dec 2025 10:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484142; cv=none; b=AiHgds3ohxqC/yvM3EWEyjz0uZfQdeMDFVgUThQUPzTzYRuRngiKGsjfUhHs/Q+2vxquw9atDAEK/xQrFDNsii1mxjIi7b/ubQnQDgCqZ6T8/3Cko1IoMohAovLqT/8QocOG5aTWTMcWTMFUL9lz/Oa2dnpdlLxBoKtHagrywCY=
+	t=1766484191; cv=none; b=E0Txa/fh53hCPzwcdLxz2O266kt3kddOM+n+WXTwegS1rcXwp4q/l2f7sVefi+2QzmI6WgvrfB+XVqLW7qR6hE08tbpobwJD0MFdBhntOSXV4rcXYyv1tKmcWrNWMpYu3TH0FXvcAqqkbwMt+XM/q5pocUzfmUpKn/yIbVmY0s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484142; c=relaxed/simple;
-	bh=M6m9ZR3gOJPB/c8SonAHbP9mPbovYQRt2g2HwOhudqQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cmA5n8TFuK/3FGxOiZUbIurhr2TWyMu+btWziWKoN3EjG7/ZJOUZu+XH3ivK4W80H+sRAbm7Kg1Oyo8cRzLSxnsk1FdmIyvw2iCLc0xyHgPIHaqFUdqSC06qCPu1ow/Em4zNEIdurBRYTh8ry7F7884n4qghAor1WvDu5FG7Ihk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=icKlT9vO; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1766484191; c=relaxed/simple;
+	bh=U+tbKM4F+Du3elwL7/+bSqYSagS2tMs6YYP5KjJHgpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4iaxB/zxKs+JrwQjGJsRHjacRcbx/mDy839m6AHEJnwyAGr2OMhoqc6cE77uB/m81te5If939kUf0dByPG8lGbCMByMF09hgXnJxkZ3XRbSKrjQk+cFvuBoMCWZFDb1Bmmo8zReyLzk7ukwebb8SSbB34PfnjsfTb6TqGeLDEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oCy7WE21; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="icKlT9vO"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1vXyUl-00ABjr-U1; Tue, 23 Dec 2025 10:15:55 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=2Vj52tMb4Pb2xJ6Ddbf2pSKXvFqOetVFjgvNEJ55Rl8=
-	; b=icKlT9vOZXDroFI6HFVTJfNSadoeWyAnIUu/TgYFJsWiajFS4u+/UfJ6kuuojSr7AjIZ/HMVa
-	U8Sn5ObzbrSAls0UHLKaw+v3zJpimT8Qw49dmqotulEdRFMDRxsrSLikMsWTJb9avd3S5FRHp4EeA
-	94cq6B1UY6dEHJqfljXXuU8ujEIPa/lDLGobQRbi3iHyZ1pBkiV5mLunJPEs3lBuEVT3iKLqNi0rS
-	D3H8JDKtW9Ix1kGMobz2Ctttib7Gw0ghcy3Kt9L52DY0wHwiFHbk3Fnvee2fRHXCzWDtc4XZMhEQc
-	AS96uCxkdnTfCro5nnVHucNM1U7SHJrctfiYXw==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1vXyUl-0005KW-33; Tue, 23 Dec 2025 10:15:55 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vXyUf-009MHY-Pb; Tue, 23 Dec 2025 10:15:49 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH net 0/2] vsock: Fix SO_ZEROCOPY on accept()ed vsocks
-Date: Tue, 23 Dec 2025 10:15:27 +0100
-Message-Id: <20251223-vsock-child-sock-custom-sockopt-v1-0-4654a75d0f58@rbox.co>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oCy7WE21"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=AQFDYWqSkDriuWAbN7InAfyNwsqwAPRnfhoRrmIYFKc=; b=oCy7WE21C1bdo4sF0tAANbR4Sv
+	mCUh9rW51XPkefJyihI9ocBlqz/eLZZPj/vdp/8zjq9h1cFTRzVcp6MO3OcLYqMuVKb0YQzFMQv9H
+	wUz4eFXVSqPgznljnurfg7nspu99Bf+XOIrQqc8PCOFQ8yTWTSSzqX1Vgl3FggonF0JU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vXzEJ-000HdJ-CK; Tue, 23 Dec 2025 11:02:59 +0100
+Date: Tue, 23 Dec 2025 11:02:59 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "illusion.wang" <illusion.wang@nebula-matrix.com>
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com, netdev@vger.kernel.org,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 net-next 01/15] net/nebula-matrix: add minimum nbl
+ build framework
+Message-ID: <b5c1c892-540b-495a-a138-781f12c3ddd7@lunn.ch>
+References: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
+ <20251223035113.31122-2-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAK9dSmkC/yWNQQqDQAwAvyI5G9BIsfoV8aAx1mC7K5tVCuLfu
- 9jbzGXmBJOgYtBmJwQ51NS7JGWeAS+DewnqlByooEdJRHiY5xV50feEf9wt+s/NfotI1VjXDVc
- FP2dIlS3IrN/70IGTCP11/QBQl6XxdgAAAA==
-X-Change-ID: 20251222-vsock-child-sock-custom-sockopt-23b779c30c8f
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251223035113.31122-2-illusion.wang@nebula-matrix.com>
 
-vsock has its own handling of setsockopt(SO_ZEROCOPY). Which works just
-fine unless socket comes from a call to accept(). Because
-SOCK_CUSTOM_SOCKOPT flag is missing, attempting to set the option always
-results in errno EOPNOTSUPP.
+> @@ -27628,6 +27628,16 @@ F:	Documentation/networking/device_drivers/ethernet/wangxun/*
+>  F:	drivers/net/ethernet/wangxun/
+>  F:	drivers/net/pcs/pcs-xpcs-wx.c
+>  
+> +NEBULA-MATRIX ETHERNET DRIVER (nebula-matrix)
+> +M:	Illusion.Wang <illusion.wang@nebula-matrix.com>
+> +M:	Dimon.Zhao <dimon.zhao@nebula-matrix.com>
+> +M:	Alvin.Wang <alvin.wang@nebula-matrix.com>
+> +M:	Sam Chen <sam.chen@nebula-matrix.com>
+> +L:	netdev@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/networking/device_drivers/ethernet/nebula-matrix/*
+> +F:	drivers/net/ethernet/nebula-matrix/
 
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
+This file is sorted, so please insert in the correct location.
+
+> +
+>  WATCHDOG DEVICE DRIVERS
+>  M:	Wim Van Sebroeck <wim@linux-watchdog.org>
+>  M:	Guenter Roeck <linux@roeck-us.net>
+> diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+> index 4a1b368ca7e6..3995f75f1016 100644
+> --- a/drivers/net/ethernet/Kconfig
+> +++ b/drivers/net/ethernet/Kconfig
+> @@ -204,5 +204,6 @@ source "drivers/net/ethernet/wangxun/Kconfig"
+>  source "drivers/net/ethernet/wiznet/Kconfig"
+>  source "drivers/net/ethernet/xilinx/Kconfig"
+>  source "drivers/net/ethernet/xircom/Kconfig"
+> +source "drivers/net/ethernet/nebula-matrix/Kconfig"
+
+Also sorted.
+
+>  
+>  endif # ETHERNET
+> diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+> index 2e18df8ca8ec..632dac9c4b75 100644
+> --- a/drivers/net/ethernet/Makefile
+> +++ b/drivers/net/ethernet/Makefile
+> @@ -108,4 +108,5 @@ obj-$(CONFIG_NET_VENDOR_XILINX) += xilinx/
+>  obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+>  obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+>  obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+> +obj-$(CONFIG_NET_VENDOR_NEBULA_MATRIX) += nebula-matrix/
+
+This is not strictly sorted, but mostly sorted. Please insert in the
+correct location.
+
+Sorting avoids merge conflicts when everybody adds to the end of the
+file.
+
+> +if NET_VENDOR_NEBULA_MATRIX
+> +
+> +config NBL_CORE
+
+Why core? Is it shared by multiple other drivers?
+
+> +#define NBL_CAP_SET_BIT(loc)			(1 << (loc))
+
+Please don't re-implement existing functionality. Why are you not using BIT()?
+
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+
+Please include the needed headers in the .c file. A large proportion
+of compile time is spent processing headers. So including headers you
+don't actually need into every C file just slows down the build for
+everybody.
+
+> +#define NBL_DRIVER_VERSION				"25.11-1.16"
+
+Driver versions are generally pointless, since they never change, but
+the kernel around it is changing all the time.
+
+> +
+> +#define NBL_FLOW_INDEX_BYTE_LEN				8
+> +
+> +#define NBL_RATE_MBPS_100G				(100000)
+> +#define NBL_RATE_MBPS_25G				(25000)
+> +#define NBL_RATE_MBPS_10G				(10000)
+
+Pointless ()
+
+> +#define NBL_NEXT_ID(id, max)	({ typeof(id) _id = (id); ((_id) == (max) ? 0 : (_id) + 1); })
+> +#define NBL_IPV6_U32LEN					4
+> +
+> +#define NBL_MAX_FUNC					(520)
+> +#define NBL_MAX_MTU					15
+
+You can only send 15 byte packets? Very odd hardware.
+
+> +static int nbl_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *id)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +
+> +	dev_info(dev, "nbl probe finished\n");
+
+Please don't spam the log in the 'happy case'. dev_dbg(), or nothing
+at all.
+
+
+> +static int __maybe_unused nbl_suspend(struct device *dev)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused nbl_resume(struct device *dev)
+> +{
+> +	return 0;
+> +}
+
+You should be able to add these when you add suspend/resume support.
+
+> +static int __init nbl_module_init(void)
+> +{
+> +	int status;
+> +
+> +	status = pci_register_driver(&nbl_driver);
+
+There are helpers for PCI drivers which should mean you don't need
+this or nbl_module_exit().
+
+    Andrew
+
 ---
-Michal Luczaj (2):
-      vsock: Make accept()ed sockets use custom setsockopt()
-      vsock/test: Test setting SO_ZEROCOPY on accept()ed socket
-
- net/vmw_vsock/af_vsock.c         |  1 +
- tools/testing/vsock/vsock_test.c | 33 +++++++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
----
-base-commit: 5e7365b5a1ac8f517a7a84442289d7de242deb76
-change-id: 20251222-vsock-child-sock-custom-sockopt-23b779c30c8f
-
-Best regards,
--- 
-Michal Luczaj <mhal@rbox.co>
-
+pw-bot: cr
