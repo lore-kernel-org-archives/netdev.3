@@ -1,22 +1,22 @@
-Received: from out198-33.us.a.mail.aliyun.com (out198-33.us.a.mail.aliyun.com [47.90.198.33])
+Received: from out28-102.mail.aliyun.com (out28-102.mail.aliyun.com [115.124.28.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFA31940A1;
-	Tue, 23 Dec 2025 03:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925232DA77E;
+	Tue, 23 Dec 2025 03:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766461908; cv=none; b=kVq5vMt6gJ8PU7/fk7PK3Cz4ma2RKaOQTp5zN0RUjwum4A3/7rP2GId9YZf/gumn4vbsqYxBE3ppP27qdBiKu27NrKUwy+nTgc44m0g+en/pS+1jstU9FcvraJogRpwFg5j3/lWiUv76Qb3hEOo69XFALCLpw7nGynAYH2Tpua8=
+	t=1766461918; cv=none; b=M54WSxiW8FaH2Hm5BfASzmO5vaqefi1hB2PxwMkA/abT0MSPnpCcJgKcgmjAeeINurx5G7paVocbBsXPL9w5QXBBqueMyYQkppE8fiz2LeZ2HFvtPLH1xGseZ9DVDXVPHRVb/03p1XIuFzdRp4CDcCOwpp9W0voT6cDR+lPMfeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766461908; c=relaxed/simple;
-	bh=JPUYGaMWOLoJDJXrI81xeMVhPblt+V/8/+8x6XW4kMs=;
+	s=arc-20240116; t=1766461918; c=relaxed/simple;
+	bh=X4uruD1BkbkGaBRQZF1eLNcU3eT+NNY8oHkJpo3871M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lk+Y1M7c0OUu/MBhCRSGZ/cGPFCIxeIjVsrhlnXgI/kibRHuMjRaVl+xvRnbSYU24jT270wMlycdVwlMS6zYwc1qh4MTlEPwf6Q4TJogrVf8EgpgGfyNZtxFUpNtDFCXSSGcCWXIjiRTEtqQakCQ9Zbm+020eRseI3+QcrMJuqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.33
+	 MIME-Version; b=jJvLXmyDxKnxYSn4TrJOVEX40hKp0CjuI9WRSHr6FpFh4qqRsaT/2YnWcguOVydkCQLzr3As8KtZKuxGvk7BGPL8WyAfrzlZ60oBsh2vaR9jQAFwHIBGbCOXv2UhU6KofE7ebRmhh4UkW+Vxn0fs3+y7kGV8IYxMpS2za7IrtYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxWVg_1766461884 cluster:ay29)
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxWpJ_1766461900 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 23 Dec 2025 11:51:26 +0800
+          Tue, 23 Dec 2025 11:51:42 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -24,9 +24,9 @@ To: dimon.zhao@nebula-matrix.com,
 	sam.chen@nebula-matrix.com,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1 net-next 03/15] net/nebula-matrix: add HW layer definitions and implementation
-Date: Tue, 23 Dec 2025 11:50:26 +0800
-Message-ID: <20251223035113.31122-4-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v1 net-next 08/15] net/nebula-matrix: add flow resource definitions and implementation
+Date: Tue, 23 Dec 2025 11:50:31 +0800
+Message-ID: <20251223035113.31122-9-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
 References: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
@@ -36,2646 +36,2960 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 
-add HW layer related definitions and product ops
+flow resource management functions include:
+Flow Configuration: Setting the actions and key-value pairs for flows.
+Flow Management: Allocating/releasing flow IDs, TCAM IDs, MCC IDs, etc.
+Multicast Control: Managing multicast control groups.
+Hash Table Management: Enabling rapid lookup of flow entries.
+LLDP/LACP Flow Management: Managing flows related to link-layer protocols.
+Multicast Flow Management: Managing multicast flows.
+MTU Management: Managing the MTU of Virtual Switching Instances (VSIs).
+Initialization and Cleanup: Initializing/cleaning up the flow management module.
 
 Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
-Change-Id: I18e1b62b94b4348abc3cbbe936fc5e4590c27a93
+Change-Id: I53154593bc66e469aef3ffc3516fcc692a002212
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |    3 +-
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   11 +
- .../nebula-matrix/nbl/nbl_hw/nbl_hw.h         |  184 ++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  168 ++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  | 1842 +++++++++++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |  187 ++
- .../nbl/nbl_include/nbl_def_hw.h              |   26 +
- .../nbl/nbl_include/nbl_include.h             |   64 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   14 +-
- 9 files changed, 2496 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |    1 +
+ .../nbl_hw/nbl_hw_leonis/nbl_flow_leonis.c    | 2094 +++++++++++++++++
+ .../nbl_hw/nbl_hw_leonis/nbl_flow_leonis.h    |  204 ++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  492 ++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |    9 +
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |    3 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   16 +
+ 7 files changed, 2819 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.h
 
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index 7717efab0b01..723ac077aef3 100644
+index ab6bb61d7b03..54372a723455 100644
 --- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -4,7 +4,8 @@
- 
- obj-$(CONFIG_NBL_CORE) := nbl_core.o
- 
--nbl_core-objs +=      nbl_main.o
-+nbl_core-objs +=      nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
-+				nbl_main.o
- 
- # Do not modify include path, unless you are adding a new file which needs some headers in its
- # direct upper directory (see the exception part in below).
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index f28fe8058c75..0a76b6f66d5e 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -7,12 +7,16 @@
- #ifndef _NBL_CORE_H_
- #define _NBL_CORE_H_
- #include "nbl_product_base.h"
-+#include "nbl_def_hw.h"
- #include "nbl_def_common.h"
- 
- #define NBL_ADAPTER_TO_PDEV(adapter)		((adapter)->pdev)
- #define NBL_ADAPTER_TO_DEV(adapter)		(&((adapter)->pdev->dev))
- #define NBL_ADAPTER_TO_COMMON(adapter)		(&((adapter)->common))
- #define NBL_ADAPTER_TO_RPDUCT_BASE_OPS(adapter)	((adapter)->product_base_ops)
-+
-+#define NBL_ADAPTER_TO_HW_MGT(adapter)		((adapter)->core.hw_mgt)
-+#define NBL_ADAPTER_TO_HW_OPS_TBL(adapter)	((adapter)->intf.hw_ops_tbl)
- #define NBL_CAP_SET_BIT(loc)			(1 << (loc))
- #define NBL_CAP_TEST_BIT(val, loc)		(((val) >> (loc)) & 0x1)
- 
-@@ -48,9 +52,16 @@ enum nbl_adapter_state {
- };
- 
- struct nbl_interface {
-+	struct nbl_hw_ops_tbl *hw_ops_tbl;
- };
- 
- struct nbl_core {
-+	void *hw_mgt;
-+	void *res_mgt;
-+	void *disp_mgt;
-+	void *serv_mgt;
-+	void *dev_mgt;
-+	void *chan_mgt;
- };
- 
- struct nbl_adapter {
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h
+@@ -7,6 +7,7 @@ obj-$(CONFIG_NBL_CORE) := nbl_core.o
+ nbl_core-objs +=       nbl_common/nbl_common.o \
+ 				nbl_channel/nbl_channel.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis.o \
++				nbl_hw/nbl_hw_leonis/nbl_flow_leonis.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_queue_leonis.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.c
 new file mode 100644
-index 000000000000..52a14f1dbf12
+index 000000000000..02432e044561
 --- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h
-@@ -0,0 +1,184 @@
-+/* SPDX-License-Identifier: GPL-2.0*/
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ * Author:
-+ */
-+
-+#ifndef _NBL_HW_H_
-+#define _NBL_HW_H_
-+
-+#include "nbl_include.h"
-+
-+#define NBL_MAX_ETHERNET				(4)
-+
-+#define NBL_PT_PP0					0
-+#define NBL_PT_LEN					3
-+#define NBL_TCAM_TABLE_LEN				(64)
-+#define NBL_MCC_ID_INVALID				U16_MAX
-+#define NBL_KT_BYTE_LEN					40
-+#define NBL_KT_BYTE_HALF_LEN				20
-+
-+#define NBL_EM0_PT_HW_UP_TUNNEL_L2			0
-+#define NBL_EM0_PT_HW_UP_L2				1
-+#define NBL_EM0_PT_HW_DOWN_L2				2
-+#define NBL_EM0_PT_HW_UP_LLDP_LACP			3
-+#define NBL_EM0_PT_PMD_ND_UPCALL			4
-+#define NBL_EM0_PT_HW_L2_UP_MULTI_MCAST		5
-+#define NBL_EM0_PT_HW_L3_UP_MULTI_MCAST		6
-+#define NBL_EM0_PT_HW_L2_DOWN_MULTI_MCAST		7
-+#define NBL_EM0_PT_HW_L3_DOWN_MULTI_MCAST		8
-+#define NBL_EM0_PT_HW_DPRBAC_IPV4			9
-+#define NBL_EM0_PT_HW_DPRBAC_IPV6			10
-+#define NBL_EM0_PT_HW_UL4S_IPV4			11
-+#define NBL_EM0_PT_HW_UL4S_IPV6			12
-+
-+#define NBL_PP0_PROFILE_ID_MIN				(0)
-+#define NBL_PP0_PROFILE_ID_MAX				(15)
-+#define NBL_PP1_PROFILE_ID_MIN				(16)
-+#define NBL_PP1_PROFILE_ID_MAX				(31)
-+#define NBL_PP2_PROFILE_ID_MIN				(32)
-+#define NBL_PP2_PROFILE_ID_MAX				(47)
-+#define NBL_PP_PROFILE_NUM				(16)
-+
-+#define NBL_QID_MAP_TABLE_ENTRIES			(4096)
-+#define NBL_EPRO_PF_RSS_RET_TBL_DEPTH			(4096)
-+#define NBL_EPRO_RSS_RET_TBL_DEPTH			(8192 * 2)
-+#define NBL_EPRO_RSS_ENTRY_SIZE_UNIT			(16)
-+
-+#define NBL_EPRO_PF_RSS_RET_TBL_COUNT			(512)
-+#define NBL_EPRO_PF_RSS_ENTRY_SIZE			(5)
-+
-+#define NBL_EPRO_RSS_ENTRY_MAX_COUNT			(512)
-+#define NBL_EPRO_RSS_ENTRY_MAX_SIZE			(4)
-+
-+#define NBL_EPRO_RSS_SK_SIZE 40
-+#define NBL_EPRO_RSS_PER_KEY_SIZE 8
-+#define NBL_EPRO_RSS_KEY_NUM (NBL_EPRO_RSS_SK_SIZE / NBL_EPRO_RSS_PER_KEY_SIZE)
-+
-+enum {
-+	NBL_HT0,
-+	NBL_HT1,
-+	NBL_HT_MAX,
-+};
-+
-+enum {
-+	NBL_KT_HALF_MODE,
-+	NBL_KT_FULL_MODE,
-+};
-+
-+#pragma pack(1)
-+union nbl_action_data {
-+	union dport_act {
-+		struct {
-+			/* port_type = SET_DPORT_TYPE_ETH_LAG, set the eth and lag field. */
-+			u16 dport_info:10;
-+			u16 dport_type:2;
-+		#define FWD_DPORT_TYPE_ETH		(0)
-+		#define FWD_DPORT_TYPE_LAG		(1)
-+		#define FWD_DPORT_TYPE_VSI		(2)
-+			u16 dport_id:4;
-+		#define FWD_DPORT_ID_HOST_TLS		(0)
-+		#define FWD_DPORT_ID_ECPU_TLS		(1)
-+		#define FWD_DPORT_ID_HOST_RDMA		(2)
-+		#define FWD_DPORT_ID_ECPU_RDMA		(3)
-+		#define FWD_DPORT_ID_EMP		(4)
-+		#define FWD_DPORT_ID_BMC		(5)
-+		#define FWD_DPORT_ID_LOOP_BACK		(7)
-+		#define FWD_DPORT_ID_ETH0		(8)
-+		#define FWD_DPORT_ID_ETH1		(9)
-+		#define FWD_DPORT_ID_ETH2		(10)
-+		#define FWD_DPORT_ID_ETH3		(11)
-+		} fwd_dport;
-+
-+		struct {
-+			/* port_type = SET_DPORT_TYPE_ETH_LAG, set the eth and lag field. */
-+			u16 eth_id:2;
-+			u16 lag_id:2;
-+			u16 eth_vld:1;
-+			u16 lag_vld:1;
-+			u16 rsv:4;
-+			u16 port_type:2;
-+			u16 next_stg_sel:2;
-+			u16 upcall_flag:2;
-+		} down;
-+
-+		struct {
-+			/* port_type = SET_DPORT_TYPE_VSI_HOST and SET_DPORT_TYPE_VSI_ECPU,
-+			 * set the port_id field as the vsi_id.
-+			 * port_type = SET_DPORT_TYPE_SP_PORT, set the port_id as the defined
-+			 * PORT_TYPE_SP_*.
-+			 */
-+			u16 port_id:10;
-+		#define PORT_TYPE_SP_DROP		(0x3FF)
-+		#define PORT_TYPE_SP_GLB_LB		(0x3FE)
-+		#define PORT_TYPE_SP_BMC		(0x3FD)
-+		#define PORT_TYPE_SP_EMP		(0x3FC)
-+			u16 port_type:2;
-+		#define SET_DPORT_TYPE_VSI_HOST		(0)
-+		#define SET_DPORT_TYPE_VSI_ECPU		(1)
-+		#define SET_DPORT_TYPE_ETH_LAG		(2)
-+		#define SET_DPORT_TYPE_SP_PORT		(3)
-+			u16 next_stg_sel:2;
-+		#define NEXT_STG_SEL_NONE		(0)
-+		#define NEXT_STG_SEL_ACL_S0		(1)
-+		#define NEXT_STG_SEL_EPRO		(2)
-+		#define NEXT_STG_SEL_BYPASS		(3)
-+			u16 upcall_flag:2;
-+		#define AUX_KEEP_FWD_TYPE		(0)
-+		#define AUX_FWD_TYPE_NML_FWD		(1)
-+		#define AUX_FWD_TYPE_UPCALL		(2)
-+		} up;
-+	} dport;
-+
-+	struct dqueue_act {
-+		u16 que_id:11;
-+		u16 rsv:5;
-+	} dqueue;
-+
-+	struct mcc_id_act {
-+		u16 mcc_id:13;
-+		u16 pri:1;
-+	#define NBL_MCC_PRI_HIGH		(0)
-+	#define NBL_MCC_PRI_LOW			(1)
-+		uint32_t rsv:2;
-+	} mcc_idx;
-+
-+	struct set_aux_act {
-+		u16 nstg_val:4;
-+		u16 nstg_vld:1;
-+		u16 ftype_val:3;
-+		u16 ftype_vld:1;
-+		u16 pkt_cos_val:3;
-+		u16 pcos_vld:1;
-+		u16 rsv:1;
-+	#define NBL_SET_AUX_CLR_FLG			(0)
-+	#define NBL_SET_AUX_SET_FLG			(1)
-+	#define NBL_SET_AUX_SET_AUX			(2)
-+		u16 sub_id:2;
-+	} set_aux;
-+
-+	u16 data;
-+};
-+
-+#pragma pack()
-+
-+#define SFF8636_TRANSMIT_FIBER_850nm_VCSEL	(0x0)
-+#define SFF8636_TRANSMIT_FIBER_1310nm_VCSEL	(0x1)
-+#define SFF8636_TRANSMIT_FIBER_1550nm_VCSEL	(0x2)
-+#define SFF8636_TRANSMIT_FIBER_1310nm_FP	(0x3)
-+#define SFF8636_TRANSMIT_FIBER_1310nm_DFB	(0x4)
-+#define SFF8636_TRANSMIT_FIBER_1550nm_DFB	(0x5)
-+#define SFF8636_TRANSMIT_FIBER_1310nm_EML	(0x6)
-+#define SFF8636_TRANSMIT_FIBER_1550nm_EML	(0x7)
-+#define SFF8636_TRANSMIT_FIBER_OTHER		(0x8)
-+#define SFF8636_TRANSMIT_FIBER_1490nm_DFB	(0x9)
-+#define SFF8636_TRANSMIT_COPPER_UNEQUA		(0xa)
-+#define SFF8636_TRANSMIT_COPPER_PASSIVE_EQUALIZED	(0xb)
-+#define SFF8636_TRANSMIT_COPPER_NEAR_FAR_END		(0xc)
-+#define SFF8636_TRANSMIT_COPPER_FAR_END			(0xd)
-+#define SFF8636_TRANSMIT_COPPER_NEAR_END		(0xe)
-+#define SFF8636_TRANSMIT_COPPER_LINEAR_ACTIVE		(0xf)
-+
-+#define NBL_SPORT_ETH_OFFSET				8
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-new file mode 100644
-index 000000000000..5c33d4ead957
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -0,0 +1,168 @@
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.c
+@@ -0,0 +1,2094 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2025 Nebula Matrix Limited.
 + * Author:
 + */
 +
-+#include "nbl_hw_leonis.h"
++#include "nbl_flow_leonis.h"
++#include "nbl_p4_actions.h"
++#include "nbl_resource_leonis.h"
 +
-+static struct nbl_hw_ops hw_ops = {
++#define NBL_FLOW_LEONIS_VSI_NUM_PER_ETH		256
++
++static u32 nbl_flow_cfg_action_set_dport(u16 upcall_flag, u16 port_type, u16 vsi, u16 next_stg_sel)
++{
++	union nbl_action_data set_dport = {.data = 0};
++
++	set_dport.dport.up.upcall_flag = upcall_flag;
++	set_dport.dport.up.port_type = port_type;
++	set_dport.dport.up.port_id = vsi;
++	set_dport.dport.up.next_stg_sel = next_stg_sel;
++
++	return set_dport.data + (NBL_ACT_SET_DPORT << 16);
++}
++
++static u16 nbl_flow_cfg_action_set_dport_mcc_eth(u8 eth)
++{
++	union nbl_action_data set_dport = {.data = 0};
++
++	set_dport.dport.down.upcall_flag = AUX_FWD_TYPE_NML_FWD;
++	set_dport.dport.down.port_type = SET_DPORT_TYPE_ETH_LAG;
++	set_dport.dport.down.next_stg_sel = NEXT_STG_SEL_EPRO;
++	set_dport.dport.down.lag_vld = 0;
++	set_dport.dport.down.eth_vld = 1;
++	set_dport.dport.down.eth_id = eth;
++
++	return set_dport.data;
++}
++
++static u16 nbl_flow_cfg_action_set_dport_mcc_vsi(u16 vsi)
++{
++	union nbl_action_data set_dport = {.data = 0};
++
++	set_dport.dport.up.upcall_flag = AUX_FWD_TYPE_NML_FWD;
++	set_dport.dport.up.port_type = SET_DPORT_TYPE_VSI_HOST;
++	set_dport.dport.up.port_id = vsi;
++	set_dport.dport.up.next_stg_sel = NEXT_STG_SEL_ACL_S0;
++
++	return set_dport.data;
++}
++
++static u32 nbl_flow_cfg_action_set_dport_mcc_bmc(void)
++{
++	union nbl_action_data set_dport = {.data = 0};
++
++	set_dport.dport.up.upcall_flag = AUX_FWD_TYPE_NML_FWD;
++	set_dport.dport.up.port_type = SET_DPORT_TYPE_SP_PORT;
++	set_dport.dport.up.port_id = NBL_FLOW_MCC_BMC_DPORT;
++	set_dport.dport.up.next_stg_sel = NEXT_STG_SEL_EPRO;
++
++	return set_dport.data + (NBL_ACT_SET_DPORT << 16);
++}
++
++static int nbl_flow_cfg_action_mcc(u16 mcc_id, u32 *action0, u32 *action1)
++{
++	union nbl_action_data mcc_idx_act = {.data = 0}, set_aux_act = {.data = 0};
++
++	mcc_idx_act.mcc_idx.mcc_id = mcc_id;
++	*action0 = (u32)mcc_idx_act.data + (NBL_ACT_SET_MCC << 16);
++
++	set_aux_act.set_aux.sub_id = NBL_SET_AUX_SET_AUX;
++	set_aux_act.set_aux.nstg_vld = 1;
++	set_aux_act.set_aux.nstg_val = NBL_NEXT_STG_MCC;
++	*action1 = (u32)set_aux_act.data + (NBL_ACT_SET_AUX_FIELD << 16);
++
++	return 0;
++}
++
++static int nbl_flow_cfg_action_up_tnl(struct nbl_flow_param param, u32 *action0, u32 *action1)
++{
++	*action1 = 0;
++	if (param.mcc_id == NBL_MCC_ID_INVALID)
++		*action0 = nbl_flow_cfg_action_set_dport(AUX_FWD_TYPE_NML_FWD,
++							 SET_DPORT_TYPE_VSI_HOST,
++							 param.vsi, NEXT_STG_SEL_ACL_S0);
++	else
++		nbl_flow_cfg_action_mcc(param.mcc_id, action0, action1);
++
++	return 0;
++}
++
++static int nbl_flow_cfg_action_lldp_lacp_up(struct nbl_flow_param param, u32 *action0, u32 *action1)
++{
++	*action1 = 0;
++	*action0 = nbl_flow_cfg_action_set_dport(AUX_FWD_TYPE_NML_FWD, SET_DPORT_TYPE_VSI_HOST,
++						 param.vsi, NEXT_STG_SEL_ACL_S0);
++
++	return 0;
++}
++
++static int nbl_flow_cfg_action_up(struct nbl_flow_param param, u32 *action0, u32 *action1)
++{
++	*action1 = 0;
++	if (param.mcc_id == NBL_MCC_ID_INVALID)
++		*action0 = nbl_flow_cfg_action_set_dport(AUX_FWD_TYPE_NML_FWD,
++							 SET_DPORT_TYPE_VSI_HOST,
++							 param.vsi, NEXT_STG_SEL_NONE);
++	else
++		nbl_flow_cfg_action_mcc(param.mcc_id, action0, action1);
++
++	return 0;
++}
++
++static int nbl_flow_cfg_action_down(struct nbl_flow_param param, u32 *action0, u32 *action1)
++{
++	*action1 = 0;
++	if (param.mcc_id == NBL_MCC_ID_INVALID)
++		*action0 = nbl_flow_cfg_action_set_dport(AUX_FWD_TYPE_NML_FWD,
++							 SET_DPORT_TYPE_VSI_HOST,
++							 param.vsi, NEXT_STG_SEL_ACL_S0);
++	else
++		nbl_flow_cfg_action_mcc(param.mcc_id, action0, action1);
++
++	return 0;
++}
++
++static int nbl_flow_cfg_up_tnl_key_value(union nbl_common_data_u *data,
++					 struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_up_data_u *kt_data = (union nbl_l2_hw_up_data_u *)data;
++	u64 dst_mac = 0;
++	u8 sport;
++	u8 reverse_mac[ETH_ALEN];
++
++	nbl_convert_mac(param.mac, reverse_mac);
++
++	memset(kt_data->hash_key, 0x0, sizeof(kt_data->hash_key));
++	ether_addr_copy((u8 *)&dst_mac, reverse_mac);
++
++	kt_data->info.dst_mac = dst_mac;
++	kt_data->info.svlan_id = param.vid;
++	kt_data->info.template = NBL_EM0_PT_HW_UP_TUNNEL_L2;
++	kt_data->info.padding = 0;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static int nbl_flow_cfg_lldp_lacp_up_key_value(union nbl_common_data_u *data,
++					       struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_lldp_lacp_data_u *kt_data = (union nbl_l2_hw_lldp_lacp_data_u *)data;
++	u8 sport;
++
++	kt_data->info.template = NBL_EM0_PT_HW_UP_LLDP_LACP;
++
++	kt_data->info.ether_type = param.ether_type;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static int nbl_flow_cfg_up_key_value(union nbl_common_data_u *data,
++				     struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_up_data_u *kt_data = (union nbl_l2_hw_up_data_u *)data;
++	u64 dst_mac = 0;
++	u8 sport;
++	u8 reverse_mac[ETH_ALEN];
++
++	nbl_convert_mac(param.mac, reverse_mac);
++
++	memset(kt_data->hash_key, 0x0, sizeof(kt_data->hash_key));
++	ether_addr_copy((u8 *)&dst_mac, reverse_mac);
++
++	kt_data->info.dst_mac = dst_mac;
++	kt_data->info.svlan_id = param.vid;
++	kt_data->info.template = NBL_EM0_PT_HW_UP_L2;
++	kt_data->info.padding = 0;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static int nbl_flow_cfg_down_key_value(union nbl_common_data_u *data,
++				       struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_down_data_u *kt_data = (union nbl_l2_hw_down_data_u *)data;
++	u64 dst_mac = 0;
++	u8 sport;
++	u8 reverse_mac[ETH_ALEN];
++
++	nbl_convert_mac(param.mac, reverse_mac);
++
++	memset(kt_data->hash_key, 0x0, sizeof(kt_data->hash_key));
++	ether_addr_copy((u8 *)&dst_mac, reverse_mac);
++
++	kt_data->info.dst_mac = dst_mac;
++	kt_data->info.svlan_id = param.vid;
++	kt_data->info.template = NBL_EM0_PT_HW_DOWN_L2;
++	kt_data->info.padding = 0;
++
++	sport = param.vsi >> 8;
++	if (eth_mode == NBL_TWO_ETHERNET_PORT)
++		sport &= 0xFE;
++	if (eth_mode == NBL_ONE_ETHERNET_PORT)
++		sport = 0;
++	kt_data->info.sport = sport;
++
++	return 0;
++}
++
++static void nbl_flow_cfg_kt_action_up_tnl(union nbl_common_data_u *data, u32 action0, u32 action1)
++{
++	union nbl_l2_hw_up_data_u *kt_data = (union nbl_l2_hw_up_data_u *)data;
++
++	kt_data->info.act0 = action0;
++	kt_data->info.act1 = action1;
++}
++
++static void nbl_flow_cfg_kt_action_lldp_lacp_up(union nbl_common_data_u *data,
++						u32 action0, u32 action1)
++{
++	union nbl_l2_hw_lldp_lacp_data_u *kt_data = (union nbl_l2_hw_lldp_lacp_data_u *)data;
++
++	kt_data->info.act0 = action0;
++}
++
++static void nbl_flow_cfg_kt_action_up(union nbl_common_data_u *data, u32 action0, u32 action1)
++{
++	union nbl_l2_hw_up_data_u *kt_data = (union nbl_l2_hw_up_data_u *)data;
++
++	kt_data->info.act0 = action0;
++	kt_data->info.act1 = action1;
++}
++
++static void nbl_flow_cfg_kt_action_down(union nbl_common_data_u *data, u32 action0, u32 action1)
++{
++	union nbl_l2_hw_down_data_u *kt_data = (union nbl_l2_hw_down_data_u *)data;
++
++	kt_data->info.act0 = action0;
++	kt_data->info.act1 = action1;
++}
++
++static int nbl_flow_cfg_action_multi_mcast(struct nbl_flow_param param, u32 *action0, u32 *action1)
++{
++	return nbl_flow_cfg_action_mcc(param.mcc_id, action0, action1);
++}
++
++static int nbl_flow_cfg_l2up_multi_mcast_key_value(union nbl_common_data_u *data,
++						   struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_up_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_up_multi_mcast_data_u *)data;
++	u8 sport;
++
++	kt_data->info.template = NBL_EM0_PT_HW_L2_UP_MULTI_MCAST;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static void nbl_flow_cfg_kt_action_l2up_multi_mcast(union nbl_common_data_u *data,
++						    u32 action0, u32 action1)
++{
++	union nbl_l2_hw_up_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_up_multi_mcast_data_u *)data;
++
++	kt_data->info.act0 = action0;
++}
++
++static int nbl_flow_cfg_l3up_multi_mcast_key_value(union nbl_common_data_u *data,
++						   struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_up_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_up_multi_mcast_data_u *)data;
++	u8 sport;
++
++	kt_data->info.template = NBL_EM0_PT_HW_L3_UP_MULTI_MCAST;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static int nbl_flow_cfg_l2down_multi_mcast_key_value(union nbl_common_data_u *data,
++						     struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_down_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_down_multi_mcast_data_u *)data;
++	u8 sport;
++
++	kt_data->info.template = NBL_EM0_PT_HW_L2_DOWN_MULTI_MCAST;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++static void nbl_flow_cfg_kt_action_l2down_multi_mcast(union nbl_common_data_u *data,
++						      u32 action0, u32 action1)
++{
++	union nbl_l2_hw_down_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_down_multi_mcast_data_u *)data;
++
++	kt_data->info.act0 = action0;
++}
++
++static int nbl_flow_cfg_l3down_multi_mcast_key_value(union nbl_common_data_u *data,
++						     struct nbl_flow_param param, u8 eth_mode)
++{
++	union nbl_l2_hw_down_multi_mcast_data_u *kt_data =
++				(union nbl_l2_hw_down_multi_mcast_data_u *)data;
++	u8 sport;
++
++	kt_data->info.template = NBL_EM0_PT_HW_L3_DOWN_MULTI_MCAST;
++
++	sport = param.eth;
++	kt_data->info.sport = sport + NBL_SPORT_ETH_OFFSET;
++
++	return 0;
++}
++
++#define NBL_FLOW_OPS_ARR_ENTRY(type, action_func, kt_func, kt_action_func)		\
++	[type] = {.cfg_action = action_func, .cfg_key = kt_func,			\
++		  .cfg_kt_action = kt_action_func}
++static const struct nbl_flow_rule_cfg_ops cfg_ops[] = {
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_UP_TNL,
++			       nbl_flow_cfg_action_up_tnl,
++			       nbl_flow_cfg_up_tnl_key_value,
++			       nbl_flow_cfg_kt_action_up_tnl),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_UP,
++			       nbl_flow_cfg_action_up,
++			       nbl_flow_cfg_up_key_value,
++			       nbl_flow_cfg_kt_action_up),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_DOWN,
++			       nbl_flow_cfg_action_down,
++			       nbl_flow_cfg_down_key_value,
++			       nbl_flow_cfg_kt_action_down),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_LLDP_LACP_UP,
++			       nbl_flow_cfg_action_lldp_lacp_up,
++			       nbl_flow_cfg_lldp_lacp_up_key_value,
++			       nbl_flow_cfg_kt_action_lldp_lacp_up),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_L2_UP_MULTI_MCAST,
++			       nbl_flow_cfg_action_multi_mcast,
++			       nbl_flow_cfg_l2up_multi_mcast_key_value,
++			       nbl_flow_cfg_kt_action_l2up_multi_mcast),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_L3_UP_MULTI_MCAST,
++			       nbl_flow_cfg_action_multi_mcast,
++			       nbl_flow_cfg_l3up_multi_mcast_key_value,
++			       nbl_flow_cfg_kt_action_l2up_multi_mcast),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_L2_DOWN_MULTI_MCAST,
++			       nbl_flow_cfg_action_multi_mcast,
++			       nbl_flow_cfg_l2down_multi_mcast_key_value,
++			       nbl_flow_cfg_kt_action_l2down_multi_mcast),
++	NBL_FLOW_OPS_ARR_ENTRY(NBL_FLOW_L3_DOWN_MULTI_MCAST,
++			       nbl_flow_cfg_action_multi_mcast,
++			       nbl_flow_cfg_l3down_multi_mcast_key_value,
++			       nbl_flow_cfg_kt_action_l2down_multi_mcast),
 +};
 +
-+/* Structure starts here, adding an op should not modify anything below */
-+static int nbl_hw_setup_hw_mgt(struct nbl_common_info *common,
-+			       struct nbl_hw_mgt_leonis **hw_mgt_leonis)
++static int nbl_flow_alloc_flow_id(struct nbl_flow_mgt *flow_mgt, struct nbl_flow_fem_entry *flow)
 +{
-+	struct device *dev;
++	u32 flow_id;
 +
-+	dev = NBL_COMMON_TO_DEV(common);
-+	*hw_mgt_leonis = devm_kzalloc(dev, sizeof(struct nbl_hw_mgt_leonis), GFP_KERNEL);
-+	if (!*hw_mgt_leonis)
-+		return -ENOMEM;
++	if (flow->flow_type == NBL_KT_HALF_MODE) {
++		flow_id = find_first_zero_bit(flow_mgt->flow_id_bitmap, NBL_MACVLAN_TABLE_LEN);
++		if (flow_id == NBL_MACVLAN_TABLE_LEN)
++			return -ENOSPC;
++		set_bit(flow_id, flow_mgt->flow_id_bitmap);
++		flow_mgt->flow_id_cnt--;
++	} else {
++		flow_id = nbl_common_find_available_idx(flow_mgt->flow_id_bitmap,
++							NBL_MACVLAN_TABLE_LEN, 2, 2);
++		if (flow_id == NBL_MACVLAN_TABLE_LEN)
++			return -ENOSPC;
++		set_bit(flow_id, flow_mgt->flow_id_bitmap);
++		set_bit(flow_id + 1, flow_mgt->flow_id_bitmap);
++		flow_mgt->flow_id_cnt -= 2;
++	}
 +
-+	NBL_HW_MGT_TO_COMMON(&(*hw_mgt_leonis)->hw_mgt) = common;
++	flow->flow_id = flow_id;
++	return 0;
++}
++
++static void nbl_flow_free_flow_id(struct nbl_flow_mgt *flow_mgt, struct nbl_flow_fem_entry *flow)
++{
++	if (flow->flow_id == U16_MAX)
++		return;
++
++	if (flow->flow_type == NBL_KT_HALF_MODE) {
++		clear_bit(flow->flow_id, flow_mgt->flow_id_bitmap);
++		flow->flow_id = 0xFFFF;
++		flow_mgt->flow_id_cnt++;
++	} else {
++		clear_bit(flow->flow_id, flow_mgt->flow_id_bitmap);
++		clear_bit(flow->flow_id + 1, flow_mgt->flow_id_bitmap);
++		flow->flow_id = 0xFFFF;
++		flow_mgt->flow_id_cnt += 2;
++	}
++}
++
++static int nbl_flow_alloc_tcam_id(struct nbl_flow_mgt *flow_mgt,
++				  struct nbl_tcam_item *tcam_item)
++{
++	u32 tcam_id;
++
++	tcam_id = find_first_zero_bit(flow_mgt->tcam_id, NBL_TCAM_TABLE_LEN);
++	if (tcam_id == NBL_TCAM_TABLE_LEN)
++		return -ENOSPC;
++
++	set_bit(tcam_id, flow_mgt->tcam_id);
++	tcam_item->tcam_index = tcam_id;
 +
 +	return 0;
 +}
 +
-+static void nbl_hw_remove_hw_mgt(struct nbl_common_info *common,
-+				 struct nbl_hw_mgt_leonis **hw_mgt_leonis)
++static void nbl_flow_free_tcam_id(struct nbl_flow_mgt *flow_mgt,
++				  struct nbl_tcam_item *tcam_item)
 +{
-+	struct device *dev;
-+
-+	dev = NBL_COMMON_TO_DEV(common);
-+	devm_kfree(dev, *hw_mgt_leonis);
-+	*hw_mgt_leonis = NULL;
++	clear_bit(tcam_item->tcam_index, flow_mgt->tcam_id);
++	tcam_item->tcam_index = 0;
 +}
 +
-+static int nbl_hw_setup_ops(struct nbl_common_info *common, struct nbl_hw_ops_tbl **hw_ops_tbl,
-+			    struct nbl_hw_mgt_leonis *hw_mgt_leonis)
++static int nbl_flow_alloc_mcc_id(struct nbl_flow_mgt *flow_mgt)
 +{
-+	struct device *dev;
++	u32 mcc_id;
 +
-+	dev = NBL_COMMON_TO_DEV(common);
-+	*hw_ops_tbl = devm_kzalloc(dev, sizeof(struct nbl_hw_ops_tbl), GFP_KERNEL);
-+	if (!*hw_ops_tbl)
-+		return -ENOMEM;
++	mcc_id = find_first_zero_bit(flow_mgt->mcc_id_bitmap, NBL_FLOW_MCC_INDEX_SIZE);
++	if (mcc_id == NBL_FLOW_MCC_INDEX_SIZE)
++		return -ENOSPC;
 +
-+	NBL_HW_OPS_TBL_TO_OPS(*hw_ops_tbl) = &hw_ops;
-+	NBL_HW_OPS_TBL_TO_PRIV(*hw_ops_tbl) = hw_mgt_leonis;
++	set_bit(mcc_id, flow_mgt->mcc_id_bitmap);
 +
-+	return 0;
++	return mcc_id + NBL_FLOW_MCC_INDEX_START;
 +}
 +
-+static void nbl_hw_remove_ops(struct nbl_common_info *common, struct nbl_hw_ops_tbl **hw_ops_tbl)
++static void nbl_flow_free_mcc_id(struct nbl_flow_mgt *flow_mgt, u32 mcc_id)
 +{
-+	struct device *dev;
-+
-+	dev = NBL_COMMON_TO_DEV(common);
-+	devm_kfree(dev, *hw_ops_tbl);
-+	*hw_ops_tbl = NULL;
++	if (mcc_id >= NBL_FLOW_MCC_INDEX_START)
++		clear_bit(mcc_id - NBL_FLOW_MCC_INDEX_START, flow_mgt->mcc_id_bitmap);
 +}
 +
-+int nbl_hw_init_leonis(void *p, struct nbl_init_param *param)
++static void nbl_flow_set_mt_input(struct nbl_mt_input *mt_input, union nbl_common_data_u *kt_data,
++				  u8 type, u16 flow_id)
 +{
-+	struct nbl_adapter *adapter = (struct nbl_adapter *)p;
-+	struct nbl_common_info *common;
-+	struct pci_dev *pdev;
-+	struct nbl_hw_mgt_leonis **hw_mgt_leonis;
-+	struct nbl_hw_mgt *hw_mgt;
-+	struct nbl_hw_ops_tbl **hw_ops_tbl;
-+	int bar_mask;
++	int i;
++	u16 key_len;
++
++	key_len = ((type) == NBL_KT_HALF_MODE ? NBL_KT_BYTE_HALF_LEN :	NBL_KT_BYTE_LEN);
++	for (i = 0; i < key_len; i++)
++		mt_input->key[i] = kt_data->hash_key[key_len - 1 - i];
++
++	mt_input->tbl_id = flow_id + NBL_EM_HW_KT_OFFSET;
++	mt_input->depth = 0;
++	mt_input->power = NBL_PP0_POWER;
++}
++
++static void nbl_flow_key_hash(struct nbl_flow_fem_entry *flow, struct nbl_mt_input *mt_input)
++{
++	u16 ht0_hash = 0;
++	u16 ht1_hash = 0;
++
++	ht0_hash = NBL_CRC16_CCITT(mt_input->key, NBL_KT_BYTE_LEN);
++	ht1_hash = NBL_CRC16_IBM(mt_input->key, NBL_KT_BYTE_LEN);
++	flow->ht0_hash = nbl_hash_transfer(ht0_hash, mt_input->power, mt_input->depth);
++	flow->ht1_hash = nbl_hash_transfer(ht1_hash, mt_input->power, mt_input->depth);
++}
++
++static bool nbl_pp_ht0_ht1_search(struct nbl_flow_ht_mng *pp_ht0_mng, u16 ht0_hash,
++				  struct nbl_flow_ht_mng *pp_ht1_mng, u16 ht1_hash,
++				  struct nbl_common_info *common)
++{
++	struct nbl_flow_ht_tbl *node0 = NULL;
++	struct nbl_flow_ht_tbl *node1 = NULL;
++	u16 i = 0;
++	bool is_find = false;
++
++	node0 = pp_ht0_mng->hash_map[ht0_hash];
++	if (node0)
++		for (i = 0; i < NBL_HASH_CFT_MAX; i++)
++			if (node0->key[i].vid && node0->key[i].ht_other_index == ht1_hash) {
++				is_find = true;
++				nbl_debug(common, NBL_DEBUG_FLOW,
++					  "Conflicted ht on vid %d and kt_index %u\n",
++					  node0->key[i].vid, node0->key[i].kt_index);
++				return is_find;
++			}
++
++	node1 = pp_ht1_mng->hash_map[ht1_hash];
++	if (node1)
++		for (i = 0; i < NBL_HASH_CFT_MAX; i++)
++			if (node1->key[i].vid && node1->key[i].ht_other_index == ht0_hash) {
++				is_find = true;
++				nbl_debug(common, NBL_DEBUG_FLOW,
++					  "Conflicted ht on vid %d and kt_index %u\n",
++					  node1->key[i].vid, node1->key[i].kt_index);
++				return is_find;
++			}
++
++	return is_find;
++}
++
++static bool nbl_flow_check_ht_conflict(struct nbl_flow_ht_mng *pp_ht0_mng,
++				       struct nbl_flow_ht_mng *pp_ht1_mng,
++				       u16 ht0_hash, u16 ht1_hash, struct nbl_common_info *common)
++{
++	return nbl_pp_ht0_ht1_search(pp_ht0_mng, ht0_hash, pp_ht1_mng, ht1_hash, common);
++}
++
++static int nbl_flow_find_ht_avail_table(struct nbl_flow_ht_mng *pp_ht0_mng,
++					struct nbl_flow_ht_mng *pp_ht1_mng,
++					u16 ht0_hash, u16 ht1_hash)
++{
++	struct nbl_flow_ht_tbl *pp_ht0_node = NULL;
++	struct nbl_flow_ht_tbl *pp_ht1_node = NULL;
++
++	pp_ht0_node = pp_ht0_mng->hash_map[ht0_hash];
++	pp_ht1_node = pp_ht1_mng->hash_map[ht1_hash];
++
++	if (!pp_ht0_node && !pp_ht1_node) {
++		return 0;
++	} else if (pp_ht0_node && !pp_ht1_node) {
++		if (pp_ht0_node->ref_cnt >= NBL_HASH_CFT_AVL)
++			return 1;
++		else
++			return 0;
++	} else if (!pp_ht0_node && pp_ht1_node) {
++		if (pp_ht1_node->ref_cnt >= NBL_HASH_CFT_AVL)
++			return 0;
++		else
++			return 1;
++	} else {
++		if ((pp_ht0_node->ref_cnt <= NBL_HASH_CFT_AVL ||
++		     (pp_ht0_node->ref_cnt > NBL_HASH_CFT_AVL &&
++		      pp_ht0_node->ref_cnt < NBL_HASH_CFT_MAX &&
++		      pp_ht1_node->ref_cnt > NBL_HASH_CFT_AVL)))
++			return 0;
++		else if (((pp_ht0_node->ref_cnt > NBL_HASH_CFT_AVL &&
++			   pp_ht1_node->ref_cnt <= NBL_HASH_CFT_AVL) ||
++			  (pp_ht0_node->ref_cnt == NBL_HASH_CFT_MAX &&
++			   pp_ht1_node->ref_cnt > NBL_HASH_CFT_AVL &&
++			   pp_ht1_node->ref_cnt < NBL_HASH_CFT_MAX)))
++			return 1;
++		else
++			return -1;
++	}
++}
++
++static int nbl_flow_insert_pp_ht(struct nbl_flow_ht_mng *pp_ht_mng,
++				 u16 hash, u16 hash_other, u32 key_index)
++{
++	struct nbl_flow_ht_tbl *node;
++	int i;
++
++	node = pp_ht_mng->hash_map[hash];
++	if (!node) {
++		node = kzalloc(sizeof(*node), GFP_KERNEL);
++		if (!node)
++			return -ENOSPC;
++		pp_ht_mng->hash_map[hash] = node;
++	}
++
++	for (i = 0; i < NBL_HASH_CFT_MAX; i++) {
++		if (node->key[i].vid == 0) {
++			node->key[i].vid = 1;
++			node->key[i].ht_other_index = hash_other;
++			node->key[i].kt_index = key_index;
++			node->ref_cnt++;
++			break;
++		}
++	}
++
++	return i;
++}
++
++static void nbl_flow_add_ht(struct nbl_ht_item *ht_item, struct nbl_flow_fem_entry *flow,
++			    u32 key_index, struct nbl_flow_ht_mng *pp_ht_mng, u8 ht_table)
++{
++	u16 ht_hash;
++	u16 ht_other_hash;
++
++	ht_hash = ht_table == NBL_HT0 ? flow->ht0_hash : flow->ht1_hash;
++	ht_other_hash = ht_table == NBL_HT0 ? flow->ht1_hash : flow->ht0_hash;
++
++	ht_item->hash_bucket = nbl_flow_insert_pp_ht(pp_ht_mng, ht_hash, ht_other_hash, key_index);
++	if (ht_item->hash_bucket < 0)
++		return;
++
++	ht_item->ht_table = ht_table;
++	ht_item->key_index = key_index;
++	ht_item->ht0_hash = flow->ht0_hash;
++	ht_item->ht1_hash = flow->ht1_hash;
++
++	flow->hash_bucket = ht_item->hash_bucket;
++	flow->hash_table = ht_item->ht_table;
++}
++
++static void nbl_flow_del_ht(struct nbl_ht_item *ht_item, struct nbl_flow_fem_entry *flow,
++			    struct nbl_flow_ht_mng *pp_ht_mng)
++{
++	struct nbl_flow_ht_tbl *pp_ht_node = NULL;
++	u16 ht_hash;
++	u16 ht_other_hash;
++	int i;
++
++	ht_hash = ht_item->ht_table == NBL_HT0 ? flow->ht0_hash : flow->ht1_hash;
++	ht_other_hash = ht_item->ht_table == NBL_HT0 ? flow->ht1_hash : flow->ht0_hash;
++
++	pp_ht_node = pp_ht_mng->hash_map[ht_hash];
++	if (!pp_ht_node)
++		return;
++
++	for (i = 0; i < NBL_HASH_CFT_MAX; i++) {
++		if (pp_ht_node->key[i].vid == 1 &&
++		    pp_ht_node->key[i].ht_other_index == ht_other_hash) {
++			memset(&pp_ht_node->key[i], 0, sizeof(pp_ht_node->key[i]));
++			pp_ht_node->ref_cnt--;
++			break;
++		}
++	}
++
++	if (!pp_ht_node->ref_cnt) {
++		kfree(pp_ht_node);
++		pp_ht_mng->hash_map[ht_hash] = NULL;
++	}
++}
++
++static int nbl_flow_send_2hw(struct nbl_resource_mgt *res_mgt, struct nbl_ht_item ht_item,
++			     struct nbl_kt_item kt_item, u8 key_type)
++{
++	struct nbl_hw_ops *hw_ops;
++	u16 hash, hash_other;
 +	int ret = 0;
 +
-+	common = NBL_ADAPTER_TO_COMMON(adapter);
-+	hw_mgt_leonis = (struct nbl_hw_mgt_leonis **)&NBL_ADAPTER_TO_HW_MGT(adapter);
-+	hw_ops_tbl = &NBL_ADAPTER_TO_HW_OPS_TBL(adapter);
-+	pdev = NBL_COMMON_TO_PDEV(common);
++	hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
 +
-+	ret = nbl_hw_setup_hw_mgt(common, hw_mgt_leonis);
++	ret = hw_ops->set_kt(NBL_RES_MGT_TO_HW_PRIV(res_mgt), kt_item.kt_data.hash_key,
++			      ht_item.key_index, key_type);
 +	if (ret)
-+		goto setup_mgt_fail;
++		goto set_kt_fail;
 +
-+	hw_mgt = &(*hw_mgt_leonis)->hw_mgt;
-+	bar_mask = BIT(NBL_MEMORY_BAR) | BIT(NBL_MAILBOX_BAR);
-+	ret = pci_request_selected_regions(pdev, bar_mask, NBL_DRIVER_NAME);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Request memory bar and mailbox bar failed, err = %d\n", ret);
-+		goto request_bar_region_fail;
-+	}
-+
-+	if (param->caps.has_ctrl) {
-+		hw_mgt->hw_addr = ioremap(pci_resource_start(pdev, NBL_MEMORY_BAR),
-+					  pci_resource_len(pdev, NBL_MEMORY_BAR) -
-+					  NBL_RDMA_NOTIFY_OFF);
-+		if (!hw_mgt->hw_addr) {
-+			dev_err(&pdev->dev, "Memory bar ioremap failed\n");
-+			ret = -EIO;
-+			goto ioremap_err;
-+		}
-+		hw_mgt->hw_size = pci_resource_len(pdev, NBL_MEMORY_BAR) - NBL_RDMA_NOTIFY_OFF;
-+	} else {
-+		hw_mgt->hw_addr = ioremap(pci_resource_start(pdev, NBL_MEMORY_BAR),
-+					  NBL_RDMA_NOTIFY_OFF);
-+		if (!hw_mgt->hw_addr) {
-+			dev_err(&pdev->dev, "Memory bar ioremap failed\n");
-+			ret = -EIO;
-+			goto ioremap_err;
-+		}
-+		hw_mgt->hw_size = NBL_RDMA_NOTIFY_OFF;
-+	}
-+
-+	hw_mgt->notify_offset = 0;
-+	hw_mgt->mailbox_bar_hw_addr = pci_ioremap_bar(pdev, NBL_MAILBOX_BAR);
-+	if (!hw_mgt->mailbox_bar_hw_addr) {
-+		dev_err(&pdev->dev, "Mailbox bar ioremap failed\n");
-+		ret = -EIO;
-+		goto mailbox_ioremap_err;
-+	}
-+
-+	spin_lock_init(&hw_mgt->reg_lock);
-+	hw_mgt->should_lock = true;
-+
-+	ret = nbl_hw_setup_ops(common, hw_ops_tbl, *hw_mgt_leonis);
++	hash = ht_item.ht_table == NBL_HT0 ? ht_item.ht0_hash : ht_item.ht1_hash;
++	hash_other = ht_item.ht_table == NBL_HT0 ? ht_item.ht1_hash : ht_item.ht0_hash;
++	ret = hw_ops->set_ht(NBL_RES_MGT_TO_HW_PRIV(res_mgt), hash, hash_other, ht_item.ht_table,
++			      ht_item.hash_bucket, ht_item.key_index, 1);
 +	if (ret)
-+		goto setup_ops_fail;
++		goto set_ht_fail;
 +
-+	(*hw_mgt_leonis)->ro_enable = pcie_relaxed_ordering_enabled(pdev);
++	ret = hw_ops->search_key(NBL_RES_MGT_TO_HW_PRIV(res_mgt),
++				  kt_item.kt_data.hash_key, key_type);
++	if (ret)
++		goto search_fail;
 +
 +	return 0;
 +
-+setup_ops_fail:
-+	iounmap(hw_mgt->mailbox_bar_hw_addr);
-+mailbox_ioremap_err:
-+	iounmap(hw_mgt->hw_addr);
-+ioremap_err:
-+	pci_release_selected_regions(pdev, bar_mask);
-+request_bar_region_fail:
-+	nbl_hw_remove_hw_mgt(common, hw_mgt_leonis);
-+setup_mgt_fail:
++search_fail:
++	ret = hw_ops->set_ht(NBL_RES_MGT_TO_HW_PRIV(res_mgt), hash, 0, ht_item.ht_table,
++			      ht_item.hash_bucket, 0, 0);
++set_ht_fail:
++	memset(kt_item.kt_data.hash_key, 0, sizeof(kt_item.kt_data.hash_key));
++	hw_ops->set_kt(NBL_RES_MGT_TO_HW_PRIV(res_mgt), kt_item.kt_data.hash_key,
++			ht_item.key_index, key_type);
++set_kt_fail:
 +	return ret;
 +}
 +
-+void nbl_hw_remove_leonis(void *p)
++static int nbl_flow_del_2hw(struct nbl_resource_mgt *res_mgt, struct nbl_ht_item ht_item,
++			    struct nbl_kt_item kt_item, u8 key_type)
 +{
-+	struct nbl_adapter *adapter = (struct nbl_adapter *)p;
-+	struct nbl_common_info *common;
-+	struct nbl_hw_mgt_leonis **hw_mgt_leonis;
-+	struct nbl_hw_ops_tbl **hw_ops_tbl;
-+	struct pci_dev *pdev;
-+	u8 __iomem *hw_addr;
-+	u8 __iomem *mailbox_bar_hw_addr;
-+	int bar_mask = BIT(NBL_MEMORY_BAR) | BIT(NBL_MAILBOX_BAR);
++	struct nbl_hw_ops *hw_ops;
++	u16 hash;
 +
-+	common = NBL_ADAPTER_TO_COMMON(adapter);
-+	hw_mgt_leonis = (struct nbl_hw_mgt_leonis **)&NBL_ADAPTER_TO_HW_MGT(adapter);
-+	hw_ops_tbl = &NBL_ADAPTER_TO_HW_OPS_TBL(adapter);
-+	pdev = NBL_COMMON_TO_PDEV(common);
++	hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
 +
-+	hw_addr = (*hw_mgt_leonis)->hw_mgt.hw_addr;
-+	mailbox_bar_hw_addr = (*hw_mgt_leonis)->hw_mgt.mailbox_bar_hw_addr;
++	hash = ht_item.ht_table == NBL_HT0 ? ht_item.ht0_hash : ht_item.ht1_hash;
++	hw_ops->set_ht(NBL_RES_MGT_TO_HW_PRIV(res_mgt), hash, 0, ht_item.ht_table,
++			ht_item.hash_bucket, 0, 0);
 +
-+	iounmap(mailbox_bar_hw_addr);
-+	iounmap(hw_addr);
-+	pci_release_selected_regions(pdev, bar_mask);
-+	nbl_hw_remove_hw_mgt(common, hw_mgt_leonis);
-+
-+	nbl_hw_remove_ops(common, hw_ops_tbl);
++	return 0;
 +}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
++
++static void nbl_flow_cfg_tcam(struct nbl_tcam_item *tcam_item, struct nbl_ht_item *ht_item,
++			      struct nbl_kt_item *kt_item, u32 action0, u32 action1)
++{
++	tcam_item->key_mode = NBL_KT_HALF_MODE;
++	tcam_item->pp_type = NBL_PT_PP0;
++	tcam_item->tcam_action[0] = action0;
++	tcam_item->tcam_action[1] = action1;
++	memcpy(&tcam_item->ht_item, ht_item, sizeof(struct nbl_ht_item));
++	memcpy(&tcam_item->kt_item, kt_item, sizeof(struct nbl_kt_item));
++}
++
++static int nbl_flow_add_tcam(struct nbl_resource_mgt *res_mgt, struct nbl_tcam_item tcam_item)
++{
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++
++	return hw_ops->add_tcam(NBL_RES_MGT_TO_HW_PRIV(res_mgt), tcam_item.tcam_index,
++				 tcam_item.kt_item.kt_data.hash_key, tcam_item.tcam_action,
++				 tcam_item.key_mode, NBL_PT_PP0);
++}
++
++static void nbl_flow_del_tcam(struct nbl_resource_mgt *res_mgt, struct nbl_tcam_item tcam_item)
++{
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++
++	hw_ops->del_tcam(NBL_RES_MGT_TO_HW_PRIV(res_mgt), tcam_item.tcam_index,
++			  tcam_item.key_mode, NBL_PT_PP0);
++}
++
++static int nbl_flow_add_flow(struct nbl_resource_mgt *res_mgt, struct nbl_flow_param param,
++			     s32 type, struct nbl_flow_fem_entry *flow)
++{
++	struct nbl_flow_mgt *flow_mgt;
++	struct nbl_hw_ops *hw_ops;
++	struct nbl_common_info *common;
++	struct nbl_mt_input mt_input;
++	struct nbl_ht_item ht_item;
++	struct nbl_kt_item kt_item;
++	struct nbl_tcam_item *tcam_item = NULL;
++	struct nbl_flow_ht_mng *pp_ht_mng = NULL;
++	u32 action0, action1;
++	int ht_table;
++	int ret = 0;
++
++	memset(&mt_input, 0, sizeof(mt_input));
++	memset(&ht_item, 0, sizeof(ht_item));
++	memset(&kt_item, 0, sizeof(kt_item));
++
++	tcam_item = kzalloc(sizeof(*tcam_item), GFP_ATOMIC);
++	if (!tcam_item)
++		return -ENOMEM;
++
++	flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	common = NBL_RES_MGT_TO_COMMON(res_mgt);
++	hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++
++	flow->flow_type = param.type;
++	flow->type = type;
++	flow->flow_id = 0xFFFF;
++
++	ret = nbl_flow_alloc_flow_id(flow_mgt, flow);
++	if (ret)
++		goto free_mem;
++
++	ret = cfg_ops[type].cfg_action(param, &action0, &action1);
++	if (ret)
++		goto free_mem;
++
++	ret = cfg_ops[type].cfg_key(&kt_item.kt_data, param, NBL_COMMON_TO_ETH_MODE(common));
++	if (ret)
++		goto free_mem;
++
++	nbl_flow_set_mt_input(&mt_input, &kt_item.kt_data, param.type, flow->flow_id);
++	nbl_flow_key_hash(flow, &mt_input);
++
++	if (nbl_flow_check_ht_conflict(&flow_mgt->pp0_ht0_mng, &flow_mgt->pp0_ht1_mng,
++				       flow->ht0_hash, flow->ht1_hash, common))
++		flow->tcam_flag = true;
++
++	ht_table = nbl_flow_find_ht_avail_table(&flow_mgt->pp0_ht0_mng,
++						&flow_mgt->pp0_ht1_mng,
++						flow->ht0_hash, flow->ht1_hash);
++	if (ht_table < 0)
++		flow->tcam_flag = true;
++
++	if (!flow->tcam_flag) {
++		pp_ht_mng = ht_table == NBL_HT0 ? &flow_mgt->pp0_ht0_mng : &flow_mgt->pp0_ht1_mng;
++		nbl_flow_add_ht(&ht_item, flow, mt_input.tbl_id, pp_ht_mng, ht_table);
++
++		cfg_ops[type].cfg_kt_action(&kt_item.kt_data, action0, action1);
++		ret = nbl_flow_send_2hw(res_mgt, ht_item, kt_item, param.type);
++	} else {
++		ret = nbl_flow_alloc_tcam_id(flow_mgt, tcam_item);
++		if (ret)
++			goto out;
++
++		nbl_flow_cfg_tcam(tcam_item, &ht_item, &kt_item, action0, action1);
++		flow->tcam_index = tcam_item->tcam_index;
++
++		ret = nbl_flow_add_tcam(res_mgt, *tcam_item);
++	}
++
++out:
++	if (ret) {
++		if (flow->tcam_flag)
++			nbl_flow_free_tcam_id(flow_mgt, tcam_item);
++		else
++			nbl_flow_del_ht(&ht_item, flow, pp_ht_mng);
++
++		nbl_flow_free_flow_id(flow_mgt, flow);
++	}
++
++free_mem:
++	kfree(tcam_item);
++
++	return ret;
++}
++
++static void nbl_flow_del_flow(struct nbl_resource_mgt *res_mgt, struct nbl_flow_fem_entry *flow)
++{
++	struct nbl_flow_mgt *flow_mgt;
++	struct nbl_hw_ops *hw_ops;
++	struct nbl_ht_item ht_item;
++	struct nbl_kt_item kt_item;
++	struct nbl_tcam_item tcam_item;
++	struct nbl_flow_ht_mng *pp_ht_mng = NULL;
++
++	if (flow->flow_id == 0xFFFF)
++		return;
++
++	memset(&ht_item, 0, sizeof(ht_item));
++	memset(&kt_item, 0, sizeof(kt_item));
++	memset(&tcam_item, 0, sizeof(tcam_item));
++
++	flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++
++	if (!flow->tcam_flag) {
++		ht_item.ht_table = flow->hash_table;
++		ht_item.ht0_hash = flow->ht0_hash;
++		ht_item.ht1_hash = flow->ht1_hash;
++		ht_item.hash_bucket = flow->hash_bucket;
++
++		pp_ht_mng = flow->hash_table == NBL_HT0 ? &flow_mgt->pp0_ht0_mng
++							: &flow_mgt->pp0_ht1_mng;
++
++		nbl_flow_del_ht(&ht_item, flow, pp_ht_mng);
++		nbl_flow_del_2hw(res_mgt, ht_item, kt_item, flow->flow_type);
++	} else {
++		tcam_item.tcam_index = flow->tcam_index;
++		nbl_flow_del_tcam(res_mgt, tcam_item);
++		nbl_flow_free_tcam_id(flow_mgt, &tcam_item);
++	}
++
++	nbl_flow_free_flow_id(flow_mgt, flow);
++}
++
++static struct nbl_flow_mcc_node *nbl_flow_alloc_mcc_node(struct nbl_flow_mgt *flow_mgt,
++							 u8 type, u16 data, u16 head)
++{
++	struct nbl_flow_mcc_node *node;
++	int mcc_id;
++	u16 mcc_action;
++
++	node = kzalloc(sizeof(*node), GFP_KERNEL);
++	if (!node)
++		return NULL;
++
++	mcc_id = nbl_flow_alloc_mcc_id(flow_mgt);
++	if (mcc_id < 0) {
++		kfree(node);
++		return NULL;
++	}
++
++	switch (type) {
++	case NBL_MCC_INDEX_ETH:
++		mcc_action = nbl_flow_cfg_action_set_dport_mcc_eth((u8)data);
++		break;
++	case NBL_MCC_INDEX_VSI:
++		mcc_action = nbl_flow_cfg_action_set_dport_mcc_vsi(data);
++		break;
++	case NBL_MCC_INDEX_BMC:
++		mcc_action = nbl_flow_cfg_action_set_dport_mcc_bmc();
++		break;
++	default:
++		nbl_flow_free_mcc_id(flow_mgt, mcc_id);
++		kfree(node);
++		return NULL;
++	}
++
++	INIT_LIST_HEAD(&node->node);
++	node->mcc_id = mcc_id;
++	node->mcc_head = head;
++	node->type = type;
++	node->data = data;
++	node->mcc_action = mcc_action;
++
++	return node;
++}
++
++static void nbl_flow_free_mcc_node(struct nbl_flow_mgt *flow_mgt, struct nbl_flow_mcc_node *node)
++{
++	nbl_flow_free_mcc_id(flow_mgt, node->mcc_id);
++	kfree(node);
++}
++
++/* not consider multicast node first change, need modify all macvlan mcc */
++static int nbl_flow_add_mcc_node(struct nbl_resource_mgt *res_mgt,
++				 struct nbl_flow_mcc_node *mcc_node,
++				 struct list_head *head,
++				 struct list_head *list,
++				 struct list_head *suffix)
++{
++	struct nbl_flow_mcc_node *mcc_head = NULL;
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	u16 prev_mcc_id, next_mcc_id = NBL_MCC_ID_INVALID;
++	int ret = 0;
++
++	/* mcc_head must init before mcc_list */
++	if (mcc_node->mcc_head) {
++		list_add_tail(&mcc_node->node, head);
++		prev_mcc_id = NBL_MCC_ID_INVALID;
++
++		WARN_ON(!list_empty(list));
++		ret = hw_ops->add_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt), mcc_node->mcc_id,
++				       prev_mcc_id, NBL_MCC_ID_INVALID, mcc_node->mcc_action);
++		goto check_ret;
++	}
++
++	list_add_tail(&mcc_node->node, list);
++
++	if (list_is_first(&mcc_node->node, list))
++		prev_mcc_id = NBL_MCC_ID_INVALID;
++	else
++		prev_mcc_id = list_prev_entry(mcc_node, node)->mcc_id;
++
++	/* not head, next mcc may point suffix */
++	if (suffix && !list_empty(suffix))
++		next_mcc_id = list_first_entry(suffix, struct nbl_flow_mcc_node, node)->mcc_id;
++	else
++		next_mcc_id = NBL_MCC_ID_INVALID;
++
++	/* first add mcc_list */
++	if (prev_mcc_id == NBL_MCC_ID_INVALID && !list_empty(head)) {
++		list_for_each_entry(mcc_head, head, node) {
++			prev_mcc_id = mcc_head->mcc_id;
++			ret |= hw_ops->add_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt), mcc_node->mcc_id,
++						prev_mcc_id, next_mcc_id,
++						mcc_node->mcc_action);
++		}
++		goto check_ret;
++	}
++
++	ret = hw_ops->add_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt),
++			       mcc_node->mcc_id, prev_mcc_id, next_mcc_id, mcc_node->mcc_action);
++check_ret:
++	if (ret) {
++		list_del(&mcc_node->node);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++/* not consider multicast node first change, need modify all macvlan mcc */
++static void nbl_flow_del_mcc_node(struct nbl_resource_mgt *res_mgt,
++				  struct nbl_flow_mcc_node *mcc_node,
++				  struct list_head *head,
++				  struct list_head *list,
++				  struct list_head *suffix)
++{
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	struct nbl_flow_mcc_node *mcc_head = NULL;
++	u16 prev_mcc_id, next_mcc_id;
++
++	if (list_entry_is_head(mcc_node, head, node) ||
++	    list_entry_is_head(mcc_node, list, node))
++		return;
++
++	if (mcc_node->mcc_head) {
++		WARN_ON(!list_empty(list));
++		prev_mcc_id = NBL_MCC_ID_INVALID;
++		next_mcc_id = NBL_MCC_ID_INVALID;
++		hw_ops->del_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt), mcc_node->mcc_id,
++				prev_mcc_id, next_mcc_id);
++		goto free_node;
++	}
++
++	if (list_is_first(&mcc_node->node, list))
++		prev_mcc_id = NBL_MCC_ID_INVALID;
++	else
++		prev_mcc_id = list_prev_entry(mcc_node, node)->mcc_id;
++
++	if (list_is_last(&mcc_node->node, list))
++		next_mcc_id = NBL_MCC_ID_INVALID;
++	else
++		next_mcc_id = list_next_entry(mcc_node, node)->mcc_id;
++
++	/* not head, next mcc may point suffix */
++	if (next_mcc_id == NBL_MCC_ID_INVALID && suffix && !list_empty(suffix))
++		next_mcc_id = list_first_entry(suffix, struct nbl_flow_mcc_node, node)->mcc_id;
++
++	if (prev_mcc_id == NBL_MCC_ID_INVALID && !list_empty(head)) {
++		list_for_each_entry(mcc_head, head, node) {
++			prev_mcc_id = mcc_head->mcc_id;
++			hw_ops->del_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt),
++					 mcc_node->mcc_id, prev_mcc_id, next_mcc_id);
++		}
++		goto free_node;
++	}
++
++	hw_ops->del_mcc(NBL_RES_MGT_TO_HW_PRIV(res_mgt), mcc_node->mcc_id,
++			 prev_mcc_id, next_mcc_id);
++free_node:
++	list_del(&mcc_node->node);
++}
++
++static struct nbl_flow_mcc_group *nbl_flow_alloc_mcc_group(struct nbl_resource_mgt *res_mgt,
++							   unsigned long *vsi_bitmap,
++							   u16 eth_id, bool multi, u16 vsi_num)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *res = &flow_mgt->switch_res[eth_id];
++	struct nbl_flow_mcc_group *group;
++	struct nbl_flow_mcc_node *mcc_node, *mcc_node_safe;
++	int ret;
++	int bit;
++
++	/* The structure for mc macvlan list is:
++	 *
++	 *    macvlan up
++	 *         |
++	 *         |
++	 *        BMC       ->       |
++	 *                           VSI 0  ->  VSI 1  ->     -> allmulti list
++	 *        ETH       ->       |
++	 *         |
++	 *         |
++	 *    macvlan down
++	 *
++	 * So that the up mc pkts will be send to BMC, not need broadcast to eth,
++	 * but the down mc pkts will send to eth, not send to BMC.
++	 *
++	 * Per mac flow entry has independent bmc/eth mcc nodes.
++	 * All mac flow entry share all allmuti vsi nodes.
++	 */
++	group = kzalloc(sizeof(*group), GFP_KERNEL);
++	if (!group)
++		return NULL;
++
++	group->vsi_base = eth_id * NBL_FLOW_LEONIS_VSI_NUM_PER_ETH;
++	group->multi = multi;
++	group->nbits = flow_mgt->vsi_max_per_switch;
++	group->ref_cnt = 1;
++	group->vsi_num = vsi_num;
++
++	INIT_LIST_HEAD(&group->group_node);
++	INIT_LIST_HEAD(&group->mcc_node);
++	INIT_LIST_HEAD(&group->mcc_head);
++
++	group->vsi_bitmap = kcalloc(BITS_TO_LONGS(flow_mgt->vsi_max_per_switch), sizeof(long),
++				    GFP_KERNEL);
++	if (!group->vsi_bitmap)
++		goto alloc_vsi_bitmap_failed;
++
++	bitmap_copy(group->vsi_bitmap, vsi_bitmap, flow_mgt->vsi_max_per_switch);
++	if (!multi)
++		goto add_mcc_node;
++
++	mcc_node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_ETH, eth_id, 1);
++	if (!mcc_node)
++		goto free_nodes;
++
++	ret = nbl_flow_add_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				    &group->mcc_node, NULL);
++	if (ret) {
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++		goto free_nodes;
++	}
++
++	group->down_mcc_id = mcc_node->mcc_id;
++	mcc_node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_BMC, NBL_FLOW_MCC_BMC_DPORT, 1);
++	if (!mcc_node)
++		goto free_nodes;
++
++	ret = nbl_flow_add_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				    &group->mcc_node, NULL);
++	if (ret) {
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++		goto free_nodes;
++	}
++	group->up_mcc_id = mcc_node->mcc_id;
++
++add_mcc_node:
++	for_each_set_bit(bit, vsi_bitmap, flow_mgt->vsi_max_per_switch) {
++		mcc_node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_VSI,
++						   bit + group->vsi_base, 0);
++		if (!mcc_node)
++			goto free_nodes;
++
++		if (multi)
++			ret = nbl_flow_add_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++						    &group->mcc_node, &res->allmulti_list);
++		else
++			ret = nbl_flow_add_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++						    &group->mcc_node, NULL);
++
++		if (ret) {
++			nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++			goto free_nodes;
++		}
++	}
++
++	if (list_empty(&group->mcc_head)) {
++		group->down_mcc_id = list_first_entry(&group->mcc_node,
++						      struct nbl_flow_mcc_node, node)->mcc_id;
++		group->up_mcc_id = list_first_entry(&group->mcc_node,
++						    struct nbl_flow_mcc_node, node)->mcc_id;
++	}
++	list_add_tail(&group->group_node, &res->mcc_group_head);
++
++	return group;
++
++free_nodes:
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &group->mcc_node, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				      &group->mcc_node, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &group->mcc_head, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				      &group->mcc_node, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++	kfree(group->vsi_bitmap);
++alloc_vsi_bitmap_failed:
++	kfree(group);
++
++	return NULL;
++}
++
++static void nbl_flow_free_mcc_group(struct nbl_resource_mgt *res_mgt,
++				    struct nbl_flow_mcc_group *group)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_mcc_node *mcc_node, *mcc_node_safe;
++
++	group->ref_cnt--;
++	if (group->ref_cnt)
++		return;
++
++	list_del(&group->group_node);
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &group->mcc_node, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				      &group->mcc_node, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &group->mcc_head, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &group->mcc_head,
++				      &group->mcc_node, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++
++	kfree(group->vsi_bitmap);
++	kfree(group);
++}
++
++static struct nbl_flow_mcc_group *nbl_find_same_mcc_group(struct nbl_flow_switch_res *res,
++							  unsigned long *vsi_bitmap,
++							  bool multi)
++{
++	struct nbl_flow_mcc_group *group = NULL;
++
++	list_for_each_entry(group, &res->mcc_group_head, group_node)
++		if (group->multi == multi &&
++		    __bitmap_equal(group->vsi_bitmap, vsi_bitmap, group->nbits)) {
++			group->ref_cnt++;
++			return group;
++		}
++
++	return NULL;
++}
++
++static void nbl_flow_macvlan_node_del_action_func(void *priv, void *x_key, void *y_key,
++						  void *data)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_l2_data *rule_data = (struct nbl_flow_l2_data *)data;
++	int i;
++
++	for (i = 0; i < NBL_FLOW_MACVLAN_MAX; i++) {
++		if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++			continue;
++		nbl_flow_del_flow(res_mgt, &rule_data->entry[i]);
++	}
++
++	/* delete mcc */
++	if (rule_data->mcast_flow)
++		nbl_flow_free_mcc_group(res_mgt, rule_data->mcc_group);
++}
++
++static u32 nbl_flow_get_reserve_macvlan_cnt(struct nbl_resource_mgt *res_mgt)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_eth_info *eth_info = NBL_RES_MGT_TO_ETH_INFO(res_mgt);
++	struct nbl_flow_switch_res *res;
++	int i;
++	u32 reserve_cnt = 0;
++
++	for_each_set_bit(i, eth_info->eth_bitmap, NBL_MAX_ETHERNET) {
++		res = &flow_mgt->switch_res[i];
++		if (res->num_vfs)
++			reserve_cnt += (res->num_vfs - res->active_vfs) * 3;
++	}
++
++	return reserve_cnt;
++}
++
++static int nbl_flow_macvlan_node_vsi_match_func(void *condition, void *x_key, void *y_key,
++						void *data)
++{
++	u16 vsi = *(u16 *)condition;
++	struct nbl_flow_l2_data *rule_data = (struct nbl_flow_l2_data *)data;
++
++	if (!rule_data->mcast_flow)
++		return rule_data->vsi == vsi ? 0 : -1;
++	else
++		return !test_bit(vsi - rule_data->mcc_group->vsi_base,
++				 rule_data->mcc_group->vsi_bitmap);
++}
++
++static void nbl_flow_macvlan_node_found_vsi_action(void *priv, void *x_key, void *y_key,
++						   void *data)
++{
++	bool *match = (bool *)(priv);
++
++	*match = 1;
++}
++
++static int nbl_flow_add_macvlan(void *priv, u8 *mac, u16 vlan, u16 vsi)
++{
++	struct nbl_hash_xy_tbl_scan_key scan_key;
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *res;
++	struct nbl_flow_l2_data *rule_data;
++	struct nbl_flow_mcc_group *mcc_group = NULL, *pend_group = NULL;
++	unsigned long *vsi_bitmap;
++	struct nbl_flow_param param = {0};
++	int i;
++	int ret = 0;
++	int pf_id, vf_id;
++	u32 reserve_cnt;
++	u16 eth_id;
++	u16 vsi_base;
++	u16 vsi_num = 0;
++	u16 func_id;
++	bool alloc_rule = 0;
++	bool need_mcast = 0;
++	bool vsi_match = 0;
++
++	eth_id = nbl_res_vsi_id_to_eth_id(res_mgt, vsi);
++	res = &flow_mgt->switch_res[eth_id];
++
++	func_id = nbl_res_vsi_id_to_func_id(res_mgt, vsi);
++	nbl_res_func_id_to_pfvfid(res_mgt, func_id, &pf_id, &vf_id);
++	reserve_cnt = nbl_flow_get_reserve_macvlan_cnt(res_mgt);
++
++	if (flow_mgt->flow_id_cnt <= reserve_cnt &&
++	    (vf_id == U32_MAX || test_bit(vf_id, res->vf_bitmap)))
++		return -ENOSPC;
++
++	vsi_bitmap = kcalloc(BITS_TO_LONGS(flow_mgt->vsi_max_per_switch), sizeof(long), GFP_KERNEL);
++	if (!vsi_bitmap)
++		return -ENOMEM;
++
++	NBL_HASH_XY_TBL_SCAN_KEY_INIT(&scan_key, NBL_HASH_TBL_OP_SHOW, NBL_HASH_TBL_ALL_SCAN,
++				      false, NULL, NULL, &vsi,
++				      &nbl_flow_macvlan_node_vsi_match_func, &vsi_match,
++				      &nbl_flow_macvlan_node_found_vsi_action);
++
++	param.mac = mac;
++	param.vid = vlan;
++	param.eth = eth_id;
++	param.vsi = vsi;
++	param.mcc_id = NBL_MCC_ID_INVALID;
++
++	vsi_base = eth_id * NBL_FLOW_LEONIS_VSI_NUM_PER_ETH;
++	rule_data = (struct nbl_flow_l2_data *)nbl_common_get_hash_xy_node(res->mac_hash_tbl,
++									   mac, &vlan);
++	if (rule_data) {
++		if (rule_data->mcast_flow &&
++		    test_bit(vsi - rule_data->mcc_group->vsi_base,
++			     rule_data->mcc_group->vsi_bitmap))
++			goto success;
++		else if (!rule_data->mcast_flow && rule_data->vsi == vsi)
++			goto success;
++
++		if (!rule_data->mcast_flow) {
++			vsi_num = 1;
++			set_bit(rule_data->vsi - vsi_base, vsi_bitmap);
++		} else {
++			vsi_num = rule_data->mcc_group->vsi_num;
++			bitmap_copy(vsi_bitmap, rule_data->mcc_group->vsi_bitmap,
++				    flow_mgt->vsi_max_per_switch);
++		}
++		need_mcast = 1;
++
++	} else {
++		rule_data = kzalloc(sizeof(*rule_data), GFP_KERNEL);
++		if (!rule_data) {
++			ret = -ENOMEM;
++			goto alloc_rule_failed;
++		}
++		alloc_rule = 1;
++		rule_data->multi = is_multicast_ether_addr(mac);
++		rule_data->mcast_flow = 0;
++	}
++
++	if (rule_data->multi)
++		need_mcast = 1;
++
++	if (need_mcast) {
++		set_bit(vsi - vsi_base, vsi_bitmap);
++		vsi_num++;
++		mcc_group = nbl_find_same_mcc_group(res, vsi_bitmap, rule_data->multi);
++		if (!mcc_group) {
++			mcc_group = nbl_flow_alloc_mcc_group(res_mgt, vsi_bitmap, eth_id,
++							     rule_data->multi, vsi_num);
++			if (!mcc_group) {
++				ret = -ENOMEM;
++				goto alloc_mcc_group_failed;
++			}
++		}
++		if (rule_data->mcast_flow)
++			pend_group = rule_data->mcc_group;
++	} else {
++		rule_data->vsi = vsi;
++	}
++
++	if (!alloc_rule) {
++		for (i = 0; i < NBL_FLOW_MACVLAN_MAX; i++) {
++			if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++				continue;
++
++			nbl_flow_del_flow(res_mgt, &rule_data->entry[i]);
++		}
++
++		if (pend_group)
++			nbl_flow_free_mcc_group(res_mgt, pend_group);
++	}
++
++	for (i = 0; i < NBL_FLOW_MACVLAN_MAX; i++) {
++		if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++			continue;
++		if (mcc_group) {
++			if (i <= NBL_FLOW_UP)
++				param.mcc_id = mcc_group->up_mcc_id;
++			else
++				param.mcc_id = mcc_group->down_mcc_id;
++		}
++		ret = nbl_flow_add_flow(res_mgt, param, i, &rule_data->entry[i]);
++		if (ret)
++			goto add_flow_failed;
++	}
++
++	if (mcc_group) {
++		rule_data->mcast_flow = 1;
++		rule_data->mcc_group = mcc_group;
++	} else {
++		rule_data->mcast_flow = 0;
++		rule_data->vsi = vsi;
++	}
++
++	if (alloc_rule) {
++		ret = nbl_common_alloc_hash_xy_node(res->mac_hash_tbl, mac, &vlan, rule_data);
++		if (ret)
++			goto add_flow_failed;
++	}
++
++	if (alloc_rule)
++		kfree(rule_data);
++success:
++	kfree(vsi_bitmap);
++
++	if (vf_id != U32_MAX && !test_bit(vf_id, res->vf_bitmap)) {
++		set_bit(vf_id, res->vf_bitmap);
++		res->active_vfs++;
++	}
++
++	return 0;
++
++add_flow_failed:
++	while (--i + 1) {
++		if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++			continue;
++		nbl_flow_del_flow(res_mgt, &rule_data->entry[i]);
++	}
++	if (!alloc_rule)
++		nbl_common_free_hash_xy_node(res->mac_hash_tbl, mac, &vlan);
++	if (mcc_group)
++		nbl_flow_free_mcc_group(res_mgt, mcc_group);
++alloc_mcc_group_failed:
++	if (alloc_rule)
++		kfree(rule_data);
++alloc_rule_failed:
++	kfree(vsi_bitmap);
++
++	nbl_common_scan_hash_xy_node(res->mac_hash_tbl, &scan_key);
++	if (vf_id != U32_MAX && test_bit(vf_id, res->vf_bitmap) && !vsi_match) {
++		clear_bit(vf_id, res->vf_bitmap);
++		res->active_vfs--;
++	}
++
++	return ret;
++}
++
++static void nbl_flow_del_macvlan(void *priv, u8 *mac, u16 vlan, u16 vsi)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_mcc_group *mcc_group = NULL, *pend_group = NULL;
++	unsigned long *vsi_bitmap;
++	struct nbl_flow_switch_res *res;
++	struct nbl_flow_l2_data *rule_data;
++	struct nbl_flow_param param = {0};
++	struct nbl_hash_xy_tbl_scan_key scan_key;
++	int i;
++	int ret;
++	int pf_id, vf_id;
++	u32 vsi_num;
++	u16 vsi_base = 0;
++	u16 eth_id;
++	u16 func_id;
++	bool need_mcast = false;
++	bool add_flow = false;
++	bool vsi_match = 0;
++
++	eth_id = nbl_res_vsi_id_to_eth_id(res_mgt, vsi);
++	res = &flow_mgt->switch_res[eth_id];
++
++	rule_data = nbl_common_get_hash_xy_node(res->mac_hash_tbl, mac, &vlan);
++	if (!rule_data)
++		return;
++	if (!rule_data->mcast_flow && rule_data->vsi != vsi)
++		return;
++	else if (rule_data->mcast_flow &&
++		 !test_bit(vsi - rule_data->mcc_group->vsi_base, rule_data->mcc_group->vsi_bitmap))
++		return;
++
++	vsi_bitmap = kcalloc(BITS_TO_LONGS(flow_mgt->vsi_max_per_switch), sizeof(long), GFP_KERNEL);
++	if (!vsi_bitmap)
++		return;
++
++	func_id = nbl_res_vsi_id_to_func_id(res_mgt, vsi);
++	nbl_res_func_id_to_pfvfid(res_mgt, func_id, &pf_id, &vf_id);
++	NBL_HASH_XY_TBL_SCAN_KEY_INIT(&scan_key, NBL_HASH_TBL_OP_SHOW, NBL_HASH_TBL_ALL_SCAN,
++				      false, NULL, NULL, &vsi,
++				      &nbl_flow_macvlan_node_vsi_match_func, &vsi_match,
++				      &nbl_flow_macvlan_node_found_vsi_action);
++
++	if (rule_data->mcast_flow) {
++		bitmap_copy(vsi_bitmap, rule_data->mcc_group->vsi_bitmap,
++			    flow_mgt->vsi_max_per_switch);
++		vsi_num = rule_data->mcc_group->vsi_num;
++		clear_bit(vsi - rule_data->mcc_group->vsi_base, vsi_bitmap);
++		vsi_num--;
++		vsi_base = (u16)rule_data->mcc_group->vsi_base;
++
++		if (rule_data->mcc_group->vsi_num > 1)
++			add_flow = true;
++
++		if ((rule_data->multi && rule_data->mcc_group->vsi_num > 1) ||
++		    (!rule_data->multi && rule_data->mcc_group->vsi_num > 2))
++			need_mcast = 1;
++		pend_group = rule_data->mcc_group;
++	}
++
++	if (need_mcast) {
++		mcc_group = nbl_find_same_mcc_group(res, vsi_bitmap, rule_data->multi);
++		if (!mcc_group) {
++			mcc_group = nbl_flow_alloc_mcc_group(res_mgt, vsi_bitmap, eth_id,
++							     rule_data->multi, vsi_num);
++			if (!mcc_group)
++				goto alloc_mcc_group_failed;
++		}
++	}
++
++	for (i = 0; i < NBL_FLOW_MACVLAN_MAX; i++) {
++		if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++			continue;
++
++		nbl_flow_del_flow(res_mgt, &rule_data->entry[i]);
++	}
++
++	if (pend_group)
++		nbl_flow_free_mcc_group(res_mgt, pend_group);
++
++	if (add_flow) {
++		param.mac = mac;
++		param.vid = vlan;
++		param.eth = eth_id;
++		param.mcc_id = NBL_MCC_ID_INVALID;
++		param.vsi = (u16)find_first_bit(vsi_bitmap,
++						flow_mgt->vsi_max_per_switch) + vsi_base;
++
++		for (i = 0; i < NBL_FLOW_MACVLAN_MAX; i++) {
++			if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++				continue;
++			if (mcc_group) {
++				if (i <= NBL_FLOW_UP)
++					param.mcc_id = mcc_group->up_mcc_id;
++				else
++					param.mcc_id = mcc_group->down_mcc_id;
++			}
++			ret = nbl_flow_add_flow(res_mgt, param, i, &rule_data->entry[i]);
++			if (ret)
++				goto add_flow_failed;
++		}
++
++		if (mcc_group) {
++			rule_data->mcast_flow = 1;
++			rule_data->mcc_group = mcc_group;
++		} else {
++			rule_data->mcast_flow = 0;
++			rule_data->vsi = param.vsi;
++		}
++	}
++
++	if (!add_flow)
++		nbl_common_free_hash_xy_node(res->mac_hash_tbl, mac, &vlan);
++
++alloc_mcc_group_failed:
++	kfree(vsi_bitmap);
++
++	nbl_common_scan_hash_xy_node(res->mac_hash_tbl, &scan_key);
++	if (vf_id != U32_MAX && test_bit(vf_id, res->vf_bitmap) && !vsi_match) {
++		clear_bit(vf_id, res->vf_bitmap);
++		res->active_vfs--;
++	}
++
++	return;
++
++add_flow_failed:
++	while (--i + 1) {
++		if (i == NBL_FLOW_UP_TNL && rule_data->multi)
++			continue;
++		nbl_flow_del_flow(res_mgt, &rule_data->entry[i]);
++	}
++	if (mcc_group)
++		nbl_flow_free_mcc_group(res_mgt, pend_group);
++	nbl_common_free_hash_xy_node(res->mac_hash_tbl, mac, &vlan);
++	kfree(vsi_bitmap);
++	nbl_common_scan_hash_xy_node(res->mac_hash_tbl, &scan_key);
++	if (vf_id != U32_MAX && test_bit(vf_id, res->vf_bitmap) && !vsi_match) {
++		clear_bit(vf_id, res->vf_bitmap);
++		res->active_vfs--;
++	}
++}
++
++static int nbl_flow_add_lldp(void *priv, u16 vsi)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
++	struct nbl_flow_lldp_rule *rule;
++	struct nbl_flow_param param = {0};
++
++	list_for_each_entry(rule, &flow_mgt->lldp_list, node)
++		if (rule->vsi == vsi)
++			return 0;
++
++	rule = kzalloc(sizeof(*rule), GFP_KERNEL);
++	if (!rule)
++		return -ENOMEM;
++
++	param.eth = nbl_res_vsi_id_to_eth_id(res_mgt, vsi);
++	param.vsi = vsi;
++	param.ether_type = ETH_P_LLDP;
++
++	if (nbl_flow_add_flow(res_mgt, param, NBL_FLOW_LLDP_LACP_UP, &rule->entry)) {
++		nbl_err(common, NBL_DEBUG_FLOW, "Fail to add lldp flow for vsi %d", vsi);
++		kfree(rule);
++		return -EFAULT;
++	}
++
++	rule->vsi = vsi;
++	list_add_tail(&rule->node, &flow_mgt->lldp_list);
++
++	return 0;
++}
++
++static void nbl_flow_del_lldp(void *priv, u16 vsi)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt;
++	struct nbl_flow_lldp_rule *rule;
++
++	flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++
++	list_for_each_entry(rule, &flow_mgt->lldp_list, node)
++		if (rule->vsi == vsi)
++			break;
++
++	if (list_entry_is_head(rule, &flow_mgt->lldp_list, node))
++		return;
++
++	nbl_flow_del_flow(res_mgt, &rule->entry);
++
++	list_del(&rule->node);
++	kfree(rule);
++}
++
++static int nbl_flow_change_mcc_group_chain(struct nbl_resource_mgt *res_mgt, u8 eth,
++					   u16 current_mcc_id)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *switch_res = &flow_mgt->switch_res[eth];
++	struct nbl_flow_mcc_group *group;
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	u16 node_mcc;
++
++	list_for_each_entry(group, &switch_res->mcc_group_head, group_node)
++		if (group->multi && !list_empty(&group->mcc_node)) {
++			node_mcc = list_last_entry(&group->mcc_node,
++						   struct nbl_flow_mcc_node, node)->mcc_id;
++			hw_ops->update_mcc_next_node(NBL_RES_MGT_TO_HW_PRIV(res_mgt),
++						      node_mcc, current_mcc_id);
++		}
++	switch_res->allmulti_first_mcc = current_mcc_id;
++	return 0;
++}
++
++static int nbl_flow_add_multi_mcast(void *priv, u16 vsi)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *switch_res;
++	struct nbl_flow_mcc_node *node;
++	int ret;
++	u16 current_mcc_id;
++	u8 eth = nbl_res_vsi_id_to_eth_id(res_mgt, vsi);
++
++	switch_res = &flow_mgt->switch_res[eth];
++	list_for_each_entry(node, &switch_res->allmulti_list, node)
++		if (node->data == vsi && node->type == NBL_MCC_INDEX_VSI)
++			return 0;
++
++	node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_VSI, vsi, 0);
++	if (!node)
++		return -ENOSPC;
++
++	switch_res = &flow_mgt->switch_res[eth];
++	ret = nbl_flow_add_mcc_node(res_mgt, node, &switch_res->allmulti_head,
++				    &switch_res->allmulti_list, NULL);
++	if (ret) {
++		nbl_flow_free_mcc_node(flow_mgt, node);
++		return ret;
++	}
++
++	if (list_empty(&switch_res->allmulti_list))
++		current_mcc_id = NBL_MCC_ID_INVALID;
++	else
++		current_mcc_id = list_first_entry(&switch_res->allmulti_list,
++						  struct nbl_flow_mcc_node, node)->mcc_id;
++
++	if (current_mcc_id != switch_res->allmulti_first_mcc)
++		nbl_flow_change_mcc_group_chain(res_mgt, eth, current_mcc_id);
++
++	return 0;
++}
++
++static void nbl_flow_del_multi_mcast(void *priv, u16 vsi)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *switch_res;
++	struct nbl_flow_mcc_node *mcc_node;
++	u16 current_mcc_id;
++	u8 eth = nbl_res_vsi_id_to_eth_id(res_mgt, vsi);
++
++	switch_res = &flow_mgt->switch_res[eth];
++	list_for_each_entry(mcc_node, &switch_res->allmulti_list, node)
++		if (mcc_node->data == vsi && mcc_node->type == NBL_MCC_INDEX_VSI) {
++			nbl_flow_del_mcc_node(res_mgt, mcc_node, &switch_res->allmulti_head,
++					      &switch_res->allmulti_list, NULL);
++			nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++			break;
++		}
++
++	if (list_empty(&switch_res->allmulti_list))
++		current_mcc_id = NBL_MCC_ID_INVALID;
++	else
++		current_mcc_id = list_first_entry(&switch_res->allmulti_list,
++						  struct nbl_flow_mcc_node, node)->mcc_id;
++
++	if (current_mcc_id != switch_res->allmulti_first_mcc)
++		nbl_flow_change_mcc_group_chain(res_mgt, eth, current_mcc_id);
++}
++
++static int nbl_flow_add_multi_group(struct nbl_resource_mgt *res_mgt, u8 eth)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *switch_res = &flow_mgt->switch_res[eth];
++	struct nbl_flow_param param_up = {0};
++	struct nbl_flow_mcc_node *up_node;
++	struct nbl_flow_param param_down = {0};
++	struct nbl_flow_mcc_node *down_node;
++	int i, ret;
++
++	down_node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_ETH, eth, 1);
++	if (!down_node)
++		return -ENOSPC;
++
++	ret = nbl_flow_add_mcc_node(res_mgt, down_node, &switch_res->allmulti_head,
++				    &switch_res->allmulti_list, NULL);
++	if (ret)
++		goto add_eth_mcc_node_failed;
++
++	param_down.mcc_id = down_node->mcc_id;
++	param_down.eth = eth;
++	for (i = 0; i < NBL_FLOW_DOWN_MULTI_MCAST_END - NBL_FLOW_L2_DOWN_MULTI_MCAST; i++) {
++		ret = nbl_flow_add_flow(res_mgt, param_down, i + NBL_FLOW_L2_DOWN_MULTI_MCAST,
++					&switch_res->allmulti_down[i]);
++		if (ret)
++			goto add_down_flow_failed;
++	}
++
++	up_node = nbl_flow_alloc_mcc_node(flow_mgt, NBL_MCC_INDEX_BMC, NBL_FLOW_MCC_BMC_DPORT, 1);
++	if (!up_node) {
++		ret = -ENOSPC;
++		goto alloc_bmc_node_failed;
++	}
++
++	ret = nbl_flow_add_mcc_node(res_mgt, up_node, &switch_res->allmulti_head,
++				    &switch_res->allmulti_list, NULL);
++	if (ret)
++		goto add_bmc_mcc_node_failed;
++
++	param_up.mcc_id = up_node->mcc_id;
++	param_up.eth = eth;
++	for (i = 0; i < NBL_FLOW_UP_MULTI_MCAST_END - NBL_FLOW_L2_UP_MULTI_MCAST; i++) {
++		ret = nbl_flow_add_flow(res_mgt, param_up, i + NBL_FLOW_L2_UP_MULTI_MCAST,
++					&switch_res->allmulti_up[i]);
++		if (ret)
++			goto add_up_flow_failed;
++	}
++
++	switch_res->ether_id = eth;
++	switch_res->allmulti_first_mcc = NBL_MCC_ID_INVALID;
++	switch_res->vld = 1;
++
++	return 0;
++
++add_up_flow_failed:
++	while (--i >= 0)
++		nbl_flow_del_flow(res_mgt, &switch_res->allmulti_up[i]);
++	nbl_flow_del_mcc_node(res_mgt, up_node, &switch_res->allmulti_head,
++			      &switch_res->allmulti_list, NULL);
++add_bmc_mcc_node_failed:
++	nbl_flow_free_mcc_node(flow_mgt, up_node);
++alloc_bmc_node_failed:
++add_down_flow_failed:
++	while (--i >= 0)
++		nbl_flow_del_flow(res_mgt, &switch_res->allmulti_down[i]);
++	nbl_flow_del_mcc_node(res_mgt, down_node, &switch_res->allmulti_head,
++			      &switch_res->allmulti_list, NULL);
++add_eth_mcc_node_failed:
++	nbl_flow_free_mcc_node(flow_mgt, down_node);
++	return ret;
++}
++
++static void nbl_flow_del_multi_group(struct nbl_resource_mgt *res_mgt, u8 eth)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	struct nbl_flow_switch_res *switch_res = &flow_mgt->switch_res[eth];
++	struct nbl_flow_mcc_node *mcc_node, *mcc_node_safe;
++
++	if (!switch_res->vld)
++		return;
++
++	nbl_flow_del_flow(res_mgt, &switch_res->allmulti_up[0]);
++	nbl_flow_del_flow(res_mgt, &switch_res->allmulti_up[1]);
++	nbl_flow_del_flow(res_mgt, &switch_res->allmulti_down[0]);
++	nbl_flow_del_flow(res_mgt, &switch_res->allmulti_down[1]);
++
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &switch_res->allmulti_list, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &switch_res->allmulti_head,
++				      &switch_res->allmulti_list, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++
++	list_for_each_entry_safe(mcc_node, mcc_node_safe, &switch_res->allmulti_head, node) {
++		nbl_flow_del_mcc_node(res_mgt, mcc_node, &switch_res->allmulti_head,
++				      &switch_res->allmulti_list, NULL);
++		nbl_flow_free_mcc_node(flow_mgt, mcc_node);
++	}
++
++	INIT_LIST_HEAD(&switch_res->allmulti_list);
++	INIT_LIST_HEAD(&switch_res->allmulti_head);
++	switch_res->vld = 0;
++	switch_res->allmulti_first_mcc = NBL_MCC_ID_INVALID;
++}
++
++static void nbl_flow_remove_multi_group(void *priv)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_eth_info *eth_info = NBL_RES_MGT_TO_ETH_INFO(res_mgt);
++	int i;
++
++	for_each_set_bit(i, eth_info->eth_bitmap, NBL_MAX_ETHERNET)
++		nbl_flow_del_multi_group(res_mgt, i);
++}
++
++static int nbl_flow_setup_multi_group(void *priv)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_eth_info *eth_info = NBL_RES_MGT_TO_ETH_INFO(res_mgt);
++	int i, ret = 0;
++
++	for_each_set_bit(i, eth_info->eth_bitmap, NBL_MAX_ETHERNET) {
++		ret = nbl_flow_add_multi_group(res_mgt, i);
++		if (ret)
++			goto fail;
++	}
++
++	return 0;
++
++fail:
++	nbl_flow_remove_multi_group(res_mgt);
++	return ret;
++}
++
++static u16 nbl_vsi_mtu_index(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
++{
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	u16 index;
++
++	index = hw_ops->get_mtu_index(NBL_RES_MGT_TO_HW_PRIV(res_mgt), vsi_id);
++	return index - 1;
++}
++
++static void nbl_clear_mtu_entry(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
++{
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	u16 mtu_index;
++
++	mtu_index = nbl_vsi_mtu_index(res_mgt, vsi_id);
++	if (mtu_index < NBL_MAX_MTU) {
++		res_mgt->resource_info->mtu_list[mtu_index].ref_count--;
++		hw_ops->set_vsi_mtu(NBL_RES_MGT_TO_HW_PRIV(res_mgt), vsi_id, 0);
++		if (res_mgt->resource_info->mtu_list[mtu_index].ref_count == 0) {
++			hw_ops->set_mtu(NBL_RES_MGT_TO_HW_PRIV(res_mgt), mtu_index + 1, 0);
++			res_mgt->resource_info->mtu_list[mtu_index].mtu_value = 0;
++		}
++	}
++}
++
++static void nbl_flow_clear_flow(void *priv, u16 vsi_id)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	void *mac_hash_tbl;
++	struct nbl_hash_xy_tbl_scan_key scan_key;
++	u8 eth_id;
++
++	eth_id = nbl_res_vsi_id_to_eth_id(res_mgt, vsi_id);
++	mac_hash_tbl = flow_mgt->switch_res[eth_id].mac_hash_tbl;
++
++	nbl_clear_mtu_entry(res_mgt, vsi_id);
++	NBL_HASH_XY_TBL_SCAN_KEY_INIT(&scan_key, NBL_HASH_TBL_OP_DELETE, NBL_HASH_TBL_ALL_SCAN,
++				      false, NULL, NULL, &vsi_id,
++				      &nbl_flow_macvlan_node_vsi_match_func, res_mgt,
++				      &nbl_flow_macvlan_node_del_action_func);
++	nbl_common_scan_hash_xy_node(mac_hash_tbl, &scan_key);
++	nbl_flow_del_multi_mcast(res_mgt, vsi_id);
++}
++
++static void nbl_res_flr_clear_flow(void *priv, u16 vf_id)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	u16 func_id = vf_id + NBL_MAX_PF;
++	u16 vsi_id = nbl_res_func_id_to_vsi_id(res_mgt, func_id, NBL_VSI_SERV_VF_DATA_TYPE);
++
++	if (nbl_res_vf_is_active(priv, func_id))
++		nbl_flow_clear_flow(priv, vsi_id);
++}
++
++static int nbl_res_flow_check_flow_table_spec(void *priv, u16 vlan_cnt,
++					      u16 unicast_cnt, u16 multicast_cnt)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	u32 reserve_cnt = nbl_flow_get_reserve_macvlan_cnt(res_mgt);
++	u32 need = vlan_cnt * (3 * unicast_cnt + 2 * multicast_cnt);
++
++	if (reserve_cnt + need > flow_mgt->flow_id_cnt)
++		return -ENOSPC;
++
++	return 0;
++}
++
++static int nbl_res_set_mtu(void *priv, u16 vsi_id, u16 mtu)
++{
++	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
++	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++	struct nbl_mtu_entry *mtu_list = &res_mgt->resource_info->mtu_list[0];
++	int i, found_idx = -1, first_zero_idx = -1;
++	u16 real_mtu = mtu + ETH_HLEN + 2 * VLAN_HLEN;
++
++	nbl_clear_mtu_entry(res_mgt, vsi_id);
++	if (mtu == 0)
++		return 0;
++
++	for (i = 0; i < NBL_MAX_MTU; i++) {
++		if (mtu_list[i].mtu_value == real_mtu) {
++			found_idx = i;
++			break;
++		}
++
++		if (!mtu_list[i].mtu_value)
++			first_zero_idx = i;
++	}
++
++	if (first_zero_idx == -1 && found_idx == -1)
++		return 0;
++
++	if (found_idx != -1) {
++		mtu_list[found_idx].ref_count++;
++		hw_ops->set_vsi_mtu(NBL_RES_MGT_TO_HW_PRIV(res_mgt), vsi_id, found_idx + 1);
++		return 0;
++	}
++
++	if (first_zero_idx != -1) {
++		mtu_list[first_zero_idx].ref_count++;
++		mtu_list[first_zero_idx].mtu_value = real_mtu;
++		hw_ops->set_vsi_mtu(NBL_RES_MGT_TO_HW_PRIV(res_mgt), vsi_id, first_zero_idx + 1);
++		hw_ops->set_mtu(NBL_RES_MGT_TO_HW_PRIV(res_mgt), first_zero_idx + 1, real_mtu);
++	}
++
++	return 0;
++}
++
++/* NBL_FLOW_SET_OPS(ops_name, func)
++ *
++ * Use X Macros to reduce setup and remove codes.
++ */
++#define NBL_FLOW_OPS_TBL								\
++do {											\
++	NBL_FLOW_SET_OPS(add_macvlan, nbl_flow_add_macvlan);				\
++	NBL_FLOW_SET_OPS(del_macvlan, nbl_flow_del_macvlan);				\
++	NBL_FLOW_SET_OPS(add_lldp_flow, nbl_flow_add_lldp);				\
++	NBL_FLOW_SET_OPS(del_lldp_flow, nbl_flow_del_lldp);				\
++	NBL_FLOW_SET_OPS(add_multi_mcast, nbl_flow_add_multi_mcast);			\
++	NBL_FLOW_SET_OPS(del_multi_mcast, nbl_flow_del_multi_mcast);			\
++	NBL_FLOW_SET_OPS(setup_multi_group, nbl_flow_setup_multi_group);		\
++	NBL_FLOW_SET_OPS(remove_multi_group, nbl_flow_remove_multi_group);		\
++	NBL_FLOW_SET_OPS(clear_flow, nbl_flow_clear_flow);				\
++	NBL_FLOW_SET_OPS(flr_clear_flows, nbl_res_flr_clear_flow);			\
++	NBL_FLOW_SET_OPS(set_mtu, nbl_res_set_mtu);					\
++	NBL_FLOW_SET_OPS(check_flow_table_spec, nbl_res_flow_check_flow_table_spec);	\
++} while (0)
++
++static void nbl_flow_remove_mgt(struct device *dev, struct nbl_resource_mgt *res_mgt)
++{
++	struct nbl_flow_mgt *flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	int i;
++	struct nbl_hash_xy_tbl_del_key del_key;
++
++	NBL_HASH_XY_TBL_DEL_KEY_INIT(&del_key, res_mgt, &nbl_flow_macvlan_node_del_action_func);
++	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
++		nbl_common_remove_hash_xy_table(flow_mgt->switch_res[i].mac_hash_tbl, &del_key);
++		if (flow_mgt->switch_res[i].vf_bitmap)
++			devm_kfree(dev, flow_mgt->switch_res[i].vf_bitmap);
++	}
++
++	if (flow_mgt->flow_id_bitmap)
++		devm_kfree(dev, flow_mgt->flow_id_bitmap);
++	if (flow_mgt->mcc_id_bitmap)
++		devm_kfree(dev, flow_mgt->mcc_id_bitmap);
++	flow_mgt->flow_id_cnt = 0;
++	devm_kfree(dev, flow_mgt);
++	NBL_RES_MGT_TO_FLOW_MGT(res_mgt) = NULL;
++}
++
++static int nbl_flow_setup_mgt(struct device *dev, struct nbl_resource_mgt *res_mgt)
++{
++	struct nbl_hash_xy_tbl_key macvlan_tbl_key;
++	struct nbl_flow_mgt *flow_mgt;
++	struct nbl_eth_info *eth_info;
++	int i;
++	int vf_num = -1;
++	u16 pf_id;
++
++	flow_mgt = devm_kzalloc(dev, sizeof(struct nbl_flow_mgt), GFP_KERNEL);
++	if (!flow_mgt)
++		return -ENOMEM;
++
++	NBL_RES_MGT_TO_FLOW_MGT(res_mgt) = flow_mgt;
++	eth_info = NBL_RES_MGT_TO_ETH_INFO(res_mgt);
++
++	flow_mgt->flow_id_bitmap = devm_kcalloc(dev, BITS_TO_LONGS(NBL_MACVLAN_TABLE_LEN),
++						sizeof(long), GFP_KERNEL);
++	if (!flow_mgt->flow_id_bitmap)
++		goto setup_mgt_failed;
++	flow_mgt->flow_id_cnt = NBL_MACVLAN_TABLE_LEN;
++
++	flow_mgt->mcc_id_bitmap = devm_kcalloc(dev, BITS_TO_LONGS(NBL_FLOW_MCC_INDEX_SIZE),
++					       sizeof(long), GFP_KERNEL);
++	if (!flow_mgt->mcc_id_bitmap)
++		goto setup_mgt_failed;
++
++	NBL_HASH_XY_TBL_KEY_INIT(&macvlan_tbl_key, dev, ETH_ALEN, sizeof(u16),
++				 sizeof(struct nbl_flow_l2_data),
++				 NBL_MACVLAN_TBL_BUCKET_SIZE, NBL_MACVLAN_X_AXIS_BUCKET_SIZE,
++				 NBL_MACVLAN_Y_AXIS_BUCKET_SIZE, false);
++	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
++		INIT_LIST_HEAD(&flow_mgt->switch_res[i].allmulti_head);
++		INIT_LIST_HEAD(&flow_mgt->switch_res[i].allmulti_list);
++		INIT_LIST_HEAD(&flow_mgt->switch_res[i].mcc_group_head);
++
++		flow_mgt->switch_res[i].mac_hash_tbl =
++				nbl_common_init_hash_xy_table(&macvlan_tbl_key);
++		if (!flow_mgt->switch_res[i].mac_hash_tbl)
++			goto setup_mgt_failed;
++		pf_id = find_first_bit((unsigned long *)&eth_info->pf_bitmap[i], 8);
++		if (pf_id != 8)
++			vf_num = nbl_res_get_pf_vf_num(res_mgt, pf_id);
++
++		if (vf_num != -1) {
++			flow_mgt->switch_res[i].num_vfs = vf_num;
++			flow_mgt->switch_res[i].vf_bitmap = devm_kcalloc(dev, BITS_TO_LONGS(vf_num),
++									 sizeof(long), GFP_KERNEL);
++			if (!flow_mgt->switch_res[i].vf_bitmap)
++				goto setup_mgt_failed;
++		} else {
++			flow_mgt->switch_res[i].num_vfs = 0;
++			flow_mgt->switch_res[i].vf_bitmap = NULL;
++		}
++		flow_mgt->switch_res[i].active_vfs = 0;
++	}
++
++	INIT_LIST_HEAD(&flow_mgt->lldp_list);
++	INIT_LIST_HEAD(&flow_mgt->lacp_list);
++	INIT_LIST_HEAD(&flow_mgt->ul4s_head);
++	INIT_LIST_HEAD(&flow_mgt->dprbac_head);
++
++	flow_mgt->vsi_max_per_switch = NBL_VSI_MAX_ID / eth_info->eth_num;
++
++	return 0;
++
++setup_mgt_failed:
++	nbl_flow_remove_mgt(dev, res_mgt);
++	return -1;
++}
++
++int nbl_flow_mgt_start_leonis(struct nbl_resource_mgt *res_mgt)
++{
++	struct nbl_hw_ops *hw_ops;
++	struct device *dev;
++	int ret = 0;
++
++	dev = NBL_RES_MGT_TO_DEV(res_mgt);
++	hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
++
++	ret = nbl_flow_setup_mgt(dev, res_mgt);
++	if (ret)
++		goto setup_mgt_fail;
++
++	ret = hw_ops->init_fem(NBL_RES_MGT_TO_HW_PRIV(res_mgt));
++	if (ret)
++		goto init_fem_fail;
++
++	return 0;
++
++init_fem_fail:
++	nbl_flow_remove_mgt(dev, res_mgt);
++setup_mgt_fail:
++	return -1;
++}
++
++void nbl_flow_mgt_stop_leonis(struct nbl_resource_mgt *res_mgt)
++{
++	struct device *dev;
++	struct nbl_flow_mgt *flow_mgt;
++
++	dev = NBL_RES_MGT_TO_DEV(res_mgt);
++	flow_mgt = NBL_RES_MGT_TO_FLOW_MGT(res_mgt);
++	if (!flow_mgt)
++		return;
++
++	nbl_flow_remove_mgt(dev, res_mgt);
++}
++
++int nbl_flow_setup_ops_leonis(struct nbl_resource_ops *res_ops)
++{
++#define NBL_FLOW_SET_OPS(name, func) do {res_ops->NBL_NAME(name) = func; ; } while (0)
++	NBL_FLOW_OPS_TBL;
++#undef  NBL_FLOW_SET_OPS
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.h
 new file mode 100644
-index 000000000000..905b197e6633
+index 000000000000..739c278916b5
 --- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-@@ -0,0 +1,1842 @@
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_flow_leonis.h
+@@ -0,0 +1,204 @@
 +/* SPDX-License-Identifier: GPL-2.0*/
 +/*
 + * Copyright (c) 2025 Nebula Matrix Limited.
 + * Author:
 + */
-+
-+#ifndef _NBL_HW_LEONIS_H_
-+#define _NBL_HW_EONIS_H_
++#ifndef _NBL_FLOW_LEONIS_H_
++#define _NBL_FLOW_LEONIS_H_
 +
 +#include "nbl_core.h"
 +#include "nbl_hw.h"
-+#include "nbl_hw_reg.h"
++#include "nbl_resource.h"
 +
-+#define NBL_NOTIFY_DELAY_MAX_TIME_FOR_REGS	300 /* 300us for palladium,5us for s2c */
++#define NBL_EM_HW_KT_OFFSET				(0x1E000)
 +
-+#define NBL_DRAIN_WAIT_TIMES			(30000)
++#define NBL_TOTAL_MACVLAN_NUM				4096
++#define NBL_MAX_ACTION_NUM				16
 +
-+/*  ----------  FEM  ----------  */
-+#define NBL_FEM_INT_STATUS			(NBL_PPE_FEM_BASE + 0x00000000)
-+#define NBL_FEM_INT_MASK			(NBL_PPE_FEM_BASE + 0x00000004)
-+#define NBL_FEM_INIT_START			(NBL_PPE_FEM_BASE + 0x00000180)
-+#define NBL_FEM_KT_ACC_DATA			(NBL_PPE_FEM_BASE + 0x00000348)
-+#define NBL_FEM_INSERT_SEARCH0_CTRL		(NBL_PPE_FEM_BASE + 0x00000500)
-+#define NBL_FEM_INSERT_SEARCH0_ACK		(NBL_PPE_FEM_BASE + 0x00000504)
-+#define NBL_FEM_INSERT_SEARCH0_DATA		(NBL_PPE_FEM_BASE + 0x00000508)
-+#define KT_MASK_LEN32_ACTION_INFO		(0x0)
-+#define KT_MASK_LEN12_ACTION_INFO		(0xFFFFF000)
-+#define NBL_FEM_SEARCH_KEY_LEN			44
-+#define NBL_HW_DUMMY_REG			(0x1300904)
++#define NBL_FLOW_MCC_PXE_SIZE				8
++#define NBL_FLOW_MCC_INDEX_SIZE				(4096 - NBL_FLOW_MCC_PXE_SIZE)
++#define NBL_FLOW_MCC_INDEX_START			(4 * 1024)
++#define NBL_FLOW_MCC_BMC_DPORT				0x30D
 +
-+#define HT_PORT0_BANK_SEL             (0b01100000)
-+#define HT_PORT1_BANK_SEL             (0b00011000)
-+#define HT_PORT2_BANK_SEL             (0b00000111)
-+#define KT_PORT0_BANK_SEL             (0b11100000)
-+#define KT_PORT1_BANK_SEL             (0b00011000)
-+#define KT_PORT2_BANK_SEL             (0b00000111)
-+#define AT_PORT0_BANK_SEL             (0b000000000000)
-+#define AT_PORT1_BANK_SEL             (0b111110000000)
-+#define AT_PORT2_BANK_SEL             (0b000001111111)
-+#define HT_PORT0_BTM                  2
-+#define HT_PORT1_BTM                  6
-+#define HT_PORT2_BTM                  16
-+#define NBL_1BIT                        1
-+#define NBL_8BIT                        8
-+#define NBL_16BIT                       16
++#define NBL_MACVLAN_TBL_BUCKET_SIZE			64
++#define NBL_MACVLAN_X_AXIS_BUCKET_SIZE			64
++#define NBL_MACVLAN_Y_AXIS_BUCKET_SIZE			16
 +
-+#define NBL_FEM_HT_BANK_SEL_BITMAP		(NBL_PPE_FEM_BASE + 0x00000200)
-+#define NBL_FEM_KT_BANK_SEL_BITMAP		(NBL_PPE_FEM_BASE + 0x00000204)
-+#define NBL_FEM_AT_BANK_SEL_BITMAP		(NBL_PPE_FEM_BASE + 0x00000208)
-+#define NBL_FEM_AT_BANK_SEL_BITMAP2		(NBL_PPE_FEM_BASE + 0x0000020C)
++#define NBL_PP0_POWER					11
 +
-+#define NBL_EM_PT_MASK_LEN_0     (0xFFFFFFFF)
-+#define NBL_EM_PT_MASK_LEN_64    (0x0000FFFF)
-+#define NBL_EM_PT_MASK_LEN_96    (0x000000FF)
-+#define NBL_EM_PT_MASK1_LEN_0    (0xFFFFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_4    (0x7FFFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_12   (0x1FFFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_20   (0x07FFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_28   (0x01FFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_32   (0x00FFFFFF)
-+#define NBL_EM_PT_MASK1_LEN_76   (0x00001FFF)
-+#define NBL_EM_PT_MASK1_LEN_112  (0x0000000F)
-+#define NBL_EM_PT_MASK1_LEN_116  (0x00000007)
-+#define NBL_EM_PT_MASK1_LEN_124  (0x00000001)
-+#define NBL_EM_PT_MASK1_LEN_128  (0x0)
-+#define NBL_EM_PT_MASK2_LEN_28   (0x000007FF)
-+#define NBL_EM_PT_MASK2_LEN_36   (0x000001FF)
-+#define NBL_EM_PT_MASK2_LEN_44   (0x0000007F)
-+#define NBL_EM_PT_MASK2_LEN_52   (0x0000001F)
-+#define NBL_EM_PT_MASK2_LEN_60   (0x00000007)
-+#define NBL_EM_PT_MASK2_LEN_68   (0x00000001)
-+#define NBL_EM_PT_MASK2_LEN_72   (0x00000010)
-+#define NBL_EM_PT_MASK2_SEC_72   (0x00000000)
-+
-+#define NBL_KT_HW_L2_DW_LEN				40
-+
-+#define NBL_ACL_VSI_PF_UPCALL			9
-+#define NBL_ACL_ETH_PF_UPCALL			8
-+#define NBL_ACL_INDIRECT_ACCESS_WRITE		(0)
-+#define NBL_ACL_INDIRECT_ACCESS_READ		(1)
-+#define NBL_ETH_BASE_IDX 8
-+#define NBL_VSI_BASE_IDX 0
-+#define NBL_PF_MAX_NUM 4
-+#define NBL_ACL_TCAM_UPCALL_IDX 15
-+
-+#define NBL_GET_PF_ETH_ID(idx) ((idx) + NBL_ETH_BASE_IDX)
-+#define NBL_GET_PF_VSI_ID(idx) ((idx) * 256)
-+#define NBL_ACL_GET_ACTION_DATA(act_buf, act_data) (act_data = (act_buf) & 0x3fffff)
-+#define NBL_ACL_FLUSH_FLOW_BTM 0x7fff
-+#define NBL_ACL_FLUSH_UPCALL_BTM 0x8000
-+
-+#define NBL_ACL_TCAM_DATA_X(t)		(NBL_PPE_ACL_BASE + 0x00000904 + ((t) * 8))
-+#define NBL_ACL_TCAM_DATA_Y(t)		(NBL_PPE_ACL_BASE + 0x00000990 + ((t) * 8))
-+
-+struct nbl_acl_tcam_common_data_u {
-+	u8 data[5];
-+	u8 rsv[3];
++enum nbl_flow_mcc_index_type {
++	NBL_MCC_INDEX_ETH,
++	NBL_MCC_INDEX_VSI,
++	NBL_MCC_INDEX_BOND,
++	NBL_MCC_INDEX_BMC,
 +};
 +
-+/*  ----------  MCC  ----------  */
-+#define NBL_MCC_MODULE	(0x00B44000)
-+#define NBL_MCC_LEAF_NODE_TABLE(i) \
-+	(NBL_MCC_MODULE + 0x00010000 + (i) * sizeof(struct nbl_mcc_tbl))
 +#pragma pack(1)
 +
-+struct nbl_fem_int_mask {
-+	u32 rsv0:2;
-+	u32 fifo_ovf_err:1;
-+	u32 fifo_udf_err:1;
-+	u32 cif_err:1;
-+	u32 rsv1:1;
-+	u32 cfg_err:1;
-+	u32 data_ucor_err:1;
-+	u32 bank_cflt_err:1;
-+	u32 rsv2:23;
-+};
-+
-+union nbl_fem_ht_acc_ctrl_u {
-+	struct nbl_fem_ht_acc_ctrl {
-+		u32 bucket_id:2; /* used for choose entry's hash-bucket */
-+		u32 entry_id:14; /* used for choose hash-bucket's entry */
-+		u32 ht_id:1; /* 0:HT0, 1:HT1 */
-+#define NBL_ACC_HT0				(0)
-+#define NBL_ACC_HT1				(1)
-+		u32 port:2; /* 0:pp0 1:pp1 2:pp2 */
-+		u32 rsv:10;
-+		u32 access_size:1; /* 0:32bit 1:128bit,read support 128 */
-+#define NBL_ACC_SIZE_32B			(0)
-+#define NBL_ACC_SIZE_128B			(1)
-+		u32 rw:1; /* 1:read 0:write */
-+#define NBL_ACC_MODE_READ			(1)
-+#define NBL_ACC_MODE_WRITE			(0)
-+		u32 start:1; /* enable indirect access */
-+	} info;
-+#define NBL_FEM_HT_ACC_CTRL_TBL_WIDTH (sizeof(struct nbl_fem_ht_acc_ctrl))
-+	u8 data[NBL_FEM_HT_ACC_CTRL_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_HT_ACC_CTRL			(NBL_PPE_FEM_BASE + 0x00000300)
-+
-+union nbl_fem_ht_acc_data_u {
-+	struct nbl_fem_ht_acc_data {
-+		u32 kt_index:17;
-+		u32 hash:14;
-+		u32 vld:1;
-+	} info;
-+#define NBL_FEM_HT_ACC_DATA_TBL_WIDTH (sizeof(struct nbl_fem_ht_acc_data))
-+	u8 data[NBL_FEM_HT_ACC_DATA_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_HT_ACC_DATA			(NBL_PPE_FEM_BASE + 0x00000308)
-+
-+union nbl_fem_ht_acc_ack_u {
-+	struct nbl_fem_ht_acc_ack {
-+		u32 done:1; /* indirect access is finished */
-+		u32 status:1; /* indirect access is error */
-+		u32 rsv:30;
-+	} info;
-+#define NBL_FEM_HT_ACC_ACK_TBL_WIDTH (sizeof(struct nbl_fem_ht_acc_ack))
-+	u8 data[NBL_FEM_HT_ACC_ACK_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_HT_ACC_ACK			(NBL_PPE_FEM_BASE + 0x00000304)
-+
-+union nbl_fem_kt_acc_ctrl_u {
-+	struct nbl_fem_kt_acc_ctrl {
-+		u32 addr:17; /* kt-index */
-+		u32 rsv:12;
-+		u32 access_size:1;
-+#define NBL_ACC_SIZE_160B			(0)
-+#define NBL_ACC_SIZE_320B			(1)
-+		u32 rw:1; /* 1:read 0:write */
-+		u32 start:1; /* enable ，indirect access */
-+	} info;
-+#define NBL_FEM_KT_ACC_CTRL_TBL_WIDTH (sizeof(struct nbl_fem_kt_acc_ctrl))
-+	u8 data[NBL_FEM_KT_ACC_CTRL_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_KT_ACC_CTRL			(NBL_PPE_FEM_BASE + 0x00000340)
-+
-+union nbl_fem_kt_acc_ack_u {
-+	struct nbl_fem_kt_acc_ack {
-+		u32 done:1; /* indirect access is finished */
-+		u32 status:1; /* indirect access is error */
-+		u32 rsv:30;
-+	} info;
-+#define NBL_FEM_KT_ACC_ACK_TBL_WIDTH (sizeof(struct nbl_fem_kt_acc_ack))
-+	u8 data[NBL_FEM_KT_ACC_ACK_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_KT_ACC_ACK			(NBL_PPE_FEM_BASE + 0x00000344)
-+
-+union nbl_search_ctrl_u {
-+	struct nbl_search_ctrl {
-+		u32 rsv:31;
-+		u32 start:1;
-+	} info;
-+#define NBL_SEARCH_CTRL_WIDTH (sizeof(struct nbl_search_ctrl))
-+	u8 data[NBL_SEARCH_CTRL_WIDTH];
-+};
-+
-+union nbl_search_ack_u {
-+	struct nbl_search_ack {
-+		u32 done:1;
-+		u32 status:1;
-+		u32 rsv:30;
-+	} info;
-+#define NBL_SEARCH_ACK_WIDTH (sizeof(struct nbl_search_ack))
-+	u8 data[NBL_SEARCH_ACK_WIDTH];
-+};
-+
-+#define NBL_FEM_EM0_TCAM_TABLE_ADDR (0xa0b000)
-+#define NBL_FEM_EM_TCAM_TABLE_DEPTH (64)
-+#define NBL_FEM_EM_TCAM_TABLE_WIDTH (256)
-+
-+union fem_em_tcam_table_u {
-+	struct fem_em_tcam_table {
-+		u32 key[5];              /* [159:0] Default:0x0 RW */
-+		u32 key_vld:1;           /* [160] Default:0x0 RW */
-+		u32 key_size:1;          /* [161] Default:0x0 RW */
-+		u32 rsv:30;              /* [191:162] Default:0x0 RO */
-+		u32 rsv1[2];              /* [255:192] Default:0x0 RO */
-+	} info;
-+	u32 data[NBL_FEM_EM_TCAM_TABLE_WIDTH / 32];
-+	u8 hash_key[sizeof(struct fem_em_tcam_table)];
-+};
-+
-+#define NBL_FEM_EM_TCAM_TABLE_REG(r, t) (NBL_FEM_EM0_TCAM_TABLE_ADDR + 0x1000 * (r) + \
-+		(NBL_FEM_EM_TCAM_TABLE_WIDTH / 8) * (t))
-+
-+#define NBL_FEM_EM0_AD_TABLE_ADDR (0xa08000)
-+#define NBL_FEM_EM_AD_TABLE_DEPTH (64)
-+#define NBL_FEM_EM_AD_TABLE_WIDTH (512)
-+
-+union fem_em_ad_table_u {
-+	struct fem_em_ad_table {
-+		u32 action0:22;          /* [21:0] Default:0x0 RW */
-+		u32 action1:22;          /* [43:22] Default:0x0 RW */
-+		u32 action2:22;          /* [65:44] Default:0x0 RW */
-+		u32 action3:22;          /* [87:66] Default:0x0 RW */
-+		u32 action4:22;          /* [109:88] Default:0x0 RW */
-+		u32 action5:22;          /* [131:110] Default:0x0 RW */
-+		u32 action6:22;          /* [153:132] Default:0x0 RW */
-+		u32 action7:22;          /* [175:154] Default:0x0 RW */
-+		u32 action8:22;          /* [197:176] Default:0x0 RW */
-+		u32 action9:22;          /* [219:198] Default:0x0 RW */
-+		u32 action10:22;         /* [241:220] Default:0x0 RW */
-+		u32 action11:22;         /* [263:242] Default:0x0 RW */
-+		u32 action12:22;         /* [285:264] Default:0x0 RW */
-+		u32 action13:22;         /* [307:286] Default:0x0 RW */
-+		u32 action14:22;         /* [329:308] Default:0x0 RW */
-+		u32 action15:22;         /* [351:330] Default:0x0 RW */
-+		u32 rsv[5];          /* [511:352] Default:0x0 RO */
-+	} info;
-+	u32 data[NBL_FEM_EM_AD_TABLE_WIDTH / 32];
-+	u8 hash_key[sizeof(struct fem_em_ad_table)];
-+};
-+
-+#define NBL_FEM_EM_AD_TABLE_REG(r, t) (NBL_FEM_EM0_AD_TABLE_ADDR + 0x1000 * (r) + \
-+		(NBL_FEM_EM_AD_TABLE_WIDTH / 8) * (t))
-+
-+#define NBL_FLOW_TCAM_TOTAL_LEN			32
-+#define NBL_FLOW_AD_TOTAL_LEN			64
-+
-+struct nbl_mcc_tbl {
-+	u32 dport_act:16;
-+	u32 dqueue_act:11;
-+	u32 dqueue_en:1;
-+	u32 dqueue_rsv:4;
-+	u32 stateid_act:11;
-+	u32 stateid_filter:1;
-+	u32 flowid_filter:1;
-+	u32 stateid_rsv:3;
-+	u32 next_pntr:13;
-+	u32 tail:1;
-+	u32 vld:1;
-+	u32 rsv:1;
-+};
-+
-+union nbl_fem_ht_size_table_u {
-+	struct nbl_fem_ht_size_table {
-+		u32 pp0_size:5;
-+		u32 rsv0:3;
-+		u32 pp1_size:5;
-+		u32 rsv1:3;
-+		u32 pp2_size:5;
-+		u32 rsv2:11;
-+	} info;
-+#define NBL_FEM_HT_SIZE_TBL_WIDTH (sizeof(struct nbl_fem_ht_size_table))
-+	u8 data[NBL_FEM_HT_SIZE_TBL_WIDTH];
-+};
-+
-+#define NBL_FEM_HT_SIZE_REG		(NBL_PPE_FEM_BASE + 0x0000011c)
-+
-+#define NBL_FEM0_PROFILE_TABLE(t) (NBL_PPE_FEM_BASE + 0x00001000 +		\
-+				   (NBL_FEM_PROFILE_TBL_WIDTH) * (t))
-+
-+/*  ----------  REG BASE ADDR  ----------  */
-+#define NBL_LB_PCIEX16_TOP_BASE			(0x01500000)
-+/* PPE modules base addr */
-+#define NBL_PPE_FEM_BASE			(0x00a04000)
-+#define NBL_PPE_IPRO_BASE			(0x00b04000)
-+#define NBL_PPE_PP0_BASE			(0x00b14000)
-+#define NBL_PPE_PP1_BASE			(0x00b24000)
-+#define NBL_PPE_PP2_BASE			(0x00b34000)
-+#define NBL_PPE_MCC_BASE			(0x00b44000)
-+#define NBL_PPE_ACL_BASE			(0x00b64000)
-+#define NBL_PPE_CAP_BASE			(0x00e64000)
-+#define NBL_PPE_EPRO_BASE			(0x00e74000)
-+#define NBL_PPE_DPRBAC_BASE			(0x00904000)
-+#define NBL_PPE_UPRBAC_BASE			(0x0000C000)
-+/* Interface modules base addr */
-+#define NBL_INTF_HOST_PCOMPLETER_BASE		(0x00f08000)
-+#define NBL_INTF_HOST_PADPT_BASE		(0x00f4c000)
-+#define NBL_INTF_HOST_CTRLQ_BASE		(0x00f8c000)
-+#define NBL_INTF_HOST_VDPA_NET_BASE		(0x00f98000)
-+#define NBL_INTF_HOST_CMDQ_BASE			(0x00fa0000)
-+#define NBL_INTF_HOST_MAILBOX_BASE		(0x00fb0000)
-+#define NBL_INTF_HOST_PCIE_BASE			(0X01504000)
-+#define NBL_INTF_HOST_PCAP_BASE			(0X015a4000)
-+/* DP modules base addr */
-+#define NBL_DP_URMUX_BASE			(0x00008000)
-+#define NBL_DP_UPRBAC_BASE			(0x0000C000)
-+#define NBL_DP_UPA_BASE				(0x0008C000)
-+#define NBL_DP_USTORE_BASE			(0x00104000)
-+#define NBL_DP_UPMEM_BASE			(0x00108000)
-+#define NBL_DP_UBM_BASE				(0x0010c000)
-+#define NBL_DP_UQM_BASE				(0x00114000)
-+#define NBL_DP_USTAT_BASE			(0x0011c000)
-+#define NBL_DP_UPED_BASE			(0x0015c000)
-+#define NBL_DP_UCAR_BASE			(0x00e84000)
-+#define NBL_DP_UL4S_BASE			(0x00204000)
-+#define NBL_DP_UVN_BASE				(0x00244000)
-+#define NBL_DP_DSCH_BASE			(0x00404000)
-+#define NBL_DP_SHAPING_BASE			(0x00504000)
-+#define NBL_DP_DVN_BASE				(0x00514000)
-+#define NBL_DP_DL4S_BASE			(0x00614000)
-+#define NBL_DP_DRMUX_BASE			(0x00654000)
-+#define NBL_DP_DSTORE_BASE			(0x00704000)
-+#define NBL_DP_DPMEM_BASE			(0x00708000)
-+#define NBL_DP_DBM_BASE				(0x0070c000)
-+#define NBL_DP_DQM_BASE				(0x00714000)
-+#define NBL_DP_DSTAT_BASE			(0x0071c000)
-+#define NBL_DP_DPED_BASE			(0x0075c000)
-+#define NBL_DP_DPA_BASE				(0x0085c000)
-+#define NBL_DP_DPRBAC_BASE			(0x00904000)
-+#define NBL_DP_DDMUX_BASE			(0x00984000)
-+#define NBL_DP_LB_DDP_BUF_BASE			(0x00000000)
-+#define NBL_DP_LB_DDP_OUT_BASE			(0x00000000)
-+#define NBL_DP_LB_DDP_DIST_BASE			(0x00000000)
-+#define NBL_DP_LB_DDP_IN_BASE			(0x00000000)
-+#define NBL_DP_LB_UDP_BUF_BASE			(0x00000000)
-+#define NBL_DP_LB_UDP_OUT_BASE			(0x00000000)
-+#define NBL_DP_LB_UDP_DIST_BASE			(0x00000000)
-+#define NBL_DP_LB_UDP_IN_BASE			(0x00000000)
-+#define NBL_DP_DL4S_BASE			(0x00614000)
-+#define NBL_DP_UL4S_BASE			(0x00204000)
-+
-+/*  --------  LB  --------  */
-+#define NBL_LB_PF_CONFIGSPACE_SELECT_OFFSET	(0x81100000)
-+#define NBL_LB_PF_CONFIGSPACE_SELECT_STRIDE	(0x00100000)
-+#define NBL_LB_PF_CONFIGSPACE_BASE_ADDR		(NBL_LB_PCIEX16_TOP_BASE + 0x00024000)
-+#define NBL_LB_PCIEX16_TOP_AHB			(NBL_LB_PCIEX16_TOP_BASE + 0x00000020)
-+
-+#define NBL_SRIOV_CAPS_OFFSET			(0x140)
-+
-+/*  --------  MAILBOX BAR2 -----  */
-+#define NBL_MAILBOX_NOTIFY_ADDR			(0x00000000)
-+#define NBL_MAILBOX_BAR_REG			(0x00000000)
-+#define NBL_MAILBOX_QINFO_CFG_RX_TABLE_ADDR	(0x10)
-+#define NBL_MAILBOX_QINFO_CFG_TX_TABLE_ADDR	(0x20)
-+#define NBL_MAILBOX_QINFO_CFG_DBG_TABLE_ADDR	(0x30)
-+
-+/*  --------  ADMINQ BAR2 -----  */
-+#define NBL_ADMINQ_NOTIFY_ADDR			(0x40)
-+#define NBL_ADMINQ_QINFO_CFG_RX_TABLE_ADDR	(0x50)
-+#define NBL_ADMINQ_QINFO_CFG_TX_TABLE_ADDR	(0x60)
-+#define NBL_ADMINQ_QINFO_CFG_DBG_TABLE_ADDR	(0x78)
-+#define NBL_ADMINQ_MSIX_MAP_TABLE_ADDR		(0x80)
-+
-+/*  --------  MAILBOX  --------  */
-+
-+/* mailbox BAR qinfo_cfg_dbg_table */
-+struct nbl_mailbox_qinfo_cfg_dbg_tbl {
-+	u16 rx_drop;
-+	u16 rx_get;
-+	u16 tx_drop;
-+	u16 tx_out;
-+	u16 rx_hd_ptr;
-+	u16 tx_hd_ptr;
-+	u16 rx_tail_ptr;
-+	u16 tx_tail_ptr;
-+};
-+
-+/* mailbox BAR qinfo_cfg_table */
-+struct nbl_mailbox_qinfo_cfg_table {
-+	u32 queue_base_addr_l;
-+	u32 queue_base_addr_h;
-+	u32 queue_size_bwind:4;
-+	u32 rsv1:28;
-+	u32 queue_rst:1;
-+	u32 queue_en:1;
-+	u32 dif_err:1;
-+	u32 ptr_err:1;
-+	u32 rsv2:28;
-+};
-+
-+/*  --------  ADMINQ  --------  */
-+
-+struct nbl_adminq_qinfo_map_table {
-+	u32 function:3;
-+	u32 devid:5;
-+	u32 bus:8;
-+	u32 msix_idx:13;
-+	u32 msix_idx_valid:1;
-+	u32 rsv:2;
-+};
-+
-+/* adminq BAR qinfo_cfg_dbg_table */
-+struct nbl_adminq_qinfo_cfg_dbg_tbl {
-+	u16 rx_hd_ptr;
-+	u16 tx_hd_ptr;
-+	u16 rx_tail_ptr;
-+	u16 tx_tail_ptr;
-+};
-+
-+/*  --------  MAILBOX BAR0 -----  */
-+/* mailbox qinfo_map_table */
-+#define NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id) \
-+	(NBL_INTF_HOST_MAILBOX_BASE + 0x00001000 + \
-+	(func_id) * sizeof(struct nbl_mailbox_qinfo_map_table))
-+
-+/* MAILBOX qinfo_map_table */
-+struct nbl_mailbox_qinfo_map_table {
-+	u32 function:3;
-+	u32 devid:5;
-+	u32 bus:8;
-+	u32 msix_idx:13;
-+	u32 msix_idx_valid:1;
-+	u32 rsv:2;
-+};
-+
-+/*  --------  HOST_PCIE  --------  */
-+#define NBL_PCIE_HOST_K_PF_MASK_REG		(NBL_INTF_HOST_PCIE_BASE + 0x00001004)
-+#define NBL_PCIE_HOST_K_PF_FID(pf_id) \
-+	(NBL_INTF_HOST_PCIE_BASE + 0x0000106C + 4 * (pf_id))
-+#define NBL_PCIE_HOST_TL_CFG_BUSDEV		(NBL_INTF_HOST_PCIE_BASE + 0x11040)
-+
-+/*  --------  HOST_PADPT  --------  */
-+#define NBL_HOST_PADPT_HOST_CFG_FC_PD_DN	(NBL_INTF_HOST_PADPT_BASE + 0x00000160)
-+#define NBL_HOST_PADPT_HOST_CFG_FC_PH_DN	(NBL_INTF_HOST_PADPT_BASE + 0x00000164)
-+#define NBL_HOST_PADPT_HOST_CFG_FC_NPH_DN	(NBL_INTF_HOST_PADPT_BASE + 0x0000016C)
-+#define NBL_HOST_PADPT_HOST_CFG_FC_CPLH_UP	(NBL_INTF_HOST_PADPT_BASE + 0x00000170)
-+/* host_padpt host_msix_info */
-+#define NBL_PADPT_ABNORMAL_MSIX_VEC		(NBL_INTF_HOST_PADPT_BASE + 0x00000200)
-+#define NBL_PADPT_ABNORMAL_TIMEOUT		(NBL_INTF_HOST_PADPT_BASE + 0x00000204)
-+#define NBL_PADPT_HOST_MSIX_INFO_REG_ARR(vector_id) \
-+	(NBL_INTF_HOST_PADPT_BASE + 0x00010000 + (vector_id) * sizeof(struct nbl_host_msix_info))
-+/* host_padpt host_vnet_qinfo */
-+#define NBL_PADPT_HOST_VNET_QINFO_REG_ARR(queue_id) \
-+	(NBL_INTF_HOST_PADPT_BASE + 0x00008000 + (queue_id) * sizeof(struct nbl_host_vnet_qinfo))
-+
-+struct nbl_host_msix_info {
-+	u32 intrl_pnum:16;
-+	u32 intrl_rate:16;
-+	u32 function:3;
-+	u32 devid:5;
-+	u32 bus:8;
-+	u32 valid:1;
-+	u32 msix_mask_en:1;
-+	u32 rsv:14;
-+};
-+
-+struct nbl_abnormal_msix_vector {
-+	u32 idx:16;
-+	u32 vld:1;
-+	u32 rsv:15;
-+};
-+
-+/* host_padpt host_vnet_qinfo */
-+struct nbl_host_vnet_qinfo {
-+	u32 function_id:3;
-+	u32 device_id:5;
-+	u32 bus_id:8;
-+	u32 msix_idx:13;
-+	u32 msix_idx_valid:1;
-+	u32 log_en:1;
-+	u32 valid:1;
-+	u32 tph_en:1;
-+	u32 ido_en:1;
-+	u32 rlo_en:1;
-+	u32 rsv0:29;
-+};
-+
-+struct nbl_msix_notify {
-+	u32 glb_msix_idx:13;
-+	u32 rsv1:3;
-+	u32 mask:1;
-+	u32 rsv2:15;
-+};
-+
-+/*  --------  HOST_PCOMPLETER  --------  */
-+/* pcompleter_host pcompleter_host_virtio_qid_map_table */
-+#define NBL_PCOMPLETER_QID_MAP_REG_ARR(select, i) \
-+	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x00010000 + \
-+	 (select) * NBL_QID_MAP_TABLE_ENTRIES * sizeof(struct nbl_virtio_qid_map_table) + \
-+	 (i) * sizeof(struct nbl_virtio_qid_map_table))
-+#define NBL_PCOMPLETER_FUNCTION_MSIX_MAP_REG_ARR(i) \
-+	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x00004000 + (i) * sizeof(struct nbl_function_msix_map))
-+#define NBL_PCOMPLETER_HOST_MSIX_FID_TABLE(i) \
-+	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x0003a000 + \
-+	(i) * sizeof(struct nbl_pcompleter_host_msix_fid_table))
-+#define NBL_PCOMPLETER_INT_STATUS (NBL_INTF_HOST_PCOMPLETER_BASE + 0x00000000)
-+#define NBL_PCOMPLETER_TLP_OUT_DROP_CNT (NBL_INTF_HOST_PCOMPLETER_BASE + 0x00002430)
-+
-+/* pcompleter_host pcompleter_host_virtio_table_ready */
-+#define NBL_PCOMPLETER_QUEUE_TABLE_READY_REG \
-+	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x0000110C)
-+/* pcompleter_host pcompleter_host_virtio_table_select */
-+#define NBL_PCOMPLETER_QUEUE_TABLE_SELECT_REG \
-+	(NBL_INTF_HOST_PCOMPLETER_BASE + 0x00001110)
-+
-+#define NBL_PCOMPLETER_MSIX_NOTIRY_OFFSET (0x1020)
-+
-+#define NBL_REG_WRITE_MAX_TRY_TIMES 2
-+
-+/* pcompleter_host virtio_qid_map_table */
-+struct nbl_virtio_qid_map_table {
-+	u32 local_qid:9;
-+	u32 notify_addr_l:23;
-+	u32 notify_addr_h;
-+	u32 global_qid:12;
-+	u32 ctrlq_flag:1;
-+	u32 rsv1:19;
-+	u32 rsv2;
-+};
-+
-+struct nbl_pcompleter_host_msix_fid_table {
-+	u32 fid:10;
-+	u32 vld:1;
-+	u32 rsv:21;
-+};
-+
-+struct nbl_function_msix_map {
-+	u64 msix_map_base_addr;
-+	u32 function:3;
-+	u32 devid:5;
-+	u32 bus:8;
-+	u32 valid:1;
-+	u32 rsv0:15;
-+	u32 rsv1;
-+};
-+
-+struct nbl_queue_table_select {
-+	u32 select:1;
-+	u32 rsv:31;
-+};
-+
-+struct nbl_queue_table_ready {
-+	u32 ready:1;
-+	u32 rsv:31;
-+};
-+
-+/* IPRO ipro_queue_tbl */
-+struct nbl_ipro_queue_tbl {
-+	u32 vsi_id:10;
-+	u32 vsi_en:1;
-+	u32 rsv:21;
-+};
-+
-+/*  --------  HOST_PCAP  --------  */
-+#define NBL_HOST_PCAP_TX_CAP_EN			(NBL_INTF_HOST_PCAP_BASE + 0x00000200)
-+#define NBL_HOST_PCAP_TX_CAP_STORE		(NBL_INTF_HOST_PCAP_BASE + 0x00000204)
-+#define NBL_HOST_PCAP_TX_CAP_STALL		(NBL_INTF_HOST_PCAP_BASE + 0x00000208)
-+#define NBL_HOST_PCAP_RX_CAP_EN			(NBL_INTF_HOST_PCAP_BASE + 0x00000800)
-+#define NBL_HOST_PCAP_RX_CAP_STORE		(NBL_INTF_HOST_PCAP_BASE + 0x00000804)
-+#define NBL_HOST_PCAP_RX_CAP_STALL		(NBL_INTF_HOST_PCAP_BASE + 0x00000808)
-+
-+/*  ----------  DPED  ----------  */
-+#define NBL_DPED_VLAN_OFFSET		(NBL_DP_DPED_BASE + 0x000003F4)
-+#define NBL_DPED_DSCP_OFFSET_0		(NBL_DP_DPED_BASE + 0x000003F8)
-+#define NBL_DPED_DSCP_OFFSET_1		(NBL_DP_DPED_BASE + 0x000003FC)
-+
-+/* DPED dped_hw_edt_prof */
-+#define NBL_DPED_HW_EDT_PROF_TABLE(i) \
-+	(NBL_DP_DPED_BASE + 0x00001000 + (i) * sizeof(struct ped_hw_edit_profile))
-+/* DPED dped_l4_ck_cmd_40 */
-+
-+/* DPED hw_edt_prof/ UPED hw_edt_prof */
-+struct ped_hw_edit_profile {
-+	u32 l4_len:2;
-+#define NBL_PED_L4_LEN_MDY_CMD_0		(0)
-+#define NBL_PED_L4_LEN_MDY_CMD_1		(1)
-+#define NBL_PED_L4_LEN_MDY_DISABLE		(2)
-+	u32 l3_len:2;
-+#define NBL_PED_L3_LEN_MDY_CMD_0		(0)
-+#define NBL_PED_L3_LEN_MDY_CMD_1		(1)
-+#define NBL_PED_L3_LEN_MDY_DISABLE		(2)
-+	u32 l4_ck:3;
-+#define NBL_PED_L4_CKSUM_CMD_0			(0)
-+#define NBL_PED_L4_CKSUM_CMD_1			(1)
-+#define NBL_PED_L4_CKSUM_CMD_2			(2)
-+#define NBL_PED_L4_CKSUM_CMD_3			(3)
-+#define NBL_PED_L4_CKSUM_CMD_4			(4)
-+#define NBL_PED_L4_CKSUM_CMD_5			(5)
-+#define NBL_PED_L4_CKSUM_CMD_6			(6)
-+#define NBL_PED_L4_CKSUM_DISABLE		(7)
-+	u32 l3_ck:1;
-+#define NBL_PED_L3_CKSUM_ENABLE			(1)
-+#define NBL_PED_L3_CKSUM_DISABLE		(0)
-+	u32 l4_ck_zero_free:1;
-+#define NBL_PED_L4_CKSUM_ZERO_FREE_ENABLE	(1)
-+#define NBL_PED_L4_CKSUM_ZERO_FREE_DISABLE	(0)
-+	u32 rsv:23;
-+};
-+
-+struct nbl_ped_hw_edit_profile_cfg {
-+	u32 table_id;
-+	struct ped_hw_edit_profile edit_prf;
-+};
-+
-+/*  ----------  UPED  ----------  */
-+/* UPED uped_hw_edt_prof */
-+#define NBL_UPED_HW_EDT_PROF_TABLE(i) \
-+	(NBL_DP_UPED_BASE + 0x00001000 + (i) * sizeof(struct ped_hw_edit_profile))
-+
-+/*  ---------  SHAPING  ---------  */
-+#define NBL_SHAPING_NET_TIMMING_ADD_ADDR	(NBL_DP_SHAPING_BASE + 0x00000300)
-+#define NBL_SHAPING_NET(i) \
-+	(NBL_DP_SHAPING_BASE + 0x00001800 + (i) * sizeof(struct nbl_shaping_net))
-+
-+/* cir 1, bandwidth 1kB/s in protol environment */
-+/* cir 1, bandwidth 1Mb/s */
-+#define NBL_LR_LEONIS_SYS_CLK			15000.0   /* 0105tag  Khz */
-+#define NBL_LR_LEONIS_NET_SHAPING_CYCLE_MAX	25
-+#define NBL_LR_LEONIS_NET_SHAPING_DPETH		600
-+#define NBL_LR_LEONIS_NET_BUCKET_DEPTH		9600
-+
-+#define NBL_SHAPING_DPORT_25G_RATE		0x61A8
-+#define NBL_SHAPING_DPORT_HALF_25G_RATE		0x30D4
-+
-+#define NBL_SHAPING_DPORT_100G_RATE		0x1A400
-+#define NBL_SHAPING_DPORT_HALF_100G_RATE	0xD200
-+
-+#define NBL_UCAR_MAX_BUCKET_DEPTH		524287
-+
-+#define NBL_DSTORE_DROP_XOFF_TH			0xC8
-+#define NBL_DSTORE_DROP_XON_TH			0x64
-+
-+#define NBL_DSTORE_DROP_XOFF_TH_100G		0x1F4
-+#define NBL_DSTORE_DROP_XON_TH_100G		0x12C
-+
-+#define NBL_DSTORE_DROP_XOFF_TH_BOND_MAIN	0x180
-+#define NBL_DSTORE_DROP_XON_TH_BOND_MAIN	0x180
-+
-+#define NBL_DSTORE_DROP_XOFF_TH_BOND_OTHER	0x64
-+#define NBL_DSTORE_DROP_XON_TH_BOND_OTHER	0x64
-+
-+#define NBL_DSTORE_DROP_XOFF_TH_100G_BOND_MAIN	0x2D5
-+#define NBL_DSTORE_DROP_XON_TH_100G_BOND_MAIN	0x2BC
-+
-+#define NBL_DSTORE_DROP_XOFF_TH_100G_BOND_OTHER	0x145
-+#define NBL_DSTORE_DROP_XON_TH_100G_BOND_OTHER	0x12C
-+
-+#define NBL_DSTORE_DISC_BP_TH			(NBL_DP_DSTORE_BASE + 0x00000630)
-+
-+struct dstore_disc_bp_th {
-+	u32 xoff_th:10;
-+	u32 rsv1:6;
-+	u32 xon_th:10;
-+	u32 rsv:5;
-+	u32 en:1;
-+};
-+
-+struct nbl_shaping_net_timming_add {
-+	u32 cycle_max:12;        /* [11:0] Default:0x8 RW */
-+	u32 rsv1:4;              /* [15:12] Default:0x0 RO */
-+	u32 depth:12;            /* [27:16] Default:0x258 RW */
-+	u32 rsv:4;               /* [31:28] Default:0x0 RO */
-+};
-+
-+/* DSCH dsch_vn_sha2net_map_tbl */
-+struct dsch_vn_sha2net_map_tbl {
-+	u32 vld:1;
-+	u32 reserve:31;
-+};
-+
-+/* DSCH dsch_vn_net2sha_map_tbl */
-+struct dsch_vn_net2sha_map_tbl {
-+	u32 vld:1;
-+	u32 reserve:31;
-+};
-+
-+#define NBL_NET_SHAPING_RDMA_BASE_ID (448)
-+
-+struct dsch_psha_en {
-+	u32 en:4;
-+	u32 rsv:28;
-+};
-+
-+/* SHAPING shaping_net */
-+struct nbl_shaping_net {
-+	u32 valid:1;
-+	u32 depth:19;
-+	u32 cir:19;
-+	u32 pir:19;
-+	u32 cbs:21;
-+	u32 pbs:21;
-+	u32 rsv:28;
-+};
-+
-+struct nbl_shaping_dport {
-+	u32 valid:1;
-+	u32 depth:19;
-+	u32 cir:19;
-+	u32 pir:19;
-+	u32 cbs:21;
-+	u32 pbs:21;
-+	u32 rsv:28;
-+};
-+
-+struct nbl_shaping_dvn_dport {
-+	u32 valid:1;
-+	u32 depth:19;
-+	u32 cir:19;
-+	u32 pir:19;
-+	u32 cbs:21;
-+	u32 pbs:21;
-+	u32 rsv:28;
-+};
-+
-+/*  ----------  DSCH  ----------  */
-+/* DSCH vn_host_qid_max */
-+#define NBL_DSCH_NOTIFY_BITMAP_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00003000 + (i) * BYTES_PER_DWORD)
-+#define NBL_DSCH_FLY_BITMAP_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00004000 + (i) * BYTES_PER_DWORD)
-+#define NBL_DSCH_PORT_MAP_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00005000 + (i) * sizeof(struct nbl_port_map))
-+/* DSCH dsch_vn_q2tc_cfg_tbl */
-+#define NBL_DSCH_VN_Q2TC_CFG_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00010000 + (i) * sizeof(struct dsch_vn_q2tc_cfg_tbl))
-+/* DSCH dsch_vn_n2g_cfg_tbl */
-+#define NBL_DSCH_VN_N2G_CFG_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00060000 + (i) * sizeof(struct dsch_vn_n2g_cfg_tbl))
-+/* DSCH dsch_vn_g2p_cfg_tbl */
-+#define NBL_DSCH_VN_G2P_CFG_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00064000 + (i) * sizeof(struct dsch_vn_g2p_cfg_tbl))
-+/* DSCH dsch_vn_tc_wgt_cfg_tbl */
-+#define NBL_DSCH_VN_TC_WGT_CFG_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00068000 + (i) * sizeof(union dsch_vn_tc_wgt_cfg_tbl_u))
-+/* DSCH dsch_vn_sha2net_map_tbl */
-+#define NBL_DSCH_VN_SHA2NET_MAP_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00070000 + (i) * sizeof(struct dsch_vn_sha2net_map_tbl))
-+/* DSCH dsch_vn_net2sha_map_tbl */
-+#define NBL_DSCH_VN_NET2SHA_MAP_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00074000 + (i) * sizeof(struct dsch_vn_net2sha_map_tbl))
-+/* DSCH dsch_vn_tc_q_list_tbl */
-+#define NBL_DSCH_VN_TC_Q_LIST_TABLE_REG_ARR(i) \
-+	(NBL_DP_DSCH_BASE + 0x00040000 + (i) * sizeof(struct dsch_vn_tc_q_list_tbl))
-+/* DSCH dsch maxqid */
-+#define NBL_DSCH_HOST_QID_MAX (NBL_DP_DSCH_BASE + 0x00000118)
-+#define NBL_DSCH_VN_QUANTA_ADDR  (NBL_DP_DSCH_BASE + 0x00000134)
-+#define NBL_DSCH_INT_STATUS		(NBL_DP_DSCH_BASE + 0x00000000)
-+#define NBL_DSCH_RDMA_OTHER_ABN		(NBL_DP_DSCH_BASE + 0x00000080)
-+#define NBL_DSCH_RDMA_OTHER_ABN_BIT	(0x4000)
-+#define NBL_DSCH_RDMA_DPQM_DB_LOST	(2)
-+
-+#define NBL_MAX_QUEUE_ID	(0x7ff)
-+#define NBL_HOST_QUANTA		(0x8000)
-+#define NBL_ECPU_QUANTA		(0x1000)
-+
-+/* DSCH dsch_vn_q2tc_cfg_tbl */
-+struct dsch_vn_q2tc_cfg_tbl {
-+	u32 tcid:13;
-+	u32 rsv:18;
-+	u32 vld:1;
-+};
-+
-+/* DSCH dsch_vn_n2g_cfg_tbl */
-+struct dsch_vn_n2g_cfg_tbl {
-+	u32 grpid:8;
-+	u32 rsv:23;
-+	u32 vld:1;
-+};
-+
-+/* DSCH dsch_vn_tc_qlist_tbl */
-+struct dsch_vn_tc_q_list_tbl {
-+	u32 nxt:11;
-+	u32 reserve:18;
-+	u32 regi:1;
-+	u32 fly:1;
-+	u32 vld:1;
-+};
-+
-+/* DSCH dsch_vn_g2p_cfg_tbl */
-+struct dsch_vn_g2p_cfg_tbl {
-+	u32 port:3;
-+	u32 rsv:28;
-+	u32 vld:1;
-+};
-+
-+/* DSCH dsch_vn_tc_wgt_cfg_tbl */
-+union dsch_vn_tc_wgt_cfg_tbl_u {
-+	struct dsch_vn_tc_wgt_cfg_tbl {
-+		u8 tc0_wgt;
-+		u8 tc1_wgt;
-+		u8 tc2_wgt;
-+		u8 tc3_wgt;
-+		u8 tc4_wgt;
-+		u8 tc5_wgt;
-+		u8 tc6_wgt;
-+		u8 tc7_wgt;
-+	} info;
-+#define NBL_DSCH_VN_TC_WGT_CFG_TBL_WIDTH (sizeof(struct dsch_vn_tc_wgt_cfg_tbl))
-+	u8 data[NBL_DSCH_VN_TC_WGT_CFG_TBL_WIDTH];
-+};
-+
-+struct dsch_vn_quanta {
-+	u32 h_qua:16;
-+	u32 e_qua:16;
-+};
-+
-+/*  ----------  DVN  ----------  */
-+
-+struct nbl_dvn_stat_cnt {
-+	u32 dvn_desc_fwd_cnt:16;
-+	u32 rsv0:16;
-+	u32 dvn_desc_drop_cnt:16;
-+	u32 rsv1:16;
-+	u32 dvn_pkt_fwd_cnt:16;
-+	u32 rsv2:16;
-+	u32 dvn_pkt_drop_cnt:16;
-+	u32 rsv3:16;
-+	u32 rsv4[4];
-+};
-+
-+/* DVN dvn_queue_table */
-+#define NBL_DVN_QUEUE_TABLE_ARR(i) \
-+	(NBL_DP_DVN_BASE + 0x00020000 + (i) * sizeof(struct dvn_queue_table))
-+#define NBL_DVN_QUEUE_CXT_TABLE_ARR(i) \
-+	(NBL_DP_DVN_BASE + 0x00030000 + (i) * sizeof(struct dvn_queue_context))
-+#define NBL_DVN_STAT_CNT(i) (NBL_DP_DVN_BASE + 0x00040000 + (i) * sizeof(struct nbl_dvn_stat_cnt))
-+/* DVN dvn_queue_reset */
-+#define NBL_DVN_QUEUE_RESET_REG (NBL_DP_DVN_BASE + 0x00000400)
-+/* DVN dvn_queue_reset_done */
-+#define NBL_DVN_QUEUE_RESET_DONE_REG (NBL_DP_DVN_BASE + 0x00000404)
-+#define NBL_DVN_ECPU_QUEUE_NUM			(NBL_DP_DVN_BASE + 0x0000041C)
-+#define NBL_DVN_DESCREQ_NUM_CFG			(NBL_DP_DVN_BASE + 0x00000430)
-+#define NBL_DVN_DESC_WR_MERGE_TIMEOUT		(NBL_DP_DVN_BASE + 0x00000480)
-+#define NBL_DVN_DIF_REQ_RD_RO_FLAG		(NBL_DP_DVN_BASE + 0x0000045C)
-+#define NBL_DVN_INT_STATUS			(NBL_DP_DVN_BASE + 0x00000000)
-+#define NBL_DVN_DESC_DIF_ERR_CNT		(NBL_DP_DVN_BASE + 0x0000003C)
-+#define NBL_DVN_DESC_DIF_ERR_INFO		(NBL_DP_DVN_BASE + 0x00000038)
-+#define NBL_DVN_PKT_DIF_ERR_INFO		(NBL_DP_DVN_BASE + 0x00000030)
-+#define NBL_DVN_PKT_DIF_ERR_CNT			(NBL_DP_DVN_BASE + 0x00000034)
-+#define NBL_DVN_ERR_QUEUE_ID_GET		(NBL_DP_DVN_BASE + 0x0000040C)
-+#define NBL_DVN_BACK_PRESSURE_MASK		(NBL_DP_DVN_BASE + 0x00000464)
-+#define NBL_DVN_DESCRD_L2_UNAVAIL_CNT		(NBL_DP_DVN_BASE + 0x00000A1C)
-+#define NBL_DVN_DESCRD_L2_NOAVAIL_CNT		(NBL_DP_DVN_BASE + 0x00000A20)
-+
-+#define DEFAULT_DVN_DESCREQ_NUMCFG		(0x00080014)
-+#define DEFAULT_DVN_100G_DESCREQ_NUMCFG		(0x00080020)
-+
-+#define NBL_DVN_INT_PKT_DIF_ERR			(4)
-+#define DEFAULT_DVN_DESC_WR_MERGE_TIMEOUT_MAX	(0x3FF)
-+
-+#define NBL_DVN_INT_DESC_DIF_ERR		(5)
-+
-+struct nbl_dvn_descreq_num_cfg {
-+	u32 avring_cfg_num:1; /* spilit ring descreq_num 0:8,1:16 */
-+	u32 rsv0:3;
-+	u32 packed_l1_num:3; /* packet ring descreq_num 0:8,1:12,2:16;3:20,4:24,5:26;6:32,7:32 */
-+	u32 rsv1:25;
-+};
-+
-+struct nbl_dvn_desc_wr_merge_timeout {
-+	u32 cfg_cycle:10;
-+	u32 rsv:22;
-+};
-+
-+struct nbl_dvn_dif_req_rd_ro_flag {
-+	u32 rd_desc_ro_en:1;
-+	u32 rd_data_ro_en:1;
-+	u32 rd_avring_ro_en:1;
-+	u32 rsv:29;
-+};
-+
-+/* DVN dvn_queue_table */
-+struct dvn_queue_table {
-+	u64 dvn_used_baddr;
-+	u64 dvn_avail_baddr;
-+	u64 dvn_queue_baddr;
-+	u32 dvn_queue_size:4;
-+	u32 dvn_queue_type:1;
-+	u32 dvn_queue_en:1;
-+	u32 dvn_extend_header_en:1;
-+	u32 dvn_interleave_seg_disable:1;
-+	u32 dvn_seg_disable:1;
-+	u32 rsv0:23;
-+	u32 rsv1:32;
-+};
-+
-+/* DVN dvn_queue_context */
-+struct dvn_queue_context {
-+	u32 dvn_descrd_num:3;
-+	u32 dvn_firstdescid:16;
-+	u32 dvn_firstdesc:16;
-+	u32 dvn_indirect_len:6;
-+	u64 dvn_indirect_addr:64;
-+	u32 dvn_indirect_next:5;
-+	u32 dvn_l1_ring_read:16;
-+	u32 dvn_avail_ring_read:16;
-+	u32 dvn_ring_wrap_counter:1;
-+	u32 dvn_lso_id:10;
-+	u32 dvn_avail_ring_idx:16;
-+	u32 dvn_used_ring_idx:16;
-+	u32 dvn_indirect_left:1;
-+	u32 dvn_desc_left:1;
-+	u32 dvn_lso_flag:1;
-+	u32 dvn_descrd_disable:1;
-+	u32 dvn_queue_err:1;
-+	u32 dvn_lso_drop:1;
-+	u32 dvn_protected_bit:1;
-+	u64 reserve;
-+};
-+
-+/* DVN dvn_queue_reset */
-+struct nbl_dvn_queue_reset {
-+	u32 dvn_queue_index:11;
-+	u32 vld:1;
-+	u32 rsv:20;
-+};
-+
-+/* DVN dvn_queue_reset_done */
-+struct nbl_dvn_queue_reset_done {
-+	u32 flag:1;
-+	u32 rsv:31;
-+};
-+
-+/* DVN dvn_desc_dif_err_info */
-+struct dvn_desc_dif_err_info {
-+	u32 queue_id:11;
-+	u32 rsv:21;
-+};
-+
-+struct dvn_pkt_dif_err_info {
-+	u32 queue_id:11;
-+	u32 rsv:21;
-+};
-+
-+struct dvn_err_queue_id_get {
-+	u32 pkt_flag:1;
-+	u32 desc_flag:1;
-+	u32 rsv:30;
-+};
-+
-+struct dvn_back_pressure_mask {
-+	u32 l4s_flag:1;
-+	u32 dsch_flag:1;
-+	u32 dstore_port0_flag:1;
-+	u32 dstore_port1_flag:1;
-+	u32 dstore_port2_flag:1;
-+	u32 dstore_port3_flag:1;
-+	u32 rsv:26;
-+};
-+
-+/*  ----------  UVN  ----------  */
-+/* UVN uvn_queue_table */
-+#define NBL_UVN_QUEUE_TABLE_ARR(i) \
-+	(NBL_DP_UVN_BASE + 0x00010000 + (i) * sizeof(struct uvn_queue_table))
-+/* UVN uvn_queue_cxt */
-+#define NBL_UVN_QUEUE_CXT_TABLE_ARR(i) \
-+	(NBL_DP_UVN_BASE + 0x00020000 + (i) * sizeof(struct uvn_queue_cxt))
-+/* UVN uvn_desc_cxt */
-+#define NBL_UVN_DESC_CXT_TABLE_ARR(i) \
-+	(NBL_DP_UVN_BASE + 0x00028000 + (i) * sizeof(struct uvn_desc_cxt))
-+/* UVN uvn_queue_reset */
-+#define NBL_UVN_QUEUE_RESET_REG (NBL_DP_UVN_BASE + 0x00000200)
-+/* UVN uvn_queue_reset_done */
-+#define NBL_UVN_QUEUE_RESET_DONE_REG (NBL_DP_UVN_BASE + 0x00000408)
-+#define NBL_UVN_STATIS_PKT_DROP(i) (NBL_DP_UVN_BASE + 0x00038000 + (i) * sizeof(u32))
-+#define NBL_UVN_INT_STATUS			(NBL_DP_UVN_BASE + 0x00000000)
-+#define NBL_UVN_QUEUE_ERR_INFO			(NBL_DP_UVN_BASE + 0x00000034)
-+#define NBL_UVN_QUEUE_ERR_CNT			(NBL_DP_UVN_BASE + 0x00000038)
-+#define NBL_UVN_DESC_RD_WAIT			(NBL_DP_UVN_BASE + 0x0000020C)
-+#define NBL_UVN_QUEUE_ERR_MASK			(NBL_DP_UVN_BASE + 0x00000224)
-+#define NBL_UVN_ECPU_QUEUE_NUM			(NBL_DP_UVN_BASE + 0x0000023C)
-+#define NBL_UVN_DESC_WR_TIMEOUT			(NBL_DP_UVN_BASE + 0x00000214)
-+#define NBL_UVN_DIF_DELAY_REQ			(NBL_DP_UVN_BASE + 0x000010D0)
-+#define NBL_UVN_DIF_DELAY_TIME			(NBL_DP_UVN_BASE + 0x000010D4)
-+#define NBL_UVN_DIF_DELAY_MAX			(NBL_DP_UVN_BASE + 0x000010D8)
-+#define NBL_UVN_DESC_PRE_DESC_REQ_NULL		(NBL_DP_UVN_BASE + 0x000012C8)
-+#define NBL_UVN_DESC_PRE_DESC_REQ_LACK		(NBL_DP_UVN_BASE + 0x000012CC)
-+#define NBL_UVN_DESC_RD_ENTRY			(NBL_DP_UVN_BASE + 0x000012D0)
-+#define NBL_UVN_DESC_RD_DROP_DESC_LACK		(NBL_DP_UVN_BASE + 0x000012E0)
-+#define NBL_UVN_DIF_REQ_RO_FLAG			(NBL_DP_UVN_BASE + 0x00000250)
-+#define NBL_UVN_DESC_PREFETCH_INIT		(NBL_DP_UVN_BASE + 0x00000204)
-+#define NBL_UVN_DESC_WR_TIMEOUT_4US		(0x960)
-+#define NBL_UVN_DESC_PREFETCH_NUM		(4)
-+
-+#define NBL_UVN_INT_QUEUE_ERR			(5)
-+
-+struct uvn_dif_req_ro_flag {
-+	u32 avail_rd:1;
-+	u32 desc_rd:1;
-+	u32 pkt_wr:1;
-+	u32 desc_wr:1;
-+	u32 rsv:28;
-+};
-+
-+/* UVN uvn_queue_table */
-+struct uvn_queue_table {
-+	u64 used_baddr;
-+	u64 avail_baddr;
-+	u64 queue_baddr;
-+	u32 queue_size_mask_pow:4;
-+	u32 queue_type:1;
-+	u32 queue_enable:1;
-+	u32 extend_header_en:1;
-+	u32 guest_csum_en:1;
-+	u32 half_offload_en:1;
-+	u32 rsv0:23;
-+	u32 rsv1:32;
-+};
-+
-+/* uvn uvn_queue_cxt */
-+struct uvn_queue_cxt {
-+	u32 queue_head:16;
-+	u32 wrap_count:1;
-+	u32 queue_err:1;
-+	u32 prefetch_null_cnt:2;
-+	u32 ntf_finish:1;
-+	u32 spnd_flag:1;
-+	u32 reserve0:10;
-+	u32 avail_idx:16;
-+	u32 avail_idx_spnd_flag:1;
-+	u32 reserve1:15;
-+	u32 reserve2[2];
-+};
-+
-+/* uvn uvn_queue_reset */
-+struct nbl_uvn_queue_reset {
-+	u32 index:11;
-+	u32 rsv0:5;
-+	u32 vld:1;
-+	u32 rsv1:15;
-+};
-+
-+/* uvn uvn_queue_reset_done */
-+struct nbl_uvn_queue_reset_done {
-+	u32 flag:1;
-+	u32 rsv:31;
-+};
-+
-+/* uvn uvn_desc_cxt */
-+struct uvn_desc_cxt {
-+	u32 cache_head:9;
-+	u32 reserve0:7;
-+	u32 cache_tail:9;
-+	u32 reserve1:7;
-+	u32 cache_pref_num_prev:9;
-+	u32 reserve2:7;
-+	u32 cache_pref_num_post:9;
-+	u32 reserve3:7;
-+	u32 cache_head_byte:30;
-+	u32 reserve4:2;
-+	u32 cache_tail_byte:30;
-+	u32 reserve5:2;
-+};
-+
-+struct uvn_desc_wr_timeout {
-+	u32 num:15;
-+	u32 mask:1;
-+	u32 rsv:16;
-+};
-+
-+struct uvn_queue_err_info {
-+	u32 queue_id:11;
-+	u32 type:5;
-+	u32 rsv:16;
-+};
-+
-+struct uvn_queue_err_mask {
-+	u32 rsv0:1;
-+	u32 buffer_len_err:1;
-+	u32 next_err:1;
-+	u32 indirect_err:1;
-+	u32 split_err:1;
-+	u32 dif_err:1;
-+	u32 rsv1:26;
-+};
-+
-+struct uvn_desc_prefetch_init {
-+	u32 num:8;
-+	u32 rsv1:8;
-+	u32 sel:1;
-+	u32 rsv:15;
-+};
-+
-+/*  --------  USTORE  --------  */
-+#define NBL_USTORE_PKT_LEN_ADDR			(NBL_DP_USTORE_BASE + 0x00000108)
-+#define NBL_USTORE_PORT_FC_TH_REG_ARR(port_id) \
-+	(NBL_DP_USTORE_BASE + 0x00000134 + (port_id) * sizeof(struct nbl_ustore_port_fc_th))
-+#define NBL_USTORE_COS_FC_TH_REG_ARR(cos_id) \
-+	(NBL_DP_USTORE_BASE + 0x00000200 + (cos_id) * sizeof(struct nbl_ustore_cos_fc_th))
-+#define NBL_USTORE_PORT_DROP_TH_REG_ARR(port_id) \
-+	(NBL_DP_USTORE_BASE + 0x00000150 + (port_id) * sizeof(struct nbl_ustore_port_drop_th))
-+#define NBL_USTORE_BUF_TOTAL_DROP_PKT		(NBL_DP_USTORE_BASE + 0x000010A8)
-+#define NBL_USTORE_BUF_TOTAL_TRUN_PKT		(NBL_DP_USTORE_BASE + 0x000010AC)
-+#define NBL_USTORE_BUF_PORT_DROP_PKT(eth_id) \
-+	(NBL_DP_USTORE_BASE + 0x00002500 + (eth_id) * sizeof(u32))
-+#define NBL_USTORE_BUF_PORT_TRUN_PKT(eth_id) \
-+	(NBL_DP_USTORE_BASE + 0x00002540 + (eth_id) * sizeof(u32))
-+
-+#define NBL_USTORE_SIGNLE_ETH_DROP_TH		0xC80
-+#define NBL_USTORE_DUAL_ETH_DROP_TH		0x640
-+#define NBL_USTORE_QUAD_ETH_DROP_TH		0x320
-+
-+/* USTORE pkt_len */
-+struct ustore_pkt_len {
-+	u32 min:7;
-+	u32 rsv:8;
-+	u32 min_chk_en:1;
-+	u32 max:14;
-+	u32 rsv2:1;
-+	u32 max_chk_len:1;
-+};
-+
-+/* USTORE port_fc_th */
-+struct nbl_ustore_port_fc_th {
-+	u32 xoff_th:12;
-+	u32 rsv1:4;
-+	u32 xon_th:12;
-+	u32 rsv2:2;
-+	u32 fc_set:1;
-+	u32 fc_en:1;
-+};
-+
-+/* USTORE cos_fc_th */
-+struct nbl_ustore_cos_fc_th {
-+	u32 xoff_th:12;
-+	u32 rsv1:4;
-+	u32 xon_th:12;
-+	u32 rsv2:2;
-+	u32 fc_set:1;
-+	u32 fc_en:1;
-+};
-+
-+#define NBL_MAX_USTORE_COS_FC_TH (4080)
-+
-+/* USTORE port_drop_th */
-+struct nbl_ustore_port_drop_th {
-+	u32 disc_th:12;
-+	u32 rsv:19;
-+	u32 en:1;
-+};
-+
-+/*  ----------  UL4S  ----------  */
-+#define NBL_UL4S_SCH_PAD_ADDR			(NBL_DP_UL4S_BASE + 0x000006c4)
-+
-+/* UL4S ul4s_sch_pad */
-+struct ul4s_sch_pad {
-+	u32 en:1;
-+	u32 clr:1;
-+	u32 rsv:30;
-+};
-+
-+/*  ---------  DSTAT  ---------  */
-+#define NBL_DSTAT_VSI_STAT(vsi_id)	\
-+	(NBL_DP_DSTAT_BASE + 0x00008000 + (vsi_id) * sizeof(struct nbl_dstat_vsi_stat))
-+
-+struct nbl_dstat_vsi_stat {
-+	u32 fwd_byte_cnt_low;
-+	u32 fwd_byte_cnt_high;
-+	u32 fwd_pkt_cnt_low;
-+	u32 fwd_pkt_cnt_high;
-+};
-+
-+/*  ---------  USTAT  ---------  */
-+#define NBL_USTAT_VSI_STAT(vsi_id)	\
-+	(NBL_DP_USTAT_BASE + 0x00008000 + (vsi_id) * sizeof(struct nbl_ustat_vsi_stat))
-+
-+struct nbl_ustat_vsi_stat {
-+	u32 fwd_byte_cnt_low;
-+	u32 fwd_byte_cnt_high;
-+	u32 fwd_pkt_cnt_low;
-+	u32 fwd_pkt_cnt_high;
-+};
-+
-+/*  ----------  IPRO  ----------  */
-+/* ipro module related macros */
-+#define NBL_IPRO_MODULE (0xB04000)
-+/* ipro queue tbl */
-+#define NBL_IPRO_QUEUE_TBL(i) \
-+	(NBL_IPRO_MODULE + 0x00004000 + (i) * sizeof(struct nbl_ipro_queue_tbl))
-+#define NBL_IPRO_UP_SPORT_TABLE(i) \
-+	(NBL_IPRO_MODULE + 0x00007000 + (i) * sizeof(struct nbl_ipro_upsport_tbl))
-+#define NBL_IPRO_DN_SRC_PORT_TABLE(i) \
-+	(NBL_PPE_IPRO_BASE + 0x00008000 + (i) * sizeof(struct nbl_ipro_dn_src_port_tbl))
-+
-+enum nbl_fwd_type_e {
-+	NBL_FWD_TYPE_NORMAL		= 0,
-+	NBL_FWD_TYPE_CPU_ASSIGNED	= 1,
-+	NBL_FWD_TYPE_UPCALL		= 2,
-+	NBL_FWD_TYPE_SRC_MIRROR		= 3,
-+	NBL_FWD_TYPE_OTHER_MIRROR	= 4,
-+	NBL_FWD_TYPE_MNG		= 5,
-+	NBL_FWD_TYPE_GLB_LB		= 6,
-+	NBL_FWD_TYPE_DROP		= 7,
-+	NBL_FWD_TYPE_MAX		= 8,
-+};
-+
-+/* IPRO dn_src_port_tbl */
-+struct nbl_ipro_dn_src_port_tbl {
-+	u32 entry_vld:1;
-+	u32 mirror_en:1;
-+	u32 mirror_pr:2;
-+	u32 mirror_id:4;
-+	u32 vlan_layer_num_1:2;
-+	u32 hw_flow:1;
-+	u32 mtu_sel:4;
-+	u32 addr_check_en:1;
-+	u32 smac_low:16;
-+	u32 smac_high;
-+	u32 dqueue:11;
-+	u32 dqueue_en:1;
-+	u32 dqueue_pri:2;
-+	u32 set_dport_pri:2;
-+	union nbl_action_data set_dport;
-+	u32 set_dport_en:1;
-+	u32 proc_done:1;
-+	u32 not_used_1:6;
-+	u32 rsv:24;
-+};
-+
-+/* IPRO up sport tab */
-+struct nbl_ipro_upsport_tbl {
-+	u32 entry_vld:1;
-+	u32 vlan_layer_num_0:2;
-+	u32 vlan_layer_num_1:2;
-+	u32 lag_vld:1;
-+	u32 lag_id:2;
-+	u32 hw_flow:1;
-+	u32 mirror_en:1;
-+	u32 mirror_pr:2;
-+	u32 mirror_id:4;
-+	u32 dqueue_pri:2;
-+	u32 set_dport_pri:2;
-+	u32 dqueue:11;
-+	u32 dqueue_en:1;
-+	union nbl_action_data set_dport;
-+	u32 set_dport_en:1;
-+	u32 proc_done:1;
-+	u32 car_en:1;
-+	u32 car_pr:2;
-+	u32 car_id:10;
-+	u32 rsv:1;
-+};
-+
-+struct nbl_ipro_mtu_sel {
-+	u32 mtu_1:16;            /* [15:0] Default:0x0 RW */
-+	u32 mtu_0:16;            /* [31:16] Default:0x0 RW */
-+};
-+
-+/*  ----------  EPRO  ----------  */
-+#define NBL_EPRO_INT_STATUS			(NBL_PPE_EPRO_BASE + 0x00000000)
-+#define NBL_EPRO_INT_MASK			(NBL_PPE_EPRO_BASE + 0x00000004)
-+#define NBL_EPRO_RSS_KEY_REG			(NBL_PPE_EPRO_BASE + 0x00000400)
-+#define NBL_EPRO_MIRROR_ACT_PRI_REG		(NBL_PPE_EPRO_BASE + 0x00000234)
-+#define NBL_EPRO_ACTION_FILTER_TABLE(i)		(NBL_PPE_EPRO_BASE + 0x00001900 + \
-+						sizeof(struct nbl_epro_action_filter_tbl) * (i))
-+/* epro epro_ept table */
-+#define NBL_EPRO_EPT_TABLE(i) \
-+	(NBL_PPE_EPRO_BASE + 0x00001800 + (i) * sizeof(struct nbl_epro_ept_tbl))
-+/* epro epro_vpt table */
-+#define NBL_EPRO_VPT_TABLE(i) \
-+	(NBL_PPE_EPRO_BASE + 0x00004000 + (i) * sizeof(struct nbl_epro_vpt_tbl))
-+/* epro epro_rss_pt table */
-+#define NBL_EPRO_RSS_PT_TABLE(i) \
-+	(NBL_PPE_EPRO_BASE + 0x00002000 + (i) * sizeof(struct nbl_epro_rss_pt_tbl))
-+/* epro epro_rss_ret table */
-+#define NBL_EPRO_RSS_RET_TABLE(i) \
-+	(NBL_PPE_EPRO_BASE + 0x00008000 + (i) * sizeof(struct nbl_epro_rss_ret_tbl))
-+/* epro epro_sch_cos_map table */
-+#define NBL_EPRO_SCH_COS_MAP_TABLE(i, j) \
-+	(NBL_PPE_EPRO_BASE + 0x00000640 + ((i) * 0x20) + (j) * sizeof(struct nbl_epro_cos_map))
-+/* epro epro_port_pri_mdf_en */
-+#define NBL_EPRO_PORT_PRI_MDF_EN	(NBL_PPE_EPRO_BASE + 0x000006E0)
-+/* epro epro_act_sel_en */
-+#define NBL_EPRO_ACT_SEL_EN_REG \
-+	(NBL_PPE_EPRO_BASE + 0x00000214)
-+/* epro epro_kgen_ft table */
-+#define NBL_EPRO_KGEN_FT_TABLE(i) \
-+	(NBL_PPE_EPRO_BASE + 0x00001980 + (i) * sizeof(struct nbl_epro_kgen_ft_tbl))
-+
-+struct nbl_epro_int_mask {
-+	u32 fatal_err:1;
-+	u32 fifo_uflw_err:1;
-+	u32 fifo_dflw_err:1;
-+	u32 cif_err:1;
-+	u32 input_err:1;
-+	u32 cfg_err:1;
-+	u32 data_ucor_err:1;
-+	u32 bank_cor_err:1;
-+	u32 rsv2:24;
-+};
-+
-+struct nbl_epro_rss_key {
-+	u64 key0;
-+	u64 key1;
-+	u64 key2;
-+	u64 key3;
-+	u64 key4;
-+};
-+
-+struct nbl_epro_mirror_act_pri {
-+	u32 car_idx_pri:2;
-+	u32 dqueue_pri:2;
-+	u32 dport_pri:2;
-+	u32 rsv:26;
-+};
-+
-+/* EPRO epro_rss_ret table */
-+struct nbl_epro_rss_ret_tbl {
-+	u32 dqueue0:11;
-+	u32 vld0:1;
-+	u32 rsv0:4;
-+	u32 dqueue1:11;
-+	u32 vld1:1;
-+	u32 rsv1:4;
-+};
-+
-+/* EPRO epro_rss_pt table */
-+struct nbl_epro_rss_pt_tbl {
-+	u32 entry_size:3;
-+#define NBL_EPRO_RSS_ENTRY_SIZE_16		(0)
-+#define NBL_EPRO_RSS_ENTRY_SIZE_32		(1)
-+#define NBL_EPRO_RSS_ENTRY_SIZE_64		(2)
-+#define NBL_EPRO_RSS_ENTRY_SIZE_128		(3)
-+#define NBL_EPRO_RSS_ENTRY_SIZE_256		(4)
-+	u32 offset1:14;
-+	u32 offset1_vld:1;
-+	u32 offset0:14;
-+	u32 offset0_vld:1;
-+	u32 vld:1;
-+	u32 rsv:30;
-+};
-+
-+/*EPRO sch cos map*/
-+struct nbl_epro_cos_map {
-+	u32 pkt_cos:3;
-+	u32 dscp:6;
-+	u32 rsv:23;
-+};
-+
-+/* EPRO epro_port_pri_mdf_en */
-+struct nbl_epro_port_pri_mdf_en_cfg {
-+	u32 eth0:1;
-+	u32 eth1:1;
-+	u32 eth2:1;
-+	u32 eth3:1;
-+	u32 loop:1;
-+	u32 rsv:27;
-+};
-+
-+enum nbl_md_action_id_e {
-+	NBL_MD_ACTION_NONE		= 0,
-+	NBL_MD_ACTION_CLEAR_FLAG	= 1,
-+	NBL_MD_ACTION_SET_FLAG		= NBL_MD_ACTION_CLEAR_FLAG,
-+	NBL_MD_ACTION_SET_FWD		= NBL_MD_ACTION_CLEAR_FLAG,
-+	NBL_MD_ACTION_FLOWID0		= 2,
-+	NBL_MD_ACTION_FLOWID1		= 3,
-+	NBL_MD_ACTION_RSSIDX		= 4,
-+	NBL_MD_ACTION_PORT_CARIDX	= 5,
-+	NBL_MD_ACTION_FLOW_CARIDX	= 6,
-+	NBL_MD_ACTION_TABLE_INDEX	= 7,
-+	NBL_MD_ACTION_MIRRIDX		= 8,
-+	NBL_MD_ACTION_DPORT		= 9,
-+	NBL_MD_ACTION_SET_DPORT		= NBL_MD_ACTION_DPORT,
-+	NBL_MD_ACTION_DQUEUE		= 10,
-+	NBL_MD_ACTION_MCIDX		= 13,
-+	NBL_MD_ACTION_VNI0		= 14,
-+	NBL_MD_ACTION_VNI1		= 15,
-+	NBL_MD_ACTION_STAT_IDX		= 16,
-+	NBL_MD_ACTION_PRBAC_IDX		= 17,
-+	NBL_MD_ACTION_L4S_IDX		= NBL_MD_ACTION_PRBAC_IDX,
-+	NBL_MD_ACTION_DP_HASH0		= 19,
-+	NBL_MD_ACTION_DP_HASH1		= 20,
-+	NBL_MD_ACTION_MDF_PRI		= 21,
-+
-+	NBL_MD_ACTION_MDF_V4_SIP	= 32,
-+	NBL_MD_ACTION_MDF_V4_DIP	= 33,
-+	NBL_MD_ACTION_MDF_V6_SIP	= 34,
-+	NBL_MD_ACTION_MDF_V6_DIP	= 35,
-+	NBL_MD_ACTION_MDF_DPORT		= 36,
-+	NBL_MD_ACTION_MDF_SPORT		= 37,
-+	NBL_MD_ACTION_MDF_DMAC		= 38,
-+	NBL_MD_ACTION_MDF_SMAC		= 39,
-+	NBL_MD_ACTION_MDF_V4_DSCP_ECN	= 40,
-+	NBL_MD_ACTION_MDF_V6_DSCP_ECN	= 41,
-+	NBL_MD_ACTION_MDF_V4_TTL	= 42,
-+	NBL_MD_ACTION_MDF_V6_HOPLIMIT	= 43,
-+	NBL_MD_ACTION_DEL_O_VLAN	= 44,
-+	NBL_MD_ACTION_DEL_I_VLAN	= 45,
-+	NBL_MD_ACTION_MDF_O_VLAN	= 46,
-+	NBL_MD_ACTION_MDF_I_VLAN	= 47,
-+	NBL_MD_ACTION_ADD_O_VLAN	= 48,
-+	NBL_MD_ACTION_ADD_I_VLAN	= 49,
-+	NBL_MD_ACTION_ENCAP_TNL		= 50,
-+	NBL_MD_ACTION_DECAP_TNL		= 51,
-+	NBL_MD_ACTION_MDF_TNL_SPORT	= 52,
-+};
-+
-+/* EPRO action filter table */
-+struct nbl_epro_action_filter_tbl {
-+	u64 filter_mask;
-+};
-+
-+#define NBL_EPRO_LAG_MAX			(4)
-+#define NBL_EPRO_EPT_LAG_OFFSET			(4)
-+
-+/* EPRO epr_ept table */
-+struct nbl_epro_ept_tbl {
-+	u32 cvlan:16;
-+	u32 svlan:16;
-+	u32 fwd:1;
-+#define NBL_EPRO_FWD_TYPE_DROP		(0)
-+#define NBL_EPRO_FWD_TYPE_NORMAL	(1)
-+	u32 mirror_en:1;
-+	u32 mirror_id:4;
-+	u32 pop_i_vlan:1;
-+	u32 pop_o_vlan:1;
-+	u32 push_i_vlan:1;
-+	u32 push_o_vlan:1;
-+	u32 replace_i_vlan:1;
-+	u32 replace_o_vlan:1;
-+	u32 lag_alg_sel:2;
-+#define NBL_EPRO_LAG_ALG_L2_HASH		(0)
-+#define NBL_EPRO_LAG_ALG_L23_HASH		(1)
-+#define NBL_EPRO_LAG_ALG_LINUX_L34_HASH		(2)
-+#define NBL_EPRO_LAG_ALG_DPDK_L34_HASH		(3)
-+	u32 lag_port_btm:4;
-+	u32 lag_l2_protect_en:1;
-+	u32 pfc_sch_cos_default:3;
-+	u32 pfc_mode:1;
-+	u32 vld:1;
-+	u32 rsv:8;
-+};
-+
-+/* EPRO epro_vpt table */
-+struct nbl_epro_vpt_tbl {
-+	u32 cvlan:16;
-+	u32 svlan:16;
-+	u32 fwd:1;
-+#define NBL_EPRO_FWD_TYPE_DROP		(0)
-+#define NBL_EPRO_FWD_TYPE_NORMAL	(1)
-+	u32 mirror_en:1;
-+	u32 mirror_id:4;
-+	u32 car_en:1;
-+	u32 car_id:10;
-+	u32 pop_i_vlan:1;
-+	u32 pop_o_vlan:1;
-+	u32 push_i_vlan:1;
-+	u32 push_o_vlan:1;
-+	u32 replace_i_vlan:1;
-+	u32 replace_o_vlan:1;
-+	u32 rss_alg_sel:1;
-+#define NBL_EPRO_RSS_ALG_TOEPLITZ_HASH		(0)
-+#define NBL_EPRO_RSS_ALG_CRC32			(1)
-+	u32 rss_key_type_ipv4:1;
-+#define NBL_EPRO_RSS_KEY_TYPE_IPV4_L3		(0)
-+#define NBL_EPRO_RSS_KEY_TYPE_IPV4_L4		(1)
-+	u32 rss_key_type_ipv6:1;
-+#define NBL_EPRO_RSS_KEY_TYPE_IPV6_L3		(0)
-+#define NBL_EPRO_RSS_KEY_TYPE_IPV6_L4		(1)
-+	u32 vld:1;
-+	u32 rsv:5;
-+};
-+
-+/* UPA upa_pri_sel_conf */
-+#define NBL_UPA_PRI_SEL_CONF_TABLE(id)	(NBL_DP_UPA_BASE + 0x00000230 + \
-+					((id) * sizeof(struct nbl_upa_pri_sel_conf)))
-+#define NBL_UPA_PRI_CONF_TABLE(id)	(NBL_DP_UPA_BASE + 0x00002000 + \
-+					((id) * sizeof(struct nbl_upa_pri_conf)))
-+
-+/* UPA pri_sel_conf */
-+struct nbl_upa_pri_sel_conf {
-+	u32 pri_sel:5;
-+	u32 pri_default:3;
-+	u32 pri_disen:1;
-+	u32 rsv:23;
-+};
-+
-+/* UPA pri_conf_table */
-+struct nbl_upa_pri_conf {
-+	u32 pri0:4;
-+	u32 pri1:4;
-+	u32 pri2:4;
-+	u32 pri3:4;
-+	u32 pri4:4;
-+	u32 pri5:4;
-+	u32 pri6:4;
-+	u32 pri7:4;
-+};
-+
-+#define NBL_DQM_RXMAC_TX_PORT_BP_EN	(NBL_DP_DQM_BASE + 0x00000660)
-+#define NBL_DQM_RXMAC_TX_COS_BP_EN	(NBL_DP_DQM_BASE + 0x00000664)
-+#define NBL_DQM_RXMAC_RX_PORT_BP_EN	(NBL_DP_DQM_BASE + 0x00000670)
-+#define NBL_DQM_RX_PORT_BP_EN		(NBL_DP_DQM_BASE + 0x00000610)
-+#define NBL_DQM_RX_COS_BP_EN		(NBL_DP_DQM_BASE + 0x00000614)
-+
-+/* DQM rxmac_tx_port_bp_en */
-+struct nbl_dqm_rxmac_tx_port_bp_en_cfg {
-+	u32 eth0:1;
-+	u32 eth1:1;
-+	u32 eth2:1;
-+	u32 eth3:1;
-+	u32 rsv:28;
-+};
-+
-+/* DQM rxmac_tx_cos_bp_en */
-+struct nbl_dqm_rxmac_tx_cos_bp_en_cfg {
-+	u32 eth0:8;
-+	u32 eth1:8;
-+	u32 eth2:8;
-+	u32 eth3:8;
-+};
-+
-+#define NBL_UQM_QUE_TYPE			(NBL_DP_UQM_BASE + 0x0000013c)
-+#define NBL_UQM_RX_COS_BP_EN			(NBL_DP_UQM_BASE + 0x00000614)
-+#define NBL_UQM_TX_COS_BP_EN			(NBL_DP_UQM_BASE + 0x00000604)
-+
-+#define NBL_UQM_DROP_PKT_CNT			(NBL_DP_UQM_BASE + 0x000009C0)
-+#define NBL_UQM_DROP_PKT_SLICE_CNT		(NBL_DP_UQM_BASE + 0x000009C4)
-+#define NBL_UQM_DROP_PKT_LEN_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009C8)
-+#define NBL_UQM_DROP_HEAD_PNTR_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009CC)
-+#define NBL_UQM_DROP_WEIGHT_ADD_CNT		(NBL_DP_UQM_BASE + 0x000009D0)
-+#define NBL_UQM_PORT_DROP_PKT_CNT		(NBL_DP_UQM_BASE + 0x000009D4)
-+#define NBL_UQM_PORT_DROP_PKT_SLICE_CNT		(NBL_DP_UQM_BASE + 0x000009F4)
-+#define NBL_UQM_PORT_DROP_PKT_LEN_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A14)
-+#define NBL_UQM_PORT_DROP_HEAD_PNTR_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A34)
-+#define NBL_UQM_PORT_DROP_WEIGHT_ADD_CNT	(NBL_DP_UQM_BASE + 0x00000A54)
-+#define NBL_UQM_FWD_DROP_CNT			(NBL_DP_UQM_BASE + 0x00000A80)
-+#define NBL_UQM_DPORT_DROP_CNT			(NBL_DP_UQM_BASE + 0x00000B74)
-+
-+#define NBL_UQM_PORT_DROP_DEPTH			6
-+#define NBL_UQM_DPORT_DROP_DEPTH		16
-+
-+struct nbl_uqm_que_type {
-+	u32 bp_drop:1;
-+	u32 rsv:31;
-+};
-+
-+/* UQM rx_cos_bp_en */
-+struct nbl_uqm_rx_cos_bp_en_cfg {
-+	u32 vld_l;
-+	u32 vld_h:16;
-+};
-+
-+/* UQM rx_port_bp_en */
-+struct nbl_uqm_rx_port_bp_en_cfg {
-+	u32 l4s_h:1;
-+	u32 l4s_e:1;
-+	u32 rdma_h:1;
-+	u32 rdma_e:1;
-+	u32 emp:1;
-+	u32 loopback:1;
-+	u32 rsv:26;
-+};
-+
-+/* UQM tx_cos_bp_en */
-+struct nbl_uqm_tx_cos_bp_en_cfg {
-+	u32 vld_l;
-+	u32 vld_h:8;
++#define NBL_DUPPKT_PTYPE_NA				135
++#define NBL_DUPPKT_PTYPE_NS				136
++
++struct nbl_flow_l2_data {
++	struct nbl_flow_fem_entry entry[NBL_FLOW_MACVLAN_MAX];
++	union {
++		struct nbl_flow_mcc_group *mcc_group;
++		u16 vsi;
++	};
++	bool multi;
++	bool mcast_flow;
++
++};
++
++union nbl_l2_hw_up_data_u {
++	struct nbl_l2_hw_up_data {
++		u32 act0:22;
++		u32 act1:22;
++		u64 rsv1:40;
++		u32 padding:4;
++		u32 sport:4;
++		u32 svlan_id:16;
++		u64 dst_mac:48;
++		u32 template:4;
++		u32 rsv[5];
++	} __packed info;
++#define NBL_L2_HW_UP_DATA_TAB_WIDTH (sizeof(struct nbl_l2_hw_up_data) \
++		/ sizeof(u32))
++	u32 data[NBL_L2_HW_UP_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_l2_hw_up_data)];
++};
++
++union nbl_l2_hw_lldp_lacp_data_u {
++	struct nbl_l2_hw_lldp_lacp_data {
++		u32 act0:22;
++		u32 rsv1:2;
++		u8 padding[14];
++		u32 sport:4;
++		u32 ether_type:16;
++		u32 template:4;
++		u32 rsv[5];
++	} __packed info;
++#define NBL_L2_HW_LLDP_LACP_DATA_TAB_WIDTH (sizeof(struct nbl_l2_hw_lldp_lacp_data) \
++		/ sizeof(u32))
++	u32 data[NBL_L2_HW_LLDP_LACP_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_l2_hw_lldp_lacp_data)];
++};
++
++union nbl_l2_hw_up_multi_mcast_data_u {
++	struct nbl_l2_hw_up_multi_mcast_data {
++		u32 act0:22;
++		u32 rsv1:2;
++		u8 padding[16];
++		u32 sport:4;
++		u32 template:4;
++		u32 rsv[5];
++	} __packed info;
++#define NBL_L2_HW_UP_MULTI_MCAST_DATA_TAB_WIDTH (sizeof(struct nbl_l2_hw_up_multi_mcast_data) \
++		/ sizeof(u32))
++	u32 data[NBL_L2_HW_UP_MULTI_MCAST_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_l2_hw_up_multi_mcast_data)];
++};
++
++union nbl_l2_hw_down_multi_mcast_data_u {
++	struct nbl_l2_hw_down_multi_mcast_data {
++		u32 act0:22;
++		u32 rsv1:2;
++		u8 rsv2[16];
++		u32 padding:2;
++		u32 sport:2;
++		u32 template:4;
++		u32 rsv[5];
++	} __packed info;
++#define NBL_L2_HW_DOWN_MULTI_MCAST_DATA_TAB_WIDTH \
++		(sizeof(struct nbl_l2_hw_down_multi_mcast_data) / sizeof(u32))
++	u32 data[NBL_L2_HW_DOWN_MULTI_MCAST_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_l2_hw_down_multi_mcast_data)];
++};
++
++union nbl_l2_hw_down_data_u {
++	struct nbl_l2_hw_down_data {
++		u32 act0:22;
++		u32 act1:22;
++		u64 rsv2:40;
++		u32 padding:6;
++		u32 sport:2;
++		u32 svlan_id:16;
++		u64 dst_mac:48;
++		u32 template:4;
++		u32 rsv[5];
++	} __packed info;
++#define NBL_L2_HW_DOWN_DATA_TAB_WIDTH (sizeof(struct nbl_l2_hw_down_data) \
++		/ sizeof(u32))
++	u32 data[NBL_L2_HW_DOWN_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_l2_hw_down_data)];
++};
++
++union nbl_common_data_u {
++	struct nbl_common_data {
++		u32 rsv[10];
++	} __packed info;
++#define NBL_COMMON_DATA_TAB_WIDTH (sizeof(struct nbl_common_data) \
++		/ sizeof(u32))
++	u32 data[NBL_COMMON_DATA_TAB_WIDTH];
++	u8 hash_key[sizeof(struct nbl_common_data)];
 +};
 +
 +#pragma pack()
 +
-+/*  ----------  TOP  ----------  */
-+/* lb_top_ctrl_crg_cfg crg_cfg */
-+#define NBL_TOP_CTRL_MODULE		(0x01300000)
-+#define NBL_TOP_CTRL_INT_STATUS		(NBL_TOP_CTRL_MODULE + 0X0000)
-+#define NBL_TOP_CTRL_INT_MASK		(NBL_TOP_CTRL_MODULE + 0X0004)
-+#define NBL_TOP_CTRL_LB_CLK		(NBL_TOP_CTRL_MODULE + 0X0100)
-+#define NBL_TOP_CTRL_LB_RST		(NBL_TOP_CTRL_MODULE + 0X0104)
-+#define NBL_TOP_CTRL_TVSENSOR0		(NBL_TOP_CTRL_MODULE + 0X0254)
-+#define NBL_TOP_CTRL_SOFT_DEF0		(NBL_TOP_CTRL_MODULE + 0x0430)
-+#define NBL_TOP_CTRL_SOFT_DEF1		(NBL_TOP_CTRL_MODULE + 0x0434)
-+#define NBL_TOP_CTRL_SOFT_DEF2		(NBL_TOP_CTRL_MODULE + 0x0438)
-+#define NBL_TOP_CTRL_SOFT_DEF3		(NBL_TOP_CTRL_MODULE + 0x043c)
-+#define NBL_TOP_CTRL_SOFT_DEF4		(NBL_TOP_CTRL_MODULE + 0x0440)
-+#define NBL_TOP_CTRL_SOFT_DEF5		(NBL_TOP_CTRL_MODULE + 0x0444)
-+#define NBL_TOP_CTRL_VERSION_INFO	(NBL_TOP_CTRL_MODULE + 0X0900)
-+#define NBL_TOP_CTRL_VERSION_DATE	(NBL_TOP_CTRL_MODULE + 0X0904)
-+
-+#define NBL_FW_HEARTBEAT_PONG		NBL_TOP_CTRL_SOFT_DEF1
-+
-+#define NBL_TOP_CTRL_RDMA_LB_RST	BIT(10)
-+#define NBL_TOP_CTRL_RDMA_LB_CLK	BIT(10)
-+
-+/* temperature threshold1 */
-+#define NBL_LEONIS_TEMP_MAX			(105)
-+/* temperature threshold2 */
-+#define NBL_LEONIS_TEMP_CRIT			(115)
-+
-+#define NBL_ACT_DATA_BITS			(16)
-+
-+#define NBL_CMDQ_DIF_MODE_VALUE			(2)
-+#define NBL_CMDQ_DELAY_200US			(200)
-+#define NBL_CMDQ_DELAY_300US			(300)
-+#define NBL_CMDQ_RESET_MAX_WAIT			(30)
-+#define NBL_CMD_NOTIFY_ADDR			(0x00001000)
-+#define NBL_ACL_RD_RETRY			(50000)
-+#define NBL_ACL_RD_WAIT_100US			(100)
-+#define NBL_ACL_RD_WAIT_200US			(200)
-+#define NBL_ACL_CPU_WRITE			(0)
-+#define NBL_ACL_CPU_READ			(1)
-+
-+/* the capacity of storing acl-items in all tcams */
-+#define NBL_ACL_ITEM_CAP			(1536)
-+#define NBL_ACL_KEY_WIDTH			(120)
-+#define NBL_ACL_ITEM6_CAP			(512)
-+#define NBL_ACL_KEY6_WIDTH			(240)
-+#define NBL_ACL_TCAM_DEPTH			(512)
-+#define NBL_ACL_S1_PROFILE_ID			(0)
-+#define NBL_ACL_S2_PROFILE_ID			(1)
-+#define NBL_ACL_TCAM_CNT			(16)
-+#define NBL_ACL_TCAM_HALF			(8)
-+#define NBL_ACL_TCAM_DEPTH			(512)
-+#define NBL_ACL_TCAM_BITS			(40)
-+#define NBL_ACL_HALF_TCAMS_BITS			(320)
-+#define NBL_ACL_HALF_TCAMS_BYTES		(40)
-+#define NBL_ACL_ALL_TCAMS_BITS			(640)
-+#define NBL_ACL_ALL_TCAMS_BYTES			(80)
-+#define NBL_ACL_ACT_RAM_CNT			(4)
-+
-+#define NBL_FEM_TCAM_MAX_NUM			(64)
-+
-+#define RTE_ETHER_TYPE_VLAN			0x8100
-+#define RTE_ETHER_TYPE_QINQ			0x88A8
-+#define RTE_ETHER_TYPE_QINQ1			0x9100
-+#define RTE_ETHER_TYPE_QINQ2			0x9200
-+#define NBL_BYTES_IN_REG			(4)
-+#define NBL_CMDQ_HI_DWORD(x)				((u32)(((x) >> 32) & 0xFFFFFFFF))
-+#define NBL_CMDQ_LO_DWORD(x)				((u32)(x) & 0xFFFFFFFF)
-+#define NBL_FEM_INIT_START_KERN			(0xFE)
-+#define NBL_FEM_INIT_START_VALUE		(0x3E)
-+#define NBL_PED_VSI_TYPE_ETH_BASE		(1027)
-+#define NBL_DPED_VLAN_TYPE_PORT_NUM		(1031)
-+#define NBL_CHAN_REG_MAX_LEN			(32)
-+#define NBL_EPRO_RSS_KEY_32			(0x6d5a6d5a)
-+
-+#define NBL_SHAPING_GRP_TIMMING_ADD_ADDR  (0x504400)
-+#define NBL_SHAPING_GRP_ADDR  (0x504800)
-+#define NBL_SHAPING_GRP_DWLEN (4)
-+#define NBL_SHAPING_GRP_REG(r) (NBL_SHAPING_GRP_ADDR + \
-+		(NBL_SHAPING_GRP_DWLEN * 4) * (r))
-+#define NBL_DSCH_VN_SHA2GRP_MAP_TBL_ADDR  (0x47c000)
-+#define NBL_DSCH_VN_SHA2GRP_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_VN_SHA2GRP_MAP_TBL_REG(r) (NBL_DSCH_VN_SHA2GRP_MAP_TBL_ADDR + \
-+		(NBL_DSCH_VN_SHA2GRP_MAP_TBL_DWLEN * 4) * (r))
-+#define NBL_DSCH_VN_GRP2SHA_MAP_TBL_ADDR  (0x480000)
-+#define NBL_DSCH_VN_GRP2SHA_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_VN_GRP2SHA_MAP_TBL_REG(r) (NBL_DSCH_VN_GRP2SHA_MAP_TBL_ADDR + \
-+		(NBL_DSCH_VN_GRP2SHA_MAP_TBL_DWLEN * 4) * (r))
-+#define NBL_SHAPING_DPORT_TIMMING_ADD_ADDR  (0x504504)
-+#define NBL_SHAPING_DPORT_ADDR  (0x504700)
-+#define NBL_SHAPING_DPORT_DWLEN (4)
-+#define NBL_SHAPING_DPORT_REG(r) (NBL_SHAPING_DPORT_ADDR + \
-+		(NBL_SHAPING_DPORT_DWLEN * 4) * (r))
-+#define NBL_SHAPING_DVN_DPORT_ADDR  (0x504750)
-+#define NBL_SHAPING_DVN_DPORT_DWLEN (4)
-+#define NBL_SHAPING_DVN_DPORT_REG(r) (NBL_SHAPING_DVN_DPORT_ADDR + \
-+		(NBL_SHAPING_DVN_DPORT_DWLEN * 4) * (r))
-+#define NBL_SHAPING_RDMA_DPORT_ADDR  (0x5047a0)
-+#define NBL_SHAPING_RDMA_DPORT_DWLEN (4)
-+#define NBL_SHAPING_RDMA_DPORT_REG(r) (NBL_SHAPING_RDMA_DPORT_ADDR + \
-+		(NBL_SHAPING_RDMA_DPORT_DWLEN * 4) * (r))
-+#define NBL_DSCH_PSHA_EN_ADDR  (0x404314)
-+#define NBL_SHAPING_NET_ADDR  (0x505800)
-+#define NBL_SHAPING_NET_DWLEN (4)
-+#define NBL_SHAPING_NET_REG(r) (NBL_SHAPING_NET_ADDR + \
-+		(NBL_SHAPING_NET_DWLEN * 4) * (r))
-+#define NBL_DSCH_VN_SHA2NET_MAP_TBL_ADDR  (0x474000)
-+#define NBL_DSCH_VN_SHA2NET_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_VN_SHA2NET_MAP_TBL_REG(r) (NBL_DSCH_VN_SHA2NET_MAP_TBL_ADDR + \
-+		(NBL_DSCH_VN_SHA2NET_MAP_TBL_DWLEN * 4) * (r))
-+#define NBL_DSCH_VN_NET2SHA_MAP_TBL_ADDR  (0x478000)
-+#define NBL_DSCH_VN_NET2SHA_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_VN_NET2SHA_MAP_TBL_REG(r) (NBL_DSCH_VN_NET2SHA_MAP_TBL_ADDR + \
-+		(NBL_DSCH_VN_NET2SHA_MAP_TBL_DWLEN * 4) * (r))
-+
-+#define NBL_DSCH_RDMA_SHA2NET_MAP_TBL_ADDR (0x49c000)
-+#define NBL_DSCH_RDMA_SHA2NET_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_RDMA_SHA2NET_MAP_TBL_REG(r) (NBL_DSCH_RDMA_SHA2NET_MAP_TBL_ADDR + \
-+		(NBL_DSCH_RDMA_SHA2NET_MAP_TBL_DWLEN * 4) * (r))
-+#define NBL_DSCH_RDMA_NET2SHA_MAP_TBL_ADDR (0x494000)
-+#define NBL_DSCH_RDMA_NET2SHA_MAP_TBL_DWLEN (1)
-+#define NBL_DSCH_RDMA_NET2SHA_MAP_TBL_REG(r) (NBL_DSCH_RDMA_NET2SHA_MAP_TBL_ADDR + \
-+		(NBL_DSCH_RDMA_NET2SHA_MAP_TBL_DWLEN * 4) * (r))
-+
-+/* Mailbox bar hw register offset begin */
-+#define NBL_FW_HEARTBEAT_PING			0x84
-+#define NBL_FW_BOARD_CONFIG			0x200
-+#define NBL_FW_BOARD_DW3_OFFSET			(NBL_FW_BOARD_CONFIG + 12)
-+#define NBL_FW_BOARD_DW6_OFFSET			(NBL_FW_BOARD_CONFIG + 24)
-+#define NBL_ETH_REP_INFO_BASE			(1024)
-+
-+/* Mailbox bar hw register offset end */
-+
-+enum nbl_ethdev_repr_flag {
-+	NBL_ETHDEV_VIRTIO_REP = 0,
-+	NBL_ETHDEV_ETH_REP,
-+	NBL_ETHDEV_PF_REP,
-+	NBL_ETHDEV_INVALID_REP,
++struct nbl_flow_param {
++	u8 *mac;
++	u8 type;
++	u8 eth;
++	u16 ether_type;
++	u16 vid;
++	u16 vsi;
++	u16 mcc_id;
++	u32 index;
++	u32 *data;
++	u32 priv_data;
++	bool for_pmd;
 +};
 +
-+enum nbl_ped_vlan_type_e {
-+	INNER_VLAN_TYPE,
-+	OUTER_VLAN_TYPE,
++struct nbl_mt_input {
++	u8 key[NBL_KT_BYTE_LEN];
++	u8 at_num;
++	u8 kt_left_num;
++	u32 tbl_id;
++	u16 depth;
++	u16 power;
 +};
 +
-+enum nbl_ped_vlan_tpid_e {
-+	PED_VLAN_TYPE_8100 = 0,
-+	PED_VLAN_TYPE_88A8 = 1,
-+	PED_VLAN_TYPE_9100 = 2,
-+	PED_VLAN_TYPE_9200 = 3,
-+	PED_VLAN_TYPE_NUM = 4,
++struct nbl_ht_item {
++	u16 ht0_hash;
++	u16 ht1_hash;
++	u16 hash_bucket;
++	u32 key_index;
++	u8 ht_table;
 +};
 +
-+enum nbl_error_code_e {
-+	NBL_ERROR_CODE_NONE		= 0,
-+	NBL_ERROR_CODE_VLAN		= 1,
-+	NBL_ERROR_CODE_L3_HEAD_LEN	= 2,
-+	NBL_ERROR_CODE_L3_PLD_LEN	= 3,
-+	NBL_ERROR_CODE_L3_CHKSUM	= 4,
-+	NBL_ERROR_CODE_L4_CHKSUM	= 5,
-+	NBL_ERROR_CODE_TTL_HOPLIMT	= 6,
-+	NBL_ERROR_CODE_ESP_AUTH_FAIL	= 7,
-+	NBL_ERROR_CODE_ESP_BAD_FAIL	= 8,
-+	NBL_ERROR_CODE_PA_RECG_FAIL	= 9,
-+	NBL_ERROR_CODE_DN_SMAC		= 10,
-+	NBL_ERROR_CODE_TOTAL_NUM	= 16,
++struct nbl_kt_item {
++	union nbl_common_data_u kt_data;
 +};
 +
-+enum nbl_epro_act_pri_e {
-+	EPRO_ACT_MIRRORIDX_PRI		= 3,
-+	EPRO_ACT_CARIDX_PRI		= 3,
-+	EPRO_ACT_DQUEUE_PRI		= 3,
-+	EPRO_ACT_DPORT_PRI		= 3,
-+	EPRO_ACT_POP_IVLAN_PRI		= 3,
-+	EPRO_ACT_POP_OVLAN_PRI		= 3,
-+	EPRO_ACT_REPLACE_IVLAN_PRI	= 3,
-+	EPRO_ACT_REPLACE_OVLAN_PRI	= 3,
-+	EPRO_ACT_PUSH_IVLAN_PRI		= 3,
-+	EPRO_ACT_PUSH_OVLAN_PRI		= 3,
-+	EPRO_ACT_OUTER_SPORT_MDF_PRI	= 3,
-+	EPRO_ACT_PRI_MDF_PRI		= 3,
-+	EPRO_ACT_DP_HASH0_PRI		= 3,
-+	EPRO_ACT_DP_HASH1_PRI		= 3,
++struct nbl_tcam_item {
++	struct nbl_ht_item ht_item;
++	struct nbl_kt_item kt_item;
++	u32 tcam_action[NBL_MAX_ACTION_NUM];
++	bool tcam_flag;
++	u8 key_mode;
++	u8 pp_type;
++	u32 *pp_tcam_count;
++	u16 tcam_index;
 +};
 +
-+enum nbl_epro_mirror_act_pri_e {
-+	EPRO_MIRROR_ACT_CARIDX_PRI	= 3,
-+	EPRO_MIRROR_ACT_DQUEUE_PRI	= 3,
-+	EPRO_MIRROR_ACT_DPORT_PRI	= 3,
++struct nbl_tcam_ad_item {
++	u32 action[NBL_MAX_ACTION_NUM];
 +};
 +
-+union nbl_ped_port_vlan_type_u {
-+	struct ped_port_vlan_type {
-+		u32 o_vlan_sel:2;
-+		u32 i_vlan_sel:2;
-+		u32 rsv:28;
-+	} __packed info;
-+#define NBL_PED_PORT_VLAN_TYPE_TABLE_WIDTH (sizeof(struct ped_port_vlan_type) \
-+		/ sizeof(u32))
-+	u32 data[NBL_PED_PORT_VLAN_TYPE_TABLE_WIDTH];
++struct nbl_flow_rule_cfg_ops {
++	int (*cfg_action)(struct nbl_flow_param param, u32 *action0, u32 *action1);
++	int (*cfg_key)(union nbl_common_data_u *data,
++		       struct nbl_flow_param param, u8 eth_mode);
++	void (*cfg_kt_action)(union nbl_common_data_u *data, u32 action0, u32 action1);
 +};
-+
-+#define NBL_ACL_ACTION_RAM_TBL(r, i)	(NBL_ACL_BASE + 0x00002000 + 0x2000 * (r) + \
-+		(NBL_ACL_ACTION_RAM0_DWLEN * 4 * (i)))
-+#define NBL_DPED_MIR_CMD_0_TABLE(t)		(NBL_DPED_MIR_CMD_00_ADDR + \
-+		(NBL_DPED_MIR_CMD_00_DWLEN * 2 * (t)))
-+#define NBL_SET_DPORT(upcall_flag, nxtstg_sel, port_type, port_id) \
-+	((upcall_flag) << 14 | (nxtstg_sel) << 12 | (port_type) << 10 | (port_id))
-+
-+#define MAX_RSS_LEN (100)
-+#define  NBL_RSS_FUNC_TYPE       "rss_func_type="
-+enum rss_func_type {
-+	NBL_SYM_TOEPLITZ_INT = 0,
-+	NBL_XOR_INT,
-+	NBL_INVALID_FUNC_TYPE
-+};
-+
-+#define  NBL_XOR                 "xor"
-+#define  NBL_SYM_TOEPLITZ        "sym_toeplitz"
-+#define  NBL_RSS_KEY_TYPE        "rss_key_type"
-+
-+enum rss_field_type {
-+	NBL_KEY_IPV4_L3_INT = 0,
-+	NBL_KEY_IPV4_L4_INT,
-+	NBL_KEY_IPV6_L3_INT,
-+	NBL_KEY_IPV6_L4_INT,
-+	NBL_KEY_AUTO,
-+};
-+
-+#define  NBL_KEY_IPV4_L3	"ipv4"
-+#define  NBL_KEY_IPV4_L4	"ipv4_l4"
-+#define  NBL_KEY_IPV6_L3	"ipv6"
-+#define  NBL_KEY_IPV6_L4	"ipv6_l4"
-+
-+#define RSS_SPLIT_STR_NUM 2
-+#define NBL_KEY_IP4_L4_RSS_BIT 1
-+#define NBL_KEY_IP6_L4_RSS_BIT 2
-+
-+union nbl_fw_board_cfg_dw3 {
-+	struct board_cfg_dw3 {
-+		u32 port_type:1;
-+		u32 port_num:7;
-+		u32 port_speed:2;
-+		u32 gpio_type:3;
-+		u32 p4_version:1; /* 0: low version; 1: high version */
-+		u32 rsv:18;
-+	} __packed info;
-+	u32 data;
-+};
-+
-+union nbl_fw_board_cfg_dw6 {
-+	struct board_cfg_dw6 {
-+		u8 lane_bitmap;
-+		u8 eth_bitmap;
-+		u16 rsv;
-+	} __packed info;
-+	u32 data;
-+};
-+
-+#define NBL_LEONIS_QUIRKS_OFFSET	(0x00000140)
-+
-+#define NBL_LEONIS_ILLEGAL_REG_VALUE	(0xDEADBEEF)
 +
 +#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-new file mode 100644
-index 000000000000..3f11f60643fa
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-@@ -0,0 +1,187 @@
-+/* SPDX-License-Identifier: GPL-2.0*/
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ * Author:
-+ */
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+index b0f53a755e86..363abf326031 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+@@ -29,6 +29,441 @@ static u32 nbl_hw_get_quirks(void *priv)
+ 	return quirks;
+ }
+ 
++static int nbl_send_kt_data(struct nbl_hw_mgt *hw_mgt, union nbl_fem_kt_acc_ctrl_u *kt_ctrl,
++			    u8 *data, struct nbl_common_info *common)
++{
++	union nbl_fem_kt_acc_ack_u kt_ack = {.info = {0}};
++	u32 times = 3;
 +
-+#ifndef _NBL_HW_REG_H_
-+#define _NBL_HW_REG_H_
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_KT_ACC_DATA, data, NBL_KT_HW_L2_DW_LEN);
++	nbl_debug(common, NBL_DEBUG_FLOW, "Set kt = %08x-%08x-%08x-%08x-%08x",
++		  ((u32 *)data)[0], ((u32 *)data)[1], ((u32 *)data)[2],
++		  ((u32 *)data)[3], ((u32 *)data)[4]);
 +
-+#include "nbl_core.h"
++	kt_ctrl->info.rw = NBL_ACC_MODE_WRITE;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_KT_ACC_CTRL,
++			  kt_ctrl->data, NBL_FEM_KT_ACC_CTRL_TBL_WIDTH);
 +
-+#define NBL_HW_MGT_TO_COMMON(hw_mgt)		((hw_mgt)->common)
-+#define NBL_HW_MGT_TO_DEV(hw_mgt)		NBL_COMMON_TO_DEV(NBL_HW_MGT_TO_COMMON(hw_mgt))
-+#define NBL_MEMORY_BAR				(0)
-+#define NBL_MAILBOX_BAR				(2)
-+#define NBL_RDMA_NOTIFY_OFF			(8192)
++	times = 3;
++	do {
++		nbl_hw_read_regs(hw_mgt, NBL_FEM_KT_ACC_ACK, kt_ack.data,
++				 NBL_FEM_KT_ACC_ACK_TBL_WIDTH);
++		if (!kt_ack.info.done) {
++			times--;
++			usleep_range(100, 200);
++		} else {
++			break;
++		}
++	} while (times);
 +
-+struct nbl_hw_mgt {
++	if (!times) {
++		nbl_err(common, NBL_DEBUG_FLOW, "Config kt flowtale failed");
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static int nbl_send_ht_data(struct nbl_hw_mgt *hw_mgt, union nbl_fem_ht_acc_ctrl_u *ht_ctrl,
++			    u8 *data, struct nbl_common_info *common)
++{
++	union nbl_fem_ht_acc_ack_u ht_ack = {.info = {0}};
++	u32 times = 3;
++
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_HT_ACC_DATA, data, NBL_FEM_HT_ACC_DATA_TBL_WIDTH);
++	nbl_debug(common, NBL_DEBUG_FLOW, "Set ht data = %x", *(u32 *)data);
++
++	ht_ctrl->info.rw = NBL_ACC_MODE_WRITE;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_HT_ACC_CTRL,
++			  ht_ctrl->data, NBL_FEM_HT_ACC_CTRL_TBL_WIDTH);
++
++	times = 3;
++	do {
++		nbl_hw_read_regs(hw_mgt, NBL_FEM_HT_ACC_ACK, ht_ack.data,
++				 NBL_FEM_HT_ACC_ACK_TBL_WIDTH);
++		if (!ht_ack.info.done) {
++			times--;
++			usleep_range(100, 200);
++		} else {
++			break;
++		}
++	} while (times);
++
++	if (!times) {
++		nbl_err(common, NBL_DEBUG_FLOW, "Config ht flowtale failed");
++		return -EIO;
++	}
++
++	return 0;
++}
++
++static void nbl_check_kt_data(struct nbl_hw_mgt *hw_mgt, union nbl_fem_kt_acc_ctrl_u *kt_ctrl,
++			      struct nbl_common_info *common)
++{
++	union nbl_fem_kt_acc_ack_u ack = {.info = {0}};
++	u32 data[10] = {0};
++
++	kt_ctrl->info.rw = NBL_ACC_MODE_READ;
++	kt_ctrl->info.access_size = NBL_ACC_SIZE_320B;
++
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_KT_ACC_CTRL, kt_ctrl->data,
++			  NBL_FEM_KT_ACC_CTRL_TBL_WIDTH);
++
++	nbl_hw_read_regs(hw_mgt, NBL_FEM_KT_ACC_ACK, ack.data, NBL_FEM_KT_ACC_ACK_TBL_WIDTH);
++	nbl_debug(common, NBL_DEBUG_FLOW, "Check kt done:%u status:%u.",
++		  ack.info.done, ack.info.status);
++	if (ack.info.done) {
++		nbl_hw_read_regs(hw_mgt, NBL_FEM_KT_ACC_DATA, (u8 *)data, NBL_KT_HW_L2_DW_LEN);
++		nbl_debug(common, NBL_DEBUG_FLOW, "Check kt data:0x%x-%x-%x-%x-%x-%x-%x-%x-%x-%x.",
++			  data[9], data[8], data[7], data[6], data[5],
++			  data[4], data[3], data[2], data[1], data[0]);
++	}
++}
++
++static void nbl_check_ht_data(struct nbl_hw_mgt *hw_mgt, union nbl_fem_ht_acc_ctrl_u *ht_ctrl,
++			      struct nbl_common_info *common)
++{
++	union nbl_fem_ht_acc_ack_u ack = {.info = {0}};
++	u32 data[4] = {0};
++
++	ht_ctrl->info.rw = NBL_ACC_MODE_READ;
++	ht_ctrl->info.access_size = NBL_ACC_SIZE_128B;
++
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_HT_ACC_CTRL, ht_ctrl->data,
++			  NBL_FEM_HT_ACC_CTRL_TBL_WIDTH);
++
++	nbl_hw_read_regs(hw_mgt, NBL_FEM_HT_ACC_ACK, ack.data, NBL_FEM_HT_ACC_ACK_TBL_WIDTH);
++	nbl_debug(common, NBL_DEBUG_FLOW, "Check ht done:%u status:%u.",
++		  ack.info.done, ack.info.status);
++	if (ack.info.done) {
++		nbl_hw_read_regs(hw_mgt, NBL_FEM_HT_ACC_DATA,
++				 (u8 *)data, NBL_FEM_HT_ACC_DATA_TBL_WIDTH);
++		nbl_debug(common, NBL_DEBUG_FLOW, "Check ht data:0x%x-%x-%x-%x.",
++			  data[0], data[1], data[2], data[3]);
++	}
++}
++
++static void nbl_hw_fem_set_bank(struct nbl_hw_mgt *hw_mgt)
++{
++	u32 bank_sel = 0;
++
++	/* HT bank sel */
++	bank_sel = HT_PORT0_BANK_SEL | HT_PORT1_BANK_SEL << NBL_8BIT
++			| HT_PORT2_BANK_SEL << NBL_16BIT;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_HT_BANK_SEL_BITMAP, (u8 *)&bank_sel, sizeof(bank_sel));
++
++	/* KT bank sel */
++	bank_sel = KT_PORT0_BANK_SEL | KT_PORT1_BANK_SEL << NBL_8BIT
++		      | KT_PORT2_BANK_SEL << NBL_16BIT;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_KT_BANK_SEL_BITMAP, (u8 *)&bank_sel, sizeof(bank_sel));
++
++	/* AT bank sel */
++	bank_sel = AT_PORT0_BANK_SEL | AT_PORT1_BANK_SEL << NBL_16BIT;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_AT_BANK_SEL_BITMAP, (u8 *)&bank_sel, sizeof(bank_sel));
++	bank_sel = AT_PORT2_BANK_SEL;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_AT_BANK_SEL_BITMAP2, (u8 *)&bank_sel, sizeof(bank_sel));
++}
++
++static void nbl_hw_fem_clear_tcam_ad(struct nbl_hw_mgt *hw_mgt)
++{
++	union fem_em_tcam_table_u tcam_table;
++	union fem_em_ad_table_u ad_table = {.info = {0}};
++	int i;
++	int j;
++
++	memset(&tcam_table, 0, sizeof(tcam_table));
++
++	for (i = 0; i < NBL_PT_LEN; i++) {
++		for (j = 0; j < NBL_TCAM_TABLE_LEN; j++) {
++			nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(i, j),
++					  tcam_table.hash_key, sizeof(tcam_table));
++			nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_AD_TABLE_REG(i, j),
++					  ad_table.hash_key, sizeof(ad_table));
++			nbl_hw_rd32(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(i, 1));
++		}
++	}
++}
++
++static int nbl_hw_set_ht(void *priv, u16 hash, u16 hash_other, u8 ht_table,
++			 u8 bucket, u32 key_index, u8 valid)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
 +	struct nbl_common_info *common;
-+	u8 __iomem *hw_addr;
-+	u8 __iomem *mailbox_bar_hw_addr;
-+	u64 notify_offset;
-+	u32 version;
-+	u32 hw_size;
-+	spinlock_t reg_lock;  /* Protect reg access */
-+	bool should_lock;
-+	u8 resv[3];
-+	enum nbl_hw_status hw_status;
-+};
++	union nbl_fem_ht_acc_data_u ht = {.info = {0}};
++	union nbl_fem_ht_acc_ctrl_u ht_ctrl = {.info = {0}};
 +
-+#define NBL_DELAY_MIN_TIME_FOR_REGS		400 /* 200us for palladium,3us for s2c */
-+#define NBL_DELAY_MAX_TIME_FOR_REGS		500 /* 300us for palladium,5us for s2c */
++	common = NBL_HW_MGT_TO_COMMON(hw_mgt);
 +
-+static inline __maybe_unused u32 rd32(u8 __iomem *addr, u64 reg)
-+{
-+	return readl(addr + (reg));
++	ht.info.vld = valid;
++	ht.info.hash = hash_other;
++	ht.info.kt_index = key_index;
++
++	ht_ctrl.info.ht_id = ht_table == NBL_HT0 ? NBL_ACC_HT0 : NBL_ACC_HT1;
++	ht_ctrl.info.entry_id = hash;
++	ht_ctrl.info.bucket_id = bucket;
++	ht_ctrl.info.port = NBL_PT_PP0;
++	ht_ctrl.info.access_size = NBL_ACC_SIZE_32B;
++	ht_ctrl.info.start = 1;
++
++	if (nbl_send_ht_data(hw_mgt, &ht_ctrl, ht.data, common))
++		return -EIO;
++
++	nbl_check_ht_data(hw_mgt, &ht_ctrl, common);
++	return 0;
 +}
 +
-+static inline __maybe_unused void wr32_barrier(u8 __iomem *addr, u64 reg, u32 value)
-+{
-+	writel((value), (addr + (reg)));
-+}
-+
-+static inline __maybe_unused void nbl_hw_read_regs(struct nbl_hw_mgt *hw_mgt, u64 reg,
-+						   u8 *data, u32 len)
-+{
-+	u32 size = len / 4;
-+	u32 i = 0;
-+
-+	if (len % 4)
-+		return;
-+
-+	if (hw_mgt->hw_status) {
-+		for (i = 0; i < size; i++)
-+			*(u32 *)(data + i * sizeof(u32)) = U32_MAX;
-+	}
-+
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_lock(&hw_mgt->reg_lock);
-+
-+	for (i = 0; i < size; i++)
-+		*(u32 *)(data + i * sizeof(u32)) = rd32(hw_mgt->hw_addr, reg + i * sizeof(u32));
-+
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_unlock(&hw_mgt->reg_lock);
-+}
-+
-+static inline __maybe_unused void nbl_hw_write_regs(struct nbl_hw_mgt *hw_mgt,
-+						    u64 reg, const u8 *data, u32 len)
-+{
-+	u32 size = len / 4;
-+	u32 i = 0;
-+
-+	if (len % 4)
-+		return;
-+
-+	if (hw_mgt->hw_status)
-+		return;
-+
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_lock(&hw_mgt->reg_lock);
-+
-+	for (i = 0; i < size; i++)
-+		/* Used for emu, make sure that we won't write too frequently */
-+		wr32_barrier(hw_mgt->hw_addr, reg + i * sizeof(u32),
-+			     *(u32 *)(data + i * sizeof(u32)));
-+
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_unlock(&hw_mgt->reg_lock);
-+}
-+
-+static inline __maybe_unused void nbl_hw_write_be_regs(struct nbl_hw_mgt *hw_mgt,
-+						       u64 reg, const u8 *data, u32 len)
-+{
-+	u32 size = len / 4;
-+	u32 i = 0;
-+	u32 data_le;
-+
-+	if (len % 4)
-+		return;
-+
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_lock(&hw_mgt->reg_lock);
-+
-+	for (i = 0; i < size; i++) {
-+		data_le = swab32(*(u32 *)(data + i * sizeof(u32)));
-+		/* Used for emu, make sure that we won't write too frequently */
-+		wr32_barrier(hw_mgt->hw_addr, reg + i * sizeof(u32), data_le);
-+	}
-+
-+	data_le = rd32(hw_mgt->hw_addr, 0x0);
-+	if (size > 1 && hw_mgt->should_lock)
-+		spin_unlock(&hw_mgt->reg_lock);
-+}
-+
-+static __maybe_unused void nbl_hw_wr32(struct nbl_hw_mgt *hw_mgt, u64 reg, u32 value)
-+{
-+	if (hw_mgt->hw_status)
-+		return;
-+
-+	/* Used for emu, make sure that we won't write too frequently */
-+	wr32_barrier(hw_mgt->hw_addr, reg, value);
-+}
-+
-+static __maybe_unused u32 nbl_hw_rd32(struct nbl_hw_mgt *hw_mgt, u64 reg)
-+{
-+	if (hw_mgt->hw_status)
-+		return U32_MAX;
-+
-+	return rd32(hw_mgt->hw_addr, reg);
-+}
-+
-+static __maybe_unused void nbl_mbx_wr32(void *priv, u64 reg, u32 value)
++static int nbl_hw_set_kt(void *priv, u8 *key, u32 key_index, u8 key_type)
 +{
 +	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_common_info *common;
++	union nbl_fem_kt_acc_ctrl_u kt_ctrl = {.info = {0}};
 +
-+	if (hw_mgt->hw_status)
-+		return;
++	common = NBL_HW_MGT_TO_COMMON(hw_mgt);
 +
-+	writel((value), ((hw_mgt)->mailbox_bar_hw_addr + (reg)));
++	kt_ctrl.info.addr = key_index;
++	kt_ctrl.info.access_size = key_type == NBL_KT_HALF_MODE ? NBL_ACC_SIZE_160B
++								: NBL_ACC_SIZE_320B;
++	kt_ctrl.info.start = 1;
++
++	if (nbl_send_kt_data(hw_mgt, &kt_ctrl, key, common))
++		return -EIO;
++
++	nbl_check_kt_data(hw_mgt, &kt_ctrl, common);
++	return 0;
 +}
 +
-+static __maybe_unused u32 nbl_mbx_rd32(void *priv, u64 reg)
++static int nbl_hw_search_key(void *priv, u8 *key, u8 key_type)
 +{
 +	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_common_info *common;
++	union nbl_search_ctrl_u s_ctrl = {.info = {0}};
++	union nbl_search_ack_u s_ack = {.info = {0}};
++	u8 key_data[NBL_KT_BYTE_LEN] = {0};
++	u8 search_key[NBL_FEM_SEARCH_KEY_LEN] = {0};
++	u8 data[NBL_FEM_SEARCH_KEY_LEN] = {0};
++	u8 times = 3;
 +
-+	if (hw_mgt->hw_status)
-+		return U32_MAX;
++	common = NBL_HW_MGT_TO_COMMON(hw_mgt);
 +
-+	return readl((hw_mgt)->mailbox_bar_hw_addr + (reg));
++	if (key_type == NBL_KT_HALF_MODE)
++		memcpy(key_data, key, NBL_KT_BYTE_HALF_LEN);
++	else
++		memcpy(key_data, key, NBL_KT_BYTE_LEN);
++
++	key_data[0] &= KT_MASK_LEN32_ACTION_INFO;
++	key_data[1] &= KT_MASK_LEN12_ACTION_INFO;
++	if (key_type == NBL_KT_HALF_MODE)
++		memcpy(&search_key[20], key_data, NBL_KT_BYTE_HALF_LEN);
++	else
++		memcpy(search_key, key_data, NBL_KT_BYTE_LEN);
++
++	nbl_debug(common, NBL_DEBUG_FLOW, "Search key:0x%x-%x-%x-%x-%x-%x-%x-%x-%x-%x",
++		  ((u32 *)search_key)[9], ((u32 *)search_key)[8],
++		  ((u32 *)search_key)[7], ((u32 *)search_key)[6],
++		  ((u32 *)search_key)[5], ((u32 *)search_key)[4],
++		  ((u32 *)search_key)[3], ((u32 *)search_key)[2],
++		  ((u32 *)search_key)[1], ((u32 *)search_key)[0]);
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_INSERT_SEARCH0_DATA, search_key, NBL_FEM_SEARCH_KEY_LEN);
++
++	s_ctrl.info.start = 1;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_INSERT_SEARCH0_CTRL, (u8 *)&s_ctrl,
++			  NBL_SEARCH_CTRL_WIDTH);
++
++	do {
++		nbl_hw_read_regs(hw_mgt, NBL_FEM_INSERT_SEARCH0_ACK,
++				 s_ack.data, NBL_SEARCH_ACK_WIDTH);
++		nbl_debug(common, NBL_DEBUG_FLOW, "Search key ack:done:%u status:%u.",
++			  s_ack.info.done, s_ack.info.status);
++
++		if (!s_ack.info.done) {
++			times--;
++			usleep_range(100, 200);
++		} else {
++			nbl_hw_read_regs(hw_mgt, NBL_FEM_INSERT_SEARCH0_DATA,
++					 data, NBL_FEM_SEARCH_KEY_LEN);
++			nbl_debug(common, NBL_DEBUG_FLOW,
++				  "Search key data:0x%x-%x-%x-%x-%x-%x-%x-%x-%x-%x-%x.",
++				  ((u32 *)data)[10], ((u32 *)data)[9],
++				  ((u32 *)data)[8], ((u32 *)data)[7],
++				  ((u32 *)data)[6], ((u32 *)data)[5],
++				  ((u32 *)data)[4], ((u32 *)data)[3],
++				  ((u32 *)data)[2], ((u32 *)data)[1],
++				  ((u32 *)data)[0]);
++			break;
++		}
++	} while (times);
++
++	if (!times) {
++		nbl_err(common, NBL_DEBUG_HW, "Search ht/kt failed.");
++		return -EAGAIN;
++	}
++
++	return 0;
 +}
 +
-+static __maybe_unused void nbl_hw_read_mbx_regs(struct nbl_hw_mgt *hw_mgt,
-+						u64 reg, u8 *data, u32 len)
++static int nbl_hw_add_tcam(void *priv, u32 index, u8 *key, u32 *action, u8 key_type, u8 pp_type)
 +{
-+	u32 i = 0;
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	union fem_em_tcam_table_u tcam_table;
++	union fem_em_tcam_table_u tcam_table_second;
++	union fem_em_ad_table_u ad_table;
 +
-+	if (len % 4)
-+		return;
++	memset(&tcam_table, 0, sizeof(tcam_table));
++	memset(&tcam_table_second, 0, sizeof(tcam_table_second));
++	memset(&ad_table, 0, sizeof(ad_table));
 +
-+	for (i = 0; i < len / 4; i++)
-+		*(u32 *)(data + i * sizeof(u32)) = nbl_mbx_rd32(hw_mgt, reg + i * sizeof(u32));
++	memcpy(tcam_table.info.key, key, NBL_KT_BYTE_HALF_LEN);
++	tcam_table.info.key_vld = 1;
++
++	if (key_type == NBL_KT_FULL_MODE) {
++		tcam_table.info.key_size = 1;
++		memcpy(tcam_table_second.info.key, &key[5], NBL_KT_BYTE_HALF_LEN);
++		tcam_table_second.info.key_vld = 1;
++		tcam_table_second.info.key_size = 1;
++
++		nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(pp_type, index + 1),
++				  tcam_table_second.hash_key, NBL_FLOW_TCAM_TOTAL_LEN);
++	}
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(pp_type, index),
++			  tcam_table.hash_key, NBL_FLOW_TCAM_TOTAL_LEN);
++
++	ad_table.info.action0 = action[0];
++	ad_table.info.action1 = action[1];
++	ad_table.info.action2 = action[2];
++	ad_table.info.action3 = action[3];
++	ad_table.info.action4 = action[4];
++	ad_table.info.action5 = action[5];
++	ad_table.info.action6 = action[6];
++	ad_table.info.action7 = action[7];
++	ad_table.info.action8 = action[8];
++	ad_table.info.action9 = action[9];
++	ad_table.info.action10 = action[10];
++	ad_table.info.action11 = action[11];
++	ad_table.info.action12 = action[12];
++	ad_table.info.action13 = action[13];
++	ad_table.info.action14 = action[14];
++	ad_table.info.action15 = action[15];
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_AD_TABLE_REG(pp_type, index),
++			  ad_table.hash_key, NBL_FLOW_AD_TOTAL_LEN);
++
++	return 0;
 +}
 +
-+static __maybe_unused void nbl_hw_write_mbx_regs(struct nbl_hw_mgt *hw_mgt,
-+						 u64 reg, const u8 *data, u32 len)
++static void nbl_hw_del_tcam(void *priv, u32 index, u8 key_type, u8 pp_type)
 +{
-+	u32 i = 0;
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	union fem_em_tcam_table_u tcam_table;
++	union fem_em_tcam_table_u tcam_table_second;
++	union fem_em_ad_table_u ad_table;
 +
-+	if (len % 4)
-+		return;
++	memset(&tcam_table, 0, sizeof(tcam_table));
++	memset(&tcam_table_second, 0, sizeof(tcam_table_second));
++	memset(&ad_table, 0, sizeof(ad_table));
++	if (key_type == NBL_KT_FULL_MODE)
++		nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(pp_type, index + 1),
++				  tcam_table_second.hash_key, NBL_FLOW_TCAM_TOTAL_LEN);
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_TCAM_TABLE_REG(pp_type, index),
++			  tcam_table.hash_key, NBL_FLOW_TCAM_TOTAL_LEN);
 +
-+	for (i = 0; i < len / 4; i++)
-+		/* Used for emu, make sure that we won't write too frequently */
-+		nbl_mbx_wr32(hw_mgt, reg + i * sizeof(u32),
-+			     *(u32 *)(data + i * sizeof(u32)));
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_EM_AD_TABLE_REG(pp_type, index),
++			  ad_table.hash_key, NBL_FLOW_AD_TOTAL_LEN);
 +}
 +
-+/* Mgt structure for each product.
-+ * Every indivisual mgt must have the common mgt as its first member, and contains its unique
-+ * data structure in the reset of it.
-+ */
-+struct nbl_hw_mgt_leonis {
-+	struct nbl_hw_mgt hw_mgt;
-+	bool ro_enable;
-+};
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-new file mode 100644
-index 000000000000..f3ec609e2ffa
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0*/
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ * Author:
-+ */
++static int nbl_hw_add_mcc(void *priv, u16 mcc_id, u16 prev_mcc_id, u16 next_mcc_id, u16 action)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_mcc_tbl node = {0};
 +
-+#ifndef _NBL_DEF_HW_H_
-+#define _NBL_DEF_HW_H_
++	node.vld = 1;
++	if (next_mcc_id == NBL_MCC_ID_INVALID) {
++		node.next_pntr = 0;
++		node.tail = 1;
++	} else {
++		node.next_pntr = next_mcc_id;
++		node.tail = 0;
++	}
 +
-+#include "nbl_include.h"
++	node.stateid_filter = 1;
++	node.flowid_filter = 1;
++	node.dport_act = action;
 +
-+#define NBL_HW_OPS_TBL_TO_OPS(hw_ops_tbl)		((hw_ops_tbl)->ops)
-+#define NBL_HW_OPS_TBL_TO_PRIV(hw_ops_tbl)		((hw_ops_tbl)->priv)
++	nbl_hw_write_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(mcc_id), (u8 *)&node, sizeof(node));
++	if (prev_mcc_id != NBL_MCC_ID_INVALID) {
++		nbl_hw_read_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(prev_mcc_id),
++				 (u8 *)&node, sizeof(node));
++		node.next_pntr = mcc_id;
++		node.tail = 0;
++		nbl_hw_write_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(prev_mcc_id),
++				  (u8 *)&node, sizeof(node));
++	}
 +
-+struct nbl_hw_ops {
-+};
++	return 0;
++}
 +
-+struct nbl_hw_ops_tbl {
-+	struct nbl_hw_ops *ops;
-+	void *priv;
-+};
++static void nbl_hw_del_mcc(void *priv, u16 mcc_id, u16 prev_mcc_id, u16 next_mcc_id)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_mcc_tbl node = {0};
 +
-+int nbl_hw_init_leonis(void *p, struct nbl_init_param *param);
-+void nbl_hw_remove_leonis(void *p);
++	if (prev_mcc_id != NBL_MCC_ID_INVALID) {
++		nbl_hw_read_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(prev_mcc_id),
++				 (u8 *)&node, sizeof(node));
 +
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-index 0bceb682b824..f9430d894b04 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -53,6 +53,12 @@ enum nbl_product_type {
- 	NBL_PRODUCT_MAX,
- };
- 
-+enum nbl_hw_status {
-+	NBL_HW_NOMAL,
-+	NBL_HW_FATAL_ERR, /* Most hw module is not work nomal exclude pcie/emp */
-+	NBL_HW_STATUS_MAX,
-+};
++		if (next_mcc_id != NBL_MCC_ID_INVALID) {
++			node.next_pntr = next_mcc_id;
++		} else {
++			node.next_pntr = 0;
++			node.tail = 1;
++		}
 +
- struct nbl_func_caps {
- 	u32 has_ctrl:1;
- 	u32 has_net:1;
-@@ -69,4 +75,62 @@ struct nbl_init_param {
- 	bool pci_using_dac;
- };
- 
-+struct nbl_vnet_queue_info_param {
-+	u32 function_id;
-+	u32 device_id;
-+	u32 bus_id;
-+	u32 msix_idx;
-+	u32 msix_idx_valid;
-+	u32 valid;
-+};
++		nbl_hw_write_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(prev_mcc_id),
++				  (u8 *)&node, sizeof(node));
++	}
 +
-+struct nbl_ustore_stats {
-+	u64 rx_drop_packets;
-+	u64 rx_trun_packets;
-+};
++	memset(&node, 0, sizeof(node));
++	nbl_hw_write_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(mcc_id), (u8 *)&node, sizeof(node));
++}
 +
-+struct nbl_notify_param {
-+	u16 notify_qid;
-+	u16 tail_ptr;
-+};
++static void nbl_hw_update_mcc_next_node(void *priv, u16 mcc_id, u16 next_mcc_id)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_mcc_tbl node = {0};
 +
-+enum nbl_port_mode {
-+	NBL_PORT_NRZ_NORSFEC,
-+	NBL_PORT_NRZ_544,
-+	NBL_PORT_NRZ_528,
-+	NBL_PORT_PAM4_544,
-+	NBL_PORT_MODE_MAX,
-+};
++	nbl_hw_read_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(mcc_id),
++			 (u8 *)&node, sizeof(node));
++	if (next_mcc_id != NBL_MCC_ID_INVALID) {
++		node.next_pntr = next_mcc_id;
++		node.tail = 0;
++	} else {
++		node.next_pntr = 0;
++		node.tail = 1;
++	}
 +
-+#define NBL_ACL_TCAM_KEY_LEN				5
-+#define NBL_ACL_TCAM_KEY_MAX				16
++	nbl_hw_write_regs(hw_mgt, NBL_MCC_LEAF_NODE_TABLE(mcc_id),
++			  (u8 *)&node, sizeof(node));
++}
 +
-+struct nbl_acl_tcam_key_param {
-+	u8 data[NBL_ACL_TCAM_KEY_LEN];
-+} __packed;
-+
-+struct nbl_acl_tcam_param {
-+	union nbl_acl_tcam_info {
-+		struct nbl_acl_tcam_key_param key[NBL_ACL_TCAM_KEY_MAX];
-+		u8 data[NBL_ACL_TCAM_KEY_LEN * NBL_ACL_TCAM_KEY_MAX];
-+	} info;
-+	u8 len;
-+};
-+
-+enum nbl_abnormal_event_module {
-+	NBL_ABNORMAL_EVENT_DVN = 0,
-+	NBL_ABNORMAL_EVENT_UVN,
-+	NBL_ABNORMAL_EVENT_MAX,
-+};
-+
-+struct nbl_abnormal_details {
-+	bool abnormal;
-+	u16 qid;
-+	u16 vsi_id;
-+};
-+
-+struct nbl_abnormal_event_info {
-+	struct nbl_abnormal_details details[NBL_ABNORMAL_EVENT_MAX];
-+	u32 other_abnormal_info;
-+};
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index b690bac3d306..f7669d361ef4 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -9,8 +9,8 @@
- 
- static struct nbl_product_base_ops nbl_product_base_ops[NBL_PRODUCT_MAX] = {
- 	{
--		.hw_init	= NULL,
--		.hw_remove	= NULL,
-+		.hw_init	= nbl_hw_init_leonis,
-+		.hw_remove	= nbl_hw_remove_leonis,
- 		.res_init	= NULL,
- 		.res_remove	= NULL,
- 		.chan_init	= NULL,
-@@ -30,6 +30,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev, struct nbl_init_param *p
- 	struct nbl_adapter *adapter;
- 	struct nbl_common_info *common;
- 	struct nbl_product_base_ops *product_base_ops;
++static int nbl_hw_init_fem(void *priv)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	union nbl_fem_ht_size_table_u ht_size = {.info = {0}};
++	u32 fem_start = NBL_FEM_INIT_START_KERN;
 +	int ret = 0;
- 
- 	if (!pdev)
- 		return NULL;
-@@ -57,7 +58,15 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev, struct nbl_init_param *p
- 
- 	nbl_core_setup_product_ops(adapter, param, &product_base_ops);
- 
-+	/* every product's hw/chan/res layer has a great difference, so call their own init ops */
-+	ret = product_base_ops->hw_init(adapter, param);
-+	if (ret)
-+		goto hw_init_fail;
 +
- 	return adapter;
-+hw_init_fail:
-+	devm_kfree(&pdev->dev, adapter);
-+	return NULL;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_INIT_START, (u8 *)&fem_start, sizeof(fem_start));
++
++	nbl_hw_fem_set_bank(hw_mgt);
++
++	ht_size.info.pp0_size = HT_PORT0_BTM;
++	ht_size.info.pp1_size = HT_PORT1_BTM;
++	ht_size.info.pp2_size = HT_PORT2_BTM;
++	nbl_hw_write_regs(hw_mgt, NBL_FEM_HT_SIZE_REG, ht_size.data, NBL_FEM_HT_SIZE_TBL_WIDTH);
++
++	nbl_hw_fem_clear_tcam_ad(hw_mgt);
++
++	return ret;
++}
++
+ static void nbl_configure_dped_checksum(struct nbl_hw_mgt *hw_mgt)
+ {
+ 	union dped_l4_ck_cmd_40_u l4_ck_cmd_40;
+@@ -1922,6 +2357,20 @@ static int nbl_hw_set_spoof_check_addr(void *priv, u16 vsi_id, u8 *mac)
+ 	return 0;
  }
  
- void nbl_core_remove(struct nbl_adapter *adapter)
-@@ -71,6 +80,7 @@ void nbl_core_remove(struct nbl_adapter *adapter)
- 
- 	dev = NBL_ADAPTER_TO_DEV(adapter);
- 	product_base_ops = NBL_ADAPTER_TO_RPDUCT_BASE_OPS(adapter);
-+	product_base_ops->hw_remove(adapter);
- 	devm_kfree(dev, adapter);
++static int nbl_hw_set_vsi_mtu(void *priv, u16 vsi_id, u16 mtu_sel)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_ipro_dn_src_port_tbl dpsport = {0};
++
++	nbl_hw_read_regs(hw_mgt, NBL_IPRO_DN_SRC_PORT_TABLE(vsi_id),
++			 (u8 *)&dpsport, sizeof(struct nbl_ipro_dn_src_port_tbl));
++	dpsport.mtu_sel = mtu_sel;
++	nbl_hw_write_regs(hw_mgt, NBL_IPRO_DN_SRC_PORT_TABLE(vsi_id),
++			  (u8 *)&dpsport, sizeof(struct nbl_ipro_dn_src_port_tbl));
++
++	return 0;
++}
++
+ static int nbl_hw_set_spoof_check_enable(void *priv, u16 vsi_id, u8 enable)
+ {
+ 	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
+@@ -2086,6 +2535,35 @@ static void nbl_hw_set_fw_pong(void *priv, u32 pong)
+ 	nbl_hw_write_regs(hw_mgt, NBL_FW_HEARTBEAT_PONG, (u8 *)&pong, sizeof(pong));
  }
  
++static int nbl_hw_set_mtu(void *priv, u16 mtu_index, u16 mtu)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_ipro_mtu_sel ipro_mtu_sel = {0};
++
++	nbl_hw_read_regs(hw_mgt, NBL_IPRO_MTU_SEL_REG(mtu_index / 2),
++			 (u8 *)&ipro_mtu_sel, sizeof(ipro_mtu_sel));
++
++	if (mtu_index % 2 == 0)
++		ipro_mtu_sel.mtu_0 = mtu;
++	else
++		ipro_mtu_sel.mtu_1 = mtu;
++
++	nbl_hw_write_regs(hw_mgt, NBL_IPRO_MTU_SEL_REG(mtu_index / 2),
++			  (u8 *)&ipro_mtu_sel, sizeof(ipro_mtu_sel));
++
++	return 0;
++}
++
++static u16 nbl_hw_get_mtu_index(void *priv, u16 vsi_id)
++{
++	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_ipro_dn_src_port_tbl ipro_dn_src_port_tbl = {0};
++
++	nbl_hw_read_regs(hw_mgt, NBL_IPRO_DN_SRC_PORT_TBL_REG(vsi_id),
++			 (u8 *)&ipro_dn_src_port_tbl, sizeof(ipro_dn_src_port_tbl));
++	return ipro_dn_src_port_tbl.mtu_sel;
++}
++
+ static int nbl_hw_process_abnormal_queue(struct nbl_hw_mgt *hw_mgt, u16 queue_id, int type,
+ 					 struct nbl_abnormal_details *detail)
+ {
+@@ -2338,9 +2816,23 @@ static struct nbl_hw_ops hw_ops = {
+ 	.save_uvn_ctx			= nbl_hw_save_uvn_ctx,
+ 	.setup_queue_switch		= nbl_hw_setup_queue_switch,
+ 	.init_pfc			= nbl_hw_init_pfc,
++	.set_vsi_mtu			= nbl_hw_set_vsi_mtu,
++	.set_mtu			= nbl_hw_set_mtu,
++	.get_mtu_index			= nbl_hw_get_mtu_index,
++
+ 	.configure_msix_map		= nbl_hw_configure_msix_map,
+ 	.configure_msix_info		= nbl_hw_configure_msix_info,
+ 	.set_coalesce			= nbl_hw_set_coalesce,
++
++	.set_ht				= nbl_hw_set_ht,
++	.set_kt				= nbl_hw_set_kt,
++	.search_key			= nbl_hw_search_key,
++	.add_tcam			= nbl_hw_add_tcam,
++	.del_tcam			= nbl_hw_del_tcam,
++	.add_mcc			= nbl_hw_add_mcc,
++	.del_mcc			= nbl_hw_del_mcc,
++	.update_mcc_next_node		= nbl_hw_update_mcc_next_node,
++	.init_fem			= nbl_hw_init_fem,
+ 	.update_mailbox_queue_tail_ptr	= nbl_hw_update_mailbox_queue_tail_ptr,
+ 	.config_mailbox_rxq		= nbl_hw_config_mailbox_rxq,
+ 	.config_mailbox_txq		= nbl_hw_config_mailbox_txq,
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+index 0e31060803bf..8020bdaeceea 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+@@ -567,6 +567,10 @@ static int nbl_res_setup_ops(struct device *dev, struct nbl_resource_ops_tbl **r
+ 		return -ENOMEM;
+ 
+ 	if (!is_ops_inited) {
++		ret = nbl_flow_setup_ops_leonis(&res_ops);
++		if (ret)
++			goto setup_fail;
++
+ 		ret = nbl_queue_setup_ops_leonis(&res_ops);
+ 		if (ret)
+ 			goto setup_fail;
+@@ -886,6 +890,7 @@ static void nbl_res_stop(struct nbl_resource_mgt_leonis *res_mgt_leonis)
+ 	nbl_intr_mgt_stop(res_mgt);
+ 	nbl_adminq_mgt_stop(res_mgt);
+ 	nbl_vsi_mgt_stop(res_mgt);
++	nbl_flow_mgt_stop_leonis(res_mgt);
+ 	nbl_res_ctrl_dev_ustore_stats_remove(res_mgt);
+ 	nbl_res_ctrl_dev_remove_vsi_info(res_mgt);
+ 	nbl_res_ctrl_dev_remove_eth_info(res_mgt);
+@@ -938,6 +943,10 @@ static int nbl_res_start(struct nbl_resource_mgt_leonis *res_mgt_leonis,
+ 		if (ret)
+ 			goto start_fail;
+ 
++		ret = nbl_flow_mgt_start_leonis(res_mgt);
++		if (ret)
++			goto start_fail;
++
+ 		ret = nbl_queue_mgt_start(res_mgt);
+ 		if (ret)
+ 			goto start_fail;
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+index 689ef84b2ce0..3d67a960bec8 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+@@ -11,6 +11,9 @@
+ 
+ #define NBL_MAX_PF_LEONIS			8
+ 
++int nbl_flow_mgt_start_leonis(struct nbl_resource_mgt *res_mgt);
++void nbl_flow_mgt_stop_leonis(struct nbl_resource_mgt *res_mgt);
++int nbl_flow_setup_ops_leonis(struct nbl_resource_ops *resource_ops);
+ int nbl_queue_setup_ops_leonis(struct nbl_resource_ops *resource_ops);
+ void nbl_queue_remove_ops_leonis(struct nbl_resource_ops *resource_ops);
+ 
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+index b30d54f0755f..b0bd29dcb0d1 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+@@ -90,10 +90,26 @@ struct nbl_hw_ops {
+ 
+ 	int (*set_spoof_check_addr)(void *priv, u16 vsi_id, u8 *mac);
+ 	int (*set_spoof_check_enable)(void *priv, u16 vsi_id, u8 enable);
++	int (*set_vsi_mtu)(void *priv, u16 vsi_id, u16 mtu_sel);
++
+ 	u8 __iomem * (*get_hw_addr)(void *priv, size_t *size);
+ 	int (*set_sfp_state)(void *priv, u8 eth_id, u8 state);
+ 	void (*set_hw_status)(void *priv, enum nbl_hw_status hw_status);
+ 	enum nbl_hw_status (*get_hw_status)(void *priv);
++	int (*set_mtu)(void *priv, u16 mtu_index, u16 mtu);
++	u16 (*get_mtu_index)(void *priv, u16 vsi_id);
++
++	int (*set_ht)(void *priv, u16 hash, u16 hash_other, u8 ht_table,
++		      u8 bucket, u32 key_index, u8 valid);
++	int (*set_kt)(void *priv, u8 *key, u32 key_index, u8 key_type);
++	int (*search_key)(void *priv, u8 *key, u8 key_type);
++	int (*add_tcam)(void *priv, u32 index, u8 *key, u32 *action, u8 key_type, u8 pp_type);
++	void (*del_tcam)(void *priv, u32 index, u8 key_type, u8 pp_type);
++	int (*add_mcc)(void *priv, u16 mcc_id, u16 prev_mcc_id, u16 next_mcc_id, u16 action);
++	void (*del_mcc)(void *priv, u16 mcc_id, u16 prev_mcc_id, u16 next_mcc_id);
++	void (*update_mcc_next_node)(void *priv, u16 mcc_id, u16 next_mcc_id);
++	int (*init_fem)(void *priv);
++
+ 	void (*set_fw_ping)(void *priv, u32 ping);
+ 	u32 (*get_fw_pong)(void *priv);
+ 	void (*set_fw_pong)(void *priv, u32 pong);
 -- 
 2.43.0
 
