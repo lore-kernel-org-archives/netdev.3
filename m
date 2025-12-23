@@ -1,22 +1,22 @@
-Received: from out198-33.us.a.mail.aliyun.com (out198-33.us.a.mail.aliyun.com [47.90.198.33])
+Received: from out28-92.mail.aliyun.com (out28-92.mail.aliyun.com [115.124.28.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9401A3160;
-	Tue, 23 Dec 2025 03:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31251A08BC;
+	Tue, 23 Dec 2025 03:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766461923; cv=none; b=kX0Ji4UMKSBhrMCvJhY4d+loOv9+PPd9RK5StC2yBqvPLeWbeok+7om5GahWRxJ0FaQIR3jXfzx/FdcqOFh4XH9RwtXS1kgU7W4N5wLHeAzjKSqTZVDyzyzKJcoAyz6lKPAtEpoD4v1nJszebdiEo6jF1pPF0hchGN/ascAI74w=
+	t=1766461927; cv=none; b=qxB2//MA8zcYnxoARbSTP7+KHoL3vyFOU29DileyAgWs+O77mqKA1l+XHFQJIxE+dNhbaGToM6VacXTGj1Z5b4pidZdsdXTddE+TPlL1tPduWQlDYIjNs3pgHroa2NGaMcTraOK4y/KSK+pCzXbDFQDe8tIXehmmErgPXDh7gsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766461923; c=relaxed/simple;
-	bh=zLkkDQAvArcfsQwMHOcgMtdV42aClqSxduEgQy4+VFQ=;
+	s=arc-20240116; t=1766461927; c=relaxed/simple;
+	bh=8cTMMM5iioN7C5D97OJRfxbwYi6xTfFJaaSGH6poz+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fHKXTZ4V0+IYgxPkUJWupHfVmfbTh35YpgRPahgJT9atMuGVThhNy7Qs1h/JKUwZXrS8rEdni3exHxggnlC8qXIWszGO+MAiKBWNY/1Qqb2o4XNHqh0n/xOfXgKgmj+4gYcaUWto5lZXU3v5r30pdrepqyoHmMAX85v966VwA44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.33
+	 MIME-Version; b=a2bwXYIhDMBR/hNZDSZ6BxVdEd6tKlgWdg3LvR+kkJ9t2RoqrnFnozj1MYdqtPpkOv99AjXu6doUGcfGJ9leTuKoDHQM7SLzaj5a0rIbMrPQh2Hd5OCSDOCa/uM0NQKVnci2x2FLSjNJIC3zWNU1YuH02t//D1bWYW2nSVjjJjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxWse_1766461902 cluster:ay29)
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.fqrxX7O_1766461916 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 23 Dec 2025 11:51:44 +0800
+          Tue, 23 Dec 2025 11:51:58 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -24,9 +24,9 @@ To: dimon.zhao@nebula-matrix.com,
 	sam.chen@nebula-matrix.com,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1 net-next 09/15] net/nebula-matrix: add txrx resource definitions and implementation
-Date: Tue, 23 Dec 2025 11:50:32 +0800
-Message-ID: <20251223035113.31122-10-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v1 net-next 14/15] net/nebula-matrix: fully support ndo operations
+Date: Tue, 23 Dec 2025 11:50:37 +0800
+Message-ID: <20251223035113.31122-15-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
 References: <20251223035113.31122-1-illusion.wang@nebula-matrix.com>
@@ -36,2409 +36,735 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-txrx resource management functions include:
-  TX/RX Ring Management: Allocate/release DMA memory and descriptors.
-  Data Transmission: Support TSO (TCP Segmentation Offload), checksum offloading, and
-VLAN tag insertion.
-  Data Reception: Support NAPI interrupt aggregation, checksum offloading, and VLAN tag stripping.
-  Resource Management: Cache receive buffers and pre-allocate resources.
-  Statistics and Debugging: Collect transmission/reception statistics.
+fully support ndo operations
 
 Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
-Change-Id: I269e5d6e28a0adda0be6aaca0b81f00730ae0c40
+Change-Id: Icb1ed852da1d28f563efdf2b6431ff7bc80f58e3
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |    1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   17 +
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |   19 +
- .../nbl_hw_leonis/nbl_resource_leonis.c       |   13 +-
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |    4 +
- .../nebula-matrix/nbl/nbl_hw/nbl_txrx.c       | 2026 +++++++++++++++++
- .../nebula-matrix/nbl/nbl_hw/nbl_txrx.h       |  188 ++
- .../nbl/nbl_include/nbl_def_hw.h              |    3 +
- 8 files changed, 2270 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.h
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 211 ++++++++-
+ .../nebula-matrix/nbl/nbl_core/nbl_service.c  | 423 +++++++++++++++++-
+ 2 files changed, 631 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index 54372a723455..96c265b8bf79 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -13,6 +13,7 @@ nbl_core-objs +=       nbl_common/nbl_common.o \
- 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
- 				nbl_hw/nbl_resource.o \
- 				nbl_hw/nbl_interrupt.o \
-+				nbl_hw/nbl_txrx.o \
- 				nbl_hw/nbl_queue.o \
- 				nbl_hw/nbl_vsi.o \
- 				nbl_hw/nbl_adminq.o \
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 6f4bfceaf995..aea8fed8ff11 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -26,6 +26,11 @@
- #define NBL_ADAPTER_TO_CHAN_OPS_TBL(adapter)	((adapter)->intf.channel_ops_tbl)
- 
- #define NBL_ADAPTER_TO_RES_PT_OPS(adapter)	(&(NBL_ADAPTER_TO_SERV_OPS_TBL(adapter)->pt_ops))
-+
-+#define NBL_NETDEV_PRIV_TO_ADAPTER(priv)	((priv)->adapter)
-+
-+#define NBL_NETDEV_TO_ADAPTER(netdev) \
-+	(NBL_NETDEV_PRIV_TO_ADAPTER((struct nbl_netdev_priv *)netdev_priv(netdev)))
- #define NBL_CAP_SET_BIT(loc)			(1 << (loc))
- #define NBL_CAP_TEST_BIT(val, loc)		(((val) >> (loc)) & 0x1)
- 
-@@ -85,6 +90,18 @@ struct nbl_adapter {
- 	DECLARE_BITMAP(state, NBL_STATE_NBITS);
- };
- 
-+struct nbl_netdev_priv {
-+	struct nbl_adapter *adapter;
-+	struct net_device *netdev;
-+	u16 tx_queue_num;
-+	u16 rx_queue_num;
-+	u16 queue_size;
-+	/* default traffic destination in kernel/dpdk/coexist scene */
-+	u16 data_vsi;
-+	u16 user_vsi;
-+	s64 last_st_time;
-+};
-+
- struct nbl_adapter *nbl_core_init(struct pci_dev *pdev, struct nbl_init_param *param);
- void nbl_core_remove(struct nbl_adapter *adapter);
- #endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-index 363abf326031..cc09abd15408 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
-@@ -2307,6 +2307,23 @@ static void nbl_hw_cfg_mailbox_qinfo(void *priv, u16 func_id, u16 bus, u16 devid
- 			  (u8 *)&mb_qinfo_map, sizeof(mb_qinfo_map));
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+index d97651c5daa0..45b75e1c4f53 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+@@ -1399,6 +1399,33 @@ static void nbl_dev_netdev_get_stats64(struct net_device *netdev, struct rtnl_li
+ 	serv_ops->get_stats64(netdev, stats);
  }
  
-+static void nbl_hw_update_tail_ptr(void *priv, struct nbl_notify_param *param)
++static void nbl_dev_netdev_set_rx_mode(struct net_device *netdev)
 +{
-+	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
-+	u8 __iomem *notify_addr = hw_mgt->hw_addr;
-+	u32 local_qid = param->notify_qid;
-+	u32 tail_ptr = param->tail_ptr;
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
 +
-+	writel((((u32)tail_ptr << 16) | (u32)local_qid), notify_addr);
++	serv_ops->set_rx_mode(netdev);
 +}
 +
-+static u8 *nbl_hw_get_tail_ptr(void *priv)
++static void nbl_dev_netdev_change_rx_flags(struct net_device *netdev, int flag)
 +{
-+	struct nbl_hw_mgt *hw_mgt = (struct nbl_hw_mgt *)priv;
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
 +
-+	return hw_mgt->hw_addr;
++	serv_ops->change_rx_flags(netdev, flag);
 +}
 +
- static void nbl_hw_set_promisc_mode(void *priv, u16 vsi_id, u16 eth_id, u16 mode)
++static int nbl_dev_netdev_set_mac(struct net_device *netdev, void *p)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_mac(netdev, p);
++}
++
+ static int nbl_dev_netdev_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
  {
- 	struct nbl_ipro_upsport_tbl upsport;
-@@ -2860,6 +2877,8 @@ static struct nbl_hw_ops hw_ops = {
- 	.update_adminq_queue_tail_ptr	= nbl_hw_update_adminq_queue_tail_ptr,
- 	.check_adminq_dma_err		= nbl_hw_check_adminq_dma_err,
+ 	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
+@@ -1417,14 +1444,190 @@ static int nbl_dev_netdev_rx_kill_vid(struct net_device *netdev, __be16 proto, u
+ 	return serv_ops->rx_kill_vid(netdev, proto, vid);
+ }
  
-+	.update_tail_ptr		= nbl_hw_update_tail_ptr,
-+	.get_tail_ptr			= nbl_hw_get_tail_ptr,
- 	.set_spoof_check_addr		= nbl_hw_set_spoof_check_addr,
- 	.set_spoof_check_enable		= nbl_hw_set_spoof_check_enable,
- 	.get_hw_addr			= nbl_hw_get_hw_addr,
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-index 8020bdaeceea..87c77e55415f 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-@@ -574,6 +574,11 @@ static int nbl_res_setup_ops(struct device *dev, struct nbl_resource_ops_tbl **r
- 		ret = nbl_queue_setup_ops_leonis(&res_ops);
- 		if (ret)
- 			goto setup_fail;
-+
-+		ret = nbl_txrx_setup_ops(&res_ops);
-+		if (ret)
-+			goto setup_fail;
-+
- 		ret = nbl_intr_setup_ops(&res_ops);
- 		if (ret)
- 			goto setup_fail;
-@@ -887,6 +892,7 @@ static void nbl_res_stop(struct nbl_resource_mgt_leonis *res_mgt_leonis)
- 	struct nbl_resource_mgt *res_mgt = &res_mgt_leonis->res_mgt;
- 
- 	nbl_queue_mgt_stop(res_mgt);
-+	nbl_txrx_mgt_stop(res_mgt);
- 	nbl_intr_mgt_stop(res_mgt);
- 	nbl_adminq_mgt_stop(res_mgt);
- 	nbl_vsi_mgt_stop(res_mgt);
-@@ -972,7 +978,12 @@ static int nbl_res_start(struct nbl_resource_mgt_leonis *res_mgt_leonis,
- 
- 		nbl_res_set_fix_capability(res_mgt, NBL_HIGH_THROUGHPUT_CAP);
- 		nbl_res_set_fix_capability(res_mgt, NBL_DVN_DESC_REQ_SYSFS_CAP);
--		nbl_res_set_fix_capability(res_mgt, NBL_NEED_DESTROY_CHIP);
-+	}
-+
-+	if (caps.has_net) {
-+		ret = nbl_txrx_mgt_start(res_mgt);
-+		if (ret)
-+			goto start_fail;
- 	}
- 
- 	nbl_res_set_fix_capability(res_mgt, NBL_HWMON_TEMP_CAP);
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-index 21f9444822d8..cd722964b75c 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
-@@ -832,6 +832,10 @@ int nbl_intr_setup_ops(struct nbl_resource_ops *resource_ops);
- int nbl_queue_mgt_start(struct nbl_resource_mgt *res_mgt);
- void nbl_queue_mgt_stop(struct nbl_resource_mgt *res_mgt);
- 
-+int nbl_txrx_mgt_start(struct nbl_resource_mgt *res_mgt);
-+void nbl_txrx_mgt_stop(struct nbl_resource_mgt *res_mgt);
-+int nbl_txrx_setup_ops(struct nbl_resource_ops *resource_ops);
-+
- int nbl_vsi_mgt_start(struct nbl_resource_mgt *res_mgt);
- void nbl_vsi_mgt_stop(struct nbl_resource_mgt *res_mgt);
- int nbl_vsi_setup_ops(struct nbl_resource_ops *resource_ops);
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.c
-new file mode 100644
-index 000000000000..e79e07e6e918
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.c
-@@ -0,0 +1,2026 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ * Author:
-+ */
-+
-+#include "nbl_txrx.h"
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <net/ipv6.h>
-+#include <linux/sctp.h>
-+#include <linux/if_vlan.h>
-+#include <net/page_pool/helpers.h>
-+
-+static bool nbl_txrx_within_vsi(struct nbl_txrx_vsi_info *vsi_info, u16 ring_index)
++static int
++nbl_dev_netdev_set_features(struct net_device *netdev, netdev_features_t features)
 +{
-+	return ring_index >= vsi_info->ring_offset &&
-+	       ring_index < vsi_info->ring_offset + vsi_info->ring_num;
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_features(netdev, features);
 +}
 +
-+static struct netdev_queue *txring_txq(const struct nbl_res_tx_ring *ring)
++static netdev_features_t
++nbl_dev_netdev_features_check(struct sk_buff *skb, struct net_device *netdev,
++			      netdev_features_t features)
 +{
-+	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
-+}
-+
-+static struct nbl_res_tx_ring *
-+nbl_alloc_tx_ring(struct nbl_resource_mgt *res_mgt, struct net_device *netdev, u16 ring_index,
-+		  u16 desc_num)
-+{
-+	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct nbl_res_tx_ring *ring;
-+
-+	ring = devm_kzalloc(dev, sizeof(struct nbl_res_tx_ring), GFP_KERNEL);
-+	if (!ring)
-+		return NULL;
-+
-+	ring->vsi_info = txrx_mgt->vsi_info;
-+	ring->dma_dev = common->dma_dev;
-+	ring->product_type = common->product_type;
-+	ring->eth_id = common->eth_id;
-+	ring->queue_index = ring_index;
-+	ring->notify_addr = hw_ops->get_tail_ptr(NBL_RES_MGT_TO_HW_PRIV(res_mgt));
-+	ring->notify_qid = NBL_RES_NOFITY_QID(res_mgt, ring_index * 2 + 1);
-+	ring->netdev = netdev;
-+	ring->desc_num = desc_num;
-+	ring->used_wrap_counter = 1;
-+	ring->avail_used_flags |= BIT(NBL_PACKED_DESC_F_AVAIL);
-+
-+	return ring;
-+}
-+
-+static int nbl_alloc_tx_rings(struct nbl_resource_mgt *res_mgt, struct net_device *netdev,
-+			      u16 tx_num, u16 desc_num)
-+{
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct nbl_res_tx_ring *ring;
-+	u32 ring_index;
-+
-+	if (txrx_mgt->tx_rings) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE,
-+			"Try to allocate tx_rings which already exists\n");
-+		return -EINVAL;
-+	}
-+
-+	txrx_mgt->tx_ring_num = tx_num;
-+
-+	txrx_mgt->tx_rings = devm_kcalloc(dev, tx_num,
-+					  sizeof(struct nbl_res_tx_ring *), GFP_KERNEL);
-+	if (!txrx_mgt->tx_rings)
-+		return -ENOMEM;
-+
-+	for (ring_index = 0; ring_index < tx_num; ring_index++) {
-+		ring = txrx_mgt->tx_rings[ring_index];
-+		WARN_ON(ring);
-+		ring = nbl_alloc_tx_ring(res_mgt, netdev, ring_index, desc_num);
-+		if (!ring)
-+			goto alloc_tx_ring_failed;
-+
-+		WRITE_ONCE(txrx_mgt->tx_rings[ring_index], ring);
-+	}
-+
-+	return 0;
-+
-+alloc_tx_ring_failed:
-+	while (ring_index--)
-+		devm_kfree(dev, txrx_mgt->tx_rings[ring_index]);
-+	devm_kfree(dev, txrx_mgt->tx_rings);
-+	txrx_mgt->tx_rings = NULL;
-+	return -ENOMEM;
-+}
-+
-+static void nbl_free_tx_rings(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct nbl_res_tx_ring *ring;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	u16 ring_count;
-+	u16 ring_index;
-+
-+	ring_count = txrx_mgt->tx_ring_num;
-+	for (ring_index = 0; ring_index < ring_count; ring_index++) {
-+		ring = txrx_mgt->tx_rings[ring_index];
-+		devm_kfree(dev, ring);
-+	}
-+	devm_kfree(dev, txrx_mgt->tx_rings);
-+	txrx_mgt->tx_rings = NULL;
-+}
-+
-+static int nbl_alloc_rx_rings(struct nbl_resource_mgt *res_mgt, struct net_device *netdev,
-+			      u16 rx_num, u16 desc_num)
-+{
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct nbl_res_rx_ring *ring;
-+	u32 ring_index;
-+
-+	if (txrx_mgt->rx_rings) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE,
-+			"Try to allocate rx_rings which already exists\n");
-+		return -EINVAL;
-+	}
-+
-+	txrx_mgt->rx_ring_num = rx_num;
-+
-+	txrx_mgt->rx_rings = devm_kcalloc(dev, rx_num,
-+					  sizeof(struct nbl_res_rx_ring *), GFP_KERNEL);
-+	if (!txrx_mgt->rx_rings)
-+		return -ENOMEM;
-+
-+	for (ring_index = 0; ring_index < rx_num; ring_index++) {
-+		ring = txrx_mgt->rx_rings[ring_index];
-+		WARN_ON(ring);
-+		ring = devm_kzalloc(dev, sizeof(struct nbl_res_rx_ring), GFP_KERNEL);
-+		if (!ring)
-+			goto alloc_rx_ring_failed;
-+
-+		ring->common = common;
-+		ring->txrx_mgt = txrx_mgt;
-+		ring->dma_dev = common->dma_dev;
-+		ring->queue_index = ring_index;
-+		ring->notify_qid = NBL_RES_NOFITY_QID(res_mgt, ring_index * 2);
-+		ring->netdev = netdev;
-+		ring->desc_num = desc_num;
-+		/* RX buffer length is determined by mtu,
-+		 * when netdev up we will set buf_len according to its mtu
-+		 */
-+		ring->buf_len = PAGE_SIZE / 2 - NBL_RX_PAD;
-+
-+		ring->used_wrap_counter = 1;
-+		ring->avail_used_flags |= BIT(NBL_PACKED_DESC_F_AVAIL);
-+		WRITE_ONCE(txrx_mgt->rx_rings[ring_index], ring);
-+	}
-+
-+	return 0;
-+
-+alloc_rx_ring_failed:
-+	while (ring_index--)
-+		devm_kfree(dev, txrx_mgt->rx_rings[ring_index]);
-+	devm_kfree(dev, txrx_mgt->rx_rings);
-+	txrx_mgt->rx_rings = NULL;
-+	return -ENOMEM;
-+}
-+
-+static void nbl_free_rx_rings(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct nbl_res_rx_ring *ring;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	u16 ring_count;
-+	u16 ring_index;
-+
-+	ring_count = txrx_mgt->rx_ring_num;
-+	for (ring_index = 0; ring_index < ring_count; ring_index++) {
-+		ring = txrx_mgt->rx_rings[ring_index];
-+		devm_kfree(dev, ring);
-+	}
-+	devm_kfree(dev, txrx_mgt->rx_rings);
-+	txrx_mgt->rx_rings = NULL;
-+}
-+
-+static int nbl_alloc_vectors(struct nbl_resource_mgt *res_mgt, u16 num)
-+{
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct nbl_res_vector *vector;
-+	u32 index;
-+
-+	if (txrx_mgt->vectors) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE,
-+			"Try to allocate vectors which already exists\n");
-+		return -EINVAL;
-+	}
-+
-+	txrx_mgt->vectors = devm_kcalloc(dev, num, sizeof(struct nbl_res_vector *),
-+					 GFP_KERNEL);
-+	if (!txrx_mgt->vectors)
-+		return -ENOMEM;
-+
-+	for (index = 0; index < num; index++) {
-+		vector = txrx_mgt->vectors[index];
-+		WARN_ON(vector);
-+		vector = devm_kzalloc(dev, sizeof(struct nbl_res_vector), GFP_KERNEL);
-+		if (!vector)
-+			goto alloc_vector_failed;
-+
-+		vector->rx_ring = txrx_mgt->rx_rings[index];
-+		vector->tx_ring = txrx_mgt->tx_rings[index];
-+		WRITE_ONCE(txrx_mgt->vectors[index], vector);
-+	}
-+	return 0;
-+
-+alloc_vector_failed:
-+	while (index--)
-+		devm_kfree(dev, txrx_mgt->vectors[index]);
-+	devm_kfree(dev, txrx_mgt->vectors);
-+	txrx_mgt->vectors = NULL;
-+	return -ENOMEM;
-+}
-+
-+static void nbl_free_vectors(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+	struct nbl_res_vector *vector;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	u16 count, index;
-+
-+	count = txrx_mgt->rx_ring_num;
-+	for (index = 0; index < count; index++) {
-+		vector = txrx_mgt->vectors[index];
-+		devm_kfree(dev, vector);
-+	}
-+	devm_kfree(dev, txrx_mgt->vectors);
-+	txrx_mgt->vectors = NULL;
-+}
-+
-+static int nbl_res_txrx_alloc_rings(void *priv, struct net_device *netdev,
-+				    struct nbl_ring_param *param)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	int err = 0;
-+
-+	err = nbl_alloc_tx_rings(res_mgt, netdev, param->tx_ring_num, param->queue_size);
-+	if (err)
-+		return err;
-+
-+	err = nbl_alloc_rx_rings(res_mgt, netdev, param->rx_ring_num, param->queue_size);
-+	if (err)
-+		goto alloc_rx_rings_err;
-+
-+	err = nbl_alloc_vectors(res_mgt, param->rx_ring_num);
-+	if (err)
-+		goto alloc_vectors_err;
-+
-+	nbl_info(res_mgt->common, NBL_DEBUG_RESOURCE,
-+		 "Alloc rings for %d tx, %d rx, %d desc\n",
-+		 param->tx_ring_num, param->rx_ring_num, param->queue_size);
-+	return 0;
-+
-+alloc_vectors_err:
-+	nbl_free_rx_rings(res_mgt);
-+alloc_rx_rings_err:
-+	nbl_free_tx_rings(res_mgt);
-+	return err;
-+}
-+
-+static void nbl_res_txrx_remove_rings(void *priv)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+
-+	nbl_free_vectors(res_mgt);
-+	nbl_free_tx_rings(res_mgt);
-+	nbl_free_rx_rings(res_mgt);
-+	nbl_info(res_mgt->common, NBL_DEBUG_RESOURCE, "Remove rings");
-+}
-+
-+static dma_addr_t nbl_res_txrx_start_tx_ring(void *priv, u8 ring_index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct device *dma_dev = NBL_RES_MGT_TO_DMA_DEV(res_mgt);
-+	struct nbl_res_tx_ring *tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, ring_index);
-+
-+	if (tx_ring->tx_bufs) {
-+		nbl_err(res_mgt->common, NBL_DEBUG_RESOURCE,
-+			"Try to setup a TX ring with buffer management array already allocated\n");
-+		return (dma_addr_t)NULL;
-+	}
-+
-+	tx_ring->tx_bufs = devm_kcalloc(dev, tx_ring->desc_num, sizeof(*tx_ring->tx_bufs),
-+					GFP_KERNEL);
-+	if (!tx_ring->tx_bufs)
-+		return (dma_addr_t)NULL;
-+
-+	/* Alloc twice memory, and second half is used to back up the desc for desc checking */
-+	tx_ring->size = ALIGN(tx_ring->desc_num * sizeof(struct nbl_ring_desc), PAGE_SIZE);
-+	tx_ring->desc = dmam_alloc_coherent(dma_dev, tx_ring->size, &tx_ring->dma,
-+					    GFP_KERNEL | __GFP_ZERO);
-+	if (!tx_ring->desc)
-+		goto alloc_dma_err;
-+
-+	tx_ring->next_to_use = 0;
-+	tx_ring->next_to_clean = 0;
-+	tx_ring->tail_ptr = 0;
-+
-+	tx_ring->valid = true;
-+	nbl_debug(res_mgt->common, NBL_DEBUG_RESOURCE, "Start tx ring %d", ring_index);
-+	return tx_ring->dma;
-+
-+alloc_dma_err:
-+	devm_kfree(dev, tx_ring->tx_bufs);
-+	tx_ring->tx_bufs = NULL;
-+	tx_ring->size = 0;
-+	return (dma_addr_t)NULL;
-+}
-+
-+static inline bool nbl_rx_cache_get(struct nbl_res_rx_ring *rx_ring, struct nbl_dma_info *dma_info)
-+{
-+	struct nbl_page_cache *cache = &rx_ring->page_cache;
-+	struct nbl_rx_queue_stats *stats = &rx_ring->rx_stats;
-+
-+	if (unlikely(cache->head == cache->tail)) {
-+		stats->rx_cache_empty++;
-+		return false;
-+	}
-+
-+	if (page_ref_count(cache->page_cache[cache->head].page) != 1) {
-+		stats->rx_cache_busy++;
-+		return false;
-+	}
-+
-+	*dma_info = cache->page_cache[cache->head];
-+	cache->head = (cache->head + 1) & (NBL_MAX_CACHE_SIZE - 1);
-+	stats->rx_cache_reuse++;
-+
-+	dma_sync_single_for_device(rx_ring->dma_dev, dma_info->addr,
-+				   dma_info->size, DMA_FROM_DEVICE);
-+	return true;
-+}
-+
-+static inline int nbl_page_alloc_pool(struct nbl_res_rx_ring *rx_ring,
-+				      struct nbl_dma_info *dma_info)
-+{
-+	if (nbl_rx_cache_get(rx_ring, dma_info))
-+		return 0;
-+
-+	dma_info->page = page_pool_dev_alloc_pages(rx_ring->page_pool);
-+	if (unlikely(!dma_info->page))
-+		return -ENOMEM;
-+
-+	dma_info->addr = dma_map_page_attrs(rx_ring->dma_dev, dma_info->page, 0, dma_info->size,
-+					    DMA_FROM_DEVICE, NBL_RX_DMA_ATTR);
-+
-+	if (unlikely(dma_mapping_error(rx_ring->dma_dev, dma_info->addr))) {
-+		page_pool_recycle_direct(rx_ring->page_pool, dma_info->page);
-+		dma_info->page = NULL;
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+static inline int nbl_get_rx_frag(struct nbl_res_rx_ring *rx_ring, struct nbl_rx_buffer *buffer)
-+{
-+	int err = 0;
-+
-+	/* first buffer alloc page */
-+	if (buffer->first_in_page)
-+		err = nbl_page_alloc_pool(rx_ring, buffer->di);
-+
-+	return err;
-+}
-+
-+static inline bool nbl_alloc_rx_bufs(struct nbl_res_rx_ring *rx_ring, u16 count)
-+{
-+	u32 buf_len;
-+	u16 next_to_use, head;
-+	__le16 head_flags = 0;
-+	struct nbl_ring_desc *rx_desc, *head_desc;
-+	struct nbl_rx_buffer *rx_buf;
-+	int i;
-+
-+	if (unlikely(!rx_ring || !count)) {
-+		nbl_warn(NBL_RING_TO_COMMON(rx_ring), NBL_DEBUG_RESOURCE,
-+			 "invalid input parameters, rx_ring is %p, count is %d.\n", rx_ring, count);
-+		return -EINVAL;
-+	}
-+
-+	buf_len = rx_ring->buf_len;
-+	next_to_use = rx_ring->next_to_use;
-+
-+	head = next_to_use;
-+	head_desc = NBL_RX_DESC(rx_ring, next_to_use);
-+	rx_desc = NBL_RX_DESC(rx_ring, next_to_use);
-+	rx_buf = NBL_RX_BUF(rx_ring, next_to_use);
-+
-+	if (unlikely(!rx_desc || !rx_buf)) {
-+		nbl_warn(NBL_RING_TO_COMMON(rx_ring), NBL_DEBUG_RESOURCE,
-+			 "invalid input parameters, next_to_use:%d, rx_desc is %p, rx_buf is %p.\n",
-+			 next_to_use, rx_desc, rx_buf);
-+		return -EINVAL;
-+	}
-+
-+	do {
-+		if (nbl_get_rx_frag(rx_ring, rx_buf))
-+			break;
-+
-+		for (i = 0; i < rx_ring->frags_num_per_page; i++, rx_desc++, rx_buf++) {
-+			rx_desc->addr = cpu_to_le64(rx_buf->di->addr + rx_buf->offset);
-+			rx_desc->len = cpu_to_le32(buf_len);
-+			rx_desc->id = cpu_to_le16(next_to_use);
-+
-+			if (likely(head != next_to_use || i))
-+				rx_desc->flags = cpu_to_le16(rx_ring->avail_used_flags |
-+							     NBL_PACKED_DESC_F_WRITE);
-+			else
-+				head_flags = cpu_to_le16(rx_ring->avail_used_flags |
-+							 NBL_PACKED_DESC_F_WRITE);
-+		}
-+
-+		next_to_use += rx_ring->frags_num_per_page;
-+		rx_ring->tail_ptr += rx_ring->frags_num_per_page;
-+		count -= rx_ring->frags_num_per_page;
-+		if (next_to_use == rx_ring->desc_num) {
-+			next_to_use = 0;
-+			rx_desc = NBL_RX_DESC(rx_ring, next_to_use);
-+			rx_buf = NBL_RX_BUF(rx_ring, next_to_use);
-+			rx_ring->avail_used_flags ^=
-+				BIT(NBL_PACKED_DESC_F_AVAIL) |
-+				BIT(NBL_PACKED_DESC_F_USED);
-+		}
-+	} while (count);
-+
-+	if (next_to_use != head) {
-+		/* wmb */
-+		wmb();
-+		head_desc->flags = head_flags;
-+		rx_ring->next_to_use = next_to_use;
-+	}
-+
-+	return !!count;
-+}
-+
-+static void nbl_unmap_and_free_tx_resource(struct nbl_res_tx_ring *ring,
-+					   struct nbl_tx_buffer *tx_buffer,
-+					   bool free, bool in_napi)
-+{
-+	struct device *dma_dev = NBL_RING_TO_DMA_DEV(ring);
-+
-+	if (tx_buffer->skb) {
-+		if (likely(free)) {
-+			if (in_napi)
-+				napi_consume_skb(tx_buffer->skb, NBL_TX_POLL_WEIGHT);
-+			else
-+				dev_kfree_skb_any(tx_buffer->skb);
-+			}
-+
-+		if (dma_unmap_len(tx_buffer, len))
-+			dma_unmap_single(dma_dev, dma_unmap_addr(tx_buffer, dma),
-+					 dma_unmap_len(tx_buffer, len),
-+					 DMA_TO_DEVICE);
-+	} else if (tx_buffer->page && dma_unmap_len(tx_buffer, len)) {
-+		dma_unmap_page(dma_dev, dma_unmap_addr(tx_buffer, dma),
-+			       dma_unmap_len(tx_buffer, len),
-+			       DMA_TO_DEVICE);
-+	} else if (dma_unmap_len(tx_buffer, len)) {
-+		dma_unmap_single(dma_dev, dma_unmap_addr(tx_buffer, dma),
-+				 dma_unmap_len(tx_buffer, len),
-+				 DMA_TO_DEVICE);
-+	}
-+
-+	tx_buffer->next_to_watch = NULL;
-+	tx_buffer->skb = NULL;
-+	tx_buffer->page = 0;
-+	tx_buffer->bytecount = 0;
-+	tx_buffer->gso_segs = 0;
-+	dma_unmap_len_set(tx_buffer, len, 0);
-+}
-+
-+static void nbl_free_tx_ring_bufs(struct nbl_res_tx_ring *tx_ring)
-+{
-+	struct nbl_tx_buffer *tx_buffer;
-+	u16 i;
-+
-+	i = tx_ring->next_to_clean;
-+	tx_buffer = NBL_TX_BUF(tx_ring, i);
-+	while (i != tx_ring->next_to_use) {
-+		nbl_unmap_and_free_tx_resource(tx_ring, tx_buffer, true, false);
-+		i++;
-+		tx_buffer++;
-+		if (i == tx_ring->desc_num) {
-+			i = 0;
-+			tx_buffer = NBL_TX_BUF(tx_ring, i);
-+		}
-+	}
-+
-+	tx_ring->next_to_clean = 0;
-+	tx_ring->next_to_use = 0;
-+	tx_ring->tail_ptr = 0;
-+
-+	tx_ring->used_wrap_counter = 1;
-+	tx_ring->avail_used_flags = BIT(NBL_PACKED_DESC_F_AVAIL);
-+	memset(tx_ring->desc, 0, tx_ring->size);
-+}
-+
-+static void nbl_res_txrx_stop_tx_ring(void *priv, u8 ring_index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct device *dma_dev = NBL_RES_MGT_TO_DMA_DEV(res_mgt);
-+	struct nbl_res_tx_ring *tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, ring_index);
-+	struct nbl_res_vector *vector = NBL_RES_MGT_TO_VECTOR(res_mgt, ring_index);
-+
-+	vector->started = false;
-+	/* Flush napi task, to ensue the sched napi finish. So napi will no to access the
-+	 * ring memory(wild point), bacause the vector->started has set false.
-+	 */
-+	napi_synchronize(&vector->nbl_napi.napi);
-+	tx_ring->valid = false;
-+
-+	nbl_free_tx_ring_bufs(tx_ring);
-+	WRITE_ONCE(NBL_RES_MGT_TO_TX_RING(res_mgt, ring_index), tx_ring);
-+
-+	devm_kfree(dev, tx_ring->tx_bufs);
-+	tx_ring->tx_bufs = NULL;
-+
-+	dmam_free_coherent(dma_dev, tx_ring->size, tx_ring->desc, tx_ring->dma);
-+	tx_ring->desc = NULL;
-+	tx_ring->dma = (dma_addr_t)NULL;
-+	tx_ring->size = 0;
-+
-+	if (nbl_txrx_within_vsi(&tx_ring->vsi_info[NBL_VSI_DATA], tx_ring->queue_index))
-+		netdev_tx_reset_queue(txring_txq(tx_ring));
-+
-+	nbl_debug(res_mgt->common, NBL_DEBUG_RESOURCE, "Stop tx ring %d", ring_index);
-+}
-+
-+static inline bool nbl_dev_page_is_reusable(struct page *page, u8 nid)
-+{
-+	return likely(page_to_nid(page) == nid && !page_is_pfmemalloc(page));
-+}
-+
-+static inline int nbl_rx_cache_put(struct nbl_res_rx_ring *rx_ring, struct nbl_dma_info *dma_info)
-+{
-+	struct nbl_page_cache *cache = &rx_ring->page_cache;
-+	u32 tail_next = (cache->tail + 1) & (NBL_MAX_CACHE_SIZE - 1);
-+	struct nbl_rx_queue_stats *stats = &rx_ring->rx_stats;
-+
-+	if (tail_next == cache->head) {
-+		stats->rx_cache_full++;
-+		return 0;
-+	}
-+
-+	if (!nbl_dev_page_is_reusable(dma_info->page, rx_ring->nid)) {
-+		stats->rx_cache_waive++;
-+		return 1;
-+	}
-+
-+	cache->page_cache[cache->tail] = *dma_info;
-+	cache->tail = tail_next;
-+
-+	return 2;
-+}
-+
-+static inline void nbl_page_release_dynamic(struct nbl_res_rx_ring *rx_ring,
-+					    struct nbl_dma_info *dma_info, bool recycle)
-+{
-+	u32 ret;
-+
-+	if (likely(recycle)) {
-+		ret = nbl_rx_cache_put(rx_ring, dma_info);
-+		if (ret == 2)
-+			return;
-+		if (ret == 1)
-+			goto free_page;
-+		dma_unmap_page_attrs(rx_ring->dma_dev, dma_info->addr, dma_info->size,
-+				     DMA_FROM_DEVICE, NBL_RX_DMA_ATTR);
-+		page_pool_recycle_direct(rx_ring->page_pool, dma_info->page);
-+
-+		return;
-+	}
-+free_page:
-+	dma_unmap_page_attrs(rx_ring->dma_dev, dma_info->addr, dma_info->size,
-+			     DMA_FROM_DEVICE, NBL_RX_DMA_ATTR);
-+	page_pool_put_page(rx_ring->page_pool, dma_info->page, dma_info->size, true);
-+}
-+
-+static inline void nbl_put_rx_frag(struct nbl_res_rx_ring *rx_ring,
-+				   struct nbl_rx_buffer *buffer, bool recycle)
-+{
-+	if (buffer->last_in_page)
-+		nbl_page_release_dynamic(rx_ring, buffer->di, recycle);
-+}
-+
-+static void nbl_free_rx_ring_bufs(struct nbl_res_rx_ring *rx_ring)
-+{
-+	struct nbl_rx_buffer *rx_buf;
-+	u16 i;
-+
-+	i = rx_ring->next_to_clean;
-+	rx_buf = NBL_RX_BUF(rx_ring, i);
-+	while (i != rx_ring->next_to_use) {
-+		nbl_put_rx_frag(rx_ring, rx_buf, false);
-+		i++;
-+		rx_buf++;
-+		if (i == rx_ring->desc_num) {
-+			i = 0;
-+			rx_buf = NBL_RX_BUF(rx_ring, i);
-+		}
-+	}
-+
-+	for (i = rx_ring->page_cache.head; i != rx_ring->page_cache.tail;
-+	     i = (i + 1) & (NBL_MAX_CACHE_SIZE - 1)) {
-+		struct nbl_dma_info *dma_info = &rx_ring->page_cache.page_cache[i];
-+
-+		nbl_page_release_dynamic(rx_ring, dma_info, false);
-+	}
-+
-+	rx_ring->next_to_clean = 0;
-+	rx_ring->next_to_use = 0;
-+	rx_ring->tail_ptr = 0;
-+	rx_ring->page_cache.head = 0;
-+	rx_ring->page_cache.tail = 0;
-+
-+	rx_ring->used_wrap_counter = 1;
-+	rx_ring->avail_used_flags = BIT(NBL_PACKED_DESC_F_AVAIL);
-+	memset(rx_ring->desc, 0, rx_ring->size);
-+}
-+
-+static dma_addr_t nbl_res_txrx_start_rx_ring(void *priv, u8 ring_index, bool use_napi)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct device *dma_dev = NBL_RES_MGT_TO_DMA_DEV(res_mgt);
-+	struct nbl_res_rx_ring *rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, ring_index);
-+	struct nbl_res_vector *vector = NBL_RES_MGT_TO_VECTOR(res_mgt, ring_index);
-+	struct page_pool_params pp_params = {0};
-+	int pkt_len, hw_mtu, max_linear_len;
-+	int buf_size;
-+	int order = 0;
-+	int i, j;
-+	u16 rx_pad, tailroom;
-+
-+	if (rx_ring->rx_bufs) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE,
-+			"Try to setup a RX ring with buffer management array already allocated\n");
-+		return (dma_addr_t)NULL;
-+	}
-+	hw_mtu = rx_ring->netdev->mtu + NBL_PKT_HDR_PAD + NBL_BUFFER_HDR_LEN;
-+	tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	rx_pad = NBL_RX_PAD;
-+	max_linear_len = NBL_RX_BUFSZ;
-+	pkt_len = SKB_DATA_ALIGN(hw_mtu + rx_pad) + tailroom;
-+	rx_ring->linear_skb = true;
-+	if (pkt_len > max_linear_len) {
-+		rx_ring->linear_skb = false;
-+		rx_pad = 0;
-+		tailroom = 0;
-+		pkt_len = SKB_DATA_ALIGN(hw_mtu);
-+	}
-+	buf_size = NBL_RX_BUFSZ;
-+	WARN_ON(buf_size > PAGE_SIZE);
-+	rx_ring->frags_num_per_page = (PAGE_SIZE * (1 << order)) / buf_size;
-+	WARN_ON(rx_ring->frags_num_per_page > NBL_MAX_BATCH_DESC);
-+	rx_ring->buf_len = buf_size - rx_pad - tailroom;
-+
-+	pp_params.order = order;
-+	pp_params.flags = 0;
-+	pp_params.pool_size = rx_ring->desc_num;
-+	pp_params.nid = dev_to_node(dev);
-+	pp_params.dev = dev;
-+	pp_params.dma_dir = DMA_FROM_DEVICE;
-+
-+	if (dev_to_node(dev) == NUMA_NO_NODE)
-+		rx_ring->nid = 0;
-+	else
-+		rx_ring->nid = dev_to_node(dev);
-+
-+	rx_ring->page_pool = page_pool_create(&pp_params);
-+	if (IS_ERR(rx_ring->page_pool)) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE, "Page_pool Allocate %u Failed failed\n",
-+			rx_ring->queue_index);
-+		return (dma_addr_t)NULL;
-+	}
-+
-+	rx_ring->di = kvzalloc_node(array_size(rx_ring->desc_num / rx_ring->frags_num_per_page,
-+					       sizeof(struct nbl_dma_info)),
-+					       GFP_KERNEL, dev_to_node(dev));
-+	if (!rx_ring->di) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE, "Dma info Allocate %u Failed failed\n",
-+			rx_ring->queue_index);
-+		goto alloc_di_err;
-+	}
-+
-+	rx_ring->rx_bufs = devm_kcalloc(dev, rx_ring->desc_num, sizeof(*rx_ring->rx_bufs),
-+					GFP_KERNEL);
-+	if (!rx_ring->rx_bufs)
-+		goto alloc_buffers_err;
-+
-+	/* Alloc twice memory, and second half is used to back up the desc for desc checking */
-+	rx_ring->size = ALIGN(rx_ring->desc_num * sizeof(struct nbl_ring_desc), PAGE_SIZE);
-+	rx_ring->desc = dmam_alloc_coherent(dma_dev, rx_ring->size, &rx_ring->dma,
-+					    GFP_KERNEL | __GFP_ZERO);
-+	if (!rx_ring->desc) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE,
-+			"Allocate %u bytes descriptor DMA memory for RX queue %u failed\n",
-+			rx_ring->size, rx_ring->queue_index);
-+		goto alloc_dma_err;
-+	}
-+
-+	rx_ring->next_to_use = 0;
-+	rx_ring->next_to_clean = 0;
-+	rx_ring->tail_ptr = 0;
-+
-+	j = 0;
-+	for (i = 0; i < rx_ring->desc_num / rx_ring->frags_num_per_page; i++) {
-+		struct nbl_dma_info *di = &rx_ring->di[i];
-+		struct nbl_rx_buffer *buffer = &rx_ring->rx_bufs[j];
-+		int f;
-+
-+		di->size = (PAGE_SIZE * (1 << order));
-+		for (f = 0; f < rx_ring->frags_num_per_page; f++, j++) {
-+			buffer = &rx_ring->rx_bufs[j];
-+			buffer->di = di;
-+			buffer->size = buf_size;
-+			buffer->offset = rx_pad + f * buf_size;
-+			buffer->rx_pad = rx_pad;
-+			buffer->first_in_page = (f == 0);
-+			buffer->last_in_page = (f == rx_ring->frags_num_per_page - 1);
-+		}
-+	}
-+
-+	if (nbl_alloc_rx_bufs(rx_ring, rx_ring->desc_num - NBL_MAX_BATCH_DESC))
-+		goto alloc_rx_bufs_err;
-+
-+	rx_ring->valid = true;
-+	if (use_napi && vector)
-+		vector->started = true;
-+
-+	nbl_debug(common, NBL_DEBUG_RESOURCE, "Start rx ring %d", ring_index);
-+	return rx_ring->dma;
-+
-+alloc_rx_bufs_err:
-+	nbl_free_rx_ring_bufs(rx_ring);
-+	dmam_free_coherent(dma_dev, rx_ring->size, rx_ring->desc, rx_ring->dma);
-+	rx_ring->desc = NULL;
-+	rx_ring->dma = (dma_addr_t)NULL;
-+alloc_dma_err:
-+	devm_kfree(dev, rx_ring->rx_bufs);
-+	rx_ring->rx_bufs = NULL;
-+alloc_buffers_err:
-+	kvfree(rx_ring->di);
-+alloc_di_err:
-+	page_pool_destroy(rx_ring->page_pool);
-+	rx_ring->size = 0;
-+	return (dma_addr_t)NULL;
-+}
-+
-+static void nbl_res_txrx_stop_rx_ring(void *priv, u8 ring_index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct device *dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	struct device *dma_dev = NBL_RES_MGT_TO_DMA_DEV(res_mgt);
-+	struct nbl_res_rx_ring *rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, ring_index);
-+
-+	rx_ring->valid = false;
-+
-+	nbl_free_rx_ring_bufs(rx_ring);
-+	WRITE_ONCE(NBL_RES_MGT_TO_RX_RING(res_mgt, ring_index), rx_ring);
-+
-+	devm_kfree(dev, rx_ring->rx_bufs);
-+	kvfree(rx_ring->di);
-+	rx_ring->rx_bufs = NULL;
-+
-+	dmam_free_coherent(dma_dev, rx_ring->size, rx_ring->desc, rx_ring->dma);
-+	rx_ring->desc = NULL;
-+	rx_ring->dma = (dma_addr_t)NULL;
-+	rx_ring->size = 0;
-+
-+	page_pool_destroy(rx_ring->page_pool);
-+
-+	nbl_debug(res_mgt->common, NBL_DEBUG_RESOURCE, "Stop rx ring %d", ring_index);
-+}
-+
-+static inline bool nbl_ring_desc_used(struct nbl_ring_desc *ring_desc, bool used_wrap_counter)
-+{
-+	bool avail;
-+	bool used;
-+	u16 flags;
-+
-+	flags = le16_to_cpu(ring_desc->flags);
-+	avail = !!(flags & BIT(NBL_PACKED_DESC_F_AVAIL));
-+	used = !!(flags & BIT(NBL_PACKED_DESC_F_USED));
-+
-+	return avail == used && used == used_wrap_counter;
-+}
-+
-+static int nbl_res_txrx_clean_tx_irq(struct nbl_res_tx_ring *tx_ring)
-+{
-+	struct nbl_tx_buffer *tx_buffer;
-+	struct nbl_ring_desc *tx_desc;
-+	unsigned int i = tx_ring->next_to_clean;
-+	unsigned int total_tx_pkts = 0;
-+	unsigned int total_tx_bytes = 0;
-+	unsigned int total_tx_descs = 0;
-+	int count = 64;
-+
-+	tx_buffer = NBL_TX_BUF(tx_ring, i);
-+	tx_desc = NBL_TX_DESC(tx_ring, i);
-+	i -= tx_ring->desc_num;
-+
-+	do {
-+		struct nbl_ring_desc *end_desc = tx_buffer->next_to_watch;
-+
-+		if (!end_desc)
-+			break;
-+
-+		/* smp_rmb */
-+		smp_rmb();
-+
-+		if (!nbl_ring_desc_used(tx_desc, tx_ring->used_wrap_counter))
-+			break;
-+
-+		total_tx_pkts += tx_buffer->gso_segs;
-+		total_tx_bytes += tx_buffer->bytecount;
-+
-+		while (true) {
-+			total_tx_descs++;
-+			nbl_unmap_and_free_tx_resource(tx_ring, tx_buffer, true, true);
-+			if (tx_desc == end_desc)
-+				break;
-+			i++;
-+			tx_buffer++;
-+			tx_desc++;
-+			if (unlikely(!i)) {
-+				i -= tx_ring->desc_num;
-+				tx_buffer = NBL_TX_BUF(tx_ring, 0);
-+				tx_desc = NBL_TX_DESC(tx_ring, 0);
-+				tx_ring->used_wrap_counter ^= 1;
-+			}
-+		}
-+
-+		tx_buffer++;
-+		tx_desc++;
-+		i++;
-+		if (unlikely(!i)) {
-+			i -= tx_ring->desc_num;
-+			tx_buffer = NBL_TX_BUF(tx_ring, 0);
-+			tx_desc = NBL_TX_DESC(tx_ring, 0);
-+			tx_ring->used_wrap_counter ^= 1;
-+		}
-+
-+		prefetch(tx_desc);
-+
-+	} while (--count);
-+
-+	i += tx_ring->desc_num;
-+
-+	tx_ring->next_to_clean = i;
-+
-+	u64_stats_update_begin(&tx_ring->syncp);
-+	tx_ring->stats.bytes += total_tx_bytes;
-+	tx_ring->stats.packets += total_tx_pkts;
-+	tx_ring->stats.descs += total_tx_descs;
-+	u64_stats_update_end(&tx_ring->syncp);
-+	if (nbl_txrx_within_vsi(&tx_ring->vsi_info[NBL_VSI_DATA], tx_ring->queue_index))
-+		netdev_tx_completed_queue(txring_txq(tx_ring), total_tx_pkts, total_tx_bytes);
-+
-+#define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
-+	if (unlikely(total_tx_pkts && netif_carrier_ok(tx_ring->netdev) &&
-+		     nbl_txrx_within_vsi(&tx_ring->vsi_info[NBL_VSI_DATA], tx_ring->queue_index) &&
-+		     (nbl_unused_tx_desc_count(tx_ring) >= TX_WAKE_THRESHOLD))) {
-+		/* Make sure that anybody stopping the queue after this
-+		 * sees the new next_to_clean.
-+		 */
-+		smp_mb();
-+
-+		if (__netif_subqueue_stopped(tx_ring->netdev, tx_ring->queue_index)) {
-+			netif_wake_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+			dev_dbg(NBL_RING_TO_DEV(tx_ring), "wake queue %u\n", tx_ring->queue_index);
-+		}
-+	}
-+
-+	return count;
-+}
-+
-+static void nbl_rx_csum(struct nbl_res_rx_ring *rx_ring, struct sk_buff *skb,
-+			struct nbl_rx_extend_head *hdr)
-+{
-+	skb->ip_summed = CHECKSUM_NONE;
-+	skb_checksum_none_assert(skb);
-+
-+	/* if user disable RX Checksum Offload, then stack verify the rx checksum */
-+	if (!(rx_ring->netdev->features & NETIF_F_RXCSUM))
-+		return;
-+
-+	if (!hdr->checksum_status)
-+		return;
-+
-+	if (hdr->error_code) {
-+		rx_ring->rx_stats.rx_csum_errors++;
-+		return;
-+	}
-+
-+	skb->ip_summed = CHECKSUM_UNNECESSARY;
-+	rx_ring->rx_stats.rx_csum_packets++;
-+}
-+
-+static inline void nbl_add_rx_frag(struct nbl_rx_buffer *rx_buffer,
-+				   struct sk_buff *skb, unsigned int size)
-+{
-+	page_ref_inc(rx_buffer->di->page);
-+	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->di->page,
-+			rx_buffer->offset, size, rx_buffer->size);
-+}
-+
-+static inline int nbl_rx_vlan_pop(struct nbl_res_rx_ring *rx_ring, struct sk_buff *skb)
-+{
-+	struct vlan_ethhdr *veth = (struct vlan_ethhdr *)skb->data;
-+
-+	if (!rx_ring->vlan_proto)
-+		return 0;
-+
-+	if (rx_ring->vlan_proto != ntohs(veth->h_vlan_proto) ||
-+	    (rx_ring->vlan_tci & VLAN_VID_MASK) != (ntohs(veth->h_vlan_TCI) & VLAN_VID_MASK))
-+		return 1;
-+
-+	memmove(skb->data + VLAN_HLEN, skb->data, 2 * ETH_ALEN);
-+	__skb_pull(skb, VLAN_HLEN);
-+
-+	return 0;
-+}
-+
-+static void nbl_txrx_register_vsi_ring(void *priv, u16 vsi_index, u16 ring_offset, u16 ring_num)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_txrx_mgt *txrx_mgt = NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+
-+	txrx_mgt->vsi_info[vsi_index].ring_offset = ring_offset;
-+	txrx_mgt->vsi_info[vsi_index].ring_num = ring_num;
-+}
-+
-+static void nbl_res_txrx_cfg_txrx_vlan(void *priv, u16 vlan_tci, u16 vlan_proto, u8 vsi_index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_txrx_mgt *txrx_mgt = NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+	struct nbl_txrx_vsi_info *vsi_info = &txrx_mgt->vsi_info[vsi_index];
-+	struct nbl_res_tx_ring *tx_ring;
-+	struct nbl_res_rx_ring *rx_ring;
-+	u16 i;
-+
-+	if (!txrx_mgt->tx_rings || !txrx_mgt->rx_rings)
-+		return;
-+
-+	for (i = vsi_info->ring_offset; i < vsi_info->ring_offset + vsi_info->ring_num; i++) {
-+		tx_ring = txrx_mgt->tx_rings[i];
-+		rx_ring = txrx_mgt->rx_rings[i];
-+
-+		if (tx_ring) {
-+			tx_ring->vlan_tci = vlan_tci;
-+			tx_ring->vlan_proto = vlan_proto;
-+		}
-+
-+		if (rx_ring) {
-+			rx_ring->vlan_tci = vlan_tci;
-+			rx_ring->vlan_proto = vlan_proto;
-+		}
-+	}
-+}
-+
-+/**
-+ * Current version support merging multiple descriptor for one packet.
-+ */
-+static struct sk_buff *nbl_construct_skb(struct nbl_res_rx_ring *rx_ring, struct napi_struct *napi,
-+					 struct nbl_rx_buffer *rx_buf, unsigned int size)
-+{
-+	struct sk_buff *skb;
-+	char *p, *buf;
-+	int tailroom, shinfo_size = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	unsigned int truesize = rx_buf->size;
-+	unsigned int headlen;
-+
-+	p = page_address(rx_buf->di->page) + rx_buf->offset;
-+	buf = p - NBL_RX_PAD;
-+	p +=  NBL_BUFFER_HDR_LEN;
-+	tailroom = truesize - size - NBL_RX_PAD;
-+	size -= NBL_BUFFER_HDR_LEN;
-+
-+	if (rx_ring->linear_skb && tailroom >= shinfo_size) {
-+		skb = build_skb(buf, truesize);
-+		if (unlikely(!skb))
-+			return NULL;
-+
-+		page_ref_inc(rx_buf->di->page);
-+		skb_reserve(skb, p - buf);
-+		skb_put(skb, size);
-+		goto ok;
-+	}
-+
-+	skb = napi_alloc_skb(napi, NBL_RX_HDR_SIZE);
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+	headlen = size;
-+	if (headlen > NBL_RX_HDR_SIZE)
-+		headlen = eth_get_headlen(skb->dev, p, NBL_RX_HDR_SIZE);
-+
-+	memcpy(__skb_put(skb, headlen), p, ALIGN(headlen, sizeof(long)));
-+	size -= headlen;
-+	if (size) {
-+		page_ref_inc(rx_buf->di->page);
-+		skb_add_rx_frag(skb, 0, rx_buf->di->page,
-+				rx_buf->offset + NBL_BUFFER_HDR_LEN + headlen,
-+				size, truesize);
-+	}
-+ok:
-+	skb_record_rx_queue(skb, rx_ring->queue_index);
-+
-+	return skb;
-+}
-+
-+static inline struct nbl_rx_buffer *nbl_get_rx_buf(struct nbl_res_rx_ring *rx_ring)
-+{
-+	struct nbl_rx_buffer *rx_buf;
-+
-+	rx_buf = NBL_RX_BUF(rx_ring, rx_ring->next_to_clean);
-+	prefetchw(rx_buf->di->page);
-+
-+	dma_sync_single_range_for_cpu(rx_ring->dma_dev, rx_buf->di->addr, rx_buf->offset,
-+				      rx_ring->buf_len, DMA_FROM_DEVICE);
-+
-+	return rx_buf;
-+}
-+
-+static inline void nbl_put_rx_buf(struct nbl_res_rx_ring *rx_ring, struct nbl_rx_buffer *rx_buf)
-+{
-+	u16 ntc = rx_ring->next_to_clean + 1;
-+
-+	/* if at the end of the ring, reset ntc and flip used wrap bit */
-+	if (unlikely(ntc >= rx_ring->desc_num)) {
-+		ntc = 0;
-+		rx_ring->used_wrap_counter ^= 1;
-+	}
-+
-+	rx_ring->next_to_clean = ntc;
-+	prefetch(NBL_RX_DESC(rx_ring, ntc));
-+
-+	nbl_put_rx_frag(rx_ring, rx_buf, true);
-+}
-+
-+static inline int nbl_maybe_stop_tx(struct nbl_res_tx_ring *tx_ring, unsigned int size)
-+{
-+	if (likely(nbl_unused_tx_desc_count(tx_ring) >= size))
-+		return 0;
-+
-+	if (!nbl_txrx_within_vsi(&tx_ring->vsi_info[NBL_VSI_DATA], tx_ring->queue_index))
-+		return -EBUSY;
-+
-+	dev_dbg(NBL_RING_TO_DEV(tx_ring), "unused_desc_count:%u, size:%u, stop queue %u\n",
-+		nbl_unused_tx_desc_count(tx_ring), size, tx_ring->queue_index);
-+	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+
-+	/* smp_mb */
-+	smp_mb();
-+
-+	if (likely(nbl_unused_tx_desc_count(tx_ring) < size))
-+		return -EBUSY;
-+
-+	dev_dbg(NBL_RING_TO_DEV(tx_ring), "unused_desc_count:%u, size:%u, start queue %u\n",
-+		nbl_unused_tx_desc_count(tx_ring), size, tx_ring->queue_index);
-+	netif_start_subqueue(tx_ring->netdev, tx_ring->queue_index);
-+
-+	return 0;
-+}
-+
-+static int nbl_res_txrx_clean_rx_irq(struct nbl_res_rx_ring *rx_ring,
-+				     struct napi_struct *napi,
-+				     int budget)
-+{
-+	struct nbl_ring_desc *rx_desc;
-+	struct nbl_rx_buffer *rx_buf;
-+	struct nbl_rx_extend_head *hdr;
-+	struct sk_buff *skb = NULL;
-+	unsigned int total_rx_pkts = 0;
-+	unsigned int total_rx_bytes = 0;
-+	unsigned int size;
-+	u32 rx_multicast_packets = 0;
-+	u32 rx_unicast_packets = 0;
-+	u16 desc_count = 0;
-+	u16 num_buffers = 0;
-+	u16 cleaned_count = nbl_unused_rx_desc_count(rx_ring);
-+	bool failure = 0;
-+	bool drop = 0;
-+
-+	while (likely(total_rx_pkts < budget)) {
-+		rx_desc = NBL_RX_DESC(rx_ring, rx_ring->next_to_clean);
-+		if (!nbl_ring_desc_used(rx_desc, rx_ring->used_wrap_counter))
-+			break;
-+
-+		dma_rmb();
-+		size = le32_to_cpu(rx_desc->len);
-+		rx_buf = nbl_get_rx_buf(rx_ring);
-+
-+		desc_count++;
-+
-+		if (skb) {
-+			nbl_add_rx_frag(rx_buf, skb, size);
-+		} else {
-+			hdr = page_address(rx_buf->di->page) + rx_buf->offset;
-+			net_prefetch(hdr);
-+			skb = nbl_construct_skb(rx_ring, napi, rx_buf, size);
-+			if (unlikely(!skb)) {
-+				rx_ring->rx_stats.rx_alloc_buf_err_cnt++;
-+				break;
-+			}
-+
-+			num_buffers = le16_to_cpu(hdr->num_buffers);
-+			nbl_rx_csum(rx_ring, skb, hdr);
-+			drop = nbl_rx_vlan_pop(rx_ring, skb);
-+		}
-+
-+		cleaned_count++;
-+		nbl_put_rx_buf(rx_ring, rx_buf);
-+		if (desc_count < num_buffers)
-+			continue;
-+		desc_count = 0;
-+
-+		if (unlikely(eth_skb_pad(skb))) {
-+			skb = NULL;
-+			drop = 0;
-+			continue;
-+		}
-+
-+		if (unlikely(drop)) {
-+			kfree(skb);
-+			skb = NULL;
-+			drop = 0;
-+			continue;
-+		}
-+
-+		total_rx_bytes += skb->len;
-+		skb->protocol = eth_type_trans(skb, rx_ring->netdev);
-+		if (unlikely(skb->pkt_type == PACKET_BROADCAST ||
-+			     skb->pkt_type == PACKET_MULTICAST))
-+			rx_multicast_packets++;
-+		else
-+			rx_unicast_packets++;
-+
-+		napi_gro_receive(napi, skb);
-+		skb = NULL;
-+		drop = 0;
-+		total_rx_pkts++;
-+	}
-+
-+	if (cleaned_count & (~(NBL_MAX_BATCH_DESC - 1)))
-+		failure = nbl_alloc_rx_bufs(rx_ring, cleaned_count & (~(NBL_MAX_BATCH_DESC - 1)));
-+
-+	u64_stats_update_begin(&rx_ring->syncp);
-+	rx_ring->stats.packets += total_rx_pkts;
-+	rx_ring->stats.bytes += total_rx_bytes;
-+	rx_ring->rx_stats.rx_multicast_packets += rx_multicast_packets;
-+	rx_ring->rx_stats.rx_unicast_packets += rx_unicast_packets;
-+	u64_stats_update_end(&rx_ring->syncp);
-+
-+	return failure ? budget : total_rx_pkts;
-+}
-+
-+static int nbl_res_napi_poll(struct napi_struct *napi, int budget)
-+{
-+	struct nbl_napi_struct *nbl_napi = container_of(napi, struct nbl_napi_struct, napi);
-+	struct nbl_res_vector *vector = container_of(nbl_napi, struct nbl_res_vector, nbl_napi);
-+	struct nbl_res_tx_ring *tx_ring;
-+	struct nbl_res_rx_ring *rx_ring;
-+	int complete = 1, cleaned = 0, tx_done = 1;
-+
-+	tx_ring = vector->tx_ring;
-+	rx_ring = vector->rx_ring;
-+
-+	if (vector->started) {
-+		tx_done = nbl_res_txrx_clean_tx_irq(tx_ring);
-+		cleaned = nbl_res_txrx_clean_rx_irq(rx_ring, napi, budget);
-+	}
-+	complete = tx_done && (cleaned < budget);
-+	if (!complete)
-+		return budget;
-+
-+	if (!napi_complete_done(napi, cleaned))
-+		return min_t(int, cleaned, budget - 1);
-+
-+	/* unmask irq passthrough for performace */
-+	if (vector->net_msix_mask_en)
-+		writel(vector->irq_data, vector->irq_enable_base);
-+
-+	return min_t(int, cleaned, budget - 1);
-+}
-+
-+static unsigned int nbl_xmit_desc_count(struct sk_buff *skb)
-+{
-+	unsigned int nr_frags = skb_shinfo(skb)->nr_frags;
-+
-+	return nr_frags + 1;
-+}
-+
-+/* set up TSO(TCP Segmentation Offload) */
-+static int nbl_tx_tso(struct nbl_tx_buffer *first, struct nbl_tx_hdr_param *hdr_param)
-+{
-+	struct sk_buff *skb = first->skb;
-+	union {
-+		struct iphdr *v4;
-+		struct ipv6hdr *v6;
-+		unsigned char *hdr;
-+	} ip;
-+	union {
-+		struct tcphdr *tcp;
-+		struct udphdr *udp;
-+		unsigned char *hdr;
-+	} l4;
-+	u8 l4_start;
-+	u32 payload_len;
-+	u8 header_len = 0;
-+	int err;
-+
-+	if (skb->ip_summed != CHECKSUM_PARTIAL)
-+		return 1;
-+
-+	if (!skb_is_gso(skb))
-+		return 1;
-+
-+	err = skb_cow_head(skb, 0);
-+	if (err < 0)
-+		return err;
-+
-+	ip.hdr = skb_network_header(skb);
-+	l4.hdr = skb_transport_header(skb);
-+
-+	/* initialize IP header fields*/
-+	if (ip.v4->version == IP_VERSION_V4) {
-+		ip.v4->tot_len = 0;
-+		ip.v4->check = 0;
-+	} else {
-+		ip.v6->payload_len = 0;
-+	}
-+
-+	/* length of (MAC + IP) header */
-+	l4_start = (u8)(l4.hdr - skb->data);
-+
-+	/* l4 packet length */
-+	payload_len = skb->len - l4_start;
-+
-+	/* remove l4 packet length from L4 pseudo-header checksum */
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) {
-+		csum_replace_by_diff(&l4.udp->check, (__force __wsum)htonl(payload_len));
-+		/* compute length of UDP segmentation header */
-+		header_len = (u8)sizeof(l4.udp) + l4_start;
-+	} else {
-+		csum_replace_by_diff(&l4.tcp->check, (__force __wsum)htonl(payload_len));
-+		/* compute length of TCP segmentation header */
-+		header_len = (u8)(l4.tcp->doff * 4 + l4_start);
-+	}
-+
-+	hdr_param->tso = 1;
-+	hdr_param->mss = skb_shinfo(skb)->gso_size;
-+	hdr_param->total_hlen = header_len;
-+
-+	first->gso_segs = skb_shinfo(skb)->gso_segs;
-+	first->bytecount += (first->gso_segs - 1) * header_len;
-+	first->tx_flags = NBL_TX_FLAGS_TSO;
-+
-+	return first->gso_segs;
-+}
-+
-+/* set up Tx checksum offload */
-+static int nbl_tx_csum(struct nbl_tx_buffer *first, struct nbl_tx_hdr_param *hdr_param)
-+{
-+	struct sk_buff *skb = first->skb;
-+	union {
-+		struct iphdr *v4;
-+		struct ipv6hdr *v6;
-+		unsigned char *hdr;
-+	} ip;
-+	union {
-+		struct tcphdr *tcp;
-+		struct udphdr *udp;
-+		unsigned char *hdr;
-+	} l4;
-+	__be16 frag_off, protocol;
-+	u8 inner_ip_type = 0, l4_type = 0, l4_csum = 0, l4_proto = 0;
-+	u32 l2_len = 0, l3_len = 0, l4_len = 0;
-+	unsigned char *exthdr;
-+	int ret;
-+
-+	if (skb->ip_summed != CHECKSUM_PARTIAL)
-+		return 0;
-+
-+	ip.hdr = skb_network_header(skb);
-+	l4.hdr = skb_transport_header(skb);
-+
-+	/* compute outer L2 header size */
-+	l2_len = ip.hdr - skb->data;
-+
-+	protocol = vlan_get_protocol(skb);
-+
-+	if (protocol == htons(ETH_P_IP)) {
-+		inner_ip_type = NBL_TX_IIPT_IPV4;
-+		l4_proto = ip.v4->protocol;
-+	} else if (protocol == htons(ETH_P_IPV6)) {
-+		inner_ip_type = NBL_TX_IIPT_IPV6;
-+		exthdr = ip.hdr + sizeof(*ip.v6);
-+		l4_proto = ip.v6->nexthdr;
-+
-+		if (l4.hdr != exthdr) {
-+			ret = ipv6_skip_exthdr(skb, exthdr - skb->data, &l4_proto, &frag_off);
-+			if (ret < 0)
-+				return -1;
-+		}
-+	} else {
-+		return -1;
-+	}
-+
-+	l3_len = l4.hdr - ip.hdr;
-+
-+	switch (l4_proto) {
-+	case IPPROTO_TCP:
-+		l4_type = NBL_TX_L4T_TCP;
-+		l4_len = l4.tcp->doff;
-+		l4_csum = 1;
-+		break;
-+	case IPPROTO_UDP:
-+		l4_type = NBL_TX_L4T_UDP;
-+		l4_len = (sizeof(struct udphdr) >> 2);
-+		l4_csum = 1;
-+		break;
-+	case IPPROTO_SCTP:
-+		if (first->tx_flags & NBL_TX_FLAGS_TSO)
-+			return -1;
-+		l4_type = NBL_TX_L4T_RSV;
-+		l4_len = (sizeof(struct sctphdr) >> 2);
-+		l4_csum = 1;
-+		break;
-+	default:
-+		if (first->tx_flags & NBL_TX_FLAGS_TSO)
-+			return -2;
-+
-+		/* unsopported L4 protocol, device cannot offload L4 checksum,
-+		 * so software compute L4 checskum
-+		 */
-+		skb_checksum_help(skb);
-+		return 0;
-+	}
-+
-+	hdr_param->mac_len = l2_len >> 1;
-+	hdr_param->ip_len = l3_len >> 2;
-+	hdr_param->l4_len = l4_len;
-+	hdr_param->l4_type = l4_type;
-+	hdr_param->inner_ip_type = inner_ip_type;
-+	hdr_param->l3_csum_en = 0;
-+	hdr_param->l4_csum_en = l4_csum;
-+
-+	return 1;
-+}
-+
-+static inline int nbl_tx_fill_desc(struct nbl_res_tx_ring *tx_ring, u64 dma, u32 size,
-+				   u16 index, bool first, bool page)
-+{
-+	struct nbl_tx_buffer *tx_buffer = NBL_TX_BUF(tx_ring, index);
-+	struct nbl_ring_desc *tx_desc = NBL_TX_DESC(tx_ring, index);
-+
-+	tx_buffer->dma = dma;
-+	tx_buffer->len = size;
-+	tx_buffer->page = page;
-+	tx_desc->addr = cpu_to_le64(dma);
-+	tx_desc->len = size;
-+	if (!first)
-+		tx_desc->flags = cpu_to_le16(tx_ring->avail_used_flags | NBL_PACKED_DESC_F_NEXT);
-+
-+	index++;
-+	if (index == tx_ring->desc_num) {
-+		index = 0;
-+		tx_ring->avail_used_flags ^=
-+			1 << NBL_PACKED_DESC_F_AVAIL |
-+			1 << NBL_PACKED_DESC_F_USED;
-+	}
-+
-+	return index;
-+}
-+
-+static int nbl_map_skb(struct nbl_res_tx_ring *tx_ring, struct sk_buff *skb,
-+		       u16 first, u16 *desc_index)
-+{
-+	u16 index = *desc_index;
-+	const skb_frag_t *frag;
-+	unsigned int frag_num = skb_shinfo(skb)->nr_frags;
-+	struct device *dma_dev = NBL_RING_TO_DMA_DEV(tx_ring);
-+	unsigned int i;
-+	unsigned int size;
-+	dma_addr_t dma;
-+
-+	size = skb_headlen(skb);
-+	dma = dma_map_single(dma_dev, skb->data, size, DMA_TO_DEVICE);
-+	if (dma_mapping_error(dma_dev, dma))
-+		return -1;
-+
-+	index = nbl_tx_fill_desc(tx_ring, dma, size, index, first, 0);
-+
-+	if (!frag_num) {
-+		*desc_index = index;
-+		return 0;
-+	}
-+
-+	frag = &skb_shinfo(skb)->frags[0];
-+	for (i = 0; i < frag_num; i++) {
-+		size = skb_frag_size(frag);
-+		dma = skb_frag_dma_map(dma_dev, frag, 0, size, DMA_TO_DEVICE);
-+		if (dma_mapping_error(dma_dev, dma)) {
-+			*desc_index = index;
-+			return -1;
-+		}
-+
-+		index = nbl_tx_fill_desc(tx_ring, dma, size, index, 0, 1);
-+		frag++;
-+	}
-+
-+	*desc_index = index;
-+	return 0;
-+}
-+
-+static inline void nbl_tx_fill_tx_extend_header_leonis(union nbl_tx_extend_head *pkthdr,
-+						       struct nbl_tx_hdr_param *param)
-+{
-+	pkthdr->mac_len = param->mac_len;
-+	pkthdr->ip_len = param->ip_len;
-+	pkthdr->l4_len = param->l4_len;
-+	pkthdr->l4_type = param->l4_type;
-+	pkthdr->inner_ip_type = param->inner_ip_type;
-+
-+	pkthdr->l4s_sid = param->l4s_sid;
-+	pkthdr->l4s_sync_ind = param->l4s_sync_ind;
-+	pkthdr->l4s_hdl_ind = param->l4s_hdl_ind;
-+	pkthdr->l4s_pbrac_mode = param->l4s_pbrac_mode;
-+
-+	pkthdr->mss = param->mss;
-+	pkthdr->tso = param->tso;
-+
-+	pkthdr->fwd = param->fwd;
-+	pkthdr->rss_lag_en = param->rss_lag_en;
-+	pkthdr->dport = param->dport;
-+	pkthdr->dport_id = param->dport_id;
-+
-+	pkthdr->l3_csum_en = param->l3_csum_en;
-+	pkthdr->l4_csum_en = param->l4_csum_en;
-+}
-+
-+static bool nbl_skb_is_lacp_or_lldp(struct sk_buff *skb)
-+{
-+	__be16 protocol;
-+
-+	protocol = vlan_get_protocol(skb);
-+	if (protocol == htons(ETH_P_SLOW) || protocol == htons(ETH_P_LLDP))
-+		return true;
-+
-+	return false;
-+}
-+
-+static int nbl_tx_map(struct nbl_res_tx_ring *tx_ring, struct sk_buff *skb,
-+		      struct nbl_tx_hdr_param *hdr_param)
-+{
-+	struct device *dma_dev = NBL_RING_TO_DMA_DEV(tx_ring);
-+	struct nbl_tx_buffer *first;
-+	struct nbl_ring_desc *first_desc;
-+	struct nbl_ring_desc *tx_desc;
-+	union nbl_tx_extend_head *pkthdr;
-+	dma_addr_t hdrdma;
-+	int tso, csum;
-+	u16 desc_index = tx_ring->next_to_use;
-+	u16 head = desc_index;
-+	u16 avail_used_flags = tx_ring->avail_used_flags;
-+	u32 pkthdr_len;
-+	bool can_push;
-+	bool doorbell = true;
-+
-+	first_desc = NBL_TX_DESC(tx_ring, desc_index);
-+	first = NBL_TX_BUF(tx_ring, desc_index);
-+	first->gso_segs = 1;
-+	first->bytecount = skb->len;
-+	first->tx_flags = 0;
-+	first->skb = skb;
-+	skb_tx_timestamp(skb);
-+
-+	can_push = !skb_header_cloned(skb) && skb_headroom(skb) >= sizeof(*pkthdr);
-+
-+	if (can_push)
-+		pkthdr = (union nbl_tx_extend_head *)(skb->data - sizeof(*pkthdr));
-+	else
-+		pkthdr = (union nbl_tx_extend_head *)(skb->cb);
-+
-+	tso = nbl_tx_tso(first, hdr_param);
-+	if (tso < 0) {
-+		netdev_err(tx_ring->netdev, "tso ret:%d\n", tso);
-+		goto out_drop;
-+	}
-+
-+	csum = nbl_tx_csum(first, hdr_param);
-+	if (csum < 0) {
-+		netdev_err(tx_ring->netdev, "csum ret:%d\n", csum);
-+		goto out_drop;
-+	}
-+
-+	memset(pkthdr, 0, sizeof(*pkthdr));
-+	switch (tx_ring->product_type) {
-+	case NBL_LEONIS_TYPE:
-+		nbl_tx_fill_tx_extend_header_leonis(pkthdr, hdr_param);
-+		break;
-+	default:
-+		netdev_err(tx_ring->netdev, "fill tx extend header failed, product type: %d, eth: %u.\n",
-+			   tx_ring->product_type, hdr_param->dport_id);
-+		goto out_drop;
-+	}
-+
-+	pkthdr_len = sizeof(union nbl_tx_extend_head);
-+
-+	if (can_push) {
-+		__skb_push(skb, pkthdr_len);
-+		if (nbl_map_skb(tx_ring, skb, 1, &desc_index))
-+			goto dma_map_error;
-+		__skb_pull(skb, pkthdr_len);
-+	} else {
-+		hdrdma = dma_map_single(dma_dev, pkthdr, pkthdr_len, DMA_TO_DEVICE);
-+		if (dma_mapping_error(dma_dev, hdrdma)) {
-+			tx_ring->tx_stats.tx_dma_busy++;
-+			return NETDEV_TX_BUSY;
-+		}
-+
-+		first_desc->addr = cpu_to_le64(hdrdma);
-+		first_desc->len = pkthdr_len;
-+
-+		first->dma = hdrdma;
-+		first->len = pkthdr_len;
-+
-+		desc_index++;
-+		if (desc_index == tx_ring->desc_num) {
-+			desc_index = 0;
-+			tx_ring->avail_used_flags ^= 1 << NBL_PACKED_DESC_F_AVAIL |
-+						     1 << NBL_PACKED_DESC_F_USED;
-+		}
-+		if (nbl_map_skb(tx_ring, skb, 0, &desc_index))
-+			goto dma_map_error;
-+	}
-+
-+	/* stats */
-+	if (is_multicast_ether_addr(skb->data))
-+		tx_ring->tx_stats.tx_multicast_packets += tso;
-+	else
-+		tx_ring->tx_stats.tx_unicast_packets += tso;
-+
-+	if (tso > 1) {
-+		tx_ring->tx_stats.tso_packets++;
-+		tx_ring->tx_stats.tso_bytes += skb->len;
-+	}
-+	tx_ring->tx_stats.tx_csum_packets += csum;
-+
-+	tx_desc = NBL_TX_DESC(tx_ring, (desc_index == 0 ? tx_ring->desc_num : desc_index) - 1);
-+	tx_desc->flags &= cpu_to_le16(~NBL_PACKED_DESC_F_NEXT);
-+	first_desc->len += (hdr_param->total_hlen << NBL_TX_TOTAL_HEADERLEN_SHIFT);
-+	first_desc->id = cpu_to_le16(skb_shinfo(skb)->gso_size);
-+
-+	tx_ring->next_to_use = desc_index;
-+	nbl_maybe_stop_tx(tx_ring, DESC_NEEDED);
-+	if (nbl_txrx_within_vsi(&tx_ring->vsi_info[NBL_VSI_DATA], tx_ring->queue_index))
-+		doorbell = __netdev_tx_sent_queue(txring_txq(tx_ring),
-+						  first->bytecount, netdev_xmit_more());
-+	/* wmb */
-+	wmb();
-+
-+	first->next_to_watch = tx_desc;
-+	/* first desc last set flag */
-+	if (first_desc == tx_desc)
-+		first_desc->flags = cpu_to_le16(avail_used_flags);
-+	else
-+		first_desc->flags = cpu_to_le16(avail_used_flags | NBL_PACKED_DESC_F_NEXT);
-+
-+	/* kick doorbell passthrough for performace */
-+	if (doorbell)
-+		writel(tx_ring->notify_qid, tx_ring->notify_addr);
-+
-+	return NETDEV_TX_OK;
-+
-+dma_map_error:
-+	while (desc_index != head) {
-+		if (unlikely(!desc_index))
-+			desc_index = tx_ring->desc_num;
-+		desc_index--;
-+		nbl_unmap_and_free_tx_resource(tx_ring, NBL_TX_BUF(tx_ring, desc_index),
-+					       false, false);
-+	}
-+
-+	tx_ring->avail_used_flags = avail_used_flags;
-+	tx_ring->tx_stats.tx_dma_busy++;
-+	return NETDEV_TX_BUSY;
-+
-+out_drop:
-+	netdev_err(tx_ring->netdev, "tx_map, free_skb\n");
-+	tx_ring->tx_stats.tx_skb_free++;
-+	dev_kfree_skb_any(skb);
-+	return NETDEV_TX_OK;
-+}
-+
-+static netdev_tx_t nbl_res_txrx_start_xmit(struct sk_buff *skb,
-+					   struct net_device *netdev)
-+{
-+	struct nbl_resource_mgt *res_mgt =
-+				NBL_ADAPTER_TO_RES_MGT(NBL_NETDEV_TO_ADAPTER(netdev));
-+	struct nbl_txrx_mgt *txrx_mgt = NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+	struct nbl_res_tx_ring *tx_ring = txrx_mgt->tx_rings[skb_get_queue_mapping(skb)];
-+	struct nbl_tx_hdr_param hdr_param = {
-+		.mac_len = 14 >> 1,
-+		.ip_len = 20 >> 2,
-+		.l4_len = 20 >> 2,
-+		.mss = 256,
-+	};
-+	u16 vlan_tci;
-+	u16 vlan_proto;
-+	unsigned int count;
-+	int ret = 0;
-+
-+	count = nbl_xmit_desc_count(skb);
-+	/* we can not tranmit a packet with more than 32 descriptors */
-+	WARN_ON(count > MAX_DESC_NUM_PER_PKT);
-+	if (unlikely(nbl_maybe_stop_tx(tx_ring, count))) {
-+		if (net_ratelimit())
-+			dev_dbg(NBL_RING_TO_DEV(tx_ring), "no desc to tx pkt in queue %u\n",
-+				tx_ring->queue_index);
-+		tx_ring->tx_stats.tx_busy++;
-+		return NETDEV_TX_BUSY;
-+	}
-+
-+	if (tx_ring->vlan_proto || skb_vlan_tag_present(skb)) {
-+		if (tx_ring->vlan_proto) {
-+			vlan_proto = htons(tx_ring->vlan_proto);
-+			vlan_tci = tx_ring->vlan_tci;
-+		}
-+
-+		if (skb_vlan_tag_present(skb)) {
-+			vlan_proto = skb->vlan_proto;
-+			vlan_tci = skb_vlan_tag_get(skb);
-+		}
-+
-+		skb = vlan_insert_tag_set_proto(skb, vlan_proto, vlan_tci);
-+		if (!skb)
-+			return NETDEV_TX_OK;
-+	}
-+	/* for dstore and eth, min packet len is 60 */
-+	eth_skb_pad(skb);
-+
-+	hdr_param.dport_id = tx_ring->eth_id;
-+	hdr_param.fwd = 1;
-+	hdr_param.rss_lag_en = 0;
-+
-+	if (nbl_skb_is_lacp_or_lldp(skb)) {
-+		hdr_param.fwd = NBL_TX_FWD_TYPE_CPU_ASSIGNED;
-+		hdr_param.dport = NBL_TX_DPORT_ETH;
-+	}
-+
-+	/* for unicast packet tx_map all */
-+	ret = nbl_tx_map(tx_ring, skb, &hdr_param);
-+	return ret;
-+}
-+
-+static void nbl_res_txrx_kick_rx_ring(void *priv, u16 index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_hw_ops *hw_ops = NBL_RES_MGT_TO_HW_OPS(res_mgt);
-+	struct nbl_notify_param notify_param = {0};
-+	struct nbl_res_rx_ring *rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, index);
-+
-+	notify_param.notify_qid = rx_ring->notify_qid;
-+	notify_param.tail_ptr = rx_ring->tail_ptr;
-+	hw_ops->update_tail_ptr(NBL_RES_MGT_TO_HW_PRIV(res_mgt), &notify_param);
-+}
-+
-+static struct nbl_napi_struct *nbl_res_txrx_get_vector_napi(void *priv, u16 index)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+
-+	if (!txrx_mgt->vectors || index >= txrx_mgt->rx_ring_num) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE, "vectors not allocated\n");
-+		return NULL;
-+	}
-+
-+	return &txrx_mgt->vectors[index]->nbl_napi;
-+}
-+
-+static void nbl_res_txrx_set_vector_info(void *priv, u8 *irq_enable_base,
-+					 u32 irq_data, u16 index, bool mask_en)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_common_info *common = NBL_RES_MGT_TO_COMMON(res_mgt);
-+	struct nbl_txrx_mgt *txrx_mgt = res_mgt->txrx_mgt;
-+
-+	if (!txrx_mgt->vectors || index >= txrx_mgt->rx_ring_num) {
-+		nbl_err(common, NBL_DEBUG_RESOURCE, "vectors not allocated\n");
-+		return;
-+	}
-+
-+	txrx_mgt->vectors[index]->irq_enable_base = irq_enable_base;
-+	txrx_mgt->vectors[index]->irq_data = irq_data;
-+	txrx_mgt->vectors[index]->net_msix_mask_en = mask_en;
-+}
-+
-+static void nbl_res_get_pt_ops(void *priv, struct nbl_resource_pt_ops *pt_ops)
-+{
-+	pt_ops->start_xmit = nbl_res_txrx_start_xmit;
-+	pt_ops->napi_poll = nbl_res_napi_poll;
-+}
-+
-+static u32 nbl_res_txrx_get_tx_headroom(void *priv)
-+{
-+	return sizeof(union nbl_tx_extend_head);
-+}
-+
-+static bool nbl_res_is_ctrlq(struct nbl_txrx_mgt *txrx_mgt, u16 qid)
-+{
-+	u16 ring_num = txrx_mgt->vsi_info[NBL_VSI_CTRL].ring_num;
-+	u16 ring_offset = txrx_mgt->vsi_info[NBL_VSI_CTRL].ring_offset;
-+
-+	if (qid >= ring_offset && qid < ring_offset + ring_num)
-+		return true;
-+
-+	return false;
-+}
-+
-+static void nbl_res_txrx_get_net_stats(void *priv, struct nbl_stats *net_stats)
-+{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_txrx_mgt *txrx_mgt = NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+	struct nbl_res_rx_ring *rx_ring;
-+	struct nbl_res_tx_ring *tx_ring;
-+	int i;
-+	u64 bytes = 0, packets = 0;
-+	u64 tso_packets = 0, tso_bytes = 0;
-+	u64 tx_csum_packets = 0;
-+	u64 rx_csum_packets = 0, rx_csum_errors = 0;
-+	u64 tx_multicast_packets = 0, tx_unicast_packets = 0;
-+	u64 rx_multicast_packets = 0, rx_unicast_packets = 0;
-+	u64 tx_busy = 0, tx_dma_busy = 0;
-+	u64 tx_desc_addr_err_cnt = 0;
-+	u64 tx_desc_len_err_cnt = 0;
-+	u64 rx_desc_addr_err_cnt = 0;
-+	u64 rx_alloc_buf_err_cnt = 0;
-+	u64 rx_cache_reuse = 0;
-+	u64 rx_cache_full = 0;
-+	u64 rx_cache_empty = 0;
-+	u64 rx_cache_busy = 0;
-+	u64 rx_cache_waive = 0;
-+	u64 tx_skb_free = 0;
-+	unsigned int start;
-+
-+	rcu_read_lock();
-+	for (i = 0; i < txrx_mgt->rx_ring_num; i++) {
-+		if (nbl_res_is_ctrlq(txrx_mgt, i))
-+			continue;
-+
-+		rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, i);
-+		do {
-+			start = u64_stats_fetch_begin(&rx_ring->syncp);
-+			bytes += rx_ring->stats.bytes;
-+			packets += rx_ring->stats.packets;
-+			rx_csum_packets += rx_ring->rx_stats.rx_csum_packets;
-+			rx_csum_errors += rx_ring->rx_stats.rx_csum_errors;
-+			rx_multicast_packets += rx_ring->rx_stats.rx_multicast_packets;
-+			rx_unicast_packets += rx_ring->rx_stats.rx_unicast_packets;
-+			rx_desc_addr_err_cnt += rx_ring->rx_stats.rx_desc_addr_err_cnt;
-+			rx_alloc_buf_err_cnt += rx_ring->rx_stats.rx_alloc_buf_err_cnt;
-+			rx_cache_reuse += rx_ring->rx_stats.rx_cache_reuse;
-+			rx_cache_full += rx_ring->rx_stats.rx_cache_full;
-+			rx_cache_empty += rx_ring->rx_stats.rx_cache_empty;
-+			rx_cache_busy += rx_ring->rx_stats.rx_cache_busy;
-+			rx_cache_waive += rx_ring->rx_stats.rx_cache_waive;
-+		} while (u64_stats_fetch_retry(&rx_ring->syncp, start));
-+	}
-+
-+	net_stats->rx_packets = packets;
-+	net_stats->rx_bytes = bytes;
-+
-+	net_stats->rx_csum_packets = rx_csum_packets;
-+	net_stats->rx_csum_errors = rx_csum_errors;
-+	net_stats->rx_multicast_packets = rx_multicast_packets;
-+	net_stats->rx_unicast_packets = rx_unicast_packets;
-+
-+	bytes = 0;
-+	packets = 0;
-+
-+	for (i = 0; i < txrx_mgt->tx_ring_num; i++) {
-+		if (nbl_res_is_ctrlq(txrx_mgt, i))
-+			continue;
-+
-+		tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, i);
-+		do {
-+			start = u64_stats_fetch_begin(&tx_ring->syncp);
-+			bytes += tx_ring->stats.bytes;
-+			packets += tx_ring->stats.packets;
-+			tso_packets += tx_ring->tx_stats.tso_packets;
-+			tso_bytes += tx_ring->tx_stats.tso_bytes;
-+			tx_csum_packets += tx_ring->tx_stats.tx_csum_packets;
-+			tx_busy += tx_ring->tx_stats.tx_busy;
-+			tx_dma_busy += tx_ring->tx_stats.tx_dma_busy;
-+			tx_multicast_packets += tx_ring->tx_stats.tx_multicast_packets;
-+			tx_unicast_packets += tx_ring->tx_stats.tx_unicast_packets;
-+			tx_skb_free += tx_ring->tx_stats.tx_skb_free;
-+			tx_desc_addr_err_cnt += tx_ring->tx_stats.tx_desc_addr_err_cnt;
-+			tx_desc_len_err_cnt += tx_ring->tx_stats.tx_desc_len_err_cnt;
-+		} while (u64_stats_fetch_retry(&tx_ring->syncp, start));
-+	}
-+
-+	rcu_read_unlock();
-+
-+	net_stats->tx_bytes = bytes;
-+	net_stats->tx_packets = packets;
-+	net_stats->tso_packets = tso_packets;
-+	net_stats->tso_bytes = tso_bytes;
-+	net_stats->tx_csum_packets = tx_csum_packets;
-+	net_stats->tx_busy = tx_busy;
-+	net_stats->tx_dma_busy = tx_dma_busy;
-+	net_stats->tx_multicast_packets = tx_multicast_packets;
-+	net_stats->tx_unicast_packets = tx_unicast_packets;
-+	net_stats->tx_skb_free = tx_skb_free;
-+	net_stats->tx_desc_addr_err_cnt = tx_desc_addr_err_cnt;
-+	net_stats->tx_desc_len_err_cnt = tx_desc_len_err_cnt;
-+	net_stats->rx_desc_addr_err_cnt = rx_desc_addr_err_cnt;
-+	net_stats->rx_alloc_buf_err_cnt = rx_alloc_buf_err_cnt;
-+	net_stats->rx_cache_reuse = rx_cache_reuse;
-+	net_stats->rx_cache_full = rx_cache_full;
-+	net_stats->rx_cache_empty = rx_cache_empty;
-+	net_stats->rx_cache_busy = rx_cache_busy;
-+	net_stats->rx_cache_waive = rx_cache_waive;
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->features_check(skb, netdev, features);
 +}
 +
 +static int
-+nbl_res_queue_stop_abnormal_sw_queue(void *priv, u16 local_queue_id, int type)
++nbl_dev_netdev_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
 +{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_res_vector *vector =  NULL;
-+	struct nbl_res_tx_ring *tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, local_queue_id);
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
 +
-+	if (type != NBL_TX)
-+		return 0;
-+
-+	if (tx_ring)
-+		vector = NBL_RES_MGT_TO_VECTOR(res_mgt, local_queue_id);
-+
-+	if (!tx_ring->valid)
-+		return -EINVAL;
-+
-+	if (vector && !vector->started)
-+		return -EINVAL;
-+
-+	if (vector) {
-+		vector->started = false;
-+		napi_synchronize(&vector->nbl_napi.napi);
-+		netif_stop_subqueue(tx_ring->netdev, local_queue_id);
-+	}
-+
-+	return 0;
++	return serv_ops->set_vf_spoofchk(netdev, vf_id, ena);
 +}
 +
-+static dma_addr_t nbl_res_txrx_restore_abnormal_ring(void *priv, int ring_index, int type)
++static void nbl_dev_netdev_tx_timeout(struct net_device *netdev, u32 txqueue)
 +{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_res_vector *vector =  NULL;
-+	struct nbl_res_tx_ring *tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, ring_index);
-+	struct nbl_res_rx_ring *rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, ring_index);
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
 +
-+	if (tx_ring)
-+		vector = NBL_RES_MGT_TO_VECTOR(res_mgt, ring_index);
-+
-+	switch (type) {
-+	case NBL_TX:
-+		if (tx_ring && tx_ring->valid) {
-+			nbl_res_txrx_stop_tx_ring(res_mgt, ring_index);
-+			return nbl_res_txrx_start_tx_ring(res_mgt, ring_index);
-+		} else {
-+			return (dma_addr_t)NULL;
-+		}
-+		break;
-+	case NBL_RX:
-+		if (rx_ring && rx_ring->valid) {
-+			nbl_res_txrx_stop_rx_ring(res_mgt, ring_index);
-+			return nbl_res_txrx_start_rx_ring(res_mgt, ring_index, true);
-+		} else {
-+			return (dma_addr_t)NULL;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return (dma_addr_t)NULL;
++	serv_ops->tx_timeout(netdev, txqueue);
 +}
 +
-+static int nbl_res_txrx_restart_abnormal_ring(void *priv, int ring_index, int type)
++static int nbl_dev_netdev_bridge_setlink(struct net_device *netdev, struct nlmsghdr *nlh,
++					 u16 flags, struct netlink_ext_ack *extack)
 +{
-+	struct nbl_resource_mgt *res_mgt = (struct nbl_resource_mgt *)priv;
-+	struct nbl_res_tx_ring *tx_ring = NBL_RES_MGT_TO_TX_RING(res_mgt, ring_index);
-+	struct nbl_res_rx_ring *rx_ring = NBL_RES_MGT_TO_RX_RING(res_mgt, ring_index);
-+	struct nbl_res_vector *vector = NULL;
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->bridge_setlink(netdev, nlh, flags, extack);
++}
++
++static int nbl_dev_netdev_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
++					 struct net_device *netdev, u32 filter_mask, int nlflags)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->bridge_getlink(skb, pid, seq, netdev, filter_mask, nlflags);
++}
++
++static int nbl_dev_netdev_set_vf_link_state(struct net_device *netdev, int vf_id, int link_state)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_vf_link_state(netdev, vf_id, link_state);
++}
++
++static int nbl_dev_netdev_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_vf_mac(netdev, vf_id, mac);
++}
++
++static int
++nbl_dev_netdev_set_vf_rate(struct net_device *netdev, int vf_id, int min_rate, int max_rate)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_vf_rate(netdev, vf_id, min_rate, max_rate);
++}
++
++static int
++nbl_dev_netdev_set_vf_vlan(struct net_device *netdev, int vf_id, u16 vlan, u8 pri, __be16 proto)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_vf_vlan(netdev, vf_id, vlan, pri, proto);
++}
++
++static int
++nbl_dev_netdev_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->set_vf_trust(netdev, vf_id, trusted);
++}
++
++static int
++nbl_dev_netdev_get_vf_config(struct net_device *netdev, int vf_id, struct ifla_vf_info *ivi)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->get_vf_config(netdev, vf_id, ivi);
++}
++
++static int
++nbl_dev_netdev_get_vf_stats(struct net_device *netdev, int vf_id, struct ifla_vf_stats *vf_stats)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->get_vf_stats(netdev, vf_id, vf_stats);
++}
++
++static u16
++nbl_dev_netdev_select_queue(struct net_device *netdev, struct sk_buff *skb,
++			    struct net_device *sb_dev)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->select_queue(netdev, skb, sb_dev);
++}
++
++static int nbl_dev_netdev_change_mtu(struct net_device *netdev, int new_mtu)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->change_mtu(netdev, new_mtu);
++}
++
++static int nbl_dev_ndo_get_phys_port_name(struct net_device *netdev, char *name, size_t len)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(netdev);
++	struct nbl_dev_mgt *dev_mgt = NBL_ADAPTER_TO_DEV_MGT(adapter);
++	struct nbl_service_ops *serv_ops = NBL_DEV_MGT_TO_SERV_OPS(dev_mgt);
++
++	return serv_ops->get_phys_port_name(netdev, name, len);
++}
++
+ static const struct net_device_ops netdev_ops_leonis_pf = {
+ 	.ndo_open = nbl_dev_netdev_open,
+ 	.ndo_stop = nbl_dev_netdev_stop,
+ 	.ndo_start_xmit = nbl_dev_start_xmit,
+ 	.ndo_validate_addr = eth_validate_addr,
+ 	.ndo_get_stats64 = nbl_dev_netdev_get_stats64,
++	.ndo_set_rx_mode = nbl_dev_netdev_set_rx_mode,
++	.ndo_change_rx_flags = nbl_dev_netdev_change_rx_flags,
++	.ndo_set_mac_address = nbl_dev_netdev_set_mac,
+ 	.ndo_vlan_rx_add_vid = nbl_dev_netdev_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid = nbl_dev_netdev_rx_kill_vid,
++	.ndo_set_features = nbl_dev_netdev_set_features,
++	.ndo_features_check = nbl_dev_netdev_features_check,
++	.ndo_set_vf_spoofchk = nbl_dev_netdev_set_vf_spoofchk,
++	.ndo_tx_timeout = nbl_dev_netdev_tx_timeout,
++	.ndo_bridge_getlink = nbl_dev_netdev_bridge_getlink,
++	.ndo_bridge_setlink = nbl_dev_netdev_bridge_setlink,
++	.ndo_set_vf_link_state = nbl_dev_netdev_set_vf_link_state,
++	.ndo_set_vf_mac = nbl_dev_netdev_set_vf_mac,
++	.ndo_set_vf_rate = nbl_dev_netdev_set_vf_rate,
++	.ndo_get_vf_config = nbl_dev_netdev_get_vf_config,
++	.ndo_get_vf_stats = nbl_dev_netdev_get_vf_stats,
++	.ndo_select_queue = nbl_dev_netdev_select_queue,
++	.ndo_set_vf_vlan = nbl_dev_netdev_set_vf_vlan,
++	.ndo_set_vf_trust = nbl_dev_netdev_set_vf_trust,
++	.ndo_change_mtu = nbl_dev_netdev_change_mtu,
++	.ndo_get_phys_port_name = nbl_dev_ndo_get_phys_port_name,
+ 
+ };
+ 
+@@ -1434,9 +1637,15 @@ static const struct net_device_ops netdev_ops_leonis_vf = {
+ 	.ndo_start_xmit = nbl_dev_start_xmit,
+ 	.ndo_validate_addr = eth_validate_addr,
+ 	.ndo_get_stats64 = nbl_dev_netdev_get_stats64,
++	.ndo_set_rx_mode = nbl_dev_netdev_set_rx_mode,
++	.ndo_set_mac_address = nbl_dev_netdev_set_mac,
+ 	.ndo_vlan_rx_add_vid = nbl_dev_netdev_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid = nbl_dev_netdev_rx_kill_vid,
+-
++	.ndo_features_check = nbl_dev_netdev_features_check,
++	.ndo_tx_timeout = nbl_dev_netdev_tx_timeout,
++	.ndo_select_queue = nbl_dev_netdev_select_queue,
++	.ndo_change_mtu = nbl_dev_netdev_change_mtu,
++	.ndo_get_phys_port_name = nbl_dev_ndo_get_phys_port_name,
+ };
+ 
+ static int nbl_dev_setup_netops_leonis(void *priv, struct net_device *netdev,
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
+index 89d3cf0f1bd4..60d17b12e364 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_service.c
+@@ -564,6 +564,36 @@ void nbl_serv_cpu_affinity_init(void *priv, u16 rings_num)
+ 	}
+ }
+ 
++static int nbl_serv_ipv6_exthdr_num(struct sk_buff *skb, int start, u8 nexthdr)
++{
++	int exthdr_num = 0;
++	struct ipv6_opt_hdr _hdr, *hp;
++	unsigned int hdrlen;
++
++	while (ipv6_ext_hdr(nexthdr)) {
++		if (nexthdr == NEXTHDR_NONE)
++			return -1;
++
++		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
++		if (!hp)
++			return -1;
++
++		exthdr_num++;
++
++		if (nexthdr == NEXTHDR_FRAGMENT)
++			hdrlen = 8;
++		else if (nexthdr == NEXTHDR_AUTH)
++			hdrlen = ipv6_authlen(hp);
++		else
++			hdrlen = ipv6_optlen(hp);
++
++		nexthdr = hp->nexthdr;
++		start += hdrlen;
++	}
++
++	return exthdr_num;
++}
++
+ static void nbl_serv_set_sfp_state(void *priv, struct net_device *netdev, u8 eth_id,
+ 				   bool open, bool is_force)
+ {
+@@ -1410,6 +1440,73 @@ static int nbl_serv_change_mtu(struct net_device *netdev, int new_mtu)
+ 	return 0;
+ }
+ 
++static int nbl_serv_set_mac(struct net_device *dev, void *p)
++{
++	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(dev);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
++	struct nbl_common_info *common = NBL_ADAPTER_TO_COMMON(adapter);
++	struct nbl_serv_flow_mgt *flow_mgt = NBL_SERV_MGT_TO_FLOW_MGT(serv_mgt);
++	struct nbl_serv_vlan_node *vlan_node;
++	struct sockaddr *addr = p;
++	struct nbl_netdev_priv *priv = netdev_priv(dev);
 +	int ret = 0;
 +
-+	if (tx_ring)
-+		vector = NBL_RES_MGT_TO_VECTOR(res_mgt, ring_index);
++	if (!is_valid_ether_addr(addr->sa_data)) {
++		netdev_err(dev, "Temp to change a invalid mac address %pM\n", addr->sa_data);
++		return -EADDRNOTAVAIL;
++	}
 +
-+	switch (type) {
-+	case NBL_TX:
-+		if (tx_ring && tx_ring->valid) {
-+			writel(tx_ring->notify_qid, tx_ring->notify_addr);
-+			netif_start_subqueue(tx_ring->netdev, ring_index);
-+		} else {
-+			ret = -EINVAL;
++	if (ether_addr_equal(flow_mgt->mac, addr->sa_data))
++		return 0;
++
++	list_for_each_entry(vlan_node, &flow_mgt->vlan_list, node) {
++		if (!vlan_node->primary_mac_effective)
++			continue;
++		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
++				      vlan_node->vid, priv->data_vsi);
++		ret = disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
++					    vlan_node->vid, priv->data_vsi);
++		if (ret) {
++			netdev_err(dev, "Fail to cfg macvlan on vid %u", vlan_node->vid);
++			goto fail;
 +		}
++	}
++
++	if (flow_mgt->promisc & BIT(NBL_USER_FLOW)) {
++		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
++				      0, priv->user_vsi);
++		ret = disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
++					    0, priv->user_vsi);
++		if (ret) {
++			netdev_err(dev, "Fail to cfg macvlan on vid %u for user", 0);
++			goto fail;
++		}
++	}
++
++	disp_ops->set_spoof_check_addr(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
++				       priv->data_vsi, addr->sa_data);
++
++	ether_addr_copy(flow_mgt->mac, addr->sa_data);
++	eth_hw_addr_set(dev, addr->sa_data);
++
++	if (!NBL_COMMON_TO_VF_CAP(common))
++		disp_ops->set_eth_mac_addr(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
++					   addr->sa_data, NBL_COMMON_TO_ETH_ID(common));
++
++	return 0;
++fail:
++	list_for_each_entry(vlan_node, &flow_mgt->vlan_list, node) {
++		if (!vlan_node->primary_mac_effective)
++			continue;
++		disp_ops->del_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), addr->sa_data,
++				      vlan_node->vid, priv->data_vsi);
++		disp_ops->add_macvlan(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), flow_mgt->mac,
++				      vlan_node->vid, priv->data_vsi);
++	}
++	return -EAGAIN;
++}
++
+ static int nbl_serv_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
+ {
+ 	struct nbl_adapter *adapter = NBL_NETDEV_TO_ADAPTER(dev);
+@@ -1752,6 +1849,195 @@ static void nbl_modify_promisc_mode(struct nbl_serv_net_resource_mgt *net_resour
+ 	rtnl_unlock();
+ }
+ 
++static void nbl_serv_set_rx_mode(struct net_device *dev)
++{
++	struct nbl_adapter *adapter;
++	struct nbl_service_mgt *serv_mgt;
++	struct nbl_serv_net_resource_mgt *net_resource_mgt;
++
++	adapter = NBL_NETDEV_TO_ADAPTER(dev);
++	serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	net_resource_mgt = NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
++
++	nbl_common_queue_work(&net_resource_mgt->rx_mode_async, false);
++}
++
++static void nbl_serv_change_rx_flags(struct net_device *dev, int flag)
++{
++	struct nbl_adapter *adapter;
++	struct nbl_service_mgt *serv_mgt;
++	struct nbl_serv_net_resource_mgt *net_resource_mgt;
++
++	adapter = NBL_NETDEV_TO_ADAPTER(dev);
++	serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	net_resource_mgt = NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
++
++	nbl_common_queue_work(&net_resource_mgt->rx_mode_async, false);
++}
++
++static netdev_features_t
++nbl_serv_features_check(struct sk_buff *skb, struct net_device *dev, netdev_features_t features)
++{
++	u32 l2_l3_hrd_len = 0, l4_hrd_len = 0, total_hrd_len = 0;
++	u8 l4_proto = 0;
++	__be16 protocol, frag_off;
++	int ret;
++	unsigned char *exthdr;
++	unsigned int offset = 0;
++	int nexthdr = 0;
++	int exthdr_num = 0;
++	union {
++		struct iphdr *v4;
++		struct ipv6hdr *v6;
++		unsigned char *hdr;
++	} ip;
++	union {
++		struct tcphdr *tcp;
++		struct udphdr *udp;
++		unsigned char *hdr;
++	} l4;
++
++	/* No point in doing any of this if neither checksum nor GSO are
++	 * being requested for this frame. We can rule out both by just
++	 * checking for CHECKSUM_PARTIAL.
++	 */
++	if (skb->ip_summed != CHECKSUM_PARTIAL)
++		return features;
++
++	/* We cannot support GSO if the MSS is going to be less than
++	 * 256 bytes or bigger than 16383 bytes. If it is then we need to drop support for GSO.
++	 */
++	if (skb_is_gso(skb) && (skb_shinfo(skb)->gso_size < NBL_TX_TSO_MSS_MIN ||
++				skb_shinfo(skb)->gso_size > NBL_TX_TSO_MSS_MAX))
++		features &= ~NETIF_F_GSO_MASK;
++
++	l2_l3_hrd_len = (u32)(skb_transport_header(skb) - skb->data);
++
++	ip.hdr = skb_network_header(skb);
++	l4.hdr = skb_transport_header(skb);
++	protocol = vlan_get_protocol(skb);
++
++	if (protocol == htons(ETH_P_IP)) {
++		l4_proto = ip.v4->protocol;
++	} else if (protocol == htons(ETH_P_IPV6)) {
++		exthdr = ip.hdr + sizeof(*ip.v6);
++		l4_proto = ip.v6->nexthdr;
++		if (l4.hdr != exthdr) {
++			ret = ipv6_skip_exthdr(skb, exthdr - skb->data, &l4_proto, &frag_off);
++			if (ret < 0)
++				goto out_rm_features;
++		}
++
++		/* IPV6 extension headers
++		 * (1) donot support routing and destination extension headers
++		 * (2) support 2 extension headers mostly
++		 */
++		nexthdr = ipv6_find_hdr(skb, &offset, NEXTHDR_ROUTING, NULL, NULL);
++		if (nexthdr == NEXTHDR_ROUTING) {
++			netdev_info(dev, "skb contain ipv6 routing ext header\n");
++			goto out_rm_features;
++		}
++
++		nexthdr = ipv6_find_hdr(skb, &offset, NEXTHDR_DEST, NULL, NULL);
++		if (nexthdr == NEXTHDR_DEST) {
++			netdev_info(dev, "skb contain ipv6 routing dest header\n");
++			goto out_rm_features;
++		}
++
++		exthdr_num = nbl_serv_ipv6_exthdr_num(skb, exthdr - skb->data, ip.v6->nexthdr);
++		if (exthdr_num < 0 || exthdr_num > 2) {
++			netdev_info(dev, "skb ipv6 exthdr_num:%d\n", exthdr_num);
++			goto out_rm_features;
++		}
++	} else {
++		goto out_rm_features;
++	}
++
++	switch (l4_proto) {
++	case IPPROTO_TCP:
++		l4_hrd_len = (l4.tcp->doff) * 4;
 +		break;
-+	case NBL_RX:
-+		if (rx_ring && rx_ring->valid)
-+			nbl_res_txrx_kick_rx_ring(res_mgt, ring_index);
-+		else
-+			ret = -EINVAL;
++	case IPPROTO_UDP:
++		l4_hrd_len = sizeof(struct udphdr);
++		break;
++	case IPPROTO_SCTP:
++		l4_hrd_len = sizeof(struct sctphdr);
 +		break;
 +	default:
-+		break;
++		goto out_rm_features;
 +	}
 +
-+	if (vector) {
-+		if (vector->net_msix_mask_en)
-+			writel(vector->irq_data, vector->irq_enable_base);
-+		vector->started = true;
-+	}
++	total_hrd_len = l2_l3_hrd_len + l4_hrd_len;
 +
-+	return ret;
++	// TX checksum offload support total header len is [0, 255]
++	if (total_hrd_len > NBL_TX_CHECKSUM_OFFLOAD_L2L3L4_HDR_LEN_MAX)
++		goto out_rm_features;
++
++	// TSO support total header len is [42, 128]
++	if (total_hrd_len < NBL_TX_TSO_L2L3L4_HDR_LEN_MIN ||
++	    total_hrd_len > NBL_TX_TSO_L2L3L4_HDR_LEN_MAX)
++		features &= ~NETIF_F_GSO_MASK;
++
++	if (skb->encapsulation)
++		goto out_rm_features;
++
++	return features;
++
++out_rm_features:
++	return features & ~(NETIF_F_IP_CSUM |
++			    NETIF_F_IPV6_CSUM |
++			    NETIF_F_SCTP_CRC |
++			    NETIF_F_GSO_MASK);
 +}
 +
-+static int nbl_res_get_max_mtu(void *priv)
++static int nbl_serv_config_rxhash(void *priv, bool enable)
 +{
-+	return NBL_MAX_JUMBO_FRAME_SIZE - NBL_PKT_HDR_PAD;
-+}
++	struct nbl_service_mgt *serv_mgt = (struct nbl_service_mgt *)priv;
++	struct nbl_common_info *common = NBL_SERV_MGT_TO_COMMON(serv_mgt);
++	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
++	struct device *dev = NBL_SERV_MGT_TO_DEV(serv_mgt);
++	struct nbl_serv_ring_mgt *ring_mgt = NBL_SERV_MGT_TO_RING_MGT(serv_mgt);
++	struct nbl_serv_ring_vsi_info *vsi_info = &ring_mgt->vsi_info[NBL_VSI_DATA];
++	u32 rxfh_indir_size = 0;
++	u32 *indir = NULL;
++	int i = 0;
 +
-+/* NBL_TXRX_SET_OPS(ops_name, func)
-+ *
-+ * Use X Macros to reduce setup and remove codes.
-+ */
-+#define NBL_TXRX_OPS_TBL								\
-+do {											\
-+	NBL_TXRX_SET_OPS(get_resource_pt_ops, nbl_res_get_pt_ops);			\
-+	NBL_TXRX_SET_OPS(alloc_rings, nbl_res_txrx_alloc_rings);			\
-+	NBL_TXRX_SET_OPS(remove_rings, nbl_res_txrx_remove_rings);			\
-+	NBL_TXRX_SET_OPS(start_tx_ring, nbl_res_txrx_start_tx_ring);			\
-+	NBL_TXRX_SET_OPS(stop_tx_ring, nbl_res_txrx_stop_tx_ring);			\
-+	NBL_TXRX_SET_OPS(start_rx_ring, nbl_res_txrx_start_rx_ring);			\
-+	NBL_TXRX_SET_OPS(stop_rx_ring, nbl_res_txrx_stop_rx_ring);			\
-+	NBL_TXRX_SET_OPS(kick_rx_ring, nbl_res_txrx_kick_rx_ring);			\
-+	NBL_TXRX_SET_OPS(get_vector_napi, nbl_res_txrx_get_vector_napi);		\
-+	NBL_TXRX_SET_OPS(set_vector_info, nbl_res_txrx_set_vector_info);		\
-+	NBL_TXRX_SET_OPS(get_tx_headroom, nbl_res_txrx_get_tx_headroom);		\
-+	NBL_TXRX_SET_OPS(get_net_stats, nbl_res_txrx_get_net_stats);			\
-+	NBL_TXRX_SET_OPS(stop_abnormal_sw_queue, nbl_res_queue_stop_abnormal_sw_queue);	\
-+	NBL_TXRX_SET_OPS(restore_abnormal_ring, nbl_res_txrx_restore_abnormal_ring);	\
-+	NBL_TXRX_SET_OPS(restart_abnormal_ring, nbl_res_txrx_restart_abnormal_ring);	\
-+	NBL_TXRX_SET_OPS(register_vsi_ring, nbl_txrx_register_vsi_ring);		\
-+	NBL_TXRX_SET_OPS(cfg_txrx_vlan, nbl_res_txrx_cfg_txrx_vlan);			\
-+	NBL_TXRX_SET_OPS(get_max_mtu, nbl_res_get_max_mtu);				\
-+} while (0)
-+
-+/* Structure starts here, adding an op should not modify anything below */
-+static int nbl_txrx_setup_mgt(struct device *dev, struct nbl_txrx_mgt **txrx_mgt)
-+{
-+	*txrx_mgt = devm_kzalloc(dev, sizeof(struct nbl_txrx_mgt), GFP_KERNEL);
-+	if (!*txrx_mgt)
++	disp_ops->get_rxfh_indir_size(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
++				NBL_COMMON_TO_VSI_ID(common), &rxfh_indir_size);
++	indir = devm_kcalloc(dev, rxfh_indir_size, sizeof(u32), GFP_KERNEL);
++	if (!indir)
 +		return -ENOMEM;
++	if (enable) {
++		if (ring_mgt->rss_indir_user) {
++			memcpy(indir, ring_mgt->rss_indir_user, rxfh_indir_size * sizeof(u32));
++		} else {
++			for (i = 0; i < rxfh_indir_size; i++)
++				indir[i] = i % vsi_info->active_ring_num;
++		}
++	}
++	disp_ops->set_rxfh_indir(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt),
++					NBL_COMMON_TO_VSI_ID(common),
++					indir, rxfh_indir_size);
++	devm_kfree(dev, indir);
++	return 0;
++}
++
++static int nbl_serv_set_features(struct net_device *netdev, netdev_features_t features)
++{
++	struct nbl_netdev_priv *priv = netdev_priv(netdev);
++	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	netdev_features_t changed = netdev->features ^ features;
++	bool enable = false;
++
++	if (changed & NETIF_F_RXHASH) {
++		enable = !!(features & NETIF_F_RXHASH);
++		nbl_serv_config_rxhash(serv_mgt, enable);
++	}
 +
 +	return 0;
 +}
 +
-+static void nbl_txrx_remove_mgt(struct device *dev, struct nbl_txrx_mgt **txrx_mgt)
-+{
-+	devm_kfree(dev, *txrx_mgt);
-+	*txrx_mgt = NULL;
-+}
-+
-+int nbl_txrx_mgt_start(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct device *dev;
-+	struct nbl_txrx_mgt **txrx_mgt;
-+
-+	dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	txrx_mgt = &NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+
-+	return nbl_txrx_setup_mgt(dev, txrx_mgt);
-+}
-+
-+void nbl_txrx_mgt_stop(struct nbl_resource_mgt *res_mgt)
-+{
-+	struct device *dev;
-+	struct nbl_txrx_mgt **txrx_mgt;
-+
-+	dev = NBL_RES_MGT_TO_DEV(res_mgt);
-+	txrx_mgt = &NBL_RES_MGT_TO_TXRX_MGT(res_mgt);
-+
-+	if (!(*txrx_mgt))
-+		return;
-+
-+	nbl_txrx_remove_mgt(dev, txrx_mgt);
-+}
-+
-+int nbl_txrx_setup_ops(struct nbl_resource_ops *res_ops)
-+{
-+#define NBL_TXRX_SET_OPS(name, func) do {res_ops->NBL_NAME(name) = func; ; } while (0)
-+	NBL_TXRX_OPS_TBL;
-+#undef  NBL_TXRX_SET_OPS
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.h
-new file mode 100644
-index 000000000000..22b11d33c799
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_txrx.h
-@@ -0,0 +1,188 @@
-+/* SPDX-License-Identifier: GPL-2.0*/
-+/*
-+ * Copyright (c) 2025 Nebula Matrix Limited.
-+ * Author:
-+ */
-+
-+#ifndef _NBL_TXRX_H_
-+#define _NBL_TXRX_H_
-+
-+#include "nbl_resource.h"
-+
-+#define NBL_RING_TO_COMMON(ring)	((ring)->common)
-+#define NBL_RING_TO_DEV(ring)		((ring)->dma_dev)
-+#define NBL_RING_TO_DMA_DEV(ring)	((ring)->dma_dev)
-+
-+#define NBL_MIN_DESC_NUM			128
-+#define NBL_MAX_DESC_NUM			32768
-+
-+#define NBL_PACKED_DESC_F_NEXT			1
-+#define NBL_PACKED_DESC_F_WRITE			2
-+#define NBL_PACKED_DESC_F_AVAIL			7
-+#define NBL_PACKED_DESC_F_USED			15
-+
-+#define NBL_TX_DESC(tx_ring, i)			(&(((tx_ring)->desc)[i]))
-+#define NBL_RX_DESC(rx_ring, i)			(&(((rx_ring)->desc)[i]))
-+#define NBL_TX_BUF(tx_ring, i)			(&(((tx_ring)->tx_bufs)[i]))
-+#define NBL_RX_BUF(rx_ring, i)			(&(((rx_ring)->rx_bufs)[i]))
-+
-+#define NBL_RX_BUF_256				256
-+#define NBL_RX_HDR_SIZE				NBL_RX_BUF_256
-+#define NBL_BUFFER_HDR_LEN			(sizeof(struct nbl_rx_extend_head))
-+#define NBL_RX_PAD				(NET_IP_ALIGN + NET_SKB_PAD)
-+#define NBL_RX_BUFSZ				(2048)
-+#define NBL_RX_DMA_ATTR				(DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
-+
-+#define NBL_TX_TOTAL_HEADERLEN_SHIFT		24
-+#define DESC_NEEDED				(MAX_SKB_FRAGS + 4)
-+#define NBL_TX_POLL_WEIGHT			256
-+#define NBL_TXD_DATALEN_BITS			16
-+#define NBL_TXD_DATALEN_MAX			BIT(NBL_TXD_DATALEN_BITS)
-+#define MAX_DESC_NUM_PER_PKT			(32)
-+
-+#define NBL_TX_TSO_MSS_MIN			(256)
-+#define NBL_TX_TSO_MSS_MAX			(16383)
-+#define NBL_TX_TSO_L2L3L4_HDR_LEN_MIN		(42)
-+#define NBL_TX_TSO_L2L3L4_HDR_LEN_MAX		(128)
-+#define NBL_TX_CHECKSUM_OFFLOAD_L2L3L4_HDR_LEN_MAX (255)
-+#define IP_VERSION_V4				(4)
-+#define NBL_TX_FLAGS_TSO			BIT(0)
-+
-+/* TX inner IP header type */
-+enum nbl_tx_iipt {
-+	NBL_TX_IIPT_NONE = 0x0,
-+	NBL_TX_IIPT_IPV6 = 0x1,
-+	NBL_TX_IIPT_IPV4 = 0x2,
-+	NBL_TX_IIPT_RSV  = 0x3
-+};
-+
-+/* TX L4 packet type */
-+enum nbl_tx_l4t {
-+	NBL_TX_L4T_NONE = 0x0,
-+	NBL_TX_L4T_TCP  = 0x1,
-+	NBL_TX_L4T_UDP  = 0x2,
-+	NBL_TX_L4T_RSV  = 0x3
-+};
-+
-+struct nbl_tx_hdr_param {
-+	u8 l4s_pbrac_mode;
-+	u8 l4s_hdl_ind;
-+	u8 l4s_sync_ind;
-+	u8 tso;
-+	u16 l4s_sid;
-+	u16 mss;
-+	u8 mac_len;
-+	u8 ip_len;
-+	u8 l4_len;
-+	u8 l4_type;
-+	u8 inner_ip_type;
-+	u8 l3_csum_en;
-+	u8 l4_csum_en;
-+	u16 total_hlen;
-+	u16 dport_id:10;
-+	u16 fwd:2;
-+	u16 dport:3;
-+	u16 rss_lag_en:1;
-+};
-+
-+union nbl_tx_extend_head {
-+	struct {
-+		/* DW0 */
-+		u32 mac_len :5;
-+		u32 ip_len :5;
-+		u32 l4_len :4;
-+		u32 l4_type :2;
-+		u32 inner_ip_type :2;
-+		u32 external_ip_type :2;
-+		u32 external_ip_len :5;
-+		u32 l4_tunnel_type :2;
-+		u32 l4_tunnel_len :5;
-+		/* DW1 */
-+		u32 l4s_sid :10;
-+		u32 l4s_sync_ind :1;
-+		u32 l4s_redun_ind :1;
-+		u32 l4s_redun_head_ind :1;
-+		u32 l4s_hdl_ind :1;
-+		u32 l4s_pbrac_mode :1;
-+		u32 rsv0 :2;
-+		u32 mss :14;
-+		u32 tso :1;
-+		/* DW2 */
-+		/* if dport = NBL_TX_DPORT_ETH; dport_info = 0
-+		 * if dport = NBL_TX_DPORT_HOST; dport_info = host queue id
-+		 * if dport = NBL_TX_DPORT_ECPU; dport_info = ecpu queue_id
-+		 */
-+		u32 dport_info :11;
-+		/* if dport = NBL_TX_DPORT_ETH; dport_id[3:0] = eth port id, dport_id[9:4] = lag id
-+		 * if dport = NBL_TX_DPORT_HOST; dport_id[9:0] = host vsi_id
-+		 * if dport = NBL_TX_DPORT_ECPU; dport_id[9:0] = ecpu vsi_id
-+		 */
-+		u32 dport_id :10;
-+#define NBL_TX_DPORT_ID_LAG_OFFSET	(4)
-+		u32 dport :3;
-+#define NBL_TX_DPORT_ETH		(0)
-+#define NBL_TX_DPORT_HOST		(1)
-+#define NBL_TX_DPORT_ECPU		(2)
-+#define NBL_TX_DPORT_EMP		(3)
-+#define NBL_TX_DPORT_BMC		(4)
-+		u32 fwd :2;
-+#define NBL_TX_FWD_TYPE_DROP		(0)
-+#define NBL_TX_FWD_TYPE_NORMAL		(1)
-+#define NBL_TX_FWD_TYPE_RSV		(2)
-+#define NBL_TX_FWD_TYPE_CPU_ASSIGNED	(3)
-+		u32 rss_lag_en :1;
-+		u32 l4_csum_en :1;
-+		u32 l3_csum_en :1;
-+		u32 rsv1 :3;
-+	};
-+	u32 dw[3];
-+};
-+
-+struct nbl_rx_extend_head {
-+	/* DW0 */
-+	/* 0x0:eth, 0x1:host, 0x2:ecpu, 0x3:emp, 0x4:bcm */
-+	uint32_t sport :3;
-+	uint32_t dport_info :11;
-+	/* sport = 0, sport_id[3:0] = eth id,
-+	 * sport = 1, sport_id[9:0] = host vsi_id,
-+	 * sport = 2, sport_id[9:0] = ecpu vsi_id,
-+	 */
-+	uint32_t sport_id :10;
-+	/* 0x0:drop, 0x1:normal, 0x2:cpu upcall */
-+	uint32_t fwd :2;
-+	uint32_t rsv0 :6;
-+	/* DW1 */
-+	uint32_t error_code :6;
-+	uint32_t ptype :10;
-+	uint32_t profile_id :4;
-+	uint32_t checksum_status :1;
-+	uint32_t rsv1 :1;
-+	uint32_t l4s_sid :10;
-+	/* DW2 */
-+	uint32_t rsv3 :2;
-+	uint32_t l4s_hdl_ind :1;
-+	uint32_t l4s_tcp_offset :14;
-+	uint32_t l4s_resync_ind :1;
-+	uint32_t l4s_check_ind :1;
-+	uint32_t l4s_dec_ind :1;
-+	uint32_t rsv2 :4;
-+	uint32_t num_buffers :8;
-+} __packed;
-+
-+static inline u16 nbl_unused_rx_desc_count(struct nbl_res_rx_ring *ring)
-+{
-+	u16 ntc = ring->next_to_clean;
-+	u16 ntu = ring->next_to_use;
-+
-+	return ((ntc > ntu) ? 0 : ring->desc_num) + ntc - ntu - 1;
-+}
-+
-+static inline u16 nbl_unused_tx_desc_count(struct nbl_res_tx_ring *ring)
-+{
-+	u16 ntc = ring->next_to_clean;
-+	u16 ntu = ring->next_to_use;
-+
-+	return ((ntc > ntu) ? 0 : ring->desc_num) + ntc - ntu - 1;
-+}
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-index b0bd29dcb0d1..13ec3ce3c7f2 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
-@@ -88,6 +88,9 @@ struct nbl_hw_ops {
- 	void (*update_adminq_queue_tail_ptr)(void *priv, u16 tail_ptr, u8 txrx);
- 	bool (*check_adminq_dma_err)(void *priv, bool tx);
+ static int nbl_serv_set_vf_mac(struct net_device *dev, int vf_id, u8 *mac)
+ {
+ 	struct nbl_service_mgt *serv_mgt = NBL_NETDEV_TO_SERV_MGT(dev);
+@@ -1987,6 +2273,31 @@ static int nbl_serv_set_vf_vlan(struct net_device *dev, int vf_id, u16 vlan, u8
+ 	return ret;
+ }
  
-+	void (*update_tail_ptr)(void *priv, struct nbl_notify_param *param);
-+	u8* (*get_tail_ptr)(void *priv);
++static int nbl_serv_get_vf_config(struct net_device *dev, int vf_id, struct ifla_vf_info *ivi)
++{
++	struct nbl_netdev_priv *priv = netdev_priv(dev);
++	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	struct nbl_serv_net_resource_mgt *net_resource_mgt =
++					NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt);
++	struct nbl_serv_vf_info *vf_info = net_resource_mgt->vf_info;
 +
- 	int (*set_spoof_check_addr)(void *priv, u16 vsi_id, u8 *mac);
- 	int (*set_spoof_check_enable)(void *priv, u16 vsi_id, u8 enable);
- 	int (*set_vsi_mtu)(void *priv, u16 vsi_id, u16 mtu_sel);
++	if (vf_id >= net_resource_mgt->total_vfs || !net_resource_mgt->vf_info)
++		return -EINVAL;
++
++	ivi->vf = vf_id;
++	ivi->spoofchk = vf_info[vf_id].spoof_check;
++	ivi->linkstate = vf_info[vf_id].state;
++	ivi->max_tx_rate = vf_info[vf_id].max_tx_rate;
++	ivi->vlan = vf_info[vf_id].vlan;
++	ivi->vlan_proto = htons(vf_info[vf_id].vlan_proto);
++	ivi->qos = vf_info[vf_id].vlan_qos;
++	ivi->trusted = vf_info[vf_id].trusted;
++	ether_addr_copy(ivi->mac, vf_info[vf_id].mac);
++
++	return 0;
++}
++
+ static int nbl_serv_get_vf_stats(struct net_device *dev, int vf_id, struct ifla_vf_stats *vf_stats)
+ {
+ 	struct nbl_service_mgt *serv_mgt = NBL_NETDEV_TO_SERV_MGT(dev);
+@@ -2021,6 +2332,98 @@ static int nbl_serv_get_vf_stats(struct net_device *dev, int vf_id, struct ifla_
+ 	return 0;
+ }
+ 
++static u16
++nbl_serv_select_queue(struct net_device *netdev, struct sk_buff *skb,
++		      struct net_device *sb_dev)
++{
++	return netdev_pick_tx(netdev, skb, sb_dev);
++}
++
++static void nbl_serv_tx_timeout(struct net_device *netdev, unsigned int txqueue)
++{
++	struct nbl_netdev_priv *priv = netdev_priv(netdev);
++	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	struct nbl_common_info *common = NBL_SERV_MGT_TO_COMMON(serv_mgt);
++	struct nbl_serv_ring_mgt *ring_mgt = NBL_SERV_MGT_TO_RING_MGT(serv_mgt);
++	struct nbl_serv_ring_vsi_info *vsi_info;
++
++	vsi_info = &ring_mgt->vsi_info[NBL_VSI_DATA];
++
++	ring_mgt->tx_rings[vsi_info->ring_offset + txqueue].need_recovery = true;
++	ring_mgt->tx_rings[vsi_info->ring_offset + txqueue].tx_timeout_count++;
++
++	nbl_warn(common, NBL_DEBUG_QUEUE, "TX timeout on queue %d", txqueue);
++
++	nbl_common_queue_work(&NBL_SERV_MGT_TO_NET_RES_MGT(serv_mgt)->tx_timeout, false);
++}
++
++static int nbl_serv_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
++				   struct net_device *netdev, u32 filter_mask, int nlflags)
++{
++	struct nbl_netdev_priv *priv = netdev_priv(netdev);
++	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	struct nbl_serv_net_resource_mgt *net_resource_mgt = serv_mgt->net_resource_mgt;
++	u16 bmode;
++
++	bmode = net_resource_mgt->bridge_mode;
++
++	return ndo_dflt_bridge_getlink(skb, pid, seq, netdev, bmode, 0, 0, nlflags,
++				       filter_mask, NULL);
++}
++
++static int nbl_serv_bridge_setlink(struct net_device *netdev, struct nlmsghdr *nlh,
++				   u16 flags, struct netlink_ext_ack *extack)
++{
++	struct nbl_netdev_priv *priv = netdev_priv(netdev);
++	struct nbl_adapter *adapter = NBL_NETDEV_PRIV_TO_ADAPTER(priv);
++	struct nbl_service_mgt *serv_mgt = NBL_ADAPTER_TO_SERV_MGT(adapter);
++	struct nbl_serv_net_resource_mgt *net_resource_mgt = serv_mgt->net_resource_mgt;
++	struct nbl_dispatch_ops *disp_ops = NBL_SERV_MGT_TO_DISP_OPS(serv_mgt);
++	struct nlattr *attr, *br_spec;
++	u16 mode;
++	int ret, rem;
++
++	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
++
++	nla_for_each_nested(attr, br_spec, rem) {
++		if (nla_type(attr) != IFLA_BRIDGE_MODE)
++			continue;
++
++		mode = nla_get_u16(attr);
++		if (mode != BRIDGE_MODE_VEPA && mode != BRIDGE_MODE_VEB)
++			return -EINVAL;
++
++		if (mode == net_resource_mgt->bridge_mode)
++			continue;
++
++		ret = disp_ops->set_bridge_mode(NBL_SERV_MGT_TO_DISP_PRIV(serv_mgt), mode);
++		if (ret) {
++			netdev_info(netdev, "bridge_setlink failed 0x%x", ret);
++			return ret;
++		}
++
++		net_resource_mgt->bridge_mode = mode;
++	}
++
++	return 0;
++}
++
++static int nbl_serv_get_phys_port_name(struct net_device *dev, char *name, size_t len)
++{
++	struct nbl_common_info *common = NBL_NETDEV_TO_COMMON(dev);
++	u8 pf_id;
++
++	pf_id = common->eth_id;
++	if ((NBL_COMMON_TO_ETH_MODE(common) == NBL_TWO_ETHERNET_PORT) && common->eth_id == 2)
++		pf_id = 1;
++
++	if (snprintf(name, len, "p%u", pf_id) >= len)
++		return -EOPNOTSUPP;
++	return 0;
++}
++
+ static int nbl_serv_register_net(void *priv, struct nbl_register_net_param *register_param,
+ 				 struct nbl_register_net_result *register_result)
+ {
+@@ -4256,11 +4659,27 @@ static struct nbl_service_ops serv_ops = {
+ 	.netdev_open = nbl_serv_netdev_open,
+ 	.netdev_stop = nbl_serv_netdev_stop,
+ 	.change_mtu = nbl_serv_change_mtu,
+-
++	.set_mac = nbl_serv_set_mac,
+ 	.rx_add_vid = nbl_serv_rx_add_vid,
+ 	.rx_kill_vid = nbl_serv_rx_kill_vid,
+ 	.get_stats64 = nbl_serv_get_stats64,
+-
++	.set_rx_mode = nbl_serv_set_rx_mode,
++	.change_rx_flags = nbl_serv_change_rx_flags,
++	.set_features = nbl_serv_set_features,
++	.features_check = nbl_serv_features_check,
++	.get_phys_port_name = nbl_serv_get_phys_port_name,
++	.tx_timeout = nbl_serv_tx_timeout,
++	.bridge_setlink = nbl_serv_bridge_setlink,
++	.bridge_getlink = nbl_serv_bridge_getlink,
++	.set_vf_spoofchk = nbl_serv_set_vf_spoofchk,
++	.set_vf_link_state = nbl_serv_set_vf_link_state,
++	.set_vf_mac = nbl_serv_set_vf_mac,
++	.set_vf_rate = nbl_serv_set_vf_rate,
++	.set_vf_vlan = nbl_serv_set_vf_vlan,
++	.get_vf_config = nbl_serv_get_vf_config,
++	.get_vf_stats = nbl_serv_get_vf_stats,
++	.select_queue = nbl_serv_select_queue,
++	.set_vf_trust = nbl_serv_set_vf_trust,
+ 	.get_rep_queue_info = nbl_serv_get_rep_queue_info,
+ 	.get_user_queue_info = nbl_serv_get_user_queue_info,
+ 
 -- 
 2.43.0
 
