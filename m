@@ -1,239 +1,109 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFD128C037
-	for <netdev@vger.kernel.org>; Wed, 24 Dec 2025 00:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC0028A1E6
+	for <netdev@vger.kernel.org>; Wed, 24 Dec 2025 00:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.204.27.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766536158; cv=none; b=SLdRl3/SzuPYSTrwKwSpl1/bmWFjjIUu0BbqdyWEWMgNOq/5S4sfDJ4duTBD0Q8Xi921ga7yqdQzspkt4VfML2VRaLx2RcADq0X13BLp32d52MrUqzceu0pD+/zzMKou5mLzOjsmh8Q/+w/IV8sIuIGnrvGzpgXVLNni0lS6yHM=
+	t=1766537340; cv=none; b=ZzkpSIaaKjoTNNjakwiItIjOx/ECWpQmtkNx/FFV+sH4obk8i/fY+41KyEw2NBH24/KpXB91o/XVLTvnMLJh3c62rs6UQ5C6qLrLWNh9ZJCG9UE4+aq9INRtqe/+zOmMXhSWufrcKUJGOtpVPv/8okz7sd8h59q+5VQZWl1Rhcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766536158; c=relaxed/simple;
-	bh=ucIpPosqEiSMdZEyChVr+4AmgFcQlUgInXBmbAzH57o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WcH4vHxkWpPEx+o5YX7tlD6LsM3/UjIpkdA8JuJdJ4UxID9qwbyi4HundcFgQst5JcXkYCFi4FnM8np7nG0sXbNyvhKjQxVKzTc24ZpvEKsaMDB+yG6DBxo4h1NwEAJzKj/aim5SyitZoHc1WwFB04CsSCoGRU6KMcIB2dDWQIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCkClzuW; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCkClzuW"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso7620549b3a.1
-        for <netdev@vger.kernel.org>; Tue, 23 Dec 2025 16:29:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766536150; x=1767140950; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sNxNvDBVFHGq590i7LC9o7diq8A3tmTtfQIAa+Qj48w=;
-        b=YCkClzuWa0dohbxJhDpKDpGU2nayGLYWt65Q1nq1mCRXFmqaSICDMPkK79PQLZNxyQ
-         XgD9fTSB9Y2xXyP7j2B6VeWey7Vy8+ntwCChKmB/WaenrUiN0pPORSBbZaWVW0s7dC88
-         aDc+mOIDxd4GAzcqGRuy9pC8IXd/oJ02p1v1wGkr/wBcwtcpMsZcZ38u6BxbJ1L+SpmE
-         ZctlakSEVjYfduvH7lXnWh7+1vIWxNBkW9j0jIV+1KBoyk4+7GquI3y/uXIDVLB1Mw1S
-         ZVPeWHwRAATxDT80pWTY3r8E+Qdu3PHhn3Q7bOcWOdPTv1/fAX2MKQzR/PAupqiWW3X7
-         SuJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766536150; x=1767140950;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sNxNvDBVFHGq590i7LC9o7diq8A3tmTtfQIAa+Qj48w=;
-        b=ecpHklXc9Pw4LExkWW+rcmZ4un2H77tvk97P+F9PyEIxQ+8JOyTdJsGZ+NaH7lcI70
-         4IOtlgRdygMQgOwNuZtQ9RqFYNrvyR9ci9WLhu4uolZUIzlCwQFx0bl6+3xEmTQ+FpYV
-         eVa82UwQoNqWSCPJ7G/Fxj371Tjf8OwzcP3dlRyEA8OAcLV0J+Bdl6kcR0nPneG9Bod3
-         bFEQQGIWIja8B7sq8sR4b9tbwRS3RxOxYd8E/pPgh3KBKoS7oxA264zuvrVVbjwArN77
-         yh4uOwl30xQXU5VmKW1pKPdCOITZzEYVFsAvVhh6LEGZWBUky25IsYXFJbWAjQC58mm/
-         Utvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz61CbpauYWKnGcbJPppz0j2x6I5Dfzi37bGJUVjperEqw9hUcUYpITFYr8lrYV69oNLTAhcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIrX7lMzMHGv9NAW8Og4NrZOjZyVV5R70y7PF/cdiMlcNZZ9xI
-	/8PneCjgJGGnrfazNEnXIf6Dz+eBt8rmPmPWrats/0L5EXkft0cw5J7E
-X-Gm-Gg: AY/fxX40oypc0Ov1hpA8RhLiLHWr6djxjtnC/goUSRXC+OakSzvOTSGhBVCfeM2jNIm
-	9sstinC30HTXll06s/Q37g+4skRHxvtCafCAT2p0YLaYh5U2JnpcwVwW5Z8TUwRR5rTine6AcU6
-	tqd2VZ4h6DmVVtqo4rJZPju9UQuxR8cGZ1AsBCJOpFfNYNQpR69l23knwCzdfAtC38mYLSLbK41
-	PRAeVzxUZQu+19aJUzi7C5qICTBWtYlVOJdxa79o9hyiPYUk7+dgkuPofHKswTPEOwgUbWTG/lo
-	hH0TlVdkkP87UVukoa87k4Q9SBx83BGK0ayqb5AMiUH+bgXJqpabQhJuhF6kpUaLNEkg+4tLQiQ
-	e1XtBM3K0h5BHINtvpKhtl1cOoEgFg3kE/vG9tZS6ZzYqBq6nWNFmlGoQNgw+EykWo6tPHL0wVY
-	URrsbOcN0CAYFy3pwL8dD0
-X-Google-Smtp-Source: AGHT+IGKtnBjY8qVMQri7rK2UM9kYsU1JWM0jsDUq4zxMWO7Sx0v5+rbDtIzGBXE3bX4EOFk1Fr9Zg==
-X-Received: by 2002:a05:6a00:e11:b0:7b8:ac7f:5969 with SMTP id d2e1a72fcca58-7ff646f92f6mr15898637b3a.4.1766536149791;
-        Tue, 23 Dec 2025 16:29:09 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:71::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm15118831b3a.45.2025.12.23.16.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 16:29:09 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 23 Dec 2025 16:28:47 -0800
-Subject: [PATCH RFC net-next v13 13/13] selftests/vsock: add tests for
- namespace deletion
+	s=arc-20240116; t=1766537340; c=relaxed/simple;
+	bh=27R/8EixYfFGEmnwRRpOv9VpmBtsnRRac/60veIk4sE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=q3ubmyUAN12fbgsJtqX198CBuN06SlxxgK/wQVEmqyn/mpPm2xnskWm5ztyaF1MLPkPL2gkMmGZEyhLKtHTa6SahUKhzUr4O7JPGSUuhvFzjkZ/H2urzu0JSlclJKwmktxW17FUXQ6YCC1SsI6/qEW+1c9VIW7uBsd0cP/X5maw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn; spf=pass smtp.mailfrom=hygon.cn; arc=none smtp.client-ip=101.204.27.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hygon.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hygon.cn
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4dbYCT2Jtfz1YQpmG;
+	Wed, 24 Dec 2025 08:48:37 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4dbYCR5jBwz1YQpmG;
+	Wed, 24 Dec 2025 08:48:35 +0800 (CST)
+Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 69D24363A1B8;
+	Wed, 24 Dec 2025 08:44:06 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
+ (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 24 Dec
+ 2025 08:48:36 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Wed, 24 Dec 2025 08:48:36 +0800
+From: Zhud <zhud@hygon.cn>
+To: Eric Dumazet <edumazet@google.com>
+CC: Paolo Abeni <pabeni@redhat.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
+	"horms@kernel.org" <horms@kernel.org>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Jing Li <lijing@hygon.cn>, Zhiwei Ying <yingzhiwei@hygon.cn>
+Subject: RE: [PATCH net] netdev: increment TSO only if TSO is not enabled on
+ any slave device
+Thread-Topic: [PATCH net] netdev: increment TSO only if TSO is not enabled on
+ any slave device
+Thread-Index: AQHcbmlNWOTIX90gx02lh/ymGCh5arUukjiAgACaXqD//6argIABLLoA
+Date: Wed, 24 Dec 2025 00:48:36 +0000
+Message-ID: <355e6f707b57413098af339d0bd6dcba@hygon.cn>
+References: <20251216085210.132387-1-zhud@hygon.cn>
+ <eae60389-27a5-4e8f-af49-7f75d4c116d8@redhat.com>
+ <fe236a552f594780a4b2ead63b4bc329@hygon.cn>
+ <CANn89i+p0UX1VW9Pm6_B5tJ-_b_iwJP5Dkk_Agnf+46FD2jY-g@mail.gmail.com>
+In-Reply-To: <CANn89i+p0UX1VW9Pm6_B5tJ-_b_iwJP5Dkk_Agnf+46FD2jY-g@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-vsock-vmtest-v13-13-9d6db8e7c80b@meta.com>
-References: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
-In-Reply-To: <20251223-vsock-vmtest-v13-0-9d6db8e7c80b@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
- Vishnu Dasa <vishnu.dasa@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, berrange@redhat.com, 
- Sargun Dhillon <sargun@sargun.me>, Bobby Eshleman <bobbyeshleman@gmail.com>, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-
-Add tests that validate vsock sockets are resilient to deleting
-namespaces. The vsock sockets should still function normally.
-
-The function check_ns_delete_doesnt_break_connection() is added to
-re-use the step-by-step logic of 1) setup connections, 2) delete ns,
-3) check that the connections are still ok.
-
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v13:
-- remove tests that change the mode after socket creation (this is not
-  supported behavior now and the immutability property is tested in other
-  tests)
-- remove "change_mode" behavior of
-  check_ns_changes_dont_break_connection() and rename to
-  check_ns_delete_doesnt_break_connection() because we only need to test
-  namespace deletion (other tests confirm that the mode cannot change)
-
-Changes in v11:
-- remove pipefile (Stefano)
-
-Changes in v9:
-- more consistent shell style
-- clarify -u usage comment for pipefile
----
- tools/testing/selftests/vsock/vmtest.sh | 84 +++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
-
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index a9eaf37bc31b..dc8dbe74a6d0 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -68,6 +68,9 @@ readonly TEST_NAMES=(
- 	ns_same_local_loopback_ok
- 	ns_same_local_host_connect_to_local_vm_ok
- 	ns_same_local_vm_connect_to_local_host_ok
-+	ns_delete_vm_ok
-+	ns_delete_host_ok
-+	ns_delete_both_ok
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -135,6 +138,15 @@ readonly TEST_DESCS=(
- 
- 	# ns_same_local_vm_connect_to_local_host_ok
- 	"Run vsock_test client in VM in a local ns with server in same ns."
-+
-+	# ns_delete_vm_ok
-+	"Check that deleting the VM's namespace does not break the socket connection"
-+
-+	# ns_delete_host_ok
-+	"Check that deleting the host's namespace does not break the socket connection"
-+
-+	# ns_delete_both_ok
-+	"Check that deleting the VM and host's namespaces does not break the socket connection"
- )
- 
- readonly USE_SHARED_VM=(
-@@ -1287,6 +1299,78 @@ test_vm_loopback() {
- 	return "${KSFT_PASS}"
- }
- 
-+check_ns_delete_doesnt_break_connection() {
-+	local pipefile pidfile outfile
-+	local ns0="global0"
-+	local ns1="global1"
-+	local port=12345
-+	local pids=()
-+	local rc=0
-+
-+	init_namespaces
-+
-+	pidfile="$(create_pidfile)"
-+	if ! vm_start "${pidfile}" "${ns0}"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+	vm_wait_for_ssh "${ns0}"
-+
-+	outfile=$(mktemp)
-+	vm_ssh "${ns0}" -- \
-+		socat VSOCK-LISTEN:"${port}",fork STDOUT > "${outfile}" 2>/dev/null &
-+	pids+=($!)
-+	vm_wait_for_listener "${ns0}" "${port}" "vsock"
-+
-+	# We use a pipe here so that we can echo into the pipe instead of using
-+	# socat and a unix socket file. We just need a name for the pipe (not a
-+	# regular file) so use -u.
-+	pipefile=$(mktemp -u /tmp/vmtest_pipe_XXXX)
-+	ip netns exec "${ns1}" \
-+		socat PIPE:"${pipefile}" VSOCK-CONNECT:"${VSOCK_CID}":"${port}" &
-+	pids+=($!)
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -e '"${pipefile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if [[ "$1" == "vm" ]]; then
-+		ip netns del "${ns0}"
-+	elif [[ "$1" == "host" ]]; then
-+		ip netns del "${ns1}"
-+	elif [[ "$1" == "both" ]]; then
-+		ip netns del "${ns0}"
-+		ip netns del "${ns1}"
-+	fi
-+
-+	echo "TEST" > "${pipefile}"
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done; exit 0'
-+
-+	if grep -q "TEST" "${outfile}"; then
-+		rc="${KSFT_PASS}"
-+	else
-+		rc="${KSFT_FAIL}"
-+	fi
-+
-+	terminate_pidfiles "${pidfile}"
-+	terminate_pids "${pids[@]}"
-+	rm -f "${outfile}" "${pipefile}"
-+
-+	return "${rc}"
-+}
-+
-+test_ns_delete_vm_ok() {
-+	check_ns_delete_doesnt_break_connection "vm"
-+}
-+
-+test_ns_delete_host_ok() {
-+	check_ns_delete_doesnt_break_connection "host"
-+}
-+
-+test_ns_delete_both_ok() {
-+	check_ns_delete_doesnt_break_connection "both"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
-
--- 
-2.47.3
+PiANCj4gT24gVHVlLCBEZWMgMjMsIDIwMjUgYXQgMToyMOKAr1BNIFpodWQgPHpodWRAaHlnb24u
+Y24+IHdyb3RlOg0KPiA+DQo+ID4NCj4gPiA+IE9uIDEyLzE2LzI1IDk6NTIgQU0sIERpIFpodSB3
+cm90ZToNCj4gPiA+ID4gVW5jb25kaXRpb25hbGx5IGluY3JlbWVudCB0aGUgVFNPIGZsYWcgaGFz
+IGEgc2lkZSBlZmZlY3Q6IGl0IHdpbGwNCj4gPiA+ID4gYWxzbw0KPiA+ID4NCj4gPiA+IFRoaXMg
+Y2hhbmdlbG9nIGlzIElNSE8gcXVpdGUgY29uZnVzaW5nLiBUaGUgY29kZSBkb2VzIG5vdCAnaW5j
+cmVtZW50DQo+ID4gPiBUU08nLiBJbnN0ZWFkIGl0IGluY3JlbWVudHMgdGhlIGZlYXR1cmVzIHNl
+dCB0byBpbmNsdWRlIEFMTF9UU08uDQo+ID4gPg0KPiA+ID4gUGxlYXNlIHJld29yZCB0aGUgY2hh
+bmdlbG9nIGFjY29yZGluZ2x5Lg0KPiA+ID4NCj4gPiA+ID4gZGlyZWN0bHkgY2xlYXIgdGhlIGZs
+YWdzIGluIE5FVElGX0ZfQUxMX0ZPUl9BTEwgb24gdGhlIG1hc3Rlcg0KPiA+ID4gPiBkZXZpY2Us
+IHdoaWNoIGNhbiBjYXVzZSBpc3N1ZXMgc3VjaCBhcyB0aGUgaW5hYmlsaXR5IHRvIGVuYWJsZSB0
+aGUNCj4gPiA+ID4gbm9jYWNoZSBjb3B5IGZlYXR1cmUgb24gdGhlIGJvbmRpbmcgbmV0d29yayBj
+YXJkLg0KPiA+ID4NCj4gPiA+IGJvbmRpbmcgbmV0d29yayBjYXJkIC0+IGJvbmRpbmcgZHJpdmVy
+Lg0KPiA+ID4NCj4gPiA+ID4gU28sIHdoZW4gYXQgbGVhc3Qgb25lIHNsYXZlIGRldmljZSdzIFRT
+TyBpcyBlbmFibGVkLCB0aGVyZSBpcyBubw0KPiA+ID4gPiBuZWVkIHRvIGV4cGxpY2l0bHkgaW5j
+cmVtZW50IHRoZSBUU08gZmxhZyB0byB0aGUgbWFzdGVyIGRldmljZS4NCj4gPiA+ID4NCj4gPiA+
+ID4gRml4ZXM6IGIwY2UzNTA4YjI1ZSAoImJvbmRpbmc6IGFsbG93IFRTTyBiZWluZyBzZXQgb24g
+Ym9uZGluZw0KPiA+ID4gPiBtYXN0ZXIiKQ0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBEaSBaaHUg
+PHpodWRAaHlnb24uY24+DQo+ID4gPiA+IC0tLQ0KPiA+ID4gPiAgaW5jbHVkZS9saW51eC9uZXRk
+ZXZpY2UuaCB8IDMgKystDQo+ID4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCsp
+LCAxIGRlbGV0aW9uKC0pDQo+ID4gPiA+DQo+ID4gPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xp
+bnV4L25ldGRldmljZS5oIGIvaW5jbHVkZS9saW51eC9uZXRkZXZpY2UuaA0KPiA+ID4gPiBpbmRl
+eCBiZjk5ZmU4NjIyZGEuLjJhY2EzOWY3ZjllMSAxMDA2NDQNCj4gPiA+ID4gLS0tIGEvaW5jbHVk
+ZS9saW51eC9uZXRkZXZpY2UuaA0KPiA+ID4gPiArKysgYi9pbmNsdWRlL2xpbnV4L25ldGRldmlj
+ZS5oDQo+ID4gPiA+IEBAIC01MzIyLDcgKzUzMjIsOCBAQCBuZXRkZXZfZmVhdHVyZXNfdA0KPiA+
+ID4gPiBuZXRkZXZfaW5jcmVtZW50X2ZlYXR1cmVzKG5ldGRldl9mZWF0dXJlc190IGFsbCwgIHN0
+YXRpYyBpbmxpbmUNCj4gPiA+IG5ldGRldl9mZWF0dXJlc190IG5ldGRldl9hZGRfdHNvX2ZlYXR1
+cmVzKG5ldGRldl9mZWF0dXJlc190DQo+ID4gPiBmZWF0dXJlcywNCj4gPiA+ID4NCj4gPiA+ID4g
+bmV0ZGV2X2ZlYXR1cmVzX3QgbWFzaykgIHsNCj4gPiA+ID4gLSAgIHJldHVybiBuZXRkZXZfaW5j
+cmVtZW50X2ZlYXR1cmVzKGZlYXR1cmVzLCBORVRJRl9GX0FMTF9UU08sIG1hc2spOw0KPiA+ID4g
+PiArICAgcmV0dXJuIChmZWF0dXJlcyAmIE5FVElGX0ZfQUxMX1RTTykgPyBmZWF0dXJlcyA6DQo+
+ID4gPiA+ICsgICAgICAgICAgIG5ldGRldl9pbmNyZW1lbnRfZmVhdHVyZXMoZmVhdHVyZXMsIE5F
+VElGX0ZfQUxMX1RTTywNCj4gPiA+ID4gKyBtYXNrKTsNCj4gPiA+DQo+ID4gPiBORVRJRl9GX0FM
+TF9UU08gaXMgbm90IGEgc2luZ2xlIGJpdCwgYnV0IGEgKGxhdGVyIGxhcmdlKSBiaXQgbWFzazsN
+Cj4gPiA+IHRoZSBhYm92ZSB3aWxsIHlpZWxkIGluY29ycmVjdCByZXN1bHQgd2hlbjoNCj4gPiA+
+DQo+ID4gPiAgICAgICBmZWF0dXJlcyAmIE5FVElGX0ZfQUxMX1RTTyAhPSBORVRJRl9GX0FMTF9U
+U08NCj4gPg0KPiA+IFllcywgaXQgaXMgaW5kZWVkIG5lY2Vzc2FyeSB0byBzZXQgYWxsIHRzbyBm
+bGFncyB0byBhdm9pZCBHU08gYXQgdGhlIGJvbmRpbmcgbGF5ZXIuDQo+ID4gSSB3aWxsIHJldmlz
+ZSB0aGUgY29kZSBhbmQgaXRzIHJlbGF0ZWQgY2hhbmdsb25nLCB0aGFua3MuDQo+IA0KPiBXaGF0
+IGFib3V0IHRoaXMgaW5zdGVhZCA/DQo+IA0KPiAgc3RhdGljIGlubGluZSBuZXRkZXZfZmVhdHVy
+ZXNfdA0KPiBuZXRkZXZfYWRkX3Rzb19mZWF0dXJlcyhuZXRkZXZfZmVhdHVyZXNfdCBmZWF0dXJl
+cywNCj4gDQo+IG5ldGRldl9mZWF0dXJlc190IG1hc2spICB7DQo+IC0gICAgICAgcmV0dXJuIG5l
+dGRldl9pbmNyZW1lbnRfZmVhdHVyZXMoZmVhdHVyZXMsIE5FVElGX0ZfQUxMX1RTTywgbWFzayk7
+DQo+ICsgICAgICAgcmV0dXJuIG5ldGRldl9pbmNyZW1lbnRfZmVhdHVyZXMoZmVhdHVyZXMsIE5F
+VElGX0ZfQUxMX1RTTyB8DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgTkVUSUZfRl9BTExfRk9SX0FMTCwgbWFzayk7DQo+ICB9DQoNClllcywgSSBhbHNvIHdhbnQg
+dG8gZG8gaXQgdGhpcyB3YXkuDQoNCg==
 
