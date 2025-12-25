@@ -1,60 +1,94 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC531A3179;
-	Thu, 25 Dec 2025 04:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6A7234984
+	for <netdev@vger.kernel.org>; Thu, 25 Dec 2025 06:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766635312; cv=none; b=i7/oo5iWZF16ofK4uYbKy7tfvoN1IFRxVgcBn8nkRprJabbgIVC9/ik6VY1JCKmaCzVGwvdUHpDtlLrivQu4pHgfz46OYgp1DIRW02cTU0KrwQSqd73YbslNQPSbQL2q6XAseAm8ZaBgKwyHdY9pnjXGg23xxc4MekNGuvL9RKo=
+	t=1766643710; cv=none; b=pdqs4sorgsZT9IPBJ+X9TU8ruoZBatXWLi/r9EFQmDzOQ0rsf3XZRwtsB6lkgss4prBSRJnIN2+cE8ZV99cr1c7UyIh9ndzjVrX0ds9kbzOIyNoC9CP/Ae/rlPb9EpqJqmvL3VD/6GnRrFN7norrZBrHfhscPLgdwOYDkO+VnHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766635312; c=relaxed/simple;
-	bh=a0iq1sd1jBM9Q1ibIFRv0NxghMqTfNf4aPuL2PGlptU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6vMNCW8AU5Hg0+L0RVM1Atx6eMWzd+G1hUHaceUn3OUYtQhvNt1GDqkaSPD/3DzdNGrY84wkhYn+lujKPiDyXxLEJLOy5TJDXY82YZOegtAApppJjxDbuaRAyeTch4fZrMSBgzBUb8HDeBc6FZM58I2ri3ARKM+X2tMXOyxp94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=bOd3Boiv; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1766643710; c=relaxed/simple;
+	bh=20KWL9YL31PPu0PJpIyTVKycYfQRADE1IeEq1ykjvnc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uPUsBQzx6Xr2cBsymDEJzgaiaTnLas1aq5YGvFapG/lBQUCETRi7EO2HPei+98EbSvbOyVqMsLxF3a0PvOHV0NbWuNmA0IyO/sVYieiTsMCzMXcDiZlLvLs5HUSvhL2DIh2zqQ95guGcwCE+cvLSA+n6nxhNLDTMC2ovn7bcVbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=lUS/55Ep; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="bOd3Boiv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=lwltwGqxiKq/BS1zwHOtRLooQae3Ubuni+ZvF375urk=; b=bOd3BoivYefmQg185t+3yXn/tN
-	KUk4ZkQer5Ngpw36nT7mKkD2t+Wi8ZD1KJJwE6RruOnhpaak65VEO5f+wwld9uu1F/vzI70BxcwUR
-	bR4BkB4AYtVkJr/mfw+LJR49JoI4NFiQ8ROcYqfES8aupTychHZ6DXHGEIkMCHlJyBA0mIsZOG9uK
-	913nxQ9+px99h/gbH3G6Qi0pQictX7fhrTQM7HGe8qjJvP5Btu5IgmUKOEaMCHVjF4RdfqMjV+mMO
-	MyMO3DmD03lypMU9Gu40kOKw+uLXc0MG4evVpfqzFlc6yKww6TSXUewxp5cggfxMf3PBsFFvkm81M
-	Y0XtYhXg==;
-Received: from [58.29.143.236] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vYcXj-00GLlf-1l; Thu, 25 Dec 2025 05:01:40 +0100
-From: Changwoo Min <changwoo@igalia.com>
-To: lukasz.luba@arm.com,
-	rafael@kernel.org,
-	donald.hunter@gmail.com,
-	kuba@kernel.org,
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="lUS/55Ep"
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id B3BDB3F881
+	for <netdev@vger.kernel.org>; Thu, 25 Dec 2025 06:21:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1766643706;
+	bh=EPJYonuix71oUm57s5z59HxPVVbLV4aoSyqepsIGEOI=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version;
+	b=lUS/55Ep2u8MkfimPl/6YpVC8aZjyMeEURqRPevBfJ1Xd6nIJ4VUFwC579PAGiLb9
+	 GL8MehwPDh2vX32gH9qOYJTTTP7s8S7+uKn9UQxD6vHaHYw93phtnK7MI8lbkK56br
+	 ZDoX8VJcE7cba8OrnAlOGXF3TOlTV75IZpTIRF3aYsZo6MYS8KDo14sSapVVXGz3yw
+	 fdbY+fVuDIwkMt7NhMyRusH0N886rmqceAs12V+KjUH4UYSF72kMVEfNaDo874J9HM
+	 1bnIudXhBv9or/bzhTwGerFyJuMDhafMForYeX0Jeu+eDB1hdUVeyIlcovGGhDN/UU
+	 ZZZSOHnwi76Odj023ScnC7p71GjblCT4NnXvkWvGjUU2CDrPUWVS8i88QxZ/a6bbuD
+	 9ImZc8R1gLvXbvTlohfJJGzXyYzT/Wry9Hr1KIyjxafc/QeGhx0MCHXLiDRGp9j2MY
+	 0+NLLWcH8jdBydIhSb0Bhn4v35lq4Dza5wxz5kru5lmifwhmP5bjVYf4NRiWYchMta
+	 S3a5W7l/RDRfV6KNpf1lDbIphTm1999J/5sdkNM+AwPG0RnwGZcsM+4q/m5xu7JsB4
+	 FZxPlDjfwEpZ+PknuZNHcVP2NXTeJBDEBOep2dliMf5TltWEa3YmOrKuttrzBoKL+Z
+	 GAsQR4cB0Ck+sbMnfyU9q2Ks=
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-64cfbb4c464so4752478a12.2
+        for <netdev@vger.kernel.org>; Wed, 24 Dec 2025 22:21:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766643706; x=1767248506;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EPJYonuix71oUm57s5z59HxPVVbLV4aoSyqepsIGEOI=;
+        b=rd5svDN3amkflBUJlgj2bSdPpbbCSK187btL2Grc5t4TZFA0526v2xQjNCpVSXNoaN
+         Yg6gPTxZjoGb5nfND69nTzhjX+HP6ykQCiRtXvnFAAseN8gadF5MJfu4A//ac8O5y1K5
+         ZERCiudf6zaLXleCO6VMTXY252dyDoHcxNWO8Qq4p2vkTA6Qbw2VX2hZA1Rxu4kBI2eH
+         R7eZsgbOm9wMeswgqy4ieR320CMXWvotmFnFGLY0XNXXC8HuVVRtXbRdC/0LZKwJzTdT
+         TDC6leuCn/QzrO08mLW/UGof+dK/ugATRsa1ufq7+ZVIK9RtCemtfsx98bRxVWjqcfVr
+         NGTw==
+X-Forwarded-Encrypted: i=1; AJvYcCV708l0nusyDeXdVhuej6ArHUVLmh/roZvbt1U5p14Zgd1Pp5v5xufn1aiFUnpWRaeEYUrsYzc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOGXdZ4VQpPAYEnXgwwmEi338oi5mDyt0Zpz4DOSY4ZVTYJVfh
+	VZdi3m02GlCCyLTVRuIQ3gGfUvRQheuE7Zv2ix1pMEY1sZombej3y13dvTqcl4qAFTXoiWi6b2Q
+	AJMYLjSswTLCi0Dhy2R5SeAMBj1RNRMIa0u8p4zEGwEnLCj0cocSAmFyYe+8HUDmHJiCg3ulUXA
+	==
+X-Gm-Gg: AY/fxX58XTCiCmPZQL0ATLOdWDyLk1HiS0Heiqo2sAaD5nHOkAxj/ss+yykgXcp0gk4
+	7kuCrZ/v3c548N9SZtKcAihEd6wZeQvPLRiJRZWYBGBc1ZiTn22BuqNCYWdEOy56Kz1KrYFjvJP
+	rgyOQaUsL+ggqBzoMIvM4ukhVJGmD3cc5tb5R/0AsMBA0hp1fEZCaE5X6bVNd2zMwY5htQJsKnn
+	zi2h9yjXOvaaNUz9C8qnLHCyNqsVgLr95FtY6ezt3+JUSqBig6TtLMQAcytEQfbO5qvlAT4meGL
+	eNqz8yJjpOn5GNLZzWJfioF0rPBpAynJwQ9OfUBO3mCC8uOJ6hYeQywJmXA9XdMjvSqjfxrWIP4
+	98OMSuF2IiK0sfjr2ZbP3c6kD
+X-Received: by 2002:a17:907:2d0e:b0:b76:bcf5:a38a with SMTP id a640c23a62f3a-b8036a924ffmr2184480266b.0.1766643706188;
+        Wed, 24 Dec 2025 22:21:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGC0cEg1z21yzaWoEYG+U6OebSRyp1hetz+m9tmpGkKhV/J46dGAMWMW+VVsjRTQhXfq0zyGQ==
+X-Received: by 2002:a17:907:2d0e:b0:b76:bcf5:a38a with SMTP id a640c23a62f3a-b8036a924ffmr2184477666b.0.1766643705750;
+        Wed, 24 Dec 2025 22:21:45 -0800 (PST)
+Received: from localhost.localdomain ([103.155.100.1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f0ecb9sm1948058466b.56.2025.12.24.22.21.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 22:21:45 -0800 (PST)
+From: Aaron Ma <aaron.ma@canonical.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	lenb@kernel.org,
-	pavel@kernel.org,
-	changwoo@igalia.com
-Cc: kernel-dev@igalia.com,
-	linux-pm@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org,
-	sched-ext@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH for 6.19 4/4] PM: EM: Add dump to get-perf-domains in the EM YNL spec
-Date: Thu, 25 Dec 2025 13:01:04 +0900
-Message-ID: <20251225040104.982704-5-changwoo@igalia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251225040104.982704-1-changwoo@igalia.com>
-References: <20251225040104.982704-1-changwoo@igalia.com>
+Subject: [PATCH v3 2/2] ice: recap the VSI and QoS info after rebuild
+Date: Thu, 25 Dec 2025 14:21:22 +0800
+Message-ID: <20251225062122.736308-2-aaron.ma@canonical.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251225062122.736308-1-aaron.ma@canonical.com>
+References: <20251225062122.736308-1-aaron.ma@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,216 +97,165 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add dump to get-perf-domains, so that a user can fetch either information
-about a specific performance domain with do or information about all
-performance domains with dump. The YNL spec, autogenerated files, and
-the do implementation are updated, and the dump implementation is added.
+Fix IRDMA hardware initialization timeout (-110) after resume by
+separating VSI-dependent configuration from RDMA resource allocation,
+ensuring VSI is rebuilt before IRDMA accesses it.
 
-Suggested-by: Donald Hunter <donald.hunter@gmail.com>
-Signed-off-by: Changwoo Min <changwoo@igalia.com>
+After resume from suspend, IRDMA hardware initialization fails:
+  ice: IRDMA hardware initialization FAILED init_state=4 status=-110
+
+Separate RDMA initialization into two phases:
+1. ice_init_rdma() - Allocate resources only (no VSI/QoS access, no plug)
+2. ice_rdma_finalize_setup() - Assign VSI/QoS info and plug device
+
+This allows:
+- ice_init_rdma() to stay in ice_resume() (mirrors ice_deinit_rdma()
+  in ice_suspend()
+- VSI assignment deferred until after ice_vsi_rebuild() completes
+- QoS info updated after ice_dcb_rebuild() completes
+- Device plugged only when control queues, VSI, and DCB are all ready
+
+Fixes: bc69ad74867db ("ice: avoid IRQ collision to fix init failure on ACPI S3 resume")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
 ---
- .../netlink/specs/dev-energymodel.yaml        | 12 ++++
- include/uapi/linux/dev_energymodel.h          |  3 +-
- kernel/power/em_netlink.c                     | 58 +++++++++++++++++--
- kernel/power/em_netlink_autogen.c             | 16 ++++-
- kernel/power/em_netlink_autogen.h             |  2 +
- 5 files changed, 82 insertions(+), 9 deletions(-)
+V1 -> V2: no changes.
+V2 -> V3:
+- mirrors init_rdma in resume as Tony Nguyen suggested to fix
+the memleak and move ice_plug_aux_dev/ice_unplug_aux_dev out of
+init/deinit rdma.
+- ensure the correct VSI/QoS info is loaded after rebuild.
 
-diff --git a/Documentation/netlink/specs/dev-energymodel.yaml b/Documentation/netlink/specs/dev-energymodel.yaml
-index af8b8f72f722..1843e68faacf 100644
---- a/Documentation/netlink/specs/dev-energymodel.yaml
-+++ b/Documentation/netlink/specs/dev-energymodel.yaml
-@@ -47,6 +47,11 @@ attribute-sets:
-     doc: >-
-       Information on all the performance domains.
-     attributes:
-+      -
-+        name: perf-domain-id
-+        type: u32
-+        doc: >-
-+          A unique ID number for each performance domain.
-       -
-         name: perf-domain
-         type: nest
-@@ -136,6 +141,13 @@ operations:
-       attribute-set: perf-domains
-       doc: Get the list of information for all performance domains.
-       do:
-+        request:
-+          attributes:
-+            - perf-domain-id
-+        reply:
-+          attributes:
-+            - perf-domain
-+      dump:
-         reply:
-           attributes:
-             - perf-domain
-diff --git a/include/uapi/linux/dev_energymodel.h b/include/uapi/linux/dev_energymodel.h
-index 3399967e1f93..e8e133b5a797 100644
---- a/include/uapi/linux/dev_energymodel.h
-+++ b/include/uapi/linux/dev_energymodel.h
-@@ -37,7 +37,8 @@ enum dev_energymodel_perf_domain_flags {
- };
- 
- enum {
--	DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN = 1,
-+	DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID = 1,
-+	DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN,
- 
- 	__DEV_ENERGYMODEL_A_PERF_DOMAINS_MAX,
- 	DEV_ENERGYMODEL_A_PERF_DOMAINS_MAX = (__DEV_ENERGYMODEL_A_PERF_DOMAINS_MAX - 1)
-diff --git a/kernel/power/em_netlink.c b/kernel/power/em_netlink.c
-index b6edb018c65a..9412f1666007 100644
---- a/kernel/power/em_netlink.c
-+++ b/kernel/power/em_netlink.c
-@@ -18,6 +18,13 @@
- #include "em_netlink_autogen.h"
- 
- /*************************** Command encoding ********************************/
-+struct dump_ctx {
-+	int idx;
-+	int start;
-+	struct sk_buff *skb;
-+	struct netlink_callback *cb;
-+};
-+
- static int __em_nl_get_pd_size(struct em_perf_domain *pd, void *data)
- {
- 	int nr_cpus, msg_sz, cpus_sz;
-@@ -76,16 +83,44 @@ static int __em_nl_get_pd(struct em_perf_domain *pd, void *data)
- 	return -EMSGSIZE;
+ drivers/net/ethernet/intel/ice/ice.h      |  1 +
+ drivers/net/ethernet/intel/ice/ice_idc.c  | 41 +++++++++++++++++------
+ drivers/net/ethernet/intel/ice/ice_main.c |  7 +++-
+ 3 files changed, 38 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 147aaee192a79..6463c1fea7871 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -989,6 +989,7 @@ int ice_schedule_reset(struct ice_pf *pf, enum ice_reset_req reset);
+ void ice_print_link_msg(struct ice_vsi *vsi, bool isup);
+ int ice_plug_aux_dev(struct ice_pf *pf);
+ void ice_unplug_aux_dev(struct ice_pf *pf);
++void ice_rdma_finalize_setup(struct ice_pf *pf);
+ int ice_init_rdma(struct ice_pf *pf);
+ void ice_deinit_rdma(struct ice_pf *pf);
+ bool ice_is_wol_supported(struct ice_hw *hw);
+diff --git a/drivers/net/ethernet/intel/ice/ice_idc.c b/drivers/net/ethernet/intel/ice/ice_idc.c
+index 420d45c2558b6..b6079a6cb7736 100644
+--- a/drivers/net/ethernet/intel/ice/ice_idc.c
++++ b/drivers/net/ethernet/intel/ice/ice_idc.c
+@@ -360,6 +360,35 @@ void ice_unplug_aux_dev(struct ice_pf *pf)
+ 	auxiliary_device_uninit(adev);
  }
  
-+static int __em_nl_get_pd_for_dump(struct em_perf_domain *pd, void *data)
++/**
++ * ice_rdma_finalize_setup - Complete RDMA setup after VSI is ready
++ * @pf: ptr to ice_pf
++ *
++ * Sets VSI-dependent information and plugs aux device.
++ * Must be called after ice_init_rdma(), ice_vsi_rebuild(), and
++ * ice_dcb_rebuild() complete.
++ */
++void ice_rdma_finalize_setup(struct ice_pf *pf)
 +{
-+	const struct genl_info *info;
-+	struct dump_ctx *ctx = data;
-+	void *hdr;
-+	int ret;
++	struct iidc_rdma_priv_dev_info *privd;
 +
-+	if (ctx->idx++ < ctx->start)
-+		return 0;
++	if (!ice_is_rdma_ena(pf) || !pf->cdev_info)
++		return;
 +
-+	info = genl_info_dump(ctx->cb);
-+	hdr = genlmsg_iput(ctx->skb, info);
-+	if (!hdr) {
-+		genlmsg_cancel(ctx->skb, hdr);
-+		return -EMSGSIZE;
-+	}
++	privd = pf->cdev_info->iidc_priv;
++	if (!privd || !pf->vsi[0] || !pf->vsi[0]->netdev)
++		return;
 +
-+	ret = __em_nl_get_pd(pd, ctx->skb);
-+	genlmsg_end(ctx->skb, hdr);
-+	return ret;
++	/* Assign VSI info now that VSI is valid */
++	privd->netdev = pf->vsi[0]->netdev;
++	privd->vport_id = pf->vsi[0]->vsi_num;
++
++	/* Update QoS info after DCB has been rebuilt */
++	ice_setup_dcb_qos_info(pf, &privd->qos_info);
++
++	ice_plug_aux_dev(pf);
 +}
 +
- int dev_energymodel_nl_get_perf_domains_doit(struct sk_buff *skb,
- 					      struct genl_info *info)
- {
-+	int id, ret = -EMSGSIZE, msg_sz = 0;
-+	int cmd = info->genlhdr->cmd;
-+	struct em_perf_domain *pd;
- 	struct sk_buff *msg;
- 	void *hdr;
--	int cmd = info->genlhdr->cmd;
--	int ret = -EMSGSIZE, msg_sz = 0;
+ /**
+  * ice_init_rdma - initializes PF for RDMA use
+  * @pf: ptr to ice_pf
+@@ -398,23 +427,16 @@ int ice_init_rdma(struct ice_pf *pf)
+ 	}
  
--	for_each_em_perf_domain(__em_nl_get_pd_size, &msg_sz);
-+	if (!info->attrs[DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID])
-+		return -EINVAL;
+ 	cdev->iidc_priv = privd;
+-	privd->netdev = pf->vsi[0]->netdev;
+ 
+ 	privd->hw_addr = (u8 __iomem *)pf->hw.hw_addr;
+ 	cdev->pdev = pf->pdev;
+-	privd->vport_id = pf->vsi[0]->vsi_num;
+ 
+ 	pf->cdev_info->rdma_protocol |= IIDC_RDMA_PROTOCOL_ROCEV2;
+-	ice_setup_dcb_qos_info(pf, &privd->qos_info);
+-	ret = ice_plug_aux_dev(pf);
+-	if (ret)
+-		goto err_plug_aux_dev;
 +
-+	id = nla_get_u32(info->attrs[DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID]);
-+	pd = em_perf_domain_get_by_id(id);
+ 	return 0;
  
-+	__em_nl_get_pd_size(pd, &msg_sz);
- 	msg = genlmsg_new(msg_sz, GFP_KERNEL);
- 	if (!msg)
- 		return -ENOMEM;
-@@ -94,10 +129,9 @@ int dev_energymodel_nl_get_perf_domains_doit(struct sk_buff *skb,
- 	if (!hdr)
- 		goto out_free_msg;
+-err_plug_aux_dev:
+-	pf->cdev_info->adev = NULL;
+-	xa_erase(&ice_aux_id, pf->aux_idx);
+ err_alloc_xa:
++	xa_erase(&ice_aux_id, pf->aux_idx);
+ 	kfree(privd);
+ err_privd_alloc:
+ 	kfree(cdev);
+@@ -432,7 +454,6 @@ void ice_deinit_rdma(struct ice_pf *pf)
+ 	if (!ice_is_rdma_ena(pf))
+ 		return;
  
--	ret = for_each_em_perf_domain(__em_nl_get_pd, msg);
-+	ret = __em_nl_get_pd(pd, msg);
- 	if (ret)
- 		goto out_cancel_msg;
--
- 	genlmsg_end(msg, hdr);
+-	ice_unplug_aux_dev(pf);
+ 	xa_erase(&ice_aux_id, pf->aux_idx);
+ 	kfree(pf->cdev_info->iidc_priv);
+ 	kfree(pf->cdev_info);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 4bb68e7a00f5f..1851e9932cefe 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5135,6 +5135,9 @@ int ice_load(struct ice_pf *pf)
+ 	if (err)
+ 		goto err_init_rdma;
  
- 	return genlmsg_reply(msg, info);
-@@ -106,10 +140,22 @@ int dev_energymodel_nl_get_perf_domains_doit(struct sk_buff *skb,
- 	genlmsg_cancel(msg, hdr);
- out_free_msg:
- 	nlmsg_free(msg);
--
- 	return ret;
- }
- 
-+int dev_energymodel_nl_get_perf_domains_dumpit(struct sk_buff *skb,
-+						struct netlink_callback *cb)
-+{
-+	struct dump_ctx ctx = {
-+		.idx = 0,
-+		.start = cb->args[0],
-+		.skb = skb,
-+		.cb = cb,
-+	};
++	/* Finalize RDMA: VSI already created, assign info and plug device */
++	ice_rdma_finalize_setup(pf);
 +
-+	return for_each_em_perf_domain(__em_nl_get_pd_for_dump, &ctx);
-+}
-+
- static struct em_perf_domain *__em_nl_get_pd_table_id(struct nlattr **attrs)
- {
- 	struct em_perf_domain *pd;
-diff --git a/kernel/power/em_netlink_autogen.c b/kernel/power/em_netlink_autogen.c
-index 44acef0e7df2..16a59200c6a4 100644
---- a/kernel/power/em_netlink_autogen.c
-+++ b/kernel/power/em_netlink_autogen.c
-@@ -11,6 +11,11 @@
+ 	ice_service_task_restart(pf);
  
- #include <uapi/linux/dev_energymodel.h>
+ 	clear_bit(ICE_DOWN, pf->state);
+@@ -5166,6 +5169,7 @@ void ice_unload(struct ice_pf *pf)
  
-+/* DEV_ENERGYMODEL_CMD_GET_PERF_DOMAINS - do */
-+static const struct nla_policy dev_energymodel_get_perf_domains_nl_policy[DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID + 1] = {
-+	[DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID] = { .type = NLA_U32, },
-+};
-+
- /* DEV_ENERGYMODEL_CMD_GET_PERF_TABLE - do */
- static const struct nla_policy dev_energymodel_get_perf_table_nl_policy[DEV_ENERGYMODEL_A_PERF_TABLE_PERF_DOMAIN_ID + 1] = {
- 	[DEV_ENERGYMODEL_A_PERF_TABLE_PERF_DOMAIN_ID] = { .type = NLA_U32, },
-@@ -18,10 +23,17 @@ static const struct nla_policy dev_energymodel_get_perf_table_nl_policy[DEV_ENER
+ 	devl_assert_locked(priv_to_devlink(pf));
  
- /* Ops table for dev_energymodel */
- static const struct genl_split_ops dev_energymodel_nl_ops[] = {
-+	{
-+		.cmd		= DEV_ENERGYMODEL_CMD_GET_PERF_DOMAINS,
-+		.doit		= dev_energymodel_nl_get_perf_domains_doit,
-+		.policy		= dev_energymodel_get_perf_domains_nl_policy,
-+		.maxattr	= DEV_ENERGYMODEL_A_PERF_DOMAINS_PERF_DOMAIN_ID,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
- 	{
- 		.cmd	= DEV_ENERGYMODEL_CMD_GET_PERF_DOMAINS,
--		.doit	= dev_energymodel_nl_get_perf_domains_doit,
--		.flags	= GENL_CMD_CAP_DO,
-+		.dumpit	= dev_energymodel_nl_get_perf_domains_dumpit,
-+		.flags	= GENL_CMD_CAP_DUMP,
- 	},
- 	{
- 		.cmd		= DEV_ENERGYMODEL_CMD_GET_PERF_TABLE,
-diff --git a/kernel/power/em_netlink_autogen.h b/kernel/power/em_netlink_autogen.h
-index f7e4bddcbd53..5caf2f7e18a5 100644
---- a/kernel/power/em_netlink_autogen.h
-+++ b/kernel/power/em_netlink_autogen.h
-@@ -14,6 +14,8 @@
++	ice_unplug_aux_dev(pf);
+ 	ice_deinit_rdma(pf);
+ 	ice_deinit_features(pf);
+ 	ice_tc_indir_block_unregister(vsi);
+@@ -5594,6 +5598,7 @@ static int ice_suspend(struct device *dev)
+ 	 */
+ 	disabled = ice_service_task_stop(pf);
  
- int dev_energymodel_nl_get_perf_domains_doit(struct sk_buff *skb,
- 					     struct genl_info *info);
-+int dev_energymodel_nl_get_perf_domains_dumpit(struct sk_buff *skb,
-+					       struct netlink_callback *cb);
- int dev_energymodel_nl_get_perf_table_doit(struct sk_buff *skb,
- 					   struct genl_info *info);
++	ice_unplug_aux_dev(pf);
+ 	ice_deinit_rdma(pf);
+ 
+ 	/* Already suspended?, then there is nothing to do */
+@@ -7803,7 +7808,7 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 
+ 	ice_health_clear(pf);
+ 
+-	ice_plug_aux_dev(pf);
++	ice_rdma_finalize_setup(pf);
+ 	if (ice_is_feature_supported(pf, ICE_F_SRIOV_LAG))
+ 		ice_lag_rebuild(pf);
  
 -- 
-2.52.0
+2.43.0
 
