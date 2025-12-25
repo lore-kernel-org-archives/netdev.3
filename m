@@ -1,140 +1,75 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42709239562;
-	Thu, 25 Dec 2025 09:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F254431960B;
+	Thu, 25 Dec 2025 10:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766655400; cv=none; b=S+0wXohA+jXAZB+bZPRuvCESmWpN4fzSnFWaxdkrK9+yiUfvxGJL20dvuLpzBOX029sE7qVOrE2iz/YFT+ctgM5iS6Y9rpugD7skIlUsbtZJaz0ufMkhSDlRt0nr1zmtHVUlHnAT3roPaVXWDQuI+rZlzI67jM32SqCMH3E0CDg=
+	t=1766658258; cv=none; b=UvSqARepivbaUijSBiVjBu1V4/fjZqQuyVaMFFFiuR8X3AmxVQ6dM7HtDhUwc/xGOcg0FS4PN0qf8+O4iVkgyMBopLViwAUnOCQ5UygMwLBPe/7bE/H+wtvuOOZqzTujeAB9AndqfJ6dZCMzSzF5YijLkenffOUn29KaqN8S/lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766655400; c=relaxed/simple;
-	bh=5zd9Xzr7uJ6VJVmaLqK49UxwmmNkyq8IF88zoZYhPWo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=bdn7XdpM9tDhkkzQpDuurP/eR0gopNKdGGDS0SNuCH88Ro8+cI1geLA0UZC2UpykQX9jZKQ0tjjRlcrguQUUSvFON64s9wchj7lFo07iiCjVwOI9PbOuYODW3tMBUmpyopz5qVPRuwZSpXNebz11mJbKvgLEROL6IjsSNNGPTfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [10.128.41.173] (unknown [103.50.105.82])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C799C61CC3FCE;
-	Thu, 25 Dec 2025 10:26:34 +0100 (CET)
-Message-ID: <14a86654-7bcd-48ba-bda6-0205b07877f9@molgen.mpg.de>
-Date: Thu, 25 Dec 2025 14:26:14 +0500
+	s=arc-20240116; t=1766658258; c=relaxed/simple;
+	bh=rkKsCN8GZKPcWF0t5jLapxBcgdye6KwO+rLjihBRFWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e6WM5qKitYIBV35AxqJoEbTl1lRPfpnsJ0tGuB/ZsTv1l6lJkNt99LA5V3xL7aUHwHlIpsWHVw00GZRMmN0Sj2XYSZM7nhRzuJ5KlsnETBKuZF7PwxwR0J0O6/7DbGScFd+Z8SOli/SYZ0OjLC8ZnY4fhaZkf//ofsh+lfUz23w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Q6oQIgN/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Q6oQIgN/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=RLZ5dp7ZF0ShvKw+eCUkjiwp3M5NbJucFJVtzDcWMmU=; b=Q6oQIgN/eZS8wpunWL02wfB5uv
+	Th/cu82a2kEIYbe4q3x+QGs3mS+kbCEwy8nzxT2h4LurjO7ji3EDh/omMoWxsuFhW57gG2GvPzrUv
+	ZE8H2fRdR5rPnG3JE9Ag+ftrzxqqyMOT/yV7O9SFgG1fJlmk075NGQbuTiNQIDe0gOkw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vYiVI-000W0A-RB; Thu, 25 Dec 2025 11:23:32 +0100
+Date: Thu, 25 Dec 2025 11:23:32 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yao Zi <me@ziyao.cc>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>,
+	Kexy Biscuit <kexybiscuit@aosc.io>
+Subject: Re: [RFC PATCH net-next v5 1/3] net: phy: motorcomm: Support YT8531S
+ PHY in YT6801 Ethernet controller
+Message-ID: <6b0b5ce1-43f5-4652-b7ba-c03ac277fe1f@lunn.ch>
+References: <20251225071914.1903-1-me@ziyao.cc>
+ <20251225071914.1903-2-me@ziyao.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v3 1/2] ice: Fix NULL pointer
- dereference in ice_vsi_set_napi_queues
-To: Aaron Ma <aaron.ma@canonical.com>
-References: <20251225062122.736308-1-aaron.ma@canonical.com>
-Content-Language: en-US
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251225062122.736308-1-aaron.ma@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251225071914.1903-2-me@ziyao.cc>
 
-Dear Aaron,
+On Thu, Dec 25, 2025 at 07:19:12AM +0000, Yao Zi wrote:
+> YT6801's internal PHY is confirmed as a GMII-capable variant of YT8531S
+> by a previous series[1] and reading PHY ID. Add support for
+> PHY_INTERFACE_MODE_GMII for YT8531S to allow the Ethernet driver to
+> reuse the PHY code for its internal PHY.
+> 
+> Link: https://lore.kernel.org/all/a48d76ac-db08-46d5-9528-f046a7b541dc@motor-comm.com/ # [1]
+> Co-developed-by: Frank Sae <Frank.Sae@motor-comm.com>
+> Signed-off-by: Frank Sae <Frank.Sae@motor-comm.com>
+> Signed-off-by: Yao Zi <me@ziyao.cc>
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Thank you for the patch.
-
-Am 25.12.25 um 11:21 schrieb Aaron Ma via Intel-wired-lan:
-> Add NULL pointer checks in ice_vsi_set_napi_queues() to prevent crashes
-> during resume from suspend when rings[q_idx]->q_vector is NULL.
-> 
-> Tested adaptor:
-> 60:00.0 Ethernet controller [0200]: Intel Corporation Ethernet Controller E810-XXV for SFP [8086:159b] (rev 02)
->          Subsystem: Intel Corporation Ethernet Network Adapter E810-XXV-2 [8086:4003]
-> 
-> SR-IOV state: both disabled and enabled can reproduce this issue.
-> 
-> kernel version: v6.18
-> 
-> Reproduce steps:
-> Bootup and execute suspend like systemctl suspend or rtcwake.
-> 
-> Log:
-> <1>[  231.443607] BUG: kernel NULL pointer dereference, address: 0000000000000040
-> <1>[  231.444052] #PF: supervisor read access in kernel mode
-> <1>[  231.444484] #PF: error_code(0x0000) - not-present page
-> <6>[  231.444913] PGD 0 P4D 0
-> <4>[  231.445342] Oops: Oops: 0000 [#1] SMP NOPTI
-> <4>[  231.446635] RIP: 0010:netif_queue_set_napi+0xa/0x170
-> <4>[  231.447067] Code: 31 f6 31 ff c3 cc cc cc cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 85 c9 74 0b <48> 83 79 30 00 0f 84 39 01 00 00 55 41 89 d1 49 89 f8 89 f2 48 89
-> <4>[  231.447513] RSP: 0018:ffffcc780fc078c0 EFLAGS: 00010202
-> <4>[  231.447961] RAX: ffff8b848ca30400 RBX: ffff8b848caf2028 RCX: 0000000000000010
-> <4>[  231.448443] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8b848dbd4000
-> <4>[  231.448896] RBP: ffffcc780fc078e8 R08: 0000000000000000 R09: 0000000000000000
-> <4>[  231.449345] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
-> <4>[  231.449817] R13: ffff8b848dbd4000 R14: ffff8b84833390c8 R15: 0000000000000000
-> <4>[  231.450265] FS:  00007c7b29e9d740(0000) GS:ffff8b8c068e2000(0000) knlGS:0000000000000000
-> <4>[  231.450715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> <4>[  231.451179] CR2: 0000000000000040 CR3: 000000030626f004 CR4: 0000000000f72ef0
-> <4>[  231.451629] PKRU: 55555554
-> <4>[  231.452076] Call Trace:
-> <4>[  231.452549]  <TASK>
-> <4>[  231.452996]  ? ice_vsi_set_napi_queues+0x4d/0x110 [ice]
-> <4>[  231.453482]  ice_resume+0xfd/0x220 [ice]
-> <4>[  231.453977]  ? __pfx_pci_pm_resume+0x10/0x10
-> <4>[  231.454425]  pci_pm_resume+0x8c/0x140
-> <4>[  231.454872]  ? __pfx_pci_pm_resume+0x10/0x10
-> <4>[  231.455347]  dpm_run_callback+0x5f/0x160
-> <4>[  231.455796]  ? dpm_wait_for_superior+0x107/0x170
-> <4>[  231.456244]  device_resume+0x177/0x270
-> <4>[  231.456708]  dpm_resume+0x209/0x2f0
-> <4>[  231.457151]  dpm_resume_end+0x15/0x30
-> <4>[  231.457596]  suspend_devices_and_enter+0x1da/0x2b0
-> <4>[  231.458054]  enter_state+0x10e/0x570
-> 
-> Add defensive checks for both the ring pointer and its q_vector
-> before dereferencing, allowing the system to resume successfully even when
-> q_vectors are unmapped.
-> 
-> Fixes: 2a5dc090b92cf ("ice: move netif_queue_set_napi to rtnl-protected sections")
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> ---
-> V1 -> V2: add test device info.
-> V2 -> V3: no changes.
-> 
->   drivers/net/ethernet/intel/ice/ice_lib.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-> index 15621707fbf81..9d1178bde4495 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-> @@ -2779,11 +2779,13 @@ void ice_vsi_set_napi_queues(struct ice_vsi *vsi)
->   
->   	ASSERT_RTNL();
->   	ice_for_each_rxq(vsi, q_idx)
-> -		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
-> +		if (vsi->rx_rings[q_idx] && vsi->rx_rings[q_idx]->q_vector)
-> +			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
->   				     &vsi->rx_rings[q_idx]->q_vector->napi);
->   
->   	ice_for_each_txq(vsi, q_idx)
-> -		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
-> +		if (vsi->tx_rings[q_idx] && vsi->tx_rings[q_idx]->q_vector)
-> +			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
->   				     &vsi->tx_rings[q_idx]->q_vector->napi);
->   	/* Also set the interrupt number for the NAPI */
->   	ice_for_each_q_vector(vsi, v_idx) {
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Pa
+    Andrew
