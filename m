@@ -1,167 +1,114 @@
-Received: from smtpx.fel.cvut.cz (smtpx.feld.cvut.cz [147.32.210.153])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB5F21D3E2;
-	Sat, 27 Dec 2025 00:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.32.210.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEC27DA66
+	for <netdev@vger.kernel.org>; Sat, 27 Dec 2025 07:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766796308; cv=none; b=PDQ/FcR9wwqvJDgdVb8Vv8l7oaa9Vog+lMtP4BDeT2V8Yc6DQb1OZECw4ruAt32g/gaR/42OoXhsx2z+agAP5ifMFoVBfF/pub0KtD1VeKSIGyBbtX7hpO4611HhhqyolHXDfJbqBT3VvG/fTBNHLTMDAesqDyCb9QrZC0ZurDo=
+	t=1766821111; cv=none; b=ITJk0iDFDw9ZIu+oLRbI9fWXUSI0bQjZyhkafqbmat22durgx1Wq16XrLvsP3xvFz/erTPcU3D2MgO2WCfYxe6d6YodE81kTiF/soqurgZILQHktF3Zr6SnoBAvk8V0qZSN/NP6c6GFq2bQl8HnywVvb5OwjdFjW32M/hrVhNhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766796308; c=relaxed/simple;
-	bh=IEBm1SxcXBuo96w3k4LPR8IigGiimqKKQp9AJiCr01c=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Disposition:Message-Id; b=QzGdIDCfz+1TlZseAQSvuS0XXq2pWvicUPfOEm4Uh65mHt4Bk4bX8ShdrKFsP9mCm/jkEz7Ts1o5Px9V9iWNImv3jcv3+UUedPd1Gjrk03Fxuqah8QR/vSHxP7ETDcY4kslkaQDvnM7r5uV70bhtgm6lFB0VpfyNkXfQDS3KozI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz; spf=pass smtp.mailfrom=fel.cvut.cz; dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b=FjRX0xZk; arc=none smtp.client-ip=147.32.210.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fel.cvut.cz
+	s=arc-20240116; t=1766821111; c=relaxed/simple;
+	bh=Po2Gok9eI39EyZ36Z3s2MTSaEXgDZ3I2++0gZ8L6Jig=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lchFmESmCk2D6e+vngn6lh/58PPRVfeo9pkWZX9wDTuX1TXMi5MG8JotuPIS1tGf2S8K4upPqnIRiXUXDjfEzqivVyQgsE8/tG0TIjzX2SE6x0w3kT8UQMWLMT1RRqdO+c+dFLQoxLkk2IPKgRw+gE91HJxmWM/ndwaAzsLazjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqfq+0NL; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b="FjRX0xZk"
-Received: from localhost (unknown [192.168.200.27])
-	by smtpx.fel.cvut.cz (Postfix) with ESMTP id DEA6B1626B;
-	Sat, 27 Dec 2025 01:45:02 +0100 (CET)
-X-Virus-Scanned: IMAP STYX AMAVIS
-Received: from smtpx.fel.cvut.cz ([192.168.200.2])
- by localhost (cerokez-250.feld.cvut.cz [192.168.200.27]) (amavis, port 10060)
- with ESMTP id q42iJ87A4n5D; Sat, 27 Dec 2025 01:45:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fel.cvut.cz;
-	s=felmail; t=1766795951;
-	bh=DndPp7+zVQ7BD6MgvFgzA5RxURbGF01KCj8ehwdRK1w=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:From;
-	b=FjRX0xZkm8CaHeFIyjdUKU4YnECrzEyZ78vv3HHWXIvozmR7u8cGpB/+DnsDG7+1L
-	 7zK+ixtHx7NFv8B0ksFMpWBbt8yN2o2Ar2APrF1RpYCK0F7RRYI5Q87WIH5RL1Cp+b
-	 nqoA3O7hZ9XjMQUv8SW8HigaTFBJ+L8SZlXlmLs/E358KvhZq02+BZKAGeJMiNv4Vb
-	 u4tZ/Ib+XRPJMBXqAyHpIXJgrtBa9fkJwaAiG0lR4Su+GjXGbSbLHlVET0WUbBoqAi
-	 8iZVAf7ukOEsdrgvydRyjSZ8yriw9v4MkrgbolG3G0RmhWpIwZozLg+SeD341LIX9V
-	 esUfspJYXoPbA==
-Received: from baree.pikron.com (static-84-242-78-234.bb.vodafone.cz [84.242.78.234])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pisa)
-	by smtpx.fel.cvut.cz (Postfix) with ESMTPSA id 5EDD416156;
-	Sat, 27 Dec 2025 01:39:10 +0100 (CET)
-From: Pavel Pisa <pisa@fel.cvut.cz>
-To: Ondrej Ille <ondrej.ille@gmail.com>
-Subject: Re: ctucanfd: possible coding error in ctucan_set_secondary_sample_point causing SSP not enabled
-Date: Sat, 27 Dec 2025 01:39:08 +0100
-User-Agent: KMail/1.9.10
-Cc: David Laight <david.laight.linux@gmail.com>,
- "Marc Kleine-Budde" <mkl@pengutronix.de>,
- Andrea Daoud <andreadaoud6@gmail.com>,
- linux-can@vger.kernel.org,
- Wolfgang Grandegger <wg@grandegger.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- netdev@vger.kernel.org
-References: <CAOprWotBRv_cvD3GCSe7N2tiLooZBoDisSwbu+VBAmt_2izvwQ@mail.gmail.com> <CAA7ZjpbhWQab77T42URMxQqv4SZwN+5FfDB9VEn0g9-ZKCqdOQ@mail.gmail.com> <202512270112.19801.pisa@fel.cvut.cz>
-In-Reply-To: <202512270112.19801.pisa@fel.cvut.cz>
-X-KMail-QuotePrefix: > 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqfq+0NL"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5957c929a5eso11179502e87.1
+        for <netdev@vger.kernel.org>; Fri, 26 Dec 2025 23:38:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766821108; x=1767425908; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1OnWDMu+q1WSYGBsX2lqqCjUP5tRl4Im0zQRuOx1Ins=;
+        b=mqfq+0NL4epq7Kt6V2Ym5Vfv4EBs9VyNMUxv1KDZzfBFpomW/SwfkTgeOTcq5qCklP
+         EDemf8ltwklPrM6cTAkgtwsQsmYF8zQscAC+vJ0Q/FMpQLn2fxbkiHrzFZJsgo7AnQf/
+         twOsczwvRaA3wOTbjK1BY9rLDtdxyoOHEL4EIvxpF7R1xulzV9sq1QdWOPoZO7kt6wOn
+         6IKLPDLRK5/g/3wpmfZUK6ecmz8+mTiuRqrX5dmCmXbrhpsbHNEqd62E5X9ARa/eYmqJ
+         MwEhLeGmiotySpOLONuAtgpt+Ha2MiNbm/WMzMw6kUK+hPhjcWd68czAZp9NxNf94aLX
+         3pZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766821108; x=1767425908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1OnWDMu+q1WSYGBsX2lqqCjUP5tRl4Im0zQRuOx1Ins=;
+        b=RxV6SQuXq4HXTZh61mTbvxiN/e5wLOtZymORJiri4NR/eu8s5Rpk/U8/7o3r48TTLg
+         /1Vo2Lfun2qBc2JiaG/Bl6B/b+DAKPDJMwqI5j/FBBp6W+HcOfFNgJcDOQnZfP9z6WWE
+         bZPH9U2ZkxcpiYpi5CgENtlaLvFdGc8sfGG38z/L2TmRYdJ1DOt9WjiULWOHy1geJGWH
+         z1Dt0OIAHleXMBItno4I0opZfNzUPMBrhwtJFnRr/YOZxQFUQMXoZRFXAdocKWT9Q97D
+         JQ+s0v7PbCQZUTJtwpLgcMUjzMe+9IBWsB9L7isFt4qalb7INggQ57HWcWQ2fo9T9gHh
+         MAOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSJkQ7Ccg0gb1Jtm66vug9GUZSknhNtKts2bSAY0hjkccZLui6M11d9X4rnVTwddRSWJgEpF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsfeV2Mzs2pNqcQMl3OZVMMdmneRrVo6uhrqLJ2plyV8GIjaf1
+	GVvmL+tznANfuog1DExsPr7QSngFlAjQoDJRn4q6NJKCzhrXjTeDe1Ka
+X-Gm-Gg: AY/fxX6zZaqDlg+IQkgxnmd12wozU6gGS67fU0xH50mO3UIIAdRCEDaovIqhmQE1iJ1
+	No0b4QLJQHiWJ7tlxULhXHReUWJxCBQJhpLI6xyx0/ivD+UrmhBQ6yunQu75UyVqjYOL3iBZ+Zs
+	sdJwWSnUGIqm65YmcF5ydcg0k+Iqa4kBnLkdov7BBBp6O+3OFmr6Y1lcCGp+FtTtMgzSkuLNvIY
+	0siPjmoj02Jt0AHZxy5MwLU2SdYPQiVhd7JebmOF4gHJV0zSGnm1tjcS1VKC+sPucfYN5AOkAKw
+	h5A4qwGrpSc/cltLI5K6pCFk3f1pa/ifYBrJf000OlD4mo+B8azYemsmhsqCzTZW+zL+8RTHgyE
+	JB8i7LC5RaywnUBwDluxZKut3A3aHy9bfG5o9mYa+h866FT7DlA80LkBFI2dfR/Eyb6l1q5qXZG
+	DbpGCx2YnBvaGsFvANoGPJiyblvSA=
+X-Google-Smtp-Source: AGHT+IGkv/1g7SIEMAlMeplAMPTx8z8ZNBEoGr/hm+qZ2r1jeY+I+97394mPN5fP2r9FVLAEbjGe6w==
+X-Received: by 2002:a05:6512:b8a:b0:597:dd9b:d444 with SMTP id 2adb3069b0e04-59a17d1cc84mr9246196e87.19.1766821107348;
+        Fri, 26 Dec 2025 23:38:27 -0800 (PST)
+Received: from localhost.localdomain ([176.33.65.121])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185dd90esm7345408e87.31.2025.12.26.23.38.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Dec 2025 23:38:26 -0800 (PST)
+From: Alper Ak <alperyasinak1@gmail.com>
+To: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org
+Cc: Alper Ak <alperyasinak1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Willem de Bruijn <willemb@google.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: ipv4: ipmr: Prevent information leak in ipmr_sk_ioctl()
+Date: Sat, 27 Dec 2025 10:37:42 +0300
+Message-ID: <20251227073743.17272-1-alperyasinak1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <202512270139.08818.pisa@fel.cvut.cz>
+Content-Transfer-Encoding: 8bit
 
-Correction
+struct sioc_vif_req has a padding hole after the vifi field due to
+alignment requirements. These padding bytes were uninitialized,
+potentially leaking kernel stack memory to userspace when the
+struct is copied via sock_ioctl_inout().
 
-On Saturday 27 of December 2025 01:12:19 Pavel Pisa wrote:
-> Dear Ondrej Ille,
->
-> On Friday 26 of December 2025 23:45:55 Ondrej Ille wrote:
-> > Hello everyone,
-> >
-> > As for this specific case, I am aware of it for longer time
-> >
-> > > but the last time when we met with Ondrej Ille this part
-> > > as been the last one on the table and the firm confirmation
-> > > what is the best value have not been stated.
-> >
-> > Pavel, the sample point should definitely be set to the variant of
-> > "measured + offset". That is
-> > what why the offset is calculated above the way it is. The aim is to
-> > place the sample point
-> > on CAN_RX "as-if the same as normal sample point", just with the TX->RX
-> > delay accounted for.
-> > One only needs to be careful that the value is not in Time Quantas, but
-> > in "number of cycles".
-> > But AFAICT should be accounted for by the ssp_offset calculation.
-> >
-> > As for leaving there comment, or leaving it up to the compiler to
-> > optimize away since the value is
-> > anyway initialized to zero, I don't know what is the preferred way in
-> > kernel.
-> > Personally, I would not leave any "meaningless code", so, I think comment
-> > is better.
->
-> I am not sure, I would probably prefer code there because it can be
-> easily modified to other value or make it configurable. So this
-> would look like
->
->         if (dbt->bitrate > 1000000) {
->                 /* Calculate SSP in minimal time quanta */
->                 ssp_offset = (priv->can.clock.freq / 1000) *
-> dbt->sample_point / dbt->bitrate;
->
->                 if (ssp_offset > 127) {
->                         netdev_warn(ndev, "SSP offset saturated to 127\n");
->                         ssp_offset = 127;
->                 }
->
->                 ssp_cfg = FIELD_PREP(REG_TRV_DELAY_SSP_OFFSET, ssp_offset);
->                 ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
->         }
->
-> It matches currents state of the driver in the IP CORE repository where
-> you have propagated change lat week
->
-> https://gitlab.fel.cvut.cz/canbus/ctucanfd_ip_core/-/commit/6188ca673f82387
->3f7b37dbb588a2d4c0a0cc98c
->
-> But I would suggest to cover even else case for dbt->bitrate <= 1 Mbit/s by
-> else statement which should be probably
->
->         } else {
->                 ssp_cfg = FIELD_PREP(REG_TRV_DELAY_SSP_OFFSET, 0);
->                 ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
->         }
+Reported by Smatch:
+    net/ipv4/ipmr.c:1575 ipmr_sk_ioctl() warn: check that 'buffer'
+    doesn't leak information (struct has a hole after 'vifi')
 
-As I have looked only onto patch, I have overlooked that whole
-register is reset to zero if condition (dbt->bitrate > 1000000)
-is not true. So then the
+Fixes: e1d001fa5b47 ("net: ioctl: Use kernel memory on protocol ioctl callbacks")
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+---
+ net/ipv4/ipmr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
-
-can is equivalent to the default and can be left in common
-path (if we consider value 0 as right value for all cases)
-or removed alltogether. So I am not sure at this moment
-if the whole line should be removed or set to zero
-and moved out of if block.
-
-Best wishes,
-
-                Pavel
-
-                Pavel Pisa
-    phone:      +420 603531357
-    e-mail:     pisa@cmp.felk.cvut.cz
-    Department of Control Engineering FEE CVUT
-    Karlovo namesti 13, 121 35, Prague 2
-    university: http://control.fel.cvut.cz/
-    personal:   http://cmp.felk.cvut.cz/~pisa
-    social:     https://social.kernel.org/ppisa
-    projects:   https://www.openhub.net/accounts/ppisa
-    CAN related:http://canbus.pages.fel.cvut.cz/
-    RISC-V education: https://comparch.edu.cvut.cz/
-    Open Technologies Research Education and Exchange Services
-    https://gitlab.fel.cvut.cz/otrees/org/-/wikis/home
-
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index ca9eaee4c2ef..18441fbe7ed7 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1571,6 +1571,7 @@ int ipmr_sk_ioctl(struct sock *sk, unsigned int cmd, void __user *arg)
+ 	/* These userspace buffers will be consumed by ipmr_ioctl() */
+ 	case SIOCGETVIFCNT: {
+ 		struct sioc_vif_req buffer;
++		memset(&buffer, 0, sizeof(buffer));
+ 
+ 		return sock_ioctl_inout(sk, cmd, arg, &buffer,
+ 				      sizeof(buffer));
+-- 
+2.43.0
 
