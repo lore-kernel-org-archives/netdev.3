@@ -1,199 +1,264 @@
-Received: from smtpx.fel.cvut.cz (smtpx.feld.cvut.cz [147.32.210.153])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D48C3A1E6E;
-	Sat, 27 Dec 2025 00:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.32.210.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1004E21FF21
+	for <netdev@vger.kernel.org>; Sat, 27 Dec 2025 00:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766794814; cv=none; b=RCZPEm4YRC5v4D+X4s+/42sD2/uAiIGwcUR5ky9LUpgG/AWOw6BPlnaCG5cQX5AZL17GD2XEq7n6wKGODxew/dE1kITfhyzvD715vvyTCELw6O6oyY3KpSVdSUJtGQJB13FbZvEJwy5xYC4SCEaGGpc7d+Kh0aTP8UzDBFLODdo=
+	t=1766795986; cv=none; b=QJPsieMlAjsNYd3Qv9gbGYujLXDDOtgG1drUbBN6UOPu24uwOzDiMeDtO+j5uxIA7dAchXzoFKJm7cyQanLfxm2475bu/9rf5AA1an/fVh8hnqUgi6hQ60mdvti/p+Ko5G/Gik6v3ocxgzPNN1vMj9+8LNhlhzqBwVqt1SD6utQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766794814; c=relaxed/simple;
-	bh=mxzYxkFXm1WBNIb5Yog/dRDInADTKBjxopk94N7WIFM=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Disposition:Message-Id; b=V9/k7eKjj3WYdN5ikZTVuw+6B+YbAYCgHzNcOBc8ffuo4sCqAamHZCh7jGbyVo5KcV6HW/N/8LybN5CQxwEcRZdxZT+q3SNNoxO7D5pxUkt2YKJnO1NrLdDv/CB0IqhMcymPZNlR3RQBEkeM/9z/BIGSfafbOfY806IhUldIUKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz; spf=pass smtp.mailfrom=fel.cvut.cz; dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b=S6KJo4cI; arc=none smtp.client-ip=147.32.210.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fel.cvut.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fel.cvut.cz
+	s=arc-20240116; t=1766795986; c=relaxed/simple;
+	bh=8Xjo+EghXUem5ZAMFl1PTKyQSO4pEPXe8t4z3/MtCAg=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rhbSbYzWJSGguCJ+eWttXrndIpWUZOz13+u/AuZy97KO+PRlww5k3JPh4TeGL1luZ2OeldhbQPmLh50o0/F5hp3yfB/rt9/WUNFhaLQw7S6dpRR6sTIMgdUlnkbB2BHelqHdcWu6khmDR6fJb3bQUjR/r7KKtxlUUgu9AX3Ryy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CALR7v4X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DgHpdiaU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fel.cvut.cz header.i=@fel.cvut.cz header.b="S6KJo4cI"
-Received: from localhost (unknown [192.168.200.27])
-	by smtpx.fel.cvut.cz (Postfix) with ESMTP id E153316404;
-	Sat, 27 Dec 2025 01:20:02 +0100 (CET)
-X-Virus-Scanned: IMAP STYX AMAVIS
-Received: from smtpx.fel.cvut.cz ([192.168.200.2])
- by localhost (cerokez-250.feld.cvut.cz [192.168.200.27]) (amavis, port 10060)
- with ESMTP id BqD-eCiLjk-B; Sat, 27 Dec 2025 01:20:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fel.cvut.cz;
-	s=felmail; t=1766794342;
-	bh=8OGPj4UIzGsRvEleY+WUlbELMJzYb1fwdxvZmVVR3kE=;
-	h=From:To:Subject:Date:Cc:References:In-Reply-To:From;
-	b=S6KJo4cIytIweL5rd951zqpgPQ7Ltt+wOjYOMDK00eteWf9Qa8tr+M5lV8LgpnvSc
-	 /vVXAoY9et/pm/NjfK1ms32NJA6ZAbYatycXHfRgk/cvNrWod669ZsIGBYQfn8y3eu
-	 9HL5AhUKsxAeY1lDKHdfDiBiCufK2ZTCYI/RJOe3iwBhcW1xzR43SBhlTIyIVope+U
-	 mrj9adJK3Q6AqWsx+hhUYz4ooyd1Rm5CjWqIMUId5eHFkNNwAJAEwjYyr2odIX2U3u
-	 0PxcKQg08xnYrJN7lKxAnVczBFCNn1Y+w5RepdAFT+VE/z5cqiiX3ZifVchq7h7q5U
-	 k/EjPLMVYzwyQ==
-Received: from baree.pikron.com (static-84-242-78-234.bb.vodafone.cz [84.242.78.234])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pisa)
-	by smtpx.fel.cvut.cz (Postfix) with ESMTPSA id 6477216145;
-	Sat, 27 Dec 2025 01:12:21 +0100 (CET)
-From: Pavel Pisa <pisa@fel.cvut.cz>
-To: Ondrej Ille <ondrej.ille@gmail.com>
-Subject: Re: ctucanfd: possible coding error in ctucan_set_secondary_sample_point causing SSP not enabled
-Date: Sat, 27 Dec 2025 01:12:19 +0100
-User-Agent: KMail/1.9.10
-Cc: David Laight <david.laight.linux@gmail.com>,
- "Marc Kleine-Budde" <mkl@pengutronix.de>,
- Andrea Daoud <andreadaoud6@gmail.com>,
- linux-can@vger.kernel.org,
- Wolfgang Grandegger <wg@grandegger.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- netdev@vger.kernel.org,
- Jan Altenberg <Jan.Altenberg@osadl.org>
-References: <CAOprWotBRv_cvD3GCSe7N2tiLooZBoDisSwbu+VBAmt_2izvwQ@mail.gmail.com> <202512222355.10509.pisa@fel.cvut.cz> <CAA7ZjpbhWQab77T42URMxQqv4SZwN+5FfDB9VEn0g9-ZKCqdOQ@mail.gmail.com>
-In-Reply-To: <CAA7ZjpbhWQab77T42URMxQqv4SZwN+5FfDB9VEn0g9-ZKCqdOQ@mail.gmail.com>
-X-KMail-QuotePrefix: > 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CALR7v4X";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DgHpdiaU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766795984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
+	b=CALR7v4XUscPCQ8bYSOzM680vVtmAlbCmMZTMn3C6UPLBFhGQ1OJgt/tF+92D6fISZ5yRz
+	WczxCvDzIzajFAMcXLUy40smos4wCufAIrcTwzY4lG1LmuU29u1D7fHiaF4SclDzRjBi//
+	HPlEne4pq1KjVdEKTZSoJ5Lw1Db1cz0=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-jQrXzOsMNyOF9bV4LQ-J7w-1; Fri, 26 Dec 2025 19:39:43 -0500
+X-MC-Unique: jQrXzOsMNyOF9bV4LQ-J7w-1
+X-Mimecast-MFC-AGG-ID: jQrXzOsMNyOF9bV4LQ-J7w_1766795982
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8888447ffebso186222276d6.1
+        for <netdev@vger.kernel.org>; Fri, 26 Dec 2025 16:39:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1766795974; x=1767400774; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
+        b=DgHpdiaUyXw50hIiXrnOXiZdP0QkSfTCeKKPIeWCNlRCkxaM9ERSCNoE2/uIs3rh/z
+         UXvUptg0UG3vFTn5tF4C3rWj69HidC7tkoEQK7fMNHFaMWWo9+7kYbdY+CBTzSYvozbS
+         MJvutWl6XWmZ2zDuqOkbt7EZoSpyOxou9fOVvHzZZC3o16jgw+fmclKLum+/+cFQsvJX
+         VG0dpwyHDITV5UkXq03ZougieaFbupChAxI39kK05r8/xlsSV+4TkJoQOZnPLAUftFON
+         TxUib1ZPu7ga2WZpf3ZBUqWjKTJU819I5jIIY6xvoHlERQBr6WhnpOYRy7C0/99tg9gM
+         U5Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766795974; x=1767400774;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pERT9koOQ435TwRjMEJhS6iFHKSf3ugdix7KpFMpVgE=;
+        b=MFoOtdcYesPeeTJ86tkGmYumwY1fA5QW/Bb7A8kqNhoYaOtwQnP2HkjYUaK7akiUj1
+         hel4jrmDSN5mE1G5gHgTyMacbLFTLySG4Q7/3B9+XOWd/7YwKoLqAdBg7OLHDvj4q3XN
+         PW1LEm3Ui5DkiPw2igjbujnxU171RTLn1n4sEwHmgPmd6vIFCfzg5CyUTqpf9C0PGpum
+         271rX9XmLEicWjehljOf3Oyky44uCP7tNC3p/KTRW8MoZQxDdIbS/BufgGO+z9VaepuR
+         8qe55o/1WbkIR6IPaCpCxExcuCR3V6P8TaNgu1mhrZeXHaecKZM0FV5aPLaiG5LVKDYN
+         4efw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWdJe8nIvyfsDHjCXdIjgCGH059kY6gV3jxGBsBflRUAnwnB9j0D7K5P4Rr+guEcLnJxo3vIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPhjnv1H33xZMdIb83oTaAwQF+5FNqpoI24zuPfbgBWjWXgdZI
+	mhg7+2W1Kgilzfk8znUSTUEdntZcIQEpjnz2jwu+ibrCN5Oa0gBM6AppKh4/Ydf8ye4K09DBVvZ
+	hUFJQXTYZkwEgtXOlOV7UHgyJWbDIN3JmHGQT+jxP/aaNsqvncMcgIsmLHA==
+X-Gm-Gg: AY/fxX7VNd4zi96EFuxyOVcv9bttdiz0mC2sojdMQuD7o6JFc3JCX5IKf7cXytR3q2V
+	yEegMW7tXhQFE796Vdb1R+jw1076feeO5SbxJ/4qAQfip9ZJAKc6w/bWIlJ+ltDmHFb7QnTbaaR
+	3Y8EZPO0ICkXgf/BFvBim7YzL/3lvP/lC3EKNzbRa647NJxi4y6MHNUZjwcjmGU2xFXHqgpW+eR
+	MXUhQqcOev4WVIUhFcvgpNWoAkcQKZ5C/eg61WmjcVooXYDzy+IOUF3Wys1cdl/uQBjSciO6l5q
+	ESu0HUBJPvh38P6rSRk1mR5pTFiQKJ9HMun1gUHZhOQZnPVd6HT2J7ZO4ApcRKhPhARQablilXp
+	InN1uArKcNRRUXbe2VtJyfy5HAzFUsx+ZcH+Pf5QT5HGbDb3UnJR7uY+Q
+X-Received: by 2002:ac8:1283:0:b0:4ed:43fe:f51e with SMTP id d75a77b69052e-4f4d96611cbmr138083471cf.39.1766795974382;
+        Fri, 26 Dec 2025 16:39:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHxBDI7wuXFeJvOL182RfGJ72MAWyQzGy7wYDnXaQodt5PgGkJkP10V4g9eH2qnu2LfLMUFPQ==
+X-Received: by 2002:ac8:1283:0:b0:4ed:43fe:f51e with SMTP id d75a77b69052e-4f4d96611cbmr138083091cf.39.1766795973951;
+        Fri, 26 Dec 2025 16:39:33 -0800 (PST)
+Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4d5b4c975sm118077431cf.1.2025.12.26.16.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Dec 2025 16:39:33 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <370149fc-1624-4a16-ac47-dd9b2dd0ed29@redhat.com>
+Date: Fri, 26 Dec 2025 19:39:28 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 33/33] doc: Add housekeeping documentation
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251224134520.33231-1-frederic@kernel.org>
+ <20251224134520.33231-34-frederic@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251224134520.33231-34-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <202512270112.19801.pisa@fel.cvut.cz>
 
-Dear Ondrej Ille,
-
-On Friday 26 of December 2025 23:45:55 Ondrej Ille wrote:
-> Hello everyone,
+On 12/24/25 8:45 AM, Frederic Weisbecker wrote:
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>   Documentation/core-api/housekeeping.rst | 111 ++++++++++++++++++++++++
+>   Documentation/core-api/index.rst        |   1 +
+>   2 files changed, 112 insertions(+)
+>   create mode 100644 Documentation/core-api/housekeeping.rst
 >
-> As for this specific case, I am aware of it for longer time
->
-> > but the last time when we met with Ondrej Ille this part
-> > as been the last one on the table and the firm confirmation
-> > what is the best value have not been stated.
->
-> Pavel, the sample point should definitely be set to the variant of
-> "measured + offset". That is
-> what why the offset is calculated above the way it is. The aim is to place
-> the sample point
-> on CAN_RX "as-if the same as normal sample point", just with the TX->RX
-> delay accounted for.
-> One only needs to be careful that the value is not in Time Quantas, but in
-> "number of cycles".
-> But AFAICT should be accounted for by the ssp_offset calculation.
->
-> As for leaving there comment, or leaving it up to the compiler to optimize
-> away since the value is
-> anyway initialized to zero, I don't know what is the preferred way in
-> kernel.
-> Personally, I would not leave any "meaningless code", so, I think comment
-> is better.
+> diff --git a/Documentation/core-api/housekeeping.rst b/Documentation/core-api/housekeeping.rst
+> new file mode 100644
+> index 000000000000..e5417302774c
+> --- /dev/null
+> +++ b/Documentation/core-api/housekeeping.rst
+> @@ -0,0 +1,111 @@
+> +======================================
+> +Housekeeping
+> +======================================
+> +
+> +
+> +CPU Isolation moves away kernel work that may otherwise run on any CPU.
+> +The purpose of its related features is to reduce the OS jitter that some
+> +extreme workloads can't stand, such as in some DPDK usecases.
+Nit: "usecases" => "use cases"
+> +
+> +The kernel work moved away by CPU isolation is commonly described as
+> +"housekeeping" because it includes ground work that performs cleanups,
+> +statistics maintainance and actions relying on them, memory release,
+> +various deferrals etc...
+> +
+> +Sometimes housekeeping is just some unbound work (unbound workqueues,
+> +unbound timers, ...) that gets easily assigned to non-isolated CPUs.
+> +But sometimes housekeeping is tied to a specific CPU and requires
+> +elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
+> +scheduler tick, etc...).
+> +
+> +Thus, a housekeeping CPU can be considered as the reverse of an isolated
+> +CPU. It is simply a CPU that can execute housekeeping work. There must
+> +always be at least one online housekeeping CPU at any time. The CPUs that
+> +are not	isolated are automatically assigned as housekeeping.
+Nit: extra white spaces between "not" and "isolated".
+> +
+> +Housekeeping is currently divided in four features described
+> +by the ``enum hk_type type``:
+> +
+> +1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
+> +	isolation performed through ``isolcpus=domain`` boot parameter or
+> +	isolated cpuset partitions in cgroup v2. This includes scheduler
+> +	load balancing, unbound workqueues and timers.
+> +
+> +2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
+> +	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
+> +	parameters. This includes remote scheduler tick, vmstat and lockup
+> +	watchdog.
+> +
+> +3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
+> +	IRQ isolation performed through ``isolcpus=managed_irq``.
+> +
+> +4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
+> +	isolation performed through ``isolcpus=domain`` only. It is similar
+> +	to HK_TYPE_DOMAIN except it ignores the isolation performed by
+> +	cpusets.
+> +
+> +
+> +Housekeeping cpumasks
+> +=================================
+> +
+> +Housekeeping cpumasks include the CPUs that can execute the work moved
+> +away by the matching isolation feature. These cpumasks are returned by
+> +the following function::
+> +
+> +	const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> +
+> +By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
+> +isolated partitions are used, which covers most usecases, this function
+> +returns the cpu_possible_mask.
+> +
+> +Otherwise the function returns the cpumask complement of the isolation
+> +feature. For example:
+> +
+> +With isolcpus=domain,7 the following will return a mask with all possible
+> +CPUs except 7::
+> +
+> +	housekeeping_cpumask(HK_TYPE_DOMAIN)
+> +
+> +Similarly with nohz_full=5,6 the following will return a mask with all
+> +possible CPUs except 5,6::
+> +
+> +	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
+> +
+> +
+> +Synchronization against cpusets
+> +=================================
+> +
+> +Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
+> +modifying or deleting an isolated partition.
+> +
+> +The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
+> +properly against cpuset in order to make sure that:
+> +
+> +1.	The cpumask snapshot stays coherent.
+> +
+> +2.	No housekeeping work is queued on a newly made isolated CPU.
+> +
+> +3.	Pending housekeeping work that was queued to a non isolated
+> +	CPU which just turned isolated through cpuset must be flushed
+> +	before the related created/modified isolated partition is made
+> +	available to userspace.
+> +
+> +This synchronization is maintained by an RCU based scheme. The cpuset update
+> +side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
+> +cpumask and before flushing pending works. On the read side, care must be
+> +taken to gather the housekeeping target election and the work enqueue within
+> +the same RCU read side critical section.
+> +
+> +A typical layout example would look like this on the update side
+> +(``housekeeping_update()``)::
+> +
+> +	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
+> +	synchronize_rcu();
+> +	flush_workqueue(example_workqueue);
+> +
+> +And then on the read side::
+> +
+> +	rcu_read_lock();
+> +	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
+> +	queue_work_on(cpu, example_workqueue, work);
+> +	rcu_read_unlock();
+> diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
+> index 5eb0fbbbc323..79fe7735692e 100644
+> --- a/Documentation/core-api/index.rst
+> +++ b/Documentation/core-api/index.rst
+> @@ -25,6 +25,7 @@ it.
+>      symbol-namespaces
+>      asm-annotations
+>      real-time/index
+> +   housekeeping.rst
+>   
+>   Data structures and low-level utilities
+>   =======================================
+Acked-by: Waiman Long <longman@redhat.com>
 
-I am not sure, I would probably prefer code there because it can be
-easily modified to other value or make it configurable. So this
-would look like
-
-        if (dbt->bitrate > 1000000) {
-                /* Calculate SSP in minimal time quanta */
-                ssp_offset = (priv->can.clock.freq / 1000) * dbt->sample_point / dbt->bitrate;
-
-                if (ssp_offset > 127) {
-                        netdev_warn(ndev, "SSP offset saturated to 127\n");
-                        ssp_offset = 127;
-                }
-
-                ssp_cfg = FIELD_PREP(REG_TRV_DELAY_SSP_OFFSET, ssp_offset);
-                ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
-        }
-
-It matches currents state of the driver in the IP CORE repository where
-you have propagated change lat week
-
-https://gitlab.fel.cvut.cz/canbus/ctucanfd_ip_core/-/commit/6188ca673f823873f7b37dbb588a2d4c0a0cc98c
-
-But I would suggest to cover even else case for dbt->bitrate <= 1 Mbit/s by else
-statement which should be probably 
-
-        } else {
-                ssp_cfg = FIELD_PREP(REG_TRV_DELAY_SSP_OFFSET, 0);
-                ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
-        }
-
-It is right that ctucan_set_secondary_sample_point() is called from ctucan_chip_start()
-only and it is called from ctucan_do_set_mode() and ctucan_open() only and the chip
-reset is done in both paths prior to ctucan_chip_start() but I think that
-state should be defined there even for case that core is only stopped by
-by REG_MODE_ENA and then re-enabled an no leftover from setup with higher
-data bitrate to some followup change to lower one should be left there.
-
-If there is already some defined way how to control/enable/disable
-SSP from userspace for some of other drivers then I would
-ted to have such option for CTU CAN FD as well to have
-option to test/diagnose and correct (in the case of some problems)
-its behavior without driver recompile.  
-
-> 1) the driver is fixed on 4 Tx Buffers synthesis value
->
-> > for CTU CAN FD IP core. I am not aware about any other value
-> > in real use (FPGA or silicon) but if the core is synthesized
-> > with other value then driver would fail.  If more are used,
-> > then current driver code stuck on Tx empty infinite interrupt,
-> > if less, messages would be lost.
-> > The option to obtain the number of Tx buffers from hardware
-> > has been added into design and we have proper code in RTEMS
-> > driver
->
-> Yes, this would be useful, I believe there is a tracking issue for that. I
-> believe querying it
-> at run-time is the simplest way to do it, but I don't know if it is "the
-> right way" in kernel.
-
-I think that it is OK, we have there already option to propagate
-value from PCI and OF specific CTU CAN FD mapping into base code
-but it is fixed on four buffers fr now and no mapping to OF is provided.
-So I would change it such that ntxbufs = 0 specified by PCI or OF
-mapping would result in configuration from info register.
-If the requested ntxbufs from PCI or OF is higher than value reported
-by info register then it should be limited as well and final limit
-should be some define
-
-#define CTUCANFD_NTXBUFS_MAX 8
-
-We have that tested info register reading in RTEMS driver
-for 2.5 as well as older branch so I hope that risk
-of breaking someone's CTU CAN FD specific integration
-is relatively small.
-
-I prepare patches. The SSP one can be considered as bugfix
-if Marc, David or somebody with the need proposes that
-and may it be it can get to 6.19. Or I prepare both
-for the next merge window.
-
-Best wishes,
-
-                Pavel
-
-                Pavel Pisa
-    phone:      +420 603531357
-    e-mail:     pisa@cmp.felk.cvut.cz
-    Department of Control Engineering FEE CVUT
-    Karlovo namesti 13, 121 35, Prague 2
-    university: http://control.fel.cvut.cz/
-    personal:   http://cmp.felk.cvut.cz/~pisa
-    social:     https://social.kernel.org/ppisa
-    projects:   https://www.openhub.net/accounts/ppisa
-    CAN related:http://canbus.pages.fel.cvut.cz/
-    RISC-V education: https://comparch.edu.cvut.cz/
-    Open Technologies Research Education and Exchange Services
-    https://gitlab.fel.cvut.cz/otrees/org/-/wikis/home
