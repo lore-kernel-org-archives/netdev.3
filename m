@@ -1,159 +1,163 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A590621CC59
-	for <netdev@vger.kernel.org>; Sun, 28 Dec 2025 19:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359C4277CA5
+	for <netdev@vger.kernel.org>; Sun, 28 Dec 2025 19:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766950871; cv=none; b=SDq88DL17xRkKzVKZFDaiNEQBA92oTkn1tnMHOCtA/tWu7jWcQJpX48T4rt6h0EYqZm7s1yQPfNNLaAMELChlBEwbiobEVd43cy3gdOiAiFhJe2fBm2dhcsMpRBKznvn9ZtSdD7M0Qy2RKL88ZSlIMnHjti0bMDkza77ZbFYSBU=
+	t=1766951093; cv=none; b=YuyflUGH1yBSsfkmkR5oA9T8VxzrxScVEplFqSbLXKAp11hRXIGb3VsfiRz2e79jm0s6nSHqNX8kasrIGZAX+3An+ZJYH7i0eubK2kdzO2BWdqHEbetVKZcB9sDSOFlBtncIJk/8RgEZG+IZto+lt/6djfHUKH8kt/pyIg1oLPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766950871; c=relaxed/simple;
-	bh=21bcbUg/Jm5WJLiHoc11VOU4SUzRQEvcHt4aWBRAjbM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GalTGcjiZD5wYHB9MZW2ePEu317G3Di9On5/XdNcJBs00953DhiPSmt+bcVeOmXmI6k4pOOx+kIRCmuvMg6MPX7b5FdEE3598NnzZ0lne6I9TlDIxzH7flKExlCgMxYPjzgMrrRuijey7JwZy1VX10m+/0/OwM1tfnbNisxD+VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vj3V+5NZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qk/JQsXO; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1766951093; c=relaxed/simple;
+	bh=blwVMnJaHbgcb2jHZU3UUYPK3eW/i3KbhdtTBPdCTI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m/NpnojxV3KbDZ6Tf6pvmamupND5S1+82PdYW3ttYZ1oQuLJOkn8LLnaBl145tDUz+IGLodfpNxh1pNVb5fLnilxujIFAkE+qP8dIfwJrVhRpxLMrdqBc62E8IsYp6Y5k7Z/EC3HyO0ccIUuZBXgOi1KduMv432XOtxXSdtdrwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxyPoxs2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SDGank/z; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vj3V+5NZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qk/JQsXO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxyPoxs2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SDGank/z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766950867;
+	s=mimecast20190719; t=1766951089;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5KPyZXn7HWfk1U+VNcBhSlEAG+YOIOxdW/Kr4DE2rJc=;
-	b=Vj3V+5NZo6u4JuxVc48bwABeoehzKGbjwWZA9LM0QUd8VSIj0auWd9lZI4uRSpmXcAxA9q
-	I3n0ouaF2oewbTm3AhTHPMcDQfTxpS0tFYd9AM9xGnC1gkuX3PKIpvLzKlH69dRqfQmygc
-	HZtviKIGAVjbojgBTGdHu5dhsVY3tPU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=yHsrmxgkdvXfz64zvqevNeUhUbHKKa3CCMwcJMI2OXc=;
+	b=WxyPoxs2tyzUHckVwZV+uua577iHQpKdWnAYjl1fVnllHk8UnTiBtctS1DMQn4h6dGM2MS
+	dDpdlhzGpctmolbXSgWf0DJnA11qaxpifPhqMZxTcPiVVsmrj/p7aZT9LI78XbhD6sEwNL
+	cDAaN/JZl4WXyD4lnI+vXaZJr6ijYo8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-vn2m5_LOP4iyA2KPehQVTw-1; Sun, 28 Dec 2025 14:41:05 -0500
-X-MC-Unique: vn2m5_LOP4iyA2KPehQVTw-1
-X-Mimecast-MFC-AGG-ID: vn2m5_LOP4iyA2KPehQVTw_1766950865
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-430fcf10287so5995935f8f.0
-        for <netdev@vger.kernel.org>; Sun, 28 Dec 2025 11:41:05 -0800 (PST)
+ us-mta-600-IW-uP8EaOg6m8Kx8hlo3lQ-1; Sun, 28 Dec 2025 14:44:48 -0500
+X-MC-Unique: IW-uP8EaOg6m8Kx8hlo3lQ-1
+X-Mimecast-MFC-AGG-ID: IW-uP8EaOg6m8Kx8hlo3lQ_1766951087
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-432586f2c82so4044396f8f.0
+        for <netdev@vger.kernel.org>; Sun, 28 Dec 2025 11:44:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1766950865; x=1767555665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KPyZXn7HWfk1U+VNcBhSlEAG+YOIOxdW/Kr4DE2rJc=;
-        b=Qk/JQsXOGyqYnbdxSjK0CpBxbz3icRnSDzCrKI8azfcfNMBP+GGJVTgog2G6V+s7AS
-         WV/AGYFgdUFFBcpXKs35T5zloFs4SqPmeR2vyuS5F07ubXqaMfUhp3raWrI8f8aKYqYP
-         bxpSudUB/UZeHlcG4PuDXY8iF2K7X4pawWpios5hWp7nWt/LAeaewcDgLUxr2iu+XQR1
-         tz2MFDuog2D4YpKB1b598D7HQbo7mrqUIrVWZvsQcsZ+458YivMe+vzH8yOjrU3iIqLG
-         ErWVNs5EaDW4c/96ByZJAmn1/XwcY8BvHfF1hYEFAt6kdbGX8nBqpS19QZdHXwy+1Re5
-         qGqg==
+        d=redhat.com; s=google; t=1766951087; x=1767555887; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yHsrmxgkdvXfz64zvqevNeUhUbHKKa3CCMwcJMI2OXc=;
+        b=SDGank/zExqzxwizn66sPdNAxPw7TshKuuzKry87YfWcNOrSVq2aSq56zCn0C8KX/U
+         2C3yM/Wm2SOJrlHqLVIgEC12bpAc1gEwmGx0xVwlh1gBHzHpU7dMXV/6BsgO7jYqgBV1
+         J0ORL8aRxkn5mZZIM+tVrDWg45VJ9l74raJYC4l1Ah3Mt9hBoysRloL3zYLvri+EbwI9
+         /bPCVLl9QN2q5oL9oHii2RMPbW+WsXXOv6DQRVmdSWDAx3iruZ+IlqCIWFBnp+Ddu1ob
+         eDfMNBNq9lArqZ8Osy7E+wiuZrYOL/EN3+7w+dMaozPcLtN/p1FC/1Gt0WKykRijrv74
+         MWkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766950865; x=1767555665;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5KPyZXn7HWfk1U+VNcBhSlEAG+YOIOxdW/Kr4DE2rJc=;
-        b=Zja9Lr2oQ5Afg+fjFDQ5NO04dydTW2qk7W8M2q7vaeA6H4SZnjcX9dRq0ptqKdpSqU
-         9Ze5GWwFMax/sWak/NDh2itOuu2fc6irINjN1Bs6q6IQDBVcop0s/e4LFf9/07S3Nktn
-         zE/kW/YbDiFLS9kwtDPrxtirv+7CF1+5+q5Oz6hOejTu/lXVYNQXjDraybrdLFQE0Kkj
-         VHZm4JF5hYPRN/G6WmHPD44lKQ8Q/OwxTcl+DUnSXFti3ufG86t+80l6IhIVVSdtLvnH
-         SJgYEGCUIAuhmLEEsUfIGPnlAsYW12k62n/a+eAsMjRoT9cWXK/UQPgXnIHpdGQiR3Ci
-         7Ahw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0IcaSkQ+vLPAqQAfVbh5hvj/ZIxSXVOGzET1LVXpcszFnLbiojDx6/j6daNNf+yZRDDsyRX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAgEiHHeIh1ZL6X8WH8KfgilPPOWo4kkTrOhMwLH8GCO/EFHkg
-	dqT/r8bE6grMCc48dC91Z6Fbs+7iHgjolkOAEjC4XeGA52pNtLuRw4o0HD+WyEirRlCTGwonQ1F
-	WP/Y1svYjNEiVXT/MkD/jQt70hvgNX7Xl1BX70ZLZnkYQdGoJYxAq00+dig==
-X-Gm-Gg: AY/fxX5MOFFT46pBGU+HG+hroWUtDe71RGwJSH5UJXVntWZW4oeQae8o1B5ovfh1D0n
-	I6vdmAY0Vu4kzz1IIvvUQm7FXX9ZbI4i66XUWBOig7yFiQ8wqiq2dCK/2JwxIBVJ0BUHik/Xr8r
-	Kj0bLdgnKlICRulLOgQ64PYao451a8Ghr+sJRgG8hlbcXm0cAyrg7lzvAyAPp80dEBUfEBEnRSe
-	5afWHJS3oB6VBRdp28FYN/7aY07H3tFnxVTqVA1516gWbGKs7tZjDScjrx9tFxfasVcAP374jD9
-	GucMclA4jTVtWBGIFXMCEyJ38sDudl/H/vGSPX/v0o9hyAp9NQjdUGneqL8ABbDlHh93dk3u0YF
-	MdszLepe3j2P0VMImCjjxPg==
-X-Received: by 2002:a5d:5f46:0:b0:42b:39ee:2858 with SMTP id ffacd0b85a97d-4324e50ab82mr37440595f8f.42.1766950864755;
-        Sun, 28 Dec 2025 11:41:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEo5eKLHCPrMiuJAWK3dekdFQFm58PxWVXUObBNMtZL2dxBCtvZnBDDfY5oX/7RDiguI1XDyg==
-X-Received: by 2002:a5d:5f46:0:b0:42b:39ee:2858 with SMTP id ffacd0b85a97d-4324e50ab82mr37440575f8f.42.1766950864378;
-        Sun, 28 Dec 2025 11:41:04 -0800 (PST)
-Received: from fedora.redhat.com ([216.128.14.64])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4327791d2f3sm25324182f8f.11.2025.12.28.11.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Dec 2025 11:41:03 -0800 (PST)
-From: mheib@redhat.com
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	davem@davemloft.net,
-	aduyck@mirantis.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	jacob.e.keller@intel.com,
-	pabeni@redhat.com,
-	Mohammad Heib <mheib@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net v3 2/2] ice: drop udp_tunnel_get_rx_info() call from ndo_open()
-Date: Sun, 28 Dec 2025 21:40:21 +0200
-Message-ID: <20251228194021.48781-2-mheib@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251228194021.48781-1-mheib@redhat.com>
-References: <20251228194021.48781-1-mheib@redhat.com>
+        d=1e100.net; s=20230601; t=1766951087; x=1767555887;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yHsrmxgkdvXfz64zvqevNeUhUbHKKa3CCMwcJMI2OXc=;
+        b=IJ6pE/R1Jrql75oZGPQ3vXF1kNHObFx+UobqzOa78zj7dXBL8KXHPPJd5iicq6+jsB
+         uSquK+Bwl7ZvnQ98+Su4VcV6I7rByUzmg/45oc7uhlAuOqpAPaISAXlsqE9I/gcG33+Y
+         5FoefYwJF2LjAhjVqNPm3BW0t9x3az9eYDUJnue6idkrCQ2F+qX8Tpz6LKqyRpVg/amJ
+         3ndmONEnevozEDYq45OxN9k88GAEt7dRgMI8qUzBnbigdPQ8oGc/QGNfIkrYcyPNkie6
+         dr3iWqehqzxTzcFW2qD3WM+rK7tyI30qou8PGsnrcp7kEpvhrV1cncxGcFZb90eLrVHz
+         G9hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWPey/emYPUP7TaCGADTPGrcVE+0zetvTA7tzntOqq0I9Sec+gNKS9FIIySSXJmqB77iWjkRcM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/uUV0GJHnlPFfi9j8y2zR/YAkwae3RblLwCh4ktYc28+jWYYA
+	hIEPSdCdjF09uKna+RpesCSpSZpEvausrXRTd698rPO3Fwrxcu5gJbCMlnp5rDoFrFYPVXaR0Vq
+	SC19WKBC3uTATFFEvo7aZo39apke8PYJhbivHfWTMXSv5lrZpPTZtzV/iHw==
+X-Gm-Gg: AY/fxX7jLZCvR8OZengF/VtwOXW08PNCFLkpfUJjF0uIMjfOeduY3HcCenYtfJsWuOF
+	8TTSVpdr1mCZySoNmlB4ld1WaqtRC5xlC8aIAh07tONAkuEQh49XD0mjT9jys/vbTJDMG3pJVG6
+	M1LK1MVvKTpzt9AUplR2g/cI+NIR0e7YrLW8hwggiaGrLzJHlzrKGIrC/g1pqHfKTIBDtyWHySm
+	NfnfczmhwL1pq61Q8T+8JG0al5mwdariHXRUJewcAsC7iKkvxXTNkFJ7m1YUe0EvghSlp9eRqym
+	K1XOzh2q1kU/v+79DxklPJljfOLNrwGLzwYsGUlFDwlzCW6RQkVO035ey9mR72++VtfNSY/3t6v
+	PsfmuzBcAH3skDWvGiVp3
+X-Received: by 2002:adf:fcd0:0:b0:432:86de:f396 with SMTP id ffacd0b85a97d-43286def40emr6030100f8f.26.1766951087202;
+        Sun, 28 Dec 2025 11:44:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJHsOScrFDpuFJ7zgwI9WOpAUYpy9EQp+yZlv92scUUdzEcD5wYEeDDQ2Cr10hpHegUM7ktQ==
+X-Received: by 2002:adf:fcd0:0:b0:432:86de:f396 with SMTP id ffacd0b85a97d-43286def40emr6030086f8f.26.1766951086826;
+        Sun, 28 Dec 2025 11:44:46 -0800 (PST)
+Received: from [192.168.68.125] ([216.128.14.64])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1af20sm55081905f8f.2.2025.12.28.11.44.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Dec 2025 11:44:45 -0800 (PST)
+Message-ID: <ba98c377-395c-456f-afb4-c0cb50f504cf@redhat.com>
+Date: Sun, 28 Dec 2025 21:44:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net v2 1/2] i40e: drop
+ udp_tunnel_get_rx_info() call from i40e_open()
+To: Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org,
+ anthony.l.nguyen@intel.com
+Cc: przemyslaw.kitszel@intel.com, davem@davemloft.net, aduyck@mirantis.com,
+ kuba@kernel.org, netdev@vger.kernel.org, jacob.e.keller@intel.com,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+References: <20251218121322.154014-1-mheib@redhat.com>
+ <e8aa1cf8-f42e-4329-8bd8-0f2c3fedde55@redhat.com>
+Content-Language: en-US
+From: mohammad heib <mheib@redhat.com>
+In-Reply-To: <e8aa1cf8-f42e-4329-8bd8-0f2c3fedde55@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Mohammad Heib <mheib@redhat.com>
+HI Paolo,
+Thank you for the review.
 
-The ice driver calls udp_tunnel_get_rx_info() during ice_open_internal().
-This is redundant because UDP tunnel RX offload state is preserved
-across device down/up cycles. The udp_tunnel core handles
-synchronization automatically when required.
+On 12/28/25 11:29 AM, Paolo Abeni wrote:
+> On 12/18/25 1:13 PM, mheib@redhat.com wrote:
+>> From: Mohammad Heib <mheib@redhat.com>
+>>
+>> The i40e driver calls udp_tunnel_get_rx_info() during i40e_open().
+>> This is redundant because UDP tunnel RX offload state is preserved
+>> across device down/up cycles. The udp_tunnel core handles
+>> synchronization automatically when required.
+>>
+>> Furthermore, recent changes in the udp_tunnel infrastructure require
+>> querying RX info while holding the udp_tunnel lock. Calling it
+>> directly from the ndo_open path violates this requirement,
+>> triggering the following lockdep warning:
+>>
+>>    Call Trace:
+>>     <TASK>
+>>     ? __udp_tunnel_nic_assert_locked+0x39/0x40 [udp_tunnel]
+>>     i40e_open+0x135/0x14f [i40e]
+>>     __dev_open+0x121/0x2e0
+>>     __dev_change_flags+0x227/0x270
+>>     dev_change_flags+0x3d/0xb0
+>>     devinet_ioctl+0x56f/0x860
+>>     sock_do_ioctl+0x7b/0x130
+>>     __x64_sys_ioctl+0x91/0xd0
+>>     do_syscall_64+0x90/0x170
+>>     ...
+>>     </TASK>
+>>
+>> Remove the redundant and unsafe call to udp_tunnel_get_rx_info() from
+>> i40e_open() resolve the locking violation.
+>>
+>> Fixes: 06a5f7f167c5 ("i40e: Move all UDP port notifiers to single function")
+>> Signed-off-by: Mohammad Heib <mheib@redhat.com>
+>> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> 
+> @Tony: I assume you prefer to take this series into your tree first.
+> 
+> @Mohammad: I think we don't need to packport this path in old kernels; I
+> guess a better fixes tag should point to the recent udp_tunnel
+> infrastructure changes.
 
-Furthermore, recent changes in the udp_tunnel infrastructure require
-querying RX info while holding the udp_tunnel lock. Calling it
-directly from the ndo_open path violates this requirement,
-triggering the following lockdep warning:
+indeed we don't need this change in the old versions.
+I updated the fixes tag to:
+   - Fixes: 1ead7501094c ("udp_tunnel: remove rtnl_lock dependency").
+This better reflects the change that exposed the problem, even though 
+the fix itself is in the driver.
 
-Call Trace:
-  <TASK>
-  ice_open_internal+0x253/0x350 [ice]
-  __udp_tunnel_nic_assert_locked+0x86/0xb0 [udp_tunnel]
-  __dev_open+0x2f5/0x880
-  __dev_change_flags+0x44c/0x660
-  netif_change_flags+0x80/0x160
-  devinet_ioctl+0xd21/0x15f0
-  inet_ioctl+0x311/0x350
-  sock_ioctl+0x114/0x220
-  __x64_sys_ioctl+0x131/0x1a0
-  ...
-  </TASK>
 
-Remove the redundant and unsafe call to udp_tunnel_get_rx_info() from
-ice_open_internal() to resolve the locking violation
-
-Fixes: 1ead7501094c ("udp_tunnel: remove rtnl_lock dependency")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 4bb68e7a00f5..a91f96253db0 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -9631,9 +9631,6 @@ int ice_open_internal(struct net_device *netdev)
- 		netdev_err(netdev, "Failed to open VSI 0x%04X on switch 0x%04X\n",
- 			   vsi->vsi_num, vsi->vsw->sw_id);
- 
--	/* Update existing tunnels information */
--	udp_tunnel_get_rx_info(netdev);
--
- 	return err;
- }
- 
--- 
-2.52.0
+> 
+> Thanks,
+> 
+> Paolo
+> 
+Thanks,
 
