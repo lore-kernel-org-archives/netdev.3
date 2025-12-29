@@ -1,90 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAFF32F741;
-	Mon, 29 Dec 2025 16:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9227F222587
+	for <netdev@vger.kernel.org>; Mon, 29 Dec 2025 16:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767026604; cv=none; b=BVQ1FOaALvKLyN39P5N8zM4n9OAkdUZ0NykMXyaUzS8c2J98P1gtXBbZ7c9GMEhjhADMI4FOR1v61FZXfICpSnHKIQZmCJ3+sL8PUT7AvLxF76z2YkoDb4c9RFt52gGUuc8fyfPCSFtdborNbdPSNi2GxCwKa5PUxY9F004I+Vo=
+	t=1767026851; cv=none; b=qbpWaTcMBf8E6r8LMoErfRiXWQBo/ME2+S2l74Vgl5Jh0AjRx6477B0G2fWdUC4L3HAkBVhPIos37VzD/CulPbzZ+2F12LQbm1hgzWzv9AL/mPApYbclJ97nGu8lxX7CQhJRqxJ7+2QDWkQn/D9hAKLiKsdakkxUcXHueakIU34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767026604; c=relaxed/simple;
-	bh=lnxWlId6PQ4och+lJMqlnXFu7vv7RTBCRW9v7SAjrAw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AiM6cB/3cs4FRvpuqNyN9IY9Vovl5wsB8bgHdmmCrpqQOZ30CVQrFrN5SUoujY24unIqrKWmkIZhae10eFljzl7uLEv/gGTCfj2GHsL85cOOCHdZoqtGI7Tuj89MEPA+Psxb9KY9oSnkhEMCPBKiU8rKNEh5GpQgg1w46iUgbmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESIE5I3D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767026851; c=relaxed/simple;
+	bh=u9+Rj2Nx5KCtNOZL1WQV63zpkR5HjS+6GcLEFPa66hU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J/crug+EVYBgpl8bb7kNxeCcIgeew4Piw1PRkvBgMsnlaM79gKRVVfSTeVu+GqGlMENMUGMe9e/n2ek4Em3+jT/zy+Hm9sTNm98sNepOrzQfsC7ZxDGDQy6ox69Y2KYMRhT/EqxUTOwCNim3+E9gYSxmdgtZGWCE6ZrV46X0sF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hXsiIOI9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YT8N6pdU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESIE5I3D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6683DC4CEF7;
-	Mon, 29 Dec 2025 16:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767026603;
-	bh=lnxWlId6PQ4och+lJMqlnXFu7vv7RTBCRW9v7SAjrAw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ESIE5I3D4iCVueW0ZOTmyF5JoDd4C/Y64q8wc4ZoqPn8wHI3MKG9a8LsB5mQ6wylG
-	 0NGjl4SvV/TuAJ0/O6e2IZOWObzK4fNNbsUxr2G0zQNcLiZ1fNt9im0+ViUGN3zdBY
-	 OPLN9LRIFOozLmpN0Inwdn86KpgAa0mkjuHMME0FGyydwH3jFegS7GeVlpfCba8WDe
-	 C/G27X7lfv5+nw+klTFAgAS/LNwrCVLMMu2NilvlHEXBDdyltmHTZx0IhsmMH4fsGW
-	 8ltZKP7o6oqMhyzV2yoEDYQGqlNeQsBpvfm82YMlWwfGuMzCJy2zXul57aIniQdt2S
-	 0rh58ElxoMBZA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B7C63808200;
-	Mon, 29 Dec 2025 16:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hXsiIOI9";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YT8N6pdU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767026848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qp1WHG8KMisT3CsYd2AkOEnzIILo3AC3ffoWNbmQxcg=;
+	b=hXsiIOI9eehX8bRZVQWjxU6Ck8tkC9U5IQkFUx5FKIWg/C6OnfZZOV/NJcXMz8Wez1aUPP
+	54vtq3sEggRyHikEptdx2eqV592QT5yxdLOSAC/ITidYi3HpoRUoT35q4N6a2XASwItckk
+	jfWpm7g2slBQGimjFekaVWz6SFIOln4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-502-4Si0Lx72NWqsQi5m2jin0Q-1; Mon, 29 Dec 2025 11:47:25 -0500
+X-MC-Unique: 4Si0Lx72NWqsQi5m2jin0Q-1
+X-Mimecast-MFC-AGG-ID: 4Si0Lx72NWqsQi5m2jin0Q_1767026844
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43009df5ab3so5130363f8f.1
+        for <netdev@vger.kernel.org>; Mon, 29 Dec 2025 08:47:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767026844; x=1767631644; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Qp1WHG8KMisT3CsYd2AkOEnzIILo3AC3ffoWNbmQxcg=;
+        b=YT8N6pdUEpUCVy71mSfLPWubQNcW8yO982hFP13k2zECFHe8Qw5222CGlmO8TPbdiq
+         twcxfta/eJI4k/noDp0jstI35LSEIHizTsarcfg+h9bSaKpJXQjaRIkgtYpenttWgxgx
+         w+M2Y4GfV9Nmn8y9p+qWGK+7H2ssMu3RVYdPH54Ok06zXaNmFTW5lGhy6EI9YHzWIwig
+         B4eipBSBacjxMbJTBv/MjYE7+ffBxGNvNQ32b/b3jgWgu3TQISAKYnqW0sIYcWLRcibX
+         +O6+xXU+EUxja9/tIgWZbocHg/CbEue3h5IKJ61jtqRnp/eOF7eUY/0LpKUQ4acPs+SF
+         13qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767026844; x=1767631644;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qp1WHG8KMisT3CsYd2AkOEnzIILo3AC3ffoWNbmQxcg=;
+        b=ff9PbB7VqTZeapUo8eOC4QL71CBoWikoTX9fVan/MZDF5eBgmVEM5aVBbRatAkGRLs
+         l9hFuoXTBKOSr5Ilv9tERLMVomRYDidSgt44Fc8i55FhnWAyQDfLk76m6XTSXtKcMK+k
+         +O3wtiakfrPU/n9+tVODlDTNDCMAXFOIPLrxbwYnsBK9KCzi1O0+WyyTSCFr3T3gb+Iw
+         K2x1tovkZ+RbobYgkWvhi8KAz4ukhBWNQdFnGsTIJWPJBYLVrZKhawcPl+klILn9LVGy
+         nGlmYxNsOU/zmNulW2TgPakSLkgHlACmbSTwnCmanONoV1NMTpoV0ChCg+w0KVzJuWMh
+         VLHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSJQQv7Vd5LLMFiEJjq4X7SpdAwK0MBHCkAlx7YZ4/m7Dce3zDm/MpHyH/5052iBeGjmMARVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3DoDBClOyHS71wAUM+RkjkMgK3+04maj4302Vw/t00KqAESDG
+	MIetC/iGSPLHueQuCL4kG6gQcG9bs6M8lbtLIE7S75pJ3+rfkwdNxKYkfNoUrOvz2KlWgbENSO0
+	9TIIDhXNvoDUa431v3JQxo/mOljw8kdg5UsWvfKogezlsig0vjdx07+DFlWtymZcD4Q==
+X-Gm-Gg: AY/fxX4/E9bEH40AWiDYQLVd7YNFmyY10U5kQYBrv0mK/lGfGIxIkoCU7/iSNrowuCQ
+	h+dN33PMBFDwgVVyPz5FgFzGrOl2iOeDn7IRDysqP8H20iykajL0XguJA61hsYDFr6ii1jwnLpw
+	5d2WFbSH/t8ZhQ8hyAlg57Zcvc2iNEDN0XCTPJbfTXHfdwbUzOR9PrITVqfI6fkkUXhIcAE0Hvd
+	m2zf8RjtY6Zbg9BEIM7WMOi1N/XBqSROThZAiBS6X0esFqM4nz17B8wqJNO113j/pfE/JwafqQc
+	8qtgcMqELSM8gljLxZNxmWubyg1EtJW1raU45VDloOq6somt2zytwPeHmNHRdt6beKy+sa2hxET
+	T94T1WiXXtkVL5Q==
+X-Received: by 2002:a05:600c:310c:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-47d1953b941mr283690455e9.7.1767026843782;
+        Mon, 29 Dec 2025 08:47:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJ44XnxUp9khVyqx84H5Y8qUWfKy7bLqy02dEyPXjY379VL98YZVicYemqvzrk6gsc7+X8hA==
+X-Received: by 2002:a05:600c:310c:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-47d1953b941mr283690155e9.7.1767026843363;
+        Mon, 29 Dec 2025 08:47:23 -0800 (PST)
+Received: from [192.168.88.32] ([169.155.232.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea227casm62923317f8f.15.2025.12.29.08.47.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Dec 2025 08:47:22 -0800 (PST)
+Message-ID: <0572ccee-d6ab-4921-b44e-c8641622940f@redhat.com>
+Date: Mon, 29 Dec 2025 17:47:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: stmmac: fix the crash issue for zero copy XDP_TX
- action
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176702640604.3003866.8845654519033252561.git-patchwork-notify@kernel.org>
-Date: Mon, 29 Dec 2025 16:40:06 +0000
-References: <20251204071332.1907111-1-wei.fang@nxp.com>
-In-Reply-To: <20251204071332.1907111-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- rmk+kernel@armlinux.org.uk, 0x1207@gmail.com, hayashi.kunihiko@socionext.com,
- vladimir.oltean@nxp.com, boon.leong.ong@intel.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/3] octeon_ep: ensure dbell BADDR updation
+To: Vimlesh Kumar <vimleshk@marvell.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: sedara@marvell.com, srasheed@marvell.com, hgani@marvell.com,
+ Veerasenareddy Burru <vburru@marvell.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>
+References: <20251219100751.3063135-1-vimleshk@marvell.com>
+ <20251219100751.3063135-3-vimleshk@marvell.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251219100751.3063135-3-vimleshk@marvell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On 12/19/25 11:07 AM, Vimlesh Kumar wrote:
+> @@ -327,11 +328,13 @@ static void octep_setup_iq_regs_cnxk_pf(struct octep_device *oct, int iq_no)
+>  }
+>  
+>  /* Setup registers for a hardware Rx Queue  */
+> -static void octep_setup_oq_regs_cnxk_pf(struct octep_device *oct, int oq_no)
+> +static int octep_setup_oq_regs_cnxk_pf(struct octep_device *oct, int oq_no)
+>  {
+>  	u64 reg_val;
+>  	u64 oq_ctl = 0ULL;
+> +	u64 reg_ba_val;
+>  	u32 time_threshold = 0;
+> +	unsigned long t_out_jiffies;
+>  	struct octep_oq *oq = oct->oq[oq_no];
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Ouch, the above variable declaration follows the exact opposite of the
+mandated style, please use the reverse christmas tree order.
 
-On Thu,  4 Dec 2025 15:13:32 +0800 you wrote:
-> There is a crash issue when running zero copy XDP_TX action, the crash
-> log is shown below.
-> 
-> [  216.122464] Unable to handle kernel paging request at virtual address fffeffff80000000
-> [  216.187524] Internal error: Oops: 0000000096000144 [#1]  SMP
-> [  216.301694] Call trace:
-> [  216.304130]  dcache_clean_poc+0x20/0x38 (P)
-> [  216.308308]  __dma_sync_single_for_device+0x1bc/0x1e0
-> [  216.313351]  stmmac_xdp_xmit_xdpf+0x354/0x400
-> [  216.317701]  __stmmac_xdp_run_prog+0x164/0x368
-> [  216.322139]  stmmac_napi_poll_rxtx+0xba8/0xf00
-> [  216.326576]  __napi_poll+0x40/0x218
-> [  216.408054] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-> 
-> [...]
+Similar nit on the next patch.
 
-Here is the summary with links:
-  - [net] net: stmmac: fix the crash issue for zero copy XDP_TX action
-    https://git.kernel.org/netdev/net/c/a48e23221000
+>  
+>  	oq_no += CFG_GET_PORTS_PF_SRN(oct->conf);
+> @@ -343,6 +346,33 @@ static void octep_setup_oq_regs_cnxk_pf(struct octep_device *oct, int oq_no)
+>  			reg_val = octep_read_csr64(oct, CNXK_SDP_R_OUT_CONTROL(oq_no));
+>  		} while (!(reg_val & CNXK_R_OUT_CTL_IDLE));
+>  	}
+> +	octep_write_csr64(oct, CNXK_SDP_R_OUT_WMARK(oq_no),  oq->max_count);
+> +	/* Wait for WMARK to get applied */
+> +	usleep_range(10, 15);
+> +
+> +	octep_write_csr64(oct, CNXK_SDP_R_OUT_SLIST_BADDR(oq_no),
+> +			  oq->desc_ring_dma);
+> +	octep_write_csr64(oct, CNXK_SDP_R_OUT_SLIST_RSIZE(oq_no),
+> +			  oq->max_count);
+> +	reg_ba_val = octep_read_csr64(oct, CNXK_SDP_R_OUT_SLIST_BADDR(oq_no));
+> +
+> +	if (reg_ba_val != oq->desc_ring_dma) {
+> +		t_out_jiffies = jiffies + 10 * HZ;
+> +		do {
+> +			if (reg_ba_val == ULLONG_MAX)
+> +				return -EFAULT;
+> +			octep_write_csr64(oct,
+> +					  CNXK_SDP_R_OUT_SLIST_BADDR(oq_no),
+> +					  oq->desc_ring_dma);
+> +			octep_write_csr64(oct,
+> +					  CNXK_SDP_R_OUT_SLIST_RSIZE(oq_no),
+> +					  oq->max_count);
+> +			reg_ba_val =
+> +			octep_read_csr64(oct,
+> +					 CNXK_SDP_R_OUT_SLIST_BADDR(oq_no));
+> +		} while ((reg_ba_val != oq->desc_ring_dma) &&
+> +			  time_before(jiffies, t_out_jiffies));
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+If a timeout happens - !time_before(jiffies, t_out_jiffies) - execution
+proceed even if reg_ba_val != oq->desc_ring_dma; I guess you should
+error out istead?!? Otherwise you should at least add a comment for
+future memory explaining why that is correct.
 
+Similar question on the next patch.
+
+/P
 
