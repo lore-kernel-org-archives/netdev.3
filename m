@@ -1,35 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.st.icloud.com (p-east2-cluster3-host7-snip4-2.eps.apple.com [57.103.77.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD142D63FC;
-	Mon, 29 Dec 2025 18:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9941096F
+	for <netdev@vger.kernel.org>; Mon, 29 Dec 2025 18:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.77.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767032004; cv=none; b=LhDMZKLTcnjihy6wAHoJC26omCEtl39038oSbBIALrdwF1hjW7dJgL7EyFCZhBZ+7k7CV0hJ+R/nEmcvvlXTNG4retRQ4LKe1LwQF8oo8k4+vG3IOTachSo1e8PTIGp8eg0DDtb9tZ31tU1AlqSbNm9UhnDEhytfLMLFyQ18YZ0=
+	t=1767033189; cv=none; b=QHw/yBIVfw/X/yLr4SXo62z95YwYNA/Apei06zXNOyOxgch8EPaYwnny3aNiJDP/WNaxn0gNxBoj8L7W31CQw8wRke2k6rGs4cMPFB0NbGwJsUU3us6WuedFVhH9Mwm4E/DrlYW4m0hMreQJXkul2u45wF7XycW99GUbDzVl7zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767032004; c=relaxed/simple;
-	bh=Sx6td9lE4hKxIcubYKlGUxkmTnJwqHdVst8KiyaS81A=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OceEzLZj0WKNNLKjwbVU5OxwQxaYnvtkBxc4JkWHgI0mwi5EaWCqsLbedESuNlUTQtOyGeeygMqF1tEGUYBDMg0hd2SamIF7JF4rW3jx9xuGqk+0kd2aNZLqsSSUQ+BZw2d3/dK4ySCJLgFPax+xWHS8svuGrGvZKnNcATuc/UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huvdEHwI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767033189; c=relaxed/simple;
+	bh=MHwfQHPauWIQT3+OqPNGY6gTOxGQ67ClhPkVTqTTuSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XH1HDuwesxCJJ7lfTcCNDb30WRD8enEb34GvB/whUVGTZ2iO6kCV8whuf5AhR5+IzvVWQf1uTx70mScG5Kr1pFxlcOxtCotIV+UMosiLhHRx9A4fq1AOtFdQIw0PwXJQ560B1T29jc4pc2R/5AcJJ8XuR6V6J724wJt4+/ijDTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net; spf=pass smtp.mailfrom=y-koj.net; dkim=fail (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b=Z59y/cFQ reason="key not found in DNS"; arc=none smtp.client-ip=57.103.77.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=y-koj.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huvdEHwI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73859C4CEF7;
-	Mon, 29 Dec 2025 18:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767032003;
-	bh=Sx6td9lE4hKxIcubYKlGUxkmTnJwqHdVst8KiyaS81A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=huvdEHwIRCJ2VkVIhQ0zScq24SMYFzZDkePcd1jlMCYsxfn2uqOOG79smJ6OA6Nky
-	 cvmf4lR/b07bg1NkKR5CG+pLP4oLM0oQnRqlL3kVXd3TeBZqorleISKOWor3AAcTXO
-	 OpObe8NNmxcr0VL6ahH1d2Yrh81+398pkhGHJHazLjuKrW1OguahZYo4IpUF0dOUHp
-	 eRItZ3UxWVmHNVFChU1dal4jce8vM0xV5N+t+KWk9ewypmBwCGbSfDTxDVUpuP95Ol
-	 8xoLsDDatRtYbSAqijptvkcbAT8M/tZtT7BSe/r0tYq4u/yi3jZ51tnd0F48yiCl5+
-	 ukspwNOBvkODQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B7BD3808200;
-	Mon, 29 Dec 2025 18:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b="Z59y/cFQ"
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-6 (Postfix) with ESMTPS id BDEC918000BC;
+	Mon, 29 Dec 2025 18:33:01 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=y-koj.net; s=sig1; bh=3i6U+qqB5xO17c1ZdodwZtD/w2GvS71vzUwSwm30f6Y=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=Z59y/cFQB1Cq3DiUDqDj3kz8cS0Q7w0D3hJckwr3u3pIDQoOcv5H0teSn6yIQcMHgwxLqaKpDk0qvfnvEfZ4ScuYiAck8P8vpOxLXpE0T3zdOg8BKa/jzfmCc7M3xfvoluShWLoV2Z7dYVXY/Yz5cJRwJeAWc4IWZXYpBkBB/Mk+gFjoBZu73S0ANHI02IebtniXuAnL/5F55Q8Ft7b8rlEIddxTmVZNZKxcb2KUzqvGZMT4UgqUoaiAnYuSIBsyRrtUXfQjNDMCLC1FvRGsBk58aG2r4Kl99ERbGLWNVdRRSBr7QBSdApXspgx1Vo/FYcFJbm9Iz6VG0LPoA5O7qQ==
+mail-alias-created-date: 1719758601013
+Received: from desktop.tail809fd.ts.net (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-6 (Postfix) with ESMTPSA id 7C29C18000AE;
+	Mon, 29 Dec 2025 18:32:58 +0000 (UTC)
+From: yk@y-koj.net
+To: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Yohei Kojima <yk@y-koj.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net 0/5] net: netdevsim: fix inconsistent carrier state after link/unlink
+Date: Tue, 30 Dec 2025 03:32:33 +0900
+Message-ID: <cover.1767032397.git.yk@y-koj.net>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,54 +47,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] gve: defer interrupt enabling until NAPI registration
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176703180604.3020297.10151848837603097522.git-patchwork-notify@kernel.org>
-Date: Mon, 29 Dec 2025 18:10:06 +0000
-References: <20251219102945.2193617-1-hramamurthy@google.com>
-In-Reply-To: <20251219102945.2193617-1-hramamurthy@google.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, pkaligineedi@google.com, sdf@fomichev.me,
- jordanrhee@google.com, nktgrg@google.com, shailend@google.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Proofpoint-ORIG-GUID: etIcuxVpL5yvXdFfMY-KSg9D8oCgXkyY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDE3MCBTYWx0ZWRfX5C+wfx2fyKpf
+ lm6G8zE0PW7eRsBKacVYWLA4/V18grDmdQ0yMulZNa7GZSA5e3TuardLWKoYQgJcMIUPtXdkdIX
+ uufNjF+B7Q2ZWZuRPx/R7kIYsWLj9ezPWp+OSjwf8y/6nvpUGB972ypp1LGmuezraac8iPExVjU
+ c/Wvm7XMMMNhNkPUP7a6mb9TqNk6qWLYVbF+dRmGl2IaXAQ+T0WPJz/6zl9vMzffuuQOJ4FtncV
+ 5k8hmxTBikDZK3Z1oGE78xlR5g4GXI9CwLzaXrNqT4e2WF5Ki1j6zAYWsLi3VSRuPhol2eIp3lw
+ Bj+fstCIJIxjlKGSEjp
+X-Authority-Info: v=2.4 cv=LZkxKzfi c=1 sm=1 tr=0 ts=6952c95f cx=c_apl:c_pps
+ a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=jnl5ZKOAAAAA:8
+ a=7STe8TXQyHsiQHg5nocA:9 a=RNrZ5ZR47oNZP8zBN2PD:22
+X-Proofpoint-GUID: etIcuxVpL5yvXdFfMY-KSg9D8oCgXkyY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-29_06,2025-12-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 clxscore=1030 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512290170
+X-JNJ: AAAAAAAB0oCq8TWCnumFUYxiunuWBHnwcvVcakQkvPzzzOIPYeQaIirEWtISyBwt8/dwpoxogTWJEHYr5IQvjgnU22HEL+3sd7FI7zWm1KYN1KhmrqMw+upAnz3LslAKpwmqTSUmqkkXFmR3UwfsNRBGNLepBO2Buv9s5DTu/moaPgBGTKdPUBbo8132xZp/Fj+kg30b56UgWmaIdg43K7Oo2U3SIc2JiZ1ZfeuZ1wObfRW1eDO9tvJAljEs3qyOmH6r5zuXq6V0LX4V8Ah2vxBM5rGnSH3aTOtx4VCVJq9APY7zuLQdkLUzmXL+KmzqlK446NHSgeixfyIVNeELKWwOPUDeOfM+BGWPMVzFE7PdCzTPib1FZ5RNmON8hgIC+GROoyH+drwfkX/Cif7kkgLnWVSxANATqUZW4CBVd41AGCr2lxRR7yS3BILPddoBFnz+Xj7J/fvi7g8aEybAW2JT/K+XBi6ePdQMXfqrmDlRm9w/L8IIGXilZbeVsPVe0Q7fMH+pC1P2sY3LveYYcmmei3zqce1ExiTTHL74RqW5qkDfRznnuEjtgJeNsNL31+NSH6sDvOzU+PlJiVRayjoA1cuZXYmWbr35uC4mSm7CNKBqWGXeEZjdKzDT3WD3PMKvyIXstDiPCQLXgHcopwacB0jl9+wp9JpjucOMe2TGCmaY8DKm0/I0CGHxWH36F5FYMhbADZeR8PXnA4o8RsEjqmoDtA==
 
-Hello:
+From: Yohei Kojima <yk@y-koj.net>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+This series fixes netdevsim's inconsistent behavior between carrier
+and link/unlink state.
 
-On Fri, 19 Dec 2025 10:29:45 +0000 you wrote:
-> From: Ankit Garg <nktgrg@google.com>
-> 
-> Currently, interrupts are automatically enabled immediately upon
-> request. This allows interrupt to fire before the associated NAPI
-> context is fully initialized and cause failures like below:
-> 
-> [    0.946369] Call Trace:
-> [    0.946369]  <IRQ>
-> [    0.946369]  __napi_poll+0x2a/0x1e0
-> [    0.946369]  net_rx_action+0x2f9/0x3f0
-> [    0.946369]  handle_softirqs+0xd6/0x2c0
-> [    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-> [    0.946369]  __irq_exit_rcu+0xc3/0xe0
-> [    0.946369]  common_interrupt+0x81/0xa0
-> [    0.946369]  </IRQ>
-> [    0.946369]  <TASK>
-> [    0.946369]  asm_common_interrupt+0x22/0x40
-> [    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
-> 
-> [...]
+More specifically, this fixes a bug that the carrier goes DOWN although
+two netdevsim were peered, depending on the order of peering and ifup.
+Especially in a NetworkManager-enabled environment, netdevsim test fails
+because of this.
 
-Here is the summary with links:
-  - [net] gve: defer interrupt enabling until NAPI registration
-    https://git.kernel.org/netdev/net/c/3d970eda0034
+The first patch fixes the bug itself in netdevsim/bus.c by adding
+netif_carrier_on() into a proper function. The second and third patches
+clean up netdevsim test and add a regression test for this bug.
 
-You are awesome, thank you!
+The fourth and fifth patches improve TCP Fast Open (TFO) test, which
+depends on netdevsim. In a NetworkManager-enabled environment, although
+TFO test times out because of this bug, the test exits with 0 without
+reporting any error.  This behavior implies that nothing would be
+reported even if TFO got broken at some point.
+
+The fourth and fifth patches are intentionally placed after the first
+patch, because fixing TFO test without fixing netdevsim results in
+a spurious test failure in a NetworkManager-enabled environment.
+
+Yohei Kojima (5):
+  net: netdevsim: fix inconsistent carrier state after link/unlink
+  selftests: netdevsim: test that linking already-connected devices
+    fails
+  selftests: netdevsim: add carrier state consistency test
+  selftests: net: improve error handling in TFO test
+  selftests: net: report SKIP if TFO test processes timed out
+
+ drivers/net/netdevsim/bus.c                   |  6 ++
+ .../selftests/drivers/net/netdevsim/peer.sh   | 79 ++++++++++++++++++-
+ tools/testing/selftests/net/tfo.c             | 10 ++-
+ tools/testing/selftests/net/tfo_passive.sh    | 15 +++-
+ 4 files changed, 101 insertions(+), 9 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.2
 
