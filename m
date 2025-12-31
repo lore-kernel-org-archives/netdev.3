@@ -1,174 +1,159 @@
-Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480E313E0A
-	for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 08:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF311EEA5F
+	for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 09:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767170238; cv=none; b=BTMbnSLmYefjT5Ba8Ho83St8GYyT4/3M9mlt9bs7ZXlSIjWW46+Tn7sjNO0VhlfDo/SXDdjvdWQz3Pk4cSrGPcd/Xn9kye1/xnyVx1r3j72VohKqkeh41mRYKFl1jRwknTgEtnn8MQ7soAZu4BUI4lq2b4Ze/h79iHHAMB8ZbUM=
+	t=1767171997; cv=none; b=hrnRDFSKblz9r9shXA2/PBRDHsGf68YKZ5/f6bKp4C2h/FOMoIxaRolMwPNPx/PB2ezbpWxPXfdBojyDqdVKxdHlxDoSZkHmGwyl7YsaAVtgnCQgD+NvtM7D7pM+mjmM17HG4/kZPI4gFO5J57NYATCA8uxctP/PidxJ8udJdaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767170238; c=relaxed/simple;
-	bh=VTT447L+ssvf2BCNaTy5dfqbbq7CazrhLECYMcQIQ6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LVPAcBdlDf6cVdNWSzMXpxWHHPY2Qrb5Er9SEBqylkLyotWJb1BAHE0OuQNa2lZ6kY6fUjw6tBPF6Jv2QwI74cQPnkhTNvz5IONBiWJfQwdc6t+eV6JTSDSw7w+MftTlX1rxs75ZTV5UCVEfxEtQVt6TBoIyH6N1ylRhpTRjsaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hl3QmaXp; arc=none smtp.client-ip=209.85.160.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1767171997; c=relaxed/simple;
+	bh=QUwlMDVJdq+AO1eB0FPeqUElozkHlV/v+Io0D1DDZNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OL69hqj1sQtX5NXkGons0q9efUy7jgHFC2Za3hrNoqg+vCM7E53Z0xdmDcknW17tEDcJttOrY0KnjtkNu0PDnUI4LS0qu/Ng9c0IoUGzSAcqgUjq/QAegE3uXawdEdHtoSVEIL0Stcf2LUGbceSmo75JKqLg7SdlQLSBHkMjSGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BXKzx1Nm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZhcaKaMI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hl3QmaXp"
-Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-3f11ad6e76fso8942615fac.1
-        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 00:37:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767170235; x=1767775035;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=76mIH5VsoNyP30FgFpGKTCg/KJTSgdU+xXj6oBGvPZg=;
-        b=iMkfepx0rUs9yENmk4/jhW+frEKHffZVdLJO7eThomeSuQMTHP0yZiYW2NaVxirrbU
-         OB8Sq7OKi3rfTbr/Wt6ox24yq4EQbffps/liSEV97OiP3CQuM5ZYdyBtFd/MPcr3cmcC
-         m2TBPNP/8c3pNTeGimBqAr4Vv+Q5lM+9ftgUK/lKSxVG94RV3F8/3yxut/mAIBwFYaB+
-         C5m7dWo6oLACFd4p1YSrCN8SimRkU5jYdbW3EqfRXM4yPwWD3l4RM4reTobzZVsTNJ3x
-         GamgnOfAt69e4vGQiX/qoVdqi5to8dLxNnpJlxzOip4r3xMFnEr497pmBbFFhCWfS8bp
-         wwbw==
-X-Gm-Message-State: AOJu0YyjgMWjZ9JDM8INU5wcsuGJfQgF1EapuGccp6n/qtT0NiOzk4X1
-	nJ4UgHk8PKk1Sq9dWrEpBgii4XX/M12XeoHJDNHydo+inb8yskNk8hCJaQigw4c/zGsko4b3L2r
-	Cm5WyI+0raCcuBC08q1mz2KRVXuH0JNPuP2KE025ZcZCsLM50s+eQPp8PEDoQb9h4YNqvPzRmSw
-	F7TSkIKK+zsIvTLVeBQYm1Ozkki5DNL1nCtvLRvI6UgfmEGRDguVNbL4A6KMmEh9KNqEwWICJzB
-	ySnvqlm0ao=
-X-Gm-Gg: AY/fxX4uqIE+ijfmzevz8i4vyRuakXRug5dt+YN7M6oFsIS2bIMl9mr1ixt7ZBh/8Ze
-	u8Hg8SAYyOSchE6mPV6u1bjDS/gphFTwIe6YkAGpWSlKjf+ppXA98qDNgURccKxHE+PqLBwCWZr
-	zN/XrbOC+cf8TVCEBk1t2fKIlieTxXWIcYBx3ri1OaWPz+6vbNZai/FxNR6WpT3jvHWUfmjVkvL
-	PXeIxTXYC+5bvy61uv8KtXFLH1R+Z6qnt0N2rcqYd2NV/J6F4fapO2Gr+jV7aODLh7l/MXuWhgA
-	rpGPcqMcvPFxTQi9m0FvZg3OqaoX3Ygp7Yf8+Z4QeELGwzU5HHhOmMK0Z+AcuP+W8sX0pGtCO9G
-	nNJfvlHwO/nE21v3733Zkq2VJ3pkWXwAy9PfZ+v2HUpz8LKJTXSZ44pup22i9Ek5kSLs64D0wAn
-	t+NTOjbeodle4aVtCQNH8QRNb6Lczrv/2owWAu06zBuWuszIM=
-X-Google-Smtp-Source: AGHT+IGDPhByM40+b4GaOIRoNYmgPbb4eTtRLWcQJM09jCNF6zS0VICMHVQqEsoBqgpJSrpCYeSZ29YSJHt8
-X-Received: by 2002:a05:6870:f201:b0:3ec:39fc:daac with SMTP id 586e51a60fabf-3fda541922amr16615782fac.48.1767170234751;
-        Wed, 31 Dec 2025 00:37:14 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-3fdaa93944esm3650735fac.6.2025.12.31.00.37.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Dec 2025 00:37:14 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-88888397482so318958446d6.1
-        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 00:37:13 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BXKzx1Nm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZhcaKaMI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767171995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2MalXOipz/CuIx0bAeR4P5zozzBVCxAWxoP4epSm8Wo=;
+	b=BXKzx1NmpIGPGULAuLEink1lZKZz+MftxGTnCfjddSFYCGb4ldyyTeG7gJ3AY3oRMLAWlA
+	SLVjIDqdVp5E4oPzReZxXxo8mO48s7Azzv+W+8pFrR3dYnb34E6ZuoZXKa6RiqCKxJDkyQ
+	FlR474wrC1s+ioUTK+H6D9SvEqERR3I=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-505-2fY7RtwFOQuKJwmpgEYbeg-1; Wed, 31 Dec 2025 04:06:33 -0500
+X-MC-Unique: 2fY7RtwFOQuKJwmpgEYbeg-1
+X-Mimecast-MFC-AGG-ID: 2fY7RtwFOQuKJwmpgEYbeg_1767171993
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47a83800743so57773075e9.0
+        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 01:06:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767170233; x=1767775033; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=76mIH5VsoNyP30FgFpGKTCg/KJTSgdU+xXj6oBGvPZg=;
-        b=hl3QmaXpWWlCNs209grdS4LR8va/5Q7jjzTfwqbMroQLC9ee4dQyEtUiB4wxVGZBOn
-         OKcdm3fqtoqsq33vg8JFcIQysuYF353F0bZyVwjzAshJcV1L8R1A5BvJ60QgeHc5Kwxn
-         WQx1DxvGVCLJYnR9wz5ykxlRXnvl48QTwsilM=
-X-Received: by 2002:a05:620a:44c5:b0:8a4:e7f6:bf57 with SMTP id af79cd13be357-8c08fbc6b6dmr5679574185a.5.1767170232883;
-        Wed, 31 Dec 2025 00:37:12 -0800 (PST)
-X-Received: by 2002:a05:620a:44c5:b0:8a4:e7f6:bf57 with SMTP id af79cd13be357-8c08fbc6b6dmr5679573185a.5.1767170232529;
-        Wed, 31 Dec 2025 00:37:12 -0800 (PST)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0971ed974sm2760651385a.30.2025.12.31.00.37.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 00:37:12 -0800 (PST)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	vadim.fedorenko@linux.dev,
-	leon@kernel.org,
-	Srijit Bose <srijit.bose@broadcom.com>,
-	Ray Jui <ray.jui@broadcom.com>
-Subject: [PATCH net v2] bnxt_en: Fix potential data corruption with HW GRO/LRO
-Date: Wed, 31 Dec 2025 00:36:25 -0800
-Message-ID: <20251231083625.3911652-1-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.45.4
+        d=redhat.com; s=google; t=1767171993; x=1767776793; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2MalXOipz/CuIx0bAeR4P5zozzBVCxAWxoP4epSm8Wo=;
+        b=ZhcaKaMIzW/rBlaRe0ePsGtLl872CLj2GFxuKLISCNEuP4qZ/CiJ9QfmnBCCpt6Nna
+         e3H9P1XPwk4PnaE435UZ/2irScjflM25XWh/xe7aner5PGd60zmcsHXZYB83QcOldSQo
+         YaXr3dJooGZNU16z0BGgpHfnycMXxM+rV+zYB98hrsURQFXgDklbxZmoGienpi4wRx/2
+         kDC/O2B1pjkPwoqkd9hmKwD+hzWU/wiXgHhzTHG1Lmq8AjPALw6hLwUeSo80vDQYLWQX
+         d7PaijY675h4yIzBeau9XXHH6wrmjCUP3984BozaeQs7ObUCeXPaTZljKUr5Ns6naWMi
+         sF7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767171993; x=1767776793;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2MalXOipz/CuIx0bAeR4P5zozzBVCxAWxoP4epSm8Wo=;
+        b=prjSO4nESfvqKB8aN+qVeZkJ0BRTmX01YfFxGs62o7C5AQxVSoj0rVcDzUwYeE3xKv
+         zbAUbep+NZG6s7cR7ksuVrYlop5t4s441uY5yDW3tMW65vnCsHrYGQx40oT8gdtbwlKj
+         ePjgGTyMzfwg+Lnj36X8U5zYUqnKt1LHlK3AZybVWVp9luO0NVwef9UZp91yxp3bR8ZO
+         bnny6HML2iiSCmKl6Qg0v2PusPuMCgpwjoDfS+sVarzUVEwRav3pvjqOJGRy3SvNP2fF
+         PDIB5/6OVU60GEdgHHqiBSjhxUf9Shf7vLpJlt4byuB6fWs3njS4+dBvFXJFOqy7Mvku
+         rmpw==
+X-Gm-Message-State: AOJu0YyQaZDZlJBLNDSCNYF8c0vlpKZA5Sa9nsogrCQyHRssInMjAjxO
+	FKpRC4m4bF4kETTVKn8cX8Hq9mhNaAetcMwtWyV47DN9c00VcrxTc4escZNEkiYkFrWDc+ebWPm
+	rn8CXXnIc2oLz572SJSRVJ8rqOl1QyyOPwR4kW7R/IQYoq7EohJtPdlv3hg==
+X-Gm-Gg: AY/fxX5b6nkCQSBWhaMjATJkKAY8pR3Of1jPQYO5ATA7UAbG/GRQ40x/NbBitcbUBMj
+	lin3wX4ZPqJtU7ZCMfhcgcYYUgHZI9THnfRn3aBH6YTCMyPfufx+2LAISoMacUDmMbQff5l9J37
+	NcV2y9L0CqaQDj7gtXeMcp8/tVyzLx4wTPeDpGbVKBnilHUr93/dcCplK6kKwRauoGAtU3YlwV0
+	gjpXOx2vnGHU3SbOCfr6SFiOHXeo09lmy7WRvvR6NGy6qVvU8veN3AweYdECnUFdZQhRO9QzH05
+	XxYoHCxsI+/XFnrF4G+wUklUSPY+OWCaaWKNQtcl+RN0z5Ll3o6t/8bHUsmLSywNyyAqdnV00F+
+	Z3hvuRaulqbOa
+X-Received: by 2002:a05:600c:c04b:10b0:47d:333d:99c with SMTP id 5b1f17b1804b1-47d333d09b9mr248393755e9.18.1767171992633;
+        Wed, 31 Dec 2025 01:06:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG6VxaZ0lW+Fv/9y//CLF5sXKC4bzgP6Kr4lwAL7PJDsWxrGCRFASFoIdj9UdL1Fzv93TAJww==
+X-Received: by 2002:a05:600c:c04b:10b0:47d:333d:99c with SMTP id 5b1f17b1804b1-47d333d09b9mr248393415e9.18.1767171992145;
+        Wed, 31 Dec 2025 01:06:32 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.153.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be3a0fb9asm283511255e9.2.2025.12.31.01.06.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Dec 2025 01:06:31 -0800 (PST)
+Message-ID: <75e23b2c-67bf-41c8-8970-627d22af3147@redhat.com>
+Date: Wed, 31 Dec 2025 10:06:29 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v3 0/8] net: wwan: add NMEA port type support
+To: Slark Xiao <slark_xiao@163.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Muhammad Nuzaihan <zaihan@unrealasia.net>, Qiang Yu
+ <quic_qianyu@quicinc.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Johan Hovold <johan@kernel.org>, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, loic.poulain@oss.qualcomm.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ mani@kernel.org, kuba@kernel.org
+References: <20251231065109.43378-1-slark_xiao@163.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251231065109.43378-1-slark_xiao@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Srijit Bose <srijit.bose@broadcom.com>
+On 12/31/25 7:51 AM, Slark Xiao wrote:
+> The series introduces a long discussed NMEA port type support for the
+> WWAN subsystem. There are two goals. From the WWAN driver perspective,
+> NMEA exported as any other port type (e.g. AT, MBIM, QMI, etc.). From
+> user space software perspective, the exported chardev belongs to the
+> GNSS class what makes it easy to distinguish desired port and the WWAN
+> device common to both NMEA and control (AT, MBIM, etc.) ports makes it
+> easy to locate a control port for the GNSS receiver activation.
+> 
+> Done by exporting the NMEA port via the GNSS subsystem with the WWAN
+> core acting as proxy between the WWAN modem driver and the GNSS
+> subsystem.
+> 
+> The series starts from a cleanup patch. Then two patches prepares the
+> WWAN core for the proxy style operation. Followed by a patch introding a
+> new WWNA port type, integration with the GNSS subsystem and demux. The
+> series ends with a couple of patches that introduce emulated EMEA port
+> to the WWAN HW simulator.
+> 
+> The series is the product of the discussion with Loic about the pros and
+> cons of possible models and implementation. Also Muhammad and Slark did
+> a great job defining the problem, sharing the code and pushing me to
+> finish the implementation. Many thanks.
+> 
+> Comments are welcomed.
+> 
+> Changes since V1:
+> Uniformly use put_device() to release port memory. This made code less
+> weird and way more clear. Thank you, Loic, for noticing and the fix
+> discussion!
+> 
+> Changes since V2:
+> Add supplement of Loic and Slark about some fix
+> 
+> CC: Slark Xiao <slark_xiao@163.com>
+> CC: Muhammad Nuzaihan <zaihan@unrealasia.net>
+> CC: Qiang Yu <quic_qianyu@quicinc.com>
+> CC: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> CC: Johan Hovold <johan@kernel.org>
+> CC: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-Fix the max number of bits passed to find_first_zero_bit() in
-bnxt_alloc_agg_idx().  We were incorrectly passing the number of
-long words.  find_first_zero_bit() may fail to find a zero bit and
-cause a wrong ID to be used.  If the wrong ID is already in use, this
-can cause data corruption.  Sometimes an error like this can also be
-seen:
+Uhm... I thingh I already shared the following with you ?!?
 
-bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
+## Form letter - net-next-closed
 
-Fix it by passing the correct number of bits MAX_TPA_P5.  Use
-DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
-check to warn if a bit cannot be found and reset the ring [MChan].
+The net-next tree is closed for new drivers, features, code refactoring
+and optimizations due to the merge window and the winter break. We are
+currently accepting bug fixes only.
 
-Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+Please repost when net-next reopens after Jan 2nd.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d17d0ea89c36..d160e54ac121 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1482,9 +1482,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
- 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
- 	u16 idx = agg_id & MAX_TPA_P5_MASK;
- 
--	if (test_bit(idx, map->agg_idx_bmap))
--		idx = find_first_zero_bit(map->agg_idx_bmap,
--					  BNXT_AGG_IDX_BMAP_SIZE);
-+	if (test_bit(idx, map->agg_idx_bmap)) {
-+		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-+		if (idx >= MAX_TPA_P5)
-+			return INVALID_HW_RING_ID;
-+	}
- 	__set_bit(idx, map->agg_idx_bmap);
- 	map->agg_id_tbl[agg_id] = idx;
- 	return idx;
-@@ -1548,6 +1550,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
- 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
- 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
-+		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
-+			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
-+				    rxr->bnapi->index,
-+				    TPA_START_AGG_ID_P5(tpa_start));
-+			bnxt_sched_reset_rxr(bp, rxr);
-+			return;
-+		}
- 	} else {
- 		agg_id = TPA_START_AGG_ID(tpa_start);
- 	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index f5f07a7e6b29..f88e7769a838 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1080,11 +1080,9 @@ struct bnxt_tpa_info {
- 	struct rx_agg_cmp	*agg_arr;
- };
- 
--#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
--
- struct bnxt_tpa_idx_map {
- 	u16		agg_id_tbl[1024];
--	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
-+	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
- };
- 
- struct bnxt_rx_ring_info {
--- 
-2.51.0
+RFC patches sent for review only are obviously welcome at any time.
 
