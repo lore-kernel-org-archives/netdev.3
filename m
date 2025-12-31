@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9367286412;
-	Wed, 31 Dec 2025 06:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DC231282C;
+	Wed, 31 Dec 2025 06:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767163946; cv=none; b=RDOmgPpyMjRHDoB2vZF/hBBLoR5bife/UEQna2GGeO1HSKMdkVr9kNURlz9rTs2WRI1ssIbnKHuTtJDaCEwscbeAAcUFKQWB7A93hcuUXjgOwgxDkVSbFDU5XW2VT1eMsCCW3xVZtXE7cUD76IK/Opbvg+xd4dQjWDb67jAG2/Q=
+	t=1767163950; cv=none; b=rGk9BvnlN+0wTLgL+5n6cr8mmsJDaLRuVoAbukpR8lY70G14FBM3jfkL18P0ft/wlcEa71gdqyJaQclCNypOkk8eVrBVPZQjRawru7FgPH6Eux795skae/qfsg1ST4NHi9sLht4GtENMKdCOFPBUv4KSRoSSmmgoitYu/7gmHy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767163946; c=relaxed/simple;
-	bh=hJb2PfqzOI9tHMOZ4VhGa1KJ5pcdFKMsblP79Oj7SMM=;
+	s=arc-20240116; t=1767163950; c=relaxed/simple;
+	bh=uwBpo1F6QPiu3cqG/KphpIXDyG1I93Ps81dd1bruFEo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CJaI39rJyxU2e+z2KFZxuB7YApRJJDRZznZwpG4W2oHqWBb0XGhwKCBCd7KcvlMB9qPS28PgVlXAxU5/cl/Gonl24p+8mW/q9wukdUYZO8/gOMYCjqJdwfwSbkR2uO7WA1Q5UbYkFbzJjAeiG2lTE9I4JwACdpNEPfpl7uF6xJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=L7NDHR1K; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=e0aXOLqOU2jdAp+xK/QaE65Xs+ZNHol4P3V5RYqt7JlcFwwoxM6H+J4mxoOCtmeCYiQrDa8X0Oy0VWnoL7N7Bi4RXU1/B+1ITjMG3zTr0IrAIni1q+Ath6wDOiWx/qAcZzjpY3qUz470OZqJZNONHtP/J5AFYSjzBHYRg4HKBv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=d0ZCwGRM; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="L7NDHR1K"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="d0ZCwGRM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Eh
-	TKEMdihrRmGhc2+GnqMu/SEAiNyVgMgt/1+m5A8zE=; b=L7NDHR1KJrU7nPah/x
-	e/F+vNnUkJgL+B8BtTZvRhd/c6GSw7XHPQWP9X4mi9HdpG0e9CDnN+q3qZ7fApii
-	aKmuUn76hCK4fc9WlGg5iS37aVa1whDfwUcvyaeY1nEm62wwn0TCJcOn1y7MbFqb
-	CV4ALwLtKNj1la3RnsdbKLYYk=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Rp
+	Tbb2gLO4QJQ+S7G8iNjUbiqTtKOf3krgXz6hII5WY=; b=d0ZCwGRMIQuhTbDDk2
+	psoDR6PYPskuw9PPk67yZWhcMfaErLMdBEZRa66FrF4sbkI7Vuugp3+jd9GFnicX
+	QHnjElc2oeEYzvV+NlhwSagmVLOYo6pAvQ8DmDvhF9c7aDbaRdGwr9ttJdOgLYK/
+	CeVNdtr2wVFUdgMH+df0AX8iE=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDHpCPmx1Rp9FyCDg--.29927S8;
-	Wed, 31 Dec 2025 14:51:40 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDHpCPmx1Rp9FyCDg--.29927S4;
+	Wed, 31 Dec 2025 14:51:34 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -37,9 +37,9 @@ To: loic.poulain@oss.qualcomm.com,
 	mani@kernel.org
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [net-next v3 6/8] net: wwan: hwsim: support NMEA port emulation
-Date: Wed, 31 Dec 2025 14:51:07 +0800
-Message-Id: <20251231065109.43378-7-slark_xiao@163.com>
+Subject: [net-next v3 2/8] net: wwan: core: split port creation and registration
+Date: Wed, 31 Dec 2025 14:51:03 +0800
+Message-Id: <20251231065109.43378-3-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251231065109.43378-1-slark_xiao@163.com>
 References: <20251231065109.43378-1-slark_xiao@163.com>
@@ -50,214 +50,145 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHpCPmx1Rp9FyCDg--.29927S8
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKrWUJr4UKFy5AFykJFW8WFg_yoWxJr15pa
-	1qgasxKrWUJw47W343GFsxJFWYqF1kWry0v34rWryYyr1xtry5XFWvkr90vrW5Gr97uFy3
-	urs5tw13Z397CrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb3ktUUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC6BygBWlUx-wJbgAA3w
+X-CM-TRANSID:_____wDHpCPmx1Rp9FyCDg--.29927S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWkAw45CFWxKFW5Jw1xuFg_yoWrCFWUp3
+	W0gas3tFW8Jr13ur43AF47ZFWF9a1Ika4SyrW8W34Skrn0qryFvFZY9FyqvrWrGFy7GFy3
+	XF45ta10k3WUGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jT1v3UUUUU=
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCwBaeA2lUx-aq5QAA3I
 
 From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-Support NMEA port emulation for the WWAN core GNSS port testing purpose.
-Emulator produces pair of GGA + RMC sentences every second what should
-be enough to fool gpsd into believing it is working with a NMEA GNSS
-receiver.
+Upcoming GNSS (NMEA) port type support requires exporting it via the
+GNSS subsystem. On another hand, we still need to do basic WWAN core
+work: find or allocate the WWAN device, make it the port parent, etc. To
+reuse as much code as possible, split the port creation function into
+the registration of a regular WWAN port device, and basic port struct
+initialization.
 
-If the GNSS system is enabled then one NMEA port will be created
-automatically for the simulated WWAN device. Manual NMEA port creation
-is not supported at the moment.
+To be able to use put_device() uniformly, break the device_register()
+call into device_initialize() and device_add() and call device
+initialization earlier.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 ---
- drivers/net/wwan/wwan_hwsim.c | 128 +++++++++++++++++++++++++++++++++-
- 1 file changed, 126 insertions(+), 2 deletions(-)
+ drivers/net/wwan/wwan_core.c | 66 ++++++++++++++++++++++--------------
+ 1 file changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wwan/wwan_hwsim.c b/drivers/net/wwan/wwan_hwsim.c
-index 11d15dc39041..e4b1bbff9af2 100644
---- a/drivers/net/wwan/wwan_hwsim.c
-+++ b/drivers/net/wwan/wwan_hwsim.c
-@@ -2,7 +2,7 @@
- /*
-  * WWAN device simulator for WWAN framework testing.
-  *
-- * Copyright (c) 2021, Sergey Ryazanov <ryazanov.s.a@gmail.com>
-+ * Copyright (c) 2021, 2025, Sergey Ryazanov <ryazanov.s.a@gmail.com>
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -12,8 +12,10 @@
- #include <linux/slab.h>
- #include <linux/device.h>
- #include <linux/spinlock.h>
-+#include <linux/time.h>
- #include <linux/list.h>
- #include <linux/skbuff.h>
-+#include <linux/timer.h>
- #include <linux/netdevice.h>
- #include <linux/wwan.h>
- #include <linux/debugfs.h>
-@@ -65,6 +67,9 @@ struct wwan_hwsim_port {
- 				AT_PARSER_SKIP_LINE,
- 			} pstate;
- 		} at_emul;
-+		struct {
-+			struct timer_list timer;
-+		} nmea_emul;
- 	};
- };
- 
-@@ -193,6 +198,108 @@ static const struct wwan_port_ops wwan_hwsim_at_emul_port_ops = {
- 	.tx = wwan_hwsim_at_emul_tx,
- };
- 
-+#if IS_ENABLED(CONFIG_GNSS)
-+#define NMEA_MAX_LEN		82	/* Max sentence length */
-+#define NMEA_TRAIL_LEN		5	/* '*' + Checksum + <CR><LF> */
-+#define NMEA_MAX_DATA_LEN	(NMEA_MAX_LEN - NMEA_TRAIL_LEN)
-+
-+static __printf(2, 3)
-+void wwan_hwsim_nmea_skb_push_sentence(struct sk_buff *skb,
-+				       const char *fmt, ...)
-+{
-+	unsigned char *s, *p;
-+	va_list ap;
-+	u8 cs = 0;
-+	int len;
-+
-+	s = skb_put(skb, NMEA_MAX_LEN + 1);	/* +'\0' */
-+	if (!s)
-+		return;
-+
-+	va_start(ap, fmt);
-+	len = vsnprintf(s, NMEA_MAX_DATA_LEN + 1, fmt, ap);
-+	va_end(ap);
-+	if (WARN_ON_ONCE(len > NMEA_MAX_DATA_LEN))/* No space for trailer */
-+		return;
-+
-+	for (p = s + 1; *p != '\0'; ++p)/* Skip leading '$' or '!' */
-+		cs ^= *p;
-+	p += snprintf(p, 5 + 1, "*%02X\r\n", cs);
-+
-+	len = (p - s) - (NMEA_MAX_LEN + 1);	/* exp. vs real length diff */
-+	skb->tail += len;			/* Adjust tail to real length */
-+	skb->len += len;
-+}
-+
-+static void wwan_hwsim_nmea_emul_timer(struct timer_list *t)
-+{
-+	/* 43.74754722298909 N 11.25759835922875 E in DMM format */
-+	static const unsigned int coord[4 * 2] = { 43, 44, 8528, 0,
-+						   11, 15, 4559, 0 };
-+	struct wwan_hwsim_port *port = timer_container_of(port, t, nmea_emul.timer);
-+	struct sk_buff *skb;
-+	struct tm tm;
-+
-+	time64_to_tm(ktime_get_real_seconds(), 0, &tm);
-+
-+	mod_timer(&port->nmea_emul.timer, jiffies + HZ);	/* 1 second */
-+
-+	skb = alloc_skb(NMEA_MAX_LEN * 2, GFP_KERNEL);	/* GGA + RMC */
-+	if (!skb)
-+		return;
-+
-+	wwan_hwsim_nmea_skb_push_sentence(skb,
-+					  "$GPGGA,%02u%02u%02u.000,%02u%02u.%04u,%c,%03u%02u.%04u,%c,1,7,1.03,176.2,M,55.2,M,,",
-+					  tm.tm_hour, tm.tm_min, tm.tm_sec,
-+					  coord[0], coord[1], coord[2],
-+					  coord[3] ? 'S' : 'N',
-+					  coord[4], coord[5], coord[6],
-+					  coord[7] ? 'W' : 'E');
-+
-+	wwan_hwsim_nmea_skb_push_sentence(skb,
-+					  "$GPRMC,%02u%02u%02u.000,A,%02u%02u.%04u,%c,%03u%02u.%04u,%c,0.02,31.66,%02u%02u%02u,,,A",
-+					  tm.tm_hour, tm.tm_min, tm.tm_sec,
-+					  coord[0], coord[1], coord[2],
-+					  coord[3] ? 'S' : 'N',
-+					  coord[4], coord[5], coord[6],
-+					  coord[7] ? 'W' : 'E',
-+					  tm.tm_mday, tm.tm_mon + 1,
-+					  (unsigned int)tm.tm_year - 100);
-+
-+	wwan_port_rx(port->wwan, skb);
-+}
-+
-+static int wwan_hwsim_nmea_emul_start(struct wwan_port *wport)
-+{
-+	struct wwan_hwsim_port *port = wwan_port_get_drvdata(wport);
-+
-+	timer_setup(&port->nmea_emul.timer, wwan_hwsim_nmea_emul_timer, 0);
-+	wwan_hwsim_nmea_emul_timer(&port->nmea_emul.timer);
-+
-+	return 0;
-+}
-+
-+static void wwan_hwsim_nmea_emul_stop(struct wwan_port *wport)
-+{
-+	struct wwan_hwsim_port *port = wwan_port_get_drvdata(wport);
-+
-+	timer_delete_sync(&port->nmea_emul.timer);
-+}
-+
-+static int wwan_hwsim_nmea_emul_tx(struct wwan_port *wport, struct sk_buff *in)
-+{
-+	consume_skb(in);
-+
-+	return 0;
-+}
-+
-+static const struct wwan_port_ops wwan_hwsim_nmea_emul_port_ops = {
-+	.start = wwan_hwsim_nmea_emul_start,
-+	.stop = wwan_hwsim_nmea_emul_stop,
-+	.tx = wwan_hwsim_nmea_emul_tx,
-+};
-+#endif
-+
- static struct wwan_hwsim_port *wwan_hwsim_port_new(struct wwan_hwsim_dev *dev,
- 						   enum wwan_port_type type)
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index ade8bbffc93e..edee5ff48f28 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -361,7 +361,8 @@ static void wwan_port_destroy(struct device *dev)
  {
-@@ -203,6 +310,10 @@ static struct wwan_hwsim_port *wwan_hwsim_port_new(struct wwan_hwsim_dev *dev,
+ 	struct wwan_port *port = to_wwan_port(dev);
  
- 	if (type == WWAN_PORT_AT)
- 		ops = &wwan_hwsim_at_emul_port_ops;
-+#if IS_ENABLED(CONFIG_GNSS)
-+	else if (type == WWAN_PORT_NMEA)
-+		ops = &wwan_hwsim_nmea_emul_port_ops;
-+#endif
- 	else
+-	ida_free(&minors, MINOR(port->dev.devt));
++	if (dev->class == &wwan_class)
++		ida_free(&minors, MINOR(dev->devt));
+ 	mutex_destroy(&port->data_lock);
+ 	mutex_destroy(&port->ops_lock);
+ 	kfree(port);
+@@ -440,6 +441,41 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
+ 	return dev_set_name(&port->dev, "%s", buf);
+ }
+ 
++/* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
++static int wwan_port_register_wwan(struct wwan_port *port)
++{
++	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
++	char namefmt[0x20];
++	int minor, err;
++
++	/* A port is exposed as character device, get a minor */
++	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
++	if (minor < 0)
++		return minor;
++
++	port->dev.class = &wwan_class;
++	port->dev.devt = MKDEV(wwan_major, minor);
++
++	/* allocate unique name based on wwan device id, port type and number */
++	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
++		 wwan_port_types[port->type].devsuf);
++
++	/* Serialize ports registration */
++	mutex_lock(&wwan_register_lock);
++
++	__wwan_port_dev_assign_name(port, namefmt);
++	err = device_add(&port->dev);
++
++	mutex_unlock(&wwan_register_lock);
++
++	if (err)
++		return err;
++
++	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
++
++	return 0;
++}
++
+ struct wwan_port *wwan_create_port(struct device *parent,
+ 				   enum wwan_port_type type,
+ 				   const struct wwan_port_ops *ops,
+@@ -448,8 +484,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ {
+ 	struct wwan_device *wwandev;
+ 	struct wwan_port *port;
+-	char namefmt[0x20];
+-	int minor, err;
++	int err;
+ 
+ 	if (type > WWAN_PORT_MAX || !ops)
  		return ERR_PTR(-EINVAL);
+@@ -461,17 +496,9 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	if (IS_ERR(wwandev))
+ 		return ERR_CAST(wwandev);
  
-@@ -478,9 +589,10 @@ static int __init wwan_hwsim_init_devs(void)
- 		list_add_tail(&dev->list, &wwan_hwsim_devs);
- 		spin_unlock(&wwan_hwsim_devs_lock);
- 
--		/* Create a couple of ports per each device to accelerate
-+		/* Create a few various ports per each device to accelerate
- 		 * the simulator readiness time.
- 		 */
-+
- 		for (j = 0; j < 2; ++j) {
- 			port = wwan_hwsim_port_new(dev, WWAN_PORT_AT);
- 			if (IS_ERR(port))
-@@ -490,6 +602,18 @@ static int __init wwan_hwsim_init_devs(void)
- 			list_add_tail(&port->list, &dev->ports);
- 			spin_unlock(&dev->ports_lock);
- 		}
-+
-+#if IS_ENABLED(CONFIG_GNSS)
-+		port = wwan_hwsim_port_new(dev, WWAN_PORT_NMEA);
-+		if (IS_ERR(port)) {
-+			dev_warn(&dev->dev, "failed to create initial NMEA port: %d\n",
-+				 (int)PTR_ERR(port));
-+		} else {
-+			spin_lock(&dev->ports_lock);
-+			list_add_tail(&port->list, &dev->ports);
-+			spin_unlock(&dev->ports_lock);
-+		}
-+#endif
+-	/* A port is exposed as character device, get a minor */
+-	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
+-	if (minor < 0) {
+-		err = minor;
+-		goto error_wwandev_remove;
+-	}
+-
+ 	port = kzalloc(sizeof(*port), GFP_KERNEL);
+ 	if (!port) {
+ 		err = -ENOMEM;
+-		ida_free(&minors, minor);
+ 		goto error_wwandev_remove;
  	}
  
- 	return 0;
+@@ -485,27 +512,14 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	mutex_init(&port->data_lock);
+ 
+ 	port->dev.parent = &wwandev->dev;
+-	port->dev.class = &wwan_class;
+ 	port->dev.type = &wwan_port_dev_type;
+-	port->dev.devt = MKDEV(wwan_major, minor);
+ 	dev_set_drvdata(&port->dev, drvdata);
++	device_initialize(&port->dev);
+ 
+-	/* allocate unique name based on wwan device id, port type and number */
+-	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
+-		 wwan_port_types[port->type].devsuf);
+-
+-	/* Serialize ports registration */
+-	mutex_lock(&wwan_register_lock);
+-
+-	__wwan_port_dev_assign_name(port, namefmt);
+-	err = device_register(&port->dev);
+-
+-	mutex_unlock(&wwan_register_lock);
+-
++	err = wwan_port_register_wwan(port);
+ 	if (err)
+ 		goto error_put_device;
+ 
+-	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
+ 	return port;
+ 
+ error_put_device:
 -- 
 2.25.1
 
