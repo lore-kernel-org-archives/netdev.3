@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24F41EA7DB;
-	Wed, 31 Dec 2025 06:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A37242D78;
+	Wed, 31 Dec 2025 06:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767163945; cv=none; b=WyBlyxYtrlXUPgh2v/lKJwkfdkzQOwLzseZJY3Dbsv0If12DSY+AXndMmTM6GTyiKvhSphZeRcwuTFP09if9iW6zK0bZnsGebhXakuFJYV2uZHZ6QqPoSC/dZFtcFenZabVqSGLrH3eIpXLeVR9ZrxrbJBtLvsYouJMGFtd8fVg=
+	t=1767163945; cv=none; b=SpjoIIzQeRELkRyWNGduof029cmwewqSxqHU4VN/hGufcb7tcsRuRUsu0bRgonaNNG3L4kQqyy+JzGrZOryoE5wv5ui4BDy08HDvW694sAcnTj2h/RkrN61qSVmSkVYy8D9hoySdDGQ2eaMNVGvL9rxysN8PXSAroQMOt9wPZWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767163945; c=relaxed/simple;
-	bh=I9JIU3SIGt6FKIY7i03S22dMA4oabfNXX+DC2RnlK48=;
+	bh=DOndyKOPHC+XjWwo8IQmKVVgE+2YxR9PrmL7vaEb2Uk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QqV7/csAHjS5mNLc8h462yhjaYB5nHxQXVzOf+6NQU1RImPMuIgGYMc5/gJQ1sDtHg89FHnjNsiv1omiD5bMiPFrYHvZQV17Fj5Y6upck+TVTU44uaRjC+Q6c5hO8fUEnSlp2PUYmULLZvTQG3mpxcPeV0Z3Ro8sF7+5A72f2uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Mpm/GyOE; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=HTAuP6Gr21V9KTnH1weOQORnQwZSbosydTzZCJWySWFn74F9MrCpMCHMzIgFJd1Is+w8yFed5JZwUnlZLTXxcEPMmnTyFp6zqjDktTuDElmAkYcxxv/u8dDu1j7f88oblZMBhbXNSN3xVzc0fK7/3YKYXPnMMn63X/otXH7//G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NXSYGWXs; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Mpm/GyOE"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NXSYGWXs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=5L
-	juFc+OGsJqsd6K9ulKKKy+F3uWfNR62IZhQjb+JGc=; b=Mpm/GyOEIAxQcsKdWT
-	YUZHkc9KexNa0HkhwM9okBTbF3jsDaXXqTKpsMmmGepuJPRLrc1M29UAKFJcE/zA
-	mS34Y415GrT4JOLBRDttbFZLWRfxKQY1hBFbeMGbkchq3E+zAyn1rgmmfM8jL644
-	rJCX15j0fCTWm+tu/4l7URFAk=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=vk
+	5iutERJA27zH/tcNhHf5mNR2d/fQros4GcMViC0s4=; b=NXSYGWXswHbeC7loCt
+	kJ2iA6Kjweahavq0YIsgKtRqihM5DtYtuOV1t2ap6j8MEUySaopfZh94eT6l/bT9
+	SlyXqw4AKiU1hgomkbAuCP4b6fibRdUAaajEkVB4RG+0SDeGK/XvogyOJlHHqjkv
+	eCzAt/anWtri+S7tifFGmOCNw=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDHpCPmx1Rp9FyCDg--.29927S9;
-	Wed, 31 Dec 2025 14:51:41 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDHpCPmx1Rp9FyCDg--.29927S3;
+	Wed, 31 Dec 2025 14:51:32 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -36,11 +36,10 @@ To: loic.poulain@oss.qualcomm.com,
 	pabeni@redhat.com,
 	mani@kernel.org
 Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [net-next v3 7/8] net: wwan: prevent premature device unregister when NMEA port is present
-Date: Wed, 31 Dec 2025 14:51:08 +0800
-Message-Id: <20251231065109.43378-8-slark_xiao@163.com>
+	linux-kernel@vger.kernel.org
+Subject: [net-next v3 1/8] net: wwan: core: remove unused port_id field
+Date: Wed, 31 Dec 2025 14:51:02 +0800
+Message-Id: <20251231065109.43378-2-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251231065109.43378-1-slark_xiao@163.com>
 References: <20251231065109.43378-1-slark_xiao@163.com>
@@ -51,100 +50,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHpCPmx1Rp9FyCDg--.29927S9
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAr1DXF4fJrWxGw4fCw1xKrg_yoW5Cw4rpa
-	n0gas8KrWkGr47ur43tF47XFWrCF4xC3yIvry0g34Skr1DtryFvrZ7CF90vFZ8JFyxCFy5
-	urZ8tay8u3y7Cr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jx6p9UUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCvx6gBWlUx-6C3wAA3d
+X-CM-TRANSID:_____wDHpCPmx1Rp9FyCDg--.29927S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw15Jr48Kw1DZF1fKw17ZFb_yoWkGwbEkr
+	nYvrZ5Z348CFyvvr42gF43ZFWFvF4IqF4kuwnaqrZ3AFWDXrWrW3Z8XFnrWrn8ur18ZrZr
+	WrZrXFs2vr1fKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8rnY7UUUUU==
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC6BSeA2lUx-QItQAA3S
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-The WWAN core unregisters the device when it has no remaining WWAN ops
-or child devices. For NMEA port types, the child is registered under
-the GNSS class instead of WWAN, so the core incorrectly assumes there
-are no children and unregisters the WWAN device too early. This leads
-to a second unregister attempt after the NMEA device is removed.
+It was used initially for a port id allocation, then removed, and then
+accidently introduced again, but it is still unused. Drop it again to
+keep code clean.
 
-To fix this issue, we register a virtual WWAN port device along the
-GNSS device, this ensures the WWAN device remains registered until
-all associated ports, including NMEA, are properly removed.
-
-Reported-by: Daniele Palmas <dnlplm@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAGRyCJE28yf-rrfkFbzu44ygLEvoUM7fecK1vnrghjG_e9UaRA@mail.gmail.com/
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 ---
- drivers/net/wwan/wwan_core.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/wwan/wwan_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 93998b498454..40a57fb0aa0b 100644
+index 63a47d420bc5..ade8bbffc93e 100644
 --- a/drivers/net/wwan/wwan_core.c
 +++ b/drivers/net/wwan/wwan_core.c
-@@ -455,7 +455,7 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
- }
- 
- /* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
--static int wwan_port_register_wwan(struct wwan_port *port)
-+static int wwan_port_register_wwan(struct wwan_port *port, bool cdev)
- {
- 	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
- 	char namefmt[0x20];
-@@ -467,7 +467,8 @@ static int wwan_port_register_wwan(struct wwan_port *port)
- 		return minor;
- 
- 	port->dev.class = &wwan_class;
--	port->dev.devt = MKDEV(wwan_major, minor);
-+	if (cdev)
-+		port->dev.devt = MKDEV(wwan_major, minor);
- 
- 	/* allocate unique name based on wwan device id, port type and number */
- 	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
-@@ -625,6 +626,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
- 				   struct wwan_port_caps *caps,
- 				   void *drvdata)
- {
-+	bool cdev = (type == WWAN_PORT_NMEA) ? false : true;
- 	struct wwan_device *wwandev;
- 	struct wwan_port *port;
- 	int err;
-@@ -659,16 +661,20 @@ struct wwan_port *wwan_create_port(struct device *parent,
- 	dev_set_drvdata(&port->dev, drvdata);
- 	device_initialize(&port->dev);
- 
--	if (port->type == WWAN_PORT_NMEA)
--		err = wwan_port_register_gnss(port);
--	else
--		err = wwan_port_register_wwan(port);
--
-+	err = wwan_port_register_wwan(port, cdev);
- 	if (err)
- 		goto error_put_device;
- 
-+	if (type == WWAN_PORT_NMEA) {
-+		err = wwan_port_register_gnss(port);
-+		if (err)
-+			goto error_port_unregister;
-+	}
-+
- 	return port;
- 
-+error_port_unregister:
-+	wwan_port_unregister_wwan(port);
- error_put_device:
- 	put_device(&port->dev);
- error_wwandev_remove:
-@@ -695,8 +701,8 @@ void wwan_remove_port(struct wwan_port *port)
- 
- 	if (port->type == WWAN_PORT_NMEA)
- 		wwan_port_unregister_gnss(port);
--	else
--		wwan_port_unregister_wwan(port);
-+
-+	wwan_port_unregister_wwan(port);
- 
- 	put_device(&port->dev);
- 
+@@ -43,7 +43,6 @@ static struct dentry *wwan_debugfs_dir;
+  *
+  * @id: WWAN device unique ID.
+  * @dev: Underlying device.
+- * @port_id: Current available port ID to pick.
+  * @ops: wwan device ops
+  * @ops_ctxt: context to pass to ops
+  * @debugfs_dir:  WWAN device debugfs dir
+@@ -51,7 +50,6 @@ static struct dentry *wwan_debugfs_dir;
+ struct wwan_device {
+ 	unsigned int id;
+ 	struct device dev;
+-	atomic_t port_id;
+ 	const struct wwan_ops *ops;
+ 	void *ops_ctxt;
+ #ifdef CONFIG_WWAN_DEBUGFS
 -- 
 2.25.1
 
