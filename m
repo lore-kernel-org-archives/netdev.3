@@ -1,194 +1,98 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms-10.1blu.de (ms-10.1blu.de [178.254.4.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416D527C84B
-	for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 23:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2C0274B39;
+	Wed, 31 Dec 2025 23:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.254.4.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767223261; cv=none; b=AeM6h42qan41HpFceGMmrydXVr7geXBv526PoifoqXqPLuypy1XF2V2fcyveNITviM62oPs6PgxCWe/8m7mW+itwYlzXAZZKrR7f5btygh7aY/xBS+5JTa54AXamDrQyeQIvVk2E604wkKdoZRJMCi+3hCMwWGVm/ELDIh49S0c=
+	t=1767225482; cv=none; b=cOJ336dpDLMrlA5P9S3dNdQ1bXZiR6t5KbKc5j9Ztr3werdxm0Jcv2Fsdd0kZ4XWHv2reQBnxPb67vYLuXG3OIUIhVyecNpgByxL1JZGwFfiKkX8nBTgsPPSfuuytxlQlwETvWO55tGsGDQRk3ZQsHGzFcmCYuiLnVhbVRQDePI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767223261; c=relaxed/simple;
-	bh=QbQeTPKkvqwDTi9jphXlB0QOUtZZZiT4Q18MidmASV8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GIuURj+HW60k77/7oBZ23Rv+z8BvA8cdrBwXQjlzWlocVxeeqiYoutvU4gCYyxmqxk41Ptn3iPepnRZ7bVxxAcbDZJu+S9LC8TT7z2M5jneI2SM2MsXF7il44HZFkWVJhlq8xSv4FZ83VScULZUeOoNMQbSLL8NahycpyY50ndQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V5ua38zc; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--maze.bounces.google.com
+	s=arc-20240116; t=1767225482; c=relaxed/simple;
+	bh=ZAftdil7U/hEEIVkBNbrvRY0U5R+SWZECk14nJx5yZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qQ5CNlE9cdWYwOLSgxrkH3vtmnorLmUzOPqfxSaftiUQiv+lq0X8q+F3Wqy9odxWplw2l1u+qo7Yi38fmlnh4XzStAR12wl19gLI8S/bKnfHaV8OON7jD+zWCO15EScEcXP8Oe4hqOd4vEKJQBtea3pWYos1exNDOsdYuOkIgoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pace-systems.de; spf=pass smtp.mailfrom=pace-systems.de; dkim=pass (2048-bit key) header.d=pace-systems.de header.i=@pace-systems.de header.b=dfRkWWFm; arc=none smtp.client-ip=178.254.4.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pace-systems.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pace-systems.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V5ua38zc"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b993eb2701bso11346751a12.0
-        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 15:21:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767223259; x=1767828059; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Fkw4pJwbf+RiOcgktvh2leaGPbqkfTxYnH0P1Ik49Q=;
-        b=V5ua38zcVzyEbjtiknV/tnbR2joQ4EIFPjYyQ98e0A4d2jNRaHHVOA6mlq+eKw5ndl
-         skhJVQZpGE3VcVjPiBMJEC0gHBGtLYxODPq6zyECUdbL1X4cUl6E60FeR8YtauHFNE/8
-         w6eAs2+XZPoFOu/t7TtONN47pW2wkU1alLOEcn+AzhwbuH1FN+X2wP1i+7f+IyJ1LI37
-         b7O2Kqo1A//JlXsigmb1jTZh0dTDXmMUEUw093J8XttO7IMIKhtW4c0GLtkogcFmoN3O
-         QJ2TU8sS0RghBF7tIujBQ0sjx9UDQ2y4nyv85Es3utUo3TFR38P29ju9b/QSq2G9WQZK
-         0p2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767223259; x=1767828059;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Fkw4pJwbf+RiOcgktvh2leaGPbqkfTxYnH0P1Ik49Q=;
-        b=xPuRC4iJT/9sjNlxAtrfAxwSySwLRNscD1+wZ4vsUJj5tDNVtta3NGUNlunU/K97Kk
-         vzo9tdhDS2rMtbUQa+sA1JZiLQVnwKjAqK4KLNk1e76ceFTyqDknbFE/OIKr/IaYhp86
-         QqBXZTa/GBEE1utx1EwcoqUacnN++LQ6H2ScdDz2cf/j3gC2xcFn7t3If/Lww7Z6LfC0
-         QHLiVXPlpYDasDc/CwmNujJfuUQrGC6yUQ9BnvSObgDsviuo8eeR6t1K4qWo17+taR0l
-         9JMUvlIHqkGxtw71m+SupigGJFyV3iE0PgA9pEr+hbALrIKsfmoDzI8Whdeo+adiM8V1
-         kbbA==
-X-Gm-Message-State: AOJu0YzTnv2Ogbmm+P6H7S1XKUhFmNcGk7X6YzNfRl6/sK6eJh2kU7S/
-	1nWH+NgiSv6MrAageDwCqTyuFLcEp8XRPkbQSNobOfu40Yn4+fSv08O5KQMU1faUZ1WbdPAQIg=
-	=
-X-Google-Smtp-Source: AGHT+IGQ1Yo74Lfs+XDagvF/do2RICQ0VFYGB7N4aHuu3r4sO5GbnwTUXgQ19dSEciYhPBpJEkJa6lWY
-X-Received: from dlbsi4.prod.google.com ([2002:a05:7022:b884:b0:119:9f33:34a6])
- (user=maze job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:f401:b0:119:fb9c:4ebb
- with SMTP id a92af1059eb24-121722ebbafmr31057680c88.30.1767223259510; Wed, 31
- Dec 2025 15:20:59 -0800 (PST)
-Date: Wed, 31 Dec 2025 15:20:48 -0800
+	dkim=pass (2048-bit key) header.d=pace-systems.de header.i=@pace-systems.de header.b="dfRkWWFm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=pace-systems.de; s=blu0479712; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=k/kZyK6TqAfwByqwpeHhw3JAJzGjFHO6FsGAvcnGlw8=; b=dfRkWWFmmCS/OHh/s56CQOoFTl
+	txJhzr56PE7YmQZBtlvQjxdgtyJChzYD7xg1pGvghSBaV8uVwgY/qGRIXKQk4nXOHSuddfL1N4FB7
+	Loy5LgGlS3K56SKukiYDCL+2/oHBSCfgwOo9mexwvJ+shIB64FWkxP9BbVYAXizMtVu1Oz/byagP+
+	Ei3X8xEdGbcPzqDA3c7zFpkno6YnyOjSaeGTcoLgPA4NOVqp24UIRhBWvGBQkmGiyNSozOUFfGAgT
+	QznqP34YRAZRpa03vbHzn1Bf/xV5m5iRahbJxum4/Mr5wYHU1YKIkxvxnc7yP42IKw4XsFOZhE3OH
+	6MMM0IOw==;
+Received: from [178.201.20.114] (helo=sebastian-zbook)
+	by ms-10.1blu.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <Sebastian.Wolf@pace-systems.de>)
+	id 1vb53A-007wep-Ff;
+	Wed, 31 Dec 2025 23:52:16 +0100
+From: Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
+To: Felix Fietkau <nbd@nbd.name>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Sebastian Roland Wolf <srw@root533.premium-rootserver.net>,
+	Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
+Subject: [PATCH] net: mediatek: add null pointer check for hardware offloading
+Date: Wed, 31 Dec 2025 23:52:06 +0100
+Message-ID: <20251231225206.3212871-1-Sebastian.Wolf@pace-systems.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.394.g0814c687bb-goog
-Message-ID: <20251231232048.2860014-1-maze@google.com>
-Subject: [PATCH bpf] bpf: 'fix' for undefined future potential exploits of BPF_PROG_LOAD
-From: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>
-To: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <zenczykowski@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: Linux Network Development Mailing List <netdev@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, BPF Mailing List <bpf@vger.kernel.org>, 
-	"=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>, John Fastabend <john.fastabend@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Con-Id: 282146
+X-Con-U: 0-sebastianwolf
 
-Over the years there's been a number of issues with the eBPF
-verifier/jit/codegen (incl. both code bugs & spectre related stuff).
+From: Sebastian Roland Wolf <srw@root533.premium-rootserver.net>
 
-It's an amazing but very complex piece of logic, and I don't think
-it's realistic to expect it to ever be (or become) 100% secure.
+Add a null pointer check to prevent kernel crashes when hardware
+offloading is active on MediaTek devices.
 
-For example we currently have KASAN reporting buffer length violation
-issues on 6.18 (which may or may not be due to eBPF subsystem, but are
-worrying none-the-less)
+In some edge cases, the ethernet pointer or its associated netdev
+element can be NULL. Checking these pointers before access is
+mandatory to avoid segmentation faults and kernel oops.
 
-Blocking bpf(BPF_PROG_LOAD, ...) is the only sure fire way to guarantee
-the inability to exploit the eBPF subsystem.
-In comparison other eBPF operations are pretty benign.
-Even map creation is usually at most a memory DoS, furthermore it
-remains useful (even with prog load disabled) due to inner maps.
+This improves the robustness of the validation check for mtk_eth
+ingress devices introduced in commit 73cfd947dbdb ("net: mediatek:
+add support for ingress traffic offloading").
 
-This new sysctl is designed primarily for verified boot systems,
-where (while the system is booting from trusted/signed media)
-BPF_PROG_LOAD can be enabled, but before untrusted user
-media is mounted or networking is enabled, BPF_PROG_LOAD
-can be outright disabled.
+Fixes: 73cfd947dbdb ("net: mediatek: add support for ingress traffic offloading")
+net: mediatek: Add null pointer check to prevent crashes with active hardware offloading.
 
-This provides for a very simple way to limit eBPF programs to only
-those signed programs that are part of the verified boot chain,
-which has always been a requirement of eBPF use in Android.
-
-I can think of two other ways to accomplish this:
-(a) via sepolicy with booleans, but it ends up being pretty complex
-    (especially wrt verifying the correctness of the resulting policies)
-(b) via BPF_LSM bpf_prog_load hook, which requires enabling additional
-    kernel options which aren't necessarily worth the bother,
-    and requires dynamically patching the kernel (frowned upon by
-    security folks).
-
-This approach appears to simply be the most trivial.
-
-I've chosed to return EUNATCH 'Protocol driver not attached.'
-to separate it from EPERM and make it clear the eBPF program loading
-subsystem has been outright disabled (detached).  There aren't
-any permissions you could gain to make things work again (short
-of a reboot/kexec).
-
-It is intentionally kernel global and doesn't affect cBPF,
-which has various runtime use cases (incl. tcpdump style dynamic
-socket filters and seccomp sandboxing) and thus cannot be disabled,
-but (as experience shows) is also much less dangerous (mainly due
-to being much simpler).
-
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej =C5=BBenczykowski <maze@google.com>
+Signed-off-by: Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
 ---
- Documentation/admin-guide/sysctl/kernel.rst |  9 +++++++++
- kernel/bpf/syscall.c                        | 14 ++++++++++++++
- 2 files changed, 23 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/ad=
-min-guide/sysctl/kernel.rst
-index f3ee807b5d8b..4906ef08c741 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -1655,6 +1655,15 @@ entry will default to 2 instead of 0.
- =3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-=20
-=20
-+disable_bpf_prog_load
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+Writing 1 to this entry will cause all future invocations of
-+``bpf(BPF_PROG_LOAD, ...)`` to fail with -EUNATCH, thus effectively
-+permanently disabling the instantiation of new eBPF programs.
-+Once set to 1, this cannot be reset back to 0.
-+
-+
- warn_limit
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-=20
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 6589acc89ef8..ef655ff501e7 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -67,6 +67,8 @@ static DEFINE_SPINLOCK(link_idr_lock);
- int sysctl_unprivileged_bpf_disabled __read_mostly =3D
- 	IS_BUILTIN(CONFIG_BPF_UNPRIV_DEFAULT_OFF) ? 2 : 0;
-=20
-+int sysctl_disable_bpf_prog_load =3D 0;
-+
- static const struct bpf_map_ops * const bpf_map_types[] =3D {
- #define BPF_PROG_TYPE(_id, _name, prog_ctx_type, kern_ctx_type)
- #define BPF_MAP_TYPE(_id, _ops) \
-@@ -2891,6 +2893,9 @@ static int bpf_prog_load(union bpf_attr *attr, bpfptr=
-_t uattr, u32 uattr_size)
- 				 BPF_F_TOKEN_FD))
- 		return -EINVAL;
-=20
-+	if (sysctl_disable_bpf_prog_load)
-+		return -EUNATCH;
-+
- 	bpf_prog_load_fixup_attach_type(attr);
-=20
- 	if (attr->prog_flags & BPF_F_TOKEN_FD) {
-@@ -6511,6 +6516,15 @@ static const struct ctl_table bpf_syscall_table[] =
-=3D {
- 		.extra1		=3D SYSCTL_ZERO,
- 		.extra2		=3D SYSCTL_TWO,
- 	},
-+	{
-+		.procname	=3D "disable_bpf_prog_load",
-+		.data		=3D &sysctl_disable_bpf_prog_load,
-+		.maxlen		=3D sizeof(sysctl_disable_bpf_prog_load),
-+		.mode		=3D 0644,
-+		.proc_handler	=3D proc_dointvec_minmax,
-+		.extra1		=3D SYSCTL_ONE,
-+		.extra2		=3D SYSCTL_ONE,
-+	},
- 	{
- 		.procname	=3D "bpf_stats_enabled",
- 		.data		=3D &bpf_stats_enabled_key.key,
---=20
-2.52.0.394.g0814c687bb-goog
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index e9bd32741983..6900ac87e1e9 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -270,7 +270,8 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 		flow_rule_match_meta(rule, &match);
+ 		if (mtk_is_netsys_v2_or_greater(eth)) {
+ 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
+-			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
++			if (idev && eth && eth->netdev[0] &&
++			    idev->netdev_ops == eth->netdev[0]->netdev_ops) {
+ 				struct mtk_mac *mac = netdev_priv(idev);
+ 
+ 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
+-- 
+2.51.0
 
