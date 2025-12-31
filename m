@@ -1,144 +1,131 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC322FB0B3
-	for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 18:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905522FF15B
+	for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 18:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767204842; cv=none; b=CoZT9ZgwSh0A+UNfEIT/vHCu4BpkQ7RzeBTyPMSazV6GmSHZyX48ccIqrCndSkS5cbwm9EWp/jOPouDsNZFdMVZcTjdP/a6dTLxD5Mll14ENiXO8RZc+42qr/yeueBKfFMtoWjrT5MQgebxbtj2TO08YKpMrCdbtOMoxDhdeW50=
+	t=1767205041; cv=none; b=Yhi5Y80hW4JkfByynAooZMJZqbNKlMWkVmf5slB27cRl/KzzRcoR7/7RwHJHgv4pq+QyKQ+9DOVCN7Trc/QUiQsl45QPzjc0MlWt61j++TqvlOdm8uT7YC/jSyZuAf+IYln2PqJ5iBT1U2cFfRAVZAv0LVx3nZ0HJr3+fhZRf5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767204842; c=relaxed/simple;
-	bh=l0LRvl1kqcmBpJ+oiXL+hUtJD8MnLQw7yRd+cy/68MI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TzIzLYWgVIZVNNJkn/jfaWHeel5ooymMhfxobosUClQCIxvoMmbeIoi3NxrhubIwNd1sRWE5wgIR6Uo8TUVWGo25+l3PcuVN10F36qfmZ2tvuK9O0iyjNBnD6EVkVhp7UdQg/FQSyblA/n4wa5jupca6f6qRgy0cJymjDe7d16Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfLzlWNU; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1767205041; c=relaxed/simple;
+	bh=DtW9jydX6kRSz+VzrOTs9HRP1q8pSatXePBnRhDvGcc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SvEd3N7eKlZ5RbG47A+vD7dbqJEc9t2gSHaaOdIHUA4D3gOTwCXK4kZJMKQdQcIR+QcsmiZFsj7WtJyjKKmi8DfF23+AhhCn/ueZvJl+vddPEYlX8Oj1dAgD1dMe6ZoSuTkZx0FDCJj9m8qsulpmCnB2n0/s7kTJ+6OTnwupX4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYs6QRd5; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfLzlWNU"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso5461414f8f.2
-        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 10:14:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYs6QRd5"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a09d981507so80740685ad.1
+        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 10:17:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767204839; x=1767809639; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=80wuQlyFH/FTtp28IkHfYhaeWqE7rS7z6vp3Trh+jc4=;
-        b=OfLzlWNU9tNh19lSAgaTDAAozHeFHEju+uWNAjP9QTUwb8+5hd+Nq9C8dAiR0RPdYg
-         J2czUTeqjfPVMQ4ePBDiPsfUjuCNlI2iAxFhljFDCeoTJ5vDlXEsrqi8GN7n0iQKa483
-         YmLoaPgSHLGADSqNRv6rmSRSB+8oHnY6/hy3v82ss0yvfk6125AncvXKghhsQCzenEuJ
-         drtwjRNp8bU1+aDi+7jqdM8/bS5plGkyolcMmSD9xvY/2jhlaG5q+eyFZ71S98AHJlmE
-         uQwtrCw9PU9u8SsPUsfe7ZLdrwA1qQpB6YMJJPwY1HzSzWxPQ0CllxHFZ/sYcgwVaXVz
-         J4wg==
+        d=gmail.com; s=20230601; t=1767205040; x=1767809840; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SXoQb1Iho9s/aJU4/V83jmA8EbXo7twbK1X6eOXoFDE=;
+        b=cYs6QRd54KTn7COi8TcmhfReUlgtg00ULE4Q4t3IoGT/xUALXfkF/OKgh7lzTOtdkQ
+         qhYvgkXY6DD+znP7OO7SfBMBIyPj4T6LRbnMvC129+5NoPHUJpHzs93EVshJ7T6woIGg
+         4n9XFkg6WBuyDK4IPXKpVquOUUmm/YFCUnSkZNvNSr8Oh0aeYnouA5iH09kMiR+sX7CB
+         IjExd+zO3nwBgUR90wuEkSZOpvilM61HcP4+e3NsXBc9/IWLLTiL/hWakn/Nwn/bDbK1
+         2CWu1Yn8MsPud0bBQds7u0B81ICEf2OhnluR5vXovSV4rRxgjOVlvujiDPRMCKTgYYvx
+         09cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767204839; x=1767809639;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=80wuQlyFH/FTtp28IkHfYhaeWqE7rS7z6vp3Trh+jc4=;
-        b=aImCC/y4dOu0UERjZ3WMiDHhmZTWYPOtTmOSVbI1hknuwTOUl70r2tLjrGG6n8hbVv
-         eL2hxxOA0BG21n1wb+pVXHJUA1tDc0g3lsQFjutexk5fCqCynvNrO//kPlywkI5zIqed
-         7rRf4tgxLXYic6cxlY8wIH+Hsn7crllMZnkPc6tBpH60LnS3zRXw77MfUT4bFQw6SfS8
-         3WSjxAD0z/eArgeKp9ACJGcL3kvPfHr3aI7+yZCmHLHiuAC7EzXbkIEncmoyPuBInw33
-         bMrKz/dj3exV03WPBSvbOX67GqlJKUX5xqZzGg2ClnmJduLUaJM/FzOx5+lo2aICB5bS
-         p66w==
-X-Forwarded-Encrypted: i=1; AJvYcCVSM8f7C7wIz03XaswEteLIdGuf4hoNwuwS1W4agJcYRzuoOiiEqBeerYl4SHOzqi+b7JbxZjg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOE32uyTdfhzkRZD7nTVDHWSUbDG/o5aK0SC0RmF1PWtj0HyZQ
-	RonpmpERJoDtivn9JhTsDtMJn6w09/qbkexTbLD8rNu8nSSjX8shXu9XTjQAJi7s1EQy2bOX5bN
-	Nwm9LfmSyecoWjGYNmoeH3ATrWH/KmqU=
-X-Gm-Gg: AY/fxX4cXTvCKdMCXhDisZqfakwzHOYsEnBAtKzBVMF/4RSyrw9cURTsJGoKJ3ib7MB
-	/SXt/Bh9DQvf7KEHb96m1JWEAwEwCjavNt55vcrQ1J2pefi0ObxtL3usmLjV7jjT52WjKRp2peg
-	yyT8Sidqin/5yhYl72I+5M9Egm7LFTvrz15j3A1tVw+AmUh7EMY1WTQC6QaqA6LV8snJcba9bdE
-	4RN3YfpMdT6N2ywxCl7oaJJSaVDCD0sfEubkaZA6S24NNegTuPwAZv+fUagJf6CYp8e0JHTqp78
-	1dhSHNjl9ETXaDN37AQlxE7pEaFv
-X-Google-Smtp-Source: AGHT+IE7rn8UGO5FxmIqC7DPe8kHIdUtmNgCuEKioyalqiNjU4yifPpIQxEAl6/RRsYuU+/knbKXbX9dpW9nJ6ADD+Y=
-X-Received: by 2002:a05:6000:611:b0:431:3ba:1188 with SMTP id
- ffacd0b85a97d-4324e4c70e5mr40336157f8f.3.1767204838828; Wed, 31 Dec 2025
- 10:13:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767205040; x=1767809840;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXoQb1Iho9s/aJU4/V83jmA8EbXo7twbK1X6eOXoFDE=;
+        b=RqZhFF2bz9TuLgej1d7nShbhdYZ2W9aepupMfgEUJFXLeWlQJ3S4JaC7lW7BurCxqp
+         aJcg46y0qBz/RYenInp2pkfPI6pCdVRpIqv/AOI1iZZBeNG84Zatv4BzhufRY4BSGonS
+         WjZ0x5cJkUDK8TQYGJaCl4F9JfUFDLTDILnSzl5wtef4HoRCwrTQMTyvzmVbPSv88q5d
+         s4jfg4ipwpzV8zKmdirzUJKTlTIMCKNq65sHP0YJljnddT2Ta7DPWhHZjMWlxSPXlB0Y
+         geOUjyXhCXJFnTwkFMwuzrzoukqjbkI+IGT8oNLQzJb0jUte05uEpcTrFLwXKfX6UY9L
+         XODg==
+X-Forwarded-Encrypted: i=1; AJvYcCXj0H9lzShV6f+vXtE2xzF1POr77xcjcsQddk84Xkgyepkg7WvQEcYdibyNAGR2oY8uwLHFYyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd4mAhSCZi+5AN7G+wO5R7MkNPmituYtOn+SXqYjUAoU1QKDBj
+	Oo5MajRbOGNBk5OyaSrMZcNUIi0ZnZDrqcYlCxcvEyZIXCoogmMsfVQH
+X-Gm-Gg: AY/fxX4zz1BlOe4vP4hK4iS0c8hNketQrFD/drv3FTUtSPfGrYZk/bpkFS27MhxJBma
+	VU10smE3dSJb9S28m7cbJgleMeuvm9voyT0pBxQkruiGa6mLCLjDDInbDPNJJlD2CJS0exTrA3O
+	7MK2Y/HQzwe73rbP8YcvNOP/JuE3pUzz4EKxQTQErrhkhP0GPJTsEvBTA1cOHKOv34usGJSQDdF
+	kH/qfuwsXVL25nHvZcIc+CwHGARZ88hYc9n0vwG2dJ/FEVpDEeSHzNWliAlD6G7hWJz4EYJTO1j
+	6zFJHyKjaac3FBynps6HVGMZC6FusQKH5uz013zgCC7h3KXKJJzdjPhoNtrsod8Ie65zat4kDcp
+	vsnWiUmHBgYNrlPLEz+3zKjY4JeURHye5a6zW+hwPjNavsr/OKK012/jkH8HcT8GA/d9NJ/rjwn
+	olrPTf1dmeUl16T2FE
+X-Google-Smtp-Source: AGHT+IFt+YYUuQnJIjJqsNxOfFi0ONI4ZVIqnGrLeLLNJzP5CtQl3rVTd4nmjmgrcpUv1MsNBMmBaA==
+X-Received: by 2002:a17:903:41c7:b0:294:8c99:f318 with SMTP id d9443c01a7336-2a2f0caa8eemr448221945ad.3.1767205039865;
+        Wed, 31 Dec 2025 10:17:19 -0800 (PST)
+Received: from rakuram-MSI ([2401:4900:93ef:93d6:a0f7:dedb:d261:86b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c66473sm310787225ad.13.2025.12.31.10.17.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 10:17:19 -0800 (PST)
+From: Rakuram Eswaran <rakuram.e96@gmail.com>
+To: rakuram.e96@gmail.com,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH 0/2] can: add dummy_can termination and update SocketCAN docs
+Date: Wed, 31 Dec 2025 23:43:14 +0530
+Message-ID: <20251231-can_doc_update_v1-v1-0-97aac5c20a35@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231173633.3981832-6-csander@purestorage.com>
- <e9a1bd633fb4bb3d2820f63f41a8dd60d8c9c5e3c699fa56057ae393ef2f31d0@mail.kernel.org>
- <CADUfDZpSSikiZ8d8eWvfucj=Cvhc=k-sHN03EVExGBQ4Lx+23Q@mail.gmail.com>
-In-Reply-To: <CADUfDZpSSikiZ8d8eWvfucj=Cvhc=k-sHN03EVExGBQ4Lx+23Q@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 31 Dec 2025 10:13:47 -0800
-X-Gm-Features: AQt7F2oHF_qxr3_KPJ-VT5eeYhG4tvvvWKJxtIn11KSC3ODYIcBGmV1QpWm3ri0
-Message-ID: <CAADnVQKXUUNn=P=2-UECF1X7SR+oqm4xsr-2trpgTy1q+0c5FQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] selftests/bpf: make cfi_stubs globals const
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: bot+bpf-ci@kernel.org, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>, 
-	Changwoo Min <changwoo@igalia.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Benjamin Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jiri Pirko <jiri@resnulli.us>, "D. Wythe" <alibuda@linux.alibaba.com>, 
-	Dust Li <dust.li@linux.alibaba.com>, sidraya@linux.ibm.com, wenjia@linux.ibm.com, 
-	mjambigi@linux.ibm.com, Tony Lu <tonylu@linux.alibaba.com>, guwen@linux.alibaba.com, 
-	Shuah Khan <shuah@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	"open list:HID CORE LAYER" <linux-input@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>, sched-ext@lists.linux.dev, 
-	linux-rdma@vger.kernel.org, linux-s390 <linux-s390@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Chris Mason <clm@meta.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20251228-can_doc_update_v1-33b15a48aff7
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767203695; l=1574; i=rakuram.e96@gmail.com; s=20251022; h=from:subject:message-id; bh=c2Ukyvmu3x+ZNm/g42TZwi6hwotnurZ3OlsKNTQ8zxQ=; b=4+zCI5bRXSp0OszcugSJ5zY1CIOEsIwO5aVMoNPNxZeR7cbFHZ23mqJw9rOT5QeZSyqBic/dV WUaTO54DYpPAnwr4U3ONOj7FQWwsNBr0fDhkzuBKah6Dfx9O5frez/I
+X-Developer-Key: i=rakuram.e96@gmail.com; a=ed25519; pk=swrXGNLB3jH+d6pqdVOCwq0slsYH5rn9IkMak1fIfgA=
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 31, 2025 at 10:09=E2=80=AFAM Caleb Sander Mateos
-<csander@purestorage.com> wrote:
->
-> On Wed, Dec 31, 2025 at 10:04=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
-> >
-> > > diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c b/t=
-ools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-> > > index 90c4b1a51de6..5e460b1dbdb6 100644
-> > > --- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-> > > +++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-> >
-> > [ ... ]
-> >
-> > > @@ -1275,7 +1275,7 @@ bpf_testmod_ops__test_return_ref_kptr(int dummy=
-, struct task_struct *task__ref,
-> > >       return NULL;
-> > >  }
-> > >
-> > > -static struct bpf_testmod_ops __bpf_testmod_ops =3D {
-> > > +static const struct bpf_testmod_ops __bpf_testmod_ops =3D {
-> > >       .test_1 =3D bpf_testmod_test_1,
-> > >       .test_2 =3D bpf_testmod_test_2,
-> >
-> > Is it safe to make __bpf_testmod_ops const here? In bpf_testmod_init(),
-> > this struct is modified at runtime:
-> >
-> >     tramp =3D (void **)&__bpf_testmod_ops.tramp_1;
-> >     while (tramp <=3D (void **)&__bpf_testmod_ops.tramp_40)
-> >         *tramp++ =3D bpf_testmod_tramp;
-> >
-> > Writing to a const-qualified object is undefined behavior and may cause=
- a
-> > protection fault when the compiler places this in read-only memory. Wou=
-ld
-> > the module fail to load on systems where .rodata is actually read-only?
->
-> Yup, that's indeed the bug caught by KASAN. Missed this mutation at
-> init time, I'll leave __bpf_testmod_ops as mutable.
+This patch series introduces two changes related to CAN XL support:
 
-No. You're missing the point. The whole patch set is no go.
-The pointer to cfi stub can be updated just as well.
+  1. Add termination configuration support to the dummy_can driver,
+     enabling termination testing with iproute2.
+
+  2. Update the SocketCAN documentation to describe CAN XL operation,
+     including MTU changes, bittiming/XBTR settings, mixed-mode
+     behaviour, error signalling, and example iproute2 usage.
+
+The goal of this patch series is to improve dummy_can support for termination and
+update documentation to match the recent addition of CAN XL upstream support.
+Feedback from the maintainers is highly appreciated.
+
+Base commit: 
+commit d26143bb38e2 ("Merge tag 'spi-fix-v6.19-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi")
+
+Testing was performed using the iproute2 master tree, which contains the
+required CAN XL netlink support for validating these changes.
+
+---
+Changes since RFC:
+1. Maintain dummy_can structures assignment as is
+2. Update the examples with latest iproute2 tool (v6.18.0) 
+
+---
+Rakuram Eswaran (2):
+      can: dummy_can: add CAN termination support
+      docs: can: update SocketCAN documentation for CAN XL
+
+ Documentation/networking/can.rst | 615 +++++++++++++++++++++++++++++++++------
+ drivers/net/can/dummy_can.c      |  25 +-
+ 2 files changed, 541 insertions(+), 99 deletions(-)
+---
+base-commit: d26143bb38e2546fe6f8c9860c13a88146ce5dd6
+change-id: 20251228-can_doc_update_v1-33b15a48aff7
+
+Best regards,
+-- 
+Rakuram Eswaran <rakuram.e96@gmail.com>
+
