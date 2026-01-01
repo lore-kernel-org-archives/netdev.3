@@ -1,98 +1,127 @@
-Received: from ms-10.1blu.de (ms-10.1blu.de [178.254.4.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2C0274B39;
-	Wed, 31 Dec 2025 23:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.254.4.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5209BA34
+	for <netdev@vger.kernel.org>; Thu,  1 Jan 2026 00:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767225482; cv=none; b=cOJ336dpDLMrlA5P9S3dNdQ1bXZiR6t5KbKc5j9Ztr3werdxm0Jcv2Fsdd0kZ4XWHv2reQBnxPb67vYLuXG3OIUIhVyecNpgByxL1JZGwFfiKkX8nBTgsPPSfuuytxlQlwETvWO55tGsGDQRk3ZQsHGzFcmCYuiLnVhbVRQDePI=
+	t=1767226066; cv=none; b=m3kkF+SW+lRpQfInKOfWnRSqRkVoSYTC81rdpyf2LLVi64JW+0DIWkQaJ41zdPuvI5pCctub5+1U0eUciRdDyTn06ME+sr5d2sLMxLdQopBlDgdjPfejhJ5nMzH89o44sHB+hUQ4Qu4gEIFHryDeZ/77aTlDGaJvm1U4Dpk8NAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767225482; c=relaxed/simple;
-	bh=ZAftdil7U/hEEIVkBNbrvRY0U5R+SWZECk14nJx5yZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qQ5CNlE9cdWYwOLSgxrkH3vtmnorLmUzOPqfxSaftiUQiv+lq0X8q+F3Wqy9odxWplw2l1u+qo7Yi38fmlnh4XzStAR12wl19gLI8S/bKnfHaV8OON7jD+zWCO15EScEcXP8Oe4hqOd4vEKJQBtea3pWYos1exNDOsdYuOkIgoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pace-systems.de; spf=pass smtp.mailfrom=pace-systems.de; dkim=pass (2048-bit key) header.d=pace-systems.de header.i=@pace-systems.de header.b=dfRkWWFm; arc=none smtp.client-ip=178.254.4.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pace-systems.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pace-systems.de
+	s=arc-20240116; t=1767226066; c=relaxed/simple;
+	bh=9TZdqYDvxAWJNyqKxpwV1QhwM8327YU4KxvehCryeNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M0pCoWXwLd1i+3hT4toLHgRGiaiYZ2H935onHKWGKZJ5nRz8YrF7lY9icabHL4oKsNBn/X4HdqUmnLfEv0HFjH1Pfhq9BLQZHv0bexe4KLzalotw5De5MlfBElfdfv0scZ4o6Emokw65vcf+q0fxqrIkov6N6eg1bCXGGLsoJqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W9KIOqDY; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pace-systems.de header.i=@pace-systems.de header.b="dfRkWWFm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=pace-systems.de; s=blu0479712; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=k/kZyK6TqAfwByqwpeHhw3JAJzGjFHO6FsGAvcnGlw8=; b=dfRkWWFmmCS/OHh/s56CQOoFTl
-	txJhzr56PE7YmQZBtlvQjxdgtyJChzYD7xg1pGvghSBaV8uVwgY/qGRIXKQk4nXOHSuddfL1N4FB7
-	Loy5LgGlS3K56SKukiYDCL+2/oHBSCfgwOo9mexwvJ+shIB64FWkxP9BbVYAXizMtVu1Oz/byagP+
-	Ei3X8xEdGbcPzqDA3c7zFpkno6YnyOjSaeGTcoLgPA4NOVqp24UIRhBWvGBQkmGiyNSozOUFfGAgT
-	QznqP34YRAZRpa03vbHzn1Bf/xV5m5iRahbJxum4/Mr5wYHU1YKIkxvxnc7yP42IKw4XsFOZhE3OH
-	6MMM0IOw==;
-Received: from [178.201.20.114] (helo=sebastian-zbook)
-	by ms-10.1blu.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <Sebastian.Wolf@pace-systems.de>)
-	id 1vb53A-007wep-Ff;
-	Wed, 31 Dec 2025 23:52:16 +0100
-From: Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
-To: Felix Fietkau <nbd@nbd.name>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Sebastian Roland Wolf <srw@root533.premium-rootserver.net>,
-	Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
-Subject: [PATCH] net: mediatek: add null pointer check for hardware offloading
-Date: Wed, 31 Dec 2025 23:52:06 +0100
-Message-ID: <20251231225206.3212871-1-Sebastian.Wolf@pace-systems.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9KIOqDY"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477563e28a3so68142455e9.1
+        for <netdev@vger.kernel.org>; Wed, 31 Dec 2025 16:07:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767226063; x=1767830863; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6nswqdzdzgDL2SsgFG1RXJY/Ml4QDsRI1s4C4JVgdyk=;
+        b=W9KIOqDY5uq8Vzo/lrEM4+cGHvnUcnIfSQsVAhZYSOcaRwOd4hZYEbu5a/LYVTZLVp
+         RMqM1UlZIUvHEv4bK7XF0knCXor4Od2wig0Scuy8x/DYNmbdfI1Ey0+iUWnd1ZjX9N/f
+         4WGDqZAM8Ch2z4xT6uNxpDIYXRS0ZuYHQSHaaLDL5KGQetgMrLrM2lDYT2gyIRhLubJc
+         3nSNz2x4iC8nbjIRI7SbZCd2Li2fOgub8tU3igVlbz4zfStAeIp9kWH8QBwQjccxlHxf
+         yVtwcjL/pdom8z+i5JH1iuMizq3hNSPPlglClsZBaa6qibONymwXOYMMmt+lGctMssV6
+         KDRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767226063; x=1767830863;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6nswqdzdzgDL2SsgFG1RXJY/Ml4QDsRI1s4C4JVgdyk=;
+        b=elnbdRNoqVy6p/zyDPenqm7zXZjrzO8hbYzHgIXZOyd3LFhKghtyrKG9bQ/vK4kpVM
+         nVLsmakPiZCoU3i0AJ90y5E0nbsGA1aK3FobemlwtG78YM+KbF9E4QsbNaD1LOP0t3W5
+         i+1vUUOIc5kzqq9uDRSNe1AqAHsR5zuXPfKIMc8hTF9shgR6T+KdgioPzLpkKXfmA7eN
+         Iqa3P3aFCqulXdHWFvl+6TZv5cLdZC4CmB28mjH3ttkTer0+QDt9PaU2Y/SrNPH2xWvS
+         8WwDnFB17TqTB7DvEokzlzGqVSWJAlAkrFVEftTUb1lZBF1w9O6oc2YzYoKbm7BKsf7N
+         o3YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV73JRhV/rCd95wF9LYuEl0uZoYu+0zKrA70G65SYRVKEF48KdY4kyP6Yd01IzM3pZPJI5U+70=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0zbdBLTl1j2mzAOyyC3qq3LD2rInPJvA2VpvIAHIi7wLdRlBO
+	vfROiEzFrx6aUiFOxHmV5lnkWRgCBiy6LmXdZMkVaP6g0WmYRqNNV9R7L3Xsdc7wiNBzOn+Tq7B
+	f3zfEaAv2uI+GeL+1DGTmWlLrKoWjOc8=
+X-Gm-Gg: AY/fxX5/ufBGLR7GgQKzxEersQ+NhLsToazOiot/wlsQpFk8E/43yjNuOnyotGy6m52
+	vcOP9tL8QqPFGGep3bXuGaZ+3T8pn3WFzP+OzBB3WjUFiT2dGYMfhweqikIkpGlI3kaFrKsErHv
+	dlaLtlsCC3XrN0cZ6AQ4RfjG0FNJnmvlFafV8sDfEZW1HGRfB/018LaUCgWpBvZpOH1LpURDUHE
+	2mVgBAfuMgK/A8iR5jlptGZDMkjD+im++p2QYQ/oSkFMCtEu/8SgmlqKR5H1AFN6ZcrGPWKkgma
+	Pk/p1LEhQFauzidB7tSEi+VRn+Wq
+X-Google-Smtp-Source: AGHT+IEuQszZg7wTp+W6ileKKwymt4EKRPFjA2SMulfekoh0KIiAS/kTnlLwyyMRH0XJuHJgfjyOaw7GUSI+Za6glwc=
+X-Received: by 2002:a05:600c:181b:b0:477:9a61:fd06 with SMTP id
+ 5b1f17b1804b1-47be29afe18mr345736325e9.8.1767226062825; Wed, 31 Dec 2025
+ 16:07:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Con-Id: 282146
-X-Con-U: 0-sebastianwolf
+References: <20251231232048.2860014-1-maze@google.com>
+In-Reply-To: <20251231232048.2860014-1-maze@google.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 31 Dec 2025 16:07:31 -0800
+X-Gm-Features: AQt7F2px-lQKro5XezvemgzE0XuwobUnwdCsPbj7ENtRF5rqiJQbbZYMafwEdLk
+Message-ID: <CAADnVQL4ZPaiwuXtB7b9nrVVMg0eDiT6gnnNGrU5Ys61UWdgCA@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: 'fix' for undefined future potential exploits of BPF_PROG_LOAD
+To: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Cc: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <zenczykowski@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Linux Network Development Mailing List <netdev@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, BPF Mailing List <bpf@vger.kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sebastian Roland Wolf <srw@root533.premium-rootserver.net>
+On Wed, Dec 31, 2025 at 3:21=E2=80=AFPM Maciej =C5=BBenczykowski <maze@goog=
+le.com> wrote:
+>
+> Over the years there's been a number of issues with the eBPF
+> verifier/jit/codegen (incl. both code bugs & spectre related stuff).
+>
+> It's an amazing but very complex piece of logic, and I don't think
+> it's realistic to expect it to ever be (or become) 100% secure.
+>
+> For example we currently have KASAN reporting buffer length violation
+> issues on 6.18 (which may or may not be due to eBPF subsystem, but are
+> worrying none-the-less)
+>
+> Blocking bpf(BPF_PROG_LOAD, ...) is the only sure fire way to guarantee
+> the inability to exploit the eBPF subsystem.
+> In comparison other eBPF operations are pretty benign.
+> Even map creation is usually at most a memory DoS, furthermore it
+> remains useful (even with prog load disabled) due to inner maps.
+>
+> This new sysctl is designed primarily for verified boot systems,
+> where (while the system is booting from trusted/signed media)
+> BPF_PROG_LOAD can be enabled, but before untrusted user
+> media is mounted or networking is enabled, BPF_PROG_LOAD
+> can be outright disabled.
+>
+> This provides for a very simple way to limit eBPF programs to only
+> those signed programs that are part of the verified boot chain,
+> which has always been a requirement of eBPF use in Android.
+>
+> I can think of two other ways to accomplish this:
+> (a) via sepolicy with booleans, but it ends up being pretty complex
+>     (especially wrt verifying the correctness of the resulting policies)
+> (b) via BPF_LSM bpf_prog_load hook, which requires enabling additional
+>     kernel options which aren't necessarily worth the bother,
+>     and requires dynamically patching the kernel (frowned upon by
+>     security folks).
+>
+> This approach appears to simply be the most trivial.
 
-Add a null pointer check to prevent kernel crashes when hardware
-offloading is active on MediaTek devices.
+You seem to ignore the existence of sysctl_unprivileged_bpf_disabled.
+And with that the CAP_BPF is the only way to prog_load to work.
 
-In some edge cases, the ethernet pointer or its associated netdev
-element can be NULL. Checking these pointers before access is
-mandatory to avoid segmentation faults and kernel oops.
+I suspect you're targeting some old kernels.
+We're definitely not adding new sysctl because you cannot upgrade
+android kernel fast enough.
 
-This improves the robustness of the validation check for mtk_eth
-ingress devices introduced in commit 73cfd947dbdb ("net: mediatek:
-add support for ingress traffic offloading").
-
-Fixes: 73cfd947dbdb ("net: mediatek: add support for ingress traffic offloading")
-net: mediatek: Add null pointer check to prevent crashes with active hardware offloading.
-
-Signed-off-by: Sebastian Roland Wolf <Sebastian.Wolf@pace-systems.de>
----
- drivers/net/ethernet/mediatek/mtk_ppe_offload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index e9bd32741983..6900ac87e1e9 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -270,7 +270,8 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 		flow_rule_match_meta(rule, &match);
- 		if (mtk_is_netsys_v2_or_greater(eth)) {
- 			idev = __dev_get_by_index(&init_net, match.key->ingress_ifindex);
--			if (idev && idev->netdev_ops == eth->netdev[0]->netdev_ops) {
-+			if (idev && eth && eth->netdev[0] &&
-+			    idev->netdev_ops == eth->netdev[0]->netdev_ops) {
- 				struct mtk_mac *mac = netdev_priv(idev);
- 
- 				if (WARN_ON(mac->ppe_idx >= eth->soc->ppe_num))
--- 
-2.51.0
-
+pw-bot: cr
