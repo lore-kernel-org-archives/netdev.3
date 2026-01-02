@@ -1,64 +1,54 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3C22882AF;
-	Fri,  2 Jan 2026 22:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185863B1B3
+	for <netdev@vger.kernel.org>; Fri,  2 Jan 2026 23:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767391392; cv=none; b=Kacvs74kD2Irt0wIUuGqeh4TnFt23eLqPwh0TxByKxFe/da9kpOPUJ/smywJE8UUa7gaeVyvTXPS9AaNMJO8xSjW4R+zuGqrl26kkB/NJwZn6IQ8buzIS0vtIAYmL16hbuMAqV4GyXVdOfh0CObCkPFBWHhVeXN6uCZ0bLoUaWs=
+	t=1767395678; cv=none; b=HeSnNTg6iKnd1jyTNLstJmcK0EKGAXb1Je3FyTid6UDUS3RmaryyY37M2HNbKCvHeRnwPUUEKdqpw6L3QyDWcvMnJuzmaKQ5LEdHgq3ysg+LtCjQG+LP7HjjE4HhQgmFpx7yolOTD48n/yp3f47zdCRWK9r5RabPkpnQIIYzPtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767391392; c=relaxed/simple;
-	bh=JuO1ZynaO2BBF1wfF7nO/buaGvl9DLsg6Gd55hvq7io=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqVAN8d8J3UtXVMcX0m1LCd8eDMiCHMBBg8/YEsVEHUsHNhcGQNJSq6IMJ8afvFvjstbz0Dwu1UNbXN5NFl7hVGL4dh01ohKOE+9PHwPtzJK9b/dHsJoYreqsvn8eY4mdcaYJ3qNXn5BVa9xfG3Q00x9g7VdUA9cY+N99MbY594=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Iy9v9Hq4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1767395678; c=relaxed/simple;
+	bh=HmmPZG6IS8uigjEdW6m717qkKYszywP2Y3h96XbzDgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YKE2d6sVB7pUPcHOMnTRf3mK6m5kSa0EvBwe8anyV3pXG0PUgPtxYwQfjVvmH+mCQe2aIWPQsk+++31FEWacJwa+pbern+KknJ8hhd/WSzVPKCgxOfs0Qx3jyMsXxF9XQ7yBDho+sJnAIeRBu9gVqPhKbQTtwhr/OSwJ4kD9D5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpYhdAt0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Iy9v9Hq4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YbSUuZNunQGW5DP0yW6H2zamWsE+O1PJd6nM6xlwcm0=; b=Iy9v9Hq4WrRioNK+3BWhrtZcck
-	K6li7BFlUXX1G3WCkq2TTumfTc30g3h+eO7EJEFWwQ2O5g3LcC4FJkMMw25HwlWYZ/jrfdygN6Tps
-	Jc5uzPJoNeyBnLSbtD03se+3S1z/GYDw7cAQoCOXf9EjDgKXVisINqg4LPO4bvU6a00g=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vbnET-001DoV-De; Fri, 02 Jan 2026 23:02:53 +0100
-Date: Fri, 2 Jan 2026 23:02:53 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Petko Manolov <petko.manolov@konsulko.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb()
- failure
-Message-ID: <38d73c63-7521-41ad-8d4d-03d5ba2288df@lunn.ch>
-References: <20251216184113.197439-1-petko.manolov@konsulko.com>
- <b3d2a2fa-35cb-48ad-ad2e-de997e9b2395@redhat.com>
- <20260102121011.GA25015@carbon.k.g>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpYhdAt0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F27EC116B1;
+	Fri,  2 Jan 2026 23:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767395677;
+	bh=HmmPZG6IS8uigjEdW6m717qkKYszywP2Y3h96XbzDgU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MpYhdAt06I58zPvsTr+ruUk474xZAavWv8obyE/EHysC+ZuXSNJhMpRIg2MDzz7XN
+	 Btb46Mt7OMwpxT+ImNvObKBzM5VYh60QCy28hlVLTnUmrAXGys/IFiwnOin58aE98P
+	 n74Bs8xsJmJ2rTCuqPME9cUEc2TZZwEFvL7yjKj9Lnv5ynisojYKGKtCxBzm5CvKFj
+	 LwOWfbqBbpwLetkbPTGd9AEBdmrHFmu570/H/JcVamPt0D2EZb7YtYCf2PRmzrOBtK
+	 Nss8r32IB8SlbhqSXR4Tq4bs8WQ1xt/JijyY6vEE6keUDt8PvDaQrVHaHZYIbP2UoQ
+	 aIbRCRwwcflfQ==
+Date: Fri, 2 Jan 2026 15:14:36 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: mheib@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, davem@davemloft.net, aduyck@mirantis.com,
+ netdev@vger.kernel.org, jacob.e.keller@intel.com, Aleksandr Loktionov
+ <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH net v2 1/2] i40e: drop udp_tunnel_get_rx_info() call
+ from i40e_open()
+Message-ID: <20260102151436.767bde60@kernel.org>
+In-Reply-To: <20251218121322.154014-1-mheib@redhat.com>
+References: <20251218121322.154014-1-mheib@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102121011.GA25015@carbon.k.g>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> Sure, will do.  However, my v2 patch makes use of __free() cleanup
-> functionality, which in turn only applies back to v6.6 stable kernels.
+On Thu, 18 Dec 2025 14:13:21 +0200 mheib@redhat.com wrote:
+> Fixes: 06a5f7f167c5 ("i40e: Move all UDP port notifiers to single function")
 
-I would suggest not using the magical __free() cleanup.
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
-
-    Low level cleanup constructs (such as __free()) can be used when
-    building APIs and helpers, especially scoped iterators. However,
-    direct use of __free() within networking core and drivers is
-    discouraged. Similar guidance applies to declaring variables
-    mid-function.
-
-    Andrew
+I doubt this is the correct Fixes tag.
+The locking was reworked in 1ead7501094c6a6.
