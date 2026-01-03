@@ -1,70 +1,111 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD16208994
-	for <netdev@vger.kernel.org>; Sat,  3 Jan 2026 18:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CBF30F522;
+	Sat,  3 Jan 2026 19:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767464054; cv=none; b=rzl59ljUcGs4LAah28msAh4oib76XzIC53nb+MboH+k+eTvzhoG4e/U/f+Zmd6fbAuVw+jEceCnyyr9TTS9zpZCTgojkNxup9+DCyoBwV35AOBlOAil2xiXVdqbegoxKfJkIPPkZX86KohQ26ekx0ETIDAVpzp1+Oo+P5fDF9wc=
+	t=1767468610; cv=none; b=cPv7N/dAle8A7ioMUM6pgQg/N2PS+nB16rwjBlKnERX8ki1Ozjm9bgfFnN9nflRPjFL5voqVDE7yEUEVsVaey/7OlVPNiBLvVsqiCNtPuqnmJloR2Vwb861Ixucv1vCRAAQuCfKLA79DAZpftrKYvMNzZKQVYnxrys0PjuTKh9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767464054; c=relaxed/simple;
-	bh=50VqyCT538dOspdKIyMvdccwY4KMwOwqiR27ePiLcyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pNAQQKY3QTDIz20C9kxDM1YBQVcL6yi7jhEF6TlWTxzuKVNB/fEhGrSuvE3xNNUQ1pqrxcSsHadfCt62ZQm/N3tizeUocTkSBnRSpG5dbe0EtNtKhC6C4PnF7NPERLvGeDy/5v6mqrHy+U72r+wDHVlhvSdNeeZ+Pq21+SV6aT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H6D2Em1D; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1767468610; c=relaxed/simple;
+	bh=Vw0CSYs8ZRkyhGGBdWqeozUHGguxua25NRiezzbXUrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LEiTj/4Zysb7lq+YQDXMUbH+4HQ9SyVnepqzVpXRoyUU8knVsuvYJt7PpCSRLW3ET1kApuC+K6oMx7G3wCSonKy8AHIrd5+Cj0QnVZl4KCUB+u1g2tC12vS/KN9oAaqWD6moY/EhLPomoqD/l2UdKr9V0Bq7QT18GnNblO6y6E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxNDb/ti; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H6D2Em1D"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=W9FefweBCMSfI6CK01SPV0RuNOb0HMAWHKaWzxV36fo=; b=H6D2Em1DWZ/gYBvUPJ1snO8IPS
-	OjQ6cT5DiSigRaRFT2M8AR3Fmvcfgc5xW0m/ZoQ2P1w5WXRHQRPC+18ttd8/uQTBoDph9CvY8IMXd
-	RdjuSbzsRielty9bVHhfAFflsTImBq04QKm3jQbvKsLmw8a8sU4E8o0tqavUx651oDfw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vc68V-001Hhb-Mi; Sat, 03 Jan 2026 19:13:59 +0100
-Date: Sat, 3 Jan 2026 19:13:59 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alok Tiwari <alok.a.tiwari@oracle.com>
-Cc: vadym.kochan@plvision.eu, oleksandr.mazur@plvision.eu,
-	andrew+netdev@lunn.ch, taras.chornyi@plvision.eu, kuba@kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	alok.a.tiwarilinux@gmail.com
-Subject: Re: [PATCH net-next] net: marvell: prestera: correct return type of
- prestera_ldr_wait_buf()
-Message-ID: <a16c5e5b-8431-4948-ad72-379375dba096@lunn.ch>
-References: <20260103174313.1172197-1-alok.a.tiwari@oracle.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxNDb/ti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8A5C113D0;
+	Sat,  3 Jan 2026 19:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767468609;
+	bh=Vw0CSYs8ZRkyhGGBdWqeozUHGguxua25NRiezzbXUrs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mxNDb/tiulVEVHsTMBerD96HPEwq+MX48PgQ/xjZqBlP+0XY5qY9dQ044l8xRU2wE
+	 K5WR9ArGjmJxyl/HwRsMiPKhB+74gz7R2/wNlPrdYEFPg3H17W05stdbCzkKLT4H7X
+	 jcL2EPlkT8O05zmOOLun8XxMC9KAZzy9cb2J8HKGorrpr7AG0kGGcmIVdvDSGnc5gM
+	 TY4HlfVJR/izOmXO54RZeKR82FdTmeCdrMoLypUPgV6/dZvSveUTqD0mwRwHnT3dN/
+	 gtFWrhm1R2MAUNVLa7rZRnc75Ml22cUm8qkG/lXTILjIiM/Y/+Uo7ntpVlq3woM5Jj
+	 ybS0joUVwqG6A==
+Message-ID: <c269cd25-9e77-4b8c-9cf6-8f2cc86296e7@kernel.org>
+Date: Sat, 3 Jan 2026 12:30:08 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260103174313.1172197-1-alok.a.tiwari@oracle.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ipv4: Improve martian logs
+Content-Language: en-US
+To: Clara Engler <cve@cve.cx>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org
+References: <20260101125114.2608-1-cve@cve.cx>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260101125114.2608-1-cve@cve.cx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jan 03, 2026 at 09:43:10AM -0800, Alok Tiwari wrote:
-> prestera_ldr_wait_buf() returns the result of readl_poll_timeout(),
-> which is 0 on success or -ETIMEDOUT on failure. Its current return
-> type is u32.
+On 1/1/26 5:51 AM, Clara Engler wrote:
+> At the current moment, the logs for martian packets are as follows:
+> ```
+> martian source {DST} from {SRC}, on dev {DEV}
+> martian destination {DST} from {SRC}, dev {DEV}
+> ```
 > 
-> Assigning this u32 value to an int variable works today because the
-> bit pattern of (u32)-ETIMEDOUT (0xffffff92) is correctly interpreted
-> as -ETIMEDOUT when stored in an int. However, keeping the function
-> return type as u32 is misleading and fragile.
+> These messages feel rather hard to understand in production, especially
+> the "martian source" one, mostly because it is grammatically ambitious
+> to parse which part is now the source address and which part is the
+> destination address.  For example, "{DST}" may there be interpreted as
+> the actual source address due to following the word "source", thereby
+> implying the actual source address to be the destination one.
 > 
-> Change the return type to int to reflect the actual semantic of
-> returning negative error codes and to avoid potential issues with
-> unsigned casts. There is no functional change.
+> Personally, I discovered this bug while toying around with TUN
+> interfaces and using them as a tunnel (receiving packets via a TUN
+> interface and sending them over a TCP stream; receiving packets from a
+> TCP stream and writing them to a TUN).[^1]
 > 
-> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+> When these IP addresses contained local IPs (i.e. 10.0.0.0/8 in source
+> and destination), everything worked fine.  However, sending them to a
+> real routable IP address on the internet led to them being treated as a
+> martian packet, obviously.  Using a few sysctl(8) and iptables(8)
+> settings[^2] fixed it, but while debugging I found the log message
+> starting with "martian source" rather confusing, as I was unsure on
+> whether the packet that gets dropped was the packet originating from me
+> or the response from the endpoint, as "martian source <ROUTABLE IP>"
+> could also be falsely interpreted as the response packet being martian,
+> due to the word "source" followed by the routable IP address, implying
+> the source address of that packet is set to this IP, as explained above.
+> In the end, I had to look into the source code of the kernel on where
+> this error message gets generated, which is usually an indicator of
+> there being room for improvement with regard to this error message.
+> 
+> In terms of improvement, this commit changes the error messages for
+> martian source and martian destination packets as follows:
+> ```
+> martian source (src={SRC}, dst={DST}, dev={DEV})
+> martian destination (src={SRC}, dst={DST}, dev={DEV})
+> ```
+> 
+> These new wordings leave pretty much no room for ambiguity as all
+> parameters are prefixed with a respective key explaining their semantic
+> meaning.
+> 
+> See also the following thread on LKML.[^3]
+> 
+> [^1]: <https://backreference.org/2010/03/26/tuntap-interface-tutorial>
+> [^2]: sysctl net.ipv4.ip_forward=1 && \
+>       iptables -A INPUT -i tun0 -j ACCEPT && \
+>       iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+> [^3]: <https://lore.kernel.org/all/aSd4Xj8rHrh-krjy@4944566b5c925f79/>
+> 
+> Signed-off-by: Clara Engler <cve@cve.cx>
+> ---
+>  net/ipv4/route.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-    Andrew
+Reviewed-by: David Ahern <dsahern@kernel.org>
+
