@@ -1,51 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0FA4400;
-	Sun,  4 Jan 2026 15:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB9D1FD4;
+	Sun,  4 Jan 2026 16:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767541344; cv=none; b=t3ZsmqQP2gRIvqir7NKtwHyFV5g3pPtnB4+IXVnPgAeR9Snhr5FkApkH7TRVweJdmUYLS7CKtMWynRXqMuVK322In9MzjfQq7aGX916nBPoyzWpDzVKAaLiq5cyluv6k7fsjclZnlOcN6yQYooEs9rirg05i6yneZAdF1XTY634=
+	t=1767542735; cv=none; b=Rdpa6E0l/cjv5ebUY2FLKPs3InbRO6rU3Nx1GUQD+quNGHGqX+sn/W9nDtbOCFNM8ZINrksHNxhiqc9k9jjX8AZnQmwF/9wh/xaRvDqjEJLW2u2AwJK0duJPtw9sBbNiVLRlnRhIk5m7Or5bTo/Q3EiZdvM/CifdxizjHLINesg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767541344; c=relaxed/simple;
-	bh=UjJWRT85rpQHhNsUnnSlU0JLznEEUlM8LzlU0ybpfFI=;
+	s=arc-20240116; t=1767542735; c=relaxed/simple;
+	bh=ffJL5CR2yAuDbnHi+TMs/kcxGe7AOdLBUBGDuxzFhck=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mk5oGEOjGovTcS1Sox/tbmwj/AWfbWRW7qi+s2KNX27AZHEaS/kUQLjazS/1TLlXHTo7yn3l4mm4N3Ckc5xOPNe0/rRThA6dUe+sJJSzvlfl6oO/jEcUPKKiTAR4o5u79VdZwlq4K3Uur4eNWBDnFAgLgS4ahRqp/ze/m9gE3fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JX2Fedpw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uvm+Z3Ry1yOn1VNpfZBkEn3n+GyduGnYZYM6JzKk3BmlaoXZP3wwYLdl+nXu4nFvuLr4T2MHc56l1Ff6r8F8vnP2RENiv/RHKo9LI/leGEaeva0F4tTYuShkPHwrPOBtMHJVxlkl7Ym9AuKF2/R3yCPiySDq/Zv9v3pwWQzdQBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jiOFJVQx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JX2Fedpw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766AFC4CEF7;
-	Sun,  4 Jan 2026 15:42:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jiOFJVQx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7673C4CEF7;
+	Sun,  4 Jan 2026 16:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767541343;
-	bh=UjJWRT85rpQHhNsUnnSlU0JLznEEUlM8LzlU0ybpfFI=;
+	s=k20201202; t=1767542735;
+	bh=ffJL5CR2yAuDbnHi+TMs/kcxGe7AOdLBUBGDuxzFhck=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JX2FedpwHJMYb96Y9Hy/Y/5G5AucFNpQZ9MKpn7vaeggkv3iwWznZagNcO3I4F+13
-	 I2rpWUGxNZy9WV5sK+rx6X1GTsLQLoKymHxKLZJHgD40PqSUcJlpv4g9oSOvyuOtG6
-	 Di/moqAA5PrKdauPb43IzQOLEVhqZA6h06TmNKnRJIyv/g2le03f1J/7oSPLgiBX+b
-	 YIp8Ude3W+FvJGOSnQ1btl10PFS13jPDONArZBSZ/nxwlyOC36wIndPxZqFVvLrr6w
-	 HyXFHnEBH5h+ydJjSNskwod+SbmMRodu1JqsSzV++T6YsSEiOm52PJKuPu3cW0z9kX
-	 L6AgIVAW6parg==
-Date: Sun, 4 Jan 2026 07:42:22 -0800
+	b=jiOFJVQxKENnNIuTGorF68CJXoSIecTdLsFG4XZLTv2fHyWskC4XcujMl0RX9euq/
+	 OjKqbEUw/wgooa5n1UXyZw+CSExDHVoFXWpsEAczFkTDBjkEcAAgwvSp+ykqHt0EeE
+	 xUgTeAdToeIZEeCQMQKmaCqhW3HjUXocXgiWXbf7haQVm/Gn0JCP+M8CQ0UZKka96r
+	 tbSpi9aUF+xOlccP5Bzin0ko8LHyVxffJnl+lyh1SVr/++cvdazkbV3X6kADEkXACt
+	 Djw6fyJ1JG1urV4FE8wpMF1Lh3BdZcGgf/olGXoCAScTuBgkZEne/WkN8ISrGtBIQU
+	 mUn9CqCUh53hw==
+Date: Sun, 4 Jan 2026 08:05:34 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Prithvi <activprithvi@gmail.com>, andrii@kernel.org, mkl@pengutronix.de,
- linux-can@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, netdev@vger.kernel.org
-Subject: Re: [bpf, xdp] headroom - was: Re: Question about to KMSAN:
- uninit-value in can_receive
-Message-ID: <20260104074222.29e660ac@kernel.org>
-In-Reply-To: <63c20aae-e014-44f9-a201-99e0e7abadcb@hartkopp.net>
-References: <20251117173012.230731-1-activprithvi@gmail.com>
-	<0c98b1c4-3975-4bf5-9049-9d7f10d22a6d@hartkopp.net>
-	<c2cead0a-06ed-4da4-a4e4-8498908aae3e@hartkopp.net>
-	<aSx++4VrGOm8zHDb@inspiron>
-	<d6077d36-93ed-4a6d-9eed-42b1b22cdffb@hartkopp.net>
-	<20251220173338.w7n3n4lkvxwaq6ae@inspiron>
-	<01190c40-d348-4521-a2ab-3e9139cc832e@hartkopp.net>
-	<20260102153611.63wipdy2meh3ovel@inspiron>
-	<20260102120405.34613b68@kernel.org>
-	<63c20aae-e014-44f9-a201-99e0e7abadcb@hartkopp.net>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ =?UTF-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
+Subject: Re: [PATCH] net: sfp: add SMBus I2C block support
+Message-ID: <20260104080534.769d4f87@kernel.org>
+In-Reply-To: <20251228213331.472887-1-jelonek.jonas@gmail.com>
+References: <20251228213331.472887-1-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,44 +47,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 3 Jan 2026 13:20:34 +0100 Oliver Hartkopp wrote:
-> Hello Jakub,
-> 
-> thanks for stepping in!
-> 
-> On 02.01.26 21:04, Jakub Kicinski wrote:
-> 
-> > You're asking the wrong person, IIUC Andrii is tangentially involved
-> > in XDP (via bpf links?):
-> >   
-> (..)
-> > 
-> > Without looking too deeply - XDP has historically left the new space
-> > uninitialized after push, expecting programs to immediately write the
-> > headers in that space. syzbot had run into this in the past but I can't
-> > find any references to past threads quickly :(  
-> 
-> To identify Andrii I mainly looked into the code with 'git blame' that 
-> led to this problematic call chain:
-> 
->    pskb_expand_head+0x226/0x1a60 net/core/skbuff.c:2275
->    netif_skb_check_for_xdp net/core/dev.c:5081 [inline]
->    netif_receive_generic_xdp net/core/dev.c:5112 [inline]
->    do_xdp_generic+0x9e3/0x15a0 net/core/dev.c:5180
-> 
-> Having in mind that the syzkaller refers to 
-> 6.13.0-rc7-syzkaller-00039-gc3812b15000c I wonder if we can leave this 
-> report as-is, as the problem might be solved in the meantime??
-> 
-> In any case I wonder, if we should add some code to re-check if the 
-> headroom of the CAN-related skbs is still consistent and not changed in 
-> size by other players. And maybe add some WARN_ON_ONCE() before dropping 
-> the skb then.
-> 
-> When the skb headroom is not safe to be used we need to be able to 
-> identify and solve it.
+On Sun, 28 Dec 2025 21:33:31 +0000 Jonas Jelonek wrote:
+> +static int sfp_smbus_block_write(struct sfp *sfp, bool a2, u8 dev_addr,
+> +				 void *buf, size_t len)
+> +{
+> +	size_t block_size = sfp->i2c_block_size;
+> +	union i2c_smbus_data smbus_data;
+> +	u8 bus_addr = a2 ? 0x51 : 0x50;
+> +	u8 *data = buf;
+> +	u8 this_len;
+> +	int ret;
+> +
+> +	while (len) {
+> +		this_len = min(len, block_size);
+> +
+> +		smbus_data.block[0] = this_len;
+> +		memcpy(&smbus_data.block[1], data, this_len);
+> +		ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
+> +				     I2C_SMBUS_WRITE, dev_addr,
+> +				     I2C_SMBUS_I2C_BLOCK_DATA, &smbus_data);
+> +		if (ret)
+> +			return ret;
+> +
+> +		len -= this_len;
+> +		data += this_len;
+> +		dev_addr += this_len;
+> +	}
+> +
+> +	return 0;
+> +}
 
-Ugh, I should have looked at the report. The struct can_skb_priv
-business is highly unconventional for the networking stack.
-Would it be possible to kmalloc() this info and pass it to the socket
-via shinfo->destructor_arg?
+AI code review says:
+
+ Should this return the number of bytes written instead of 0?
+
+ The existing sfp_i2c_write() returns the byte count on success, and several
+ callers depend on this return value:
+
+ sfp_cotsworks_fixup_check() checks:
+    err = sfp_write(sfp, false, SFP_PHYS_ID, &id->base, 3);
+    if (err != 3) { ... error path ... }
+
+ sfp_sm_mod_hpower() via sfp_modify_u8() checks:
+    if (err != sizeof(u8)) { ... error path ... }
+
+ With this function returning 0 on success, these checks will always fail,
+ causing high-power SFP modules to fail initialization with "failed to enable
+ high power" errors, and Cotsworks module EEPROM fixups to fail with "Failed
+ to rewrite module EEPROM" errors.
+
+Either way, you'll need to repost, net-next was closed when you posted.
+-- 
+pw-bot: cr
