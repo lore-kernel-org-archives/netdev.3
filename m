@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF6D2797B5;
-	Sun,  4 Jan 2026 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F552D7DC0;
+	Sun,  4 Jan 2026 18:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767551163; cv=none; b=lTUNldVvtnYHUrhLN5k6NITumHJb3I4fqnNPnYXIEA6bSEAjvF56+SkDXOZM65piffeMbhRAUXXh9hM/BjlwOI4LZJurkVsnQrgLTgJPSZEOc088mkoJX35W0wSa1Zbn8Is1QiNOpqAkyV4/6ltFvUaqVOXhq28aZIL4pYlUn5Q=
+	t=1767551164; cv=none; b=Ahtwhaz8rOzFJTbzcxB8nwvzG9VZZBJmgDa2M7tlR03E8DfSM5AAbxqtFyztuhLGJZ26KSw/NBCUZRw4oI15+HGl1aoc4rdrqsNgUndNhHmHoXxjPmSzREWjFMN+1RZJFdkhSQWs0clhLbY3gVg+Q8cp8ik3TPm6cHNz9dKLM28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767551163; c=relaxed/simple;
-	bh=clhBWUoYeZWEDAFPY3adO7NhzlQ58GU2nLISINnoLAI=;
+	s=arc-20240116; t=1767551164; c=relaxed/simple;
+	bh=l49lKSRr9mv/JL0+y7qLuqhr0b4ZKkZ+dtOWdUKfR8w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rRjAwaWox0YbPkWcq0NSZ+6iyT8XAvmClCe2+Q7LNX/2H0bANdA3IPXPAciaKHO/+8lsfohFba37mNw3VjdOSX/kEKzH9BFKNiCccN7gdNSspQ8xf2fs1CetYNx/J5zvu2Erz3LMIoTRsUDw4pMvy2fHOibVZsBOQq7qZiu0zu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/mFAmnU; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=kbLko//XK24XZoRJAvEb3G2KSmatDUe2VmwDQ0a8HOaBIbbVRmdhU01SsE8qkJfekeRZ/zmUM+ff0LB4ca0TKrCGa1MwyLvKQNabh3Olj6Ebf6dUZVA5n+aXm9UPdn5+Cci8XhhaRWH9VW8rYZqvUNL3sVfZ9T3xPi6UoEAuhV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mCcoV2Ao; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/mFAmnU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6948BC4CEF7;
-	Sun,  4 Jan 2026 18:26:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mCcoV2Ao"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171C8C19423;
+	Sun,  4 Jan 2026 18:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767551161;
-	bh=clhBWUoYeZWEDAFPY3adO7NhzlQ58GU2nLISINnoLAI=;
+	s=k20201202; t=1767551164;
+	bh=l49lKSRr9mv/JL0+y7qLuqhr0b4ZKkZ+dtOWdUKfR8w=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=h/mFAmnUlB3ZKObDG165cFDz5+zZR39PryuuYkRn4kBImU8AnmuYCeB6axlA3VVRg
-	 QNLmaGNItOX7pCsJZAfkxFIsep9KAqKrOhe4YUQv1bELQFKG2fOoNbLG59NwPC+BfL
-	 vW1/UQgeLNVqamvBm7i5a6rl2uP8rTKsSUamHMumcZgI1gFcyRmcDv2iKbBdbQdf3Q
-	 33NnXvZh33PI8ipszlAwY8pkJK1iOnZzFgMrTi9r5JBMvGo+ZEjkR6CqnHWzjuiXI6
-	 FCWr6o4NNKSz6bxd63q5RzIZ3HuSv3Bc7fXSb6UMg4Aq6Y5mExEA5G7SbZn3+YqwRk
-	 wfXJuejMNKDOA==
+	b=mCcoV2AoQVVUqWBsEkiec/Il5Ms+XTd5g9infLt5GRuFp9ozoNjaR95E8zf/n05eV
+	 1GmtYTT8CWrdS2GPYiGiTyup/RUe4E9+GD6xfOt+dpzCm0D+hOBOMVpbuwjeApCw7j
+	 8g1yDNGf7i5k5tP2gDP/pqMXv0IdeynAVIQSFhSpNHRNn0JlsADmj1I9SpFLCW6tQi
+	 1SNptGPZ4wtafkltv+PoIQZYUcfRGvweGCzqWZdBlCj+s864sCTWnlRVktqrjxyVc7
+	 Gli9VgHQg8uKaLdL4N72ljAuYANWYQQJVOTJ4ZzJotzSU7wzQ8KmTf3K3TIEbkf2Hk
+	 kMR27wBAroxDw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 789E5380AA4F;
-	Sun,  4 Jan 2026 18:22:41 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B728380AA4F;
+	Sun,  4 Jan 2026 18:22:44 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: phy: mxl-86110: Add power management and soft
- reset support
+Subject: Re: [PATCH net v5] net: sock: fix hardened usercopy panic in
+ sock_recv_errqueue
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176755096036.142863.1452181499477671976.git-patchwork-notify@kernel.org>
-Date: Sun, 04 Jan 2026 18:22:40 +0000
-References: <20251223120940.407195-1-stefano.r@variscite.com>
-In-Reply-To: <20251223120940.407195-1-stefano.r@variscite.com>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stefano.r@variscite.com, lxu@maxlinear.com, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+ <176755096302.142863.3789456679843940692.git-patchwork-notify@kernel.org>
+Date: Sun, 04 Jan 2026 18:22:43 +0000
+References: <20251223203534.1392218-2-bestswngs@gmail.com>
+In-Reply-To: <20251223203534.1392218-2-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: security@kernel.org, edumazet@google.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, xmei5@asu.edu
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 23 Dec 2025 13:09:39 +0100 you wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
+On Wed, 24 Dec 2025 04:35:35 +0800 you wrote:
+> From: Weiming Shi <bestswngs@gmail.com>
 > 
-> Implement soft_reset, suspend, and resume callbacks using
-> genphy_soft_reset(), genphy_suspend(), and genphy_resume()
-> to fix PHY initialization and power management issues.
-> 
-> The soft_reset callback is needed to properly recover the PHY after an
-> ifconfig down/up cycle. Without it, the PHY can remain in power-down
-> state, causing MDIO register access failures during config_init().
-> The soft reset ensures the PHY is operational before configuration.
+> skbuff_fclone_cache was created without defining a usercopy region,
+> [1] unlike skbuff_head_cache which properly whitelists the cb[] field.
+> [2] This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is
+> enabled and the kernel attempts to copy sk_buff.cb data to userspace
+> via sock_recv_errqueue() -> put_cmsg().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: phy: mxl-86110: Add power management and soft reset support
-    https://git.kernel.org/netdev/net/c/62f7edd59964
+  - [net,v5] net: sock: fix hardened usercopy panic in sock_recv_errqueue
+    https://git.kernel.org/netdev/net/c/2a71a1a8d0ed
 
 You are awesome, thank you!
 -- 
