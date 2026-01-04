@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761C72D7DC4;
-	Sun,  4 Jan 2026 18:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B382C2E03F0
+	for <netdev@vger.kernel.org>; Sun,  4 Jan 2026 18:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767551164; cv=none; b=Qvr8R8kU9/bSzfUMQITjp1W2iiQWhGQ6Dk1Tyu+YgCqnR43/jpcx4Hy2rreruLYrYD8udo776G6u4w9jW4dqxZhkMqm0MUsZqme6FMxfCP6ot0l4AstDtuskQSaOqavA0Q+cuWVBlSw2Oq5mJrtBwFtGIYcrBS3M4db64oGMHrI=
+	t=1767551165; cv=none; b=T2f3im6u/+3RncQtgK4N8LpXbVaMdr3i03T7ZxsHwg953fadRwsN4EOLUU2YIFOruYnXS5SDpwmI7gS/xnHHdxzp06pdol6Xybrxybemen463Zp+rk/6Hq9VpAxt3l4llpxeQMJ3k7DUA06fjcaxIvuy9qufP9+Y/BY7CzKBCEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767551164; c=relaxed/simple;
-	bh=CO2S7t9L6KKi/q5HQ9TVGnJjFJjVGfggW1WPU+Bh+q8=;
+	s=arc-20240116; t=1767551165; c=relaxed/simple;
+	bh=3OcYIADWS6OLb71Ww/hx37jTbqZQ9/7EFd/t12hB2ec=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Bhm4+T+ZVT0HiX7p4tpBxM9hhW1BUQw9eaqlehvWV4fWWs2OebPUoYodwMBHJyLmmfi9iN9BLImBG5chqbpAx/06Ge4rnBt/xNaa2VjcvfzMArRQl2QnI235KSHJF6/KaNw1h4AuKvnCEm+Tpnnago39pdLeymPKLFBJIXtXozQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+5L9hrr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=BBAL6hMcX6hebwMFr3Fyir5A3lG4SFofMLIZWG+r9ojkV+0/vTjA1HvuTtFQfkzucgn3weWvmLS9zmY3VdA7ztOkZ1o9lT3Pfo9DtcWOWah9g1vODzFTMsF6pzV/Pf/k5n3o9evkquu6/AZXsOo06DqSePKaNYOA2EPjIVS7kuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehqn6cPE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+5L9hrr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C5EC19421;
-	Sun,  4 Jan 2026 18:26:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehqn6cPE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963F2C4CEF7;
+	Sun,  4 Jan 2026 18:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767551162;
-	bh=CO2S7t9L6KKi/q5HQ9TVGnJjFJjVGfggW1WPU+Bh+q8=;
+	s=k20201202; t=1767551165;
+	bh=3OcYIADWS6OLb71Ww/hx37jTbqZQ9/7EFd/t12hB2ec=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=f+5L9hrrufJQZwG2rxtZp7xVC4dXelU9FarhzyMvI0YYH5AHy2ppLtl39PxgHuRmC
-	 XKqdpQPKQCOqtGxxy4Es73vNf+s5KSnnvDpl8uHH7PjKs2uICElGGFMBz+cLcthAhM
-	 P096DUo6Mzs2l1l0oiiLCTmOPoTdG9nEbs75n9uGrcDaciNeGOw7aXyPHVAojoEVah
-	 gYathni/45kq8pH8kiQRrb/oUMHNR61n531Ieix+nBUPTOej/9hpWCMnGjTV/l8mWH
-	 tZ6dL9iB+PY1J3YnPeurosnd1aeYXUAC1OLARfSgyHPVZ1q+9O9fpENAzDPJkThf4L
-	 iUXuH6F5HShQQ==
+	b=ehqn6cPEm8G8Jf+myBw+Uk+vgfLTGUGENJim1LEsUHRKsvugqz/AEw6o8Lz4Xm7ij
+	 QNz4Xo8tT9cTlf6GsvmiklgECcmlSuTzMGyL+AHOFZG5t0J7e3INzumtKfVnzkFRXa
+	 mkweCA1TbKRZGzMhehR8q9PFSG/dQrMaRZPyaENm2NYhSBbC3Z3fbXVHUm4H9BODqa
+	 aGvwzCn3ktjWQZ4EmEMVm1nuqRoJA8A7cNxc1xgebbzFjr60pJM5drzKTF4HjtFdDP
+	 mAPWvxi9ZIxumjXAhEntOyFI9CmxJnah+KX3HX0HmXA0+ri+K//6Vc8BFkYHJm078k
+	 NzCELwaiFKgFQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2ABF380AA4F;
-	Sun,  4 Jan 2026 18:22:42 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5800380AA4F;
+	Sun,  4 Jan 2026 18:22:45 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: mscc: ocelot: Fix crash when adding interface
- under a lag
+Subject: Re: [PATCH net] bridge: fix C-VLAN preservation in 802.1ad
+ vlan_tunnel
+ egress
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176755096153.142863.971381899802476876.git-patchwork-notify@kernel.org>
-Date: Sun, 04 Jan 2026 18:22:41 +0000
-References: <tencent_75EF812B305E26B0869C673DD1160866C90A@qq.com>
-In-Reply-To: <tencent_75EF812B305E26B0869C673DD1160866C90A@qq.com>
-To: Jerry Wu <w.7erry@foxmail.com>
-Cc: vladimir.oltean@nxp.com, UNGLinuxDriver@microchip.com,
- alexandre.belloni@bootlin.com, andrew+netdev@lunn.ch,
- christophe.jaillet@wanadoo.fr, claudiu.manoil@nxp.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com
+ <176755096427.142863.8710171882718555642.git-patchwork-notify@kernel.org>
+Date: Sun, 04 Jan 2026 18:22:44 +0000
+References: <20251228020057.2788865-1-knecht.alexandre@gmail.com>
+In-Reply-To: <20251228020057.2788865-1-knecht.alexandre@gmail.com>
+To: Alexandre Knecht <knecht.alexandre@gmail.com>
+Cc: netdev@vger.kernel.org, roopa@nvidia.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 25 Dec 2025 20:36:17 +0000 you wrote:
-> Commit 15faa1f67ab4 ("lan966x: Fix crash when adding interface under a lag")
-> fixed a similar issue in the lan966x driver caused by a NULL pointer dereference.
-> The ocelot_set_aggr_pgids() function in the ocelot driver has similar logic
-> and is susceptible to the same crash.
+On Sun, 28 Dec 2025 03:00:57 +0100 you wrote:
+> When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
+> incorrectly stripped from frames during egress processing.
 > 
-> This issue specifically affects the ocelot_vsc7514.c frontend, which leaves
-> unused ports as NULL pointers. The felix_vsc9959.c frontend is unaffected as
-> it uses the DSA framework which registers all ports.
+> br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
+> from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
+> moves any "next" VLAN from the payload into hwaccel:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] net: mscc: ocelot: Fix crash when adding interface under a lag
-    https://git.kernel.org/netdev/net/c/34f3ff52cb9f
+  - [net] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
+    https://git.kernel.org/netdev/net/c/3128df6be147
 
 You are awesome, thank you!
 -- 
