@@ -1,56 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2445346E64;
-	Mon,  5 Jan 2026 12:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1650F349B15
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 12:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767617231; cv=none; b=FJKe3vEm/4n+ZKx2rhjh+QAtFT3M4+qxaRp5NGRkfNshiZqlNkncRb6S6d8z0AHHbSTU+GVsWqoIemOSx4qBebrORoPlTNexs28VMo11Ne/iRkK/ks5tb5+q7AIrn9dBSkSfPMMz26FqObyiktWBEhQvVOPpe+dBSpvtCgcMNTw=
+	t=1767617397; cv=none; b=XzVYOTHKAR/DbOmvIunaxlwg63xEP5yQDv8nTAL6BxRFd9z4vqDtGh+uivlwxta7mwLIyOhlWe+r3w9mx+eK/1MZ9bjYYfxz36AfDZmrLa1jLgBmJiJPRagFcC7v6FcXrDLue8b27W0HlPclznzSU+IECY6OVV1lZb6CPdiBKbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767617231; c=relaxed/simple;
-	bh=DcK9JhgklTlks/dbMU+80cGJYIWzHkB6Fy6SWnC+6X4=;
+	s=arc-20240116; t=1767617397; c=relaxed/simple;
+	bh=lRraDb91H8EGMrvV5XOLLRb+tX4puvrC8jQuSwsaH1M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HoCR0KRRlpdsPBo9c2/AmpDVc+hkbQ0MKouk5w5QDWI9LHiKBkM5wcjwyFUbk6SoPHDpo2qywan8s/ULpcLGKbmpEpKr1WuuGwzBcS7xoFP8O2YOYTpUuh5qWGoJIS2ooQMmUTpzIlFtcosgB0PxYjVSweFvV0y8ki+wR1bCS3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nz5BKJw/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nz5BKJw/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3606CC116D0;
-	Mon,  5 Jan 2026 12:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767617227;
-	bh=DcK9JhgklTlks/dbMU+80cGJYIWzHkB6Fy6SWnC+6X4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nz5BKJw/SW7aFh5PDOn4mjTKTV+LFDrfIA0RGg+0ukrtI/PWWaAkWyRxPhjHOORJ2
-	 F/w6WBFrMWFgCSU2ISdgFwjDlN6RJQGUpNtbSDFRgxj0nCBCNDcP/L8EDfUCsH9gEc
-	 mlu4FBl2Ci2EU2Ws0he3TS3VVhUptlYr949Nb1Pt3prNClT7c60WGSzHXKmRhXNJ6j
-	 AahYn0rfC6Gh2cHn5zTWUzZEAv/8eKMksb2N723rGz9Dh7iCNZ/zP1/Y/1u5wxBIyA
-	 1Un3saqGObtBBTQaXpEhtVjmp3anbCGER1NIrZ5yjgzlo4HO5YIiuhg64BQYow0aEu
-	 K25kQXvV5JU6Q==
-Date: Mon, 5 Jan 2026 12:46:57 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, herbert@gondor.apana.org.au,
-	davem@davemloft.net, vkoul@kernel.org, andi.shyti@kernel.org,
-	lee@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linusw@kernel.org,
-	Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com, olivia@selenic.com,
-	radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
-	gregkh@linuxfoundation.org, jirislaby@kernel.org,
-	lars.povlsen@microchip.com, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	luka.perkov@sartura.hr, Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 04/15] dt-bindings: spi: at91: add
- microchip,lan9691-spi
-Message-ID: <2ff4b417-871b-4b0e-a4f5-424ce535ebd3@sirena.org.uk>
-References: <20251229184004.571837-1-robert.marko@sartura.hr>
- <20251229184004.571837-5-robert.marko@sartura.hr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqti1cQP/FH/S2lUYjZfcA27gVCrGRaImhf+o0XQjEgahtZlHm5TV62r6j4NQ/tniARnlMWjM1PG0iuhdg6OrgWZXQomQTB03hiSEVb05Z0X0FERbhmE9UKgQJxu+9jFEeqe7Nm+92gmewM5up6pulNcoBXGf2ynDMP02mgfobk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vck1s-0008Dv-Um; Mon, 05 Jan 2026 13:49:48 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vck1r-009AhK-1H;
+	Mon, 05 Jan 2026 13:49:47 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1D46A4C664F;
+	Mon, 05 Jan 2026 12:49:47 +0000 (UTC)
+Date: Mon, 5 Jan 2026 13:49:46 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Pavel Pisa <pisa@fel.cvut.cz>
+Cc: linux-can@vger.kernel.org, David Laight <david.laight.linux@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Andrea Daoud <andreadaoud6@gmail.com>, 
+	Wolfgang Grandegger <wg@grandegger.com>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	Jiri Novak <jnovak@fel.cvut.cz>, Ondrej Ille <ondrej.ille@gmail.com>
+Subject: Re: [PATCH v2] can: ctucanfd: fix SSP_SRC in cases when bit-rate is
+ higher than 1 MBit.
+Message-ID: <20260105-rare-imported-hyrax-b2e3e2-mkl@pengutronix.de>
+References: <20260105111620.16580-1-pisa@fel.cvut.cz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,39 +50,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L5qsEAHx6q9dJj52"
+	protocol="application/pgp-signature"; boundary="atk4rgrunsb7ifgl"
 Content-Disposition: inline
-In-Reply-To: <20251229184004.571837-5-robert.marko@sartura.hr>
-X-Cookie: So many women
+In-Reply-To: <20260105111620.16580-1-pisa@fel.cvut.cz>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 
---L5qsEAHx6q9dJj52
-Content-Type: text/plain; charset=us-ascii
+--atk4rgrunsb7ifgl
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] can: ctucanfd: fix SSP_SRC in cases when bit-rate is
+ higher than 1 MBit.
+MIME-Version: 1.0
 
-On Mon, Dec 29, 2025 at 07:37:45PM +0100, Robert Marko wrote:
+On 05.01.2026 12:16:20, Pavel Pisa wrote:
+> From: Ondrej Ille <ondrej.ille@gmail.com>
+>
+> The Secondary Sample Point Source field has been
+> set to an incorrect value by some mistake in the
+> past
+>
+>   0b01 - SSP_SRC_NO_SSP - SSP is not used.
+>
+> for data bitrates above 1 MBit/s. The correct/default
+> value already used for lower bitrates is
+>
+>   0b00 - SSP_SRC_MEAS_N_OFFSET - SSP position =3D TRV_DELAY
+>          (Measured Transmitter delay) + SSP_OFFSET.
+>
+> The related configuration register structure is described
+> in section 3.1.46 SSP_CFG of the CTU CAN FD
+> IP CORE Datasheet.
+>
+> The analysis leading to the proper configuration
+> is described in section 2.8.3 Secondary sampling point
+> of the datasheet.
+>
+> The change has been tested on AMD/Xilinx Zynq
+> with the next CTU CN FD IP core versions:
+>
+>  - 2.6 aka master in the "integration with Zynq-7000 system" test
+>    6.12.43-rt12+ #1 SMP PREEMPT_RT kernel with CTU CAN FD git
+>    driver (change already included in the driver repo)
+>  - older 2.5 snapshot with mainline kernels with this patch
+>    applied locally in the multiple CAN latency tester nightly runs
+>    6.18.0-rc4-rt3-dut #1 SMP PREEMPT_RT
+>    6.19.0-rc3-dut
+>
+> The logs, the datasheet and sources are available at
+>
+>  https://canbus.pages.fel.cvut.cz/
+>
+> Signed-off-by: Ondrej Ille <ondrej.ille@gmail.com>
+> Signed-off-by: Pavel Pisa <pisa@fel.cvut.cz>
 
-> Document Microchip LAN969x SPI compatible.
+While applying, re-formated patch description and added the following tags:
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+| Reported-by: Andrea Daoud <andreadaoud6@gmail.com>
+| Closes: https://lore.kernel.org/all/CAOprWotBRv_cvD3GCSe7N2tiLooZBoDisSwb=
+u+VBAmt_2izvwQ@mail.gmail.com
+| Cc: stable@vger.kernel.org
+| Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-sour=
+ce IP core - bus independent part.")
 
---L5qsEAHx6q9dJj52
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--atk4rgrunsb7ifgl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlbssAACgkQJNaLcl1U
-h9D4Xwf/SR39qhC6yLd9TVLdTbJvbv9td/1UUXSFHjr1far0W1wTnHIk9agrEcs+
-/CUvNmq9Xga7s68neH9NM4e3phBnJZt74a3J3zzhvBekn3xXCyKfmhw9WFU+rGGC
-dLJg/c/VyK4Dzfq6tzvajmvH8NYGkfWsf8TDYMAQkWfyFf3iASqrWODzvobA5l8D
-f4Q5wCZqo6GnSlAfW2+galQbUNMK85g0ponFRfi1JfjuTyYb2ZKghpKWLJGOTJzj
-PMinOleBkv3jp7jH4T6Lh+DiCyhddXuYJhoGGfDIlnhZrm+1fCifyVtpxwbXKXH3
-bT3c73me1CxD3Ncn8Q6E2gOrpidxdg==
-=VKTA
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlbs2cACgkQDHRl3/mQ
+kZw2eAgAnOyzkTpNBnmXYyvz6S9amUP5MgyUR4WcLRaL6H6o/X5K0XLhLGc04saO
+HYQ7ujYFVmEu5AT3s6cxMkiOq/VSI3WJo6DybP/hignPAldyE+GAK6tHQ4N/iZB2
+HfjMbJNGZkaQNhJRqANcrSdGHOUUm4orciVB+/fAyesYklMOsM/4NGbo0gNFmq28
+QVbZxUZHcLuCl/R0GgfIuPFzDYAVxj7XshsDgMf3In8Jpab6Kd2Ar+98iBgGOl4N
+TTgYTIHvWU0fyY7Iap89u4cIfzrIfgD19LjJ+egU+horcGFvrryiiI/0fqRozSvi
+5IaAnzaoJ6YaYK9krVPwoKxYZlXHsw==
+=wYjE
 -----END PGP SIGNATURE-----
 
---L5qsEAHx6q9dJj52--
+--atk4rgrunsb7ifgl--
