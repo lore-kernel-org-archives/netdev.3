@@ -1,284 +1,1074 @@
-Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FBEBA3F
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 15:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7AC33C52C
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 15:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767628296; cv=none; b=qaiwlOh0m2Q7if1uMJecuzXBx4Ho4cbf9dtcnOWsXzHocc3P2EJLE52d2BbvjFi84nHbi4dnTQ1+ktLFZQhPCbfJ++TwXdeaZz39c9Y4rU/GjciLwPsI0FXN5zab45YOxslsVlY687Xuz4Wn0r46AZsorhXTnPNPH9bxqJMeQeo=
+	t=1767628606; cv=none; b=DnF5pOUI/z/yqDHeMUq3HqyPJUmkFInOquCb2HdA8Gw238X8+FOnBVHbERLIAYSA2TzinfJmZvW5mSrDAZWvz2j1bMprebKkpEwu3Bd37KrXkcZnjDkQCa1HtzDC3nxJuX91yAkOfZLpBGblm/GarLgvFmN1OI7Fe6wxkonFwWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767628296; c=relaxed/simple;
-	bh=AzSKBn6UDABRClkLRjWtLnLsPdnLBC3x5ubuKx2h5+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DAyo8tg+pRt4XfLkx28Dv9rlfP6tGvtiZ+6G8FQJWrW3QRpM6bigCnx4mzmeOj3QSbIHPBZxorhQ5Lub7tNvK4Zrqcxfgjjv+OsBnAu1nc8Kx3EdQ4lzN6Ls0vMXHCBvH71iDhs0CdeUrBWBXmXYZRDto5yxh0cfcaZogQ0NIx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XXCeFVGB; arc=none smtp.client-ip=209.85.214.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1767628606; c=relaxed/simple;
+	bh=jeE3xWsxoZNXlZ371QgzpwRnITUzJwbhI31Q33krc2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oKpuuk/ZLV/sC+11ujw2CtSVSz72rkePSFH3yC5a2V6ChkhkHpuyhHBka+DsfR2tDWGP1V2muykOMgMvCJHir0tDq1VoVnOdh0u1QazDEkYR+8NdYUIiMSQmCEK71wGaOAUY+UZLnnFro31Zmqo0NYsFpUbuXzjyvV2nS98BTzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TulIww9J; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XXCeFVGB"
-Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2a0a95200e8so334895ad.0
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 07:51:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767628294; x=1768233094;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AzSKBn6UDABRClkLRjWtLnLsPdnLBC3x5ubuKx2h5+8=;
-        b=f9Doo8fN8jnoRxGGhOltao/Jrgf3IWZnDo8o3T9I5gzkUaWLidnXNPLhMzKf0whC/m
-         SaNkW94C6sKuHLs7qe48sw0d/UZRVXttR662KqwLpm5S9bepoy0K82+jRyBOJIxzE3aL
-         sKp+BOnSsfCdCiy2xBdmfM2T/1aSBsZbsGLVkJvAftf8MTk5V1RHCviqFYrrZjOYdmkd
-         PiTPDqMIU5VMjRovIq502fBW012KdR6jpg0kNiw5vZKoGtGBgLltQdXO92nMtGKSTKyA
-         B9Se7PW/SnmvCkGtBB3WHOwuTGOjzyP9JwTxjppkszR+Cqv5sKTz9rQlPycvH0LJF8RP
-         5sBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWt2bVvzpa2x/wUs4VQhhT8GzaQIerjdYYhcWET8ikiKgOGKPd+naFR2fxllxdyoMuAlq6Cj1U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/ZCUHRagva0euRmY84okMtronBW85ZUNzZxLjrGsw6Ne3EZCl
-	kWDFXF/M5U0oRnoRJHvMJrFeuFjC2Jyh3XeQ7w/SLVctySXk7VucLLBKMH6rp+zGBMBlbfhrTah
-	nKPlC/Yj8xK4N4TRwnsoiXy79EYDV1OUXoMQWNxoxLF35GnQhBv/TEjsJKo8Ks2zYRck/8WAC4S
-	RJIl044C+9tYFF4otOJulCnMxFVHdi8vMU1vd+EnicACYCXwBhyezGDKf8In5RvoRi+bKaTXmON
-	Re8JbH8M4s=
-X-Gm-Gg: AY/fxX64UTwQJ+a+cJWNXifQn+Grzu+V3NItE7facdYBAnggLyE6rjTMDtkPfZKVezC
-	np0dBB1QWuKS6yjzCEvmW/noZXf3BChuCsdFXxENxJq12lE4yTmocMzzGGHMJYT2zhJGeChSbSO
-	neQCiX6jff0nnqxgUXEAVVkNv+ISQ4sLl6plFgPWHkj8TqzdR1Y38fO1Nhc6pb7BlBuD1EqbnET
-	JABlim8Vv+ploUc8QjKW6CNDPSgMYyMbSsNSaqO7Dp/Gd38sPPVfQRqoLJABoBCNuZ3CswERLQi
-	Io+w9vvxcbWiHbRFw/Unkvcq+qM/pmsh+Dv/RREv8yGGr6rCGac4Fty34aUlGF54P1smWijuv9j
-	zL0f//1yM5b/pb3qIy65/sZdcWFV3Xh9vfCFf2kMPWVPMWocVeo4kohMD6nGtkOd5F+X6lGH3hl
-	ISN/yOsm0s4bK2oke2wuj5clDgwCTn+uVPyaSH346B/Q==
-X-Google-Smtp-Source: AGHT+IEfZno6v9cYIU5wdZyVF7XiI0lTccSd3MLY3Ju7H011Co1UjJ/xrLxnbl1KSF1+3CjSXUsbgJquouVH
-X-Received: by 2002:a17:903:2c8:b0:2a0:a92c:2cb6 with SMTP id d9443c01a7336-2a3e2cfd028mr1696845ad.36.1767628293600;
-        Mon, 05 Jan 2026 07:51:33 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a3e2b9b7ddsm226145ad.38.2026.01.05.07.51.33
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 05 Jan 2026 07:51:33 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2a089575ab3so513105ad.0
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 07:51:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TulIww9J"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c7660192b0so62962a34.0
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 07:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767628292; x=1768233092; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AzSKBn6UDABRClkLRjWtLnLsPdnLBC3x5ubuKx2h5+8=;
-        b=XXCeFVGB2t/MmpDigcvRpGrWYs1QeK7ofMST26VmhI3ebVfZ+V7oWtBWoCHCIqGhTU
-         edeiQjIAiDStS7tYvVTa4sfmWLMIgHlwpWvcEbHFWQutikDT09cJR/p+4yMfxZCnWD92
-         uidmzSHHp8Xhaf1pfiNy56OST09w1ncvlV6YQ=
-X-Forwarded-Encrypted: i=1; AJvYcCXzM6//B71M8fDkygDfP4eFPXNXyGVtX8KzE7epqcVa4KLEhsQZbt8r1vj8xPKy5D5PHu+nQq4=@vger.kernel.org
-X-Received: by 2002:a17:903:3c64:b0:2a1:e19:ff0 with SMTP id d9443c01a7336-2a3e2d00f7bmr1613985ad.39.1767628291983;
-        Mon, 05 Jan 2026 07:51:31 -0800 (PST)
-X-Received: by 2002:a17:903:3c64:b0:2a1:e19:ff0 with SMTP id
- d9443c01a7336-2a3e2d00f7bmr1613755ad.39.1767628291493; Mon, 05 Jan 2026
- 07:51:31 -0800 (PST)
+        d=gmail.com; s=20230601; t=1767628603; x=1768233403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q8zWlxj7PWB8YlPSgIwfvOLBHuCoA658ynR10F9nWJ8=;
+        b=TulIww9J4AHlqvYJOcjZkIJv7UyV56rByqFRl772/07vzOdXbEWC5909lRNmFOxfWV
+         WiHW0/gBggBGS4T75Mg751ZltFxwaRMh9AUNnbNaJgzo/nEsYAo7Jic9bbAV6crszdf1
+         Ag3DbGKmWgS7qhZK3vVkxaivbCpeOf1ZR8a/1pwQaeDRLi47VKXpmLLISFzD+0ez5XD/
+         23VQq/Nv2/Zp84F0H8blmjL6f5YDfwLf6oWI4i2qbb0XGdJWvbWDfEaKousV4YBu5pBu
+         5rMs5ILVEWG4NdG4qPkcxupM6pEyYphxIM1kT0xkhDV2WBCoIDopQdca9rDg/RhGZoTA
+         z4CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767628603; x=1768233403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q8zWlxj7PWB8YlPSgIwfvOLBHuCoA658ynR10F9nWJ8=;
+        b=eE9iLmkhpC5NrCdT4mhj4PhDup5c3qrDOdZ0uDk1qiROH/e90VbLegjhAF5EcOthTG
+         dvrGx5iOz23nI2yFkKpIt+knNKj0qO6Qzov+91WSFZbAYT+3XsBZ9fCW2wRJARPNS279
+         ZnaC9AG2yO5ed3QNA3yn83U27DDeKWnifXI5WBRWVYeTIqkjo0+D673KJzIES7wccZYe
+         bua6qgcx85zyM9nf2PmZ7b+Efthdw6QX14KRYNGDwAsfNV7/UXBXuGIejl1zj5TYoi4R
+         X/87989xrGCUe1+0QXpJNhZYQi71dIi8U11rN78w3oGNxlMjMcfm2mAbUaK1is7HkLnk
+         UgMQ==
+X-Gm-Message-State: AOJu0YwJ2ugwgm9RZoZDuMZwEdp4ugTJMjxPR0pK9Xx94J+2mIq+L2AL
+	R3l3NRi172NDRR298jFkdomxs3+6IKm56PIR8BVqwBmfSpr58szvkk7A3RIwmN+4
+X-Gm-Gg: AY/fxX5w4O0CMIK4cVTwVp8g0oeDDLICcwV6XOPOorH/FsdeKvta+6sX9Rii8hu+1h+
+	dRnZ5dAMrGnffdGYzJvoOofEC30IZY/dFCfN2aR+IcW1KfqMGGyZ0w+kG7X9A5U52qqotdbzdUU
+	vKO3wlXSrgW1OoOZp/n1bpFqfpVABKNbEwPfa3QinWJp+yvCNjojBOSzjg1JDSA43tYTzEXElbI
+	qSnv2wiV92qsmd5BggEHDzufMlakrZ4nDDFMbB8cKuPPjJ3HRvs7IloZpymjgWEjdFnY2kkZ9U8
+	HEUkI8++u2BdIexqL954+paOPV3UTirogFaveOQGUYjqTuKdS9KmOe4Mm/onzZOg6GVHY7LkIGR
+	aERHiGOic9agjtVxSTXnarCGL3Icf0ikCzMZeheSPAonDPm1fvOuIqyp5rEpsmBnBGr+CxNZXjq
+	UZ1hN1aCwBCQklp2cm7E97xiW65XblK8pPUScwU83/uu4Gujxgi84=
+X-Google-Smtp-Source: AGHT+IGN3Wh8O3dk8yILZk5HnqvvUz2UWGBV0nvzr0AbMoJBvNPSuxgw7xgnXtcDA1jDtS+Uq1g8Ng==
+X-Received: by 2002:a05:622a:4209:b0:4f1:b947:aa04 with SMTP id d75a77b69052e-4f4abcef4c3mr772900661cf.18.1767622094785;
+        Mon, 05 Jan 2026 06:08:14 -0800 (PST)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac64a47esm368957221cf.24.2026.01.05.06.08.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 06:08:13 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	quic@lists.linux.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Moritz Buhl <mbuhl@openbsd.org>,
+	Tyler Fanelli <tfanelli@redhat.com>,
+	Pengtao He <hepengtao@xiaomi.com>,
+	Thomas Dreibholz <dreibh@simula.no>,
+	linux-cifs@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve Dickson <steved@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"D . Wythe" <alibuda@linux.alibaba.com>,
+	Jason Baron <jbaron@akamai.com>,
+	illiliti <illiliti@protonmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Daniel Stenberg <daniel@haxx.se>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Subject: [PATCH net-next v6 03/16] quic: provide common utilities and data structures
+Date: Mon,  5 Jan 2026 09:04:29 -0500
+Message-ID: <f891d87f585b028c2994b4f57712504e6c39b1b5.1767621882.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1767621882.git.lucien.xin@gmail.com>
+References: <cover.1767621882.git.lucien.xin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org> <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
-In-Reply-To: <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Mon, 5 Jan 2026 21:21:19 +0530
-X-Gm-Features: AQt7F2oUM47ns1M3ftrROqBtJ9QJsHhV8zfYKwhUbIv5oQ9RNohjq9sGFqDJ_KY
-Message-ID: <CALs4sv0s-cJqyK3Gn9X95o82==e8zGcaEeuLHns3VPJCo7v6rw@mail.gmail.com>
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
- during error cleanup
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Breno Leitao <leitao@debian.org>, Michael Chan <michael.chan@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000075c6410647a608d2"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---00000000000075c6410647a608d2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This patch provides foundational data structures and utilities used
+throughout the QUIC stack.
 
-On Mon, Jan 5, 2026 at 6:59=E2=80=AFPM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
->
-> On Mon, Jan 05, 2026 at 04:00:16AM -0800, Breno Leitao wrote:
-> > When bnxt_init_one() fails during initialization (e.g.,
-> > bnxt_init_int_mode returns -ENODEV), the error path calls
-> > bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-> > bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-> > which invokes ptp_clock_unregister().
-> >
-> > Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-> > disable events"), ptp_clock_unregister() now calls
-> > ptp_disable_all_events(), which in turn invokes the driver's .enable()
-> > callback (bnxt_ptp_enable()) to disable PTP events before completing th=
-e
-> > unregistration.
-> >
-> > bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
-> > and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
-> > function tries to allocate from bp->hwrm_dma_pool, causing a NULL
-> > pointer dereference:
->
-> This has revealed a latent bug in this driver. All the time that the
-> PTP clock is registered, userspace can interact with it, and thus
-> bnxt_ptp_enable() can be called. ptp_clock_unregister() unpublishes
-> that interface.
->
-> ptp_clock_unregister() must always be called _before_ tearing down any
-> resources that the PTP clock implementation may use.
->
-> From what you describe, it sounds like this patch fixes that.
->
-> Looking at the driver, however, it looks very suspicious.
->
-> __bnxt_hwrm_ptp_qcfg() seems to be the place where PTP is setup and
-> initialised (and ptp_clock_register() called in bnxt_ptp_init()).
->
-> First, it looks like bnxt_ptp_init() will tear down an existing PTP
-> clock via bnxt_ptp_free() before then re-registering it. That seems
-> odd.
+It introduces packet header types, connection ID support, and address
+handling. Hash tables are added to manage socket lookup and connection
+ID mapping.
 
-This is to handle the firmware capabilities changes post an update,
-like you guessed.
+A flexible binary data type is provided, along with helpers for parsing,
+matching, and memory management. Helpers for encoding and decoding
+transport parameters and frames are also included.
 
->
-> Second, __bnxt_hwrm_ptp_qcfg() calls bnxt_ptp_clear() if
-> bp->hwrm_spec_code < 0x10801 || !BNXT_CHIP_P5_PLUS(bp) is true or
-> hwrm_req_init() fails. Is it really possible that we have the PTP
-> clock registered when PTP isn't supported?
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+---
+v3:
+  - Rework hashtables: split into two types and size them based on
+    totalram_pages(), similar to SCTP (reported by Paolo).
+  - struct quic_shash_table: use rwlock instead of spinlock.
+  - quic_data_from/to_string(): add safety and common-case checks
+    (noted by Paolo).
+v4:
+  - Handle the error returned by quic_hash_tables_init() properly
+    (reported by Simon).
+  - Use vmalloc() to simplify hashtable allocations (suggested by Paolo).
+  - Replace rwlock_t with spinlock_t and use hlist_nulls_head in
+    quic_shash_head for lockless lookup/access (suggested by Paolo).
+  - Define QUIC_PN_BITS to replace a magical number in quic_get_num()
+    (reported by Paolo)
+  - Rename several hash-related functions:
+    * quic_(listen_)sock_hash() → quic_(listen_)sock_head()
+    * quic_(listen_)sock_head() → quic_(listen_)sock_hash()
+    * quic_shash() → quic_addr_hash()
+    * quic_ahash() → call its code directly in quic_sock_hash().
+  - Include net in the hash calculations in quic_listen_sock_hash() and
+    quic_udp_sock_head(), and include len in quic_source_conn_id_head().
+v5:
+  - Use u64 for skb_cb->time and u32 for skb_cb->seqno, and introduce
+    quic_ktime_get_us() to obtain timestamps in microseconds.
+  - Remove skb_cb->number_max and reuse number as the largest previously
+    seen, and add skb_cb->crypto_ctx for async crypto context freeing.
+  - Add case 8 to quic_put_int(), which will be used to pack a u64
+    timestamp into the token in a later patch.
+v6:
+  - Since transport_header is no longer set for QUIC, use skb->data
+    instead in quic_hdr() and quic_hshdr(). As the UDP header can now
+    be accessed via udp_hdr(), drop udph_offset from struct quic_skb_cb.
+  - Note for AI reviews: although ticket/token/alpn are not initialized
+    in quic_init_sock(), it is safe to kfree() them in quic_destroy_sock()
+    because they are always set to NULL (via sk_alloc() in inet/6_create()
+    or memset(0) in quic_accept() in a later patchset).
+---
+ net/quic/Makefile   |   2 +-
+ net/quic/common.c   | 581 ++++++++++++++++++++++++++++++++++++++++++++
+ net/quic/common.h   | 204 ++++++++++++++++
+ net/quic/protocol.c |   7 +
+ net/quic/socket.c   |   4 +
+ net/quic/socket.h   |  21 ++
+ 6 files changed, 818 insertions(+), 1 deletion(-)
+ create mode 100644 net/quic/common.c
+ create mode 100644 net/quic/common.h
 
-Right, this check may not make much sense because we call
-__bnxt_hwrm_ptp_qcfg() only after we know PTP is supported.
-Michael may tell better but I think we could improve by removing that check=
-.
+diff --git a/net/quic/Makefile b/net/quic/Makefile
+index 020e4dd133d8..e0067272de7d 100644
+--- a/net/quic/Makefile
++++ b/net/quic/Makefile
+@@ -5,4 +5,4 @@
+ 
+ obj-$(CONFIG_IP_QUIC) += quic.o
+ 
+-quic-y := protocol.o socket.o
++quic-y := common.o protocol.o socket.o
+diff --git a/net/quic/common.c b/net/quic/common.c
+new file mode 100644
+index 000000000000..b5982c50ca89
+--- /dev/null
++++ b/net/quic/common.c
+@@ -0,0 +1,581 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Initialization/cleanup for QUIC protocol support.
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#include <net/netns/hash.h>
++#include <linux/vmalloc.h>
++#include <linux/jhash.h>
++
++#include "common.h"
++
++#define QUIC_VARINT_1BYTE_MAX		0x3fULL
++#define QUIC_VARINT_2BYTE_MAX		0x3fffULL
++#define QUIC_VARINT_4BYTE_MAX		0x3fffffffULL
++
++#define QUIC_VARINT_2BYTE_PREFIX	0x40
++#define QUIC_VARINT_4BYTE_PREFIX	0x80
++#define QUIC_VARINT_8BYTE_PREFIX	0xc0
++
++#define QUIC_VARINT_LENGTH(p)		BIT((*(p)) >> 6)
++#define QUIC_VARINT_VALUE_MASK		0x3f
++
++struct quic_hashinfo {
++	struct quic_shash_table		shash; /* Source connection ID hashtable */
++	struct quic_shash_table		lhash; /* Listening sock hashtable */
++	struct quic_shash_table		chash; /* Connection sock hashtable */
++	struct quic_uhash_table		uhash; /* UDP sock hashtable */
++};
++
++static struct quic_hashinfo quic_hashinfo;
++
++u32 quic_sock_hash_size(void)
++{
++	return quic_hashinfo.chash.size;
++}
++
++u32 quic_sock_hash(struct net *net, union quic_addr *s, union quic_addr *d)
++{
++	u32 ports = ((__force u32)s->v4.sin_port) << 16 | (__force u32)d->v4.sin_port;
++	u32 saddr = (s->sa.sa_family == AF_INET6) ? jhash(&s->v6.sin6_addr, 16, 0) :
++						    (__force u32)s->v4.sin_addr.s_addr;
++	u32 daddr = (d->sa.sa_family == AF_INET6) ? jhash(&d->v6.sin6_addr, 16, 0) :
++						    (__force u32)d->v4.sin_addr.s_addr;
++
++	return jhash_3words(saddr, ports, net_hash_mix(net), daddr) & (quic_sock_hash_size() - 1);
++}
++
++struct quic_shash_head *quic_sock_head(u32 hash)
++{
++	return &quic_hashinfo.chash.hash[hash];
++}
++
++u32 quic_listen_sock_hash_size(void)
++{
++	return quic_hashinfo.lhash.size;
++}
++
++u32 quic_listen_sock_hash(struct net *net, u16 port)
++{
++	return jhash_2words((__force u32)port, net_hash_mix(net), 0) &
++		(quic_listen_sock_hash_size() - 1);
++}
++
++struct quic_shash_head *quic_listen_sock_head(u32 hash)
++{
++	return &quic_hashinfo.lhash.hash[hash];
++}
++
++struct quic_shash_head *quic_source_conn_id_head(struct net *net, u8 *scid, u32 len)
++{
++	struct quic_shash_table *ht = &quic_hashinfo.shash;
++
++	return &ht->hash[jhash_2words(jhash(scid, len, 0), net_hash_mix(net), 0) & (ht->size - 1)];
++}
++
++struct quic_uhash_head *quic_udp_sock_head(struct net *net, u16 port)
++{
++	struct quic_uhash_table *ht = &quic_hashinfo.uhash;
++
++	return &ht->hash[jhash_2words((__force u32)port, net_hash_mix(net), 0) & (ht->size - 1)];
++}
++
++u32 quic_addr_hash(struct net *net, union quic_addr *a)
++{
++	u32 addr = (a->sa.sa_family == AF_INET6) ? jhash(&a->v6.sin6_addr, 16, 0) :
++						   (__force u32)a->v4.sin_addr.s_addr;
++
++	return  jhash_3words(addr, (__force u32)a->v4.sin_port, net_hash_mix(net), 0);
++}
++
++void quic_hash_tables_destroy(void)
++{
++	vfree(quic_hashinfo.shash.hash);
++	vfree(quic_hashinfo.lhash.hash);
++	vfree(quic_hashinfo.chash.hash);
++	vfree(quic_hashinfo.uhash.hash);
++}
++
++static int quic_shash_table_init(struct quic_shash_table *ht, u32 size)
++{
++	int i;
++
++	ht->hash = vmalloc(size * sizeof(struct quic_shash_head));
++	if (!ht->hash)
++		return -ENOMEM;
++
++	ht->size = size;
++	for (i = 0; i < ht->size; i++) {
++		spin_lock_init(&ht->hash[i].lock);
++		INIT_HLIST_NULLS_HEAD(&ht->hash[i].head, i);
++	}
++	return 0;
++}
++
++static int quic_uhash_table_init(struct quic_uhash_table *ht, u32 size)
++{
++	int i;
++
++	ht->hash = vmalloc(size * sizeof(struct quic_uhash_head));
++	if (!ht->hash)
++		return -ENOMEM;
++
++	ht->size = size;
++	for (i = 0; i < ht->size; i++) {
++		mutex_init(&ht->hash[i].lock);
++		INIT_HLIST_HEAD(&ht->hash[i].head);
++	}
++	return 0;
++}
++
++int quic_hash_tables_init(void)
++{
++	unsigned long nr_pages = totalram_pages();
++	u32 limit, size;
++	int err;
++
++	/* Scale hash table size based on system memory, similar to SCTP. */
++	if (nr_pages >= (128 * 1024))
++		limit = nr_pages >> (22 - PAGE_SHIFT);
++	else
++		limit = nr_pages >> (24 - PAGE_SHIFT);
++
++	limit = roundup_pow_of_two(limit);
++
++	/* Source connection ID table (fast lookup, larger size) */
++	size = min(limit, 64 * 1024U);
++	err = quic_shash_table_init(&quic_hashinfo.shash, size);
++	if (err)
++		goto err;
++	size = min(limit, 16 * 1024U);
++	err = quic_shash_table_init(&quic_hashinfo.lhash, size);
++	if (err)
++		goto err;
++	err = quic_shash_table_init(&quic_hashinfo.chash, size);
++	if (err)
++		goto err;
++	err = quic_uhash_table_init(&quic_hashinfo.uhash, size);
++	if (err)
++		goto err;
++	return 0;
++err:
++	quic_hash_tables_destroy();
++	return err;
++}
++
++union quic_var {
++	u8	u8;
++	__be16	be16;
++	__be32	be32;
++	__be64	be64;
++};
++
++/* Returns the number of bytes required to encode a QUIC variable-length integer. */
++u8 quic_var_len(u64 n)
++{
++	if (n <= QUIC_VARINT_1BYTE_MAX)
++		return 1;
++	if (n <= QUIC_VARINT_2BYTE_MAX)
++		return 2;
++	if (n <= QUIC_VARINT_4BYTE_MAX)
++		return 4;
++	return 8;
++}
++
++/* Decodes a QUIC variable-length integer from a buffer. */
++u8 quic_get_var(u8 **pp, u32 *plen, u64 *val)
++{
++	union quic_var n = {};
++	u8 *p = *pp, len;
++	u64 v = 0;
++
++	if (!*plen)
++		return 0;
++
++	len = QUIC_VARINT_LENGTH(p);
++	if (*plen < len)
++		return 0;
++
++	switch (len) {
++	case 1:
++		v = *p;
++		break;
++	case 2:
++		memcpy(&n.be16, p, 2);
++		n.u8 &= QUIC_VARINT_VALUE_MASK;
++		v = be16_to_cpu(n.be16);
++		break;
++	case 4:
++		memcpy(&n.be32, p, 4);
++		n.u8 &= QUIC_VARINT_VALUE_MASK;
++		v = be32_to_cpu(n.be32);
++		break;
++	case 8:
++		memcpy(&n.be64, p, 8);
++		n.u8 &= QUIC_VARINT_VALUE_MASK;
++		v = be64_to_cpu(n.be64);
++		break;
++	default:
++		return 0;
++	}
++
++	*plen -= len;
++	*pp = p + len;
++	*val = v;
++	return len;
++}
++
++/* Reads a fixed-length integer from the buffer. */
++u32 quic_get_int(u8 **pp, u32 *plen, u64 *val, u32 len)
++{
++	union quic_var n;
++	u8 *p = *pp;
++	u64 v = 0;
++
++	if (*plen < len)
++		return 0;
++	*plen -= len;
++
++	switch (len) {
++	case 1:
++		v = *p;
++		break;
++	case 2:
++		memcpy(&n.be16, p, 2);
++		v = be16_to_cpu(n.be16);
++		break;
++	case 3:
++		n.be32 = 0;
++		memcpy(((u8 *)&n.be32) + 1, p, 3);
++		v = be32_to_cpu(n.be32);
++		break;
++	case 4:
++		memcpy(&n.be32, p, 4);
++		v = be32_to_cpu(n.be32);
++		break;
++	case 8:
++		memcpy(&n.be64, p, 8);
++		v = be64_to_cpu(n.be64);
++		break;
++	default:
++		return 0;
++	}
++	*pp = p + len;
++	*val = v;
++	return len;
++}
++
++u32 quic_get_data(u8 **pp, u32 *plen, u8 *data, u32 len)
++{
++	if (*plen < len)
++		return 0;
++
++	memcpy(data, *pp, len);
++	*pp += len;
++	*plen -= len;
++
++	return len;
++}
++
++/* Encodes a value into the QUIC variable-length integer format. */
++u8 *quic_put_var(u8 *p, u64 num)
++{
++	union quic_var n;
++
++	if (num <= QUIC_VARINT_1BYTE_MAX) {
++		*p++ = (u8)(num & 0xff);
++		return p;
++	}
++	if (num <= QUIC_VARINT_2BYTE_MAX) {
++		n.be16 = cpu_to_be16((u16)num);
++		*((__be16 *)p) = n.be16;
++		*p |= QUIC_VARINT_2BYTE_PREFIX;
++		return p + 2;
++	}
++	if (num <= QUIC_VARINT_4BYTE_MAX) {
++		n.be32 = cpu_to_be32((u32)num);
++		*((__be32 *)p) = n.be32;
++		*p |= QUIC_VARINT_4BYTE_PREFIX;
++		return p + 4;
++	}
++	n.be64 = cpu_to_be64(num);
++	*((__be64 *)p) = n.be64;
++	*p |= QUIC_VARINT_8BYTE_PREFIX;
++	return p + 8;
++}
++
++/* Writes a fixed-length integer to the buffer in network byte order. */
++u8 *quic_put_int(u8 *p, u64 num, u8 len)
++{
++	union quic_var n;
++
++	switch (len) {
++	case 1:
++		*p++ = (u8)(num & 0xff);
++		return p;
++	case 2:
++		n.be16 = cpu_to_be16((u16)(num & 0xffff));
++		*((__be16 *)p) = n.be16;
++		return p + 2;
++	case 4:
++		n.be32 = cpu_to_be32((u32)num);
++		*((__be32 *)p) = n.be32;
++		return p + 4;
++	case 8:
++		n.be64 = cpu_to_be64(num);
++		*((__be64 *)p) = n.be64;
++		return p + 8;
++	default:
++		return NULL;
++	}
++}
++
++/* Encodes a value as a variable-length integer with explicit length. */
++u8 *quic_put_varint(u8 *p, u64 num, u8 len)
++{
++	union quic_var n;
++
++	switch (len) {
++	case 1:
++		*p++ = (u8)(num & 0xff);
++		return p;
++	case 2:
++		n.be16 = cpu_to_be16((u16)(num & 0xffff));
++		*((__be16 *)p) = n.be16;
++		*p |= QUIC_VARINT_2BYTE_PREFIX;
++		return p + 2;
++	case 4:
++		n.be32 = cpu_to_be32((u32)num);
++		*((__be32 *)p) = n.be32;
++		*p |= QUIC_VARINT_4BYTE_PREFIX;
++		return p + 4;
++	default:
++		return NULL;
++	}
++}
++
++u8 *quic_put_data(u8 *p, u8 *data, u32 len)
++{
++	if (!len)
++		return p;
++
++	memcpy(p, data, len);
++	return p + len;
++}
++
++/* Writes a transport parameter as two varints: ID and value length, followed by value. */
++u8 *quic_put_param(u8 *p, u16 id, u64 value)
++{
++	p = quic_put_var(p, id);
++	p = quic_put_var(p, quic_var_len(value));
++	return quic_put_var(p, value);
++}
++
++/* Reads a QUIC transport parameter value. */
++u8 quic_get_param(u64 *pdest, u8 **pp, u32 *plen)
++{
++	u64 valuelen;
++
++	if (!quic_get_var(pp, plen, &valuelen))
++		return 0;
++
++	if (*plen < valuelen)
++		return 0;
++
++	if (!quic_get_var(pp, plen, pdest))
++		return 0;
++
++	return (u8)valuelen;
++}
++
++/* rfc9000#section-a.3: DecodePacketNumber()
++ *
++ * Reconstructs the full packet number from a truncated one.
++ */
++s64 quic_get_num(s64 max_pkt_num, s64 pkt_num, u32 n)
++{
++	s64 expected = max_pkt_num + 1;
++	s64 win = BIT_ULL(n * 8);
++	s64 hwin = win / 2;
++	s64 mask = win - 1;
++	s64 cand;
++
++	cand = (expected & ~mask) | pkt_num;
++	if (cand <= expected - hwin && cand < BIT_ULL(QUIC_PN_BITS) - win)
++		return cand + win;
++	if (cand > expected + hwin && cand >= win)
++		return cand - win;
++	return cand;
++}
++
++int quic_data_dup(struct quic_data *to, u8 *data, u32 len)
++{
++	if (!len)
++		return 0;
++
++	data = kmemdup(data, len, GFP_ATOMIC);
++	if (!data)
++		return -ENOMEM;
++
++	kfree(to->data);
++	to->data = data;
++	to->len = len;
++	return 0;
++}
++
++int quic_data_append(struct quic_data *to, u8 *data, u32 len)
++{
++	u8 *p;
++
++	if (!len)
++		return 0;
++
++	p = kzalloc(to->len + len, GFP_ATOMIC);
++	if (!p)
++		return -ENOMEM;
++	p = quic_put_data(p, to->data, to->len);
++	p = quic_put_data(p, data, len);
++
++	kfree(to->data);
++	to->len = to->len + len;
++	to->data = p - to->len;
++	return 0;
++}
++
++/* Check whether 'd2' is equal to any element inside the list 'd1'.
++ *
++ * 'd1' is assumed to be a sequence of length-prefixed elements. Each element
++ * is compared to 'd2' using 'quic_data_cmp()'.
++ *
++ * Returns 1 if a match is found, 0 otherwise.
++ */
++int quic_data_has(struct quic_data *d1, struct quic_data *d2)
++{
++	struct quic_data d;
++	u64 length;
++	u32 len;
++	u8 *p;
++
++	for (p = d1->data, len = d1->len; len; len -= length, p += length) {
++		quic_get_int(&p, &len, &length, 1);
++		quic_data(&d, p, length);
++		if (!quic_data_cmp(&d, d2))
++			return 1;
++	}
++	return 0;
++}
++
++/* Check if any element of 'd1' is present in the list 'd2'.
++ *
++ * Iterates through each element in 'd1', and uses 'quic_data_has()' to check
++ * for its presence in 'd2'.
++ *
++ * Returns 1 if any match is found, 0 otherwise.
++ */
++int quic_data_match(struct quic_data *d1, struct quic_data *d2)
++{
++	struct quic_data d;
++	u64 length;
++	u32 len;
++	u8 *p;
++
++	for (p = d1->data, len = d1->len; len; len -= length, p += length) {
++		quic_get_int(&p, &len, &length, 1);
++		quic_data(&d, p, length);
++		if (quic_data_has(d2, &d))
++			return 1;
++	}
++	return 0;
++}
++
++/* Serialize a list of 'quic_data' elements into a comma-separated string.
++ *
++ * Each element in 'from' is length-prefixed. This function copies their raw
++ * content into the output buffer 'to', inserting commas in between. The
++ * resulting string length is written to '*plen'.
++ */
++int quic_data_to_string(u8 *to, u32 *plen, struct quic_data *from)
++{
++	u32 remlen = *plen;
++	struct quic_data d;
++	u8 *data = to, *p;
++	u64 length;
++	u32 len;
++
++	p = from->data;
++	len = from->len;
++	while (len) {
++		if (!quic_get_int(&p, &len, &length, 1) || len < length)
++			return -EINVAL;
++
++		quic_data(&d, p, length);
++		if (d.len > remlen)
++			return -EOVERFLOW;
++
++		data = quic_put_data(data, d.data, d.len);
++		remlen -= d.len;
++		p += d.len;
++		len -= d.len;
++		if (len) {
++			if (!remlen)
++				return -EOVERFLOW;
++			data = quic_put_int(data, ',', 1);
++			remlen--;
++		}
++	}
++	*plen = data - to;
++	return 0;
++}
++
++/* Parse a comma-separated string into a 'quic_data' list format.
++ *
++ * Each comma-separated token is turned into a length-prefixed element. The
++ * first byte of each element stores the length. Elements are stored in
++ * 'to->data', and 'to->len' is updated.
++ */
++int quic_data_from_string(struct quic_data *to, u8 *from, u32 len)
++{
++	u32 remlen = to->len;
++	struct quic_data d;
++	u8 *p = to->data;
++
++	to->len = 0;
++	while (len) {
++		while (len && *from == ' ') {
++			from++;
++			len--;
++		}
++		if (!len)
++			break;
++		if (!remlen)
++			return -EOVERFLOW;
++		d.data = p++;
++		d.len  = 0;
++		remlen--;
++		while (len) {
++			if (*from == ',') {
++				from++;
++				len--;
++				break;
++			}
++			if (!remlen)
++				return -EOVERFLOW;
++			*p++ = *from++;
++			len--;
++			d.len++;
++			remlen--;
++		}
++		if (d.len > U8_MAX)
++			return -EINVAL;
++		*d.data = (u8)(d.len);
++		to->len += d.len + 1;
++	}
++	return 0;
++}
+diff --git a/net/quic/common.h b/net/quic/common.h
+new file mode 100644
+index 000000000000..bfec0aaf2907
+--- /dev/null
++++ b/net/quic/common.h
+@@ -0,0 +1,204 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#include <net/net_namespace.h>
++
++#define QUIC_MAX_ACK_DELAY	(16384 * 1000)
++#define QUIC_DEF_ACK_DELAY	25000
++
++#define QUIC_STREAM_BIT_FIN	0x01
++#define QUIC_STREAM_BIT_LEN	0x02
++#define QUIC_STREAM_BIT_OFF	0x04
++#define QUIC_STREAM_BIT_MASK	0x08
++
++#define QUIC_CONN_ID_MAX_LEN	20
++#define QUIC_CONN_ID_DEF_LEN	8
++
++#define QUIC_PN_MAX_LEN		4	/* For encoded packet number */
++#define QUIC_PN_BITS		62
++#define QUIC_PN_MAX		(BIT_ULL(QUIC_PN_BITS) - 1)
++
++struct quic_conn_id {
++	u8 data[QUIC_CONN_ID_MAX_LEN];
++	u8 len;
++};
++
++static inline void quic_conn_id_update(struct quic_conn_id *conn_id, u8 *data, u32 len)
++{
++	memcpy(conn_id->data, data, len);
++	conn_id->len = (u8)len;
++}
++
++struct quic_skb_cb {
++	/* Callback and temporary context when encryption/decryption completes in async mode */
++	void (*crypto_done)(struct sk_buff *skb, int err);
++	void *crypto_ctx;
++	union {
++		struct sk_buff *last;	/* Last packet in bundle on TX */
++		u64 time;		/* Arrival timestamp in UDP tunnel on RX */
++	};
++	s64 number;		/* Parsed packet number, or the largest previously seen */
++	u32 seqno;		/* Dest connection ID number on RX */
++	u16 errcode;		/* Error code if encryption/decryption fails */
++	u16 length;		/* Payload length + packet number length */
++
++	u16 number_offset;	/* Offset of packet number field */
++	u8 number_len;		/* Length of the packet number field */
++	u8 level;		/* Encryption level: Initial, Handshake, App, or Early */
++
++	u8 key_update:1;	/* Key update triggered by this packet */
++	u8 key_phase:1;		/* Key phase used (0 or 1) */
++	u8 backlog:1;		/* Enqueued into backlog list */
++	u8 resume:1;		/* Crypto already processed (encrypted or decrypted) */
++	u8 path:1;		/* Packet arrived from a new or migrating path */
++	u8 ecn:2;		/* ECN marking used on TX */
++};
++
++#define QUIC_SKB_CB(skb)	((struct quic_skb_cb *)&((skb)->cb[0]))
++
++struct quichdr {
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++	__u8 pnl:2,
++	     key:1,
++	     reserved:2,
++	     spin:1,
++	     fixed:1,
++	     form:1;
++#elif defined(__BIG_ENDIAN_BITFIELD)
++	__u8 form:1,
++	     fixed:1,
++	     spin:1,
++	     reserved:2,
++	     key:1,
++	     pnl:2;
++#endif
++};
++
++static inline struct quichdr *quic_hdr(struct sk_buff *skb)
++{
++	return (struct quichdr *)skb->data;
++}
++
++struct quichshdr {
++#if defined(__LITTLE_ENDIAN_BITFIELD)
++	__u8 pnl:2,
++	     reserved:2,
++	     type:2,
++	     fixed:1,
++	     form:1;
++#elif defined(__BIG_ENDIAN_BITFIELD)
++	__u8 form:1,
++	     fixed:1,
++	     type:2,
++	     reserved:2,
++	     pnl:2;
++#endif
++};
++
++static inline struct quichshdr *quic_hshdr(struct sk_buff *skb)
++{
++	return (struct quichshdr *)skb->data;
++}
++
++union quic_addr {
++	struct sockaddr_in6 v6;
++	struct sockaddr_in v4;
++	struct sockaddr sa;
++};
++
++static inline union quic_addr *quic_addr(const void *addr)
++{
++	return (union quic_addr *)addr;
++}
++
++struct quic_shash_head {
++	struct hlist_nulls_head	head;
++	spinlock_t		lock;	/* Protects 'head' in atomic context */
++};
++
++struct quic_shash_table {
++	struct quic_shash_head *hash;
++	u32 size;
++};
++
++struct quic_uhash_head {
++	struct hlist_head	head;
++	struct mutex		lock;	/* Protects 'head' in process context */
++};
++
++struct quic_uhash_table {
++	struct quic_uhash_head *hash;
++	u32 size;
++};
++
++struct quic_data {
++	u8 *data;
++	u32 len;
++};
++
++static inline struct quic_data *quic_data(struct quic_data *d, u8 *data, u32 len)
++{
++	d->data = data;
++	d->len  = len;
++	return d;
++}
++
++static inline int quic_data_cmp(struct quic_data *d1, struct quic_data *d2)
++{
++	return d1->len != d2->len || memcmp(d1->data, d2->data, d1->len);
++}
++
++static inline void quic_data_free(struct quic_data *d)
++{
++	kfree(d->data);
++	d->data = NULL;
++	d->len = 0;
++}
++
++static inline u64 quic_ktime_get_us(void)
++{
++	return ktime_to_us(ktime_get());
++}
++
++u32 quic_sock_hash(struct net *net, union quic_addr *s, union quic_addr *d);
++struct quic_shash_head *quic_sock_head(u32 hash);
++u32 quic_sock_hash_size(void);
++
++u32 quic_listen_sock_hash(struct net *net, u16 port);
++struct quic_shash_head *quic_listen_sock_head(u32 hash);
++u32 quic_listen_sock_hash_size(void);
++
++struct quic_shash_head *quic_source_conn_id_head(struct net *net, u8 *scid, u32 len);
++struct quic_uhash_head *quic_udp_sock_head(struct net *net, u16 port);
++u32 quic_addr_hash(struct net *net, union quic_addr *a);
++
++void quic_hash_tables_destroy(void);
++int quic_hash_tables_init(void);
++
++u32 quic_get_data(u8 **pp, u32 *plen, u8 *data, u32 len);
++u32 quic_get_int(u8 **pp, u32 *plen, u64 *val, u32 len);
++s64 quic_get_num(s64 max_pkt_num, s64 pkt_num, u32 n);
++u8 quic_get_param(u64 *pdest, u8 **pp, u32 *plen);
++u8 quic_get_var(u8 **pp, u32 *plen, u64 *val);
++u8 quic_var_len(u64 n);
++
++u8 *quic_put_param(u8 *p, u16 id, u64 value);
++u8 *quic_put_data(u8 *p, u8 *data, u32 len);
++u8 *quic_put_varint(u8 *p, u64 num, u8 len);
++u8 *quic_put_int(u8 *p, u64 num, u8 len);
++u8 *quic_put_var(u8 *p, u64 num);
++
++int quic_data_from_string(struct quic_data *to, u8 *from, u32 len);
++int quic_data_to_string(u8 *to, u32 *plen, struct quic_data *from);
++
++int quic_data_match(struct quic_data *d1, struct quic_data *d2);
++int quic_data_append(struct quic_data *to, u8 *data, u32 len);
++int quic_data_has(struct quic_data *d1, struct quic_data *d2);
++int quic_data_dup(struct quic_data *to, u8 *data, u32 len);
+diff --git a/net/quic/protocol.c b/net/quic/protocol.c
+index 30cb6766734b..ba24f4f94f97 100644
+--- a/net/quic/protocol.c
++++ b/net/quic/protocol.c
+@@ -334,6 +334,10 @@ static __init int quic_init(void)
+ 	if (err)
+ 		goto err_percpu_counter;
+ 
++	err = quic_hash_tables_init();
++	if (err)
++		goto err_hash;
++
+ 	err = register_pernet_subsys(&quic_net_ops);
+ 	if (err)
+ 		goto err_def_ops;
+@@ -351,6 +355,8 @@ static __init int quic_init(void)
+ err_protosw:
+ 	unregister_pernet_subsys(&quic_net_ops);
+ err_def_ops:
++	quic_hash_tables_destroy();
++err_hash:
+ 	percpu_counter_destroy(&quic_sockets_allocated);
+ err_percpu_counter:
+ 	return err;
+@@ -363,6 +369,7 @@ static __exit void quic_exit(void)
+ #endif
+ 	quic_protosw_exit();
+ 	unregister_pernet_subsys(&quic_net_ops);
++	quic_hash_tables_destroy();
+ 	percpu_counter_destroy(&quic_sockets_allocated);
+ 	pr_info("quic: exit\n");
+ }
+diff --git a/net/quic/socket.c b/net/quic/socket.c
+index fa3faddce63b..784b8aaadb25 100644
+--- a/net/quic/socket.c
++++ b/net/quic/socket.c
+@@ -52,6 +52,10 @@ static int quic_init_sock(struct sock *sk)
+ 
+ static void quic_destroy_sock(struct sock *sk)
+ {
++	quic_data_free(quic_ticket(sk));
++	quic_data_free(quic_token(sk));
++	quic_data_free(quic_alpn(sk));
++
+ 	sk_sockets_allocated_dec(sk);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+ }
+diff --git a/net/quic/socket.h b/net/quic/socket.h
+index 98d3f738e909..9a2f4b851676 100644
+--- a/net/quic/socket.h
++++ b/net/quic/socket.h
+@@ -10,6 +10,8 @@
+ 
+ #include <net/udp_tunnel.h>
+ 
++#include "common.h"
++
+ #include "protocol.h"
+ 
+ extern struct proto quic_prot;
+@@ -25,6 +27,10 @@ enum quic_state {
+ struct quic_sock {
+ 	struct inet_sock		inet;
+ 	struct list_head		reqs;
++
++	struct quic_data		ticket;
++	struct quic_data		token;
++	struct quic_data		alpn;
+ };
+ 
+ struct quic6_sock {
+@@ -42,6 +48,21 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
+ 	return &quic_sk(sk)->reqs;
+ }
+ 
++static inline struct quic_data *quic_token(const struct sock *sk)
++{
++	return &quic_sk(sk)->token;
++}
++
++static inline struct quic_data *quic_ticket(const struct sock *sk)
++{
++	return &quic_sk(sk)->ticket;
++}
++
++static inline struct quic_data *quic_alpn(const struct sock *sk)
++{
++	return &quic_sk(sk)->alpn;
++}
++
+ static inline bool quic_is_serv(const struct sock *sk)
+ {
+ 	return !!sk->sk_max_ack_backlog;
+-- 
+2.47.1
 
->
-> Third, same concern but with __bnxt_hwrm_func_qcaps().
-
-This case is different? __bnxt_hwrm_func_qcaps() is always called post
-fw reset, where the capability could have changed.
-
->
-> My guess is that this has something to do with firmware, and maybe
-> upgrading it at runtime - so if the firmware gets upgraded to a
-> version that doesn't support PTP, the driver removes PTP. However,
-> can PTP be used while firmware is being upgraded, and what happens
-> if, e.g. bnxt_ptp_enable() were called mid-upgrade? Would that be
-> safe?
-
-Hm.. you have a point. This is a consequence of commit a60fc3294a37.
-We never had this situation before.
-As it stands now, from what I know, bnxt_ptp_enable()'s fw commands
-will be no-ops.
-But yes, to be correct, I think we should have a fw PTP capability
-check inside bnxt_ptp_enable().
-
->
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
-
---00000000000075c6410647a608d2
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDBM+Sd
-NVfW5kDmxl530uYXUs1LoY7B+1FS48P9k80EEjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjAxMDUxNTUxMzJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBKQIeESOK1rJAVxKrh496/E4RkIRB0hxQpKkbp1obe
-DH4M4AP2W7zSr2U0YMx+smer5Bt0Dli4o8OW9xJ8x87YDz59eSbwqP0bGtomSag3F8R/7QzUaRmx
-hI5oQAgu5ZL2c0ZtcXyc7o0ea/oLuBchDE80yaD/8q6CvaBxYOupabugYyOlBziyLtm62RjeOpHy
-Vt10rYlG/OSY2VdEZ2oydjLIzyry/eVuegtm2k/DB8M1G5XGqPhy307t/ROtyj6ID+ihi6Drt6qp
-JFsAMA6YAII07unNrmfklsVN1ayT8qaoqyMCrzrTwOJZzh/GrAhAIfagDS1GGshdd3y5jqJk
---00000000000075c6410647a608d2--
