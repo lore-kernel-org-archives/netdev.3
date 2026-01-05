@@ -1,165 +1,124 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD2D33375A
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 12:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB1E330D2A
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 12:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.168.196.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767614445; cv=none; b=RJ26Vw5qj1j7yHk1ix/khiyndDtjk6mqGmOIxUWEoO5uCEA6L+UTx1ACQEGyVBVXewRE7CgyUvjB+x9Zion2hgG2xWfCzFtp5AJBDw+6Ipkc6mwO4oQaYKbLV/2e6KLF/yrB8uCSTwpJ5kkQ22FaJHk+uI5LB6QhDEGOAJDl3Ag=
+	t=1767614473; cv=none; b=DTB05ee+lPIYoNweB0lJJcgfQXGo+kAOLydaIy8pum0fiwgXCK3BfMiG5Q6fP4zKLU4M6di+6t16w3vT4wU952dTTlt9ARrLsDWBLhiJImodWcb8pYUBO8btc+xtF2xXwLSyLaZa/IWxOQjD+1llI6kQowccR5tme4VH+QkfykU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767614445; c=relaxed/simple;
-	bh=ofkk3fDMXfaDqdL6mAbClhIKaLqJwPvhJFxDHVlpUhM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NLS9w9Jds7T8lwE+eBGKfNEWI5j9Bb50ih2Mjq7I3ESUjD3mKOZyOJmZIxu/Vc06pTWQZToT6vucdYqYV+7X9+UzpZhB0qyTSZ3rZFR5lmj93gawS2jkGVxUXhD9MKdp6zHUWq1dY9J2PqfBCQIEDycfDGAu8MP8fKBh9Bevp0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c75b829eb6so8844810a34.1
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 04:00:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767614442; x=1768219242;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+nGI90FgNg6Orxw3QE9KbiBZzXhpcXBalJ+YBtICfE0=;
-        b=PjEdxTlK0J0kvJmxp9ulio5z+NPZfSXd1voWgNpCrLP3/7MFTT4hG60Ny7eEVVl//9
-         rL61BrkB29bLweOMhPWZzpx9G+kxQpDvWscLLg1nk5b+445O1rXlohjWXOp+arY62q/0
-         fQur1GjRlnQ5r/0xqUyxib7Y0Jra+ao9d14TQei90DE8sLcxDCHKZK2U93fAdCYuckSG
-         j0mgLY6JRkzY0kBEbk2O5uLCs0gvW3Z117ini/24BwnPj67gbIrDisdVsM9BdF7Z/NG+
-         84vfJ1RCW3U1PyZ7Mszjbz7JiJUnXNLC6tJnqVBWbFyMmhAncGAHzV2YDgESwAwsR2OR
-         yNhQ==
-X-Gm-Message-State: AOJu0YxfzOAkmdjvz0pT78pLECpdCxxCfbe83jyTdHHikxOLLRTJjgY0
-	xf+iCwLiur8y6XcORnYwEuoerWl6Np+hxu46fNRoGkZrrK1Rf06/sh9a
-X-Gm-Gg: AY/fxX5qcLT1beq4oWMHXgfG993lYj7GMJx1pG8GvMqyqrdTtSyvctwvN2pf36FzsFD
-	KFU3XKug/7m/00K2uJfon/7BUNWbgNEtn1jKMaCWerfAmpnBLyzB4d/NweP4Bk29+5Uy2CITvYq
-	6lQ6sTjaY9NfuMz1lUlg5GJHYCUUz5yRS1/0VQ8RB1zdJC6HXpwRkHGr6tWk5Z2nge9IDVc1qDn
-	yT6O1h2lOtfTDwT0NDinMWSSaSLHErkxUlIH7lWEhc5DedDzJ0Ypu7JKJOb/3FgvDXBRtoZZjJ2
-	XQghPQbedyOF91wodUQFaeDgNG5JEhrD5Q49S9Ct+aJ+Z9SD8D90uRGaM0K+MeuahCLvJ/zNmuH
-	HZCPJUQCdpBb0qLGzNczy9RjoN19tEydKldeiezoLEO/20EYbfuiTq+NZJwhD3/71U9ZBGEZP7l
-	nBmXt1tNMRA1UN
-X-Google-Smtp-Source: AGHT+IH8deTVPke2vXyRK4ncJdp0pK2ey5NcMLE1Kk9Y3AUkKsrGoLMbt59kO3J3OMAbGgUYNScKQg==
-X-Received: by 2002:a05:6830:4119:b0:7c6:a2da:ce4b with SMTP id 46e09a7af769-7cc668a4bb0mr26188912a34.5.1767614440673;
-        Mon, 05 Jan 2026 04:00:40 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:5::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667fa674sm32887148a34.29.2026.01.05.04.00.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 04:00:40 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 05 Jan 2026 04:00:16 -0800
-Subject: [PATCH net v2] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
- during error cleanup
+	s=arc-20240116; t=1767614473; c=relaxed/simple;
+	bh=18raZhmpFTwODA8sz/4MhjDdY+LXW9FNpXfqu0ATNjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dwm0Yynd/WVBX65LUokQc7wmEDLNeVRCvyYrSI1bfyGU/t7NNtniHTB45vIR+F9MsPm7nN2/rxKUcnevOBSV/r68bjepbkByAtFsPTwFbInm+ld4MOmr8fte0Q1R5Ka2HHipMVgV3A5Myg3t4V96DB1gltyHOMoTHLgDhPqJh8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cdn77.com; spf=fail smtp.mailfrom=cdn77.com; dkim=pass (1024-bit key) header.d=cdn77.com header.i=@cdn77.com header.b=PFcG9yP7; arc=none smtp.client-ip=95.168.196.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cdn77.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=cdn77.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=cdn77.com header.i=@cdn77.com header.b="PFcG9yP7"
+DKIM-Signature: a=rsa-sha256; t=1767614159; x=1768218959; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=ovbISY9Hoz8IE0AR4zzdU++AVAbMMHC38b3c2Gj157k=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Transfer-Encoding;
+   b=PFcG9yP7z9VoXEmIr2BqNkIJDeN4bHa0Jydvqgc9U8HL1ksQnG842hApeyJGmh8B+0yL3RZ+atosjVlQY0YS9YrVnAeFnEKQouVyI9+gWN2vdkqVYKPjmMPt+MF4cHtl9oDUuDZlP20jaEJ1VynrJaDCNXbLEni97iSFvHZ3LNY=
+Received: from osgiliath ([188.75.189.151])
+        by mail.sh.cz (14.2.0 build 9 ) with ASMTP (SSL) id 202601051255580699;
+        Mon, 05 Jan 2026 12:55:58 +0100
+From: Daniel Sedlak <daniel.sedlak@cdn77.com>
+To: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>
+Subject: [PATCH net-next v2] tcp: clarify tcp_congestion_ops functions comments
+Date: Mon,  5 Jan 2026 12:55:33 +0100
+Message-ID: <20260105115533.1151442-1-daniel.sedlak@cdn77.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
-X-B4-Tracking: v=1; b=H4sIANCnW2kC/1XNyw6CMBCF4VdpZk2NUy4WVr6HYUHbKYyLYtpKM
- IR3N+DK7cmf72yQKDIl6MQGkRZOPAfohCoE2GkII0l20AlQV1WjKlGasGZp68qVeHPaeIJCwCu
- S5/VkHhAoQ/8b09s8yeYDOLKJU57j5zxb8Iz/3QUlSu1b66hpWm2quyPDQ7jMcYR+3/cvpkq7k
- LAAAAA=
-X-Change-ID: 20251231-bnxt-c54d317d8bfe
-To: Michael Chan <michael.chan@broadcom.com>, 
- Pavan Chebbi <pavan.chebbi@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2959; i=leitao@debian.org;
- h=from:subject:message-id; bh=ofkk3fDMXfaDqdL6mAbClhIKaLqJwPvhJFxDHVlpUhM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpW6fnW7MzHTVeSjf5pSIQjcuOIopl/jVai0jMP
- G7iyXAaFYaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaVun5wAKCRA1o5Of/Hh3
- bWsWD/9JLfEicI2+EMVUr7Q2qY/ChMUsiCsxDBicYYI8wwK9tpyNuyFextX2bXbYY8obVfl3FD1
- a3Nah9zOpJ03BQhU7huiSbEMG58BVvbuuxFuZSq5jHuSbXwTdhje1+4KGuTMH9+uRekVWzVIUME
- mcX47ZVNQ5yLG4jks86VO9l35fXl9KNjRIq/6s04yhAXFqC9/qcBQD5VWsp0thLEfwv3ii95GrY
- 7ew+PhHMsfJORRW8aVGkAkbMkYzXzoCBkpMa4aSCnmPLvASLWaURTAkOMQwYpKMjv29PcvVCM2p
- 9a6Xpx0Hqj8zW3Rp1M05eJg/mHb7Teho44fGLOR3okE4SGx2JJA5w8Srz2Cr7/8I6l6D8b3S6MW
- HCzslV+zyzazoCFBO+V39CqrNrqx6mP/Jj2442rbHNoJVeh4pdmokF1HljLpeloJhJ+rK48nqJ7
- +9NmdtDxtot9HoBcDnAyjGyCGFOeXxOsibTMkHyTRljahrBXmkVBLzGSUFg2EvpIZIVdOfjegoA
- kKswRQQqv4LO1+5qy/OseXyXYNXAPdGIzDi4D23e/IntHd7sNjAVtGDeyNGL5rsNis4tw2yNatk
- 1J0eyxXTDax4ZasCYGekoIW1kC4zsh2OgegB1VRTBWWqqLuGiZQQVKBo6+xKKwBd+CI7BaQoUEf
- xYHV0cjCWwncmRQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
+X-CTCH: RefID="str=0001.0A2D031F.695BA6CF.0006,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
 
-When bnxt_init_one() fails during initialization (e.g.,
-bnxt_init_int_mode returns -ENODEV), the error path calls
-bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-which invokes ptp_clock_unregister().
+The optional and required hints in the tcp_congestion_ops are information
+for the user of this interface to signalize its importance when
+implementing these functions.
 
-Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-disable events"), ptp_clock_unregister() now calls
-ptp_disable_all_events(), which in turn invokes the driver's .enable()
-callback (bnxt_ptp_enable()) to disable PTP events before completing the
-unregistration.
+However, cong_avoid comment incorrectly tells that it is required,
+in reality congestion control must provide one of either cong_avoid or
+cong_control.
 
-bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
-and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
-function tries to allocate from bp->hwrm_dma_pool, causing a NULL
-pointer dereference:
+In addition, min_tso_segs has not had any comment optional/required
+hints. So mark it as optional since it is used only in BBR.
 
-  bnxt_en 0000:01:00.0 (unnamed net_device) (uninitialized): bnxt_init_int_mode err: ffffffed
-  KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
-  Call Trace:
-   __hwrm_req_init (drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c:72)
-   bnxt_ptp_enable (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:323 drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:517)
-   ptp_disable_all_events (drivers/ptp/ptp_chardev.c:66)
-   ptp_clock_unregister (drivers/ptp/ptp_clock.c:518)
-   bnxt_ptp_clear (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:1134)
-   bnxt_init_one (drivers/net/ethernet/broadcom/bnxt/bnxt.c:16889)
-
-Lines are against commit f8f9c1f4d0c7 ("Linux 6.19-rc3")
-
-Fix this by clearing and unregistering ptp (bnxt_ptp_clear()) before
-freeing HWRM resources.
-
-Suggested-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-Cc: stable@vger.kernel.org
+Co-developed-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Daniel Sedlak <daniel.sedlak@cdn77.com>
 ---
-Changes in v2:
-- Instead of checking for HWRM resources in bnxt_ptp_enable(), call it
-  when HWRM resources are availble (Pavan Chebbi)
-- Link to v1: https://patch.msgid.link/20251231-bnxt-v1-1-8f9cde6698b4@debian.org
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+changelog:
+- Apply Neal's suggestion and add as Co-developed-by.
+- Link: https://lore.kernel.org/netdev/20251218105819.63906-1-daniel.sedlak@cdn77.com/
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d160e54ac121..5a4af8abf848 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -16891,11 +16891,11 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ include/net/tcp.h | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 0deb5e9dd911..ef0fee58fde8 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1243,12 +1243,27 @@ struct rate_sample {
+ struct tcp_congestion_ops {
+ /* fast path fields are put first to fill one cache line */
  
- init_err_pci_clean:
- 	bnxt_hwrm_func_drv_unrgtr(bp);
-+	bnxt_ptp_clear(bp);
-+	kfree(bp->ptp_cfg);
- 	bnxt_free_hwrm_resources(bp);
- 	bnxt_hwmon_uninit(bp);
- 	bnxt_ethtool_free(bp);
--	bnxt_ptp_clear(bp);
--	kfree(bp->ptp_cfg);
- 	bp->ptp_cfg = NULL;
- 	kfree(bp->fw_health);
- 	bp->fw_health = NULL;
++	/* A congestion control (CC) must provide one of either:
++	 *
++	 * (a) a cong_avoid function, if the CC wants to use the core TCP
++	 *     stack's default functionality to implement a "classic"
++	 *     (Reno/CUBIC-style) response to packet loss, RFC3168 ECN,
++	 *     idle periods, pacing rate computations, etc.
++	 *
++	 * (b) a cong_control function, if the CC wants custom behavior and
++	 *      complete control of all congestion control behaviors.
++	 */
++	/* (a) "classic" response: calculate new cwnd.
++	 */
++	void (*cong_avoid)(struct sock *sk, u32 ack, u32 acked);
++	/* (b) "custom" response: call when packets are delivered to update
++	 * cwnd and pacing rate, after all the ca_state processing.
++	 */
++	void (*cong_control)(struct sock *sk, u32 ack, int flag, const struct rate_sample *rs);
++
+ 	/* return slow start threshold (required) */
+ 	u32 (*ssthresh)(struct sock *sk);
+ 
+-	/* do new cwnd calculation (required) */
+-	void (*cong_avoid)(struct sock *sk, u32 ack, u32 acked);
+-
+ 	/* call before changing ca_state (optional) */
+ 	void (*set_state)(struct sock *sk, u8 new_state);
+ 
+@@ -1261,15 +1276,9 @@ struct tcp_congestion_ops {
+ 	/* hook for packet ack accounting (optional) */
+ 	void (*pkts_acked)(struct sock *sk, const struct ack_sample *sample);
+ 
+-	/* override sysctl_tcp_min_tso_segs */
++	/* override sysctl_tcp_min_tso_segs (optional) */
+ 	u32 (*min_tso_segs)(struct sock *sk);
+ 
+-	/* call when packets are delivered to update cwnd and pacing rate,
+-	 * after all the ca_state processing. (optional)
+-	 */
+-	void (*cong_control)(struct sock *sk, u32 ack, int flag, const struct rate_sample *rs);
+-
+-
+ 	/* new value of cwnd after loss (required) */
+ 	u32  (*undo_cwnd)(struct sock *sk);
+ 	/* returns the multiplier used in tcp_sndbuf_expand (optional) */
 
----
-base-commit: e146b276a817807b8f4a94b5781bf80c6c00601b
-change-id: 20251231-bnxt-c54d317d8bfe
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+base-commit: 8f7aa3d3c7323f4ca2768a9e74ebbe359c4f8f88
+-- 
+2.52.0
 
