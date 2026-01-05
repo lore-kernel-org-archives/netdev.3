@@ -1,177 +1,151 @@
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03BB32C943
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 17:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5DD3A1E6D
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 17:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767633945; cv=none; b=DZ8jCd/rKgQRguT8RPFgNYvTJC/uqBw/qnGitm57AMQ8JpxZqKQgV3XFiVrBDH76AkPZJyQ5mLx6Pi+6Fw3D0wFSyDHHlRxXqMZtL9T4ipHs7mEGa+XxLwAxkSykZvuu5jm+8ZrYkUpkQC9O3hNk7zo5r2odKfkm2pbXU0w4gR8=
+	t=1767634352; cv=none; b=tu3+5RRlm1KvpRpo2tKb+ZgKZNE8Jle0e+xATwnarFnmMqL5mvvAy3Y2MftETQpiNvPltXR3NBRS/Gn07XQBVGWTHhX1G4BP0nEy2X7BE0QfP+/p9n3ThfjEsT/5ltetnbUNBVAYAOty1cYD9yVO4lFmuCnH3eFm5F7cRtRKvtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767633945; c=relaxed/simple;
-	bh=cSW9Ya7EtqCgc7BmUY+54nKNBDcropQrmBOSjd5tJwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otJ+rqqyGnKBa5K/a+ha0mPhkys9wMnlv0yaC2Bwy95S4of5tJW+I+IGaFjLhm+Xx5Cv+pI+gDhuNMc/uw//q9YNL/UXJYclYs5H8GYvXbPelCaIb6R3/fLGT26FHFFum2+8+C26upChCbDwYJdgFECvMOai2wkV4Y+Al8wAdAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kOsRnZp2; arc=none smtp.client-ip=74.125.224.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1767634352; c=relaxed/simple;
+	bh=8yzIbly2UHl0Vwgg2DStQ1FhnXDhQDu3dGxqofhkSFo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P2uqg5Um3EbNdtEoIU7G5F9vwLCICDnu/NyJhJGiKPE+VQG/hxWo8yj+bVXyoxSbtrzSbzemX3dkPZab/N59lv3vccTbtUbSmIcwL/9VEcoB5xRFTDNAVhGIoZFIjhNNSdPMcMSicwsrq2yyw6ZcApmyMWbpVtYxFC8xOQXiAh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kOsRnZp2"
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6447743ce90so149827d50.2
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 09:25:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767633941; x=1768238741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAgw88zB/0n406dKe0mFSxk/1jJyLdp45WOMoU/JUUo=;
-        b=kOsRnZp2IwI+lA7XvCXUh3AMhEdFoEgBrbQ+7mIOy/TxODAREASZD+BDO9RDpOoOAX
-         OWoHPxJbx6tFnKupqPGZqSKVemYDRgCk9rSE46UIXQ4nLor/nSOpjFLMVrappo7ZJjZp
-         yKuvtUV1XYVpJb4qL24CRzKYaNZy1zLk9c2g0IZlK/FADltB3mCd0X2sLssa4wNI8vUJ
-         O5R/6OLwf5EsoLewUzJ69SoVlMBLLweskPsRy9R/6q/KYEJ0A2nhkQ4ab5yanDb2G6gs
-         cgqs6W2IWtYlRBix3U01mqJ4dQwyJt6F705HJ6GSdqLbRl9GPioUiEVR8VCOt2nZsYZp
-         pIUw==
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-450ac3ed719so127513b6e.0
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 09:32:30 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767633941; x=1768238741;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1767634349; x=1768239149;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aAgw88zB/0n406dKe0mFSxk/1jJyLdp45WOMoU/JUUo=;
-        b=a5/kFaIBelr1yckpG7APzm8q++/thcmu3pYDe+osAbBOxtZZmJmEizvkk7ucvehynK
-         cuvdWJOqsKpKTuz4Gl6IDTGtov16JwdP8pDOMKYK71vvUXSCyPKPCRRz6zl9OjVvOhK7
-         8fBqVl9PKebOfQNl4v1d9URgTivgkkEjJ0sfjZNUvil7A+IxXtsjg3C/9BpDQZoo+aWB
-         JXxfr+/+z6CwC6D4qIgwE8W7zUmAazKdRh363iykYQQUdrZe560uNyNUHQJZOzILmBpV
-         OChdkAKVy8vxW5pyAgX8es4Jhzvu1h1ly3E1V2vjclnbod0dbwbKOI3iWOifc6PMIxOv
-         Ri2A==
-X-Gm-Message-State: AOJu0Yy9pxAjLLKYSEyqPh30WUGAOiUGzqtH4QglnaoLeec05brpGvvr
-	+ZKf34SB2Cinv13338CDjhP9I8pDd4uedN0X5u+VzEDaSbhuvgWvh8TiifDz7w==
-X-Gm-Gg: AY/fxX7mv4W9Ybd2rG7QQDM0YjntyC2UH4ukxRlUJL9yJZFNN+Izdr+MAaCrpL7dTN5
-	yp+isoNT4G7bWukrsdc3k6pfNokij9ce9uXkIiU/QgSB4BDjw/H2V63gPlNQT6XdKCs59nQ8rUE
-	rYu1fG1E5mdCSv2m7QSQn6zP9gRQEcIl0DLyVCIBQLxihAYAPJCVzD2x8CYsDRfqcT3RibpCCYk
-	7BAOzsqGbs20czbdXefRNL9zgXtFnVtbPDzzOgQiVeyqDEpcki9UeWWS+mkIn2v4S81osTFEtBt
-	9ZMseXydW8FvCSDFFuIfxWJf9fmiNKm4G1/T6yKxJF2pK2ryncYTQKysvt0GABIm97qHdXtYK0J
-	/ylI0o/MCr9QuSyqjIyvHl4F9xIgO/j3eVNu0ZslRljdvVf6ceakNoz3ORnfxysYZlVQ9H48d/v
-	lr346TfpDq1P2TR/aIMuhGIP9EPbD449ZnGXv9aXRpXOFkFzLWswF+f5aYhLyxMj6t+HKGzOBy5
-	jGxVpr/HgmsETnkIWak
-X-Google-Smtp-Source: AGHT+IEkN1k9pIE87L4SaD4bhxvb0fy//z+GpLDrYWznM5t1hKVib804e71qhcqXMjgnYF09WMLUHQ==
-X-Received: by 2002:a05:690e:b4c:b0:63f:ab4c:9603 with SMTP id 956f58d0204a3-6470c8edcf3mr201621d50.45.1767633940868;
-        Mon, 05 Jan 2026 09:25:40 -0800 (PST)
-Received: from willemb.c.googlers.com.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470c4617basm117388d50.14.2026.01.05.09.25.40
+        bh=RYn6FjhQfhPL6f3Mik1cXFaG5Y4p44xKisVF9XySoVI=;
+        b=QVdYOUiWU7vVKbE8VFqOYkkKPWv+dhiruR9QpZiBJ8acl5mBxXlkQyfloEvzbXS1ff
+         MvmQpML6H7EP4hJNKUzgm1liCxFjXdjrsqeey72sH2J4/AHKngumXBFZmZvrFJPRkSih
+         As0Pj3fW4zGS7Zm6deJaZot/W+G1BjcZlBb1Wj8vzN+KVx1b3PR/E81A/gO4qJWFDD2K
+         C8WH2YRyfAdUkEwRHTDmEts0tdZJ/ILCwwN7kX/MrqNx2Lwc2Hi/u9EYWRmyLM+d0T+V
+         3O/4h+2yOR1Z2LVk/fln7vew3NGsxpBCwlVXaaLpYU++84nfxOt5E5L5eQbc8Bry9E7a
+         fTPw==
+X-Gm-Message-State: AOJu0YznFtFPd+nifz6IAgJ4rCoqWqdzH5j3RRMm+l8AA/TgRxvcQKhv
+	9aT1ZmIvrmnSfaw6UFAdRcVZxm8Jqtn0oN+zJfrOqKLGe99NMGkGdL6t
+X-Gm-Gg: AY/fxX41LYrAd7PcsYukYyaNhez5SDgPV+muUcqDdPYjPK6GCMxTZNd0/Jp9Dmq4zPg
+	b3GgynK9otbzaxhqUQTW6qfxQorJnKiREDl5qK4oXWXaenySMm9i+n1EZS69rZoNJAMivWMqCT/
+	MbfF//nOXf3Bi8dv1lAxuCTz4Z+9h2ccs0GLk1In5rzFy/NtnXR4eLK+H4I9QzGCF6Wn1CQr42T
+	Ik668xDn46L8gUg3ufSjOh+nXzx0m5xitsKcoVEtpDWQblXFqrQXczTVmZR6BWPw/DHNBlhcRAd
+	pQ2iShnlORwIkju14Bri6YlwTpZdNWhB9Kb+oaDHBMzxpTQF3sKbpY8M1vWkfLgvFq2+1zJAEnt
+	5WkVvuiJrt3e6J/hc0hrJ/gihBQQUa/dRxUVGIsNHJR2ENAjBgKszjciBVhKAphUT3dmXg0p6jk
+	cOdjOjMjh+mRPXLg==
+X-Google-Smtp-Source: AGHT+IGnxAvyyWGzRjwRWd5adqZT7uyXgQqZ23sNU7XJr4BVlfP4hWXh4Fn1hQ9ZN1IGVOYSZ4a0YA==
+X-Received: by 2002:a05:6820:a206:b0:65e:f7e6:438c with SMTP id 006d021491bc7-65ef7e644e7mr6709338eaf.36.1767626930632;
+        Mon, 05 Jan 2026 07:28:50 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:74::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65d0f4cd66csm28337512eaf.7.2026.01.05.07.28.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 09:25:40 -0800 (PST)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next] selftests/net: packetdrill: add minimal client and server tests
-Date: Mon,  5 Jan 2026 12:25:02 -0500
-Message-ID: <20260105172529.3514786-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+        Mon, 05 Jan 2026 07:28:50 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 05 Jan 2026 07:28:26 -0800
+Subject: [PATCH net-next v2] net: gve: convert to use .get_rx_ring_count
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260105-gxring_google-v2-1-e7cfe924d429@debian.org>
+X-B4-Tracking: v=1; b=H4sIAJrYW2kC/3WNQQ6CMBBFr9LMmho7SJuw8h6GGChDGWNa09YGQ
+ 7i7Adeu//vvrZAoMiVoxQqRCicOHlqBlQA7996R5BFaAXjGRiGidEtk7+4uBPckOWprtK0NTkZ
+ DJeAVaeLl8N3AU5aelgzdb0nv4UE277qdnTnlED9Huqjj8adSlFSybshctKHGqv460sC9P4Xoo
+ Nu27QtmZDTUxwAAAA==
+X-Change-ID: 20251222-gxring_google-d6c76c372f76
+To: Joshua Washington <joshwash@google.com>, 
+ Harshitha Ramamurthy <hramamurthy@google.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, nktgrg@google.com, 
+ willemb@google.com, kernel-team@meta.com, 
+ Subbaraya Sundeep <sbhatta@marvell.com>, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2190; i=leitao@debian.org;
+ h=from:subject:message-id; bh=8yzIbly2UHl0Vwgg2DStQ1FhnXDhQDu3dGxqofhkSFo=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpW9ixZxdc7/8scJyq2CQOUP11l0fWhZ4Ijr3HT
+ 5lQQRKZlXCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaVvYsQAKCRA1o5Of/Hh3
+ bceAD/9Lvn0dJj7gHor5Q6ht4H8wDYa/rVl37+wtqh5U7k+m+PcKID3aAnEUr8mU1yDvWo3xuK5
+ mK7It0A9OAVCZvYGwVbUeMpMjBBomBknPqvDa1kN1LcPdx1g/y2mZT1RgG5RxOnDb/Fgdx4t3E8
+ JDmwCfaCWVZnvvAt8U7UmEywHaraBM0GN8bUHfnwjAE8np43ECLpSkYAK5vglK0RNpr+q6Z+gE7
+ Fjm0tVgf0WNBvNtq6l4X3hviJAD8Ab9HZKGzmiiorGUx4vhW6MjF5fdBjM/8XkLebF/2z/RlA96
+ tIXdwACkL8en3oUkiNcJqH73S8yenknfibwtEafBgNxAIBtvKJpi3CyLZL+eL+3682Iw+h2GiTB
+ Rjf3nrnF1qaNHWJduBHfrIfcj732/TKswWcbv6Z7kCZg7oajLmp/HMDHd5hwGfU06lbvLG0V6zw
+ kxWc/x2tUw/OnGt73iSvVIPs6WxliQykNuUiCu6SVrcGDXjSZeOkh4Ft11h8gevqRvyGltalkeJ
+ Kpvs9tAtSC7+qMeocLpVy8LBIqBEI5bUv2DCF0TmcSZIdvKldLCFohbjr0PZyFoSAXoRITQUFEu
+ GvUaqFh08efPo04n7vt1LEMn4MxfzBcBzCFg4H73T9rufkjrJ+WCpaj5uGn+5NMuEnV+GESBHRn
+ /d4lPY9+WyLHpJw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-From: Willem de Bruijn <willemb@google.com>
+Convert the Google Virtual Ethernet (GVE) driver to use the new
+.get_rx_ring_count ethtool operation instead of handling
+ETHTOOL_GRXRINGS in .get_rxnfc. This simplifies the code by moving the
+ring count query to a dedicated callback.
 
-Introduce minimal tests. These can serve as simple illustrative
-examples, and as templates when writing new tests.
+The new callback provides the same functionality in a more direct way,
+following the ongoing ethtool API modernization.
 
-When adding new cases, it can be easier to extend an existing base
-test rather than start from scratch. The existing tests all focus on
-real, often non-trivial, features. It is not obvious which to take as
-starting point, and arguably none really qualify.
-
-Add two tests
-- the client test performs the active open and initial close
-- the server test implements the passive open and final close
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- .../net/packetdrill/tcp_basic_client.pkt      | 24 +++++++++++++
- .../net/packetdrill/tcp_basic_server.pkt      | 35 +++++++++++++++++++
- 2 files changed, 59 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_basic_client.pkt
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_basic_server.pkt
+Changes in v2:
+- Added the reviewed-by tags
+- Link to v1: https://patch.msgid.link/20251222-gxring_google-v1-1-35e7467e5c1a@debian.org
+---
+ drivers/net/ethernet/google/gve/gve_ethtool.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_basic_client.pkt b/tools/testing/selftests/net/packetdrill/tcp_basic_client.pkt
-new file mode 100644
-index 000000000000..319f81dd717d
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_basic_client.pkt
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Minimal active open.
-+// First to close connection.
+diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
+index 52500ae8348e..9ed1d4529427 100644
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -815,15 +815,19 @@ static int gve_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
+ 	return err;
+ }
+ 
++static u32 gve_get_rx_ring_count(struct net_device *netdev)
++{
++	struct gve_priv *priv = netdev_priv(netdev);
 +
-+`./defaults.sh`
++	return priv->rx_cfg.num_queues;
++}
 +
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 4
-+
-+   // Connect to server: active open: three-way handshake
-+   +0...0 connect(4, ..., ...) = 0
-+   +0 > S 0:0(0) <mss 1460,sackOK,TS val 0 ecr 0,nop,wscale 8>
-+   +0 < S. 0:0(0) ack 1 win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 7>
-+   +0 > . 1:1(0) ack 1
-+
-+   // Send data
-+   +0 send(4, ..., 1000, 0) = 1000
-+   +0 > P. 1:1001(1000) ack 1
-+   +0 < . 1:1(0) ack 1001 win 257
-+
-+   +0 close(4) = 0
-+   +0 > F. 1001:1001(0) ack 1
-+   +0 < F. 1:1(0) ack 1002 win 257
-+   +0 > . 1002:1002(0) ack 2
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_basic_server.pkt b/tools/testing/selftests/net/packetdrill/tcp_basic_server.pkt
-new file mode 100644
-index 000000000000..e72a291b666e
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_basic_server.pkt
-@@ -0,0 +1,35 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Minimal passive open.
-+// Peer is first to close.
-+
-+`./defaults.sh`
-+
-+   // Open listener socket
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   // Incoming connection: passive open: three-way handshake
-+   +0 < S 0:0(0) win 65535 <mss 1000,sackOK,nop,nop,nop,wscale 8>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+   +0 < . 1:1(0) ack 1 win 257
-+
-+   // Open connection socket and close listener socket
-+   +0 accept(3, ..., ...) = 4
-+   +0 close(3) = 0
-+
-+   // Peer sends data: acknowledge and receive
-+   +0 < P. 1:1001(1000) ack 1 win 257
-+   +0 > . 1:1(0) ack 1001
-+   +0 recv(4, ..., 1000, 0) = 1000
-+
-+   // Peer initiates connection close
-+   +0 < F. 1001:1001(0) ack 1 win 257
-+ +.04 > . 1:1(0) ack 1002
-+
-+   // Local socket also closes its side
-+   +0 close(4) = 0
-+   +0 > F. 1:1(0) ack 1002
-+   +0 < . 1002:1002(0) ack 2 win 257
--- 
-2.52.0.351.gbe84eed79e-goog
+ static int gve_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd, u32 *rule_locs)
+ {
+ 	struct gve_priv *priv = netdev_priv(netdev);
+ 	int err = 0;
+ 
+ 	switch (cmd->cmd) {
+-	case ETHTOOL_GRXRINGS:
+-		cmd->data = priv->rx_cfg.num_queues;
+-		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+ 		if (!priv->max_flow_rules)
+ 			return -EOPNOTSUPP;
+@@ -966,6 +970,7 @@ const struct ethtool_ops gve_ethtool_ops = {
+ 	.get_channels = gve_get_channels,
+ 	.set_rxnfc = gve_set_rxnfc,
+ 	.get_rxnfc = gve_get_rxnfc,
++	.get_rx_ring_count = gve_get_rx_ring_count,
+ 	.get_rxfh_indir_size = gve_get_rxfh_indir_size,
+ 	.get_rxfh_key_size = gve_get_rxfh_key_size,
+ 	.get_rxfh = gve_get_rxfh,
+
+---
+base-commit: c303e8b86d9dbd6868f5216272973292f7f3b7f1
+change-id: 20251222-gxring_google-d6c76c372f76
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
