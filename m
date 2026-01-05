@@ -1,172 +1,134 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010046.outbound.protection.outlook.com [40.93.198.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3E8277C96
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 16:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767631213; cv=fail; b=PoCB7u317sgWGFOw7f0I/romQruwMTvOeqSlgrlitWFusTVaVXpO+57fKT6g6wYTECim3xhQM1RX2azxh0/Wv7yBfvy1aUpSJ29oIalWr1gLyx3eAAceBYsbxJ/9n19/zT3lqLIJI/e4EeGbNP2V2VvGHp05+5h8SL7clhWbK40=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767631213; c=relaxed/simple;
-	bh=97Hf6pC4gkvJIgN/OlkNO199HWhXAf3G6A2xo12Hlvk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nNr8a8u6ZhLepbLMQ0esoyU9iZs7jGNDFJ5AQ4EZxgCKrqkUR6Lrq8k7D9mp4me0JTD78AqKFnqiYE+BpK+BJDdo79hZV+6cIe5HqEHL9dUMrP9R8+OS8nkNJuO/FhFqDtkxiQKr/9OfqqmS5Hzmzdsj3fi8iUcLaJrEXelGSJc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=S3o2ejMq; arc=fail smtp.client-ip=40.93.198.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C2430DEC1
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 16:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767631350; cv=none; b=rE2dxdVbvO/pCOVau6SGqKU0YmcOlXCTmM2nLqPeyCtBN8OOCqM9YUt26rWqvE6elnXSo2iujcl5q//5aE93KgmUl5iRcKbanhFCgW+Kc54R1cM3uGoCZcvVBEp1xQAZHB4Gc9ZJeFHeDXBfkJMsNsXbEr/NPdN9bI4eNqwFAWM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767631350; c=relaxed/simple;
+	bh=m1cWU1c28IHidxYRJfjMgPQezz6qGL1YM01BII9uEjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V+LJw+4joQnh96zfIrhFIGa/qSnC0Xy2MK10XQolq1WNoCn67WrCy0xm6YaXN29YCKNGDuwDAksd6Y/ALVm0RDhcL+4k3Qegtetbuhqt7pfvnOc9VyBaFcopraJUtJpNx6snI+Jqihvyap7tnAyiAS+OrrNRhZSf5/7mkUNRTbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpvcwbQm; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="S3o2ejMq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Orr0H21uQr6BNYw7T7lPZGVrUw4exEpFJJ4AgzEy182N6/V+cIiaJbvtiFUMD3sdIHIX5kZbo1Mcbz0rg5sfzVwnsIShKubonJGnr18c8MbZmBJOck9nZbi+rxlND3YnFvF8dY7hDsCvnfZffhfWNcNuJtCDv191Mr6QKiUBS/or0A7iFJGRYTb/7v1M28t3boT/yWClyS0nG0v1k7zVXRb+Lp7r3JHU02wfH5uVYPiqJQm/c7XJQxe6FtMExhoX2yaXancDtmSb4yb78ZeX4X63lhyLUyno8NNR7/CrtB8cqxPAQl8Qovf8hJrC0yXJpVfbaDczUkXkkgkFdN4tMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8gwz1ARr11NKAfmp1P8yQ3QPpKPaj3YXLFdSNN+bfz0=;
- b=i+bnDgYl2JgB0rbs1m38afOauqaFSWAht4WVCY9ZtaW7FCUgr0jFyEq9A/cvI06uIy2BVhi3xOAcNeknKV7xBHSwTpJoJ+LpffpyV+fobP4Sx73SCXytrd5ZWb8pMqDN9j1YJ5ShIt5ze32NUsM9mbNyyc9YESwWS4gOeZstk7LYXTuUnelFZm64//GZvZDf4gdNy9/E5Cr8S2hhraKfyW8QV1fHVvFaFfR/caOTfNDR7xyG35fJMljm2uO7x25qUyGt2JiEUmqpEkd69X/r9Zk++CnXKNj/cTujc9tY9ViuYTAZxp6ufunFjixz5ydktb0LHUDOBrwz2FpF/yQS9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8gwz1ARr11NKAfmp1P8yQ3QPpKPaj3YXLFdSNN+bfz0=;
- b=S3o2ejMqhxj73pxbRoxb0jgj7JRnhl5DjSPTdYltr7+ZXcZJCLk91jlT+9zQWtNOh/mAS/LKL48UQ8WgATQ8oQUV+ig3o7XhkZWPgFGz95C5FF7OE865VyJJv7LvqsHaHpDtNCWRZcJvpOe1QHeiVxd4BLpd+JFqZi5yCfDTjSBxfagv+gbxtf8myJC/UAJDoL0dh7kAwCNUG+RGEIJyEOIAxKV5olFOiiWb1TDTTC8FLPa7i+lVeGNJ8tlxQb3OWon4iJKM3c4C/iEXhxOvDfK5YijxFQ6CcRbKvnJa2c20Q1YklrvFFGh7WWEeoq1hd8M6SqHWbNzi71Av2jHQdA==
-Received: from CY8P220CA0007.NAMP220.PROD.OUTLOOK.COM (2603:10b6:930:46::14)
- by CY8PR12MB8339.namprd12.prod.outlook.com (2603:10b6:930:7e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 5 Jan
- 2026 16:40:02 +0000
-Received: from CY4PEPF0000FCBF.namprd03.prod.outlook.com
- (2603:10b6:930:46:cafe::ab) by CY8P220CA0007.outlook.office365.com
- (2603:10b6:930:46::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.4 via Frontend Transport; Mon, 5
- Jan 2026 16:40:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000FCBF.mail.protection.outlook.com (10.167.242.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Mon, 5 Jan 2026 16:40:02 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 5 Jan
- 2026 08:39:41 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 5 Jan
- 2026 08:39:41 -0800
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 5 Jan
- 2026 08:39:38 -0800
-From: Gal Pressman <gal@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	<netdev@vger.kernel.org>
-CC: Andrew Lunn <andrew@lunn.ch>, Simon Horman <horms@kernel.org>, "Gal
- Pressman" <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH net-next] ethtool: Clarify len/n_stats fields in/out semantics
-Date: Mon, 5 Jan 2026 18:39:23 +0200
-Message-ID: <20260105163923.49104-1-gal@nvidia.com>
-X-Mailer: git-send-email 2.40.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpvcwbQm"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47d3ba3a4deso732865e9.2
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 08:42:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767631345; x=1768236145; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OyCREwze6wuRU2UsbFO8TEdIlanzdvvtH1ABUGO9pDk=;
+        b=YpvcwbQm1Ws8kOnBUDebthH7pvpr+9K1tOO6q41ET3aQT3gSf0QPKEjIH7nFGXScZl
+         nbvPh+zzM+mEpGmIJsqK85m7URuRjmo92MoOVdjG9YaDLr/LxU6NoIyG3FAp9hK4DI4d
+         /sHcowifOP/wrfNVb+Wwhb4ZYIA37cIUtY0M2ojV1pMpyqCOpAAP7FggUhxLyFln4kg8
+         fZPdcJFwhjLs/jQ0tcDd1Y8pKfm82Kmw3dDCyaax6DiTnR2FgJ8qB22eJyFqK2dpPm5w
+         JJzC9Qn6D6R8PB3HEtVk+UeytTw8chSRaGZAfK7O796k+BgpbiDZbW7wPZdTpjDp5eOC
+         EDUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767631345; x=1768236145;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OyCREwze6wuRU2UsbFO8TEdIlanzdvvtH1ABUGO9pDk=;
+        b=Zm/7Q7Qj+9WPdXLfp9s3RZKaNzZ27Il+RHhZTl+GQedwbvcKQixtEL7x2Kf1z7gDhd
+         z3K7Wy50bUm/EZRKRnJaaec62HKsqL3PtqqdV2cZRTdecQo0S/hJxUfi7EhipIoAFRw8
+         bJA6aeY4yirIxYS6Q5BloW+LCyQs6ngDUlCN1xoRa4sy+Vdd/f2vxqFOe4QsAvQ0w7eW
+         if/cnOfp5VUBrKuyATFDEbyThpdEM1W9JNGei2Rd8IHJ1FAh5qzTl3qoir+1tp6njFRk
+         +9sXSpXubtxxnuTLraP8C9th4jUaWpH/Gg5izKNcX2rJutwzYvYuX1FZjWcCxNW3Cnv+
+         QSng==
+X-Forwarded-Encrypted: i=1; AJvYcCWxaQyxzQvGzyK2JEn8fL7fdtR5TxVJKCf1fg8IZS3aug6251tFVR/jkJvucZvzL4nbwsraKx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtFYmtnU17/l9Iy4i9kNW/3Yfvh3MoA4gK+E8tuWVzosCCPwpo
+	7YSaNafunDN/5ltks7Rgrgd3IM3yb2sHQw7EKiC2XwdJVwudQ17SY+cS
+X-Gm-Gg: AY/fxX6qsn547PMllOPmT28QNFAoZd+AepZNK8BSQ1Hkueg6dBHkzWx0rpyhb5QokWU
+	qDg2uAHAy53qlov+rvW1ylawfNu61sNpAwhvK2MLATMCwu7A5OdW+M/KqAiJLhxeLfZI8HPya2D
+	oZZMK+j0UxlpGMeZmkNin6EtFcMgdMixPh/fmnfnLJIn4TPuO7kwG7SstfbNkjQxfyz51rCZJA0
+	CKtfp4A89TzoQbGArnI/FKSrt7UmngLGIpyVER3ts77OG8zbsJX3p3rUqidNgLP5kMCv2MVKlgH
+	QZXboY1t/J6o7CESeDPTTWHRIxAXyKHljxWe6ZQTfnt/jCAjImD+UWI0yBkj5s/TfCDPsW7BulG
+	ma3tbn+9mY6VrZPw0G5pL3Bx8vtAFRyfCxHGLVm3nucXwv+3Mojn+6chuucBSil/RNJVgmwYOGg
+	CuZS8JByJW0SM=
+X-Google-Smtp-Source: AGHT+IE/JjorzXLwwkJgsbApvm+a3QMCRUUp3o9LGdUjHP2iI1zq9V8yb9BydDK6HAKwFcoQXH8UFg==
+X-Received: by 2002:a05:600c:1c29:b0:46e:37a7:48d1 with SMTP id 5b1f17b1804b1-47d1959d4bamr704429525e9.34.1767631345377;
+        Mon, 05 Jan 2026 08:42:25 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72:0:20bb:19ed:fbb2:7e2d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bca532c6sm442805f8f.27.2026.01.05.08.42.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 08:42:24 -0800 (PST)
+Date: Mon, 5 Jan 2026 17:42:23 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, francesco.dolcini@toradex.com,
+	robh@kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH RESEND net-next v2] net: stmmac: dwmac: Add a fixup for
+ the Micrel KSZ9131 PHY
+Message-ID: <aVvp70S2Lr3o_jyB@eichest-laptop>
+References: <20260105100245.19317-1-eichest@gmail.com>
+ <6ee0d55a-69de-4c28-8d9d-d7755d5c0808@bootlin.com>
+ <aVuxv3Pox-y5Dzln@eichest-laptop>
+ <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCBF:EE_|CY8PR12MB8339:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b56d409-b082-496c-1172-08de4c7912d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wXyPk5sy6CEhpPA239Qf2IWj2ISFhy7n8i1GajBEccJl2dx7pHZtQD0TvQRR?=
- =?us-ascii?Q?SGkQsmlzr+MUt+g48KEAgAGoX8M4HRs92Po+9d2Rx2arLT5y1Y39B1pjdDzE?=
- =?us-ascii?Q?4gEwlJpszIztNlijShGVWXIlY+s8jj5YM3coqN/Y9f8LLKtSDKOZ1hMz4tFX?=
- =?us-ascii?Q?L6cc0sPJqjweVEddJ532n0MbZg/fiM/24TJ2ksyp3OSnouR/x+/rrqKr6Tbg?=
- =?us-ascii?Q?RUvowE2Yd+3QkdC2ChjiUWw8hh2HZ9z+ErfTUysVxf+8sjqJeBTgZ7+Up2DW?=
- =?us-ascii?Q?nPTsy73mzzhVp1zTfg5FIZR/zALmHHosTI3zdGAFSaB8qKxWJlw/8VefkzTf?=
- =?us-ascii?Q?wGWpiW2NBiG132KixSoIVdqc7AsmqDO72krWnL5hUfQhVXDNEyx5Z22iCvM1?=
- =?us-ascii?Q?ox8QPti3hPCljgoqlsKJkGWCPcbCngk9mO1gTdAHxSS6kMZbmX/yotxY5yCA?=
- =?us-ascii?Q?N30tqEDfxLDDSkPxtqvzNKLQWizaeNo9p9DMixozAAsOyG+zApHiAO+oLy3R?=
- =?us-ascii?Q?SFYeBEZZNbsuRFo5dP57JvJSW1FrgiO7IhYL+Ivttpac/19yyEWatsoFK6cv?=
- =?us-ascii?Q?vjt8OSbL8j3cqAfMPuHbbFzklYtVhc+HPWYe4rY0CIHfc2lZi4WJQajwV3wI?=
- =?us-ascii?Q?2fmRHhir3ca668eDhJzKXUetFlnMp0sLP+O0gWq3lWPAQmjkIsiwdA5lsuI6?=
- =?us-ascii?Q?rc+Z+GlxkC0nME2XAt/AHhKlhJR1L6X164lqg7p3WV132IzZo9QYEde4iP+v?=
- =?us-ascii?Q?7Fh0XdIkIsK0Mg8neCrqHecwjHJAk/s4qHx6pWOh2SbPIOaGxmSZnSuyo9y8?=
- =?us-ascii?Q?cY9vqCHxAIX+IkVWJa7ow3WffzSErAwmytIlvQ/c6G6gS48wZL7B0VPmiNxw?=
- =?us-ascii?Q?ne/PuI72p96oy+p3dh4TdO0NfPEEbayPuB0bKM3g2+USPS2SZC5edlLNfdsy?=
- =?us-ascii?Q?FjOYGRudoLwRuSgjIKYtiRaN++tHeiGDSa7eqqPUhdaEDcMkcKG6nl1gxS/G?=
- =?us-ascii?Q?t5WLLOexSteJPdTkOuPsfzoLrGvjmWY06z8tcG4w7T3kBQXMDwM1X+RAMTGo?=
- =?us-ascii?Q?noMYPHqNOnco49MGH4S8sounFUDmiA4j8Q6jcQ5URIJrZjOqlUzFW1stBuaf?=
- =?us-ascii?Q?lSXrQ8swws4LB3w9hqV7xFvKPO55dy/DkRNyla+n37dM3cIM5EM1n4goUv81?=
- =?us-ascii?Q?jJ5+Cf/C23wmFSatYaSZHpNCG2NeMspQpShPyJuLTfqFmBf1NTv/xgA7tgWP?=
- =?us-ascii?Q?v/mSP21wsKC2l+TrfvEK6g8M7mfOpcnDh+bZgz9wo5iGJ5f8l9+Cgi7EFQSI?=
- =?us-ascii?Q?OczaBW+F4qr/1sGjO5Dq2PtWh2W6R21GsfkG8rMJndpPdjdnfkb1TmfssHLk?=
- =?us-ascii?Q?LMUHKM+Cyhn5lOuveRWPYOEYUKKNh3hToKAVND2bL2TKAE5awXLq0RAFXEHt?=
- =?us-ascii?Q?vTKX3J0+MOulYDwXkTBnIFUkv2+1ePsrjdf5t/94uqlidb+hfwtEIzFE4nCU?=
- =?us-ascii?Q?L+K5hJOasDK5ttxVap8C/Fcts6GevX91jy6S+cvNrwYn7sGk42ZH/QAejYp5?=
- =?us-ascii?Q?1KZGB0FiFAedBuYeVNI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 16:40:02.2785
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b56d409-b082-496c-1172-08de4c7912d4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCBF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8339
+In-Reply-To: <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
 
-Document that the 'len' field in ethtool_gstrings and 'n_stats' field in
-ethtool_stats serve dual purposes: on entry they specify the number of
-items requested, and on return they indicate the number actually
-returned (which is not necessarily the same).
+Hi Andrew,
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
----
- include/uapi/linux/ethtool.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+On Mon, Jan 05, 2026 at 04:26:40PM +0100, Andrew Lunn wrote:
+> > Unfortunately, I'm afraid of breaking something on the platforms
+> > that are already working, as this is an Ethernet controller
+> > issue. As I understand it, the PHY works according to the standard.
+> 
+> What is the exact wording of the standard? I'm assuming this is IEEE
+> 802.3?  Please could you quote the relevant part.
 
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index eb7ff2602fbb..f66adf15a3c8 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -1094,7 +1094,8 @@ enum ethtool_module_fw_flash_status {
-  * struct ethtool_gstrings - string set for data tagging
-  * @cmd: Command number = %ETHTOOL_GSTRINGS
-  * @string_set: String set ID; one of &enum ethtool_stringset
-- * @len: On return, the number of strings in the string set
-+ * @len: On entry, the number of strings requested.
-+ *	On return, the number of strings returned.
-  * @data: Buffer for strings.  Each string is null-padded to a size of
-  *	%ETH_GSTRING_LEN.
-  *
-@@ -1177,7 +1178,8 @@ struct ethtool_test {
- /**
-  * struct ethtool_stats - device-specific statistics
-  * @cmd: Command number = %ETHTOOL_GSTATS
-- * @n_stats: On return, the number of statistics
-+ * @n_stats: On entry, the number of stats requested.
-+	On return, the number of stats returned.
-  * @data: Array of statistics
-  *
-  * Users must use %ETHTOOL_GSSET_INFO or %ETHTOOL_GDRVINFO to find the
--- 
-2.40.1
+Yes this is correct. ERR050694 from NXP states:
+The IEEE 802.3 standard states that, in MII/GMII modes, the byte
+preceding the SFD (0xD5), SMD-S (0xE6,0x4C, 0x7F, or 0xB3), or SMD-C
+(0x61, 0x52, 0x9E, or 0x2A) byte can be a non-PREAMBLE byte or there can
+be no preceding preamble byte. The MAC receiver must successfully
+receive a packet without any preamble(0x55) byte preceding the SFD,
+SMD-S, or SMD-C byte.
+However due to the defect, in configurations where frame preemption is
+enabled, when preamble byte does not precede the SFD, SMD-S, or SMD-C
+byte, the received packet is discarded by the MAC receiver. This is
+because, the start-of-packet detection logic of the MAC receiver
+incorrectly checks for a preamble byte.
 
+NXP refers to IEEE 802.3 where in clause 35.2.3.2.2 Receive case (GMII)
+they show two tables one where the preamble is preceding the SFD and one
+where it is not. The text says:
+The operation of 1000 Mb/s PHYs can result in shrinkage of the preamble
+between transmission at the source GMII and reception at the destination
+GMII. Table 35–3 depicts the case where no preamble bytes are conveyed
+across the GMII. This case may not be possible with a specific PHY, but
+illustrates the minimum preamble with which MAC shall be able to
+operate. Table 35–4 depicts the case where the entire preamble is
+conveyed across the GMII.
+
+We would change the behavior from "no preamble is preceding SFD" to "the
+enitre preamble is preceding SFD". Both are listed in the standard and
+shall be supported by the MAC.
+
+I hope this helps.
+
+Regards,
+Stefan
