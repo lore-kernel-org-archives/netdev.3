@@ -1,139 +1,112 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A081333447
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 11:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A57335060;
+	Mon,  5 Jan 2026 11:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613685; cv=none; b=SwLUgBY66UUwRP8AaHIYz7Eti3Jd1Ae3h51/aTKGj1N/D2bXVUZCIi48hn/hfBmTUT8rO8Fx5+2r2/9WRkI5c9RaE08rFfz/fkCdqg9mibAduK8A3UV2AsAqpc4x+QwKdcJvBoAnf+qd595+rLKOZPIET2axnB2ApI9dXz1FDBo=
+	t=1767613776; cv=none; b=d+zY6p2zNr/eiWqEimVj9deTVOZHwXTjGYyXaQXrmGqMRGvTCf2zfZS++PrBCw4N4yFTE/dXO5Dy2bSdlidRVZMWKpgVucgwU1UFicSv9Gpn1ae8XfoQIC04u5KSD/vFpPSWwo77MSNWFAuesa45JoTQixNxqq83CB0Vyhtklkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613685; c=relaxed/simple;
-	bh=9KuF5mVTCYqNpYTWSGEzNxM1NAUHaHIt1frKONRl/3c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MbizIGQlFoNgFTL00UcD4Ap/dK88ymFjUjxv41LgkG15Q0aRcovLoWdTYgzb3iGjm6atV2fAcz9IoQEBvSaox5Fjwv53KAEAEKpqVWZ/2DHByTEqOFei+cwBG27IfNm3v+Q06vDg1JHjbjhuYZxWdV9XZZ6INrtkGUVs5Fkpm/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e1CPeIYq; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767613776; c=relaxed/simple;
+	bh=yWu645PPDBjG4J1fJYBg5tusEONb7bKGLU7c13nDQJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTwXILZMeBWuTegz2yOlVGGJSR31gnswTzjyRmRaoNMhxVIEknYn8IOXZQRFcgm76XiR3z4P61h5w+XbMPC6tzlVQKEX5XOJ8gVXyePJgTgrBiMrBxzna2cPHcfkISHm83j1yCB98Ve0BvQuABzN9275FkjjLV8hsSetsXupumk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA5rotvD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e1CPeIYq"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47d3ffa5f33so36534025e9.2
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 03:48:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767613681; x=1768218481; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0c7x1KuoCO36lV/cUbw2RbaoUEVJdub9OudTswrskL8=;
-        b=e1CPeIYqqLxhaGhQhEAFUgiFi3kRex4k/G1yNOl/C+sz70vye3TpgcVztmpo+9xu9K
-         RdcrHg9wGVad2cynGGGE3DQS+Npv0odgsCGBymJ+l6xRZabra0GEgoxZvpNvyznz8nKD
-         Guik2Bwd3XFgy8yqQODXasy1JepllAfWtTV+kRf1FKepERZGCx7cO+tHEX4e3V9D5fwe
-         e+snLowISA53rBynxc1JiWae22Izm42JrpLbSeYkqR0XRHoq1jn82bWm9/g/BDDqC0xi
-         eDJWWFMxkLCpLxhOm+izU6Cw5PZ0L+4GwJGwH7Kk4FHMSpAujy3+PZ5b6DHR66Wp1610
-         dkLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767613681; x=1768218481;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0c7x1KuoCO36lV/cUbw2RbaoUEVJdub9OudTswrskL8=;
-        b=eOLDg5rBr2eTqLiep65FHNi+tu3h3UASkAThpDWWC0d9PySjPRjnGTVqmCgZCWb5sj
-         6Ttc4PXaoDUASm8ay7M4cW2GzUwaTWGni3EsFGgRy8oq0FUMBdfhpudUicodv0QRwI1W
-         /5BvtYO2tp8kAjZwQiOvdJ0/RpeScaj1q7eP9HWxOzXN9xVlaS/9tk56i6fgWvQjXigz
-         ks1lNyrb9OrIQqRfkOJsn2PiLjGT2GNTf1JP1CXEg7g0H8VJVWRhdCuv1cKn2DE/mIRM
-         1BLXaQn3DWy/v8RW/+/pixP2n5K7cb2d6LQ2CusS7ZhLHmCUWlbQx0BVxBBkKrGAh7IC
-         gUJw==
-X-Gm-Message-State: AOJu0Yz4bhJRxujCcZYoKj0I5DWsVNj1zKAFdSu/J6GzB5UvNfI4r49L
-	b2XbZhgZgtHaNdPlUq2zm5nkeLqUF5A38pre1rV1kG8bj8lJCrIqnbkk+QaTTy9L
-X-Gm-Gg: AY/fxX4/dmfHh8yjpc+5MElghlcmx/b6SES/onv8L8gc+b3o34C/U0G3hE4h1GoQJmc
-	07P6Rx53StT67564OLNHbyO/GdjqhIyUSOAXk71kQ2sfuUMoMnzQ8WBPV68qtLE/PQvqFOeFIjO
-	98YrYo7uWTK8LJt7PepyEb876pGUpnWEWhYkyzT4un8p8W3bv54jq4UL7DWl9kNdYywN2TFG8yA
-	p52th8cB8I996GlL82EpeP4PMgAVLwOCzgjiVaSi6fmUerS6DkYYYeQIWmzTjNZF5Fy5ooQb0uc
-	dGKk0zL6f5a/rLgc+w4XUqrXGNm4htUb5wyW3Js5uDOl8cMBDpDgcGNC2T5yPm3Vk6MI6I6zw5+
-	Nl6YuTMRNld9JWmD4cM59tQEBC33CulSWOHFFhygbs13CMjv1o6qbkGMcgScRbG7oiXboMwx4f9
-	Ag
-X-Google-Smtp-Source: AGHT+IHKI7pXBundH6Aldzu3XpW85g+I64MiD5fidXc/xSwpMM10ybpQYDIOpGVHUtF2nmtmcb5RbA==
-X-Received: by 2002:a05:600c:310c:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-47d1953b941mr483080275e9.7.1767613681409;
-        Mon, 05 Jan 2026 03:48:01 -0800 (PST)
-Received: from wdesk. ([5.213.159.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6ba7090esm56459345e9.7.2026.01.05.03.47.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 03:48:00 -0800 (PST)
-From: Mahdi Faramarzpour <mahdifrmx@gmail.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Mahdi Faramarzpour <mahdifrmx@gmail.com>
-Subject: [PATCH net-next] udp: add drop count for packets in udp_prod_queue
-Date: Mon,  5 Jan 2026 15:17:32 +0330
-Message-Id: <20260105114732.140719-1-mahdifrmx@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA5rotvD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB68C19421;
+	Mon,  5 Jan 2026 11:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767613775;
+	bh=yWu645PPDBjG4J1fJYBg5tusEONb7bKGLU7c13nDQJ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bA5rotvDlyCaLm7EtL2iBPGJw/Au9k0G72MCu+EKs6p5iLzStc6XznizNcA8iQ6gV
+	 otTYllFnOWjne9l0Qs8D4fqOTWOBUg58fsvi0d4QVGhlSAdE0DmZMIXcwmUb6wQohE
+	 tlo+jPFzHYjExWA65Ik5GX7b+BHnYbN0PrS6+mhHW/wuP/pyOU01pQkm3pGWctuw7O
+	 qvFRuoKEHfG8sqj/7DFsjPba3EgP8I+1SToDrmWieg/ak9RtjY+12r+KuCjIESz63+
+	 ng0ogXey35ODFl1s572WpnSrfBVQdaz5liQ+iJF6kHfo3IAhJS7M08Hi7uAYn7mz8K
+	 jKspppuY0ls3g==
+Date: Mon, 5 Jan 2026 11:49:29 +0000
+From: Simon Horman <horms@kernel.org>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+	paulros@microsoft.com
+Subject: Re: [PATCH RFC 1/2] net: mana: Add support for coalesced RX packets
+ on CQE
+Message-ID: <20260105114929.GA330625@horms.kernel.org>
+References: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
 
-This commit adds SNMP drop count increment for the packets in
-per NUMA queues which were introduced in commit b650bf0977d3
-("udp: remove busylock and add per NUMA queues").
+On Tue, Dec 16, 2025 at 07:57:54AM -0800, Haiyang Zhang wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> Our NIC can have up to 4 RX packets on 1 CQE. To support this feature,
+> check and process the type CQE_RX_COALESCED_4. The default setting is
+> disabled, to avoid possible regression on latency.
+> 
+> And add ethtool handler to switch this feature. To turn it on, run:
+>   ethtool -C <nic> rx-frames 4
+> To turn it off:
+>   ethtool -C <nic> rx-frames 1
+> 
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 
-Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
----
- net/ipv4/udp.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+...
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index ffe074cb5..19ab44e46 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1709,6 +1709,11 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 	int dropcount;
- 	int nb = 0;
- 
-+	struct {
-+		int mem4;
-+		int mem6;
-+	} err_count = { 0, 0 };
-+
- 	rmem = atomic_read(&sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 	size = skb->truesize;
-@@ -1760,6 +1765,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 		total_size += size;
- 		err = udp_rmem_schedule(sk, size);
- 		if (unlikely(err)) {
-+			if (skb->protocol == htons(ETH_P_IP))
-+				err_count.mem4++;
-+			else
-+				err_count.mem6++;
- 			/*  Free the skbs outside of locked section. */
- 			skb->next = to_drop;
- 			to_drop = skb;
-@@ -1797,10 +1806,18 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 			skb = to_drop;
- 			to_drop = skb->next;
- 			skb_mark_not_on_list(skb);
--			/* TODO: update SNMP values. */
- 			sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PROTO_MEM);
- 		}
- 		numa_drop_add(&udp_sk(sk)->drop_counters, nb);
-+
-+		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_MEMERRORS,
-+			       err_count.mem4);
-+		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_INERRORS,
-+			       err_count.mem4);
-+		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_MEMERRORS,
-+			       err_count.mem6);
-+		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_INERRORS,
-+			       err_count.mem6);
- 	}
- 
- 	atomic_sub(total_size, &udp_prod_queue->rmem_alloc);
--- 
-2.34.1
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> index 0e2f4343ac67..1b9ed5c9bbff 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> @@ -397,6 +397,58 @@ static void mana_get_channels(struct net_device *ndev,
+>  	channel->combined_count = apc->num_queues;
+>  }
+>  
+> +static int mana_get_coalesce(struct net_device *ndev,
+> +			     struct ethtool_coalesce *ec,
+> +			     struct kernel_ethtool_coalesce *kernel_coal,
+> +			     struct netlink_ext_ack *extack)
 
+...
+
+> +	if (err) {
+> +		netdev_err(ndev, "Set rx-frames to %u failed:%d\n",
+> +			   ec->rx_max_coalesced_frames, err);
+> +		NL_SET_ERR_MSG_FMT(extack, "Set rx-frames to %u failed:%d\n",
+> +				   ec->rx_max_coalesced_frames, err);
+
+nit: I don't think the trailing '\n' is necessary here.
+
+     Flagged by coccinelle.
+
+> +
+> +		apc->cqe_coalescing_enable = saved_cqe_coalescing_enable;
+> +	}
+> +
+> +	return err;
+> +}
+
+...
