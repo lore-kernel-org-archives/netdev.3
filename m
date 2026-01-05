@@ -1,126 +1,89 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEE430B520
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 16:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FA6329C5F;
+	Mon,  5 Jan 2026 16:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767632028; cv=none; b=LyrQxWRZ69LTXRvUIvMFR0w8UdILYJ+UMLgc7p2R3CZcZoki8ERgImKpOXx+OY5FgTUbVn6a3Cee0zv63WPeJUkgzJh39qnKkotRGXTgVRGSugKEqt9ZhSNpXBm24hdf7cNktem7qZKp7QyqeBi9Q45HJquJKZWhYJc0neWRl5I=
+	t=1767632072; cv=none; b=epRCsmJE3Y7pVsNi95hdmJUGfm/mQJNfZCe+tqeZfqJM9ciQ1Cu1wAPjSMpnd1gv0K+QjXEGG3KShdiOUcd2r0ZdehGvGvH0Vhbu0U3vTsAvtaxdfpmjC4AkWsFsvAXZJfRqlkPaV6PDHWv6wJfw3NRukkmntkFRS5xzxJop1Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767632028; c=relaxed/simple;
-	bh=b646dHGOv+VV6aLwAkaxZ/Wf7u+I6uBXShgZx/JBC1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=udCGnvY2i5xqPFj/Lp0k+sNyDPGYsgeDZpmfc7XL3NsW9JLIO7mbc5MllW8CoO/JW6dY5zRfPxcNSRm9aQzRwFLC4DwynEi42LQ7OzBEMwEO4FYZpxtjC5mmujAJARl7UBi6wDhydTjPyL9tFe6aiGQ41t1hc8bHMD6NN5cRXdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/uyUUYE; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767632072; c=relaxed/simple;
+	bh=kgBOPx8X3O0tdg7z3K2K03zc42e9NiZ8Oa6G1WZ9OpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bmBg2/EuvEultnsTVi2UYQhPhdLhrL9K8sY4hjPr7EQwQNAhCfa5AwSZ2KXTrOVOjzMfdqtg1VL3c/wp+R+DFld9/mUgMImXRmp6VSgBbMsoTLG3220n4zuxxIyaO/zYXvpQOt8PxW4fwIbU4ZxDlnr+560v4zjMHiqu/5g8IsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lX1FW+Yg; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/uyUUYE"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b79ea617f55so29048966b.3
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 08:53:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767632025; x=1768236825; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l00UN7SRVhBQC6JXZrocYBm/aaGRNA8NKJUkQbam+Zc=;
-        b=c/uyUUYEkQKqmuVfIU9H6/4shBjRqZXfEevoZ4WpVBwOlvFEFnfHEtCZeaDhZp8vfL
-         SNIJdktdQheFb3ElDCeXPH1UoPDGIzHS58vCs/mmlTT52xztyOrPOENHQWK8bni8QkG6
-         mH45wyHtsPKijBh42qpI4YwqO+apOZlZWhn+Y5uw40eWF2xeeaEIYeeQBRFoObLYWc3o
-         xLpmabk4t73NleTzDC0XIE3JvAtGv3W07CUuVzkGm5+efgftgs8Zr22tP41uSc4AYKKs
-         WMs/X/BsZaPZSXJ7ksJa6GNObo2sDB5P+bQqkGKNmq2e5R44Z98YwEJZdFWW1VvDxrKz
-         2YMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767632025; x=1768236825;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l00UN7SRVhBQC6JXZrocYBm/aaGRNA8NKJUkQbam+Zc=;
-        b=tkJ473qZ+gGFJeId8yWdU45WyEXjUetZL9oz7iJloN9TI3Qyii3u/uA8QgSOLGXLkj
-         99OERxZNFYuV6P9xywlRUNZr28r1+46F5i5+XM20ky7/+ywMhZ23m7qFx5dMzoHr4AVY
-         uThIAwUZ5p4l0pMO8zIrLw9vbbOc9hiKwTZLOHi+ajH7dUGX5T0nfaQnU9mTh/Y30P8Q
-         IbBgbctmIOnw1pMQhgI3aBofrgs8Te6x189ElrRkphxpX+J9lVuThrqbb4idfuJA9zVR
-         jKxrzK7EEYEoDbfk9eIH8qumnl7GIvcsxP36Rwvzx66hY3bxYP0+jvGacUF0EwH9mTuP
-         zY2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUBUHIwa02ZYswao5Y2OZDKVv80+brvS6dyDThNxFHVLSevD/05irgZINo+rd2gz/2xUNX/sLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXZdpX9fbW4ukBiiDJQFVBtvcn2ORgzHjErq5ADnc++rLYSFuv
-	+e923PeO74SwSnFiP2hq7mxlSMTKsJ2N58ezAf8WbR6KVEfMYgpSt/Nv
-X-Gm-Gg: AY/fxX7zWR9ATPFUh3ZSf/oFqYfERJThWjPO6bUvKN8akPpeR1aqZWq8WByWU/niDY+
-	peI33Q3riEduGNZhZNAvb05XFg3TBz3yquk56Hq/uTeNBS0ftO7uCyfYArl0oRAEhymhf0RxRPk
-	5aGuOQoBTVgkUSWs68m1JtYC2uCLOY1IoDV+4EwwIfYJzFfx85Dx4VAUZXAAVXY58zOOkjnKRI+
-	ZGpSwmZm7zCYDRBuwusir8mB7y/ZJRINvPv9GVwFMgmV4WNn7/UWVGjd8BnAMpL99uacsvlYAjP
-	pTDoYPKEzdqdwhZJJED0GzilToSEIKW4DUoUQGuZ4kONZ/Roicvq5FVOep1cyjYPicxldcgSCw2
-	KVhcQYnwDiUZf+LADd8nlmMKhZvp8mfnoqhIM9h8UFtNmhEWITOfvUUAVa0l5TwmGAQRc8xr/AJ
-	M8LgBBWiTrK8l6odiIpyOqp3WWOZPG00qJ0TU1qa741ce/feLk3+WSnEULB6NsExay
-X-Google-Smtp-Source: AGHT+IF+Z26J3eqWANjwvz2aGbzwbHwj03Dvzld4yxgmdcITZPUnWCL1cmdrL77moI4imhMFx9RY5A==
-X-Received: by 2002:a17:907:971a:b0:b72:c261:3ad2 with SMTP id a640c23a62f3a-b8426bfc283mr45915466b.50.1767632024349;
-        Mon, 05 Jan 2026 08:53:44 -0800 (PST)
-Received: from [192.168.255.3] (217-8-142-46.pool.kielnet.net. [46.142.8.217])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842678bfe6sm32386166b.57.2026.01.05.08.53.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 08:53:44 -0800 (PST)
-Message-ID: <3c774e4d-b7a6-44e3-99f3-876f5ccb1ca3@gmail.com>
-Date: Mon, 5 Jan 2026 17:53:42 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lX1FW+Yg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hlE/YpIwDNqax9z0PkzEpkmZoVeweYd1LfeBmSFqwL4=; b=lX1FW+Yg79iuHLRTfHfKSZiNF3
+	g886BgR5O75BB6TRwqUrXDkWeOIBkTj7LUFNNfxSCfBzTwgX4aXK1dzreo0HnVs9eEbRlVHvhCemc
+	1QUtmdjbP3A2YBo+MHevWB69be47dGBRkkfCFfBEoflBFAOKUh4E8H2098ItJ6k+hr1dIpmPD2TUi
+	qqKdRYkjcUZlmaz+KjsmZxungXWSqq11wNjmTmEgpQsOHM/kZGo3D3/y8Zt2Y4ZVgXs1Hh03tXYzP
+	UK5EyqnY9lqurBm/NGBDmu7GGcT6fV5p7gA3AMmaax0awly5CgZDeNF9HKU2MkwGxbS3ca5ttd80T
+	T6o+DFdw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49446)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vcnqM-00000000884-3i9V;
+	Mon, 05 Jan 2026 16:54:10 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vcnqF-0000000080r-2Jwx;
+	Mon, 05 Jan 2026 16:54:03 +0000
+Date: Mon, 5 Jan 2026 16:54:03 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Yao Zi <me@ziyao.cc>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Mingcong Bai <jeffbai@aosc.io>,
+	Kexy Biscuit <kexybiscuit@aosc.io>, Runhua He <hua@aosc.io>,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: Re: [RFC PATCH net-next v5 2/3] net: stmmac: Add glue driver for
+ Motorcomm YT6801 ethernet controller
+Message-ID: <aVvsq7HKOJ0RKwrA@shell.armlinux.org.uk>
+References: <20251225071914.1903-1-me@ziyao.cc>
+ <20251225071914.1903-3-me@ziyao.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] net: sfp: add SMBus I2C block support
-Content-Language: en-US
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-References: <20260105161242.578487-1-jelonek.jonas@gmail.com>
- <aVvmu1YtiO9cXUw0@shell.armlinux.org.uk>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <aVvmu1YtiO9cXUw0@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251225071914.1903-3-me@ziyao.cc>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Russell,
+On Thu, Dec 25, 2025 at 07:19:13AM +0000, Yao Zi wrote:
+> +struct dwmac_motorcomm_priv {
+> +	void __iomem *base;
+> +	struct device *dev;
 
-On 05.01.26 17:28, Russell King (Oracle) wrote:
-> On Mon, Jan 05, 2026 at 04:12:42PM +0000, Jonas Jelonek wrote:
->> base-commit: c303e8b86d9dbd6868f5216272973292f7f3b7f1
->> prerequisite-patch-id: ae039dad1e17867fce9182b6b36ac3b1926b254a
-> This seems to be almost useless information. While base-commit exists
-> in the net-next tree, commit ae039dad1e17867fce9182b6b36ac3b1926b254a
-> doesn't exist in either net-next nor net trees.
->
-> My guess is you applied Maxime's patch locally, and that is the
-> commit ID of that patch.
+This is only setup in the probe function, and then only used when
+reading the MAC address to print error messages - which is called
+from the probe function. Would it make more sense to pass the struct
+device into motorcomm_efuse_read_mac(), especially as it uses
+dev_err_probe() which suggests this function can only be called from
+the probe path.
 
-This was supposed to be the stable patch-id obtained with 
-'git patch-id --stable'.
+Thanks.
 
-> Given that Maxime's patch is targetting the net tree (because it's
-> a fix), and your patch is new development, so is for net-next, you
-> either need to:
-> - wait until Maxime's patch has been merged, and then the net tree
->   has been merged into net-next.
-> or:
-> - resend without Maxime's patch.
->
-> In either case, please read https://docs.kernel.org/process/maintainer-netdev.html
-> In particular, the salient points are:
-> - no resends in under 24 hours (see point 1.6.7)
-> - specify the tree that your patch is targetting in the subject line
->   (see point 1.6.1) E.g. [PATCH net-next v...] net: blah blah
->
-> Thanks.
->
-
-Ack. I'll fix the points you mentioned.
-Thanks for your patience.
-
-
-Best,
-Jonas
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
