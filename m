@@ -1,171 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA4C31987E
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 11:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A081333447
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 11:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613682; cv=none; b=Qzls/HoqHustUnmGCX6FzB9aFf3mDuELGO94AIQSr08c8nT0ExyFuDKk8hlpeUmxpG4erFfWy3mGymLS6+RGED8hTTx3U9WT6yoG3llQo4qwz5hhyoIDw0ltaaLrmiLlCOCc4AUshaSwj1NhILoBdfbeOS0kQ+CPzoctUvcPBY8=
+	t=1767613685; cv=none; b=SwLUgBY66UUwRP8AaHIYz7Eti3Jd1Ae3h51/aTKGj1N/D2bXVUZCIi48hn/hfBmTUT8rO8Fx5+2r2/9WRkI5c9RaE08rFfz/fkCdqg9mibAduK8A3UV2AsAqpc4x+QwKdcJvBoAnf+qd595+rLKOZPIET2axnB2ApI9dXz1FDBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613682; c=relaxed/simple;
-	bh=sZVZYXKGi6x0/cNomEW7NL3LhpGZjdik2+xI/ZdAt6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E0qFbg5X2fMkAOSVH2s+ih+mgZCD2qqY3P7cXJe/3X2CyGdYogI4ReLrq1Qzb6gjbF+eFzVKuifvmLgtcl2Vk+lQBLaDDIutEbyzNdqp3Y/lpyr9hAxtyyYw5dwBLw2buRHdWPca6yjatI9k+HkHdY/p2iq/k+l3Y5RMMPN2O+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CBtImg1N; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uq/gqoWu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767613685; c=relaxed/simple;
+	bh=9KuF5mVTCYqNpYTWSGEzNxM1NAUHaHIt1frKONRl/3c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MbizIGQlFoNgFTL00UcD4Ap/dK88ymFjUjxv41LgkG15Q0aRcovLoWdTYgzb3iGjm6atV2fAcz9IoQEBvSaox5Fjwv53KAEAEKpqVWZ/2DHByTEqOFei+cwBG27IfNm3v+Q06vDg1JHjbjhuYZxWdV9XZZ6INrtkGUVs5Fkpm/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e1CPeIYq; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CBtImg1N";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uq/gqoWu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767613678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4yVc7Fv6KTjwK4Gtk6iZcVFGv62TYxn7ujD99PvmsPk=;
-	b=CBtImg1N9b7D0gq4DcCK7I03eHnJ//kp4F4hkeRadWwoB2JCyBLZ+J0z/tAaxg2263MY3N
-	zFPg/gj0ibTUSWbF6AQnr6YN8bHylBr1Gta6nsSZ0sntoBmFYb9Paw9i5XmrVMKquBb0ll
-	2Nrb1JDmoCG2WkpW4Z1VBlPB1mYD8ic=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-Q-5YMvvuML6_CsU-ubWolg-1; Mon, 05 Jan 2026 06:47:56 -0500
-X-MC-Unique: Q-5YMvvuML6_CsU-ubWolg-1
-X-Mimecast-MFC-AGG-ID: Q-5YMvvuML6_CsU-ubWolg_1767613675
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b73599315adso1087413366b.2
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 03:47:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e1CPeIYq"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47d3ffa5f33so36534025e9.2
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 03:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767613675; x=1768218475; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yVc7Fv6KTjwK4Gtk6iZcVFGv62TYxn7ujD99PvmsPk=;
-        b=Uq/gqoWu5sz0+kM0gQ2AKZLImyqocLSMwvGdj01wCLkxw7mUBET96VM7Xuevdj0Apg
-         QwzB6o/e2vBtebblp4Gcnb/A9dw2Al37TselWVwaTp6SpIXh7gib4fagZBbhf/lWpzua
-         GyjbPzT5V0E9OP4qIf0Vh7ofiPMceSfCl9NLnNsWY/UmChgMqZQML1N/o0PhSmJMW3vn
-         ZlUnRPMmOjRwsrEwweaPJ+Fkof8HhAENLpppyLcD5sirU6vlyxmYoYpNfEFljHC3aLhq
-         b8Jz7uoS0I2jRwQhk5oXWfIXkK04dEWvPTS8spWeHS6i5vzSQTpfRETreDDmUx35yA06
-         /APg==
+        d=gmail.com; s=20230601; t=1767613681; x=1768218481; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0c7x1KuoCO36lV/cUbw2RbaoUEVJdub9OudTswrskL8=;
+        b=e1CPeIYqqLxhaGhQhEAFUgiFi3kRex4k/G1yNOl/C+sz70vye3TpgcVztmpo+9xu9K
+         RdcrHg9wGVad2cynGGGE3DQS+Npv0odgsCGBymJ+l6xRZabra0GEgoxZvpNvyznz8nKD
+         Guik2Bwd3XFgy8yqQODXasy1JepllAfWtTV+kRf1FKepERZGCx7cO+tHEX4e3V9D5fwe
+         e+snLowISA53rBynxc1JiWae22Izm42JrpLbSeYkqR0XRHoq1jn82bWm9/g/BDDqC0xi
+         eDJWWFMxkLCpLxhOm+izU6Cw5PZ0L+4GwJGwH7Kk4FHMSpAujy3+PZ5b6DHR66Wp1610
+         dkLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767613675; x=1768218475;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4yVc7Fv6KTjwK4Gtk6iZcVFGv62TYxn7ujD99PvmsPk=;
-        b=J0OSM5eqspNOI6AuzOmGC/VoN5J9ZF9a+U/KDE8aTU9nzgDd5hogobhSsd3D0Xi8lq
-         H5CHaz/3wJwfVKlVwrcx2KmJDbGM4ZryJksX6KtDKHQrVUCNAnM+lTg6Q33sg+1JliM2
-         ckkglJIdUisLubg4nJ44EoQiZMrYaEq82VU9yo50arsT0LNON5my704GjV8+ZC884pjl
-         NJ8+A0eUoaOTjwR4I2U2w7sNhdCV9XybEm3xSYGfcQJm/bXy+rcGM+9n3HdeWo4DxGyk
-         ywaURrXmroZcNNCuMbCQigHtLiWtbZYsI6aZWJWD92FlK5kp5K7kSjXIiZ2VFGlXWPgx
-         MrUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvsfF4M5Nh4VGqqbsL5Kcn6FgPRmgQTfebG4i3rdUUVedI8DputONzdp1CGuTtl/oenb4R9ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz99ZNLDxg/RalIn+61l7vqacpA1aoEQbmRp+7v+doAhfy4IRKO
-	D3AUTt3a+n/Rq5ZySUPIb1dYuM36I49rpLDxymu40Xki5oRJmT+wv7alrTfipCv5/3lrQayEduV
-	7NSt3BjUySujxbPrdZldNQ7E7wUZdwiBc7Xx12v9stl9kqj+Fh1lGbF+38g==
-X-Gm-Gg: AY/fxX5NFp3ehnwyNIZNm2e1UB7dy+Ozhdq5BI42LRZv4FHOcMLV07c/LUbcFceMTxS
-	69LLRPVUTy+CMGWMXcRm/6oYU0LWgnjoPBGfulMB25lVAiuAGDMY2qRNmK1EEHzHSONPceiep7s
-	aRPMhf1plg2tARf6ka4JyanZWsP6P/MnA08AyLJGH6qR1os/i81at04y7KRHhsJ+7UYar01nwA3
-	8hGV6J7NL9jGOtLvbwGFCJWyiDa6Cpe829dOhHH19NDc3ZDpaDqY7+dTDAC7zIV6WyjLMU+Yl/7
-	dD9YvgSM5xGmhJBkq9PzudP0VsGP+6qwnggSaWptaKypEOq5YTlP6KwGevGWkfOon7gj1Ak5ZjS
-	S701RypAKiuKjStCmCTP2aOJt+8WMEHIfCBV/
-X-Received: by 2002:a17:907:7b9e:b0:b83:f03a:664 with SMTP id a640c23a62f3a-b83f03a080dmr523519566b.49.1767613675485;
-        Mon, 05 Jan 2026 03:47:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHxl5eOZaA5tkb0SiXmLtUqZuvDTKDYvvMC2EjLr6KOiOyt8Eqh0XpS42ZrtvKeQMhJx1p6cw==
-X-Received: by 2002:a17:907:7b9e:b0:b83:f03a:664 with SMTP id a640c23a62f3a-b83f03a080dmr523515866b.49.1767613675017;
-        Mon, 05 Jan 2026 03:47:55 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b80426fc164sm5336443066b.30.2026.01.05.03.47.54
+        d=1e100.net; s=20230601; t=1767613681; x=1768218481;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0c7x1KuoCO36lV/cUbw2RbaoUEVJdub9OudTswrskL8=;
+        b=eOLDg5rBr2eTqLiep65FHNi+tu3h3UASkAThpDWWC0d9PySjPRjnGTVqmCgZCWb5sj
+         6Ttc4PXaoDUASm8ay7M4cW2GzUwaTWGni3EsFGgRy8oq0FUMBdfhpudUicodv0QRwI1W
+         /5BvtYO2tp8kAjZwQiOvdJ0/RpeScaj1q7eP9HWxOzXN9xVlaS/9tk56i6fgWvQjXigz
+         ks1lNyrb9OrIQqRfkOJsn2PiLjGT2GNTf1JP1CXEg7g0H8VJVWRhdCuv1cKn2DE/mIRM
+         1BLXaQn3DWy/v8RW/+/pixP2n5K7cb2d6LQ2CusS7ZhLHmCUWlbQx0BVxBBkKrGAh7IC
+         gUJw==
+X-Gm-Message-State: AOJu0Yz4bhJRxujCcZYoKj0I5DWsVNj1zKAFdSu/J6GzB5UvNfI4r49L
+	b2XbZhgZgtHaNdPlUq2zm5nkeLqUF5A38pre1rV1kG8bj8lJCrIqnbkk+QaTTy9L
+X-Gm-Gg: AY/fxX4/dmfHh8yjpc+5MElghlcmx/b6SES/onv8L8gc+b3o34C/U0G3hE4h1GoQJmc
+	07P6Rx53StT67564OLNHbyO/GdjqhIyUSOAXk71kQ2sfuUMoMnzQ8WBPV68qtLE/PQvqFOeFIjO
+	98YrYo7uWTK8LJt7PepyEb876pGUpnWEWhYkyzT4un8p8W3bv54jq4UL7DWl9kNdYywN2TFG8yA
+	p52th8cB8I996GlL82EpeP4PMgAVLwOCzgjiVaSi6fmUerS6DkYYYeQIWmzTjNZF5Fy5ooQb0uc
+	dGKk0zL6f5a/rLgc+w4XUqrXGNm4htUb5wyW3Js5uDOl8cMBDpDgcGNC2T5yPm3Vk6MI6I6zw5+
+	Nl6YuTMRNld9JWmD4cM59tQEBC33CulSWOHFFhygbs13CMjv1o6qbkGMcgScRbG7oiXboMwx4f9
+	Ag
+X-Google-Smtp-Source: AGHT+IHKI7pXBundH6Aldzu3XpW85g+I64MiD5fidXc/xSwpMM10ybpQYDIOpGVHUtF2nmtmcb5RbA==
+X-Received: by 2002:a05:600c:310c:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-47d1953b941mr483080275e9.7.1767613681409;
+        Mon, 05 Jan 2026 03:48:01 -0800 (PST)
+Received: from wdesk. ([5.213.159.39])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6ba7090esm56459345e9.7.2026.01.05.03.47.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 03:47:54 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id A4FDF407E7F; Mon, 05 Jan 2026 12:47:53 +0100 (CET)
-From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH bpf 2/2] selftests/bpf: Update xdp_context_test_run test to check maximum metadata size
-Date: Mon,  5 Jan 2026 12:47:46 +0100
-Message-ID: <20260105114747.1358750-2-toke@redhat.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260105114747.1358750-1-toke@redhat.com>
-References: <20260105114747.1358750-1-toke@redhat.com>
+        Mon, 05 Jan 2026 03:48:00 -0800 (PST)
+From: Mahdi Faramarzpour <mahdifrmx@gmail.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Mahdi Faramarzpour <mahdifrmx@gmail.com>
+Subject: [PATCH net-next] udp: add drop count for packets in udp_prod_queue
+Date: Mon,  5 Jan 2026 15:17:32 +0330
+Message-Id: <20260105114732.140719-1-mahdifrmx@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Update the selftest to check that the metadata size check takes the
-xdp_frame size into account in bpf_prog_test_run. The original
-check (for meta size 256) was broken because the data frame supplied was
-smaller than this, triggering a different EINVAL return. So supply a
-larger data frame for this test to make sure we actually exercise the
-check we think we are.
+This commit adds SNMP drop count increment for the packets in
+per NUMA queues which were introduced in commit b650bf0977d3
+("udp: remove busylock and add per NUMA queues").
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
 ---
- .../bpf/prog_tests/xdp_context_test_run.c          | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ net/ipv4/udp.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index ee94c281888a..24d7d6d8fea1 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -47,6 +47,7 @@ void test_xdp_context_test_run(void)
- 	struct test_xdp_context_test_run *skel = NULL;
- 	char data[sizeof(pkt_v4) + sizeof(__u32)];
- 	char bad_ctx[sizeof(struct xdp_md) + 1];
-+	char large_data[256];
- 	struct xdp_md ctx_in, ctx_out;
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
-@@ -94,9 +95,6 @@ void test_xdp_context_test_run(void)
- 	test_xdp_context_error(prog_fd, opts, 4, sizeof(__u32), sizeof(data),
- 			       0, 0, 0);
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index ffe074cb5..19ab44e46 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1709,6 +1709,11 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	int dropcount;
+ 	int nb = 0;
  
--	/* Meta data must be 255 bytes or smaller */
--	test_xdp_context_error(prog_fd, opts, 0, 256, sizeof(data), 0, 0, 0);
--
- 	/* Total size of data must be data_end - data_meta or larger */
- 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
- 			       sizeof(data) + 1, 0, 0, 0);
-@@ -116,6 +114,16 @@ void test_xdp_context_test_run(void)
- 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32), sizeof(data),
- 			       0, 0, 1);
- 
-+	/* Meta data must be 216 bytes or smaller (256 - sizeof(struct
-+	 * xdp_frame)). Test both nearest invalid size and nearest invalid
-+	 * 4-byte-aligned size, and make sure data_in is large enough that we
-+	 * actually hit the cheeck on metadata length
-+	 */
-+	opts.data_in = large_data;
-+	opts.data_size_in = sizeof(large_data);
-+	test_xdp_context_error(prog_fd, opts, 0, 217, sizeof(large_data), 0, 0, 0);
-+	test_xdp_context_error(prog_fd, opts, 0, 220, sizeof(large_data), 0, 0, 0);
++	struct {
++		int mem4;
++		int mem6;
++	} err_count = { 0, 0 };
 +
- 	test_xdp_context_test_run__destroy(skel);
- }
+ 	rmem = atomic_read(&sk->sk_rmem_alloc);
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	size = skb->truesize;
+@@ -1760,6 +1765,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 		total_size += size;
+ 		err = udp_rmem_schedule(sk, size);
+ 		if (unlikely(err)) {
++			if (skb->protocol == htons(ETH_P_IP))
++				err_count.mem4++;
++			else
++				err_count.mem6++;
+ 			/*  Free the skbs outside of locked section. */
+ 			skb->next = to_drop;
+ 			to_drop = skb;
+@@ -1797,10 +1806,18 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 			skb = to_drop;
+ 			to_drop = skb->next;
+ 			skb_mark_not_on_list(skb);
+-			/* TODO: update SNMP values. */
+ 			sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PROTO_MEM);
+ 		}
+ 		numa_drop_add(&udp_sk(sk)->drop_counters, nb);
++
++		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_MEMERRORS,
++			       err_count.mem4);
++		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_INERRORS,
++			       err_count.mem4);
++		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_MEMERRORS,
++			       err_count.mem6);
++		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_INERRORS,
++			       err_count.mem6);
+ 	}
  
+ 	atomic_sub(total_size, &udp_prod_queue->rmem_alloc);
 -- 
-2.52.0
+2.34.1
 
