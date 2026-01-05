@@ -1,112 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A57335060;
-	Mon,  5 Jan 2026 11:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB92333451;
+	Mon,  5 Jan 2026 12:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613776; cv=none; b=d+zY6p2zNr/eiWqEimVj9deTVOZHwXTjGYyXaQXrmGqMRGvTCf2zfZS++PrBCw4N4yFTE/dXO5Dy2bSdlidRVZMWKpgVucgwU1UFicSv9Gpn1ae8XfoQIC04u5KSD/vFpPSWwo77MSNWFAuesa45JoTQixNxqq83CB0Vyhtklkc=
+	t=1767614406; cv=none; b=QJ7Rh8Gcobxy1lKpsr1nT9MBxLuPCKkBng/h0rj60HK99uP0qh7DNtjUcr0LYl266rVmVQMnH+rwMMZ8WDElku+AsEz0suaqPEieriL0tacSywUpESi6iYvMztxOVLy/bx1wlf2AyayG1SF/n5yQIi3YQhsb1IYBXmGTxliMBS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613776; c=relaxed/simple;
-	bh=yWu645PPDBjG4J1fJYBg5tusEONb7bKGLU7c13nDQJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PTwXILZMeBWuTegz2yOlVGGJSR31gnswTzjyRmRaoNMhxVIEknYn8IOXZQRFcgm76XiR3z4P61h5w+XbMPC6tzlVQKEX5XOJ8gVXyePJgTgrBiMrBxzna2cPHcfkISHm83j1yCB98Ve0BvQuABzN9275FkjjLV8hsSetsXupumk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA5rotvD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767614406; c=relaxed/simple;
+	bh=n1qvQvUP8Tc1ge0D3hbyWIHdrfniwFulB8hQ3XwguQE=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=NvnYUJm7jAUIYdegINEXY2uYTVVQT+qh3vBJNK8aIc8AYbfaLaCBTPbWvGbgwlPC1eA/JmjmNhEV+C0EQnjwuA4jjq45RJHisF2WjTtTGFw4Sr/Bqw2WOGcgcWNVd3LTH+pqUaIHvOZpygd5ZNKNmDbU+Yw6sfyK0hKCSak9wTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ij48lTOs; arc=none smtp.client-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA5rotvD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB68C19421;
-	Mon,  5 Jan 2026 11:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767613775;
-	bh=yWu645PPDBjG4J1fJYBg5tusEONb7bKGLU7c13nDQJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bA5rotvDlyCaLm7EtL2iBPGJw/Au9k0G72MCu+EKs6p5iLzStc6XznizNcA8iQ6gV
-	 otTYllFnOWjne9l0Qs8D4fqOTWOBUg58fsvi0d4QVGhlSAdE0DmZMIXcwmUb6wQohE
-	 tlo+jPFzHYjExWA65Ik5GX7b+BHnYbN0PrS6+mhHW/wuP/pyOU01pQkm3pGWctuw7O
-	 qvFRuoKEHfG8sqj/7DFsjPba3EgP8I+1SToDrmWieg/ak9RtjY+12r+KuCjIESz63+
-	 ng0ogXey35ODFl1s572WpnSrfBVQdaz5liQ+iJF6kHfo3IAhJS7M08Hi7uAYn7mz8K
-	 jKspppuY0ls3g==
-Date: Mon, 5 Jan 2026 11:49:29 +0000
-From: Simon Horman <horms@kernel.org>
-To: Haiyang Zhang <haiyangz@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	paulros@microsoft.com
-Subject: Re: [PATCH RFC 1/2] net: mana: Add support for coalesced RX packets
- on CQE
-Message-ID: <20260105114929.GA330625@horms.kernel.org>
-References: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ij48lTOs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1767614392; bh=ZHsshIjfSqIMQ3XoA6Iibo5+CynohV16uWOFfEhVjRs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ij48lTOsLKkblyVAztR2FaTuDAuzHsgwF2l7dnWSCk/WxTWOaG1zRgSJ8yofWkP85
+	 AaNx4FSlmsm5UeYHuaPrHF57FCaGWPBlmJ+hJc7BWK54yZLTs3jv1wBCsqjwIuwNNB
+	 8m8Eweb+6QTi6ftjipWKshFZS1tQZcONmGQH1LHo=
+Received: from localhost.localdomain ([61.144.111.35])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id EF0A8E12; Mon, 05 Jan 2026 19:59:48 +0800
+X-QQ-mid: xmsmtpt1767614388trjnbkar0
+Message-ID: <tencent_DEB3B993C801A1D507C53976DEA7F6940D05@qq.com>
+X-QQ-XMAILINFO: MMwjR1C73eIsPqlrovuwgOgybZRKqow9kNg5BmWF6S7qErNMeqkWu6+VQi28Lv
+	 saIyjhbPxM6h4565rvqFl5HQLwuLy0ksvN5/jAk482wP0tf9Sub35FQBgMM7yZmodOpFReXHD0o2
+	 u3TpfoOsY+mBedwitU7SouVYxpP9o0HPySkHPzZ80ZVz2BA9/MbYwkgDXsYaUMaCv1NBwNDLIm0s
+	 IHWPTaxj7g1w4XGUQx3v0hK/1Y0P517UuqegKUTOSDxE4mGf3SDE9ArfThcJ0T74HaG/8c+EAjj4
+	 ekh1Of2iguFcfWIfkWgGC6Xp4Ng8+uQUQOTtif9wZK53gYd0xjYOiy/6vSWpliRH6K/0rHLcpoo9
+	 dlbChG0Xs88QmmKiffGx5pYGFIR4kxbi1glMjjy6tNWsOCutgRm34cmHIrNinhvsIhUXs9reDBuJ
+	 9qBBUt+0sEUorbyy39MCslk7KKCoJkKvGsG9IlKngzQzwdVo5f1hw63wvYfc1vtG9lFtZ8w5EQlX
+	 TBF27PDY28MDKQH7sNr/kDuA9AnRt/iQu9TeofyJluGTffgOGu6JyXfBtW7D1F3w+YEwNXfgV5yo
+	 knUhcF2KcjtgLEnt0s0hAPTSsrFqjae0CdP/pPmY78PeqcD5XkgcJXtlXOA0TJXmGtCL9ZCpa2k8
+	 ybI38GZSN4JcZVMA5hFDQhnrWnlhjZHVKRELVdigIx8lCROMez9lnpHqmRHhMXTsho3hdCj3aKdT
+	 E0NXqEXavO5DBAZVxMLUOJ6aVgAPAQW/t9kEWbWwDa3GfSzmLr/8LUal6O1xVBxH3ISHfpuiXhbu
+	 2kUu7rZmoPBIvOADuJDalWeBb3FeUbo6h/JQkHUMrJFy4hJOUtjLsBBWy9QHekp8qCL0rdscWUhA
+	 y7GKzAADF5M0zSbV3/Tlw8HFfzJMDt46ZaWvl6YbYdcm6W/qGZY9FAvaNoe2ez4np7GiCAJtF+Uy
+	 HWRMDmHktJ76ClJ+75Ca85zHMwG+wJfpovxjETvyAptaEEEpHfv5JGqSCoMtNfb2Vo7vcTLKyfIG
+	 L5TFhtiQIV1F6ZhtBffoeD7dLBlMmo7yvn0IT+Zg+tGYiwmCNF
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: wujing <realwujing@qq.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>,
+	wujing <realwujing@qq.com>
+Subject: [PATCH v3 0/1] mm/page_alloc: dynamic watermark boosting
+Date: Mon,  5 Jan 2026 19:59:42 +0800
+X-OQ-MSGID: <20260105115943.1361645-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <tencent_C5AD9528AAB1853E24A7DC98A19D700E3808@qq.com>
+References: <tencent_C5AD9528AAB1853E24A7DC98A19D700E3808@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1765900682-22114-1-git-send-email-haiyangz@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 16, 2025 at 07:57:54AM -0800, Haiyang Zhang wrote:
-> From: Haiyang Zhang <haiyangz@microsoft.com>
-> 
-> Our NIC can have up to 4 RX packets on 1 CQE. To support this feature,
-> check and process the type CQE_RX_COALESCED_4. The default setting is
-> disabled, to avoid possible regression on latency.
-> 
-> And add ethtool handler to switch this feature. To turn it on, run:
->   ethtool -C <nic> rx-frames 4
-> To turn it off:
->   ethtool -C <nic> rx-frames 1
-> 
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+This is v3 of the auto-tuning patch, addressing feedback from Vlastimil Babka,
+Andrew Morton, and Matthew Wilcox.
 
-...
+Major shift in v3:
+Following Vlastimil's suggestion, this version abandons the direct modification
+of min_free_kbytes. Instead, it leverages the existing watermark_boost
+infrastructure. This approach is more idiomatic as it:
+- Avoids conflicts with administrative sysctl settings.
+- Only affects specific zones experiencing pressure.
+- Utilizes standard kswapd logic for natural decay after reclamation.
 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> index 0e2f4343ac67..1b9ed5c9bbff 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> @@ -397,6 +397,58 @@ static void mana_get_channels(struct net_device *ndev,
->  	channel->combined_count = apc->num_queues;
->  }
->  
-> +static int mana_get_coalesce(struct net_device *ndev,
-> +			     struct ethtool_coalesce *ec,
-> +			     struct kernel_ethtool_coalesce *kernel_coal,
-> +			     struct netlink_ext_ack *extack)
+Responses to Vlastimil Babka's feedback:
+> "Were they really packet drops observed? AFAIK the receive is deferred to non-irq 
+> context if those atomic allocations fail, it shouldn't mean a drop."
+In our high-concurrency production environment, we observed that while the 
+network stack tries to defer processing, persistent GFP_ATOMIC failures 
+eventually lead to NIC-level drops due to RX buffer exhaustion.
 
-...
+> "As for the implementation I'd rather not be changing min_free_kbytes directly... 
+> We already have watermark_boost to dynamically change watermarks"
+Agreed and implemented in v3.
 
-> +	if (err) {
-> +		netdev_err(ndev, "Set rx-frames to %u failed:%d\n",
-> +			   ec->rx_max_coalesced_frames, err);
-> +		NL_SET_ERR_MSG_FMT(extack, "Set rx-frames to %u failed:%d\n",
-> +				   ec->rx_max_coalesced_frames, err);
+Changes in v3:
+- Replaced min_free_kbytes modification with watermark_boost calls.
+- Removed all complex decay/persistence logic from v2, relying on kswapd's 
+  standard behavior.
+- Maintained the 10-second debounce mechanism.
+- Engaged netdev@ community as requested by Andrew Morton.
 
-nit: I don't think the trailing '\n' is necessary here.
+Thanks for the thoughtful reviews!
 
-     Flagged by coccinelle.
+wujing (1):
+  mm/page_alloc: auto-tune watermarks on atomic allocation failure
 
-> +
-> +		apc->cqe_coalescing_enable = saved_cqe_coalescing_enable;
-> +	}
-> +
-> +	return err;
-> +}
+ mm/page_alloc.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-...
+-- 
+2.39.5
+
