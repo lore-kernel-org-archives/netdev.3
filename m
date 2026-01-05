@@ -1,116 +1,99 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A853B323411;
-	Mon,  5 Jan 2026 17:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF281EACD;
+	Mon,  5 Jan 2026 17:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767632977; cv=none; b=T/0KACanUyP9c51V1/IivpulhG+rGN+61379FjkKT9cAOBfr8yy9Q1NbjGvA7pwG0KvMMogOaJFiC0an9JmUzb/WiXDaaw+0WE9vVR0udKN0QEaNdxPW+AtT3ee1Z6O6VnvTFjrTVSOHODjVVoEISWCauPjuLBqQQzOf6zBhvKQ=
+	t=1767633232; cv=none; b=PmzrjgUQMLqHRIRSk80tzHW+uSvW/53ODm9u1pFTIlWDlKU+uTF5UKeS44tu77Yoc1EmasT/qE+thr+veobgES105ugjfNrM8spqjXqRt8ra/6cxCQU93XRsh5juF24Qh4bJ63ueDArL1f0tUSii8h/naK7aGH55zR6PdtKqofc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767632977; c=relaxed/simple;
-	bh=Gq9ZQsejFWgbt/cznYIkZJ9e4Kdlhi4OnV/LwodtYMM=;
+	s=arc-20240116; t=1767633232; c=relaxed/simple;
+	bh=tyr4cn0jOghbwju0lZCBopNZ7oA6fmticVyw7sTQVEc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uYHOtl6YLnesZq+EIh4mIDP4792/S6E8Bs8culRG5CN3br4Qh6v4qQKe17umfpLiL6jLqf7t6h1FBPn/1toRa46v9h+5bStrnFXaJUrq0VfvdKYhPij2wceM6WHaaktYhlrMLZEO7m+bUbzy2BJr6DItwbEsVGY8p6CeGcXAN/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zRa4bM80; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=ap7dpEBupzDB3TqSOkwnkt4tJytlZh4WmZlL8uw3yjcVR9sWibUCzmUaVC+cdUJyPtN4zxJ//eKpLMm2BzId7af2PAxCRfeSwbl6cW3o0TRhi9EYkagzQWppIcBaGCotFniJqANDRyrFpL4B9BZIlWAmGMXuNaDnozmip7BpagM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TD43Gf2B; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zRa4bM80"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TD43Gf2B"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
 	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=p1gzXDkRAfSsLirw5BNtPwUstkVTvPynwJOx+2Xmj98=; b=zRa4bM80CQpDZhryMbMzsFsCkX
-	nSTrr0PLgUmgV2ncgRTwnc7GCglwhlJuPqwCo0qudRA6hSdqBLskS4xVzUzIHSQFGY4hz9F7INgoq
-	mfiGiiYOVFDGpT7cZtMJKkzRa4Do8Jp1sKQPyavQBrAr51ZNWYlkSqQS0vTcZu9VaClmpLXXtiE6d
-	W/kVKKKyM7BJD/6EVps8zWXtA//ja5QMDs+yQ9TBJE7d9aQeNEfaNa3UV87WUdAYthrne9uLs0IzV
-	ogILDDhFXIYbFwnmnKEbcsuAxq9Ru/0wRcENC3s0BRpsOkPUu4l/Psa6D0FG01cyrcTI+nbfX7pki
-	NYIOAJIQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60322)
+	bh=JVvbf6VOOy5SlB6SsQX22t386bNPBzzZILoui+6wI4U=; b=TD43Gf2BisI77yaOolzQqByA+2
+	xB/NRJx2wlR48HnP9b1rtuGb4EXqz+y+2yf1rONl2yTtfQvLv3OV0i4oa9EfRju/rG5glojzVgwBt
+	+do0k240zNza+fOvX7ilC1ar9+JhDgihL68YVEm+LAmiOSXLJ63eDdA1L/SvWM9etxXJWSKhx+Pdr
+	TNVFQTc9OfWnN6LVQVgOoR5TgF7FR4io74ButH9s05/XQIbaomvPmJZJiXiKsluAnj0B1HMAZcZdF
+	SUXWQo9ci+/xjk8NTF5Eo3IY0bQfTnKVSH6TBLf1V7mN+oMhj7JEdd9UeOlmLS/UD4nI/TJZ/x0M+
+	gkmSAi4A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42846)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1vco4z-0000000089f-29LL;
-	Mon, 05 Jan 2026 17:09:17 +0000
+	id 1vco9K-000000008Ad-2CXW;
+	Mon, 05 Jan 2026 17:13:46 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vco4v-00000000822-2qhH;
-	Mon, 05 Jan 2026 17:09:13 +0000
-Date: Mon, 5 Jan 2026 17:09:13 +0000
+	id 1vco9J-0000000082C-0xLP;
+	Mon, 05 Jan 2026 17:13:45 +0000
+Date: Mon, 5 Jan 2026 17:13:45 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, francesco.dolcini@toradex.com,
-	robh@kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH RESEND net-next v2] net: stmmac: dwmac: Add a fixup for
- the Micrel KSZ9131 PHY
-Message-ID: <aVvwOYce1CFOLiBk@shell.armlinux.org.uk>
-References: <20260105100245.19317-1-eichest@gmail.com>
- <6ee0d55a-69de-4c28-8d9d-d7755d5c0808@bootlin.com>
- <aVuxv3Pox-y5Dzln@eichest-laptop>
- <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
- <aVvp70S2Lr3o_jyB@eichest-laptop>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH v3] net: sfp: add SMBus I2C block support
+Message-ID: <aVvxSa2volDcLPZE@shell.armlinux.org.uk>
+References: <20260105161242.578487-1-jelonek.jonas@gmail.com>
+ <aVvmu1YtiO9cXUw0@shell.armlinux.org.uk>
+ <3c774e4d-b7a6-44e3-99f3-876f5ccb1ca3@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aVvp70S2Lr3o_jyB@eichest-laptop>
+In-Reply-To: <3c774e4d-b7a6-44e3-99f3-876f5ccb1ca3@gmail.com>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Jan 05, 2026 at 05:42:23PM +0100, Stefan Eichenberger wrote:
-> Yes this is correct. ERR050694 from NXP states:
-> The IEEE 802.3 standard states that, in MII/GMII modes, the byte
-> preceding the SFD (0xD5), SMD-S (0xE6,0x4C, 0x7F, or 0xB3), or SMD-C
-> (0x61, 0x52, 0x9E, or 0x2A) byte can be a non-PREAMBLE byte or there can
-> be no preceding preamble byte. The MAC receiver must successfully
-> receive a packet without any preamble(0x55) byte preceding the SFD,
-> SMD-S, or SMD-C byte.
-> However due to the defect, in configurations where frame preemption is
-> enabled, when preamble byte does not precede the SFD, SMD-S, or SMD-C
-> byte, the received packet is discarded by the MAC receiver. This is
-> because, the start-of-packet detection logic of the MAC receiver
-> incorrectly checks for a preamble byte.
+On Mon, Jan 05, 2026 at 05:53:42PM +0100, Jonas Jelonek wrote:
+> Hi Russell,
 > 
-> NXP refers to IEEE 802.3 where in clause 35.2.3.2.2 Receive case (GMII)
-> they show two tables one where the preamble is preceding the SFD and one
-> where it is not. The text says:
-> The operation of 1000 Mb/s PHYs can result in shrinkage of the preamble
-> between transmission at the source GMII and reception at the destination
-> GMII. Table 35–3 depicts the case where no preamble bytes are conveyed
-> across the GMII. This case may not be possible with a specific PHY, but
-> illustrates the minimum preamble with which MAC shall be able to
-> operate. Table 35–4 depicts the case where the entire preamble is
-> conveyed across the GMII.
+> On 05.01.26 17:28, Russell King (Oracle) wrote:
+> > On Mon, Jan 05, 2026 at 04:12:42PM +0000, Jonas Jelonek wrote:
+> >> base-commit: c303e8b86d9dbd6868f5216272973292f7f3b7f1
+> >> prerequisite-patch-id: ae039dad1e17867fce9182b6b36ac3b1926b254a
+> > This seems to be almost useless information. While base-commit exists
+> > in the net-next tree, commit ae039dad1e17867fce9182b6b36ac3b1926b254a
+> > doesn't exist in either net-next nor net trees.
+> >
+> > My guess is you applied Maxime's patch locally, and that is the
+> > commit ID of that patch.
 > 
-> We would change the behavior from "no preamble is preceding SFD" to "the
-> enitre preamble is preceding SFD". Both are listed in the standard and
-> shall be supported by the MAC.
+> This was supposed to be the stable patch-id obtained with�
+> 'git patch-id --stable'.
 
-Thanks for providing the full explanation, it would be good to have
-that in the commit message.
+Hmm, didn't know about that... but in this context, I wonder how
+useful it is. As a maintainer, given that patches submitted don't
+specify their patch-id, tracking down which patch is the
+pre-requisit would be a mammoth task, whereas a lore.kernel.org
+link would indicate the pre-requisit immediately.
 
-The next question would be, is it just the NXP EQOS implementation
-that this breaks on, or are other EQOS implementations affected?
+lore.kernel.org links are easy:
 
-In other words, if we choose to conditionally enable the preable at
-the PHY, should the generic parts of stmmac handle this rather than
-ending up with multiple platform specific glue having to code this.
-(This is something I really want to avoid - it doesn't scale.)
+https://lore.kernel.org/r/<message id of the email containing the patch>
+
+I can see patch-ids are useful for automation, but lore.kernel.org
+URLs are useful for humans.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
