@@ -1,241 +1,135 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5200933FE12;
-	Mon,  5 Jan 2026 12:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DD6346A02;
+	Mon,  5 Jan 2026 12:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767617103; cv=none; b=dCs74QDgyxICL1UwQYmU2hBp039Yo2xyIK1XpD/D1Iw23aHy053lkzx7K0TBBxnUcb28NFtVithw31KE4cC4QeUWZpSk45kyKsoaeLRT0AElAQey3EHDtSd+RUk3ofa17SsfKurN3Ai20Au80hE8+I0zuArR6pbcf5Im0FSahKM=
+	t=1767617219; cv=none; b=LRvDduoK+8QdjpIBLiJt9w0x3JgVlD3rWg2A6EVdJYa5Bs+XTxsNamQ3vGKFyG67ahSfgH6G/Ji2SRJwf1bp88aUtT6UGiJKVJcm7tIiEm5kbi9VG1KVSkt7zqhSoVgPJdzWRqOATY5J7OUqrKW0CnqQmGaDQ1UeefV4I0fcxyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767617103; c=relaxed/simple;
-	bh=kde+YF5V+DYYmMMob26eEC+xps34thGQHk+CSSqXeBE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PcX0N3PQzZV+Gr7m/fO7zQZPydkESkru78xfA2XzYmHKqCExnzVRbWFTQgIkioZOBUayH0SllCzpDwos2rks/EMuxecybiooIyEP/z/mI0zIs3HPT615aw355VIcUGgq8v/6ErH8/Z5akBQB4Ycyomk4egpzz/73n2IOOa+NweY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=brSQVMN7; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1767617219; c=relaxed/simple;
+	bh=321yEr8YVsmjW3bML0bGo3Vdw9hbGBArRwRU7u8cNo4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tE5H+5z7aLZHZ2jVlbgOaXwiHjFRbCu5NlvtmsCy47DrdbgdNVqv/31VRVoSmg9w87h2gIONFavsCAvHxtjG3jLK28i+BVuvefH/cd9cLl8QMAlB97c0Eyt6IoW5xMy1EBRVwSVPRWyE1qWOQlJqdqCqpzYNxSaUIJvkm7r9BXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=PLzJYIml; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="brSQVMN7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
-	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=oBPTsdQ+5QIOEyqpw9EejEwAlJu22ofULxi/H8UNZbA=; b=brSQVMN7FjeSc2Fbit2wtuBftX
-	7fGHa72sFdSvSHkxwn6CCv8mdxFRKn23JbEY0U9jj44OFUm4GIkQv/7enuF0FDBaJL114NDictATW
-	YZuhKE1Lbb7PyqenJnHKNu2FgJEb5BI+n4GENjGIahLzQUchWnSzMZbnDseFg2KZiDEP7D9/XVaIK
-	svU8Qr6g+WGmU5hNbyFG5PLU+Rjt/O41/hq1hxt3ApE3HOO4G/vB+6PcH4jXK4oGcYO1zuQIl+MiV
-	Lgjl31R510y1lwj67dTUGmNnlEUqCVZK4XEqIyqkygjywFuM3UxUUY8F9w8xXASRRPBJ5KDARZCJP
-	Fb62Mbow==;
-Received: from [122.175.9.182] (port=7326 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1vcjgg-0000000Ezqj-36WM;
-	Mon, 05 Jan 2026 07:27:55 -0500
-From: Parvathi Pudi <parvathi@couthit.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	danishanwar@ti.com,
-	parvathi@couthit.com,
-	rogerq@kernel.org,
-	pmohan@couthit.com,
-	basharath@couthit.com,
-	afd@ti.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	alok.a.tiwari@oracle.com,
-	horms@kernel.org,
-	pratheesh@ti.com,
-	j-rameshbabu@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com
-Subject: [PATCH net-next v11 0/3] STP/RSTP SWITCH support for PRU-ICSSM Ethernet driver
-Date: Mon,  5 Jan 2026 17:53:06 +0530
-Message-ID: <20260105122549.1808390-1-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="PLzJYIml"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=Dvm+kvJHyY1KKCJtfQp8EPX7C/3KH3OKeCdRxBCMWeY=; t=1767617217;
+	x=1768049217; b=PLzJYImlfCTEI7mQXQ7prJGSMDoN8oXs1p+C9EDUvpXeMC3VmPdent9PtEwwZ
+	MQ75cDikmkQ2l0V1ykYP67PlQQ8/P7h694uhBfPPwF3RXz2rnr/zE3vLa7xhrWnaatNbSaXJs7CHc
+	ysdF8WU6f9694OvVFm7Rj9WmhR/Kz/gi2dpQHTL2lvc8CMw1+0PzNg56wrnTLVi8EWg1J3EMMRTE9
+	CrDLSA5l1i+k7j10w+kny5yplPt7x/BazTGVygX1N2xIucT5RuGXfwqdj7X1Ob2Z9kbMC5MnFM1+c
+	hHGPxQB8S3/Z+uRQcbVTde3pKwfXvpozoYWH6lLyElxZOHC6Vw==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1vcjjg-001TXb-2m;
+	Mon, 05 Jan 2026 13:31:00 +0100
+Message-ID: <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
+Date: Mon, 5 Jan 2026 13:30:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression 5.10.y] Libvirt can no longer delete macvtap devices
+ after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
+ flag") to 5.10.y series (Debian 11)
+To: Ben Hutchings <benh@debian.org>,
+ Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+ Nikolay Aleksandrov <razor@blackwall.org>, David Ahern <dsahern@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Sasha Levin <sashal@kernel.org>,
+ debian-kernel@lists.debian.org, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, regressions@lists.linux.dev, 1124549@bugs.debian.org
+References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
+ <aUMEVm1vb7bdhlcK@eldamar.lan>
+ <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
+ <176608738558.457059.16166844651150713799@eldamar.lan>
+ <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
+ <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1767617217;2151dd91;
+X-HE-SMSGID: 1vcjjg-001TXb-2m
 
-Hi,
+@stable team and/or @net maintainers: this imho needs a judgement call
+from your side. See below for details.
 
-The DUAL-EMAC patch series for Megabit Industrial Communication Sub-system
-(ICSSM), which provides the foundational support for Ethernet functionality
-over PRU-ICSS on the TI SOCs (AM335x, AM437x, and AM57x), was merged into
-net-next recently [1].
+On 1/2/26 21:18, Ben Hutchings wrote:
+> On Fri, 2025-12-19 at 10:19 +0100, Thorsten Leemhuis wrote:
+>> On 12/18/25 20:50, Salvatore Bonaccorso wrote:
+>>>
+>>> Is there soemthing missing?
+>>>
+>>> Roland I think it would be helpful if you can test as well more recent
+>>> stable series versions to confirm if the issue is present there as
+>>> well or not, which might indicate a 5.10.y specific backporting
+>>> problem.
+>>
+>> FWIW, it (as usual) would be very important to know if this happens with
+>> mainline as well, as that determines if it's a general problem or a
+>> backporting problem
+> [...]
+> 
+> The bug is this:
+> 
+> - libvirtd wrongly used to use NLM_F_CREATE (0x400) and NLM_F_EXCL
+>   (0x200) flags on an RTM_DELLINK operation.  These flags are only
+>   semantically valid for NEW-type operations.
+> 
+> - rtnetlink is rather lax about checking the flags on operations, so
+>   these unsupported flags had no effect.
+> 
+> - rtnetlink can now support NLM_F_BULK (0x200) on some DEL-type
+>   operations.  If the flag is used but is not valid for the specific
+>   operation then the operation now fails with EOPNOTSUPP.  Since
+>   NLM_F_EXCL == NLM_F_BULK and RTM_DELLINK does not support bulk
+>   operations, libvirtd now hits this error case.
+> 
+> I have not tested with mainline, but in principle the same issue should
+> occur with any other kernel version that has commit a6cec0bcd342 "net:
+> rtnetlink: add bulk delete support flag"
 
-This patch series enhances the PRU-ICSSM Ethernet driver to support bridge
-(STP/RSTP) SWITCH mode, which has been implemented using the "switchdev"
-framework and interacts with the "mstp daemon" for STP and RSTP management
-in userspace.
+FWIW, merged for v5.19-rc1 and backported to v5.10.246 as 1550f3673972c5
+End of October 2025 in parallel with 5b22f62724a0a0 ("net: rtnetlink:
+fix module reference count leak issue in rtnetlink_rcv_msg") [v6.0-rc2],
+which is a fix for the former.
 
-When the  SWITCH mode is enabled, forwarding of Ethernet packets using
-either the traditional store-and-forward mechanism or via cut-through is
-offloaded to the two PRU based Ethernet interfaces available within the
-ICSSM. The firmware running on the PRU inspects the bridge port states and
-performs necessary checks before forwarding a packet. This improves the
-overall system performance and significantly reduces the packet forwarding
-latency.
+> together with an older version of libvirt.
+> 
+> This was fixed in libvirt commit 1334002340b, which appears to have gone
+> into version 7.1.0,
 
-Protocol switching from Dual-EMAC to bridge (STP/RSTP) SWITCH mode can be
-done as follows.
+Could not find that commit when looking briefly, but that version was
+released 2021-03-01.
 
-Assuming eth2 and eth3 are the two physical ports of the ICSS2 instance:
+> but Debian 11 "bullseye" has 7.0.0.
+> 
+> We can certainly fix the libvirt side of this in Debian, but this also
+> sounds like a case where the kernel should work around known buggy user-
+> space.  On the other hand, this has been upstream for over 3 years so
+> maybe it doesn't make sense now.
 
->> brctl addbr br0
->> ip maddr add 01:80:c2:00:00:00 dev br0
->> ip link set dev br0 address $(cat /sys/class/net/eth2/address)
->> brctl addif br0 eth2
->> brctl addif br0 eth3
->> mstpd
->> brctl stp br0 on
-# STP to RSTP mode
->> mstpctl setforcevers br0 rstp
->> ip link set dev br0 up
+Yeah, I tend to the latter as well (the @net maintainers can speak up if
+the disagree). But we have one more middle-ground option here maybe the
+@stable team could do: revert the backports of 1550f3673972c5 and
+5b22f62724a0a0 from 5.10.y, unless they are strongly needed there.
 
-To revert back to the default dual EMAC mode, the steps are as follows:
+> Please let me know whether I (or anyone) should try to implement a
+> workaround for this in the kernel.
 
->> ip link set dev br0 down
->> brctl delif br0 eth2
->> brctl delif br0 eth3
->> brctl delbr br0
-
-The patches presented in this series have gone through the patch verification
-tools and no warnings or errors are reported.
-
-Sample test logs obtained from AM33x, AM43x and AM57x verifying the
-functionality on Linux next kernel are available here:
-
-[Interface up Testing](https://gist.github.com/ParvathiPudi/28fc4a2abff0c6f617d80f09c4a12881)
-
-[Ping Testing](https://gist.github.com/ParvathiPudi/1f50c92e5c36b3d297bd4fc684b3d7fd)
-
-[Iperf Testing](https://gist.github.com/ParvathiPudi/1dc93b2a65f873e8ab85747fed6ea953)
-
-[1] https://lore.kernel.org/all/20250912104741.528721-1-parvathi@couthit.com/
-
-This is the v11 of the patch series [v1]. This version of the patchset
-has no changes from [v10] of the series.
-
-Changes from v10 to v11:
-
-*) Dropped the RFC tag.
-*) No code changes were made, only the version was updated.
-*) Rebased the series on latest net-next.
-
-Changes from v9 to v10:
-
-*) Added RFC tag as net-next is closed now.
-*) Addressed applicable AI review warnings, including clearing the host lock before returning on
-timeout, avoiding a race on hw_bridge_dev and adding a conditional check to avoid null
-pointer dereferences.
-*) Rebased the series on latest net-next.
-
-Changes from v8 to v9:
-
-*) Added RFC tag as net-next is closed now.
-*) Addressed  Jakub Kicinski comments on patch 1 and 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v7 to v8:
-
-*) Modified dev_hold/dev_put reference to netdev_hold/netdev_put in patch 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v6 to v7:
-
-*) Addressed Jakub Kicinski comments on patch 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v5 to v6:
-
-*) Addressed Simon Horman comments on patch 1, 2 and 3 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v4 to v5:
-
-*) Addressed ALOK TIWARI comments on patch 1 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v3 to v4:
-
-*) Addressed Andrew Lunn comments on patch 1 and 2 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v2 to v3:
-
-*) Dropped the RFC tag.
-*) Addressed  MD Danish Anwar comments on patch 3 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v1 to v2 :
-
-*) Added RFC tag as net-next is closed now.
-*) Updated the cover letter of the series to generalize and indicate support for
-both STP and RSTP along with subject change as per Andrew Lunn's suggestion.
-*) Addressed the Andrew Lunn's comments on patch 1 of the series.
-*) Rebased the series on latest net-next.
-
-[v1] https://lore.kernel.org/all/20250925141246.3433603-1-parvathi@couthit.com/
-[v2] https://lore.kernel.org/all/20251006104908.775891-1-parvathi@couthit.com/
-[v3] https://lore.kernel.org/all/20251014124018.1596900-1-parvathi@couthit.com/
-[v4] https://lore.kernel.org/all/20251110125539.31052-1-parvathi@couthit.com/
-[v5] https://lore.kernel.org/all/20251113101229.675141-1-parvathi@couthit.com/
-[v6] https://lore.kernel.org/all/20251124135800.2219431-1-parvathi@couthit.com/
-[v7] https://lore.kernel.org/all/20251126124602.2624264-1-parvathi@couthit.com/
-[v8] https://lore.kernel.org/all/20251126163056.2697668-1-parvathi@couthit.com/
-[v9] https://lore.kernel.org/all/20251205123146.462397-1-parvathi@couthit.com/
-[v10] https://lore.kernel.org/all/20251216132641.1313026-1-parvathi@couthit.com/
-
-Thanks and Regards,
-Parvathi.
-
-Roger Quadros (3):
-  net: ti: icssm-prueth: Add helper functions to configure and maintain
-    FDB
-  net: ti: icssm-prueth: Add switchdev support for icssm_prueth driver
-  net: ti: icssm-prueth: Add support for ICSSM RSTP switch
-
- drivers/net/ethernet/ti/Makefile              |    2 +-
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  |  529 +++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   20 +-
- .../ethernet/ti/icssm/icssm_prueth_fdb_tbl.h  |   76 ++
- .../ethernet/ti/icssm/icssm_prueth_switch.c   | 1065 +++++++++++++++++
- .../ethernet/ti/icssm/icssm_prueth_switch.h   |   37 +
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |  103 ++
- .../net/ethernet/ti/icssm/icssm_switchdev.c   |  333 ++++++
- .../net/ethernet/ti/icssm/icssm_switchdev.h   |   13 +
- .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   |  120 ++
- 10 files changed, 2275 insertions(+), 23 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-
--- 
-2.43.0
-
+Ciao, Thorsten
