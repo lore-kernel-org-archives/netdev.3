@@ -1,135 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D032C943
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 16:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2F01F4CB3;
+	Mon,  5 Jan 2026 16:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767630246; cv=none; b=rheVrlDifNX+X/38cyRnHaf6ez2PXwYKOwDjmBnz8qDw8mlilYWqceBD3RqZoWn7ZKUKDaY9s/5m6mcfUPjSJq2JbDuFK1N5N7bz6b6g11YkKtN8jvhLuoj1loNPiKE0/gQCMfgqsVxkUFwFfaKlAJ2acvbblRAHSlfnjFT7HTI=
+	t=1767630417; cv=none; b=eroHT4t9EV1xApDg8w3XRHg0dU4BtKB8fKnGsu/WP/3y0znkiaRVEG8GVXpSxOaYscZQLWOFOkVJ8RkwF22S5/VoDrUO2DaNBKZ/5j8+eSFRlcN72qGhQOKbfboXf95hhtL3G33V9aLTjYRFdbQft8sMNoL3+Xs7Z1XCnPAdQyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767630246; c=relaxed/simple;
-	bh=41PDqGT/J89UTl4bu3bwe45Dw8kT1aCfLaGp+kS+sX4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LSn6N8BO5bovqAcY2Uwt1NljQ/hj7qsbOXXHSKmyrC06CPRHkxbr7TJamlNqhmmxx6tJ5jKKixokiBmS1nnyy3ctqr2kssmS8ZI5NDVFkY0q7pG46PTdXXzUt4qQm5NDHYSHRL81n0PAXlFPEypIgNKrwLqkoJbL7eOw4nRa9uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fbjlcouJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767630417; c=relaxed/simple;
+	bh=5Wc9sInLDKoQ8ZQovSeuGk9hGRb7jTE2yi9yCvC/awg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OyFQV4+72vP65pg9Q03tNkoWmPdRhVDLYyo7x3HMcXlGNyEwCh1Wo1h8EeiPvDbFIYsjyJCY4OzM3f5e5eoKE+vFqvyDfVRP9WHHNtxY6BKZCCXQfZbBllQkbrW5mLTz2x9ZeSWImWcHhoUjif3luYrTtu0tgJkgAYaJMFqXk5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=FTSl9nhG; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fbjlcouJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767630243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=46dE8wQn1HVL0x3WTf36oZBc8LAD4VTY8ItMtpTUnY8=;
-	b=fbjlcouJm3yQi7P7iMdlXD9Tc9fgxKSm9cszc0JiT7F5bmKgypTIkDuQtzX3VOudNSPjFX
-	MwskC8zeHA74zvdqZybyvdUxjB6cQOfdvcMM8un37UEgTnU39/AKoKB3viEiT0woMkVIeK
-	AFoK31aVOsf6OkYUrCCQOI2tiat1qEg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-qAfVWpaVPVmwinV2Ig6kOw-1; Mon,
- 05 Jan 2026 11:24:00 -0500
-X-MC-Unique: qAfVWpaVPVmwinV2Ig6kOw-1
-X-Mimecast-MFC-AGG-ID: qAfVWpaVPVmwinV2Ig6kOw_1767630236
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C443F1956050;
-	Mon,  5 Jan 2026 16:23:55 +0000 (UTC)
-Received: from [10.44.32.50] (unknown [10.44.32.50])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 982321956048;
-	Mon,  5 Jan 2026 16:23:44 +0000 (UTC)
-Message-ID: <5db81f5b-4f35-46e4-8fec-4298f1ac0c4e@redhat.com>
-Date: Mon, 5 Jan 2026 17:23:42 +0100
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="FTSl9nhG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=0m/ogoMH86peXHoclOtU2pOxK+47SyNwKWpbIlyEMO4=; b=FTSl9nhGlqB9Aal6Bdz+gSerX6
+	4S6dsus+CfM0AsQde8QzUPMUVwSxVn1yZlwdTcwcjeblGzFQZut0ubdUupSrPt7++pj0JzfOyVYz0
+	DCwLDqSObO7NYva5JsN7z+rabXOjxkfOs8u+qslwc++2NfGbogkK9nxWWORs6W+3rDfkTlHa14oDI
+	3xe1ZtZRbu3hjBLzGBKjDC5xgP0lmvANWCAIZ4i84RuPzWVjb1buVqBuePObP+suNypeyxSTYh6X8
+	SovTkLh1qD/JS28Fdy6EUnxBljlFF2tFpwYE/elOcuk+BvnRnJffk8DvgoqgQlMKTfX9ZkCKytg+M
+	CqdxwOyw==;
+Received: from [122.175.9.182] (port=19826 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vcnPw-0000000F4as-1bUm;
+	Mon, 05 Jan 2026 11:26:52 -0500
+From: Parvathi Pudi <parvathi@couthit.com>
+To: nm@ti.com,
+	vigneshr@ti.com,
+	afd@ti.com,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info
+Cc: andrew@lunn.ch,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	danishanwar@ti.com,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	parvathi@couthit.com
+Subject: [PATCH v4 0/2] Add support for ICSSM Ethernet on AM57x, AM437x, and AM335x
+Date: Mon,  5 Jan 2026 21:51:18 +0530
+Message-ID: <20260105162546.1809714-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next 01/13] dt-bindings: net: ethernet-controller:
- Add DPLL pin properties
-To: Rob Herring <robh@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Grzegorz Nitka <grzegorz.nitka@intel.com>, Jiri Pirko <jiri@resnulli.us>,
- Petr Oros <poros@redhat.com>, Michal Schmidt <mschmidt@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Jonathan Lemon <jonathan.lemon@gmail.com>, Simon Horman <horms@kernel.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Willem de Bruijn <willemb@google.com>, Stefan Wahren <wahrenst@gmx.net>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- Horatiu Vultur <Horatiu.Vultur@microchip.com>
-References: <20251211194756.234043-1-ivecera@redhat.com>
- <20251211194756.234043-2-ivecera@redhat.com>
- <2de556f0-d7db-47f1-a59e-197f92f93d46@lunn.ch>
- <20251217004946.GA3445804-robh@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20251217004946.GA3445804-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 12/17/25 1:49 AM, Rob Herring wrote:
-> On Thu, Dec 11, 2025 at 08:56:52PM +0100, Andrew Lunn wrote:
->> On Thu, Dec 11, 2025 at 08:47:44PM +0100, Ivan Vecera wrote:
->>> Ethernet controllers may be connected to DPLL (Digital Phase Locked Loop)
->>> pins for frequency synchronization purposes, such as in Synchronous
->>> Ethernet (SyncE) configurations.
->>>
->>> Add 'dpll-pins' and 'dpll-pin-names' properties to the generic
->>> ethernet-controller schema. This allows describing the physical
->>> connections between the Ethernet controller and the DPLL subsystem pins
->>> in the Device Tree, enabling drivers to request and manage these
->>> resources.
->>
->> Please include a .dts patch in the series which actually makes use of
->> these new properties.
-> 
-> Actually, first you need a device (i.e. a specific ethernet
-> controller bindings) using this and defining the number of dpll-pins
-> entries and the names.
+Hi,
 
-The goal of this patch is to define properties that allow referencing
-dpll pins from other devices. I included it in this series to allow
-implementing helpers that use the property names defined in the schema.
+This series adds support for ICSSM Ethernet on Texas Instruments AM57x,
+AM437x and AM335x platforms.
 
-This series implements the dpll pin consumer in the ice driver. This is
-usually present on ACPI platforms, so the properties are stored in _DSD
-ACPI nodes. Although I don't have a DT user right now, isn't it better
-to define the schema now?
+The AM57x and AM437x IDKs support two PRU-ICSS instances, each consisting
+of two PRU cores, with each PRU-ICSS instance capable of handling two
+Ethernet ports. For the AM57x platforms, the PRU-ICSS2 node has been added
+to the am57xx-idk-common.dtsi, while for the AM437x platform, the PRU-ICSS1
+node has been added to the am437x-idk-evm.dts.
 
-Thinking about this further, consumers could be either an Ethernet
-controller (where the PHY is not exposed and is driven directly by the
-NIC driver) or an Ethernet PHY.
+The AM335x ICE features a single PRU-ICSS instance. A new device tree overlay
+source file, am335x-icev2-prueth-overlay.dtso, has been introduced to define the
+PRU-ICSS node for the AM335x platform.
 
-For the latter case (Ethernet PHY), I have been preparing a similar
-implementation for the Micrel phy driver (lan8814) on the Microchip EDS2
-board (pcb8385). Unfortunately, the DTS is not upstreamed yet [1], so I
-cannot include the necessary bindings here.
+This is v4 of the patch series [v1]. It has no changes from [v3].
+This series is based on the latest next-20260105 linux-next.
 
-Since there can be multiple consumer types (Ethernet controller or PHY),
-would it be better to define a dpll-pin-consumer.yaml schema instead
-(similar to mux-consumer)?
+Changes from v3 to v4 :
 
-Thanks for the advice,
-Ivan
+*) No code changes were made, only the version was updated.
+*) Rebased the series on latest linux-next.
 
-[1] 
-https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=1031294&state=*
+Changes from v2 to v3 :
+
+*) Addressed Andrew Davis's comment by placing PRUETH nodes in a new overlay file
+am335x-icev2-prueth-overlay.dtso.
+*) Rebased the series on latest linux-next.
+
+Changes from v1 to v2 :
+
+*) Addressed Andrew Lunn's comment on patch 1 of the series.
+*) Addressed MD Danish Anwar comment on patch 1 of the series.
+*) Rebased the series on latest linux-next.
+
+[v1] https://lore.kernel.org/all/20251013125401.1435486-1-parvathi@couthit.com/
+[v2] https://lore.kernel.org/all/20251103124820.1679167-1-parvathi@couthit.com/
+[v3] https://lore.kernel.org/all/20251217130715.1327138-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Roger Quadros (2):
+  arm: dts: ti: Adds device tree nodes for PRU Cores, IEP and eCAP
+    modules of PRU-ICSS2 Instance.
+  arm: dts: ti: Adds support for AM335x and AM437x
+
+ arch/arm/boot/dts/ti/omap/Makefile            |   5 +
+ .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 190 ++++++++++++++++++
+ arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 +
+ arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 +
+ arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 137 ++++++++++++-
+ arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     |  11 +
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts      |   8 +-
+ arch/arm/boot/dts/ti/omap/am572x-idk.dts      |  10 +-
+ arch/arm/boot/dts/ti/omap/am574x-idk.dts      |  10 +-
+ .../boot/dts/ti/omap/am57xx-idk-common.dtsi   |  61 ++++++
+ 10 files changed, 444 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+
+-- 
+2.43.0
 
