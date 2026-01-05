@@ -1,667 +1,238 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04462255F3F
-	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 14:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9985345CDA
+	for <netdev@vger.kernel.org>; Mon,  5 Jan 2026 14:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767622126; cv=none; b=aaqVHCmU9W9iQ81fd5MDe/r9mN9yQqxI869How8qOZG44El9fsWGfXaE5cpkEmpB4lChxrhxCxAXC80OzO8gxoiG8YOwlFi2u+BVEe2K7Y3KjQAuJObemmlOrzm5yqWdSIwrvMG0U0Zu2bjUiscNvC7KBacdWRoE9h5Zt9nOwcU=
+	t=1767622281; cv=none; b=n02JQWVSDjrUE+JRGNC1rQL/+pPeB7980hCq5ZwhEcF09D0d1BJm4Go9y05uxQXpuUbjdk6SbShcqRWQt7Y98r8BZWaReydytvioEXqjsLtq1ES41OsservpkJpEAUZJvw1UD2t7iIiRW0p37E9W8/a0a0y7X5EFuwyWQJ+U2aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767622126; c=relaxed/simple;
-	bh=UjY1qfAlGIm9BZaLhEQ9tDVHvZXEYCuYEr2LM5Iv0nU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ACZsxkB0iJNcEF/6pvLubrN2mTWeDEsBLNrrTUrpqbW+0W4K8myDlSTfOFSxJ2I+/oETVWVqXMS+44HPXKhkw2lleiPR6nXZXlvg60Ihz6rQObN/Ngsin7ewOM7Z5NO2FSk3ImfH58/TfnREEa+U0vF0ZC3eXsTa/GajUcgYfZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMdoH6Nq; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMdoH6Nq"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so160678636d6.2
-        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 06:08:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767622114; x=1768226914; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IcXQDX9utiE4yE1plGTDORj2uFFQtwgI0WcuWjtYoug=;
-        b=PMdoH6NqhqBY4IO20XE3wyNNBwjQcYOfwUOF2zRcJ7UfFfuR2FyHpVqR5fKhW9E+Se
-         VPAvxXlIiXoK9mM+fUUnk+sRVNChYoQfS7g0m3D3il///JuYmFAiwXlCT46qA/w3RJsw
-         rhKOP+sMvDSfe/ZZy6CDCEiqlyfLGKNyg2n3o4zss6pCAXutr+//csaO+G6WDPzz752v
-         VJm5G2+wJmCswPZ0Cx+K+ndwP2us/0m9+jmaw9mCfefdxBdbh2JW+mityMgvKimPwkBk
-         d9qovix7GjdITO5pBoeKxHCche4oXmzJJSC0LbEQLdPVRsqP95VKIOZv4/mMLqg2v8cD
-         HNZQ==
+	s=arc-20240116; t=1767622281; c=relaxed/simple;
+	bh=SxNlGhoDBkaZv0Iy0fCk8gTsb4Hnd6ztmd4CRnc3a+M=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=aFGVtLpNpGU+jzsjCv1XQEyz/o81g5jcxhayuOx8ws71W9Bs0d+/lrm0iqR+7995ob4XKS2wOo/b9M4dq7qYJWB97DiyXQiKAbAPktwHKtIMxpMBMCIg1Ohi1U9Icju2ivOfYWhrEGrdTjKftMfT1XloAk8OzX2r3TCiBrGpDRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-65d12f446c2so27013505eaf.1
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 06:11:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767622114; x=1768226914;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IcXQDX9utiE4yE1plGTDORj2uFFQtwgI0WcuWjtYoug=;
-        b=tuhnvYSrnag1+VXm2XL9qVx3cu73ZafsnqzRXOXHQ2Gpe0c6y1wdthzMfxi6mYd/Fl
-         bfHQuRZyeB2wEdFYCbO1je65k/o6q3SRYOkvil2wyBmMUKUrUspRG/+eHb+j5o91eCWg
-         YFwMITM2V6KZ+MHuyxF261qNco4r4/ihjnTtVlX+Xg9UuHV7xPjwg61MrHRXhtI06iy/
-         Dm/zjh29TSL/eDaHBN+C5JLKA7uIWv4KiAd0Vo1OtwLgto8Q+/wCASMwDEdudYQBYjy0
-         I2RyrrbRATL3J3MFL16qUOq5mbqSyiC+cIOsiOnN4gEdVcFPNJ1NtTPusPiAvGTs50SL
-         n3pw==
-X-Gm-Message-State: AOJu0Yx3FdyKBKRKy0TSFmTyOHKIsBgvTtif0IUHTCEZj9+P4+VldpjK
-	LBPFUB1mD6kuwiHxceRyEq4rmZ3gqOuYd9eW3tHind6Z59WEfTGz6HZm7Cdtu6h4
-X-Gm-Gg: AY/fxX413QPy/NPt+NwThD9zP6ClNlLt1z8oIlLCql24B9lfSFcwwSxlJPtbzMcOsiy
-	G1211TFDyI73UPgjRiSEc8GOIJxOsM/hA7E9ql4c+CcZ763tKj+m2a/eRI4BqL+OJuCZQAGt5bA
-	spfTBQYFR8ucohNBeoWHF3ryog94CBaDcDjnVfjstWDU7I6D+HhbHRXry6krLAntPkCYVJGQzuA
-	b2XLma/EgPKE5bMFLZL6zjYshWQsQ3+nsOiS/hZ8/yioacGBUfzIN0dzh2M3oM635qIHeWszBF+
-	w+oG74uhwNim/yfb2HdfLVDX63Dj+5YW4T/vlHRxWfBwAVxMTkQsQMDga+heaeTTWqRDjyHh7nA
-	bg10OxliK+ZFoCTXLXwhSittu8r/8kuior0aHkC9v6VgM0UG7K9gYgpMhFgjuddQ70P6Dzo90Jh
-	dejnHwjTrJDkwRevHldVzvJLlvXCiW9xhvRc3/T/5kaXfRCArMvDI=
-X-Google-Smtp-Source: AGHT+IEh60ifEQ4skXCUIIIHphMvL8bP01mKTOAAJ814wAmq2DX4dMYWg2cjvZX7H5LYHqPwKpvV4A==
-X-Received: by 2002:a05:6214:469e:b0:884:6f86:e08c with SMTP id 6a1803df08f44-88d8271aeb3mr823781116d6.21.1767622113799;
-        Mon, 05 Jan 2026 06:08:33 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac64a47esm368957221cf.24.2026.01.05.06.08.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 06:08:33 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Subject: [PATCH net-next v6 15/16] quic: add packet builder base
-Date: Mon,  5 Jan 2026 09:04:41 -0500
-Message-ID: <2594c0e223de422661d0e1cb51021c7de6e2b536.1767621882.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1767621882.git.lucien.xin@gmail.com>
-References: <cover.1767621882.git.lucien.xin@gmail.com>
+        d=1e100.net; s=20230601; t=1767622279; x=1768227079;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wtMWxxPLCuk2eWMEbDquYa0hrVzkkp2fBA7Y9QCp76s=;
+        b=D+eEA7RfBPUVhez3sgDQPPkloaVbn05hRy3LNqk395yFgh2b07d/+AoaZGn5DvBXsV
+         yw34FF3lkPMOTuGyCExOkCYI89KFbLtbZCaPQskIxSVOLySGYRoNDFA/ARa+XF6b4J/p
+         WMs9BDAjpBuPJH0b3ld/GLTxJq89NI3Wj9h42P7GV6ARw9jZglbsEaGIWjK73cGLpk4D
+         i1aYxW9q5SgEuyrd7bi9dl+MIYoqH/3hOqRhaN0SczSclIiYrmBxNvj3iymo9aoLCV//
+         E1XtWJej4KWf8IShN9L+aex6VcY2DKBGq9Kg0dp6lBZS6L8e+kj/33tTCq/l1nnt0WFU
+         ZaoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3m05cCKLT0WA9oxPQiA83qwCzPAldGdXYsZPTSavg0vGSiu3dYTXDbR89tF+qSOOzeveEI8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBHuDPL3ck4q4FnINVwGIV8nIh/U09I+hJF8aTUcG8Srr3+dN8
+	u/dJuHFCyHALaytBOqZOSJQMu3H4JhUAkdvEbby0usfWFad05DejG1KG84TkunAbQGKBqaet5Qn
+	tiPKQlc9eLa6bSzHz5jUiMsbs6UQ5oksyM0zQkD675egbBcbGq0uOKgQenx4=
+X-Google-Smtp-Source: AGHT+IEtUuAscl8sS2KwjQTHkBr++AMhsAQH1zdhVQ+qs1Np9ixn7kBeTOEbFr2sI8lujPW+hVCE2quCBT31w6fXtRyamdvkHjwd
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:2224:b0:65b:33ec:1bd4 with SMTP id
+ 006d021491bc7-65d0eb2e62amr21568883eaf.43.1767622278740; Mon, 05 Jan 2026
+ 06:11:18 -0800 (PST)
+Date: Mon, 05 Jan 2026 06:11:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <695bc686.050a0220.1c677c.032f.GAE@google.com>
+Subject: [syzbot] [bpf?] KASAN: slab-out-of-bounds Read in strnchr
+From: syzbot <syzbot+2c29addf92581b410079@syzkaller.appspotmail.com>
+To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, eddyz87@gmail.com, haoluo@google.com, 
+	john.fastabend@gmail.com, jolsa@kernel.org, kpsingh@kernel.org, 
+	linux-kernel@vger.kernel.org, martin.lau@linux.dev, netdev@vger.kernel.org, 
+	sdf@fomichev.me, song@kernel.org, syzkaller-bugs@googlegroups.com, 
+	yonghong.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-This patch introduces 'quic_packet' to handle packing of QUIC packets on
-the transmit (TX) path.
+Hello,
 
-It provides functionality for frame packing and packet construction. The
-packet configuration includes setting the path, calculating overhead,
-and verifying routing. Frames are appended to the packet before it is
-created with the queued frames.
+syzbot found the following issue on:
 
-Once assembled, the packet is encrypted, bundled, and sent out. There
-is also support to flush the packet when no additional frames remain.
-Functions to create application (short) and handshake (long) packets
-are currently placeholders for future implementation.
+HEAD commit:    22cc16c04b78 riscv, bpf: Fix incorrect usage of BPF_TRAMP_..
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=1391f792580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a94030c847137a18
+dashboard link: https://syzkaller.appspot.com/bug?extid=2c29addf92581b410079
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10c82e22580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16de569a580000
 
-- quic_packet_config(): Set the path, compute overhead, and verify routing.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/43a53493cb5f/disk-22cc16c0.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9726fb9e1980/vmlinux-22cc16c0.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/efd2bc050ab6/bzImage-22cc16c0.xz
 
-- quic_packet_tail(): Append a frame to the packet for transmission.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2c29addf92581b410079@syzkaller.appspotmail.com
 
-- quic_packet_create_and_xmit(): Create and send the packet with the queued
-  frames.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in strnchr+0x5e/0x80 lib/string.c:405
+Read of size 1 at addr ffff888029e093b0 by task ksoftirqd/1/23
 
-- quic_packet_xmit(): Encrypt, bundle, and send out the packet.
+CPU: 1 UID: 0 PID: 23 Comm: ksoftirqd/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xca/0x240 mm/kasan/report.c:482
+ kasan_report+0x118/0x150 mm/kasan/report.c:595
+ strnchr+0x5e/0x80 lib/string.c:405
+ bpf_bprintf_prepare+0x167/0x13d0 kernel/bpf/helpers.c:829
+ ____bpf_snprintf kernel/bpf/helpers.c:1065 [inline]
+ bpf_snprintf+0xd3/0x1b0 kernel/bpf/helpers.c:1049
+ bpf_prog_c2925c0a7ac12d80+0x58/0x60
+ bpf_dispatcher_nop_func include/linux/bpf.h:1378 [inline]
+ __bpf_prog_run include/linux/filter.h:723 [inline]
+ bpf_prog_run include/linux/filter.h:730 [inline]
+ __bpf_trace_run kernel/trace/bpf_trace.c:2075 [inline]
+ bpf_trace_run1+0x27f/0x4c0 kernel/trace/bpf_trace.c:2115
+ __bpf_trace_rcu_utilization+0xa1/0xf0 include/trace/events/rcu.h:27
+ __do_trace_rcu_utilization include/trace/events/rcu.h:27 [inline]
+ trace_rcu_utilization+0x191/0x1c0 include/trace/events/rcu.h:27
+ rcu_core+0x13fe/0x1870 kernel/rcu/tree.c:2865
+ handle_softirqs+0x27d/0x850 kernel/softirq.c:622
+ run_ksoftirqd+0x9b/0x100 kernel/softirq.c:1063
+ smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
 
-- quic_packet_flush(): Send the packet if there's nothing left to bundle.
+Allocated by task 6022:
+ kasan_save_stack mm/kasan/common.c:56 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:397 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:414
+ kasan_kmalloc include/linux/kasan.h:262 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_node_noprof+0x57a/0x820 mm/slub.c:5663
+ kmalloc_node_noprof include/linux/slab.h:987 [inline]
+ __bpf_map_area_alloc kernel/bpf/syscall.c:395 [inline]
+ bpf_map_area_alloc+0x64/0x180 kernel/bpf/syscall.c:408
+ insn_array_alloc+0x52/0x140 kernel/bpf/bpf_insn_array.c:49
+ map_create+0xafd/0x16a0 kernel/bpf/syscall.c:1514
+ __sys_bpf+0x5f0/0x860 kernel/bpf/syscall.c:6146
+ __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
+ __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
+The buggy address belongs to the object at ffff888029e09000
+ which belongs to the cache kmalloc-cg-1k of size 1024
+The buggy address is located 0 bytes to the right of
+ allocated 944-byte region [ffff888029e09000, ffff888029e093b0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x29e08
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+memcg:ffff888072141701
+flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000040 ffff88813ffb0280 dead000000000100 dead000000000122
+raw: 0000000000000000 0000000080100010 00000000f5000000 ffff888072141701
+head: 00fff00000000040 ffff88813ffb0280 dead000000000100 dead000000000122
+head: 0000000000000000 0000000080100010 00000000f5000000 ffff888072141701
+head: 00fff00000000003 ffffea0000a78201 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5709, tgid 5709 (dhcpcd-run-hook), ts 83835394493, free_ts 83796353079
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x234/0x290 mm/page_alloc.c:1846
+ prep_new_page mm/page_alloc.c:1854 [inline]
+ get_page_from_freelist+0x2365/0x2440 mm/page_alloc.c:3915
+ __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5210
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2486
+ alloc_slab_page mm/slub.c:3075 [inline]
+ allocate_slab+0x86/0x3b0 mm/slub.c:3248
+ new_slab mm/slub.c:3302 [inline]
+ ___slab_alloc+0xf2b/0x1960 mm/slub.c:4656
+ __slab_alloc+0x65/0x100 mm/slub.c:4779
+ __slab_alloc_node mm/slub.c:4855 [inline]
+ slab_alloc_node mm/slub.c:5251 [inline]
+ __do_kmalloc_node mm/slub.c:5656 [inline]
+ __kmalloc_noprof+0x47d/0x800 mm/slub.c:5669
+ kmalloc_noprof include/linux/slab.h:961 [inline]
+ kmalloc_array_noprof include/linux/slab.h:1003 [inline]
+ alloc_pipe_info+0x1fd/0x4d0 fs/pipe.c:817
+ get_pipe_inode fs/pipe.c:896 [inline]
+ create_pipe_files+0x8a/0x7e0 fs/pipe.c:928
+ __do_pipe_flags+0x46/0x1f0 fs/pipe.c:990
+ do_pipe2+0x9c/0x170 fs/pipe.c:1038
+ __do_sys_pipe2 fs/pipe.c:1056 [inline]
+ __se_sys_pipe2 fs/pipe.c:1054 [inline]
+ __x64_sys_pipe2+0x5a/0x70 fs/pipe.c:1054
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5712 tgid 5712 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1395 [inline]
+ __free_frozen_pages+0xbc8/0xd30 mm/page_alloc.c:2943
+ __slab_free+0x21b/0x2a0 mm/slub.c:6004
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:349
+ kasan_slab_alloc include/linux/kasan.h:252 [inline]
+ slab_post_alloc_hook mm/slub.c:4953 [inline]
+ slab_alloc_node mm/slub.c:5263 [inline]
+ kmem_cache_alloc_noprof+0x37d/0x710 mm/slub.c:5270
+ vm_area_alloc+0x24/0x140 mm/vma_init.c:32
+ __mmap_new_vma mm/vma.c:2469 [inline]
+ __mmap_region mm/vma.c:2708 [inline]
+ mmap_region+0xdea/0x1d10 mm/vma.c:2786
+ do_mmap+0xc45/0x10d0 mm/mmap.c:558
+ vm_mmap_pgoff+0x2a6/0x4d0 mm/util.c:581
+ ksys_mmap_pgoff+0x51f/0x760 mm/mmap.c:604
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888029e09280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888029e09300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff888029e09380: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
+                                     ^
+ ffff888029e09400: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888029e09480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
 ---
-v3:
-  - Adjust global connection and listen socket hashtable operations
-    based on the new hashtable type.
-  - Introduce quic_packet_backlog_schedule() to enqueue Initial packets
-    to quic_net.backlog_list and defer their decryption for ALPN demux
-    to quic_packet_backlog_work() on quic_net.work, since
-    quic_crypto_initial_keys_install()/crypto_aead_setkey() must run
-    in process context.
-v4:
-  - Update quic_(listen_)sock_lookup() to support lockless socket
-    lookup using hlist_nulls_node APIs.
-  - Use quic_wq for QUIC packet backlog processing work.
-v5:
-  - Rename quic_packet_create() to quic_packet_create_and_xmit()
-    (suggested by Paolo).
-  - Move the packet parser base code to a separate patch, keeping only
-    the packet builder base in this patch (suggested by Paolo).
-  - Change sent_time timestamp from u32 to u64 to improve accuracy.
----
- net/quic/Makefile |   2 +-
- net/quic/packet.c | 313 ++++++++++++++++++++++++++++++++++++++++++++++
- net/quic/packet.h | 121 ++++++++++++++++++
- net/quic/socket.c |   1 +
- net/quic/socket.h |   7 ++
- 5 files changed, 443 insertions(+), 1 deletion(-)
- create mode 100644 net/quic/packet.c
- create mode 100644 net/quic/packet.h
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/quic/Makefile b/net/quic/Makefile
-index 645ee470c95e..4a43052eb441 100644
---- a/net/quic/Makefile
-+++ b/net/quic/Makefile
-@@ -6,4 +6,4 @@
- obj-$(CONFIG_IP_QUIC) += quic.o
- 
- quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o \
--	  cong.o pnspace.o crypto.o timer.o frame.o
-+	  cong.o pnspace.o crypto.o timer.o frame.o packet.o
-diff --git a/net/quic/packet.c b/net/quic/packet.c
-new file mode 100644
-index 000000000000..348e760aa197
---- /dev/null
-+++ b/net/quic/packet.c
-@@ -0,0 +1,313 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Initialization/cleanup for QUIC protocol support.
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#include "socket.h"
-+
-+#define QUIC_HLEN		1
-+
-+/* Make these fixed for easy coding. */
-+#define QUIC_PACKET_NUMBER_LEN	QUIC_PN_MAX_LEN
-+#define QUIC_PACKET_LENGTH_LEN	4
-+
-+static struct sk_buff *quic_packet_handshake_create(struct sock *sk)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_frame *frame, *next;
-+
-+	/* Free all frames for now, and future patches will implement the actual creation logic. */
-+	list_for_each_entry_safe(frame, next, &packet->frame_list, list) {
-+		list_del(&frame->list);
-+		quic_frame_put(frame);
-+	}
-+	return NULL;
-+}
-+
-+static int quic_packet_number_check(struct sock *sk)
-+{
-+	return 0;
-+}
-+
-+static struct sk_buff *quic_packet_app_create(struct sock *sk)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_frame *frame, *next;
-+
-+	/* Free all frames for now, and future patches will implement the actual creation logic. */
-+	list_for_each_entry_safe(frame, next, &packet->frame_list, list) {
-+		list_del(&frame->list);
-+		quic_frame_put(frame);
-+	}
-+	return NULL;
-+}
-+
-+/* Update the MSS and inform congestion control. */
-+void quic_packet_mss_update(struct sock *sk, u32 mss)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_cong *cong = quic_cong(sk);
-+
-+	packet->mss[0] = (u16)mss;
-+	quic_cong_set_mss(cong, packet->mss[0] - packet->taglen[0]);
-+}
-+
-+/* Perform routing for the QUIC packet on the specified path, update header length and MSS
-+ * accordingly, reset path and start PMTU timer.
-+ */
-+int quic_packet_route(struct sock *sk)
-+{
-+	struct quic_path_group *paths = quic_paths(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_config *c = quic_config(sk);
-+	union quic_addr *sa, *da;
-+	u32 pmtu;
-+	int err;
-+
-+	da = quic_path_daddr(paths, packet->path);
-+	sa = quic_path_saddr(paths, packet->path);
-+	err = quic_flow_route(sk, da, sa, &paths->fl);
-+	if (err)
-+		return err;
-+
-+	packet->hlen = quic_encap_len(da);
-+	pmtu = min_t(u32, dst_mtu(__sk_dst_get(sk)), QUIC_PATH_MAX_PMTU);
-+	quic_packet_mss_update(sk, pmtu - packet->hlen);
-+
-+	quic_path_pl_reset(paths);
-+	quic_timer_reset(sk, QUIC_TIMER_PMTU, c->plpmtud_probe_interval);
-+	return 0;
-+}
-+
-+/* Configure the QUIC packet header and routing based on encryption level and path. */
-+int quic_packet_config(struct sock *sk, u8 level, u8 path)
-+{
-+	struct quic_conn_id_set *dest = quic_dest(sk), *source = quic_source(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_config *c = quic_config(sk);
-+	u32 hlen = QUIC_HLEN;
-+
-+	/* If packet already has data, no need to reconfigure. */
-+	if (!quic_packet_empty(packet))
-+		return 0;
-+
-+	packet->ack_eliciting = 0;
-+	packet->frame_len = 0;
-+	packet->ipfragok = 0;
-+	packet->padding = 0;
-+	packet->frames = 0;
-+	hlen += QUIC_PACKET_NUMBER_LEN; /* Packet number length. */
-+	hlen += quic_conn_id_choose(dest, path)->len; /* DCID length. */
-+	if (level) {
-+		hlen += 1; /* Length byte for DCID. */
-+		hlen += 1 + quic_conn_id_active(source)->len; /* Length byte + SCID length. */
-+		if (level == QUIC_CRYPTO_INITIAL) /* Include token for Initial packets. */
-+			hlen += quic_var_len(quic_token(sk)->len) + quic_token(sk)->len;
-+		hlen += QUIC_VERSION_LEN; /* Version length. */
-+		hlen += QUIC_PACKET_LENGTH_LEN; /* Packet length field length. */
-+		/* Allow fragmentation if PLPMTUD is enabled, as it no longer relies on ICMP
-+		 * Toobig messages to discover the path MTU.
-+		 */
-+		packet->ipfragok = !!c->plpmtud_probe_interval;
-+	}
-+	packet->level = level;
-+	packet->len = (u16)hlen;
-+	packet->overhead = (u8)hlen;
-+
-+	if (packet->path != path) { /* If the path changed, update and reset routing cache. */
-+		packet->path = path;
-+		__sk_dst_reset(sk);
-+	}
-+
-+	/* Perform routing and MSS update for the configured packet. */
-+	if (quic_packet_route(sk) < 0)
-+		return -1;
-+	return 0;
-+}
-+
-+static void quic_packet_encrypt_done(struct sk_buff *skb, int err)
-+{
-+	/* Free it for now, future patches will implement the actual deferred transmission logic. */
-+	kfree_skb(skb);
-+}
-+
-+/* Coalescing Packets. */
-+static int quic_packet_bundle(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct quic_skb_cb *head_cb, *cb = QUIC_SKB_CB(skb);
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct sk_buff *p;
-+
-+	if (!packet->head) { /* First packet to bundle: initialize the head. */
-+		packet->head = skb;
-+		cb->last = skb;
-+		goto out;
-+	}
-+
-+	/* If bundling would exceed MSS, flush the current bundle. */
-+	if (packet->head->len + skb->len >= packet->mss[0]) {
-+		quic_packet_flush(sk);
-+		packet->head = skb;
-+		cb->last = skb;
-+		goto out;
-+	}
-+	/* Bundle it and update metadata for the aggregate skb. */
-+	p = packet->head;
-+	head_cb = QUIC_SKB_CB(p);
-+	if (head_cb->last == p)
-+		skb_shinfo(p)->frag_list = skb;
-+	else
-+		head_cb->last->next = skb;
-+	p->data_len += skb->len;
-+	p->truesize += skb->truesize;
-+	p->len += skb->len;
-+	head_cb->last = skb;
-+	head_cb->ecn |= cb->ecn;  /* Merge ECN flags. */
-+
-+out:
-+	/* rfc9000#section-12.2:
-+	 *   Packets with a short header (Section 17.3) do not contain a Length field and so
-+	 *   cannot be followed by other packets in the same UDP datagram.
-+	 *
-+	 * so Return 1 to flush if it is a Short header packet.
-+	 */
-+	return !cb->level;
-+}
-+
-+/* Transmit a QUIC packet, possibly encrypting and bundling it. */
-+int quic_packet_xmit(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct quic_skb_cb *cb = QUIC_SKB_CB(skb);
-+	struct net *net = sock_net(sk);
-+	int err;
-+
-+	/* Skip encryption if taglen == 0 (e.g., disable_1rtt_encryption). */
-+	if (!packet->taglen[quic_hdr(skb)->form])
-+		goto xmit;
-+
-+	cb->crypto_done = quic_packet_encrypt_done;
-+	/* Associate skb with sk to ensure sk is valid during async encryption completion. */
-+	WARN_ON(!skb_set_owner_sk_safe(skb, sk));
-+	err = quic_crypto_encrypt(quic_crypto(sk, packet->level), skb);
-+	if (err) {
-+		if (err != -EINPROGRESS) {
-+			QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCDROP);
-+			kfree_skb(skb);
-+			return err;
-+		}
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCBACKLOGS);
-+		return err;
-+	}
-+	if (!cb->resume) /* Encryption completes synchronously. */
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_ENCFASTPATHS);
-+
-+xmit:
-+	if (quic_packet_bundle(sk, skb))
-+		quic_packet_flush(sk);
-+	return 0;
-+}
-+
-+/* Create and transmit a new QUIC packet. */
-+int quic_packet_create_and_xmit(struct sock *sk)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	struct sk_buff *skb;
-+	int err;
-+
-+	err = quic_packet_number_check(sk);
-+	if (err)
-+		goto err;
-+
-+	if (packet->level)
-+		skb = quic_packet_handshake_create(sk);
-+	else
-+		skb = quic_packet_app_create(sk);
-+	if (!skb) {
-+		err = -ENOMEM;
-+		goto err;
-+	}
-+
-+	err = quic_packet_xmit(sk, skb);
-+	if (err && err != -EINPROGRESS)
-+		goto err;
-+
-+	/* Return 1 if at least one ACK-eliciting (non-PING) frame was sent. */
-+	return !!packet->frames;
-+err:
-+	pr_debug("%s: err: %d\n", __func__, err);
-+	return 0;
-+}
-+
-+/* Flush any coalesced/bundled QUIC packets. */
-+void quic_packet_flush(struct sock *sk)
-+{
-+	struct quic_path_group *paths = quic_paths(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+
-+	if (packet->head) {
-+		quic_lower_xmit(sk, packet->head,
-+				quic_path_daddr(paths, packet->path), &paths->fl);
-+		packet->head = NULL;
-+	}
-+}
-+
-+/* Append a frame to the tail of the current QUIC packet. */
-+int quic_packet_tail(struct sock *sk, struct quic_frame *frame)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+	u8 taglen;
-+
-+	/* Reject frame if it doesn't match the packet's encryption level or path, or if
-+	 * padding is already in place (no further frames should be added).
-+	 */
-+	if (frame->level != (packet->level % QUIC_CRYPTO_EARLY) ||
-+	    frame->path != packet->path || packet->padding)
-+		return 0;
-+
-+	/* Check if frame would exceed the current datagram MSS (excluding AEAD tag). */
-+	taglen = quic_packet_taglen(packet);
-+	if (packet->len + frame->len > packet->mss[frame->dgram] - taglen) {
-+		/* If some data has already been added to the packet, bail out. */
-+		if (packet->len != packet->overhead)
-+			return 0;
-+		/* Otherwise, allow IP fragmentation for this packet unless it’s a PING probe. */
-+		if (!quic_frame_ping(frame->type))
-+			packet->ipfragok = 1;
-+	}
-+	if (frame->padding)
-+		packet->padding = frame->padding;
-+
-+	/* Track frames that require retransmission if lost (i.e., ACK-eliciting and non-PING). */
-+	if (frame->ack_eliciting) {
-+		packet->ack_eliciting = 1;
-+		if (!quic_frame_ping(frame->type)) {
-+			packet->frames++;
-+			packet->frame_len += frame->len;
-+		}
-+	}
-+
-+	list_move_tail(&frame->list, &packet->frame_list);
-+	packet->len += frame->len;
-+	return frame->len;
-+}
-+
-+void quic_packet_init(struct sock *sk)
-+{
-+	struct quic_packet *packet = quic_packet(sk);
-+
-+	INIT_LIST_HEAD(&packet->frame_list);
-+	packet->taglen[0] = QUIC_TAG_LEN;
-+	packet->taglen[1] = QUIC_TAG_LEN;
-+	packet->mss[0] = QUIC_TAG_LEN;
-+	packet->mss[1] = QUIC_TAG_LEN;
-+
-+	packet->version = QUIC_VERSION_V1;
-+}
-diff --git a/net/quic/packet.h b/net/quic/packet.h
-new file mode 100644
-index 000000000000..85efeba6199b
---- /dev/null
-+++ b/net/quic/packet.h
-@@ -0,0 +1,121 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+struct quic_packet {
-+	struct quic_conn_id dcid;	/* Dest Connection ID from received packet */
-+	struct quic_conn_id scid;	/* Source Connection ID from received packet */
-+	union quic_addr daddr;		/* Dest address from received packet */
-+	union quic_addr saddr;		/* Source address from received packet */
-+
-+	struct list_head frame_list;	/* List of frames to pack into packet for send */
-+	struct sk_buff *head;		/* Head skb for packet bundling on send */
-+	u16 frame_len;		/* Length of all ack-eliciting frames excluding PING */
-+	u8 taglen[2];		/* Tag length for short and long packets */
-+	u32 version;		/* QUIC version used/selected during handshake */
-+	u8 errframe;		/* Frame type causing packet processing failure */
-+	u8 overhead;		/* QUIC header length excluding frames */
-+	u16 errcode;		/* Error code on packet processing failure */
-+	u16 frames;		/* Number of ack-eliciting frames excluding PING */
-+	u16 mss[2];		/* MSS for datagram and non-datagram packets */
-+	u16 hlen;		/* UDP + IP header length for sending */
-+	u16 len;		/* QUIC packet length excluding taglen for sending */
-+
-+	u8 ack_eliciting:1;	/* Packet contains ack-eliciting frames to send */
-+	u8 ack_requested:1;	/* Packet contains ack-eliciting frames received */
-+	u8 ack_immediate:1;	/* Send ACK immediately (skip ack_delay timer) */
-+	u8 non_probing:1;	/* Packet has ack-eliciting frames excluding NEW_CONNECTION_ID */
-+	u8 has_sack:1;		/* Packet has ACK frames received */
-+	u8 ipfragok:1;		/* Allow IP fragmentation */
-+	u8 padding:1;		/* Packet has padding frames */
-+	u8 path:1;		/* Path identifier used to send this packet */
-+	u8 level;		/* Encryption level used */
-+};
-+
-+struct quic_packet_sent {
-+	struct list_head list;	/* Link in sent packet list for ACK tracking */
-+	u64 sent_time;		/* Timestamp when packet was sent */
-+	s64 number;		/* Packet number */
-+	u8  level;		/* Packet number space */
-+	u8  ecn:2;		/* ECN bits */
-+
-+	u16 frame_len;		/* Combined length of all frames held */
-+	u16 frames;		/* Number of frames held */
-+
-+	struct quic_frame *frame_array[];	/* Array of pointers to held frames */
-+};
-+
-+#define QUIC_PACKET_INITIAL_V1		0
-+#define QUIC_PACKET_0RTT_V1		1
-+#define QUIC_PACKET_HANDSHAKE_V1	2
-+#define QUIC_PACKET_RETRY_V1		3
-+
-+#define QUIC_PACKET_INITIAL_V2		1
-+#define QUIC_PACKET_0RTT_V2		2
-+#define QUIC_PACKET_HANDSHAKE_V2	3
-+#define QUIC_PACKET_RETRY_V2		0
-+
-+#define QUIC_PACKET_INITIAL		QUIC_PACKET_INITIAL_V1
-+#define QUIC_PACKET_0RTT		QUIC_PACKET_0RTT_V1
-+#define QUIC_PACKET_HANDSHAKE		QUIC_PACKET_HANDSHAKE_V1
-+#define QUIC_PACKET_RETRY		QUIC_PACKET_RETRY_V1
-+
-+#define QUIC_VERSION_LEN		4
-+
-+static inline u8 quic_packet_taglen(struct quic_packet *packet)
-+{
-+	return packet->taglen[!!packet->level];
-+}
-+
-+static inline void quic_packet_set_taglen(struct quic_packet *packet, u8 taglen)
-+{
-+	packet->taglen[0] = taglen;
-+}
-+
-+static inline u32 quic_packet_mss(struct quic_packet *packet)
-+{
-+	return packet->mss[0] - packet->taglen[!!packet->level];
-+}
-+
-+static inline u32 quic_packet_max_payload(struct quic_packet *packet)
-+{
-+	return packet->mss[0] - packet->overhead - packet->taglen[!!packet->level];
-+}
-+
-+static inline u32 quic_packet_max_payload_dgram(struct quic_packet *packet)
-+{
-+	return packet->mss[1] - packet->overhead - packet->taglen[!!packet->level];
-+}
-+
-+static inline int quic_packet_empty(struct quic_packet *packet)
-+{
-+	return list_empty(&packet->frame_list);
-+}
-+
-+static inline void quic_packet_reset(struct quic_packet *packet)
-+{
-+	packet->level = 0;
-+	packet->errcode = 0;
-+	packet->errframe = 0;
-+	packet->has_sack = 0;
-+	packet->non_probing = 0;
-+	packet->ack_requested = 0;
-+	packet->ack_immediate = 0;
-+}
-+
-+int quic_packet_tail(struct sock *sk, struct quic_frame *frame);
-+int quic_packet_config(struct sock *sk, u8 level, u8 path);
-+
-+int quic_packet_xmit(struct sock *sk, struct sk_buff *skb);
-+int quic_packet_create_and_xmit(struct sock *sk);
-+int quic_packet_route(struct sock *sk);
-+
-+void quic_packet_mss_update(struct sock *sk, u32 mss);
-+void quic_packet_flush(struct sock *sk);
-+void quic_packet_init(struct sock *sk);
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index 0a6e59f85d32..f3a2b11fb251 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -48,6 +48,7 @@ static int quic_init_sock(struct sock *sk)
- 	quic_cong_init(quic_cong(sk));
- 
- 	quic_timer_init(sk);
-+	quic_packet_init(sk);
- 
- 	if (quic_stream_init(quic_streams(sk)))
- 		return -ENOMEM;
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index eeb510e0a09b..a463b80a76fc 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -20,6 +20,7 @@
- #include "path.h"
- #include "cong.h"
- 
-+#include "packet.h"
- #include "frame.h"
- 
- #include "protocol.h"
-@@ -77,6 +78,7 @@ struct quic_sock {
- 	struct quic_pnspace		space[QUIC_PNSPACE_MAX];
- 	struct quic_crypto		crypto[QUIC_CRYPTO_MAX];
- 
-+	struct quic_packet		packet;
- 	struct quic_timer		timers[QUIC_TIMER_MAX];
- };
- 
-@@ -155,6 +157,11 @@ static inline struct quic_crypto *quic_crypto(const struct sock *sk, u8 level)
- 	return &quic_sk(sk)->crypto[level];
- }
- 
-+static inline struct quic_packet *quic_packet(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->packet;
-+}
-+
- static inline void *quic_timer(const struct sock *sk, u8 type)
- {
- 	return (void *)&quic_sk(sk)->timers[type];
--- 
-2.47.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
