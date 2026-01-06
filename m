@@ -1,85 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE57B1EF39E;
-	Tue,  6 Jan 2026 00:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0DB1C3BF7
+	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 00:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767660817; cv=none; b=Y/Lcea5J+I2RPzwx5lQo27NlVBfCrweqkQmbTCgwViytLJ0vkR+t+B4Ws6xgSHXeRWdwKVhAD0A9Ju/gkMqWQ5zD1YEdNw9EVMEwfqdZmZtzj6E3SfNQDMYy6jtubso7NXe28TLoDwvYemZsuxK90778PPiFmAhhGwdPKfG9Jek=
+	t=1767661082; cv=none; b=asiRQxPosyhpHU7xU/cqjWkvcjgrpvNXrdPgqqv3JqmEDprQbO73bpjMYMLBHuCe637nfR4nvuF5dMUG1bXfOcmwAXQc+JYtqVb4zRlXPhrIC5CKl3+Xmcw3rB0rww41nhdgnL5LJdgKBest6kd3+EFV4Hu52CrJv73X9bz8QHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767660817; c=relaxed/simple;
-	bh=4xWN1bwzbgN5DPUomxioMqX4PBUFAK4DzQGzQSGDBEM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Qtloj+1FDjEn+NUVNtszUyQX/EQHNtMFUHFHwjoNatH96KU/h4eW29Nw5CZQgU597f3RQ2vCv28QsoIH1dzz8hU7NkpMq/7Koym0+PpSKsPWAIrwYjQv83SVgVPy0CiGiRqPTlPOFcQlNY2BQHq9Ued3Eh7co5MxH+VxzqTdlTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCiWX1GF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767661082; c=relaxed/simple;
+	bh=KWvFDvXHT8S5dvDF1yI8ZG/GMpS/ULrliFX9M8TUh2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QZpCMuzB6K3KePHYIKGqZEGSDYVcpehE4AA77EW+28y9+4RPRclKhnmWNWuysVqQbwl8ZA+vNi+7Yt9B7v1dy+BLUY/vPV2Ppoy1PCiyjajmVF3/dHyRHvnAHmrNIrsnEHzpAhWJxTFtooC5/RP00kH8RpysvnD3CXKn+Ll31BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UUL7+GZ3; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCiWX1GF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B71CC16AAE;
-	Tue,  6 Jan 2026 00:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767660816;
-	bh=4xWN1bwzbgN5DPUomxioMqX4PBUFAK4DzQGzQSGDBEM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=eCiWX1GFTww9t2XrrAle1xK3H4ENzTP7Nz+5pJzhmZTv0p5E4Ggspo2ITv/3xxyHO
-	 m9vU8eo8D8w5U/H8A8tKBK1lZqPCD0sN8bBxVmdZBjXmNSecHfH5++MQI+NateAHkw
-	 5eFoZ/kVf6VPjeERB008Poj6VlH7yQXMcb2hH7gX6QwCaUtjABzgFcyGfL5XY8nE6J
-	 4rMyoCX9MLJqKftvn6Ai4tfuEBsaf94z2UKnlYPFsDfFChsuPysMcwiEdmaRTfKBsV
-	 CCzookdZOBV90WruFYlaGO7Zi7q+YjaVCj2tW2CkEzd0a8VNUCOHb8UvRk0h8lPIP9
-	 BWx9Vx3sFPFgw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5B80380AADC;
-	Tue,  6 Jan 2026 00:50:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UUL7+GZ3"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8bc53dae8c2so58123885a.2
+        for <netdev@vger.kernel.org>; Mon, 05 Jan 2026 16:58:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1767661080; x=1768265880; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KWvFDvXHT8S5dvDF1yI8ZG/GMpS/ULrliFX9M8TUh2Y=;
+        b=UUL7+GZ3a2PmrXbs0RK+LBv4xwA/xKvTWh77jr057j3BFwrpeqPWoL0Cz50sF0Kll2
+         0MrO9BnnnIjJh1NK0+GoDzXJL/rrGji43Q9HMF8e06UtT8qQkGA1tW3vA1bm4Fgupd0q
+         bNW9Lb/6GOiiTMt+66QLpNN7wghp4cBP4Z7UApZxqVlqLrrRMdW+bqjulHm9WqG3gbpw
+         3EdpgPPeQy3so3TPap7EIoQspsL868iZGtbBaXjE5fpp92DJECwV9dOi3TGjZ10KIRr/
+         6Z/lnkJM0HI3njqeVnJSLLfoJbZQZxe0R43IwUWmflG9RB319lWnTrGF81kiIknBJSfl
+         /3UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767661080; x=1768265880;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KWvFDvXHT8S5dvDF1yI8ZG/GMpS/ULrliFX9M8TUh2Y=;
+        b=STgnQ9A7VoPFdzaD103FPEEX4Jagm7vTxhxqQWupfJybqK0GGad/d3p298Z28R833c
+         nL2CqW/5zOw2dqudK3jb4iSz3CbBfxtFJ+DukUPoRVG9I+woahLopGxBqCTJ8wtZfYcc
+         dP5R4hUvqaoDFdy1ewrO0Jz7lIPj5cerLsmf4IXwAL+X8eDH+285E6UHzEOJfKY4d+Kc
+         cyinRHuseFFBB1C46jJHjdMagK3qNevDOL87m2E7iK7ns0o7iPtE0uQUtpDN8fu4Vqsy
+         S28uVZqyytFmfH0Aik6Y8cdobhCjj8nvaFKD5eCI2wJNr/7chcPSOnhqFipx5vCJiYJe
+         gPaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrq/rE0STk0yOeVAnMTVjwCjApjYS7OfF3M+HS2qplPJv2mk+4r/4lwWTYA0kuhfYXMiaMsoc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEpxcj46I8xEaYQadDaBb6VUxH9RN94PWDkPDRTirbd4jfY7Uv
+	6r+NamE826mzhG81+Zr1BTOQna7QrrJA3/ZPbpyHRVgaGJnGFZ1LSQi2Ex17/T9KBz4=
+X-Gm-Gg: AY/fxX5BvJYKQ8vW7l0NFbO47znMUfwXNN0A2HZgnMbPZMQ6NreGNuKv3CbKcysinaH
+	/lbJl2iuU/8ps/rxCI1J5KuvylsPvqU6alUAipSKHRpWMo10riR7nK+Dfezyg6OtAyZAkOsN40G
+	1XBmhTqj/8tlKKO0cKlmoYFbur7pkh+kRLg6O/o7QTvSkAl+Bo6MEIqiF8UV4+GACfh7hipte+6
+	Ydx00ikZERlxAD4t01T8aQ8n+XHT20aTU953MGiUQtQvR0sDCzIFrSQTfMPIhi0KPLfHqqwoq3H
+	GnLQKM8GUqhMBS2s9SD8TocrQ7Szv2HfQJtPiri3zL/1n5tv3/SUxBOfpItTPZa4Ufspwd/KBps
+	oVEZN701b/pwXIWHkP1KnYHzjsP7IBsy8g8GqD8m6DX/cUneOtEKjnhvemtQmto3HRPcnC9Lz2T
+	4pWZEvhogbHJ/EmJsXuZ5dv0gTM+ntfP6cDW0/5ziKD4mfz7YQvMAn9dbg+OOeGE12tMU=
+X-Google-Smtp-Source: AGHT+IGa0r5JunugmxLwRSZ3te7/5csaOdNw4asu9kfOiZSkSQ9900m9rT02+OnpqPMVecqSE44X0A==
+X-Received: by 2002:a05:620a:469e:b0:893:2ba8:eec8 with SMTP id af79cd13be357-8c37ec0439fmr206640185a.79.1767661079931;
+        Mon, 05 Jan 2026 16:57:59 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a6b5bsm65910185a.8.2026.01.05.16.57.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 16:57:59 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vcvOY-00000001EWh-2Hbg;
+	Mon, 05 Jan 2026 20:57:58 -0400
+Date: Mon, 5 Jan 2026 20:57:58 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [RFC 2/2] Set steering-tag directly for PCIe P2P memory access
+Message-ID: <20260106005758.GM125261@ziepe.ca>
+References: <20251204081117.1987227-1-zhipingz@meta.com>
+ <20251227192303.3866551-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/2] rust: net: replace `kernel::c_str!` with C-Strings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176766061426.1346422.17052893149146776757.git-patchwork-notify@kernel.org>
-Date: Tue, 06 Jan 2026 00:50:14 +0000
-References: <20260103-cstr-net-v2-0-8688f504b85d@gmail.com>
-In-Reply-To: <20260103-cstr-net-v2-0-8688f504b85d@gmail.com>
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- dakr@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, tamird@gmail.com, gregkh@linuxfoundation.org,
- daniel.almeida@collabora.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227192303.3866551-1-zhipingz@meta.com>
 
-Hello:
+On Sat, Dec 27, 2025 at 11:22:54AM -0800, Zhiping Zhang wrote:
+> For p2p or dmabuf use cases, we pass in an ID or fd similar to CPU_ID when
+> allocating a dmah, and make a callback to the dmabuf exporter to get the
+> TPH value associated with the fd. That involves adding a new dmabuf operation
+> for the callback to get the TPH/tag value associated.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Ah, hum, that approach seems problematic since the dmah could be used
+with something that is not the exporting devices MMIO and this would
+allow userspace to subsitute in a wrong TPH which I think we should
+consider a security problem.
 
-On Sat, 03 Jan 2026 21:24:26 -0500 you wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible.
-> 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> Changes in v2:
-> - Pick up Tomo and Daniel's tags.
-> - Link to v1: https://patch.msgid.link/20251222-cstr-net-v1-0-cd9e30a5467e@gmail.com
-> 
-> [...]
+I think you need to have the reg_mr_dmabuf itself enforce a TPH if the
+exporting DMABUF requests it that way we know the TPH and the MMIO
+addresses are properly linked together.
 
-Here is the summary with links:
-  - [v2,1/2] rust: net: replace `kernel::c_str!` with C-Strings
-    https://git.kernel.org/netdev/net-next/c/7a8461a2a8da
-  - [v2,2/2] drivers: net: replace `kernel::c_str!` with C-Strings
-    https://git.kernel.org/netdev/net-next/c/5a69d30f30fd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Jason
