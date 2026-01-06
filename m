@@ -1,140 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D729F31280E
-	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 14:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9492F1FE2
+	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 14:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767709429; cv=none; b=Hhn708Hr+urWiecu2n/YbjNj2KqAoxuSYvY0ZlFwz25xpQz4NkUwEevjOlAKGbZQ1YqspbwEJsMn0SqKhstviHaDUlzvejlyiINXJAN3M4Z4+cJhurULpzwNmUr8AHr6WK3gktn/rz7H91XbLpvpSO3bxOozwdqf1mWmgUnFxhQ=
+	t=1767709834; cv=none; b=SQrVzZqjy4/b+KquNIURmhgd0NCUnxSJYn32SS6qAKfTMsXSSKZYR4dvxI7DMW98mABbN4uz3NQ7mBwP0xPbsR7VQKNiN59YZ17kwALtXQN5gg0+SxzsTXTpxpmprl0Z4+1MmpTgaJMBLkZuZnjXy5Eu2DmQ1jvL6Bl0rwIGjv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767709429; c=relaxed/simple;
-	bh=lVULV5GfaJFN2tASGfIP17U8gJhLLwXEwGtmS7IVzcI=;
+	s=arc-20240116; t=1767709834; c=relaxed/simple;
+	bh=eE12yfAlE1rfj5earAgwFv2AZemZgv3pixoGX8nJbhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X1BCEdLP/h5iiFoszc3RVnPjxXmPjoc+n/bftqVc14QZjLSrJxS0qBL3t+ENV1YCMklb2MQn1+XPTpnREsfBCwhfgzbUlqkDQPsfasdf/IfaebXdcYK6SctkWYATIrrmBfaSL1NQeFE0bRh97G5OSnw/zvulSeaZbT+5Uk1Z6fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gvq7Blsk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIWGtAnbJu9zmcAWmX+pRV4GPjkvEaGApUbqHteIfkwYUtsuNR4qQmlRfTBxFzfIfuPVDowuMOXpjYscQdPWK4ikuHn8Akgm3XIGLiO1ogk4t3RkMCVgrN4+1q6cYMXv5vMKCbdqEV/sRpjByDdWARArKHEPuXqYXwLuKzrcOYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTwT9DcE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gvq7Blsk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767709424;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0OqzwyCKSkjy5BfIhkLbUQnq0t0kB+MbQfPUkbaaRNY=;
-	b=Gvq7BlskAL2Pg/D6NOCh5280H8VzccaI5vc/PdRXlSRVPtdXVT7pKPLfYgsValLeuuCZJC
-	Un0ds4FZXWOpmCYEWHQBUn15W4cpD470UwpjOjzBW8agi9LxT7SXvfrY+1hGxhJgDwXmzP
-	JJXnNTRsxUInnHi+UkefsSrFj+EQWqw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-bni8fjkMOieXIdoRKDxuwg-1; Tue,
- 06 Jan 2026 09:23:39 -0500
-X-MC-Unique: bni8fjkMOieXIdoRKDxuwg-1
-X-Mimecast-MFC-AGG-ID: bni8fjkMOieXIdoRKDxuwg_1767709416
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 343971955F3E;
-	Tue,  6 Jan 2026 14:23:32 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.158])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DB52419560AB;
-	Tue,  6 Jan 2026 14:23:29 +0000 (UTC)
-Date: Mon, 5 Jan 2026 13:19:39 -0500
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Petr Tesarik <ptesarik@suse.com>,
-	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bartosz Golaszewski <brgl@kernel.org>, linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-scsi@vger.kernel.org, iommu@lists.linux.dev,
-	kvm@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 10/15] virtio_scsi: fix DMA cacheline issues for events
-Message-ID: <20260105181939.GA59391@fedora>
-References: <cover.1767601130.git.mst@redhat.com>
- <8801aeef7576a155299f19b6887682dd3a272aba.1767601130.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TTwT9DcE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166F4C116C6;
+	Tue,  6 Jan 2026 14:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767709833;
+	bh=eE12yfAlE1rfj5earAgwFv2AZemZgv3pixoGX8nJbhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TTwT9DcEVu7q9GBwyZtT/X0pLti4R9RxAdmg2+4BlViEnusAo3Sx5dDiA0N5pQ2v5
+	 neYjVsxf1rZZwP4as9sqyy7oAv/4xUskKB3cj31swFjJlNxt3aLtRenqkDOdVrnkvz
+	 bi06+qZ4H5pijXkS4ikCHZ9pMEcguS74up0MFmpeYqyAzY9cENAwm5c2VLRyGgwsNH
+	 3Lj0rzleGcdT4Xv5JK2P0Waz5/7n0QBpoaMyia7yWf6hDv8j/OzWYXE665mAuxNnb2
+	 okPfyqeykre83C+xgaFcbS1XBuJoUMyrRShMgj9SPbdNhfjduJxWhMKpwqRG4ftTqn
+	 Fp20qMvOoVHTg==
+Date: Tue, 6 Jan 2026 14:30:28 +0000
+From: Simon Horman <horms@kernel.org>
+To: Felix Maurer <fmaurer@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, jkarrenpalo@gmail.com,
+	tglx@linutronix.de, mingo@kernel.org, allison.henderson@oracle.com,
+	matttbe@kernel.org, petrm@nvidia.com, bigeasy@linutronix.de
+Subject: Re: [RFC net 0/6] hsr: Implement more robust duplicate discard
+ algorithm
+Message-ID: <aV0chBkc20PCn-Is@horms.kernel.org>
+References: <cover.1766433800.git.fmaurer@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TgzbTybhuc4Vbyp1"
-Content-Disposition: inline
-In-Reply-To: <8801aeef7576a155299f19b6887682dd3a272aba.1767601130.git.mst@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-
-
---TgzbTybhuc4Vbyp1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <cover.1766433800.git.fmaurer@redhat.com>
 
-On Mon, Jan 05, 2026 at 03:23:29AM -0500, Michael S. Tsirkin wrote:
-> @@ -61,7 +62,7 @@ struct virtio_scsi_cmd {
-> =20
->  struct virtio_scsi_event_node {
->  	struct virtio_scsi *vscsi;
-> -	struct virtio_scsi_event event;
-> +	struct virtio_scsi_event *event;
->  	struct work_struct work;
->  };
-> =20
-> @@ -89,6 +90,11 @@ struct virtio_scsi {
-> =20
->  	struct virtio_scsi_vq ctrl_vq;
->  	struct virtio_scsi_vq event_vq;
-> +
-> +	__dma_from_device_group_begin();
-> +	struct virtio_scsi_event events[VIRTIO_SCSI_EVENT_LEN];
-> +	__dma_from_device_group_end();
+On Mon, Dec 22, 2025 at 09:57:30PM +0100, Felix Maurer wrote:
+> The PRP duplicate discard algorithm does not work reliably with certain
+> link faults. Especially with packet loss on one link, the duplicate
+> discard algorithm drops valid packets. For a more thorough description
+> see patch 5.
+> 
+> My suggestion is to replace the current, drop window-based algorithm
+> with a new one that tracks the received sequence numbers individually
+> (description again in patch 5). I am sending this as an RFC to gather
+> feedback mainly on two points:
+> 
+> 1. Is the design generally acceptable? Of course, this change leads to
+>    higher memory usage and more work to do for each packet. But I argue
+>    that this is an acceptable trade-off to make for a more robust PRP
+>    behavior with faulty links. After all, PRP is to be used in
+>    environments where redundancy is needed and people are ready to
+>    maintain two duplicate networks to achieve it.
+> 2. As the tests added in patch 6 show, HSR is subject to similar
+>    problems. I do not see a reason not to use a very similar algorithm
+>    for HSR as well (with a bitmap for each port). Any objections to
+>    doing that (in a later patch series)? This will make the trade-off
+>    with memory usage more pronounced, as the hsr_seq_block will grow by
+>    three more bitmaps, at least for each HSR node (of which we do not
+>    expect too many, as an HSR ring can not be infinitely large).
 
-If the device emits two events in rapid succession, could the CPU see
-stale data for the second event because it already holds the cache line
-for reading the first event?
+Hi Felix,
 
-In other words, it's not obvious to me that the DMA warnings are indeed
-spurious and should be silenced here.
+Happy New Year!
 
-It seems safer and simpler to align and pad the struct virtio_scsi_event
-field in struct virtio_scsi_event_node rather than packing these structs
-into a single array here they might share cache lines.
+We have spoken about this offline before and I agree that the situation
+should be improved.
 
-Stefan
+IMHO the trade-offs you are making here seem reasonable.  And I wonder if
+it helps to think in terms of the expected usage of this code: Is it
+expected to scale to a point where the memory and CPU overhead becomes
+unreasonable; or do, as I think you imply above, we expect deployments to
+be on systems where the trade-offs are acceptable?
 
---TgzbTybhuc4Vbyp1
-Content-Type: application/pgp-signature; name=signature.asc
+> 
+> Most of the patches in this series are for the selftests. This is mainly
+> to demonstrate the problems with the current duplicate discard
+> algorithms, not so much about gathering feedback. Especially patch 1 and
+> 2 are rather preparatory cleanups that do not have much to do with the
+> actual problems the new algorithm tries to solve.
+> 
+> A few points I know not yet addressed are:
+> - HSR duplicate discard (see above).
+> - The KUnit test is not updated for the new algorithm. I will work on
+>   that before actual patch submission.
 
------BEGIN PGP SIGNATURE-----
+FTR, the KUnit tests no longer compiles. But probably you already knew that.
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmlcALoACgkQnKSrs4Gr
-c8hxKAgAntRCUOkAR5sJ85qdfsRgS5doxT9/NXPvgLJJuioZ7uhZ5gZoJlDI03Jd
-hAhz7RZQq0egV90TXQcX+aVTCMEoVFBZs9myLPSn3+P2aJI58FiFGQtA0EmzWkA5
-sjTyB+Fn5GvsA5yoatFgYoqr0Fc6xPDTWWkgqMkg2nmMjdbnR9taetiYfcW8FdHu
-eZmLE0d8xc2KhR/HMfz11L+fk1oXF94bZyqM98sOXkzqWgXK0vyd4UK/atflMQMv
-QInPClb3ErPbr27EQixAwC6yR40bvPArKxVFbJEYWYm1uP4fprxUVZD6VfmeTMZZ
-vJCcbmW4I0BK/ICRg+hCVzw3tAAmjg==
-=RvL+
------END PGP SIGNATURE-----
+> - Merging the sequence number blocks when two entries in the node table
+>   are merged because they belong to the same node.
+> 
+> Thank you for your feedback already!
 
---TgzbTybhuc4Vbyp1--
+Some slightly more specific feedback:
 
+* These patches are probably for net-next rather than net
+
+* Please run checkpatch.pl --max-line-length=80 --codespell (on each patch)
+  - And fix the line lengths where it doesn't reduce readability.
+    E.g. don't split strings
+
+* Please also run shellcheck on the selftests
+  - As much as is reasonable please address the warnings
+  - In general new .sh files should be shellcheck-clean
+  - To aid this, use "# shellcheck disable=CASE", for cases that don't match
+    the way selftests are written , e.g. SC2154 and SC2034
+
+* I was curious to see LANG=C in at least one of the selftests.
+  And I do see limited precedence for that. I'm just mentioning
+  that I was surprised as I'd always thought it was an implied requirement.
