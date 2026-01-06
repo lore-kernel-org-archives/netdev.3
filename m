@@ -1,96 +1,74 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8093559EC
-	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 19:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE2A3587B6;
+	Tue,  6 Jan 2026 19:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767726781; cv=none; b=R+L9basllmnn4UgMWQBUNQULBGgpzln5IbBeNCTU+txMfICrUWLgQkmF4uezSIlNu38WSEvk0Ly6I6oEKCLRawSvpiqxhFOo0wUUPUfnZ7dGmGlno+T2Yq1efk1zPweSrMGHss55D2RG8FDiclM4ZBCOXWFKkoycsRPsJziBbHs=
+	t=1767726915; cv=none; b=BKUngNVi+Xih4x3wruR+naDNgkVV20OHketHEjuOKLyoT4hXih7RmgsIFWHL+pXI0A2xcd54+GsjmhWE+Ya4SM+p33WW+6Q6rf1V9JJMpLiR7V1DH7NtpUzMfacZn4+69YV333QEev68zojIvypn/iVZy8kUiA8LxJ+A5q06OfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767726781; c=relaxed/simple;
-	bh=MTcyF5b+m7Nyqandj8JtczWsOLQSOo5LeGjHtbxWriw=;
+	s=arc-20240116; t=1767726915; c=relaxed/simple;
+	bh=mhw90XZVlZP+k0RPbsgOaOSrXrjWbeCxnVbLPsrLSrw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jxLHV7k9mZhtnt2YRK7+3pKlm7WCv/iqnZJrE/Ty4OQX/ds4/IkQS050pxk8YlnywlF0hPecGZMUzru/ouPCgdfGMT8ojOtubGTQzjHmdEI7rAjGvbYAG/XprLWM8RI5O1vklD+GshizyloliOe1hoPBKfiDRhXcMpqCReBnkyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=J1ZBZfYB; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	 MIME-Version:Content-Type; b=ocz2pR3pdmVCWdmTBzgCY9cx0pSGPIECW/++WZ56GFwJELtkQXswwrvsonL2FhDH/zPk6bOk+3S2KC06LvA9ebzgh1GirP1xiZySWoIj2tC0JmYUBQWZjy2QgjPaQs/CiE+8C+7Nvp0Cd+N6sjTTIKsFrfKUKJMKhPUuoaLXLt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=OaArPkna; arc=none smtp.client-ip=65.108.154.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="J1ZBZfYB"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b76b5afdf04so243274566b.1
-        for <netdev@vger.kernel.org>; Tue, 06 Jan 2026 11:12:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1767726778; x=1768331578; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NXWpgxUwvI+z5T2g0AYqNsPXHVO8gEezrOfJieXUNiU=;
-        b=J1ZBZfYBN/5Aqgd1hJT8EvXHE+m2mSbf6ghC7xxsR/O1bXxPVJ9TeF09lQq4rWbeBO
-         W2yCD7rvqI7+UWO/1L3W6rkbGBDygal0nssDjKyOx5s/YnfXTO9M+AczvxNQ75uzKMc2
-         OwMmdZ0Vahj4gAClUs1TJwdUNOrhudbVmfX+BLn23ratB5M5tkJHTf/8eltiEBCqx5YV
-         3Ilo+c+2VjixeugzzvRvdEaeP1Ps5I3GqnkkreyGoCqs3YQAW5S//rzUHzCWTyNG41aF
-         3kOBAYZ0l7Dr4nPgk42BPmU9s8ZOVkO1qg6GR4xm1poKxokoqPodgDAjifDaE3x7/nK5
-         Jyhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767726778; x=1768331578;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NXWpgxUwvI+z5T2g0AYqNsPXHVO8gEezrOfJieXUNiU=;
-        b=CwUwP9AnpLhTwhVESCuPGtqy6OH8COOpmvwpXhKirB/2o6nijnkrbiqWLt31oJA4Of
-         83UuMUtoN4iifQNIg20vTwwdw6VdSuQjjSrf5Spt1umHLt6eTfQtYyB3rnQuRfzUvvpr
-         7psNeHDiTbKur5d67rp13N3thGSANlQyIiZBSGuknBiPCVXAFSdV9q07jEu6/RGcmYSO
-         w6SIhgFgBEALughPM+NBT3xbKX+l2GA8T3Qd5CkYXqB6ppJUFfeAr6l9dsKFTg1Kpeu3
-         ActIfaSyCgrYeiKCW4WcBB+lc7RYX4KYraFyyW5rCCnhyxF9ilwuVEnPFskcD/LWGdvv
-         TH0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUaU89AiWxkK2cYJiI2NhTjYnxofVtHXlKrRd105mr1fYwQauhAAd/et9EXJvDVKszpi8C8xpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyobVmcAYfxrgp+249YPLv7e88qstSXflkLqFi1AHjDa2kVKS0K
-	Ns95B1LFbKi9d/SITvuss0ZiHCm7+KqMEpg66Lus/vcuQ+CP5yyMbs7TWdMMDR1yaRI=
-X-Gm-Gg: AY/fxX4Cs7dz6qiEAPz+AfkgXGrhtL7cADApn+OhZQFqkcetw9aMxb032Noe2ZjQ9VD
-	4S9t6D7XfWMB3IFthb0X5JQR5OsrEFobaTbP1JekkmZxyeMDMASD2J/vz44lFvxoLF1IJKHrGfM
-	XD6jZBlQnROF9LPVMXQ8A/sEOusl9tjc30EWZqx0ah9HxrZ0mpKdlYA0AA+2kkRVZJS3k/We2W6
-	95+uJ8V55GguS7O7rFYZhgK4kME7gmC9+6MLQTpAZcCzsA5C4GZr8GO5mQ2Q3d+MUub5UlWxheg
-	JsO/Vxqy2g3uabUjkyOPmSYs085+aQzTkdKblvDj+mxqRwpjURxua68sltJ0pSonuimjt9JVxcD
-	lP1sSPHUOfdRt7FaFayegF+iqi+5V0raorE+Fu1ZdsS+2A1WBuTnqAjyVEDCCFbRVzoFUKTPJ+/
-	gy3w==
-X-Google-Smtp-Source: AGHT+IE3z7Gjd92GDSE6PNW2kogYeyhE4xgee7+KnxQ3/NwdbhBSJKfxfIGkZrdtzTRaaf5Uhcw0Uw==
-X-Received: by 2002:a17:907:3d0b:b0:b83:1326:7d45 with SMTP id a640c23a62f3a-b8445345f6dmr14494766b.32.1767726778155;
-        Tue, 06 Jan 2026 11:12:58 -0800 (PST)
-Received: from cloudflare.com ([2a09:bac5:5063:295f::41f:a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d0290sm291076166b.32.2026.01.06.11.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 11:12:57 -0800 (PST)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Amery Hung <ameryhung@gmail.com>, Alexei Starovoitov
- <alexei.starovoitov@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>,  bpf <bpf@vger.kernel.org>,
-  Network Development <netdev@vger.kernel.org>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Alexei
- Starovoitov <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>,
-  Jesper Dangaard Brouer <hawk@kernel.org>,  John Fastabend
- <john.fastabend@gmail.com>,  Stanislav Fomichev <sdf@fomichev.me>,  Simon
- Horman <horms@kernel.org>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
- Zingerman <eddyz87@gmail.com>,  Song Liu <song@kernel.org>,  Yonghong Song
- <yonghong.song@linux.dev>,  KP Singh <kpsingh@kernel.org>,  Hao Luo
- <haoluo@google.com>,  Jiri Olsa <jolsa@kernel.org>,  kernel-team
- <kernel-team@cloudflare.com>
-Subject: Re: [PATCH bpf-next v2 15/16] bpf: Realign skb metadata for TC
- progs using data_meta
-In-Reply-To: <CAMB2axNnCWp0-ow7Xbg2Go7G61N=Ls_e+DVNq5wBWFbqbFZn-A@mail.gmail.com>
-	(Amery Hung's message of "Tue, 6 Jan 2026 09:46:49 -0800")
-References: <20260105-skb-meta-safeproof-netdevs-rx-only-v2-0-a21e679b5afa@cloudflare.com>
-	<20260105-skb-meta-safeproof-netdevs-rx-only-v2-15-a21e679b5afa@cloudflare.com>
-	<CAADnVQJbGosoXOCdyi=NZar966FVibKYobBgQ9BiyEH3=-HOsw@mail.gmail.com>
-	<CAMB2axPivi+mZOXie=VnJM8nscqkHDjSrKT=Dhp5z_copEwxLQ@mail.gmail.com>
-	<e969a85c-94eb-4cb5-a7ac-524a16ccce01@linux.dev>
-	<CAADnVQKB5vRJM4kJC5515snR6KHweE-Ld_W1wWgPSWATgiUCwg@mail.gmail.com>
-	<d267c646-1acc-4e5b-aa96-56759fca57d0@linux.dev>
-	<CAMB2axM+Z9npytoRDb-D1xVQSSx__nW0GOPMOP_uMNU-ZE=AZA@mail.gmail.com>
-	<CAADnVQJ=kmVAZsgkG9P2nEBTUG3E4PrDG=Yz8tfeFysH4ZBqVw@mail.gmail.com>
-	<877btu8wz2.fsf@cloudflare.com>
-	<CAMB2axNnCWp0-ow7Xbg2Go7G61N=Ls_e+DVNq5wBWFbqbFZn-A@mail.gmail.com>
-Date: Tue, 06 Jan 2026 20:12:56 +0100
-Message-ID: <87qzs2imh3.fsf@cloudflare.com>
+	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="OaArPkna"
+Authentication-Results: dilbert.mork.no;
+	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=OaArPkna;
+	dkim-atps=neutral
+Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
+	(authenticated bits=0)
+	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 606J3pAR245901
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Tue, 6 Jan 2026 19:03:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+	t=1767726231; bh=2A66euThQPenJG2KEd8CaRBqOlB3WqSPAAMrbx7aFzg=;
+	h=From:To:Cc:Subject:References:Date:Message-ID:From;
+	b=OaArPknaMBsAYMuaq+tE2ybZt2qjucvuf7QIlgekae4B0sR6nr28biT5g1R1+uXxB
+	 MlORgrtRyQcLsXMDqpCXl4OufIxKdvhxL2ge3sW0IIol4hr8PpqY+YlUBf29+iVjig
+	 RCiJf7ehJ219xozbMNnCVYrZ7DI5HT1W5imubuF0=
+Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
+	(authenticated bits=0)
+	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 606J3oDj1248715
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Tue, 6 Jan 2026 20:03:50 +0100
+Received: (nullmailer pid 602062 invoked by uid 1000);
+	Tue, 06 Jan 2026 19:03:50 -0000
+From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Daniel Golle <daniel@makrotopia.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Eric Woudstra <ericwouds@gmail.com>,
+        Marek =?utf-8?Q?Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>,
+        Patrice Chotard <patrice.chotard@foss.st.com>
+Subject: Re: [PATCH v2 net-next 07/10] net: phy: air_en8811h: deprecate
+ "airoha,pnswap-rx" and "airoha,pnswap-tx"
+In-Reply-To: <20260103210403.438687-8-vladimir.oltean@nxp.com> (Vladimir
+	Oltean's message of "Sat, 3 Jan 2026 23:04:00 +0200")
+Organization: m
+References: <20260103210403.438687-1-vladimir.oltean@nxp.com>
+	<20260103210403.438687-8-vladimir.oltean@nxp.com>
+Date: Tue, 06 Jan 2026 20:03:50 +0100
+Message-ID: <87qzs2a7hl.fsf@miraculix.mork.no>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,40 +77,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
+X-Virus-Status: Clean
 
-On Tue, Jan 06, 2026 at 09:46 AM -08, Amery Hung wrote:
-> On Tue, Jan 6, 2026 at 9:36=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.c=
-om> wrote:
->> --- a/kernel/bpf/verifier.c
->> +++ b/kernel/bpf/verifier.c
->> @@ -21806,6 +21806,14 @@ static int convert_ctx_accesses(struct bpf_veri=
-fier_env *env)
->>                         env->prog =3D new_prog;
->>                         delta +=3D cnt - 1;
->>
->> +                       /* gen_prologue emits function calls with target=
- address
->> +                        * relative to __bpf_call_base. Skip patch_call_=
-imm fixup.
->> +                        */
->> +                       for (i =3D 0; i < cnt - 1; i++) {
->> +                               if (bpf_helper_call(&env->prog->insnsi[i=
-]))
->> +                                       env->insn_aux_data[i].finalized_=
-call =3D true;
->> +                       }
->> +
->>                         ret =3D add_kfunc_in_insns(env, insn_buf, cnt - =
-1);
->
-> And then we can get rid of this function as there is no use case for
-> having a new kfunc in gen_{pro,epi}logue.
+Vladimir Oltean <vladimir.oltean@nxp.com> writes:
 
-Happy to convert bpf_{qdisc,testmod} gen_{pro,epi}logue to use
-BPF_EMIT_CALL instead of BPF_CALL_KFUNC.
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index a7ade7b95a2e..7b73332a13d9 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -98,6 +98,7 @@ config AS21XXX_PHY
+>=20=20
+>  config AIR_EN8811H_PHY
+>  	tristate "Airoha EN8811H 2.5 Gigabit PHY"
+> +	select PHY_COMMON_PROPS
 
-If it's alright with you, I'd like to kill kfunc support in
-{pro,epi}logue as a follow up.
+GENERIC_PHY_COMMON_PROPS maybe?
 
-Looks like there will be a bit of churn in selftests to remove the
-coverage. And this series is getting quite long.
+
+Bj=C3=B8rn
