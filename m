@@ -1,347 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mailgw03.horizon.ai (mailgw03.horizon.ai [42.62.85.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BB133344B
-	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 11:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CF9326945
+	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 11:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767699668; cv=none; b=L5UJsjfnlHELMiAHdEBKx1EK2pKZ1h1Y4sZ1vdUA0DvDXCmKZ0sjRR0jMllSk31lXdMNn1owQ6DyMoe+XWgAAudiZFviyslcQUqiHD4oL+KKy2AGQUvSQ8G5aCUSF2QyaOIaV2YdA+3MDBKmVUEOcLCaKVWRZ47uvDbypIVCTac=
+	t=1767699669; cv=none; b=N5l5vxGUQ5S+z5RlkxtQDPxl6bMCTdLIXhOxBOB6/3h3//wH60el3qRjsO3WEzdLUCfDOtv5ZWywG/XKhgC/cyrcCrRtTMxFqiy0gR1KoCgvmYod3UZqgEK9VcT0AderRgOcl+UVqi1EsEG/C2S7vx+lzYZhiBoTO8KlmeNWiWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767699668; c=relaxed/simple;
-	bh=DDQ8mgIFNxt/vLn+lO0X5uk0KlwAqPXTmwsN7nJGRzo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZGoKMBLyFnuOwCjOXJsKgtEGlj9yXQvsDzKhvwd+AhyN5f3AvM8T/d3J/yeuzV+W8pVLZx10uBiwGBJ+S8hmXCXHoTes6HtvgZ+ZkdhzDKnHZw/jwGCq46ADd81dGHOheg2Nfm5VpajDXyZZ8jBK9wFzFCTfzzLotk0x5QnwiWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hLg4azyR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vee1X9+d; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767699669; c=relaxed/simple;
+	bh=xLcp7DxkbZIfaB6Im5TqqQSEtZSUIe6oY8JuffNed4A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KIokwRvjD/uvSEtgfMZAyFnkencmLy1di5GoOFbxMPcsjL2ovBaaOsRQDyPa6cSfPGEwoUJLz/KNKJNmu4EzTElxhzRSxwfO1GlAou7WebhkiwgYhup0wYfhfB6KG/eKrKDlIkZykZSCH9Hq0Fyw8UeUW2si4UygxjIIHnoq3cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (1024-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=DM3weNvX; arc=none smtp.client-ip=42.62.85.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hLg4azyR";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vee1X9+d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767699665;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YvsPs1ICShVhzZot0GV9I6SUy38v96hmCBSsHXFLVSw=;
-	b=hLg4azyR3C2LcRsGg/mJP469zmoCWL9LIeOpwxG829rte4vULN+WNyE+hiTHJTFBEvhXv7
-	Ux//KDZspQwLo4AKBP071nxqF8oMaAayU6rK67spfjlDaGpX3ScSaTkQ/bgpBXzrpRvM50
-	UxBW3GR6MlZZQVc38TpgsYEngdgnEaM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-8MBPED0pNrysdGR1hmN5fQ-1; Tue, 06 Jan 2026 06:41:02 -0500
-X-MC-Unique: 8MBPED0pNrysdGR1hmN5fQ-1
-X-Mimecast-MFC-AGG-ID: 8MBPED0pNrysdGR1hmN5fQ_1767699661
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b7ce2f26824so84903766b.1
-        for <netdev@vger.kernel.org>; Tue, 06 Jan 2026 03:41:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767699661; x=1768304461; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YvsPs1ICShVhzZot0GV9I6SUy38v96hmCBSsHXFLVSw=;
-        b=Vee1X9+dtTvOXWxQ7jNj7QPmFbL7KuCnAp+ESe6cpDvCSaGDEhJM/SYtaKVPSgAm23
-         zjHL8L+MujmIR3ONIDihw/aUnxSXvyLLj6+xaroq5JXGmav1PACnakFGRRSC4kHyaRSI
-         HEiATTLKcWe2F28f8i99vNUSBjdLikmuASgsxd1RShb6BxepCQhPVUghJ6AfvjHSEKru
-         wujrvksErcVAS7cwN9Nxbo0LC60pkJ7fOWv9G28DKsnHLmyCqSFR2vTuHU053Y9iS567
-         qhzM5hMPixlYrHwD1FfLwOFFAHnaOe3BlV16qEgijhC4c46bXZMyWLrTSwqCLa3Dob3V
-         PNyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767699661; x=1768304461;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YvsPs1ICShVhzZot0GV9I6SUy38v96hmCBSsHXFLVSw=;
-        b=ksgZgGiY0edAI1blrkRYyqk8nUpRlYHDt3FdVSYQXZA1f17A+OFaz8QXnYh2Qxx4mB
-         GbfPnpYGAizGyJl4nSe973XeFJejQ3CqaQPDa+qYZjzH28jiXmDRfnCWlELGYM39UDKr
-         6PKZWbUFHO1HuZFBVCWAvoe+qdw8i13lWdp0B2/Rvm6AM2nJyboZqK9jAqkTVob5CNS4
-         mUajVjuwS1K8CB2ue8xsj+bFcoWBT2DieKjob9hme2+oIOZumHZWrjQzUaWxFuwmbLAK
-         SA/3qUd7vJoDyClXVW5qSaYt3MrIxLOsXNY+MzSqgAlV2NSkvBruWQwly/3Yh+hmk7XD
-         +BBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHrkuq6aLQn4Q6KmW3WUM1PuOSS8KENSQ4a1UU4XuLkY0tFakA/MszWNPjFZnlqEtOHOBHR/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztbMJldSZfa27JKihkkZ3UPsjX569rGSjYDKNVsvMA6OdO2nU7
-	QtoqfEBkEEYDbMVaSPs4PViqYXJVUDzxBNue+baOASvOaj7AKOwtwtH5Szyt2S6kQ3FB2OU4Nkh
-	PZu9qSX7BV4qaSZHRPD5lv1zblCB1zzl4D3lHolTmH6LzZpwSYwDWHo+5Xw==
-X-Gm-Gg: AY/fxX7+WJ7GU581ifKSqaR9k1gZ0IGDVenQRKYO0I6cf85qDeuxfRxbAudQRzhkv/p
-	jRmy5pno6+bKQChoqAB4fe+fkXeZflNFUf3WjTNTaSt1Qo6PFWXAmQHQOHaOmVu9SwE7fX1VIKI
-	0lPFpkqRRFz54mCd+EJ/eBUKOAAtKidG2I7VDtA7EANBV7wVrFwKtsgSF+NhyWesg52mO+blbZ/
-	xv+HXJ1uTArnx78JbUuiTeUUvohbfthxW4Km4KZbgZkjpyQsC8+s5FminuWOXsoF9GXdQAdHUol
-	M5+YHHSG0sPCrqHoQG17Dv3KtnpNN18hYO9GszZWRh9ZWNbT/v1Y+7gm36rlVfPwtVNp7zWXYTO
-	dD1I+y47/brqztWCfoIp0Zrca7D4njtAO37nN
-X-Received: by 2002:a17:907:1b0a:b0:b83:6e2b:890d with SMTP id a640c23a62f3a-b8426ac78fbmr306073266b.25.1767699660993;
-        Tue, 06 Jan 2026 03:41:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG0wx7ZkrHr0gAW2RumB5kgKuMENbMiLC7gkypJN0uY+O0GJfBpH/v5uInZIUKRlusXcJqFCw==
-X-Received: by 2002:a17:907:1b0a:b0:b83:6e2b:890d with SMTP id a640c23a62f3a-b8426ac78fbmr306069666b.25.1767699660504;
-        Tue, 06 Jan 2026 03:41:00 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d3229sm200692966b.37.2026.01.06.03.40.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 03:40:59 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id AA275407FCE; Tue, 06 Jan 2026 12:40:58 +0100 (CET)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Tue, 06 Jan 2026 12:40:52 +0100
-Subject: [PATCH net-next v6 1/6] net/sched: Export mq functions for reuse
+	dkim=pass (1024-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="DM3weNvX"
+DKIM-Signature: v=1; a=rsa-sha256; d=horizon.auto; s=horizonauto; c=relaxed/simple;
+	q=dns/txt; i=@horizon.auto; t=1767698751; x=2631612351;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xLcp7DxkbZIfaB6Im5TqqQSEtZSUIe6oY8JuffNed4A=;
+	b=DM3weNvXtTX0KIlPI74fvz6LW9wWilmod+80qoRbXQlyvydi+VYcxvP2G81KoIMe
+	hyE42TslQerdODj6owZbG3SpQy+oAgKyGlOwb9KMyS2iLxmCdAPUJe62QpeI1GvU
+	wAMYQJ1bhk360l3wlfvsoc9OD4gTbdFJWZpZLVxoXMQ=;
+X-AuditID: 0a0901b2-df5da70000001406-80-695cf13f1dfe
+Received: from mailgw03.horizon.ai ( [10.9.15.211])
+	by mailgw03.horizon.ai (Anti-spam for msg) with SMTP id 15.A1.05126.F31FC596; Tue,  6 Jan 2026 19:25:51 +0800 (HKT)
+Received: from wangtao-VirtualBox.hobot.cc (10.9.0.252) by
+ robotics002.hobot.cc (10.9.15.211) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.8; Tue, 6 Jan 2026 19:25:50 +0800
+From: Tao Wang <tao03.wang@horizon.auto>
+To: <andrew+netdev@lunn.ch>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
+	<alexandre.torgue@foss.st.com>, <rmk+kernel@armlinux.org.uk>,
+	<maxime.chevallier@bootlin.com>, <0x1207@gmail.com>,
+	<netdev@vger.kernel.org>, Tao Wang <tao03.wang@horizon.auto>
+Subject: [PATCH] net: stmmac: fix transmit queue timed out after resume
+Date: Tue, 6 Jan 2026 19:24:44 +0800
+Message-ID: <20260106112444.93951-1-tao03.wang@horizon.auto>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260106-mq-cake-sub-qdisc-v6-1-ee2e06b1eb1a@redhat.com>
-References: <20260106-mq-cake-sub-qdisc-v6-0-ee2e06b1eb1a@redhat.com>
-In-Reply-To: <20260106-mq-cake-sub-qdisc-v6-0-ee2e06b1eb1a@redhat.com>
-To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
- Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, 
- cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain
+X-ClientProxiedBy: exchange004.hobot.cc (10.9.15.112) To robotics002.hobot.cc
+ (10.9.15.211)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrPLMWRmVeSWpSXmKPExsXCxcl/Wdf+Y0ymwe5uGYufL6cxWix/sIPV
+	Ys75FhaLC9v6WC1evt7GbHFsgZjFt9NvGC0u9U9kcuDwuHztIrPHvDXVHltW3mTyeNq/ld1j
+	06pONo+dOz4zebzfd5XN4/MmuQCOKC6blNSczLLUIn27BK6MR7PusBa8EKzo3biEvYGxk7+L
+	kYNDQsBE4klXbBcjF4eQwEpGiQv3LrNAOG8YJZp7TjB2MXJysAloSNydeo0FxBYRkJZYvOYV
+	M0gRs8A6Jont/5rAioQF3CUa2zawgdgsAioST/6vYgaxeQVsJKa2TQNrlhCQl9h/8CxUXFDi
+	5MwnYHFmoHjz1tnMELaExMEXL8BsIaA5zSfns0P0ykm83rCfDcKOlbi97BnbBEaBWUhGzUIy
+	ahaSUQsYmVcxCucmZuaklxsY62XkF2VW5efpJWZuYgTHAeOmHYxLFnzUO8TIxMF4iFGCg1lJ
+	hPeVTHSmEG9KYmVValF+fFFpTmrxIUZpDhYlcd7Jed6ZQgLpiSWp2ampBalFMFkmDk6pBqYw
+	P9nkIxPO3nKdl883q2dt3C/O+vWKJ3qSkrf+bqsTlTny9sRzryU6Cyq85Xh+/ZyiLrGkq7fw
+	z+Fjnq0aTX9P9ORksrUKbA7mbdx9fS/H070+PsUlj3a0mrgmX317NddBw8bw6dbtTkUPjxpL
+	zmTSnDR5952QtteZV2KXTH7zqzJgtZNARvyxWQoFnpPOVP5iag60+vjiQPa1NRNtjPzc7k5N
+	SBJ8J6TAFHNfRcl1Yv3Vg5JX9/0zfP36ucxH8w1zmiwdy7QPiWgqJkYzS3h/se89/zvryJX4
+	hh0HuCb+XbXv5MTmSYLdMjw9iVvSVXeGx1/pX6N0snmSeXNwyLNWdzX7ZxO+mLYLWwien6DE
+	UpyRaKjFXFScCADj+9zd8gIAAA==
 
-To enable the cake_mq qdisc to reuse code from the mq qdisc, export a
-bunch of functions from sch_mq. Split common functionality out from some
-functions so it can be composed with other code, and export other
-functions wholesale. To discourage wanton reuse, put the symbols into a
-new NET_SCHED_INTERNAL namespace, and a sch_priv.h header file.
+When the TSO function sets tx_skbuff_dma[tx_q->cur_tx].last_segment = true
+, and the last_segment value is not cleared in stmmac_free_tx_buffer after
+ resume, restarting TSO transmission may incorrectly use
+tx_q->tx_skbuff_dma[first_entry].last_segment = true for a new TSO packet.
 
-No functional change intended.
+after resume dev_watchdog() message:
+"NETDEV WATCHDOG: CPU: x: transmit queue x timed out xx ms"
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+tx ring descriptor info as follows:
+eth0: 221 [0x0000000876d10dd0]: 0x73660cbe 0x8 0x42 0xb04416a0
+eth0: 222 [0x0000000876d10de0]: 0x77731d40 0x8 0x16a0 0x90000000
+
+Descriptor 221 is the TSO header, and descriptor 222 is the TSO payload.
+ In the tdes3 (0xb04416a0), bit 29 (first descriptor) and bit 28
+ (last descriptor) of the TSO packet 221 DMA descriptor cannot both be
+ set to 1 simultaneously. Since descriptor 222 is the actual last
+ descriptor, failing to set it properly will cause the EMAC DMA to stop
+ and hang.
+
+To solve the issue, set last_segment to false in stmmac_free_tx_buffer:
+tx_q->tx_skbuff_dma[i].last_segment = false;
+Set last_segment to false in stmmac_tso_xmit, and do not use the default
+ value: tx_q->tx_skbuff_dma[first_entry].last_segment = false;
+This will prevent similar issues from occurring in the future.
+
+Signed-off-by: Tao Wang <tao03.wang@horizon.auto>
 ---
- include/net/sch_priv.h | 27 +++++++++++++++++++
- net/sched/sch_mq.c     | 71 ++++++++++++++++++++++++++++++++++----------------
- 2 files changed, 76 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/sch_priv.h b/include/net/sch_priv.h
-new file mode 100644
-index 000000000000..4789f668ae87
---- /dev/null
-+++ b/include/net/sch_priv.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __NET_SCHED_PRIV_H
-+#define __NET_SCHED_PRIV_H
-+
-+#include <net/sch_generic.h>
-+
-+struct mq_sched {
-+	struct Qdisc		**qdiscs;
-+};
-+
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops);
-+void mq_destroy_common(struct Qdisc *sch);
-+void mq_attach(struct Qdisc *sch);
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb);
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm);
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl);
-+unsigned long mq_find(struct Qdisc *sch, u32 classid);
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm);
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d);
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg);
-+
-+#endif
-diff --git a/net/sched/sch_mq.c b/net/sched/sch_mq.c
-index c860119a8f09..bb94cd577943 100644
---- a/net/sched/sch_mq.c
-+++ b/net/sched/sch_mq.c
-@@ -15,11 +15,7 @@
- #include <net/netlink.h>
- #include <net/pkt_cls.h>
- #include <net/pkt_sched.h>
--#include <net/sch_generic.h>
--
--struct mq_sched {
--	struct Qdisc		**qdiscs;
--};
-+#include <net/sch_priv.h>
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b3730312aeed..d786ac3c78f7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1653,6 +1653,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
  
- static int mq_offload(struct Qdisc *sch, enum tc_mq_command cmd)
- {
-@@ -49,23 +45,29 @@ static int mq_offload_stats(struct Qdisc *sch)
- 	return qdisc_offload_dump_helper(sch, TC_SETUP_QDISC_MQ, &opt);
+ 	tx_q->tx_skbuff_dma[i].buf = 0;
+ 	tx_q->tx_skbuff_dma[i].map_as_page = false;
++	tx_q->tx_skbuff_dma[i].last_segment = false;
  }
  
--static void mq_destroy(struct Qdisc *sch)
-+void mq_destroy_common(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
- 	unsigned int ntx;
+ /**
+@@ -4448,6 +4449,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (dma_mapping_error(priv->device, des))
+ 		goto dma_map_err;
  
--	mq_offload(sch, TC_MQ_DESTROY);
--
- 	if (!priv->qdiscs)
- 		return;
- 	for (ntx = 0; ntx < dev->num_tx_queues && priv->qdiscs[ntx]; ntx++)
- 		qdisc_put(priv->qdiscs[ntx]);
- 	kfree(priv->qdiscs);
- }
-+EXPORT_SYMBOL_NS_GPL(mq_destroy_common, "NET_SCHED_INTERNAL");
- 
--static int mq_init(struct Qdisc *sch, struct nlattr *opt,
--		   struct netlink_ext_ack *extack)
-+static void mq_destroy(struct Qdisc *sch)
-+{
-+	mq_offload(sch, TC_MQ_DESTROY);
-+	mq_destroy_common(sch);
-+}
-+
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -87,7 +89,8 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
- 		dev_queue = netdev_get_tx_queue(dev, ntx);
--		qdisc = qdisc_create_dflt(dev_queue, get_default_qdisc_ops(dev, ntx),
-+		qdisc = qdisc_create_dflt(dev_queue,
-+					  qdisc_ops ?: get_default_qdisc_ops(dev, ntx),
- 					  TC_H_MAKE(TC_H_MAJ(sch->handle),
- 						    TC_H_MIN(ntx + 1)),
- 					  extack);
-@@ -98,12 +101,24 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 	}
- 
- 	sch->flags |= TCQ_F_MQROOT;
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(mq_init_common, "NET_SCHED_INTERNAL");
-+
-+static int mq_init(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack)
-+{
-+	int ret;
-+
-+	ret = mq_init_common(sch, opt, extack, NULL);
-+	if (ret)
-+		return ret;
- 
- 	mq_offload(sch, TC_MQ_CREATE);
- 	return 0;
- }
- 
--static void mq_attach(struct Qdisc *sch)
-+void mq_attach(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -124,8 +139,9 @@ static void mq_attach(struct Qdisc *sch)
- 	kfree(priv->qdiscs);
- 	priv->qdiscs = NULL;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_attach, "NET_SCHED_INTERNAL");
- 
--static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct Qdisc *qdisc;
-@@ -152,7 +168,12 @@ static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
- 
- 		spin_unlock_bh(qdisc_lock(qdisc));
- 	}
-+}
-+EXPORT_SYMBOL_NS_GPL(mq_dump_common, "NET_SCHED_INTERNAL");
- 
-+static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+{
-+	mq_dump_common(sch, skb);
- 	return mq_offload_stats(sch);
- }
- 
-@@ -166,11 +187,12 @@ static struct netdev_queue *mq_queue_get(struct Qdisc *sch, unsigned long cl)
- 	return netdev_get_tx_queue(dev, ntx);
- }
- 
--static struct netdev_queue *mq_select_queue(struct Qdisc *sch,
--					    struct tcmsg *tcm)
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm)
- {
- 	return mq_queue_get(sch, TC_H_MIN(tcm->tcm_parent));
- }
-+EXPORT_SYMBOL_NS_GPL(mq_select_queue, "NET_SCHED_INTERNAL");
- 
- static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 		    struct Qdisc **old, struct netlink_ext_ack *extack)
-@@ -198,14 +220,15 @@ static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 	return 0;
- }
- 
--static struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
- 	return rtnl_dereference(dev_queue->qdisc_sleeping);
- }
-+EXPORT_SYMBOL_NS_GPL(mq_leaf, "NET_SCHED_INTERNAL");
- 
--static unsigned long mq_find(struct Qdisc *sch, u32 classid)
-+unsigned long mq_find(struct Qdisc *sch, u32 classid)
- {
- 	unsigned int ntx = TC_H_MIN(classid);
- 
-@@ -213,9 +236,10 @@ static unsigned long mq_find(struct Qdisc *sch, u32 classid)
- 		return 0;
- 	return ntx;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_find, "NET_SCHED_INTERNAL");
- 
--static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
--			 struct sk_buff *skb, struct tcmsg *tcm)
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -224,9 +248,10 @@ static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
- 	tcm->tcm_info = rtnl_dereference(dev_queue->qdisc_sleeping)->handle;
- 	return 0;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_dump_class, "NET_SCHED_INTERNAL");
- 
--static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
--			       struct gnet_dump *d)
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -236,8 +261,9 @@ static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 		return -1;
- 	return 0;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_dump_class_stats, "NET_SCHED_INTERNAL");
- 
--static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	unsigned int ntx;
-@@ -251,6 +277,7 @@ static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- 			break;
- 	}
- }
-+EXPORT_SYMBOL_NS_GPL(mq_walk, "NET_SCHED_INTERNAL");
- 
- static const struct Qdisc_class_ops mq_class_ops = {
- 	.select_queue	= mq_select_queue,
-
++	tx_q->tx_skbuff_dma[first_entry].last_segment = false;
+ 	stmmac_set_desc_addr(priv, first, des);
+ 	stmmac_tso_allocator(priv, des + proto_hdr_len, pay_len,
+ 			     (nfrags == 0), queue);
 -- 
-2.52.0
+2.34.1
 
