@@ -1,56 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8D527FD74;
-	Tue,  6 Jan 2026 19:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44142274FDF;
+	Tue,  6 Jan 2026 19:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767726088; cv=none; b=VWNrZTzjNWbRrIg6MNfxQJsm7gYnspYsJALw26DOZlyGLEZhWXhIOAgmh8qjxY0+aFIPUGoi0ay373vi4MbiL37+rAk05tO1PcKjeh1ZbnxcG/BZWUsEGBkWElUc1dmFWmbME8WGm8REhktn12yD8FA7TAsTjyDlozsGjVtE008=
+	t=1767726482; cv=none; b=jgp0ZmZjYCm907l9u+JrKp696He5b5lNPrd8NUrlGR0SwCHq4GHiknR6JLnER4/6PDD7QUih6Gp/Ypmuggm4yoFMnqOK9MAJoS6RFoLbUiezwO6WmfjnYBDcnfOllZ+0NQaS7bwYRJ4pzzzCSaE9Y/av3gDSfchSDnJ1yOmTVok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767726088; c=relaxed/simple;
-	bh=mnBxn/Rz2DfcOBFabd4WdQGJtGWiMmCwwVsL6cusnNo=;
+	s=arc-20240116; t=1767726482; c=relaxed/simple;
+	bh=u9DkmJtck8Gc8X7zOPBHUnDaOOBZacRpl9q/C06riN0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GruRtKNnfamM5S5tgzcfi20Ffqy2YPqmnJSz+7W7GAhqY4yNlJYPUgmNwU4Q6r4cwbs+9avUzRQ6Mg+Gsr8NvUJIA9JPxo8Du7zUrf/mz4G9TbjP45lBdR0Q7d9tq+DqN2ksnCaGoVzZTIMMKjQkLc7wb+hlMkvS6guO8i4t4z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6+H7MW4; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mKHOt4nXzG2lDoZZ5dsMK97qBFc8Gxn+M2uE6j0sXbB/7EW2iJBCWD/C0bbZZQFtMBOUXWzSBztT1e8kRneVQZpFB3WOZ2+68wxWFuiafxfNBipjQxIA4k3nbt4ubqp0VoPb8JB5ri4IWM1rj9dTdTVxY+hDQSDo8rpVUP8BZTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFQ5SAei; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6+H7MW4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64BEC116C6;
-	Tue,  6 Jan 2026 19:01:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFQ5SAei"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCBBC19422;
+	Tue,  6 Jan 2026 19:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767726087;
-	bh=mnBxn/Rz2DfcOBFabd4WdQGJtGWiMmCwwVsL6cusnNo=;
+	s=k20201202; t=1767726481;
+	bh=u9DkmJtck8Gc8X7zOPBHUnDaOOBZacRpl9q/C06riN0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s6+H7MW4loyEJscRG5Psbu3gmX/Y5UgpqbgG7ATxtlOOdKw3U2y1JPyCyAxtKvEMN
-	 UTG2O49hKxgvG+Avk6OJbu4iI2ziQpA8kyUMqIGJA9Wk0YfGcy0EEASCYgVjortKCp
-	 F2cfdPwkllaLtN/xkYVdTKTrukryLKs3bIQFutNFv4vrlitPlIBCwPn3rGzd2v8g6f
-	 UDcErOxPY0jUl5Ovlb2ke4XAZrxC40h8K3zCXVE+FVOjnz+SqdI3J5xzLi3cbdtxXH
-	 WTB12R7tX6mmA0Y1mP9piXA4nfT2EfIfmXd040rjb5QASLy87QZFvcrX1UaVPwXceg
-	 dg4w7k9xliGOg==
-Date: Tue, 6 Jan 2026 13:01:26 -0600
-From: Rob Herring <robh@kernel.org>
-To: Dinh Nguyen <dinguyen@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	b=JFQ5SAeiBqjiwrJGCO0B7KsJHn/6wn0GLVEQG4Rl16FaTkv8L/Od3KLBU6TrweBG7
+	 2cqKgSdU8YQyshLZP4ZFg2WuN3Dw53KkGNFUCtk1NoQaqfVhv6Rvt0RHflV33LQ2B6
+	 BTw6e4rWTdVIf/4n28ye+uDgMU7kBZ1LoWDQUXjhqS7jMElwB0t7UN4RYe55ZqlOLg
+	 zAQD0YhaLu7D560lJVbOljv5INF/IlDEOdJAAJv+0YMVhyB3hV4kzgCP8IapNwBOdt
+	 cS6OxwoNZiblSwool7IVY89R68Aoa47PjrpjEfF5Dy0G+7ph5Vmreg3wwLmcx9eKLF
+	 HOA4qTQVmi9GA==
+Date: Tue, 6 Jan 2026 13:08:00 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Mamta Shukla <mamta.shukla@leica-geosystems.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	bsp-development.geo@leica-geosystems.com,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] dt-bindings: net: altr,socfpga-stmmac: deprecate
- 'stmmaceth-ocp'
-Message-ID: <20260106190126.GA2537154-robh@kernel.org>
-References: <20260105-remove_ocp-v2-0-4fa2bda09521@kernel.org>
- <20260105-remove_ocp-v2-3-4fa2bda09521@kernel.org>
+	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+	netdev@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: dsa: lantiq,gswip: add
+ MaxLinear R(G)MII slew rate
+Message-ID: <176772648028.2565771.5663023472968969071.robh@kernel.org>
+References: <20260105175825.2142205-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,48 +50,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105-remove_ocp-v2-3-4fa2bda09521@kernel.org>
+In-Reply-To: <20260105175825.2142205-1-alexander.sverdlin@siemens.com>
 
-On Mon, Jan 05, 2026 at 06:08:22AM -0600, Dinh Nguyen wrote:
-> Make the reset name 'stmmaceth-ocp' as deprecated and to use 'ahb' going
-> forward.
+
+On Mon, 05 Jan 2026 18:58:21 +0100, A. Sverdlin wrote:
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > 
-> Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+> Add new slew-rate uint32 property. This property is only applicable for
+> ports in R(G)MII mode and allows for slew rate reduction in comparison to
+> "normal" default configuration with the purpose to reduce radiated
+> emissions.
+> 
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 > ---
->  .../devicetree/bindings/net/altr,socfpga-stmmac.yaml          | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+> Changelog:
+> v3:
+> - use [pinctrl] standard "slew-rate" property as suggested by Rob
+>   https://lore.kernel.org/all/20251219204324.GA3881969-robh@kernel.org/
+> v2:
+> - unchanged
 > 
-> diff --git a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
-> index fc445ad5a1f1..4ba06a955fe2 100644
-> --- a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
-> @@ -13,8 +13,6 @@ description:
->    This binding describes the Altera SOCFPGA SoC implementation of the
->    Synopsys DWMAC for the Cyclone5, Arria5, Stratix10, Agilex5 and Agilex7
->    families of chips.
-> -  # TODO: Determine how to handle the Arria10 reset-name, stmmaceth-ocp, that
-> -  # does not validate against net/snps,dwmac.yaml.
->  
->  select:
->    properties:
-> @@ -84,6 +82,15 @@ properties:
->        - sgmii
->        - 1000base-x
->  
-> +  resets:
-> +    minItems: 1
+>  .../devicetree/bindings/net/dsa/lantiq,gswip.yaml          | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-That's already the min in the referenced schema.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> +
-> +  reset-names:
-> +    deprecated: true
-> +    items:
-> +      - const: stmmaceth-ocp
-
-This says stmmaceth-ocp is the 1st entry, but it is the 2nd.
-
-You can't really fix this to validate a DT using stmmaceth-ocp. I would 
-just drop this. So that leaves this with just dropping the TODO.
-
-Rob
