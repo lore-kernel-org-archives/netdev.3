@@ -1,33 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8820636D514
-	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 17:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8A819258E
+	for <netdev@vger.kernel.org>; Tue,  6 Jan 2026 18:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722394; cv=none; b=Z1XJ8RTthjCA3qc2Sp1SYbqede0gjGBag1TsknbWN7cOFeyTW7AFOxtS1XQgFpymg5AD6egUFPqyERnL8eS63GMpC6LVrVTd1wgsRc9eu2w2WHB65iw8AWr7gHwGXdlrs8UO8iX+1pQe+Xjfr/JlKHwHb+c/aygIDbyyrdnVGhc=
+	t=1767722801; cv=none; b=mq/7sf2LWMWAIMNOUTMiZNf19IW++/Wa9uFpF72VGpfqq6JleyfbAKQMA1ylgpbeZBChcpC7iRiOW2ZG93+alHipo0OKP1xSSubg1ZCi9k2kpRfu3u5E0nLbjzc93hJQ2vhw3AY3dHnaO6RooZKBbiinDhdNxmIUShfdb/BieuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722394; c=relaxed/simple;
-	bh=ctAcHFLjXWJnEFXRiYzF3EpnGIE1CYGwH0RzT3Ylcz0=;
+	s=arc-20240116; t=1767722801; c=relaxed/simple;
+	bh=NPyQcav2krgnLWyDGTohZLZVur0OnTqQHzvso3gS9gU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qXRMU4Euxk4fcHW23duaqpUK62aB/QCHJpGzrmMRSmYalBhNdk6ycXrwbvALRMjl0BCT7yhBCJvY3ganOxsoGP6avMaDTeYQAaOp2j6YJs9O0VrrT2RQa/dbywEtfUlbEO7CovLojhApuytC8YkawlC1v3dQOYuBBuVFQITXwns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PE1VhAsa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=q8bG6EtbgkmPm8YGhjBObedoJAhUuzgDUrH5X0RO5swK3g/QADXJIJRdPNvk4tpQV0KRVGLmQbdxr4m0pRVJyUwvWHc6bEEQYesri2m9tABybhV09m86aVgSU2lSsAXmvk6GnO13Wa4ZceI0WJfV7aFKUqCbWyQJIRCm4+wZUug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ENGjtcp4; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PE1VhAsa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251C6C116C6;
-	Tue,  6 Jan 2026 17:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767722394;
-	bh=ctAcHFLjXWJnEFXRiYzF3EpnGIE1CYGwH0RzT3Ylcz0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PE1VhAsawbI1MdOSfpyJBTHr+K+edA1fPrZzKGSjodwZ1U4BM1jhi68ZVeoNxyOZc
-	 rR5/hgvUSfhW474oNiBDB6l2IqeBkyTDaEIXmblK0GBFN3nvg5WI+JyFit+IeQB4k8
-	 zK6B690d7/nYifsc3vs/MWnPD5glpSz/DeKIoRSGfhG+SxWvskoIIpaae0b/B6Lbwb
-	 s+bbgb1bgs3NKqVG07FBHQb55sbHWitpnnFPLDzyICjq/UKFQ1q/UISDtaI2AHR7po
-	 nDdyxouImNyCitFyoXp7/+SS7jKMb1hbRX6i4c2nYqpaTi4QKIUlCs/fRVBjb2ORBp
-	 gcSlv2ePYr3dQ==
-Message-ID: <f2ece8a4-1eaf-45c6-8861-27042d275b92@kernel.org>
-Date: Tue, 6 Jan 2026 10:59:53 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ENGjtcp4"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47d5e021a53so9348225e9.3
+        for <netdev@vger.kernel.org>; Tue, 06 Jan 2026 10:06:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767722798; x=1768327598; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R7u5jLTYA4c3DVTtb38caOiF3uMdXpHH3qq8F4raeWk=;
+        b=ENGjtcp4f4vyipweeNfAq52XeDg7ch1zWlGbDi7D28gElNFREpqba/INddgmnmYPq0
+         rwcDZqJO5K4snQoIdDAByNSHKfqhqB0YkzVLWpTtosV1Xy2PR//hudOSe+rQxZXxTXwg
+         uGrbx5//tHWUo7V4HxoYZVL0v92ybz2NsTrzhoz7McgIhvtplZi4OCaRjrgbwMvj01y3
+         2ZGlY6PXoR9krYIRKXkG6qU+yB6qs+nzURbAK9DqD9krIZnSi/eGF5Cjp4AE8uzMoRZ+
+         c3+mdYGbFMrt3T2pROqWTACbSbGQxo1zTpBUcRcmC56op7+haq1u6hpaaqd1oaNrInlQ
+         3Ipw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767722798; x=1768327598;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R7u5jLTYA4c3DVTtb38caOiF3uMdXpHH3qq8F4raeWk=;
+        b=XUvfnB6D7SrgyJbsyivYJe00wFWsTzNnZQIDjhU0MQx3ntPYjNxCzVeQTsNCPGcBYY
+         UvF1jHIwAepycYqbztM1Is1JTcpbcYADEbw0x7tQ7ihWBUHuJfYnlJ6SMIuWJEnxTrzF
+         CJzCP0cjLrEN7HY08i0IwRvW2+2st1mq0SzIj+Zetr7ea+G1sdqozOH/4mvilo7vsndu
+         fP4JytBiKoVlLH5knIkLy7b20FHVmEy8psL3FQD6HGwNOkb8K+GmOKPTThdEqKjgKJQ5
+         csHFz7nLk0OPPbM/n/XJPUDrMVNw5g09yMhDEjCM3nnrLsBwQWgKJI69tNIrIH+hGdd/
+         egcg==
+X-Gm-Message-State: AOJu0YwiJN0e/AZagh3SRBbnKqMeM/Q9gYIuU8ZszZK/RirPVsdfdFJ/
+	EyBoa736WpEetfw9boHrUhl6T+YUBby9xFvc0xy0V/ssQ+lX3pGr1+BJ
+X-Gm-Gg: AY/fxX79b12V0tz1F4LaWei3+daH1yv1HnKHQ9lFPcQ+UtAt2XhNc6trqP9GVK8L/tg
+	0eAPL+TFgf7czcFvlrVfzjX70IFqb1W2BgkVQi0nOht5KqW2VaOba25vtWqhiQ+DXW3ZpuXI7TX
+	Eg6ltwdCzOid2lzDfvknbsqq1YrFm/uQuGJcbjCjTZuwjQpnpU7Ne2fH90DR+210w0lFk0Yi/Y9
+	Wk27JK9wqFwOar5zw+UM3W2alG5BNswHWwsbamG8AjLF7bTixvzSGR2pKyxjkmt3eiMRslS6Yy6
+	lbJnGvJPXdRH10XcAkM1BVM3MrtCgCfy9tBXcFlFVCK/4IV8P4lF5OttHta8TSQPrqktVG1Xc+C
+	eY+TNbdaEV5NGxK87DEB3I7S0d0HWDTSsxiu2w2hBaAdAV1w8c4Xke8xnJFuv5u1fSl79oGbqBF
+	ZAGxdNGvaEWrDLZZxzXvlyjXNwWZsM9s4B4m84zWVh1UPPiJW6zxPeRJOoELg/NqeSttoD/6j7Y
+	ArvejJpuL5V0SVUcP06yoh0c1/I+WwWqPROGudmsNsaZ6T4x2+fUg==
+X-Google-Smtp-Source: AGHT+IGQnGQuOjKBpcWKWE8MAMWFzkunB1Kbez2otk2nshi3587ggVic6q7KQQUr8YjWL1BQKCQDrQ==
+X-Received: by 2002:a05:600c:a02:b0:477:7c7d:d9b7 with SMTP id 5b1f17b1804b1-47d7f0a9337mr39992515e9.33.1767722797943;
+        Tue, 06 Jan 2026 10:06:37 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f35:e900:51c5:daf3:bde4:546e? (p200300ea8f35e90051c5daf3bde4546e.dip0.t-ipconnect.de. [2003:ea:8f35:e900:51c5:daf3:bde4:546e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f418538sm54360335e9.5.2026.01.06.10.06.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jan 2026 10:06:37 -0800 (PST)
+Message-ID: <847e626b-c103-4884-beca-f8b0e74e3613@gmail.com>
+Date: Tue, 6 Jan 2026 19:06:35 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,201 +69,165 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next 2/2] selftests: fib_tests: Add test cases for
- route lookup with oif
+Subject: Re: [PATCH net-next 2/2] r8169: enable LTR support
+To: javen <javen_xu@realsil.com.cn>, nic_swsd@realtek.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260106083012.164-1-javen_xu@realsil.com.cn>
+ <20260106083012.164-3-javen_xu@realsil.com.cn>
 Content-Language: en-US
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org
-References: <20251224161801.824589-1-idosch@nvidia.com>
- <20251224161801.824589-2-idosch@nvidia.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20251224161801.824589-2-idosch@nvidia.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <20260106083012.164-3-javen_xu@realsil.com.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/24/25 9:18 AM, Ido Schimmel wrote:
-> Test that both address families respect the oif parameter when a
-> matching multipath route is found, regardless of the presence of a
-> source address.
+On 1/6/2026 9:30 AM, javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
 > 
-> Output without "ipv6: Honor oif when choosing nexthop for locally
-> generated traffic":
+> This patch will enable
+> RTL8168FP/RTL8168EP/RTL8168H/RTL8125/RTL8126/RTL8127 LTR support.
 > 
->  # ./fib_tests.sh -t "ipv4_mpath_oif ipv6_mpath_oif"
-> 
->  IPv4 multipath oif test
->      TEST: IPv4 multipath via first nexthop                              [ OK ]
->      TEST: IPv4 multipath via second nexthop                             [ OK ]
->      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
->      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
-> 
->  IPv6 multipath oif test
->      TEST: IPv6 multipath via first nexthop                              [ OK ]
->      TEST: IPv6 multipath via second nexthop                             [ OK ]
->      TEST: IPv6 multipath via first nexthop with source address          [FAIL]
->      TEST: IPv6 multipath via second nexthop with source address         [FAIL]
-> 
->  Tests passed:   6
->  Tests failed:   2
-> 
-> Output with "ipv6: Honor oif when choosing nexthop for locally generated
-> traffic":
-> 
->  # ./fib_tests.sh -t "ipv4_mpath_oif ipv6_mpath_oif"
-> 
->  IPv4 multipath oif test
->      TEST: IPv4 multipath via first nexthop                              [ OK ]
->      TEST: IPv4 multipath via second nexthop                             [ OK ]
->      TEST: IPv4 multipath via first nexthop with source address          [ OK ]
->      TEST: IPv4 multipath via second nexthop with source address         [ OK ]
-> 
->  IPv6 multipath oif test
->      TEST: IPv6 multipath via first nexthop                              [ OK ]
->      TEST: IPv6 multipath via second nexthop                             [ OK ]
->      TEST: IPv6 multipath via first nexthop with source address          [ OK ]
->      TEST: IPv6 multipath via second nexthop with source address         [ OK ]
-> 
->  Tests passed:   8
->  Tests failed:   0
-> 
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Few questions:
+- Is there a reason to ever disable LTR?
+- Is there any known LTR-related problem with the existing code?
+  IOW: Should your patch be treated as a fix?
+- What is the chip default after a hw reset? Is LTR enabled or disabled?
+- Can at least some register numbers (and bits in these registers) be replaced with
+  names according to the data sheet? I think of OCP reg 0xe032 and register 0xb6.
+
+> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 > ---
->  tools/testing/selftests/net/fib_tests.sh | 108 ++++++++++++++++++++++-
->  1 file changed, 107 insertions(+), 1 deletion(-)
+>  drivers/net/ethernet/realtek/r8169_main.c | 98 +++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
-> index a88f797c549a..8ae0adbcafe9 100755
-> --- a/tools/testing/selftests/net/fib_tests.sh
-> +++ b/tools/testing/selftests/net/fib_tests.sh
-> @@ -12,7 +12,7 @@ TESTS="unregister down carrier nexthop suppress ipv6_notify ipv4_notify \
->         ipv4_route_metrics ipv4_route_v6_gw rp_filter ipv4_del_addr \
->         ipv6_del_addr ipv4_mangle ipv6_mangle ipv4_bcast_neigh fib6_gc_test \
->         ipv4_mpath_list ipv6_mpath_list ipv4_mpath_balance ipv6_mpath_balance \
-> -       fib6_ra_to_static"
-> +       ipv4_mpath_oif ipv6_mpath_oif fib6_ra_to_static"
->  
->  VERBOSE=0
->  PAUSE_ON_FAIL=no
-> @@ -2776,6 +2776,110 @@ ipv6_mpath_balance_test()
->  	forwarding_cleanup
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index f9df6aadacce..97abf95502dc 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -2919,6 +2919,101 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+>  	}
 >  }
 >  
-> +ipv4_mpath_oif_test_common()
+> +static void rtl_enable_ltr(struct rtl8169_private *tp)
 > +{
-> +	local get_param=$1; shift
-> +	local expected_oif=$1; shift
-> +	local test_name=$1; shift
-> +	local tmp_file
-> +
-> +	tmp_file=$(mktemp)
-> +
-> +	for i in {1..100}; do
-> +		$IP route get 203.0.113.${i} $get_param >> "$tmp_file"
-> +	done
-> +
-> +	[[ $(grep "$expected_oif" "$tmp_file" | wc -l) -eq 100 ]]
-> +	log_test $? 0 "$test_name"
-> +
-> +	rm "$tmp_file"
+> +	switch (tp->mac_version) {
+> +	case RTL_GIGA_MAC_VER_80:
+> +		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe034, 0x0000, 0xc000);
+> +		r8168_mac_ocp_modify(tp, 0xe0a2, 0x0000, BIT(0));
+> +		r8168_mac_ocp_write(tp, 0xcdd2, 0x8c09);
+> +		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd4, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcde8, 0x887a);
+> +		r8168_mac_ocp_write(tp, 0xcdea, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdec, 0x8c09);
+> +		r8168_mac_ocp_write(tp, 0xcdee, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf0, 0x8a62);
+> +		r8168_mac_ocp_write(tp, 0xcdf2, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf4, 0x883e);
+> +		r8168_mac_ocp_write(tp, 0xcdf6, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf8, 0x8849);
+> +		r8168_mac_ocp_write(tp, 0xcdfa, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe032, 0x0000, BIT(14));
+> +		break;
+> +	case RTL_GIGA_MAC_VER_70:
+> +		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe034, 0x0000, 0xc000);
+> +		r8168_mac_ocp_modify(tp, 0xe0a2, 0x0000, BIT(0));
+> +		r8168_mac_ocp_write(tp, 0xcdd2, 0x8c09);
+> +		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd4, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcde8, 0x887a);
+> +		r8168_mac_ocp_write(tp, 0xcdea, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdec, 0x8c09);
+> +		r8168_mac_ocp_write(tp, 0xcdee, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf0, 0x8a62);
+> +		r8168_mac_ocp_write(tp, 0xcdf2, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf4, 0x883e);
+> +		r8168_mac_ocp_write(tp, 0xcdf6, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe032, 0x0000, BIT(14));
+> +		break;
+> +	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_66:
+> +		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe034, 0x0000, 0xc000);
+> +		r8168_mac_ocp_modify(tp, 0xe0a2, 0x0000, BIT(0));
+> +		r8168_mac_ocp_write(tp, 0xcdd2, 0x889c);
+> +		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd4, 0x8c30);
+> +		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcde8, 0x883e);
+> +		r8168_mac_ocp_write(tp, 0xcdea, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdec, 0x889c);
+> +		r8168_mac_ocp_write(tp, 0xcdee, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdf0, 0x8C09);
+> +		r8168_mac_ocp_write(tp, 0xcdf2, 0x9003);
+> +		r8168_mac_ocp_modify(tp, 0xe032, 0x0000, BIT(14));
+> +		break;
+> +	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_52:
+> +		r8168_mac_ocp_modify(tp, 0xe034, 0x0000, 0xc000);
+> +		r8168_mac_ocp_modify(tp, 0xe0a2, 0x0000, BIT(0));
+> +		r8168_mac_ocp_write(tp, 0xe02c, 0x1880);
+> +		r8168_mac_ocp_write(tp, 0xe02e, 0x4880);
+> +		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
+> +		r8168_mac_ocp_write(tp, 0xcdd2, 0x883c);
+> +		r8168_mac_ocp_write(tp, 0xcdd4, 0x8c12);
+> +		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
+> +		RTL_W8(tp, 0xb6, RTL_R8(tp, 0xb6) | BIT(0));
+> +		break;
+> +	default:
+> +		return;
+> +	}
+> +	/* chip can trigger LTR */
+> +	r8168_mac_ocp_modify(tp, 0xe032, 0x0003, BIT(0));
 > +}
 > +
-> +ipv4_mpath_oif_test()
+> +static void rtl_disable_ltr(struct rtl8169_private *tp)
 > +{
-> +	echo
-> +	echo "IPv4 multipath oif test"
-> +
-> +	setup
-> +
-> +	set -e
-> +	$IP link add dummy1 type dummy
-> +	$IP link set dev dummy1 up
-> +	$IP address add 192.0.2.1/28 dev dummy1
-> +	$IP address add 192.0.2.17/32 dev lo
-> +
-> +	$IP route add 203.0.113.0/24 \
-> +		nexthop via 198.51.100.2 dev dummy0 \
-> +		nexthop via 192.0.2.2 dev dummy1
-> +	set +e
-> +
-> +	ipv4_mpath_oif_test_common "oif dummy0" "dummy0" \
-> +		"IPv4 multipath via first nexthop"
-> +
-> +	ipv4_mpath_oif_test_common "oif dummy1" "dummy1" \
-> +		"IPv4 multipath via second nexthop"
-> +
-> +	ipv4_mpath_oif_test_common "oif dummy0 from 192.0.2.17" "dummy0" \
-> +		"IPv4 multipath via first nexthop with source address"
-> +
-> +	ipv4_mpath_oif_test_common "oif dummy1 from 192.0.2.17" "dummy1" \
-> +		"IPv4 multipath via second nexthop with source address"
-> +
-> +	cleanup
+> +	switch (tp->mac_version) {
+> +	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_80:
+> +		r8168_mac_ocp_modify(tp, 0xe032, 0x0003, 0);
+> +		break;
+> +	default:
+> +		break;
+> +	}
 > +}
 > +
-> +ipv6_mpath_oif_test_common()
-> +{
-> +	local get_param=$1; shift
-> +	local expected_oif=$1; shift
-> +	local test_name=$1; shift
-> +	local tmp_file
-> +
-> +	tmp_file=$(mktemp)
-> +
-> +	for i in {1..100}; do
-> +		$IP route get 2001:db8:10::${i} $get_param >> "$tmp_file"
-> +	done
-> +
-> +	[[ $(grep "$expected_oif" "$tmp_file" | wc -l) -eq 100 ]]
-> +	log_test $? 0 "$test_name"
-> +
-> +	rm "$tmp_file"
-> +}
-> +
-> +ipv6_mpath_oif_test()
-> +{
-> +	echo
-> +	echo "IPv6 multipath oif test"
-> +
-> +	setup
-> +
-> +	set -e
-> +	$IP link add dummy1 type dummy
-> +	$IP link set dev dummy1 up
-> +	$IP address add 2001:db8:2::1/64 dev dummy1
-> +	$IP address add 2001:db8:100::1/128 dev lo
-> +
-> +	$IP route add 2001:db8:10::/64 \
-> +		nexthop via 2001:db8:1::2 dev dummy0 \
-> +		nexthop via 2001:db8:2::2 dev dummy1
-> +	set +e
-> +
-> +	ipv6_mpath_oif_test_common "oif dummy0" "dummy0" \
-> +		"IPv6 multipath via first nexthop"
-> +
-> +	ipv6_mpath_oif_test_common "oif dummy1" "dummy1" \
-> +		"IPv6 multipath via second nexthop"
-> +
-> +	ipv6_mpath_oif_test_common "oif dummy0 from 2001:db8:100::1" "dummy0" \
-> +		"IPv6 multipath via first nexthop with source address"
-> +
-> +	ipv6_mpath_oif_test_common "oif dummy1 from 2001:db8:100::1" "dummy1" \
-> +		"IPv6 multipath via second nexthop with source address"
-> +
-> +	cleanup
-> +}
-> +
->  ################################################################################
->  # usage
+>  static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+>  {
+>  	u8 val8;
+> @@ -2947,6 +3042,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+>  			break;
+>  		}
 >  
-> @@ -2861,6 +2965,8 @@ do
->  	ipv6_mpath_list)		ipv6_mpath_list_test;;
->  	ipv4_mpath_balance)		ipv4_mpath_balance_test;;
->  	ipv6_mpath_balance)		ipv6_mpath_balance_test;;
-> +	ipv4_mpath_oif)			ipv4_mpath_oif_test;;
-> +	ipv6_mpath_oif)			ipv6_mpath_oif_test;;
->  	fib6_ra_to_static)		fib6_ra_to_static;;
+> +		rtl_enable_ltr(tp);
+>  		switch (tp->mac_version) {
+>  		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
+>  		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_LAST:
+> @@ -2968,6 +3064,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+>  			break;
+>  		}
 >  
->  	help) echo "Test names: $TESTS"; exit 0;;
+> +		rtl_disable_ltr(tp);
+>  		switch (tp->mac_version) {
+>  		case RTL_GIGA_MAC_VER_70:
+>  		case RTL_GIGA_MAC_VER_80:
+> @@ -4811,6 +4908,7 @@ static void rtl8169_down(struct rtl8169_private *tp)
+>  
+>  	rtl8169_cleanup(tp);
+>  	rtl_disable_exit_l1(tp);
+> +	rtl_disable_ltr(tp);
+>  	rtl_prepare_power_down(tp);
+>  
+>  	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
 
-if VRF versions of the test also pass, I am good with the proposed change.
