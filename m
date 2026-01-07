@@ -1,197 +1,187 @@
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F60935BDB7;
-	Wed,  7 Jan 2026 16:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B8B3A0B05
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 16:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767804871; cv=none; b=U5WmmLAkMMwxLXV8rUP1fnuIKr/39x9kdkTpJWqrzLy26TyBpt4iydFBA7Jp0vkDQbvgvG0+wGtF/+FFRKo1LMpLInHUnthU/MCkfIvUzpXf5suNzD0yB6fv1AI0hCwAd74C4qh2ur9chtxTHoTlHt4rCiFK3aAszapozdi1p3Y=
+	t=1767805078; cv=none; b=CYNRvj4CwSKKJNjPTNBqWcaWuW9JoFu3Kr3lQ4oejI2/mByao6owUWOjMzSnr9z26aGuPonKS14I1s1VP1SgTXzGh98gYHdS8PyTFMxLkfICvHWX5N5Rv3QIz7I06WJi09T51ZmSf71xte0A82gSt14uwZ4wMZL04lrAOKoIv/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767804871; c=relaxed/simple;
-	bh=uoAGtfRbYArfoPSNs6e3ZxQU2rrUeNSguaMbjEQ+TbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oM6+TVnb5+3JhCzPJeYw6qIi5lXSGmXNpFdt+UFLkQIXaVYePypXFf23TsAu6wKgFOXpDauOudONy0i9Zj+JfoVkxXzaRpxDvdDKneLmiwwAF6sTX5xXSUWRh2WcLYk68my5O9uVscr3RUFBAd2Blf1e+tkoWVHL0IMUXWc6yOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7A7C1B5A5;
-	Wed,  7 Jan 2026 16:54:16 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf11.hostedemail.com (Postfix) with ESMTPA id C72342002A;
-	Wed,  7 Jan 2026 16:54:13 +0000 (UTC)
-Date: Wed, 7 Jan 2026 11:54:40 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Petr Mladek <pmladek@suse.com>
-Cc: Lance Yang <lance.yang@linux.dev>, syzbot
- <syzbot+085983798339fb1b6e51@syzkaller.appspotmail.com>,
- syzkaller-bugs@googlegroups.com, netdev@vger.kernel.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- mhiramat@kernel.org, John Ogness <john.ogness@linutronix.de>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,
- bpf@vger.kernel.org
-Subject: Re: [syzbot] [kernel?] INFO: rcu detected stall in watchdog (2)
-Message-ID: <20260107115440.5714c8f2@gandalf.local.home>
-In-Reply-To: <aV6C68oZgbIGEXiV@pathway.suse.cz>
-References: <694a2745.050a0220.19928e.0016.GAE@google.com>
-	<4b3462bb-1cb5-4240-a57a-49b0f39f233f@linux.dev>
-	<aV6C68oZgbIGEXiV@pathway.suse.cz>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1767805078; c=relaxed/simple;
+	bh=oTh/Bm7Bvc5pQDGtio2WHmCSYQcQfl+HLeQb6+ZuPa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jCdqDpflgH8vz1SJbvcMAxH/OsF/RNw7ktcsj7j094jsRc4tjpd/dtqPCvIdwHNk8PMwnU9uaqYmOfmAOFhQaqTPcWKGoamDtAT0ZVd2BAw8aFqehz21JQHcSVHu92KiZuYVxTwPyHMyHcnMmO/d5J4nm55bVkAneh8zUqNfQPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WNb+a3iI; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WNb+a3iI"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so24469645e9.2
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 08:57:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767805070; x=1768409870; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9cVSMIV0M1vHEkGoca4IYHePZY2mIben9Mxd1bnOl0g=;
+        b=WNb+a3iI069+UVfkyi0mdxhz3UHcXoR2Dks6g/Zr5duayBmAFceV4VkycZSQSpNejh
+         HLZlFMYjlGHuAd5pKPpyck8hVhyA2qdSQS6CJ0AFLDAqOnmDIgtA5UrRPi6TgeY3OBXb
+         M7jL5UtGiyEB5/LAvkngUsdz8mpiVg5rAWbvbWb69JZ3mBVLfT4SVX43b32nfuvyPxDS
+         oVaOjdXCtPvHyFZkhXo97/vde6t2f3pdnBRP4enQVaZtjMSYvHnmG3e3qQ/L9D7r8sEL
+         vxr5lm3h5pey/t84dNgdBxUxJDBVt3m5XkrlodFszwtaV2LuITUgssDn6gLTPFbCNLb7
+         sLsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767805070; x=1768409870;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9cVSMIV0M1vHEkGoca4IYHePZY2mIben9Mxd1bnOl0g=;
+        b=wKIp60E2Bhl9LXrl/aHPoIuG+r4G5ncxhbF6hMHuxY1s3J2NGc1HvccpOt11crG+cb
+         aOT40grPuBkQtTlXz6XaWg+5m4kgMB+Ju6LYphL4QPFYKwSeS3WKQZ2BVJXFyWm2gsuc
+         H3OA8BVVLViooX51UmwBgLGZxx+Ot/IrV2hvvCShskZhrKu6G9eDOELcUKD3qGJyZOkN
+         SNnNa0NUOG9S9r9dJGhSmdNgvNvzkkUftYVsl/6Z7uytSFScHQ9nIn5sDYgshyY+pnX5
+         5fGP9T9kQmp87Alyux7dmhwSiV/IZ32hdqjHDeuvC2duv/i8RyEC5zp55z6YwMiqbpHF
+         /Ezw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4WEZh2AySPNzrJLaA2g2dTGPzfWDwVqFFbLBmRIZzyWyG1qOrmQcI5LEaNamOn1FQ9V/XuVg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKe7mNBry/OBHO/nDSo7ePIHhf+kblb1qd68P9gH/lkU13dad2
+	t1XzB5EV5gV9NWj7TYzlDZpZWqzRQZp8r7O2vktfTUkAWsqT0SYK7tC5nHwbHN2wCg==
+X-Gm-Gg: AY/fxX4gWqZuY9dOboIbqrA5dDVVC7j27rx93QPKM8g/z3wAUVqUDpnsuEBB5vvH7zx
+	wpXlqO+bvtWS7YSuV6bSlUyWCcWipwdQi26pN92TnaFOpfmXJvOK63D3TdRUqFyxpDHDqiS0mzZ
+	+WkblnDEEYUOQpuP9vhl2elOm8FUt8fgv/v11vDglZuTldNkyusceYHfOcAA3LvgnTsccwAiIvr
+	zpQxLWTfHm2iSjRiZWaaw+QG6BHZ1b7lLC+VWV/06Bp6xViV856lDv/5ND3rGykhOfnQZ7epDbl
+	6RCdQacvikHezUXsiLroSEP6veOLAoJliUZMGIoGdg8Hjj3RvuMhNL19ABQqLocZcA3QYXa2UtC
+	uce5wpCgGnHJLyz0EigeIpPXwyNZiNmaTFy5ZffLOvkTppe5RGJJ/0kdnYX6hwcONnIvu3IHbYc
+	kwzZNcMRXtkuyLT3wSRRa/vr0xEEDTKWU47wzUJ1nsCw==
+X-Google-Smtp-Source: AGHT+IFNWlJitUC1NSOuwXl+nF0iGIoib1vo+UR+IFwK8+8wYGCEbPSdCgCOi3fSLDFCBKtQyHctnQ==
+X-Received: by 2002:a05:600c:8b2c:b0:477:7f4a:44b0 with SMTP id 5b1f17b1804b1-47d84b3ea06mr36754095e9.33.1767805069507;
+        Wed, 07 Jan 2026 08:57:49 -0800 (PST)
+Received: from google.com ([2a00:79e0:288a:8:aaba:e2c1:29df:3e24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f41f5e0sm104518655e9.8.2026.01.07.08.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 08:57:48 -0800 (PST)
+Date: Wed, 7 Jan 2026 17:57:43 +0100
+From: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>
+To: Justin Suess <utilityemal77@gmail.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	Simon Horman <horms@kernel.org>,
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	linux-security-module@vger.kernel.org, Tingmao Wang <m@maowtm.org>,
+	netdev@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [RFC PATCH 0/1] lsm: Add hook unix_path_connect
+Message-ID: <aV6Qh39jVg8trMlg@google.com>
+References: <20251231213314.2979118-1-utilityemal77@gmail.com>
+ <CAAVpQUCF3uES6j22P1TYzgKByw+E4EqpM=+OFyqtRGStGWxH+Q@mail.gmail.com>
+ <aVuaqij9nXhLfAvN@google.com>
+ <CAAVpQUB6gnfovRZAg_BfVKPuS868dFj7HxthbxRL-nZvcsOzCg@mail.gmail.com>
+ <2da3f1ae-1fe1-40c4-8748-9fb371e696f0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w965ewa938co3cftju61eq3pzspjsst7
-X-Rspamd-Server: rspamout02
-X-Rspamd-Queue-Id: C72342002A
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19QZpGmB30Dyfjof9iM/w4/8GjcpMKEwVA=
-X-HE-Tag: 1767804853-455056
-X-HE-Meta: U2FsdGVkX18T2uWTzBioJt2tkN4GAxZ4ZDHCM3ByWx7LHywKbwmAv9+mIubCjsamDAB3G1tfbTrP7zHhOXyGq9eVaqHJRBBsuyAwv7bZRF0EVAv0BhJW8QI13mar3AV/cLBZOdTWBjjcSzs4O3uAYniT7X/e313zm4t5quNUumjoKncGoShJXUQxCpqMZZ0JHw69LBCiAmPv3yfvtkvFiAJYO0TulQLpNFbVBhCSZQh4kGfufKCeezzsHE/JceLShDB7cn2LP5YAkY3YVuOS8GQraznnlJvaFrLV+AZR4Oyga3k4Mw9d+3E3pjoAE4Xg7LDNDioxgQ2UWwiV2TDyl4q1OKXxwgKrzqx2kUNmktpR96JXF+JbcbQEnhhXJJhMqzeex4zucrkbp+1S6opXv8dPa1v/w0fFTfuqDcBRHEHuSUVkFgEY7GfqW7UgSH/v0ZXr9NuzD3s8o9dWPYw4FsPN3iIOZ1hEOmrzSkTmiK3fTrpJWthUqnBvkDjU5tN2D4uUZq0Br4c1s7nSGGxugGCPAMVL+nvOT2U1UQs4ahT30fSAASvlPEyjcxGKkdy1G2F2fgydRft1fbw13+3hw8ZjCJ4mYETV2111fJXdtCoQZY/FEu6fHF2b9cZzrYspROPs3rQdK1Imu3aYhzncNzD2RQTPNapycduiD4WbgmIhIj6AqL9cIaVJzBIlKZRvyWvya3a3n46owrwzCB5rluUP/+GAOM/JAshBP+VHaAvvbzE27q2Kg7/maFb3Zy4+ALmoa72WSwI=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2da3f1ae-1fe1-40c4-8748-9fb371e696f0@gmail.com>
 
-On Wed, 7 Jan 2026 16:59:39 +0100
-Petr Mladek <pmladek@suse.com> wrote:
+On Wed, Jan 07, 2026 at 07:19:02AM -0500, Justin Suess wrote:
+> On 1/7/26 02:33, Kuniyuki Iwashima wrote:
+> > +VFS maintainers
+> >
+> > On Mon, Jan 5, 2026 at 3:04 AM Günther Noack <gnoack@google.com> wrote:
+> >> Hello!
+> >>
+> >> On Sun, Jan 04, 2026 at 11:46:46PM -0800, Kuniyuki Iwashima wrote:
+> >>> On Wed, Dec 31, 2025 at 1:33 PM Justin Suess <utilityemal77@gmail.com> wrote:
+> >>>> Motivation
+> >>>> ---
+> >>>>
+> >>>> For AF_UNIX sockets bound to a filesystem path (aka named sockets), one
+> >>>> identifying object from a policy perspective is the path passed to
+> >>>> connect(2). However, this operation currently restricts LSMs that rely
+> >>>> on VFS-based mediation, because the pathname resolved during connect()
+> >>>> is not preserved in a form visible to existing hooks before connection
+> >>>> establishment.
+> >>> Why can't LSM use unix_sk(other)->path in security_unix_stream_connect()
+> >>> and security_unix_may_send() ?
+> >> Thanks for bringing it up!
+> >>
+> >> That path is set by the process that acts as the listening side for
+> >> the socket.  The listening and the connecting process might not live
+> >> in the same mount namespace, and in that case, it would not match the
+> >> path which is passed by the client in the struct sockaddr_un.
+> > Thanks for the explanation !
+> >
+> > So basically what you need is resolving unix_sk(sk)->addr.name
+> > by kern_path() and comparing its d_backing_inode(path.dentry)
+> > with d_backing_inode (unix_sk(sk)->path.dendtry).
+> >
+> > If the new hook is only used by Landlock, I'd prefer doing that on
+> > the existing connect() hooks.
+> I see. Did you have a particular hook in mind to extend?
+> 
+> One complication I see is whatever hook this gets added to
+> would also need CONFIG_SECURITY_PATH, since logically this restriction
+> would fall under it:
+> 
+> From security/Kconfig:
+> 
+> config SECURITY_PATH
+>     bool "Security hooks for pathname based access control"
+>     depends on SECURITY
+>     help
+>       This enables the security hooks for pathname based access control.
+>       If enabled, a security module can use these hooks to
+>       implement pathname based access controls.
+>       If you are unsure how to answer this question, answer N.
+> 
+> config SECURITY_NETWORK
+>     bool "Socket and Networking Security Hooks"
+>     depends on SECURITY
+>     help
+>       This enables the socket and networking security hooks.
+>       If enabled, a security module can use these hooks to
+>       implement socket and networking access controls.
+>       If you are unsure how to answer this question, answer N.
+> 
+> Logically, this type of access control falls under both categories, so must be
+> gated by both features. No existing LSM hooks are gated by both afaik, so
+> there is not really an existing logical place to extend an existing hook without
+> changing what features are required to be enabled for existing users.
+> 
+> I do see more uses for this hook that just landlock, bpf lsm hooks
+> or other non-labeling LSMs like apparmor or TOMOYO could take advantage
+> of this as well.
 
-> Adding John, tracing, and BPF people into Cc.
-> 
-> On Tue 2025-12-23 17:35:42, Lance Yang wrote:
-> > 
-> > 
-> > On 2025/12/23 13:23, syzbot wrote:  
-> > > Hello,
-> > > 
-> > > syzbot found the following issue on:
-> > > 
-> > > HEAD commit:    7b8e9264f55a Merge tag 'net-6.19-rc2' of git://git.kernel...
-> > > git tree:       net-next
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=1207562a580000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=a94030c847137a18
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=085983798339fb1b6e51
-> > > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> > > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=174cab1a580000
-> > > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=122e777c580000
-> > > 
-> > > Downloadable assets:
-> > > disk image: https://storage.googleapis.com/syzbot-assets/8974d9d662d1/disk-7b8e9264.raw.xz
-> > > vmlinux: https://storage.googleapis.com/syzbot-assets/127f2bb7aa37/vmlinux-7b8e9264.xz
-> > > kernel image: https://storage.googleapis.com/syzbot-assets/2dc3e335ca80/bzImage-7b8e9264.xz
-> > > 
-> > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> > > Reported-by: syzbot+085983798339fb1b6e51@syzkaller.appspotmail.com
-> > > 
-> > > rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> > > rcu: 	(detected by 0, t=10502 jiffies, g=18609, q=500 ncpus=2)
-> > > rcu: All QSes seen, last rcu_preempt kthread activity 10502 (4294978752-4294968250), jiffies_till_next_fqs=1, root ->qsmask 0x0
-> > > rcu: rcu_preempt kthread starved for 10502 jiffies! g18609 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
-> > > rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-> > > rcu: RCU grace-period kthread stack dump:
-> > > task:rcu_preempt     state:R  running task     stack:27272 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-> > > Call Trace:
-> > >   <TASK>
-> > >   context_switch kernel/sched/core.c:5256 [inline]
-> > >   __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
-> > >   __schedule_loop kernel/sched/core.c:6945 [inline]
-> > >   schedule+0x165/0x360 kernel/sched/core.c:6960
-> > >   schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
-> > >   rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
-> > >   rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
-> > >   kthread+0x711/0x8a0 kernel/kthread.c:463
-> > >   ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
-> > >   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-> > >   </TASK>
-> > > rcu: Stack dump where RCU GP kthread last ran:
-> > > Sending NMI from CPU 0 to CPUs 1:
-> > > NMI backtrace for cpu 1
-> > > CPU: 1 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full)
-> > > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-> > > RIP: 0010:check_kcov_mode kernel/kcov.c:183 [inline]
-> > > RIP: 0010:write_comp_data kernel/kcov.c:246 [inline]
-> > > RIP: 0010:__sanitizer_cov_trace_switch+0x97/0x130 kernel/kcov.c:351  
-> 
-> I am a bit confused here.
-> 
->   1. Why there are 3 RIP entries?
-> 
->   2. Why RIP points to kcov code? The last return address on stack
->      is rb_event_length() which does not seem to call kcov code...
-> 
->   3. Who calls __sanitizer_cov_trace_switch()? It seems to be
->      an exported symbol which is not directly called from kernel.
-> 
-> Note that I am not familiar with the kcov code and how it is used.
-> 
-> > > Code: 54 53 48 8b 54 24 20 65 4c 8b 04 25 08 b0 7e 92 45 31 c9 eb 08 49 ff c1 4c 39 c8 74 77 4e 8b 54 ce 10 65 44 8b 1d c9 f7 bc 10 <41> 81 e3 00 01 ff 00 74 13 41 81 fb 00 01 00 00 75 d9 41 83 b8 6c
-> > > RSP: 0018:ffffc90000a082e0 EFLAGS: 00000016
-> > > RAX: 0000000000000020 RBX: 0000000000000004 RCX: 0000000000000005
-> > > RDX: ffffffff81c39275 RSI: ffffffff8df9a280 RDI: 0000000000000004
-> > > RBP: 0000006100d347d2 R08: ffff88801e2b0000 R09: 000000000000001b
-> > > R10: 000000000000001b R11: 0000000080010005 R12: dffffc0000000000
-> > > R13: ffff88801bed6010 R14: ffff88801bed64c0 R15: 00000000000667c4
-> > > FS:  0000000000000000(0000) GS:ffff888125f35000(0000) knlGS:0000000000000000
-> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > CR2: 000055d3cfba3a38 CR3: 00000000727a4000 CR4: 00000000003526f0
-> > > Call Trace:
-> > >   <IRQ>
-> > >   rb_event_length+0x45/0x400 kernel/trace/ring_buffer.c:222
-> > >   rb_read_data_buffer+0x438/0x580 kernel/trace/ring_buffer.c:1858
+Apologies, I overlooked your reply earlier today.
 
-Oh, they have CONFIG_RING_BUFFER_VALIDATE_TIME_DELTAS enabled.
+The existing hooks that are called from af_unix.c are:
 
-This is a purely debug feature that will iterate all the events in the
-sub-buffer every time a new event is added, checking the integrity of the
-timestamps in the sub-buffer.
+- security_unix_stream_connect() for SOCK_STREAM unix(7) sockets
+- security_unix_may_send() for SOCK_DGRAM unix(7) sockets
 
-This *will* add a lot of overhead to tracing. This is an O(n^2) operation
-where 'n' is the number of events in a sub-buffer. For a typical event that
-may be 32 bytes, that's 127 events in a sub-buffer. n^2 = 16129. If it is
-triggering timeouts, simply disable that config.
+Apart from that, at a higher level, there are also
 
--- Steve
+- security_socket_connect()
+- security_socket_sendmsg() and security_socket_recvmsg()
 
+These are used from net/socket.c.
 
-> > >   check_buffer+0x28a/0x750 kernel/trace/ring_buffer.c:4410
-> > >   __rb_reserve_next+0x592/0xdb0 kernel/trace/ring_buffer.c:4509
-> > >   rb_reserve_next_event kernel/trace/ring_buffer.c:4646 [inline]
-> > >   ring_buffer_lock_reserve+0xbb5/0x1010 kernel/trace/ring_buffer.c:4705
-> > >   __trace_buffer_lock_reserve kernel/trace/trace.c:1079 [inline]
-> > >   trace_event_buffer_lock_reserve+0x1d0/0x6f0 kernel/trace/trace.c:2808
-> > >   trace_event_buffer_reserve+0x248/0x340 kernel/trace/trace_events.c:672
-> > >   do_trace_event_raw_event_bpf_trace_printk kernel/trace/bpf_trace.h:11 [inline]
-> > >   trace_event_raw_event_bpf_trace_printk+0x100/0x260 kernel/trace/bpf_trace.h:11
-> > >   __do_trace_bpf_trace_printk kernel/trace/bpf_trace.h:11 [inline]
-> > >   trace_bpf_trace_printk+0x153/0x1b0 kernel/trace/bpf_trace.h:11
-> > >   ____bpf_trace_printk kernel/trace/bpf_trace.c:379 [inline]
-> > >   bpf_trace_printk+0x11e/0x190 kernel/trace/bpf_trace.c:362
-> > >   bpf_prog_b1367f0be6c54012+0x39/0x3f
-> > >   bpf_dispatcher_nop_func include/linux/bpf.h:1378 [inline]
-> > >   __bpf_prog_run include/linux/filter.h:723 [inline]
-> > >   bpf_prog_run include/linux/filter.h:730 [inline]
-> > >   __bpf_trace_run kernel/trace/bpf_trace.c:2075 [inline]
-> > >   bpf_trace_run1+0x27f/0x4c0 kernel/trace/bpf_trace.c:2115
-> > >   __bpf_trace_rcu_utilization+0xa1/0xf0 include/trace/events/rcu.h:27
-> > >   __traceiter_rcu_utilization+0x7a/0xb0 include/trace/events/rcu.h:27
-> > >   __do_trace_rcu_utilization include/trace/events/rcu.h:27 [inline]
-> > >   trace_rcu_utilization+0x191/0x1c0 include/trace/events/rcu.h:27
-> > >   rcu_sched_clock_irq+0xd3/0x1280 kernel/rcu/tree.c:2693
-> > >   update_process_times+0x23c/0x2f0 kernel/time/timer.c:2474
-> > >   tick_sched_handle kernel/time/tick-sched.c:298 [inline]
-> > >   tick_nohz_handler+0x3e9/0x710 kernel/time/tick-sched.c:319
-> > >   __run_hrtimer kernel/time/hrtimer.c:1777 [inline]
-> > >   __hrtimer_run_queues+0x4d0/0xc30 kernel/time/hrtimer.c:1841
-> > >   hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
-> > >   local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1045 [inline]
-> > >   __sysvec_apic_timer_interrupt+0x102/0x3e0 arch/x86/kernel/apic/apic.c:1062
-> > >   instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1056 [inline]
-> > >   sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1056
-> > >   </IRQ>
-> > >   <TASK>
-> > >   asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-> > > RIP: 0010:console_trylock_spinning kernel/printk/printk.c:2037 [inline]  
-> > 
-> > The khungtaskd was trying to print something  
-> 
+For the connectionless dgram Unix sockets, we would need to tell apart the cases
+where sendmsg()/recvmsg() are used with and without a sockaddr.  (Dgram sockets
+can be either connected with connect() and then have a fixed sockaddr, or they
+can be passed a remote sockaddr with each message send and receive operation.)
+This can told apart in security_socket_sendmsg() from the msg argument, but it
+doesn't look like we could tell it apart from security_unix_may_send().
+
+Landlock already depends on CONFIG_SECURITY_NETWORK and CONFIG_SECURITY_PATH,
+so we would not need to have further #ifdefs to use one of these hooks.
+
+There are other difficulties I found which worry me and which I listed in the
+other mail at https://lore.kernel.org/all/aV5WTGvQB0XI8Q_N@google.com/.
+
+—Günther
