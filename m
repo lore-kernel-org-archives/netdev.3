@@ -1,116 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB50018027;
-	Wed,  7 Jan 2026 23:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5594C97;
+	Wed,  7 Jan 2026 23:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767828616; cv=none; b=VZ1//yZUmabkmACj3soZFimTup1EZR6eltK+fs8CPfwAmg/6Nhd4twmynGJAsa4RuiClT36ePvHX5j6EZ5AiSbZl6IJwOw8Vy3j0XizdblQi6OIHDtV2wIQrcLr8LVA/MYAP52Z9ceaNf1W9Bn7H+OT0NURxv3b++38IOVQYUIk=
+	t=1767828835; cv=none; b=bLrw2r6QvndesiPJ5vY1jm0QRQJjsvkk+6+0jY6jR93XldRHELvIwvQ4yR4eCH/woYwuyYZV6p+BBLkhCqBxhenr6FJWynCj8xrgX5i7lHgyiecKHLRWRO24rVH5SHYlf8gJRin/5Tfp1n+pTMSGD+I1xV23mULliPQogWJF8EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767828616; c=relaxed/simple;
-	bh=JJUKBnRRM9z3Ei4dz7JLCEY8pd+eY/BXxSmSJZTydcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k0jkOtoNnfFIRi2LkuyWre6vIHAAY+MIFr53c8ayVjYxubCC1BBJPj/BxtKHdb7lJGExts9VqYdWKSM64iqyh8icPg8MN+Jsc8DLmpgZsIlM2gfTGrDGsMeML20IYsrAadaE9E8/pnooqxtgdkGzx71Q8/tvxAMn2/URZvUkDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FD9BLnDO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767828835; c=relaxed/simple;
+	bh=WUaEOya31dg1J97PZUfkIOu6cbbt8+NJt/GsqGwv3tE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CcW22tERYhZLRMQZyTg7Wvse/Z91zVnLBZePe6Z6tnUuxbPOmqD1lJziBTz0iTioGHGqAwdZJp+3bTXfw9bv8uWqaYs8MTHbb8dDCnXXqwJ7Xt1J+S3EKj1O0oKInw2f5bA3zWBpuWFB86183SsWbTYtHI79DckG3KDFkoFCM2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKSXRBsB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FD9BLnDO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E29CC4CEF1;
-	Wed,  7 Jan 2026 23:30:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKSXRBsB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7B7C4CEF1;
+	Wed,  7 Jan 2026 23:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767828616;
-	bh=JJUKBnRRM9z3Ei4dz7JLCEY8pd+eY/BXxSmSJZTydcU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FD9BLnDOkE5gza7p0aI13xDJW1xjmBlp99SMKC13B/Vu4oiy+78aPYh+cbVuLnYGy
-	 Fl7pXOjBsyLlmELBlm+4tVm4lT63RyIqyfDl24wlumHGuh2jgrHdHOEDbXU7Y+iG4J
-	 /cHcKtewu+hEeQy6sIPWCWmwhQ3xTmh8+irt2gmFHTE1PNT3SnQzutRbgCHg4kMkqJ
-	 1v0+eyQaw8MBLlsvVmyyPvKgWUeroyNXlpAAQskjsL5sHDX2UY4zCFhfUJoa3jI8OP
-	 30a4z9OUHiAqzAQ4p/IXy7EOUGqDGWTd1vqf2YxHqqwsrhtrrNFsIBVPovzyz95bcV
-	 p1KJ2zvhxZYtA==
-Date: Thu, 8 Jan 2026 00:30:13 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, Jinhui Guo <guojinhui.liam@bytedance.com>
-Subject: Re: [PATCH 01/33] PCI: Prepare to protect against concurrent
- isolated cpuset change
-Message-ID: <aV7sheFKQWb23lsc@pavilion.home>
-References: <20260101221359.22298-2-frederic@kernel.org>
- <20260107190534.GA441483@bhelgaas>
+	s=k20201202; t=1767828835;
+	bh=WUaEOya31dg1J97PZUfkIOu6cbbt8+NJt/GsqGwv3tE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dKSXRBsB7fvtgwAJBamAtz1K6amRmSMVN2KC1A5E2K7o8y8AvdOFK7s7CzJKj1fxT
+	 gmmXZTViGyO2MhK17LUMtkOi8FIFRHQ/2qVS8EMbliNYvbgx58SOINPxLHpInMummG
+	 Nxy0diu0Us76prg3y9e7JIe+DDdWKDyPAyPOh9HmZr3W6YFzIBQGHVzN/fi5SjY14K
+	 TmsqBXqrKDbbnRCLJvzvZN/e+KbIJOmPMtT7b8gdC+FWRYQpM9HXY5TYUHd7vvTMQz
+	 ez+6KD40cvJuWDwtBfgKyqQEmjShufiyvDclYcx3uxi2msvlbgfGqNMrJzBaHDBe/5
+	 gt+1vA1LVODJQ==
+Date: Wed, 7 Jan 2026 15:33:53 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dan Jurgens <danielj@nvidia.com>
+Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+ pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
+ shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+ eperezma@redhat.com, jgg@ziepe.ca, kevin.tian@intel.com,
+ andrew+netdev@lunn.ch, edumazet@google.com
+Subject: Re: [PATCH net-next v15 05/12] virtio_net: Query and set flow
+ filter caps
+Message-ID: <20260107153353.028ed4bc@kernel.org>
+In-Reply-To: <17453401-86b8-4fbc-8907-c2cf1faa06ac@nvidia.com>
+References: <20260107170422.407591-1-danielj@nvidia.com>
+	<20260107170422.407591-6-danielj@nvidia.com>
+	<20260107133747.2ae75f3d@kernel.org>
+	<17453401-86b8-4fbc-8907-c2cf1faa06ac@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260107190534.GA441483@bhelgaas>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Le Wed, Jan 07, 2026 at 01:05:34PM -0600, Bjorn Helgaas a écrit :
-> [+cc Jinhui]
-> 
-> On Thu, Jan 01, 2026 at 11:13:26PM +0100, Frederic Weisbecker wrote:
-> > HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
-> > therefore be made modifiable at runtime. Synchronize against the cpumask
-> > update using RCU.
+On Wed, 7 Jan 2026 16:09:01 -0600 Dan Jurgens wrote:
+> > disable_delayed_refill() is going away in net 
 > > 
-> > The RCU locked section includes both the housekeeping CPU target
-> > election for the PCI probe work and the work enqueue.
+> > https://lore.kernel.org/all/20260106150438.7425-1-minhquangbui99@gmail.com/
 > > 
-> > This way the housekeeping update side will simply need to flush the
-> > pending related works after updating the housekeeping mask in order to
-> > make sure that no PCI work ever executes on an isolated CPU. This part
-> > will be handled in a subsequent patch.
+> > You'll have to wait for that change to propagate to net-next to avoid
+> > a transient build issue:
 > > 
-> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> > https://netdev.bots.linux.dev/contest.html?pw-n=0&branch=net-next-2026-01-07--21-00&pw-n=0&pass=0  
 > 
-> Just FYI, Jinhui posted a series that touches this same code and might
-> need some coordination:
-> 
->   https://lore.kernel.org/r/20260107175548.1792-1-guojinhui.liam@bytedance.com
-> 
-> IIUC, Jinhui's series adds some more NUMA smarts in the driver core
-> sync probing path and removes corresponding NUMA code from the PCI
-> core probe path.
+> Thanks for the heads up. The AI bot flagged another bug with the return
+> value of virtnet_restore_up so I'll send a v16 once this patch comes in.
 
-I see. I can't drop my change, otherwise my series alone could crash
-dereferencing garbage. But Jinhui's series removes the need for my changes.
+FWIW it costs us ~$17.04 to run the AI review on your series.
+I presume you have access to Claude or Gemini at nvidia, if
+you could potentially run the reviews internally that'd both
+save us money and shorten the review loop for you.
 
-So an unpleasant conflict will happen in -next (and if everything goes well,
-further in next merge window) and it should be resolved with simply ignoring
-my changes and only apply those of Jinhui.
+All we do is clone this:
+https://github.com/masoncl/review-prompts
 
-Should we inform Linux Next people ahead?
+And give AI this prompt:
 
-Thanks for making me notice!
-
--- 
-Frederic Weisbecker
-SUSE Labs
+        Current directory is the root of a Linux Kernel git repository.
+        Read the prompt from {full_prompt_path}.
+        Using the prompt, do a deep dive regression analysis of the HEAD commit.
+        Use commit range {git_range} for the false-positive-guide.md section. 
