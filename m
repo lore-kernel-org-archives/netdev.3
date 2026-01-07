@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEF9F4FA
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D94117A31C
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767744422; cv=none; b=Z0RcFDQtFMNwp/mnQaT8uRdIAiXF6pQEf03et87G2jHB+pHxFlRui2iIAa9g+rWQdvCIRff10Ih/8kAGVNbA3RQBve+O24rgWfv6BYyC490TbDiFj8mv7xDp9FUbKEGzsupe0A38y9smNwQDdS8bp+EBhSzoSuObEwWJkF9Z+og=
+	t=1767744423; cv=none; b=gKWefMyH5gu3SPENzy6w3zqT4jvBCwrUpOOhXftvJGTZmsyzIJY09dvGkjuKGc3WaWLrl4OKT65Gkvioebk3zTy3Noyl/ZFzeKUbhRJAejC3fNQVRrHwDDldKKVvA6c9TKwK9Gh4VELvp9csLCGSvPqYBQxl2uh+7isKNWpeQAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767744422; c=relaxed/simple;
-	bh=l4kO+RInFXPD0eQPH5vgIWqsidhaQIKdPH8t4QU3kwg=;
+	s=arc-20240116; t=1767744423; c=relaxed/simple;
+	bh=/RivF8jJo9an+unAjuLeJtZktqUpKOr1D3Rof4+nCtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHTBZ16WQVONNXclaS89wHDzvu/gVYQVcvxq7ePfOVPsEgozQL+6kGxlNoMGlPvWe/61Z5YfrIa6XYG0qq//CDXk0ge2etH1maHXWn/0PK1K9WLtHZOF6GWz1NhjZBBbwvcVnT4BsGU0NEureXTXPScAWrOHVsir9wWvDCFFkJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lfxE0s2o; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=PFICBRU+JITiOqmTpZ+1w5nIJTxf0FBZrRkUQQpSpB50xYhbvaZUK7DEa/C2aIcHe7pSit+VffBO7BkYFhPyf7Lc8SIS+IGYpjFnSWnZ8PD+uB/tWs6zTcyW+NC8PXodPotIuLtKkGDM7AdmkMRXy+ANJDinB1pWo1v74G9odjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mLIzmWYh; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lfxE0s2o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mLIzmWYh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767744420; x=1799280420;
+  t=1767744422; x=1799280422;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=l4kO+RInFXPD0eQPH5vgIWqsidhaQIKdPH8t4QU3kwg=;
-  b=lfxE0s2ou1WvS8iNbfkVFD++Y+WKw1RnTNYfQExjfrZ5/HWGLP0sLxUY
-   xBZagoytPTU20OvlHLfu0RPB8dQjaEiteFcdQZF40Oq7tVF6OoaxgQMYu
-   9U4P+EezO1QfvY6ydDkNxmJRUe4Yrarp6lPVTxJsXbi9YAd+JOILjktNd
-   HjAuiW9MkZD1TRvqtPQFpz86hvhDxkMUwVA8EGzxidgB1PyXF0GG1jn4L
-   7okpLeAFE7+kTMVn5ZZMIE+E2zA5WC4wJUQzjNwC5KD0yYjyzBjExzdAe
-   MOz5g+q2P4LZPPSd+SgeTdjbEc57MmqORNMNTBuJaNIEF8fsY6pmTLCKs
-   Q==;
-X-CSE-ConnectionGUID: LlNzFxKjSeii2TNrlJhbEg==
-X-CSE-MsgGUID: FddHnETbRyG/RAu806AIFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161658"
+  bh=/RivF8jJo9an+unAjuLeJtZktqUpKOr1D3Rof4+nCtY=;
+  b=mLIzmWYhXRciiLxLDQe29zYPLawDpa3YhPD80ArY1F09J9x1iFfFzCSJ
+   DJIXTKXK/8AkXv06E2dXyOGZ23Rp0xUPpaETMS07FazP+7xRwt5LKfMB9
+   2cLY+APoPw3QXcxao5WYXkDmT++N5Y8gXxcB2LsubjRsh7UpryHIPUprK
+   l8z+1iX56mByR+APb1F9KbqZ+nDUdKtGbqC7iLNnCwaFJmxZM6COKzcBh
+   J8rwDwjuC/b0CxLnF34+jzXQI+PbeOUdNS36eBbnpwXNxpt0f5LnVSC67
+   ganhysi0iplkRSk4CeTr9kIhxPKON8Q4ieHCYoKltJd3g3gJnEkAfIVX4
+   g==;
+X-CSE-ConnectionGUID: 3UzFus4HSYGX87ClyOAWTw==
+X-CSE-MsgGUID: a5c6nlXAT8SzLPJ4T2s/4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161672"
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="69161658"
+   d="scan'208";a="69161672"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 16:06:54 -0800
-X-CSE-ConnectionGUID: GfruU19lTkyWPC505UHNjg==
-X-CSE-MsgGUID: YjgtsJqkRuy890wTmoV7iQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 16:06:55 -0800
+X-CSE-ConnectionGUID: dBKtP05xRpeUykAb38F1Yw==
+X-CSE-MsgGUID: sYsvCRXYTnqnST59K5znkw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="207841199"
+   d="scan'208";a="207841205"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa005.jf.intel.com with ESMTP; 06 Jan 2026 16:06:55 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -53,15 +53,14 @@ To: davem@davemloft.net,
 Cc: Sreedevi Joshi <sreedevi.joshi@intel.com>,
 	anthony.l.nguyen@intel.com,
 	willemb@google.com,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Sridhar Samudrala <sridhar.samudrala@intel.com>,
 	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Simon Horman <horms@kernel.org>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net 08/13] idpf: Fix RSS LUT NULL pointer crash on early ethtool operations
-Date: Tue,  6 Jan 2026 16:06:40 -0800
-Message-ID: <20260107000648.1861994-9-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 10/13] idpf: Fix RSS LUT NULL ptr issue after soft reset
+Date: Tue,  6 Jan 2026 16:06:42 -0800
+Message-ID: <20260107000648.1861994-11-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
 References: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
@@ -75,400 +74,147 @@ Content-Transfer-Encoding: 8bit
 
 From: Sreedevi Joshi <sreedevi.joshi@intel.com>
 
-The RSS LUT is not initialized until the interface comes up, causing
-the following NULL pointer crash when ethtool operations like rxhash on/off
-are performed before the interface is brought up for the first time.
+During soft reset, the RSS LUT is freed and not restored unless the
+interface is up. If an ethtool command that accesses the rss lut is
+attempted immediately after reset, it will result in NULL ptr
+dereference. Also, there is no need to reset the rss lut if the soft reset
+does not involve queue count change.
 
-Move RSS LUT initialization from ndo_open to vport creation to ensure LUT
-is always available. This enables RSS configuration via ethtool before
-bringing the interface up. Simplify LUT management by maintaining all
-changes in the driver's soft copy and programming zeros to the indirection
-table when rxhash is disabled. Defer HW programming until the interface
-comes up if it is down during rxhash and LUT configuration changes.
+After soft reset, set the RSS LUT to default values based on the updated
+queue count only if the reset was a result of a queue count change and
+the LUT was not configured by the user. In all other cases, don't touch
+the LUT.
 
 Steps to reproduce:
-** Load idpf driver; interfaces will be created
-	modprobe idpf
-** Before bringing the interfaces up, turn rxhash off
-	ethtool -K eth2 rxhash off
 
-[89408.371875] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[89408.371908] #PF: supervisor read access in kernel mode
-[89408.371924] #PF: error_code(0x0000) - not-present page
-[89408.371940] PGD 0 P4D 0
-[89408.371953] Oops: Oops: 0000 [#1] SMP NOPTI
+** Bring the interface down (if up)
+ifconfig eth1 down
+
+** update the queue count (eg., 27->20)
+ethtool -L eth1 combined 20
+
+** display the RSS LUT
+ethtool -x eth1
+
+[82375.558338] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[82375.558373] #PF: supervisor read access in kernel mode
+[82375.558391] #PF: error_code(0x0000) - not-present page
+[82375.558408] PGD 0 P4D 0
+[82375.558421] Oops: Oops: 0000 [#1] SMP NOPTI
 <snip>
-[89408.372052] RIP: 0010:memcpy_orig+0x16/0x130
-[89408.372310] Call Trace:
-[89408.372317]  <TASK>
-[89408.372326]  ? idpf_set_features+0xfc/0x180 [idpf]
-[89408.372363]  __netdev_update_features+0x295/0xde0
-[89408.372384]  ethnl_set_features+0x15e/0x460
-[89408.372406]  genl_family_rcv_msg_doit+0x11f/0x180
-[89408.372429]  genl_rcv_msg+0x1ad/0x2b0
-[89408.372446]  ? __pfx_ethnl_set_features+0x10/0x10
-[89408.372465]  ? __pfx_genl_rcv_msg+0x10/0x10
-[89408.372482]  netlink_rcv_skb+0x58/0x100
-[89408.372502]  genl_rcv+0x2c/0x50
-[89408.372516]  netlink_unicast+0x289/0x3e0
-[89408.372533]  netlink_sendmsg+0x215/0x440
-[89408.372551]  __sys_sendto+0x234/0x240
-[89408.372571]  __x64_sys_sendto+0x28/0x30
-[89408.372585]  x64_sys_call+0x1909/0x1da0
-[89408.372604]  do_syscall_64+0x7a/0xfa0
-[89408.373140]  ? clear_bhb_loop+0x60/0xb0
-[89408.373647]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[89408.378887]  </TASK>
+[82375.558516] RIP: 0010:idpf_get_rxfh+0x108/0x150 [idpf]
+[82375.558786] Call Trace:
+[82375.558793]  <TASK>
+[82375.558804]  rss_prepare.isra.0+0x187/0x2a0
+[82375.558827]  rss_prepare_data+0x3a/0x50
+[82375.558845]  ethnl_default_doit+0x13d/0x3e0
+[82375.558863]  genl_family_rcv_msg_doit+0x11f/0x180
+[82375.558886]  genl_rcv_msg+0x1ad/0x2b0
+[82375.558902]  ? __pfx_ethnl_default_doit+0x10/0x10
+[82375.558920]  ? __pfx_genl_rcv_msg+0x10/0x10
+[82375.558937]  netlink_rcv_skb+0x58/0x100
+[82375.558957]  genl_rcv+0x2c/0x50
+[82375.558971]  netlink_unicast+0x289/0x3e0
+[82375.558988]  netlink_sendmsg+0x215/0x440
+[82375.559005]  __sys_sendto+0x234/0x240
+[82375.559555]  __x64_sys_sendto+0x28/0x30
+[82375.560068]  x64_sys_call+0x1909/0x1da0
+[82375.560576]  do_syscall_64+0x7a/0xfa0
+[82375.561076]  ? clear_bhb_loop+0x60/0xb0
+[82375.561567]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 <snip>
 
-Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
+Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
 Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
 Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h        |  2 -
- drivers/net/ethernet/intel/idpf/idpf_lib.c    | 94 +++++++++----------
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 36 +++----
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  4 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   |  9 +-
- 5 files changed, 66 insertions(+), 79 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c  | 20 ++++----------------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c |  2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h |  1 +
+ 3 files changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index dab36c0c3cdc..1bf7934d4e28 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -423,14 +423,12 @@ enum idpf_user_flags {
-  * @rss_key: RSS hash key
-  * @rss_lut_size: Size of RSS lookup table
-  * @rss_lut: RSS lookup table
-- * @cached_lut: Used to restore previously init RSS lut
-  */
- struct idpf_rss_data {
- 	u16 rss_key_size;
- 	u8 *rss_key;
- 	u16 rss_lut_size;
- 	u32 *rss_lut;
--	u32 *cached_lut;
- };
- 
- /**
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index d56366e676cf..51716e5a84ef 100644
+index 51716e5a84ef..003bab3ce5ae 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1073,7 +1073,7 @@ static void idpf_vport_rel(struct idpf_vport *vport)
- 	u16 idx = vport->idx;
- 
- 	vport_config = adapter->vport_config[vport->idx];
--	idpf_deinit_rss(vport);
-+	idpf_deinit_rss_lut(vport);
- 	rss_data = &vport_config->user_config.rss_data;
- 	kfree(rss_data->rss_key);
- 	rss_data->rss_key = NULL;
-@@ -1226,6 +1226,7 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 	u16 idx = adapter->next_vport;
- 	struct idpf_vport *vport;
- 	u16 num_max_q;
-+	int err;
- 
- 	if (idx == IDPF_NO_FREE_SLOT)
- 		return NULL;
-@@ -1276,10 +1277,11 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 
- 	idpf_vport_init(vport, max_q);
- 
--	/* This alloc is done separate from the LUT because it's not strictly
--	 * dependent on how many queues we have. If we change number of queues
--	 * and soft reset we'll need a new LUT but the key can remain the same
--	 * for as long as the vport exists.
-+	/* LUT and key are both initialized here. Key is not strictly dependent
-+	 * on how many queues we have. If we change number of queues and soft
-+	 * reset is initiated, LUT will be freed and a new LUT will be allocated
-+	 * as per the updated number of queues during vport bringup. However,
-+	 * the key remains the same for as long as the vport exists.
- 	 */
- 	rss_data = &adapter->vport_config[idx]->user_config.rss_data;
- 	rss_data->rss_key = kzalloc(rss_data->rss_key_size, GFP_KERNEL);
-@@ -1289,6 +1291,11 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 	/* Initialize default rss key */
- 	netdev_rss_key_fill((void *)rss_data->rss_key, rss_data->rss_key_size);
- 
-+	/* Initialize default rss LUT */
-+	err = idpf_init_rss_lut(vport);
-+	if (err)
-+		goto free_rss_key;
-+
- 	/* fill vport slot in the adapter struct */
- 	adapter->vports[idx] = vport;
- 	adapter->vport_ids[idx] = idpf_get_vport_id(vport);
-@@ -1299,6 +1306,8 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 
- 	return vport;
- 
-+free_rss_key:
-+	kfree(rss_data->rss_key);
- free_vector_idxs:
- 	kfree(vport->q_vector_idxs);
- free_vport:
-@@ -1476,6 +1485,7 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
+@@ -1484,8 +1484,6 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
+ {
  	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
  	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_vport_config *vport_config;
-+	struct idpf_rss_data *rss_data;
+-	struct idpf_vport_config *vport_config;
+-	struct idpf_rss_data *rss_data;
  	int err;
  
  	if (test_bit(IDPF_VPORT_UP, np->state))
-@@ -1570,12 +1580,21 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
+@@ -1579,19 +1577,6 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
+ 
  	idpf_restore_features(vport);
  
- 	vport_config = adapter->vport_config[vport->idx];
--	if (vport_config->user_config.rss_data.rss_lut)
--		err = idpf_config_rss(vport);
--	else
--		err = idpf_init_rss(vport);
-+	rss_data = &vport_config->user_config.rss_data;
-+
-+	if (!rss_data->rss_lut) {
-+		err = idpf_init_rss_lut(vport);
-+		if (err) {
-+			dev_err(&adapter->pdev->dev,
-+				"Failed to initialize RSS LUT for vport %u: %d\n",
-+				vport->vport_id, err);
-+			goto disable_vport;
-+		}
-+	}
-+
-+	err = idpf_config_rss(vport);
+-	vport_config = adapter->vport_config[vport->idx];
+-	rss_data = &vport_config->user_config.rss_data;
+-
+-	if (!rss_data->rss_lut) {
+-		err = idpf_init_rss_lut(vport);
+-		if (err) {
+-			dev_err(&adapter->pdev->dev,
+-				"Failed to initialize RSS LUT for vport %u: %d\n",
+-				vport->vport_id, err);
+-			goto disable_vport;
+-		}
+-	}
+-
+ 	err = idpf_config_rss(vport);
  	if (err) {
--		dev_err(&adapter->pdev->dev, "Failed to initialize RSS for vport %u: %d\n",
-+		dev_err(&adapter->pdev->dev, "Failed to configure RSS for vport %u: %d\n",
- 			vport->vport_id, err);
- 		goto disable_vport;
- 	}
-@@ -1584,7 +1603,7 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to complete interface up for vport %u: %d\n",
- 			vport->vport_id, err);
--		goto deinit_rss;
-+		goto disable_vport;
- 	}
- 
- 	if (rtnl)
-@@ -1592,8 +1611,6 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
- 
- 	return 0;
- 
--deinit_rss:
--	idpf_deinit_rss(vport);
- disable_vport:
- 	idpf_send_disable_vport_msg(vport);
- disable_queues:
-@@ -2051,7 +2068,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 		dev_err(&adapter->pdev->dev, "Failed to configure RSS for vport %u: %d\n",
+@@ -2068,7 +2053,6 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
  		idpf_vport_stop(vport, false);
  	}
  
--	idpf_deinit_rss(vport);
-+	idpf_deinit_rss_lut(vport);
+-	idpf_deinit_rss_lut(vport);
  	/* We're passing in vport here because we need its wait_queue
  	 * to send a message and it should be getting all the vport
  	 * config data out of the adapter but we need to be careful not
-@@ -2219,40 +2236,6 @@ static void idpf_set_rx_mode(struct net_device *netdev)
- 		dev_err(dev, "Failed to set promiscuous mode: %d\n", err);
- }
+@@ -2094,6 +2078,10 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
+ 	if (err)
+ 		goto err_open;
  
--/**
-- * idpf_vport_manage_rss_lut - disable/enable RSS
-- * @vport: the vport being changed
-- *
-- * In the event of disable request for RSS, this function will zero out RSS
-- * LUT, while in the event of enable request for RSS, it will reconfigure RSS
-- * LUT with the default LUT configuration.
-- */
--static int idpf_vport_manage_rss_lut(struct idpf_vport *vport)
--{
--	bool ena = idpf_is_feature_ena(vport, NETIF_F_RXHASH);
--	struct idpf_rss_data *rss_data;
--	u16 idx = vport->idx;
--	int lut_size;
--
--	rss_data = &vport->adapter->vport_config[idx]->user_config.rss_data;
--	lut_size = rss_data->rss_lut_size * sizeof(u32);
--
--	if (ena) {
--		/* This will contain the default or user configured LUT */
--		memcpy(rss_data->rss_lut, rss_data->cached_lut, lut_size);
--	} else {
--		/* Save a copy of the current LUT to be restored later if
--		 * requested.
--		 */
--		memcpy(rss_data->cached_lut, rss_data->rss_lut, lut_size);
--
--		/* Zero out the current LUT to disable */
--		memset(rss_data->rss_lut, 0, lut_size);
--	}
--
--	return idpf_config_rss(vport);
--}
--
- /**
-  * idpf_set_features - set the netdev feature flags
-  * @netdev: ptr to the netdev being adjusted
-@@ -2278,10 +2261,19 @@ static int idpf_set_features(struct net_device *netdev,
- 	}
- 
- 	if (changed & NETIF_F_RXHASH) {
-+		struct idpf_netdev_priv *np = netdev_priv(netdev);
++	if (reset_cause == IDPF_SR_Q_CHANGE &&
++	    !netif_is_rxfh_configured(vport->netdev))
++		idpf_fill_dflt_rss_lut(vport);
 +
- 		netdev->features ^= NETIF_F_RXHASH;
--		err = idpf_vport_manage_rss_lut(vport);
--		if (err)
--			goto unlock_mutex;
-+
-+		/* If the interface is not up when changing the rxhash, update
-+		 * to the HW is skipped. The updated LUT will be committed to
-+		 * the HW when the interface is brought up.
-+		 */
-+		if (test_bit(IDPF_VPORT_UP, np->state)) {
-+			err = idpf_config_rss(vport);
-+			if (err)
-+				goto unlock_mutex;
-+		}
- 	}
+ 	if (vport_is_up)
+ 		err = idpf_vport_open(vport, false);
  
- 	if (changed & NETIF_F_GRO_HW) {
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 1d91c56f7469..8991a891a440 100644
+index 8991a891a440..f51d52297e1e 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -4650,57 +4650,47 @@ static void idpf_fill_dflt_rss_lut(struct idpf_vport *vport)
- 
- 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
- 
--	for (i = 0; i < rss_data->rss_lut_size; i++) {
-+	for (i = 0; i < rss_data->rss_lut_size; i++)
- 		rss_data->rss_lut[i] = i % num_active_rxq;
--		rss_data->cached_lut[i] = rss_data->rss_lut[i];
--	}
- }
- 
- /**
-- * idpf_init_rss - Allocate and initialize RSS resources
-+ * idpf_init_rss_lut - Allocate and initialize RSS LUT
-  * @vport: virtual port
-  *
-- * Return 0 on success, negative on failure
-+ * Return: 0 on success, negative on failure
+@@ -4641,7 +4641,7 @@ int idpf_config_rss(struct idpf_vport *vport)
+  * idpf_fill_dflt_rss_lut - Fill the indirection table with the default values
+  * @vport: virtual port structure
   */
--int idpf_init_rss(struct idpf_vport *vport)
-+int idpf_init_rss_lut(struct idpf_vport *vport)
+-static void idpf_fill_dflt_rss_lut(struct idpf_vport *vport)
++void idpf_fill_dflt_rss_lut(struct idpf_vport *vport)
  {
  	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_rss_data *rss_data;
--	u32 lut_size;
- 
- 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
-+	if (!rss_data->rss_lut) {
-+		u32 lut_size;
- 
--	lut_size = rss_data->rss_lut_size * sizeof(u32);
--	rss_data->rss_lut = kzalloc(lut_size, GFP_KERNEL);
--	if (!rss_data->rss_lut)
--		return -ENOMEM;
--
--	rss_data->cached_lut = kzalloc(lut_size, GFP_KERNEL);
--	if (!rss_data->cached_lut) {
--		kfree(rss_data->rss_lut);
--		rss_data->rss_lut = NULL;
--
--		return -ENOMEM;
-+		lut_size = rss_data->rss_lut_size * sizeof(u32);
-+		rss_data->rss_lut = kzalloc(lut_size, GFP_KERNEL);
-+		if (!rss_data->rss_lut)
-+			return -ENOMEM;
- 	}
- 
- 	/* Fill the default RSS lut values */
- 	idpf_fill_dflt_rss_lut(vport);
- 
--	return idpf_config_rss(vport);
-+	return 0;
- }
- 
- /**
-- * idpf_deinit_rss - Release RSS resources
-+ * idpf_deinit_rss_lut - Release RSS LUT
-  * @vport: virtual port
-  */
--void idpf_deinit_rss(struct idpf_vport *vport)
-+void idpf_deinit_rss_lut(struct idpf_vport *vport)
- {
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_rss_data *rss_data;
- 
- 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
--	kfree(rss_data->cached_lut);
--	rss_data->cached_lut = NULL;
- 	kfree(rss_data->rss_lut);
- 	rss_data->rss_lut = NULL;
- }
+ 	u16 num_active_rxq = vport->num_rxq;
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 75b977094741..7d20593bd877 100644
+index 7d20593bd877..0472698ca192 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
 +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1086,8 +1086,8 @@ void idpf_vport_intr_deinit(struct idpf_vport *vport);
+@@ -1085,6 +1085,7 @@ void idpf_vport_intr_update_itr_ena_irq(struct idpf_q_vector *q_vector);
+ void idpf_vport_intr_deinit(struct idpf_vport *vport);
  int idpf_vport_intr_init(struct idpf_vport *vport);
  void idpf_vport_intr_ena(struct idpf_vport *vport);
++void idpf_fill_dflt_rss_lut(struct idpf_vport *vport);
  int idpf_config_rss(struct idpf_vport *vport);
--int idpf_init_rss(struct idpf_vport *vport);
--void idpf_deinit_rss(struct idpf_vport *vport);
-+int idpf_init_rss_lut(struct idpf_vport *vport);
-+void idpf_deinit_rss_lut(struct idpf_vport *vport);
- int idpf_rx_bufs_init_all(struct idpf_vport *vport);
- 
- struct idpf_q_vector *idpf_find_rxq_vec(const struct idpf_vport *vport,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 01bbd12a642a..cb702eac86c8 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -2804,6 +2804,10 @@ int idpf_send_get_stats_msg(struct idpf_vport *vport)
-  * @vport: virtual port data structure
-  * @get: flag to set or get rss look up table
-  *
-+ * When rxhash is disabled, RSS LUT will be configured with zeros.  If rxhash
-+ * is enabled, the LUT values stored in driver's soft copy will be used to setup
-+ * the HW.
-+ *
-  * Returns 0 on success, negative on failure.
-  */
- int idpf_send_get_set_rss_lut_msg(struct idpf_vport *vport, bool get)
-@@ -2814,10 +2818,12 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_vport *vport, bool get)
- 	struct idpf_rss_data *rss_data;
- 	int buf_size, lut_buf_size;
- 	ssize_t reply_sz;
-+	bool rxhash_ena;
- 	int i;
- 
- 	rss_data =
- 		&vport->adapter->vport_config[vport->idx]->user_config.rss_data;
-+	rxhash_ena = idpf_is_feature_ena(vport, NETIF_F_RXHASH);
- 	buf_size = struct_size(rl, lut, rss_data->rss_lut_size);
- 	rl = kzalloc(buf_size, GFP_KERNEL);
- 	if (!rl)
-@@ -2839,7 +2845,8 @@ int idpf_send_get_set_rss_lut_msg(struct idpf_vport *vport, bool get)
- 	} else {
- 		rl->lut_entries = cpu_to_le16(rss_data->rss_lut_size);
- 		for (i = 0; i < rss_data->rss_lut_size; i++)
--			rl->lut[i] = cpu_to_le32(rss_data->rss_lut[i]);
-+			rl->lut[i] = rxhash_ena ?
-+				cpu_to_le32(rss_data->rss_lut[i]) : 0;
- 
- 		xn_params.vc_op = VIRTCHNL2_OP_SET_RSS_LUT;
- 	}
+ int idpf_init_rss_lut(struct idpf_vport *vport);
+ void idpf_deinit_rss_lut(struct idpf_vport *vport);
 -- 
 2.47.1
 
