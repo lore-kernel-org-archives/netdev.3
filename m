@@ -1,106 +1,115 @@
 Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAED525F96D
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 17:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C3B3986E8
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 17:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767807270; cv=none; b=iua5+BovWhMvirqwWcRSEbDzE9UmddtDkOSa+VOdjB+/ICObV6000VP30vR3eu+VQcY355ccIh+Zxt5mobE8AgvwOHaqr7JRd82A9NZ4J63LZRaWCopDqfeMCZJwLwvsr8W5EQerLQGZxNugNrWyXx0+7dd2YcqNQdDOu5y3D2Q=
+	t=1767807270; cv=none; b=uH1DNrUbCAujzz7VYK2o0qVMuaU8YVLqiwEZPHLThjXPspVZijU/RA7TOen+CeiekveOhziJp1lWSxQISJ3XE/nRxIeRUSWlCNGCnQlPIKPJUZta8acOdGZectjBgUIVFuogfJgVmqVZd7JALmvGnTMHyifieBbLg2S80ZWDCv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767807270; c=relaxed/simple;
-	bh=T8p9x7YcHH4RBi5k9EYCafGeHl5JeFf5qbbqC19P2CE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=u4RZJx9hfidOsnkghoohlg6uvrAHlB305JoyArMNYIAj0dlWpKajqQVnc8vhzcNI0rMKIjgEmQ8jTjgLBgjO1ENj1JXnMpajwaaGHlJqQMukFtJrE2eSz0ho4KTSMMx6jEYqTRqmoP8ouTe4kNXDZRUID1jEX9qc3p+AxHXb65E=
+	bh=5U1R4ljm+W2Izg/oglsYWbCr8DPRgdEq+bghHYPYKOo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cdQhvDrUOp2197Oj2kQfftWAM4OQN3HJiv3K2jM4cn+cN2vMDItQXAJCUunz9IUsY4NTp2JNmlWGjBNW1h2DGmoeUIoFbbTSjEicr0NnhpKUku1sXCf3YxfG64HT055SnZlglHaHQQXUJwqbsvZFWdcY/Kzs89OrEPHhOxzSynk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-65b153371efso2074771eaf.1
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 09:34:28 -0800 (PST)
+Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-65ed4d39a1bso7234988eaf.2
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 09:34:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1767807268; x=1768412068;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YXJ9WC2NmU9YEErBDW4d1c4BSngY0akKh966eavx5Fk=;
-        b=slU2vZxsPlfZIRp0uImq33MRfMchyO/Btr9WmvnRHRej2mUeJVJkdME1tz9YH/85G5
-         TIM51rUh7gRtMNrQrHJTfenv2yNeSKElxLRqmM04R5aBgfuldXEeQjTXj0O6y4ZUztPe
-         VJG6zq+VkAd/DvUftwAOA6rUnYSbW93f2DwThDsO8mBYAUlLtocxtDwXdLzisqeLj2Tf
-         Ct0aztGL4Q2X/vAreGiy+y9EgSfu74OwfQvRvVhW/A+61ZvEWCaTsxkQGRfE2x9dZMHv
-         DzFECPgWOuxwgEz6D4kXq0asAjpDr/77J9RflLkVxG1cjSPN1+W+1aswZdjFDebyYOWS
-         Eusg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJrwIbPtRpMPyyViR9vUwFd4nU4dDrbaENIcJRIRFvgErpy2ZpVBEJ5mjRnp+DgydRWAVsFwg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2gQrog4MsOBgZrX/SlrxQTpIeQcK9QVBiDvYyQ6AwGSED0Fq9
-	JPuNaMWoY5G0doxdT1gd2cpqXCrlfKEDhKih0D8vnD540qpxITh3aNQOa61xJOEgNLJni5LF9ES
-	Cjd0xYXU+dvtMBg5Zl0MacOcoTjt6OL+mbcRHWQVZ597wRja0mhOvuK590Yw=
-X-Google-Smtp-Source: AGHT+IH4AnecHwe1eU+seiZT8AASstncmzFKC7GVs7sp+BqLT+rUYXqD/TFtAndib/yxC1B/VhUmEO2OoS2WpKMEmKAy6Syz4FVi
+        bh=B2PYel2T5pfRZieI9Ikpf9k9MeQfExr2YEBU6Ig4pDY=;
+        b=bsc+/cq7qVPYTsiOjleWD2N2Od98Xz3Y0N72qxVeas1xoIVkiTQmS5b6xMCSOiD2la
+         BS/fKNEmMepv78Y/dznZzb7bW/pYl/3WHJt9v3mhWBPNXhFVCb1QcU3TirDo+zV4xjzi
+         EXIFb5virXnoPtI7a89/VOvcdM7Xv1L8EEvBrOQpIGFUuYC15K83sb5ia9zCrR+kq5gX
+         7860HyL+57NDcUn+BKhQ3jhy2ElGnf1xtH6FKbHNIPPuXjvAxZnP5CYPc/2jxtj3/NAE
+         sfMcHfyVwCmYJRfeuDGvXeiKN9ZfOYltooI0z5lInDMdvzkPv1YYtZAvNuzU0JeovRNn
+         AldQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXS5vGfEx/psFp/IepY1/YUDGV7Y4I1ccCjrs112gQRAmGERHTle74ESCKr2zh87qA79eRYqbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4Fy8rOrk2dbCNHQVxSgKMDORG9pslTMShYBYepI9I1HMke6CB
+	EP+vSZro4Rc088r/zDRL4+2rxjIZaFroURPwyhklkC+02NgkEVtfi3ter+9T4ywqSA1TahXjXv9
+	XblBSYEJDPJwnbR1hTc8jqDE5AwhHeUHrSwFUsptkiDqRYfSatdUETu7owUo=
+X-Google-Smtp-Source: AGHT+IEvbirL/hcDClvaNWS9E2YR9mYvyih3qxygmz33zoYwgC4KNsxzOEs9f+P8oN9uGiWUy2XEHmVaENeSQdofantqDPgl4BZV
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e645:0:b0:65b:299f:8947 with SMTP id
- 006d021491bc7-65f481e96e9mr3009818eaf.14.1767807267978; Wed, 07 Jan 2026
- 09:34:27 -0800 (PST)
-Date: Wed, 07 Jan 2026 09:34:27 -0800
+X-Received: by 2002:a05:6820:f002:b0:65d:318:df67 with SMTP id
+ 006d021491bc7-65f55082728mr1367976eaf.70.1767807268209; Wed, 07 Jan 2026
+ 09:34:28 -0800 (PST)
+Date: Wed, 07 Jan 2026 09:34:28 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <695e9923.050a0220.1c677c.0370.GAE@google.com>
-Subject: [syzbot] [batman?] [bluetooth?] memory leak in skb_clone (3)
-From: syzbot <syzbot+6e76aa21aaf2d8be6034@syzkaller.appspotmail.com>
-To: antonio@mandelbit.com, b.a.t.m.a.n@lists.open-mesh.org, 
-	johan.hedberg@gmail.com, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, luiz.dentz@gmail.com, marcel@holtmann.org, 
-	marek.lindner@mailbox.org, netdev@vger.kernel.org, sven@narfation.org, 
-	sw@simonwunderlich.de, syzkaller-bugs@googlegroups.com
+Message-ID: <695e9924.050a0220.1c677c.0371.GAE@google.com>
+Subject: [syzbot] [netfilter?] WARNING in nf_hook_entry_head (2)
+From: syzbot <syzbot+6f6a1d20567a8d6b2a58@syzkaller.appspotmail.com>
+To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+	fw@strlen.de, horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org, 
+	phil@nwl.cc, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
 Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    4a26e7032d7d Merge tag 'core-bugs-2025-12-01' of git://git..
+HEAD commit:    b69053dd3ffb wifi: mt76: Remove blank line after mt792x fi..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=116a9512580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cbf343972ee89096
-dashboard link: https://syzkaller.appspot.com/bug?extid=6e76aa21aaf2d8be6034
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=179be192580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15cd92b4580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=134dca9a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a94030c847137a18
+dashboard link: https://syzkaller.appspot.com/bug?extid=6f6a1d20567a8d6b2a58
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/3f4ff8b7d65f/disk-4a26e703.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2fbb585ef1ac/vmlinux-4a26e703.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dfdc58db78d3/bzImage-4a26e703.xz
+disk image: https://storage.googleapis.com/syzbot-assets/18036fd3b399/disk-b69053dd.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bcf4c5ec9d8e/vmlinux-b69053dd.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b4101a9d1eed/bzImage-b69053dd.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6e76aa21aaf2d8be6034@syzkaller.appspotmail.com
+Reported-by: syzbot+6f6a1d20567a8d6b2a58@syzkaller.appspotmail.com
 
-2025/12/03 00:25:54 executed programs: 5
-BUG: memory leak
-unreferenced object 0xffff88811a1e1100 (size 240):
-  comm "kworker/u9:0", pid 51, jiffies 4294944590
-  hex dump (first 32 bytes):
-    90 50 50 42 81 88 ff ff 90 50 50 42 81 88 ff ff  .PPB.....PPB....
-    00 00 00 00 00 00 00 00 00 50 50 42 81 88 ff ff  .........PPB....
-  backtrace (crc eed28d2d):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4983 [inline]
-    slab_alloc_node mm/slub.c:5288 [inline]
-    kmem_cache_alloc_noprof+0x397/0x5a0 mm/slub.c:5295
-    skb_clone+0xae/0x2b0 net/core/skbuff.c:2050
-    __skb_tstamp_tx+0x3a0/0x4c0 net/core/skbuff.c:5636
-    hci_conn_tx_queue+0x11c/0x1d0 net/bluetooth/hci_conn.c:3026
-    hci_send_conn_frame net/bluetooth/hci_core.c:3086 [inline]
-    hci_sched_acl_pkt net/bluetooth/hci_core.c:3701 [inline]
-    hci_sched_acl net/bluetooth/hci_core.c:3726 [inline]
-    hci_tx_work+0x437/0x570 net/bluetooth/hci_core.c:3820
-    process_one_work+0x26b/0x620 kernel/workqueue.c:3263
-    process_scheduled_works kernel/workqueue.c:3346 [inline]
-    worker_thread+0x2c4/0x4f0 kernel/workqueue.c:3427
-    kthread+0x15b/0x310 kernel/kthread.c:463
-    ret_from_fork+0x2af/0x2e0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+------------[ cut here ]------------
+WARNING: net/netfilter/core.c:329 at nf_hook_entry_head+0x23e/0x2c0 net/netfilter/core.c:329, CPU#0: kworker/u8:13/4537
+Modules linked in:
+CPU: 0 UID: 0 PID: 4537 Comm: kworker/u8:13 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: netns cleanup_net
+RIP: 0010:nf_hook_entry_head+0x23e/0x2c0 net/netfilter/core.c:329
+Code: 4c 89 f8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 80 3c 08 00 74 08 4c 89 ff e8 5d 76 a7 f8 4d 39 37 74 36 e8 23 56 41 f8 90 <0f> 0b 90 31 db 48 89 d8 5b 41 5e 41 5f 5d e9 5a 9f 90 f7 cc e8 09
+RSP: 0018:ffffc9000d997788 EFLAGS: 00010293
+RAX: ffffffff897fa15b RBX: ffff888024f18000 RCX: ffff888033515b80
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffff888033515b80 R09: 0000000000000006
+R10: 000000000000000a R11: 0000000000000000 R12: ffff8880555f8000
+R13: 0000000000000005 R14: ffff8880555f8000 R15: ffff888024f18108
+FS:  0000000000000000(0000) GS:ffff888125e1f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2fa18ff8 CR3: 00000000ac7e4000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ __nf_unregister_net_hook+0x74/0x6f0 net/netfilter/core.c:491
+ nft_unregister_flowtable_ops net/netfilter/nf_tables_api.c:9038 [inline]
+ __nft_unregister_flowtable_net_hooks net/netfilter/nf_tables_api.c:9053 [inline]
+ __nft_release_hook+0x180/0x350 net/netfilter/nf_tables_api.c:12035
+ __nft_release_hooks net/netfilter/nf_tables_api.c:12049 [inline]
+ nf_tables_pre_exit_net+0xa7/0x110 net/netfilter/nf_tables_api.c:12200
+ ops_pre_exit_list net/core/net_namespace.c:161 [inline]
+ ops_undo_list+0x187/0x990 net/core/net_namespace.c:234
+ cleanup_net+0x4d8/0x7a0 net/core/net_namespace.c:696
+ process_one_work kernel/workqueue.c:3257 [inline]
+ process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
 
 
 ---
@@ -113,10 +122,6 @@ https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
 If the report is already addressed, let syzbot know by replying with:
 #syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
 If you want to overwrite report's subsystems, reply with:
 #syz set subsystems: new-subsystem
