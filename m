@@ -1,102 +1,112 @@
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20A1326933;
-	Wed,  7 Jan 2026 10:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F38311946
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 10:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767781819; cv=none; b=tSFmpAhYG6Jnwt1p5O0feAcRYa+Fd9jrA72fSYvQFXmN9m5KR+N0tCEXAtgWnct0thsVOBafW1mnSk8IlgYxMzPz5IMiE+nGYzW45DVey+t65iLxuN6iUjSKIWWDJZbuB8lE99MhDCySGdoatb4zbnxBlzLS0IvuId40J4hI7VA=
+	t=1767782444; cv=none; b=BMs8x0mWYinNr4MzNeA+vjLUZVnmKFMeBeRi/Zh4dcuYTUzN0KIpY6/f16D0iJ8h5PlWZ9Fo2a6niu6xFd4hW14CD5TzQcFQuxJCCWuik3syKEB43QNU/p8WPXWjwdzppElWXffsFatexLyGf7y1hP1mn3myZ/Ue+tPdWxc1y5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767781819; c=relaxed/simple;
-	bh=QDNik1P9OvsgAtFchTw4BckF/mSE1cSKBVO0iEJIHME=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mzm63Kc2/EyFtIP7D43GS3+oqppwzBuC1PWMzdpv+tsy2xMirsMcmABJ8FWinKmSYxaRllfxQclfe/O0adFOnVHEQvua182APa5IxC79EMy/ISgKuUVHuLCYjJWkgckfKT9MGi1+ETAsy74wHmaxv56diRDhDOVV8eN9SzzWzf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=GapqslJR reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
+	s=arc-20240116; t=1767782444; c=relaxed/simple;
+	bh=W65ywHkxr/c/KCyfBI+l7f4LxqL8QCrEbzadamlZa8Y=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=h3VD4P7cQt/2pZi1pS0K+8knv56ziqAabuWmG3JbwTLY8ptSv0yZVxy2XOy9OBksO47v7ksZNVl7f0ltfM1AbqUdAmGanXrEHLF2iDj1XHqpPlR93fhaEOvUHAthxtlCCw2TEA45FaeRjKsRiKAHx8aGAlF9buo0JAusMRkT9hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R8FV0YP7; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="GapqslJR"
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4dmPHX1tZwz1DDr1;
-	Wed,  7 Jan 2026 11:22:48 +0100 (CET)
-Received: from [10.10.15.21] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4dmPHS5YrMz1DDdR;
-	Wed,  7 Jan 2026 11:22:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1767781367;
-	bh=5sCdqnj/RCGcOZ4N1FNFLLmFTy7auxTIhL2QEEcNqFg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GapqslJRt7PAo/OPdy40/uiS8yl/fdKamd8Ti7v8KhTSWM+dyJpM0kA09WqDkvmTF
-	 JDac2AP0hk4IXLuaOc19G85CIClqVXmQFScccHC7rgNcYdl16DovAFndj0u/scyZuZ
-	 rFnlzmQeoXkgQ81qRhHQTXrNih6T2iluIH43PJMds/ZZIo6rm/VM9YDeYihibbVdmg
-	 uDvdrF41naRrcWhAD/3/BJoa7qr9vCUPqLxuLP48CDDioxfF0rw5/F8n0Js/OfpQsy
-	 f1VR1SCUMB9l0JY24lstr5qvSKP50VGC6KkhF0cw5Ng7hX+p9V4PT5L0p7hEJpFlek
-	 UmVwAHzAgacCA==
-Message-ID: <836139d1-1425-4381-bb84-6c2654a4d239@gaisler.com>
-Date: Wed, 7 Jan 2026 11:22:44 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R8FV0YP7"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47d3ffb0f44so12536635e9.3
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 02:40:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767782441; x=1768387241; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xlNKU8snKxPrM/xhzQl925n3je13gp0n7pC/W8KVq+k=;
+        b=R8FV0YP7iWNsRxJgXmIE4SLGIkr6L4YJV6TfQvKTIX9+DKn/3DUiakPC/oDC6P3Pek
+         vRKDpoh4552w0olL3+Tw18Egr6FBfPSz478Y3W6VxsaQ0RY6Nr/GvuMo0+maQ6gDMlDn
+         6bW56EOEGhC3BZFKLwvtH6BUSVVL3mMCyFbVP6IvEJyoegaVLBiwwnB7xVQqi2/CpZOa
+         MDs7jboRlCBJ0+4U16MVPIsjKJKwW7eQ0yRN0ehA9citOd1zfUvrU6lqwSN9uX4oYR71
+         M0tXn2ank6Z5AHHifQEUBufxTEiA3RmtBtIUWJmhsr2boT6xuL+ICGfGFlKJtswvO7zN
+         TLIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767782441; x=1768387241;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xlNKU8snKxPrM/xhzQl925n3je13gp0n7pC/W8KVq+k=;
+        b=B7vgszW3GgennmVdgqYqKaJoi76tCCyblLlwVOBwmdPzUtFL8zpZJbjy9PRY+IZHrn
+         4DJprVMeN3YFYpuF3V74heHGRbmJek/j9XqHk8bYKaYuRDheNjzVkcamjIIxa6vgzlS0
+         53Sj4L1fyvEEYbi8e/qgkme+BvnHVfM9gRgHqvkDdKeVeij3AaNwcTAJsoPyPse+Ef4F
+         ZVr3bGF4gd3WBwoB+vMMmpNkr45EPQ4T4t+YTzMeZVmRa9em3cYuRAnWhftKDsVbOKZj
+         RCmrHfxhv17HvV5zDgIYYIw0eICWGCbPWh4LtjEDF0obKt1GI1nis8wIfAeCnKKarQzE
+         /SPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVyRj6icrDXLYON3VT3dYRdVF25tPG9+EVjHcvLha8TRc6tGhPonWCMqZIEAOt+XvA0xo9+OTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3Ym/Ou4ZmwQu6iOQuWt0gUrKM5xji4w5BKsOB11FxHFz5JZUc
+	jnDWw1pW7u/WoMwoRAYJYUNYURF0yxcXb/E65og6hxwnRtTR0fhXXm6D
+X-Gm-Gg: AY/fxX5IQpR4JFGyrebjiXTrAo2jb4OpoYFtXlrx/X3UIUewNg7MtjMOZFyfulnAUbG
+	QelPdVATB8AbiJRoUd8oBFpuX3UKamiEqhE/ABqeTJwpQikk1muGc3Bh/RA68zzWgmrifP+0cT5
+	ZOH0C2EcN15A36KF+hiY7710D9EYVLIkPskoT+BbTg5+eKPkTgyg3B2OWbZ+T7ZMXiO2fZpvuNo
+	UD8s/yWIJhtpJ2xk+kvKJiDRh0OU5u+G7aBbLHFZ5rc/dbJ7wAUwqMrEDajXXlYea67LxlghR4c
+	KKUopfFYNqgbs+PA19C5aJSW3siVLFU5PxKDJ0Sa869xa++UemGA/Ujy4jlZ5JZWUhn4N95TG8T
+	k1EkSrZqIYqDZMPd5VaFc4FB+tnXGUTJwY/ZEsrSJWJb9YfXCIusF4/5x2FOao3BV4x01cm7Ubv
+	CdcmENY+74O/Xc/p6eGYndJLynImzqD2WynQ==
+X-Google-Smtp-Source: AGHT+IEWznxiVsvoMd8i4NpdWHrf3h7fmSqNaQAER327WIZpo6FiFg15Y3vG4vyP3jxuFF3bkt/jNQ==
+X-Received: by 2002:a05:600c:4fc3:b0:477:569c:34e9 with SMTP id 5b1f17b1804b1-47d84b3b9e6mr26180555e9.23.1767782441368;
+        Wed, 07 Jan 2026 02:40:41 -0800 (PST)
+Received: from imac ([2a02:8010:60a0:0:bc70:fb0c:12b6:3a41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f410c86sm92762115e9.3.2026.01.07.02.40.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 02:40:40 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  jstancek@redhat.com,  liuhangbin@gmail.com,  matttbe@kernel.org
+Subject: Re: [PATCH net] tools: ynl: don't install tests
+In-Reply-To: <20260106163426.1468943-1-kuba@kernel.org>
+Date: Wed, 07 Jan 2026 10:36:24 +0000
+Message-ID: <m2fr8hwvyv.fsf@gmail.com>
+References: <20260106163426.1468943-1-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/19] printk cleanup - part 3
-To: Marcos Paulo de Souza <mpdesouza@suse.com>,
- Richard Weinberger <richard@nod.at>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jason Wessel <jason.wessel@windriver.com>,
- Daniel Thompson <danielt@kernel.org>,
- Douglas Anderson <dianders@chromium.org>, Petr Mladek <pmladek@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, John Ogness
- <john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>,
- Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- kgdb-bugreport@lists.sourceforge.net, linux-serial@vger.kernel.org,
- netdev@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
-References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 2025-12-27 13:16, Marcos Paulo de Souza wrote:
-> The parts 1 and 2 can be found here [1] and here[2].
-> 
-> The changes proposed in this part 3 are mostly to clarify the usage of
-> the interfaces for NBCON, and use the printk helpers more broadly.
-> Besides it, it also introduces a new way to register consoles
-> and drop thes the CON_ENABLED flag. It seems too much, but in reality
-> the changes are not complex, and as the title says, it's basically a
-> cleanup without changing the functional changes.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Hi,
+> make's install target is meant for installing the production
+> artifacts, AFAIU. Don't install test_ynl_cli and test_ynl_ethtool
+> from under the main YNL install target. The install target
+> under tests/ is retained in case someone wants the tests
+> to be installed.
+>
+> Fixes: 308b7dee3e5c ("tools: ynl: add YNL test framework")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: donald.hunter@gmail.com
+> CC: jstancek@redhat.com
+> CC: liuhangbin@gmail.com
+> CC: matttbe@kernel.org
+> ---
+>  tools/net/ynl/Makefile | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/tools/net/ynl/Makefile b/tools/net/ynl/Makefile
+> index 7736b492f559..c2f3e8b3f2ac 100644
+> --- a/tools/net/ynl/Makefile
+> +++ b/tools/net/ynl/Makefile
+> @@ -51,7 +51,6 @@ install: libynl.a lib/*.h
+>  	@echo -e "\tINSTALL pyynl"
+>  	@pip install --prefix=$(DESTDIR)$(prefix) .
+>  	@make -C generated install
+> -	@make -C tests install
+>  
+>  run_tests:
+>  	@$(MAKE) -C tests run_tests
 
-Patches 7-17 all say "replacing the CON_ENABLE flag" in their
-descriptions, which should rather be "replacing the CON_ENABLED flag".
-
-Cheers,
-Andreas
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
