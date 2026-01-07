@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5F978F26
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C1C1684A4
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767744421; cv=none; b=Puq9C17ErpohgHTcq63wkox7qJPTaEqX5rGDwzFxELG1djSoyTkxVmUc0BAQftqvCGw0eN9jawR+gzIoVbrjkpzhO83K+wZdq2gYAd6q9D7zMiezrcZ4L9OvRhDSqhdxppBP1yypj6WJ4TNpp5jPzANShxL7Ks8IfDeJ1dKTyUo=
+	t=1767744422; cv=none; b=HWjuOgibyoSSPar1qSs38xoZ6xNKCBZG1sXmplYZvU6vze7iIw2dKU27v6nHiz/1FcS0E2bXHz0gbLrOWVkiBxpDrkejRlToQ42qaZuIrNhZHz0vmKfPkR136XQWL07SaO8ENuquYSc+6TWQlCubY2lWKYrLi3zVa31ohzhBxMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767744421; c=relaxed/simple;
-	bh=KVo2Yo+ctszDBHlooK1jFRQkfcVE1zTpATB0CXinmJI=;
+	s=arc-20240116; t=1767744422; c=relaxed/simple;
+	bh=OxcSkJyIuf6OXT7UVftOS4lO6GnEtTzyCclRoU8DzCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHcHsJDueh4wTU2kjMMErZQY8IlpU+Gyd0Qv5ZY4hqA4cwr3QG/5pdDoJj/o27r8h5oVx62+mNelHfeoKT5Wu9kdZA3lZpLuNmICaWwCTNT9sYvcPcf0/ykkl5zFreTF+4l1tcwEiRvYRtWFTXSlIdx96jsz5oWg6HAm2kLKXfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O27hWILB; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=lKaDrB5EktoTT0ODm5bX67ed2u0abQ8yfEyPPjsISQ1bRigkXqHo3JVcWln3tvhDnViuZeCDrXfpIakwaZB7arudVKxcSZic+g9F96H4TTX1JPrVDp6zkrHMWR1+tvNfcaBVoe2klC8U9tQF/9wV7HqL3Oj3jfpZYKIFgAXgj2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BHojBqOh; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O27hWILB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BHojBqOh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767744419; x=1799280419;
+  t=1767744421; x=1799280421;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=KVo2Yo+ctszDBHlooK1jFRQkfcVE1zTpATB0CXinmJI=;
-  b=O27hWILBUCI/csRFTrgiOt5Pfr1EBU0h6GKn8S4FntHUqYhJndBRsj4I
-   pjyrgElPjuAdGYkaCogrO8/fYF8DV5gRA6C85sPO1t+bszqM7H4QIXeGK
-   sUCAwz+0IT8IRJvBJYRLPuOhxII/LukNVhhA4/Jcg+4PZwg4TtXOja/Ow
-   mugX+LtRl9fmn+MqOgEE4yMdG9+UydcFwx+ktCKPXSV1OkdOzd46M1X3u
-   MInW69yt+hSbqxjgQLfU9dl8OEr8KkPz6/rizb6sPtVh6sm7kt+5X2LHR
-   L7gq6LjMfQRtMt7KBdcsOkyh9oLYqvWrUErjea8iqhRj6odvhl4zQvXrw
-   A==;
-X-CSE-ConnectionGUID: Gu92FwNpQUeKx+Fy5yDfWQ==
-X-CSE-MsgGUID: NERWLofiQQ2Ie0DsFqzu1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161651"
+  bh=OxcSkJyIuf6OXT7UVftOS4lO6GnEtTzyCclRoU8DzCQ=;
+  b=BHojBqOhTWMiaIotzTgmChTFgB+uIfcA5GJogjgbpgwq9rme3VFxtlqE
+   LvgtmhoLduJZ5LRBWo7lwxFUBpxnpqsh8erGlQNQbmUNBSLsk21fu/hRJ
+   LfVdMKZ6bgicmPGUNn3OF/dAo5JbcM5TDwR/3VjpRjDl7ko9b8XT5Tz77
+   JPAZURh8KGS/idyyFbBheiq7ChFhRsdUdml5AMqC4Y5jgNH51IsCqtfU4
+   nawiKnli6eEZYO/k5W0vSbtlOhwW1gOGk96IRZqZHx2GvVxW0SAwyZ4Hh
+   PkVyLzyAbKfixAyHZlbOQA6yA7ky65469otOTpJDRuxiTTvv4Ynnx4C0d
+   g==;
+X-CSE-ConnectionGUID: DJt/1ExaS+6upC3O5bOawg==
+X-CSE-MsgGUID: bTtxSKgjR86tBR+reo83gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161665"
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="69161651"
+   d="scan'208";a="69161665"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 16:06:54 -0800
-X-CSE-ConnectionGUID: NpiyS8g4QWaITUjGxKmOqg==
-X-CSE-MsgGUID: pa5kAu/jSDWcZ5NT5SZ2xQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 16:06:55 -0800
+X-CSE-ConnectionGUID: CPKw3gLKQ7+gr0BDM0j+og==
+X-CSE-MsgGUID: Kv1CtlyDR3iGu7knv1PMlA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="207841196"
+   d="scan'208";a="207841202"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa005.jf.intel.com with ESMTP; 06 Jan 2026 16:06:54 -0800
+  by orviesa005.jf.intel.com with ESMTP; 06 Jan 2026 16:06:55 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,17 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Erik Gabriel Carrillo <erik.g.carrillo@intel.com>,
+Cc: Sreedevi Joshi <sreedevi.joshi@intel.com>,
 	anthony.l.nguyen@intel.com,
-	sridhar.samudrala@intel.com,
-	Sreedevi Joshi <sreedevi.joshi@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	horms@kernel.org,
+	willemb@google.com,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Mina Almasry <almasrymina@google.com>
-Subject: [PATCH net 07/13] idpf: fix issue with ethtool -n command display
-Date: Tue,  6 Jan 2026 16:06:39 -0800
-Message-ID: <20260107000648.1861994-8-anthony.l.nguyen@intel.com>
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>
+Subject: [PATCH net 09/13] idpf: Fix RSS LUT configuration on down interfaces
+Date: Tue,  6 Jan 2026 16:06:41 -0800
+Message-ID: <20260107000648.1861994-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
 References: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
@@ -72,212 +72,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Erik Gabriel Carrillo <erik.g.carrillo@intel.com>
+From: Sreedevi Joshi <sreedevi.joshi@intel.com>
 
-When ethtool -n is executed on an interface to display the flow steering
-rules, "rxclass: Unknown flow type" error is generated.
+RSS LUT provisioning and queries on a down interface currently return
+silently without effect. Users should be able to configure RSS settings
+even when the interface is down.
 
-The flow steering list maintained in the driver currently stores only the
-location and q_index but other fields of the ethtool_rx_flow_spec are not
-stored. This may be enough for the virtchnl command to delete the entry.
-However, when the ethtool -n command is used to query the flow steering
-rules, the ethtool_rx_flow_spec returned is not complete causing the
-error below.
+Fix by maintaining RSS configuration changes in the driver's soft copy and
+deferring HW programming until the interface comes up.
 
-Resolve this by storing the flow spec (fsp) when rules are added and
-returning the complete flow spec when rules are queried.
-
-Also, change the return value from EINVAL to ENOENT when flow steering
-entry is not found during query by location or when deleting an entry.
-
-Add logic to detect and reject duplicate filter entries at the same
-location and change logic to perform upfront validation of all error
-conditions before adding flow rules through virtchnl. This avoids the
-need for additional virtchnl delete messages when subsequent operations
-fail, which was missing in the original upstream code.
-
-Example:
-Before the fix:
-ethtool -n eth1
-2 RX rings available
-Total 2 rules
-
-rxclass: Unknown flow type
-rxclass: Unknown flow type
-
-After the fix:
-ethtool -n eth1
-2 RX rings available
-Total 2 rules
-
-Filter: 0
-        Rule Type: TCP over IPv4
-        Src IP addr: 10.0.0.1 mask: 0.0.0.0
-        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
-        TOS: 0x0 mask: 0xff
-        Src port: 0 mask: 0xffff
-        Dest port: 0 mask: 0xffff
-        Action: Direct to queue 0
-
-Filter: 1
-        Rule Type: UDP over IPv4
-        Src IP addr: 10.0.0.1 mask: 0.0.0.0
-        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
-        TOS: 0x0 mask: 0xff
-        Src port: 0 mask: 0xffff
-        Dest port: 0 mask: 0xffff
-        Action: Direct to queue 0
-
-Fixes: ada3e24b84a0 ("idpf: add flow steering support")
-Signed-off-by: Erik Gabriel Carrillo <erik.g.carrillo@intel.com>
-Co-developed-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Fixes: 02cbfba1add5 ("idpf: add ethtool callbacks")
 Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h        |  3 +-
- .../net/ethernet/intel/idpf/idpf_ethtool.c    | 59 ++++++++++++-------
- 2 files changed, 40 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index a61821333f5d..dab36c0c3cdc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -284,8 +284,7 @@ struct idpf_port_stats {
- 
- struct idpf_fsteer_fltr {
- 	struct list_head list;
--	u32 loc;
--	u32 q_index;
-+	struct ethtool_rx_flow_spec fs;
- };
- 
- /**
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 00481fec8179..7000f6283a33 100644
+index 7000f6283a33..2efa3c08aba5 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -54,11 +54,15 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
- 		cmd->data = idpf_fsteer_max_rules(vport);
- 		break;
- 	case ETHTOOL_GRXCLSRULE:
--		err = -EINVAL;
-+		err = -ENOENT;
- 		spin_lock_bh(&vport_config->flow_steer_list_lock);
- 		list_for_each_entry(f, &user_config->flow_steer_list, list)
--			if (f->loc == cmd->fs.location) {
--				cmd->fs.ring_cookie = f->q_index;
-+			if (f->fs.location == cmd->fs.location) {
-+				/* Avoid infoleak from padding: zero first,
-+				 * then assign fields
-+				 */
-+				memset(&cmd->fs, 0, sizeof(cmd->fs));
-+				cmd->fs = f->fs;
- 				err = 0;
- 				break;
- 			}
-@@ -72,7 +76,7 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
- 				err = -EMSGSIZE;
- 				break;
- 			}
--			rule_locs[cnt] = f->loc;
-+			rule_locs[cnt] = f->fs.location;
- 			cnt++;
- 		}
- 		if (!err)
-@@ -174,7 +178,7 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 	struct idpf_vport *vport;
- 	u32 flow_type, q_index;
- 	u16 num_rxq;
--	int err;
-+	int err = 0;
+@@ -411,7 +411,10 @@ static u32 idpf_get_rxfh_indir_size(struct net_device *netdev)
+  * @netdev: network interface device structure
+  * @rxfh: pointer to param struct (indir, key, hfunc)
+  *
+- * Reads the indirection table directly from the hardware. Always returns 0.
++ * RSS LUT and Key information are read from driver's cached
++ * copy. When rxhash is off, rss lut will be displayed as zeros.
++ *
++ * Return: 0 on success, -errno otherwise.
+  */
+ static int idpf_get_rxfh(struct net_device *netdev,
+ 			 struct ethtool_rxfh_param *rxfh)
+@@ -419,10 +422,13 @@ static int idpf_get_rxfh(struct net_device *netdev,
+ 	struct idpf_netdev_priv *np = netdev_priv(netdev);
+ 	struct idpf_rss_data *rss_data;
+ 	struct idpf_adapter *adapter;
++	struct idpf_vport *vport;
++	bool rxhash_ena;
+ 	int err = 0;
+ 	u16 i;
  
- 	vport = idpf_netdev_to_vport(netdev);
- 	vport_config = vport->adapter->vport_config[np->vport_idx];
-@@ -200,6 +204,29 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 	if (!rule)
- 		return -ENOMEM;
+ 	idpf_vport_ctrl_lock(netdev);
++	vport = idpf_netdev_to_vport(netdev);
  
-+	fltr = kzalloc(sizeof(*fltr), GFP_KERNEL);
-+	if (!fltr) {
-+		err = -ENOMEM;
-+		goto out_free_rule;
-+	}
-+
-+	/* detect duplicate entry and reject before adding rules */
-+	spin_lock_bh(&vport_config->flow_steer_list_lock);
-+	list_for_each_entry(f, &user_config->flow_steer_list, list) {
-+		if (f->fs.location == fsp->location) {
-+			err = -EEXIST;
-+			break;
-+		}
-+
-+		if (f->fs.location > fsp->location)
-+			break;
-+		parent = f;
-+	}
-+	spin_unlock_bh(&vport_config->flow_steer_list_lock);
-+
-+	if (err)
-+		goto out;
-+
- 	rule->vport_id = cpu_to_le32(vport->vport_id);
- 	rule->count = cpu_to_le32(1);
- 	info = &rule->rule_info[0];
-@@ -238,28 +265,20 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 		goto out;
+ 	adapter = np->adapter;
+ 
+@@ -432,9 +438,8 @@ static int idpf_get_rxfh(struct net_device *netdev,
  	}
  
--	fltr = kzalloc(sizeof(*fltr), GFP_KERNEL);
--	if (!fltr) {
--		err = -ENOMEM;
--		goto out;
--	}
-+	/* Save a copy of the user's flow spec so ethtool can later retrieve it */
-+	fltr->fs = *fsp;
+ 	rss_data = &adapter->vport_config[np->vport_idx]->user_config.rss_data;
+-	if (!test_bit(IDPF_VPORT_UP, np->state))
+-		goto unlock_mutex;
  
--	fltr->loc = fsp->location;
--	fltr->q_index = q_index;
- 	spin_lock_bh(&vport_config->flow_steer_list_lock);
--	list_for_each_entry(f, &user_config->flow_steer_list, list) {
--		if (f->loc >= fltr->loc)
--			break;
--		parent = f;
--	}
--
- 	parent ? list_add(&fltr->list, &parent->list) :
- 		 list_add(&fltr->list, &user_config->flow_steer_list);
++	rxhash_ena = idpf_is_feature_ena(vport, NETIF_F_RXHASH);
+ 	rxfh->hfunc = ETH_RSS_HASH_TOP;
  
- 	user_config->num_fsteer_fltrs++;
- 	spin_unlock_bh(&vport_config->flow_steer_list_lock);
-+	goto out_free_rule;
+ 	if (rxfh->key)
+@@ -442,7 +447,7 @@ static int idpf_get_rxfh(struct net_device *netdev,
  
- out:
-+	kfree(fltr);
-+out_free_rule:
- 	kfree(rule);
- 	return err;
- }
-@@ -313,14 +332,14 @@ static int idpf_del_flow_steer(struct net_device *netdev,
- 	spin_lock_bh(&vport_config->flow_steer_list_lock);
- 	list_for_each_entry_safe(f, iter,
- 				 &user_config->flow_steer_list, list) {
--		if (f->loc == fsp->location) {
-+		if (f->fs.location == fsp->location) {
- 			list_del(&f->list);
- 			kfree(f);
- 			user_config->num_fsteer_fltrs--;
- 			goto out_unlock;
- 		}
+ 	if (rxfh->indir) {
+ 		for (i = 0; i < rss_data->rss_lut_size; i++)
+-			rxfh->indir[i] = rss_data->rss_lut[i];
++			rxfh->indir[i] = rxhash_ena ? rss_data->rss_lut[i] : 0;
  	}
--	err = -EINVAL;
-+	err = -ENOENT;
  
- out_unlock:
- 	spin_unlock_bh(&vport_config->flow_steer_list_lock);
+ unlock_mutex:
+@@ -482,8 +487,6 @@ static int idpf_set_rxfh(struct net_device *netdev,
+ 	}
+ 
+ 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
+-	if (!test_bit(IDPF_VPORT_UP, np->state))
+-		goto unlock_mutex;
+ 
+ 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+ 	    rxfh->hfunc != ETH_RSS_HASH_TOP) {
+@@ -499,7 +502,8 @@ static int idpf_set_rxfh(struct net_device *netdev,
+ 			rss_data->rss_lut[lut] = rxfh->indir[lut];
+ 	}
+ 
+-	err = idpf_config_rss(vport);
++	if (test_bit(IDPF_VPORT_UP, np->state))
++		err = idpf_config_rss(vport);
+ 
+ unlock_mutex:
+ 	idpf_vport_ctrl_unlock(netdev);
 -- 
 2.47.1
 
