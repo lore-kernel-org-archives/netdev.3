@@ -1,136 +1,97 @@
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815702F90C4;
-	Wed,  7 Jan 2026 09:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188DE308F23;
+	Wed,  7 Jan 2026 09:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767778994; cv=none; b=RpBncHiYoyuo7LDwtuJ5XlkRPitlL5o19J57JMEqM1SJby0qAsFJ1d1AvuoLgyj0yfXyYdVIkKEcXihHktRTjETMnzPnBpH35IXcN+5pTCk2ZQlGX6cg9F7eTZOQyhBedhV5WPPnUI1JbS3fPgukC+eZH5+JZSmhZu/AI7eDjrg=
+	t=1767778995; cv=none; b=LIeB1ol93BlItIC62BpFIug2xjVOikSI/RNR4+xtVVaqCIZtfJrNOPc4kZ5Cnst03ycseFhQ8BFiukArbe8C0zBzNIcMC07o6WuBxfqpAzdbOZHsPbIJDHJqcW1c3VUaEA8q61uYURbPcCMvZFy4Bfdm53+Sp6l1uzewJiV9cyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767778994; c=relaxed/simple;
-	bh=e5Z9BMyTMDb2QZfqzAeyDiin2K0Q7WTCGMXvX7EV/tg=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=XDZYqX0r5jgDfyhzgwglN/MAHf8CmHAhyP4r/mTM3d2X8vGPfJ3lfQ8TVAscBWj+pNGV+9jPjILWdW8wL9jt5sOntVrB0Nybk9H3xhTv0g4Su5RiuswR9xmzhmfYk+Jz64wj2dxzS/EoyFkgXoYE6WEJvc4hhsORDs49j7KTfk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ip4LOdV+; arc=none smtp.client-ip=203.205.221.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1767778995; c=relaxed/simple;
+	bh=LV318xn+Kurhf1Wo89/uufqdn1Tp2VD3weaZx0d3cwE=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MHf0z3P1X/NSnj0Tb0AGGvAnHKCwlWr77at9QSY5y1wmPZzrSyAQeZzwAAE699oh7R+KDMsyTUQ0Pw1w3dxNuXRR68DviDFPTUU6syp0QQKOwQz7ysxiOz5HGzSK9LSOoXoSCdIk47k4DoaUzs/DuEiqkl7Ed3hpSNfUMT0S6sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=P1snuVUM; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ip4LOdV+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1767778984; bh=+bJiMBFBrn/FC4AjXuqOVF1bcIPRgzlAJLWD5B04d3M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ip4LOdV+bbQDUJllWRlm9u7e9/ldnFyJ8IPCY/1vjc/Je+SEofe47oa1gYXDfqTDX
-	 A1+oNQt4jhHsbtTgKPakV7EsWfkezreagd38EcS318iH/LO25krGFk1UYtT9XwkBfl
-	 a4yLfHPhArHtl91ZuzQDHQK2ZT5pa3AxDEFnJFmk=
-Received: from lxu-ped-host.. ([114.244.57.24])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 9E539CC6; Wed, 07 Jan 2026 17:39:37 +0800
-X-QQ-mid: xmsmtpt1767778777t5wze93sj
-Message-ID: <tencent_8D33CB9E2A1B8D4B511BB0250FBAA8BB8708@qq.com>
-X-QQ-XMAILINFO: MlsYLnHA0UVj0lNvl/JwsaMpgzWBFFEbb9PqA1DSUfdUMRO+mX8BI1sVvoCLZ8
-	 B/AkqJTIS1FwBUM4uFLcbLY9Vhou9IHvpbZf4BGuSxEDTtFyf+5JYCO6ZwZ2hVdUvwAKMDJ7lMAj
-	 LGNiVPcZDopwd9Dmh8ZE4EniLvU6X93X2FHQ+EQn2wdV7FwN0XCBocv/bRMHhPZjfu4FxC1tIFDC
-	 YiyA7gDGVAsSxEl3pgZnzDQ8PB+HFmP2Yk63bdqxX3AaGKC93Q0447TBjhzXw/APwzBiXuKwACX+
-	 g1nHPsBknAjpgtkOaxhl2bwzcTVQwulMSpyRq8fG4Z/3euiH1sLOXxqvAXQni5NfcD+GfaD8CTt3
-	 r5iDUt3v54tZLtuMVXaSuFRMzSTUAfxnmsUQ/9rGhth5yuTP27ItlYnFBbpXgGiIwlf/7dRZLFPH
-	 roB4aRkhEZqrsM/EEkmq0yxoFtUgtJoGyarezj/h1e36JEy+ni6MQyX3rawniKAOCeA/whRL0uA5
-	 vHEMLax/Gd75o/kBaA7Ll5L4Xn3dCAXFZuvfoN+SRdXo4hygL94ZVsxh7FxxPWo19oYr9ArEVVuO
-	 1E2+S04PSGw66cTSdDpYO6DjgvpcV67o0IxHCdP55XuDuUbdKEL9jggWudJckDDSiL/k9hUB5DOE
-	 N1rwzhpngZnfVCUPq53Tn7cfQRIpPhP8Xnbalyi7yX0WgKj9WiwiLcMtwcrjq5IB1YGxM/ULk5UM
-	 9bZM28LHy1LUulF9834o/G4EVKFFs/kyUSmCTrZMmYMmbGYLP4wlHiL1dh2KWfeDNlJC0xtehZPa
-	 WiE4WeYe32Deas73fCihDfexJZYRvVZZFCjgAxlIeFJ39ViqwSsImutRLDGAsyWOYjflI6NcgYcJ
-	 oAXW8RdcIISCMkAtIgcV29tgA+MkqGHaAcKVm3+42pkTmktGVud8jDyk1DhYFXhPqoMSntbCoGdw
-	 EkHUVZg/7Z2LEVE1q09/qQtKt4oPg/6IS0wrQ4JIL1+FT7L0menymD4/5I7xvMEJF58/W51Z4=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+2c29addf92581b410079@syzkaller.appspotmail.com
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	haoluo@google.com,
-	john.fastabend@gmail.com,
-	jolsa@kernel.org,
-	kpsingh@kernel.org,
-	linux-kernel@vger.kernel.org,
-	martin.lau@linux.dev,
-	netdev@vger.kernel.org,
-	sdf@fomichev.me,
-	song@kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	yonghong.song@linux.dev
-Subject: [PATCH] bpf: Format string can't be empty
-Date: Wed,  7 Jan 2026 17:39:36 +0800
-X-OQ-MSGID: <20260107093935.474079-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <695bc686.050a0220.1c677c.032f.GAE@google.com>
-References: <695bc686.050a0220.1c677c.032f.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="P1snuVUM"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=LV318xn+Kurhf1Wo89/uufqdn1Tp2VD3weaZx0d3cwE=;
+	b=P1snuVUM6DDpCFxwUUzCD6d1TLi4VihNSzEwA6NwXEojTqmDQ2DYn2Y6SLZtpXJ3BfMeTe5tB
+	EF0aUxwJtRCHpeX7oMUM2bWGoLIMhmfUMos49RkzPKl0MYiiLbJI6msuVG23TgXQuVUoAnq8ZeI
+	dVpfTIdHo8R+XVtyr4vhhQc=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dmNL35B20zLlSr;
+	Wed,  7 Jan 2026 17:39:55 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 73E0C40539;
+	Wed,  7 Jan 2026 17:43:10 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 7 Jan 2026 17:43:09 +0800
+Message-ID: <2d94db98-9484-438f-8e25-6b836c63ff71@huawei.com>
+Date: Wed, 7 Jan 2026 17:43:08 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, Andrew Lunn <andrew@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<Frank.Sae@motor-comm.com>, <hkallweit1@gmail.com>, <shenjian15@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<shiyongbang@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
+ rules
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+References: <20251215125705.1567527-1-shaojijie@huawei.com>
+ <20251215125705.1567527-3-shaojijie@huawei.com>
+ <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
+ <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
+ <aVerWcPPteVKRHv1@shell.armlinux.org.uk>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <aVerWcPPteVKRHv1@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-The user constructed a BPF program containing a bpf_snprintf() call.
-The fmt parameter passed to bpf_snprintf() was not assigned a value;
-it only executed the BPF_MAP_FREEZE command to freeze the fmt string.
-Furthermore, when bpf_check() executed check_reg_const_str() and
-check_bpf_snprintf_call() to check the fmt input parameter of the
-user-constructed BPF program's bpf_snprintf() call, strnchr() only
-checked if fmt was a null-terminated string. This led the BPF verifier
-to incorrectly assume the constant format string was valid.
-When the BPF program was actually executed, the out-of-bounds (OOB)
-issue reported by syzbot occurred [1].
 
-This issue is strongly related to bpf_snprintf(), therefore adding a
-check for an empty format string in check_bpf_snprintf_call() would
-be beneficial. Since it calls bpf_bprintf_prepare(), only adding a
-check on the result of strnchr() is needed to prevent the case where
-the format string is empty.
+on 2026/1/2 19:26, Russell King (Oracle) wrote:
+> On Wed, Dec 17, 2025 at 08:54:59PM +0800, Jijie Shao wrote:
+>> on 2025/12/16 15:09, Andrew Lunn wrote:
+>>> On Mon, Dec 15, 2025 at 08:57:01PM +0800, Jijie Shao wrote:
+>>>> The node of led need add new property: rules,
+>>>> and rules can be set as:
+>>>> BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_RX)
+>>> Please could you expand this description. It is not clear to my why it
+>>> is needed. OF systems have not needed it so far. What is special about
+>>> your hardware?
+>> I hope to configure the default rules.
+>> Currently, the LED does not configure rules during initialization; it uses the default rules in the PHY registers.
+>> I would like to change the default rules during initialization.
+> One of the issues here is that there are boards out there where the boot
+> loader has configured the PHY LED configuration - and doesn't supply it
+> via DT (because PHY LED configuration in the kernel is a new thing.)
+>
+> Adding default rules for LEDs will break these platforms.
+>
+> Please find a way to provide the LED rules via firmware rather than
+> introducing some kind of rule defaulting.
 
-[1]
-BUG: KASAN: slab-out-of-bounds in strnchr+0x5e/0x80 lib/string.c:405
-Read of size 1 at addr ffff888029e093b0 by task ksoftirqd/1/23
-Call Trace:
- strnchr+0x5e/0x80 lib/string.c:405
- bpf_bprintf_prepare+0x167/0x13d0 kernel/bpf/helpers.c:829
- ____bpf_snprintf kernel/bpf/helpers.c:1065 [inline]
- bpf_snprintf+0xd3/0x1b0 kernel/bpf/helpers.c:1049
 
-Allocated by task 6022:
- __bpf_map_area_alloc kernel/bpf/syscall.c:395 [inline]
- bpf_map_area_alloc+0x64/0x180 kernel/bpf/syscall.c:408
- insn_array_alloc+0x52/0x140 kernel/bpf/bpf_insn_array.c:49
- map_create+0xafd/0x16a0 kernel/bpf/syscall.c:1514
+Actually, in my code, `default_rules` is an optional configuration;
+you can choose not to set default rules.
 
-The buggy address is located 0 bytes to the right of
- allocated 944-byte region [ffff888029e09000, ffff888029e093b0)
-
-Fixes: d9c9e4db186a ("bpf: Factorize bpf_trace_printk and bpf_seq_printf")
-Reported-by: syzbot+2c29addf92581b410079@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2c29addf92581b410079
-Tested-by: syzbot+2c29addf92581b410079@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
----
- kernel/bpf/helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index db72b96f9c8c..88da2d0e634c 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -827,7 +827,7 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
- 	char fmt_ptype, cur_ip[16], ip_spec[] = "%pXX";
- 
- 	fmt_end = strnchr(fmt, fmt_size, 0);
--	if (!fmt_end)
-+	if (!fmt_end || fmt_end == fmt)
- 		return -EINVAL;
- 	fmt_size = fmt_end - fmt;
- 
--- 
-2.43.0
+Thanks,
+Jijie Shao
 
