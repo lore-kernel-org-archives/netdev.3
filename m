@@ -1,97 +1,136 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2C91D6AA;
-	Wed,  7 Jan 2026 07:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0861280332
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 07:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771045; cv=none; b=aImwR624wL/6ppM2lVQCfFBoNfkjOvkVeRMKHdel1OOqTtIxEwLKc50KfHApldNJWw2xMAqCvOQ5lSwG5Z96n+jjPkdtMofgfdXeZYTvighxlj1g58zLl62GFSJXuuLtYlFEhzImBxPBR316Yc4Qtzsbp5BzLBUJpc9LTXByE3I=
+	t=1767771226; cv=none; b=IMn5/D7KV/MbknruN1NpzghGDs8K6thdEE9BxyJb4KGblXyjeAd+OMiAwqJNnlnzE+aUCSwL6du63D+298mQgjH+2+d016nF8AqGA+OmKpigC8Gyy+Y/+gq+OlH8MloZ29n7PNGq2DVZAfxfZzahNasIMWsOVl+iWTUV1acjtAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771045; c=relaxed/simple;
-	bh=wLyagcN9auWDH0AMqrqEQdu5ZjLCXtjXEEOWvWCsyF0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=e8XNYLqNO+7um0Oj0cbFw8kJBRaXzhgq/LvpIcSa38IXRmIPoz8Xlx/fr7P/V78jBzDbbj6eYgmrC3F9gy4TT0xi4mfUSv07hdmjKXqOWI/g8jwqu84Jc7J1bxoVrSgQecDt/SbDnDm7e9714rkaswYrTly9fB78jGnzirrAh58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lp0B3+kU; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1767771226; c=relaxed/simple;
+	bh=DqDSpwcYbNYLl1aM0TIWsuAfF70N/EEM8oLleO/iIYk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ux5xbwtzJE5ycDvm40rZIOrCfV3EWWCGzwEHAQ2FO6C0tAXP4srMIMMScyA3j3U8IuhvsLiUOX9zvVzEhSvYgYLtaZ22bgnFB2a96WvqbL8S2RRvDCOBc8BTKpm8i+4v+PiFtcjA5juYD+HNQjxb0DFMBnX3+Skfv7Iigg3SSoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nu9mPLFl; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lp0B3+kU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=wLyagcN9auWDH0AMqrqEQdu5ZjLCXtjXEEOWvWCsyF0=; b=l
-	p0B3+kUA2d8r0bOr2+CSMqDck9P4QA48NGynGxTeZi+k5efGCjiN2t1Q3LHTdPYc
-	UOq3YK5tBsMglV5NB6uyxMnnlC97pVFGYyJ1TrKLdenipIEZEJp1qbxIk0NqKHIr
-	wyB5Mg9LScSzNfipznbUYjQt2npyxRdAFQ4BKiq6to=
-Received: from slark_xiao$163.com (
- [2408:8459:3860:79dc:e48d:3bf1:6788:3ccb] ) by ajax-webmail-wmsvr-40-127
- (Coremail) ; Wed, 7 Jan 2026 15:29:24 +0800 (CST)
-Date: Wed, 7 Jan 2026 15:29:24 +0800 (CST)
-From: "Slark Xiao" <slark_xiao@163.com>
-To: "Sergey Ryazanov" <ryazanov.s.a@gmail.com>
-Cc: loic.poulain@oss.qualcomm.com, johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mani@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Daniele Palmas" <dnlplm@gmail.com>
-Subject: Re:Re: [net-next v4 7/8] net: wwan: prevent premature device
- unregister when NMEA port is present
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250723(a044bf12) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <83c51a99-038d-4283-9a39-97129966a500@gmail.com>
-References: <20260105102018.62731-1-slark_xiao@163.com>
- <20260105102018.62731-8-slark_xiao@163.com>
- <83c51a99-038d-4283-9a39-97129966a500@gmail.com>
-X-NTES-SC: AL_Qu2dBfucv0Et4iGRYekfmk8Sg+84W8K3v/0v1YVQOpF8jA/p8D8rXnZKEETb8uSdCjyerB63dQJQxMhbR6tAWYkJXRrvxDGQzXjOWRxKChVO9g==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nu9mPLFl"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-11f36012fb2so1505528c88.1
+        for <netdev@vger.kernel.org>; Tue, 06 Jan 2026 23:33:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767771224; x=1768376024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AYGT8bDi0cltarggyS89UVlr8I1trzzHf57StlSFRxg=;
+        b=nu9mPLFlQLFcXvYMdpBsB/O0an09BuHjlbGv4n3ValpajYAd8oryCLw7PzYBMMjMdL
+         eTxsfwK2qFou9sKdWRVstuAGMaT7gV1rgdVNqVm/5xVGd4b8sLhlXhWYibDgd0Gk+MCu
+         3n25Gn0MuAK3Fo8J27jBTGobTwVj8j5fDYkisgDsTKKlwOKP9R6JgzTVhdfUbJRo4K53
+         OeJObygvs5fWQ/2Wf0tdvC4To1GRutNr4aQm8frfU9XAmp9hzpOBRhHS3eoaAEpO3zL8
+         MtlJaWX7w3FblM2gnqUKn3jath67T2Y4QbYUkpIvr7M9F1B/8UZK/tVaz36NGLB3kuPB
+         tJwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767771224; x=1768376024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AYGT8bDi0cltarggyS89UVlr8I1trzzHf57StlSFRxg=;
+        b=mOU6YOYcZe7BZZQXA6teea/r5kdEllzhnupmJ3TNqb7XjdjldEZhlaIEelpP5t4Eql
+         AvIVgB8zlnEBztf4FBQ5kb7XvfPC1Oz466uPd4aQIE8Hw4Z0fvBOCrbqk1KrLYLgYyQr
+         M028eYFjxtijDvqfKGLV8Df2KLADwUBjU5wiCCk8VObwzhv1umb+I/ks5m15tn5YkgkW
+         VwnAQ19M95itO/yPsFHny/dsCafloPDnYku6tPuwbJOcDdWKxafTGpr9H/BzYLo3N3A4
+         4XR8ejbqZOcacE/LvWLm/bDk6s/jegvd/Lw9NOiVKePWdMOvV+C5UH66VyeEGruw3rel
+         VBmA==
+X-Forwarded-Encrypted: i=1; AJvYcCULYMnjOGXKvJBKGZJhjlhSHn3G7vgXxLG7PQOkcljerW0T8rlS09iQa0nuFZpRfiOCcKsbBXY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykmUKLxLZfOrPZzxGTIwrJveVaNsvTHPhsw3ijnfW3pwQevbk7
+	tIqTXBH2OkwufpcLOxVbJ8YxZeycfflQwHHg19j4u+KJIcc5AEeF9dWbBQVgJfDQLJOHEeAuh/m
+	MIkxvHduEo0FBJgC2uFv3aV16p7m8VnwsA5ZXzEUV
+X-Gm-Gg: AY/fxX5pm1zIEBFyJEn+VPgdFfJ05+i2JkmdnglPL//2FuoviqNc4G/UBU+Pq7020vZ
+	5ltQviZivY4Nhjm2eSmI3n6bQQ3YfjPVJ6Dq4Vg4gTMR6Xv9pqRG7JUnIpfOTpFuaM0eUznZ/+1
+	79Mo/ddvohQ1BKyBZ7EfoiozH+abwAFxpb1/JGAkVaAzcknGotCtSp4CMzB8vM0ZG+hIY6WwDmR
+	aMA4bAbeOj3TEncvxJaG+M5mSL/Owq1Pel5C9hwe7bTr2KCqyWypXLEZBmmeAaaljgnJrvKuPCJ
+	r/KrwUeibIRZHcUWPVOfUOM/FD4=
+X-Google-Smtp-Source: AGHT+IGVWDaAAufKG6cmY61WIEHpz/DCkMzHNAMA7Qq/9XczEH9ksqtPnuAAKTZpAqiEaew+WJqsmTkoKXiTFbLDgrA=
+X-Received: by 2002:a05:7022:41d:b0:11a:342e:8a98 with SMTP id
+ a92af1059eb24-121f8a3172fmr1585843c88.0.1767771223553; Tue, 06 Jan 2026
+ 23:33:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <63fddbfb.60e7.19b975c40ea.Coremail.slark_xiao@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fygvCgBXlypUC15pNeJRAA--.17370W
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCvxTJLmleC1RQ-QAA3J
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+References: <20251231213314.2979118-1-utilityemal77@gmail.com>
+ <CAAVpQUCF3uES6j22P1TYzgKByw+E4EqpM=+OFyqtRGStGWxH+Q@mail.gmail.com> <aVuaqij9nXhLfAvN@google.com>
+In-Reply-To: <aVuaqij9nXhLfAvN@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 6 Jan 2026 23:33:32 -0800
+X-Gm-Features: AQt7F2oljSqURSVX-s0tTsTMpeCMLJQxfW23hgyHnAzDH_XdW9vmaQD1ns9eGvg
+Message-ID: <CAAVpQUB6gnfovRZAg_BfVKPuS868dFj7HxthbxRL-nZvcsOzCg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] lsm: Add hook unix_path_connect
+To: =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>
+Cc: Justin Suess <utilityemal77@gmail.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, Simon Horman <horms@kernel.org>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	linux-security-module@vger.kernel.org, Tingmao Wang <m@maowtm.org>, 
+	netdev@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-CgpBdCAyMDI2LTAxLTA3IDA5OjA2OjA1LCAiU2VyZ2V5IFJ5YXphbm92IiA8cnlhemFub3Yucy5h
-QGdtYWlsLmNvbT4gd3JvdGU6Cj5IaSBTbGFyaywgTG9pYywKPgo+c29ycnkgZm9yIGxhdGUgam9p
-bmluZyB0aGUgZGlzY3Vzc2lvbiwgcGxlYXNlIGZpbmQgYSBkZXNpZ24gcXVlc3Rpb24gYmVsb3cu
-Cj4KPk9uIDEvNS8yNiAxMjoyMCwgU2xhcmsgWGlhbyB3cm90ZToKPj4gRnJvbTogTG9pYyBQb3Vs
-YWluIDxsb2ljLnBvdWxhaW5Ab3NzLnF1YWxjb21tLmNvbT4KPj4gCj4+IFRoZSBXV0FOIGNvcmUg
-dW5yZWdpc3RlcnMgdGhlIGRldmljZSB3aGVuIGl0IGhhcyBubyByZW1haW5pbmcgV1dBTiBvcHMK
-Pj4gb3IgY2hpbGQgZGV2aWNlcy4gRm9yIE5NRUEgcG9ydCB0eXBlcywgdGhlIGNoaWxkIGlzIHJl
-Z2lzdGVyZWQgdW5kZXIKPj4gdGhlIEdOU1MgY2xhc3MgaW5zdGVhZCBvZiBXV0FOLCBzbyB0aGUg
-Y29yZSBpbmNvcnJlY3RseSBhc3N1bWVzIHRoZXJlCj4+IGFyZSBubyBjaGlsZHJlbiBhbmQgdW5y
-ZWdpc3RlcnMgdGhlIFdXQU4gZGV2aWNlIHRvbyBlYXJseS4gVGhpcyBsZWFkcwo+PiB0byBhIHNl
-Y29uZCB1bnJlZ2lzdGVyIGF0dGVtcHQgYWZ0ZXIgdGhlIE5NRUEgZGV2aWNlIGlzIHJlbW92ZWQu
-Cj4+IAo+PiBUbyBmaXggdGhpcyBpc3N1ZSwgd2UgcmVnaXN0ZXIgYSB2aXJ0dWFsIFdXQU4gcG9y
-dCBkZXZpY2UgYWxvbmcgdGhlCj4+IEdOU1MgZGV2aWNlLCB0aGlzIGVuc3VyZXMgdGhlIFdXQU4g
-ZGV2aWNlIHJlbWFpbnMgcmVnaXN0ZXJlZCB1bnRpbAo+PiBhbGwgYXNzb2NpYXRlZCBwb3J0cywg
-aW5jbHVkaW5nIE5NRUEsIGFyZSBwcm9wZXJseSByZW1vdmVkLgo+Cj53d2FuIGNvcmUgYXNzdW1l
-cyB3aG9sZSByZXNwb25zaWJpbGl0eSBmb3IgbWFuYWdpbmcgYSBXV0FOIGRldmljZS4gV2UgCj5h
-bHJlYWR5IHVzZSB3d2FuX2NyZWF0ZV9kZXYoKS93d2FuX3JlbW92ZV9kZXYoKSBldmVyeXdoZXJl
-LiBCdXQsIHdlIGFyZSAKPmNoZWNraW5nIHRoZSByZW1pbmRpbmcgcmVmZXJlbmNlcyBpbiBhbiBp
-bXBsaWNpdCB3YXkgdXNpbmcgCj5kZXZpY2VfZm9yX2VhY2hfY2hpbGQoKSBhbmQgcmVnaXN0ZXJl
-ZCBPUFMgZXhpc3RlbmNlLiBUaHVzLCB3ZSBuZWVkIHRoaXMgCj50cmljayB3aXRoIGEgdmlydHVh
-bCBjaGlsZCBwb3J0Lgo+Cj5Eb2VzIGl0IG1ha2Ugc2Vuc2UgdG8gc3dpdGNoIHRvIGFuIGV4cGxp
-Y2l0IHJlZmVyZW5jZSBjb3VudGluZz8gV2UgY2FuIAo+aW50cm9kdWNlIHN1Y2ggY291bnRlciB0
-byB0aGUgd3dhbl9kZXZpY2Ugc3RydWN0dXJlLCBhbmQgCj5pbmNyZW1lbnQvZGVjcmVtZW50IGl0
-IG9uIGV2ZXJ5IHd3YW5fY3JlYXRlX2RldigpL3d3YW5fcmVtb3ZlX2RldigpIAo+Y2FsbC4gU28s
-IHdlIHdpbGwgZG8gZGV2aWNlX3VucmVnaXN0ZXIoKSB1cG9uIHJlZmVyZW5jZSBudW1iZXIgYmVj
-b21pbmcgCj56ZXJvLgo+Cj5JZiBpdCBzb3VuZHMgcHJvbWlzaW5nLCBJIGNhbiBzZW5kIGEgUkZD
-LCBsZXQncyBzYXksIHRvbW9ycm93LgoKVGhlIFJGQyBvbmx5IGZvciB0aGlzIHBhdGNoIG9yIHRo
-ZSBleGlzdGluZyBkZXNpZ24/IFNpbmNlIHRoZXJlIGlzIHByb2JsZW0KcmVwb3J0ZWQgaW7CoGh0
-dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcHJvamVjdC9uZXRkZXZicGYvcGF0Y2gvMjAyNjAx
-MDUxMDIwMTguNjI3MzEtMy1zbGFya194aWFvQDE2My5jb20vIzI2NzIwODI4LgoKQ3VycmVudGx5
-IGRlc2lnbjoKwqDCoMKgIG1pbm9yID0gaWRhX2FsbG9jX3JhbmdlKCZtaW5vcnMsIDAsIFdXQU5f
-TUFYX01JTk9SUyAtIDEsIEdGUF9LRVJORUwpOwrCoMKgwqAgaWYgKG1pbm9yIDwgMCkKwqDCoMKg
-wqDCoMKgwqAgcmV0dXJuIG1pbm9yOwoKwqDCoMKgIHBvcnQtPmRldi5jbGFzcyA9ICZ3d2FuX2Ns
-YXNzOwovLyB3aGVuIGNkZXYgaXMgZmFsc2UsIG5vIGRldnQgd2FzIGFzc2lnbmVkLiBCdXQgd3dh
-bl9wb3J0X2Rlc3Ryb3koKSB1c2UgZGV2dCB0byBmcmVlCsKgwqDCoCBpZiAoY2RldikKwqDCoMKg
-wqDCoMKgwqAgcG9ydC0+ZGV2LmRldnQgPSBNS0RFVih3d2FuX21ham9yLCBtaW5vcik7CgpXZSBu
-ZWVkIHRvIGhhdmUgYSB1cGRhdGUgYmFzZWQgb24gdGhpcyBwYXRjaCBpZiB3ZSB3YW50IHRvIHVz
-ZSB0aGlzIG9uZSBpbiB0aGlzIHNlcmlhbC4KwqAK
++VFS maintainers
+
+On Mon, Jan 5, 2026 at 3:04=E2=80=AFAM G=C3=BCnther Noack <gnoack@google.co=
+m> wrote:
+>
+> Hello!
+>
+> On Sun, Jan 04, 2026 at 11:46:46PM -0800, Kuniyuki Iwashima wrote:
+> > On Wed, Dec 31, 2025 at 1:33=E2=80=AFPM Justin Suess <utilityemal77@gma=
+il.com> wrote:
+> > > Motivation
+> > > ---
+> > >
+> > > For AF_UNIX sockets bound to a filesystem path (aka named sockets), o=
+ne
+> > > identifying object from a policy perspective is the path passed to
+> > > connect(2). However, this operation currently restricts LSMs that rel=
+y
+> > > on VFS-based mediation, because the pathname resolved during connect(=
+)
+> > > is not preserved in a form visible to existing hooks before connectio=
+n
+> > > establishment.
+> >
+> > Why can't LSM use unix_sk(other)->path in security_unix_stream_connect(=
+)
+> > and security_unix_may_send() ?
+>
+> Thanks for bringing it up!
+>
+> That path is set by the process that acts as the listening side for
+> the socket.  The listening and the connecting process might not live
+> in the same mount namespace, and in that case, it would not match the
+> path which is passed by the client in the struct sockaddr_un.
+
+Thanks for the explanation !
+
+So basically what you need is resolving unix_sk(sk)->addr.name
+by kern_path() and comparing its d_backing_inode(path.dentry)
+with d_backing_inode (unix_sk(sk)->path.dendtry).
+
+If the new hook is only used by Landlock, I'd prefer doing that on
+the existing connect() hooks.
+
+
+>
+> For more details, see
+> https://lore.kernel.org/all/20260101134102.25938-1-gnoack3000@gmail.com/
+> and
+> https://github.com/landlock-lsm/linux/issues/36#issuecomment-2950632277
+>
+> Justin: Maybe we could add that reasoning to the cover letter in the
+> next version of the patch?
+>
+> =E2=80=93G=C3=BCnther
