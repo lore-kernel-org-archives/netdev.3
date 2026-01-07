@@ -1,183 +1,161 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1A4315D24
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 12:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A970315D2D
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 12:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788542; cv=none; b=nGU1VJRE2qt1KcLdG0zUS8v5XkT0PcHZDgWgfjE0kxpWUVpgXuF+CgxBczin1ae9bn8GCeK/PonKLy61KMp2RTkGmrUVUk+pIg3zOXhSJJLubAxjQ0R3ai6WSikXVnxN06bjzVrrrbaiM2HnGVG8o9eP2BhkHPClHcftMixUtsY=
+	t=1767788543; cv=none; b=W+xi7Hg1abPdtB7Nxf4q+kYVgaKMWU1Y+HiO2RBcAj4NDl+gTKiRdjnpyeAj+5nJZpM1ZiV/P28ipzXNkQjiPbEq+TsAZ0aSH7ji0GJ5FHQ5Sqg3D+3Dh7IyTZO9o9IlerMZIrtl8BgOWZUugq5tXPc7VhnJYTHZBzWW1Q2yKSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788542; c=relaxed/simple;
-	bh=kdB+D8ooK5y+MGn4KMCXRzCE7BBpYAmF+6+mGhFmov0=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVqRamgQa/52cG5ToEHrLQoSIdOwsWIBmdoXIW7IEx6QQbKlF6jJil9cyUrD3Kuo9XxBUi0g+ytDtHClp0QkVxaEnbnv2HRLe4aEQsPHchmKiETp/PcFQecv0CXLxtfGgdevZQFcxQAOKrRsRYObuw+C2SzcMKFr2u8fzWe7pjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4ud838R; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1767788543; c=relaxed/simple;
+	bh=im6+FmUa4bUrtYoqyvdPdobyaHlhncXg5H7WqmB2EoQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=etLeZj9lPXVPYJX2PoEHV/S+C3lntgN4FJ0dbDnjtLkW+g37t8yUASo60XsMgCSKfcf06os+urVfDblbdyoUIipufdZR8YTY+Uxoc3Dc+a2HN4bIKAGrdhvNAGoZDO2FkgCBH3Q3Og6knO1O8OQhmaCk5AhcfAnxMYCPctL9Ppw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCUjThau; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4ud838R"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42e2e3c0dccso949912f8f.2
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 04:22:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCUjThau"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a0d06ffa2aso16485975ad.3
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 04:22:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767788538; x=1768393338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FKLGw9RhzY5YOkkhmRmhvQTx9xsA1wJogmSE46HH268=;
-        b=R4ud838ReTtdL3jRI3wcuL8XKgEZ0M93KZcWiGkimDRBqSLq5nPwK8u/gHv/9FEc9i
-         Tzxc5WdUYmlpofesl8hb6oMc4+Xnw3mq3F4YNAtOXLaJOgchazsrooMNX8JKYyCxL4U6
-         hnAq99ns9ffa9C3sOSo7GRosJxyFKR11ctjMlK4LrvlQzynvpheonnoId5jfNY584KbL
-         cmNzOPsmGqHH7BAcn0BEWFdPLir5EWHu6wSEr+H7thUSA1SNqMqvE2om/k+dEumpQdWm
-         cjxjp4bOE3Xylwixbj6B+BTM3n8yVXxplOWdCkKVA4U+m4UhSsad9xOEfTVKojd8Y2fZ
-         Zqpg==
+        d=gmail.com; s=20230601; t=1767788541; x=1768393341; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SGrLo1T/GXWCd4yT4qDDB4M00lQE1SksrWNKQr8UGaA=;
+        b=gCUjThauMASaq0N5h1HZH5drWl7/mU3lrlDzES6q1vrBU/vnE7GcOTbfGE+SGGNifJ
+         y3VAMG5lGJzROmxmhKDWUDUDNgRliHGNlqDkk2HaL6UPEof5AKbJrBkhEKxx3WCJCOPa
+         9W9B6D2FDLdUHzaTI2pBtqpbsh83ZLN4xFJK0HZtUsq2QXGXH9i1/fdgpqoXkoVYZ9fB
+         IXR0o2JH2fKVmVDyxqIhHyDe55IReIUJmAx4uN6J+RyedkgSAfNo9gV5JKLmX3bhr776
+         2X94+V2m3uhJQfIdVHjUhVIj3IXs1BsjArEIXXPcYW3L8oH6zysw0FxOJRdWOznVH48c
+         DW8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767788538; x=1768393338;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FKLGw9RhzY5YOkkhmRmhvQTx9xsA1wJogmSE46HH268=;
-        b=qB7n4Qqz9OU9iKRi3h6M3uEMQDF+t3VWZUwhn7nSTeiV0D1Q+mYMQwka9ixY450vpw
-         jyxpaGwhEsLZJPIlMJfRzr0EJoxzllhU8EdDt63Jow0jn872IWxhhgecPY4ItPQGF3ya
-         TFfGbmPVFhnQ9JPCQ+hvFiRibfdEnMD1WwiBzKnhSpSo7H/4whtcOzA0Jkm8CifEUpdL
-         r4OG6F8PUMJZfHYENU7/8i3mVQzB1V8iEpkMvimADhv07ztUO0EhtZYd0vGmOkCWUy5X
-         Ni/P4u2IBH9iua/V/UzXqOj4cHNPJB0U1pzVK4Ms5UlqQnQQDEVRKxhB+7xenetDMxuu
-         lAjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTJZGPeKbjoWLpdF+YY3G1G/I8lh+aH8oRwrIlCp+5n0CMN6PR+lUKKI8A96EG6g4SdwoFs8w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEO1ufovyn1c5YQtBLFnlvEXuVb2cHCGyrR+z6moYh9iKZETTm
-	UxtJUFZYF+PUU27xY3mdX0zvMZcDLnuDgbPIqKyY5iD1yWPo6FPRLxBRbgx6cg==
-X-Gm-Gg: AY/fxX7QzwF+gQoQ5z1KJq7KL1RTaym2nfhuISdA6RBQxYtB2EmtutKxtJYs0301lfk
-	iysipWCroue8Hn7FwX2eBeU+sDm1RWTwi9IR8fmWZiL/TDluZhXk9wEUHwwGBEdXko2DJrDPTKP
-	I6nj1OjrgkxOJjSi4Z1AVuKU37NNIzYD8X5IXjSo5oZua2NPLUPjihZpwBoYXSG1SxuuH8VmdVI
-	ijuGVq0Kw6+AUl/NcCk0gn2X014ks3+XGUvcZowvioAUbwBh13ySioLXWww2H1sXOCR38eCftxt
-	Vbm0f5wwqgBVYrv6//gSlET0iRR4Zc1f1eBvjzeHk0D9JETKsHQJiBC2G8WmwxCkfKuvX3HuMjP
-	GzyNIwJeRYBwADnhwjoQ8gTpnYkz0SABHK/a9xgAuoQvkGpMNrcYoxZUzyuIY018nHcTLBf1SdX
-	UDjn3jUs4BVIEWNhRda2VKOZSwkMcr
-X-Google-Smtp-Source: AGHT+IFDN//R8tPKMlA4XyPjKFG9gUgQwKQylfTdCf0jvQBBESf+sLesU0BxFAZFA45mSUh5AwD0QA==
-X-Received: by 2002:a05:6000:1449:b0:431:6ba:38ac with SMTP id ffacd0b85a97d-432c374f131mr3053927f8f.4.1767788538368;
-        Wed, 07 Jan 2026 04:22:18 -0800 (PST)
-Received: from imac.lan ([2a02:8010:60a0:0:bc70:fb0c:12b6:3a41])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e16f4sm10417107f8f.11.2026.01.07.04.22.17
+        d=1e100.net; s=20230601; t=1767788541; x=1768393341;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SGrLo1T/GXWCd4yT4qDDB4M00lQE1SksrWNKQr8UGaA=;
+        b=RcZGeH9b2uRHbZ59aCARkWe0ZbrvfMeDDr5L1lgOWytQEAZ3fhQdKlMVU3H8JECUwp
+         Vsqbb9BIJehtgu0kRbSMck49xdfjTr4RjFrW0pEeyfLt/655hgLe68LITqT67pThvZdW
+         GXVHLjDohVb9pU+fBQTgU329xMx+3nXGS8x3BRwk6AbXFpkWyjqPflaS/qvr72eDPqdk
+         etIU1aswd9ZWEdWjJpaFP4ixmQgtX/yLER3ccfnvmpRR4JChwcmKJJax21M9g1bSThTD
+         Sa1KLcSdzeMwu6R52bdVP8K3LupzJensnJQmy/rYo1rKR0N7Nsfp5aVh2xGWmx/hnrWx
+         CUwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXD7nI7Gvl2P3z3tLdayosQK8baVx8aMYyKRxOm+j+rtF2nJYG61662RkLGMjWya0u5LgWWKNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwNCeNuFsy5a4hx0H09z/eJsMzzH1xKhvgiPUjA2r6tg6gQDrW
+	aJQ53A/X4OGjFvbsnN23+oqungak+pONiwFc7VxlMQtVcUqg0iM9bYVR
+X-Gm-Gg: AY/fxX7sXKETjJ+UqRX8pE3nuhC3mfet6PmETSm1AruBR7MMQObjmPexBwd6rdGOTp1
+	3RWJoMQxJw77K4fLy50A3czBqX9v6Z8SC7QUfsIplvmqVIzzbceOcK9mS+a60zTxslYlg83qvwn
+	SmoTJLP2nyl6wCtnv92ALRbrxe1vg+ArWZHu/aOz68dk7Bb6Uxa9kznyZRf1qqofB4iqczLT+fA
+	/WhaY924MG9K747j+77qjHKuvIUiEjnWnBZr03OTbOPhu1EkRauQnUYBu5UKe6+beEPYhZVxTMN
+	FfbyMQ5/h0pshxX+wZRyt4ZHFqRnnxD7FXbeWz1+ts50EGALVTEgiOE2cElh0aHNTZblXaZNBut
+	TtB7LD/HMvyoS2phfyCFKFoF1e0hDqlIoDCQo5QH4N8kJNdnH7ehZwoGueqJlukZ3yZ2hPJiilZ
+	HxkTtHyFCHHJo=
+X-Google-Smtp-Source: AGHT+IFRchTfsduoJn0oX6m0fWHXyRosMYVgZHpA1UJaa4M9jq2wiA3YsmjcaDKgVMcgaLKr+eTvyw==
+X-Received: by 2002:a17:902:cece:b0:298:2afa:796d with SMTP id d9443c01a7336-2a3ee4c432bmr20560315ad.61.1767788540464;
+        Wed, 07 Jan 2026 04:22:20 -0800 (PST)
+Received: from [127.0.0.1] ([188.253.121.153])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f8b1526sm5025946a91.14.2026.01.07.04.22.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 04:22:17 -0800 (PST)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Gal Pressman <gal@nvidia.com>,
-	Jan Stancek <jstancek@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	netdev@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Ruben Wauters <rubenru09@aol.com>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v1 13/13] tools: ynl-gen-c: Fix remaining pylint warnings
-Date: Wed,  7 Jan 2026 12:21:43 +0000
-Message-ID: <20260107122143.93810-14-donald.hunter@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260107122143.93810-1-donald.hunter@gmail.com>
-References: <20260107122143.93810-1-donald.hunter@gmail.com>
+        Wed, 07 Jan 2026 04:22:20 -0800 (PST)
+From: Zesen Liu <ftyghome@gmail.com>
+Subject: [PATCH bpf 0/2] bpf: Fix memory access flags in helper prototypes
+Date: Wed, 07 Jan 2026 20:21:37 +0800
+Message-Id: <20260107-helper_proto-v1-0-e387e08271cc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANFPXmkC/22NwQ6CMBBEf4Xs2Zp2haKe/A9DDJQtbAK0aQnRE
+ P7dyskDx5nJe7NCpMAU4Z6tEGjhyG5KQZ0yMH09dSS4TRlQYqEQpehp8BRePrjZCdto0rm6Yq5
+ LSIgPZPm9657QeAtVKnuOswuf/WJR+3RsW5SQIrWaZHvLEdtHN9Y8nI0bf/IEaalkeQQpWxd4s
+ cbYf6jatu0LDlaxAeIAAAA=
+X-Change-ID: 20251220-helper_proto-fb6e64182467
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Matt Bobrowski <mattbobrowski@google.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Shuran Liu <electronlsr@gmail.com>, Peili Gao <gplhust955@gmail.com>, 
+ Haoran Ni <haoran.ni.cs@gmail.com>, Zesen Liu <ftyghome@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2113; i=ftyghome@gmail.com;
+ h=from:subject:message-id; bh=im6+FmUa4bUrtYoqyvdPdobyaHlhncXg5H7WqmB2EoQ=;
+ b=owGbwMvMwCXWI1/u+8bXqJ3xtFoSQ2ac/+eQ+OhzsvkdJ+oKCppF4/PlwgI1hFmXTEuq6a5M/
+ 7L33OOOUhYGMS4GWTFFlt4fhndXZpobb7NZcBBmDisTyBAGLk4BmEhoPyPDhvalsXW6SoV+8oks
+ bY72h/oXecpbv5/FtmRR2P5gnZ3XGRmmXPfYNCHcc++RJersW/6vVm4sO77s+9yei48kPyzinar
+ JDQA=
+X-Developer-Key: i=ftyghome@gmail.com; a=openpgp;
+ fpr=8DF831DDA9693733B63CA0C18C1F774DEC4D3287
 
-Fix the following pylint warning instances:
+Hi,
 
-ynl_gen_c.py:575:15: E0606: Possibly using variable 'mem' before
-assignment (possibly-used-before-assignment)
+This series adds missing memory access flags (MEM_RDONLY or MEM_WRITE) to
+several bpf helper function prototypes that use ARG_PTR_TO_MEM but lack the
+correct flag. It also adds a new check in verifier to ensure the flag is
+specified.
 
-ynl_gen_c.py:888:0: R1707: Disallow trailing comma tuple
-(trailing-comma-tuple)
+Missing memory access flags in helper prototypes can lead to critical
+correctness issues when the verifier tries to perform code optimization.
+After commit 37cce22dbd51 ("bpf: verifier: Refactor helper access type
+tracking"), the verifier relies on the memory access flags, rather than
+treating all arguments in helper functions as potentially modifying the
+pointed-to memory.
 
-ynl_gen_c.py:944:21: C0209: Formatting a regular string which could be an
-f-string (consider-using-f-string)
+Using ARG_PTR_TO_MEM alone without flags does not make sense because:
 
-ynl_gen_c.py:1450:14: C1802: Do not use `len(SEQUENCE)` without comparison
-to determine if a sequence is empty (use-implicit-booleaness-not-len)
+- If the helper does not change the argument, missing MEM_RDONLY causes the
+   verifier to incorrectly reject a read-only buffer.
+- If the helper does change the argument, missing MEM_WRITE causes the
+   verifier to incorrectly assume the memory is unchanged, leading to
+   errors in code optimization.
 
-ynl_gen_c.py:1688:13: W1514: Using open without explicitly specifying an
-encoding (unspecified-encoding)
+We have already seen several reports regarding this:
 
-ynl_gen_c.py:3446:0: C0325: Unnecessary parens after '=' keyword
-(superfluous-parens)
+- commit ac44dcc788b9 ("bpf: Fix verifier assumptions of bpf_d_path's
+   output buffer") adds MEM_WRITE to bpf_d_path;
+- commit 2eb7648558a7 ("bpf: Specify access type of bpf_sysctl_get_name
+   args") adds MEM_WRITE to bpf_sysctl_get_name.
 
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+This series looks through all prototypes in the kernel and completes the
+flags. It also adds a new check (check_func_proto) in
+verifier.c to statically restrict ARG_PTR_TO_MEM from appearing without
+memory access flags. 
+
+Thanks,
+
+Zesen Liu
+
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Zesen Liu (2):
+      bpf: Fix memory access flags in helper prototypes
+      bpf: Require ARG_PTR_TO_MEM with memory flag
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 5f079a74c8d1..c823ccf2b75c 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -571,6 +571,8 @@ class TypeBinary(Type):
-             mem = 'NLA_POLICY_MIN_LEN(' + self.get_limit_str('min-len') + ')'
-         elif 'max-len' in self.checks:
-             mem = 'NLA_POLICY_MAX_LEN(' + self.get_limit_str('max-len') + ')'
-+        else:
-+            raise Exception('Failed to process policy check for binary type')
- 
-         return mem
- 
-@@ -885,7 +887,7 @@ class TypeIndexedArray(Type):
-                 f"for (i = 0; i < {var}->{ref}_count.{self.c_name}; i++)",
-                 f'{self.nested_render_name}_free(&{var}->{ref}{self.c_name}[i]);',
-             ]
--        lines += f"free({var}->{ref}{self.c_name});",
-+        lines += (f"free({var}->{ref}{self.c_name});",)
-         return lines
- 
- class TypeNestTypeValue(Type):
-@@ -941,9 +943,8 @@ class TypeSubMessage(TypeNest):
-         else:
-             sel_var = f"{var}->{sel}"
-         get_lines = [f'if (!{sel_var})',
--                     'return ynl_submsg_failed(yarg, "%s", "%s");' %
--                        (self.name, self['selector']),
--                    f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
-+                     f'return ynl_submsg_failed(yarg, "{self.name}", "{self['selector']}");',
-+                     f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
-                      "return YNL_PARSE_CB_ERROR;"]
-         init_lines = [f"parg.rsp_policy = &{self.nested_render_name}_nest;",
-                       f"parg.data = &{var}->{self.c_name};"]
-@@ -1447,7 +1448,7 @@ class Family(SpecFamily):
-         attr_set_queue = list(self.root_sets.keys())
-         attr_set_seen = set(self.root_sets.keys())
- 
--        while len(attr_set_queue):
-+        while attr_set_queue:
-             a_set = attr_set_queue.pop(0)
-             for attr, spec in self.attr_sets[a_set].items():
-                 if 'nested-attributes' in spec:
-@@ -1685,7 +1686,7 @@ class CodeWriter:
-         if not self._overwrite and os.path.isfile(self._out_file):
-             if filecmp.cmp(self._out.name, self._out_file, shallow=False):
-                 return
--        with open(self._out_file, 'w+') as out_file:
-+        with open(self._out_file, 'w+', encoding='utf-8') as out_file:
-             self._out.seek(0)
-             shutil.copyfileobj(self._out, out_file)
-             self._out.close()
-@@ -3443,7 +3444,7 @@ def main():
-         print(exc)
-         os.sys.exit(1)
- 
--    cw = CodeWriter(BaseNlLib(), args.out_file, overwrite=(not args.cmp_out))
-+    cw = CodeWriter(BaseNlLib(), args.out_file, overwrite=not args.cmp_out)
- 
-     _, spec_kernel = find_kernel_root(args.spec)
-     if args.mode == 'uapi' or args.header:
+ kernel/bpf/helpers.c     |  2 +-
+ kernel/bpf/syscall.c     |  2 +-
+ kernel/bpf/verifier.c    | 17 +++++++++++++++++
+ kernel/trace/bpf_trace.c |  6 +++---
+ net/core/filter.c        |  8 ++++----
+ 5 files changed, 26 insertions(+), 9 deletions(-)
+---
+base-commit: ab86d0bf01f6d0e37fd67761bb62918321b64efc
+change-id: 20251220-helper_proto-fb6e64182467
+
+Best regards,
 -- 
-2.52.0
+Zesen Liu <ftyghome@gmail.com>
 
