@@ -1,249 +1,110 @@
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BB030B501
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 09:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792CA30216D;
+	Wed,  7 Jan 2026 09:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767778715; cv=none; b=t7N8eqaCMytN2UGN+OuqpJ5Cr5PSziWvHgYwNz+jJh707QIR2wTp3mMf7vYYWAvz6EPOEQXABwqFhsRTt1CydbkKUoREHtZ+fhVJHrqdF6K5mzH+yLleZj87lhjZK1F9hKYLPsKl72tynvwElRgV50+kzsVRXi8IrQo+nemhnIw=
+	t=1767778851; cv=none; b=YLRL0B5PuhBm29O292kGlmIj0PadbqK8vk0tlgsj+e5KSkkYZPjHx+Ade7czXBHr0grOYD5V2n+NYrQyUKPe1RyCvxj2tfWr9Jk2Usv9kKVAinCWzryPsIVAieCt+FcEBGd3jHgfFlGiV7/P4RjcfywTteQyixXj6DKg//P0hhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767778715; c=relaxed/simple;
-	bh=eHItNXSuFuiIX4AdsQWnDjqU/WQZ3vk3O/CYr5Z0/cA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ioay0XR0u+iSn13mdhqbMUEo2w+n9XdD1t2FS2rfyzpeWGu7ci/SUET/tx8QRlG2G1+rn6Am0jhjAiZy8dVbgNguMLaFuRbl86ere9Lp9OEDp7FO4YuHlqtPPY71lFmdgWnyRnHzYhRn931L9QhEOeqQQTTvYyDyp1J0b3fPMxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PsB5UQYB; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1767778851; c=relaxed/simple;
+	bh=YSi9esBmeYEyRGSCpsJzzuJLcgrfHriDtCZKo1Lrbi8=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=MQbvucx/nVMaEx/EaIfGrHOVo0mSehTH72abJIb1i1K+QNcgqo5S6errPNmaI2QDmdZ3+XEKbz2MzPOH7QMbdbKAzzOmE8Jj6XtNQxTCxZmpciSonhr5eC82WCEBPQza3/wFsSunBMMCXq/9oZHYGal/L6b5plLSytNVwVA6alE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LRkG+CCZ; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PsB5UQYB"
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65ecd7fcf36so1002610eaf.1
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 01:38:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767778710; x=1768383510; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lzcLdE5lW6KjrMioL4MVcYHG8ltNGC1zHqzO2YGzVIs=;
-        b=PsB5UQYBAZoi7z0hWcL+39f21zYQ6lVLIsVZh77ruPXbOslr7D9WUJ/9vNWIrXg43d
-         Lq1EKfflcFKl+wiiJ6WxKEfmAQVRmJuXVP9I3tht1b47lQnOJRJagdFBnzAcxA/bd0k0
-         ad9/Nqt53Hk5crV2ZW08Cq9hylzWf93Vdo7CtTKI55fG78WhNPJXB8qhVem5nztZ1KEZ
-         KMR1N0TDldtdHdnpKu64je8P/kcOwl+bMag3AGPdcrG8iBtRsvhM+p4Pxm5HN19quSvK
-         yl/GY0LO/wJ8F4uuILMzNPZS0AvVQ1MHFgw+a8+Bsb+fucCdHOIbDc+ApTBPL4j9ovCJ
-         LaUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767778710; x=1768383510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lzcLdE5lW6KjrMioL4MVcYHG8ltNGC1zHqzO2YGzVIs=;
-        b=ljO0WpC9afmnfhNKmC54BYRenWu355NUXRsEyPhpwvopCdRS9oIQ5SLoHTc390ChIi
-         dZYhG7yHeE5AYixZcjzt4vjsFBNRvkd6AzVbln9o33SjloG2cfTnLascr8On9XCsHYa/
-         /RLgy193PE6SLnq70Hp4DajrXYkVRgEPK4I5uWCcOTPIoiTUn1mu37ydBKxR/VHlIRUm
-         zog6H+prX+wMxuOYZHor3Qjo2lwlRrGPp0iqRrKgGykiNKBAfALAfHEdyT4BY1kTNnK0
-         KZSIjhgFUxUNBNbrC8zNZ62jPumdVegn3lSaYeca4ShDImB1sQJvkkjUfiCtFsWmXGhD
-         L6vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOhOCS1hwYdtUVYTk5AIlsNqoAhoEgkmp3ZKdKa6EOUvqEnlBOHymwJpaahEi1e0Vw+yeymWI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL4tBQtr3uJnxJou/j1cs9iEt3AU98/8liApXPlCSrXwpmLnTy
-	yq93PWPuIsNh3D5rKvkmVHzO6QpnFFcMyKWUnJyofaNkMP6lCzpYsCrCO/6XIhlQCBfu3XVaCYh
-	EoyWkle7KIYYbfphokGZ+NxWKu3QY+6AmOMnW0U1PYA==
-X-Gm-Gg: AY/fxX7rJc/HX5DaMdinF8aDLkyVwpE2Uh15hNvkcq3CPuszNhKBbnRjSir0djh5sSk
-	d3KtvQNHa+VEl/7C+lLDqOHhYm9JvCdqCs0dfMqTIh7DMSCDWx0pYYaA3eINW5/5dkmUj/eoh8u
-	Q3yRZn1s8Aet9uqaftvGFrGw5vkH3tzeFBj0gReZ/RpX3xomzo96+j4B3A1j79WmGnce9PW/COg
-	oWMYh7ppthNuZ0WDMAag1gASE7GwwIqfY/8f8GZ8YVApQKtBGdOLBpsg8Kw9PeitSAqs3hm5+jR
-	BRCGUMS1eo8F4WQFW3SXJdZytA==
-X-Google-Smtp-Source: AGHT+IHSj3fyWcR8PeI71mFrFGfZpz1gtYlT37IzGcQAYuwipaKr7ifaf9acDpnsMoegGnuUM/krqm4/4tHZyu+YBdY=
-X-Received: by 2002:a05:6820:f02e:b0:659:9a49:8ff0 with SMTP id
- 006d021491bc7-65f54ef5252mr794898eaf.29.1767778710402; Wed, 07 Jan 2026
- 01:38:30 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LRkG+CCZ"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=PGby5+iD4Unob2dCk7B6aOiRK3t3aCW/yTkgMFN2Yuk=;
+	b=LRkG+CCZK3iga7889Gyxa23VOE5dCf1vZlu8BYqs8E80zWAVYPXwthaEfRnUYN3gBf+Tdvcmi
+	dqUKLosG6k02EjC1hhQcVkK5YJrJlehGdDgpnHbgVeQhuXh74qVlLzfA9Wo1yuV7dsD9h6MPfDE
+	f9UKkWlw4eB0QhAqHV5lTTM=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dmNHF261Nz1prM1;
+	Wed,  7 Jan 2026 17:37:29 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id A2DC840363;
+	Wed,  7 Jan 2026 17:40:46 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 7 Jan 2026 17:40:45 +0800
+Message-ID: <e5fb30bf-bf8d-417a-b031-8d706422bee0@huawei.com>
+Date: Wed, 7 Jan 2026 17:40:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
- <CAHUa44FrDZbvRvfN8obf80_k=Eqxe9YxHpjaE5jU7nkxPUwfag@mail.gmail.com>
- <20251218135332f323fa91@mail.local> <CAHUa44GpW5aO26GDyL9RZub9vVYvVcJ7etwO0yXBN_mUi0W4AA@mail.gmail.com>
- <CAHUa44HqRbCJTXsrTCm0G5iwtkQtq+Si=yOspCjpAn-N2uVSVg@mail.gmail.com> <aV0Qx5BOso5co3tm@bogus>
-In-Reply-To: <aV0Qx5BOso5co3tm@bogus>
-From: Jens Wiklander <jens.wiklander@linaro.org>
-Date: Wed, 7 Jan 2026 10:38:19 +0100
-X-Gm-Features: AQt7F2rcNsjXN7djR70fxjzIrnv1VtdzPp10juTq1vFrm5vuVSwDuqGbqR3kJLk
-Message-ID: <CAHUa44FhRO0AO3nDXSoZ7O_9T3EFB47D34zRooCTd6fhXFzxXw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/17] tee: Use bus callbacks instead of driver callbacks
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Sumit Garg <sumit.garg@kernel.org>, 
-	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Sumit Garg <sumit.garg@oss.qualcomm.com>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, 
-	Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org, 
-	linux-mips@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+	<horms@kernel.org>, <Frank.Sae@motor-comm.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<salil.mehta@huawei.com>, <shiyongbang@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
+ rules
+To: Andrew Lunn <andrew@lunn.ch>
+References: <20251215125705.1567527-1-shaojijie@huawei.com>
+ <20251215125705.1567527-3-shaojijie@huawei.com>
+ <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
+ <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
+ <4e884fc2-9f64-48dd-b0be-e9bb6ec0582d@lunn.ch>
+ <3c82f4e1-0702-4617-b40c-d7f1cbd5a1de@huawei.com>
+ <7d6fd4f6-3cc3-4a42-a726-6cbc4d902cc3@lunn.ch>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <7d6fd4f6-3cc3-4a42-a726-6cbc4d902cc3@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On Tue, Jan 6, 2026 at 2:40=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com> =
-wrote:
->
-> On Mon, Jan 05, 2026 at 10:16:09AM +0100, Jens Wiklander wrote:
-> > Hi,
-> >
-> > On Thu, Dec 18, 2025 at 5:29=E2=80=AFPM Jens Wiklander
-> > <jens.wiklander@linaro.org> wrote:
-> > >
-> > > On Thu, Dec 18, 2025 at 2:53=E2=80=AFPM Alexandre Belloni
-> > > <alexandre.belloni@bootlin.com> wrote:
-> > > >
-> > > > On 18/12/2025 08:21:27+0100, Jens Wiklander wrote:
-> > > > > Hi,
-> > > > >
-> > > > > On Mon, Dec 15, 2025 at 3:17=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > > > > <u.kleine-koenig@baylibre.com> wrote:
-> > > > > >
-> > > > > > Hello,
-> > > > > >
-> > > > > > the objective of this series is to make tee driver stop using c=
-allbacks
-> > > > > > in struct device_driver. These were superseded by bus methods i=
-n 2006
-> > > > > > (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shut=
-down
-> > > > > > methods.")) but nobody cared to convert all subsystems accordin=
-gly.
-> > > > > >
-> > > > > > Here the tee drivers are converted. The first commit is somewha=
-t
-> > > > > > unrelated, but simplifies the conversion (and the drivers). It
-> > > > > > introduces driver registration helpers that care about setting =
-the bus
-> > > > > > and owner. (The latter is missing in all drivers, so by using t=
-hese
-> > > > > > helpers the drivers become more correct.)
-> > > > > >
-> > > > > > v1 of this series is available at
-> > > > > > https://lore.kernel.org/all/cover.1765472125.git.u.kleine-koeni=
-g@baylibre.com
-> > > > > >
-> > > > > > Changes since v1:
-> > > > > >
-> > > > > >  - rebase to v6.19-rc1 (no conflicts)
-> > > > > >  - add tags received so far
-> > > > > >  - fix whitespace issues pointed out by Sumit Garg
-> > > > > >  - fix shutdown callback to shutdown and not remove
-> > > > > >
-> > > > > > As already noted in v1's cover letter, this series should go in=
- during a
-> > > > > > single merge window as there are runtime warnings when the seri=
-es is
-> > > > > > only applied partially. Sumit Garg suggested to apply the whole=
- series
-> > > > > > via Jens Wiklander's tree.
-> > > > > > If this is done the dependencies in this series are honored, in=
- case the
-> > > > > > plan changes: Patches #4 - #17 depend on the first two.
-> > > > > >
-> > > > > > Note this series is only build tested.
-> > > > > >
-> > > > > > Uwe Kleine-K=C3=B6nig (17):
-> > > > > >   tee: Add some helpers to reduce boilerplate for tee client dr=
-ivers
-> > > > > >   tee: Add probe, remove and shutdown bus callbacks to tee_clie=
-nt_driver
-> > > > > >   tee: Adapt documentation to cover recent additions
-> > > > > >   hwrng: optee - Make use of module_tee_client_driver()
-> > > > > >   hwrng: optee - Make use of tee bus methods
-> > > > > >   rtc: optee: Migrate to use tee specific driver registration f=
-unction
-> > > > > >   rtc: optee: Make use of tee bus methods
-> > > > > >   efi: stmm: Make use of module_tee_client_driver()
-> > > > > >   efi: stmm: Make use of tee bus methods
-> > > > > >   firmware: arm_scmi: optee: Make use of module_tee_client_driv=
-er()
-> > > > > >   firmware: arm_scmi: Make use of tee bus methods
-> > > > > >   firmware: tee_bnxt: Make use of module_tee_client_driver()
-> > > > > >   firmware: tee_bnxt: Make use of tee bus methods
-> > > > > >   KEYS: trusted: Migrate to use tee specific driver registratio=
-n
-> > > > > >     function
-> > > > > >   KEYS: trusted: Make use of tee bus methods
-> > > > > >   tpm/tpm_ftpm_tee: Make use of tee specific driver registratio=
-n
-> > > > > >   tpm/tpm_ftpm_tee: Make use of tee bus methods
-> > > > > >
-> > > > > >  Documentation/driver-api/tee.rst             | 18 +----
-> > > > > >  drivers/char/hw_random/optee-rng.c           | 26 ++----
-> > > > > >  drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
-> > > > > >  drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
-> > > > > >  drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
-> > > > > >  drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
-> > > > > >  drivers/rtc/rtc-optee.c                      | 27 ++-----
-> > > > > >  drivers/tee/tee_core.c                       | 84 ++++++++++++=
-++++++++
-> > > > > >  include/linux/tee_drv.h                      | 12 +++
-> > > > > >  security/keys/trusted-keys/trusted_tee.c     | 17 ++--
-> > > > > >  10 files changed, 164 insertions(+), 138 deletions(-)
-> > > > > >
-> > > > > > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > > > > > --
-> > > > > > 2.47.3
-> > > > > >
-> > > > >
-> > > > > Thank you for the nice cleanup, Uwe.
-> > > > >
-> > > > > I've applied patch 1-3 to the branch tee_bus_callback_for_6.20 in=
- my
-> > > > > tree at https://git.kernel.org/pub/scm/linux/kernel/git/jenswi/li=
-nux-tee.git/
-> > > > >
-> > > > > The branch is based on v6.19-rc1, and I'll try to keep it stable =
-for
-> > > > > others to depend on, if needed. Let's see if we can agree on taki=
-ng
-> > > > > the remaining patches via that branch.
-> > > >
-> > > > 6 and 7 can go through your branch.
-> > >
-> > > Good, I've added them to my branch now.
-> >
-> > This entire patch set should go in during a single merge window. I
-> > will not send any pull request until I'm sure all patches will be
-> > merged.
-> >
-> > So far (if I'm not mistaken), only the patches I've already added to
-> > next have appeared next. I can take the rest of the patches, too, but
-> > I need OK for the following:
-> >
->
-> [...]
->
-> >
-> > Sudeep, you seem happy with the following patches
-> > - firmware: arm_scmi: optee: Make use of module_tee_client_driver()
-> > - firmware: arm_scmi: Make use of tee bus methods
-> > OK if I take them via my tree, or would you rather take them yourself?
-> >
->
-> I am happy if you want to take all of them in one go. I think I have
-> already acked it. Please shout if you need anything else from me, happy t=
-o
-> help in anyway to make it easier to handle this change set.
 
-Thanks, I've applied all the patches in the series now, since it
-otherwise causes warnings during boot.
+on 2025/12/18 18:12, Andrew Lunn wrote:
+> On Thu, Dec 18, 2025 at 09:35:44AM +0800, Jijie Shao wrote:
+>> on 2025/12/17 21:53, Andrew Lunn wrote:
+>>>> Some of our boards have only one LED, and we want to indicate both
+>>>> link and active(TX and RX) status simultaneously.
+>>> Configuration is generally policy, which is normally done in
+>>> userspace. I would suggest a udev rule.
+>>>
+>>> 	Andrew
+>> Yes, the PHY LED framework supports configuration from user space,
+>> allowing users to configure their preferred policies according to their own requirements.
+>> I believe this is the original intention of the LED framework.
+>>
+>> However, we cannot require users to actively configure policies,
+>> nor can we restrict the types of OS versions they use.
+>> Therefore, I personally think that the driver should still provide a reasonable default policy
+>> to ensure that the LED behavior meets the needs of most scenarios.
+> The DT Maintainers are likely to push back if you add this to the DT
+> binding. You are not really describing the hardware.
+>
+> In your case, it is the MAC driver which has access to the
+> configuration you want to use. So please think about how you can add
+> an API a MAC driver could use. It is not so easy, since the PHY led is
+> just a Linux LED. It can be used for anything, any trigger can be
+> assigned to it, like the heartbeat, CPU load, disc activity, etc. You
+> also need to look at keeping the state synchronised. The netdev
+> trigger will read the state of the LED when it is bound to the
+> LED. After that, it assumes it is controlling the LED. Any changes
+> which go direct to the LED will not be seen by the LED trigger.
 
-/Jens
+Yes, a feasible approach is for the MAC driver to immediately
+call `phydriver->led_hw_control_set()` after `phy_probe()` to configure this rule.
+At this point, the netdev trigger for the LED has not yet been activated.
+
+When the netdev trigger is activated, it will retrieve the initial state
+from `phydriver->yt8521_led_hw_control_get()`, which is the rule we want to configure.
+
+Thanks,
+Jijie Shao
+
+
