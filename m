@@ -1,163 +1,153 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE82395D90;
-	Wed,  7 Jan 2026 15:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767800071; cv=pass; b=l0R/xKYpQgeuRQ0UHeyO6M3ifbbWdoQnGPx9ZFbWsWVgCkOyqRhrPEy/3R362wNGO2TFO2szHcdyKFZEm8RlWKWbM5FfoD9yDLvv7olVgZFtFZdGMo/oAiEM8QWQ33XZ3VVNPd8qPiWTBxk6Ta1IFJ9v9cyTvJKZO6kRioQu3Xc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767800071; c=relaxed/simple;
-	bh=UZZarDGIHnVTIoQ8enN9Zph0GfAT5H+xlYSwfaS7/b4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuX3Z8oUjsDXpbHfAz3VqzmKBUyG86UCToK52HxcGBiCH26Yf61ALP8+l7ccsT0XSEDk9DxeWRwtRlyIDQLK6Dr9ZBbt+EkQhwpD3D3sHgzZx0tP84ayiu0Ba87zU3IWVnKSs1Zv8ZwmblgvM+VkMZNRzQHj3MDXKYJyGSRy6yA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=eQ7TJO44; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=LSQQ2Z5j; arc=pass smtp.client-ip=85.215.255.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2B03A35BC
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 15:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767800346; cv=none; b=Dlc3IwpOR9GNHo4jhqqP5BHNLHUHO4GNsTRfmUCMwZaA8R1Mjn1PjU2Xkjl8fhKAYXTF37M9mpmBxbiNMiaENNZS1ZUmV7qPqCnZ2nEdGSlICT48qxveNvgfczWaft5fG9dCsUoYf/XSSpSGkshquHjamS/kv57hlleJQulwFII=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767800346; c=relaxed/simple;
+	bh=50w+oXt2hScNdCwJcCVqTG2Afxm91zAvIhyTSnt4iuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hKcZTF6RBilRjjSj5sh1M/tHUdAeJeVPzvCrYMGFok0Mbn6AFRLqqvKn8ISZ6d6mRzcjp6NPCGkNlajpgd6YOgJ+GGlUkGbiN+66ryMs7zRqvEGgmehB1f1QxF2LtlEVfkTpAChLU51eS+/WirVLchp/amDdfxAOvSDcY13aaNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HffQtd3T; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VbfctQdP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HffQtd3T; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VbfctQdP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="eQ7TJO44";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="LSQQ2Z5j"
-ARC-Seal: i=1; a=rsa-sha256; t=1767800059; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Y8AqzZECsUtKXD47IaJyz6CUOMhsEeJ2E7JoIdJFvlyNY1UeyMq6GgKvgrE5CLetxA
-    SUdQqWz31eQlqXhxzlQPWoOP08eVUFqhPb70uTGNckwGUvsaYHLo6VzsCcgZ75g6pBTb
-    n3Reh5VFmdDfzBvYU3yJpdjzC0Ld6u7S731RTSW84M7wEWmtSiS/hSzhwJLxn+ORJQvQ
-    AQBWde5p2DgY9QXZhlzR2fQO6nf/KEsuScsnkYIxzNWLN7J6gnpfjV72qTIxjzULOzvk
-    mcEwvBKukPX4uaisENRVIweQD56po/fODN1r+hydZOhmwrzKW/+LBCWlpiBL0cqJsXSm
-    j9Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1767800059;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=9NgbAeqzyHQXGFfVjBUF3lSa3PSH4LNlvLsaHRyC/Ro=;
-    b=YWP9OQI1zSmmJP2ITyacR0ZakUnMVU0t+BGVaXtJ8SJLPLVgiVDXyHJA6DWcHL0Z4o
-    zm29yFOtcY4CYQ8S6GxlCa6DJTbzvDfWZusWZA8lToJ6z8lrFjKayfWysWbPQx1jLljP
-    m7EJIf3aTNJY66xmSo1UG02F2IdQZ2LBcNqpdQnxmkjlEZIn9B/NbEND+37omU+Pz6lf
-    bRJAbQXaiWugWSGiRsI6kf4C1knEZN4EVfBcP1ciS+Yj7VJdkBme3vsk8Ak+z2gQ4aV5
-    gcm4dXoHRMBN7dO9IcU9IBMyzq/ityw7xQczMsd/Jj0EPg03SheO/BlHDLlc6U13DksI
-    3lrA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1767800059;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=9NgbAeqzyHQXGFfVjBUF3lSa3PSH4LNlvLsaHRyC/Ro=;
-    b=eQ7TJO44rUjF23D9lQY1Lna/TzxzECfBfaB6cED4gcnQDlxYWLnk+8DA6fDUUUPPfK
-    j1fmN7f978eJ6LAUTZLOBqsWhjKSIds/9QBDz21ZhLsJ6gDAmYQ/76MLd3oF2zsu6U8V
-    2YPcjxRquEv7Pwq1MeKw6BKqtIuJTiwEgSlELwZokCRuI5x3453hjE6UwgcwY0EdM+js
-    UaTuje/YsIEIgWyFGAt0+86ojGkZ+yNpSwmx+6mDMhvucgyzSY1DGsbAVOljPGItfIRf
-    sQyVCVk3oKZCfALboZzH9UGqOpKmVdP3eVAZQS+lV9NMAkj3Dgn3V3gWyIVM/nn+yaTD
-    Oz8A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1767800059;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=9NgbAeqzyHQXGFfVjBUF3lSa3PSH4LNlvLsaHRyC/Ro=;
-    b=LSQQ2Z5jZVIUPlGGD3ht5/t24eB9Cxae7AFDLH2XkKZLBAjhvsMGE/Nv/WummSvYVX
-    TmKA2xfY71cTF/2A80AQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s8bGWj0Q=="
-Received: from [IPV6:2a00:6020:4a38:6800::9f3]
-    by smtp.strato.de (RZmta 54.1.0 AUTH)
-    with ESMTPSA id K0e68b207FYJD0i
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 7 Jan 2026 16:34:19 +0100 (CET)
-Message-ID: <8b55ae26-daba-4b2e-a10b-4be367fb42d0@hartkopp.net>
-Date: Wed, 7 Jan 2026 16:34:13 +0100
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HffQtd3T";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="VbfctQdP";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HffQtd3T";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="VbfctQdP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DCC185C1FD;
+	Wed,  7 Jan 2026 15:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767800336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=1vbLNYrfc5erOsYy/2jQXQL9OCtF2aZv1jUjz7lYxqY=;
+	b=HffQtd3TM1BjTsGQwefVftqZ3266RcD5AQK/4N04203quy+/o7pt5WZA0OKIcTsJlJy5Z8
+	6r55ogwrldeu7wCKXZxogH2VLcmrQDif6W9cbMVXllJpxMfHnvrQcM/AS4gYxJYp7emvik
+	F0qgge4sWcc/sUhCR/OCv10z2eHbeq4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767800336;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=1vbLNYrfc5erOsYy/2jQXQL9OCtF2aZv1jUjz7lYxqY=;
+	b=VbfctQdPdf+mJe9RMGv9VbUn82Ba4/3Av9AMqrvN2bCZZC5EHOdX7+qFuDO2IsY1/wVRlq
+	4YyCXKKmztAIQFCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767800336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=1vbLNYrfc5erOsYy/2jQXQL9OCtF2aZv1jUjz7lYxqY=;
+	b=HffQtd3TM1BjTsGQwefVftqZ3266RcD5AQK/4N04203quy+/o7pt5WZA0OKIcTsJlJy5Z8
+	6r55ogwrldeu7wCKXZxogH2VLcmrQDif6W9cbMVXllJpxMfHnvrQcM/AS4gYxJYp7emvik
+	F0qgge4sWcc/sUhCR/OCv10z2eHbeq4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767800336;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=1vbLNYrfc5erOsYy/2jQXQL9OCtF2aZv1jUjz7lYxqY=;
+	b=VbfctQdPdf+mJe9RMGv9VbUn82Ba4/3Av9AMqrvN2bCZZC5EHOdX7+qFuDO2IsY1/wVRlq
+	4YyCXKKmztAIQFCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5396B3EA63;
+	Wed,  7 Jan 2026 15:38:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FcJ2ERB+Xmn7CgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 07 Jan 2026 15:38:56 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH 1/2 net-next v2] ipv6: use the right ifindex when replying to icmpv6 from localhost
+Date: Wed,  7 Jan 2026 16:38:40 +0100
+Message-ID: <20260107153841.5030-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bpf, xdp] headroom - was: Re: Question about to KMSAN:
- uninit-value in can_receive
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: mkl@pengutronix.de, Prithvi <activprithvi@gmail.com>, andrii@kernel.org,
- linux-can@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, netdev@vger.kernel.org
-References: <20251117173012.230731-1-activprithvi@gmail.com>
- <0c98b1c4-3975-4bf5-9049-9d7f10d22a6d@hartkopp.net>
- <c2cead0a-06ed-4da4-a4e4-8498908aae3e@hartkopp.net>
- <aSx++4VrGOm8zHDb@inspiron>
- <d6077d36-93ed-4a6d-9eed-42b1b22cdffb@hartkopp.net>
- <20251220173338.w7n3n4lkvxwaq6ae@inspiron>
- <01190c40-d348-4521-a2ab-3e9139cc832e@hartkopp.net>
- <20260102153611.63wipdy2meh3ovel@inspiron>
- <20260102120405.34613b68@kernel.org>
- <63c20aae-e014-44f9-a201-99e0e7abadcb@hartkopp.net>
- <20260104074222.29e660ac@kernel.org>
- <fac5da75-2fc0-464c-be90-34220313af64@hartkopp.net>
- <20260105152638.74cfea6c@kernel.org>
- <904fa297-b657-4f5b-9999-b8cfcc11bfa9@hartkopp.net>
- <20260106162306.0649424c@kernel.org>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260106162306.0649424c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.987];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+	RCVD_TLS_ALL(0.00)[]
 
-Hello Jakub,
+When replying to a ICMPv6 echo request that comes from localhost address
+the right output ifindex is 1 (lo) and not rt6i_idev dev index. Use the
+skb device ifindex instead. This fixes pinging to a local address from
+localhost source address.
 
-On 07.01.26 01:23, Jakub Kicinski wrote:
-> On Tue, 6 Jan 2026 13:04:41 +0100 Oliver Hartkopp wrote:
->> When such skb is echo'ed back after successful transmission via
->> netif_rx() this leads to skb->skb_iif = skb->dev->ifindex;
->>
->> To prevent a loopback the CAN frame must not be sent back to the
->> originating interface - even when it has been routed to different CAN
->> interfaces in the meantime (which always overwrites skb_iif).
->>
->> Therefore we need to maintain the "real original" incoming interface.
-> 
-> Alternatively perhaps for this particular use case you could use
-> something like metadata_dst to mark the frame as forwarded / annotate
-> with the originating ifindex?
+$ ping6 -I ::1 2001:1:1::2 -c 3
+PING 2001:1:1::2 (2001:1:1::2) from ::1 : 56 data bytes
+64 bytes from 2001:1:1::2: icmp_seq=1 ttl=64 time=0.037 ms
+64 bytes from 2001:1:1::2: icmp_seq=2 ttl=64 time=0.069 ms
+64 bytes from 2001:1:1::2: icmp_seq=3 ttl=64 time=0.122 ms
 
-I looked into it and the way how skb_dst is shared in the union behind 
-cb[] does not look very promising for skbs that wander up and down in 
-the network layer. And it is pretty complex to just store a single 
-interface index integer value.
+2001:1:1::2 ping statistics
+3 packets transmitted, 3 received, 0% packet loss, time 2032ms
+rtt min/avg/max/mdev = 0.037/0.076/0.122/0.035 ms
 
-While looking into _sk_redir to see how the _skb_refdst union is used, 
-I've seen that the _sk_redir function was removed from struct tcp_skb_cb 
-(commit e3526bb92a208).
+Fixes: 1b70d792cf67 ("ipv6: Use rt6i_idev index for echo replies to a local address")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+v2: no changes
+---
+ net/ipv6/icmp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Today we use skb->cb only for passing (address) information from the 
-network layer to the socket layer and user space. But the space in cb[] 
-could also hold the content we currently store in the problematic skb 
-headroom.
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 5d2f90babaa5..5de254043133 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -965,7 +965,9 @@ static enum skb_drop_reason icmpv6_echo_reply(struct sk_buff *skb)
+ 	fl6.daddr = ipv6_hdr(skb)->saddr;
+ 	if (saddr)
+ 		fl6.saddr = *saddr;
+-	fl6.flowi6_oif = icmp6_iif(skb);
++	fl6.flowi6_oif = ipv6_addr_type(&fl6.daddr) & IPV6_ADDR_LOOPBACK ?
++			 skb->dev->ifindex :
++			 icmp6_iif(skb);
+ 	fl6.fl6_icmp_type = type;
+ 	fl6.flowi6_mark = mark;
+ 	fl6.flowi6_uid = sock_net_uid(net, NULL);
+-- 
+2.52.0
 
-Would using skb->cb be a good approach for CAN skbs (that do not have 
-any of the Ethernet/TCP/IP requirements/features) or will there still be 
-networking code (besides CAN drivers and CAN network layer) that writes 
-into cb[] when passing the CAN skb up and down in the stack?
-
-/**
-  * struct can_skb_cb - private data inside CAN skb->cb
-  * cb[] is 64 bit aligned which is also recommended for struct sockaddr_can
-  * @magic:	to check if someone wrote to our CAN skb->cb space
-  * @flags:	extra flags for CAN_RAW and CAN_BCM sockets
-  * @can_addr:	socket address information to userspace
-  * @can_iif:	ifindex of the first interface the CAN frame appeared on
-  * @skbcnt:	atomic counter to have an unique id together with skb pointer
-  * @frame_len:	bql length cache of CAN frame in data link layer
-  */
-struct can_skb_cb {
-	u32 magic;
-	u32 flags;
-	struct sockaddr_can can_addr;
-	int can_iif;
-	int skbcnt;
-	unsigned int frame_len;
-};
-
-If not: We also don't have vlans nor inner[protocol|headers] in CAN 
-where we might store the 4 byte can_iif integer ...
-
-Many thanks and best regards,
-Oliver
