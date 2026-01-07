@@ -1,112 +1,101 @@
-Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1F327510B;
-	Wed,  7 Jan 2026 22:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB702C11FE
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 22:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767824978; cv=none; b=u3htA8w+yny1CnnTZhddQfl5tgB2OSet6coYkkCWHebSDrYQhga7lWFUpj8EF6AEBCvVIavDP5LRRVhLDvWBOEFy1XIZkXghPBP6P9JfjFhiawbxFsw6XxYiQ/pGx0urXIlWv+/DKOcpV7lluf6b9a57MnZ5L92HmTwhXxijE1A=
+	t=1767825145; cv=none; b=rFZREiTlxoOTn48iIsrhJv0CKMNgjHvEg0p3eYFHsp79Oz9OzqhM5uMdwADux54FLLXezR6NDQ4SUPOLaAZOre1hNyH3ypIT2crZoKhf1r7neAmUOLArZRefjqx2NoUuaofR6kbEzhnS3eRW38W5Uz22fJ0e3TTfJglYYCGx7MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767824978; c=relaxed/simple;
-	bh=PpRMIVVGL+LKNB6DZ4hfIdnkbdC7KPjjimbm0u5I2co=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVE3f4y7aqbOZ3+NiAQOqjrmddW8eXJ7g58mGgYGOAOT1M0xCwC92OQQgz066r2x8nbw3nwKb+tD/KWGi5nN73xivVsYL9qd/eP6pOWxp5Lgu0wRs9lLBjS2UGgoC1DsV3zxx61p4SOIh8g2WRxgEoSKf7YntrvYAsznnaL3rj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=JGsvQm9X; arc=none smtp.client-ip=208.88.110.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
+	s=arc-20240116; t=1767825145; c=relaxed/simple;
+	bh=hxJpW78Jq3c6dYdI5Bg33vN9yB0fU2t2fXYtYPPwvvk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kWzQQFYFN+WwpXwIEbN9NdpZczlAZFGlB27Mh4ZSrDuC5c4kvVb+8OwMU/c65X1wBaFeG6uXZPtMVDH1SF6+OOPI+TkX5ddFCmwM3yhxvcHroZzuqImxvAmls/BY49B+m8wPWbFDjGQLZDRmbpVaCbUx8OCxLbvk63s4+i/ntCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCNQWds0; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="JGsvQm9X"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 4CC723D8517C;
-	Wed,  7 Jan 2026 17:19:52 -0500 (EST)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id 6es2FM1r3awo; Wed,  7 Jan 2026 17:19:51 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 813643D85335;
-	Wed,  7 Jan 2026 17:19:51 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 813643D85335
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCNQWds0"
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-459ac606f0bso1513296b6e.0
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 14:32:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-	t=1767824391; bh=tpkOvFCXO7k+g2tJHJOPhaQQWMmDAm5QGPGlvIH/qrE=;
-	h=From:To:Date:Message-ID:MIME-Version;
-	b=JGsvQm9XV1AMxAyEesFD019gbXAovb/dNemZh9Y5WSEPw95DwBj7BVLOlquE+639q
-	 y8bgrLMIk9VqZvoY9bDtQoYaOMQ6+FhyDIB46Gj6orY5Qli/M4Ht2ZP0XuCB1U2kWK
-	 UmTVROstahwk8AiXWpDh/N8vvUVk7DRp5q24IkyhGzadlAeRiQtXAqFtuzseer3XQ1
-	 P8yKbZIfzJpTyZjEa5QLGPJGX2uhdVUE5jE5d2L9YBssC8qrS1CqpcwJYAecPJQpW+
-	 tEfrGpfTy+Yl7o+PcKbuzuaY8GU4dEEN/gX+azBiq4lgynj9O2YozEz5T7vVoxtuc/
-	 JzJYB9ziE6gig==
-X-Virus-Scanned: amavis at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id Ihano5PtzQiT; Wed,  7 Jan 2026 17:19:51 -0500 (EST)
-Received: from oitua-pc.mtl.sfl (unknown [192.168.51.254])
-	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id 5977B3D8517C;
-	Wed,  7 Jan 2026 17:19:51 -0500 (EST)
-From: Osose Itua <osose.itua@savoirfairelinux.com>
-To: netdev@vger.kernel.org
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	michael.hennerich@analog.com,
-	jerome.oufella@savoirfairelinux.com,
-	Osose Itua <osose.itua@savoirfairelinux.com>
-Subject: [PATCH v3 1/2] dt-bindings: net: adi,adin: document LP Termination property
-Date: Wed,  7 Jan 2026 17:16:52 -0500
-Message-ID: <20260107221913.1334157-2-osose.itua@savoirfairelinux.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260107221913.1334157-1-osose.itua@savoirfairelinux.com>
-References: <20260107221913.1334157-1-osose.itua@savoirfairelinux.com>
+        d=gmail.com; s=20230601; t=1767825143; x=1768429943; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1RSvXf5TMr3Lj+5hiKndUKWf/wAY/TBMJfBbSZAKH/E=;
+        b=NCNQWds0h5PuVJ05jbq35u0u/pmj/hlZmFBKVQ3S2KRI8WSJ2g3RlSwaoo0vYa/11j
+         gRbNgu2ctDUVcF7craSLBptTS7z8JwVkZlkBJrCg8y+wznXFD53tVYQxhOB/nS46MRQW
+         FQ2reAzCuco+QZv7ym72MAzZrCbL+Zsvg5L+SXD6zHH5HozFbF8wCZMB9qlsyPP/+7zi
+         OuCXx00mlNfluC0rjxe8xgEy1foX7C/VV1SqaS+0ryn532cNvtpG6R/atec85v+T4ZgJ
+         9RiIJQOtLfiYCGruRvGFjuOllBSGsWiozFdCzHObsK2Jzo0AHtL21BXDHe/SkK36D2QV
+         kjiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767825143; x=1768429943;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1RSvXf5TMr3Lj+5hiKndUKWf/wAY/TBMJfBbSZAKH/E=;
+        b=tQL+v8l7/n4U+ErPGx075RuOpDzF8SsLfM+zESk3xIjt2wepDimIqtb/rvCeakEw+p
+         sB2+lByD61S2UHZwed2uAw4izVqGJimVdlftD7kN14AzpFLl9yfyaxRJQWgxkg36JRuq
+         ataKa6H/9CMAiRv/+CO7QJU8QYzllzOXBLm8Nfr3qqVBlMdBlLet95ctzRJkJiTk9WFu
+         Q0l0xcVsoePLhvoxWWEvhmikrzxn8g5oAATbviaRnQnyvQM9JIK88uiuQt9I1ILvhy01
+         v6nnF/5uSa8llCXvnwQClp47auc0p7b02kIhidz+penXsVu4wuuvuXVvmK76cRVfXkFv
+         wzsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpkqywHvxQopt/pg8TJafaujSTWgadO14MlnRaaEpvKaS1KRwN9JFufYG0+M8/oAQ8BSPM6UA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtjNdT1s8oQBk4EEfiBkUFtBgj8YfET4ewCdOA4P5pjy9BKhER
+	+3X4lLo26hv2tQSe+HEpNEVUrQCUhH7MCnfRi3+xzeKulAeVHKDchzgp66SdrW76r4h63zHzwVO
+	gTJQvuuet4QVNCa42WADNc23E1fvgHwI=
+X-Gm-Gg: AY/fxX4TgW3p1q5dfZs3h3Vueu7y70HF5HgXAMrcZN57ZeSlf0qyG0RdpzHfEvmi8Ka
+	wOE6CWMjXfjklbCLJNo72RaRIopCCEI8eV+jh0rZZno+cJP6rJXOt1V6qxqPGnSuSvp+N0oTx64
+	29kFapian0z2FbnnWl4RY2WOauCzaRYK3+0JOAvBzacDvoofHFW6PVIF+/h2og70ZQL4V04X5nB
+	S6OhtFVwLxjUZtuTjd03gTx5bx7ynu39VE0lDCDoB5o6F8zytCMGech2n3B1I9nxsns8AX10TV1
+	O64oswUL0wkd+XwHieL3DDPAHg==
+X-Google-Smtp-Source: AGHT+IFJFvNQOXoLxMqgYnEkDy9xwipEEyGtPrq6QaFTT6gsdBkEwhR8BblgfxSO6DXqZD0W4FnoMVG7ma8qseKjoUU=
+X-Received: by 2002:a05:6808:6909:b0:450:2854:405a with SMTP id
+ 5614622812f47-45a6be8b0admr2035976b6e.45.1767825143211; Wed, 07 Jan 2026
+ 14:32:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20260107122143.93810-1-donald.hunter@gmail.com>
+ <20260107122143.93810-14-donald.hunter@gmail.com> <20260107084534.11dcb921@kernel.org>
+In-Reply-To: <20260107084534.11dcb921@kernel.org>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Wed, 7 Jan 2026 22:32:11 +0000
+X-Gm-Features: AQt7F2o3Zxr-a8RiBnHk7NS8uf1usOPLSsMdKl-fU-dkVfmDg6uyjsLYw3TeWyk
+Message-ID: <CAD4GDZzZVJgiRv05sFktmvmOD4K60YpFiP=xbtfVRGU=5QHOVQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 13/13] tools: ynl-gen-c: Fix remaining pylint warnings
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>, Gal Pressman <gal@nvidia.com>, Jan Stancek <jstancek@redhat.com>, 
+	Hangbin Liu <liuhangbin@gmail.com>, Nimrod Oren <noren@nvidia.com>, netdev@vger.kernel.org, 
+	Jonathan Corbet <corbet@lwn.net>, =?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>, 
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>, 
+	Ruben Wauters <rubenru09@aol.com>, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add "adi,low-cmode-impedance" boolean property which, when present,
-configures the PHY for the lowest common-mode impedance on the receive
-pair for 100BASE-TX operation by clearing the B_100_ZPTM_EN_DIMRX bit.
-This is suited for capacitive coupled applications and other
-applications where there may be a path for high common-mode noise to
-reach the PHY.
+On Wed, 7 Jan 2026 at 16:45, Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> On Wed,  7 Jan 2026 12:21:43 +0000 Donald Hunter wrote:
+> > -                     'return ynl_submsg_failed(yarg, "%s", "%s");' %
+> > -                        (self.name, self['selector']),
+> > -                    f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
+> > +                     f'return ynl_submsg_failed(yarg, "{self.name}", "{self['selector']}");',
+> > +                     f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
+>
+> This one breaks build of tools/ with old Python, unfortunately:
+>
+>   File "/home/virtme/testing/wt-24/tools/net/ynl/generated/../pyynl/ynl_gen_c.py", line 946
+>     f'return ynl_submsg_failed(yarg, "{self.name}", "{self['selector']}");',
+>                                                             ^
+> SyntaxError: f-string: unmatched '['
 
-If this value is not present, the value of the bit by default is 1,
-which is normal termination (zero-power termination) mode.
+Yep, this showed up in the AI review as well. I'll fix it along with
+the other AI review issues.
 
-Signed-off-by: Osose Itua <osose.itua@savoirfairelinux.com>
----
- .../devicetree/bindings/net/adi,adin.yaml          | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/adi,adin.yaml b/Docume=
-ntation/devicetree/bindings/net/adi,adin.yaml
-index c425a9f1886d..f594055c2b15 100644
---- a/Documentation/devicetree/bindings/net/adi,adin.yaml
-+++ b/Documentation/devicetree/bindings/net/adi,adin.yaml
-@@ -52,6 +52,20 @@ properties:
-     description: Enable 25MHz reference clock output on CLK25_REF pin.
-     type: boolean
-=20
-+  adi,low-cmode-impedance:
-+    description: |
-+      Configure PHY for the lowest common-mode impedance on the receive =
-pair
-+      for 100BASE-TX. This is suited for capacitive coupled applications=
- and
-+      other applications where there may be a path for high common-mode =
-noise
-+      to reach the PHY.
-+      If not present, by default the PHY is configured for normal termin=
-ation
-+      (zero-power termination) mode.
-+
-+      Note: There is a trade-off of 12 mW increased power consumption wi=
-th
-+        the lowest common-mode impedance setting, but in all cases the
-+        differential impedance is 100 ohms.
-+    type: boolean
-+
- unevaluatedProperties: false
-=20
- examples:
+Thanks,
+Donald
