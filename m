@@ -1,55 +1,55 @@
-Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.57.120.243])
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D333FE34;
-	Wed,  7 Jan 2026 13:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.57.120.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B2332A3C8;
+	Wed,  7 Jan 2026 13:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.197.217.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767792441; cv=none; b=Z1XKRzs9qxZKBI00e5aacVGFMIbtrzCLeTZeDhbxfeDdw7BZwNtQFv9LV8FHwk/DCi+4bEbnV3DPqaN+f6uohcg0H2qhbIwvVospj9INEg6cFvsWmDrn7hAXYxx/jhTbJ1XbBV8oVic3erSm61ydGT8Ec8BtUd7svYGnADi8W5A=
+	t=1767792474; cv=none; b=q5LR1HlDnsJyATl0N4IYmGQBfzqVFe9PdpNWqzDLjP0Wa1WhZmpLuOpBQzeU/1HMdzpRL1nThovtkovYX0Wf5SA1/D7Q3b5/llieC3vAtfFCbzoeVWFcvvkfFvNkGlLQ0QQkpCgIx053t7H6zZ7o8YrshKWoZcWa1l7bv0My+JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767792441; c=relaxed/simple;
-	bh=CMePqU7fDA/wHXd5/nycVWAvieQKAaHLSa+FSiuP0+0=;
+	s=arc-20240116; t=1767792474; c=relaxed/simple;
+	bh=Ti6DVNKmg5qGrzR6Izr3vZmPUKusU/KUZQ1En+vsk1Q=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qTgj5gENL8vlP+7xCr0d3upO/kUrXR6G2pZ5KtPho+XiGtXqp2r2LbdvjVG/fjehtjqvH9cABErqNLRBJF7GvL82/mpJFvUiGQ8LywA+507BDYKSicskWa4tiudCYHSwdS+ChZfLDAhyCVGBJemUrQb1VWf3wFfpVKTB3EhQ6v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.es; spf=pass smtp.mailfrom=amazon.es; dkim=pass (2048-bit key) header.d=amazon.es header.i=@amazon.es header.b=s3WTaWwZ; arc=none smtp.client-ip=52.57.120.243
+	 Content-Type:MIME-Version; b=Epx4tDgCYWGe/MQrvIiGzRe5ruh356riVL90V146IjpY1W/4FJRKZ0lbSxbfQwrkendSOOCIvXhQxjo+jzGq8AW8MF4/ekrrnxNn1/o6+4rItm6WV0Xh6lXWIrTVthUf8TQ84TqnN+8zDnb4EdgyJHzrx65Zr/voKndeU+/jFWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.es; spf=pass smtp.mailfrom=amazon.es; dkim=pass (2048-bit key) header.d=amazon.es header.i=@amazon.es header.b=E9L3e1/8; arc=none smtp.client-ip=18.197.217.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.es
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.es
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.es header.i=@amazon.es header.b="s3WTaWwZ"
+	dkim=pass (2048-bit key) header.d=amazon.es header.i=@amazon.es header.b="E9L3e1/8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.es; i=@amazon.es; q=dns/txt; s=amazoncorp2;
-  t=1767792439; x=1799328439;
+  t=1767792472; x=1799328472;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=yIJepOPX3arqb5MyazZ+94RAcXRQ7bSmHnzahqj+Zso=;
-  b=s3WTaWwZ/VkPvkT8U2YcwGAsQCUFaZON5tEUkPoPekbuDd3ZWdgxZM2e
-   mCPHkJV++hfCYSfo6ByDO5xULbjsU5eu3j4dNZqe+WCSxttuozeYU6Dau
-   LCElTnhDDNTECHT/+pl2uaEeBnBTKn2kFvsAGjgz6TwJfcfqKH7d251zl
-   WyOmj0OraMIhMex9HXTLV830FC6u2SKuHaT+WhAKfVoMbRY56NThPdeG+
-   CNdoASYGv2gK0w8aM/G43ilgGC57DC/H1/5clG8DIqsX1NmRXj5osydPq
-   1YTQRUszgbb1GZ3La89kiCybj0X61sS0pthn/hy4jS7S+pSygMwedkc9a
-   Q==;
-X-CSE-ConnectionGUID: xOpZit2GTu+Kq2Ek5lFvJA==
-X-CSE-MsgGUID: DXdAOuVoQ0mEwNsgDrfkfQ==
+  bh=H3uGUXvOCuNhUduxo8F66wZPo+9zml7uMCM9YxnLfJc=;
+  b=E9L3e1/8TEB1VzHxFrM+/LRCGG8QuGK7mVFQhnXRGpn6wXXQi2lfe5/s
+   WuG7YakxmBwubEpftrCm28pDiAaOW3SBoqFiehrVlB9I0dzzYCCv961uU
+   7OSBMmOMPTsXJ9bqj6DW+Tih1XvjVD0Nlw1HpVQfqkZiKmJvZQuJjbuYT
+   32EcyhHYCbTbUsFoakypdgk/si5wGzjV2Tnydyrxnykv2ZHnIDiGHZLOE
+   jFuxdwUiIMpLH2C6maBlk0FFlWazvF6o2LqOTjrdWYxYPP4YDagspDM6A
+   4jajyHnlsSIlZo/C4bmmK8S8r1Z9rXK6VJONOxQ4XPlQYJewGZ5gJ9I5Q
+   g==;
+X-CSE-ConnectionGUID: znsjwAptRtSAZ/0fqfDxBQ==
+X-CSE-MsgGUID: W1/19W8PS22GIPIm7R2qjw==
 X-IronPort-AV: E=Sophos;i="6.21,208,1763424000"; 
-   d="scan'208";a="7474660"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:25:51 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:25407]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.44.14:2525] with esmtp (Farcaster)
- id e68d9584-8813-4339-872d-da1bc2eb117d; Wed, 7 Jan 2026 13:25:50 +0000 (UTC)
-X-Farcaster-Flow-ID: e68d9584-8813-4339-872d-da1bc2eb117d
-Received: from EX19D012EUA001.ant.amazon.com (10.252.50.122) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+   d="scan'208";a="7583657"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:26:25 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.236:26786]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.4.21:2525] with esmtp (Farcaster)
+ id 0b9a8df3-f540-4b78-b044-f04545756402; Wed, 7 Jan 2026 13:26:25 +0000 (UTC)
+X-Farcaster-Flow-ID: 0b9a8df3-f540-4b78-b044-f04545756402
+Received: from EX19D012EUA003.ant.amazon.com (10.252.50.98) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Wed, 7 Jan 2026 13:25:50 +0000
+ Wed, 7 Jan 2026 13:26:24 +0000
 Received: from EX19D012EUA001.ant.amazon.com (10.252.50.122) by
- EX19D012EUA001.ant.amazon.com (10.252.50.122) with Microsoft SMTP Server
+ EX19D012EUA003.ant.amazon.com (10.252.50.98) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Wed, 7 Jan 2026 13:25:50 +0000
+ Wed, 7 Jan 2026 13:26:24 +0000
 Received: from EX19D012EUA001.ant.amazon.com ([fe80::b7ea:84f7:2c4b:2719]) by
  EX19D012EUA001.ant.amazon.com ([fe80::b7ea:84f7:2c4b:2719%3]) with mapi id
- 15.02.2562.035; Wed, 7 Jan 2026 13:25:50 +0000
+ 15.02.2562.035; Wed, 7 Jan 2026 13:26:24 +0000
 From: "Chalios, Babis" <bchalios@amazon.es>
 To: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
 	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
@@ -63,13 +63,13 @@ CC: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Chalios,
  Babis" <bchalios@amazon.es>, "Graf (AWS), Alexander" <graf@amazon.de>,
 	"mzxreary@0pointer.de" <mzxreary@0pointer.de>, "Cali, Marco"
-	<xmarcalx@amazon.co.uk>, "Woodhouse, David" <dwmw@amazon.co.uk>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v5 3/7] dt-bindings: ptp: Add amazon,vmclock
-Thread-Topic: [PATCH v5 3/7] dt-bindings: ptp: Add amazon,vmclock
-Thread-Index: AQHcf9kjlf9LyNdHpUqK8CP9OeMyQQ==
-Date: Wed, 7 Jan 2026 13:25:50 +0000
-Message-ID: <20260107132514.437-4-bchalios@amazon.es>
+	<xmarcalx@amazon.co.uk>, "Woodhouse, David" <dwmw@amazon.co.uk>
+Subject: [PATCH v5 6/7] ptp: ptp_vmclock: remove dependency on CONFIG_ACPI
+Thread-Topic: [PATCH v5 6/7] ptp: ptp_vmclock: remove dependency on
+ CONFIG_ACPI
+Thread-Index: AQHcf9k4ohKUWhGLDU2lPfhktO8/2Q==
+Date: Wed, 7 Jan 2026 13:26:24 +0000
+Message-ID: <20260107132514.437-7-bchalios@amazon.es>
 References: <20260107132514.437-1-bchalios@amazon.es>
 In-Reply-To: <20260107132514.437-1-bchalios@amazon.es>
 Accept-Language: en-GB, en-US
@@ -87,91 +87,84 @@ MIME-Version: 1.0
 
 From: David Woodhouse <dwmw@amazon.co.uk>=0A=
 =0A=
-The vmclock device provides a PTP clock source and precise timekeeping=0A=
-across live migration and snapshot/restore operations.=0A=
-=0A=
-The binding has a required memory region containing the vmclock_abi=0A=
-structure and an optional interrupt for clock disruption notifications.=0A=
-=0A=
-The full spec is at https://uapi-group.org/specifications/specs/vmclock/=0A=
+Now that we added device tree support we can remove dependency on=0A=
+CONFIG_ACPI.=0A=
 =0A=
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>=0A=
 Signed-off-by: Babis Chalios <bchalios@amazon.es>=0A=
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>=0A=
 ---=0A=
- .../bindings/ptp/amazon,vmclock.yaml          | 46 +++++++++++++++++++=0A=
- MAINTAINERS                                   |  1 +=0A=
- 2 files changed, 47 insertions(+)=0A=
- create mode 100644 Documentation/devicetree/bindings/ptp/amazon,vmclock.ya=
-ml=0A=
+ drivers/ptp/Kconfig       |  2 +-=0A=
+ drivers/ptp/ptp_vmclock.c | 13 ++++++++-----=0A=
+ 2 files changed, 9 insertions(+), 6 deletions(-)=0A=
 =0A=
-diff --git a/Documentation/devicetree/bindings/ptp/amazon,vmclock.yaml b/Do=
-cumentation/devicetree/bindings/ptp/amazon,vmclock.yaml=0A=
-new file mode 100644=0A=
-index 000000000000..357790df876f=0A=
---- /dev/null=0A=
-+++ b/Documentation/devicetree/bindings/ptp/amazon,vmclock.yaml=0A=
-@@ -0,0 +1,46 @@=0A=
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)=0A=
-+%YAML 1.2=0A=
-+---=0A=
-+$id: http://devicetree.org/schemas/ptp/amazon,vmclock.yaml#=0A=
-+$schema: http://devicetree.org/meta-schemas/core.yaml#=0A=
-+=0A=
-+title: Virtual Machine Clock=0A=
-+=0A=
-+maintainers:=0A=
-+  - David Woodhouse <dwmw2@infradead.org>=0A=
-+=0A=
-+description:=0A=
-+  The vmclock device provides a precise clock source and allows for=0A=
-+  accurate timekeeping across live migration and snapshot/restore=0A=
-+  operations. The full specification of the shared data structure is=0A=
-+  available at https://uapi-group.org/specifications/specs/vmclock/=0A=
-+=0A=
-+properties:=0A=
-+  compatible:=0A=
-+    const: amazon,vmclock=0A=
-+=0A=
-+  reg:=0A=
-+    description:=0A=
-+      Specifies the shared memory region containing the vmclock_abi struct=
-ure.=0A=
-+    maxItems: 1=0A=
-+=0A=
-+  interrupts:=0A=
-+    description:=0A=
-+      Interrupt used to notify when the contents of the vmclock_abi struct=
-ure=0A=
-+      have been updated.=0A=
-+    maxItems: 1=0A=
-+=0A=
-+required:=0A=
-+  - compatible=0A=
-+  - reg=0A=
-+=0A=
-+additionalProperties: false=0A=
-+=0A=
-+examples:=0A=
-+  - |=0A=
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>=0A=
-+    ptp@80000000 {=0A=
-+      compatible =3D "amazon,vmclock";=0A=
-+      reg =3D <0x80000000 0x1000>;=0A=
-+      interrupts =3D <GIC_SPI 36 IRQ_TYPE_EDGE_RISING>;=0A=
-+    };=0A=
-diff --git a/MAINTAINERS b/MAINTAINERS=0A=
-index e8f06145fb54..171813ea76a3 100644=0A=
---- a/MAINTAINERS=0A=
-+++ b/MAINTAINERS=0A=
-@@ -20728,6 +20728,7 @@ PTP VMCLOCK SUPPORT=0A=
- M:	David Woodhouse <dwmw2@infradead.org>=0A=
- L:	netdev@vger.kernel.org=0A=
- S:	Maintained=0A=
-+F:	Documentation/devicetree/bindings/ptp/amazon,vmclock.yaml=0A=
- F:	drivers/ptp/ptp_vmclock.c=0A=
- F:	include/uapi/linux/vmclock-abi.h=0A=
+diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig=0A=
+index 5f8ea34d11d6..b93640ca08b7 100644=0A=
+--- a/drivers/ptp/Kconfig=0A=
++++ b/drivers/ptp/Kconfig=0A=
+@@ -134,7 +134,7 @@ config PTP_1588_CLOCK_KVM=0A=
+ config PTP_1588_CLOCK_VMCLOCK=0A=
+ 	tristate "Virtual machine PTP clock"=0A=
+ 	depends on X86_TSC || ARM_ARCH_TIMER=0A=
+-	depends on PTP_1588_CLOCK && ACPI && ARCH_SUPPORTS_INT128=0A=
++	depends on PTP_1588_CLOCK && ARCH_SUPPORTS_INT128=0A=
+ 	default PTP_1588_CLOCK_KVM=0A=
+ 	help=0A=
+ 	  This driver adds support for using a virtual precision clock=0A=
+diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c=0A=
+index 80fc7c9e062e..9f17f4a1b2be 100644=0A=
+--- a/drivers/ptp/ptp_vmclock.c=0A=
++++ b/drivers/ptp/ptp_vmclock.c=0A=
+@@ -501,6 +501,7 @@ static void vmclock_remove(void *data)=0A=
+ 		misc_deregister(&st->miscdev);=0A=
+ }=0A=
  =0A=
++#if IS_ENABLED(CONFIG_ACPI)=0A=
+ static acpi_status vmclock_acpi_resources(struct acpi_resource *ares, void=
+ *data)=0A=
+ {=0A=
+ 	struct vmclock_state *st =3D data;=0A=
+@@ -584,6 +585,7 @@ static int vmclock_probe_acpi(struct device *dev, struc=
+t vmclock_state *st)=0A=
+ =0A=
+ 	return 0;=0A=
+ }=0A=
++#endif /* CONFIG_ACPI */=0A=
+ =0A=
+ static irqreturn_t vmclock_of_irq_handler(int __always_unused irq, void *_=
+st)=0A=
+ {=0A=
+@@ -627,12 +629,11 @@ static int vmclock_setup_notification(struct device *=
+dev,=0A=
+ 	if (!(le64_to_cpu(st->clk->flags) & VMCLOCK_FLAG_NOTIFICATION_PRESENT))=
+=0A=
+ 		return 0;=0A=
+ =0A=
+-	if (has_acpi_companion(dev)) {=0A=
++#if IS_ENABLED(CONFIG_ACPI)=0A=
++	if (has_acpi_companion(dev))=0A=
+ 		return vmclock_setup_acpi_notification(dev);=0A=
+-	} else {=0A=
+-		return vmclock_setup_of_notification(dev);=0A=
+-	}=0A=
+-=0A=
++#endif=0A=
++	return vmclock_setup_of_notification(dev);=0A=
+ }=0A=
+ =0A=
+ =0A=
+@@ -653,9 +654,11 @@ static int vmclock_probe(struct platform_device *pdev)=
+=0A=
+ 	if (!st)=0A=
+ 		return -ENOMEM;=0A=
+ =0A=
++#if IS_ENABLED(CONFIG_ACPI)=0A=
+ 	if (has_acpi_companion(dev))=0A=
+ 		ret =3D vmclock_probe_acpi(dev, st);=0A=
+ 	else=0A=
++#endif=0A=
+ 		ret =3D vmclock_probe_dt(dev, st);=0A=
+ =0A=
+ 	if (ret) {=0A=
 -- =0A=
 2.34.1=0A=
 =0A=
