@@ -1,237 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A60328B70;
-	Wed,  7 Jan 2026 12:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D2320CAA
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 12:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788663; cv=none; b=aa28lq/ucz86TBi/d/GeicIYYm+xJPeUD1evYWmUZzIoMnRKpkypow4DZya0h7Vvw7SfzWTsIVsEJ5Rr6ki5tJlO6MxeZsFe9op2TzTBNFYmU0VX5xhDbt94gHU+d1YpAJ/FSFXbSa3+RNCOzJX7xKZS+N7As3nCBQpUn9VqPvs=
+	t=1767789343; cv=none; b=G5zwzANol4ZGXRbOygrCHKCgOjjX/ZNVgZa6qy9X43hkyoGTjazlQL6vkFLg7EHLrHiW5Jd4oG2SQUAoxBJbpe9Ozjn8f/Fp1N1HN2MZyhHlxWqxaZ3rb6tjH+ccEfRpQ6SjUUONKTj+d3Baw27R9HnOELIFYQ+7a3L4HUWe2Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788663; c=relaxed/simple;
-	bh=IsygWTMZdTG0Nq6crJvMpuu1naoy0zMIB4K4PhC/N+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OQE/KZQoOnjsdN1BQIRFC1Y9PdnjGmbKLKzYRQeh8Y3aP8zNj0oHYL1f9fyFxnaB36nBc2i0R1g4qnUvrlD1/PNK5oTSNL+GCN4xNJw+TxK5ENTvYBv7pEownFX5lOzWSV+bDZlHO4LPpKNdP0KXooCpa0khHNSct9IAhZAQvNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQPBqY3d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767789343; c=relaxed/simple;
+	bh=Z3/xgfDcR9ktiH/1Lr6yEevZOzIdj4I2wJegVeEfRBk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=IHcSMzOryFaXlFKwtWa1fanpGHOaAWzwv+hqotwyqXodxkNAHJHNi1gdTS1CMx5QQFFYCDeOgNHAPnQhKkG0D58cMkIf0rXRsFuELk4ZKcDe+sGApRmAsiDGJ6IRKJkp8iuk7GefKTn4HJFQ+lb6Fx8Y8uvuqA2FYw4XPMVhAWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mclLOmd+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XlQZGwjG; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQPBqY3d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7A2C4CEF7;
-	Wed,  7 Jan 2026 12:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767788663;
-	bh=IsygWTMZdTG0Nq6crJvMpuu1naoy0zMIB4K4PhC/N+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IQPBqY3d1wDsYM2p0cWdND2XmtPcU6sME/U61WJINvoK0+GWxk+WGZrcW5N1NQM1N
-	 73Sb6VNbTLeyVeVtSvcGuq01XdzERHaNnnCSIpllqmR85o83ujea5Gm5hz2MczeBy/
-	 JHWs91IWhHNoW7DLlmSc8UndW/pTYDFOLFNQ7GY00vA2nrOibnCos/9s1USnf0dGuD
-	 qEvBv22WKdjZnB8dCGLvYpmSR5Unp3anb0PsaOw6LL7fGw1RXS2LJG9DTpV/RznDhd
-	 0/H8+MMiRmpEnx0rGGoIo6HoQhpSHd0SRTD8/G338qS7bZt6Mel6qlFXr6gHiG7O2V
-	 h2Fospv+Dq25g==
-Date: Wed, 7 Jan 2026 12:24:18 +0000
-From: Simon Horman <horms@kernel.org>
-To: Cindy Lu <lulu@redhat.com>
-Cc: mst@redhat.com, jasowang@redhat.com, dtatulea@nvidia.com,
-	virtualization@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] vdpa/mlx5: reuse common function for MAC address
- updates
-Message-ID: <20260107122418.GB196631@kernel.org>
-References: <20251229071614.779621-1-lulu@redhat.com>
- <20251229071614.779621-2-lulu@redhat.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mclLOmd+";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XlQZGwjG"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 607C4cjn1642893
+	for <netdev@vger.kernel.org>; Wed, 7 Jan 2026 12:35:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	bC0wC25dWX1u9h804y9npqlSPE9Pd9D9e+NxLaj/2I4=; b=mclLOmd+Va5hvkJq
+	I73xotDuEPUPz/8m5HsSnCU2taxUQmDmbgWwX2kQiNnHkhINHy4wAu/OF8+lAHj6
+	us43TEwIv7ZhVpfrB1Se+qnRMlQZl1iCbUaZR/3eHNGfAsFuqqpSUUS96cDuuUx+
+	ZLlHwR0Brvrg+1PbspBuw8bdVWa/DHSW32cuEz8IGNlqzF4XHbJqoPX1SJXRRUXz
+	Fjy0QqYySQOnlI2zDl6f1WCC9W4NtsUTogulzaqgBP6xP24vdlN5szN2LZZieHAj
+	/muaIpc5NfmykX6B/YGgwvXn/3ST1QLhP6EFkIX0vw2Y573ssJ+AhZ0QWCs3/Olv
+	PGFzGw==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bhgsfhd11-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 12:35:40 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-7d5564057d0so4557131b3a.0
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 04:35:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1767789340; x=1768394140; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bC0wC25dWX1u9h804y9npqlSPE9Pd9D9e+NxLaj/2I4=;
+        b=XlQZGwjGxG5YenVFmIu/3eDb2V00tLRTBuxwOqBeXMhYWkzLI7e+gS75qHILGs1rzd
+         SMqTItWoiE3KR6BxbIPf1rZ1S6B8ohKSc2hFnwVPcDLkI/3No+x55umzk98V675Glqwy
+         2hSxlzNtTbU0+jO/ekIhAcaS/FWWOIFEdLqgt91wFK0O6GQJUX0FPRP7+jWuHyEKNnt1
+         NWQqoBFVBXMjBr54r1mclJk/OZPSd9Pr5Y3/R0x5HKaJBpbz0m7gUm0wWZPPluBbMYKy
+         bZ9/Pstlhs4OLQFG3XYLRFUPjeLlC6CZIOZxRxvUwMe0U/ux1mIZXdHCiPqFkcSIzJmH
+         rB4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767789340; x=1768394140;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bC0wC25dWX1u9h804y9npqlSPE9Pd9D9e+NxLaj/2I4=;
+        b=ddRiKJ1IeDaGSbcltkaZIf32/X0/R/a+byjiVtqU00B+hrjRWKWLV3IJOlqiLIsv2c
+         GnG0mOFLTvrdVXPeRH9OBYQqs1VH5tFvNdFAxR2cTXKlOUBaNTbD+UJAgglanBSt0JTx
+         iZme5JyZiy/sZXUUEKbmrcz0iPzq3iaEyYtfNGSYhVBLXezkP+z8eVX0vFQY4zm4dOEn
+         iOcWPyh7BQURM/Q/ApandVYaH3EOq4cE5zG3xC0UTsjZPr8oSUfXx6A6p+cuGte/c9Ms
+         f83gT4xa2OKL+Z3ZwFlheb1qhtyIjsdstrKHvFXtnJcrjiGMFkEjo2xNvJILDG+wn5dK
+         lopA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWIMEOKuBZy1Fjm3jw99+zeg2SIVC1kaO93wUwYoaRt2KjWVWS4fZ8WoS37o7ARHSs0D14iOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAPGkEkSuJO0oo0fQWNn3dxTX4MeWHBMF8YA9hKFDFXTyH6Ib6
+	hzjTHQ2uESZr0zJblGUZS/kH6rrpwZQ1MsJhBiU9p4bzG8GxHjmMTXlOcIYtxjo+J3gZdjoEs1x
+	GWlyNOAFtusVQV71GKsBlgW728qIiOr+6mYqVIirpdTYRipa1o2egFh56/lU=
+X-Gm-Gg: AY/fxX6ddMOzs9BR/dLO20g/zzgYs/RMmOq8CAK5NeA/Tt1t6qNmunR6EsMqJGBTy7e
+	lLeOqmWghwE6g2NBhHL8sh4qJum5AVZLBu/1mBpd+e1KRe/LbYrpC+R/dy81wd8mfFzWKfxG/70
+	VOJ0YCtYaqZjlF8fV3W+52zYc/xQAb7y2ONGB3bFPbpPbdoiOdtkT6BHtduohqaJhrZxAxAKW7r
+	C9cFZsShJpfWcKBViC+D5dPP7QYuXlcT0c4CGeap39f+Wgs065kAy9Maxx2VAQPnGTsmkq+Ph4c
+	G7o9GQSuehdeCAxZapXu4ZBhNWHM7Ylpmug8/Bd/lTDJK2Ay17bMBW60nb7cQ9J9Ei7Q6y3XCF8
+	v17mmLbE=
+X-Received: by 2002:a05:6a00:348a:b0:800:902d:9fdb with SMTP id d2e1a72fcca58-81b7d861859mr2145552b3a.5.1767789339622;
+        Wed, 07 Jan 2026 04:35:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH93fKUDfasuP5q8gHkOnrMUzHklFoNL76RVcQSiBJyvyfD7E4zZeOiwuGWUMy40Gzp59Romg==
+X-Received: by 2002:a05:6a00:348a:b0:800:902d:9fdb with SMTP id d2e1a72fcca58-81b7d861859mr2145512b3a.5.1767789338774;
+        Wed, 07 Jan 2026 04:35:38 -0800 (PST)
+Received: from [192.168.1.102] ([120.60.59.91])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c59e7c16sm4940286b3a.53.2026.01.07.04.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 04:35:38 -0800 (PST)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+X-Google-Original-From: Manivannan Sadhasivam <mani@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Jianjun Wang <jianjun.wang@mediatek.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>, Lee Jones <lee@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, Sjoerd Simons <sjoerd@collabora.com>
+Cc: kernel@collabora.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-pci@vger.kernel.org,
+        linux-phy@lists.infradead.org, netdev@vger.kernel.org,
+        Daniel Golle <daniel@makrotopia.org>,
+        Bryan Hinton <bryan@bryanhinton.com>,
+        Conor Dooley <conor.dooley@microchip.com>
+In-Reply-To: <20251223-openwrt-one-network-v5-0-7d1864ea3ad5@collabora.com>
+References: <20251223-openwrt-one-network-v5-0-7d1864ea3ad5@collabora.com>
+Subject: Re: (subset) [PATCH v5 0/8] arm64: dts: mediatek: Add Openwrt One
+ AP functionality
+Message-Id: <176778933103.573787.15149542478385360900.b4-ty@kernel.org>
+Date: Wed, 07 Jan 2026 18:05:31 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229071614.779621-2-lulu@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDA5NiBTYWx0ZWRfX1Rs5GCo1PbH8
+ IZP66XnE2dhaCKDTGVdEcE5TutsnM9yC+Phmvh5G0OrUdyE4jyWlWWWoruKpvOXnUNSOw4bgFPt
+ +laHEzgSknTozmeBtIsDNWmwsFFrhcKrWmPrRyLKdoYBSAfGn1qTVLFdhKRbdMoGIzVqnOIiFd6
+ ZHFweKpcsAGAlCCTjO/8aXoEDi+OnAqVo44kW4kI/kDTHQrM3zvVGb9DkG3V4LP0943yhFASL4O
+ 8LqlQD3GPFXEgVivAgYcGL1TjNPPeJccmx/gMHONS8bxq9C9ZEjvjsRQAIXpnOzkcmygee3poPV
+ epWVO0PcUOF4OSMyLy741WeoNgNi6HK1Rrgvrqx8HqqEJeg/8IT+UGgXDNi2xkCyGSLGqW9FpKs
+ qyHd5wzxheCFUzgPNwwZSBHK6dHCLgQb9UhAEgMEEV8EsecLs616T76hsEZHzzabnmJWRBrbYT7
+ 6t4jZDdNTv1grJF5jfg==
+X-Proofpoint-GUID: wv5G8PvShsWBDyl8sKAHEL8XDOCdH-kT
+X-Proofpoint-ORIG-GUID: wv5G8PvShsWBDyl8sKAHEL8XDOCdH-kT
+X-Authority-Analysis: v=2.4 cv=Abi83nXG c=1 sm=1 tr=0 ts=695e531c cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=jZ9eb5YeB6VHmQ1DXVOWBw==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=QX4gbG5DAAAA:8
+ a=w7wmWQyBmLUzaIw334oA:9 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+ a=AbAUZ8qAyYyZVLSsDulk:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-07_01,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2601070096
 
-On Mon, Dec 29, 2025 at 03:16:13PM +0800, Cindy Lu wrote:
-> Factor out MAC address update logic and reuse it from handle_ctrl_mac().
+
+On Tue, 23 Dec 2025 13:37:50 +0100, Sjoerd Simons wrote:
+> Significant changes in V5:
+>   * Rebase against linux v6.19-rc2, dropping merged patches
+>   * Drop note about disable pci_aspm in cover letter, not required anymore
+> Significant changes in V4:
+>   * Drop patches that were picked up
+>   * Improve mediatek,net dt bindings:
+>     - Move back to V2 version (widening global constraint, constraining
+>       per compatible)
+>     - Ensure all compatibles are constraint in the amount of WEDs (2 for
+>       everything apart from mt7981). Specifically adding constraints for
+>       mediatek,mt7622-eth and ralink,rt5350-eth
+> Significant changes in V3:
+>   * Drop patches that were picked up
+>   * Re-order patches so changes that don't require dt binding changes
+>     come first (Requested by Angelo)
+>   * Specify drive power directly rather then using MTK_DRIVE_...
+>   * Simply mediatek,net binding changes to avoid accidental changes to
+>     other compatibles then mediatek,mt7981-eth
+> Significant changes in V2:
+>   * https://lore.kernel.org/lkml/20251016-openwrt-one-network-v1-0-de259719b6f2@collabora.com/
+>   * Only introduce labels in mt7981b.dtsi when required
+>   * Switch Airoha EN8811H phy irq to level rather then edge triggered
+>   * Move uart0 pinctrl from board dts to soc dtsi
+>   * Only overwrite constraints with non-default values in MT7981 bindings
+>   * Make SPI NOR nvmem cell labels more meaningfull
+>   * Seperate fixing and disable-by-default for the mt7981 in seperate
+>     patches
 > 
-> This ensures that old MAC entries are removed from the MPFS table
-> before adding a new one and that the forwarding rules are updated
-> accordingly. If updating the flow table fails, the original MAC and
-> rules are restored as much as possible to keep the software and
-> hardware state consistent.
-> 
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
-> ---
->  drivers/vdpa/mlx5/net/mlx5_vnet.c | 95 +++++++++++++++++--------------
->  1 file changed, 53 insertions(+), 42 deletions(-)
-> 
-> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> index 6e42bae7c9a1..c87e6395b060 100644
-> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> @@ -2125,62 +2125,48 @@ static void teardown_steering(struct mlx5_vdpa_net *ndev)
->  	mlx5_destroy_flow_table(ndev->rxft);
->  }
->  
-> -static virtio_net_ctrl_ack handle_ctrl_mac(struct mlx5_vdpa_dev *mvdev, u8 cmd)
-> +static int mlx5_vdpa_change_new_mac(struct mlx5_vdpa_net *ndev,
-> +				    struct mlx5_core_dev *pfmdev,
-> +				    const u8 *new_mac)
->  {
-> -	struct mlx5_vdpa_net *ndev = to_mlx5_vdpa_ndev(mvdev);
-> -	struct mlx5_control_vq *cvq = &mvdev->cvq;
-> -	virtio_net_ctrl_ack status = VIRTIO_NET_ERR;
-> -	struct mlx5_core_dev *pfmdev;
-> -	size_t read;
-> -	u8 mac[ETH_ALEN], mac_back[ETH_ALEN];
-> -
-> -	pfmdev = pci_get_drvdata(pci_physfn(mvdev->mdev->pdev));
-> -	switch (cmd) {
-> -	case VIRTIO_NET_CTRL_MAC_ADDR_SET:
-> -		read = vringh_iov_pull_iotlb(&cvq->vring, &cvq->riov, (void *)mac, ETH_ALEN);
-> -		if (read != ETH_ALEN)
-> -			break;
-> -
-> -		if (!memcmp(ndev->config.mac, mac, 6)) {
-> -			status = VIRTIO_NET_OK;
-> -			break;
-> -		}
-> +	struct mlx5_vdpa_dev *mvdev = &ndev->mvdev;
-> +	u8 old_mac[ETH_ALEN];
->  
-> -		if (is_zero_ether_addr(mac))
-> -			break;
-> +	if (is_zero_ether_addr(new_mac))
-> +		return -EINVAL;
->  
-> -		if (!is_zero_ether_addr(ndev->config.mac)) {
-> -			if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
-> -				mlx5_vdpa_warn(mvdev, "failed to delete old MAC %pM from MPFS table\n",
-> -					       ndev->config.mac);
-> -				break;
-> -			}
-> +	if (!is_zero_ether_addr(ndev->config.mac)) {
-> +		if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
-> +			mlx5_vdpa_warn(mvdev, "failed to delete old MAC %pM from MPFS table\n",
-> +				       ndev->config.mac);
-> +			return -EIO;
->  		}
-> +	}
->  
-> -		if (mlx5_mpfs_add_mac(pfmdev, mac)) {
-> -			mlx5_vdpa_warn(mvdev, "failed to insert new MAC %pM into MPFS table\n",
-> -				       mac);
-> -			break;
-> -		}
-> +	if (mlx5_mpfs_add_mac(pfmdev, (u8 *)new_mac)) {
-> +		mlx5_vdpa_warn(mvdev, "failed to insert new MAC %pM into MPFS table\n",
-> +			       new_mac);
-> +		return -EIO;
-> +	}
->  
->  		/* backup the original mac address so that if failed to add the forward rules
->  		 * we could restore it
->  		 */
-> -		memcpy(mac_back, ndev->config.mac, ETH_ALEN);
-> +		memcpy(old_mac, ndev->config.mac, ETH_ALEN);
->  
-> -		memcpy(ndev->config.mac, mac, ETH_ALEN);
-> +		memcpy(ndev->config.mac, new_mac, ETH_ALEN);
+> [...]
 
-...
+Applied, thanks!
 
-Hi Cindy,
+[1/8] dt-bindings: PCI: mediatek-gen3: Add MT7981 PCIe compatible
+      commit: 407cc7ff3e99f6bca9b4ca2561d3f9e7192652fe
 
-I realise that this makes the diffstat significantly more verbose.
-And hides material changes. So perhaps there is a nicer way to do this.
+Best regards,
+-- 
+Manivannan Sadhasivam <mani@kernel.org>
 
-But with the current arrangement of this patch, I think that
-the indentation from just above, until the end of this function
-needs to be updated.
-
-I.e. the following incremental patch on top of this one.
-
-This was flagged by Smatch.
-
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index c87e6395b060..c796f502b604 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -2149,48 +2149,48 @@ static int mlx5_vdpa_change_new_mac(struct mlx5_vdpa_net *ndev,
- 		return -EIO;
- 	}
- 
--		/* backup the original mac address so that if failed to add the forward rules
--		 * we could restore it
--		 */
--		memcpy(old_mac, ndev->config.mac, ETH_ALEN);
-+	/* backup the original mac address so that if failed to add the forward rules
-+	 * we could restore it
-+	 */
-+	memcpy(old_mac, ndev->config.mac, ETH_ALEN);
- 
--		memcpy(ndev->config.mac, new_mac, ETH_ALEN);
-+	memcpy(ndev->config.mac, new_mac, ETH_ALEN);
- 
--		/* Need recreate the flow table entry, so that the packet could forward back
--		 */
--		mac_vlan_del(ndev, old_mac, 0, false);
-+	/* Need recreate the flow table entry, so that the packet could forward back
-+	 */
-+	mac_vlan_del(ndev, old_mac, 0, false);
- 
--		if (mac_vlan_add(ndev, ndev->config.mac, 0, false)) {
--			mlx5_vdpa_warn(mvdev, "failed to insert forward rules, try to restore\n");
-+	if (mac_vlan_add(ndev, ndev->config.mac, 0, false)) {
-+		mlx5_vdpa_warn(mvdev, "failed to insert forward rules, try to restore\n");
- 
--			/* Although it hardly run here, we still need double check */
--			if (is_zero_ether_addr(old_mac)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: Original MAC is zero\n");
--				return -EIO;
--			}
-+		/* Although it hardly run here, we still need double check */
-+		if (is_zero_ether_addr(old_mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: Original MAC is zero\n");
-+			return -EIO;
-+		}
- 
--			/* Try to restore original mac address to MFPS table, and try to restore
--			 * the forward rule entry.
--			 */
--			if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: delete MAC %pM from MPFS table failed\n",
--					       ndev->config.mac);
--			}
-+		/* Try to restore original mac address to MFPS table, and try to restore
-+		 * the forward rule entry.
-+		 */
-+		if (mlx5_mpfs_del_mac(pfmdev, ndev->config.mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: delete MAC %pM from MPFS table failed\n",
-+				       ndev->config.mac);
-+		}
- 
--			if (mlx5_mpfs_add_mac(pfmdev, old_mac)) {
--				mlx5_vdpa_warn(mvdev, "restore mac failed: insert old MAC %pM into MPFS table failed\n",
--					       old_mac);
--			}
-+		if (mlx5_mpfs_add_mac(pfmdev, old_mac)) {
-+			mlx5_vdpa_warn(mvdev, "restore mac failed: insert old MAC %pM into MPFS table failed\n",
-+				       old_mac);
-+		}
- 
--			memcpy(ndev->config.mac, old_mac, ETH_ALEN);
-+		memcpy(ndev->config.mac, old_mac, ETH_ALEN);
- 
--			if (mac_vlan_add(ndev, ndev->config.mac, 0, false))
--				mlx5_vdpa_warn(mvdev, "restore forward rules failed: insert forward rules failed\n");
-+		if (mac_vlan_add(ndev, ndev->config.mac, 0, false))
-+			mlx5_vdpa_warn(mvdev, "restore forward rules failed: insert forward rules failed\n");
- 
--			return -EIO;
--		}
-+		return -EIO;
-+	}
- 
--		return 0;
-+	return 0;
- }
- 
- static virtio_net_ctrl_ack handle_ctrl_mac(struct mlx5_vdpa_dev *mvdev, u8 cmd)
