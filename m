@@ -1,179 +1,165 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33A6396D18
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 16:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95063A1A24
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 16:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767803048; cv=none; b=o5fveIMKXmqrunkcFcReCAgX1GqztNuRg6Y+GP/G4loz+rJf+ay9Ifwk2vUASzZtY+gUFscENTo94t0nbzfqwVMuAiI5nl4IlgapKzl4jJzATp0nmw0vKcyvgyUxN2f/ezgdmjJse3yvWrCFc/TwHjfsQcJdxu43Eti2sncmUiU=
+	t=1767803074; cv=none; b=Zjq/gvPq5fd2cKwd/wDiR8CJukT+2FV405gaP/x+84EVpaTej4TgoXwbEV4WTCf2bg4XnJ6nvpTvyzgIyIhKNgHb6Y/znCAGyDXEjCxNFj/tw9lFLmZmOqQlf6VxSny4YrpUZnBlvHngsgyFOZg2yH7jwtGKK32KksCRRWk+cLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767803048; c=relaxed/simple;
-	bh=U+4V9kZhIJ53Qp8akWz44aVV3ahWbnLCmQhJYp3f2m8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a1t0Zsdyv2uS05/0z9uNONJjo0VKYLnlNxV6JRXNkOXtTznjjBLJEfRWww/hCzckHS9VyqaY8yw6gU6iFZSfTqM/fOiXrhx4xVQFpXj1KtJCYEdAo1WObNFVg/8LFHeyEiuYBq8KzkWMog+0vBi3texsZ2Ubyrk6xjScNZmItGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h3zrSWAM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h3zrSWAM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767803036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sN2vQaF8rLYlwVoaTYwGxcXdAruqPXep/xxEwK8q/D8=;
-	b=h3zrSWAMjqJ3J/EVhl9ZyLdQlY0nu1KvFGrN6FrnMhslBbVpNRKuuYp23lxT0gdOyEE4da
-	qELDAM9GJVz6swdsGAr2g+M5mVW8N//6yBY2M0RhtY80puguqC7uzTM/GWt9hzrKKgQGr0
-	vgrO4XJtVLdhvFK8pc8aNsuTo/5DMFM=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-_cIzh2sSM7Kp46SHWjHbXQ-1; Wed,
- 07 Jan 2026 11:23:55 -0500
-X-MC-Unique: _cIzh2sSM7Kp46SHWjHbXQ-1
-X-Mimecast-MFC-AGG-ID: _cIzh2sSM7Kp46SHWjHbXQ_1767803031
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C976519560B5;
-	Wed,  7 Jan 2026 16:23:50 +0000 (UTC)
-Received: from [10.44.32.248] (unknown [10.44.32.248])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5E5C41956048;
-	Wed,  7 Jan 2026 16:23:41 +0000 (UTC)
-Message-ID: <66815c08-8408-4651-b039-d47925ae125e@redhat.com>
-Date: Wed, 7 Jan 2026 17:23:40 +0100
+	s=arc-20240116; t=1767803074; c=relaxed/simple;
+	bh=NEUMDtuzOaM0QW+pEErdVZUjXHEKX2eRDIbB6TPcJes=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ov0ULoq8tOmHKEtI6uDNcAGTYiudFvEHNDobTSfu933LjQvl2/FIQnhvYWd3LZTKYtlY/8RR0UBF4OIUVrWUx63OpbG3f6MXKngadZSHuvLGxnz3KjPuVtwXVVblXuY17jQ2NzaVt3z6JgwHeZIas3a3saRl3CTJlDSkJ9bY2yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-3f9a5b4ae58so4075916fac.2
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 08:24:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767803059; x=1768407859;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WDW1sZB7rsDwU9IQxdhOJ2RMK2HxW4Gsg47a08SWtKw=;
+        b=rQX8yCKL36344mZmG4GewyVB2LTg9aKHaK+Zz0PEp/heJo2L6HR3Jgn3OWDLWIxA/3
+         gP1nZ8CQv4mEOFawKpkadbUhp1IcyQXWnrjTOrWjPX4XbB1jZWYaPOM06DRqCmzcupe0
+         nOdvTeqOIXAbr2rspyhX4haREOZk2keC69VxcCXpRpmYh9euxdgozpqtLqLbiaxITYG7
+         Rw7bvE9TEaLpbDHo+sJ4pTRNifj7N1wWgZqiaxHoB6pT5Su+q8Kt1Q4fuv7ZfzoGBkOe
+         NL69RvRG7mEZSsbvEUqIQdVTCkQ0/TkwhhCyCNjVEGIh3G/6BaqGRBaIP/6krsrrZhP6
+         40JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXN0jPpc3KY3Kypvo7qzjqRssn53gifUZFiQP7/YFcYxzzhi9QibQfu71mwHD6XbhFx7Gr8OWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtXNl3GM7YtmnMy4534SgqhFeI3LY26tOyWbe5q6rFOQt7M8iR
+	WZG/EAkBJVCDJTbT0/HrgEO9p0KW0Svkrk2xSF0dE1TQlZK3ZEFKkyOFTtEijnkS21Rgd/GUn5Y
+	zE0PAFj+4nRNLMp1g0zMYrLl3bnYQmKWH4HH3ej2UAW2tGbtHNa210CYYUs4=
+X-Google-Smtp-Source: AGHT+IGZBzky28h7vaazRxhmyPHTTskvRA1dazi6T5/NV0pPluQoGd82LyNcpcOEs0gF2K9vD6NJiCyJzjGHc31O54+uw1/sBn4d
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next 01/13] dt-bindings: net: ethernet-controller:
- Add DPLL pin properties
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Grzegorz Nitka <grzegorz.nitka@intel.com>, Jiri Pirko <jiri@resnulli.us>,
- Petr Oros <poros@redhat.com>, Michal Schmidt <mschmidt@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Jonathan Lemon <jonathan.lemon@gmail.com>, Simon Horman <horms@kernel.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Willem de Bruijn <willemb@google.com>, Stefan Wahren <wahrenst@gmx.net>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- Horatiu Vultur <Horatiu.Vultur@microchip.com>
-References: <20251211194756.234043-1-ivecera@redhat.com>
- <20251211194756.234043-2-ivecera@redhat.com>
- <2de556f0-d7db-47f1-a59e-197f92f93d46@lunn.ch>
- <20251217004946.GA3445804-robh@kernel.org>
- <5db81f5b-4f35-46e4-8fec-4298f1ac0c4e@redhat.com>
- <CAL_JsqJoybgJTAbSjGbTBxo-v=dbYY68tT309CV98=ohWhnC=w@mail.gmail.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <CAL_JsqJoybgJTAbSjGbTBxo-v=dbYY68tT309CV98=ohWhnC=w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Received: by 2002:a05:6820:6101:b0:65c:fa23:2cf7 with SMTP id
+ 006d021491bc7-65f54f7e6b0mr823746eaf.65.1767803058758; Wed, 07 Jan 2026
+ 08:24:18 -0800 (PST)
+Date: Wed, 07 Jan 2026 08:24:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <695e88b2.050a0220.1c677c.036d.GAE@google.com>
+Subject: [syzbot] [net?] KMSAN: uninit-value in IP6_ECN_decapsulate (3)
+From: syzbot <syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Rob,
+Hello,
 
-On 1/7/26 4:15 PM, Rob Herring wrote:
-> On Mon, Jan 5, 2026 at 10:24 AM Ivan Vecera <ivecera@redhat.com> wrote:
->>
->> On 12/17/25 1:49 AM, Rob Herring wrote:
->>> On Thu, Dec 11, 2025 at 08:56:52PM +0100, Andrew Lunn wrote:
->>>> On Thu, Dec 11, 2025 at 08:47:44PM +0100, Ivan Vecera wrote:
->>>>> Ethernet controllers may be connected to DPLL (Digital Phase Locked Loop)
->>>>> pins for frequency synchronization purposes, such as in Synchronous
->>>>> Ethernet (SyncE) configurations.
->>>>>
->>>>> Add 'dpll-pins' and 'dpll-pin-names' properties to the generic
->>>>> ethernet-controller schema. This allows describing the physical
->>>>> connections between the Ethernet controller and the DPLL subsystem pins
->>>>> in the Device Tree, enabling drivers to request and manage these
->>>>> resources.
->>>>
->>>> Please include a .dts patch in the series which actually makes use of
->>>> these new properties.
->>>
->>> Actually, first you need a device (i.e. a specific ethernet
->>> controller bindings) using this and defining the number of dpll-pins
->>> entries and the names.
->>
->> The goal of this patch is to define properties that allow referencing
->> dpll pins from other devices. I included it in this series to allow
->> implementing helpers that use the property names defined in the schema.
->>
->> This series implements the dpll pin consumer in the ice driver. This is
->> usually present on ACPI platforms, so the properties are stored in _DSD
->> ACPI nodes. Although I don't have a DT user right now, isn't it better
->> to define the schema now?
-> 
-> I have no idea what makes sense for ACPI and little interest in
-> reviewing ACPI bindings. While I think the whole idea of shared
-> bindings is questionable, really it's a question of review bandwidth
-> and so far no one has stepped up to review ACPI bindings.
+syzbot found the following issue on:
 
-It depends... shared bindings allow drivers to read property values
-without need to have separate OF and ACPI codepaths.
+HEAD commit:    9bb956508c9d Merge tag 'riscv-for-linus-6.18-rc3' of git:/..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=157ccbe2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=dce7eac4016da338
+dashboard link: https://syzkaller.appspot.com/bug?extid=d4dda070f833dc5dc89a
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12022258580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=140eaf34580000
 
->> Thinking about this further, consumers could be either an Ethernet
->> controller (where the PHY is not exposed and is driven directly by the
->> NIC driver) or an Ethernet PHY.
->>
->> For the latter case (Ethernet PHY), I have been preparing a similar
->> implementation for the Micrel phy driver (lan8814) on the Microchip EDS2
->> board (pcb8385). Unfortunately, the DTS is not upstreamed yet [1], so I
->> cannot include the necessary bindings here.
->>
->> Since there can be multiple consumer types (Ethernet controller or PHY),
->> would it be better to define a dpll-pin-consumer.yaml schema instead
->> (similar to mux-consumer)?
-> 
-> The consumer type doesn't matter for that. What matters is you have
-> specific device bindings and if they are consumers of some
-> provider/consumer style binding, then typically each device binding
-> has to define the constraints if there can be multiple
-> entries/connections (e.g. how many interrupts, clocks, etc. and what
-> each one is).
-> 
-> Hard to say what's needed for DPLL exactly because I know next to
-> nothing about it.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e72b2dd5c2f0/disk-9bb95650.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a1b145971798/vmlinux-9bb95650.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/bb711e135af2/bzImage-9bb95650.xz
 
-The motivation is to describe the interconnection between an Ethernet
-controller (or PHY) and a DPLL device. In SyncE scenarios, the NIC or
-PHY provides a recovered clock output received from the physical port,
-and the signal is routed to specific DPLL pin(s). The DPLL device then
-locks onto this signal, filters jitter/wander, and provides a stable,
-phase-aligned clock back to the NIC. When a NIC or PHY package supports
-multiple Ethernet ports, it may allow selecting which port's recovered
-clock signal is routed to the DPLL pin.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
 
-The goal of this entire series is to allow NIC drivers to register their
-own pins (per port) on top of existing pins from the DPLL device. To do
-so, it is necessary to know which DPLL device pin is connected to the
-NIC's recovered clock output.
+syz.0.17 uses obsolete (PF_INET,SOCK_PACKET)
+=====================================================
+BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+ __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+ ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
+ __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
+ ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
+ gre_rcv+0x14fd/0x1b60 net/ipv6/ip6_gre.c:-1
+ ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
+ ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
+ ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
+ dst_input include/net/dst.h:474 [inline]
+ ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
+ __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
+ __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6192
+ netif_receive_skb_internal net/core/dev.c:6278 [inline]
+ netif_receive_skb+0x57/0x630 net/core/dev.c:6337
+ tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+ tun_get_user+0x5d60/0x6d70 drivers/net/tun.c:1953
+ tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+ ksys_write fs/read_write.c:738 [inline]
+ __do_sys_write fs/read_write.c:749 [inline]
+ __se_sys_write fs/read_write.c:746 [inline]
+ __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+ x64_sys_call+0x3014/0x3e30 arch/x86/include/generated/asm/syscalls_64.h:2
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-The NIC/PHY acts as a consumer of the DPLL pin(s) provided by the DPLL
-device. As I mentioned in my previous email, I am working on the
-implementation of this feature (recovered clock selection) for the
-Micrel driver (a DT area user). If it is acceptable to you, I can omit
-the first patch that introduces DT properties from this series and add
-it to the series that will introduce the feature for the Micrel driver.
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4977 [inline]
+ slab_alloc_node mm/slub.c:5280 [inline]
+ kmem_cache_alloc_node_noprof+0x989/0x16b0 mm/slub.c:5332
+ kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:579
+ __alloc_skb+0x347/0x7d0 net/core/skbuff.c:670
+ alloc_skb include/linux/skbuff.h:1383 [inline]
+ alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6671
+ sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2965
+ tun_alloc_skb drivers/net/tun.c:1461 [inline]
+ tun_get_user+0x1142/0x6d70 drivers/net/tun.c:1794
+ tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+ ksys_write fs/read_write.c:738 [inline]
+ __do_sys_write fs/read_write.c:749 [inline]
+ __se_sys_write fs/read_write.c:746 [inline]
+ __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+ x64_sys_call+0x3014/0x3e30 arch/x86/include/generated/asm/syscalls_64.h:2
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd9/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Thanks,
-Ivan
+CPU: 1 UID: 0 PID: 6032 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+=====================================================
 
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
