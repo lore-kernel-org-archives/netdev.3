@@ -1,103 +1,59 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from natrix.sarinay.com (natrix.sarinay.com [159.100.251.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABE32FD68B;
-	Wed,  7 Jan 2026 09:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEDD3126DB;
+	Wed,  7 Jan 2026 09:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.251.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767779445; cv=none; b=I5IChHdyXSFqkxsBN1egmf2faapStAwkMCSV4SRDWVI9vjcHP+tkTSgkZPkiEis9c6jwrJeFAIGsxxWGtWSls4z1Sde8xHrmryGMFhHftLe3qFsavJoe5yzDoYhG7rg599ym90I93QW7zbOBZPSbAVHkTFqDug+/nRZ4Bt/zCtU=
+	t=1767779512; cv=none; b=pXIhASzfcs6pHaUhPTBKYbw/b3s2Q7CRH3yjbzhSeWi5TVEYyJI5bgc4ALs6TTSRuaG57cIO8L5rGvow11O6bjDT+68++JhcpW7akEDtsM1OtvJkLRk2GBcFrzWvKLSMoZG4v9VzbaR5BsAlzGHIS4ZCkUwdH898tdsKZwS+5OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767779445; c=relaxed/simple;
-	bh=s36ctYcNy4Vzxq93WlQu/9txP+PqQvXrxF16njdDAHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7sToN+Hg2BR3W9QPGNilQqPVJ4jSJ0YAe0qu2SHMFIb6GrFFHVLuCjy1l+Y8qRbkIpg+cw8A41yA6acRs6d0vjUKz6FPgt+5DPgLNPlJUIylOZtfgg2nDGztSOZGEunwW2WbFACq7+oGbriwXBsAcd3HEIo9MmpBSSJi49DDJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Fj1xK8wV; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1767779512; c=relaxed/simple;
+	bh=nE5xqdgsLdwjSBCDkh9NrAinC8GAJWzhSEOF62kybxc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lVlfrgnqE1Mo+Jgarq8611tWX0Oh73RNLgGVyB8UmcG/CCbKlDuOt4hAeyjOZOn6Zq1x0ej4sccZGAwC/ZpnOIVX49IvkZXHOY/P5Qpcs942/ZzhfmLEfoXVNgoyP+U3uzGGJ/72vUr/SvvUM+fwLVLA+Ujkf9pzzasV8p2/NjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sarinay.com; spf=pass smtp.mailfrom=sarinay.com; dkim=pass (2048-bit key) header.d=sarinay.com header.i=@sarinay.com header.b=k5MAatyg; arc=none smtp.client-ip=159.100.251.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sarinay.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sarinay.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Fj1xK8wV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tBRKSt2dyqR0s90Y7GVNDkqm9S9FCIJZ4rJuhPgGBv4=; b=Fj1xK8wVOVCeli9QMOCiLSS2IV
-	MYdeV/nhwFPW4s/C3wlfsLCHc5jNvaJ8pmutv+9Y6ffNgeQUnJ7L0uVpHjpTxXADAMthHZH34b3hL
-	m0lwJ8+Ov2WJsLuypZsOcSjbSknHz4i03M9y7RrbRKrbKFw795T/r2pBqr92hLRzUKA30szm2hf2S
-	IohnMYeCDFmSzmcD0JJcJKSHvZGZkj2rAyIXtl0ccdehAetTcAz/povQw3PG4aN50DSVcDgowdd6S
-	AR8KR83jEh1a5ev9T38lAnSzO2y86Yn7r/X5xJEvw6d4U+Qn+wr/jjC5DC21CyOhJ29PHnmDDkmV2
-	LvOtVKvA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48840)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vdQB6-000000001Ua-20gm;
-	Wed, 07 Jan 2026 09:50:08 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vdQB0-000000001J0-2rw1;
-	Wed, 07 Jan 2026 09:50:02 +0000
-Date: Wed, 7 Jan 2026 09:50:02 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	horms@kernel.org, Frank.Sae@motor-comm.com, hkallweit1@gmail.com,
-	shenjian15@huawei.com, liuyonglong@huawei.com,
-	chenhao418@huawei.com, jonathan.cameron@huawei.com,
-	salil.mehta@huawei.com, shiyongbang@huawei.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
- rules
-Message-ID: <aV4sSr79IBIQRj9x@shell.armlinux.org.uk>
-References: <20251215125705.1567527-1-shaojijie@huawei.com>
- <20251215125705.1567527-3-shaojijie@huawei.com>
- <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
- <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
- <aVerWcPPteVKRHv1@shell.armlinux.org.uk>
- <2d94db98-9484-438f-8e25-6b836c63ff71@huawei.com>
+	dkim=pass (2048-bit key) header.d=sarinay.com header.i=@sarinay.com header.b="k5MAatyg"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=sarinay.com; s=2023;
+	t=1767778890; bh=nE5xqdgsLdwjSBCDkh9NrAinC8GAJWzhSEOF62kybxc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=k5MAatygne1vwEa/WKKs0N+JGqvIvXzEvORvNM00jNfhVl74wJ0SWirCSb0cCsHkX
+	 zD9QGd2ko9Y9LqU5QBm6MlxZoh5vYC+Ozg+oofm7Y+DISvfxcTll0/8PCO4nE8KozQ
+	 r3nSt2FB5dKhEFE8kHS7EFc3IY4zIErAI+LhT1UBH10ybLWeaFkYNfaMw40shQDH6J
+	 dDhpOeAYvHvrRgpPq35FCVLOkTwlCulE3pZGzosomAKGrFm20VSTP7hJhfI726TMKK
+	 J2akg5PUN4aw5Lj3n758k6S/L5JOJfuh2Wejcp9Toy86dQiGw97wTj7moAWU3liPgB
+	 V/YnqNzr5zL+Q==
+Message-ID: <4ece65a62bac434de260896d208fcd9067185b4c.camel@sarinay.com>
+Subject: Re: [PATCH net v4] net: nfc: nci: Fix parameter validation for
+ packet data
+From: Juraj =?UTF-8?Q?=C5=A0arinay?= <juraj@sarinay.com>
+To: Michael Thalmeier <michael.thalmeier@hale.at>, Deepak Sharma	
+ <deepak.sharma.472935@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon Horman
+ <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Michael Thalmeier	
+ <michael@thalmeier.at>, stable@vger.kernel.org, regressions@lists.linux.dev
+Date: Wed, 07 Jan 2026 10:41:30 +0100
+In-Reply-To: <20251223072552.297922-1-michael.thalmeier@hale.at>
+References: <20251223072552.297922-1-michael.thalmeier@hale.at>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d94db98-9484-438f-8e25-6b836c63ff71@huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Jan 07, 2026 at 05:43:08PM +0800, Jijie Shao wrote:
-> 
-> on 2026/1/2 19:26, Russell King (Oracle) wrote:
-> > On Wed, Dec 17, 2025 at 08:54:59PM +0800, Jijie Shao wrote:
-> > > on 2025/12/16 15:09, Andrew Lunn wrote:
-> > > > On Mon, Dec 15, 2025 at 08:57:01PM +0800, Jijie Shao wrote:
-> > > > > The node of led need add new property: rules,
-> > > > > and rules can be set as:
-> > > > > BIT(TRIGGER_NETDEV_LINK) | BIT(TRIGGER_NETDEV_RX)
-> > > > Please could you expand this description. It is not clear to my why it
-> > > > is needed. OF systems have not needed it so far. What is special about
-> > > > your hardware?
-> > > I hope to configure the default rules.
-> > > Currently, the LED does not configure rules during initialization; it uses the default rules in the PHY registers.
-> > > I would like to change the default rules during initialization.
-> > One of the issues here is that there are boards out there where the boot
-> > loader has configured the PHY LED configuration - and doesn't supply it
-> > via DT (because PHY LED configuration in the kernel is a new thing.)
-> > 
-> > Adding default rules for LEDs will break these platforms.
-> > 
-> > Please find a way to provide the LED rules via firmware rather than
-> > introducing some kind of rule defaulting.
-> 
-> 
-> Actually, in my code, `default_rules` is an optional configuration;
-> you can choose not to set default rules.
+On Tue, 2025-12-23 at 08:25 +0100, Michael Thalmeier wrote:
+> Since commit 9c328f54741b ("net: nfc: nci: Add parameter validation for
+> packet data") communication with nci nfc chips is not working any more.
 
-How is that achieved?
+The commit broke existing user workflows, should therefore be handled
+as a regression. Please consider reverting it until more refined
+validation code has been thoroughly tested.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+
+#regzbot introduced: 9c328f54741bd5465ca1dc717c84c04242fac2e1
