@@ -1,78 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC45224AF7
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 01:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42DC18C008
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 01:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767750216; cv=none; b=mZEIebB3h2fW/H46CxMhEwDBMBhf+4ICd91dzAZPTylhqPDEI+RTece0xiAGjyIerXkm6xwZKThgWxAY3k7tX/q2YUgkIGUtKCBgfKHpGaTb0iKM/4F8ZUd+m12kF1u55SqgIMAF9dWEyBz8emG/FjpRgJX0hJDKfBOlQ9ioHvc=
+	t=1767750498; cv=none; b=WP6ZvUUD6uKiB2bgIQLCDvbWsCRzpbkmgo6X4Lnu+GqHNsz3cB/7RahipKWfkaCp4JqdgylhNJhGerNVzTRNAHvUdg0uI4z1X/F8Zk3CS8k0uUYsqeX309Ln9p3c3IFEmcbqOMrZg0uuBDSpYuFraiydI0KsPTv6+lruo2qyo44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767750216; c=relaxed/simple;
-	bh=l69uPmhRnaxYY0DAkUZCeMjtW/s86vt5BeT+e1GMNRw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=csMYMySsVe2eDHDtR2OnKvWIGKFYdewG0gv4lXRsrTVMTK6qN5fBYHq6o8RqyhLvIDve9I0vqbDa3vwrNupmADoNkCkSGhhdiCzQNDjocRbdPOxe7ees40JxVJOmruFvWAoThLXNyjLEosRw+mP8XabY2gZH1sAC/I2lgP8ONc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cw6B1qaU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767750498; c=relaxed/simple;
+	bh=OMqs9Y/XqslkGbzFKIbzBnsbDkbyUzUfmVc6deigixE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AJMmfPka++v3QkYgCVLdkg6NmXUzQx/YAFBDFonGcXlL+j8sdkRfu2ySECYAYkNUgEUjm5Dc3mlG34p4wSrpsjMkNw7OOqURcescCEn6IC7kfkQALEwFw43KY6606UeWDxdeWdk+kguHWy7iCwqs8uw2RrPpzRK1IQq2Wtj/4wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8mS8hHm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cw6B1qaU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1F5C16AAE;
-	Wed,  7 Jan 2026 01:43:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8mS8hHm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F93C116C6;
+	Wed,  7 Jan 2026 01:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767750215;
-	bh=l69uPmhRnaxYY0DAkUZCeMjtW/s86vt5BeT+e1GMNRw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Cw6B1qaU8I+EsuVzCAX/Y/gjXzRIo/AiTYClH8n/QoCzT2lWweSZUK6fQMhhOxR1B
-	 6Lv2OyJO/ltUJa1ahn68Ohrc7/hOwZjlI80WaQ0ZLKr5dBkFgr6fTSHSu7YmP5OEFW
-	 JDdsLAYpZQWmSP5zSmOinWvy9bddA1m/8HNwAopZZNVv3ETMkOEIA7BHEsZDxcfsWW
-	 TjKyirutIu6+1SaaldjPmWE5nRnB4SQxiRyfEPjZfB7c1d9ce3DWUAStTO1UG+ryZ1
-	 zhDs7zePGaKEWI9Ab5VABThmbkSvKNvSCwEqia8MqGZZWiP04Ns50wda1Dq1kp/qq+
-	 +9xQNYfVUhFww==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 786EB380CEF5;
-	Wed,  7 Jan 2026 01:40:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1767750498;
+	bh=OMqs9Y/XqslkGbzFKIbzBnsbDkbyUzUfmVc6deigixE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n8mS8hHmRH12HU2eNPyhX+wSXvl63DnqRcnSb9izgbyEA/1ncbA8Mi9k7SdBHiO5Z
+	 3lRik4+FoECjgGuz/UdkrQfYq78rJLP9zMVGo2ZXIJ/HZg7b4jV5L4ROa1nO1nHcsL
+	 kmLKbD904+XP4CPJAJKL+2CM85AdCqUxD1oaWRL3rwUDqqobvO7ohnerLZp5bWbCsa
+	 X5J8YSRFwPOBqbK8Ao9A7o+NBwouBUUQz0h5zoa6zmOH2ssg8uBIAareuRce5OjNn8
+	 NkFuO71SzI/d3LJgVaNS66xBuNCjnvDLLSXFhDhlkF5n74sTzemUv67r5tr9KJDT1i
+	 yTB1FbJlVpOJA==
+Date: Tue, 6 Jan 2026 17:48:16 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Gal Pressman <gal@nvidia.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ <netdev@vger.kernel.org>, Andrew Lunn <andrew@lunn.ch>, Simon Horman
+ <horms@kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>
+Subject: Re: [PATCH net-next] ethtool: Clarify len/n_stats fields in/out
+ semantics
+Message-ID: <20260106174816.0476e043@kernel.org>
+In-Reply-To: <20260105163923.49104-1-gal@nvidia.com>
+References: <20260105163923.49104-1-gal@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] tcp: clarify tcp_congestion_ops functions
- comments
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176775001302.2194089.4168880876984104559.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Jan 2026 01:40:13 +0000
-References: <20260105115533.1151442-1-daniel.sedlak@cdn77.com>
-In-Reply-To: <20260105115533.1151442-1-daniel.sedlak@cdn77.com>
-To: Daniel Sedlak <daniel.sedlak@cdn77.com>
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 5 Jan 2026 18:39:23 +0200 Gal Pressman wrote:
+> - * @n_stats: On return, the number of statistics
+> + * @n_stats: On entry, the number of stats requested.
+> +	On return, the number of stats returned.
+>   * @data: Array of statistics
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Missing a '*'
+But stepping back we should rephrase the comment to cover both
+directions instead of mechanically adding the corresponding "On entry"
 
-On Mon,  5 Jan 2026 12:55:33 +0100 you wrote:
-> The optional and required hints in the tcp_congestion_ops are information
-> for the user of this interface to signalize its importance when
-> implementing these functions.
-> 
-> However, cong_avoid comment incorrectly tells that it is required,
-> in reality congestion control must provide one of either cong_avoid or
-> cong_control.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v2] tcp: clarify tcp_congestion_ops functions comments
-    https://git.kernel.org/netdev/net-next/c/55ffb0b14a4d
-
-You are awesome, thank you!
+FTR my recollection was that we never validated these field on entry and
+if that's the case 7b07be1ff1cb6 is quite questionable, uAPI-breakage
+wise.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
