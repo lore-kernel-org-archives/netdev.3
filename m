@@ -1,168 +1,89 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF682E62B7
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 23:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD3E27510B
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 23:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767828837; cv=none; b=Z74KK6bAORbSNCrUz05PZ5b0ACU5W71TxeLrgUNIPYP/MMVIIRsPXSYdiqAIlXk5IwIkZdhRKykwKCmIB9m4dOVkpNBqWXXyUzo/DvKuNzu2WfibMj/1H4sx4Oevu6N5G2cxG7kqlVY1Ye/mfEU4l1g9ryTVyMjzZeTZufzeqSU=
+	t=1767828897; cv=none; b=n5HWJaJlJSMaH3oJnKvSFIf3nJUP8Oz/AP4fCcymU7bLBjc36dZgxKCXln+A4EQvshyEI8sktl2g4I3qhLx/31LBR5FM1LHlB8ae/Pr9jzKiK/tD33uW3JU8s+FZ4xx2xfo5kSISE6oHSbb39udrhkmvi8EoO2nYdEDSkFewRaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767828837; c=relaxed/simple;
-	bh=S8v7gcIvrBk8FhX7J7sBGMuV/tq1fO+JRDaGA16Q+yA=;
+	s=arc-20240116; t=1767828897; c=relaxed/simple;
+	bh=k1JkNfqCjqgS2Fn8Wt+NpeAyAgoKoh52zawLfS7KSjM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mSVXl0D9Y/pSTkpo+4uMTa7+fiKzeon0myEXGY3+VY1G6buCqttEWLlciZYZ06D08EHj09pMeqnLkwleFkc7tJxTkS3R7g8RRlN1UDYNS2UAExwVmBOFs0S1yxANv5Ukou/vzG9h4elHz/Km68z83javBjtc2M0nrMgMmp/XV6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEv3abxj; arc=none smtp.client-ip=74.125.82.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=mGdjSU4aI3M29BeLVqq2aF2xcp663+P9QDq4j01N6ykgcc0uDqovnxyvWg3xJ05EIX8BD12vJV8rcgUG5ssi3725R/01O+mc9eyfWlcTZF46qFCyq+oFkF1dPTviqxA8bW1m21AKv3cNC7frPuRFefVH9B+LzqYF2leLVEtoFWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JEs1gcYg; arc=none smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEv3abxj"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-11f42e97340so1233250c88.0
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 15:33:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JEs1gcYg"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ae2eb49b4bso3602612eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 15:34:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767828835; x=1768433635; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1Ppm5jM8uBff5D/7Ouw3LuW+QYaXI0yXmrC55KZnupA=;
-        b=WEv3abxjJdC3mk2vZYHkRHGkx2QDk/SRS+5uf8Yk8aoy8vTtTKvhFRfc5PEt4woCOL
-         hm99+7MehDpdcybrYJpbpnQ6O3aCR8j68hBSELy9TFfg435iS/AQvr+ETonpybcyImbq
-         6Ee7PzAWRPGHrdbuBsKt6sNnrBAMBgdFITUhDJenGzCeF01ucByMs2k1YHvgcIHWQIYQ
-         YP0+ykO1Q95YWfBavHICRkgVXrzfLjDuyywVwuZNIwHWBIfIA6zm7Is5C/hURWryweKC
-         03KCzeSNxShKMXcBsuPO6v3cycfa+FyPm+MHW4+8S+qn+BX7shOtDM0rFGDSccNwubyy
-         u3Tw==
+        d=gmail.com; s=20230601; t=1767828895; x=1768433695; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7SNGAQ5az2meuAaZ6eZnSG35VJ+0tQCyfAb8wlRB7Mo=;
+        b=JEs1gcYg7NWTkdLvuqrN2nAmqVnQdSLzrr6zICg7wNQBUZjWwv16LhRBs1uUEjmHMj
+         No+J8T2hy9KVX0lYqxfxBiuP9Oybicin+YcKd2cYNZnjO+j8kZG+0kEO1eyWEmsRunk3
+         EnkC2UVYTEQyIIX8VDv/dyUU7OAFf/TGfWXogwEubQ0JliTxX7gS3pUmnrkt7nXeVCoQ
+         r6qlpl6yE+tK+yNCCe9HwJbcQd5sr7bU/SwNSqIkeTU0rRhSbN9sgzQI0mZHuNXyiqMS
+         3fZ+CqghjF2Pj/BoqEPIrgX+jU6dHGnrzGLAsNS9xnNd0c070hzk/JgSK0JvRRh/OMXh
+         NDvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767828835; x=1768433635;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Ppm5jM8uBff5D/7Ouw3LuW+QYaXI0yXmrC55KZnupA=;
-        b=AfqqQjAfxJ5XfLRABcfpa9a8JC5v9dP1aNpdlmmux4HbJeE6HaWx8jhmKT5L7cbMk3
-         l1yIZIP1ZHKDzhZMeVwsn/U5MDBY+H0R5O/PwVmL+W1XlT6mSnixvT+TVHfQ4C05XQYF
-         2PrXC9xfpepzXMzSFmyjEvVVIyEAjE4e93svCOskDdOkaIH5yIMk3bruwB9SERvrmk15
-         JCY8u1SbOxn2ZrDGmdhylGIvtAUH/Ntc5J7D47YWympIyAe21lq3H3MfMBnsHeldLZ2D
-         B097UbuywxX6zg9gjZ/YY+71af9mKJXtL4vr0AEG/sh0LShe21VTwxALmav1FlLu6gEe
-         RJrg==
-X-Gm-Message-State: AOJu0YxQLETcK8eeVe+IjtGWbwIT9xbKzchVa8cGpQi1T3xXW6lYf20w
-	mwJSvyKSwa/i1p7tq1jPPbpkK+rZanT9fQEHvoVhND+LiFi+4bdzP7nVrJIi1A==
-X-Gm-Gg: AY/fxX6ootobz4aKsLxHLG77etixSK04/1qiMKOjyouBBdOUd9M5jHETyAkhkiICAz0
-	FKyAApcUDEzXJ/OF632VgcRpYyCOhNbItTtSm4xIUCHArBSIvKz3NwRfUB8lBX3PLFgpzvOy8l0
-	hqUOi7iP/BFsbkFptY/e9XlrJ43wqIjaCojW2k4C9l654AwTy8QH5RZCdIPldz02i/VAqooG2q5
-	p3UXtbvrUWlEXoyrB7MYcGV6pnPUqzvzydYtsO2/0lAjTsv2XkWVwkc10uKI26EM35UZDr47amx
-	5k2MCeUkoD0/ZphMQ+LIsn02eappQK2Mx0ZwOAUsMO8cKDKwTBn6um3LjMX7v/u0WnoCsp+lviZ
-	MvWgaggiS58SbpW4bY2qHg78ONlI7ENtohup2XxSm/GFUIcshZY7VTq/10KtY1aqE6uIlgB5Fg5
-	atWeNKIo0WkMh+ZzdEdg==
-X-Google-Smtp-Source: AGHT+IGt+cT4l7kHjk19Sz0YLAYbJZK6FeuEQofOd7WlWhWy4oPerX3TIo9V3d2WpFVKKoW83HW0Lw==
-X-Received: by 2002:a05:7022:41:b0:11a:3734:3db3 with SMTP id a92af1059eb24-121f8b4deddmr3900657c88.32.1767828834779;
-        Wed, 07 Jan 2026 15:33:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767828895; x=1768433695;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7SNGAQ5az2meuAaZ6eZnSG35VJ+0tQCyfAb8wlRB7Mo=;
+        b=MuK77n6S4LuNY6qwsRjjoMGyZ07CNn5gVe72aIcAjWE/RoIQ2bO92NABflPAmHr3aa
+         6nMMa3zP6gsma2vTb4+foN73TjEECtsgCLMaLxAqO2jNa25v5AgSA8S+xpAxRagE3+5w
+         hVRc7qx5WQAlJrv0VBTpqf8mPCePzktB956T0V8aDya07MWdu40a7poNrBeZ19F2tAUL
+         zV+ln3pQGg0J0zBGoAe5R0F2RdoohZDd/LideRNpNNO0lQaRHdfoj1eZCzww64ZLcI9/
+         FwDhJ32Abek6jQjGdJttL0LevlQ2e5fxggOji6qhHStGIyf7P0q45NmVphnzbpxiV2V3
+         sZWA==
+X-Gm-Message-State: AOJu0Yz5C9AxrKfF89/E/7ejn1Snbp67B5o++OJ2Y2/FBjjxOy7ruIex
+	Ld9/u6HBnRdXPXD0v5VAz7oItMcbiNrDjz0F38W5NKNZP6jilLgx6Ln8
+X-Gm-Gg: AY/fxX6GqWbeFgPYfYFmh47nReFJ1hEtGFNNRZm9rYKCxFwPjC92zs6vrGWCjhNkpYL
+	UURQW2iTrhV6/clHw9mZN1Tnj3dSkG6t9rLp9yEBcdcIdyl8PHrHxsJ7f81u0qSgopEux0fwp7G
+	B+KbqWvqcjff+N4+XTMfTzDXUD7NAnkDdFY6eYieRFsmXovX4vUmEz08wMzPXP+DACifXYIbcXh
+	ej+JjUwRh2eVGNvepCEHb6gJEBS8mgF5hOri/O/8VhHDE7c5jcoSvKf6ALpPACxonL9Fd+U+Jhs
+	qXPupnBsVz3cyh/Cx42nHEGYnYzFrVU6mMuMH6Zrl4zkXUAYvgizm0M8GVex/zUQACU8SIFhGW0
+	LXDqeafi+tNt/mgqgJkzBln/I/yqcjJjJzRzm12N92R3SiblHi8/Uid6mB65BN9n0mdr15He9pK
+	CshHmOjCTWyRVMc5BxBg==
+X-Google-Smtp-Source: AGHT+IGOwUj/ix8wxHbIE5Cjwl7joCnx2c1xyNjX0U2anaWdQL94eqRLKbyLxi5JJsQhYqk1tWOSQg==
+X-Received: by 2002:a05:693c:40db:b0:2af:cd0a:ef8c with SMTP id 5a478bee46e88-2b17d2c0ed4mr3786836eec.36.1767828894982;
+        Wed, 07 Jan 2026 15:34:54 -0800 (PST)
 Received: from localhost ([2601:647:6802:dbc0:36c8:e8eb:df03:2fdc])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243496asm11764040c88.1.2026.01.07.15.33.53
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706a53fbsm7723432eec.12.2026.01.07.15.34.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 15:33:54 -0800 (PST)
-Date: Wed, 7 Jan 2026 15:33:53 -0800
+        Wed, 07 Jan 2026 15:34:54 -0800 (PST)
+Date: Wed, 7 Jan 2026 15:34:53 -0800
 From: Cong Wang <xiyou.wangcong@gmail.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>
-Subject: Re: [Patch net v6 4/8] net_sched: Implement the right netem
- duplication behavior
-Message-ID: <aV7tYRnVikZXAC23@pop-os.localdomain>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org
+Subject: Re: [Patch net v6 6/8] selftests/tc-testing: Add a test case for
+ piro with netem duplicate
+Message-ID: <aV7tnSRylK3MMB6X@pop-os.localdomain>
 References: <20251227194135.1111972-1-xiyou.wangcong@gmail.com>
- <20251227194135.1111972-5-xiyou.wangcong@gmail.com>
- <20251230092850.43251a09@phoenix.local>
+ <20251227194135.1111972-7-xiyou.wangcong@gmail.com>
+ <20260104111539.61f97ad0@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251230092850.43251a09@phoenix.local>
+In-Reply-To: <20260104111539.61f97ad0@kernel.org>
 
-On Tue, Dec 30, 2025 at 09:28:50AM -0800, Stephen Hemminger wrote:
-> On Sat, 27 Dec 2025 11:41:31 -0800
-> Cong Wang <xiyou.wangcong@gmail.com> wrote:
+On Sun, Jan 04, 2026 at 11:15:39AM -0800, Jakub Kicinski wrote:
+> On Sat, 27 Dec 2025 11:41:33 -0800 Cong Wang wrote:
+> > Subject: [Patch net v6 6/8] selftests/tc-testing: Add a test case for piro with netem duplicate
 > 
-> > In the old behavior, duplicated packets were sent back to the root qdisc,
-> > which could create dangerous infinite loops in hierarchical setups -
-> > imagine a scenario where each level of a multi-stage netem hierarchy kept
-> > feeding duplicates back to the top, potentially causing system instability
-> > or resource exhaustion.
-> > 
-> > The new behavior elegantly solves this by enqueueing duplicates to the same
-> > qdisc that created them, ensuring that packet duplication occurs exactly
-> > once per netem stage in a controlled, predictable manner. This change
-> > enables users to safely construct complex network emulation scenarios using
-> > netem hierarchies (like the 4x multiplication demonstrated in testing)
-> > without worrying about runaway packet generation, while still preserving
-> > the intended duplication effects.
-> > 
-> > Another advantage of this approach is that it eliminates the enqueue reentrant
-> > behaviour which triggered many vulnerabilities. See the last patch in this
-> > patchset which updates the test cases for such vulnerabilities.
-> > 
-> > Now users can confidently chain multiple netem qdiscs together to achieve
-> > sophisticated network impairment combinations, knowing that each stage will
-> > apply its effects exactly once to the packet flow, making network testing
-> > scenarios more reliable and results more deterministic.
-> > 
-> > I tested netem packet duplication in two configurations:
-> > 1. Nest netem-to-netem hierarchy using parent/child attachment
-> > 2. Single netem using prio qdisc with netem leaf
-> > 
-> > Setup commands and results:
-> > 
-> > Single netem hierarchy (prio + netem):
-> >   tc qdisc add dev lo root handle 1: prio bands 3 priomap 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-> >   tc filter add dev lo parent 1:0 protocol ip matchall classid 1:1
-> >   tc qdisc add dev lo parent 1:1 handle 10: netem limit 4 duplicate 100%
-> > 
-> > Result: 2x packet multiplication (1→2 packets)
-> >   2 echo requests + 4 echo replies = 6 total packets
-> > 
-> > Expected behavior: Only one netem stage exists in this hierarchy, so
-> > 1 ping becomes 2 packets (100% duplication). The 2 echo requests generate
-> > 2 echo replies, which also get duplicated to 4 replies, yielding the
-> > predictable total of 6 packets (2 requests + 4 replies).
-> > 
-> > Nest netem hierarchy (netem + netem):
-> >   tc qdisc add dev lo root handle 1: netem limit 1000 duplicate 100%
-> >   tc qdisc add dev lo parent 1: handle 2: netem limit 1000 duplicate 100%
-> > 
-> > Result: 4x packet multiplication (1→2→4 packets)
-> >   4 echo requests + 16 echo replies = 20 total packets
-> > 
-> > Expected behavior: Root netem duplicates 1 ping to 2 packets, child netem
-> > receives 2 packets and duplicates each to create 4 total packets. Since
-> > ping operates bidirectionally, 4 echo requests generate 4 echo replies,
-> > which also get duplicated through the same hierarchy (4→8→16), resulting
-> > in the predictable total of 20 packets (4 requests + 16 replies).
-> > 
-> > The new netem duplication behavior does not break the documented
-> > semantics of "creates a copy of the packet before queuing." The man page
-> > description remains true since duplication occurs before the queuing
-> > process, creating both original and duplicate packets that are then
-> > enqueued. The documentation does not specify which qdisc should receive
-> > the duplicates, only that copying happens before queuing. The implementation
-> > choice to enqueue duplicates to the same qdisc (rather than root) is an
-> > internal detail that maintains the documented behavior while preventing
-> > infinite loops in hierarchical configurations.
-> > 
-> > Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
-> > Reported-by: William Liu <will@willsroot.io>
-> > Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-> > Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-> 
-> It is worth testing for the case where netem is used as a leaf qdisc.
-> I worry that this could cause the parent qdisc to get accounting wrong.
-> I.e if HTB calls netem and netem queues 2 packets, the qlen in HTB
-> would be incorrect.
+> nit: piro -> prio
 
-In patch 6/8, I added "Test PRIO with NETEM duplication", which installs
-netem Qdisc as a child and leaf of root prio qdisc.
-
-Or am I misunderstanding it?
+Good catch, I typed too fast. I will correct it in the next version.
 
 Regards,
 Cong
