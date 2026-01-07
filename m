@@ -1,209 +1,164 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E535CB6C
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 14:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E544430E0F4
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 14:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767797845; cv=none; b=OEPWUfiW9R0r+pn/Jai6h7nsBGg42VqbMlNv0gs6vMTCX4MGDgLPTrpAKAc/1ShVolISvKzARkaeVA1FSTicD8wc0XU9s5qvcBbtE2TXeHSrt6Jhayn2ogJ6WVSy+XR/1qO622S5FkBfk5YFExb1wevjt4S69kJON1wtb4fCcNk=
+	t=1767797960; cv=none; b=EIC5KEtPTXGOu+KbGfNj4/tsXJ9HKx9SD/OIPSWTCG8bNIgAPAxhKwkx8aEDgKd3ztK8UsefODByLD8NQJfJMXxiEPvOkacDgqzjlr8iO7tWs9mrpE264RK2uNgI6eGQ99iXibJHADpcbb7VGbziHyvvIyaMHo74jnJrb4j2jAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767797845; c=relaxed/simple;
-	bh=fvL5Aq5EZaylFLTAe6GwH7xU0V2ydU6nEzGXwuR9XUM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TsXpZ9o6PyNk86Cqku0KnWgReHdi1tTAOBAqUCeEP5W/npfUx9Mkc5BmmUhhaK+8yf+OU1EZFcNX70lTHhqD3qMhkKD8+mGSt3KA2/jXh/j0aWi2w47eU6+ju9oMRKh3ocj65DnVGAKjmo4NCfoq+qa/VHWfnOTUBXtil9xoN6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XxX5J7Oj; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1767797960; c=relaxed/simple;
+	bh=lZz8ZAu8vrs8Ru98ohAatnW1AHr7PhD4PTK1H1/KWrk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=anpnnHIbO5LrduDhGWX72/IeW7wiOBbAFXGRzs5gxEhJ4Pve79FFLggtf95rGE2a8eeZ6ANCBBm7phIAKPYy15m1YW6ubY1mo/nuo12SM8Gh2s+fGqdUDcFE0hYaJVsNlxo/nthiIBDr+A/k7bAIqKpYROSmQskCgbW7cNECKv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YziDo8/j; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XxX5J7Oj"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78fba1a1b1eso15386917b3.1
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 06:57:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YziDo8/j"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4327790c4e9so1057534f8f.2
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 06:59:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767797843; x=1768402643; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xlGENMu3o6cBLcDeYDff2G8dRuXoMZxnkdZNgTS5OtU=;
-        b=XxX5J7OjB0WroFzWmR8NHLYZDy6i7Uuph+plwWj5X9SITRrJxS6xQOXURg32LKLcbm
-         cDHOAlSY1lrYmwrP4VH8P4vspqezCRdN4LmU1zFDI/3KbfdjC1e4/hRX7YVGpWG+ONRe
-         VgpMBG8JF3Adixnzfe0VUg4EXl3jkdjjMySE/7dBDISxF9yfckbFXM31at5xFmY1NOQk
-         I58uW1eJ8S0qx9ySAliXdZq1kdiUVkMhnQFqMRIqx1HHuSKXvT/yxW6+MTW0QcSiUADv
-         +CNoPfGziGSWSaCV6bhqf5JJDLMhrdy/DqD8juHXT3UvYK1vbfaavM0VXd4Nb2ye7dFs
-         B64g==
+        d=gmail.com; s=20230601; t=1767797957; x=1768402757; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SV1cZScFIWK8ylac8dKg4D7bUheGaqaRyP9KVJQ7iTw=;
+        b=YziDo8/jjXzxLszplOUg1Yx6muPbjxZOE7bZ4LgGXuDk12djjYrsTa/4ZKQv2OSYjo
+         /twTzpNbYWievfgD0Wy4NGc6q/mDd1YTJ4ljI7aPky8IscuhbuY35FVMA5m7sNnfGvnY
+         //zEpK9WlpsGVuIRrpA8YRrFKk2+dVeHA1ZfdB+s4vJygrojTPAwc3VQXyDwwOTuizuG
+         D4k2ytcIy0nkM/8iah+f+CR5+V+7KLkKA9JNyFEKwbsqJO4NbNpj4iYxrS5RnZc6yjov
+         Vkp/ppKjuvvo/xEQ3I5Tb2Ffmm46xG87x8hmdcQV0mBGBv7m+jV80sAF0RK4xv/pxSNH
+         8Nkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767797843; x=1768402643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xlGENMu3o6cBLcDeYDff2G8dRuXoMZxnkdZNgTS5OtU=;
-        b=IGVbFMwLmucxqF7wuvP4UKsnKZpunRVYKQzVszuB2O/oh9HWM2GSDI4VqNzVKmSKhv
-         1LdcJakt8vQ5+s9cjCk72jO+Yq8lMfOoYOzBsh6ULPGnX2Ijg2L3wJr1sdOpWso7olAm
-         BzHOkRX8WiXTS0ncxrC0X2TpTE/BaLQLUO2FwGVnnmMnAUBs+E1V6B8OHfmq28Fmp3ay
-         nOyb+Oh7IS28ptdhcNd07rlNK4+eNjiU5wZDt54X2J1YPZzY92djbZdhDQbukkabPva5
-         fiL4aZYv9aLZUJruDdMrbW2CZBCGxb17Wo7+tZHdTjxZnWjJMNnJfUjSQtfFG+yNFeZv
-         2rsw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5fZ7StopJ15Mi5w7Q+5IhqdcE6FndlNBpl9ZmWMlj1N/ATnHM27VGYp+mRCjIRP0GEZqDbAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqbbGzdf1X/ShhMB45lh+eJmo+KFwoUDNbmF1et2zRdJ5YzCy8
-	UNVBgX60hUz/XmBHzDNOHG9arSdRZnxxcY288h8I4IBoG0unBsOn8EH9brXLXcFKwkGiqDxxh0X
-	17SVEm/Sq42EGhqLXEGnNKFdqK/BBPjk=
-X-Gm-Gg: AY/fxX7mldX2rJ0SVBN5y+6shLY7U6KiRzubRZzcpuDIhjoOI9q+XunB2qGFSnwxwHQ
-	NPR93jVLTlR0bUZqoWeCEup+yWer0vHmqctYv373j6emYmrp680V4Faz66oDetsb03oYDSbrIoo
-	CujiYih8Aug7IpilzK2XxfDCo6j3D35jAXzK78YNWDMylRkTCK7Eq069O0lk3ZC/xBCdkmFZ0dq
-	tESebfP4rsWeOY3ITUdbwRhh7g+ry79Lw4BSBzNIBDjIBj1CQKfNUxwmzwXg0Z7U1TLZT8Clpxd
-	WDS3lr9PSIi+4wNQBaknS+Kso5WSLl9XaIZQKUpl///BGEGAZwDrx0c+lA==
-X-Google-Smtp-Source: AGHT+IHjTnt4JomhA1NrENsfN7U9oy8sOR4wHmf0Jm5V6vz/LIZBGXyI/1E3rqPv9Q1OLv5vv8dAFMlfW+nv2Sla2pY=
-X-Received: by 2002:a05:690e:1206:b0:63f:c019:23b2 with SMTP id
- 956f58d0204a3-6470d2dfce6mr5035512d50.28.1767797843191; Wed, 07 Jan 2026
- 06:57:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767797957; x=1768402757;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SV1cZScFIWK8ylac8dKg4D7bUheGaqaRyP9KVJQ7iTw=;
+        b=Hfb3pQvsNtekjOfBNtbQEO+edggMM0JzxPSnBQDAeuGsS5wGUSVnCRriA5GzMmQzNX
+         WN1nh+NGBghfTyRCIjkqXXyuU0uCE3AWoP5nv6hJw/wA4VoQ4PqsnPPMUF8ZFi7C0Q69
+         FORDtWMZh0Y+o7u6q+yT+Lzy53BnNSeucZ20LLSAImFTTEeCutS83wq58MWHrDYcx8/k
+         l6gh8d1DDZwdleFh2nXiJ3arPjRvewCDfN3Xg5ImeFWNqtKn7/JY/f7Gl3uQvkCUQr6m
+         g0miSEGRhPTqCrbaMqT7FMQrObDm1FKbOXObgOCbBVapYP6P5sHKJu9tglfQr50rgFh5
+         +nkg==
+X-Gm-Message-State: AOJu0YwW7Kknubzi3sS/rM7UXpJHLZF0dORS4cCh1eJgBHxYfvGx2Tb/
+	QIKGFjwtytiFROa8DFoHpex879WDUvUk+urApLKV5ZGHK73iwPl+X4Fd
+X-Gm-Gg: AY/fxX5KdBxR627xL62Z1aSjbUh75UVbQ6cMVDoYKOiqKVmiww3zmDtVs83gNgkOQd9
+	llCLsJ9K6/Uk6aNXVqE5ihSOlzb/Lx7eLX6iq3vtC16Z0JssJ17MXqc3BgPbJuYaVBPmQdtWiap
+	SG51PmFMcjrtGG6a0OXehW9xIUnoGe2ncf7ZvOk+jGbmJlzIeb9cRxRYreuFUtHDEB9p8PWE3vi
+	3eRgMhHEDbMG9o96hJSWZxjcUltD4dXU9EDTXSku9xR0SrtBBGDRagOTkUpPENh+dhiKkzYK6Sd
+	zxFt//CAP10IQJ/VwbloyS7tqMECm0IYf0v/CJLC1Od+tUoJAFcHrJuEw6TE+jK7BKWTHzv/DZx
+	l/r9AeIyH1srY35VdlLpn4Hxf+40fBDDvX9ReQNos/IZOC7K6Ggg/7XVxeKmDF/lhExs4YOfNGJ
+	177eX98TWIiwUWu/bej+4WSXVext7XLoQrXiX+JaSwyJ7A1/DeKhYG5x7UXHCPHh5q8Q8=
+X-Google-Smtp-Source: AGHT+IG1YououSj/EXDwxzVarDQZ72uogU8BTCNy+0HLyFRU+zonnThKVMk8YKlAXuXT6L0Z4fcuMQ==
+X-Received: by 2002:a5d:5d11:0:b0:432:c0e6:cfcd with SMTP id ffacd0b85a97d-432c3632bc5mr3400757f8f.22.1767797957100;
+        Wed, 07 Jan 2026 06:59:17 -0800 (PST)
+Received: from 0.1.2.1.2.0.a.2.dynamic.cust.swisscom.net ([2a02:1210:8642:2b00:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee243sm10690182f8f.31.2026.01.07.06.59.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 06:59:16 -0800 (PST)
+Message-ID: <297860d547bb93b794e7b1cee4eb7b93b9e05e9d.camel@gmail.com>
+Subject: Re: [PATCH net-next] selftests: forwarding: update PTP tcpdump
+ patterns
+From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Wed, 07 Jan 2026 15:59:17 +0100
+In-Reply-To: <20260107145320.1837464-1-kuba@kernel.org>
+References: <20260107145320.1837464-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107-mgmt_ext_adv_sid-v1-1-1cb570c7adf7@amlogic.com>
-In-Reply-To: <20260107-mgmt_ext_adv_sid-v1-1-1cb570c7adf7@amlogic.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Wed, 7 Jan 2026 09:57:11 -0500
-X-Gm-Features: AQt7F2qhSo4nrnNS5S4zj0Jx6WYkEx_FVwcpIMkrACSlquB2R40vf7Q2LUdC8jk
-Message-ID: <CABBYNZ+a32Y9VM-XsECBjTwN_bXaPxuYALBL_6S8b+s1vQ8EZw@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: mgmt: report extended advertising SID to userspace
-To: yang.li@amlogic.com
-Cc: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Yang,
+Hi Jakub,
 
-On Wed, Jan 7, 2026 at 3:48=E2=80=AFAM Yang Li via B4 Relay
-<devnull+yang.li.amlogic.com@kernel.org> wrote:
->
-> From: Yang Li <yang.li@amlogic.com>
->
-> Add a new mgmt event to report the SID of extended advertising
-> to userspace. This allows userspace to obtain the SID before
-> initiating PA sync, without waiting for the next extended
-> advertising report to update the SID.
->
-> By providing the SID earlier, the PA sync flow can be simplified
-> and the overall latency reduced.
->
-> Link: https://github.com/bluez/bluez/issues/1758
+On Wed, 2026-01-07 at 06:53 -0800, Jakub Kicinski wrote:
+> Recent version of tcpdump (tcpdump-4.99.6-1.fc43.x86_64) seems to have
+> removed the spurious space after msg type in PTP info, e.g.:
+>=20
+> =C2=A0before:=C2=A0 PTPv2, majorSdoId: 0x0, msg type : sync msg, length: =
+44
+> =C2=A0after:=C2=A0=C2=A0 PTPv2, majorSdoId: 0x0, msg type: sync msg, leng=
+th: 44
+>=20
+> Update our patterns to match both.
+>=20
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-This is a new API so it can't possible fix the userspace issue above,
-there is clearly a bug when sid is set to 0xff we shall not proceed
-until it is resolved.
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
-> Signed-off-by: Yang Li <yang.li@amlogic.com>
 > ---
->  include/net/bluetooth/hci_core.h |  2 ++
->  include/net/bluetooth/mgmt.h     |  7 +++++++
->  net/bluetooth/hci_event.c        |  3 +++
->  net/bluetooth/mgmt.c             | 13 +++++++++++++
->  4 files changed, 25 insertions(+)
->
-> diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci=
-_core.h
-> index a7bffb908c1e..81ef3e94e3af 100644
-> --- a/include/net/bluetooth/hci_core.h
-> +++ b/include/net/bluetooth/hci_core.h
-> @@ -2469,6 +2469,8 @@ void mgmt_device_found(struct hci_dev *hdev, bdaddr=
-_t *bdaddr, u8 link_type,
->                        u8 addr_type, u8 *dev_class, s8 rssi, u32 flags,
->                        u8 *eir, u16 eir_len, u8 *scan_rsp, u8 scan_rsp_le=
-n,
->                        u64 instant);
-> +void mgmt_ext_adv_sid_changed(struct hci_dev *hdev, bdaddr_t *bdaddr,
-> +                                    u8 addr_type, u8 sid);
->  void mgmt_remote_name(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_ty=
-pe,
->                       u8 addr_type, s8 rssi, u8 *name, u8 name_len);
->  void mgmt_discovering(struct hci_dev *hdev, u8 discovering);
-> diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
-> index 8234915854b6..7ee38ebaccd8 100644
-> --- a/include/net/bluetooth/mgmt.h
-> +++ b/include/net/bluetooth/mgmt.h
-> @@ -1195,3 +1195,10 @@ struct mgmt_ev_mesh_device_found {
->  struct mgmt_ev_mesh_pkt_cmplt {
->         __u8    handle;
->  } __packed;
-> +
-> +#define MGMT_EV_EXT_ADV_SID_CHANGED            0x0033
-> +struct mgmt_ev_ext_adv_sid_changed {
-> +       struct mgmt_addr_info addr;
-> +       __u8    sid;
-> +} __packed;
-
-I rather have a new device found event, or somehow embed the SID into
-the existing one.
-
-> diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-> index 467710a42d45..f4463e71b424 100644
-> --- a/net/bluetooth/hci_event.c
-> +++ b/net/bluetooth/hci_event.c
-> @@ -6519,6 +6519,9 @@ static void hci_le_ext_adv_report_evt(struct hci_de=
-v *hdev, void *data,
->                                            info->rssi, info->data, info->=
-length,
->                                            !(evt_type & LE_EXT_ADV_LEGACY=
-_PDU),
->                                            false, instant);
-> +                       mgmt_ext_adv_sid_changed(hdev, &info->bdaddr,
-> +                                                     info->bdaddr_type,
-> +                                                     info->sid);
->                 }
->         }
->
-> diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-> index 5be9b8c91949..4e0f8c43e387 100644
-> --- a/net/bluetooth/mgmt.c
-> +++ b/net/bluetooth/mgmt.c
-> @@ -208,6 +208,7 @@ static const u16 mgmt_untrusted_events[] =3D {
->         MGMT_EV_EXT_INDEX_REMOVED,
->         MGMT_EV_EXT_INFO_CHANGED,
->         MGMT_EV_EXP_FEATURE_CHANGED,
-> +       MGMT_EV_EXT_ADV_SID_CHANGED,
->  };
->
->  #define CACHE_TIMEOUT  secs_to_jiffies(2)
-> @@ -10516,6 +10517,18 @@ void mgmt_device_found(struct hci_dev *hdev, bda=
-ddr_t *bdaddr, u8 link_type,
->         mgmt_adv_monitor_device_found(hdev, bdaddr, report_device, skb, N=
-ULL);
->  }
->
-> +void mgmt_ext_adv_sid_changed(struct hci_dev *hdev, bdaddr_t *bdaddr,
-> +                                    u8 addr_type, u8 sid)
-> +{
-> +       struct mgmt_ev_ext_adv_sid_changed ev;
-> +
-> +       bacpy(&ev.addr.bdaddr, bdaddr);
-> +       ev.addr.type =3D link_to_bdaddr(LE_LINK, addr_type);
-> +       ev.sid =3D sid;
-> +
-> +       mgmt_event(MGMT_EV_EXT_ADV_SID_CHANGED, hdev, &ev, sizeof(ev), NU=
-LL);
-> +}
-> +
->  void mgmt_remote_name(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_ty=
-pe,
->                       u8 addr_type, s8 rssi, u8 *name, u8 name_len)
->  {
->
+> CC: shuah@kernel.org
+> CC: vladimir.oltean@nxp.com
+> CC: alexander.sverdlin@gmail.com
+> CC: linux-kselftest@vger.kernel.org
 > ---
-> base-commit: 030d2c0e9c1d68e67f91c08704482ad9881583eb
-> change-id: 20260107-mgmt_ext_adv_sid-7ea503e46791
->
-> Best regards,
-> --
-> Yang Li <yang.li@amlogic.com>
->
->
-
+> =C2=A0.../net/forwarding/local_termination.sh=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 18 +++++++++---------
+> =C2=A01 file changed, 9 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh =
+b/tools/testing/selftests/net/forwarding/local_termination.sh
+> index 892895659c7e..1f2bf6e81847 100755
+> --- a/tools/testing/selftests/net/forwarding/local_termination.sh
+> +++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+> @@ -306,39 +306,39 @@ run_test()
+> =C2=A0
+> =C2=A0	if [ $skip_ptp =3D false ]; then
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over L2 transport, Sync" \
+> -			"ethertype PTP (0x88f7).* PTPv2.* msg type : sync msg" \
+> +			"ethertype PTP (0x88f7).* PTPv2.* msg type *: sync msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over L2 transport, Follow-Up" \
+> -			"ethertype PTP (0x88f7).* PTPv2.* msg type : follow up msg" \
+> +			"ethertype PTP (0x88f7).* PTPv2.* msg type *: follow up msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over L2 transport, Peer Delay Requ=
+est" \
+> -			"ethertype PTP (0x88f7).* PTPv2.* msg type : peer delay req msg" \
+> +			"ethertype PTP (0x88f7).* PTPv2.* msg type *: peer delay req msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv4, Sync" \
+> -			"ethertype IPv4 (0x0800).* PTPv2.* msg type : sync msg" \
+> +			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: sync msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv4, Follow-Up" \
+> -			"ethertype IPv4 (0x0800).* PTPv2.* msg type : follow up msg" \
+> +			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: follow up msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv4, Peer Delay Request" \
+> -			"ethertype IPv4 (0x0800).* PTPv2.* msg type : peer delay req msg" \
+> +			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: peer delay req msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv6, Sync" \
+> -			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : sync msg" \
+> +			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: sync msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv6, Follow-Up" \
+> -			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : follow up msg" \
+> +			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: follow up msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0
+> =C2=A0		check_rcv $rcv_if_name "1588v2 over IPv6, Peer Delay Request" \
+> -			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : peer delay req msg" \
+> +			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: peer delay req msg" \
+> =C2=A0			true "$test_name"
+> =C2=A0	fi
+> =C2=A0
 
 --=20
-Luiz Augusto von Dentz
+Alexander Sverdlin.
