@@ -1,121 +1,122 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEBF35CBA9
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 14:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26139348889
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 15:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767797980; cv=none; b=lG54nNzT6kJsnQjRLNl9i8dLKAa4n5qPcRenHFctya/R4IgBzEoHXyOQCQ8feDGKOf8+ihD91b3gXOh7Y430404qtsNodl7OuDw0u7IGK8aq2bRU41UyB7n7JenwIgCYq8Vh2w4G+bknzgJH1FdbtqPxQRd1pqkWj7D3W9U7SZk=
+	t=1767798306; cv=none; b=jIUrholPT5fLsJXHfozT+DQZm8ydurbD3hlOL0+JBhrEwLEwtKYAJctY+00PQYR1gdfEsyxYhm8m4WCaLIcg8dd+wpiD0NGZHCyKh1Jkqg2QAJWGEc2G+TnWqDLlg9ULI5CZGvHA0h/PvwXUgzIpY0giaKcmMtQo+lhPTnYSzXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767797980; c=relaxed/simple;
-	bh=/g+VPdf5RLxM3FpCwylvaiin4nBnMP86FjrQ2QeZu2c=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=R+kddu12XYVwyoDFCiONFHLKyJZ5USK7lLurJ1UlWOvXFL7im83uJMeGl37ajmNlRYAmQ9aFXQi7CvkQJvvnfI7+mI+c3Zih2D09xf3qeJ6MURmLZ/8EdPcYPxEQ5IGpyYX56tG2B6OBowSrWYDzROIfOTsLHCU2X1iEXdCcyUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMYUCLYq; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767798306; c=relaxed/simple;
+	bh=D5FmglVvkl3g4DuAXZKkWi0EAt1o7Pm+KQPATu7ybOQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OkpMBuBQSkxCfaDmXahEMsiXU9nTZBxpEUFKc4UGML2+MQI9B0brwOYDJ78fkYZ5Uqr56urm2LAm5bQm0BhENnaEU2kLxNrtmZxfeyDnTvu2mexIxw4W9uLbT4e4WRzLmkxnawqaqHfTTJjgrc0G4aHmyUa5FHpjERXUEglA57M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CtEISEka; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMYUCLYq"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-790ac42fd00so16847677b3.3
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 06:59:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CtEISEka"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47d1d8a49f5so14837205e9.3
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 07:05:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767797977; x=1768402777; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ygEsBMOtQfOnd+ceAekCXMasHvVQy7UNaDcAc1PawvA=;
-        b=YMYUCLYq2dJWMCKoC+oWjv27yM2iCKeBsMMNIcYPVJ9aPbwlMM8WtvDtWj38GIOR7M
-         xIXoIb+anvUvL1HInj6BrdYuCF5TcEZ83PRLVED0/wPj8vrvYRE9dIWIUi+I5gXJ7wNJ
-         AViT+KEm/wB9VJrs+ov9E65HzNnRdlQ+og0eR2x7lyu8sqQL3yBzaUrIHb1r616fPO7x
-         oPDtFodb8sG1ZMTR1ERrrCuDDcGwr5h8NbNd2EFfakTSmajcIGGzWdIQ+e49NsF5kDel
-         9V8DXIIZVW1I+Dc2SGMPmO/uVJh8W8wGn+5gq8Rs8rMYPHfyt6KshxnKAgIs91C1d4d2
-         LJVw==
+        d=suse.com; s=google; t=1767798302; x=1768403102; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UZ/7ZMF+GZy1qUkEJEGh+CeH3UAPpaGuj74Mgzc+UGQ=;
+        b=CtEISEkaNSereDkNgutOh7W4rCw22UG1W2ZcLdcb+1OL/hlRe6fvz0JvcsMBNtYvm+
+         KPVuHN4H7/k9KzsHNuRnBGTrghn9pU3oCdqZADXMgU1im8/fZrpk0UFX7SIoieFQ2DfP
+         kRUnUZqTRe9TAbtN7v804XNFsbTJl8crfBpzhC5Uw9R79Oe+RLqISte6UiuG3sWDqBC7
+         WZV9lQ/oQb6vNgypSZbrQDWeeYWLauKuj1Uisv0c0bznKx9/3SAxl7VXf4zl3gbtlCOG
+         pMxHfaUZNckxIWJJ4aMf6xG0V+4jP+zZv2ssCvrGpjFoC/dR088k2aMezSPFbT2QzDhA
+         93kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767797977; x=1768402777;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ygEsBMOtQfOnd+ceAekCXMasHvVQy7UNaDcAc1PawvA=;
-        b=HDRKWHbmcDsL9J3OAP5Yb0qlqMi7n/xrM6T3YCiiviicRIOTj51f7u2Bw3NHy4tYgt
-         wmbMIM5yoI7gIGYK0euBN6mSvximzKIZoyv6hY9r+2gY9F0Yc+DjyHudr8rfVQ6LnkMQ
-         iMDMsBbti/qKAy1ZMo5Bc1fLb6LPAFutmvObORgqeDPSs9x16S+UlUDRsoiKMyIByoM0
-         zdYXxiWKXu8GrrcdbGOPVs0AecshUzawrTYxbMSsMRrfDwhYf4yqVn1sdR2Nl2tzI58F
-         MhABBBEfX0X6b/WbSHgjn4jzh/cEqQtP3DdnmwIrHZ+uBCkaC7c8psQwdv4P+ttEBUJj
-         DH1g==
-X-Forwarded-Encrypted: i=1; AJvYcCUADy0aJOGBqbH/kLgpG+7TeHB6poij0RGMCS1S/nZuytf3U+qWftDlJw/jE9lHT8kpUU9t1mU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxgd94e1oSVy627POf2ufkvVxGEo7d2/l8HA1l3WFtdLQBcxNX
-	D0fxcX4bXqEkUcs2XQ/Uox9laW3EEzWFyWilAbdw/4LByerlzBR8Qr82
-X-Gm-Gg: AY/fxX6ijk68+3v+BR5MPIVQBXFZE+IO6XIPp1Mv9PXJ/3xXteHHGkwDmgYd+HjEaCU
-	2xN3/RH1plCEqwWzjTIf7z1DMormPvKlaSRaxiW5Iu/R1wjFbNhuThDS54lDXpNgthAV6HF7IbO
-	CJHNE9VNxHWGqrTnxgfkKOgBOYvzhCslaOvGUqobB2fUcf56luGocJDciZbHJMj8vzs6YsKJ3X4
-	8HAUdaOR2PdMRN2TfrHxuybBJlUIOGpn8J+rxIm2Z3hvfWaerWZzV461FJd7v9mLZk87HA8nhXs
-	qUKzTZtNDTcJfLgzed++aIflde0+Du8qWB32jhAlfBnQhVlJ1PW1a2BdhmWBmLmPGQiciHxTpdx
-	yFzeSM6cTUOoT2DwQFxFMusNiqWLm5jTrHZ/ZxdXb7REycvExvmS8RYqCnI38if0OYMdkkYA+xk
-	/7qt+VO3E/ab6J2+se602dkTeKsCW0moPl8qDWDtL25o6ruTfo3Q464tF+1Mo=
-X-Google-Smtp-Source: AGHT+IHGckZa869lQuPtJPN6tXowxLF91dFKwcfoBAPflAsajZxCtT4RbtUWJmXlz8CVoUJtC1vKmA==
-X-Received: by 2002:a05:690c:315:b0:789:3166:25a7 with SMTP id 00721157ae682-790b5828b28mr57702757b3.46.1767797977574;
-        Wed, 07 Jan 2026 06:59:37 -0800 (PST)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-790aa553750sm19318617b3.9.2026.01.07.06.59.36
+        d=1e100.net; s=20230601; t=1767798302; x=1768403102;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UZ/7ZMF+GZy1qUkEJEGh+CeH3UAPpaGuj74Mgzc+UGQ=;
+        b=Eb8iaCszW5cSlDsOIDPNYgrbCNS0ce0VwNWU3F+udamA8r0QVo16owpqYxBOqpYsbU
+         IwK5SEEkBMMaod8mn0KDascd4oiBcfaiYZL9T2YiiypAriHuB/8uvLkxqZ+cU1UZRRbx
+         hNmYFIeHwp1OAyYUurvXFtBfn7jJwEzj+NS4CBrmLcyOS4/Hlwta7vPHVD2d2zHmlBvr
+         zRvTpc6BndyRe05w+xsRExDHghZcF+U9//viCcl2iK6JLyxQdoRHTLJoaGh7DdYmpFZz
+         2YDpIhPDghKJ51PpoojWHUbadwrSaPbgKjsL3M7lcvnh2Gcqw2SbQVqdSQQ4hoGutcSA
+         hyew==
+X-Forwarded-Encrypted: i=1; AJvYcCXhu14vcmKLgI/JxDDu3sSM97ISIrXm4T8hwom4m2KvpbbxTYf0ITjSZ7CMc4ayCYZm9Nd8Lzw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjYPFzl4TfHIzZ693z+8naPT0JkV2Jfexw7LQEp5espK7LlXd/
+	azVKSD+EWUacc7bySN8PVgKb7M1FMDgbc8TTe3lLf7Of/h821TwUv5dqoLuEWNNNMm8=
+X-Gm-Gg: AY/fxX6/3MWjj+p0x8+BV0RQ3x1XcYsyPFQ8ORh7SI+1YJeyB9n3/4zAIHLkggTcn2l
+	yGdO/+FqiBXQMWbXuVD8/kbtoa2DIo9ICXDDqp/r10K0ZJZ5c8oZe3fl9/iCyfo+U+YpDBtYOfb
+	5e/Y6YEDXWderkSipvW5w876sDJ84ZdbM68Z1xf08EqoNSV5LqLNMLwYQKrKgZ5fDXyau6HUFSx
+	0sa6M83Mo/F8PaQh/LTy7fLGYSXCWYno5XKj+3q8/d9SUNkNRDrY4W0XrOcgfy9yQgCFPy5RtcA
+	XuV537qeduXMUHk/dKOJv1/KkyoRDqZpjlz/s7VjP2b8/wiJDyl2bA1LBBxZGsLioGRRH7yTlaR
+	3I0V5hNdpEZO7DmpWKAjfR9UnWn5Z1mfo2ykTv+3+dkijb7l55DdBpH5hFVNXYqPMTmr2BpfDQq
+	taxYujNwXbX0ZhlU0rn0Yaq8sBOKzMWoPstNwj
+X-Google-Smtp-Source: AGHT+IEOYlyKev/JXhO6ZFSHDXlM8eUuok0NFZfe0rNvo/VSyQSXG3Dl2jreomEhLjqpb0WuT9HVpw==
+X-Received: by 2002:a05:600c:3110:b0:47d:3ffa:980e with SMTP id 5b1f17b1804b1-47d84b4101dmr28129435e9.28.1767798302280;
+        Wed, 07 Jan 2026 07:05:02 -0800 (PST)
+Received: from [192.168.3.33] (9.39.160.45.gramnet.com.br. [45.160.39.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee24esm10984075f8f.33.2026.01.07.07.04.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 06:59:37 -0800 (PST)
-Date: Wed, 07 Jan 2026 09:59:36 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Xu Du <xudu@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- davem@davemloft.net, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- shuah@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.24d5d52e43030@gmail.com>
-In-Reply-To: <CAA92KxkOYKA9vsihvk0FR58m4zgM8-oZVWGsLDYycnk4UWmQAg@mail.gmail.com>
-References: <cover.1767597114.git.xudu@redhat.com>
- <willemdebruijn.kernel.3ae0df5f36144@gmail.com>
- <20260106145822.3cd9b317@kernel.org>
- <CAA92KxkOYKA9vsihvk0FR58m4zgM8-oZVWGsLDYycnk4UWmQAg@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 0/8] selftest: Extend tun/virtio coverage for
- GSO over UDP tunnel
+        Wed, 07 Jan 2026 07:05:01 -0800 (PST)
+Message-ID: <737d6c96a51b5975c9fd7ed302df014e0d5e4fe1.camel@suse.com>
+Subject: Re: [PATCH net-next 2/2] netconsole: convert to NBCON console
+ infrastructure
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asantostc@gmail.com, 
+	efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
+	kernel-team@meta.com
+Date: Wed, 07 Jan 2026 12:04:55 -0300
+In-Reply-To: <l5u6w3ydgfbrah22dbm2vcpytqejfw6aomvzl5uzh5vssljqxd@suspm42neo2z>
+References: <20251222-nbcon-v1-2-65b43c098708@debian.org>
+	 <20260102035415.4094835-1-mpdesouza@suse.com>
+	 <l5u6w3ydgfbrah22dbm2vcpytqejfw6aomvzl5uzh5vssljqxd@suspm42neo2z>
+Autocrypt: addr=mpdesouza@suse.com; prefer-encrypt=mutual;
+ keydata=mDMEZ/0YqhYJKwYBBAHaRw8BAQdA4JZz0FED+JD5eKlhkNyjDrp6lAGmgR3LPTduPYGPT
+ Km0Kk1hcmNvcyBQYXVsbyBkZSBTb3V6YSA8bXBkZXNvdXphQHN1c2UuY29tPoiTBBMWCgA7FiEE2g
+ gC66iLbhUsCBoBemssEuRpLLUFAmf9GKoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgk
+ QemssEuRpLLWGxwD/S1I0bjp462FlKb81DikrOfWbeJ0FOJP44eRzmn20HmEBALBZIMrfIH2dJ5eM
+ GO8seNG8sYiP6JfRjl7Hyqca6YsE
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-Xu Du wrote:
-> On Wed, Jan 7, 2026 at 6:58=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
- wrote:
-> >
-> > On Tue, 06 Jan 2026 17:14:05 -0500 Willem de Bruijn wrote:
-> > > For instance, can the new netlink code be replaced by YNL, whether =
-in
-> > > C or called from a script?
-> >
-> > +1 looks like YNL is already used in net/ tests, and it supports
-> > the operations in question, so that's a much better direction.
-> > Please let us (YNL maintainers) know if there's anything missing
-> > or not working, IDK how much use the rtnetlink support in YNL is
-> > getting.
-> >
-> =
+On Tue, 2026-01-06 at 07:43 -0800, Breno Leitao wrote:
+> Hello Marcos,
+>=20
+> On Fri, Jan 02, 2026 at 12:54:14AM -0300, Marcos Paulo de Souza
+> wrote:
+> > On Mon, 22 Dec 2025 06:52:11 -0800 Breno Leitao <leitao@debian.org>
+> > wrote:
+> > > +		if (!nbcon_enter_unsafe(wctxt))
+> > > +			continue;
+> >=20
+> > In this case, I believe that it should return directly? If it can't
+> > enter in the
+> > unsafe region the output buffer is not reliable anymore, so
+> > retrying the send
+> > the buffer to a different target isn't correct anymore. Petr, John,
+> > do you
+> > agree?
+>=20
+> That makes sense. I undersatnd that the ownership will not be
+> re-acquired here by just looping through the netconsole targets,
+> right?
 
-> Thank you for the suggestion. I am looking into replacing the netlink
-> with YNL to reduce code. But after reviewing rt-link.rst, I found that
-> rt-link currently lacks support for VXLAN. Would more significant chang=
-es
->  to the patch be acceptable if I switch to Geneve to leverage YNL?
+Yes, take a look into the drivers/tty/serial/*, some of the only
+reacquire the context to reset some hardware registers, since the
+printing context was lost. In this case, for you, I don't believe that
+you can't continue trying to send data to other targets, since the
+original data is gone.
 
-These are only changes to the new code in your series. SGTM. I assume
-it is not a significant burden as the two are fairly similar. Is that
-correct?
-
-Eventually it may be nice to have VXLAN support in YNL akin to Geneve
-support. But sounds like a separate goal.
+In any case, the context reacquire method is nbcon_reacquire_nobuf.
