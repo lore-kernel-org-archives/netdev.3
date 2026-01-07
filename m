@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE81156CA
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A06F28371
+	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 00:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767744418; cv=none; b=Ag7744WTz6RJNpyR5l1OLm0hMvaLEpoZD4AEclOf/6zQN/TjrIDKkK7QN8N/vKq8Yp15biZZMj5Fm6yn54Zvps2OMEr1ucNxlLx9z4QKxWemLMw7+2gn8HOmP65W9RVj7DUPEkmkByhF+ijA566VEGhLuS3ZHm9fQrBRF2YeHrE=
+	t=1767744419; cv=none; b=Qt3Dhvb2cYNNRaS9AMJga2UM8d2Ms/9GsrFyXZD9rP5nKGcJzeTsz0xj6+IHxZo38DptuWKfaUpVimmnPi7Z5NKnhwneTDqx8zdmQ+Wj+f1V6X0wjHa2ByVmVtHaxAMIFAyGol0RvGBwJ0odw02dPCfdkwEeH1bL7lPkZD+qVMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767744418; c=relaxed/simple;
-	bh=S75QM6is21ytQBizK1/zY77OLc695DGnwry4N258bvQ=;
+	s=arc-20240116; t=1767744419; c=relaxed/simple;
+	bh=nzzeb2vXBzdlN+dgcmf3PLpjhJA2mHHVQnkEpJNibYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtQ672vtZEu/XCpNPVBbV9CwV+GM53zIU8gI/ql0q3TryVv8PVotE7vaReOaVXiYn+Htcqpf+xp7Cs5Z0dNdJ8JUrlQCjGCMLBQfJwtuNpwXP4z47EkKfhi/v0Qqzkht1rdntqopEiul9Uu+PkNKnlDxYpm0xXw+MAnDkRSQD/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X2JEWwOr; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=cQLKQjoAiBC2LfmCJcMNtLFwERRlJpEO1WlbdXWhBwmtSJCzgTNZWR25vb6RDFVkFSpr6/JryzhtLXnoMqf1L2g/zpHFeFt0hPK/ab/khmD4U0JidD5pqiLW+xxIhB5sDCg9xzlgO60t9QVImJnnhMP3jq58c2p1qQ9oiKhO9R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PHkBcYgm; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X2JEWwOr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PHkBcYgm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1767744418; x=1799280418;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=S75QM6is21ytQBizK1/zY77OLc695DGnwry4N258bvQ=;
-  b=X2JEWwOrNTp11etWJu4mbdD4gpfjWlCXej+2s9JBgDqVa3gXl+sKDt2f
-   rMHqa5fojKTRNh6aNOFynNONLMceEeb2Fy9NerBdra3ZvJPdYvp2UheuC
-   NRwxewaCXL0AI/vaYiNPsoweriVZwq+xDS0o+oiCDNlisM6WWIQ535pzR
-   mI6vMIOyBFptAxD0Ml4gNXyX6PRmzRrcr00jVUmxz3LNNvBskDCKySLQ7
-   whrdkADfuzyV9NK4r8Ke4X8QDZuh52s27sPkCNGOaGYix3g7vNlzZH9Rl
-   /vpbz6+frcssWqsJKZ5Ncr7r6fHUZ0S5+yePhdivFpPuwkM3c5qb3P4/8
+  bh=nzzeb2vXBzdlN+dgcmf3PLpjhJA2mHHVQnkEpJNibYg=;
+  b=PHkBcYgm0uq8EsFv3HAZP2ZVoCA01/8BpwRvuT2CliiUSij+QfbHiaJM
+   2UDKyp6TTOK5tsHTQgSdgjNtUHnJYwJC7/Jfqfxkyyk/1oQ53RzLOCkTm
+   63YYFLgI6q9umF0tP9nqx4cTVtatedzYJXtM31jA8rDwV4esVuz2jqjvr
+   6hraUUykoXEjO8DmohY+wc0v2FJp4kxC1z0/iix1qBAM7yNMo/QTXSamX
+   KooNx9PyH0WLQasRzLN9oiNbH7voOIOlzHiJg+SVn44j/AG52z80ApWRl
+   5v+zGrexSbPPudkt9ShafD8wxDHVjh2LNuRyvT+Ep2a9DoARjPUiol07m
    Q==;
-X-CSE-ConnectionGUID: K+LV866tTLWvGxcNilqdIg==
-X-CSE-MsgGUID: dLW3ZkBTR82U10RytMQmaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161634"
+X-CSE-ConnectionGUID: feSZZRj+T5u3wOHnluEjdg==
+X-CSE-MsgGUID: 9tWNKcsjTa6r6taa4RQKew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69161646"
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="69161634"
+   d="scan'208";a="69161646"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 16:06:54 -0800
-X-CSE-ConnectionGUID: dpMmNZPISw603SMrkQCtnA==
-X-CSE-MsgGUID: IwoS502QRSCCG7/1BDSutg==
+X-CSE-ConnectionGUID: GbpR8gNqTA2XvdxNfo7Ukw==
+X-CSE-MsgGUID: vRvHMnZMSBu90avyY3xXuQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="207841187"
+   d="scan'208";a="207841193"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa005.jf.intel.com with ESMTP; 06 Jan 2026 16:06:54 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,21 +50,16 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Emil Tantilov <emil.s.tantilov@intel.com>,
+Cc: Sreedevi Joshi <sreedevi.joshi@intel.com>,
 	anthony.l.nguyen@intel.com,
-	joshua.a.hay@intel.com,
-	madhu.chittim@intel.com,
-	larysa.zaremba@intel.com,
-	aleksander.lobakin@intel.com,
-	iamvivekkumar@google.com,
-	decot@google.com,
-	willemb@google.com,
-	tatyana.e.nikolova@intel.com,
+	sridhar.samudrala@intel.com,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net 04/13] idpf: fix memory leak in idpf_vc_core_deinit()
-Date: Tue,  6 Jan 2026 16:06:36 -0800
-Message-ID: <20260107000648.1861994-5-anthony.l.nguyen@intel.com>
+	Simon Horman <horms@kernel.org>,
+	Mina Almasry <almasrymina@google.com>
+Subject: [PATCH net 06/13] idpf: fix memory leak of flow steer list on rmmod
+Date: Tue,  6 Jan 2026 16:06:38 -0800
+Message-ID: <20260107000648.1861994-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
 References: <20260107000648.1861994-1-anthony.l.nguyen@intel.com>
@@ -76,57 +71,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Sreedevi Joshi <sreedevi.joshi@intel.com>
 
-Make sure to free hw->lan_regs. Reported by kmemleak during reset:
+The flow steering list maintains entries that are added and removed as
+ethtool creates and deletes flow steering rules. Module removal with active
+entries causes memory leak as the list is not properly cleaned up.
 
-unreferenced object 0xff1b913d02a936c0 (size 96):
-  comm "kworker/u258:14", pid 2174, jiffies 4294958305
-  hex dump (first 32 bytes):
-    00 00 00 c0 a8 ba 2d ff 00 00 00 00 00 00 00 00  ......-.........
-    00 00 40 08 00 00 00 00 00 00 25 b3 a8 ba 2d ff  ..@.......%...-.
-  backtrace (crc 36063c4f):
-    __kmalloc_noprof+0x48f/0x890
-    idpf_vc_core_init+0x6ce/0x9b0 [idpf]
-    idpf_vc_event_task+0x1fb/0x350 [idpf]
-    process_one_work+0x226/0x6d0
-    worker_thread+0x19e/0x340
-    kthread+0x10f/0x250
-    ret_from_fork+0x251/0x2b0
-    ret_from_fork_asm+0x1a/0x30
+Prevent this by iterating through the remaining entries in the list and
+freeing the associated memory during module removal. Add a spinlock
+(flow_steer_list_lock) to protect the list access from multiple threads.
 
-Fixes: 6aa53e861c1a ("idpf: implement get LAN MMIO memory regions")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Fixes: ada3e24b84a0 ("idpf: add flow steering support")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Joshua Hay <joshua.a.hay@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf.h        |  2 ++
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    | 15 ++++++++--
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    | 28 ++++++++++++++++++-
+ 3 files changed, 42 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 5bbe7d9294c1..01bbd12a642a 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3570,6 +3570,7 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 8cfc68cbfa06..a61821333f5d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -558,6 +558,7 @@ struct idpf_vector_lifo {
+  * @max_q: Maximum possible queues
+  * @req_qs_chunks: Queue chunk data for requested queues
+  * @mac_filter_list_lock: Lock to protect mac filters
++ * @flow_steer_list_lock: Lock to protect fsteer filters
+  * @flags: See enum idpf_vport_config_flags
   */
- void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ struct idpf_vport_config {
+@@ -565,6 +566,7 @@ struct idpf_vport_config {
+ 	struct idpf_vport_max_q max_q;
+ 	struct virtchnl2_add_queues *req_qs_chunks;
+ 	spinlock_t mac_filter_list_lock;
++	spinlock_t flow_steer_list_lock;
+ 	DECLARE_BITMAP(flags, IDPF_VPORT_CONFIG_FLAGS_NBITS);
+ };
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+index 2589e124e41c..00481fec8179 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+@@ -37,6 +37,7 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
  {
-+	struct idpf_hw *hw = &adapter->hw;
- 	bool remove_in_prog;
+ 	struct idpf_netdev_priv *np = netdev_priv(netdev);
+ 	struct idpf_vport_user_config_data *user_config;
++	struct idpf_vport_config *vport_config;
+ 	struct idpf_fsteer_fltr *f;
+ 	struct idpf_vport *vport;
+ 	unsigned int cnt = 0;
+@@ -44,7 +45,8 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
  
- 	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
-@@ -3593,6 +3594,9 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 	idpf_vport_ctrl_lock(netdev);
+ 	vport = idpf_netdev_to_vport(netdev);
+-	user_config = &np->adapter->vport_config[np->vport_idx]->user_config;
++	vport_config = np->adapter->vport_config[np->vport_idx];
++	user_config = &vport_config->user_config;
  
- 	idpf_vport_params_buf_rel(adapter);
+ 	switch (cmd->cmd) {
+ 	case ETHTOOL_GRXCLSRLCNT:
+@@ -53,15 +55,18 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
+ 		break;
+ 	case ETHTOOL_GRXCLSRULE:
+ 		err = -EINVAL;
++		spin_lock_bh(&vport_config->flow_steer_list_lock);
+ 		list_for_each_entry(f, &user_config->flow_steer_list, list)
+ 			if (f->loc == cmd->fs.location) {
+ 				cmd->fs.ring_cookie = f->q_index;
+ 				err = 0;
+ 				break;
+ 			}
++		spin_unlock_bh(&vport_config->flow_steer_list_lock);
+ 		break;
+ 	case ETHTOOL_GRXCLSRLALL:
+ 		cmd->data = idpf_fsteer_max_rules(vport);
++		spin_lock_bh(&vport_config->flow_steer_list_lock);
+ 		list_for_each_entry(f, &user_config->flow_steer_list, list) {
+ 			if (cnt == cmd->rule_cnt) {
+ 				err = -EMSGSIZE;
+@@ -72,6 +77,7 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
+ 		}
+ 		if (!err)
+ 			cmd->rule_cnt = user_config->num_fsteer_fltrs;
++		spin_unlock_bh(&vport_config->flow_steer_list_lock);
+ 		break;
+ 	default:
+ 		break;
+@@ -240,6 +246,7 @@ static int idpf_add_flow_steer(struct net_device *netdev,
  
-+	kfree(hw->lan_regs);
-+	hw->lan_regs = NULL;
+ 	fltr->loc = fsp->location;
+ 	fltr->q_index = q_index;
++	spin_lock_bh(&vport_config->flow_steer_list_lock);
+ 	list_for_each_entry(f, &user_config->flow_steer_list, list) {
+ 		if (f->loc >= fltr->loc)
+ 			break;
+@@ -250,6 +257,7 @@ static int idpf_add_flow_steer(struct net_device *netdev,
+ 		 list_add(&fltr->list, &user_config->flow_steer_list);
+ 
+ 	user_config->num_fsteer_fltrs++;
++	spin_unlock_bh(&vport_config->flow_steer_list_lock);
+ 
+ out:
+ 	kfree(rule);
+@@ -302,17 +310,20 @@ static int idpf_del_flow_steer(struct net_device *netdev,
+ 		goto out;
+ 	}
+ 
++	spin_lock_bh(&vport_config->flow_steer_list_lock);
+ 	list_for_each_entry_safe(f, iter,
+ 				 &user_config->flow_steer_list, list) {
+ 		if (f->loc == fsp->location) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			user_config->num_fsteer_fltrs--;
+-			goto out;
++			goto out_unlock;
+ 		}
+ 	}
+ 	err = -EINVAL;
+ 
++out_unlock:
++	spin_unlock_bh(&vport_config->flow_steer_list_lock);
+ out:
+ 	kfree(rule);
+ 	return err;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index e2ee8b137421..d56366e676cf 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -442,6 +442,29 @@ int idpf_intr_req(struct idpf_adapter *adapter)
+ 	return err;
+ }
+ 
++/**
++ * idpf_del_all_flow_steer_filters - Delete all flow steer filters in list
++ * @vport: main vport struct
++ *
++ * Takes flow_steer_list_lock spinlock.  Deletes all filters
++ */
++static void idpf_del_all_flow_steer_filters(struct idpf_vport *vport)
++{
++	struct idpf_vport_config *vport_config;
++	struct idpf_fsteer_fltr *f, *ftmp;
 +
- 	kfree(adapter->vports);
- 	adapter->vports = NULL;
++	vport_config = vport->adapter->vport_config[vport->idx];
++
++	spin_lock_bh(&vport_config->flow_steer_list_lock);
++	list_for_each_entry_safe(f, ftmp, &vport_config->user_config.flow_steer_list,
++				 list) {
++		list_del(&f->list);
++		kfree(f);
++	}
++	vport_config->user_config.num_fsteer_fltrs = 0;
++	spin_unlock_bh(&vport_config->flow_steer_list_lock);
++}
++
+ /**
+  * idpf_find_mac_filter - Search filter list for specific mac filter
+  * @vconfig: Vport config structure
+@@ -1107,8 +1130,10 @@ static void idpf_vport_dealloc(struct idpf_vport *vport)
+ 		idpf_vport_stop(vport, true);
+ 		idpf_decfg_netdev(vport);
+ 	}
+-	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
++	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags)) {
+ 		idpf_del_all_mac_filters(vport);
++		idpf_del_all_flow_steer_filters(vport);
++	}
  
+ 	if (adapter->netdevs[i]) {
+ 		struct idpf_netdev_priv *np = netdev_priv(adapter->netdevs[i]);
+@@ -1648,6 +1673,7 @@ void idpf_init_task(struct work_struct *work)
+ 	vport_config = adapter->vport_config[index];
+ 
+ 	spin_lock_init(&vport_config->mac_filter_list_lock);
++	spin_lock_init(&vport_config->flow_steer_list_lock);
+ 
+ 	INIT_LIST_HEAD(&vport_config->user_config.mac_filter_list);
+ 	INIT_LIST_HEAD(&vport_config->user_config.flow_steer_list);
 -- 
 2.47.1
 
