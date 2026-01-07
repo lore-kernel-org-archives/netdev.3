@@ -1,123 +1,91 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA14350A0E;
-	Wed,  7 Jan 2026 18:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB7C22A4FE;
+	Wed,  7 Jan 2026 18:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767809576; cv=none; b=dHHxZVgHs3tSyyqP7qkwMAsPMc3lGq26ffP/7bNCTH9BtFB31Z92AvBs1HfHB9QGOyuZJ+QCYx76mVY+a56k3fZCk07EjCz6plJMGmPVASiWA940xeTfKBNcjKrCFvoDadtdsYKj7MxSiv6NRToE1Jc1kb8h8x0fUcKUoX/ZKZg=
+	t=1767810701; cv=none; b=FayYlo63fqAtMWfU/ucM0XJVnBKa6ekeaDiYd4xuawkDhwWgiIBy6nLTAZ3va+TwXxdHZ06f0rwfbiV0UNTmawvKvB+BHKfOJvzZjN4i0ZygsoSHgGTNmBdtw6Xk1df5nJukPPWwT8d7fTx9X2akcJbpOe+cm01rGKJPJjti4F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767809576; c=relaxed/simple;
-	bh=ryrestnb926D+RVdbTzuIT2CgKK558InMSvyrXOSHUI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hhN6MLFEJPokOobIGb6mHHJcnLP1DUC8dCLDCtjtSj4OJHUAmclgGAaGn2oIh5OWUbKXm1GI9NBkQAZBTxNs0rriOi1odIWzu4rLwc8a19UjhfQbV2xMgK3LWLsVB3lsGCK8FeQD5GYLcCFqUV3vzaYOP8g5bK+M8xb1ZymL4Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from localhost.localdomain (vps-f4c04b7b.vps.ovh.net [IPv6:2001:41d0:305:2100::d563])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 5940D40215;
-	Wed,  7 Jan 2026 18:12:52 +0000 (UTC)
-Authentication-Results: Plesk;
-	spf=pass (sender IP is 2001:41d0:305:2100::d563) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=localhost.localdomain
-Received-SPF: pass (Plesk: connection is authenticated)
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
-To: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	contact@arnaud-lcm.com,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	haoluo@google.com,
-	john.fastabend@gmail.com,
-	jolsa@kernel.org,
-	kpsingh@kernel.org,
-	linux-kernel@vger.kernel.org,
-	martin.lau@linux.dev,
-	netdev@vger.kernel.org,
-	sdf@fomichev.me,
-	song@kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	yonghong.song@linux.dev,
-	Brahmajit Das <listout@listout.xyz>
-Subject: [PATCH v2] bpf-next: Prevent out of bound buffer write in
- __bpf_get_stack
-Date: Wed,  7 Jan 2026 18:12:37 +0000
-Message-ID: <20260107181237.1075490-1-contact@arnaud-lcm.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1767810701; c=relaxed/simple;
+	bh=tiWz7ZyYMf9ScXUa+wyIt+0EmMop/T91xq6X1lu4fp0=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=K7mkT4TKPZmTTObIdQOCSqnn4USnhKU3BI26tilurOk6Ez7T2dXNUprHprp4bTmKoTXNaWbQ3jOKg9VoPKpG3VBp7mypNTZvAXmcC394T4/HgBng3KvhLquCvu6/LfKRFfJRI1w7Y2nz5wo/hFmy9HqESJdbdZ+9q03BLsjN8ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SO++xmxz; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SO++xmxz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320ABC4CEF7;
+	Wed,  7 Jan 2026 18:31:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767810698;
+	bh=tiWz7ZyYMf9ScXUa+wyIt+0EmMop/T91xq6X1lu4fp0=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=SO++xmxzPDQhvT0ukuzFTp50glP8aCmy3aPwcO4/kTEtFhrloNlmyM5miDINAYfSv
+	 DAhCWxxOO85tpM1in4P24usWMMv/l89qpWPVbDkgRfvcubP5nxyDxS3yTwUGjCj1PN
+	 8CXCSIkNa4fGTPFqJNSw5mmRvTNzrXloQ2bJJuHRkym0dOVbZ82fd4QJ7p0Regnv+J
+	 UdNQxejJVBwNJaeccRpPsoYxwAigKX6Ze1YWt2QhkWXJb/gd1OzwRSSx5V69YFH48O
+	 9NuX4C7ndr1SWfiL82UuwfKUc2n8e/EZgDS6b7hx9BuJ3Y0ooLx4Qi5vZctar7GC4j
+	 +YosWtw4YHuDw==
+Content-Type: multipart/mixed; boundary="===============7187549189809104809=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <176780957287.21808.12715779468988145766@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+Message-Id: <f0c89037c4870388696751365cec002fe3ded78c7ef260bd99e1934ceb245acd@mail.kernel.org>
+In-Reply-To: <20260107181237.1075490-1-contact@arnaud-lcm.com>
+References: <20260107181237.1075490-1-contact@arnaud-lcm.com>
+Subject: Re: [PATCH v2] bpf-next: Prevent out of bound buffer write in __bpf_get_stack
+From: bot+bpf-ci@kernel.org
+To: contact@arnaud-lcm.com,syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
+Cc: andrii@kernel.org,ast@kernel.org,bpf@vger.kernel.org,contact@arnaud-lcm.com,daniel@iogearbox.net,eddyz87@gmail.com,haoluo@google.com,john.fastabend@gmail.com,jolsa@kernel.org,kpsingh@kernel.org,linux-kernel@vger.kernel.org,martin.lau@linux.dev,netdev@vger.kernel.org,sdf@fomichev.me,song@kernel.org,syzkaller-bugs@googlegroups.com,yonghong.song@linux.dev,listout@listout.xyz,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed,  7 Jan 2026 18:31:38 +0000 (UTC)
 
-Syzkaller reported a KASAN slab-out-of-bounds write in __bpf_get_stack()
-during stack trace copying.
+--===============7187549189809104809==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The issue occurs when: the callchain entry (stored as a per-cpu variable)
-grow between collection and buffer copy, causing it to exceed the initially
-calculated buffer size based on max_depth.
+> diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+> index da3d328f5c15..c0a430f9eafb 100644
+> --- a/kernel/bpf/stackmap.c
+> +++ b/kernel/bpf/stackmap.c
+> @@ -465,7 +465,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+>
+>  	if (trace_in) {
+>  		trace = trace_in;
+> -		trace->nr = min_t(u32, trace->nr, max_depth);
+>  	} else if (kernel && task) {
+>  		trace = get_callchain_entry_for_task(task, max_depth);
+>  	} else {
+> @@ -473,13 +472,15 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+>  					   crosstask, false, 0);
+>  	}
+>
+> +	trace_nr = min(trace->nr, max_depth);
+                       ^^^^^^^^
 
-The callchain collection intentionally avoids locking for performance
-reasons, but this creates a window where concurrent modifications can
-occur during the copy operation.
+Can this dereference trace when it is NULL? Both get_callchain_entry_for_task()
+and get_perf_callchain() can return NULL, and several callers pass trace_in as
+NULL (bpf_get_stack, bpf_get_stack_sleepable, __bpf_get_task_stack, and one
+path in bpf_get_stack_pe).
 
-To prevent this from happening, we clamp the trace len to the max
-depth initially calculated with the buffer size and the size of
-a trace.
+The NULL check below comes after this dereference:
 
-Reported-by: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/691231dc.a70a0220.22f260.0101.GAE@google.com/T/
-Fixes: e17d62fedd10 ("bpf: Refactor stack map trace depth calculation into helper function")
-Tested-by: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
-Cc: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+> +
+> +	if (unlikely(!trace) || trace_nr < skip) {
+                    ^^^^^^
+
+This check is now ineffective because trace->nr was already dereferenced above.
+
+[ ... ]
+
+
 ---
-Changes in v2:
-	- Moved the trace_nr clamping to max_depth above trace->nr skip
-	  verification.
-Link to v1: https://lore.kernel.org/all/20260104205220.980752-1-contact@arnaud-lcm.com/
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-Thanks Brahmajit Das for the initial fix he proposed that I tweaked
-with the correct justification and a better implementation in my
-opinion.
----
- kernel/bpf/stackmap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20791981532
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index da3d328f5c15..c0a430f9eafb 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -465,7 +465,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 
- 	if (trace_in) {
- 		trace = trace_in;
--		trace->nr = min_t(u32, trace->nr, max_depth);
- 	} else if (kernel && task) {
- 		trace = get_callchain_entry_for_task(task, max_depth);
- 	} else {
-@@ -473,13 +472,15 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 					   crosstask, false, 0);
- 	}
- 
--	if (unlikely(!trace) || trace->nr < skip) {
-+	trace_nr = min(trace->nr, max_depth);
-+
-+	if (unlikely(!trace) || trace_nr < skip) {
- 		if (may_fault)
- 			rcu_read_unlock();
- 		goto err_fault;
- 	}
- 
--	trace_nr = trace->nr - skip;
-+	trace_nr = trace_nr - skip;
- 	copy_len = trace_nr * elem_size;
- 
- 	ips = trace->ip + skip;
--- 
-2.43.0
-
+--===============7187549189809104809==--
