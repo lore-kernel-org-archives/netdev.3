@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3513876B7;
-	Wed,  7 Jan 2026 15:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6A33A981A;
+	Wed,  7 Jan 2026 15:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801272; cv=none; b=ht8adfETGAIpWRCuZa0p57HF0l1ZWqQmlR0nO2yxyjbe1n8JXpZJ1ZYJkqbOjhg2TgENmO2sUZnHPAUp9cQxn8HSfQxH2R24FenDnZqyLh71T1gbMTIZme3IOKJa7ZPvGRSo09ANGbdXmwG5BllVIwDarPynEje6DUgWgtGf56I=
+	t=1767801323; cv=none; b=nJNFEtNm966DxEW38q2mgadqQekFrltJvuDRD+c2R2Ri5JTsTpV31338rLy7g2ZtIhZRPMXF3Af/OR9jL9XwzqpHh7ve7UsYCDU+fp07NIqYtB+OPXr4BeSj+m8204NhhXuSxd456NorIcLDMA47kw5n8Aqn4HBlMGEhQxrwkuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801272; c=relaxed/simple;
-	bh=V6P3bS26yze5zMNM28stYUxE4Le+BxDGHcSAb1viy+M=;
+	s=arc-20240116; t=1767801323; c=relaxed/simple;
+	bh=kYVwO3rYvaj9FbefwMJ9YShwPb9d1RsDG3k8NGmOwBA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lqWRHyEQ90+dsTJXjSw86mDFTasTOvjZu2MLxQWZ80jWdfjmGW5+p4FyqcO27OXdN/ddUaidwcKlwleHG/rjN0P6on3EVNZjBHsMEOw40nTM+enWk/ffjinZxqsHKeNgbkWa38bfByh1ooC2b2ix6vg7TV9U78wHJxZH2neW5a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IoKJjTDu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=U2L0+KnblnbyHCliERPfEt/bKNyhJQwRerM0hlKpTWLe0WflN+wImEZ05DjLkjeDcuFC3t15iGeJroAPbGV7BjvaXuTSBchBBczDzgkmfxrhlI6wj/pqUFH9Z6c4oMBNJFDwjsmUISTd9+H/gFKjbjHsrGqw6KNvtyLElt1LJ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=atRHehhy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoKJjTDu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2F4C4CEF1;
-	Wed,  7 Jan 2026 15:54:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atRHehhy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE47C4CEF1;
+	Wed,  7 Jan 2026 15:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801271;
-	bh=V6P3bS26yze5zMNM28stYUxE4Le+BxDGHcSAb1viy+M=;
+	s=k20201202; t=1767801321;
+	bh=kYVwO3rYvaj9FbefwMJ9YShwPb9d1RsDG3k8NGmOwBA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IoKJjTDu6LO0cMglVQCHDIjABOw7Go4Mql5XK2sx8JQ2VWmI5mujktEf2N2CgS5X9
-	 jEwESOpMc1JWPBsWr2hx0+NaBKpxRqaY5qNJl8zzPt7hHxW67RS+A1OMPi+Hdq2A5F
-	 DGPATarT/I+2uOcxxD4IVISsLJ+rge2/eYtz2GmYDO1ZmZCp7j4wrYdVOABbOcodIo
-	 D3oBObx50rJRPr251ReUlfO+XoknYdv7C0dEM72JKAhHK/LTNCebORgPr3gwcFzlau
-	 83Prx/HnlMc1ihKPc6HB36QWWKwLCX48/LMEkFeFJV6cNG1w8i4BrYj+oNh7mQzThQ
-	 HIgIpsbnvDw0A==
-Date: Wed, 7 Jan 2026 15:54:27 +0000
+	b=atRHehhyJpnBldSqmxhxLHSYnEqjnhYnG+rxBy6VF2QvfzR1B7GxWBiDIF2+nJsOb
+	 B6mhe/nJ0SHuMiKBgH1cvXMIbaJOD4NyLPIKHbnBDez2HTc0AEe/A0IvBzYJHbpIhl
+	 z5sKmwFaFyKqPaU9bxFlknevQc9J0JIVamfm8lAFMP/XGFuozNkTJjHhPkWrVJZ8V6
+	 hlN9QtJP91XRQg0sj6CSLLccDd6+cq5OP+Cl6Vy5FExDjQ/VeD0idijLvw1bOe+Gk6
+	 OJvubP5JeQN7YBa+Gcb5yYjv9TbSuNV1a8B8F5sYeIxnkAKEHm6Ofd7t9QfwjsWqmK
+	 TCDO/teg7edng==
+Date: Wed, 7 Jan 2026 15:55:17 +0000
 From: Simon Horman <horms@kernel.org>
 To: Jacky Chou <jacky_chou@aspeedtech.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -35,9 +35,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH 00/15] net: ftgmac100: Various probe cleanups
-Message-ID: <20260107155427.GB345651@kernel.org>
+Subject: Re: [PATCH 04/15] net: ftgmac100: Use devm_alloc_etherdev()
+Message-ID: <20260107155517.GC345651@kernel.org>
 References: <20260105-ftgmac-cleanup-v1-0-b68e4a3d8fbe@aspeedtech.com>
+ <20260105-ftgmac-cleanup-v1-4-b68e4a3d8fbe@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,45 +47,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105-ftgmac-cleanup-v1-0-b68e4a3d8fbe@aspeedtech.com>
+In-Reply-To: <20260105-ftgmac-cleanup-v1-4-b68e4a3d8fbe@aspeedtech.com>
 
-On Mon, Jan 05, 2026 at 03:08:46PM +0800, Jacky Chou wrote:
-> The probe function of the ftgmac100 is rather complex, due to the way
-> it has evolved over time, dealing with poor DT descriptions, and new
-> variants of the MAC.
+On Mon, Jan 05, 2026 at 03:08:50PM +0800, Jacky Chou wrote:
+> From: Andrew Lunn <andrew@lunn.ch>
 > 
-> Make use of DT match data to identify the MAC variant, rather than
-> looking at the compatible string all the time.
-> 
-> Make use of devm_ calls to simplify cleanup. This indirectly fixes
-> inconsistent goto label names.
-> 
-> Always probe the MDIO bus, when it exists. This simplifies the logic a
-> bit.
-> 
-> Move code into helpers to simply probe.
+> Make use of devm_alloc_etherdev() to simplify cleanup.
 > 
 > Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 > Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> ---
+>  drivers/net/ethernet/faraday/ftgmac100.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+> index f07167cabf39..75c7ab43e7e9 100644
+> --- a/drivers/net/ethernet/faraday/ftgmac100.c
+> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
+> @@ -1877,10 +1877,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
+>  		return irq;
+>  
+>  	/* setup net_device */
+> -	netdev = alloc_etherdev(sizeof(*priv));
+> +	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+>  	if (!netdev) {
+> -		err = -ENOMEM;
+> -		goto err_alloc_etherdev;
+> +		return -ENOMEM;
+>  	}
 
-Hi,
+nit: There is no longer any need for {} here.
 
-I'm slightly unclear on the providence of this patchset.
-But overall it looks good to me. And I particularly like
-how it has been split up into bite-sized chunks.
-
-I don't see anything that should block progress, but I do have a few
-minor nits that I'll raise just in case there is a v2 for other reasons.
-
-The first nit is that the patch-set should be targeted at net-next,
-by including inet-next in the Subjects, like this:
-
-  [PATCH net-net 00/15] ...
-
-The other minor nits are patch-specifically, so I'll respond to those patches
-accordingly.
-
-Again, overall this looks good to me.
-So for the series:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+...
