@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45C5280CE0
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 01:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA02C3C2F;
+	Wed,  7 Jan 2026 01:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767748421; cv=none; b=HPhozopnjI8QTFKyWQnb8b8YaKR3Rf6E3L9f3/9cgbgz2mh0a8eDsbt8UDJNacXLoG/tNQWzo3a+aWcydt568Pwnls2CumVNhUkWOlklKLd7cq8qA0jtR6TKj1xUn6+VC1G0DONZyLOox7/KoSODFFgLBsdw1xxGrZVRKOkBnBQ=
+	t=1767749009; cv=none; b=NM8lkdUi9XjTZ9k/kmRCTc7Gau9I6azhT8JQib9DUnudZ2g9WelishnWjdZHJtVz7nQHEqaYHDQue1YYP48nZQgWkcGnWXJL67kcC5JNug0LjihCVUBO6+HCEQOLidh00CTK4PTXxVqmA8G9UDLrlX7pvNPo8+ByoXgX2YdJ5tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767748421; c=relaxed/simple;
-	bh=F8TRBdEX0IKoosO6AWlc9pFWMhHrf5riuSD9UCdfoxM=;
+	s=arc-20240116; t=1767749009; c=relaxed/simple;
+	bh=WekDqgZtqkKfkrvVCpmmKae/JFgoUDTJyK2zOeI8kjU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WQzcoVWVjdfXC6oJX9j/98sKntAVH+/P3YRaKpKy45RXpgccVfdXo42Uy+jtGMpAMCqYCjBuq7qBXrS8AMOdeENzH+9Jbt7fjSF/5Z5AJgTxO+QCNQpmiXVnAdzXkrWbXgIU2wJZvAGhcRF5cS6RttgZlSZl4GJQE9B/EjQJqbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMSQGL83; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Bf6WFsQSYYxFDZTBOJdGBllNi489A94Rg8t79uEILhJ8NWLp6enCrFGrHdXBtJKQT4izZn50G5qsgGRhJLs/5A7qzbMCzRE0ZlxaPg4AlfojpscnvQpacbVY2yIYrdRrUPpUlC7npfiE6KBoYf9lKYsqbuD1AGrc3vnnA9fGRK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fs+PjrIa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMSQGL83"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBA7C19422;
-	Wed,  7 Jan 2026 01:13:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fs+PjrIa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47678C116C6;
+	Wed,  7 Jan 2026 01:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767748420;
-	bh=F8TRBdEX0IKoosO6AWlc9pFWMhHrf5riuSD9UCdfoxM=;
+	s=k20201202; t=1767749009;
+	bh=WekDqgZtqkKfkrvVCpmmKae/JFgoUDTJyK2zOeI8kjU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RMSQGL83BaOtl7R/cKZl2xOqO/EfeCuO/EC/4LLu2y64ALQttL8YDHWs95Le+HpSo
-	 IrvXkNFF5uVLJHfiZDkH53C1qIlHr/rjs2SKiknra56c9fXOkp5lOdT6/eS7dD4666
-	 z/lxIMDdEen88BAyTj1qJIKx19qazVu3D97NOzRzBIbfh6YC3ufYc4zpg7i8izyHTg
-	 /nYPPz7sO2REVdPwHTGC3F3Gfi9VzPYHxtTDNofUOa0/TU2CUKsMWVBH8vu0X0Ll4a
-	 kK63cU9SuLzQajsi9GjUvPioTCiDOxoFRXLvc2lPoJ5DoFKw+K1pkEpr5FQPw/UcY1
-	 uyrob2oVIW3eg==
+	b=fs+PjrIapaAgvbXjrQgw1dUanyFaJ74KFVptyUGD26MWqoGQ3zVxGMfOBNYVE+7n2
+	 DTaY5/cOO3qlcQuu6qRSiR5SZhzbK6rBhPl802iYna5UyniLByZugjKgdGZR5FrQB1
+	 oziJwkhMDE06XmGEXAOTXf0DZLs+dx1OeFAsHf5/3Y4TroQB1r/or6f+n39tT3x+kf
+	 2Ba/OWGY0J+be5LjMd5hrZ/9FB9kxhG7HEy/Ab3XIPfl2aOff5YhoDotcUrPx8WSg5
+	 jv7ruSTAAuIXA2ngAYmnrARflWLdJy3EecD6cP/ikorDH/VlTNWFG72RcEqHRzhqRA
+	 sHio3Ov08JyCQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B74B380CEF5;
-	Wed,  7 Jan 2026 01:10:19 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2BB0380CEF5;
+	Wed,  7 Jan 2026 01:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,34 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: libwx: remove unused rx_buffer_pgcnt
+Subject: Re: [PATCH net] net: sfp: return the number of written bytes for
+ smbus
+ single byte access
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176774821802.2186142.12690968741108457435.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Jan 2026 01:10:18 +0000
-References: <F0907C8394B2D4A8+20260105071158.49929-1-jiawenwu@trustnetic.com>
-In-Reply-To: <F0907C8394B2D4A8+20260105071158.49929-1-jiawenwu@trustnetic.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- michal.kubiak@intel.com, mengyuanlou@net-swift.com
+ <176774880679.2188953.327787991480765340.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Jan 2026 01:20:06 +0000
+References: <20260105151840.144552-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20260105151840.144552-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, linux@armlinux.org.uk, jelonek.jonas@gmail.com,
+ hkallweit1@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, f.fainelli@gmail.com,
+ kory.maincent@bootlin.com, horms@kernel.org, romain.gantois@bootlin.com,
+ kabel@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  5 Jan 2026 15:11:58 +0800 you wrote:
-> The variable rx_buffer_pgcnt is redundant, just remove it.
+On Mon,  5 Jan 2026 16:18:39 +0100 you wrote:
+> We expect the SFP write accessors to return the number of written bytes.
+> We fail to do so for single-byte smbus accesses, which may cause errors
+> when setting a module's high-power state and for some cotsworks modules.
 > 
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->  drivers/net/ethernet/wangxun/libwx/wx_lib.c | 17 ++++-------------
->  1 file changed, 4 insertions(+), 13 deletions(-)
+> Let's return the amount of written bytes, as expected.
+> 
+> Fixes: 7662abf4db94 ("net: phy: sfp: Add support for SMBus module access")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] net: libwx: remove unused rx_buffer_pgcnt
-    https://git.kernel.org/netdev/net-next/c/d362f446334c
+  - [net] net: sfp: return the number of written bytes for smbus single byte access
+    https://git.kernel.org/netdev/net/c/13ff3e724207
 
 You are awesome, thank you!
 -- 
