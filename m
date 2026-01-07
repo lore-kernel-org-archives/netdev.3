@@ -1,106 +1,125 @@
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F3355804
-	for <netdev@vger.kernel.org>; Wed,  7 Jan 2026 14:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8C3355043;
+	Wed,  7 Jan 2026 14:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767797396; cv=none; b=IDRRnY5oBdulh4GpUiEmkQ40+lrj1wEIqbi3KW00BOGpfuokzsLSesOyiRtLK8U8K0M9tmOVEMT1qRGUf5dWSWeZdtggZnWNkBpFvbT3XlOTiKOLVlG1DS7ZfTs8+aO2To6DzYhrn6iblJyLZ3J+Xx6i0c7Swy8mlu2yhSNLAxc=
+	t=1767797602; cv=none; b=ua1cGMzuV8ZKsdBMBoyOCq4811ioqeoCR2b3SrNZHM3L0Zgi+LsYINUjlqoffob5OfnCaD4U8GlKm8V9fQuaarcaKCrizTw3GqZBVQ0LrQSM6QOpnP9bFW/soLmBL62kBpE6OXJoJmzKH4QdICx/NsPuQUUDxSBnWA/GBVrFMOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767797396; c=relaxed/simple;
-	bh=osl6vrBt0IXGyZBefxMFeDDLnbTP5uGuV4aS82yutQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SGbBcxLBpaekY0GAUGKO2LBossmYYTL3GLzNu7aQvo+vde7w9CncvSblNt6Fo6X8R25SBBzCMSdjHi0FtG8iHv9ccjt3idt0E2YvltDX2YYmpWlqHFSslliJuxGw6dBCXTDSfObDpAxf0BBFu/uHUMCrqt5Yin1moQIAZwBXSZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-65cfb4beabcso1303129eaf.3
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 06:49:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767797393; x=1768402193;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HQkY59DeE1vgVLwbeSLHnvYnYwGjrhZ6pudLKjncWzQ=;
-        b=L/ZyjwQJ2PwlEgugWBSbpqhyI35Om5lOdOA6bPtURm8dP5I75BVAfVwWaBvZWnTCQm
-         bH+LOrTatpdNR3VFKbT5G2FuhfCcj0PSpteQuToXNVTFPaeW/ukQvKMUl7dCBYS79c7h
-         gJiBlA1g+S6Dln/VPV4bb9epOSRfzLdPps83yTqK+PCauRcmy6DEdDua5rslUZcvo4fe
-         xPwsbjJWAbG8dBAlWNshcJku4LlqJQnNHYIO/e1izf5N0/mxhtsCrx9dwiFs4/8os724
-         BbLUVYTs7ZS09ySTO65u+lbuo7TWKIqxo8mcNcoYSwRXUGpTxZpEXCbIDnotUnIWnW+y
-         fkPg==
-X-Gm-Message-State: AOJu0Yww5u1H4wQIAYjrBKE+jIl1RjYqatfKPisrgt/HwdPSmQACVSu+
-	dF3+SfVL3s93oLmN3Kb5Q5Lq+Nt8KqXpjG9LWCrAdc6bjwMiauAhlc9hmFWgvA==
-X-Gm-Gg: AY/fxX45tA590cfmLUEoy5B2FuZnGUqhXGYNHyp/gJ/P4bapsiPoSE+avS5Sr4BKSFl
-	qhqHCJbh5CJjfGGGxE4H4d6MRwjjqzIB7YO53z0J6YuTWUm0tCw4m6O41iZQPVae4pDesOtvREs
-	iwGqMaNRwTagC9L6V66X/FMlMqXTRd3S+mNVH2leDgJVTnQc11JsbJjkhAdaWg7F2CrQ1OU8jkY
-	GrMjHd3YqTJGX1/20TlK9/JWTcg9yN/3EGMGC906+Xg2pJj7vizoOEwAgcb/oOUqQRYr9T59y6B
-	oVeuuWxzNKaJqTmsh7cTCJgDdbp7RRX4qBy/U+dKUJkQ6ELTX5Sop4xFpWm3ICAolBm9E9SzUbg
-	y1RmJ8i0aR8tSVPkWzzJIiCRETPttB4MLYJ5fdsi9o3mlD6AqDg76wjmLVK2JyYF3rxSFq0ltVy
-	JWtRchwKBmi46/Iw==
-X-Google-Smtp-Source: AGHT+IF6jhhRB4Njfs4SvcunYwv34l2OH0EunFy0CT188DAhMUx3PPAoxevnG3G1usEIdAfSWEJFEA==
-X-Received: by 2002:a05:6820:4006:b0:65f:5451:d80b with SMTP id 006d021491bc7-65f55086554mr1051996eaf.68.1767797393296;
-        Wed, 07 Jan 2026 06:49:53 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:58::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65f48ced969sm2087609eaf.17.2026.01.07.06.49.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 06:49:52 -0800 (PST)
-Date: Wed, 7 Jan 2026 06:49:51 -0800
-From: Breno Leitao <leitao@debian.org>
-To: pmladek@suse.com, john.ogness@linutronix.de, mpdesouza@suse.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, 
-	jv@jvosburgh.net, kernel-team@meta.com, Petr Mladek <pmladek@suse.com>, 
-	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, rostedt@goodmis.org
-Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
- infrastructure
-Message-ID: <5mpei32y7sl5jmi2ciim4crxbc55zztiucxxsdd633mvzxlk7n@fowtsefym5y6>
-References: <20251222-nbcon-v1-0-65b43c098708@debian.org>
+	s=arc-20240116; t=1767797602; c=relaxed/simple;
+	bh=cArOAZu2vf19+VFBgmj/e+ZIi+kTdN9NBGzWcNSqNRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WibXQ7vymCJ2nKWxmzL905RJPlFZqXOVFXPvQ1vkdrJmAoE+UvaPMWJq1ZNdHOE9/iJ5S6UYWhstYfvkneI8SlT03q08/AeH7I8bLkFDPK17RH6yKi2+/lEaocy7REeN5jEIb+PGghW8xynIcJTuaYJ/0icYYzhIkpKzvKHbcuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ee91BQm2; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ee91BQm2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67932C4CEF1;
+	Wed,  7 Jan 2026 14:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767797602;
+	bh=cArOAZu2vf19+VFBgmj/e+ZIi+kTdN9NBGzWcNSqNRs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ee91BQm2IoeyYD6gcMxxj4z29bK0iUJ3krQ567hBuYTdzHHJuJrlfq9NCaAEIkY3Z
+	 QHAdCTRQKCowk9CH0Kp1UOoyg2/HEG7lwIOFJrTgmmtEBk6QBcvsBptAgKB8e60MJc
+	 /Ka6LO9rXmsoq1G3ywV20thWUY7fFO0ivnnLATSjnp6r1oJgdpsE8TvvwH9h96bHjo
+	 2a6kLNGNnfIlWDoRKnNtmkX41r89sO80mNZHLHXZB3jBTKmqEmqOVuSjO6fbLT/dzY
+	 g+cuqJd4TUBRUhGJg+hHo+lJ7uyZ01BUNfCzyS0n+A4caH9f9lZ+PLbasFMs92c0fz
+	 2V2poM+Zgmg3Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	shuah@kernel.org,
+	vladimir.oltean@nxp.com,
+	alexander.sverdlin@gmail.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next] selftests: forwarding: update PTP tcpdump patterns
+Date: Wed,  7 Jan 2026 06:53:19 -0800
+Message-ID: <20260107145320.1837464-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222-nbcon-v1-0-65b43c098708@debian.org>
+Content-Transfer-Encoding: 8bit
 
-Hello Petr, John and Marcos,
+Recent version of tcpdump (tcpdump-4.99.6-1.fc43.x86_64) seems to have
+removed the spurious space after msg type in PTP info, e.g.:
 
-On Mon, Dec 22, 2025 at 06:52:09AM -0800, Breno Leitao wrote:
-> This series adds support for the nbcon (new buffer console) infrastructure
-> to netconsole, enabling lock-free, priority-based console operations that
-> are safer in crash scenarios.
+ before:  PTPv2, majorSdoId: 0x0, msg type : sync msg, length: 44
+ after:   PTPv2, majorSdoId: 0x0, msg type: sync msg, length: 44
 
-I've been reflecting further on this port and encountered a potential
-roadblock that I'd like to discuss to ensure I'm heading in the right
-direction.
+Update our patterns to match both.
 
-Netconsole appends additional data (sysdata) to messages, specifically
-the CPU and task_struct->comm fields.
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: shuah@kernel.org
+CC: vladimir.oltean@nxp.com
+CC: alexander.sverdlin@gmail.com
+CC: linux-kselftest@vger.kernel.org
+---
+ .../net/forwarding/local_termination.sh        | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-Basically, it appends current->comm and raw_smp_processor_id()
-when sending a message.
-(For more details, see sysdata_append_cpu_nr() and
-sysdata_append_taskname())
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index 892895659c7e..1f2bf6e81847 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -306,39 +306,39 @@ run_test()
+ 
+ 	if [ $skip_ptp = false ]; then
+ 		check_rcv $rcv_if_name "1588v2 over L2 transport, Sync" \
+-			"ethertype PTP (0x88f7).* PTPv2.* msg type : sync msg" \
++			"ethertype PTP (0x88f7).* PTPv2.* msg type *: sync msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over L2 transport, Follow-Up" \
+-			"ethertype PTP (0x88f7).* PTPv2.* msg type : follow up msg" \
++			"ethertype PTP (0x88f7).* PTPv2.* msg type *: follow up msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over L2 transport, Peer Delay Request" \
+-			"ethertype PTP (0x88f7).* PTPv2.* msg type : peer delay req msg" \
++			"ethertype PTP (0x88f7).* PTPv2.* msg type *: peer delay req msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv4, Sync" \
+-			"ethertype IPv4 (0x0800).* PTPv2.* msg type : sync msg" \
++			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: sync msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv4, Follow-Up" \
+-			"ethertype IPv4 (0x0800).* PTPv2.* msg type : follow up msg" \
++			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: follow up msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv4, Peer Delay Request" \
+-			"ethertype IPv4 (0x0800).* PTPv2.* msg type : peer delay req msg" \
++			"ethertype IPv4 (0x0800).* PTPv2.* msg type *: peer delay req msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv6, Sync" \
+-			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : sync msg" \
++			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: sync msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv6, Follow-Up" \
+-			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : follow up msg" \
++			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: follow up msg" \
+ 			true "$test_name"
+ 
+ 		check_rcv $rcv_if_name "1588v2 over IPv6, Peer Delay Request" \
+-			"ethertype IPv6 (0x86dd).* PTPv2.* msg type : peer delay req msg" \
++			"ethertype IPv6 (0x86dd).* PTPv2.* msg type *: peer delay req msg" \
+ 			true "$test_name"
+ 	fi
+ 
+-- 
+2.52.0
 
-With nbcon, since netconsole will operate on a separate thread, this
-sysdata may become inaccurate (the data would reflect the printk thread
-rather than the original task or CPU that generated the message).
-
-Upon reviewing the printk subsystem, I noticed that struct
-printk_info->caller_id stores similar information, but not exactly the
-same. It contains either the CPU *or* the task, not both, and this data
-isn't easily accessible from within the ->write_thread() context. 
-
-One possible solution that comes to my mind is to pass both the CPU ID
-and the task_struct/vpid to struct printk_info, and then integrate this
-into struct nbcon_write_context *wctxt somehow.
-
-This way, netconsole could reliably query the original CPU and task that
-generated the message, regardless of where the netconsole code is
-executed.
-
-How crazy is this approach?
