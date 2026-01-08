@@ -1,276 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f74.google.com (mail-ua1-f74.google.com [209.85.222.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884D8230BCB;
-	Thu,  8 Jan 2026 18:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7926E17C77
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 19:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767898126; cv=none; b=MXhjVNjekNss9LraoNxp5E5JeULOJ2Ue1r3/68WpXBEP/VP3ngOmOgXqGRFOpamZvdpcI83s3RL9IwtpE1JOxfEmFIGudz8t5o59AgoyAlPk+Yk+w9fQV6DSUstUk0AfGRoeKGchOxMYyhpD3/BOLDUKUdY4rs7dRk5Qre4sX5A=
+	t=1767898938; cv=none; b=Bc0YBJQIHH142KrGzMu5aQfGtk4n3FHWSXjIm9BXC9iHrxW0kQXTZNnZTQ+w+uGhxyzyuIUw10Wfh4GToDGpl5k77nAjymHTxrlAya5erjdR5a2GVSuaSU6irv2JoU8gmxeAkealecySWLulhXrITIibznc3ux2DYY+JMHHSf8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767898126; c=relaxed/simple;
-	bh=iaKLxH1eWMLIWQCBMyurZPxJrCh6SelDIBA5lqfVKFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLZaPjq1q7QuYvJYWHvu5y6vXV/jr2dgkZl2bS+hizLnPd5OHE/oT9CUVkT5yCGyu15pvTUOH46KhxJ7SdKFbMiYpFlR3AwK0axn7zGtOxda/maXMZWkCm1O6VI5Dyv2PtJ8glxKeLwcZ2xfjkF22SQtyUzI7ieX9Q/8RyCy9rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5CiaR/K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767898938; c=relaxed/simple;
+	bh=bmsgJQjLk29OJNvpvfRINdDYgS5i02EpAdv8qvo87Tw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Q2kpvrpwPl3OMtiLI04PXkQ2mw2qBexo3DshTU0u4ai/EPd7oakJw+S7WbpZcpYMheHAwWTfUMBCMaDeMqt/7GREjhhXfffcS/Fy6eMqCuGNbtLSeF9wG+qtWsYIkqUzAu3IkxC5wz10nOpFnvQP93GvzGJEMDlwnzAxaWByQtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RHCDhwtm; arc=none smtp.client-ip=209.85.222.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5CiaR/K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E19C116C6;
-	Thu,  8 Jan 2026 18:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767898126;
-	bh=iaKLxH1eWMLIWQCBMyurZPxJrCh6SelDIBA5lqfVKFY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o5CiaR/KOo4BuHLVpDduKTti7k2pTbaFx5PSfaIKJqs+uz11Zzm+yg2Qsau2sQow8
-	 EmSheYn6EX3jMXhx3kPigpazRhAvChWG5uEdBO4XDm1ziQpLnomt2mQSKaf5UBlKjz
-	 3a+2q9vuc4HsXwQ8VEOrss93VYyGvwkWoJcjq04Ebaz3OFLXm14I/idUb/35gu1fm/
-	 e85kQrMRgf/kh4z9Wshu6AwIQhcYKW5EM08EURrKCK2+0A5pY9mNU2quZnzN+rfhMX
-	 CBVO9yQaasThvN1frLxLaMIfwj9Hz9Z1CC0/mFGkJR6xdQvtSQXXEMhUXgBWvXnzeY
-	 JGAQUUE2rYgsQ==
-Date: Thu, 8 Jan 2026 12:48:45 -0600
-From: Rob Herring <robh@kernel.org>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: net: micrel: Convert to DT schema
-Message-ID: <20260108184845.GA758009-robh@kernel.org>
-References: <20260108125208.29940-1-eichest@gmail.com>
- <20260108125208.29940-2-eichest@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RHCDhwtm"
+Received: by mail-ua1-f74.google.com with SMTP id a1e0cc1a2514c-93f5fe52b10so8013742241.1
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 11:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767898936; x=1768503736; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EDj2Vvsei5534FITWHXTg4wgHwlaEiMeQ4aPR0lt8yc=;
+        b=RHCDhwtmOqicAg4CLfIlTDSZ8/msTZx0sECgx391anqQIVBx++1SvLKUhDBR4icjFl
+         xdEqCcy6JiwuO0T1BrvndJj6btg30SsQ85+Tn39Z4MWEbtd1y3VdHNJFH0ivlnqxShAX
+         9J25KOby1Q/GM0/Nx1yZfNOfURjEH6lxOhQRnXwpwbasSrrNbid653TDXB++utYh0TrU
+         elVeP0ej1YvgxldT43ppnv/+dfpGLFkiIB9VtoiqCRvBV+4egE93koKTVRFYlSBwuskg
+         NAM5c6EZ64+ESJoRFR88cknnQvYXtzny+kk60+uAv6nq18lwCLC2ftTqbDls7hLm/oMH
+         OfXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767898936; x=1768503736;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EDj2Vvsei5534FITWHXTg4wgHwlaEiMeQ4aPR0lt8yc=;
+        b=DeCtOGMh2CY62Rn2930/7PNmHDjbbUEdYd/Z6Vcyp7W/AiFwWqbCYEk95xxLtOQrwB
+         sYwCRbxhiI7NYAkqkhEBd46bZO7pBmC6N31yjs/38OGI/ij1llK3NfXbf/H9DMCZA3Wt
+         YZniCToUHCPUXSN00LfzvCqDZHWQUzm7s6T79KIdF93v3qG55wQ8wPKi4VtL7TZWlUoS
+         x6rUO0FLMqmS8CbeFw9KMkeZeCyZkihLK4XRvIvZzXxJMSSZpQtomWnefX02vzC46fmp
+         y5SHa5Ic8VQqyhZ3fHGeJUaM7kW3LP/ZxaUVTQoFKYiEoZxBOf8VThj9MCYaEuVLkKkq
+         P7Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqZBvGHzbzX7VfagoEjQAINKzTEcuRKnMykY6OoIDlOPAGBB/8PeWCaReivJnA8KUgzUFdyTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6s/IiIp9VSwpCNvCJ4O+hDkYQrIxL5nWqihB7qgU5PJT+msQs
+	XEbFGKi+5LcObf8SJb8mM4lszbgyAoV8sR6U1zl1WdutDflI9MW4DodZY5xdKuNwCR+Za7Rl16S
+	OPwIB4Vh4MzzPXg==
+X-Google-Smtp-Source: AGHT+IGjC8bFQ9AcUYDDWAL6x3CrQ/3mMjNLHg/HzJ3BeRqfNzWWSQYax9ZrU8zE3tM17cQ0oE0szEbJNCZNqg==
+X-Received: from qvbkr16.prod.google.com ([2002:a05:6214:2b90:b0:88a:27b1:923a])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6102:548b:b0:5d7:debc:ae81 with SMTP id ada2fe7eead31-5ecb1e8dba8mr2758918137.4.1767898936044;
+ Thu, 08 Jan 2026 11:02:16 -0800 (PST)
+Date: Thu,  8 Jan 2026 19:02:14 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260108125208.29940-2-eichest@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260108190214.1667040-1-edumazet@google.com>
+Subject: [PATCH net] ipv4: ip_gre: make ipgre_header() robust
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jan 08, 2026 at 01:51:27PM +0100, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> 
-> Convert the devicetree bindings for the Micrel PHYs and switches to DT
-> schema.
-> 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> ---
->  .../devicetree/bindings/net/micrel.txt        |  57 --------
->  .../devicetree/bindings/net/micrel.yaml       | 133 ++++++++++++++++++
->  2 files changed, 133 insertions(+), 57 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/micrel.txt
->  create mode 100644 Documentation/devicetree/bindings/net/micrel.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/micrel.txt b/Documentation/devicetree/bindings/net/micrel.txt
-> deleted file mode 100644
-> index 01622ce58112..000000000000
-> --- a/Documentation/devicetree/bindings/net/micrel.txt
-> +++ /dev/null
-> @@ -1,57 +0,0 @@
-> -Micrel PHY properties.
-> -
-> -These properties cover the base properties Micrel PHYs.
-> -
-> -Optional properties:
-> -
-> - - micrel,led-mode : LED mode value to set for PHYs with configurable LEDs.
-> -
-> -	Configure the LED mode with single value. The list of PHYs and the
-> -	bits that are currently supported:
-> -
-> -	KSZ8001: register 0x1e, bits 15..14
-> -	KSZ8041: register 0x1e, bits 15..14
-> -	KSZ8021: register 0x1f, bits 5..4
-> -	KSZ8031: register 0x1f, bits 5..4
-> -	KSZ8051: register 0x1f, bits 5..4
-> -	KSZ8081: register 0x1f, bits 5..4
-> -	KSZ8091: register 0x1f, bits 5..4
-> -	LAN8814: register EP5.0, bit 6
-> -
-> -	See the respective PHY datasheet for the mode values.
-> -
-> - - micrel,rmii-reference-clock-select-25-mhz: RMII Reference Clock Select
-> -						bit selects 25 MHz mode
-> -
-> -	Setting the RMII Reference Clock Select bit enables 25 MHz rather
-> -	than 50 MHz clock mode.
-> -
-> -	Note that this option is only needed for certain PHY revisions with a
-> -	non-standard, inverted function of this configuration bit.
-> -	Specifically, a clock reference ("rmii-ref" below) is always needed to
-> -	actually select a mode.
-> -
-> - - clocks, clock-names: contains clocks according to the common clock bindings.
-> -
-> -	supported clocks:
-> -	- KSZ8021, KSZ8031, KSZ8081, KSZ8091: "rmii-ref": The RMII reference
-> -	  input clock. Used to determine the XI input clock.
-> -
-> - - micrel,fiber-mode: If present the PHY is configured to operate in fiber mode
-> -
-> -	Some PHYs, such as the KSZ8041FTL variant, support fiber mode, enabled
-> -	by the FXEN boot strapping pin. It can't be determined from the PHY
-> -	registers whether the PHY is in fiber mode, so this boolean device tree
-> -	property can be used to describe it.
-> -
-> -	In fiber mode, auto-negotiation is disabled and the PHY can only work in
-> -	100base-fx (full and half duplex) modes.
-> -
-> - - coma-mode-gpios: If present the given gpio will be deasserted when the
-> -		    PHY is probed.
-> -
-> -	Some PHYs have a COMA mode input pin which puts the PHY into
-> -	isolate and power-down mode. On some boards this input is connected
-> -	to a GPIO of the SoC.
-> -
-> -	Supported on the LAN8814.
-> diff --git a/Documentation/devicetree/bindings/net/micrel.yaml b/Documentation/devicetree/bindings/net/micrel.yaml
-> new file mode 100644
-> index 000000000000..52d1b187e1d3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/micrel.yaml
-> @@ -0,0 +1,133 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/micrel.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Micrel KSZ series PHYs and switches
-> +
-> +maintainers:
-> +  - Andrew Lunn <andrew@lunn.ch>
-> +  - Stefan Eichenberger <eichest@gmail.com>
-> +
-> +description:
-> +  The Micrel KSZ series contains different network phys and switches.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ethernet-phy-id000e.7237  # KSZ8873MLL
-> +      - ethernet-phy-id0022.1430  # KSZ886X
-> +      - ethernet-phy-id0022.1435  # KSZ8863
-> +      - ethernet-phy-id0022.1510  # KSZ8041
-> +      - ethernet-phy-id0022.1537  # KSZ8041RNLI
-> +      - ethernet-phy-id0022.1550  # KSZ8051
-> +      - ethernet-phy-id0022.1555  # KSZ8021
-> +      - ethernet-phy-id0022.1556  # KSZ8031
-> +      - ethernet-phy-id0022.1560  # KSZ8081, KSZ8091
-> +      - ethernet-phy-id0022.1570  # KSZ8061
-> +      - ethernet-phy-id0022.161a  # KSZ8001
-> +      - ethernet-phy-id0022.1720  # KS8737
-> +
-> +  micrel,fiber-mode:
-> +    type: boolean
-> +    description: |
-> +      If present the PHY is configured to operate in fiber mode.
-> +
-> +      The KSZ8041FTL variant supports fiber mode, enabled by the FXEN
-> +      boot strapping pin. It can't be determined from the PHY registers
-> +      whether the PHY is in fiber mode, so this boolean device tree
-> +      property can be used to describe it.
-> +
-> +      In fiber mode, auto-negotiation is disabled and the PHY can only
-> +      work in 100base-fx (full and half duplex) modes.
-> +
-> +  micrel,led-mode:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      LED mode value to set for PHYs with configurable LEDs.
-> +
-> +      Configure the LED mode with single value. The list of PHYs and the
-> +      bits that are currently supported:
-> +
-> +      KSZ8001: register 0x1e, bits 15..14
-> +      KSZ8041: register 0x1e, bits 15..14
-> +      KSZ8021: register 0x1f, bits 5..4
-> +      KSZ8031: register 0x1f, bits 5..4
-> +      KSZ8051: register 0x1f, bits 5..4
-> +      KSZ8081: register 0x1f, bits 5..4
-> +      KSZ8091: register 0x1f, bits 5..4
-> +
-> +      See the respective PHY datasheet for the mode values.
-> +    minimum: 0
-> +    maximum: 3
-> +
-> +allOf:
-> +  - $ref: ethernet-phy.yaml#
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              const: ethernet-phy-id0022.1510
-> +    then:
-> +      properties:
-> +        micrel,fiber-mode: false
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              enum:
-> +                - ethernet-phy-id0022.1510
-> +                - ethernet-phy-id0022.1555
-> +                - ethernet-phy-id0022.1556
-> +                - ethernet-phy-id0022.1550
-> +                - ethernet-phy-id0022.1560
-> +                - ethernet-phy-id0022.161a
-> +    then:
-> +      properties:
-> +        micrel,led-mode: false
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - ethernet-phy-id0022.1555
-> +              - ethernet-phy-id0022.1556
-> +              - ethernet-phy-id0022.1560
-> +    then:
-> +      properties:
-> +        clocks:
-> +          maxItems: 1
+Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
 
-This has no effect because ethernet-phy.yaml already defines this.
+Over the years, syzbot found many ways to crash the kernel
+in ipgre_header() [1].
 
-> +        clock-names:
-> +          const: rmii-ref
-> +          description:
-> +            The RMII reference input clock. Used to determine the XI input
-> +            clock.
-> +        micrel,rmii-reference-clock-select-25-mhz:
-> +          type: boolean
-> +          description: |
-> +            RMII Reference Clock Select bit selects 25 MHz mode
-> +
-> +            Setting the RMII Reference Clock Select bit enables 25 MHz rather
-> +            than 50 MHz clock mode.
+This involves team or bonding drivers ability to dynamically
+change their dev->needed_headroom and/or dev->hard_header_len
 
-These should be defined at the top-level. Then use the if/then schema to 
-disallow the properties.
+In this particular crash mld_newpack() allocated an skb
+with a too small reserve/headroom, and by the time mld_sendpack()
+was called, syzbot managed to attach an ipgre device.
 
-> +
-> +dependentRequired:
-> +  micrel,rmii-reference-clock-select-25-mhz: [ clock-names ]
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    mdio {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        ethernet-phy@5 {
-> +            compatible = "ethernet-phy-id0022.1510";
-> +            reg = <5>;
-> +            micrel,led-mode = <2>;
-> +            micrel,fiber-mode;
-> +        };
-> +    };
-> -- 
-> 2.51.0
-> 
+[1]
+skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
+ kernel BUG at net/core/skbuff.c:213 !
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: mld mld_ifc_work
+ RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
+Call Trace:
+ <TASK>
+  skb_under_panic net/core/skbuff.c:223 [inline]
+  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
+  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
+  dev_hard_header include/linux/netdevice.h:3436 [inline]
+  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
+  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
+Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
+Closes: https://www.spinics.net/lists/netdev/msg1147302.html
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/ip_gre.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 8178c44a3cdd48c5a737e9f4e5696ad8f9fbd4cc..e13244729ad8d5b1c2b9c483d25bff0e438134b5 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -891,10 +891,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
+ 			const void *daddr, const void *saddr, unsigned int len)
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
+-	struct iphdr *iph;
+ 	struct gre_base_hdr *greh;
++	struct iphdr *iph;
++	int needed;
++
++	needed = t->hlen + sizeof(*iph);
++	if (skb_headroom(skb) < needed &&
++	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
++			     0, GFP_ATOMIC))
++		return -needed;
+ 
+-	iph = skb_push(skb, t->hlen + sizeof(*iph));
++	iph = skb_push(skb, needed);
+ 	greh = (struct gre_base_hdr *)(iph+1);
+ 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
+ 	greh->protocol = htons(type);
+-- 
+2.52.0.457.g6b5491de43-goog
+
