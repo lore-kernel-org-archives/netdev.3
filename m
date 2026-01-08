@@ -1,54 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904332D641C;
-	Thu,  8 Jan 2026 14:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205EA3E8345
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 14:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767882736; cv=none; b=g1M9J84yz666I+IpuJtapJ1za3vk7LcFeP05t6OYYWo6FDv30Okf1rAgGKDjH89dRQXjW35SMRu6mEXnrgTZQGFLxP3GuCZOdWiuMkJUkRloc9sVwtFzxC2HW9PUoTmRW5bYUTQLQXayEfAOrC9GIVNSzYZxsx7WuGIkKm+kK5Q=
+	t=1767882754; cv=none; b=V0eJ4RrKKF5RhzZjECNW6/CMV3/NWm3BvuEyfiI7x0rGP68IRzeP0OsLMGQzz2AyTMJn7KTGdzURuXbZAPZtny0eE10pIze9oLJweUkowgfhNa5C6dzyfZ55amrwF7zZPtC5qO/ifF9MKx4yvVGtHxqJyX9llVCDqgwfaGqenh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767882736; c=relaxed/simple;
-	bh=75sU1pnzkYdOyK+Xa922WehXLcn+nA8/e8ViucVg6bQ=;
+	s=arc-20240116; t=1767882754; c=relaxed/simple;
+	bh=/ul1MI70WNuWUatNq9QXmWY0n1CnY3rQPVMj9RML37Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIfrE8rogSlhrmjqQZeEIghJMcgM0a7tPK69vjdncELmwMtVjy7M4mDIrTgB0805yQpYalN8uvfs0Ha0lSwIUCk1rBTLAVAKDS4CCJ+hYQi3WXVx4r96plBCE4TQRZCnvurlOMU3nVQACy4fzS5SoDPwotyAsUtq4hLI7dXGE0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MDY9Ne0g; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y4VBnNRpT5hG5czFXblFIQ7oVuw+vou9H0KsfVCtOcRO03C79SVhF+UVNUIsgMmQ3hSAJZ7CyeEMRiXxxmR00CH9BDo08/Epm1MLpH+SKfxesDaTlyeh8PiZ+ewaxGHjKwzGW0sjG60M1rWz9asepBDO5Srk0GiT99icnKuozwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WJyKWbEg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cNSjTGmp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MDY9Ne0g"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Re7M6LdtvhdNqEYL+EBdoJ128eL4bJjgUYnGGAfRk9I=; b=MDY9Ne0gm8qsafCUwSHfeCT6mn
-	BG628dCjMo3ScozAmmZg6U0JDPLREFDMSE3J+ODlcSF44BFx+7i3If85AhiKuBJOqieycF+89YCrP
-	8UJ9y78kl4sAySZxSZu4tKP29g8EBGHqYCeCcUQMVVZRu3TvyB8a4iG53LGIt9C8ZKLE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vdr3P-001xdV-TC; Thu, 08 Jan 2026 15:31:59 +0100
-Date: Thu, 8 Jan 2026 15:31:59 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	Frank.Sae@motor-comm.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, shenjian15@huawei.com,
-	liuyonglong@huawei.com, chenhao418@huawei.com,
-	jonathan.cameron@huawei.com, salil.mehta@huawei.com,
-	shiyongbang@huawei.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 2/6] net: phy: add support to set default
- rules
-Message-ID: <b2cc74c0-d63f-418b-9c28-f7a143f61bd3@lunn.ch>
-References: <20251215125705.1567527-1-shaojijie@huawei.com>
- <20251215125705.1567527-3-shaojijie@huawei.com>
- <fe22ae64-2a09-45ce-8dbf-a4683745e21c@lunn.ch>
- <647f91c7-72c2-4e9d-a26d-3f1b5ee42b21@huawei.com>
- <4e884fc2-9f64-48dd-b0be-e9bb6ec0582d@lunn.ch>
- <3c82f4e1-0702-4617-b40c-d7f1cbd5a1de@huawei.com>
- <970a1e2d-c1b1-4b96-9e8e-71aea6b6dc44@lunn.ch>
- <178a0dc6-438b-4f6f-9cf3-0fb36f7953b3@huawei.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WJyKWbEg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cNSjTGmp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767882752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
+	b=WJyKWbEg44CWEIG+OHygWEYC/2XqFLpMdZO4cLDF/NFqtKPDhXE/yJ6a21rnv5qR6C5eN4
+	hviUUFWJliX5bLDBjLeN3RPW+DdHqjeRomDee2OSn2kcpAsPCGRsQsVR/6rFEJsz8v6Dj6
+	g/bxRg7BofK8b/89bSIVM4axp8OvLQQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-pnk1yrJoNBOK5c3eVu18IQ-1; Thu, 08 Jan 2026 09:32:29 -0500
+X-MC-Unique: pnk1yrJoNBOK5c3eVu18IQ-1
+X-Mimecast-MFC-AGG-ID: pnk1yrJoNBOK5c3eVu18IQ_1767882749
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4779d8fd4ecso12848325e9.1
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 06:32:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767882749; x=1768487549; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
+        b=cNSjTGmpx2OD2hbzzk3iGl0ks+3AWSN4ekaGROqtixhA1W5CXwAK9Q8hAEQ2IhDoOQ
+         GJPpxXjTL0yAhiyZx/3uubM8MJDpcXcY5dAroyeNsPAyFttbm7+2cFWnMB2izCT9nHLf
+         DBhwMOhjmco0/QadOCZFMYAt2THMFQRLd7+HRDptXW7IS1lu9vYP/o/b5NK1xkgz0asm
+         kqHa0RlaVQUuE4VRbcCulMsS2Y4vzDdhvjmeDZ6WlOeMPB6BCW7ti45d3vksKd+4n2/Y
+         Cc6yYYrMc0meN3CEnfOrHmAkhqaP7FUHwxMY8bv64L6b0ttsJ4mUqm+1f5iwYmKWCL7x
+         PzMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767882749; x=1768487549;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZQ5KldlPLZnW3hZQd/TnLSW7zs03bZTdFv6fpQxf5uk=;
+        b=B+VU8Fbk1FBYZcjXEBTTYHrh7wrMU6JLuznc57IRviHL28cIqrEYtxoTKzdBiMS75V
+         eq/sEpBVt1IOZfNI/tzllAmbsEa3wj9eRgGKpu4tSJLRUqWipiadAkwzSieRsDf4n3+i
+         haR7KeMa1qUDjPPmIXm5RDepYLpb9Yy0e+mh5rdSZOKYtNaFqG+g9RTdlUJrvX9cWr4B
+         qI4PimNHFsBPNkGHJqGsV3GEKsLiYopYE+cnqxhqlxUkjIcRQM9HJ80PAzyN4zqE4eyo
+         f35a9xrchzNwdQy7wJaLJ9gNdzzh4ZBHu9iDicNgzRTjJbD+BomA2SCDmTmEeVrmpHFx
+         1+AA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVc1wI3zvL6KEmGYiTrKG8Qk/QS+7Adb1SO8O3jxowjyVezs07MBvN1jGrYJZ0cEoSAJuB/SQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp5EVfMjDgRR2+qCmLE8O2UjPJ43qjWoGCitHO9PG7LI0u98tl
+	PSFDsJ7auloX8WkeXmAWN+KogH0a9ybOf6ZxqMohjTaWfaO3E/pb4rG0cKxZlggbDdzFK3EeWWo
+	Dx/kz6WcCxqSiMsleOrglbUeV+QM0sxkE6KPHKfz3UfO/0/1frlqVeU9sWw==
+X-Gm-Gg: AY/fxX5xFhksiliMaVx8wXwGP4nmnF6e4KEtD3g1lvA2HFUtjPlNaIC7OPXMa0PfnHT
+	isKYwt1OoIdhaFFo3LrAdRn/F0QkqU2wM23FRSbvQpISsWrcN/0K57KhRETLtfgx8Crb6s/mC6O
+	V2EDgt8GGikEUawWVOw1lcbxr9RogJ28mIc9PTJN4Jw2/bMhRmVLxwRXzD6SQf2TcwiFUvvBwLc
+	3zclSMC4mDsJerZjbzn2+fyeWQFFd9CxJbuqfB+OWpElr15IHETEae/AEdabF+W5uamU5rL1PJv
+	EMEzECrTjyRvUpwpQP0rVe4latEAGhNRLL9MQ+/jUQ0CjZEHWwAhZUwktumQh6tpZXQKbK3w8Uv
+	B0IzgG9Irw88QO0HCEBDSNdM12JhF+3/2Wg==
+X-Received: by 2002:a05:600c:6c95:b0:47a:8383:f2b2 with SMTP id 5b1f17b1804b1-47d7f63722dmr100357935e9.17.1767882748599;
+        Thu, 08 Jan 2026 06:32:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG7Gl8OtqeQkvPJx1M3QhvEhlvzebP4MIt/f4g31duD4E6Ii6eayAMa8grqHGKZjLNtnJFSpw==
+X-Received: by 2002:a05:600c:6c95:b0:47a:8383:f2b2 with SMTP id 5b1f17b1804b1-47d7f63722dmr100357545e9.17.1767882748121;
+        Thu, 08 Jan 2026 06:32:28 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-31-118.inter.net.il. [80.230.31.118])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8717d78fsm38131185e9.9.2026.01.08.06.32.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 06:32:27 -0800 (PST)
+Date: Thu, 8 Jan 2026 09:32:23 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jason Wang <jasowang@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Petr Tesarik <ptesarik@suse.com>,
+	Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-doc@vger.kernel.org,
+	linux-crypto@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-scsi@vger.kernel.org, iommu@lists.linux.dev,
+	kvm@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 13/15] vsock/virtio: reorder fields to reduce padding
+Message-ID: <20260108092931-mutt-send-email-mst@kernel.org>
+References: <cover.1767601130.git.mst@redhat.com>
+ <fdc1da263186274b37cdf7660c0d1e8793f8fe40.1767601130.git.mst@redhat.com>
+ <aV-6gniRnZlNvkwc@sgarzare-redhat>
+ <20260108091514-mutt-send-email-mst@kernel.org>
+ <aV-9F42fMfKGP4Rg@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,14 +117,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178a0dc6-438b-4f6f-9cf3-0fb36f7953b3@huawei.com>
+In-Reply-To: <aV-9F42fMfKGP4Rg@sgarzare-redhat>
 
-> However, there is no way to handle the issue with another patch;
-> I cannot directly modify the ACPI table (a risky operation).
+On Thu, Jan 08, 2026 at 03:27:04PM +0100, Stefano Garzarella wrote:
+> On Thu, Jan 08, 2026 at 09:17:49AM -0500, Michael S. Tsirkin wrote:
+> > On Thu, Jan 08, 2026 at 03:11:36PM +0100, Stefano Garzarella wrote:
+> > > On Mon, Jan 05, 2026 at 03:23:41AM -0500, Michael S. Tsirkin wrote:
+> > > > Reorder struct virtio_vsock fields to place the DMA buffer (event_list)
+> > > > last. This eliminates the padding from aligning the struct size on
+> > > > ARCH_DMA_MINALIGN.
+> > > >
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > ---
+> > > > net/vmw_vsock/virtio_transport.c | 8 +++++---
+> > > > 1 file changed, 5 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> > > > index ef983c36cb66..964d25e11858 100644
+> > > > --- a/net/vmw_vsock/virtio_transport.c
+> > > > +++ b/net/vmw_vsock/virtio_transport.c
+> > > > @@ -60,9 +60,7 @@ struct virtio_vsock {
+> > > > 	 */
+> > > > 	struct mutex event_lock;
+> > > > 	bool event_run;
+> > > > -	__dma_from_device_group_begin();
+> > > > -	struct virtio_vsock_event event_list[8];
+> > > > -	__dma_from_device_group_end();
+> > > > +
+> > > > 	u32 guest_cid;
+> > > > 	bool seqpacket_allow;
+> > > >
+> > > > @@ -76,6 +74,10 @@ struct virtio_vsock {
+> > > > 	 */
+> > > > 	struct scatterlist *out_sgs[MAX_SKB_FRAGS + 1];
+> > > > 	struct scatterlist out_bufs[MAX_SKB_FRAGS + 1];
+> > > > +
+> > > 
+> > > IIUC we would like to have these fields always on the bottom of this struct,
+> > > so would be better to add a comment here to make sure we will not add other
+> > > fields in the future after this?
+> > 
+> > not necessarily - you can add fields after, too - it's just that
+> > __dma_from_device_group_begin already adds a bunch of padding, so adding
+> > fields in this padding is cheaper.
+> > 
+> 
+> Okay, I see.
+> 
+> > 
+> > do we really need to add comments to teach people about the art of
+> > struct packing?
+> 
+> I can do it later if you prefer, I don't want to block this work, but yes,
+> I'd prefer to have a comment because otherwise I'll have to ask every time
+> to avoid, especially for new contributors xD
 
-It should not be risky. ACPI tables have as many bugs as any other
-software. You have to assume they are buggy and will get updated
-during their lifetime, so you have processes in place to allow them to
-be safely upgraded.
+On the one hand you are right on the other I don't want it
+duplicated each time __dma_from_device_group_begin is invoked.
+Pls come up with something you like, and we'll discuss.
 
-   Andrew
+> > 
+> > > Maybe we should also add a comment about the `ev`nt_lock`
+> > > requirement we
+> > > have in the section above.
+> > > 
+> > > Thanks,
+> > > Stefano
+> > 
+> > hmm which requirement do you mean?
+> 
+> That `event_list` must be accessed with `event_lock`.
+> 
+> So maybe we can move also `event_lock` and `event_run`, so we can just move
+> that comment. I mean something like this:
+> 
+> 
+> @@ -74,6 +67,15 @@ struct virtio_vsock {
+>          */
+>         struct scatterlist *out_sgs[MAX_SKB_FRAGS + 1];
+>         struct scatterlist out_bufs[MAX_SKB_FRAGS + 1];
+> +
+> +       /* The following fields are protected by event_lock.
+> +        * vqs[VSOCK_VQ_EVENT] must be accessed with event_lock held.
+> +        */
+> +       struct mutex event_lock;
+> +       bool event_run;
+> +       __dma_from_device_group_begin();
+> +       struct virtio_vsock_event event_list[8];
+> +       __dma_from_device_group_end();
+>  };
+> 
+>  static u32 virtio_transport_get_local_cid(void)
+
+Yea this makes sense.
+
+> 
+> Thanks,
+> Stefano
+
