@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C7E369974;
-	Thu,  8 Jan 2026 08:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0864836B05D;
+	Thu,  8 Jan 2026 08:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767859318; cv=none; b=qTLf1WiAUvQO5vaG/zttxyDh+NjcvW2TQ2eTxPLItvCobDhzt8Fsir2+fqAVY9SnWYTCixPqsIu7ardgacpCKTRJGeBnQ+zK04pQN8lJmG9/C161hyuHSjBx13y/gjtvYnZ17hCMQKSObBNdUEj/HmEj3P0Mc5pfJcYh0MtV5QE=
+	t=1767859321; cv=none; b=l6Bo7a7vBqFV0cGM6ioIBzauZPctIGgh3Lqqp5EOOomtyT5RzOO3JlZjMBv1yWjDbtgqbxGnzeKdNJSRGRN81fHyOLp6pweuFsYmLNiqx+38sGnVR2YimcrbmyqcqCr8ZCwqd5+HONieUypJiKOLPI14Qpyp9+F9BQly54w6aew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767859318; c=relaxed/simple;
-	bh=FPOPOiaHiMS1DGiB15UET9ZTvHI8/dOj06ra13vuyiE=;
+	s=arc-20240116; t=1767859321; c=relaxed/simple;
+	bh=VGggFU4pSY/93ddNPs/6VFxQoZ1cjmxA38HqPaLd3zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUUlpyzi+pnDxVXe4EbVGRkXXuvJYgrAW7fHqmr4h5jKyv97VnKb9OH3synrddvRqRQ8pEqJqfRGUHXVzwemF8J6UmYN+KtFmZxBClXncitdor3B3UCg5kGT2vKVhXdaLA10dNVM4K01Jnqxk8LIaxpBetjH91ggsGjiCynxybQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aBWtHZkA; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=XdecrBurGBgOjOzLwvSf2BXEy//WC7ShC1x19zgjM7TqpuCu5o0vVJtTWOB8YzSKK2N67kwguo/XKjQQ2M/WNzDnhqSNAY6WhQa4HkxuUvhA1XK/cAU7h8bWESIN3Y3CO0hLrNjL5RqDPFGGvyqaHNG2pSf5SJL63ocNoYV39Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fZEQI/FH; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aBWtHZkA"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fZEQI/FH"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id D758AC1ECB4;
-	Thu,  8 Jan 2026 08:01:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2B0091A26F7;
+	Thu,  8 Jan 2026 08:01:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 10D5B606B6;
-	Thu,  8 Jan 2026 08:01:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C0FB2103C8674;
-	Thu,  8 Jan 2026 09:01:31 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F179B606B6;
+	Thu,  8 Jan 2026 08:01:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F6DD103C86C8;
+	Thu,  8 Jan 2026 09:01:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767859295; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1767859302; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=246FoifQioiJlJKgK0l+PteqgHVK9qea+qwvqnjBY1s=;
-	b=aBWtHZkAKBfoJKrCVBeIgCH0DizWz1dLnxNjTB0j4LnxHtt27Ev8L1zJVUaJQHYNm+Jrqz
-	Qh3m8lbH5SE2Fpo52vWhHsuCYadvIn1t+MpLeyQUC4wYtxV52+sOc+07uThw2L973O29tS
-	Wz4uO85ab5PYGoqy6s72Drrb1WRWgIyz0xHhUUVpQlb1QXopxm4gf8JdhvnLiHIepkkqEN
-	tV13yGLgCj4aRHK6ViS/czZlhOtbprzgmbdrrexR787Mg3yUlG0UiEzPXvb2Dh0grkGAY5
-	T+IoJJYtODUiobXxdW54VhztXCb6Jmtpq/Yj5UOeFcTGf2UPajFmDDoJ13+Ryw==
+	bh=lZNAdq0UJhsnSSI2KxMPBItMg0vGjNMiuJQhyVgnBCo=;
+	b=fZEQI/FHP852MJEPCSx0WsBKrk/DOtFS4/w7fx00IGYAE9+S/97GOSjKIpcwnlcR/I5VlN
+	t93ZPQvH9xUTHLZs3RGhbdfI1XgxQ5wuIZ/G6NyXNrD9fsWwK3q/7W5QsxgO14P37refTx
+	hlmZwyfnqOlyS9v1lu1OGktIDcQPrUQHXia6Sp9YxYFftKxentm7MaU4LGBZDbF7BpOy2E
+	2eotA2cTbJj1mkGetfwEEnMuVFY1Zy34pybR5bjRPE1OKYGI+2ORHY0KSifjddB+mMbr0z
+	tmlpl/tspwWVSfjnq03qd7bCtkusDbaw9ZlQywg/6mmyzaL0N6h7JH9mM5Fs0A==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -66,9 +66,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
 	Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next v22 11/14] net: phy: at803x: Support SFP through phy_port interface
-Date: Thu,  8 Jan 2026 09:00:36 +0100
-Message-ID: <20260108080041.553250-12-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v22 13/14] net: phy: Only rely on phy_port for PHY-driven SFP
+Date: Thu,  8 Jan 2026 09:00:38 +0100
+Message-ID: <20260108080041.553250-14-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260108080041.553250-1-maxime.chevallier@bootlin.com>
 References: <20260108080041.553250-1-maxime.chevallier@bootlin.com>
@@ -80,141 +80,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Fuzzy: 6ac6e519e75a554e67f2104c7210da3a2c979cf32edc8c6d8e910adc4843e63003c4d236c302d7f208dab6442f689e0a542b9008a83f7126b67c6c93008d5787
 
-Convert the at803x driver to use the generic phylib SFP handling, via a
-dedicated .attach_port() callback, populating the supported interfaces.
-
-As these devices are limited to 1000BaseX, a workaround is used to also
-support, in a very limited way, copper modules. This is done by
-supporting SGMII but limiting it to 1G full duplex (in which case it's
-somewhat compatible with 1000BaseX).
+Now that all PHY drivers that support downstream SFP have been converted
+to phy_port serdes handling, we can make the generic PHY SFP handling
+mandatory, thus making all phylib sfp helpers static.
 
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/qcom/at803x.c | 77 +++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 45 deletions(-)
+ drivers/net/phy/phy_device.c | 28 +++++++++-------------------
+ include/linux/phy.h          |  6 ------
+ 2 files changed, 9 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
-index 338acd11a9b6..2995b08bac96 100644
---- a/drivers/net/phy/qcom/at803x.c
-+++ b/drivers/net/phy/qcom/at803x.c
-@@ -20,7 +20,7 @@
- #include <linux/of.h>
- #include <linux/phylink.h>
- #include <linux/reset.h>
--#include <linux/sfp.h>
-+#include <linux/phy_port.h>
- #include <dt-bindings/net/qca-ar803x.h>
- 
- #include "qcom.h"
-@@ -769,57 +769,44 @@ static int at8031_register_regulators(struct phy_device *phydev)
- 	return 0;
- }
- 
--static int at8031_sfp_insert(void *upstream, const struct sfp_eeprom_id *id)
-+static int at803x_configure_mii(struct phy_port *port, bool enable,
-+				phy_interface_t interface)
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 0d9eca84081e..85e2ba401140 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1532,7 +1532,7 @@ static DEVICE_ATTR_RO(phy_standalone);
+  *
+  * Return: 0 on success, otherwise a negative error code.
+  */
+-int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
++static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
  {
--	__ETHTOOL_DECLARE_LINK_MODE_MASK(phy_support);
--	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
--	struct phy_device *phydev = upstream;
--	const struct sfp_module_caps *caps;
--	phy_interface_t iface;
--
--	linkmode_zero(phy_support);
--	phylink_set(phy_support, 1000baseX_Full);
--	phylink_set(phy_support, 1000baseT_Full);
--	phylink_set(phy_support, Autoneg);
--	phylink_set(phy_support, Pause);
--	phylink_set(phy_support, Asym_Pause);
--
--	caps = sfp_get_module_caps(phydev->sfp_bus);
--	/* Some modules support 10G modes as well as others we support.
--	 * Mask out non-supported modes so the correct interface is picked.
--	 */
--	linkmode_and(sfp_support, phy_support, caps->link_modes);
-+	struct phy_device *phydev = port_phydev(port);
- 
--	if (linkmode_empty(sfp_support)) {
--		dev_err(&phydev->mdio.dev, "incompatible SFP module inserted\n");
--		return -EINVAL;
--	}
-+	if (interface == PHY_INTERFACE_MODE_SGMII)
-+		dev_warn(&phydev->mdio.dev,
-+			 "module may not function if 1000Base-X not supported\n");
-+
-+	return 0;
-+}
- 
--	iface = sfp_select_interface(phydev->sfp_bus, sfp_support);
-+static const struct phy_port_ops at803x_port_ops = {
-+	.configure_mii = at803x_configure_mii,
-+};
- 
--	/* Only 1000Base-X is supported by AR8031/8033 as the downstream SerDes
--	 * interface for use with SFP modules.
--	 * However, some copper modules detected as having a preferred SGMII
--	 * interface do default to and function in 1000Base-X mode, so just
--	 * print a warning and allow such modules, as they may have some chance
--	 * of working.
-+static int at8031_attach_mii_port(struct phy_device *phydev,
-+				  struct phy_port *port)
-+{
-+	linkmode_zero(port->supported);
-+	phylink_set(port->supported, 1000baseX_Full);
-+	phylink_set(port->supported, 1000baseT_Full);
-+	phylink_set(port->supported, Autoneg);
-+	phylink_set(port->supported, Pause);
-+	phylink_set(port->supported, Asym_Pause);
-+
-+	/* This device doesn't really support SGMII. However, do our best
-+	 * to be compatible with copper modules (that usually require SGMII),
-+	 * in a degraded mode as we only allow 1000BaseT Full
- 	 */
--	if (iface == PHY_INTERFACE_MODE_SGMII)
--		dev_warn(&phydev->mdio.dev, "module may not function if 1000Base-X not supported\n");
--	else if (iface != PHY_INTERFACE_MODE_1000BASEX)
--		return -EINVAL;
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, port->interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, port->interfaces);
-+
-+	port->ops = &at803x_port_ops;
+ 	struct phy_device *phydev = upstream;
+ 	struct net_device *dev = phydev->attached_dev;
+@@ -1542,7 +1542,6 @@ int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
  
  	return 0;
  }
+-EXPORT_SYMBOL(phy_sfp_connect_phy);
  
--static const struct sfp_upstream_ops at8031_sfp_ops = {
--	.attach = phy_sfp_attach,
--	.detach = phy_sfp_detach,
--	.module_insert = at8031_sfp_insert,
--	.connect_phy = phy_sfp_connect_phy,
--	.disconnect_phy = phy_sfp_disconnect_phy,
--};
--
- static int at8031_parse_dt(struct phy_device *phydev)
+ /**
+  * phy_sfp_disconnect_phy - Disconnect the SFP module's PHY from the upstream PHY
+@@ -1554,7 +1553,7 @@ EXPORT_SYMBOL(phy_sfp_connect_phy);
+  * will be destroyed, re-inserting the same module will add a new phy with a
+  * new index.
+  */
+-void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
++static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
  {
- 	struct device_node *node = phydev->mdio.dev.of_node;
-@@ -840,8 +827,7 @@ static int at8031_parse_dt(struct phy_device *phydev)
- 		return ret;
+ 	struct phy_device *phydev = upstream;
+ 	struct net_device *dev = phydev->attached_dev;
+@@ -1562,7 +1561,6 @@ void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
+ 	if (dev)
+ 		phy_link_topo_del_phy(dev, phy);
+ }
+-EXPORT_SYMBOL(phy_sfp_disconnect_phy);
+ 
+ /**
+  * phy_sfp_attach - attach the SFP bus to the PHY upstream network device
+@@ -1571,7 +1569,7 @@ EXPORT_SYMBOL(phy_sfp_disconnect_phy);
+  *
+  * This is used to fill in the sfp_upstream_ops .attach member.
+  */
+-void phy_sfp_attach(void *upstream, struct sfp_bus *bus)
++static void phy_sfp_attach(void *upstream, struct sfp_bus *bus)
+ {
+ 	struct phy_device *phydev = upstream;
+ 
+@@ -1579,7 +1577,6 @@ void phy_sfp_attach(void *upstream, struct sfp_bus *bus)
+ 		phydev->attached_dev->sfp_bus = bus;
+ 	phydev->sfp_bus_attached = true;
+ }
+-EXPORT_SYMBOL(phy_sfp_attach);
+ 
+ /**
+  * phy_sfp_detach - detach the SFP bus from the PHY upstream network device
+@@ -1588,7 +1585,7 @@ EXPORT_SYMBOL(phy_sfp_attach);
+  *
+  * This is used to fill in the sfp_upstream_ops .detach member.
+  */
+-void phy_sfp_detach(void *upstream, struct sfp_bus *bus)
++static void phy_sfp_detach(void *upstream, struct sfp_bus *bus)
+ {
+ 	struct phy_device *phydev = upstream;
+ 
+@@ -1596,7 +1593,6 @@ void phy_sfp_detach(void *upstream, struct sfp_bus *bus)
+ 		phydev->attached_dev->sfp_bus = NULL;
+ 	phydev->sfp_bus_attached = false;
+ }
+-EXPORT_SYMBOL(phy_sfp_detach);
+ 
+ static int phy_sfp_module_insert(void *upstream, const struct sfp_eeprom_id *id)
+ {
+@@ -1753,10 +1749,8 @@ static int phy_setup_sfp_port(struct phy_device *phydev)
+ /**
+  * phy_sfp_probe - probe for a SFP cage attached to this PHY device
+  * @phydev: Pointer to phy_device
+- * @ops: SFP's upstream operations
+  */
+-int phy_sfp_probe(struct phy_device *phydev,
+-		  const struct sfp_upstream_ops *ops)
++static int phy_sfp_probe(struct phy_device *phydev)
+ {
+ 	struct sfp_bus *bus;
+ 	int ret = 0;
+@@ -1768,7 +1762,7 @@ int phy_sfp_probe(struct phy_device *phydev,
+ 
+ 		phydev->sfp_bus = bus;
+ 
+-		ret = sfp_bus_add_upstream(bus, phydev, ops);
++		ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
+ 		sfp_bus_put(bus);
  	}
  
--	/* Only AR8031/8033 support 1000Base-X for SFP modules */
--	return phy_sfp_probe(phydev, &at8031_sfp_ops);
-+	return 0;
- }
+@@ -1777,7 +1771,6 @@ int phy_sfp_probe(struct phy_device *phydev,
  
- static int at8031_probe(struct phy_device *phydev)
-@@ -1172,6 +1158,7 @@ static struct phy_driver at803x_driver[] = {
- 	.set_tunable		= at803x_set_tunable,
- 	.cable_test_start	= at8031_cable_test_start,
- 	.cable_test_get_status	= at8031_cable_test_get_status,
-+	.attach_mii_port	= at8031_attach_mii_port,
- }, {
- 	/* Qualcomm Atheros AR8032 */
- 	PHY_ID_MATCH_EXACT(ATH8032_PHY_ID),
+ 	return ret;
+ }
+-EXPORT_SYMBOL(phy_sfp_probe);
+ 
+ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
+ {
+@@ -3586,12 +3579,9 @@ static int phy_setup_ports(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Use generic SFP probing only if the driver didn't do so already */
+-	if (!phydev->sfp_bus) {
+-		ret = phy_sfp_probe(phydev, &sfp_phydev_ops);
+-		if (ret)
+-			goto out;
+-	}
++	ret = phy_sfp_probe(phydev);
++	if (ret)
++		goto out;
+ 
+ 	if (phydev->n_ports < phydev->max_n_ports) {
+ 		ret = phy_default_setup_single_port(phydev);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index eb7fd533b0e4..3beb5dbba791 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2151,12 +2151,6 @@ int phy_suspend(struct phy_device *phydev);
+ int phy_resume(struct phy_device *phydev);
+ int __phy_resume(struct phy_device *phydev);
+ int phy_loopback(struct phy_device *phydev, bool enable, int speed);
+-int phy_sfp_connect_phy(void *upstream, struct phy_device *phy);
+-void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy);
+-void phy_sfp_attach(void *upstream, struct sfp_bus *bus);
+-void phy_sfp_detach(void *upstream, struct sfp_bus *bus);
+-int phy_sfp_probe(struct phy_device *phydev,
+-	          const struct sfp_upstream_ops *ops);
+ struct phy_device *phy_attach(struct net_device *dev, const char *bus_id,
+ 			      phy_interface_t interface);
+ struct phy_device *phy_find_next(struct mii_bus *bus, struct phy_device *pos);
 -- 
 2.49.0
 
