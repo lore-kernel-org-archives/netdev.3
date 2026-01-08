@@ -1,131 +1,96 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034C64A340E;
-	Thu,  8 Jan 2026 10:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8042846D;
+	Thu,  8 Jan 2026 11:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767869746; cv=none; b=kAjvzjaHknSqnxHtGzU/m7JHh7MkNl+8+tM6JhKPuiAijzMr/BhiYQcbuMuWKRzlApR/vluR3Xid1C14RDAC+CR0Zm1dQBZih0R9H93T6/NeuzZXf6j0lmvJD18BeBKsP0/wGGe05pmmj9tQuzok4J+uMrhaswvlBuie2Jqiup4=
+	t=1767870095; cv=none; b=qKHw5uykK67S24zhYt6LupTIpAzz7zrXNOOw+RyRN/zOUh4ghhdPCbCbTADUlHiCPTYS7Yf8r8wXwCJvHJLKfYIPDlXEx1zCSZ8JqA0VILC8Z2sM9d/7zF7XTKsrhffiGA0Kw9NOP77ty/tTmkpH4JuqjAj7dF56Y37HHT6A4ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767869746; c=relaxed/simple;
-	bh=CMHw5DVfJXuTHlKA1vYZRXcYoK6WVCIZRW+YpFHJDKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oh0qmdcl+AvjeVQcyGH8ElVZ27RJRcb1lj6G+VuKprzHTABq/yuwCdRfQPD4ZU2kY9gMuZAar1bPRySMNcKiE4pa7thC0SSpqxvKwrEDPg+Z8wfaXqL9xiDrVX3gdilX/Jn+GxFCDp4nusC74oQPcThzH25nWzCmiSpGY2+Lb8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LSNy5RUW; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1767870095; c=relaxed/simple;
+	bh=kifWMDUcjyoNqnma7UqgQlLZbT3dPAVcD7eeu3dSDNg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XB7Kb5fTFw4RcgahAbUwHy6E9C+nKXez6rvRXH2FjwZY1Q9jK5XGvsYqg6ekf5IYWUZP1Xh7H1jPyZbaC+E7808UBy6LQoFAMWprByvq1zCqOFuoL5ko0YjksKkLMnSaZ2+Fl7QKXdOD980kZ2qlqmHrb+vWriwFAqXk26xKQBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=usZprcgd; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LSNy5RUW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6B
-	x/uBoRw2LaNn4oI17UqZrmd/+0o1xj0zRiwIVURNk=; b=LSNy5RUWIF5JMTqzzU
-	H7aEcuFI6pUxe17aBdf06ze43FCCxKPOEcfYO+PqRf6qFANEy+Evl/YLP2SQPu4S
-	2M1/eCM3EFUqS5siVuyjhtcsTw0yCB/cKpDJxXpW6b82lulMcJR741mhM+yQd+uG
-	G06UbvG2RMeFu34oAyd8S1md4=
-Received: from GHT-5854251031.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgBnDLTojF9pnbalKQ--.33395S2;
-	Thu, 08 Jan 2026 18:54:36 +0800 (CST)
-From: "wanquan.zhong" <zwq2226404116@163.com>
-To: chandrashekar.devegowda@intel.com,
-	chiranjeevi.rapolu@linux.intel.com,
-	haijun.liu@mediatek.com,
-	ricardo.martinez@linux.intel.com
-Cc: netdev@vger.kernel.org,
-	loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	"wanquan.zhong" <wanquan.zhong@fibocom.com>
-Subject: [PATCH] wwan: t7xx: Add CONFIG_WWAN_DEBUG_PORTS to control ADB debug port
-Date: Thu,  8 Jan 2026 18:54:25 +0800
-Message-ID: <20260108105425.601842-1-zwq2226404116@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="usZprcgd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=QXBd9eAoJBUhCI7owVszPAap9fsVDbLgy/vELqg02I8=;
+	t=1767870087; x=1769079687; b=usZprcgdYHAmiySm1ZuQiBSLSJM24eEwZSnb7cxWW35EIKC
+	eAWWfArgoGD12FBx9IBlkMAY6F7eyqUxrFjbugYdi7dSHguyUSn6cgHL35KrqVrtIokFsVhnVP5Vn
+	FuCwuMCvRBLbRVhHDLRRK9BYxBgwN3iItbU0y+rVw83q69Rrg8nz6arZSbi/ymK0PJHykIP+AdPDw
+	1yao9jvGZ9O98Uxd7BovHh075h+UktgXwvdKnUT3su+y0CH3pllQZVR/Nny2C+PyOsjHg4MXZWIL0
+	bZN6/nkefjSZvN5DIYfpWepcxF/aOe/jFVznPgeg8XEUBmKJ0RzxW0fWAJ/9Lraw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vdnlU-00000006SZl-25oB;
+	Thu, 08 Jan 2026 12:01:16 +0100
+Message-ID: <0e3af232f15f62f2540a307ccb967c1ae5fdadbf.camel@sipsolutions.net>
+Subject: Re: [PATCH net] wifi: avoid kernel-infoleak from struct iw_point
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com,
+ syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org
+Date: Thu, 08 Jan 2026 12:01:15 +0100
+In-Reply-To: <20260108101927.857582-1-edumazet@google.com> (sfid-20260108_112630_391137_9C1D2E9D)
+References: <20260108101927.857582-1-edumazet@google.com>
+	 (sfid-20260108_112630_391137_9C1D2E9D)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgBnDLTojF9pnbalKQ--.33395S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArW3tFWxuF18AF43Cw4kJFb_yoW5Xr1kpa
-	1DGa4Ykr1DJ3ZxAa18AayI9ry5AFnruFW2gry2q34Y9ryUAFy5Cr4v9FyayF15J3W7ZFyx
-	A3yjgFnFgF1q9w7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uvg4DUUUUU=
-X-CM-SenderInfo: h2ztjjaswuikqrrwqiywtou0bp/xtbC0g2Q52lfjO0NlAAA3m
+X-malware-bazaar: not-scanned
 
-From: "wanquan.zhong" <wanquan.zhong@fibocom.com>
+On Thu, 2026-01-08 at 10:19 +0000, Eric Dumazet wrote:
+>=20
+> https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.c=
+om/T/#u
 
-Add a new Kconfig option CONFIG_WWAN_DEBUG_PORTS for WWAN devices,
-to conditionally enable the ADB debug port functionality. This option:
-- Depends on DEBUG_FS (aligning with existing debug-related WWAN configs)
-- Defaults to 'n' (disabled by default for user devices)
-- Requires EXPERT to be visible (to avoid accidental enablement)
+That wasn't the easiest bit to follow (for me anyway), so for anyone
+else wanting to follow along, here's my interpretation of what happens:
 
-In t7xx_port_proxy.c, wrap the ADB port configuration struct with
-CONFIG_WWAN_DEBUG_PORTS, so the port is only exposed when
-the config is explicitly enabled (e.g. for lab debugging scenarios).
+> +++ b/net/wireless/wext-core.c
+> @@ -1101,6 +1101,10 @@ static int compat_standard_call(struct net_device	=
+*dev,
+>  		return ioctl_standard_call(dev, iwr, cmd, info, handler);
+> =20
+>  	iwp_compat =3D (struct compat_iw_point *) &iwr->u.data;
+> +
+> +	/* struct iw_point has a 32bit hole on 64bit arches. */
+> +	memset(&iwp, 0, sizeof(iwp));
+> +
+>  	iwp.pointer =3D compat_ptr(iwp_compat->pointer);
+>  	iwp.length =3D iwp_compat->length;
+>  	iwp.flags =3D iwp_compat->flags;
 
-This aligns with security best practices of restricting debug interfaces
-on production user devices, while retaining access for development.
+This all looks mostly fine locally, even for the compat code, i.e. for a
+32-bit task on the 64-bit machine. The iwp is created here and is given
+to ioctl_standard_iw_point(), which crucially then for some requests
+(according to IW_DESCR_FLAG_EVENT) passes it to wireless_send_event().
 
-Signed-off-by: wanquan.zhong <wanquan.zhong@fibocom.com>
----
- drivers/net/wwan/Kconfig                | 11 +++++++++++
- drivers/net/wwan/t7xx/t7xx_port_proxy.c |  2 ++
- 2 files changed, 13 insertions(+)
- mode change 100644 => 100755 drivers/net/wwan/Kconfig
- mode change 100644 => 100755 drivers/net/wwan/t7xx/t7xx_port_proxy.c
+This then can creates _two_ events, one for 32-bit tasks and one for 64-
+bit tasks, and the 64-bit one will have the "struct iw_point" starting
+from "length", excluding "pointer" but including the padding at the
+end... The layout is further described in the "The problem for 64/32
+bit." comment in wext-core.c
 
-diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
-old mode 100644
-new mode 100755
-index 410b0245114e..70edfd0c03bb
---- a/drivers/net/wwan/Kconfig
-+++ b/drivers/net/wwan/Kconfig
-@@ -27,6 +27,17 @@ config WWAN_DEBUGFS
- 	  elements for each WWAN device in a directory that is corresponding to
- 	  the device name: debugfs/wwan/wwanX.
- 
-+config WWAN_DEBUG_PORTS
-+	bool "WWAN devices ADB debug port" if EXPERT
-+	depends on DEBUG_FS
-+	default n
-+	help
-+	  Enables ADB (Android Debug Bridge) debug port support for WWAN devices.
-+
-+	  If this option is selected, then the ADB debug port functionality in
-+	  WWAN device drivers is enabled, allowing for Android Debug Bridge
-+	  connections through WWAN modems that support this feature.
-+
- config WWAN_HWSIM
- 	tristate "Simulated WWAN device"
- 	help
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.c b/drivers/net/wwan/t7xx/t7xx_port_proxy.c
-old mode 100644
-new mode 100755
-index 4fc131f9632f..23b331780f07
---- a/drivers/net/wwan/t7xx/t7xx_port_proxy.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.c
-@@ -102,6 +102,7 @@ static const struct t7xx_port_conf t7xx_port_conf[] = {
- 		.ops = &ctl_port_ops,
- 		.name = "t7xx_ap_ctrl",
- 	}, {
-+#ifdef CONFIG_WWAN_DEBUG_PORTS
- 		.tx_ch = PORT_CH_AP_ADB_TX,
- 		.rx_ch = PORT_CH_AP_ADB_RX,
- 		.txq_index = Q_IDX_ADB,
-@@ -112,6 +113,7 @@ static const struct t7xx_port_conf t7xx_port_conf[] = {
- 		.port_type = WWAN_PORT_ADB,
- 		.debug = true,
- 	}, {
-+#endif
- 		.tx_ch = PORT_CH_MIPC_TX,
- 		.rx_ch = PORT_CH_MIPC_RX,
- 		.txq_index = Q_IDX_MBIM_MIPC,
--- 
-2.43.0
+I don't think this can happen for the compat_private_call() part since
+no events are generated there, but fixing it there as well is definitely
+better (and who knows what random drivers might do in priv ioctls.)
 
+johannes
