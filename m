@@ -1,275 +1,216 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593B6461DB0
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 11:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC8486B99
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 11:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767870511; cv=none; b=AGAX8AaasjjFNl8U7h/LiCwInUHb/5aUjipLdei0sA4Tq1YmpuA3QPCMr5A+wWEF2UXexGgNXssS4aYRi7fDEuZnl9G9uaHCHQK077RAlMFC4JvxcBdofnMekHGotCTCXkN1SETzKIit4m7eH2m9u1G+3clLxNtsMEJYLy/188c=
+	t=1767870996; cv=none; b=KsSStO5yghHzHQ9ku0qprV7kZOCDQZazAlhOPMdsZUWk/2ow6D/Kr6kUS/ZORMIvYrFZuOrn04U5oGLH1fjPsp1QO15lFTi/NSZZ6FDuMzdJiYl+DwyUs1bMAPlmG9EHwx6WX+GJh0LAht5vmIUV91KUEC34ztkcAJyf9VySTZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767870511; c=relaxed/simple;
-	bh=wcGRWM+RnRdB3POnfupDCWelJbx+Hr39/IrIZi1Sq3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mck8Gx7hP3jAMZzkYQSXg0rg/oMTZMMP5MUl55INU1Mxz5epJKkxn3yH3rAd0wV9UvJzbuVsf8ajbYPZR4JpBHdAH2jbNx07bE7njaiqs0UXkAP/XfNHiBsn1DsBhdXH3ldJpCqGTwf3eONyym/YGzqJYbbT93DopJ7H+Ty13FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-65cff0c342eso2151070eaf.3
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 03:08:23 -0800 (PST)
+	s=arc-20240116; t=1767870996; c=relaxed/simple;
+	bh=f0uGCTSwPTYZJTNYDNMp/keoPX6ADIjnXIWpyV78Od8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sx2Yxjr0VWVs2LSR+ygYbfwxMXLKp0QsN93B/hhmle/yM4299UkxqSYgIqhHnFONt7tSeVAQRNF78ThVrUgGDdklahyVzZCqdpPLrtCWSW4v9Mi9ACyQo+KK9eTC8+3d4IjDXZM0fljJNpUxVI20Xx9n/RiAMgeuWMmNOyhDQE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TC9MpLAp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jKeyG9mK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TC9MpLAp";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jKeyG9mK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767870992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oJRtpdk3QL9oOI3hi+tsdde7GeB/zLo7cbRVz+hyZxc=;
+	b=TC9MpLApIhH3ZuW7o49k8lPNhqvchc5973aJt/ClNEZU3qKKR8O1alVX7ybxFNR2Jjy60r
+	eEs7ghD9mBOz0BbUpr9YCsLlR0U0m2HSzfOpZbIxoQyIe+jPkuyiwjtZ8MNan42MuarX68
+	7VutmVSGd6YXs7xJAW7pybqvUL6Yb5g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-128-p2fl9jr7NL6ge81yTkAptg-1; Thu, 08 Jan 2026 06:16:31 -0500
+X-MC-Unique: p2fl9jr7NL6ge81yTkAptg-1
+X-Mimecast-MFC-AGG-ID: p2fl9jr7NL6ge81yTkAptg_1767870990
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-477b8a667bcso34598575e9.2
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 03:16:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767870990; x=1768475790; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oJRtpdk3QL9oOI3hi+tsdde7GeB/zLo7cbRVz+hyZxc=;
+        b=jKeyG9mKx9MlNa2bH7L/YoED0fteGJurcjF8vcz9vthmrbZ80VuVpAxrjUTMLXQIJG
+         m/8YvpsEWrBSVWkZpIUFYynlvs7nqqbM4NvcP+JEUr/x/3IxV17fdL8i/ObLUplrDx00
+         m4eq8ipgl4rZ2bpp0+7slEfNsSA89WaHyZUqA8F+SytMMfvMyOznWTMCjj6BYDRtdvKp
+         ZtVeUhaATEo3L+KiMrqjBHLRBHEgvRnEem+fQrMpRqqj2y8bXHNPuEqZQpXqDMEC4XVg
+         /DKpFtj3Pugo+MBw995lCSTNiiMI5A2cYTQYdoTTnqOdySVixgr2J+W+0qCOE1RImiA8
+         0Z+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767870499; x=1768475299;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PlbXXe8ivVlM+DeeY84GE+OAIs3+4LxqS0gyqDVJQ5A=;
-        b=OPBk/t93AHCtJaNnYZsugxKdntkchFvTLqYkEjawacnyMrFsq2qp45jqJ09+bvs+j8
-         zqoVHuvRWu999Ky8MyzoFGbAwYJPkfwEqPAu2a2q+YgqZFYGtIXa0REDYLycGbX777M4
-         bALXJTWiWqtwfiuDRYWX9nNt2/rw2nH9ZnbUgWPGfIzR+FIpcHmGqOt6VQHHpKf64QXH
-         uOPf09JlVHPtZVabPxArw/YNUZUKTTejZPNkh5sh707bXtCJ0yDJxpJeGhwKw6Po+xk7
-         CFpFp5EbtQRsKkZH6b9dRRbhMidg+BmdUe3xkN3tJJbunO36TIvJmOu4UFP+s8NEASrG
-         eBLg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJML0HLyczW4EX0OYBwncuA1F/lXwPkuecWQYSFezIzvg0jxhFoBG0dfm9Ts4xpQPQK/s19vw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhzZ+c9OCUiBmgkzstnqiLuAiPCPKgBDkCm/PIQKh93IJPFC1H
-	HlHABAF+4EiTLqhjqLzp3QNdMBsxog1b4UOMzJdJhK1cPWh2p1y1oGaX
-X-Gm-Gg: AY/fxX5jaNk9TJWwGR+I6/rucNJ8uwQLU6G0ZM3SV9Qp+FUa86NsPIg4PPEQmx1rQ6o
-	9V+FHBhh9kafb+Buo43/EaEWwtdfPFkCPklE1eHGdpKa24Oc7jB0UpTa5CRrT1axl8YVPc8y+B7
-	L5l3nM7DbABz1SlsPicJh90wGHywXBaHdj7qh9XqUidaMp2WSjNZsTT6iaHWgqTsmzLwsxKQjHC
-	5gCnKUH9WY0BhBdJxiAmbCpUw24oWds8I3TPLdwokNnSMsHl/tzklhxbBFBWbrb/LnXg13f6Xi1
-	xFKdehn3VmbpLIlYCSXSibElrRs6ECH8ENMKVhzgHWhSPFmmsl9fZ91he+sRDD1Yjo/ELtDS8x9
-	BNqvZwoDqt/vr5t1I/iv+rxDp7btbT2SyqnQgzXIS2p7KSJRZKyQZdRZlEIVtuuwpNY97VveCuy
-	ml91jTszXMH0wP
-X-Google-Smtp-Source: AGHT+IFcPD+ED5vq4PSH9sGAATnX//FOjx5ZkRYp2X6L9Gh1I9FJuyRqd7zLWOVuXVwlMFRnhpKBNQ==
-X-Received: by 2002:a05:6820:f002:b0:65d:a79:568b with SMTP id 006d021491bc7-65f54eebcccmr2237188eaf.34.1767870499469;
-        Thu, 08 Jan 2026 03:08:19 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:73::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65f48cb03d4sm3297830eaf.12.2026.01.08.03.08.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 03:08:18 -0800 (PST)
-Date: Thu, 8 Jan 2026 03:08:16 -0800
-From: Breno Leitao <leitao@debian.org>
-To: John Ogness <john.ogness@linutronix.de>, pmladek@suse.com, 
-	mpdesouza@suse.com
-Cc: pmladek@suse.com, mpdesouza@suse.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, 
-	calvin@wbinvd.org, jv@jvosburgh.net, kernel-team@meta.com, 
-	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, rostedt@goodmis.org
-Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
- infrastructure
-Message-ID: <j764nuipx4nvemd3wlqfyx77lkdf7wgs5z452hlacwglvc2e7n@vsko4bq5xb2f>
-References: <20251222-nbcon-v1-0-65b43c098708@debian.org>
- <5mpei32y7sl5jmi2ciim4crxbc55zztiucxxsdd633mvzxlk7n@fowtsefym5y6>
- <87zf6pfmlq.fsf@jogness.linutronix.de>
- <4dwhhlnuv2n3f7d3hqoulcnsg6ljucd6v47kqcszcwcshfoqno@rzxvg456q4fi>
+        d=1e100.net; s=20230601; t=1767870990; x=1768475790;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oJRtpdk3QL9oOI3hi+tsdde7GeB/zLo7cbRVz+hyZxc=;
+        b=cyVZvNlX+RNairUfnT4ZpcyLq2qRLQgHg0OxI3GnxMb4Ld98wLMTS/9Q37/OdbXCJe
+         8j2Pv3rD6lGVFuAzTjnfL818Mjql/58KPHXajv6QbJN0zZDibwa+kHCB4jYg/MBltWQH
+         QukUv4MGtJT5ynCOMmtVeXktMbG+N9ctyBLv6LZ6WEYxPuhTILg19E6b8qhrpluxeF93
+         7Tawr2vvH+Zc6XYY5BO7kpAz5Hj316fcF5Tn3dI4NUnKrxZ+LRd3T964EVL/TUfV044/
+         tyreZUEjyMISjBpd7f9LseTeHyMFlB3MqE1CAF4DfWFGkVwIB7VpU3zZ515E7g80n49A
+         WpNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVG0zD1JdXQEcbDGj0VBspvP+tgk65C7WsaOqy6HBPbAZ/aD7prbWe+VONXjQc8dOr0ryT/ds=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx0EhZa344WZ0RBLa6PDN1292NiElLvkO2KTNdeCk+Js6Mj9RH
+	JcS+QDuXkwGHYI/3+YwnIATpOirp0Xkv1poZihEhj/WRW2959mnCU1RH6Wz9Pvj7i8ajDv7A0O4
+	auqj0kmgEQ7OmPoz7Gr/xC0yPLf8CckAiHU6ODsfmb6GB1g3mhAj+lYnslg==
+X-Gm-Gg: AY/fxX4AWpi94wTzY/nh21Dxo2rHJ8vNSKjSPzfP1n5ni5eGV/4Eq32a+9a7iI+eIRz
+	aoA0dY74zRjNP9Cz8E0gYOKjU5AwyxhFKVyOQbLoJ1ZJQ8Q+XE72oDx2FAIJuhf4BLims5NXmMI
+	jbqVv1m54U4RR9YuUF1Xypu88JI86wkTvUyoenhj+IuXI+Qmc3tf+P0gJfyEIDtpHfWN3J4mRus
+	p1i0nThJIc33pRUy8O9JBVIF9hIvcRjoeaeXdKkCUOjcIED//8uIpwwWPvhLH4kVhoBW9sP8Kf3
+	yGegTdLSkm6dydcF5s2bRrspW7UxD7nHpDeEOpoOD+nfJICR2xJftQZaAJp3eVx6RpUdzq3kLrx
+	HqM/L9St1YfDF3w==
+X-Received: by 2002:a05:600c:1d0c:b0:471:14b1:da13 with SMTP id 5b1f17b1804b1-47d84b1fcf9mr65378825e9.14.1767870990013;
+        Thu, 08 Jan 2026 03:16:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IECFAYMklkN8ocTu4Dz3mO638bkTteVgtAQQ9rUydv0hMcGqTqfp396cLkFjrtdp1r5gRDhPQ==
+X-Received: by 2002:a05:600c:1d0c:b0:471:14b1:da13 with SMTP id 5b1f17b1804b1-47d84b1fcf9mr65378425e9.14.1767870989533;
+        Thu, 08 Jan 2026 03:16:29 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.149.145])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d870c73c0sm36623355e9.3.2026.01.08.03.16.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 03:16:29 -0800 (PST)
+Message-ID: <40be3195-62e0-483a-9448-cf8a342d95f6@redhat.com>
+Date: Thu, 8 Jan 2026 12:16:27 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4dwhhlnuv2n3f7d3hqoulcnsg6ljucd6v47kqcszcwcshfoqno@rzxvg456q4fi>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 1/3] net: ti: icssm-prueth: Add helper
+ functions to configure and maintain FDB
+To: Parvathi Pudi <parvathi@couthit.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ danishanwar@ti.com, rogerq@kernel.org, pmohan@couthit.com,
+ basharath@couthit.com, afd@ti.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, alok.a.tiwari@oracle.com,
+ horms@kernel.org, pratheesh@ti.com, j-rameshbabu@ti.com, vigneshr@ti.com,
+ praneeth@ti.com, srk@ti.com, rogerq@ti.com, krishna@couthit.com,
+ mohan@couthit.com
+References: <20260105122549.1808390-1-parvathi@couthit.com>
+ <20260105122549.1808390-2-parvathi@couthit.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260105122549.1808390-2-parvathi@couthit.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 07, 2026 at 08:58:39AM -0800, Breno Leitao wrote:
-> On Wed, Jan 07, 2026 at 04:56:41PM +0106, John Ogness wrote:
-> 
-> Thanks. Let me prototype this and see how it turns out.
+On 1/5/26 1:23 PM, Parvathi Pudi wrote:
+> +static void icssm_prueth_sw_fdb_update_index_tbl(struct prueth *prueth,
+> +						 u16 left, u16 right)
+> +{
+> +	unsigned int hash, hash_prev;
+> +	u8 mac[ETH_ALEN];
+> +	unsigned int i;
+> +
+> +	/* To ensure we don't improperly update the
+> +	 * bucket index, initialize with an invalid
+> +	 * hash in case we are in leftmost slot
+> +	 */
+> +	hash_prev = 0xff;
 
-This is what I am thinking about. How bad is it?
+Why 0xff is an invalid index if the hash table size is 256?
 
-(I've also implemented the netconsole part as well, so, if you want to
-have a tree, you can find it in
-https://github.com/leitao/linux/tree/execution_context)
+> +
+> +	if (left > 0) {
+> +		memcpy_fromio(mac, FDB_MAC_TBL_ENTRY(left - 1)->mac, ETH_ALEN);
+> +		hash_prev = icssm_prueth_sw_fdb_hash(mac);
+> +	}
+> +
+> +	/* For each moved element, update the bucket index */
+> +	for (i = left; i <= right; i++) {
+> +		memcpy_fromio(mac, FDB_MAC_TBL_ENTRY(i)->mac, ETH_ALEN);
+> +		hash = icssm_prueth_sw_fdb_hash(mac);
+> +
+> +		/* Only need to update buckets once */
+> +		if (hash != hash_prev)
+> +			writew(i, &FDB_IDX_TBL_ENTRY(hash)->bucket_idx);
+> +
+> +		hash_prev = hash;
+> +	}
+> +}
+> +
+> +static struct fdb_mac_tbl_entry __iomem *
+> +icssm_prueth_sw_find_free_mac(struct prueth *prueth, struct fdb_index_tbl_entry
+> +			      __iomem *bucket_info, u8 suggested_mac_tbl_idx,
+> +			      bool *update_indexes, const u8 *mac)
+> +{
+> +	s16 empty_slot_idx = 0, left = 0, right = 0;
+> +	unsigned int mti = suggested_mac_tbl_idx;
+> +	struct fdb_mac_tbl_array __iomem *mt;
+> +	struct fdb_tbl *fdb;
+> +	u8 flags;
+> +
+> +	fdb = prueth->fdb_tbl;
+> +	mt = fdb->mac_tbl_a;
+> +
+> +	flags = readb(&FDB_MAC_TBL_ENTRY(mti)->flags);
+> +	if (!(flags & FLAG_ACTIVE)) {
+> +		/* Claim the entry */
+> +		flags |= FLAG_ACTIVE;
+> +		writeb(flags, &FDB_MAC_TBL_ENTRY(mti)->flags);
+> +
+> +		return FDB_MAC_TBL_ENTRY(mti);
+> +	}
+> +
+> +	if (fdb->total_entries == FDB_MAC_TBL_MAX_ENTRIES)
+> +		return NULL;
+> +
+> +	empty_slot_idx = icssm_prueth_sw_fdb_empty_slot_left(mt, mti);
+> +	if (empty_slot_idx == -1) {
+> +		/* Nothing available on the left. But table isn't full
+> +		 * so there must be space to the right,
+> +		 */
+> +		empty_slot_idx = icssm_prueth_sw_fdb_empty_slot_right(mt, mti);
+> +
+> +		/* Shift right */
+> +		left = mti;
+> +		right = empty_slot_idx;
+> +		icssm_prueth_sw_fdb_move_range_right(prueth, left, right);
+> +
+> +		/* Claim the entry */
+> +		flags = readb(&FDB_MAC_TBL_ENTRY(mti)->flags);
+> +		flags |= FLAG_ACTIVE;
+> +		writeb(flags, &FDB_MAC_TBL_ENTRY(mti)->flags);
+> +
+> +		memcpy_toio(FDB_MAC_TBL_ENTRY(mti)->mac, mac, ETH_ALEN);
+> +
+> +		/* There is a chance we moved something in a
+> +		 * different bucket, update index table
+> +		 */
+> +		icssm_prueth_sw_fdb_update_index_tbl(prueth, left, right);
+> +
+> +		return FDB_MAC_TBL_ENTRY(mti);
 
+AI review found what looks like a valid issue above:
 
-commit fe79961da6cabe42343185cf1a7308162bf6bad3
-Author: Breno Leitao <leitao@debian.org>
-Date:   Thu Jan 8 03:00:46 2026 -0800
+"""
+In this branch, FLAG_ACTIVE is set on FDB_MAC_TBL_ENTRY(mti) but the
+function returns FDB_MAC_TBL_ENTRY(empty_slot_idx). The caller in
+icssm_prueth_sw_insert_fdb_entry() then writes the MAC address to the
+returned entry (empty_slot_idx), leaving entry mti marked active with
+stale data.
 
-    printk: Add execution context (PID/CPU) to dev_printk_info
-    
-    Extend struct dev_printk_info to include the task PID and CPU number
-    where printk messages originate. This information is captured at
-    vprintk_store() time and propagated through printk_message to
-    nbcon_write_context, making it available to nbcon console drivers.
-    
-    This is useful for consoles like netconsole that want to include
-    execution context in their output, allowing correlation of messages
-    with specific tasks and CPUs regardless of where the console driver
-    actually runs.
-    
-    The feature is controlled by CONFIG_PRINTK_EXECUTION_CTX, which is
-    automatically selected by CONFIG_NETCONSOLE_DYNAMIC. When disabled,
-    the helper functions compile to no-ops with no overhead.
-    
-    Suggested-by: John Ogness <john.ogness@linutronix.de>
-    Signed-off-by: Breno Leitao <leitao@debian.org>
+Should FLAG_ACTIVE be set on empty_slot_idx instead? For comparison,
+the other paths in this function (lines 270-277, 294-306, and 330-342)
+all set FLAG_ACTIVE on the same entry they return and write MAC data to.
+"""
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index ac12eaf11755..e6a9369be202 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -341,6 +341,7 @@ config NETCONSOLE_DYNAMIC
- 	bool "Dynamic reconfiguration of logging targets"
- 	depends on NETCONSOLE && SYSFS && CONFIGFS_FS && \
- 			!(NETCONSOLE=y && CONFIGFS_FS=m)
-+	select PRINTK_EXECUTION_CTX
- 	help
- 	  This option enables the ability to dynamically reconfigure target
- 	  parameters (interface, IP addresses, port numbers, MAC addresses)
-diff --git a/include/linux/console.h b/include/linux/console.h
-index fc9f5c5c1b04..c724f59f96e6 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -298,12 +298,18 @@ struct nbcon_context {
-  * @outbuf:		Pointer to the text buffer for output
-  * @len:		Length to write
-  * @unsafe_takeover:	If a hostile takeover in an unsafe state has occurred
-+ * @pid:		PID of the task that generated the message
-+ * @cpu:		CPU on which the message was generated
-  */
- struct nbcon_write_context {
- 	struct nbcon_context	__private ctxt;
- 	char			*outbuf;
- 	unsigned int		len;
- 	bool			unsafe_takeover;
-+#ifdef CONFIG_PRINTK_EXECUTION_CTX
-+	pid_t			pid;
-+	int			cpu;
-+#endif
- };
- 
- /**
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index eb2094e43050..42ee778b29dd 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -27,6 +27,10 @@ struct device;
- struct dev_printk_info {
- 	char subsystem[PRINTK_INFO_SUBSYSTEM_LEN];
- 	char device[PRINTK_INFO_DEVICE_LEN];
-+#ifdef CONFIG_PRINTK_EXECUTION_CTX
-+	pid_t pid;
-+	int cpu;
-+#endif
- };
- 
- #ifdef CONFIG_PRINTK
-diff --git a/kernel/printk/internal.h b/kernel/printk/internal.h
-index 5f5f626f4279..81e5cd336677 100644
---- a/kernel/printk/internal.h
-+++ b/kernel/printk/internal.h
-@@ -287,6 +287,10 @@ struct printk_message {
- 	unsigned int		outbuf_len;
- 	u64			seq;
- 	unsigned long		dropped;
-+#ifdef CONFIG_PRINTK_EXECUTION_CTX
-+	pid_t			pid;
-+	int			cpu;
-+#endif
- };
- 
- bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
-diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-index 3fa403f9831f..2465fafd7727 100644
---- a/kernel/printk/nbcon.c
-+++ b/kernel/printk/nbcon.c
-@@ -946,6 +946,18 @@ void nbcon_reacquire_nobuf(struct nbcon_write_context *wctxt)
- }
- EXPORT_SYMBOL_GPL(nbcon_reacquire_nobuf);
- 
-+#ifdef CONFIG_PRINTK_EXECUTION_CTX
-+static inline void wctxt_load_execution_ctx(struct nbcon_write_context *wctxt,
-+					    struct printk_message *pmsg)
-+{
-+	wctxt->pid = pmsg->pid;
-+	wctxt->cpu = pmsg->cpu;
-+}
-+#else
-+static inline void wctxt_load_execution_ctx(struct nbcon_write_context *wctxt,
-+					    struct printk_message *pmsg) {}
-+#endif
-+
- /**
-  * nbcon_emit_next_record - Emit a record in the acquired context
-  * @wctxt:	The write context that will be handed to the write function
-@@ -1048,6 +1060,8 @@ static bool nbcon_emit_next_record(struct nbcon_write_context *wctxt, bool use_a
- 	/* Initialize the write context for driver callbacks. */
- 	nbcon_write_context_set_buf(wctxt, &pmsg.pbufs->outbuf[0], pmsg.outbuf_len);
- 
-+	wctxt_load_execution_ctx(wctxt, &pmsg);
-+
- 	if (use_atomic)
- 		con->write_atomic(con, wctxt);
- 	else
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 1d765ad242b8..ff47b5384f20 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2213,6 +2213,26 @@ static u16 printk_sprint(char *text, u16 size, int facility,
- 	return text_len;
- }
- 
-+#ifdef CONFIG_PRINTK_EXECUTION_CTX
-+static inline void printk_save_execution_ctx(struct dev_printk_info *dev_info)
-+{
-+	dev_info->pid = task_pid_nr(current);
-+	dev_info->cpu = smp_processor_id();
-+}
-+
-+static inline void pmsg_load_execution_ctx(struct printk_message *pmsg,
-+					   const struct dev_printk_info *dev_info)
-+{
-+	pmsg->pid = dev_info->pid;
-+	pmsg->cpu = dev_info->cpu;
-+}
-+#else
-+static inline void printk_save_execution_ctx(struct dev_printk_info *dev_info) {}
-+
-+static inline void pmsg_load_execution_ctx(struct printk_message *pmsg,
-+					   const struct dev_printk_info *dev_info) {}
-+#endif
-+
- __printf(4, 0)
- int vprintk_store(int facility, int level,
- 		  const struct dev_printk_info *dev_info,
-@@ -2320,6 +2340,7 @@ int vprintk_store(int facility, int level,
- 	r.info->caller_id = caller_id;
- 	if (dev_info)
- 		memcpy(&r.info->dev_info, dev_info, sizeof(r.info->dev_info));
-+	printk_save_execution_ctx(&r.info->dev_info);
- 
- 	/* A message without a trailing newline can be continued. */
- 	if (!(flags & LOG_NEWLINE))
-@@ -3002,6 +3023,7 @@ bool printk_get_next_message(struct printk_message *pmsg, u64 seq,
- 	pmsg->seq = r.info->seq;
- 	pmsg->dropped = r.info->seq - seq;
- 	force_con = r.info->flags & LOG_FORCE_CON;
-+	pmsg_load_execution_ctx(pmsg, &r.info->dev_info);
- 
- 	/*
- 	 * Skip records that are not forced to be printed on consoles and that
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index ba36939fda79..197022099dd8 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -35,6 +35,17 @@ config PRINTK_CALLER
- 	  no option to enable/disable at the kernel command line parameter or
- 	  sysfs interface.
- 
-+config PRINTK_EXECUTION_CTX
-+	bool
-+	depends on PRINTK
-+	help
-+	  This option extends struct dev_printk_info to include extra execution
-+	  context in pritnk, such as task PID and CPU number from where the
-+	  message originated. This is useful for correlating device messages
-+	  with specific execution contexts.
-+
-+	  One of the main user for this config is netconsole.
-+
- config STACKTRACE_BUILD_ID
- 	bool "Show build ID information in stacktraces"
- 	depends on PRINTK
+Generally speaking the hash table handling looks complex and error
+prone. Is keeping the collided entries sorted really a win? I guess that
+always head-inserting would simplify the code a bit.
+
+/P
+
