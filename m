@@ -1,74 +1,76 @@
-Received: from mail-qv1-f97.google.com (mail-qv1-f97.google.com [209.85.219.97])
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC46230DEC0
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 18:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F2B30DEC0
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 18:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767897366; cv=none; b=jh0RFdSRllKJVWcycMbu3NnCo3CgGfvGwXn0xmDnKeMkfTCvpHJiM8n3o7bpCguSV8oPCS+znDBWzI9n3pSXsVAFSnNNIkOt2A8XgvpB6kDy4pw6F6mM37vB/58oxoKTiYn+gXbLV+2I0Socf3eQh+QuNFWZkvpWcuRHtie4AWE=
+	t=1767897369; cv=none; b=TzhRtRTyD8YvZhWHNbPCrhIPSTNZ3RrvmgCNPpyxMMM/JrPB12B9BARIuqJXhXk14xVIqcB3XSFhxLWuhEJBGdvZWKSqw0SPGnDeUS3R1OobzGESHRFF2OMcU5FIegXCSYbGtzQA9qoUXyXDQyf8IM3KJm9BZDxNyDm/9w/lxn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767897366; c=relaxed/simple;
-	bh=ZTLO03p16aWLmOdMN72apXY6oZhEjPbAIScTDR/RgQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3K0IRc9vqxRrVmfjT5jytwM05aoEb49OpAHY4pxR1F/+aUE2O9gQZVgDdXu+WdQKqaAXQheka9bIov8bxMyzZUmBRXqP2mdvpfmDE4v4/T5XGogFKHqLNt3i9GmP3yE2/CPwKY9uRh4BHMLlcvtmNCXrZA7wJWht6l+EDnKA5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=P+MurTRk; arc=none smtp.client-ip=209.85.219.97
+	s=arc-20240116; t=1767897369; c=relaxed/simple;
+	bh=KYkptGmkhPtA7qF+rSTOLQ8GbeWeUjh0uwXZfkQ8y+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bV5bH/LV8ekxytq2I0NOIsHQU1aLPoAauI3cusISaHBu9IizcSy8F5VzbDl+2hzAYwaK73+ed8GNRd+Bo1boyNDHDUnnbYYeyx/IFQPJ2Ny0rLs1Kr7z6jE1FOFtQcupuDqO+bjfiJr2lQDWTRb5K58kLx+lHb8SdZ3jOh9XOFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hssYumxP; arc=none smtp.client-ip=209.85.214.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="P+MurTRk"
-Received: by mail-qv1-f97.google.com with SMTP id 6a1803df08f44-88a35a00502so30843676d6.0
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hssYumxP"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so24412645ad.3
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767897364; x=1768502164;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kbQt0nkY7cuDBU6IlU5BH2FTOYcZDlt7u+HO8OFr9ok=;
-        b=ZoFabwmkvStM3WsMWWT2dKjGzb+qLa1piYj69p0xsqy/BUwRFS9KmOllfiwUp6Z/9/
-         dBdJxWdoRoHTVA/29Spu4eoyFQka1mooYA9pMutahrqItf9c//LAUCOyRW3gQVLKGbKa
-         oQM3a2TrfPin1qBbzf23NJmCvzUaUyeGKFChbX+eSnhgzHTXY6M4CZSEhH0mb7sKS14m
-         u/8x+qfIVo1a7n/atEPxc3rPh0itQphs4JW64BX3ulO8KALQ4elggQm2/8pSG/ebm5Kr
-         1jLPCSHNFt2XDOBq3vJCDZrwXTLbCOk3B2TBefPHaIWN+mRwqmNqyRPaZuWC43Fl/d0K
-         0Tgw==
-X-Gm-Message-State: AOJu0Yw9acGLwT3PH784vSxcENyu+i/REVDNB2gcgWBTmSAaTj5BIHkn
-	FZOPNesQTi/jiYS7f4s8gbBHZ+5NWA09vchY9+8O5+Bc3QtP4uC71WVtb5/2HvmewMd30vLbxbF
-	wIktdBEAQSsxhFWvtJ5KYHaAWbnUBif/aEPpELIzjONNZ8wMt9ljjKgpHC4ler9q14ESylSFLqu
-	/nf6d9nZLy0SxzN3c5ucJpNGxQBYVyQp6rc8M1drtSwAJE9UKRaXjV9f3IcMJ7InGgAEcJ0v2ok
-	4JtqIvGZQU=
-X-Gm-Gg: AY/fxX5BWNjTKpfI6UND89tGMI3uLsWNC/JAzN2IMVQN3dyHIOud6cfPqLG7xxVtc3e
-	irjkAPGqKxlxspWrn4OwKNm7AxkZ5ebkRSaEF95pSDS4L1nWo/fqdbWWJQ7rvzvKn5gl3L/merF
-	l7A6MAZcY2nLUSDX7PDj193cZDs8bHufcbZG/eTsrLPDM9kP5qlZnU80I8zNFWc3aGwMcQ6fDHY
-	VgXpOdPIMszuoBYIzC0ThJzJKykLVy+K9fGwRXWo+XfrbUH+eR6zW/3S2rW7kAxFlVMgKoVGykb
-	vX38bB07mcJtLWLu9970s3UQ+xbVdqvHfEIuZ04JYx1hUwfD4B2eOmWW//HgPojo+ep8PMyoMsz
-	MG/sW9dVCvSwZ6mlPMnj/hZ50anQ45N9C5jAb6cd0mEDzWdXHrTs+AeAuoJkkv9SnbUa4dLouSL
-	sNz3CicDnra7gqAXuCQapvY0AHOYNoZbpJYBrssZDKWmLjRJU=
-X-Google-Smtp-Source: AGHT+IEUxL+QEen5jF+JTlUXU/NcB+/F0ghDZXE1OaryYs/+K84A75uikcbP1q4dAVYLTd6m+YQRlCGbAe2+
-X-Received: by 2002:a05:6214:1ccc:b0:88f:a4a1:bc96 with SMTP id 6a1803df08f44-890841e45f3mr102211196d6.1.1767897363572;
-        Thu, 08 Jan 2026 10:36:03 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-89077093d8esm10490756d6.7.2026.01.08.10.36.03
+        d=1e100.net; s=20230601; t=1767897367; x=1768502167;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X3jdLozbBaCOuCy+2fPMaFduIkZPhQUP5mxNmDGX6fk=;
+        b=HqgC6eYpjHAN9HH0wszy9pFMNnLvhLh2gXSYmemuC1aVy0wx0mvIHdpZTiAIvln1mD
+         +mOz4BTuAt/IcFVHib+4/FKsq1hR9jseuqbA9DNc3kbJ2yOj48bkKwrDg5wowrN8MYEX
+         i3wkDJI42FB6Uz7xDsidOGSpKqpKk39+9Du+fjQyb03wbq8JifjLvSlr8ab6v5Le2Njl
+         Y80fheBnne/JvCEVdiwH1YqCk1u6oYk6QLV5GxwysD3ky5IvU8CCjksjqliyqUuBCZLQ
+         vX/I9F6+JAqIB07/a/EOehOoffra6WgLTc3v5CXLPjW2nx5JtobUvUf9Me3Rzwhf3IOu
+         gN7A==
+X-Gm-Message-State: AOJu0YzoBDP/UgHcBLFAsCxmI/aUcG7evcRV+pCNegiFlKF58P0pokwl
+	awajHxVxBPgvB4KFChop/E8WEoZ4jbXvjPiBxTgkKMD27Ta4Npa9INvH1mGscsyYg+v61+MvZka
+	wfCH7LAVMMQqAyYZo5P56ShcF2T6Ap83qK8Fic7bijPzHHuib8R94cs+wkGLGY0cIek+uhczMEz
+	tbCCsV6WR+S266jOWhYPypPW6zMPeoWssm8APrI7cf9sj1Zvp1qJplZlEp8CTSOsR4EiVdEKAD4
+	sGKQVbATAI=
+X-Gm-Gg: AY/fxX7Ys/wxu0g7s19Nz0Ie/Z6QA1Yyzb5C+PJaLKGqJUiA5Jy+Q84SyckNQOOr9/t
+	h6n01CIMNYGv3ePhF160RCqbW3OSYJebP5uKik/rz/2qAy4itQPogm9MPvZZ8RsanijhxfZP+4m
+	QCmClhUgiq7F/eMEFCayBkU5o7jB1Q+xUndoQq1Mwpyp9gIpCf/HudMGVqnsbDdd9qhUZclHNcX
+	QG8Raesq8fZibpsPK2GQpdLivFgCan5ICTYEjlIHnw2PJ0WSJD3B/Cth/k4F1g/o//QgXEAQvg/
+	qAtzzIDH/daz4rAKNb0LswyvJZpP1fsVRmzM0LStOWmy1ogpe2G/pT4E1ER6mKXDU1QGxbc8bP6
+	0+hE/2Yxt3PPQwEAWover+DC/8MfqX36uTALlVpnIj02eLZMPpg63DuvEpxau7rXvXswEtzuurm
+	vxpPrE/mF9gmjnARrHvbq5pbNRA01VPOhEvCJfI8hovQ==
+X-Google-Smtp-Source: AGHT+IHyhmz3KxCRe9g/VsV9sm2rOTqV/b9iUGhAIbODD/MoWNJUXepfaDYV5xFQoRoGXybx/oHhuog/PKIY
+X-Received: by 2002:a17:902:f552:b0:2a3:1b33:ae11 with SMTP id d9443c01a7336-2a3ee4c1534mr63006035ad.53.1767897367008;
+        Thu, 08 Jan 2026 10:36:07 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a3e3cc49b5sm9992445ad.43.2026.01.08.10.36.06
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Jan 2026 10:36:03 -0800 (PST)
+        Thu, 08 Jan 2026 10:36:07 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b24a25cff5so1045563885a.2
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:03 -0800 (PST)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4f4d60d1fbdso64950301cf.3
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767897363; x=1768502163; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kbQt0nkY7cuDBU6IlU5BH2FTOYcZDlt7u+HO8OFr9ok=;
-        b=P+MurTRk/Q08OjkfKT4X/L30kfewUjX7tRHazW+Vh4D2GCE5f0Ers6ANdKMro05pFz
-         0TI/tINWZ55UjpiEj3BiER4m0AQsEHG8s2eqfFxEK8BRtr2bUMgw7Wnj0Anlq5dPRvRj
-         bg2IrEMNExPWAqUpgFVpe2hg2kM5qmivMrRJg=
-X-Received: by 2002:ac8:5d02:0:b0:4ed:ee58:215 with SMTP id d75a77b69052e-4ffb48c654fmr102503171cf.35.1767897362699;
-        Thu, 08 Jan 2026 10:36:02 -0800 (PST)
-X-Received: by 2002:ac8:5d02:0:b0:4ed:ee58:215 with SMTP id d75a77b69052e-4ffb48c654fmr102502761cf.35.1767897362302;
-        Thu, 08 Jan 2026 10:36:02 -0800 (PST)
+        d=broadcom.com; s=google; t=1767897366; x=1768502166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X3jdLozbBaCOuCy+2fPMaFduIkZPhQUP5mxNmDGX6fk=;
+        b=hssYumxPm9DZbggStvxiLQAnUK5l/VKi9LzWFgV1v9psfjk0gr5DXzWGrCy17bKdgm
+         wyd/qtb8qXx+J+a97cgqcdJ4NNPQMchNRuXw9vN1p5/dgMfh0VT529OOaGNmVctR9kSx
+         2HOFcKXz53aGnZayJwN4Iq7VkwlAe+ITJj5XQ=
+X-Received: by 2002:a05:622a:2505:b0:4ec:f452:4ec0 with SMTP id d75a77b69052e-4ffb4a5857amr99436191cf.69.1767897365895;
+        Thu, 08 Jan 2026 10:36:05 -0800 (PST)
+X-Received: by 2002:a05:622a:2505:b0:4ec:f452:4ec0 with SMTP id d75a77b69052e-4ffb4a5857amr99435861cf.69.1767897365500;
+        Thu, 08 Jan 2026 10:36:05 -0800 (PST)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffc17c2897sm15973721cf.32.2026.01.08.10.36.00
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffc17c2897sm15973721cf.32.2026.01.08.10.36.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 10:36:01 -0800 (PST)
+        Thu, 08 Jan 2026 10:36:05 -0800 (PST)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -77,11 +79,15 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com
-Subject: [PATCH net-next v2 0/6] bnxt_en: Updates for net-next
-Date: Thu,  8 Jan 2026 10:35:15 -0800
-Message-ID: <20260108183521.215610-1-michael.chan@broadcom.com>
+	andrew.gospodarek@broadcom.com,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v2 2/6] bnxt_en: Add PTP .getcrosststamp() interface to get device/host times
+Date: Thu,  8 Jan 2026 10:35:17 -0800
+Message-ID: <20260108183521.215610-3-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.45.4
+In-Reply-To: <20260108183521.215610-1-michael.chan@broadcom.com>
+References: <20260108183521.215610-1-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,41 +97,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-This patchset updates the driver with a FW interface update to support
-FEC stats histogram and NVRAM defragmentation.  Patch #2 adds PTP
-cross timestamps [1].  Patch #3 adds FEC histogram stats.  Patch #4 adds
-NVRAM defragmentation support that prevents FW update failure when NVRAM
-is fragmented.  Patch #5 improves RSS distribution accuracy when certain
-number of rings is in use.  The last patch adds ethtool
-.get_link_ext_state() support.
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-v2: Updated patches #4 and #6
+.getcrosststamp() helps the applications to obtain a snapshot of
+device and host time almost taken at the same time. This function
+will report PCIe PTM device and host times to any application using
+the ioctl PTP_SYS_OFFSET_PRECISE. The device time from the HW is
+48-bit and needs to be converted to 64-bit.
 
-v1 of the patchset:
-https://lore.kernel.org/netdev/20260105215833.46125-1-michael.chan@broadcom.com/
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+---
+v2: Add check for x86 support
 
-[1] v1 of patch #3 posted earlier:
-https://lore.kernel.org/netdev/20251126215648.1885936-8-michael.chan@broadcom.com/
+v1: https://lore.kernel.org/netdev/20251126215648.1885936-8-michael.chan@broadcom.com/
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  2 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 47 +++++++++++++++++++
+ 3 files changed, 50 insertions(+)
 
-Michael Chan (4):
-  bnxt_en: Update FW interface to 1.10.3.151
-  bnxt_en: Add support for FEC bin histograms
-  bnxt_en: Use a larger RSS indirection table on P5_PLUS chips
-  bnxt_en: Implement ethtool_ops -> get_link_ext_state()
-
-Pavan Chebbi (2):
-  bnxt_en: Add PTP .getcrosststamp() interface to get device/host times
-  bnxt_en: Defrag the NVRAM region when resizing UPDATE region fails
-
- drivers/infiniband/hw/bnxt_re/main.c          |   4 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  39 +++-
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |   6 +
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 118 ++++++++++++-
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c |  47 +++++
- include/linux/bnxt/hsi.h                      | 167 ++++++++++++++++--
- include/uapi/linux/ethtool.h                  |   2 +
- 7 files changed, 361 insertions(+), 22 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index d17d0ea89c36..9ab9ebd57367 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -9691,6 +9691,8 @@ static int __bnxt_hwrm_func_qcaps(struct bnxt *bp)
+ 		bp->fw_cap |= BNXT_FW_CAP_EXT_HW_STATS_SUPPORTED;
+ 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_PTP_PPS_SUPPORTED))
+ 		bp->fw_cap |= BNXT_FW_CAP_PTP_PPS;
++	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_PTP_PTM_SUPPORTED)
++		bp->fw_cap |= BNXT_FW_CAP_PTP_PTM;
+ 	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_PTP_64BIT_RTC_SUPPORTED)
+ 		bp->fw_cap |= BNXT_FW_CAP_PTP_RTC;
+ 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_HOT_RESET_IF_SUPPORT))
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index f5f07a7e6b29..08d9adf52ec6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2518,6 +2518,7 @@ struct bnxt {
+ 	#define BNXT_FW_CAP_SW_MAX_RESOURCE_LIMITS	BIT_ULL(41)
+ 	#define BNXT_FW_CAP_NPAR_1_2			BIT_ULL(42)
+ 	#define BNXT_FW_CAP_MIRROR_ON_ROCE		BIT_ULL(43)
++	#define BNXT_FW_CAP_PTP_PTM			BIT_ULL(44)
+ 
+ 	u32			fw_dbg_cap;
+ 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index a8a74f07bb54..75ad385f5f79 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -882,6 +882,49 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
+ 	}
+ }
+ 
++static int bnxt_phc_get_syncdevicetime(ktime_t *device,
++				       struct system_counterval_t *system,
++				       void *ctx)
++{
++	struct bnxt_ptp_cfg *ptp = (struct bnxt_ptp_cfg *)ctx;
++	struct hwrm_func_ptp_ts_query_output *resp;
++	struct hwrm_func_ptp_ts_query_input *req;
++	struct bnxt *bp = ptp->bp;
++	u64 ptm_local_ts;
++	int rc;
++
++	rc = hwrm_req_init(bp, req, HWRM_FUNC_PTP_TS_QUERY);
++	if (rc)
++		return rc;
++	req->flags = cpu_to_le32(FUNC_PTP_TS_QUERY_REQ_FLAGS_PTM_TIME);
++	resp = hwrm_req_hold(bp, req);
++	rc = hwrm_req_send(bp, req);
++	if (rc) {
++		hwrm_req_drop(bp, req);
++		return rc;
++	}
++	ptm_local_ts = le64_to_cpu(resp->ptm_local_ts);
++	*device = ns_to_ktime(bnxt_timecounter_cyc2time(ptp, ptm_local_ts));
++	/* ptm_system_ts is 64-bit */
++	system->cycles = le64_to_cpu(resp->ptm_system_ts);
++	system->cs_id = CSID_X86_ART;
++	system->use_nsecs = true;
++
++	hwrm_req_drop(bp, req);
++
++	return 0;
++}
++
++static int bnxt_ptp_getcrosststamp(struct ptp_clock_info *ptp_info,
++				   struct system_device_crosststamp *xtstamp)
++{
++	struct bnxt_ptp_cfg *ptp = container_of(ptp_info, struct bnxt_ptp_cfg,
++						ptp_info);
++
++	return get_device_system_crosststamp(bnxt_phc_get_syncdevicetime,
++					     ptp, NULL, xtstamp);
++}
++
+ static const struct ptp_clock_info bnxt_ptp_caps = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "bnxt clock",
+@@ -1094,6 +1137,10 @@ int bnxt_ptp_init(struct bnxt *bp)
+ 		if (bnxt_ptp_pps_init(bp))
+ 			netdev_err(bp->dev, "1pps not initialized, continuing without 1pps support\n");
+ 	}
++	if ((bp->fw_cap & BNXT_FW_CAP_PTP_PTM) && pcie_ptm_enabled(bp->pdev) &&
++	    boot_cpu_has(X86_FEATURE_ART))
++		ptp->ptp_info.getcrosststamp = bnxt_ptp_getcrosststamp;
++
+ 	ptp->ptp_clock = ptp_clock_register(&ptp->ptp_info, &bp->pdev->dev);
+ 	if (IS_ERR(ptp->ptp_clock)) {
+ 		int err = PTR_ERR(ptp->ptp_clock);
 -- 
 2.51.0
 
