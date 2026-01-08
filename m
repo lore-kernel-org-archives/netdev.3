@@ -1,86 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0369A24DCE3
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 14:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3F92690D1
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 15:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767883902; cv=none; b=mb1n5TAQc48l0kYb4GPdVtBneiPzmOY/GxdkL6UOcUKJ/x5Qp5CszdI2F9aIxfaeA8/vOHrnysQRjqaaznmQCbRBtBlRSB5OYx1EJ6BqbdJNdyPBj0E6ZR9x654VlFpCIwglyvWMAYpTej7Bavr1yDlS2N9xW7NIer5V7dRSSdU=
+	t=1767884466; cv=none; b=R0cyetYRy+WmolI7iZUVIbphBa/tS80hkT2DET3rDQBzVhcvRrH/ZvexfeFMiXJTRJS7kOgd94GloKUvfrmGdxF4q//EWfT1M6zcKbJqyUPEwLp/o4dJL0N2kcAXoxRtrieQbxnholYj29Pm3X9lt+Hj/b3n8qnUhtQ9x1pgacE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767883902; c=relaxed/simple;
-	bh=DXhgONYeIS9bChdWRL5MXzxkLSKekfV9hllD3azG3T8=;
+	s=arc-20240116; t=1767884466; c=relaxed/simple;
+	bh=x/KSeZmo4BpDEjmSmP/FoMnnJGbAD1EDOlqErMkqNac=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LnTzTPhGUDgBKhA1XSBeHl+E+5uFM5AH9+2lzdGqalVbQbzgMSUpbKAWy0/ybCh8AfwUeSsLBDG2qoZwWMLNQvs3zYU3e+4tdKMVEYFL+BLDBIYTjP8+fuat6Z/+qCS+QioWu/Z5nywRLzD3zstdr/wvyJi2FPWfLYwNagodcBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WZmiTmoI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dIEfseNO; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=lGpqgY+JKmEWliCAglVe+SOLsswPYF7eCZvlQaJBn3wDLyiZ/MDbk0HxqVuSvbdQqJVGzqgQYdXCcNdAsQP8gnPUhadcxT9C4hZMREa4vZxLCWnMS1R0cL1hz1knrjKTEJJno6c/InThXr/YuYmExPjpBZ6c3qFhfyWSFt/qkN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iOT/uQK/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S7Rzr0kV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WZmiTmoI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dIEfseNO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iOT/uQK/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S7Rzr0kV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767883900;
+	s=mimecast20190719; t=1767884459;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sOEaS67jxDLLnbL0hp6gXDx5hl4Xnwdn7lV77ig2jkU=;
-	b=WZmiTmoIUofRl8sr8F9/HwP7/5eQAnMWfSJHHewdgtexOO0cFD0DlxLi297bdfe3L0msCC
-	xz62p5OLndM0MEcOhj5xzq9y7Zcr6dvTNZKhRWLzXSAl4hbWGNnmFN6x/K4rLxBgJwrc2z
-	BhjUsSgEOdWrX/6biakx/mYH/QMLPjc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=HqGiJMM1pVcyveofpqbLm9RhIj56aLTI2bxMd5dfX0k=;
+	b=iOT/uQK/kD/I4vGHKvFIFS5VoG6Y+7TYo8ULY0ztjivDfJDiMSDCT8VxU656PQL7preeR7
+	Ky71ElZ8iMDKIw2bVl3SO+S1SWHIqc4UxuO+lipU3WYpu/vWcfIJlktzATsP/J8A0ygGiI
+	kgTycH9uSzsDhbXRfHDcIi6fWB7pJ5I=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-PmXPog5dNB-d2glznz1VnA-1; Thu, 08 Jan 2026 09:51:38 -0500
-X-MC-Unique: PmXPog5dNB-d2glznz1VnA-1
-X-Mimecast-MFC-AGG-ID: PmXPog5dNB-d2glznz1VnA_1767883898
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-430fcf10280so2206523f8f.0
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 06:51:38 -0800 (PST)
+ us-mta-460-hDr5im0rNjKg-aNJiRx4Jw-1; Thu, 08 Jan 2026 10:00:58 -0500
+X-MC-Unique: hDr5im0rNjKg-aNJiRx4Jw-1
+X-Mimecast-MFC-AGG-ID: hDr5im0rNjKg-aNJiRx4Jw_1767884457
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43102ac1da8so2349671f8f.2
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 07:00:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767883898; x=1768488698; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1767884457; x=1768489257; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=sOEaS67jxDLLnbL0hp6gXDx5hl4Xnwdn7lV77ig2jkU=;
-        b=dIEfseNO62Kx1NSJgTPJ5FMkwWJ+jPWFVMC6bs+UknVBoRSnA17z8fU4y4y1fC12wQ
-         ArkAbyOXw/dcyOCZq0VctKF0+UNDPc5MG2R3z1geE/X11mc7a7oryN1NfbiUotxWDCe9
-         EvPUYEUeQIRajp6TOyPs79VcEdjZ0ZEqEeb1PhZk421Q9aVBiNw0SUMb6qJS31iYYsJG
-         6I0GxHEokhUOZvIq9SIty4dMWWnF5No/bF3UPdRSja8mRQqPJE0bO2bX1wrgj8G6OqkW
-         vc5QuI9a6BWvY/ZrSPvzI30z44PXFT6b3Te/ycbPU5HBOJDxOK1dVnmBwr6gwLhl+/A6
-         2Xmg==
+        bh=HqGiJMM1pVcyveofpqbLm9RhIj56aLTI2bxMd5dfX0k=;
+        b=S7Rzr0kV4Oc5LzZq6MJaoYlJiBa618ndKkT9Hh/WnSDRktJiq4CDzP2wIJWCJCvZeK
+         D8F6JAuhTNUqrrPOJwbfi6+8l20KqBfOc7YlLx1dyrOYRqW0t/DjNB6xxOqHHc4QiG7T
+         p1d0LjOit+/xG4qd4L0ub/bD/CBAEw8kBgaUPQbVGbEF+hFU2Fz7XFOKVH04iyDW+rZx
+         C0O/nfxJnXpRlAPpavSiFWBk8fczKX+tKTqt9/LhsjNC1ayGTH/zVnbnfiWQufoE8f6M
+         gzBmydIuxWxDKCfBs3L7chs8LdEohZh4mMrH0wd5C4+36+APGxntdeMIUQbaVHLAqQXZ
+         Rqug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767883898; x=1768488698;
+        d=1e100.net; s=20230601; t=1767884457; x=1768489257;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sOEaS67jxDLLnbL0hp6gXDx5hl4Xnwdn7lV77ig2jkU=;
-        b=FYjttFrdIzw44dgmDWJUeDzL4VOt6GJt3OYcNFfrvLFshDsqfQbzXxuIZOC6qoDm0J
-         8Lty/S/TbtZWuZqP+tlnPGwZZi5+14CyzKcwWVQ5dkhunJOLwzHOJWwDgcYj8Ffc9FJ+
-         8k0QYnkYDbZnf729RNuxa2EDupJBKH9imxVeDrb+VRNytdlnQyF1QzaYGwz7yEYDgF2U
-         uAY2/dn3T3bzMH4wbpSiHGUke8lJ0H7gx4JVmRfDVfwJ5inw1wwS7md/iZ/v5H+A5/dv
-         +Mhg5FNdhjWSYLoiwEQyBSIWV3tun8XpyxuqJPF3Vn4HQhx0+2+I59sBKc+Q1pmGKs4f
-         xjdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmcu6cDXB+hJtVr7kVTl7GNTLbTneNWuJHC43sVz4iR2sYUwRG+VanOSGjp4nBmz5AunsNMVY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+jMABs/w2DXMjrlIJ6E8jgj85aQ3/dAQlSCTj+M+z8w+nzsWc
-	9t0DDUx+je1s45jx+ZN7o1WvpCmF5CXmsWyDLGfHy7TL20gCTcvmh/w7AULkRxuZJ+uv5M8FTEn
-	nyR0P0aJ7nrEfnyLIh8NhTEdNcWeKTdQ1F263WLuOv8d6DllhhYyGvpmbRA==
-X-Gm-Gg: AY/fxX4kq1EFGwYblLPHV8AkWc2IAHfdrGnxhRByZ6xpfR0Xg0+rVF7zAEltc94iRQZ
-	x5OSwT2WzoG+4x069S8mHsgOSVwkkQatCpRDqgL4OHThcqQK2pQZPEkpW/AyImU7ZWIj6KnL0b8
-	sVjCZc3CgimWwWOvyWigSXUMG5RJ/Ur5oVca4XFaZSgfmheHFw58CEMffQXsgIdFS8M9xzwhZjo
-	YDnae1mCa/garOGcRB5fq6oIxJPPXb7U9XnvQ05w2YkqPmErNHoUlv+OslzXfSxgqCUQSTUyity
-	do2ewhQspst3fWAvsqAzf2tsuZJIskagfmCwb5US6qc67yClYuWl+of9xJGtmjTx3vFqLTkirbH
-	p7Wnh75dzfQwsTw==
-X-Received: by 2002:a05:6000:250e:b0:430:fd69:9926 with SMTP id ffacd0b85a97d-432c377ece0mr7284121f8f.28.1767883897588;
-        Thu, 08 Jan 2026 06:51:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGl69o07nid1rtv2ElvvEp5emJMaGD57S1+3wGIJzICQrcTyqY6I1e4bFP5EYxEC7EOfbCGWA==
-X-Received: by 2002:a05:6000:250e:b0:430:fd69:9926 with SMTP id ffacd0b85a97d-432c377ece0mr7284095f8f.28.1767883897151;
-        Thu, 08 Jan 2026 06:51:37 -0800 (PST)
+        bh=HqGiJMM1pVcyveofpqbLm9RhIj56aLTI2bxMd5dfX0k=;
+        b=kr3TnEozFhMHVAYBmNnG491LAiiuk3Qq4JIbcL0aCQRns+hdNopOpeieJobmz0SuYn
+         XQ8r/LSvx2xdAdCDftzK6RRe2aSAKQWnjdddZ3l+q3L6XP2zekr8MgotD5RHYoRRdclL
+         GqLldbk3YZTMAoc+UUa4Z8wA6qDJbJ6OLZaICsXCwcYS6N2qJuPkfs1Mk3QMD0x2x5Rr
+         cFGBxIt/xPbm2ct8ZxsJ1kqfVXRPNNFhyS1oY3Uo/qoe3AgutQiJ9HJxYCZiurZ7bQTb
+         aDVZBpCl3Ll+JYAhqQT2HkGA5yduITTJeDZmkMuedIfbony3dQC5bCyAAQBQVsdtHJ79
+         LQQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAdakHy3G+0ccKqDCA3TawtFGBtABnfbm2NZ05e9PnWRsexxgruSogr3u4tLq+cDxFJg/5NHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo+dY0k5hpYr4sMGgKhaDweoYns4KSZkLfAvyZz//U63mxDsHN
+	hWUOJBnZE3RbW9UEqvdTirzXKwbA5E6Y1rdh7lsMnLO3Zxyo7Bd9XztmkuxTjsi1556FXjDTQcE
+	taLGDxIm0/FHDhRTNvWLMs3FCpopW3e9elHhb0q8IUl0Ewe+SOJdf0cn+Yw==
+X-Gm-Gg: AY/fxX5GVVtGXHgvEpBl4tPFQan30pHUbCgdFxQUWS9PVSzoG6EwLOZgALGE2XOri+j
+	q2CtCIJOI/iTWl6Lq7y7kwUbNHmEiU9epG4pFvcywOotReg0QLQrRAVpjsRayN7m+Sj7GH08tXU
+	70Snb5bf5i5RTsqdo/QWjQm8hIMEkC/IvG7HHnTCKmUuFgyDeaUHqqnr3G26szYLYtk18I53bwc
+	rX4F1MuBdmXbQPmbbUZWNJulm4HyLyopc4UZZD4Mawvu6N7Lsyb2X5JMwxZ7lMLuqRoNoKTpY3D
+	slF6n/DfeB6rBnhWDrKmQTsk3SATuk138rJd5cLDv1svVb7RmcpA2uKoSSUGgA1HNxJVOui4a1F
+	ZyTpzM6W//+clZg==
+X-Received: by 2002:a05:6000:603:b0:430:f72e:c998 with SMTP id ffacd0b85a97d-432c379f3d4mr7580416f8f.51.1767884456866;
+        Thu, 08 Jan 2026 07:00:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEFTqZKQeu3SumB0qBMJBfqywsL0m05L0nnqVw7M8JGsK2WTMQCpTmAHt9TI/XwSLSTqMmww==
+X-Received: by 2002:a05:6000:603:b0:430:f72e:c998 with SMTP id ffacd0b85a97d-432c379f3d4mr7580153f8f.51.1767884453818;
+        Thu, 08 Jan 2026 07:00:53 -0800 (PST)
 Received: from [192.168.88.32] ([212.105.149.145])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ff1e9sm17585141f8f.41.2026.01.08.06.51.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5fe83bsm17351709f8f.38.2026.01.08.07.00.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 06:51:36 -0800 (PST)
-Message-ID: <32c5dc26-d200-4c45-bcd5-3739699e39eb@redhat.com>
-Date: Thu, 8 Jan 2026 15:51:34 +0100
+        Thu, 08 Jan 2026 07:00:53 -0800 (PST)
+Message-ID: <1f31a9ac-01dd-4bb1-9a5a-ec67b381c5c0@redhat.com>
+Date: Thu, 8 Jan 2026 16:00:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,8 +88,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 04/16] quic: provide family ops for address
- and protocol
+Subject: Re: [PATCH net-next v6 05/16] quic: provide quic.h header files for
+ kernel and userspace
 To: Xin Long <lucien.xin@gmail.com>, network dev <netdev@vger.kernel.org>,
  quic@lists.linux.dev
 Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>,
@@ -110,23 +110,28 @@ Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>,
  Daniel Stenberg <daniel@haxx.se>,
  Andy Gospodarek <andrew.gospodarek@broadcom.com>
 References: <cover.1767621882.git.lucien.xin@gmail.com>
- <d6526f74c99731fa08bdd43f97330f9c2dd78e43.1767621882.git.lucien.xin@gmail.com>
+ <127ed26fc7689a580c52316a2a82d8f418228b23.1767621882.git.lucien.xin@gmail.com>
 Content-Language: en-US
 From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <d6526f74c99731fa08bdd43f97330f9c2dd78e43.1767621882.git.lucien.xin@gmail.com>
+In-Reply-To: <127ed26fc7689a580c52316a2a82d8f418228b23.1767621882.git.lucien.xin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/5/26 3:04 PM, Xin Long wrote:
-> Introduce QUIC address and protocol family operations to handle IPv4/IPv6
-> specifics consistently, similar to SCTP. The new quic_family.{c,h} provide
-> helpers for routing, skb transmit handling, address parsing and comparison
-> and UDP socket config initializing etc.
+> This commit adds quic.h to include/uapi/linux, providing the necessary
+> definitions for the QUIC socket API. Exporting this header allows both
+> user space applications and kernel subsystems to access QUIC-related
+> control messages, socket options, and event/notification interfaces.
 > 
-> This consolidates protocol-family logic and enables cleaner dual-stack
-> support in the QUIC socket implementation.
-> 
-> Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> Since kernel_get/setsockopt() is no longer available to kernel consumers,
+> a corresponding internal header, include/linux/quic.h, is added. 
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Re-adding kernel_get/setsockopt() variants after removal, but just for a
+single protocol is a bit ackward. The current series does not have any
+user.
+
+Do such helpers save a lot of duplicate code? Otherwise I would instead
+expose quic_do_{get,set}sockopt().
+
+/P
 
