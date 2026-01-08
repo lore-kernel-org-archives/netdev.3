@@ -1,256 +1,283 @@
-Received: from mail-oa1-f100.google.com (mail-oa1-f100.google.com [209.85.160.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4C331AABF
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 18:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8C4286D70
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 18:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767897376; cv=none; b=WdweEJJ1HU03LN5vlHUEhiE7KuFUOe4OYjMhSMzstPI6LTZMTwkxZU6ww+ahAHi7nXuUOueEWH92rW4WArUUK2C/KVIiRuSHJjZZ6Wo1QAXoHvMiJjA/O+NM+AEJMc6imCA48y9Cw4teijVtAUQbdjshgHnDpc7jT9UMqwg41P8=
+	t=1767897734; cv=none; b=EN7LlL2QRyrNzd89C9TFic/CoYwwDRxeAqagwWI1cdUZqA1eykKmgNSLnSkAtywWJMeLPeHPW7GZepXqs3GajrL1n/Osp+A0otvZng4eZedaNUe939T+zxXXSfvjIVjXaEiyVg/VY211OROf5kmBKtViol2oxn2Wby9pnjemkQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767897376; c=relaxed/simple;
-	bh=zE649Te+zguNGBvzccddz/Vtc0M1XkVlVlMqurGKLmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1pxdJFUZQx8Ach360z17zqLL4DyAySpgs8nTLPPKqQLvuforzg9SR/54dHW0hiCQcU0uhfcPLrqQyOAH7/6YWuekNzmhSNBr7JqocvoKFoiYFaHiKQBIT62tdo8qoDhLoQCgBTI7PGjlaRzA/46MRI1J9JbXGjAEWY8GG8r0RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=f7hecKoS; arc=none smtp.client-ip=209.85.160.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1767897734; c=relaxed/simple;
+	bh=5AhcDwpfR+YII5+gCn87seKs+lCY2e2+wFBN2fIYU4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eE9CBlUzj+xV340t5YA9tLjqkLSe1aJsLL751O7QTyzUxwIqfLkH+d3UO5F2ouTq4DLCHNY2T1iTvMJOVQknM6awiTNKYNkxP7ElSM0z3okSZp6Hg3KxBMAXtUoEpJFOnRu+QYXzs/GyUl7FCz7npDGFrVDsKiJucji/5ooBxjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=tXDlQCeV; arc=none smtp.client-ip=45.157.188.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="f7hecKoS"
-Received: by mail-oa1-f100.google.com with SMTP id 586e51a60fabf-3fff664b610so145983fac.1
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767897374; x=1768502174;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1iU4MK5rHwbECPAWENKqYr53MSdOG7vBvHFQwnp4hfQ=;
-        b=aHeD8oMrfej5/kK1X7Jkhp4tmSmsSD4J8M67ea3+DLg/KDKexkOsh2Uk/7MaOURzHv
-         iii3hst0g+zFmQk27yvZ44dFnYa98yTFUAONp9JVL5quN/f6p/vWMlfq+8Y3QFXi6k54
-         dGZoNgK9vblSl5zaH69ZnGvhSfp4DbCQyUaysNweys84KY+xrfm5in6N25MCi2z5BExz
-         lmP8fVqZ3nw6kdmlMtLGwRNqONIt9mT6nn9YjOT6LbSiGLtERhPRfDpLlA5HtkwJFGCd
-         trxXhBekcDepDbnDnhhAHgkAhMdh/WJRjkk9G/AbEaG+hte0IF1bT4vQBONqJ5E51K5W
-         CO2A==
-X-Gm-Message-State: AOJu0YxROEUb77swKU8WuJj6T2FTXKRaM2/NUNiWXwGm4SUPOj+K4Of8
-	OZ4fNU1pC7I17uz4mp3t26QZ6qHrQ7bEJjtIEljorIYzn7CvPg20sDu9/wfQCulzdHLF78TGmZw
-	aWcCWJ4Ab8btvB//U68wn+0/iW42n8yvEhRQxMIV788NGkUxh2NELxiNq5Q4L1LRybuWfOu6y2g
-	0AXj349NpFmWVxA/HLbGwKwOwPdlYbg6Jl3pXIKly+Eu4bcdPM4fNym+6zarktp/X/EychdC5l7
-	0yekVwMLBc=
-X-Gm-Gg: AY/fxX4UnXJOH543Pl9JI84S39actsrwxVG0XdIlTaemraD21x6/rIE9NIBXiWi7vAZ
-	u8yvUzh9E+jV9AywqLguWMdoRNENEOE5dzDehhVJCFQg4+RmPpClA0PZKGWu2U/kumarsWZD6lB
-	fqrxeUS3K6JzYlwAPkw+59TwrSuDgRXm/io0LFP1db/MgRBoxAfGZbr1X+33MXQ/x+gnduTVFgr
-	h+L946GA7utqyZTrgztcBtkilwK6IgbbQKa20srC4latEnxxSqLJTTJ9BIihQP3K44F7oUHtNCV
-	JSRStkjuMrKwycdISp0qdNgBZRqvHdbWC5ePKp9cZb9eV4oA+3R2ivbIUz65wk9b74xS+Xq37Xc
-	2yhfWehoYPSGVtT0sUl5y2wnlorX6iWgtMZnnyx8IABThmzlXipyZ0evZQcOH+0iEr7We54jj/p
-	+xdAByvSgjd3goida1nUggY/Mgj7Qym0Ju+sE7aXH1Gv193a8=
-X-Google-Smtp-Source: AGHT+IELa96aZMEKtUUMsUkfaX7tvXpeyqvqYV6SgBzBKMkecwL1qpeQkhAe7zD9sr0apugVDbvzWzp90i0P
-X-Received: by 2002:a05:6870:9627:b0:3f6:1f08:edeb with SMTP id 586e51a60fabf-3ffc0c0637bmr3445292fac.48.1767897373834;
-        Thu, 08 Jan 2026 10:36:13 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-3ffa50f6dc7sm995663fac.18.2026.01.08.10.36.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Jan 2026 10:36:13 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4ee0995fa85so104794931cf.1
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 10:36:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767897373; x=1768502173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1iU4MK5rHwbECPAWENKqYr53MSdOG7vBvHFQwnp4hfQ=;
-        b=f7hecKoSXHU1jcOzJVn1N80tScB5OJqm0Kq4C73WOyTUthmq9n+58G1LP/AxBuLyz7
-         XQ52TPxr7UUCFCaRAVwbHjHENNHK2Zd6dm2xKoqqUCL4EMTLJhf6kh7l9vY6onCyn/oL
-         BUrFZ7Y3NXyC4Ugg/Gw+MCqHtFV6maT7FRGqQ=
-X-Received: by 2002:a05:622a:4d0c:b0:4f4:d928:54c6 with SMTP id d75a77b69052e-4ffb484a748mr123636361cf.5.1767897372762;
-        Thu, 08 Jan 2026 10:36:12 -0800 (PST)
-X-Received: by 2002:a05:622a:4d0c:b0:4f4:d928:54c6 with SMTP id d75a77b69052e-4ffb484a748mr123635951cf.5.1767897372366;
-        Thu, 08 Jan 2026 10:36:12 -0800 (PST)
-Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffc17c2897sm15973721cf.32.2026.01.08.10.36.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 10:36:11 -0800 (PST)
-From: Michael Chan <michael.chan@broadcom.com>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Subject: [PATCH net-next v2 6/6] bnxt_en: Implement ethtool_ops -> get_link_ext_state()
-Date: Thu,  8 Jan 2026 10:35:21 -0800
-Message-ID: <20260108183521.215610-7-michael.chan@broadcom.com>
-X-Mailer: git-send-email 2.45.4
-In-Reply-To: <20260108183521.215610-1-michael.chan@broadcom.com>
-References: <20260108183521.215610-1-michael.chan@broadcom.com>
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="tXDlQCeV"
+Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dnDKB5mwyzhyb;
+	Thu,  8 Jan 2026 19:42:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1767897726;
+	bh=y3jrhHg5FUx7kF7ivKJ7o2ZPDRDDiYTDDrcyS1yBIpA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tXDlQCeVQGf2kBOcNAdDXCUJtXZwsibr5Bn6v/MRWbBIxKa4oMgobVLIg4AH97ZHV
+	 CRLjv9hCH8cvUcvZ2vVJpY1c+6Wxt2yVkx9psmDA21Ci4CRmB4MQmTwG6+3dYujbjW
+	 E+ebe8PmGnPEDyFHe1+h4b5r3+KwhHkSU59uHuxo=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4dnDK94t2VzXJF;
+	Thu,  8 Jan 2026 19:42:05 +0100 (CET)
+Date: Thu, 8 Jan 2026 19:42:00 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Justin Suess <utilityemal77@gmail.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, 
+	Simon Horman <horms@kernel.org>, linux-security-module@vger.kernel.org, 
+	Tingmao Wang <m@maowtm.org>, netdev@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [RFC PATCH 0/1] lsm: Add hook unix_path_connect
+Message-ID: <20260108.gaiDoe7Faghi@digikod.net>
+References: <20251231213314.2979118-1-utilityemal77@gmail.com>
+ <CAAVpQUCF3uES6j22P1TYzgKByw+E4EqpM=+OFyqtRGStGWxH+Q@mail.gmail.com>
+ <aVuaqij9nXhLfAvN@google.com>
+ <CAAVpQUB6gnfovRZAg_BfVKPuS868dFj7HxthbxRL-nZvcsOzCg@mail.gmail.com>
+ <aV5WTGvQB0XI8Q_N@google.com>
+ <CAAVpQUAd==+Pw02+E6UC-qwaDNm7aFg+Q9YDbWzyniShAkAhFQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+In-Reply-To: <CAAVpQUAd==+Pw02+E6UC-qwaDNm7aFg+Q9YDbWzyniShAkAhFQ@mail.gmail.com>
+X-Infomaniak-Routing: alpha
 
-Map the link_down_reason from the FW to the ethtool link_ext_state
-when it is available.  Also log it to the link down dmesg when it is
-available.  Add 2 new link_ext_state enums to the UAPI:
+On Thu, Jan 08, 2026 at 02:17:05AM -0800, Kuniyuki Iwashima wrote:
+> On Wed, Jan 7, 2026 at 4:49 AM Günther Noack <gnoack@google.com> wrote:
+> >
+> > On Tue, Jan 06, 2026 at 11:33:32PM -0800, Kuniyuki Iwashima wrote:
+> > > +VFS maintainers
+> > >
+> > > On Mon, Jan 5, 2026 at 3:04 AM Günther Noack <gnoack@google.com> wrote:
+> > > >
+> > > > Hello!
+> > > >
+> > > > On Sun, Jan 04, 2026 at 11:46:46PM -0800, Kuniyuki Iwashima wrote:
+> > > > > On Wed, Dec 31, 2025 at 1:33 PM Justin Suess <utilityemal77@gmail.com> wrote:
+> > > > > > Motivation
+> > > > > > ---
+> > > > > >
+> > > > > > For AF_UNIX sockets bound to a filesystem path (aka named sockets), one
+> > > > > > identifying object from a policy perspective is the path passed to
+> > > > > > connect(2). However, this operation currently restricts LSMs that rely
+> > > > > > on VFS-based mediation, because the pathname resolved during connect()
+> > > > > > is not preserved in a form visible to existing hooks before connection
+> > > > > > establishment.
+> > > > >
+> > > > > Why can't LSM use unix_sk(other)->path in security_unix_stream_connect()
+> > > > > and security_unix_may_send() ?
+> > > >
+> > > > Thanks for bringing it up!
+> > > >
+> > > > That path is set by the process that acts as the listening side for
+> > > > the socket.  The listening and the connecting process might not live
+> > > > in the same mount namespace, and in that case, it would not match the
+> > > > path which is passed by the client in the struct sockaddr_un.
+> > >
+> > > Thanks for the explanation !
+> > >
+> > > So basically what you need is resolving unix_sk(sk)->addr.name
+> > > by kern_path() and comparing its d_backing_inode(path.dentry)
+> > > with d_backing_inode (unix_sk(sk)->path.dendtry).
 
-ETHTOOL_LINK_EXT_STATE_OTP_SPEED_VIOLATION
-ETHTOOL_LINK_EXT_STATE_BMC_REQUEST_DOWN
+I would definitely prefer to avoid any kind of hack to try to detect
+potential race conditions. :)  I think it would also be more difficult
+to maintain.
 
-to cover OTP (one-time-programmable) speed restrictions and
-BMC (Baseboard management controller) forcing the link down.
+A well-defined hook would avoid race conditions by design, simplify
+kernel code, and document the security check.
 
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
----
-v2: Add new UAPIs, remove spurious semi-colon, remove an invalid
-TX_LASER_DISABLE reason. 
+> > >
+> > > If the new hook is only used by Landlock, I'd prefer doing that on
+> > > the existing connect() hooks.
 
-v1: https://lore.kernel.org/netdev/20260105215833.46125-7-michael.chan@broadcom.com/
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 25 ++++++++++++-
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  1 +
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 35 +++++++++++++++++++
- include/uapi/linux/ethtool.h                  |  2 ++
- 4 files changed, 62 insertions(+), 1 deletion(-)
+I guess other security modules would like to rely on that too.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 9efdc382ebd7..239bc771b71c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11906,6 +11906,26 @@ static char *bnxt_report_fec(struct bnxt_link_info *link_info)
- 	}
- }
- 
-+static char *bnxt_link_down_reason(struct bnxt_link_info *link_info)
-+{
-+	u8 reason = link_info->link_down_reason;
-+
-+	/* Multiple bits can be set, we report 1 bit only in order of
-+	 * priority.
-+	 */
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_RF)
-+		return "(Remote fault)";
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_OTP_SPEED_VIOLATION)
-+		return "(OTP Speed limit violation)";
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_CABLE_REMOVED)
-+		return "(Cable removed)";
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_MODULE_FAULT)
-+		return "(Module fault)";
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_BMC_REQUEST)
-+		return "(BMC request down)";
-+	return "";
-+}
-+
- void bnxt_report_link(struct bnxt *bp)
- {
- 	if (BNXT_LINK_IS_UP(bp)) {
-@@ -11963,8 +11983,10 @@ void bnxt_report_link(struct bnxt *bp)
- 				    (fec & BNXT_FEC_AUTONEG) ? "on" : "off",
- 				    bnxt_report_fec(&bp->link_info));
- 	} else {
-+		char *str = bnxt_link_down_reason(&bp->link_info);
-+
- 		netif_carrier_off(bp->dev);
--		netdev_err(bp->dev, "NIC Link is Down\n");
-+		netdev_err(bp->dev, "NIC Link is Down %s\n", str);
- 	}
- }
- 
-@@ -12164,6 +12186,7 @@ int bnxt_update_link(struct bnxt *bp, bool chng_link_state)
- 	link_info->phy_addr = resp->eee_config_phy_addr &
- 			      PORT_PHY_QCFG_RESP_PHY_ADDR_MASK;
- 	link_info->module_status = resp->module_status;
-+	link_info->link_down_reason = resp->link_down_reason;
- 
- 	if (bp->phy_flags & BNXT_PHY_FL_EEE_CAP) {
- 		struct ethtool_keee *eee = &bp->eee;
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 476c5684a1eb..aff781f167d4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1555,6 +1555,7 @@ struct bnxt_link_info {
- #define BNXT_LINK_STATE_DOWN	1
- #define BNXT_LINK_STATE_UP	2
- #define BNXT_LINK_IS_UP(bp)	((bp)->link_info.link_state == BNXT_LINK_STATE_UP)
-+	u8			link_down_reason;
- 	u8			active_lanes;
- 	u8			duplex;
- #define BNXT_LINK_DUPLEX_HALF	PORT_PHY_QCFG_RESP_DUPLEX_STATE_HALF
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 4dfae7b61c76..6b15fedbb16f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -3432,6 +3432,40 @@ static u32 bnxt_get_link(struct net_device *dev)
- 	return BNXT_LINK_IS_UP(bp);
- }
- 
-+static int bnxt_get_link_ext_state(struct net_device *dev,
-+				   struct ethtool_link_ext_state_info *info)
-+{
-+	struct bnxt *bp = netdev_priv(dev);
-+	u8 reason;
-+
-+	if (BNXT_LINK_IS_UP(bp))
-+		return -ENODATA;
-+
-+	reason = bp->link_info.link_down_reason;
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_RF) {
-+		info->link_ext_state = ETHTOOL_LINK_EXT_STATE_LINK_TRAINING_FAILURE;
-+		info->link_training = ETHTOOL_LINK_EXT_SUBSTATE_LT_REMOTE_FAULT;
-+		return 0;
-+	}
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_CABLE_REMOVED) {
-+		info->link_ext_state = ETHTOOL_LINK_EXT_STATE_NO_CABLE;
-+		return 0;
-+	}
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_OTP_SPEED_VIOLATION) {
-+		info->link_ext_state = ETHTOOL_LINK_EXT_STATE_OTP_SPEED_VIOLATION;
-+		return 0;
-+	}
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_MODULE_FAULT) {
-+		info->link_ext_state = ETHTOOL_LINK_EXT_STATE_MODULE;
-+		return 0;
-+	}
-+	if (reason & PORT_PHY_QCFG_RESP_LINK_DOWN_REASON_BMC_REQUEST) {
-+		info->link_ext_state = ETHTOOL_LINK_EXT_STATE_BMC_REQUEST_DOWN;
-+		return 0;
-+	}
-+	return -ENODATA;
-+}
-+
- int bnxt_hwrm_nvm_get_dev_info(struct bnxt *bp,
- 			       struct hwrm_nvm_get_dev_info_output *nvm_dev_info)
- {
-@@ -5711,6 +5745,7 @@ const struct ethtool_ops bnxt_ethtool_ops = {
- 	.get_eeprom             = bnxt_get_eeprom,
- 	.set_eeprom		= bnxt_set_eeprom,
- 	.get_link		= bnxt_get_link,
-+	.get_link_ext_state	= bnxt_get_link_ext_state,
- 	.get_link_ext_stats	= bnxt_get_link_ext_stats,
- 	.get_eee		= bnxt_get_eee,
- 	.set_eee		= bnxt_set_eee,
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index eb7ff2602fbb..5daa8f225b67 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -603,6 +603,8 @@ enum ethtool_link_ext_state {
- 	ETHTOOL_LINK_EXT_STATE_POWER_BUDGET_EXCEEDED,
- 	ETHTOOL_LINK_EXT_STATE_OVERHEAT,
- 	ETHTOOL_LINK_EXT_STATE_MODULE,
-+	ETHTOOL_LINK_EXT_STATE_OTP_SPEED_VIOLATION,
-+	ETHTOOL_LINK_EXT_STATE_BMC_REQUEST_DOWN,
- };
- 
- /* More information in addition to ETHTOOL_LINK_EXT_STATE_AUTONEG. */
--- 
-2.51.0
+> >
+> > I've talked about that in the "Alternative: Use existing LSM hooks" section in
+> > https://lore.kernel.org/all/20260101134102.25938-1-gnoack3000@gmail.com/
+> >
+> > If we resolve unix_sk(sk)->addr.name ourselves in the Landlock hook
+> > again, we would resolve the path twice: Once in unix_find_bsd() in
+> > net/unix/af_unix.c (the Time-Of-Use), and once in the Landlock
+> > security hook for the connect() operation (the Time-Of-Check).
+> >
+> > If I understand you correctly, you are suggesting that we check that
+> > the inode resolved by af_unix
+> > (d_backing_inode(unix_sk(sk)->path.dentry)) is the same as the one
+> > that we resolve in Landlock ourselves, and therefore we can detect the
+> > TOCTOU race and pretend that this is equivalent to the case where
+> > af_unix resolved to the same inode with the path that Landlock
+> > observed?
+> >
+> > If the walked file system hierarchy changes in between these two
+> > accesses, Landlock enforces the policy based on path elements that
+> > have changed in between.
+> >
+> > * We start with a Landlock policy where Unix connect() is restricted
+> >   by default, but is permitted on "foo/bar2" and everything underneath
+> >   it.  The hierarchy is:
+> >
+> >   foo/
+> >       bar/
+> >           baz.sock
+> >       bar2/        <--- Landlock rule: socket connect() allowed here and below
+> >
+> > * We connect() to the path "foo/bar/baz.sock"
+> > * af_unix.c path lookup resolves "foo/bar/baz.sock" (TOU)
+> >   This works because Landlock is not checked at this point yet.
+> > * In between the two lookups:
+> >   * the directory foo/bar gets renamed to foo/bar.old
+> >   * foo/bar2 gets moved to foo/bar
+> >   * baz.sock gets moved into the (new) foo/bar directory
+> > * Landlock check: path lookup of "foo/bar/baz.sock" (TOC)
+> >   and subsequent policy check using the resolved path.
+> >
+> >   This succeeds because connect() is permitted on foo/bar2 and
+> >   beneath.  We also check that the resolved inode is the same as the
+> >   one resolved by af_unix.c.
+> >
+> > And now the reasoning is basically that this is fine because the
+> > (inode) result of the two lookups was the same and we pretend that the
+> > Landlock path lookup was the one where the actual permission check was
+> > done?
+> 
+> Right.  IIUC, even in your patch, the file could be renamed
+> while LSM is checking the path, no ?
 
+Yes but that should not be an issue wrt to the security policy.  The
+check should atomic and consistent with the unix socket path resolution
+used by the network stack.  In fact, comparing paths would potentially
+forbid such rename, whereas this might be legitimate.
+
+> I think holding the
+> path ref does not lock concurrent rename operations.
+
+We cannot hold a path ref without potential VFS issues.
+
+> 
+> To me, it's not a small race and basically it's the same with
+> the ops below,
+> 
+> sk1.bind('test')
+> sk1.listen()
+> os.rename('test', 'test2')
+> sk2.connect('test2')
+> 
+> sk1.bind('test')
+> sk1.listen()
+> sk2.connect('test1')
+> os.rename('test', 'test2')
+> 
+> and the important part is whether the path _was_ the
+> allowed one when LSM checked the path.
+
+In the case of Landlock's sandboxing, we want to check the path at
+connect time because that's when it makes sense for the client wrt to
+its request (and its security policy).
+
+FYI, Landlock identifies paths with a set of inodes, so if the unix
+socket is explicitly allowed, then a rename may still be allowed by the
+security policy.
+
+> 
+> >
+> > Some pieces of this which I am still unsure about:
+> >
+> > * What we are supposed to do when the two resolved inodes are not the
+> >   same, because we detected the race?  We can not allow the connection
+> >   in that case, but it would be wrong to deny it as well.  I'm not
+> >   sure whether returning one of the -ERESTART* variants is feasible in
+> >   this place and bubbles up correctly to the system call / io_uring
+> >   layer.
+> 
+> Imagine that the rename ops was done a bit earlier, which is
+> before the first lookup in unix_find_bsd().  Then, the socket
+> will not be found, and -ECONNREFUSED is returned.
+> LSM pcan pretend as such.
+
+Yes but this would be inconsistent with the network stack.  It would
+introduce a race condition where unix socket cannot be used for
+potentially no legitimate reason.
+
+> 
+> 
+> >
+> > * What if other kinds of permission checks happen on a different
+> >   lookup code path?  (If another stacked LSM had a similar
+> >   implementation with yet another path lookup based on a different
+> >   kind of policy, and if a race happened in between, it could at least
+> >   be possible that for one variant of the path, it would be OK for
+> >   Landlock but not the other LSM, and for the other variant of the
+> >   path it would be OK for the other LSM but not Landlock, and then the
+> >   connection could get accepted even if that would not have been
+> >   allowed on one of the two paths alone.)  I find this a somewhat
+> >   brittle implementation approach.
+> 
+> Do you mean that the evaluation of the stacked LSMs could
+> return 0 if one of them allows it even though other LSMs deny ?
+
+If any LSM returns a non-zero value, then the call stops.
+
+I think what Günther wanted to highlight is that a hook call may lead to
+different hook implementation calls, and all these implementations should
+be able to return consistent results wrt to other calls.
+
+> 
+> 
+> >
+> > * Would have to double check the unix_dgram_connect code paths in
+> >   af_unix to see whether this is feasible for DGRAM sockets:
+> >
+> >   There is a way to connect() a connectionless DGRAM socket, and in
+> >   that case, the path lookup in af_unix happens normally only during
+> >   connect(),
+> 
+> Note that connected DGRAM socket can send() data to other sockets
+> by specifying the peer name in each send(), and even they can
+> disconnect by connect(AF_UNSPEC).
+
+Yes, thanks for pointing this out.  It's the duty of LSMs to correctly
+handle this case.  It is handled by Landlock for abstract unix sockets.
+
+> 
+> 
+> > very far apart from the initial security_unix_may_send()
+> >   LSM hook which is used for DGRAM sockets - It would be weird if we
+> >   were able to connect() a DGRAM socket, thinking that now all path
+> >   lookups are done, but then when you try to send a message through
+> >   it, Landlock surprisingly does the path lookup again based on a very
+> >   old and possibly outdated path.  If Landlock's path lookup fails
+> >   (e.g. because the path has disappeared, or because the inode now
+> >   differs), retries won't be able to recover this any more.  Normally,
+> >   the path does not need to get resolved any more once the DGRAM
+> >   socket is connected.
+> >
+> >   Noteworthy: When Unix servers restart, they commonly unlink the old
+> >   socket inode in the same place and create a new one with bind().  So
+> >   as the time window for the race increases, it is actually a common
+> >   scenario that a different inode with appear under the same path.
+> >
+> > I have to digest this idea a bit.  I find it less intuitive than using
+> > the exact same struct path with a newly introduced hook, but it does
+> > admittedly mitigate the problem somewhat.  I'm just not feeling very
+> > comfortable with security policy code that requires difficult
+> > reasoning. 🤔 Or maybe I interpreted too much into your suggestion. :)
+> > I'd be interested to hear what you think.
+> >
+> > —Günther
