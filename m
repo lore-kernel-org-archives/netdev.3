@@ -1,121 +1,162 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EAB33C1B3
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 06:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8349B329C69
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 06:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767854190; cv=none; b=HQ6RqcKeQU/fIAs0QuCtj5KCKOhuGYorR4o1gwAG7Anmf7mDClk6Siq09WYkDgADTvxUTlOf5tRCVZ3qs2L+oBgdrjl/uxE8jxyPrgCtOg7eMFsJJMJjBmh7RutXK328mNRD2wn7KsiL9O3dd3l+bBEbSYNDtBhBQnrSYv8eF2M=
+	t=1767854285; cv=none; b=MVGLCqMzJihQ22RlW06P7m3kBlP26dprYTbom+0gq1mtet3dGPR2w2rUmrClqFFYDYN2XCZrqZYRkWYCskTl+JaYIARDjkvT/yML0dzpHSZQC7zT7bnr6SMVX1sAczX2kpK9TyYAF7DeMtKisdTps34Rs/7Rpo5UoShPlW9ytss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767854190; c=relaxed/simple;
-	bh=maWf8E4/nR6r4iZkfiudPX2lmDBux7LpubjWVpgYQew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ersfcH0kRwQl+57bMcvDwyT0N5YKfJuYacD6MBwmCMbb7EEDVEb+pA1lEkPYEJkAjyvXRoybW5U4g9wlrYkgDW4EgY0ioa1+U+fSwmLdPheAerT3EVaRwFsKd7qfk45niHuqpf1rJpPMjIS3dzgOkEO3WoeKupR+dfEnn7Fme4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0Suw0Kw; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0Suw0Kw"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b05fe2bf14so3143566eec.1
-        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 22:36:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767854162; x=1768458962; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZuFRSJyxVGvc7rvYjVUrIZJ8+nTlCmoSPS+Ihaf2wKk=;
-        b=G0Suw0KwSdJldq9NXSlwsFQPNzWOl/cWYNbOT1hXUCRVZBO3hL2BrURlzj2dZcG1Z8
-         hJXCLMTRX+cWP9EBU6Z5k7nyib7bJaRZG5Azv7lxIpsfGvP8X6T+GULhQKbr22Bfsloq
-         GyGMdXNjlaKfbYa0KabzzAEAjoBgtj0WONQwEOdte7/pi0tgJd3JnaW6LUy/+peMJteG
-         AwBPk0rL6/O0Qma0W9XR1AMicdhDrTIk8v1BYQoqQ04tr+jm6TvydmepenBbgFu60wAO
-         IRfOlvj8zQfL8RPAwVD/vGtCpep6Adb7hoQI018/hiRzeC1ebGeuBJiPcOK9iEMtH5mV
-         C0+w==
+	s=arc-20240116; t=1767854285; c=relaxed/simple;
+	bh=ILvKRSqrZfBY8R9Sv0medJtSP+HX16ReDfjszaeLukE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=C/FddC3tz93HU1YVwyLKiC4aWjt2SuVR0yq1MV0vtcMMaUa6jr7S4T6lsv4hV+L2ULu6G4zRc2bAY1mIm3/y9iq0p6OE81c0ikOofUFPa9Zolc7mY0VIg6aDintybhzPzWdHSGWeScKWfZYgRLdUAgGOyYjllimGAT2+DxrvVPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-65744e10b91so3858825eaf.0
+        for <netdev@vger.kernel.org>; Wed, 07 Jan 2026 22:37:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767854162; x=1768458962;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20230601; t=1767854274; x=1768459074;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZuFRSJyxVGvc7rvYjVUrIZJ8+nTlCmoSPS+Ihaf2wKk=;
-        b=svEtW07lbdrrU60eKXZfqCeuqerHHNY429MKdxZ0OuF6tkyInNEhvSPY9A0ZpHegtY
-         4fFbfk+Zo5Om7Y0O9azpL2o3IO0wPz9p9/Gbezf8mMQ0oUdY9EM5K0w06G/69Uo/Npix
-         09w12+wL81xfHHwtcnLSADnxG3Mpz4P7KTQBhtwOj7SJMEPsxDEuDiH/Lxen2+y/BfLX
-         yF158I5qlBUbBOO6A0CcKX83EUlDmW9CSOEbgFGqNpd5XJMjjSBUDMrCK5LyrWwOQcS1
-         t7tmmWp2hK5dRMj0Vo3uvSIXGxH6QgM2xsxDemeEidaqRk3SMvGTwd95XGYDz1Cg0+Xv
-         Se8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUGM9/epokOgLSjLlNJjl2TIDc8KgXAilNmyhca+Hv+578rOErrC3IYyo/v5JqnIx0Ym1UsWNU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrSzymjinNatWlhlKvnVY5Z0ptYHeAFgvkaDN+Fx5JpJELRmZx
-	MCsqMhmPpUy6zgyifakc15DcC+ki9UyQvg70EpcjMkPDFmDA19tGMlZDIzK63w==
-X-Gm-Gg: AY/fxX4XUzO8/AYV1DZb5/TIxN8qwjRdzI7iplmIhzHjhk57rEY18qSC0oY54tCq73O
-	i1nm/2XNNiDknRwDWKxvd1fF9xQdljfJLZQb90dKhg1iEHYDbzVjmb8enpPvOrbaKGTnnTGkLJn
-	xJubqOL0++h0n3JZp1plik+gXLIILi/93dlfHs7QK0cYQrn1YEkc7ngQa10RHN6tRiiqagTQmEj
-	UttE7kHGK2T4naohLbUgypwIjmndV11FyqQ85K3/wz9Z/GAqPeDV5AT06XzIqvSKOo46qu0pGZl
-	0clmOyZ5cEuO6PcOm3M952YfM1FuaRniRsAeENxjcRC+n+83+pmJJ35g7oiHu8+8B81fjOsyoTz
-	RMeQsifOAiD0v62CfGQOsNYzSSaQar/Hv8IXoLiU5sEJwioQ3PaZxOrF+7uPMMSngIOk0cyhMoV
-	Ag/Pp7k5uyRYkqhlaekpLUQugqpPVIWAHx32w=
-X-Google-Smtp-Source: AGHT+IHr+qha1eOTfp4wLQhnqwmJ68KneYOC7GXQfwKel51U3gavmvexU6VxrRyZtU0m6yrWXG1P3w==
-X-Received: by 2002:a53:e239:0:b0:63f:ba88:e8e9 with SMTP id 956f58d0204a3-64716bd5e88mr3638566d50.43.1767847054268;
-        Wed, 07 Jan 2026 20:37:34 -0800 (PST)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:53::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-790aa6a4d00sm25981107b3.41.2026.01.07.20.37.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 20:37:33 -0800 (PST)
-Date: Wed, 7 Jan 2026 20:37:32 -0800
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	David Ahern <dsahern@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Stanislav Fomichev <sdf@fomichev.me>, asml.silence@gmail.com,
-	matttbe@kernel.org, skhawaja@google.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v8 0/5] net: devmem: improve cpu cost of RX
- token management
-Message-ID: <aV80jCHD9PGaOr87@devvm11784.nha0.facebook.com>
-References: <20260107-scratch-bobbyeshleman-devmem-tcp-token-upstream-v8-0-92c968631496@meta.com>
- <20260107193013.0984ab97@kernel.org>
+        bh=gqIBuhKVe2+1cy9MVOoRMx3f9L33YTIZn4K3zXXwQSg=;
+        b=MeJ3sVc6eeox/k8W9uqQBG5bj2tN2Q1kuW+2DHl+s7vByzIzshHea4cxwl6/ETJ9xu
+         /qaPBuJ474x1yWMoN9uRvCbJxgse/m/nBtmGRpWoA9S5mlcrnvW30MjloCj15iqYLQFZ
+         bIccILCUF1+F+TTaoqJU2NO0RuvOrndDSNuq4STLcRs9virvGeH32Y30tVE2JIfcQi96
+         pe1pTgt75qGokFb2MOlM2caGqzr4QtSxTyQ+RAGK1sGUDt1WeS0itivcvIfLc2AFaou/
+         hd6flchcrXdOS2hGkitZw/DqZMIl3khkX010nDl2BG09y08UD4kTRn/lBijYzQOnLxCw
+         YZow==
+X-Forwarded-Encrypted: i=1; AJvYcCWhi7Z3iIkXuVlOolGiEc4IROe7CR36haejR9NjN1LvcwpRCaO3yEqNWU1VD0ftDXqvdQjm2pY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRkkSSyPR7MlbRvjnJug0VflcPokuLZO4UhHhIR5wQXJJn+Nzl
+	VAKFTcDH1dG2rB+W/K5V9Lmy9nZMxcjhWI439CUzHLWx4T6qNz9EicNF5I7xGh38cymTSc9RUcq
+	6fgumyu+pNBTpvb2q4djctX70WUej7dx+J1BhSYBJZ17HtP3VJ/dKklDrsZg=
+X-Google-Smtp-Source: AGHT+IHIfg3MfaIcvzzEKAjuxvTtaZyQdIckRHbJK0+t50UYjzoeOX8AdyZuFdPHRxMGZUOI8oplaw/SIT3W0Dkym7+Zfte1G2MU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260107193013.0984ab97@kernel.org>
+X-Received: by 2002:a05:6820:1624:b0:659:9a49:90ac with SMTP id
+ 006d021491bc7-65f54f7a4f7mr1813923eaf.43.1767854274203; Wed, 07 Jan 2026
+ 22:37:54 -0800 (PST)
+Date: Wed, 07 Jan 2026 22:37:54 -0800
+In-Reply-To: <20260107125423.4031241-1-edumazet@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <695f50c2.050a0220.1c677c.038a.GAE@google.com>
+Subject: [syzbot ci] Re: net: update netdev_lock_{type,name}
+From: syzbot ci <syzbot+ci131adae482253910@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, eric.dumazet@gmail.com, 
+	horms@kernel.org, kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jan 07, 2026 at 07:30:13PM -0800, Jakub Kicinski wrote:
-> On Wed, 07 Jan 2026 16:57:34 -0800 Bobby Eshleman wrote:
-> > This series improves the CPU cost of RX token management by adding an
-> > attribute to NETDEV_CMD_BIND_RX that configures sockets using the
-> > binding to avoid the xarray allocator and instead use a per-binding niov
-> > array and a uref field in niov.
-> 
-> net/ipv4/tcp.c:2600:41: error: implicit declaration of function ‘net_devmem_dmabuf_binding_get’; did you mean ‘net_devmem_dmabuf_binding_put’? [-Wimplicit-function-declaration]
->  2600 |                                         net_devmem_dmabuf_binding_get(binding);
->       |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |                                         net_devmem_dmabuf_binding_put
-> -- 
-> pw-bot: cr
+syzbot ci has tested the following series
 
-I see that net_devmem_dmabuf_binding_get() is lacking a
-stub for CONFIG_NET_DEVMEM=n ...
+[v2] net: update netdev_lock_{type,name}
+https://lore.kernel.org/all/20260107125423.4031241-1-edumazet@google.com
+* [PATCH v2 net] net: update netdev_lock_{type,name}
 
-Just curious how pw works... is this a randconfig catch? I ask because
-all of the build targets pass for this series (build_allmodconfig_warn,
-build_clang, etc.. locally and on patchwork.kernel.org), and if there is
-a config that pw uses that I'm missing in my local checks I'd like to
-add it.
+and found the following issue:
+WARNING in register_netdevice
 
-Best,
-Bobby
+Full report is available here:
+https://ci.syzbot.org/series/07a2abd3-8dbc-43d0-a5d9-cdbb1a35d769
+
+***
+
+WARNING in register_netdevice
+
+tree:      net
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
+base:      1806d210e5a8f431ad4711766ae4a333d407d972
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251202083448+f68f64eb8130-1~exp1~20251202083504.46), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/f4fb7576-ea1f-485d-9ef1-c3270f1560d9/config
+C repro:   https://ci.syzbot.org/findings/e4767ea9-6be5-4bce-9523-40ab12d29b67/c_repro
+syz repro: https://ci.syzbot.org/findings/e4767ea9-6be5-4bce-9523-40ab12d29b67/syz_repro
+
+------------[ cut here ]------------
+netdev_lock_pos() could not find dev_type=805
+WARNING: net/core/dev.c:529 at netdev_lock_pos net/core/dev.c:529 [inline], CPU#0: syz.0.17/5972
+WARNING: net/core/dev.c:529 at netdev_set_addr_lockdep_class net/core/dev.c:547 [inline], CPU#0: syz.0.17/5972
+WARNING: net/core/dev.c:529 at register_netdevice+0x7f9/0x1ba0 net/core/dev.c:11318, CPU#0: syz.0.17/5972
+Modules linked in:
+CPU: 0 UID: 0 PID: 5972 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:netdev_lock_pos net/core/dev.c:529 [inline]
+RIP: 0010:netdev_set_addr_lockdep_class net/core/dev.c:547 [inline]
+RIP: 0010:register_netdevice+0x7fc/0x1ba0 net/core/dev.c:11318
+Code: ca 56 db f8 48 c7 03 00 00 00 00 41 bd f4 ff ff ff 4c 8b 64 24 28 e9 8f f9 ff ff e8 4e 59 74 f8 48 8d 3d 27 79 82 06 44 89 e6 <67> 48 0f b9 3a 41 bc 40 00 00 00 49 bf 00 00 00 00 00 fc ff df 4c
+RSP: 0018:ffffc9000768ef20 EFLAGS: 00010293
+RAX: ffffffff894e19b2 RBX: fffffffffffffff8 RCX: ffff8881063c57c0
+RDX: 0000000000000000 RSI: 0000000000000325 RDI: ffffffff8fd092e0
+RBP: ffffc9000768f090 R08: 0000000000000003 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed10218fd9d4 R12: 0000000000000325
+R13: ffffffff8c902318 R14: 000000000000fffe R15: 0000000000000040
+FS:  000055556284f500(0000) GS:ffff88818e40f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f4739c706c0 CR3: 00000001bdb86000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ieee802154_if_add+0xb39/0x1050 net/mac802154/iface.c:667
+ ieee802154_add_iface_deprecated+0x43/0x70 net/mac802154/cfg.c:26
+ rdev_add_virtual_intf_deprecated net/ieee802154/rdev-ops.h:16 [inline]
+ ieee802154_add_iface+0x472/0x860 net/ieee802154/nl-phy.c:218
+ genl_family_rcv_msg_doit+0x22a/0x330 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x61c/0x7a0 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:742
+ ____sys_sendmsg+0x4d7/0x810 net/socket.c:2592
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4739d9acb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd43a0e968 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f473a005fa0 RCX: 00007f4739d9acb9
+RDX: 0000000020048000 RSI: 00002000000009c0 RDI: 0000000000000004
+RBP: 00007f4739e08bf7 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f473a005fac R14: 00007f473a005fa0 R15: 00007f473a005fa0
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	ca 56 db             	lret   $0xdb56
+   3:	f8                   	clc
+   4:	48 c7 03 00 00 00 00 	movq   $0x0,(%rbx)
+   b:	41 bd f4 ff ff ff    	mov    $0xfffffff4,%r13d
+  11:	4c 8b 64 24 28       	mov    0x28(%rsp),%r12
+  16:	e9 8f f9 ff ff       	jmp    0xfffff9aa
+  1b:	e8 4e 59 74 f8       	call   0xf874596e
+  20:	48 8d 3d 27 79 82 06 	lea    0x6827927(%rip),%rdi        # 0x682794e
+  27:	44 89 e6             	mov    %r12d,%esi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	41 bc 40 00 00 00    	mov    $0x40,%r12d
+  35:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
+  3c:	fc ff df
+  3f:	4c                   	rex.WR
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
