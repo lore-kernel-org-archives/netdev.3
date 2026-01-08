@@ -1,423 +1,279 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAC62FD7A7
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 11:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86087483817;
+	Thu,  8 Jan 2026 12:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767872832; cv=none; b=k79T6Zjcd/WSvNh0c8hke6unae6fD4NVShteOOVNrj6THJf99/Y1pnDVuAfS/C30Xw+5GCh0T4EoRG+IyjMZucDNlwesrJrUIDsjGxTDsKZGLHpoAT1y5VWCwweSTQ+0b7pA3I3HbDtYXA2h1Qh2Bghf09y2Qgc2R2wX97p6FKU=
+	t=1767873767; cv=none; b=pfBlzyFovhmVGCV6CZ3GLJS7hv9udHo670vJPvLRUfoOcTOAFpT8WH1bpvRVg743Nd7iS3tKKMEXoTsMqOywn8j59fY7ZUUrW3CcUExHa2D53wMqHBZIPDWLNorfn4QORebD86sNMJyg2Yua/4Hv1PmOEYGsAthVgD5fsEkM/yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767872832; c=relaxed/simple;
-	bh=ae1ahcMQ6W4KZC2gE/1OZAOU9eLsdS4SuPOqdQF4o7o=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=Jcm2xEVsiHnaY/uCqeWSAddQjdSOqffHM8bAfH+yg4QR5aXixhaozOnl9n0Y4uL1FkQDJ7Znn8T1AeEQSSp4NA1u7xcZOgJloozTSme2w4og0oAH+shUPEW4qMArDy4rGD8C5jWX6YebHakIzBenmTNwUoozHMaya2UPqIZnQAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZpPt0D+M; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1767873767; c=relaxed/simple;
+	bh=6H7El0KrlREwMD6n9HpCMSMKIilzMD7JYSAu1RPoHfs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=vCdTrdYQcM/rSomwIboGNGLST+Cb5Ky2qkOm1hSRH5ICOgDv2nXk7c/SKuS+Wn3mszB7D3SJ1idCkyM4CnCeOvxkM2FuDC6xQCb2ZTSoHrCJRp+EXmBbLlqprXuGTjcis5IpnXIFP5rDl/fZ5kYIZQn/XtYA7ZxA4bmcIBHtEXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=QCjcHtxj; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZpPt0D+M"
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="QCjcHtxj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=toBZ9wB9UjYA/F/GIAjEX8Vx9aqxKz7DvDgXm2wrmcU=; b=QCjcHtxjynL1ZuDv0nLAFrYa/d
+	8snQkIDaxAq8ev8Ibn03muSTZvU4o/lXLnhTHU3bwGWcY8YPkmLDIs08yPlXW1QolYmjVnNc7/Shz
+	JVqAO1Ph7Sg7FyF5wJU1YlPSJSYfkisQorYOXcC9Ic4m+A7Kb6A3Wk7x4aV+IIlmr4vHFsQGxXvTL
+	LQjAeLBtpyjI8EMGnEoMLAHzOkfBdbkFAMHx4o8yuYVWAzZEGvl2OUoeSQxYq0cOIfvQ2FRX5HnpS
+	DI3AjgGDLRI2oj1q61uAOgYNwDTiSVXJz930enom+Gwf4+54Rfdffew2QFyEmGcmdOLBVc3eLq43H
+	2g//Iiyg==;
+Received: from [122.175.9.182] (port=29271 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vdoil-0000000036V-0S6z;
+	Thu, 08 Jan 2026 07:02:31 -0500
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 583AA1A80E0F;
+	Thu,  8 Jan 2026 17:32:24 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id mAcZArUnjiuA; Thu,  8 Jan 2026 17:32:23 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 5AD781A80E27;
+	Thu,  8 Jan 2026 17:32:23 +0530 (IST)
+X-Virus-Scanned: amavis at couthit.local
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id ouwfcrParFdQ; Thu,  8 Jan 2026 17:32:23 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 3387F1A80E0F;
+	Thu,  8 Jan 2026 17:32:23 +0530 (IST)
+Date: Thu, 8 Jan 2026 17:32:23 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Andrew Davis <afd@ti.com>
+Cc: Parvathi Pudi <parvathi@couthit.com>, nm <nm@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, 
+	Kevin Hilman <khilman@baylibre.com>, rogerq <rogerq@kernel.org>, 
+	tony <tony@atomide.com>, robh <robh@kernel.org>, 
+	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	aaro koskinen <aaro.koskinen@iki.fi>, andreas <andreas@kemnade.info>, 
+	Andrew Lunn <andrew@lunn.ch>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
+	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
+	praneeth <praneeth@ti.com>, srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, mohan <mohan@couthit.com>, 
+	pmohan <pmohan@couthit.com>, basharath <basharath@couthit.com>, 
+	Murali Karicheri <m-karicheri2@ti.com>
+Message-ID: <2110802326.88645.1767873743162.JavaMail.zimbra@couthit.local>
+In-Reply-To: <84b08398-5622-45c9-a8fa-54639c1cf0b3@ti.com>
+References: <20260105162546.1809714-1-parvathi@couthit.com> <20260105162546.1809714-3-parvathi@couthit.com> <84b08398-5622-45c9-a8fa-54639c1cf0b3@ti.com>
+Subject: Re: [PATCH v4 2/2] arm: dts: ti: Adds support for AM335x and AM437x
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767872815;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UtoPCHhrlUD7ktISh+mpZ5JLYC/bBj6xbi4IbIb21ao=;
-	b=ZpPt0D+MZiWgXOEGPQGunqR/Xuf0FYuGpBUcvkesYci2sc/FfSTQewLlSjWyi3fonfP6be
-	GWS+OwdoWkiLHyr4kWdf+RbaHiZ1g7RcTr4KE+MhVXAsifWFX+XY906l34+ulH/mWRWHWj
-	NN3Sw1c79mus4XV8NYrOitHrVf+cPQE=
-Date: Thu, 08 Jan 2026 11:46:46 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <66843c358b71a0dc3e57cc6ac6c0e8b1bb018e38@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH bpf-next v5 2/3] bpf, sockmap: Fix FIONREAD for sockmap
-To: "Jakub Sitnicki" <jakub@cloudflare.com>
-Cc: bpf@vger.kernel.org, "John Fastabend" <john.fastabend@gmail.com>, "David 
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Neal Cardwell"
- <ncardwell@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "David
- Ahern" <dsahern@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Martin  KaFai Lau" <martin.lau@linux.dev>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "KP  Singh" <kpsingh@kernel.org>,
- "Stanislav Fomichev" <sdf@fomichev.me>, "Hao  Luo" <haoluo@google.com>,
- "Jiri Olsa" <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Stefano
- Garzarella" <sgarzare@redhat.com>, "Michal  Luczaj" <mhal@rbox.co>, "Cong
- Wang" <cong.wang@bytedance.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <87ikddijrd.fsf@cloudflare.com>
-References: <20260106051458.279151-1-jiayuan.chen@linux.dev>
- <20260106051458.279151-3-jiayuan.chen@linux.dev>
- <87ikddijrd.fsf@cloudflare.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC143 (Mac)/9.0.0_ZEXTRAS_20240927)
+Thread-Topic: Adds support for AM335x and AM437x
+Thread-Index: q8z9cKWgO4NEoGv8PQwa5viWNmn8ow==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-January 7, 2026 at 22:23, "Jakub Sitnicki" <jakub@cloudflare.com mailto:j=
-akub@cloudflare.com?to=3D%22Jakub%20Sitnicki%22%20%3Cjakub%40cloudflare.c=
-om%3E > wrote:
+Hi,
+
+> On 1/5/26 10:21 AM, Parvathi Pudi wrote:
+>> From: Roger Quadros <rogerq@ti.com>
+>> 
+>> PRU-ICSS instance consists of two PRU cores along with various
+>> peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
+>> Ethernet Peripheral(IEP), the Real Time Media Independent Interface
+>> controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+>> 
+>> The TI Sitara AM335x ICE-V2 consists of single PRU-ICSS instance,
+>> This patch adds the new device tree overlay file in-order to enable
+>> PRU-ICSS instance, along with makefile changes.
+>> 
+>> The TI Sitara AM437x series of devices consists of 2 PRU-ICSS instances
+>> (PRU-ICSS0 and PRU-ICSS1). This patch adds the device tree nodes for the
+>> PRU-ICSS1 instance to support DUAL-MAC mode of operation. Support for
+>> Ethernet over PRU is available only for ICSS1 instance.
+>> 
+>> am33xx-l4.dtsi, am4372.dtsi - Adds IEP and eCAP peripheral as child nodes
+>> of the PRUSS subsystem node.
+>> 
+>> am335x-icev2-prueth.dtso, am437x-idk-evm.dts - Adds PRU-ICSS
+>> instance node along with PRU eth port information and corresponding
+>> port configuration. It includes interrupt mapping for packet reception,
+>> HW timestamp collection, and PRU Ethernet ports in MII mode,
+>> 
+>> GPIO configuration, boot strapping along with delay configuration for
+>> individual PRU Ethernet port and other required nodes.
+>> 
+>> Signed-off-by: Roger Quadros <rogerq@ti.com>
+>> Signed-off-by: Andrew F. Davis <afd@ti.com>
+>> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+>> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+>> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+>> ---
+>>   arch/arm/boot/dts/ti/omap/Makefile            |   5 +
+>>   .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 190 ++++++++++++++++++
+>>   arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 +
+>>   arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 +
+>>   arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 137 ++++++++++++-
+>>   5 files changed, 353 insertions(+), 1 deletion(-)
+>>   create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+>> 
+>> diff --git a/arch/arm/boot/dts/ti/omap/Makefile
+>> b/arch/arm/boot/dts/ti/omap/Makefile
+>> index 14e500846875..c68948035eca 100644
+>> --- a/arch/arm/boot/dts/ti/omap/Makefile
+>> +++ b/arch/arm/boot/dts/ti/omap/Makefile
+>> @@ -82,6 +82,10 @@ dtb-$(CONFIG_ARCH_OMAP4) += \
+>>   	omap4-var-stk-om44.dtb \
+>>   	omap4-xyboard-mz609.dtb \
+>>   	omap4-xyboard-mz617.dtb
+>> +
+>> +am335x-icev2-prueth-dtbs := am335x-icev2.dtb \
+>> +	am335x-icev2-prueth-overlay.dtbo
+>> +
+>>   dtb-$(CONFIG_SOC_AM33XX) += \
+>>   	am335x-baltos-ir2110.dtb \
+>>   	am335x-baltos-ir3220.dtb \
+>> @@ -100,6 +104,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+>>   	am335x-evmsk.dtb \
+>>   	am335x-guardian.dtb \
+>>   	am335x-icev2.dtb \
+>> +	am335x-icev2-prueth.dtb \
+>>   	am335x-lxm.dtb \
+>>   	am335x-mba335x.dtb \
+>>   	am335x-moxa-uc-2101.dtb \
+>> diff --git a/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+>> b/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+>> new file mode 100644
+>> index 000000000000..abde5119875f
+>> --- /dev/null
+>> +++ b/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+>> @@ -0,0 +1,190 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * DT overlay for IDK AM335x
+>> + *
+>> + * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
+>> + */
+>> +
+>> +/*
+>> + * AM335x ICE V2 board
+>> + * http://www.ti.com/tool/tmdsice3359
+>> + */
+>> +
+>> +/dts-v1/;
+>> +/plugin/;
+>> +
+>> +#include <dt-bindings/bus/ti-sysc.h>
+>> +#include <dt-bindings/gpio/gpio.h>
+>> +#include <dt-bindings/pinctrl/am33xx.h>
+>> +#include <dt-bindings/clock/am3.h>
+>> +
+>> +&{/} {
+>> +        /* Dual-MAC Ethernet application node on PRU-ICSS */
+>> +        pruss_eth: pruss-eth {
+>> +                compatible = "ti,am3359-prueth";
+>> +                ti,prus = <&pru0>, <&pru1>;
+>> +                sram = <&ocmcram>;
+>> +                ti,mii-rt = <&pruss_mii_rt>;
+>> +                ti,iep = <&pruss_iep>;
+>> +                ti,ecap = <&pruss_ecap>;
+>> +                interrupts = <20 2 2>, <21 3 3>;
+>> +                interrupt-names = "rx_hp", "rx_lp";
+>> +                interrupt-parent = <&pruss_intc>;
+>> +
+>> +                pinctrl-0 = <&pruss_eth_default>;
+>> +                pinctrl-names = "default";
+>> +
+>> +                ethernet-ports {
+>> +                        #address-cells = <1>;
+>> +                        #size-cells = <0>;
+>> +                        pruss_emac0: ethernet-port@0 {
+>> +                                reg = <0>;
+>> +                                phy-handle = <&pruss_eth0_phy>;
+>> +                                phy-mode = "mii";
+>> +                                interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
+>> +                                interrupt-names = "rx", "emac_ptp_tx",
+>> +                                                  "hsr_ptp_tx";
+>> +                                /* Filled in by bootloader */
+>> +                                local-mac-address = [00 00 00 00 00 00];
+>> +                        };
+>> +
+>> +                        pruss_emac1: ethernet-port@1 {
+>> +                                reg = <1>;
+>> +                                phy-handle = <&pruss_eth1_phy>;
+>> +                                phy-mode = "mii";
+>> +                                interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
+>> +                                interrupt-names = "rx", "emac_ptp_tx",
+>> +                                                  "hsr_ptp_tx";
+>> +                                /* Filled in by bootloader */
+>> +                                local-mac-address = [00 00 00 00 00 00];
+>> +                        };
+>> +                };
+>> +        };
+>> +};
+>> +
+>> +&am33xx_pinmux {
+>> +	/* MDIO node for PRU-ICSS */
+>> +        pruss_mdio_default: pruss_mdio_default {
+>> +                pinctrl-single,pins = <
+>> +                        /* gpmc_clk.pr1_mdio_mdclk */
+>> +                        AM33XX_PADCONF(0x88c, PIN_OUTPUT, MUX_MODE5)
+>> +                        /* gpmc_csn3.pr1_mdio_data */
+>> +                        AM33XX_PADCONF(0x888, PIN_INPUT, MUX_MODE5)
+> 
+> Have you regenerated this list lately? The pinmux tool usually puts the
+> comment after the PADCONF entry. It also now also shows the pin number
+> in the comment which is nice:
+> 
+>	AM33XX_IOPAD(0x88c, PIN_OUTPUT, MUX_MODE5) /* (V12) gpmc_clk.pr1_mdio_mdclk */
+>	AM33XX_IOPAD(0x888, PIN_INPUT, MUX_MODE5) /* (T13) gpmc_csn3.pr1_mdio_data */
+> 
+> I'd recommend regenerating these nodes to match the latest pinmux tool output.
+> 
+
+Sure, we will check and regenerate these nodes using the pinmux tool and
+update accordingly.
+
+>> +                        /* gpmc_ben0_cle.gpio2_5 */
+>> +                        AM33XX_PADCONF(0x89c, PIN_INPUT_PULLUP, MUX_MODE7)
+>> +                        /* disable CPSW MDIO */
+> 
+> Is this needed? If you disable the CPSW MDIO node the pinmux should be unset,
+> so not sure why you are muxing these to GPIO pins.
+> 
+
+We will review and get back with more details on this.
+
+> Also, this patch is a bit busy, might be easier to review if you split it
+> into one for AM335x and one for AM437x changes.
+> 
+
+We will split the changes into two patches, one for AM335x
+and one for AM437x, and address this in the next version.
 
 
->=20
->=20On Tue, Jan 06, 2026 at 01:14 PM +08, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> A socket using sockmap has its own independent receive queue: ingre=
-ss_msg.
-> >  This queue may contain data from its own protocol stack or from othe=
-r
-> >  sockets.
-> >=20
->=20>  Therefore, for sockmap, relying solely on copied_seq and rcv_nxt t=
-o
-> >  calculate FIONREAD is not enough.
-> >=20
->=20>  This patch adds a new ingress_size field in the psock structure to=
- record
-> >  the data length in ingress_msg. Additionally, we implement new ioctl
-> >  interfaces for TCP and UDP to intercept FIONREAD operations. While U=
-nix
-> >  and VSOCK also support sockmap and have similar FIONREAD calculation
-> >  issues, fixing them would require more extensive changes
-> >  (please let me know if modifications are needed). I believe it's not
-> >  appropriate to include those changes under this fix patch.
-> >=20
->=20Nit: These last two lines don't really belong in the commit message.
-> Side notes for reviewers can be added after the "---" marker.
->=20
->=20>=20
->=20> Previous work by John Fastabend made some efforts towards FIONREAD =
-support:
-> >  commit e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq"=
-)
-> >  Although the current patch is based on the previous work by John Fas=
-tabend,
-> >  it is acceptable for our Fixes tag to point to the same commit.
-> >=20
->=20>  FD1:read()
-> >  -- FD1->copied_seq++
-> >  | [read data]
-> >  |
-> >  [enqueue data] v
-> >  [sockmap] -> ingress to self -> ingress_msg queue
-> >  FD1 native stack ------> ^
-> >  -- FD1->rcv_nxt++ -> redirect to other | [enqueue data]
-> >  | |
-> >  | ingress to FD1
-> >  v ^
-> >  ... | [sockmap]
-> >  FD2 native stack
-> >=20
->=20>  Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-> >  Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> >  ---
-> >  include/linux/skmsg.h | 67 +++++++++++++++++++++++++++++++++++++++++=
---
-> >  net/core/skmsg.c | 3 ++
-> >  net/ipv4/tcp_bpf.c | 21 ++++++++++++++
-> >  net/ipv4/udp_bpf.c | 25 +++++++++++++---
-> >  4 files changed, 110 insertions(+), 6 deletions(-)
-> >=20
->=20>  diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-> >  index 0323a2b6cf5e..1fa03953043f 100644
-> >  --- a/include/linux/skmsg.h
-> >  +++ b/include/linux/skmsg.h
-> >  @@ -97,6 +97,7 @@ struct sk_psock {
-> >  struct sk_buff_head ingress_skb;
-> >  struct list_head ingress_msg;
-> >  spinlock_t ingress_lock;
-> >  + ssize_t ingress_size;
-> >=20
->=20The name is not great because we also already have `ingress_bytes`.
-> I suggest to rename and add a doc string. Also we don't expect the coun=
-t
-> to ever be negative. Why ssize_t when we store all other byte counts
-> there as u32?
->=20
->=20 /** @msg_tot_len: Total bytes queued in ingress_msg list. */
->  u32 msg_tot_len;
->=20
->=20>=20
->=20> unsigned long state;
-> >  struct list_head link;
-> >  spinlock_t link_lock;
-> >  @@ -321,6 +322,27 @@ static inline void sock_drop(struct sock *sk, s=
-truct sk_buff *skb)
-> >  kfree_skb(skb);
-> >  }
-> >=20=20
->=20>  +static inline ssize_t sk_psock_get_msg_size_nolock(struct sk_psoc=
-k *psock)
-> >  +{
-> >  + /* Used by ioctl to read ingress_size only; lock-free for performa=
-nce */
-> >  + return READ_ONCE(psock->ingress_size);
-> >  +}
-> >  +
-> >  +static inline void sk_psock_inc_msg_size_locked(struct sk_psock *ps=
-ock, ssize_t diff)
-> >  +{
-> >  + /* Use WRITE_ONCE to ensure correct read in sk_psock_get_msg_size_=
-nolock().
-> >  + * ingress_lock should be held to prevent concurrent updates to ing=
-ress_size
-> >  + */
-> >  + WRITE_ONCE(psock->ingress_size, psock->ingress_size + diff);
-> >  +}
-> >  +
-> >  +static inline void sk_psock_inc_msg_size(struct sk_psock *psock, ss=
-ize_t diff)
-> >=20
->=20Not sure about this function name. "inc" usually means increment by o=
-ne.
-> Was that modeled after some existing interface?
->=20
->=20If not, I'd switch rename to sk_psock_msg_len_add(..., int delta)
->=20
->=20Following the naming convention from sk_forward_alloc_add(),
-> skb_frag_size_add(), skb_len_add(), etc.
->=20
->=20>=20
->=20> +{
-> >  + spin_lock_bh(&psock->ingress_lock);
-> >  + sk_psock_inc_msg_size_locked(psock, diff);
-> >  + spin_unlock_bh(&psock->ingress_lock);
-> >  +}
-> >  +
-> >  static inline bool sk_psock_queue_msg(struct sk_psock *psock,
-> >  struct sk_msg *msg)
-> >  {
-> >  @@ -329,6 +351,7 @@ static inline bool sk_psock_queue_msg(struct sk_=
-psock *psock,
-> >  spin_lock_bh(&psock->ingress_lock);
-> >  if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
-> >  list_add_tail(&msg->list, &psock->ingress_msg);
-> >  + sk_psock_inc_msg_size_locked(psock, msg->sg.size);
-> >  ret =3D true;
-> >  } else {
-> >  sk_msg_free(psock->sk, msg);
-> >  @@ -345,18 +368,25 @@ static inline struct sk_msg *sk_psock_dequeue_=
-msg(struct sk_psock *psock)
-> >=20=20
->=20>  spin_lock_bh(&psock->ingress_lock);
-> >  msg =3D list_first_entry_or_null(&psock->ingress_msg, struct sk_msg,=
- list);
-> >  - if (msg)
-> >  + if (msg) {
-> >  list_del(&msg->list);
-> >  + sk_psock_inc_msg_size_locked(psock, -msg->sg.size);
-> >  + }
-> >  spin_unlock_bh(&psock->ingress_lock);
-> >  return msg;
-> >  }
-> >=20=20
->=20>  +static inline struct sk_msg *sk_psock_peek_msg_locked(struct sk_p=
-sock *psock)
-> >  +{
-> >  + return list_first_entry_or_null(&psock->ingress_msg, struct sk_msg=
-, list);
-> >  +}
-> >  +
-> >  static inline struct sk_msg *sk_psock_peek_msg(struct sk_psock *psoc=
-k)
-> >  {
-> >  struct sk_msg *msg;
-> >=20=20
->=20>  spin_lock_bh(&psock->ingress_lock);
-> >  - msg =3D list_first_entry_or_null(&psock->ingress_msg, struct sk_ms=
-g, list);
-> >  + msg =3D sk_psock_peek_msg_locked(psock);
-> >  spin_unlock_bh(&psock->ingress_lock);
-> >  return msg;
-> >  }
-> >  @@ -523,6 +553,39 @@ static inline bool sk_psock_strp_enabled(struct=
- sk_psock *psock)
-> >  return !!psock->saved_data_ready;
-> >  }
-> >=20=20
->=20>  +/* for tcp only, sk is locked */
-> >  +static inline ssize_t sk_psock_msg_inq(struct sock *sk)
-> >  +{
-> >  + struct sk_psock *psock;
-> >  + ssize_t inq =3D 0;
-> >  +
-> >  + psock =3D sk_psock_get(sk);
-> >  + if (likely(psock)) {
-> >  + inq =3D sk_psock_get_msg_size_nolock(psock);
-> >  + sk_psock_put(sk, psock);
-> >  + }
-> >  + return inq;
-> >  +}
-> >  +
-> >  +/* for udp only, sk is not locked */
-> >  +static inline ssize_t sk_msg_first_length(struct sock *sk)
-> >=20
->=20s/_length/_len/
->=20
->=20>=20
->=20> +{
-> >  + struct sk_psock *psock;
-> >  + struct sk_msg *msg;
-> >  + ssize_t inq =3D 0;
-> >  +
-> >  + psock =3D sk_psock_get(sk);
-> >  + if (likely(psock)) {
-> >  + spin_lock_bh(&psock->ingress_lock);
-> >  + msg =3D sk_psock_peek_msg_locked(psock);
-> >  + if (msg)
-> >  + inq =3D msg->sg.size;
-> >  + spin_unlock_bh(&psock->ingress_lock);
-> >  + sk_psock_put(sk, psock);
-> >  + }
-> >  + return inq;
-> >  +}
-> >  +
-> >  #if IS_ENABLED(CONFIG_NET_SOCK_MSG)
-> >=20=20
->=20>  #define BPF_F_STRPARSER (1UL << 1)
-> >  diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> >  index d73e03f7713a..c959d52a62b2 100644
-> >  --- a/net/core/skmsg.c
-> >  +++ b/net/core/skmsg.c
-> >  @@ -455,6 +455,7 @@ int __sk_msg_recvmsg(struct sock *sk, struct sk_=
-psock *psock, struct msghdr *msg
-> >  atomic_sub(copy, &sk->sk_rmem_alloc);
-> >  }
-> >  msg_rx->sg.size -=3D copy;
-> >  + sk_psock_inc_msg_size(psock, -copy);
-> >=20=20
->=20>  if (!sge->length) {
-> >  sk_msg_iter_var_next(i);
-> >  @@ -819,9 +820,11 @@ static void __sk_psock_purge_ingress_msg(struct=
- sk_psock *psock)
-> >  list_del(&msg->list);
-> >  if (!msg->skb)
-> >  atomic_sub(msg->sg.size, &psock->sk->sk_rmem_alloc);
-> >  + sk_psock_inc_msg_size(psock, -((ssize_t)msg->sg.size));
-> >=20
->=20Cast won't be needed after you switch param type to `int`.
->=20
->=20>=20
->=20> sk_msg_free(psock->sk, msg);
-> >  kfree(msg);
-> >  }
-> >  + WARN_ON_ONCE(psock->ingress_size);
-> >  }
-> >=20=20
->=20>  static void __sk_psock_zap_ingress(struct sk_psock *psock)
-> >  diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> >  index 6332fc36ffe6..a9c758868f13 100644
-> >  --- a/net/ipv4/tcp_bpf.c
-> >  +++ b/net/ipv4/tcp_bpf.c
-> >  @@ -10,6 +10,7 @@
-> >=20=20
->=20>  #include <net/inet_common.h>
-> >  #include <net/tls.h>
-> >  +#include <asm/ioctls.h>
-> >=20=20
->=20>  void tcp_eat_skb(struct sock *sk, struct sk_buff *skb)
-> >  {
-> >  @@ -332,6 +333,25 @@ static int tcp_bpf_recvmsg_parser(struct sock *=
-sk,
-> >  return copied;
-> >  }
-> >=20=20
->=20>  +static int tcp_bpf_ioctl(struct sock *sk, int cmd, int *karg)
-> >  +{
-> >  + bool slow;
-> >  +
-> >  + /* we only care about FIONREAD */
-> >=20
->=20Nit: This comment seems redundant. The expression is obvious.
->=20
->=20>=20
->=20> + if (cmd !=3D SIOCINQ)
-> >  + return tcp_ioctl(sk, cmd, karg);
-> >  +
-> >  + /* works similar as tcp_ioctl */
-> >  + if (sk->sk_state =3D=3D TCP_LISTEN)
-> >  + return -EINVAL;
-> >  +
-> >  + slow =3D lock_sock_fast(sk);
-> >  + *karg =3D sk_psock_msg_inq(sk);
-> >  + unlock_sock_fast(sk, slow);
-> >  +
-> >  + return 0;
-> >  +}
-> >  +
-> >  static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size=
-_t len,
-> >  int flags, int *addr_len)
-> >  {
-> >  @@ -610,6 +630,7 @@ static void tcp_bpf_rebuild_protos(struct proto =
-prot[TCP_BPF_NUM_CFGS],
-> >  prot[TCP_BPF_BASE].close =3D sock_map_close;
-> >  prot[TCP_BPF_BASE].recvmsg =3D tcp_bpf_recvmsg;
-> >  prot[TCP_BPF_BASE].sock_is_readable =3D sk_msg_is_readable;
-> >  + prot[TCP_BPF_BASE].ioctl =3D tcp_bpf_ioctl;
-> >=20=20
->=20>  prot[TCP_BPF_TX] =3D prot[TCP_BPF_BASE];
-> >  prot[TCP_BPF_TX].sendmsg =3D tcp_bpf_sendmsg;
-> >  diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
-> >  index 0735d820e413..cc1156aef14d 100644
-> >  --- a/net/ipv4/udp_bpf.c
-> >  +++ b/net/ipv4/udp_bpf.c
-> >  @@ -5,6 +5,7 @@
-> >  #include <net/sock.h>
-> >  #include <net/udp.h>
-> >  #include <net/inet_common.h>
-> >  +#include <asm/ioctls.h>
-> >=20=20
->=20>  #include "udp_impl.h"
-> >=20=20
->=20>  @@ -111,12 +112,28 @@ enum {
-> >  static DEFINE_SPINLOCK(udpv6_prot_lock);
-> >  static struct proto udp_bpf_prots[UDP_BPF_NUM_PROTS];
-> >=20=20
->=20>  +static int udp_bpf_ioctl(struct sock *sk, int cmd, int *karg)
-> >  +{
-> >  + /* we only care about FIONREAD */
-> >  + if (cmd !=3D SIOCINQ)
-> >  + return udp_ioctl(sk, cmd, karg);
-> >  +
-> >  + /* works similar as udp_ioctl.
-> >  + * man udp(7): "FIONREAD (SIOCINQ): Returns the size of the next
-> >  + * pending datagram in the integer in bytes, or 0 when no datagram
-> >  + * is pending."
-> >  + */
-> >=20
->=20Not sure we need to quote man pages here.
->=20
->=20>=20
->=20> + *karg =3D sk_msg_first_length(sk);
-> >  + return 0;
-> >  +}
-> >  +
-> >  static void udp_bpf_rebuild_protos(struct proto *prot, const struct =
-proto *base)
-> >  {
-> >  - *prot =3D *base;
-> >  - prot->close =3D sock_map_close;
-> >  - prot->recvmsg =3D udp_bpf_recvmsg;
-> >  - prot->sock_is_readable =3D sk_msg_is_readable;
-> >  + *prot =3D *base;
-> >  + prot->close =3D sock_map_close;
-> >  + prot->recvmsg =3D udp_bpf_recvmsg;
-> >  + prot->sock_is_readable =3D sk_msg_is_readable;
-> >  + prot->ioctl =3D udp_bpf_ioctl;
-> >  }
-> >=20=20
->=20>  static void udp_bpf_check_v6_needs_rebuild(struct proto *ops)
-> >
->
-
-Thanks Jakub. All good suggestions. I've applied them in v6.
+Thanks and Regards,
+Parvathi.
