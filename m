@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D642E92B3;
-	Thu,  8 Jan 2026 16:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFE92DCF46;
+	Thu,  8 Jan 2026 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767891225; cv=none; b=oCb4ILjr70UJi7zXsakj0D0+sQ7haU2+7RtLLsokIAQJ+9F1A9Hdmw65FMO4+RAmtKGZaPBKRVaBEwN785P358erftkr+wk575sbxfGf3kEQWKQOv79VNzTgis4/A/jEpycQ44XCjMggQJfXMCrOMUdO9g1GLMtNEKk5Wvjhtfo=
+	t=1767891226; cv=none; b=M4i9D1iCHb+KBzjuCAqLL8+oNHKVx8CZDGpAfoLBq5J7oFpn9pWbr8q3yJK9IKpuJhYYy9NJhcRtqOuVE09zHPyrmujvGpOhHPV+gA5+rDZA9GwCDBFNgAr0w52qglBHjCw64n8vTKSgk9Cont+ORneugvvPcPmGt6CmZ/J1alA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767891225; c=relaxed/simple;
-	bh=i6dVRJG+I1R9SW2c8nfM6ffyXlvX60SGhGpE4GiquWU=;
+	s=arc-20240116; t=1767891226; c=relaxed/simple;
+	bh=m4uIYf7XRXQ4HudqrctBnnMhYPZl+6Vzv/7NAPsBjHk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Wukw9PRdZl1zSzG5GivgqU/x13HfrntZc/HAD2eOggKmI4W3mmVDiRuC4Ph11WS+je+ovWEj2XaC5baXfEiUGhzEsXhXUEtXRBLDfktZeVt1KxinSzXYhfFi33D20JgGh/BHqJMWhgvadhx1ZmZR49ObnQouiaru9EniUSt3uEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STeu9Ohd; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cCsyZJPxFZBbrYMOtfzKJPWzid+fQunTMi26/pziBxvpOTE3RJ14uMCTmFmlkc8ZOc+dfkKGRA2xnyCd6HUF3suNDfY9BsHFj3r5J43IjBLfplEkcYDHxGIbZixXzPi0VKF7yIzOFCf+V6qX8u1C7klAhD43AzDDNROlswaj8Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0hTXkKg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STeu9Ohd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2041EC116C6;
-	Thu,  8 Jan 2026 16:53:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0hTXkKg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4700BC4AF0B;
+	Thu,  8 Jan 2026 16:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767891225;
-	bh=i6dVRJG+I1R9SW2c8nfM6ffyXlvX60SGhGpE4GiquWU=;
+	s=k20201202; t=1767891226;
+	bh=m4uIYf7XRXQ4HudqrctBnnMhYPZl+6Vzv/7NAPsBjHk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=STeu9OhdZM+HFvZVZNNRbZClfRU5gLsbfnwwqLGLU1yQPOnSDQ+8jpLNKKXZlkZ4+
-	 77WZbPUqPesVNQUStmiLaiwH/dCx3BUDXhxfq9EmkPRPgYpFhWazWfStK5O54QKRkh
-	 IDIDCcz93wFO4HFWyRpx/59PT7ku+iv+/MB46idvH+AoxzlZrpPZDVOJIy+uF2obKb
-	 9hbyNQnYXwT4MjaTdVop5MNMkZZV27rriJWandy4sTGiuozjI/oVomHwBZlkEvwXco
-	 tSvTvAWACfzppEKv5BiSqfl2axbuq4x9YNsgpx7kykgnSO59DyUBCVBHH5Ec6mc0do
-	 crfXvZhf+xT3w==
+	b=l0hTXkKgc3KwpLWgIVq7oGmjDHOZr4MG+7HMUv4DfkcYra9NqnqwXw0MSKvU08aJ0
+	 dikv8LqWrsxtqImw7MwVyDBx13DnT0VznwHhpzJrAdd3ivhtaPOCqzrRa/fwQGUTFU
+	 rF2M9tB32+VvHOytIBZp80uGHSXDAl9BphphbE6Ii27xfQvo+VDfvCt0DU5e8OmOEZ
+	 Gm46OUjYNsTZWg5vmFjqWskXX6M9YEXGIkC0Us5KxIclJvFX0ikjzoQYPZBCNDHEP3
+	 bFdXnvSdCObY3rPChJQz9E7NdWzbzftl+CeBSLJvjeoQlJ1r8dLLjsfGFgpQaAO6ZE
+	 jXKUJSxN8L42g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B59BF3A54A3D;
-	Thu,  8 Jan 2026 16:50:22 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2AC23A54A3D;
+	Thu,  8 Jan 2026 16:50:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: enetc: fix build warning when PAGE_SIZE is
- greater
- than 128K
+Subject: Re: [PATCH NET v2 1/1] net: usb: pegasus: fix memory leak in
+ update_eth_regs_async()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176789102128.3716059.7380953613614818892.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Jan 2026 16:50:21 +0000
-References: <20260107091204.1980222-1-wei.fang@nxp.com>
-In-Reply-To: <20260107091204.1980222-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+ <176789102277.3716059.3717751225941024809.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Jan 2026 16:50:22 +0000
+References: <20260106084821.3746677-1-petko.manolov@konsulko.com>
+In-Reply-To: <20260106084821.3746677-1-petko.manolov@konsulko.com>
+To: Petko Manolov <petko.manolov@konsulko.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, stable@vger.kernel.org,
+ pabeni@redhat.com, andrew@lunn.ch, petkan@nucleusys.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  7 Jan 2026 17:12:04 +0800 you wrote:
-> The max buffer size of ENETC RX BD is 0xFFFF bytes, so if the PAGE_SIZE
-> is greater than 128K, ENETC_RXB_DMA_SIZE and ENETC_RXB_DMA_SIZE_XDP will
-> be greater than 0xFFFF, thus causing a build warning.
+On Tue,  6 Jan 2026 10:48:21 +0200 you wrote:
+> From: Petko Manolov <petkan@nucleusys.com>
 > 
-> This will not cause any practical issues because ENETC is currently only
-> used on the ARM64 platform, and the max PAGE_SIZE is 64K. So this patch
-> is only for fixing the build warning that occurs when compiling ENETC
-> drivers for other platforms.
+> When asynchronously writing to the device registers and if usb_submit_urb()
+> fail, the code fail to release allocated to this point resources.
+> 
+> Fixes: 323b34963d11 ("drivers: net: usb: pegasus: fix control urb submission")
+> Signed-off-by: Petko Manolov <petkan@nucleusys.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: enetc: fix build warning when PAGE_SIZE is greater than 128K
-    https://git.kernel.org/netdev/net/c/4b5bdabb5449
+  - [NET,v2,1/1] net: usb: pegasus: fix memory leak in update_eth_regs_async()
+    https://git.kernel.org/netdev/net/c/afa27621a28a
 
 You are awesome, thank you!
 -- 
