@@ -1,83 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8452327BF6;
-	Thu,  8 Jan 2026 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECE4242935
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 15:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767884741; cv=none; b=skxY24NuVgLr0A2pkWnxtAogDeDeenolGBvdgcJCKDFtLePpMbqA5KHnU7AL6oQF0ns7l9yfGL3b9j4qRB0fJw2gUzG9K9kkDAiwe3pKJCg71PQuFB328uD1VstR26n50W2uozlIsEUsn8P4BZv4Rhr/w+wOCbvFrbe9Q6+ILWc=
+	t=1767884851; cv=none; b=IW7c5ZP6mBC4a408AOaVc17FSYp0JXjVPnErbEGC0+KZLNFCjomtOjrDLjh8C8unuXWsO15ei+JQTzMYiW7EJGpkLiZouAoQ7Oj0luFrlLZNCa8/NSedbw1CnAFkAvZMD2aMfqXixlzYH4x0wQrqxksUOcqw43R8wyeaI1zES0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767884741; c=relaxed/simple;
-	bh=JhbaVv1PdLdceMg/5l3s3xkAwxQ3DqsArTD5uFDz5Zw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DuZHC7Fj+RB3QtJef8sD+UScl7w9jjKz42j/PWt6yCQMyewZHjO+GxrpBD0sCpypiXityzDIdoBWK+pxGa0NdvgPEF/229N8ksY7WUfG5MZ52xmjetUg/z95J66EI2I1it3LVmShlTpT+Aje7buLapLFhh51jOMmKptKyohB9Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDEZETrQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767884851; c=relaxed/simple;
+	bh=rVjW+7g08CsaF8/U5C2AIau2HipugOJgIASXicUAEIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ao3dKIUbrysNW47oj27sE/fkKehJ5jezA2o0J83W+1JPOXt/diO8+fjjSkamc6ogxNJKrDgROxMDGDzU+qHdP37WvwfodkAtIaMmD7lnU6jZKQvvp0EmkB0dCJByWvn68ytadQhV/IT6WHSLV6tWo1ZjFVyhEoC1goAYGirQsCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kiih61/M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDEZETrQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3FBC16AAE;
-	Thu,  8 Jan 2026 15:05:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kiih61/M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09CEC116C6;
+	Thu,  8 Jan 2026 15:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767884741;
-	bh=JhbaVv1PdLdceMg/5l3s3xkAwxQ3DqsArTD5uFDz5Zw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gDEZETrQ+Z9UPMytldJRovzTnLSjacFXt+Q+B+cfeE+T5YAwNxLbuBmm5nknDN4MH
-	 Rw3oTLL05HaAM2aBlgpZoz9qcS9HLs0A75NgCBSx+0qUpvbJUwQTIbpBXSSBDPsEMU
-	 tQ0eB3FB1ZVHuO3qjursuCtgYn3GGM3rcmd+JmG9xlEeElXrxRSUiiRM53XeTHhULz
-	 cEMd00ikEDxwN0+znh3T3oFeK3heIx+wK8kHlGP0goiSbzSC7Fi0VVz0WpTZCEWWng
-	 didFwhkUaSJ/RiyaKH3KXjQ9FktKJmNlSDStvejhEelIwyOblIeGa1YnR8Sh28AmlL
-	 K36vWk2VSQkBg==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 08 Jan 2026 16:05:08 +0100
-Subject: [PATCH net-next v3 2/2] net: airoha: npu: Init BA memory region if
- provided via DTS
+	s=k20201202; t=1767884851;
+	bh=rVjW+7g08CsaF8/U5C2AIau2HipugOJgIASXicUAEIg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kiih61/M5L1y+N813dg8NelXTuCXe6o9V2dm4tynnomud2ULI9buOkfQBLIOW6yyb
+	 U8C9dPSxKS8UbtJDvC0mzCpWxoHklbjg6m5W2MixJdXi9rl3tFQsQJDlZXOMuSo33k
+	 PWLwKfMwQlFmM179JxIw/aGXLeZaitKMwA48fhCtyoE9HKj9iHMqFweyTEBXw504bq
+	 lnwYxYrpjeM6cEHsdvDZvwGXcaOSz69o9Sknt6tGJiDzCqAU4mrtWTC0BorfuhtSbG
+	 r2QfnJ4qKhSdtBFlf3oSw/NACFGU05pst3Am5jHQfPNUITnIt8zg/M3S52gw+v5cPA
+	 0fKNyrbGRrcMg==
+Date: Thu, 8 Jan 2026 07:07:29 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Takashi Kozu <takkozu@amazon.com>
+Cc: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
+ <netdev@vger.kernel.org>, Kohei Enju <enjuk@amazon.com>
+Subject: Re: [PATCH iwl-next v2 3/3] igb: allow configuring RSS key via
+ ethtool set_rxfh
+Message-ID: <20260108070729.79575f9c@kernel.org>
+In-Reply-To: <20260108052020.84218-8-takkozu@amazon.com>
+References: <20260108052020.84218-5-takkozu@amazon.com>
+	<20260108052020.84218-8-takkozu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-airoha-ba-memory-region-v3-2-bf1814e5dcc4@kernel.org>
-References: <20260108-airoha-ba-memory-region-v3-0-bf1814e5dcc4@kernel.org>
-In-Reply-To: <20260108-airoha-ba-memory-region-v3-0-bf1814e5dcc4@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-X-Mailer: b4 0.14.2
 
-Initialize NPU Block Ack memory region if reserved via DTS.
-Block Ack memory region is used by NPU MT7996 (Eagle) offloading.
+On Thu, 8 Jan 2026 14:20:15 +0900 Takashi Kozu wrote:
+> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+> index da0f550de605..d42b3750f0b1 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> @@ -4526,7 +4526,8 @@ static void igb_setup_mrqc(struct igb_adapter *adapter)
+>  	u32 mrqc, rxcsum;
+>  	u32 j, num_rx_queues;
+>  
+> -	netdev_rss_key_fill(adapter->rss_key, sizeof(adapter->rss_key));
+> +	if (!adapter->has_user_rss_key)
+> +		netdev_rss_key_fill(adapter->rss_key, sizeof(adapter->rss_key));
+>  	igb_write_rss_key(adapter);
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_npu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+This is an unusual construct. adapter->rss_key is driver state, does
+something wipe it? It's normal to have to write the key into the device
+after reset but initializing the driver state is usually done at probe,
+just once. Then you don't have to worry whether the state is coming from
+random or user.
 
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index 22f72c146065998d5450477f664ed308b1569aa3..a56b3780bb627cc393b94210b6b5c72cc95baea3 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -519,6 +519,14 @@ static int airoha_npu_wlan_init_memory(struct airoha_npu *npu)
- 	if (err)
- 		return err;
- 
-+	if (of_property_match_string(npu->dev->of_node, "memory-region-names",
-+				     "ba") >= 0) {
-+		cmd = WLAN_FUNC_SET_WAIT_DRAM_BA_NODE_ADDR;
-+		err = airoha_npu_wlan_set_reserved_memory(npu, 0, "ba", cmd);
-+		if (err)
-+			return err;
-+	}
-+
- 	cmd = WLAN_FUNC_SET_WAIT_IS_FORCE_TO_CPU;
- 	return airoha_npu_wlan_msg_send(npu, 0, cmd, &val, sizeof(val),
- 					GFP_KERNEL);
+Note that netdev_rss_key_fill() initializes its state once per boot so
+it will not change its 'return' value without reboot.
 
--- 
-2.52.0
+Last but not least - would you be able to run:
 
+tools/testing/selftests/drivers/net/hw/toeplitz.py
+tools/testing/selftests/drivers/net/hw/rss_api.py
+
+against this device? Some more help:
+https://github.com/linux-netdev/nipa/wiki/Running-driver-tests
