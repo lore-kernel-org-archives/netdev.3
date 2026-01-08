@@ -1,69 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E022DB795
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 15:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3152D63E5
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 15:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767884703; cv=none; b=efMH8K7ycyPhv4uC3siLIXRLYRNgiL2N+cqVsvVcL2ZLeadlOETNl7NBXvV8B9AWWkbtz6qN8mtgRplC63C/9t5f7mMXY5DcOd8jD+4dHLMDn+idOBwQCUYy2FZEtrIMgc46npVLk5G1q25LVssv7uPaf/84jhLt6Ad8sBH5OK8=
+	t=1767884714; cv=none; b=ekMZylBDAh225/9XyzvRlM0fU8tA2CZnVHMkQfKwDhBNopq0mT0j3MJztS7cdT1VlcwpNfBT7GRcZxVCLwlwWY3wBO91aLI3IuYmL4UJIOQ0kdAz7m0HvdwL3mB6QCvLhP5qgjbjBQzyV9/0RZ7zBN9uNdyk3fcROeXddPTMSlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767884703; c=relaxed/simple;
-	bh=RGmmRSOekZ9dSwMwSZLBkzhaCG4B3yB6Z3uObL3WdfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WPNskkf9RNB8yx/cqO0CfbYysclPV0s2ikIKLqGYl1+YmOScM2ZJsZBNUzXplApy7i927fr2/q7QLBNpZAyN4pbqufvg5iEQabEHcFHtne6qrZ0wO86vxJRy14Xoxr9c3yd+5t1EztETYXN99hAq6uQFTqHCqEl7CHvd3yXohhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dPdY47mD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767884714; c=relaxed/simple;
+	bh=9y+gumv6+abQK3WrEmzubVcxZM5jnmgGM58KsYU56ow=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=W4lAzqSOtVpEol+ZWMEOWoai7wDjTC3L1V2gApJR+N1xPJBYHNbTjzKCe5Db9ucVSbcupIcZunk8SJh1SewmOtKV4pxOUcebdE2HUE925wO6SuAenOP2ns/dWDBdhCUBlxvBvcHsUz2VJl0/haK5ZlxdcVi+rKk9Kjh0ZAGgQj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAe4vl8S; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dPdY47mD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44BDC116C6;
-	Thu,  8 Jan 2026 15:05:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767884702;
-	bh=RGmmRSOekZ9dSwMwSZLBkzhaCG4B3yB6Z3uObL3WdfE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dPdY47mDYM/ZOdRmussvL0jQ5nswO4clI6ZQN71mcBr7JXT85xT+fBbNdwlIyPfIq
-	 QbP43ELD7V+B/rrU5jWxBY5L88B9PQJQDUnPpWMuYBoIsCWSgqvlB64aTxf/nq4mei
-	 F7t4YOeZ6mlPdNAExetVUXi6Ejf9hqIDL4Kmf2d5HEPqqrtY4C8gYPe6eKgmUEpKkG
-	 v+fOcbdIXu0e2IOWQ7IL/RNjsucZtVENMLU6hsG4xnRpyGvgBUimnNItvD3PbDFBTy
-	 HaYLS0geSops+1PXgaLCzoYmocS20i9eiXT2kHrHfidhqQF2gQEATrlxzwFP5XvlxP
-	 qhpE2cNl6LVTg==
-Date: Thu, 8 Jan 2026 15:04:57 +0000
-From: Simon Horman <horms@kernel.org>
-To: Joris Vaisvila <joey@tinyisr.com>
-Cc: netdev@vger.kernel.org, nbd@nbd.name, sean.wang@mediatek.com,
-	lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH v2] net: ethernet: mtk_eth_soc: avoid writing to ESW
- registers on MT7628
-Message-ID: <20260108150457.GI345651@kernel.org>
-References: <20260106052845.1945352-1-joey@tinyisr.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAe4vl8S"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-790647da8cbso36180467b3.1
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 07:05:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767884711; x=1768489511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P9SnUaQupDJTHWVBeAVtee0q7OFN0KAML/VstuXdPgU=;
+        b=PAe4vl8S8lkc7AKbWf7KHaJFL0bX5PbfYnDmJ+Wbdh5Zq/FoQPzJJjJuxZV6SEmquH
+         NQSbUhkFfQcgxwiYHJIDuQ8PLwTTqyHQMRuAGsuu5bn1f+aly/Rlbxq22d+5Wh7qu6oe
+         +RS49QVjFJIeRXuLNnsGyikoed++nyo8T3EDuHEHpZ3KbVvFBwyMC8Mi2rxF0ZSZgFI8
+         fFXG3bE9RPCgF6qzEBrVOk++msXNpyeWXQrCsM0SQae1lDplKIAmQ+rqfFmDxbaUSqF4
+         pvsOb+s92TocKIuo3AH67RCstYv4S6TTdW65p96LGhNOUgZT6H9MUfSj2aR+bTXe8n7C
+         P5eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767884711; x=1768489511;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P9SnUaQupDJTHWVBeAVtee0q7OFN0KAML/VstuXdPgU=;
+        b=bEbiOf1dA86zsG2PpomqNtOt5yzvAdtCftDLY47BtWJrvBNwPBD1JoDt47rhavUSpv
+         /SVMEWf4fm6XK+u/RUFDSw4yt3ahuRRMkww5A6J69Fr+jniHiTkz6V/x2KAEJJVRc08p
+         gJkFGHpOBD4FI5653GV4clBA+5rtXKeevGb1d+p6JNHVC120XaAUuFJxncE3voTPyWKz
+         ojdymaD6s5zJt/huq8XD7s4NbwUyVhPuVH/jorWGGegaHIpln+DvmIZFZzuSRNi3SU2f
+         VWllTn+GwsNWhf2meLPiD41FYK6uHdjU1FpI8QnavRo6HFDn6LVta0/4ogMMyIt23pxz
+         RH2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU+l43VEMcSSKOfVryQ+LVQyIIWa5FZonz1DkX6atX14KMQZDGXcFCcS0YWQGdS4p1QZXe3v2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ/36JL1cMTKVFUuNDzyggXVzSAmxZ+ERE1cRdGEy5Gy4/5baE
+	ySEj0sVwSDdmnxhQaH/4xSIBPlXejwgmthuHO/pqOnM2pCxd2YyC0HoM
+X-Gm-Gg: AY/fxX72jgYSgZc8UqRR+aadhvcKeWeSHXNrbJ8gmsHkHEwQARY8sKYz9cGgGXZRJpU
+	y8u78qIR7NZRd7LT9Wb5gXWEM7EbuLCVA+NaYYaZSarX6n1aWQO038I2bT+fWBmaipPKyLlNVYD
+	Q+RdGxUjqFWLJqyKd8E17IKfs8o8qmcQ2C6myRv5z8wMvHpn+ITu+dblC5u9+mmeof4gH9OkPm5
+	H0GyXlzNpD2CgN4xGoPgOQalvhZvdfE2t91irVEK3DJW9yYGdHwRJwiNosNsdCY5TnqizK+MtCn
+	KR+b2uza4UgS6eENmF5LamrruXtMiHK3Aw65D4NESzJJb3s+JrkRX3Urx/gsr7JvVcOsbysFl1R
+	SpOIKRODNQNTT49l7By0BW+TsxF/ictXfxpVUSgT5J4c1AdMA/k/NtIlvcz6y7fhdViKJusFcZD
+	vdipjN0lukNJK6GOk9o9+FeDXDeK/ymKP9prdhJbWWaEfg6a7A20njRVPVnRA=
+X-Google-Smtp-Source: AGHT+IGKh8OH5jNGc9Klaj9frs4A/TPDhnmQu2N/mh5aKvUE5uhrNeLEu0GOrcZhHASHbyGkkVHD6A==
+X-Received: by 2002:a05:690e:1517:b0:645:550e:efb5 with SMTP id 956f58d0204a3-64716bd2ef5mr5830319d50.52.1767884711297;
+        Thu, 08 Jan 2026 07:05:11 -0800 (PST)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-790aa57a73csm29893997b3.19.2026.01.08.07.05.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 07:05:10 -0800 (PST)
+Date: Thu, 08 Jan 2026 10:05:10 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Mahdi Faramarzpour <mahdifrmx@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ dsahern@kernel.org, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ kshitiz.bartariya@zohomail.in, 
+ Mahdi Faramarzpour <mahdifrmx@gmail.com>
+Message-ID: <willemdebruijn.kernel.3d34f04282b4@gmail.com>
+In-Reply-To: <20260108102950.49417-1-mahdifrmx@gmail.com>
+References: <20260108102950.49417-1-mahdifrmx@gmail.com>
+Subject: Re: [PATCH net-next] udp: add drop count for packets in
+ udp_prod_queue
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260106052845.1945352-1-joey@tinyisr.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 06, 2026 at 07:18:28AM +0200, Joris Vaisvila wrote:
-> The MT7628 does not expose MAC control registers. Writes to these
-> registers corrupt the ESW VLAN configuration. Existing drivers
-> never use the affected features, so this went unnoticed.
+Mahdi Faramarzpour wrote:
+> This commit adds SNMP drop count increment for the packets in
+> per NUMA queues which were introduced in commit b650bf0977d3
+> ("udp: remove busylock and add per NUMA queues").
+
+If respinning anyway, may be worth adding the note that SNMP
+counters are incremented currently by the caller for skb. And
+that these skbs on the intermediate queue cannot be counted
+there so need similar logic in their error path.
+
 > 
-> This patch skips MCR register reads and writes on MT7628, preventing
-> invalid register access.
-> 
-> Fixes: 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
-> Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
+> Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
 > ---
-> v2:
-> - Add missing Fixes tag
+> v4:
+>   - move all changes to unlikely(to_drop) branch
+> v3: https://lore.kernel.org/netdev/20260105114732.140719-1-mahdifrmx@gmail.com/
+>   - remove the unreachable UDP_MIB_RCVBUFERRORS code
+> v2: https://lore.kernel.org/netdev/20260105071218.10785-1-mahdifrmx@gmail.com/
+>   - change ENOMEM to ENOBUFS
+> v1: https://lore.kernel.org/netdev/20260104105732.427691-1-mahdifrmx@gmail.com/
+> ---
+>  net/ipv4/udp.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index ffe074cb5..399d1a357 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -1705,6 +1705,10 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+>  	unsigned int rmem, rcvbuf;
+>  	int size, err = -ENOMEM;
+>  	int total_size = 0;
+> +	struct {
+> +		int ipv4;
+> +		int ipv6;
+> +	} mem_err_count;
+>  	int q_size = 0;
+>  	int dropcount;
+>  	int nb = 0;
+> @@ -1793,14 +1797,28 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+>  	}
+>  
+>  	if (unlikely(to_drop)) {
+> +		mem_err_count.ipv4 = 0;
+> +		mem_err_count.ipv6 = 0;
 
-Hi Joris,
+Simpler to avoid the struct and in this branch scope define
 
-While I think a minimal patch along these lines is appropriate as a bug
-fix. I am wondering if, as a follow-up, consideration could be given to
-registering alternate phy ops for MT7628. This would push the conditional
-handling to probe rather than calback execution time. And I suspect it
-would lead to a cleaner implementation.
+int err_ipv4 = 0;
+int err_ipv6 = 0;
+
+>  		for (nb = 0; to_drop != NULL; nb++) {
+>  			skb = to_drop;
+> +			if (skb->protocol == htons(ETH_P_IP))
+> +				mem_err_count.ipv4++;
+> +			else
+> +				mem_err_count.ipv6++;
+>  			to_drop = skb->next;
+>  			skb_mark_not_on_list(skb);
+> -			/* TODO: update SNMP values. */
+>  			sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PROTO_MEM);
+>  		}
+>  		numa_drop_add(&udp_sk(sk)->drop_counters, nb);
+> +
+> +		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_MEMERRORS,
+> +			       mem_err_count.ipv4);
+> +		SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_INERRORS,
+> +			       mem_err_count.ipv4);
+> +		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_MEMERRORS,
+> +			       mem_err_count.ipv6);
+> +		SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_INERRORS,
+> +			       mem_err_count.ipv6);
+
+Only add if non-zero.
+
+>  	}
+>  
+>  	atomic_sub(total_size, &udp_prod_queue->rmem_alloc);
+> -- 
+> 2.34.1
+> 
+
+
