@@ -1,131 +1,252 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D691633123A
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 08:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F64D3816E9
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 08:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767862521; cv=none; b=aTMcC8KejU/naQypJ6dOXQLtMhURKRGwp88TzeYYR0lIg5jetsohCXpttkRILu8tm6v9I8HitdO0yLjtOL9fvoAc+IhTjt2oUO+op+KrZIOJVOnS3Ghhd50uaAv9a0t2j/ZET5HLy4Zk8Y8PDwYsnC3khbAXUt6EeauFEGJgVHc=
+	t=1767862771; cv=none; b=OQC9DeFJ80YxsTo4L/M7N8ddhYZvUnuGPmji8C8SNY31T+L3NQoN6xE2LqgqYNZ2oZnL8aq8tCMcOaaNsm0dVhJdw7WmL5pD0IqJczjSXzLwbnebLI9Iy6dvgWhODt7iMGbsY+0el38wN+HguJ5aFaYLfmBKfDModzEXH0K+pt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767862521; c=relaxed/simple;
-	bh=bFmLVSAcLFz2S+ZEsibt6MqqAQ0+Kcz/e6Xn5wGq9BA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gov92KDOiMoTE2aLNTzwnFClpiulWzNdEkTsTLDWLTjCIf+4w6FOPM1hl6DaVwdLMWY4GdhjbyrdvXMtuo264lvyVL4OV3+Uws4K+09HNzqTfzh4FrqTq0xyMfSn08M56Zs9oLYz1vUlETuCCIjC3E9T3oiM0bi54V6n9qWVGqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aBaY2P0V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=j/Mpn09K; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767862771; c=relaxed/simple;
+	bh=YHlE0d4Zdg3zGpi7vnXaRyEcbTQU0hyKWGZwGGtXrSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rc3Qe9ewCrcJvP6Wr1gGuOGO4OVOZjlKvUMMtXaaXDnRGNXdM/TTHk5+ZwSlL5ScS35Rl0xTUgIFjaYwpm0drmrtH+jj51TEZPri088RrBta4/QD+Ky8jgJl56Nfpgz6yozl0zcNnEE/uPRUNkOUln9Fe70sqovV6s8fbu1XaTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q5ew7+gP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TpiR/AZj; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aBaY2P0V";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="j/Mpn09K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767862512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
-	b=aBaY2P0V3vYJDAElQaHSKD5qkRubewg/EpIclUiCCFHS1a28lMgjNhDaASM50DCXogK4PF
-	MPzm0wMEs6yG1hd/ifcsIgFTTOaY+LDos+u3TnaKpMtYVCSsIt8VQd3ksPF4Do+i6jje7B
-	uIF4TRP72SU8ZUkE58g8HdFRfZxUdFQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-gLN119ONPYyhsysy-AHj6Q-1; Thu, 08 Jan 2026 03:55:11 -0500
-X-MC-Unique: gLN119ONPYyhsysy-AHj6Q-1
-X-Mimecast-MFC-AGG-ID: gLN119ONPYyhsysy-AHj6Q_1767862510
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d3ba3a49cso26161775e9.2
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 00:55:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q5ew7+gP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TpiR/AZj"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6087QBlR1258526
+	for <netdev@vger.kernel.org>; Thu, 8 Jan 2026 08:59:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	W2zJ4MmBHNV6iOH+dkgfjuEvhOikcvGRf00d0zwDe6E=; b=Q5ew7+gPvSW9mncm
+	F8RfLr5tQRPOkbtavnM7YN/f8Bt9awTCBEUDwhtPzQ+K4XMyje09PSOqA11FXX/T
+	m3UUAZnJVRyvRNHEG8Qorff0g3b8XIopMpFUUMwB5jKHJYSFd7SSsEQvnAAaKI4w
+	r4kK4klhGFa1Me4X3JuzKqc0pucPdIuIaWfYxKiNitoevdZ0DjefJGyBMfYl/qXt
+	8hSFaQPHt6mStl2DpkKU6yo/UFYO8O6/VUaZWV9Oip1EfSys83N5+Mw1wL0KsNjA
+	z6hWf7LCqKqetACoxnBYoe4Q5eR+D0TnJjuDV1dl58ZZZrwC/d8BBCUUmYQwXQaE
+	gJmNuQ==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bj86gr8ss-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 08:59:23 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-88a360b8096so77759836d6.0
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 00:59:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767862510; x=1768467310; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
-        b=j/Mpn09Ksl06ge3iPfRKBIsO/2A0A2VvAGI/K46hwkoPVn8gJgJvo6G8sbVpiCn8ZH
-         i6j1dWLknVqzfcw01LQEBv3g/BBgN/UsPGJVzDSRg6tVCoENtr3BZ14sWCLm95xhiW87
-         02VEErM9RMC/FVM4+3CcIdtOKrVg4bp8+wx346BGP2EAXuGvY9ze+/HYo1PRCju2ibmJ
-         sjfa91fNrTBHJtcpKBqngnSVhmk5uSQhIxIHIG/AdyowXCdKA3n32ldXUsOZ+0040Fhi
-         DLXx1ynwc9SmO5eX3lLWAauEo/ASSgBPwP2ugBFhMuNx1DzsRMMXUAelcDwzQNR+4z4A
-         nz8g==
+        d=oss.qualcomm.com; s=google; t=1767862762; x=1768467562; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W2zJ4MmBHNV6iOH+dkgfjuEvhOikcvGRf00d0zwDe6E=;
+        b=TpiR/AZjAEbPz1ufTkh1t3QlzWStNyaDUcXq7iXPQB21AdRICkcRMQ5+xInVIkUPWV
+         4kXBsmiGNvFFc3BaZbx6rJmxZWpT0Bd8fM85tK+9wNOnr5sC/gXOxzGowOh/EmW20FLk
+         EHDcamOJZKZNRpGriTorai761SzwcFeznidBmYml29DcWlBM/A+iRSqG6D8Z/pxs4DKT
+         CHUNonDLZVXMoDKVLZhY65hkZHbw9fCdvU8n0wMFi/hclrb7Ks1Xs4w4H57yE3/t8PDy
+         s+gwOyYSh1GljWsXuSJgSRUOkxwOl+UdEGumGKFUWSY0AIYJ3DD9ZSCxx7z/Q82GSJpl
+         qz4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767862510; x=1768467310;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
-        b=A0/6zYr2SliOcxQJhAAiCrpASElKbpSmA1Yf7TXqPysUO5fHv3TU+MHODE5zwhEIRV
-         oeqyosCB04STXDYxjT04Mq0/w5s8R/qgihJpP/RSV4b/aBJb6JnpzG9uZdKb4MbVhZg5
-         nQtAHpOymx1NlvM+L1nydek6w3o9XdvPhgz2HHXpboY8Ob5EQrt5tEyunE7AIuOoWSfg
-         iqYSeYT9U/O56xINZCFvxRTZs1CXkApGNHfDqDZkN1m89DsDWdnXf3cSPGsCefrkkzbX
-         cY5qZ+gDvpDJLasnSxcz/o3b8Op6fdVRmEaljz+MVFeuvceku37Fdl3H+g2Da7j+rJLe
-         SbUA==
-X-Forwarded-Encrypted: i=1; AJvYcCURzuSB8b+j7XsPrzQ43htUW/Fr4sKU+75oGnorojCN1pLSmjghgc1LaVKN8IRRCUDDLLw7aJs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSQr+yC9oBWnSXlcMikQfNv4go83vG5fxxjp+4rqbr80T9hAJk
-	44utIB1E3qGLc1SErjHM+mh+nHyiDuViPcQKiu6DG9UHDVrcjNUp1PmMAe1YuftS3sO1rlzH8au
-	4mFQtGti4i0q0bveocnYZSvL436s03opA6IOg+8Lg2qFzV5j0oJogGKk6rA==
-X-Gm-Gg: AY/fxX6ud1QHovp6iRdOM7XUPEykSsenxnm6KHvHxh0WGMTVVo/QC9U7H6UDRR53j0s
-	WPNtgEJTlqhfQIg4rawy2oM8gbUq4T4e2r+CGKBpNxk5wwugIZlI2waAPXsVOqNwCXpghHvI5dH
-	ZtRMH9giqy0nibKE+2WkVWqeYWE/Ji0u9eSMFKtkpzw6JWdTneY2L0u8DX+1QbJiOD8mZ77HI9+
-	6UtBHjVVRs8TRHObH6FKDJ0mDT/LJa+jP4GPe5D1oDYVo7bI1TKRgSPd/JQcBp6JnmF7S0mCJ85
-	7ZJY5+wEfB4yUS+C5et9CN6SWcCqYytLXkFkZBtE1oWZugMXZ9FAjC/cpPHtS5ZNcnJUlZ97BNa
-	4XbyU6taTk3Cg9A==
-X-Received: by 2002:a05:600c:348f:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d84b4113cmr64178075e9.34.1767862510111;
-        Thu, 08 Jan 2026 00:55:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGaTX6Vb9Xp6nT3BQIbPf9uYgZ4XxnPVNIfnIPI+U4WUs2U6AT0/uTauIZVS1q7u+CvwWYylQ==
-X-Received: by 2002:a05:600c:348f:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d84b4113cmr64177785e9.34.1767862509768;
-        Thu, 08 Jan 2026 00:55:09 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.149.145])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5df90dsm14458469f8f.20.2026.01.08.00.55.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 00:55:09 -0800 (PST)
-Message-ID: <9f0fffcd-8e2a-4ae1-b89d-ae73dba9e1be@redhat.com>
-Date: Thu, 8 Jan 2026 09:55:07 +0100
+        d=1e100.net; s=20230601; t=1767862762; x=1768467562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=W2zJ4MmBHNV6iOH+dkgfjuEvhOikcvGRf00d0zwDe6E=;
+        b=EEVlP57Z3PBhPGj+7KggZq5eOg/mqzzj6LGq1qX49QO2cvn8YRxjXhGAGzsdQPLvXW
+         SX4wQI6AEAuF8/3I/Td6LiAGLBJHu5V8efJra0xxSHG/tK5frXmihnwe5qBkMEn3Fya+
+         Ip2htnQl+AzuKn1Rhcp4nEi1hJgyQlTOdMpRTwMIh2d8xzcJNwRTvgWoxUOMaiwm4PMH
+         p6gkXP3bsU4kK/kGGsuQV14zEImQYAPYN/H4MEdpOefQ3+E3XxOypMnaZ6+HC0kRZkl4
+         w9w41fheTbkcx7DDNoXfDZiTPbPOoAwmcjHmhKED9eMId5njP1V02OiDyAfWXcRZMujw
+         Jt5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVzdRij5yAN+TA9VrSLBhE6ZZkqazONDIFzDlOT7HIINQ1IkJHQWuGQ4/kHRO3UVj0ZFPQOwr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9T/1ivCIonEOCOYzsJW/WCVNSGk7cG20Rkmeurd3DCAg78NbX
+	HPhwoOClYwb9Us1FkmYQLdClZqHo3KrnUcCt2KaQRVklppOCEe7zwpnF2y9rd1Gp/1A6E5IvhTG
+	UAdvpLDGom+lLD4UR7DiHlED3IXMTMKNfiwF0s9tahfD+4hixXJ5gRCZR89HZWi6QVPYPMxcTDr
+	omSvsgm9bp5TbkTBs64wK+PvPxGM9ZhPAXlA==
+X-Gm-Gg: AY/fxX6ofaV5PfSM3k0gebio2t2ZIystzYcmqQgWsiJMX5cSeDqAfh9bG1RyAfcvqkY
+	WEOonRymAnJfsDUlX44jS1zglMvyOihXLNfBkhL8wF1OuVa/9uoFO4THwqUm5hv7/wY6nyMEMgR
+	XjKtJw857s+lX0UhkAQvFW0DeG2cRjMZy2/gAiA3cJSp5Ejh7NIxPMb7gRop0y6otRA4hgyB2ME
+	g8tDu8BiAa4EZd5uPer6lzuJDg=
+X-Received: by 2002:a05:6214:5a13:b0:88a:2fb5:a085 with SMTP id 6a1803df08f44-8908429d1bdmr68994446d6.63.1767862762414;
+        Thu, 08 Jan 2026 00:59:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHD08pztITad85dXLvvLj/zaVI7S1hQWKy76WyLIAObgQ5gJ5PNnIvzvVBmR/unLMMKb1PuoQDxIPtYho/Irg8=
+X-Received: by 2002:a05:6214:5a13:b0:88a:2fb5:a085 with SMTP id
+ 6a1803df08f44-8908429d1bdmr68994246d6.63.1767862761950; Thu, 08 Jan 2026
+ 00:59:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/2] xsk: move cq_cached_prod_lock to avoid
- touching a cacheline in sending path
-To: Jason Xing <kerneljasonxing@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, bjorn@kernel.org,
- magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
- jonathan.lemon@gmail.com, sdf@fomichev.me, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- Jason Xing <kernelxing@tencent.com>
-References: <20260104012125.44003-1-kerneljasonxing@gmail.com>
- <20260104012125.44003-3-kerneljasonxing@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260104012125.44003-3-kerneljasonxing@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <63fddbfb.60e7.19b975c40ea.Coremail.slark_xiao@163.com>
+ <20260108020518.27086-1-ryazanov.s.a@gmail.com> <20260108020518.27086-2-ryazanov.s.a@gmail.com>
+In-Reply-To: <20260108020518.27086-2-ryazanov.s.a@gmail.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Thu, 8 Jan 2026 09:59:10 +0100
+X-Gm-Features: AQt7F2qaLtMgbw-nlldBcRtYDWUYk02042kppIpDTdXRJEkqAipSIXtzn8PNruc
+Message-ID: <CAFEp6-17zHKA+88FfTqUKV44O18sg7Ow2HAt05ucucaXjXbSKA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/1] net: wwan: core: explicit WWAN device reference counting
+To: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        netdev@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=ZNjaWH7b c=1 sm=1 tr=0 ts=695f71eb cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=EUspDBNiAAAA:8 a=ariseCS8t_dG9Y59fBMA:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-ORIG-GUID: fXD9YJn_P5059xqhCUhElmgugctubgzY
+X-Proofpoint-GUID: fXD9YJn_P5059xqhCUhElmgugctubgzY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA1OSBTYWx0ZWRfX9E7jUEwrxiIc
+ /i0ehP+UdkFTca8Y8lK2mAMNaRwstR4mdeeLsmRCjSUHpB2vVmHhgXwJnHI6TBK5VOgudhpcMeS
+ 9fM/dxq9OPMkQiYlZ8T08FztNEV8+erw5bFrx2zk42vbJLca6v+Z5Rq0c35uUdy5W2FL42yJBxd
+ 8JlXm+zP2v9mCa+4GImWKtPxrcNSH5EBRe9O5fT36Pxk3WIKSWxaaibtyjJ7Emd5nKD+jbwwEsW
+ 3Y3g9y0PVizDBb8Q7sGljts2CL1FmbXL1ptTQeoRy0PQbRyaLR/XyE2fC7uhgon0X2WALEjFTO/
+ LOpdqi1OKzfBanLqA2TfKRGR2WHWAZ7EYiAwQSK9gsRKdKg0KqyyRi6Zygt94cv70Zzt65YUgty
+ sFDnOPw7R+B5L60lkNKZrAkr/9qTnuF0WfcFrekQomRipZxDpKr66VGLpxCqFZkkCY9qTRtpzCr
+ tur8Vn/tMNEz/YzAfCw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_01,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
+ adultscore=0 clxscore=1015 phishscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601080059
 
-On 1/4/26 2:21 AM, Jason Xing wrote:
-> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-> index 6bf84316e2ad..cd5125b6af53 100644
-> --- a/net/xdp/xsk_buff_pool.c
-> +++ b/net/xdp/xsk_buff_pool.c
-> @@ -91,7 +91,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
->  	INIT_LIST_HEAD(&pool->xsk_tx_list);
->  	spin_lock_init(&pool->xsk_tx_list_lock);
->  	spin_lock_init(&pool->cq_prod_lock);
-> -	spin_lock_init(&pool->cq_cached_prod_lock);
-> +	spin_lock_init(&xs->cq_tmp->cq_cached_prod_lock);
->  	refcount_set(&pool->users, 1);
+On Thu, Jan 8, 2026 at 3:05=E2=80=AFAM Sergey Ryazanov <ryazanov.s.a@gmail.=
+com> wrote:
+>
+> We need information about existing WWAN device children since we remove
+> the device after removing the last child. Previously, we tracked users
+> implicitly by checking whether ops was registered and existence of a
+> child device of the wwan_class class. Upcoming GNSS (NMEA) port type
+> support breaks this approach by introducing a child device of the
+> gnss_class class.
+>
+> And a modem driver can easily trigger a kernel Oops by removing regular
+> (e.g., MBIM, AT) ports first and then removing a GNSS port. The WWAN
+> device will be unregistered on removal of a last regular WWAN port. And
+> subsequent GNSS port removal will cause NULL pointer dereference in
+> simple_recursive_removal().
+>
+> In order to support ports of classes other than wwan_class, switch to
+> explicit references counting. Introduce a dedicated counter to the WWAN
+> device struct, increment it on every wwan_create_dev() call, decrement
+> on wwan_remove_dev(), and actually unregister the WWAN device when there
+> are no more references.
+>
+> Run tested with wwan_hwsim with NMEA support patches applied and
+> different port removing sequences.
+>
+> Reported-by: Daniele Palmas <dnlplm@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CAGRyCJE28yf-rrfkFbzu44ygLEvoUM7fe=
+cK1vnrghjG_e9UaRA@mail.gmail.com/
+> Suggested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+> Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+> ---
+>  drivers/net/wwan/wwan_core.c | 29 +++++++++--------------------
+>  1 file changed, 9 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+> index ade8bbffc93e..d24f7b2b435b 100644
+> --- a/drivers/net/wwan/wwan_core.c
+> +++ b/drivers/net/wwan/wwan_core.c
+> @@ -42,6 +42,9 @@ static struct dentry *wwan_debugfs_dir;
+>   * struct wwan_device - The structure that defines a WWAN device
+>   *
+>   * @id: WWAN device unique ID.
+> + * @refcount: Reference count of this WWAN device. When this refcount re=
+aches
+> + * zero, the device is deleted. NB: access is protected by global
+> + * wwan_register_lock mutex.
+>   * @dev: Underlying device.
+>   * @ops: wwan device ops
+>   * @ops_ctxt: context to pass to ops
+> @@ -49,6 +52,7 @@ static struct dentry *wwan_debugfs_dir;
+>   */
+>  struct wwan_device {
+>         unsigned int id;
+> +       unsigned int refcount;
+>         struct device dev;
+>         const struct wwan_ops *ops;
+>         void *ops_ctxt;
+> @@ -222,8 +226,10 @@ static struct wwan_device *wwan_create_dev(struct de=
+vice *parent)
+>
+>         /* If wwandev already exists, return it */
+>         wwandev =3D wwan_dev_get_by_parent(parent);
+> -       if (!IS_ERR(wwandev))
+> +       if (!IS_ERR(wwandev)) {
+> +               wwandev->refcount++;
+>                 goto done_unlock;
+> +       }
+>
+>         id =3D ida_alloc(&wwan_dev_ids, GFP_KERNEL);
+>         if (id < 0) {
+> @@ -242,6 +248,7 @@ static struct wwan_device *wwan_create_dev(struct dev=
+ice *parent)
+>         wwandev->dev.class =3D &wwan_class;
+>         wwandev->dev.type =3D &wwan_dev_type;
+>         wwandev->id =3D id;
+> +       wwandev->refcount =3D 1;
+>         dev_set_name(&wwandev->dev, "wwan%d", wwandev->id);
+>
+>         err =3D device_register(&wwandev->dev);
+> @@ -263,30 +270,12 @@ static struct wwan_device *wwan_create_dev(struct d=
+evice *parent)
+>         return wwandev;
+>  }
+>
+> -static int is_wwan_child(struct device *dev, void *data)
+> -{
+> -       return dev->class =3D=3D &wwan_class;
+> -}
+> -
+>  static void wwan_remove_dev(struct wwan_device *wwandev)
+>  {
+> -       int ret;
+> -
+>         /* Prevent concurrent picking from wwan_create_dev */
+>         mutex_lock(&wwan_register_lock);
+>
+> -       /* WWAN device is created and registered (get+add) along with its=
+ first
+> -        * child port, and subsequent port registrations only grab a refe=
+rence
+> -        * (get). The WWAN device must then be unregistered (del+put) alo=
+ng with
+> -        * its last port, and reference simply dropped (put) otherwise. I=
+n the
+> -        * same fashion, we must not unregister it when the ops are still=
+ there.
+> -        */
+> -       if (wwandev->ops)
+> -               ret =3D 1;
+> -       else
+> -               ret =3D device_for_each_child(&wwandev->dev, NULL, is_wwa=
+n_child);
+> -
+> -       if (!ret) {
+> +       if (--wwandev->refcount =3D=3D 0) {
 
-Very minor nit: moving the init later, after:
+Looks good to me, though I=E2=80=99m not sure why this wasn=E2=80=99t the i=
+nitial
+solution. I=E2=80=99d suggest adding a paranoid WARN here, just in the
+unlikely case there are still ops or wwan children attached.
 
-	pool->cq = xs->cq_tmp;
 
-would avoid touching a '_tmp' field, which looks strange.
-
-Please do not resubmit just for this. Waiting a little longer for
-Magnus, Maciej or Stanislav ack.
-
-/P
-
+>  #ifdef CONFIG_WWAN_DEBUGFS
+>                 debugfs_remove_recursive(wwandev->debugfs_dir);
+>  #endif
+> --
+> 2.52.0
+>
