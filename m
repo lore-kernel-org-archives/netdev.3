@@ -1,150 +1,146 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4A047423C
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 11:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4407F426EBD
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 11:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767872598; cv=none; b=YRZG4WyAq2N4QZgUuYaHPlVU9zi/w2NTOQoVLvyrZQkBfPtRDETKtEvZW20P6XC8SIQs3sVpv48wblnGP0zGl2EW+j6LdwW90OunI/ioIexHN1nuJVx0/DEOihIe95dTJKlCVVUKqRsrd94MB5PCmdCrRnXrJLFus9MND/lWHYk=
+	t=1767872672; cv=none; b=at4o/QkypcLCyOs6F4MSLiuRK1Doyow9cmR2c2nqtq1BlfERiuqVY/cPDmer0oriEvNPEvl+KJqlWzf8VMxU6Lb2BYSH+f203tBTVTgVDR2GaNquQhFTHqxw/aOXP314aCDpCIFkVUh5od7fZ2uCcr6ENSLisEpkWQf0ATq4Jgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767872598; c=relaxed/simple;
-	bh=8E1ysSUShJ8p6nlzz4eEEoUf1cDKgDwOfnAJUPcBZHs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sL5oJgjMQhyLvPP3OrFh2Y4L9sLvkjrsMcoIys9G02Qbn8v79OtuAamoK6DrWX8eIYQoiZQhQFL/BaHcbNcQhIsKUd2jXWxOHhIbXlG5y83eTraMXXCk9xvWAvN1pvDHEII2hmD4008s4X+EKRjX3Tl8LEoH0905jK0Y/wT3psA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7c6cc44ff62so2369484a34.3
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 03:43:14 -0800 (PST)
+	s=arc-20240116; t=1767872672; c=relaxed/simple;
+	bh=MhjOQ6tmOpwUURIT+Tj/wOwtK7iu+4OcYSITUD2+mYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lJJ6EnIpKaLVH3dp77aSpswhCCWrNqkenmVnJutMNHtDP2SPQjRyi4CfrERtYn+2AGNQY6Z9iz+j79SZsmkVhFD43+Dm/JOhaeYJQJnUUeTpoZcfzY+tPmStPGQB9HHT+UHvfgAOyfjdlfgJE0xdVzJFC+CMM6AEIYRInH6fzFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dhj58B8q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lv3afKew; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dhj58B8q";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lv3afKew"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767872665;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=G1ixihK0gQ+hFNZb+Yl0BISPWkVFMXZp1kkOJZgBibE=;
+	b=dhj58B8q6Ok3URHNwCTlGAPytgA6AEKUspzSQ4pSNmTucOkcAxkVt7RXnFkWTqzZBCaV5G
+	WvGPOtDJ3qEwnABdBm+tzA/aNC9cpOFbSU2jWxRJ2yirITti8e+SPqSB+bb6kePoD47l5+
+	28t23a4dWFpZVcHeSu9Sz+eBxdJHA3U=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-Yx3wUOgfNym4z8Ir3nkJbQ-1; Thu, 08 Jan 2026 06:44:24 -0500
+X-MC-Unique: Yx3wUOgfNym4z8Ir3nkJbQ-1
+X-Mimecast-MFC-AGG-ID: Yx3wUOgfNym4z8Ir3nkJbQ_1767872664
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477b8a667bcso34845645e9.2
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 03:44:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767872663; x=1768477463; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G1ixihK0gQ+hFNZb+Yl0BISPWkVFMXZp1kkOJZgBibE=;
+        b=lv3afKewWf2tMrNUctgw3sC3w23e2QSbxi/4iwozfveSahpZ1lpDtxQ0e9f9f0Iwaw
+         Wc1E3d+v87PgHm6SBQKtW2Ah63VPEEOdxxZsej6De8EJiVlFb8J+Iz+AiqNrnjHj7E1v
+         zsagI5CvUw0lA3ka1eUpidY68iqaNHB6OwGVhEi2HzJr7dgFncB+ri841Z5gXm4jgcld
+         nLR/8vwHsAz9o+QAxZdzom8lxrbIxXtmnRd7lIQeEpLGPCscC/V1LMKEPijO7aqAFF+9
+         iCzbEKu//cB0LgTpoRsY5KC373lnufhj4V8IzyCaKHENnZt7I1lQK8L84phTMq/L/Pdg
+         TQIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767872593; x=1768477393;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1767872663; x=1768477463;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LLl2yTmIyk/u0fY0OTkeSRaVcVv4cgEfyMzNgksSQTs=;
-        b=EFUzZbQSSXxC5Cc0APsOhhWPkc2bMJoIapTHJC98NzFG4BsnAQ6b6l1ENrMQBKaqCv
-         1mwSSObhPgWfb2OBfHqPB1+GPrzKccFkokJfwFaHqv/xZ1bL0YlPwiz3mTyD+bUnmfk7
-         +YbmV8jpaxQAr516DxwRQCvQtp47O+xBoJU6IRNOJnN1gpgyXHVbU0EVjas7op0V20dw
-         mMLpagbAX9DBF1PwYHrkSVCNeoebI8WFGX6ldm+nT8BNbnt7oFBn/AVtQMAeZxkQPtKD
-         Ia8WhxCZEqEqvR7AR2QtWp49F/gmCNuW4RD+xjiOSU75pfNAXuNy+7nOFQOIsCtaP7Ek
-         MVnw==
-X-Gm-Message-State: AOJu0Yx8P0QmxUXoXIAtrh0RtUSmavcGiahO5dWjWDPxmSqW8X3Q5KQd
-	a0xVtvUV3sGaogDe9UHevPfj8P0Z7MzxE0tQKi25tOPEV7yOSwY+0saG
-X-Gm-Gg: AY/fxX74lbgKTTyk7vnM8XgBEc27xAqTI+WnVCbtYFi5/bC9j1rWoC4gxDhYloivIzB
-	6ZiP2FscGxRXye9XnKiAD93ALN0kNj9lxGeNC+AjKJA9IUN6HnFTb8OWeVputWjOUVl6jYpLd1H
-	lUb82Qj8kJUqL/iH/+60DR6LAdXD0uXV7l+lhsPjgyhp4Ae8sd4kL/g4N+MC0qBaB0zXP9EMP7c
-	plK89nKi3DeeANLEtmPrPF9/+T+NwW6/0gP6YQwXiLP+fXfzWLgjPa8Ms+/8PIrmLk906NXWqpT
-	U3wdvY5G8lESZX9ac7/kJD4lxi3u1cSJ/aArf/VjCBy3dgPKltJ7de2dF99WpWZ2xCiQ+D32JCu
-	JyEBpC3KDsiluP85NuMU+XWyhctSKzH3+4lpv+gQAYVHHWrtktBS1YfcSRFpWFEg7jIt6TnBkfT
-	WI1g==
-X-Google-Smtp-Source: AGHT+IHMFL4AvJOQLr+1gng3or268k0qffkqrhBJ29oEiScsZeINaFbiTYzQwVXPvQ6mp+IzqqnIIw==
-X-Received: by 2002:a05:6830:3497:b0:7c7:53bc:54a7 with SMTP id 46e09a7af769-7ce50b8d191mr3288912a34.20.1767872592742;
-        Thu, 08 Jan 2026 03:43:12 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:40::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce47802551sm5246754a34.1.2026.01.08.03.43.12
+        bh=G1ixihK0gQ+hFNZb+Yl0BISPWkVFMXZp1kkOJZgBibE=;
+        b=gHMl9MEQzdN9FUUwR1lqjsOZJncCZM7jJg3592jmv5GhKjbKbkFtLIEOBLbNSORJGJ
+         DyIetRpLLUsU/NsZlVCb0GHVWnTjXoI2x7JuyO8DLt4KfVokqs9VCQ6H7QO1G/f+Fv16
+         LmZlGMsb7XLL3RQkWiUIN4ARXM0U+qMgYJQf4ungL0F0h6ne2U9d2uVNaS2RgWOUrrMI
+         ZPe3Te4JnGirDIXOO7h3xDSVf6qIFEjoZeVOX+AJ1AlByFHAP8hlaTO2/nuzI3EwZCGS
+         q91DPWolIK0dtDHe+C165IvBPyGpRHS54dt98tFDdzVsJapjeIuzhv/ncrTfbVFXFBnw
+         Dduw==
+X-Gm-Message-State: AOJu0YyzjeUZBvvFBTiA24Bj3MTgTeFtxn+4xqNym4dhnQpTsTdQT8jS
+	WI4PoGrcHUaTRHC/YdRZR8mxYmP8jXKzo4H1qMyyoBH/+LQK9Sy1wXp65NWZMCQ0ab72Ew4k33O
+	DIh2NXbLofdc6G8zGXApF6g/2HofEo6285oAhNg57D/4EioZlriPnCC2WxzNdeptriUHRM0bH2z
+	Xo4R/3vz98YYyikr0KjpFddGuawvp5s7zio7BiKLnrjw==
+X-Gm-Gg: AY/fxX4Ztz6qsr5YMbhH6kdKO/g4n6mUd8PUPsE00PthFUvk+5H6Mcrg9dojZHZonD4
+	sROGzeXAZg3DTzhIvbFnu3QNyBxbEPab6Cm5vd1l+Y0xvwaXjNBT9Z5iFINt3rz5hCtnnNBGIvY
+	ZMJT3lta63DbzhoxpeSVstjd8IOUA8vAuikJdhf+LJnEr+WqSmhP+rJQFiqFF20rBTnm6KcCbBa
+	fjD+A59Mw+TZZn0P/ovBw9wNa+Lst06ldI6PFls4e5xg0PxvCyCb0rz0MdPhMSxFQ3q4CyuVsbS
+	xZCuVL62sixFSykPqQLIb4N1ouw9i38CGJy5wPoATeIJwJCs3vgQgAJ1if2Qwx8zlQqbqhidxT3
+	fd8SGH2yQAQik/2J+UQ==
+X-Received: by 2002:a05:600c:3556:b0:477:6374:6347 with SMTP id 5b1f17b1804b1-47d84b3bb18mr71180765e9.22.1767872662900;
+        Thu, 08 Jan 2026 03:44:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHkHKGejy8Hjd+SNLXzLlfus0//cWgbdRbbQV3EefELMJbpz06K9AfM6OsyNmFE2rKQ3DJOqg==
+X-Received: by 2002:a05:600c:3556:b0:477:6374:6347 with SMTP id 5b1f17b1804b1-47d84b3bb18mr71180415e9.22.1767872662398;
+        Thu, 08 Jan 2026 03:44:22 -0800 (PST)
+Received: from stex1.redhat.com ([193.207.178.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8660be14sm37910885e9.1.2026.01.08.03.44.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 03:43:12 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 08 Jan 2026 03:43:00 -0800
-Subject: [PATCH net-next v2] net: stmmac: convert to use .get_rx_ring_count
+        Thu, 08 Jan 2026 03:44:21 -0800 (PST)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: virtualization@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>
+Subject: [PATCH net v2] vsock/test: add a final full barrier after run all tests
+Date: Thu,  8 Jan 2026 12:44:19 +0100
+Message-ID: <20260108114419.52747-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-gxring_stmicro-v2-1-3dcadc8ed29b@debian.org>
-X-B4-Tracking: v=1; b=H4sIAEOYX2kC/3WNQQqDMBBFrxJmbYoJUcRV71GkxGSMU2hSJqlYx
- LsX7brr//57G2Rkwgy92IBxoUwpQi90JcDNNgaU5KEXoGvdKK21DCtTDPdcnuQ4SVOP1rWTs75
- roRLwYpxoPYU3iFhkxLXA8Fvye3ygK4fvYGfKJfHnbC/qfPzLLEoq6WvVWWVaY2xz9TiSjZfEA
- YZ937/b7rXEyQAAAA==
-X-Change-ID: 20251222-gxring_stmicro-40bac6fcad86
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2253; i=leitao@debian.org;
- h=from:subject:message-id; bh=8E1ysSUShJ8p6nlzz4eEEoUf1cDKgDwOfnAJUPcBZHs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpX5hPLU4cUiB//lWOugf+MGfu+cH0iHAC/Z9et
- 5lX/HdKFiOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaV+YTwAKCRA1o5Of/Hh3
- bfCWD/9SXn9wXZKcp9wRbju5Q8fSyNgRaLkqW8m5h2LlEGgOqu/ilvXA9i5lX0JnbrP0/O1keli
- JUSr1cH4l5PpOmv286HitihXQvP7lt8bJoZcy5hltW0wLcb1K+/JWMFo1VzmdYsSCG92+qJwSCE
- PJbNgYaTga9E3FZ/aT7zzWhnzGc9Uqmw61WG6CGb5j3izsECWhanLtzE8DF/EZy9Aa38zyKL11u
- lXjQW5YNTcEq2Siny2CHUq7ASWTD1PHOOch+65QgCoORg/h/lt9x0KX5vyBM6EmRr8+m/tqY6JY
- /+wUcCJuY+e4CZt6RIroC36WXI3mi0sn4I39ck67tx4QKCP7tBhZWAi3BMdBOy9TVnCMJY7th9J
- K6kjKS9fGGPjJAfvMlZFPC7y4Lg4Z7GYjLLvvzswOEhUwreNwCX/blmjqoQoLMqS9Plx1AfQxDp
- CvzgnEZRgOuRaC0Z7CBq4Pe58i+hCOGKUffcPGTU5lI4+zfpu2LexEm/4ncw9D0SIEcs1FL2L3D
- Njeitufk7bAe/KWYISJ0krP8Hom1kf0zev/wz4BGBz5C5T5h3s5eeiHFB8GCFXblnAs8VP7J+lJ
- f0bAfn17p0Q0fYxyk61dOhFvjq4+RR34v2SQLSM3P3AgqSbvSJJSrv9GBv1lEzdcLe2/ThWPzmq
- 1jcp/YE2frbDlew==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
 
-Convert the stmmac driver to use the new .get_rx_ring_count
-ethtool operation instead of implementing .get_rxnfc for handling
-ETHTOOL_GRXRINGS command.
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-Since stmmac_get_rxnfc() only handled ETHTOOL_GRXRINGS (returning
--EOPNOTSUPP for all other commands), remove it entirely and replace
-it with the simpler stmmac_get_rx_ring_count() callback.
+If the last test fails, the other side still completes correctly,
+which could lead to false positives.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Let's add a final barrier that ensures that the last test has finished
+correctly on both sides, but also that the two sides agree on the
+number of tests to be performed.
+
+Fixes: 2f65b44e199c ("VSOCK: add full barrier between test cases")
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
-Changes in v2:
-- no change from v1. Basically resending it now that net-next is open.
-- Link to v1: https://patch.msgid.link/20251222-gxring_stmicro-v1-1-d018a14644a5@debian.org
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+v2:
+- code unchanged from v1
+- target net tree and add fixes tag [Paolo]
+- added Luigi's R-b
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index b155e71aac51..c1e26965d9b5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -914,20 +914,11 @@ static int stmmac_set_per_queue_coalesce(struct net_device *dev, u32 queue,
- 	return __stmmac_set_coalesce(dev, ec, queue);
+v1: https://lore.kernel.org/netdev/20251223162210.43976-1-sgarzare@redhat.com/
+---
+ tools/testing/vsock/util.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index d843643ced6b..9430ef5b8bc3 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -511,6 +511,18 @@ void run_tests(const struct test_case *test_cases,
+ 
+ 		printf("ok\n");
+ 	}
++
++	printf("All tests have been executed. Waiting other peer...");
++	fflush(stdout);
++
++	/*
++	 * Final full barrier, to ensure that all tests have been run and
++	 * that even the last one has been successful on both sides.
++	 */
++	control_writeln("COMPLETED");
++	control_expectln("COMPLETED");
++
++	printf("ok\n");
  }
  
--static int stmmac_get_rxnfc(struct net_device *dev,
--			    struct ethtool_rxnfc *rxnfc, u32 *rule_locs)
-+static u32 stmmac_get_rx_ring_count(struct net_device *dev)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	switch (rxnfc->cmd) {
--	case ETHTOOL_GRXRINGS:
--		rxnfc->data = priv->plat->rx_queues_to_use;
--		break;
--	default:
--		return -EOPNOTSUPP;
--	}
--
--	return 0;
-+	return priv->plat->rx_queues_to_use;
- }
- 
- static u32 stmmac_get_rxfh_key_size(struct net_device *dev)
-@@ -1121,7 +1112,7 @@ static const struct ethtool_ops stmmac_ethtool_ops = {
- 	.get_eee = stmmac_ethtool_op_get_eee,
- 	.set_eee = stmmac_ethtool_op_set_eee,
- 	.get_sset_count	= stmmac_get_sset_count,
--	.get_rxnfc = stmmac_get_rxnfc,
-+	.get_rx_ring_count = stmmac_get_rx_ring_count,
- 	.get_rxfh_key_size = stmmac_get_rxfh_key_size,
- 	.get_rxfh_indir_size = stmmac_get_rxfh_indir_size,
- 	.get_rxfh = stmmac_get_rxfh,
-
----
-base-commit: 8e7148b5602321be48614bcde048cbe1c738ce3e
-change-id: 20251222-gxring_stmicro-40bac6fcad86
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+ void list_tests(const struct test_case *test_cases)
+-- 
+2.52.0
 
