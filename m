@@ -1,79 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10D52E9EAE
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 16:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDF62DC792;
+	Thu,  8 Jan 2026 16:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767891227; cv=none; b=ES3GzWpR9R6oC7hXmjabVR4upEBuArJBJCCRALJYFKL+rXISSqZZWMMlKx5hF597TXECeSa4j+t80WkxWMxjiBxRsUbQ18UU9i2BdZl6dKiY9qgONy/vC6QH41io2jsC0uPLRPwYH7ND1sx6hd2ZA8+td/s4wXYkFVPa+WfOEIY=
+	t=1767891228; cv=none; b=HQnDexXtm5vBZY+HC/Ot2vxjFNEImcWuuT/aIThMnKXpMwGjzi6cqqnw2t25upHXSZ9drUpbOnWiEqAqEOSPM10zvFU1bIHl3ZArNvwDx0E/k0G2oS6joItCmbUD6mIwFXDiXaBR9z7Kyfn4IV38rjKiVwgPRHvDMk9MTe1ueLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767891227; c=relaxed/simple;
-	bh=Jzf8zaj/18RluhRNfs3E+iGvbGzsUJq52CgdDRVw5SA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ewMDGQOtyMwG+OBJ9piIVdS9+t8VF0p+GoxwKfoJhy07191vuyZekg2igh1PrwOnommCNKa6u46hV2MVqBJjOKiyLGuDDgnzagq+AaJp0GVfQemYXRPXVQEohhzFaeOxfI0Nzijmm7n9pxk6jbv0vgx4Z7t4ULgEkgDuDigNBqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Grpgfaio; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767891228; c=relaxed/simple;
+	bh=H6ZzK5qb8nWtFLSe4fdBJd3Sr6s7l07yqSi7M31fQTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewQnuSUfY7sWw/fd/aj+F93tCqDIhQfmm56/A4R2i97eCdPB491G0wFmQrLyCEXg+JTA240kTYDlroM+81sxRxUNgXDebTmVUCI/dvGHhhs4G3FQbuAj3DN7S6dYtsGkc4dZXhSxuifcd0mPcGtdUIU5lBy7WTDrDKaynmpCFks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=o6ybf19F; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Grpgfaio"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA6FC16AAE;
-	Thu,  8 Jan 2026 16:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767891227;
-	bh=Jzf8zaj/18RluhRNfs3E+iGvbGzsUJq52CgdDRVw5SA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Grpgfaio2k77LqpVwEjw0kjvqOC+dtKvSs1XHfohOt0/jvI6R2wi+rTGlHQk80poO
-	 b4yct/g0Sgt3bvHA/4jiVyt7+pPfGso+khUceCrVtciwK6yt1aON+UfVJvy/XpZ0DM
-	 Lr2hkzcnVu6Mye5N8MnfzO5eQL8UVmBCkPVGR4ww/IX3vGmHu60StGjRfiOZV7XVug
-	 iRoBzJ8qgbmyv2QEpa638gc935LPmyIAWDlwybf10Izqod/kjiv5vk91sphOOPK76E
-	 rWvgsqPwPRj/ehJ65wP6kbZGH8sG+AjTZ7Jc0FtoTaIZTWItpYFHKKbKCAv/t17OeB
-	 8kbsHLn6NEXqA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3C2D03A54A3D;
-	Thu,  8 Jan 2026 16:50:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="o6ybf19F"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3siOpUNTPvOetSwU3kkXTXaIQvHOmBaMe0L2dosaTxU=; b=o6ybf19FQhA2/H0eXyYAWhtYCg
+	E8J7QNNibSepM+CpqXDcjTCEXSDmnR7+vAORpbZk4kTZVsegRNEgFkFKinfF9y0Z2M4cnpsdnuDzL
+	I2rpUSBEqhBNs9pXdH3OOo7nj6AT4CkgeTF8RlYKVLskcyCD3aEgYDT3wNANa9m+a3ws=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vdtGL-001zEW-Ds; Thu, 08 Jan 2026 17:53:29 +0100
+Date: Thu, 8 Jan 2026 17:53:29 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	thomas.petazzoni@bootlin.com, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+	Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Tariq Toukan <tariqt@nvidia.com>
+Subject: Re: [PATCH net-next v22 02/14] net: ethtool: Introduce
+ ETHTOOL_LINK_MEDIUM_* values
+Message-ID: <b8da3ec2-0775-4d81-8867-4993325a1e6c@lunn.ch>
+References: <20260108080041.553250-1-maxime.chevallier@bootlin.com>
+ <20260108080041.553250-3-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tools: ynl: don't install tests
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176789102402.3716059.16341235372896443735.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Jan 2026 16:50:24 +0000
-References: <20260106163426.1468943-1-kuba@kernel.org>
-In-Reply-To: <20260106163426.1468943-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, jstancek@redhat.com, liuhangbin@gmail.com,
- matttbe@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108080041.553250-3-maxime.chevallier@bootlin.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  6 Jan 2026 08:34:26 -0800 you wrote:
-> make's install target is meant for installing the production
-> artifacts, AFAIU. Don't install test_ynl_cli and test_ynl_ethtool
-> from under the main YNL install target. The install target
-> under tests/ is retained in case someone wants the tests
-> to be installed.
+On Thu, Jan 08, 2026 at 09:00:27AM +0100, Maxime Chevallier wrote:
+> In an effort to have a better representation of Ethernet ports,
+> introduce enumeration values representing the various ethernet Mediums.
 > 
-> Fixes: 308b7dee3e5c ("tools: ynl: add YNL test framework")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> This is part of the 802.3 naming convention, for example :
 > 
-> [...]
+> 1000 Base T 4
+>  |    |   | |
+>  |    |   | \_ pairs (4)
+>  |    |   \___ Medium (T == Twisted Copper Pairs)
+>  |    \_______ Baseband transmission
+>  \____________ Speed
+> 
+>  Other example :
+> 
+> 10000 Base K X 4
+>            | | \_ lanes (4)
+>            | \___ encoding (BaseX is 8b/10b while BaseR is 66b/64b)
+>            \_____ Medium (K is backplane ethernet)
+> 
+> In the case of representing a physical port, only the medium and number
+> of pairs should be relevant. One exception would be 1000BaseX, which is
+> currently also used as a medium in what appears to be any of 1000BaseSX,
+> 1000BaseCX, 1000BaseLX, 1000BaseEX, 1000BaseBX10 and some other.
+> 
+> This was reflected in the mediums associated with the 1000BaseX linkmode.
+> 
+> These mediums are set in the net/ethtool/common.c lookup table that
+> maintains a list of all linkmodes with their number of pairs, medium,
+> encoding, speed and duplex.
+> 
+> One notable exception to this is 100BaseT Ethernet. It emcompasses 100BaseTX,
+> which is a 2-pairs protocol but also 100BaseT4, that will also work on 4-pairs
+> cables. As we don't make a disctinction between these,  the lookup table
+> contains 2 sets of pair numbers, indicating the min number of pairs for a
+> protocol to work and the "nominal" number of pairs as well.
+> 
+> Another set of exceptions are linkmodes such 100000baseLR4_ER4, where
+> the same link mode seems to represent 100GBaseLR4 and 100GBaseER4. The
+> macro __DEFINE_LINK_MODE_PARAMS_MEDIUMS is here used to populate the
+> .mediums bitfield with all appropriate mediums.
+> 
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Here is the summary with links:
-  - [net] tools: ynl: don't install tests
-    https://git.kernel.org/netdev/net/c/790792ebc960
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+    Andrew
