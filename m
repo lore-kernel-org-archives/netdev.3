@@ -1,79 +1,109 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB3E4DDCE4;
-	Thu,  8 Jan 2026 13:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0837640FD89;
+	Thu,  8 Jan 2026 14:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767880794; cv=none; b=hUsNbDcv5zqfV1xnTINPvenvYtoCGWaM1iNMf5EmiPbRiJ8+0mAxPk3BoDp8CDVtKrJl1cFFkdKGNrE89On+xDQPJfVbJcAg2TavuspA2HT1QToLw3nSdwRaKimFyxhPM5vHOOWlUAfaAXuipjKQ6/lZ3mlKk3JORfIQkIn9Vj4=
+	t=1767880908; cv=none; b=Vng8Lb+8bqtkLRHiyxEC/BVw0zXUAcOwNYuYAK4/0qgaHBMhGpmBceRd/6ew04kHRNA6TPfrjFpp4xOkkVGGYXiTLV898XYZGlZLicSnGOyAKxBb+tcucWrghheELc97kC+MHCS3IiTzEuqWxrawXHiMEmjbaaS9UNNoHkZH3MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767880794; c=relaxed/simple;
-	bh=SV1vfA3DDmlDwoSyLgZGwcMpsQkhB0gPTppk6+ZHqvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nLfN2DM1bRYjU5a96pVW93nDmmnLp7Xhhodc75szfc5FbxTi3ko+yqm0FNKK4YqOtFrG4fPESn+BIAEFskQyYA7K+zTv21gxFa4c25RFRqa40Y0cqvn252uD3IXix2KLN5bDz9t14YvUgZJIQHNpk1CjnrkdEb1vfpq6redHamg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ISVsJchs; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1767880908; c=relaxed/simple;
+	bh=/a6tor3t3BHXPf6cV1FkvZgBVzI83Fmb2fWyG8E85nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nzdM75hZ006gjkAnS76/zlfNO3wTpycige3UKFW4rMSBXheVQVmZrplPCuarKA0u1vwH91E0oKcLyiuY1go7DCErrmfhnxqRjwozh5m5tXKAum+vzNL20Gf6lmdINUfZd1c4GAGeNrr5OWefogr1jE4Y+t60HEs1s6WfmvaOUi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=dFB5skw8; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ISVsJchs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=40SDH+D72wcbssB7qIIFgRlJ+4oHszNF24AJeHNECOQ=; b=ISVsJchs8yZlrYctilabY4Vkmo
-	aW+fSJ0aFXTzL6P6yxT1fGBew2MHPIE5Hlka0oSZFfGHu3EDsOmR8TgQuzk57HmWtqlI+mWL/RzOs
-	rf6oSxCZgRSSVWmeuOKVn581ETPYV0dUAq9lpnZi7ysVuQP+Hg2o/r5/rtvqAoCWghz0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vdqY5-001xMl-Ms; Thu, 08 Jan 2026 14:59:37 +0100
-Date: Thu, 8 Jan 2026 14:59:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	Frank.Sae@motor-comm.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, shenjian15@huawei.com,
-	liuyonglong@huawei.com, chenhao418@huawei.com,
-	jonathan.cameron@huawei.com, salil.mehta@huawei.com,
-	shiyongbang@huawei.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 3/6] net: hibmcge: create a software node
- for phy_led
-Message-ID: <b23a63c0-110c-49ab-8189-670717f243a3@lunn.ch>
-References: <20251215125705.1567527-1-shaojijie@huawei.com>
- <20251215125705.1567527-4-shaojijie@huawei.com>
- <543efb90-da56-4190-afa7-665d32303c8c@lunn.ch>
- <fd6f70bc-b563-4eff-97c3-1b7ad79ca093@huawei.com>
- <eaf25bd7-4211-45ca-a747-5039d69bd57c@lunn.ch>
- <e403251c-c874-46ff-a7e2-442b18bc2c92@huawei.com>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="dFB5skw8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=CHsYpmrl3ptgn/SH1+1dZo3E9tUPIlXIh6WzL+1xlrU=; t=1767880907; x=1769090507; 
+	b=dFB5skw8p+/z8w6j6pkGCnsYOXuVlI8+anoooXH/nJSHa8Zhu8CGHKEjAUVWQpmmgG55qfCqyBn
+	Eji3C3Y71mShBlo7zHfiSbMi1FcaZ+Y4kSxH3RQU+RYIjXeSYSUMhCGzLZwlFPezI1LB0azR/VkXP
+	xh56ZZWgHCm6xHao1kh//DBBnTGkp5YPlmHuoGAu9WU0PUBjHPMbjRYvpaNgGhbW+sLFzbHzdPE5+
+	38YGjcXcK3+w3mqqj8HyDx48H59XHCi/pqhznP4Yu0NHE15TvBgPKw1lG+7Z/l1jeO3I6iK6e8B4a
+	pwOFXgBmiq2tVJnXpfzNECYALUpWNPt6s+XA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vdqa8-00000006XK8-3ShP;
+	Thu, 08 Jan 2026 15:01:45 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-01-08
+Date: Thu,  8 Jan 2026 15:01:23 +0100
+Message-ID: <20260108140141.139687-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e403251c-c874-46ff-a7e2-442b18bc2c92@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-> I did some research, and it seems that our board uses ACPI,
-> so it might not be possible to use this method.
-> 
-> If we rely on ACPI, we would need to ask the BIOS team to add ACPI entries.
-> I need to communicate with the customer's BIOS team, which may not be easy.
+Hi,
 
-If you are going the ACPI route, please take a look at:
+After the holidays and all we don't seem to have that
+much yet, but I've collected what we have for now.
 
-Documentation/firmware-guide/acpi/dsd/phy.rst
+Please pull and let us know if there's any problem.
 
-The basic structure of how to list PHYs is defined here.
+Thanks,
+johannes
 
-And you also want to look at:
 
-Documentation/firmware-guide/acpi/dsd/leds.rst
 
-Since you are describing LEDs on a PHY. You will probably need to
-extend phy.rst to reference leds.rst.
+The following changes since commit dbf8fe85a16a33d6b6bd01f2bc606fc017771465:
 
-      Andrew
+  Merge tag 'net-6.19-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-12-30 08:45:58 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-01-08
+
+for you to fetch changes up to a203dbeeca15a9b924f0d51f510921f4bae96801:
+
+  wifi: mac80211: collect station statistics earlier when disconnect (2026-01-08 13:33:11 +0100)
+
+----------------------------------------------------------------
+Couple of fixes:
+ - mac80211:
+   - long-standing injection bug due to chanctx rework
+   - more recent interface iteration issue
+   - collect statistics before removing stations
+ - hwsim:
+   - fix NAN frequency typo (potential NULL ptr deref)
+   - fix locking of radio lock (needs softirqs disabled)
+ - wext:
+   - ancient issue with compat and events copying some
+     uninitialized stack data to userspace
+
+----------------------------------------------------------------
+Baochen Qiang (1):
+      wifi: mac80211: collect station statistics earlier when disconnect
+
+Benjamin Berg (2):
+      wifi: mac80211_hwsim: fix typo in frequency notification
+      wifi: mac80211_hwsim: disable BHs for hwsim_radio_lock
+
+Eric Dumazet (1):
+      wifi: avoid kernel-infoleak from struct iw_point
+
+Johannes Berg (1):
+      wifi: mac80211: restore non-chanctx injection behaviour
+
+Miri Korenblit (1):
+      wifi: mac80211: don't iterate not running interfaces
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 6 +++---
+ net/mac80211/chan.c                           | 3 +++
+ net/mac80211/sta_info.c                       | 7 ++++---
+ net/mac80211/tx.c                             | 2 ++
+ net/wireless/wext-core.c                      | 4 ++++
+ net/wireless/wext-priv.c                      | 4 ++++
+ 6 files changed, 20 insertions(+), 6 deletions(-)
