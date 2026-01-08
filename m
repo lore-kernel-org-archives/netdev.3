@@ -1,122 +1,131 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA412352C48
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 10:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034C64A340E;
+	Thu,  8 Jan 2026 10:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767869679; cv=none; b=ZryBNxhW7C2Ow4fp4gLs8EtQ30aXkfkI3klll7dzGuYNV1pzS//OFgZf6vX7O0i8qZE7kcFydDwM+L8TGJK8U98idY2qraEZEPoQzjG6gEf+yfq0edBSgBAK5XapGs8GGTaRVOho5p1xbodSq5sECAx6r/6I9OiCB3JIDW9rRI4=
+	t=1767869746; cv=none; b=kAjvzjaHknSqnxHtGzU/m7JHh7MkNl+8+tM6JhKPuiAijzMr/BhiYQcbuMuWKRzlApR/vluR3Xid1C14RDAC+CR0Zm1dQBZih0R9H93T6/NeuzZXf6j0lmvJD18BeBKsP0/wGGe05pmmj9tQuzok4J+uMrhaswvlBuie2Jqiup4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767869679; c=relaxed/simple;
-	bh=X1AeJ7N4i8+SK2RnBDtq0LwFDsMhBf5L0Kh+mUydmsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FlQ6C6OAd3fBfN0BW9yJKVoE3ShYxQw1VKGbqc8yuEGfKqqjPc6W1se0A5UF2wvr2hiSLXEw7xt0F5dVPHlJ3H9vbfmSWCMdbywinZwhnoReFoD1AO8rEGKXOKfeukoDryVMJSvH/LIEkH6E3EPtTFt794gVtvzrKUp438gcQgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=heNYvUk0; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767869746; c=relaxed/simple;
+	bh=CMHw5DVfJXuTHlKA1vYZRXcYoK6WVCIZRW+YpFHJDKo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oh0qmdcl+AvjeVQcyGH8ElVZ27RJRcb1lj6G+VuKprzHTABq/yuwCdRfQPD4ZU2kY9gMuZAar1bPRySMNcKiE4pa7thC0SSpqxvKwrEDPg+Z8wfaXqL9xiDrVX3gdilX/Jn+GxFCDp4nusC74oQPcThzH25nWzCmiSpGY2+Lb8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LSNy5RUW; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heNYvUk0"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b79ea617f55so621533766b.3
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 02:54:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767869666; x=1768474466; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BGNSfyZ14mhgFHrLCd55IAkiSyATWPzAV9vrJzYyTU0=;
-        b=heNYvUk09L/ox0xfss01QPVyOHJMjZXc2eJD+zXT+p9l9k0JYNH5N44rkiCUu5E0vE
-         ElugXVTE3gons++KOttXOOBDLreREBtDshU7/T+HtQitiLwQM5MsAHz/tBi5H2ZfKnZB
-         ibJeghXDTtp4OsN/BpQJjLT0XNjQjWSvlxW0rLaAGgeowFqlWL1Ed3BGohil0yCQpjK6
-         QIpdAWz3NBjbA2hd+/B9OIefWSIY7RRlFkopVLWj1O86UEmb1NUvWjsfirWZHCftf8Zz
-         oFlau0prZWz/MpCwBRdWIqMaYw6L5FJR/aEE1YBEgi9w2LwCjrEbw1ssNc+sstp2DZK0
-         7pQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767869666; x=1768474466;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BGNSfyZ14mhgFHrLCd55IAkiSyATWPzAV9vrJzYyTU0=;
-        b=anRIp0TDI4T26uuSCUqkHMqR8P6VC5+IesasUN7pHCV1clfEUo6hVVBc6/qYuBfQCr
-         honlqkIcOhpcy6PVnmLA743RA3OH9yaDnwkii1dSK4Kk2HWJRHDHcozZbgRYhH/lozFW
-         CJcAK11F1ZYVHXm8qmHOsn6hUYiwO8o6mRMVanym27fNxvO05U7MwEq1bTBdlh1RH2J8
-         NbfAyULjeOIRktize5kTgiASmqkXDw2b8sFDG3ITczPqbPwFHf67bz6uxpmKqFufWrO1
-         gvPDYmHc/XHOpM+Hvt82UqHlNLG+mu+oMF/Adew1a45iEdZnKOL6+Jul+SKV+CmWtIdS
-         4/3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXthENjTry/DP6uEiSB+ELJXRuNw+eZs9iAsTE8Ht30QmTCOY7euFi/RyJsuMBxWDzrME31a9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf2EmyEJyQvsOtKVj31o1VLFvlxJRS/7d7oJUZEuxigBmFSBSr
-	/c9QutwkvcBNEliW/yF+bX/RgKcD4bdSpLMm2JcB8QL7qeR/6i1eZ+ICz0so9w==
-X-Gm-Gg: AY/fxX4FxExlWaDBvMW03twxLC5zYqmp3vg6ScUfY9u414yx8hljeflBq9dVbcelktz
-	GWZQse3TLxhMbZgKdOu21esmUnkcZH8EqJqvKLG2FzQSRDUCqTZz5VrkvYkv1YCAzP/ZW0WtEdq
-	Ff7+dvNMVbHgPHGqkjBBbJOo97nmr+PUvGc+nLnYlYedGjKpj/qNVTyj+m1k68wUhPYdDAl/7xO
-	p0QkbciT+MButQ0TRfDNPU4/Dcs28gwZoUJxb0r3SiDrnblqFHqxMX9E4C0ZO8dWTtEsK9Ffq/v
-	g9E71aMY9lMVAo9NmN99mSPOUHo5ZAvLBZmR2zZ2xAzRJT0vfc9bEiY0JRlqXxkd3XUYsoe3IzH
-	n4FoZQxGTQJegItwoh7bbWOZ4r84oswTzX0A+OqZ6mWMObbKv/b8/oWwdBdWrxpHic7uuaYha1j
-	R/4azls03PgF6Pd0RsQR13eb5lGoiDTNYUJWjn+cX+V5Jcz6M3yhLm
-X-Google-Smtp-Source: AGHT+IGqCP130UpuuANz8HR/GkYDcNsmaKPOj1V5+2tWgODMHf6K6iZQhaCL0rcFVNmgtFuaq57HWA==
-X-Received: by 2002:a05:600c:3e8e:b0:459:db7b:988e with SMTP id 5b1f17b1804b1-47d84b1820amr58573495e9.13.1767863116998;
-        Thu, 08 Jan 2026 01:05:16 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f390a69sm141644795e9.0.2026.01.08.01.05.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 01:05:16 -0800 (PST)
-Date: Thu, 8 Jan 2026 09:05:14 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: ethernet: ave: Replace udelay with
- usleep_range
-Message-ID: <20260108090514.375a23fb@pumpkin>
-In-Reply-To: <20260108064641.2593749-2-hayashi.kunihiko@socionext.com>
-References: <20260108064641.2593749-1-hayashi.kunihiko@socionext.com>
-	<20260108064641.2593749-2-hayashi.kunihiko@socionext.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LSNy5RUW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=6B
+	x/uBoRw2LaNn4oI17UqZrmd/+0o1xj0zRiwIVURNk=; b=LSNy5RUWIF5JMTqzzU
+	H7aEcuFI6pUxe17aBdf06ze43FCCxKPOEcfYO+PqRf6qFANEy+Evl/YLP2SQPu4S
+	2M1/eCM3EFUqS5siVuyjhtcsTw0yCB/cKpDJxXpW6b82lulMcJR741mhM+yQd+uG
+	G06UbvG2RMeFu34oAyd8S1md4=
+Received: from GHT-5854251031.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgBnDLTojF9pnbalKQ--.33395S2;
+	Thu, 08 Jan 2026 18:54:36 +0800 (CST)
+From: "wanquan.zhong" <zwq2226404116@163.com>
+To: chandrashekar.devegowda@intel.com,
+	chiranjeevi.rapolu@linux.intel.com,
+	haijun.liu@mediatek.com,
+	ricardo.martinez@linux.intel.com
+Cc: netdev@vger.kernel.org,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	"wanquan.zhong" <wanquan.zhong@fibocom.com>
+Subject: [PATCH] wwan: t7xx: Add CONFIG_WWAN_DEBUG_PORTS to control ADB debug port
+Date: Thu,  8 Jan 2026 18:54:25 +0800
+Message-ID: <20260108105425.601842-1-zwq2226404116@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgBnDLTojF9pnbalKQ--.33395S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArW3tFWxuF18AF43Cw4kJFb_yoW5Xr1kpa
+	1DGa4Ykr1DJ3ZxAa18AayI9ry5AFnruFW2gry2q34Y9ryUAFy5Cr4v9FyayF15J3W7ZFyx
+	A3yjgFnFgF1q9w7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uvg4DUUUUU=
+X-CM-SenderInfo: h2ztjjaswuikqrrwqiywtou0bp/xtbC0g2Q52lfjO0NlAAA3m
 
-On Thu,  8 Jan 2026 15:46:41 +0900
-Kunihiko Hayashi <hayashi.kunihiko@socionext.com> wrote:
+From: "wanquan.zhong" <wanquan.zhong@fibocom.com>
 
-> Replace udelay() with usleep_range() as notified by checkpatch.pl.
+Add a new Kconfig option CONFIG_WWAN_DEBUG_PORTS for WWAN devices,
+to conditionally enable the ADB debug port functionality. This option:
+- Depends on DEBUG_FS (aligning with existing debug-related WWAN configs)
+- Defaults to 'n' (disabled by default for user devices)
+- Requires EXPERT to be visible (to avoid accidental enablement)
 
-Nak.
-Look at the code...
+In t7xx_port_proxy.c, wrap the ADB port configuration struct with
+CONFIG_WWAN_DEBUG_PORTS, so the port is only exposed when
+the config is explicitly enabled (e.g. for lab debugging scenarios).
 
-> 
->     CHECK: usleep_range is preferred over udelay; see function description
->     of usleep_range() and udelay().
->     #906: FILE: drivers/net/ethernet/socionext/sni_ave.c:906:
->     +       udelay(50);
-> 
-> Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> ---
->  drivers/net/ethernet/socionext/sni_ave.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/socionext/sni_ave.c b/drivers/net/ethernet/socionext/sni_ave.c
-> index 4700998c4837..a3735d81a862 100644
-> --- a/drivers/net/ethernet/socionext/sni_ave.c
-> +++ b/drivers/net/ethernet/socionext/sni_ave.c
-> @@ -903,11 +903,11 @@ static void ave_rxfifo_reset(struct net_device *ndev)
->  
->  	/* assert reset */
->  	writel(AVE_GRR_RXFFR, priv->base + AVE_GRR);
-> -	udelay(50);
-> +	usleep_range(50, 100);
->  
->  	/* negate reset */
->  	writel(0, priv->base + AVE_GRR);
-> -	udelay(20);
-> +	usleep_range(20, 40);
->  
->  	/* negate interrupt status */
->  	writel(AVE_GI_RXOVF, priv->base + AVE_GISR);
+This aligns with security best practices of restricting debug interfaces
+on production user devices, while retaining access for development.
+
+Signed-off-by: wanquan.zhong <wanquan.zhong@fibocom.com>
+---
+ drivers/net/wwan/Kconfig                | 11 +++++++++++
+ drivers/net/wwan/t7xx/t7xx_port_proxy.c |  2 ++
+ 2 files changed, 13 insertions(+)
+ mode change 100644 => 100755 drivers/net/wwan/Kconfig
+ mode change 100644 => 100755 drivers/net/wwan/t7xx/t7xx_port_proxy.c
+
+diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
+old mode 100644
+new mode 100755
+index 410b0245114e..70edfd0c03bb
+--- a/drivers/net/wwan/Kconfig
++++ b/drivers/net/wwan/Kconfig
+@@ -27,6 +27,17 @@ config WWAN_DEBUGFS
+ 	  elements for each WWAN device in a directory that is corresponding to
+ 	  the device name: debugfs/wwan/wwanX.
+ 
++config WWAN_DEBUG_PORTS
++	bool "WWAN devices ADB debug port" if EXPERT
++	depends on DEBUG_FS
++	default n
++	help
++	  Enables ADB (Android Debug Bridge) debug port support for WWAN devices.
++
++	  If this option is selected, then the ADB debug port functionality in
++	  WWAN device drivers is enabled, allowing for Android Debug Bridge
++	  connections through WWAN modems that support this feature.
++
+ config WWAN_HWSIM
+ 	tristate "Simulated WWAN device"
+ 	help
+diff --git a/drivers/net/wwan/t7xx/t7xx_port_proxy.c b/drivers/net/wwan/t7xx/t7xx_port_proxy.c
+old mode 100644
+new mode 100755
+index 4fc131f9632f..23b331780f07
+--- a/drivers/net/wwan/t7xx/t7xx_port_proxy.c
++++ b/drivers/net/wwan/t7xx/t7xx_port_proxy.c
+@@ -102,6 +102,7 @@ static const struct t7xx_port_conf t7xx_port_conf[] = {
+ 		.ops = &ctl_port_ops,
+ 		.name = "t7xx_ap_ctrl",
+ 	}, {
++#ifdef CONFIG_WWAN_DEBUG_PORTS
+ 		.tx_ch = PORT_CH_AP_ADB_TX,
+ 		.rx_ch = PORT_CH_AP_ADB_RX,
+ 		.txq_index = Q_IDX_ADB,
+@@ -112,6 +113,7 @@ static const struct t7xx_port_conf t7xx_port_conf[] = {
+ 		.port_type = WWAN_PORT_ADB,
+ 		.debug = true,
+ 	}, {
++#endif
+ 		.tx_ch = PORT_CH_MIPC_TX,
+ 		.rx_ch = PORT_CH_MIPC_RX,
+ 		.txq_index = Q_IDX_MBIM_MIPC,
+-- 
+2.43.0
 
