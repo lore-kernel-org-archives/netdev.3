@@ -1,64 +1,64 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0FB26159E
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 16:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC032D9784
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 16:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767888856; cv=none; b=WW9RsegQrzGLzPOa9TvYCSK1cpUgKkHZB5OtbFXOMyt7VPD7yZ8MQ3XcOknIRpG9eMKl/zjwFm4h44eaol4PvhXR93zbl3qPzq4lhD3xxQMo2Fmu+tlXvdqnqPhFwBc89Jnba5KX6700ISIR4g4Ct9bFYcYkfgNGSapV+MQO7fA=
+	t=1767888858; cv=none; b=MEP3iD4rF7RbHnRkVYHncx9zjRy04f7rYAMXy2H0Uj3JTRT9KImPhYtu99Af2pKjUOSR57OXA1Ro89idGKOcxIs3y/Yml797iLHrvHuP3JLfJBz0vGPcoTQySk3P6XJLe6DxjYFQIom8X8OyeMu96sbbjHD0xWQFzJZW0GGnf2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767888856; c=relaxed/simple;
-	bh=LXy2Ua1cUOSGWHBNdtUnsbR39WZkmXzM0hJK6m/a3KQ=;
+	s=arc-20240116; t=1767888858; c=relaxed/simple;
+	bh=Q4ZqUeHdxj8w0kNEPzoysqUJgGoxPgA1XB5F+ofXapY=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8g7HWasjZMlaEv7IUdUZiIJstNdX5QvxEhBByjtigc12r6Hj8xUDoqVEZtlLbk31J9zLO673umANcoivGFhxyRDZ396hCDgTAgKULZW7WgeMxmZA2TY4gY/65zRkfKBJxYY5d5SvhpZA/OKRZRW82lgjiDZGw+Yslh5tUf8OHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDBcptIS; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version; b=WoIY8k/9cmt2FSuBX/Ba6lEVUjUrTtE63dBrkCSsnLvtuueAhxQ/mOjz2llCDunxUj+TnQep7pCQ4NmIveJ+GsuKUiYnrMUVhJ37QsO5Q4HpDMKkX2DyZzZnV9lulTiGMw7ht0qDAZvPVE7nea3h8n/uiL6s8FhZyqhEkESuvUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJV2aMoc; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDBcptIS"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so1725404f8f.2
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 08:14:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJV2aMoc"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so1725428f8f.2
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 08:14:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767888851; x=1768493651; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767888854; x=1768493654; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uN8D9zqUx9hP6RtZocuSaBDdTng6nEw0sA37guFjwQ4=;
-        b=eDBcptIS0VRNduzrOJvCI6whOOG3jjMrsWJGLlnve4D+JdpEErS86ORdy09C60N+zh
-         HUYnKsraUq/dYo08TyGyTGrmanUyapA1dun9GbGUlhA1bmmnRBlx3Usf5QVprSC2GsNt
-         5S6UdHJ/R1Cvs7p/qIS+8mgjTGe6U1xNmdEG5Y6+xU2Ta7QFwxrj0VGxnL8rhE2RD5D0
-         QLp3YuGMTnZoj+jKosM1sbrlBwwpMYWEu606TDIalOdl8/zLB2F4s0u9d8GkKZAjDnYY
-         UVB08APgD/BCPyGeTbmu46ON5m8u9JfFU3DcD5MYXfBPJw1BbbXfk5wcA8aMf8qI24mY
-         fYtw==
+        bh=+2Lat8SdX+02TbmLDhXK9YgQomayPj4Tjy+cMyjwyFk=;
+        b=YJV2aMocaEDevN6qUL/PWkBKxC/1o+WtCN8nPokdfoZnARAwXgLf0nHnkLtBCcDpDN
+         reUdBHUCmhlZSFyXLsO7ZNkAOujARnaLkH71Po+hQIkGhN+J6At07hqzDUwpIKCe4hIq
+         qvLIow33xGnmgJSSv/07Qux/d3sYo5WLokQUiXBBoq8rwz3BS6lYQzW5nl2TsKT29oIL
+         min2AJUvaleehWRJtMoAt4jsKNNf8s8lkZEdLR982rzYuU3YIGL2XNH+EPRuFWWSsmPg
+         1awFYW6qEmmrB+uPQWqIrMbJVn3TsAbKT6dPyq13KanvpJmEdAmruquKF0iXQYD64D+U
+         3VHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767888851; x=1768493651;
+        d=1e100.net; s=20230601; t=1767888854; x=1768493654;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=uN8D9zqUx9hP6RtZocuSaBDdTng6nEw0sA37guFjwQ4=;
-        b=XT9IVeWns6Q8joCmCBfZzWVHw7lL5Y8dtvTzJS8PcwxO8W6B8M8RIyiEk3oT9zjE2x
-         pSkxKf948qr9m8PXEu1GrVw3RFcAEF3V4Z0g31qyG8pBygu0rygJVYBHvfo3pXImYwiG
-         Wc++MOlvyFzwjVPycbIhZuiet1SPYY4B8g/Hl5fVvklDMP+xzhGieSwzb1LVcVyJ2sdv
-         oJkRgk2r7Znc82VnRriSpcrRtqEzUwebfhn5Nujj8zIXOqDRdqR1GYnVFcjJwS0z/GNM
-         cHjks6papfzmim/c6TuxKtT108RA0S5205mbtjfogBiDc76XrX1GvfPKySZtuxrTMN+m
-         ygQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTcE8OBprcjo754YPcHoGnQgRzuA2jH1TAsNaVfRtvcblBjG1IHFb4mhwRU6n/OwVNov3FntE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykzXphsIguuWNcY+F2zd2Qo/iDG0QUcSyKUbN3blA6dwO2YrXp
-	Or86jQ+B+O9M63Wrl+MBFapVdMZIoqwwFi2jtuAMae1VOctVbQNakPLJa+x9iA==
-X-Gm-Gg: AY/fxX4LVeZv1TS+SPiqQmPTg5XRjxQ9S6kqjU2WudanfZddH8iLaN0zyiIlE0F2n0m
-	jEf6QVT3KQ7zO5gupg+mrTlIvRvOQ+I2jpl+Ol0mWoBWh/HCzIHVMCiamHsc8D96tOd440EBjZz
-	7N7qzXMa0LgCSP4kTmUpMgDCYkbO9axp5PPO5uBwZ16mrKXo/YALEAxMe0wr3yQaLwT3hkL37Ku
-	CHLdMuG3E1tMQNkRQpx6f8O3qW7liTnRJ8pKLV7U6kt84Sw5PXsauiEP9qN2N08+SLP+O8SMaTA
-	CpyOG4jBdyGbKAHB6STsqQDqYNOp3lXrrIpgfcKCaWV8QEj9eHpOXG4vbINt7ObngccYClp0ZS0
-	moff5+cnTEvCo9R1csqwCi00fc1h93rt+LUsuFys2+D5VdbGDaqE6GCOFLH0f/FvfhDFS1djeuf
-	QU6SGMLXBzilysMzImbRlgRKvV8AkM
-X-Google-Smtp-Source: AGHT+IFWuMKAlw7vAFoR/06p1Ty8iS62arXcBSiWcP9P0l+zbna8uaAvmkxQD38fb3oGMEha5w4Ccg==
-X-Received: by 2002:a5d:64e3:0:b0:42b:3dfb:644c with SMTP id ffacd0b85a97d-432c3628287mr7819387f8f.10.1767888851369;
-        Thu, 08 Jan 2026 08:14:11 -0800 (PST)
+        bh=+2Lat8SdX+02TbmLDhXK9YgQomayPj4Tjy+cMyjwyFk=;
+        b=jupa7m29TB95UWDp0/Am0O06XNC/tWq+Dw1zSAw2HFIcMjo/EnWQijrTvOikPS06Oe
+         USUX4fsr2i7wc0QvvOummu96mXbKuY/zMEViDcGNIlI3AgV3s3b1IqMT9MbneuWrU2tq
+         kCkv7gIRGEA52Kha/d6FzXracOtsag++po9+9M1YbdUWKzEdSzPpaP9wB92STGdkYIkl
+         0kdj+YW5pwvUfsNf9CEgbkJAfwh5rAErnYqFQlOh/27wgfw59L0m9xCuhM80FwaCXWQR
+         JesgwLE2V1UUYPmSNnjmyw76l5OM+FRiWw7DQcbUE1w0fW7Hrn2hGQsTIfRWyXJ10eqV
+         F+NA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFG9Imxr7FzDoHo+G7n1RlVwzaWZhdR98jybw+i+mvt9l9p6HtGHoSUx3CPw3lnViImsTVi6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRcIEp22f3G3oPN4s2FzDU+0mCywy/ERKliKDO6NRkni5irG0U
+	ttR0W2yGbubq6vTQYfHAyuNpo6m8Ca4ASBkwDpVxnvt8Uk3xyNdAGozI
+X-Gm-Gg: AY/fxX6MKGn1+ONRGf18U7KUpf3IMjA/+n1nKf2+t+ikPj8zytZNW2sh1K7zDcLX+0y
+	5gTxFtx6/oshljkJp52/Ynea/RgMimnrSmmOSvt4bKBbT1lDvcTyjhq3+PsS4K1jcPDkRk6F09I
+	R74Xute+StmAbC3BtgaVHo93R7URfcmQyiB+PKjahdNCoWqqAUmkIHwdeDsEouBNS1tg04moXnf
+	kY3tme+UtrFWO2VirmQjTNHsOfyCPwO5//r5RMPlJ7qWrKps0nmQSIxJFlnn51gA0ZIFVZZ4q/s
+	KKayYa8wufl/er3Y5oRdP0t/wuTTmMabAhsOKyzzVI2bFz0m4z2H0oNEJR7Ro6bYQnwhfI2DtjW
+	sMX/DFBIRlEXFZuQbIFq7dqbzZE1w6Ocba8lEstwKz13W8dlc+HcfVhz70ODugp8x/3JcNPlZUp
+	ZZCrtikAuJhoIElg/RxOj7dMXxpKaEbt8yAbPNoxI=
+X-Google-Smtp-Source: AGHT+IG1vgvpzx0rhxyfmBwtGJ+0oxYBD/K8EASvXCLfiOLuS6bmIi+Y2CjqHx/QQTzroKTX0qFSeQ==
+X-Received: by 2002:a5d:5288:0:b0:432:c37c:d83b with SMTP id ffacd0b85a97d-432c37cd9bcmr7538529f8f.20.1767888853988;
+        Thu, 08 Jan 2026 08:14:13 -0800 (PST)
 Received: from imac.lan ([2a02:8010:60a0:0:8115:84ef:f979:bd53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5edd51sm17140039f8f.29.2026.01.08.08.14.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5edd51sm17140039f8f.29.2026.01.08.08.14.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 08:14:10 -0800 (PST)
+        Thu, 08 Jan 2026 08:14:13 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -78,9 +78,9 @@ To: Donald Hunter <donald.hunter@gmail.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	Ruben Wauters <rubenru09@aol.com>,
 	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v2 08/13] tools: ynl: ethtool: fix pylint issues
-Date: Thu,  8 Jan 2026 16:13:34 +0000
-Message-ID: <20260108161339.29166-9-donald.hunter@gmail.com>
+Subject: [PATCH net-next v2 10/13] tools: ynl-gen-c: suppress unhelpful pylint messages
+Date: Thu,  8 Jan 2026 16:13:36 +0000
+Message-ID: <20260108161339.29166-11-donald.hunter@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260108161339.29166-1-donald.hunter@gmail.com>
 References: <20260108161339.29166-1-donald.hunter@gmail.com>
@@ -92,179 +92,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix or suppress all the pylint issues in ethtool.py, except for
-TODO (fixme) items.
-
-Suppress:
-
-- too-many-locals
-- too-many-branches
-- too-many-statements
-- too-many-return-statements
-- import-error
-
-Fix:
-
-- missing-module-docstring
-- redefined-outer-name
-- dangerous-default-value
-- use-dict-literal
-- missing-function-docstring
-- global-variable-undefined
-- expression-not-assigned
-- inconsistent-return-statements
-- wrong-import-order
+Disable pylint messages for too-many-*, too-few-*, docstrings,
+broad-exception-* and messages for specific code that won't get changed.
 
 Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- tools/net/ynl/pyynl/ethtool.py | 46 +++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/net/ynl/pyynl/ethtool.py b/tools/net/ynl/pyynl/ethtool.py
-index 40a8ba8d296f..f1a2a2a89985 100755
---- a/tools/net/ynl/pyynl/ethtool.py
-+++ b/tools/net/ynl/pyynl/ethtool.py
-@@ -1,5 +1,10 @@
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index b517d0c605ad..14d16024fe11 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -1,5 +1,11 @@
  #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ # SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
 +#
-+# pylint: disable=too-many-locals, too-many-branches, too-many-statements
-+# pylint: disable=too-many-return-statements
-+
-+""" YNL ethtool utility """
++# pylint: disable=line-too-long, missing-class-docstring, missing-function-docstring
++# pylint: disable=too-many-positional-arguments, too-many-arguments, too-many-statements
++# pylint: disable=too-many-branches, too-many-locals, too-many-instance-attributes
++# pylint: disable=too-many-nested-blocks, too-many-lines, too-few-public-methods
++# pylint: disable=broad-exception-raised, broad-exception-caught, protected-access
  
  import argparse
- import pathlib
-@@ -10,8 +15,10 @@ import os
+ import filecmp
+@@ -11,6 +17,7 @@ import sys
+ import tempfile
+ import yaml
  
- # pylint: disable=no-name-in-module,wrong-import-position
++# pylint: disable=no-name-in-module,wrong-import-position
  sys.path.append(pathlib.Path(__file__).resolve().parent.as_posix())
--from lib import YnlFamily
-+# pylint: disable=import-error
- from cli import schema_dir, spec_dir
-+from lib import YnlFamily
-+
+ from lib import SpecFamily, SpecAttrSet, SpecAttr, SpecOperation, SpecEnumSet, SpecEnumEntry
+ from lib import SpecSubMessage
+@@ -183,6 +190,7 @@ class Type(SpecAttr):
+         for line in lines:
+             ri.cw.p(line)
  
- def args_to_req(ynl, op_name, args, req):
-     """
-@@ -49,7 +56,8 @@ def print_field(reply, *desc):
-         return
++    # pylint: disable=assignment-from-none
+     def arg_member(self, ri):
+         member = self._complex_member_type(ri)
+         if member:
+@@ -280,6 +288,7 @@ class Type(SpecAttr):
  
-     if len(desc) == 0:
--        return print_field(reply, *zip(reply.keys(), reply.keys()))
-+        print_field(reply, *zip(reply.keys(), reply.keys()))
-+        return
+         code = []
+         presence = ''
++        # pylint: disable=consider-using-enumerate
+         for i in range(0, len(ref)):
+             presence = f"{var}->{'.'.join(ref[:i] + [''])}_present.{ref[i]}"
+             # Every layer below last is a nest, so we know it uses bit presence
+@@ -414,6 +423,7 @@ class TypeScalar(Type):
+         if low < -32768 or high > 32767:
+             self.checks['full-range'] = True
  
-     for spec in desc:
-         try:
-@@ -89,11 +97,12 @@ def doit(ynl, args, op_name):
-     args_to_req(ynl, op_name, args.args, req)
-     ynl.do(op_name, req)
- 
--def dumpit(ynl, args, op_name, extra = {}):
-+def dumpit(ynl, args, op_name, extra=None):
-     """
-     Prepare request header, parse arguments and dumpit (filtering out the
-     devices we're not interested in).
-     """
-+    extra = extra or {}
-     reply = ynl.dump(op_name, { 'header': {} } | extra)
-     if not reply:
-         return {}
-@@ -115,9 +124,9 @@ def bits_to_dict(attr):
-     """
-     ret = {}
-     if 'bits' not in attr:
--        return dict()
-+        return {}
-     if 'bit' not in attr['bits']:
--        return dict()
-+        return {}
-     for bit in attr['bits']['bit']:
-         if bit['name'] == '':
-             continue
-@@ -127,6 +136,8 @@ def bits_to_dict(attr):
-     return ret
- 
- def main():
-+    """ YNL ethtool utility """
-+
-     parser = argparse.ArgumentParser(description='ethtool wannabe')
-     parser.add_argument('--json', action=argparse.BooleanOptionalAction)
-     parser.add_argument('--show-priv-flags', action=argparse.BooleanOptionalAction)
-@@ -156,7 +167,7 @@ def main():
-     # TODO:                       rss-get
-     parser.add_argument('device', metavar='device', type=str)
-     parser.add_argument('args', metavar='args', type=str, nargs='*')
--    global args
-+
-     args = parser.parse_args()
- 
-     spec = os.path.join(spec_dir(), 'ethtool.yaml')
-@@ -170,13 +181,16 @@ def main():
-         return
- 
-     if args.set_eee:
--        return doit(ynl, args, 'eee-set')
-+        doit(ynl, args, 'eee-set')
-+        return
- 
-     if args.set_pause:
--        return doit(ynl, args, 'pause-set')
-+        doit(ynl, args, 'pause-set')
-+        return
- 
-     if args.set_coalesce:
--        return doit(ynl, args, 'coalesce-set')
-+        doit(ynl, args, 'coalesce-set')
-+        return
- 
-     if args.set_features:
-         # TODO: parse the bitmask
-@@ -184,10 +198,12 @@ def main():
-         return
- 
-     if args.set_channels:
--        return doit(ynl, args, 'channels-set')
-+        doit(ynl, args, 'channels-set')
-+        return
- 
-     if args.set_ring:
--        return doit(ynl, args, 'rings-set')
-+        doit(ynl, args, 'rings-set')
-+        return
- 
-     if args.show_priv_flags:
-         flags = bits_to_dict(dumpit(ynl, args, 'privflags-get')['flags'])
-@@ -338,25 +354,25 @@ def main():
-         print(f'Time stamping parameters for {args.device}:')
- 
-         print('Capabilities:')
--        [print(f'\t{v}') for v in bits_to_dict(tsinfo['timestamping'])]
-+        _ = [print(f'\t{v}') for v in bits_to_dict(tsinfo['timestamping'])]
- 
-         print(f'PTP Hardware Clock: {tsinfo.get("phc-index", "none")}')
- 
-         if 'tx-types' in tsinfo:
-             print('Hardware Transmit Timestamp Modes:')
--            [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
-+            _ = [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
++    # pylint: disable=too-many-return-statements
+     def _attr_policy(self, policy):
+         if 'flags-mask' in self.checks or self.is_bitfield:
+             if self.is_bitfield:
+@@ -1650,6 +1660,7 @@ class CodeWriter:
+         if out_file is None:
+             self._out = os.sys.stdout
          else:
-             print('Hardware Transmit Timestamp Modes: none')
- 
-         if 'rx-filters' in tsinfo:
-             print('Hardware Receive Filter Modes:')
--            [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
-+            _ = [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
-         else:
-             print('Hardware Receive Filter Modes: none')
- 
-         if 'stats' in tsinfo and tsinfo['stats']:
-             print('Statistics:')
--            [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
-+            _ = [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
- 
-         return
++            # pylint: disable=consider-using-with
+             self._out = tempfile.NamedTemporaryFile('w+')
+             self._out_file = out_file
  
 -- 
 2.52.0
