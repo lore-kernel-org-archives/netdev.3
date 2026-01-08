@@ -1,80 +1,116 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF4E3A9620;
-	Thu,  8 Jan 2026 09:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46D33D3D06;
+	Thu,  8 Jan 2026 10:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767866314; cv=none; b=tth+oNt5WnT51rIgNibyS71a1ccEEMzfjWFioJzUvSCbMSmXLkEvtZB7wcoubVJw/hzs/HbsAjtrRSEhNXgnd3bh4OInQ35VleERvY1XdZ28uP/mmN76EjbKnEDU8CWGU/M9DOzTfK/YeAXpF1AvPiez9kPK8BEHxOEXi08YQlc=
+	t=1767866748; cv=none; b=b81pSks89NaEtrSk565CofTYepayNgJ38g4rziF/mXZK5A3e/2rpm1pGlJlaj1ieZiEUn2oInhSIPX1qLzicMAmc++RkxjYqDQa/aAysAXEal+38xvkWndjinWwuK2X6Eq18X0yvFEDDfB4ox2FtM67d55HIwBnoVZgfm3kmUsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767866314; c=relaxed/simple;
-	bh=OOi7zdhUhSxjZEg80i3heu5/A/kVGWDlC+6FE0vP2L4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=emrphEsDy1NlHOamUqkGwry/cJcO+6TzcH+fdakFtAHFYOE8i+77PC8QobMr5A6aRNoPYxryfHJsWlkzkdvyB6bOAuqNHO8qHPxyZjvGtB6kthIZ0LGEIQYSf5vmOKMNDKnbGJzVVWKHQlvts3zGi/D9e0PIxcIwBiX7j8dPGKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=CYqvsQfW; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1767866748; c=relaxed/simple;
+	bh=XMkwXayjCzPZQIoKrghk+AI8rddAh7OXJnvhpON1SI4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiMfZtTxg6SRS/L/ujRvMAeIylefKEOA63KpIR/Ov9B9iDz4/X0zoJw5OHDwcHKOOnlPF1rnmR4Gk6bqZiYD2ThNB9rzMumSjk+mGggMXIeTfKXgWrgOM908YV4ivfSJs/tgOZXuMUvmntAERznp17j8DD+y4fLyuWWyPlCzBvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=V0hyD3JK; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="CYqvsQfW"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1vdmmY-0002Ir-PL; Thu, 08 Jan 2026 10:58:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=a4f65bwhcNDzgchnTfsfzNek4RVFvclKBpnDIBiuh5o=; b=CYqvsQfWsh6zVT3HpZSKzGluhz
-	QFMy9K4ERI0k1L0eCx316lWKhdG+J+Ci6fkHh/EGj2S31I0YvPHIumKbdOrnxPYxQdVkTk+Nv8fcO
-	0Q1+Z86IfyEvzx5XiEjTaWTL3l3LESD7Uer99JFIdmfgPB6e4J9wJ0m6uGwIj+roym6C8VcCLgu88
-	5d7cM+Gy5cQYA3m9Dh09KDQJGesZP5ph4Oa5yS0KwUwhPPxC3uSCLAN2VIQkDvTgL+/tDva08XfPg
-	6kXOz57GFCE+zj14BMuGz4rKny8/e9kTMgwhANAtW0D1Rg0fe2bEj5Oznx5FAJCNQRRgdL4WetmWA
-	o0XsUkSg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1vdmmY-0006dW-En; Thu, 08 Jan 2026 10:58:18 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vdmmJ-0001RB-1Q; Thu, 08 Jan 2026 10:58:03 +0100
-Message-ID: <5ae4dbd2-52e0-467d-8342-d3dd6d7029ff@rbox.co>
-Date: Thu, 8 Jan 2026 10:58:01 +0100
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="V0hyD3JK"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 607MJEkg1058250;
+	Thu, 8 Jan 2026 02:05:32 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=qro90WFnBng8Fsvr48rpqiHDG
+	Pv9Fdvw6hm+RVDF42w=; b=V0hyD3JKCU3LRgXTm07ukzVLoNZq1OSeQDEbODRHb
+	CbN0RwWvzqt6vfA884z4iN/2zkukjuvWhPtQETXKvm8DYlGxBsv8AhXI3gLnYGfd
+	D/FTx8ZxB3LfUrPF/GFFl+IPbJQBr/0bL1OsxNm05e3vWQHuWZQWWaneozxW/7hR
+	ma5vNKzo38z5aF2o/4HOTZ47CUammxuNUOWF18iArEXXuCLEeQbDNN9IsZdRDxui
+	Ye3oyhTZS8ClJgSkYML95qsRnajGr0pE+o8jFmPnBNRsRerc+qYbHDcQ8HuDgeve
+	/nBvMcwXiEtLhu+3hF0zZbjLILzZiODJdaCoYyf3gY4Nw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4bgf3fym7t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 02:05:32 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 8 Jan 2026 02:05:32 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 8 Jan 2026 02:05:32 -0800
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 2B1383F7091;
+	Thu,  8 Jan 2026 02:05:28 -0800 (PST)
+Date: Thu, 8 Jan 2026 15:35:28 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: ALOK TIWARI <alok.a.tiwari@oracle.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <andrew+netdev@lunn.ch>, <sgoutham@marvell.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2 09/10] octeontx2: switch: Flow offload support
+Message-ID: <aV-BaKNhJJMM-GIE@rkannoth-OptiPlex-7090>
+References: <20260107132408.3904352-1-rkannoth@marvell.com>
+ <20260107132408.3904352-10-rkannoth@marvell.com>
+ <f8d9d910-e2bf-42cf-b15a-b6624c0bda56@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] vsock/virtio: Fix data loss/disclosure due to joining
- of non-linear skb in RX queue
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260108-vsock-recv-coalescence-v1-0-26f97bb9a99b@rbox.co>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <20260108-vsock-recv-coalescence-v1-0-26f97bb9a99b@rbox.co>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <f8d9d910-e2bf-42cf-b15a-b6624c0bda56@oracle.com>
+X-Authority-Analysis: v=2.4 cv=PLgCOPqC c=1 sm=1 tr=0 ts=695f816c cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=fx7Rj7giRjSIOVbTE-wA:9 a=CjuIK1q_8ugA:10
+ a=8_z660xuARpGUQqPBE_n:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA2NyBTYWx0ZWRfXzZdrP1kGVnON
+ 3PM2HWO7Dq9op+12PPCPQ3DXTFPRAKMudtnxcDaKBUuxXlF0ENuDpq0uByAyNHD8BqO47chQrIX
+ 3JvxKJuXkaAPa2+GbVatLQ0Ip4ZnkqFuazHCQ8Ql7xIF9UnQK6j8aDmCCUhDNiIYkluYpkfmREv
+ KZLp2HRj/CunCIPBbdk8UYikuYYGOiNLNgwpxtCxxIDv6/vu2dgv+mNmXfj1cZYBAuGLXupk4r1
+ hpve1FlX/xvIQg4vgMpP3h17tEeGNx31TlWNrf9Qfm4yDkgGvy4dwZE5aM47aelc/WurI4pNy33
+ jGsDYM6MnQ3A5xSAv5LMF70LT1rsn+WJkDXkp3+y4Q71XgAQW6zsyFCY3qeMsYoV0DmgJW7wX7+
+ UjSrgAtg5xXx67vxu5nICserbLsbxLpuAyw3WGrVAhvihDwCSe2y9bSh/l9SMPV32bw9qMCybIb
+ 2rA0hLWEmEaBB07LPwQ==
+X-Proofpoint-GUID: igYmndpY7_jxkoUNs3uNOIFnnR6IpJgc
+X-Proofpoint-ORIG-GUID: igYmndpY7_jxkoUNs3uNOIFnnR6IpJgc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
 
-On 1/8/26 10:54, Michal Luczaj wrote:
-> Loopback transport coalesces some skbs too eagerly. Handling a zerocopy
-> (non-linear) skb as a linear one leads to skb data loss and kernel memory
-> disclosure.
-> 
-> Plug the loss/leak by allowing only linear skb join. Provide a test.
-
-Aaand I forgot to set the "net" prefix. Please let me know if I should
-resend just for that.
-
-Sorry,
-Michal
-
+On 2026-01-08 at 14:39:11, ALOK TIWARI (alok.a.tiwari@oracle.com) wrote:
+>
+>
+> On 1/7/2026 6:54 PM, Ratheesh Kannoth wrote:
+> > +	err = sw_fl_get_route(&res, dst);
+> > +	if (err) {
+> > +		pr_err("%s:%d Failed to find route to dst %pI4\n",
+> > +		       __func__, __LINE__, &dst);
+> > +		goto done;
+> > +	}
+> > +
+> > +	if (res.fi->fib_type != RTN_UNICAST) {
+> > +		pr_err("%s:%d Not unicast  route to dst %pi4\n",
+>
+> %pi4 -> %pI4
+ACK
+>
+> > +		       __func__, __LINE__, &dst);
+> > +		err = -EFAULT;
+> > +		goto done;
+> > +	}
+> > +
+> > +	fib_nhc = fib_info_nhc(res.fi, 0);
+> > +	if (!fib_nhc) {
+> > +		err = -EINVAL;
+> > +		pr_err("%s:%d Could not get fib_nhc for %pI4\n",
+> > +		       __func__, __LINE__, &dst);
+> > +		goto done;
+> > +	}
+>
+>
+> Thanks,
+> Alok
