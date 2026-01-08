@@ -1,180 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E4D40F8F6
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 14:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFE040F8F3;
+	Thu,  8 Jan 2026 14:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881909; cv=none; b=LuXCGweUjK5DyxkVawRJcibZkMoMUk8vXv2bEwzf7/sY5oanseH/B7vh6r+yZQH3P1+YtbNXomQSeBQjAzcb6CjpNOIGW6TdUeOpn/yCHa71NumlPy9l7jgKewApPbr7t+CO1lOVn32MNTZvUFBMbdtVUuIsZHr9ZKQxbRn3gKo=
+	t=1767881949; cv=none; b=mC03oytCuq9ldHHzwefLQ+GnyBIVtre3qX1hw6me+VmgbtqQlHpVgT4Z6UNZ3tFU9lve+/fE3It3Udo3RyQiI16kNz0XqfapDFijxjsW5R+l7oB3M3a+vuDXzv0WrkpzM0rML8HfMfmRwAVNg3X4e1+W+CAp77PMBqTa8OmN20k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881909; c=relaxed/simple;
-	bh=SJZE4KTbW/+usatKP1Sr4PPUbIQlx0UuUvCG+8I8T1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xc35TztF68lbNAptp563JC8NQUtORfsXpuN3w7dH0AocI1DVhJnU+0TXISPkq32N2TW+HPNUbVkJlmWfDbhM4WiC6pYz5osxH51elH8anOYEcdAk5pjUc4ET4hyKOowy/zp8qug5ujGVN7LNmciDdVdtrAyaaM461c3g/uQRQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R3wFfw2A; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JC7gymIB; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R3wFfw2A";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JC7gymIB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767881906;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rqZiGHlphsIXyTZBYYB1RUSRDC4SlQ7PgnKFPfthJ9A=;
-	b=R3wFfw2ApP7SxgdllfSlk6Xr+mhi7oYYZcbmMIjmw1iabWKHleyN1zTXPTfqz5F+1B71u+
-	trFMeqMvQD5sOnW6N8WIqkuB9xsjXW5myFh4/Z8gnQU4aFc6LmZ3gGj1//PVyqIQdO874e
-	NdQSWOClviM6Qrt68NZf050vLdies4o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-438-y4DvjdlEOha1gJeTwNFHEw-1; Thu, 08 Jan 2026 09:18:25 -0500
-X-MC-Unique: y4DvjdlEOha1gJeTwNFHEw-1
-X-Mimecast-MFC-AGG-ID: y4DvjdlEOha1gJeTwNFHEw_1767881904
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b844098869cso250178966b.2
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 06:18:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767881904; x=1768486704; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rqZiGHlphsIXyTZBYYB1RUSRDC4SlQ7PgnKFPfthJ9A=;
-        b=JC7gymIBcxw/OfysV7sn+9xCEjaiOlZZ2Karv2EGjt7Br17mK6QduTkk8Pfc6XC3xq
-         h0MDzXa08eyZOWQQzhqyBoM47HzUGT+8E8El24O5Th9PM437FB9OEtaD2AnQmm+Oobcy
-         dMXFPNxAOxEVsZze9JRT8tH1k7IlNqdWBUo5y8ukWQ/xsziWlP9NJnHNL87T4Y6/IfD2
-         6DaGSuE0H1yqdQZrwftzB/Ok/AvI0z0CkFCWhPt4Jbl2w6wSXTZWYht48b/sVh1r7SSB
-         RlerkxeIm8yfGt6Yn5oqI6mUob7y3Xs83nKbUKJ6FYmysoIM/Sm/Xve1j32jD2WUUWng
-         OwOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767881904; x=1768486704;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rqZiGHlphsIXyTZBYYB1RUSRDC4SlQ7PgnKFPfthJ9A=;
-        b=h9R1lKWQvzVWetOvqJJmKmCV9oRKgINe0mBE0VMgJbekQRN3rXFUIwDtmLHOdDkZp8
-         DoY/iI4YbgS/2lp2YAwwmQeD44pzuqqy8ELdO0tMXWjtzf5CtnXW1PNS/q41TDUnZxIa
-         KksseNGjYVTUgSiOEvWw8oQKtlDnSj2Xk+IJ9CdlhYB5pkKcXFfp0kmnK5VCNEaeVSHm
-         RsEc/WyyXb9tYRG2OD2zbmZaoNcT3bsR+weZFZ1cjcVghzO39lq9WDE0PPua2aU9mN5h
-         TkKUO0wTmfWHJS1PgYALq3JQ+MvPKxjwt1no4/NizsNT7W9lMHmKJGHrGruGBgfF3O1k
-         vS9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWL9SXDfVz1tXqckK1TJU/HlBPcDYnkhqXlvZ8TNMAdLlXaep7l1MMvcpDrTxN9j/WviPr3Uvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMG7kMxBZKvuux1nEGTBRgS44ehy68M25qfxKbYNl9eKVkungv
-	DnFlGmozDiNrYXK6gFW6NZrcMlcuQOKxSo9x2K3dwHViavjtxRe+cxjH4F5TpDlsWpgkJYpaB2F
-	vSRAXAJ3K+jh4mywsvm0dL+OfdOK0LnPFgk/CQ9NGjgnO/J5PERHi7/vsqg==
-X-Gm-Gg: AY/fxX4jowhZPCCapTxM29GlJvhZxsW6Kf9mz7mWgDlqrv5EcMkkcnDOSlH0wYT+7h4
-	djIYi4jjPwbZQfG/0r7N5Q0eQMDyKNd0kQSfMdF2NXStj0QAiCzNceUkCSmEbPAFHIbcJGtNpIg
-	NPUvOd9b0xb7vdLqfts37Ys2ojeRJ8H+fBJEZqBKnahHKpnaGg3UJA66cnZemTlr7Njl01TpJxD
-	HwkLcD98nek0wNvNugNjJj0IX1S+q23vGvP6g12he2UOvZqXdRCeebq6/vLDygJXLR7fQ4ZvvSI
-	teGuzmt5hUGlZcCBszLWJiAiYEh20x8QIcPoiTeeo/NUiZ45bKZRt4NlzScP+R6e3wAQgXahoN0
-	v/akUDPA/1Gqynq7r
-X-Received: by 2002:a17:907:2d07:b0:b84:1fc7:944b with SMTP id a640c23a62f3a-b8445066498mr627908266b.58.1767881903683;
-        Thu, 08 Jan 2026 06:18:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH3Dxa4w6bRkF+MtZ8LKCNuWLpqie07t2Imxvb7EeEx+3jZGwolIwvKYG0CWJg5J8bgXET92Q==
-X-Received: by 2002:a17:907:2d07:b0:b84:1fc7:944b with SMTP id a640c23a62f3a-b8445066498mr627904166b.58.1767881902999;
-        Thu, 08 Jan 2026 06:18:22 -0800 (PST)
-Received: from sgarzare-redhat ([193.207.223.215])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a22ff58sm817309166b.6.2026.01.08.06.18.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 06:18:22 -0800 (PST)
-Date: Thu, 8 Jan 2026 15:18:13 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Olivia Mackall <olivia@selenic.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Jason Wang <jasowang@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Petr Tesarik <ptesarik@suse.com>, Leon Romanovsky <leon@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Bartosz Golaszewski <brgl@kernel.org>, linux-doc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, virtualization@lists.linux.dev, linux-scsi@vger.kernel.org, 
-	iommu@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 07/15] vsock/virtio: fix DMA alignment for event_list
-Message-ID: <aV-7QoTi5AfMcfQa@sgarzare-redhat>
-References: <cover.1767601130.git.mst@redhat.com>
- <f19ebd74f70c91cab4b0178df78cf6a6e107a96b.1767601130.git.mst@redhat.com>
- <aV-4mPQYn3MUW10A@sgarzare-redhat>
- <20260108090639-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1767881949; c=relaxed/simple;
+	bh=BepAi8AeO4+ixlelyuqSBWK9uM4+csWfw4z51yePc58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=a4bpf2E5NQTWuY5Jc2tGMII8o+cuhHxUEHjpVq61H7Re2ACwop+ohbHu9Fvh2TKSD/8deURnLmGynb2CGWVixNvbcQDrrFTKSpYNPY6FZHl4RJsKNslca9F3/woPH9MI1BHXRDCHCV/YR3vNm3N2sNmG9EWBuFqJ2vcKZaFTy9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 608EIsPZ043558;
+	Thu, 8 Jan 2026 23:18:54 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 608EIs3R043554
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 8 Jan 2026 23:18:54 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <1db0fa14-af3b-47e6-93dc-0adffaa3d934@I-love.SAKURA.ne.jp>
+Date: Thu, 8 Jan 2026 23:18:54 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260108090639-mutt-send-email-mst@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bpf: fix reference count leak in bpf_prog_test_run_xdp()
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>, bpf <bpf@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>
+References: <af090e53-9d9b-4412-8acb-957733b3975c@I-love.SAKURA.ne.jp>
+ <87qzs02ofv.fsf@toke.dk>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <87qzs02ofv.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Anti-Virus-Server: fsav303.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-On Thu, Jan 08, 2026 at 09:07:53AM -0500, Michael S. Tsirkin wrote:
->On Thu, Jan 08, 2026 at 03:04:07PM +0100, Stefano Garzarella wrote:
->> On Mon, Jan 05, 2026 at 03:23:17AM -0500, Michael S. Tsirkin wrote:
->> > On non-cache-coherent platforms, when a structure contains a buffer
->> > used for DMA alongside fields that the CPU writes to, cacheline sharing
->> > can cause data corruption.
->> >
->> > The event_list array is used for DMA_FROM_DEVICE operations via
->> > virtqueue_add_inbuf(). The adjacent event_run and guest_cid fields are
->> > written by the CPU while the buffer is available, so mapped for the
->> > device. If these share cachelines with event_list, CPU writes can
->> > corrupt DMA data.
->> >
->> > Add __dma_from_device_group_begin()/end() annotations to ensure event_list
->> > is isolated in its own cachelines.
->> >
->> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->> > ---
->> > net/vmw_vsock/virtio_transport.c | 4 +++-
->> > 1 file changed, 3 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->> > index 8c867023a2e5..bb94baadfd8b 100644
->> > --- a/net/vmw_vsock/virtio_transport.c
->> > +++ b/net/vmw_vsock/virtio_transport.c
->> > @@ -17,6 +17,7 @@
->> > #include <linux/virtio_ids.h>
->> > #include <linux/virtio_config.h>
->> > #include <linux/virtio_vsock.h>
->> > +#include <linux/dma-mapping.h>
->> > #include <net/sock.h>
->> > #include <linux/mutex.h>
->> > #include <net/af_vsock.h>
->> > @@ -59,8 +60,9 @@ struct virtio_vsock {
->> > 	 */
->> > 	struct mutex event_lock;
->> > 	bool event_run;
->> > +	__dma_from_device_group_begin();
->> > 	struct virtio_vsock_event event_list[8];
->> > -
->> > +	__dma_from_device_group_end();
->>
->> Can we keep the blank line before `guest_cid` so that the comment before
->> this section makes sense? (regarding the lock required to access these
->> fields)
->>
->> Thanks,
->> Stefano
->
->A follow up patch re-introduces it, so I don't think it matters?
+On 2026/01/08 23:01, Toke Høiland-Jørgensen wrote:
+> Hmm, this will end up call bpf_ctx_finish() in the error path, which I'm
+> not sure we want?
 
-Yes, I saw it later. Of course I don't want you to resend the whole 
-series just for this. So if you have to resend the series for other 
-reasons, I would avoid removing the line here because I don't see any 
-value on removing it and add back later.
+Excuse me, but I don't think bpf_ctx_finish() will be called, for
 
-In both cases:
++out_put_dev:
+ 	/* We convert the xdp_buff back to an xdp_md before checking the return
+ 	 * code so the reference count of any held netdevice will be decremented
+ 	 * even if the test run failed.
+ 	 */
+ 	xdp_convert_buff_to_md(&xdp, ctx);
+ 	if (ret) // <== ret was set to non-0 value immediately before the "goto out_put_dev;" line.
+ 		goto out;
+ 
+ 	size = xdp.data_end - xdp.data_meta + sinfo->xdp_frags_size;
+ 	ret = bpf_test_finish(kattr, uattr, xdp.data_meta, sinfo, size, sinfo->xdp_frags_size,
+ 			      retval, duration);
+ 	if (!ret)
+ 		ret = bpf_ctx_finish(kattr, uattr, ctx,
+ 				     sizeof(struct xdp_md));
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> Could we just move the xdp_convert_md_to_buff() call to after the frags
+> have been copied? Not sure there's technically any dependency there,
+> even though it does look a little off?
 
->
->> > 	u32 guest_cid;
->> > 	bool seqpacket_allow;
->> >
->> > --
->> > MST
->> >
->
+Unless
+
+	xdp_md->data = xdp->data - xdp->data_meta;
+	xdp_md->data_end = xdp->data_end - xdp->data_meta;
+
+in xdp_convert_buff_to_md() lines do something bad for the error path,
+I think this change will be safe.
 
