@@ -1,112 +1,173 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D2C342502
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 12:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C564ABFC3
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 12:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767874751; cv=none; b=RmC5nbndeI1KA5FfjPh5/hSagNRG0V9Q2kaMnvBNmLxd1r9V5R6FP7+c599YFbzJZ9Za+eLEoEWJ49ysapYR5g+EgAP7KChEkbI5Q2EPut3dsoNxcbajqZoB15azCbj+mBGjxtd5Nax5j3f9lDHPgQI6xGdjwOhsEmoje9ZL5gk=
+	t=1767874773; cv=none; b=mlFI5AgMN6UpW4BRhujLLMhOcfSgNiogmLt/QPRUF9DMWqn66xfiwBfiup1FSVLA7h49iyoT8Cxz7bwGCawkfGqgj/42kAr+KaqviDQ3V0TYVI2p1uYQt/22S+EKSErV1wsxoz43pixL3TyZeFsMDM0isxqYypmvzJkvXT4rp74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767874751; c=relaxed/simple;
-	bh=XslR5Skl/tw/Xim8K72eczklMzvlOxARWwVTFZz2hyo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fmn2/86Gke4HfyReZgdEyWLpAe4D4chobnWWzSw2Fhq0GN6wna5bK4q8hlDqBNYShnXCaZeJFLy8GA0C9dPAOxU1UMSD3D+rwGWvm1tby8OZ70Tk8K36hBJq/1ncJ/JEHZu2dYUBsuz2Dd1V0jFtnDmYxg4O9iS2zfeMCzTJD3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ja+7V8F1; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1767874773; c=relaxed/simple;
+	bh=BvSuTILHr8EDgeSjzYkEZLxnDIUA/flfupiqpa7Khcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N7eNZwXFkirxKJ27CF7LL97s55yiba362RhDUEqUfd3QjkN6McABJV+dG5OFN/K76IUSl3cLPS1C6pDxuYb3USfK58Bfar7bj9i3S1E8/YXORGDBz+Qlb4bHWW6+B/8deCTDV5xI9PCSJj0g2kOo4MYSad48CJACz1w0jF6Pdhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=J+7D1kdk; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ja+7V8F1"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4fc42188805so32640961cf.3
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 04:19:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767874746; x=1768479546; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XslR5Skl/tw/Xim8K72eczklMzvlOxARWwVTFZz2hyo=;
-        b=ja+7V8F1ZwjWz5gIR9kXgeJQwqADgKnij+xGhHeSKOkbZ3j0fpqSXJgQwNFDUpSKHu
-         BLRlwmWb5dG1rM6Sz97lQd8qG1LLDpxMRxJYaMGnmPnlptG5NZpECNAIr9Tm3qHE5hyY
-         piUAzuG5yyotnME9cOrJQl6abmkEoDMJBDTvgWGMzgl/OE0W9gkeHApBotwro/H/ZKDs
-         yL/HIYAMRAuDuFSAmVl2ueileIkRxaFoPFTmU+Q9KvU6xmU7xtRbJRglFTI+LTVlwgjV
-         Jc3u+GQncx4lvYaL+FriQh4RoBG8qp0tuMoKbeqSCwslizSnn2sb1YoiVqWHZZy60zhk
-         JhwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767874746; x=1768479546;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XslR5Skl/tw/Xim8K72eczklMzvlOxARWwVTFZz2hyo=;
-        b=lR9aCeXkD7RVzqQYNVtCooHMqflNSg/Kbsz8Yp4SwqEvE1zpem713eJHW3+l4zcZxr
-         q2CFx3UIY4Eyx/ey54O/+V7OBMGtxM4xkHI4EIwN6+hiOHMB8oTaCZZNKx6bbe/o/ViA
-         1LoTMKPUrKiCW0Z+Om5On7Dfg0ALENiWHGLpeb3a/htKQJ2+MZDltyluokqLkVIY+kXq
-         1ejQCdi0yK5NXlo4laXjbC7Vpd7Px3gLmDLc3rQnV6m9TXhWypbAgsMM8c+/FV5AlqVw
-         WBR5wRPPV8oWfIGHvyjagzTd8zU83PlsaOnOlz3bYPtIPNDW4ikJc9vUK/WHGNNv8/Su
-         OHJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5Xv5o8x/dcaDJwzX4m+knHzAOWcz6NT9Zu82LbZmfVjidpJUO8AhsoKvyHtBJUdme4MyxTJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxggf/VIStdnE74fUEc2dQEPADvl4shlLqUVLNV61f5+IW7q7Rn
-	PXxvhZ955Yza74oeM1006ob+oV6nzlQza/x3vyBGjxD+GdQ+UfyNviZjjEcLzAoOP5G04d9pgOJ
-	SAminxS9jQ+gMYTj3ml3hMomElqsMzwjKZj7aazFm
-X-Gm-Gg: AY/fxX4Wpgs42bgfIifc/iFslaVFQfe+yWbOV8RIUHDOfadlI4+tX8D6CvhfZWyIxTY
-	vCojEpsFQ3jnD2hFgIkXakSy5Uad4p9Uw6Q19+RcuvSBl+cdm7qRi7R8N7TWR5vE/0ihaMuAnqU
-	OQA0mnkF0buNuDX+zSLZOMpS/EDbKhyNyatdOBBKv8LgYDeIUg40QmbvpeWYt6R4ZzTDYR1kkT0
-	5+vvzRNZa4Mg5wswV2FjGNYrXX5+LFYeK82b11fBoeu3ptKCLvexP6JFycbK21hRJYnFkeZUl0i
-	oW3g
-X-Google-Smtp-Source: AGHT+IE6CBzyCrx4IFVvz/0AqM39PV6mvwh7lOn07b9ckEerO+EpyGAL7TIuu+rk4c57j55fgOdIw95rlnzvDdfaED8=
-X-Received: by 2002:ac8:7f8c:0:b0:4e8:b2df:fe1f with SMTP id
- d75a77b69052e-4ffb487f955mr83824451cf.28.1767874745665; Thu, 08 Jan 2026
- 04:19:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="J+7D1kdk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hif2hvnGrWVjKRMJEAdc4UWKgX381vfN7zL1PT9/Ogg=; b=J+7D1kdkycHTtChi2XvssBNcbU
+	w5KuTSCZfiUJu4wSPTGY27d6eir99M1S+gjGJmPNPyAwMyGhw3SDy/926ebKBNS4wCrdJNSVH5NKO
+	mz3nDx/hqkvsLkJdEzkJIImS17xDlqm6B6CzhyLK3atsP3RRpurPsv7nmr8W6VwOKc2CilVNp00OP
+	VMoG+VJ5xaziRx5Bi0BJ1n+Mkxy+wlqzfBCjSib94EqcaQyEEc2oIpmNSQ172BD4zPRWXhQlAPZGm
+	Mp6Bw3oYJV8R3CI07yVWp9+oXQmXJPk/Yx4eP8B7UWlU8PnJuERzP7HoDFccP4UXBe8MgyLlLrkIo
+	e/u34BWg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56296)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vdoz2-000000002dh-1oTm;
+	Thu, 08 Jan 2026 12:19:20 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vdoyz-000000002L8-3aLA;
+	Thu, 08 Jan 2026 12:19:17 +0000
+Date: Thu, 8 Jan 2026 12:19:17 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 4/9] net: stmmac: descs: fix buffer 1 off-by-one
+ error
+Message-ID: <aV-gxT3Ijk_8cmHS@shell.armlinux.org.uk>
+References: <aV1w9yxPwL990yZJ@shell.armlinux.org.uk>
+ <E1vdDiF-00000002E1d-30rR@rmk-PC.armlinux.org.uk>
+ <4bf4ec53-c972-4009-b827-5083e080f32f@bootlin.com>
+ <aV-X20nSS-JahPr6@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260103131028.10708-1-chia-yu.chang@nokia-bell-labs.com>
- <56f6f3dd-14a8-44e9-a13d-eeb0a27d81d2@redhat.com> <PAXPR07MB798456B62DBAC92A9F5915DAA385A@PAXPR07MB7984.eurprd07.prod.outlook.com>
- <9d64dd7e-273b-4627-ba0c-a3c8aab2dcb1@redhat.com>
-In-Reply-To: <9d64dd7e-273b-4627-ba0c-a3c8aab2dcb1@redhat.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 8 Jan 2026 13:18:54 +0100
-X-Gm-Features: AQt7F2pGmpHwQwLbaeD-dBc7rrFfr_O4l9u7b9jAwL-yY9Bn1sm999duNbFyyYY
-Message-ID: <CANn89iKRAs86PVNAGKMUgE49phgZ2zpZU99rRkJq=cc_kNYf=Q@mail.gmail.com>
-Subject: Re: [PATCH v7 net-next 00/13] AccECN protocol case handling series
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>, 
-	"parav@nvidia.com" <parav@nvidia.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"corbet@lwn.net" <corbet@lwn.net>, "horms@kernel.org" <horms@kernel.org>, 
-	"dsahern@kernel.org" <dsahern@kernel.org>, "kuniyu@google.com" <kuniyu@google.com>, 
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"dave.taht@gmail.com" <dave.taht@gmail.com>, "jhs@mojatatu.com" <jhs@mojatatu.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "stephen@networkplumber.org" <stephen@networkplumber.org>, 
-	"xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, "jiri@resnulli.us" <jiri@resnulli.us>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
-	"donald.hunter@gmail.com" <donald.hunter@gmail.com>, "ast@fiberby.net" <ast@fiberby.net>, 
-	"liuhangbin@gmail.com" <liuhangbin@gmail.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "ij@kernel.org" <ij@kernel.org>, 
-	"ncardwell@google.com" <ncardwell@google.com>, 
-	"Koen De Schepper (Nokia)" <koen.de_schepper@nokia-bell-labs.com>, 
-	"g.white@cablelabs.com" <g.white@cablelabs.com>, 
-	"ingemar.s.johansson@ericsson.com" <ingemar.s.johansson@ericsson.com>, 
-	"mirja.kuehlewind@ericsson.com" <mirja.kuehlewind@ericsson.com>, cheshire <cheshire@apple.com>, 
-	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, 
-	"Jason_Livingood@comcast.com" <Jason_Livingood@comcast.com>, Vidhi Goel <vidhi_goel@apple.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aV-X20nSS-JahPr6@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Jan 8, 2026 at 1:05=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wrot=
-e:
->
-> On 1/8/26 9:47 AM, Chia-Yu Chang (Nokia) wrote:
-> > Regarding the packetdrill cases for AccECN, shall I can include in this=
- patch series (v8) or is it suggested to submit them in a standalone series=
-?
->
-> IMHO can be in a separate series, mainly because this one is already
-> quite big.
->
-> /P
->
+On Thu, Jan 08, 2026 at 11:41:15AM +0000, Russell King (Oracle) wrote:
+> On Wed, Jan 07, 2026 at 10:28:30AM +0100, Maxime Chevallier wrote:
+> > Hi Russell,
+> > 
+> > On 06/01/2026 21:31, Russell King (Oracle) wrote:
+> > > norm_set_tx_desc_len_on_ring() incorrectly tests the buffer length,
+> > > leading to a length of 2048 being squeezed into a bitfield covering
+> > > bits 10:0 - which results in the buffer 1 size being zero.
+> > > 
+> > > If this field is zero, buffer 1 is ignored, and thus is equivalent
+> > > to transmitting a zero length buffer.
+> > > 
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > 
+> > Should it be a fix ? I've tried to trigger the bug without success, this
+> > seems to be fairly specific so I'm OK with it going to net-next.
+> 
+> Note that you need hardware that doesn't use enhanced descriptors -
+> which descriptors get used are dependent on the hardware rather than a
+> runtime option.
+> 
+> Note that we have this silly code, which I've brought up in the past:
+> 
+>         if (priv->plat->core_type == DWMAC_CORE_XGMAC)
+>                 ndev->max_mtu = XGMAC_JUMBO_LEN;
+>         else if (priv->plat->enh_desc || priv->synopsys_id >= DWMAC_CORE_4_00)
+>                 ndev->max_mtu = JUMBO_LEN;
+>         else
+>                 ndev->max_mtu = SKB_MAX_HEAD(NET_SKB_PAD + NET_IP_ALIGN);
+> 
+> where the "silly" part is that last line - SKB_MAX_HEAD() is dependent
+> on PAGE_SIZE. So, if you build your kernel for e.g. 64K page sizes, but
+> stmmac doesn't have enhanced descriptor support, ->max_mtu ends up being
+> close to 64K, and you can configure the netdev's MTU to be that large.
+> 
+> Even with a 4KiB page size, max_mtu will certainly be greater than
+> 2KiB.
+> 
+> That means stmmac_xmit() can be called with packets >= 2KiB in length.
+> As stmmac_xmit() has this:
+> 
+>         /* To program the descriptors according to the size of the frame */
+>         if (enh_desc)
+>                 is_jumbo = stmmac_is_jumbo_frm(priv, skb->len, enh_desc);
+> 
+> the code will not treat them as jumbo frames, and thus
+> stmmac_jumbo_frm() will not be called. This means we'll call
+> stmmac_set_desc_addr() and stmmac_prepare_tx_desc() only for each
+> fragment of the skb, which only supports buffer 1 in the descriptor.
+> 
+> There is the possibility for a descriptor to supply the next chunk of
+> the packet in buffer 2 (with its separate length field of the same
+> bit size) but the driver doesn't do that in this path.
+> 
+> So, even if we did get a fragment >= 2KiB, the code would only be able
+> to send up to the maximum size that can fit in the descriptor.
 
-If possible, please send a packetdrill series _before_ adding more code.
+Reviewing the docs again, I actually think it's worse than this.
 
-I have been reluctant to review your changes, because there is no test.
+Consider the case where enh_desc = false, so we're using normal
+descriptors. in stmmac_xmit() is_jumbo will always be false because
+we never check stmmac_is_jumbo_frm() for normal descriptors. Thus,
+we use the paths in stmmac_xmit() which only call
+stmmac_set_desc_addr() and stmmac_prepare_tx_desc().
+
+For normal descriptors, these correspond with ndesc_set_addr() and
+ndesc_prepare_tx_desc().
+
+ndesc_set_addr() sets tdes2 to the address - this is the buffer1 DMA
+address.
+
+In ring mode, ndesc_prepare_tx_desc() calls
+norm_set_tx_desc_len_on_ring() which divides the buffer between the
+buffer1 length and buffer2 length. This means, in theory, that normal
+descriptors can transmit up to 4KiB - 2 split across two 2KiB - 1
+buffers. However, nothing sets tdes3, which is the buffer2 DMA address,
+so either we transmit garbage (I suspect whatever happens to be at
+DMA address zero) or DMA fails.
+
+In chain mode, ndesc_prepare_tx_desc() calls
+norm_set_tx_desc_len_on_chain() which only sets the buffer1 length
+(masking off the bits that don't fit in the field.) This is because
+tdes3 is used to point at the next descriptor, so each normal
+descriptor can only contain buffers up to 2KiB - 1.
+
+This all comes down to the "silly" code that I mentioned previously.
+
+While one can argue that it would be nice to fully fix this, I suspect
+the reality is that almost no one cares, because hardly anyone uses
+"normal" descriptors, especially with more recent hardware.
+
+However, my thoughts more centre around the idiotic max_mtu setting
+that didn't gain any traction when I tried to bring that topic up.
+The simple solution here would be to ensure max_mtu isn't set to
+SKB_MAX_HEAD() but left as the standard setting (thus not allowing
+the MTU to be increased beyond ETH_DATA_LEN, aka 1500) which would
+then prevent buffer1 being anywhere near crossing the 2KiB-1
+threshold.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
