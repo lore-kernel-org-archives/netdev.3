@@ -1,88 +1,89 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0700296BBD
-	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 16:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479E12DE6E6
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 16:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767891485; cv=none; b=ILt1R8z7CYLyiQC1F//UODsV+TR7t2FfLw9roLAm2ELHQAe2ezdG0jJ1zF91CWELdV7n+NL2FfOnO16dVORmMOif9aAYoI0JRYPnMnArwrOKRNDS1DpXcpTP48vCMjj85kVY30wRVAXruYDAQhGRX15Iy9kXHseN0AAPgTymWGM=
+	t=1767891487; cv=none; b=OchROqCsWRmyDH0pUlEvaLUB2swRMkzGyGshoMttRtmvSXPQBgSu+IOH+M5UrkVbtfCiZPrLDt8T9dOcHvuWf/Nzz3trTH5yHBoIxaow/k6GB3piP8RbbUqUtM0byU6cBPOLAcOrbXO6wL2uYVuKGCnM1XhQ45RfVbbEfEsioqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767891485; c=relaxed/simple;
-	bh=JmuDeJxLItLOh/bZtOxtFm1LStfkTnXSGkMQRcDG4Fw=;
+	s=arc-20240116; t=1767891487; c=relaxed/simple;
+	bh=Dez9V004RqsLaGpEYBVQFmv3d3qxXY4twEruRZGGTNs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UuM8NRgxcE4IYGtoUBLZPIIYB2bF3ZC7ti3atmWX3mbZK9RrMJLKYcow9HA5HhBoZp6Jn2X63pd1QxC1XnxBYUGC8MDTsMT54GFnqQbROCdx03jRT6wxyxhqkDOhW4nz9heqra1qkoL7QeiNTJpZyUxWTGdoDpF6ZMTi2pFbOy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TIqoaaaj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kl//2PfF; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:To:Cc; b=OREmCetrCBjnipHo0dOdGUysUghduFrPp8t/URMVG0v69vOskuRXmcNoKy9y7EEyDinfyS59GwN/JgyynpsCNUjpDOt77Xd253eEPFJdydzAuxtmZIK/+qAl1e63PbMZUdHDfz8BwtJec5F6Dz7RU7cPUgaCIm8jSH0OwHOAMpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GsslVlev; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=a5YrQWdS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TIqoaaaj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kl//2PfF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GsslVlev";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="a5YrQWdS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767891478;
+	s=mimecast20190719; t=1767891481;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w0VRQtyWtlpjzCobkhPA/bxrDXQwuOX3Zf3Yncleem0=;
-	b=TIqoaaajEzCZymlo2QBFtQoRUGyhrs8zaKJ7D0pvDt05G4kOk0sTO43bMDuo/1ZQQ9beL2
-	RcWOvxuJgsLqQ4/CrndS2zk+G4qHzasTl5SyFafk+j4osddWhgBcDT16tfqjUrZTDK7LjF
-	HbP0b5wp9z/IBmRHTHrTorPIo075I54=
+	bh=GT7mN+7KVGActvdAZOBkafMg8y6aw5SRyHijs56WQuU=;
+	b=GsslVlevTaPTsaOlsTQ0bdbYoz1G4pOtMCNvnwmvt6dcH7+2Q+RHjN/PbAgj6OtKY/7dpY
+	JVV8XINRhEkn6EaKa1G1ScaxLaWFz2WNbXaMiGc1QvtdkfStNwJJwr8P1980vqoSlqodAK
+	z60tnaz2O1cGT4rRviPwJ1Zq+KPl3gc=
 Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
  [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-rCr31u-pOqCsrbI0O8VE3g-1; Thu, 08 Jan 2026 11:57:57 -0500
-X-MC-Unique: rCr31u-pOqCsrbI0O8VE3g-1
-X-Mimecast-MFC-AGG-ID: rCr31u-pOqCsrbI0O8VE3g_1767891476
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b763b24f223so526584966b.0
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 08:57:56 -0800 (PST)
+ us-mta-426-egNvscmLOd2JXquC3muWtw-1; Thu, 08 Jan 2026 11:57:59 -0500
+X-MC-Unique: egNvscmLOd2JXquC3muWtw-1
+X-Mimecast-MFC-AGG-ID: egNvscmLOd2JXquC3muWtw_1767891478
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b7ce2f26824so363877466b.1
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 08:57:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1767891476; x=1768496276; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1767891478; x=1768496278; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w0VRQtyWtlpjzCobkhPA/bxrDXQwuOX3Zf3Yncleem0=;
-        b=kl//2PfFwFajP39WoGAIJ+mkKiVyaFHjrgcXbriaWut9cLF9pAxRRNnOL38KcnxfPL
-         zENOx19rmghJm2cGk/OELIv/5uSF9M6Ebu7m/meJxmJdLkRvgScBs5/xdnRb4KvD555t
-         kPd9LEyI/5XLM8bedMTCuuB0hL9HZL5hGBSUUk96C7US4IUufv3FhCRZxDnEXOq9dYeK
-         SmygQVDAehezLJD6HQLpSduzIEGzUOP6PYAKdckg10ihDf3+GWTMSb/c8yDK/D++otDj
-         pGiECJr3kgDeiSvezwu865iJYwf3bwTxe5E20DabvMoM2XllepXRsn+xQ3OzgWIqdktM
-         O1JA==
+        bh=GT7mN+7KVGActvdAZOBkafMg8y6aw5SRyHijs56WQuU=;
+        b=a5YrQWdSid7rqntLjfEhTTSelZCnyqwCBvpEjtCI5pJVzK0h5bF45D9MhZO5l6C/bc
+         iDL8AXja32FNB3ylUXraWvDiBlQSOgr/Oup8uOVTZFKvr8+GHg7bJpz3Z3KaU/9x7nw5
+         Z0Jm2CT3DCPgL1x85h4IaL4FUIbKLVjTnjFZZvMHvJ62bDxK4yiQU2EoN/fBkxRN66ly
+         2EUfrG8Ewz92qK/h7wbWwZnKAbnPwdxLp3hdEd7WG3CYQgvLO2Z6BBrYdUS2L2dhJQy7
+         TAxH27v7Tr7r/wd1EJRpKJLWzyTepcNAdfJM7mi8+selPjIIcajoSxKl9I5hlztC2jxs
+         RAYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767891476; x=1768496276;
+        d=1e100.net; s=20230601; t=1767891478; x=1768496278;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=w0VRQtyWtlpjzCobkhPA/bxrDXQwuOX3Zf3Yncleem0=;
-        b=ndyvTBFOft3aqqp/TbqK3ip3NY/fy0ylivS0vOhqXj7h0n6Y7eeYApYPCR482EvVKP
-         hTtpj7JX4I0gB6g3RCSGRJPmvpA4wUgyI7ER9gZGzmqfSpHd0sxrBMBNlM9ZDWVJhucU
-         S9KxjJjNYSH8DbAUxRGATKyDBCrQZ7tvFzu/Bgh7kmW27kgIwxVeN/KkyrMcUV9TnRH7
-         LTc/g/pZ3oH163rxnlDzY5Ot3yMFjD1nlgvCOmtVaIbaIjs4Ls8WtWZqF/zpZFxunAqA
-         jg18eHKzxl43je9QWoqXPRw/ZjM9SlosiWIPoa74aBSM+a7+3XNqUVqj84pm9NUBLQD5
-         T3oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3zRoSeKqmy1uazNEkOzfEOcf/j82AC1OIP6Me8eUBcovl/xyOPaVU3Rw8ATI5ppRuWQf6juM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2+eycrLwpEJhcOGG9LC0QAXpTlPB4/98TGOUnfIhoC583ktKH
-	mVTOwXCsdQww2RtF0EhxbcAPci+k0h/eLb8cM4zNXKUYgsIdkAi78L/vSvDPciqS/4rUOtubQDC
-	sULJYzVSKh1kLyxdZ/mhObeK4yEp5mS5Dw6HhPiBNceRV/dhtyTvhPxP/sQ==
-X-Gm-Gg: AY/fxX6jYUU1c2+tR31C4N8oLzOKwdDz9FmsiX4zVzc3meFQsSq4S8wPrINwnBCXWqu
-	YouYcgdni0F0ZNv+QGufC1q/pxQTD1s8fBNCclyPo+ZqSY4GBB66aWzgNA5vF1DTwTiEuOrt8EH
-	hfs5iCnQUTQmjun4XNzoWGveI6UMiYuXr0HpyA2V+tB6uUS0g+mmSlSaBiyF2MYp+8rLN2Z8qz4
-	u/xfc+jnU49AT6J7piLVBpLwVCVxU/4WTCJTTEnkZ3PVPF7qiczVsBc1biBoBjMujvkGg+AvJJ5
-	Ku0P9MaZREO5plnaAddvgzJg3237+2XAr2WpkNbJiLfjAXbaMw3qvLWBV8w5ClpgTtCtKjLYwyW
-	cSsyM7Ys7ZSXxmg09ztniuOy4qKaVmE2OlvW1
-X-Received: by 2002:a17:907:7b8d:b0:b76:791d:1c5c with SMTP id a640c23a62f3a-b844518d800mr681809066b.9.1767891475820;
-        Thu, 08 Jan 2026 08:57:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEn3ywfuyYSJK5cn2ap/TME+/wbKHSEFmv4WE+49MUqOtr8ydi99dI6kFTLg3kVp6uHsoNGZg==
-X-Received: by 2002:a17:907:7b8d:b0:b76:791d:1c5c with SMTP id a640c23a62f3a-b844518d800mr681807466b.9.1767891475386;
-        Thu, 08 Jan 2026 08:57:55 -0800 (PST)
+        bh=GT7mN+7KVGActvdAZOBkafMg8y6aw5SRyHijs56WQuU=;
+        b=RgkNKjkXyjATfQHlXuB2dOpiUMf4gTcSNP4HggFaYyuWQtqMP9nod1UdJgbsejnu0r
+         KQgxTMtSEBEo+YLjRX/8hUKxRopAdGgFxhJTB1iq1JPKV9epIirks4984QPMgm+Lf8/I
+         bzBE29dVHbg5FegwDQgzll5YNJHMPaRX8whmO4CapGI03Nz2cSYQNs8r4u9Aiia+QZP9
+         b1GaIsO4R/OPxOvykH8v7r/QleyWV+0wy1ppFFk3k9Zr1lZbEMpvmHKugfkzbNBontlN
+         fAP4QK97eHXWX4yqyAcllR3J7t9andYbEouDFIq+BmYFIxcjd4MBYIPQcD7rKkoNyIls
+         6GJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHPzqk3glZ2h4sw3I0goQqRzKJI8edgPjbEdkOKb10r+kRA2bKcrtC7mM2M3OIB0x00SqBWj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcrhJ5ROw6hXTrLMLAe4ozDR2aWH0cfeloZy+VIGQ7te7d2YzI
+	27QZJ4yAGjkAAdSGoK3ptCRMpoXonSCDaX1PDsVHMRC34bfpLx4W7/gHWmjhqS6z4zYjrs2by4t
+	TbGE2/ZYgzB8M2GmC7wXVTp3eWCjrMSiEvmc9y8ZM7gfVeXht+bRviVpe9w==
+X-Gm-Gg: AY/fxX6bJHvj6BoIHhq8jBcz2WlP+gJk/m1fpVzNd8kSIQw13KP/AV6EhEuPx5FqiHz
+	iGpPTV7Y0jzDEAAOeWhJSvGJkPiZ6GIdodWS9QBj+VJziUXRcO5ZCZaDb/2OHTP0dNDvwD5UeKv
+	AI1Tmrhu7ZNi2hK3m6tGHOKAK5yTbOh1S2vYuIG38mghqfV8k2iMHlkq9CyQm/vQlSQ4VWEwVfu
+	L/C8QYgBjEXkHGTmk4sSlLOJTbywXgCG6F/5J7eWb9Dg1NMGoWrEb7w2pQrXiZuqxudj6mEF5Tg
+	unAbICYMqTNQls4Q06gkrIMl3tai21c5b+eUANL11SqIz6kpH43cD6xIScvmz2jfBZhlKzbJYWJ
+	qp49WnHJ4y6reDDoaf2fd8J7T16Vqe/A8es7e
+X-Received: by 2002:a17:906:f582:b0:b83:8fc:c64b with SMTP id a640c23a62f3a-b84453a1868mr691277566b.38.1767891477998;
+        Thu, 08 Jan 2026 08:57:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHyCcbTaz3WM8h6k5wWHSlzh8KQXMFyUoi+JTohnsi9QMBt6I9uFBCxiHUq4OYhJNAQHkOMiA==
+X-Received: by 2002:a17:906:f582:b0:b83:8fc:c64b with SMTP id a640c23a62f3a-b84453a1868mr691274266b.38.1767891477356;
+        Thu, 08 Jan 2026 08:57:57 -0800 (PST)
 Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d0290sm855178166b.32.2026.01.08.08.57.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a563f73sm891182866b.61.2026.01.08.08.57.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 08:57:53 -0800 (PST)
+        Thu, 08 Jan 2026 08:57:55 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id C5C3B4083BB; Thu, 08 Jan 2026 17:57:52 +0100 (CET)
+	id D76D34083C5; Thu, 08 Jan 2026 17:57:52 +0100 (CET)
 From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Thu, 08 Jan 2026 17:56:03 +0100
-Subject: [PATCH net-next v7 1/6] net/sched: Export mq functions for reuse
+Date: Thu, 08 Jan 2026 17:56:08 +0100
+Subject: [PATCH net-next v7 6/6] selftests/tc-testing: add selftests for
+ cake_mq qdisc
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,7 +92,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260108-mq-cake-sub-qdisc-v7-1-4eb645f0419c@redhat.com>
+Message-Id: <20260108-mq-cake-sub-qdisc-v7-6-4eb645f0419c@redhat.com>
 References: <20260108-mq-cake-sub-qdisc-v7-0-4eb645f0419c@redhat.com>
 In-Reply-To: <20260108-mq-cake-sub-qdisc-v7-0-4eb645f0419c@redhat.com>
 To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
@@ -101,261 +102,610 @@ To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
 Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, 
  cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
- Willem de Bruijn <willemb@google.com>, 
+ Victor Nogueira <victor@mojatatu.com>, 
  =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 X-Mailer: b4 0.14.3
 
-To enable the cake_mq qdisc to reuse code from the mq qdisc, export a
-bunch of functions from sch_mq. Split common functionality out from some
-functions so it can be composed with other code, and export other
-functions wholesale. To discourage wanton reuse, put the symbols into a
-new NET_SCHED_INTERNAL namespace, and a sch_priv.h header file.
+From: Jonas Köppeler <j.koeppeler@tu-berlin.de>
 
-No functional change intended.
+Test 684b: Create CAKE_MQ with default setting (4 queues)
+Test 7ee8: Create CAKE_MQ with bandwidth limit (4 queues)
+Test 1f87: Create CAKE_MQ with rtt time (4 queues)
+Test e9cf: Create CAKE_MQ with besteffort flag (4 queues)
+Test 7c05: Create CAKE_MQ with diffserv8 flag (4 queues)
+Test 5a77: Create CAKE_MQ with diffserv4 flag (4 queues)
+Test 8f7a: Create CAKE_MQ with flowblind flag (4 queues)
+Test 7ef7: Create CAKE_MQ with dsthost and nat flag (4 queues)
+Test 2e4d: Create CAKE_MQ with wash flag (4 queues)
+Test b3e6: Create CAKE_MQ with flowblind and no-split-gso flag (4 queues)
+Test 62cd: Create CAKE_MQ with dual-srchost and ack-filter flag (4 queues)
+Test 0df3: Create CAKE_MQ with dual-dsthost and ack-filter-aggressive flag (4 queues)
+Test 9a75: Create CAKE_MQ with memlimit and ptm flag (4 queues)
+Test cdef: Create CAKE_MQ with fwmark and atm flag (4 queues)
+Test 93dd: Create CAKE_MQ with overhead 0 and mpu (4 queues)
+Test 1475: Create CAKE_MQ with conservative and ingress flag (4 queues)
+Test 7bf1: Delete CAKE_MQ with conservative and ingress flag (4 queues)
+Test ee55: Replace CAKE_MQ with mpu (4 queues)
+Test 6df9: Change CAKE_MQ with mpu (4 queues)
+Test 67e2: Show CAKE_MQ class (4 queues)
+Test 2de4: Change bandwidth of CAKE_MQ (4 queues)
+Test 5f62: Fail to create CAKE_MQ with autorate-ingress flag (4 queues)
+Test 038e: Fail to change setting of sub-qdisc under CAKE_MQ
+Test 7bdc: Fail to replace sub-qdisc under CAKE_MQ
+Test 18e0: Fail to install CAKE_MQ on single queue device
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jonas Köppeler <j.koeppeler@tu-berlin.de>
 Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
- MAINTAINERS            |  1 +
- include/net/sch_priv.h | 27 +++++++++++++++++++
- net/sched/sch_mq.c     | 71 ++++++++++++++++++++++++++++++++++----------------
- 3 files changed, 77 insertions(+), 22 deletions(-)
+ .../tc-testing/tc-tests/qdiscs/cake_mq.json        | 559 +++++++++++++++++++++
+ 1 file changed, 559 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 765ad2daa218..01b691cb00d7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25446,6 +25446,7 @@ L:	netdev@vger.kernel.org
- S:	Maintained
- F:	include/net/pkt_cls.h
- F:	include/net/pkt_sched.h
-+F:	include/net/sch_priv.h
- F:	include/net/tc_act/
- F:	include/uapi/linux/pkt_cls.h
- F:	include/uapi/linux/pkt_sched.h
-diff --git a/include/net/sch_priv.h b/include/net/sch_priv.h
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/cake_mq.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/cake_mq.json
 new file mode 100644
-index 000000000000..4789f668ae87
+index 000000000000..0efe229fb86e
 --- /dev/null
-+++ b/include/net/sch_priv.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __NET_SCHED_PRIV_H
-+#define __NET_SCHED_PRIV_H
-+
-+#include <net/sch_generic.h>
-+
-+struct mq_sched {
-+	struct Qdisc		**qdiscs;
-+};
-+
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops);
-+void mq_destroy_common(struct Qdisc *sch);
-+void mq_attach(struct Qdisc *sch);
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb);
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm);
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl);
-+unsigned long mq_find(struct Qdisc *sch, u32 classid);
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm);
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d);
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg);
-+
-+#endif
-diff --git a/net/sched/sch_mq.c b/net/sched/sch_mq.c
-index c860119a8f09..bb94cd577943 100644
---- a/net/sched/sch_mq.c
-+++ b/net/sched/sch_mq.c
-@@ -15,11 +15,7 @@
- #include <net/netlink.h>
- #include <net/pkt_cls.h>
- #include <net/pkt_sched.h>
--#include <net/sch_generic.h>
--
--struct mq_sched {
--	struct Qdisc		**qdiscs;
--};
-+#include <net/sch_priv.h>
- 
- static int mq_offload(struct Qdisc *sch, enum tc_mq_command cmd)
- {
-@@ -49,23 +45,29 @@ static int mq_offload_stats(struct Qdisc *sch)
- 	return qdisc_offload_dump_helper(sch, TC_SETUP_QDISC_MQ, &opt);
- }
- 
--static void mq_destroy(struct Qdisc *sch)
-+void mq_destroy_common(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
- 	unsigned int ntx;
- 
--	mq_offload(sch, TC_MQ_DESTROY);
--
- 	if (!priv->qdiscs)
- 		return;
- 	for (ntx = 0; ntx < dev->num_tx_queues && priv->qdiscs[ntx]; ntx++)
- 		qdisc_put(priv->qdiscs[ntx]);
- 	kfree(priv->qdiscs);
- }
-+EXPORT_SYMBOL_NS_GPL(mq_destroy_common, "NET_SCHED_INTERNAL");
- 
--static int mq_init(struct Qdisc *sch, struct nlattr *opt,
--		   struct netlink_ext_ack *extack)
-+static void mq_destroy(struct Qdisc *sch)
-+{
-+	mq_offload(sch, TC_MQ_DESTROY);
-+	mq_destroy_common(sch);
-+}
-+
-+int mq_init_common(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack,
-+		   const struct Qdisc_ops *qdisc_ops)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -87,7 +89,8 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	for (ntx = 0; ntx < dev->num_tx_queues; ntx++) {
- 		dev_queue = netdev_get_tx_queue(dev, ntx);
--		qdisc = qdisc_create_dflt(dev_queue, get_default_qdisc_ops(dev, ntx),
-+		qdisc = qdisc_create_dflt(dev_queue,
-+					  qdisc_ops ?: get_default_qdisc_ops(dev, ntx),
- 					  TC_H_MAKE(TC_H_MAJ(sch->handle),
- 						    TC_H_MIN(ntx + 1)),
- 					  extack);
-@@ -98,12 +101,24 @@ static int mq_init(struct Qdisc *sch, struct nlattr *opt,
- 	}
- 
- 	sch->flags |= TCQ_F_MQROOT;
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(mq_init_common, "NET_SCHED_INTERNAL");
-+
-+static int mq_init(struct Qdisc *sch, struct nlattr *opt,
-+		   struct netlink_ext_ack *extack)
-+{
-+	int ret;
-+
-+	ret = mq_init_common(sch, opt, extack, NULL);
-+	if (ret)
-+		return ret;
- 
- 	mq_offload(sch, TC_MQ_CREATE);
- 	return 0;
- }
- 
--static void mq_attach(struct Qdisc *sch)
-+void mq_attach(struct Qdisc *sch)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct mq_sched *priv = qdisc_priv(sch);
-@@ -124,8 +139,9 @@ static void mq_attach(struct Qdisc *sch)
- 	kfree(priv->qdiscs);
- 	priv->qdiscs = NULL;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_attach, "NET_SCHED_INTERNAL");
- 
--static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+void mq_dump_common(struct Qdisc *sch, struct sk_buff *skb)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	struct Qdisc *qdisc;
-@@ -152,7 +168,12 @@ static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
- 
- 		spin_unlock_bh(qdisc_lock(qdisc));
- 	}
-+}
-+EXPORT_SYMBOL_NS_GPL(mq_dump_common, "NET_SCHED_INTERNAL");
- 
-+static int mq_dump(struct Qdisc *sch, struct sk_buff *skb)
-+{
-+	mq_dump_common(sch, skb);
- 	return mq_offload_stats(sch);
- }
- 
-@@ -166,11 +187,12 @@ static struct netdev_queue *mq_queue_get(struct Qdisc *sch, unsigned long cl)
- 	return netdev_get_tx_queue(dev, ntx);
- }
- 
--static struct netdev_queue *mq_select_queue(struct Qdisc *sch,
--					    struct tcmsg *tcm)
-+struct netdev_queue *mq_select_queue(struct Qdisc *sch,
-+				     struct tcmsg *tcm)
- {
- 	return mq_queue_get(sch, TC_H_MIN(tcm->tcm_parent));
- }
-+EXPORT_SYMBOL_NS_GPL(mq_select_queue, "NET_SCHED_INTERNAL");
- 
- static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 		    struct Qdisc **old, struct netlink_ext_ack *extack)
-@@ -198,14 +220,15 @@ static int mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
- 	return 0;
- }
- 
--static struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
-+struct Qdisc *mq_leaf(struct Qdisc *sch, unsigned long cl)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
- 	return rtnl_dereference(dev_queue->qdisc_sleeping);
- }
-+EXPORT_SYMBOL_NS_GPL(mq_leaf, "NET_SCHED_INTERNAL");
- 
--static unsigned long mq_find(struct Qdisc *sch, u32 classid)
-+unsigned long mq_find(struct Qdisc *sch, u32 classid)
- {
- 	unsigned int ntx = TC_H_MIN(classid);
- 
-@@ -213,9 +236,10 @@ static unsigned long mq_find(struct Qdisc *sch, u32 classid)
- 		return 0;
- 	return ntx;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_find, "NET_SCHED_INTERNAL");
- 
--static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
--			 struct sk_buff *skb, struct tcmsg *tcm)
-+int mq_dump_class(struct Qdisc *sch, unsigned long cl,
-+		  struct sk_buff *skb, struct tcmsg *tcm)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -224,9 +248,10 @@ static int mq_dump_class(struct Qdisc *sch, unsigned long cl,
- 	tcm->tcm_info = rtnl_dereference(dev_queue->qdisc_sleeping)->handle;
- 	return 0;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_dump_class, "NET_SCHED_INTERNAL");
- 
--static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
--			       struct gnet_dump *d)
-+int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
-+			struct gnet_dump *d)
- {
- 	struct netdev_queue *dev_queue = mq_queue_get(sch, cl);
- 
-@@ -236,8 +261,9 @@ static int mq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 		return -1;
- 	return 0;
- }
-+EXPORT_SYMBOL_NS_GPL(mq_dump_class_stats, "NET_SCHED_INTERNAL");
- 
--static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
-+void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- {
- 	struct net_device *dev = qdisc_dev(sch);
- 	unsigned int ntx;
-@@ -251,6 +277,7 @@ static void mq_walk(struct Qdisc *sch, struct qdisc_walker *arg)
- 			break;
- 	}
- }
-+EXPORT_SYMBOL_NS_GPL(mq_walk, "NET_SCHED_INTERNAL");
- 
- static const struct Qdisc_class_ops mq_class_ops = {
- 	.select_queue	= mq_select_queue,
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/cake_mq.json
+@@ -0,0 +1,559 @@
++[
++    {
++        "id": "684b",
++        "name": "Create CAKE_MQ with default setting (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device || true",
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "7ee8",
++        "name": "Create CAKE_MQ with bandwidth limit (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq bandwidth 1000",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth 1Kbit diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "1f87",
++        "name": "Create CAKE_MQ with rtt time (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq rtt 200",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 200us raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "e9cf",
++        "name": "Create CAKE_MQ with besteffort flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq besteffort",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited besteffort triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "7c05",
++        "name": "Create CAKE_MQ with diffserv8 flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq diffserv8",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv8 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "5a77",
++        "name": "Create CAKE_MQ with diffserv4 flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq diffserv4",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv4 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "8f7a",
++        "name": "Create CAKE_MQ with flowblind flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq flowblind",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 flowblind nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "7ef7",
++        "name": "Create CAKE_MQ with dsthost and nat flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq dsthost nat",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 dsthost nat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "2e4d",
++        "name": "Create CAKE_MQ with wash flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq hosts wash",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 hosts nonat wash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "b3e6",
++        "name": "Create CAKE_MQ with flowblind and no-split-gso flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq flowblind no-split-gso",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 flowblind nonat nowash no-ack-filter no-split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "62cd",
++        "name": "Create CAKE_MQ with dual-srchost and ack-filter flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq dual-srchost ack-filter",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 dual-srchost nonat nowash ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "0df3",
++        "name": "Create CAKE_MQ with dual-dsthost and ack-filter-aggressive flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq dual-dsthost ack-filter-aggressive",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 dual-dsthost nonat nowash ack-filter-aggressive split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "9a75",
++        "name": "Create CAKE_MQ with memlimit and ptm flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq memlimit 10000 ptm",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw ptm overhead 0 memlimit 10000b ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "cdef",
++        "name": "Create CAKE_MQ with fwmark and atm flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq fwmark 8 atm",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw atm overhead 0 fwmark 0x8 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "93dd",
++        "name": "Create CAKE_MQ with overhead 0 and mpu (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq overhead 128 mpu 256",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms noatm overhead 128 mpu 256 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "1475",
++        "name": "Create CAKE_MQ with conservative and ingress flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq conservative ingress",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash ingress no-ack-filter split-gso rtt 100ms atm overhead 48 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "7bf1",
++        "name": "Delete CAKE_MQ with conservative and ingress flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq conservative ingress"
++        ],
++        "cmdUnderTest": "$TC qdisc del dev $ETH handle 1: root",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash ingress no-ack-filter split-gso rtt 100ms atm overhead 48 ",
++        "matchCount": "0",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "ee55",
++        "name": "Replace CAKE_MQ with mpu (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq overhead 128 mpu 256"
++        ],
++        "cmdUnderTest": "$TC qdisc replace dev $ETH handle 1: root cake_mq mpu 128",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms noatm overhead 128 mpu 128 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "6df9",
++        "name": "Change CAKE_MQ with mpu (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq overhead 128 mpu 256"
++        ],
++        "cmdUnderTest": "$TC qdisc change dev $ETH handle 1: root cake_mq mpu 128",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms noatm overhead 128 mpu 128 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "67e2",
++        "name": "Show CAKE_MQ class (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq",
++        "expExitCode": "0",
++        "verifyCmd": "$TC class show dev $ETH",
++        "matchPattern": "class cake_mq",
++        "matchCount": "4",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "2de4",
++        "name": "Change bandwidth of CAKE_MQ (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq"
++        ],
++        "cmdUnderTest": "$TC qdisc replace dev $ETH handle 1: root cake_mq bandwidth 1000",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth 1Kbit diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "5f62",
++        "name": "Fail to create CAKE_MQ with autorate-ingress flag (4 queues)",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq autorate-ingress",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited autorate-ingress diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "0",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "038e",
++        "name": "Fail to change setting of sub-qdisc under CAKE_MQ",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH parent 1:1 cake besteffort flows",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "7bdc",
++        "name": "Fail to replace sub-qdisc under CAKE_MQ",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$TC qdisc add dev $ETH handle 1: root cake_mq"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH parent 1:1 fq",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "5",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    },
++    {
++        "id": "18e0",
++        "name": "Fail to install CAKE_MQ on single queue device",
++        "category": [
++            "qdisc",
++            "cake_mq"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "echo \"1 1 1\" > /sys/bus/netdevsim/new_device"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $ETH handle 1: root cake_mq",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $ETH",
++        "matchPattern": "qdisc (cake_mq 1: root|cake 0: parent 1:[1-4]) bandwidth unlimited diffserv3 triple-isolate nonat nowash no-ack-filter split-gso rtt 100ms raw overhead 0 ",
++        "matchCount": "0",
++        "teardown": [
++            "echo \"1\" > /sys/bus/netdevsim/del_device"
++        ]
++    }
++]
 
 -- 
 2.52.0
