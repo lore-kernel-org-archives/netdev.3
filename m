@@ -1,91 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BEB349AEE;
-	Thu,  8 Jan 2026 08:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D691633123A
+	for <netdev@vger.kernel.org>; Thu,  8 Jan 2026 08:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767862434; cv=none; b=a0ymHoM5ErFwLGYn5YHP1pDmoYStV9mjahNrrCF4x+b0z4v8WcSVRQw86xNzuJiXUjx/7qAeOLWLDuSXdJrhIM5zXzhX5BCQyuwAxNFGpdHld9B0qYk+HYDj2EBjVfoGKljdXiezHyDwG/p8ovIj2WSeosgjLD2F3g3Msxw5lgQ=
+	t=1767862521; cv=none; b=aTMcC8KejU/naQypJ6dOXQLtMhURKRGwp88TzeYYR0lIg5jetsohCXpttkRILu8tm6v9I8HitdO0yLjtOL9fvoAc+IhTjt2oUO+op+KrZIOJVOnS3Ghhd50uaAv9a0t2j/ZET5HLy4Zk8Y8PDwYsnC3khbAXUt6EeauFEGJgVHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767862434; c=relaxed/simple;
-	bh=+Y3pmCrSWmzwJE7Z9VU/gWsBpMcei7lqxHoCxpXUJ88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqFa9uZj8OMyDLYUMI5IFPlfoR0mjBVXPQPVsUZm6DJB4JbyamE/ZqngdTowexFD5eXetJSGhGjF+LkoJCCMt/IoeRyLtsfuxTnixZfDYRpz2BteYupx1AqREw3ACHMhxmm3RC/PaEEwmJstkLoJ5jEbZ/mUwkfeuzcZF+uCcTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnbQJI6G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767862521; c=relaxed/simple;
+	bh=bFmLVSAcLFz2S+ZEsibt6MqqAQ0+Kcz/e6Xn5wGq9BA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gov92KDOiMoTE2aLNTzwnFClpiulWzNdEkTsTLDWLTjCIf+4w6FOPM1hl6DaVwdLMWY4GdhjbyrdvXMtuo264lvyVL4OV3+Uws4K+09HNzqTfzh4FrqTq0xyMfSn08M56Zs9oLYz1vUlETuCCIjC3E9T3oiM0bi54V6n9qWVGqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aBaY2P0V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=j/Mpn09K; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnbQJI6G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1858FC116C6;
-	Thu,  8 Jan 2026 08:53:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767862432;
-	bh=+Y3pmCrSWmzwJE7Z9VU/gWsBpMcei7lqxHoCxpXUJ88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dnbQJI6GX0z9Bph2xDSMz7Es6JYAT1Nyholi12t4kaW7FSFRxe4wFpZ7uDVhJGHnu
-	 EaC/592YAPLbcZYi1BsmhhqAD87ndt8AhRD7iDTMYp8JlRcM2lxuszvPxsCJSxaaIh
-	 03PIoWPd7SnH6vg0hrZoLTdzYhqSMruJhsgP/kKwkqe5N+DI7jvh7cuoY+kgzJM/eY
-	 46EurBV3G9UzXMpMUNQGix9UWimERDGX8WadNA+i7ay4c4kaA1QLgMyU7Y+4UW8N6H
-	 68Nu9UTA/RIJwPE7U9Jkq1zbockXKCJA5ZU/kf53U4NzgbKN8JFU+B4FqnLckh9e2z
-	 E3dhJxOd6+5Kg==
-Date: Thu, 8 Jan 2026 09:53:50 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: airoha: npu: Add BA
- memory region
-Message-ID: <20260108-shaggy-smart-okapi-efd3b7@quoll>
-References: <20260107-airoha-ba-memory-region-v2-0-d8195fc66731@kernel.org>
- <20260107-airoha-ba-memory-region-v2-1-d8195fc66731@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aBaY2P0V";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="j/Mpn09K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767862512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
+	b=aBaY2P0V3vYJDAElQaHSKD5qkRubewg/EpIclUiCCFHS1a28lMgjNhDaASM50DCXogK4PF
+	MPzm0wMEs6yG1hd/ifcsIgFTTOaY+LDos+u3TnaKpMtYVCSsIt8VQd3ksPF4Do+i6jje7B
+	uIF4TRP72SU8ZUkE58g8HdFRfZxUdFQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-gLN119ONPYyhsysy-AHj6Q-1; Thu, 08 Jan 2026 03:55:11 -0500
+X-MC-Unique: gLN119ONPYyhsysy-AHj6Q-1
+X-Mimecast-MFC-AGG-ID: gLN119ONPYyhsysy-AHj6Q_1767862510
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47d3ba3a49cso26161775e9.2
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 00:55:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767862510; x=1768467310; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
+        b=j/Mpn09Ksl06ge3iPfRKBIsO/2A0A2VvAGI/K46hwkoPVn8gJgJvo6G8sbVpiCn8ZH
+         i6j1dWLknVqzfcw01LQEBv3g/BBgN/UsPGJVzDSRg6tVCoENtr3BZ14sWCLm95xhiW87
+         02VEErM9RMC/FVM4+3CcIdtOKrVg4bp8+wx346BGP2EAXuGvY9ze+/HYo1PRCju2ibmJ
+         sjfa91fNrTBHJtcpKBqngnSVhmk5uSQhIxIHIG/AdyowXCdKA3n32ldXUsOZ+0040Fhi
+         DLXx1ynwc9SmO5eX3lLWAauEo/ASSgBPwP2ugBFhMuNx1DzsRMMXUAelcDwzQNR+4z4A
+         nz8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767862510; x=1768467310;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eI5c1pIYmm7x1JE+RGB61/I3xmf/iU6ZuwYMsS4kL0I=;
+        b=A0/6zYr2SliOcxQJhAAiCrpASElKbpSmA1Yf7TXqPysUO5fHv3TU+MHODE5zwhEIRV
+         oeqyosCB04STXDYxjT04Mq0/w5s8R/qgihJpP/RSV4b/aBJb6JnpzG9uZdKb4MbVhZg5
+         nQtAHpOymx1NlvM+L1nydek6w3o9XdvPhgz2HHXpboY8Ob5EQrt5tEyunE7AIuOoWSfg
+         iqYSeYT9U/O56xINZCFvxRTZs1CXkApGNHfDqDZkN1m89DsDWdnXf3cSPGsCefrkkzbX
+         cY5qZ+gDvpDJLasnSxcz/o3b8Op6fdVRmEaljz+MVFeuvceku37Fdl3H+g2Da7j+rJLe
+         SbUA==
+X-Forwarded-Encrypted: i=1; AJvYcCURzuSB8b+j7XsPrzQ43htUW/Fr4sKU+75oGnorojCN1pLSmjghgc1LaVKN8IRRCUDDLLw7aJs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSQr+yC9oBWnSXlcMikQfNv4go83vG5fxxjp+4rqbr80T9hAJk
+	44utIB1E3qGLc1SErjHM+mh+nHyiDuViPcQKiu6DG9UHDVrcjNUp1PmMAe1YuftS3sO1rlzH8au
+	4mFQtGti4i0q0bveocnYZSvL436s03opA6IOg+8Lg2qFzV5j0oJogGKk6rA==
+X-Gm-Gg: AY/fxX6ud1QHovp6iRdOM7XUPEykSsenxnm6KHvHxh0WGMTVVo/QC9U7H6UDRR53j0s
+	WPNtgEJTlqhfQIg4rawy2oM8gbUq4T4e2r+CGKBpNxk5wwugIZlI2waAPXsVOqNwCXpghHvI5dH
+	ZtRMH9giqy0nibKE+2WkVWqeYWE/Ji0u9eSMFKtkpzw6JWdTneY2L0u8DX+1QbJiOD8mZ77HI9+
+	6UtBHjVVRs8TRHObH6FKDJ0mDT/LJa+jP4GPe5D1oDYVo7bI1TKRgSPd/JQcBp6JnmF7S0mCJ85
+	7ZJY5+wEfB4yUS+C5et9CN6SWcCqYytLXkFkZBtE1oWZugMXZ9FAjC/cpPHtS5ZNcnJUlZ97BNa
+	4XbyU6taTk3Cg9A==
+X-Received: by 2002:a05:600c:348f:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d84b4113cmr64178075e9.34.1767862510111;
+        Thu, 08 Jan 2026 00:55:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGaTX6Vb9Xp6nT3BQIbPf9uYgZ4XxnPVNIfnIPI+U4WUs2U6AT0/uTauIZVS1q7u+CvwWYylQ==
+X-Received: by 2002:a05:600c:348f:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d84b4113cmr64177785e9.34.1767862509768;
+        Thu, 08 Jan 2026 00:55:09 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.149.145])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5df90dsm14458469f8f.20.2026.01.08.00.55.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 00:55:09 -0800 (PST)
+Message-ID: <9f0fffcd-8e2a-4ae1-b89d-ae73dba9e1be@redhat.com>
+Date: Thu, 8 Jan 2026 09:55:07 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260107-airoha-ba-memory-region-v2-1-d8195fc66731@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 2/2] xsk: move cq_cached_prod_lock to avoid
+ touching a cacheline in sending path
+To: Jason Xing <kerneljasonxing@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, bjorn@kernel.org,
+ magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
+ jonathan.lemon@gmail.com, sdf@fomichev.me, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
+ Jason Xing <kernelxing@tencent.com>
+References: <20260104012125.44003-1-kerneljasonxing@gmail.com>
+ <20260104012125.44003-3-kerneljasonxing@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260104012125.44003-3-kerneljasonxing@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 07, 2026 at 09:29:34AM +0100, Lorenzo Bianconi wrote:
-> Introduce Block Ack memory region used by NPU MT7996 (Eagle) offloading.
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  .../devicetree/bindings/net/airoha,en7581-npu.yaml   | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-> index 59c57f58116b568092446e6cfb7b6bd3f4f47b82..42bc0f2a42a91236c858241ca76aa0b0ddac8d54 100644
-> --- a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-> +++ b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-> @@ -42,14 +42,13 @@ properties:
->        - description: wlan irq line5
->  
->    memory-region:
-> -    oneOf:
-> -      - items:
-> -          - description: NPU firmware binary region
-> -      - items:
-> -          - description: NPU firmware binary region
-> -          - description: NPU wlan offload RX buffers region
-> -          - description: NPU wlan offload TX buffers region
-> -          - description: NPU wlan offload TX packet identifiers region
-> +    items:
-> +      - description: NPU firmware binary region
-> +      - description: NPU wlan offload RX buffers region
-> +      - description: NPU wlan offload TX buffers region
-> +      - description: NPU wlan offload TX packet identifiers region
-> +      - description: NPU wlan Block Ack buffers region
-> +    minItems: 1
->  
->    memory-region-names:
+On 1/4/26 2:21 AM, Jason Xing wrote:
+> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> index 6bf84316e2ad..cd5125b6af53 100644
+> --- a/net/xdp/xsk_buff_pool.c
+> +++ b/net/xdp/xsk_buff_pool.c
+> @@ -91,7 +91,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+>  	INIT_LIST_HEAD(&pool->xsk_tx_list);
+>  	spin_lock_init(&pool->xsk_tx_list_lock);
+>  	spin_lock_init(&pool->cq_prod_lock);
+> -	spin_lock_init(&pool->cq_cached_prod_lock);
+> +	spin_lock_init(&xs->cq_tmp->cq_cached_prod_lock);
+>  	refcount_set(&pool->users, 1);
 
-missing minItems here.
+Very minor nit: moving the init later, after:
 
-Best regards,
-Krzysztof
+	pool->cq = xs->cq_tmp;
+
+would avoid touching a '_tmp' field, which looks strange.
+
+Please do not resubmit just for this. Waiting a little longer for
+Magnus, Maciej or Stanislav ack.
+
+/P
 
