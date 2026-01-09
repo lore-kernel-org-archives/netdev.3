@@ -1,89 +1,227 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062D358D3C;
-	Fri,  9 Jan 2026 09:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767949666; cv=none; b=k29LKCB7cb2cz43wAksL9sA/905zdzkTHfBedklliPnwJrguPt0AEPwTY/Bs1aso/Fu3x+kJSRQ6cuNMIC8jSQ0LUQzb/CWcXYyLVFkeeNCiEvi/rOLAucpwt5Rm8JuR/foMQeRiZVAIyuu14ZGPHX5/aXkaAtI5kjgs+C2JLeU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767949666; c=relaxed/simple;
-	bh=3hwaGAcFcggIgpihes8MMjjJIldk8j4e67WpwcS7sYE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OA0+wKBbtWLOGVS5S/KxIqn3pN+aVGH+/lGyM0K0WIzycF8OwkHSWuaO4i4GWcrAFdu2GwJ+dnQn36FEj6AKRnmXsx4gXLDJywLWa6rIulBDLAzGdy1SmzG2F3J40Jg0Ynd5tRH4KuYm9gVn+LdJ9xs0a+BbUb7MEQCg4ZgXzao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NEz8xk+a; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D52619D8AC;
+	Fri,  9 Jan 2026 09:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767949694; cv=fail; b=F9fc2PyvCaAC1Wex6ES5aK2KjWzmoAtzFumBLZjGNw5chiCnZ8g/ojfYFqdEDpPYsA3k+PjHDZCqH4OvrDt0m8DEDkx5pRO4z7QujffxryfER5FK8HPJ0Adn8d1HwRRtW5RE1lYkVYfExXwR7A+0doQifMX8YuhePRMrI5WcDfI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767949694; c=relaxed/simple;
+	bh=oczYAHNnhyIuayusuobk1rHXKsm51hJW8qGAQr/mKow=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=GKnetue/syca6vdcxc6Axa2jhQGA2Lgqy8zKNihNBcd9e54WC16CvP6jIqFoUG9DPYh+X2+c2q2UPmR5nFsgD0iL7/73VEemW18zDIx1d8L/e5g/mf3z2gXK0lqmPT7CDoLpel5k/+Au2bH45lna3cnln0icKKH3+DE9cQ5x4tk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kY0fYF9g; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NEz8xk+a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9U
-	mGaF8kB2z7vJpTD1/CORh1KAvWfraUhIxE9qUDlWM=; b=NEz8xk+aRn+bkboOMJ
-	iR7EfXiHiymGwlGqL3PeAvYnBls2I2g9bDqGYNhTKq10Ab4PxDAtowZjUCRBz9Kl
-	hPRXdoalvsBT1Pio4dPZ11l0j6q7BkLmh7HT1HbI94Wr5SRz4uE7Fr8rzIf0vxyo
-	qOep4QLK1sJiEbwACi+a5sG4w=
-Received: from zengchi (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgBXuCMsxWBpFG8wKw--.19983S2;
-	Fri, 09 Jan 2026 17:06:54 +0800 (CST)
-From: Zeng Chi <zeng_chi911@163.com>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zengchi@kylinos.cn
-Subject: [PATCH] net/mlx5: Fix return type mismatch in mlx5_esw_vport_vhca_id()
-Date: Fri,  9 Jan 2026 17:06:50 +0800
-Message-Id: <20260109090650.1734268-1-zeng_chi911@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kY0fYF9g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767949693; x=1799485693;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=oczYAHNnhyIuayusuobk1rHXKsm51hJW8qGAQr/mKow=;
+  b=kY0fYF9gy8/6+NlBnK6cG28l2LEjGoaQ7O0OudcqmORvcnvtgzjNyL75
+   PZ9j/6s2VmGrC9u/0iYsPeO1DWbjLmGMby9NajZ6N//sYmmkyMnDksHFP
+   tnESclTQcWsi/7Jbr0RajC3Mi7SccEKVQuOyqR9d6xKzaRqB8P2x1VOtj
+   9EblCPo3HDAguO4qV72s+CJyJRDa3FC5Vjul3mMDcZqENkAQ6iDVb5K5K
+   bLC+ZeNKyuxLBNy2p3V8PFYHt3s0YeHRAEstPlkCzDS2eOMQoKaUgKeOG
+   kk3iDkA/K3eClBiO0on2Ngg8kPwftCy/tyJ39NjRoZMnEWt43BBgoGINB
+   w==;
+X-CSE-ConnectionGUID: yh7eeZg1TfaYi/LMT6YLbw==
+X-CSE-MsgGUID: 7nm+An0jRDucjnNqjNi+Fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="79969659"
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="79969659"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 01:08:12 -0800
+X-CSE-ConnectionGUID: c7rwiGqARq+EEBQLSUbcxA==
+X-CSE-MsgGUID: taGKqOTKSRO8bexaMFcdKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,212,1763452800"; 
+   d="scan'208";a="202541555"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 01:08:12 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 9 Jan 2026 01:08:11 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Fri, 9 Jan 2026 01:08:11 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.56)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Fri, 9 Jan 2026 01:08:11 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CX+tvfVuIrDEAYActkCH9pUmlNEXYwIe8dgIl1/7IV+WOAWVT5grMc3KHCP4zuMCzsu4oVEScV4sO8w5c2XQkC5athn/3HAubLDcwSAni4ifR4O0KES9z4aF1Fw+Cxpd5behj2mahkKFoxZfx+kd8XhehQs8HT4dorPvO8UQ9R4GfEek419P4163leOryrLAL013c6LdAlu862JfhSxdz41eUPuXn4fZpjYsdJ4AAhEdl1MZROqDgWxAKrA/dmlU4YbkNMPAkv9oid/AuaQjF660mpkTv0c8EhllQN+2gxY2UQCZNzeisumNmlAXalLi3D7cg3C8A9uOFBbjP5r2Ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oczYAHNnhyIuayusuobk1rHXKsm51hJW8qGAQr/mKow=;
+ b=D0bzotO6hT1za6beJwDHKACn3p5I/eAH6zqjtkrypMpHKPSkU7UrIAc5r/1dC2SITfgL0/1IFF1VzuB4+I2Cg9PXh+NfQn+S8qbL7rRABwVh1K8jC1T3ZHfv/SAvZXqNbnOww+TbFFtJvqVtiOjjQAuQXb1ztjqqL/X87aXhEFle3o1XewqmPacT4jVyZ7Pdw2opDrpERG30ye0scYueyUE8UDA0xiQiufRFaT4Jbk4WWG9TIWK3ISPl+DA+yoBAuKk+d7tKWDzhVjHvL4uyG7Yjl6PP8K6JT9+oQhczqQV1Zrl0RNqBE7nxUVV3UureYRkxFl1JguI3iCNn6o8fLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by PH0PR11MB5141.namprd11.prod.outlook.com (2603:10b6:510:3c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Fri, 9 Jan
+ 2026 09:08:04 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%4]) with mapi id 15.20.9499.002; Fri, 9 Jan 2026
+ 09:08:04 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: "Ding, Hui" <dinghui@sangfor.com.cn>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Ding, Hui"
+	<dinghui@sangfor.com.cn>
+Subject: RE: [Intel-wired-lan] [Patch net v2] ice: Fix incorrect timeout
+ ice_release_res()
+Thread-Topic: [Intel-wired-lan] [Patch net v2] ice: Fix incorrect timeout
+ ice_release_res()
+Thread-Index: AQHcZrbJw8zbULYZIkOERF8VXK4bULVJwRCw
+Date: Fri, 9 Jan 2026 09:08:03 +0000
+Message-ID: <IA1PR11MB6241AEE4989336C3583AE3698B82A@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20251206134609.10565-1-dinghui@sangfor.com.cn>
+In-Reply-To: <20251206134609.10565-1-dinghui@sangfor.com.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|PH0PR11MB5141:EE_
+x-ms-office365-filtering-correlation-id: b38f3c73-e89e-4f2e-61fd-08de4f5e98bd
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|921020|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?oONVUCdDhjNdi1WIBHEMX8Edn5uryxqI5t2lJHY1liinHEOq+ru38CaGzBrk?=
+ =?us-ascii?Q?f8xFYVfzlBuLQrJspz7nYbwRwRiPudKITpA/qVD3bWotjsOzsJ7RG/8RkagR?=
+ =?us-ascii?Q?/62T/nT9PDrmHPJdE/ReyOCmTeoiCxNKSQ2wzchd7tEmt2YapnsPgY/PBWgT?=
+ =?us-ascii?Q?WXwOY10yOXcJgXwDKSKWKKFg/KkGuW/r5riuh6NgVQmqX+TP/pX1dqkiATgD?=
+ =?us-ascii?Q?Zl9uEMuLroeaQNBmviVKyDXNrPsjKq0L5bgUrtE4XlQHoUrVococtc+l8w3e?=
+ =?us-ascii?Q?/rYg9iQmXA2lwtADeor/1CuGp2p+6udNq3mO7dIrVtmVc8nE9MRXCWL2Fm+x?=
+ =?us-ascii?Q?HV5h9dcMI2mPYSPasPBH/FRXkyQgu9w9ax/GzvSeZT0RXlIvsIfDTZn4ZBJs?=
+ =?us-ascii?Q?t0kzYRSPSkVNRCjlr4fwJrW9V5Ln9Awg8ilYffxw1LwPp2d2T+ddYIFvEV4j?=
+ =?us-ascii?Q?D93BR7ulNA22ZW/7172ObmSMvsU5fsQW6ws88ymayMDBuPup0hkCNl497jiC?=
+ =?us-ascii?Q?QNK0fJff+dztd57RVGfgIE5a9LWtT9rf0klaOOFTvPcfnxcjhvDNWlxaFqfj?=
+ =?us-ascii?Q?Rxte052n5ctZV5hfJDRX9r1i5bC44253TYIZGVLDmw5TMIJTp9tRrdXyVlUf?=
+ =?us-ascii?Q?MkEYFcKSh90Se3WXVC+LgEqQQiMAEvsydHIPASWI8kFI7PYwqmAK9SBeAHDO?=
+ =?us-ascii?Q?EnkE4Y8LZ7d7hb9VGogyd46BaZQZj08RlMFqYALchzGAism2Q138bey9BeqL?=
+ =?us-ascii?Q?9iAI1SlBScJjjm259GUiT5XSrC8Hs4V2LxErfUcm/PmCsw1qiSa4Lf8ev5uK?=
+ =?us-ascii?Q?OAcmRa9MCkUk1nzWnijeM6K6ZH95A//vTx26YejKsLGqkFUxa3wwdiBtZoI6?=
+ =?us-ascii?Q?taWeYqvHuJ/JojGIUHVxM7ai8abWSqxrLqOxwvBrulqfP0awzBDQ1K4iOCdN?=
+ =?us-ascii?Q?8U27LM5qH1N53bZhCO0EouKtk7xOa7pAwvbS1Mx/MnzzOIhuBI699CsUhDQd?=
+ =?us-ascii?Q?nvflUDU0gdBNeZrrRzg/X/Q4kttYLhr0iQNRAazb0z9VrhhXG6iM0aV2oBqc?=
+ =?us-ascii?Q?2bGXRq9dbPgOICXyytrhWlloRRHoAbCsGlQmajxe68GR9OtvjFDay8N67D38?=
+ =?us-ascii?Q?yqA5w8Ef0SiZDBZYe2UIN2FdAkboVOoTZ2uHOY/w7I1Iw3IMN7j582X01gDC?=
+ =?us-ascii?Q?v70x9U07RFaArcJVHl5w7Z6IA2sXhYS3DZMPNQRa2Dh1sdM4yMATuqN7sCqT?=
+ =?us-ascii?Q?A9lwaT8+XBsYgJLAM6XFLJb1pT8ryZEEbW2OlI7WmwAsXlAZy7unkMCUQwp2?=
+ =?us-ascii?Q?eQM+zzTPn+MLd0lYHhAvQIasePgY9Qgb8PN/lqbWdKAFk7R8T9D1TEdV5QVf?=
+ =?us-ascii?Q?quqYj9FmXTgIEgZOmGVa8aAOAalOyYRFEyAvZUVaYuiyEMqE5sMtdFiO4bqv?=
+ =?us-ascii?Q?eFyRNHhgVEuN6nL0k15CEEg1Xbr7RMY29kjeuhVlU0RkNmDZFuMw2hcyWXoT?=
+ =?us-ascii?Q?TVDb8hDCY13CamkebxKbhraZd5r5e994wPjjztk2KY+//abRUXwjH1ik3Q?=
+ =?us-ascii?Q?=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(921020)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qc9fwjUE4GbIamDZhgQPUlkJqdHUZ+LulpAJHBU8P5IfjYjomOLeAXOLqbL4?=
+ =?us-ascii?Q?e0icW8a6HCvFCos/MSKLzH7L8iYP2YYT4Tebp069QkL/39YkWtWjLVZrIh/5?=
+ =?us-ascii?Q?CubNp0/LUa5q0FWcj4FQNTefuXu3ihIjVP117IDOshoHIJhO7FW3qhEK/8D5?=
+ =?us-ascii?Q?o5PnNrHHET9VRofv7Xdiph3pKcLN23Urmp1eAcEEEwQ44eVAhF93xI8ccAoR?=
+ =?us-ascii?Q?l2pvGxc5eC1Sw0pluQZfsiH5AD70epVoa+DYC+HvHwfwB0UjyrRyiCYpkvDq?=
+ =?us-ascii?Q?+FzplN5rbGyg+mYgbuJZUrtmKR768TvLnBN1Dx7U8T4K/MIKQ9/VoEzhF2Ds?=
+ =?us-ascii?Q?Ou26QDB51R9eBHR+ABwlrmx64lptSXSaExeRKYg1wkydSojgP/1ayqHR9SQj?=
+ =?us-ascii?Q?dhtPEoniIEN8w7pSQhN+bIk6xjdpel6ZWk53Y11M3gdev9430wU9k22+u2gY?=
+ =?us-ascii?Q?v6te3DtKEHJ36sRTEMrE3/C9dP0uesszQXL2kZe5K1daoyPzZP3nahaBFCE6?=
+ =?us-ascii?Q?lFU59wk0bdPkFQHlARjOzYMeVFv1XdLgV+qDawA4t4VAaZcqZyys0vUUk6RH?=
+ =?us-ascii?Q?HPlJ+vlOxpKTd2MBUG7Z4/I07QVtZCOXbjJ4vtFkY4lSCDHM85TySCTGrj1/?=
+ =?us-ascii?Q?nYc9utcl5CN6d8wEIlKGafZi8oS8X3sxBZRM0AL7EhPXg8ixxVxZvhU1YRj2?=
+ =?us-ascii?Q?Z9pnKT0VgVTGDoq/MCHsJ4K3qFlsmX7GqKlcZZ7Cr4MXVZG/Ej1BRW9TVSLM?=
+ =?us-ascii?Q?nlVjulmstruIH1aJPjfbjyyU3QLGQQZzoacB21R1/RyUm1FCs9Wg3SK3v8HT?=
+ =?us-ascii?Q?B2AwiFmWf0d8BQ2y2wkwEQ2Y4UpHjlE8iP2Ev49CkEeSwScPs95ohKLUZKOz?=
+ =?us-ascii?Q?LrobGxSgAz3mrzDy9ELxV/yVB3PzgZbzS70WBCIh8TvscMJAHoQ8AvgwoAQR?=
+ =?us-ascii?Q?l/i6490Q2n4tLdr67QW0wOZpVn/11O9jF/rHtsvDSEMEbZIIMucSfKovFB3O?=
+ =?us-ascii?Q?unnYjIpXhRojWqHubsFun+Pmwz2VYLJsB6dfrgziAeacRjbGiFha03pwiJ5h?=
+ =?us-ascii?Q?q6J328QEXULVQ+0w95x615et2tu2zLI1pAuY5Ez1tQQ7T+v5Mv/gY9tea4pk?=
+ =?us-ascii?Q?cezOA0jqj0kIgmlmtD0gA2Yu711kxfoqR/ldovka1UHkxZBZcNHRromHaUfy?=
+ =?us-ascii?Q?Left6f9080sJwfHJFWGoyesfRMkJrO/gPl2sGpzCVwGiMxloKCDcPc3zNw5y?=
+ =?us-ascii?Q?rTNc5x+CnFIFvkQ11kWMabsxmzleTyxHLV/wKDJtAybBMRKUv7QTZ6kqtXh0?=
+ =?us-ascii?Q?TsDtn6tIjex0dPBGK/EEqe9SdO5f57vEkkhRtNflix3TKZUkxU8dsLAu6az1?=
+ =?us-ascii?Q?I9ERI0UZ/UMM+P0tqM8N9J7/9wj2b6oQ6ZoSqjLBCkkc+XmGWbR3hjlCjkEV?=
+ =?us-ascii?Q?ba0v5e1oBQzdjhcN4jZlK74/h8L5fSJOO3X94WBnsQRUGDu+1WheOEmR0HBE?=
+ =?us-ascii?Q?FT0QPHfuuBkL+8K6TKYsMTdPykVcpop4YuC5uJzqHHd6CBH8nSljz6CYLYzV?=
+ =?us-ascii?Q?xBpBIvAye5WCHunty4WwEtTjM1J6LS6BE97PqpxHFWU1Z2O3de5+hqfi9Hl3?=
+ =?us-ascii?Q?Q1LjCRH1QLetKhCDBMcqfvodpACDUfxRnHGokOvpuh1CBc+wMBxGSD0Qf2lK?=
+ =?us-ascii?Q?GUCUal1GFdbj4niNvf+FZ2S+zcivARDhT36gEvDB+tacE7VJ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgBXuCMsxWBpFG8wKw--.19983S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtr1xAw48CFWDZrWUCr1fCrg_yoWkCrbEg3
-	WUXF43Xw4q9Fn8Kr1rWrWYgrWI9r1DWFZ3CFZ2vFZ8Jw4q9w1DJ3y8Z3WfAryxWr18XFyD
-	Ga12vayav34jvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8jsj5UUUUU==
-X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/xtbCwA7uqmlgxS4z4AAA37
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b38f3c73-e89e-4f2e-61fd-08de4f5e98bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2026 09:08:04.0120
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: anHjvCChHORFPv+FQoIymQHwS7Zunl2vCcFS+I5hvnTrJ6UGviK8Yc7BeupNwhoRMaj/dLvdFPwjpPqSvpGwoA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5141
+X-OriginatorOrg: intel.com
 
-From: Zeng Chi <zengchi@kylinos.cn>
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of D=
+ing Hui
+> Sent: 06 December 2025 19:16
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw <=
+przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch; davem@davemloft.net; =
+edumazet@google.com; kuba@kernel.org; pabeni@redhat.com; Keller, Jacob E <j=
+acob.e.keller@intel.com>; intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ding, Hui <ding=
+hui@sangfor.com.cn>
+> Subject: [Intel-wired-lan] [Patch net v2] ice: Fix incorrect timeout ice_=
+release_res()
+>
+> The commit 5f6df173f92e ("ice: implement and use rd32_poll_timeout for ic=
+e_sq_done timeout") converted ICE_CTL_Q_SQ_CMD_TIMEOUT from jiffies to micr=
+oseconds.
+>
+> But the ice_release_res() function was missed, and its logic still treats=
+ ICE_CTL_Q_SQ_CMD_TIMEOUT as a jiffies value.
+>
+> So correct the issue by usecs_to_jiffies().
+>
+> Found by inspection of the DDP downloading process.
+> Compile and modprobe tested only.
+>
+> Fixes: 5f6df173f92e ("ice: implement and use rd32_poll_timeout for ice_sq=
+_done timeout")
+> Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> ---
+> v1->v2: rebase to net branch and add commit log.
+>
 
-The function mlx5_esw_vport_vhca_id() is declared to return bool,
-but returns -EOPNOTSUPP (-45), which is an int error code. This
-causes a signedness bug as reported by smatch.
-
-This patch fixes this smatch report:
-drivers/net/ethernet/mellanox/mlx5/core/eswitch.h:981 mlx5_esw_vport_vhca_id()
-warn: signedness bug returning '(-45)'
-
-Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
----
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index ad1073f7b79f..e7fe43799b23 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -1009,7 +1009,7 @@ mlx5_esw_host_functions_enabled(const struct mlx5_core_dev *dev)
- static inline bool
- mlx5_esw_vport_vhca_id(struct mlx5_eswitch *esw, u16 vportn, u16 *vhca_id)
- {
--	return -EOPNOTSUPP;
-+	return false;
- }
- 
- #endif /* CONFIG_MLX5_ESWITCH */
--- 
-2.25.1
-
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
