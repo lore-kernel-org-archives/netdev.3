@@ -1,38 +1,38 @@
 Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8A633D4EC;
-	Fri,  9 Jan 2026 21:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76B131B133;
+	Fri,  9 Jan 2026 21:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767994024; cv=none; b=SNSg99Oqj+Z3n4pCmomYhvHIiV93nkAxMbDYHVamqG07OJBaQ/s/K1kPd9g1tL7bb6Lmy4gqxYfkTpP7rIg/7NPnNKTvkZ096M4yLpsi8whwVFs+u7P0b6K7KaXck6aM5oQwcfAsljyEPg2IgsyfJ20SmO96vvaoBPnZ5YpNshM=
+	t=1767994024; cv=none; b=RhOeTeim74pCBSopDH2l/ZaANMqmtTR8AB2vleGPC2+vm9/GTR6rKCaN4WiFoYwOMI7+16YzFdibhdiWLkig4HXUGkd0FPAuP26vE+X4tRFr4U44DROZvZjtxFjASfXA7VG0PMByJhp+4Mql5rqkXueXaPEfhTyiuFJLzh/HI5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767994024; c=relaxed/simple;
-	bh=1Tj2cU78U6Uqvupeim/+6m/jr/f90sGQupkBeHHca+I=;
+	bh=deHERidX6Uj50jqArC5AnAHfZyrBeWMJABClTGf0c9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsMYNwrHvIx0pYV6dAe5fAS4iEeIQL0mvUQJBRjBoefSXvJ9mm3Z7MC8I755Ay4sXDfJV2c6rMXIphfVfyyEYOaQWw8JB4hcXDn/lVaV86nVY6FGw3SKEKbJbl4wZPtSwWstTSY4HjaRsv9/GF6aOCEVVzK5won4Jo2aj+g3rBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=mtmQnUIB; arc=none smtp.client-ip=213.133.104.62
+	 MIME-Version; b=hA7WuE7p2kgBFxOrO9GcRRXjk19MedHLMoJQmCAv3Kf72WNx75Jxu5MzttCW6nw1WbNX0n+BcJ095dYeF17rTZ7mKWS/iC1ibX25ZKo+VEHQ+eBSzaKaA/e7m1c/v5tZu4Qg/5fadD3GH8A4NUJOyjcw1tU7pprVfxmWGF99tPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=pVjIhKSB; arc=none smtp.client-ip=213.133.104.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="mtmQnUIB"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="pVjIhKSB"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=uXdCZyoZVljtyNiSMpjIWzZRgp0/tQVh+jDLIVX7swA=; b=mtmQnUIBDXegCjZfkGpBUTzHNp
-	Unz+mDEy7y90S1AsBExgljeq5FfMjahc6L2meaguNOY5V2DNhcqa69TEPKPjjNL7Q0EJJb6F0ruyF
-	cFvZ287bB2+ceE2HI3qzw9ChsMBTwRj9HaizcZWXaHH7F8UzjmGtHd1mwvycK/u+BbtcXZGub1LW6
-	3kqUIJo0mBWR0yichNn8UsSY16HbitkdOywqwVAitlP/Vo4HFw0/bqcaEuBrskrbB+bTCB4Yh795i
-	RCGPGYzco9dw+4tPwVPHNZG22+OPr3SJuMJoIukNa14rDTLw0D4KiRfOvd7KWauOVeLIk6l8xx09E
-	ISxRrPKA==;
+	bh=jKRcqnAN1FejFT21FpY8AxftZkZMdt43RnsJvrkKQQU=; b=pVjIhKSBpKUoE8CCgKm0e9FxZr
+	t6GWp19qLDLuqCenAnleYwRF/y7gj/hC3KjqXUqG0UAHjHaomWrvGM+RqlSXDvayR+ZA+qkhJ7wnW
+	rQhXRJ20PPIZFfGsDK3Sp/3J61mAzJlc/sbhEPWJveBYkDybxFjHUKmHeZFmdFRKpl9AFr3ddul8w
+	DPemHIZyiE4AQQjsyqLKzZQm6kKrl+egFrUuj0ReDcqWkt4a23qmzZ1vTlJ3UQKPNm365SrBJm8Dv
+	PQQ6Nv+8AfaAS0q+6U5+Yuk1V2fK30xhUjWbtKGOPco3UT5HN4G3ROvb+DlV8IwghsEB/4pI9DURt
+	KL0DxvmA==;
 Received: from localhost ([127.0.0.1])
 	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1veK0I-00053n-19;
-	Fri, 09 Jan 2026 22:26:42 +0100
+	id 1veK0E-00053V-2h;
+	Fri, 09 Jan 2026 22:26:38 +0100
 From: Daniel Borkmann <daniel@iogearbox.net>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc: bpf@vger.kernel.org,
 	toke@redhat.com,
 	yangzhenze@bytedance.com,
 	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v5 07/16] xsk: Extend xsk_rcv_check validation
-Date: Fri,  9 Jan 2026 22:26:23 +0100
-Message-ID: <20260109212632.146920-8-daniel@iogearbox.net>
+Subject: [PATCH net-next v5 04/16] net, ethtool: Disallow leased real rxqs to be resized
+Date: Fri,  9 Jan 2026 22:26:20 +0100
+Message-ID: <20260109212632.146920-5-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260109212632.146920-1-daniel@iogearbox.net>
 References: <20260109212632.146920-1-daniel@iogearbox.net>
@@ -66,59 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.0.9/27875/Fri Jan  9 08:26:02 2026)
 
-xsk_rcv_check tests for inbound packets to see whether they match the bound
-AF_XDP socket. Refactor the test into a small helper xsk_dev_queue_valid and
-move the validation against xs->dev and xs->queue_id there. The fast-path
-case stays in place and allows for quick return in xsk_dev_queue_valid. If
-it fails, the validation is extended to check whether the AF_XDP socket is
-bound against a leased queue, and if the case then the test is redone.
+Similar to AF_XDP, do not allow queues in a physical netdev to be
+resized by ethtool -L when they are leased.
 
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Co-developed-by: David Wei <dw@davidwei.uk>
 Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/xdp/xsk.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ net/ethtool/channels.c | 12 +++++++-----
+ net/ethtool/ioctl.c    |  9 +++++----
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 410297b4ab48..d95c481338c6 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -324,14 +324,31 @@ static bool xsk_is_bound(struct xdp_sock *xs)
- 	return false;
- }
+diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
+index ca4f80282448..797d2a08c515 100644
+--- a/net/ethtool/channels.c
++++ b/net/ethtool/channels.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+static bool xsk_dev_queue_valid(const struct xdp_sock *xs,
-+				const struct xdp_rxq_info *info)
-+{
-+	struct net_device *dev = xs->dev;
-+	u32 queue_index = xs->queue_id;
-+	struct netdev_rx_queue *rxq;
+-#include <net/xdp_sock_drv.h>
++#include <net/netdev_queues.h>
+ 
+ #include "netlink.h"
+ #include "common.h"
+@@ -169,14 +169,16 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* ensure channels are not busy at the moment */
+ 	from_channel = channels.combined_count +
+ 		       min(channels.rx_count, channels.tx_count);
+-	for (i = from_channel; i < old_total; i++)
+-		if (xsk_get_pool_from_qid(dev, i)) {
+-			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
++	for (i = from_channel; i < old_total; i++) {
++		if (netdev_queue_busy(dev, i, NULL)) {
++			GENL_SET_ERR_MSG(info,
++					 "requested channel counts are too low due to busy queues (AF_XDP or queue leasing)");
+ 			return -EINVAL;
+ 		}
++	}
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+ 	return ret < 0 ? ret : 1;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 9431e305b233..02a3454234d6 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -27,12 +27,13 @@
+ #include <linux/net.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/utsname.h>
++#include <linux/ethtool_netlink.h>
+ #include <net/devlink.h>
+ #include <net/ipv6.h>
+-#include <net/xdp_sock_drv.h>
+ #include <net/flow_offload.h>
+ #include <net/netdev_lock.h>
+-#include <linux/ethtool_netlink.h>
++#include <net/netdev_queues.h>
 +
-+	if (info->dev == dev &&
-+	    info->queue_index == queue_index)
-+		return true;
-+
-+	rxq = READ_ONCE(__netif_get_rx_queue(dev, queue_index)->lease);
-+	if (!rxq)
-+		return false;
-+
-+	return info->dev == rxq->dev &&
-+	       info->queue_index == get_netdev_rx_queue_index(rxq);
-+}
-+
- static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- {
- 	if (!xsk_is_bound(xs))
- 		return -ENXIO;
--
--	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
-+	if (!xsk_dev_queue_valid(xs, xdp->rxq))
- 		return -EINVAL;
--
- 	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
- 		xs->rx_dropped++;
- 		return -ENOSPC;
+ #include "common.h"
+ 
+ /* State held across locks and calls for commands which have devlink fallback */
+@@ -2282,12 +2283,12 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* Disabling channels, query busy queues (AF_XDP, queue leasing) */
+ 	from_channel = channels.combined_count +
+ 		min(channels.rx_count, channels.tx_count);
+ 	to_channel = curr.combined_count + max(curr.rx_count, curr.tx_count);
+ 	for (i = from_channel; i < to_channel; i++)
+-		if (xsk_get_pool_from_qid(dev, i))
++		if (netdev_queue_busy(dev, i, NULL))
+ 			return -EINVAL;
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
 -- 
 2.43.0
 
