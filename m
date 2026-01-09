@@ -1,53 +1,52 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7F935CB79
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 17:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE89D366DDA
+	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 17:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767980538; cv=none; b=O3RUDYu6CZ6PA2dZJID8F+bG2I2qc+Uv8Rip7ELUcQSMI87QNuvHLTo9uObFCFk6V+el7xgfNkBeT+UOmJs8drH8OkneZpRO9aDK67ZWXbce+mqb1mt8iMfxyLxEqxXX8BRiU1GDE5/fz5SZLbymAOT480BWaoK/fAeHbx2UldE=
+	t=1767980539; cv=none; b=n3KU14SMntmokFaBdIyYu2N63at/3lNISI4PCVNl52Ly+Ej37R6SDq/vvfeaz6vTBT08eVjYWz8wfZGMnDe4tBj88ZH8BR0o1QtmQvoObLc1a911uRHzom56bAPbtx7aWsHHDz91EbURwHJczjhIrTl329KMy0nmgMgkarE7Jv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767980538; c=relaxed/simple;
-	bh=NwEAQJcWkyJW4qDQ88U4X0DJVlPj19fNX0H4+k52RXE=;
+	s=arc-20240116; t=1767980539; c=relaxed/simple;
+	bh=HMSNJxCMyQJnjwP9Vi8R6ihLUN8j5UtDt4JQzxAdwSY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XrBZWf8YSFWcbhhbW0UJ0kDClNJJQjzfGVwolfTXaWjc77JJq1v4+Uke0urL8BJubR4+iz4bv3CXBV+DCBiSnR6suOnZC5aSQVcEPeAuQR37vUJ4Zr6IAkvgouAhXSJ4+K2yjNyMGPnBR1LiMEIGuWpgB9Jb8tS7yEJQPWTXWiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.46
+	 In-Reply-To:To:Cc; b=HitmHWzh/JNF+gxv3mQQXRv3amouA0BkubsFJrZJERRC+jwywrtiGPtdidjGirYdw3PFazweDFr5MtN7OgcrCe7pZxM7rTEfG7E+oz+6VvF6UgwqOYQzHSZJGKVAfPY1i3zlPDCLK7z3e3HMx9buUYGAK51Psk1asHOmRuUnmLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c6d1ebb0c4so3293830a34.1
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 09:42:15 -0800 (PST)
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c6e815310aso3607728a34.0
+        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 09:42:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767980535; x=1768585335;
+        d=1e100.net; s=20230601; t=1767980537; x=1768585337;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HWjIDWJUNaanJUAgQBmNnGhxSv8UlX4YaBxPMnEA0t0=;
-        b=JQg5pjIFe+Vvul3WTA/g/mvhO6BFf6jlxvjd/zHCN1T8L1tDBJgJ30XQi1KdBEA/ro
-         J83huAQXpw+qSCJ8KTxsWWEpcIOv7ANkTMl1ndZxg02SYw1IWM72pGEyg2zCZaJXYOkC
-         /b+WsmOrDmpXtxygDVk0rZPYVzmZc/jEnqOdikh/tpvQpUXP584MA2JkYUIlwOTn10iI
-         iHP79v556Gw2TudzCdXgcuzFtBg4wZnDYdw1d9Hd8GteNF88w41u/7sW9AhgUGIWqYu6
-         zSW+gzDiGJm79rMouWto25zFVPkDvGMBRxdgmx1cdjKUE/b6p8yTexXCV23+HF0eUYtq
-         O3hQ==
-X-Gm-Message-State: AOJu0Yz46gIEcniosqQURZ5PqPf/RBn9omg508XMpHx5ascSvVC3MXAs
-	uw1IQ+Naz0s75Jpv10o0MBk+nMyb5BEOhtwsVkfcUYSt/6k+Ct3BJYOo
-X-Gm-Gg: AY/fxX4X8AO62piLwS5uTny8UAtLeLw12qR65gsH/1CRUICOHHeP/CP0qwyNrMDyr9H
-	0b4dk1g8GVrkTUUsMxwz4KElSuconnJ5slPpirMmxrduq/ojC9j1ARDex2o7K0HZgM/PbKBzQ/g
-	rZK1+335TPDnweFTOPRUrNUE9EDRHzY54tIunm9oB/tt+6k9gBUPwKHj8efEYB9QRIp+96ii/lc
-	XPsXvDAcefmY5CUnuQklhn2aXO9l6cC/Q9IobG6NttKRCHgp29JGNzf+BxE/Cuk1v1EHf0SnJwb
-	GsuNxcpI448G/rtw/qi58hEw+42pNcIY4LOetJTOprlhysayiXD6lTBxeilhGhzPKwbN4P9Uvc1
-	dkGqoOSVYKEHkyhmANI1Tsa+fL30RIQOhLtaIu7oiKxzENv+lU4guUBLeXojgBbcjXTbXos0NxP
-	ku
-X-Google-Smtp-Source: AGHT+IGaqjRFJpSDasXnML8R59MQ0MpL/WRlDumZ6uerEbIHt3xQqrojN5zaIWL/R1Vl8HB4tAl5fg==
-X-Received: by 2002:a05:6830:314b:b0:7c7:59a1:48d7 with SMTP id 46e09a7af769-7ce5089ba54mr6767349a34.2.1767980534743;
-        Fri, 09 Jan 2026 09:42:14 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:7::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce4781c286sm8168665a34.8.2026.01.09.09.42.14
+        bh=NaEh6cJxLtlYrpweCyDGNhGCl8srT8+pwREViLqGFxo=;
+        b=Fk+rIk5TtZfmH1n1KWIQgksThF1Dr779zFdR0bBoBs8ywQfb2W3qiDR2og3BMxYepQ
+         ogcKDP/YeizwJ9BbUZoDUANSstrwabazNIm6BodGjmiWiveHn7T+zbdbbD6MSdmXlChZ
+         tEM5anX01vcK6uEne+3OJQ9mCw92y1SbNASQah3NcM5LmB04H7hLkMWI9jnlhdEzSGZ7
+         qmtqKNb0kbSHz0++4cU87frFBUOzWiHxWFzXyyPgQJsc+4VpyitfMgfQDm+ED16irpfA
+         LzmYtERoq+hAT57HCUO+KtXS2yclTxzXJolK3HEZ3se4Vil4QHwUwBM60JtorDIezl7O
+         OQXw==
+X-Gm-Message-State: AOJu0YxBXshl1vipR1oSYMhWJjaj7LY0CI1+dxbDTdY6o+raz7/uLHrn
+	s8f7K7l5FwfFS2P3yQ7DdpMKcaR5Ll5BPXAW9QJCh0Ib7LnzV/AnXd7O
+X-Gm-Gg: AY/fxX6oxdvLTiWoAWgciBTw8Oq0HGM4YgDgxTBx3C9rTKMHFQx/DBfKVAuJnVZUXjf
+	K2EoxS2rNZf9JLz5Mln6jmIIddpViBK/ad5Zr69p3SA/n3MywL4+DDazm3zRhuzdmZbcvHVbtgZ
+	yNewas5UrUHE6VfSxMZzONTLR8QjmlDntts3gTukoqItipz5eZT/AEa8sy1NGsg/1U+iwL4E+TQ
+	sB9yC+orynhXK94c2HOk9JuMej2KNs1SFR8YlMd/6g/rDzfmvzEbAfCKcIGhaQcFWnpq0B7wnAh
+	c7lm7ZNNAU0Y/UcUH7QhWctm5eW6s54L0edBsc4pE7nXLgjgeUVrGM7I24bBb1WB0kJV0k988Um
+	xr9bRNVhliwMohp0HGOHgD73q+D6NghmnpnXIYtEycpLLVp4TKwBIJB6A+iB5f93bmQ117C13zP
+	lTVA==
+X-Google-Smtp-Source: AGHT+IFNeqMRLXaeZ/FlUPMWaSWYPUHKwN0UsvQ4VO173wkZ5BYlAu4VXY/o9qNzItHHjVkz+ioQWQ==
+X-Received: by 2002:a05:6830:7194:b0:7c7:54e1:a3ad with SMTP id 46e09a7af769-7ce50c00c51mr6786742a34.17.1767980536766;
+        Fri, 09 Jan 2026 09:42:16 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:52::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478af813sm7858243a34.19.2026.01.09.09.42.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 09:42:14 -0800 (PST)
+        Fri, 09 Jan 2026 09:42:16 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 09 Jan 2026 09:40:55 -0800
-Subject: [PATCH net-next 4/8] net: funeth: convert to use
- .get_rx_ring_count
+Date: Fri, 09 Jan 2026 09:40:57 -0800
+Subject: [PATCH net-next 6/8] net: qede: convert to use .get_rx_ring_count
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-grxring_big_v1-v1-4-a0f77f732006@debian.org>
+Message-Id: <20260109-grxring_big_v1-v1-6-a0f77f732006@debian.org>
 References: <20260109-grxring_big_v1-v1-0-a0f77f732006@debian.org>
 In-Reply-To: <20260109-grxring_big_v1-v1-0-a0f77f732006@debian.org>
 To: Sunil Goutham <sgoutham@marvell.com>, 
@@ -73,20 +72,20 @@ To: Sunil Goutham <sgoutham@marvell.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1667; i=leitao@debian.org;
- h=from:subject:message-id; bh=NwEAQJcWkyJW4qDQ88U4X0DJVlPj19fNX0H4+k52RXE=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpYT3xeosS5k/MaQsTjxHVS3p9JfgUIqb0QvAjf
- aobZITgM+KJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWE98QAKCRA1o5Of/Hh3
- bWCdD/9j+M0r9Mi4slfacJL1ikudlVEf6YibKZYpumN38Yxk3lDLaWA6WMksruTGqDGQwvubNm2
- xg+K8+/fzHVBCo+ikbrYNMkRIMK9c0GDvlBdg9BLdUR1U0Ok3aGIqVboNnlEGlvQEs6izGmqtT7
- U+2DtIsj3uqqs6dDrbIzGM49vWTRqAqmKzAJ1VQMf3ZvYPyGVeZEYlUecw0UQwK1M9LWzOiO8tQ
- n2dqQa48oPSnTawrMK1thkLs5coJ2f5xsXlqJh5N+EcAdI98cJJTG8W2sH2XANMNT2MOI+B9qRP
- GG5VKcZ1wptSVoH+U3Sztd/Px2ZIyhwzj/14NUENG4klC4fS0S1bCy1bjKXTHMRI8yxiak50Vgl
- DoBhknDeCAymCjhuOe0KWIeHEyg/WyU2vYvI61Fn63FQrE7dui9n/7lEYXHLkuzoiEGSz6DI93b
- q4rtFAB58NaI+JWmxiOnhazXo2NDn/Lu7dusvuHOT0szkTPRvk/JBJelh6neypPRDkAhE+iqjMM
- 5m2gvk9WQv62UIRbu2nkrx/PeawOC2tNoaj4zXzjbSTp8HzM50u3NNE/Ijmidbb7Pxg+I7ucOG4
- r/RTnKVz5+tnPLnk9kclM0IR7+IOYSu8A45aak/hLpdkHWC5dqwCJMXGMzQpVYJtwDwlh5z7p+R
- r1JBytBw2mvsIbQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2026; i=leitao@debian.org;
+ h=from:subject:message-id; bh=HMSNJxCMyQJnjwP9Vi8R6ihLUN8j5UtDt4JQzxAdwSY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpYT3xmb5BcnbRMkGzoZGEguVmG26s9fYL2MoVQ
+ 0UiDDKECI+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWE98QAKCRA1o5Of/Hh3
+ bc4aEACAFc4hkacr0Sd8PlEFtW46uub2TNOaw1BkYAFmcovah7pK7gHEpm8bNT0KZp+8QZkxW7D
+ 4ndsRrWk/inM91PZEDnDfcd7irM7BIhDnEEeoDXVwjE95QOZ+YDKBKw4kdDrFsODiseLfqQWWm+
+ r90YyK3nTM7ux58S54XESynzTrfQWJUC6Qh1WDCMmKaWsdumBKqhps19uzsQ9a0UD33gwBPVbJd
+ hy6h7vuzJbWw9RDtAdQqF7Ropm9f0IK+Ue/0UYT2nxBP5dIi3lgqzcJbnPHegbBjukt8saR2CWl
+ sh5xwgtlEyuLeCB0HEILMKOMyyfEaSIykdmfuTEcR6JH+/4dqBnASnkcl6bbbAWXFhjhLpCwdKO
+ 7uc/12ExUjFHwSneH/XCWWUPxFeBo4olLOR86gdyebEwacQGMCc3RH7CDLibYI58ACVAgvm6meo
+ C0isHQQSHnfdcgFz5WtVTcIAfQUSFzFcK1yUN7VQ4HnLZ5nbrEHv7/mclX7HYX/s8dHgtBXqBgj
+ 3C4f3pIiXZPuPOHqfFGpi76LrfTheD40u97ITyRRhQ26WE4CySKOJXY3mbcbYAmy2ahPyYY9hOs
+ eEQDVk+zqvTsPNImdLLjuN3GgD4ZoDuaActbm250ygThHJw5NGPB4IVus+nqSCY1ccRkRQPDyj9
+ HpI6Ev3bqPHN7cw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
@@ -95,43 +94,53 @@ of handling ETHTOOL_GRXRINGS directly in .get_rxnfc().
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/ethernet/fungible/funeth/funeth_ethtool.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_ethtool.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c b/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-index 1966dba512f8..106adf7a870f 100644
---- a/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-+++ b/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-@@ -946,17 +946,9 @@ static void fun_get_fec_stats(struct net_device *netdev,
- #undef TX_STAT
- #undef FEC_STAT
- 
--static int fun_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
--			 u32 *rule_locs)
-+static u32 fun_get_rx_ring_count(struct net_device *netdev)
- {
--	switch (cmd->cmd) {
--	case ETHTOOL_GRXRINGS:
--		cmd->data = netdev->real_num_rx_queues;
--		return 0;
--	default:
--		break;
--	}
--	return -EOPNOTSUPP;
-+	return netdev->real_num_rx_queues;
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
+index 23982704273c..647f30a16a94 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
+@@ -1199,6 +1199,13 @@ static int qede_get_rxfh_fields(struct net_device *dev,
+ 	return 0;
  }
  
- static int fun_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *info)
-@@ -1169,8 +1161,8 @@ static const struct ethtool_ops fun_ethtool_ops = {
- 	.get_sset_count      = fun_get_sset_count,
- 	.get_strings         = fun_get_strings,
- 	.get_ethtool_stats   = fun_get_ethtool_stats,
--	.get_rxnfc	     = fun_get_rxnfc,
- 	.set_rxnfc           = fun_set_rxnfc,
-+	.get_rx_ring_count   = fun_get_rx_ring_count,
- 	.get_rxfh_indir_size = fun_get_rxfh_indir_size,
- 	.get_rxfh_key_size   = fun_get_rxfh_key_size,
- 	.get_rxfh            = fun_get_rxfh,
++static u32 qede_get_rx_ring_count(struct net_device *dev)
++{
++	struct qede_dev *edev = netdev_priv(dev);
++
++	return QEDE_RSS_COUNT(edev);
++}
++
+ static int qede_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info,
+ 			  u32 *rule_locs)
+ {
+@@ -1206,9 +1213,6 @@ static int qede_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info,
+ 	int rc = 0;
+ 
+ 	switch (info->cmd) {
+-	case ETHTOOL_GRXRINGS:
+-		info->data = QEDE_RSS_COUNT(edev);
+-		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+ 		info->rule_cnt = qede_get_arfs_filter_count(edev);
+ 		info->data = QEDE_RFS_MAX_FLTR;
+@@ -2289,6 +2293,7 @@ static const struct ethtool_ops qede_ethtool_ops = {
+ 	.get_sset_count			= qede_get_sset_count,
+ 	.get_rxnfc			= qede_get_rxnfc,
+ 	.set_rxnfc			= qede_set_rxnfc,
++	.get_rx_ring_count		= qede_get_rx_ring_count,
+ 	.get_rxfh_indir_size		= qede_get_rxfh_indir_size,
+ 	.get_rxfh_key_size		= qede_get_rxfh_key_size,
+ 	.get_rxfh			= qede_get_rxfh,
+@@ -2333,6 +2338,7 @@ static const struct ethtool_ops qede_vf_ethtool_ops = {
+ 	.get_sset_count			= qede_get_sset_count,
+ 	.get_rxnfc			= qede_get_rxnfc,
+ 	.set_rxnfc			= qede_set_rxnfc,
++	.get_rx_ring_count		= qede_get_rx_ring_count,
+ 	.get_rxfh_indir_size		= qede_get_rxfh_indir_size,
+ 	.get_rxfh_key_size		= qede_get_rxfh_key_size,
+ 	.get_rxfh			= qede_get_rxfh,
 
 -- 
 2.47.3
