@@ -1,64 +1,64 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293621632E7
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 01:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9616F1632E7
+	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 01:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767920953; cv=none; b=P3hcyVjZfOH2D5A1b8iU+XSCuInbZGCs/XrvWsGvPHNZHIU8KPMLtE7DQmoNgNupg5m58tVDcU6QFvTg0r4/jIKZtvcZ+EcCf6ksAAkL6y2ov9MnC7WCa3mKDgZ+U/0BLvUBsdeLa/PPhDEiOECrmIRhcE88ZuyU68yOWvDFlXo=
+	t=1767920958; cv=none; b=Lg1QOq5Nn/+J7xXVtCA7q8BGyBo/pue5fIeYE4sNbIo5BYpaPdSrYuU+S5tUnlcolfMGTX4riZlxrlNZYJxNCEE1HJmN0mnLsysOMAXrMY7h6U3ylz8XxFk73er0KA6XDu+DgHAwY1uYQkVcbvzwYGHDs4V2zhatM1q+/LgMCmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767920953; c=relaxed/simple;
-	bh=Op1D4JGBOw6dW1leE2O1zi7Myotx/Tp5RPzy4tsAm/0=;
+	s=arc-20240116; t=1767920958; c=relaxed/simple;
+	bh=90sHoqH4RL5mBcr0BE53mSSntuQmQc+iJiK3UPwFJ5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skcFqJYlkkTEp8UaTM/Ifo1OdnHSG1aiTrn3dunrMs7z5BX2IorESio3IolK3XSXytCJ+aHrWHkcv0udkkbc8Zsa+tymAclOL7+4UWUIDEcYRs5t9i/t2xYel2JWCgs+9c/sDP4kIxtglQ+z6q17lnf7hUKKd3Oo+AjowwDUR+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk4KkMYc; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version; b=Ee8zYai3/pKoDlaNGQiCbSCuCFQsZRD70VNhS1f8brU3P6bJpivbWg5ASwR2eYZk7vn8obMgKUs/L6oyG8gUJMnSWc0IF8lO1eMLuxrGnXP+h3x5dYkSA4xf8NFoQdWQnaUZ5AJpFHaI5rSwS+8sQQ8ZqFs+F1Mj1gdbIN6jx2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TWe5Xty7; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk4KkMYc"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so1891785f8f.2
-        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 17:09:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TWe5Xty7"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fbad1fa90so3132489f8f.0
+        for <netdev@vger.kernel.org>; Thu, 08 Jan 2026 17:09:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767920950; x=1768525750; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767920955; x=1768525755; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZRf1S/pKhh92G5gtxmiVStxeCyhZJoINvG7rPfwHfBQ=;
-        b=Mk4KkMYc6uINMLuaKXHNw+gsuoKGMfrVyxJmx4kCGRX7uO2+yEyY3rgBjqap2d0BQp
-         rU5L7x19G+iqm9mjt+2bi/7NoYHmQwe+jpUCvZS+Lw2ohKP0CnWqgYaUd+YiKFbVLBww
-         EjefexfVhGcM6wRYwagQ8p+9GHo+7UnnUTkAihzP8SFSC3FCzMewqMnsUJecRESBvKUU
-         hAiK3Q7fI4VTCffyneYfk59mZjncqO2U6Zr6Dgv1Hv/KE65Z+nvIGDpJYhuIyRvFuzIH
-         8QrtqDZupyItRr0qxv/VOjsqxpiRX81vcJ/HnGzHmmtNpMqk3Yp1eH9cC8bXFDbXeQFa
-         E+xw==
+        bh=+SHb5iap/jO9yZCOT+B+wTKv2mx2x7r0hKBUlQThMqk=;
+        b=TWe5Xty7v4w3VRZWvtf3FERkXiUZF3/x6ySXOHUQgwfZ3xbXf9dDKgI3hc9brEl1Y5
+         bWhLxHQI/fmBAw2K+J75pXeEhzvEXo+fhF/89edWghtmvY0yQvuEltsvW1mhdbQ+clvf
+         lQyxyYrCAwdHKxAicezntZVCZjmZ/33DXVOz8Jh8zBMK/iotUlNzOhZcrWl8qjowU42R
+         Z3bhxfvbI+BH9NQKzLWDYhZgnl3o2GLeKNRADypEXVsohOLqaFS1HdqvQUzZsVE7BDaD
+         ubAf/WtPJT9dJn8sNIOJneshMXZUmoyu7eaij8eGUBm25HtnNwcLZM37/US7OD8ys5eZ
+         MOAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767920950; x=1768525750;
+        d=1e100.net; s=20230601; t=1767920955; x=1768525755;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZRf1S/pKhh92G5gtxmiVStxeCyhZJoINvG7rPfwHfBQ=;
-        b=M7dbj2EtnAalp+WW7RdNDcyJqi6qHG3ISbFMiF5A2/l5ADk2eZkZCjlQGlD93KD8hW
-         DZjj77smrQukKNPlUjEzNn/uaFdlMvxf4b8lBbgQk+dNQ5bipTe+ieSax+oUhkZ1Y4CO
-         aF+Voeq5S9eWcdb3XoZLDdpx4+njMtd34cgztpcv9IAuYYyYAcfQMCnNEpHwKkFXWRm2
-         VqwgvVvSD3Z9KKSdkPjTfHSj6c4SFFuZJb6/acICu4v4UdnvZUc5eQe+/5RoTdaD8euM
-         PbzhJs93hL9WLZXCKB/8dLCNZLaBt5VWO9XsJ4/Z9HHIgAPqu2GBN1i0Eh1QRI79GmYq
-         c5+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWv0CWd5wFPmOBUSRKGi6eLsIGsJawXCYqFfWkmrZ5gOVy8CdKGcOzk+SyIzBviEdGNzn2FSPY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPxoKgFAoIEpEL6n5NzNFCND0N+kmj91SZPeaXGInQXZ1lW7zB
-	K9kcmx8Evpm2SgkLCdNayiuSZJ5C0FSCdU0QNT8ZamNTFYCqhUQclVwx
-X-Gm-Gg: AY/fxX4FxsdI9PLfhC2p8HmoB+sOIGjkU3Cr0OFWAbP5WzzCf0jUd6jkzZE31lib7OM
-	fXmY+VqsdEioaNtOYQbx4zgWs79KRQ7HPq0JxZsn6cNe5bpMmWtdUua96R4NLAF5IINgQAFtZcy
-	qKV5MhH96PCX22pI73cGyRbnFHD6Z1E9ykVpesKuTeAxqLkl2YKwS9jO7GH5g4lw76ioIVSYQVl
-	JXKDtB3oY9HXYrioS7VmihpxX8swfenUafK3PH9AI69TEOXniCRDCc+6pQUY7RDvMR/ilH1gTwN
-	dih7CDF1AOoHshrR29JOeHG0vCALjHiaIfuPs11VNnrUffMSqlcebeogDIjwCY1naoCDzEMB3r7
-	hxnUwqNqJttvt+NFlVcGoWrZ8dci9BDBzF50+ll5t7Ftk6Vh8fsmbx+3FewRqeWv86EZ3JdNe/x
-	KEitEVHJlUCg==
-X-Google-Smtp-Source: AGHT+IE221jfHoMWtPiR1bdRK+Bmhk9UZXI/X3lOz7oVpdDUb0Ux6I8od5an69R4QgV6ZJxvmTnqdA==
-X-Received: by 2002:a5d:5f51:0:b0:430:ff81:295d with SMTP id ffacd0b85a97d-432c374fc38mr10771526f8f.41.1767920950433;
-        Thu, 08 Jan 2026 17:09:10 -0800 (PST)
+        bh=+SHb5iap/jO9yZCOT+B+wTKv2mx2x7r0hKBUlQThMqk=;
+        b=NNwFr85RypBPyMPr2m/TL4Q8piF1SqImy13pqW0iT2vLkj/Pp0xwZb2l4y7FHfrCzu
+         GdxmIf+0Jt/HS4qwPAg3XqREimNfMo8JGEewHpHAHwTHfCCwQmuPnoaLkvkT60pB2ujR
+         mEL4gn3DJmjVKq5cV+TLtAe1Mk0I8rIYSUbu1ef9N+hRE+aOaxVhr7PKXOO9EpeEoMWz
+         mF/ysrMcsHDEGdp+saplYKOVzISAvblrwBQnG50TVbmln5LdzL+dIShjux1wolfkdVGj
+         6JEEyDc6K8+UBuu4+4CQUnlwJTU5OScltUKk+ssdLA6DXQVBMfU2FWfO/Kh3efqGkGqM
+         Uc5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUsWOEP+9t0ZiMlqlBAzrIi7De4hHZnoQWCVVNjx9sCLsvbLuvvU5HVWjliFtKP8JEVYRBF9mY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJgN79fDGnXTfG/UlRz3DdjJxe5kEu0NCxpDEy+8Za3bPeKnEH
+	i/qqlfxv7VtJ0KF72X1Gl+sgktnPW8MxxOq6iFzC6RRoBJOtu4n+C30g
+X-Gm-Gg: AY/fxX5R/k9qdXsAb8fk866Ve5BYBmzjZEcx02v7zmZysLqPVlJo/1FlqOtSOg/C0tE
+	ieQRLqV7heih8+IGULvi+fAT24ADzxlxs9jRuJ+Z3vyeKHSZGBgrlJsm/rHRE7O60W0WihPmyxM
+	jPgyukoye7oftPzKw9V2PMLas2sFbukIbuMTQoABRJji+RmIadz1WUZ9VjA1dsjuxo4lzTWjxPj
+	KXM7vggNLLaXt3JxsKponffvfZGf2DWPFymbbfMNKMJpT+SdY02QjtlpYttafvviP+6E8yJV7wX
+	nHr9yGNnm7ACRGLqGZ0Bx+Wy2Fz815i4eiGXjdOanMKwZN6LbQgAoykisQGdsg6r3J7gDUTHZED
+	og+0v+JTGeDmo3S4Tn2kHRBk1BuR3hzbl8dn2iHjwhudmjO3o/k+pv32rGNQr0ZmIm0602KONVs
+	O73uEjT0/2NA==
+X-Google-Smtp-Source: AGHT+IGZZl1eOTQKqr3U4roTGY3nttslGtCz+jMNMxC7tfA+9P2eIFxkQ9kKXlfnPAxpeNqHTYGfaw==
+X-Received: by 2002:a05:6000:4024:b0:430:f59d:4dfc with SMTP id ffacd0b85a97d-432c378a153mr8428939f8f.9.1767920954609;
+        Thu, 08 Jan 2026 17:09:14 -0800 (PST)
 Received: from rsa-laptop ([212.50.121.5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e17aasm19698214f8f.15.2026.01.08.17.09.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e17aasm19698214f8f.15.2026.01.08.17.09.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 17:09:09 -0800 (PST)
+        Thu, 08 Jan 2026 17:09:14 -0800 (PST)
 From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
 	Johannes Berg <johannes@sipsolutions.net>
@@ -68,9 +68,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org
-Subject: [RFC PATCH v5 1/7] net: wwan: core: remove unused port_id field
-Date: Fri,  9 Jan 2026 03:09:03 +0200
-Message-ID: <20260109010909.4216-2-ryazanov.s.a@gmail.com>
+Subject: [RFC PATCH v5 3/7] net: wwan: core: split port creation and registration
+Date: Fri,  9 Jan 2026 03:09:05 +0200
+Message-ID: <20260109010909.4216-4-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109010909.4216-1-ryazanov.s.a@gmail.com>
 References: <20260109010909.4216-1-ryazanov.s.a@gmail.com>
@@ -82,36 +82,148 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It was used initially for a port id allocation, then removed, and then
-accidently introduced again, but it is still unused. Drop it again to
-keep code clean.
+Upcoming GNSS (NMEA) port type support requires exporting it via the
+GNSS subsystem. On another hand, we still need to do basic WWAN core
+work: find or allocate the WWAN device, make it the port parent, etc. To
+reuse as much code as possible, split the port creation function into
+the registration of a regular WWAN port device, and basic port struct
+initialization.
+
+To be able to use put_device() uniformly, break the device_register()
+call into device_initialize() and device_add() and call device
+initialization earlier.
+
+While at it, fix a minor number leak upon WWAN port registration
+failure.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 ---
- drivers/net/wwan/wwan_core.c | 2 --
- 1 file changed, 2 deletions(-)
+Changes:
+* RFCv1->RFCv2: break device_register() into device_initialize() and
+  device_add() and use put_device() uniformly. Now, in case of error,
+  memory is released in wwan_create_port().
+* RFCv2->RFCv5: became 3/7 (was 2/6); fix a minor number leak on
+  device_add() failure - thanks Sai!
+---
+ drivers/net/wwan/wwan_core.c | 68 ++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 63a47d420bc5..ade8bbffc93e 100644
+index 33f7a140fba9..4c6d315f4847 100644
 --- a/drivers/net/wwan/wwan_core.c
 +++ b/drivers/net/wwan/wwan_core.c
-@@ -43,7 +43,6 @@ static struct dentry *wwan_debugfs_dir;
-  *
-  * @id: WWAN device unique ID.
-  * @dev: Underlying device.
-- * @port_id: Current available port ID to pick.
-  * @ops: wwan device ops
-  * @ops_ctxt: context to pass to ops
-  * @debugfs_dir:  WWAN device debugfs dir
-@@ -51,7 +50,6 @@ static struct dentry *wwan_debugfs_dir;
- struct wwan_device {
- 	unsigned int id;
- 	struct device dev;
--	atomic_t port_id;
- 	const struct wwan_ops *ops;
- 	void *ops_ctxt;
- #ifdef CONFIG_WWAN_DEBUGFS
+@@ -360,7 +360,8 @@ static void wwan_port_destroy(struct device *dev)
+ {
+ 	struct wwan_port *port = to_wwan_port(dev);
+ 
+-	ida_free(&minors, MINOR(port->dev.devt));
++	if (dev->class == &wwan_class)
++		ida_free(&minors, MINOR(dev->devt));
+ 	mutex_destroy(&port->data_lock);
+ 	mutex_destroy(&port->ops_lock);
+ 	kfree(port);
+@@ -439,6 +440,43 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
+ 	return dev_set_name(&port->dev, "%s", buf);
+ }
+ 
++/* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
++static int wwan_port_register_wwan(struct wwan_port *port)
++{
++	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
++	char namefmt[0x20];
++	int minor, err;
++
++	/* A port is exposed as character device, get a minor */
++	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
++	if (minor < 0)
++		return minor;
++
++	port->dev.class = &wwan_class;
++	port->dev.devt = MKDEV(wwan_major, minor);
++
++	/* allocate unique name based on wwan device id, port type and number */
++	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
++		 wwan_port_types[port->type].devsuf);
++
++	/* Serialize ports registration */
++	mutex_lock(&wwan_register_lock);
++
++	__wwan_port_dev_assign_name(port, namefmt);
++	err = device_add(&port->dev);
++
++	mutex_unlock(&wwan_register_lock);
++
++	if (err) {
++		ida_free(&minors, minor);
++		return err;
++	}
++
++	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
++
++	return 0;
++}
++
+ struct wwan_port *wwan_create_port(struct device *parent,
+ 				   enum wwan_port_type type,
+ 				   const struct wwan_port_ops *ops,
+@@ -447,8 +485,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ {
+ 	struct wwan_device *wwandev;
+ 	struct wwan_port *port;
+-	char namefmt[0x20];
+-	int minor, err;
++	int err;
+ 
+ 	if (type > WWAN_PORT_MAX || !ops)
+ 		return ERR_PTR(-EINVAL);
+@@ -460,17 +497,9 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	if (IS_ERR(wwandev))
+ 		return ERR_CAST(wwandev);
+ 
+-	/* A port is exposed as character device, get a minor */
+-	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
+-	if (minor < 0) {
+-		err = minor;
+-		goto error_wwandev_remove;
+-	}
+-
+ 	port = kzalloc(sizeof(*port), GFP_KERNEL);
+ 	if (!port) {
+ 		err = -ENOMEM;
+-		ida_free(&minors, minor);
+ 		goto error_wwandev_remove;
+ 	}
+ 
+@@ -484,27 +513,14 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	mutex_init(&port->data_lock);
+ 
+ 	port->dev.parent = &wwandev->dev;
+-	port->dev.class = &wwan_class;
+ 	port->dev.type = &wwan_port_dev_type;
+-	port->dev.devt = MKDEV(wwan_major, minor);
+ 	dev_set_drvdata(&port->dev, drvdata);
++	device_initialize(&port->dev);
+ 
+-	/* allocate unique name based on wwan device id, port type and number */
+-	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
+-		 wwan_port_types[port->type].devsuf);
+-
+-	/* Serialize ports registration */
+-	mutex_lock(&wwan_register_lock);
+-
+-	__wwan_port_dev_assign_name(port, namefmt);
+-	err = device_register(&port->dev);
+-
+-	mutex_unlock(&wwan_register_lock);
+-
++	err = wwan_port_register_wwan(port);
+ 	if (err)
+ 		goto error_put_device;
+ 
+-	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
+ 	return port;
+ 
+ error_put_device:
 -- 
 2.52.0
 
