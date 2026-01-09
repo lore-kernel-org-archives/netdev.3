@@ -1,242 +1,232 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEB535BDA5
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 13:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B10A1EA7DB
+	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 13:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963975; cv=none; b=KxpKHRXVM1NPZUzRoh9KAqokrJ+zw6Ubm5INCgEUBIjlbhRDEkESsWaZQV6jflBaMyzsh1tta7Dl8PTyhoVRJceSGLlLZHofVXufHXu6IiSmLOiiuKgY6Q/olo4DIlDB9XGiKjEChKh/EBDdMQ6KFEECJ+3QyK0J7wm9kwE5OLo=
+	t=1767964544; cv=none; b=gQR/wDz8XNM7itYeUR6GAGdTogwY9o5uqOrcZNrbIE1lJoDQNh+LnD9/J9wxWqj6zKdMuDcP3jSRhZmBouCo2/cIZ/Sresms957CpwzGoByKC9dgcBdi/yx+B57h/zAVpuKRPz6H2DssRd6ti64jYKX+0axvlgdRCk9SLKQvIzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963975; c=relaxed/simple;
-	bh=ME5RwYYeXnXNLbQ/Bkl/rSm+h34n/XlbEQhFl4FNSPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bH98Px8K4It7lEwQ4b3iBEd9He9INkCkSl/b8VV2YVxKYuBEDhB9AKQ3WtRK/tJtq+DnlojhxZ+8LC4rt1Llc+R1N6nzGd7s8GtITNtgdLtKJzRTrH4hpHxuO5bvJjKNNrDDiY2lbCanjrqjXg4DVGylpm/Ts/3PdzVDMMO7De4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RuVcdLLF; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767964544; c=relaxed/simple;
+	bh=IUpFxFDFneXRPrBN5rYaUUt5kHq4md45xveBt6EZg5o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rdzXioF4WTVo0oXD4rFkKroVUTHwy307FRxK4kqjaSwy4A7b/8F8ulRwlMaH6N2foy7DWA8/2tmbqbOiDe1qx2hXgvWHUJhdkF1nZdHWJWO3VO32fdSMkYlkWNT7sdxJZiEl/JR2tCqvAC6V8vOVJTEVI8ySAAmRRkN1ltZDz/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gV0Ce6k3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q/1AVh7K; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RuVcdLLF"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64fabaf9133so7479192a12.3
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 05:06:14 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gV0Ce6k3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q/1AVh7K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767964542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6v7LIDmlBSSLIwJFDsDnkCD6163g5qbTTW+W41NUR+s=;
+	b=gV0Ce6k3wdqINQszwRX6O8MVhuv16gVr0ZdzI6cqM/iTm19VLsxMfjTI5w9rhYbGupbvGi
+	9kYq9ANCyWRJ/gmVR9T7Gf9FJnLPIoSCb5erc7xyAiz2ouB/WoYnxAeKLkfq+GYvUF+VC6
+	W/mQ9XQFVXSX90kR8JqjqI6uA6S7/Zw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-3ABGxoriOGC4ED68DAqANw-1; Fri, 09 Jan 2026 08:15:41 -0500
+X-MC-Unique: 3ABGxoriOGC4ED68DAqANw-1
+X-Mimecast-MFC-AGG-ID: 3ABGxoriOGC4ED68DAqANw_1767964540
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b79fcc35ab2so351784966b.2
+        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 05:15:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767963973; x=1768568773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fQi3F9taD578uKhb5WeGr8+LqFJi+cgMU9mJCgFH+JI=;
-        b=RuVcdLLFWX0DbUjmxtERB4CBLBnP6RubT19y9HUxnKtPdRF6hzOqG4V60a9mFWCbDb
-         RpD7bLl1h6PTB7L0jm8qGlmbAvLXg5aLTlqo2kP4/rJWeRLtMrOvMXyEtEOiDTj4bGIw
-         I8IrUsaoKtJEKf1sxgSbftZdD1zTwa85THehjgQ6uAfhuzPHPBRVn+QMy15coZ9tkbTf
-         LhMeAbUhhKxLZeB3grtemTIgNwIREl7rywJkux8mTVtKmTirUOnjORkrNHID4tm7LdHa
-         eHkdHvjw02y/BkPhIFGcgC3BOoRlzGaBDPMqt2DFTsezyngQ6w4qTbWWARAUXLOCqlf0
-         h1Uw==
+        d=redhat.com; s=google; t=1767964540; x=1768569340; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6v7LIDmlBSSLIwJFDsDnkCD6163g5qbTTW+W41NUR+s=;
+        b=Q/1AVh7KuC0ZjSNlH2gxQgiYfWmHDWPleEKbkW/0XVv0+973rBULzx64MFFWmFjXp+
+         J0Rr6wQ8BwNLly3H9nv65AtjIZHnOy8mwCqCv8FS4ydspmBe069yt/44mu90qBWucgDP
+         B7gsQBcNdB6hyKws6FEXqlwcSbUuvlelistrpzdgJDNvK/McjX6kRc4ylyH/s60Tj9mt
+         iPLyLqRXTarUOcMib73Eygv1cDAjselC72KRtAMARMsHcTpHvN069mgFMDgTu6boAavh
+         EhhaqvnbTgESByOzU6NRkXPcscg7i+1v6kdefYvjqqsk6OFDfQns+c2bnTD6riCq7LKi
+         J3IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767963973; x=1768568773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fQi3F9taD578uKhb5WeGr8+LqFJi+cgMU9mJCgFH+JI=;
-        b=EH8aYbVHJblR9S2EAZnbeOOPMzchpnWQ4xylhOiKUCbr0gvOe9AvlzSOExL4gQNY/X
-         Gi9C6galFLyakVTZqhLpKNzQOY2156ZABcYOAHaZOWRiiYohMn9rbjB6NA0zqSpQ5Oio
-         qUhFyas8CajAa/vhW9mVAJNRizw6DZtBrhJQIWprPhmkCeuz8KXuDxarlF9Osg4MctMv
-         1UWBYdREfwzos70tCUZQ99A/bjwdWAktGfjtd0O4LvGwP2Uxmep5KTD7x3h7gVoJD4JU
-         WrbhezV7coq15P4759tk/3PrXfUJEgZ2RA5n0a9GqaNJDtI6haKOTr5qUVJIL6aB6O64
-         N8Fg==
-X-Gm-Message-State: AOJu0Yx0nlvg4z7rM77XzFAnBf7lXlqgqonHbxO/2LvBdowC+bhg3yVP
-	r/n+Aexmxb0tUPFRZvJaFlH2fBVpk8J0hEqkBo+f/f77GfvSxc1dgSTK/EkxfA==
-X-Gm-Gg: AY/fxX7eshcpFddCR3smKNVx40bT0WbqB0M5I1UKOPXOWVNlp1P/2kjL1sxM8uwLLty
-	vQcYXFYAQ8EEkOH4wlbPRgCEq2i4dJ7gRx8W4DMCWXMTFUmvWUSybn6IE+xMZv2VJ4srUHrnEq4
-	KW/KxSV6ahvz4L5ydJ+FiqHZ6WdSJXfGwInmQA6iRAa9UccdRaaLyougwbxlSTUIDybSK5GhohI
-	Ab71HB5JwT7WNAkVZ8p+pi/KUiqM2ExztD0FqFYWYCme427MKmdbKEadvHrXsL5XAKmLbV03jbi
-	FNG6c6LG31A3OyUSzNvovOQSPNxJOgDzHNt1ay8u5RyKSRg6UGPIo3jJECOYj/7nGOBYNmF4p31
-	k4RyOrCgBLleSm1uETf6o4G4jkNTmZ4d8nifAg9z8K3KhI6wW6Ae92RW8cN3IWwXzS8DWDd3k9u
-	6wv4CBbQuvbLmmexOTXezji/c3dGOcnv8PGmN6COgg/y25hC/odiy4TKBwbmBkC1HcXY3bGQ==
-X-Google-Smtp-Source: AGHT+IHEu00dTqymHYnWX3YB9+V+M0g0pVj0f65C6gXQXrOLC70cW7LkbUbrjcu3dFBefYWTWksRNQ==
-X-Received: by 2002:a05:600c:4fc6:b0:477:a21c:2066 with SMTP id 5b1f17b1804b1-47d84b0a902mr94022565e9.5.1767958133975;
-        Fri, 09 Jan 2026 03:28:53 -0800 (PST)
-Received: from 127.com ([2620:10d:c092:600::1:69b5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8636c610sm60056985e9.0.2026.01.09.03.28.51
+        d=1e100.net; s=20230601; t=1767964540; x=1768569340;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6v7LIDmlBSSLIwJFDsDnkCD6163g5qbTTW+W41NUR+s=;
+        b=pkMKrImJYCUfKqT1tgf1yPC423fo5saIJ85vV547NMswtb6/3bkNGRSOhWwlto73Wg
+         yeFJjK/iegpoCREvlLYxp8hi62GnJZ2pqpQMl4WFuI8BKHk4TIk+aWaafU25hMvYZzEM
+         b+YAP4WQL1g2Q4uGgEw1XFGAWsS88UKAt2jH1JFvMzjEbquC7wkKXeeTQEMv9bzBDVVX
+         q9OJ7Of+SC8HM6CjwGNXOHQ+0Y7D/l2UqGNEs9r36vepNEOFEe2CXJciY6Jr5kkjYPhQ
+         jGlmNfiNdq09R3Yb2sRdSs8If0DozyMlXHbulz/YcdzxhUEpOtzaRXQ9iBm7QYRc38Dn
+         Fnnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXd3f3enaL11xBOBnrej/vsPedv3F++7m6pyaTNNRmcxUxQ6ecfgiT9aqr8anrLJ0AyyVgPHEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzyAO//YfWWur+ZlXIRlIaTohdh1WjBfHp62+vINfq82VTryg5
+	IqW6M0JJyHke2MJdEWWnoURRbxFxQTWV+CRKKnmJR1Oi6MG8XsAiRORNJfcEZhvQLefOACTUuuP
+	npdgahRqN2yjN1zATT8Vvz9G2aTNu73iZlREx2QFPc7HD1MxW5GIjsYjIlA==
+X-Gm-Gg: AY/fxX7P1fuvJ6oGb8wo4G1/Fc9gOoQpkjQ50/VvLHtFkxbwpb/YPF9hzfAnbzoB4ev
+	H2ppfroSr2tNFqmnwfmDDo9tS7GfmPbmtYQnu8erkYuOAClz6aiWRxUCEhZ9JTs5jDcEKI5QOk8
+	NqDJQKr/+CnPMInMN/jYfP3WQrxaUBTAP8/bnNPpQuOW9eizT8UHwk3JvIIvH8pjAqY41G4eBgB
+	9aOS9IZiLXMrkx1eHzJXNm005N7CCSl0c7ZkzVmjtROsJIFPVdYwFud3D6pxrg/qgTFs3qvOf+R
+	MJfwjtSfxNX5TT5BB/o8E34OnNfaJhFghar8PWpHpU73qkfBINYVIq1d3aCjobD8I1NtyXis5kP
+	PlV1D+GkuK/YKEAxA8eINl4s4d4+TtAk15U81
+X-Received: by 2002:a17:907:7b8c:b0:b7a:1b3:5e5d with SMTP id a640c23a62f3a-b8444d4eab6mr1016401566b.8.1767964540125;
+        Fri, 09 Jan 2026 05:15:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFHuPjoMEJqZfbLiGY+Ot+KJUEOv4XZBJF8HqzJPsLJiPaUI6xualgZff0FVz208JYKVjAtJA==
+X-Received: by 2002:a17:907:7b8c:b0:b7a:1b3:5e5d with SMTP id a640c23a62f3a-b8444d4eab6mr1016398366b.8.1767964539641;
+        Fri, 09 Jan 2026 05:15:39 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a2ab77bsm1158358866b.25.2026.01.09.05.15.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 03:28:52 -0800 (PST)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Ankit Garg <nktgrg@google.com>,
-	Tim Hostetler <thostet@google.com>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Ziwei Xiao <ziweixiao@google.com>,
-	John Fraker <jfraker@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Joe Damato <joe@dama.to>,
-	Mina Almasry <almasrymina@google.com>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	David Wei <dw@davidwei.uk>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Haiyue Wang <haiyuewa@163.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Simon Horman <horms@kernel.org>,
-	Vishwanath Seshagiri <vishs@fb.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	dtatulea@nvidia.com,
-	io-uring@vger.kernel.org
-Subject: [PATCH net-next v8 0/9] Add support for providers with large rx buffer
-Date: Fri,  9 Jan 2026 11:28:39 +0000
-Message-ID: <cover.1767819709.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        Fri, 09 Jan 2026 05:15:38 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 28350408631; Fri, 09 Jan 2026 14:15:38 +0100 (CET)
+From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Date: Fri, 09 Jan 2026 14:15:32 +0100
+Subject: [PATCH net-next v8 3/6] net/sched: sch_cake: Add cake_mq qdisc for
+ using cake on mq devices
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20260109-mq-cake-sub-qdisc-v8-3-8d613fece5d8@redhat.com>
+References: <20260109-mq-cake-sub-qdisc-v8-0-8d613fece5d8@redhat.com>
+In-Reply-To: <20260109-mq-cake-sub-qdisc-v8-0-8d613fece5d8@redhat.com>
+To: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+ Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+ Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: =?utf-8?q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, 
+ cake@lists.bufferbloat.net, netdev@vger.kernel.org, 
+ Willem de Bruijn <willemb@google.com>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+X-Mailer: b4 0.14.3
 
-Note: it's net/ only bits and doesn't include changes, which shoulf be
-merged separately and are posted separately. The full branch for
-convenience is at [1], and the patch is here:
+Add a cake_mq qdisc which installs cake instances on each hardware
+queue on a multi-queue device.
 
-https://lore.kernel.org/io-uring/7486ab32e99be1f614b3ef8d0e9bc77015b173f7.1764265323.git.asml.silence@gmail.com
+This is just a copy of sch_mq that installs cake instead of the default
+qdisc on each queue. Subsequent commits will add sharing of the config
+between cake instances, as well as a multi-queue aware shaper algorithm.
 
-Many modern NICs support configurable receive buffer lengths, and zcrx and
-memory providers can use buffers larger than 4K to improve performance. When
-paired with hw-gro larger rx buffer sizes can drastically reduce the number
-of buffers traversing the stack and save a lot of processing time. It also
-allows to give to users larger contiguous chunks of data. The idea was first
-floated around by Saeed during netdev conf 2024 and was asked about by a few
-folks.
-
-Single stream benchmarks showed up to ~30% CPU util improvement.
-E.g. comparison for 4K vs 32K buffers using a 200Gbit NIC:
-
-packets=23987040 (MB=2745098), rps=199559 (MB/s=22837)
-CPU    %usr   %nice    %sys %iowait    %irq   %soft   %idle
-  0    1.53    0.00   27.78    2.72    1.31   66.45    0.22
-packets=24078368 (MB=2755550), rps=200319 (MB/s=22924)
-CPU    %usr   %nice    %sys %iowait    %irq   %soft   %idle
-  0    0.69    0.00    8.26   31.65    1.83   57.00    0.57
-
-This series adds net infrastructure for memory providers configuring
-the size and implements it for bnxt. It's an opt-in feature for drivers,
-they should advertise support for the parameter in the qops and must check
-if the hardware supports the given size. It's limited to memory providers
-as it drastically simplifies implementation. It doesn't affect the fast
-path zcrx uAPI, and the user exposed parameter is defined in zcrx terms,
-which allows it to be flexible and adjusted in the future.
-
-A liburing example can be found at [2]
-
-full branch:
-[1] https://github.com/isilence/linux.git zcrx/large-buffers-v8
-Liburing example:
-[2] https://github.com/isilence/liburing.git zcrx/rx-buf-len
-
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
+ net/sched/sch_cake.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 78 insertions(+), 1 deletion(-)
 
-The following changes since commit 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb:
-
-  Linux 6.19-rc4 (2026-01-04 14:41:55 -0800)
-
-are available in the Git repository at:
-
-  https://github.com/isilence/linux.git tags/net-queue-rx-buf-len-v8
-
-for you to fetch changes up to 37f5abe6929963fc6086777056b59ecb034d0e19:
-
-  io_uring/zcrx: document area chunking parameter (2026-01-08 11:35:20 +0000)
-
-
-v8: - Add stripped down qcfg
-    - Retain the page size across resets for bnxt
-
-v7: - Add xa_destroy
-    - Rebase
-
-v6: - Update docs and add a selftest
-
-v5: https://lore.kernel.org/netdev/cover.1760440268.git.asml.silence@gmail.com/
-    - Remove all unnecessary bits like configuration via netlink, and
-      multi-stage queue configuration.
-
-v4: https://lore.kernel.org/all/cover.1760364551.git.asml.silence@gmail.com/
-    - Update fbnic qops
-    - Propagate max buf len for hns3
-    - Use configured buf size in __bnxt_alloc_rx_netmem
-    - Minor stylistic changes
-v3: https://lore.kernel.org/all/cover.1755499375.git.asml.silence@gmail.com/
-    - Rebased, excluded zcrx specific patches
-    - Set agg_size_fac to 1 on warning
-v2: https://lore.kernel.org/all/cover.1754657711.git.asml.silence@gmail.com/
-    - Add MAX_PAGE_ORDER check on pp init
-    - Applied comments rewording
-    - Adjust pp.max_len based on order
-    - Patch up mlx5 queue callbacks after rebase
-    - Minor ->queue_mgmt_ops refactoring
-    - Rebased to account for both fill level and agg_size_fac
-    - Pass providers buf length in struct pp_memory_provider_params and
-      apply it in __netdev_queue_confi().
-    - Use ->supported_ring_params to validate drivers support of set
-      qcfg parameters.
-
-Jakub Kicinski (2):
-  net: reduce indent of struct netdev_queue_mgmt_ops members
-  eth: bnxt: adjust the fill level of agg queues with larger buffers
-
-Pavel Begunkov (7):
-  net: memzero mp params when closing a queue
-  net: add bare bone queue configs
-  net: pass queue rx page size from memory provider
-  eth: bnxt: store rx buffer size per queue
-  eth: bnxt: support qcfg provided rx page size
-  selftests: iou-zcrx: test large chunk sizes
-  io_uring/zcrx: document area chunking parameter
-
- Documentation/networking/iou-zcrx.rst         |  20 +++
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 126 ++++++++++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |   2 +
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   6 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h |   2 +-
- drivers/net/ethernet/google/gve/gve_main.c    |   9 +-
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  10 +-
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  |   8 +-
- drivers/net/netdevsim/netdev.c                |   7 +-
- include/net/netdev_queues.h                   |  47 +++++--
- include/net/netdev_rx_queue.h                 |   2 +
- include/net/page_pool/types.h                 |   1 +
- net/core/dev.c                                |  17 +++
- net/core/netdev_rx_queue.c                    |  31 +++--
- .../selftests/drivers/net/hw/iou-zcrx.c       |  72 ++++++++--
- .../selftests/drivers/net/hw/iou-zcrx.py      |  37 +++++
- 16 files changed, 318 insertions(+), 79 deletions(-)
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 8171674b160d..2671481d8e01 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -67,6 +67,7 @@
+ #include <linux/if_vlan.h>
+ #include <net/gso.h>
+ #include <net/pkt_sched.h>
++#include <net/sch_priv.h>
+ #include <net/pkt_cls.h>
+ #include <net/tcp.h>
+ #include <net/flow_dissector.h>
+@@ -3157,14 +3158,89 @@ static struct Qdisc_ops cake_qdisc_ops __read_mostly = {
+ };
+ MODULE_ALIAS_NET_SCH("cake");
+ 
++struct cake_mq_sched {
++	struct mq_sched mq_priv; /* must be first */
++};
++
++static void cake_mq_destroy(struct Qdisc *sch)
++{
++	mq_destroy_common(sch);
++}
++
++static int cake_mq_init(struct Qdisc *sch, struct nlattr *opt,
++			struct netlink_ext_ack *extack)
++{
++	int ret;
++
++	ret = mq_init_common(sch, opt, extack, &cake_qdisc_ops);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int cake_mq_dump(struct Qdisc *sch, struct sk_buff *skb)
++{
++	mq_dump_common(sch, skb);
++	return 0;
++}
++
++static int cake_mq_change(struct Qdisc *sch, struct nlattr *opt,
++			  struct netlink_ext_ack *extack)
++{
++	return -EOPNOTSUPP;
++}
++
++static int cake_mq_graft(struct Qdisc *sch, unsigned long cl, struct Qdisc *new,
++			 struct Qdisc **old, struct netlink_ext_ack *extack)
++{
++	NL_SET_ERR_MSG(extack, "can't replace cake_mq sub-qdiscs");
++	return -EOPNOTSUPP;
++}
++
++static const struct Qdisc_class_ops cake_mq_class_ops = {
++	.select_queue	= mq_select_queue,
++	.graft		= cake_mq_graft,
++	.leaf		= mq_leaf,
++	.find		= mq_find,
++	.walk		= mq_walk,
++	.dump		= mq_dump_class,
++	.dump_stats	= mq_dump_class_stats,
++};
++
++static struct Qdisc_ops cake_mq_qdisc_ops __read_mostly = {
++	.cl_ops		=	&cake_mq_class_ops,
++	.id		=	"cake_mq",
++	.priv_size	=	sizeof(struct cake_mq_sched),
++	.init		=	cake_mq_init,
++	.destroy	=	cake_mq_destroy,
++	.attach		=	mq_attach,
++	.change		=	cake_mq_change,
++	.change_real_num_tx = mq_change_real_num_tx,
++	.dump		=	cake_mq_dump,
++	.owner		=	THIS_MODULE,
++};
++MODULE_ALIAS_NET_SCH("cake_mq");
++
+ static int __init cake_module_init(void)
+ {
+-	return register_qdisc(&cake_qdisc_ops);
++	int ret;
++
++	ret = register_qdisc(&cake_qdisc_ops);
++	if (ret)
++		return ret;
++
++	ret = register_qdisc(&cake_mq_qdisc_ops);
++	if (ret)
++		unregister_qdisc(&cake_qdisc_ops);
++
++	return ret;
+ }
+ 
+ static void __exit cake_module_exit(void)
+ {
+ 	unregister_qdisc(&cake_qdisc_ops);
++	unregister_qdisc(&cake_mq_qdisc_ops);
+ }
+ 
+ module_init(cake_module_init)
+@@ -3172,3 +3248,4 @@ module_exit(cake_module_exit)
+ MODULE_AUTHOR("Jonathan Morton");
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_DESCRIPTION("The CAKE shaper.");
++MODULE_IMPORT_NS("NET_SCHED_INTERNAL");
 
 -- 
 2.52.0
