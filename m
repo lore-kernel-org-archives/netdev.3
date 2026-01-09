@@ -1,52 +1,52 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B9366DBA
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 17:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68F5368282
+	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 17:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767980540; cv=none; b=uKv4FOD6yQye4lD3KdrxdZsP/+1yhH9rrbUvl+nq0w8wufxUtvYXwft0dc019hgRWFLjflu9Ooqx0pzIemRprKM13EQ5KLlrBThaR3zFQLZEg3JNIwqy4b4OBglHzPDRnuyUFppOC1AuXMV/bHXmlRV8xwGoIwD5yLXk5kTbNnU=
+	t=1767980540; cv=none; b=dl4U4jSfNw82EwBce+Y9FGsBZhgcyXo3olkumZzUCjdGTwzRDHZ/6RJ8cpxTSpR1soh+Bw9EjCVjozl1eimYpsOfqa4EyXdrFtl3V6OJlUrSBO00U3G6Ko+NW7scJOtXQ8F8y4ghR4gfmFso0WwmayEN6hNrKaiwnuvM7GJ5Kv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767980540; c=relaxed/simple;
-	bh=tU535M0GY9FyQ8mWK2BHQ8gb8VNQ7ucJhAwMu0Rw6ug=;
+	bh=5m0OPDAoHdVcGZxe3wMgRXhAnSN2B57F2rHKvA0SyYY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AFnyCrZaCv8B5LF7P9uDszKPhFK+OYvxzlN5N3JYtJvR5ycthrXhEI2KjNBWDr2I7o8rAEDhirG7hs/2LJ0EsZrHCLpMkvYbUB8uCnavjcpnL7bGLuuHFMic7/UWcaLcsqZByql/ahRotHUTKqkdusc0QxIcfWSo0X4iUmHLN0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.41
+	 In-Reply-To:To:Cc; b=epUVTohQL39KtaIUfmv3PlX0WxIigdTZ87TlBMnjj3irMFvAUiefVRzZYX7QuOjnHZggerawUDDugaAZOjGU+GaicG/PYSwi3LUXvsFaDXm5UCxFyG+vQB7lCUYmQjIV1nZyV02vLZWOtf2INM9/1TkERgkKA1Ksp8UHHZ+cHAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-3e7f68df436so2338264fac.1
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 09:42:16 -0800 (PST)
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7ce614de827so1049322a34.1
+        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 09:42:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767980536; x=1768585336;
+        d=1e100.net; s=20230601; t=1767980537; x=1768585337;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=9xTp4jaek5ypFmz7UFVBs3jQhPSOjK2UhBmvUfaPLF8=;
-        b=D/qGkt0FyoSFPez3lhO3epyAH3GikR9CuCVFcG9q6Mv/hYkzf7C1eJfwgTnf9NGg1F
-         /HEMDQwb311GzxieBWfkTuVeCJwMwll83qTYfLkSqTIhuvHHG9WX+C8EsWNqheLAww94
-         XypFCeGl5hImmY2K6QWaNzwHQ0yckdMXNGsddwK6wsxNzkHr10faP9ww+lgchSbzwEXY
-         vD9/1jY0OKzX3FwgVbiJ3pFSoGoJW8Qz4at0DKK3RGT0xQaDFs1/pc/pvwpsSxhGc15z
-         hYPlb+HAz3xbhg9LHdGOtuv4MNSN0s1dokHHDZJs/LwYf8RTHWyVDh3PgdPgzvRiBig6
-         q+xw==
-X-Gm-Message-State: AOJu0YxKHbWUpBh/4hedPDoyRG4BHgFoelgDL157d3IFLOCNozogedjN
-	42C5PBr0eJkJ+vEYUmErc/BEazgEOC+jbNobqRdeVZStUHX6nRo3joWp
-X-Gm-Gg: AY/fxX4GIApMd9Re7SXCC4SYdXDsdex8upZCu+SwfgTXtDH2gNKlxQwletDN7qcIJEm
-	QWLvmF0EjRxoIEl1+gvG0nqS8DnhZwE7AZs756IJCydJVQjtNPqRlD46NK+FYpu8HTXozAsD1oY
-	625zgxyqu0am/bNg320H9ITzMNHHzBnSQUTKxlCRR++V2ThSAgvNxJ6Wizp0UXrwNNhHfcyLJLZ
-	V0tCjflhU3VwY4KZxsRP1UkXZaK2/HeC6Ws6tstOoXLo6KT3Yaa0NHaQCpyAjjEtK+FCPUnMtQz
-	PTLPob2G6j1fuPY6VnapJ4jRzNeaqPuhqtSd6kuyWJxzzl8ZxcWyCrFnV7zImNfOvqoCXj9xOzL
-	YAtQirMIxe+N6KzTjf/uC5SZwvYAFcWVY0UWokhXlmRvLAHEWpn6ONM2WFU/2MbvDPrnATNrWNy
-	PO7g==
-X-Google-Smtp-Source: AGHT+IGDKwjKAy0vTmDz204fXsFfJKa18HGkRPg0kSvzRcw96dIsJGdkpkkiOqWgwnUnG9Lax1dfcQ==
-X-Received: by 2002:a05:6870:320f:b0:3e0:aec2:8b50 with SMTP id 586e51a60fabf-3ffbf09f3bcmr5979858fac.22.1767980535772;
-        Fri, 09 Jan 2026 09:42:15 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:5c::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ffa5072427sm7148925fac.12.2026.01.09.09.42.15
+        bh=8/KQkYe6aBGCJy2yx8mXj5Gk2hKUrzVetGq19pgglDc=;
+        b=uQM0XgKssyAIQHVdGzrW/r+vnwpn8QFoCN99kyRDLBabNhtvMAXFknLJsAmc/z9UpU
+         SpVdETZ73a8VxBVuMs1BeeFo08KbdemjoNakyaxRliaAxF2/c2Ws68AJOsrYL8lzrAta
+         EIYQp4GJV5MtmePM4vP6Vsn8RToSyPkaV0lwUt7xsQJX/w7wwByRUSTQm7J1EBD05dDg
+         Fuclo3m+dhp0H7znq62qvxU8Pb2N8RSkbu56jHMedCBS3xg/qbnYxLKfH/yi8hjqvvKt
+         ZfZL0qfCFnccMHhou81MtVhzzYMUHPfKxaH3AdmbWWDL6qxLkrnfXPMBscdQqLruq2Jv
+         fLdw==
+X-Gm-Message-State: AOJu0YyYG31avQvOw+hWfsanATAUfn17Bu6ha6qxdbHhzVBgm8jfQY08
+	j8lhUTyTMiMzHzDfCFihfRggXJgqS6GidAjdJ6f8Be58l5DVZwwfnE76
+X-Gm-Gg: AY/fxX6/7MyXNZ+/qIsT+BP7cqRcUZJgiU0PC561pdYBUE8QcZSpWdrsV177Yu3XL7t
+	KuVThxF3ejtwieFZBLTG0s2JMqzFfgfwi3Fr9iftxZlZER3iQhtg6tOk7N5TjyLViE5UYEP+vD+
+	jKAqsdTL7IG0NsF3SOw0ZTBKJ7GIaPlPHA8YVvZxEYy3ZCkcyPY5QI2L5FBHER7/9U0OjnaCz5i
+	kOMv6msaycKnP6c0zdby7jJnoH3aBAr4BI5rhWJEfXEgPFH6WVGL9dt9qZDtXsYgGnNltszs14s
+	lQ8GNPJVmeSjruYfUQ1OWpjjR2f29l9JGI0r0ki8avwlCBzC2GIOxwLrpgqCbMHPSXYQV57W/CT
+	aFVvzHymZOkri2ulUdwRdgj/BXb/dilax7TIY33/URjwfexmShgO0RvQzvEyMSE558NhVmUcgr9
+	vPhD82bK7UJdN4
+X-Google-Smtp-Source: AGHT+IHqaDAOTgl7gG4NOfQi80vgg90NDfqDx1cS/RqFYdEnoSJ5gipbBVkIZAU5ziJ0LT4W3YovBg==
+X-Received: by 2002:a05:6830:2709:b0:7cb:1287:e3d4 with SMTP id 46e09a7af769-7ce50a88c52mr5960088a34.36.1767980537626;
+        Fri, 09 Jan 2026 09:42:17 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:51::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478af6efsm7594765a34.18.2026.01.09.09.42.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 09:42:15 -0800 (PST)
+        Fri, 09 Jan 2026 09:42:17 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 09 Jan 2026 09:40:56 -0800
-Subject: [PATCH net-next 5/8] net: niu: convert to use .get_rx_ring_count
+Date: Fri, 09 Jan 2026 09:40:58 -0800
+Subject: [PATCH net-next 7/8] net: hns: convert to use .get_rx_ring_count
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-grxring_big_v1-v1-5-a0f77f732006@debian.org>
+Message-Id: <20260109-grxring_big_v1-v1-7-a0f77f732006@debian.org>
 References: <20260109-grxring_big_v1-v1-0-a0f77f732006@debian.org>
 In-Reply-To: <20260109-grxring_big_v1-v1-0-a0f77f732006@debian.org>
 To: Sunil Goutham <sgoutham@marvell.com>, 
@@ -72,20 +72,20 @@ To: Sunil Goutham <sgoutham@marvell.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1495; i=leitao@debian.org;
- h=from:subject:message-id; bh=tU535M0GY9FyQ8mWK2BHQ8gb8VNQ7ucJhAwMu0Rw6ug=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpYT3x6ByFQI+KerXkQEDXHmJlJsbQO8qB7VerD
- mFdreLb+s+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWE98QAKCRA1o5Of/Hh3
- bfZpD/99c8Y+E+uIRhOpRXr2PokQdk2b4g0wBkVzbO+xahgxT07IBsWP+xDiW1XdJWaaYkvEsqX
- nViIhqLFiXjz2KzbaGNGZpjy2DicumiFAIqBuKcNqnHTvzS8zvTH4DDzfn2MbJC0Q3iox7VxvQk
- soXjD/MS5mbPlYR8wmNTsZFVEEr8b4QXBhrT6oh1i+Tm+2oFt0AZblggevvgTD1tbnRKucjP8Sb
- Pk5ntnUxjYwMR7xjasnFQl6LSXe92QwIscaX4liZaGQtLses55eV8ZNOE0zwtQSDjf5ogORq+Ep
- z22FQxxKzoPeXAf5neJUFXFsidftk/2JQHZRM4Yrf+hfkmYG1HkwYyKk9gJPikxWZT0o2tQ1tF4
- mf/Ic2IAMKXUpeEY3BvOBpoYPjP2lX4bZ7wKbTmqzS1HTC/297RlBDwNdPktcj2026zJGPwNkAi
- ZLeZQMGEjzOAtO90533hzvplw3eJNvnLHQjp5t0KAXCCcusu92SoPqOSARBkOML/4hClicRVtN2
- UwfAZpJ4/FoXRN3BWPcph4SbAnDkflYjUrH8acxkQypXWeuI70wEf9WYgXaU6Bjkd0tOv7Xyi0J
- bAoQ43+VRmzLMzGroxjdOK72FRghKqc88Gd1YfpXZfx2etZofYva4HueNYvUPrqsH4v2Zm3bkhg
- ExoG1F+7EJQk3Jg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1599; i=leitao@debian.org;
+ h=from:subject:message-id; bh=5m0OPDAoHdVcGZxe3wMgRXhAnSN2B57F2rHKvA0SyYY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpYT3xW+c+EO03fUkD7qa3VBjl0tRZrbv2eV6Cr
+ WZh9PkZCmWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaWE98QAKCRA1o5Of/Hh3
+ be9FD/9OSf9UXz9Er7jwkNu8YGckxaxRLWOvxNtXJ3zrb6Cc+X0fFukAgj4kcQaK9e55iN1fN+h
+ VatRIc0YYvCqAAgxAHJrdtMyK3XQ+uQNlK2n9cjw5Cb1bdiSS2AB1PBXk00k4Gs60EQaH2rp4l4
+ A4bN1QKgLqvlMuImMlIxCu0TajbRupReSNmRN3fuqM+n5bFEaA6tGhU7YLlegL8KWfNcPQSVKjz
+ LxOcctBzcvKU+GdrcjpbivkJOZLM8vhjqhw7/u0xSWiB6Dfks5l65llfToBShANxy0ERMDsy12s
+ IuZN1rap7BU7qJ8bQXyvk5mmoeEbYUnS956ev57kiqWTtptfclECOBtbypaxzvlJYq3Bq0sTPzE
+ X1dtcKKJWoEkRUtqEgHWQgIuiiuWGVHvn4K+WL8qmbWmP9DaTkhgDAkpQyZcYgrP/d20zuW4ISF
+ oo0Y7Jt5pFrDd76lnNyE6addUV8xXcBmQkO0d2JeqnQN77zCriVZ9lZHbeUuvzcFF4uu1y3n391
+ 0PLHmNZ0bNhhqxcaaeoKf1B61pide6qXr8h4ibfN/Z7pbXUwrBtCRIB7L+3pFzxWBHPHUB13YV7
+ HWeDNuyfnUOodxDGFzhYlwLJHPJMPZ8Eg5x9cXJSm/uugzNxALaSmXu5/5rPtJuwtUWB4tqcfyS
+ GtMmk3xmuVwa3Xg==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
@@ -94,45 +94,46 @@ of handling ETHTOOL_GRXRINGS directly in .get_rxnfc().
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/ethernet/sun/niu.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns/hns_ethtool.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index 893216b0e08d..f035e3bbbef8 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -7302,6 +7302,13 @@ static int niu_get_ethtool_tcam_all(struct niu *np,
- 	return ret;
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
+index 60a586a951a0..23b295dedaef 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_ethtool.c
+@@ -1230,21 +1230,11 @@ hns_set_rss(struct net_device *netdev, struct ethtool_rxfh_param *rxfh,
+ 			    rxfh->indir, rxfh->key, rxfh->hfunc);
  }
  
-+static u32 niu_get_rx_ring_count(struct net_device *dev)
-+{
-+	struct niu *np = netdev_priv(dev);
-+
-+	return np->num_rx_rings;
-+}
-+
- static int niu_get_nfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
- 		       u32 *rule_locs)
+-static int hns_get_rxnfc(struct net_device *netdev,
+-			 struct ethtool_rxnfc *cmd,
+-			 u32 *rule_locs)
++static u32 hns_get_rx_ring_count(struct net_device *netdev)
  {
-@@ -7309,9 +7316,6 @@ static int niu_get_nfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
- 	int ret = 0;
+ 	struct hns_nic_priv *priv = netdev_priv(netdev);
  
- 	switch (cmd->cmd) {
+-	switch (cmd->cmd) {
 -	case ETHTOOL_GRXRINGS:
--		cmd->data = np->num_rx_rings;
+-		cmd->data = priv->ae_handle->q_num;
 -		break;
- 	case ETHTOOL_GRXCLSRLCNT:
- 		cmd->rule_cnt = tcam_get_valid_entry_cnt(np);
- 		break;
-@@ -7928,6 +7932,7 @@ static const struct ethtool_ops niu_ethtool_ops = {
- 	.set_phys_id		= niu_set_phys_id,
- 	.get_rxnfc		= niu_get_nfc,
- 	.set_rxnfc		= niu_set_nfc,
-+	.get_rx_ring_count	= niu_get_rx_ring_count,
- 	.get_rxfh_fields	= niu_get_rxfh_fields,
- 	.set_rxfh_fields	= niu_set_rxfh_fields,
- 	.get_link_ksettings	= niu_get_link_ksettings,
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-
+-	return 0;
++	return priv->ae_handle->q_num;
+ }
+ 
+ static const struct ethtool_ops hns_ethtool_ops = {
+@@ -1273,7 +1263,7 @@ static const struct ethtool_ops hns_ethtool_ops = {
+ 	.get_rxfh_indir_size = hns_get_rss_indir_size,
+ 	.get_rxfh = hns_get_rss,
+ 	.set_rxfh = hns_set_rss,
+-	.get_rxnfc = hns_get_rxnfc,
++	.get_rx_ring_count = hns_get_rx_ring_count,
+ 	.get_link_ksettings  = hns_nic_get_link_ksettings,
+ 	.set_link_ksettings  = hns_nic_set_link_ksettings,
+ };
 
 -- 
 2.47.3
