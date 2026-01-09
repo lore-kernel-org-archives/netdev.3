@@ -1,72 +1,62 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C655F4315F
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 21:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E003B31E0EF;
+	Fri,  9 Jan 2026 21:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767993602; cv=none; b=VVY+u1cTzqF0Z3jOfoT8pZiqMj1/6c6VP56fOoMF5vYkN1P9i8IRFcTVT2CTjh9S+98OHsEFaYGdtSbr1zZOcz+cSYr/xLuwxFeEBEvvQe0a+zbQomC+MxrWcekI+bTsX0pqJ0lMms28M1pXT1IxIDOFsWpCP4cwALocIbJCzmI=
+	t=1767994022; cv=none; b=OMNRZzYe5Ya3QX/wQ09WNEP79qmxcS1cmcaIY1WIh80fHsnOYDW0ItGZzfazcinxbHWCxN/J9ld/Sb/sfnzGgrY4ehjSo8plKWkP6lpIGHCjzRSG1i89LasUDKE9fKmkbiqOAw6Qp3Q/kvI7lYhckJYWXmniXYGvi9kcwKf57Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767993602; c=relaxed/simple;
-	bh=Keh8/wLkPjuIFsQpRgZCfp4ZJyx7wqjtW0Jo9H9Wq/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dcynYI/eLM5r6iA1Wshj+hlROGIdWVWZ0nhD0Q6sxtlWs5k1IZY36ghEhrAVlgvfL3tNAVLHdVFsuwmeLR0h+FWKakmGoy/nc/fBys76b+FrHMuPh4AK8cpMyOoRotuGBAQ6aKg8sxUiU5m1Rns+a8BESs54zB+nwE9Jr3n805E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gt0ELQxc; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767994022; c=relaxed/simple;
+	bh=Lvw/9q7y1akwNTHErzXo6FSryF1tiMaZ5bOpTrCuEkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fL3sXsftI92BKmA1Uqo93I8eNxLsyhVuSkPPxJbnO6xIkADAzdlkyk0yWyxdxp9/qb7EYrUzfR2EHf0WLKO3WgppUbRUcXIbDOnheLTy7L44kOFphR9nQL0NpK/i+V/A9L4LKPKiwdG99gRQAaDAKhvdf/NvaGMJgETEF+A/JHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=kmgusg6V; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gt0ELQxc"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5636f0cf5c3so441519e0c.1
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 13:20:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767993600; x=1768598400; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UHTvqu+YkutNQHzeS1Yr8MBlQu521tKvbncrgZNFtME=;
-        b=gt0ELQxczY99lSnLJzE6z0RPgXojdioG3214w6U+DbbPbm9G1FGv935LVbv9gkNZlN
-         zxVP2ry/6V/wKzw6PRvIzudASHSOTec9VswmNPDgJwaU+gZJBnZBqMKiPXSIKIalznJ6
-         1ZSpQZD7v6VHY1n/M/aIhh6JeLq591WWMWu9LQkBs/di1QQjYhpvcYQYmem1uPxxhKWz
-         q3r4auCprCCUfO4J/GepWHhLa+AiXY0xDN5QKlJR+m4YTVZUTJbtW6zFJwNzqxwfRyyr
-         5Ae1to2NCVJ4tiRdylFNEzIFJMo1vVYcmthYKgoBUy3zqHuz0MLvsHNCeQCOaGXSYFrR
-         ZNiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767993600; x=1768598400;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UHTvqu+YkutNQHzeS1Yr8MBlQu521tKvbncrgZNFtME=;
-        b=hcyCet/n/LFAXAuSb4jRjfanrR974vXNrmTXO4Gm8iH/90YzEl9URpgkhWZEJVXdqg
-         KM4U2LhlpvEItag/iO8/F22F3Kmak8tVGJyCKXPwjrsM9TW4fsG6yBVVPYM7/HDdVy0i
-         qkGp14t7N+lPRNCC83Rz0o2Pm2qehdkNS82pkwZwx7UUYwwxzOx2xKsc2p4IDDlVi06o
-         f0BdJuRVNba8JssRdSJ1b3h49saJohHv3lG/ekjJNwWIbF5+3fZ/wfSxSBMF+wf2srPz
-         ndFQOvwdDOsTMF5gdRXIYBV4gCXBOaQ4OFdQ2ZFh0RxjYkHFAI6X0mOkJaeV8yWlIHkq
-         InpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzVmXbF7Lv0BHZBSf29ScfRvSqhc8swW/wsJVqqTAl9nk4ow9/K3iAhh/+x7d7BVzjXuX6E0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtsLm2Jon6DRlQf8aKoNFYDT2j9qdq3B4vFLCzQgR74SRwo7NE
-	g0a+8CTVnlB6QtrMByK90BOPJmhRSSZwrh0FhijRaNFDfHdfJXHFMUgI
-X-Gm-Gg: AY/fxX7mjh4bEnO4ItN7f05Fw1+qYiyb7XjtFxpePsYh0Ysw/WGQsW2Ofjd64q/A/4R
-	bMZXROhXUTaP6MmVrV/N/UacP2avwEr7dWpOVjq7aGU02CfafnTuuT4xmAPwH4UPaQYXPpyWlha
-	5N4y19dfpI3l4y6lJzXWuFG6V/ZOBb5TsG2b2om7qK6jDotu8ZkEiEPq5y2r9yfKFJsVsjbENG9
-	O70g7Ur/OBtKCQm3wFjChf9TfGkJIJuAvRfbjyJvytUNy9SyMUTvxDgzsvERdOrQBLjTP8yKMaX
-	Kyhq2l62Acq2cSC39yjJCbuMYdoSY+t4+nvWlbOzYNCka3UDLmkaEiLdxoXBNvnI7yunkeP5uUz
-	+zxxo8RGf4lDM8T/WTyeJhdzbwEZizeib2LHz8StAeTViDxM5v4BGnu7AFRkk6KnXfoc44EXiTl
-	/X04dMcWh+3F6fHyP94P3nbRYtlgmLGpR6U5wwefkwqcHmPqrmbRixobsQRpgj6hDkqCFTOBSLs
-	os6YQ==
-X-Google-Smtp-Source: AGHT+IEvBK7U7IYllotOCwtJvH/1foan5XHxTgks2D780rhblSmxmqd7ZL0bY7xhJskhy2TuvTjkDQ==
-X-Received: by 2002:a05:6122:322b:b0:55b:305b:4e41 with SMTP id 71dfb90a1353d-5634800fd9dmr4637269e0c.18.1767993599713;
-        Fri, 09 Jan 2026 13:19:59 -0800 (PST)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5633a20a183sm10259956e0c.9.2026.01.09.13.19.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 13:19:58 -0800 (PST)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-01-09
-Date: Fri,  9 Jan 2026 16:19:49 -0500
-Message-ID: <20260109211949.236218-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="kmgusg6V"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=vWVw+q1iuvOsMKlx0+VagsyC0HkwY6nD1/LeI6xzM8E=; b=kmgusg6Vnn4Am+m6hShkYWKShO
+	AmfdekeACIdFrVMEMZvk7+DWrR8SoQNLx0QYpsb879YhdS3R3eeXr904DSVYu4Lm/R1WKJCIRkSdP
+	yPqEiWflicuCY0MutEYrl7a7rQBhI0rwgGTuAZEZICF2A229Ge+6G4FXN75A3dumUTeod9L+nTwlN
+	+EQLVbYVEq9BDre8lNqoMWIhcl4fUiVBfd56h3z1FJuOi2o6KT0GdCnN+O7DD5mpGByh3KlGw534S
+	+f9Mvc75NPSz+MW/Wk1syJiyZWgUbDR83kfORhwyMCdHKXDQ1dIiccalOokR9oXIFtIibESSQU99p
+	ISKdZePA==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1veK0M-00054l-24;
+	Fri, 09 Jan 2026 22:26:46 +0100
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v5 11/16] netkit: Add netkit notifier to check for unregistering devices
+Date: Fri,  9 Jan 2026 22:26:27 +0100
+Message-ID: <20260109212632.146920-12-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260109212632.146920-1-daniel@iogearbox.net>
+References: <20260109212632.146920-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,27 +64,174 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.0.9/27875/Fri Jan  9 08:26:02 2026)
 
-The following changes since commit 872ac785e7680dac9ec7f8c5ccd4f667f49d6997:
+Add a netdevice notifier in netkit to watch for NETDEV_UNREGISTER events.
+If the target device is indeed NETREG_UNREGISTERING and previously leased
+a queue to a netkit device, then collect the related netkit devices and
+batch-unregister_netdevice_many() them.
 
-  ipv4: ip_tunnel: spread netdev_lockdep_set_classes() (2026-01-08 18:02:35 -0800)
+If this would not be done, then the netkit device would hold a reference
+on the physical device preventing it from going away. However, in case of
+both io_uring zero-copy as well as AF_XDP this situation is handled
+gracefully and the allocated resources are torn down.
 
-are available in the Git repository at:
+In the case where mentioned infra is used through netkit, the applications
+have a reference on netkit, and netkit in turn holds a reference on the
+physical device. In order to have netkit release the reference on the
+physical device, we need such watcher to then unregister the netkit ones.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-01-09
+This is generally quite similar to the dependency handling in case of
+tunnels (e.g. vxlan bound to a underlying netdev) where the tunnel device
+gets removed along with the physical device.
 
-for you to fetch changes up to ab749bfe6a1fc233213f2d00facea5233139d509:
+  # ip a
+  [...]
+  4: enp10s0f0np0: <BROADCAST,MULTICAST> mtu 1500 qdisc mq state DOWN group default qlen 1000
+      link/ether e8:eb:d3:a3:43:f6 brd ff:ff:ff:ff:ff:ff
+      inet 10.0.0.2/24 scope global enp10s0f0np0
+         valid_lft forever preferred_lft forever
+  [...]
+  8: nk@NONE: <BROADCAST,MULTICAST,NOARP> mtu 1500 qdisc noop state DOWN group default qlen 1000
+      link/ether 00:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff
+  [...]
 
-  Bluetooth: hci_sync: enable PA Sync Lost event (2026-01-09 16:03:57 -0500)
+  # rmmod mlx5_ib
+  # rmmod mlx5_core
 
-----------------------------------------------------------------
-bluetooth pull request for net:
+  [  309.261822] mlx5_core 0000:0a:00.0 mlx5_0: Port: 1 Link DOWN
+  [  344.235236] mlx5_core 0000:0a:00.1: E-Switch: Unload vfs: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  344.246948] mlx5_core 0000:0a:00.1: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  344.463754] mlx5_core 0000:0a:00.1: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  344.770155] mlx5_core 0000:0a:00.1: E-Switch: cleanup
+  [  345.345709] mlx5_core 0000:0a:00.0: E-Switch: Unload vfs: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  345.357524] mlx5_core 0000:0a:00.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  350.995989] mlx5_core 0000:0a:00.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
+  [  351.574396] mlx5_core 0000:0a:00.0: E-Switch: cleanup
 
- - hci_sync: enable PA Sync Lost event
+  # ip a
+  [...]
+  [ both enp10s0f0np0 and nk gone ]
+  [...]
 
-----------------------------------------------------------------
-Yang Li (1):
-      Bluetooth: hci_sync: enable PA Sync Lost event
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Co-developed-by: David Wei <dw@davidwei.uk>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ drivers/net/netkit.c      | 58 ++++++++++++++++++++++++++++++++++++++-
+ include/linux/netdevice.h |  6 ++++
+ 2 files changed, 63 insertions(+), 1 deletion(-)
 
- net/bluetooth/hci_sync.c | 1 +
- 1 file changed, 1 insertion(+)
+diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+index 9d9d74a7e589..d4426c30e0fd 100644
+--- a/drivers/net/netkit.c
++++ b/drivers/net/netkit.c
+@@ -1037,6 +1037,49 @@ static int netkit_change_link(struct net_device *dev, struct nlattr *tb[],
+ 	return 0;
+ }
+ 
++static void netkit_check_lease_unregister(struct net_device *dev)
++{
++	LIST_HEAD(list_kill);
++	u32 q_idx;
++
++	if (READ_ONCE(dev->reg_state) != NETREG_UNREGISTERING ||
++	    !dev->dev.parent)
++		return;
++
++	for (q_idx = 0; q_idx < dev->real_num_rx_queues; q_idx++) {
++		struct net_device *tmp = dev;
++		u32 tmp_q_idx = q_idx;
++
++		netdev_lock_ops(dev);
++		if (netif_rx_queue_lease_get_owner(&tmp, &tmp_q_idx)) {
++			if (tmp->netdev_ops != &netkit_netdev_ops)
++				continue;
++			/* A single phys device can have multiple queues leased
++			 * to one netkit device. We can only queue that netkit
++			 * device once to the list_kill. Queues of that phys
++			 * device can be leased with different individual netkit
++			 * devices, hence we batch via list_kill.
++			 */
++			if (unregister_netdevice_queued(tmp))
++				continue;
++			netkit_del_link(tmp, &list_kill);
++		}
++		netdev_unlock_ops(dev);
++	}
++
++	unregister_netdevice_many(&list_kill);
++}
++
++static int netkit_notifier(struct notifier_block *this,
++			   unsigned long event, void *ptr)
++{
++	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++
++	if (event == NETDEV_UNREGISTER)
++		netkit_check_lease_unregister(dev);
++	return NOTIFY_DONE;
++}
++
+ static size_t netkit_get_size(const struct net_device *dev)
+ {
+ 	return nla_total_size(sizeof(u32)) + /* IFLA_NETKIT_POLICY */
+@@ -1113,18 +1156,31 @@ static struct rtnl_link_ops netkit_link_ops = {
+ 	.maxtype	= IFLA_NETKIT_MAX,
+ };
+ 
++static struct notifier_block netkit_netdev_notifier = {
++	.notifier_call	= netkit_notifier,
++};
++
+ static __init int netkit_mod_init(void)
+ {
++	int ret;
++
+ 	BUILD_BUG_ON((int)NETKIT_NEXT != (int)TCX_NEXT ||
+ 		     (int)NETKIT_PASS != (int)TCX_PASS ||
+ 		     (int)NETKIT_DROP != (int)TCX_DROP ||
+ 		     (int)NETKIT_REDIRECT != (int)TCX_REDIRECT);
+ 
+-	return rtnl_link_register(&netkit_link_ops);
++	ret = rtnl_link_register(&netkit_link_ops);
++	if (ret)
++		return ret;
++	ret = register_netdevice_notifier(&netkit_netdev_notifier);
++	if (ret)
++		rtnl_link_unregister(&netkit_link_ops);
++	return ret;
+ }
+ 
+ static __exit void netkit_mod_exit(void)
+ {
++	unregister_netdevice_notifier(&netkit_netdev_notifier);
+ 	rtnl_link_unregister(&netkit_link_ops);
+ }
+ 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 5870a9e514a5..3ff1370bc9ae 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3400,11 +3400,17 @@ static inline int dev_direct_xmit(struct sk_buff *skb, u16 queue_id)
+ int register_netdevice(struct net_device *dev);
+ void unregister_netdevice_queue(struct net_device *dev, struct list_head *head);
+ void unregister_netdevice_many(struct list_head *head);
++
+ static inline void unregister_netdevice(struct net_device *dev)
+ {
+ 	unregister_netdevice_queue(dev, NULL);
+ }
+ 
++static inline bool unregister_netdevice_queued(const struct net_device *dev)
++{
++	return !list_empty(&dev->unreg_list);
++}
++
+ int netdev_refcnt_read(const struct net_device *dev);
+ void free_netdev(struct net_device *dev);
+ 
+-- 
+2.43.0
+
