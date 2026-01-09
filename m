@@ -1,28 +1,28 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012038.outbound.protection.outlook.com [40.107.200.38])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011003.outbound.protection.outlook.com [52.101.62.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68707350A1F
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 08:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8AE1DA628
+	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 08:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767947930; cv=fail; b=LmQxQqqZIPWxafmU1ntfhBahG5ZIaOqQHeDLIpbGf40hwuFG0oJ7KwhpWQk/DYhAJV6IGKSgGelVn5AaJfztIwYUR6SkeFnqOixOEk4qDE9agsAVeEtwFpayhP/YYwcbP3KExNe7rW0DZk3uSR2JMhE9L1pa8LSvZejeJWzD3Xs=
+	t=1767947972; cv=fail; b=fuOQy+C/U4NwRUNspyppt24+MuTjmM2aKwCPVI9HoPKVz5+/U9asClWLoUKxpOnbRJPvVszrf6hf+79NM4Eao8Z0f+oxTYzgxyhJJi7Hldzsu2WIsX5U56MWhXsy7xlKz3h7njL0vvmKn0LNM16YgRJ3D4G6Dv14IXOkzOSSnpU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767947930; c=relaxed/simple;
-	bh=kx4pjv42QOc8t00j2XacEF+KVdC/MzJN+vx56zSfH8E=;
+	s=arc-20240116; t=1767947972; c=relaxed/simple;
+	bh=D0IarSUVC/yKze6xCqsd+zwSi4QntLAE5y72WH2/mMA=;
 	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=P+fAvanQ1CKK8+9M1ciFe/sehY69mS4/N9lHed7Nn3hJm5v/+NSPJuizEE8KN8K+ymrErsmIJXp99T81JDakuKwWeqdUkHP1Zpjp81Srxc0a99hJKiIH1lcCZEL1JuturTn2feHa1pWh9raxRazI9rWIAIUAQAVb/IMaUH6nDPw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lOTHLrxb; arc=fail smtp.client-ip=40.107.200.38
+	 MIME-Version:Content-Type; b=Qqw3fxPp3q7NT8Xlon9Ye5KJbaBkMuy4Kf1IEWV+5nIwwoX6XHNu9zey4zmmFEhX387ItHhZX9+WkPXG4vY1SMMMoa0zGzCN3VWwOwA8gsdfbWRkyWIxGlaxt4dbcBmvU7wnJoWba6BEMGLMOytQMMMnTpzeSOy2WAmdQoQgA04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QmiSFIvl; arc=fail smtp.client-ip=52.101.62.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lOTHLrxb"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QmiSFIvl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sv5bTt9oSPNjTiOo5X/STN2ZbUNPXIQdgr014W70Mb9zSiqfi84Lmc6WC+qjq/QD1UG+y+/QzOopug7OiU5xBasuALE+od0G9g1oW9IMMElDjwUqmQL7hGkVZ9nPjYMdDkTUAqboSvGhanr/FVt5OrcP97px3UYNYJwwxgpcIzknPVDKcGGgqXY7mjYDvf6JSY1Sc6XGTSA9Tt3OEhZfhIeIviGLbsyHxnu5iLRk5l98I3hsnVlNSHadVDbltN2qr6yqpJpMzFLuVgywTk9uFCmlnrIrCBZ9Lt/xw+Os/xQKIVXdjxea202a5KVIGHITyUHm0FLhClO7LcCnLNoBrg==
+ b=BiIBZhQP4Ekz2/uj93MEEjvcqHDAGXjeTghOlTVXDrtQIWXahIsqOBwQ70cUrdQjACC57zh0j0hkmrcWuGnCLRqz+9hOIT2nKX3A5XwaWb+EO3IOkJAC8REQ/+TyJ9lxxpX/yAotEkZXXsfF0weZpHzVnKt7NyoVNyLIrpQ3OCs7p8wgcK5PlYFfcU42eu8yyAUDAyq55xXPFXutsKrqr3nR9pCPLlmUA/+Kk8b6ZrnYT7UH03X9LVjYOkngBtHBcPDRYRrxotAijU8F5nNAs7+PlyfOW2Ph8czlNfiLh3JRgtdHTCtRa8uYeHXSS25gZMqc6Ex6p+j37/gk5s9Y1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qJJqlpDlY5ar2CdFy9lRNfL1SzXvHSWWY/LOwUeMLzg=;
- b=tIu9irQ51XOkFkx4yhCBGT0h48RJXzYio5TucYLhTwIuL4OQk/8Oxs8WSWfGN6wUiBfJcMScoit1ho44Ews3mSHxE83cHxdl1oSaAlbmAbA2sPZ5wApoVu+xScTDy2FgyvcD4SVXBgiL+8WZvgnb7OtAhmjGkwW6wZFmSR1MgWFZNSfLBT8UWLobFOoqLY2h38F0G0hpZOoQI6uHYD5/o7XChIZNglu3xoEGEAznZaXk8Nz4l+XTQX8WCEkO8DaTTpq09l0YQVYw3qThZlFJ9PnH/h50jJBtW++lDwSQTz0Pb56xwae58Qzm1tO7UttvyOJsvLSQuXfTMJEdExdwvg==
+ bh=D0IarSUVC/yKze6xCqsd+zwSi4QntLAE5y72WH2/mMA=;
+ b=XrR9SN+N0gsQcZOFyUuo5CBhdz+RmKv/vpaeAZdBQuJXiXatQbAtSI7oxnCEtcOr3wrTgymqbZn4cY+GF6HDTrDcRXdqr3CZHgkF/qTE3KbUCvWuIu3EG/R7P7FJIoBM3DUDBXBdfDCiNz0rPT1yjc7LxnHwVTUpb2oJOYTqbho3B2OFhgHLtitTj+Ww1TFn8VjzJC3sUXPEqGWJ28VhiePVEzjtq7gYDoDEatcVwoiMcbvxk5i7jGIs5J6h6sRBPm5BK5Cerzjte++FggR8oEKzmVfoySnyHgCRW4XkmhZTQFvWDIbeDmFeLaNSBRIxsofMAeu1JvokuM4tLc66tA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=fastly.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qJJqlpDlY5ar2CdFy9lRNfL1SzXvHSWWY/LOwUeMLzg=;
- b=lOTHLrxb3L4h5xpuobcqeT7uagX+Mx/37qD+ZbCgQf/WfMBODfD6Qr+PWLUCp08A2v+LW0eTzDQzvxREno+lbujvs/ImseRNo5cgi37M13b+RmxtcV3SfEPDN6Ui38c5AS+9BXu5frtsCEPvBYg2csKD9TOOo1AuFrYvu24jl3yPVZTOj64OnAsuELp7V5icJoWIjLFL8zdfEfX5+H8IUhPyxXPemQgFqjFxvvYJSWJ7Z0YrxYqgVeSzJLtRGBFvpNRMrcJTbGdvtXfIUAEuCxMF9NC7seVailtXagES/GwG6/kz2sPPPEObYuSZjJvzFm+/Kl7g0yY+P301miu4Mw==
-Received: from BY5PR04CA0028.namprd04.prod.outlook.com (2603:10b6:a03:1d0::38)
- by DS0PR12MB6560.namprd12.prod.outlook.com (2603:10b6:8:d0::22) with
+ bh=D0IarSUVC/yKze6xCqsd+zwSi4QntLAE5y72WH2/mMA=;
+ b=QmiSFIvlhwD2sOi4CH8RVsFXdb4dwu8Sm/Q+cLdSAJkxRBWJhJlPzlgf8UtiwCfstOVlKw5F5E/Iwwi31EbBMjvSpKA3qgJGQoNgKaqnAjs1Ar/iUYQslcv2jxSJkYPsbl2L/xSChiPjl8wwaYqW8Zgo+XQAZuKNJ8mh1YdSCgZePjAG7cF4tmtAvY5pcnlXcd50iaMagBh3BLNo8E9WseVVXWH3fZN567tr7M80lHtJFFnedEpWta84QSTreG9Opdpu63BETqXatNVQA379tDAlB08gU051Kmnv7bScRWNUV5xxJeGeXMSYEzSX2usRRshTnI9zBGQRve3NipsPng==
+Received: from SJ0PR03CA0165.namprd03.prod.outlook.com (2603:10b6:a03:338::20)
+ by CH0PR12MB8532.namprd12.prod.outlook.com (2603:10b6:610:191::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
- 2026 08:38:38 +0000
-Received: from MWH0EPF000A672E.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0:cafe::7f) by BY5PR04CA0028.outlook.office365.com
- (2603:10b6:a03:1d0::38) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.4 via Frontend Transport; Fri, 9
- Jan 2026 08:38:25 +0000
+ 2026 08:39:19 +0000
+Received: from MWH0EPF000A672F.namprd04.prod.outlook.com
+ (2603:10b6:a03:338:cafe::54) by SJ0PR03CA0165.outlook.office365.com
+ (2603:10b6:a03:338::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.3 via Frontend Transport; Fri, 9
+ Jan 2026 08:39:17 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,30 +49,29 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- MWH0EPF000A672E.mail.protection.outlook.com (10.167.249.20) with Microsoft
+ MWH0EPF000A672F.mail.protection.outlook.com (10.167.249.21) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Fri, 9 Jan 2026 08:38:37 +0000
+ 15.20.9520.1 via Frontend Transport; Fri, 9 Jan 2026 08:39:18 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 9 Jan
- 2026 00:38:22 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ 2026 00:38:57 -0800
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 9 Jan
- 2026 00:38:17 -0800
+ 2026 00:38:51 -0800
 References: <20260108225257.2684238-1-kuba@kernel.org>
- <20260108225257.2684238-2-kuba@kernel.org>
 User-agent: mu4e 1.8.14; emacs 30.2
 From: Petr Machata <petrm@nvidia.com>
 To: Jakub Kicinski <kuba@kernel.org>
 CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
 	<petrm@nvidia.com>, <leitao@debian.org>, <jdamato@fastly.com>
-Subject: Re: [PATCH net-next 2/2] selftests: net: py: ensure defer() is only
- used within a test case
-Date: Fri, 9 Jan 2026 09:23:54 +0100
-In-Reply-To: <20260108225257.2684238-2-kuba@kernel.org>
-Message-ID: <87fr8f5ggb.fsf@nvidia.com>
+Subject: Re: [PATCH net-next 1/2] selftests: net: py: capitalize defer queue
+ and improve import
+Date: Fri, 9 Jan 2026 09:38:31 +0100
+In-Reply-To: <20260108225257.2684238-1-kuba@kernel.org>
+Message-ID: <87bjj35gfd.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,133 +83,62 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A672E:EE_|DS0PR12MB6560:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b87a3bb-0b7e-46c7-256c-08de4f5a7c1b
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A672F:EE_|CH0PR12MB8532:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a45a9e9-3d6e-4e59-1cdd-08de4f5a9459
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RIaUDdCwx9ih3RnxChI/YiWxl/PCTarjLCWIACqU0/6WyVQoqLKtfrpoKuzS?=
- =?us-ascii?Q?RYGaV18434uu9K6RO80jgoVbPW23KtD/TxrzTOEHbAWKchupf6xM8zhbq2iV?=
- =?us-ascii?Q?05bgkROc9SEeP4Vnw3tVT3yEQrss3PXIhvbbdhIVGbYksO/x/cmymDwXNEnd?=
- =?us-ascii?Q?JvIIywMYlhhpqgtXS7GXV80MMgod/tbx2DFY/xlwNr6Y22gg53SF2txo7u5O?=
- =?us-ascii?Q?5nHobJTjoMnWg+Rc3+bFjYtEF7zzsgQ407Lz2iuduYIpdmTxIsVJ1OMFaheA?=
- =?us-ascii?Q?Oo+yelvh7Nit30JS1OXVM1BfdpPD7QcuxISFLzDz/BgpsanR/MDm22c2Utyb?=
- =?us-ascii?Q?CP0b7JTrgrB3FFPqTnzxhfkgSUG50xDLyiYVWcwL5I7HgSg+Q2CZdbEHj4C7?=
- =?us-ascii?Q?lSxYUMBDCD8wUNBo0qxpm3l62vy5H87JmmNyzTIT7C5LP9ZDX2ArIii6xPDn?=
- =?us-ascii?Q?dFYpFXj3/S1w6Rx+cS1NdX8CwTrwztUVYSoDV8WxzMVQpqLoIDt+tEpQd/Co?=
- =?us-ascii?Q?jGZCwZ2iSN6wBfZia1BIz0bc0UMFy5lZPGDCBV9o0XOlHhRNaYBu/DV8UMWA?=
- =?us-ascii?Q?dDuwRlJ8lcpAULJF89r/Bx2+S5WIt/lDvmt8A3TIaIG5faoQlxnbMICFIJh5?=
- =?us-ascii?Q?m80NQCcMEMJ3EsMYMionOnyVnhZyuQLjNDi7MkoIjCvbnlIlKp213EEVnGVq?=
- =?us-ascii?Q?lf2f6GCaLLC04iqNxG7Pklt2QHr27nANvjBgMuPTRkxK3ZEZefIG4Rc3mCFj?=
- =?us-ascii?Q?xRCT2qgnd5+jy3lS3cuvs/bbso8IDi8QCKqni5T3xj1W6kJuRrloMH5Bp5nF?=
- =?us-ascii?Q?Oj/h72jhsFxkAkagw2MlZR2h8189i9l5EpgAsYy/EGFa06DM6OHDJzhfgeIP?=
- =?us-ascii?Q?dWVIBlu8fdjj5NdxofhOrlT6PFi2f4u/wJjP8luBHtoV3bbXp5TUJiBBP7XN?=
- =?us-ascii?Q?L7m7hwVv99u9A6+Xx8Y7UHFSrOcfe5539nMciJI3MKuiOLQ6oz8N709DBOM6?=
- =?us-ascii?Q?ARCRhGRjuVWPMVd0UjTN1bkk+8skm9nLGO/hyMxEXaNsncAAA0HgP/4fToRP?=
- =?us-ascii?Q?xdi+ZaS3ICrBTUwE4kyBX6DZKiRmM6BJ8KVPmeeDyp0XiGh6ARTIKQ5icNjV?=
- =?us-ascii?Q?ojFaMfCpG/N0wYVjoMN48hFnE59Fw1vHdgny0qhJHn1VnJ3/KmZ5chMETXR3?=
- =?us-ascii?Q?uC8WVVp5w6Qm9S8xqAtmpB7ROqcctzgrXm8EMIX3qYDcyQbnH9QJbArjCVae?=
- =?us-ascii?Q?cBuSQVyytDsD8tCm4MyevW0hN3VD9R6XH61se7sYKwxdGWg8DrQ+WOPDhWAb?=
- =?us-ascii?Q?a9Arg8s0iPDwxJB/o+a23mK8LnvtLtUj/q4V+hqnK4+M9j3cIU20EpxgH8OJ?=
- =?us-ascii?Q?UO5mC94ZPZtqN4HhOCtXACA7eBRCMEex940jd/yjg5beNg28+QLjbJYBZyiT?=
- =?us-ascii?Q?Um34S7iaopno22+Qie3x/S38e01a7+AAL9N9uqfgJzWZmN57IzbgljpSZL8j?=
- =?us-ascii?Q?yeb7EsotCvy9b3kTB9IApL5gAAft7vneqo0KwMsoJ3UWvT19JtmOl/IBpim3?=
- =?us-ascii?Q?naMMfbEZ+ttAmxoFxMM=3D?=
+	=?us-ascii?Q?qlpyGWib1K39d66Q6KnoWbK5IkNQvG8WaULvoGf39gxGPYXBMUQFRgxx1Dx+?=
+ =?us-ascii?Q?CZl/HOsGKi+ZNNXWgtp6A/dGZ+N+m6zBb22RVLaQzJoMOhS1pF4WmFrOw3QP?=
+ =?us-ascii?Q?rQsijcp3uNWH6K+yBDT+BqJxy1lpeVTyW+fLO48lh2Wai40ozrJ1SYAuZo5+?=
+ =?us-ascii?Q?4mmpx2pSWEqMFFRyFE3Uyv8FVLl1JT4yjh9wkeZ134+ROd+oaCfu7ssMZvmW?=
+ =?us-ascii?Q?vfImL4aAqr/wMAn+kjGtmnd6Z/n4Dy+tROkFRnvO/NHh4D3Hw6ay71AQYrvY?=
+ =?us-ascii?Q?CdnUMdkk5rhuYMkD2dRwTau0ENTIwWAzDJ2QiOxsib55w8ZZIlYgxv8r8r5Z?=
+ =?us-ascii?Q?r4QABPt8BhBaJBC6r56HrFGOVk3C6lCajwOewQIBcvCH5SWvxLcFy57NHlrv?=
+ =?us-ascii?Q?2b5X85O9XFByPY4rU9L4ER+jpvJfgPrKyY9Loq3PHH5v54LiAmWTy9kxwiB7?=
+ =?us-ascii?Q?nRWeWmv9AY3Hj1kAMmX8jpsBPERDquS/AmsU3AufYR8Pf4TbR85LLD5JsOIb?=
+ =?us-ascii?Q?aWEpq4pIVxm5qwU6Yzlakf/6XPVwWXYAGD5t3fX8tJvHm9LtTafdcghe0aNG?=
+ =?us-ascii?Q?2SkHWanPpG5d2rhbiu83n2KVqjCHUSHtZhE88u+JzzBs/xHcb+hPWWh6sFzf?=
+ =?us-ascii?Q?ESyi/DVvzvvTy2koQFWqHO6l8H2czKp281spEuF6WPUs5Dm9WrluXmdItgSW?=
+ =?us-ascii?Q?K2yojb1sfX8VP9nVixOMqiBzbHcDrGCd2V3EvyZi8ZXtvK5wzP1F+WxoQMaO?=
+ =?us-ascii?Q?WOnaBzQKWIJ17B1Mp4RAEoBnets84MLAqXcMifLxOnURYKD+3+irGMq21Rrt?=
+ =?us-ascii?Q?dKdsilEk2cQQOt6IgeDsik4QeNk5TM+gm3aNKdvkZ2dV1aM525wfIJHSIUX7?=
+ =?us-ascii?Q?1rSWmltLkz6To9OD4B+mZVx8ylnArhEmB+NQNEiRM2+0flDjUDB8QgoWI/Sk?=
+ =?us-ascii?Q?W6lSdekl4TStZN3PKeDVT0IR9IEr5HTEb+6TV3npd2aauVdiuPJMk/gYrSmP?=
+ =?us-ascii?Q?XYdaQXjYh9VWKI36AOWsPO9QwU4eFVHh+LOCCPCfJ+m69a3rFUo7VCDHXfu3?=
+ =?us-ascii?Q?YNhev2JXKSXjAPlYy2Tu5OvWs9W4+KQg4fIZfpnTXPK2IPLfnKrdmhcsKByP?=
+ =?us-ascii?Q?DsX2L6DrZAkruvQEvRSHpP5tJq6xzKZ82/d3NP+BiN2m/aZl0pW2UxfFtKM1?=
+ =?us-ascii?Q?gw2o0XUPgm3yZ4IHToLtBR/NUWEFXHl3AMutyJmcsR4A7E2UzJOWYyKQQjwW?=
+ =?us-ascii?Q?AoBOwffYhjBLcw69HLWrpcLTCB1Q9cn1RKyaOx/HtLdhe+ph0zZITRzkJram?=
+ =?us-ascii?Q?VAl9c1l8m4CrelnjhGR37kvSEq+NDXci2rCToCBTKz2XixNFfS9k/cdnZ+k3?=
+ =?us-ascii?Q?dYQKQsDCIy2poxYkCz9uaYR3RmSYqgIpulcOY6yAG7f5ESDh7K0IGy4uP7CG?=
+ =?us-ascii?Q?BAoyiyvPK80nDtzhy8KW1KgTsS4FVoupnk/R2D96xC9BDWjUG1kj5/nMpjTS?=
+ =?us-ascii?Q?jRTzhbQIKrCSAgDEuaUgS3+z7zEgy8g7cgcWZIWjVfiDQjZlNqEXkvi6W+7p?=
+ =?us-ascii?Q?RTZrKHaFiJmyy36Bw3s=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 08:38:37.9954
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 08:39:18.6785
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b87a3bb-0b7e-46c7-256c-08de4f5a7c1b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a45a9e9-3d6e-4e59-1cdd-08de4f5a9459
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A672E.namprd04.prod.outlook.com
+	MWH0EPF000A672F.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6560
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8532
 
 
 Jakub Kicinski <kuba@kernel.org> writes:
 
-> I wasted a couple of hours recently after accidentally adding
-> a defer() from within a function which itself was called as
-> part of defer(). This leads to an infinite loop of defer().
-> Make sure this cannot happen and raise a helpful exception.
->
-> I understand that the pair of _ksft_defer_arm() calls may
-> not be the most Pythonic way to implement this, but it's
-> easy enough to understand.
+> Import utils and refer to the global defer queue that way instead
+> of importing the queue. This will make it possible to assign value
+> to the global variable. While at it capitalize the name, to comply
+> with the Python coding style.
 >
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-I think we achieve the same without the extra globals though? Just drain
-the queue and walk through a copy of it?
-
-    defer_queue = utils.GLOBAL_DEFER_QUEUE
-    utils.GLOBAL_DEFER_QUEUE = []
-    for i, entry in enumerate(defer_queue):
-        ...
-    if utils.GLOBAL_DEFER_QUEUE:
-        warning / exception
-
-> ---
->  tools/testing/selftests/net/lib/py/ksft.py  | 7 +++++++
->  tools/testing/selftests/net/lib/py/utils.py | 3 +++
->  2 files changed, 10 insertions(+)
->
-> diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
-> index 248cd1a723a3..0a96f88bb60a 100644
-> --- a/tools/testing/selftests/net/lib/py/ksft.py
-> +++ b/tools/testing/selftests/net/lib/py/ksft.py
-> @@ -153,6 +153,11 @@ KSFT_DISRUPTIVE = True
->      print(res, flush=True)
->  
->  
-> +def _ksft_defer_arm(state):
-> +    """ Allow or disallow the use of defer() """
-> +    utils.GLOBAL_DEFER_ARMED = state
-> +
-> +
->  def ksft_flush_defer():
->      global KSFT_RESULT
->  
-> @@ -315,6 +320,7 @@ KsftCaseFunction = namedtuple("KsftCaseFunction",
->          comment = ""
->          cnt_key = ""
->  
-> +        _ksft_defer_arm(True)
->          try:
->              func(*args)
->          except KsftSkipEx as e:
-> @@ -332,6 +338,7 @@ KsftCaseFunction = namedtuple("KsftCaseFunction",
->                  ksft_pr(f"Stopping tests due to {type(e).__name__}.")
->              KSFT_RESULT = False
->              cnt_key = 'fail'
-> +        _ksft_defer_arm(False)
->  
->          try:
->              ksft_flush_defer()
-> diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
-> index 2dde34560d65..824f039d384c 100644
-> --- a/tools/testing/selftests/net/lib/py/utils.py
-> +++ b/tools/testing/selftests/net/lib/py/utils.py
-> @@ -142,6 +142,7 @@ import time
->  
->  
->  GLOBAL_DEFER_QUEUE = []
-> +GLOBAL_DEFER_ARMED = False
->  
->  
->  class defer:
-> @@ -153,6 +154,8 @@ GLOBAL_DEFER_QUEUE = []
->          self.args = args
->          self.kwargs = kwargs
->  
-> +        if not GLOBAL_DEFER_ARMED:
-> +            raise Exception("defer queue not armed, did you use defer() outside of a test case?")
->          self._queue = GLOBAL_DEFER_QUEUE
->          self._queue.append(self)
-
+Reviewed-by: Petr Machata <petrm@nvidia.com>
