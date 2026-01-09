@@ -1,49 +1,57 @@
-Received: from mailgw03.horizon.ai (mailgw03.horizon.ai [42.62.85.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9942586FE
-	for <netdev@vger.kernel.org>; Fri,  9 Jan 2026 07:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522872BEFE7;
+	Fri,  9 Jan 2026 07:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767942161; cv=none; b=fLMupn03MjyLYAv/ZYg/VHwtVobvUSIx35+1AMZ1OhHFm+HSSjzqIPINz3LHk4ZhpR9xkYtPcwo6Q7r9yNVwMFLmDGePdRfX+YSFIoWbeWfMHWUNlYq+Aajs9DdY7ej4405AZQdPNaLeuWfIZpM7pgIUG5hHSS3uObuuJZit0nM=
+	t=1767942282; cv=none; b=gtYJXwCrHrkBiAAY3kH877EWMjYGhRvG6OP74b8MU0JDhqcRgb0VbF5id/wb7+gfPIm0lC0ocQGcx8mkLWsPPUJ6oAogEJ4+Kz7zbaNNh/MeCkgMzKWsu0/EJtEXKmth29lqVx0OYiTz45xjR1R4UT1sOhDOjaj8hbMiB/9AKBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767942161; c=relaxed/simple;
-	bh=Y64n2Qv//UyAC/rV14nyXSTMyZ+t04xMntNuy1XuNfk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eUOXAgVbMjOAc6anS2Ojy5Um/smCkCQkhhXg2VLb5tiXqgYT+vdxoyrVH1PMJwBrkTIE8JhwYPSnQafB1PM+lGWlFlGl63uING4qvqPOvLmBE6cfdUFS/HMF5VIQ9pW72y/jKyIehPWxLNqzLchLDK6+DckDUhtjX/q+at9S2Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (1024-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=tMGgv0oR; arc=none smtp.client-ip=42.62.85.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
+	s=arc-20240116; t=1767942282; c=relaxed/simple;
+	bh=7bGxxODUayhFpFH7ufFTYiYf88UtsbWD3WqeYGG1Ask=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SIA7oqbNwtG3KZtGmqKJ/M/8CCru4pnV4/6gbz6nUw3EtSg0QDN2AJ8dmx++hjiJfZGhrn5EzybFpghaN2dEsIXwIeLlJ5evOcqJZuomxLPbJkUZy+OkfQdoRO5VzropaxBwrsVXrBjMk2mqfTIAHXEYssrDpllPpi17PrgO8yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Wpaw6G7/; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="tMGgv0oR"
-DKIM-Signature: v=1; a=rsa-sha256; d=horizon.auto; s=horizonauto; c=relaxed/simple;
-	q=dns/txt; i=@horizon.auto; t=1767942145; x=2631855745;
-	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Y64n2Qv//UyAC/rV14nyXSTMyZ+t04xMntNuy1XuNfk=;
-	b=tMGgv0oRIFe+lRHjoOsdO5TBGTRhAuzGlRkQpWxSkr//Rgo9tDxucEbqo9Ct6EUs
-	3Lw5QiMyaWmHk0MsAxebLmCMVAAZEHZ3IQWOdgu4voHqnJqHLfD7uEApmxob9MVD
-	qIPmV31orHDJwoU3gf76mZaWsy9feX7kVqbQx3XJNBg=;
-X-AuditID: 0a0901b2-df5da70000001406-04-6960a8010822
-Received: from mailgw03.horizon.ai ( [10.9.15.111])
-	by mailgw03.horizon.ai (Anti-spam for msg) with SMTP id C0.2C.05126.108A0696; Fri,  9 Jan 2026 15:02:25 +0800 (HKT)
-Received: from wangtao-VirtualBox.hobot.cc (10.9.0.252) by
- exchange002.hobot.cc (10.9.15.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.27;
- Fri, 9 Jan 2026 15:02:24 +0800
-From: Tao Wang <tao03.wang@horizon.auto>
-To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<andrew+netdev@lunn.ch>, <mcoquelin.stm32@gmail.com>,
-	<alexandre.torgue@foss.st.com>, <rmk+kernel@armlinux.org.uk>,
-	<maxime.chevallier@bootlin.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Tao Wang
-	<tao03.wang@horizon.auto>
-Subject: [PATCH net Resend] net: stmmac: fix transmit queue timed out after resume
-Date: Fri, 9 Jan 2026 15:02:11 +0800
-Message-ID: <20260109070211.101076-1-tao03.wang@horizon.auto>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Wpaw6G7/"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60974H2N02723801, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1767942257;
+	bh=7g87re8t4MshgafsWCmjGFNSoUEW5ANnTwm1h447a7Q=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=Wpaw6G7/otS9Fgz9vpxITPfyICw/4PnDO9hfnMhtijsdQsYa/rJQfQojbPUPtwDSN
+	 nb6NygYCkkgoaMQmMI+J9U//zz9isWJvPB8yk8M7WGUFEmSziBcXgthKi3vsbbmpW+
+	 Xse25eHz+ALrhG1PoFXA6oviMBlGT5HQcyYltTdzts8+jTABfy9BozzGYW506LhBph
+	 VXHW1njCEfoNzR3w/4xHtDHdIHmUJ8rVSHqkMzg/F3EaCdyX9WIlg6OA4pZh9nMbNF
+	 vlWShU6hf2tow3jOL4GsfUTufj5fzXg2p6d/4zSDpwFeukk5DgaUbhnalCh79cG8C0
+	 n2l3n2yDAxYIg==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60974H2N02723801
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 9 Jan 2026 15:04:17 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Fri, 9 Jan 2026 15:04:17 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
+ Transport; Fri, 9 Jan 2026 15:04:17 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v4 1/2] r8169: add DASH support for RTL8127AP
+Date: Fri, 9 Jan 2026 15:04:14 +0800
+Message-ID: <20260109070415.1115-2-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260109070415.1115-1-javen_xu@realsil.com.cn>
+References: <20260109070415.1115-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,83 +60,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: exchange004.hobot.cc (10.9.15.112) To exchange002.hobot.cc
- (10.9.15.111)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrLLMWRmVeSWpSXmKPExsXCxcmfr8u4IiHTYP5UU4ufL6cxWix/sIPV
-	Ys75FhaLR/0n2CwubOtjtVjYtoTF4vKuOWwWL19vY7Y4tkDM4tvpN4wWl/onMjlwe1y+dpHZ
-	Y96aao8tK28yeTzt38rusWlVJ5vHzh2fmTze77vK5vF5k1wARxSXTUpqTmZZapG+XQJXxqmn
-	+9kLDglVbNnxhqWB8Rh/FyMnh4SAicSJpknsILaQwEpGifON7l2MXED2c0aJS7ceMYIk2AQ0
-	JO5OvcYCkhARWMwk0Xl6KhNIglkgVWLv7p/MILawQJDE1oeHWEFsFgEViaMzNgA1cHDwCthK
-	fOhhgVgmL7H/4Fmwcl4BQYmTM5+wQIyRl2jeOpsZwpaQOPjiBTPEQSoSzSfns0P0ykm83rCf
-	DcKOlfj2YgbLBEaBWUhGzUIyahaSUQsYmVcxCucmZuaklxsY62XkF2VW5efpJWZuYgTHCOOm
-	HYxLFnzUO8TIxMF4iFGCg1lJhLdZMD5TiDclsbIqtSg/vqg0J7X4EKM0B4uSOK+2YlymkEB6
-	YklqdmpqQWoRTJaJg1OqgSmB/aZb6obw65sXzW3n01K5v9xD6OxBzp17l+iynn01dWpBGo+q
-	hNUFlq/Ci/ce/HlP+liB5cmf3PcteYRWb5tR/m/DAnXD5muODW4xMxhFXOvarnflZUyLvtPX
-	+/rUaYdtG4/6pmU63LtXa3Rg1Zfd926pFHL1H/hpq/ciedmTA99z2AuWp/bam2Rzhh7lKmHv
-	Wn5aQ0bcmL28Z9slj92bjUwz7yQ+/lPDlXn2p9sTli1z3q7fEmY60fHW/Crefy9NkxQZUp2E
-	t/Fu4VvoZt1t+f3U6SWME5lrDYsXOub//hJ//4SWXPMCW+HIvKPin9dcYV/by7VeZdbLLJUN
-	E3P2WvTtXbd2WoiM4En5lcuUWIozEg21mIuKEwG9m0ZvAAMAAA==
 
-after resume dev_watchdog() message:
-"NETDEV WATCHDOG: CPU: x: transmit queue x timed out xx ms"
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-The trigging scenario is as follows:
+This adds DASH support for chip RTL8127AP. Its mac version is
+RTL_GIGA_MAC_VER_80 and revision id is 0x04. DASH is a standard for
+remote management of network device, allowing out-of-band control.
 
-When the TSO function sets tx_skbuff_dma[tx_q->cur_tx].last_segment = true
-
-, and the last_segment value is not cleared in stmmac_free_tx_buffer after
-
- resume, restarting TSO transmission may incorrectly use
-
-tx_q->tx_skbuff_dma[first_entry].last_segment = true for a new TSO packet.
-
-When the tx queue has timed out, and the emac TX descriptor is as follows:
-eth0: 221 [0x0000000876d10dd0]: 0x73660cbe 0x8 0x42 0xb04416a0
-eth0: 222 [0x0000000876d10de0]: 0x77731d40 0x8 0x16a0 0x90000000
-
-Descriptor 221 is the TSO header, and descriptor 222 is the TSO payload.
-
-In the tdes3 (0xb04416a0), bit 29 (first descriptor) and bit 28
-
-(last descriptor) of the TSO packet 221 DMA descriptor cannot both be
-
-set to 1 simultaneously. Since descriptor 222 is the actual last
-
-descriptor, failing to set it properly will cause the EMAC DMA to stop
-
-and hang.
-
-To solve the issue, set last_segment to false in stmmac_free_tx_buffer:
-tx_q->tx_skbuff_dma[i].last_segment = false;
-Set last_segment to false in stmmac_tso_xmit, and do not use the default
- value: tx_q->tx_skbuff_dma[first_entry].last_segment = false;
-This will prevent similar issues from occurring in the future.
-
-Signed-off-by: Tao Wang <tao03.wang@horizon.auto>
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b3730312aeed..d786ac3c78f7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1653,6 +1653,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
- 
- 	tx_q->tx_skbuff_dma[i].buf = 0;
- 	tx_q->tx_skbuff_dma[i].map_as_page = false;
-+	tx_q->tx_skbuff_dma[i].last_segment = false;
- }
- 
- /**
-@@ -4448,6 +4449,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (dma_mapping_error(priv->device, des))
- 		goto dma_map_err;
- 
-+	tx_q->tx_skbuff_dma[first_entry].last_segment = false;
- 	stmmac_set_desc_addr(priv, first, des);
- 	stmmac_tso_allocator(priv, des + proto_hdr_len, pay_len,
- 			     (nfrags == 0), queue);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 755083852eef..f9df6aadacce 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -1513,6 +1513,10 @@ static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
+ 		return RTL_DASH_EP;
+ 	case RTL_GIGA_MAC_VER_66:
+ 		return RTL_DASH_25_BP;
++	case RTL_GIGA_MAC_VER_80:
++		return (tp->pci_dev->revision == 0x04)
++			? RTL_DASH_25_BP
++			: RTL_DASH_NONE;
+ 	default:
+ 		return RTL_DASH_NONE;
+ 	}
 -- 
-2.34.1
+2.43.0
 
