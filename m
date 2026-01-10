@@ -1,51 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5441FF7C7;
-	Sat, 10 Jan 2026 00:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF972A1CF
+	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 01:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768006301; cv=none; b=Zlm5CfX/GBVdmkb9yHCMsv91UxVMvx85d9Qr8DeY1DLPplQOkug0nh6nM6KhJ/4wu1A6er+x+1PAYLtLhShsLZdljfKid2jNTlXxsmwCXsEyt5zVVaTXRINYx2prRpkzrtHVhvp0pM66/Q9x/psIq2WueSvx+Qr8G07JEitd914=
+	t=1768009411; cv=none; b=dElOUCC+DYmpVHSOs+Bdy6VUZYhNAdo3CMA+KG4WmMs174N7Yhh2qu0XdfsvaBRiBodM/KZbhkfZdermg4Ng0oAFXmnc45iZDN+zAcerzTo6cydo4NRAHtqFYw7DrXIi+zmgEpKhwLmDCBeNUy4EXfmJbmIw90JYOqoY6J4GMoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768006301; c=relaxed/simple;
-	bh=cqShxWfYLMgJ2YU5goe7pZTLh+Xnb8RKO33BNC8ldf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u59oFR7ZTXIpQtWjqWifZcdEq39EhhgUAOyN56iRkBnorw2G+790F6DezhtKWHNFOgawASc2Ve5e9ToEUVE1P3b0k9Tv5xr/Xo9WgeT3RFrmmIsCoTSY6hKhbwzM6vCDVgEnyhCIu5bctwz/ENFacR96G4GfNiXPIIdzQhPopwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkF89My1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768009411; c=relaxed/simple;
+	bh=zbTuvh60RYa+x7sVZLNV0CzP5Fl2z8l5uEUjbH2vLbg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=B86re63OJC0dq9stRPG4pI5UG4UkrY9bJ92FcJTI8YBhDvRLxoH550cxr0jZ1WytTE+dJJwNBLsxxt02UglBXQIny0aiAYEWZEpXfA/VVQM78AEQgwEhpr/lqjJlSSBaHl3MubecasjMrazTwWYRjlgmV1YwKaYGsQERR1Lvr48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gC6V55cW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkF89My1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63858C19421;
-	Sat, 10 Jan 2026 00:51:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gC6V55cW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9726C4CEF1;
+	Sat, 10 Jan 2026 01:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768006300;
-	bh=cqShxWfYLMgJ2YU5goe7pZTLh+Xnb8RKO33BNC8ldf0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkF89My15bJYIG9Ekk8six5PBbcsht1l2me05ziXrCVf0Qr8D8wN21/DnRWea5RFW
-	 AaYWU+U3zw9btZ1bHQCcSYzIyHj2ApgkgxR46Z0rJ7MQyGm4iRCSXgfG9GfWa+pYfI
-	 S0/vA/0pi6X0RnQvSH9601PsSdeDp3VDB1fRxZC3RYYb+qUvoOHy1fDS3QfvMqHgxo
-	 2Xglint7MOe82XYpVs8FPEKBKfN9aemvay0yF57BTa2jZAfQSS2gBlvwAaTYd38tl5
-	 cIUG4z2NniZfoxDqfkRVnpeAPwe0Itkm1643e6MHExYzheS+fqvFTjscY9xyKu97pU
-	 EOXqiuO8MTYhA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	sdf@fomichev.me,
-	willemb@google.com,
-	petrm@nvidia.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	willemdebruijn.kernel@gmail.com
-Subject: [PATCH net-next v2 4/6] selftests: drv-net: gro: improve feature config
-Date: Fri,  9 Jan 2026 16:51:19 -0800
-Message-ID: <20260110005121.3561437-5-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260110005121.3561437-1-kuba@kernel.org>
-References: <20260110005121.3561437-1-kuba@kernel.org>
+	s=k20201202; t=1768009410;
+	bh=zbTuvh60RYa+x7sVZLNV0CzP5Fl2z8l5uEUjbH2vLbg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=gC6V55cWmZQuEuoTikDyUUSQ0HZJ//nDTpkd6tiboyOj/ipPVacPedwS9c/Fgo9cE
+	 znFnqDQJgl/aoNdTe2NnUUmIujRaNJbEVV39rAkXUpxzEujYyQ38lrf1hq4bcnJ8UT
+	 165o2TMcyrlMBT5GdXL2C0TMb06Xt7AKWbdqZ6G/jyUEZg+/qjDOSW/uMNTcr5UieQ
+	 xTXvhMp6ZYny72GX5DTSfuiWfD3rjSRkljiI0oHurWLMPGsresPtSVb2Pyi3tnu/J9
+	 qeH4JiaHxApBLZ7lJrI2b1ngfRwiqY8FoqZqkwnhhZmIBL/uXW1rtcGEcRBSRn9pXI
+	 z1OGBTpeYV2yA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 78A943AA9F46;
+	Sat, 10 Jan 2026 01:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,110 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net] net: bridge: annotate data-races around
+ fdb->{updated,used}
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176800920629.446502.13134188823510819845.git-patchwork-notify@kernel.org>
+Date: Sat, 10 Jan 2026 01:40:06 +0000
+References: <20260108093806.834459-1-edumazet@google.com>
+In-Reply-To: <20260108093806.834459-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+bfab43087ad57222ce96@syzkaller.appspotmail.com, razor@blackwall.org,
+ idosch@nvidia.com
 
-We'll need to do a lot more feature handling to test HW-GRO and LRO.
-Clean up the feature handling for SW GRO a bit to let the next commit
-focus on the new test cases, only.
+Hello:
 
-Make sure HW GRO-like features are not enabled for the SW tests.
-Be more careful about changing features as "nothing changed"
-situations may result in non-zero error code from ethtool.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Don't disable TSO on the local interface (receiver) when running over
-netdevsim, we just want GSO to break up the segments on the sender.
+On Thu,  8 Jan 2026 09:38:06 +0000 you wrote:
+> fdb->updated and fdb->used are read and written locklessly.
+> 
+> Add READ_ONCE()/WRITE_ONCE() annotations.
+> 
+> Fixes: 31cbc39b6344 ("net: bridge: add option to allow activity notifications for any fdb entries")
+> Reported-by: syzbot+bfab43087ad57222ce96@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/695e3d74.050a0220.1c677c.035f.GAE@google.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: Ido Schimmel <idosch@nvidia.com>
+> 
+> [...]
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-v2:
- - reoder the imports
- - fix restoring all features - don't assume all the features
-   have to be flipped, some may have already been in desired state
-v1: https://lore.kernel.org/20251128005242.2604732-1-kuba@kernel.org
+Here is the summary with links:
+  - [v3,net] net: bridge: annotate data-races around fdb->{updated,used}
+    https://git.kernel.org/netdev/net/c/b25a0b4a2193
 
-CC: willemdebruijn.kernel@gmail.com
-CC: shuah@kernel.org
-CC: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/drivers/net/gro.py | 38 ++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/gro.py b/tools/testing/selftests/drivers/net/gro.py
-index 4e0fb19d1527..b72a1d756d72 100755
---- a/tools/testing/selftests/drivers/net/gro.py
-+++ b/tools/testing/selftests/drivers/net/gro.py
-@@ -20,7 +20,7 @@ coalescing behavior.
- import os
- from lib.py import ksft_run, ksft_exit, ksft_pr
- from lib.py import NetDrvEpEnv, KsftXfailEx
--from lib.py import cmd, defer, bkg, ip
-+from lib.py import bkg, cmd, defer, ethtool, ip
- from lib.py import ksft_variants
- 
- 
-@@ -70,6 +70,27 @@ from lib.py import ksft_variants
-         defer(ip, f"link set dev {dev['ifname']} mtu {dev['mtu']}", host=host)
- 
- 
-+def _set_ethtool_feat(dev, current, feats, host=None):
-+    s2n = {True: "on", False: "off"}
-+
-+    new = ["-K", dev]
-+    old = ["-K", dev]
-+    no_change = True
-+    for name, state in feats.items():
-+        new += [name, s2n[state]]
-+        old += [name, s2n[current[name]["active"]]]
-+
-+        if current[name]["active"] != state:
-+            no_change = False
-+            if current[name]["fixed"]:
-+                raise KsftXfailEx(f"Device does not support {name}")
-+    if no_change:
-+        return
-+
-+    ethtool(" ".join(new), host=host)
-+    defer(ethtool, " ".join(old), host=host)
-+
-+
- def _setup(cfg, test_name):
-     """ Setup hardware loopback mode for GRO testing. """
- 
-@@ -77,6 +98,11 @@ from lib.py import ksft_variants
-         cfg.bin_local = cfg.test_dir / "gro"
-         cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
- 
-+    if not hasattr(cfg, "feat"):
-+        cfg.feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
-+        cfg.remote_feat = ethtool(f"-k {cfg.remote_ifname}",
-+                                  host=cfg.remote, json=True)[0]
-+
-     # "large" test needs at least 4k MTU
-     if test_name == "large":
-         _set_mtu_restore(cfg.dev, 4096, None)
-@@ -88,15 +114,21 @@ from lib.py import ksft_variants
-     _write_defer_restore(cfg, flush_path, "200000", defer_undo=True)
-     _write_defer_restore(cfg, irq_path, "10", defer_undo=True)
- 
-+    _set_ethtool_feat(cfg.ifname, cfg.feat,
-+                      {"generic-receive-offload": True,
-+                       "rx-gro-hw": False,
-+                       "large-receive-offload": False})
-+
-     try:
-         # Disable TSO for local tests
-         cfg.require_nsim()  # will raise KsftXfailEx if not running on nsim
- 
--        cmd(f"ethtool -K {cfg.ifname} gro on tso off")
--        cmd(f"ethtool -K {cfg.remote_ifname} gro on tso off", host=cfg.remote)
-+        _set_ethtool_feat(cfg.remote_ifname, cfg.remote_feat, {"tso": False},
-+                          host=cfg.remote)
-     except KsftXfailEx:
-         pass
- 
-+
- def _gro_variants():
-     """Generator that yields all combinations of protocol and test types."""
- 
+You are awesome, thank you!
 -- 
-2.52.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
