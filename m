@@ -1,208 +1,108 @@
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1D32EFD9B
-	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 04:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924CE1E8329
+	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 06:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768018547; cv=none; b=s999O3lReljAIZYKcUaokymJPtGSCNSjYhllTnp22R3KPv7l93vHAu4TyPsZwLOgfJSOuyY0T4WCjUg/yF4F2Z8604pGBqdPEcETCFTvVqjxM7ViIAFx5qkY7HuKPKcgSLlQ8xsxQ9TlRLoQqoI4YXJerjPIZH30rWmRgx9WD8Q=
+	t=1768025131; cv=none; b=aIGa14hl+rkh1+xrGmXn8Kjx0R6qDAIY6CbVmJozNMJnN+cYB2LkD87iamptF4YuJkkkgI732Rq5MJ1i3N9CyEu5vHlfyGZJweR9Aywezqb9DRUytfMSYg1etsk2Tcx/XjjnwbdzDrIyFgRmfgWU0n7Oa/oGpBJNbp8TbeYViEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768018547; c=relaxed/simple;
-	bh=zRMaG2UZoaDAk8JWg4Py4arxiWvpQFKHkL9OU1MsMMQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dQi61trSszWrh31LrWsJU15UKarXdHZ0xkMPbWjIz3PsLxakLiXzQ5xDr+jss/5NaXHCfuUGdAPDThNgZ07e4YTjb0yYxH2HTiyoxiyvMboJnvydaBS6nBuiOf4wmFZr/hJG1RgeEaApYpSFX86Io1eg417daKFUgiDULkhCCJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f1RDHwCS; arc=none smtp.client-ip=209.85.217.51
+	s=arc-20240116; t=1768025131; c=relaxed/simple;
+	bh=kevaTriPoK7uo2zRxhJdxm5S4k5lh+Y4F4KTuM+3wzU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YBbAesYykF+4yQoko/g7IOchHBc+soYlMLDIt2onwhHEFkqTjxeG+LYzMBWeTczxfOJQt+EYya3HuBS3ZZ/jGg2wj54fseTiSYEEoio51SdbsIXksu2oJE2UPREZDJKro45ztA+Qpcu9HcY750olIsSRJMK4u7IHpSq3ZJxtDgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XclxCg3Y; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f1RDHwCS"
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5ec838c33e6so2025732137.0
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 20:15:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XclxCg3Y"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-430f5ecaa08so2356441f8f.3
+        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 22:05:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768018542; x=1768623342; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lzuCZ10ab2Iorj0lcSOmaTCThwhF5YTUtr2Jp++0Xa0=;
-        b=f1RDHwCSGNaXGLhAQTXXmeqFdtwMaqUjJ0UI4PAl+oqmb3PyKZq0DdI2+jnAL2nTww
-         nXGMmd5K20P0t8KosH/+Eq/KCuwYLA4Xi9saUaMY9Bmexv5pOFJnshUKVC2ZaxeuNH+d
-         iG++tcTvmLclr9xOFlVWuIdsr9PGmB7K9MsmE9RHHUcLdSQNgLIIMkVJL9WvI8T7ZO05
-         /RUZGRAcVJCp5rZcEMk/h1ugSI3GEGxGQ0a7k6jYy5K3uiVdqNgE0XdazRnSGBDTcPnM
-         4I48oz/DEOvYL5nFCBsj5euZ15X1cKWFMGmIEm/S1KuZRotvV+awXXGB5eqY/U/YtjNp
-         dSSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768018542; x=1768623342;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768025128; x=1768629928; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lzuCZ10ab2Iorj0lcSOmaTCThwhF5YTUtr2Jp++0Xa0=;
-        b=iJ8EtGlVB4Bjlat2sF5HeKQoa5B389keJuydV+jR65u2xH2ZgJTUzytSauJ03c3dYo
-         RGkAUyfFtO28FAPzn57NjTmbUedXfYn1uHLGncgE96Mogsix68Mc2kRPiCNfMozRNJUv
-         6V8lNv6sWVF+JLSgt/tamPusUl8q4iB+zRZLHaVlleipp+eaKNhOMhlNnvdgfA76oMBt
-         fz2LN6WGKfdBs4y7dGUWVsw1ORk/ENQ4HGpPt6WR3RO6KE9rmq3JmaAeYvMPUvZ2ecOz
-         Lg7n7wTN2354BcFaBPAWMfgkx9mVoo/LbtTidIGRgJcYjW7owhaATkG1XsYYf0Si98ED
-         6wOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWA75xgvfftrOScIcL9lQVjff/A7zQoIiiDCXrZdyvIEwVrkiIbvlPKLvu/+slqWkqS8lhHvds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAcDQ2CUGEBTAtTCEmZfxODQEcYOlwiI3Rnl9K933UeeGYe7YF
-	e9rVofR6UnYviyvmcgEWk02niQWGY8hCOpxYCLAMo4vFGEqYX+7slxT9j8i2UA==
-X-Gm-Gg: AY/fxX6zRHfoB3mAjZPRIWK8HkKiSvbMaSP8vMkxZRUfr7qxetixkdnnTfz5t7uO6bu
-	WqXLKI/8cULQ90QcKlfRXo3AkibMQe0s2ytZqa4Gi/wWqMPUP2W+p2oqzegy5JyRiUTGlOZumdc
-	ZMX9G63EgTveAbLWz/SqUui/wJAwukt+/wHuSLsg6f7SSBproSISMxGOo8A+ennxlM5NXlUN9NH
-	02kAwqMp/TPiyntJ5rAiRZ42SDh5++UO1PMfXWkhyv+OLxBDKU80tK6GMRXPU5SeEtyKj5otnQd
-	tz22WbwTJP9hx7arzL1AOr6LyoRbfrtGHWBx6V+SCaHJ/8aJwQY/n6krnsT1R0vRU/KBwdj25pF
-	GiAflSrJBcAAUqOL7HVpRICetQu4auWycSvA7do+VVz9yGgb9PHFc/8q1EkEDNpwOo1rf/MMSSU
-	S6q56ZxxWDSA==
-X-Google-Smtp-Source: AGHT+IEz37L2wQQJA4qX8j5KYwrwN9NH1ecV7Azu8uWOr9xF8kdhENvXLiTeJfu5CUWtgau8Fq/JnA==
-X-Received: by 2002:a53:d005:0:b0:645:5297:3e5d with SMTP id 956f58d0204a3-6470d31648fmr10030592d50.46.1768011539825;
-        Fri, 09 Jan 2026 18:18:59 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:42::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-790ae603282sm43469157b3.13.2026.01.09.18.18.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 18:18:59 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: [PATCH net-next v9 0/5] net: devmem: improve cpu cost of RX token
- management
-Date: Fri, 09 Jan 2026 18:18:14 -0800
-Message-Id: <20260109-scratch-bobbyeshleman-devmem-tcp-token-upstream-v9-0-8042930d00d7@meta.com>
+        bh=bglbtsHOxySnlTuSr3LlIYflvRTUmpsnMOYiW/z1XSg=;
+        b=XclxCg3YHOW/ach8zwvZEGFCpjKih4E62+62YA6FZ6KCeq7gIiepxrIAkTmcEjiExk
+         bj3o3jLx7DBOQKlMaoFd16pQWf1xoPc+BisMXjWTvnFbcCjHZXb/47w51TOACj29Duk3
+         T7E3Vb0cXIIzb6Y/AGAAmYSYbPAF3eAqPf5LNwxbKIgpg59lfF6DY+GdiOq3Lqf9h/PX
+         At45eKSGjR0lsWQztI9tNK4BKobjob8s3B+Ypj8El/PnfjxNLLbHEmVmHzWMBHZklZGM
+         0Yd1fEufcIUAG36+M7vPBfQuIlFfnsSs57ZkGxyjlDmm387JOfXsJlLdsZRXoS8VjBFi
+         O6rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768025128; x=1768629928;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bglbtsHOxySnlTuSr3LlIYflvRTUmpsnMOYiW/z1XSg=;
+        b=OP11s3rb5+5juhHJBFmax+Vp9nfrKXi4F5NjYoR3h3y7iekmpGS1LJkhUq+1xuXi6u
+         UNaRWs3/6uOP0Hu4F6Th1QbET2tYDA/jNvVa9WvIGmknSdbqBi7gs6Sut4b4IDa3eHXf
+         O9+6YzxK3qLgVUwpb+HbkGfcaNDxZK16myQpgxcTnVnDkktOTsUNtvEVe28AQrjSjXbl
+         MY1sR8XTntnniqgv+/d0t9X//QtZMEWm/ww+cwbmS0MVC72++DO+EfRknALoIQfGrVcM
+         hzd5yAIFG2Qrk3vX4XYLNrPYmPLCnetU7wa0NzgbNDK8LagOC2m1gn8f2faEwxW2h+3R
+         KOYA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFPMAICmhx3e4vVQOSsa4nQ/EmfBI/PP076QeoJnqR4WoF19WODhGBZD+lquoOsLCsL0NixEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5hOIgtNFiBBC03n88p/P3pr+Sfrhi4sqwVmUXwlBKOqdiMtUD
+	x/6xaiPYI4IB7nS60AZHfolrP8LSPKqJhD+RGc4Yp1pOzU9ghTjBt0qrH56sQ2QvxaIZGgbI+bw
+	V0ueHeoWCUL30/TlXhUAW3dEohBm5hbw=
+X-Gm-Gg: AY/fxX4jR4nqLChRdlHAD66D5bFdEDrDkuOG6GbDm5l7nFgeM5v1AT1Oro45sy13gwI
+	XC981RzOpfbdcs0wS590gHFZY2719Eyr3N0TkQjpfgW9mWjYknscC4uk48cI4eg48WDMgFrSbM+
+	vngNSyfXmXkSwzrUB6brQ2B5854axqFfAuSpFbeRFj2NYUcXPW7Swf4jCarBQQ4c0SPj4iFGNT4
+	3MF8gRNoIsfzgnm/ZGg9GoB0eT45U6adrFk7WfAIZnAHF7FKgF59IRQjXvykT54Yt8EW9Kzig3L
+	Al10JwI95VOlSExu9fiVp+cUixU4
+X-Google-Smtp-Source: AGHT+IFIGMY70drcXjnQqo814e6yw5emZ0xAl+kZ2Ch2S72OzxevXU0Aef6RQ5bd7MfcTI3HfveNSiRcr2htHPQ/eDc=
+X-Received: by 2002:a05:6000:420c:b0:431:67d:5390 with SMTP id
+ ffacd0b85a97d-432c37757demr16763024f8f.54.1768025127786; Fri, 09 Jan 2026
+ 22:05:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOi2YWkC/5XSS2rEMAyA4asEr0dFfttZ9R6lCz+UJrRJhtgNM
- wxz90Kgbcgua8H3C6EHK7QMVFjbPNhC61CGeWJt4y8NS32YPgiGzNqGCRQanfBQ0hJq6iHOMd6
- p9F80hgkyrSONUNMV6vxJE3xfS10ojCC8iMStyholuzTsulA33LbiG5uowkS3yt4vDeuHUuflv
- q2y8m2+VT2K09WVA0L2ynDjo9YaX0eq4SXN45ZaxY7n/DwvACE5zFbqmJWWB17ueGHO8xIQ0Km
- oTMzBue7A6z+eo5DneQ0IyqbodKeF9nTgzT/PUZ3nDSBQ8C51KiuMx+PYHc/PP9RqAYGHmJwyV
- mqVDrz75Q1ytOd5BwheJG+ckVx5s+Ofz+cPGcVR5jEDAAA=
-X-Change-ID: 20250829-scratch-bobbyeshleman-devmem-tcp-token-upstream-292be174d503
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, Neal Cardwell <ncardwell@google.com>, 
- David Ahern <dsahern@kernel.org>, Mina Almasry <almasrymina@google.com>, 
- Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, 
- Donald Hunter <donald.hunter@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- asml.silence@gmail.com, matttbe@kernel.org, skhawaja@google.com, 
- Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+References: <20260108022450.88086-1-dongml2@chinatelecom.cn>
+ <20260108022450.88086-5-dongml2@chinatelecom.cn> <CAADnVQLj4c-nc6gLbBiaT24KXWEpG3AzFT=P1tszu_akXhyD=Q@mail.gmail.com>
+ <5075208.31r3eYUQgx@7950hx>
+In-Reply-To: <5075208.31r3eYUQgx@7950hx>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 9 Jan 2026 22:05:16 -0800
+X-Gm-Features: AZwV_QiyO19oQ1GqYdcTiEpyTcAEmMfkfKsihDLDsu69uCPWQedF0QdILw5JDow
+Message-ID: <CAADnVQJTc3qegim-hyzaurnCX-8pRQWoj+r9+0jgBQ-WmpLHuw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v8 04/11] bpf: support fsession for bpf_session_is_return
+To: Menglong Dong <menglong.dong@linux.dev>
+Cc: Menglong Dong <menglong8.dong@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, jiang.biao@linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, bpf <bpf@vger.kernel.org>, 
+	Network Development <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series improves the CPU cost of RX token management by adding an
-attribute to NETDEV_CMD_BIND_RX that configures sockets using the
-binding to avoid the xarray allocator and instead use a per-binding niov
-array and a uref field in niov.
+On Fri, Jan 9, 2026 at 7:38=E2=80=AFPM Menglong Dong <menglong.dong@linux.d=
+ev> wrote:
+>
+>
+> >
+> > Remove the first hunk and make the 2nd a comment instead of a real func=
+tion?
+>
+> Agree. So it will be:
+>
+> +static bool bpf_fsession_is_return(void *ctx)
+> +{
+> +       /* This helper call is implemented and inlined by the verifier, a=
+nd the logic is:
+> +         *   return !!(((u64 *)ctx)[-1] & (1 << BPF_TRAMP_M_IS_RETURN));
+> +         */
+> +        return false;
+> +}
 
-Improvement is ~13% cpu util per RX user thread.
-
-Using kperf, the following results were observed:
-
-Before:
-	Average RX worker idle %: 13.13, flows 4, test runs 11
-After:
-	Average RX worker idle %: 26.32, flows 4, test runs 11
-
-Two other approaches were tested, but with no improvement. Namely, 1)
-using a hashmap for tokens and 2) keeping an xarray of atomic counters
-but using RCU so that the hotpath could be mostly lockless. Neither of
-these approaches proved better than the simple array in terms of CPU.
-
-The attribute NETDEV_A_DMABUF_AUTORELEASE is added to toggle the
-optimization. It is an optional attribute and defaults to 0 (i.e.,
-optimization on).
-
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-
-Changes in v9:
-- fixed build with NET_DEVMEM=n
-- fixed bug in rx bindings count logic
-- Link to v8: https://lore.kernel.org/r/20260107-scratch-bobbyeshleman-devmem-tcp-token-upstream-v8-0-92c968631496@meta.com
-
-Changes in v8:
-- change static branch logic (only set when enabled, otherwise just
-  always revert back to disabled)
-- fix missing tests
-- Link to v7: https://lore.kernel.org/r/20251119-scratch-bobbyeshleman-devmem-tcp-token-upstream-v7-0-1abc8467354c@meta.com
-
-Changes in v7:
-- use netlink instead of sockopt (Stan)
-- restrict system to only one mode, dmabuf bindings can not co-exist
-  with different modes (Stan)
-- use static branching to enforce single system-wide mode (Stan)
-- Link to v6: https://lore.kernel.org/r/20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-0-ea98cf4d40b3@meta.com
-
-Changes in v6:
-- renamed 'net: devmem: use niov array for token management' to refer to
-  optionality of new config
-- added documentation and tests
-- make autorelease flag per-socket sockopt instead of binding
-  field / sysctl
-- many per-patch changes (see Changes sections per-patch)
-- Link to v5: https://lore.kernel.org/r/20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-0-47cb85f5259e@meta.com
-
-Changes in v5:
-- add sysctl to opt-out of performance benefit, back to old token release
-- Link to v4: https://lore.kernel.org/all/20250926-scratch-bobbyeshleman-devmem-tcp-token-upstream-v4-0-39156563c3ea@meta.com
-
-Changes in v4:
-- rebase to net-next
-- Link to v3: https://lore.kernel.org/r/20250926-scratch-bobbyeshleman-devmem-tcp-token-upstream-v3-0-084b46bda88f@meta.com
-
-Changes in v3:
-- make urefs per-binding instead of per-socket, reducing memory
-  footprint
-- fallback to cleaning up references in dmabuf unbind if socket
-  leaked tokens
-- drop ethtool patch
-- Link to v2: https://lore.kernel.org/r/20250911-scratch-bobbyeshleman-devmem-tcp-token-upstream-v2-0-c80d735bd453@meta.com
-
-Changes in v2:
-- net: ethtool: prevent user from breaking devmem single-binding rule
-  (Mina)
-- pre-assign niovs in binding->vec for RX case (Mina)
-- remove WARNs on invalid user input (Mina)
-- remove extraneous binding ref get (Mina)
-- remove WARN for changed binding (Mina)
-- always use GFP_ZERO for binding->vec (Mina)
-- fix length of alloc for urefs
-- use atomic_set(, 0) to initialize sk_user_frags.urefs
-- Link to v1: https://lore.kernel.org/r/20250902-scratch-bobbyeshleman-devmem-tcp-token-upstream-v1-0-d946169b5550@meta.com
-
----
-Bobby Eshleman (5):
-      net: devmem: rename tx_vec to vec in dmabuf binding
-      net: devmem: refactor sock_devmem_dontneed for autorelease split
-      net: devmem: implement autorelease token management
-      net: devmem: document NETDEV_A_DMABUF_AUTORELEASE netlink attribute
-      selftests: drv-net: devmem: add autorelease test
-
- Documentation/netlink/specs/netdev.yaml           |  12 +++
- Documentation/networking/devmem.rst               |  70 +++++++++++++
- include/net/netmem.h                              |   1 +
- include/net/sock.h                                |   7 +-
- include/uapi/linux/netdev.h                       |   1 +
- net/core/devmem.c                                 | 116 ++++++++++++++++++----
- net/core/devmem.h                                 |  29 +++++-
- net/core/netdev-genl-gen.c                        |   5 +-
- net/core/netdev-genl.c                            |  10 +-
- net/core/sock.c                                   | 103 ++++++++++++++-----
- net/ipv4/tcp.c                                    |  76 +++++++++++---
- net/ipv4/tcp_ipv4.c                               |  11 +-
- net/ipv4/tcp_minisocks.c                          |   3 +-
- tools/include/uapi/linux/netdev.h                 |   1 +
- tools/testing/selftests/drivers/net/hw/devmem.py  |  21 +++-
- tools/testing/selftests/drivers/net/hw/ncdevmem.c |  19 ++--
- 16 files changed, 407 insertions(+), 78 deletions(-)
----
-base-commit: 6ad078fa0ababa8de2a2b39f476d2abd179a3cf6
-change-id: 20250829-scratch-bobbyeshleman-devmem-tcp-token-upstream-292be174d503
-
-Best regards,
--- 
-Bobby Eshleman <bobbyeshleman@meta.com>
-
+No need to define an empty function.
+A comment next to 'inline-by-bpf-asm' part explaining what is going on
+will be enough.
