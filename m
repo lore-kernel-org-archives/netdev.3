@@ -1,68 +1,68 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+Received: from mail-yx1-f66.google.com (mail-yx1-f66.google.com [74.125.224.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7C823EAA1
-	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 02:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097DD25EFBE
+	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 02:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768011544; cv=none; b=IVkNA96BjsripRlZVFuiy1XEGvkS/GjIqDQfUNCMHdvxEGbXGrVk9d2xgfGLR9Bqr8K/UZNZYaKsohl8xxC9e1sVjZ/DS1aWzG0/QnJ3W77lxufkxQ1ccRKXWnu/vEDmwBEi21l1GhKp9ILtnMpxE1d3WOMEYk4MkTFHonOFWmo=
+	t=1768011548; cv=none; b=R/5VFtikkNem5gZkYFZq8xgsLkN22nUb22kK6bbAQgLea3wYccSVIytnYAq00Gn6JrxS3WrFWgfo7Z28rcQNCStl+0Erm4jkXXAKghcMbU6zrbM4jEXa8Ji5FZ2MyXliDxosoyBn+e09IOwIdW1FQWhOoRFFC/OrAkxfiFvX8QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768011544; c=relaxed/simple;
-	bh=/8irlWx212MZNFNuTQquG/o/4qXs4GzUcqgDeIkWkeY=;
+	s=arc-20240116; t=1768011548; c=relaxed/simple;
+	bh=6tucM9ZQ59G0xrDfMuItsfF1GTt7N8xzYil/t1gA1PQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZSDyfvOK3D3CvnqaVHtSdRMdAviTTagmC2VoVtfoEzaViPFKrJwetkZhuas1J7qn5Eoqt5V6FYCUmOmJC6n38ZyBXQ8n2ZdkEtbWeY/nyCkmqHeeQPKGuvb2yta5wiiiMS/7iP22YVioup+Oz2pjtvz6kOf6Xic6oLdqd/8brGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pmh4gQv6; arc=none smtp.client-ip=74.125.224.43
+	 In-Reply-To:To:Cc; b=DACED5jRFmcXls5WwdsaBZr6JVMjF2ItYKg+F1uZ5hRzQEwjTLINqpyrPfa8oJQOKc3dV4xrewlLNUISqEwEOeH83upAlnp6cNkhPj4+L+9dtBp+dD2Yp8Cc5YO+qtZXr5MWazSZX86t2fUyGECCYMafS1fpvajiAxqIAZVr8uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RRZ//9XF; arc=none smtp.client-ip=74.125.224.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pmh4gQv6"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-646b8d2431dso4141898d50.2
-        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 18:19:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RRZ//9XF"
+Received: by mail-yx1-f66.google.com with SMTP id 956f58d0204a3-6467bed0d2fso4872632d50.0
+        for <netdev@vger.kernel.org>; Fri, 09 Jan 2026 18:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768011542; x=1768616342; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768011544; x=1768616344; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vJwRH55S+4zS4rc7LIeDbyFWVKjFx7zOxvxC4DTtZFU=;
-        b=Pmh4gQv6CDB0sn4MOfoJNJplhGdYkdl806mn+HX/jQdzPnHdNtrmIAkAo6WQeipPFj
-         q9IP8/gve/ApA78ioiaTE2hknb/mgSj2O66aYQia5uxObrhYl3SKgYdWUGtyM9GUoHIp
-         YgdmgchvIoPttlKzKoVZXqls4rg02rtkJuweYqJSeD2oyD5i2I82qZhEKy6Mczv/KMBl
-         CFkzK0QFpNV2jpONeDQsqjBid0Eclzv7/ESnvQriZUGTGIez7szNmuh+x3NKf5eGMRyC
-         bntgEz+0P95+q2V4sfu5TeyGDkHRG9/cwbCJXisuHKvThcw/lwl+Y9e8bkDwUdV2KN07
-         GNxQ==
+        bh=DXRdbOnUYiudn9GxHVVfvuR3By+3aRth8g9ruHEmquY=;
+        b=RRZ//9XFWutooYFdB4GTmpzjV5zZXDbguHHvTNrat3+JjePN7DsXSBz2YEoc1sBUNr
+         CWu19+T0PsjbWWn41lO6qbwbaQCFgEKUdQZRxI6vEVYheN8zDQV/QhDWt1gK53qaLMxV
+         wBg6p4gCF9VZK3tj0a7cQ2ddG+jgbuShYTP4Ijfwm9A1A7+pU9pml2geDMy4xT0YWuZG
+         BqjWeoJXTdjafCZrbOD/GX980Rkv6SR8HuaMHHTTdDLCdIlDx+KBx2QN4XIEAeFvTfW7
+         5usfQLENdof2Bu2Z7IWiVc121bGmVIZb6qnKORdhNx18h83RXKnRXKU7JJn4RmFRM0vI
+         zrVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768011542; x=1768616342;
+        d=1e100.net; s=20230601; t=1768011544; x=1768616344;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=vJwRH55S+4zS4rc7LIeDbyFWVKjFx7zOxvxC4DTtZFU=;
-        b=L/LU8OdgEFf9saEL6gR0/h+AC/RjkbvKuzJzvSi1LC0f9sSDR7PoNB7f/wEyHTy2sR
-         Fa4vRoSfHJKrsbnt2j+imt+SJCkKK5THG2TsH/wsPeMAcF5wtbL6FW4psT3iLn0ClgLE
-         g8VQcUgxgmFknFs7TrjyKN/U3gJLRnQPB9QGZZ98IgHBiVTMfLpezHFEz33gqe/WNQ71
-         v2tExFmtFgUTxay3NptNyYlDPCGVIZhteP5rT7InGy0kfaUBnms3yTSL95Nfo6f36vC3
-         oDY7oPPIQ0higNWjyr99PvnHWNG9XJeGcv+SVw5ifcXLWkhugIacf7xfm0UX//pkkb3x
-         QkCw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/jHrK5sueOx8Eoh12RuTihFy/uJZKsPZu8t6kyvJU9/+tjjHBUwX3lg86rXPIBBVQ/Mr95qE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk7f4NLSaWBuIff5gRf4db6O+jhHbpSdLjXaBDOcSHbdwUFZrc
-	IYiyCWzwTJmTTxn3bzlXzNYcYZYa2I96G5qCZnc9DkB9UA0Fge1aUhYk
-X-Gm-Gg: AY/fxX43Ofr0FxqqgnUApPwpRJA2sNpRoAM+3GLpcZ4gPI1lP12TjyQsAVxI6ngZG4P
-	avrIedI1//EZVGxFPwMeqNnfNQzsW+c4UuI3PxvilThvh1dGCxdrNZQxS3Yo0dGeUPqttY87QT9
-	EaXQMxGf4m01Q5o5GfbpCV+OS/pOCCj1BUND9BxHyDmkzzXAbvW5EdTbxD8gnWXjM8XXJwB43Bz
-	P11awSeoJJA0LRnBAbG9BJjxJUGPMdi3B7ajQNegjZto/xA/Zsp1dU8PZAJNqnHd548xf+m1dli
-	R7mXb+0VUw5PJFRTEMKZUEgESI1e/UhJ1CqPtON4UKK/qLLCCIqF/xjgYMtKC+I+JsaxRZsg7Pj
-	lqdkCCFaJ05qFO5X5iDzYtrdJfI22YRBqcLpv+VCmGjO1TNxgtkEtUuEfXCAzhRboiK1mNh5mBk
-	QKjSMJFLS7+Q==
-X-Google-Smtp-Source: AGHT+IFOmZSfq1+B/UIacsFnpLVgmv9FPVdwArttfHVymmNEdJMthIaDrn+0zcXw3EHB1ioYKpS2zw==
-X-Received: by 2002:a53:e319:0:b0:644:7b34:7bd2 with SMTP id 956f58d0204a3-64716c804d2mr7062728d50.75.1768011541886;
-        Fri, 09 Jan 2026 18:19:01 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:70::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d8b241csm5204761d50.19.2026.01.09.18.19.01
+        bh=DXRdbOnUYiudn9GxHVVfvuR3By+3aRth8g9ruHEmquY=;
+        b=Su7SWmSCHNtgkDCk/dw2KeB/DzonwfLftPy2uSFxO3Dm7PNyHoJZ520WcVHQ7RTNkP
+         DBjukRz3tcojx73mIXlSr915TNyFeQZhIaZNq/ImkvY0tECM+ojl6PWFsH6lqF9BQJL2
+         OtChsbnFNwYhXhDZl60i54wUYr5vd3NmGBtiUCOOu7yknfpakrVo5Ekep8x5OTvSM1S5
+         7PW/uSCDS+GwZv2gQwMaT6wzUFfR1LRNzi6WlEisIrdSdoHTa4RSQjBVjIIh5osJyozX
+         MPdMIPwVtAFf0xI/uGHtHCHReihush1r585H7eoFIy496+x3+mJSyBRtlcTrfGM5Fn3O
+         vEuw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3DbB1WypOplid2cibqGs9+NPXXTXt34UpxAydrq74JpzVPh7cJmrxXm92WuRaQpIlqQeEJoE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFVYh1cmauRIQuuSiKGU33h4buOW62ABlPLyQIlwxeQcljmRi4
+	G8SxFQDFTwg3CG/m+D2Na+HAM+E2WaFM6dnLJk9EBM4+XCmHVLFoJ1qq
+X-Gm-Gg: AY/fxX61WWUBWInKVupZW76yKWGHosa/lCTchRNQIVFCbd2uEfg9v1NpR3XL0KuqPiH
+	YVZDUcQaaf3m7PXF93S5iSUi36faOmScV5FJEZxHprVvVyo6O2QG9iPgLGoNmx288vuc0lRJrpL
+	+R4/9SD3+umkYuxRuAZIhcuB+pY55PscyxdQ8GO+VytV5NchBpBNJ6t2Eopa/nxRYlM2O2PmZAW
+	TmqvFBfJLHvBqhladEAV5F4q7ci+SeVKtofdStTkwmdea8RCQCr34HYU46SXARweZV9Bgvsxn0k
+	cagzZXT9zBS88Qy8Z1ILdLdDFD+ks/ug5+gcGOW2uCbmLIkGgZAwv5LCBXeeFNIAREbuVyrYMJs
+	KA8ro24Nde9KhdLltcFZwuDVCWmEMqOZSPn37CTX4fc7EzW3ThmheNv94zA/XP6CDj3vec3JLV8
+	cPmqkF/N8IWA==
+X-Google-Smtp-Source: AGHT+IGzRizbGlIsAZwDp+VnMT+8idkBjcUWkmHJRYK1pkT2bOkNYQhUeyud4a1V268OgPfep68gmw==
+X-Received: by 2002:a05:690e:400a:b0:646:a3cf:a2e8 with SMTP id 956f58d0204a3-64716ba374amr9762926d50.40.1768011543796;
+        Fri, 09 Jan 2026 18:19:03 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:53::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-790aa672725sm47421447b3.34.2026.01.09.18.19.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 18:19:01 -0800 (PST)
+        Fri, 09 Jan 2026 18:19:03 -0800 (PST)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Fri, 09 Jan 2026 18:18:16 -0800
-Subject: [PATCH net-next v9 2/5] net: devmem: refactor sock_devmem_dontneed
- for autorelease split
+Date: Fri, 09 Jan 2026 18:18:18 -0800
+Subject: [PATCH net-next v9 4/5] net: devmem: document
+ NETDEV_A_DMABUF_AUTORELEASE netlink attribute
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-scratch-bobbyeshleman-devmem-tcp-token-upstream-v9-2-8042930d00d7@meta.com>
+Message-Id: <20260109-scratch-bobbyeshleman-devmem-tcp-token-upstream-v9-4-8042930d00d7@meta.com>
 References: <20260109-scratch-bobbyeshleman-devmem-tcp-token-upstream-v9-0-8042930d00d7@meta.com>
 In-Reply-To: <20260109-scratch-bobbyeshleman-devmem-tcp-token-upstream-v9-0-8042930d00d7@meta.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -92,103 +92,107 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Refactor sock_devmem_dontneed() in preparation for supporting both
-autorelease and manual token release modes.
+Update devmem.rst documentation to describe the autorelease netlink
+attribute used during RX dmabuf binding.
 
-Split the function into two parts:
-- sock_devmem_dontneed(): handles input validation, token allocation,
-  and copying from userspace
-- sock_devmem_dontneed_autorelease(): performs the actual token release
-  via xarray lookup and page pool put
+The autorelease attribute is specified at bind-time via the netlink API
+(NETDEV_CMD_BIND_RX) and controls what happens to outstanding tokens
+when the socket closes.
 
-This separation allows a future commit to add a parallel
-sock_devmem_dontneed_manual_release() function that uses a different
-token tracking mechanism (per-niov reference counting) without
-duplicating the input validation logic.
+Document the two token release modes (automatic vs manual), how to
+configure the binding for autorelease, the perf benefits, new caveats
+and restrictions, and the way the mode is enforced system-wide.
 
-The refactoring is purely mechanical with no functional change. Only
-intended to minimize the noise in subsequent patches.
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- net/core/sock.c | 52 ++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+Changes in v7:
+- Document netlink instead of sockopt
+- Mention system-wide locked to one mode
+---
+ Documentation/networking/devmem.rst | 70 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a1c8b47b0d56..f6526f43aa6e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1082,30 +1082,13 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
- #define MAX_DONTNEED_FRAGS 1024
+diff --git a/Documentation/networking/devmem.rst b/Documentation/networking/devmem.rst
+index a6cd7236bfbd..67c63bc5a7ae 100644
+--- a/Documentation/networking/devmem.rst
++++ b/Documentation/networking/devmem.rst
+@@ -235,6 +235,76 @@ can be less than the tokens provided by the user in case of:
+ (a) an internal kernel leak bug.
+ (b) the user passed more than 1024 frags.
  
- static noinline_for_stack int
--sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
-+sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
-+				 unsigned int num_tokens)
- {
--	unsigned int num_tokens, i, j, k, netmem_num = 0;
--	struct dmabuf_token *tokens;
-+	unsigned int i, j, k, netmem_num = 0;
- 	int ret = 0, num_frags = 0;
- 	netmem_ref netmems[16];
++
++Autorelease Control
++~~~~~~~~~~~~~~~~~~~
++
++The autorelease mode controls what happens to outstanding tokens (tokens not
++released via SO_DEVMEM_DONTNEED) when the socket closes. Autorelease is
++configured per-binding at binding creation time via the netlink API::
++
++	struct netdev_bind_rx_req *req;
++	struct netdev_bind_rx_rsp *rsp;
++	struct ynl_sock *ys;
++	struct ynl_error yerr;
++
++	ys = ynl_sock_create(&ynl_netdev_family, &yerr);
++
++	req = netdev_bind_rx_req_alloc();
++	netdev_bind_rx_req_set_ifindex(req, ifindex);
++	netdev_bind_rx_req_set_fd(req, dmabuf_fd);
++	netdev_bind_rx_req_set_autorelease(req, 0); /* 0 = manual, 1 = auto */
++	__netdev_bind_rx_req_set_queues(req, queues, n_queues);
++
++	rsp = netdev_bind_rx(ys, req);
++
++	dmabuf_id = rsp->id;
++
++When autorelease is disabled (0):
++
++- Outstanding tokens are NOT released when the socket closes
++- Outstanding tokens are only released when the dmabuf is unbound
++- Provides better performance by eliminating xarray overhead (~13% CPU reduction)
++- Kernel tracks tokens via atomic reference counters in net_iov structures
++
++When autorelease is enabled (1):
++
++- Outstanding tokens are automatically released when the socket closes
++- Backwards compatible behavior
++- Kernel tracks tokens in an xarray per socket
++
++The default is autorelease disabled.
++
++Important: In both modes, applications should call SO_DEVMEM_DONTNEED to
++return tokens as soon as they are done processing. The autorelease setting only
++affects what happens to tokens that are still outstanding when close() is called.
++
++The mode is enforced system-wide. Once a binding is created with a specific
++autorelease mode, all subsequent bindings system-wide must use the same mode.
++
++
++Performance Considerations
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Disabling autorelease provides approximately ~13% CPU utilization improvement
++in RX workloads. That said, applications must ensure all tokens are released
++via SO_DEVMEM_DONTNEED before closing the socket, otherwise the backing pages
++will remain pinned until the dmabuf is unbound.
++
++
++Caveats
++~~~~~~~
++
++- Once a system-wide autorelease mode is selected (via the first binding),
++  all subsequent bindings must use the same mode. Attempts to create bindings
++  with a different mode will be rejected with -EINVAL.
++
++- Applications using manual release mode (autorelease=0) must ensure all tokens
++  are returned via SO_DEVMEM_DONTNEED before socket close to avoid resource
++  leaks during the lifetime of the dmabuf binding. Tokens not released before
++  close() will only be freed when the dmabuf is unbound.
++
++
+ TX Interface
+ ============
  
--	if (!sk_is_tcp(sk))
--		return -EBADF;
--
--	if (optlen % sizeof(*tokens) ||
--	    optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
--		return -EINVAL;
--
--	num_tokens = optlen / sizeof(*tokens);
--	tokens = kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
--	if (!tokens)
--		return -ENOMEM;
--
--	if (copy_from_sockptr(tokens, optval, optlen)) {
--		kvfree(tokens);
--		return -EFAULT;
--	}
--
- 	xa_lock_bh(&sk->sk_user_frags);
- 	for (i = 0; i < num_tokens; i++) {
- 		for (j = 0; j < tokens[i].token_count; j++) {
-@@ -1135,6 +1118,35 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- 	for (k = 0; k < netmem_num; k++)
- 		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
- 
-+	return ret;
-+}
-+
-+static noinline_for_stack int
-+sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
-+{
-+	struct dmabuf_token *tokens;
-+	unsigned int num_tokens;
-+	int ret;
-+
-+	if (!sk_is_tcp(sk))
-+		return -EBADF;
-+
-+	if (optlen % sizeof(*tokens) ||
-+	    optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
-+		return -EINVAL;
-+
-+	num_tokens = optlen / sizeof(*tokens);
-+	tokens = kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
-+	if (!tokens)
-+		return -ENOMEM;
-+
-+	if (copy_from_sockptr(tokens, optval, optlen)) {
-+		kvfree(tokens);
-+		return -EFAULT;
-+	}
-+
-+	ret = sock_devmem_dontneed_autorelease(sk, tokens, num_tokens);
-+
- 	kvfree(tokens);
- 	return ret;
- }
 
 -- 
 2.47.3
