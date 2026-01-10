@@ -1,66 +1,66 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC4829A322
-	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 21:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEAF28A3FA
+	for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 21:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768079133; cv=none; b=CzAQ7JrVudB2/ewYLWvHnU8t8hi96eCosd8S3sHeKiUwr0n98LIhpDB+2aimLWBDfWjqMdeyXMCP4oJ6dpLzXvT78js8uqHDNhu8YsGBbjWAEIfwxs0wLNxSNXCYkZUu6w391sOGqazse5Kh8ctfmM5MEsmZRZL9+/YAVz3wuAQ=
+	t=1768079134; cv=none; b=dA1XMvoT5jTcMW2aVEnCZwc8PUzEv0WORkFAgHY5gtCaH0reMahZDLMkPvDJxRzeKL/Zrvbm1UeEyheIZINjneL+xWEenCle0dUO4M6GYb9b7z+e2tp6lRblYSWtOBkCPQYhhpV8WSHUOTl1wl/z3aPjWqQ4gwYwYeop8p3q+no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768079133; c=relaxed/simple;
-	bh=Ghap+Uyv9EG02fN/gnmF6GE+EbcYHA//0AOkobhpB5c=;
+	s=arc-20240116; t=1768079134; c=relaxed/simple;
+	bh=79nK24opN6uM1iQ+K6OE/uKIwjvXCL9v0B8DauUBPRk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NvXztfEMVkIuSVRemt0KOU5YG6SrJ830FNYlqRVxXajTFwicL/yKQ+bPcfYc6gAi3LXxxt7fbZAZ3dKu7+nXZJWB+pLZP7M/ivFAxOcBXF/nn+plvGiy7+9Jo9u+YOAFeK2hQw1t15neekKxppzhIc2t2wlA+bTkUUnNibJKNe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=K/XIFzhk; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:To:Cc; b=iGirc5u6KcqyzGp0tHeDmWk1rc1L1HKCuvqUHL/eC8qUkiUYA1Md3Dz4ojBBBrZirrF9qbgu876f86SQPEbNCfBXlTqGO3gFHxa/QZ0f/FkS9ALh3D1pWmXGj3H/sz8Sdoi3JY8RdXClyLW8MoTbadO2w0RXe5ty+19P5Yc6iG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=DqcxWv3r; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="K/XIFzhk"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b86f212c3b0so100032666b.0
-        for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 13:05:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="DqcxWv3r"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64b9dfc146fso4207771a12.0
+        for <netdev@vger.kernel.org>; Sat, 10 Jan 2026 13:05:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1768079131; x=1768683931; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1768079127; x=1768683927; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZrS/fiDVSpNqpnGbLktJGFsAvmbG4oFl4B9ZbG+ylX8=;
-        b=K/XIFzhkDz3I/91Oj3cNjwR2MQqSipg0686W5vrGHcxAW1loty2U5Fw4fYjTcqfphD
-         Luk4XykAPhgdn1IBOvxFNBg70wm9PBfMeRWupa84Q5oqARe/r6YwU8GsxcCuJNDUKY1E
-         etTK/gsWG8Hjhj5HJpYEN1rv6JRSZGa4rYakWeIWM2XeAHCWWwsZr0Y6hqQFR7d2OGct
-         P8C3km21syv48Fi3m/uRj1EYxspLWnL6GvwphoK5n9qR9LJetCyXM54XBAw3vt4cajV0
-         WWKaNytR5KcFzBNPpk4XlLZN6o3AMGG4IyhabX301hdZlWsFJieIPUhB3b2X+s/dAYJ2
-         n9MA==
+        bh=qOm2Dco79W8CJqhRdT3ov73dnM6p4xH+R1QoW90QGkc=;
+        b=DqcxWv3rBrfzUju2khjIjf6PA6ujXHBoZi5nkX6TsMhA9jehbmiMbwVY5R9OjGhy7b
+         Q7Fa6pnQz/2HLNEPZSmDIXczYH2Z3k8H/AXAiHIzpgZyIkck4IMds3HzNsDFN/A7uWqc
+         P3mg5T6Fg0NZi5zm4d0K161UcZgR6rFjMC8sCr3br35ZsEup2huL3kGU9QcFUyLUITF+
+         q00wkIq7QqLdeUmS+5sLuniUWvb4FvUtExp/IaDzm+cXqEkWf4kFsgNsU3fdFArGfEeh
+         NsOZscgVGIyeKxtfgoZMwUlwjaWcEILuBn7bel6vQ8JnA1N1LEMk7RYv2pbmuQqBNA4V
+         SQhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768079131; x=1768683931;
+        d=1e100.net; s=20230601; t=1768079127; x=1768683927;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ZrS/fiDVSpNqpnGbLktJGFsAvmbG4oFl4B9ZbG+ylX8=;
-        b=wphlPxhTbkXwvhsqcRyzVIodj4bOtSa1iiQF8skzAZnLSZt4vXb5weI3XutXuqpvdZ
-         r4KtcyR26Mt/zgzhfCljK9DLY1x3L1rJTCGRTbyTOJIGCJkPBzMtygFma349TRbxiceP
-         T03i8DUuVhb7dJQWQNSZYGzSpLd/Yk3WU4qP+UhuYBL0Z8de4I+RdaQue2RMIMIxwQaL
-         tkWEy3HU6ubIH6ZCOdb4y/nrbj1s27HK2FarPqlaoTbMF9cG8queajyaTUWY2lY89epy
-         +FXMGh2BRefe+n8TADz/lVnQwAaB8DFhFPtweRCezO7pyzHH3a1xMkcOMFrs2n0Ydo40
-         9cdg==
-X-Gm-Message-State: AOJu0YwDn64thsFETMn4F2J3cBNl8NqxFvJDNhd7rVSjU7knJwbfCA64
-	dh2Y3z8j7n8TECFtTjx6Ccl3ExLW0fWNH5oV0e2iQMeIkoFFNMQePh+QDyg/p0lPdb8=
-X-Gm-Gg: AY/fxX5EHoNtGSUOwkAl/l2WuNoOK81wXte1imGwHd2ebDlTR/q9Ku9khU+ryQvTrSP
-	+YlpoPT3B3eA3xIP2b6oi40ZQyJiwxbH7KSDLFMdq7UjIZaK32LhRfrIldIQsU9w36DHl5/s9CJ
-	FrKSdiUARXI2lIJN4ECG4zTiIFgKtKcrJuevZ5GCxVU0vEuj3PGUNd0vn6EE+dOQwfU40CgJpfF
-	JiW+LxVAqSnV84Q7NoCPL7P7gZahQkiT1e3wl4u49+3gzVgaXI5QIxTQR3fvN1LspbTV80VnOum
-	7GIsy8Kzgr6aUVZz/6K/876/gq1k6kF0H3abK1KQ/mmb/5WqPxc6drd1sHXlN0jxrYHYsmRWmc7
-	oy86FQ15VFDrFgaun+ows1p/QO4tDCnYbzqwEDe7gsFuobA6iGqASemx0L684e30uibwPQCueaH
-	6bRI9+QRd9SVR28UKtzUkYsTlBklx/0IZeHQhj7zVxCGQYLyiWia5VW/RfHIg=
-X-Google-Smtp-Source: AGHT+IEXzU4wEefDLk0fDfjXgkYuzrme5GrsRIy+MsiA/VGuWxBA6XjNbLVOftqt0DT0rpqevpx7vw==
-X-Received: by 2002:a17:907:a08:b0:b07:87f1:fc42 with SMTP id a640c23a62f3a-b8444f488f0mr1563600766b.16.1768079130751;
-        Sat, 10 Jan 2026 13:05:30 -0800 (PST)
+        bh=qOm2Dco79W8CJqhRdT3ov73dnM6p4xH+R1QoW90QGkc=;
+        b=PGSrWQFKp8CMJ8TeF8fC1N/c8RG1AoWXs/KknHnKYunsOFGwHlhDvqsrJN6U1eY8y2
+         X352xCpwwFhhxew7mHsuA7YQXeW6swmXgTzX/9BN3IpKAJNaie/zzogN0cngJhb0eoa1
+         2nBbNWGcNDdX84iZlj+3j0FU26I0h1d2TCcADoFjCyVSESS3vTyR/uqx5GwQBq9YZpau
+         pQ7q9DlDLMtHGZIB/OtKyOEIzlfLtyrIMr92oPyZdpyycx7vNK86Zli59zwAAirFfavE
+         HrVLOnduCN8yGp3gDOmrFC0XzS2QOGNnvCaz6YpAkUmip1Q8Y5LLjWdSBxSF5xbyuPU3
+         vlGA==
+X-Gm-Message-State: AOJu0YzrY21CKeLnum123z3Gu6EAJGaFg8DOtMEmZX0dEFReYjHa39hh
+	S22cSUOcJ/g3iaEG6CziafOQ1kVXsrGfnnBvxk+ObSnHpxCiluaAufkdDeHdYf51h5o=
+X-Gm-Gg: AY/fxX7OYgkPE5jcOTGy7Wfxnl2rWcV98DVbtm9NwqcWETvnjP8NeeYM0cRCdAOmqSB
+	KSG66CJHrqCFk7+3tsErOgIbgJH/Xm7Q+uX313NDsIEEmx8yP49i/rLHAOH4GDpiejBaZHFl8B6
+	jLMwyvUwyvmrHJkaGxOGyv5Wvuq3tmHvqVjZKNk0jWBnN54ucPDL2ii3hj9UUbe1izhEatoO38n
+	4jbl5lCTL7ohsLCijs24UW2vzYTUGfgkesGWa9lvQL6EJGIVGNW/VoBJBsQsxVoMibm1JuUReUo
+	T2t7ZU3OVPUHtxNvvDIlJDfAOipTIiIMxmAwGHoy6s4pKwdIbJH6covBnKq+nOb4t4yI8HBKO+B
+	yDFW7TxWEQBEdj5AWe4hO7EOCr19kwyY59dRgpnbvszv673RCfbX8da49Z/t+8bk105UmEHvpon
+	KH64Oe8naHnsi0tGnLjvjNgbYtuQ0BWfMkBI0wJdkIBfSxhOKsLVHFjH5fV54=
+X-Google-Smtp-Source: AGHT+IEEoQmWnDDRGqBo6ow/YqTGmki9h0Hp/wugoaNy4VsuTpMCu3HOef9yqHlTJ1K/zJx1Hlhozw==
+X-Received: by 2002:aa7:c845:0:b0:64a:86db:526a with SMTP id 4fb4d7f45d1cf-6507bc3d721mr13850443a12.4.1768079126946;
+        Sat, 10 Jan 2026 13:05:26 -0800 (PST)
 Received: from cloudflare.com (79.184.207.118.ipv4.supernova.orange.pl. [79.184.207.118])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d3113sm1479232866b.43.2026.01.10.13.05.30
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507b8c4c15sm13415763a12.4.2026.01.10.13.05.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 13:05:30 -0800 (PST)
+        Sat, 10 Jan 2026 13:05:26 -0800 (PST)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Sat, 10 Jan 2026 22:05:20 +0100
-Subject: [PATCH net-next 06/10] ixgbe: Call skb_metadata_set when skb->data
+Date: Sat, 10 Jan 2026 22:05:17 +0100
+Subject: [PATCH net-next 03/10] i40e: Call skb_metadata_set when skb->data
  points past metadata
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-skb-meta-fixup-skb_metadata_set-calls-v1-6-1047878ed1b0@cloudflare.com>
+Message-Id: <20260110-skb-meta-fixup-skb_metadata_set-calls-v1-3-1047878ed1b0@cloudflare.com>
 References: <20260110-skb-meta-fixup-skb_metadata_set-calls-v1-0-1047878ed1b0@cloudflare.com>
 In-Reply-To: <20260110-skb-meta-fixup-skb_metadata_set-calls-v1-0-1047878ed1b0@cloudflare.com>
 To: netdev@vger.kernel.org
@@ -97,14 +97,14 @@ Adjust the driver to pull from skb->data before calling skb_metadata_set.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c | 2 +-
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-index 7b941505a9d0..69104f432f8d 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-@@ -228,8 +228,8 @@ static struct sk_buff *ixgbe_construct_skb_zc(struct ixgbe_ring *rx_ring,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 9f47388eaba5..11eff5bd840b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -310,8 +310,8 @@ static struct sk_buff *i40e_construct_skb_zc(struct i40e_ring *rx_ring,
  	       ALIGN(totalsize, sizeof(long)));
  
  	if (metasize) {
@@ -113,7 +113,7 @@ index 7b941505a9d0..69104f432f8d 100644
 +		skb_metadata_set(skb, metasize);
  	}
  
- 	return skb;
+ 	if (likely(!xdp_buff_has_frags(xdp)))
 
 -- 
 2.43.0
