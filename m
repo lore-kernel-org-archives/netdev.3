@@ -1,63 +1,85 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FBF3563E8
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 11:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C4D283FCD
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 11:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768218154; cv=none; b=gEidDJn5oa8rS6WkPOC3S5bU4kjrerxQTMV8G0rDl99GH0n7+bj3azcPy01tfT2N8hkpy2DLbWcuDbuBfMJU3d4j1y2kPdHep3S6cv+/TdwbaUcD2G5Jxd/88ZaLtrcUw4PRskum87pDOKx9NCDMST54BQI7jQgIFwQlJJlcyFY=
+	t=1768218297; cv=none; b=eXQ708gh/GZvnsXsAlqPsSHZbMI8K4ndBaRBDMUNq/lOoYdA9lG+oIXyW/I8hy65PBskHclVVUhTF5BF+eBZzVXhKPvE+ympnM9LZeTa//Z+JQ7ltLStpo+deEPSOUwoz8hHK8st+Gxy3397gasGzXvEemBCepdtDQ0rqSPwTyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768218154; c=relaxed/simple;
-	bh=z/ArGWZ0ymurQ9RwS25hqPmwVaTuHQEKtYq863o9s8E=;
+	s=arc-20240116; t=1768218297; c=relaxed/simple;
+	bh=gDyz9DEwu/PJ1o/0DeT833g8qAnydvU1mNL95N6NRRk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rw2INbCgILZr6Zhw8aVmJe/gfvfJFFrn+7q2l5qfMP5nCgyoaUyCdOJuQjZKFVlLR0tjTWy0yYYVKGUeUul2IeCbSUeRxWBnm4k1dmpDPmnAZRVRMVJRY4DIuFRMk2tz8XW3/BTCywVnOUlybsXJLJ941jmoSbWoGuxelau1Ro8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lV/Q/faM; arc=none smtp.client-ip=91.218.175.188
+	 In-Reply-To:Content-Type; b=AOIYmzHO7nWXdnfXid3GEiN8Ek/oIu9+i3i2TJCG5mnjfWEvPDRsM96b2CCliQGyUqPCVJHzktFSsrW4H7nyZRU9/CPKPONIFwLVocz7tt6ZgzK0Dhv06EW3g0mNiW0ICYrJSqL13dDC8TNEmMJB2r6hL4Dek0fOYlaWXO5+vCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PbC+oshL; arc=none smtp.client-ip=95.215.58.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lV/Q/faM"
-Message-ID: <e500a519-8277-4ddc-be7c-529b64b24860@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PbC+oshL"
+Message-ID: <ba9928dc-2701-4e6e-a8b2-73a5484f75b0@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768218141;
+	t=1768218294;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tkpHsuvE6V8Bk7Pqpm7Lok7WPhoO3vgdm1OBWx3Et7o=;
-	b=lV/Q/faMYufFVo58zKJkIRqEafbT+KpNpulx33db8hdn6J4sI1BWiWOosUf6Ek/cCRBIhO
-	KU9bhvsHMYKsn+fdylQwyFXHyi5w0X61+ohFK6XC7nvYu5pGLrGcavFqRxf0SDTOhENyR8
-	tRwZyKGE09xb+1e6XCUHMbGgRSSiehM=
-Date: Mon, 12 Jan 2026 11:41:35 +0000
+	bh=KJLXyEczMZIPV6uir4SSL+PQjYmTXJlf4x91gK7pPbA=;
+	b=PbC+oshLQP2z7U2LHV/ErsEAReN1s7YI0iQ8xALRJa8VHMCNIwNCU07w0Oo7YcrQ9/9FI3
+	HyUVjkD94UTUWVeQH+0C5YHHoZFTD0EaQAYrKnX8IXK8fjTpRfFN3WB5YWCxgTbSa3tboG
+	1hT1rGwIReEO3Roy6MwAHebLZmdROm4=
+Date: Mon, 12 Jan 2026 11:44:27 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] wireguard: allowedips: Use kfree_rcu() instead of
- call_rcu()
-To: Fushuai Wang <fushuai.wang@linux.dev>, wangfushuai@baidu.com
-Cc: Jason@zx2c4.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, wireguard@lists.zx2c4.com
-References: <20251005133936.32667-1-wangfushuai@baidu.com>
- <20260112031021.81853-1-fushuai.wang@linux.dev>
+Subject: Re: [PATCH net-next 1/3] dpll: add dpll_device op to get supported
+ modes
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
+Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>,
+ Prathosh Satish <Prathosh.Satish@microchip.com>, Petr Oros
+ <poros@redhat.com>, linux-kernel@vger.kernel.org,
+ Michal Schmidt <mschmidt@redhat.com>
+References: <20260112101409.804206-1-ivecera@redhat.com>
+ <20260112101409.804206-2-ivecera@redhat.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260112031021.81853-1-fushuai.wang@linux.dev>
+In-Reply-To: <20260112101409.804206-2-ivecera@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 12/01/2026 03:10, Fushuai Wang wrote:
->> Replace call_rcu() + kmem_cache_free() with kfree_rcu() to simplify
->> the code and reduce function size.
+On 12/01/2026 10:14, Ivan Vecera wrote:
+> Currently, the DPLL subsystem assumes that the only supported mode is
+> the one currently active on the device. When dpll_msg_add_mode_supported()
+> is called, it relies on ops->mode_get() and reports that single mode
+> to userspace. This prevents users from discovering other modes the device
+> might be capable of.
 > 
-> Gentle ping.
+> Add a new callback .supported_modes_get() to struct dpll_device_ops. This
+> allows drivers to populate a bitmap indicating all modes supported by
+> the hardware.
+> 
+> Update dpll_msg_add_mode_supported() to utilize this new callback:
+> 
+> * if ops->supported_modes_get is defined, use it to retrieve the full
+>    bitmap of supported modes.
+> * if not defined, fall back to the existing behavior: retrieve
+>    the current mode via ops->mode_get and set the corresponding bit
+>    in the bitmap.
+> 
+> Finally, iterate over the bitmap and add a DPLL_A_MODE_SUPPORTED netlink
+> attribute for every set bit, accurately reporting the device's capabilities
+> to userspace.
+> 
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 
-I believe you have to resend the patch as it's not going to be
-automatically re-evaluated. And you have to rebase it on top of current
-net-next. While preparing new patch, please add clear indentification of
-the target tree, the subject should look like "[PATCH net-next v3] ..."
-in your case.
+LGTM,
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
