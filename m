@@ -1,204 +1,173 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FE31AA1D2
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 02:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDC58634F;
+	Mon, 12 Jan 2026 02:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768185957; cv=none; b=G8AXej7hXnjV3Mv0JuNxX7rFEoJH4zT239jXZArQSJtN7zqK8WlpYeDDFbS7a37d5lIAi/BvXyZef1Wc75SHiV9lR22ij8DGS2POOhLG1sO8nkWazDKUp8HX+O/MIRUyM3vlsgqHlY75Tx0pfL6l6wG+ms105YjETXTpnuoW8Jw=
+	t=1768185991; cv=none; b=p9a3v3IzxkCqObU8aSVpJPLrS89pQ24ukahUQROlhPJplkpJr8YgcKsJKYctU2HOZry7oGx8MWEsNMtRWpTAsw0c213yP3vEtBDzowZIeKE5PVV4m/OdMahO6BfWSJ063pTZzmX1ft0JwqYXfNRpi1h4HuzaOpZY4Ub1NzuVuz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768185957; c=relaxed/simple;
-	bh=t3fqYup1Q4i1hX+rY6sipxB1IioFo7OZLWHTUppIxwE=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Uocwz+RMC9dll90tx6tYIeeMjbA0hfBW7141UYHHg4xis118qaa3cPxTqYPYcgCUiB11l3v3aMwtYvMCtmenXFagcEZ9ventmiG0vu+oHKMDdwEgXq4Qyfk3YotfjXGSpWjCWOGgrd97BW9viFCbLAYvghs0WVDTr0Ha4PS7tLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RIHtvEL6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OQaguD4O; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768185991; c=relaxed/simple;
+	bh=JFE2Uy28/Fyajiebu5unxsSTP/WHsIrQJV+GAQ0IW/s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NWhGOpXtVLbXoK7zcBaOpf5gQwvkSpqYWBGSljpWimN6btsgJ1m68cT15lpOVRA/DKYjjrhNUu84F3fxypMFi63A9QkJE1jsmuu0KM1GdO80WZY86uHiq2hMurUsig9BHm3mlmPjNcD9lKu3eIpkKSkov+mPLvN/Npm+dTp+yLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=ao7isnKp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RIHtvEL6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OQaguD4O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768185954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xcS5shRmDCmvz+IoTKqWTzUo+o6AAuc9PAErT+qJLAs=;
-	b=RIHtvEL6WNI17SXaRSRMorIVqYMrxh0ySwzskBkEaln1u8krV+tG1S/A7Lr5TCnZ/xmPyZ
-	KtKNrpQmrQ45jIQpgu6HJ7A1kYnPaFHjPmwVj/b5VXojhbjSh2ImKwg3YSG+yXekkmAAns
-	oUF53XL9SgyNuCR2Z2VN4mMm5KjFmL8=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-8DoMO_vyOzWkHdhwvcByaQ-1; Sun, 11 Jan 2026 21:45:53 -0500
-X-MC-Unique: 8DoMO_vyOzWkHdhwvcByaQ-1
-X-Mimecast-MFC-AGG-ID: 8DoMO_vyOzWkHdhwvcByaQ_1768185953
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-9412e0b1ec7so6191253241.1
-        for <netdev@vger.kernel.org>; Sun, 11 Jan 2026 18:45:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768185953; x=1768790753; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xcS5shRmDCmvz+IoTKqWTzUo+o6AAuc9PAErT+qJLAs=;
-        b=OQaguD4OW/a0PRcKXewnQoJz2HveUAELXWyoGoFSB4eakOiaN7tvkhvroIJENmrFeJ
-         PuXhQwOuoS0ZPVBot7jNgIujYR/bmcdJMtq1VBx7U0wi1aj+iIuW4r/6YuomR+XN0y9v
-         sSRuVS20/+rxYnHwdp+oQyGga1ktao5cj7wHS/C0jbSqfrBDZZVwi5JksbrL92hPebwY
-         fLaRsznU4Ph/uhnaDGP5GyNfrYYkj71sNtZ7TZOgK0l/7FzeYA6/q8LhcJGUMV4nZinF
-         gcNf58MM8flPh5y8Kkcdqu/uhs8VpBTqx5/327LJT+G9ApAPx2w6zzFUoq4SKNY3v0qk
-         QpfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768185953; x=1768790753;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xcS5shRmDCmvz+IoTKqWTzUo+o6AAuc9PAErT+qJLAs=;
-        b=ROMaF4ekPActHXj2X/fcgh+OVfaHz1jF/iSB3Lj7AgmytpezZ7D/XT0fI8VL3mruEc
-         S3tyoi1/r5wheZlRb8ZqxAcbelPIS9ij+74KokFk5irvvPjT1BRwh8NLA1lfH/3u6Ccu
-         GHaG4DuqURsqEer3JspcCpgJsH0piohlWtoYD1HPkTMVH6pWiJOm9kqcbbZtrp4y1lr4
-         qOy2rRkS9Q9psEcoiyrCdbpzhxaZiUBFMH+5nIcdu5AEKpcuBteeAZTdTa7B0GtNpgn0
-         Zr8s6UaUxsQ6Iw2SrEAVa8UWcbU1BBLkOVf/bI2e/n36iKJtDeEp1H4O8ubNnHY8ci5V
-         yeXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5b8LFfzjMz6hq6263cD7RMKTgakbZNrZ56MiTDHt2YdPhkMGAXxIRIsUEyfhRWI/SOxfSrxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyeqe/2vyVfa3MDR1+h6NAgcNg1JCMVPDY0QQT4vy2MakvgoEjp
-	UpI4UJDvieBk/ebRCtpoBe5x2qI9aP8g74uHxcbhVYZAZB2sUb1GRCFJtDRt884+vrS1AXt9XHZ
-	j2WewTAC3OTB6+nAGwbg/xH9rzUZJCUTIemuSGKIjtsZEz1wHcqX1Qopwcw==
-X-Gm-Gg: AY/fxX64dykZE8IGzqWdnhFiV8YwNGqOTB55k9s0u+lBzno6f5CqaCyJTuDM7MkbpGE
-	qlLzOT1oCHRf7EZYTj6sOdScdp9E+opiGYCODw/3Mco7zQWNoxTHIfcIWi35tPf9zzsjtHtu82U
-	wRllpChBf96cIys3wCB19kkdwoh5JrYs+QnDlv4i4jrQOXHNOLangHtgt7CNlOcKTDcdCui8y6p
-	Rq+SudXQj98V5Hs0m/JG1dpaMMN+bIm5eL9mXKTQSNAPOKV2iwRX8cWAu/IliBRLoovYQDDskGT
-	rkH9no8bYrj79rMR4XCMC6eWCY9Yn+CRM4erY7q+CN9bHkUGP4cb/YTvQltzJFVi2NRX4w6zcOl
-	IzXVg6BfJr+bFx+FkMhrDsIzwvGfhaB8OYTMG3Z/I0WFDPmyUu6f5w16N
-X-Received: by 2002:a05:6122:1d4d:b0:55b:1a1b:3273 with SMTP id 71dfb90a1353d-56347d4a0bemr5054227e0c.6.1768185952726;
-        Sun, 11 Jan 2026 18:45:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwOFp6cPvfkUcSbRWdkrghqM2mUWR9n3I0P3Nk8PJy6T841SLsur+1hpT47PiYyZ5sXMn8AA==
-X-Received: by 2002:a05:6122:1d4d:b0:55b:1a1b:3273 with SMTP id 71dfb90a1353d-56347d4a0bemr5054194e0c.6.1768185952291;
-        Sun, 11 Jan 2026 18:45:52 -0800 (PST)
-Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563667cf148sm8166160e0c.2.2026.01.11.18.45.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Jan 2026 18:45:51 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <18ee9089-8a08-44ed-8761-7c9db765cd4e@redhat.com>
-Date: Sun, 11 Jan 2026 21:45:36 -0500
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="ao7isnKp"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60C2jjyG74128687, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1768185945;
+	bh=4/a1T+VhEubM75m2jeLU4QR0PZlJpN5DuHktbJ45OHI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=ao7isnKpZkZsgPmUxKJJZAYbdIF5IXD9mB4B6otRtfBU8rEpUsopfD8vjP6kSJ6Q+
+	 nDN9X6755n5OqvyDvYLBRN0ItOgjkzxqj+1cMxoe1wAXuanKWscWtUGg6QD6Pk8S5c
+	 MfbUVyICnNtWZwQY9ASb66bbZRNrmsM5fqNGyWMamAH35UsFhAM5lGLaYUWAkJrYzc
+	 7+8K/1/WLt2DNQt3oU3xtGIE/H1vQ2GlYHBhW9YgP6oxeqkMQ1kexB5sz/C33Yxfge
+	 MaNzjaQPJwz3jojQJdxlFLOc6mvRvRARC+pKkQQZJbNq+EeruJBZFdz3Z2kVnDMyd9
+	 pAhuQMMZm+iUQ==
+Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60C2jjyG74128687
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 12 Jan 2026 10:45:45 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.39; Mon, 12 Jan 2026 10:45:44 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
+ Transport; Mon, 12 Jan 2026 10:45:44 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v1 3/3] r8169: add support for chip RTL9151AS
+Date: Mon, 12 Jan 2026 10:45:41 +0800
+Message-ID: <20260112024541.1847-4-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260112024541.1847-1-javen_xu@realsil.com.cn>
+References: <20260112024541.1847-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/33] sched/isolation: Convert housekeeping cpumasks to
- rcu pointers
-To: Simon Horman <horms@kernel.org>, Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chen Ridong <chenridong@huawei.com>, Danilo Krummrich <dakr@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
-References: <20260101221359.22298-1-frederic@kernel.org>
- <20260101221359.22298-14-frederic@kernel.org>
- <20260107115653.GA196631@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260107115653.GA196631@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On 1/7/26 6:56 AM, Simon Horman wrote:
-> On Thu, Jan 01, 2026 at 11:13:38PM +0100, Frederic Weisbecker wrote:
->> HK_TYPE_DOMAIN's cpumask will soon be made modifiable by cpuset.
->> A synchronization mechanism is then needed to synchronize the updates
->> with the housekeeping cpumask readers.
->>
->> Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
->> cpumask will be modified, the update side will wait for an RCU grace
->> period and propagate the change to interested subsystem when deemed
->> necessary.
->>
->> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->> ---
->>   kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
->>   kernel/sched/sched.h     |  1 +
->>   2 files changed, 37 insertions(+), 22 deletions(-)
->>
->> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
->> index 11a623fa6320..83be49ec2b06 100644
->> --- a/kernel/sched/isolation.c
->> +++ b/kernel/sched/isolation.c
->> @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
->>   EXPORT_SYMBOL_GPL(housekeeping_overridden);
->>   
->>   struct housekeeping {
->> -	cpumask_var_t cpumasks[HK_TYPE_MAX];
->> +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
->>   	unsigned long flags;
->>   };
->>   
->> @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
->>   }
->>   EXPORT_SYMBOL_GPL(housekeeping_enabled);
->>   
->> +const struct cpumask *housekeeping_cpumask(enum hk_type type)
->> +{
->> +	if (static_branch_unlikely(&housekeeping_overridden)) {
->> +		if (housekeeping.flags & BIT(type)) {
->> +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
->> +		}
->> +	}
->> +	return cpu_possible_mask;
->> +}
->> +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
->> +
-> Hi Frederic,
->
-> I think this patch should also update the access to housekeeping.cpumasks
-> in housekeeping_setup(), on line 200, to use housekeeping_cpumask().
->
-> As is, sparse flags __rcu a annotation miss match there.
->
->    kernel/sched/isolation.c:200:80: warning: incorrect type in argument 3 (different address spaces)
->    kernel/sched/isolation.c:200:80:    expected struct cpumask const *srcp3
->    kernel/sched/isolation.c:200:80:    got struct cpumask [noderef] __rcu *
->
-> ...
->
-The direct housekeeping.cpumasks[type] reference is in the newly merged 
-check after Federic's initial patch series.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-                 iter_flags = housekeeping.flags & (HK_FLAG_KERNEL_NOISE 
-| HK_FLAG_DOMAIN);
-                 type = find_first_bit(&iter_flags, HK_TYPE_MAX);
-                 /*
-                  * Pass the check if none of these flags were 
-previously set or
-                  * are not in the current selection.
-                  */
-                 iter_flags = flags & (HK_FLAG_KERNEL_NOISE | 
-HK_FLAG_DOMAIN);
-                 first_cpu = (type == HK_TYPE_MAX || !iter_flags) ? 0 :
-cpumask_first_and_and(cpu_present_mask,
-                                     housekeeping_staging, 
-housekeeping.cpumasks[type]);
+This patch adds support for chip RTL9151AS. Since lacking of Hardware
+version IDs, we use TX_CONFIG_V2 to recognize RTL9151AS and coming chips.
+rtl_chip_infos_extend is used to store IC information for RTL9151AS and
+coming chips. The TxConfig value between RTL9151AS and RTL9151A is =0D
+different.
 
-Maybe that is why it is missed.
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+ drivers/net/ethernet/realtek/r8169.h      |  3 ++-
+ drivers/net/ethernet/realtek/r8169_main.c | 28 +++++++++++++++++++++--
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-Cheers,
-Longman
+diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/re=
+altek/r8169.h
+index 2c1a0c21af8d..f66c279cbee6 100644
+--- a/drivers/net/ethernet/realtek/r8169.h
++++ b/drivers/net/ethernet/realtek/r8169.h
+@@ -72,7 +72,8 @@ enum mac_version {
+ 	RTL_GIGA_MAC_VER_70,
+ 	RTL_GIGA_MAC_VER_80,
+ 	RTL_GIGA_MAC_NONE,
+-	RTL_GIGA_MAC_VER_LAST =3D RTL_GIGA_MAC_NONE - 1
++	RTL_GIGA_MAC_VER_LAST =3D RTL_GIGA_MAC_NONE - 1,
++	RTL_GIGA_MAC_VER_CHECK_EXTEND
+ };
+=20
+ struct rtl8169_private;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethern=
+et/realtek/r8169_main.c
+index 9b89bbf67198..164ad6570059 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -95,8 +95,8 @@
+ #define JUMBO_16K	(SZ_16K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+=20
+ static const struct rtl_chip_info {
+-	u16 mask;
+-	u16 val;
++	u32 mask;
++	u32 val;
+ 	enum mac_version mac_version;
+ 	const char *name;
+ 	const char *fw_name;
+@@ -205,10 +205,20 @@ static const struct rtl_chip_info {
+ 	{ 0xfc8, 0x040,	RTL_GIGA_MAC_VER_03, "RTL8110s" },
+ 	{ 0xfc8, 0x008,	RTL_GIGA_MAC_VER_02, "RTL8169s" },
+=20
++	/* extend chip version*/
++	{ 0x7cf, 0x7c8, RTL_GIGA_MAC_VER_CHECK_EXTEND },
++
+ 	/* Catch-all */
+ 	{ 0x000, 0x000,	RTL_GIGA_MAC_NONE }
+ };
+=20
++static const struct rtl_chip_info rtl_chip_infos_extend[] =3D {
++	{ 0x7fffffff, 0x00000000, RTL_GIGA_MAC_VER_64, "RTL9151AS", FIRMWARE_9151=
+A_1},
++
++	/* Catch-all */
++	{ 0x00000000, 0x00000000, RTL_GIGA_MAC_NONE }
++};
++
+ static const struct pci_device_id rtl8169_pci_tbl[] =3D {
+ 	{ PCI_VDEVICE(REALTEK,	0x2502) },
+ 	{ PCI_VDEVICE(REALTEK,	0x2600) },
+@@ -255,6 +265,8 @@ enum rtl_registers {
+ 	IntrStatus	=3D 0x3e,
+=20
+ 	TxConfig	=3D 0x40,
++	/* Extend version register */
++	TX_CONFIG_V2	=3D 0x60b0,
+ #define	TXCFG_AUTO_FIFO			(1 << 7)	/* 8111e-vl */
+ #define	TXCFG_EMPTY			(1 << 11)	/* 8111e-vl */
+=20
+@@ -2351,6 +2363,15 @@ static const struct ethtool_ops rtl8169_ethtool_ops =
+=3D {
+ 	.get_eth_ctrl_stats	=3D rtl8169_get_eth_ctrl_stats,
+ };
+=20
++static const struct rtl_chip_info *rtl8169_get_extend_chip_version(u32 txc=
+onfigv2)
++{
++	const struct rtl_chip_info *p =3D rtl_chip_infos_extend;
++
++	while ((txconfigv2 & p->mask) !=3D p->val)
++		p++;
++	return p;
++}
++
+ static const struct rtl_chip_info *rtl8169_get_chip_version(u16 xid, bool =
+gmii)
+ {
+ 	/* Chips combining a 1Gbps MAC with a 100Mbps PHY */
+@@ -5543,6 +5564,9 @@ static int rtl_init_one(struct pci_dev *pdev, const s=
+truct pci_device_id *ent)
+=20
+ 	/* Identify chip attached to board */
+ 	chip =3D rtl8169_get_chip_version(xid, tp->supports_gmii);
++
++	if (chip->mac_version =3D=3D RTL_GIGA_MAC_VER_CHECK_EXTEND)
++		chip =3D rtl8169_get_extend_chip_version(RTL_R32(tp, TX_CONFIG_V2));
+ 	if (chip->mac_version =3D=3D RTL_GIGA_MAC_NONE)
+ 		return dev_err_probe(&pdev->dev, -ENODEV,
+ 				     "unknown chip XID %03x, contact r8169 maintainers (see MAINTAINER=
+S file)\n",
+--=20
+2.43.0
 
