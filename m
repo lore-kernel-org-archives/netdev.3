@@ -1,290 +1,96 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047FD346AE6;
-	Mon, 12 Jan 2026 13:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303E30B532
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 13:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768223154; cv=none; b=ZJddwLJEhxgtZUMxquu77KITgAoKH/XZu+SQVLGsVdweghjH2/pn5wFXSbvpGRM4KbPZSA5Xf5IwEUwNLo85S7wgFvM3R+AkJFUvwbaGUuvOYHGb/mC6aAbe+0ziAzftDnSYJSxTSg8GMswMWbThB6OcCkOqx4dH6FnqXNSekXU=
+	t=1768223215; cv=none; b=WpN6K6YG+hBKvO0ngS0uy5gCLIp8VeNyRc2OkAn0PWrOc7xXTP32+bum+T9xYYZ+9L2wno4ma3eRlxTsgKOoTMQonmlfQ40bbXgYfdjG/rbZlEpxg3QR+lwIyAW4eWS4/pEpXQxAYalbqK0OzpHM4gKB0XKHXiyaAOSggLEmQKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768223154; c=relaxed/simple;
-	bh=LDRMrQRVyy1prgME2OQUHsThxIlbPrQ6Bi0i03otMnM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DMvIgvoebgxiQ6uZxqpG8sf2/CIP6lB1rnaZvyTpmN8vQgBixzsd7IzDekKXGhQ+t214WE1TVEml51bk6jQ1+9MjjBOED5EDoFyCrV3AJyUe8xSBePLwB2pbjkcKnXdHtWvDHx125ObQeD4UJUHo4+3Yfrdye9qKDEhMAC5OqVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=M/Y6jAha; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1768223215; c=relaxed/simple;
+	bh=FsiGsnhkfIMq5xQxcHKbKkmD3OAOQscT86cIg6iw2U8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i99dqS7IbZ+A5bF5cw+JbgY8NU/sa0QEhSs0kQvoTRXMyxTTEb6zHfkMD15X+VPhCWLLr+Tuvn7qW9KtW1YrCi0qH2vDTd9xwpZmSR29CAgaTmcFODpklojoEBwrC1NkjvHyYdd8rA3gTy98r6+Lepy22Qzi3pgrDjlNyV7cetA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nbZWez4/; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="M/Y6jAha"
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id ACA39201AC86; Mon, 12 Jan 2026 05:05:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACA39201AC86
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1768223152;
-	bh=tEofgjfRMhXX8w5hgxWzQkqBlNRBlhwkGqlGrIa89mQ=;
-	h=Date:From:To:Subject:From;
-	b=M/Y6jAhaGZvHcUM8xjpRplCaHhdvFsALngovYyCgthkKOJQM+Zut6y3o7/PWejbA8
-	 QqzIctEwcXRYKWzuXgn52oMu3BvUFDgoBHn5Jz3O8mJSH8I2EXrOfgeJuoO3blAPSr
-	 lsWwF0VVJxRgCzSq7d398HzlWwAcPF4N8L3p+JGY=
-Date: Mon, 12 Jan 2026 05:05:52 -0800
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
-	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	dipayanroy@microsoft.com
-Subject: [PATCH net-next, v8] net: mana: Implement ndo_tx_timeout and
- serialize queue resets per port.
-Message-ID: <20260112130552.GA11785@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nbZWez4/"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768223211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xbIJal/gfJnpbqOOXrwfFZL/+IG8MB1cGwJ3x0vOuxo=;
+	b=nbZWez4/3ZblIOQ9G5g1ieE4N3T2mwTJlVl9gJg/aoSELhCwJc6RjuHmqLay54jx93el+z
+	BEWStciT9kNesSkrMC+2aO9/21ZAjpXZ2LIr9my8LnofPN6pHuFMHCsrjdw98RMtlAPnOq
+	AC85xzrI22VLmhCcvdG0U4gnYjuT9OM=
+From: Fushuai Wang <fushuai.wang@linux.dev>
+To: Jason@zx2c4.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wangfushuai@baidu.com,
+	vadim.fedorenko@linux.dev
+Subject: [PATCH net-next v3] wireguard: allowedips: Use kfree_rcu() instead of call_rcu()
+Date: Mon, 12 Jan 2026 21:06:33 +0800
+Message-Id: <20260112130633.25563-1-fushuai.wang@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Implement .ndo_tx_timeout for MANA so any stalled TX queue can be detected
-and a device-controlled port reset for all queues can be scheduled to a
-ordered workqueue. The reset for all queues on stall detection is
-recomended by hardware team.
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
----
-Changes in v8:
-  - better aligned queue reset work struct.
-Changes in v7:
-  - Add enable_work in resume path.
-Changes in v6:
-  - Rebased.
-Changes in v5:
-  -Fixed commit message, used 'create_singlethread_workqueue' and fixed
-   cleanup part.
-Changes in v4:
-  -Fixed commit message, work initialization before registering netdev,
-   fixed potential null pointer de-reference bug.
-Changes in v3:
-  -Fixed commit meesage, removed rtnl_trylock and added
-   disable_work_sync, fixed mana_queue_reset_work, and few
-   cosmetics.
-Changes in v2:
-  -Fixed cosmetic changes.
----
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 77 ++++++++++++++++++-
- include/net/mana/gdma.h                       |  7 +-
- include/net/mana/mana.h                       |  3 +-
- 3 files changed, 84 insertions(+), 3 deletions(-)
+Replace call_rcu() + kmem_cache_free() with kfree_rcu() to simplify
+the code and reduce function size.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 1ad154f9db1a..91c418097284 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -299,6 +299,39 @@ static int mana_get_gso_hs(struct sk_buff *skb)
- 	return gso_hs;
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+---
+ drivers/net/wireguard/allowedips.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
+index 09f7fcd7da78..5ece9acad64d 100644
+--- a/drivers/net/wireguard/allowedips.c
++++ b/drivers/net/wireguard/allowedips.c
+@@ -48,11 +48,6 @@ static void push_rcu(struct allowedips_node **stack,
+ 	}
  }
  
-+static void mana_per_port_queue_reset_work_handler(struct work_struct *work)
-+{
-+	struct mana_port_context *apc = container_of(work,
-+						     struct mana_port_context,
-+						     queue_reset_work);
-+	struct net_device *ndev = apc->ndev;
-+	int err;
-+
-+	rtnl_lock();
-+
-+	/* Pre-allocate buffers to prevent failure in mana_attach later */
-+	err = mana_pre_alloc_rxbufs(apc, ndev->mtu, apc->num_queues);
-+	if (err) {
-+		netdev_err(ndev, "Insufficient memory for reset post tx stall detection\n");
-+		goto out;
-+	}
-+
-+	err = mana_detach(ndev, false);
-+	if (err) {
-+		netdev_err(ndev, "mana_detach failed: %d\n", err);
-+		goto dealloc_pre_rxbufs;
-+	}
-+
-+	err = mana_attach(ndev);
-+	if (err)
-+		netdev_err(ndev, "mana_attach failed: %d\n", err);
-+
-+dealloc_pre_rxbufs:
-+	mana_pre_dealloc_rxbufs(apc);
-+out:
-+	rtnl_unlock();
-+}
-+
- netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- {
- 	enum mana_tx_pkt_format pkt_fmt = MANA_SHORT_PKT_FMT;
-@@ -839,6 +872,23 @@ static int mana_change_mtu(struct net_device *ndev, int new_mtu)
- 	return err;
- }
- 
-+static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
-+{
-+	struct mana_port_context *apc = netdev_priv(netdev);
-+	struct mana_context *ac = apc->ac;
-+	struct gdma_context *gc = ac->gdma_dev->gdma_context;
-+
-+	/* Already in service, hence tx queue reset is not required.*/
-+	if (gc->in_service)
-+		return;
-+
-+	/* Note: If there are pending queue reset work for this port(apc),
-+	 * subsequent request queued up from here are ignored. This is because
-+	 * we are using the same work instance per port(apc).
-+	 */
-+	queue_work(ac->per_port_queue_reset_wq, &apc->queue_reset_work);
-+}
-+
- static int mana_shaper_set(struct net_shaper_binding *binding,
- 			   const struct net_shaper *shaper,
- 			   struct netlink_ext_ack *extack)
-@@ -924,6 +974,7 @@ static const struct net_device_ops mana_devops = {
- 	.ndo_bpf		= mana_bpf,
- 	.ndo_xdp_xmit		= mana_xdp_xmit,
- 	.ndo_change_mtu		= mana_change_mtu,
-+	.ndo_tx_timeout		= mana_tx_timeout,
- 	.net_shaper_ops         = &mana_shaper_ops,
- };
- 
-@@ -3287,6 +3338,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	ndev->min_mtu = ETH_MIN_MTU;
- 	ndev->needed_headroom = MANA_HEADROOM;
- 	ndev->dev_port = port_idx;
-+	/* Recommended timeout based on HW FPGA re-config scenario. */
-+	ndev->watchdog_timeo = 15 * HZ;
- 	SET_NETDEV_DEV(ndev, gc->dev);
- 
- 	netif_set_tso_max_size(ndev, GSO_MAX_SIZE);
-@@ -3303,6 +3356,10 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	if (err)
- 		goto reset_apc;
- 
-+	/* Initialize the per port queue reset work.*/
-+	INIT_WORK(&apc->queue_reset_work,
-+		  mana_per_port_queue_reset_work_handler);
-+
- 	netdev_lockdep_set_classes(ndev);
- 
- 	ndev->hw_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-@@ -3492,6 +3549,7 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- {
- 	struct gdma_context *gc = gd->gdma_context;
- 	struct mana_context *ac = gd->driver_data;
-+	struct mana_port_context *apc = NULL;
- 	struct device *dev = gc->dev;
- 	u8 bm_hostmode = 0;
- 	u16 num_ports = 0;
-@@ -3549,6 +3607,14 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 	if (ac->num_ports > MAX_PORTS_IN_MANA_DEV)
- 		ac->num_ports = MAX_PORTS_IN_MANA_DEV;
- 
-+	ac->per_port_queue_reset_wq =
-+		create_singlethread_workqueue("mana_per_port_queue_reset_wq");
-+	if (!ac->per_port_queue_reset_wq) {
-+		dev_err(dev, "Failed to allocate per port queue reset workqueue\n");
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+
- 	if (!resuming) {
- 		for (i = 0; i < ac->num_ports; i++) {
- 			err = mana_probe_port(ac, i, &ac->ports[i]);
-@@ -3565,6 +3631,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 	} else {
- 		for (i = 0; i < ac->num_ports; i++) {
- 			rtnl_lock();
-+			apc = netdev_priv(ac->ports[i]);
-+			enable_work(&apc->queue_reset_work);
- 			err = mana_attach(ac->ports[i]);
- 			rtnl_unlock();
- 			/* we log the port for which the attach failed and stop
-@@ -3616,13 +3684,15 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
- 
- 	for (i = 0; i < ac->num_ports; i++) {
- 		ndev = ac->ports[i];
--		apc = netdev_priv(ndev);
- 		if (!ndev) {
- 			if (i == 0)
- 				dev_err(dev, "No net device to remove\n");
- 			goto out;
- 		}
- 
-+		apc = netdev_priv(ndev);
-+		disable_work_sync(&apc->queue_reset_work);
-+
- 		/* All cleanup actions should stay after rtnl_lock(), otherwise
- 		 * other functions may access partially cleaned up data.
- 		 */
-@@ -3649,6 +3719,11 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
- 
- 	mana_destroy_eq(ac);
- out:
-+	if (ac->per_port_queue_reset_wq) {
-+		destroy_workqueue(ac->per_port_queue_reset_wq);
-+		ac->per_port_queue_reset_wq = NULL;
-+	}
-+
- 	mana_gd_deregister_device(gd);
- 
- 	if (suspending)
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index eaa27483f99b..a59bd4035a99 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -598,6 +598,10 @@ enum {
- 
- /* Driver can self reset on FPGA Reconfig EQE notification */
- #define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
-+
-+/* Driver detects stalled send queues and recovers them */
-+#define GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY BIT(18)
-+
- #define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
- 
- /* Driver supports linearizing the skb when num_sge exceeds hardware limit */
-@@ -621,7 +625,8 @@ enum {
- 	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE | \
- 	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY | \
- 	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE | \
--	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY)
-+	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY | \
-+	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index d7e089c6b694..a078af283bdd 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -480,7 +480,7 @@ struct mana_context {
- 	struct mana_ethtool_hc_stats hc_stats;
- 	struct mana_eq *eqs;
- 	struct dentry *mana_eqs_debugfs;
+-static void node_free_rcu(struct rcu_head *rcu)
+-{
+-	kmem_cache_free(node_cache, container_of(rcu, struct allowedips_node, rcu));
+-}
 -
-+	struct workqueue_struct *per_port_queue_reset_wq;
- 	/* Workqueue for querying hardware stats */
- 	struct delayed_work gf_stats_work;
- 	bool hwc_timeout_occurred;
-@@ -495,6 +495,7 @@ struct mana_context {
- struct mana_port_context {
- 	struct mana_context *ac;
- 	struct net_device *ndev;
-+	struct work_struct queue_reset_work;
+ static void root_free_rcu(struct rcu_head *rcu)
+ {
+ 	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
+@@ -271,13 +266,13 @@ static void remove_node(struct allowedips_node *node, struct mutex *lock)
+ 	if (free_parent)
+ 		child = rcu_dereference_protected(parent->bit[!(node->parent_bit_packed & 1)],
+ 						  lockdep_is_held(lock));
+-	call_rcu(&node->rcu, node_free_rcu);
++	kfree_rcu(node, rcu);
+ 	if (!free_parent)
+ 		return;
+ 	if (child)
+ 		child->parent_bit_packed = parent->parent_bit_packed;
+ 	*(struct allowedips_node **)(parent->parent_bit_packed & ~3UL) = child;
+-	call_rcu(&parent->rcu, node_free_rcu);
++	kfree_rcu(parent, rcu);
+ }
  
- 	u8 mac_addr[ETH_ALEN];
- 
+ static int remove(struct allowedips_node __rcu **trie, u8 bits, const u8 *key,
 -- 
-2.43.0
+2.36.1
 
