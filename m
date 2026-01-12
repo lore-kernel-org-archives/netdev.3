@@ -1,288 +1,262 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010001.outbound.protection.outlook.com [52.101.193.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1CC34A79D
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 09:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768210879; cv=none; b=fIfsndv1wSTxjoU0jWHoqRQ8DayaPjsTCwbnzGN6Z2m8afJ1rNnsZK2hf+DjwROjaVd2uRLzIUaP6Wa0q0jxFk6M5Zh9bbL9gYrjSmM7VIuP2liJV6di10Mqz5CQg+AOSqHhrNO44D1CFvJB1rQSdePtaBjke0EsNWMvGhN7BQg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768210879; c=relaxed/simple;
-	bh=KSC8Nj3DiK31fDmZ4/PzcbAzUlQgw1PwPAvmb/6l8Os=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Aw6YMG7fIVvauTxzUWWnG2vg50bbv5SU/RNIs2GUcoWJ5T0g764W3cgI7JJ+bJpgpm42rs9IpCG//uo6TMPp61ixLNDYQJcZFdWdMyWHEBjai3wSgH9h7VQ2cbLCcXreYfu+WdwilJDAiJsqtRGxwH8gNpD5Sp9brkEQrKPD/yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k4Rg5gtr; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779DB34AB09;
+	Mon, 12 Jan 2026 09:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768210880; cv=fail; b=JEJ6cP6pw9urld1cfL/KEQvqF1DmxM4rGvkZgyO3DZdY2PRJdU99HhZHp1YOyrywG7SgasmO1c8V0qgzM/UkVoEBe83xcaHL7plgxbDyrQXeEVU5Lf6jlTVlSueya5WjpMKYpAAmRJsVq6E1oLKHgSW51EmuwAE64V6cZBdPdbs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768210880; c=relaxed/simple;
+	bh=M0dC8ftDo2ys1vt7Cl/ni4LEncLNXRMoo4qs/zB83WA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XgiqbkQGc29zxafVt8DostgA2LaKurfuewnws9QnfmJ54fD6m9AD8IvMSIBHMe/8BburXWvsW7FW820A3vKLLl89StTYtZNarHxxI0gNNqMZ6NgfgmHwyPH7d5kefxB2G+8JNW2RFLdhPpmch4KESBpoiKJS/E0w0oEsz7nJVSE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aF3J+lwW; arc=fail smtp.client-ip=52.101.193.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k4Rg5gtr"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b87281dbdbcso52711066b.0
-        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 01:41:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768210874; x=1768815674; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2RFEABt6Iiak9nuJmj7Wxw5Z8I9sCXd9qm2gCXqcVTA=;
-        b=k4Rg5gtrQzZNDFwPEua/3PteELL8IOfQ76OrcxIPrd7hmF3EMtSTW93tIpL+OaBmXl
-         8HL3DUkpewKwM0YM4jx6YxsVegRMX+MxxhNxM3FTlw71JjFCGxMj3lhd2mhsyOg8EfdL
-         Xk2kFp3j4LX47D/v33R/bpeYOwKp7BJDgWgKWGTo5cLd6VqGk1JtdbGCZs39nzjiBBrc
-         RW3speVSWuV45YO0jW+2suJT3b9O7TCsirkbsCuzUney+jq6YXtuRZIlyWESpEBm2I1l
-         JCVXfkdS+d6dQPDh9upvynPl4VfKZLSjTJtCbfKLWiP9+Ox7m4KsvvulkmXGTp4ASwIH
-         SdcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768210874; x=1768815674;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2RFEABt6Iiak9nuJmj7Wxw5Z8I9sCXd9qm2gCXqcVTA=;
-        b=hmlAmuL1grDZ4hIdC8Bdn0m4NNoOLTH9r2Om1dxRkGen69uuTZfQo3Lawqk2apDguC
-         5X4SDb1aqAOE18e9Iz24w0j1dZzmQPFiXAd7z7T8D0lLgNa7Ix4TSH4QvpFC0qKJvKZk
-         dgk4d23zlBd1Ty3vnJudRjam9tOuPSfGIo6qFh4MQyXs1xrURKJ6ut4v2FPOpdjKnjz7
-         Lz9aRUi6R60vJDujoy8X3hVnrBsr3573AOkndyXrSkzb972W4zPfl4M6pLXwReD3aBR7
-         gwJ1yha5D8FlgUzVF5e5yL2G3yAltw68Y/WtF/KX5dlPua28nZe1dkDtRzRSnY7i3isd
-         hfOQ==
-X-Gm-Message-State: AOJu0Ywok8BoA1d3mMBNinmJrISAd6Q2aLUUbz6Pta1IVXiPP91bQPM3
-	Rb2/Yr5BJjJOKPf6VvRmiP7auEZb72zbp4P8GRsgXBDqJ0J0edValVYA
-X-Gm-Gg: AY/fxX67nsgeKJm1EOjH4sfe/4Pb1lqITjzTC0kqh7HFpFQdokGnUFEcwbu3sYe/qJi
-	6qF/L3WgBjMKNElrxKEB2oeTgHUe3skObchqRoaer+lscRDIe91VYrgmy2tQ5qPm/zqLaMcGPpK
-	Fen5ZNmFgUgBe0C85ZrjJK2zhQAQlQFhGxyLeUWoYVFPZdMhyVkqQQBy1byDDuwL37U//zM6rjK
-	LICZuv15MY8vAbdEuf/zZH7HMT/SQ4lE/SdSbBHEHoO/lgFuBaJBXXaTqV7Xoj4UeZDld7+B5pV
-	0OfA9JwixrZSznW1BUQZ48KXW4iyjvHdDISLriNYIYTidAgBr1ZPXvdWlyvRbG8+Sl14QCmpshZ
-	BSYpp0yFqVOJs+xG1ZShiL4xmreHUOnKk7jYJSRratsaiF6mUKZJw2qGRaYFXDRp7m0fCFkpYDQ
-	kCIADdNJLbDf+H0oz0PFgGpdI1
-X-Google-Smtp-Source: AGHT+IE3wiOXJvIMJw8ueQ9HmSpunkUpmolMVZVGfJsiMnps0ap0V1WAk3+kWd4HECoGsMIKWUcuqw==
-X-Received: by 2002:a17:907:86a5:b0:b87:6d0:df2a with SMTP id a640c23a62f3a-b8706d0e1e9mr437193266b.40.1768210873498;
-        Mon, 12 Jan 2026 01:41:13 -0800 (PST)
-Received: from [192.168.1.243] ([143.58.192.3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b870bcd342bsm410828766b.56.2026.01.12.01.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 01:41:12 -0800 (PST)
-From: Andre Carvalho <asantostc@gmail.com>
-Date: Mon, 12 Jan 2026 09:40:58 +0000
-Subject: [PATCH net-next v10 7/7] selftests: netconsole: validate target
- resume
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aF3J+lwW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PWgKb9GA1G6bjyDbjK+itjau7H+dHP4X7yKxPz2FGin4Sh8Al6VaTrsJIjNqPVmFMaKUn3TURml4wGczvejaTOLqRt2j2qVXYJ9QVutbcQLNndNfS1K9Ub7c9CkAVNppjaqaGP7gFCRYOCS7HjYfX3Bs0dm6O7xs22CRW463x8AimNpC+fyGsGZXk8a9yjU7SGtEVvJXQ3MKwxxzyOQ02lxEFOChuN5aSmMA1EnVWXwbqfy46Cuya+r05aDer7FLvUE+3jt/kKnYWFieI9WbReegWZzw7l3e7AbXna9yxI/dgMzIkIwGoGrC3aoUzRj5hIaSenXDox47FPXydWarzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ANjacQbri3PxJY8MiZJSO5BRqI0rp0n5/6XuLJyCEKU=;
+ b=RZFVKzmhKDFeK91sTaxFgooZkkKLc+zcZMP8zDYP3SV1M+GY0sP0Z47Pm82taPVHBQR5WLVJzdJu4vwB1xRYPhpw94kmoQWDDQ+1v+J6xD2bYN/NNMm9cdWR5VnXVrFKYWcWzk8jYe3ZQAXHFYTZg3RgrhpGiXduDkpke41iUUQyyrIjYp7sX2tLqoIBr4i3pgoyWJFmFs7KSQeT1APdVsiGrstvyjw0H2/6BEyTll+UTBHR5hfJgS5f7gc4JUOLHsBA115DeHIa66DL/ZzGYlY8UkK/+d+OkKM9/oWSW+Ysm95gRnoXRe/KFV5GBZG/7e5DG7k/lcgO9GJvjUP3bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ANjacQbri3PxJY8MiZJSO5BRqI0rp0n5/6XuLJyCEKU=;
+ b=aF3J+lwWbb9SXX14UVvlpY73Ils4UX+cR4RgCSSIKOLsrYsRq7+jcp/0+MyB7hzbCbjgNWKIHlBKzv8A0KC0glCZuSCUvMtmMNprHe6NERHLY8fkkpSx4d+omLQEbzP6mej+6b7S+eaHWCeGgidG42hhcKeY5idAOzUe0crkkM6gXNr7KQWNhrOySI9MHusIcmlW1wkgeFrRUAvbQ1aLyGMNQ6MsGFRFDUKvV1MPz96sZ7c6QWLhyrSe0aRrZdML3RCJqX4y++JzbvYq41mAwWDiFyP1Pzp7xHIn4D6zuVNYKJtNYAykmkYng1iwo8idJApUAQfcRimitlVDKw7Alw==
+Received: from CH0PR04CA0020.namprd04.prod.outlook.com (2603:10b6:610:76::25)
+ by DS0PR12MB7536.namprd12.prod.outlook.com (2603:10b6:8:11c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
+ 2026 09:41:03 +0000
+Received: from CH2PEPF00000144.namprd02.prod.outlook.com
+ (2603:10b6:610:76:cafe::3) by CH0PR04CA0020.outlook.office365.com
+ (2603:10b6:610:76::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Mon,
+ 12 Jan 2026 09:41:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF00000144.mail.protection.outlook.com (10.167.244.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.1 via Frontend Transport; Mon, 12 Jan 2026 09:41:03 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
+ 2026 01:40:47 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
+ 2026 01:40:47 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 12
+ Jan 2026 01:40:43 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Yevgeny Kliteynik <kliteyn@nvidia.com>
+Subject: [PATCH net-next 2/3] net/mlx5: fs, split bulk init
+Date: Mon, 12 Jan 2026 11:40:24 +0200
+Message-ID: <1768210825-1598472-3-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
+In-Reply-To: <1768210825-1598472-1-git-send-email-tariqt@nvidia.com>
+References: <1768210825-1598472-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-netcons-retrigger-v10-7-d82ebfc2503e@gmail.com>
-References: <20260112-netcons-retrigger-v10-0-d82ebfc2503e@gmail.com>
-In-Reply-To: <20260112-netcons-retrigger-v10-0-d82ebfc2503e@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Andre Carvalho <asantostc@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768210863; l=6537;
- i=asantostc@gmail.com; s=20250807; h=from:subject:message-id;
- bh=KSC8Nj3DiK31fDmZ4/PzcbAzUlQgw1PwPAvmb/6l8Os=;
- b=yT390LC8bW9NHpfY3TcipbMrxZ1ISAJCIIideT52vdpL2kwc0ZJtpmUDb7SyZ6EhSZKrh9A56
- kiD5h+lpd5OCA7yQCr9if1+60dgN/t+nBN+mVJu0b4/kjEelQ209O4m
-X-Developer-Key: i=asantostc@gmail.com; a=ed25519;
- pk=eWre+RwFHCxkiaQrZLsjC67mZ/pZnzSM/f7/+yFXY4Q=
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000144:EE_|DS0PR12MB7536:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32d248e3-2d72-4e4a-1aba-08de51beb3a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ha7DwaZGNZolD5OXi4ZTLzrp5hCWecyOb9fwS4Sj0a7EJ2JZDf8RgEREp2rx?=
+ =?us-ascii?Q?+AHUFOiejbTtScMR6uCgX2QR+nGqDD7NTV7OgsDWisE7Q2uC6mY363Z5VKa5?=
+ =?us-ascii?Q?uCfEg7SD1sA2V1XPiGkFqTGhptbFKiJNyuNWmcuCRioQ522321/mKYdgXZ0w?=
+ =?us-ascii?Q?bI69CcRy+nhFvxsfaHV2jlp+jBD9fjnREpbPPlZFV0EsPOcNtkF6ydZgeyAy?=
+ =?us-ascii?Q?17XRldjYOypxwg1niypvnEeib0fE5j4FChsBE48XiRKnxRihDhcbZ7Q+oely?=
+ =?us-ascii?Q?N0dE4uf8KV0J0NckrW8qe0bzVCrOh32idsLdL52BkOtSJnGU4JSg7pajtr6T?=
+ =?us-ascii?Q?v5fEbqT0hzstXayHJp7mv0u46Hh7PgYCNaWgfvjHmtgJFARLpsJFObVD+auT?=
+ =?us-ascii?Q?dMrpQBFZUl6pcqcqwVRJ5zE2GG9F6PX+aLGFwfIUr6yhk0q3Hl3k+z94CqF9?=
+ =?us-ascii?Q?RgIq4vdSCDfN9IivUZ/85SuMYwOKW+mm1wB4aTPE+8tPweoXGSmIgZ6MutyO?=
+ =?us-ascii?Q?7Z8S+qFQD8xvRrNeL859rV3lBL4Yc1xva10fCkZvj+027wtd+hCbCUiGcI/U?=
+ =?us-ascii?Q?7vPou8PMNaLVUELzbOWKnoZ35YPv5sTy/JVB4sW0IbAZG6SJjRquAEUDkP40?=
+ =?us-ascii?Q?QgOrP3UCNaL8ojf9t54qgICKmz9T7e7qk7K8EByAAMKRtiuJgXDh7/2wV/SD?=
+ =?us-ascii?Q?XIUVauV8uJeVNdSANM1yVrKxZIlKS5dDNm6CZGTrRoLvfTAxscOKTeolx1yH?=
+ =?us-ascii?Q?+QG4Zk0NjTi2lz7st4mlfjvY/lZZ7yaVzPRYBOURukqJOFgbnGmh+mup/s3A?=
+ =?us-ascii?Q?KQpv6UBwYL2XS0HCcMgHpj/7nwQplmdyciprdPYIFa4Ks4z3Y9fITu6jdqLK?=
+ =?us-ascii?Q?j5Kh4VL9LbNrIC1SMiovWErKiHp5lWojFfNkfP6WvefobPmRmQ95HLPDmkN1?=
+ =?us-ascii?Q?wTvTxo/q1fopu7vngOQxksBEB+nw97YIzwp7EL9P/cFChO5x32PsVJC/bfZV?=
+ =?us-ascii?Q?WvwnM8Ns5riYLD8u8v6wsjAIzTlzDGz1L6g2BPa6YrRyKu9A88E54ZO8CcER?=
+ =?us-ascii?Q?uyNxIYVeV+/Hh7OqgX3J3XxMgplp3IBqnHsqsmehFgpagsNCXzKMx8KABYwk?=
+ =?us-ascii?Q?FlrDz3l+P9gEpseRMYHD/kuI/bpjTzUv9Y3SlU+iDupLWTqN5CRskmK9OnEq?=
+ =?us-ascii?Q?RksOWOsOvtSPA+wpuAmiR+vrd1DZ9oqLAEauAIySSLJ01oeKTkhVdgmtJIHp?=
+ =?us-ascii?Q?6oWUYCsZyXMpzSXS1yOxjpU/sNn/ZYZBCPl5rGYADfnFw4lK9L1YOAQbDQql?=
+ =?us-ascii?Q?7++dOzCgEzbOvEglK1+FhucdyRPqTokU0nlQphC+gQoJ/SWHHXNk5sLQdbec?=
+ =?us-ascii?Q?/fL9AL7E3ycSkR2yOZlQcC55idLtgv91gIssTxBOXQ4gm5v9EVlD5oHL4rj/?=
+ =?us-ascii?Q?nFFGzzq4y4I3P6aIzsaBJNAHBKnetiQrROxDZ4jCpngAH12ktEI3ho8Gt5HX?=
+ =?us-ascii?Q?xuYlybYN1aojPixtuU/uCNDjzlOlOnk5HAGmcVLt18jhAf9HBJ5sXg+e/Q5x?=
+ =?us-ascii?Q?N/WW1+aN0mlHDGls2qk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 09:41:03.0314
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32d248e3-2d72-4e4a-1aba-08de51beb3a5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000144.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7536
 
-Introduce a new netconsole selftest to validate that netconsole is able
-to resume a deactivated target when the low level interface comes back.
+From: Mark Bloch <mbloch@nvidia.com>
 
-The test setups the network using netdevsim, creates a netconsole target
-and then remove/add netdevsim in order to bring the same interfaces
-back. Afterwards, the test validates that the target works as expected.
+Refactor mlx5_fs_bulk_init() by moving bitmap allocation logic into a
+new helper function mlx5_fs_bulk_bitmap_alloc(). This change does not
+alter any logic.
 
-Targets are created via cmdline parameters to the module to ensure that
-we are able to resume targets that were bound by mac and interface name.
-
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Andre Carvalho <asantostc@gmail.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- tools/testing/selftests/drivers/net/Makefile       |  1 +
- .../selftests/drivers/net/lib/sh/lib_netcons.sh    | 35 ++++++--
- .../selftests/drivers/net/netcons_resume.sh        | 97 ++++++++++++++++++++++
- 3 files changed, 128 insertions(+), 5 deletions(-)
+ .../ethernet/mellanox/mlx5/core/fs_counters.c    |  6 ++++--
+ .../net/ethernet/mellanox/mlx5/core/fs_pool.c    | 16 ++++++++++------
+ .../net/ethernet/mellanox/mlx5/core/fs_pool.h    |  5 +++--
+ .../mlx5/core/steering/hws/fs_hws_pools.c        |  8 ++++++--
+ 4 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index f5c71d993750..3eba569b3366 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -19,6 +19,7 @@ TEST_PROGS := \
- 	netcons_cmdline.sh \
- 	netcons_fragmented_msg.sh \
- 	netcons_overflow.sh \
-+	netcons_resume.sh \
- 	netcons_sysdata.sh \
- 	netcons_torture.sh \
- 	netpoll_basic.py \
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-index ae8abff4be40..b6093bcf2b06 100644
---- a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-+++ b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-@@ -203,19 +203,21 @@ function do_cleanup() {
- function cleanup_netcons() {
- 	# delete netconsole dynamic reconfiguration
- 	# do not fail if the target is already disabled
--	if [[ ! -d "${NETCONS_PATH}" ]]
-+	local TARGET_PATH=${1:-${NETCONS_PATH}}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_counters.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_counters.c
+index e14570a3d492..14539a20a60f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_counters.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_counters.c
+@@ -449,7 +449,9 @@ static struct mlx5_fs_bulk *mlx5_fc_bulk_create(struct mlx5_core_dev *dev,
+ 	if (!fc_bulk)
+ 		return NULL;
+ 
+-	if (mlx5_fs_bulk_init(dev, &fc_bulk->fs_bulk, bulk_len))
++	mlx5_fs_bulk_init(&fc_bulk->fs_bulk, bulk_len);
 +
-+	if [[ ! -d "${TARGET_PATH}" ]]
- 	then
- 		# in some cases this is called before netcons path is created
- 		return
- 	fi
--	if [[ $(cat "${NETCONS_PATH}"/enabled) != 0 ]]
-+	if [[ $(cat "${TARGET_PATH}"/enabled) != 0 ]]
- 	then
--		echo 0 > "${NETCONS_PATH}"/enabled || true
-+		echo 0 > "${TARGET_PATH}"/enabled || true
- 	fi
- 	# Remove all the keys that got created during the selftest
--	find "${NETCONS_PATH}/userdata/" -mindepth 1 -type d -delete
-+	find "${TARGET_PATH}/userdata/" -mindepth 1 -type d -delete
- 	# Remove the configfs entry
--	rmdir "${NETCONS_PATH}"
-+	rmdir "${TARGET_PATH}"
++	if (mlx5_fs_bulk_bitmap_alloc(dev, &fc_bulk->fs_bulk))
+ 		goto fc_bulk_free;
+ 
+ 	if (mlx5_cmd_fc_bulk_alloc(dev, alloc_bitmask, &base_id))
+@@ -566,7 +568,7 @@ mlx5_fc_local_create(u32 counter_id, u32 offset, u32 bulk_size)
+ 
+ 	counter->type = MLX5_FC_TYPE_LOCAL;
+ 	counter->id = counter_id;
+-	fc_bulk->fs_bulk.bulk_len = bulk_size;
++	mlx5_fs_bulk_init(&fc_bulk->fs_bulk, bulk_size);
+ 	mlx5_fc_bulk_init(fc_bulk, counter_id - offset);
+ 	counter->bulk = fc_bulk;
+ 	refcount_set(&counter->fc_local_refcount, 1);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.c
+index f6c226664602..faa519254316 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.c
+@@ -4,23 +4,27 @@
+ #include <mlx5_core.h>
+ #include "fs_pool.h"
+ 
+-int mlx5_fs_bulk_init(struct mlx5_core_dev *dev, struct mlx5_fs_bulk *fs_bulk,
+-		      int bulk_len)
++int mlx5_fs_bulk_bitmap_alloc(struct mlx5_core_dev *dev,
++			      struct mlx5_fs_bulk *fs_bulk)
+ {
+ 	int i;
+ 
+-	fs_bulk->bitmask = kvcalloc(BITS_TO_LONGS(bulk_len), sizeof(unsigned long),
+-				    GFP_KERNEL);
++	fs_bulk->bitmask = kvcalloc(BITS_TO_LONGS(fs_bulk->bulk_len),
++				    sizeof(unsigned long), GFP_KERNEL);
+ 	if (!fs_bulk->bitmask)
+ 		return -ENOMEM;
+ 
+-	fs_bulk->bulk_len = bulk_len;
+-	for (i = 0; i < bulk_len; i++)
++	for (i = 0; i < fs_bulk->bulk_len; i++)
+ 		set_bit(i, fs_bulk->bitmask);
+ 
+ 	return 0;
  }
  
- function cleanup() {
-@@ -377,6 +379,29 @@ function check_netconsole_module() {
- 	fi
- }
++void mlx5_fs_bulk_init(struct mlx5_fs_bulk *fs_bulk, int bulk_len)
++{
++	fs_bulk->bulk_len = bulk_len;
++}
++
+ void mlx5_fs_bulk_cleanup(struct mlx5_fs_bulk *fs_bulk)
+ {
+ 	kvfree(fs_bulk->bitmask);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.h b/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.h
+index f04ec3107498..4deb66479d16 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_pool.h
+@@ -39,8 +39,9 @@ struct mlx5_fs_pool {
+ 	int threshold;
+ };
  
-+function wait_target_state() {
-+	local TARGET=${1}
-+	local STATE=${2}
-+	local TARGET_PATH="${NETCONS_CONFIGFS}"/"${TARGET}"
-+	local ENABLED=0
+-int mlx5_fs_bulk_init(struct mlx5_core_dev *dev, struct mlx5_fs_bulk *fs_bulk,
+-		      int bulk_len);
++void mlx5_fs_bulk_init(struct mlx5_fs_bulk *fs_bulk, int bulk_len);
++int mlx5_fs_bulk_bitmap_alloc(struct mlx5_core_dev *dev,
++			      struct mlx5_fs_bulk *fs_bulk);
+ void mlx5_fs_bulk_cleanup(struct mlx5_fs_bulk *fs_bulk);
+ int mlx5_fs_bulk_get_free_amount(struct mlx5_fs_bulk *bulk);
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
+index 839d71bd4216..5bc8e97ecf1c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws_pools.c
+@@ -121,7 +121,9 @@ mlx5_fs_hws_pr_bulk_create(struct mlx5_core_dev *dev, void *pool_ctx)
+ 	if (!pr_bulk)
+ 		return NULL;
+ 
+-	if (mlx5_fs_bulk_init(dev, &pr_bulk->fs_bulk, bulk_len))
++	mlx5_fs_bulk_init(&pr_bulk->fs_bulk, bulk_len);
 +
-+	if [ "${STATE}" == "enabled" ]
-+	then
-+		ENABLED=1
-+	fi
++	if (mlx5_fs_bulk_bitmap_alloc(dev, &pr_bulk->fs_bulk))
+ 		goto free_pr_bulk;
+ 
+ 	for (i = 0; i < bulk_len; i++) {
+@@ -275,7 +277,9 @@ mlx5_fs_hws_mh_bulk_create(struct mlx5_core_dev *dev, void *pool_ctx)
+ 	if (!mh_bulk)
+ 		return NULL;
+ 
+-	if (mlx5_fs_bulk_init(dev, &mh_bulk->fs_bulk, bulk_len))
++	mlx5_fs_bulk_init(&mh_bulk->fs_bulk, bulk_len);
 +
-+	if [ ! -d "$TARGET_PATH" ]; then
-+		echo "FAIL: Target does not exist." >&2
-+		exit "${ksft_fail}"
-+	fi
-+
-+	local CHECK_CMD="grep \"$ENABLED\" \"$TARGET_PATH/enabled\""
-+	slowwait 2 sh -c "test -n \"\$($CHECK_CMD)\"" || {
-+		echo "FAIL: ${TARGET} is not ${STATE}." >&2
-+		exit "${ksft_fail}"
-+	}
-+}
-+
- # A wrapper to translate protocol version to udp version
- function wait_for_port() {
- 	local NAMESPACE=${1}
-diff --git a/tools/testing/selftests/drivers/net/netcons_resume.sh b/tools/testing/selftests/drivers/net/netcons_resume.sh
-new file mode 100755
-index 000000000000..383ad1149271
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netcons_resume.sh
-@@ -0,0 +1,97 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# This test validates that netconsole is able to resume a target that was
-+# deactivated when its interface was removed when the interface is brought
-+# back up.
-+#
-+# The test configures a netconsole target and then removes netdevsim module to
-+# cause the interface to disappear. Targets are configured via cmdline to ensure
-+# targets bound by interface name and mac address can be resumed.
-+# The test verifies that the target moved to disabled state before adding
-+# netdevsim and the interface back.
-+#
-+# Finally, the test verifies that the target is re-enabled automatically and
-+# the message is received on the destination interface.
-+#
-+# Author: Andre Carvalho <asantostc@gmail.com>
-+
-+set -euo pipefail
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "${SCRIPTDIR}"/lib/sh/lib_netcons.sh
-+
-+modprobe netdevsim 2> /dev/null || true
-+rmmod netconsole 2> /dev/null || true
-+
-+check_netconsole_module
-+
-+function cleanup() {
-+	cleanup_netcons "${NETCONS_CONFIGFS}/cmdline0"
-+	do_cleanup
-+	rmmod netconsole
-+}
-+
-+trap cleanup EXIT
-+
-+# Run the test twice, with different cmdline parameters
-+for BINDMODE in "ifname" "mac"
-+do
-+	echo "Running with bind mode: ${BINDMODE}" >&2
-+	# Set current loglevel to KERN_INFO(6), and default to KERN_NOTICE(5)
-+	echo "6 5" > /proc/sys/kernel/printk
-+
-+	# Create one namespace and two interfaces
-+	set_network
-+
-+	# Create the command line for netconsole, with the configuration from
-+	# the function above
-+	CMDLINE=$(create_cmdline_str "${BINDMODE}")
-+
-+	# The content of kmsg will be save to the following file
-+	OUTPUT_FILE="/tmp/${TARGET}-${BINDMODE}"
-+
-+	# Load the module, with the cmdline set
-+	modprobe netconsole "${CMDLINE}"
-+	# Expose cmdline target in configfs
-+	mkdir "${NETCONS_CONFIGFS}/cmdline0"
-+
-+	# Target should be enabled
-+	wait_target_state "cmdline0" "enabled"
-+
-+	# Remove low level module
-+	rmmod netdevsim
-+	# Target should be disabled
-+	wait_target_state "cmdline0" "disabled"
-+
-+	# Add back low level module
-+	modprobe netdevsim
-+	# Recreate namespace and two interfaces
-+	set_network
-+	# Target should be enabled again
-+	wait_target_state "cmdline0" "enabled"
-+
-+	# Listen for netconsole port inside the namespace and destination
-+	# interface
-+	listen_port_and_save_to "${OUTPUT_FILE}" &
-+	# Wait for socat to start and listen to the port.
-+	wait_local_port_listen "${NAMESPACE}" "${PORT}" udp
-+	# Send the message
-+	echo "${MSG}: ${TARGET}" > /dev/kmsg
-+	# Wait until socat saves the file to disk
-+	busywait "${BUSYWAIT_TIMEOUT}" test -s "${OUTPUT_FILE}"
-+	# Make sure the message was received in the dst part
-+	# and exit
-+	validate_msg "${OUTPUT_FILE}"
-+
-+	# kill socat in case it is still running
-+	pkill_socat
-+	# Cleanup & unload the module
-+	cleanup
-+
-+	echo "${BINDMODE} : Test passed" >&2
-+done
-+
-+trap - EXIT
-+exit "${EXIT_STATUS}"
-
++	if (mlx5_fs_bulk_bitmap_alloc(dev, &mh_bulk->fs_bulk))
+ 		goto free_mh_bulk;
+ 
+ 	for (int i = 0; i < bulk_len; i++) {
 -- 
-2.52.0
+2.31.1
 
