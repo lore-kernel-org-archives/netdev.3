@@ -1,121 +1,151 @@
-Received: from outbound.st.icloud.com (p-east2-cluster2-host2-snip4-2.eps.apple.com [57.103.78.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D46345CAF
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 08:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.78.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5736334677A
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 08:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768207973; cv=none; b=nSFPWXUHqoji/jh7eRN64wfMj2vL3BJHepI/rmMaDtYD5zPRulrL5iEDfgMxJ5qBpFqliL/r93l5OK5AUePcN+9Fa8A5YslYRrbwQE7QnbEu7SVUVou6qVwX7+K+49L9JRi/vg+O14ICNs8VSlvEom/kDBJc7Hqxi1Ky1QbPw/g=
+	t=1768207973; cv=none; b=VMHMELUksKWwXm4W0IVfd8EVeLR+ZYC1w853exBf82r1qY0s/nolBgu6/WW0xFtCHVttHzOYSLcBCUhiDvEDC1jkXthA2x7uPHNRBqxOd3aXld2MCXaVnKutrRHNeAeCGens4LMxK+puaiNr5NIO/sMQ7RTYyLAuWbBdvsTOpEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768207973; c=relaxed/simple;
-	bh=8jzkVNyIzEY2OeZAG2tyS95Rn7p59gwHlKarlepS/QM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5QBySMf9nPJug9v0mfltv52C3wIxiunu2Ym9Y2yH+0tHM/RKVV9mRKIgyM6BsBMwy0J6Zw1D/ShcFQD8Yoew2LuN3JJ0agW8Kljz9JM1Pyhpq9QYxb6u815eeLudLO26oA3I3MiIhblmk6Z2bmF/3dR7btGCmVlbIpa96RyGX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net; spf=pass smtp.mailfrom=y-koj.net; dkim=fail (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b=CWsK1CrV reason="key not found in DNS"; arc=none smtp.client-ip=57.103.78.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=y-koj.net
+	bh=hCAIODDBXUR1lJzCXHd+vWzfYVnk0E3TcXj6L2K+O6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gazH7iykw9nyxZxfKMZszko2NDBt+yY2d9Atx/Cl57w/23BaNZHipKbjyD1xO5iS/gj/CaxveamRaKSdaFPyIiOkBuF8vrlPbi1sg64JQN2LNH2spZw9qOp3GbJYveDQNZ2VYxfJzvGkfKvB4cNHOuJ6v4j68atrGfgkrJ1gqc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SehTPn8V; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b="CWsK1CrV"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPS id 3941318000A5;
-	Mon, 12 Jan 2026 08:52:48 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=y-koj.net; s=sig1; bh=iBw/jihR12dcfjegs0/lwJ1bWrYhtdrmwFgkaFDJvfg=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=CWsK1CrVTrihV+354ULBWdrCHj9WsBY3RQhxDTHjEqkne3ydiDbTApucy1bOmgpLbzsU76x2eO75i3ZWUpsjZfBMROO8ci7OlKOz0eubmctotwiDcn1rRDI5Z4xHOMzoFFDzm9sNpH8Nw1vDZUK2kswEPb6yEmG39ivV4ogldp8e56TgiHLG1q2kPn6EfES90MK2mPxsKDz8otMWARvQbeHMfZNPqAPNfwTci8D+gCs/sQ7HOLjooh6pY9WHzYOUTFGsrLTQQhQVBgv6mgjh3Ulg2+fCoY7skdEbCW4rmA8PvPIjqIAxfW1fUVMnDJIxwE6ryYUhJ5Jiq2W1xfdF+w==
-mail-alias-created-date: 1719758601013
-Received: from desktop.tail809fd.ts.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPSA id A0DF21800150;
-	Mon, 12 Jan 2026 08:52:45 +0000 (UTC)
-From: Yohei Kojima <yk@y-koj.net>
-To: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SehTPn8V"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c1d84781bso3450011a91.2
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 00:52:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768207971; x=1768812771; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rAvO+4sr8eby8Ki32sy15zXdfAa+GIY6AvTzuh51kLg=;
+        b=SehTPn8Vc1o/m5VvBhUbVjQHyM9IXJihCKAR9j9V5MdzI44wrk9HuY5pmjNqMSJhG4
+         v1mMZ2iIQt1pOmfa4c+BrImTzwiiBdivsgoOTLK5QdFvZFJhDmJe7xUGXVZgTqH6LXPx
+         0nK20GKV8SHh6rZfYeNwobxLAPZZnAwNX8i2WtCn1ahrGMQT+9R1fMUUT/hbEful2wgz
+         C9shZudqb1i+NtTd2n5k+pknbaqSS6YXN5K9CWLy3LNIrgBN2zZQTTNT6N9FXJ/N332X
+         CJ/js82Tx4/TaFcbo1BEj4B7S6pHNizq6KJ7SLG9EBzKs6RiXeDzAl6ohX4eftel/bEF
+         Zg/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768207971; x=1768812771;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rAvO+4sr8eby8Ki32sy15zXdfAa+GIY6AvTzuh51kLg=;
+        b=KP7k59DlsoY9HFIr4h2gtsXQaLz6BzV3lS5mjIV3SEGGwSE8VxMrbEP/S/UMS6OzMg
+         Ci1HmcXoWR41OdUl5vVI5CzUY5g58JUsisX6ha9mUAUcjRNDpdIJh7xgkvarTToH2gYF
+         BDp1Qac9WQAGvZTcjb4M4xC6X6auDaLFPU5/EeFuO4S/LDPtbb9OUcy4pwrUrNCafper
+         smiQjLUsAELJ3CXo0azJU1UcPIXEKQ3tlj6XUx7UZ95XWlkynMr1CUf0AE+UjOCQRqYy
+         f20ZP7xPlkO5tThWLwC6DkD0MBuNZp04zrC+o0o98gwGy2xhwgu9mwH0gXPtHqg0FnZW
+         3aVA==
+X-Gm-Message-State: AOJu0YyRrir6IgV84MMmjP0qWfHVozDKZbKbTP825LVDN7EyLIsFZW90
+	/eRgHje+qUDZL/+jR+e7w4FQ+ppm+Jt0pCBqq9edkS+NxT5LiOdrhtzL
+X-Gm-Gg: AY/fxX77v3S/gIR7mIq8jB6EMpj/xHc5jbasCe4JnDH7JFROpJOoyf6r28s6bkAfS8q
+	Q44l4qv2wxQiOUeNJpJ+amgPY3vjsGKYcc3Y+qpb1jINO5Y350H+kPvAEvILz5ucWMGJpQDDaJ3
+	SPycGJURoVKst/liy3uZVuk3SRpmzOTO3C3IBbYEk48Vd7cn0GYrE1RN34mo6FweSzk2mMgB0/D
+	tEUjsLzFKKFh9hRRyWg+LAtNpSDecppHibNVQBVN97rygMchIzxVxlYue31oAUUkbvhZquMFM/j
+	IrJSmliYRTRf5m5rtmhmFRLB/NhI3+FSVTBi/Y3Z1naoiRxrh38NaOxGgGaiz+EmI7le3RMvxIW
+	3pgKMPygEy0nQ/1gN2e61m6fJEA3OAqneyWihfQYk5vbeyTutE11b11oZigAcDSEdLlqtU9bakC
+	/TRVoxSv+tzMnEMlk=
+X-Google-Smtp-Source: AGHT+IHhrlxnEkgpReHyY/ln7FfgcqmD96vph7wFRQzv/wIxQr0+Go96YJcfFR08UIl7j9LbvOvoHg==
+X-Received: by 2002:a17:90b:57c4:b0:343:eb40:8dca with SMTP id 98e67ed59e1d1-34f68ca4463mr15285309a91.19.1768207971469;
+        Mon, 12 Jan 2026 00:52:51 -0800 (PST)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f6db356sm16884474a91.0.2026.01.12.00.52.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 00:52:50 -0800 (PST)
+Date: Mon, 12 Jan 2026 08:52:43 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Tonghao Zhang <tonghao@bamaicloud.com>
+Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Yohei Kojima <yk@y-koj.net>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/2] selftests: net: fix passive TFO test to fail if child processes failed
-Date: Mon, 12 Jan 2026 17:51:43 +0900
-Message-ID: <19d12f125d3f4df8fe8e8f2267b182a877ea672c.1768207347.git.yk@y-koj.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1768207347.git.yk@y-koj.net>
-References: <cover.1768207347.git.yk@y-koj.net>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jason Xing <kerneljasonxing@gmail.com>
+Subject: Re: [PATCH RESEND net-next v4 4/4] net: bonding: add the
+ READ_ONCE/WRITE_ONCE for outside lock accessing
+Message-ID: <aWS2W27L3MbZMK1T@fedora>
+References: <cover.1768184929.git.tonghao@bamaicloud.com>
+ <5bf134412fd558dc80fbf97a149964f536a59cb7.1768184929.git.tonghao@bamaicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 6zE-PBl1VhKYaHGNlB3t723L41My0dnK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA2OSBTYWx0ZWRfX0s8E4ktXI3yi
- wQAsTZ7i2UPrJpAmuS4yE3oJCSdTY9x7piAEmR99LECd53JR/Vz9ckAuQ9qxB0+6iYgjJrgXXtR
- EZ+8igWq6jwC0VtGTv8OUGVUKCT+/lDJm8UDqYEjkhS1oKxpT2GbsrokfLOdUZUlcaddD/IrfDX
- dg3vGU03bKmGytc/39/Hr7JCPhSFM4HKnechXzMudzwO7ooPI+ji6xqlMjYTu3SLu4Rk+ioxKKd
- 2DRQjduzjdXuztmdEARRCkfRYBAIVYdSj96nER14S/LgQchfHm+oWNFqtKP0VRUeQzKaLLLcgMf
- JnyXjLl+jX1WRCgrYLd
-X-Proofpoint-GUID: 6zE-PBl1VhKYaHGNlB3t723L41My0dnK
-X-Authority-Info: v=2.4 cv=GI0F0+NK c=1 sm=1 tr=0 ts=6964b661
- cx=c_apl:c_apl_out:c_pps a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jnl5ZKOAAAAA:8 a=DMn0v-ajJ4USD0-U4hgA:9 a=RNrZ5ZR47oNZP8zBN2PD:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 mlxlogscore=965 clxscore=1030 spamscore=0 mlxscore=0 phishscore=0
- suspectscore=0 malwarescore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2510240001 definitions=main-2601120069
-X-JNJ: AAAAAAAB0inQ/87hTFQ6Cj85yNi71cidjtAtEFtSnp8IdOCionP1nuT+V4/1DA0xdINQGFvjh+5WGGEIkT7VmjSNGtXjhwBrs+zB0CjnWeD+XlA86VqiuDWpsR6nt15eJdGF6aBdY00s4Pf3NCTnjxnU8+wJxwp2W/75Isyio3m8wazSQS+g4P2Q55fxxSUyrClDNvayQ6R+k0XLlnyGO0VeakInzD1PNjMd/jGmo9fJHnV6XIMBsPAaUA/6auoHSC8av7JzxuoqZXq0NQ6mVSpx/CAvXdeDhqEkp28wYCa7tftAosctoDTLrRtm8GTwXan9KtwUiQYs+RCUUcVbtD0PUa5Mt3PGXMrwckEMu5wvA9PBifw7V0n+SAXc/a5FSx7Jzs/hXClbxiZYt9ZnTIpBDjcf8ENfqZXIUg5mM0V2K9Gpy4yVpgJ4fBVvbCLNtn3bWqxAkS2GnKbgUDuOW9f7FWb4BWpR4I211jnH+8zObhIItf/8jZYorA6i6V8UUyn08RvQydtdkFFUMtdmu2j2oIigPwoQf0Q3c3vDpwE+HVAmZznqoYXTHYDiM0guLqhtS+Nj6nRE48DuuvQWeorvHAdsUHYT+VCoIEVIvSxT2DrK5dDyLHLYGxuFpya7slJkXUZA/n2y+cYVthySftVC7CnUvKTIS6ITDOjNN6yIxLIbIGabAJ95z6dhaEZoBBs60sgueI3ZgHUrefrRUymsku5LNRozP7okz8P5mfQ3eyemiYhma4TfSfXOLz0=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5bf134412fd558dc80fbf97a149964f536a59cb7.1768184929.git.tonghao@bamaicloud.com>
 
-This commit improves the passive TFO test to report failure if the
-server or the cliend timed out or exited with non-zero status.
+On Mon, Jan 12, 2026 at 10:40:51AM +0800, Tonghao Zhang wrote:
+> Although operations on the variable send_peer_notif are already within
+> a lock-protected critical section, there are cases where it is accessed
+> outside the lock. Therefore, READ_ONCE() and WRITE_ONCE() should be
+> added to it.
+> 
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: Jason Xing <kerneljasonxing@gmail.com>
+> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+> Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+> ---
+> v3/4:
+> - no change
+> v2: fix compilation errors
+> ---
+>  drivers/net/bonding/bond_main.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index b835f63d2871..909c01f55744 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -1204,8 +1204,9 @@ void bond_peer_notify_work_rearm(struct bonding *bond, unsigned long delay)
+>  /* Peer notify update handler. Holds only RTNL */
+>  static void bond_peer_notify_reset(struct bonding *bond)
+>  {
+> -	bond->send_peer_notif = bond->params.num_peer_notif *
+> -		max(1, bond->params.peer_notif_delay);
+> +	WRITE_ONCE(bond->send_peer_notif,
+> +		   bond->params.num_peer_notif *
+> +		   max(1, bond->params.peer_notif_delay));
+>  }
+>  
+>  static void bond_peer_notify_handler(struct work_struct *work)
+> @@ -2825,7 +2826,7 @@ static void bond_mii_monitor(struct work_struct *work)
+>  
+>  	rcu_read_unlock();
+>  
+> -	if (commit || bond->send_peer_notif) {
+> +	if (commit || READ_ONCE(bond->send_peer_notif)) {
+>  		/* Race avoidance with bond_close cancel of workqueue */
+>  		if (!rtnl_trylock()) {
+>  			delay = 1;
+> @@ -3784,7 +3785,7 @@ static void bond_activebackup_arp_mon(struct bonding *bond)
+>  	should_notify_rtnl = bond_ab_arp_probe(bond);
+>  	rcu_read_unlock();
+>  
+> -	if (bond->send_peer_notif || should_notify_rtnl) {
+> +	if (READ_ONCE(bond->send_peer_notif) || should_notify_rtnl) {
+>  		if (!rtnl_trylock()) {
+>  			delta_in_ticks = 1;
+>  			goto re_arm;
+> -- 
+> 2.34.1
+> 
 
-Before this commit, TFO test didn't fail even if exit(EXIT_FAILURE) is
-added to the first line of the run_server() and run_client() functions.
-
-Signed-off-by: Yohei Kojima <yk@y-koj.net>
----
- tools/testing/selftests/net/tfo_passive.sh | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/net/tfo_passive.sh b/tools/testing/selftests/net/tfo_passive.sh
-index a4550511830a..f116f888b794 100755
---- a/tools/testing/selftests/net/tfo_passive.sh
-+++ b/tools/testing/selftests/net/tfo_passive.sh
-@@ -85,12 +85,15 @@ timeout -k 1s 30s ip netns exec nssv ./tfo        \
- 				-s                \
- 				-p ${SERVER_PORT} \
- 				-o ${out_file}&
-+server_pid="$!"
- 
- wait_local_port_listen nssv ${SERVER_PORT} tcp
- 
- ip netns exec nscl ./tfo -c -h ${SERVER_IP} -p ${SERVER_PORT}
-+client_exit_status="$?"
- 
--wait
-+wait "$server_pid"
-+server_exit_status="$?"
- 
- res=$(cat $out_file)
- rm $out_file
-@@ -101,6 +104,14 @@ if [ "$res" = "0" ]; then
- 	exit 1
- fi
- 
-+if [ "$client_exit_status" -ne 0 ] || [ "$server_exit_status" -ne 0 ]; then
-+	# Note: timeout(1) exits with 124 if it timed out
-+	echo "client exited with ${client_exit_status}"
-+	echo "server exited with ${server_exit_status}"
-+	cleanup_ns
-+	exit 1
-+fi
-+
- echo "$NSIM_SV_FD:$NSIM_SV_IFIDX" > $NSIM_DEV_SYS_UNLINK
- 
- echo $NSIM_CL_ID > $NSIM_DEV_SYS_DEL
--- 
-2.52.0
-
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
