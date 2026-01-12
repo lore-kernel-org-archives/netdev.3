@@ -1,72 +1,66 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964152BEFFB;
-	Mon, 12 Jan 2026 14:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805EB2DA760;
+	Mon, 12 Jan 2026 15:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229636; cv=none; b=QjG7I4l6fuiTqpPKL15uEryTyA4R6Yre/Bqhvl5J3Cur49sABREo5wMmI+Vt/7ymNvNRGMhjOJ6WBOdHhF8oP6YsNoi54WoMVC/bjuPTIQze5OdVOYQeUClystl5H3jpKjsYSQmksAWyvbzg0T5Goy9g9SEEdEu1OZ8ZxYo05hY=
+	t=1768230151; cv=none; b=NJN0LEpYN6cSJC//EIiske3/hpekSkdLCa3smNbIasNgJI8/4EBqsqXjo4Q771MJQCFEMvARbpHHg0+UOJh96t61yZu7MtEcc+OHHNKFHy5+XkAEAW5g6IlIXz1VlW1BMwhCwZHzmwKSbWBnUfBmrGf15A02ufPBkPPDKkw+XXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229636; c=relaxed/simple;
-	bh=vMdMbkaj9FIBvbrqlM+Ht0cnW5A4bq8nE13c3jx00b4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F4PIUSsQz2PH8NG0p1p04Bbf2guBZ+o6Er/bbEUEOww6/7kyD9Gj5kNhLXfuViRrYQN7EqJxt9RPdLKLw+IKG3Y34ETWVeuzKRkUWbNCL19+ixvz3lSnfI/dlExjQcYMyVKTXzNLP8HhdEBnUGwrvBFhB1JUh/aymv2f/6zWVow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CYSKjae3; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1768230151; c=relaxed/simple;
+	bh=Ae7WpaO1J58wZ6XHUKdyKvVyk3a9mihKfWDlokrMAmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GpGagOQOwo4mi6VXESUnc41BldVdlwhUOUWOaSxFMJxmRtL7aQXojEmm4ZUaMKGnCZAmJdPg6340cl2j+/RHggvzmsIVvP25r0QrIMvO5ICA5NEIY8S+FL8xUaCWpSlib+zAFZZ/nVbeDIWzuYxqbkTmllgc0KsSMzG7mmt0yFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWQlcdr7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CYSKjae3"
-Message-ID: <e6499ec9-92d3-4a63-8172-3c09a8b64066@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768229632;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WJRXUcKkDog21NY9arGh1QRo0yXqzWSWI32WfNW/NXU=;
-	b=CYSKjae3S5FACFkMnLMzwVE2kPTt9AMRFN7mSAGW7ME7h8gCmWVnkY/8iXTwGDn78taKG+
-	dlMM0E4bxhFjRCNUCQ0EdYqXcA3SfGlSkxhCK1yFDn7rUu5Sk2zK83MCOlOKqDNNxxeFqM
-	XELoFN5cAGbovb03AKSOu9bx+yyVOnI=
-Date: Mon, 12 Jan 2026 09:53:28 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWQlcdr7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39072C19422;
+	Mon, 12 Jan 2026 15:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768230151;
+	bh=Ae7WpaO1J58wZ6XHUKdyKvVyk3a9mihKfWDlokrMAmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MWQlcdr7qyhoD+qSMO/SbTyz0xX3OVS3b/SrwH0JagzlV8Vc25Wwkmo5laoMPBxSf
+	 rvWo6QmO7MSJBxh3CxA7CfGrzerVem7QII7cN3vFK1dIW4HePZZa5Uw8FL58qL8/YX
+	 Zquj5dyYzGy4TJAg3bpoDMIjiNxRo8gL+OGeAtXJAVt76kx7zgWRyLm7IxThQLJCnU
+	 7YH5J1O3ooKSxdyMycKZmWtoHuxStvp85Mess1pV/ZyrEdy2COwwnAevlQfHq6mxlq
+	 uhygBzDXvGdb4XIfnIZEzMxvt/KzsEAf+0TCjm1AR7ABTezoecuMkEcQiSVUfL+4vM
+	 yCTiIi0LviCFA==
+Date: Mon, 12 Jan 2026 15:02:27 +0000
+From: Simon Horman <horms@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jacky Chou <jacky_chou@aspeedtech.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/15] net: ftgmac100: Various probe cleanups
+Message-ID: <aWUNA823xsZfQBlw@horms.kernel.org>
+References: <20260105-ftgmac-cleanup-v1-0-b68e4a3d8fbe@aspeedtech.com>
+ <20260107155427.GB345651@kernel.org>
+ <ec093af3-93a0-4a9a-9688-ba870d42156a@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] net: axienet: Fix resource release ordering
-To: Jakub Kicinski <kuba@kernel.org>, Suraj Gupta <suraj.gupta2@amd.com>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, radhey.shyam.pandey@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, michal.simek@amd.com, linux@armlinux.org.uk,
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- bmasney@redhat.com
-References: <20260109071051.4101460-1-suraj.gupta2@amd.com>
- <20260109071051.4101460-3-suraj.gupta2@amd.com>
- <20260110115306.4049b2cb@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20260110115306.4049b2cb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec093af3-93a0-4a9a-9688-ba870d42156a@lunn.ch>
 
-On 1/10/26 14:53, Jakub Kicinski wrote:
-> On Fri, 9 Jan 2026 12:40:51 +0530 Suraj Gupta wrote:
->> Device-managed resources are released after manually-managed resources.
->> Therefore, once any manually-managed resource is acquired, all further
->> resources must be manually-managed too.
+On Wed, Jan 07, 2026 at 05:09:00PM +0100, Andrew Lunn wrote:
+> > I'm slightly unclear on the providence of this patchset.
 > 
-> only for resources which have dependencies. Please include in the commit
-> message what exactly is going wrong in this driver. The commit under
-> Fixes seems to be running ioremap, I don't see how that matters vs
-> netdev allocation for example..
+> This driver needs a cleanup before aspeed fix up the mess they made
+> with RGMII delays, which is going to make the probe code even more
+> complex. In a fit of boredom on a train, i made these cleanup
+> patches. But i don't have the hardware, so passed them onto aspeed for
+> testing and bug fixing. I said they could submit them, appending their
+> own Signed-off-by:
 
-In the series I originally submitted this in, I wanted to add a devm
-resources (mdio bus etc.) at the end of probe that required the clocks
-to be running. But as a standalone patch this is more of a cleanup.
+Thanks Andrew,
 
->> Convert all resources before the MDIO bus is created into device-managed
->> resources. In all cases but one there are already devm variants available.
+That satisfies my curiosity.
+All good from my side.
