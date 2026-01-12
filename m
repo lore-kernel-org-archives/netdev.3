@@ -1,116 +1,126 @@
-Received: from outbound.st.icloud.com (p-east2-cluster2-host4-snip4-3.eps.apple.com [57.103.78.116])
+Received: from gw.hale.at (gw.hale.at [89.26.116.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26F534677D
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 08:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.78.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC4346771;
+	Mon, 12 Jan 2026 08:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.26.116.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768207979; cv=none; b=fuzf8fx2oawr2fA1ceWUPScOMGWZehIW705UnmX61KQ4vZ4rzNkQYj1CNNS1FzCjswm50PPOgPWLlZIDOVDvmdBV3Q4rj9Iv+4pa9spyr9XmEWIiBydGywFzrqO1uVtYUnedt3+zRFQRdmz5EcUxsXg/LuinIzO+lwtEyx/icM4=
+	t=1768208182; cv=none; b=lBTWCqQiw8O30axXyGNcYtWMuYK4w/IGN3ik2kEjw3CL/tARI2zKj0Zv2tqaqCb4nNSTMRfFD9tHemLRvwFnSRyMBfmYNH309zlYV6AVeuYtesL2sgHw0/K99K+da9BTR7RQCuxyvUl8D4JGb54Jv74ImBxO87a3blnOG2c2s2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768207979; c=relaxed/simple;
-	bh=HP+XBvzAZZe6ZDdctV1mJaps2CvpOUXtmq5bhKKyrhM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6AJqEOxHEdqp8QiiGPHfq1nFOVtsOc+ffosSgxJ93hlK+Wa8it8yZZz6LVeARrtZBK35MAoR2O3b1KewB7Yw/aRg/bKc3A0tDi2rnceD6LxMEUV8SRa4mMtrh3B5y221qPYijwcTlgxqeqFzmKBmlIEJdZem0lLTJ/u5PQj4Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net; spf=pass smtp.mailfrom=y-koj.net; dkim=fail (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b=qhVfuhwP reason="key not found in DNS"; arc=none smtp.client-ip=57.103.78.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=y-koj.net
+	s=arc-20240116; t=1768208182; c=relaxed/simple;
+	bh=xIRZ/FaSvuHrmYkGikUIcZjd9YhQw52qIW7JYwpyfIM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hVIqKoPGhrYjsiInmOSPlAdD0hfHcUBEu2mFyX6SOBxu2ZC5645Zq4kYnLZetB6woAjWzTzNZTBMgcip/9Gzbc79V5yr5ht1CKQn8ctqFkBUbWQvDeexyA41zr5gRIzaGvnDkJ0KoIRPKFPgmBWBPkj7Z4iHpjqe/5fjIazDHas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hale.at; spf=pass smtp.mailfrom=hale.at; dkim=pass (2048-bit key) header.d=hale.at header.i=@hale.at header.b=Rj5LJwT+; arc=none smtp.client-ip=89.26.116.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hale.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hale.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b="qhVfuhwP"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPS id 08A1D1800176;
-	Mon, 12 Jan 2026 08:52:53 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=y-koj.net; s=sig1; bh=7GMNJGoWv7q+yUAaMvgB+dlAPnp9uN5GEATgw8djXug=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=qhVfuhwP5mIfryREsOYMsAkg2aFMrtH8lUU3zylUOVK+V4Xk0nzv1qEMFhQxzGfQZUd6PzDCAcOX0mbQuysdVJiW/agJuNNZWM/IjD5shM91gBFxWygZWIVGzJeJYmSxoZhq/Qn7y9iLjTg2v86o/wpyy3ZTSFl1JxhcR51hyW3558MwQ3hp0mlLO76UWZlbMiKbUkMIELR5MjKiV6D/XW4XsLLbXEFAejKZ9pk4f7F1C8vNg9buQD39BdoV8YjUcgMbfCxoPkW87Yjc9irP5L7g3sc/VntagtE41zVEwj4obvW0N7sQPWUrLCjq2p3p6gs+1lDg0NDIIDLck9GodQ==
-mail-alias-created-date: 1719758601013
-Received: from desktop.tail809fd.ts.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-2 (Postfix) with ESMTPSA id 6D7C51800308;
-	Mon, 12 Jan 2026 08:52:51 +0000 (UTC)
-From: Yohei Kojima <yk@y-koj.net>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Yohei Kojima <yk@y-koj.net>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/2] selftests: net: improve error handling in passive TFO test
-Date: Mon, 12 Jan 2026 17:51:44 +0900
-Message-ID: <60dc3da1f913aa9625e864ea862c23c401e7bc6e.1768207347.git.yk@y-koj.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1768207347.git.yk@y-koj.net>
-References: <cover.1768207347.git.yk@y-koj.net>
+	dkim=pass (2048-bit key) header.d=hale.at header.i=@hale.at header.b="Rj5LJwT+"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=hale.at; i=@hale.at; q=dns/txt; s=mail;
+  t=1768208179; x=1799744179;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xIRZ/FaSvuHrmYkGikUIcZjd9YhQw52qIW7JYwpyfIM=;
+  b=Rj5LJwT+exXWqiNeGJzijpgDYhQmeuKSMVAxWWtC3WTKDzkZX2JsqPzh
+   92Dt7i9JGbUdr0kvZTr+HnomJdcIOKnB3+cIytyozf5f1oL3mHfkyCim8
+   q9kSfZ6QsyMgPWo9ErnnRxlwOTItcBap0W1CIQXPCwverwY2Du/m4Fvxf
+   r23QHYzq9kLN4ZzBmnJt/ky4EN92/NtWa42osLSFeP3bW9jBmlLBKlIjU
+   CODroHatGz1BUo7PTBwy6v1gCjCmXsXOafB6g9D6IVhAR9zMVMzHq43BU
+   r6TgkDg57KiIWKaMQ+pDaJvq1VdKOSn2GL7KZ0GYTapocMPbZmrO8DfrG
+   A==;
+X-CSE-ConnectionGUID: 651BMYvfTVGlE7RB3UICaA==
+X-CSE-MsgGUID: 1OKWucKESpq7sHUxRfp4PA==
+IronPort-SDR: 6964b714_tSxTxtCp/DhJlGVKvJgQK83f0dJn/sc2Eb7KU4/2ZLVibuW
+ y8CuVpNiLDhhkyOKJ+BSNgYPgHSN9mc+dLVQEog==
+X-IronPort-AV: E=Sophos;i="6.21,219,1763420400"; 
+   d="scan'208";a="1584331"
+Received: from unknown (HELO mail4.hale.at) ([192.168.100.5])
+  by mgmt.hale.at with ESMTP; 12 Jan 2026 09:55:48 +0100
+Received: from mail4.hale.at (localhost.localdomain [127.0.0.1])
+	by mail4.hale.at (Postfix) with ESMTPS id 4165913005A6;
+	Mon, 12 Jan 2026 09:55:28 +0100 (CET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail4.hale.at (Postfix) with ESMTP id 2955813006A1;
+	Mon, 12 Jan 2026 09:55:28 +0100 (CET)
+X-Virus-Scanned: amavis at mail4.hale.at
+Received: from mail4.hale.at ([127.0.0.1])
+ by localhost (mail4.hale.at [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id KBcMbSomLXQ0; Mon, 12 Jan 2026 09:55:28 +0100 (CET)
+Received: from [192.168.100.117] (entw47 [192.168.100.117])
+	by mail4.hale.at (Postfix) with ESMTPSA id EAD5F13005A6;
+	Mon, 12 Jan 2026 09:55:27 +0100 (CET)
+Message-ID: <095dd1c7-58fe-4fa7-9ed5-dbfa22911e90@hale.at>
+Date: Mon, 12 Jan 2026 09:55:27 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA2OSBTYWx0ZWRfXwzaD7X2qOaH+
- XalJjAGHZbgoMnPpOT8f8jcCpH2yzEiUsN9UEFIuW6WDjSiVYuwalK3nDKG11VxDeHajNUoSNrB
- UhjVEORBay72OYDFWsU1C94d23qoBkT4rh+YX8IaeYfzh2lfQgg/bbeLxVANkaXWQcUQvvtui5d
- 5sBdcdoUVMaSNcfJuhYEmJ1inqRIKXIz96mpQ436JpbmHA338UB1kBZTPusBNqT1VYfFIhYbdx/
- GI1F4qzGmunw80el0RPGYVLJpBgAoGbDYwr3yUzwxZahAbbSZhaNrmelc/L6KrPRG2BMV+6u5hy
- e7EhhLB1f++Ljx6Gp4Q
-X-Proofpoint-ORIG-GUID: uHRBUSwWjHH81w3tcoV1-u084S6X_gXw
-X-Authority-Info: v=2.4 cv=d5X4CBjE c=1 sm=1 tr=0 ts=6964b666
- cx=c_apl:c_apl_out:c_pps a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jnl5ZKOAAAAA:8 a=ycCnPHV353GAyiuBZJ8A:9 a=RNrZ5ZR47oNZP8zBN2PD:22
-X-Proofpoint-GUID: uHRBUSwWjHH81w3tcoV1-u084S6X_gXw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 phishscore=0 spamscore=0 clxscore=1030 bulkscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2601120069
-X-JNJ: AAAAAAAB8MtWQLSH1n/5K7FNnv3+ElpBVMEyMv7p92eaJEU6EN/RYVhdWWaAjTgLe+09K3KFWqUAe3HurXYp8d5grQNmiurQ4NB6eDOmYsyyNtoJCpCs2pxWueAy9goBOrB5h+cXDsJqL54xkG1QimkJ9p3OC6CsOXLexWjyzrBpTWG6OJL4aDldYWEBmH90xG79Q0lOICRGnyb7LsIJsFcHLH7m7QcI+ehkQp5PjN8qYQWhv2AiAoOOeX10llZaqhZq5VpwvJ15/ZE5kYlvH5xSpMLLQ1ePLys+GmN+NrOj/T3jjz912EIEW7fAEWP3eiPZWvB4LbIqN4lgdhuTFx9w1wgoKrY1+WUKi73I/fAaKxd3OG/ZTZamFMOmGJplSYdds7lKQp+FHlhmaSeBWhVdAH+ze1yuBIjzJBFshnwdp2r8YN0XfaFIEvITsnyVZXgt+xPj52b1VIlI6Frgl5OzhPV3UgN8CcvrtgiP7tk8dvuGtHd65GKmkISXGLUwW2smqH+q1w6vX9wWcwSX1524bg9jBjcF99Xg7r4bMeXcLQ9s7y5Vfexo/DDbUJ7+X6shR5z1G2VuRFwnUeu2UJ+Es1SkbewVMtXgZcSKR5n4PiTAbo9UsF9vKIgPcycibAN8NXwlg2cKBqxpqTUGL9VLcxGXqbBaq0rVIaY5k3yGfBM+7SZQf1jnPUWqPPADuIP5fENLAiUSScjjcbh8vpKyweXwzXE4Qqz74rD7jZsyLHWkuNhR
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] net: nfc: nci: Fix parameter validation for packet
+ data
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Deepak Sharma <deepak.sharma.472935@gmail.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon Horman
+ <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Michael Thalmeier <michael@thalmeier.at>, stable@vger.kernel.org
+References: <20251223072552.297922-1-michael.thalmeier@hale.at>
+ <20260104101323.1ac8b478@kernel.org>
+ <4d6a1f0b-946e-4acb-bfe4-1e9317fd144e@hale.at>
+ <20260107181519.1e6dbfc6@kernel.org>
+From: Michael Thalmeier <michael.thalmeier@hale.at>
+Content-Language: en-US
+In-Reply-To: <20260107181519.1e6dbfc6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This commit improves the error handling in passive TFO test to check the
-return value from sendto(), and  to fail if read() failed.
+Am 08.01.26 um 03:15 schrieb Jakub Kicinski:
+> On Wed, 7 Jan 2026 11:06:27 +0100 Michael Thalmeier wrote:
+>>>> @@ -380,6 +384,10 @@ static int nci_rf_discover_ntf_packet(struct nci_dev *ndev,
+>>>>    	pr_debug("rf_tech_specific_params_len %d\n",
+>>>>    		 ntf.rf_tech_specific_params_len);
+>>>>    
+>>>> +	if (skb->len < (data - skb->data) +
+>>>> +			ntf.rf_tech_specific_params_len + sizeof(ntf.ntf_type))
+>>>> +		return -EINVAL;
+>>>
+>>> Are we validating ntf.rf_tech_specific_params_len against the
+>>> extraction logic in nci_extract_rf_params_nfca_passive_poll()
+>>> and friends?
+>>
+>> You are right. The current patch is only validating that the received
+>> packet is consistent in the way that the rf_tech_specific_params_len
+>> number of bytes is also contained in the buffer.
+>>
+>> There is currently no code that validates that
+>> nci_extract_rf_params_nfca_passive_poll and friends only access the
+>> given number of bytes in their logic.
+>> And to be frank, I do not know how to implement this without either
+>> cluttering the code with validation logic or re-implementing half the
+>> parsing logic for length validation.
+> 
+> Don't think there's a magic bullet, we'd either have to pass the skb
+> or "remaining length" to all the parsing helpers and have them ensure
+> they are not going out of bounds.
+> 
+> There doesn't seem to be a huge number of those helpers but if you
+> don't wanna tackle trying to validate the accesses maybe just add a
+> couple of comments that the validation is missing in the helpers called
+> in the switch statement?
 
-Signed-off-by: Yohei Kojima <yk@y-koj.net>
----
- tools/testing/selftests/net/tfo.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Will be sending an updated patch with validation in the helpers.
 
-diff --git a/tools/testing/selftests/net/tfo.c b/tools/testing/selftests/net/tfo.c
-index 8d82140f0f76..4572eb9b8968 100644
---- a/tools/testing/selftests/net/tfo.c
-+++ b/tools/testing/selftests/net/tfo.c
-@@ -82,7 +82,8 @@ static void run_server(void)
- 		error(1, errno, "getsockopt(SO_INCOMING_NAPI_ID)");
- 
- 	if (read(connfd, buf, 64) < 0)
--		perror("read()");
-+		error(1, errno, "read()");
-+
- 	fprintf(outfile, "%d\n", opt);
- 
- 	fclose(outfile);
-@@ -92,14 +93,17 @@ static void run_server(void)
- 
- static void run_client(void)
- {
--	int fd;
-+	int fd, ret;
- 	char *msg = "Hello, world!";
- 
- 	fd = socket(AF_INET6, SOCK_STREAM, 0);
- 	if (fd == -1)
- 		error(1, errno, "socket()");
- 
--	sendto(fd, msg, strlen(msg), MSG_FASTOPEN, (struct sockaddr *)&cfg_addr, sizeof(cfg_addr));
-+	ret = sendto(fd, msg, strlen(msg), MSG_FASTOPEN,
-+		     (struct sockaddr *)&cfg_addr, sizeof(cfg_addr));
-+	if (ret < 0)
-+		error(1, errno, "sendto()");
- 
- 	close(fd);
- }
--- 
-2.52.0
+> 
+> BTW are you actually using the Linux NFC implementation or just playing
+> with it? I'm not sure I'd trust this code for anything but accumulating
+> C-V-Es, TBH.
+
+Yes, we are using the Linux NFC implementation with the NCI driver (with 
+a NXP PN7150 NFC chip) in production devices. It was actually working 
+quite well and stable until the referenced commit completely broke it.
+
 
