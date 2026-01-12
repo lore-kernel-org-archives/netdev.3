@@ -1,78 +1,88 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010055.outbound.protection.outlook.com [52.101.85.55])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5840F2C21C2;
-	Mon, 12 Jan 2026 10:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214318; cv=fail; b=l++c96u3SGAFuWRWEDYQydKLr0PVyvxp+bMuGuFgIMtlLOutZxdxN/3ZGEu0ukPerklGkzz5CyzqN4+mt3iUwljjub22+FVDNDcQxPgdZPY2Uw3jKbIh4EnIGKsZvb0ai1hZsjxDfzkVioeZswreb+aEIciIx9Eu9ufBWci9uy8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214318; c=relaxed/simple;
-	bh=IXm30fGUmo8eo14QhLVaMnAFShrPgOkSLzMpioRLVVs=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Pb7xNCfJZhi83v9oQZSBCEa3SOOQZyR5UhGiLAjEXtziRb3Nhc0OlMNV+J8Ww2HTuliQKPjHuzlyd2dz8SB0pnnnttb5V4KcQV4Vqflff9gcfuvsGp6UuIVaa/lOYMr14dhS2xpLJl8hr0G4kWO1oRpE0BqiBsq+vuOA0dadT78=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QouRIW2m; arc=fail smtp.client-ip=52.101.85.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103A7354AEB;
+	Mon, 12 Jan 2026 11:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768215656; cv=none; b=sH896oH8/rieRJ/poWp9khwne91HcX2Bn6cankcbwaBp9si3Pz9eGOdYDkdfcWaTrKZoyYzRfXfDvATgPofmqpuBzHT/Egin0FjjO9qchVzYXzUiRIDOaWLD1WKU+XXMjyYREtOz4fsBWqgTsZnhki5kATQFJpkmNlFh+w55Xxw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768215656; c=relaxed/simple;
+	bh=6N0w3HynyaxBFCSLVe4Xx3Rf9r05hgNoJPD8hl0l46U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VEYIVcKVMqS9mr2uDbEokRGIapCPC0iegMb8C93QBeC6TFdVtE7nKk8hVW6mQIViIiGBgf9NCXgCcKfXmEPe7ecgsIkW9YBz7dUhiYJQS847EuZesL/HIPNiueE9mNkzAyF9cFaNiu/tGWcWKI2dPp4TfYCwEiUS2QYRjqb2lLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TGOjZIYe; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QouRIW2m"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mMGJ0PSAu0ir51+VpzVykhj4604ASXzuFYChAXlRNi/61Ldme00+g4jgLUJux6/dyQpmDxfqWdbmNRTybuIGRanDLSPqEi97hm4PhE2SJ7YFbMP5yW3k93NoWvd4TU/dohjT+bbXp709lHLCDvVuuMvW7cYGi9R4+WU6lFsIdfi7yUY79Doek0GKDOlsLqsR903Yis+uW/sdK4iahEn70Ki0Y8y6JpAtjzIKCv3kMhCZyOoCuLosotwJIgwGB01+1DZFO7O1viCsH+q/kUiYZMHLZu2xAIpldVQjLZZj5ZRlIX/DSQ/OW9MfGyAUbMVlMiMHTHmTx+K7VRF4hWFiqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=joeWtUxGn5/MW0LnNuGZLfxYIMBRc5ze7CMWpAj2ZWI=;
- b=QSqllT2yrccxdArWUxUpWJWzbS/q9ixDGDVuhQE4I1QaB1GPNaDDkHapPDNtTxOvRdzmI6QQJiClg5d0Nkqdp89zWxlBJTfzeN9KSSB3Wr5YbbLSRuVDqw54G1lA5+yobhfS0WS6CyHx6qcNV7j0jQSt3SzCB/MeLQKElhreR0sepYA2N1IWJU16MF9J3SfcPVuNJs1Ack5uvAYu2YS0bfJ3G+84tEzk5BMWdCAlYhm9BFKsBqYCFpkKCH+qV++757AG36VbiOlaYZS+HKuU/OOYwYgh31qAgTAa3hn+/WfbMw3TwniIstcLDSmnQCW2VmzfZS/2nkjB2GQTHpwbOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=joeWtUxGn5/MW0LnNuGZLfxYIMBRc5ze7CMWpAj2ZWI=;
- b=QouRIW2mBZ0obJUuUTml4uiChU4Oj/FPv/3sfnqo5N4q5i2jA3hxNhCSIjcY8vPbes7IsFe8c9mF8siertFF+ZSqSaHdhXpXWL4LrtCXTiAJb8TlkPHZCVr4rTZ0EVsUY9sNvy0ODpwqYyqrj5qBTLZ0dP7xiW7y03Tm4crt2uyvZU/Rzkk7BbpBZIZ9bdU1/c2kJISvd/JBOzo0H2Lmg9yPu8MwtjjJc9U5FkYvvVHjYCBXLVkw7fmKbxBizyzuymipzNUNB3aVD9J/gFPEclxQpN0aT1waZpdSoOOBVoDOeJY/Er25Pd/tYyTMF+BiNaRs3CwMIzq5GLHQRXQOcA==
-Received: from BYAPR05CA0057.namprd05.prod.outlook.com (2603:10b6:a03:74::34)
- by CH1PPF711010B62.namprd12.prod.outlook.com (2603:10b6:61f:fc00::614) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 10:38:34 +0000
-Received: from SJ1PEPF000023D0.namprd02.prod.outlook.com
- (2603:10b6:a03:74:cafe::c3) by BYAPR05CA0057.outlook.office365.com
- (2603:10b6:a03:74::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.4 via Frontend Transport; Mon,
- 12 Jan 2026 10:38:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000023D0.mail.protection.outlook.com (10.167.244.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Mon, 12 Jan 2026 10:38:33 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
- 2026 02:38:18 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
- 2026 02:38:12 -0800
-References: <20260110005121.3561437-1-kuba@kernel.org>
- <20260110005121.3561437-4-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, <sdf@fomichev.me>,
-	<willemb@google.com>, <petrm@nvidia.com>
-Subject: Re: [PATCH net-next v2 3/6] selftests: drv-net: gro: use cmd print
-Date: Mon, 12 Jan 2026 11:37:56 +0100
-In-Reply-To: <20260110005121.3561437-4-kuba@kernel.org>
-Message-ID: <87h5sr3ylw.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TGOjZIYe"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60BLRa0Y019757;
+	Mon, 12 Jan 2026 11:00:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=2rGg7enf1xOKVJ1j/wY7QPZf7Sq+0n
+	k5rlSbS++b8i8=; b=TGOjZIYe88F1yvH9WKaGzhg+CqbJF/w09gBPr7ECWRyQuo
+	gxoY2BRYQ/C2A9gVO0pxT86Qn5QLULC0v8raBIZ20hx/2/L/K3pUK04oBbv5zSC2
+	yLwI9msyrTBTgwX312rgM0smwkWPSM9N48e/M7JCfgZQlRXaHpNn76sjO7UVGnwC
+	79b+8D6AN3kALwOfyiRU59cBpEMHvcejw3Eu/sl6q/4HsQ3DdtiC51aEzAVGt9fj
+	ncmDx7IPBURIZvRaRuECrh+qh1rk2lz5SsN44CQg61a/a39ZELNafPHi5H8EVNl2
+	G39i05NWgxPrd6MVURr48jEyMh4UnRtHfaIFOzqQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedspckw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 11:00:35 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60CB0YWh010584;
+	Mon, 12 Jan 2026 11:00:34 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedspckk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 11:00:34 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60C9IV8m014274;
+	Mon, 12 Jan 2026 11:00:33 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fxwkcb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Jan 2026 11:00:33 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60CB0VoD40698290
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Jan 2026 11:00:31 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B99662004B;
+	Mon, 12 Jan 2026 11:00:31 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84BB920040;
+	Mon, 12 Jan 2026 11:00:31 +0000 (GMT)
+Received: from tuxmaker.linux.ibm.com (unknown [9.87.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 12 Jan 2026 11:00:31 +0000 (GMT)
+From: Sven Schnelle <svens@linux.ibm.com>
+To: Wen Gu <guwen@linux.alibaba.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+        Richard Cochran
+ <richardcochran@gmail.com>,
+        "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Xuan
+ Zhuo <xuanzhuo@linux.alibaba.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        David Woodhouse <dwmw2@infradead.org>, virtualization@lists.linux.dev,
+        Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
+        linux-clk@vger.kernel.org
+Subject: Re: [RFC] Defining a home/maintenance model for non-NIC PHC devices
+ using the /dev/ptpX API
+In-Reply-To: <0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com> (Wen
+	Gu's message of "Fri, 9 Jan 2026 10:56:56 +0800")
+References: <0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com>
+Date: Mon, 12 Jan 2026 12:00:31 +0100
+Message-ID: <yt9decnv6qpc.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,79 +90,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D0:EE_|CH1PPF711010B62:EE_
-X-MS-Office365-Filtering-Correlation-Id: db816ca0-b03e-49b1-7623-08de51c6bc50
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uEUqNhlPounmril31qxTKF4uGTWW4LHRXvC303m0/DxkfA7YTsk+7yAk4WhE?=
- =?us-ascii?Q?fJfXfno3iqppud8DLmWe4Kgne2hmBlRuTCHjeJOqJCccx+aIhBLtAqF5+oqo?=
- =?us-ascii?Q?qQvBlU4IouGryoJ3jKum/L42jkJFxTuj+5u6BvODjfgXerYItX2z0oH+PFc8?=
- =?us-ascii?Q?TkGnFEFvNFgQ981nvIJqdOlpW9DOTaIW3C+wd42jb0KhMqVWC2KeRoAMfBij?=
- =?us-ascii?Q?hklqrBgAHhIR3dK/8ZAYtvK3ZfiQNZjpwoODLYXB6AAx3oSKXpPalNg0w7rA?=
- =?us-ascii?Q?402lmAc53tMSNCn4gG0eMQVPJVWgj/pAeID7D6NIhBrUAhKOVfkSLgEd/Q0J?=
- =?us-ascii?Q?b9i/2PsF2NUk+t6doS2c8kxd/JPdJrrwy/t/XLyUcrlhjNXphHd4SzvSpQpr?=
- =?us-ascii?Q?AIrGvRjiMePJX57HeXt7sOD7qY6mkeMach7UGvo45xHM1dYjesuQZ97g8/W/?=
- =?us-ascii?Q?VGBVhB96YaYUR18IW3cPItT6Z4aX2xnD33FkkRrA2tdP5Dj1UdT2r4grusZJ?=
- =?us-ascii?Q?OltT87K4tUrEh/oFxMKiztarm9vVbCVKRpihT2jTukmNR3li5jTQ/nflOzqL?=
- =?us-ascii?Q?J57xFSkre6o09MVvSx/OgPZvJtgp4sQ1Tz5jJ3mGN0GAwjxoVgXSh3nI1O8+?=
- =?us-ascii?Q?iO8IN5VptVHgCaa1tqi6IAjGMqnly4e77kqvp3bfdy8S/PJS0nz0EOprF2wF?=
- =?us-ascii?Q?OEeODGrR9iV2n52VyiHSgQwIf6V0fIMf3sJVicl4keYuQKdDP//SX/vb3ucs?=
- =?us-ascii?Q?xzUR3BvmZXlxB3YZRAQd6HCIBXpCPyV48rg5lQlkOiwsRdhNeEwjvYurdkRk?=
- =?us-ascii?Q?q7ryouCa0vCf6C6ftddtK2gPWDs8BSzto8Y1Um7o6Pd35EZaW5QGesqHRoiW?=
- =?us-ascii?Q?wLzpeZWs7Wl/Cg/tAzHd5rDd9MJ3s86mxaSICZ3CJqXtdNWdDBqWYrCMaTEA?=
- =?us-ascii?Q?GcdqdQKdc7DE1AHFwqKodOO/KkMq8sY4WWrgswldZ7DOgRhDl3W1+RgtLOXi?=
- =?us-ascii?Q?bIEg4RsnuMY7BC1+JZ0wgRXS5tFBVDiGl4lPoIZrIfDzucIE2teSfByHvEyC?=
- =?us-ascii?Q?RBh6ATeBDp9XkflNp7R2V+mLl188Cb7kH9E73VVVLP6luMfEr4GxgUJkEuUV?=
- =?us-ascii?Q?4S4hxz9WxGevm5y4vpuwtIGHOnpjQykQY8sUE1zYG6kOemRGz/Hm2t784rBZ?=
- =?us-ascii?Q?mm0I00BTDOr0KDRBcUBcmWuKWG6CmU4+E1gXmu8PsvjbJ/ai+2FWhfnjKV1M?=
- =?us-ascii?Q?kEb7MjcG5FpFYfSBQqFsnqVCHrekNDreP46tkI1mafJXyKqJ+3HEAOqHu9m+?=
- =?us-ascii?Q?PDhGBP5GRi6IJugbz+/1mHVkFbwkLzA9hF8F/Pz2jps6H4K4L/fkyaVg2aO1?=
- =?us-ascii?Q?TfSpYN3UQMz/Zw5CQnD8T0/gLiA2U5zF9H5BgdbH1HwY07glt4rULOS+iMD/?=
- =?us-ascii?Q?1wonOqa403dTUmriMFa8f757h3/rOJXWwXLyuBfp6TMpLC1hX8EE4q2s6lSS?=
- =?us-ascii?Q?FDgmRFTlTuW19h6qEoJL4f9TV2KeAm64KndJxLbFFBddt3cuf/m+1qxY9t2G?=
- =?us-ascii?Q?oKIIe0lO+gSbqmaKOuQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 10:38:33.6642
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: db816ca0-b03e-49b1-7623-08de51c6bc50
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D0.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF711010B62
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA4NiBTYWx0ZWRfX2Xhrrn4DjaLy
+ XeeMtnuMIJOIXT/lPd5GLgBkTYFzNP7oUgElbQuegcAQTEvN+fsTAKNULiorgNH+7gHwNX2Z24B
+ C3c9+eItaGVZrHoYRRAWfTm+ECbLVUT1VJto5g0KL9bvJTt2+49xKVb0pMeJwtyMZO0hIhupQjv
+ tCUjsjitwYLanfRlGnzfJAKrtPjRXPuO6puZlLIbwLsUlEvYbifgJaOS0v77CV62JBnz2S4lRA0
+ 3+aQIYh013niMZV4B7fc1EeSutYsu3XryoDRUkWsoH6Ppf0ynRugK/DU7vkTvblDfH4s2Y3IQgl
+ 1z8GBnSe86kclucDw6tHpOHwP0SUuBwfzp5ubzjIo7TSQvLBnIjc8+M1hmalu+RyVIHy5IDzYg9
+ 6jt6phWBN2B1HP8A540Waf+pyhKtbSRH3bXwLQ24u4PvUWBKYrNpwuFia6/fUS3PHHW18ZD6W45
+ Wtorx22AZugbF7ocLGQ==
+X-Proofpoint-GUID: 2dzlkKuuZGqvKD3iJmn2bayCJY5VE71O
+X-Authority-Analysis: v=2.4 cv=WLJyn3sR c=1 sm=1 tr=0 ts=6964d453 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=SRrdq9N9AAAA:8
+ a=3nQEIVoXau97ABBm5YcA:9
+X-Proofpoint-ORIG-GUID: DRn0cgi7mHMDldvAvb1qmnSl45Rg90Av
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-12_03,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601120086
 
+Hi Wen,
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Wen Gu <guwen@linux.alibaba.com> writes:
 
-> Now that cmd() can be printed directly remove the old formatting.
+> 1. Reorganize drivers/ptp/ to make the interface/implementation split
+>    explicit,
 >
-> Before:
+>    * drivers/ptp/core      : PTP core infrastructure and API.
+>                              (e.g. ptp_chardev.c, ptp_clock.c,
+>                               ptp_sysfs.c, etc.)
 >
->   # fragmented ip6 doesn't coalesce:
->   # Expected {200 100 100 }, Total 3 packets
->   # Received {200 100 }, Total 2 packets.
->   # /root/ksft-net-drv/drivers/net/gro: incorrect number of packets
+>    * drivers/ptp/pure      : Non-network ("pure clock") implementation,
+>                              they are typically platform/architecture/
+>                              virtualization-provided time sources.
+>                              (e.g. ptp_kvm, ptp_vmw, ptp_vmclock,
+>                               ptp_s390, etc.)
 >
-> Now:
->
->   # CMD: drivers/net/gro --ipv6 --dmac 9e:[...]
->   #   EXIT: 1
->   #   STDOUT: fragmented ip6 doesn't coalesce:
->   #   STDERR: Expected {200 100 100 }, Total 3 packets
->   #           Received {200 100 }, Total 2 packets.
->   #           /root/ksft-net-drv/drivers/net/gro: incorrect number of packets
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>    * drivers/ptp/*         : Network timestamping oriented implementation,
+>                              they primarily used together with IEEE1588
+>                              over the network.
+>                              (e.g. ptp_qoriq, ptp_pch, ptp_dp83640,
+>                               ptp_idt82p33 etc.)
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+I'm fine with splitting paths - but I would propose a different naming
+scheme as 'pure' is not really a common term in the driver world (at
+least in my perception, which might be wrong. How about the following
+instead:
+
+drivers/ptp/core    - API as written above
+drivers/ptp/virtual - all PtP drivers somehow emulating a PtP clock
+                      (like the ptp_s390 driver)
+drivers/ptp/net     - all NIC related drivers.
+
