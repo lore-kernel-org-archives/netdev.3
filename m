@@ -1,123 +1,197 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03D93328FB;
-	Mon, 12 Jan 2026 07:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768204200; cv=none; b=hSQTQJEhEkOCh/cIm2GzEksO/VYSvg/qYWloAmwlyeCFqsaEXUjxu+Z2Gkb5VmeKcgQh4RBobpuktOVNafWsfPO9p0eCrcFWt16r+pZduViUfL2GxBbddR8x4K17H216tIyh1CtKew3aeosBAQPQCVrhKLWxUKkutjSn0musRu4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768204200; c=relaxed/simple;
-	bh=zr+cpbgW76FANEZrnWJXeRXNoWuIFdknjGQ1xqOZS24=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=beykj3gdIXw/jWW67Jam82XkPbuLP0cAuJbn+UmXv/I5FahgmAMHBWF2NcXIjbvyFA1XoeP08ffrGh8InICdpXKATWhnKotostcJ5AwybROC52xj+0D/wzZjllUZFPV4bxrqX7QSS43Ay5aA3L8rz12HcTLeK6IKbtG0Mmo7Yhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JIAbrxU4; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2487E3382E8;
+	Mon, 12 Jan 2026 07:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768204362; cv=pass; b=rNPH658rS8k7hGKMYPVyBPMcsUZQXi6dfeHXj5nCzt0iSaRxWwa305gjmpPVozO11SadNcJA+PIjJ/6kY+0fes0bIENAk4dQfv+8ge1SU1yfNif9bCllA8XCWe9+23q2s4Q/3b9spDGk/KdeRBm5RiBCdRIrVzora+kSVmOcHvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768204362; c=relaxed/simple;
+	bh=jVHTsvL19Y7PhfTK1gHG53kuijo2TcrJJ98gw03bqF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TsgcG7guXXiNsdDKCo2ejDgHrtVkiN9APBA4Ratkg2aPssr5CKTSlraM4cfI62z1x9+WykNvpTLYV3hyfjj+X5C0U1x5pJoquUivSkebX8SZ5UqTH2bljX+23gJ05/TDIB1nZL9WAaYbOL+liRjKEZ6kcP33hdXVY+twdF7hLyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=dekvvaUB; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JIAbrxU4"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=bWEhCzx9xyA3ZWKQ2WgUGddIaO+7ZeRIEJqvOKFz16c=;
-	b=JIAbrxU4VhK0/bSgwAdER2BnM99VVF5jH1LFaBmeTAwvSTIMcpyRmuOR9u3MZVtoa7go+2nrb
-	wyFIaycRbViIHNWaeDkJPMxB70CtdWPqvsoxoNALgrGL6BTLph5TLmzBR1sWwNABmTdAb6bpr9b
-	AdOao41X2u6sju7FrAtnUuE=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4dqPZg1Bp4zmV8R;
-	Mon, 12 Jan 2026 15:46:19 +0800 (CST)
-Received: from kwepemk500008.china.huawei.com (unknown [7.202.194.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2273A40565;
-	Mon, 12 Jan 2026 15:49:38 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by kwepemk500008.china.huawei.com
- (7.202.194.93) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 12 Jan
- 2026 15:49:37 +0800
-From: Chen Zhen <chenzhen126@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<huyizhen2@huawei.com>, <gaoxingwang1@huawei.com>
-Subject: [PATCH v3 net 2/2] selftests: vlan: add test for turn on hw offload with reorder_hdr off
-Date: Mon, 12 Jan 2026 15:59:39 +0800
-Message-ID: <20260112075939.2509397-3-chenzhen126@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260112075939.2509397-1-chenzhen126@huawei.com>
-References: <20260112075939.2509397-1-chenzhen126@huawei.com>
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="dekvvaUB"
+ARC-Seal: i=1; a=rsa-sha256; t=1768204310; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Y4FPmIjlPWYrGO7vwM1RZ0pKDsXtt5Y7NHbBHcaSZDD3EDcNX0pDwstqLj2iuCROOMjx5QQzfpNp/lx2IlrlaSGVfW6nC3oYIzxPcdLdLuCLi39rIPf6sbvxtTLWJgmr2JeWopw4ObXk1/U09WMGUpQN7kL1CUphwdPKzwdKpek=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768204310; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/U1whJfeIeOAez4jVNR+GpdMr1BCrwk6CMiD5RunnZM=; 
+	b=PRKuoGv8BgOPAxLpwSNCBmXV6jz5374XgBPDboMP5K9ZEgn6//Raj/qUSxvd7PBoE4iyoIB2c1zKoxCMZQHORnhFEm23QsDGDKuQhKG7KK4Zthpv2HO0S3YBPyu7/YKYaxQAQCi2ouPZJemFwesGmzJEO+d3qXOnSjKGHdxpxME=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768204310;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=/U1whJfeIeOAez4jVNR+GpdMr1BCrwk6CMiD5RunnZM=;
+	b=dekvvaUBPwTsJAwzP0nfZDxZGgy9ZZ6Ht0V+meJBUNp1ZY/pQE9dMxvmAJrtRa5p
+	dnyJ3fgTrRT2uZhSSmGTvhqFxQDnAYhTIc1mObOsPtZUtgoq/wfDBkmVjAaNQ0kX+np
+	51go6uolxKcjksfe0N5w6F3U7xgsUbIrNzvnQaaY=
+Received: by mx.zohomail.com with SMTPS id 1768204305759488.36230350277333;
+	Sun, 11 Jan 2026 23:51:45 -0800 (PST)
+Date: Mon, 12 Jan 2026 07:51:35 +0000
+From: Yao Zi <me@ziyao.cc>
+To: Sai Krishna Gajula <saikrishnag@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
+	Runhua He <hua@aosc.io>, Xi Ruoyao <xry111@xry111.site>
+Subject: Re: [PATCH RESEND net-next v6 2/3] net: stmmac: Add glue driver for
+ Motorcomm YT6801 ethernet controller
+Message-ID: <aWSoBzEBUVj-RblG@pie>
+References: <20260109093445.46791-2-me@ziyao.cc>
+ <20260109093445.46791-4-me@ziyao.cc>
+ <BYAPR18MB3735FED933ED0F7536C07A59A081A@BYAPR18MB3735.namprd18.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemk500008.china.huawei.com (7.202.194.93)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BYAPR18MB3735FED933ED0F7536C07A59A081A@BYAPR18MB3735.namprd18.prod.outlook.com>
+X-ZohoMailClient: External
 
-If vlan dev was created with reorder_hdr off and hw offload both
-off but up with hw offload on, it will trigger a skb_panic bug in
-vlan_dev_hard_header().
+On Mon, Jan 12, 2026 at 06:10:26AM +0000, Sai Krishna Gajula wrote:
+> 
+> 
+> > -----Original Message-----
+> > From: Yao Zi <me@ziyao.cc>
+> > Sent: Friday, January 9, 2026 3:05 PM
+> > To: Andrew Lunn <andrew+netdev@lunn.ch>; David S. Miller
+> > <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> > Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Frank
+> > <Frank.Sae@motor-comm.com>; Heiner Kallweit <hkallweit1@gmail.com>;
+> > Russell King <linux@armlinux.org.uk>; Russell King (Oracle)
+> > <rmk+kernel@armlinux.org.uk>; Vladimir Oltean
+> > <vladimir.oltean@nxp.com>; Chen-Yu Tsai <wens@csie.org>; Jisheng Zhang
+> > <jszhang@kernel.org>; Furong Xu <0x1207@gmail.com>
+> > Cc: linux-kernel@vger.kernel.org; netdev@vger.kernel.org; Mingcong Bai
+> > <jeffbai@aosc.io>; Kexy Biscuit <kexybiscuit@aosc.io>; Yao Zi <me@ziyao.cc>;
+> > Runhua He <hua@aosc.io>; Xi Ruoyao <xry111@xry111.site>
+> > Subject: [PATCH RESEND net-next v6 2/3] net: stmmac: Add glue
+> > driver for Motorcomm YT6801 ethernet controller
+> > 
+> > Motorcomm YT6801 is a PCIe ethernet controller based on DWMAC4 IP. It
+> > integrates an GbE phy, supporting WOL, VLAN tagging and various types of
+> > offloading. It ships an on-chip eFuse for storing various vendor configuration,
+> > including MAC address.
+> > Motorcomm YT6801 is a PCIe ethernet controller based on DWMAC4 IP. It
+> > integrates an GbE phy, supporting WOL, VLAN tagging and various types of
+> > offloading. It ships an on-chip eFuse for storing various vendor configuration,
+> > including MAC address.
+> > 
+> > This patch adds basic glue code for the controller, allowing it to be set up and
+> > transmit data at a reasonable speed. Features like WOL could be implemented
+> > in the future.
+> > 
+> > Signed-off-by: Yao Zi <me@ziyao.cc>
+> > Tested-by: Mingcong Bai <jeffbai@aosc.io>
+> > Tested-by: Runhua He <hua@aosc.io>
+> > Tested-by: Xi Ruoyao <xry111@xry111.site>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/Kconfig   |   9 +
+> >  drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
+> >  .../ethernet/stmicro/stmmac/dwmac-motorcomm.c | 384
+> > ++++++++++++++++++
+> >  3 files changed, 394 insertions(+)
 
-Add a test to automatically catch re-occurrence of the issue.
+...
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chen Zhen <chenzhen126@huawei.com>
----
- tools/testing/selftests/net/Makefile          |  1 +
- .../testing/selftests/net/vlan_hw_offload.sh  | 31 +++++++++++++++++++
- 2 files changed, 32 insertions(+)
- create mode 100755 tools/testing/selftests/net/vlan_hw_offload.sh
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+> > new file mode 100644
+> > index 000000000000..8b45b9cf7202
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index b66ba04f19d9..8b50448a01cd 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -113,6 +113,7 @@ TEST_PROGS := \
- 	veth.sh \
- 	vlan_bridge_binding.sh \
- 	vlan_hw_filter.sh \
-+	vlan_hw_offload.sh \
- 	vrf-xfrm-tests.sh \
- 	vrf_route_leaking.sh \
- 	vrf_strict_mode_test.sh \
-diff --git a/tools/testing/selftests/net/vlan_hw_offload.sh b/tools/testing/selftests/net/vlan_hw_offload.sh
-new file mode 100755
-index 000000000000..ac7140539d95
---- /dev/null
-+++ b/tools/testing/selftests/net/vlan_hw_offload.sh
-@@ -0,0 +1,31 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# shellcheck disable=SC2329
-+
-+setup() {
-+	ip link add veth0 type veth peer name veth1
-+	ip link set veth0 up
-+	ip link set veth1 up
-+}
-+
-+cleanup() {
-+	ip link delete veth0 2>/dev/null
-+}
-+
-+# turn on hw offload and set up vlan dev with reorder_hdr off
-+test_vlan_hw_offload_toggle_crash() {
-+	ethtool -K veth0 tx-vlan-hw-insert off
-+	ip link add link veth0 name veth0.10 type vlan id 10 reorder_hdr off
-+	ethtool -K veth0 tx-vlan-hw-insert on
-+
-+	# set up vlan dev and it will trigger ndisc
-+	ip link set veth0.10 up
-+	ip -6 route show dev veth0.10
-+}
-+
-+trap cleanup EXIT
-+
-+setup
-+test_vlan_hw_offload_toggle_crash
-+
-+exit 0
--- 
-2.33.0
+...
 
+> > +static int motorcomm_efuse_read_patch(struct dwmac_motorcomm_priv
+> > *priv,
+> > +				      u8 index,
+> > +				      struct motorcomm_efuse_patch *patch) {
+> Minor nit
+> This format breaks  kernel style function definition, use as below ( "{" in next line)
+> static int motorcomm_efuse_read_patch(struct dwmac_motorcomm_priv
+>                                                                           *priv,
+> 				                 u8 index,
+> 				                 struct motorcomm_efuse_patch *patch) 
+> {
+
+This is strange, I didn't put the left curly brace in the same line as
+the argument list. You could confirm this in the mbox archived by
+lore[1]. Same for other functions.
+
+I've talked to other recipients of the patch, and one uses Outlook as
+MTA reported similar issues. It seems Outlook MTA (not the server)
+automatically removes the line break and the plus sign before the curly
+brace.
+
+I checked your Message-ID and found you're also using Outlook as service
+provider, if Outlook is also your MTA, could you try turn off option
+"Remove extra line breaks in plain text messages" and see whether the
+problem gets fixed?
+
+...
+
+> > +static int motorcomm_setup_irq(struct pci_dev *pdev,
+> > +			       struct stmmac_resources *res,
+> > +			       struct plat_stmmacenet_data *plat) {
+> > +	int ret;
+> > +
+> > +	ret = pci_alloc_irq_vectors(pdev, 6, 6, PCI_IRQ_MSIX);
+> > +	if (ret > 0) {
+> > +		res->rx_irq[0]	= pci_irq_vector(pdev, 0);
+> > +		res->tx_irq[0]	= pci_irq_vector(pdev, 4);
+> > +		res->irq	= pci_irq_vector(pdev, 5);
+> > +
+> > +		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
+> > +	} else {
+> > +		dev_info(&pdev->dev, "failed to allocate MSI-X vector: %d\n",
+> > +			 ret);
+> > +		dev_info(&pdev->dev, "try MSI instead\n");
+> > +
+> > +		ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSI);
+> > +		if (ret < 0)
+> > +			return dev_err_probe(&pdev->dev, ret,
+> > +					     "failed to allocate MSI\n");
+> > +
+> > +		res->irq = pci_irq_vector(pdev, 0);
+> > +	}
+> 
+> If possible, add enum for MAX MSIX count (in this case 6 ), or dynamic values as per hardware. 
+
+The only Motorcomm PCIe ethernet controller I could find is YT6801, so
+I don't think there's a need for per-hardware values (at least for now).
+Will add a constant to represent MSI-X count in the next version.
+
+...
+
+> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
+
+Thanks for reviewing.
+
+Best regards,
+Yao Zi
+
+[1]: https://lore.kernel.org/all/20260109093445.46791-4-me@ziyao.cc/raw
