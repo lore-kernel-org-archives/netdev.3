@@ -1,150 +1,324 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011002.outbound.protection.outlook.com [40.93.194.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED290264609;
-	Mon, 12 Jan 2026 10:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214290; cv=fail; b=niVfGMvWsmAZWE0d3tcqN6BRAEYSgK61foZkzQp+ckUDfurYMXiJHGzRzsnpftgZUunRwgeJwIWrjUNgpK+i84TLn7vLy3DJs59xreUYUFQNOt1JM/jEz5/6yn6PbaewuVuw0ujQux3ZVO2z4PduQdaCxO4sy9c98z81lajdkZQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214290; c=relaxed/simple;
-	bh=y9he46J2Y2zYxZG1o2RMKaKDidVwaUtdrvy3Md0km+U=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=DeprHJ9dgiPLwNsh4Q/NZf04FiF4Ddcc/IngvHmUDUEX7AigQEqSiYjPNIkjauLZ8ck/NtxUmAr99iM0urSyyJHgF40G70iO8ubItmRotq80IputZYtFEGo1VJocmSzN7u0BE5A/pkInd5hpeBRvYLnxSFnmnjevFVjHkUVPNOI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G3yWAltw; arc=fail smtp.client-ip=40.93.194.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4D02C237F
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 10:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768214309; cv=none; b=f2Zl64QkPpR9v3G4OIgY67or53aLszGToFD58z/rQW/zZ3UEzh3CLj9W/GZY4vtC8MSKtVD9fATfszduMc78b+X9uFAnkFO2QEew7ho8DNw8HzL0k/D84Wyaihz8xljUpF6JgksWW1LBGwr3yw6IvCLhbePT2dbDDGdqKbv5PPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768214309; c=relaxed/simple;
+	bh=cOm/ERwPfe+Xo3Qo6wuMNiIL2iu8c51aQ+1vzEqbbuY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DQbKdySKpIX6lV+fXqSlvaklRy4BOAB2/V+oGX70RCjJvi9VBpqwEaTIQA4CZqf5zjdtf364cg5iOwyw3UcMygNk+vcj5BEYs3SbjQ91gO7/LL2NyKNnbh/JHxbiQyuHUGJAdXBpGAoi1aeyFeaZ3wJN2sRXANHET50nThJEfUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ff7SB9RL; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G3yWAltw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nK/kCupe+c/IhFpdtiux6IxJHTr54jmqYHKVsZkhgAhu6kCwS5ay4qE0NEME1Rf63WBeK+G2oRfa53xLsVrKefkmKgsXi4RPE/jJq+TuQoUOMNVEADSs1oNgYD/I6miyoAcO5gFBYDhuXmb7nc4jHPB1x5jGKMYCgMGpLA2LiQrdMJQLcFz0B1hMfmJUyTHvsZjvZ4qUTLXlLg+ob9XkyT1WMnBlPElepnN1yGewBQFBao2oki+srtlAsMsRJGR5gG3eLx4utbGlFXDlCf9je705q3NfOTvFzAasb8HzdRvAJQ0g/i4VUNCU+ixQ+cckBzzoGw/LdfYGNe8uauYvyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G7z2VmVT4+M3pkmFklMKsbekKsZLHwPBtjbGbI16z34=;
- b=QTBXma9aFgP286RfOUv1dLit4f0/vgRyvmnOnKt4bd/dbXGle+zrl47ZqQsdST5DUAljM69Swsij9GCRMkU0mbc1hnMISl7Q9heZjMkbZeot6vgu1EdwBLKjhADKhA/h/duYMfGKL9NY+T/zGkPFHapilOHIg1qI8llU31lcT8hZ0PnqOxidTQzN5jKFtVXVZLSz4TTxScAac51elGsISKKrcQ/eW7Aj/SkaLtGEA1cK2+unm9dLpXlQWd1jsweqV2JIh0od4Eq+AWQBkAoI3dHS1xrqFQBIrc6h50S9JYE64c729bMc8fsZanivRPwq82swl5frnaG/IWnFRI/zOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G7z2VmVT4+M3pkmFklMKsbekKsZLHwPBtjbGbI16z34=;
- b=G3yWAltwvcY0EViGLvQQYlMUC9zCNMWRBvggJvyC7jOycc73LWBAP/om1kIZM7YG8q3LjOubh5W9UZD7p7jU+m/mAuAsjv7qCE7Yk9MjuiEbimkbb7HrJDXVNGzSSX/c29gaa/aNJgb4TO1Q5QT24zLfhQimIyNxm7x5pUNt4Fzpk2v49hSx4ICVygnVPx8Ghu8ShWe+sgGzDgPoIGpgh2UoXcgxnxshqgLChXXethOPzV4IY53S/oQfuJ5vleAdfBv9yatP5qf8EN52E9cgM55WKjQtm7Fda7OGjGoIZGz780wirZ7bNL2TY7tB2PGw2Owp26XO/m8JD13ItA2EjQ==
-Received: from SA1P222CA0046.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2d0::14)
- by DS7PR12MB5766.namprd12.prod.outlook.com (2603:10b6:8:75::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 10:38:05 +0000
-Received: from SA2PEPF00001505.namprd04.prod.outlook.com
- (2603:10b6:806:2d0:cafe::a8) by SA1P222CA0046.outlook.office365.com
- (2603:10b6:806:2d0::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Mon,
- 12 Jan 2026 10:37:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF00001505.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Mon, 12 Jan 2026 10:38:05 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
- 2026 02:37:52 -0800
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 12 Jan
- 2026 02:37:47 -0800
-References: <20260110005121.3561437-1-kuba@kernel.org>
- <20260110005121.3561437-3-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, <sdf@fomichev.me>,
-	<willemb@google.com>, <petrm@nvidia.com>
-Subject: Re: [PATCH net-next v2 2/6] selftests: net: py: teach cmd() how to
- print itself
-Date: Mon, 12 Jan 2026 11:37:34 +0100
-In-Reply-To: <20260110005121.3561437-3-kuba@kernel.org>
-Message-ID: <87ldi33ymk.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ff7SB9RL"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-792785bc7ffso16003947b3.3
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 02:38:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768214307; x=1768819107; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xQC5N3XNGquXZOqwYNNYDjkmqVzyTHgte0jy1aBx8QU=;
+        b=ff7SB9RLYnIIe+Vmj4AKCajl12vrbabVJ9EaaMHWK5Ily4mAReTjdytHOE6kYqDWxe
+         hU4mbICojAOamv0CxsE+Lu9/xE8j0hCns1DvcS4E+I5BFM/igCz5LDGT6fe1If17KHrF
+         rxUdavqi+XL6AW1SrHJpwbFA3tYgvct4q9EaEqbsAILe2Dtaj/BYFrk1fMPu9a7tIyKP
+         shTNHQji26SfvKN2wTuF2bjqKiAr3iFr1ZZqJj5SleJBhFNN86Jb5Q+4+IyTytK+v23h
+         Q1lFLTDH7xs9fcNEgO6ZUJEU0FYsZMN46qkjhH8c5JPZh3+wtWBVxRRbYDd/ztZC0/4z
+         BHdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768214307; x=1768819107;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xQC5N3XNGquXZOqwYNNYDjkmqVzyTHgte0jy1aBx8QU=;
+        b=sXJl8nKips6r5fWgYIvIxgJ1ZmRzrM9KudAuTgECm4sCde97pdezdRs+yQ1hydER5i
+         nyTTeR07k1M9CKxX7SV4aXkLHT1OAuXP0jble1SM/qG9DQhjRwbKMRSw8ePuU4KtB40b
+         0gjIQfoU9ijImzhODmPU9q9fnWVYAnFTjWP5OZYcz94cuFFMlYbfqbVfZTo38OnsIKUP
+         TRrLigkCQv7zm+mWTDkD3qA3L6fCDlKC8LORmHw4bnYk/A0HW9DFyFOSM2WZuWz9BIjm
+         vdTjplhe1P4tPBmH/3Zw8gS6a1ldkf6ve6hvHCXWIVm9HPtxGQQ+J3Js/tGgwQaVfdQ3
+         LPzg==
+X-Forwarded-Encrypted: i=1; AJvYcCXNIsXSY5e64Bk4MYdg2Blrdf+yRutD0WiXhVkZ//lzz0NP8VqTX8ESkvTQm/ISU0nyGBV4SNY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySJPGv3yKmA1mDSVzd+uOK+3a7O8PtGRAqWF8gGo5lEEmRNEWw
+	UVdLqDoYx3Wh9UM24UFL2y0WQ63FKJKpRxpEVMnDx49Deu2rg9QNC01na+34GZCBotQUsisrMZ1
+	VFc/0nnNvKlNF7w==
+X-Google-Smtp-Source: AGHT+IE5dDVVFv3KsL6FjnOJI1qn0i77gODoAiVIXk9OnmrgsUHsr+aeZT2uMC9xzgIOerlvszEbhX82jiaS0A==
+X-Received: from ywll16.prod.google.com ([2002:a05:690c:a1d0:b0:789:2e24:b795])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690c:490a:b0:78f:a7aa:b684 with SMTP id 00721157ae682-790b56176ccmr142095007b3.31.1768214306789;
+ Mon, 12 Jan 2026 02:38:26 -0800 (PST)
+Date: Mon, 12 Jan 2026 10:38:25 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001505:EE_|DS7PR12MB5766:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3887523d-459e-4133-b19d-08de51c6ab78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9X/BHNGnLPSPTY6iXzldmxAQAjdPI/wKo5Wg0HfSyygL1/t6tuKqGZd97V0S?=
- =?us-ascii?Q?sqkF7DoUecJq9w2tU6T8YKXvQXDIb7HH5iBZYVW8lp8+He+Sr+i+6r6ixET+?=
- =?us-ascii?Q?leII6N4eB1/s2xBqZuL5Q9gOo/LwSCAyUzd56iC/za1jo04dV1bqmFZ/Xn5n?=
- =?us-ascii?Q?bDh41TH1732Zdnr1YGbC8bLUXnEsuAAd6nUcigmyZpp33i99Hay7uK1L9YWB?=
- =?us-ascii?Q?JmD1jU7zOvEu7M9k/meD2CuwhtwRZ5r/4aXOcPbV6IF0FJlL6aeSkA28IMES?=
- =?us-ascii?Q?0ZpeWtN7vACHf7FV/LMsooVWu9yeXd6ndsI6R7rDbgCLXv9UdnDgK5H8hu0M?=
- =?us-ascii?Q?m78uQe9NC9EqGX+ut6FNBbijl9dhXXF1Xb+hLoFPzoPnrij2Zg/rdtXCXfWn?=
- =?us-ascii?Q?4BenJOB2LEdxX8gAztX7E82anHGGfyUeD6MyxeuRnhwP8Benx12RHbDPRWJh?=
- =?us-ascii?Q?dpf6/6k1MIZwazeRhnlA6Wb1TfzhFBbBZc66Mh9K/aGcXP0Q+GQGPigRMHWb?=
- =?us-ascii?Q?F/H0AffoLFEHAcId8CHRAibvuPrVCa9VpJ48fDKRhjkIKEteVbAZWO+5e/iZ?=
- =?us-ascii?Q?MTwWwISV0xixJRL8uizq7gy0JC4492OPfC9BBYBrXSmQJLFqtAWVeDLz9LNP?=
- =?us-ascii?Q?zcxPpcGUevMOfbfzvzizeUTf+gFpsoj6qXiQfeknQThYbCpG1V5VdUTt1iAp?=
- =?us-ascii?Q?YSSkwUAkDPQIXgIl/uy3DVIc7QzMD85dS66Zm2PcJ3QkIzOC7NPLGmsXv3oY?=
- =?us-ascii?Q?MY2QW9NPt+Rma/DUQetki6L57uSM+DEdHu/gpBUHJ5sFbKrMuWkyKSsue195?=
- =?us-ascii?Q?nKNC5C/xexxf7mCP8dVfPLVpvZhY//fU97HwLjiJssYFtWjrEyH7O9UnmmiF?=
- =?us-ascii?Q?aNq4Fw6LSBC47B2ZWfst175SssUNtEkJFSTH6mO9I2iCppR0mUaEPKqm0EsA?=
- =?us-ascii?Q?dcF1dkqHWs4qiHQONOKtKZo6SDmkPc1neTCGZqneIGLnU9D5lzjXa7ZW/1Yb?=
- =?us-ascii?Q?wkOvOFpTGHqRf+vnXrx5p/aQTyM4wUu98iVSwhfbV326lqZ7bn5IINo8NKc9?=
- =?us-ascii?Q?D96LElREys8zhDUNc8RIQAT2A8yrmU7S1ubws8oFtBPjHNQ4IFaQBHcuItzk?=
- =?us-ascii?Q?oAfBoePMduwtluqOxMrrZiBapA5bqYZJVztRMwiegudGo21OZQ3k17XJLiLZ?=
- =?us-ascii?Q?jlAhvyn3Nf8kdyCR6AxwHmMw6rrUw03SEu9Wwmr3IF+NoCwmX9rC23SGH6pi?=
- =?us-ascii?Q?K4tuqnuM2NgmDKiiHBIrdiL2WcZMdN7efhFC0ag1QW7hY7gSx0BrlrR4kGoc?=
- =?us-ascii?Q?fAlGjrTbrZCoK08gcEk/avSYMewzZJn+j1nngd48yRhN8zz6dtetE3sSES+z?=
- =?us-ascii?Q?srG8nLz8dnUlvCk4TzCe7ptUVCasDXKwGAHSUiZBWIXrowv8J1jtL/xqv99m?=
- =?us-ascii?Q?/2SyreqA8yjK466BIyKExHNNh8xFMCQ5B/2ml8AnYjMgVJc4nV12s75tnQSC?=
- =?us-ascii?Q?ttVoZMsssfdeKwWmD+q1Fdj5k7udD41TYbljrXrt1o3HZBVnFDnYoB1Rrzyq?=
- =?us-ascii?Q?rR0xczYOKbdCG0mvGHc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 10:38:05.3771
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3887523d-459e-4133-b19d-08de51c6ab78
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001505.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5766
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260112103825.3810713-1-edumazet@google.com>
+Subject: [PATCH net] dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com, 
+	Martin KaFai Lau <martin.lau@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
+syzbot was able to crash the kernel in rt6_uncached_list_flush_dev()
+in an interesting way [1]
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Crash happens in list_del_init()/INIT_LIST_HEAD() while writing
+list->prev, while the prior write on list->next went well.
 
-> Teach cmd() how to print itself, to make debug prints easier.
-> Example output (leading # due to ksft_pr()):
->
->   # CMD: /root/ksft-net-drv/drivers/net/gro
->   #   EXIT: 1
->   #   STDOUT: ipv6 with ext header does coalesce:
->   #   STDERR: Expected {200 }, Total 1 packets
->   #           Received {100 [!=200]100 [!=0]}, Total 2 packets.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+static inline void INIT_LIST_HEAD(struct list_head *list)
+{
+	WRITE_ONCE(list->next, list); // This went well
+	WRITE_ONCE(list->prev, list); // Crash, @list has been freed.
+}
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+Issue here is that rt6_uncached_list_del() did not attempt to lock
+ul->lock, as list_empty(&rt->dst.rt_uncached) returned
+true because the WRITE_ONCE(list->next, list) happened on the other CPU.
+
+We might use list_del_init_careful() and list_empty_careful(),
+or make sure rt6_uncached_list_del() always grabs the spinlock
+whenever rt->dst.rt_uncached_list has been set.
+
+A similar fix is neeed for IPv4.
+
+[1]
+
+ BUG: KASAN: slab-use-after-free in INIT_LIST_HEAD include/linux/list.h:46 [inline]
+ BUG: KASAN: slab-use-after-free in list_del_init include/linux/list.h:296 [inline]
+ BUG: KASAN: slab-use-after-free in rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
+ BUG: KASAN: slab-use-after-free in rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
+Write of size 8 at addr ffff8880294cfa78 by task kworker/u8:14/3450
+
+CPU: 0 UID: 0 PID: 3450 Comm: kworker/u8:14 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: netns cleanup_net
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+  INIT_LIST_HEAD include/linux/list.h:46 [inline]
+  list_del_init include/linux/list.h:296 [inline]
+  rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
+  rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
+  addrconf_ifdown+0x143/0x18a0 net/ipv6/addrconf.c:3853
+ addrconf_notify+0x1bc/0x1050 net/ipv6/addrconf.c:-1
+  notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
+  call_netdevice_notifiers_extack net/core/dev.c:2268 [inline]
+  call_netdevice_notifiers net/core/dev.c:2282 [inline]
+  netif_close_many+0x29c/0x410 net/core/dev.c:1785
+  unregister_netdevice_many_notify+0xb50/0x2330 net/core/dev.c:12353
+  ops_exit_rtnl_list net/core/net_namespace.c:187 [inline]
+  ops_undo_list+0x3dc/0x990 net/core/net_namespace.c:248
+  cleanup_net+0x4de/0x7b0 net/core/net_namespace.c:696
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+
+Allocated by task 803:
+  kasan_save_stack mm/kasan/common.c:57 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+  unpoison_slab_object mm/kasan/common.c:340 [inline]
+  __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
+  kasan_slab_alloc include/linux/kasan.h:253 [inline]
+  slab_post_alloc_hook mm/slub.c:4953 [inline]
+  slab_alloc_node mm/slub.c:5263 [inline]
+  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
+  dst_alloc+0x105/0x170 net/core/dst.c:89
+  ip6_dst_alloc net/ipv6/route.c:342 [inline]
+  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
+  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Freed by task 20:
+  kasan_save_stack mm/kasan/common.c:57 [inline]
+  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+  kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+  poison_slab_object mm/kasan/common.c:253 [inline]
+  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
+  kasan_slab_free include/linux/kasan.h:235 [inline]
+  slab_free_hook mm/slub.c:2540 [inline]
+  slab_free mm/slub.c:6670 [inline]
+  kmem_cache_free+0x18f/0x8d0 mm/slub.c:6781
+  dst_destroy+0x235/0x350 net/core/dst.c:121
+  rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+  rcu_core kernel/rcu/tree.c:2857 [inline]
+  rcu_cpu_kthread+0xba5/0x1af0 kernel/rcu/tree.c:2945
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Last potentially related work creation:
+  kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
+  kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
+  __call_rcu_common kernel/rcu/tree.c:3119 [inline]
+  call_rcu+0xee/0x890 kernel/rcu/tree.c:3239
+  refdst_drop include/net/dst.h:266 [inline]
+  skb_dst_drop include/net/dst.h:278 [inline]
+  skb_release_head_state+0x71/0x360 net/core/skbuff.c:1156
+  skb_release_all net/core/skbuff.c:1180 [inline]
+  __kfree_skb net/core/skbuff.c:1196 [inline]
+  sk_skb_reason_drop+0xe9/0x170 net/core/skbuff.c:1234
+  kfree_skb_reason include/linux/skbuff.h:1322 [inline]
+  tcf_kfree_skb_list include/net/sch_generic.h:1127 [inline]
+  __dev_xmit_skb net/core/dev.c:4260 [inline]
+  __dev_queue_xmit+0x26aa/0x3210 net/core/dev.c:4785
+  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+The buggy address belongs to the object at ffff8880294cfa00
+ which belongs to the cache ip6_dst_cache of size 232
+The buggy address is located 120 bytes inside of
+ freed 232-byte region [ffff8880294cfa00, ffff8880294cfae8)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x294cf
+memcg:ffff88803536b781
+flags: 0x80000000000000(node=0|zone=1)
+page_type: f5(slab)
+raw: 0080000000000000 ffff88802ff1c8c0 ffffea0000bf2bc0 dead000000000006
+raw: 0000000000000000 00000000800c000c 00000000f5000000 ffff88803536b781
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 9, tgid 9 (kworker/0:0), ts 91119585830, free_ts 91088628818
+  set_page_owner include/linux/page_owner.h:32 [inline]
+  post_alloc_hook+0x234/0x290 mm/page_alloc.c:1857
+  prep_new_page mm/page_alloc.c:1865 [inline]
+  get_page_from_freelist+0x28c0/0x2960 mm/page_alloc.c:3915
+  __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5210
+  alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2486
+  alloc_slab_page mm/slub.c:3075 [inline]
+  allocate_slab+0x86/0x3b0 mm/slub.c:3248
+  new_slab mm/slub.c:3302 [inline]
+  ___slab_alloc+0xb10/0x13e0 mm/slub.c:4656
+  __slab_alloc+0xc6/0x1f0 mm/slub.c:4779
+  __slab_alloc_node mm/slub.c:4855 [inline]
+  slab_alloc_node mm/slub.c:5251 [inline]
+  kmem_cache_alloc_noprof+0x101/0x6c0 mm/slub.c:5270
+  dst_alloc+0x105/0x170 net/core/dst.c:89
+  ip6_dst_alloc net/ipv6/route.c:342 [inline]
+  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
+  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+page last free pid 5859 tgid 5859 stack trace:
+  reset_page_owner include/linux/page_owner.h:25 [inline]
+  free_pages_prepare mm/page_alloc.c:1406 [inline]
+  __free_frozen_pages+0xfe1/0x1170 mm/page_alloc.c:2943
+  discard_slab mm/slub.c:3346 [inline]
+  __put_partials+0x149/0x170 mm/slub.c:3886
+  __slab_free+0x2af/0x330 mm/slub.c:5952
+  qlink_free mm/kasan/quarantine.c:163 [inline]
+  qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
+  kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+  __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:350
+  kasan_slab_alloc include/linux/kasan.h:253 [inline]
+  slab_post_alloc_hook mm/slub.c:4953 [inline]
+  slab_alloc_node mm/slub.c:5263 [inline]
+  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
+  getname_flags+0xb8/0x540 fs/namei.c:146
+  getname include/linux/fs.h:2498 [inline]
+  do_sys_openat2+0xbc/0x200 fs/open.c:1426
+  do_sys_open fs/open.c:1436 [inline]
+  __do_sys_openat fs/open.c:1452 [inline]
+  __se_sys_openat fs/open.c:1447 [inline]
+  __x64_sys_openat+0x138/0x170 fs/open.c:1447
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+
+Fixes: 8d0b94afdca8 ("ipv6: Keep track of DST_NOCACHE routes in case of iface down/unregister")
+Fixes: 78df76a065ae ("ipv4: take rt_uncached_lock only if needed")
+Reported-by: syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6964cdf2.050a0220.eaf7.009d.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+---
+ net/core/dst.c   | 1 +
+ net/ipv4/route.c | 4 ++--
+ net/ipv6/route.c | 4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/dst.c b/net/core/dst.c
+index e9d35f49c9e7800d7397b643c70931dd516a6265..1dae26c51ebec0bd4fc088284ce7165606d5eaf6 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -68,6 +68,7 @@ void dst_init(struct dst_entry *dst, struct dst_ops *ops,
+ 	dst->lwtstate = NULL;
+ 	rcuref_init(&dst->__rcuref, 1);
+ 	INIT_LIST_HEAD(&dst->rt_uncached);
++	dst->rt_uncached_list = NULL;
+ 	dst->__use = 0;
+ 	dst->lastuse = jiffies;
+ 	dst->flags = flags;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index b549d6a573073b3319fef2f4b76d49bf5ed7a6d7..11d990703d31a9cfa48646b298cd149025c72123 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1537,9 +1537,9 @@ void rt_add_uncached_list(struct rtable *rt)
+ 
+ void rt_del_uncached_list(struct rtable *rt)
+ {
+-	if (!list_empty(&rt->dst.rt_uncached)) {
+-		struct uncached_list *ul = rt->dst.rt_uncached_list;
++	struct uncached_list *ul = rt->dst.rt_uncached_list;
+ 
++	if (ul) {
+ 		spin_lock_bh(&ul->lock);
+ 		list_del_init(&rt->dst.rt_uncached);
+ 		spin_unlock_bh(&ul->lock);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index a3e051dc66ee07c5bc22ba94388097b72d8270b6..e3a260a5564ba84fd4a4f9c57670c1fff7dc28ed 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -148,9 +148,9 @@ void rt6_uncached_list_add(struct rt6_info *rt)
+ 
+ void rt6_uncached_list_del(struct rt6_info *rt)
+ {
+-	if (!list_empty(&rt->dst.rt_uncached)) {
+-		struct uncached_list *ul = rt->dst.rt_uncached_list;
++	struct uncached_list *ul = rt->dst.rt_uncached_list;
+ 
++	if (ul) {
+ 		spin_lock_bh(&ul->lock);
+ 		list_del_init(&rt->dst.rt_uncached);
+ 		spin_unlock_bh(&ul->lock);
+-- 
+2.52.0.457.g6b5491de43-goog
+
