@@ -1,239 +1,138 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E222D8DDF
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 11:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4CC356A2A
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 11:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768217891; cv=none; b=e82mhUcbittGRhmbIphiEpwYuuRvcIsx1lbP0Hypa3MXuRe2sOSsmDfbX9NwNYVu43fbdTx27zr64Zekzd+JLVrL5dsvtFDJdaLl/JvUMHlnbUzjyvCov+on/qkWoDAOgeCC9GW45mSinUjH89HB0OYDUiMeEkXKwGJwLGNUs5c=
+	t=1768218149; cv=none; b=FR2aKQQZZ9/N3qbVD4nmFMyhO2+lFpgeEdqlF+9tfBxha6gbb6sTFioHlYqgRVQCwDN9qA7PDJ0mla3e4XbrfFZg7zgcRbPmAOtaUuCH7OVswwm+k1d5P+UR2XaJOjY2whvImpowhqHxqUk4TiBNE79MThJcNAa+yP7miQcVjD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768217891; c=relaxed/simple;
-	bh=NEOn60HUeDZocL6BvdbzUCkkOXmcf0fqo9qVaOJL9XI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IPgCuFWTlQwo5LhOrnrfJXHagYUBTe5yiLuqMzEU9ajjtKp1sgJuMl4LVhUDJmgpxD/hcas2u0Az3b24rY3KNmssmEqOVLq7rhkrDPmBNAGK57BNLeX3pD9rwXJ3En+9YM/d6p9BwP17JAuPS0VLqCh0nnALUWR5EaE9QYcBfGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lq7aDmaG; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1768218149; c=relaxed/simple;
+	bh=/cZB6jAScdGWtlTD1wUvgFwqNswsMuCb5T8p3wPVa24=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GRwTSwD8+4sOpBl2s/cLDOnbCO5nEyEYObXA+y0N+eUF/gJLOxmuqrw3uf7LOc9+c+aNVBZBG52NQI3gHSMYLB3ShO/+9zhy9jg4uNDue+CRiIwGfJW8X+9h2DWRzNgdzDuF+GAzpZPC+flbhut6tDBi/VhxXd9keex8I0uJjWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cfs0uqIo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lq7aDmaG"
-Message-ID: <825dbb02-5e76-45d1-acf6-78bcc2e999c8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768217887;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cfs0uqIo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768218146;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FcXhocpu+w8GdlsVIvnOM5XAoY8JHsgRG7eNfAcTcyE=;
-	b=lq7aDmaGWc1Y2CKE2bhQV929XXJZQYw9HdDeH+k7abiCQ6OJGvjm7HjCO7CGpVP34C6sjn
-	cb5r21AwBgcZukyBCsR83ey7lowCi19OHZgNwNBcjEpeKbblEXatkSM3JqT7zPgzmjxvPR
-	j9sYkMcVWhh/Wpfb7JUH47D8IYZrhQA=
-Date: Mon, 12 Jan 2026 11:37:51 +0000
+	bh=wVdsttuN8LG2+FSiw2KfXuXK5R+7mNaRXlQUP1M6CHk=;
+	b=cfs0uqIoYLOkpVj4DW2R5iwluTv7BmAoXdnmkxvs3oCJrTFco1bLTp3r9ALRQhcDlHaJjh
+	GWS7mebRpm6al6WVUqS/g6GRIj/7ELF9m4q3Mj1tgUbTZOnCYlPmi86AO6qA062qw/oolU
+	QW29GdxzndbwjB07YvHS/1lHmgWKKkQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-PR2pgkj8NdqOCA0nOnVW1w-1; Mon,
+ 12 Jan 2026 06:42:24 -0500
+X-MC-Unique: PR2pgkj8NdqOCA0nOnVW1w-1
+X-Mimecast-MFC-AGG-ID: PR2pgkj8NdqOCA0nOnVW1w_1768218142
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B3FB119560A6;
+	Mon, 12 Jan 2026 11:42:22 +0000 (UTC)
+Received: from fweimer-oldenburg.csb.redhat.com (unknown [10.44.32.58])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 76ACA1800577;
+	Mon, 12 Jan 2026 11:42:19 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Jakub Kicinski" <kuba@kernel.org>,  Thomas =?utf-8?Q?Wei=C3=9Fschuh?=
+ <thomas.weissschuh@linutronix.de>,  "Eric Dumazet" <edumazet@google.com>,
+  "Kuniyuki Iwashima" <kuniyu@google.com>,  "Paolo Abeni"
+ <pabeni@redhat.com>,  "Willem de Bruijn" <willemb@google.com>,  Netdev
+ <netdev@vger.kernel.org>,  linux-kernel@vger.kernel.org,
+  linux-api@vger.kernel.org
+Subject: Re: [PATCH net-next] net: uapi: Provide an UAPI definition of
+ 'struct sockaddr'
+In-Reply-To: <06cf1396-c100-45ba-8b46-edb4ed4feb62@app.fastmail.com> (Arnd
+	Bergmann's message of "Fri, 09 Jan 2026 13:56:38 +0100")
+References: <20260105-uapi-sockaddr-v1-1-b7653aba12a5@linutronix.de>
+	<20260105095713.0b312b26@kernel.org>
+	<20260106112714-d47c16e0-0020-4851-9c2a-f8849c9a0677@linutronix.de>
+	<20260106151313.1f8bd508@kernel.org>
+	<06cf1396-c100-45ba-8b46-edb4ed4feb62@app.fastmail.com>
+Date: Mon, 12 Jan 2026 12:42:17 +0100
+Message-ID: <lhu7btnkqg6.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 3/3] dpll: zl3073x: Implement device mode setting
- support
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Prathosh Satish <Prathosh.Satish@microchip.com>, Petr Oros
- <poros@redhat.com>, linux-kernel@vger.kernel.org,
- Michal Schmidt <mschmidt@redhat.com>
-References: <20260112101409.804206-1-ivecera@redhat.com>
- <20260112101409.804206-4-ivecera@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260112101409.804206-4-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 12/01/2026 10:14, Ivan Vecera wrote:
-> Add support for .supported_modes_get() and .mode_set() callbacks
-> to enable switching between manual and automatic modes via netlink.
-> 
-> Implement .supported_modes_get() to report available modes based
-> on the current hardware configuration:
-> 
-> * manual mode is always supported
-> * automatic mode is supported unless the dpll channel is configured
->    in NCO (Numerically Controlled Oscillator) mode
-> 
-> Implement .mode_set() to handle the specific logic required when
-> transitioning between modes:
-> 
-> 1) Transition to manual:
-> * If a valid reference is currently active, switch the hardware
->    to ref-lock mode (force lock to that reference).
-> * If no reference is valid and the DPLL is unlocked, switch to freerun.
-> * Otherwise, switch to Holdover.
-> 
-> 2) Transition to automatic:
-> * If the currently selected reference pin was previously marked
->    as non-selectable (likely during a previous manual forcing
->    operation), restore its priority and selectability in the hardware.
-> * Switch the hardware to Automatic selection mode.
-> 
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   drivers/dpll/zl3073x/dpll.c | 106 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 106 insertions(+)
-> 
-> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 9879d85d29af0..d0a9c361dc1d8 100644
-> --- a/drivers/dpll/zl3073x/dpll.c
-> +++ b/drivers/dpll/zl3073x/dpll.c
-> @@ -100,6 +100,20 @@ zl3073x_dpll_pin_direction_get(const struct dpll_pin *dpll_pin, void *pin_priv,
->   	return 0;
->   }
->   
-> +static struct zl3073x_dpll_pin *
-> +zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
-> +{
-> +	struct zl3073x_dpll_pin *pin;
-> +
-> +	list_for_each_entry(pin, &zldpll->pins, list) {
-> +		if (zl3073x_dpll_is_input_pin(pin) &&
-> +		    zl3073x_input_pin_ref_get(pin->id) == ref_id)
-> +			return pin;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->   static int
->   zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
->   				 void *pin_priv,
-> @@ -1137,6 +1151,26 @@ zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
->   	return 0;
->   }
->   
-> +static int
-> +zl3073x_dpll_supported_modes_get(const struct dpll_device *dpll,
-> +				 void *dpll_priv, unsigned long *modes,
-> +				 struct netlink_ext_ack *extack)
-> +{
-> +	struct zl3073x_dpll *zldpll = dpll_priv;
-> +
-> +	/* We support switching between automatic and manual mode, except in
-> +	 * a case where the DPLL channel is configured to run in NCO mode.
-> +	 * In this case, report only the manual mode to which the NCO is mapped
-> +	 * as the only supported one.
-> +	 */
-> +	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_NCO)
-> +		__set_bit(DPLL_MODE_AUTOMATIC, modes);
-> +
-> +	__set_bit(DPLL_MODE_MANUAL, modes);
-> +
-> +	return 0;
-> +}
-> +
->   static int
->   zl3073x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
->   		      enum dpll_mode *mode, struct netlink_ext_ack *extack)
-> @@ -1217,6 +1251,76 @@ zl3073x_dpll_phase_offset_avg_factor_set(const struct dpll_device *dpll,
->   	return 0;
->   }
->   
-> +static int
-> +zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
-> +		      enum dpll_mode mode, struct netlink_ext_ack *extack)
-> +{
-> +	struct zl3073x_dpll *zldpll = dpll_priv;
-> +	u8 hw_mode, mode_refsel, ref;
-> +	int rc;
-> +
-> +	rc = zl3073x_dpll_selected_ref_get(zldpll, &ref);
-> +	if (rc) {
-> +		NL_SET_ERR_MSG_MOD(extack, "failed to get selected reference");
-> +		return rc;
-> +	}
-> +
-> +	if (mode == DPLL_MODE_MANUAL) {
-> +		/* We are switching from automatic to manual mode:
-> +		 * - if we have a valid reference selected during auto mode then
-> +		 *   we will switch to forced reference lock mode and use this
-> +		 *   reference for selection
-> +		 * - if NO valid reference is selected, we will switch to forced
-> +		 *   holdover mode or freerun mode, depending on the current
-> +		 *   lock status
-> +		 */
-> +		if (ZL3073X_DPLL_REF_IS_VALID(ref))
-> +			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_REFLOCK;
-> +		else if (zldpll->lock_status == DPLL_LOCK_STATUS_UNLOCKED)
-> +			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_FREERUN;
-> +		else
-> +			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER;
-> +	} else {
-> +		/* We are switching from manual to automatic mode:
-> +		 * - if there is a valid reference selected then ensure that
-> +		 *   it is selectable after switch to automatic mode
-> +		 * - switch to automatic mode
-> +		 */
-> +		struct zl3073x_dpll_pin *pin;
-> +
-> +		pin = zl3073x_dpll_pin_get_by_ref(zldpll, ref);
-> +		if (pin && !pin->selectable) {
-> +			/* Restore pin priority in HW */
-> +			rc = zl3073x_dpll_ref_prio_set(pin, pin->prio);
-> +			if (rc)
-> +				return rc;
+* Arnd Bergmann:
 
-I think it's better to fill-up extack here to give at least some info of
-what's happened?
+> On Wed, Jan 7, 2026, at 00:13, Jakub Kicinski wrote:
+>> On Tue, 6 Jan 2026 11:32:52 +0100 Thomas Wei=C3=9Fschuh wrote:
+>>> As for the failure in netdev CI however I am not so sure.
+>>> Looking at net-next-2026-01-05--12-00, the only failures triggered by my
+>>> change are also the ones from the bpf-ci. Are these the ones you meant,
+>>> or am I missing some others?
+>>
+>> Multiple things broke at once so slightly hard to fish the relevant
+>> stuff out from here:
+>>
+>> https://netdev.bots.linux.dev/contest.html?branch=3Dnet-next-2026-01-05-=
+-15-00&pass=3D0&pw-n=3D0
+>>
+>> Here's one:
+>>
+>> make[1]: Entering directory=20
+>> '/home/virtme/testing/wt-3/tools/testing/selftests/net'
+>>   CC       busy_poller
+>> In file included from [01m[K/usr/include/sys/socket.h:33[m[K,
+>>                  from [01m[K/usr/include/netinet/in.h:23[m[K,
+>>                  from [01m[K/usr/include/arpa/inet.h:22[m[K,
+>>                  from [01m[Kbusy_poller.c:14[m[K:
+>> [01m[K/usr/include/bits/socket.h:182:8:[m[K [01;31m[Kerror:=20
+>> [m[Kredefinition of '[01m[Kstruct sockaddr[m[K'
+>
+>>                  from [01m[Kbusy_poller.c:12[m[K:
+>> [01m[K/home/virtme/testing/wt-3/usr/include/linux/socket.h:37:8:[m[K=20
+>> [01;36m[Knote: [m[Koriginally defined here
+>
+> Maybe we can change all the instances of 'struct sockaddr' in
+> include/uapi/ to reference a new 'struct __kernel_sockaddr',
+> and then redirect that one if the libc header got included
+> first?
+>
+> struct __kernel_sockaddr {
+>        __kernel_sa_family_t    sa_family;      /* address family, AF_xxx =
+      */
+>        char sa_data_min[14];           /* Minimum 14 bytes of protocol ad=
+dress */
+> };
+> #ifdef _SYS_SOCKET_H
+> #define __kernel_sockaddr sockaddr
+> #endif
+>
+> This will still fail when a user application includes linux/if.h
+> before sys/socket.h and then expects the structures in linux/if.h
+> to contain the libc version of sockaddr, but hopefully that is
+> much rarer. A survey of codesearch.debian.net shows almost all
+> users of linux/if.h first including sys/socket.h, and most of
+> them not caring about struct sockaddr either.
 
-> +
-> +			pin->selectable = true;
-> +		}
-> +
-> +		hw_mode = ZL_DPLL_MODE_REFSEL_MODE_AUTO;
-> +	}
-> +
-> +	/* Build mode_refsel value */
-> +	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, hw_mode);
-> +
-> +	if (ZL3073X_DPLL_REF_IS_VALID(ref))
-> +		mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
-> +
-> +	/* Update dpll_mode_refsel register */
-> +	rc = zl3073x_write_u8(zldpll->dev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
-> +			      mode_refsel);
-> +	if (rc)
-> +		return rc;
+If you call the data member sa_data just like glibc, it will only fail
+in C++, not C.  GCC considers the two definitions sufficiently
+equivalent (even though glibc adds a may_alias attribute to meet POSIX
+requirements), and duplicate definitions are permitted in C.
 
-And here as well..
+C++ with modules will probably support duplicate definitions, too, but I
+haven't checked if it's possible to get this work with GCC 16.
 
-> +
-> +	zldpll->refsel_mode = hw_mode;
-> +
-> +	if (ZL3073X_DPLL_REF_IS_VALID(ref))
-> +		zldpll->forced_ref = ref;
-> +
-> +	return 0;
-> +}
-> +
->   static int
->   zl3073x_dpll_phase_offset_monitor_get(const struct dpll_device *dpll,
->   				      void *dpll_priv,
-> @@ -1276,10 +1380,12 @@ static const struct dpll_pin_ops zl3073x_dpll_output_pin_ops = {
->   static const struct dpll_device_ops zl3073x_dpll_device_ops = {
->   	.lock_status_get = zl3073x_dpll_lock_status_get,
->   	.mode_get = zl3073x_dpll_mode_get,
-> +	.mode_set = zl3073x_dpll_mode_set,
->   	.phase_offset_avg_factor_get = zl3073x_dpll_phase_offset_avg_factor_get,
->   	.phase_offset_avg_factor_set = zl3073x_dpll_phase_offset_avg_factor_set,
->   	.phase_offset_monitor_get = zl3073x_dpll_phase_offset_monitor_get,
->   	.phase_offset_monitor_set = zl3073x_dpll_phase_offset_monitor_set,
-> +	.supported_modes_get = zl3073x_dpll_supported_modes_get,
->   };
->   
->   /**
+Thanks,
+Florian
 
