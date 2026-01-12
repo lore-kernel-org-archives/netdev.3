@@ -1,146 +1,235 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-8fad.mail.infomaniak.ch (smtp-8fad.mail.infomaniak.ch [83.166.143.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399BA3624C7;
-	Mon, 12 Jan 2026 16:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8273644A4
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 16:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768234573; cv=none; b=pPO9EfgkfbmcLbhFPjO3Mvo9ypoaMmJM0XOKZHGcb0ZQQWbI9cnAmAeDk6vAkZxPTgrNtOoGmNdQP/tf7P6pZljZhIJT4tRh/AitHZhyM2ViQbhBSOFFX4hHUVXs5OMAOp/U0CgA2y39SLA8BMudUOpzibQ2rp6QLJRVdwg4+aw=
+	t=1768234814; cv=none; b=CyoHf8b/+BfSJT1GMeBnATOEuMk31Czu+ikhmcpRpH+Y8z8T6AW//m3f9c+rFeB1pdkt5GrYrGDcDMu/DrJE+yZSMTJXHjlRZSdVl9tpvSKP6TqDIJAqD/hGKBDBEkgCH9bSU+XgkA48KZm17tm9sxRaMYUqSciO/BKwXkA+Wpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768234573; c=relaxed/simple;
-	bh=VLv6+c253IeyK2kF+FrgrPyGN3TxjzmnUCtTvmlGwA0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jFYPYLJB0a83njZCOastmEu4co5dGO5CynX+ptm3woFFdHGKBGC5BUO0zv/6xA2yyfko6v2YVDFfMzLz/Z2AFTjzb4JKeFj/uwWj+/G4VCdPhT6ezu5JqU2P8zRVEoDrPiYm9aDmi49ObFEeDykeVTYvYHUyrDl0o/B1M2trVGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJW8AmCC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768234814; c=relaxed/simple;
+	bh=1nBCITjqomWB9lUtyhFM4fajJwtdvdo71dDPZ6vyU+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W2SObyW46gEBJIK9bar95uL3394On55l6IHFfdED8ReXGHCsjmbCNWoYdhVHRSgx/O7tDkn9R/GM2XJyjPn7lg1JMnHY5C8HGc3E9tUWpuWVg8v41anY5Mk14Fvg82gFpjCy851hUxCrNmZabOf0WUo9ZNFb2scdKB++aaD23Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=Pcq+7xEk; arc=none smtp.client-ip=83.166.143.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJW8AmCC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE19C19422;
-	Mon, 12 Jan 2026 16:16:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768234572;
-	bh=VLv6+c253IeyK2kF+FrgrPyGN3TxjzmnUCtTvmlGwA0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hJW8AmCCRmBGvt+S5sVmjCJin6/lR4tA6iBujti0d9E/ouu13Kjqx6jZO9aoo/L1A
-	 0eStjvZUkrrZK/4PRCOt1G7gmoWsQnwpKGiKDkFguWk/QORGUcVoX/zuGp+weh26dl
-	 YwOafoGHeUkXWfXCnCYlqoydNZpda2zMbIGfKhYhOUcYZsrMU3WVw2HYhQ/g4okS1a
-	 qSMmwj9q7YraweCHeK3dkJaM9Zrtu0Dgq7qylJDT52QSnZNlUAEfWpxjlf7HkrlXdO
-	 ZToaYvKtRBj3OI1KSUINwuIGbFOXhHkvSx63PoPOKwnlauyjJcx11n1A4+pZKbH3oT
-	 Z/zOEyUdC34wg==
-Message-ID: <22bdda82-9ebf-4381-a7d4-edbf97408a5f@kernel.org>
-Date: Mon, 12 Jan 2026 17:16:05 +0100
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="Pcq+7xEk"
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dqcjd2T3gzjrv;
+	Mon, 12 Jan 2026 17:08:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1768234085;
+	bh=fuGNBBmrV1aaR4mfqBEY752BSmb2lnimAb5XpRaYrrE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pcq+7xEkzz8ORRTFZUA+HkwHYaf0f3sb4sKz3kod+D+bbNzuAkYf2+KhMGcZsi7EU
+	 hFw+UNsLt7NF0TdHkiUpVv4c+MTIhZl97dmeJRKH8QcZr4mlpJ4dwDODuPyiKOIXiN
+	 PpKC7k3BV+h9XTEmgCL/E0hRMsIpJ+cmiXrPofGI=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dqcjb6Gvrzg7Z;
+	Mon, 12 Jan 2026 17:08:03 +0100 (CET)
+Date: Mon, 12 Jan 2026 17:08:02 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E . Hallyn" <serge@hallyn.com>, linux-security-module@vger.kernel.org, 
+	Tingmao Wang <m@maowtm.org>, Justin Suess <utilityemal77@gmail.com>, 
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Matthieu Buffet <matthieu@buffet.re>, 
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, konstantin.meskhidze@huawei.com, 
+	Demi Marie Obenour <demiobenour@gmail.com>, Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>, 
+	Tahera Fahimi <fahimitahera@gmail.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 0/5] landlock: Pathname-based UNIX connect() control
+Message-ID: <20260112.Wufar9coosoo@digikod.net>
+References: <20260110143300.71048-2-gnoack3000@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 03/12] dpll: Add helpers to find DPLL pin fwnode
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Prathosh Satish <Prathosh.Satish@microchip.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Jonathan Lemon <jonathan.lemon@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- Michal Schmidt <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>,
- Grzegorz Nitka <grzegorz.nitka@intel.com>
-References: <20260108182318.20935-1-ivecera@redhat.com>
- <20260108182318.20935-4-ivecera@redhat.com>
- <20260109-cooperative-chinchilla-of-swiftness-aebbc8@quoll>
- <25f49485-2228-4aa5-9023-0b00cc10a4da@redhat.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <25f49485-2228-4aa5-9023-0b00cc10a4da@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260110143300.71048-2-gnoack3000@gmail.com>
+X-Infomaniak-Routing: alpha
 
-On 09/01/2026 11:22, Ivan Vecera wrote:
+On Sat, Jan 10, 2026 at 03:32:55PM +0100, Günther Noack wrote:
+> Hello!
+> 
+> This patch set introduces a filesystem-based Landlock restriction
+> mechanism for connecting to UNIX domain sockets (or addressing them
+> with sendmsg(2)).  It introduces a file system access right for each
+> type of UNIX domain socket:
+> 
+>  * LANDLOCK_ACCESS_FS_RESOLVE_UNIX_STREAM
+>  * LANDLOCK_ACCESS_FS_RESOLVE_UNIX_DGRAM
+>  * LANDLOCK_ACCESS_FS_RESOLVE_UNIX_SEQPACKET
+> 
+> For the connection-oriented SOCK_STREAM and SOCK_SEQPACKET type
+> sockets, the access right makes the connect(2) operation fail with
+> EACCES, if denied.
+> 
+> SOCK_DGRAM-type UNIX sockets can be used both with connect(2), or by
+> passing an explicit recipient address with every sendmsg(2)
+> invocation.  In the latter case, the Landlock check is done when an
+> explicit recipient address is passed to sendmsg(2) and can make
+> sendmsg(2) return EACCES.  When UNIX datagram sockets are connected
+> with connect(2), a fixed recipient address is associated with the
+> socket and the check happens during connect(2) and may return EACCES.
+> 
+> ## Motivation
+> 
+> Currently, landlocked processes can connect() to named UNIX sockets
+> through the BSD socket API described in unix(7), by invoking socket(2)
+> followed by connect(2) with a suitable struct sockname_un holding the
+> socket's filename.  This can come as a surprise for users (e.g. in
+> [1]) and it can be used to escape a sandbox when a Unix service offers
+> command execution (some scenarios were listed by Tingmao Wang in [2]).
+> 
+> The original feature request is at [4].
+> 
+> ## Alternatives and Related Work
+> 
+
+> ### Alternative: Use existing LSM hooks
+> 
+> The existing hooks security_unix_stream_connect(),
+> security_unix_may_send() and security_socket_connect() do not give
+> access to the resolved file system path.
+> 
+> Resolving the file system path again within Landlock would in my
+> understanding produce a TOCTOU race, so making the decision based on
+> the struct sockaddr_un contents is not an option.
+> 
+> It is tempting to use the struct path that the listening socket is
+> bound to, which can be acquired through the existing hooks.
+> Unfortunately, the listening socket may have been bound from within a
+> different namespace, and it is therefore a path that can not actually
+> be referenced by the sandboxed program at the time of constructing the
+> Landlock policy.  (More details are on the Github issue at [6] and on
+> the LKML at [9]).
+
+Please move (or duplicate) this rationale in the patch dedicated to the
+new hook.  It helps patch review (and to understand commits when already
+merged).
+
+> 
+> ### Related work: Scope Control for Pathname Unix Sockets
+> 
+> The motivation for this patch is the same as in Tingmao Wang's patch
+> set for "scoped" control for pathname Unix sockets [2], originally
+> proposed in the Github feature request [5].
+> 
+> In my reply to this patch set [3], I have discussed the differences
+> between these two approaches.  On the related discussions on Github
+> [4] and [5], there was consensus that the scope-based control is
+> complimentary to the file system based control, but does not replace
+> it.  Mickael's opening remark on [5] says:
+> 
+> > This scoping would be complementary to #36 which would mainly be
+> > about allowing a sandboxed process to connect to a more privileged
+> > service (identified with a path).
+> 
+> ## Open questions in V2
+> 
+> Seeking feedback on:
+> 
+> - Feedback on the LSM hook name would be appreciated. We realize that
+>   not all invocations of the LSM hook are related to connect(2) as the
+>   name suggests, but some also happen during sendmsg(2).
+
+Renaming security_unix_path_connect() to security_unix_find() would look
+appropriate to me wrt the caller.
+
+> - Feedback on the structuring of the Landlock access rights, splitting
+>   them up by socket type.  (Also naming; they are now consistently
+>   called "RESOLVE", but could be named "CONNECT" in the stream and
+>   seqpacket cases?)
+
+I don't see use cases where differenciating the type of unix socket
+would be useful.  LANDLOCK_ACCESS_FS_RESOLVE_UNIX would look good to me.
+
+Tests should still cover all these types though.
+
+What would be the inverse of "resolve" (i.e. to restrict the server
+side)?  Would LANDLOCK_ACCESS_FS_MAKE_SOCK be enough?
+
+> 
+> ## Credits
+> 
+> The feature was originally suggested by Jann Horn in [7].
+> 
+> Tingmao Wang and Demi Marie Obenour have taken the initiative to
+> revive this discussion again in [1], [4] and [5] and Tingmao Wang has
+> sent the patch set for the scoped access control for pathname Unix
+> sockets [2].
+> 
+> Justin Suess has sent the patch for the LSM hook in [8].
+> 
+> Ryan Sullivan has started on an initial implementation and has brought
+> up relevant discussion points on the Github issue at [4] that lead to
+> the current approach.
+> 
+> [1] https://lore.kernel.org/landlock/515ff0f4-2ab3-46de-8d1e-5c66a93c6ede@gmail.com/
+> [2] Tingmao Wang's "Implemnet scope control for pathname Unix sockets"
+>     https://lore.kernel.org/all/cover.1767115163.git.m@maowtm.org/
+> [3] https://lore.kernel.org/all/20251230.bcae69888454@gnoack.org/
+> [4] Github issue for FS-based control for named Unix sockets:
+>     https://github.com/landlock-lsm/linux/issues/36
+> [5] Github issue for scope-based restriction of named Unix sockets:
+>     https://github.com/landlock-lsm/linux/issues/51
+> [6] https://github.com/landlock-lsm/linux/issues/36#issuecomment-2950632277
+> [7] https://lore.kernel.org/linux-security-module/CAG48ez3NvVnonOqKH4oRwRqbSOLO0p9djBqgvxVwn6gtGQBPcw@mail.gmail.com/
+> [8] Patch for the LSM hook:
+>     https://lore.kernel.org/all/20251231213314.2979118-1-utilityemal77@gmail.com/
+> [9] https://lore.kernel.org/all/20260108.64bd7391e1ae@gnoack.org/
+> 
+> ---
+> 
+> ## Older versions of this patch set
+> 
+> V1: https://lore.kernel.org/all/20260101134102.25938-1-gnoack3000@gmail.com/
+> 
+> Changes in V2:
+>  * Send Justin Suess's LSM hook patch together with the Landlock
+>    implementation
+>  * LSM hook: Pass type and flags parameters to the hook, to make the
+>    access right more generally usable across LSMs, per suggestion from
+>    Paul Moore (Implemented by Justin)
+>  * Split the access right into the three types of UNIX domain sockets:
+>    SOCK_STREAM, SOCK_DGRAM and SOCK_SEQPACKET.
+>  * selftests: More exhaustive tests.
+>  * Removed a minor commit from V1 which adds a missing close(fd) to a
+>    test (it is already in the mic-next branch)
+> 
+> Günther Noack (4):
+>   landlock: Control pathname UNIX domain socket resolution by path
+>   samples/landlock: Add support for named UNIX domain socket
+>     restrictions
+>   landlock/selftests: Test named UNIX domain socket restrictions
+>   landlock: Document FS access rights for pathname UNIX sockets
+> 
+> Justin Suess (1):
+>   lsm: Add hook unix_path_connect
+> 
+>  Documentation/userspace-api/landlock.rst     |  25 ++-
+>  include/linux/lsm_hook_defs.h                |   4 +
+>  include/linux/security.h                     |  11 +
+>  include/uapi/linux/landlock.h                |  10 +
+>  net/unix/af_unix.c                           |   9 +
+>  samples/landlock/sandboxer.c                 |  18 +-
+>  security/landlock/access.h                   |   2 +-
+>  security/landlock/audit.c                    |   6 +
+>  security/landlock/fs.c                       |  34 ++-
+>  security/landlock/limits.h                   |   2 +-
+>  security/landlock/syscalls.c                 |   2 +-
+>  security/security.c                          |  20 ++
+>  tools/testing/selftests/landlock/base_test.c |   2 +-
+>  tools/testing/selftests/landlock/fs_test.c   | 225 +++++++++++++++++--
+>  14 files changed, 344 insertions(+), 26 deletions(-)
+> 
+> -- 
+> 2.52.0
 > 
 > 
-> On 1/9/26 10:55 AM, Krzysztof Kozlowski wrote:
->> On Thu, Jan 08, 2026 at 07:23:09PM +0100, Ivan Vecera wrote:
->>> Add helper functions to the DPLL core to retrieve a DPLL pin's firmware
->>> node handle based on the "dpll-pins" and "dpll-pin-names" properties.
->>>
->>> * `fwnode_dpll_pin_node_get()`: matches the given name against the
->>>    "dpll-pin-names" property to find the correct index, then retrieves
->>>    the reference from "dpll-pins".
->>> * `device_dpll_pin_node_get()`: a wrapper around the fwnode helper for
->>>    convenience when using a `struct device`.
->>>
->>> These helpers simplify the process for consumer drivers (such as Ethernet
->>> controllers or PHYs) to look up their associated DPLL pins defined in
->>> the DT or ACPI, which can then be passed to the DPLL subsystem to acquire
->>> the pin object.
->>>
->>> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
->>> ---
->>>   drivers/dpll/dpll_core.c | 20 ++++++++++++++++++++
->>>   include/linux/dpll.h     | 15 +++++++++++++++
->>>   2 files changed, 35 insertions(+)
->>>
->>
->> I don't see cells defined in your binding. Neither updated property.c.
->>
-> WDYM by property.c ?
-
-Each standardized phandle reliationship is supposed to be reflected with
-device links (at least of now... maybe it already changed after this LPC?)
-
-Best regards,
-Krzysztof
