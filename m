@@ -1,159 +1,154 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8B2361DAD;
-	Mon, 12 Jan 2026 16:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46482364EA5;
+	Mon, 12 Jan 2026 16:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768234002; cv=none; b=i2x9rYpAutVYyOWcI6GvIw3eHKmOPfgKWmdtdDr6UKYWWmeospOm8bpjn7OCnQzdx6yl0RBvRVjocb35GcNF9WSVApneMcHsw1Rc56G/hoc4jaAF3hnOsv7zE6pAgm+2YVEEpVOC3UIuMvAHo7MfxPV00H4GuDnfByiKPI18QXw=
+	t=1768234502; cv=none; b=sMEQubMtXMPd4KKOAhZeDC69jkLWJYhMlEizFl7SOkfjb2/aX4yfjPIpREPcg5rdvSUvuiFSYfckFkW4hcSTexTUbX1Y108pZfAXQv6XgVq8apmXPcy3gN7LYVvtTBduw6L8qfKM4fCkYMRx6EOGL1VgNo5uJxDUT4BL+rgMUJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768234002; c=relaxed/simple;
-	bh=fyNj7tGccVud7VFJ570wDzTR6P1wo4PxWud1jjxeoLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EEUMnXZOP5clK1kEUaR8fHVgn5d98tKjCr+v8zgynTpVd35VQ/js7gykznJ2blNWCN2MhlyGrbur3gBj+DMmDgQgz81VgHwXD8rWZWXH9mwqqzNk7vuZ1xeUI1IG81WRGvKc3FqI0/gdEc2yInL9JQ94Kkq+33dU/eEP86ytoKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQK4xeDg; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768234502; c=relaxed/simple;
+	bh=PmRsUuJqnWmX19O8SSFENbMFEb1Sg7/vMsXCttr9Ry4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UbeyAxXGAeSMRpwa75+uRLHRjKewy4mvjwpGOe38+Nf8cDQTmErGzgmSpDZuczIr14AJ3f9cTuBh/pIw+PnomakEccd7MFhVxa8NYcnrjJsWiIDLNT36CWuhwpcc+m1z3JV2VC+NiFWXiOrlJt3J2EtK+fEJh3Sp8ZdF588d+bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7yTm1+Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQK4xeDg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768234001; x=1799770001;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fyNj7tGccVud7VFJ570wDzTR6P1wo4PxWud1jjxeoLA=;
-  b=NQK4xeDgINA2JepN0LwHCqxN+8xfsClRMqgWQMR0jK/fa2fc42nLSdDT
-   q3aIJFIhJ+sqq2Rz6BwBvbQT/VacXSmDwo7a3UOExKH+cnDqFpegPczQR
-   saUh4P50Ti2XGRq7WqeMYQSTW5E1fVJTO7C5k0sBYhvjcNFgPE09LI+Bh
-   q3BxUgPB/W6A6ARZfQ+MAq3n3iUYrjmNZP4yDTaxMGjNRF4QQk0yPECNF
-   snIudgnYlRT58kVLBHnU9wvkJaGCGVjQeHsrBcnlK0FnZHimCi84+66cC
-   QDkw7QFkvy4qC1UyZXPivOHNqMz0eRJaOoCQjL1kWr7miMdzf2hknNGKb
-   A==;
-X-CSE-ConnectionGUID: HHv9pSoXTAy0yrHNrPXlIQ==
-X-CSE-MsgGUID: lOl6P1QdRVSBB6MqLpIzLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80231449"
-X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
-   d="scan'208";a="80231449"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 08:06:40 -0800
-X-CSE-ConnectionGUID: iSLH7eN9SFOCYq5DOJ5WIw==
-X-CSE-MsgGUID: HOa+UAlbQ7W7l2VewISO6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
-   d="scan'208";a="203337754"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 12 Jan 2026 08:06:34 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfKR5-00000000DY0-2V2o;
-	Mon, 12 Jan 2026 16:06:31 +0000
-Date: Tue, 13 Jan 2026 00:06:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rob Herring <robh@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-rdma@vger.kernel.org,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Mark Bloch <mbloch@nvidia.com>, linux-kernel@vger.kernel.org,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>
-Subject: Re: [Intel-wired-lan] [PATCH net-next 10/12] dpll: Add reference
- count tracking support
-Message-ID: <202601122334.64RmoU1u-lkp@intel.com>
-References: <20260108182318.20935-11-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7yTm1+Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82247C116D0;
+	Mon, 12 Jan 2026 16:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768234501;
+	bh=PmRsUuJqnWmX19O8SSFENbMFEb1Sg7/vMsXCttr9Ry4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=o7yTm1+ZHktF7rR6oGXdWbXYexfO0KHJz8OjoIVjplzDSXfP6uIpTQUWV7ys1FoA7
+	 txMpzxwGttmicDgVcIvjRDsHw/HdNvBLG98EWDRq9g61HSMf6Ya5M3SoW8EI7gGb3q
+	 5k9/vyVMO2P+zKAGuzw5jdw3pptN2nyl1c1v0m2lsxUt6xLrrdq3q6Df6Y67LfD9pJ
+	 4QZ/grRi/fzDdlEybds/lLr0E3IsP9fWAhS2phe9gZgOmukHqg04C+Mc3Q0UvhxzFq
+	 gXELRX8i7aakeligRCErr153bau5kvbnm2jUa8qmZnAgqnOZargIRYtlOtYmlb56Q2
+	 SBHoxKfbRpJAg==
+Message-ID: <cbf482be-4aa8-488f-9f78-181f8f145c28@kernel.org>
+Date: Mon, 12 Jan 2026 17:14:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260108182318.20935-11-ivecera@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net-next 01/12] dt-bindings: dpll: add
+ common dpll-pin-consumer schema
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>, Rob Herring <robh@kernel.org>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ linux-rdma@vger.kernel.org, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ intel-wired-lan@lists.osuosl.org, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org,
+ Conor Dooley <conor+dt@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
+ Mark Bloch <mbloch@nvidia.com>, linux-kernel@vger.kernel.org,
+ Tariq Toukan <tariqt@nvidia.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Jonathan Lemon <jonathan.lemon@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Saeed Mahameed
+ <saeedm@nvidia.com>, "David S. Miller" <davem@davemloft.net>
+References: <20260108182318.20935-1-ivecera@redhat.com>
+ <20260108182318.20935-2-ivecera@redhat.com>
+ <20260109-wonderful-acoustic-civet-e030da@quoll>
+ <a581a86d-d49c-4761-bd68-989a7a12cb56@redhat.com>
+ <fd07e1f8-455c-464f-9760-9d16d450a7d5@redhat.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <fd07e1f8-455c-464f-9760-9d16d450a7d5@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Ivan,
+On 09/01/2026 15:11, Ivan Vecera wrote:
+>>>> +  Common properties for devices that require connection to DPLL 
+>>>> (Digital Phase
+>>>> +  Locked Loop) pins for frequency synchronization (e.g. SyncE).
+>>>> +
+>>>> +properties:
+>>>> +  dpll-pins:
+>>>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+>>>> +    description:
+>>>> +      List of phandles to the DPLL pin nodes connected to this device.
+>>>> +
+>>>> +  dpll-pin-names:
+>>>> +    $ref: /schemas/types.yaml#/definitions/string-array
+>>>> +    description:
+>>>> +      Names for the DPLL pins defined in 'dpll-pins', in the same 
+>>>> order.
+>>>> +
+>>>> +dependencies:
+>>>> +  dpll-pin-names: [ dpll-pins ]
+>>>
+>>> Binding should go to dtschema. See also commit
+>>> 3282a891060aace02e3eed4789739768060cea32 in dtschema or other examples
+>>> how to add new provider/consumer properties.
+> 
+> Quick questions... if the dpll pin consumer properties schema should go
+> to dtschema...
+> 
+> 1) Should I remove this patch from this series? So this schema won't be
+>     a part of kernel
 
-kernel test robot noticed the following build errors:
+Yes.
 
-[auto build test ERROR on net-next/main]
+> 2) dtschema does not contain dpll-device and dpll-pin schemas now, I
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ivan-Vecera/dt-bindings-dpll-add-common-dpll-pin-consumer-schema/20260109-022618
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260108182318.20935-11-ivecera%40redhat.com
-patch subject: [Intel-wired-lan] [PATCH net-next 10/12] dpll: Add reference count tracking support
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20260112/202601122334.64RmoU1u-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260112/202601122334.64RmoU1u-lkp@intel.com/reproduce)
+The provider, so the #foo-cells should be in dtschema as well.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601122334.64RmoU1u-lkp@intel.com/
+>     expect they should be added as well... or? I'm asking because there
+>     is also e.g. hwlock-consumer.yaml in dtschema but no hwlock
 
-All errors (new ones prefixed by >>):
+hwlock-cells are missing, probably due to licensing.
 
-   lib/ref_tracker.c: In function 'ref_tracker_alloc':
->> lib/ref_tracker.c:277:22: error: implicit declaration of function 'stack_trace_save'; did you mean 'stack_depot_save'? [-Wimplicit-function-declaration]
-     277 |         nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 1);
-         |                      ^~~~~~~~~~~~~~~~
-         |                      stack_depot_save
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for REF_TRACKER
-   Depends on [n]: STACKTRACE_SUPPORT
-   Selected by [y]:
-   - DPLL_REFCNT_TRACKER [=y] && DPLL [=y]
-
-
-vim +277 lib/ref_tracker.c
-
-4e66934eaadc83b Eric Dumazet  2021-12-04  252  
-4e66934eaadc83b Eric Dumazet  2021-12-04  253  int ref_tracker_alloc(struct ref_tracker_dir *dir,
-4e66934eaadc83b Eric Dumazet  2021-12-04  254  		      struct ref_tracker **trackerp,
-4e66934eaadc83b Eric Dumazet  2021-12-04  255  		      gfp_t gfp)
-4e66934eaadc83b Eric Dumazet  2021-12-04  256  {
-4e66934eaadc83b Eric Dumazet  2021-12-04  257  	unsigned long entries[REF_TRACKER_STACK_ENTRIES];
-4e66934eaadc83b Eric Dumazet  2021-12-04  258  	struct ref_tracker *tracker;
-4e66934eaadc83b Eric Dumazet  2021-12-04  259  	unsigned int nr_entries;
-acd8f0e5d72741b Andrzej Hajda 2023-06-02  260  	gfp_t gfp_mask = gfp | __GFP_NOWARN;
-4e66934eaadc83b Eric Dumazet  2021-12-04  261  	unsigned long flags;
-4e66934eaadc83b Eric Dumazet  2021-12-04  262  
-e3ececfe668facd Eric Dumazet  2022-02-04  263  	WARN_ON_ONCE(dir->dead);
-e3ececfe668facd Eric Dumazet  2022-02-04  264  
-8fd5522f44dcd7f Eric Dumazet  2022-02-04  265  	if (!trackerp) {
-8fd5522f44dcd7f Eric Dumazet  2022-02-04  266  		refcount_inc(&dir->no_tracker);
-8fd5522f44dcd7f Eric Dumazet  2022-02-04  267  		return 0;
-8fd5522f44dcd7f Eric Dumazet  2022-02-04  268  	}
-c12837d1bb31032 Eric Dumazet  2022-01-12  269  	if (gfp & __GFP_DIRECT_RECLAIM)
-c12837d1bb31032 Eric Dumazet  2022-01-12  270  		gfp_mask |= __GFP_NOFAIL;
-c12837d1bb31032 Eric Dumazet  2022-01-12  271  	*trackerp = tracker = kzalloc(sizeof(*tracker), gfp_mask);
-4e66934eaadc83b Eric Dumazet  2021-12-04  272  	if (unlikely(!tracker)) {
-4e66934eaadc83b Eric Dumazet  2021-12-04  273  		pr_err_once("memory allocation failure, unreliable refcount tracker.\n");
-4e66934eaadc83b Eric Dumazet  2021-12-04  274  		refcount_inc(&dir->untracked);
-4e66934eaadc83b Eric Dumazet  2021-12-04  275  		return -ENOMEM;
-4e66934eaadc83b Eric Dumazet  2021-12-04  276  	}
-4e66934eaadc83b Eric Dumazet  2021-12-04 @277  	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 1);
-4e66934eaadc83b Eric Dumazet  2021-12-04  278  	tracker->alloc_stack_handle = stack_depot_save(entries, nr_entries, gfp);
-4e66934eaadc83b Eric Dumazet  2021-12-04  279  
-4e66934eaadc83b Eric Dumazet  2021-12-04  280  	spin_lock_irqsave(&dir->lock, flags);
-4e66934eaadc83b Eric Dumazet  2021-12-04  281  	list_add(&tracker->head, &dir->list);
-4e66934eaadc83b Eric Dumazet  2021-12-04  282  	spin_unlock_irqrestore(&dir->lock, flags);
-4e66934eaadc83b Eric Dumazet  2021-12-04  283  	return 0;
-4e66934eaadc83b Eric Dumazet  2021-12-04  284  }
-4e66934eaadc83b Eric Dumazet  2021-12-04  285  EXPORT_SYMBOL_GPL(ref_tracker_alloc);
-4e66934eaadc83b Eric Dumazet  2021-12-04  286  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Krzysztof
