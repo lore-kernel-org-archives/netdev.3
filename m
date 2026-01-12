@@ -1,80 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3715D3587B8
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 12:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F753587CE
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 12:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768222487; cv=none; b=I2DWVYqYfGYY5strfIgVwUnooiWtjP4m8OKZSz3KzOns6H4Jx1Xy80O2jcA29zKxtRyY7M5IaDbfuq7I7QMEti55uS9Ojx32wm7rPjJJ0gQT1++0Rn4N21/O5Gw1O9h7RQAvQbni04roMlYQl7IRZA67MN0OxpG05afZK82i28U=
+	t=1768222497; cv=none; b=u94KqptbYVipNIcmu/Spo+6e/2EASfFDX/INxW2LsYiwHXtRQ9uQ77qsR2YHBCYMc9aVkAyd8Jlc2w2Q1ShaTlqXrCLj/AMIAzfrSKq7giL7sLzpgwvKLz+1cYah/F41Faj2fRkm0NZZZGbz+QE+ZEaqcPSQye8AYFmDqS0Pvr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768222487; c=relaxed/simple;
-	bh=ArVVBiqIBetgJi+p5f+cmJSVHQwk79p7Tqq1GTf/FIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=carB0qCCnqSzXDk9FGVs7ULoGdwJjrmMDXdODVJNpuGZj9KYnT9G2TJ+o5lD+dL8SKl3kk5BkS5yZCzwFomDoqBvO+Xco+Eou7TG0ENNae+Tudx1eslP36dCeIWvILZcmGpF7+YQZnU8WZFbBL1qh84LeVhFXcor/3jjmarOVH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E9j4cyk5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rCxp4Ryz; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1768222497; c=relaxed/simple;
+	bh=XU1R8eEmf+8OcV6QhVEoFS8ffVTmlKxgnjEPke2eHaM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QwwuG3d8KlJaNy/Fc1tVemoohz5TVHgNh90MsxUSfNnOiTybohUzjZbU5VzTu5j48kAiq39kcuQmU+5ArKeNbarzJ78qmD1Nki/+cIhNXIe7M1uY6XGFGTeWb7iQTdQtKTAlm2KIbIjcd0vfr7XVJb6VA3I2c2zl08M3mmBAru8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CEzeXbIi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LqSqNFh5; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E9j4cyk5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rCxp4Ryz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CEzeXbIi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LqSqNFh5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768222483;
+	s=mimecast20190719; t=1768222491;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iKF0BzHe4DoMZWSEsankET3G7Dd2Xauwml8GRRGytpc=;
-	b=E9j4cyk5z0iEToT85F/Oc74/7Vp/ox9v9+St2NSE2BbsvfxfVnI7M6DsWgeC6i0jZZBejb
-	dAn6CK65rZSSIXwbaJihC/fIekDj1Sp6ZJlkPaO0uD9wEaXuVDPyBVyr2itqMBCeIxKVOj
-	o4DwzypcW/YD3mpcYZaXTztk8gWUBSQ=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2pTWpsZNjWgj8wv5f92UAOMouEbb8hc3HuMURULyk40=;
+	b=CEzeXbIiwM/J4K3PnlT5Y3fP2V/l+GqD1X1TpGhvRUcgecMqzY61DaOBGS/83uEk/6qI+l
+	2RGNRa9fADcXZxu0PZ9LbUr6Gk25DOiSP5jC7S7ZmYFLwicAno5Evci2oAytNOp0bYXeAl
+	0AhHlSq5+D1Cqo0sSyAAR4lBzMRhRbg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-08iYjDDpP32AbR_t4Ktwdw-1; Mon, 12 Jan 2026 07:54:42 -0500
-X-MC-Unique: 08iYjDDpP32AbR_t4Ktwdw-1
-X-Mimecast-MFC-AGG-ID: 08iYjDDpP32AbR_t4Ktwdw_1768222481
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b872c97a2a2so74186166b.1
-        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 04:54:41 -0800 (PST)
+ us-mta-672-m-1nZwzrOHO2mQ6E_T_R-g-1; Mon, 12 Jan 2026 07:54:50 -0500
+X-MC-Unique: m-1nZwzrOHO2mQ6E_T_R-g-1
+X-Mimecast-MFC-AGG-ID: m-1nZwzrOHO2mQ6E_T_R-g_1768222489
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b7fe37056e1so623601966b.2
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 04:54:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768222481; x=1768827281; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iKF0BzHe4DoMZWSEsankET3G7Dd2Xauwml8GRRGytpc=;
-        b=rCxp4RyzYa1uRlHfi4XCk6oEMRJJXQ9SgGaYEBF/YfmuGPtkoZrDAfaxomS6GCz6Za
-         QiN9IH2twxYg+43Ig2uUrdLwb3VuNarUO8ZDZfruxNxxxT8n3txWJS7ZxBvGpxY1Marm
-         w2N0QCCS58hX+iD7Q3wlj6wTnNiTQAg30DJFY/HwEaUR+1w8K9zQfHZNLP3rST+puygG
-         S5TKaTzGsSxcicY34XgrKC/7iSg5UcrA5ppX9ojDzluwSo9+pCpfJenj0wgiCn7A9nSR
-         2/mgXe3TuUFIJlmkjqC6oS82ir5qMn0wr4ssq8/HLwbsFVwSS/YtEnjtvtr+Ga6DCD1w
-         JjOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768222481; x=1768827281;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1768222489; x=1768827289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iKF0BzHe4DoMZWSEsankET3G7Dd2Xauwml8GRRGytpc=;
-        b=nBLWCoT57nFqOuTKoy2+XfxZbE5/g9QqbxE4idk1Rl+KaeOLz7rN1nloitMaA8vCfd
-         NJ2Q+M8jISL78RAGyQgbdTrQ+0v5SnZjDDtQDatdxDhvc/5JU6tWilS8HaTHh1NukEiH
-         KS5Emt7aepbB1YxXUks2GTj4ls1TH6nFOXquNvD0X94/aKXxHwGEJIQCF8DO5mWVdAZb
-         L9yVbCEgbJUMYbwNLqt5TNH0Xz0PKykye+1F7ilgKrCR3fcIlqq4FmRnFfoBgBxZC3ps
-         Cwj3H6MpfTK0bWqS5tYNMQU+jYdbgNkDbpR58nrvUgn9P8ezGmeojAxIPNv6Cq86S4mg
-         ycdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVO5LfwEQ9CfrdCnU2fMrIV24x94wicONcDWaFIA8gmKhUmhSootMAST0RCky0rqNC9TD4hfKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZOgnTk7dr5Io07zoica+K41KNpcho3hReZcNAJS2wTo2rXxHG
-	Sz5IDjluibQ25h6g4nf+rJwZzNZItiIsEf3uE23oE5npk9mH2fqnbKhTkxFnz4gG/Qa+vZgwPJV
-	wp2IuBrIjsmzYfiOe0nxrly3kxj76NYuSvbUJaJE6qa1R21ng1HG/MjxNVA==
-X-Gm-Gg: AY/fxX5tSqtETQlyfe+BkM2kmxUMXbB4s6ZVOYqjS0P26R4gCn4Iy0Nj9L5xDT2eORt
-	50SkyLB9A98y8g5ZhRpSb+0PqVI7BtE4x24A+/E64FLJxUFwiYHYdfIaUWphVujSXXCYDQjdEvv
-	L2DaEBpXgl6w2zgz8nsZz/OcVQjh/LNlHOLob9mrw63lZe03noyBPPDs+iI0vOuyAfBosm34Ixs
-	ZYYef8cMvlX7250+9fY2G9yFloLw3YpNJwaVp59aM/R9SEtZGtRqx6b0n3szNlDk2pjBf5S2FtN
-	PxdG4oUMsRVKaqix0bQoSYSxPs6bTBK+27XCaPuGMqtkon62bdg51HgwC3Rb9LXp+KdjjMb/OHm
-	MeuA9Ph+SIznGMtWM+rzlnDmwwSonRLJ6ZJYncAPfo+pS7+xKWkWeKNi9x0g=
-X-Received: by 2002:a17:907:a4a:b0:b83:8f35:773b with SMTP id a640c23a62f3a-b844501e49emr1772456566b.54.1768222480781;
-        Mon, 12 Jan 2026 04:54:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGSZz6AlBAsyDbYMyXJssyt5r14tT5j/dhOjPD0uwwtT32eYJd5F4wjSbE4zxf083DcjrlpEg==
-X-Received: by 2002:a17:907:a4a:b0:b83:8f35:773b with SMTP id a640c23a62f3a-b844501e49emr1772452766b.54.1768222480270;
-        Mon, 12 Jan 2026 04:54:40 -0800 (PST)
+        bh=2pTWpsZNjWgj8wv5f92UAOMouEbb8hc3HuMURULyk40=;
+        b=LqSqNFh52oCCy4tw8QgSvS8ufBhTEEWVhgKds6lYaSxVk1WvSTIIEACeYiUzsVQpPM
+         IjyuipVH2D8+7BOhL8h1P3wvZIhCCwu9POsdpoifZ8r/o9RkJtG1QEMlz5Ww3LHc7NsT
+         PCAZ01DDVwLMNqGuRjD3sLZGnaTQYfyNtoG/H8iQJpXYp+vlU107WBn52H86etbyw6pb
+         92l4B4JQnuhwAFrO2eAtIgK58nj3X2GbICLw2L9XNuEjR1BvBQzCw9BQyEc232Fy3izr
+         lXEkITsELO+NXFrfTHcuhW/wH1PKXtDUivtDxdxPfcMG+Tk2WPWRmcHAwQ37rht0prEQ
+         lfKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768222489; x=1768827289;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2pTWpsZNjWgj8wv5f92UAOMouEbb8hc3HuMURULyk40=;
+        b=rY0ZZNR4gdyK4NGyVhX2vXvus014MK9CufrkJKrnL/jJMZhSLj/hXQwzcfTfa5+UaH
+         KM54Atdejotelvg1glKkMTih6a6G6W1iX+ZSM02f2hvsS1JIA1+RJYS2OgmSVijaNcdK
+         bcMyiH0uiYpGSUEdEj0S+S9HJqlqmeQ1wtHFNNWc8dp9twVUASfvzleUAMTt4Anr7kWc
+         bu66yxP1B6+fe5MlN7nfbkwX4pPkdnkUtgoEXMveWD+60MOsgDTCBBvGv/ahjsSKMMO7
+         /cpeU6Uw9kQVLra1ITnhuPVWkjtENAzpFwWU2tQE25j1Vm+DFP6UspvQk9u5JJIXbO7y
+         Q3tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhQdptVSuqzyhE8uUXux3mlmfRdtXJ7Icdc8vDcMVNTVlXECxeXlkTdm3X4TWxl5ZpWGgtWW4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkKmBNwuZDqF3s0mkGBFCgN4YXea+LzZNTeBKjgv3lxR86o6Dg
+	glPoZwX8iCDMYycYMqBc6Uur//s03KojHHl7U4sOdWVh80rr029dz9O5IkiqFUSC1JObtm+xCCR
+	DMgmUFlsNkWhmpIvcifIMwLzH80pd6ul2zfWxbYLJKVAqStP6YIO0UStf2lrQBg4RDQ==
+X-Gm-Gg: AY/fxX5odeOdvrI7Vz0hy36BBo20gOOHykA/MWbAm9Bxuc+NcI3nvKiA4jkFugB1xjQ
+	J2Wh8Fh29ASDfC1IpxzH8i25MRcShwnl1iN9Du1V8h6Mr1sw7qJwqrGnhe4nviXwEKfFy3+Bu6/
+	FXZFWDec17nFW+UtrysjtUxQUsbmTn8Ooj4BPUdV1hhX4uS/ybszVnnD0Rv4NioCsGOi8Ltt6u1
+	F8FGuKmWpL2C0cebBrwqFnmnfjKekR3NWumexLWhdFIjd5pLoGnqgkZSHiN6R4YnahDQVyFIZ3F
+	AlyxGc2AqljttRJ8vXVFwU2YpduF5pJXqOQ7mrIVWIUpjrfqgGG2gpooYRXVFCY+A5QvduqbHP2
+	KDN0neZH7uco25JtGMBdLjuXAstn73/nMsajuRWdPjitOzQySIB+6Vv6ZLg4=
+X-Received: by 2002:a17:907:a0e:b0:b80:34e8:5eb with SMTP id a640c23a62f3a-b844542221cmr1612466666b.55.1768222489039;
+        Mon, 12 Jan 2026 04:54:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE7t8/HlV/5AlKScEccxcE3fk05AaGQ3PxxJdFkixgC3oQPqTZ4vVB050U3KXnraou/3iD9lw==
+X-Received: by 2002:a17:907:a0e:b0:b80:34e8:5eb with SMTP id a640c23a62f3a-b844542221cmr1612464966b.55.1768222488577;
+        Mon, 12 Jan 2026 04:54:48 -0800 (PST)
 Received: from lbulwahn-thinkpadx1carbongen12.rmtde.csb ([2a02:810d:7e01:ef00:ff56:9b88:c93b:ed43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8706c2604bsm497062466b.16.2026.01.12.04.54.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8706c2604bsm497062466b.16.2026.01.12.04.54.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 04:54:39 -0800 (PST)
+        Mon, 12 Jan 2026 04:54:48 -0800 (PST)
 From: Lukas Bulwahn <lbulwahn@redhat.com>
 X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 To: "David S . Miller" <davem@davemloft.net>,
@@ -105,10 +108,12 @@ Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
 	kernel-janitors@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [RFC PATCH 0/5] net: make config options NF_LOG_{ARP,IPV4,IPV6} transitional
-Date: Mon, 12 Jan 2026 13:54:26 +0100
-Message-ID: <20260112125432.61218-1-lukas.bulwahn@redhat.com>
+Subject: [RFC PATCH 2/5] selftests: net: replace deprecated NF_LOG configs by NF_LOG_SYSLOG
+Date: Mon, 12 Jan 2026 13:54:28 +0100
+Message-ID: <20260112125432.61218-3-lukas.bulwahn@redhat.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260112125432.61218-1-lukas.bulwahn@redhat.com>
+References: <20260112125432.61218-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -117,84 +122,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-This RFC patch series makes the config options NF_LOG_{ARP,IPV4,IPV6}
-transitional. Recently, Kees Cook added a feature to kconfig to assist
-transitioning deprecated config options. Here is a first RFC patch to apply
-this feature for NF_LOG_{ARP,IPV4,IPV6}.
+The config options NF_LOG_{ARP,IPV4,IPV6} are deprecated and they only
+exist to ensure that older kernel configurations would enable the
+replacement config option NF_LOG_SYSLOG. To step towards eventually
+removing the definitions of these deprecated config options from the kernel
+tree, update the selftests net kernel configuration to set NF_LOG_SYSLOG
+and drop the deprecated config options.
 
-The plan is to mark all deprecated config options in net transitional, and
-update the kernel configurations in the kernel tree to not use those
-transitional config options. Then we leave these transitional config
-options for a year or two to allow users that only update from one LTS to
-the next to see that these config options are deprecated. After such a
-grace period, we can finally drop these transitional config options.
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ tools/testing/selftests/net/netfilter/config | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-This patch series is the manifestation of that plan for the three
-deprecated options NF_LOG_{ARP,IPV4,IPV6}. If there is general agreement
-that this is how deprecated config options are to be handled, then please
-apply the patches 1 and 2 to the net-next tree.
-
-Note that for the time being, as there is no dedicated kernel-wide Kconfig
-file for collecting transitional config options right now, so simply adding
-them at the end of the net/Kconfig file seems the best choice for now. 
-
-The patches 3, 4 and 5 are added here to understand the complete treewide
-change to transition the deprecated config options; I expect the patches
-3, 4 and 5 to be applied by the corresponding arch maintainers, though.
-Note that all patches in this series can be applied independently from each
-other without causing any regression, i.e., if any patch 2 to 5 is applied
-without patch 1, the resulting kernel configurations still enable the same
-functionality as before as well as with patch 1 applied.
-
-Once the general approach and patches are accepted, I plan to send some
-further patch series to transition more net config options. My current
-investigation identified that these further config options in net can be
-transitioned:
-
-  IP_NF_MATCH_ECN -> NETFILTER_XT_MATCH_ECN
-  IP_NF_MATCH_TTL -> NETFILTER_XT_MATCH_HL
-  IP_NF_TARGET_MASQUERADE -> NETFILTER_XT_TARGET_MASQUERADE
-  IP_NF_TARGET_NETMAP -> NETFILTER_XT_TARGET_NETMAP
-  IP_NF_TARGET_REDIRECT -> NETFILTER_XT_TARGET_REDIRECT
-  IP_NF_TARGET_TTL -> NETFILTER_XT_TARGET_HL
-  NETFILTER_XT_TARGET_CONNMARK -> NETFILTER_XT_CONNMARK
-  NETFILTER_XT_TARGET_MARK -> NETFILTER_XT_MARK
-
-
-Lukas
-
-
-Lukas Bulwahn (5):
-  net: make configs NF_LOG_{ARP,IPV4,IPV6} transitional
-  selftests: net: replace deprecated NF_LOG configs by NF_LOG_SYSLOG
-  m68k: defconfig: replace deprecated NF_LOG configs by NF_LOG_SYSLOG
-  riscv: defconfig: replace deprecated NF_LOG configs by NF_LOG_SYSLOG
-  s390/configs: replace deprecated NF_LOG configs by NF_LOG_SYSLOG
-
- arch/m68k/configs/amiga_defconfig            |  3 +--
- arch/m68k/configs/apollo_defconfig           |  3 +--
- arch/m68k/configs/atari_defconfig            |  3 +--
- arch/m68k/configs/bvme6000_defconfig         |  3 +--
- arch/m68k/configs/hp300_defconfig            |  3 +--
- arch/m68k/configs/mac_defconfig              |  3 +--
- arch/m68k/configs/multi_defconfig            |  3 +--
- arch/m68k/configs/mvme147_defconfig          |  3 +--
- arch/m68k/configs/mvme16x_defconfig          |  3 +--
- arch/m68k/configs/q40_defconfig              |  3 +--
- arch/m68k/configs/sun3_defconfig             |  3 +--
- arch/m68k/configs/sun3x_defconfig            |  3 +--
- arch/riscv/configs/defconfig                 |  4 +---
- arch/s390/configs/debug_defconfig            |  2 +-
- arch/s390/configs/defconfig                  |  2 +-
- net/Kconfig                                  | 21 ++++++++++++++++++++
- net/ipv4/netfilter/Kconfig                   | 16 ---------------
- net/ipv6/netfilter/Kconfig                   |  8 --------
- net/netfilter/Kconfig                        |  1 +
- tools/testing/selftests/net/netfilter/config |  3 +--
- 20 files changed, 38 insertions(+), 55 deletions(-)
-
+diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
+index 12ce61fa15a8..f7b1f1299ff0 100644
+--- a/tools/testing/selftests/net/netfilter/config
++++ b/tools/testing/selftests/net/netfilter/config
+@@ -64,8 +64,7 @@ CONFIG_NF_CT_NETLINK=m
+ CONFIG_NF_CT_PROTO_SCTP=y
+ CONFIG_NF_FLOW_TABLE=m
+ CONFIG_NF_FLOW_TABLE_INET=m
+-CONFIG_NF_LOG_IPV4=m
+-CONFIG_NF_LOG_IPV6=m
++CONFIG_NF_LOG_SYSLOG=m
+ CONFIG_NF_NAT=m
+ CONFIG_NF_NAT_MASQUERADE=y
+ CONFIG_NF_NAT_REDIRECT=y
 -- 
 2.52.0
 
