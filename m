@@ -1,240 +1,130 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B644B352C3F
-	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 12:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223EB1A9FB7
+	for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 12:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768220644; cv=none; b=jUl7G0bld7EArWltQqOEQ3quCugElbJDXoB2O49hv5WHbWp19wyLkIsMwsL11fPG3lfPhebzYhsF/v/6b/yqB1tX51su1SddzOcaqyj3bB2mRR+jHIShVWISFxy9LTS1t+dquzDQT8WIVPZnpsm/oBKxAFQnsUYrqJZEYivFTCA=
+	t=1768221117; cv=none; b=J7ztwYKiDdvJAQ4DMSALL1xtCZfSV3MSPFv4b5B+Y5FQDxqVsQhx9+oZdYTZDDhIKvnuyMyMu7O9IO6wL7EFIhLWclzRlmXa8a4b1sts24T4zzKHeZXTfk7oI2UHxNv/yzzdbheEDbKQbySSKcGKH83oQmgE8lQozancwgUUiuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768220644; c=relaxed/simple;
-	bh=OLKdb8chvw7R4HEuCyJOjvQb561sK52IZueEj8urZnk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OMc4rgBapMLTrSSSdK8h54SjcaYvwSThd0AagQxqIgH5je9d73LVJ/JxtN9+iSawYobUEXHyPg2olfrIo7dMuzt3c3hePJa5E7yAw2dRX248rngpkhvvaxVb977ghGtz7L8RcGV3KOXX4W9Z3HiMlaufz6fR5wQAfbhAnar9E7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=WXPyeiKl; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="WXPyeiKl"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id F28012019D;
-	Mon, 12 Jan 2026 13:23:52 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id hvk8T0Lh0Oyn; Mon, 12 Jan 2026 13:23:52 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 401A620049;
-	Mon, 12 Jan 2026 13:23:52 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 401A620049
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1768220632;
-	bh=6qr9f591+B+r8XmaBooH0ts7PpuPkLvzaFcN/46qPgs=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=WXPyeiKlzY75Zt5o7Ff23oXbUjz7hAssv9Uf0JLwWYewxd15keWSeKQE7x8naIGp7
-	 0H3iBEFz8SCIMkxDB4XyWBNsRUUNYtCz1k7dAWiG1aWlk/Y5yMX9kisrZzPJj1j7YQ
-	 dtGiw0N2ltw3mRe3wgSV3q/hLAPWrcx0OEcUaMh4ZkDckGQxqvfk+hVbe1J3MyKl9Q
-	 +QCCUAxnBotWlucMqCl6ZqgdHAnYayGo9aZbjMlsWyvkkrmkTiLAYSqZIDdI0+Lr/M
-	 ZKp80NetJ7p9OvW7JQrzwTC6iyjQaPcgaFO5RTw+dIBAv9BCoxIjVnPv12+lvmPZFg
-	 xqYs+IW52qD/w==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 12 Jan
- 2026 13:23:51 +0100
-Received: (nullmailer pid 3018200 invoked by uid 1000);
-	Mon, 12 Jan 2026 12:23:51 -0000
-Date: Mon, 12 Jan 2026 13:23:51 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, <devel@linux-ipsec.org>
-Subject: Re: [PATCH RFC ipsec-next] esp: Consolidate esp4 and esp6.
-Message-ID: <aWTn12LAh-KnSoeM@secunet.com>
-References: <aPhzm0lzMXGSpf22@secunet.com>
- <aP-jXvmys9D37Hp6@krikkit>
+	s=arc-20240116; t=1768221117; c=relaxed/simple;
+	bh=D+eSIORp6hkFjtzYOBatu8K5maR1eLde4wH4IDQSgv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bckJbRSsmbm6k9+dqKKaWQ/e7Afw/U+847HtAcoQcVHRQrlSV85ODNkb6yPHwgbp8TG+4TOWe+A9tQkwjrgrvL3DXiihilAGUt96opSdpTB99uuPPMOUck7aEJf4dcVmv6ECvZS9qEEEOFS/R+tRD04uM2Wo9ZTQ4U8QR8UdOoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5efa4229bd2so1821850137.0
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 04:31:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768221115; x=1768825915;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t872TIfE/0yLSN2fTJlE7imIk93fYjUN6CJU2FvEfLA=;
+        b=nI/MUg2c2qoUQUgNn/T4D3j8yavr08qz2zwWWi+jFAeAGhv47FByX5TE5fO3rxZ0Wv
+         BRcCF2o+iEFEtNVbCKumobrZvXv1Xap4SODIm3Wtl/s3DBkzk05rcGyx+uZIaspIjOKK
+         WtTWoBpQNeujQMLrOvG2ly8ai9Q/atv1KQ4Bd4pp3lAoCl1EZcr+IAtJqvmt06XfzXp8
+         Fi4ZilbKDygQQ0r6/1EKwyV5Z9nVVCJgeL7SgcNLoWFvfaLNCTB3jXkjWOlSpo6QrCsa
+         A6ixb2XOkDOuWlhRgJFeKPwZgJDsb5epWhz6JjeFn2lgIpRdMrz4kAPXg+bKtqYNswOs
+         8u8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWRn+F6N/VS74tCUR4S7SN+T14DcRRdX9kZ7zoV8Icc5cDF76qvferBB2tiEU4A/Gox+36Za4s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6DsNqFBwvbPOAPVHhoKNX1+dqQ5Qlf7jF3a8A4KwJwNbWY1mu
+	nwgd4m8GMWsCtKBOnyZk6BIE8TEU/Gvx+TFwF3cQMhgjiPpzk8FGOY/Rf6uAXvVk
+X-Gm-Gg: AY/fxX6NvJSIkTrRJc9X4C0h8dZwUyaO3lAZoLXHD6A5K9QmFskB1s0yUkNeTiWUrG/
+	GKziOnYtEkTCEs4ooaU0fQTxRMv/NICKEaNqI71XLkVUp6USVhCiSjuS5McQ6GdPDT2apoDy/4n
+	k7LdRbklkbbPCbwEqTVq9ZWZjmp+WuQVsaIfd3Xl9HmO4uRtkOIrfJvlR4/mhyrXEjQGJDe3z0y
+	9XLDFuWCqFNElm3LDEt9oQcKsdS+3EFvtdeVVTsrQOeFuP7hZ+YkxacsyBiw6LJHouqFr2WisB8
+	4oMcydjBGdjNkc1KCrr6I1UzhQPB0nlnE7RsMShgbg7xzED5zHvjwFoEx3ABtrJDBZe0enR2rmG
+	kS9I0hchtepL2J1AqhJCY7vCtLI0e8EFxvT9cGcbLzPQ4V1spT0opXJaq1ZEic49/HqF5HvkZ3F
+	Fomg==
+X-Google-Smtp-Source: AGHT+IFUh41EDGB00B1ng9zvevzsW5YndFOwaUcgnhcK73da0G9DNjBeIh1Xql/tMhA/jjXPanwVdA==
+X-Received: by 2002:a05:6870:d187:b0:3ff:68aa:ebb0 with SMTP id 586e51a60fabf-3ffc0bd60fdmr8472571fac.52.1768215308916;
+        Mon, 12 Jan 2026 02:55:08 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ffa507235fsm12386412fac.13.2026.01.12.02.55.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 02:55:08 -0800 (PST)
+Date: Mon, 12 Jan 2026 02:55:06 -0800
+From: Breno Leitao <leitao@debian.org>
+To: John Ogness <john.ogness@linutronix.de>, pmladek@suse.com, 
+	osandov@osandov.com
+Cc: Petr Mladek <pmladek@suse.com>, mpdesouza@suse.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+	gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, kernel-team@meta.com, 
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, rostedt@goodmis.org
+Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
+ infrastructure
+Message-ID: <44upa7szd563kggh4xolznmfcwfnhrrh5guvecp6pzlvp5qvic@w7hxtzy7huzf>
+References: <20251222-nbcon-v1-0-65b43c098708@debian.org>
+ <5mpei32y7sl5jmi2ciim4crxbc55zztiucxxsdd633mvzxlk7n@fowtsefym5y6>
+ <87zf6pfmlq.fsf@jogness.linutronix.de>
+ <4dwhhlnuv2n3f7d3hqoulcnsg6ljucd6v47kqcszcwcshfoqno@rzxvg456q4fi>
+ <j764nuipx4nvemd3wlqfyx77lkdf7wgs5z452hlacwglvc2e7n@vsko4bq5xb2f>
+ <87eco09hgb.fsf@jogness.linutronix.de>
+ <aWECzkapsFFPFKNP@pathway.suse.cz>
+ <875x9a6cpw.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aP-jXvmys9D37Hp6@krikkit>
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
- (10.32.0.171)
+In-Reply-To: <875x9a6cpw.fsf@jogness.linutronix.de>
 
-On Mon, Oct 27, 2025 at 05:52:46PM +0100, Sabrina Dubroca wrote:
-> 2025-10-22, 08:03:07 +0200, Steffen Klassert wrote:
-> > This patch merges common code of esp4.c and esp6.c into
-> > xfrm_esp.c. This almost halves the size of the ESP
-> > implementation for the prize of three indirect calls
-> > on UDP/TCP encapsulation.
+On Fri, Jan 09, 2026 at 04:19:31PM +0106, John Ogness wrote:
+> On 2026-01-09, Petr Mladek <pmladek@suse.com> wrote:
+
+...
+
+> Crash/dump tools that are not updated would at least continue to print
+> the text at the beginning of the line. Here are a few projects that I
+> track and how they would react (unmodified):
 > 
-> If that turns out to be a problem, maybe we can figure out a way to
-> use the INDIRECT_CALL* helpers here as well (but currently they don't
-> work for modules, I played with that a while back and could look into
-> it again).
-
-I have no indication that it could be a problem so far,
-but would be nice to have the INDIRECT_CALL* helpers
-for modules anyway!
-
-> > -int esp_input_done2(struct sk_buff *skb, int err)
-> > -{
-> [...]
-> > +	if (iph->saddr != x->props.saddr.a4 ||
-> > +	    source != encap->encap_sport) {
-> > +		xfrm_address_t ipaddr;
-> > +
-> > +		ipaddr.a4 = iph->saddr;
-> > +		km_new_mapping(x, &ipaddr, source);
-> > +
-> > +		/* XXX: perhaps add an extra
-> > +		 * policy check here, to see
-> > +		 * if we should allow or
-> > +		 * reject a packet from a
-> > +		 * different source
-> > +		 * address/port.
-> >  		 */
+> makedumpfile
+> - https://github.com/makedumpfile/makedumpfile/blob/master/printk.c#L134
+> - will print "\x00" between the fields
 > 
-> Maybe we can get rid of those "XXX" comments? Unless you think the
-> suggestion still makes sense. But the comments (here and in
-> esp6_input_done2) have been here a long time and it doesn't seem to
-> bother users.
-
-Good point, I'll remove them in the next version.
-
+> vmcore-dmesg
+> - https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git/tree/util_lib/elf_info.c?h=main#n904
+> - will print "\x00" between the fields
 > 
-> [...]
-> >  static int esp_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
+> crash
+> - https://github.com/crash-utility/crash/blob/master/printk.c#L210
+> - will print "." between the fields
+
+drgn:
+
+I know that drgn also parses it, and has a if depending the kernel
+version (before or after commit commit 896fbe20b4e2 ("printk: use the
+lockless ringbuffer")
+
+https://github.com/osandov/drgn/blob/44ba3eb43a44f246fe3e65a728aa2594a19f15ee/drgn/helpers/linux/printk.py#L252C1-L255C55
+
+> > My opinion:
+> > ===========
+> >
+> > I personally think that the approach B) is the best compromise for now
+> > because:
+> >
+> > 1. We really should distinguish task/interrupt context. IMHO, it is
+> >    a very useful information provided by the caller_id now.
+
+Agree. I don't have it in netconsole yet, but, this is I would like to
+implement.
+
+> My ordered preferences for right now would be:
 > 
-> Looking at esp_init_state and esp6_init_state, they also have a lot in
-> common (pretty much everything except some x->props.header_len
-> adjustments) that could be extracted into the new file.
+> 1. keeping @caller_id semantics + adding @cpu + adding @comm (similar to
+> your C)
 
-Yes, true. This patch is just a start, there is much more possible.
+This is similar the PoC I wrote earlier in this thread [0] plus @comm.
 
-> [...]
-> > +static int esp6_input_encap(struct sk_buff *skb, struct xfrm_state *x)
-> >  {
-> > +	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-> > +	int offset = skb_network_offset(skb) + sizeof(*ip6h);
-> > +	int hdr_len = skb_network_header_len(skb);
-> 
-> As Simon mentioned, it's set/incremented but not used. The current
-> code in esp6_input_done2 would then use that value in
-> skb_set_transport_header, but now the common esp_input_done2 calls
-> ->input_encap and doesn't get that increased value back. I think we'll
-> need to have esp_input_done2 pass &hdr_len when it calls the
-> ->input_encap to get the correct value and take into account ipv6
-> exthdrs.
+Link: https://lore.kernel.org/all/j764nuipx4nvemd3wlqfyx77lkdf7wgs5z452hlacwglvc2e7n@vsko4bq5xb2f/ [0]
 
-Either this, or ->input_encap returns the offset of the ipv6
-exthdrs and then add this value to hdr_len in esp_input_done2().
-
-> [...]
-> > +static void esp_output_done(void *data, int err)
-> > +{
-> > +	struct sk_buff *skb = data;
-> > +	struct xfrm_offload *xo = xfrm_offload(skb);
-> > +	void *tmp;
-> > +	struct xfrm_state *x;
-> > +
-> > +	if (xo && (xo->flags & XFRM_DEV_RESUME)) {
-> > +		struct sec_path *sp = skb_sec_path(skb);
-> > +
-> > +		x = sp->xvec[sp->len - 1];
-> > +	} else {
-> > +		x = skb_dst(skb)->xfrm;
-> > +	}
-> > +
-> > +	tmp = ESP_SKB_CB(skb)->tmp;
-> > +	esp_ssg_unref(x, tmp, skb);
-> > +	kfree(tmp);
-> > +
-> > +	x->type->output_encap_csum(skb);
-> 
-> Since the ipv4 variant doesn't do anything, maybe
-> 
-> if (x->type->output_encap_csum)
-> 	x->type->output_encap_csum(skb);
-> 
-> and don't set it in esp_type?
-> 
-> OTOH it's nice to have a consistent "all CBs are always defined" and
-> just call them unconditionally.
-
-Let's keeep the CBs always defined.
-
-> > +static struct ip_esp_hdr *esp_output_udp_encap(struct sk_buff *skb,
-> > +					       int encap_type,
-> > +					       struct esp_info *esp,
-> > +					       __be16 sport,
-> > +					       __be16 dport)
-> > +{
-> > +	struct udphdr *uh;
-> > +	unsigned int len;
-> > +	struct xfrm_offload *xo = xfrm_offload(skb);
-> > +
-> > +	len = skb->len + esp->tailen - skb_transport_offset(skb);
-> > +	if (len + sizeof(struct iphdr) > IP_MAX_MTU)
-> 
-> This is now used by both IPv4 and IPv6, and esp6_output_udp_encap
-> didn't have any adjustment in this test.
-
-I wonder whether this check makes sense here at all. We add ESP
-headers and trailers, and just in case of UDP/TCP encapsulation,
-we check the size of the resulting packet. If we need such a check,
-it should be on a more generic place.
-
-Another thing I noticed when looking into this. The code
-above is from ipv4 udpencap. All other encap functions do:
-
-len = skb->len + esp->tailen - skb_transport_offset(skb);
-if (len > IP_MAX_MTU)
-	return ERR_PTR(-EMSGSIZE);
-
-I think this is 'kind of' correct for ipv6, but not for ipv4 tcpencap:
-
-#define IP_MAX_MTU      0xFFFFU
-#define IP6_MAX_MTU (0xFFFF + sizeof(struct ipv6hdr))
-
-> > +		return ERR_PTR(-EMSGSIZE);
-> > +
-> > +	uh = (struct udphdr *)esp->esph;
-> > +	uh->source = sport;
-> > +	uh->dest = dport;
-> > +	uh->len = htons(len);
-> > +	uh->check = 0;
-> > +
-> > +	/* For IPv4 ESP with UDP encapsulation, if xo is not null, the skb is in the crypto offload
-> > +	 * data path, which means that esp_output_udp_encap is called outside of the XFRM stack.
-> > +	 * In this case, the mac header doesn't point to the IPv4 protocol field, so don't set it.
-> > +	 */
-> > +	if (!xo || encap_type != UDP_ENCAP_ESPINUDP)
-> > +		*skb_mac_header(skb) = IPPROTO_UDP;
-> 
-> That was absent in esp6_output_udp_encap, commit 447bc4b1906f ("xfrm:
-> Support crypto offload for outbound IPv4 UDP-encapsulated ESP packet")
-> only took care of IPv4. I'm not sure adding this to the IPv6 code
-> without adapting the rest of 447bc4b1906f in the esp6_offload code is
-> correct.
-
-Hm, that would mean ipv6 udpencap offload can be configured,
-but does not work in the current codebase. Maybe this needs
-a separate fix.
-
-> > +
-> > +	return (struct ip_esp_hdr *)(uh + 1);
-> > +}
-> 
-> [...]
-> > + int esp_output(struct xfrm_state *x, struct sk_buff *skb)
-> 
-> nit: ' ' at the start of the line
-
-Fixed.
-
-Thanks!
+Let me hack a new version of it with @comm, and post here to check how
+it looks likes.
