@@ -1,76 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB1F392B68;
-	Tue, 13 Jan 2026 15:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9C936A02C
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 15:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768317213; cv=none; b=ERshuWpZi9/qtGed0gNPX6+Mesu6V6zAZ9AXklo/3az7VyY1GNH6ufShS3wTTIjVRkC++D448C90B/fVyqTL5FkMwKhFv3aOtbxf6XEV9ZbMHy31SQ3350UmXBEDO4VaFK6go3QcZiikZmYwvesXc8sS/DkFPZoJeYCI3zXqjxo=
+	t=1768317310; cv=none; b=H39y3LuIk7gVgo2nXi8qXeig97I+8t/h38kPk8axX478480lIxFvdlmOz2YCU6F3vgHLJWOJrVan/sVPEKiWjPdQ6upYKuCHoXqZNb8i8jAtgqL+vMcZKY/HPDYclaPGlbmzzUukDrxWEJriMWNOjZtnX9Tl0DTYGz2y+RbyXvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768317213; c=relaxed/simple;
-	bh=ogyBPwEl2kLjnHwSzJ6tn0JU+Pl+B4TgKzZ7v+/NVtg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pqAQ1VtQLTWltecDtMh3mq6dGSw4vyvppA9gpslWXmg8hNNgx+ReGqv5Z66wBCC/FRsRQGlmaesXDtKU2wyy40U6YkumrOn3p8NV0vVa8Bkw0SacNJZLi5r4codJOG2226UcwcP6loIt+3OZ8C4L/5ytp2PWPci/iAmdORUHQAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHbf8sIA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768317310; c=relaxed/simple;
+	bh=bcTVOO8/vCiYePb7Vu2f2AXRb9HXnGsAyAA8X84cJaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N4bjdjERgpWdmooP18hRFlxtdR9mG9DOlFHQcBh4MkEBBsT9C39X0uxblVo8+36rwLX+HV8N7Hav3hJ2+IxurnronCjNA68dsyuRKMupk9lx25Ppg/uu+OhuzaMwLQki2ApelIB3htY38jQo4D+y42CLBrQYFfM2q0hyvBVOGuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RRnQjIO8; arc=none smtp.client-ip=209.85.128.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHbf8sIA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491F2C2BC9E;
-	Tue, 13 Jan 2026 15:13:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768317213;
-	bh=ogyBPwEl2kLjnHwSzJ6tn0JU+Pl+B4TgKzZ7v+/NVtg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cHbf8sIAknuIkoIKXAZ9Kio4X2id1ByWBU/znd5GdRn2aqNQbu56gAnI6Qmwz40YI
-	 ja8Po1/GTvBbc+z4LR/e+6t+ntHxbfzc7E4cYZKukCdAguZFzjQLHvQogVfIxjaAuD
-	 jFyD392K0ta91S+3LZe8C3AOzsOTPIWlPNP09CQVRSfqejQ8uPfBEYKDwPXB8kQwpm
-	 lfkOl+4VZbi49UzMTHDaZCfk11xCxfxtIObY/k7ksqYPEFhWDC7JKNZs3YvuQdR0y+
-	 0Z1BU6zpBdEcHZ3VgY1nl9NX+e0SHpCVZkeFdXnvyofFAJQgSrePLveZWuWenndkYs
-	 yxbXX1MMNsS5Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B675D3808200;
-	Tue, 13 Jan 2026 15:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RRnQjIO8"
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-47775fb6c56so73657505e9.1
+        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 07:15:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768317307; x=1768922107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bEMT98k8iq5R+rKSzDQS7NpiqCNwYDuIMcmag2sytXM=;
+        b=RRnQjIO8Z1+XjEcVl1fxSeSv3ORCXtw+ddsSGhqGPG/Tl8aoRjUZ5P4aQJS9WrQUGH
+         CMIlRPfN0dU2CSnAcSwmk5Ft09j7HMV3BSJyokPrS+T2+TXN2YUDA7Qe41y9TCnJRP8w
+         Se2Boq3nhNp0s0YDojPnaDsGiLpqmrkb+CsbL3sG0EbQn/vDYLLyQzHzu5/1MhyaCKNq
+         bLsf820XI4eamsnYsdH+jtJh37V8X6lHizHGd2+i6OhwHaCJa+6enezAilUCxXvB8CVw
+         nskTJnWvnQerJVNI3J4zvtMxtAOC0Bs9XlmUc4Sv6NfSJ9LC+yusx7IZtdFUf67P1Xyl
+         CBaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768317307; x=1768922107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bEMT98k8iq5R+rKSzDQS7NpiqCNwYDuIMcmag2sytXM=;
+        b=ivaLxq3jQV5ZlhHvN2Jz+cCxcV0nW9cV3YAoepGLV6+M9tC/8ic+S8ukoPINzeQRqU
+         HvcjQfAS7UXQNTLQ6hLxg035EpcD2GchpPWkAOb3yeEXW7+F01/JAfJU0bwZax8CRDTA
+         iufCkwdsVf+jsxrUZHEXFiiME5PRldQpt5o+Jr2zPM/uxw48qCjBBTKQzsHTaLSJ1zlQ
+         IdFUvFNBxd2PzF2dhjQAS8KUsglLBORz/WnfvCPnNbmNlwBSgLrbpRbtRySy9Q/ZiZ4s
+         ze9zTs4mSH/KrLralZH8hUFWU69ALogn5CTKFaFX2yUAPt4tC1VhIN6d7pSgdqO6ajiv
+         OfDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSlIVUJRnld6ORXF5mo+ELgZXkTefGUkoCjlKnLUypLufKSNQOXJ29nrpJGRsNiW7f2WqKKSE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykFLw7/c+PG3HiT15wCC3RcfGxhcAH6U5JiBOH7V/3QZjo4uLj
+	N7Yih6b9hHcf6N05DjI16XBhx7FbDkHr+dN8DGp1VXk82n+RrENn7GUjC1ALxGRcO80=
+X-Gm-Gg: AY/fxX5VlxgONAYE3Ag5WGtH9SFo6tWd497iC1h6jOMb5YXlRWG3JtqQyyDhBUOVJKw
+	G1eZ3rCOfPphikTpPclWEZ748FayBG/xarAuYZ+oIkjg70JHcwgef7kt/98mAxyHP3tSkbEnfyU
+	kBULYGuzX3pE7dX+4J2OjOylAmkM7dovyO82Q6YpR4/zfeAvuVLGUPuHNR7h/oTQO1gSdQhCRm5
+	ybESmIFLpt2sqFzaeLP3jYFFPTMPKDgBDpjlTjUC8VauGFxGNfsvJsbDPzHmtGJLri2FMbcAVYW
+	rxlhW6f0Lx+guwALE8aa5GC9V/IgSyIdF9V+BA4vh2xtgQZA5i1ASZDjMMhCY12CuLZ3nKaflTC
+	DCildW1l8mLkF2QdL2UsBVdim//Y6hmdjLcifswWz9LO/fzBNI7ZfkJTwTyKKn9AN5ZlvKXwYak
+	j6u6Yijq6mh9XiMNoAsT97Z0b5zylZ1+4vAh0=
+X-Google-Smtp-Source: AGHT+IHzLadLrCzJ0IARYGYOL/uQU0nIwi5HkbDAdynsruHgRkEKv8POOYNOWEncAXJ9lrsUEtZCiQ==
+X-Received: by 2002:a05:600c:4685:b0:477:7975:30ea with SMTP id 5b1f17b1804b1-47d84b41bcbmr256430415e9.29.1768317306872;
+        Tue, 13 Jan 2026 07:15:06 -0800 (PST)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5edd51sm44713407f8f.29.2026.01.13.07.15.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 07:15:06 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Fan Gong <gongfan1@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] hinic3: add WQ_PERCPU to alloc_workqueue users
+Date: Tue, 13 Jan 2026 16:14:33 +0100
+Message-ID: <20260113151433.257320-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: airoha: implement get_link_ksettings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176831700647.2290468.15768850457756402576.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Jan 2026 15:10:06 +0000
-References: <20260110170212.570793-1-olek2@wp.pl>
-In-Reply-To: <20260110170212.570793-1-olek2@wp.pl>
-To: Aleksander Jan Bajkowski <olek2@wp.pl>
-Cc: lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+   commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+   commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
-On Sat, 10 Jan 2026 18:02:05 +0100 you wrote:
-> Implement the .get_link_ksettings to get the rate, duplex, and
-> auto-negotiation status.
-> 
-> Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 1 +
->  1 file changed, 1 insertion(+)
+The refactoring is going to alter the default behavior of
+alloc_workqueue() to be unbound by default.
 
-Here is the summary with links:
-  - net: airoha: implement get_link_ksettings
-    https://git.kernel.org/netdev/net-next/c/50e194b6da72
+With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
+must now use WQ_PERCPU. For more details see the Link tag below.
 
-You are awesome, thank you!
+In order to keep alloc_workqueue() behavior identical, explicitly request
+WQ_PERCPU.
+
+Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+---
+ drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c   | 2 +-
+ drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
+index 01686472985b..1ecc2aca1e35 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
+@@ -655,7 +655,7 @@ int hinic3_aeqs_init(struct hinic3_hwdev *hwdev, u16 num_aeqs,
+ 	hwdev->aeqs = aeqs;
+ 	aeqs->hwdev = hwdev;
+ 	aeqs->num_aeqs = num_aeqs;
+-	aeqs->workq = alloc_workqueue(HINIC3_EQS_WQ_NAME, WQ_MEM_RECLAIM,
++	aeqs->workq = alloc_workqueue(HINIC3_EQS_WQ_NAME, WQ_MEM_RECLAIM | WQ_PERCPU,
+ 				      HINIC3_MAX_AEQS);
+ 	if (!aeqs->workq) {
+ 		dev_err(hwdev->dev, "Failed to initialize aeq workqueue\n");
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+index 95a213133be9..3696ab3f1a1b 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+@@ -472,7 +472,7 @@ int hinic3_init_hwdev(struct pci_dev *pdev)
+ 		goto err_free_hwdev;
+ 	}
+ 
+-	hwdev->workq = alloc_workqueue(HINIC3_HWDEV_WQ_NAME, WQ_MEM_RECLAIM,
++	hwdev->workq = alloc_workqueue(HINIC3_HWDEV_WQ_NAME, WQ_MEM_RECLAIM | WQ_PERCPU,
+ 				       HINIC3_WQ_MAX_REQ);
+ 	if (!hwdev->workq) {
+ 		dev_err(hwdev->dev, "Failed to alloc hardware workq\n");
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
