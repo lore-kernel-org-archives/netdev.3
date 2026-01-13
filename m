@@ -1,133 +1,85 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6093138BDAD
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 11:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908872BE644
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 11:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768303851; cv=none; b=fbfY/NMfsbvFBx5aMzQEEjhkb8b2x13uqVfvVhX+L6+hcojkCI8+xka0+rX+o7ia8laR9ZQO6Mh1Xz5RouX/bXAq3mRx4s4VziB16UirW/FJ7axlr2vNIjjYsxu5O6bP+mZps0otrwOM7q18UapIryR69Ql/w7Q7wE7VDfpAM8s=
+	t=1768304531; cv=none; b=WkvLauTI2aK7OgKkKrkWB+XtGoxXhFzEJzQl2mB66Bp/sN3JLuVCaF2RbV6ICO/fOI3hwf2NeooD/lLhvWcSDlNdZXy+hBuh53qMZdekeakmOXtp5dCBxUJgRVKOsJXx3K3ZhEfWm7rmKaNB58w9TldvDnbFDUYPy0R2HaSWSdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768303851; c=relaxed/simple;
-	bh=bgvUodXDUnIEvDzCkIlCH1wd2koKpEYANFLlqTzVhdo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=HAeWQr2HYNMML/SOQzs+Us2zrDzHSf6Hu8pMj5lfoyIbO4if1vgbK2ph3/tbf5HFgvdahlGvNOt3Trjqkwo2ysQYZQOOWwZeMVXbKRadEsQDzdtD3EZhPEN4sVBhVOTTKNQ4srYjB4WAMMTgG9ONYFXJzj3tEOn/SU5Y5sG+vDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMcBXmgP; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768304531; c=relaxed/simple;
+	bh=2+ipIYDbNYYZYB768f4XnhO95OY6vPbnkSlu9gig+K0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gPeR7AeL4QZYUBJlkVKNJXgKyNmDJRS60IOwpyZsrcOxN2fE4TA3LzCIDF2aS8/NWhD7n7dPTvz2BbVaPntMdzenvbFHgMTOBnXNwTSvl3dje7pXs6GcFMrTlSYJjM5pd2pue2Alf9vP+U/mJ2kiBiDFso5pgSQL2g32yBPZ+Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OkQ7ULiq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMcBXmgP"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a2ea96930cso48131345ad.2
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 03:30:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768303850; x=1768908650; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:subject:from:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UlYhAj6Qmp6+pkbpgG8JbNmACj7mG4zQD/RWT+Cxx3c=;
-        b=iMcBXmgP5puMRvpnIYGocdaP3r56Drpig5a3wFk2f6fp7DlFypKq5SXXoE8ZiMI/4b
-         ZWL65l/Tgwl8BAIlO4sVAydYtve1pjFRap4TR5yCvZcr+ANoDsXSUnujCV3W+YEZnG//
-         UuYfhYbT44F5ecDAtBsddXDSlNWmkt1i/5E/zX13o2aX9O0dHi3qo5KhmZuUoqkr4Tq2
-         S/sVrqBg1+ie1+42hhadx/1tU0bPDDQqIGUCRGh9ebcUF5217k6VHXU8WghJqPaJF1d9
-         0dM+iCl4sk9NhQtn5YpH78G8tZGvEanIfHIl1dLGHfIy+Twm0Nh2eHh3GLw2CKzOHCxm
-         3BQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768303850; x=1768908650;
-        h=in-reply-to:references:cc:subject:from:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UlYhAj6Qmp6+pkbpgG8JbNmACj7mG4zQD/RWT+Cxx3c=;
-        b=IsjxErAyMlToeUcuA0wBXnFL+hgoSHck/oVhJ4JXCKaq8JkGIEXlp/IPYKV6vu0QGN
-         b1a0J/jyuAVGWLI8CqpqCAaSUx/d/s4FFJChyhKHa01QdRvr0ncz5JzImjmKHzvwcxce
-         /cIfCbegpNrVQQXMuTnOwqI70aHsdqvLT4D4NLbawQoeBw5WDg5kbwk3ZMYceN75b3+j
-         HXdunwAX0ccUmMSLvBZZGfh1umDW8l6k2tl0Pv6w89I4D8WsR5zjXBRJ7NYePjvGZ/HV
-         RaHWroUsa6EaJapl7JLku6ytUgWawygd4VwV4VQA5wE1WkJkdvbylzagbDIBRpSFeSpo
-         pDZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLZBRjHtoeMMuLmu08GkgJiXqUOymW1CtKqNhJtPAP8UdZNTDkuQlfVO6usVcA9lau2LHSnbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLCqkLetdzuuhU7yGSDsxZSKhUqaM4qquN+zZ8vZ4+QBRZWaIW
-	vyqnKvjAz2XIkJZI3tJE2GqiQ7Q3xwBxLNXFiG5D0olNjOEWpcyXUZZR
-X-Gm-Gg: AY/fxX4d2DbkPvmwwm9gmSbJcM1DsbYbWDmLd/lMt/pYvReLMZyS2V0JNacpNELSkTj
-	UYIjTfJiA/VXfTIMlodu44GsP/5Nsf5nMYhhXEl/uxSP0UkDWc5Bf117/cXsClJigtsDtn1d086
-	U/IhS7HJtUbWOkmXYe0q8P0noxUq5nPcz99gNJ7Ap8DZFpF6y3N+IDQm9WcnMhEDSk0XhceuryB
-	bphRUhg5cCpXl7uIo9Vaw5w3JommwNBMeavRLbmNCV8o9WF+lu52tOz3VuTH2E/iUwz0ZfbxXNd
-	65eRY1K7vSImFfhJiIF2VRDSNrx9bBzAZccm44l7TO0c7wqzdk4/qUGXfec1S66UW1MgYjLPyQK
-	wTA6BiVDs7L2Aoha1izMxo3h2xCC3ksPjKfdp682dXgcwwvFcb5SJUuNyQaObnWMS9cNXfcWimo
-	4rC8iFvsBfnwtS4qE=
-X-Google-Smtp-Source: AGHT+IHHyPdLQhLMJv85R43imUk6lt/OSW7jCE4knZP06M839c71Oz4y+wEJKXpkd+gtJJxZn79utQ==
-X-Received: by 2002:a17:902:d491:b0:2a0:b02b:210b with SMTP id d9443c01a7336-2a3ee4fe86bmr201095145ad.41.1768303849578;
-        Tue, 13 Jan 2026 03:30:49 -0800 (PST)
-Received: from localhost ([61.82.116.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd4a41sm83557315ad.100.2026.01.13.03.30.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 03:30:49 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OkQ7ULiq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768304529;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zme19PqktiZaeWPqXSVs234DIJrEP7IzNWk0WMredpM=;
+	b=OkQ7ULiqN8SXDJevPcseBp94uotTsF4MK0kEw+mIp0yoiuGTnrz98tGIeN9wwGDPDnTYmB
+	VFU+J+96HF0iCoURyz08Zda5ocotUCJgB4RdKqM8BO2U9mALqRq/TfNVmeuFFPjQAeyB8o
+	i0/Pk7WDN+zMN9BsIkmFPbcdQCe26wA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-Mlu9L2yOPCOI75Rnu-fPwg-1; Tue,
+ 13 Jan 2026 06:42:08 -0500
+X-MC-Unique: Mlu9L2yOPCOI75Rnu-fPwg-1
+X-Mimecast-MFC-AGG-ID: Mlu9L2yOPCOI75Rnu-fPwg_1768304527
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 721671956050;
+	Tue, 13 Jan 2026 11:42:07 +0000 (UTC)
+Received: from fedora (unknown [10.45.225.207])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11DAB19560BA;
+	Tue, 13 Jan 2026 11:42:05 +0000 (UTC)
+From: Jan Vaclav <jvaclav@redhat.com>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org,
+	Jan Vaclav <jvaclav@redhat.com>,
+	Gris Ge <fge@redhat.com>
+Subject: [PATCH iproute2] ip/iplink: fix off-by-one KIND length in modify()
+Date: Tue, 13 Jan 2026 12:41:27 +0100
+Message-ID: <20260113114127.36386-1-jvaclav@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 Jan 2026 20:30:45 +0900
-Message-Id: <DFNFEBZPHG3I.1YEOOHK1BTI3N@gmail.com>
-To: "Andrew Lunn" <andrew@lunn.ch>, "Yeounsu Moon" <yyyynoom@gmail.com>
-From: "Yeounsu Moon" <yyyynoom@gmail.com>
-Subject: Re: [PATCH net-next] net: dlink: count tx_dropped when dropping skb
- on link down
-Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260106122350.21532-2-yyyynoom@gmail.com>
- <b6ff2078-86d7-4416-a914-e07ae13e2128@lunn.ch>
-In-Reply-To: <b6ff2078-86d7-4416-a914-e07ae13e2128@lunn.ch>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Tue Jan 6, 2026 at 10:44 PM KST, Andrew Lunn wrote:
-> On Tue, Jan 06, 2026 at 09:23:51PM +0900, Yeounsu Moon wrote:
->> Increment tx_dropped when dropping the skb due to link down.
->>=20
->> Tested-on: D-Link DGE-550T Rev-A3
->> Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
->> ---
->>  drivers/net/ethernet/dlink/dl2k.c | 1 +
->>  1 file changed, 1 insertion(+)
->>=20
->> diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dl=
-ink/dl2k.c
->> index 846d58c769ea..edc6cd64ac56 100644
->> --- a/drivers/net/ethernet/dlink/dl2k.c
->> +++ b/drivers/net/ethernet/dlink/dl2k.c
->> @@ -733,6 +733,7 @@ start_xmit (struct sk_buff *skb, struct net_device *=
-dev)
->>  	u64 tfc_vlan_tag =3D 0;
->> =20
->>  	if (np->link_status =3D=3D 0) {	/* Link Down */
->> +		dev->stats.tx_dropped++;
->
-> Do you see this being hit very often? It should be that as soon as you
-> know the link is down, you tell the core, and it will stop calling
-> start_xmit. If you see this counter being incremented a lot, it
-> indicates there is a problem somewhere else.
->
-> You might want to consider converting this driver to phylink.
->
-> 	  Andrew
+The expected size for IFLA_INFO_KIND in kernel is strlen(kind) + 1.
+See `size` in rtnl_link_get_size() in net/core/rtnetlink.c.
 
-Sorry for the late reply. I recently started my first job and have been
-a bit busy settling in.
+Fixes: 1d93483985f0 ("iplink: use netlink for link configuration")
+Reported-by: Gris Ge <fge@redhat.com>
+Signed-off-by: Jan Vaclav <jvaclav@redhat.com>
+---
+ ip/iplink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To answer your question: this path is hit extremely rarely. In practice,
-I only observed it in rather extreme cases, such as forcibly
-disconnecting the physical link (e.g. unplugging the Ethernet cable). I
-have not seen it occurring during normal operation.
+diff --git a/ip/iplink.c b/ip/iplink.c
+index 59e8caf4..fce6631d 100644
+--- a/ip/iplink.c
++++ b/ip/iplink.c
+@@ -1139,7 +1139,7 @@ static int iplink_modify(int cmd, unsigned int flags, int argc, char **argv)
+ 
+ 		linkinfo = addattr_nest(&req.n, sizeof(req), IFLA_LINKINFO);
+ 		addattr_l(&req.n, sizeof(req), IFLA_INFO_KIND, type,
+-			 strlen(type));
++			 strlen(type) + 1);
+ 
+ 		lu = get_link_kind(type);
+ 		if (ulinep && !strcmp(ulinep, "_slave"))
+-- 
+2.51.0
 
-Given that, dropping the packet in this situation seems reasonable, so I
-added a counter to make such cases visible. However, I am not entirely
-sure whether this is the right direction, or whether this is just
-masking a problem that should be handled elsewhere.
-
-Do you think this should instead be addressed by improving how link-down
-is propagted to the core, or would converting this driver to phylink
-help avoid or improve this situation?
-
-    Yeounsu
