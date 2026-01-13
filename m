@@ -1,213 +1,88 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4143904D1;
-	Tue, 13 Jan 2026 15:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02DE38FEE1;
+	Tue, 13 Jan 2026 15:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768316972; cv=none; b=MDk62ZBkwpvYev8xGmeV0tJaQcfitNID8H5Rx/rvrRZaG1MYn+YpJzaTO4lX9lVt7md4kGexTLey5BoURq9Ix1cPqDFPcMAMWO4OnaFk/GRdUhyEUn3vbDwTnmIxu0ba2uL3iuBda0ZazGcg6EtzfBOjzVK3LdU76AEwVlxZcEM=
+	t=1768317101; cv=none; b=LKKIgD05KtHW7XSRD4JNYJNlgWI/TRcHdaYUiZylciekApoD0bmQdwvEKpK2xYuh4fRYT+rI+2k7vj5SaqdibZ/FKPTb3m3AVOBnOqYgN34541lv8A1hNzolHh88HLEi3mHPhOH/AIyPLugg7gGne+4E/dIEuCRuGojKnPq57gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768316972; c=relaxed/simple;
-	bh=+m/zcz9m5qjJUbvy4oHymY9PyGgul7PKAKQGzkSYjno=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=px5NkkqzW34UaDJuUxkn1S6+79mVqFru31RrG47jKyRUtL4kGjJR9RUdcevvZeroPARqYC0QtiYNIsSXFLRFJe7oZ+RNtZmkWEdfU+g07fpvAvizjSzQvwx7OMlYBsEo+e/RSvPqaSxyiI1qt2kyO5XMSY9s9ig0x6QoJ5611s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=WhE7lXar; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="WhE7lXar"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1vfg1B-00GIga-TJ; Tue, 13 Jan 2026 16:09:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=cY/xVqDotsaOhRcTT+mmKBIUBa7/ehWTCbrX7fejO/o=; b=WhE7lXarkujclW4JMyz1blCVA7
-	U096LEiJIJDuu/DxkbEZRe4dPlZhFZUS/w0BGt5NlnxVKofYJLWIqA5eN5JJts7VgwFayvrxCsIiH
-	9d48SDNcUmMCxL8kjc3m35dMMEGwzzbCxDclVg4NJtR2OcCuGgpEuMlf4tUvNbX8OCeJ35Pz+LZgT
-	BMvCP0NjBEf/aT1neBJfj64klly806QmRCwLZR/rmByehsEprSstiTRRhMcOjGPN60L12UJx17kbp
-	boduUz6fsZrhNoTgyHQY1ZBiiOQ2vioD6c6p1i+iAORRVtOZFcVB4peZ/xqdW0rDgZjr1kn0g860g
-	uRXPoUww==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1vfg1A-0007vx-OB; Tue, 13 Jan 2026 16:09:12 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vfg0w-00DMTf-1M; Tue, 13 Jan 2026 16:08:58 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 13 Jan 2026 16:08:19 +0100
-Subject: [PATCH net v2 2/2] vsock/test: Add test for a linear and
- non-linear skb getting coalesced
+	s=arc-20240116; t=1768317101; c=relaxed/simple;
+	bh=AWS7Xlr64jAUWbLqzrwIJU45griMgDUfS/i7tmMdgu0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GIcz9H3KJgmcQYwhc/WKCM/+Bcn+CORtPzm5ka7fuLp+cY91Pev7ZSLmYWcTlEwdCNnAP6zBGPDRIv086JaVI/765JgZUnun7wZNuqIUeDgAQgQtOS3dF21RPStRWw5dcUXf7Pw4y3sObu1mA6ZCDaFLeL1xYzuTxnqypPSEaoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 4C9F96035A; Tue, 13 Jan 2026 16:11:35 +0100 (CET)
+Date: Tue, 13 Jan 2026 16:11:30 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>, Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH nf-next v2 1/4] netfilter: Introduce tunnel metadata info
+ in nf_flowtable_ctx struct
+Message-ID: <aWZgos3epThP36en@strlen.de>
+References: <20251209-b4-flowtable-offload-ip6ip6-v2-0-44817f1be5c6@kernel.org>
+ <20251209-b4-flowtable-offload-ip6ip6-v2-1-44817f1be5c6@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260113-vsock-recv-coalescence-v2-2-552b17837cf4@rbox.co>
-References: <20260113-vsock-recv-coalescence-v2-0-552b17837cf4@rbox.co>
-In-Reply-To: <20260113-vsock-recv-coalescence-v2-0-552b17837cf4@rbox.co>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209-b4-flowtable-offload-ip6ip6-v2-1-44817f1be5c6@kernel.org>
 
-Loopback transport can mangle data in rx queue when a linear skb is
-followed by a small MSG_ZEROCOPY packet.
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+> This is a preliminary patch to introduce IP6IP6 flowtable acceleration.
 
-To exercise the logic, send out two packets: a weirdly sized one (to ensure
-some spare tail room in the skb) and a zerocopy one that's small enough to
-fit in the spare room of its predecessor. Then, wait for both to land in
-the rx queue, and check the data received. Faulty packets merger manifests
-itself by corrupting payload of the later packet.
+Would you mind extending this a little bit?
+AFAICS this prepares for IP6IP6 by removing the 'its ipv4'
+assumptions resp. adding needed 'its ipv4' checks:
+no ipv6 support is added here.
 
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- tools/testing/vsock/vsock_test.c          |  5 +++
- tools/testing/vsock/vsock_test_zerocopy.c | 74 +++++++++++++++++++++++++++++++
- tools/testing/vsock/vsock_test_zerocopy.h |  3 ++
- 3 files changed, 82 insertions(+)
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  net/netfilter/nf_flow_table_ip.c | 80 ++++++++++++++++++++++------------------
+>  1 file changed, 44 insertions(+), 36 deletions(-)
+> 
+> diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+> index e128b0fe9a7bf50b458df9940d629ea08c521871..14c01b59f76569170057d2465ee5953efb557bcc 100644
+> --- a/net/netfilter/nf_flow_table_ip.c
+> +++ b/net/netfilter/nf_flow_table_ip.c
+> @@ -142,7 +142,18 @@ static bool ip_has_options(unsigned int thoff)
+>  	return thoff != sizeof(struct iphdr);
+>  }
+>  
+> -static void nf_flow_tuple_encap(struct sk_buff *skb,
+> +struct nf_flowtable_ctx {
+> +	const struct net_device	*in;
+> +	u32			offset;
+> +	u32			hdrsize;
+> +	struct {
+> +		u32 offset;
+> +		u8 proto;
+> +	} tun;
+> +};
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index bbe3723babdc..27e39354499a 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -2403,6 +2403,11 @@ static struct test_case test_cases[] = {
- 		.run_client = test_stream_accepted_setsockopt_client,
- 		.run_server = test_stream_accepted_setsockopt_server,
- 	},
-+	{
-+		.name = "SOCK_STREAM virtio MSG_ZEROCOPY coalescence corruption",
-+		.run_client = test_stream_msgzcopy_mangle_client,
-+		.run_server = test_stream_msgzcopy_mangle_server,
-+	},
- 	{},
- };
- 
-diff --git a/tools/testing/vsock/vsock_test_zerocopy.c b/tools/testing/vsock/vsock_test_zerocopy.c
-index 9d9a6cb9614a..a31ddfc1cd0c 100644
---- a/tools/testing/vsock/vsock_test_zerocopy.c
-+++ b/tools/testing/vsock/vsock_test_zerocopy.c
-@@ -9,14 +9,18 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <unistd.h>
- #include <poll.h>
- #include <linux/errqueue.h>
- #include <linux/kernel.h>
-+#include <linux/sockios.h>
-+#include <linux/time64.h>
- #include <errno.h>
- 
- #include "control.h"
-+#include "timeout.h"
- #include "vsock_test_zerocopy.h"
- #include "msg_zerocopy_common.h"
- 
-@@ -356,3 +360,73 @@ void test_stream_msgzcopy_empty_errq_server(const struct test_opts *opts)
- 	control_expectln("DONE");
- 	close(fd);
- }
-+
-+#define GOOD_COPY_LEN	128	/* net/vmw_vsock/virtio_transport_common.c */
-+
-+void test_stream_msgzcopy_mangle_client(const struct test_opts *opts)
-+{
-+	char sbuf1[PAGE_SIZE + 1], sbuf2[GOOD_COPY_LEN];
-+	unsigned long hash;
-+	struct pollfd fds;
-+	int fd, i;
-+
-+	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-+	if (fd < 0) {
-+		perror("connect");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	enable_so_zerocopy_check(fd);
-+
-+	memset(sbuf1, 'x', sizeof(sbuf1));
-+	send_buf(fd, sbuf1, sizeof(sbuf1), 0, sizeof(sbuf1));
-+
-+	for (i = 0; i < sizeof(sbuf2); i++)
-+		sbuf2[i] = rand() & 0xff;
-+
-+	send_buf(fd, sbuf2, sizeof(sbuf2), MSG_ZEROCOPY, sizeof(sbuf2));
-+
-+	hash = hash_djb2(sbuf2, sizeof(sbuf2));
-+	control_writeulong(hash);
-+
-+	fds.fd = fd;
-+	fds.events = 0;
-+
-+	if (poll(&fds, 1, TIMEOUT * MSEC_PER_SEC) != 1 ||
-+	    !(fds.revents & POLLERR)) {
-+		perror("poll");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(fd);
-+}
-+
-+void test_stream_msgzcopy_mangle_server(const struct test_opts *opts)
-+{
-+	unsigned long local_hash, remote_hash;
-+	char rbuf[PAGE_SIZE + 1];
-+	int fd;
-+
-+	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-+	if (fd < 0) {
-+		perror("accept");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	/* Wait, don't race the (buggy) skbs coalescence. */
-+	vsock_ioctl_int(fd, SIOCINQ, PAGE_SIZE + 1 + GOOD_COPY_LEN);
-+
-+	/* Discard the first packet. */
-+	recv_buf(fd, rbuf, PAGE_SIZE + 1, 0, PAGE_SIZE + 1);
-+
-+	recv_buf(fd, rbuf, GOOD_COPY_LEN, 0, GOOD_COPY_LEN);
-+	remote_hash = control_readulong();
-+	local_hash = hash_djb2(rbuf, GOOD_COPY_LEN);
-+
-+	if (local_hash != remote_hash) {
-+		fprintf(stderr, "Data received corrupted\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(fd);
-+}
-diff --git a/tools/testing/vsock/vsock_test_zerocopy.h b/tools/testing/vsock/vsock_test_zerocopy.h
-index 3ef2579e024d..d46c91a69f16 100644
---- a/tools/testing/vsock/vsock_test_zerocopy.h
-+++ b/tools/testing/vsock/vsock_test_zerocopy.h
-@@ -12,4 +12,7 @@ void test_seqpacket_msgzcopy_server(const struct test_opts *opts);
- void test_stream_msgzcopy_empty_errq_client(const struct test_opts *opts);
- void test_stream_msgzcopy_empty_errq_server(const struct test_opts *opts);
- 
-+void test_stream_msgzcopy_mangle_client(const struct test_opts *opts);
-+void test_stream_msgzcopy_mangle_server(const struct test_opts *opts);
-+
- #endif /* VSOCK_TEST_ZEROCOPY_H */
+Could you add comments for the members here?
 
--- 
-2.52.0
+In particular, we now have @offset and @tun.offset.
 
+I can guess that the offset is the start of the inner
+ip header and tun.offset is the start of the header
+following the inner ip header.
+
+This patch would perhaps be easier to review if the
+pure move of the ctx structure and passing the extra
+'ctx' arg would be in a separate patch.
