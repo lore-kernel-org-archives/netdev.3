@@ -1,355 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic303-48.consmr.mail.ne1.yahoo.com (sonic303-48.consmr.mail.ne1.yahoo.com [66.163.188.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B059734DCD2
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32CA30AAD8
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768323053; cv=none; b=RvQ5Yg6MZ7B1G257Eyd+OL7rjkOrZqhyxCr//czPnJ/ZgrC8u2D63XWSUyd2yOdqF5Ws+cynyNusUzwYY0dmKLynmOsVkx+0IvPICEPDh6YU3zKrvicvCTsauQfMnH7e8VRtupS5rwLFtVIKbi6npFskFfdzj1wr/c9gQhdvVb0=
+	t=1768323157; cv=none; b=HTD0qcYRWW1j1r86b0kpREpY4y+rlsz6VxL5SMHyUQcwOJ7lO7RJkZRnDMZmaw7zwxCF3e/tYgmsoe+ZNLgvTrSChu2NMKW45+ry6Vhd59xe7+7X5T1kvUQiTcNozhsqoNmqFfQ+/GQDDJJ7Q8FirgHnZhbJTmKaCDbbTgRT6Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768323053; c=relaxed/simple;
-	bh=l/MzUKV5vBhOjr5ZED+tJpwan1YXWA9mauHZNOyldN8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jCvRMOQ3fblngRQ/v0AP62UrkCLuV/Svg6146RoYtRkwXglsciFUxeMO68HGt/rHlZrQQru+grKSOTHXolZtnzSX0WwVGupM/TCD+AYhxi0Mu7o2MAKHbwgaJEszRbTcjdGm5DDhYAVCHiEvMD9zonwQpYuJkvfw6wd9UaOA2Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EPDsUKYM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VBDAb6xN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768323157; c=relaxed/simple;
+	bh=Ka2c+f7cKYrDNOEeGzycd0g5ak922xHdu7igTZVlUKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Mf7RAbDOh82sjG0hegEjFPqbs6yEonJH0tDzwqyneioX5/FNRX8NgmWFMKvDldIWU7xNwVoGz3HXVOc+vY3RzvvkAcZgVTHRz0DjmboJSV4HqWFC0t6OhVUUYlbN11ptU47VTwCvrrOvYY2VABtB3v+RBzjVMVpNBlHi3YPcJSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=rJyeHE1m; arc=none smtp.client-ip=66.163.188.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EPDsUKYM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VBDAb6xN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768323049;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DG0WRw7YxgTU3+MntFsjdanWVcUUw4Bpd9rGhDr013E=;
-	b=EPDsUKYM/iHMyQzeU3SwLfDtsJ1qv5zoEfA83mHcT1a3H2GG7h/rSHDKmvL0cQ8tzzPgqW
-	nF3Zyuzl5TALA33M7Hw8+tL71JFsqVEq2sDGbQgBGGwdVqrLeXmYK38zJQD/rwpK5+Pw7z
-	DRDpDAoEJufKchehzbgYTkMMmlMs1KI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-mdy_gyHQORmyjgGB29cEAQ-1; Tue, 13 Jan 2026 11:50:48 -0500
-X-MC-Unique: mdy_gyHQORmyjgGB29cEAQ-1
-X-Mimecast-MFC-AGG-ID: mdy_gyHQORmyjgGB29cEAQ_1768323047
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-477cf25ceccso68168735e9.0
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 08:50:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768323047; x=1768927847; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DG0WRw7YxgTU3+MntFsjdanWVcUUw4Bpd9rGhDr013E=;
-        b=VBDAb6xNI58zdYmTI6oRUjQtylcczFbmLkUlF6la5VPMIDA+aYzveCUe2FHTYaZupU
-         KPxXOepYzi3KHEAdUFiI20ol+rprv2Av2YZNHdDb5JmxWQGGmsRSLJN1fjCa62xsxB7V
-         efWldlZ0/Cayp3bpYradXrr/rWRJoZyLEClXmqP38iw4C1Qc/tZb9nr67regoc0Ff3m/
-         kgkpkr+zIRnfbfuLJ+LUmLtG6Bp95vVfRqJpfiyTMmFDCGLzFjRGaE0kGA+Bo/MyOGjy
-         TKf79NkD7NNobtE0k72kI1JBXW9iUEYnK5nxjtjp68JkUgO2O7V9yRL7XlD6eeEefTa+
-         Y4ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768323047; x=1768927847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DG0WRw7YxgTU3+MntFsjdanWVcUUw4Bpd9rGhDr013E=;
-        b=MTFDGqu52dhpw5bPOKcz6xxyCDkGfHbbP114xU4db6ey12H3Edk7PEl0mWNLI/sKbV
-         4SORag54XOjrwVJ9Id3rcuT73DtueqM3CDGyi+fMg0C9XJ5J0qSHxyjHvD6rvRWswMu9
-         f+HAV9ygP3XOtW5wHq4b2N3+bCbByaaTzcIuNRb9RdyMIQvEO0Qz7QSIRPY1uShJU96/
-         jb4FU/QIMHRICGDpRFLYC3JaAQtu3ZeKj/gVO+IsKVRfXMtXoRywSLERytdraW3KpC6w
-         3N/7+qtzdvbm3QhKMggMpa4xOWdnHb8UTzPaAS+2d//kQLdfo7wIK4Fecl/Ub3GILgCX
-         7JMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUw43hBHHdvU4rKzUMZxtDokiiNcx13GaOf7CiZTAJoKffSLg4wiBcySbjsku7pIGfTsJhr+Rc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx99BKfPBx5iUR5CufbL9qUACTbWOG0rN/ZLot+ZW+FkkdCvwwB
-	WDG46MEaCLF6UAuXRbmc8DqzUtRuovjXpv7ndrzOE7njONRjstuy4HwMXwdiE4vdpJlGLRfiuUh
-	ikLnKJQhYmihBsNUy/aQE0B5FJ3UzR1SdiPffdcAFKTVHbQ4apZMfWtXo4w==
-X-Gm-Gg: AY/fxX6dmlIZutPMySm+BrmlJs+nENqIpgdlhktLUbykZiT4+/gZmSqfZLuORMdoCPz
-	DkL7QGoRRlF4vyIESySaQcOLGaamQRo1TBYBtE1/2Iz7F4SBxWnn/gSEXsuHcWEoHxz+41lzUSr
-	8WMALLVYKCwwzTwloAGPmo9wZUoq8jbnjTugwT+s3j4IwPzeBdSVCp0qbi3CtOnLpodIX/Yq4DF
-	FAbfMGYIGRh54z7g8/id55gcCjgfy3tVJWr1q0ecrLIzgKHxe8gz61BS89hIwjFVjMQnnJ8Hqav
-	TwwlX0jEVrVYzmKt7vB8i3Ld4raGZJsyGEA9rltunsqU9HzDB51ESW3Kqx48S1DVWfDSi/vPvjk
-	3F+qClXOaKaGi0Luxcl1gXeTo1YBi7n5gnq7iwYv1XkMHkx8ksKXHv9rLuYf98Q==
-X-Received: by 2002:a05:600c:4692:b0:47d:3ead:7439 with SMTP id 5b1f17b1804b1-47d84b5403dmr248980035e9.37.1768323047192;
-        Tue, 13 Jan 2026 08:50:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHlubu09xauLTgM5vIaUwncOAsAxE5DLD0jbAoR78s6Ju0YY/wLL6jLo1N3GDIcOu7AsHYzxQ==
-X-Received: by 2002:a05:600c:4692:b0:47d:3ead:7439 with SMTP id 5b1f17b1804b1-47d84b5403dmr248979725e9.37.1768323046648;
-        Tue, 13 Jan 2026 08:50:46 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-25-233.business.telecomitalia.it. [87.12.25.233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee134a057sm7988835e9.14.2026.01.13.08.50.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 08:50:46 -0800 (PST)
-Date: Tue, 13 Jan 2026 17:50:35 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	berrange@redhat.com, Sargun Dhillon <sargun@sargun.me>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v14 09/12] selftests/vsock: add tests for proc
- sys vsock ns_mode
-Message-ID: <aWZ3xxGbK0Ccldv9@sgarzare-redhat>
-References: <20260112-vsock-vmtest-v14-0-a5c332db3e2b@meta.com>
- <20260112-vsock-vmtest-v14-9-a5c332db3e2b@meta.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="rJyeHE1m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768323152; bh=vCUpaCooJZwcd2Xh0qe1ZUXItKm1jGVNkgmZ/ssEtTg=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=rJyeHE1moehC+pUjfn7c4KCIJ9Ar1ME3yzH5it0FhYy7m/1umYX3MrQfKzVu61D2cNmc1JgG/YFiw8ZZJJtxDGAH6p0bJG8Yr+e1kvlWvDKRC4nOjuzKYkZrsTPY2o7ibjjrTfio9SCiUjU96HMSeB2laHvheasH9tGXMtw0KqlHWewLizublZAmeDYCoME37T3900hmUStneF2DWtiN64MVf2VTALQzsIm2lQGJ94n0Thtw1cT1loAfPEBIvy8AFRj9So7bNBEb72wgR/28YtP5TzZp1Nn4h93suPAWRGpVHG8UFAaoO3Wbo7brrGSdPgVhTO6t+QDtJzQ+CvZB9w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768323152; bh=rBnk9HGKpFlKHed9XoC3LvY2bMMaXB8/wYYcCl76S+3=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=SEudGLHgL4bHDSIknEdPpcli/2kc5ocdHu55p2nbi/kWoRRz+kEb7iUaOiqwR4R2xAwGv93jmJlpsSZkaEx4SNoUXe3eFnVrfFd1CQg2tjQx3ChDK3pIPDBZupt1ne36bcucPYRuNTuGA0KjNF1jgmUm12/nwA5QItdXsMXeozFPqfsetNjoTd0T2vNr7cmgxVZddYv8p1aTlGJ5Ti8WbOQUKOJkLY6hv3QoyuBL0IJy4Gum1b/TFMNH5GXW/innN5KwAqyUzOOWOuU0ISuhWpfN3Y96lVUOzLkJtQdTfdPnyq3VUZabNd1FXapKOjNMdAufc9WE1vvUB613kbvZKg==
+X-YMail-OSG: TY2fSmwVM1nD_LVBOrEJHiRgM_bjaOdoDU.OdalHzEbGuADQuBl6nX5IAuN5C9K
+ vgfLH1kMVJ_SyOtpAAXVkW212cbjWoGyD0kzWPszmL9mSfkmTY2HNmQ4ivz2bCz3HZNkgk_.EOIb
+ h_exDkdI4p8b1ho0Zi2XEaAC9Oh82CYIJ2WkUjFIGRndwnZavVKQduEapoS_SAZtXjDXzUv4VDmN
+ cFylC.LSwK104rooVyKZFJ0Jq8YjXsvJxZ.50DL.hBahbHFtzJKzyJvUjliIqFDO.QZIbZ_WL6zw
+ 4JG3kWdwQLWGIUBaVVDqPRNNyJm1cjnrW2BIff.Qy_Kj_KuhbzkQjCXiM9KLssPU3B52cIuINQJE
+ AzNyIYm884biCoMM7DBjMFwSZntMnksdHUyPxOtXsg1mr3VSzjYn3eGldPTUFTLoeyNx5zW4VL.x
+ e3Vjn1cMdz_Xcac4S.AFTOP6DxZCR64KgsqX41xVMgzjIhbag.3vKz3Mpd.l43reUnzV.VUOFe8f
+ WPBU5ORpgpxKDFDf__HhkPC1lAVjOkZt7et3R2HO.CZjntocrYqxYL86CAQVe8cajfHBOOMef49x
+ v6.mj1vWXmxOnwP.nhEgt4a5c1GeTpTbjzSSuR18OxjSWVUemv763wzK42n2toQt3DIBAbMFJYh1
+ HsgqlHS8gbs1DcODXTxfVJfRCV2GglZ3ZGG83eZfBs4rK8nE1cIj6QNXe_CvRWbkqVClaP_hwnfs
+ Bn2VNBSBehd6D2lFeIU2HsP95jJz8SQe_kumZUChDOsOT8VGeFezVWrQxZUQUEKx_42F54zh5kwp
+ 40Km6i3cOQCIGfDzfCFHBknR1w4oqqmfrdPgSXlIgxT_52HdQaAMwwREHJ0WNvS0av0Enj_4TXLx
+ xzIVaIrJ7.k7eHpU0NnqLocXk7N5SmCGA7jlm0x2Eo5AXBuy_4gCrPJ5O1byz1Ej2cYGC3yO_u2v
+ XDNfJ4MdUb.moJbXJ2qzE.2SdAP2tR2wzdpk6SIPixOGc1qC80CuNJTDhxm7.FA39pC49o.mmZ3S
+ EQKB0Idt3Xy1PuEOwbgXnxU4lNcX6Z48KeeVKs26MwyzaCZAxxaUBtMINgIVzvWJXbMVQhNHIuUb
+ SpZd8WUM6AZpL80ZPQ6P6Om6MdQuiib5eVwfCmNl3Q.AbCj_v70ANJUgUmMFRvDbbaqmWcecWcv5
+ QtfZgOeztxXnap.VXuGOb7QqC8Mgwd2lSVAbrxMzmUUExl27UDW8Wb_b6G1woqeEPQRpSbsJcU82
+ tJK9liWHxcfMH7uT5NWLQ0VXSwPWolH5jgx7ReWziLJEmLA5B46REh1kTv0E6Iq2K.Y.Dy8kwoKj
+ yGpYbDtMZazgj0av_BzQDfJqhVR.FmadNwysIbQ1UJllAGXacgWT25K3VYvP1Md8XwgWCpl4SuTn
+ GnKNYplBCyMclPk2JCeZjo8OntZtF3ecIcgDBS7bYXoGn8McevVec56DbwlVbk1sxybB9bVwBveM
+ fsjZWQf5XOrGqGDLt3kq42Vbatkm.er1XZ8x_n3ul0Ni_Fi2T2Rj6RP_oCCtft4jYtzinjbxSyEF
+ Rc19EmlmAZnn.5jMcWybPHVh4VzciwmnLINnwjuEI_OdBGcUE_GMKYDSjd1ZK9b9TvYr4WfBC.6K
+ JwcEYEXG0fVYAVfywjeLx_5RJuOeG.J7aKHybD3hDj9MrWrXCj_Fqyhlm2YBepiKr4F5Mv2mW5xP
+ s_pqpEvafMfemVGeKhP4wW7OancpL1Otb_osj1pfJX7u4NeJHZBxn.21vNK7QgX_EUrc0R8QNXpg
+ b6ZyMryqa_0.o7TYFQauO7l.sWTExgHuy5vKPtXC3ZemvahnSkiVBjRonWZGrbeH9qQbaDQx0WPN
+ _wfxr.pFccfPuHNbQtVQIBlkaMo3EYdZ3xXK1jVOKSm3Zm7zeiXM0jq1aMyEeenYbwjm.Y1.IYTd
+ UPh2RasI1Pe_gBmUSMaTrzurLHDodLE_TLFwjHAbLzPYncLJdttq1ippL_Qp1PLdryzjwrIR2HoJ
+ tzBCuqVSlsgJAFAWH.afN6lAPD7L7RVE4ibIUu9LN6teQxf7ULN2_nk_ageBfZDZhwc9C6w8vGPX
+ .A2Uh2iG_n9gHuk0PHra0xf.RB10J1SOW9Aoj9OC2VK7sasFW.nZZEkJD_z37y.MgMJ0SC2iPZZq
+ S3PNT7oXiAj_wZRYO4ejaMxPTIAsA_lODSOK9uwzgwFUeiffzYv5GLUavzrUfNZfvn.rJKPkkWS6
+ 0tX_tR7uHE0NN8Ys-
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: eba165af-e7b6-4cd4-8007-5a8497b98392
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Tue, 13 Jan 2026 16:52:32 +0000
+Received: by hermes--production-ir2-6fcf857f6f-7nlzs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 11e96f127f9288c2e2174b22f2ee0351;
+          Tue, 13 Jan 2026 16:30:15 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v5 00/11] net: tunnel: introduce noref xmit flows for tunnels
+Date: Tue, 13 Jan 2026 17:29:43 +0100
+Message-ID: <20260113162954.5948-1-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260112-vsock-vmtest-v14-9-a5c332db3e2b@meta.com>
+Content-Transfer-Encoding: 8bit
+References: <20260113162954.5948-1-mmietus97.ref@yahoo.com>
 
-On Mon, Jan 12, 2026 at 07:11:18PM -0800, Bobby Eshleman wrote:
->From: Bobby Eshleman <bobbyeshleman@meta.com>
->
->Add tests for the /proc/sys/net/vsock/{ns_mode,child_ns_mode}
->interfaces. Namely, that they accept/report "global" and "local" strings
->and enforce their access policies.
->
->Start a convention of commenting the test name over the test
->description. Add test name comments over test descriptions that existed
->before this convention.
->
->Add a check_netns() function that checks if the test requires namespaces
->and if the current kernel supports namespaces. Skip tests that require
->namespaces if the system does not have namespace support.
->
->This patch is the first to add tests that do *not* re-use the same
->shared VM. For that reason, it adds a run_ns_tests() function to run
->these tests and filter out the shared VM tests.
->
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
->Changes in v13:
->- remove write-once test ns_host_vsock_ns_mode_write_once_ok to reflect
->  removing the write-once policy
->- add child_ns_mode test test_ns_host_vsock_child_ns_mode_ok
->- modify test_ns_host_vsock_ns_mode_ok() to check that the correct mode
->  was inherited from child_ns_mode
->
->Changes in v12:
->- remove ns_vm_local_mode_rejected test, due to dropping that constraint
->
->Changes in v11:
->- Document ns_ prefix above TEST_NAMES (Stefano)
->
->Changes in v10:
->- Remove extraneous add_namespaces/del_namespaces calls.
->- Rename run_tests() to run_ns_tests() since it is designed to only
->  run ns tests.
->
->Changes in v9:
->- add test ns_vm_local_mode_rejected to check that guests cannot use
->  local mode
->---
-> tools/testing/selftests/vsock/vmtest.sh | 140 +++++++++++++++++++++++++++++++-
-> 1 file changed, 138 insertions(+), 2 deletions(-)
+Currently, tunnel xmit flows always take a reference on the dst_entry
+for each xmitted packet. These atomic operations are redundant in some
+flows.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+This patchset introduces the infrastructure required for converting
+the tunnel xmit flows to noref, and converts them where possible.
 
->
->diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
->index 0e681d4c3a15..38785a102236 100755
->--- a/tools/testing/selftests/vsock/vmtest.sh
->+++ b/tools/testing/selftests/vsock/vmtest.sh
->@@ -41,14 +41,38 @@ readonly KERNEL_CMDLINE="\
-> 	virtme.ssh virtme_ssh_channel=tcp virtme_ssh_user=$USER \
-> "
-> readonly LOG=$(mktemp /tmp/vsock_vmtest_XXXX.log)
->-readonly TEST_NAMES=(vm_server_host_client vm_client_host_server vm_loopback)
->+
->+# Namespace tests must use the ns_ prefix. This is checked in check_netns() and
->+# is used to determine if a test needs namespace setup before test execution.
->+readonly TEST_NAMES=(
->+	vm_server_host_client
->+	vm_client_host_server
->+	vm_loopback
->+	ns_host_vsock_ns_mode_ok
->+	ns_host_vsock_child_ns_mode_ok
->+)
-> readonly TEST_DESCS=(
->+	# vm_server_host_client
-> 	"Run vsock_test in server mode on the VM and in client mode on the host."
->+
->+	# vm_client_host_server
-> 	"Run vsock_test in client mode on the VM and in server mode on the host."
->+
->+	# vm_loopback
-> 	"Run vsock_test using the loopback transport in the VM."
->+
->+	# ns_host_vsock_ns_mode_ok
->+	"Check /proc/sys/net/vsock/ns_mode strings on the host."
->+
->+	# ns_host_vsock_child_ns_mode_ok
->+	"Check /proc/sys/net/vsock/ns_mode is read-only and child_ns_mode is writable."
-> )
->
->-readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
->+readonly USE_SHARED_VM=(
->+	vm_server_host_client
->+	vm_client_host_server
->+	vm_loopback
->+)
-> readonly NS_MODES=("local" "global")
->
-> VERBOSE=0
->@@ -196,6 +220,20 @@ check_deps() {
-> 	fi
-> }
->
->+check_netns() {
->+	local tname=$1
->+
->+	# If the test requires NS support, check if NS support exists
->+	# using /proc/self/ns
->+	if [[ "${tname}" =~ ^ns_ ]] &&
->+	   [[ ! -e /proc/self/ns ]]; then
->+		log_host "No NS support detected for test ${tname}"
->+		return 1
->+	fi
->+
->+	return 0
->+}
->+
-> check_vng() {
-> 	local tested_versions
-> 	local version
->@@ -519,6 +557,54 @@ log_guest() {
-> 	LOG_PREFIX=guest log "$@"
-> }
->
->+ns_get_mode() {
->+	local ns=$1
->+
->+	ip netns exec "${ns}" cat /proc/sys/net/vsock/ns_mode 2>/dev/null
->+}
->+
->+test_ns_host_vsock_ns_mode_ok() {
->+	for mode in "${NS_MODES[@]}"; do
->+		local actual
->+
->+		actual=$(ns_get_mode "${mode}0")
->+		if [[ "${actual}" != "${mode}" ]]; then
->+			log_host "expected mode ${mode}, got ${actual}"
->+			return "${KSFT_FAIL}"
->+		fi
->+	done
->+
->+	return "${KSFT_PASS}"
->+}
->+
->+test_ns_host_vsock_child_ns_mode_ok() {
->+	local orig_mode
->+	local rc
->+
->+	orig_mode=$(cat /proc/sys/net/vsock/child_ns_mode)
->+
->+	rc="${KSFT_PASS}"
->+	for mode in "${NS_MODES[@]}"; do
->+		local ns="${mode}0"
->+
->+		if echo "${mode}" 2>/dev/null > /proc/sys/net/vsock/ns_mode; then
->+			log_host "ns_mode should be read-only but write succeeded"
->+			rc="${KSFT_FAIL}"
->+			continue
->+		fi
->+
->+		if ! echo "${mode}" > /proc/sys/net/vsock/child_ns_mode; then
->+			log_host "child_ns_mode should be writable to ${mode}"
->+			rc="${KSFT_FAIL}"
->+			continue
->+		fi
->+	done
->+
->+	echo "${orig_mode}" > /proc/sys/net/vsock/child_ns_mode
->+
->+	return "${rc}"
->+}
->+
-> test_vm_server_host_client() {
-> 	if ! vm_vsock_test "init_ns" "server" 2 "${TEST_GUEST_PORT}"; then
-> 		return "${KSFT_FAIL}"
->@@ -592,6 +678,11 @@ run_shared_vm_tests() {
-> 			continue
-> 		fi
->
->+		if ! check_netns "${arg}"; then
->+			check_result "${KSFT_SKIP}" "${arg}"
->+			continue
->+		fi
->+
-> 		run_shared_vm_test "${arg}"
-> 		check_result "$?" "${arg}"
-> 	done
->@@ -645,6 +736,49 @@ run_shared_vm_test() {
-> 	return "${rc}"
-> }
->
->+run_ns_tests() {
->+	for arg in "${ARGS[@]}"; do
->+		if shared_vm_test "${arg}"; then
->+			continue
->+		fi
->+
->+		if ! check_netns "${arg}"; then
->+			check_result "${KSFT_SKIP}" "${arg}"
->+			continue
->+		fi
->+
->+		add_namespaces
->+
->+		name=$(echo "${arg}" | awk '{ print $1 }')
->+		log_host "Executing test_${name}"
->+
->+		host_oops_before=$(dmesg 2>/dev/null | grep -c -i 'Oops')
->+		host_warn_before=$(dmesg --level=warn 2>/dev/null | grep -c -i 'vsock')
->+		eval test_"${name}"
->+		rc=$?
->+
->+		host_oops_after=$(dmesg 2>/dev/null | grep -c -i 'Oops')
->+		if [[ "${host_oops_after}" -gt "${host_oops_before}" ]]; then
->+			echo "FAIL: kernel oops detected on host" | log_host
->+			check_result "${KSFT_FAIL}" "${name}"
->+			del_namespaces
->+			continue
->+		fi
->+
->+		host_warn_after=$(dmesg --level=warn 2>/dev/null | grep -c -i 'vsock')
->+		if [[ "${host_warn_after}" -gt "${host_warn_before}" ]]; then
->+			echo "FAIL: kernel warning detected on host" | log_host
->+			check_result "${KSFT_FAIL}" "${name}"
->+			del_namespaces
->+			continue
->+		fi
->+
->+		check_result "${rc}" "${name}"
->+
->+		del_namespaces
->+	done
->+}
->+
-> BUILD=0
-> QEMU="qemu-system-$(uname -m)"
->
->@@ -690,6 +824,8 @@ if shared_vm_tests_requested "${ARGS[@]}"; then
-> 	terminate_pidfiles "${pidfile}"
-> fi
->
->+run_ns_tests "${ARGS[@]}"
->+
-> echo "SUMMARY: PASS=${cnt_pass} SKIP=${cnt_skip} FAIL=${cnt_fail}"
-> echo "Log: ${LOG}"
->
->
->-- 
->2.47.3
->
+These changes improve tunnel performance, since less atomic operations
+are used.
+
+There are already noref optimizations in both ipv4 and ip6.
+(See __ip_queue_xmit, inet6_csk_xmit)
+This patchset implements similar optimizations in ip and udp tunnels.
+
+Benchmarks:
+I used a vxlan tunnel over a pair of veth peers and measured the average
+throughput over multiple samples.
+
+I ran 100 samples on a clean build, and another 100 on a patched
+build. Each sample ran for 120 seconds. These were my results:
+
+clean:      71.95 mb/sec, stddev = 1.71
+patched:    74.92 mb/sec, stddev = 1.35
+
+TL;DR - This patchset results in a 4% improvement in throughput for
+vxlan. It's safe to assume that we might see similar results when testing
+other tunnels.
+
+Changes in v5:
+ - Reverted dstref object implementation
+ - Converted tunnel xmit functions to be noref instead of using dstref objects
+ - Added a "noref" output boolean argument in the tunnel lookup functions in order to return noref dsts
+
+Link to v4: https://lore.kernel.org/netdev/20251112072720.5076-1-mmietus97@yahoo.com/
+
+Marek Mietus (11):
+  net: dst_cache: add noref versions for dst_cache
+  net: tunnel: convert iptunnel_xmit to noref
+  net: tunnel: convert udp_tunnel{6,}_xmit_skb to noref
+  net: tunnel: allow noref dsts in udp_tunnel{,6}_dst_lookup
+  net: ovpn: convert ovpn_udp{4,6}_output to use a noref dst
+  wireguard: socket: convert send{4,6} to use a noref dst when possible
+  net: tunnel: convert ip_md_tunnel_xmit to use a noref dst when
+    possible
+  net: tunnel: convert ip_tunnel_xmit to use a noref dst when possible
+  net: sctp: convert sctp_v{4,6}_xmit to use a noref dst when possible
+  net: sit: convert ipip6_tunnel_xmit to use a noref dst
+  net: tipc: convert tipc_udp_xmit to use a noref dst
+
+ drivers/net/amt.c              |   3 +
+ drivers/net/bareudp.c          |  28 +++++--
+ drivers/net/geneve.c           |  59 ++++++++++-----
+ drivers/net/gtp.c              |   5 ++
+ drivers/net/ovpn/udp.c         |   8 +-
+ drivers/net/vxlan/vxlan_core.c |  39 +++++++---
+ drivers/net/wireguard/socket.c |  12 ++-
+ include/net/dst_cache.h        |  71 ++++++++++++++++++
+ include/net/udp_tunnel.h       |   6 +-
+ net/core/dst_cache.c           | 133 ++++++++++++++++++++++++++++++---
+ net/ipv4/ip_tunnel.c           |  47 +++++++-----
+ net/ipv4/ip_tunnel_core.c      |   2 +-
+ net/ipv4/udp_tunnel_core.c     |  16 ++--
+ net/ipv6/ip6_udp_tunnel.c      |  19 +++--
+ net/ipv6/sit.c                 |  13 +---
+ net/sctp/ipv6.c                |   4 +-
+ net/sctp/protocol.c            |   4 +-
+ net/tipc/udp_media.c           |   6 +-
+ 18 files changed, 372 insertions(+), 103 deletions(-)
+
+-- 
+2.51.0
 
