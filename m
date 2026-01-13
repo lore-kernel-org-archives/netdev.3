@@ -1,162 +1,93 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from srv5.3e8.eu (srv5.3e8.eu [94.16.113.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ECC19644B;
-	Tue, 13 Jan 2026 21:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19CC318BBD;
+	Tue, 13 Jan 2026 21:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.16.113.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768338103; cv=none; b=AFdPEddDcAIX8PeJVRVp2gcyNhj9OupgvcBd/JemS1boY0bSoC2oCqz6oD4BGteksRN9b9mJDOXopetEq9UXBz/RPteInDym4p8uyyL+U1svmXO3iihN2SkBCu13LHHAL8TxqmItLEMS5Z57DV4ydmZClo5v1Ow3ZrdX/vId/NU=
+	t=1768338471; cv=none; b=dc2F0iYKNKpeeKSbOMUhdrO4b/qb3zoudSLQlI38lKmqWH1r3joUY/g3R/XbfxNq3KlcAD2tq6PVT5R2Z76ta8ao+LgS/mUcbHgrXuCmRupenOBId+B90gDCdNHjunf/reCc9IJQRqizRGqVRKgq3bVFkdkHteoCk7BmO8Kx2y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768338103; c=relaxed/simple;
-	bh=51Z8IvVJeA8MbP+NxHMavihnLSuqqsR+e5pSkyhEgOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QsDO+zF4sgmdjLBVnk6rO6VhJ0NRQfhx1qcRHE3FfVJrbtGPNISmNM+42P/MaQP8NFZfn81fBI0qcYxRCQxSUI2IcHL+osfMpifx15q+pmi+QkhI6TkYdyyYSlC8HTKquagZMKbaROyzDmVJp6cBsSQ17DF1vTlLy6GyeJ5QBzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from [10.5.62.34] (unknown [89.100.17.9])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 6F90D401A0;
-	Tue, 13 Jan 2026 21:01:32 +0000 (UTC)
-Authentication-Results: Plesk;
-        spf=pass (sender IP is 89.100.17.9) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[10.5.62.34]
-Received-SPF: pass (Plesk: connection is authenticated)
-Message-ID: <e2fff10c-1a58-4e68-b9ca-2d27e0eb165b@arnaud-lcm.com>
-Date: Tue, 13 Jan 2026 21:01:32 +0000
+	s=arc-20240116; t=1768338471; c=relaxed/simple;
+	bh=hVvt1hy0fhPrDke3dMsM0EaUiJ8dO4HektY/hMvgHgM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ig5VhHbbG0JfvvapSwDuL0emiFCZOW/MZhKcuw2yHvWQSaf87yLUuZvpo+EnUZYrQS3JY5+a25x6aLKpDtMXTr3cjQAKojjqdW5UfTyHtb3mcPDQGr2BhgGOMb6jSgd/3O4KGP2YlCn4PfRJvkfaYMWKgTHAtI1a/6rXb/jPeJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu; spf=pass smtp.mailfrom=3e8.eu; dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b=EtTk97qV; arc=none smtp.client-ip=94.16.113.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3e8.eu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=3e8.eu header.i=@3e8.eu header.b="EtTk97qV"
+Received: from jan-pc (p200300ed47159ba0e29a2b5a09ffd5c0.dip0.t-ipconnect.de [IPv6:2003:ed:4715:9ba0:e29a:2b5a:9ff:d5c0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by srv5.3e8.eu (Postfix) with ESMTPSA id 1DEBF1201AE;
+	Tue, 13 Jan 2026 21:56:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3e8.eu; s=mail20211217;
+	t=1768337812;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DSzAqKIi7H+h3ZgX5UzhooE7Rl4zTVAZh+rL++kKiKo=;
+	b=EtTk97qVhDDz6+Qjg+Dv3/qw0vxPo4MHf7YZQE69CsDexV8dmTzPKRg135qeVZkx7lLqpY
+	ODjMlmvnMiU19aLgHepDcyDY7ItMHG974ppn6tIg4CkFBulJxJ4qYnLV2g3/vX+AitBrLg
+	5DzIbzgxH3ZYjSbHGYiQvwJESJASdBFnu1EqCin3CBEFYYuYH985LrvMuQoWzf3y8veaiP
+	yYFyZlEYAyoXmF1t9y+CXR9bnsytZ8HkOWBj48budJ+38ztf03IZnJrofCajD31RzPlVjC
+	yuM/9rTOutBg2ZPl4IH7Wz6D2RYh8z1Hcy6Ex/R+PRGQUo3VEGOTjGgU5PsAxw==
+From: Jan Hoffmann <jan@3e8.eu>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michael Klein <michael@fossekall.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jan Hoffmann <jan@3e8.eu>
+Subject: [PATCH net-next] net: phy: realtek: fix in-band capabilities for 2.5G PHYs
+Date: Tue, 13 Jan 2026 21:55:44 +0100
+Message-ID: <20260113205557.503409-1-jan@3e8.eu>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bpf-next: Prevent out of bound buffer write in
- __bpf_get_stack
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com, andrii@kernel.org,
- ast@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
- eddyz87@gmail.com, haoluo@google.com, john.fastabend@gmail.com,
- jolsa@kernel.org, kpsingh@kernel.org, linux-kernel@vger.kernel.org,
- martin.lau@linux.dev, netdev@vger.kernel.org, sdf@fomichev.me,
- song@kernel.org, syzkaller-bugs@googlegroups.com, yonghong.song@linux.dev,
- Brahmajit Das <listout@listout.xyz>
-References: <20260104205220.980752-1-contact@arnaud-lcm.com>
- <CAEf4BzYakog+DLSfA6aiHCPW0QHR-=TC8pVi+jDVo27Ljk5uuA@mail.gmail.com>
- <3c22314c-a677-4e59-be51-a807d26e7d33@arnaud-lcm.com>
- <962121a5-e69a-4c66-b447-6681da0827aa@arnaud-lcm.com>
- <CAEf4Bza=OwYhe_tSx0FHB8Bjzq9f2j9nWhmdQAraFAKJqGyj2A@mail.gmail.com>
-Content-Language: en-US
-From: "Lecomte, Arnaud" <contact@arnaud-lcm.com>
-In-Reply-To: 
- <CAEf4Bza=OwYhe_tSx0FHB8Bjzq9f2j9nWhmdQAraFAKJqGyj2A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <176833809333.19451.17124036763493028100@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
 
+It looks like the configuration of in-band AN only affects SGMII, and it
+is always disabled for 2500Base-X. Adjust the reported capabilities
+accordingly.
 
-On 09/01/2026 19:05, Andrii Nakryiko wrote:
-> On Wed, Jan 7, 2026 at 10:35 AM Lecomte, Arnaud <contact@arnaud-lcm.com> wrote:
->>
->> On 07/01/2026 19:08, Lecomte, Arnaud wrote:
->>> On 06/01/2026 01:51, Andrii Nakryiko wrote:
->>>> On Sun, Jan 4, 2026 at 12:52 PM Arnaud Lecomte
->>>> <contact@arnaud-lcm.com> wrote:
->>>>> Syzkaller reported a KASAN slab-out-of-bounds write in
->>>>> __bpf_get_stack()
->>>>> during stack trace copying.
->>>>>
->>>>> The issue occurs when: the callchain entry (stored as a per-cpu
->>>>> variable)
->>>>> grow between collection and buffer copy, causing it to exceed the
->>>>> initially
->>>>> calculated buffer size based on max_depth.
->>>>>
->>>>> The callchain collection intentionally avoids locking for performance
->>>>> reasons, but this creates a window where concurrent modifications can
->>>>> occur during the copy operation.
->>>>>
->>>>> To prevent this from happening, we clamp the trace len to the max
->>>>> depth initially calculated with the buffer size and the size of
->>>>> a trace.
->>>>>
->>>>> Reported-by: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
->>>>> Closes:
->>>>> https://lore.kernel.org/all/691231dc.a70a0220.22f260.0101.GAE@google.com/T/
->>>>> Fixes: e17d62fedd10 ("bpf: Refactor stack map trace depth
->>>>> calculation into helper function")
->>>>> Tested-by: syzbot+d1b7fa1092def3628bd7@syzkaller.appspotmail.com
->>>>> Cc: Brahmajit Das <listout@listout.xyz>
->>>>> Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
->>>>> ---
->>>>> Thanks Brahmajit Das for the initial fix he proposed that I tweaked
->>>>> with the correct justification and a better implementation in my
->>>>> opinion.
->>>>> ---
->>>>>    kernel/bpf/stackmap.c | 4 ++--
->>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
->>>>> index da3d328f5c15..e56752a9a891 100644
->>>>> --- a/kernel/bpf/stackmap.c
->>>>> +++ b/kernel/bpf/stackmap.c
->>>>> @@ -465,7 +465,6 @@ static long __bpf_get_stack(struct pt_regs
->>>>> *regs, struct task_struct *task,
->>>>>
->>>>>           if (trace_in) {
->>>>>                   trace = trace_in;
->>>>> -               trace->nr = min_t(u32, trace->nr, max_depth);
->>>>>           } else if (kernel && task) {
->>>>>                   trace = get_callchain_entry_for_task(task, max_depth);
->>>>>           } else {
->>>>> @@ -479,7 +478,8 @@ static long __bpf_get_stack(struct pt_regs
->>>>> *regs, struct task_struct *task,
->>>>>                   goto err_fault;
->>>>>           }
->>>>>
->>>>> -       trace_nr = trace->nr - skip;
->>>>> +       trace_nr = min(trace->nr, max_depth);
->>>> there is `trace->nr < skip` check right above, should it be moved here
->>>> and done against adjusted trace_nr (but before we subtract skip, of
->>>> course)?
->>> We could indeed be more proactive on the clamping even-though I would
->>>   say it does not fundamentally change anything in my opinion.
->>> Happy to raise a new rev.
->> Nvm, this is not really possible as we are checking that the trace is
->> not NULL.
->> Moving it above could lead to a NULL dereference.
-> ok, so what are we doing then?
->
-> if (unlikely(!trace)) { ... }
->
-> trace_nr = min(trace->nr, max_depth);
->
-> if (trace->nr < skip) { ... }
->
-> trace_nr = trace->nr - skip;
->
->
-> (which is what I proposed, or am I still missing why this shouldn't be
-> done like that?)
+This is based on testing using OpenWrt on Zyxel XGS1010-12 rev A1 with
+RTL8226-CG, and Zyxel XGS1210-12 rev B1 with RTL8221B-VB-CG. On these
+devices, 2500Base-X in-band AN is known to work with some SFP modules
+(containing an unknown PHY). However, with the built-in Realtek PHYs,
+no auto-negotiation takes place, irrespective of the configuration of
+the PHY.
 
-I think it doesn't really bring any value to adopt this split check.
-The underlying problem is the lack of locking mechanism on
-the trace structure. I will try to find a workaround minimizing
-it's performance impact. I think this is an interesting problem
-actually. Will get back to you soon !
+Fixes: 10fbd71fc5f9b ("net: phy: realtek: implement configuring in-band an")
+Signed-off-by: Jan Hoffmann <jan@3e8.eu>
+---
+ drivers/net/phy/realtek/realtek_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> pw-bot: cr
->
->
->
->>>>> +       trace_nr = trace_nr - skip;
->>>>>           copy_len = trace_nr * elem_size;
->>>>>
->>>>>           ips = trace->ip + skip;
->>>>> --
->>>>> 2.43.0
->>>>>
->>> Thanks for the review !
->>> Arnaud
-
-Thanks, Arnaud
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 5a7f472bf58e..7b7a48e5082a 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -1429,6 +1429,7 @@ static unsigned int rtl822x_inband_caps(struct phy_device *phydev,
+ {
+ 	switch (interface) {
+ 	case PHY_INTERFACE_MODE_2500BASEX:
++		return LINK_INBAND_DISABLE;
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
+ 	default:
+-- 
+2.52.0
 
