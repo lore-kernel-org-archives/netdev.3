@@ -1,319 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3622368291
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 06:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FC230DD25
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 06:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768285601; cv=none; b=LdhMt12SOOQOGpWaTuMUED9sgTIiEbG44WDEpeEw4pZhdBTZZ0zXL5OuQs5ASnnKE4k5k1lW5ttyqN7O8fD8Yj/QT0W9m4CMljrDNs9MxJYR6c+xWF03EFYp2o/Z7Vkbtv0SVre51U5DXHQGhL7XnahkTZve4cpGB6TKVWyYViY=
+	t=1768285924; cv=none; b=r0K3RUH0nhclqd5KYOpJ8m7Qq4N2v8cVsXW1beKxtT1kubBmWYu56N6Lrz42sxkoYyTWOVPctAZxRpL+H/abPMS9zW32qj/qB2eGdiRGdYont78tzGq2tvQNLFtVPKT3lnmi6KTa1+JbmvQ02YLbIJQ5CF51Y6YvmssXz7sIeBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768285601; c=relaxed/simple;
-	bh=2KJOX7Y1h6Sza8SV2r3yloVs1Dz7199qc4bMzJHHhMc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fmQYx0wwSH74ktkB/O97GDeady7Kho2Vgw+HZZpM/Y25iPNVtdOMv14RFBD4S6VN/W2A9Fh/x5mQvS5tEmdHZfHdbi7v2UwhijJfuKTu99+hOT9PegxquaWbcO2vH5/7EOnZJtSGH/5ZalhYH5ZTWJlUVDO6TGeFboCXgsQ8KC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qd3PE92v; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=g+OgEE1G; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768285924; c=relaxed/simple;
+	bh=yX7DhlFraPUD//ZuqML4tqjQ5mKp1gfm8pBA5BRUq/M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=edqbQhkRiOv4FqgCiO3am7FPuWZsRNlqp/cak5ROBXsbNMeAWqIoICotCxJXoniBcRSoBg5ZTIoDlVefA7ro5tn59Nju9BLbSahj5Qa8PqmxfRF+j3TudHXgmE6BDiyo5C3IJJGLcu23XcZ9LkUi3QpvQoJe6NIVHPtvZkTwUZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9QjCqi6; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qd3PE92v";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="g+OgEE1G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768285599;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=spmIztd2EKRamvoD/LZmM+FSW3z8/AEEzT5gP8xnhtI=;
-	b=Qd3PE92v8s4+4XKRGmOBgVluDcSwJw+4WnyZbaIJo3+GE7yeNSQ078GsGsOGU+8sXAZPHE
-	6wGtchgbEX4sR+YKLPjdEBBAzRAykMTNqcrbkyajjWVj6BsMNI94Fat6cfcpfs0D12OYZJ
-	xD1q6suqIQ1VUIloxUiAJap4SjXv2Hs=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-541-Ixm6eK_uOdWXy7ivU3oHVQ-1; Tue, 13 Jan 2026 01:26:36 -0500
-X-MC-Unique: Ixm6eK_uOdWXy7ivU3oHVQ-1
-X-Mimecast-MFC-AGG-ID: Ixm6eK_uOdWXy7ivU3oHVQ_1768285595
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2a0b7eb0a56so75269405ad.1
-        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 22:26:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9QjCqi6"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47d3ffb0f44so49537865e9.3
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 22:32:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768285595; x=1768890395; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=spmIztd2EKRamvoD/LZmM+FSW3z8/AEEzT5gP8xnhtI=;
-        b=g+OgEE1GjxfdvU0bJ4XMAgpAP+WK68cVC8nLF5o920ssdewltXBNO+rIhRY/B81Dwf
-         FuGv3MaKXyh+SEKNm8HlP59186LGN3J5P68VKsOx2hF+0kvc3ofSVU0Pw/Hx/3EhK9QG
-         V8YCIDKl7tpIFGXqltVFKaYasCKZ7e5CiSakh2SDJYIP7Cqh7UudTTjpUPxMYtiem4EN
-         kNezU8fblb7YY63JuEmAbB+PfZvNTNDN/vb7dIEgzwQMYqaOdlYlcXODTqpgiRcJsm9g
-         YITLhOr1PrsDU4SwF9OOpSg6jS9zXNwpMUxyCUbtRgJpOPQ8JCVeLLg0ACTXDJCgqfNI
-         JlVg==
+        d=gmail.com; s=20230601; t=1768285919; x=1768890719; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LQhbZxT1S/lDurK26TholDxT9dj20OVvsAU3YYjIzC4=;
+        b=M9QjCqi6CQFL/lUsrNPux0k/Fxi0Ix/7huip3lofiin1oMdBv3NTzN6Sc0Aop2dym8
+         6jSORaAoz1DS4w/HAHNxbPI0rFghqENG1bXatbX6wEzE6zgUijGKQCkRkCQj4WM+Ndv6
+         M5eRg2UEH4dpG/hMLgfUTNv2mxcBbhnVS0gNt1B6s9qQmnrTWybN39hFJKuGDW4KZp7d
+         FuDy4pBwgwM7hVTXshhnqTYemLnSRmuHw/87dDhqRFzR4l2cOChxiC/6lsblovClHP0M
+         PK6VlBOpjcznGHaFRpvfCTB3ytXAW0CbXKTWkDoYlojbNTiigHRs5GaOnuUHgyRSYxiS
+         Ebug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768285595; x=1768890395;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=spmIztd2EKRamvoD/LZmM+FSW3z8/AEEzT5gP8xnhtI=;
-        b=cOawHRUBLkyspDyP1qTwdw17mL9VdCQaUcHSPuW4rJM+6wIZelr7voda+Qva3pjEuT
-         JZRDt3eIQye5rMCDZVqERHue31NtURF4q8FK5XBR2UsuObHw0p6sya2Rg9FtaAV8ndPM
-         WMh/7PjCkQsk+gX3hl8GsxXjJK9GpY2nrILoF92g9HrxbeXl2Xbe3s1MVzSnDSI4Qk9a
-         LhzoNDDnGepyf8ucSGuWjGrCHC8kIuVCpxLqSCWezO7eWqOIJH1ChWAe0ENeKKhLlp2V
-         VyRnK9vXbwlXdpV4xl1E8idXhXeGXtQQGQ1FGOqQz7IqSkKCNNSCjcPIAc85voaxSMnD
-         2Xvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWS/QGQxvlbnzYBSRo3vCqtgehF129KtrxAyrx+R1JO0F9KbVxJeGYFiRXyg6TtxU/aWfo2bGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Lycpdgj/SrHHhE1aA0AgnJOphs9XlT/cu3kWOBe7UjN7d9wo
-	NcEHdpVFZ3OWqoFjnOL3FuuzPQbbhLQ1XgjtGKGuxttVyvrLCRQncNRuJnSeUCEps4/Jf95SBWH
-	lfhxsbTedVuyUEG3TOebDUL0dMG/HfAl9Jwvg3cX8NWGUu2KUzaUQC2qf1vFMHnIY8jy6tZMGsr
-	Fk9Jpkh/RRnqP48xmI4YeKEtLmg6pnadtJ
-X-Gm-Gg: AY/fxX6P3WDkraI9r8S6PHOuGzLUafpXVLigJ9ZeUp0DYBM07cT3L4mL5HSL5TtAUBm
-	bx6BxndUaFK9IzplswPKKYQfVV6TU9i6SNaYAjT/by8Hl0QaGsP8HnoeUYAgSkBD067eNL1vgqL
-	mx6UHb9fNSFm1RXp/CSv9z2FCyPENVqDex2A+t0iE9cZ/dbPl1Oiuy/6SdGLRry0s0ESQ=
-X-Received: by 2002:a17:903:2309:b0:2a1:1f28:d7ee with SMTP id d9443c01a7336-2a3ee4e7b36mr210661665ad.57.1768285595145;
-        Mon, 12 Jan 2026 22:26:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkrFx7g5uPp/RVCdWIKCbFMZKKQEX7QrKp7mlNw23iQIFZMsd+pNgwa63opXK27IJ+KJs7xwsgiZ/pqlR/VE8=
-X-Received: by 2002:a17:903:2309:b0:2a1:1f28:d7ee with SMTP id
- d9443c01a7336-2a3ee4e7b36mr210661285ad.57.1768285594667; Mon, 12 Jan 2026
- 22:26:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768285919; x=1768890719;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LQhbZxT1S/lDurK26TholDxT9dj20OVvsAU3YYjIzC4=;
+        b=mMcLiFrmBrr/uLZyC80gQYzPm1oaVFbinF31W7TEEYLc6oHi0L2iFqiStgSYeuILt9
+         7Gc937Bc6li/O2lXVGp5BshkO6N41EHtScipYXvU2l4NnkJNvxD+TpbouU9KdZec/bu8
+         Kj8VJDPLnB6g4r2w702uuA4zYfUp6iiub2Ag51+W/cHmxC4c8plm4RrONkHLsRvcdjdW
+         tyOVxpjGcNX06XXS/x5y2Cb2bKL26YZJacX7DBD486aQVp+ZEDNE1vEDvjh4IQUDP7PD
+         Pfg3A1fx4XzjRLbNHXQsxsaM0rg5xVhbUyc0UalMPcOrJ3IZ6QSnC3eoF9/dpI9/7wMo
+         xZfA==
+X-Gm-Message-State: AOJu0YztANqzrtu/tf9N/VXo8ygaW7SYvK79nG1RIr8KafAAPxIXbVMk
+	C8FPA59gS4zYCKgxCp8V7wYLLzN3f5gWAhWZmInvTFiJns1AfC311tb7
+X-Gm-Gg: AY/fxX6t/jz5MYGD3UV3ze5qr2OUyEDv5pD8Vi4OWjItNK6MJDCJPMOpuZ3s4m4ga1o
+	UDHKSly47wwiVXPWN7RejYQj4u1T1n1IyqpTRU+Dmn6eDxEyoDa/2a+Vf25yNcx7LjoXgNS5wbj
+	0xcWPd55NdNZeoV4RNboqniePg8+kYJ81CDmfi1ZlaTARjO8WHTv3ry2dlc2PBzQhYnWajAU6/f
+	Dxziuy4UTVUOX+tO9Aytrn56H5eGyglE9G1mij66D9N7gPC4S9HWIgI78fD6uNz2t8Ff5ULgVR1
+	INftD8nhVXyeGDHiKDur9songU/qwi6IGZ/AuLneRkWwV97kWx/f18/M5JyKRvZupZ6I/pyFglX
+	0KF1Ye8jrG0FfBsAkDYzGavzhBGWJSRjXKd9wkPDECl2MzKXVdeARjfnfwR1HpTV2T/+tyBtJ8K
+	htULMQIj5dvabtFqA+DnZx4ok4b7u9QMbaE4s=
+X-Google-Smtp-Source: AGHT+IEUAFfAI80TkN+eVQsY3YtARbADJ3c4FvvQWuIZMALTzGmm7ksRXUr+QWT776d5USXcuu/wkw==
+X-Received: by 2002:a05:600c:c4a3:b0:46e:6d5f:f68 with SMTP id 5b1f17b1804b1-47ed1422becmr69367275e9.12.1768285919415;
+        Mon, 12 Jan 2026 22:31:59 -0800 (PST)
+Received: from [10.221.200.118] ([165.85.126.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ed9eb9319sm9021265e9.2.2026.01.12.22.31.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Jan 2026 22:31:58 -0800 (PST)
+Message-ID: <0ac69f6a-d587-45a7-be30-6ad4429ef8d2@gmail.com>
+Date: Tue, 13 Jan 2026 08:31:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107210448.37851-1-simon.schippers@tu-dortmund.de>
- <20260107210448.37851-10-simon.schippers@tu-dortmund.de> <CACGkMEuQikCsHn9cdhVxxHbjKAyW288SPNxAyXQ7FWNxd7Qenw@mail.gmail.com>
- <bd41afae-cf1e-46ab-8948-4c7fa280b20f@tu-dortmund.de> <CACGkMEs8VHGjiLqn=-Gt5=WPMzqAXNM2GcK73dLarP9CQw3+rw@mail.gmail.com>
- <900c364b-f5ca-4458-a711-bf3e0433b537@tu-dortmund.de> <CACGkMEvqoxSiM65ectKaF=UQ6PJn6+FQyJ=_YjgCo+QBCj1umg@mail.gmail.com>
- <9aaf2420-089d-4fd9-824d-24982a86a70d@tu-dortmund.de>
-In-Reply-To: <9aaf2420-089d-4fd9-824d-24982a86a70d@tu-dortmund.de>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 13 Jan 2026 14:26:20 +0800
-X-Gm-Features: AZwV_QjHXGnkpFliLh_wH6DUhN9nDzDN7okYZwH3wTHNoiHdG1zRFgliI6b-EAo
-Message-ID: <CACGkMEvpb-kAhC7hB2SOtBZ6L6O9SVGK3J9e0pN-XJmpztr2CA@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 9/9] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when qdisc is present
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mst@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
-	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC mlx5-next 0/1] net/mlx5e: Expose physical received
+ bits counters to ethtool
+To: Kenta Akagi <k@mgml.me>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260112070324.38819-1-k@mgml.me>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20260112070324.38819-1-k@mgml.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 12, 2026 at 7:08=E2=80=AFPM Simon Schippers
-<simon.schippers@tu-dortmund.de> wrote:
->
-> On 1/12/26 03:22, Jason Wang wrote:
-> > On Fri, Jan 9, 2026 at 6:15=E2=80=AFPM Simon Schippers
-> > <simon.schippers@tu-dortmund.de> wrote:
-> >>
-> >> On 1/9/26 07:09, Jason Wang wrote:
-> >>> On Thu, Jan 8, 2026 at 4:02=E2=80=AFPM Simon Schippers
-> >>> <simon.schippers@tu-dortmund.de> wrote:
-> >>>>
-> >>>> On 1/8/26 05:37, Jason Wang wrote:
-> >>>>> On Thu, Jan 8, 2026 at 5:06=E2=80=AFAM Simon Schippers
-> >>>>> <simon.schippers@tu-dortmund.de> wrote:
-> >>>>>>
-> >>>>>> This commit prevents tail-drop when a qdisc is present and the ptr=
-_ring
-> >>>>>> becomes full. Once an entry is successfully produced and the ptr_r=
-ing
-> >>>>>> reaches capacity, the netdev queue is stopped instead of dropping
-> >>>>>> subsequent packets.
-> >>>>>>
-> >>>>>> If producing an entry fails anyways, the tun_net_xmit returns
-> >>>>>> NETDEV_TX_BUSY, again avoiding a drop. Such failures are expected =
-because
-> >>>>>> LLTX is enabled and the transmit path operates without the usual l=
-ocking.
-> >>>>>> As a result, concurrent calls to tun_net_xmit() are not prevented.
-> >>>>>>
-> >>>>>> The existing __{tun,tap}_ring_consume functions free space in the
-> >>>>>> ptr_ring and wake the netdev queue. Races between this wakeup and =
-the
-> >>>>>> queue-stop logic could leave the queue stopped indefinitely. To pr=
-event
-> >>>>>> this, a memory barrier is enforced (as discussed in a similar
-> >>>>>> implementation in [1]), followed by a recheck that wakes the queue=
- if
-> >>>>>> space is already available.
-> >>>>>>
-> >>>>>> If no qdisc is present, the previous tail-drop behavior is preserv=
-ed.
-> >>>>>>
-> >>>>>> +-------------------------+-----------+---------------+-----------=
------+
-> >>>>>> | pktgen benchmarks to    | Stock     | Patched with  | Patched wi=
-th   |
-> >>>>>> | Debian VM, i5 6300HQ,   |           | noqueue qdisc | fq_codel q=
-disc |
-> >>>>>> | 10M packets             |           |               |           =
-     |
-> >>>>>> +-----------+-------------+-----------+---------------+-----------=
------+
-> >>>>>> | TAP       | Transmitted | 196 Kpps  | 195 Kpps      | 185 Kpps  =
-     |
-> >>>>>> |           +-------------+-----------+---------------+-----------=
------+
-> >>>>>> |           | Lost        | 1618 Kpps | 1556 Kpps     | 0         =
-     |
-> >>>>>> +-----------+-------------+-----------+---------------+-----------=
------+
-> >>>>>> | TAP       | Transmitted | 577 Kpps  | 582 Kpps      | 578 Kpps  =
-     |
-> >>>>>> |  +        +-------------+-----------+---------------+-----------=
------+
-> >>>>>> | vhost-net | Lost        | 1170 Kpps | 1109 Kpps     | 0         =
-     |
-> >>>>>> +-----------+-------------+-----------+---------------+-----------=
------+
-> >>>>>>
-> >>>>>> [1] Link: https://lore.kernel.org/all/20250424085358.75d817ae@kern=
-el.org/
-> >>>>>>
-> >>>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> >>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> >>>>>> ---
-> >>>>>>  drivers/net/tun.c | 31 +++++++++++++++++++++++++++++--
-> >>>>>>  1 file changed, 29 insertions(+), 2 deletions(-)
-> >>>>>>
-> >>>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> >>>>>> index 71b6981d07d7..74d7fd09e9ba 100644
-> >>>>>> --- a/drivers/net/tun.c
-> >>>>>> +++ b/drivers/net/tun.c
-> >>>>>> @@ -1008,6 +1008,8 @@ static netdev_tx_t tun_net_xmit(struct sk_bu=
-ff *skb, struct net_device *dev)
-> >>>>>>         struct netdev_queue *queue;
-> >>>>>>         struct tun_file *tfile;
-> >>>>>>         int len =3D skb->len;
-> >>>>>> +       bool qdisc_present;
-> >>>>>> +       int ret;
-> >>>>>>
-> >>>>>>         rcu_read_lock();
-> >>>>>>         tfile =3D rcu_dereference(tun->tfiles[txq]);
-> >>>>>> @@ -1060,13 +1062,38 @@ static netdev_tx_t tun_net_xmit(struct sk_=
-buff *skb, struct net_device *dev)
-> >>>>>>
-> >>>>>>         nf_reset_ct(skb);
-> >>>>>>
-> >>>>>> -       if (ptr_ring_produce(&tfile->tx_ring, skb)) {
-> >>>>>> +       queue =3D netdev_get_tx_queue(dev, txq);
-> >>>>>> +       qdisc_present =3D !qdisc_txq_has_no_queue(queue);
-> >>>>>> +
-> >>>>>> +       spin_lock(&tfile->tx_ring.producer_lock);
-> >>>>>> +       ret =3D __ptr_ring_produce(&tfile->tx_ring, skb);
-> >>>>>> +       if (__ptr_ring_produce_peek(&tfile->tx_ring) && qdisc_pres=
-ent) {
-> >>>>>> +               netif_tx_stop_queue(queue);
-> >>>>>> +               /* Avoid races with queue wake-up in
-> >>>>>> +                * __{tun,tap}_ring_consume by waking if space is
-> >>>>>> +                * available in a re-check.
-> >>>>>> +                * The barrier makes sure that the stop is visible=
- before
-> >>>>>> +                * we re-check.
-> >>>>>> +                */
-> >>>>>> +               smp_mb__after_atomic();
-> >>>>>> +               if (!__ptr_ring_produce_peek(&tfile->tx_ring))
-> >>>>>> +                       netif_tx_wake_queue(queue);
-> >>>>>
-> >>>>> I'm not sure I will get here, but I think those should be moved to =
-the
-> >>>>> following if(ret) check. If __ptr_ring_produce() succeed, there's n=
-o
-> >>>>> need to bother with those queue stop/wake logic?
-> >>>>
-> >>>> There is a need for that. If __ptr_ring_produce_peek() returns -ENOS=
-PC,
-> >>>> we stop the queue proactively.
-> >>>
-> >>> This seems to conflict with the following NETDEV_TX_BUSY. Or is
-> >>> NETDEV_TX_BUSY prepared for the xdp_xmit?
-> >>
-> >> Am I not allowed to stop the queue and then return NETDEV_TX_BUSY?
-> >
-> > No, I mean I don't understand why we still need to peek since we've
-> > already used NETDEV_TX_BUSY.
->
-> Yes, if __ptr_ring_produce() returns -ENOSPC, there is no need to check
-> __ptr_ring_produce_peek(). I agree with you on this point and will update
-> the code accordingly. In all other cases, checking
-> __ptr_ring_produce_peek() is still required in order to proactively stop
-> the queue.
->
-> >
-> >> And I do not understand the connection with xdp_xmit.
-> >
-> > Since there's we don't modify xdp_xmit path, so even if we peek next
-> > ndo_start_xmit can still hit ring full.
->
-> Ah okay. Would you apply the same stop-and-recheck logic in
-> tun_xdp_xmit when __ptr_ring_produce() fails to produce it, or is that
-> not permitted there?
 
-I think it won't work as there's no qdsic logic implemented in the XDP
-xmit path. NETDEV_TX_BUSY for tun_net_xmit() should be sufficient.
 
->
-> Apart from that, as noted in the commit message, since we are using LLTX,
-> hitting a full ring is still possible anyway. I could see that especially
-> at multiqueue tests with pktgen by looking at the qdisc requeues.
->
-> Thanks
+On 12/01/2026 9:03, Kenta Akagi wrote:
+> Hi,
+> 
+> I would like to measure the cable BER on ConnectX.
+> 
+> According to the documentation[1][2], there are counters that can be used
+> for this purpose: rx_corrected_bits_phy, rx_pcs_symbol_err_phy and
+> rx_bits_phy. However, rx_bits_phy does not show up in ethtool
+> statistics.
+> 
+> This patch exposes the PPCNT phy_received_bits as rx_bits_phy.
+> 
+> 
+> On a ConnectX-5 with 25Gbase connection, it works as expected.
+> 
+> On the other hand, although I have not verified it, in an 800Gbps
+> environment rx_bits_phy would likely overflow after about 124 days.
+> Since I cannot judge whether this is acceptable, I am posting this as an
+> RFC first.
+> 
 
-Thanks
+Hi,
 
->
-> >
-> > Thanks
-> >
-> >>
-> >>>
-> >>>>
-> >>>> I believe what you are aiming for is to always stop the queue if(ret=
-),
-> >>>> which I can agree with. In that case, I would simply change the cond=
-ition
-> >>>> to:
-> >>>>
-> >>>> if (qdisc_present && (ret || __ptr_ring_produce_peek(&tfile->tx_ring=
-)))
-> >>>>
-> >>>>>
-> >>>>>> +       }
-> >>>>>> +       spin_unlock(&tfile->tx_ring.producer_lock);
-> >>>>>> +
-> >>>>>> +       if (ret) {
-> >>>>>> +               /* If a qdisc is attached to our virtual device,
-> >>>>>> +                * returning NETDEV_TX_BUSY is allowed.
-> >>>>>> +                */
-> >>>>>> +               if (qdisc_present) {
-> >>>>>> +                       rcu_read_unlock();
-> >>>>>> +                       return NETDEV_TX_BUSY;
-> >>>>>> +               }
-> >>>>>>                 drop_reason =3D SKB_DROP_REASON_FULL_RING;
-> >>>>>>                 goto drop;
-> >>>>>>         }
-> >>>>>>
-> >>>>>>         /* dev->lltx requires to do our own update of trans_start =
-*/
-> >>>>>> -       queue =3D netdev_get_tx_queue(dev, txq);
-> >>>>>>         txq_trans_cond_update(queue);
-> >>>>>>
-> >>>>>>         /* Notify and wake up reader process */
-> >>>>>> --
-> >>>>>> 2.43.0
-> >>>>>>
-> >>>>>
-> >>>>> Thanks
-> >>>>>
-> >>>>
-> >>>
-> >>> Thanks
-> >>>
-> >>
-> >
->
+This is a 64-bits counter so no overflow is expected.
+
+> 
+> [1] commit 8ce3b586faa4 ("net/mlx5: Add counter information to mlx5
+>      driver documentation")
+> [2] https://docs.kernel.org/networking/device_drivers/ethernet/mellanox/mlx5/counters.html
+> 
+> Kenta Akagi (1):
+>    net/mlx5e: Expose physical received bits counters to ethtool
+> 
+>   drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
 
