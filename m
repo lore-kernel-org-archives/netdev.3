@@ -1,100 +1,136 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from sonic308-36.consmr.mail.ne1.yahoo.com (sonic308-36.consmr.mail.ne1.yahoo.com [66.163.187.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7842FF17A
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D7B34D4FF
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768322967; cv=none; b=SiMTyH/oASQneudLHZtHQHnhFvgD9S3ajVYxqzfLgNc3I8CbvMCZLnDhdz0fMjWKIHuE97dizxE6wFQbr7AARREuv3qSdQHXgrOkbkQI2Fbs1x4KiAhRZ/14ow32BfD0Pcq45ikLz5AxCgNv2jWcI+1+UdFezOHH5VQmGax/HpA=
+	t=1768322968; cv=none; b=ZG2u0eE/PkycDqHtNHoqBjiFazTanrssWEAuKBKnC0/56i6U1t6E8TBSoZq1L8rthY7X+N1rdEBvNTq4UazWnpn8+MhmBhClqtz078gitNkCDHCAFzFGgvE4+1nvrCkjBhMTirlqGcFUtwiPcMUn9Zs2BRLd5tpvviLFHQrBZ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768322967; c=relaxed/simple;
-	bh=FcKwhFtwMjJDEN2YQ222Ot6kSiGOtJGNAi5RAuQWTkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J/lA2GkhUPLAPLuUOePYYx9rZHRDyWmvYIhmR7B0iN2RFcbhVjDeaVkfAyGsL1fDR0U4m2DRa5m4pnUSSc8vL+pUMHw6VW2BhHY3MO6fSuuvWxuPIiUnN2MNqEJ7fd5EcE6K6MCwASEI7YYuuXJscGh8dLMla34UJg/72Z4hh9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=IUN+F7Os; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1768322968; c=relaxed/simple;
+	bh=OyOaWwBvHND5r3TfmA5EfR/0ZZhhdD9apaXkw0UcDzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O/VIDMH25HkZl4/NX7H1Sduoky4Zb56wEXh8LAkVY1IG9x/Bbp6FsCw2CdOPlWdiBnniFjScl+/BJ1Bl4JQ99OBW61fGdMBfiFMood6SIUaTUGsy66IytuUBAbvxhb5xgEWpvGscFyeoiIZDsfPoidIV8QQYHhBWLWGOdg4zE2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=hMwh8Ga4; arc=none smtp.client-ip=66.163.187.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="IUN+F7Os"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4f4cd02f915so57548381cf.1
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 08:49:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768322964; x=1768927764; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FcKwhFtwMjJDEN2YQ222Ot6kSiGOtJGNAi5RAuQWTkY=;
-        b=IUN+F7Os2CbsEpMXD+uy4zfUryF0h24o1jyx/IiYJq7BeVoHZ6z1GLN7ui8LGfBeDP
-         DA6tBmkTPIySiWnRFO2xpwJfRu9SLXxaW5kpd8t9UaDDsOIyaFmhxxvdDzVLw7HDPgVZ
-         tMZlJgPmwHU2p01l/jcmvEXdj1SWT2nHiRpYbfEBCcreb/F5llf+NsHfCACTdfcMNR8l
-         DlZRQw8wRcmCaT2Nvcdpr1DkRQSeSiDyg/bGgMd6WUEpQRAUsjvSw0omNVCqKuNWw+pN
-         il0/6wjhstUZFg/vaSnhZQGAGHC5NTUavNRSWwIyuKwrr+1bpAAkJdGo4G27m5McLDER
-         h86Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768322964; x=1768927764;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FcKwhFtwMjJDEN2YQ222Ot6kSiGOtJGNAi5RAuQWTkY=;
-        b=d/oxBA2l6PgAu6syMfO+vyuILKa2PpseZM179Sy3RSE706veanUi5rP+JEsFemTTk9
-         CgWPrIhPMMNUMwxITVgGHOv2CDryo4Tia8pFvOTsPShQH/xjg3k6gEsUZWaE6x5c6NW3
-         NZ4nlaY4FTlWMNF26XKi96ulDmNFvMRQI360Bhh54pSVjcrdf0kSuiCsJxgBpSBHVp96
-         4r13roogqPuO+MI5VxpJjogc4+PEXTNgxKigVPrDGaLjxKUrfHGNgqQZB+370LGs/z2J
-         sqnId7kA1+v1qFDidJuaaUpAlT0SskrGeS0Xv5UwfO58ONwBCsYSiIIfhDiojRAZb27z
-         0qMA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6147H5Bv7DCzG86FqfAFiL7xmcI0EfHBZN4rKwMenaathxRXXivjrUyskTuL+UDAJzSsSMkw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsulPMBlLkiM80kR5YmRtg1EOlS9S0LIiZfbzN+A1jrxliF//j
-	in9l6gSbirgrz1qaZZYicwTiva65GcyDKo9lrucCYfF7kJte1Ly5G0/8I8KK3GJRRg8=
-X-Gm-Gg: AY/fxX40P1kfxmxIJ+rlbSlFvPHGt+duuBzY5AvdY1YzBTjwxmg+ZxODeH9wE78L3dF
-	5zXYWfaH0hwBeJkv+nNDVD+gPm3Yy/zSVP8pQpnkdH2AI1En7ToYG4FBQfNBlLhGzj+0W3kQ09g
-	4Qu+hdR+cNUesJl9D6BDF4J13bv9FTtncmkVtqnwP4it1psl+8Wp0mfqlIYsIWPpHrbnSNP7OAM
-	0m6DvmH26PUN7362OpOimLlyg2l7kg/gUXX6TkPgluOXzp/Yztq3RPfU6p/N5061VoOgAGx0hWG
-	103yWGfmuQ2QK6lP98+cX/mrk6dSxD9T+p65UYeUX+2Lvs6GgGZS87Usn9mAQC7Mz6yaZ1/8esO
-	S8g/ePU2N1hKzZB7Vl8kVLsO3MIlHTmzUdbM8oE/j1bdH3Hs3GFyef7sGV5JzR+xo+gE/BgITPU
-	8T/OOF4g6TvHW21p1to472h7Vq1MPYX81fQzKu/TNLC4Fzt4qRseC7hu7wNp8P748Fc7w=
-X-Google-Smtp-Source: AGHT+IFiSxb4uxmRYe6XxApgypPCZjK3lS4QULTVbEwLXNQHGmzceL2GIP7E4FtNXvFCswjqEyy+cQ==
-X-Received: by 2002:ac8:5e08:0:b0:4ff:a9d4:8773 with SMTP id d75a77b69052e-4ffb4afd0e0mr293395281cf.82.1768322964364;
-        Tue, 13 Jan 2026 08:49:24 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89077253218sm159988626d6.43.2026.01.13.08.49.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 08:49:23 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vfha7-00000003vHg-0bmX;
-	Tue, 13 Jan 2026 12:49:23 -0400
-Date: Tue, 13 Jan 2026 12:49:23 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
-	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
-Subject: Re: [RFC 2/2] Set steering-tag directly for PCIe P2P memory access
-Message-ID: <20260113164923.GQ745888@ziepe.ca>
-References: <20260106005758.GM125261@ziepe.ca>
- <20260113074318.941459-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="hMwh8Ga4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768322966; bh=NWYeVvUmPkhrr6EVYaqNHPu/ef7X6jiiHaSE1eZ3j9I=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=hMwh8Ga4IdzX5UmCgtzdCdmft1FA5adBzxaFiT1FxAmhBhHVAqpMxOCfInH9izIPRtSvB/H7XDsVGjwS9azyB9OubjUSgbsa4+2MwLA0Zt3DmNFyp4Er7c4qPW0JHgRXFfNZ2LMCXFmvFZJZNuxZaF5P2HUynr/UySo4OL77glEhYT6xpxRWtQjBiiZ2RrL0e52Tm6a34vPAtYXdaLRGE4m7khqM8P3ZVdI98zmOcxXpXBMiFeU3V9bNaxJYJxe4fabUWI4+hTSbuiRMR9udJvTWma4QfGIWBcjnZ9WZx4DCKaQXsW5cS52kVeDWNOCr4VFtqjt/ac74Q9DUfwP56g==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768322966; bh=YfZXH1STePBpHXsaoONo6+zHNkZsrpoqNy4mgNfNx9o=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=knf3Vzed3Dkr0smdg2YmF0yGokpv/lTGF5BZovxA0ZahiFmTJ8Qy/mENSSKLPygRE+pT4A3BHvtbd53Iia7PV5ZWFUr9LzU39TOAP2nYuDgDDtbRJnTn/UNEhVG4Opw5pFx1xl0h9Af5Ug5bFL/grwJIARTSRbOpgl6wRt//pClAI18+jx22I7SvOz3uR4XBEIAjFNc4xW9R77XKKmv9oz4+Db+z3g8SqAaUp+3VW4tuJqcGB5Th12WAjq2UgEgRIjFYNywk5QDVtU4xQ6KHLYXg0JAuQIvwK3Y04SkcBn4pL/uGf8on+2HCWH8fM/88IvRrvH7hl90SHIoopHghiQ==
+X-YMail-OSG: oonfWk8VM1kv3gGrxtMp.Y56WLWB0z5pL_qRGagGrKe0neDKOA_xSCLuvUq7dFu
+ NV_F_cgE0fc_AoKSxEPOf2gFOKaSDkO4kRLqZ.IquHSycYs_x7S1MUSM5xp6Ys9YVAPhkT1kq08y
+ CcfOl.YokeznFuaE2zot0EFFJBOM2q_5Ne666ggIv6E.UNtIFq1wr6kLWPP.xocf5iT8vhau_Kam
+ NSQMY6QW.t_0bwCe2YGuhYVji5J7XO.GBsaXrNZAivjHMoh.BQM9w6NYvRl15UqSVxpS10enCUOw
+ Oic_oXaFAUG85SG9izosctVQUCHPODUSd2k0EEr8dEmGDts3NquBcLIFmu81lh.bYXKC_vi49jC3
+ kiCS5jQ92GWX8COn2_SBNJgbfARIZYvsRsX54pDzkB7SnhEKKcF.XPtZ8LWkh03BYS8mmPX3QfTt
+ 5TXI6L9UAx6xhY2HQIc3NTTa.Muu7tay8Ovfsf8dtKpZUyHkjfOmikb6DrVSKdd6ZoXq8alnQgmJ
+ WhBemI5UsjS3pF2VTvfe0exf2A8n1yurl088ULFN9jR5QpszDfHhbVPJtX4kcz9QltD1U7SbB2gY
+ sGDDSeR29IejsvSb7c2XhDyS6AqqcS9cevyb6MVh8wlZbeQFDbn_JEAV_3.Tbro_elEgXpilTCyB
+ ShKlphQZybMlB3INlHKIa3Wt7oci_DTxDXyhyZ_HfZudda_DMsw4E7BeCqgJzt1nPa.bLv_7fhFz
+ MZcjwsAhM_wGFyjOKM_Q4Plp5NtL6oy0SmGfhHFbva7FGp4iPU8WInIOUbgqslqvYJ1mT.Bo68__
+ mflCROtQbE4TJ9bJQmtfeVm_QFWtuwbsDgn.Wb0mbHIKDJlzN9gp.wkZo2MNLVYfgJG2g6j6jGPc
+ RR_Ab7DslOsU1eFTHiyXfzBg5Za3ugdzijGjKP72Oamr6rGnB.pdwsYywuIAsNHXYstOhbFb2TSg
+ GyeL5apKkU0VuY8bIRZ83zPNguLgZ7nuN0Suay.ahUI8AAI0RsiZIAYhiB4VyrKUsav_SZGC4fX1
+ kbwHtj5flr4BRo92c63PrMVN43p.WUMaywunDIe66hSo8qmpDcyHtfN1gYltJyuG23l.jVZNsTH1
+ mIf4eQ4WwCxp9ZL0q6bH1zhCej16zKKJyykWU5vsa7qhFFQnJBcqvwFlfWqMLUKEDM.g.4WJBnIk
+ g67.sdlGdmO_WWintfFixJPyVMeSzps2DaNunBf9z44hS85oyguXXsefnSbE4hUlLrQHU_K9DyWI
+ U3dugLVCE28P.pOWjoEyy50xHSIJ_WwrkxuhCmChY6e4L6afYfuFXwVMELFfJvgf9hbhczoGff5V
+ 7Abvpgelu5eLEKkxsp7.I._aBCRzbA_PMWknyBIeuKVVU9zGRGSbf.lAQVqaB3rim834B.j4HgBs
+ 6UNYpeWKbo6EZomju.1ZMnbQfIfYH9iAc0IWNRbor94spy8rGCSmDqEDi9sVgBDe7laNV56Titlt
+ AOipWYQr9yq9qs.HhZfaPf0seFar2cTS9Byl29Wh31kKKaecV7yFEhiZuxJ9UtnSyXd29zCkeu6q
+ 0DsRVY5kREpWggV.KUIIWPkOlB8oGbKrhyj4yoWQT8j7pERKeqWQJ6jKEHf4IAPfk2UTPZIM6Enk
+ fil6XfUZFkBoLhOHluibqSLZEuut9IFV.rnIc71hRkWyzR8tTmGznSQp4l4hxoOr0HTzYSGd.oFL
+ D_ucfSfer_n6zMxrIXCOzwIdsh.YX6eSnx9h3rem5sUAs9ktZuY_2_H.lvwzGErobu8pc6iRixvM
+ dFQrrspbNZajPFnIP56eMLLtrs88POTUP84sQfakRUa6z8RIctvsAxv8M8TKtCLQazdpyewy_TnC
+ druwTZG1Wkml9h9v5FJbFlUtKMVkW.oUaAmK6uaA5iZpDPE8dGI5CZ3MgcgOBU2lkPgwGu_iyx21
+ XeLuOb5lWYaE69nlQrFYoiP1yqhLmQoENn48tQ2E8gg5ZmVZQx5d0fvAPM_onT3mFW3sIuO2SNtx
+ g9eTx3G9aACOikL8n53XprHPZ0NUIIaezgROySr5Thgnxhqnwak5Uop.fNzbBXcxevaFS78Y_Ha7
+ wm.jT5n9N7dT_jKzji2xjR1lhhQo2Lxhjrwq.5L88SXebhlDZHylhBBHqL44iN2P2I0_XdjDQw_m
+ e1ci7Ttp_hdSUUh7n4aNObTVs_SLWOcAjYOYQCbk_d18atGVyt_Lb2pw48mChth__UlDMtcWOt0r
+ kEnuW7i3YBAiudrSA23pA0nI3dJU-
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: 19d22beb-231c-4ffc-8abc-ad96a16dfd4a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 13 Jan 2026 16:49:26 +0000
+Received: by hermes--production-ir2-6fcf857f6f-9ndng (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ae45f0023da4d2f517b44dd167b3090b;
+          Tue, 13 Jan 2026 16:37:15 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v5 11/11] net: tipc: convert tipc_udp_xmit to use a noref dst
+Date: Tue, 13 Jan 2026 17:36:14 +0100
+Message-ID: <20260113163614.6212-3-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260113162954.5948-1-mmietus97@yahoo.com>
+References: <20260113162954.5948-1-mmietus97@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260113074318.941459-1-zhipingz@meta.com>
 
-On Mon, Jan 12, 2026 at 11:43:13PM -0800, Zhiping Zhang wrote:
-> Got it, thanks for pointing out the security concern! To address this, I
-> propose that we still pass the TPH value when allocating the dmah, but we add
-> a verification callback in the reg_mr_dmabuf flow to the dmabuf exporter. This
-> callback will ensure that the TPH value is correctly linked to the exporting
-> device’s MMIO, and only the exporter can authorize the TPH/tag association.
+tipc_udp_xmit unnecessarily references the dst_entry from the
+dst_cache when interacting with the cache.
 
-That still sounds messy because we have to protect CPU memory.
+Reduce this overhead by avoiding the redundant refcount increments.
 
-I think you should not use dmah possibly and make it so the dmabuf
-entirely supplies the TPH value.
+This change is safe as both ipv4 and ip6 support noref xmit under RCU
+which is already the case for tipc_udp_xmit.
 
-Jason
+Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+---
+ net/tipc/udp_media.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index ba4ff5b3354f..cc1ef043aaf0 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -175,7 +175,7 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 	int ttl, err;
+ 
+ 	local_bh_disable();
+-	ndst = dst_cache_get(cache);
++	ndst = dst_cache_get_rcu(cache);
+ 	if (dst->proto == htons(ETH_P_IP)) {
+ 		struct rtable *rt = dst_rtable(ndst);
+ 
+@@ -191,14 +191,13 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 				err = PTR_ERR(rt);
+ 				goto tx_error;
+ 			}
+-			dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
++			dst_cache_steal_ip4(cache, &rt->dst, fl.saddr);
+ 		}
+ 
+ 		ttl = ip4_dst_hoplimit(&rt->dst);
+ 		udp_tunnel_xmit_skb(rt, ub->ubsock->sk, skb, src->ipv4.s_addr,
+ 				    dst->ipv4.s_addr, 0, ttl, 0, src->port,
+ 				    dst->port, false, true, 0);
+-		ip_rt_put(rt);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	} else {
+ 		if (!ndst) {
+@@ -215,13 +214,12 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 				err = PTR_ERR(ndst);
+ 				goto tx_error;
+ 			}
+-			dst_cache_set_ip6(cache, ndst, &fl6.saddr);
++			dst_cache_steal_ip6(cache, ndst, &fl6.saddr);
+ 		}
+ 		ttl = ip6_dst_hoplimit(ndst);
+ 		udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
+ 				     &src->ipv6, &dst->ipv6, 0, ttl, 0,
+ 				     src->port, dst->port, false, 0);
+-		dst_release(ndst);
+ #endif
+ 	}
+ 	local_bh_enable();
+-- 
+2.51.0
+
