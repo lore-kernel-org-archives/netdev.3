@@ -1,139 +1,236 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9529308F28
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 15:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768319619; cv=none; b=iSM5Uf8fHQ+DQc8ML+E2E6lrnxuaPfVUZyxhtmL4dESe7OXcaGjjUwfC60jQYZeNxvVJEWhyHuwWwFeOafK/uqVOzOSEmlvZuA2rl6AfZrRI3Na/osJhoV0xU7xpZ3NE/DgDhzkjEE6APANvmVhhiMre+PaRdSvbz6hk3CWckc4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768319619; c=relaxed/simple;
-	bh=Rr2crUz2DUI9okAYGgwFpuu8kDcfbmW4w4rvyQxofL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EtfWKTXerG6A4Hw5OO3yLNxJF5X/mI2wOTfWxFr2pR5AAwFvinRnrU0jhQxaYciwJ5ylWzTg7zNnXB0lHNwuzGG+Io2NPXRL43fMozUzxl6ITx4TtzS2vrW7f9/k0AJsUq29euy5fvVUIzmncZ9fToaw25ss9OcWkcQUWTrHWNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NKialfsJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AZmInMJA; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4738C32C305;
+	Tue, 13 Jan 2026 15:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768319773; cv=fail; b=WCXU8Bo/OO3EgIGuWx2xhVyOF6lvemO9mFrjTXovbgaCAWW7OHBOhiVKHfb65ctMangfuR18Iju3Zl4yajJ5IDVLvVdHO3moh9DpDxGR7c99Y7O42p3dSBiqINGNu//06E3ij81hnXkyYHqci04f6S6z9GCNCDZzVHoPPwBo6ig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768319773; c=relaxed/simple;
+	bh=huP+J43gZxXwrod0tVxcLQtHI6NFWatFMRtWlY00+WM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T0fYjfcXxuE+/z7Kqq2E9crS1pkvS4K/z7kxgSRnt1g9/jJsv51ukT7D7dULERISGZQbtBMsk2F18nrG9Ci1C1cGAXPkVtOUAoeyfS8YewQfSAB+I3M5PwplR8s6heqRvzrPB9nhg0a6PQe8dUagCH1cAzPZaCvFOJ7b5wxfM3Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Nz82Fsru; arc=fail smtp.client-ip=52.101.70.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NKialfsJ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AZmInMJA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768319612;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TZoXydkaCbRzi/BpIgWSYmd+dDTH7DJWzt1xArcC9YQ=;
-	b=NKialfsJQ7EM6pZAFEGS+vYS0+boEAO7tu39PSpmD1iXQU7RX7yFY9IpDse1T2Dckm/UnS
-	Cp5pp5SQtWP7ymT8pGI05lg82jTohHIyd2Fv63MowzUehtDEDe94yN33LFzl4Mb2pkrtEI
-	Nt8JlcL3kS95+X7+l+X//+loRu0Xo8U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-9sgBWo5aNuGQ-wgW_LAQuw-1; Tue, 13 Jan 2026 10:53:31 -0500
-X-MC-Unique: 9sgBWo5aNuGQ-wgW_LAQuw-1
-X-Mimecast-MFC-AGG-ID: 9sgBWo5aNuGQ-wgW_LAQuw_1768319610
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-47d5bd981c8so53068965e9.0
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 07:53:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768319610; x=1768924410; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZoXydkaCbRzi/BpIgWSYmd+dDTH7DJWzt1xArcC9YQ=;
-        b=AZmInMJAKFbIrBf7UToa72AxvvcyYT/ZyN9qd+0NBs/qY1lbUWeo/SM3iFJijD8Wnn
-         CV+rTPczW3bJ2SJWrIGHjz5A5pONIjqR09iBr0+aToxIIL9/lfrBR/8OemiJ4j2fp1Ty
-         xHZQUKwYmlLSkkOcZj56yBNMcn5ZoULiYtVnawOfn+fdTAMOq7MAoI+R1crh2pzMQPdf
-         CW0JHR5Pf8w14iHiPH7835uPvYSY0Kp+WXVbFALOVIQwF7hmZpw9VGr9fe5p0nszDLBT
-         31MntioOtNFIK/Um3yb2GqAjTyGGmw0kuXj68/XA1qzD3VHml60CVmPMmOql+8vXgh43
-         b84A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768319610; x=1768924410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TZoXydkaCbRzi/BpIgWSYmd+dDTH7DJWzt1xArcC9YQ=;
-        b=uz6swnPFarSnauDpMsi4pAm4BUcFR6Wi5oZ6ptLU9ihqn1+kS7WwY7DvCftjK5tFUi
-         P9b+moEm9UfRPSC1Ht6P39ZAngCQ71/GyLNWRMqz6DtzuN2iWtreAD0dXmAdK/PNUJtj
-         GRhhtTrWEBq3gSuGjNEZPKC8Pd3nqUmhlFwxC8JPX6khOPvSihCINwypolGzZl8fRdJX
-         mpzbHXujp4wUAglfnr6i4UmBfnD4QF8Yof1zNyPq1l60um+HX9SKl1sgZGsk3C4Mm8eO
-         TWQgxM0hxlnXirXX3Qwq8SfLuywrz/z8hq1+92RCrW3mZxM/qvCtCfVknKybRdFgaL8/
-         oyVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWe9PVroPTPfSJbkYEL2myz8+ixAZR69CIff16yNbzrFoGw8M/5mu1fo1JoO09+dBEWlJzV+bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZThwsMxQby9jOXeCNfYIKTFvbOjWXqQdIjUC+4RfnuI0irpsA
-	9272LohbQeOS5ErMwUx36nuaa7UIC3K9C00p2GCccbHPUpIxwvZ05a4Y5BSrjGiHCWn7+zjCDul
-	/mSNmLN/oXPgHCvAnO8x1DIKzfxi3mQO3APv7ZcRKjLsdrpSHurRP6SgA4g==
-X-Gm-Gg: AY/fxX4OZN2L+nbFMsPh/Q2V2pLFAx4FUYhnFtVLIvbAP6UQIxexPHSlc/eEXcN2cU2
-	zYoPn90/H2KQrkPd5+HDv9xouQGV9i8dM5gSiJ4XWSeIJq6MIx0Q0Yzan8GjNbB0fW6Tb0WrmWB
-	94II/VTHFT/RgQ6PnT0MRhxeDV/UxwM13oWRk/1AqRBdRlJ5v4HMSLQSMNTnOlNyIFkzHX8EFt+
-	V+b62UsY3iwHFEFrcj/fJfzKVX7LIU/IyHv2L5jn3Wja0KrNxwjuVSUZiL+knQXGP3Ud6s2z0Qk
-	A4G4jY6VZKQxrd9b2h7CHquEFX5Rkfkvf24ncHMp28s/FIchqR4io5oePYjuOB8bFogz5PyUfi7
-	FRtCenrX+6s1N/JvDHVqhCkf6VizH/nK5Nx0ZQlYJEskkS66sfAXZW3RwphFcFw==
-X-Received: by 2002:a05:600c:4449:b0:477:aed0:f401 with SMTP id 5b1f17b1804b1-47d84b368f6mr258282665e9.23.1768319610414;
-        Tue, 13 Jan 2026 07:53:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFQfC7/NeIeIlU44iVNxdFG3KKUWSQZIDiswxSwdGso26nsC4+3O4KhbxqfJ82+1Ys/KVNR7A==
-X-Received: by 2002:a05:600c:4449:b0:477:aed0:f401 with SMTP id 5b1f17b1804b1-47d84b368f6mr258282215e9.23.1768319609956;
-        Tue, 13 Jan 2026 07:53:29 -0800 (PST)
-Received: from sgarzare-redhat (host-87-12-25-233.business.telecomitalia.it. [87.12.25.233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f69e802sm419650175e9.8.2026.01.13.07.53.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 07:53:29 -0800 (PST)
-Date: Tue, 13 Jan 2026 16:53:20 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shuah Khan <shuah@kernel.org>, Long Li <longli@microsoft.com>, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	berrange@redhat.com, Sargun Dhillon <sargun@sargun.me>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v14 05/12] selftests/vsock: add namespace
- helpers to vmtest.sh
-Message-ID: <aWZqYWzhGf9gQgHk@sgarzare-redhat>
-References: <20260112-vsock-vmtest-v14-0-a5c332db3e2b@meta.com>
- <20260112-vsock-vmtest-v14-5-a5c332db3e2b@meta.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Nz82Fsru"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B9/V1TQ1K2dbuaPSUx2KbKWkSHHwrRawlgJuMX3avaxmzysTPZU9dtl2BDshbL41vrUUV5SCQUMh8Z/1/Qz3Ee1OUW55RLtWbTyre2giPqjbsl5o9PeoL4FCFQNL4fTjq64jIo8bMGi8yaUtmhEuFfi7JfrpL4ENAx/YBGc7zVFkq5f4JbEda2ST6lVD0h429ygKOZpHNdj+enMxL3WQjbcIOCD+XXEGYeu2cq+jaowUMqZJELfhXFyNShXPLlUGnNwI/nmYGNDATyBYqCTX07YndGi11EEVtYt/LL1AObFd84d6rN1Nkf6YkRGyHFy5iGbKeJkCruBw3agTL0WeNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WoawCt4Z1FV0G7KqaZeEQLj0/qaUpaz+EcdtcRy6fGw=;
+ b=OW6IpWOyVcnwaGrVAwd3y3g9fe8Cyo0lQBGR2GV/2wq58XxXT9uDB2A3OsgKo6Xb/uY8hYEZU7OsmH1e9XJNP3rZ00hIyMD8O6JgFuuhrlC1w+SwUhWVnkCE+gCX1OWTmPLp2M0Afdqk/Tmhr1TY+M8D5rU/cSufAiw6Sp60Bum5GtnXdiszlT/HWh8yKaiN8VI8IrcKDng7hognBLD0Hy8pMorOipkc1TNa3mbUI8B0mrVFEMfZjxuWSreGMYc98564lVIzqoRTerKj6fSdMnVlUkXpPu34S6XE86iV9n9664BqwB0yHCXElyQpntUzDlCgzUmImwKGEiLRUnIORg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WoawCt4Z1FV0G7KqaZeEQLj0/qaUpaz+EcdtcRy6fGw=;
+ b=Nz82FsruSJQbNgcadjH6JqgvwswH+7z4yYpa58k7n6L6BQOI8kVY3O3eXrHU0brZIyywaj+uHJU+DJrzGROpW7t5tEzD90iHKF9cnApIbJjuec+PKkKmnSOPJJzAWbUAIohqqayKJ+mGueDQ+vH/AByyVObA7InCQcsSS/hXavNFD9B9548W3bEo6Gr0az9IQQLhjlZ2dpSiBYY+nxCCB8qPdLh/5YyQp2LfrMljR0qWJwkQQAVWMaoSQVlqg5c50MLRXuUVwbY3Kgz7PIgm0Hzi9H9SIamSUfb53rmtsjrQ32WWwyNaJ3zTJ/rTCOlclssJTuPNdzsPRO3CcBTliA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8948.eurprd04.prod.outlook.com (2603:10a6:20b:42f::17)
+ by DU4PR04MB11411.eurprd04.prod.outlook.com (2603:10a6:10:5ed::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
+ 2026 15:56:09 +0000
+Received: from AS8PR04MB8948.eurprd04.prod.outlook.com
+ ([fe80::843f:752e:60d:3e5e]) by AS8PR04MB8948.eurprd04.prod.outlook.com
+ ([fe80::843f:752e:60d:3e5e%4]) with mapi id 15.20.9499.002; Tue, 13 Jan 2026
+ 15:56:09 +0000
+Date: Tue, 13 Jan 2026 10:56:00 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next 03/11] net: fec: add rx_shift to indicate the
+ extra bytes padded in front of RX frame
+Message-ID: <aWZrECQIy+a8yEcJ@lizhi-Precision-Tower-5810>
+References: <20260113032939.3705137-1-wei.fang@nxp.com>
+ <20260113032939.3705137-4-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260113032939.3705137-4-wei.fang@nxp.com>
+X-ClientProxiedBy: PH1PEPF0001330B.namprd07.prod.outlook.com
+ (2603:10b6:518:1::1a) To AS8PR04MB8948.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42f::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260112-vsock-vmtest-v14-5-a5c332db3e2b@meta.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8948:EE_|DU4PR04MB11411:EE_
+X-MS-Office365-Filtering-Correlation-Id: d19e4a9e-06e1-4cb2-01a4-08de52bc4470
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?h4OW30a8p8gBYKpqDHA8RQXgzmyuK7gEQcyw0izR/ysll40+aMDjhApuVKYo?=
+ =?us-ascii?Q?S7qnA7SPMu76US+UDUVsMhcS/nuopSSa/kB5bOmAZ0gns42wGwiYB6l5MGri?=
+ =?us-ascii?Q?353V76V7Qu0y7jYWtCaYj+jSppRLQ4HZqrDhR3iEq/Okx8dCSrgQ1/rkB1iM?=
+ =?us-ascii?Q?khA67LuZcawVD9w/nw4TpqJXtXYoFb/HZxD9jbCIe1eKPJQS9mcJpOBpe9oo?=
+ =?us-ascii?Q?a3stpA7lJ5NuSAA2YZgvvOt5YDfEgOfVk9nbqYQVXzku79X+AhqFETdVnvVm?=
+ =?us-ascii?Q?v6w9eCTGbsWD95c+rA2e0VELYZwWZMSEdVn79sRuoEq7Vc0Y5PCjxbBAMLsI?=
+ =?us-ascii?Q?QrJwBPi643fdjPAuSpEuRZtB11XRp1AaIrV6nsEYXHg31hhnzlO8R4QI6PAV?=
+ =?us-ascii?Q?3T2aBv25a7LT9g45s2dDYZjqAZNFY3hD92+fBC7p26Rx+t+EhfCxErHXB01L?=
+ =?us-ascii?Q?vwdWmH5WV0PCood+BI0RYyLw9wpfKNOK3mEh5XrsMuXAH63K8K8Krnei8DwU?=
+ =?us-ascii?Q?cV5aeRb6Sgs/EINhjv7/TEkN0KR9plCZtJlWxcgreu7Q9nTN+8ja2sCQ7bM4?=
+ =?us-ascii?Q?hAF+ORlAXwhpOEyVF2tF3dJNl2B2Ful83gZnpr3hvOyINqS+zYjKffmC4vjn?=
+ =?us-ascii?Q?15QXzDCTWMV9mW7O3uBeG+D+gkT8paOL29hnCtPQq65zF5O51fqkybwg0ICA?=
+ =?us-ascii?Q?oO5dltljAQCfHeGDH0cyzHJxUNlL4ZMSIRwrycBlFDrQ0j4TGAzaKMKErrE8?=
+ =?us-ascii?Q?sfg4fwzingwY7KSTdCKSIO3q2/yigK2jDlnY4vuOcuRq2jBtl2esH9cquRnF?=
+ =?us-ascii?Q?KemXsKFMEGoVN3G8NvW59ncQ7NpDRvqkCQb/2q088jqOVCHWWXM313Fk1BAU?=
+ =?us-ascii?Q?uPipwasZOagVPxbzhxEcx/E3YrYpXvBEpCMi4n8xOgNyBA+bVYH8zyXJNgZ1?=
+ =?us-ascii?Q?8pIU3N0qMJAxv/lW7K7RTK8SVVUeS1J/cM2RA9qgavLUbjbglBfYUpbBgf7o?=
+ =?us-ascii?Q?jpK6ANF6/lmhyywnTtBrixmmaoDEg52oPRWrQOHbZglGjh0N+GzDpoXOa/Wj?=
+ =?us-ascii?Q?HhzheLlBHJicb3L5IrFgY3D+y/RWbfIbfKsedFczczshEEni1dzFIv/gCNZg?=
+ =?us-ascii?Q?Jiz5y/uWzJSmJbh2JdTsYUiPtDxXUderWBn8rQ3UWCGrx7d6jT6O5S+uk48Y?=
+ =?us-ascii?Q?kgZZwOfB7+TH4RYkCbdCKB6j85IfYw1TIKV4Oaaa4HY4tRZd4YjbMtA331S0?=
+ =?us-ascii?Q?F9T0Xyk902YJ7z0yoJXlR+WWng7WD+DQozVMMucwWWeY5sIyuH1mDBFOuc6a?=
+ =?us-ascii?Q?64OCsbvwb2WoR0hy5KZMbX2yaqQNUO6aEo8GZ7/r1nVngjJyIZSq2iTg4wV3?=
+ =?us-ascii?Q?Qtw0dAjLK9kPLTvU3QgvlIsMbl/b7K9TIMxfeHDKY/oQRrnj05aEu5IqkSaP?=
+ =?us-ascii?Q?rSpj5S4e778YmxNNQfbEdvjc0viy8ZYI/bTA3dUH/OZP/YgAaJsmJGh8wSOm?=
+ =?us-ascii?Q?h1RaviHbgvTCB6bGqlOKApVy1NnLTy3X/3DQ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8948.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fo6EPIvPX4Bllikjea5kNGjIaBrMbXH2AgbsbM2PSTZ3aq7iE8/+CL+6zk4f?=
+ =?us-ascii?Q?8P7MI/CfAcHAS3tdIMVSSwMfGXD3ldqKdOr03DE059pwKYf55bjYYu7giDQp?=
+ =?us-ascii?Q?Mqp1THp9zMrBaBkX59NsTUE6wiQgCPcyJY6B3qDItvEkCVMuh1IU7N3fGHLj?=
+ =?us-ascii?Q?dUO9XSeTL9HqsBbDU6pjOLBC9HFVLMxSkQXCtORRGKj3IWYEDfP6f6PdwB+s?=
+ =?us-ascii?Q?CfOyW+6yhinrpmxIv4KYsv/9WQ9pzF6Xdknj3AHGgl6r3/LALNpnfjFHPGUk?=
+ =?us-ascii?Q?uZZu9MkcqmUsxmjXAKKQ0m/AK+pM5STNPNjWv+Ck/W1KwC3M5h0bvpLELiQA?=
+ =?us-ascii?Q?T0XQWjgaUHAJIvzvVazhW2lV5aHUxSS8R61QfRvo4w6rd6apfUSztD/sSxIn?=
+ =?us-ascii?Q?axpe6eHn2Zw40gWblUvxsyv9CQ5VhAXkqrBgMaQSzqHZWr21nbJqajkj5Na+?=
+ =?us-ascii?Q?7kBaAaspN6lKKUwVWyWdAe+H3Pubqqq9ObGm5Yg+QZEdyhOYMBCittebJ5lV?=
+ =?us-ascii?Q?vKEUf6lfmCNsLOyB5JsrgFXkf/cg+0H2lSFnPDvq+9yxOzmjOzg24NchhvII?=
+ =?us-ascii?Q?i5GC9O3ELL11FKEEFV9NPO1AJrok0NC/m8YpkOqJf5FY7OO+rlUWscW7Mjzf?=
+ =?us-ascii?Q?ArpMf7POii0DbmW5euasaDeaHOHbsndzL9lWwBrKJtwj3uWzDcqyOq85761a?=
+ =?us-ascii?Q?t5kH0gAUB1ra9p5pODgDhBWtaaWIqtarOSXtmVa510NDIz5EV+JaQMQB+uaz?=
+ =?us-ascii?Q?We5932jJQf6G8KRcaeY+G04eVKqsOgIMcrXLVVGNQUALjfARHnkszDYGlLVE?=
+ =?us-ascii?Q?rj9SqJBn4AOfkfSs4a8CKz1rMTW+Fq64gJpnH2nNZHa4U726faVNRNYhMMma?=
+ =?us-ascii?Q?N+o8m5a6qZhrLt+ovjO1TQzKVO6K2XuxgOacLznH4YyLT41EzAif3dT5MUVB?=
+ =?us-ascii?Q?T77lI8b9/7QwEWKxNhr+DAC8S/1fHiV9lBo9xqljafyHhRqdmaEYrfjvxG+0?=
+ =?us-ascii?Q?s+PtBqpuOIiQjLh3jptj0X1ptVqvH0b3SNX8EG4TuETLtxHF4Q0ET3PgQF3i?=
+ =?us-ascii?Q?fce9yXHmMwqZHxbyOdG6GQh6TW7oLbJ9L32sTxZFLAtAZXlp78Dgy6LCQqAz?=
+ =?us-ascii?Q?fxc/11ylEVVCccpbw6cWvTetlG/YDf9dpYHwqBtjyj+E6uteAyOe/p9a+KL7?=
+ =?us-ascii?Q?ncuqymefycokn+03wGG+8m5HIok+e1Yg3jIckM25V6LURGtK7rT6bdk7JR+I?=
+ =?us-ascii?Q?tcjfyY9jLUJ5dBK9ZVSQbNf58wKF5vdR2AbKrdE1aW9haD1xOM6qeu7ReYQC?=
+ =?us-ascii?Q?g44F40Nk7WPbOC6PQj3ZMOUrMwu58wYUx805HsssEEK3VLN4v+SUg6Oi2xcP?=
+ =?us-ascii?Q?l9gjO7/5wETU9DkMOHH1fJduBH70LCswJN7FRodB4Q3q2unZWw2rFYynUrmP?=
+ =?us-ascii?Q?DfKoCsRnX1WSTXwlV7hb1P4MIR05N317BGxu56zEzwyF9bHYkLFkRLiERltF?=
+ =?us-ascii?Q?0SxmWCgetZE8DwNh6v6tjJHY/c77zJMhi9QiVhEvpx19yuWBK7tcwl5YLrfG?=
+ =?us-ascii?Q?uQwMa0MvKaSy6vec2DIoYGPgQeynABQiZLfKA4FB+E9mhU4nAjDTiEqkUTvD?=
+ =?us-ascii?Q?9zV4qgbcOz7FUuI9E7A/63IJOpddRf5E89cHxic00fO5XBYUddMobdeG6OB8?=
+ =?us-ascii?Q?WDjR+SzbXM1PQloCVCueUMIr+rTb2SX3XjLBp4ZxKn5iXiQxIq//UWyEJoqB?=
+ =?us-ascii?Q?xKUUkS2xdw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d19e4a9e-06e1-4cb2-01a4-08de52bc4470
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8948.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 15:56:09.2096
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AN9aUsuVGpUaKFz5CbWNqLRfoasIOm47fdo2p/BfSliBrL673IbLR3FfnwJWPWbnULTT5P5OWbK/+BFcfssWOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11411
 
-On Mon, Jan 12, 2026 at 07:11:14PM -0800, Bobby Eshleman wrote:
->From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Tue, Jan 13, 2026 at 11:29:31AM +0800, Wei Fang wrote:
+> The FEC of some platforms supports RX FIFO shift-16, it means the actual
+> frame data starts at bit 16 of the first word read from RX FIFO aligning
+> the Ethernet payload on a 32-bit boundary. The MAC writes two additional
+> bytes in front of each frame received into the RX FIFO. Currently, the
+> fec_enet_rx_queue() updates the data_start, sub_len and the rx_bytes
+> statistics by checking whether FEC_QUIRK_HAS_RACC is set. This makes the
+> code less concise, so rx_shift is added to represent the number of extra
+> bytes padded in front of the RX frame. Furthermore, when adding separate
+> RX handling functions for XDP copy mode and zero copy mode in the future,
+> it will no longer be necessary to check FEC_QUIRK_HAS_RACC to update the
+> corresponding variables.
 >
->Add functions for initializing namespaces with the different vsock NS
->modes. Callers can use add_namespaces() and del_namespaces() to create
->namespaces global0, global1, local0, and local1.
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>  drivers/net/ethernet/freescale/fec.h      |  1 +
+>  drivers/net/ethernet/freescale/fec_main.c | 21 ++++++++-------------
+>  2 files changed, 9 insertions(+), 13 deletions(-)
 >
->The add_namespaces() function initializes global0, local0, etc... with
->their respective vsock NS mode by toggling child_ns_mode before creating
->the namespace.
+> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+> index fd9a93d02f8e..ad7aba1a8536 100644
+> --- a/drivers/net/ethernet/freescale/fec.h
+> +++ b/drivers/net/ethernet/freescale/fec.h
+> @@ -643,6 +643,7 @@ struct fec_enet_private {
+>  	struct pm_qos_request pm_qos_req;
 >
->Remove namespaces upon exiting the program in cleanup(). This is
->unlikely to be needed for a healthy run, but it is useful for tests that
->are manually killed mid-test.
+>  	unsigned int tx_align;
+> +	unsigned int rx_shift;
 >
->This patch is in preparation for later namespace tests.
+>  	/* hw interrupt coalesce */
+>  	unsigned int rx_pkts_itr;
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 0fa78ca9bc04..68410cb3ef0a 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1799,22 +1799,14 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
+>  	struct	bufdesc_ex *ebdp = NULL;
+>  	int	index = 0;
+>  	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
+> +	u32 data_start = FEC_ENET_XDP_HEADROOM + fep->rx_shift;
+>  	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
+>  	u32 ret, xdp_result = FEC_ENET_XDP_PASS;
+> -	u32 data_start = FEC_ENET_XDP_HEADROOM;
+> +	u32 sub_len = 4 + fep->rx_shift;
+>  	int cpu = smp_processor_id();
+>  	struct xdp_buff xdp;
+>  	struct page *page;
+>  	__fec32 cbd_bufaddr;
+> -	u32 sub_len = 4;
+> -
+> -	/*If it has the FEC_QUIRK_HAS_RACC quirk property, the bit of
+> -	 * FEC_RACC_SHIFT16 is set by default in the probe function.
+> -	 */
+> -	if (fep->quirks & FEC_QUIRK_HAS_RACC) {
+> -		data_start += 2;
+> -		sub_len += 2;
+> -	}
 >
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
->Changes in v13:
->- intialize namespaces to use the child_ns_mode mechanism
->- remove setting modes from init_namespaces() function (this function
->  only sets up the lo device now)
->- remove ns_set_mode(ns) because ns_mode is no longer mutable
->---
-> tools/testing/selftests/vsock/vmtest.sh | 32 ++++++++++++++++++++++++++++++++
-> 1 file changed, 32 insertions(+)
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
+>  #if defined(CONFIG_COLDFIRE) && !defined(CONFIG_COLDFIRE_COHERENT_DMA)
+>  	/*
+> @@ -1847,9 +1839,7 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
+>  		/* Process the incoming frame. */
+>  		ndev->stats.rx_packets++;
+>  		pkt_len = fec16_to_cpu(bdp->cbd_datlen);
+> -		ndev->stats.rx_bytes += pkt_len;
+> -		if (fep->quirks & FEC_QUIRK_HAS_RACC)
+> -			ndev->stats.rx_bytes -= 2;
+> +		ndev->stats.rx_bytes += pkt_len - fep->rx_shift;
+>
+>  		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+>  		page = rxq->rx_buf[index];
+> @@ -4602,6 +4592,11 @@ fec_probe(struct platform_device *pdev)
+>
+>  	ndev->max_mtu = fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
+>
+> +	if (fep->quirks & FEC_QUIRK_HAS_RACC)
+> +		fep->rx_shift = 2;
+> +	else
+> +		fep->rx_shift = 0;
+> +
+>  	ret = register_netdev(ndev);
+>  	if (ret)
+>  		goto failed_register;
+> --
+> 2.34.1
+>
