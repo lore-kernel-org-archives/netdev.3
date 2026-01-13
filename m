@@ -1,96 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E658319C540;
-	Tue, 13 Jan 2026 00:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410FB3A1DB
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 00:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768262871; cv=none; b=bSCDaw+ZPBB7YgGzSoKaO4SC5AcEEWE4ft0pLPUtbaha68ETF5ueL6Vaq7iGAD0dcS/F6hS3j01PRtpU4RmMfvndYgPWSe8uvC1uuUWEDYALa34q5miG+0e1oGEoLr0+OFtkrrMaVenMp+BE5JD/DDBdJnDPXuq+uJECzJS+RTk=
+	t=1768263327; cv=none; b=sNegLiw8YQPuBLn7d+yDzZ8BzrXm/XLJjV6DoGkcSS0vRFoQKwPRWpWHdQRMizNTi93teOuZxRjHpG5h9UeF2TsmDsSG4o/esXDNvGPVx1RRSP5sIcavKH/z+BprnKFifD2ATfC8Uc47b7U1CGHzFuUeosmk6yf+38Dds3syNqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768262871; c=relaxed/simple;
-	bh=gEb54MfQLok1AaVPXIabDGRMNEVrb2hBFPA4n2SmHxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ak31wG6Ek19HNycS1twHaOfrjvtIzwDuI+Mp45eR1oRVbYja14ErBsSmIULtNvT/sJ2Hld7rzK6D8rFGUC3YPTB3oZNGQLYDfWjKA1FxXUn01R32nAMQ5+yVbv2YQWbXtFwbScNBzyaw051o3Far/4svfHoa0famfVPrILdCSBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uh2UTF/s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768263327; c=relaxed/simple;
+	bh=gvHbvF+alHW/GFmZwyIqoDQwp8tglUaEb3uXXAOyTz4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yxf+YGHb83H2c9h6sFIqYORt9vXj4Ni+Hm+zuy495jI1BjFlAzJ91H4UqhsjH6M1PIG983f02MtaKkIrEVCvUM/JiGsOXd4uSj7qF6/OU1kCh/8qzR+dedsqM/tZUyK2oS6bLsyk7wf51par7S5c/6LCKGQVi91fSdnYDRt5rDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LeI67RfI; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uh2UTF/s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1F4C19425;
-	Tue, 13 Jan 2026 00:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768262868;
-	bh=gEb54MfQLok1AaVPXIabDGRMNEVrb2hBFPA4n2SmHxs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uh2UTF/sSKw+3pT9ZTASol+zzT7eU0Igvd7h0xOi5WjKh5iOHX7o7I2ivO7+AROyE
-	 vPaNml2TwOTog2NVYdFwu43zao5ehczhGkPOh4RHhAH5M5TDN/BP+4Vyx7KR9vN1Nk
-	 KvNoyO6fyx1VPqbRxy7OMYTR9PeB7w4Twj/XDLFk7n5vjC61uEOaEb8+ffWVMKVr/e
-	 Ej8hu1FQAAz/8SIz+QnHcHBPx+3gPuRR9RzM+NlBzctZ+/Pn9cRVSgcJrWuobRXM0w
-	 2LhF1rCHxO10Fyv4YNGsVKNnMzlhBW+egE7ld9RHvrFq7MfqcaB4zg/sU8ikGAW+RZ
-	 9y2YN4sM36p5w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	sdf@fomichev.me,
-	willemb@google.com,
-	petrm@nvidia.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v3 3/6] selftests: drv-net: gro: use cmd print
-Date: Mon, 12 Jan 2026 16:07:37 -0800
-Message-ID: <20260113000740.255360-4-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260113000740.255360-1-kuba@kernel.org>
-References: <20260113000740.255360-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LeI67RfI"
+Message-ID: <1eb1715a-c1b0-4741-8d2d-f66adffcf91d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768263323;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eHAD91F192HxWa7NlcF9nJf3tRWljkeKZQty/FQBwSI=;
+	b=LeI67RfIZQK6RmNFheDra64ma8/vGrHEaePeIAt/I6825Jo6bIwlaaJi5gRY94NSE4g29z
+	K79TJMy0H0G6GwGZpbmpS6RRct8+SOzOv1pYSvH/YVRz862igkd7ot1w6atuBxRtg0lw33
+	daxtdN86tdo1sSN3q4xV7tby6HkPU78=
+Date: Mon, 12 Jan 2026 16:15:17 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next v3 10/16] bpf: Support lockless unlink when
+ freeing map or local storage
+To: Amery Hung <ameryhung@gmail.com>
+Cc: netdev@vger.kernel.org, alexei.starovoitov@gmail.com, andrii@kernel.org,
+ daniel@iogearbox.net, memxor@gmail.com, martin.lau@kernel.org,
+ kpsingh@kernel.org, yonghong.song@linux.dev, song@kernel.org,
+ haoluo@google.com, kernel-team@meta.com, bpf@vger.kernel.org
+References: <20251218175628.1460321-1-ameryhung@gmail.com>
+ <20251218175628.1460321-11-ameryhung@gmail.com>
+ <337d8ebe-d3d4-4818-92d8-4937da835843@linux.dev>
+ <CAMB2axNcc5yJwhXjcEcQJuLxrjB7MgVK6XXpKqO9EiFPtQH6bQ@mail.gmail.com>
+ <36b3dc2d-b850-491f-bfc5-3581d5de7b82@linux.dev>
+ <CAMB2axNtrFEL0x+j6M3De-ezR38cv5s7LFtpuAeN7QCf_AyHaQ@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <CAMB2axNtrFEL0x+j6M3De-ezR38cv5s7LFtpuAeN7QCf_AyHaQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Now that cmd() can be printed directly remove the old formatting.
 
-Before:
 
-  # fragmented ip6 doesn't coalesce:
-  # Expected {200 100 100 }, Total 3 packets
-  # Received {200 100 }, Total 2 packets.
-  # /root/ksft-net-drv/drivers/net/gro: incorrect number of packets
+On 1/12/26 2:38 PM, Amery Hung wrote:
+>> [ btw, a nit, I think it can use a better function name instead of
+>> "lockless". This function still takes the lock if it can. ]
+> Does using _nofail suffix make it more clear?
 
-Now:
+sgtm.
 
-  # CMD: drivers/net/gro --ipv6 --dmac 9e:[...]
-  #   EXIT: 1
-  #   STDOUT: fragmented ip6 doesn't coalesce:
-  #   STDERR: Expected {200 100 100 }, Total 3 packets
-  #           Received {200 100 }, Total 2 packets.
-  #           /root/ksft-net-drv/drivers/net/gro: incorrect number of packets
+> 
+>>> sure how destroy() can hold b->lock in a way that causes map_free() to
+>>> fail acquiring b->lock.
+>> I recall ETIMEDOUT was mentioned to be the likely (only?) case here.
+>> Assume the b->lock did fail in map_free here, there are >1 selem(s)
+>> using the same b->lock. Is it always true that the selem that failed at
+>> the b->lock in map_free() here must race with the very same selem in
+>> destroy()?
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- tools/testing/selftests/drivers/net/gro.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+This is still an open issue/question.
 
-diff --git a/tools/testing/selftests/drivers/net/gro.py b/tools/testing/selftests/drivers/net/gro.py
-index ba83713bf7b5..4e0fb19d1527 100755
---- a/tools/testing/selftests/drivers/net/gro.py
-+++ b/tools/testing/selftests/drivers/net/gro.py
-@@ -142,8 +142,7 @@ from lib.py import ksft_variants
-         if rx_proc.ret == 0:
-             return
- 
--        ksft_pr(rx_proc.stdout.strip().replace('\n', '\n# '))
--        ksft_pr(rx_proc.stderr.strip().replace('\n', '\n# '))
-+        ksft_pr(rx_proc)
- 
-         if test_name == "large" and os.environ.get("KSFT_MACHINE_SLOW"):
-             ksft_pr(f"Ignoring {protocol}/{test_name} failure due to slow environment")
--- 
-2.52.0
+>>
+>>>>> +             }
+>>>>> +     }
+>>>>> +
+>>>>> +     /*
+>>>>> +      * Only let destroy() unlink from local_storage->list and do mem_uncharge
+>>>>> +      * as owner is guaranteed to be valid in destroy().
+>>>>> +      */
+>>>>> +     if (local_storage && caller == BPF_LOCAL_STORAGE_DESTROY) {
+>>>> If I read here correctly, only bpf_local_storage_destroy() can do the
+>>>> bpf_selem_free(). For example, if a bpf_sk_storage_map is going away,
+>>>> the selem (which is memcg charged) will stay in the sk until the sk is
+>>>> closed?
+>>> You read it correctly and Yes there will be stale elements in
+>>> local_storage->list.
+>>>
+>>> I would hope the unlink from local_storage part is doable from
+>>> map_free() and destroy(), but it is hard to guarantee (1) mem_uncharge
+>>> is done only once (2) while the owner is still valid in a lockless
+>>> way.
+>> This needs to be addressed. It cannot leave the selem lingering. At
+>> least the selem should be freed for the common case (i.e., succeeds in
+>> both locks). Lingering selem is ok in case of lock failure. Many sk can
+>> be long-lived connections. The user space may want to recreate the map,
+>> and it will be limited by the memcg.
+> I think this is doable by maintaining a local memory charge in local storage.
+> 
+> So, remove selem->size and have a copy of total selem memory charge in
+> a new local_storage->selem_size. Update will be protected by
+> local_storage->lock in common paths (not in bpf_selem_unlink_nofail).
+> More specifically, charge in bpf_selem_link_storage_nolock() when a
+> selem is going to be publicized. uncharge in
+> bpf_selem_unlink_storage_nolock() when a selem is being deleted. Then,
+> in destroy() we simply get the total amount to be uncharged from the
+> owner from local_storage->selem_size.
+
+Right, I had a similar thought before. Because of the nofail/lockless 
+consideration, I suspect the local_storage->selem_size will need to be 
+atomic. I am not sure if it is enough though, e.g. there is a debug/warn 
+on sk->sk_omem_alloc in __sk_destruct to ensure it is 0, so I stopped 
+thinking on it for now, but it could be a direction to explore.
+
+If it is the case, it is another atomic in the destruct/map_free code 
+path. I am still open-minded on the nofail requirement for both locks, 
+but complexity is building up. Kumar has also commented that b->lock in 
+map_free should not fail. Regardless, I think lets get the nofail code 
+path for map_free() sorted out first. Then we can move on to handle this 
+case.
 
