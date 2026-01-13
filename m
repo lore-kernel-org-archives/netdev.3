@@ -1,136 +1,196 @@
-Received: from sonic308-36.consmr.mail.ne1.yahoo.com (sonic308-36.consmr.mail.ne1.yahoo.com [66.163.187.59])
+Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D7B34D4FF
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE352571C5
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 16:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768322968; cv=none; b=ZG2u0eE/PkycDqHtNHoqBjiFazTanrssWEAuKBKnC0/56i6U1t6E8TBSoZq1L8rthY7X+N1rdEBvNTq4UazWnpn8+MhmBhClqtz078gitNkCDHCAFzFGgvE4+1nvrCkjBhMTirlqGcFUtwiPcMUn9Zs2BRLd5tpvviLFHQrBZ9E=
+	t=1768322975; cv=none; b=PTEEL3UPECPi/AndKvyABRr+WZL2GRgcDo6VfdWl9NyvHkQZib1t6x0SiVYIz+d5c0oDtI5da3z5uPoKnTsfwSTWjCNL/TROhCprpsnII/7UfP/E4gxZjyPsTZsCfz+Z85Ozi0pZ5hgRv9Qk+jMagmDcOvxjOBCYfzOibOpUtrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768322968; c=relaxed/simple;
-	bh=OyOaWwBvHND5r3TfmA5EfR/0ZZhhdD9apaXkw0UcDzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/VIDMH25HkZl4/NX7H1Sduoky4Zb56wEXh8LAkVY1IG9x/Bbp6FsCw2CdOPlWdiBnniFjScl+/BJ1Bl4JQ99OBW61fGdMBfiFMood6SIUaTUGsy66IytuUBAbvxhb5xgEWpvGscFyeoiIZDsfPoidIV8QQYHhBWLWGOdg4zE2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=hMwh8Ga4; arc=none smtp.client-ip=66.163.187.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="hMwh8Ga4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768322966; bh=NWYeVvUmPkhrr6EVYaqNHPu/ef7X6jiiHaSE1eZ3j9I=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=hMwh8Ga4IdzX5UmCgtzdCdmft1FA5adBzxaFiT1FxAmhBhHVAqpMxOCfInH9izIPRtSvB/H7XDsVGjwS9azyB9OubjUSgbsa4+2MwLA0Zt3DmNFyp4Er7c4qPW0JHgRXFfNZ2LMCXFmvFZJZNuxZaF5P2HUynr/UySo4OL77glEhYT6xpxRWtQjBiiZ2RrL0e52Tm6a34vPAtYXdaLRGE4m7khqM8P3ZVdI98zmOcxXpXBMiFeU3V9bNaxJYJxe4fabUWI4+hTSbuiRMR9udJvTWma4QfGIWBcjnZ9WZx4DCKaQXsW5cS52kVeDWNOCr4VFtqjt/ac74Q9DUfwP56g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768322966; bh=YfZXH1STePBpHXsaoONo6+zHNkZsrpoqNy4mgNfNx9o=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=knf3Vzed3Dkr0smdg2YmF0yGokpv/lTGF5BZovxA0ZahiFmTJ8Qy/mENSSKLPygRE+pT4A3BHvtbd53Iia7PV5ZWFUr9LzU39TOAP2nYuDgDDtbRJnTn/UNEhVG4Opw5pFx1xl0h9Af5Ug5bFL/grwJIARTSRbOpgl6wRt//pClAI18+jx22I7SvOz3uR4XBEIAjFNc4xW9R77XKKmv9oz4+Db+z3g8SqAaUp+3VW4tuJqcGB5Th12WAjq2UgEgRIjFYNywk5QDVtU4xQ6KHLYXg0JAuQIvwK3Y04SkcBn4pL/uGf8on+2HCWH8fM/88IvRrvH7hl90SHIoopHghiQ==
-X-YMail-OSG: oonfWk8VM1kv3gGrxtMp.Y56WLWB0z5pL_qRGagGrKe0neDKOA_xSCLuvUq7dFu
- NV_F_cgE0fc_AoKSxEPOf2gFOKaSDkO4kRLqZ.IquHSycYs_x7S1MUSM5xp6Ys9YVAPhkT1kq08y
- CcfOl.YokeznFuaE2zot0EFFJBOM2q_5Ne666ggIv6E.UNtIFq1wr6kLWPP.xocf5iT8vhau_Kam
- NSQMY6QW.t_0bwCe2YGuhYVji5J7XO.GBsaXrNZAivjHMoh.BQM9w6NYvRl15UqSVxpS10enCUOw
- Oic_oXaFAUG85SG9izosctVQUCHPODUSd2k0EEr8dEmGDts3NquBcLIFmu81lh.bYXKC_vi49jC3
- kiCS5jQ92GWX8COn2_SBNJgbfARIZYvsRsX54pDzkB7SnhEKKcF.XPtZ8LWkh03BYS8mmPX3QfTt
- 5TXI6L9UAx6xhY2HQIc3NTTa.Muu7tay8Ovfsf8dtKpZUyHkjfOmikb6DrVSKdd6ZoXq8alnQgmJ
- WhBemI5UsjS3pF2VTvfe0exf2A8n1yurl088ULFN9jR5QpszDfHhbVPJtX4kcz9QltD1U7SbB2gY
- sGDDSeR29IejsvSb7c2XhDyS6AqqcS9cevyb6MVh8wlZbeQFDbn_JEAV_3.Tbro_elEgXpilTCyB
- ShKlphQZybMlB3INlHKIa3Wt7oci_DTxDXyhyZ_HfZudda_DMsw4E7BeCqgJzt1nPa.bLv_7fhFz
- MZcjwsAhM_wGFyjOKM_Q4Plp5NtL6oy0SmGfhHFbva7FGp4iPU8WInIOUbgqslqvYJ1mT.Bo68__
- mflCROtQbE4TJ9bJQmtfeVm_QFWtuwbsDgn.Wb0mbHIKDJlzN9gp.wkZo2MNLVYfgJG2g6j6jGPc
- RR_Ab7DslOsU1eFTHiyXfzBg5Za3ugdzijGjKP72Oamr6rGnB.pdwsYywuIAsNHXYstOhbFb2TSg
- GyeL5apKkU0VuY8bIRZ83zPNguLgZ7nuN0Suay.ahUI8AAI0RsiZIAYhiB4VyrKUsav_SZGC4fX1
- kbwHtj5flr4BRo92c63PrMVN43p.WUMaywunDIe66hSo8qmpDcyHtfN1gYltJyuG23l.jVZNsTH1
- mIf4eQ4WwCxp9ZL0q6bH1zhCej16zKKJyykWU5vsa7qhFFQnJBcqvwFlfWqMLUKEDM.g.4WJBnIk
- g67.sdlGdmO_WWintfFixJPyVMeSzps2DaNunBf9z44hS85oyguXXsefnSbE4hUlLrQHU_K9DyWI
- U3dugLVCE28P.pOWjoEyy50xHSIJ_WwrkxuhCmChY6e4L6afYfuFXwVMELFfJvgf9hbhczoGff5V
- 7Abvpgelu5eLEKkxsp7.I._aBCRzbA_PMWknyBIeuKVVU9zGRGSbf.lAQVqaB3rim834B.j4HgBs
- 6UNYpeWKbo6EZomju.1ZMnbQfIfYH9iAc0IWNRbor94spy8rGCSmDqEDi9sVgBDe7laNV56Titlt
- AOipWYQr9yq9qs.HhZfaPf0seFar2cTS9Byl29Wh31kKKaecV7yFEhiZuxJ9UtnSyXd29zCkeu6q
- 0DsRVY5kREpWggV.KUIIWPkOlB8oGbKrhyj4yoWQT8j7pERKeqWQJ6jKEHf4IAPfk2UTPZIM6Enk
- fil6XfUZFkBoLhOHluibqSLZEuut9IFV.rnIc71hRkWyzR8tTmGznSQp4l4hxoOr0HTzYSGd.oFL
- D_ucfSfer_n6zMxrIXCOzwIdsh.YX6eSnx9h3rem5sUAs9ktZuY_2_H.lvwzGErobu8pc6iRixvM
- dFQrrspbNZajPFnIP56eMLLtrs88POTUP84sQfakRUa6z8RIctvsAxv8M8TKtCLQazdpyewy_TnC
- druwTZG1Wkml9h9v5FJbFlUtKMVkW.oUaAmK6uaA5iZpDPE8dGI5CZ3MgcgOBU2lkPgwGu_iyx21
- XeLuOb5lWYaE69nlQrFYoiP1yqhLmQoENn48tQ2E8gg5ZmVZQx5d0fvAPM_onT3mFW3sIuO2SNtx
- g9eTx3G9aACOikL8n53XprHPZ0NUIIaezgROySr5Thgnxhqnwak5Uop.fNzbBXcxevaFS78Y_Ha7
- wm.jT5n9N7dT_jKzji2xjR1lhhQo2Lxhjrwq.5L88SXebhlDZHylhBBHqL44iN2P2I0_XdjDQw_m
- e1ci7Ttp_hdSUUh7n4aNObTVs_SLWOcAjYOYQCbk_d18atGVyt_Lb2pw48mChth__UlDMtcWOt0r
- kEnuW7i3YBAiudrSA23pA0nI3dJU-
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 19d22beb-231c-4ffc-8abc-ad96a16dfd4a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 13 Jan 2026 16:49:26 +0000
-Received: by hermes--production-ir2-6fcf857f6f-9ndng (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ae45f0023da4d2f517b44dd167b3090b;
-          Tue, 13 Jan 2026 16:37:15 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v5 11/11] net: tipc: convert tipc_udp_xmit to use a noref dst
-Date: Tue, 13 Jan 2026 17:36:14 +0100
-Message-ID: <20260113163614.6212-3-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260113162954.5948-1-mmietus97@yahoo.com>
-References: <20260113162954.5948-1-mmietus97@yahoo.com>
+	s=arc-20240116; t=1768322975; c=relaxed/simple;
+	bh=JKV6GmAoHH6oMG9RtZl5ikrn+qQp/xRkZ93O5+SeUjA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=uHMd0aAtKZid8ldLuSsvMd+YS4dJEJJ3VJvhGac8Xx4A0PJnbnGqY/y2msq23mb1/Qr4ryVnqT2n2seeyZ7SyY82PCJ2mz+/StYhcqO0h/fCzkmg0FKiMSQuqUzepbBGgGyyV8iZzpFIPHs+yX3hZdndicq2DatWKxPNZv2rJtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-6574475208eso8597280eaf.3
+        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 08:49:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768322972; x=1768927772;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s9l8oU/c63XdGQ4bmpll3fc4/YEXsaRrmbMS6OocjtA=;
+        b=bZTb8EkCHdew5ED8mbjhg6q57Cx0GCukhY5FN6XLnzAqXCwXcAWp9i+LVAVSBT2MUB
+         C/1hSOut2YJmT86SWhThqkhJ6tc0HCshluzNfIWzQlMwhQOUYTHQ20TayMM5JhX+/mu8
+         l/Js5nAaMY1yCFKBm68ndbrdIYvm4v5RX7HL8ovONAnYMZwnJZsDAD/VKDH5msaFnwQs
+         3CdEJdK1QUNLbHIdsGvTBfhW0+sorblSd6P5IDGkDYrB4yb2ArCDBQ/da9meWD35J8Nc
+         SviSUqmlyiRsJx3z0psd0gJWj02IHVfSLqfRiWFcoAmyFrWwUBdhbzmigyCOJasA7NBe
+         uBiw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwe/OHt3kq6l0fBZIV9g+9xe1T5B1s6v87EI+RQk7+wUtaHPD6w8DyqHCZRNu/pBvKvJT2lOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOa/DiaxW4x7cZap82i2wekcVa5GwzS88VbDAi3L5VPgFVR4xZ
+	aJiYJBsHxM9fticTaP34XCAJrD61SOtO1pt2qz27bFti0jBI4gjIwR+COHFamTmjpS4Cvj086p4
+	HhlW7WpltkGhHyt9WvYO6X1X7GmaGTLp7IQDj5KwfPRvKfkhC4AxucSoKEX4=
+X-Google-Smtp-Source: AGHT+IEe/slWVvl0T454EGqu8WlPgYqlIICpSF4oVyCGrhUTsIMlkv0ggB+FG4mhkY906wm3GJ8Yk+twQIkabsYOF//ltoNzLnrG
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:a1a5:b0:65f:6df9:215f with SMTP id
+ 006d021491bc7-65f6df92832mr3738213eaf.32.1768322972506; Tue, 13 Jan 2026
+ 08:49:32 -0800 (PST)
+Date: Tue, 13 Jan 2026 08:49:32 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6966779c.050a0220.1a12f3.09f0.GAE@google.com>
+Subject: [syzbot] [kernfs?] INFO: rcu detected stall in cleanup_net (8)
+From: syzbot <syzbot+0604401cc084920f6c3d@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	gregkh@linuxfoundation.org, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tj@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tipc_udp_xmit unnecessarily references the dst_entry from the
-dst_cache when interacting with the cache.
+Hello,
 
-Reduce this overhead by avoiding the redundant refcount increments.
+syzbot found the following issue on:
 
-This change is safe as both ipv4 and ip6 support noref xmit under RCU
-which is already the case for tipc_udp_xmit.
+HEAD commit:    008d3547aae5 Add linux-next specific files for 20251210
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=147c3a1a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a94030c847137a18
+dashboard link: https://syzkaller.appspot.com/bug?extid=0604401cc084920f6c3d
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13f9deb4580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1406b992580000
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/f5497242418d/disk-008d3547.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/46fd6edd4284/vmlinux-008d3547.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/61e6e2e573e8/bzImage-008d3547.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0604401cc084920f6c3d@syzkaller.appspotmail.com
+
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P5930/1:b..l
+rcu: 	(detected by 1, t=10502 jiffies, g=11645, q=51 ncpus=2)
+task:kworker/u8:12   state:R  running task     stack:22432 pid:5930  tgid:5930  ppid:2      task_flags:0x4208060 flags:0x00080000
+Workqueue: netns cleanup_net
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5256 [inline]
+ __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
+ preempt_schedule_irq+0xb5/0x150 kernel/sched/core.c:7190
+ irqentry_exit+0x5d8/0x660 kernel/entry/common.c:216
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:rcu_is_watching+0x67/0xb0 kernel/rcu/tree.c:752
+Code: 89 f7 e8 0c 71 80 00 48 c7 c3 d8 f6 7f 92 49 03 1e 48 89 d8 48 c1 e8 03 42 0f b6 04 38 84 c0 75 34 8b 03 65 ff 0d 79 1d d7 10 <74> 11 83 e0 04 c1 e8 02 5b 41 5e 41 5f e9 97 d8 b6 09 cc e8 71 d5
+RSP: 0018:ffffc900043af018 EFLAGS: 00000286
+RAX: 000000000003f46c RBX: ffff8880b86336d8 RCX: 1e5222b0fc0eb100
+RDX: 000000005b9ddbdf RSI: ffffffff8bc07c40 RDI: ffffffff8bc07c00
+RBP: dffffc0000000000 R08: ffffffff81743f85 R09: ffffffff8df41a60
+R10: ffffc900043af158 R11: ffffffff81ada810 R12: 1ffff92000875e21
+R13: ffffc900043af140 R14: ffffffff8d9b1dd0 R15: dffffc0000000000
+ rcu_read_lock include/linux/rcupdate.h:868 [inline]
+ class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
+ unwind_next_frame+0xd4/0x2390 arch/x86/kernel/unwind_orc.c:479
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x9c/0xe0 kernel/stacktrace.c:122
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:253 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2540 [inline]
+ slab_free mm/slub.c:6668 [inline]
+ kfree+0x1c0/0x660 mm/slub.c:6876
+ devinet_sysctl_unregister net/ipv4/devinet.c:2729 [inline]
+ inetdev_destroy net/ipv4/devinet.c:334 [inline]
+ inetdev_event+0x78e/0x15b0 net/ipv4/devinet.c:1655
+ notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2269 [inline]
+ call_netdevice_notifiers net/core/dev.c:2283 [inline]
+ unregister_netdevice_many_notify+0x1867/0x2340 net/core/dev.c:12400
+ unregister_netdevice_many net/core/dev.c:12463 [inline]
+ default_device_exit_batch+0x964/0x9e0 net/core/dev.c:13055
+ ops_exit_list net/core/net_namespace.c:205 [inline]
+ ops_undo_list+0x525/0x990 net/core/net_namespace.c:252
+ cleanup_net+0x4d8/0x7a0 net/core/net_namespace.c:696
+ process_one_work+0x93a/0x15a0 kernel/workqueue.c:3279
+ process_scheduled_works kernel/workqueue.c:3362 [inline]
+ worker_thread+0x9b0/0xee0 kernel/workqueue.c:3443
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: rcu_preempt kthread starved for 10553 jiffies! g11645 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:R  running task     stack:27736 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5256 [inline]
+ __schedule+0x14bc/0x5000 kernel/sched/core.c:6863
+ __schedule_loop kernel/sched/core.c:6945 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6960
+ schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x599/0xb30 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:pv_native_safe_halt+0x13/0x20 arch/x86/kernel/paravirt.c:82
+Code: 13 ee 02 00 cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 66 90 0f 00 2d 73 c0 0c 00 f3 0f 1e fa fb f4 <c3> cc cc cc cc cc cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90000197de0 EFLAGS: 000002c6
+RAX: 2bdaeed9ae4cb000 RBX: ffffffff8197971a RCX: 2bdaeed9ae4cb000
+RDX: 0000000000000001 RSI: ffffffff8d791c9e RDI: ffffffff8bc07c60
+RBP: ffffc90000197f10 R08: ffff8880b87336db R09: 1ffff110170e66db
+R10: dffffc0000000000 R11: ffffed10170e66dc R12: ffffffff8f820770
+R13: 1ffff110039dcb70 R14: 0000000000000001 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff888125f34000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffee7189228 CR3: 00000000753b0000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ arch_safe_halt arch/x86/include/asm/paravirt.h:107 [inline]
+ default_idle+0x13/0x20 arch/x86/kernel/process.c:767
+ default_idle_call+0x73/0xb0 kernel/sched/idle.c:122
+ cpuidle_idle_call kernel/sched/idle.c:191 [inline]
+ do_idle+0x1ea/0x520 kernel/sched/idle.c:332
+ cpu_startup_entry+0x44/0x60 kernel/sched/idle.c:430
+ start_secondary+0x101/0x110 arch/x86/kernel/smpboot.c:312
+ common_startup_64+0x13e/0x147
+ </TASK>
+
+
 ---
- net/tipc/udp_media.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index ba4ff5b3354f..cc1ef043aaf0 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -175,7 +175,7 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 	int ttl, err;
- 
- 	local_bh_disable();
--	ndst = dst_cache_get(cache);
-+	ndst = dst_cache_get_rcu(cache);
- 	if (dst->proto == htons(ETH_P_IP)) {
- 		struct rtable *rt = dst_rtable(ndst);
- 
-@@ -191,14 +191,13 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 				err = PTR_ERR(rt);
- 				goto tx_error;
- 			}
--			dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
-+			dst_cache_steal_ip4(cache, &rt->dst, fl.saddr);
- 		}
- 
- 		ttl = ip4_dst_hoplimit(&rt->dst);
- 		udp_tunnel_xmit_skb(rt, ub->ubsock->sk, skb, src->ipv4.s_addr,
- 				    dst->ipv4.s_addr, 0, ttl, 0, src->port,
- 				    dst->port, false, true, 0);
--		ip_rt_put(rt);
- #if IS_ENABLED(CONFIG_IPV6)
- 	} else {
- 		if (!ndst) {
-@@ -215,13 +214,12 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 				err = PTR_ERR(ndst);
- 				goto tx_error;
- 			}
--			dst_cache_set_ip6(cache, ndst, &fl6.saddr);
-+			dst_cache_steal_ip6(cache, ndst, &fl6.saddr);
- 		}
- 		ttl = ip6_dst_hoplimit(ndst);
- 		udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
- 				     &src->ipv6, &dst->ipv6, 0, ttl, 0,
- 				     src->port, dst->port, false, 0);
--		dst_release(ndst);
- #endif
- 	}
- 	local_bh_enable();
--- 
-2.51.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
