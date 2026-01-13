@@ -1,68 +1,68 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BBC328246
-	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 03:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1EF330B3E
+	for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 03:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768273989; cv=none; b=WEzOfZKnyd9hf2ASD8i9rHd1vaq2dmUZYGo7bPl1K/zB+jfNrDK019alm/USAdJdEamho3KTiUE2GoOy5XpLcWqujWZrVbXZe0XQvzIQPYz65His7vNnz3I/gyL4cn39uofW0jFSMxcKovcG6eDHzqHlX5j7Svjyh6ov3jraYE4=
+	t=1768273991; cv=none; b=QrN4X7QLtNtNRjyETGB2efLftgYj1QJw9YOqArWLPV/NJdUlxu3IO82HlZW1vqzSIXM4ZAxXCHsX9lL7y9Uj4RwB8HnxG9nFS1ViFsoi3B1U5JS8MAhJo7TNqZQj3uJkEfhYuGGUZvbr16g/tk1NDzix6Hl1gpqQj8OU/NK+fwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768273989; c=relaxed/simple;
-	bh=P4erHizl27nbkGk13UaQgtaMcmfPrCQL8OW5nr9GtQs=;
+	s=arc-20240116; t=1768273991; c=relaxed/simple;
+	bh=43YZlXDQmW65hszyjr5m3UtpfpB8+72+oSXEtxR8B+c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aA/KHWLcbZtBQjNrh2KY0rmaIRbE7F9yu4Mh5md4d3iqPj3Pmu4Er7t/pqwtP5kPvtaH4EdwL8YmsLUIr7+gdQQmK8WS2znKWtTx+DibU4Z8j3VfgwVlFN8lZgHuhAnCEWWGD8dgl+juaABVyf8HCX0rMaOtXeqZ2DUU9dT85t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJW025XU; arc=none smtp.client-ip=209.85.128.180
+	 In-Reply-To:To:Cc; b=lJW8be7QsaIaE75EjTc5oaDqnJeGx0POCwE92kk2dMgKKLg1FBn9Z9/xZk+WyQeurlhsY4Wyk9FcQAea17IhbSoPBvq4e1rJjVpzw2rZeO9BAlM6uFPJNLD+ZMkNpcMiANK6QowDkL6ytIIlUsxgr1BIHca7jNNKoT8wZAS0YAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GvKioUeq; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJW025XU"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78c66bdf675so70730917b3.2
-        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 19:13:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GvKioUeq"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-78c6a53187dso36900517b3.2
+        for <netdev@vger.kernel.org>; Mon, 12 Jan 2026 19:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768273984; x=1768878784; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768273986; x=1768878786; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pnWUXZAQs2u/RX1G1g/cLNdC4zcJTVF/JpiRxAH0cLc=;
-        b=dJW025XUyS0hkypO5syqIx9fQbwC2g43y7fdpET5hJo6tRLKtoZLLyvWIeCSiPStdU
-         2xPXuzf50clQcMeyqG9H6Q4NUf923gNDmUOmn0nSpM0M0bJsXajOEM/UGVppFQ0WE9Pa
-         CX89EQ4o8X2rCeKP3szDc+ZVpheLMX3/xwI9172ilwMH82KqmeHzkqWjANgqcQ3Ptr6W
-         h7IXBkV/lWV/UsDJd7iPkCGESrRmqxnnGvWLkO1C6c9ONTVEM0ujojcMgYG0S6vdFkJv
-         mrbaAI19Si6DhtVClx5cwhxB7e+kfv1Vmv/vrANEQD+57C/3aq6amTXAUFm4qsmiAdRn
-         /mJg==
+        bh=Y3I8QcIsIeOrh9cIrz38ZjjL+G5z3ujRC9KA0ugGud8=;
+        b=GvKioUeqJuLgXz0GTYRTnFqU+1pyo22l7fcw4ynkxpj+ey80UuN3tYzpU2kMujz52S
+         s+yskllsgQLGjnNi/D8mNh/PzPHuvlr+Cp0oE+5xE4yFopGJgOQgF/Ai01IInbuJhcKf
+         Q37/CodOAib/BJmlG+bWstVR3nrbWVQJCX+HKOAQ7NWqkuxMs8ub9FZLVX2w45ONdomL
+         /J0qzGvfhsh755mx1poZv2bblgJ/2PEJsM3IpLtsk0N2YaoTvDXcTWrXWrZnvg7Wmn4V
+         4MUihvhyyTrKhXGeityiFQOmoxSxSx6XIyg68nj6iQfVvVmAA0UydPmqRcwqTScchCYr
+         Lsfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768273984; x=1768878784;
+        d=1e100.net; s=20230601; t=1768273986; x=1768878786;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=pnWUXZAQs2u/RX1G1g/cLNdC4zcJTVF/JpiRxAH0cLc=;
-        b=fN8DpI7GrE5N0l+qbBKKMXTPkPyDi1NbOOCSA2AiuZxFjk5FlsUP/KGbhMZRVyi9WU
-         pl6sXcrniy0Qg91fwcsufCrBwgm+4Fu85zBNfAOC18wqQJaLhAKBnnWjmUBCqKbbsK+S
-         prPcTTQhZrd5ycep/Gq+ERNkR0gASygLlnwX66s+V/XWF+f1EwvxCDgrFHdbIMfPy2o0
-         AIcuH1/Qvq20tg4Ky+rch9VMaVMhWyWywrSBKvhk/LKkr3+yDbpMX63wOwXMGZAcrOEw
-         dS6KX6D4/pVDuE06kwdd9OFcy5Us1xm5nUQPYjqk9n9n4yJJItdvkB8DZ51ICQMhCqHj
-         F3vA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBNUrPV9lj6x5XsAlWTObVFWzUKFR2M3vkqcFUKYsGkyZ4Mi1lCrvb2U6vN6UNXsPoS7MsCzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp7EfyMwAq4ji7rHPqcgykac+R+C7JHjiWYyUh2XcOOV0uW7zP
-	7iAOIstoum1rLjiLQI5HUT0TzemmOlbljlurYTFiiqSgB3ohfs2tR+pl
-X-Gm-Gg: AY/fxX7S1+bmiXcaM4N8eO8AGjat/F3swxiRapao6JPPldwSyNeswc+D2gVMaXAvw6p
-	rgXfIDOrOSXLgko5MdVMDBs73lbkwQgGHBK3xn+8VUpASMHYeCZb5wiUQ/eXglorRfKsGe+z63Y
-	FJ77G1qqBgcUKmAtE3AdnNmMfuhPUrQYLp2J0zSqg5DLkzArOu2fqAeSXJIX/XMlEfAeFJDTC+j
-	bHmNgXYE0QexugGPBgDvd9LrVQ84GBVEktbdTKsoEpzHtn1AYLgSwMpx36IySSIaF1QHN54yagQ
-	aG2Lv1ZUaR5yYclnYMe5+ISkoE5a9MyxBMXi4PrPoPycwEbRfs00rBevRHFdrWVDhNjQvFKcVp8
-	2KbBaszxwTga00025ehNROraiqJeUd5nPS5IQpi72x/MuR5QosKHc5AyOibqTJNzsGPizd4hFj3
-	Kyb/xgHGgKJg==
-X-Google-Smtp-Source: AGHT+IEy9Q+Bs+OJz9UukhXskoJRq1Ip3lDRk/f1Rv+Si7ZL/p4TbWg6hnGyyFmzcwY6bJqShwt21A==
-X-Received: by 2002:a05:690e:14c9:b0:63e:3b29:f1e1 with SMTP id 956f58d0204a3-64716c04ccfmr15374186d50.36.1768273984459;
-        Mon, 12 Jan 2026 19:13:04 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:74::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6470d89d4besm8862008d50.13.2026.01.12.19.13.04
+        bh=Y3I8QcIsIeOrh9cIrz38ZjjL+G5z3ujRC9KA0ugGud8=;
+        b=E5EMD6XvLApKoDs9hjq+eR1gu+wCKle2q9cmdaue8Pz5ZYhaI+vyGid+Dtr4KX6e6p
+         6gfNs6SheJwZNvJuA6kzsDFovqeXHFP7y6l35ZP7Qh8F8TGOi9v2SJgBBGp/D0JnZBed
+         EbXwp2VXCg0KRRmNWQnsCbHWcElgYjmsSVQ17JsYNEqAjnviZr6kEJRVm6Eryjy+zSDH
+         2JHSyLi/UtAIBkoSBfK1IbAc07brD65aM5iSCeS0gLyhpUSV4W0zNXmmMoDWmcKcB6wj
+         7RdIhqQ8P83Vf/wd6p2RoDRhTSMCMCNw97h0Npr7GPww4rGculWEdoFaoip9D9YvI48+
+         CTKA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2xQ2Tu58RUCUY+E0BRFkOxjSLVHjybcl0PPsZ54CnvBY++tetArtJd3R/w2KL2SBEWkij6j0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yykm0yTKAplj4idamA6Zz8cLh/kT1p2vGRJDY0wXwwCIgkQdlrQ
+	jUguyGjHUIdhWsYzUONAtj/7Mkr7loPnCqkYV+a43B8gzxVaJ/N/F3an
+X-Gm-Gg: AY/fxX5qjRaYpCpn9+8pWIXSBhHVc2eM4p70jnbHtHQt4yujLQeJDgJbetM0RyirRin
+	O7DMSD6IQD6FU4J7tAzuRJ2ULitgyWekUfqZuEwSu7VywAh9E3G7N3rh0mfYw/VOpFnjMknMHS2
+	mjHiDpJR2N59QgLOyDrbuGalCXOOzTJVxDlx2Sl6wqYmdSPrxUCswYTIDVE3/Z+oxI61/44hkL6
+	LhFBAgFQdejQxEKWReEGjgidP0YDGquuEdMoWeLFv62TYsi96hYnRNlDOIt0SCHQ4C6OKrv6XWc
+	oJgU84w5/eIAbFmAHcVNvNSS3skIWu5sRLBxXQk3w+csKx4PQigRZ82DdczWaERhPTu9HaH6BhJ
+	zeewdALnEm6umWmC1qt9iQJjezuC40yGAq8tVKnvvykPEtjT/mNzkwYhKmUYKZKR8sMKr3B8EAf
+	x0DpEfoiQvliz9mGlYmUsY
+X-Google-Smtp-Source: AGHT+IERhF9/l61WGAQ1JPbNCa1uy97rBtlOCcNLY+Lr8nEdQsaCK1nAx9XYRA7ZWkcN16bvEB72Wg==
+X-Received: by 2002:a05:690c:6f05:b0:792:7721:e072 with SMTP id 00721157ae682-7927721ee43mr68361877b3.11.1768273986386;
+        Mon, 12 Jan 2026 19:13:06 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:5d::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-790aa6a3969sm75907927b3.43.2026.01.12.19.13.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 19:13:04 -0800 (PST)
+        Mon, 12 Jan 2026 19:13:06 -0800 (PST)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Mon, 12 Jan 2026 19:11:17 -0800
-Subject: [PATCH net-next v14 08/12] selftests/vsock: use ss to wait for
- listeners instead of /proc/net
+Date: Mon, 12 Jan 2026 19:11:19 -0800
+Subject: [PATCH net-next v14 10/12] selftests/vsock: add namespace tests
+ for CID collisions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260112-vsock-vmtest-v14-8-a5c332db3e2b@meta.com>
+Message-Id: <20260112-vsock-vmtest-v14-10-a5c332db3e2b@meta.com>
 References: <20260112-vsock-vmtest-v14-0-a5c332db3e2b@meta.com>
 In-Reply-To: <20260112-vsock-vmtest-v14-0-a5c332db3e2b@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, 
@@ -96,133 +96,139 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Replace /proc/net parsing with ss(8) for detecting listening sockets in
-wait_for_listener() functions and add support for TCP, VSOCK, and Unix
-socket protocols.
+Add tests to verify CID collision rules across different vsock namespace
+modes.
 
-The previous implementation parsed /proc/net/tcp using awk to detect
-listening sockets, but this approach could not support vsock because
-vsock does not export socket information to /proc/net/.
+1. Two VMs with the same CID cannot start in different global namespaces
+   (ns_global_same_cid_fails)
+2. Two VMs with the same CID can start in different local namespaces
+   (ns_local_same_cid_ok)
+3. VMs with the same CID can coexist when one is in a global namespace
+   and another is in a local namespace (ns_global_local_same_cid_ok and
+   ns_local_global_same_cid_ok)
 
-Instead, use ss so that we can detect listeners on tcp, vsock, and unix.
+The tests ns_global_local_same_cid_ok and ns_local_global_same_cid_ok
+make sure that ordering does not matter.
 
-The protocol parameter is now required for all wait_for_listener family
-functions (wait_for_listener, vm_wait_for_listener,
-host_wait_for_listener) to explicitly specify which socket type to wait
-for.
-
-ss is added to the dependency check in check_deps().
+The tests use a shared helper function namespaces_can_boot_same_cid()
+that attempts to start two VMs with identical CIDs in the specified
+namespaces and verifies whether VM initialization failed or succeeded.
 
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- tools/testing/selftests/vsock/vmtest.sh | 47 +++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
+Changes in v11:
+- check vm_start() rc in namespaces_can_boot_same_cid() (Stefano)
+- fix ns_local_same_cid_ok() to use local0 and local1 instead of reusing
+  local0 twice. This check should pass, ensuring local namespaces do not
+  collide (Stefano)
+---
+ tools/testing/selftests/vsock/vmtest.sh | 78 +++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
 diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 4b5929ffc9eb..0e681d4c3a15 100755
+index 38785a102236..1bf537410ea6 100755
 --- a/tools/testing/selftests/vsock/vmtest.sh
 +++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -182,7 +182,7 @@ check_args() {
+@@ -50,6 +50,10 @@ readonly TEST_NAMES=(
+ 	vm_loopback
+ 	ns_host_vsock_ns_mode_ok
+ 	ns_host_vsock_child_ns_mode_ok
++	ns_global_same_cid_fails
++	ns_local_same_cid_ok
++	ns_global_local_same_cid_ok
++	ns_local_global_same_cid_ok
+ )
+ readonly TEST_DESCS=(
+ 	# vm_server_host_client
+@@ -66,6 +70,18 @@ readonly TEST_DESCS=(
+ 
+ 	# ns_host_vsock_child_ns_mode_ok
+ 	"Check /proc/sys/net/vsock/ns_mode is read-only and child_ns_mode is writable."
++
++	# ns_global_same_cid_fails
++	"Check QEMU fails to start two VMs with same CID in two different global namespaces."
++
++	# ns_local_same_cid_ok
++	"Check QEMU successfully starts two VMs with same CID in two different local namespaces."
++
++	# ns_global_local_same_cid_ok
++	"Check QEMU successfully starts one VM in a global ns and then another VM in a local ns with the same CID."
++
++	# ns_local_global_same_cid_ok
++	"Check QEMU successfully starts one VM in a local ns and then another VM in a global ns with the same CID."
+ )
+ 
+ readonly USE_SHARED_VM=(
+@@ -577,6 +593,68 @@ test_ns_host_vsock_ns_mode_ok() {
+ 	return "${KSFT_PASS}"
  }
  
- check_deps() {
--	for dep in vng ${QEMU} busybox pkill ssh; do
-+	for dep in vng ${QEMU} busybox pkill ssh ss; do
- 		if [[ ! -x $(command -v "${dep}") ]]; then
- 			echo -e "skip:    dependency ${dep} not found!\n"
- 			exit "${KSFT_SKIP}"
-@@ -337,21 +337,32 @@ wait_for_listener()
- 	local port=$1
- 	local interval=$2
- 	local max_intervals=$3
--	local protocol=tcp
--	local pattern
-+	local protocol=$4
- 	local i
- 
--	pattern=":$(printf "%04X" "${port}") "
--
--	# for tcp protocol additionally check the socket state
--	[ "${protocol}" = "tcp" ] && pattern="${pattern}0A"
--
- 	for i in $(seq "${max_intervals}"); do
--		if awk -v pattern="${pattern}" \
--			'BEGIN {rc=1} $2" "$4 ~ pattern {rc=0} END {exit rc}' \
--			/proc/net/"${protocol}"*; then
-+		case "${protocol}" in
-+		tcp)
-+			if ss --listening --tcp --numeric | grep -q ":${port} "; then
-+				break
-+			fi
-+			;;
-+		vsock)
-+			if ss --listening --vsock --numeric | grep -q ":${port} "; then
-+				break
-+			fi
-+			;;
-+		unix)
-+			# For unix sockets, port is actually the socket path
-+			if ss --listening --unix | grep -q "${port}"; then
-+				break
-+			fi
-+			;;
-+		*)
-+			echo "Unknown protocol: ${protocol}" >&2
- 			break
--		fi
-+			;;
-+		esac
- 		sleep "${interval}"
- 	done
- }
-@@ -359,23 +370,25 @@ wait_for_listener()
- vm_wait_for_listener() {
- 	local ns=$1
- 	local port=$2
-+	local protocol=$3
- 
- 	vm_ssh "${ns}" <<EOF
- $(declare -f wait_for_listener)
--wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX}
-+wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}
- EOF
- }
- 
- host_wait_for_listener() {
- 	local ns=$1
- 	local port=$2
-+	local protocol=$3
- 
- 	if [[ "${ns}" == "init_ns" ]]; then
--		wait_for_listener "${port}" "${WAIT_PERIOD}" "${WAIT_PERIOD_MAX}"
-+		wait_for_listener "${port}" "${WAIT_PERIOD}" "${WAIT_PERIOD_MAX}" "${protocol}"
- 	else
- 		ip netns exec "${ns}" bash <<-EOF
- 			$(declare -f wait_for_listener)
--			wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX}
-+			wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}
- 		EOF
- 	fi
- }
-@@ -422,7 +435,7 @@ vm_vsock_test() {
- 			return $rc
- 		fi
- 
--		vm_wait_for_listener "${ns}" "${port}"
-+		vm_wait_for_listener "${ns}" "${port}" "tcp"
- 		rc=$?
- 	fi
- 	set +o pipefail
-@@ -463,7 +476,7 @@ host_vsock_test() {
- 			return $rc
- 		fi
- 
--		host_wait_for_listener "${ns}" "${port}"
-+		host_wait_for_listener "${ns}" "${port}" "tcp"
- 		rc=$?
- 	fi
- 	set +o pipefail
++namespaces_can_boot_same_cid() {
++	local ns0=$1
++	local ns1=$2
++	local pidfile1 pidfile2
++	local rc
++
++	pidfile1="$(create_pidfile)"
++
++	# The first VM should be able to start. If it can't then we have
++	# problems and need to return non-zero.
++	if ! vm_start "${pidfile1}" "${ns0}"; then
++		return 1
++	fi
++
++	pidfile2="$(create_pidfile)"
++	vm_start "${pidfile2}" "${ns1}"
++	rc=$?
++	terminate_pidfiles "${pidfile1}" "${pidfile2}"
++
++	return "${rc}"
++}
++
++test_ns_global_same_cid_fails() {
++	init_namespaces
++
++	if namespaces_can_boot_same_cid "global0" "global1"; then
++		return "${KSFT_FAIL}"
++	fi
++
++	return "${KSFT_PASS}"
++}
++
++test_ns_local_global_same_cid_ok() {
++	init_namespaces
++
++	if namespaces_can_boot_same_cid "local0" "global0"; then
++		return "${KSFT_PASS}"
++	fi
++
++	return "${KSFT_FAIL}"
++}
++
++test_ns_global_local_same_cid_ok() {
++	init_namespaces
++
++	if namespaces_can_boot_same_cid "global0" "local0"; then
++		return "${KSFT_PASS}"
++	fi
++
++	return "${KSFT_FAIL}"
++}
++
++test_ns_local_same_cid_ok() {
++	init_namespaces
++
++	if namespaces_can_boot_same_cid "local0" "local1"; then
++		return "${KSFT_PASS}"
++	fi
++
++	return "${KSFT_FAIL}"
++}
++
+ test_ns_host_vsock_child_ns_mode_ok() {
+ 	local orig_mode
+ 	local rc
 
 -- 
 2.47.3
