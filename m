@@ -1,91 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3023230D14;
-	Wed, 14 Jan 2026 02:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6BAA945;
+	Wed, 14 Jan 2026 02:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768358623; cv=none; b=lNBCxt4HdeAtOYQwHdb1j1vTNhit+H9fnSjTb57w3u8C5/2CzNuaQhX66JSq+M7wmbVB0BWInf5yPEK28CZHzU7omyGWwIfCfLTJOPhEbny9XW+/tNeaK4sk+bhkvCInWMushu8qMFX42t80WECVJnmFElwnKWvRNVL8TFrfF3E=
+	t=1768358661; cv=none; b=AOzYtxzPHaDF9GAKjIYHAgoT0TnBg0y3bYgg9erLAAKd2z/T7mZhlSbbyRdqXRiLgruDEuyX/PotrlAZRfkxCzJ9IYwI2sKFapsvigEmGgZy61RTFF5oAayq1Ne28nFHdiSszSpKDirFw26/eTUFJ/z85woWRt7kCyj7YVdV9Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768358623; c=relaxed/simple;
-	bh=B82yhT/Xs8cX6q/6DEszXt6PG6EP4RUHWy6XtrKoXU4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Fu3d0t/UsAmbX3kzzqX8nbmbEMcGYc0jCHyFczzqj0OvhVuClhU6WlUIYzy8ofxXx4o7+L5+ijuvGFDyEeap46E/4KFvAuFUVd2fLiaHFaefiBF/vzlf78ob7Dvn8a4nlTVy2yAU685eMQgb7Ei6r1bH9TwN4yRHn5dr6tZd0Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubocRfUU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768358661; c=relaxed/simple;
+	bh=Wwal9vaDVR63Q0cWKi0y+u1strxx7+v2N6jTiHNDP4I=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=H/u43R3/JYSXklpxbANtvM0fQuG8v6cBnpsqRpYhEDsAnEQee3ETdKaPavMZQGdu3YNpVa4oJy2w6iYesTmybjq37ZcFLdM1r6jLB3YoMwgdc5vCugq9LHNjLrBxfqEIoerMdotawK/O/PEK+7OMuomxqTuIxYJnjVaGtSw1Bsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBudthnk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubocRfUU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D0EC116C6;
-	Wed, 14 Jan 2026 02:43:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBudthnk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677E1C116C6;
+	Wed, 14 Jan 2026 02:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768358623;
-	bh=B82yhT/Xs8cX6q/6DEszXt6PG6EP4RUHWy6XtrKoXU4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ubocRfUUtPXACTPLANWw8GpW7Wqeal60nf4Q5GP7PPhy3mbFrGw7jaFv1VZL7Yx7l
-	 9L/TQzGaPtU5O2H0XLpRCCE90k3HLofy1AI/CXJKYPjWD+O1r67XZQ/ESvkfssx4ug
-	 5L/CFAgePxY0cb9OqiPydFkNXKlZ2Jj8k5MQSIOBnSsub1eSum8AuxeXmjAkTPpy2Y
-	 EaEsNH6RDYwJtC6HOKBdNfWmfEpezhKktHktpdQv/45KUFz8uCN05MoRuI78fZ/hK3
-	 01M8w1jd0K9UAYY2nGrzFHP7OJ+zbYRclYHRVd8q99ObXDMdmmHdwyTTKf51pjHU18
-	 DFnAfBDkryGQw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2FC03808200;
-	Wed, 14 Jan 2026 02:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1768358660;
+	bh=Wwal9vaDVR63Q0cWKi0y+u1strxx7+v2N6jTiHNDP4I=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=YBudthnkocEzp/9apWrCNd3oy3e0KJ/xFUQYZlJXyt7e1hm6pUrIXyb8uobdOJ3qt
+	 uNHZSNzFuh7XJZiiSvwJpT+/LhClLNxw6r33jcHCwM24gpwlTNOp8Rf76d9dWiYko6
+	 PIQnpbL6NlnZ8NBzFZByDIzRJkX/8pBbiIs8I7+Fu8GL5C+OdIzYzUvCFGbguZYskI
+	 iXADQWKqc2lwf9k4qbM7QBitH8sJmTy9udMMloYNW+eUoujiUZgjGzMjxKdsYzMyqv
+	 x3FGbhlR76/iBuLmlS4jV49PZCvnohaBOFMjA4LZYYjLQx1qWmcxnDEzBXH+5nPbWM
+	 /3ksiSTIWUJrQ==
+Content-Type: multipart/mixed; boundary="===============2427180407077981129=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/6] selftests: drv-net: gro: enable HW GRO
- and
- LRO testing
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176835841678.2561636.12391509152675295422.git-patchwork-notify@kernel.org>
-Date: Wed, 14 Jan 2026 02:40:16 +0000
-References: <20260113000740.255360-1-kuba@kernel.org>
-In-Reply-To: <20260113000740.255360-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, sdf@fomichev.me, willemb@google.com,
- petrm@nvidia.com
+Message-Id: <718d0ad2565e1df204d3d73cc8130f7a37527e056affe7f3637f2898fb886c8f@mail.kernel.org>
+In-Reply-To: <20260114021202.1272096-1-saiaunghlyanhtet2003@gmail.com>
+References: <20260114021202.1272096-1-saiaunghlyanhtet2003@gmail.com>
+Subject: Re: [PATCH] bpf: cpumap: report queue_index to xdp_rxq_info
+From: bot+bpf-ci@kernel.org
+To: saiaunghlyanhtet2003@gmail.com,bpf@vger.kernel.org
+Cc: ast@kernel.org,daniel@iogearbox.net,john.fastabend@gmail.com,netdev@vger.kernel.org,saiaunghlyanhtet2003@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 14 Jan 2026 02:44:20 +0000 (UTC)
 
-Hello:
+--===============2427180407077981129==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index aa742f413c35..feafeed327a2 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
 
-On Mon, 12 Jan 2026 16:07:34 -0800 you wrote:
-> Add support for running our existing GRO test against HW GRO
-> and LRO implementation. The first 3 patches are just ksft lib
-> nice-to-haves, and patch 4 cleans up the existing gro Python.
-> 
-> Patches 5 and 6 are of most practical interest. The support
-> reconfiguring the NIC to disable SW GRO and enable HW GRO and LRO.
-> Additionally last patch breaks up the existing GRO cases to
-> track HW compliance at finer granularity.
-> 
-> [...]
+[ ... ]
 
-Here is the summary with links:
-  - [net-next,v3,1/6] selftests: net: py: teach ksft_pr() multi-line safety
-    https://git.kernel.org/netdev/net-next/c/b324192e36ec
-  - [net-next,v3,2/6] selftests: net: py: teach cmd() how to print itself
-    https://git.kernel.org/netdev/net-next/c/ce0f92dc737c
-  - [net-next,v3,3/6] selftests: drv-net: gro: use cmd print
-    https://git.kernel.org/netdev/net-next/c/d131da6d7282
-  - [net-next,v3,4/6] selftests: drv-net: gro: improve feature config
-    https://git.kernel.org/netdev/net-next/c/8171f6a76b22
-  - [net-next,v3,5/6] selftests: drv-net: gro: run the test against HW GRO and LRO
-    https://git.kernel.org/netdev/net-next/c/d3b35898de02
-  - [net-next,v3,6/6] selftests: drv-net: gro: break out all individual test cases
-    https://git.kernel.org/netdev/net-next/c/fe074aaa5329
+> @@ -421,6 +422,7 @@ int xdp_update_frame_from_buff(const struct xdp_buff *xdp,
+>  	xdp_frame->metasize = metasize;
+>  	xdp_frame->frame_sz = xdp->frame_sz;
+>  	xdp_frame->flags = xdp->flags;
+> +	xdp_frame->queue_index = xdp->rxq->queue_index;
+>
+>  	return 0;
+>  }
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The new assignment unconditionally writes queue_index from xdp->rxq to the
+frame. Several callers of xdp_update_frame_from_buff() do not set up
+rxq.queue_index, which means they will write incorrect values.
+
+In dev_map_bpf_prog_run() (kernel/bpf/devmap.c):
+
+    struct xdp_rxq_info rxq = { .dev = rx_dev };
+    ...
+    xdp.rxq = &rxq;
+    ...
+    err = xdp_update_frame_from_buff(&xdp, xdpf);
+
+The local rxq has queue_index implicitly set to 0, so any frame passing
+through devmap with XDP_PASS will have its queue_index overwritten to 0.
+Should devmap also preserve queue_index similar to cpumap, perhaps like:
+
+    rxq.queue_index = xdpf->queue_index;
+
+In veth_xdp_rcv_one() (drivers/net/veth.c):
+
+    xdp_convert_frame_to_buff(frame, xdp);
+    xdp->rxq = &rq->xdp_rxq;
+    ...
+    if (xdp_update_frame_from_buff(xdp, frame))
+
+Here the frame's queue_index will be overwritten with veth's own queue
+index, not the original source queue. Is this intended behavior?
+
+Additionally, xdp_convert_zc_to_xdp_frame() in net/core/xdp.c creates
+frames for XSK buff pool memory but does not set queue_index:
+
+    xdpf = addr;
+    memset(xdpf, 0, sizeof(*xdpf));
+    ...
+    xdpf->frame_sz = PAGE_SIZE;
+    xdpf->mem_type = MEM_TYPE_PAGE_ORDER0;
+    /* queue_index not set, remains 0 from memset */
+
+Should this also copy xdp->rxq->queue_index to maintain consistency with
+the regular conversion path?
 
 
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/20980088225
+
+--===============2427180407077981129==--
