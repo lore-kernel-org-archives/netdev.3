@@ -1,170 +1,93 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E9F357A31
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 22:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E00535EDA7
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 22:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768430654; cv=none; b=cI9s5qlh7tgrVZYSs0NS8NwNqduRfI9LEuEuc9ZTb1T7I8K7BYsL9feVeR+8C7ivzX5rb3BGYjbNLHwH888jLNU1X9fztO0gyn656bNKMGD6U6uOvBIydvxfUpUurp2O32WHjj300NYdDBPA339cNTkJCxKbTL9qhHmB9WzkQiU=
+	t=1768431246; cv=none; b=DMYmtIlWBPcwAk0408QiZNBA9G8Qp61a/rivOQ1IEiytATkftyGYrxhtOxbejLjDK9F5MoOOuRPlgdxum0MYqqoWQ7QyV3XSJ2/OYAvHUvTQhg0gtBMmzBVUEv5OlUCT0mD4OZcajXvflsQvoCAnoqwNtRat8Dvc0lG9fcBBnyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768430654; c=relaxed/simple;
-	bh=Lv253Vhdyqoq3A5npjLCB56uuIiWXMDJHNoJItx2n8A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gvYl2tm1JdqNX+UivDHqdDgJjwW+TOzFvSisyorWrOxoEl6UmvSWTonZP+/DhH5DSajWUKcU8EbQ3tpUnUX469ukwPZaYiqjdrE1XDCADZG637nbkaGm33ScJdEhCIvBOYIZ3rNn0dQ4Sln3p1XeQsSMhcLcTs71MtIevNh3erY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CtQiYFSP; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1768431246; c=relaxed/simple;
+	bh=7WsxJU7FKkp41RYPPQz3X32Ge44pP2VLnRmModcDNf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=McLX/lMrV8epQKCPhF3IxZ8CHxQUUEYxWTSM23LfCrIoB2+3NiiOQfRrmG5Wo3omLwins2uVLK3C0K4dnXXcdT8nwEROo7ZzdXPXR8+j103rSXscARwFzfPumnsuSzNGlGql+mZD3+oT5z8oIkp78gbyKFoCbAYO/pEOfK+MZNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXXECRc6; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CtQiYFSP"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768430643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=s55j+wTSPH7nHnij6DJE35wc9T6tk2CJ+DwpAtHo/e0=;
-	b=CtQiYFSP+Wd5VBxdHzgMoEzEK0rrVtL/es+iSmbk9bg2RyalLL0p89Tx8Rjks0oKrIv2fp
-	J8dcauybSqwXpm4ogZunFcBRnLJWoM0KkekE/bs6cs5M0foxd8J/PUzScoX5FmQnFU6nwX
-	c+oOZTxEDtNGB+HaLEplsutMAqSioOI=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kory Maincent <kory.maincent@bootlin.com>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next 1/2] net: remove legacy way to get/set HW timestamp config
-Date: Wed, 14 Jan 2026 22:44:13 +0000
-Message-ID: <20260114224414.1225788-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXXECRc6"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c69ffb226eso2464485a.1
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 14:54:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768431243; x=1769036043; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HLgCsqyyIABS0s1NbINga0N29+Yya9EPm6l3UVkUqlk=;
+        b=CXXECRc6OCkyUIt4NKKmq8VFiuNCWEztho5Mx7qcDz2okZvGZ9uJX7m0v3IoOj7r/f
+         rm4wHnlhhLmJJR5yhyeOfA0L5h1xnAkIvr5FIf5JjCzQxeE4Ln7dgHaIInsMWG/blKs6
+         dwBEx8EOlfoZT9rlxDw+O0PkG+IrdHfOmJY0laBJ3pi+MdkPe2m7iXUw8ymE5Jgqm0vh
+         d0xogJmxcJoEULkODhF5RrdoCMWjGX+sQ11O+NaXHYfB7ih1cryCu1U7HtaJ05jHCuBu
+         x+UImKN0eq/BJgcuUl+OIuGHfyorhLr1ni8b51i1jIbPiLogEEyX7aUDd9EySsbjOkVV
+         hVLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768431243; x=1769036043;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HLgCsqyyIABS0s1NbINga0N29+Yya9EPm6l3UVkUqlk=;
+        b=eqtbU0VmyPqUplrQzCJnMzYbahVeayMyfXEQ0wAORXLFpYr3xCe5X7etp5VldKlE/C
+         8e+CFoV4aVoz4Z2r3NHHh4tD0kXeBFNta076dQFIkrz1Hlg7lxfd33kMgu7EmSYWihqH
+         PheEUqsfs+mw8xDjlVupVr8E0ZmKZiWZ/J2QP2R4/GHR2Idx98hTSYv6qBB4ZndD7BQn
+         BQwtNBgw6gfqFQxyaigQ9C8ZM7xRhXNhderkBhzT5z8c4aYZ+ozeg44ouB85Hh+WNqtl
+         twyZLUQuUuLUIKJMZ8tBFaOzYZpXatVEJs8xn0g8gv8djOkoKpt8tIB5zav3kSSc5XPO
+         GaAw==
+X-Forwarded-Encrypted: i=1; AJvYcCVz7DkLjeVkeFlSkZMfl2aEq0UuGknfCPA67BHk9T8qxtT9506JPVWPkLcVdajag0mNkfM6OqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxN3If8mnP/+SJpFYuijAqIGGZCIBtulFr3HjBu0kWvmFce4Ub
+	KmW0fQECeFvKr2lHly+PsdjXCdpPKOPiS2xeM7womm4LIyttRLh2DKI=
+X-Gm-Gg: AY/fxX5MPp8Xs/ILRseuBwLcTB7WZJQDtnFkcnR2OhfUFkFyuGnibtOChglHQ3NExx6
+	JEkx7LrvlLlapEI5y6QGVdtbUpyX6nusI9H/P9lH7Z14k6AsGPpUgPjmsEhR7UWVY1EW7WnoFo8
+	Gut5RR3Qt/hjNw75nKLbXaOuUHtd5YsAqWmfww9TZH3YhKaRIhkSLdsOkH6QGA4ZBzINFDROl/2
+	fcHU+6AtDodouspcdGZFJ1gSM15wao63AfyO6TKj8J/c/bimli2SuNH+sp5Mx/BgLkJGJcb4Dkn
+	p0HH73uKs8WQ3qOkNyeqPNTI3Cn9oue/dwc4XgHzyGCEgu9QjoK7kZ1tmAP6/R9ahLmp4yuHJn1
+	d936hWpu6HgA8as/MscjvGGW7GkCUcoAQO18Da1Pj6TuOpHCbSiLaoFZz90FOqoeQntjKEuZjCq
+	1ABLPsxgty95gdTntzQi4rvyk497P86k2UeD3+rhC3tYr4aOfQDzrhsJTScykXY+l1NUtrrK9ku
+	EEFcg==
+X-Received: by 2002:a05:7022:1582:b0:123:34e8:ae8e with SMTP id a92af1059eb24-12336ae5ca6mr4266670c88.50.1768424199264;
+        Wed, 14 Jan 2026 12:56:39 -0800 (PST)
+Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f248c246sm32065044c88.11.2026.01.14.12.56.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 12:56:38 -0800 (PST)
+Date: Wed, 14 Jan 2026 12:56:38 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com,
+	sdf@fomichev.me, ast@kernel.org, daniel@iogearbox.net,
+	hawk@kernel.org, john.fastabend@gmail.com, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, Jason Xing <kernelxing@tencent.com>
+Subject: Re: [PATCH net-next v6 0/2] xsk: move cq_cached_prod_lock
+Message-ID: <aWgDBtepjbGNSA0z@mini-arch>
+References: <20260104012125.44003-1-kerneljasonxing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260104012125.44003-1-kerneljasonxing@gmail.com>
 
-With all drivers converted to use ndo_hwstamp callbacks the legacy way
-can be removed, marking ioctl interface as deprecated.
+On 01/04, Jason Xing wrote:
+> From: Jason Xing <kernelxing@tencent.com>
+> 
+> Move cq_cached_prod_lock to avoid touching new cacheline.
+> 
+> ---
+> V6
+> Link: https://lore.kernel.org/all/20251216025047.67553-1-kerneljasonxing@gmail.com/
+> 1. only rebase
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- net/core/dev_ioctl.c | 60 ++++++++++++--------------------------------
- 1 file changed, 16 insertions(+), 44 deletions(-)
-
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 53a53357cfef..7a8966544c9d 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -287,7 +287,7 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 	int err;
- 
- 	if (!ops->ndo_hwtstamp_get)
--		return dev_eth_ioctl(dev, ifr, SIOCGHWTSTAMP); /* legacy */
-+		return -EOPNOTSUPP;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
-@@ -414,7 +414,7 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 	}
- 
- 	if (!ops->ndo_hwtstamp_set)
--		return dev_eth_ioctl(dev, ifr, SIOCSHWTSTAMP); /* legacy */
-+		return -EOPNOTSUPP;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
-@@ -438,48 +438,23 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 	return 0;
- }
- 
--static int generic_hwtstamp_ioctl_lower(struct net_device *dev, int cmd,
--					struct kernel_hwtstamp_config *kernel_cfg)
--{
--	struct ifreq ifrr;
--	int err;
--
--	if (!kernel_cfg->ifr)
--		return -EINVAL;
--
--	strscpy_pad(ifrr.ifr_name, dev->name, IFNAMSIZ);
--	ifrr.ifr_ifru = kernel_cfg->ifr->ifr_ifru;
--
--	err = dev_eth_ioctl(dev, &ifrr, cmd);
--	if (err)
--		return err;
--
--	kernel_cfg->ifr->ifr_ifru = ifrr.ifr_ifru;
--	kernel_cfg->copied_to_user = true;
--
--	return 0;
--}
--
- int generic_hwtstamp_get_lower(struct net_device *dev,
- 			       struct kernel_hwtstamp_config *kernel_cfg)
- {
- 	const struct net_device_ops *ops = dev->netdev_ops;
-+	int err;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (ops->ndo_hwtstamp_get) {
--		int err;
--
--		netdev_lock_ops(dev);
--		err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
--		netdev_unlock_ops(dev);
-+	if (!ops->ndo_hwtstamp_get)
-+		return -EOPNOTSUPP;
- 
--		return err;
--	}
-+	netdev_lock_ops(dev);
-+	err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
-+	netdev_unlock_ops(dev);
- 
--	/* Legacy path: unconverted lower driver */
--	return generic_hwtstamp_ioctl_lower(dev, SIOCGHWTSTAMP, kernel_cfg);
-+	return err;
- }
- EXPORT_SYMBOL(generic_hwtstamp_get_lower);
- 
-@@ -488,22 +463,19 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
- 			       struct netlink_ext_ack *extack)
- {
- 	const struct net_device_ops *ops = dev->netdev_ops;
-+	int err;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (ops->ndo_hwtstamp_set) {
--		int err;
--
--		netdev_lock_ops(dev);
--		err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
--		netdev_unlock_ops(dev);
-+	if (!ops->ndo_hwtstamp_set)
-+		return -EOPNOTSUPP;
- 
--		return err;
--	}
-+	netdev_lock_ops(dev);
-+	err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
-+	netdev_unlock_ops(dev);
- 
--	/* Legacy path: unconverted lower driver */
--	return generic_hwtstamp_ioctl_lower(dev, SIOCSHWTSTAMP, kernel_cfg);
-+	return err;
- }
- EXPORT_SYMBOL(generic_hwtstamp_set_lower);
- 
--- 
-2.47.3
-
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
