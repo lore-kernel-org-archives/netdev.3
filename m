@@ -1,257 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F7A396B80
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 12:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C2B3557EA
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 12:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768393676; cv=none; b=BbZAqXq3gAokaA+Ta8qw418F1YdvlS7BhO6MQC/FNWB5t5hEwSA3i6e4GH27TrbToG1lQTVDLd7WP4hR0l1ovkbJNeC5pEetogR/NooPAgUVXVxbqANFUqN6ijcmEenuTnW4ICS+DuBn8eRsaRYIG+TuxGLkzaPezS2kaxKryqU=
+	t=1768393989; cv=none; b=GC6uL1XJxx7Y5KFQhQwBoe6vdETvJ9OOjsPXR7ST1rq5KnLgX7xH73yTCEm8nvyotfQc4bws8SXurAhlPFu63Rq5X3a6TIMlXrGBa7a2DDe9BUNteu7pfCzjkN1UspihWk18ANO0Q7J+xIg4PMhk9m+YscRQxLRvNrgWSfY7kkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768393676; c=relaxed/simple;
-	bh=xP93VIKpObzbvyld2iuB5BR9QJPYkq90JwMjod3oPxU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMkMNv9HmWICzJR2A9pkgsv+DeCMcz9FoOnC/rdqdPdbiaEu//OolO3kLOFGqe20W38woNVdLAp1JJ4UuqPc1ueHzl4gywhxp6lhyN4AgQMIov71SQ7Cf9yHqeDT4ggRMHx1POSRQdCe/tQfEaoKjdxiT09AKx+DEqrMlkz0pWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LnhtGu73; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768393989; c=relaxed/simple;
+	bh=agxatYm5mUbN++KbSQ9n748/3c6GkMV4Ub9NYi5fR9k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pZlWDQF3x1HxabJ51rpVVSnLFcTVALzm1FiyNiH63WsBpGRJoj30WqaZrCk+9gnLTX2iV4BN+pjFvkMDut5jQ0zs9AMF8MuKQPMyiT6Ga20WrPNyHdD/F7MZ/+5o9uekRGUISrQwMl+XLZeZW3a1yiMoRUYpQ1/82cZNltlLvXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=OPWt0T5P; arc=none smtp.client-ip=209.85.210.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LnhtGu73"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768393672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S+3BLDyp40rfFFbBDUJeuhOZtok2AbBGm0ObGnrAe3A=;
-	b=LnhtGu73XNRsd9/em2JVZ6UNZHilQjaJdJjPd1Ys6h7s7makBjZ65LWAZbWuQNek52wBde
-	ysSM0EVTqylUwwjVMJJjrLIxoKjGFuV4Tx+NRydmh5gKHUrCR4liEf0v5nVX9iuNUuyyf5
-	5qxtACKZsv0Y6FdA+8hPnE4REUffRok=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-78-mFKQwd13PJ-e9em4OfW65Q-1; Wed,
- 14 Jan 2026 07:27:48 -0500
-X-MC-Unique: mFKQwd13PJ-e9em4OfW65Q-1
-X-Mimecast-MFC-AGG-ID: mFKQwd13PJ-e9em4OfW65Q_1768393666
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62E4918005A7;
-	Wed, 14 Jan 2026 12:27:46 +0000 (UTC)
-Received: from p16v.luc.cera.cz (unknown [10.44.32.45])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4F0C41956053;
-	Wed, 14 Jan 2026 12:27:42 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Petr Oros <poros@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Michal Schmidt <mschmidt@redhat.com>
-Subject: [PATCH net-next v3 3/3] dpll: zl3073x: Implement device mode setting support
-Date: Wed, 14 Jan 2026 13:27:26 +0100
-Message-ID: <20260114122726.120303-4-ivecera@redhat.com>
-In-Reply-To: <20260114122726.120303-1-ivecera@redhat.com>
-References: <20260114122726.120303-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="OPWt0T5P"
+Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7c76d855ddbso2858978a34.3
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 04:33:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1768393986; x=1768998786; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W/79JQOY2vgvGddRC2TVOlm5nKGEv4fVyeyaPqhKG7U=;
+        b=OPWt0T5PNVJSyu0HLdsVezlHTiUL7hIUxXyd980iPwDtaEl5yHRywAS5IyBh6TCXIo
+         ni2ZjaBanCu9XFGHYSZtq7ZLb2De/VOqF3PUKVnVJ/6kN4BgxhcftEc/7WTFRpKG/8D4
+         VczpN6kNNThmV3Dzix/KBWl/lxaINyoNUTRqwWUrd5tZ0c161IZomu0AI4FAH3jcD+ns
+         yB7WGeGtk7RhM8XUIjfRiOUSFVWf7/xsRa2yyf4cFfzmJZ+bwPNkoeamjoTU0BU+TEqY
+         NOLazlf4eY+5NBR1K/dN719m1+FFeBdAjIgqDhcenmN5ZuzkeYdTbEmXxNX6H0lBIIbA
+         WxmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768393986; x=1768998786;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=W/79JQOY2vgvGddRC2TVOlm5nKGEv4fVyeyaPqhKG7U=;
+        b=gJfdGsFOikNosJ6Mn/DC4jLEO8rrTqM0IBVx7xu+Z6A8/DLkGtcI4u5E8c4DYuOgC0
+         OUL23ngzv7+TDetlJYeVEOLiFczpg3k97tGZ5QDYJ7TWHw82GlQjghoPdjSyvZdb5xK/
+         f4AQhhE9brmConpPqKZpmfAsGs5v7TjKc1DG8OVc7HRoQ6DCNnVxEcts+tAfbe0eNXle
+         K+RTC11me56tbrvUEGMoeRF0zsAIe42r4gpT7AIRkvvCIuZ+zA3T96I+gjaArUqhjq4h
+         Zlse87WspTlvCKK8L2OhB2Rl+5TWSNx1F/EkbmGBZMiSiKFwRgQgEf5QbycQ3eSDDk/R
+         6bhA==
+X-Forwarded-Encrypted: i=1; AJvYcCVAHNfxhU72kQcbHaYowEpbMi2byWunD+ZEaSMylaCbbIQ0jsxI16MnGZO0Q4woRnaiYr7gA8I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdZuak1GzdpDfvtLI0NM7VBi/56zNWGX3ZJcOQ5kGS8NDMdRTC
+	Zcu7ZU2VMpGuEOPeOWJTk58cyyO7nzkzax2rcdKVlYpxQ5FX/V/mHKf5FBIx1WKm0IY=
+X-Gm-Gg: AY/fxX6EN8AZ/TiX7oDBZweoumk/3duM+bVPralC63/ol4hGBSKINIUBRxebWS1DpwK
+	AoGTC2QqgKdH6vEYamE6Wos5qGNZizjQXUFejZkRHqIyvkTJ5AFEtCzUqyLPc/aWXWGpxp3IWyq
+	ZhC3LexW55zIAWjPj975gpe4UfA2CDVOAaIxsMD5arm8jRnjHBAsckXdF3L4fNef2a8mpy2Vxsw
+	AWgnzZz5flPcpOYqe+heMckQ+is8+RS7sWCtALL8bV9GercrqcNmcThbuB8uvfWsoynGQyqUPp8
+	qYq7n7Ja3j9b39eKuvc3rleDnbqq6vEF3C00k27iEob3ZrItrwwAVlCV1H+8zADesJOKZb3gwkJ
+	JfxV0G4j2EPu8gj6C6taim8XIPJDUG6tbe3FMx3qZAyTT96BXlOCe1xq+B6hegdkWeGeF9Zv6/R
+	UyBs8=
+X-Received: by 2002:a05:6808:318d:b0:450:471:b9ba with SMTP id 5614622812f47-45c714302ddmr1785761b6e.14.1768393986332;
+        Wed, 14 Jan 2026 04:33:06 -0800 (PST)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:bd])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478d9c17sm18199756a34.22.2026.01.14.04.33.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 04:33:05 -0800 (PST)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>,  Alexei Starovoitov
+ <ast@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  netdev@vger.kernel.org,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Simon Horman
+ <horms@kernel.org>,  Michael Chan <michael.chan@broadcom.com>,  Pavan
+ Chebbi <pavan.chebbi@broadcom.com>,  Andrew Lunn <andrew+netdev@lunn.ch>,
+  Tony Nguyen <anthony.l.nguyen@intel.com>,  Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>,  Saeed Mahameed <saeedm@nvidia.com>,  Leon
+ Romanovsky <leon@kernel.org>,  Tariq Toukan <tariqt@nvidia.com>,  Mark
+ Bloch <mbloch@nvidia.com>,  Daniel Borkmann <daniel@iogearbox.net>,  John
+ Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
+ <sdf@fomichev.me>,  intel-wired-lan@lists.osuosl.org,
+  bpf@vger.kernel.org,  kernel-team@cloudflare.com,  Jesse Brandeburg
+ <jbrandeburg@cloudflare.com>,  Willem Ferguson <wferguson@cloudflare.com>,
+  Arthur Fabre <arthur@arthurfabre.com>
+Subject: Re: [Intel-wired-lan] [PATCH net-next 00/10] Call skb_metadata_set
+ when skb->data points past metadata
+In-Reply-To: <878qe01kii.fsf@toke.dk> ("Toke =?utf-8?Q?H=C3=B8iland-J?=
+ =?utf-8?Q?=C3=B8rgensen=22's?= message of
+	"Wed, 14 Jan 2026 12:49:57 +0100")
+References: <20260110-skb-meta-fixup-skb_metadata_set-calls-v1-0-1047878ed1b0@cloudflare.com>
+	<20260112190856.3ff91f8d@kernel.org>
+	<36deb505-1c82-4339-bb44-f72f9eacb0ac@redhat.com>
+	<bd29d196-5854-4a0c-a78c-e4869a59b91f@kernel.org>
+	<87wm1luusg.fsf@cloudflare.com> <878qe01kii.fsf@toke.dk>
+Date: Wed, 14 Jan 2026 13:33:03 +0100
+Message-ID: <87ecnsv0g0.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Add support for .supported_modes_get() and .mode_set() callbacks
-to enable switching between manual and automatic modes via netlink.
+On Wed, Jan 14, 2026 at 12:49 PM +01, Toke H=C3=B8iland-J=C3=B8rgensen wrot=
+e:
+> Jakub Sitnicki via Intel-wired-lan <intel-wired-lan@osuosl.org> writes:
+>
+>> On Tue, Jan 13, 2026 at 07:52 PM +01, Jesper Dangaard Brouer wrote:
+>>> *BUT* this patchset isn't doing that. To me it looks like a cleanup
+>>> patchset that simply makes it consistent when skb_metadata_set() called.
+>>> Selling it as a pre-requirement for doing copy later seems fishy.
+>>=20=20
+>> Fair point on the framing. The interface cleanup is useful on its own -
+>> I should have presented it that way rather than tying it to future work.
+>>
+>>> Instead of blindly copying XDP data_meta area into a single SKB
+>>> extension.  What if we make it the responsibility of the TC-ingress BPF-
+>>> hook to understand the data_meta format and via (kfunc) helpers
+>>> transfer/create the SKB extension that it deems relevant.
+>>> Would this be an acceptable approach that makes it easier to propagate
+>>> metadata deeper in netstack?
+>>
+>> I think you and Jakub are actually proposing the same thing.
+>>=20=20
+>> If we can access a buffer tied to an skb extension from BPF, this could
+>> act as skb-local storage and solves the problem (with some operational
+>> overhead to set up TC on ingress).
+>>=20=20
+>> I'd also like to get Alexei's take on this. We had a discussion before
+>> about not wanting to maintain two different storage areas for skb
+>> metadata.
+>>=20=20
+>> That was one of two reasons why we abandoned Arthur's patches and why I
+>> tried to make the existing headroom-backed metadata area work.
+>>=20=20
+>> But perhaps I misunderstood the earlier discussion. Alexei's point may
+>> have been that we don't want another *headroom-backed* metadata area
+>> accessible from XDP, because we already have that.
+>>=20=20
+>> Looks like we have two options on the table:
+>>=20=20
+>> Option A) Headroom-backed metadata
+>>   - Use existing skb metadata area
+>>   - Patch skb_push/pull call sites to preserve it
+>>=20=20
+>> Option B) Extension-backed metadata
+>>   - Store metadata in skb extension from BPF
+>>   - TC BPF copies/extracts what it needs from headroom-metadata
+>>=20=20
+>> Or is there an Option C I'm missing?
+>
+> Not sure if it's really an option C, but would it be possible to
+> consolidate them using verifier tricks? I.e., the data_meta field in the
+> __sk_buff struct is really a virtual pointer that the verifier rewrites
+> to loading an actual pointer from struct bpf_skb_data_end in skb->cb. So
+> in principle this could be loaded from an skb extension instead with the
+> BPF programs being none the wiser.
+>
+> There's the additional wrinkle that the end of the data_meta pointer is
+> compared to the 'data' start pointer to check for overflow, which
+> wouldn't work anymore. Not sure if there's a way to make the verifier
+> rewrite those checks in a compatible way, or if this is even a path we
+> want to go down. But it would be a pretty neat way to make the whole
+> thing transparent and backwards compatible, I think :)
 
-Implement .supported_modes_get() to report available modes based
-on the current hardware configuration:
+I gave it a shot when working on [1]. Here's the challenge:
 
-* manual mode is always supported
-* automatic mode is supported unless the dpll channel is configured
-  in NCO (Numerically Controlled Oscillator) mode
+1) Keep the skb->data_meta + N <=3D skb->data checks working
 
-Implement .mode_set() to handle the specific logic required when
-transitioning between modes:
+This is what guarantees that your BPF program won't access memory
+outside of the metadata area. So you can't rewrite the skb->data_meta
+pseudo-pointer load. This means you must...
 
-1) Transition to manual:
-* If a valid reference is currently active, switch the hardware
-  to ref-lock mode (force lock to that reference).
-* If no reference is valid and the DPLL is unlocked, switch to freerun.
-* Otherwise, switch to Holdover.
+2) Patch the skb->data_meta pointer dereference after the check
 
-2) Transition to automatic:
-* If the currently selected reference pin was previously marked
-  as non-selectable (likely during a previous manual forcing
-  operation), restore its priority and selectability in the hardware.
-* Switch the hardware to Automatic selection mode.
+Since deref happens at some unknown point after the skb->data_meta
+pointer load, you may no longer have the context pointer in any of the
+registers.
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
-v2:
-* added extack error messages in error paths
----
- drivers/dpll/zl3073x/dpll.c | 112 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
+You might be able to hack it by spilling the context pointer to the
+stack in the prologue, like I've seen bpf_qdisc does. But that I haven't
+tried.
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 9879d85d29af0..7d8ed948b9706 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -100,6 +100,20 @@ zl3073x_dpll_pin_direction_get(const struct dpll_pin *dpll_pin, void *pin_priv,
- 	return 0;
- }
- 
-+static struct zl3073x_dpll_pin *
-+zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
-+{
-+	struct zl3073x_dpll_pin *pin;
-+
-+	list_for_each_entry(pin, &zldpll->pins, list) {
-+		if (zl3073x_dpll_is_input_pin(pin) &&
-+		    zl3073x_input_pin_ref_get(pin->id) == ref_id)
-+			return pin;
-+	}
-+
-+	return NULL;
-+}
-+
- static int
- zl3073x_dpll_input_pin_esync_get(const struct dpll_pin *dpll_pin,
- 				 void *pin_priv,
-@@ -1137,6 +1151,26 @@ zl3073x_dpll_lock_status_get(const struct dpll_device *dpll, void *dpll_priv,
- 	return 0;
- }
- 
-+static int
-+zl3073x_dpll_supported_modes_get(const struct dpll_device *dpll,
-+				 void *dpll_priv, unsigned long *modes,
-+				 struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll *zldpll = dpll_priv;
-+
-+	/* We support switching between automatic and manual mode, except in
-+	 * a case where the DPLL channel is configured to run in NCO mode.
-+	 * In this case, report only the manual mode to which the NCO is mapped
-+	 * as the only supported one.
-+	 */
-+	if (zldpll->refsel_mode != ZL_DPLL_MODE_REFSEL_MODE_NCO)
-+		__set_bit(DPLL_MODE_AUTOMATIC, modes);
-+
-+	__set_bit(DPLL_MODE_MANUAL, modes);
-+
-+	return 0;
-+}
-+
- static int
- zl3073x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
- 		      enum dpll_mode *mode, struct netlink_ext_ack *extack)
-@@ -1217,6 +1251,82 @@ zl3073x_dpll_phase_offset_avg_factor_set(const struct dpll_device *dpll,
- 	return 0;
- }
- 
-+static int
-+zl3073x_dpll_mode_set(const struct dpll_device *dpll, void *dpll_priv,
-+		      enum dpll_mode mode, struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll *zldpll = dpll_priv;
-+	u8 hw_mode, mode_refsel, ref;
-+	int rc;
-+
-+	rc = zl3073x_dpll_selected_ref_get(zldpll, &ref);
-+	if (rc) {
-+		NL_SET_ERR_MSG_MOD(extack, "failed to get selected reference");
-+		return rc;
-+	}
-+
-+	if (mode == DPLL_MODE_MANUAL) {
-+		/* We are switching from automatic to manual mode:
-+		 * - if we have a valid reference selected during auto mode then
-+		 *   we will switch to forced reference lock mode and use this
-+		 *   reference for selection
-+		 * - if NO valid reference is selected, we will switch to forced
-+		 *   holdover mode or freerun mode, depending on the current
-+		 *   lock status
-+		 */
-+		if (ZL3073X_DPLL_REF_IS_VALID(ref))
-+			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_REFLOCK;
-+		else if (zldpll->lock_status == DPLL_LOCK_STATUS_UNLOCKED)
-+			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_FREERUN;
-+		else
-+			hw_mode = ZL_DPLL_MODE_REFSEL_MODE_HOLDOVER;
-+	} else {
-+		/* We are switching from manual to automatic mode:
-+		 * - if there is a valid reference selected then ensure that
-+		 *   it is selectable after switch to automatic mode
-+		 * - switch to automatic mode
-+		 */
-+		struct zl3073x_dpll_pin *pin;
-+
-+		pin = zl3073x_dpll_pin_get_by_ref(zldpll, ref);
-+		if (pin && !pin->selectable) {
-+			/* Restore pin priority in HW */
-+			rc = zl3073x_dpll_ref_prio_set(pin, pin->prio);
-+			if (rc) {
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "failed to restore pin priority");
-+				return rc;
-+			}
-+
-+			pin->selectable = true;
-+		}
-+
-+		hw_mode = ZL_DPLL_MODE_REFSEL_MODE_AUTO;
-+	}
-+
-+	/* Build mode_refsel value */
-+	mode_refsel = FIELD_PREP(ZL_DPLL_MODE_REFSEL_MODE, hw_mode);
-+
-+	if (ZL3073X_DPLL_REF_IS_VALID(ref))
-+		mode_refsel |= FIELD_PREP(ZL_DPLL_MODE_REFSEL_REF, ref);
-+
-+	/* Update dpll_mode_refsel register */
-+	rc = zl3073x_write_u8(zldpll->dev, ZL_REG_DPLL_MODE_REFSEL(zldpll->id),
-+			      mode_refsel);
-+	if (rc) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "failed to set reference selection mode");
-+		return rc;
-+	}
-+
-+	zldpll->refsel_mode = hw_mode;
-+
-+	if (ZL3073X_DPLL_REF_IS_VALID(ref))
-+		zldpll->forced_ref = ref;
-+
-+	return 0;
-+}
-+
- static int
- zl3073x_dpll_phase_offset_monitor_get(const struct dpll_device *dpll,
- 				      void *dpll_priv,
-@@ -1276,10 +1386,12 @@ static const struct dpll_pin_ops zl3073x_dpll_output_pin_ops = {
- static const struct dpll_device_ops zl3073x_dpll_device_ops = {
- 	.lock_status_get = zl3073x_dpll_lock_status_get,
- 	.mode_get = zl3073x_dpll_mode_get,
-+	.mode_set = zl3073x_dpll_mode_set,
- 	.phase_offset_avg_factor_get = zl3073x_dpll_phase_offset_avg_factor_get,
- 	.phase_offset_avg_factor_set = zl3073x_dpll_phase_offset_avg_factor_set,
- 	.phase_offset_monitor_get = zl3073x_dpll_phase_offset_monitor_get,
- 	.phase_offset_monitor_set = zl3073x_dpll_phase_offset_monitor_set,
-+	.supported_modes_get = zl3073x_dpll_supported_modes_get,
- };
- 
- /**
--- 
-2.52.0
+In general, I view it as a seconary issue since you can use a BPF dynptr
+to access the skb metadata. It was exactly for that reason - to hide the
+fact where the metadata is actually located.
 
+> Other than that, I like the extention-backed metadata idea!
+
+That's what I'm going to work on. I look at it as an skb local storage
+backed by an skb extension.
+
+If the user wants to transfer the contents of the skb metadata into
+local storage, they can. But the extra allocation is their decision.
+
+[1] https://lore.kernel.org/r/20260110-skb-meta-fixup-skb_metadata_set-call=
+s-v1-0-1047878ed1b0@cloudflare.com
