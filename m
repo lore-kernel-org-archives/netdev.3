@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E63396D10
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 10:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F92395DA0
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 10:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768388106; cv=none; b=KpBpsQ9L7lkMBqMAFiF+miiUOQu0KtWo5XqqVZ5MbidwFcZ78mitwa4nLTfk2oZoPGMrbS5TzC3TLzP8wAtjR7kOSecV2I9fr8wK02RoIf/SEdGM2Hfl5o5/atdOreH4j+ZowYcvVSflbzZaSPdcsR/rBdNTnK5JXAVaFnVk/00=
+	t=1768388109; cv=none; b=PIHhAxCPf4o8ymPGEa4XcBfwjNu/pZLkwDT6dgNwCxzoGh395UesYxkjf/TCQqk4hSXGu0KiiDQmMBbu67eQAdUItKYle7u+MDoG/0c3UROr86oazrLkcYmbJva5o9L8xM6saIErvY+d2EU4C3fYLWGAne+QiPmnfIzW+xr3/lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768388106; c=relaxed/simple;
-	bh=xClUHxueU9IC+ZNDK5EebSCDQYqRsL7jy2IZ06pMyfI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIO+yDHFpK6GlfZ/8PyoFzWEGfymlXA1Ddyr7Dk/C9kCFS7kamejzg2iedCKl2oc4xUlhp1bJxouHH0doJlsipj0NWBUBOUQ8bztz17WwBnT/wphyoxrlT+AgHjiB/jFGNKMJcl6vCBic94VHfqwrslElEZHfksjuN87cm2JvMI=
+	s=arc-20240116; t=1768388109; c=relaxed/simple;
+	bh=xslTz0QAsrjmjJhCdA2M85qhDLJ1vcw6JdsnlpToTE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ueIdoXqp/sGlFu4U4MNrJVK2sdpTmTzPIfCoicxeqgx0lbChPzEbzmXic4oQD/T7u+XooGOUxaeGp/ibdfWUAYJi+qb96ugtahJS0LU9VKcVD2wRB1OkGc3cFvZOw4Y7balHAYwPCwUAsrQhKw8CwozXpqIkJrtsLUhom7eAKSE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,36 +17,30 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vfyU4-0006p5-5S; Wed, 14 Jan 2026 11:52:16 +0100
+	id 1vfyU4-0006p1-3t; Wed, 14 Jan 2026 11:52:16 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vfyU4-000Zez-1T;
+	id 1vfyU4-000Zeu-0a;
 	Wed, 14 Jan 2026 11:52:15 +0100
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 794F14CCB6A;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 45B3A4CCB67;
 	Wed, 14 Jan 2026 10:52:15 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Vincent Mailhol <mailhol@kernel.org>
-Subject: [PATCH net 3/4] can: raw: instantly reject disabled CAN frames
-Date: Wed, 14 Jan 2026 11:45:02 +0100
-Message-ID: <20260114105212.1034554-4-mkl@pengutronix.de>
+	kernel@pengutronix.de
+Subject: [PATCH net 0/4] pull-request: can 2026-01-14
+Date: Wed, 14 Jan 2026 11:44:59 +0100
+Message-ID: <20260114105212.1034554-1-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260114105212.1034554-1-mkl@pengutronix.de>
-References: <20260114105212.1034554-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,92 +53,59 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+Hello netdev-team,
 
-For real CAN interfaces the CAN_CTRLMODE_FD and CAN_CTRLMODE_XL control
-modes indicate whether an interface can handle those CAN FD/XL frames.
+this is a pull request of 4 patches for net/main.
 
-In the case a CAN XL interface is configured in CANXL-only mode with
-disabled error-signalling neither CAN CC nor CAN FD frames can be sent.
+The first 3 patches are by Oliver Hartkopp and revert the approach to
+instantly reject unsupported CAN frames introduced in
+net-next-for-v6.19 and replace it by placing the needed data into the
+CAN specific ml_priv.
 
-The checks are now performed on CAN_RAW sockets to give an instant feedback
-to the user when writing unsupported CAN frames to the interface or when
-the CAN interface is in read-only mode.
+The last patch is by Tetsuo Handa and fixes a J1939 refcount leak for
+j1939_session in session deactivation upon receiving the second RTS.
 
-Fixes: 1a620a723853 ("can: raw: instantly reject unsupported CAN frames")
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20260109144135.8495-4-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+regards,
+Marc
+
 ---
- net/can/raw.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index f36a83d3447c..d66036da6753 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -49,8 +49,8 @@
- #include <linux/if_arp.h>
- #include <linux/skbuff.h>
- #include <linux/can.h>
-+#include <linux/can/can-ml.h>
- #include <linux/can/core.h>
--#include <linux/can/dev.h> /* for can_is_canxl_dev_mtu() */
- #include <linux/can/skb.h>
- #include <linux/can/raw.h>
- #include <net/sock.h>
-@@ -892,20 +892,21 @@ static void raw_put_canxl_vcid(struct raw_sock *ro, struct sk_buff *skb)
- 	}
- }
- 
--static unsigned int raw_check_txframe(struct raw_sock *ro, struct sk_buff *skb, int mtu)
-+static unsigned int raw_check_txframe(struct raw_sock *ro, struct sk_buff *skb,
-+				      struct net_device *dev)
- {
--	/* Classical CAN -> no checks for flags and device capabilities */
--	if (can_is_can_skb(skb))
-+	/* Classical CAN */
-+	if (can_is_can_skb(skb) && can_cap_enabled(dev, CAN_CAP_CC))
- 		return CAN_MTU;
- 
--	/* CAN FD -> needs to be enabled and a CAN FD or CAN XL device */
-+	/* CAN FD */
- 	if (ro->fd_frames && can_is_canfd_skb(skb) &&
--	    (mtu == CANFD_MTU || can_is_canxl_dev_mtu(mtu)))
-+	    can_cap_enabled(dev, CAN_CAP_FD))
- 		return CANFD_MTU;
- 
--	/* CAN XL -> needs to be enabled and a CAN XL device */
-+	/* CAN XL */
- 	if (ro->xl_frames && can_is_canxl_skb(skb) &&
--	    can_is_canxl_dev_mtu(mtu))
-+	    can_cap_enabled(dev, CAN_CAP_XL))
- 		return CANXL_MTU;
- 
- 	return 0;
-@@ -944,6 +945,10 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	if (!dev)
- 		return -ENXIO;
- 
-+	/* no sending on a CAN device in read-only mode */
-+	if (can_cap_enabled(dev, CAN_CAP_RO))
-+		return -EACCES;
-+
- 	skb = sock_alloc_send_skb(sk, size + sizeof(struct can_skb_priv),
- 				  msg->msg_flags & MSG_DONTWAIT, &err);
- 	if (!skb)
-@@ -961,7 +966,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	err = -EINVAL;
- 
- 	/* check for valid CAN (CC/FD/XL) frame content */
--	txmtu = raw_check_txframe(ro, skb, READ_ONCE(dev->mtu));
-+	txmtu = raw_check_txframe(ro, skb, dev);
- 	if (!txmtu)
- 		goto free_skb;
- 
--- 
-2.51.0
+The following changes since commit e707c591a139d1bfa4ddc83036fc820ca006a140:
 
+  can: ctucanfd: fix SSP_SRC in cases when bit-rate is higher than 1 MBit. (2026-01-09 14:26:29 +0100)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.19-20260114
+
+for you to fetch changes up to 426c303c80c2cc220d1477c6ea63bbb183cabd77:
+
+  net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts (2026-01-14 11:36:58 +0100)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.19-20260114
+
+----------------------------------------------------------------
+Marc Kleine-Budde (1):
+      Merge patch series "can: raw: better approach to instantly reject unsupported CAN frames"
+
+Oliver Hartkopp (3):
+      Revert "can: raw: instantly reject unsupported CAN frames"
+      can: propagate CAN device capabilities via ml_priv
+      can: raw: instantly reject disabled CAN frames
+
+Tetsuo Handa (1):
+      net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
+
+ drivers/net/can/Kconfig       |  7 +++++--
+ drivers/net/can/Makefile      |  2 +-
+ drivers/net/can/dev/Makefile  |  5 +++--
+ drivers/net/can/dev/dev.c     | 27 ++++++++++++++++++++++++
+ drivers/net/can/dev/netlink.c |  1 +
+ drivers/net/can/vcan.c        | 15 +++++++++++++
+ drivers/net/can/vxcan.c       | 15 +++++++++++++
+ include/linux/can/can-ml.h    | 24 +++++++++++++++++++++
+ include/linux/can/dev.h       |  8 +------
+ net/can/j1939/transport.c     | 10 ++++++++-
+ net/can/raw.c                 | 49 +++++++------------------------------------
+ 11 files changed, 109 insertions(+), 54 deletions(-)
