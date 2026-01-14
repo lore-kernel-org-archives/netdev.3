@@ -1,72 +1,70 @@
-Received: from MTA-08-4.privateemail.com (mta-08-4.privateemail.com [198.54.122.147])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C3B36B075;
-	Tue, 13 Jan 2026 23:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.122.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7C530E84A
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 00:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768347524; cv=none; b=HXLBzy4jvbueXRu2N6fg6VLwESOks2Mro56359hQxsAsDnfi7FKQHsuFpmE2tT+HQifGP/hg58I4pZv/95GkHvxYzFT29GJcO6Uw0WjIQ85qKZukk+pBrLb//P20+2QKtKyjUa7gUSEOcD2wcOHJx4NF1B/Q1eI+OFarN1aoIEM=
+	t=1768348813; cv=none; b=aV34G6GPYIw1fBI8m7QbvgLWe7ATY3umyam8aGbwLk30OcbIOg7bw+9ihAJBkZ8zOTKufV5j81cIfOQPgUa6SHkfnMlsxSVkYYFQ8peYyzPaD4H1ENoc+53hCUXFOgzn+rsdYtqLyWErVQrgRbDpWQMJnmZnUUo6BjFSCUf7zT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768347524; c=relaxed/simple;
-	bh=WB3bP7F4W/KUYt6cXm8bDzC6b9+gvFcmU2yR/wyQDJw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e5BWjyFJd/XFOEI3XpxPrMuyBouQTvLlAA8kfbpmPWaoNbo4PxGnSgCGtXCsHKXKb1G8We2bOzvAGEmywjrMd8nNBvJypzkguBl/23uMe2T/0R4cE/R/9WUVpXs2VX1qGufKgimb5a2spFfFh/2Dnf1WcQdaoI7vXtTkJx17ZK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=effective-light.com; spf=pass smtp.mailfrom=effective-light.com; arc=none smtp.client-ip=198.54.122.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=effective-light.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=effective-light.com
-Received: from mta-08.privateemail.com (localhost [127.0.0.1])
-	by mta-08.privateemail.com (Postfix) with ESMTP id 4drQg01N69z3hhTl;
-	Tue, 13 Jan 2026 18:38:36 -0500 (EST)
-Received: from localhost.localdomain (bras-base-toroon4332w-grc-38-70-55-47-65.dsl.bell.ca [70.55.47.65])
-	by mta-08.privateemail.com (Postfix) with ESMTPA;
-	Tue, 13 Jan 2026 18:38:23 -0500 (EST)
-From: Hamza Mahfooz <someguy@effective-light.com>
-To: netdev@vger.kernel.org
-Cc: Hamza Mahfooz <someguy@effective-light.com>,
-	stable@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: sfp: add potron quirk to the H-COM SPP425H-GAB4 SFP+ Stick
-Date: Tue, 13 Jan 2026 18:29:57 -0500
-Message-ID: <20260113232957.609642-1-someguy@effective-light.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768348813; c=relaxed/simple;
+	bh=cgBDizAyonfYIqSrnhGl9fQcV2GBbnTgA7hDpPmfvpI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RUhik+ncU4KY9fFtKuLXztkBFA3bVTDp1Hm7rxsSB2JuB+WxBZXGtUsGLKiwLbFvoq68aByZoQVQCfOzddmASA/G2jc0VMxxwpUYFPDEg0QL8inzQ+yNRXogmILLTxOqGnsuTsWcja8/qQzjFfD9i1k9a/VS8AQij5S9EPQqzjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NeCMgxIZ; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NeCMgxIZ"
+Message-ID: <d9b9bd69-e232-45ff-b210-c21229946427@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768348809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9vkd5Vwe8NUqXXhB8w9t5WgfI6zx49RL54i6l3mSiy8=;
+	b=NeCMgxIZFYORfPiqkPhw0ubF/LKtnDoREbEhJZj+5PNdx2fhTBr79+ZxqC9HCVeINtrLLD
+	z+W9sS4e8uBeVZmCuZfbF14cXcwYLj0Ma15qRQ/Uaqlwc94Qsv1x8tlw5PFSY1tA2wR6+I
+	WI0fQeJdBF3zkOK0BdNIGGZe1Qj612A=
+Date: Wed, 14 Jan 2026 00:00:04 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Subject: Re: [PATCH net-next] bnxt_en: Fix build break on non-x86 platforms
+To: Michael Chan <michael.chan@broadcom.com>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com,
+ andrew.gospodarek@broadcom.com, sfr@canb.auug.org.au,
+ kernel test robot <lkp@intel.com>
+References: <20260113183422.508851-1-michael.chan@broadcom.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260113183422.508851-1-michael.chan@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-This is another one of those XGSPON ONU sticks that's using the
-X-ONU-SFPP internally, thus it also requires the potron quirk to avoid tx
-faults. So, add an entry for it in sfp_quirks[].
+On 13/01/2026 18:34, Michael Chan wrote:
+> From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> 
+> Commit c470195b989fe added .getcrosststamp() interface where
+> the code uses boot_cpu_has() function which is available only
+> in x86 platforms. This fails the build on any other platform.
+> 
+> Since the interface is going to be supported only on x86 anyway,
+> we can simply compile out the entire support on non-x86 platforms.
+> 
+> Cover the .getcrosststamp support under CONFIG_X86
+> 
+> Fixes: c470195b989f ("bnxt_en: Add PTP .getcrosststamp() interface to get device/host times")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202601111808.WnBJCuWI-lkp@intel.com
+> Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
----
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 84bef5099dda..47f095bd91ce 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -519,6 +519,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 
- 	SFP_QUIRK_F("HALNy", "HL-GSFP", sfp_fixup_halny_gsfp),
- 
-+	SFP_QUIRK_F("H-COM", "SPP425H-GAB4", sfp_fixup_potron),
-+
- 	// HG MXPD-483II-F 2.5G supports 2500Base-X, but incorrectly reports
- 	// 2600MBd in their EERPOM
- 	SFP_QUIRK_S("HG GENUINE", "MXPD-483II", sfp_quirk_2500basex),
--- 
-2.52.0
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
