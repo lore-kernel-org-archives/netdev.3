@@ -1,76 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8A9944F;
-	Wed, 14 Jan 2026 00:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C19B17BA2;
+	Wed, 14 Jan 2026 00:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768349613; cv=none; b=G7EaOi0Ya+AmPfZIDLxS620/U2it2WQJSDZClDYQQLA6mZNW57QmMfvcrynbbscJboO2BzPG8hpDc1MqWU9TMXs1VTuLgju7x+g9CL6lR++8dUBOYD5GUf1pfOaOyhF7NcGGhcU+w5ufjYdkuNRNR/eD5rJd1yDvq6upv/2q+AQ=
+	t=1768350754; cv=none; b=pL1qN69faj9+GJk2cKGk51XrqVn3OZhoKGTG7uxfWe8gd7hnLrYIi21cxP+yfK7wXzK/kfA2ccpmE53+dCUrCRogJekbMmBSz/OisAUx+T/1Rn8yqwjn9zFHd/RuT7YIcDHKH5PFjPRiXGMzMwSjzrtUwCTCFIZupz40URbwEp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768349613; c=relaxed/simple;
-	bh=aqnHze+Td25OVXDIGdgpRDIRDAM53FeOGdj9+wWFseY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DW+HDFpj2NoItVT01wtVhXIhHtrI7IOMWauUbu9DK4YKqLG9C8qX/c3wWwjCjhHS/jwOy4Z542MhQS671LozkKy9YkSVjjWzZviDaDwYiJTb8OQYrbUkOTTgqsYj18isZj675/XCWqacsa3m1KC3TfVdKUdYmT50MUkGTzTR/ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgV3+5Ff; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768350754; c=relaxed/simple;
+	bh=ZRd8ycP0HInt9domfCK0GgLx5X0qKLG2LlahvqGiNN8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xm5aE3ux0wWgdwoCk7fGKLK3s3CltXPBKGEHZYXLNIVub9gKLWgfFUpYuCVIPtx3/+SsiOSXsBtID0dpZJEzZ9aZvfVtTL7Y8oab3/IVKqFOGRh+5xrMksB198G3Hcenxg2EcKMtLe4OZ0WKWliB6sk0nD16FrxfB8IoW3bmNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=E7EXGDLa; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgV3+5Ff"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEE8C116C6;
-	Wed, 14 Jan 2026 00:13:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768349612;
-	bh=aqnHze+Td25OVXDIGdgpRDIRDAM53FeOGdj9+wWFseY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=TgV3+5Ff8t0/g8AniA+UuBLz/Te7zln4zP21xGOw2JnnTMj3jDJZ1Dwk5FMA0H9Dj
-	 +OqDCfjpRGBvu0BYh6LnMFQePJ+g2bRtpcVOztF22fRiNA4a/mD+R1Hs7FISM5rNHF
-	 jhvfjvXWOxbz+dcGEaUhuQ3+PUjGO78rX5xPY4bimyAvbd1upIk2XmMTl7jHaZxBzw
-	 fAZRM+6nkobv7zU0ij/QyB9vBixc6RPODIg38Qr2hX1pWFehiPkTHf2d+fru2zP45w
-	 reobcE+PZXhrQ72FSvth9pxLj+AknWR3iaYJ+SjLQ606c9dQf8jc4aPtDAOOlrmboM
-	 tjQ4mazH7TALQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B9D93808200;
-	Wed, 14 Jan 2026 00:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="E7EXGDLa"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=hmI6L29WAjCZ2TxVqq2qTB2q3gkzS0APUeR8cbfOJrA=; b=E7EXGDLaRjj1x163ec8sFl6Ity
+	yraxAfXMZ5fz51Ef7cfJAJZhHkGyPzwJ11Fltk7d+dDc0x5kzc1YV+qwRTH0WbkhLK/BRzmKy5NGA
+	D6c71qoyFM/2rKu0KJzslPmBEsCUArR/7HkRYSpM8VVr/tDqDypE9dbvaaCGsdpT9SoY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vfooA-002iKC-2E; Wed, 14 Jan 2026 01:32:22 +0100
+Date: Wed, 14 Jan 2026 01:32:22 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v2 2/2] net: airoha: npu: Add en7581-npu-7996
+ compatible string
+Message-ID: <75479a93-366d-4540-8f37-be2063594f17@lunn.ch>
+References: <20260113-airoha-npu-firmware-name-v2-0-28cb3d230206@kernel.org>
+ <20260113-airoha-npu-firmware-name-v2-2-28cb3d230206@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1] tools: ynl: render event op docs correctly
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176834940605.2527918.15409968883446606893.git-patchwork-notify@kernel.org>
-Date: Wed, 14 Jan 2026 00:10:06 +0000
-References: <20260112153436.75495-1-donald.hunter@gmail.com>
-In-Reply-To: <20260112153436.75495-1-donald.hunter@gmail.com>
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: donhunte@redhat.com, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260113-airoha-npu-firmware-name-v2-2-28cb3d230206@kernel.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 12 Jan 2026 15:34:36 +0000 you wrote:
-> The docs for YNL event ops currently render raw python structs. For
-> example in:
+On Tue, Jan 13, 2026 at 09:20:28AM +0100, Lorenzo Bianconi wrote:
+> Introduce "airoha,en7581-npu-7996" compatible string in order to
+> specify different firmware binaries if the EN7581 SoC is running MT7996
+> (Eagle) chipset.
+> This is a preliminary patch to enable MT76 NPU offloading for MT7996
+> (Eagle) chipset since it requires different binaries with respect to
+> the ones used for MT7992 on the EN7581 SoC.
 > 
-> https://docs.kernel.org/netlink/specs/ethtool.html#cable-test-ntf
-> 
->   event: {‘attributes’: [‘header’, ‘status’, ‘nest’], ‘__lineno__’: 2385}
-> 
-> [...]
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Here is the summary with links:
-  - [net,v1] tools: ynl: render event op docs correctly
-    https://git.kernel.org/netdev/net/c/fa5726692e4c
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+    Andrew
