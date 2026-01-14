@@ -1,107 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9221FF5F
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 03:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C725228C
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 03:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768360284; cv=none; b=g3G4dMZqxoAnGclWXXD8lYqXS/r4mskayntZ0va2FUEKiJ25/AmhyvTncv2OjQJMByW6lxLcstFIG6OnAgtuATf0wUbnt2TQtT357ZhM4c1akvW83ivStxhpN9m/oVdz9l9kGtlJVOV1Wge6Qf4e9Y/Cm6SbjUCThBCHCsTwft8=
+	t=1768360415; cv=none; b=Jid0nfLPa7KfRPsakASdx0wOL7Mzj01FpZ9N28Qraon4SkRJktYP9mBVWXizVyCg8n3a7wQCO2z009879BbSFBfZ+cW1UmRMQXK2xag4rur+oQdoF8HxPOTYOn6wRhNvHEUEbzOo3QSuDF84OuuRp1EEBz5gTRJjrClkaGxvGQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768360284; c=relaxed/simple;
-	bh=M7TYh6FlKn9OC4w77BQZZM3jmcLVgxboo63sSmjy01w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cbd5RLDyWfxBOQEsB1MDBRuqPxxyapDlYJwFfg0LmiR0Ix5788q43cxFNoNi4bitAiz5p+7vX1XGnXoJS5s/L3xr+fPEnLmAQYFR5KVSWfPJCfBdWWIrip9dSkqM2fMw79ocoopzTdeRzvOeuiE4Lp7/1TPyJr3F0IWEcc15TyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1Kerekv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768360415; c=relaxed/simple;
+	bh=jOHPouqn622XoWbux8LzVeDbfNcf3EuFozrahtJ3/fA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Lp7iX4wij2BbGmmDAaV094gj7aeJpk5ogqbUHdEvspDy2k+2cquTmOeKTd26uzxxR+rMOD2/bLzYO68EYGqSdqh1eTHfeOKRJbrUK9eszVuvrjGeWU9s00mELZ/r9nO2devoEAD4u4RxHEuuDT6ZSpUCiZ0oY0ieLTTAwBTSy1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evBF4ech; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1Kerekv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15E9C116C6;
-	Wed, 14 Jan 2026 03:11:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evBF4ech"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA01C116C6;
+	Wed, 14 Jan 2026 03:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768360284;
-	bh=M7TYh6FlKn9OC4w77BQZZM3jmcLVgxboo63sSmjy01w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R1KerekvCCq4UZicaeJtQlluHFWZx7FBXaE6WbvKkdgesoZhsy2/FhxpmH1BuncOD
-	 j/WcKA0GU31TSVgfHDpi04CstbZpPE1AC6fRd+61amlPNZtGlBQBZa9XKrTqGE38UO
-	 phtb4Kua1iF2Gz6Kl0SbdkXSH8nV4mYcA0vRGXltSE3m/6M/bs20fvP12IW57HxWTz
-	 TT300nsJB4o9gsEQKl6paCkrmV1ArUAx/KJ4U+u5JMhmT5obFYrRBjR6ip0ypzrFbS
-	 Z+6/IyirAkv3LFcRo+9ncLsX2w/Xqkvc26E/8DBFai351FetVDGdoShOqflVoQN0xJ
-	 7pWukhUb/Gzsw==
-Date: Tue, 13 Jan 2026 19:11:22 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, David Ahern
- <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Tom Herbert
- <therbert@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net 2/2] fou: Don't allow 0 for FOU_ATTR_IPPROTO.
-Message-ID: <20260113191122.1d0f3ec4@kernel.org>
-In-Reply-To: <20260112200736.1884171-3-kuniyu@google.com>
-References: <20260112200736.1884171-1-kuniyu@google.com>
-	<20260112200736.1884171-3-kuniyu@google.com>
+	s=k20201202; t=1768360414;
+	bh=jOHPouqn622XoWbux8LzVeDbfNcf3EuFozrahtJ3/fA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=evBF4echpjEUh0ilp3HdzluDhq7MY8k3yRvNg88YppssIa+lHDLIwzHZlM5exxftJ
+	 fWhKSoQY8avB6s09nwTE4Fe3rokziCG/h9VA6O0TdaGjz59hItkkVzyigoUSs3oZC5
+	 Ktr3TOxdx/0JfDfJrc1+4B8N4AzYS82CQFAGTjDOQCg0Z3jnSFXVmGlAg86AAgu9DH
+	 ULtthfUUgcFIi4SIuaeiyseofGqOx/f6C6F8HMVTYcbEfrYkjHyoQ6QLDqcEOTt8ZU
+	 CaQfIh5DLXqsxqA6bL4y9veyOO8koxbMRKyiS9ziqPaYyymFJffE20uoM6FSXYVqRC
+	 I+qB1faHcxIgg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3BB9A3808200;
+	Wed, 14 Jan 2026 03:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net] ipv6: Fix use-after-free in inet6_addr_del().
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176836020805.2567523.17097289084265459734.git-patchwork-notify@kernel.org>
+Date: Wed, 14 Jan 2026 03:10:08 +0000
+References: <20260113010538.2019411-1-kuniyu@google.com>
+In-Reply-To: <20260113010538.2019411-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, liuhangbin@gmail.com,
+ kuni1840@gmail.com, netdev@vger.kernel.org,
+ syzbot+72e610f4f1a930ca9d8a@syzkaller.appspotmail.com
 
-On Mon, 12 Jan 2026 20:06:36 +0000 Kuniyuki Iwashima wrote:
-> fou_udp_recv() has the same problem mentioned in the previous
-> patch.
-> 
-> If FOU_ATTR_IPPROTO is set to 0, skb is not freed by
-> fou_udp_recv() nor "resubmit"-ted in ip_protocol_deliver_rcu().
-> 
-> Let's forbid 0 for FOU_ATTR_IPPROTO.
-> 
-> Fixes: 23461551c0062 ("fou: Support for foo-over-udp RX path")
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
->  net/ipv4/fou_nl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
-> index 7a99639204b16..0dec9da1bff46 100644
-> --- a/net/ipv4/fou_nl.c
-> +++ b/net/ipv4/fou_nl.c
-> @@ -15,7 +15,7 @@
->  const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
->  	[FOU_ATTR_PORT] = { .type = NLA_BE16, },
->  	[FOU_ATTR_AF] = { .type = NLA_U8, },
-> -	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
-> +	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, .min = 1 },
->  	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
->  	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
->  	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
+Hello:
 
-This code is generated, please use :
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/Documentation/netlink/specs/fou.yaml b/Documentation/netlink/specs/fou.yaml
-index 8e7974ec453f..331f1b342b3a 100644
---- a/Documentation/netlink/specs/fou.yaml
-+++ b/Documentation/netlink/specs/fou.yaml
-@@ -39,6 +39,8 @@ kernel-policy: global
-       -
-         name: ipproto
-         type: u8
-+        checks:
-+          min: 1
-       -
-         name: type
-         type: u8
-diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
-index 7a99639204b1..309d5ba983d0 100644
---- a/net/ipv4/fou_nl.c
-+++ b/net/ipv4/fou_nl.c
-@@ -15,7 +15,7 @@
- const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
- 	[FOU_ATTR_PORT] = { .type = NLA_BE16, },
- 	[FOU_ATTR_AF] = { .type = NLA_U8, },
--	[FOU_ATTR_IPPROTO] = { .type = NLA_U8, },
-+	[FOU_ATTR_IPPROTO] = NLA_POLICY_MIN(NLA_U8, 1),
- 	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
- 	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
- 	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
+On Tue, 13 Jan 2026 01:05:08 +0000 you wrote:
+> syzbot reported use-after-free of inet6_ifaddr in
+> inet6_addr_del(). [0]
+> 
+> The cited commit accidentally moved ipv6_del_addr() for
+> mngtmpaddr before reading its ifp->flags for temporary
+> addresses in inet6_addr_del().
+> 
+> [...]
+
+Here is the summary with links:
+  - [v1,net] ipv6: Fix use-after-free in inet6_addr_del().
+    https://git.kernel.org/netdev/net/c/ddf96c393a33
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
