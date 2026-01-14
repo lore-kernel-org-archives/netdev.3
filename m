@@ -1,120 +1,160 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D39303CAB;
-	Wed, 14 Jan 2026 17:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAED817A309
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 18:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768413555; cv=none; b=rLsiIEREWFujatOIcV6vK8Rq+rTmkNJjmJmM9f+F2zRxxLHKk3HWzLr2zOsQa9LXOeSAtHDBdphugV0332uYbKpjduL1/RYl9ednZncu8hCvCNcGJoFBS2gGDM4eQDHBbcGB2jLEri33AOSi0abXwclOK4mjetYl9niD2bCLzVU=
+	t=1768414043; cv=none; b=W8+30JWXUQe5B2IDOQZgxT4KDNRZtKmIW2r1o6g6wzrvCbuAh4R2PvYaBVfspUfoEWLZoxuo4hv2uKSIafp4+aqk1TalJO9uQG7G/MA3sive+jTBRfFe7vi6JYUL0xT6zUSu2NPiPeXDX1/2sHgBsFhRQSfc3y2zzDiO5Hnlyhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768413555; c=relaxed/simple;
-	bh=kINmhQmoaLnJyInheFAGtb14x04Fk6egTTyMWNJsc6g=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=LlLEDHLYvHCwh+pUyXXV/glJerkmlIV/sFQ4ogt16KNJv5cYKTddxI07mIIqM+Wa8ZLzwBUJkf+ePl9toYwOfpSsVymGNhUT8gz9e0Z9/joT0cL+5HLJS6UPzWJKgCBBxRLhAQiWtTdpkEehy6VTSgM2CNS7/x77qCedJiXNwt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=JFCKx6MU; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1768414043; c=relaxed/simple;
+	bh=rAA0hfnYW/g3iYZ/x9yjGCX4k7/q0bDFC6BHR2C+Xsg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=liqANc5qawNsBA/qrwJEqYD54F0vLZzruSNx4JY6DaacMKTzdF5M4ECYhAkZE0uij1FvASkXt0gb5L7tHb3NEu7Qh/JyUsBHx6xShgXQHwQe+v6CJEiS0HcHXVzrfMJ2tuQGL2yv3WY2ZaZLiiHdoKj9v0RvcCxBT4WxZwCFbG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JobFciBA; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="JFCKx6MU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rVE0ichfCCZBPxaV5iFEVGkv6qOUUWRLscyvBIVG1Cw=; b=JFCKx6MUsF1kQlYJFJsRvxEXWU
-	KMctRT/x6Q6znR6/zKn+NWVMeAwnFZ1uNZGvs/aV/AJL27XF/ZxTP4hcFzYdQhWYC3JQXBWuApNbL
-	T+1tMfaYqDBG/5ET+T1wobIB9yr/DDi5B/RouZX4cN9K1aChvkIRIJh5060DFhR952JoR9e+4HH2s
-	5qbAHX3WxQPYwyf1qt34UyYidGkB/nAt2krtn/M9Ys1TY/LhO6/AKXO7meYwyCVkX9s5WGXuW3If9
-	M0ARH8DMunRPPRp4RE1qli5T5fgnWz9grbV/8wxDdfjP38IDuk6Z0zwGKdcrA7SFkKJLeLcB0Jl9n
-	L6mbSfYA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36992 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vg4wp-000000000WU-1IOD;
-	Wed, 14 Jan 2026 17:46:23 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vg4wm-00000003SGx-2eSP;
-	Wed, 14 Jan 2026 17:46:20 +0000
-In-Reply-To: <aWfWDsCoBc3YRKKo@shell.armlinux.org.uk>
-References: <aWfWDsCoBc3YRKKo@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 14/14] net: stmmac: report PCS configuration changes
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JobFciBA"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-88a32bf0248so331876d6.0
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 10:07:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768414041; x=1769018841; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fXnvVQQge95JJk0l6ClBVGN7ircNBoD+M2yk74abE8k=;
+        b=JobFciBA+W69WB4jRjDwHs4+JAq7P/1HGn07UM2EO+CqGN7Tz7imrWzXqQCwCUkbAU
+         Ye9PC3k9Z9Hc4UdA1qqjmx2Fc9a7+o+pioZ2fRMrqmsNOeEf9jCm0O1yxN9Z5HQ6Tb0p
+         B/ADI2myZ3vAytBuOw98vAbs91ni4uyMpvZFmavVDqzyJc+7zw2ptMgwD4vPF47Q3947
+         HVMHkK46p5CMt8vL2MmYNSxlLngQUi7nEe6fXsXRtSHi2xqGXAWKAG5XRG8Jf53ARHbF
+         8619Tq4rJ5OWT0SxmJ6J1wgnPRM9vLF3Vja26wZc0zpwZD3Worj+NDzl07dSHhZ1ZYO9
+         BTUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768414041; x=1769018841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fXnvVQQge95JJk0l6ClBVGN7ircNBoD+M2yk74abE8k=;
+        b=ESw4yFpD3WBY8MMJ0cOsuKKRaAnuPa2sC7LenUDh8gFsDmkmV6K3THq2v4yj7ARkAo
+         KDK4moun6B3sWTpDqIIJgVX+h/DvtQBGKNGQca8TlAq4EcIMYLn7VO/pKTNgUZ4+qi/R
+         KJRzyD/VOO2IzV1h7kZ9VPa+iLQf4YQ9xNYhZSFIPl0Wansv7vV/VKwGHc88s0iBy6Q0
+         kicxEJG/v32wKCPXMVF+/Sj+0jsBVWbNzePticVGf/hoBfoXvHViN7wK4a9EUOriF8ka
+         B4IhM5ty306jYsLUCS0xTSpPqcHgz0X/z4Um5HMUMwGwBcCzG9rz6jq+JXR5EtMWuZwz
+         mD+g==
+X-Gm-Message-State: AOJu0Yz6uOpPnSPykqyHqgyuPKHXUbJ1cNzj0O9iKeFQltTel5ZrWr/1
+	utQb83QGi0ZCmz3+t9wJ4M6ggLfvaTrMHyoYz94svpXDDoGy0o/gH99RsOI1/5oZe4ODhMiysW+
+	JpenVB3Fslc5wXeNNiCpCBVKxCbcTNl9Km8oCb0qoadTwZlb6cexofmtN6yU=
+X-Gm-Gg: AY/fxX4YdRxdUfcuDfUauzEvYdL0uOI8s1a+0g9TrDqhwOCIZg19caDkgn8PMSRJGUX
+	1reuLIACDmT8vVFr1rOo35dgZz1Xr4jBOA+ic8u+9Yi/Akk4XXoJseGbo18VYkplf9bri+IiqFk
+	SYz1E+VCnWXJICk/JqYcDoFAHCRPJc2BkiaDcIv9rSQJRE2/GFjnLRbjC9gXGEwEuJJVOqVjmm3
+	9UOcQACfCC8YjLA6o3HIXI4FKB4AHZxUkUjXIzTJu8Aqwu8SHZGsXwoix+rSO+UWxkrvA==
+X-Received: by 2002:a05:622a:1892:b0:4e8:96ed:2e65 with SMTP id
+ d75a77b69052e-501481fa1ebmr52824681cf.22.1768414040117; Wed, 14 Jan 2026
+ 10:07:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vg4wm-00000003SGx-2eSP@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 14 Jan 2026 17:46:20 +0000
+References: <cover.1768410519.git.pabeni@redhat.com> <70afe1dc4404ef46154b684b12c59d4bc523477c.1768410519.git.pabeni@redhat.com>
+In-Reply-To: <70afe1dc4404ef46154b684b12c59d4bc523477c.1768410519.git.pabeni@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 14 Jan 2026 19:07:08 +0100
+X-Gm-Features: AZwV_QhtilMGxV-G2_E50OsKGlThJ7vXvrtgxSmll1Uj35mny0M0gsLb2OwMVaM
+Message-ID: <CANn89iKk+BPOxCYr1+w85+hd3j7ugLB7EYmm+NdN=4XCsecAig@mail.gmail.com>
+Subject: Re: [PATCH v3 net-next 01/10] net: introduce mangleid_features
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Donald Hunter <donald.hunter@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Shuah Khan <shuah@kernel.org>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, sdf@fomichev.me, 
+	petrm@nvidia.com, razor@blackwall.org, idosch@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Report if/when qcom-ethqos changes the PCS configuration. With phylink
-now setting the PCS configuration, there should be no need for drivers
-to change this.
+On Wed, Jan 14, 2026 at 6:21=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> Some/most devices implementing gso_partial need to disable the GSO partia=
+l
+> features when the IP ID can't be mangled; to that extend each of them
+> implements something alike the following:
+>
+>         if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
+>                 features &=3D ~NETIF_F_TSO;
+>
+> in the ndo_features_check() op, which leads to a bit of duplicate code.
+>
+> Later patch in the series will implement GSO partial support for virtual
+> device, and the current status quo will require more duplicate code and
+> a new indirect call in the TX path for such devices.
+>
+> Introduce the mangleid_features mask, allowing the core to disable NIC
+> features based on/requiring MANGLEID, without any further intervention
+> from the driver.
+>
+> The same functionality could be alternatively implemented adding a single
+> boolean flag to the struct net_device, but would require an additional
+> checks in ndo_features_check().
+>
+> Also note that the above mentioned action is incorrect if the NIC
+> additionally implements NETIF_F_GSO_UDP_L4, mangleid_features
+> transparently handle even such a case.
+>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> ---
+>  include/linux/netdevice.h | 5 ++++-
+>  net/core/dev.c            | 4 +++-
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index d99b0fbc1942..23a698b70de1 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -1830,7 +1830,9 @@ enum netdev_reg_state {
+>   *                             and drivers will need to set them appropr=
+iately.
+>   *
+>   *     @mpls_features: Mask of features inheritable by MPLS
+> - *     @gso_partial_features: value(s) from NETIF_F_GSO\*
+> + *     @gso_partial_features: value(s) from NETIF_F_GSO
+> + *     @mangleid_features:     Mask of features requiring MANGLEID, will=
+ be
+> + *                             disabled together with the latter.
+>   *
+>   *     @ifindex:       interface index
+>   *     @group:         The group the device belongs to
+> @@ -2219,6 +2221,7 @@ struct net_device {
+>         netdev_features_t       vlan_features;
+>         netdev_features_t       hw_enc_features;
+>         netdev_features_t       mpls_features;
+> +       netdev_features_t       mangleid_features;
+>
+>         unsigned int            min_mtu;
+>         unsigned int            max_mtu;
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index c711da335510..6154f306ed76 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -3788,8 +3788,10 @@ static netdev_features_t gso_features_check(const =
+struct sk_buff *skb,
+>                 struct iphdr *iph =3D skb->encapsulation ?
+>                                     inner_ip_hdr(skb) : ip_hdr(skb);
+>
+> -               if (!(iph->frag_off & htons(IP_DF)))
+> +               if (!(iph->frag_off & htons(IP_DF))) {
+>                         features &=3D ~NETIF_F_TSO_MANGLEID;
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Nit : We could avoid the above line, if we always make sure
+NETIF_F_TSO_MANGLEID is set in dev->mangleid_features
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index f9e7a7ed840b..6a1e30b10740 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -71,6 +71,7 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 				  bool srgmi_ral)
- {
- 	u32 value = readl(ioaddr + GMAC_AN_CTRL(reg));
-+	u32 old = value, diff;
- 
- 	/* Enable and restart the Auto-Negotiation */
- 	if (ane)
-@@ -84,6 +85,20 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 	if (srgmi_ral)
- 		value |= GMAC_AN_CTRL_SGMRAL;
- 
-+	diff = old ^ value;
-+	if (diff & ~GMAC_AN_CTRL_RAN) {
-+		pr_warn("dwmac: PCS configuration changed from phylink by glue, please report: 0x%08x -> 0x%08x\n",
-+			old & ~GMAC_AN_CTRL_RAN, value & ~GMAC_AN_CTRL_RAN);
-+#define REPORT_BIT(x) \
-+		if (diff & GMAC_AN_CTRL_##x) \
-+			pr_warn("dwmac: %8s %u -> %u\n", #x, \
-+				!!(old & GMAC_AN_CTRL_##x), \
-+				!!(value & GMAC_AN_CTRL_##x))
-+		REPORT_BIT(ANE);
-+		REPORT_BIT(SGMRAL);
-+#undef REPORT_BIT
-+	}
-+
- 	writel(value, ioaddr + GMAC_AN_CTRL(reg));
- }
- #endif /* __STMMAC_PCS_H__ */
--- 
-2.47.3
-
+> +                       features &=3D ~dev->mangleid_features;
+> +               }
+>         }
+>
+>         /* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
+> --
+> 2.52.0
+>
