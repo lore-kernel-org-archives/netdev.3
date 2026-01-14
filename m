@@ -1,53 +1,74 @@
-Received: from oak.phenome.org (unknown [193.110.157.52])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B11C3A35AF
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 16:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B4C11CBA;
+	Wed, 14 Jan 2026 16:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768407341; cv=none; b=Yi/6xiQW/IIYK6c0CMbt5lMb83SUiDVmst0K2ebLZsxxKcRVfD6TE/MRvbXd/RX9O5E7WCUEE5HAoBMYuCwZLaFIrpGktQX59wEgP3MPKoBQT09T+2GpXOeFqk46AU3dBwCSGspGB5Eqvco2LxoW1R0R+pdDUsvHUjOKFs5jGYM=
+	t=1768407414; cv=none; b=e+U2157A2TzjWFW/tMCQV/XC2LVD4H5A/iN1i8g2tbIlbtLtem28YH2cOjyYXCFVLBb7zhCr1w0CDbJ8TMTpZC5mLJBV0wVDQtll3PTm+YJX7djkGovqEINZsO+NvXIcQdY9Kix6ifR4YsZo5yT1FqHR5/Q7rMnmjG5AQhatPHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768407341; c=relaxed/simple;
-	bh=T3PGiunjMtfEky24Efp3g6lTcEYvuq+fn/JbKrjgFko=;
+	s=arc-20240116; t=1768407414; c=relaxed/simple;
+	bh=Lu0FQTjo6owgFDAe5auJaLSofFYoxVkva31bfcDtA9c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lIngdcejt0R8q4v/iwc2zQ41y/2RwezwANcN6mhS40AxfYVs7+h7280Rn1rf/ySVTfTWlLkT1Iqqo5fMW++T0OeX64nPGQUmswaT59CpcyoJ3SDBc9hR91ruR1jA8PqBvexl6t2KXDxarV3mBFdJOJupgzOD3p+53ShFST1Wyeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=bbW+Aq8P; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=tZU5FOpA6cP7nam3X6kKmX+tyZcjMVos1LX/ojnu5dFVFtMSm93CsHV9z4BTpVG6pjaSpnmigGRDQ+V5QgPn5lTFl7tnGiDW9yL6l2TfayP/BZi2CKojvpwXIYVebTdMKkOyyZ5wG90j5WK434s14IjGWhJL3qNz+DxPEM90OFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=UglqIB+1; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="bbW+Aq8P"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-disposition:content-type:content-type
-	:mime-version:references:message-id:subject:subject:from:from
-	:date:date:received; s=oak1; t=1768406964; x=1769270965; bh=T3PG
-	iunjMtfEky24Efp3g6lTcEYvuq+fn/JbKrjgFko=; b=bbW+Aq8P5T1O134WTEin
-	j2NDLY9kxgLuN+CZaMiclPHTso10WCEAiZVBaP5pJnJBBzcUlqLxDyNCEjISSAvk
-	rRa3GPgNmsfpnYgug486dzvMYuyo7bMWFZojWP5XV2I2aTSJ9I4EDsMcrnUu5i2Z
-	vbapAQXn9608XNVoIy5PpRZoEyrcsJUHOEikj/jzP+rYwiCsFAp6nDWY0aqFNUJl
-	ntkEm+gt9g0/fcpcPQ00Xzh+qJz814an4zllhDgFDtbI4RaamVn5zd1WI8ROAVqn
-	YkdkUC0MeVxKNJerTWaCOhBcnZtT3nHPkuIoZ3bmY7AhqBIon5t3AAHd+S1qjrCi
-	cQ==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: by oak.phenome.org (Postfix);
-	Wed, 14 Jan 2026 17:09:21 +0100 (CET)
-Date: Wed, 14 Jan 2026 17:09:20 +0100
-From: Antony Antony <antony@phenome.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Antony Antony <antony.antony@secunet.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="UglqIB+1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jDEZj2tQ/lWE441pwvzkJV5WL54sUoxA3nZX64TSvWs=; b=UglqIB+1S2BMn0y/oTec/Afhcf
+	yhA5dUCtFPFLb/p3Om/n3BSg5GuABbW0u7WsnGhQfh25a6uF/CH6zjb+LpEDzP7RQBsKWjKoQKTcU
+	FAVu2lNhugMS8uZCf/X+urcd9gkmUMfVIfWEreUbEXt+/dWDSfUh38OEszcOlHG1Mi0mmS0DT5AT3
+	B/Z1SSOSOcstJIDGAWbP8iEIvaxp7CLyuKt3sTuW9g6ZQLRNbwgqP+8VE6On97ZJxB8wUzIcCbDuW
+	ga+f5WTl2BgzLwOknYY4qVSP4BmbGvyj/PpVGJTlBgnscypeUWszsgGhB9vvttXMcWfGHXN6nnfiP
+	AgGXLAQQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52560)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vg3Xi-000000000M3-0AFG;
+	Wed, 14 Jan 2026 16:16:22 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vg3Xd-000000001mY-0K7W;
+	Wed, 14 Jan 2026 16:16:17 +0000
+Date: Wed, 14 Jan 2026 16:16:16 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: SHUKLA Mamta <mamta.shukla@leica-geosystems.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	devel@linux-ipsec.org
-Subject: Re: [devel-ipsec] Re: [PATCH ipsec-next 4/6] xfrm: add
- XFRM_MSG_MIGRATE_STATE for single SA migration
-Message-ID: <aWe_sIibKYzdWL9C@Antony2201.local>
-References: <cover.1767964254.git.antony@moon.secunet.de>
- <3558d8c20a0a973fd873ca6f50aef47a9caffcdc.1767964254.git.antony@moon.secunet.de>
- <aWZdTOXTn_YBKKhv@horms.kernel.org>
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	GEO-CHHER-bsp-development <bsp-development.geo@leica-geosystems.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 1/3] net: stmmac: socfpga: add call to assert/deassert
+ ahb reset line
+Message-ID: <aWfBUPxvykOdygLO@shell.armlinux.org.uk>
+References: <20260108-remove_ocp-v3-0-ea0190244b4c@kernel.org>
+ <20260108-remove_ocp-v3-1-ea0190244b4c@kernel.org>
+ <aV_W2yLmnHrTvbTP@shell.armlinux.org.uk>
+ <a2dc72ae-0798-4baa-b4d2-fa66c334576a@kernel.org>
+ <c18fbdf0-b8e2-4fa7-8bb7-a3fed8960970@leica-geosystems.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,147 +77,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aWZdTOXTn_YBKKhv@horms.kernel.org>
+In-Reply-To: <c18fbdf0-b8e2-4fa7-8bb7-a3fed8960970@leica-geosystems.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Simon,
+On Wed, Jan 14, 2026 at 02:09:27PM +0000, SHUKLA Mamta wrote:
+> Hello Dinh,
+> 
+> On Arria10 socfpga, both reset lines i.e stmmac_ocp_rst and stmmac_rst 
+> are needed since EMAC Controller on Arria10 supports Tx Rx FIFO with ECC
+> 
+> RAM and as per datasheet[1]:
+> 
+> `An EMAC ECC RAM reset asserts a reset to both the memory and the 
+> multiplexed EMAC bus interface clock, ap_clk. You should ensure that 
+> both the EMAC ECC RAM and the EMAC Module resets are deasserted before 
+> beginning transactions. Program the emac*ocp bits and the emac* bits in 
+> the per0modrst register of the Reset Manager to deassert reset in the 
+> EMAC's ECC RAM and the EMAC module, respectively.`
+> 
+> [1]https://docs.altera.com/r/docs/683711/22.3/intel-arria-10-hard-processor-system-technical-reference-manual/taking-the-ethernet-mac-out-of-reset
 
-On Tue, Jan 13, 2026 at 02:57:16PM +0000, Simon Horman via Devel wrote:
-> On Fri, Jan 09, 2026 at 02:38:05PM +0100, Antony Antony wrote:
-> > Add a new netlink method to migrate a single xfrm_state.
-> > Unlike the existing migration mechanism (SA + policy), this
-> > supports migrating only the SA and allows changing the reqid.
-> > 
-> > Signed-off-by: Antony Antony <antony.antony@secunet.com>
-> 
-> ...
-> 
-> > diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> > index ef832ce477b6..04c893e42bc1 100644
-> > --- a/net/xfrm/xfrm_state.c
-> > +++ b/net/xfrm/xfrm_state.c
-> > @@ -1967,7 +1967,8 @@ static inline int clone_security(struct xfrm_state *x, struct xfrm_sec_ctx *secu
-> >  
-> >  static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
-> >  					   struct xfrm_encap_tmpl *encap,
-> > -					   struct xfrm_migrate *m)
-> > +					   struct xfrm_migrate *m,
-> 
-> Hi Antony,
-> 
-> Not strictly related to this patch, but FWIIW, it seems that m could be
-> const in this call stack.  And, moreover, I think there would be some value
-> in constifying parameters throughout xfrm.
+Let's look at exactly what this is saying.
 
-thanks. It is good advise. I sprinkled a couple of const.
+"An EMAC ECC RAM reset asserts a reset to both the memory and the
+multiplexed EMAC bus interface clock, ap_clk."
 
-> 
-> > +					   struct netlink_ext_ack *extack)
-> >  {
-> >  	struct net *net = xs_net(orig);
-> >  	struct xfrm_state *x = xfrm_state_alloc(net);
-> > @@ -1979,9 +1980,13 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
-> >  	memcpy(&x->lft, &orig->lft, sizeof(x->lft));
-> >  	x->props.mode = orig->props.mode;
-> >  	x->props.replay_window = orig->props.replay_window;
-> > -	x->props.reqid = orig->props.reqid;
-> >  	x->props.saddr = orig->props.saddr;
-> >  
-> > +	if (orig->props.reqid != m->new_reqid)
-> > +		x->props.reqid = m->new_reqid;
-> > +	else
-> > +		x->props.reqid = orig->props.reqid;
-> > +
-> 
-> Claude Code with Review Prompts [1] flags that until the next
-> patch of this series m->new_reqid is used uninitialised in the following
-> call stack:
-> 
-> xfrm_do_migrate -> xfrm_migrate -> xfrm_state_migrate -> xfrm_state_clone_and_setup
-> 
-> Also, while I could have missed something, it seems to me that it is
-> also uninitialised in this call stack:
-> 
-> pfkey_migrate -> xfrm_migrate -> xfrm_state_migrate -> xfrm_state_clone_and_setup
+1. Asserting the EMAC ECC RAM reset asserts reset to two items:
+    - memory
+    - the EMAC bus interface clock, ap_clk.
+   This is not referring to any other modules, but it does suggest that
+   the bus clock will be affected in some way, potentially stopping the
+   clock.
 
-thanks. I fxied this by squashing the next patch to this one.
- 
-> [1] https://github.com/masoncl/review-prompts/
+"You should ensure that both the EMAC ECC RAM and the EMAC Module resets
+are deasserted before beginning transactions."
 
-thanks! that looks interesting.
+2. This states that both resets (EMAC ECC RAM and EMAC module) need to
+   be deasserted in order to access the EMAC. This is logical.
 
-> 
-> >  	if (orig->aalg) {
-> >  		x->aalg = xfrm_algo_auth_clone(orig->aalg);
-> >  		if (!x->aalg)
-> > @@ -2059,7 +2064,6 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
-> >  			goto error;
-> >  	}
-> >  
-> > -
-> 
-> nit: this hunk doesn't seem related to the rest of the patch.
+   If the EMAC ECC RAM reset is asserted, then, because it affects the
+   bus interface clock, this may mean that accesses over the APB bus
+   can not be performed because there could be no clock to allow them
+   to complete. Thus attempting an access will probably stall the
+   processor. (We've seen SoCs where this happens.)
 
-fixed.
+   As having the DWMAC reset asserted means that the entire DWMAC
+   hardware would be held in reset, including the bus interface,
+   meaning that it will not respond to accesses. Whether that also
+   hangs the processor is questionable, because APB has error reporting.
 
-> 
-> >  	x->props.family = m->new_family;
-> >  	memcpy(&x->id.daddr, &m->new_daddr, sizeof(x->id.daddr));
-> >  	memcpy(&x->props.saddr, &m->new_saddr, sizeof(x->props.saddr));
-> 
-> ...
-> 
-> > diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-> 
-> ...
-> 
-> > +static inline unsigned int xfrm_migrate_state_msgsize(bool with_encap, bool with_xuo)
-> 
-> Please don't use the inline keyword in .c files unless there is a
-> demonstrable - usually performance - reason to do so.
-> Rather, please let the compiler inline (or not) code as it sees fit.
+"Program the emac*ocp bits and the emac* bits in the per0modrst register
+of the Reset Manager to deassert reset in the EMAC's ECC RAM and the EMAC
+module, respectively.`
 
-removed
+3. This states where the reset bits allegedly are in the register set.
+   There is a link to https://docs.altera.com/r/docs/683711/22.3/intel-arria-10-hard-processor-system-technical-reference-manual/module-reset-signals
+   but interestingly, the per0modrst (which implies per0 group) doesn't
+   list emac*ocp resets. In fact, there is only one reference to "ocp"
+   on that web page, which is in a diagram of the reset controller,
+   specifically its bus interface.
 
-> 
-> > +{
-> > +	return NLMSG_ALIGN(sizeof(struct xfrm_user_migrate_state)) +
-> > +		(with_encap ? nla_total_size(sizeof(struct xfrm_encap_tmpl)) : 0) +
-> > +		(with_xuo ? nla_total_size(sizeof(struct xfrm_user_offload)) : 0);
-> > +}
-> > +
-> 
-> ...
-> 
-> > +static int xfrm_send_migrate_state(const struct xfrm_user_migrate_state *um,
-> > +				   const struct xfrm_encap_tmpl *encap,
-> > +				   const struct xfrm_user_offload *xuo)
-> > +{
-> > +	int err;
-> > +	struct sk_buff *skb;
-> > +	struct net *net = &init_net;
-> > +
-> > +	skb = nlmsg_new(xfrm_migrate_state_msgsize(!!encap, !!xuo), GFP_ATOMIC);
-> > +	if (!skb)
-> > +		return -ENOMEM;
-> > +
-> > +	err = build_migrate_state(skb, um, encap, xuo);
-> > +	if (err < 0) {
-> > +		WARN_ON(1);
-> > +		return err;
-> 
-> skb seems to be leaked here.
-> 
-> Also flagged by Review Prompts.
+So, the quoted section doesn't state anything about the requirements for
+resetting the dwmac core.
 
-I don't see a skb leak. It also looks similar to the functions above.
+What it does state is that both resets need to be deasserted before any
+access is made, which is reasonable.
 
-> 
-> > +	}
-> > +
-> > +	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-> > +}
+> OTOH, we can't have both scp and ahb rst together while setting phy 
+> mode, since they are basically same reset lines and having both leads to 
+> warning:
 
-I will send a new v2.
+So it seems that you actually have a single reset bit, and you have
+that represented as a single shared reset - shared between your
+"stmamc_rst" and "stmmac_ocp_rst".
 
-regards
--antony
+I notice Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+doesn't describe the resets, but has:
+  # TODO: Determine how to handle the Arria10 reset-name, stmmaceth-ocp, that
+  # does not validate against net/snps,dwmac.yaml.
+
+as dwmac describes at least one reset between one called "stmmaceth"
+and the other called "ahb".
+
+The only possibility I see for these "EMAC ECC RAM" resets are in
+Table 25.  RAM Clear Group, Generated Module Resets, there's a bunch
+of signals described there "emacN(tx|rx)_sec_ram_rst_n, and that
+table suggests that these resets are asserted and deasserted on
+cold and warm system level resets.
+
+Given that there seems to be no way for software to control these
+EMAC ECC RAM resets, they seem to be outside the realm of needing
+to be handled within the driver, and also should not be described
+in DT.
+
+Maybe I missed something?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
