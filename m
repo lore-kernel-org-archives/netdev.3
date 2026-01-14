@@ -1,32 +1,30 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCEC3933F9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E9F357A31
 	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 22:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768430652; cv=none; b=M6alJAsCWfOykhAvBpwjmWPvIUiCMK8IjhzaUpIwPR/tmL/L45bDZ2RdXGSWw5McZybDfjxYMfN9RyiA3sxdm05TX98+o/NDunKLI2y+OQ09OxTlkV/TJGcboY6/GhDushuB5l16+4r0Ogbe9jqqa6VcIKkSITxLGM0eI+KfUpY=
+	t=1768430654; cv=none; b=cI9s5qlh7tgrVZYSs0NS8NwNqduRfI9LEuEuc9ZTb1T7I8K7BYsL9feVeR+8C7ivzX5rb3BGYjbNLHwH888jLNU1X9fztO0gyn656bNKMGD6U6uOvBIydvxfUpUurp2O32WHjj300NYdDBPA339cNTkJCxKbTL9qhHmB9WzkQiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768430652; c=relaxed/simple;
-	bh=ntT7coBWRx6jsrH3U/PSDWGgipMEhbENiiPiB6xeQVc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+shQhKK/fcotO6W308sS8zqBd8BT7q0FxoLhR8MaPjxVTrd9hJor7rwT+cOIVTYITKPHeTJfJnHvsMlWu1zpXIHbpJe/6KvArQlFqsYPMhIKGio258GsJHxOroyd26KyExQjq1rezoFfmB8K6XbRLovkCd7pPY3YVzzl59b7hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p4M0z9uq; arc=none smtp.client-ip=91.218.175.178
+	s=arc-20240116; t=1768430654; c=relaxed/simple;
+	bh=Lv253Vhdyqoq3A5npjLCB56uuIiWXMDJHNoJItx2n8A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gvYl2tm1JdqNX+UivDHqdDgJjwW+TOzFvSisyorWrOxoEl6UmvSWTonZP+/DhH5DSajWUKcU8EbQ3tpUnUX469ukwPZaYiqjdrE1XDCADZG637nbkaGm33ScJdEhCIvBOYIZ3rNn0dQ4Sln3p1XeQsSMhcLcTs71MtIevNh3erY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CtQiYFSP; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p4M0z9uq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CtQiYFSP"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768430644;
+	t=1768430643;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YT8IYxCZzGIWLLwLEeNMhMU67fqEIU9z3PUBwsYDAOU=;
-	b=p4M0z9uqL7djafR3iA6b7d6wgzaZS6oh2O03P8+1L+HZ54FBp6+CTpiT2UUWjUE9bLvRCo
-	1ltrJgUKjzucg58cf9GW9A5FSynS5mxPfE0c4Fq2CqhP+P/9nMU39SSPJA48IK7cp1tVVr
-	ZAlke5x6QE68IzVYDKvy3rcgWnva3Uc=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s55j+wTSPH7nHnij6DJE35wc9T6tk2CJ+DwpAtHo/e0=;
+	b=CtQiYFSP+Wd5VBxdHzgMoEzEK0rrVtL/es+iSmbk9bg2RyalLL0p89Tx8Rjks0oKrIv2fp
+	J8dcauybSqwXpm4ogZunFcBRnLJWoM0KkekE/bs6cs5M0foxd8J/PUzScoX5FmQnFU6nwX
+	c+oOZTxEDtNGB+HaLEplsutMAqSioOI=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -39,11 +37,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	Shuah Khan <shuah@kernel.org>,
 	netdev@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next 2/2] selftests: drv-net: extend HW timestamp test with ioctl
-Date: Wed, 14 Jan 2026 22:44:14 +0000
-Message-ID: <20260114224414.1225788-2-vadim.fedorenko@linux.dev>
-In-Reply-To: <20260114224414.1225788-1-vadim.fedorenko@linux.dev>
-References: <20260114224414.1225788-1-vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next 1/2] net: remove legacy way to get/set HW timestamp config
+Date: Wed, 14 Jan 2026 22:44:13 +0000
+Message-ID: <20260114224414.1225788-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,211 +49,121 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Extend HW timestamp tests to check that ioctl interface is not broken
-and configuration setups and requests are equal to netlink interface.
+With all drivers converted to use ndo_hwstamp callbacks the legacy way
+can be removed, marking ioctl interface as deprecated.
 
 Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- .../selftests/drivers/net/hw/nic_timestamp.py | 121 ++++++++++++++++--
- 1 file changed, 113 insertions(+), 8 deletions(-)
+ net/core/dev_ioctl.c | 60 ++++++++++++--------------------------------
+ 1 file changed, 16 insertions(+), 44 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/nic_timestamp.py b/tools/testing/selftests/drivers/net/hw/nic_timestamp.py
-index c1e943d53f19..f016bc65c340 100755
---- a/tools/testing/selftests/drivers/net/hw/nic_timestamp.py
-+++ b/tools/testing/selftests/drivers/net/hw/nic_timestamp.py
-@@ -6,10 +6,26 @@ Tests related to configuration of HW timestamping
- """
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 53a53357cfef..7a8966544c9d 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -287,7 +287,7 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 	int err;
  
- import errno
-+import ctypes, fcntl, socket
- from lib.py import ksft_run, ksft_exit, ksft_ge, ksft_eq, KsftSkipEx
- from lib.py import NetDrvEnv, EthtoolFamily, NlError
+ 	if (!ops->ndo_hwtstamp_get)
+-		return dev_eth_ioctl(dev, ifr, SIOCGHWTSTAMP); /* legacy */
++		return -EOPNOTSUPP;
  
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+@@ -414,7 +414,7 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 	}
  
-+SIOCSHWTSTAMP = 0x89b0
-+SIOCGHWTSTAMP = 0x89b1
-+class hwtstamp_config(ctypes.Structure):
-+    _fields_ = [
-+        ("flags", ctypes.c_int),
-+        ("tx_type", ctypes.c_int),
-+        ("rx_filter", ctypes.c_int),
-+    ]
-+class ifreq(ctypes.Structure):
-+    _fields_ = [
-+        ("ifr_name", ctypes.c_char * 16),
-+        ("ifr_data", ctypes.POINTER(hwtstamp_config)),
-+    ]
-+
-+
- def __get_hwtimestamp_support(cfg):
-     """ Retrieve supported configuration information """
+ 	if (!ops->ndo_hwtstamp_set)
+-		return dev_eth_ioctl(dev, ifr, SIOCSHWTSTAMP); /* legacy */
++		return -EOPNOTSUPP;
  
-@@ -31,8 +47,29 @@ def __get_hwtimestamp_support(cfg):
-     return ctx
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+@@ -438,48 +438,23 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 	return 0;
+ }
  
+-static int generic_hwtstamp_ioctl_lower(struct net_device *dev, int cmd,
+-					struct kernel_hwtstamp_config *kernel_cfg)
+-{
+-	struct ifreq ifrr;
+-	int err;
+-
+-	if (!kernel_cfg->ifr)
+-		return -EINVAL;
+-
+-	strscpy_pad(ifrr.ifr_name, dev->name, IFNAMSIZ);
+-	ifrr.ifr_ifru = kernel_cfg->ifr->ifr_ifru;
+-
+-	err = dev_eth_ioctl(dev, &ifrr, cmd);
+-	if (err)
+-		return err;
+-
+-	kernel_cfg->ifr->ifr_ifru = ifrr.ifr_ifru;
+-	kernel_cfg->copied_to_user = true;
+-
+-	return 0;
+-}
+-
+ int generic_hwtstamp_get_lower(struct net_device *dev,
+ 			       struct kernel_hwtstamp_config *kernel_cfg)
+ {
+ 	const struct net_device_ops *ops = dev->netdev_ops;
++	int err;
  
-+def __get_hwtimestamp_config_ioctl(cfg):
-+    """ Retrieve current TS configuration information (via ioctl) """
-+
-+    config = hwtstamp_config()
-+
-+    req = ifreq()
-+    req.ifr_name = cfg.ifname.encode()
-+    req.ifr_data = ctypes.pointer(config)
-+
-+    try:
-+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-+        fcntl.ioctl(sock.fileno(), SIOCGHWTSTAMP, req)
-+        sock.close()
-+
-+    except OSError as e:
-+        if e.errno == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("timestamping configuration is not supported via ioctl") from e
-+        raise
-+    return config
-+
-+
- def __get_hwtimestamp_config(cfg):
--    """ Retrieve current TS configuration information """
-+    """ Retrieve current TS configuration information (via netLink) """
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
  
-     try:
-         tscfg = cfg.ethnl.tsconfig_get({'header': {'dev-name': cfg.ifname}})
-@@ -43,8 +80,27 @@ def __get_hwtimestamp_config(cfg):
-     return tscfg
+-	if (ops->ndo_hwtstamp_get) {
+-		int err;
+-
+-		netdev_lock_ops(dev);
+-		err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
+-		netdev_unlock_ops(dev);
++	if (!ops->ndo_hwtstamp_get)
++		return -EOPNOTSUPP;
  
+-		return err;
+-	}
++	netdev_lock_ops(dev);
++	err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
++	netdev_unlock_ops(dev);
  
-+def __set_hwtimestamp_config_ioctl(cfg, ts):
-+    """ Setup new TS configuration information (via ioctl) """
-+    config = hwtstamp_config()
-+    config.rx_filter = ts['rx-filters']['bits']['bit'][0]['index']
-+    config.tx_type = ts['tx-types']['bits']['bit'][0]['index']
-+    req = ifreq()
-+    req.ifr_name = cfg.ifname.encode()
-+    req.ifr_data = ctypes.pointer(config)
-+    try:
-+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-+        fcntl.ioctl(sock.fileno(), SIOCSHWTSTAMP, req)
-+        sock.close()
-+
-+    except OSError as e:
-+        if e.errno == errno.EOPNOTSUPP:
-+            raise KsftSkipEx("timestamping configuration is not supported via ioctl") from e
-+        raise
-+
-+
- def __set_hwtimestamp_config(cfg, ts):
--    """ Setup new TS configuration information """
-+    """ Setup new TS configuration information (via netlink) """
+-	/* Legacy path: unconverted lower driver */
+-	return generic_hwtstamp_ioctl_lower(dev, SIOCGHWTSTAMP, kernel_cfg);
++	return err;
+ }
+ EXPORT_SYMBOL(generic_hwtstamp_get_lower);
  
-     ts['header'] = {'dev-name': cfg.ifname}
-     try:
-@@ -56,9 +112,9 @@ def __set_hwtimestamp_config(cfg, ts):
-     return res
+@@ -488,22 +463,19 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
+ 			       struct netlink_ext_ack *extack)
+ {
+ 	const struct net_device_ops *ops = dev->netdev_ops;
++	int err;
  
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
  
--def test_hwtstamp_tx(cfg):
-+def __perform_hwtstamp_tx(cfg, is_ioctl):
-     """
--    Test TX timestamp configuration.
-+    Test TX timestamp configuration via either netlink or ioctl.
-     The driver should apply provided config and report back proper state.
-     """
+-	if (ops->ndo_hwtstamp_set) {
+-		int err;
+-
+-		netdev_lock_ops(dev);
+-		err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
+-		netdev_unlock_ops(dev);
++	if (!ops->ndo_hwtstamp_set)
++		return -EOPNOTSUPP;
  
-@@ -66,16 +122,37 @@ def test_hwtstamp_tx(cfg):
-     ts = __get_hwtimestamp_support(cfg)
-     tx = ts['tx']
-     for t in tx:
-+        res = None
-         tscfg = orig_tscfg
-         tscfg['tx-types']['bits']['bit'] = [t]
--        res = __set_hwtimestamp_config(cfg, tscfg)
-+        if is_ioctl:
-+            __set_hwtimestamp_config_ioctl(cfg, tscfg)
-+        else:
-+            res = __set_hwtimestamp_config(cfg, tscfg)
-         if res is None:
-             res = __get_hwtimestamp_config(cfg)
-+        resioctl = __get_hwtimestamp_config_ioctl(cfg)
-         ksft_eq(res['tx-types']['bits']['bit'], [t])
-+        ksft_eq(resioctl.tx_type, t['index'])
-     __set_hwtimestamp_config(cfg, orig_tscfg)
+-		return err;
+-	}
++	netdev_lock_ops(dev);
++	err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
++	netdev_unlock_ops(dev);
  
-+def test_hwtstamp_tx_netlink(cfg):
-+    """
-+    Test TX timestamp configuration setup via netlink.
-+    The driver should apply provided config and report back proper state.
-+    """
-+    __perform_hwtstamp_tx(cfg, False)
-+
- 
--def test_hwtstamp_rx(cfg):
-+def test_hwtstamp_tx_ioctl(cfg):
-+    """
-+    Test TX timestamp configuration setup via ioctl.
-+    The driver should apply provided config and report back proper state.
-+    """
-+    __perform_hwtstamp_tx(cfg, True)
-+
-+
-+def __perform_hwtstamp_rx(cfg, is_ioctl):
-     """
-     Test RX timestamp configuration.
-     The filter configuration is taken from the list of supported filters.
-@@ -87,11 +164,17 @@ def test_hwtstamp_rx(cfg):
-     ts = __get_hwtimestamp_support(cfg)
-     rx = ts['rx']
-     for r in rx:
-+        res = None
-         tscfg = orig_tscfg
-         tscfg['rx-filters']['bits']['bit'] = [r]
--        res = __set_hwtimestamp_config(cfg, tscfg)
-+        if is_ioctl:
-+            __set_hwtimestamp_config_ioctl(cfg, tscfg)
-+        else:
-+            res = __set_hwtimestamp_config(cfg, tscfg)
-         if res is None:
-             res = __get_hwtimestamp_config(cfg)
-+        resioctl = __get_hwtimestamp_config_ioctl(cfg)
-+        ksft_eq(resioctl.rx_filter, res['rx-filters']['bits']['bit'][0]['index'])
-         if r['index'] == 0 or r['index'] == 1:
-             ksft_eq(res['rx-filters']['bits']['bit'][0]['index'], r['index'])
-         else:
-@@ -100,12 +183,34 @@ def test_hwtstamp_rx(cfg):
-     __set_hwtimestamp_config(cfg, orig_tscfg)
- 
- 
-+def test_hwtstamp_rx_netlink(cfg):
-+    """
-+    Test RX timestamp configuration via netlink.
-+    The filter configuration is taken from the list of supported filters.
-+    The driver should apply the config without error and report back proper state.
-+    Some extension of the timestamping scope is allowed for PTP filters.
-+    """
-+    __perform_hwtstamp_rx(cfg, False)
-+
-+
-+def test_hwtstamp_rx_ioctl(cfg):
-+    """
-+    Test RX timestamp configuration via ioctl.
-+    The filter configuration is taken from the list of supported filters.
-+    The driver should apply the config without error and report back proper state.
-+    Some extension of the timestamping scope is allowed for PTP filters.
-+    """
-+    __perform_hwtstamp_rx(cfg, True)
-+
-+
- def main() -> None:
-     """ Ksft boiler plate main """
- 
-     with NetDrvEnv(__file__, nsim_test=False) as cfg:
-         cfg.ethnl = EthtoolFamily()
--        ksft_run([test_hwtstamp_tx, test_hwtstamp_rx], args=(cfg,))
-+        ksft_run([test_hwtstamp_tx_ioctl, test_hwtstamp_tx_netlink,
-+                  test_hwtstamp_rx_ioctl, test_hwtstamp_rx_netlink],
-+                 args=(cfg,))
-         ksft_exit()
- 
+-	/* Legacy path: unconverted lower driver */
+-	return generic_hwtstamp_ioctl_lower(dev, SIOCSHWTSTAMP, kernel_cfg);
++	return err;
+ }
+ EXPORT_SYMBOL(generic_hwtstamp_set_lower);
  
 -- 
 2.47.3
