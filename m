@@ -1,133 +1,137 @@
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F07399A60
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 15:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F653570C6
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 15:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768406047; cv=none; b=JsfDaYMIr29llE7UQtgK/Gw3gUi/3OF2bKrZW1es9A8EgNOcZuaR5nv6Ta1Ej0pDmhdcZQcRKkAJ8tFahCf2JeBiNE2odOh/Vm9RHjW27tvzOOCC4i1RGiOqhEeR5RB+UC1QlfYpkDj2L0YM20ygqV9Yinq+9blYuHMYyi7M6MI=
+	t=1768406073; cv=none; b=g+NQNDtiwmfznButRqbsfg2oZrVPXS35dFfJq06Pa8m/GvpkBiosgkChGLs1DvXWtg7f+f85EVFLP0J2Hfw2DVl5KtOLiz8wjTlDi1NfdAoMaAUOzxr4jb7mk54lyxSAtSTQbtqLvc+km2lVShVnO+ToLW0oTAkUey/Z0O4YhIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768406047; c=relaxed/simple;
-	bh=drm999Z3WAnH4wE5rwcutlUbtlEjBk/jhuN6Mff/FEs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Mkt09uhVlZFfXPJBYWPI5EI9/miHge+K/PeoHi8Hp9uCjurlEW0hSccmVfjTm0S0/HYXbJLJ1uffv35nsmAY0yeqJdsyktSuf1lDgV/GwFhSYXdhXjIvL51i2LcSMmPkZXFVXpWPsrKtgNjaohY7xLx0AYL6NDmFVSmdJ+B8Asw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWKKXER5; arc=none smtp.client-ip=209.85.218.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768406073; c=relaxed/simple;
+	bh=vu8wNkY+ONyZ11dQOa1RhYbfZ6CIfKh+CDlvLi9Pphk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PThPLfYbetbDoJ5ZCLJMZbqOFnnG57mPs6tnCmBKvrHdOr0Gwlp3zwxQgf26IUArh9CD297CmdAiYRuqVTw7pejUIMSqk1n98bY2NMczkZ8sJ5z09Lv2N5vwC/JT+E6FtC0i9VW6duFbrMcj4FgfP+y6BJJlcOnXlWoBiKx6bC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MrXFRNpY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HfUYU3I6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWKKXER5"
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-b8718294331so57449266b.3
-        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 07:54:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MrXFRNpY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HfUYU3I6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768406071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=45w2Nqp7W5ReZCd4Up6qyFBRnRWCXaqu4990woCkPZ0=;
+	b=MrXFRNpYH8wUVQnmIR9XvMEq7byxOJlTwsZK9GiQ0thZ9Ob/iBxJ4ZuSDmekt4/Hn+VP+A
+	9MKY0TwRcytqfMXhQslgez1p6JTTZ081M9SzeJuOamrqXeuGOQtr0AXriIYALqcgTR4DfA
+	JzS8pP5CFj0VsTclfA1AxZE9fd5ffJA=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-4P5-O-FSOwKi_qfgBHZaqA-1; Wed, 14 Jan 2026 10:54:30 -0500
+X-MC-Unique: 4P5-O-FSOwKi_qfgBHZaqA-1
+X-Mimecast-MFC-AGG-ID: 4P5-O-FSOwKi_qfgBHZaqA_1768406068
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-34ab8693a2cso16372005a91.0
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 07:54:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768406044; x=1769010844; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TxRavD2CHBey74glO8jcJSiamTPypq/lM19n9w55O+4=;
-        b=MWKKXER5tWtpqXK1NmKMu1V/zr26rQpdv5N3yzKnBOSEmsRYE2VPrUpO0ZNk8nObg8
-         9wqQNkwucOHLMO8yEij4w99z6bvPZmDVcYpp2j3I7jb96BO4REpPI4idmUecCsWw6hAR
-         fLEVMKAunTFKNmo4Lqxn2/Lj/J5xRjnrTew4+/BIOoST/5Wn9+nU8OzLKWZda1aqpoHS
-         7g+kma3V5q6qTaT+YEh8rSzFyqKQCpbl5YmfoGAPp0L/hJZHRWXw6KUfmAFwRYf+ppHO
-         i+PIWTcAIxcClrY1qr6tBE4HHm8FYU/zozEdQaYTJqfzYsGNWwhMUPQpG4Z6fK+m56Gg
-         rnrw==
+        d=redhat.com; s=google; t=1768406068; x=1769010868; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=45w2Nqp7W5ReZCd4Up6qyFBRnRWCXaqu4990woCkPZ0=;
+        b=HfUYU3I67nA80vs1ntunHYhEWVdZpA75QutEdzJDO9yTjYaEF1+7mFCQDghFSlT4cC
+         WYrjBmLkCWxH/ice8Q+FsXKECBpBjIbLhuV09EyYLkveJnpuiEiKvw4aYp2xB8V/lit6
+         GBakRdXp+8+c78uXoT4w3LRwD9Wdc7qfLHfhx4JJ+4EHGOPKDRqnhA1esGNK17KrwdHN
+         VUi7TYB6zLWaU+Jpaja3P6e/260gfdSHJSJ+U1mizjLtw+B4b8UKLzAdjmEFCM3iKl3P
+         MxWZhBCQjqFEg8WV5Ek+2wjH2w6lEXB5uQVKtFDL+DowQma0So4LWt4RLcEccmlNs5SO
+         RSxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768406044; x=1769010844;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TxRavD2CHBey74glO8jcJSiamTPypq/lM19n9w55O+4=;
-        b=M2dVwMlqD9LWXbKiSdPwmDlN2v0wkDO7KdOCvB85GtIW3bD6hpgaHxM6OjcWcjCglE
-         3QxEJlX+FJGzu9roMRoWSfTbcICWAtnaHakOwoUP3KYJQvWiHz6e7BUMqQBpaamCZII6
-         sq3Pqe2G+yJPxSVTJo+rMX7fmQ7dGhtS/rqYkNrKVbRwiJVvn2syLhGsdzeTWnoOSh8h
-         YT/Z4W4QRoxQBsBWnsHcvsBNVelYvWdAOSaNSiCtkRwcyweXi4hq9gD4LhutQkdSVh11
-         pVaOkRoKPMwHJ1vCHfUAW7uQvAZAT2CvA2KBp24RVL3AMIU6SriccLJYLmWJ8wDjqhjf
-         pyTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZpeUboNowlTfCLXOiyMtPivkhTxmg23r7ETo9CEZ0jjn4Kmdf/xfZDJ018XB0qcSNxxYP/gA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtu5+Fjyh7ASt3PZXsU6U+bs1b7u2TArRJYC10aUGDRRKrm8a3
-	P6gaf1p7J965rQrEMzPxhxrAq2TgqhRzFgOoYdBixFDDq+Uhqm4wZvfo
-X-Gm-Gg: AY/fxX5AfDXPkTZHBfdskKOYK+NAgwl/UTpk8a/6U0tDmr/u/9j2j3WBGasQGGlcyXT
-	sSl6i4EjZxb1mhNGS1ViaRFFaoTcvOU3KNKvfmtqod52riduTiO/SROoxH6+D/q7cRBNTMcIqOR
-	4zPdbM3G8q4LoSPtQK64K0NQv3hcI+B2epJiFkJpX8Bk2Kct7Wt2Yut3stsTTlhqMkHh+OMd/Ra
-	LSU6Gcu+kY3izKKpfSN1UPPif3ZNfIdkhjO1DH0v6lnUT2q5EZAlqOIjvw121Lqq3FMXCjrquBD
-	svypDvgDHIwiqrRM1K8SmpaywN4GRKUDBVSKvN0srZQO53wupV+RmIAyLNp/ycaQEHxhgJcPSvB
-	esQ77877gkM/ktIAx+CyY6biqmhXxZRDXtA535BN82iGFYLUt4eylZOY5xG/8VNsVkpkAjZ5Xkr
-	nIpS4BWsOx
-X-Received: by 2002:a17:907:6e8d:b0:b87:301f:6172 with SMTP id a640c23a62f3a-b87612b615amr137912666b.6.1768406044076;
-        Wed, 14 Jan 2026 07:54:04 -0800 (PST)
-Received: from localhost ([104.28.193.185])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b870e33259esm1030507366b.8.2026.01.14.07.53.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jan 2026 07:54:03 -0800 (PST)
-Message-ID: <7e99edd2-f725-4226-b686-9efbd9adc2e1@gmail.com>
-Date: Wed, 14 Jan 2026 16:52:30 +0100
+        d=1e100.net; s=20230601; t=1768406068; x=1769010868;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=45w2Nqp7W5ReZCd4Up6qyFBRnRWCXaqu4990woCkPZ0=;
+        b=t9ZRNQozQb/5ITOGdZ9z1wGzUGEOvLEigF5GvgU8jPlSlpeSfLUEuui/eqVotQNasR
+         j6gXs2EkHTypZXYWC7q5memMlTva8vxWGeBFNWfbjTBcVLCY+vfB64cahiP4lmub/Grb
+         9jT29kSamadcoiDFL5lWbDL0zXpkrKpZ21ypUiRKBWfDwjTJgcyeeh0/NUKMFJkCPpQf
+         2HNyUHEiQmWE4qGejCPR/QT0uYwNgb5o/jbPYeh+2lAK5JNbQc/4fDuz4hZR0T8+Wzfv
+         MJ3hJMx9s2CtNPwxubE0xCZ2Ma3uZoNHsaTIjX85yulEX/bW2HZAeFnLr3NkzkECXPWX
+         YgVw==
+X-Forwarded-Encrypted: i=1; AJvYcCVIECNXYHPwKV/PyRqwAV27c/sDOfI8WW/TCzb0Uefz2s3QVI9rD15ZISQflcGQdAEudpEpumM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbE81Dg4e1rXjSe+wu2EcOnSpPQXOHRe/GXYMbvXcDEBsAyHNb
+	eUYnmBqq2G3ICiLIQSVrDT+SF5IoIC/ZIYiKM06pEBYML2l5IAFDgVrgiUS2JXnkdISu5Hf18X7
+	c4RwKGfIzSUlSxucdI964ZJWadlgy43E4BcklhyiuW2RbCF8w8KWN9uj/44udZkxd5SQ2iTRzBY
+	5bkZutQ52BeKQNNIcx4WnLYThRZTSobEPv
+X-Gm-Gg: AY/fxX4gzNleP8yvctdS4x2sLn1NaDpcXr1HYU+u6M8lNzn5znLPosZqLZItJ2dCGZe
+	cMzQGEll7QlC+VVB6YC4k+pfh8wXW4EFWMKmafsuB0MlWXtJQTTFs40kMz5/EqxtVl+xeT4iqUO
+	6K91yotai6ZJytl0SCKugyROT4tjblrgBIer+CkPCBJbhw2ZUMSIYR5/3HUfC1b10+
+X-Received: by 2002:a17:90b:590c:b0:34c:f8e6:5ec1 with SMTP id 98e67ed59e1d1-35109163a89mr3116110a91.35.1768406068151;
+        Wed, 14 Jan 2026 07:54:28 -0800 (PST)
+X-Received: by 2002:a17:90b:590c:b0:34c:f8e6:5ec1 with SMTP id
+ 98e67ed59e1d1-35109163a89mr3116054a91.35.1768406067530; Wed, 14 Jan 2026
+ 07:54:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/3] net: gso: do not include jumbogram HBH
- header in seglen calculation
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-References: <20260106095243.15105-1-maklimek97@gmail.com>
- <20260106095243.15105-2-maklimek97@gmail.com>
- <3e3ef9d0-f1df-4568-a207-2a121ca76def@redhat.com>
-Content-Language: en-US
-From: Mariusz Klimek <maklimek97@gmail.com>
-In-Reply-To: <3e3ef9d0-f1df-4568-a207-2a121ca76def@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260112-vsock-vmtest-v14-1-a5c332db3e2b@meta.com> <202601140749.5TXm5gpl-lkp@intel.com>
+In-Reply-To: <202601140749.5TXm5gpl-lkp@intel.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 14 Jan 2026 16:54:15 +0100
+X-Gm-Features: AZwV_Qg5JTJCQi1Wwfd0jbkgP1qN1I8qkJH4vIis9H-XSIO4o_clOB-LFig_dcA
+Message-ID: <CAGxU2F45q7CWy3O_QhYj0Y2Bt84vA=eaTeBTu+TvEmFm0_E7Jw@mail.gmail.com>
+Subject: Re: [PATCH net-next v14 01/12] vsock: add netns to vsock core
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: kernel test robot <lkp@intel.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
+	Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Long Li <longli@microsoft.com>, 
+	oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, berrange@redhat.com, 
+	Sargun Dhillon <sargun@sargun.me>
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/13/26 15:14, Paolo Abeni wrote:
-> On 1/6/26 10:52 AM, Mariusz Klimek wrote:
->> @@ -177,8 +178,13 @@ static unsigned int skb_gso_transport_seglen(const struct sk_buff *skb)
->>   */
->>  static unsigned int skb_gso_network_seglen(const struct sk_buff *skb)
->>  {
->> -	unsigned int hdr_len = skb_transport_header(skb) -
->> -			       skb_network_header(skb);
->> +	unsigned int off = skb_network_offset(skb) + sizeof(struct ipv6hdr);
->> +	unsigned int hdr_len = skb_network_header_len(skb);
->> +
->> +	/* Jumbogram HBH header is removed upon segmentation. */
->> +	if (skb_protocol(skb, true) == htons(ETH_P_IPV6) &&
->> +	    skb->len - off > IPV6_MAXPLEN)
->> +		hdr_len -= sizeof(struct hop_jumbo_hdr);
-> 
-> I'm sorry for splitting the feedback in multiple replies.
-> 
-> I think the concern I expressed on v1:
-> 
-> https://lore.kernel.org/netdev/a7b90a3a-79ed-42a4-a782-17cde1b9a2d6@redhat.com/
-> 
-> is still not addressed here. What I fear is:
-> 
-> - TCP cooks a plain GSO packet just below the 64K limit.
-> - Such packet goes trough UDP (or gre) encapsulation, the skb->len size
-> (including outer network header) grows above the 64K limit.
-> - the above check is satisfied, but no jumbo hop option is present.
-> 
+On Wed, 14 Jan 2026 at 00:13, kernel test robot <lkp@intel.com> wrote:
+>
+> Hi Bobby,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on net-next/main]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Bobby-Eshleman/virtio-set-skb-owner-of-virtio_transport_reset_no_sock-reply/20260113-125559
+> base:   net-next/main
+> patch link:    https://lore.kernel.org/r/20260112-vsock-vmtest-v14-1-a5c332db3e2b%40meta.com
+> patch subject: [PATCH net-next v14 01/12] vsock: add netns to vsock core
+> config: x86_64-buildonly-randconfig-004-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140749.5TXm5gpl-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140749.5TXm5gpl-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601140749.5TXm5gpl-lkp@intel.com/
+>
+> All warnings (new ones prefixed by >>, old ones prefixed by <<):
+>
+> >> WARNING: modpost: net/vmw_vsock/vsock: section mismatch in reference: vsock_exit+0x25 (section: .exit.text) -> vsock_sysctl_ops (section: .init.data)
 
-Could you maybe clarify what you mean?
+Bobby can you check this report?
 
-This check is for the outer IPv6 header. skb->len - off is the IPv6 payload
-length so the packet contains a hop-by-hop header if and only if
-skb->len - off > IPV6_MAXPLEN. It doesn't matter what comes after the IPv6
-header. If the TCP payload is smaller than 65535 and it is the encapsulation
-headers that cause the IPv6 payload length to be above 65535, a jumbogram
-hop-by-hop header is still added (in ip6_xmit).
+Could be related to `__net_initdata` annotation of `vsock_sysctl_ops` ?
+Why we need that?
 
-> I think you could use the `ipv6_has_hopopt_jumbo()` helper to be on the
-> safe side.
+Thanks,
+Stefano
 
-Sure, I could submit another revision with this change if my explanation is
-unsatisfactory.
-
-> 
-> /P
-> 
-
--- 
-Mariusz K.
