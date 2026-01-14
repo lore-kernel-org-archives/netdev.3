@@ -1,109 +1,59 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF59322A2A
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 02:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C2E2356C6;
+	Wed, 14 Jan 2026 03:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768359457; cv=none; b=T3qUyIXgZSdY9yCtR6uX3mj+5k8VDM+sxV22jGQVp2g1ezFeQQezAFgR2u4smWWkWqD1IffSOUidpFGTeFEfQmfwe+2gc+yjtbnO7y2g6uk2/wPP+VLkRiyDqlgnvDBbXkcvyf8cpiS6CZ2iFELFWwslNiY1JAPtQcwgDfNasxU=
+	t=1768359732; cv=none; b=HTPixT/CZS707HGoaB/L6puHRsNds4h8wNvfv3m771wx8ZnkIzj2gUt4tvwVvdzdULgLnkfMdqjTb/N1cN0i+qmO7WI9t65DjEFzxdTorrcRyY1v9OjiavfW2Lifx8hl7IrpvF1fyWaZKejgLG/ihc9ZSrXG/8j+IvF0wUIg7pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768359457; c=relaxed/simple;
-	bh=LjBkblyUkULyDT4omYys3dIwv9tE600i8x24LDhgZYE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N5eGt5Z17MFqv+IwHjo8+REj7WGDocj6B/pBncIKW1LEHciOGQV9Rkg0iOQ4IsdfzUYFwdoeWYA5eVAqIWuxf3BUcic7CwLTkfOfUsHB062RuZewr0A5rmJY2JarQqJgM0YfxEXlyHlPnvsJs2ZV8deVzIe64LHKXfMeKWDg1Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V8JkkpD9; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768359732; c=relaxed/simple;
+	bh=v7Y0cxUB+ZK/4JUhXqBaIjT6u2OfUUkLzJ7JLKX7x3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FyI3r4XmpA7iw3M7KMU3OPWHEVlTWm58otZzBTgvHSb//4z5oW9vA1PH7z46W6aRIJdlyIP48Tcunf6JUV0Cjo0DvdecUY0yFRasCx6X7MEyONrbwsDWaF7b4Tp/pUsQauFVIDjEcOLe4PtBwjtBEjN2vBxqcxVQdAQg75NkrVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXWM6BDW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V8JkkpD9"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-34cf1e31f85so4833315a91.1
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 18:57:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768359455; x=1768964255; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y3wa55kpx6iwIJ8pAH9E5hP+eKzgTqRTpXTNuwbc4Hw=;
-        b=V8JkkpD9dqum0XxPpTcktpLl1FXjb8LDbnQ+mNGjgIE1aCPImShhGLaurjOivWwU35
-         QQaykQUeFQbR2ja/scNL2SzgM5zsmxHycTxttAupZi0qBEgfOvsCzgOi+UPW1YjX4jjO
-         YQSAE+TwjATEGjx1nThBOzpI+tBsmDVU3oTBv5h3izBC93m4FUHiIZlxL1Gzrpw8xCdI
-         xoqW470LRJJx9vzbExMtyXPOJJ+jim9JFGFNfaY40cJWMcgLz13jzXDAWOx7QJmC6D2D
-         gk36PFSNPhafLcMDB/Bfdd+Q5Gcz8mnMQLhF5v+ZS/7sB1/o65bNG+fdaEleeUOE7cFW
-         TlIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768359455; x=1768964255;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y3wa55kpx6iwIJ8pAH9E5hP+eKzgTqRTpXTNuwbc4Hw=;
-        b=vf8s6Hb1CCuM9lMjnyxjpWOt3+bWFwqwTL1Op4xlXHBecpnpuKss9E9oJ6fmsmN7UW
-         pWqTd271s9Od8ikeg84jpKGlVg09RsCK1MHU4kWWCHHeP+tyJhgzAVL2b647+ZxO4dwa
-         OwFBYZTbnHzxD905VByIBsfxr11UZQ4hyL0bwgMhfkJ2ZG4f/EoZkma3bVZKnREC9/KF
-         bhhhkXbJiMLaOPvegzYrcIy0p/66OdlljdCJe50npLSNJIkPd/Hc34mXW1fuVG0SwhCu
-         F9NE/YPc2Y0nf3i1fnxkPLM9qnHKXD2ZN6Xl993eslWlrOZGjtY7RmVmQOC7f+neU33c
-         Pjjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlgNEtRXOAj1KKdvVr7gbuD7hPNaROPasKy/5EPzk0cLpi4DAAd0iG+HYr/EhmUGR0DRYSkiE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMhhFQ885sGOEGQQlsn9yVWKmciHdjdDoBM36rDiWy/VAG+G79
-	Me923og5S89z84Ympc4YK7YJi6KZ+XcVLcfZ2KHmJ8PSJSL5MZ0o1Xic
-X-Gm-Gg: AY/fxX5czFmb0LdASxnBhBDTVkWt3JnmJLj9vbHmakswpBnuIuhRv+xmcW1nHpK3HQ0
-	5a4wyz3/yxqWMLDuy19LvN9OOAhQJKTatNcODPdZnnOvIPeVjc4kYfllVLIOqOo5ugfJ7+ozIIp
-	Ps9/EW06twksQsICsz8uDui1IYtFvN/VDl2X4LASbpIrs/UhuEdj7Bd8xQpW6FtdQqF9x/r/9oy
-	sDWGUUFDbs27imifbDgkbCLShMVnIHrcGibNKuQzystY5NSV0hvogXmgIaMgUHu35TEEqH8aWmH
-	c2V8WLE6d72FaXHztWfJqfE2t8ooeP61mTg+jc+NQssmXFV3wzFINR2DB2QaIJhkia6Eq7DGBNQ
-	NoJkinI+Uol7ZeVy1KqglzfUpFyZ0VuBrdmKGwJnXxPcEsS9yFqiv+ypHmtmK5TdepwxRW2GLnC
-	gvFtl47LbZXXJCik44/ixfrpQNQ2O05iNfAJ5vYHbhqHYPVKzH
-X-Received: by 2002:a17:90b:2fc6:b0:32e:e18a:3691 with SMTP id 98e67ed59e1d1-3510915b7abmr1289752a91.35.1768359455374;
-        Tue, 13 Jan 2026 18:57:35 -0800 (PST)
-Received: from yemj-virtual-machine.localdomain ([111.55.148.79])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35109b1974fsm433166a91.5.2026.01.13.18.57.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 18:57:35 -0800 (PST)
-From: insyelu <insyelu@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	nic_swsd@realtek.com,
-	tiwai@suse.de
-Cc: hayeswang@realtek.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	insyelu <insyelu@gmail.com>
-Subject: [PATCH] net: usb: r8152: fix transmit queue timeout
-Date: Wed, 14 Jan 2026 10:56:22 +0800
-Message-Id: <20260114025622.24348-1-insyelu@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXWM6BDW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ACAC19421;
+	Wed, 14 Jan 2026 03:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768359732;
+	bh=v7Y0cxUB+ZK/4JUhXqBaIjT6u2OfUUkLzJ7JLKX7x3g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KXWM6BDWzLo5Cv+dcEofXhrHvpUMI/aCOPqG6l+P/Gd9XsrP/IYhv22IOWjHGMc5H
+	 7LwIRh8RKQEPiwyuOr66ua3mGolNjE4n5bp5J3GuVyUH4LQb+kuUJKA4KbpJPzs8Te
+	 9zxU1XkK8ujNkLDCycY2fHNmmZu9OvLR6Q97OT2QpYqMll3lrBxvczfvaGRTpYafef
+	 VpSMO7qbt9xyFEtl0yDUDMa8oTXJbxNoqWrz9ORuIZpBoI9ep3bqiyMRJPiNt9x9Dk
+	 xV2zEH/WenlRjuHWSwJKKLjVM7WBkyYCPL/knlby/b0GHq80Y29iU97LDTTfwDAv0o
+	 J0ICBMYxuFU/Q==
+Date: Tue, 13 Jan 2026 19:02:10 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jinseok Kim <always.starving0@gmail.com>
+Cc: quic_luoj@quicinc.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: qualcomm: ppe: Remove redundant include of
+ dev_printk.h
+Message-ID: <20260113190210.5387bde1@kernel.org>
+In-Reply-To: <20260112042038.2553-1-always.starving0@gmail.com>
+References: <20260112042038.2553-1-always.starving0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When the TX queue length reaches the threshold, the netdev watchdog
-immediately detects a TX queue timeout.
+On Sun, 11 Jan 2026 20:20:38 -0800 Jinseok Kim wrote:
+> The header <linux/device.h> already includes <linux/dev_printk.h>.
+> Therefore, explicitly including <linux/dev_printk.h> is unnecessary.
+> 
+> This patch removes the redundant include. No functional changes.
 
-This patch updates the transmit queue's trans_start timestamp upon
-completion of each asynchronous USB URB submission on the TX path,
-ensuring the network watchdog correctly reflects ongoing transmission
-activity.
-
-Signed-off-by: insyelu <insyelu@gmail.com>
----
- drivers/net/usb/r8152.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index fa5192583860..afec602a5fdb 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -1954,6 +1954,8 @@ static void write_bulk_callback(struct urb *urb)
- 
- 	if (!skb_queue_empty(&tp->tx_queue))
- 		tasklet_schedule(&tp->tx_tl);
-+
-+	netif_trans_update(netdev);
- }
- 
- static void intr_callback(struct urb *urb)
+Unless there's some effort to remove the dev_printk.h header let's
+leave it as is. Depending on header dependencies is not generally
+recommended.
 -- 
-2.34.1
-
+pw-bot: cr
