@@ -1,273 +1,129 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2545F337BBA
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 18:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D332AAD4
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 19:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768416994; cv=none; b=UVRbJOaMsR2eauYxs7DgINf6JLPRZX+lo3aIkAHlKyCthy/715gJWp1HH5aAay+D82CCTmwfGWJnbDskKCitQnvElh6W4DRW80tEi2Iw/5LPv4LhxB9BzONa8VWXH/2O8Qo35AfDfsqhu0dZnJGeGAi0m1JLNRY/7SiZClfFJqk=
+	t=1768417380; cv=none; b=D8i4tcJEpAxN5knBHWKrvfz9MCCjcVC6rGRnx/qP15JZGPviXPovqksLhN5bUrQYG3Q9ol89m1k88NZM2y+3ER5bIlYFa1Bp3MpETZHN8SLXd5SznOl1tgZvFp9axdHay8f5KAfhfJgUlzvGJjwflwKHvJv1+Uk9rEBDv1NXg8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768416994; c=relaxed/simple;
-	bh=4azGP8VcRIjSALxG8aZAYNFnLhGyrhB2MnSKXZKdT/o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BUq1QkABLxa6aVhOCP4ep987hMk4ygTDGEEN1AU3VbDFWixywTvKO7OrP6eNuF8TJOH3aoI88VrviUS4AoZQK15VmfH7+HLpukvTjcV4xCh5g116QA4hlUZIVbKtLc9iyIpzpi4ZtJ3EVw99KmCMJZnRW0rCAep8LQkciBJ2cNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGoQRUBS; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1768417380; c=relaxed/simple;
+	bh=dM8WzcBwVGKmj0SltOmlTIrgVx4XI4wR6LCK9i1T7Zg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCjjSDVA3nLpDBnj+Hx5FLIVPqRoM9t9RxwCF1kNQhGWaTnflrp8vyiN53pfQkXC3Zg89heAVRJ9y72Ia5FeF0Ae+kGkVqI5QgWP3fYmMkFX8N/fY8IxIK1CcK116+6cwmQ2Le4jgfXLPy5ty+0I+x0O/a5dUnEzWpoBM7yITWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hXGeSfxY; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGoQRUBS"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34c2f335681so27786a91.1
-        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 10:56:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hXGeSfxY"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b9cb95009so13528a12.1
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 11:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768416991; x=1769021791; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/jyqCRUml6RQX1yM05nYgct3qQ9LHRmYpUM/HjuPv5M=;
-        b=LGoQRUBSupmRP6iB2j4QftDczDMNWE+pyRKa06trxzgV0cLdLa5eIXnCR7nhATE7fa
-         RxYYEKja26tOoLntochQ/st6nADBTEJFL7mJX7aDGM2toRPoemjUvdGQVOqVXl/JKSOz
-         s6S1dDgKMBm0YmeMtgr5VsLHhdjqsbDCsAqFKmwMd9iUWT2mLPRr02VgifGIq62ud+a5
-         ekmG3FO3yMufRuUNfzULh+/SjUgsxn+HjVxfDo+Xz1zXg0+SImcb4xi7cNa4T/awKMOs
-         zkN/PknwSrvDMiRdzMvcntAE0yDPkEYKboHNso8hN8JYOnwlvU+ILXb37I0v3zBUcCxn
-         OUPg==
+        d=gmail.com; s=20230601; t=1768417377; x=1769022177; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zqOxMcid/peC1Iie6lTLw8C1UUftl4S8ZikbVgEoS64=;
+        b=hXGeSfxYvNTYCGReSXPE9b9PjCuDj1VBcDNy2XxSceLUtDARcEsOsbGA2UBPl99EQK
+         CNNZ7qbPbN08KAdjt+qAuT48BScnz4eVzeo64dce/B2QOFOr3wv6YDM+aY72eBFk2AP/
+         Ias9D1lRmxP1kz2BCm+/pvlgur4DVtzMckN15++6Mps8zE20upY4K1jJznafoEoo9Y4u
+         1hwPqIroWzijNmnaRh8TaZLa+59VSWerrIl5y0+DTXBZjm+fli81REIkKg8MigUf5v0I
+         EEu041ayIRLgePoIlJ4r5MWCGveLrkqErhIvFtRnL+A6sgisyRymHW9dPKHYyBY+36Zk
+         /0Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768416991; x=1769021791;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/jyqCRUml6RQX1yM05nYgct3qQ9LHRmYpUM/HjuPv5M=;
-        b=IQtk461nY2wHzO05LNXA7Db3fi3FMiOlf8HPBolkounxlxfsPnXTq/tIRZxbnguP/C
-         vWwqYpzbws8aU4rKkmI2AAucXyuLuCUtzcjNalHI3cEnlzxD2DbKWA1WDD5gmRWwOLiN
-         WblZfSppMxTRKa+NH/Pvs9TeC4yKyqNVLYb42k+cyAxUXeOo2mByqbACwO+PjquHFOG6
-         mgpFzyi/HIN5poUk3pY5wBsRPF7WCgxis2SjD4vu3M7Zw7eHuQ8+VJmT0GzuvfC2RR0W
-         jpbaPFmLuRu7SnM7zHf0wXyNBrCtblIDJ/BWnWPCfA2ukqEqZJijw+J20OACx7X2Rh0l
-         V7RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUjrrkVLMA//BnpSoVb3YV1se3LPkpiqk5nRU3KHm5Kox4IqKpo+75hpLbua83kEV+lqEAWyg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxnsh/XYOzu0xUCvc0XjlIT0YbzM1j9XOM1wzwuUbwUUtgcVzvo
-	Waw2shugIcBnbvRB75eqOoSVZ21JzSLHLiD+iJdz40zP4LMHsJyxUlXMUm+d4Yj2UM2I1GSunSi
-	80Zv9R5Xfa/pv65G3hx0P1uSu0bDMzII=
-X-Gm-Gg: AY/fxX5TdFn196seVKpFi2+xGCAApAxwdH94g789yFAKfMT+mPq+WnDww3ToATqQsYb
-	JKaVaY2f6dhGgihKcfv0eMX4yir65qDSC+f8vQuTHKqMWfAhVuLlZbXXkGt4Zanqd9mZmQjwr7V
-	nJrJZ24WI/okXHAMxfIU2mzPY9QJX22khtWOJJALxsitB7/shZKpqsnK6JCMXqv/HpQLkypv75d
-	VWKuiy0yg+pjyJUgfLlUjlOniwREMYF67mapQ4lL/NHwCrFLVMO6/Fmk3CceIbS12/N7idJdW2p
-	ji70oNtCoyeayNq6mO9F
-X-Received: by 2002:a17:90b:3d8f:b0:32d:e07f:3236 with SMTP id
- 98e67ed59e1d1-3510915bb29mr3671344a91.22.1768416991354; Wed, 14 Jan 2026
- 10:56:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768417377; x=1769022177;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zqOxMcid/peC1Iie6lTLw8C1UUftl4S8ZikbVgEoS64=;
+        b=G+e2Uk95pwUEjSCxTWDwD0yLdisi9KgPnNAJSIz5yvoBZelQ+39VgSwxaZ7WuQac8z
+         soFhfhlr7k6HAbHUJfOOXyEdCP369Jm4G5virQ8xKXVR76bD3rtTXOMmG0txq/xxxo5P
+         UCl/HtmarLdfmJ/NJll9A+ch2izDgvcq3XfPf5Nxi4SFtYyWPR1uOi+zWlG5k0npJ258
+         70MnOigIn+b511OIGiL0aj+8z3K08XZuLVr7ocFAc3bFA8OkIIhEAHPavC13M1AqhEiI
+         FCFyIeEtXgpzDXM/+a5K54fol8SbmSr1TmZJOSk6l4nGId00AyfdBZtHj1bx3f+SGeI+
+         0CvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWc+5TelqMMROjF4vQgjjGWPlAKtyUzxyjg/+S6DTqlaNxogNXXjIsdxTT2y33HHGHo/iL6XdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl56rODBaPIVEv7Z3sHBwHFtgkI5Mry1uwQxPFE1kpXA1oDnQh
+	Etz+0hk+NY7mEmFnnKcDCR2JwZgxQzt7sUpVcxx9qwgXGy8RmtYDsHPZ
+X-Gm-Gg: AY/fxX6cxlOxP5DWdVk6UzDSYrppgkDSImcmZxVxU+hPMAV4y0eikQkkCF+9cLfranT
+	92QpvpY+qWxuAybJnIWA3iC0TO7x/xmQP6vsCC/VaaPUBtYte5hrg0GZNzhb1x000LAX5jkI5LO
+	rKDWScMZhFrTyoWUjp3QNSynShq33OFs10XFcLDQNiXlbg1UVVXKCTSXhC1E2HipHSIUSNhEhTm
+	Vd3VCXvcwCWKBQF7mYgEqbJfA+kHStXYcU0cUul9OMEM+vbwjEQn4J6WXD5RBD9GP1HeIKilMcM
+	wABCVcVSFya7dgUNEsncufdvmAXPHmSXRBixSHWpnTVMsZUscEpOwia4r1IMLJ66bARSheW8hN5
+	V/OzvVTfOLz41QIE9yvNbSS7cbfuJMjOewM+25VNKjU5jFfakOvyQ3zkU5L+l8WJsWlhgPKhSc/
+	hfFtg=
+X-Received: by 2002:a05:6402:34d3:b0:64b:5a76:792b with SMTP id 4fb4d7f45d1cf-653ec459a3cmr1649376a12.3.1768417377014;
+        Wed, 14 Jan 2026 11:02:57 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d703:5400:9b39:8144:8a26:667e])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65411877591sm391335a12.5.2026.01.14.11.02.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 11:02:56 -0800 (PST)
+Date: Wed, 14 Jan 2026 21:02:53 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH net-next 03/14] phy: qcom-sgmii-eth: add .set_mode() and
+ .validate() methods
+Message-ID: <20260114190253.ttrookxubevt7aku@skbuf>
+References: <aWfWDsCoBc3YRKKo@shell.armlinux.org.uk>
+ <aWfWDsCoBc3YRKKo@shell.armlinux.org.uk>
+ <E1vg4vs-00000003SFt-1Fje@rmk-PC.armlinux.org.uk>
+ <E1vg4vs-00000003SFt-1Fje@rmk-PC.armlinux.org.uk>
+ <20260114184705.djvad5phrnfen6wx@skbuf>
+ <aWfmpq-dJ-mUCvz1@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260110141115.537055-1-dongml2@chinatelecom.cn>
- <20260110141115.537055-2-dongml2@chinatelecom.cn> <CAEf4Bzb+p4fXkCL01MVrvCwPvboeMWXgu4uTSMhweO_MYL+tqg@mail.gmail.com>
- <3026834.e9J7NaK4W3@7940hx>
-In-Reply-To: <3026834.e9J7NaK4W3@7940hx>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 14 Jan 2026 10:56:16 -0800
-X-Gm-Features: AZwV_QhhhMbgeUBMJrChYDEp9_IVNQzntrSbFWIrvtYGIewMkOM9tYD4U31ZKF0
-Message-ID: <CAEf4Bza84H=FL-KxJEFAn6pFpVBQVnvrpif6_gtf_SWHH4pRJQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v9 01/11] bpf: add fsession support
-To: Menglong Dong <menglong.dong@linux.dev>
-Cc: Menglong Dong <menglong8.dong@gmail.com>, ast@kernel.org, andrii@kernel.org, 
-	daniel@iogearbox.net, martin.lau@linux.dev, eddyz87@gmail.com, 
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com, 
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, 
-	davem@davemloft.net, dsahern@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jiang.biao@linux.dev, bp@alien8.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, hpa@zytor.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWfmpq-dJ-mUCvz1@shell.armlinux.org.uk>
 
-On Tue, Jan 13, 2026 at 6:11=E2=80=AFPM Menglong Dong <menglong.dong@linux.=
-dev> wrote:
->
-> On 2026/1/14 09:22 Andrii Nakryiko <andrii.nakryiko@gmail.com> write:
-> > On Sat, Jan 10, 2026 at 6:11=E2=80=AFAM Menglong Dong <menglong8.dong@g=
-mail.com> wrote:
-> > >
-> > > The fsession is something that similar to kprobe session. It allow to
-> > > attach a single BPF program to both the entry and the exit of the tar=
-get
-> > > functions.
-> > >
-> [...]
-> > > --- a/kernel/bpf/btf.c
-> > > +++ b/kernel/bpf/btf.c
-> > > @@ -6107,6 +6107,7 @@ static int btf_validate_prog_ctx_type(struct bp=
-f_verifier_log *log, const struct
-> > >                 case BPF_TRACE_FENTRY:
-> > >                 case BPF_TRACE_FEXIT:
-> > >                 case BPF_MODIFY_RETURN:
-> > > +               case BPF_TRACE_FSESSION:
-> > >                         /* allow u64* as ctx */
-> > >                         if (btf_is_int(t) && t->size =3D=3D 8)
-> > >                                 return 0;
-> > > @@ -6704,6 +6705,7 @@ bool btf_ctx_access(int off, int size, enum bpf=
-_access_type type,
-> > >                         fallthrough;
-> > >                 case BPF_LSM_CGROUP:
-> > >                 case BPF_TRACE_FEXIT:
-> > > +               case BPF_TRACE_FSESSION:
-> >
-> > According to the comment below we make this exception due to LSM.
-> > FSESSION won't be using FSESSION programs, no? So this is not
-> > necessary?
->
-> The comment describe the LSM case here, but the code
-> here is not only for LSM. It is also for FEXIT, which makes
-> sure that we can get the return value with "ctx[nr_args]".
-> So I think we still need it here, as we need to access the
-> return value with "ctx[nr_args]" too.
+On Wed, Jan 14, 2026 at 06:55:34PM +0000, Russell King (Oracle) wrote:
+> On Wed, Jan 14, 2026 at 08:47:05PM +0200, Vladimir Oltean wrote:
+> > On Wed, Jan 14, 2026 at 05:45:24PM +0000, Russell King (Oracle) wrote:
+> > > qcom-sgmii-eth is an Ethernet SerDes supporting only Ethernet mode
+> > > using SGMII, 1000BASE-X and 2500BASE-X.
+> > > 
+> > > Add an implementation of the .set_mode() method, which can be used
+> > > instead of or as well as the .set_speed() method. The Ethernet
+> > > interface modes mentioned above all have a fixed data rate, so
+> > > setting the mode is sufficient to fully specify the operating
+> > > parameters.
+> > > 
+> > > Add an implementation of the .validate() method, which will be
+> > > necessary to allow discovery of the SerDes capabilities for platform
+> > > independent SerDes support in the stmmac netowrk driver.
+> > 
+> > s/netowrk/network/
+> > 
+> > > 
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > ---
+> > 
+> > Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> According to patchwork (I forgot the RFC tag on the patches) it needs
+> linux/phy.h included. Plesae let me know if you'd like me to retain
+> your r-b. Thanks.
 
-please update the comment then as well
+Ah, ok, I thought that the SPEED_* macros are also phylib-specific like
+PHY_INTERFACE_MODE_*, and hence, the phylib header would already be included,
+but it seems the SPEED_* macros are provided by include/uapi/linux/ethtool.h.
+Go figure...
 
->
-> >
-> > >                         /* When LSM programs are attached to void LSM=
- hooks
-> > >                          * they use FEXIT trampolines and when attach=
-ed to
-> > >                          * int LSM hooks, they use MODIFY_RETURN tram=
-polines.
-> >
-> > [...]
-> >
-> > > @@ -4350,6 +4365,7 @@ attach_type_to_prog_type(enum bpf_attach_type a=
-ttach_type)
-> > >         case BPF_TRACE_RAW_TP:
-> > >         case BPF_TRACE_FENTRY:
-> > >         case BPF_TRACE_FEXIT:
-> > > +       case BPF_TRACE_FSESSION:
-> > >         case BPF_MODIFY_RETURN:
-> > >                 return BPF_PROG_TYPE_TRACING;
-> > >         case BPF_LSM_MAC:
-> > > diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-> > > index 2a125d063e62..11e043049d68 100644
-> > > --- a/kernel/bpf/trampoline.c
-> > > +++ b/kernel/bpf/trampoline.c
-> > > @@ -111,7 +111,7 @@ bool bpf_prog_has_trampoline(const struct bpf_pro=
-g *prog)
-> > >
-> > >         return (ptype =3D=3D BPF_PROG_TYPE_TRACING &&
-> > >                 (eatype =3D=3D BPF_TRACE_FENTRY || eatype =3D=3D BPF_=
-TRACE_FEXIT ||
-> > > -                eatype =3D=3D BPF_MODIFY_RETURN)) ||
-> > > +                eatype =3D=3D BPF_MODIFY_RETURN || eatype =3D=3D BPF=
-_TRACE_FSESSION)) ||
-> > >                 (ptype =3D=3D BPF_PROG_TYPE_LSM && eatype =3D=3D BPF_=
-LSM_MAC);
-> >
-> > this is getting crazy, switch to the switch (lol) maybe?
->
-> ACK
->
-> >
-> > >  }
-> > >
-> > > @@ -559,6 +559,8 @@ static enum bpf_tramp_prog_type bpf_attach_type_t=
-o_tramp(struct bpf_prog *prog)
-> > >                 return BPF_TRAMP_MODIFY_RETURN;
-> > >         case BPF_TRACE_FEXIT:
-> > >                 return BPF_TRAMP_FEXIT;
-> > > +       case BPF_TRACE_FSESSION:
-> > > +               return BPF_TRAMP_FSESSION;
-> > >         case BPF_LSM_MAC:
-> > >                 if (!prog->aux->attach_func_proto->type)
-> > >                         /* The function returns void, we cannot modif=
-y its
-> > > @@ -596,6 +598,8 @@ static int __bpf_trampoline_link_prog(struct bpf_=
-tramp_link *link,
-> > >  {
-> > >         enum bpf_tramp_prog_type kind;
-> > >         struct bpf_tramp_link *link_exiting;
-> > > +       struct bpf_fsession_link *fslink;
-> >
-> > initialize to NULL to avoid compiler (falsely, but still) complaining
-> > about potentially using uninitialized value
->
-> ACK
->
-> >
-> > > +       struct hlist_head *prog_list;
-> > >         int err =3D 0;
-> > >         int cnt =3D 0, i;
-> > >
-> >
-> > [...]
-> >
-> > > -       hlist_add_head(&link->tramp_hlist, &tr->progs_hlist[kind]);
-> > > -       tr->progs_cnt[kind]++;
-> > > +       hlist_add_head(&link->tramp_hlist, prog_list);
-> > > +       if (kind =3D=3D BPF_TRAMP_FSESSION) {
-> > > +               tr->progs_cnt[BPF_TRAMP_FENTRY]++;
-> > > +               fslink =3D container_of(link, struct bpf_fsession_lin=
-k, link.link);
-> > > +               hlist_add_head(&fslink->fexit.tramp_hlist,
-> > > +                              &tr->progs_hlist[BPF_TRAMP_FEXIT]);
-> >
-> > fits under 100 characters? keep on a single line then
->
-> ACK
->
-> >
-> > > +               tr->progs_cnt[BPF_TRAMP_FEXIT]++;
-> > > +       } else {
-> > > +               tr->progs_cnt[kind]++;
-> > > +       }
-> > >         err =3D bpf_trampoline_update(tr, true /* lock_direct_mutex *=
-/);
-> > >         if (err) {
-> > >                 hlist_del_init(&link->tramp_hlist);
-> > > -               tr->progs_cnt[kind]--;
-> > > +               if (kind =3D=3D BPF_TRAMP_FSESSION) {
-> > > +                       tr->progs_cnt[BPF_TRAMP_FENTRY]--;
-> > > +                       hlist_del_init(&fslink->fexit.tramp_hlist);
-> > > +                       tr->progs_cnt[BPF_TRAMP_FEXIT]--;
-> > > +               } else {
-> > > +                       tr->progs_cnt[kind]--;
-> > > +               }
-> > >         }
-> > >         return err;
-> > >  }
-> > > @@ -659,6 +683,7 @@ static int __bpf_trampoline_unlink_prog(struct bp=
-f_tramp_link *link,
-> > >                                         struct bpf_trampoline *tr,
-> > >                                         struct bpf_prog *tgt_prog)
-> > >  {
-> > > +       struct bpf_fsession_link *fslink;
-> >
-> > used in only one branch, move declaration there?
->
-> ACK
->
-> Thanks!
-> Menglong Dong
->
-> >
-> > >         enum bpf_tramp_prog_type kind;
-> > >         int err;
-> > >
-> > > @@ -672,6 +697,11 @@ static int __bpf_trampoline_unlink_prog(struct b=
-pf_tramp_link *link,
-> > >                 guard(mutex)(&tgt_prog->aux->ext_mutex);
-> > >                 tgt_prog->aux->is_extended =3D false;
-> > >                 return err;
-> > > +       } else if (kind =3D=3D BPF_TRAMP_FSESSION) {
-> > > +               fslink =3D container_of(link, struct bpf_fsession_lin=
-k, link.link);
-> > > +               hlist_del_init(&fslink->fexit.tramp_hlist);
-> > > +               tr->progs_cnt[BPF_TRAMP_FEXIT]--;
-> > > +               kind =3D BPF_TRAMP_FENTRY;
-> > >         }
-> > >         hlist_del_init(&link->tramp_hlist);
-> > >         tr->progs_cnt[kind]--;
-> >
-> > [...]
-> >
->
->
->
->
+Please keep the review tag.
