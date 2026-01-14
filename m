@@ -1,58 +1,58 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC8120DD72
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 01:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E78D18BBAE
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 02:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768355664; cv=none; b=Ewf7+9nwWHz1qKQ+F7WSbCMgtJCmrp/utEuRriXWD99ZCLXn2uwYXbSZkiLln6ZUm6LqDbIsY+IhaBIQgz4OXYpFVo2g6yrEO89q/VO+vzxfQgmQvVOcY9StyMuzA61Pxfr/JHafD98PG923BVoyGxXEReVSXxQVWng5n6DfEhQ=
+	t=1768356100; cv=none; b=f5EbID7+oP4DvkFpXYYiJHVLW2tOSmuAn0DE/KM4RSLm5S+yBuihxGp3g6NOb3P0io+gCPcUR+hKFZfsfPTZldCSD3gCnK0kj/S3T9jQxGrZVMea7nBYbWITCUD7Uc0laAqdPLmTKGFp5xf9q5LM6GoliBvLDFYkivI2aXMAq0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768355664; c=relaxed/simple;
-	bh=/6aqy76u2W9VKAySido3V9a5UUY51nL1QvLE6DSpitk=;
+	s=arc-20240116; t=1768356100; c=relaxed/simple;
+	bh=9C94nQTK7DnwA7gjdKMJb+u/ecuo+vMs28/RY2Dyecw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o0TnXO4NLXLz+p2Z0zYXYSYqcvR/S6Ml2xUrxhC97h9ebwhiqMLoWoF5xQjN37wjf8d+coJQ7zTqa6y0VnNmlBmiWz2pR+snMqnRfJhvv+qxNbxmvyvE8TYSsvN0cW17Ayq746Ctey4X6TvCYZdH7u/4GBRMnC22w2YykYTp7JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ILmxRUS9; arc=none smtp.client-ip=209.85.219.41
+	 To:Cc:Content-Type; b=cupQ/q94LFw7ERE6r5sVLmftaTil6Yxu9N3Y9jWzC0HFwVcRtz5549R15xZZN6DjpFwEdikMfZMKafp7oyN2T1EB7XQDHmco6EerjY4y/RVRsat2JE38iM1ijpA2nY0nw+iZH1veVtCQRhgdTNF3Ui3TKzBHgQadT5hFfQPdNh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YkLd5oTV; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ILmxRUS9"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so83680926d6.2
-        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 17:54:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YkLd5oTV"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5014b7de222so726691cf.0
+        for <netdev@vger.kernel.org>; Tue, 13 Jan 2026 18:01:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768355662; x=1768960462; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768356098; x=1768960898; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X1JMzsd+AaLKlWRubKvOFKNrRDPCucP7s/Qk6uX8gUU=;
-        b=ILmxRUS9F4We+in8kdsbwjb+mmcYiWvuUUBb1wyLI/Qj1E7vsrpdQOJy3wMCjGN92o
-         Yz9uw79SyojpDg86Zv57pibbM6kMfngipJVt0iObmYumgLD56tl3rA0WZTF7W1UrIIAG
-         mReXSUSizuzdPDnjFxvvkmL12aElMsAkTEFI/UP0iX8OFEYe2GalZpfd8iyOVAbKKdWE
-         X05i0ANbHvpHesLBBBJcF+4rPbH4V/Hzet441+SM/YdMy+uo6j/4S5DpyWBLtmwEnG2C
-         iOlHn4gl7ioUg1xW/gW+fXjqOE2D5U605EO26iH8JiQ22/zEg6o71fMMrFDo/NmMpgI5
-         qXTg==
+        bh=Nqdg5Rx1hxsd34tgtRIX9MZCBC0NBLvB3Lt0noII71A=;
+        b=YkLd5oTVCe9JzVSskNmV3pwHDZ2UaqfP+WnKY34nQ7nWt4r8PY+OyVuBUSFcdgwZ5M
+         x9HZ/nvZlwiy15PARXf7f/777mhGozOCZGDPcAoGPak88pYi6VllBw3n77r2wcZcuewj
+         /LR4OZuH//nEKgl9BJrDHpcTuAbnOlq5pNgq9DqfzOEswM1Q/fd8PprZut/yXaeWzvqI
+         xUFBIEpQl/PAxGQaKi9kvTiiPKgUY/sc75acMMOtwd+iMI78brjDQ7/eb3rW4PR1C4uP
+         BC/e7DIUVuJDWelQuJcY92+Lq3Y4vtca6eRA7NGitesmJc3Tm/Ul6SANhBNMoppyNrUH
+         FUIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768355662; x=1768960462;
+        d=1e100.net; s=20230601; t=1768356098; x=1768960898;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=X1JMzsd+AaLKlWRubKvOFKNrRDPCucP7s/Qk6uX8gUU=;
-        b=Cn4bhnhI2FKhz3AHlEWbnJP05VzWRN7XMYpk3E7Q0N2/uFc8nFjheF7yp22vbMO5Je
-         3siMzhGtzkkfU5qEvGc6dSfgXnQrpc/cAi2jCE/5+jFpM4Ktmb+jF0oNDo4k6C9dyYZU
-         jo2J/L+GODV0Kdv2P9b+W3qcby4l5Lp5zAgBEt70mo9K8Z+Nq/o7goAHMQiDOULQYLLM
-         JEx16N7gX99MSqGJLZx6dJ+gkFvmt6PuSaNfTzuE86xIPUGGB5iI0MFNQNI+uASWcliX
-         rOP0N/omz1KVreLVjU3t8dJI4sFiHpMF6LX8ZtMaRCpVSEM+YtCBqkwy4bSYpWnu3ayi
-         YM9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXVATXyenpEtlcYnn4aKJf0bl8IDxrIOuF3iSMy7ec0qXqbc+ob04lQNeG3NeYwdJL6K4Ngb4s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHZkIwa968x2joO4QGFTlP9ZAILHwGEoenF8/gwAe9gVV/RFv3
-	dBNibpMJvvyK1D9un+dYynNRYmQ0Wnb+RaIfPI8nX/AGZcd1bJ7dJqiCE1dT73F2jb6nMpo+XtS
-	ivPEHj9XStsJq/UkppGg//QWchip8F02EDlK4ge2C
-X-Gm-Gg: AY/fxX5DpRyqfD6g+v8wsCz4qCq4GYCYcpiHTPcZF76O9JJt4geQ4HYlD6Xc8wD2/7g
-	Y9jPL1X7qxKy3cG+djCWqswz+zlI3Iy5H4N1E+L/ACZNi7Ld3boR8EFHtOMU0MLetRvcEm6xWaJ
-	G5VHuXKjUcjsWzotq31QSDHDJy4npS0HK7OT048EEkKrjzm1hl1C76euR9fqvzhoqCdfd4GPXjU
-	sD2S3IAw1Hy3O4MMRmlia8t+S0OMr2AG2KI1FkLEoCqgpwlu1crtku0GqMPpzVCXXySKqd5
-X-Received: by 2002:a05:622a:8c6:b0:4e7:2210:295f with SMTP id
- d75a77b69052e-501481e483dmr16431961cf.13.1768355661444; Tue, 13 Jan 2026
- 17:54:21 -0800 (PST)
+        bh=Nqdg5Rx1hxsd34tgtRIX9MZCBC0NBLvB3Lt0noII71A=;
+        b=TxjaWkHGBsZAYJiPSADl77WR1h0lWPoEhUDE99gufmvf+s0os+x434ArpVPpGKXo3T
+         xbqc6SHBSD27ASsIrkDKj/SNZ+2hoyrSNOo2B/OL++DSOxktO2e8kR2X73q8TnMmXW30
+         paD+REYOi7yPCGrTXCUkk+cyolB/+ztKdTTRPC0iMPdafEQ+VPvqdMYt74OeUq9/1nXN
+         VXocc5+RjclGrkmuqAtu5zcKqBhUgwTQeah8PFJWymAhlLZJfP7Tf0ZY4CON/p6VAg4s
+         xm4JRg/4V0z08PnMxChNPfowC8TkoXeJfL2TJTXv5W92NG8CaPxW+pOt011AqtexctHW
+         kFxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWT4lHZ77U3cUWyPsY5D39XTH2va4/fOeMpT/s1Uij2HRQICsKpVw3MDNxkkRRAy8ZLFinoPc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUYlBF1sgmwqA1CbvfFmPCqsgXe8GQaI4xPQgNXDnR0i+vDaJC
+	hQSyzjrJQaR1bZqwlJ7v4npMNSKmdsTa6YZPolyMT6pANCHl0oB6rXvfVdaJbELP+dxx+L/CgIc
+	FdxBe9rG+6L1nhMQImz6iAMXiQHherqbzozbeboaF
+X-Gm-Gg: AY/fxX5ZPpAc/lbMM1IhBhISwsrg9PlqbHaqPUEPXnOvRJz2Xoq9w3s9Gv0U8+f7YFQ
+	JZP7tRoXafY3yxQALSFWbBzm6rSjCtQBGBQAZtz5JGu6x2rUs9wW+1yn25ZxllpB2ls9VNUa2Eh
+	AUTI/jtiTN69cQx3K67IEcxJ4SsH4PHJthXn1pSVwUb/fhaQkROCNMclBs6gTsLWjYIAE/0RnAG
+	CMzacc+zvKWgFEtlXtq2+N4j8qSoWHQ+Sy+kVA22xgsJP+9AlqIiSZT4YfJEMXY1Dx9tUln
+X-Received: by 2002:a05:622a:410f:b0:4ec:f56c:afa5 with SMTP id
+ d75a77b69052e-5014a9043d1mr4560551cf.22.1768356097940; Tue, 13 Jan 2026
+ 18:01:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,11 +60,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260113131017.2310584-1-edumazet@google.com> <20260113174417.32b13cc1@kernel.org>
-In-Reply-To: <20260113174417.32b13cc1@kernel.org>
+ <CANn89iKDrx0DP56AynzMuKv4so7DFEFpFE2yHg6gCGugzd4ivQ@mail.gmail.com>
+In-Reply-To: <CANn89iKDrx0DP56AynzMuKv4so7DFEFpFE2yHg6gCGugzd4ivQ@mail.gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 14 Jan 2026 02:54:10 +0100
-X-Gm-Features: AZwV_Qh9QDRQQdEfFkFpY_oUWCCqKvjQoducQ3rofdkF2r6eeFvLILO6teMJJRU
-Message-ID: <CANn89iKDrx0DP56AynzMuKv4so7DFEFpFE2yHg6gCGugzd4ivQ@mail.gmail.com>
+Date: Wed, 14 Jan 2026 03:01:27 +0100
+X-Gm-Features: AZwV_QhwSMIKc3b9ic3shy2icGFf3JvY1RV6kykJZOx-DUnYOjuXKCQH2n4ahHo
+Message-ID: <CANn89iJ3Ha6pQbBjR3XgvM35HVdeCh8k9nMqScuHxamz0JVYFQ@mail.gmail.com>
 Subject: Re: [PATCH net-next] net: minor __alloc_skb() optimization
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
@@ -72,35 +73,49 @@ Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 14, 2026 at 2:44=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On Wed, Jan 14, 2026 at 2:54=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> On Tue, 13 Jan 2026 13:10:17 +0000 Eric Dumazet wrote:
-> > We can directly call __finalize_skb_around()
-> > instead of __build_skb_around() because @size is not zero.
+> On Wed, Jan 14, 2026 at 2:44=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Tue, 13 Jan 2026 13:10:17 +0000 Eric Dumazet wrote:
+> > > We can directly call __finalize_skb_around()
+> > > instead of __build_skb_around() because @size is not zero.
+> >
+> > FWIW I've been tempted to delete the zero check from
+> > __build_skb_around() completely recently..
+> > It's been a few years since we added slab_build_skb()
+> > surely any buggy driver that's actually used would have
+> > already hit that WARN_ONCE() and gotten reported?
 >
-> FWIW I've been tempted to delete the zero check from
-> __build_skb_around() completely recently..
-> It's been a few years since we added slab_build_skb()
-> surely any buggy driver that's actually used would have
-> already hit that WARN_ONCE() and gotten reported?
+> We could keep it for a while, WDYT of
+>
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 77508cf7c41e829a11a988d8de3d2673ff1ff121..ccd287ff46e91c2548483c51f=
+a32fc6167867940
+> 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -458,7 +458,8 @@ static void __build_skb_around(struct sk_buff
+> *skb, void *data,
+>         /* frag_size =3D=3D 0 is considered deprecated now. Callers
+>          * using slab buffer should use slab_build_skb() instead.
+>          */
+> -       if (WARN_ONCE(size =3D=3D 0, "Use slab_build_skb() instead"))
+> +       if (IS_ENABLED(CONFIG_DEBUG_NET) &&
+> +           WARN_ONCE(size =3D=3D 0, "Use slab_build_skb() instead"))
+>                 data =3D __slab_build_skb(data, &size);
+>
+>         __finalize_skb_around(skb, data, size);
 
-We could keep it for a while, WDYT of
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 77508cf7c41e829a11a988d8de3d2673ff1ff121..ccd287ff46e91c2548483c51fa3=
-2fc6167867940
-100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -458,7 +458,8 @@ static void __build_skb_around(struct sk_buff
-*skb, void *data,
-        /* frag_size =3D=3D 0 is considered deprecated now. Callers
-         * using slab buffer should use slab_build_skb() instead.
-         */
--       if (WARN_ONCE(size =3D=3D 0, "Use slab_build_skb() instead"))
-+       if (IS_ENABLED(CONFIG_DEBUG_NET) &&
-+           WARN_ONCE(size =3D=3D 0, "Use slab_build_skb() instead"))
-                data =3D __slab_build_skb(data, &size);
+BTW, for folks using clang and not up to date kernels, backporting this com=
+mit
+makes sure __build_skb_around() is at least inlined.
 
-        __finalize_skb_around(skb, data, size);
+commit 242b872239f6a7deacbc20ab9406ea40cb738ec6
+Author: Xie Yuanbin <qq570070308@gmail.com>
+Date:   Sun Nov 9 16:37:15 2025 +0800
+
+    include/linux/once_lite.h: fix judgment in WARN_ONCE with clang
