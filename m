@@ -1,212 +1,108 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACF43A1A44
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 15:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A503A1D01
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 16:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768406298; cv=none; b=um/ARmg9qLFYe5M+/cUw7s64+rNtAEHSw2RDOWwodgy3sWRg0mfs7wnv8YRYCUDo+I03om2rQf62DhvuZbDR3MsN7CxSCsN2G8s9G040JsRoj1ZTQAsWSh72oOkNTunpQOjw5IyhQ20ReeoNzVECoHoYFiMnTchWl6usZVC6LbQ=
+	t=1768406584; cv=none; b=NLTheF1Jzw7Kewrj2XL8JxeL7H3uRqgsCtRemuFCqb2RCvnahQ0FIvxU8/9ykXmpdPAAy1kToQHAhO+4Tvo3exO4cHpKsdjKpQpQLzKmrXdC/n879kn8sNUiYHaVSjb0gtShhudrS54QPOXlDaWuFMyhTFEiAEB88kYSiT60tC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768406298; c=relaxed/simple;
-	bh=fyFkPzA7jD86HDqzxLlGJw1nUhjO3+Q6huQ4gYgSwK8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=YoUn3/QJtxU0FJ3tKRxlqSKjlz6nfxGss2ADFpdbOxEqz774wsrAm5Vxw0vs0hw13ULyUlEjSDaOFQajYDZaPx0hXw+/CVp5XSolXYY2pmc6ryTw+u3ZPRu2oaZ+2mm97w6tS2puU8svaTXQjuvSAYVVLN1v1HhJegbvdGeKLIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GB7UP8Mz; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768406584; c=relaxed/simple;
+	bh=sY9pL49eI+iAaNRXDJUpPj2uwc2IYCChq6PaL6YbgsY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=iPTrgwNiekPMchGrHEW4JT+BfeR9xLxvwbqrLK8q9xhO5oOLcAWnJyyWifZPS0P6AXtqI08j+LFP7uHF3RU2up1mXXDHma8U4avhMI6ckABDHZOrsZ/zJkfuE8LJVGOJ3pwRSVb23J4OXP/nrD6aFzegcxfZ8zBvtvy46UAinBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=RlwPhsBx; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GB7UP8Mz"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50145cede6eso11345701cf.2
-        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 07:58:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="RlwPhsBx"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4f1aecac2c9so12955071cf.1
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 08:03:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768406291; x=1769011091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fyFkPzA7jD86HDqzxLlGJw1nUhjO3+Q6huQ4gYgSwK8=;
-        b=GB7UP8MzbH+zo3J+a15WxFGHqpJNmNxGFeeQnj2bW1ANbZoF3h2ufO1wHja9wlMHMb
-         NiN90QIDCgPS8SbC0v+cd/BN2qRBb0E1NVDeErx5ofZdc0u/+FJ2Vzb3Fi9TGxzIqIJk
-         6pULQnGtROKszzz2opai9vBB0pHqy1QW3Sou7AeOCPhity3t/32JolroB8JAG3toUtM7
-         /LEYj8x/nWn2KWgq2al7e2XdKgw+F4LE3eGYjyWNGmpNrooOyRUHqYK4a9O43sDT/ce4
-         o7cmb9Usn1YehbDuuBcjkTElDB2OuunRsEW8GSWiidXdE1ZcaS+3MqGO8tYtWlJtvHpT
-         wNSw==
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1768406579; x=1769011379; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7A6mLt5TKWKJHAxjxXm3B7k58nEHjMbCeaedAX1PDt8=;
+        b=RlwPhsBxCMhjhDh3C4/o6sLOD2LWiH66DToMgo/cnoIHUGoyo9ZmZv+kCwUhLROkWC
+         42Ff5IKtCn5N2Ief3VUy3bhgqN2+jF9As+qhCq0ixmtY1qyGlBIlQzvzVaK/HK92hoYX
+         pHvpQx+SUdDHXGrAGOq0ve1+WPFCw7TpI5NVlLrTcqA2YC03pFn2wfRz5MTOlNshp7WR
+         +QutcMNvSieD2HsjALLEQkb4qfbVfVMWY+wf+MId9BM1je5aEXD1BEh1f3vRHgepcWH0
+         QWqkazQFYdu379WbHbRhyK1uYmYNCDhsIpcLTbbQ9q/qLSgOFZF20bdyemLYMT509ycB
+         M0HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768406291; x=1769011091;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fyFkPzA7jD86HDqzxLlGJw1nUhjO3+Q6huQ4gYgSwK8=;
-        b=ZhsByx2xJ4YCKOAJtI6t07/A0Y2dVIKCNnOoIMNo6ge5kmRKVXnmYkhy4dtYjuRoh6
-         i2+oZbR6LXjbV08NZ9ecpfzY0+G6FIzZO/D5KGOI7o7wmpew0Gs27ks/btVZgt5+dp8w
-         OxgClgioiIKhopAo2QIE0sI43cnmCIXXG2jA46kAoH57duDdvDJE/xVchMq36IrYo0F9
-         hjckF5kRoG24Bi0P5Bq0zOPMybKUmxHW75W45Ctbo0G1rn2GVSiY3ot+97pkxa2wz3xj
-         LclWB3DTcjsMZFqD+8Np/pEABekL4hiDYtgydmM3h13lkh9aG+NPEUrU+QBQQCQrgpg7
-         01zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXmQ9hJ+GU3R84HNUfFb7aV6INvJviC3mP3ToXCqstJQfwmI1CGDN5tdWpBvvoat0kkn7J0fjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywdg+/KNdsO4+ck4mmKJqDLyqR2O1YLmrTrWtJgJfyHaFVunCjX
-	2ZsuGC5NeATbj2nYFz2yP+k3wzuEDpPhOjvbJVlv2dwRu0PYt3yzcCbduOHaHQ==
-X-Gm-Gg: AY/fxX4UOZRO2FUpgP29rGVokjOSkiazr+X/3U8bgzkwLCEhe+cTPVNSMiCzYi9vW48
-	w5hj8rzDZLzQDEfvYLR3cDljW685I/WUg8nbVwxAolDYfJyC9njdtk/jReZQhiypxjBW4v1t73Z
-	2MWb9BAggNUY2KB5/r6+6hSpDiyAvDvgfs5d1xCy/w2HXU5UdY1v3j/LOPf+ZA2+SrDP+kmq5MY
-	XwBF8MjaupsWOkfGmeWPKsMRa/+TInhAlWAkq6ohetUESRUT1Ytl+H9Cct4YiRnZyUcuM+/6Hyn
-	3/fzzw1teKawfwMkVIt5znQRa1Ej0MzSHFHA5dnjoWz2ZbNvsnFkJ59g8Rxt01LviR73usop+z+
-	cUp1hTSezqcoYv2DdcGIkzt/uL4WLCxjCVJf1uAsgmSX/8aKH6AmNCVoJmScKubFOy4PC0qU16d
-	yfFFC3tyAhLHquKh32SXKPuyq1A068KaxkYJzo3XFQVaglv805FZBvexAlJITlrUE2kOKsKw==
-X-Received: by 2002:a05:690c:9c0a:b0:78c:25fa:1bb7 with SMTP id 00721157ae682-793a1d6fa34mr22055957b3.60.1768400306350;
-        Wed, 14 Jan 2026 06:18:26 -0800 (PST)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-790aa670ec0sm91265417b3.36.2026.01.14.06.18.25
+        d=1e100.net; s=20230601; t=1768406579; x=1769011379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7A6mLt5TKWKJHAxjxXm3B7k58nEHjMbCeaedAX1PDt8=;
+        b=lD/46O7c3NGamXyV3BPeIv7AzuZ0YVXTBtEX3ls4rqGLwkKh9mPGKKkM87njFNxZAL
+         pLEmZVJwbpuIW8OIJyboTlXVEC1XRU50cMIBwlpLQjjkzoWgHOExsEKWi371nC3ZcCeq
+         v+1fB2g9qc5dlsuxxoITCZdAvBnjuwe+UEsL0qfhZUfBkXpsfYAFtWIFu+WBIzGou30/
+         bbIS5zFLfr88lYTJ9WZiEAjVr2CAddC1dhfWxQZAyVDo6I56qB2oSFe2VCNX8EfiGdYY
+         wS6JSuK3xFc15sPFmKsdxbZTNbNaD16TmEs9alFCqoqOzx5id+Hkn1Z40t8ZGgBeVLts
+         L4xg==
+X-Gm-Message-State: AOJu0YwlVkoU9ZLCZ+dXEd6DWn7Rv0tKgEYYelBIpJ3ECz87ry9a9UDW
+	tic+nwiNDg9Ul8at7B8CrRZp4zF7PZ+pdwfWcdFlhkG+b2S6HP/t1kFCuOznVt9fCQ==
+X-Gm-Gg: AY/fxX75tNYVtDObDMaaQiHvybkmck0Yyu7u19ASvejuyAT/JHGYqEhmq/LRT0PDGMx
+	whw988pfCkvzlX12qY+ZO6WHnfN9cpxN7Xy+r1TQcOUzSuxL0ENzZEQ4LBlkegOjBRlxn7TWm+A
+	Pw0I2gFbYnfGvO6L98C0souOe1X6nqhWjcfhKDnt2SS4kLeVPSaWZoABtu/jKqyFRF8QBwPqRem
+	yFkAy+AX59fSE/WZpvoYiIJNaiafxje/8UkySiihIZUw7yHT8JrPS6Sa5oHbMzvF7vZwdLwWIeA
+	D5xbqnjV8UNmMbu9gqDHdw7Xm3RTTLMrwqhnXiRWW1Lu1b3IBOlENGZDB42VrZYu9uQ3/Dj/10/
+	xZi6/2K1IeQew8S6A8KC3fUGPq9o/G/57tcHKBuaYNVURDV8aH0OQ3twVBZeyBrl3vJjR0xNfZI
+	V8qZJJjwiIww5nFj0sKwNwDw==
+X-Received: by 2002:a05:622a:7701:b0:501:46b7:401b with SMTP id d75a77b69052e-50146b741e9mr42719841cf.15.1768406579169;
+        Wed, 14 Jan 2026 08:02:59 -0800 (PST)
+Received: from majuu.waya ([70.50.89.69])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50148ecc0e4sm15543451cf.23.2026.01.14.08.02.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 06:18:25 -0800 (PST)
-Date: Wed, 14 Jan 2026 09:18:25 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>, 
- Neal Cardwell <ncardwell@google.com>
-Cc: "pabeni@redhat.com" <pabeni@redhat.com>, 
- "edumazet@google.com" <edumazet@google.com>, 
- "parav@nvidia.com" <parav@nvidia.com>, 
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
- "corbet@lwn.net" <corbet@lwn.net>, 
- "horms@kernel.org" <horms@kernel.org>, 
- "dsahern@kernel.org" <dsahern@kernel.org>, 
- "kuniyu@google.com" <kuniyu@google.com>, 
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
- "dave.taht@gmail.com" <dave.taht@gmail.com>, 
- "jhs@mojatatu.com" <jhs@mojatatu.com>, 
- "kuba@kernel.org" <kuba@kernel.org>, 
- "stephen@networkplumber.org" <stephen@networkplumber.org>, 
- "xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, 
- "jiri@resnulli.us" <jiri@resnulli.us>, 
- "davem@davemloft.net" <davem@davemloft.net>, 
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
- "donald.hunter@gmail.com" <donald.hunter@gmail.com>, 
- "ast@fiberby.net" <ast@fiberby.net>, 
- "liuhangbin@gmail.com" <liuhangbin@gmail.com>, 
- "shuah@kernel.org" <shuah@kernel.org>, 
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
- "ij@kernel.org" <ij@kernel.org>, 
- "Koen De Schepper (Nokia)" <koen.de_schepper@nokia-bell-labs.com>, 
- "g.white@cablelabs.com" <g.white@cablelabs.com>, 
- "ingemar.s.johansson@ericsson.com" <ingemar.s.johansson@ericsson.com>, 
- "mirja.kuehlewind@ericsson.com" <mirja.kuehlewind@ericsson.com>, 
- cheshire <cheshire@apple.com>, 
- "rs.ietf@gmx.at" <rs.ietf@gmx.at>, 
- "Jason_Livingood@comcast.com" <Jason_Livingood@comcast.com>, 
- Vidhi Goel <vidhi_goel@apple.com>, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.a2eb52bfa5d5@gmail.com>
-In-Reply-To: <PAXPR07MB7984F8BDC1261BD144D20DCFA38FA@PAXPR07MB7984.eurprd07.prod.outlook.com>
-References: <20260108155816.36001-1-chia-yu.chang@nokia-bell-labs.com>
- <20260108155816.36001-2-chia-yu.chang@nokia-bell-labs.com>
- <CADVnQykTJWJf7kjxWrdYMYaeamo20JDbd_SijTejLj1ES37j7Q@mail.gmail.com>
- <PAXPR07MB7984F8BDC1261BD144D20DCFA38FA@PAXPR07MB7984.eurprd07.prod.outlook.com>
-Subject: RE: [PATCH net-next 1/1] selftests/net: Add packetdrill packetdrill
- cases
+        Wed, 14 Jan 2026 08:02:58 -0800 (PST)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch
+Cc: netdev@vger.kernel.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	victor@mojatatu.com,
+	km.kim1503@gmail.com,
+	security@kernel.org,
+	Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: [PATCH net 0/3] net/sched: teql: Enforce hierarchy placement
+Date: Wed, 14 Jan 2026 11:02:40 -0500
+Message-Id: <20260114160243.913069-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Chia-Yu Chang (Nokia) wrote:
-> > -----Original Message-----
-> > From: Neal Cardwell <ncardwell@google.com> =
+GangMin Kim <km.kim1503@gmail.com> managed to create a UAF on qfq by inserting
+teql as a child qdisc and exploiting a qlen sync issue.
+teql is not intended to be used as a child qdisc. Lets enforce that rule in
+patch #1. Although patch #1 fixes the issue, we prevent another potential qlen
+exploit in qfq in patch #2 by enforcing the child's active status is not
+determined by inspecting the qlen. In patch #3 we add a tdc test case.
 
-> > Sent: Thursday, January 8, 2026 11:47 PM
-> > To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>
-> > Cc: pabeni@redhat.com; edumazet@google.com; parav@nvidia.com; linux-d=
-oc@vger.kernel.org; corbet@lwn.net; horms@kernel.org; dsahern@kernel.org;=
- kuniyu@google.com; bpf@vger.kernel.org; netdev@vger.kernel.org; dave.tah=
-t@gmail.com; jhs@mojatatu.com; kuba@kernel.org; stephen@networkplumber.or=
-g; xiyou.wangcong@gmail.com; jiri@resnulli.us; davem@davemloft.net; andre=
-w+netdev@lunn.ch; donald.hunter@gmail.com; ast@fiberby.net; liuhangbin@gm=
-ail.com; shuah@kernel.org; linux-kselftest@vger.kernel.org; ij@kernel.org=
-; Koen De Schepper (Nokia) <koen.de_schepper@nokia-bell-labs.com>; g.whit=
-e@cablelabs.com; ingemar.s.johansson@ericsson.com; mirja.kuehlewind@erics=
-son.com; cheshire <cheshire@apple.com>; rs.ietf@gmx.at; Jason_Livingood@c=
-omcast.com; Vidhi Goel <vidhi_goel@apple.com>; Willem de Bruijn <willemb@=
-google.com>
-> > Subject: Re: [PATCH net-next 1/1] selftests/net: Add packetdrill pack=
-etdrill cases
-> > =
 
-> > =
+Jamal Hadi Salim (2):
+  net/sched: Enforce that teql can only be used as root qdisc
+  net/sched: qfq: Use cl_is_active to determine whether  class is active
+    in qfq_rm_from_ag
 
-> > CAUTION: This is an external email. Please be very careful when click=
-ing links or opening attachments. See the URL nok.it/ext for additional i=
-nformation.
-> > =
+Victor Nogueira (1):
+  selftests/tc-testing: Try to add teql as a child qdisc
 
-> > =
+ net/sched/sch_qfq.c                           |  2 +-
+ net/sched/sch_teql.c                          |  5 ++++
+ .../tc-testing/tc-tests/qdiscs/teql.json      | 25 +++++++++++++++++++
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
-> > =
+-- 
+2.34.1
 
-> > On Thu, Jan 8, 2026 at 10:58=E2=80=AFAM <chia-yu.chang@nokia-bell-lab=
-s.com> wrote:
-> > >
-> > > From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> > >
-> > > Linux Accurate ECN test sets using ACE counters and AccECN options =
-to =
-
-> > > cover several scenarios: Connection teardown, different ACK =
-
-> > > conditions, counter wrapping, SACK space grabbing, fallback schemes=
-, =
-
-> > > negotiation retransmission/reorder/loss, AccECN option drop/loss, =
-
-> > > different handshake reflectors, data with marking, and different sy=
-sctl values.
-> > >
-> > > Co-developed-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
-> > > Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
-> > > Co-developed-by: Neal Cardwell <ncardwell@google.com>
-> > > Signed-off-by: Neal Cardwell <ncardwell@google.com>
-> > > ---
-> > =
-
-> > Chia-Yu, thank you for posting the packetdrill tests.
-> > =
-
-> > A couple thoughts:
-> > =
-
-> > (1) These tests are using the experimental AccECN packetdrill support=
- that is not in mainline packetdrill yet. Can you please share the github=
- URL for the version of packetdrill you used? I will work on merging the =
-appropriate experimental AccECN packetdrill support into the Google packe=
-tdrill mainline branch.
-> > =
-
-> > (2) The last I heard, the tools/testing/selftests/net/packetdrill/
-> > infrastructure does not run tests in subdirectories of that packetdri=
-ll/ directory, and that is why all the tests in tools/testing/selftests/n=
-et/packetdrill/ are in a single directory.
-> > When you run these tests, do all the tests actually get run? Just wan=
-ted to check this. :-)
-> > =
-
-> > Thanks!
-> > neal
-> =
-
-> Hi Neal,
-> =
-
-> Regards (2), I will put all ACCECN cases in the tools/testing/selftests=
-/net/packetdrill/
-> But I would like to include another script to avoid running these AccEC=
-N tests one-by-one manually, does it make sense to you?
-> Thanks.
-
-All scripts under tools/testing/selftests/net/packetdrill are already
-picked up for automated testing in kselftests:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commi=
-t/?id=3D8a405552fd3b
