@@ -1,38 +1,38 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF1338F244;
-	Wed, 14 Jan 2026 22:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B438B98D;
+	Wed, 14 Jan 2026 22:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768431481; cv=none; b=YlHLWMuftkrt/vxFCMYObQqPRKM0cQzd+EHxF3OXwQ1hUHB323XQFy4cywnP32YPEj4u7tUFfAipip4pobLmgJ4ZWuo11LykvqXjBQnI8LS9xsevUzvAq+UWeN3E4Y7wckzoisQ8WSIJRK4uErcW6iIpAKb0u7j3ExYDEwjjrOs=
+	t=1768431485; cv=none; b=aa83aFr71PCQjbhH7dZZyFo9qWMyWoUQJsseqglcBmvidKXAxzbf/LWQ0w7fIPU3gTTPXwngXmJ4cH8YHCfit/9tEx0fgeA6yj2S/wRM1MX5YP30Ri77MWI/wSn1gFuDtdSfYC7yZ8TZSz2A4eZ1DfcqhBW8/kK4h+fGrWPiJjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768431481; c=relaxed/simple;
-	bh=vRRIhHFPxtzThZZQkWphkJSxIn6V0oCyMNSakYsx6Oo=;
+	s=arc-20240116; t=1768431485; c=relaxed/simple;
+	bh=z4WqN2kh5qmAt21Q277EcIgqW0dOmQxzf7nNvly+CsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpnsFLHx+XnBPZyXTZTL2hqyphM/cnybn+e27btIfx6ZfvXBQqRCR4bhYdcnLKYsH5gWOPPLaKdNHlZfBpjAumezrMnukciT3qD5dLIrgqJ/u3jdKEWuVAhOYT+A5/Xwx9kTq11hOJLB1uadovuuGLcLipzscCt/+H7Zcy/Z0W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=krrboD/U; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=XDbNsKLLpObz6ZfBpZHf6H8bX+N1X9o6kGBdsqZABA5r61XIdLeRxDjV+Ki7MoUWihUkrYRSGGhUqqX5r1ut1GOYSjI/iGIA9ejQuB7yfggHcmgVS1WtOiyBVzWEKikdXLjJf85V08QZE3LCR7bsVdGRcipYeEm9hCILBgN+hyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TCMS1gX8; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="krrboD/U"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TCMS1gX8"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B8F081A286C;
-	Wed, 14 Jan 2026 22:57:49 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 389A41A2870;
+	Wed, 14 Jan 2026 22:57:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8DF536074A;
-	Wed, 14 Jan 2026 22:57:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63EBE10B68428;
-	Wed, 14 Jan 2026 23:57:47 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0ECEF6074A;
+	Wed, 14 Jan 2026 22:57:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B522A10B68450;
+	Wed, 14 Jan 2026 23:57:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768431468; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1768431476; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=vGkT6kUPV4XCoAV2sMfIa4glGoO0PPY84FW31CL588M=;
-	b=krrboD/U0c0msIeHbPyU/Q1VZnhGftw7G9KU3HY/JcJtST9GXoGxRNrOrcXzdCz7XUKLnR
-	h7D7z9DnvM4IinXd9rf+5iGd9bPLHxw+oWEDuUiiAW0Hw6v+J7muWODIeSik+fCws6OI4V
-	6Ulegra5k2Xw4BrTPq2Um8ems14miJZPdxv52H6qD+POXiW9DWfEV/L6h4Nnxlsbe3JL7F
-	bPn2wEMvf+skrEK0jl7552pCvPWk9ikGZKOdWPG8RSkrGsTgiFX37zNfm16vG/1T9cwJk+
-	/f10LJVGwom20uhHJO6uPerckXZOMcArJLV/nu9nndvJqmpXYqUXfSvBbrtIJg==
+	bh=Jrfj5FZfYx7TZar0UsYfofe6PTAJ+saTzQzi5V7Is9I=;
+	b=TCMS1gX8OD9n7qRPEOnqKvI8QBs15gRU9Ar58RkcY98JNuvAp4BP8bEYyE1DINXC6sux3x
+	h4Oohx5k28UU5/WEGhYkuB7e0D/VGg6/7lmLpcgsKHUHsGIFcflCe8utX0SWaaWx8WBG3L
+	7f8zG+96cKFVnSBQg9VXGx1co0zyOg+sTRb0n+7t8qx9+GZpfffJYdsXdhIRS+EWHXCXCw
+	pdCFWuEf7/OLGY/gW9qoAxDhoBECrYj0sbVz0rZ0pEkRVlMf1JnZd9R35OFh/HQiDwPLLL
+	VVHrJY8fv3DyAvUNwLMniv6yw6otInXpiZ2lsc4R4t44KJLSNCAR4Zfcf8Oevw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -51,9 +51,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
 	bcm-kernel-feedback-list@broadcom.com
-Subject: [PATCH net-next 1/6] net: sfp: Add support for SGMII to 100FX modules
-Date: Wed, 14 Jan 2026 23:57:23 +0100
-Message-ID: <20260114225731.811993-2-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next 5/6] net: mdio: mdio-i2c: Add single-byte C22 MDIO protocol
+Date: Wed, 14 Jan 2026 23:57:27 +0100
+Message-ID: <20260114225731.811993-6-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260114225731.811993-1-maxime.chevallier@bootlin.com>
 References: <20260114225731.811993-1-maxime.chevallier@bootlin.com>
@@ -66,70 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-There exist some SFP modules that rely on a built-in PHY (usually a
-Broadcom BCM5461) to output 100baseFX, using SGMII as the
-phy_interface.
+In commit d4bd3aca33c2 ("net: mdio: mdio-i2c: Add support for single-byte
+SMBus operations"), we introduced single-byte SMBus support for the
+mdio-i2c. This was intended to deal with the case where the I2C adapter
+that accesses the SFP module is limited to single-byte smbus accesses.
+We find this type of adapters in some PHY devices such as the VSC8552.
 
-This is relevant as there are devices that support SGMII and 1000BaseX,
-but not 100FX natively on their SFP cages.
+It was discovered that some SFP modules have a built-in PHY that only
+reply to single-byte smbus accesses. This is the case for the Prolabs
+GLC-GE-100FX-C SGMII to 100FX module, which contains a Broadcom BCM5461
+PHY.
 
-SGMII can be used to convey 100Mbps links with symbol repetition, but the
-serdes lane stays clocked at 1.25GHz. We therefore absolutely need a
-media-converter to adapt this to 100BaseFX, that runs at 125MHz.
+In that case, trying to access the PHY with regular 16-bit transactions
+with the mdio-i2c driver causes the PHY to stall the i2c bus completely,
+without any way to recover. Accessing it in single-byte mode however,
+works fine.
 
-What this means for the sfp-bus infrastructure is that we may have a PHY
-to probe when dealing with a 100FX (and possibly a 100LX) module, and if
-this PHY exist it will use SGMII.
+Add a dedicated MDIO_I2C_SINGLE_BYTE_C22 protocol type, so that we can
+setup the mdio-i2c driver accordingly. The good news here is that this
+should work on pretty much every setup, as a true I2C adapter is also
+capable of single-byte accesses thanks to the i2c smbus emulation layer.
+
+Some care will need to be taken should we add support for word-only
+smbus adapters.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/sfp-bus.c | 11 +++++++++++
- drivers/net/phy/sfp.c     |  3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/mdio/mdio-i2c.c   | 12 ++++++++----
+ drivers/net/phy/sfp.c         |  1 +
+ include/linux/mdio/mdio-i2c.h |  1 +
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/sfp-bus.c b/drivers/net/phy/sfp-bus.c
-index b945d75966d5..85c9f21af69b 100644
---- a/drivers/net/phy/sfp-bus.c
-+++ b/drivers/net/phy/sfp-bus.c
-@@ -105,6 +105,14 @@ static void sfp_module_parse_may_have_phy(struct sfp_bus *bus,
- 		return;
- 	}
+diff --git a/drivers/net/mdio/mdio-i2c.c b/drivers/net/mdio/mdio-i2c.c
+index ed20352a589a..86ae8a5c0ebd 100644
+--- a/drivers/net/mdio/mdio-i2c.c
++++ b/drivers/net/mdio/mdio-i2c.c
+@@ -452,7 +452,8 @@ static bool mdio_i2c_check_functionality(struct i2c_adapter *i2c,
+ 		return true;
  
-+	/* Some 100M fiber modules have a PHY, acting as an SGMII to 100FX
-+	 * media converter.
+ 	if (i2c_check_functionality(i2c, I2C_FUNC_SMBUS_BYTE_DATA) &&
+-	    protocol == MDIO_I2C_MARVELL_C22)
++	    (protocol == MDIO_I2C_MARVELL_C22 ||
++	     protocol == MDIO_I2C_SINGLE_BYTE_C22))
+ 		return true;
+ 
+ 	return false;
+@@ -475,9 +476,12 @@ struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
+ 	mii->parent = parent;
+ 	mii->priv = i2c;
+ 
+-	/* Only use SMBus if we have no other choice */
+-	if (i2c_check_functionality(i2c, I2C_FUNC_SMBUS_BYTE_DATA) &&
+-	    !i2c_check_functionality(i2c, I2C_FUNC_I2C)) {
++	/* Only use single-byte SMBus if explicitly asked, or if we have no
++	 * other choice.
 +	 */
-+	if (id->base.e100_base_fx || id->base.e100_base_lx) {
-+		bus->caps.may_have_phy = true;
-+		return;
-+	}
-+
- 	if (id->base.phys_id != SFF8024_ID_DWDM_SFP) {
- 		switch (id->base.extended_cc) {
- 		case SFF8024_ECC_10GBASE_T_SFI:
-@@ -188,6 +196,9 @@ static void sfp_module_parse_support(struct sfp_bus *bus,
- 	if (id->base.e100_base_fx || id->base.e100_base_lx) {
- 		phylink_set(modes, 100baseFX_Full);
- 		__set_bit(PHY_INTERFACE_MODE_100BASEX, interfaces);
-+
-+		/* SGMII to 100Base-FX modules with internal PHY */
-+		__set_bit(PHY_INTERFACE_MODE_SGMII, interfaces);
- 	}
- 	if ((id->base.e_base_px || id->base.e_base_bx10) && br_nom == 100) {
- 		phylink_set(modes, 100baseFX_Full);
++	if (protocol == MDIO_I2C_SINGLE_BYTE_C22 ||
++	    (i2c_check_functionality(i2c, I2C_FUNC_SMBUS_BYTE_DATA) &&
++	    !i2c_check_functionality(i2c, I2C_FUNC_I2C))) {
+ 		mii->read = smbus_byte_mii_read_default_c22;
+ 		mii->write = smbus_byte_mii_write_default_c22;
+ 		return mii;
 diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 84bef5099dda..5b42af1cf6aa 100644
+index 1f9112efef62..bff91735f681 100644
 --- a/drivers/net/phy/sfp.c
 +++ b/drivers/net/phy/sfp.c
-@@ -2446,7 +2446,8 @@ static int sfp_sm_mod_probe(struct sfp *sfp, bool report)
- 	    sfp->id.base.extended_cc == SFF8024_ECC_5GBASE_T ||
- 	    sfp->id.base.extended_cc == SFF8024_ECC_2_5GBASE_T)
- 		sfp->mdio_protocol = MDIO_I2C_C45;
--	else if (sfp->id.base.e1000_base_t)
-+	else if (sfp->id.base.e1000_base_t || sfp->id.base.e100_base_fx ||
-+		 sfp->id.base.e100_base_lx)
- 		sfp->mdio_protocol = MDIO_I2C_MARVELL_C22;
- 	else
- 		sfp->mdio_protocol = MDIO_I2C_NONE;
+@@ -2016,6 +2016,7 @@ static int sfp_sm_probe_for_phy(struct sfp *sfp)
+ 		break;
+ 
+ 	case MDIO_I2C_MARVELL_C22:
++	case MDIO_I2C_SINGLE_BYTE_C22:
+ 		err = sfp_sm_probe_phy(sfp, SFP_PHY_ADDR, false);
+ 		break;
+ 
+diff --git a/include/linux/mdio/mdio-i2c.h b/include/linux/mdio/mdio-i2c.h
+index 65b550a6fc32..f51c474da5b1 100644
+--- a/include/linux/mdio/mdio-i2c.h
++++ b/include/linux/mdio/mdio-i2c.h
+@@ -16,6 +16,7 @@ enum mdio_i2c_proto {
+ 	MDIO_I2C_MARVELL_C22,
+ 	MDIO_I2C_C45,
+ 	MDIO_I2C_ROLLBALL,
++	MDIO_I2C_SINGLE_BYTE_C22,
+ };
+ 
+ struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
 -- 
 2.49.0
 
