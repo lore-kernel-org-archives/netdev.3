@@ -1,38 +1,38 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B4B37F8A5;
-	Wed, 14 Jan 2026 08:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2737F722;
+	Wed, 14 Jan 2026 08:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768379941; cv=none; b=tvm9wskU3P801lpkgbjZGlRi6WKmMDZtoXGJLygB4AbJOxwtyROfBhfDkvTmObKe6GrD9wDpm811+48r0b0DXXa+KCJA6+ZI2oJUn81aIzOlISaCxFTPmEiuVH9RP0MuYN4ahN4U7mumoFzjpC76wIzqWGAI1VzvYBaixVEpKUc=
+	t=1768379943; cv=none; b=sWfrXmVfL2U8S/bDh1Sw0xAdZjlD8OaVwIbF2Krd75M5yiwyn5sOafxn01gflG+/ebLahsT/whqtbwc3yv5GHeBod+88LrwkhWMBxTYod7WLptVqS5WDwAIErx2jmHtRLmZ3ojwDXP2+b2heUkveIzjkTDD+JGXQCN7TytiAnfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768379941; c=relaxed/simple;
-	bh=nDIAQIMWm4smxwX8AbbVJ3wy0kU2V9tKAp9Rf/7tG3A=;
+	s=arc-20240116; t=1768379943; c=relaxed/simple;
+	bh=abKWTshI3Sk4EJvY2sgQ0YvahqoNhRfN8DRiP8g73Ik=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dwVyy4MlWIgGgGaVN1QXONErZUcjV8lG4YPOCPBot51Rp8Woj3nr5BimjxTx8lmC6UsguYHj97tR51w9Oa3X/GK4J7+yT293Y6H1SD/RWC33fCVUXu06ked3b0BK8V7gl4XtOUCZ9+6N6hSsyNVSGcsttIYkDbPYAlboOdd6Q4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ZmVrAKOP; arc=none smtp.client-ip=113.46.200.220
+	 MIME-Version:Content-Type; b=ZSvjTHQHjEvwZt3atOf8MqgE4c9IRqDgpUQTal//4P4reohgbwkZNqMrw3FTsN7swbPwZOu+f3q1kod+zN+OQmurWuJn6WjWkPFfAYJmr8Fyt+CXkNLu06GQf/7bCN3l/d9Knxbd+r4E2LNYFYd9do2u9XZmXvWeYPq8+EaEsIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=SG/vxWow; arc=none smtp.client-ip=113.46.200.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ZmVrAKOP"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="SG/vxWow"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=bbFy0m9RPTUd0cF/ffkOwZYCHxiIA2STuQ2c/VxSYLQ=;
-	b=ZmVrAKOP3uOd+i+aQwWkr+tlL6wimHaYuHm2G+wFRwOhXJS6zqIb7dNuFpid6SnO2ZtpDh55l
-	HYhk1IM+OED9v+nT6cIPSkQr/RPUrZnl5920eYeVT8kxeT1lJwsLVmZ+wALhnEhTWeQoxmq1Kk+
-	M1DyoN1qxiJiI5WDcxDvlKU=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4drfZx0HcMz12LdB;
-	Wed, 14 Jan 2026 16:35:53 +0800 (CST)
+	bh=LeiJJQCA648xtNmhTYCtHNzKwHpQF1tlV4W/ViQloRE=;
+	b=SG/vxWow1LIyw3ei1jr3VgzEjT8zCEq78Kn5T++pcqR1jEAgGVo7wrnxhfgJD+QBL4dD+f42T
+	XdaPIO2cJrom3vMHEuphHlirsPdkLrN2kBEh9Jf8mNAdcRrnBHxytZP52g8JqGmAND55JnyORvV
+	7Jl8DjWRejKF8g10/eYS5QY=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4drfYp5157z1T4fQ;
+	Wed, 14 Jan 2026 16:34:54 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 473C64056D;
-	Wed, 14 Jan 2026 16:38:53 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7D506201E9;
+	Wed, 14 Jan 2026 16:38:47 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 14 Jan 2026 16:38:52 +0800
+ 15.2.1544.36; Wed, 14 Jan 2026 16:38:46 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
 	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
@@ -44,9 +44,9 @@ CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
 	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
 	<shijing34@huawei.com>, Luo Yang <luoyang82@h-partners.com>
-Subject: [PATCH net-next v11 9/9] hinic3: Add HW event handler
-Date: Wed, 14 Jan 2026 16:38:28 +0800
-Message-ID: <53a2b928136998f740d597bbd45ca1740b95538f.1768375903.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v11 6/9] hinic3: Add .ndo_vlan_rx_add/kill_vid and .ndo_validate_addr
+Date: Wed, 14 Jan 2026 16:38:25 +0800
+Message-ID: <70be187afcaa7b38981d114c088ffdc2cba0b4f1.1768375903.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.51.0.windows.1
 In-Reply-To: <cover.1768375903.git.zhuyikai1@h-partners.com>
 References: <cover.1768375903.git.zhuyikai1@h-partners.com>
@@ -61,212 +61,269 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-Add HINIC3_INIT_UP flags to trace netdev open status.
-Add port module event handler.
-Add link status event type(FAULT, PCIE link down, heart lost, mgmt
-watchdog).
+Implement following callback function:
+.ndo_vlan_rx_add_vid
+.ndo_vlan_rx_kill_vid
+.ndo_validate_addr
 
 Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_hwdev.h |  9 ++++
- .../net/ethernet/huawei/hinic3/hinic3_irq.c   |  3 +-
- .../net/ethernet/huawei/hinic3/hinic3_main.c  | 50 +++++++++++++++++++
- .../huawei/hinic3/hinic3_netdev_ops.c         | 12 +++++
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 18 +++++++
- .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |  1 +
- 6 files changed, 92 insertions(+), 1 deletion(-)
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |  7 +++
+ .../huawei/hinic3/hinic3_mgmt_interface.h     | 10 +++
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 62 +++++++++++++++++++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   | 41 ++++++++++++
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   |  2 +
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |  6 ++
+ 6 files changed, 128 insertions(+)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
-index 58bc561f95b3..9686c2600b46 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.h
-@@ -17,6 +17,15 @@ enum hinic3_event_service_type {
- 	HINIC3_EVENT_SRV_NIC  = 1
- };
- 
-+enum hinic3_comm_event_type {
-+	HINIC3_COMM_EVENT_PCIE_LINK_DOWN = 0,
-+	HINIC3_COMM_EVENT_HEART_LOST = 1,
-+	HINIC3_COMM_EVENT_FAULT = 2,
-+	HINIC3_COMM_EVENT_SRIOV_STATE_CHANGE = 3,
-+	HINIC3_COMM_EVENT_CARD_REMOVE = 4,
-+	HINIC3_COMM_EVENT_MGMT_WATCHDOG = 5,
-+};
-+
- enum hinic3_fault_err_level {
- 	HINIC3_FAULT_LEVEL_SERIOUS_FLR = 3,
- };
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-index 63932a1fa8ee..6950ee4d037b 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-@@ -19,7 +19,8 @@ static void hinic3_net_dim(struct hinic3_nic_dev *nic_dev,
- 	struct hinic3_rxq *rxq = irq_cfg->rxq;
- 	struct dim_sample sample = {};
- 
--	if (!nic_dev->adaptive_rx_coal)
-+	if (!test_bit(HINIC3_INTF_UP, &nic_dev->flags) ||
-+	    !nic_dev->adaptive_rx_coal)
- 		return;
- 
- 	dim_update_sample(irq_cfg->total_events, rxq->rxq_stats.packets,
 diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-index 2c16ec2b4616..a33f86675954 100644
+index 6071d2023a5d..1f6bf7be9c1e 100644
 --- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
 +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-@@ -331,6 +331,44 @@ static void hinic3_link_status_change(struct net_device *netdev,
+@@ -137,11 +137,17 @@ static int hinic3_init_nic_dev(struct net_device *netdev,
+ 
+ 	nic_dev->rx_buf_len = HINIC3_RX_BUF_LEN;
+ 	nic_dev->lro_replenish_thld = HINIC3_LRO_REPLENISH_THLD;
++	nic_dev->vlan_bitmap = kzalloc(HINIC3_VLAN_BITMAP_SIZE(nic_dev),
++				       GFP_KERNEL);
++	if (!nic_dev->vlan_bitmap)
++		return -ENOMEM;
++
+ 	nic_dev->nic_svc_cap = hwdev->cfg_mgmt->cap.nic_svc_cap;
+ 
+ 	nic_dev->workq = create_singlethread_workqueue(HINIC3_NIC_DEV_WQ_NAME);
+ 	if (!nic_dev->workq) {
+ 		dev_err(hwdev->dev, "Failed to initialize nic workqueue\n");
++		kfree(nic_dev->vlan_bitmap);
+ 		return -ENOMEM;
  	}
+ 
+@@ -335,6 +341,7 @@ static void hinic3_nic_event(struct auxiliary_device *adev,
+ static void hinic3_free_nic_dev(struct hinic3_nic_dev *nic_dev)
+ {
+ 	destroy_workqueue(nic_dev->workq);
++	kfree(nic_dev->vlan_bitmap);
  }
  
-+static void hinic3_port_module_event_handler(struct net_device *netdev,
-+					     struct hinic3_event_info *event)
-+{
-+	const char *g_hinic3_module_link_err[LINK_ERR_NUM] = {
-+		"Unrecognized module"
-+	};
-+	struct hinic3_port_module_event *module_event;
-+	enum port_module_event_type type;
-+	enum link_err_type err_type;
+ static int hinic3_nic_probe(struct auxiliary_device *adev,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+index 69405715e734..60f47152c01d 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+@@ -56,6 +56,15 @@ struct l2nic_cmd_update_mac {
+ 	u8                   new_mac[ETH_ALEN];
+ };
+ 
++struct l2nic_cmd_vlan_config {
++	struct mgmt_msg_head msg_head;
++	u16                  func_id;
++	u8                   opcode;
++	u8                   rsvd1;
++	u16                  vlan_id;
++	u16                  rsvd2;
++};
 +
-+	module_event = (struct hinic3_port_module_event *)event->event_data;
-+	type = module_event->type;
-+	err_type = module_event->err_type;
-+
-+	switch (type) {
-+	case HINIC3_PORT_MODULE_CABLE_PLUGGED:
-+	case HINIC3_PORT_MODULE_CABLE_UNPLUGGED:
-+		netdev_info(netdev, "Port module event: Cable %s\n",
-+			    type == HINIC3_PORT_MODULE_CABLE_PLUGGED ?
-+			    "plugged" : "unplugged");
-+		break;
-+	case HINIC3_PORT_MODULE_LINK_ERR:
-+		if (err_type >= LINK_ERR_NUM) {
-+			netdev_info(netdev, "Link failed, Unknown error type: 0x%x\n",
-+				    err_type);
-+		} else {
-+			netdev_info(netdev,
-+				    "Link failed, error type: 0x%x: %s\n",
-+				    err_type,
-+				    g_hinic3_module_link_err[err_type]);
-+		}
-+		break;
-+	default:
-+		netdev_err(netdev, "Unknown port module type %d\n", type);
-+		break;
-+	}
-+}
-+
- static void hinic3_nic_event(struct auxiliary_device *adev,
- 			     struct hinic3_event_info *event)
- {
-@@ -344,8 +382,20 @@ static void hinic3_nic_event(struct auxiliary_device *adev,
- 				   HINIC3_NIC_EVENT_LINK_UP):
- 		hinic3_link_status_change(netdev, true);
- 		break;
-+	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_NIC,
-+				   HINIC3_NIC_EVENT_PORT_MODULE_EVENT):
-+		hinic3_port_module_event_handler(netdev, event);
-+		break;
- 	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_NIC,
- 				   HINIC3_NIC_EVENT_LINK_DOWN):
-+	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_COMM,
-+				   HINIC3_COMM_EVENT_FAULT):
-+	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_COMM,
-+				   HINIC3_COMM_EVENT_PCIE_LINK_DOWN):
-+	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_COMM,
-+				   HINIC3_COMM_EVENT_HEART_LOST):
-+	case HINIC3_SRV_EVENT_TYPE(HINIC3_EVENT_SRV_COMM,
-+				   HINIC3_COMM_EVENT_MGMT_WATCHDOG):
- 		hinic3_link_status_change(netdev, false);
- 		break;
- 	default:
+ struct l2nic_cmd_vlan_offload {
+ 	struct mgmt_msg_head msg_head;
+ 	u16                  func_id;
+@@ -205,6 +214,7 @@ enum l2nic_cmd {
+ 	L2NIC_CMD_SET_MAC             = 21,
+ 	L2NIC_CMD_DEL_MAC             = 22,
+ 	L2NIC_CMD_UPDATE_MAC          = 23,
++	L2NIC_CMD_CFG_FUNC_VLAN       = 25,
+ 	L2NIC_CMD_SET_VLAN_FILTER_EN  = 26,
+ 	L2NIC_CMD_SET_RX_VLAN_OFFLOAD = 27,
+ 	L2NIC_CMD_CFG_RSS             = 60,
 diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
-index 58629a24d458..75adfe897e81 100644
+index 87ada13b8f96..74b2ce9e3a0a 100644
 --- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
 +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
-@@ -432,6 +432,11 @@ static int hinic3_open(struct net_device *netdev)
- 	struct hinic3_dyna_qp_params qp_params;
- 	int err;
+@@ -17,6 +17,12 @@
+ #define HINIC3_LRO_DEFAULT_COAL_PKT_SIZE  32
+ #define HINIC3_LRO_DEFAULT_TIME_LIMIT     16
  
-+	if (test_bit(HINIC3_INTF_UP, &nic_dev->flags)) {
-+		netdev_dbg(netdev, "Netdev already open, do nothing\n");
-+		return 0;
-+	}
++#define VLAN_BITMAP_BITS_SIZE(nic_dev)    (sizeof(*(nic_dev)->vlan_bitmap) * 8)
++#define VID_LINE(nic_dev, vid)  \
++	((vid) / VLAN_BITMAP_BITS_SIZE(nic_dev))
++#define VID_COL(nic_dev, vid)  \
++	((vid) & (VLAN_BITMAP_BITS_SIZE(nic_dev) - 1))
 +
- 	err = hinic3_init_nicio_res(nic_dev);
- 	if (err) {
- 		netdev_err(netdev, "Failed to init nicio resources\n");
-@@ -459,6 +464,8 @@ static int hinic3_open(struct net_device *netdev)
- 	if (err)
- 		goto err_close_channel;
- 
-+	set_bit(HINIC3_INTF_UP, &nic_dev->flags);
-+
+ /* try to modify the number of irq to the target number,
+  * and return the actual number of irq.
+  */
+@@ -688,6 +694,59 @@ static int hinic3_set_mac_addr(struct net_device *netdev, void *addr)
  	return 0;
+ }
  
- err_close_channel:
-@@ -479,6 +486,11 @@ static int hinic3_close(struct net_device *netdev)
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
- 	struct hinic3_dyna_qp_params qp_params;
- 
-+	if (!test_and_clear_bit(HINIC3_INTF_UP, &nic_dev->flags)) {
-+		netdev_dbg(netdev, "Netdev already close, do nothing\n");
-+		return 0;
++static int hinic3_vlan_rx_add_vid(struct net_device *netdev,
++				  __be16 proto, u16 vid)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	unsigned long *vlan_bitmap = nic_dev->vlan_bitmap;
++	u32 column, row;
++	u16 func_id;
++	int err;
++
++	column = VID_COL(nic_dev, vid);
++	row = VID_LINE(nic_dev, vid);
++
++	func_id = hinic3_global_func_id(nic_dev->hwdev);
++
++	err = hinic3_add_vlan(nic_dev->hwdev, vid, func_id);
++	if (err) {
++		netdev_err(netdev, "Failed to add vlan %u\n", vid);
++		goto out;
 +	}
 +
- 	hinic3_vport_down(netdev);
- 	hinic3_close_channel(netdev);
- 	hinic3_uninit_qps(nic_dev, &qp_params);
++	set_bit(column, &vlan_bitmap[row]);
++	netdev_dbg(netdev, "Add vlan %u\n", vid);
++
++out:
++	return err;
++}
++
++static int hinic3_vlan_rx_kill_vid(struct net_device *netdev,
++				   __be16 proto, u16 vid)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	unsigned long *vlan_bitmap = nic_dev->vlan_bitmap;
++	u32 column, row;
++	u16 func_id;
++	int err;
++
++	column  = VID_COL(nic_dev, vid);
++	row = VID_LINE(nic_dev, vid);
++
++	func_id = hinic3_global_func_id(nic_dev->hwdev);
++	err = hinic3_del_vlan(nic_dev->hwdev, vid, func_id);
++	if (err) {
++		netdev_err(netdev, "Failed to delete vlan %u\n", vid);
++		goto out;
++	}
++
++	clear_bit(column, &vlan_bitmap[row]);
++	netdev_dbg(netdev, "Remove vlan %u\n", vid);
++
++out:
++	return err;
++}
++
+ static void hinic3_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+@@ -771,6 +830,9 @@ static const struct net_device_ops hinic3_netdev_ops = {
+ 	.ndo_features_check   = hinic3_features_check,
+ 	.ndo_change_mtu       = hinic3_change_mtu,
+ 	.ndo_set_mac_address  = hinic3_set_mac_addr,
++	.ndo_validate_addr    = eth_validate_addr,
++	.ndo_vlan_rx_add_vid  = hinic3_vlan_rx_add_vid,
++	.ndo_vlan_rx_kill_vid = hinic3_vlan_rx_kill_vid,
+ 	.ndo_tx_timeout       = hinic3_tx_timeout,
+ 	.ndo_get_stats64      = hinic3_get_stats64,
+ 	.ndo_start_xmit       = hinic3_xmit_frame,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+index 79494ac8f395..918882deea87 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+@@ -10,6 +10,9 @@
+ #include "hinic3_nic_dev.h"
+ #include "hinic3_nic_io.h"
+ 
++#define MGMT_MSG_CMD_OP_ADD  1
++#define MGMT_MSG_CMD_OP_DEL  0
++
+ static int hinic3_feature_nego(struct hinic3_hwdev *hwdev, u8 opcode,
+ 			       u64 *s_feature, u16 size)
+ {
+@@ -496,6 +499,44 @@ int hinic3_force_drop_tx_pkt(struct hinic3_hwdev *hwdev)
+ 	return pkt_drop.msg_head.status;
+ }
+ 
++static int hinic3_config_vlan(struct hinic3_hwdev *hwdev,
++			      u8 opcode, u16 vlan_id, u16 func_id)
++{
++	struct l2nic_cmd_vlan_config vlan_info = {};
++	struct mgmt_msg_params msg_params = {};
++	int err;
++
++	vlan_info.opcode = opcode;
++	vlan_info.func_id = func_id;
++	vlan_info.vlan_id = vlan_id;
++
++	mgmt_msg_params_init_default(&msg_params, &vlan_info,
++				     sizeof(vlan_info));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_L2NIC,
++				       L2NIC_CMD_CFG_FUNC_VLAN, &msg_params);
++
++	if (err || vlan_info.msg_head.status) {
++		dev_err(hwdev->dev,
++			"Failed to %s vlan, err: %d, status: 0x%x\n",
++			opcode == MGMT_MSG_CMD_OP_ADD ? "add" : "delete",
++			err, vlan_info.msg_head.status);
++		return -EFAULT;
++	}
++
++	return 0;
++}
++
++int hinic3_add_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id)
++{
++	return hinic3_config_vlan(hwdev, MGMT_MSG_CMD_OP_ADD, vlan_id, func_id);
++}
++
++int hinic3_del_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id)
++{
++	return hinic3_config_vlan(hwdev, MGMT_MSG_CMD_OP_DEL, vlan_id, func_id);
++}
++
+ int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable)
+ {
+ 	struct mag_cmd_set_port_enable en_state = {};
 diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
-index f83913e74cb5..c32eaa886e17 100644
+index a17cd56bce71..84831c87507b 100644
 --- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
 +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
-@@ -22,6 +22,7 @@ struct hinic3_nic_dev;
- enum hinic3_nic_event_type {
- 	HINIC3_NIC_EVENT_LINK_DOWN = 0,
- 	HINIC3_NIC_EVENT_LINK_UP   = 1,
-+	HINIC3_NIC_EVENT_PORT_MODULE_EVENT = 2,
- };
+@@ -83,5 +83,7 @@ int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable);
+ int hinic3_get_link_status(struct hinic3_hwdev *hwdev, bool *link_status_up);
+ int hinic3_set_vport_enable(struct hinic3_hwdev *hwdev, u16 func_id,
+ 			    bool enable);
++int hinic3_add_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id);
++int hinic3_del_vlan(struct hinic3_hwdev *hwdev, u16 vlan_id, u16 func_id);
  
- struct hinic3_sq_attr {
-@@ -51,6 +52,23 @@ struct mag_cmd_set_port_enable {
- 	u8                   rsvd1[3];
- };
- 
-+enum link_err_type {
-+	LINK_ERR_MODULE_UNRECOGENIZED,
-+	LINK_ERR_NUM,
-+};
-+
-+enum port_module_event_type {
-+	HINIC3_PORT_MODULE_CABLE_PLUGGED,
-+	HINIC3_PORT_MODULE_CABLE_UNPLUGGED,
-+	HINIC3_PORT_MODULE_LINK_ERR,
-+	HINIC3_PORT_MODULE_MAX_EVENT,
-+};
-+
-+struct hinic3_port_module_event {
-+	enum port_module_event_type type;
-+	enum link_err_type          err_type;
-+};
-+
- int hinic3_get_nic_feature_from_hw(struct hinic3_nic_dev *nic_dev);
- int hinic3_set_nic_feature_to_hw(struct hinic3_nic_dev *nic_dev);
- bool hinic3_test_support(struct hinic3_nic_dev *nic_dev,
+ #endif
 diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
-index 9bd46541b3e3..29189241f446 100644
+index a8e92e070d9e..6e48c29566e1 100644
 --- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
 +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
-@@ -16,6 +16,7 @@
- 	(VLAN_N_VID / HINIC3_VLAN_BITMAP_BYTE_SIZE(nic_dev))
+@@ -4,12 +4,17 @@
+ #ifndef _HINIC3_NIC_DEV_H_
+ #define _HINIC3_NIC_DEV_H_
  
++#include <linux/if_vlan.h>
+ #include <linux/netdevice.h>
+ 
+ #include "hinic3_hw_cfg.h"
+ #include "hinic3_hwdev.h"
+ #include "hinic3_mgmt_interface.h"
+ 
++#define HINIC3_VLAN_BITMAP_BYTE_SIZE(nic_dev)  (sizeof(*(nic_dev)->vlan_bitmap))
++#define HINIC3_VLAN_BITMAP_SIZE(nic_dev)  \
++	(VLAN_N_VID / HINIC3_VLAN_BITMAP_BYTE_SIZE(nic_dev))
++
  enum hinic3_flags {
-+	HINIC3_INTF_UP,
- 	HINIC3_MAC_FILTER_CHANGED,
  	HINIC3_RSS_ENABLE,
- 	HINIC3_UPDATE_MAC_FILTER,
+ };
+@@ -71,6 +76,7 @@ struct hinic3_nic_dev {
+ 	u16                             max_qps;
+ 	u16                             rx_buf_len;
+ 	u32                             lro_replenish_thld;
++	unsigned long                   *vlan_bitmap;
+ 	unsigned long                   flags;
+ 	struct hinic3_nic_service_cap   nic_svc_cap;
+ 
 -- 
 2.43.0
 
