@@ -1,105 +1,138 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2842BE64A;
-	Wed, 14 Jan 2026 19:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F43346AE5
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 19:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768418127; cv=none; b=h5cJctwTss/OcO79NVCxKxQxlWREF7/RL8ZeKXmMucF0wytfJx0qvWKKcZCGb2vT+PxiiCAv4pUkdr61CpVQ+BMfLRldnBlAeiDEkECTNoSKttF60zra4wmuZqzvHIcVWMVsnl+wFasGVftU0+g4xZQ6UkDc1EoN8l/O2dGxwyw=
+	t=1768418933; cv=none; b=M0OWoLQDU/YhUt+uYEK+IPD3K76Lj3VNV7R4mekjBiTEmLF8eIETre5tW4QH7jtBZV/dPsV8tV7AmgYab58UGxhpLuLgrMZJzxjWWdJaL2XvSyALfZasB1GYH3QttXoAxr2x/OXOEIl1O2bE8F8hoXloLeH6EwRof400CiJkcxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768418127; c=relaxed/simple;
-	bh=eHQT2XiH/Hn4kXqGCKx+RQZ3zir8LXmWrAHWs12I3Z4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=depclzLb36pWAiqYRFCJ03KbE/+DwZN0G2XKbq6V6qZFudLi1XOW4Js6JJl+PVLHFa4ZP5LGP4DjClfj2ZTU+LJsOd8i5+jUpVRdNgvay3h9ywp/ejW+VYxf4qPGCtwV8jklYAC0bCL4cqcUJ+6Iw9BUszGMKtuZZxIHLpGlWjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tYyySsep; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1768418933; c=relaxed/simple;
+	bh=QKRezXrA3bG4ArDBbT58+S8c1CtyAn6iBKaQozySKZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S0TYKCpd3bHvqnwl8YBkHmrw7c/XW46UVHQDQ9I8AgppqIRk144tCjNi5afC8bLFKkknD6vZ6FfyDaGyMXIVSGeeDj5Qy6UUzwec/4WONe7EO1uLQZQ7O19JLVWYJiXLR4pwUkUXd1z31k7wDRaNXISyHzGSAJxuk5apmhBjCnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F1SaFUWm; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tYyySsep"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ohUDHpsnMco4Xgo3XSm0EfBYp3A9TL5K/dhQ/vb/yM8=; b=tYyySsepYrZU3aHlr8hprCJPM1
-	wmxjpsisNsFntxxiKjikUG5ZHeNBUEBPE98LAdplMyQSjcun2jc68T6t6qZCnWRGE73grbuG/IB+Z
-	zgDEOvrYmHXCuOFAcc00HqtNfJ3OotCQJJgw3C5eWw7CfcBDjDtuj63ekx9hBqV6OuKkRLOzgCO0s
-	Tu1tLbsScbDBH8goYXPETk4lrV8EZkdZChE8602Qt5UZ4OrzidTtiz0tZj5LocXKGdsxFzqPwz8Cc
-	/oa81Bu3J5ycpAnBbWleUOSIMf4EYBr+2Pq4yx7nZP/4V6x91O1Y6Fu7K7Ri0wpF9O3Wxpin1YzWO
-	/iP9f0SA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vg6Kz-0000000ARnD-2UOU;
-	Wed, 14 Jan 2026 19:15:25 +0000
-Message-ID: <df90c466-a28a-49ea-8f34-895bf50c1cfb@infradead.org>
-Date: Wed, 14 Jan 2026 11:15:25 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F1SaFUWm"
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-56373f07265so137592e0c.0
+        for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 11:28:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768418931; x=1769023731; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jUpDNPxjIqi9ICJXtc+mfMuxEexyo061EqFw5Nyb8q0=;
+        b=F1SaFUWm961JKpMnu0ydteNHS4t3gcUzC4JP64uX+Pxwm6r+qtELwLoB7gSni/Vb87
+         ST5RwkRCCH/SRgx5WxbexFtcrj26A8BiglaB5QC30Rl/Uv41uKG7AVFGlPgBTmFFmKJw
+         coXkIQuaGC0k2EPoL0hhFOLMboVh7HCwv30Vi4N3Rg449J4JzWWraOAZZYHXRMnpcR1z
+         pMqlkGgiEDtsaNCPANBcnVAE5GJq9rpbSUYYL9hBi1OcDD/9mpRNCtlaPN1VqTo2zk6u
+         Fztciom0/pJecn0NCLJpn+i5hSrSetqKJwq6Oc7PZsCl4e6/JZ9lYCfHMoMutSuVEZlZ
+         86mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768418931; x=1769023731;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jUpDNPxjIqi9ICJXtc+mfMuxEexyo061EqFw5Nyb8q0=;
+        b=QAnQ+Wyhq+z/IJjl9C6iZtJLcfqdA3q+QvD6w4Lx8zGIZb9+ibQUHANO4EoTuJk4vB
+         QuWy5GZY4ToMlZWozbanMXCC2Q2HWkCauZjqf+G//ClsUCYmm4IAlDmPHEG1P00VK1Ng
+         Y+xqZkRGZHcUd0bfMx0iUtuKRWp96in0Ie92mUlGK1UpXB5SH0imcvCYoEgu4R80jgE9
+         sC7lFcEh790gkNPJ3qUjll0Zf/1SS1aw+6XmLLOF/zJrKvb4Mgt55A+B/w+JdgZMidbR
+         PBLbdzXetAEajcAFkXrXlIYeOPTJ0WRBAEmh1u1VztJlaUJ5wwAppvg2Kz/NmS9ZQVRX
+         0Z5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVlY9wBIzkmAXE5Z33qAYQw/lJlWl1nd0xu94Nk3+VI7XzGs1rmgboUILT/sJvO7BzH2a3cQPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN/RHIcSZQ9OAQlGehu9X/8rTY68SLg8TxqN47utwQVstMhvNj
+	J9IwXDJRm5ZXtbbeyOYhuF9odJLVGqEjeAlF3EVdMIHtx08AbmbUZa06SKF/RA==
+X-Gm-Gg: AY/fxX7nz6wF6Tkwyq9B1Sy9nremlxVnWqxP4cLn3txs8usxNWaDr/NCW8Bxietpbuj
+	OutYLv6tuzwSk6VB219GvnU4SDRQXIgnOPr6MHf3OdI7iPSC/rpkKGnAWVuin02eORrT1BrY0aH
+	QEtMggeWwB9I7OEvWeW/hsvcnIhBg6lOHKb0yI3vsgzD8kmqRSPN9dThCzDdwtIRHEMV3YWDjqW
+	YLRRrPl0ETsLPxx70qUAoRHONNrDCxUfce7jyY54EsFmJ+dUMzg56I+LjJnw3ef9nlDEn9ke7uF
+	Su3R2QJkgotHfCDpt3FXcKkkn+t3EqNUCvNbE8TUBpFEnJwpGn0pNgsW2O5AiczlO/IVDdeeqPr
+	BSDOOSCiISD41CmVLB0vJkiSwKORswP69/pHcyZesfmOEph8V8hTtwyfK9BNmtv9Y64l2Jc4Fb5
+	/oszmvu6+XmoGqSVJTh9arPzrZvOWx8TguKQ==
+X-Received: by 2002:a05:690e:1c06:b0:646:eb06:f2e2 with SMTP id 956f58d0204a3-64903b513d2mr1973243d50.73.1768411311135;
+        Wed, 14 Jan 2026 09:21:51 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:5::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-790aa6e12ffsm92418037b3.53.2026.01.14.09.21.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 09:21:50 -0800 (PST)
+Date: Wed, 14 Jan 2026 09:21:49 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: kernel test robot <lkp@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Long Li <longli@microsoft.com>, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	berrange@redhat.com, Sargun Dhillon <sargun@sargun.me>
+Subject: Re: [PATCH net-next v14 01/12] vsock: add netns to vsock core
+Message-ID: <aWfQrS1oNcXwcXu3@devvm11784.nha0.facebook.com>
+References: <20260112-vsock-vmtest-v14-1-a5c332db3e2b@meta.com>
+ <202601140749.5TXm5gpl-lkp@intel.com>
+ <CAGxU2F45q7CWy3O_QhYj0Y2Bt84vA=eaTeBTu+TvEmFm0_E7Jw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ath9k: debug.h: fix kernel-doc bad lines and struct
- ath_tx_stats
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, netdev@vger.kernel.org
-Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <20251117020304.448687-1-rdunlap@infradead.org>
- <cf6b81ea-3ab2-420a-ac10-e847be54c9c3@oss.qualcomm.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <cf6b81ea-3ab2-420a-ac10-e847be54c9c3@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGxU2F45q7CWy3O_QhYj0Y2Bt84vA=eaTeBTu+TvEmFm0_E7Jw@mail.gmail.com>
 
-
-
-On 1/14/26 7:53 AM, Jeff Johnson wrote:
-> On 11/16/2025 6:03 PM, Randy Dunlap wrote:
->> Repair "bad line" warnings by starting each line with " *".
->> Add or correct kernel-doc entries for missing struct members in
->> struct ath_tx_stats.
->>
->> Warning: ../drivers/net/wireless/ath/ath9k/debug.h:144 bad line:
->>   may have had errors.
->> Warning: ../drivers/net/wireless/ath/ath9k/debug.h:146 bad line:
->>   may have had errors.
->> Warning: ../drivers/net/wireless/ath/ath9k/debug.h:156 bad line:
->>   Valid only for:
->> Warning: ../drivers/net/wireless/ath/ath9k/debug.h:157 bad line:
->>   - non-aggregate condition.
->> Warning: ../drivers/net/wireless/ath/ath9k/debug.h:158 bad line:
->>   - first packet of aggregate.
->> Warning: drivers/net/wireless/ath/ath9k/debug.h:191 struct member
->>  'xretries' not described in 'ath_tx_stats'
->> Warning: drivers/net/wireless/ath/ath9k/debug.h:191 struct member
->>  'data_underrun' not described in 'ath_tx_stats'
->> Warning: drivers/net/wireless/ath/ath9k/debug.h:191 struct member
->>  'delim_underrun' not described in 'ath_tx_stats'
->>
->> Fixes: 99c15bf575b1 ("ath9k: Report total tx/rx bytes and packets in debugfs.")
->> Fixes: fec247c0d5bf ("ath9k: Add debug counters for TX")
->> Fixes: 5a6f78afdabe ("ath9k: show excessive-retry MPDUs in debugfs")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> ---
->> Cc: Toke Høiland-Jørgensen <toke@toke.dk>
->> Cc: Johannes Berg <johannes@sipsolutions.net>
->> Cc: linux-wireless@vger.kernel.org
+On Wed, Jan 14, 2026 at 04:54:15PM +0100, Stefano Garzarella wrote:
+> On Wed, 14 Jan 2026 at 00:13, kernel test robot <lkp@intel.com> wrote:
+> >
+> > Hi Bobby,
+> >
+> > kernel test robot noticed the following build warnings:
+> >
+> > [auto build test WARNING on net-next/main]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Bobby-Eshleman/virtio-set-skb-owner-of-virtio_transport_reset_no_sock-reply/20260113-125559
+> > base:   net-next/main
+> > patch link:    https://lore.kernel.org/r/20260112-vsock-vmtest-v14-1-a5c332db3e2b%40meta.com
+> > patch subject: [PATCH net-next v14 01/12] vsock: add netns to vsock core
+> > config: x86_64-buildonly-randconfig-004-20260113 (https://download.01.org/0day-ci/archive/20260114/202601140749.5TXm5gpl-lkp@intel.com/config)
+> > compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260114/202601140749.5TXm5gpl-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202601140749.5TXm5gpl-lkp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>, old ones prefixed by <<):
+> >
+> > >> WARNING: modpost: net/vmw_vsock/vsock: section mismatch in reference: vsock_exit+0x25 (section: .exit.text) -> vsock_sysctl_ops (section: .init.data)
 > 
-> I'm picking this up, but my automation noticed there are still kdoc issues:
-> Warning: drivers/net/wireless/ath/ath9k/debug.h:138 struct member 'txeol' not described in 'ath_interrupt_stats'
-> ...
-> Warning: drivers/net/wireless/ath/ath9k/debug.h:138 struct member 'mac_sleep_access' not described in 'ath_interrupt_stats'
-> 19 warnings as errors
+> Bobby can you check this report?
 > 
-> Are these handled elsewhere, or will they need to be handled later?
+> Could be related to `__net_initdata` annotation of `vsock_sysctl_ops` ?
+> Why we need that?
 > 
-> /jeff
+> Thanks,
+> Stefano
+> 
 
-Hi Jeff,
-I didn't attempt to address those warnings. They need to be handled
-later by someone who knows that they are.
+Yep, no problem.
 
--- 
-~Randy
-
+Best,
+Bobby
