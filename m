@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAC02857CF
-	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 17:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607482F83A7
+	for <netdev@vger.kernel.org>; Wed, 14 Jan 2026 17:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768411282; cv=none; b=IhCyq0yhgZsOl+fOiTIERXcFkNjkY98tHIqcm1hfBC3fA8HKrtRR8/RJumGs8zw7BdVSGGmcGXxYvKO2qWkCnRlf5E0ULBS4BgECMgHLZlXlfpDAprcDs/8Ya7TviiJBUFKAnT4WyeGEuGdo4IRDldHQpnHk2kYL/AnR6A/nc20=
+	t=1768411286; cv=none; b=q+wGxMoHl7gzBeHeuO/D7huq5M+rdN13daIBNgyooVfHRfJ1gbeyd84AmNOaLAuwxvf4XGZCkjtmamMVhXU7R1t7/7ExO5NM0sXxvHHn0YHKwJpGyqHycbUdu9Vigy6uiVdO7sz8R+XdutGVMRAdiNgrj+OxDfFRm53FRRcoF5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768411282; c=relaxed/simple;
-	bh=h1bLSgxdpgtRqlq58JBrWlmqVe83xJlLsJqBd7U3h1I=;
+	s=arc-20240116; t=1768411286; c=relaxed/simple;
+	bh=Iyv9cRRUO/UOcYkZb3yOqIDJpejxteLgsOjDXuBRAVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jd9OgGtU3coFLg8Q1YXHsF+xzzmQtOHtzbjlhAYZ/paQi3dU1wb4RAx3WHAQqJ0kh7LoXqN0Uxz+nGYJuM4qqAM/aPcC/XMKmtFALb5V6OyAbH/fwzSGGNNAvytdQM+Qc69JwFthrddD9v7G59dZWchq+rWR5/RGdFQslE2BwBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=an81nY6+; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=oh12ui0lI8XiOKsZtNodRFAA3LKLqjPbT1dD4R8cfGvYjvCzyO6d4dyuNZbHP7tqmHVuMM0EGKTYhZ6beht0Cg8Q8Rhg5+exkLBGE4MZtln+UPX3IPCVVKw+l3RoVCvhIcPQetq5g58X0pl0kx0S6WJ3f9n9h6rpYJQ4qK5Pjgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ezh9dEgY; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="an81nY6+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ezh9dEgY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768411279;
+	s=mimecast20190719; t=1768411284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D/s0GXuNL9g9mdojAkGCXJ2uGGA6zHDkPRCRiaiyppY=;
-	b=an81nY6+5UFZ18QLMayoj/STD540D/1FycY6sAiFpG8tt8stNlWSMG9/9DKwB5Rs3QC8aW
-	o/UneW2b+HiKnpTRdQzJqouJY5Khd6nTbODKpS319rxmXSA0srWZmLAn28H7hHUzzmk7is
-	ykfIE+jAZ9UoHjNXhJ19lgd+I9vI+s0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=+NQAmShh/qZptdYWibhZ+VLfu1vgl2kUqlDLa2oCr3A=;
+	b=ezh9dEgYmprzZNlrK5cRlBgRZGQmr+mV0RDsUKLdii2hU2pv74FImVoPdhs+NvcQqV7cTT
+	39+XLaIZqyccMiaLT7qgVx9dF4KEPBiQ7bl8i4miXf8+W+hdQcU73yZeFraE1jKjw/4S8l
+	OAYmit7QSyJ9Nyi8PPlsUtTbwZZHTzk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-UC85N3qjMZaZ5n7GFuc15Q-1; Wed,
- 14 Jan 2026 12:21:14 -0500
-X-MC-Unique: UC85N3qjMZaZ5n7GFuc15Q-1
-X-Mimecast-MFC-AGG-ID: UC85N3qjMZaZ5n7GFuc15Q_1768411272
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-dSesxxrYNMaAcMN-ThJ8vQ-1; Wed,
+ 14 Jan 2026 12:21:22 -0500
+X-MC-Unique: dSesxxrYNMaAcMN-ThJ8vQ-1
+X-Mimecast-MFC-AGG-ID: dSesxxrYNMaAcMN-ThJ8vQ_1768411281
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BD9118005B2;
-	Wed, 14 Jan 2026 17:21:12 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D688E1800473;
+	Wed, 14 Jan 2026 17:21:20 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.45.224.130])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4699619560A7;
-	Wed, 14 Jan 2026 17:21:08 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E76E719560BA;
+	Wed, 14 Jan 2026 17:21:16 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -56,9 +56,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	petrm@nvidia.com,
 	razor@blackwall.org,
 	idosch@nvidia.com
-Subject: [PATCH v3 net-next 01/10] net: introduce mangleid_features
-Date: Wed, 14 Jan 2026 18:20:34 +0100
-Message-ID: <70afe1dc4404ef46154b684b12c59d4bc523477c.1768410519.git.pabeni@redhat.com>
+Subject: [PATCH v3 net-next 03/10] vxlan: expose gso partial features for tunnel  offload
+Date: Wed, 14 Jan 2026 18:20:36 +0100
+Message-ID: <4e1b48de270fee82be2eb0d8f81c26e3f8b167b7.1768410519.git.pabeni@redhat.com>
 In-Reply-To: <cover.1768410519.git.pabeni@redhat.com>
 References: <cover.1768410519.git.pabeni@redhat.com>
 Precedence: bulk
@@ -70,76 +70,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Some/most devices implementing gso_partial need to disable the GSO partial
-features when the IP ID can't be mangled; to that extend each of them
-implements something alike the following:
-
-	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
-		features &= ~NETIF_F_TSO;
-
-in the ndo_features_check() op, which leads to a bit of duplicate code.
-
-Later patch in the series will implement GSO partial support for virtual
-device, and the current status quo will require more duplicate code and
-a new indirect call in the TX path for such devices.
-
-Introduce the mangleid_features mask, allowing the core to disable NIC
-features based on/requiring MANGLEID, without any further intervention
-from the driver.
-
-The same functionality could be alternatively implemented adding a single
-boolean flag to the struct net_device, but would require an additional
-checks in ndo_features_check().
-
-Also note that the above mentioned action is incorrect if the NIC
-additionally implements NETIF_F_GSO_UDP_L4, mangleid_features
-transparently handle even such a case.
+Similar to the previous patch, reuse the same helpers to add tunnel GSO
+partial capabilities to vxlan devices.
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- include/linux/netdevice.h | 5 ++++-
- net/core/dev.c            | 4 +++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index d99b0fbc1942..23a698b70de1 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1830,7 +1830,9 @@ enum netdev_reg_state {
-  *				and drivers will need to set them appropriately.
-  *
-  *	@mpls_features:	Mask of features inheritable by MPLS
-- *	@gso_partial_features: value(s) from NETIF_F_GSO\*
-+ *	@gso_partial_features: value(s) from NETIF_F_GSO
-+ *	@mangleid_features:	Mask of features requiring MANGLEID, will be
-+ *				disabled together with the latter.
-  *
-  *	@ifindex:	interface index
-  *	@group:		The group the device belongs to
-@@ -2219,6 +2221,7 @@ struct net_device {
- 	netdev_features_t	vlan_features;
- 	netdev_features_t	hw_enc_features;
- 	netdev_features_t	mpls_features;
-+	netdev_features_t	mangleid_features;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index e957aa12a8a4..7bd0ae0a6a33 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2183,11 +2183,12 @@ static int vxlan_build_skb(struct sk_buff *skb, struct dst_entry *dst,
+ 			   struct vxlan_metadata *md, u32 vxflags,
+ 			   bool udp_sum)
+ {
++	int type = udp_sum ? SKB_GSO_UDP_TUNNEL_CSUM : SKB_GSO_UDP_TUNNEL;
++	__be16 inner_protocol = htons(ETH_P_TEB);
+ 	struct vxlanhdr *vxh;
++	bool double_encap;
+ 	int min_headroom;
+ 	int err;
+-	int type = udp_sum ? SKB_GSO_UDP_TUNNEL_CSUM : SKB_GSO_UDP_TUNNEL;
+-	__be16 inner_protocol = htons(ETH_P_TEB);
  
- 	unsigned int		min_mtu;
- 	unsigned int		max_mtu;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c711da335510..6154f306ed76 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3788,8 +3788,10 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 		struct iphdr *iph = skb->encapsulation ?
- 				    inner_ip_hdr(skb) : ip_hdr(skb);
+ 	if ((vxflags & VXLAN_F_REMCSUM_TX) &&
+ 	    skb->ip_summed == CHECKSUM_PARTIAL) {
+@@ -2208,6 +2209,7 @@ static int vxlan_build_skb(struct sk_buff *skb, struct dst_entry *dst,
+ 	if (unlikely(err))
+ 		return err;
  
--		if (!(iph->frag_off & htons(IP_DF)))
-+		if (!(iph->frag_off & htons(IP_DF))) {
- 			features &= ~NETIF_F_TSO_MANGLEID;
-+			features &= ~dev->mangleid_features;
-+		}
++	double_encap = udp_tunnel_handle_partial(skb);
+ 	err = iptunnel_handle_offloads(skb, type);
+ 	if (err)
+ 		return err;
+@@ -2238,7 +2240,7 @@ static int vxlan_build_skb(struct sk_buff *skb, struct dst_entry *dst,
+ 		inner_protocol = skb->protocol;
  	}
  
- 	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
+-	skb_set_inner_protocol(skb, inner_protocol);
++	udp_tunnel_set_inner_protocol(skb, double_encap, inner_protocol);
+ 	return 0;
+ }
+ 
+@@ -3348,10 +3350,18 @@ static void vxlan_setup(struct net_device *dev)
+ 	dev->features   |= NETIF_F_RXCSUM;
+ 	dev->features   |= NETIF_F_GSO_SOFTWARE;
+ 
++	/* Partial features are disabled by default. */
+ 	dev->vlan_features = dev->features;
+ 	dev->hw_features |= NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_FRAGLIST;
+ 	dev->hw_features |= NETIF_F_RXCSUM;
+ 	dev->hw_features |= NETIF_F_GSO_SOFTWARE;
++	dev->hw_features |= UDP_TUNNEL_PARTIAL_FEATURES;
++	dev->hw_features |= NETIF_F_GSO_PARTIAL;
++
++	dev->hw_enc_features = dev->hw_features;
++	dev->gso_partial_features = UDP_TUNNEL_PARTIAL_FEATURES;
++	dev->mangleid_features = NETIF_F_GSO_PARTIAL;
++
+ 	netif_keep_dst(dev);
+ 	dev->priv_flags |= IFF_NO_QUEUE;
+ 	dev->change_proto_down = true;
 -- 
 2.52.0
 
