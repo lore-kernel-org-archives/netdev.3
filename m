@@ -1,54 +1,48 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133034676D
-	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 09:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AF433E35B;
+	Thu, 15 Jan 2026 09:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768467982; cv=none; b=rXPLYAJOk/zDtefHyBMQ6EhBv4QDd/Pxsr8xb+ZPBecjqM0iHfoEa3mENfiUuQxqPmRtRD1owssxq5eOSi1t8kHeOmpeMfesqlm3dTjeSXSXbWg5JvnVYbWRDEe8xrxeBihip0j4OglNxfJNyuMZtf8FWpBikC3CmWllWIxDRA4=
+	t=1768468132; cv=none; b=d+RFzaGv6y7fmyfFNE9W1BjIWiRDN9lxIFGRRzYgaEhksXOdB40R4wobSSo2oPaU/pNtUJoWAwZ6bb0yC+2pkPu2yQ9YRSo8PgnE3VwoKa2/+sXtwC93rNCV6GNX27tF0gHB6cNcBCLdCpo98L9r6l9zI42vAS3aCcqM7i9Yu80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768467982; c=relaxed/simple;
-	bh=N3Pqqp8dF2+QpK86L3qSSsrFm0cAtWFa+zhTYIkq+kQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLA5CZbmtFMAQlGjznd0+twxmIPqBVqXXRyNu8CZ6e5MAoX+tlDMKeynOZXwdkmAa0dk31ublTW7Aw+y3lh0Vnq5ZayTzltNgxXyjZck+dkq07kiuOuHTdHj0du15qTfrVF3oWWW3ZlOMvBhRIQA01IWIO+Cc6tQMIDLZMBxslk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vgJIw-0004cZ-NA; Thu, 15 Jan 2026 10:06:10 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vgJIv-000jGV-22;
-	Thu, 15 Jan 2026 10:06:09 +0100
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B128F4CD6B3;
-	Thu, 15 Jan 2026 09:06:08 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/4] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
-Date: Thu, 15 Jan 2026 09:57:11 +0100
-Message-ID: <20260115090603.1124860-5-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260115090603.1124860-1-mkl@pengutronix.de>
-References: <20260115090603.1124860-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1768468132; c=relaxed/simple;
+	bh=TACqM6MrhIV6ay/73FoCpS3CaZS0eJYh1YKHXmr7TV4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I+w6VU038Qx5D7IHWBsn2TCB6hNP8GST2J984807Ee1EM4EwlrUmjXS7WHXhNae0+jJQ13uNBp/avc1vcg3w7HgxcKY5PvJNmSse5XuP8Ah7DJxbSSWCiyIe/QB7hqm/eKHLb4C1KyydLHqxkes7W5+ue1Y5ZUimMU1i73NQCKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pV9kTPcB; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pV9kTPcB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0709C116D0;
+	Thu, 15 Jan 2026 09:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768468132;
+	bh=TACqM6MrhIV6ay/73FoCpS3CaZS0eJYh1YKHXmr7TV4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=pV9kTPcBH5t5MkMrLlFtvaNeLRH/Q9UTak53dCbGpZuandiKS4B9E4q3xryWLbJ1w
+	 cuR4Fh7K13C+CwOOxnIlHdrZQqPmjWBiX/d4MKNxLP+WcqwKSe+/6lRte0Xt4lMSQu
+	 dJjOyWj0/qq1dKEnAHplgD09zXDaXPfVRR/9Pof3VvzPefAenw8m3MnWRgoWFR9uD1
+	 dffM0OSqeGgUy9GoFGIjysjKS/jvgDCm3HfTLWRmsHoL3215jBGXcp9k+vJWsCOV5L
+	 KCGG++s+8yQ6NuTp5Hk9noZbU6UkvEC7lYzzjH5Kxkqe0lIxr/8Ocq9L9Ocu5V4dKY
+	 ZZMejgqpZLC8Q==
+Message-ID: <748dbd7653d31edaccb54425788bbf9a6881da89.camel@kernel.org>
+Subject: Re: [PATCH net-next] selftests: tls: use mkstemp instead of
+ open(O_TMPFILE)
+From: Geliang Tang <geliang@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>,  Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,  Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>
+Cc: Gang Yan <yangang@kylinos.cn>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev
+Date: Thu, 15 Jan 2026 17:08:46 +0800
+In-Reply-To: <3936106c6b3cc45c570023e083a1e56fa6548b41.1768356312.git.geliang@kernel.org>
+References: 
+	<3936106c6b3cc45c570023e083a1e56fa6548b41.1768356312.git.geliang@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-4 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,57 +50,89 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+On Wed, 2026-01-14 at 10:12 +0800, Geliang Tang wrote:
+> From: Gang Yan <yangang@kylinos.cn>
+> 
+> When running TLS tests in a virtual machine/container environment,
+> they
+> fail:
+> 
+>  # tls.c:1479:mutliproc_even: Expected fd (-1) >= 0 (0)
+>  # mutliproc_even: Test terminated by assertion
+>  #          FAIL  tls.12_aes_gcm.mutliproc_even
+>  not ok 59 tls.12_aes_gcm.mutliproc_even
+>  #  RUN           tls.12_aes_gcm.mutliproc_readers ...
+>  # tls.c:1479:mutliproc_readers: Expected fd (-1) >= 0 (0)
+>  # mutliproc_readers: Test terminated by assertion
+>  #          FAIL  tls.12_aes_gcm.mutliproc_readers
+>  not ok 60 tls.12_aes_gcm.mutliproc_readers
+>  #  RUN           tls.12_aes_gcm.mutliproc_writers ...
+>  # tls.c:1479:mutliproc_writers: Expected fd (-1) >= 0 (0)
+>  # mutliproc_writers: Test terminated by assertion
+>  #          FAIL  tls.12_aes_gcm.mutliproc_writers
+>  not ok 61 tls.12_aes_gcm.mutliproc_writers
+> 
+> This is because the /tmp directory uses the virtiofs filesystem,
+> which does
+> not support the O_TMPFILE feature.
+> 
+> This patch uses mkstemp() to create temporary files, thereby
+> eliminating
+> the dependency on the O_TMPFILE feature. And closes the file
+> descriptor
+> (fd) and deletes the temfile after the test ends.
+> 
+> Co-developed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Gang Yan <yangang@kylinos.cn>
+> ---
+>  tools/testing/selftests/net/tls.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/net/tls.c
+> b/tools/testing/selftests/net/tls.c
+> index 9e2ccea13d70..f4b8dd99d501 100644
+> --- a/tools/testing/selftests/net/tls.c
+> +++ b/tools/testing/selftests/net/tls.c
+> @@ -1456,6 +1456,7 @@ test_mutliproc(struct __test_metadata
+> *_metadata, struct _test_data_tls *self,
+>  	       bool sendpg, unsigned int n_readers, unsigned int
+> n_writers)
+>  {
+>  	const unsigned int n_children = n_readers + n_writers;
+> +	char tmpfile[] = "/tmp/tls_test_tmpfile_XXXXXX";
+>  	const size_t data = 6 * 1000 * 1000;
+>  	const size_t file_sz = data / 100;
+>  	size_t read_bias, write_bias;
+> @@ -1469,7 +1470,7 @@ test_mutliproc(struct __test_metadata
+> *_metadata, struct _test_data_tls *self,
+>  	write_bias = n_readers / n_writers ?: 1;
+>  
+>  	/* prep a file to send */
+> -	fd = open("/tmp/", O_TMPFILE | O_RDWR, 0600);
+> +	fd = mkstemp(tmpfile);
 
-Since j1939_session_deactivate_activate_next() in j1939_tp_rxtimer() is
-called only when the timer is enabled, we need to call
-j1939_session_deactivate_activate_next() if we cancelled the timer.
-Otherwise, refcount for j1939_session leaks, which will later appear as
+Superseded.
 
-| unregister_netdevice: waiting for vcan0 to become free. Usage count = 2.
+I noticed that this mkstemp approach was already implemented in
+chunked_sendfile(). To eliminate duplication, in v2 I just submitted, I
+extracted this logic into a new helper create_temp_file(), which is now
+shared by both chunked_sendfile() and test_mutliproc().
 
-problem.
+Thanks,
+-Geliang
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Link: https://patch.msgid.link/b1212653-8fa1-44e1-be9d-12f950fb3a07@I-love.SAKURA.ne.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- net/can/j1939/transport.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index 613a911dda10..8656ab388c83 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1695,8 +1695,16 @@ static int j1939_xtp_rx_rts_session_active(struct j1939_session *session,
- 
- 		j1939_session_timers_cancel(session);
- 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
--		if (session->transmission)
-+		if (session->transmission) {
- 			j1939_session_deactivate_activate_next(session);
-+		} else if (session->state == J1939_SESSION_WAITING_ABORT) {
-+			/* Force deactivation for the receiver.
-+			 * If we rely on the timer starting in j1939_session_cancel,
-+			 * a second RTS call here will cancel that timer and fail
-+			 * to restart it because the state is already WAITING_ABORT.
-+			 */
-+			j1939_session_deactivate_activate_next(session);
-+		}
- 
- 		return -EBUSY;
- 	}
--- 
-2.51.0
-
+>  	ASSERT_GE(fd, 0);
+>  
+>  	memset(buf, 0xac, file_sz);
+> @@ -1527,6 +1528,8 @@ test_mutliproc(struct __test_metadata
+> *_metadata, struct _test_data_tls *self,
+>  			left -= res;
+>  		}
+>  	}
+> +	close(fd);
+> +	unlink(tmpfile);
+>  }
+>  
+>  TEST_F(tls, mutliproc_even)
