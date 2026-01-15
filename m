@@ -1,102 +1,200 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879023803DA;
-	Thu, 15 Jan 2026 11:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C8C38A9B6;
+	Thu, 15 Jan 2026 11:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768477486; cv=none; b=I/oqCS7xYkMQTrgUgFtFnwEMqNtpbHI8fPfwmDK6VGKme/mJiCHlPpZKo2iBzxp3MV5LzlZ2L7EFaxdJ1cF3FLtM6w1OkmOlF77nG3U4a+kUaPUXBgSsTl7XIlASHIX54k4/LCi9woZ7XVgSrpv/NpYiUTpZP/Wmnd2VKcazXfI=
+	t=1768477643; cv=none; b=GuEv9ubuPktt/S13TOyMX2DCE9ndJsX8Z0+OhXPUm4OlhyuJwlCxS7stGYgr9hXYuTQqNqZRrVIkHiWoclcNIVK0RbLSGByvfgVN0ZqtMYucj1wnCg+C0IwTWN56uJf9mcUDfG6frmPkWp4ZqpYNliXlbFERyXoQDI/MjC3N5Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768477486; c=relaxed/simple;
-	bh=vs7f1bhY9yDIJnCaMDj6N6nJziV47T+dhFpcwIx6KW4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=aRYnArOLUjOSDqQSdi3cs9zi5/E3qUnVJ/plVeM0uxFtd5mywED1ZOXElzycBsZZq6hIzDrZjqVexOaF+aDKkR/ls7fovOXIeJ1cyeROX1Lny76o/oexgf2ASC9kXEX1YDIIMeg8fblNgspDttiahgV90gdLYHuD9bLGm2iSW5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=PRRptX5W; arc=none smtp.client-ip=220.197.31.3
+	s=arc-20240116; t=1768477643; c=relaxed/simple;
+	bh=h2aKPbYYSCfPFp+IaCbNK1a2/jGwBhkzQ4eo2a8O6QQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iIbHHdHliHW3jS+tULjiCZCn1j3vSqDDYUa5XQf41LFNbGPhFH3kEyn+nNCCq8Qa752qI4ra13L7SZgMDUqolAUZNNGSzQRx0Npd1YjmzWye1q+1VtLs+MJKJvhtL/eJNxY/hVzro8HL4zkpcv6WABaGzyPEGJSJD1kvQYFtPzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UBMq8LG9; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="PRRptX5W"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UBMq8LG9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=vs7f1bhY9yDIJnCaMDj6N6nJziV47T+dhFpcwIx6KW4=; b=P
-	RRptX5Ww4bajYCNox36fnJjEWGaVa/Tottr//4XyFWAc1k3iQKdezamlUr/eK8Ke
-	HSS6OuFciovYs2p49Jv2ZHdceSx3WvK1A7QC5X3z7hLfgNFdlmUhLD0O/rmrlnUw
-	AzsMJp31+F1rqFqT2oSP+NFBkE0yMfI0cGOjyimVdU=
-Received: from slark_xiao$163.com (
- [2408:8459:3860:80a7:77ea:6fe3:a3bc:96b9] ) by ajax-webmail-wmsvr-40-130
- (Coremail) ; Thu, 15 Jan 2026 19:43:55 +0800 (CST)
-Date: Thu, 15 Jan 2026 19:43:55 +0800 (CST)
-From: "Slark Xiao" <slark_xiao@163.com>
-To: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, mani@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re:[net-next v6 0/8] net: wwan: add NMEA port type support
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20251222(83accb85) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20260115095417.36975-1-slark_xiao@163.com>
-References: <20260115095417.36975-1-slark_xiao@163.com>
-X-NTES-SC: AL_Qu2dCvicuEwo4yeeZOkfmk8Sg+84W8K3v/0v1YVQOpF8jADo5h4+ZGVtJ0XH4uukDwmniRe7bz1rzc9iV4hqZ7sr5FBW7Tv4wEs5xtvfZL1MPw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=3U
+	FBFgL70KdmPe6agoutZjKBWX5ibQPwtUx3H8N2FHE=; b=UBMq8LG9hTsmdHPuU2
+	PT/mdryuI1PwSqMITEyqLNjW/7zIlhs7/K0BFvL5oyGeNSkg1cz1Wb5PpdVdAgGV
+	AKVLuGuKFmLt00BTRoZ/jWpIPJUCiiKsTsM6qxwiwv01yY2SZRnZ3tziOVcn8XnS
+	frFefJ8sRhxnGNoKG/WM+Kapg=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHLGiX02hpr2PzGQ--.4331S5;
+	Thu, 15 Jan 2026 19:46:43 +0800 (CST)
+From: Slark Xiao <slark_xiao@163.com>
+To: loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mani@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	slark_xiao@163.com
+Subject: [net-next v7 3/8] net: wwan: core: split port creation and registration
+Date: Thu, 15 Jan 2026 19:46:20 +0800
+Message-Id: <20260115114625.46991-4-slark_xiao@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260115114625.46991-1-slark_xiao@163.com>
+References: <20260115114625.46991-1-slark_xiao@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <41675d06.99df.19bc178277f.Coremail.slark_xiao@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:gigvCgBXZU370mhpwINXAA--.2582W
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5xtny2lo0vvwpQAA3t
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBHLGiX02hpr2PzGQ--.4331S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWkAw45CFWxKFW5Jw1xuFg_yoWrZF4kp3
+	W0gas5tFW8Jrnrur43AF47ZF4rua1Ik34IyrW8W34Skrn0qryFvFZY9FyqvFWrGFy7GFy3
+	Xrs8ta10ka4UWr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRrhLnUUUUU=
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCwASS9mlo06Tm+gAA3K
 
-CkF0IDIwMjYtMDEtMTUgMTc6NTQ6MDksICJTbGFyayBYaWFvIiA8c2xhcmtfeGlhb0AxNjMuY29t
-PiB3cm90ZToKPlRoZSBzZXJpZXMgaW50cm9kdWNlcyBhIGxvbmcgZGlzY3Vzc2VkIE5NRUEgcG9y
-dCB0eXBlIHN1cHBvcnQgZm9yIHRoZQo+V1dBTiBzdWJzeXN0ZW0uIFRoZXJlIGFyZSB0d28gZ29h
-bHMuIEZyb20gdGhlIFdXQU4gZHJpdmVyIHBlcnNwZWN0aXZlLAo+Tk1FQSBleHBvcnRlZCBhcyBh
-bnkgb3RoZXIgcG9ydCB0eXBlIChlLmcuIEFULCBNQklNLCBRTUksIGV0Yy4pLiBGcm9tCj51c2Vy
-IHNwYWNlIHNvZnR3YXJlIHBlcnNwZWN0aXZlLCB0aGUgZXhwb3J0ZWQgY2hhcmRldiBiZWxvbmdz
-IHRvIHRoZQo+R05TUyBjbGFzcyB3aGF0IG1ha2VzIGl0IGVhc3kgdG8gZGlzdGluZ3Vpc2ggZGVz
-aXJlZCBwb3J0IGFuZCB0aGUgV1dBTgo+ZGV2aWNlIGNvbW1vbiB0byBib3RoIE5NRUEgYW5kIGNv
-bnRyb2wgKEFULCBNQklNLCBldGMuKSBwb3J0cyBtYWtlcyBpdAo+ZWFzeSB0byBsb2NhdGUgYSBj
-b250cm9sIHBvcnQgZm9yIHRoZSBHTlNTIHJlY2VpdmVyIGFjdGl2YXRpb24uCj4KPkRvbmUgYnkg
-ZXhwb3J0aW5nIHRoZSBOTUVBIHBvcnQgdmlhIHRoZSBHTlNTIHN1YnN5c3RlbSB3aXRoIHRoZSBX
-V0FOCj5jb3JlIGFjdGluZyBhcyBwcm94eSBiZXR3ZWVuIHRoZSBXV0FOIG1vZGVtIGRyaXZlciBh
-bmQgdGhlIEdOU1MKPnN1YnN5c3RlbS4KPgo+VGhlIHNlcmllcyBzdGFydHMgZnJvbSBhIGNsZWFu
-dXAgcGF0Y2guIFRoZW4gdGhyZWUgcGF0Y2hlcyBwcmVwYXJlcyB0aGUKPldXQU4gY29yZSBmb3Ig
-dGhlIHByb3h5IHN0eWxlIG9wZXJhdGlvbi4gRm9sbG93ZWQgYnkgYSBwYXRjaCBpbnRyb2Rpbmcg
-YQo+bmV3IFdXTkEgcG9ydCB0eXBlLCBpbnRlZ3JhdGlvbiB3aXRoIHRoZSBHTlNTIHN1YnN5c3Rl
-bSBhbmQgZGVtdXguIFRoZQo+c2VyaWVzIGVuZHMgd2l0aCBhIGNvdXBsZSBvZiBwYXRjaGVzIHRo
-YXQgaW50cm9kdWNlIGVtdWxhdGVkIEVNRUEgcG9ydAo+dG8gdGhlIFdXQU4gSFcgc2ltdWxhdG9y
-Lgo+Cj5UaGUgc2VyaWVzIGlzIHRoZSBwcm9kdWN0IG9mIHRoZSBkaXNjdXNzaW9uIHdpdGggTG9p
-YyBhYm91dCB0aGUgcHJvcyBhbmQKPmNvbnMgb2YgcG9zc2libGUgbW9kZWxzIGFuZCBpbXBsZW1l
-bnRhdGlvbi4gQWxzbyBNdWhhbW1hZCBhbmQgU2xhcmsgZGlkCj5hIGdyZWF0IGpvYiBkZWZpbmlu
-ZyB0aGUgcHJvYmxlbSwgc2hhcmluZyB0aGUgY29kZSBhbmQgcHVzaGluZyBtZSB0bwo+ZmluaXNo
-IHRoZSBpbXBsZW1lbnRhdGlvbi4gRGFuaWVsZSBoYXMgY2F1Z2h0IGFuIGlzc3VlIG9uIGRyaXZl
-cgo+dW5sb2FkaW5nIGFuZCBzdWdnZXN0ZWQgYW4gaW52ZXN0aWdhdGlvbiBkaXJlY3Rpb24uIFdo
-YXQgd2FzIGNvbmNsdWRlZAo+YnkgTG9pYy4gTWFueSB0aGFua3MuCj4KPkNoYW5nZXMgUkZDdjEt
-PlJGQ3YyOgo+KiBVbmlmb3JtbHkgdXNlIHB1dF9kZXZpY2UoKSB0byByZWxlYXNlIHBvcnQgbWVt
-b3J5LiBUaGlzIG1hZGUgY29kZSBsZXNzCj4gIHdlaXJkIGFuZCB3YXkgbW9yZSBjbGVhci4gVGhh
-bmsgeW91LCBMb2ljLCBmb3Igbm90aWNpbmcgYW5kIHRoZSBmaXgKPiAgZGlzY3Vzc2lvbiEKPkNo
-YW5nZXMgUkZDdjItPlJGQ3Y1Ogo+KiBGaXggcHJlbWF0dXJlIFdXQU4gZGV2aWNlIHVucmVnaXN0
-ZXI7IG5ldyBwYXRjaCAyLzcsIHRodXMsIGFsbAo+ICBzdWJzZXF1ZW50IHBhdGNoZXMgaGF2ZSBi
-ZWVuIHJlbnVtYmVyZWQKPiogTWlub3IgYWRqdXN0bWVudHMgaGVyZSBhbmQgdGhlcmUKPgo+U2Vy
-Z2V5IFJ5YXphbm92ICg3KToKPiAgbmV0OiB3d2FuOiBjb3JlOiByZW1vdmUgdW51c2VkIHBvcnRf
-aWQgZmllbGQKPiAgbmV0OiB3d2FuOiBjb3JlOiBleHBsaWNpdCBXV0FOIGRldmljZSByZWZlcmVu
-Y2UgY291bnRpbmcKSWdub3JlIHRoaXMgc2VyaWFsIHNpbmNlIGEgdHlwbyB3aGljaCBsZWFkIHRv
-IGJ1aWxkIGVycm9yLgpTZWUgbmV4dCB2OCB2ZXJzaW9uIGxhdGVyLgoKPiAgbmV0OiB3d2FuOiBj
-b3JlOiBzcGxpdCBwb3J0IGNyZWF0aW9uIGFuZCByZWdpc3RyYXRpb24KPiAgbmV0OiB3d2FuOiBj
-b3JlOiBzcGxpdCBwb3J0IHVucmVnaXN0ZXIgYW5kIHN0b3AKPiAgbmV0OiB3d2FuOiBhZGQgTk1F
-QSBwb3J0IHN1cHBvcnQKPiAgbmV0OiB3d2FuOiBod3NpbTogcmVmYWN0b3IgdG8gc3VwcG9ydCBt
-b3JlIHBvcnQgdHlwZXMKPiAgbmV0OiB3d2FuOiBod3NpbTogc3VwcG9ydCBOTUVBIHBvcnQgZW11
-bGF0aW9uCj4KPlNsYXJrIFhpYW8gKDEpOgo+ICBuZXQ6IHd3YW46IG1oaV93d2FuX2N0cmw6IEFk
-ZCBOTUVBIGNoYW5uZWwgc3VwcG9ydAo+Cj4gZHJpdmVycy9uZXQvd3dhbi9LY29uZmlnICAgICAg
-ICAgfCAgIDEgKwo+IGRyaXZlcnMvbmV0L3d3YW4vbWhpX3d3YW5fY3RybC5jIHwgICAxICsKPiBk
-cml2ZXJzL25ldC93d2FuL3d3YW5fY29yZS5jICAgICB8IDI3NyArKysrKysrKysrKysrKysrKysr
-KysrKysrLS0tLS0tCj4gZHJpdmVycy9uZXQvd3dhbi93d2FuX2h3c2ltLmMgICAgfCAyMDEgKysr
-KysrKysrKysrKysrKysrLS0tLQo+IGluY2x1ZGUvbGludXgvd3dhbi5oICAgICAgICAgICAgIHwg
-ICAyICsKPiA1IGZpbGVzIGNoYW5nZWQsIDM5NCBpbnNlcnRpb25zKCspLCA4OCBkZWxldGlvbnMo
-LSkKPgo+LS0gCj4yLjI1LjEK
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+
+Upcoming GNSS (NMEA) port type support requires exporting it via the
+GNSS subsystem. On another hand, we still need to do basic WWAN core
+work: find or allocate the WWAN device, make it the port parent, etc. To
+reuse as much code as possible, split the port creation function into
+the registration of a regular WWAN port device, and basic port struct
+initialization.
+
+To be able to use put_device() uniformly, break the device_register()
+call into device_initialize() and device_add() and call device
+initialization earlier.
+
+While at it, fix a minor number leak upon WWAN port registration
+failure.
+
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+---
+ drivers/net/wwan/wwan_core.c | 68 ++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index 1da935e84008..1a9a77d597e6 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -357,7 +357,8 @@ static void wwan_port_destroy(struct device *dev)
+ {
+ 	struct wwan_port *port = to_wwan_port(dev);
+ 
+-	ida_free(&minors, MINOR(port->dev.devt));
++	if (dev->class == &wwan_class)
++		ida_free(&minors, MINOR(dev->devt));
+ 	mutex_destroy(&port->data_lock);
+ 	mutex_destroy(&port->ops_lock);
+ 	kfree(port);
+@@ -436,6 +437,43 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
+ 	return dev_set_name(&port->dev, "%s", buf);
+ }
+ 
++/* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
++static int wwan_port_register_wwan(struct wwan_port *port)
++{
++	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
++	char namefmt[0x20];
++	int minor, err;
++
++	/* A port is exposed as character device, get a minor */
++	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
++	if (minor < 0)
++		return minor;
++
++	port->dev.class = &wwan_class;
++	port->dev.devt = MKDEV(wwan_major, minor);
++
++	/* allocate unique name based on wwan device id, port type and number */
++	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
++		 wwan_port_types[port->type].devsuf);
++
++	/* Serialize ports registration */
++	mutex_lock(&wwan_register_lock);
++
++	__wwan_port_dev_assign_name(port, namefmt);
++	err = device_add(&port->dev);
++
++	mutex_unlock(&wwan_register_lock);
++
++	if (err) {
++		ida_free(&minors, minor);
++		return err;
++	}
++
++	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
++
++	return 0;
++}
++
+ struct wwan_port *wwan_create_port(struct device *parent,
+ 				   enum wwan_port_type type,
+ 				   const struct wwan_port_ops *ops,
+@@ -444,8 +482,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ {
+ 	struct wwan_device *wwandev;
+ 	struct wwan_port *port;
+-	char namefmt[0x20];
+-	int minor, err;
++	int err;
+ 
+ 	if (type > WWAN_PORT_MAX || !ops)
+ 		return ERR_PTR(-EINVAL);
+@@ -457,17 +494,9 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	if (IS_ERR(wwandev))
+ 		return ERR_CAST(wwandev);
+ 
+-	/* A port is exposed as character device, get a minor */
+-	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
+-	if (minor < 0) {
+-		err = minor;
+-		goto error_wwandev_remove;
+-	}
+-
+ 	port = kzalloc(sizeof(*port), GFP_KERNEL);
+ 	if (!port) {
+ 		err = -ENOMEM;
+-		ida_free(&minors, minor);
+ 		goto error_wwandev_remove;
+ 	}
+ 
+@@ -481,27 +510,14 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	mutex_init(&port->data_lock);
+ 
+ 	port->dev.parent = &wwandev->dev;
+-	port->dev.class = &wwan_class;
+ 	port->dev.type = &wwan_port_dev_type;
+-	port->dev.devt = MKDEV(wwan_major, minor);
+ 	dev_set_drvdata(&port->dev, drvdata);
++	device_initialize(&port->dev);
+ 
+-	/* allocate unique name based on wwan device id, port type and number */
+-	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
+-		 wwan_port_types[port->type].devsuf);
+-
+-	/* Serialize ports registration */
+-	mutex_lock(&wwan_register_lock);
+-
+-	__wwan_port_dev_assign_name(port, namefmt);
+-	err = device_register(&port->dev);
+-
+-	mutex_unlock(&wwan_register_lock);
+-
++	err = wwan_port_register_wwan(port);
+ 	if (err)
+ 		goto error_put_device;
+ 
+-	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
+ 	return port;
+ 
+ error_put_device:
+-- 
+2.25.1
+
