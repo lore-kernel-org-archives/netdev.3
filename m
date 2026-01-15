@@ -1,125 +1,93 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58428357A28
-	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 09:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABEA357A30
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 09:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768468553; cv=none; b=JxLzDhRdp+tHBgsciuGqNk6PH1fe9uhnWC2ZkBKFUtWF6oJ5ioQm98wNALQlz+BuPpeDsMT7A2//Bo+5ULwMXFY08TVL5XpwAXTnZv6DNulA1m7NrU5SKAwo9Mzo8W9BODIoaE9X1ILNAzMi8miTYblJH/DALK7cC/sXUQxe9fg=
+	t=1768468556; cv=none; b=MZPAgueg7+8QyNn0BIrb1PYM/s0xqJj0XrlW+m45S0zwjSxL694qbuc1jhRioPosi7oppYLThD6AwUdvYThokxZW01wyOe5VXcxwhe0JIvrF55c4GzXgPU3Ojw/hq56SCGU7hWTFg+1IIh002j2i5grmqerWtMfRzoEqHuA0W8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768468553; c=relaxed/simple;
-	bh=gtMeMIiWZfR1FPtMNs15Lf/g6JMp2RzBjrLoGR7//dE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qL+mLn2bgU1BdnJMKqzydu1UyJCvqNDQKYNXyva/G5lRshb3Ms1NuhaK7qhlHPHsiYFMZdvYsNYFvk0g1TLrvn6axWGC7GZRYtO5/tLcNIPLRZx6sknUeFsrhvgojTlcb3DPyqu+/OvT368+5qPnsBGe4icrB+vQ10RjOPlj+cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1jv5x/Lw; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1768468556; c=relaxed/simple;
+	bh=0HijuXWJpjwbVYBFjlsD56UImJ6stIXjhDyb2cKuonk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YLG1pzKKZe7S3blkFDw3TcenvzUubjmyKXLmY7guq4l9no6dAPBAmI6TC5xyNwHZrsdnvGMXE089P3blUXWBT3ArlIN9890qySjyBk+6jSSPZMpBfuKv+wayCbzAdlDM06JpPfD/M8iUUIPzCrPBQc+LBMc2YiFFyZZRHiXTygw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTXX7YUn; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1jv5x/Lw"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5029901389dso2882351cf.2
-        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 01:15:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTXX7YUn"
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-bc2abdcfc6fso265361a12.2
+        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 01:15:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768468548; x=1769073348; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768468551; x=1769073351; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1LJoalJ/bPq/SwT2K8wCn2gybGfkpq32wbnQ3LM3Vlc=;
-        b=1jv5x/LwZ4womyiZUsDHisqA1CI3EUWxOSDb02YihrPIjFOsV6ERhnOOAS0E7eNtzg
-         6PyGXm978pbxe4Wc9CFwoBk32LyaeVRvWgOCzBDOofJ1RF3WP42Nmks32d+yNSZPpWCL
-         mOQRidsINSw5VUECGkBPqL/PCkHT9UB1V10imoEhXWKJ4qoSwlKCm97Tz/8QeLCJTIIn
-         2VuovK8kyPRRI7tgo30DZ15s/tP8HYo06SBkVMtpHoyaPkPcHm76Gi+/DB8YMd2/fEdU
-         H9EbgSLpvM7HGDB1N/lTphjiQ692vJ0HbnYTrpig3HIzz2T5hp6wJHjNkyXOGXisUNLZ
-         UnMw==
+        bh=0HijuXWJpjwbVYBFjlsD56UImJ6stIXjhDyb2cKuonk=;
+        b=OTXX7YUnCYhrg1AwTXyxej5XtK6qSMAW5E6Pnnx48K2lMGod0kyMc9Tfzx0+A/YQO2
+         /wZbfVE4KfE6jtOm/62GgTY51NmPs++pVlc/zNY1CJxnIreB6l6GJ/DMhFBDh7xtbCwO
+         syCskqbMTE3S00xjM02cggneEp9xgPNaZaavvjL4YRFhZOUvwzs3LVIdOcxHI9U6jztA
+         znGqyqQAN8vndJKpH//bWCgytt+P0vKEHSZnx8DeTdIahjzNk6CVKiazLb4ZsXP8bzuM
+         4gy+g7saZx7gOekMwrB5u90+sipTnxO8bLir7cjavgJbX7YnEkh+BAYyt3kHEh8Epme2
+         3l1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768468548; x=1769073348;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1768468551; x=1769073351;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1LJoalJ/bPq/SwT2K8wCn2gybGfkpq32wbnQ3LM3Vlc=;
-        b=WBR3UNFJHduyAGpr9dZTrzqX14HLfaZtKBNgyBcTDFwgiZeABx0D8pnj+jrOVr072K
-         NKvosyNfqi9VLWoUDhUPEvCn6FudTrULVxAPdtfNeS+lmS02+2uNnoTPWqP3R+J6NR/w
-         XjVr0FkdNvURpfZ4A9ZENwde6jAydkyhoVYEnXBdllGr/OQghcOibb3eqy8dbbvqkxWd
-         8rq+ojZIIKQjrNli6K27V11LjRJTpGvpZT+KqTN5D6vRAzaPADDTTy0oKrvt3k6v/Ure
-         MiwlkBcEgMaUxz4FBeHcPAZB9edmtPGbzjrsNpOWZC61NSlD/OYJnhevLWXAY/lPjIDc
-         j1ew==
-X-Forwarded-Encrypted: i=1; AJvYcCX3FksSZfJ05C0XoCCCoAzkK6U8pVLWjspZNZey+HPcin9rR2hAATobbuN/KrAunmPtOj2h0es=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAIvrH8KAJeLsKC4OGW6nC2jQa9nJXuwwbovRscZ0fQJh+yEv8
-	/Ht0H/wtySJMkyWEE5M8hZyIwAp8kw5tjA2JGVXehNfATVsxlLtHgh8p2qjHHKNUgLKi7mXa63r
-	7CqpZsi7On+Z8deaM8dxMT9N8xW+eGPf0YniIhiaF
-X-Gm-Gg: AY/fxX4MUsxKQd7X0UIiBugqAbNGO4Xxd7xy0AGeiMiCsgLvZ4sGzNAzrcJ5CYb54Uq
-	cTq/9/cVorywuYKpwd+ksf0mNZrYeQHXx14EMI7zb6AG+Xc0BczgR+Qsb6rC+9OPkJ4X09tUKEr
-	kZuMjOlwnf1ZQjxAR1F4HvUtwiHd0UDkgokmLeVId3zMi3Xgz3mkyqurNPMvRw4+QObfkKvOhPz
-	MUy0viwZ2A8yxr2xIhSnZsWNpKxIYDZCK7Z+gccLMaMmF91hjuVG6UMspMWJmbSbv1JfA==
-X-Received: by 2002:a05:622a:199b:b0:502:9bdc:57e1 with SMTP id
- d75a77b69052e-5029bdc598cmr6774851cf.2.1768468548067; Thu, 15 Jan 2026
- 01:15:48 -0800 (PST)
+        bh=0HijuXWJpjwbVYBFjlsD56UImJ6stIXjhDyb2cKuonk=;
+        b=N4lPHlGS/Jbeg6oHKsxwgz5g0Ku8CamzgBhaBkdAmhYeJQLnftyH6BNjSrUG5I8Uza
+         yGvv1aFBLPcJt3DUnOVgfyqlSZ8alZFDU9zTXlzxXXzH7akFurbKER7LZ+DHSbK6n7ra
+         EYIBDd+i9lEqjNvSRcVQc7RjujE72aJDoA1WbYgJbAyjQJLZ0fwZliXP4RmFEciuYRqz
+         n3z0OubZ6XGKhiQs/5q/mGejN8v37rZ76Zns1ddkR/01aLt3oF09NrxIttnc0RXGuEcj
+         gBNhXC31hsdCNjITSb/L2T5E4PbOafD1ABO476ssqT0czKrDe3c27ZEkurKqQddwzsAw
+         cw8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXl0McemiAwfkOYbAOAfdxew/tGBRPsVEkRtVquLwE0+QFC0M2JJZkJuVIhW2V+57BSeybEaYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzqxkl+Zw+uRUltoH8SQ4xPQFgISy6ZUqR3I4yJdahCyRV5jBEq
+	urnvbutCj+sQx0nUqCT8y0HljhMAtNWlZ0XsQrqkDJnHycL8611gD/M=
+X-Gm-Gg: AY/fxX7An07D3gfwxfvM50uzOiP1UEMw8txleO4IzSxDwgeBE4FH4yTTlyhwfNnXl74
+	Jyux65NPNDmlrFyaOUtN6Bg+jo6YWgQbTT8CeysbupWClaKf0O58tCRkvuwBz+sTfs+W0tcwyNh
+	dywpYwzVqPx7Qek2dWN2erSXTz8SEzcZ6sYeqyMo3pUKcEKjFpOxwF6qaFdg2+NnLUev7+3buxK
+	trprCqVUOcNgnXDjD7cnRMIhIAEVmEMSvDmCS3/hXh12A23gIlRHoITcVu1Ldst1y/S3Du6vxb2
+	7NSue0BWlflW3oacRwkXbEF2M74IU7i9UaTBo9UfxPghKPj/U1gnzCIY8dPyaEVYmwTtamMRLb7
+	yq3GBny8FGYWfWmlouflJF4WOjtZ6Y80Mkimtm9/Vw4CooGOmXpg8i1KbAGbhuVl7vIlPDgxlqx
+	eA2MTLWi4dkskuwDizdRPV8eOZMcs3bxA=
+X-Received: by 2002:a17:90b:3cc7:b0:34c:e5fc:faec with SMTP id 98e67ed59e1d1-351090bdf07mr5514921a91.2.1768468550753;
+        Thu, 15 Jan 2026 01:15:50 -0800 (PST)
+Received: from localhost.localdomain ([64.114.211.100])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-352675f8e97sm1554321a91.0.2026.01.15.01.15.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 01:15:50 -0800 (PST)
+From: Jinseok Kim <always.starving0@gmail.com>
+To: kuba@kernel.org
+Cc: always.starving0@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	quic_luoj@quicinc.com
+Subject: Re: [PATCH] net: qualcomm: ppe: Remove redundant include of dev_printk.h
+Date: Thu, 15 Jan 2026 01:11:23 -0800
+Message-ID: <20260115091439.2216-1-always.starving0@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260113190210.5387bde1@kernel.org>
+References: <20260113190210.5387bde1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115033237.1545400-1-kuba@kernel.org> <20260115051221.68054-1-fushuai.wang@linux.dev>
-In-Reply-To: <20260115051221.68054-1-fushuai.wang@linux.dev>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 15 Jan 2026 10:15:36 +0100
-X-Gm-Features: AZwV_QhTCMDKh5q0J0qjsf9QjxWK4VZqifJza4JSZzX25aIAu0asXhhTMuuhlKY
-Message-ID: <CANn89iKfuXjqKsn+xB6bpGOaqM7pN4ZcRJ=2KJg4WY76ArYXhQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3] wireguard: allowedips: Use kfree_rcu()
- instead of call_rcu()
-To: Fushuai Wang <fushuai.wang@linux.dev>
-Cc: kuba@kernel.org, Jason@zx2c4.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, vadim.fedorenko@linux.dev, wangfushuai@baidu.com, 
-	wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 15, 2026 at 6:12=E2=80=AFAM Fushuai Wang <fushuai.wang@linux.de=
-v> wrote:
->
-> >> @@ -271,13 +266,13 @@ static void remove_node(struct allowedips_node *=
-node, struct mutex *lock)
-> >>      if (free_parent)
-> >>              child =3D rcu_dereference_protected(parent->bit[!(node->p=
-arent_bit_packed & 1)],
-> >>                                                lockdep_is_held(lock));
-> >> -    call_rcu(&node->rcu, node_free_rcu);
-> >> +    kfree_rcu(node, rcu);
-> >
-> > Does wg_allowedips_slab_uninit() need to be updated to use
-> > kvfree_rcu_barrier() instead of rcu_barrier()?
-> >
-> > When CONFIG_KVFREE_RCU_BATCHED is enabled (the default), kfree_rcu()
-> > uses a batched mechanism that queues work via queue_rcu_work(). The
-> > rcu_barrier() call waits for RCU callbacks to complete, but these
-> > callbacks only queue the actual free to a workqueue via rcu_work_rcufn(=
-).
-> > The workqueue work that calls kvfree() may still be pending after
-> > rcu_barrier() returns.
-> >
-> > The existing cleanup path is:
-> >   wg_allowedips_slab_uninit() -> rcu_barrier() -> kmem_cache_destroy()
-> >
-> > With kfree_rcu(), this sequence could destroy the slab cache while
-> > kfree_rcu_work() still has pending frees queued. The proper barrier for
-> > kfree_rcu() is kvfree_rcu_barrier() which also calls flush_rcu_work()
-> > on all pending batches.
->
-> We do not need to add an explict kvfree_rcu_barrier(), becasue the commit
-> 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destro=
-y()")
-> already does it.
+Thanks for the review!
 
-It was doing it, but got replaced recently with a plain rcu_barrier()
+I suggested removing the direct #include <linux/dev_printk.h> because
+this is the only file under net/ethernet/qualcomm/ that explicitly includes it.
+All other files use dev_err() etc. just fine via <linux/device.h>.
 
-commit 0f35040de59371ad542b915d7b91176c9910dadc
-Author: Harry Yoo <harry.yoo@oracle.com>
-Date:   Mon Dec 8 00:41:47 2025 +0900
-
-    mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction
-
-We would like explicit +2 from mm _and_ rcu experts on this wireguard patch=
-.
-
-Thank you.
+But you're right — relying on indirect includes isn't ideal...
+I'll leave it as-is for now.
