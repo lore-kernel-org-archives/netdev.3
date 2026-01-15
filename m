@@ -1,29 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD232E729;
-	Thu, 15 Jan 2026 09:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAB435FF44;
+	Thu, 15 Jan 2026 09:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768470926; cv=none; b=oEuypcNByuiVHI22aFOnACTEI7wTZ12mGGXrwPtPIWNJHh15dTjfnWiz7J118GFG64wYGbsXcuipgL19PXNTSVo0/PekXu3rtmLKBat5tpTwiDxykduLWz47OAQ1Olz38csEb/NbG6oLbU5n4Vn/f3XrQuqT27dKeHAb0HoSYxs=
+	t=1768470934; cv=none; b=oZNjzt3xn+I6rGE9Nosc466A7L6vI+vcx3nnxZoQZJ5vfAS/63EusmELdJy9KsBYpbPID7/np5WG/MEKrRLUs8K9yuGPCkV6/VJFryGqsSd1R8kyprgloT6OEJVygVyEyyfKwzBNPhus+s+wzaNuJPofIOk3EM6JVGxdXlmVtIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768470926; c=relaxed/simple;
-	bh=bNkZku3+pHbkAKEAT4hyATmpfiR4ZitCeSV5TMCsLRs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VVqlbEayunm/k7lxXd9M2w2m/LZVZq7VCG+XWTAWLAVqz1et+lwoEqnfCEcqF6/8EG6Zh/DPF2rMuTJSXFtCiZzx8unKcjF5MnB3VcVpIaDMorqeBKvPbO12kF32+UadeY6IrpXoDu+QVH09Ro4Bawm0OpIOmI71cw6Anh3logw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NQssVUCP; arc=none smtp.client-ip=117.135.210.2
+	s=arc-20240116; t=1768470934; c=relaxed/simple;
+	bh=hPpGrhBm7dswjrLDv/THjvYEQrlbFx3TtA9jAFW1hNQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=U5++CGi0MhKZ432nKGaT8VHsYqyU5sOW5yT1tVUL7qDjyeX4SjErgoiAQS1cJdfkVLYqOjvZ82/O0O3wSRAPJF1/DrfRtIj3fyPbwJIOeeW4nCVkyTpjEhoL/5AUa9W8X86aYNRUkSmrvvfjoknpCvEeHbwQEvkFM+gh2PqolJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=h5vMqRcD; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NQssVUCP"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="h5vMqRcD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Lq
-	Ia76KbEllDdg/3rtMx6RLTk8DzkKDVBuYBQvnqoFo=; b=NQssVUCPEoCd323iiK
-	olr330Rv5ts3cI7nS94hZjznGrYFdsR1v3OMso54l1uHly8j5GUwQGT+zIcDQL3Q
-	nY0NodSvenIkxUV47CnRgZevVvQDhPkhtVh5WvVatJrxqY8wRRCdF+AysNlFjTOV
-	luSo+TjqN5/9zd56L0d0AvgR0=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/4
+	b01nswZlIsKdbMEMUcNlPloW0gjn+e2EWs/AY2u78=; b=h5vMqRcDMQszMYc7kH
+	zlJrIPRAkAycQg+758m3DthuXxZOqwZ4C1auOQOtpf0VEyR9Aco0leZenzLqR8FT
+	1XrQ2iCdcDkmhq+jnwy2sQ7i+z+ewjPh5eSkZzEsGc0RFi2lvo6H4A6jYy1olcfb
+	sDVn+XRZ6H2ipXagGaBTpee2M=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S2;
-	Thu, 15 Jan 2026 17:54:31 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S10;
+	Thu, 15 Jan 2026 17:54:51 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -37,10 +38,12 @@ To: loic.poulain@oss.qualcomm.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	slark_xiao@163.com
-Subject: [net-next v6 0/8] net: wwan: add NMEA port type support
-Date: Thu, 15 Jan 2026 17:54:09 +0800
-Message-Id: <20260115095417.36975-1-slark_xiao@163.com>
+Subject: [net-next v6 8/8] net: wwan: mhi_wwan_ctrl: Add NMEA channel support
+Date: Thu, 15 Jan 2026 17:54:17 +0800
+Message-Id: <20260115095417.36975-9-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260115095417.36975-1-slark_xiao@163.com>
+References: <20260115095417.36975-1-slark_xiao@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,66 +51,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJryDJrykKFyfZw47JryrZwb_yoW8Kw48pF
-	WjgrySyF97GFs7Wr4fAws7AryFvF1fG3yjqry2v34Fqrs8Jr1a9ryIq3Z0qas5Jw1Fqa47
-	ZrWUtw1kG3W5CrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUEf5UUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5xj4XWlouVivTgAA3b
+X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S10
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKrW3Xw48Gr4fGr4kur1rJFb_yoWfKrgE9w
+	1kXF9rJrW3J347KFsF9F13urWfK3W0qF4kXFnaqr9Yv347XFyfWw1kZF4Dtr9F9r17CF9r
+	urnxWayFyw4fWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRig4S5UUUUU==
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCvwz9YmlouWxo4wAA3z
 
-The series introduces a long discussed NMEA port type support for the
-WWAN subsystem. There are two goals. From the WWAN driver perspective,
-NMEA exported as any other port type (e.g. AT, MBIM, QMI, etc.). From
-user space software perspective, the exported chardev belongs to the
-GNSS class what makes it easy to distinguish desired port and the WWAN
-device common to both NMEA and control (AT, MBIM, etc.) ports makes it
-easy to locate a control port for the GNSS receiver activation.
+For MHI WWAN device, we need a match between NMEA channel and
+WWAN_PORT_NMEA type. Then the GNSS subsystem could create the
+gnss device succssfully.
 
-Done by exporting the NMEA port via the GNSS subsystem with the WWAN
-core acting as proxy between the WWAN modem driver and the GNSS
-subsystem.
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+---
+ drivers/net/wwan/mhi_wwan_ctrl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The series starts from a cleanup patch. Then three patches prepares the
-WWAN core for the proxy style operation. Followed by a patch introding a
-new WWNA port type, integration with the GNSS subsystem and demux. The
-series ends with a couple of patches that introduce emulated EMEA port
-to the WWAN HW simulator.
-
-The series is the product of the discussion with Loic about the pros and
-cons of possible models and implementation. Also Muhammad and Slark did
-a great job defining the problem, sharing the code and pushing me to
-finish the implementation. Daniele has caught an issue on driver
-unloading and suggested an investigation direction. What was concluded
-by Loic. Many thanks.
-
-Changes RFCv1->RFCv2:
-* Uniformly use put_device() to release port memory. This made code less
-  weird and way more clear. Thank you, Loic, for noticing and the fix
-  discussion!
-Changes RFCv2->RFCv5:
-* Fix premature WWAN device unregister; new patch 2/7, thus, all
-  subsequent patches have been renumbered
-* Minor adjustments here and there
-
-Sergey Ryazanov (7):
-  net: wwan: core: remove unused port_id field
-  net: wwan: core: explicit WWAN device reference counting
-  net: wwan: core: split port creation and registration
-  net: wwan: core: split port unregister and stop
-  net: wwan: add NMEA port support
-  net: wwan: hwsim: refactor to support more port types
-  net: wwan: hwsim: support NMEA port emulation
-
-Slark Xiao (1):
-  net: wwan: mhi_wwan_ctrl: Add NMEA channel support
-
- drivers/net/wwan/Kconfig         |   1 +
- drivers/net/wwan/mhi_wwan_ctrl.c |   1 +
- drivers/net/wwan/wwan_core.c     | 277 +++++++++++++++++++++++++------
- drivers/net/wwan/wwan_hwsim.c    | 201 ++++++++++++++++++----
- include/linux/wwan.h             |   2 +
- 5 files changed, 394 insertions(+), 88 deletions(-)
-
+diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
+index e9f979d2d851..e13c0b078175 100644
+--- a/drivers/net/wwan/mhi_wwan_ctrl.c
++++ b/drivers/net/wwan/mhi_wwan_ctrl.c
+@@ -263,6 +263,7 @@ static const struct mhi_device_id mhi_wwan_ctrl_match_table[] = {
+ 	{ .chan = "QMI", .driver_data = WWAN_PORT_QMI },
+ 	{ .chan = "DIAG", .driver_data = WWAN_PORT_QCDM },
+ 	{ .chan = "FIREHOSE", .driver_data = WWAN_PORT_FIREHOSE },
++	{ .chan = "NMEA", .driver_data = WWAN_PORT_NMEA },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(mhi, mhi_wwan_ctrl_match_table);
 -- 
 2.25.1
 
