@@ -1,358 +1,245 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013018.outbound.protection.outlook.com [40.93.201.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DC737BE95;
-	Thu, 15 Jan 2026 11:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768477688; cv=none; b=KXvm2KByo2Ah/DTahqvbT3z3cAj6+Inu2sVuzgtUIRqFNXw5oilckSl2/LZOj08YIhEji12xrqB5O/5iWkzwxWLuBRY1dqjb+1IlnL795ggzsW9LD0ZgBvbCQm2hJebSMWFCcdMMx6spefChfmYTDIwqVNxkUlZwyymDiHROJH8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768477688; c=relaxed/simple;
-	bh=0jJOMxzLsMb17DtgbKdwfIg16N7cV5nNPrbp2xfSBxg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gt7gC0Texww5ftqkJUzWU9NygI8YSvh7luN1SYRLn9V6HWeA4mtzkHHQEWc5o704OfvT6rr7GFJwBoaGTK/mhHsvSGBoJWAl2YZIleji1VAzew7nATr4DjElI9uuu3yXHNcNeHOlBH/fvCX7V5GjlpxZ76RVH4pz/cvZT3c9xfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JpyG8zbF; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74B23570AF
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 11:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768477856; cv=fail; b=Rp3/Kuyliw70thJ4Dt05AKSH1D/6JeUBw64gF5Dmi+QFafuyHaOBgwhgWxiLgVJQwZDEGPYMN0ZGcgGpm23TvjrtOq5kezPqCxTNsvQHODCLvSFFiODRIn/rIxE0XowFAlzf9Uhc2MjNPyuI8YykDNuZQ9o7PsXdREJFw0rIlSc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768477856; c=relaxed/simple;
+	bh=BKhps9tM5uPWf3DsF9fYeAZsmSvs+JyxhcAf+wnlEoY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=cW2+N7gmEhoF7WvndWVsHp3wP3OdxLc+t8/MNNRkkK0RhaASV3xtfB9M823sQIwa+Qyf410T4su1fO8R1Dkq8edRSz0e2l5b36v1E4N9++mbY+JREe+a2Rnin5KyHSJJT6JkZQUUK7wbzX7Eg6CDOew0WhXqfzpU6KVx0VFF9GI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pTNRkhj1; arc=fail smtp.client-ip=40.93.201.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JpyG8zbF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Lp
-	Y+aJmoEhOG44KQ3VdTvnBgg4wtPWt0VenoOwUOBcE=; b=JpyG8zbFdtP0tzb/XE
-	+4JGF1d2Mpy6QwjQx0frnOD+Kg5Wvb/VPbq9Ns+PRNnOANM4k43knY/XsMoV5U9B
-	Zx//7r8+3+VPYePB8w6VQL+FVjhbrpSZjk55ss16+adTL5AMe2EdkBgf8SwKhZ9Q
-	rh5a6SbkCvrUImWSZix5Uim78=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHLGiX02hpr2PzGQ--.4331S7;
-	Thu, 15 Jan 2026 19:46:47 +0800 (CST)
-From: Slark Xiao <slark_xiao@163.com>
-To: loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mani@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	slark_xiao@163.com,
-	Muhammad Nuzaihan <zaihan@unrealasia.net>,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [net-next v7 5/8] net: wwan: add NMEA port support
-Date: Thu, 15 Jan 2026 19:46:22 +0800
-Message-Id: <20260115114625.46991-6-slark_xiao@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260115114625.46991-1-slark_xiao@163.com>
-References: <20260115114625.46991-1-slark_xiao@163.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pTNRkhj1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fGlx9L9aatl/YwgFuDsNnoLpYmla6y9l5H6Ul9NzoXZZ3eTDa2i/tcvUOf0UFRCnJ2GDtlm32T8OLigrbmqEf96YZcS3DxKVH/rh2MpRwG3OaX4SGXW9Pjc9wQ88gpGZvQhyYMLlZXzBqyzm6nr6JWkKI1/opPdd4Fc6PEriJBmBJizZARGROXT8pHXxpx0w7IeQfS8z4vmE+i1rqyYSObmoen0Iu4OQKc9YK8TaoA92oJmc8lYxHtvjpHuhkUfs0eKbuQEUFoXxsCFjJ8w84qv+jiqzTniUU4GblrQRKQOsiMkrNZFHpBx3ut2Y4OHAr1wMd1N/oR5I5axkiRLaYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dPWfwS1+vYGPY8o4HAOVT0c6td2SJNqWgMQpE49yzoQ=;
+ b=XrwvRiu1PGQIVth48jhUyt0NG29vefUFTLTn76luHEI73Mk+YQwhO/0iAcIIe177r0QGLLnsdlpJZQ8CxpTOBe5NLQQX8aSa3QpglX8uDKeONwN3txbGMLg7hyazsYfWR5FAk5oQMTQPZ/ughg1CnjP+Dff2tLNr0L9AHVc7n1F8hdOsAe7Er1fZ3NWHHTr1U/D2y9+otFou19Od6K2Lb9ZPNuHH+PDDlr3ziiJ6sP9wKpiVgUY7sh1q+aVTC85nAT2BdV543/+0ISHl5ELhX8K+EgGOyUZxvylVhIhD0u/ptAOJ9X9Z8RLn90bkkNGXe1EAQO5ddO3ZecD8t52bYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dPWfwS1+vYGPY8o4HAOVT0c6td2SJNqWgMQpE49yzoQ=;
+ b=pTNRkhj1nMgrD4R9kyQ4fkmd0ZykK5p6csWdHID9erAwKDfrtyBG+WAj4asvNuzC2B057Zryw2XQI6/0fq50HavY7KhxH2jER1W0SXS5+wsMW5eA5YyORgQbdLFM6pB7r49Ab5u6Fi/DtpOBNE/t/Bi5eLMVc9rowcRhsqVQvJcCjT9hg7k6DDhFiLor4bEmsZtLIAk+QMws6LzJw1rzO6H1FGZZz1NDYmbbTYSpvZEtGqUdhlCZ3ciC0GoNZf+PSR44v7vwXcHPrlsIPyWlXNwhmlx2WFdqxx1o9rS3hz9l9Pn+Oinjs25g3Y4cXIvlNoKf3Yyum3rrd4KUex6GGg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CY8PR12MB7753.namprd12.prod.outlook.com (2603:10b6:930:93::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Thu, 15 Jan
+ 2026 11:50:51 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%2]) with mapi id 15.20.9499.005; Thu, 15 Jan 2026
+ 11:50:51 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: stephen@networkplumber.org,
+	dsahern@kernel.org,
+	jiri@nvidia.com,
+	petrm@nvidia.com,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH iproute2] devlink: Fix resource show output
+Date: Thu, 15 Jan 2026 13:50:04 +0200
+Message-ID: <20260115115004.863685-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TL2P290CA0003.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::20) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHLGiX02hpr2PzGQ--.4331S7
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKrW8uF4rWw1kXw17CFW5GFg_yoWfAry3pa
-	yqga45KrZ5JF47Wr47JF42vFWY93WxCryxtry8W34Skr1UtryFvaykuFyqyFy5JrZ7uFya
-	krZ5KFW09345CrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRAHUhUUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5weS9mlo06f82AAA3V
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CY8PR12MB7753:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b7bdbeb-9763-4417-cb87-08de542c54ea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MOlwH5fFrE2Q4V0BYerU10obL4zyIxdWWT/IG/RwWQnBxtUt8pzdhvC7kwJC?=
+ =?us-ascii?Q?48efh+aPunfju7U73MY7m0HfhGbCTQRnH0lE8VOO4wUxMHqdbbmnkcLzu3sD?=
+ =?us-ascii?Q?rCbx8bau4EbqSMHELGVNVQ3BDtbKa9WL3ZdvD0Ksdrqg3Z3JBXNRpOX41Lq9?=
+ =?us-ascii?Q?iKAxfO9R1OjZUy+MgG69YyU+PztVKCrqKRkywxIN/J017xqcX29YXAMGLJT3?=
+ =?us-ascii?Q?qWcIToteQp/NdP+8CROYG1pBuMRbRcIMBA8oR3l/iReKXidV5g6/Pg9SYpYh?=
+ =?us-ascii?Q?XWVGBLmXxzx3bRoIM6CImCRTsFZyQDCu/KaruBzAP2nJLXYEHX83Bi/I+zK/?=
+ =?us-ascii?Q?4t0XArVlEhn6j+b5oETOhfkASC91WngUop7iRAkv+hPhkqSJtrN3HaA+a3ZD?=
+ =?us-ascii?Q?HNvZuL1NeSyx8DUhgdW8OsBBi9MdsxZluKh+H1izYJvOwlMpt886D0/dNl7O?=
+ =?us-ascii?Q?gwSy+n9eP9VYBxHlxcs1VWQ1LrgOvMAkdl3oy5Mhy0rWCDaofTtamfd/FpCc?=
+ =?us-ascii?Q?UY81+vlTc029X0KUQLmi027wlqOUzs8Ax0QMwUIDb44Y5PcJMOZ9NNfocnVk?=
+ =?us-ascii?Q?W9Oe+/vVhQDt3o12ZzRpUuJ8JC1/xEmIw5YCPLiboLr4PE30fc4YDDvEYFz1?=
+ =?us-ascii?Q?bqPh7s3eUvNWrXP/7nKs087gw6vGIGpZOv3bB3EzBRXJDplQWkWigkz87Q/7?=
+ =?us-ascii?Q?GKZt8m4IvYucI+m5DfpGoCrMbuEDb6Gdsa/9A/j2Oho2ApABfSWCcxkrKl7S?=
+ =?us-ascii?Q?qyskKZvIuVMygQ6tM67lC++bE8dV25i/r6jG/so7QFq3sgUUv1p/gKcKnU+V?=
+ =?us-ascii?Q?p6oG/aQpjUXn+Pj573d9RrQf7LwmUufGUQIIAS4DkIM45/hX7xu2lZGD6+dV?=
+ =?us-ascii?Q?Rq2kXZx6bfCWYizKWdvZ35xpbTbVQ3aJqhLxfvNeeqHkjIdRnblGejc5ViBw?=
+ =?us-ascii?Q?hOvFFc894uyyy3/dz1ILtiT3X9X1bfhXZsjwmhN7EBWwBdIR0vMvty/BiLfL?=
+ =?us-ascii?Q?kaW2/+VQ0mer3ZXkhEzW+A+n9+flsS13TmhTi9RX2pcG0kSfv7ZArQYv5zhD?=
+ =?us-ascii?Q?0obs1taAWisnf1eQx9EpMtFHc4mLD3jknKGhkxXKQc716rxVSAk0kzX8C9nj?=
+ =?us-ascii?Q?m0ZbONYYWqKDZHg2wjqN8qWtkopyKd5ZYF4Udisy6bbNqE2+fLIMGGtlNMOY?=
+ =?us-ascii?Q?svTAXzcjwGPAFZuJRQKBeRv0+LsfXAj94w/wItxWhQaV11vMwZm3FOVqVAD3?=
+ =?us-ascii?Q?WBVEX8KItV4v3f3XmyOmRFEZ9hmHlclybs6nPc0/I/4O+q1AR/LWwIE1MHsi?=
+ =?us-ascii?Q?90tdF9LW4A4+HJ2R/65ppEqnXQ9AxXw9gHxjl1BbMr2HAPQiJw6MghIUvxdC?=
+ =?us-ascii?Q?FUqWU/YcTWsHNo4O+CwqRbkttB3Pjr7ZvIe8WQZfuTbVt/whitQgZgtWcNnJ?=
+ =?us-ascii?Q?nwEpOdVJCi3z3aj7Zl+3Cvk4gwuXhQXNeEC91Ot9W2mk4CvUP3HJN4sL2INX?=
+ =?us-ascii?Q?bkcXp4kGtz8ToFguVWBqxsOs4Wx5btYoYKazy9WgdUFF4rCFzp0ahxt5qNO4?=
+ =?us-ascii?Q?y1azoPTaa31ZfHdY54s=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZDo27ZmzHX4cQTBV+QU/pQNPbh/qDOaaBMAxPZi2GPgMtpKzDC0umouVwwv3?=
+ =?us-ascii?Q?68S++nlZXhedHF4/DYQ1y7ZIJl+Dx4tJw8zs3B6gbu83sJQ1d+bvv8331BKc?=
+ =?us-ascii?Q?WsR2Li1uxQsxl+Bh6DbuBhAefOozwAnNjHGIClFWOIshSogT+f4y1O8vShxa?=
+ =?us-ascii?Q?L/NQU76Un4vm00nSVIrv9xVRVttDUx7kyBtAx//CYe8fhRgoUyg4CepObbXe?=
+ =?us-ascii?Q?lLCMh9pkryResZtCGC07ZEIeTQ5q9Drmw3RSNsZFBbfM8//ohzFRK40y7mz0?=
+ =?us-ascii?Q?z36vgeyV9XGHnbHHplSUvNLd6NGLytzYMKwHwP2Pxr8bMXEjvftq8cV9KkCo?=
+ =?us-ascii?Q?eHFRnX07YUuEjAt6xMerbCdczOcejgZ5jFONDEgnnJUKdY7jezlsHnT8gmVg?=
+ =?us-ascii?Q?npJI3rPpICtg42kxwkiUt1XhpJuYiG5FrBvN730BWQlMy1SCp+VsFBVAnDQ2?=
+ =?us-ascii?Q?MpU8R891xP4I3AbLyNDsS06IXe3bpFpLzGsp1AufBu7cv5S6o1p1IhViuAqu?=
+ =?us-ascii?Q?NA3It0lTqi/6dUcaSAYZozk4k/AQnVvZjgHLbEyqVrhp0moUBuFqo031M1+e?=
+ =?us-ascii?Q?hVnZCRRcINJhkqCeYqz3j0pwheU1WwlXt6NHp4pPZkk1fzsVtq4bQUxIhb8B?=
+ =?us-ascii?Q?tA5VqfxinJvuNiY35AVe6jBg9mk1vQJ0fjco4fZc3LlJM++JNS9POrmvPsP5?=
+ =?us-ascii?Q?jm6mug4fiNgWl76ae4zSOn7iEwpaakBXJJJI2koRphzH+CojLSJH6JxIlbmJ?=
+ =?us-ascii?Q?C6sx10UoNDgmp6q2u+6NUFM6Zv7MPu0iu7SivpmEeoyKovhbjTwLs2iV8uYC?=
+ =?us-ascii?Q?1rMcIwfgtuIMVMt65up1f4hO221OIzH2KI/Z1bgkit490eLBVxLVRehCX0IZ?=
+ =?us-ascii?Q?bSviG3xSn7/n/4kQfw8JqyJ2iTdoiiJbykf6lUFOukXjbednAjARUz7vXecw?=
+ =?us-ascii?Q?0FUM2X05XpqdRnh9QshMn4KpZ4DJmfPM3Avch0CDtRNaNMDJIGJGDSMjIDnz?=
+ =?us-ascii?Q?Xer7LMWflY6ECoUd6A8r+9j61KUK7f1mY/LVcXE7FFi+2UWTtxFR0oQnIRN4?=
+ =?us-ascii?Q?7PP4e8E4k5D6bYzVOGC34NqLB1WskYuCBDOGftkiadGCw6s2bURynyCscigz?=
+ =?us-ascii?Q?k7LuRFzRI+Wq9JHCokf1N+1vot1WFrHuOKIX/lMU7n4glLzi+7e8lbqjpBKG?=
+ =?us-ascii?Q?uzqta5VjyD5TrNBxp0+uORsttrmNmHjvgAgkJDClkzgW2PR+x4rjyEN4QEM9?=
+ =?us-ascii?Q?kdBI1yO+k8fZKaNCXqlDr79ATObyHhF4PNh0Pqiu/RGxgeqeWA474smELr3a?=
+ =?us-ascii?Q?YukcA5YVIPnN5baN8ueOTfSdrqLtBX9s5DRpyPE8vb5DKl3l8Qt5LYAn0rnq?=
+ =?us-ascii?Q?Yd+yB46S5Eeozf4BwGSWLC37wfdKkMENvuO/V1yhG1JH9Hdn03deTNyyByXl?=
+ =?us-ascii?Q?PE0dyQU+RyeiptpxIDS1GZTSOJuDpgiWBLVrQB6xht8+BDDG6O8noExB65bb?=
+ =?us-ascii?Q?k+7O4R9h3n3CzA7EKWOgFIxO2hmmbsEi/sCc5UkRaj2nSEVz2lkMFwuN1vc8?=
+ =?us-ascii?Q?OSuvK9bYIfJ6WvqZIPVLkc+gUQcI5laj9/67NgP0F5f8aUwE+dAu8T2ckqcr?=
+ =?us-ascii?Q?fzcUgEl8CYF+vG23Zcxn5cFd/bck708wWA24Ab/Mc/blEv/ciCzOxlFT8eF6?=
+ =?us-ascii?Q?2IGqjEtZ69QkKS6beRPgR5+t2SYvoo/EUKHGaoYuRi1Zh9MOczto9tD/yHC0?=
+ =?us-ascii?Q?6p3Y4FcZ+A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b7bdbeb-9763-4417-cb87-08de542c54ea
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 11:50:51.5399
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YMGjhTyCwNZ6F+lRc5F41cotqENshYVYNmUVbIo5lWWBExqfq/2j0VTsBDmKyGCpwgUZpkyxdAzJJqq4cSR69g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7753
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+When the user asks to show device resources, devlink first queries the
+device's dpipe tables so that it will be able to show the association
+between resources and dpipe tables.
 
-Many WWAN modems come with embedded GNSS receiver inside and have a
-dedicated port to output geopositioning data. On the one hand, the
-GNSS receiver has little in common with WWAN modem and just shares a
-host interface and should be exported using the GNSS subsystem. On the
-other hand, GNSS receiver is not automatically activated and needs a
-generic WWAN control port (AT, MBIM, etc.) to be turned on. And a user
-space software needs extra information to find the control port.
+In this flow, 'ctx->resources' is always NULL as resources have yet to
+be retrieved. As a result, the dpipe tables are not associated with a
+resource identifier and the resource show command does not show any
+dpipe tables:
 
-Introduce the new type of WWAN port - NMEA. When driver asks to register
-a NMEA port, the core allocates common parent WWAN device as usual, but
-exports the NMEA port via the GNSS subsystem and acts as a proxy between
-the device driver and the GNSS subsystem.
+$ devlink resource show pci/0000:03:00.0
+pci/0000:03:00.0:
+  name kvd size 258048 unit entry dpipe_tables none
+    resources:
+      name linear size 98304 occ 1 unit entry size_min 0 size_max 159744 size_gran 128 dpipe_tables none
+        resources:
+          name singles size 16384 occ 1 unit entry size_min 0 size_max 159744 size_gran 1 dpipe_tables none
+          name chunks size 49152 occ 0 unit entry size_min 0 size_max 159744 size_gran 32 dpipe_tables none
+          name large_chunks size 32768 occ 0 unit entry size_min 0 size_max 159744 size_gran 512 dpipe_tables none
+      name hash_double size 65408 unit entry size_min 32768 size_max 192512 size_gran 128 dpipe_tables none
+      name hash_single size 94336 unit entry size_min 65536 size_max 225280 size_gran 128 dpipe_tables none
+  name span_agents size 3 occ 0 unit entry dpipe_tables none
+  name counters size 32766 occ 4 unit entry dpipe_tables none
+    resources:
+      name rif size 8192 occ 0 unit entry dpipe_tables none
+      name flow size 24574 occ 4 unit entry dpipe_tables none
+  name global_policers size 1000 unit entry dpipe_tables none
+    resources:
+      name single_rate_policers size 968 occ 0 unit entry dpipe_tables none
+  name rif_mac_profiles size 1 occ 0 unit entry dpipe_tables none
+  name rifs size 1000 occ 1 unit entry dpipe_tables none
+  name port_range_registers size 16 occ 0 unit entry dpipe_tables none
+  name physical_ports size 64 occ 32 unit entry dpipe_tables none
 
->From the WWAN device driver perspective, a NMEA port is registered as a
-regular WWAN port without any difference. And the driver interacts only
-with the WWAN core. From the user space perspective, the NMEA port is a
-GNSS device which parent can be used to enumerate and select the proper
-control port for the GNSS receiver management.
+Fix by moving the check against 'ctx->resources' to the place where it
+is actually used. Output after the fix:
 
-CC: Slark Xiao <slark_xiao@163.com>
-CC: Muhammad Nuzaihan <zaihan@unrealasia.net>
-CC: Qiang Yu <quic_qianyu@quicinc.com>
-CC: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-CC: Johan Hovold <johan@kernel.org>
-Suggested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+$ devlink resource show pci/0000:03:00.0
+pci/0000:03:00.0:
+  name kvd size 258048 unit entry dpipe_tables none
+    resources:
+      name linear size 98304 occ 1 unit entry size_min 0 size_max 159744 size_gran 128
+        dpipe_tables:
+          table_name mlxsw_adj
+        resources:
+          name singles size 16384 occ 1 unit entry size_min 0 size_max 159744 size_gran 1 dpipe_tables none
+          name chunks size 49152 occ 0 unit entry size_min 0 size_max 159744 size_gran 32 dpipe_tables none
+          name large_chunks size 32768 occ 0 unit entry size_min 0 size_max 159744 size_gran 512 dpipe_tables none
+      name hash_double size 65408 unit entry size_min 32768 size_max 192512 size_gran 128
+        dpipe_tables:
+          table_name mlxsw_host6
+      name hash_single size 94336 unit entry size_min 65536 size_max 225280 size_gran 128
+        dpipe_tables:
+          table_name mlxsw_host4
+  name span_agents size 3 occ 0 unit entry dpipe_tables none
+  name counters size 32766 occ 4 unit entry dpipe_tables none
+    resources:
+      name rif size 8192 occ 0 unit entry dpipe_tables none
+      name flow size 24574 occ 4 unit entry dpipe_tables none
+  name global_policers size 1000 unit entry dpipe_tables none
+    resources:
+      name single_rate_policers size 968 occ 0 unit entry dpipe_tables none
+  name rif_mac_profiles size 1 occ 0 unit entry dpipe_tables none
+  name rifs size 1000 occ 1 unit entry dpipe_tables none
+  name port_range_registers size 16 occ 0 unit entry dpipe_tables none
+  name physical_ports size 64 occ 32 unit entry dpipe_tables none
+
+Fixes: 0e7e1819453c ("devlink: relax dpipe table show dependency on resources")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- drivers/net/wwan/Kconfig     |   1 +
- drivers/net/wwan/wwan_core.c | 156 +++++++++++++++++++++++++++++++++--
- include/linux/wwan.h         |   2 +
- 3 files changed, 154 insertions(+), 5 deletions(-)
+ devlink/devlink.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
-index 410b0245114e..88df55d78d90 100644
---- a/drivers/net/wwan/Kconfig
-+++ b/drivers/net/wwan/Kconfig
-@@ -7,6 +7,7 @@ menu "Wireless WAN"
+diff --git a/devlink/devlink.c b/devlink/devlink.c
+index b95fd348007c..0b3bf197e6f2 100644
+--- a/devlink/devlink.c
++++ b/devlink/devlink.c
+@@ -8088,8 +8088,7 @@ static int dpipe_table_show(struct dpipe_ctx *ctx, struct nlattr *nl)
+ 	size = mnl_attr_get_u32(nla_table[DEVLINK_ATTR_DPIPE_TABLE_SIZE]);
+ 	counters_enabled = !!mnl_attr_get_u8(nla_table[DEVLINK_ATTR_DPIPE_TABLE_COUNTERS_ENABLED]);
  
- config WWAN
- 	tristate "WWAN Driver Core"
-+	depends on GNSS || GNSS = n
- 	help
- 	  Say Y here if you want to use the WWAN driver core. This driver
- 	  provides a common framework for WWAN drivers.
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index ae91b1cd7142..c50f1fad17a5 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -1,5 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0-only
--/* Copyright (c) 2021, Linaro Ltd <loic.poulain@linaro.org> */
-+/* WWAN Driver Core
-+ *
-+ * Copyright (c) 2021, Linaro Ltd <loic.poulain@linaro.org>
-+ * Copyright (c) 2025, Sergey Ryazanov <ryazanov.s.a@gmail.com>
-+ */
+-	resource_valid = nla_table[DEVLINK_ATTR_DPIPE_TABLE_RESOURCE_ID] &&
+-			 ctx->resources;
++	resource_valid = !!nla_table[DEVLINK_ATTR_DPIPE_TABLE_RESOURCE_ID];
+ 	if (resource_valid) {
+ 		table->resource_id = mnl_attr_get_u64(nla_table[DEVLINK_ATTR_DPIPE_TABLE_RESOURCE_ID]);
+ 		table->resource_valid = true;
+@@ -8104,7 +8103,7 @@ static int dpipe_table_show(struct dpipe_ctx *ctx, struct nlattr *nl)
+ 	print_uint(PRINT_ANY, "size", " size %u", size);
+ 	print_bool(PRINT_ANY, "counters_enabled", " counters_enabled %s", counters_enabled);
  
- #include <linux/bitmap.h>
- #include <linux/err.h>
-@@ -16,6 +20,7 @@
- #include <linux/types.h>
- #include <linux/uaccess.h>
- #include <linux/termios.h>
-+#include <linux/gnss.h>
- #include <linux/wwan.h>
- #include <net/rtnetlink.h>
- #include <uapi/linux/wwan.h>
-@@ -75,6 +80,7 @@ struct wwan_device {
-  * @headroom_len: SKB reserved headroom size
-  * @frag_len: Length to fragment packet
-  * @at_data: AT port specific data
-+ * @gnss: Pointer to GNSS device associated with this port
-  */
- struct wwan_port {
- 	enum wwan_port_type type;
-@@ -93,9 +99,16 @@ struct wwan_port {
- 			struct ktermios termios;
- 			int mdmbits;
- 		} at_data;
-+		struct gnss_device *gnss;
- 	};
- };
- 
-+static int wwan_port_op_start(struct wwan_port *port);
-+static void wwan_port_op_stop(struct wwan_port *port);
-+static int wwan_port_op_tx(struct wwan_port *port, struct sk_buff *skb,
-+			   bool nonblock);
-+static int wwan_wait_tx(struct wwan_port *port, bool nonblock);
-+
- static ssize_t index_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
- 	struct wwan_device *wwan = to_wwan_dev(dev);
-@@ -336,6 +349,7 @@ static const struct {
- 		.name = "MIPC",
- 		.devsuf = "mipc",
- 	},
-+	/* WWAN_PORT_NMEA is exported via the GNSS subsystem */
- };
- 
- static ssize_t type_show(struct device *dev, struct device_attribute *attr,
-@@ -486,6 +500,124 @@ static void wwan_port_unregister_wwan(struct wwan_port *port)
- 	device_del(&port->dev);
- }
- 
-+#if IS_ENABLED(CONFIG_GNSS)
-+static int wwan_gnss_open(struct gnss_device *gdev)
-+{
-+	return wwan_port_op_start(gnss_get_drvdata(gdev));
-+}
-+
-+static void wwan_gnss_close(struct gnss_device *gdev)
-+{
-+	wwan_port_op_stop(gnss_get_drvdata(gdev));
-+}
-+
-+static int wwan_gnss_write(struct gnss_device *gdev, const unsigned char *buf,
-+			   size_t count)
-+{
-+	struct wwan_port *port = gnss_get_drvdata(gdev);
-+	struct sk_buff *skb, *head = NULL, *tail = NULL;
-+	size_t frag_len, remain = count;
-+	int ret;
-+
-+	ret = wwan_wait_tx(port, false);
-+	if (ret)
-+		return ret;
-+
-+	do {
-+		frag_len = min(remain, port->frag_len);
-+		skb = alloc_skb(frag_len + port->headroom_len, GFP_KERNEL);
-+		if (!skb) {
-+			ret = -ENOMEM;
-+			goto freeskb;
-+		}
-+		skb_reserve(skb, port->headroom_len);
-+		memcpy(skb_put(skb, frag_len), buf + count - remain, frag_len);
-+
-+		if (!head) {
-+			head = skb;
-+		} else {
-+			if (!tail)
-+				skb_shinfo(head)->frag_list = skb;
-+			else
-+				tail->next = skb;
-+
-+			tail = skb;
-+			head->data_len += skb->len;
-+			head->len += skb->len;
-+			head->truesize += skb->truesize;
-+		}
-+	} while (remain -= frag_len);
-+
-+	ret = wwan_port_op_tx(port, head, false);
-+	if (!ret)
-+		return count;
-+
-+freeskb:
-+	kfree_skb(head);
-+	return ret;
-+}
-+
-+static struct gnss_operations wwan_gnss_ops = {
-+	.open = wwan_gnss_open,
-+	.close = wwan_gnss_close,
-+	.write_raw = wwan_gnss_write,
-+};
-+
-+/* GNSS port specific device registration */
-+static int wwan_port_register_gnss(struct wwan_port *port)
-+{
-+	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
-+	struct gnss_device *gdev;
-+	int err;
-+
-+	gdev = gnss_allocate_device(&wwandev->dev);
-+	if (!gdev)
-+		return -ENOMEM;
-+
-+	/* NB: for now we support only NMEA WWAN port type, so hardcode
-+	 * the GNSS port type. If more GNSS WWAN port types will be added,
-+	 * then we should dynamically map WWAN port type to GNSS type.
-+	 */
-+	gdev->type = GNSS_TYPE_NMEA;
-+	gdev->ops = &wwan_gnss_ops;
-+	gnss_set_drvdata(gdev, port);
-+
-+	port->gnss = gdev;
-+
-+	err = gnss_register_device(gdev);
-+	if (err) {
-+		gnss_put_device(gdev);
-+		return err;
-+	}
-+
-+	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&gdev->dev));
-+
-+	return 0;
-+}
-+
-+/* GNSS port specific device unregistration */
-+static void wwan_port_unregister_gnss(struct wwan_port *port)
-+{
-+	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
-+	struct gnss_device *gdev = port->gnss;
-+
-+	dev_info(&wwandev->dev, "port %s disconnected\n", dev_name(&gdev->dev));
-+
-+	gnss_deregister_device(gdev);
-+	gnss_put_device(gdev);
-+}
-+#else
-+static inline int wwan_port_register_gnss(struct wwan_port *port)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline void wwan_port_unregister_gnss(struct wwan_port *port)
-+{
-+	WARN_ON(1);	/* This handler cannot be called */
-+}
-+#endif
-+
- struct wwan_port *wwan_create_port(struct device *parent,
- 				   enum wwan_port_type type,
- 				   const struct wwan_port_ops *ops,
-@@ -526,7 +658,11 @@ struct wwan_port *wwan_create_port(struct device *parent,
- 	dev_set_drvdata(&port->dev, drvdata);
- 	device_initialize(&port->dev);
- 
--	err = wwan_port_register_wwan(port);
-+	if (port->type == WWAN_PORT_NMEA)
-+		err = wwan_port_register_gnss(port);
-+	else
-+		err = wwan_port_register_wwan(port);
-+
- 	if (err)
- 		goto error_put_device;
- 
-@@ -556,7 +692,10 @@ void wwan_remove_port(struct wwan_port *port)
- 	wake_up_interruptible(&port->waitqueue);
- 	skb_queue_purge(&port->rxq);
- 
--	wwan_port_unregister_wwan(port);
-+	if (port->type == WWAN_PORT_NMEA)
-+		wwan_port_unregister_gnss(port);
-+	else
-+		wwan_port_unregister_wwan(port);
- 
- 	put_device(&port->dev);
- 
-@@ -567,8 +706,15 @@ EXPORT_SYMBOL_GPL(wwan_remove_port);
- 
- void wwan_port_rx(struct wwan_port *port, struct sk_buff *skb)
- {
--	skb_queue_tail(&port->rxq, skb);
--	wake_up_interruptible(&port->waitqueue);
-+	if (port->type == WWAN_PORT_NMEA) {
-+#if IS_ENABLED(CONFIG_GNSS)
-+		gnss_insert_raw(port->gnss, skb->data, skb->len);
-+#endif
-+		consume_skb(skb);
-+	} else {
-+		skb_queue_tail(&port->rxq, skb);
-+		wake_up_interruptible(&port->waitqueue);
-+	}
- }
- EXPORT_SYMBOL_GPL(wwan_port_rx);
- 
-diff --git a/include/linux/wwan.h b/include/linux/wwan.h
-index a4d6cc0c9f68..1e0e2cb53579 100644
---- a/include/linux/wwan.h
-+++ b/include/linux/wwan.h
-@@ -19,6 +19,7 @@
-  * @WWAN_PORT_FASTBOOT: Fastboot protocol control
-  * @WWAN_PORT_ADB: ADB protocol control
-  * @WWAN_PORT_MIPC: MTK MIPC diagnostic interface
-+ * @WWAN_PORT_NMEA: embedded GNSS receiver with NMEA output
-  *
-  * @WWAN_PORT_MAX: Highest supported port types
-  * @WWAN_PORT_UNKNOWN: Special value to indicate an unknown port type
-@@ -34,6 +35,7 @@ enum wwan_port_type {
- 	WWAN_PORT_FASTBOOT,
- 	WWAN_PORT_ADB,
- 	WWAN_PORT_MIPC,
-+	WWAN_PORT_NMEA,
- 
- 	/* Add new port types above this line */
- 
+-	if (resource_valid) {
++	if (resource_valid && ctx->resources) {
+ 		resource_units = mnl_attr_get_u32(nla_table[DEVLINK_ATTR_DPIPE_TABLE_RESOURCE_UNITS]);
+ 		resource_path_print(ctx->dl, ctx->resources,
+ 				    table->resource_id);
 -- 
-2.25.1
+2.52.0
 
