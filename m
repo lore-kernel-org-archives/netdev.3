@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEEB11CBA;
-	Thu, 15 Jan 2026 09:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FD232E729;
+	Thu, 15 Jan 2026 09:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768470925; cv=none; b=GB1X7+9dRT7DAZnm8Y2yPE8ltlZc0nzq03rOD+ULdZjToU1uiCHNko8LFf89UQ85xDNTsEWryIxnfefxIZPUTh6DGUet4FlDv7DCzzc12q6JlzJpal8bI++XRZSpVf3MlGjqI2PK5ZnweuIbxkwfgRWfJ+gl9n74um7AgobDkXw=
+	t=1768470926; cv=none; b=oEuypcNByuiVHI22aFOnACTEI7wTZ12mGGXrwPtPIWNJHh15dTjfnWiz7J118GFG64wYGbsXcuipgL19PXNTSVo0/PekXu3rtmLKBat5tpTwiDxykduLWz47OAQ1Olz38csEb/NbG6oLbU5n4Vn/f3XrQuqT27dKeHAb0HoSYxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768470925; c=relaxed/simple;
-	bh=o+ZV1CBPnBmJ/22DsQYCg1Fg1p/UG8Fip+mrHZ3W6FQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cQYr/KPHgE9qbeHXmdFhyOKSRHITKktcaBeKm6OG9oRXMZJfLmw5GgKJ6nXIhWG716SzWw66w7xBlRvcQhxZgE4gcO2Nsmtgchmht06lbXRfvae3ihajizpZ7MyO5KK01tp9MgV26YZ2EXZdtSGkh1YOhvoyUI3cu+EYGru/Ix8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lb5z514v; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1768470926; c=relaxed/simple;
+	bh=bNkZku3+pHbkAKEAT4hyATmpfiR4ZitCeSV5TMCsLRs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VVqlbEayunm/k7lxXd9M2w2m/LZVZq7VCG+XWTAWLAVqz1et+lwoEqnfCEcqF6/8EG6Zh/DPF2rMuTJSXFtCiZzx8unKcjF5MnB3VcVpIaDMorqeBKvPbO12kF32+UadeY6IrpXoDu+QVH09Ro4Bawm0OpIOmI71cw6Anh3logw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NQssVUCP; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lb5z514v"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NQssVUCP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zk
-	cIfgJqM1DgtC/a415w75FdCH9Eqg4K1CDOiRCFFPk=; b=lb5z514vpavnDaSbSV
-	LXykhEQQGJIAks92U7poufMlMRWzZtVfvL8o/vUxBflQbVnUGbKpQXVCVJssKAJZ
-	yh4SvD8iy+wF8XKeUZYHVe/Wdnc7mOMmCyckJBkiC5wq1CqIr2QdYCZK+BzVsA6x
-	3+M/6ok2k1XfEWckMBnRMO71g=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Lq
+	Ia76KbEllDdg/3rtMx6RLTk8DzkKDVBuYBQvnqoFo=; b=NQssVUCPEoCd323iiK
+	olr330Rv5ts3cI7nS94hZjznGrYFdsR1v3OMso54l1uHly8j5GUwQGT+zIcDQL3Q
+	nY0NodSvenIkxUV47CnRgZevVvQDhPkhtVh5WvVatJrxqY8wRRCdF+AysNlFjTOV
+	luSo+TjqN5/9zd56L0d0AvgR0=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S5;
-	Thu, 15 Jan 2026 17:54:43 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S2;
+	Thu, 15 Jan 2026 17:54:31 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -38,12 +37,10 @@ To: loic.poulain@oss.qualcomm.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	slark_xiao@163.com
-Subject: [net-next v6 3/8] net: wwan: core: split port creation and registration
-Date: Thu, 15 Jan 2026 17:54:12 +0800
-Message-Id: <20260115095417.36975-4-slark_xiao@163.com>
+Subject: [net-next v6 0/8] net: wwan: add NMEA port type support
+Date: Thu, 15 Jan 2026 17:54:09 +0800
+Message-Id: <20260115095417.36975-1-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260115095417.36975-1-slark_xiao@163.com>
-References: <20260115095417.36975-1-slark_xiao@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,150 +48,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWkAw45CFWxKFW5Jw1xuFg_yoWrZF4kp3
-	W0gas5tFW8Jrnrur43AF47ZF4rua1Ik34IyrW8W34Skrn0qryFvF9Y9FyqvFWrGFy7GFy3
-	Xrs8ta10k3WUGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1a09UUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCwAP6X2louWMtUQAA3B
+X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJryDJrykKFyfZw47JryrZwb_yoW8Kw48pF
+	WjgrySyF97GFs7Wr4fAws7AryFvF1fG3yjqry2v34Fqrs8Jr1a9ryIq3Z0qas5Jw1Fqa47
+	ZrWUtw1kG3W5CrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUEf5UUUUU=
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5xj4XWlouVivTgAA3b
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+The series introduces a long discussed NMEA port type support for the
+WWAN subsystem. There are two goals. From the WWAN driver perspective,
+NMEA exported as any other port type (e.g. AT, MBIM, QMI, etc.). From
+user space software perspective, the exported chardev belongs to the
+GNSS class what makes it easy to distinguish desired port and the WWAN
+device common to both NMEA and control (AT, MBIM, etc.) ports makes it
+easy to locate a control port for the GNSS receiver activation.
 
-Upcoming GNSS (NMEA) port type support requires exporting it via the
-GNSS subsystem. On another hand, we still need to do basic WWAN core
-work: find or allocate the WWAN device, make it the port parent, etc. To
-reuse as much code as possible, split the port creation function into
-the registration of a regular WWAN port device, and basic port struct
-initialization.
+Done by exporting the NMEA port via the GNSS subsystem with the WWAN
+core acting as proxy between the WWAN modem driver and the GNSS
+subsystem.
 
-To be able to use put_device() uniformly, break the device_register()
-call into device_initialize() and device_add() and call device
-initialization earlier.
+The series starts from a cleanup patch. Then three patches prepares the
+WWAN core for the proxy style operation. Followed by a patch introding a
+new WWNA port type, integration with the GNSS subsystem and demux. The
+series ends with a couple of patches that introduce emulated EMEA port
+to the WWAN HW simulator.
 
-While at it, fix a minor number leak upon WWAN port registration
-failure.
+The series is the product of the discussion with Loic about the pros and
+cons of possible models and implementation. Also Muhammad and Slark did
+a great job defining the problem, sharing the code and pushing me to
+finish the implementation. Daniele has caught an issue on driver
+unloading and suggested an investigation direction. What was concluded
+by Loic. Many thanks.
 
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
----
- drivers/net/wwan/wwan_core.c | 68 ++++++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 26 deletions(-)
+Changes RFCv1->RFCv2:
+* Uniformly use put_device() to release port memory. This made code less
+  weird and way more clear. Thank you, Loic, for noticing and the fix
+  discussion!
+Changes RFCv2->RFCv5:
+* Fix premature WWAN device unregister; new patch 2/7, thus, all
+  subsequent patches have been renumbered
+* Minor adjustments here and there
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index e631da58c493..ef8f4cb9279c 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -357,7 +357,8 @@ static void wwan_port_destroy(struct device *dev)
- {
- 	struct wwan_port *port = to_wwan_port(dev);
- 
--	ida_free(&minors, MINOR(port->dev.devt));
-+	if (dev->class == &wwan_class)
-+		ida_free(&minors, MINOR(dev->devt));
- 	mutex_destroy(&port->data_lock);
- 	mutex_destroy(&port->ops_lock);
- 	kfree(port);
-@@ -436,6 +437,43 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
- 	return dev_set_name(&port->dev, "%s", buf);
- }
- 
-+/* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
-+static int wwan_port_register_wwan(struct wwan_port *port)
-+{
-+	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
-+	char namefmt[0x20];
-+	int minor, err;
-+
-+	/* A port is exposed as character device, get a minor */
-+	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
-+	if (minor < 0)
-+		return minor;
-+
-+	port->dev.class = &wwan_class;
-+	port->dev.devt = MKDEV(wwan_major, minor);
-+
-+	/* allocate unique name based on wwan device id, port type and number */
-+	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
-+		 wwan_port_types[port->type].devsuf);
-+
-+	/* Serialize ports registration */
-+	mutex_lock(&wwan_register_lock);
-+
-+	__wwan_port_dev_assign_name(port, namefmt);
-+	err = device_add(&port->dev);
-+
-+	mutex_unlock(&wwan_register_lock);
-+
-+	if (err) {
-+		ida_free(&minors, minor);
-+		return err;
-+	}
-+
-+	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
-+
-+	return 0;
-+}
-+
- struct wwan_port *wwan_create_port(struct device *parent,
- 				   enum wwan_port_type type,
- 				   const struct wwan_port_ops *ops,
-@@ -444,8 +482,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
- {
- 	struct wwan_device *wwandev;
- 	struct wwan_port *port;
--	char namefmt[0x20];
--	int minor, err;
-+	int err;
- 
- 	if (type > WWAN_PORT_MAX || !ops)
- 		return ERR_PTR(-EINVAL);
-@@ -457,17 +494,9 @@ struct wwan_port *wwan_create_port(struct device *parent,
- 	if (IS_ERR(wwandev))
- 		return ERR_CAST(wwandev);
- 
--	/* A port is exposed as character device, get a minor */
--	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
--	if (minor < 0) {
--		err = minor;
--		goto error_wwandev_remove;
--	}
--
- 	port = kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port) {
- 		err = -ENOMEM;
--		ida_free(&minors, minor);
- 		goto error_wwandev_remove;
- 	}
- 
-@@ -481,27 +510,14 @@ struct wwan_port *wwan_create_port(struct device *parent,
- 	mutex_init(&port->data_lock);
- 
- 	port->dev.parent = &wwandev->dev;
--	port->dev.class = &wwan_class;
- 	port->dev.type = &wwan_port_dev_type;
--	port->dev.devt = MKDEV(wwan_major, minor);
- 	dev_set_drvdata(&port->dev, drvdata);
-+	device_initialize(&port->dev);
- 
--	/* allocate unique name based on wwan device id, port type and number */
--	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
--		 wwan_port_types[port->type].devsuf);
--
--	/* Serialize ports registration */
--	mutex_lock(&wwan_register_lock);
--
--	__wwan_port_dev_assign_name(port, namefmt);
--	err = device_register(&port->dev);
--
--	mutex_unlock(&wwan_register_lock);
--
-+	err = wwan_port_register_wwan(port);
- 	if (err)
- 		goto error_put_device;
- 
--	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
- 	return port;
- 
- error_put_device:
+Sergey Ryazanov (7):
+  net: wwan: core: remove unused port_id field
+  net: wwan: core: explicit WWAN device reference counting
+  net: wwan: core: split port creation and registration
+  net: wwan: core: split port unregister and stop
+  net: wwan: add NMEA port support
+  net: wwan: hwsim: refactor to support more port types
+  net: wwan: hwsim: support NMEA port emulation
+
+Slark Xiao (1):
+  net: wwan: mhi_wwan_ctrl: Add NMEA channel support
+
+ drivers/net/wwan/Kconfig         |   1 +
+ drivers/net/wwan/mhi_wwan_ctrl.c |   1 +
+ drivers/net/wwan/wwan_core.c     | 277 +++++++++++++++++++++++++------
+ drivers/net/wwan/wwan_hwsim.c    | 201 ++++++++++++++++++----
+ include/linux/wwan.h             |   2 +
+ 5 files changed, 394 insertions(+), 88 deletions(-)
+
 -- 
 2.25.1
 
