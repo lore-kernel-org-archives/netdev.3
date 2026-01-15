@@ -1,147 +1,109 @@
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1883803C9
-	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 11:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EED37E307;
+	Thu, 15 Jan 2026 11:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768477330; cv=none; b=mPPtXl3veUhz1AK0G21755DYeXhHN+VA4NFnTyE0dwpZ3QQnU2ZY7Myj2wXl8CyhOQmO/wA8z9GvYsiSyz1W472TCu9pP0OxrozNqpzgHoy+R2VDwvqhnIVlNN+W7iofUcKGCe13dyT5m3Uz+L72n113D1sHh/eLM/LxjfojR5Q=
+	t=1768477371; cv=none; b=VJl6cZCYbJebjs34bib8SeyVp/5o7jtrnItIzisk3Ca4c1cqomjFVXTW72jSvmokmbmfqoK96cS5bFu3VXCGYGDthd5LFYevXa+jgosWLhxi1JwUeo1nsm434o0O7VwH2IJLesnm+A2GG1LxactNLuG/TVCgxCcO+R07/7M8eLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768477330; c=relaxed/simple;
-	bh=Wp32ITHx7s2+X+835Jbu4gJ7F+S1PggViopmVDWASsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8v9t+diSt7Yv/sRO3y2RhKJas++UzruaAIsAQcKHrTMX6dlihYtnDYJlJOsWjIRBk6+GBGDzjQqVAl1A1Blk0+fUm/L68W3ldoFwpHrk0o+85SiTiLflqMTGy0K4voUpUTk/jmxgQjv0L1m+9MKWJ9ZsaSwWZJU8p92FF/6nk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=zqtLJLd5; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	s=arc-20240116; t=1768477371; c=relaxed/simple;
+	bh=63dl3TNPU5nwdThJj/EBkKixN0LIH7NW8BAMlypNW+k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YM2zmB4SDRyEiv7iritD3+6o8xLWf1WNQY61L7P4St80+U+wWCw/8DycZkdi34teaKhakPy9BSg0hqunhEjUPUASmJbz3IS1KKsw3MsAiehswjBPKuvGrNR5Ka1PQARTm2Pb4cOnfweudDV0vYv6vLqfUmCYnLvQKDXsYOMftf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=QD02b6F3; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="zqtLJLd5"
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-121a0bcd376so2136393c88.0
-        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 03:41:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1768477310; x=1769082110; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z6BNeAKcW11oL+iAABviMYbNNLfmxyGYsliVava+u3M=;
-        b=zqtLJLd52zChUvs4oYWUJHIMhxUAmPvrUA/0RxveUEHPvgdR011hU/GyGExJrIAUtw
-         ovZapknkgFlI5/Zy7PYrplN8lb0nEvwlrB2bitjgOHP/9PAg1nrZA9Fj3UIvooQSj2Eb
-         aOmSZy9AaiWsrmQA8A5g+8gR30/6QW10C906so7KV/BSfppbdAkUBExMMWuejC1oyg8a
-         hS1eVLAVKZ6isDD7pGVC/rjV+tM4j3B2ep3BO5FIQk93c4p82HoWhGA3oGp1gXkRV+Fx
-         7lVupRmwIN+TVrcbFZYu3fb4M/QxwuuB4FgD5JB2r/pXEiPUEbhi6FRsYlGJffrqypV0
-         R7Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768477310; x=1769082110;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z6BNeAKcW11oL+iAABviMYbNNLfmxyGYsliVava+u3M=;
-        b=YkeLZIdjSyTkay9y7BgbP7Oc7P0bOyIG6UQTQ4GSl+qiihvP1C/bSRKXfO5ZH6hnv1
-         VvL4fGfgyf/Lz9FMPwPT2kna0BDpIlMJdiYJElOkVm1jGDRxuLHo/HbrWHQHIdMmSt35
-         xQeUziQfDAeZq0JnHtYARYergmPyE5ZHLhlP+LdrD0AmumC+Gw/atPz8RIVN5syo3060
-         a9Ie3g/ebXMhku87XVoNOf707lbstx98VVpTDnd9YcR2YM0z9CZ85fh9SNCPjoJGbVwe
-         dxfqwHRuEKcJiukI9SpDUUzfa5StA+9qZGGWsI/vGWsCOHSpsGxEUfKN4MBBlNQtte6V
-         8/Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrO2x12w0kSjOoADJ6hKimRnI3A4P92OK84cs/CtUkup5s+NhMdODIMIgxl7VPO9h17V/LE2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFr0HYkMEzfkUwO+FB8bxJTrWj6o1J5L9i/rEC5NryLWXr+b08
-	YpMUcEoXYhBeYLCwT7vxwu3Qtc48FZPAl6ifx5DjSLMije+xuEZtVII0qknrHfGEokA=
-X-Gm-Gg: AY/fxX6BRnp3fZyDj1hG4G8ogpUI+ympvAkRKWoDEpLZi8UFJKt1gKWVAdLrZoXPHJn
-	qrsfxsSzFOqdz5MyjTyDpFVEPwFTaFE2i058vG7469m1DZ696YlESuErOE/JSC8r4pe1iKSFUL2
-	+8zGe96l5YUDNgrXipeYo/dUrNw5iOD7CG4QnuMSGw2j0LDPDvzxhf8fc8mpOYJdwu2oAt70Tie
-	9+Cz1yQECYA0iVCPrZd187QpCipLEcboaq9s1YdYQ70e1YZCE2KJIiaTu6ZAY7HodBQbe1VgoJH
-	F/7FKrpbGbRshCRGLnzx0mihJreeGnTacezsiETfcubbaWAutu2Ufq+upSyqANrxyQh5tTIAJ3m
-	ePi5EnDcirBBj54g3ti2xDkyjPznh7R41a3Dueb9pEcRhnxCP37UkF+nI/T876DZUgllrKygPop
-	y2/TpdTPgyDAJTF9K5ykV0fr3CRy/5GRyo5fBuFy+27dtanmz5QCNALDVCR8GKuy0NHDBXyjyxJ
-	aJyRw3q
-X-Received: by 2002:a05:701b:2715:b0:123:3461:99be with SMTP id a92af1059eb24-12336a38feemr6814416c88.21.1768477309977;
-        Thu, 15 Jan 2026 03:41:49 -0800 (PST)
-Received: from fedora (dh207-14-52.xnet.hr. [88.207.14.52])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-123370a051esm4875347c88.15.2026.01.15.03.41.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 03:41:49 -0800 (PST)
-From: Robert Marko <robert.marko@sartura.hr>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	lee@kernel.org,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	linusw@kernel.org,
-	olivia@selenic.com,
-	richard.genoud@bootlin.com,
-	radu_nicolae.pirea@upb.ro,
-	gregkh@linuxfoundation.org,
-	richardcochran@gmail.com,
-	horatiu.vultur@microchip.com,
-	Ryan.Wanner@microchip.com,
-	tudor.ambarus@linaro.org,
-	kavyasree.kotagiri@microchip.com,
-	lars.povlsen@microchip.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Cc: luka.perkov@sartura.hr,
-	Robert Marko <robert.marko@sartura.hr>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v5 09/11] dt-bindings: arm: AT91: document EV23X71A board
-Date: Thu, 15 Jan 2026 12:37:34 +0100
-Message-ID: <20260115114021.111324-10-robert.marko@sartura.hr>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115114021.111324-1-robert.marko@sartura.hr>
-References: <20260115114021.111324-1-robert.marko@sartura.hr>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="QD02b6F3"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 60FBgLHS12959073, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1768477341; bh=63dl3TNPU5nwdThJj/EBkKixN0LIH7NW8BAMlypNW+k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=QD02b6F3HVNB9WkRoVclfsLcaQtCsABc/bdOc+pqMvvChpW3W9t5MUiQQiY8LQUVA
+	 EkNgb0/5TVG5WLFCdHo93emd5/KuQPM7L1FK1GfS+ivHuBkM6A+mMWiPiqvjZZI/36
+	 xC24eDsJM98ryWbUWbD/aPlg2N1vXWfVUf4ksgrIoCDjgAQrUAL7XY+HiTZ4+PczQz
+	 Om06AcZDh6jjFjjeA9f/B6BanQG97Uqwjsw7AYQIunHOOlYPfGZfZOaCSfbJwPjBtQ
+	 mcTV7obWrCB+xFC4kTbgMGvIE4nrB6pdKvUA0aAmgo26kw4I9xavBYuTX3YZbRWEib
+	 An3EvQ9oZBIRg==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 60FBgLHS12959073
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jan 2026 19:42:21 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 15 Jan 2026 19:42:20 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::8bac:ef80:dea8:91d5%9]) with mapi id
+ 15.02.1748.010; Thu, 15 Jan 2026 19:42:20 +0800
+From: Hayes Wang <hayeswang@realtek.com>
+To: lu lu <insyelu@gmail.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        nic_swsd <nic_swsd@realtek.com>, "tiwai@suse.de"
+	<tiwai@suse.de>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] net: usb: r8152: fix transmit queue timeout
+Thread-Topic: [PATCH] net: usb: r8152: fix transmit queue timeout
+Thread-Index: AQHchQGLBs/iMEigv0CwXIii7EgMTLVRErBAgADcLoCAASPVoA==
+Date: Thu, 15 Jan 2026 11:42:20 +0000
+Message-ID: <1b498052994c4ed48de45b5af9a490b6@realtek.com>
+References: <20260114025622.24348-1-insyelu@gmail.com>
+ <3501a6e902654554b61ab5cd89dcb0dd@realtek.com>
+ <CAAPueM4XheTsmb6xd3w5A3zoec-z3ewq=uNpA8tegFbtFWCfaA@mail.gmail.com>
+In-Reply-To: <CAAPueM4XheTsmb6xd3w5A3zoec-z3ewq=uNpA8tegFbtFWCfaA@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Microchip EV23X71A board is an LAN9696 based evaluation board.
-
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
----
-Changes in v5:
-* Pick Acked-by from Conor
-* Pick Reviewed-by from Claudiu
-
- Documentation/devicetree/bindings/arm/atmel-at91.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/arm/atmel-at91.yaml b/Documentation/devicetree/bindings/arm/atmel-at91.yaml
-index 68d306d17c2a..bf161e0950ea 100644
---- a/Documentation/devicetree/bindings/arm/atmel-at91.yaml
-+++ b/Documentation/devicetree/bindings/arm/atmel-at91.yaml
-@@ -243,6 +243,12 @@ properties:
-           - const: microchip,lan9668
-           - const: microchip,lan966
- 
-+      - description: Microchip LAN9696 EV23X71A Evaluation Board
-+        items:
-+          - const: microchip,ev23x71a
-+          - const: microchip,lan9696
-+          - const: microchip,lan9691
-+
-       - description: Kontron KSwitch D10 MMT series
-         items:
-           - enum:
--- 
-2.52.0
-
+bHUgbHUgPGluc3llbHVAZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgSmFudWFyeSAxNSwg
+MjAyNiA5OjM3IEFNDQpbLi4uXQ0KPiBUbyByZWR1Y2UgdGhlIHBlcmZvcm1hbmNlIGltcGFjdCBv
+biB0aGUgdHhfdGwgdGFza2xldOKAmXMgdHJhbnNtaXQgcGF0aCwNCj4gbmV0aWZfdHJhbnNfdXBk
+YXRlKCkgaGFzIGJlZW4gbW92ZWQgZnJvbSB0aGUgbWFpbiB0cmFuc21pdCBwYXRoIGludG8NCj4g
+d3JpdGVfYnVsa19jYWxsYmFjayAodGhlIFVTQiB0cmFuc2ZlciBjb21wbGV0aW9uIGNhbGxiYWNr
+KS4NCj4gVGhlIG1haW4gY29uc2lkZXJhdGlvbnMgYXJlIGFzIGZvbGxvd3M6DQo+IDEuIFJlZHVj
+ZSBmcmVxdWVudCB0YXNrbGV0IG92ZXJoZWFkDQo+IG5ldGlmX3RyYW5zX3VwZGF0ZSgpIGlzIGlu
+dm9rZWQgZnJlcXVlbnRseSB1bmRlciBoaWdoLXRocm91Z2hwdXQNCj4gY29uZGl0aW9ucy4gQ2Fs
+bGluZyBpdCBkaXJlY3RseSBpbiB0aGUgbWFpbiB0cmFuc21pdCBwYXRoIGNvbnRpbnVvdXNseQ0K
+PiBpbnRyb2R1Y2VzIGEgc21hbGwgYnV0IG5vdGljZWFibGUgQ1BVIG92ZXJoZWFkLCBkZWdyYWRp
+bmcgdGhlDQo+IHNjaGVkdWxpbmcgZWZmaWNpZW5jeSBvZiB0aGUgdHhfdGwgdGFza2xldC4NCj4g
+Mi4gTW92ZSBub24tY3JpdGljYWwgb3BlcmF0aW9ucyBvdXQgb2YgdGhlIGNyaXRpY2FsIHBhdGgN
+Cj4gQnkgZGVmZXJyaW5nIG5ldGlmX3RyYW5zX3VwZGF0ZSgpIHRvIHRoZSBVU0IgY2FsbGJhY2sg
+dGhyZWFk4oCUYW5kDQo+IGVuc3VyaW5nIGl0IGV4ZWN1dGVzIGFmdGVyIHRhc2tsZXRfc2NoZWR1
+bGUoJnRwLT50eF90bCnigJR0aGUgdGltZXN0YW1wDQo+IHVwZGF0ZSBpcyByZW1vdmVkIGZyb20g
+dGhlIGNyaXRpY2FsIHRyYW5zbWl0IHNjaGVkdWxpbmcgcGF0aCwgZnVydGhlcg0KPiByZWR1Y2lu
+ZyB0aGUgYnVyZGVuIG9uIHR4X3RsLg0KDQpFeGN1c2UgbWUsIEkgZG8gbm90IGZ1bGx5IHVuZGVy
+c3RhbmQgdGhlIHJlYXNvbmluZyBhYm92ZS4NCkl0IHNlZW1zIHRoYXQgdGhpcyBjaGFuZ2UgbWVy
+ZWx5IHNoaWZ0cyB0aGUgdGltZSAob3IgZWZmb3J0KSBmcm9tIHR4X3RsIHRvIHRoZSBUWCBjb21w
+bGV0aW9uIGNhbGxiYWNrLg0KDQpXaGlsZSB0aGUgaW50ZW50aW9uIGlzIHRvIG1ha2UgdHhfdGwg
+cnVuIGZhc3RlciwgdGhpcyBhbHNvIGRlbGF5cyB0aGUgY29tcGxldGlvbiBvZiB0aGUgY2FsbGJh
+Y2ssDQp3aGljaCBpbiB0dXJuIG1heSBkZWxheSBib3RoIHRoZSBuZXh0IGNhbGxiYWNrIGV4ZWN1
+dGlvbiBhbmQgdGhlIG5leHQgc2NoZWR1bGluZyBvZiB0eF90bC4NCg0KRnJvbSB0aGlzIHBlcnNw
+ZWN0aXZlLCBpdCBpcyB1bmNsZWFyIHdoYXQgaXMgYWN0dWFsbHkgYmVpbmcgc2F2ZWQuDQoNCkhh
+dmUgeW91IG9ic2VydmVkIGEgbWVhc3VyYWJsZSBkaWZmZXJlbmNlIGJhc2VkIG9uIHRlc3Rpbmc/
+DQoNCklmIHlvdSB3YW50IHRvIHJlZHVjZSB0aGUgZnJlcXVlbmN5IG9mIGNhbGxpbmcgbmV0aWZf
+dHJhbnNfdXBkYXRlKCksDQp5b3UgY291bGQgdHJ5IHNvbWV0aGluZyBsaWtlIHRoZSBmb2xsb3dp
+bmcuIFRoaXMgd2F5LA0KbmV0aWZfdHJhbnNfdXBkYXRlKCkgd291bGQgbm90IGJlIGV4ZWN1dGVk
+IG9uIGV2ZXJ5IHRyYW5zbWlzc2lvbi4NCg0KLS0tIGEvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMN
+CisrKyBiL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jDQpAQCAtMjQzMiw5ICsyNDMyLDEyIEBAIHN0
+YXRpYyBpbnQgcjgxNTJfdHhfYWdnX2ZpbGwoc3RydWN0IHI4MTUyICp0cCwgc3RydWN0IHR4X2Fn
+ZyAqYWdnKQ0KDQogICAgICAgIG5ldGlmX3R4X2xvY2sodHAtPm5ldGRldik7DQoNCi0gICAgICAg
+aWYgKG5ldGlmX3F1ZXVlX3N0b3BwZWQodHAtPm5ldGRldikgJiYNCi0gICAgICAgICAgIHNrYl9x
+dWV1ZV9sZW4oJnRwLT50eF9xdWV1ZSkgPCB0cC0+dHhfcWxlbikNCisgICAgICAgaWYgKG5ldGlm
+X3F1ZXVlX3N0b3BwZWQodHAtPm5ldGRldikpIHsNCisgICAgICAgICAgIGlmIChza2JfcXVldWVf
+bGVuKCZ0cC0+dHhfcXVldWUpIDwgdHAtPnR4X3FsZW4pDQogICAgICAgICAgICAgICAgbmV0aWZf
+d2FrZV9xdWV1ZSh0cC0+bmV0ZGV2KTsNCisgICAgICAgICAgIGVsc2UNCisgICAgICAgICAgICAg
+ICBuZXRpZl90cmFuc191cGRhdGUodHAtPm5ldGRldik7DQorICAgICAgIH0NCg0KICAgICAgICBu
+ZXRpZl90eF91bmxvY2sodHAtPm5ldGRldik7DQoNCkJlc3QgUmVnYXJkcywNCkhheWVzDQoNCg==
