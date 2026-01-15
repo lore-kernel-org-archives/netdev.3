@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230EE3806B7;
-	Thu, 15 Jan 2026 11:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8B9389E0E;
+	Thu, 15 Jan 2026 11:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768477652; cv=none; b=nFZj+GfVMQIAQlXkYDpZp0/oEdxODTNlOHjBaF0YFV95wb/cCAntei4FzLekqoQN3OsHXHELMLcdepHpwLXGIHTR6TVqJ5AgxafRwIvux6KcX9XqeMvTYIeL5AXOx7bvNCPN5wxLcGAigkKesklP8zczQPl0+0rkF1fXUFfcZCg=
+	t=1768477655; cv=none; b=TShBoQMS3zGnmfQrEcNzqlfY4XqnRRqK+wxdws2v9k3Xp52VIZeCHOe9l1v9wPYGaBmwSpDZuzcuz1HJXY0EfuOMVOJGhtIqzlqmoRZAF6C2uwdfU4eHClc7PFjO9L2xBwJ9b7Cfccd8b8F0spnKSebtd2Vx2mhFv4JTUjiv1cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768477652; c=relaxed/simple;
-	bh=DOndyKOPHC+XjWwo8IQmKVVgE+2YxR9PrmL7vaEb2Uk=;
+	s=arc-20240116; t=1768477655; c=relaxed/simple;
+	bh=hPpGrhBm7dswjrLDv/THjvYEQrlbFx3TtA9jAFW1hNQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QqEUV2BwSwNYn3TXapOk6dPoNeGWFh6qnzD+Dm+3O90aoC2gVS9oEcjG8uSlI6hAe3r1QIfv5W/9Qf2+OeUKA2KXdgu7Oyfv3muL/QaV+A01WF7j6HPC90E6fVk7KyoN64FAEsk1Wh3sIogxtQxCEw//ebGi/bY4FFWXmULBcVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=enbuSupH; arc=none smtp.client-ip=220.197.31.2
+	 MIME-Version; b=lY8HJ2SbyDhGAA0GuAfk1abaTFmiTzMuHLWhaaoTGzeOWDHDI6LA6wqjLhTWrnFwgxhznjZTFTNNYyhCEwH3TXIEWdduXkSYNDGPo3J07h/01ZgH5ZN9AVepY5Rnd0ZT8WBSoA2UOrOkTldpPILskT5f5gYu5FrjQA+jCxavs+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=aHXhSO0u; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="enbuSupH"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="aHXhSO0u"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=vk
-	5iutERJA27zH/tcNhHf5mNR2d/fQros4GcMViC0s4=; b=enbuSupH6cvbsQ4bAc
-	/V6ixb+Da5H8ipj4dbgwgcgWOZJpUWxHifAuEwlIpfsPl6UG0YlgPOtszovA47Gf
-	55HpHPygrnsibnh/MLgJDHFg7LGVXLCW4VZdWicXIrLJs6X3fmH/uSqu323dBixs
-	SW58fAGEUuEIZFtKNPeuvqY60=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/4
+	b01nswZlIsKdbMEMUcNlPloW0gjn+e2EWs/AY2u78=; b=aHXhSO0u60uet3jDlt
+	ozkenQewX2OaKjX6xLMNdcSH6EI1p9o3jtfxiau7+wGmsqWF1IlyzLNeM9sPRpbD
+	FZ7S0qiYSgr4l+dtEocNr/YKKl7I5jCmlrvFoeKsaTECKqDvF4GLtwrt+G8Ax7wt
+	ntIt1rp4fmVTGE0fRBJTkHLxU=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHLGiX02hpr2PzGQ--.4331S3;
-	Thu, 15 Jan 2026 19:46:37 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHLGiX02hpr2PzGQ--.4331S10;
+	Thu, 15 Jan 2026 19:46:51 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -38,9 +38,9 @@ To: loic.poulain@oss.qualcomm.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	slark_xiao@163.com
-Subject: [net-next v7 1/8] net: wwan: core: remove unused port_id field
-Date: Thu, 15 Jan 2026 19:46:18 +0800
-Message-Id: <20260115114625.46991-2-slark_xiao@163.com>
+Subject: [net-next v7 8/8] net: wwan: mhi_wwan_ctrl: Add NMEA channel support
+Date: Thu, 15 Jan 2026 19:46:25 +0800
+Message-Id: <20260115114625.46991-9-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260115114625.46991-1-slark_xiao@163.com>
 References: <20260115114625.46991-1-slark_xiao@163.com>
@@ -51,45 +51,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHLGiX02hpr2PzGQ--.4331S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw15Jr48Kw1DZF1fKw17ZFb_yoWkGwbEkr
-	nYvrZ5Z348CFyvvr42gF43ZFWFvF4IqF4kuwnaqrZ3AFWDXrWrW3Z8XFnrWrn8ur18ZrZr
-	WrZrXFs2vr1fKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sR_a9aJUUUUU==
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5x2Q9Glo0538PwAA3S
+X-CM-TRANSID:_____wBHLGiX02hpr2PzGQ--.4331S10
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKrW3Xw48Gr4fGr4kur1rJFb_yoWfKrgE9w
+	1kXF9rJrW3J347KFsF9F13urWfK3W0qF4kXFnaqr9Yv347XFyfWw1kZF4Dtr9F9r17CF9r
+	urnxWayFyw4fWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sREEfO5UUUUU==
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5wuT92lo06v9NgAA36
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+For MHI WWAN device, we need a match between NMEA channel and
+WWAN_PORT_NMEA type. Then the GNSS subsystem could create the
+gnss device succssfully.
 
-It was used initially for a port id allocation, then removed, and then
-accidently introduced again, but it is still unused. Drop it again to
-keep code clean.
-
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 ---
- drivers/net/wwan/wwan_core.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wwan/mhi_wwan_ctrl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index 63a47d420bc5..ade8bbffc93e 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -43,7 +43,6 @@ static struct dentry *wwan_debugfs_dir;
-  *
-  * @id: WWAN device unique ID.
-  * @dev: Underlying device.
-- * @port_id: Current available port ID to pick.
-  * @ops: wwan device ops
-  * @ops_ctxt: context to pass to ops
-  * @debugfs_dir:  WWAN device debugfs dir
-@@ -51,7 +50,6 @@ static struct dentry *wwan_debugfs_dir;
- struct wwan_device {
- 	unsigned int id;
- 	struct device dev;
--	atomic_t port_id;
- 	const struct wwan_ops *ops;
- 	void *ops_ctxt;
- #ifdef CONFIG_WWAN_DEBUGFS
+diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
+index e9f979d2d851..e13c0b078175 100644
+--- a/drivers/net/wwan/mhi_wwan_ctrl.c
++++ b/drivers/net/wwan/mhi_wwan_ctrl.c
+@@ -263,6 +263,7 @@ static const struct mhi_device_id mhi_wwan_ctrl_match_table[] = {
+ 	{ .chan = "QMI", .driver_data = WWAN_PORT_QMI },
+ 	{ .chan = "DIAG", .driver_data = WWAN_PORT_QCDM },
+ 	{ .chan = "FIREHOSE", .driver_data = WWAN_PORT_FIREHOSE },
++	{ .chan = "NMEA", .driver_data = WWAN_PORT_NMEA },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(mhi, mhi_wwan_ctrl_match_table);
 -- 
 2.25.1
 
