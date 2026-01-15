@@ -1,156 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B605838A9AB;
-	Thu, 15 Jan 2026 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF8E393DD4;
+	Thu, 15 Jan 2026 12:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768479792; cv=none; b=RhCMkof2++KouQ2nNUGGa2xvNgSuX22b7C4t9WmArpkkdh9xT0/V/fkjc7t1SouD+bUb2z6STokKwmmjI6C/UHFaGSPHV4F5GajBEa0pXFAoMo9wxRr9kSl0nL/I4KGsFdK6VO9OGzNeTrrXDNE5GLRSxOGmlvMl7zgFH7KGshY=
+	t=1768479819; cv=none; b=aESNnNlywnDlAO5HVtr4SWV8PNzXadnNKGGto2TwIUFeyLqPw35jAEJ7ZNpQECQqWGeoyRp9ZT1NhOthLQybvszjDz82zLDjKv5dCauyhecDgypBL/FBqHYv9l0cFflldqcjcTApAguLsZYiRuh1bObHUqbV5crJb//FgEe4tmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768479792; c=relaxed/simple;
-	bh=ZMEYK47BrOyJGKV5630tH7EVWhmlchg1ygi5vcWhQfo=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=IA48K5+OaXAM2WuBTi/7zHQjWBwByKipBdY8isBoVyfBpuzPAvN2pB1lUtSp5GK665ELD6SfKMx1jjOftmQAAJRxAysOM3Sj7pyTg4tCr9DZuQL4lG73tOiajQfEZEV22hmwYqUeOf7XnhvUaH7KCX2XD1lFZ+zywThQS7wfk1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJ4uEcSQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768479819; c=relaxed/simple;
+	bh=fFmSM/hVjBlWoP/bvoORXUI2Ig1WhL/IDaETPBRXU5M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fAb0GU3x/M4WYnBrAwhl/Q5uTqUvmCX+dKWDs8HUrQcOxJXhHaPvxlCHMu9UTTmiEs74Sls1dFT+Qh0jLCa13Q8NKleYBMibtSzbZfQcNhwmtkRNqWeI7GfP4O+3U6MkvOsUq2/oS6M6tAELiX7qluub8d41mPrVD1tcj7wsIIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUTUj/hH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJ4uEcSQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A93C116D0;
-	Thu, 15 Jan 2026 12:23:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUTUj/hH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EB0C116D0;
+	Thu, 15 Jan 2026 12:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768479792;
-	bh=ZMEYK47BrOyJGKV5630tH7EVWhmlchg1ygi5vcWhQfo=;
-	h=Subject:From:To:Cc:Date:From;
-	b=dJ4uEcSQwshSKla8C7v9CFLU/Y3Ve5YWg59pfX/APy7foMLST1tHc6Eb01szMpxjK
-	 jWfDde/7Fsh4ceYiVazDO78bFUgGsyILBnXPy+GLp4Ft4EbmZRIzglfiIHyopyr9TN
-	 g4bWgSuC71rMI9bDta+gPWPD/h4N2FMYROilt0m4FzwtGgA2MwEC3QB5ej9KGXeM7y
-	 W92o3NKoFysDwZm7UA2FYqIxo3HS3NEbRicic87V5W/K0Ns3FgdCnFTesWK7rnaixL
-	 kx1Mkhh0u4tdXue+f+lTYi74FVmlGvHd4c+lJ9YjW9ivID8F/ZARRRbec6RgvPN98N
-	 S7nWGhVaEEKuw==
-Subject: [PATCH net-next v1] net: sched: sfq: add detailed drop reasons for
- monitoring
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-To: netdev@vger.kernel.org
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
- Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- carges@cloudflare.com, kernel-team@cloudflare.com
-Date: Thu, 15 Jan 2026 13:23:07 +0100
-Message-ID: <176847978787.939583.16722243649193888625.stgit@firesoul>
-User-Agent: StGit/1.5
+	s=k20201202; t=1768479819;
+	bh=fFmSM/hVjBlWoP/bvoORXUI2Ig1WhL/IDaETPBRXU5M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KUTUj/hHx12ueidi4Z0SBVs/cDiS5TZZvCU3hzkjtQOqyCE+bgo6sWDjp6e6iq4/v
+	 2DP+WRPgj/+wT7bNBUMhpFsc8gYUc2Pe89nY3v0ZVBK+Kgv65xOtqVs+1InzhmRM6l
+	 yOfIDtm76mgOv28aXW7fv5KgT1R6Ez5nsyY8KAST5QTzkNNT2b52kP0TGeL5F+Z1IM
+	 jBc8j3OtCU/AmpKCFcSkH13IbjEnhqx506NpgO+mhbci9hej9xtQ1JpmtBkGNsxKEH
+	 Dae7maJGd2DPo3tvCt8x6tQ5Hl7NkjHoiIvDnqhZia/uusVP58nIzrn+WB/jSO8DTd
+	 K5hGPuJGu9f6Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F304E3809A82;
+	Thu, 15 Jan 2026 12:20:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/4] Revert "can: raw: instantly reject unsupported
+ CAN
+ frames"
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176847961180.3970738.13022780012071262607.git-patchwork-notify@kernel.org>
+Date: Thu, 15 Jan 2026 12:20:11 +0000
+References: <20260115090603.1124860-2-mkl@pengutronix.de>
+In-Reply-To: <20260115090603.1124860-2-mkl@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net,
+ arnd@arndb.de, mailhol@kernel.org
 
-Add specific drop reasons to SFQ qdisc to improve packet drop observability
-and monitoring capabilities. This change replaces generic qdisc_drop()
-calls with qdisc_drop_reason() to provide granular metrics about different
-drop scenarios in production environments.
+Hello:
 
-Two new drop reasons are introduced:
+This series was applied to netdev/net.git (main)
+by Marc Kleine-Budde <mkl@pengutronix.de>:
 
-- SKB_DROP_REASON_QDISC_MAXFLOWS: Used when a new flow cannot be created
-  because the maximum number of flows (flows parameter) has been
-  reached and no free flow slots are available.
+On Thu, 15 Jan 2026 09:57:08 +0100 you wrote:
+> From: Oliver Hartkopp <socketcan@hartkopp.net>
+> 
+> This reverts commit 1a620a723853a0f49703c317d52dc6b9602cbaa8
+> 
+> and its follow-up fixes for the introduced dependency issues.
+> 
+> commit 1a620a723853 ("can: raw: instantly reject unsupported CAN frames")
+> commit cb2dc6d2869a ("can: Kconfig: select CAN driver infrastructure by default")
+> commit 6abd4577bccc ("can: fix build dependency")
+> commit 5a5aff6338c0 ("can: fix build dependency")
+> 
+> [...]
 
-- SKB_DROP_REASON_QDISC_MAXDEPTH: Used when a flow's queue length exceeds
-  the per-flow depth limit (depth parameter), triggering either tail drop
-  or head drop depending on headdrop configuration.
+Here is the summary with links:
+  - [net,1/4] Revert "can: raw: instantly reject unsupported CAN frames"
+    https://git.kernel.org/netdev/net/c/4650ff58a1b9
+  - [net,2/4] can: propagate CAN device capabilities via ml_priv
+    https://git.kernel.org/netdev/net/c/166e87329ce6
+  - [net,3/4] can: raw: instantly reject disabled CAN frames
+    https://git.kernel.org/netdev/net/c/faba5860fcf9
+  - [net,4/4] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
+    https://git.kernel.org/netdev/net/c/1809c82aa073
 
-The existing SKB_DROP_REASON_QDISC_OVERLIMIT is used in sfq_drop() when
-the overall qdisc limit is exceeded and packets are dropped from the
-longest queue.
-
-These detailed drop reasons enable production monitoring systems to
-distinguish between different SFQ drop scenarios and generate specific
-metrics for:
-- Flow table exhaustion (flows exceeded)
-- Per-flow congestion (depth limit exceeded)
-- Global qdisc congestion (overall limit exceeded)
-
-This granular visibility allows operators to identify issues related
-to traffic patterns, and optimize SFQ configuration based on
-real-world drop patterns.
-
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
----
- include/net/dropreason-core.h |   12 ++++++++++++
- net/sched/sch_sfq.c           |    8 ++++----
- 2 files changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 58d91ccc56e0..e395d0ff9904 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -69,6 +69,8 @@
- 	FN(QDISC_DROP)			\
- 	FN(QDISC_OVERLIMIT)		\
- 	FN(QDISC_CONGESTED)		\
-+	FN(QDISC_MAXFLOWS)		\
-+	FN(QDISC_MAXDEPTH)		\
- 	FN(CAKE_FLOOD)			\
- 	FN(FQ_BAND_LIMIT)		\
- 	FN(FQ_HORIZON_LIMIT)		\
-@@ -384,6 +386,16 @@ enum skb_drop_reason {
- 	 * due to congestion.
- 	 */
- 	SKB_DROP_REASON_QDISC_CONGESTED,
-+	/**
-+	 * @SKB_DROP_REASON_QDISC_MAXFLOWS: dropped by qdisc when the maximum
-+	 * number of flows is exceeded.
-+	 */
-+	SKB_DROP_REASON_QDISC_MAXFLOWS,
-+	/**
-+	 * @SKB_DROP_REASON_QDISC_MAXDEPTH: dropped by qdisc when a flow
-+	 * exceeds its maximum queue depth limit.
-+	 */
-+	SKB_DROP_REASON_QDISC_MAXDEPTH,
- 	/**
- 	 * @SKB_DROP_REASON_CAKE_FLOOD: dropped by the flood protection part of
- 	 * CAKE qdisc AQM algorithm (BLUE).
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 96eb2f122973..e91d74127600 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -302,7 +302,7 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		sfq_dec(q, x);
- 		sch->q.qlen--;
- 		qdisc_qstats_backlog_dec(sch, skb);
--		qdisc_drop(skb, sch, to_free);
-+		qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_OVERLIMIT);
- 		return len;
- 	}
- 
-@@ -363,7 +363,7 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 	if (x == SFQ_EMPTY_SLOT) {
- 		x = q->dep[0].next; /* get a free slot */
- 		if (x >= SFQ_MAX_FLOWS)
--			return qdisc_drop(skb, sch, to_free);
-+			return qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_MAXFLOWS);
- 		q->ht[hash] = x;
- 		slot = &q->slots[x];
- 		slot->hash = hash;
-@@ -420,14 +420,14 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 	if (slot->qlen >= q->maxdepth) {
- congestion_drop:
- 		if (!sfq_headdrop(q))
--			return qdisc_drop(skb, sch, to_free);
-+			return qdisc_drop_reason(skb, sch, to_free, SKB_DROP_REASON_QDISC_MAXDEPTH);
- 
- 		/* We know we have at least one packet in queue */
- 		head = slot_dequeue_head(slot);
- 		delta = qdisc_pkt_len(head) - qdisc_pkt_len(skb);
- 		sch->qstats.backlog -= delta;
- 		slot->backlog -= delta;
--		qdisc_drop(head, sch, to_free);
-+		qdisc_drop_reason(head, sch, to_free, SKB_DROP_REASON_QDISC_MAXDEPTH);
- 
- 		slot_queue_add(slot, skb);
- 		qdisc_tree_reduce_backlog(sch, 0, delta);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
