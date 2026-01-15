@@ -1,529 +1,106 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A332345758
-	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 17:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC0F396B7D;
+	Thu, 15 Jan 2026 17:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496655; cv=none; b=RkbHxYSLzDwReHdcokAU2yViM7OY3pB9m2rMiPBSe/nGv74cYnlN3zGtMQGcV7kZ47BQts7ci4adTo3K2jowQZ3GFptUALk9tiGnnUZycZeh1u4ZeU/Ll3uPsOQidxIudfM3bDv67YiF9BLhTaVqSdJc7pbzlVN/eMpP2AYUe9M=
+	t=1768496755; cv=none; b=XMvLxmhd5IsYsEiJfKvECkAMn9jQjyQsZfJ03a7Fpr65hf0cD3EQIB1y9Ba88CCXn/Ez9GKKrB78P080Kc+tyShySUVhQlPB9cCZJasJbJjRGw3drmGbtCZZgHK1MUf1rW5/xcmNUxElxBqbwR5PKrqN28qg0DLRDmG4cSbASzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496655; c=relaxed/simple;
-	bh=hdmty16Y3UPCJ85uyPbUwOr7VFEIdxCMDgYIwpvvJX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfNXWOGn+zNEDYhov5gs8CGex1v+0wkYbBCPmcvaBvXUp/KYSTD7Nfu9xi5oJ0Gv6CXWgH/KbvcSj03RtFQcxayBHifWFNvDo1S7AyV+pwybfsKj631g31uuRKRZTqjzSGMSUOAqgCBj7ovyRcZUAvR7wKUkL+Y3mpHa7+LPrtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5NyPAai; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768496755; c=relaxed/simple;
+	bh=y8qkrc7MAMIJcCKh2tDsF+EBlT0sGzZ7XalQzMxRcdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s7yoVI+o2UYxDIHHTVGLL/yMUAMCENA2hBxLiB+nLeJB7iVtRiBFjfyoxea2Yiz/5rgOBQR/6Q8AdrvzRg9KFKs6WZa5tgFFZtc0qgWPzqXtG5hTtpGm9xUiTQGJX230W1ZFJtIXId2pHcYeA6CmsX6bj46GqSxf6ZMah3NDkKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PyHD9Xc2; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5NyPAai"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-790884840baso12288287b3.0
-        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 09:04:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768496652; x=1769101452; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yiYjAOIUiN8obs6nhzXenHSK+BjcngnjF6Yf7NvozL4=;
-        b=G5NyPAai9KPyCe7aY70NlUYZxzYAIZlklanj73lVn3sDIQ2IEmlYjBkvRAHPmcBT+U
-         x/Zda4Q/Q/Y2F45+OP6DnBN4kdzQHUeOWZdDR7W8vCjOrVLnyCravpvTVC+30GDBvxrR
-         DXNCGsIvBnDCXhY4EPOJSdNAYE8JnEy73tqzDYkjXjHYHD7lFsR1RgodV0bWsULw3zPa
-         /mZHr9FXxMC25BiL81lwg2umSxSss3WRXdtaai7E3MzI4cqvctyBDIptYSkoRxpHiIO5
-         rcIUpJ9XvIQTYe78fWtYpc6QN+JagsG4RsiODd/WEcrEX7mR974bQMgl9gSj3c3OH3nY
-         78Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768496652; x=1769101452;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yiYjAOIUiN8obs6nhzXenHSK+BjcngnjF6Yf7NvozL4=;
-        b=GLZPH+l4x/YE/g0WI8QVPRMNG6fXBRPr2o60PcxqHhyQi7OSZcfmKFxFNfUK6s360e
-         LPC2yrtAQZlZXGVIiT8Ggcnb2EcISzddGMUxsTBgRXxHma66MXaf0NH+ZdV9br4otKcB
-         TC3x0GupRVULJv0k40T4KMjhzK24uGzlcLUt0RfonJYumXWG+7BePU9ya9KEJihDQc1k
-         Z6LJ8Mfw4RAOoOuUNeiCwFrAyWod3Gw3aWm9NhlAtL36xE5K513iRiCxAtys8mYlqXyT
-         EUDnH/FgQMlqTeKyW2m8JYEyP5h04E+COreD+TSriUDwvIjNvOyq64G2z1GlFL93bVe7
-         kWXg==
-X-Gm-Message-State: AOJu0Yx6KwH9vUJKtMMEziIqudN6ZH4BhmOaOVK2Eu8z1XPE/We7L/Je
-	Q1UV1G/GhGHNGVNNHeM91FaHlfbsfXlduA31qkLTslrv4tzBXixLY8SQ+nxzJh65
-X-Gm-Gg: AY/fxX7c4axtBsUVTUT5yp6epKye9wBIKCIsgENODv5v54VU2hYxG3iNP33r0jghhvS
-	8VIUMdCQcG6xn4uieI6dzFc21HKCHqJ5ejTZTtFEtb2I+WiNcxI/6hoGtn+VZKqnLBOEh1hSYsa
-	Ihst/Cpqf8TqQsYRmp236RMjkz/V/8yWVea7rOdFFGNMyuKo2i3O1rUf7wEQdBJEtn50jSyNs3Q
-	usAXrw2iUNOZSb+m6afKfEeL1SJRagz23LBPUtr+agMEv1JLQ81TX/FsDA2xhmw6ApIh+XxgrgS
-	bvV4Da7/C5RF55K/8dHs5XoxIsSp5+5uMbzdVq1viU0INF2s40lWcZV5d6hsPzK4xHAtExdocWi
-	EeK+b4Qkc+RK7uKK1WewMl+Ar+QV/iK5XeClqafWxk3JobIie2DN3wb6ROFL5eN8wO1Mx8KxoCs
-	ssLPG12S6drOCV2aX1EvKp2nWoCBFAL/ATnzEqIDz+mXUaIgidB7w=
-X-Received: by 2002:a05:6214:1c8a:b0:87c:268d:bbda with SMTP id 6a1803df08f44-89275c6335dmr76896256d6.60.1768490130053;
-        Thu, 15 Jan 2026 07:15:30 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770cc6edsm201030056d6.4.2026.01.15.07.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 07:15:29 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Subject: [PATCH net-next v7 05/16] quic: provide quic.h header files for kernel and userspace
-Date: Thu, 15 Jan 2026 10:11:05 -0500
-Message-ID: <32a34bfa4fcd69de5c738db95dbd71ac8e361d24.1768489876.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1768489876.git.lucien.xin@gmail.com>
-References: <cover.1768489876.git.lucien.xin@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PyHD9Xc2"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 67C4FC1F1E7;
+	Thu, 15 Jan 2026 17:05:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0298A606E0;
+	Thu, 15 Jan 2026 17:05:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D0EEB10B686E6;
+	Thu, 15 Jan 2026 18:05:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768496749; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=g4zRCSFfE37X0wjE4Eq60ptM+6zY+xi0fpy9SZxByac=;
+	b=PyHD9Xc2nFFNUiJ8vCVKW6UoakkqrJe4GfZCmHL47MSiF7lqDVHbIizQ+CqIuDxa3UrF0d
+	69x3/HeT4iQ4ZpGF7A9AEaOgJBdiL3ax4kenM4qkK5JB3kysk1/sol6ynCKQzoHU0xpJZb
+	knTvfnnGFoaJmmsGLAmeLASOAdhdzoi0VDMYp6tTna0K0TD5xySYQDy2KAe2AN4Ois5ZPi
+	wAPiIJqxXwKr+y4EPEO8gsI0nerg7ai0eTSrcc78mUylsPJMkP/IP2C8POMuBrMdH/Inl9
+	hCPSRsty4LYYmNv1BHQItLHE4/y5L3HC1rtgEtyUz6gUG/GvBWJNEUcCGeocKg==
+Message-ID: <722dcba9-d9ae-43ba-b1bf-1d577a882bef@bootlin.com>
+Date: Thu, 15 Jan 2026 18:05:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/8] net: dsa: microchip: Add KSZ8463 tail tag
+ handling
+To: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+ Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260115-ksz8463-ptp-v1-0-bcfe2830cf50@bootlin.com>
+ <20260115-ksz8463-ptp-v1-5-bcfe2830cf50@bootlin.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260115-ksz8463-ptp-v1-5-bcfe2830cf50@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This commit adds quic.h to include/uapi/linux, providing the necessary
-definitions for the QUIC socket API. Exporting this header allows both
-user space applications and kernel subsystems to access QUIC-related
-control messages, socket options, and event/notification interfaces.
+Hi Bastien,
 
-Since kernel_get/setsockopt() is no longer available to kernel consumers,
-a corresponding internal header, include/linux/quic.h, is added. This
-exposes quic_do_get/setsockopt() to handle QUIC socket options directly
-for kernel subsystems.
+On 15/01/2026 16:57, Bastien Curutchet (Schneider Electric) wrote:
+> KSZ8463 uses the KSZ9893 DSA TAG driver. However, the KSZ8463 doesn't
+> use the tail tag to convey timestamps to the host as KSZ9893 does. It
+> uses the reserved fields in the PTP header instead.
 
-Detailed descriptions of these structures are available in [1], and will
-be also provided when adding corresponding socket interfaces in the
-later patches.
+[ ... ]
 
-[1] https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
+> +static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
+> +{
+> +	unsigned int len = KSZ_EGRESS_TAG_LEN;
+> +	struct ptp_header *ptp_hdr;
+> +	unsigned int ptp_class;
+> +	unsigned int port;
+> +	ktime_t tstamp;
+> +	u8 *tag;
+> +
+> +	if (skb_linearize(skb))
+> +		return NULL;
+> +
+> +	/* Tag decoding */
+> +	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+> +	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
+> +
+> +	__skb_push(skb, ETH_HLEN);
+> +	ptp_class = ptp_classify_raw(skb);
+> +	__skb_pull(skb, ETH_HLEN);
+> +	if (ptp_class == PTP_CLASS_NONE)
+> +		goto common_rcv;
+> +
+> +	ptp_hdr = ptp_parse_header(skb, ptp_class);
+> +	if (ptp_hdr) {
+> +		tstamp = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
+> +		KSZ_SKB_CB(skb)->tstamp = tstamp;
 
-Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Thomas Dreibholz <dreibh@simula.no>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
----
-v2:
-  - Fix a kernel API description warning, found by Jakub.
-  - Replace uintN_t with __uN, capitalize _UAPI_LINUX_QUIC_H, and
-    assign explicit values for QUIC_TRANSPORT_ERROR_ enum in UAPI
-    quic.h, suggested by David Howells.
-v4:
-  - Use MSG_QUIC_ prefix for MSG_* flags to avoid conflicts with other
-    protocols, such as MSG_NOTIFICATION in SCTP (reported by Thomas).
-  - Remove QUIC_CONG_ALG_CUBIC; only NEW RENO congestion control is
-    supported in this version.
-v5:
-  - Add include/linux/quic.h and include/uapi/linux/quic.h to the
-    QUIC PROTOCOL entry in MAINTAINERS.
-v6:
-  - Fix the copy/pasted the uAPI path for SCTP to the QUIC entry (noted
-    by Jakub).
-v7:
-  - Expose quic_do_get/setsockopt() instead of quic_kernel_get/setsockopt()
-    (suggested by Paolo).
----
- MAINTAINERS               |   2 +
- include/linux/quic.h      |  20 ++++
- include/uapi/linux/quic.h | 235 ++++++++++++++++++++++++++++++++++++++
- net/quic/socket.c         |  32 +++++-
- net/quic/socket.h         |   7 ++
- 5 files changed, 294 insertions(+), 2 deletions(-)
- create mode 100644 include/linux/quic.h
- create mode 100644 include/uapi/linux/quic.h
+As it is using a reserved field, is it OK to leave this field as-is when forwarding
+this skb to userspace, or should it be zeroed first ?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e129a03590be..fd770b20ab03 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21661,6 +21661,8 @@ M:	Xin Long <lucien.xin@gmail.com>
- L:	quic@lists.linux.dev
- S:	Maintained
- W:	https://github.com/lxin/quic
-+F:	include/linux/quic.h
-+F:	include/uapi/linux/quic.h
- F:	net/quic/
- 
- RADEON and AMDGPU DRM DRIVERS
-diff --git a/include/linux/quic.h b/include/linux/quic.h
-new file mode 100644
-index 000000000000..c246f6349f9c
---- /dev/null
-+++ b/include/linux/quic.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#ifndef _LINUX_QUIC_H
-+#define _LINUX_QUIC_H
-+
-+#include <linux/sockptr.h>
-+#include <uapi/linux/quic.h>
-+
-+int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen);
-+int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen);
-+
-+#endif
-diff --git a/include/uapi/linux/quic.h b/include/uapi/linux/quic.h
-new file mode 100644
-index 000000000000..990b70c3afb0
---- /dev/null
-+++ b/include/uapi/linux/quic.h
-@@ -0,0 +1,235 @@
-+/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#ifndef _UAPI_LINUX_QUIC_H
-+#define _UAPI_LINUX_QUIC_H
-+
-+#include <linux/types.h>
-+#ifdef __KERNEL__
-+#include <linux/socket.h>
-+#else
-+#include <sys/socket.h>
-+#endif
-+
-+/* NOTE: Structure descriptions are specified in:
-+ * https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
-+ */
-+
-+/* Send or Receive Options APIs */
-+enum quic_cmsg_type {
-+	QUIC_STREAM_INFO,
-+	QUIC_HANDSHAKE_INFO,
-+};
-+
-+#define QUIC_STREAM_TYPE_SERVER_MASK	0x01
-+#define QUIC_STREAM_TYPE_UNI_MASK	0x02
-+#define QUIC_STREAM_TYPE_MASK		0x03
-+
-+enum quic_msg_flags {
-+	/* flags for stream_flags */
-+	MSG_QUIC_STREAM_NEW		= MSG_SYN,
-+	MSG_QUIC_STREAM_FIN		= MSG_FIN,
-+	MSG_QUIC_STREAM_UNI		= MSG_CONFIRM,
-+	MSG_QUIC_STREAM_DONTWAIT	= MSG_WAITFORONE,
-+	MSG_QUIC_STREAM_SNDBLOCK	= MSG_ERRQUEUE,
-+
-+	/* extented flags for msg_flags */
-+	MSG_QUIC_DATAGRAM		= MSG_RST,
-+	MSG_QUIC_NOTIFICATION		= MSG_MORE,
-+};
-+
-+enum quic_crypto_level {
-+	QUIC_CRYPTO_APP,
-+	QUIC_CRYPTO_INITIAL,
-+	QUIC_CRYPTO_HANDSHAKE,
-+	QUIC_CRYPTO_EARLY,
-+	QUIC_CRYPTO_MAX,
-+};
-+
-+struct quic_handshake_info {
-+	__u8	crypto_level;
-+};
-+
-+struct quic_stream_info {
-+	__s64	stream_id;
-+	__u32	stream_flags;
-+};
-+
-+/* Socket Options APIs */
-+#define QUIC_SOCKOPT_EVENT				0
-+#define QUIC_SOCKOPT_STREAM_OPEN			1
-+#define QUIC_SOCKOPT_STREAM_RESET			2
-+#define QUIC_SOCKOPT_STREAM_STOP_SENDING		3
-+#define QUIC_SOCKOPT_CONNECTION_ID			4
-+#define QUIC_SOCKOPT_CONNECTION_CLOSE			5
-+#define QUIC_SOCKOPT_CONNECTION_MIGRATION		6
-+#define QUIC_SOCKOPT_KEY_UPDATE				7
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM			8
-+#define QUIC_SOCKOPT_CONFIG				9
-+#define QUIC_SOCKOPT_TOKEN				10
-+#define QUIC_SOCKOPT_ALPN				11
-+#define QUIC_SOCKOPT_SESSION_TICKET			12
-+#define QUIC_SOCKOPT_CRYPTO_SECRET			13
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM_EXT		14
-+
-+#define QUIC_VERSION_V1			0x1
-+#define QUIC_VERSION_V2			0x6b3343cf
-+
-+struct quic_transport_param {
-+	__u8	remote;
-+	__u8	disable_active_migration;
-+	__u8	grease_quic_bit;
-+	__u8	stateless_reset;
-+	__u8	disable_1rtt_encryption;
-+	__u8	disable_compatible_version;
-+	__u8	active_connection_id_limit;
-+	__u8	ack_delay_exponent;
-+	__u16	max_datagram_frame_size;
-+	__u16	max_udp_payload_size;
-+	__u32	max_idle_timeout;
-+	__u32	max_ack_delay;
-+	__u16	max_streams_bidi;
-+	__u16	max_streams_uni;
-+	__u64	max_data;
-+	__u64	max_stream_data_bidi_local;
-+	__u64	max_stream_data_bidi_remote;
-+	__u64	max_stream_data_uni;
-+	__u64	reserved;
-+};
-+
-+struct quic_config {
-+	__u32	version;
-+	__u32	plpmtud_probe_interval;
-+	__u32	initial_smoothed_rtt;
-+	__u32	payload_cipher_type;
-+	__u8	congestion_control_algo;
-+	__u8	validate_peer_address;
-+	__u8	stream_data_nodelay;
-+	__u8	receive_session_ticket;
-+	__u8	certificate_request;
-+	__u8	reserved[3];
-+};
-+
-+struct quic_crypto_secret {
-+	__u8	send;  /* send or recv */
-+	__u8	level; /* crypto level */
-+	__u32	type; /* TLS_CIPHER_* */
-+#define QUIC_CRYPTO_SECRET_BUFFER_SIZE 48
-+	__u8	secret[QUIC_CRYPTO_SECRET_BUFFER_SIZE];
-+};
-+
-+enum quic_cong_algo {
-+	QUIC_CONG_ALG_RENO,
-+	QUIC_CONG_ALG_MAX,
-+};
-+
-+struct quic_errinfo {
-+	__s64	stream_id;
-+	__u32	errcode;
-+};
-+
-+struct quic_connection_id_info {
-+	__u8	dest;
-+	__u32	active;
-+	__u32	prior_to;
-+};
-+
-+struct quic_event_option {
-+	__u8	type;
-+	__u8	on;
-+};
-+
-+/* Event APIs */
-+enum quic_event_type {
-+	QUIC_EVENT_NONE,
-+	QUIC_EVENT_STREAM_UPDATE,
-+	QUIC_EVENT_STREAM_MAX_DATA,
-+	QUIC_EVENT_STREAM_MAX_STREAM,
-+	QUIC_EVENT_CONNECTION_ID,
-+	QUIC_EVENT_CONNECTION_CLOSE,
-+	QUIC_EVENT_CONNECTION_MIGRATION,
-+	QUIC_EVENT_KEY_UPDATE,
-+	QUIC_EVENT_NEW_TOKEN,
-+	QUIC_EVENT_NEW_SESSION_TICKET,
-+	QUIC_EVENT_MAX,
-+};
-+
-+enum {
-+	QUIC_STREAM_SEND_STATE_READY,
-+	QUIC_STREAM_SEND_STATE_SEND,
-+	QUIC_STREAM_SEND_STATE_SENT,
-+	QUIC_STREAM_SEND_STATE_RECVD,
-+	QUIC_STREAM_SEND_STATE_RESET_SENT,
-+	QUIC_STREAM_SEND_STATE_RESET_RECVD,
-+
-+	QUIC_STREAM_RECV_STATE_RECV,
-+	QUIC_STREAM_RECV_STATE_SIZE_KNOWN,
-+	QUIC_STREAM_RECV_STATE_RECVD,
-+	QUIC_STREAM_RECV_STATE_READ,
-+	QUIC_STREAM_RECV_STATE_RESET_RECVD,
-+	QUIC_STREAM_RECV_STATE_RESET_READ,
-+};
-+
-+struct quic_stream_update {
-+	__s64	id;
-+	__u8	state;
-+	__u32	errcode;
-+	__u64	finalsz;
-+};
-+
-+struct quic_stream_max_data {
-+	__s64	id;
-+	__u64	max_data;
-+};
-+
-+struct quic_connection_close {
-+	__u32	errcode;
-+	__u8	frame;
-+	__u8	phrase[];
-+};
-+
-+union quic_event {
-+	struct quic_stream_update	update;
-+	struct quic_stream_max_data	max_data;
-+	struct quic_connection_close	close;
-+	struct quic_connection_id_info	info;
-+	__u64	max_stream;
-+	__u8	local_migration;
-+	__u8	key_update_phase;
-+};
-+
-+enum {
-+	QUIC_TRANSPORT_ERROR_NONE			= 0x00,
-+	QUIC_TRANSPORT_ERROR_INTERNAL			= 0x01,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_REFUSED		= 0x02,
-+	QUIC_TRANSPORT_ERROR_FLOW_CONTROL		= 0x03,
-+	QUIC_TRANSPORT_ERROR_STREAM_LIMIT		= 0x04,
-+	QUIC_TRANSPORT_ERROR_STREAM_STATE		= 0x05,
-+	QUIC_TRANSPORT_ERROR_FINAL_SIZE			= 0x06,
-+	QUIC_TRANSPORT_ERROR_FRAME_ENCODING		= 0x07,
-+	QUIC_TRANSPORT_ERROR_TRANSPORT_PARAM		= 0x08,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_ID_LIMIT	= 0x09,
-+	QUIC_TRANSPORT_ERROR_PROTOCOL_VIOLATION		= 0x0a,
-+	QUIC_TRANSPORT_ERROR_INVALID_TOKEN		= 0x0b,
-+	QUIC_TRANSPORT_ERROR_APPLICATION		= 0x0c,
-+	QUIC_TRANSPORT_ERROR_CRYPTO_BUF_EXCEEDED	= 0x0d,
-+	QUIC_TRANSPORT_ERROR_KEY_UPDATE			= 0x0e,
-+	QUIC_TRANSPORT_ERROR_AEAD_LIMIT_REACHED		= 0x0f,
-+	QUIC_TRANSPORT_ERROR_NO_VIABLE_PATH		= 0x10,
-+
-+	/* The cryptographic handshake failed. A range of 256 values is reserved
-+	 * for carrying error codes specific to the cryptographic handshake that
-+	 * is used. Codes for errors occurring when TLS is used for the
-+	 * cryptographic handshake are described in Section 4.8 of [QUIC-TLS].
-+	 */
-+	QUIC_TRANSPORT_ERROR_CRYPTO			= 0x0100,
-+};
-+
-+#endif /* _UAPI_LINUX_QUIC_H */
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index a0eedf59545a..b86989080184 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -107,10 +107,24 @@ static void quic_close(struct sock *sk, long timeout)
- 	sk_common_release(sk);
- }
- 
--static int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
-+/**
-+ * quic_do_setsockopt - set a QUIC socket option
-+ * @sk: socket to configure
-+ * @optname: option name (QUIC-level)
-+ * @optval: user buffer containing the option value
-+ * @optlen: size of the option value
-+ *
-+ * Sets a QUIC socket option on a given socket.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
- {
- 	return -EOPNOTSUPP;
- }
-+EXPORT_SYMBOL_GPL(quic_do_setsockopt);
- 
- static int quic_setsockopt(struct sock *sk, int level, int optname,
- 			   sockptr_t optval, unsigned int optlen)
-@@ -121,10 +135,24 @@ static int quic_setsockopt(struct sock *sk, int level, int optname,
- 	return quic_do_setsockopt(sk, optname, optval, optlen);
- }
- 
--static int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
-+/**
-+ * quic_do_getsockopt - get a QUIC socket option
-+ * @sk: socket to query
-+ * @optname: option name (QUIC-level)
-+ * @optval: user buffer to receive the option value
-+ * @optlen: in/out parameter for buffer size; updated with actual length on return
-+ *
-+ * Gets a QUIC socket option from a given socket.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
- {
- 	return -EOPNOTSUPP;
- }
-+EXPORT_SYMBOL_GPL(quic_do_getsockopt);
- 
- static int quic_getsockopt(struct sock *sk, int level, int optname,
- 			   char __user *optval, int __user *optlen)
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 0aa642e3b0ae..7ee190af4454 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -9,6 +9,7 @@
-  */
- 
- #include <net/udp_tunnel.h>
-+#include <linux/quic.h>
- 
- #include "common.h"
- #include "family.h"
-@@ -29,6 +30,7 @@ struct quic_sock {
- 	struct inet_sock		inet;
- 	struct list_head		reqs;
- 
-+	struct quic_config		config;
- 	struct quic_data		ticket;
- 	struct quic_data		token;
- 	struct quic_data		alpn;
-@@ -49,6 +51,11 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
- 	return &quic_sk(sk)->reqs;
- }
- 
-+static inline struct quic_config *quic_config(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->config;
-+}
-+
- static inline struct quic_data *quic_token(const struct sock *sk)
- {
- 	return &quic_sk(sk)->token;
--- 
-2.47.1
+Maxime
 
