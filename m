@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0047C35FF51;
-	Thu, 15 Jan 2026 09:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACAA35F8DE;
+	Thu, 15 Jan 2026 09:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768470936; cv=none; b=oIIsZs7zB1VjdvL+27iihaORwGK2Yax1+PCa3OvUmw9gLXYFc6+EFcRsofwzwzmIeK21s3Up7iDAcffHT8UmwxO6L7fo4+4fU8taxqAV+h2qyaJ+pd0uvgAXhpByQ9yjWZ1fPKjiDvUxORP95gcikrVTN4gC/4nZi6LCoUx2nf0=
+	t=1768470936; cv=none; b=KTfCBYyR+8Y/vcomT0fAN8HrSOl+k8nzBClLS70aHaOHjsG0X6Ahgv/mbA76Sg0xSsaMqyHB4P1c2cv4MPURl1uCAbTRUOzOeHhGb9QJCv2DVeQ8SGZMRU6G4R6fjEMK6Irk8CL3fi5QdT/rrzVYJPVEwZbwQYdEWgHdnuQMrok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768470936; c=relaxed/simple;
-	bh=oAMs2NSqOllFJJV6ioWKQ33aLM7PlREjc3QoSRYM13U=;
+	bh=DOndyKOPHC+XjWwo8IQmKVVgE+2YxR9PrmL7vaEb2Uk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZYsdVjYpXuPydUO0tpClBMYwMZ4uZMYnn2+LLpN5SzGrgcRAsxqSbrKWEHYOfhlGuc4LIlgG/57wmIjUZWnCIj/9pZCxu/zLdAkH9rllLqYeIKviQIh+mkadvXcGeQ9uIRoKLJK3faLiKxA0ZfypfFJOIQxcVm4Nc/0wftT2JS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oM1QH39t; arc=none smtp.client-ip=220.197.31.4
+	 MIME-Version; b=oQ3sNve7uy9gi/lMKWpbAWzF++7A50+RisK4w2/8WZpI/HCV9bouAjY3wY1RTqHiqiYuHoBm4YcACOqZRdBGXBmXbvA5d9C2TRayvhi1eTemQf5RA824OhGqJqKJCLYi5PCJ/zO9P9F856a4p83ttrptJP1PT86wOuCKpHAUOZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bSE2Um8L; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oM1QH39t"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bSE2Um8L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=y2
-	6c9Ul7xtvzQmlIpcEdE+5G3aZFcgLB2fDIOU5iC9c=; b=oM1QH39tw+aNZ/WVqP
-	k3b/myieyfhIFcvpgA3StO8xtlqAFA+S0lyrY1xaj+KKtAopDANf8QITatDIzUWM
-	XovE89X1rUbdzOo1+hsxzztusRaM65qZioGh98QygJeQkMzTOoSE+LhUSRQ/DOVt
-	aYOrxgzLYppScImZb6MRhhJ7I=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=vk
+	5iutERJA27zH/tcNhHf5mNR2d/fQros4GcMViC0s4=; b=bSE2Um8LHUJaYSQPbx
+	jsIqWlRe10zlhvYh9qygYtJrYCfFVJLrGHAQ4umzj92XJbiNLxyf0X9YyHKLeonj
+	t783IFtQCFaumh+yviB2EMmguVA0kgVdi1Lv/4U99JnAsR3imPK3iSdy06vA/HoS
+	FPNwJesfi7L94A4/ALvu/c+30=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S6;
-	Thu, 15 Jan 2026 17:54:44 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAH3axTuWhpe3IgLg--.97S3;
+	Thu, 15 Jan 2026 17:54:36 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -38,9 +38,9 @@ To: loic.poulain@oss.qualcomm.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	slark_xiao@163.com
-Subject: [net-next v6 4/8] net: wwan: core: split port unregister and stop
-Date: Thu, 15 Jan 2026 17:54:13 +0800
-Message-Id: <20260115095417.36975-5-slark_xiao@163.com>
+Subject: [net-next v6 1/8] net: wwan: core: remove unused port_id field
+Date: Thu, 15 Jan 2026 17:54:10 +0800
+Message-Id: <20260115095417.36975-2-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260115095417.36975-1-slark_xiao@163.com>
 References: <20260115095417.36975-1-slark_xiao@163.com>
@@ -51,80 +51,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S6
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww48CFy3Cr1kJr15WFWxZwb_yoW5Jr15pa
-	1qqF9xKFW8JF43Ww43XF4xXFWruF4xGw1Sy34xW34Skrn5tryFvrWkuF1qyrWrJF97WFy5
-	ZrW5tFWUCa4UCr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piU3k_UUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5wX7YGlouWWwNAAA3g
+X-CM-TRANSID:PigvCgAH3axTuWhpe3IgLg--.97S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw15Jr48Kw1DZF1fKw17ZFb_yoWkGwbEkr
+	nYvrZ5Z348CFyvvr42gF43ZFWFvF4IqF4kuwnaqrZ3AFWDXrWrW3Z8XFnrWrn8ur18ZrZr
+	WrZrXFs2vr1fKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sR_iSdDUUUUU==
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCwBz5XmlouVws1QAA3m
 
 From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-Upcoming GNSS (NMEA) port type support requires exporting it via the
-GNSS subsystem. On another hand, we still need to do basic WWAN core
-work: call the port stop operation, purge queues, release the parent
-WWAN device, etc. To reuse as much code as possible, split the port
-unregistering function into the deregistration of a regular WWAN port
-device, and the common port tearing down code.
-
-In order to keep more code generic, break the device_unregister() call
-into device_del() and put_device(), which release the port memory
-uniformly.
+It was used initially for a port id allocation, then removed, and then
+accidently introduced again, but it is still unused. Drop it again to
+keep code clean.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 ---
- drivers/net/wwan/wwan_core.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/wwan/wwan_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index ef8f4cb9279c..7de9b69422e9 100644
+index 63a47d420bc5..ade8bbffc93e 100644
 --- a/drivers/net/wwan/wwan_core.c
 +++ b/drivers/net/wwan/wwan_core.c
-@@ -474,6 +474,18 @@ static int wwan_port_register_wwan(struct wwan_port *port)
- 	return 0;
- }
- 
-+/* Unregister a regular WWAN port (e.g. AT, MBIM, etc) */
-+static void wwan_port_unregister_wwan(struct wwan_port *port)
-+{
-+	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
-+
-+	dev_set_drvdata(&port->dev, NULL);
-+
-+	dev_info(&wwandev->dev, "port %s disconnected\n", dev_name(&port->dev));
-+
-+	device_del(&port->dev);
-+}
-+
- struct wwan_port *wwan_create_port(struct device *parent,
- 				   enum wwan_port_type type,
- 				   const struct wwan_port_ops *ops,
-@@ -534,18 +546,19 @@ void wwan_remove_port(struct wwan_port *port)
- 	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
- 
- 	mutex_lock(&port->ops_lock);
--	if (port->start_count)
-+	if (port->start_count) {
- 		port->ops->stop(port);
-+		port->start_count = 0;
-+	}
- 	port->ops = NULL; /* Prevent any new port operations (e.g. from fops) */
- 	mutex_unlock(&port->ops_lock);
- 
- 	wake_up_interruptible(&port->waitqueue);
--
- 	skb_queue_purge(&port->rxq);
--	dev_set_drvdata(&port->dev, NULL);
- 
--	dev_info(&wwandev->dev, "port %s disconnected\n", dev_name(&port->dev));
--	device_unregister(&port->dev);
-+	wwan_port_unregister_wwan(port);
-+
-+	put_device(&port->dev);
- 
- 	/* Release related wwan device */
- 	wwan_remove_dev(wwandev);
+@@ -43,7 +43,6 @@ static struct dentry *wwan_debugfs_dir;
+  *
+  * @id: WWAN device unique ID.
+  * @dev: Underlying device.
+- * @port_id: Current available port ID to pick.
+  * @ops: wwan device ops
+  * @ops_ctxt: context to pass to ops
+  * @debugfs_dir:  WWAN device debugfs dir
+@@ -51,7 +50,6 @@ static struct dentry *wwan_debugfs_dir;
+ struct wwan_device {
+ 	unsigned int id;
+ 	struct device dev;
+-	atomic_t port_id;
+ 	const struct wwan_ops *ops;
+ 	void *ops_ctxt;
+ #ifdef CONFIG_WWAN_DEBUGFS
 -- 
 2.25.1
 
