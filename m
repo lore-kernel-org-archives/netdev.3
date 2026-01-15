@@ -1,50 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEEE39446C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10BD393DD4
 	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 11:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768478220; cv=none; b=hAtE3/dlcYX8uvUTJA//VQmDRbsOwokY3w9Vaw9x6qUxzHZXboCnJz5Hr1GFS828118obiASxf0xcYBK8cpvhOWOYfExdlGM5z9knkJL5+8I2FecTdClUBmrcv7mBSUY/6phBlmiZbbrjaa9f7s4pY99DNqx8PaaqH9/tDKkp7w=
+	t=1768478219; cv=none; b=lEd6ST6oYvkFcNPuxxHUhiQjLSk2YS0tDRTQtq/7kK+MQphntME7aV49Z64GEK94urEBwP2JMs4HPmzsFtlKAmDlmRJ8OxoN13QrXByb1/jmY3zowUPHF7OmpDY9AP8S0Fno/pobbudyYj9mO0NCtOgPc/YCdAIHgaVPxgHItIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768478220; c=relaxed/simple;
-	bh=0+S70uDu8MQa0SKUiPhcF4BG83Mz6D8Cx411R2DVh9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwKEGa49amOtFgDJbsrRbVnC2K9hhc+ZM5oJ6EjwrbUbUb9GVVOAmZzrAUNAar2c3ZeLSzmJfPmOBqzuu0qZAwqxml6X6HC53dbT+knP6nsdh3qRbeC0hUNm9dsGMYM5YQIoE0E5xcpkgtETLNBOWE7s2ehJva5vqQc/pG+Deps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PGzcMde4; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1768478219; c=relaxed/simple;
+	bh=9Ram+zm+a/I03dQdDMtdGiHtetxs4RlEtSjVj+5A1gE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bSj3zwKisMiGsaIzO1u3nc5zsjH9XWxoOUvb0LS0W2GrMeQDCAYj0MQNzL1YNxHaUTWVEmlr6jz6CD9z5z0jLlgfZxht31IZgoF/m22x8RfXpVEgJ/3R2Z4FPysaaJkJ5cqeMMKst9zGAuyqysnGpRXIoah1w12VC4kRBVGoetA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IafE6CjI; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PGzcMde4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IafE6CjI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1768478217; x=1800014217;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0+S70uDu8MQa0SKUiPhcF4BG83Mz6D8Cx411R2DVh9g=;
-  b=PGzcMde4MTEgaTc4k7vF0VpMlGVlZrf8721lJcYg5X3LYpvXkRabBQTR
-   ivAe+K7X1m4Ns31wX3OpPSzECT6gMwlPkbn+f6smLdAZrtrscECGTh8fO
-   LmhVCjn7KyotI2qBqgcDI5TWPurZzLOBiE/mGCnk9t+rYlpZWmCDIglnO
-   gbhGDm5TN/WaSvDA3mXKlBV2zv+Jci785xZ1wfFHX1cR5aY2YqT5Xey2s
-   E56zSlmPWOciAU0M8//qteqopI5/PNcm7R4fjtVQ8jqUQ7ArBpJcRbutu
-   V401EQSl6vPJ0XthM6TVEnrltIxbtV9LOiqpvmnq8+PBK0oL8mb44dex3
-   g==;
-X-CSE-ConnectionGUID: 0pxE9Qy0TN6FguumT7kbRg==
-X-CSE-MsgGUID: 1jyw6Db3TE29Nj/GlHJrow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="95258957"
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9Ram+zm+a/I03dQdDMtdGiHtetxs4RlEtSjVj+5A1gE=;
+  b=IafE6CjIiLvjQrdhK41htjs6VJT/4GNTnz0mHro0yMNFPR3jSnLKWIP5
+   boyJiVlsiK1uy/qJpWtUeJ37rInnZaQr/xkW0B12g+CQNVKH6kON8Wwm7
+   ELZU2TI0kwba+bxw40TgtOt9LTU5NDPyQcDvzHWwBVfoT30GljWFOz9QA
+   AOdub59qVLCEkbgeK+raGAJas6lKXIHsrodKBU5CqYFBn3xb2j6QVjsSp
+   IAuDCrqeH7u4BhZf8rvJfhkrA1CFrDg5/Vo7QXSW99mrwOjkp/296SDD0
+   MwQRnCL7z/0zqUhPvNLRnWGFd955gaSFsKAPYnm95p5M10NYP1RHEFreb
+   w==;
+X-CSE-ConnectionGUID: BnxA2VoPSZe5c0xE701M9g==
+X-CSE-MsgGUID: W3GeB00hQ+utU/eXdsKFWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="80503310"
 X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="95258957"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 03:56:51 -0800
-X-CSE-ConnectionGUID: bPRuGqwsQ2C7kDFAcuOl4A==
-X-CSE-MsgGUID: LIqjvCdPRx2v/O3HiRO8bw==
+   d="scan'208";a="80503310"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 03:56:52 -0800
+X-CSE-ConnectionGUID: Aczuku30QweCUDg76X7DZg==
+X-CSE-MsgGUID: u17iqXRlS8GlGq8xMBK5pQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="209413879"
+   d="scan'208";a="204078624"
 Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa005.fm.intel.com with ESMTP; 15 Jan 2026 03:56:47 -0800
+  by orviesa006.jf.intel.com with ESMTP; 15 Jan 2026 03:56:49 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id F423F9B; Thu, 15 Jan 2026 12:56:46 +0100 (CET)
+	id EE3AB98; Thu, 15 Jan 2026 12:56:46 +0100 (CET)
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 To: netdev@vger.kernel.org
 Cc: Ian MacDonald <ian@netstatz.com>,
@@ -61,12 +60,10 @@ Cc: Ian MacDonald <ian@netstatz.com>,
 	Salvatore Bonaccorso <carnil@debian.org>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH net-next v3 2/4] net: ethtool: Add support for 80Gbps speed
-Date: Thu, 15 Jan 2026 12:56:44 +0100
-Message-ID: <20260115115646.328898-3-mika.westerberg@linux.intel.com>
+Subject: [PATCH net-next v3 0/4] net: thunderbolt: Various improvements
+Date: Thu, 15 Jan 2026 12:56:42 +0100
+Message-ID: <20260115115646.328898-1-mika.westerberg@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260115115646.328898-1-mika.westerberg@linux.intel.com>
-References: <20260115115646.328898-1-mika.westerberg@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,110 +72,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-USB4 v2 link used in peer-to-peer networking is symmetric 80Gbps so in
-order to support reading this link speed, add support for it to ethtool.
+Hi all,
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
----
-I had to update include/linux/phylink.h as well, I hope it's fine to just
-put it into middle and changing all the following bits accordingly. These
-does not seem to be user-facing.
+This series improves the Thunderbolt networking driver so that it should
+work with the bonding driver.
 
- drivers/net/phy/phy-caps.h   | 1 +
- drivers/net/phy/phy-core.c   | 2 ++
- drivers/net/phy/phy_caps.c   | 2 ++
- drivers/net/phy/phylink.c    | 1 +
- include/linux/phylink.h      | 7 ++++---
- include/uapi/linux/ethtool.h | 1 +
- 6 files changed, 11 insertions(+), 3 deletions(-)
+The discussion that started this patch series can be read below:
 
-diff --git a/drivers/net/phy/phy-caps.h b/drivers/net/phy/phy-caps.h
-index 4951a39f3828..fdc489fe3a2a 100644
---- a/drivers/net/phy/phy-caps.h
-+++ b/drivers/net/phy/phy-caps.h
-@@ -25,6 +25,7 @@ enum {
- 	LINK_CAPA_40000FD,
- 	LINK_CAPA_50000FD,
- 	LINK_CAPA_56000FD,
-+	LINK_CAPA_80000FD,
- 	LINK_CAPA_100000FD,
- 	LINK_CAPA_200000FD,
- 	LINK_CAPA_400000FD,
-diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-index 277c034bc32f..4fd264ece09e 100644
---- a/drivers/net/phy/phy-core.c
-+++ b/drivers/net/phy/phy-core.c
-@@ -47,6 +47,8 @@ const char *phy_speed_to_str(int speed)
- 		return "50Gbps";
- 	case SPEED_56000:
- 		return "56Gbps";
-+	case SPEED_80000:
-+		return "80Gbps";
- 	case SPEED_100000:
- 		return "100Gbps";
- 	case SPEED_200000:
-diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
-index 3a05982b39bf..3c53d3a746f2 100644
---- a/drivers/net/phy/phy_caps.c
-+++ b/drivers/net/phy/phy_caps.c
-@@ -21,6 +21,7 @@ static struct link_capabilities link_caps[__LINK_CAPA_MAX] __ro_after_init = {
- 	{ SPEED_40000, DUPLEX_FULL, {0} }, /* LINK_CAPA_40000FD */
- 	{ SPEED_50000, DUPLEX_FULL, {0} }, /* LINK_CAPA_50000FD */
- 	{ SPEED_56000, DUPLEX_FULL, {0} }, /* LINK_CAPA_56000FD */
-+	{ SPEED_80000, DUPLEX_FULL, {0} }, /* LINK_CAPA_80000FD */
- 	{ SPEED_100000, DUPLEX_FULL, {0} }, /* LINK_CAPA_100000FD */
- 	{ SPEED_200000, DUPLEX_FULL, {0} }, /* LINK_CAPA_200000FD */
- 	{ SPEED_400000, DUPLEX_FULL, {0} }, /* LINK_CAPA_400000FD */
-@@ -49,6 +50,7 @@ static int speed_duplex_to_capa(int speed, unsigned int duplex)
- 	case SPEED_40000: return LINK_CAPA_40000FD;
- 	case SPEED_50000: return LINK_CAPA_50000FD;
- 	case SPEED_56000: return LINK_CAPA_56000FD;
-+	case SPEED_80000: return LINK_CAPA_80000FD;
- 	case SPEED_100000: return LINK_CAPA_100000FD;
- 	case SPEED_200000: return LINK_CAPA_200000FD;
- 	case SPEED_400000: return LINK_CAPA_400000FD;
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 43d8380aaefb..c8fd6b91cdd4 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -311,6 +311,7 @@ static struct {
- 	{ MAC_400000FD, SPEED_400000, DUPLEX_FULL, BIT(LINK_CAPA_400000FD) },
- 	{ MAC_200000FD, SPEED_200000, DUPLEX_FULL, BIT(LINK_CAPA_200000FD) },
- 	{ MAC_100000FD, SPEED_100000, DUPLEX_FULL, BIT(LINK_CAPA_100000FD) },
-+	{ MAC_80000FD,  SPEED_80000,  DUPLEX_FULL, BIT(LINK_CAPA_80000FD) },
- 	{ MAC_56000FD,  SPEED_56000,  DUPLEX_FULL, BIT(LINK_CAPA_56000FD) },
- 	{ MAC_50000FD,  SPEED_50000,  DUPLEX_FULL, BIT(LINK_CAPA_50000FD) },
- 	{ MAC_40000FD,  SPEED_40000,  DUPLEX_FULL, BIT(LINK_CAPA_40000FD) },
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 38363e566ac3..20996f5778d1 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -90,9 +90,10 @@ enum {
- 	MAC_40000FD	= BIT(13),
- 	MAC_50000FD	= BIT(14),
- 	MAC_56000FD	= BIT(15),
--	MAC_100000FD	= BIT(16),
--	MAC_200000FD	= BIT(17),
--	MAC_400000FD	= BIT(18),
-+	MAC_80000FD	= BIT(16),
-+	MAC_100000FD	= BIT(17),
-+	MAC_200000FD	= BIT(18),
-+	MAC_400000FD	= BIT(19),
- };
- 
- static inline bool phylink_autoneg_inband(unsigned int mode)
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index eb7ff2602fbb..181243a2d700 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -2190,6 +2190,7 @@ enum ethtool_link_mode_bit_indices {
- #define SPEED_40000		40000
- #define SPEED_50000		50000
- #define SPEED_56000		56000
-+#define SPEED_80000		80000
- #define SPEED_100000		100000
- #define SPEED_200000		200000
- #define SPEED_400000		400000
+  https://lore.kernel.org/netdev/CAFJzfF9N4Hak23sc-zh0jMobbkjK7rg4odhic1DQ1cC+=MoQoA@mail.gmail.com/
+
+The previous version of the series can be seen here:
+
+  v2: https://lore.kernel.org/netdev/20260109122606.3586895-1-mika.westerberg@linux.intel.com/
+  v1: https://lore.kernel.org/netdev/20251127131521.2580237-1-mika.westerberg@linux.intel.com/
+
+Changes from v2:
+  - Drop the patch that allows changing MTU. It is not necessary as we fill
+    in the min/max_mtu already.
+  - Updated code under drivers/net/phy/ to deal with the new SPEED_80000.
+  - Updated bond_3ad.c::__get_agg_bandwidth() with the new speed as well.
+  - Added review tags from Andrew.
+
+Changes from v1:
+  - Add SPEED_80000
+  - Add support for SPEED_80000 for ethtool and 3ad bonding driver
+  - Use SPEED_80000 with the USB4 v2 symmetric link
+  - Fill blank for supported and advertising.
+
+Ian MacDonald (1):
+  net: thunderbolt: Allow reading link settings
+
+Mika Westerberg (3):
+  net: thunderbolt: Allow changing MAC address of the device
+  net: ethtool: Add support for 80Gbps speed
+  bonding: 3ad: Add support for SPEED_80000
+
+ drivers/net/bonding/bond_3ad.c |  9 ++++++
+ drivers/net/phy/phy-caps.h     |  1 +
+ drivers/net/phy/phy-core.c     |  2 ++
+ drivers/net/phy/phy_caps.c     |  2 ++
+ drivers/net/phy/phylink.c      |  1 +
+ drivers/net/thunderbolt/main.c | 53 ++++++++++++++++++++++++++++++++++
+ include/linux/phylink.h        |  7 +++--
+ include/uapi/linux/ethtool.h   |  1 +
+ 8 files changed, 73 insertions(+), 3 deletions(-)
+
 -- 
 2.50.1
 
