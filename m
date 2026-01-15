@@ -1,81 +1,83 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8433BF2FE;
-	Thu, 15 Jan 2026 17:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AEA33993;
+	Thu, 15 Jan 2026 17:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496845; cv=none; b=OUvo2GH3loJ68oTu+h5dm6MyyGX84yxXbZXRDWOMaZqww1X+6Bj0aID/7F9zIRBThPLq32UkoAiBEwZTSNV5vqUKUE6jLe3yYB3wlLo1yF6lqJm+38+IJPJ7I1zyNnbwjZn53NsronPxMt8zK+MfwVdYMcX/G5CbK7X8XSuiYP8=
+	t=1768496900; cv=none; b=cSMQDfoIlaolkWqEgFpn6ZZOdx0x40cPX8hw7mKoWNd25dEqMymfiUBA0RRqCglNczZA9RgPhZdfiDQou1nSAEejAqUwt2xcAkK5qtuS4RZEg5eNiQ9yWOO5cHDEKmer4ceFPrBbXk6YuWOr7iOq524bllbWjQtyXCixcZYJXuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496845; c=relaxed/simple;
-	bh=Y5bCUzwpR7yHK2M2CwdzEcqkSnHX5QkN2HJ2y+FYJck=;
+	s=arc-20240116; t=1768496900; c=relaxed/simple;
+	bh=iOcpCIZ+a4vdsBx+sEdiZ2mYqK9JkOiq05tb+TdjeNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AXksb2NyBvClUVEx+RHsccTrN7e7LgeJjXvOckTZhPxLhe0ZipiW/PTqGrx/iSQNGzpDWgacq4qUX/4U3ssKsrMvG4dUi6D1zh8J9z1C91THeqXnZstI0I3Ygls5CZpg18nMUNu9ddhNT7TDzcdoLwb1GMtb/20bNMapMO8rgpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id D3A9E606D9; Thu, 15 Jan 2026 18:07:08 +0100 (CET)
-Date: Thu, 15 Jan 2026 18:07:03 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Scott Mitchell <scott.k.mitch1@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, kadlec@netfilter.org,
-	phil@nwl.cc, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot@syzkaller.appspotmail.com
-Subject: Re: [PATCH v5] netfilter: nfnetlink_queue: optimize verdict lookup
- with hash table
-Message-ID: <aWketzn78tzo5anB@strlen.de>
-References: <20251122003720.16724-1-scott_mitchell@apple.com>
- <aWWQ-ooAmTIEhdHO@chamomile>
- <CAFn2buDeCxJp3OHDifc5yX0pQndmLCKc=PShT+6Jq3-uy8C-OA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dL3dngSDaVq0Oxr1kxjm2PJLcMkuP31pGx2K+2IhTsU+ypPzc4wvbszvpUWLJuvsjTNttPRpwE/pI4ewWcOfzAr3+k7rq4hWfby9BhPxc+hXo5BGzcgkLPCJYT31/D61bwhU6Aybg42HyvOilpAY1AIg/5JMwwndlY6N2h7uPUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1yIGlI3; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1yIGlI3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB4EC16AAE;
+	Thu, 15 Jan 2026 17:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768496900;
+	bh=iOcpCIZ+a4vdsBx+sEdiZ2mYqK9JkOiq05tb+TdjeNc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s1yIGlI3tuUg/NO2qx6O647UlNwXPcLKi71SUUFXNzkFVG+7072TXoWKG9KBeIv3X
+	 k6zi/1c6SJu38yetGEtkdXcWBT6bv6b1Jid1keiPzIv9btU2FzYyxDOKvGLmhmdfJg
+	 P63Fds8Oetnvb8+R1XOcc10yubbOZaDJILZsxSVwoAGfdLuc0WkwQO3qOhX4x0f9Bf
+	 Weov/+lWZw0okq9OmyKnrZtDgfLrDK8xzet46Fxr5EZbgZZwELaE4gQhy5Zkz3XGuz
+	 Kgn4u2sSdpcK6IUkeLQls3S64gvP/K86TAiLfTXTWop1m0U0HCCyehX1H3efyUmfrG
+	 JhRc5L0SNDL0g==
+Date: Thu, 15 Jan 2026 17:08:17 +0000
+From: Simon Horman <horms@kernel.org>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	linux-mips@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] pcnet32: remove VLB support
+Message-ID: <aWkfAQNO8PQes7sV@horms.kernel.org>
+References: <20260107071831.32895-1-enelsonmoore@gmail.com>
+ <20260109180443.GO345651@kernel.org>
+ <alpine.DEB.2.21.2601110027520.30566@angie.orcam.me.uk>
+ <aWVxAVHWTOgEcwAD@alpha.franken.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFn2buDeCxJp3OHDifc5yX0pQndmLCKc=PShT+6Jq3-uy8C-OA@mail.gmail.com>
+In-Reply-To: <aWVxAVHWTOgEcwAD@alpha.franken.de>
 
-Scott Mitchell <scott.k.mitch1@gmail.com> wrote:
-> > > +     NFQA_CFG_HASH_SIZE,             /* __u32 hash table size (rounded to power of 2) */
-> >
-> > This should use the rhashtable implementation, I don't find a good
-> > reason why this is not used in first place for this enhancement.
+On Mon, Jan 12, 2026 at 11:09:05PM +0100, Thomas Bogendoerfer wrote:
+> On Sun, Jan 11, 2026 at 12:40:56AM +0000, Maciej W. Rozycki wrote:
+> > [+cc Thomas, linux-mips]
+> > 
+> > On Fri, 9 Jan 2026, Simon Horman wrote:
+> > 
+> > > > This allows the code managing device instances to be simplified
+> > > > significantly. The VLB bus is very obsolete and last appeared on
+> > > > P5 Pentium-era hardware. Support for it has been removed from
+> > > > other drivers, and it is highly unlikely anyone is using it with
+> > > > modern Linux kernels.
+> > > > 
+> > > > Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> > > 
+> > > Hi Ethan,
+> > > 
+> > > I don't think this driver has received much attention for some time.
+> > > So, unless you have hardware to test changes on, I would suggest
+> > > either leaving it alone or, if we suspect there are no users,
+> > > removing it.
+> > 
+> >  You mean discarding the whole of drivers/net/ethernet/amd/pcnet32.c?  If 
+> > so, then it's a hard NAK from me.  It's the onboard/netboot interface of 
+> > the MIPS Malta platform and it continues being used regularly, primarily 
+> > with QEMU setups, although I have actual Malta hardware in my lab too, 
+> > usually running 24/7.  It's one of the primary MIPS plaforms, cf. 
+> > arch/mips/configs/malta_defconfig.
 > 
-> Thank you for the review! I can make the changes. Before implementing,
-> I have a few questions to ensure I understand the preferred approach:
-> 
-> 1. For the "perns" allocation comment - which approach did you have in mind:
->   a) Shared rhashtable in nfnl_queue_net (initialized in
-> nfnl_queue_net_init) with key={queue_num, packet_id}
->   b) Per-instance rhashtable in nfqnl_instance, with lock refactoring
+> I have a few more MIPS systems with PCnet32 chip on board. And this
+> driver was the first network driver for VMware. I see no reason to
+> remove it as it simply works.
 
-You could also go with c), single rhashtable created at module init
-time, like what af_netlink.c is doing.
-
-hash and compare function would then have to include struct net *
-in the hash and the compare.
-
-b) makes no sense; if you do the lock refactoring to also allow
-   GFP_ACCOUNT you could also keep the existing hashtable approach,
-   I think.
-
-> 2. The lock refactoring (GFP_ATOMIC → GFP_KERNEL) is independent of
-> the hash structure choice, correct? We could fix that separately?
-
-Not needed if you go with a) or c).
-
-> 3. Can you help me understand the trade-offs you considered for
-> rhashtable vs hlist_head? Removing the API makes sense, and I want to
-> better understand how to weigh that against runtime overhead (RCU,
-> locks, atomic ops) for future design decisions.
-
-I think for this not using rhashtable is fine, but as-is the patch would
-allow almost unlimited memory consumption due to ability to create 64k
-queues.
+Understood. Thanks for the valuable feedback.
