@@ -1,35 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C03D18AFD;
-	Thu, 15 Jan 2026 11:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88412378D61
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 11:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768475619; cv=none; b=JVRmyrJdXcRNLRdMzBpoU0pr4veta3Syl4qPwUtU7kIK8U5cdlFVwZHp3FVpiGYIlBdLbCdOwcqhcBp7TNT32MmLmYYGlQQq3Ws7ig4cVP1HNWXfbULJLKXo7L/3879mV71xIENfPEWCWcUZMHeIk9zIw9PLijtWdQrzu6Z5oMA=
+	t=1768476185; cv=none; b=M5UNDeJ6GycT2y2HIDF3+a8hbCFBlLEB/dPY1GTrtQcns/rYk+FoMuIzGfAjbpjQlilMEbKMu8rCHHwjycMFLHo9rAj5pQ6jxMyoB3MeVXtOfeEvLOpCF4azKzR12O+bdHmmovz3RGSU1T9BhTith9rkZkG/RWYgABMyptoTn/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768475619; c=relaxed/simple;
-	bh=lrOWhi0ZXiQSDbUZ2b/clYrZAbRkQ08r0GnFK8TGVb8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Cvt9cfpt36nC56d1IfnorQIEJA0P4ulo4jHDWhcWJjFC69WxsRldatRb7sdQFjlsT7I3H0x8oAy91qXjnzzdb18cKurVTuaa94cvjU2STNFJPE3MR4FEHnIVwqoN8eRFFvHGEdeoyqmaww/FIcLhuWQQjVMvjsf4JvhdBFA0FGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDLhYB2S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768476185; c=relaxed/simple;
+	bh=FIwHESQVYuuZxc5uoVG/+Wr/XmXfglSjp8N8KZh0HG4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B+CWdbwMs+RPLOF1dco5g03BPQcm2Gbu6uj4+Z0T1XnocGMPXYGdRbSAiYB4JcnI/Eu46H+lPwWVXVsQklvOgbRm9p38MY/fkA3ocfFmp443qfgY1C3s7M9nLQZug8oD1mKeFBbsp2mPHQy1FGBOnqXmLyLPGFA+aBkBePnbdDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AIRQuZWD; arc=none smtp.client-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDLhYB2S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22279C116D0;
-	Thu, 15 Jan 2026 11:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768475619;
-	bh=lrOWhi0ZXiQSDbUZ2b/clYrZAbRkQ08r0GnFK8TGVb8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nDLhYB2SDUO6m6G7cSvDixR73wwMqFgEm6Drs8feOzMxK7HM7huSDE9dCpapCL6DT
-	 mGSLDdJOedYJQDPa+sZnpT2xo0txxml1MWiCpSKrh7o37MtvZzWBFItGl2cIa2qENR
-	 /d778umFekRWiuvjRr97dOIdTfpQSVQQOca5xkBmQyICSHYtFSPnp//1rlo2a4YrBc
-	 RzNRp3rDM3SvSF2WzpJBUBLNf7iDJK+79JEYBuFWSRHSobQdy3GzbgNt3WXOT2phlw
-	 tu7UUal44+T6On1Xdgvz1br+Zoz1h+YVGCPHH+QmvWc4EOgIvo1nS6L2TrGtWtfGHf
-	 au/Ts5IB9qAMw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id A44943809A3D;
-	Thu, 15 Jan 2026 11:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AIRQuZWD"
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a0c09bb78cso5219795ad.0
+        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 03:23:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768476183; x=1769080983; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vt3QKUVCCxglq0avEJJmb3HplxqAgTVpWZ+HnoWeEpI=;
+        b=AIRQuZWDOAr/xMbRd4J5uNHasYRWWCx4+9yRe+fU0zwHiPidvmnfkumAnmvO6+Axn4
+         uLnY1wgLQyZDyRTTiTRzqKbgDEGTl2NE2jFj/ZqDOm9z4lIv3BjJieZFP7aqIKp4mdMj
+         hYPmy64EAU3IM+Ez/yL+iDFvjl2pTc4az4Eaeokd/hMimCC8JT5yrINWEREsbvS3o41l
+         vkcM1abEbjHajxxjahnWbbLUzR/wsqfwvT75qmIHNxE0d7Zx72FLCwLZ7rfHcyFXwihp
+         +0Uuk+q56Gx3hCoNqe0qhND2wyXbM/9Mp9BG/3xIu+E6rQspjq27LnJg9MvBiBRgnOdV
+         3VGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768476183; x=1769080983;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vt3QKUVCCxglq0avEJJmb3HplxqAgTVpWZ+HnoWeEpI=;
+        b=RA+9Lk4UxZpxQA6xZZLnB9q+Jc0PFqqWh4raG0SnEf3J2+Bju9zDN26uDdabiZAtQX
+         IhIqXKMW8G33dT0c4d20RNVp+GBg9587X52cHm70kI1YjkrGzHAexdKaIv87xlEPpT4O
+         KiAzk15UCkrkBaJwTg2FMbm0m8YW8R1Y2TmSwmy2OvQyfD71mMWrmbTNoq0r9/Y+OO6h
+         TIQAovm2aOl9ahE1Lk225XmkWbrYd6EWTWBuLo5anx2TJkiep6WC9cG0sOJwgtb7iVIC
+         MzSkeZQIsbM3vGHi0tCtCTRkXgKKiFAABzz2IugaofB6z1RLBxKkqMi8YZrZgBSsZU++
+         t85g==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ1nQZD3yUvzPJvIVEIkOK87BrzxAIM1kyXOuYsawi97RZmeHSEIZGK9T7U5Z2kgMzD+7CBDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg6dLbrChiPKrLc3E3zFJz72P/5JVj8iL27PXZDlrs+9vblVAl
+	MH6896d94QI96E5yScKL+aM0f+P+traSGlSsKiS+ooH7MrN5Dtxs4g3M
+X-Gm-Gg: AY/fxX5uGAvnBLHp5pQb38L4UQIX8yPBBfVLaK00JgoRoqekOY+5c5o+7sV+j7L1s0O
+	qC+d2a/rfpUs1GHcBunM+MW3mO/NIJI8JYvRU+ppBnKOBRkJ4tgS5Vqq4IOQ2uPzChZjfdhGefq
+	UGYkPPqODOjqHBaFyfLPphKTIRz0hRm124FmpKKP3HSA4Gy0xPwynxQUN5kY2GAju/EcpawRzO+
+	bUzsAWt2lPSdupI19g0jUuO7oyXFanXRXuuwnn7SYgM0RMrggvhTMn+3+wnwzO3mYPAlSZBwsrE
+	rLdGKLddC87sgXkfYuKbfwQ8xELB1o2MGTqLsHsG9DpocFiaZ4FR8PB76mAufipChG3p0PZk6bq
+	1z9Wt8DKqZ1hPOPNuf8q/oHAM1/SznS2dFG+0DfwegPzB8auEVC4Q7TLserOm9Kyso6w2KjLi6r
+	GdO19xT5Y=
+X-Received: by 2002:a17:902:dac5:b0:2a0:9047:a738 with SMTP id d9443c01a7336-2a700a1c294mr23718005ad.19.1768476182752;
+        Thu, 15 Jan 2026 03:23:02 -0800 (PST)
+Received: from 7940hx ([160.187.0.149])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3ba03f9sm248523225ad.0.2026.01.15.03.22.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 03:23:02 -0800 (PST)
+From: Menglong Dong <menglong8.dong@gmail.com>
+X-Google-Original-From: Menglong Dong <dongml2@chinatelecom.cn>
+To: ast@kernel.org,
+	andrii@kernel.org
+Cc: daniel@iogearbox.net,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	jiang.biao@linux.dev,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf-next v10 00/12] bpf: fsession support
+Date: Thu, 15 Jan 2026 19:22:34 +0800
+Message-ID: <20260115112246.221082-1-dongml2@chinatelecom.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,51 +93,182 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V2 0/3] Introduce and use netif_xmit_timeout_ms()
- helper
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176847541141.3946378.12441502657710309903.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Jan 2026 11:10:11 +0000
-References: <1768209383-1546791-1-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1768209383-1546791-1-git-send-email-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, shenjian15@huawei.com,
- salil.mehta@huawei.com, shaojijie@huawei.com, saeedm@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, gal@nvidia.com,
- moshe@nvidia.com, shshitrit@nvidia.com, ychemla@nvidia.com, jhs@mojatatu.com
 
-Hello:
+Hi, all.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+In this version, I followed Andrii's suggestions in v9, and did many
+adjustment.
 
-On Mon, 12 Jan 2026 11:16:20 +0200 you wrote:
-> Hi,
-> 
-> This is V2, find V1 here:
-> https://lore.kernel.org/all/1764054776-1308696-1-git-send-email-tariqt@nvidia.com/
-> 
-> This series by Shahar introduces a new helper function
-> netif_xmit_timeout_ms() to check if a TX queue has timed out and report
-> the timeout duration.
-> It also encapsulates the check for whether the TX queue is stopped.
-> 
-> [...]
+overall
+-------
+Sometimes, we need to hook both the entry and exit of a function with
+TRACING. Therefore, we need define a FENTRY and a FEXIT for the target
+function, which is not convenient.
 
-Here is the summary with links:
-  - [net-next,V2,1/3] net: Introduce netif_xmit_timeout_ms() helper
-    https://git.kernel.org/netdev/net-next/c/cfbc8b6babf2
-  - [net-next,V2,2/3] net: hns3: Use netif_xmit_timeout_ms() helper
-    https://git.kernel.org/netdev/net-next/c/3ae02d659773
-  - [net-next,V2,3/3] net/mlx5e: Refine TX timeout handling to skip non-timed-out SQ
-    https://git.kernel.org/netdev/net-next/c/b0ba734516d2
+Therefore, we add a tracing session support for TRACING. Generally
+speaking, it's similar to kprobe session, which can hook both the entry
+and exit of a function with a single BPF program.
 
-You are awesome, thank you!
+We allow the usage of bpf_get_func_ret() to get the return value in the
+fentry of the tracing session, as it will always get "0", which is safe
+enough and is OK.
+
+Session cookie is also supported with the kfunc bpf_session_cookie().
+In order to limit the stack usage, we limit the maximum number of cookies
+to 4.
+
+kfunc design
+------------
+In order to keep consistency with existing kfunc, we don't introduce new
+kfunc for fsession. Instead, we reuse the existing kfunc
+bpf_session_cookie() and bpf_session_is_return().
+
+The prototype of bpf_session_cookie() and bpf_session_is_return() don't
+satisfy our needs, so we change their prototype by adding the argument
+"void *ctx" to them.
+
+We inline bpf_session_cookie() and bpf_session_is_return() for fsession
+in the verifier directly. Therefore, we don't need to introduce new
+functions for them.
+
+architecture
+------------
+The fsession stuff is arch related, so the -EOPNOTSUPP will be returned if
+it is not supported yet by the arch. In this series, we only support
+x86_64. And later, other arch will be implemented.
+
+Changes v9 -> v10:
+* 1st patch: some small adjustment, such as use switch in
+  bpf_prog_has_trampoline()
+* 2nd patch: some adjustment to the commit log and comment
+* 3rd patch:
+  - drop the declaration of bpf_session_is_return() and
+    bpf_session_cookie()
+  - use vmlinux.h instead of bpf_kfuncs.h in uprobe_multi_session.c,
+    kprobe_multi_session_cookie.c and uprobe_multi_session_cookie.c
+* 4th patch:
+  - some adjustment to the comment and commit log
+  - rename the prefix from BPF_TRAMP_M_ tp BPF_TRAMP_SHIFT_
+  - remove the definition of BPF_TRAMP_M_NR_ARGS
+  - check the program type in bpf_session_filter()
+* 5th patch: some adjustment to the commit log
+* 6th patch:
+  - add the "reg" to the function arguments of emit_store_stack_imm64()
+  - use the positive offset in emit_store_stack_imm64()
+* 7th patch:
+  - use "|" for func_meta instead of "+"
+  - pass the "func_meta_off" to invoke_bpf() explicitly, instead of
+    computing it with "stack_size + 8"
+  - pass the "cookie_off" to invoke_bpf() instead of computing the current
+    cookie index with "func_meta"
+* 8th patch:
+  - split the modification to bpftool to a separate patch
+* v9: https://lore.kernel.org/bpf/20260110141115.537055-1-dongml2@chinatelecom.cn/
+
+Changes v8 -> v9:
+* remove the definition of bpf_fsession_cookie and bpf_fsession_is_return
+  in the 4th and 5th patch
+* rename emit_st_r0_imm64() to emit_store_stack_imm64() in the 6th patch
+* v8: https://lore.kernel.org/bpf/20260108022450.88086-1-dongml2@chinatelecom.cn/
+
+Changes v7 -> v8:
+* use the last byte of nr_args for bpf_get_func_arg_cnt() in the 2nd patch
+* v7: https://lore.kernel.org/bpf/20260107064352.291069-1-dongml2@chinatelecom.cn/
+
+Changes v6 -> v7:
+* change the prototype of bpf_session_cookie() and bpf_session_is_return(),
+  and reuse them instead of introduce new kfunc for fsession.
+* v6: https://lore.kernel.org/bpf/20260104122814.183732-1-dongml2@chinatelecom.cn/
+
+Changes v5 -> v6:
+* No changes in this version, just a rebase to deal with conflicts.
+* v5: https://lore.kernel.org/bpf/20251224130735.201422-1-dongml2@chinatelecom.cn/
+
+Changes v4 -> v5:
+* use fsession terminology consistently in all patches
+* 1st patch:
+  - use more explicit way in __bpf_trampoline_link_prog()
+* 4th patch:
+  - remove "cookie_cnt" in struct bpf_trampoline
+* 6th patch:
+  - rename nr_regs to func_md
+  - define cookie_off in a new line
+* 7th patch:
+  - remove the handling of BPF_TRACE_SESSION in legacy fallback path for
+    BPF_RAW_TRACEPOINT_OPEN
+* v4: https://lore.kernel.org/bpf/20251217095445.218428-1-dongml2@chinatelecom.cn/
+
+Changes v3 -> v4:
+* instead of adding a new hlist to progs_hlist in trampoline, add the bpf
+  program to both the fentry hlist and the fexit hlist.
+* introduce the 2nd patch to reuse the nr_args field in the stack to
+  store all the information we need(except the session cookies).
+* limit the maximum number of cookies to 4.
+* remove the logic to skip fexit if the fentry return non-zero.
+* v3: https://lore.kernel.org/bpf/20251026030143.23807-1-dongml2@chinatelecom.cn/
+
+Changes v2 -> v3:
+* squeeze some patches:
+  - the 2 patches for the kfunc bpf_tracing_is_exit() and
+    bpf_fsession_cookie() are merged into the second patch.
+  - the testcases for fsession are also squeezed.
+* fix the CI error by move the testcase for bpf_get_func_ip to
+  fsession_test.c
+* v2: https://lore.kernel.org/bpf/20251022080159.553805-1-dongml2@chinatelecom.cn/
+
+Changes v1 -> v2:
+* session cookie support.
+  In this version, session cookie is implemented, and the kfunc
+  bpf_fsession_cookie() is added.
+* restructure the layout of the stack.
+  In this version, the session stuff that stored in the stack is changed,
+  and we locate them after the return value to not break
+  bpf_get_func_ip().
+* testcase enhancement.
+  Some nits in the testcase that suggested by Jiri is fixed. Meanwhile,
+  the testcase for get_func_ip and session cookie is added too.
+* v1: https://lore.kernel.org/bpf/20251018142124.783206-1-dongml2@chinatelecom.cn/
+
+Menglong Dong (12):
+  bpf: add fsession support
+  bpf: use the least significant byte for the nr_args in trampoline
+  bpf: change prototype of bpf_session_{cookie,is_return}
+  bpf: support fsession for bpf_session_is_return
+  bpf: support fsession for bpf_session_cookie
+  bpf,x86: introduce emit_store_stack_imm64() for trampoline
+  bpf,x86: add fsession support for x86_64
+  libbpf: add fsession support
+  bpftool: add fsession support
+  selftests/bpf: add testcases for fsession
+  selftests/bpf: add testcases for fsession cookie
+  selftests/bpf: test fsession mixed with fentry and fexit
+
+ arch/x86/net/bpf_jit_comp.c                   |  71 +++++--
+ include/linux/bpf.h                           |  36 ++++
+ include/uapi/linux/bpf.h                      |   1 +
+ kernel/bpf/btf.c                              |   2 +
+ kernel/bpf/syscall.c                          |  18 +-
+ kernel/bpf/trampoline.c                       |  53 +++++-
+ kernel/bpf/verifier.c                         |  86 +++++++--
+ kernel/trace/bpf_trace.c                      |  49 +++--
+ net/bpf/test_run.c                            |   1 +
+ net/core/bpf_sk_storage.c                     |   1 +
+ tools/bpf/bpftool/common.c                    |   1 +
+ tools/include/uapi/linux/bpf.h                |   1 +
+ tools/lib/bpf/bpf.c                           |   1 +
+ tools/lib/bpf/libbpf.c                        |   3 +
+ tools/testing/selftests/bpf/bpf_kfuncs.h      |   3 -
+ .../selftests/bpf/prog_tests/fsession_test.c  |  90 +++++++++
+ .../bpf/prog_tests/tracing_failure.c          |   2 +-
+ .../selftests/bpf/progs/fsession_test.c       | 179 ++++++++++++++++++
+ .../bpf/progs/kprobe_multi_session_cookie.c   |  15 +-
+ .../bpf/progs/uprobe_multi_session.c          |   7 +-
+ .../bpf/progs/uprobe_multi_session_cookie.c   |  15 +-
+ .../progs/uprobe_multi_session_recursive.c    |  11 +-
+ 22 files changed, 550 insertions(+), 96 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/fsession_test.c
+ create mode 100644 tools/testing/selftests/bpf/progs/fsession_test.c
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
