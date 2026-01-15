@@ -1,73 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D0357A25;
-	Thu, 15 Jan 2026 10:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3EF361DDD
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 10:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768471926; cv=none; b=hrMb+uHq13fYITSbdc7/7EX8xIUG4pCsfbltKQUP9H3gHf0rCCbKlvB/x3cweqYDpfAr0GQcLQc1yE+Z57JfGouHGRkLA7z9b0lCxV7mv4gjHpja9B9aCkORjERJx45pBBWcePJQL0QPmmejY6jT4qwLphpJYxGUO6oKo1G/2d8=
+	t=1768472199; cv=none; b=G4LIdFNEo2giPH/cpt9UScju74sP9chgFzCv0BL9dp32ozEJ2itOCUlM6sseMZzSxqWKI2wAtEe5k07SE4MwwL7BjJHzhupEw3MERmhfmdDpghO5SXvyCxuK/46Y3fLY8h58ZWtkD0HzTL97tjblBKJlJk9QMa6UmPE9waGp8OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768471926; c=relaxed/simple;
-	bh=tx5ox7cf+WJOeQAnUn6eddrERLDC/s/3WemE93oK43A=;
+	s=arc-20240116; t=1768472199; c=relaxed/simple;
+	bh=zwLrvsF0GMvPSCBeAjAWQZcmbWMJVYh05GZu4CqMmyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MX3IMVMhMTtUaDwudkfUM403kzFFOisUbYtjuc7v9WblxwRYKbbEv1otuLwoy+AftwrZJoEv/LjpvZwkLvCSp20+aqQUsZJOsMlCHu5Xbr7koSmvUpauMDK8dFkHiezPnadvHgAjmuKbSKIy3cRyJes7itgn06i7UB8YtZeIveU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hA5ZbP/v; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CMhv5+QntyXBXCxUqPs7/LkivwGsU88DPtceyyu5MXjawqTXU+ZOLwOcTOPblTit+UOXIeeJoySuEhwEmHpW+R+O01hA6Y+rqyDclNvkEblrgXK5w4yEEQwDuXL75zSecboWnGUp2YCzDdFzrmdEWNCekBtnmGj0S9LaBidyvkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=O1AfzI1f; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hA5ZbP/v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768471925; x=1800007925;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tx5ox7cf+WJOeQAnUn6eddrERLDC/s/3WemE93oK43A=;
-  b=hA5ZbP/vr9Nw20IvoiAugazAAp4LvgX6gyHtSzQnhxMM+vChJN7D4OtH
-   KT6ybz24esLtdOyPyErPs+4IAKlPZ85GO8dg2V+KTdsSKW4FZS5KLKhA7
-   xpfgOvKKgzH7C85BxUHA8P+3NbAjtKOb1GMetbmFbYrPV1JVFv5x+u5OP
-   ku5UvKwsroO5uFlv+bGJpVRaCNA1b94poxCffePp32AQkWDFoW8h6Ua+D
-   zQKYy2ulDp79YZpJ5f4UD2+yVB2Ry41C3r0VlIV6ngigXP1RggFSS8F+r
-   UFecM0mDx1daVpdrDJWxQj2vRLXf044sM+kvziBEsPEPofVWAw00SiIN1
-   g==;
-X-CSE-ConnectionGUID: NWAdZUBQSvGtuw5Q1IYiOA==
-X-CSE-MsgGUID: l/nDkJudStWJINSspSS9Fw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="95253465"
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="95253465"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 02:12:02 -0800
-X-CSE-ConnectionGUID: pTIX+ck0SgKrV1X6qCteVg==
-X-CSE-MsgGUID: bH39DakyT76AUG+yMF9u4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="235630095"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 15 Jan 2026 02:11:57 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vgKKY-00000000HpY-2zGP;
-	Thu, 15 Jan 2026 10:11:54 +0000
-Date: Thu, 15 Jan 2026 18:11:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="O1AfzI1f"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801d24d91bso258065e9.2
+        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 02:16:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768472195; x=1769076995; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zwLrvsF0GMvPSCBeAjAWQZcmbWMJVYh05GZu4CqMmyk=;
+        b=O1AfzI1fLMDVa3SD3LO45cvIiavE+LKVM93UrB7hJYcD0m6yOptHdhokkT8bTYka6C
+         3sXJ7mv88zLWCKOA1K4tTNEUpgl5sRbxQkPkY/JxJ39NJl8UGOMFq8kcmDmf/klRNfzu
+         nJ2y1cuRJKr4oZuTg+fls6YXgf7Cmk8scFvR14UdHkOvJCMLVgfHdOWaDArlFHS8i+in
+         /rjDe30x+8k/vU2nriXmVzYvgsK75zbtsHQliWEWoqaCQIzSRCmZBSVIuTAHgBAk/qqa
+         BhvMnVF7Ni7MX4Rr/TPuFFrwopkxq3IhJQiQJ1qEZjzsylkwRiXGFMLOKcT5/GAwd0bX
+         FnhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768472195; x=1769076995;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zwLrvsF0GMvPSCBeAjAWQZcmbWMJVYh05GZu4CqMmyk=;
+        b=ACuArZ4xnkfAvFmWll1QI2T32SZ4SyRs3+/byWb34FjIyH+ni/rOM4McwlN8zrQqgz
+         0x1s9hvT0tShIR15MQMrvfCSq63Pf9Tc9caEruNHqABlN9DcYV1mP2uu1msNv6pJQQdD
+         SWk2oM+4SdQYSBcoplTEY2Ets7TvNM4PYLcUT7tC+tATTEDGFpEY8HgIulNFJJYsH2FN
+         s3ly5xzHYf3cLCxmU6ZZwS4gEswK8F+6Kkk5vbYn74AF7f+TIBDKfCP6if9trVcfJJDH
+         Nn+xZDExNQ8llUYWIepKnVHR1Ee0PIPAaGwH67Z/BOCY2EDTRGZKxu0B3Gy8Zz1hq0DV
+         pz3g==
+X-Forwarded-Encrypted: i=1; AJvYcCU6LwuxgxiPr4Q5Gw1HFCPKTL+9vkARLLuXBt/1l26TYEtE8jxI06orai1yXz82xs8Y4Eq2ZtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHkOSYEIHMLNGURMFuQK1iruMY0PdLVANHJ3LqHsUG1Rznw2C5
+	/8IKxbwJcTGRTkrgRICfDUQejyAfKK3ho9tyvl6BtLzI1LbURkyNjw0DpnakahAqHlM=
+X-Gm-Gg: AY/fxX5pPlqleW6dduvSTD+KkJIxMBQfzcYfPKbvrwD3/gaVWQdOj1jeOod4MT4vJk+
+	1hkE7QmSsQrB7j62SYmPMflZvqriG3c+bYZOzzBEP4ehQJCztJgUVnBiUPaDTLfgdWOdZ8owfZl
+	ZYiFIjFXDDrhsVpyn9ID8ORoPk0NyEK/9oGZzwcIBF/dBjYlLZWvwGRkJOI5zY0B6caOGY4kyor
+	J/pUGzPNuEuAn42Ka71F6wt2T2oTSWXlOYbTaX/D+DJqAs9cteYoKnbxSJj8e55I/poM5XA1D3j
+	51yFcKy3N4Tlx+TJng8hp2OFb8I6TzcYr5jzyKwfbkI2zNw9jcylsIllbXBRlw4WRSLSwXvafDs
+	7KZUvPPzPpl8lc8JVbM/NXPFNDM0QcQBIDW2ONFrUlL7mSwTolHliUljrTFa7clDK3ix5r+79qu
+	FlPLynUVJH0GglZQG0JPVm9sZQ
+X-Received: by 2002:a05:600c:608c:b0:477:a246:8398 with SMTP id 5b1f17b1804b1-47ee32e0829mr58296485e9.2.1768472195426;
+        Thu, 15 Jan 2026 02:16:35 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee28144aasm39739585e9.11.2026.01.15.02.16.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 02:16:34 -0800 (PST)
+Date: Thu, 15 Jan 2026 11:16:31 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Daniel Thompson <danielt@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jiri Slaby <jirislaby@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 03/14] phy: qcom-sgmii-eth: add .set_mode() and
- .validate() methods
-Message-ID: <202601151714.J1BAilHy-lkp@intel.com>
-References: <E1vg4vs-00000003SFt-1Fje@rmk-PC.armlinux.org.uk>
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>, linux-um@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
+	linux-serial@vger.kernel.org, netdev@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-hardening@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 07/19] drivers: netconsole: Migrate to
+ register_console_force helper
+Message-ID: <aWi-f9LBJtxGWgWs@pathway.suse.cz>
+References: <20251227-printk-cleanup-part3-v1-0-21a291bcf197@suse.com>
+ <20251227-printk-cleanup-part3-v1-7-21a291bcf197@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,62 +107,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1vg4vs-00000003SFt-1Fje@rmk-PC.armlinux.org.uk>
+In-Reply-To: <20251227-printk-cleanup-part3-v1-7-21a291bcf197@suse.com>
 
-Hi Russell,
+On Sat 2025-12-27 09:16:14, Marcos Paulo de Souza wrote:
+> The register_console_force function was introduced to register consoles
+> even on the presence of default consoles, replacing the CON_ENABLE flag
+> that was forcing the same behavior.
 
-kernel test robot noticed the following build errors:
+I would add "No functional changes." like you did in the other
+similar patches ;-)
 
-[auto build test ERROR on net-next/main]
+> Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Russell-King-Oracle/net-stmmac-qcom-ethqos-remove-mac_base/20260115-054728
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/E1vg4vs-00000003SFt-1Fje%40rmk-PC.armlinux.org.uk
-patch subject: [PATCH net-next 03/14] phy: qcom-sgmii-eth: add .set_mode() and .validate() methods
-config: microblaze-randconfig-r073-20260115 (https://download.01.org/0day-ci/archive/20260115/202601151714.J1BAilHy-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 14.3.0
-smatch version: v0.5.0-8985-g2614ff1a
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260115/202601151714.J1BAilHy-lkp@intel.com/reproduce)
+Nice clean up!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601151714.J1BAilHy-lkp@intel.com/
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-All errors (new ones prefixed by >>):
-
-   drivers/phy/qualcomm/phy-qcom-sgmii-eth.c: In function 'qcom_dwmac_sgmii_phy_speed':
->> drivers/phy/qualcomm/phy-qcom-sgmii-eth.c:294:24: error: 'PHY_INTERFACE_MODE_SGMII' undeclared (first use in this function)
-     294 |         if (submode == PHY_INTERFACE_MODE_SGMII ||
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/phy/qualcomm/phy-qcom-sgmii-eth.c:294:24: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/phy/qualcomm/phy-qcom-sgmii-eth.c:295:24: error: 'PHY_INTERFACE_MODE_1000BASEX' undeclared (first use in this function)
-     295 |             submode == PHY_INTERFACE_MODE_1000BASEX)
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/phy/qualcomm/phy-qcom-sgmii-eth.c:298:24: error: 'PHY_INTERFACE_MODE_2500BASEX' undeclared (first use in this function)
-     298 |         if (submode == PHY_INTERFACE_MODE_2500BASEX)
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/PHY_INTERFACE_MODE_SGMII +294 drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
-
-   288	
-   289	static int qcom_dwmac_sgmii_phy_speed(enum phy_mode mode, int submode)
-   290	{
-   291		if (mode != PHY_MODE_ETHERNET)
-   292			return -EINVAL;
-   293	
- > 294		if (submode == PHY_INTERFACE_MODE_SGMII ||
- > 295		    submode == PHY_INTERFACE_MODE_1000BASEX)
-   296			return SPEED_1000;
-   297	
- > 298		if (submode == PHY_INTERFACE_MODE_2500BASEX)
-   299			return SPEED_2500;
-   300	
-   301		return -EINVAL;
-   302	}
-   303	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards,
+Petr
