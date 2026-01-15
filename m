@@ -1,113 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830D93446D3;
-	Thu, 15 Jan 2026 14:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377393ACEF0
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 15:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768489058; cv=none; b=paH7Q23WXcM3lbspBiAYhe7+QT3tqTRE3v+kyR0i+kcFoW1lgCHbVgo2VIxYRO8dH2KlOv+GoSS9JiWvz2H7Jf+vh31KML3y6QSzjK9HUhCLV9sWxWB2+ez6EJBKUKSf84EzZsQ6aVUm45IShu1WN/ZinEieYyRKVHfth50972k=
+	t=1768490091; cv=none; b=EutuNioND9/e8SkQtLhANCt306zHK6tCireCSSFnnh9kAQv8fmASvVzwEXwz/2EIK8xHm/cFPX3bbBbk4k1yD2PAq+LGooCrvhQlu3micObvYsXH1ej+GQ+vyRRFfbfkYlDxAcup9VJBbo4fJ6Js1PP/ScxrmCUhNdx2rPmdiPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768489058; c=relaxed/simple;
-	bh=ikCvdOXi3FprM5XeYlF5j+h1c627PrYNjEIksGSN63U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tn60CgXGkqYRFWs0Mo9yyuRjg1PK+zfqbFHc7x2IDD81lRA10T17zFJwpD1vPRcTU6D35SnaIEr0lwC0eq+0w+3SjzDatTlUjtOL7hA5LOQo9B8nq/zr8ZET2NWWIgTc4rJToXQqXbnD79DcOnwXA4w59ShlF3hvCzDoTv9syjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlSnY+wN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768490091; c=relaxed/simple;
+	bh=EmdrmrQatIkWYrWc3Tso6zV2W4IPfCbeSJjTG87cs5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VEwaxhT0iXVyfuoL7Jx+kAY+GGY/9ZUbTZec4ey9GQwKVdUZvT+o02Ocre06bo6bKMrIgMpN+Lllc+4RMJM7p/EVBc4Y4l+vaaqBORHyinDb53X1RZn/UeI68foQSBGA5+BZL6u6qhyTgD/chJDvyPR/wYxODqLFNVG9fnv/v0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BBoWYs2h; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlSnY+wN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E4AC116D0;
-	Thu, 15 Jan 2026 14:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768489057;
-	bh=ikCvdOXi3FprM5XeYlF5j+h1c627PrYNjEIksGSN63U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DlSnY+wNH4LqKcXJ2MRlFDUISiNZuAB1mAjqkVlqcJNlJChcmrxrif0kWS5qipu67
-	 2fKSrtqHbwKa+0Sj1AzvuOi6VUSeSp8EPTrPcWPvv05faBO5kj9WSgqFfcvxcul46T
-	 UAjmlFtBA8IQU2J+jtN6fLMHrSFA0MrX2iuWWPcEUCTN7h011EvACFTlDa/+g5yUdu
-	 zYQAoLtyQZOwuW5Ib0NBeZLKrCX1xgJARCcA8rDjXerrSHIMhdnWZsE3Vce1zc/OWO
-	 gBo6YXCctfSPvfh5AE0noWgFT8EYR5pejOqHDitfjr9mYV9rUy7a7Q1Expt0Q4yqBX
-	 AEMb2yxvonClQ==
-Date: Thu, 15 Jan 2026 14:57:32 +0000
-From: Simon Horman <horms@kernel.org>
-To: Meghana Malladi <m-malladi@ti.com>
-Cc: vadim.fedorenko@linux.dev, jacob.e.keller@intel.com, afd@ti.com,
-	pmohan@couthit.com, basharath@couthit.com, vladimir.oltean@nxp.com,
-	rogerq@kernel.org, danishanwar@ti.com, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
-	andrew+netdev@lunn.ch, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH net-next 1/2] net: ti: icssg-prueth: Add Frame Preemption
- MAC Merge support
-Message-ID: <aWkAXHXHHOD9SDBt@horms.kernel.org>
-References: <20260107125111.2372254-1-m-malladi@ti.com>
- <20260107125111.2372254-2-m-malladi@ti.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BBoWYs2h"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88a3d2f3299so9554266d6.2
+        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 07:14:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768490082; x=1769094882; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0XFWhnozczQdBY9wOF6c5V46t5MOgQ+lGzwQjjTNU9A=;
+        b=BBoWYs2hHEOUT6FyQjNm4QI4AIsE5LVnSjCdAXGzD8YvxFZFVkmNnZ/xT+kOqH9z9n
+         MsS0ahH62YfoiSIgriBzvWEtmB0vo1PFHlAQaWDKzDQozcfFRBGQPCzgeVp2zriI4SF+
+         HSkE5uvCSjP5HpZSpOd9cV2mCgwhWbSBQ+XC/+IkuSOXzCOpnJbdWkCNWZCj83U9vHUb
+         EedyEpXj6Yzy3T3UO6UlPh3YkHcXzBbp2NhWIqLAUSVXL/hWhbPxF9E1stM0L5orYWZr
+         /e6nXGYWsGtNa3CHB9TWKFhuwduoGbfX/lrDglH4XwW7mTHSj/Tz6TBHT7cYBCtNglZg
+         F2Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768490082; x=1769094882;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0XFWhnozczQdBY9wOF6c5V46t5MOgQ+lGzwQjjTNU9A=;
+        b=Pi6pnfw/XMS+c+NpX7eNE+YNx8Cwrb7OW+CfoPLbY+8aKmaWHXlWeEOLsz139MSyS4
+         6BZTsNUUJFI6iW9i9LnMBPwaMh0nl6qEZm5kwJQ6EjLFGA2LQQWblk7TJMgoAbRqNFZt
+         CgLpoHp83WCoTJ5YkPvVGiatNRy2Mm50K1GDZUptcOTDF5SA7ePIYotlyXI5iZe7zhwV
+         fF5vLKY88Ebg8mhlb8bHfjS1G+Q/CYuqDhS/p7jpdZZtox7ORDFUorAxI3cN3UQxKB1s
+         xJfr9Ks5X4HUDW0zGqMnYU4kf9g5PxvazQU89IZsISvBFk7kfXTFRvu9ZwAznY5H61ii
+         EZeg==
+X-Gm-Message-State: AOJu0YwcSB3HG0wwQenBE0fVWnHqcnOzCowc78IUjCrFhFeqgo9pe1TT
+	4f3KuASRJAIhUg0G4EKYtljN1noKYrpFU0PU6ioYpGY4eFEHtDE7alLfQG5cc4BD
+X-Gm-Gg: AY/fxX5eRvdV8EF2JTlQVxpIYLuoMplkFulS0CKKHcJxRsiHDVjhN8jUktWyJrMBZfz
+	TnKXDESfSzbHtgdm7n1Foc+Erbe2j7GnPsvzK/VlcWLBvkXVvwFRrABQ/HFNP7TmM6mXAqu0iV3
+	f/VHxY/5PKYGtUUHKVxAIxiBaBL6j/ivxV1v8XPziVktV5tungig7nzg1ENBbCVrTD7fdCkd+aR
+	EktbAdNI6ET9dMeV+GdgliSGKk1NAZfFwlNKgD/6PO4i+GQsgwb2vCdhhLilhdfIySlK4I3Joq2
+	GvpgJHrV2UY+Xhw1XBc6z2FHiP5hzhpzZk6/Ycpan42VUeUMymhK57/hVIl9pBMuVZfgNHFNlfF
+	Xr/EUCwvslSMfSTg14eipgNwlj1uhPip1a8EHTHJ8+BHjPHqnrpc7tHrcYR9sfeaDGt1QhcYV8w
+	lvjr7cTJ6dTGep2RlAwfpQVD3XycewYkZKuXsdQc+Kb7KfWbl01+I=
+X-Received: by 2002:a05:6214:4003:b0:890:58b4:3e7c with SMTP id 6a1803df08f44-892743ded60mr90739606d6.33.1768490081454;
+        Thu, 15 Jan 2026 07:14:41 -0800 (PST)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770cc6edsm201030056d6.4.2026.01.15.07.14.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 07:14:40 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	quic@lists.linux.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Moritz Buhl <mbuhl@openbsd.org>,
+	Tyler Fanelli <tfanelli@redhat.com>,
+	Pengtao He <hepengtao@xiaomi.com>,
+	Thomas Dreibholz <dreibh@simula.no>,
+	linux-cifs@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve Dickson <steved@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"D . Wythe" <alibuda@linux.alibaba.com>,
+	Jason Baron <jbaron@akamai.com>,
+	illiliti <illiliti@protonmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Daniel Stenberg <daniel@haxx.se>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Subject: [PATCH net-next v7 01/16] net: define IPPROTO_QUIC and SOL_QUIC constants
+Date: Thu, 15 Jan 2026 10:11:01 -0500
+Message-ID: <87ccdbc3b8abe4fb1df5a97c0baf39d2b943eeef.1768489876.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1768489876.git.lucien.xin@gmail.com>
+References: <cover.1768489876.git.lucien.xin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107125111.2372254-2-m-malladi@ti.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 07, 2026 at 06:21:10PM +0530, Meghana Malladi wrote:
-> This patch adds utility functions to configure firmware to enable
-> IET FPE. The highest priority queue is marked as Express queue and
-> lower priority queues as pre-emptable, as the default configuration
-> which will be overwritten by the mqprio tc mask passed by tc qdisc.
-> Driver optionally allow configure the Verify state machine in the
-> firmware to check remote peer capability. If remote fails to respond
-> to Verify command, then FPE is disabled by firmware and TX FPE active
-> status is disabled.
-> 
-> This also adds the necessary hooks to enable IET/FPE feature in ICSSG
-> driver. IET/FPE gets configured when Link is up and gets disabled when link
-> goes down or device is stopped.
-> 
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+This patch adds IPPROTO_QUIC and SOL_QUIC constants to the networking
+subsystem. These definitions are essential for applications to set
+socket options and protocol identifiers related to the QUIC protocol.
 
-...
+QUIC does not possess a protocol number allocated from IANA, and like
+IPPROTO_MPTCP, IPPROTO_QUIC is merely a value used when opening a QUIC
+socket with:
 
->  /* The buf includes headroom compatible with both skb and xdpf */
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_qos.c b/drivers/net/ethernet/ti/icssg/icssg_qos.c
+  socket(AF_INET, SOCK_STREAM, IPPROTO_QUIC);
 
-...
+Note we did not opt for UDP ULP for QUIC implementation due to several
+considerations:
 
-> +static int emac_tc_setup_mqprio(struct net_device *ndev, void *type_data)
-> +{
-> +	struct tc_mqprio_qopt_offload *mqprio = type_data;
-> +	struct prueth_emac *emac = netdev_priv(ndev);
-> +	struct prueth_qos_mqprio *p_mqprio;
-> +	int ret;
-> +
-> +	if (mqprio->qopt.hw == TC_MQPRIO_HW_OFFLOAD_TCS)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!mqprio->qopt.num_tc) {
-> +		netdev_reset_tc(ndev);
-> +		p_mqprio->preemptible_tcs = 0;
+- QUIC's connection Migration requires at least 2 UDP sockets for one
+  QUIC connection at the same time, not to mention the multipath
+  feature in one of its draft RFCs.
 
-Hi MD & Meghana,
+- In-Kernel QUIC, as a Transport Protocol, wants to provide users with
+  the TCP or SCTP like Socket APIs, like connect()/listen()/accept()...
+  Note that a single UDP socket might even be used for multiple QUIC
+  connections.
 
-p_mqprio is dereferenced here.
-But it isn't initialised yet.
+The use of IPPROTO_QUIC type sockets over UDP tunnel will effectively
+address these challenges and provides a more flexible and scalable
+solution.
 
-Flagged by Clang 21.1.7 W=1 build for arm64.
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+---
+ include/linux/socket.h  | 1 +
+ include/uapi/linux/in.h | 2 ++
+ 2 files changed, 3 insertions(+)
 
-> +		return 0;
-> +	}
-> +
-> +	ret = prueth_mqprio_validate(ndev, mqprio);
-> +	if (ret)
-> +		return ret;
-> +
-> +	p_mqprio = &emac->qos.mqprio;
-> +	memcpy(&p_mqprio->mqprio, mqprio, sizeof(*mqprio));
-> +	netdev_set_num_tc(ndev, mqprio->qopt.num_tc);
-> +
-> +	return 0;
-> +}
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index ec715ad4bf25..dc80de8d8c50 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -401,6 +401,7 @@ struct ucred {
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
+ #define SOL_VSOCK	287
++#define SOL_QUIC	288
+ 
+ /* IPX options */
+ #define IPX_TYPE	1
+diff --git a/include/uapi/linux/in.h b/include/uapi/linux/in.h
+index ced0fc3c3aa5..34becd90d3a6 100644
+--- a/include/uapi/linux/in.h
++++ b/include/uapi/linux/in.h
+@@ -85,6 +85,8 @@ enum {
+ #define IPPROTO_RAW		IPPROTO_RAW
+   IPPROTO_SMC = 256,		/* Shared Memory Communications		*/
+ #define IPPROTO_SMC		IPPROTO_SMC
++  IPPROTO_QUIC = 261,		/* A UDP-Based Multiplexed and Secure Transport	*/
++#define IPPROTO_QUIC		IPPROTO_QUIC
+   IPPROTO_MPTCP = 262,		/* Multipath TCP connection		*/
+ #define IPPROTO_MPTCP		IPPROTO_MPTCP
+   IPPROTO_MAX
+-- 
+2.47.1
 
-...
