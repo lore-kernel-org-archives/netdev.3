@@ -1,138 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AF433E35B;
-	Thu, 15 Jan 2026 09:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179EA3469F5
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 09:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768468132; cv=none; b=d+RFzaGv6y7fmyfFNE9W1BjIWiRDN9lxIFGRRzYgaEhksXOdB40R4wobSSo2oPaU/pNtUJoWAwZ6bb0yC+2pkPu2yQ9YRSo8PgnE3VwoKa2/+sXtwC93rNCV6GNX27tF0gHB6cNcBCLdCpo98L9r6l9zI42vAS3aCcqM7i9Yu80=
+	t=1768468339; cv=none; b=G6IeP6QLy/P1m51Oa6jKrLxhfK6Ju5uT7QLcDmE74ipfd4IxviHxqy+fc5MpgopsGGRF7CtomO32B5+taBMWHe0SWuVaQxqXrRB5He/9ibJsHdfYa6WTpC9k2seABGefsD+8AUhghQ1zTvcxVPJLMy4DXkqg3NIET8XSXTPYmIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768468132; c=relaxed/simple;
-	bh=TACqM6MrhIV6ay/73FoCpS3CaZS0eJYh1YKHXmr7TV4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I+w6VU038Qx5D7IHWBsn2TCB6hNP8GST2J984807Ee1EM4EwlrUmjXS7WHXhNae0+jJQ13uNBp/avc1vcg3w7HgxcKY5PvJNmSse5XuP8Ah7DJxbSSWCiyIe/QB7hqm/eKHLb4C1KyydLHqxkes7W5+ue1Y5ZUimMU1i73NQCKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pV9kTPcB; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pV9kTPcB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0709C116D0;
-	Thu, 15 Jan 2026 09:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768468132;
-	bh=TACqM6MrhIV6ay/73FoCpS3CaZS0eJYh1YKHXmr7TV4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=pV9kTPcBH5t5MkMrLlFtvaNeLRH/Q9UTak53dCbGpZuandiKS4B9E4q3xryWLbJ1w
-	 cuR4Fh7K13C+CwOOxnIlHdrZQqPmjWBiX/d4MKNxLP+WcqwKSe+/6lRte0Xt4lMSQu
-	 dJjOyWj0/qq1dKEnAHplgD09zXDaXPfVRR/9Pof3VvzPefAenw8m3MnWRgoWFR9uD1
-	 dffM0OSqeGgUy9GoFGIjysjKS/jvgDCm3HfTLWRmsHoL3215jBGXcp9k+vJWsCOV5L
-	 KCGG++s+8yQ6NuTp5Hk9noZbU6UkvEC7lYzzjH5Kxkqe0lIxr/8Ocq9L9Ocu5V4dKY
-	 ZZMejgqpZLC8Q==
-Message-ID: <748dbd7653d31edaccb54425788bbf9a6881da89.camel@kernel.org>
-Subject: Re: [PATCH net-next] selftests: tls: use mkstemp instead of
- open(O_TMPFILE)
-From: Geliang Tang <geliang@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>,  Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,  Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
- <shuah@kernel.org>
-Cc: Gang Yan <yangang@kylinos.cn>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev
-Date: Thu, 15 Jan 2026 17:08:46 +0800
-In-Reply-To: <3936106c6b3cc45c570023e083a1e56fa6548b41.1768356312.git.geliang@kernel.org>
-References: 
-	<3936106c6b3cc45c570023e083a1e56fa6548b41.1768356312.git.geliang@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2-4 
+	s=arc-20240116; t=1768468339; c=relaxed/simple;
+	bh=LVvYUTqC/oEI4gN4LmMhQdNkMf8OhpvENex0r8YMyt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jNO0BpmqvQmkz3RL/33Lherrg37EYx2w/FfKC2Evatd9nbkLTMxqWxJaMjvbX7WhxjsnxcYilOfWuNljhkIedJJ9wVOBaijs+/s9btGxyh2UjsDRD2mqQJKuHXQ9fG2OFRhE8owjMwOGGc4aBPTKGPiCF1RenP+1NWDB8SbBCH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vgJOn-0005Xa-Mx; Thu, 15 Jan 2026 10:12:13 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vgJOn-000jHX-39;
+	Thu, 15 Jan 2026 10:12:13 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 0141F4CD6EB;
+	Thu, 15 Jan 2026 09:12:12 +0000 (UTC)
+Date: Thu, 15 Jan 2026 10:12:12 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org, 
+	kernel@pengutronix.de
+Subject: Re: [PATCH net 0/4] pull-request: can 2026-01-14
+Message-ID: <20260115-acoustic-adaptable-cougar-a8cd74-mkl@pengutronix.de>
+References: <20260114105212.1034554-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jgx3ky55dpjbc3ss"
+Content-Disposition: inline
+In-Reply-To: <20260114105212.1034554-1-mkl@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Wed, 2026-01-14 at 10:12 +0800, Geliang Tang wrote:
-> From: Gang Yan <yangang@kylinos.cn>
-> 
-> When running TLS tests in a virtual machine/container environment,
-> they
-> fail:
-> 
->  # tls.c:1479:mutliproc_even: Expected fd (-1) >= 0 (0)
->  # mutliproc_even: Test terminated by assertion
->  #          FAIL  tls.12_aes_gcm.mutliproc_even
->  not ok 59 tls.12_aes_gcm.mutliproc_even
->  #  RUN           tls.12_aes_gcm.mutliproc_readers ...
->  # tls.c:1479:mutliproc_readers: Expected fd (-1) >= 0 (0)
->  # mutliproc_readers: Test terminated by assertion
->  #          FAIL  tls.12_aes_gcm.mutliproc_readers
->  not ok 60 tls.12_aes_gcm.mutliproc_readers
->  #  RUN           tls.12_aes_gcm.mutliproc_writers ...
->  # tls.c:1479:mutliproc_writers: Expected fd (-1) >= 0 (0)
->  # mutliproc_writers: Test terminated by assertion
->  #          FAIL  tls.12_aes_gcm.mutliproc_writers
->  not ok 61 tls.12_aes_gcm.mutliproc_writers
-> 
-> This is because the /tmp directory uses the virtiofs filesystem,
-> which does
-> not support the O_TMPFILE feature.
-> 
-> This patch uses mkstemp() to create temporary files, thereby
-> eliminating
-> the dependency on the O_TMPFILE feature. And closes the file
-> descriptor
-> (fd) and deletes the temfile after the test ends.
-> 
-> Co-developed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Gang Yan <yangang@kylinos.cn>
-> ---
->  tools/testing/selftests/net/tls.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/net/tls.c
-> b/tools/testing/selftests/net/tls.c
-> index 9e2ccea13d70..f4b8dd99d501 100644
-> --- a/tools/testing/selftests/net/tls.c
-> +++ b/tools/testing/selftests/net/tls.c
-> @@ -1456,6 +1456,7 @@ test_mutliproc(struct __test_metadata
-> *_metadata, struct _test_data_tls *self,
->  	       bool sendpg, unsigned int n_readers, unsigned int
-> n_writers)
->  {
->  	const unsigned int n_children = n_readers + n_writers;
-> +	char tmpfile[] = "/tmp/tls_test_tmpfile_XXXXXX";
->  	const size_t data = 6 * 1000 * 1000;
->  	const size_t file_sz = data / 100;
->  	size_t read_bias, write_bias;
-> @@ -1469,7 +1470,7 @@ test_mutliproc(struct __test_metadata
-> *_metadata, struct _test_data_tls *self,
->  	write_bias = n_readers / n_writers ?: 1;
->  
->  	/* prep a file to send */
-> -	fd = open("/tmp/", O_TMPFILE | O_RDWR, 0600);
-> +	fd = mkstemp(tmpfile);
 
-Superseded.
+--jgx3ky55dpjbc3ss
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net 0/4] pull-request: can 2026-01-14
+MIME-Version: 1.0
 
-I noticed that this mkstemp approach was already implemented in
-chunked_sendfile(). To eliminate duplication, in v2 I just submitted, I
-extracted this logic into a new helper create_temp_file(), which is now
-shared by both chunked_sendfile() and test_mutliproc().
+On 14.01.2026 11:44:59, Marc Kleine-Budde wrote:
+> Hello netdev-team,
+>
+> this is a pull request of 4 patches for net/main.
 
-Thanks,
--Geliang
+This PR is Super-seeded by:
+https://lore.kernel.org/all/20260115090603.1124860-2-mkl@pengutronix.de/
 
->  	ASSERT_GE(fd, 0);
->  
->  	memset(buf, 0xac, file_sz);
-> @@ -1527,6 +1528,8 @@ test_mutliproc(struct __test_metadata
-> *_metadata, struct _test_data_tls *self,
->  			left -= res;
->  		}
->  	}
-> +	close(fd);
-> +	unlink(tmpfile);
->  }
->  
->  TEST_F(tls, mutliproc_even)
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--jgx3ky55dpjbc3ss
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlor2kACgkQDHRl3/mQ
+kZxeawf9HdIIVePhlbspkufhxAInFz21dJVgFRn24xxTkS3cp6uXcT4U7GfYvgGF
+2lM2n/3ZTV2xDsqcDqKKJkxC6X9vZoOLIxO8tHAmG1A5PcUmz+eDyJ231kYu/dU8
+HVVTSJhy42jzrLZz7Mx9yNErlB5wX/1KpKHEuhuAZlYvaBLiM5zDX204u0Nd9gt3
+3F1qNK2tL7GV6zKToThfAHlWZXy13/2QVhZf869nSpSIR8HGALtpCmzg9fO4nHx2
+eldQ4eFXyRrC89rlbqLqaXmH5Jd7XwLUQNmEJ24ppNfnebb3H/qbiYIiusL8tTw8
+K1l1fFtWrfptLA8xpUAauljmj6y0HQ==
+=oEPJ
+-----END PGP SIGNATURE-----
+
+--jgx3ky55dpjbc3ss--
