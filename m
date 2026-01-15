@@ -1,138 +1,103 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC831353E;
-	Thu, 15 Jan 2026 07:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B4B27510E
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 07:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768463386; cv=none; b=Gtsa5cy78sNjNAfH6m+SH7aggHr/2g7274jht+zhSTQTUSIwacKuLWdwDm2gLeuiXFOM46SOPf9xD8Vdv3o/JBqUAdIqPB7slNGuAlM4+rP1IX7Uw1M8LeljdImwdUmSeEen1ZNqDj7eVh68nm/Hq+WxjzkIJKtuBQCzbpLxCPQ=
+	t=1768463824; cv=none; b=at4L2LM7cqcrq4dLSZ5hcqhuheGJX94DFthPF9QAjp9mNGWed6mmDK7RFfXwEaYseBjGDNKZ/p5Xe7gPtwS7zC5vyAvaHgJf8LaAdcHqLjCZN83ZRZabCo30/+63t7Dpb3US0tXILGJslTe7ib57nB85aPu7MbJFbTkRlLlDnq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768463386; c=relaxed/simple;
-	bh=9PlLrC7+QoI4WBEHZ/2y3JpLHZ3p1SzET0kSYD90bLk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q2d2brrHMoY1MEttbeE3E75eszg1b9VZSBACCLyldFqaGeXhIGiEWDXfPC3UzVWmtEhiXj0mvLijaAnBGf6cHMbwkvQllI6HZxdPW8006k0ODwv8t93ZRWN5doVp5eowGnphq1VsNJmKsHsVxO94Yxq2NlNOJvsTOz1Ow9d2A+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tM32YNnk; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1768463824; c=relaxed/simple;
+	bh=z7M1gJSxco/n4ZsPehNhTapu74iwMGfHlhkpGIYRppU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nlwhLoYfYvEX0aGcPT2cVVW7I+C2/DhMXxM8TzAtkjO21L62UdZza26htUHh0kugzwKk0p0uDscDbM5Q5LQN4TmKm/XPrp6/91ZnJNEBVh6gmYGnLmOIuDsS5GKEwG9hCNeMR2lZxVZ283+n5UrwepH/jY/UyG9L5OqlonPvXbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxUWpxsP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tM32YNnk"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 276334E420F2;
-	Thu, 15 Jan 2026 07:49:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EFE4D606B6;
-	Thu, 15 Jan 2026 07:49:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A28AE10B684A8;
-	Thu, 15 Jan 2026 08:49:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768463370; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6wgX3T55tHgIPFpJB2Dl4d7F1Quzo9e+vU4hu4/3zUg=;
-	b=tM32YNnkbe5GbLCPsjEOXiuve1Up/fWJxAbPCAKFH1/UI4lXGnPcdhzM4RnFRhbnGHDH8l
-	pLtXNS/VEfscxzgq6njV+PIYy680G/G/RhYiuMOwWmd7P7h/g5tYQwblMJ+d6rITqgttlk
-	X27RtpKaGIhrtVMD7F7Im0M/9fSM3IFLxcOsNEUS5jbRX8SUxqug/VyrZ9zHoRoyAwoQ+6
-	7P+0H1rGhmNlUhz6sgug25pTGCfkGFFWtijBbPwQD7xRiBNIEIDkczYEe2ZR/rutRolJG6
-	6uVDIvyV0uChx/QRQAak3aLuKKUMo7X/hZ1z7p/60DHeqVD4O5NbgsvTcukjcQ==
-Message-ID: <01ce4d48-6f64-4d90-9f87-ed1382fa57cf@bootlin.com>
-Date: Thu, 15 Jan 2026 08:49:23 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxUWpxsP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899D1C116D0;
+	Thu, 15 Jan 2026 07:57:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768463823;
+	bh=z7M1gJSxco/n4ZsPehNhTapu74iwMGfHlhkpGIYRppU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YxUWpxsPOzHxOA0tGdbH62iRX4bmlHdJ4ghaK0B9VqEVDKqGzIE19FruKFYFVBVGK
+	 cWQqk+drILJSEIGsBFzk26fMSBtflhxTa6ReUMaFeCtJ7SHcwzGsq5sgpmHIvMBV3d
+	 Zzo3ZgeYY1cL8RzYLYSI9NTRn4yXyXpJZ0zF+mPwTsObq8xoOEOeTYaQT2Bc6/sB/Z
+	 xFxQ8jF8NHhhmVBGvlFHNEY+uVDBPWrc49KP+AmWf8VfMGN3lyy7Qj5rnz4/WSMNRr
+	 O+bbaBgjpVLIC3fc1Yy9oHKzR46sxzkO/Jccdz8C5Ra1ycdyXERKoyyHLIzm2EgpYM
+	 hvs1kzMCSec1Q==
+Date: Thu, 15 Jan 2026 08:57:01 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Sayantan Nandy <sayantann11@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	sayantan.nandy@airoha.com, bread.hsu@airoha.com,
+	kuldeep.malik@airoha.com, aniket.negi@airoha.com
+Subject: Re: [PATCH] net: airoha_eth: increase max MTU to 9220 for DSA jumbo
+ frame support the industry standard for jumbo frame MTU is 9216 bytes. When
+ using DSA sub-system, an extra 4 byte tag is added to each frame. To allow
+ users to set the standard 9216-byte MTU via ifconfig ,increase
+ AIROHA_MAX_MTU to 9220 bytes (9216+4).
+Message-ID: <aWidzQgGXpbht9zL@lore-desk>
+References: <20260115064043.45589-1-sayantann11@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/6] net: phylink: Allow more interfaces in SFP
- interface selection
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Jonas Jelonek <jelonek.jonas@gmail.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- Simon Horman <horms@kernel.org>, Romain Gantois
- <romain.gantois@bootlin.com>, =?UTF-8?Q?Marek_Beh=C3=BAn?=
- <kabel@kernel.org>, bcm-kernel-feedback-list@broadcom.com
-References: <20260114225731.811993-1-maxime.chevallier@bootlin.com>
- <20260114225731.811993-3-maxime.chevallier@bootlin.com>
- <aWgnHo01j38TF3lp@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aWgnHo01j38TF3lp@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="agj4UNEhb8R3CoY5"
+Content-Disposition: inline
+In-Reply-To: <20260115064043.45589-1-sayantann11@gmail.com>
 
-Hi Russell,
 
-On 15/01/2026 00:30, Russell King (Oracle) wrote:
-> On Wed, Jan 14, 2026 at 11:57:24PM +0100, Maxime Chevallier wrote:
->> When phylink handles an SFP module that contains a PHY, it selects a
->> phy_interface to use to communicate with it. This selection ensures that
->> the highest speed gets achieved, based on the linkmodes we want to
->> support in the module.
->>
->> This approach doesn't take into account the supported interfaces
->> reported by the module
-> 
-> This is intentional by design, because the capabilities of the PHY
-> override in this case.
+--agj4UNEhb8R3CoY5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-OK makes sense. Just to summarize my understanding, let me know if
-I'm wrong there :
+> This change ensures compatibility with common network equipment and jumbo=
+ frame configurations.
 
- - The interfaces list we have in sfp_module_caps is to be used when we 
-   don't have a PHY in the module (there may be one, but we don't
-   know/care about it).
+can you please provide more details?
 
- - When we do have a PHY, we _should_ select the interface based on what
-   the MAC (+ PCS + Serdes etc.) can output on this sfp-bus and what
-   the SFP PHY can take as an input. We ignore the sfp_module_caps
-   interfaces list.
+Regards,
+Lorenzo
 
-> Unfortunately, as I've said previously, the> rush to throw in a regurgitated version of my obsoleted
-> "host_interfaces" rather messed up my replacement patch set which
-> had the PHY driver advertising the interface capabilities of the
-> PHY, which were then going to be used to make the PHY interface
-> selection when attaching the PHY.
->
-> I've still got the code, but I can't now push it into mainline
-> because, with the obsolete host_interfaces stuff merged, we will end
-> up with two competing solutions.
-> 
-> In any case, I really would appreciate people looking through
-> http://git.armlinux.org.uk/cgit/linux-arm.git/log/?h=net-queue
-> 
-> before doing development on SFP and phylink to see whether I've
-> already something that solves their issue.
+>=20
+> Signed-off-by: Sayantan Nandy <sayantann11@gmail.com>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index fbbc58133364..20e602d61e61 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -21,7 +21,7 @@
+>  #define AIROHA_MAX_NUM_IRQ_BANKS	4
+>  #define AIROHA_MAX_DSA_PORTS		7
+>  #define AIROHA_MAX_NUM_RSTS		3
+> -#define AIROHA_MAX_MTU			9216
+> +#define AIROHA_MAX_MTU			9220
+>  #define AIROHA_MAX_PACKET_SIZE		2048
+>  #define AIROHA_NUM_QOS_CHANNELS		4
+>  #define AIROHA_NUM_QOS_QUEUES		8
+> --=20
+> 2.43.0
+>=20
 
-So what's the plan there ? This work here is kinda low priority
-for me, I wanted to get this out there before continuing with
-phy_port followup. Without this patch though, this whole series
-is blocked as SGMII will never be selected for 100FX modules.
+--agj4UNEhb8R3CoY5
+Content-Type: application/pgp-signature; name=signature.asc
 
-With your permission, can I pick up your patchs for supported_interfaces
-and see what I can do from there ? I also found host_interfaces to be
-not enough there.
+-----BEGIN PGP SIGNATURE-----
 
-Knowing that for me, phy_port is the priorty, this is going to be
-something I'll do on my free time so don't expect fast progress :(
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaWidzQAKCRA6cBh0uS2t
+rE5mAQDNH43QGKQqdK54O/WNSaz5NO5TROfHNgllhMJoY2J7gAEArEqFD7ASdBH5
+PfGPjeC1j0qi9Ysjn4GYqMIXUyyIWAQ=
+=JgeZ
+-----END PGP SIGNATURE-----
 
-> Quite simply, I don't have> the time to push every patch out that I have, especially as I'm up to
-> my eyeballs with the crappy stmmac driver now, but also because I
-> have work items from Oracle that reduce the time I can work on
-> mainline. BTW, the "age" stated in cgit is based on the commit time
-> (which gets reset when rebased) not the initial merge time. You will
-> see that the "supported_interfaces" stuff dates from 2019, not 2025.
-
-Besides that part, will you take a look at the rest of the series ? I'm
-not saying that to rush you, but this whole SGMII to 100Fx journey seemed
-to me that a lot of hacky stuff, I'd like to get your opinion on the rest
-before iterating and facing anther blocking problem down the line on
-another part of that series.
-
-I know you have a lot on your plate, but as I said, this series is probably
-going to move slowly anyways :)
-
-Maxime
+--agj4UNEhb8R3CoY5--
