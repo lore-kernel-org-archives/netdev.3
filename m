@@ -1,97 +1,651 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4419B3AE6ED;
-	Thu, 15 Jan 2026 15:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BEA3AEF21
+	for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 15:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768490177; cv=none; b=OAkG+fIabxnrPET/pn51ZtUkaMSNse6tPjvrSjjaR37BQaIp80hM6Z06h94pwJeJNOsD7GuZ/7uQBCApFsbgARnye8RBFZ37qYREoL6c94JEEE3K5rLjyDKVqxgnkEtBXI0c+6lfeJiRCG75VxP/B3aar2R2wHGKqiU8D8nw/MY=
+	t=1768490194; cv=none; b=dHiwLCQQEssDwT+R6x34S3usvzKXJNK+jPdiEFAs0PC/Wiw7jjaFRTsPT2ZpTLJMR9o4IoDGRWFFznQuBOwsx+1Xlq0eZHzdnzx7nj/xj28YV8vV8FFJF0L52J4BbWHccdxXWx/U4TfPoJfPuzenDXQEQu9rRYu7snwsECCo6nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768490177; c=relaxed/simple;
-	bh=kWYMgicb/wXnfn/i+0E5kPZESbgs/m1X/QORhgZCg4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X5TVxdwvkLakLtviI/Mkfocdun0hM/vVhjGhMJd0l9iYTAfrFVh1a4XPPjKFc8YOISO2LN/nS1YVYGRGt1g/FIPKdXKoRwZ+SthZEuMNd0CS9aEUUzsy2ECCBIrCMB6kTB6jwmK58+KqSXe6FkQE+HfPXFDws4dXBWdwkOud2qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=RrA0c2Cr; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1768490194; c=relaxed/simple;
+	bh=7ixEeB0C9TQGmyMuhS/8Nz28muqKWIq0dKMkhksH0S4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p8C5QRkDm+zK1zSsPE7veGiwneqpEBrjLfN6GNXa6vyNWzO9ZKIi+wCZchlMwVn7b3mExUOIrEU00sazU4uOVu5i7gzJBT4HYz9zB5HWCW2zTQ3DaSsM7YUPMYfa7vNUxZNuT3JM2VZETu/11SqO6rnvBDq3paSgD4zElHXkYPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIaWQtJ1; arc=none smtp.client-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="RrA0c2Cr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QOLovP1nf5K8/XFRLq/JOQI95IJezXEIyYwgpMIfHxg=; b=RrA0c2Crm8jwm+G3tWPYeyiqT7
-	zErC1h99cNML2NBK9REG2mW04hcq38xBMii0CtX5baQwyTf8qSB+aKaO+QM16CHsyH9H/x2aTuxXM
-	ILfkpky1HEd40uBy+7wNq7YihR+5WgT3rnxPGL3ikENUP57iAluJPkWrrF+YrdYlpNbGPFz8tsnbm
-	m2rGB7I1S1E8qmyGtbzKZZuc1Ow0GJno4sJnG6IV9aMMxUZzPXN+MAEceecT5UJxepEK9pPRiWEUf
-	nTa3+MGFhxPa6YurSLP0sHO2oC5Q9T0m8M4LzafOZ69dGyIIToW9uQSqyf8XcRUdBk9k0K86Gmyfl
-	UaBs1WYw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59658)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vgP4Z-000000001PW-0scZ;
-	Thu, 15 Jan 2026 15:15:43 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vgP4U-000000002kl-1vG7;
-	Thu, 15 Jan 2026 15:15:38 +0000
-Date: Thu, 15 Jan 2026 15:15:38 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIaWQtJ1"
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-56373f07265so831722e0c.0
+        for <netdev@vger.kernel.org>; Thu, 15 Jan 2026 07:16:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768490180; x=1769094980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4C8FU8W8wGl3Qnrh0TGt4VCDk5clBUGrVEc4IedfmQ=;
+        b=TIaWQtJ1kCUcBY0JMO8ojGtgP7/nH7TqqgEfvjn7EGOTHnfGp/lL70NKXmpprCK0jG
+         iwPKceAu4n19uK7NvX4iYbiL48XQ3bZSfCwAv76B0bybvuSxPLVbf3dNJ0O/CWfLv96/
+         yEfpDFStzLVxSHjXFeCGjLSqh7lQDTC7XifxqNbRqH2mSq6E/j47ORKnPraw6T+pbp6f
+         QPxHR9cT1PNIXy37zjs3rkGmiQmmmbgrrdLUkEiJOqNhpTclyENcVTO+pk9cIzXYRL/h
+         tthI9GgbVznpVWHyXt19svp9kPZfKCRFn4FGYY/EbvjhdEjy+SO/RwIlpGeKLWKxfzqJ
+         QlRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768490180; x=1769094980;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X4C8FU8W8wGl3Qnrh0TGt4VCDk5clBUGrVEc4IedfmQ=;
+        b=SpF0e2v9rqDaPOOu7RnR45BSYeXHK3K3tbIBTy811Sju6UTl26yNQGEgMPU27gcd45
+         jbI1KC79toYsUJPwCjBAI4LNPwh/d9x6u8dN9oXta/0yD8hUGC0IwKCgChsg+Izv2wXL
+         F58qbemb7K7Gd70IcJ69XxQ3Bt2unKvqFryO/VjNRQrqRHnWwfnKVHbFvTYvD1wOqe1G
+         nUv998WVVCYsgX0DtBb9XSWcPozBMUlzn7ohnCn154VhPGegaIKdP+avpwzG0gm8DhBn
+         ksqaVpyfZ9Rcr3wjQgXXvXmr4FjqmIqRgF+EN0YPQDCMRkVv3wdV48bUuajDQ/OoRvN4
+         YtYg==
+X-Gm-Message-State: AOJu0YyUVpLm5j6Uf74GZcJv36TNe49GRteY6By2yLqV5grtSiFOnVxF
+	LNHGPlnLdBjf+/iXB7/sTrdPQo33DsAiN2swzpaNh0ihMh7uWvz9WoVlyYdKEmoF
+X-Gm-Gg: AY/fxX5Hx1LqwHgwzyyxTyLY31E4IGX4sBvozUZYSDmEsYCWd5t7CiGRpkBEvMxUQ9l
+	qjqRCCBh7+uCY3lRlzS2xqB5FwWWfws3IFziA7PQWpbMHhLCdk1CeQbsLMpEiSHXp9AxIPdLhY/
+	jjOq+tLpkWLPZE2l6IWPyWMhMliEWpfPhQSBfRzDpNsC7FXRyzNujyTrPzFSa78oBLSQMg0YwRq
+	DdhOPeQwqzxWw+h+YDXX5m5+MUVnWJTnsZmAXx/4nrxJJSa7WNmfK2q1oUfodeerbi3pS6SxNyL
+	ZPfB4+9wNzl0zMZbgU3oQ0M0GK5Mi2ckL4+OBZdiYIbyGOOQG5FRCk3lrElCBVgrc+/PLNsVCux
+	jd6zhvaLSl6on3xtiUJ+ULHWp9bv3ZSS4yAy1c7WcI5asZtlFcVqu8QKLtj6JbLbA1RGEWoETXg
+	eSDpw1SqNRAaIjuOCUoYPggENXjDrEUltcGK4JrI4/iLUeuXQ1mafUWkeewAhOKA==
+X-Received: by 2002:a05:6122:4f86:b0:544:c8bf:6509 with SMTP id 71dfb90a1353d-563b5b7fe23mr88113e0c.4.1768490179048;
+        Thu, 15 Jan 2026 07:16:19 -0800 (PST)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770cc6edsm201030056d6.4.2026.01.15.07.16.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 07:16:18 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	quic@lists.linux.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 05/14] net: stmmac: add stmmac core serdes
- support
-Message-ID: <aWkEmockEyLsZKMd@shell.armlinux.org.uk>
-References: <aWfWDsCoBc3YRKKo@shell.armlinux.org.uk>
- <E1vg4w2-00000003SG5-2FH5@rmk-PC.armlinux.org.uk>
- <a91a0937-93cd-40f2-9759-8823fb08f48c@bootlin.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Moritz Buhl <mbuhl@openbsd.org>,
+	Tyler Fanelli <tfanelli@redhat.com>,
+	Pengtao He <hepengtao@xiaomi.com>,
+	Thomas Dreibholz <dreibh@simula.no>,
+	linux-cifs@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve Dickson <steved@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"D . Wythe" <alibuda@linux.alibaba.com>,
+	Jason Baron <jbaron@akamai.com>,
+	illiliti <illiliti@protonmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Daniel Stenberg <daniel@haxx.se>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Subject: [PATCH net-next v7 09/16] quic: add congestion control
+Date: Thu, 15 Jan 2026 10:11:09 -0500
+Message-ID: <fca98ba35201c4635bc6d216f5758bbdb863910c.1768489876.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1768489876.git.lucien.xin@gmail.com>
+References: <cover.1768489876.git.lucien.xin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a91a0937-93cd-40f2-9759-8823fb08f48c@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 15, 2026 at 03:48:40PM +0100, Maxime Chevallier wrote:
-> Hi Russell,
-> 
-> On 14/01/2026 18:45, Russell King (Oracle) wrote:
-> > Rather than having platform glue implement SerDes PHY support, add it
-> > to the core driver, specifically to the stmmac integrated PCS driver
-> > as the SerDes is connected to the integrated PCS.
-> > 
-> > Platforms using external PCS can also populate plat->serdes, and the
-> > core driver will call phy_init() and phy_exit() when the administrative
-> > state of the interface changes, but the other phy methods will not be
-> > called.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> 
-> Unfortunately I have no way to test. But still,
+This patch introduces 'quic_cong' for RTT measurement and congestion
+control. The 'quic_cong_ops' is added to define the congestion
+control algorithm.
 
-I am hoping Mohd Ayaan Anwar will be able to do at least some testing
-on the qcom-ethqos hardware.
+It implements a congestion control state machine with slow start,
+congestion avoidance, and recovery phases, and currently introduces
+the New Reno algorithm only.
 
+The implementation updates RTT estimates when packets are acknowledged,
+reacts to loss and ECN signals, and adjusts the congestion window
+accordingly during packet transmission and acknowledgment processing.
+
+- quic_cong_rtt_update(): Performs RTT measurement, invoked when a
+  packet is acknowledged by the largest number in the ACK frame.
+
+- quic_cong_on_packet_acked(): Invoked when a packet is acknowledged.
+
+- quic_cong_on_packet_lost(): Invoked when a packet is marked as lost.
+
+- quic_cong_on_process_ecn(): Invoked when an ACK_ECN frame is received.
+
+- quic_cong_on_packet_sent(): Invoked when a packet is transmitted.
+
+- quic_cong_on_ack_recv(): Invoked when an ACK frame is received.
+
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+---
+v4:
+  - Remove the CUBIC congestion algorithm support for this version
+    (suggested by Paolo).
+v5:
+  - Do not update the pacing rate when !cong->smoothed_rtt in
+    quic_cong_pace_update() (suggested by Paolo).
+  - Change timestamp variables from u32 to u64, as RTT is measured in
+    microseconds and u64 provides sufficient precision for timestamps
+    in microsecond.
+---
+ net/quic/Makefile |   3 +-
+ net/quic/cong.c   | 307 ++++++++++++++++++++++++++++++++++++++++++++++
+ net/quic/cong.h   | 120 ++++++++++++++++++
+ net/quic/socket.c |   1 +
+ net/quic/socket.h |   7 ++
+ 5 files changed, 437 insertions(+), 1 deletion(-)
+ create mode 100644 net/quic/cong.c
+ create mode 100644 net/quic/cong.h
+
+diff --git a/net/quic/Makefile b/net/quic/Makefile
+index 1565fb5cef9d..4d4a42c6d565 100644
+--- a/net/quic/Makefile
++++ b/net/quic/Makefile
+@@ -5,4 +5,5 @@
+ 
+ obj-$(CONFIG_IP_QUIC) += quic.o
+ 
+-quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o
++quic-y := common.o family.o protocol.o socket.o stream.o connid.o path.o \
++	  cong.o
+diff --git a/net/quic/cong.c b/net/quic/cong.c
+new file mode 100644
+index 000000000000..ec3bc22dfa67
+--- /dev/null
++++ b/net/quic/cong.c
+@@ -0,0 +1,307 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Initialization/cleanup for QUIC protocol support.
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#include <linux/quic.h>
++
++#include "common.h"
++#include "cong.h"
++
++static int quic_cong_check_persistent_congestion(struct quic_cong *cong, u64 time)
++{
++	u32 ssthresh;
++
++	/* rfc9002#section-7.6.1:
++	 *   (smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay) *
++	 *      kPersistentCongestionThreshold
++	 */
++	ssthresh = cong->smoothed_rtt + max(4 * cong->rttvar, QUIC_KGRANULARITY);
++	ssthresh = (ssthresh + cong->max_ack_delay) * QUIC_KPERSISTENT_CONGESTION_THRESHOLD;
++	if (cong->time - time <= ssthresh)
++		return 0;
++
++	pr_debug("%s: permanent congestion, cwnd: %u, ssthresh: %u\n",
++		 __func__, cong->window, cong->ssthresh);
++	cong->min_rtt_valid = 0;
++	cong->window = cong->min_window;
++	cong->state = QUIC_CONG_SLOW_START;
++	return 1;
++}
++
++/* NEW RENO APIs */
++static void quic_reno_on_packet_lost(struct quic_cong *cong, u64 time, u32 bytes, s64 number)
++{
++	if (quic_cong_check_persistent_congestion(cong, time))
++		return;
++
++	switch (cong->state) {
++	case QUIC_CONG_SLOW_START:
++		pr_debug("%s: slow_start -> recovery, cwnd: %u, ssthresh: %u\n",
++			 __func__, cong->window, cong->ssthresh);
++		break;
++	case QUIC_CONG_RECOVERY_PERIOD:
++		return;
++	case QUIC_CONG_CONGESTION_AVOIDANCE:
++		pr_debug("%s: cong_avoid -> recovery, cwnd: %u, ssthresh: %u\n",
++			 __func__, cong->window, cong->ssthresh);
++		break;
++	default:
++		pr_debug("%s: wrong congestion state: %d\n", __func__, cong->state);
++		return;
++	}
++
++	cong->recovery_time = cong->time;
++	cong->state = QUIC_CONG_RECOVERY_PERIOD;
++	cong->ssthresh = max(cong->window >> 1U, cong->min_window);
++	cong->window = cong->ssthresh;
++}
++
++static void quic_reno_on_packet_acked(struct quic_cong *cong, u64 time, u32 bytes, s64 number)
++{
++	switch (cong->state) {
++	case QUIC_CONG_SLOW_START:
++		cong->window = min_t(u32, cong->window + bytes, cong->max_window);
++		if (cong->window >= cong->ssthresh) {
++			cong->state = QUIC_CONG_CONGESTION_AVOIDANCE;
++			pr_debug("%s: slow_start -> cong_avoid, cwnd: %u, ssthresh: %u\n",
++				 __func__, cong->window, cong->ssthresh);
++		}
++		break;
++	case QUIC_CONG_RECOVERY_PERIOD:
++		if (cong->recovery_time < time) {
++			cong->state = QUIC_CONG_CONGESTION_AVOIDANCE;
++			pr_debug("%s: recovery -> cong_avoid, cwnd: %u, ssthresh: %u\n",
++				 __func__, cong->window, cong->ssthresh);
++		}
++		break;
++	case QUIC_CONG_CONGESTION_AVOIDANCE:
++		cong->window += cong->mss * bytes / cong->window;
++		break;
++	default:
++		pr_debug("%s: wrong congestion state: %d\n", __func__, cong->state);
++		return;
++	}
++}
++
++static void quic_reno_on_process_ecn(struct quic_cong *cong)
++{
++	switch (cong->state) {
++	case QUIC_CONG_SLOW_START:
++		pr_debug("%s: slow_start -> recovery, cwnd: %u, ssthresh: %u\n",
++			 __func__, cong->window, cong->ssthresh);
++		break;
++	case QUIC_CONG_RECOVERY_PERIOD:
++		return;
++	case QUIC_CONG_CONGESTION_AVOIDANCE:
++		pr_debug("%s: cong_avoid -> recovery, cwnd: %u, ssthresh: %u\n",
++			 __func__, cong->window, cong->ssthresh);
++		break;
++	default:
++		pr_debug("%s: wrong congestion state: %d\n", __func__, cong->state);
++		return;
++	}
++
++	cong->recovery_time = cong->time;
++	cong->state = QUIC_CONG_RECOVERY_PERIOD;
++	cong->ssthresh = max(cong->window >> 1U, cong->min_window);
++	cong->window = cong->ssthresh;
++}
++
++static void quic_reno_on_init(struct quic_cong *cong)
++{
++}
++
++static struct quic_cong_ops quic_congs[] = {
++	{ /* QUIC_CONG_ALG_RENO */
++		.on_packet_acked = quic_reno_on_packet_acked,
++		.on_packet_lost = quic_reno_on_packet_lost,
++		.on_process_ecn = quic_reno_on_process_ecn,
++		.on_init = quic_reno_on_init,
++	},
++};
++
++/* COMMON APIs */
++void quic_cong_on_packet_lost(struct quic_cong *cong, u64 time, u32 bytes, s64 number)
++{
++	cong->ops->on_packet_lost(cong, time, bytes, number);
++}
++
++void quic_cong_on_packet_acked(struct quic_cong *cong, u64 time, u32 bytes, s64 number)
++{
++	cong->ops->on_packet_acked(cong, time, bytes, number);
++}
++
++void quic_cong_on_process_ecn(struct quic_cong *cong)
++{
++	cong->ops->on_process_ecn(cong);
++}
++
++/* Update Probe Timeout (PTO) and loss detection delay based on RTT stats. */
++static void quic_cong_pto_update(struct quic_cong *cong)
++{
++	u32 pto, loss_delay;
++
++	/* rfc9002#section-6.2.1:
++	 *   PTO = smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay
++	 */
++	pto = cong->smoothed_rtt + max(4 * cong->rttvar, QUIC_KGRANULARITY);
++	cong->pto = pto + cong->max_ack_delay;
++
++	/* rfc9002#section-6.1.2:
++	 *   max(kTimeThreshold * max(smoothed_rtt, latest_rtt), kGranularity)
++	 */
++	loss_delay = QUIC_KTIME_THRESHOLD(max(cong->smoothed_rtt, cong->latest_rtt));
++	cong->loss_delay = max(loss_delay, QUIC_KGRANULARITY);
++
++	pr_debug("%s: update pto: %u\n", __func__, pto);
++}
++
++/* Update pacing timestamp after sending 'bytes' bytes.
++ *
++ * This function tracks when the next packet is allowed to be sent based on pacing rate.
++ */
++static void quic_cong_update_pacing_time(struct quic_cong *cong, u32 bytes)
++{
++	u64 prior_time, credit, len_ns, rate = READ_ONCE(cong->pacing_rate);
++
++	if (!rate)
++		return;
++
++	prior_time = cong->pacing_time;
++	cong->pacing_time = max(cong->pacing_time, ktime_get_ns());
++	credit = cong->pacing_time - prior_time;
++
++	/* take into account OS jitter */
++	len_ns = div64_ul((u64)bytes * NSEC_PER_SEC, rate);
++	len_ns -= min_t(u64, len_ns / 2, credit);
++	cong->pacing_time += len_ns;
++}
++
++/* Compute and update the pacing rate based on congestion window and smoothed RTT. */
++static void quic_cong_pace_update(struct quic_cong *cong, u32 bytes, u64 max_rate)
++{
++	u64 rate;
++
++	if (unlikely(!cong->smoothed_rtt))
++		return;
++
++	/* rate = N * congestion_window / smoothed_rtt */
++	rate = div64_ul((u64)cong->window * USEC_PER_SEC * 2, cong->smoothed_rtt);
++
++	WRITE_ONCE(cong->pacing_rate, min_t(u64, rate, max_rate));
++	pr_debug("%s: update pacing rate: %llu, max rate: %llu, srtt: %u\n",
++		 __func__, cong->pacing_rate, max_rate, cong->smoothed_rtt);
++}
++
++void quic_cong_on_packet_sent(struct quic_cong *cong, u64 time, u32 bytes, s64 number)
++{
++	if (!bytes)
++		return;
++	if (cong->ops->on_packet_sent)
++		cong->ops->on_packet_sent(cong, time, bytes, number);
++	quic_cong_update_pacing_time(cong, bytes);
++}
++
++void quic_cong_on_ack_recv(struct quic_cong *cong, u32 bytes, u64 max_rate)
++{
++	if (!bytes)
++		return;
++	if (cong->ops->on_ack_recv)
++		cong->ops->on_ack_recv(cong, bytes, max_rate);
++	quic_cong_pace_update(cong, bytes, max_rate);
++}
++
++/* rfc9002#section-5: Estimating the Round-Trip Time */
++void quic_cong_rtt_update(struct quic_cong *cong, u64 time, u32 ack_delay)
++{
++	u32 adjusted_rtt, rttvar_sample;
++
++	/* Ignore RTT sample if ACK delay is suspiciously large. */
++	if (ack_delay > cong->max_ack_delay * 2)
++		return;
++
++	/* rfc9002#section-5.1: latest_rtt = ack_time - send_time_of_largest_acked */
++	cong->latest_rtt = cong->time - time;
++
++	/* rfc9002#section-5.2: Estimating min_rtt */
++	if (!cong->min_rtt_valid) {
++		cong->min_rtt = cong->latest_rtt;
++		cong->min_rtt_valid = 1;
++	}
++	if (cong->min_rtt > cong->latest_rtt)
++		cong->min_rtt = cong->latest_rtt;
++
++	if (!cong->is_rtt_set) {
++		/* rfc9002#section-5.3:
++		 *   smoothed_rtt = latest_rtt
++		 *   rttvar = latest_rtt / 2
++		 */
++		cong->smoothed_rtt = cong->latest_rtt;
++		cong->rttvar = cong->smoothed_rtt / 2;
++		quic_cong_pto_update(cong);
++		cong->is_rtt_set = 1;
++		return;
++	}
++
++	/* rfc9002#section-5.3:
++	 *   adjusted_rtt = latest_rtt
++	 *   if (latest_rtt >= min_rtt + ack_delay):
++	 *     adjusted_rtt = latest_rtt - ack_delay
++	 *   smoothed_rtt = 7/8 * smoothed_rtt + 1/8 * adjusted_rtt
++	 *   rttvar_sample = abs(smoothed_rtt - adjusted_rtt)
++	 *   rttvar = 3/4 * rttvar + 1/4 * rttvar_sample
++	 */
++	adjusted_rtt = cong->latest_rtt;
++	if (cong->latest_rtt >= cong->min_rtt + ack_delay)
++		adjusted_rtt = cong->latest_rtt - ack_delay;
++
++	cong->smoothed_rtt = (cong->smoothed_rtt * 7 + adjusted_rtt) / 8;
++	if (cong->smoothed_rtt >= adjusted_rtt)
++		rttvar_sample = cong->smoothed_rtt - adjusted_rtt;
++	else
++		rttvar_sample = adjusted_rtt - cong->smoothed_rtt;
++	cong->rttvar = (cong->rttvar * 3 + rttvar_sample) / 4;
++	quic_cong_pto_update(cong);
++
++	if (cong->ops->on_rtt_update)
++		cong->ops->on_rtt_update(cong);
++}
++
++void quic_cong_set_algo(struct quic_cong *cong, u8 algo)
++{
++	if (algo >= QUIC_CONG_ALG_MAX)
++		algo = QUIC_CONG_ALG_RENO;
++
++	cong->state = QUIC_CONG_SLOW_START;
++	cong->ssthresh = U32_MAX;
++	cong->ops = &quic_congs[algo];
++	cong->ops->on_init(cong);
++}
++
++void quic_cong_set_srtt(struct quic_cong *cong, u32 srtt)
++{
++	/* rfc9002#section-5.3:
++	 *   smoothed_rtt = kInitialRtt
++	 *   rttvar = kInitialRtt / 2
++	 */
++	cong->latest_rtt = srtt;
++	cong->smoothed_rtt = cong->latest_rtt;
++	cong->rttvar = cong->smoothed_rtt / 2;
++	quic_cong_pto_update(cong);
++}
++
++void quic_cong_init(struct quic_cong *cong)
++{
++	cong->max_ack_delay = QUIC_DEF_ACK_DELAY;
++	cong->max_window = S32_MAX / 2;
++	quic_cong_set_algo(cong, QUIC_CONG_ALG_RENO);
++	quic_cong_set_srtt(cong, QUIC_RTT_INIT);
++}
+diff --git a/net/quic/cong.h b/net/quic/cong.h
+new file mode 100644
+index 000000000000..e6cfb0fa1b6c
+--- /dev/null
++++ b/net/quic/cong.h
+@@ -0,0 +1,120 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#define QUIC_KPERSISTENT_CONGESTION_THRESHOLD	3
++#define QUIC_KPACKET_THRESHOLD			3
++#define QUIC_KTIME_THRESHOLD(rtt)		((rtt) * 9 / 8)
++#define QUIC_KGRANULARITY			1000U
++
++#define QUIC_RTT_INIT		333000U
++#define QUIC_RTT_MAX		2000000U
++#define QUIC_RTT_MIN		QUIC_KGRANULARITY
++
++/* rfc9002#section-7.3: Congestion Control States
++ *
++ *                  New path or      +------------+
++ *             persistent congestion |   Slow     |
++ *         (O)---------------------->|   Start    |
++ *                                   +------------+
++ *                                         |
++ *                                 Loss or |
++ *                         ECN-CE increase |
++ *                                         v
++ *  +------------+     Loss or       +------------+
++ *  | Congestion |  ECN-CE increase  |  Recovery  |
++ *  | Avoidance  |------------------>|   Period   |
++ *  +------------+                   +------------+
++ *            ^                            |
++ *            |                            |
++ *            +----------------------------+
++ *               Acknowledgment of packet
++ *                 sent during recovery
++ */
++enum quic_cong_state {
++	QUIC_CONG_SLOW_START,
++	QUIC_CONG_RECOVERY_PERIOD,
++	QUIC_CONG_CONGESTION_AVOIDANCE,
++};
++
++struct quic_cong {
++	/* RTT tracking */
++	u32 max_ack_delay;	/* max_ack_delay from rfc9000#section-18.2 */
++	u32 smoothed_rtt;	/* Smoothed RTT */
++	u32 latest_rtt;		/* Latest RTT sample */
++	u32 min_rtt;		/* Lowest observed RTT */
++	u32 rttvar;		/* RTT variation */
++	u32 pto;		/* Probe timeout */
++
++	/* Timing & pacing */
++	u64 recovery_time;	/* Recovery period start timestamp */
++	u64 pacing_rate;	/* Packet sending speed Bytes/sec */
++	u64 pacing_time;	/* Next scheduled send timestamp (ns) */
++	u64 time;		/* Cachedached current timestamp */
++
++	/* Congestion window */
++	u32 max_window;		/* Max growth cap */
++	u32 min_window;		/* Min window limit */
++	u32 loss_delay;		/* Time before marking loss */
++	u32 ssthresh;		/* Slow start threshold */
++	u32 window;		/* Bytes in flight allowed */
++	u32 mss;		/* QUIC MSS (excl. UDP) */
++
++	/* Algorithm-specific */
++	struct quic_cong_ops *ops;
++	u64 priv[8];		/* Algo private data */
++
++	/* Flags & state */
++	u8 min_rtt_valid;	/* min_rtt initialized */
++	u8 is_rtt_set;		/* RTT samples exist */
++	u8 state;		/* State machine in rfc9002#section-7.3 */
++};
++
++/* Hooks for congestion control algorithms */
++struct quic_cong_ops {
++	void (*on_packet_acked)(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++	void (*on_packet_lost)(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++	void (*on_process_ecn)(struct quic_cong *cong);
++	void (*on_init)(struct quic_cong *cong);
++
++	/* Optional callbacks */
++	void (*on_packet_sent)(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++	void (*on_ack_recv)(struct quic_cong *cong, u32 bytes, u64 max_rate);
++	void (*on_rtt_update)(struct quic_cong *cong);
++};
++
++static inline void quic_cong_set_mss(struct quic_cong *cong, u32 mss)
++{
++	if (cong->mss == mss)
++		return;
++
++	/* rfc9002#section-7.2: Initial and Minimum Congestion Window */
++	cong->mss = mss;
++	cong->min_window = max(min(mss * 10, 14720U), mss * 2);
++
++	if (cong->window < cong->min_window)
++		cong->window = cong->min_window;
++}
++
++static inline void *quic_cong_priv(struct quic_cong *cong)
++{
++	return (void *)cong->priv;
++}
++
++void quic_cong_on_packet_acked(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++void quic_cong_on_packet_lost(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++void quic_cong_on_process_ecn(struct quic_cong *cong);
++
++void quic_cong_on_packet_sent(struct quic_cong *cong, u64 time, u32 bytes, s64 number);
++void quic_cong_on_ack_recv(struct quic_cong *cong, u32 bytes, u64 max_rate);
++void quic_cong_rtt_update(struct quic_cong *cong, u64 time, u32 ack_delay);
++
++void quic_cong_set_srtt(struct quic_cong *cong, u32 srtt);
++void quic_cong_set_algo(struct quic_cong *cong, u8 algo);
++void quic_cong_init(struct quic_cong *cong);
+diff --git a/net/quic/socket.c b/net/quic/socket.c
+index 3427039d5416..54598044dbe4 100644
+--- a/net/quic/socket.c
++++ b/net/quic/socket.c
+@@ -43,6 +43,7 @@ static int quic_init_sock(struct sock *sk)
+ 
+ 	quic_conn_id_set_init(quic_source(sk), 1);
+ 	quic_conn_id_set_init(quic_dest(sk), 0);
++	quic_cong_init(quic_cong(sk));
+ 
+ 	if (quic_stream_init(quic_streams(sk)))
+ 		return -ENOMEM;
+diff --git a/net/quic/socket.h b/net/quic/socket.h
+index 0553caaa0237..c5684cf7378d 100644
+--- a/net/quic/socket.h
++++ b/net/quic/socket.h
+@@ -16,6 +16,7 @@
+ #include "stream.h"
+ #include "connid.h"
+ #include "path.h"
++#include "cong.h"
+ 
+ #include "protocol.h"
+ 
+@@ -42,6 +43,7 @@ struct quic_sock {
+ 	struct quic_conn_id_set		source;
+ 	struct quic_conn_id_set		dest;
+ 	struct quic_path_group		paths;
++	struct quic_cong		cong;
+ };
+ 
+ struct quic6_sock {
+@@ -104,6 +106,11 @@ static inline bool quic_is_serv(const struct sock *sk)
+ 	return !!sk->sk_max_ack_backlog;
+ }
+ 
++static inline struct quic_cong *quic_cong(const struct sock *sk)
++{
++	return &quic_sk(sk)->cong;
++}
++
+ static inline bool quic_is_establishing(struct sock *sk)
+ {
+ 	return sk->sk_state == QUIC_SS_ESTABLISHING;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.47.1
+
