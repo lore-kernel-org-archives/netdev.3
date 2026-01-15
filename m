@@ -1,135 +1,151 @@
-Received: from gmmr-3.centrum.cz (gmmr-3.centrum.cz [46.255.225.205])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313612D3EC1;
-	Thu, 15 Jan 2026 08:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.225.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C3326D5C;
+	Thu, 15 Jan 2026 08:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768464838; cv=none; b=htVpuzW6w6HdbDjktzqHv0Y7eFspokknThO51QquWHPeCJ3qR3zJlEPfhqEwdwFW/ARZNtDdZxf/0k1IhvWKfjUX2x32k7b8j1Wn8DujbuNjOFT8crSPwRWtY6vqjU7gJh0UIVVCZHVqdA3/iUlJH1ypTE70OD2GhzSOcY9Dmmc=
+	t=1768465588; cv=none; b=O9AgF3h9qUpskElBPCf5beQXL5EjCB3ZMbCGrVv35Y8L9LeLKgX7SuN/ax7uS7zM4lNj2/Qs0iscGi5yu7oY9JyWn8gv/6Dlj2F0XfojFoiwphgJUopHDN8xmx2ea6iD8VofoG2PziKfMtPDnfJVDnauUGEss2yWn+vnWwF2zE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768464838; c=relaxed/simple;
-	bh=RVJsit++Thv4QFWpjxk1A5tPUotoM8QUBIxSFIY+aiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=id98HfPtdVkvdy8iVvhS1pZ2faJ1UN+yVns3kIs5V+YUkRyiSAqsEwCvCvjZxldYZjHQ++jbwpWcYiQp6+TLWEA1Ldsm8PDoOoKSb6NcmhNiASG+9s7azhhhnH5n7cJXYSunvhug9fBC4NKLKFjYZljjd0JgQ8ajBReZ3D8wl1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=PzX+Io4W; arc=none smtp.client-ip=46.255.225.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
+	s=arc-20240116; t=1768465588; c=relaxed/simple;
+	bh=deHERidX6Uj50jqArC5AnAHfZyrBeWMJABClTGf0c9o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iPWrvc9iYegpkLlYtA9mY0kzcdu4bvSF08mM8CJytlg3yxlK79pXdPr9QkySLlYY3kcEutdgyM50fMKv69nIkZOmLHVVx6XrG1ucppcYd1ht3xb86s3xE2Is4p3Ck48avGHzx2oYt4F1HsN26D1+SdaD7oNIj8GifeYEHkrpTQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=FmsBICbe; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="PzX+Io4W"
-Received: from gmmr-3.centrum.cz (localhost [127.0.0.1])
-	by gmmr-3.centrum.cz (Postfix) with ESMTP id E9921205FFE0;
-	Thu, 15 Jan 2026 09:12:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
-	t=1768464740; bh=8xs4Ur+iyrRIuci3J+LzFqMJp6PbKveiLreGF9YV6j8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PzX+Io4WQTvytOktzlWe8zZStzEvkGKY9E5an3T2xojbmYzqOc8dKrmF5Yc8nFoyL
-	 9WsjJ1Fso/HOLad3FPdu1GTYKPxUbUXU1mxYwI/sZ+bF/ymyL93xa3a5Gct0GXtMCD
-	 Cx4cuPtzfJqoTK9mWHikSAeEgT9+TlxHD62r1/Js=
-Received: from antispam102.centrum.cz (antispam102.cent [10.30.208.102])
-	by gmmr-3.centrum.cz (Postfix) with ESMTP id E4D1E20241B8;
-	Thu, 15 Jan 2026 09:12:20 +0100 (CET)
-X-CSE-ConnectionGUID: JIz2WijUQpieEWqCpfKtUg==
-X-CSE-MsgGUID: SVgMl3xhSHqvlnkbrVU6cg==
-X-ThreatScanner-Verdict: Negative
-X-IPAS-Result: =?us-ascii?q?A2H/BwBCoGhp/0vj/y5agQkJi1GRd1WLIoY1gSCEAYZhg?=
- =?us-ascii?q?WsPAQEBAQEBAQEBCVEEAQGFBwKMdic4EwECBAEBAQEDAgMBAQEBAQEBAQEBA?=
- =?us-ascii?q?QsBAQYBAQEBAQEGBgECgR2GCVOCW4QIAQUjBFIQCw0BCgICJgICVgaDFYI6A?=
- =?us-ascii?q?TmuY38zGgJl3HcCgSVigSwVgQouiFMBhH5xhHhCgg2EPz6EDgESAYN8gmkEg?=
- =?us-ascii?q?iKBDoFFik6IAVJ4HANZLAFVExcLBwWBI0MDgQYjSwUtHYEjIR0XEx9YGwcFE?=
- =?us-ascii?q?yOBHAYbBhwSAgMBAgI6UwyBdgICBIIQe4IBD4cQgQAFLm8aDiICQzUDC209N?=
- =?us-ascii?q?xQbBJV7gRMgG8ZggxyBCoROnSQzg3EBlAsDkmsumFipQYFRLoEPcDMiMIMjU?=
- =?us-ascii?q?RnSLoEzAgcLAQEDCYI7j2OBSwEB?=
-IronPort-PHdr: A9a23:GzdngRAVN7V5rxfn4nOgUyQUC0UY04WdBeb1wqQuh78GSKm/5ZOqZ
- BWZua4xygeRFtyBtq8fw8Pt8IneGkU4qa6bt34DdJEeHzQksu4x2yEGPouuJHa/EsTXaTcnF
- t9JTl5v8iLzG0FUHMHjew+a+SXqvnYdFRrlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5/I
- hq7oR/NusUKjoduN7g9xxvJr3ZGZu9b2X5mKVWPkhnz4cu94IRt+DlKtfI78M5AX6T6f6AmQ
- rFdET8rLWM76tD1uBfaVQeB6WMSXWoPnhdWDAbL8Qn2UZjtvCT0sOp9wzSaMtbtTb8oQzSi7
- rxkRwHuhSwaKjM26mDXish3jKJGvBKsogF0zoDIbI2JMvd1Y6XQds4YS2VcRMZcTyJPDIOiY
- YYREuQPPuhYoIbhqFQTrxSzHhWsCP/1xzNUmnP6wa833uI8Gg/GxgwgGNcOvWzOotrrKKcSS
- /2+w6bSwjXFcfZW2ir25Y/SfRA7ovGDR7dwftDLyUQ0DQzFklGQppb+Pz+PyusMsnGW4ux9X
- u2gl2ApsRt+oiSzxsgykInJgJoYxk3Y+Chlz4s4J9+1RVNmbdOmH5VduSGXOop5TM4sTW9lp
- ig0xLIGtJKmYiUG1ZQqyh7fZfCbcoWG7BbuWPiRLDp+mXlre6q/ig69/EWh0OHwSMm53VZQo
- iZbjNXBtGoB2h7T58SfVPdx40ms1SyR2wzN9u1IO144mKXHJ5I7xrM9l5weulnZECDsgkX5l
- qqWe10h+uiv9uvofK3rpoSZN49okgH+NbkumtCnDeQ4LAcOW2+b9Pyz1L3m5EH5W7BKjuEuk
- qXErZzWP9gUqbC/Aw9JyIYj9hO/Ay2639UZhXUHLVRFdwybj4XxNFzDIer0Aem/jlmsijtn2
- e7KM7/7DpjPLnXPiLLhcqx8605Yxgoz19df55dMB74bOvLzWVX+tNnCAR8jKAG72frnCNFn2
- YMFQ26AHq6YPLvIsVCU/uIvP/WMZIgNtTfzMfcl4fHujXEkmV8GfampwIEYaHGjE/t9OUqZY
- GfjgsobHWgWuQo+SfTmiEeeXj5Le3ayQ6U86ykmB428E4fMWIWtjaec0yihAJ1ZeGVGClSLE
- Xfma4WIQfEMZzyOIsN5iDwLSaChS5M91RGprAL11adoLvfR+iICtJPsysR16vbclRE18jx0A
- MCd3H+XQ25omWMIQic63Lpjrkxl1leDza94juRbFdxO/PxGSBw3NZ3CwOxgDdD9RAbBcs2OS
- Fa8TdWqGSsxQc4pw98Sf0Z9HM2vjh7e3yqxA78ViqaEBJ0u/qPSxXfxIcl9xm3C1KkgiVkmX
- 8ROOXe7iaFh6QjfH5TJnFmBl6a2aaQc2zbA9HmZwmWTvUFYVRR8UavbUn8CYUvWt8r25kXBT
- 7+pErknNgpBycifKqpFcNHmkEtJROn7NNTEf22xg3uwBQqPxr6UYovqen8d0zvSCEgZiQ8T5
- 2uJOBM6BieguGLeECduGUjuYkLj7+VxtHy2QlUowAGNak1tz6C19QINhfyAV/MT2aoJtz0nq
- zppBlaywdzXB92GpwV/YKVTfM0y4Elc2GLdqgx9OJqgI7p+iV4eIExLuBbM3hZqAM1jkMMrq
- mgpzUImKr+S2XtCeime0JS2PafYfDrc5heqPpbbxkuW7t+QWaRHvP0iqFzmtRuBH1Ym+m4h2
- MsDgCjU3YnDEAdHCcG5aU0w7RUv/9nn
-IronPort-Data: A9a23:KRK5N6NKSab0qJ/vrR0WlsFynXyQoLVcMsEvi/4bfWQNrUoqgWcHm
- GMXCz+FPPmLMDbzedB3Pojg8xhTscDSxtNkT3M5pCpnJ55oRWspJjg7wmPYZX76whjrFRo/h
- ykmQoCeaphyFDmF/03F3oHJ9RFUzbuPSqf3FNnKMyVwQR4MYCo6gHqPocZg6mJTqYb/WVrlV
- e/a+ZWFZgf8gmMsawr41orawP9RlKWv0N8nlgNmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
- vr017qw+GXU5X8FUrtJRZ6mGqGiaue60Tmm0hK6aYD76vRxjnBaPpIACRYpQRw/ZwOhxIktl
- YoX5fRcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQq2pYjqhljJBheAGEWxgp4KUNv5
- 6YnKTIwVwiCis+J2ZmjRMpwu8t2eaEHPKtH0p1h5T7cSO0jXYiaGuPB6NlExio1wMtcdRrcT
- 5ZHL2AyMVKaOUIJZQp/5JEWxY9EglH2aT5RrVuPjaMr52HIigdjuFToGIOJIoHRHJoIwi50o
- Er9wWvcBkoKNOe/0CSB9HGmnNHywyj0Ddd6+LqQs6QCbEeo7nMaDhIYSEC7vPC4okS3Wt5Cb
- UcT/0IGoaEs+UmDQtDjUhi8p3CY+BgRR7J4HuEn7Qifx7b87AGeCWwJCDVGbbQOt9I8TBQp2
- 0WPktevAiZg2JWbVGmd676V6yy7Pyc9KW4EeD9CQQYbi/H9qY0yi1TBQ9pkCqOzjdrdHTD23
- iDMoCUg750MjNQG2Liy51zvhzO3uoOPXB5v7VmRVWWghitwYoK/apPr71XH4fteBIKESF/Ht
- 3hss9CX5u0IDLmXmSCNSflLF7asj96BMTvBkRtsEoMn+jCF5XGuZ8ZT7St4KUMvNdwLERfvb
- VPftB15+pBeJj2pYLVxbob3DN4lpYDCHM/iUNjGfoBFPt56cwrvwc11TRLOmTqwzQ52y/55Z
- srznduQMEv2wJ9PlFKeL9rxG5dymkjSGUu7qUjH8ima
-IronPort-HdrOrdr: A9a23:2bgCWKt2UQHsy+T32PlbOIEF7skDYdV00zEX/kB9WHVpmwKj+P
- xGuM5rsCMc6QxhOk3I9urrBEDtex7hHNtOkO0s1NSZLWrbUQmTTb2KhLGKq1bd8m/FltK1vp
- 0PT0ERMrHNMWQ=
-X-Talos-CUID: =?us-ascii?q?9a23=3AylOexGqUfdOXsIpV1xSkjbzmUeIEYCfizXXtGle?=
- =?us-ascii?q?5BEtWUZaNR3yMxawxxg=3D=3D?=
-X-Talos-MUID: =?us-ascii?q?9a23=3AOTmOVA8+3PYVdYCLRGzlJd2Qf/xW7IGqU1ANqrU?=
- =?us-ascii?q?fpc2CNiZqBQrDhzviFw=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.21,226,1763420400"; 
-   d="scan'208";a="140531754"
-Received: from unknown (HELO gm-smtp11.centrum.cz) ([46.255.227.75])
-  by antispam102.centrum.cz with ESMTP; 15 Jan 2026 09:12:14 +0100
-Received: from arkam (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gm-smtp11.centrum.cz (Postfix) with ESMTPSA id 077331004FFCE;
-	Thu, 15 Jan 2026 09:12:14 +0100 (CET)
-Date: Thu, 15 Jan 2026 09:12:13 +0100
-From: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: fushuai.wang@linux.dev, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-	edumazet@google.com, pabeni@redhat.com,
-	linux-kernel@vger.kernel.org, davem@davemloft.net,
-	vadim.fedorenko@linux.dev, Jason@zx2c4.com,
-	wireguard@lists.zx2c4.com, wangfushuai@baidu.com
-Subject: Re: [net-next, v3] wireguard: allowedips: Use kfree_rcu() instead of
- call_rcu()
-Message-ID: <202611581213-aWihXdQpdnhXv606-arkamar@atlas.cz>
-References: <20260112130633.25563-1-fushuai.wang@linux.dev>
- <20260115033237.1545400-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="FmsBICbe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=jKRcqnAN1FejFT21FpY8AxftZkZMdt43RnsJvrkKQQU=; b=FmsBICbeY4mWZKcIr+cNCff1y4
+	paQss6DSn/Zlq1KmIhp0bVpzyv/+ARgbSRG5f/GcojEu24ziBFYDNZPryAJY11SYTUVbagAErTVAB
+	q+djdsVJUM01uFwJFOBbc/nF56jCWRXJ90xdxmuMHkyMNuyemaWdFnqN8iJD/cloDTUhTZB99GUbZ
+	9+PcLPyh8cw1VKg0VuXpG+Cu8r3xf/UpjOTHAg8rtHVKG5ZPCNd446TkZxrgGnNRckte0OgyGkjTk
+	j01Cxsi14vL2T20PSf9n3xGiIcWdIYnEVNy1ScSxpFtiXZky9rSISw8xIbVyOPhsZDrC4FTvxXitS
+	7tV1wNpg==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vgIgD-000NpU-25;
+	Thu, 15 Jan 2026 09:26:09 +0100
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v7 04/16] net, ethtool: Disallow leased real rxqs to be resized
+Date: Thu, 15 Jan 2026 09:25:51 +0100
+Message-ID: <20260115082603.219152-5-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260115082603.219152-1-daniel@iogearbox.net>
+References: <20260115082603.219152-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260115033237.1545400-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27881/Thu Jan 15 08:25:08 2026)
 
-Hi Jakub,
+Similar to AF_XDP, do not allow queues in a physical netdev to be
+resized by ethtool -L when they are leased.
 
-Minor side note: I noticed a small typo in the AI review foreword. I
-assume this is part of a template:
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Co-developed-by: David Wei <dw@davidwei.uk>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ net/ethtool/channels.c | 12 +++++++-----
+ net/ethtool/ioctl.c    |  9 +++++----
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-On Wed, Jan 14, 2026 at 07:32:37PM -0800, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least pausible.
-                                                        ^~~~~~~~
-pausible -> plausible
+diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
+index ca4f80282448..797d2a08c515 100644
+--- a/net/ethtool/channels.c
++++ b/net/ethtool/channels.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+-#include <net/xdp_sock_drv.h>
++#include <net/netdev_queues.h>
+ 
+ #include "netlink.h"
+ #include "common.h"
+@@ -169,14 +169,16 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* ensure channels are not busy at the moment */
+ 	from_channel = channels.combined_count +
+ 		       min(channels.rx_count, channels.tx_count);
+-	for (i = from_channel; i < old_total; i++)
+-		if (xsk_get_pool_from_qid(dev, i)) {
+-			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
++	for (i = from_channel; i < old_total; i++) {
++		if (netdev_queue_busy(dev, i, NULL)) {
++			GENL_SET_ERR_MSG(info,
++					 "requested channel counts are too low due to busy queues (AF_XDP or queue leasing)");
+ 			return -EINVAL;
+ 		}
++	}
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+ 	return ret < 0 ? ret : 1;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 9431e305b233..02a3454234d6 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -27,12 +27,13 @@
+ #include <linux/net.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/utsname.h>
++#include <linux/ethtool_netlink.h>
+ #include <net/devlink.h>
+ #include <net/ipv6.h>
+-#include <net/xdp_sock_drv.h>
+ #include <net/flow_offload.h>
+ #include <net/netdev_lock.h>
+-#include <linux/ethtool_netlink.h>
++#include <net/netdev_queues.h>
++
+ #include "common.h"
+ 
+ /* State held across locks and calls for commands which have devlink fallback */
+@@ -2282,12 +2283,12 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* Disabling channels, query busy queues (AF_XDP, queue leasing) */
+ 	from_channel = channels.combined_count +
+ 		min(channels.rx_count, channels.tx_count);
+ 	to_channel = curr.combined_count + max(curr.rx_count, curr.tx_count);
+ 	for (i = from_channel; i < to_channel; i++)
+-		if (xsk_get_pool_from_qid(dev, i))
++		if (netdev_queue_busy(dev, i, NULL))
+ 			return -EINVAL;
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+-- 
+2.43.0
 
-Best,
-Petr
