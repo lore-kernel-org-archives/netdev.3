@@ -1,75 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC9D20C00C;
-	Fri, 16 Jan 2026 04:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A50C20C00C
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 04:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768536720; cv=none; b=JtSnhhlWpfMmuqU3VXIt1SiFxvRNdr3nG5QnqBxHpgEghBEmlVb0QvFb/+Vky1Ma6LW/Lg8jXBB58i+XtBl0P2A7BhKZUBH4HZzYYI6NYi0lBBejlV3ZueLt+nPJ9njCrCjBdvV46mY6wyOiEwGSzOqvncubu7gN9rEXL2lYCEw=
+	t=1768536814; cv=none; b=n1e9Jd1vOXWxmJXOHvo3BpZm6IBJ3r1wLYprzGrh3ebt4UZ6ptBfpXkoGcsB1OFjQvGSdcwTiM6wBrovioDpyX+c0WfQNQHoziHBGRmyyfeXM2YPmwkjTHUEixAVMEzCwQJuRxZ5xJrBmoVoT/rcR4HKEzgs9hdzGbaA2NxGPIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768536720; c=relaxed/simple;
-	bh=4uoGgoog5Fby7u6C0Dxo43qgoE40DFXVo7FCNNGrnfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OherzVIgrHtg+PaEEIikmUI2vbr5zV1jAq6JsdUnct1Ss6UR4omzU5iK1IBA4KYomVAIuPHY6ExAU7eD650H7lGHTJDkSrxaMfpyj0B+k25CLhNaue2xyi6T9gr9SuB/+QMmoDMD8zjilhZA19P3YPHKfyRpH12+niNdD0SmFPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pofHY7nk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768536814; c=relaxed/simple;
+	bh=RJgP0oSCPnvtxFvzh7DZGIlYNLvPQY9y/cj4rFBtraA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Lcer5PEztBAlWfPUCE0DwbI8bPGFQqphLaM6qCb0W1JmjVo+zdChdj+JxlcoONr6m5nTqMAdcgfFTivShfnvwEYnFg0RbzylPk1X0877Zgzit0780fBe7IrQZsXOuHo06xvAOCCjZcRMabcAxjfTTzv5YgTnBjpAzQqBjVT8RXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lzgi0q9s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pofHY7nk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5566AC116C6;
-	Fri, 16 Jan 2026 04:11:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lzgi0q9s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591FDC116C6;
+	Fri, 16 Jan 2026 04:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768536720;
-	bh=4uoGgoog5Fby7u6C0Dxo43qgoE40DFXVo7FCNNGrnfU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pofHY7nkpiKhAxQyLOLbPsRy8q/x5Q/3s4n/wEkvNw0YzWKn8tw91Nl7uszQ3mN4R
-	 k2af9HzewRX7zlJGADX7lewi1sxDwR2sJvcO6V2gbWRDEnpu2+F1yhW9zGSmjabsHT
-	 laMMS8KVeWATcL2n55obXgFbbrSQmlqLlMbsgmAy1EQopNMfjX6TPXzU9ZNoJ+fpl2
-	 5JKOlnQXI3XrLyLR1fa4cvXYy+7lYnkaU3qtdtgC+Oy7ylKTTQy/B4l/83h47iT71o
-	 YGPUza2uy325wf3IlpZzXqsZaQvOe9cFyJIj121e8LQJq8wPQS5gPbnbvAOpVTCLHt
-	 tic45C3RQ0WlA==
-Date: Thu, 15 Jan 2026 20:11:58 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Suraj Gupta <suraj.gupta2@amd.com>
-Cc: <mturquette@baylibre.com>, <sboyd@kernel.org>,
- <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <michal.simek@amd.com>, <sean.anderson@linux.dev>, <linux@armlinux.org.uk>,
- <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <bmasney@redhat.com>
-Subject: Re: [PATCH V2 1/2] clk: Add devm_clk_bulk_get_optional_enable()
- helper
-Message-ID: <20260115201158.3371bf40@kernel.org>
-In-Reply-To: <20260113181002.200544-2-suraj.gupta2@amd.com>
-References: <20260113181002.200544-1-suraj.gupta2@amd.com>
-	<20260113181002.200544-2-suraj.gupta2@amd.com>
+	s=k20201202; t=1768536814;
+	bh=RJgP0oSCPnvtxFvzh7DZGIlYNLvPQY9y/cj4rFBtraA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Lzgi0q9sGGIz0RYuVBI/EMUSYIp4L75B/ffnqenEiOvwWd1uPffEFKHTeCmpu85gx
+	 RW3Ex7nmlrxcGHO8/6F4qjDAw4WmsqXzseYh6hSrXt77RZjBSx/cPLvUC7GHNXrC/T
+	 JQmd/3ojM43toZzfqYvzR3OgEIRqh1caecyMfCQwgnVtkaosuxVNVUT3RWLPypSKjP
+	 SUnI/BkYep5xQuO1engOKVzAB/SuXwxd/0dWGNsSoamoAJVRkYhrXl2Lb/4qoQgvg3
+	 VtnsuWurVtFuvTzFexuaC14IvnSQOO79vIZAzme7+dPvNe2RSs14wue1OrR3o5cwFd
+	 OasS/gfBbVfrA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 78A4A380AA4C;
+	Fri, 16 Jan 2026 04:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] xgbe: Use netlink extack to report errors to
+ ethtool
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176853660636.79095.7065833387528038849.git-patchwork-notify@kernel.org>
+Date: Fri, 16 Jan 2026 04:10:06 +0000
+References: <20260114080357.1778132-1-Raju.Rangoju@amd.com>
+In-Reply-To: <20260114080357.1778132-1-Raju.Rangoju@amd.com>
+To: Raju Rangoju <Raju.Rangoju@amd.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
+ Shyam-sundar.S-k@amd.com, Vishal.Badole@amd.com
 
-On Tue, 13 Jan 2026 23:40:01 +0530 Suraj Gupta wrote:
-> +/**
-> + * devm_clk_bulk_get_optional_enable - Get and enable optional bulk clocks (managed)
-> + * @dev: device for clock "consumer"
-> + * @num_clks: the number of clk_bulk_data
-> + * @clks: pointer to the clk_bulk_data table of consumer
-> + *
-> + * Behaves the same as devm_clk_bulk_get_optional() but also prepares and enables
-> + * the clocks in one operation with management. The clks will automatically be
-> + * disabled, unprepared and freed when the device is unbound.
-> + *
-> + * Returns 0 if all clocks specified in clk_bulk_data table are obtained
-> + * and enabled successfully, or for any clk there was no clk provider available.
-> + * Otherwise returns valid IS_ERR() condition containing errno.
-> + */
-> +int __must_check devm_clk_bulk_get_optional_enable(struct device *dev, int num_clks,
-> +						   struct clk_bulk_data *clks);
+Hello:
 
-s/Returns 0/Return: /
-the colon is required by kdoc
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 14 Jan 2026 13:33:57 +0530 you wrote:
+> From: Vishal Badole <Vishal.Badole@amd.com>
+> 
+> Upgrade XGBE driver to report errors via netlink extack instead
+> of netdev_error so ethtool userspace can be aware of failures.
+> 
+> Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
+> Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v3] xgbe: Use netlink extack to report errors to ethtool
+    https://git.kernel.org/netdev/net-next/c/74ecff77dace
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
