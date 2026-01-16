@@ -1,125 +1,135 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D363054D8
-	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 20:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA8421770A
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 20:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768593894; cv=none; b=RTMc8Oi80FrbnAvnz6AKjlQd+FGsL648WDnH5Pg0vs+ioq8riTtXe1AzCPpOUjsKlo2VvRjMR7Ey3g6yk2LCUKHekx2ifAbzJ8/+w24XMpHXqDySiB2ZwJoAyNb0Gzt4OQOIx7rxJcwQB+JWrPLmNDUftImveg9XOclFZ3uTU+A=
+	t=1768594291; cv=none; b=szbnHvV81CV1vI/kOSBTajy8Cd6R5NJEKhlhTa9+zc7VPJ9Se4MBu5BtJML5Ah4U3VdCKiKAuAzy+q+9sGuH1EoCn6r4wpEEeYnN4XkvIJ2JqgTa/uA2LAu+OzdNNGtfiOBkRqR0PomNWC4bt3f9oizgRkKh5ueZ/AcbZpld4+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768593894; c=relaxed/simple;
-	bh=K6LdsqUXrNUwOQjRda+4TL3J9Tvwpa+riyhbDUqJr3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J7x/ZR1QJjmHY3Rfmswy5n2CbFAC7yVOxr+EBxFAaZy5EaXiJSXhbWObFK2X+W+kRWBFxM7SvjKyOUs5yOypH7FnADFqxAvFJhHfkS2UBvWgPv4e293xc6gJZ+RgKRbWCyIpErdJWzP+vimjuNJODL+ttjkyqoHx3WdowTF0Vgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2ae2eb49b4bso5285746eec.0
-        for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 12:04:53 -0800 (PST)
+	s=arc-20240116; t=1768594291; c=relaxed/simple;
+	bh=E/KAWSg8rDPMJI39MnpZvrtFpm7kSErqc3R9EfRND7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Bfn6m5jWx1INoi8/v/dsz40M1AnzmdnEKSSyCwQpMVR3Ks/dmGQpuiaZHqAziRxBNsPT5hxPsM6vLO+nRWuIHg9mV5lvTrVRZ+dfX/bTmBKylKZmv2f7+l+SVkmnwEpZ18wB7oJzsBhOoy72R6BweHWM+x+tFv5ZUsxleSUrv7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IeruIiZz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aDLBvAL/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IeruIiZz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aDLBvAL/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768594289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oGy5kpqtC8Nz3SdV42jAbXS+si9RUu3HOAbvwL8Sc2k=;
+	b=IeruIiZzRvUyHFWEYeqgd92bfxYfhDzw6boPHbyOWmQBVOLNAAtdFYsPGRX/xUAM4+WNnY
+	ooPEmTb9Gfnyh53+6moGN7MCXbgw7S6m7AkCOYeekqp+D9NpiJqXQKW72eNrvvuQXaTwT+
+	/otXwkcUc3VV6oj5YCqiw/vXEc8NyGI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-oq7IjXaRO1q6OytO7qsRDQ-1; Fri, 16 Jan 2026 15:11:28 -0500
+X-MC-Unique: oq7IjXaRO1q6OytO7qsRDQ-1
+X-Mimecast-MFC-AGG-ID: oq7IjXaRO1q6OytO7qsRDQ_1768594287
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477cf2230c8so21063105e9.0
+        for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 12:11:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1768594286; x=1769199086; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oGy5kpqtC8Nz3SdV42jAbXS+si9RUu3HOAbvwL8Sc2k=;
+        b=aDLBvAL/V7HlfT/MVMcELu003QkIxJ3fGvjyw2i8w/RHTHsvBZx7vWjliE8Ygzx5FB
+         f2vlTYwZ/qsr/OyoYMuUwoOElTDHtw4EoQU+QXBYuLv63+G3nDZ38qUfg/EqFHdMJfqC
+         zAeayxCcUfXfjSiqWCLscMJfumguAUHU+XGN4md3pP06iNmUgIzqeUP6pZwOHPLWpYpZ
+         ZVcnDEbNhOi/dJ+IfQblWV57+Y4Tp/+GvZsU6HPgyNRT1SrV+tEfDPAvA4k2XfOvKHHq
+         aq7f02YSTJRQwHjcUh+2sd4orB7F0Q2Q2OtwSs1IMCHQXS4e7CQzustzPhwPjRpjMwFg
+         aPuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768593892; x=1769198692;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nJgMpRp84niyMMb5pn3Lj6itNx/z6RtbQINRzPFwtgc=;
-        b=NJpB5XL8zbo/1wNIDKlXi1t9K5VdkhzF4OnmQgOqYGP1erbpTHu0z2m45Z1CVJDHY/
-         Yz0EPXzNNvrUStLiI8pyOqFBff07mjR6gexGwK6LBbxyXvu9kXj01S/acHfNnOo9ixQ3
-         Fg2T2C6mqYT4akMwzsJLz9z8klsoZAa4hbswuzcxXRa7xcgHAvE4MukQLoTYpAGGA9vE
-         AH2NuCCtmZwUD9nnXQyCn6s3WoFRM56iiSBubwvwp9/T9UTyRQQZDN4OqHScLayR9Y71
-         XEErixRSUsEf4pY9IQ8TjzqgmSG2rTM5tiYuEIrQs44Wf9rNf6YRVapsp1PkHAkX5iXf
-         yeaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU11NzzpVELBpa3RfhAINbeDcyCloCftWRX9t2SA/SAzexUctKDS+6qPxsm2B+Q7Qic/Z8hZQ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkqIbpaH8AB+0WrWkarWKBVi1Hflo/fPO9qecppiR8lKeZSfZf
-	QmiSvGic/9azF/o/26XTAZN3ufvrxFlxmSHJumHiBxpAHIqH6Fkh5mcH7sCaqQ==
-X-Gm-Gg: AY/fxX7kovNOXtzr8JPhoYVw+6QpMLLY7N0ikk54pEBW8pkNcr87yZ+ZKgM73WXx6Iw
-	3WLgKzJgkBc3pRj2Qsz6VeScK6Euvj3m6wzQHRlGuEuVV5NVEZksxF6ft8BhhnQiwTaTGEMz5D7
-	cDJXtvoMxn86Ga/HJoi4bNaRB6VcRmIyQDTNL3ojCSMQRdpcs4/RRLmt3+68SkkhRWOXikSQudT
-	CHwvNZbUxM4Fuzs6oP0qoKZPbLY+Bpl/nJMwQHqwV8wC5YuG00hs/pmM9mEYuaTVmAt8WXHyvzT
-	Uh1nxGZvPVQjTILW9VRwKZ03sxT2sxZ919HhgYkA+0+TlnaltC8AN03C3ITljfXHw+gsjUMjaNf
-	LV+t7ebehGcxzKA/OKFusMgjGLNEd8+6NOVUEWsFGABNSzf2WANY9CjS63Q8b+G5txfsHOAS03r
-	1L
-X-Received: by 2002:a05:6808:1b23:b0:459:9fe6:b16f with SMTP id 5614622812f47-45c9bf57251mr1551727b6e.23.1768586830992;
-        Fri, 16 Jan 2026 10:07:10 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:4::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-45c9e03dff2sm1636081b6e.17.2026.01.16.10.07.09
+        d=1e100.net; s=20230601; t=1768594286; x=1769199086;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oGy5kpqtC8Nz3SdV42jAbXS+si9RUu3HOAbvwL8Sc2k=;
+        b=AozNppzblppTrHejCLDXAOAp2iwOFJECSotg4kNvOIuNsPsVCyx4mAdndJGNnInqoV
+         GAdPg4WobZ7oS8J/Tq55YyqdfThBMeLqpUKLjfgSyUnu0tqDwXaEzKnsfY8KxP09tMIx
+         aHjZQgGzjNtg0I/4OGSwT5gCsPrS1sdz+wZ7uTjC+cFp8p8Jhr+i7/gxzQgEmA5pGh2F
+         YIyavgavxWusjhrAMooYLNo3bhk6HwUZOARd0UG55j1lcHFeuOUU9lprAi+S4wfglXbQ
+         luaiAJ7IkXEPO2b6Q8RcEdbUKkWP9TM0jvF8RqqkLMfvKJPUODgLMeKefGEd7xD9LnLf
+         q9MA==
+X-Gm-Message-State: AOJu0YwnMjoc+YvuUL+L8CwzsL0MiYlo0x7LW8DkUyHKxB2XaZ51Z5eE
+	jyBBF3V344meQuTnrRU2bNLW5Hi+e4+Dfp/h1ssfFgZzlYyJUtxkVpA6ogRZ3X81rLUArcEAnkp
+	H4wVEhj42nUvXz4A7VzipyWm4RGGg8Vrj9E8KG7eW56iyVtcGX1zkdVE6u/nXVk8QGfntGbYaGc
+	laRNkFeTawuAWevMESyRXy86+nwlf3dOIsnrOUbuMoOw==
+X-Gm-Gg: AY/fxX6y7DI322AB2NkaFFO9Fv0oWOeHtIjdyxUcRbTW82eK7L34O0JNaFQN1SMkc1F
+	KxdJuXgmE+elUBLuT1x1hWX4w6BODP5z9fIms7Bx32HhLIxqneSNyWPX94POM4e6Z1Yzasc4U1k
+	iXr1j14mWMMACKv3qCSY/2nRfOwyJ0/lagPpE5ve/ldw7EycC/DABCZJXebbFHC65zjX6l2sn9Q
+	CjyflRdrfraqZbqD6Ws6PHuZqjgFFMitgKEfzm79ldPhxWFvqFQRgYEg0eWI+JyzwPUB7wvP2yV
+	27S90nE5xV2gHdDfRRn3VYMYTj9s+e38u/osbolWNqm/mGE/WgFkACkxJlHzWHWezSaEFiMEAW8
+	wW5OHrADq837n95v9tkKD739ITRecEz0VnpJHJMzTRXL6Boi6LodTUQgFi08I
+X-Received: by 2002:a05:600c:528c:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-4801e2fdd1fmr41061375e9.3.1768594286307;
+        Fri, 16 Jan 2026 12:11:26 -0800 (PST)
+X-Received: by 2002:a05:600c:528c:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-4801e2fdd1fmr41061195e9.3.1768594285815;
+        Fri, 16 Jan 2026 12:11:25 -0800 (PST)
+Received: from stex1.redhat.com (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e8d77besm60526195e9.14.2026.01.16.12.11.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 10:07:10 -0800 (PST)
-Date: Fri, 16 Jan 2026 10:07:08 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Petr Mladek <pmladek@suse.com>
-Cc: John Ogness <john.ogness@linutronix.de>, osandov@osandov.com, 
-	mpdesouza@suse.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, 
-	jv@jvosburgh.net, kernel-team@meta.com, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, rostedt@goodmis.org
-Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
- infrastructure
-Message-ID: <6tryrckp7mah2qghxu5fktrwexoik6anplubfvybushtcgocq5@kg6ln44istyk>
-References: <87zf6pfmlq.fsf@jogness.linutronix.de>
- <4dwhhlnuv2n3f7d3hqoulcnsg6ljucd6v47kqcszcwcshfoqno@rzxvg456q4fi>
- <j764nuipx4nvemd3wlqfyx77lkdf7wgs5z452hlacwglvc2e7n@vsko4bq5xb2f>
- <87eco09hgb.fsf@jogness.linutronix.de>
- <aWECzkapsFFPFKNP@pathway.suse.cz>
- <875x9a6cpw.fsf@jogness.linutronix.de>
- <44upa7szd563kggh4xolznmfcwfnhrrh5guvecp6pzlvp5qvic@w7hxtzy7huzf>
- <jakydyx5dprrzgbsb6lorgpova46jbhq5tecwwtiihkhyi6ofy@olsrizfk52je>
- <aWpekVlhRpD4CaDI@pathway.suse.cz>
- <aWpfDKd64DLX32Hl@pathway.suse.cz>
+        Fri, 16 Jan 2026 12:11:24 -0800 (PST)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH net v5 0/4] vsock/virtio: fix TX credit handling
+Date: Fri, 16 Jan 2026 21:11:19 +0100
+Message-ID: <20260116201123.271102-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.52.0
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWpfDKd64DLX32Hl@pathway.suse.cz>
+Content-Transfer-Encoding: 8bit
 
-Hello Petr,
+The original series was posted by Melbin K Mathew <mlbnkm1@gmail.com> till
+v4: https://lore.kernel.org/netdev/20251217181206.3681159-1-mlbnkm1@gmail.com/
 
-On Fri, Jan 16, 2026 at 04:53:48PM +0100, Petr Mladek wrote:
-> > Otherwise, it looks good to me.
-> > 
-> > I tried to update your patch with the above proposal to see how
-> > it looks and I got:
-> 
-> The change seems to work. I have tested it with the following patch:
+Since it's a real issue and the original author seems busy, I'm sending
+the v5 fixing my comments but keeping the authorship (and restoring mine
+on patch 2 as reported on v4).
 
-First of all, *thank you* so much for spending your time on it, this is
-helpful.
+From Melbin K Mathew <mlbnkm1@gmail.com>:
 
-> Then the extended console format should show also:
-> 
->      ,cpu=XXX,pid=YYY,comm=ZZZ
+This series fixes TX credit handling in virtio-vsock:
 
-Are you using this just for testing, or do you plan to get this output?
+Patch 1: Fix potential underflow in get_credit() using s64 arithmetic
+Patch 2: Fix vsock_test seqpacket bounds test
+Patch 3: Cap TX credit to local buffer size (security hardening)
+Patch 4: Add stream TX credit bounds regression test
 
-Context: netconsole outputs the message in a different way, similarly to the
-printk dictionary. I.e, taskname and cpu come after, one entry per line:
+The core issue is that a malicious guest can advertise a huge buffer
+size via SO_VM_SOCKETS_BUFFER_SIZE, causing the host to allocate
+excessive sk_buff memory when sending data to that guest.
 
-  <message>
-   SUBSYSTEM=net
-   DEVICE=+pci:0000:00:1f.6
-   cpu=42
-   taskname=NetworkManager
-   ...
+On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
+32 guest vsock connections advertising 2 GiB each and reading slowly
+drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB; the system only
+recovered after killing the QEMU process.
 
-I would like to keep the same format, given users might be used to this format
-already, where netconsole grabs teh cpu,pid,comm data and massage it before
-outputing. Something as:
+With this series applied, the same PoC shows only ~35 MiB increase in
+Slab/SUnreclaim, no host OOM, and the guest remains responsive.
 
- static int sysdata_append_taskname(struct netconsole_target *nt, int offset,
-				    struct nbcon_write_context *wctxt)
- {
-     return scnprintf(&nt->sysdata[offset],
-              MAX_EXTRADATA_ENTRY_LEN, " taskname=%s\n",
--             current->comm);
-+             wctxt->msg_comm);
- }
+Melbin K Mathew (3):
+  vsock/virtio: fix potential underflow in virtio_transport_get_credit()
+  vsock/virtio: cap TX credit to local buffer size
+  vsock/test: add stream TX credit bounds test
 
-Here is the full patch I was using to test the integration of netconsole and
-the previous printk patch:
+Stefano Garzarella (1):
+  vsock/test: fix seqpacket message bounds test
 
-https://github.com/leitao/linux/commit/4175dc10719a15844b3a0bd7aa38158a913181a3
+ net/vmw_vsock/virtio_transport_common.c |  30 +++++--
+ tools/testing/vsock/vsock_test.c        | 112 ++++++++++++++++++++++++
+ 2 files changed, 133 insertions(+), 9 deletions(-)
+
+-- 
+2.52.0
+
