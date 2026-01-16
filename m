@@ -1,69 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA4A337B91;
-	Fri, 16 Jan 2026 17:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9CD335573
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 17:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768584775; cv=none; b=IQYZ9Ly2h5ttoEHSm5lzd9SE/00mFqS8XlkdjRX9z4ujR+8ZNot9h3M/qiRK0IX3DTgBdT5JTCUGMQXTqB4DJ82xbI/HqaGgIK9pCQmJUcGDfnjDLViNyf4InKWFp2OZgqnNdBXwYQ7+3F4ijVj8MVCqPG8kJAlXTUmsD8ystdE=
+	t=1768585192; cv=none; b=nf4HYuxe4MtA2D5TgojCVxwlyRwdDiDZwLoCIS9Kd05DwmzpJ07tqO7VXTCHfU2W6SIoKyQO/g3DiJtVXOGdTXagQLz8NJEHJU5bwcVbRzMSHcqN/DOiRFsAEEZp+gl/F31sy684Hbux0MVaToSWbSTMpwcXPdJAG6RZuFP2c3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768584775; c=relaxed/simple;
-	bh=YyvyrsGhMbFFDQKb6NiNeT+k/FsQborlUQWPjAXpp3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q1dI2i6fKPjdDR7l4zXTt5gzKcKY8y0N68wNDwVa3v3creJWpKkZM4eke8HwK4MyhDRkFgtSaSwZhzGujn1zPquarmTg+WcalHPcycBICxFC/2WT3kYQlNqk0k38yD57QtEysVe7/2QMrvLT4hy1aXZtdEnkVEcRTm5fHaVx6c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0mrgd8Ss; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0mrgd8Ss"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=NLErl4gvK4Y6j6GKoVV2CPKisx29kEhGwGnW45BCQVA=; b=0mrgd8SsKEWO0/U6VH1OOSWZPr
-	Our3oHj2A6KaqaaddV8Gn55ACMyMk6XJ9YE3radbRgYjQ5uGNzRLC7DscGRkw3fNfxLocZbKqSJcw
-	eCI7CGmBfxbxnSP+cuiO1BRKZGT9uY1VT48wusMkv4IqjvPWWavYt8NSupCyc/4DESVU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vgngn-0036Fb-Uc; Fri, 16 Jan 2026 18:32:49 +0100
-Date: Fri, 16 Jan 2026 18:32:49 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: insyelu <insyelu@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, nic_swsd@realtek.com,
-	tiwai@suse.de, hayeswang@realtek.com, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: usb: r8152: fix transmit queue timeout
-Message-ID: <974e39e1-490c-4d61-87fc-6d8249cf8c25@lunn.ch>
-References: <20260114025622.24348-1-insyelu@gmail.com>
- <20260116023725.8095-1-insyelu@gmail.com>
+	s=arc-20240116; t=1768585192; c=relaxed/simple;
+	bh=4KhA2N89OUrkCUozlHBvO123NlacAJdVbaEW8kC5D4U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rATQey1H+LvRUUL0Hc+se4zQiq9AYKRyKhB4CK8wPt0H2FhjWbOewNXY7AUNsgaLT703GkxQ7WR+zN1wzUlLoIs77VbBQ80e8PJ7K6Ku44rvaUu6LGzEZC9695kz7X6KRLVFoNGIL/C+CMX5wSBBarFggjnjN90vRtnajzaFS1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [10.0.54.236] (unknown [62.214.191.67])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8CAA44C2887195;
+	Fri, 16 Jan 2026 18:39:27 +0100 (CET)
+Message-ID: <f7f38dbf-3c5e-428d-a4c3-19f3a9ce18ee@molgen.mpg.de>
+Date: Fri, 16 Jan 2026 18:39:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116023725.8095-1-insyelu@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net] idpf: Fix flow rule delete
+ failure due to invalid validation
+To: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Ahmed Zaki <ahmed.zaki@intel.com>
+References: <20260113180113.2478622-1-sreedevi.joshi@intel.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260113180113.2478622-1-sreedevi.joshi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 16, 2026 at 10:37:25AM +0800, insyelu wrote:
-> When the TX queue length reaches the threshold, the netdev watchdog
-> immediately detects a TX queue timeout.
+[Cc: +Ahmed Zaki]
+
+Dear Sreedevi,
+
+
+Thank you for your patch.
+
+Am 13.01.26 um 19:01 schrieb Sreedevi Joshi:
+> When deleting a flow rule using "ethtool -N <dev> delete <location>",
+> idpf_sideband_action_ena() incorrectly validates fsp->ring_cookie even
+> though ethtool doesn't populate this field for delete operations. The
+> uninitialized ring_cookie may randomly match RX_CLS_FLOW_DISC or
+> RX_CLS_FLOW_WAKE, causing validation to fail and preventing legitimate
+> rule deletions. Remove the unnecessary sideband action enable check and
+> ring_cookie validation during delete operations since action validation
+> is not required when removing existing rules.
 > 
-> This patch updates the trans_start timestamp of the transmit queue
-> on every asynchronous USB URB submission along the transmit path,
-> ensuring that the network watchdog accurately reflects ongoing
-> transmission activity.
-> 
-> Signed-off-by: insyelu <insyelu@gmail.com>
+> Fixes: ada3e24b84a0 ("idpf: add flow steering support")
+> Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 > ---
-> v2: Update the transmit timestamp when submitting the USB URB.
+>   drivers/net/ethernet/intel/idpf/idpf_ethtool.c | 3 ---
+>   1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+> index 2efa3c08aba5..49cefb973f4d 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+> @@ -307,9 +307,6 @@ static int idpf_del_flow_steer(struct net_device *netdev,
+>   	vport_config = vport->adapter->vport_config[np->vport_idx];
+>   	user_config = &vport_config->user_config;
+>   
+> -	if (!idpf_sideband_action_ena(vport, fsp))
+> -		return -EOPNOTSUPP;
+> -
+>   	rule = kzalloc(struct_size(rule, rule_info, 1), GFP_KERNEL);
+>   	if (!rule)
+>   		return -ENOMEM;
 
-Always create a new thread for a new version of a patch. The CI/CD
-system just thinks this is a discussion comment, so has ignored it.
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
-    Andrew
 
----
-pw-bot: cr
+Kind regards,
+
+Paul
