@@ -1,41 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB77335BBB
-	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 04:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B360032E15B
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 04:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768536415; cv=none; b=UKSZr7dzA/bwS2SU6N45RMMAel0zK7O6K20O1vOmpV13fGcKxF4TIjAqTGTJhbTIKpvrSoDr5CIPWo/VnelxMLpt7Nq7nBusU7myVlPngX8zIc8ThtcABEIfPWsmSAOo5kkBXfwO/gkmZavMDNlQAs4ReLb23G+nJF3p0gYgyHs=
+	t=1768536622; cv=none; b=shiDHv7QAsmc2/jYj6fYOzVRWq7hz9GGiROwv64V3EQgDWroUsrw23aq9fPETx89dlaFq1Q+2L22rTSn68UlDcC9NwuZSfNcsutidYKd+us2M7KZ+BGVOVNxBbeirQqftBkVATpvzpaml5jxO0+SObCHmzLWjqtkZbEClL8S8RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768536415; c=relaxed/simple;
-	bh=tjC04V6FxrkwYO0VPLzmYlI1IYEgTao9gUmmOKVJBT4=;
+	s=arc-20240116; t=1768536622; c=relaxed/simple;
+	bh=a/NicxW3PdzYrPqo75Izw2awQl78BVWlLtSFavV/Wk4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EBI1ounlpJQevR4rmj18BR9BuwuONU3eN8N0GcY26KNB6oKVd/MT7KSDnk5jVNSFrw9h6/4ZLw6ckZnK8GWIJumoLcazorH1JmH/ehEMxm/bfvZlvQ50+S+VWFZhzTKA8Tvs1ZxhiorDN/sc1T6JQY5QX7lQ//aHfaXyWBhaNfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2SVhu4j; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=dt8BN/RpofdLhd7AdOvKPjUy8v1svaY5xijNakH10n1SA+Fp38FMCIk1PZ6yZRsbEKhzBd/k5FWvLxr2f23oFoemKQg9puOuHTQJ4gAyOaUt+5TVLgWIMMk7qI7AI7GNZwOOsFsxE1xRlP97YTEFATTnU81k6s5wmsnnUUBWkOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqC5tH4v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2SVhu4j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FAFC116C6;
-	Fri, 16 Jan 2026 04:06:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqC5tH4v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFCEC116C6;
+	Fri, 16 Jan 2026 04:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768536414;
-	bh=tjC04V6FxrkwYO0VPLzmYlI1IYEgTao9gUmmOKVJBT4=;
+	s=k20201202; t=1768536622;
+	bh=a/NicxW3PdzYrPqo75Izw2awQl78BVWlLtSFavV/Wk4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f2SVhu4jwSmP+upFCeO02l8ZkBoO9JuZunQlw/lKfBuk30Z0Sxx+XbPQK1Vp4vTnX
-	 QJmsSTfwGbFBfrwgt11dPuVpn0XQtXiHnWws8hvwlM8yDD7CU3/UP7LnvHOAEm4Opf
-	 U9qPs8ptBZBvXbXtH1n+kZJ9DtgjekxyJ1/kCRUfQDx4zxQRCrNJtfjETX2GJA63Hx
-	 ly9/SX1I/ZNaPUZpPBVelW+9k/wwykpEW6YahDkrs6ceivfsyFz7xDZx4grRWJzggj
-	 XOFbcXXTkVJy6sBavR8LL0aZBweJHy6ApPctaqu2bFhBTxprww5gDxAVJpkuNZzCV9
-	 7jF9gR0j2wpPg==
-Date: Thu, 15 Jan 2026 20:06:53 -0800
+	b=XqC5tH4vdZafkDWDAn22RFdZVFY3LbLfBCVgKhHdJBMN8mrRUAkwmBt76QMcIm5jX
+	 hDry07xPWxHCdL74pcrvq/OcwJo9WN0RBF/j1Getrp04wK3ARvwZL0M8/scttuOA6C
+	 cbc9wrWAMxDlbHiIdsmac/mQJ8qr3i5mX8QRttMBqidSwE7MnPOI/wy2ODHRdFkPmq
+	 qzgYjPfiQUgjjkRuEEEV1G9Z3LFtS8ZZpwz2t8qboJahN0WRlwbLqil7+LmBuoE4yY
+	 kN2a7wqCuBdX1y1VLk4QAKP42y5F/HoAuFRA5EpHko7BRRuGj1Z7ZVYK49/cfPkuWV
+	 uQrR4yavTl5iw==
+Date: Thu, 15 Jan 2026 20:10:20 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] net: split kmalloc_reserve()
-Message-ID: <20260115200653.6afa6149@kernel.org>
-In-Reply-To: <20260114212840.2511487-1-edumazet@google.com>
-References: <20260114212840.2511487-1-edumazet@google.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Kory Maincent <kory.maincent@bootlin.com>, Richard
+ Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>, Shuah
+ Khan <shuah@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] selftests: drv-net: extend HW timestamp
+ test with ioctl
+Message-ID: <20260115201020.69f2a0b8@kernel.org>
+In-Reply-To: <20260114224414.1225788-2-vadim.fedorenko@linux.dev>
+References: <20260114224414.1225788-1-vadim.fedorenko@linux.dev>
+	<20260114224414.1225788-2-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,24 +49,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 14 Jan 2026 21:28:40 +0000 Eric Dumazet wrote:
-> kmalloc_reserve() is too big to be inlined.
-> 
-> Put the slow path in a new out-of-line function : kmalloc_pfmemalloc()
-> 
-> Then let kmalloc_reserve() set skb->pfmemalloc only when/if
-> the slow path is taken.
-> 
-> This means __alloc_skb() is faster :
-> 
-> - kmalloc_reserve() is now automatically inlined by both gcc and clang.
-> - No more expensive RMW (skb->pfmemalloc = pfmemalloc).
-> - No more expensive stack canary (for CONFIG_STACKPROTECTOR_STRONG=y).
-> - Removal of two prefetches that were coming too late for modern cpus.
-> 
-> Text size increase is quite small compared to the cpu savings (~0.5 %)
+On Wed, 14 Jan 2026 22:44:14 +0000 Vadim Fedorenko wrote:
+> Extend HW timestamp tests to check that ioctl interface is not broken
+> and configuration setups and requests are equal to netlink interface.
 
-Could you resend? Looks like this depends on some of the patches that
-were pending so it didn't apply when posted.
+Haven't looked closely but pylint is not happy (pylint --disable=R
+$file):
+
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:9:0: C0410: Multiple imports on one line (ctypes, fcntl, socket) (multiple-imports)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:16:0: C0115: Missing class docstring (missing-class-docstring)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:16:0: C0103: Class name "hwtstamp_config" doesn't conform to PascalCase naming style (invalid-name)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:86:4: W0201: Attribute 'rx_filter' defined outside __init__ (attribute-defined-outside-init)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:87:4: W0201: Attribute 'tx_type' defined outside __init__ (attribute-defined-outside-init)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:22:0: C0115: Missing class docstring (missing-class-docstring)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:22:0: C0103: Class name "ifreq" doesn't conform to PascalCase naming style (invalid-name)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:56:4: W0201: Attribute 'ifr_name' defined outside __init__ (attribute-defined-outside-init)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:89:4: W0201: Attribute 'ifr_name' defined outside __init__ (attribute-defined-outside-init)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:57:4: W0201: Attribute 'ifr_data' defined outside __init__ (attribute-defined-outside-init)
+tools/testing/selftests/drivers/net/hw/nic_timestamp.py:90:4: W0201: Attribute 'ifr_data' defined outside __init__ (attribute-defined-outside-init)
 -- 
 pw-bot: cr
