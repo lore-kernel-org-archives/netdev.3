@@ -1,79 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007433446AD;
-	Fri, 16 Jan 2026 04:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB77335BBB
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 04:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768536253; cv=none; b=snpM5v/MFAY5AyTv916CGRpbBXuM+vCxh4LICMZpzqjahSbIVtJasbxhcWHbphqutaOQfoAdlleS4t3h9zzPcbdmOfS5RmCy7+o6jnbEZeWk8wbeq0Nq9nzfxvwHmuBukjwG/zAgeOzR2ovqj9oqVtfFBwoBMyKhl5vBaC/pVjw=
+	t=1768536415; cv=none; b=UKSZr7dzA/bwS2SU6N45RMMAel0zK7O6K20O1vOmpV13fGcKxF4TIjAqTGTJhbTIKpvrSoDr5CIPWo/VnelxMLpt7Nq7nBusU7myVlPngX8zIc8ThtcABEIfPWsmSAOo5kkBXfwO/gkmZavMDNlQAs4ReLb23G+nJF3p0gYgyHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768536253; c=relaxed/simple;
-	bh=6j04D6Bfas7Iqnbk6Ue0emn6tbmUeJEMvJl7wNwwmz4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gjYvatvTQgJ3QSo/Pc/33wwg/aDtr1J9AxpeiM0+ieJL4lHBgW2JotieE9wk9MOMD/+VtFqODuvpDHEHDOuQKkNWKitqsJ1TLZFeym/ZUxzpAFD0jS0u5SxE3nKUwny+ffjawG3MXvsp7m82CCzh1uJtJokU+68ULtMugLoPHTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gou8Y0iY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768536415; c=relaxed/simple;
+	bh=tjC04V6FxrkwYO0VPLzmYlI1IYEgTao9gUmmOKVJBT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EBI1ounlpJQevR4rmj18BR9BuwuONU3eN8N0GcY26KNB6oKVd/MT7KSDnk5jVNSFrw9h6/4ZLw6ckZnK8GWIJumoLcazorH1JmH/ehEMxm/bfvZlvQ50+S+VWFZhzTKA8Tvs1ZxhiorDN/sc1T6JQY5QX7lQ//aHfaXyWBhaNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2SVhu4j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gou8Y0iY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85B7C16AAE;
-	Fri, 16 Jan 2026 04:04:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2SVhu4j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FAFC116C6;
+	Fri, 16 Jan 2026 04:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768536252;
-	bh=6j04D6Bfas7Iqnbk6Ue0emn6tbmUeJEMvJl7wNwwmz4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Gou8Y0iYTYojcQFdkm49LxwKtiWgGPTYDiUThVTDOoxe3+g9pNHXuq6ZTh1wKSALE
-	 /nfJ0S7GCdZ/cQQyYSefnEy1W6PzA7f9HX0xvqhJepg9FpC0hfbgJzc1RdPbzCXPJ9
-	 YPxwohkEL+FuuenM/YbjGyp0FolgeTsNMajlhIH7kayrztnSGTxTGwBQlBNKJJpgGB
-	 7262FGozelSNj4jhwxYg4qIHyNT0ZKhGsAYENWIbupnw2U7VOjQSebi/ZOjtpuKxce
-	 V3E0k2FC27l+MnKHIIvaD2RAOw6CqIG+QBBI+oq0+0jesiDO/FwuwLPx0J28/DttFq
-	 85iHzii5AMEbQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F29E4380AA4C;
-	Fri, 16 Jan 2026 04:00:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1768536414;
+	bh=tjC04V6FxrkwYO0VPLzmYlI1IYEgTao9gUmmOKVJBT4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f2SVhu4jwSmP+upFCeO02l8ZkBoO9JuZunQlw/lKfBuk30Z0Sxx+XbPQK1Vp4vTnX
+	 QJmsSTfwGbFBfrwgt11dPuVpn0XQtXiHnWws8hvwlM8yDD7CU3/UP7LnvHOAEm4Opf
+	 U9qPs8ptBZBvXbXtH1n+kZJ9DtgjekxyJ1/kCRUfQDx4zxQRCrNJtfjETX2GJA63Hx
+	 ly9/SX1I/ZNaPUZpPBVelW+9k/wwykpEW6YahDkrs6ceivfsyFz7xDZx4grRWJzggj
+	 XOFbcXXTkVJy6sBavR8LL0aZBweJHy6ApPctaqu2bFhBTxprww5gDxAVJpkuNZzCV9
+	 7jF9gR0j2wpPg==
+Date: Thu, 15 Jan 2026 20:06:53 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH net-next] net: split kmalloc_reserve()
+Message-ID: <20260115200653.6afa6149@kernel.org>
+In-Reply-To: <20260114212840.2511487-1-edumazet@google.com>
+References: <20260114212840.2511487-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] hinic3: add WQ_PERCPU to alloc_workqueue users
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176853604453.76642.15885305360661736174.git-patchwork-notify@kernel.org>
-Date: Fri, 16 Jan 2026 04:00:44 +0000
-References: <20260113151433.257320-1-marco.crivellari@suse.com>
-In-Reply-To: <20260113151433.257320-1-marco.crivellari@suse.com>
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, tj@kernel.org,
- jiangshanlai@gmail.com, frederic@kernel.org, bigeasy@linutronix.de,
- mhocko@suse.com, gongfan1@huawei.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 13 Jan 2026 16:14:33 +0100 you wrote:
-> This continues the effort to refactor workqueue APIs, which began with
-> the introduction of new workqueues and a new alloc_workqueue flag in:
+On Wed, 14 Jan 2026 21:28:40 +0000 Eric Dumazet wrote:
+> kmalloc_reserve() is too big to be inlined.
 > 
->    commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
->    commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
+> Put the slow path in a new out-of-line function : kmalloc_pfmemalloc()
 > 
-> The refactoring is going to alter the default behavior of
-> alloc_workqueue() to be unbound by default.
+> Then let kmalloc_reserve() set skb->pfmemalloc only when/if
+> the slow path is taken.
 > 
-> [...]
+> This means __alloc_skb() is faster :
+> 
+> - kmalloc_reserve() is now automatically inlined by both gcc and clang.
+> - No more expensive RMW (skb->pfmemalloc = pfmemalloc).
+> - No more expensive stack canary (for CONFIG_STACKPROTECTOR_STRONG=y).
+> - Removal of two prefetches that were coming too late for modern cpus.
+> 
+> Text size increase is quite small compared to the cpu savings (~0.5 %)
 
-Here is the summary with links:
-  - hinic3: add WQ_PERCPU to alloc_workqueue users
-    https://git.kernel.org/netdev/net-next/c/48b0126da665
-
-You are awesome, thank you!
+Could you resend? Looks like this depends on some of the patches that
+were pending so it didn't apply when posted.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
