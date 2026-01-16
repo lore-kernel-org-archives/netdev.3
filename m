@@ -1,113 +1,95 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3517937BE9A;
-	Fri, 16 Jan 2026 11:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEED41E0DCB
+	for <netdev@vger.kernel.org>; Fri, 16 Jan 2026 12:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768564361; cv=none; b=mq6944/93DP9wOyxSHXRtixpnpI9i2E5gA+IhI9MBcnSZm3bo7IXaZ3AZEIgAHfJMBD0tQ+sUos0EGJMmI7kIfYaWRVXvQtNcsOo77eQbZerGIKlDgcRmP203GzY+ccm+QzSVtx6qtaCoY6o9/qsxROqD+F8AB4xFznkjkh4A9w=
+	t=1768564949; cv=none; b=qVoIjrAX74M+CISG91P+TVaWEtrMccMDWRLGDPohcMx769CqGFADkKDUvdjadHTRUAhZWY8ljPxvcVi7DfLOxithzfEt48w0s0fk5DbVTC8r33Aj/XVvOpxcwIZO3p8YJaSMEYsDVbrukkEItGJaqDppAwkQtDVv8mpwXHj01gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768564361; c=relaxed/simple;
-	bh=l4Z3L0eSIOmedzZKy5xxNT96CXf4nRAYp4vkgSI0/n8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q0HozOWcLkZYQnk5WgYPjfRtoQI865kDtOGGkufPl6QBCFprJCu2BfefB0/0WQKT5Xp59dl3PKcFSEi9/6hnIU8AY4jVfF0WFowvWs5RsWw1vRJZkHbzK0X/IX63iSlLxGxNuGxO1qgB016fNDlfkcphkgBVQsta3DbVlq2LP9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=D+Y0x8L/; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1768564949; c=relaxed/simple;
+	bh=X4qf3eU27DL70bv5ck3IOiqNTfvbHsfrTGeivJyJjLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i0szJnkVhTOrrwVWbwtE7IEMIiyDwRija84dZZes4uinvVQJOYFK+42O9pQjdibfibm6S0NEVl90lNq5HhdSi/9hlIQgeO8hSN/hhREyJO+iMaOiM7x2GGMN855Dqa7lLuFRC5nbPrUFF6rn5Ntbzn8mtBF/lfSD1KweNthCNSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P39FDdHK; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="D+Y0x8L/"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=D+Y0x8L/;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 60GBpmL2487713
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 11:51:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1768564308; bh=mwpLxfn20Fc2lrmXykLCG1maMV4wepIXnppFnDA+934=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=D+Y0x8L/Mby7vZuO4ByicLNAvcxOkF957t2d3jIUfuEq1AKakB7Z/zipvjYiHL0rf
-	 ChkKFe76SY72v88BktoJM3Ru7idHD+Z2sFregalj2bksLKQqH4rIdjANTK7zyjslGS
-	 LFWWXjzrmsoEuvxSkSWQ2+wARAHTZ4vKAb+Wj++E=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 60GBplec1938416
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 12:51:48 +0100
-Received: (nullmailer pid 552088 invoked by uid 1000);
-	Fri, 16 Jan 2026 11:51:47 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jonas Jelonek <jelonek.jonas@gmail.com>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S
- . Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH net-next v4] net: sfp: add SMBus I2C block support
-In-Reply-To: <aWofM8Y0AIHVESml@shell.armlinux.org.uk> (Russell King's message
-	of "Fri, 16 Jan 2026 11:21:23 +0000")
-Organization: m
-References: <20260109101321.2804-1-jelonek.jonas@gmail.com>
-	<466efdd2-ffe2-4d2e-b964-decde3d6369b@bootlin.com>
-	<397e0cdd-86de-4978-a068-da8237b6e247@gmail.com>
-	<0c181c3d-cb68-4ce4-b505-6fc9d10495cd@bootlin.com>
-	<d5c11fec-1e75-46cf-aeae-593fb6a4af09@gmail.com>
-	<aWofM8Y0AIHVESml@shell.armlinux.org.uk>
-Date: Fri, 16 Jan 2026 12:51:47 +0100
-Message-ID: <87jyxhwzak.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P39FDdHK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768564948; x=1800100948;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=X4qf3eU27DL70bv5ck3IOiqNTfvbHsfrTGeivJyJjLw=;
+  b=P39FDdHK9uy+aYxn+QRRNp4ERhdHAzVduofIzebS7RZL8u7lubp3jA3o
+   Zqxvg9Z/aYEFmT3SAw3YWK5ePtOadlJHvzaFaeAsCWxaCEP7bmR9Ncznj
+   s6v7vwoKZD8WlyVi4fZiqY3W14w2Zlh/A+nF+c7I2z1ilUA+5YduS2z2T
+   HW9yrJHZiNT48LRwWFk7dmklqPy4OSKxLDyFaTBSciFn2hWoh5J4hwzgj
+   4H6vICUlc4nVSzfPVGjKt00/cD5E+q3mCbugxL/D5f1A1ModW8068mHaX
+   2thGSu59AtbRcg9GPy83O9DHjsVQGV55VqOY7YsqDhHCX/Vj294HQFuL4
+   g==;
+X-CSE-ConnectionGUID: PY1SkYbiSfSZ20UZgHEkWQ==
+X-CSE-MsgGUID: I3/FYX7XTfikVVWpr1lnsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="92542189"
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; 
+   d="scan'208";a="92542189"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 04:02:27 -0800
+X-CSE-ConnectionGUID: juPtriiURyCn/AgQmw8Oig==
+X-CSE-MsgGUID: CEBJNsVkSFKoNVdzUAb8FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; 
+   d="scan'208";a="205645881"
+Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2026 04:02:26 -0800
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Subject: [PATCH iwl-next 0/2] ixgbe: e610: add ACI dynamic debug
+Date: Fri, 16 Jan 2026 13:23:06 +0100
+Message-ID: <20260116122306.78200-1-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-"Russell King (Oracle)" <linux@armlinux.org.uk> writes:
-> On Fri, Jan 16, 2026 at 12:16:11PM +0100, Jonas Jelonek wrote:
->
->> When I come to trying to work on that, should that all be kept in
->> mdio-i2c.c? I'm asking because we have a downstream implementation
->> moving that SMbus stuff to mdio-smbus.c. This covers quite a lot right
->> now, C22/C45 and Rollball, but just with byte access [1]. Because that
->> isn't my work, I'll need to check with the original authors and adapt th=
-is
->> for an upstream patch, trying to add word + block access.
->>=20
->> Kind regards,
->> Jonas
->>=20
->> [1] https://github.com/openwrt/openwrt/blob/66b6791abe6f08dec2924b5d9e9e=
-7dac93f37bc4/target/linux/realtek/patches-6.12/712-net-phy-add-an-MDIO-SMBu=
-s-library.patch
->
-> My personal view on this is not suitable for sharing publicly. I'm sure
-> people can guess what my view is and why. (Look at the age of the
-> patch, and it's clearly "lets re-implement mdio-i2c" rather than "let's
-> adapt it".
+Enable dynamic debug (dyndbg) of Admin Command Interface (ACI) for e610
+adapter. Utilizes the standard dynamic debug interface. For example to
+enable dyndbg at driver load:
 
-FWIW, I agree if my guess is correct :-)
+insmod ixgbe.ko dyndbg='+p'
 
-I see that my name is on that downstream patch, due to the RollBall
-additions there. It was never intended for mainline in that form.  I
-originally implemented the SMBus RollBall access methods as part of
-mdio-i2c.c and that's where they belong IMHO.
+ACI debug output for e610 adapter is immediately printed into a kernel
+log (dmesg). Example output:
 
-It was briefly discussed here.  But I never had enough time and
-motivation to finish this properly. So it ended up as an OpenWrt
-specific hack for now.  I certainly won't object to anyone else reusing
-any of the code I wrote, if it is any help at all.
+ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0701, flags 0x3003, datalen 0x0060, retval 0x0000
+ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
+ixgbe 0000:01:00.0 eth0:       param (0,1)  0x8194E044 0x00600000
+ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
+ixgbe 0000:01:00.0 eth0: Buffer:
+ixgbe 0000:01:00.0 eth0: 00000000: 01 00 17 00 00 00 00 00 00 00 00 00 00 00 00 00
+ixgbe 0000:01:00.0 eth0: 00000010: 1d 00 00 00 0b d5 1e 15 5e 4b 90 63 aa 0b 21 31
+ixgbe 0000:01:00.0 eth0: 00000020: 69 eb cd ab dc f8 8a fd f4 53 e2 dc 54 e0 81 fa
+ixgbe 0000:01:00.0 eth0: 00000030: 12 dc 41 82 01 00 00 00 24 20 08 26 53 08 00 00
+ixgbe 0000:01:00.0 eth0: 00000040: 08 00 14 00 00 00 00 00 00 00 00 00 00 00 00 00
+ixgbe 0000:01:00.0 eth0: 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0009, flags 0x2003, datalen 0x0000, retval 0x0000
+ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
+ixgbe 0000:01:00.0 eth0:       param (0,1)  0x00000001 0x00000000
+ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
 
-Not sure the c45 SMBus stuff in openwrt ever worked BTW. I have only
-tested c22 and RollBall over SMBus.
+Piotr Kwapulinski (2):
+  ixgbe: e610: add missing endianness conversion
+  ixgbe: e610: add ACI dynamic debug
 
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 119 ++++++++++++++++--
+ 1 file changed, 109 insertions(+), 10 deletions(-)
 
-Bj=C3=B8rn
+-- 
+2.47.1
+
