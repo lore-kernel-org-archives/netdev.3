@@ -1,128 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C5626E71F
-	for <netdev@vger.kernel.org>; Sat, 17 Jan 2026 10:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51EB3128DF;
+	Sat, 17 Jan 2026 11:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768646836; cv=none; b=bZiqPE6Bi5qGLAsoxVSmqsB02+ac7OQhNTjqMtZPby5yTLL2FECthwxJAMZaKQBvHGkO0EjIoLJHmnZTyFWgBtoi3MRCUFrfZJ/lUieVLF4TNHJCy5sgQfo6XWFZJQOBHqbvPXwd1+0DWerPgDwyX4TjiIWITHgBiltRHuvYfPw=
+	t=1768648204; cv=none; b=Qyvnofn90lp/RmSOtQlFCjcr6B91jQmF23t5XcWVHMRdd/VnPwF+17KN41IiajLa3gAXUkTuFj5toPAB9jfiPmysL585MHjqRqRNK0ciIBVwjfl31LmXz3hoEdGm039o395xA3ZUa4Gct1oNXEdvLbdLmqwJ8h3L7aNT6Y3lShw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768646836; c=relaxed/simple;
-	bh=Rl4rAKSmBZ1P2vmLgvWlWA/q88jy13J1zq0K3kcgkD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=trgr/pP1AzeBQMPfAyp9JnejfvPY33vNuy6Yq9qWdf7LJy3FBD50a7ZAImU8JzLUObakRzjHXyEMw/LWWQveOYL24NS19GDK7AOd4pR4sIdEJ4/zrQZR+xGYenkebC+WU1j+Dewu002iQb9N0Cup535NbKT6YqjMKignJceGDJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4kqSJ+c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768648204; c=relaxed/simple;
+	bh=7poodvKUuzOVou6yy26C68DYDDTn3cRpsimnGL1nDDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I2vkfEpIHKDsHKAn31Tq52uenocQu9rbFK6NjFiVRGKml+fLnHQtY8yLA7ovFVHRUBQNXaUmfYUXTvpsY5sIzpFRdQr1zG+PEQx85tNHa7JsLu/mQEwyA9cEtEouaF8p4kwZMNRZzgVrJtbkJO158tjwckyKxFQGLVt1d+Hmt9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=JMeggK56; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4kqSJ+c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6853C4CEF7;
-	Sat, 17 Jan 2026 10:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768646835;
-	bh=Rl4rAKSmBZ1P2vmLgvWlWA/q88jy13J1zq0K3kcgkD4=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=O4kqSJ+cs2BWmWsdYnHXRgvnsgCPaYZVFn5wFGPFQ7it7biRzNYNbO+ZgCRPF5YBY
-	 UthpBushxH+xQsZGLpqU/EY7exfHap6UpFFTZwwCcyoG8Hq6DE/6TgN4WzOydiw/63
-	 mXv49SDaN8Kmb9XhHzvcCFKq07BLNoYWvdWX9CTecZrEQAVKeiyN9KOziYW7wRXo0E
-	 +B22ycIhcEMuCJ1L4ry4K0OPDcSUxC/ic/aC0HDeJBmGgl4txVryQ44KbMihR1avrT
-	 X3QV7fp5tI9d7n3+F+plwRfv3aIcXC7OMaNzJ5HwcT9N80v8DzaSiJv50X3jxzHwsZ
-	 IM8E4aOlp6tRg==
-Message-ID: <30324c2a-8dc9-46e3-b220-4d6cd06d2480@kernel.org>
-Date: Sat, 17 Jan 2026 11:47:13 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="JMeggK56"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jOPle7CQdmTssFXDdVFhSB4QqaOxmM9CxYXqpbVKQco=; b=JMeggK56xm6oep9ztPotoQPnYu
+	ThsH19MPem4x4BSprEfAOw7ogoLTdjB+IXSkIxP0MAYtfINEyat8lqs9U4Ntc++2zi2nvv45s3VsF
+	C4HXnUmI1Xl1DeMMD1vaYz2cPeF2Q36J/9UQb722UgKWhOzKpz+8WMo0S6PFcBFX1MKP6PQgM8x4W
+	e9IEJDp1AGnchrawCPf2KNgh4niOs9m1kXkevcid9NzkRTRCxKwEaeabDqcZb1ixYx/Chd1QbJSwo
+	6lwm9Q523lSsaPLX0oc1/gUAVodsgM9iVw648qg5A7Xv9osyISoUzqYnAU+mducfXoJbcw5zK3kal
+	LzpVQG6g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49136)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vh4Be-000000003Yr-0IBH;
+	Sat, 17 Jan 2026 11:09:46 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vh4BX-000000004XG-0FzH;
+	Sat, 17 Jan 2026 11:09:39 +0000
+Date: Sat, 17 Jan 2026 11:09:38 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Tao Wang <tao03.wang@horizon.auto>
+Cc: alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v3] net: stmmac: fix transmit queue timed out after
+ resume for tso
+Message-ID: <aWtt8hlsqWVF1tYz@shell.armlinux.org.uk>
+References: <aWrJvrpIAZHQS2uv@shell.armlinux.org.uk>
+ <20260117075926.128979-1-tao03.wang@horizon.auto>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] net: phy: realtek: add RTL8224 polarity swap support
-To: Damien Dejean <dam.dejean@gmail.com>, netdev@vger.kernel.org
-References: <20260116173920.371523-1-dam.dejean@gmail.com>
- <20260116173920.371523-2-dam.dejean@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260116173920.371523-2-dam.dejean@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260117075926.128979-1-tao03.wang@horizon.auto>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 16/01/2026 18:39, Damien Dejean wrote:
-> The RTL8224 has a register to configure the polarity of every pair of
-> each port. It provides device designers more flexbility when wiring the
-> chip.
+On Sat, Jan 17, 2026 at 03:59:22PM +0800, Tao Wang wrote:
+> > Rather than using tx_q->tx_skbuff_dma[].last_segment to determine
+> > whether the first descriptor entry is the only segment, calculate the
+> > number of descriptor entries used. If there is only one descriptor,
+> > then the first is also the last, so mark it as such.
 > 
-> Unfortunately, the register is left in an unknown state after a reset.
-> Thus on devices where the bootloader don't initialize it, the driver has
-> to do it to detect and use a link.
+> This is a good idea. tx_q->tx_skbuff_dma[].last_segment no longer carries
+>  much meaning and can indeed be removed altogether.
 > 
-> The MDI polarity swap can be set in the device tree using the property
-> realtek,mdi-polarity-swap. The u32 value is a bitfield where bit[0..3]
-> control the polarity of pairs A...D.
+> > +       is_last_segment = ((tx_q->cur_tx - first_entry) &
+> > +                          (priv->dma_conf.dma_tx_size - 1)) == 1;
 > 
-> Signed-off-by: Damien Dejean <dam.dejean@gmail.com>
-> ---
->  .../bindings/net/realtek,rtl82xx.yaml         |  7 +++++
->  drivers/net/phy/realtek/realtek_main.c        | 29 +++++++++++++++++++
->  2 files changed, 36 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
-> index 2d04d90f8b97..4abcc5cfaf5f 100644
-> --- a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
-> +++ b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
-> @@ -67,6 +67,13 @@ properties:
->        - off
->      default: keep
->  
-> +  realtek,mdi-polarity-swap:
-> +    description:
-> +      A bitmap to describe pair polarity swap. Bit 0 to swap polarity of pair A,
-> +      bit 1 to swap polarity of pair B, bit 2 to swap polarity of pair C and bit
-> +      3 to swap polarity of pair D.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+> Since tx_q->cur_tx may wrap around and become smaller than first_entry,
+> the following statement is more concise:
+> is_last_segment = (tx_q->cur_tx == first_entry);
 
-Same problem.
+That's incorrect. We advance tx_q->cur_tx by at least one by this
+point:
 
-Best regards,
-Krzysztof
+        first_entry = tx_q->cur_tx;
+
+... fill descriptors ...
+
+        /* We've used all descriptors we need for this skb, however,
+         * advance cur_tx so that it references a fresh descriptor.
+         * ndo_start_xmit will fill this descriptor the next time it's
+         * called and stmmac_tx_clean may clean up to this descriptor.
+         */
+        tx_q->cur_tx = STMMAC_GET_ENTRY(tx_q->cur_tx, priv->dma_conf.dma_tx_size);
+
+...
+
+        /* If we only have one entry used, then the first entry is the last
+         * segment.
+         */
+        is_last_segment = ((tx_q->cur_tx - first_entry) &
+                           (priv->dma_conf.dma_tx_size - 1)) == 1;
+
+So, replacing this with a check for tx_q->cur_tx == first_entry
+would always be false here, unless we completely filled the ring
+with a single TSO.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
