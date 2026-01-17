@@ -1,388 +1,267 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702C528A3F2;
-	Sat, 17 Jan 2026 13:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.167
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768656596; cv=pass; b=lJEopEf+Zqgzo8OIDJr6S421saHcmJsV0lFk6VWZp1vP54aB0MoT32ukTVPfp8rzpkfKJExDGwgujGd5x0fynyM5PP+nSjH4iu14CiIdxs8naMif243vZxBFlTkqfEoXbA9KBf+FVoN7aVa0NoYCtUGp9PdzRnrFgVd1GOPUCr0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768656596; c=relaxed/simple;
-	bh=Q/KBkdkvvc0dGcxPB+aZYuNat+JaGhs6wyQq/gRb7hA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gFhRHncGBi4GWffzF7NSj/UcqGnJR8uzj5SgMAC+ywn0MLWVFBdJ9Sy+jrjZE/HWXyBVnCSHv5JkjmV4AgCA+zqmCpZQC4lp9vT9exvcKs2f5wLGRFgRAneMCctu+aNhzBYIcMYZkniuc6RHfZgeeJguJJAe4/OMckmKNphSUUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=RejvIzQS; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=947uyWYa; arc=pass smtp.client-ip=81.169.146.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD94017B425
+	for <netdev@vger.kernel.org>; Sat, 17 Jan 2026 13:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768656903; cv=none; b=oLqWm3unL0n0CwbdUEH64vsQI2rfM0O4NPy3Yk2JCbEyxlvaPXgrfdwMr67y7QXSxe9+0RxlBDYKWHga3HNl4YRxqm5VD0ro9iMA3bQ19JEluAEGVsTKEJi2jr5uDwFGgz3gutzn+/OUiQzowsVFQO2UeLO3GsgBoRwi8vMNaXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768656903; c=relaxed/simple;
+	bh=YJLn4OUeFverMjOgEXLG89mwU6rhIp33L4m9Ox1ziD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G6gITkKCObv0HyAi1OjtDNWgm5iauQj6buRXxbP042MMd5B+p0uNfmKU8flm56T9lRFLIMpg4LUF/QnmcHkZythyUVO9VeZOH6JZzpoomuohaW42i4ctaUHj5ngwbj/1iz53xfhNP4RdcwsG6Dsu+2vE/JLcfzxVddcLtzYMzzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eBs+CwmG; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="RejvIzQS";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="947uyWYa"
-ARC-Seal: i=1; a=rsa-sha256; t=1768656567; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=P7lgt/m1hNd4b5Hg1SsEJwN9Dypp7/7aOWmPCqYOPXmp2H5BHkhCMY2HVSVFII5ino
-    jnoBnbdQnLJddYDiZx4OacXke89CZIlQc9nTPLALRqBNjw3oMDLVKKWfOAzZyzzBwQtC
-    EmhOgDWylOjq+RyRqFU+jPqen5qmav+RaZMvg8ZzVvj0O76eKqn/uwiF2hZigmeyhZKl
-    t3sgQYSvDnLdgGjbe7mUtAExONURYSYXwsBJFdp0Rk7wZzdaKRT+a41s3Nx/Y0hFt9FH
-    lYKA+kuQ+ZgWHxKroRNvNe/FqybOVodnVcb5gYNzbsLbEPydctikUurJ1iYvj52sWaA9
-    Dmaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1768656567;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=fCLxvus0zupQcPor7DFeCWkX6q0hQdwAvLXUXFSIed4=;
-    b=MgYy4T5dyiFK5z8H2o7QlMG07SX9Zo1onmZQjmiBRsw3IQyjGsf+ZogNsgrkazKfR1
-    aaldfOm3lkRobVM3GNNUFkF8ugS3Lw/mDZMe8E1gzhDwFWJ5PCUulSrGuz0ifrCunnEi
-    J6i7jG+3Jy+R6bmEaRsQmxb5acRcayC7AIlLs6OAClCdpfMSQdypApCqNPJL/1Px+EuP
-    xpIotfRL4dig1p0TXBNH9qiBapmm8zhWq82kEjoXWo3f0KewAwridphoMvpk8s4yk9u2
-    xfebHlwMpy9oX5OGoGATbWAZx4bWItArhAQz2sXbUycpcuJoJ3f4eVWiXxO9RY0sdy+B
-    KgoA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1768656567;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=fCLxvus0zupQcPor7DFeCWkX6q0hQdwAvLXUXFSIed4=;
-    b=RejvIzQSpc1T1s0mJXvbYSp01CX2tai1F7rZAe5p4nZZVQ5G22e0zRtEVQxIf5ZvTz
-    F+DAP2m/XMa66IIrTUK/U2/orsBXIHLQ2Vjg4B2M2ZOJbs+8Y9dcs59rMeg8kGDG0O9K
-    a3s5GF7SqzYeBY3TnA/oYaHz3zam7SluUBED1kAxrsM6P0Tw28UW+EQ1uODK4EtoarYr
-    dfiaPwdVDmJFw40NDpFq9a/RkMKNTeuVeNcfvomiLlRewHK6BifhwZRzgGhFVFVBc8N2
-    Wy5v3pN7BR0sby6Vk56kPVwiHOPlimQfBZ9bwM03jVf3W5ObULgz7K0cWbAqpCy6tTUZ
-    FpbA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1768656567;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=fCLxvus0zupQcPor7DFeCWkX6q0hQdwAvLXUXFSIed4=;
-    b=947uyWYafP0iB8JwqV8WmESMVH7cuETfrawrFcwjJteDT0deM25Wkz7Me/94beHBQG
-    pJvQOMq0T7vJlTqogsBw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bGWj0Q=="
-Received: from lenov17.lan
-    by smtp.strato.de (RZmta 54.1.0 AUTH)
-    with ESMTPSA id K0e68b20HDTQGRz
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sat, 17 Jan 2026 14:29:26 +0100 (CET)
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-To: linux-can@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	davem@davemloft.net,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [can-next v2 1/5] can: use skb hash instead of private variable in headroom
-Date: Sat, 17 Jan 2026 14:28:20 +0100
-Message-ID: <20260117132824.3649-2-socketcan@hartkopp.net>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260117132824.3649-1-socketcan@hartkopp.net>
-References: <20260117132824.3649-1-socketcan@hartkopp.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eBs+CwmG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768656902; x=1800192902;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YJLn4OUeFverMjOgEXLG89mwU6rhIp33L4m9Ox1ziD4=;
+  b=eBs+CwmGk4Pe35BcjbDk8+yVe3f3sENyUNofCQxyNvYD0hM3GYtqmjXp
+   RvpKMzty+6KKvHigo7vTU2FjaqforEGWmSkPPa95da69gc/E7jke1AuQU
+   jaESQZ3zyKOMBY66mhw/asGpr8/Oy33yBoK5XoYLTMdJkLATARGa3/PeA
+   RWDb/ox21S/TINa2l1rRrp1InT+W0LlMxU7NdVIpRVQ3ZRMvuwNl/hRpv
+   ym/2VTt6MxxR8YsKUXMvV0sxkxszIUMYrwtTfVODly0My+uNOei1y2L1E
+   KutYJ5fJPJAyYHpe/T3IZOnEYIVl4uk9SL2yPKeMMyp+Snrv/8YyeEI9Y
+   A==;
+X-CSE-ConnectionGUID: AUP9lLIbRQGa5FM90oX3bA==
+X-CSE-MsgGUID: O54tUXw/T+yCUvbiKDg/HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11674"; a="95418861"
+X-IronPort-AV: E=Sophos;i="6.21,234,1763452800"; 
+   d="scan'208";a="95418861"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2026 05:35:01 -0800
+X-CSE-ConnectionGUID: J7dGuL60SLy+9iiPMR2yrQ==
+X-CSE-MsgGUID: 2xZOaTjMQ7mwC9YiqGksGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,234,1763452800"; 
+   d="scan'208";a="210482909"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 17 Jan 2026 05:34:59 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vh6S7-00000000Lse-3guE;
+	Sat, 17 Jan 2026 13:34:55 +0000
+Date: Sat, 17 Jan 2026 21:34:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	dan.carpenter@linaro.org, horms@kernel.org,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH iwl-next 1/2] ixgbe: e610: add missing endianness
+ conversion
+Message-ID: <202601172130.UkaUgjIE-lkp@intel.com>
+References: <20260116122353.78235-1-piotr.kwapulinski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116122353.78235-1-piotr.kwapulinski@intel.com>
 
-The can_skb_priv::skbcnt variable is used to identify CAN skbs in the rx
-path analogue to the skb->hash. As the skb hash is not filled in CAN skbs
-we can move the private skbcnt value to skb->hash and set skb->sw_hash
-accordingly. The skb->hash is a value used for RPS to identify skbs.
-We use it as intended.
+Hi Piotr,
 
-Patch 1/5 to remove the private CAN bus skb headroom infrastructure.
+kernel test robot noticed the following build warnings:
 
-Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
----
- drivers/net/can/dev/skb.c |  2 --
- include/linux/can/core.h  |  1 +
- include/linux/can/skb.h   |  2 --
- net/can/af_can.c          | 14 +++++++++++---
- net/can/bcm.c             |  2 --
- net/can/isotp.c           |  3 ---
- net/can/j1939/socket.c    |  1 -
- net/can/j1939/transport.c |  2 --
- net/can/raw.c             |  7 +++----
- 9 files changed, 15 insertions(+), 19 deletions(-)
+[auto build test WARNING on tnguy-next-queue/dev-queue]
 
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index 3ebd4f779b9b..0da615afa04d 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -200,11 +200,10 @@ static void init_can_skb_reserve(struct sk_buff *skb)
- 	skb_reset_mac_header(skb);
- 	skb_reset_network_header(skb);
- 	skb_reset_transport_header(skb);
- 
- 	can_skb_reserve(skb);
--	can_skb_prv(skb)->skbcnt = 0;
- }
- 
- struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
- {
- 	struct sk_buff *skb;
-@@ -310,11 +309,10 @@ static bool can_skb_headroom_valid(struct net_device *dev, struct sk_buff *skb)
- 
- 	/* af_packet does not apply CAN skb specific settings */
- 	if (skb->ip_summed == CHECKSUM_NONE) {
- 		/* init headroom */
- 		can_skb_prv(skb)->ifindex = dev->ifindex;
--		can_skb_prv(skb)->skbcnt = 0;
- 
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 
- 		/* perform proper loopback on capable devices */
- 		if (dev->flags & IFF_ECHO)
-diff --git a/include/linux/can/core.h b/include/linux/can/core.h
-index 5fb8d0e3f9c1..5c382ed61755 100644
---- a/include/linux/can/core.h
-+++ b/include/linux/can/core.h
-@@ -56,8 +56,9 @@ extern void can_rx_unregister(struct net *net, struct net_device *dev,
- 			      canid_t can_id, canid_t mask,
- 			      void (*func)(struct sk_buff *, void *),
- 			      void *data);
- 
- extern int can_send(struct sk_buff *skb, int loop);
-+extern void can_set_skb_uid(struct sk_buff *skb);
- void can_sock_destruct(struct sock *sk);
- 
- #endif /* !_CAN_CORE_H */
-diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
-index 1abc25a8d144..869ea574a40a 100644
---- a/include/linux/can/skb.h
-+++ b/include/linux/can/skb.h
-@@ -47,17 +47,15 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb);
-  */
- 
- /**
-  * struct can_skb_priv - private additional data inside CAN sk_buffs
-  * @ifindex:	ifindex of the first interface the CAN frame appeared on
-- * @skbcnt:	atomic counter to have an unique id together with skb pointer
-  * @frame_len:	length of CAN frame in data link layer
-  * @cf:		align to the following CAN frame at skb->data
-  */
- struct can_skb_priv {
- 	int ifindex;
--	int skbcnt;
- 	unsigned int frame_len;
- 	struct can_frame cf[];
- };
- 
- static inline struct can_skb_priv *can_skb_prv(struct sk_buff *skb)
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index 770173d8db42..70659987ef4d 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -639,10 +639,20 @@ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buf
- 	}
- 
- 	return matches;
- }
- 
-+void can_set_skb_uid(struct sk_buff *skb)
-+{
-+	/* create non-zero unique skb identifier together with *skb */
-+	while (!(skb->hash))
-+		skb->hash = atomic_inc_return(&skbcounter);
-+
-+	skb->sw_hash = 1;
-+}
-+EXPORT_SYMBOL(can_set_skb_uid);
-+
- static void can_receive(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct can_dev_rcv_lists *dev_rcv_lists;
- 	struct net *net = dev_net(dev);
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
-@@ -650,13 +660,11 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 
- 	/* update statistics */
- 	atomic_long_inc(&pkg_stats->rx_frames);
- 	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
--	/* create non-zero unique skb identifier together with *skb */
--	while (!(can_skb_prv(skb)->skbcnt))
--		can_skb_prv(skb)->skbcnt = atomic_inc_return(&skbcounter);
-+	can_set_skb_uid(skb);
- 
- 	rcu_read_lock();
- 
- 	/* deliver the packet to sockets listening on all devices */
- 	matches = can_rcv_filter(net->can.rx_alldev_list, skb);
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 7eba8ae01a5b..8ed60f18c2ea 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -314,11 +314,10 @@ static void bcm_can_tx(struct bcm_op *op)
- 	if (!skb)
- 		goto out;
- 
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 
- 	skb_put_data(skb, cf, op->cfsiz);
- 
- 	/* send with loopback */
- 	skb->dev = dev;
-@@ -1342,11 +1341,10 @@ static int bcm_tx_send(struct msghdr *msg, int ifindex, struct sock *sk,
- 		kfree_skb(skb);
- 		return -ENODEV;
- 	}
- 
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 	skb->dev = dev;
- 	can_skb_set_owner(skb, sk);
- 	err = can_send(skb, 1); /* send with loopback */
- 	dev_put(dev);
- 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index ce588b85665a..4bb60b8f9b96 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -228,11 +228,10 @@ static int isotp_send_fc(struct sock *sk, int ae, u8 flowstatus)
- 		return 1;
- 	}
- 
- 	can_skb_reserve(nskb);
- 	can_skb_prv(nskb)->ifindex = dev->ifindex;
--	can_skb_prv(nskb)->skbcnt = 0;
- 
- 	nskb->dev = dev;
- 	can_skb_set_owner(nskb, sk);
- 	ncf = (struct canfd_frame *)nskb->data;
- 	skb_put_zero(nskb, so->ll.mtu);
-@@ -778,11 +777,10 @@ static void isotp_send_cframe(struct isotp_sock *so)
- 		return;
- 	}
- 
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 
- 	cf = (struct canfd_frame *)skb->data;
- 	skb_put_zero(skb, so->ll.mtu);
- 
- 	/* create consecutive frame */
-@@ -1007,11 +1005,10 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 		goto err_out_drop;
- 	}
- 
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 
- 	so->tx.len = size;
- 	so->tx.idx = 0;
- 
- 	cf = (struct canfd_frame *)skb->data;
-diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-index ff9c4fd7b433..1589e8ca634e 100644
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -895,11 +895,10 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
- 	if (!skb)
- 		goto failure;
- 
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = ndev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 	skb_reserve(skb, offsetof(struct can_frame, data));
- 
- 	ret = memcpy_from_msg(skb_put(skb, size), msg, size);
- 	if (ret < 0)
- 		goto free_skb;
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index 613a911dda10..d4be13422f50 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -599,11 +599,10 @@ sk_buff *j1939_tp_tx_dat_new(struct j1939_priv *priv,
- 		return ERR_PTR(-ENOMEM);
- 
- 	skb->dev = priv->ndev;
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 	/* reserve CAN header */
- 	skb_reserve(skb, offsetof(struct can_frame, data));
- 
- 	/* skb->cb must be large enough to hold a j1939_sk_buff_cb structure */
- 	BUILD_BUG_ON(sizeof(skb->cb) < sizeof(*re_skcb));
-@@ -1534,11 +1533,10 @@ j1939_session *j1939_session_fresh_new(struct j1939_priv *priv,
- 		return NULL;
- 
- 	skb->dev = priv->ndev;
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 	skcb = j1939_skb_to_cb(skb);
- 	memcpy(skcb, rel_skcb, sizeof(*skcb));
- 
- 	session = j1939_session_new(priv, skb, size);
- 	if (!session) {
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 12293363413c..6ebc6abb5987 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -74,11 +74,11 @@ MODULE_ALIAS("can-proto-1");
-  * storing the single filter in dfilter, to avoid using dynamic memory.
-  */
- 
- struct uniqframe {
- 	const struct sk_buff *skb;
--	int skbcnt;
-+	__u32 hash;
- 	unsigned int join_rx_count;
- };
- 
- struct raw_sock {
- 	struct sock sk;
-@@ -162,21 +162,21 @@ static void raw_rcv(struct sk_buff *oskb, void *data)
- 		}
- 	}
- 
- 	/* eliminate multiple filter matches for the same skb */
- 	if (this_cpu_ptr(ro->uniq)->skb == oskb &&
--	    this_cpu_ptr(ro->uniq)->skbcnt == can_skb_prv(oskb)->skbcnt) {
-+	    this_cpu_ptr(ro->uniq)->hash == oskb->hash) {
- 		if (!ro->join_filters)
- 			return;
- 
- 		this_cpu_inc(ro->uniq->join_rx_count);
- 		/* drop frame until all enabled filters matched */
- 		if (this_cpu_ptr(ro->uniq)->join_rx_count < ro->count)
- 			return;
- 	} else {
- 		this_cpu_ptr(ro->uniq)->skb = oskb;
--		this_cpu_ptr(ro->uniq)->skbcnt = can_skb_prv(oskb)->skbcnt;
-+		this_cpu_ptr(ro->uniq)->hash = oskb->hash;
- 		this_cpu_ptr(ro->uniq)->join_rx_count = 1;
- 		/* drop first frame to check all enabled filters? */
- 		if (ro->join_filters && ro->count > 1)
- 			return;
- 	}
-@@ -956,11 +956,10 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	if (!skb)
- 		goto put_dev;
- 
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
--	can_skb_prv(skb)->skbcnt = 0;
- 
- 	/* fill the skb before testing for valid CAN frames */
- 	err = memcpy_from_msg(skb_put(skb, size), msg, size);
- 	if (err < 0)
- 		goto free_skb;
+url:    https://github.com/intel-lab-lkp/linux/commits/Piotr-Kwapulinski/ixgbe-e610-add-missing-endianness-conversion/20260116-200705
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git dev-queue
+patch link:    https://lore.kernel.org/r/20260116122353.78235-1-piotr.kwapulinski%40intel.com
+patch subject: [PATCH iwl-next 1/2] ixgbe: e610: add missing endianness conversion
+config: x86_64-randconfig-r111-20260117 (https://download.01.org/0day-ci/archive/20260117/202601172130.UkaUgjIE-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260117/202601172130.UkaUgjIE-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601172130.UkaUgjIE-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:116:17: sparse: sparse: cast to restricted __le32
+>> drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:149:37: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] @@     got restricted __le32 [usertype] @@
+   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:149:37: sparse:     expected unsigned int [usertype]
+   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:149:37: sparse:     got restricted __le32 [usertype]
+   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:157:37: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [usertype] @@     got restricted __le32 [usertype] @@
+   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:157:37: sparse:     expected unsigned int [usertype]
+   drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:157:37: sparse:     got restricted __le32 [usertype]
+
+vim +116 drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+
+    35	
+    36	/**
+    37	 * ixgbe_aci_send_cmd_execute - execute sending FW Admin Command to FW Admin
+    38	 * Command Interface
+    39	 * @hw: pointer to the HW struct
+    40	 * @desc: descriptor describing the command
+    41	 * @buf: buffer to use for indirect commands (NULL for direct commands)
+    42	 * @buf_size: size of buffer for indirect commands (0 for direct commands)
+    43	 *
+    44	 * Admin Command is sent using CSR by setting descriptor and buffer in specific
+    45	 * registers.
+    46	 *
+    47	 * Return: the exit code of the operation.
+    48	 * * - 0 - success.
+    49	 * * - -EIO - CSR mechanism is not enabled.
+    50	 * * - -EBUSY - CSR mechanism is busy.
+    51	 * * - -EINVAL - buf_size is too big or
+    52	 * invalid argument buf or buf_size.
+    53	 * * - -ETIME - Admin Command X command timeout.
+    54	 * * - -EIO - Admin Command X invalid state of HICR register or
+    55	 * Admin Command failed because of bad opcode was returned or
+    56	 * Admin Command failed with error Y.
+    57	 */
+    58	static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+    59					      struct libie_aq_desc *desc,
+    60					      void *buf, u16 buf_size)
+    61	{
+    62		u16 opcode, buf_tail_size = buf_size % 4;
+    63		u32 *raw_desc = (u32 *)desc;
+    64		u32 hicr, i, buf_tail = 0;
+    65		bool valid_buf = false;
+    66	
+    67		hw->aci.last_status = LIBIE_AQ_RC_OK;
+    68	
+    69		/* It's necessary to check if mechanism is enabled */
+    70		hicr = IXGBE_READ_REG(hw, IXGBE_PF_HICR);
+    71	
+    72		if (!(hicr & IXGBE_PF_HICR_EN))
+    73			return -EIO;
+    74	
+    75		if (hicr & IXGBE_PF_HICR_C) {
+    76			hw->aci.last_status = LIBIE_AQ_RC_EBUSY;
+    77			return -EBUSY;
+    78		}
+    79	
+    80		opcode = le16_to_cpu(desc->opcode);
+    81	
+    82		if (buf_size > IXGBE_ACI_MAX_BUFFER_SIZE)
+    83			return -EINVAL;
+    84	
+    85		if (buf)
+    86			desc->flags |= cpu_to_le16(LIBIE_AQ_FLAG_BUF);
+    87	
+    88		if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_BUF)) {
+    89			if ((buf && !buf_size) ||
+    90			    (!buf && buf_size))
+    91				return -EINVAL;
+    92			if (buf && buf_size)
+    93				valid_buf = true;
+    94		}
+    95	
+    96		if (valid_buf) {
+    97			if (buf_tail_size)
+    98				memcpy(&buf_tail, buf + buf_size - buf_tail_size,
+    99				       buf_tail_size);
+   100	
+   101			if (((buf_size + 3) & ~0x3) > LIBIE_AQ_LG_BUF)
+   102				desc->flags |= cpu_to_le16(LIBIE_AQ_FLAG_LB);
+   103	
+   104			desc->datalen = cpu_to_le16(buf_size);
+   105	
+   106			if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_RD)) {
+   107				for (i = 0; i < buf_size / 4; i++)
+   108					IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), ((u32 *)buf)[i]);
+   109				if (buf_tail_size)
+   110					IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), buf_tail);
+   111			}
+   112		}
+   113	
+   114		/* Descriptor is written to specific registers */
+   115		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
+ > 116			IXGBE_WRITE_REG(hw, IXGBE_PF_HIDA(i),
+   117					le32_to_cpu(raw_desc[i]));
+   118	
+   119		/* SW has to set PF_HICR.C bit and clear PF_HICR.SV and
+   120		 * PF_HICR_EV
+   121		 */
+   122		hicr = (IXGBE_READ_REG(hw, IXGBE_PF_HICR) | IXGBE_PF_HICR_C) &
+   123		       ~(IXGBE_PF_HICR_SV | IXGBE_PF_HICR_EV);
+   124		IXGBE_WRITE_REG(hw, IXGBE_PF_HICR, hicr);
+   125	
+   126	#define MAX_SLEEP_RESP_US 1000
+   127	#define MAX_TMOUT_RESP_SYNC_US 100000000
+   128	
+   129		/* Wait for sync Admin Command response */
+   130		read_poll_timeout(IXGBE_READ_REG, hicr,
+   131				  (hicr & IXGBE_PF_HICR_SV) ||
+   132				  !(hicr & IXGBE_PF_HICR_C),
+   133				  MAX_SLEEP_RESP_US, MAX_TMOUT_RESP_SYNC_US, true, hw,
+   134				  IXGBE_PF_HICR);
+   135	
+   136	#define MAX_TMOUT_RESP_ASYNC_US 150000000
+   137	
+   138		/* Wait for async Admin Command response */
+   139		read_poll_timeout(IXGBE_READ_REG, hicr,
+   140				  (hicr & IXGBE_PF_HICR_EV) ||
+   141				  !(hicr & IXGBE_PF_HICR_C),
+   142				  MAX_SLEEP_RESP_US, MAX_TMOUT_RESP_ASYNC_US, true, hw,
+   143				  IXGBE_PF_HICR);
+   144	
+   145		/* Read sync Admin Command response */
+   146		if ((hicr & IXGBE_PF_HICR_SV)) {
+   147			for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
+   148				raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
+ > 149				raw_desc[i] = cpu_to_le32(raw_desc[i]);
+   150			}
+   151		}
+   152	
+   153		/* Read async Admin Command response */
+   154		if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
+   155			for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
+   156				raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
+   157				raw_desc[i] = cpu_to_le32(raw_desc[i]);
+   158			}
+   159		}
+   160	
+   161		/* Handle timeout and invalid state of HICR register */
+   162		if (hicr & IXGBE_PF_HICR_C)
+   163			return -ETIME;
+   164	
+   165		if (!(hicr & IXGBE_PF_HICR_SV) && !(hicr & IXGBE_PF_HICR_EV))
+   166			return -EIO;
+   167	
+   168		/* For every command other than 0x0014 treat opcode mismatch
+   169		 * as an error. Response to 0x0014 command read from HIDA_2
+   170		 * is a descriptor of an event which is expected to contain
+   171		 * different opcode than the command.
+   172		 */
+   173		if (desc->opcode != cpu_to_le16(opcode) &&
+   174		    opcode != ixgbe_aci_opc_get_fw_event)
+   175			return -EIO;
+   176	
+   177		if (desc->retval) {
+   178			hw->aci.last_status = (enum libie_aq_err)
+   179				le16_to_cpu(desc->retval);
+   180			return -EIO;
+   181		}
+   182	
+   183		/* Write a response values to a buf */
+   184		if (valid_buf) {
+   185			for (i = 0; i < buf_size / 4; i++)
+   186				((u32 *)buf)[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
+   187			if (buf_tail_size) {
+   188				buf_tail = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
+   189				memcpy(buf + buf_size - buf_tail_size, &buf_tail,
+   190				       buf_tail_size);
+   191			}
+   192		}
+   193	
+   194		return 0;
+   195	}
+   196	
+
 -- 
-2.47.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
