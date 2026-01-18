@@ -1,156 +1,160 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84522F261C
-	for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 17:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF22C2FC891
+	for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 17:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768757718; cv=none; b=DCma3Qrob4dUC3zMqg8Tc+dnKMoT+wd3iZms9LQkF6a0uFRRys1tUlMv/Jb4ylm25Lxkvgh/AnKnRdT9rGHowe7d3EhC+Ehg9QrYQYMfyZ5va/rjblwiFjKllmxcMvK/UWFp3wSe+kdWPmWGwHTii/IY8kIGQFEPyv/1SycXR4A=
+	t=1768758325; cv=none; b=U/WogbKkivlQWKP8qCYi0qMb0Atf+7zuysf0Z8jU3qANFom2chRtmYDRjDjHfzrlFnAV0pFaS+yIIiurW5srp8Ps9rOzPwuTiNqm88JLazNWLYDmdytIb5mBjgphGsXUgOj8p6Sess/3Tf3CiNoZHTOOY7N3K6TWfxIneiSdXGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768757718; c=relaxed/simple;
-	bh=1XjJMml5OQHthHhA3ZJ+DGh77+QauGSNKbPL+AXXDOA=;
+	s=arc-20240116; t=1768758325; c=relaxed/simple;
+	bh=s0irCw+gMjmzH65mBrP4Mzm7/teDdFv8COtAVdp7uJ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q74uP3M06vwqdKq4lysN5BIajYMjanypw7NVMBHfLkbMe2bEA3gvggngozJTDoOIYp31fM8USBbNQ9znv33FmUiXJ+YN//MBnsOUqMWPRe3975Zh4U8foA3haup8izSHDrXOo7Qh9VYhj+qeSLm2MYg0a2/lmoQXI6KM1r+jTXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3HWkvEK; arc=none smtp.client-ip=209.85.218.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=YYJcMvxjqeA0k1pMGuDW8eJ32wXi9eUbiKy/FfeHE4/Af3g9DKb7euCO9KcSnmFBdXBAd4RWLoov+zoBKTGPHY9flcm7nI5hq5kJl0ITBFWiUWBpuTOhINCoUkZTkt+Tra0S+I4YtHZrHY1Py1+xyjtf5YeoQkbd+P0loY1TvBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jx+Hh6yS; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3HWkvEK"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b876c0d5318so489627366b.0
-        for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 09:35:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jx+Hh6yS"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b8768225837so491504466b.2
+        for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 09:45:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768757715; x=1769362515; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pGZEHCPvQHmUu6ZZAHCVz+kl9sfR9JLyuBUpjMnyHL8=;
-        b=h3HWkvEKKGJzTpxkwG9bvkRXr5RPqRabGvsoGSv304WVI1dyZqMCsqAObaJ1SDhCF/
-         WtbWaujJHUaHqoTWFpvthfeHIUJwusghfpSIAUzOE3kCInyrUjhGkACgD7oshWWBDG/A
-         XyQfnrB9u2TDPzA+42vVKD453juaeh7QQ3nB335Yh8HO6cLJO8ypUjwO38EtzMXyq4/Y
-         YkdKN8mhfpOVy/xKeNfPbAHUMngf9ZYplSjtup5qpi7jVO19BEFErHktTqK2meWtnTVK
-         vFGAfew8p0QbiiBAId6QlOPzGVB0Fk64cVc1V4Q2WkGjQ+lTaKy8uDnFCEgV+3HRsoau
-         rmGg==
+        d=gmail.com; s=20230601; t=1768758307; x=1769363107; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+lLGRI572lOA24qrLkpQ+3948vS4VnXxEWoByvnQJrs=;
+        b=jx+Hh6yS+aE7WsNuHxm8uVup268woTU9vdoJdTYL7xiMh9b10/sO1kNI7GLEKNSucN
+         fjZxHXusAjp2MsH1AgXdTi5qSLYn77H6oncJd2jV5+iv3VojzU9wFqmoY5lsPEd1PJ4b
+         2IDbN+yZIzCGcARTre5xWNimszoIq9dUHHNzEynDpDHxWeloSYfBAa4ry8VHJ6iYsCya
+         RWNejxKJp8FUXi48p9uVN44NXCwp4efNbLts9lvW9a8cFgvfUQxqMqsISaiNFQ3TVyPs
+         wHXy0tAaNGMxWb2PUfc8De0G+tyWdBqn4BSwiDZmdBckoL1SsLmsLd5/lqUpPi10Uyer
+         NRsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768757715; x=1769362515;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pGZEHCPvQHmUu6ZZAHCVz+kl9sfR9JLyuBUpjMnyHL8=;
-        b=Wvp9W9nS6F80I0qRrenYHXXAsHtOPJx3qmIasdO+/4r5CKWo1WVBTHvoauusjA3y40
-         UWxw05e8lRz+QceyFio6tReVZqPe0VPxP0VrUEjuzz/N/bWaJZiyt/4K95ENAls+wRdH
-         k/KGabjGl/vJCnw3a/Exm2pzl+AgC9TeWVj33FzpGZSwHoyPt2LneA+biRUirmLWj7vE
-         TR9/V+I3njskahz/R6XLmCgyH3DJy3KWkHRxhU9Xph0sJD8e+IYhK9U4yIsyZ72p2FS/
-         KRe8EmXMPF2U+MtJcM38aQar1IY2Ubm32Zqir6Fkf5JMfMs4Rg2lFFPrBYj3o1KGl5i2
-         Zdgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqNKejY1MQ8O6F6J/90DZvMRZGLKh1j+5zYmhwCWCqpnsf4Ap2fESRpIA2t8HmEA5PGULR6Yw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8iqZ0pH49Y4Pn33QsGqzn7Eh4/+qtDyqi+XjvpCfzG/Zm21tm
-	CWTxXajE0yk5W86mYuLOzD3GZDRNhvBVQEkg8azCBzubPV1waHfZ2iop
-X-Gm-Gg: AY/fxX7LBiduYutBrWQGKfK8oEXhPibEteHewS4ACJX48Vuf5fWC11br5QlzOYkeLD1
-	fy91Dovo6KfMwW1GRKlu9L8KgzS6AecHogpiZOTWopTmi41IjjtOeixnKsaLCDsPmhIAHXToq7F
-	VVxq+t1VFqMUyAbr8riic0b5gI5wNNoKrrbHAVuwpyiuVfWzQM6b5VPARAa3C9vLOdMeaWzcPLb
-	3KV6RUk9eD5lhWBtmZuS4jqxA2xd1gDPVYxLyBjS+8fHonJfiVEu2PtMR9Q/RzAsFqV0xFPd2yz
-	dDPfOmswtYCNf0NR/7IohvpwsG/YzGON9z09AvNKAkuW0EvjbLqZX5scL/lIkILE8EfYEYnalw3
-	QgX90o58hUO4thZ7B5r2oujWjbWiavsiJcpmg1EkDtGvO9fEjMOCijS9L06+RE9x+Y6f8OHYM6i
-	LVMm+AlBAd2+0=
-X-Received: by 2002:a17:907:1c02:b0:b80:a31:eb08 with SMTP id a640c23a62f3a-b879302426amr752483166b.55.1768757714447;
-        Sun, 18 Jan 2026 09:35:14 -0800 (PST)
-Received: from osama ([2a02:908:1b4:dac0:5466:5c6:1ae0:13b7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-654533cc4b9sm8173672a12.18.2026.01.18.09.35.13
+        d=1e100.net; s=20230601; t=1768758307; x=1769363107;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+lLGRI572lOA24qrLkpQ+3948vS4VnXxEWoByvnQJrs=;
+        b=o0i8rujJ6AUsEQCWN105rHNPfrvA2sjaYJPHZTzpiqvGlqpvXjBZ77VDH45SxxbB51
+         UnK3FcCQqk45KAq1TtfkEZafC4d4WtJRkc48SWd1Q39lqhJBEHZIpjD5rETxfQmWT7Ei
+         dHYo8X4BIuvFfbuTxAQUnVXvfAhl3uY7ccToV40HIDHdUpcDVWEYujgLEqJiZvry+waW
+         8y06t/9RJDYoHnJn3IuDSFrgLUKTD1LS9+9gA0W1bk7UhgefukWQTRtyctezhAG/J/zm
+         mstx6hnlbz+phWpBbosLvSdnP/IBQQlphn94gWmdrmqnPhm3pBW3J7z5Yoa+OgngpdFI
+         ctMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTWHEKCQppgS6yBg2FU/NtVp3tHQJCRrfiTYsXALaQBpSNi6zdPjxFcwiHovoNavx0jKK0whc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3Kf9e6gQWe+0NvKQ4NjaWVDp0DGO4yjgkSVQhnz+pUJ1zpURc
+	twUHNXU0gq48riiQzUUwW5tm528HyZpjXNolLuLu3tnVeHMqWf1eM9DI
+X-Gm-Gg: AY/fxX6ETSaMMqL8qp+Kzb2EmUHQdFRx17ZWIoxg7NgXG/SvJi3PK7YhvCG4E2A21lq
+	LATXmNy9KCwOUeXdfw80EZJ5ck37LMQn1EB6qvLQQvTOx975j0utR3AUxRjCVr9lBHyX0yXLe+x
+	0qa1bgkTxvwmzII6PwmLG/zax+GPPE/G1A2zk8jHItH3LS5lfMlympgGDQK3mzlotU+HBSYWQpY
+	Z41cXMg9DuSue6jthQA462DLWpNEXNDXSK53qfj4jtJTxR3iSoV4EbJyxNwsqs0sQqaLRW0nn3b
+	XbNCMCKWjqKev91JXzrSY2THAc2kvnokopDu618yh0DeN5MfUIuZ2/JI2ln61ayToxjKa3hT5ps
+	QRc8FKIf/bjUqGkBN1q7C6kQmyKLF759f7MMbWsvitqmIbye1XB46yDIudV9rFjjVVMSqseYMkV
+	0pB525Pe0+OpWgROPXGEhFAJoeXoR9KOLPwY1T
+X-Received: by 2002:a17:907:c0a:b0:b7a:1be1:983 with SMTP id a640c23a62f3a-b879324ea84mr842454266b.63.1768758306343;
+        Sun, 18 Jan 2026 09:45:06 -0800 (PST)
+Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c96f4sm874098366b.40.2026.01.18.09.45.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 09:35:13 -0800 (PST)
-Date: Sun, 18 Jan 2026 18:35:11 +0100
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Sjur Braendeland <sjur.brandeland@stericsson.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: caif: fix memory leak in ldisc_receive
-Message-ID: <aW0Zz9SNbxJRxghp@osama>
-References: <20260118144800.18747-1-osama.abdelkader@gmail.com>
- <2026011805-bamboo-disband-926a@gregkh>
+        Sun, 18 Jan 2026 09:45:05 -0800 (PST)
+Date: Sun, 18 Jan 2026 18:44:58 +0100
+From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
+To: Justin Suess <utilityemal77@gmail.com>
+Cc: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	linux-security-module@vger.kernel.org, Tingmao Wang <m@maowtm.org>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	konstantin.meskhidze@huawei.com,
+	Demi Marie Obenour <demiobenour@gmail.com>,
+	Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>,
+	Tahera Fahimi <fahimitahera@gmail.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 0/5] landlock: Pathname-based UNIX connect() control
+Message-ID: <20260118.a37c57a422d7@gnoack.org>
+References: <20260110143300.71048-2-gnoack3000@gmail.com>
+ <20260112.Wufar9coosoo@digikod.net>
+ <20260112.a7f8e16a6573@gnoack.org>
+ <62eda124-de91-4445-b163-9dfb8039d08c@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2026011805-bamboo-disband-926a@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <62eda124-de91-4445-b163-9dfb8039d08c@gmail.com>
 
-On Sun, Jan 18, 2026 at 04:02:44PM +0100, Greg Kroah-Hartman wrote:
-> On Sun, Jan 18, 2026 at 03:47:54PM +0100, Osama Abdelkader wrote:
-> > Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
-> > prevent memory leaks when the function is called during device close
-> > or in race conditions where tty->disc_data or ser->dev may be NULL.
-> > 
-> > The memory leak occurred because netdev_alloc_skb() would allocate an
-> > skb, but if ser or ser->dev was NULL, the function would return early
-> > without freeing the allocated skb. Additionally, ser->dev was accessed
-> > before checking if it was NULL, which could cause a NULL pointer
-> > dereference.
-> > 
-> > Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
-> > Closes:
-> > https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
+Hello!
+
+On Sat, Jan 17, 2026 at 01:57:20PM -0500, Justin Suess wrote:
+> On 1/12/26 15:53, Günther Noack wrote:
+> > On Mon, Jan 12, 2026 at 05:08:02PM +0100, Mickaël Salaün wrote:
+> >> On Sat, Jan 10, 2026 at 03:32:55PM +0100, Günther Noack wrote:
+> >>> ## Alternatives and Related Work
+> >>>
+> >>> ### Alternative: Use existing LSM hooks
+> >>>
+> >>> The existing hooks security_unix_stream_connect(),
+> >>> security_unix_may_send() and security_socket_connect() do not give
+> >>> access to the resolved file system path.
+> >>>
+> >>> Resolving the file system path again within Landlock would in my
+> >>> understanding produce a TOCTOU race, so making the decision based on
+> >>> the struct sockaddr_un contents is not an option.
+> >>>
+> >>> It is tempting to use the struct path that the listening socket is
+> >>> bound to, which can be acquired through the existing hooks.
+> >>> Unfortunately, the listening socket may have been bound from within a
+> >>> different namespace, and it is therefore a path that can not actually
+> >>> be referenced by the sandboxed program at the time of constructing the
+> >>> Landlock policy.  (More details are on the Github issue at [6] and on
+> >>> the LKML at [9]).
+> >> Please move (or duplicate) this rationale in the patch dedicated to the
+> >> new hook.  It helps patch review (and to understand commits when already
+> >> merged).
+> > Justin, would you like to look into this?
+> > Please feel free to copy the wording.
+> No problem.
 > 
-> Please do not wrap this line.
+> It's quite long, so would it make sense in the notes?
+> Instead of directly in the commit message?
 
-OK.
+I think including it in the commit message is what Mickaël meant here.
+The quoted email above is already from the cover letter (which I
+assume you meant by "notes"?).  IMHO, the considerations that are
+specific to the LSM hook are OK to put on the commit that introduces
+it, even if they are a bit longer.  That way, a summary of the
+tradeoffs also makes its way into the overall commit history (unlike
+the cover letter).
 
-> 
-> > Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> > ---
-> >  drivers/net/caif/caif_serial.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-> > index c398ac42eae9..0ec9670bd35c 100644
-> > --- a/drivers/net/caif/caif_serial.c
-> > +++ b/drivers/net/caif/caif_serial.c
-> > @@ -152,12 +152,16 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
-> >  	int ret;
-> >  
-> >  	ser = tty->disc_data;
-> > +	if (!ser)
-> > +		return;
-> 
-> Can this ever be true?
+FWIW, commit messages with long descriptions are not unheard of,
+e.g. commit ee6a44da3c87 ("tty: Require CAP_SYS_ADMIN for all usages
+of TIOCL_SELMOUSEREPORT"), which I submitted a while back.
 
-Yes, when the line discipline is changed, tty_set_termios_ldisc() sets tty->disc_data = NULL
-> 
-> >  	/*
-> >  	 * NOTE: flags may contain information about break or overrun.
-> >  	 * This is not yet handled.
-> >  	 */
-> >  
-> > +	if (!ser->dev)
-> > +		return;
-> 
-> Why is this check here and not just merged together with the one you
-> added above?  And how can ->dev be NULL?
+For reference, the official guidance on commit messages is
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
 
-I'm going to combine them in v2.
-If ser exists, ser->dev should be non-NULL (they're created together), but the check is defensive.
 
-> 
-> And where is the locking to prevent this from changing right after you
-> check it?
-> 
+> >>> Seeking feedback on:
+> >>>
+> >>> - Feedback on the LSM hook name would be appreciated. We realize that
+> >>>   not all invocations of the LSM hook are related to connect(2) as the
+> >>>   name suggests, but some also happen during sendmsg(2).
+> >> Renaming security_unix_path_connect() to security_unix_find() would look
+> >> appropriate to me wrt the caller.
+> > Justin, this is also on your commit.  (I find security_unix_find() and
+> > security_unix_resolve() equally acceptable options.)
+> security_unix_find works for me, and seems to better match the hook
+> location. I'll send an updated commit.
 
-I'm going to address that in v2.
+Thanks! Please feel free to ping me, I'd be ready to send an updated v3.
 
-> thanks,
-> 
-> greg k-h
-
-Thanks,
-Osama
+–Günther
