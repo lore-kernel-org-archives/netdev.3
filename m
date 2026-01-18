@@ -1,151 +1,114 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8952FCBF5
-	for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 17:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B542356A4
+	for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 17:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768758334; cv=none; b=DgICz2crxMfgR62veyE6GAbP5NlUTHD890mR86lAk6yRDhzl+vRRvZyhkHhHU+MzJ7rm0Snw8S9OLHG1t5SiK04EhPaMaHMeHq6z1URSysIVVypsIpPGuJT/q16SiqZ89xdQa2MVhuwdwGaDIjh+xp2Y2LodHdhG1pw2d7DIqvg=
+	t=1768758740; cv=none; b=aJPdtS3rxaYnt2qaBu4DhLCg/ClkEv7wRNEw519aBIKxpTnvaXqLw7jdHOiH0hOB0SbPhyeob7ziSzMyedZFBD14JAyQz1TWWGPb9jpfGaqDe5paDtRJX64cEHw4pesVdc1cGSOKjyr+YWSkMqBMqakB5o9kW+TCaAfZ5+quXa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768758334; c=relaxed/simple;
-	bh=VcjR+Y1iNWZSa1ZtxEzMaBCTuPx9pXxpzhpYI/x/o48=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iTyTEcCP6sIffpLqSblZD7fGuYWEUPjT8SIjvgxiKNLwSvhRtYbU53v66PBolGZVUNs6rGeJBCN8Dg9JyYzBZXn0r3fCp8rtLIwg5olJk1lgDnj049Yu6oWfO6C1H5RwiKJhh3I2Cihto+/H+thPYLtYftOAZfyoa+9DBbNZLfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3BA18oM; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768758740; c=relaxed/simple;
+	bh=MOuVqo23n0E8mTJYERWPyLbIOukPssp+mVzANySagYA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tUE2r+OaClR6YVgRheTib8dF10+fC0ZDj6jggchc9lae17nwowiXXvOxHzzqhBAtE17T1iLyRCHD3Mo98Uz5nXwqMfWYjAnLo8p1oibrmOyY/+P5/N9gOzldqGqaL+WdCxSYGFqXoNso4Minn6MGRDj4REyVj80UqaqdCjYWaY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LBCyL86U; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3BA18oM"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso7085735a12.0
-        for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 09:45:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LBCyL86U"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-78f92e123f5so47969697b3.2
+        for <netdev@vger.kernel.org>; Sun, 18 Jan 2026 09:52:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768758330; x=1769363130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PbagKvzCIQaOeLMD21+nxd4UKX2WNLT5bVzVk/tS3pc=;
-        b=M3BA18oMmjUmADEe403rh92JvTWHfJCcY48LxqKL1hxU/xNRYO4P1I+s+d5Kojjg/D
-         hY0Ioo6uA5GwfHoMf1Q1llyfqbp/liVpI7OapIk5cmoxODPRxbD8G6FfNVUALCGE1LbB
-         MDau6kmCzdF0ZVVVdOiFRX2bcCqlCQVhrVMZEr6POMGnbiICD62EO2dmcW8wLZPLW8ta
-         /A/ETvbfyys1Er8ifMxG8rrXODPLxnRalcx6HSAjp2jaj3JLgZkiaFkMRHJ7LOWtNn/8
-         lG8xtzT6T0wPkQQrBecBuuBEwF0wXmwQapECu9MaMDOCNfIV5BG7Ms9Ohz9nxQapx2va
-         Bz5A==
+        d=google.com; s=20230601; t=1768758738; x=1769363538; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0soLYoLD2HEfbC5aYG8vVqwAVSj2C6MMeQGZIYPijrU=;
+        b=LBCyL86U6dpsv5G8O5/+y1hst38gDNZ60Mp287kBVd1XRg/kqsf5xu5czcr8ROs10e
+         ISiFDXchqrm5gXu9JzYpiHyBVzT5NTadFVaykyqk1wzrT4BWa+RzefR7X5LDM15QTF08
+         xMNGDToSuz75deGRa3OWSKwaCs5ANPZNwcrbyNRmVszNQikL2vtyt9kW/6pupo1P7nJG
+         tEI+MKKPLsZCppDjTrAsPOHCb6lSgUqVmdxovg/I5xR24o06DN3tRgULg4+MBS39a3mh
+         xh2tyHn9PTkQefCItI9n0PzNJILJn8iDPqOudTBc/ryP8GKnw6m3YF7A+NiTaZJNsbB7
+         ddfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768758330; x=1769363130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PbagKvzCIQaOeLMD21+nxd4UKX2WNLT5bVzVk/tS3pc=;
-        b=f0m9wubJvOsqcQJyDjOugeU8ipdOevuN7O8fpUx6XxO4e13kj/Rz3LPKPmHkChJb5p
-         obJ1Pcu0OkVaaX7gWvIIa7P1aXRH1pUdL9HOZ4GOsbf7bp8CWzugTEHV+dBCDrcfuPC/
-         lt3WqliNqpEi6sdL/Z93hTsWU3Ig8JbR6JVCevSQZ8uE2YWgMUQ2iwFhW+/iG76zaCjm
-         8/mDEVlPquOzMu8BhNvkFe1XbK8DSkE6SU61d8tSSK2e+BM95pvLyrnLn/rkugiqOVsM
-         j7KL88yfDdNjFRPF4k5YXGv/ay1jhi/bq0Okw8HLjLG3Yiig3j1r2wADgt6h+BRsGGd2
-         xUtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfECnFyfCqd9iG8yGxRoQP2taOIwOvWShrMbRv1mh+dO426ezBRr8nWuLPyn9wnWMfA1prbfQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5CH9gDwgjD5x5MYt8eXaIrcqJBWVlffbHLcX8SxSfQwY1kuaG
-	sNfRQ1zsvt+i5YutiVX7xYNafva8xjFsTkGfWeJfvjglEd9WZr4tM2R2
-X-Gm-Gg: AY/fxX6UaeSfrUl+f0kqxAMrCCZoxLGuQAoj+SSoU7PTUQMs8SrCdtmwPFrANlukOdm
-	9884HHtSz0ugPyQi56ea0q2+aNfK5H8fJLiAuxBoAouoUhXL8KkseJt9UzWCz9u1WI0ka1ApXLC
-	ZKUmKU01VpZQF1FCBY/uoTiRe7GxqQNY7Tzf+QQijddWACgAodD6aWjz3YVGXmfiy2vPMM01Oca
-	92tQHkJs3WKLPlEG3TUnvByIYPjxID8fLlsyiiNlOFeOigErZi4Uf0ZNTK8IwuhLBcp/SdyW2xj
-	/gtvpJdsD01GPK2h8smTzsRPOGsY8xZBJOu4g3Sr9cbsAwvjegoHXURdx1rNI05LUE5OWCXOBfp
-	WpwS1a1t2YPyjyzxBRD/UtVciPQ+f70Ttp4G5/uvzlYu06R1vhKU7+oEaFkOSZkA2Y+6IiHTVxC
-	qlL35e7ZBwDTFWAw==
-X-Received: by 2002:a05:6402:3491:b0:64b:5562:c8f4 with SMTP id 4fb4d7f45d1cf-654524cf27fmr7018655a12.7.1768758330277;
-        Sun, 18 Jan 2026 09:45:30 -0800 (PST)
-Received: from osama.. ([2a02:908:1b4:dac0:5466:5c6:1ae0:13b7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65452bce411sm8105189a12.7.2026.01.18.09.45.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 09:45:28 -0800 (PST)
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Sjur Braendeland <sjur.brandeland@stericsson.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] net: caif: fix memory leak in ldisc_receive
-Date: Sun, 18 Jan 2026 18:44:16 +0100
-Message-ID: <20260118174422.10257-1-osama.abdelkader@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1768758738; x=1769363538;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0soLYoLD2HEfbC5aYG8vVqwAVSj2C6MMeQGZIYPijrU=;
+        b=tZhn+Cq2IUMcI337qntbSOQI+5CnMU9TnsIm9rKpGoMq1YnoMXvi9vivPvGmQ5Bh7/
+         EzoEtI5WkfK97LJ9CJgIbL6mEI26wS3n4xLh83BQyxkHV6rp8AZovZe6DskfHMKkLHHU
+         oH02W0DToI3jvz1f6UP/GPqVImIJf1aLK82d2emBQ4SI2oz0zaOFbjTT3hflRl2KY+/3
+         B8stAPfsahyeEOSzIMYvSK1Q6L4QTxhnZ5l1Q5RekQtKcHWgTFQSHOMsDv5CiV/OhMKW
+         9CKquDMhG310JJqsMp79HG8ptix3SBLFWEM3X1RVO2eO7eeTIwIl49ZEmktnbJczZIbD
+         +I+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWTFXfFedgex66S0O6e3S1M1BAH1ea7Ga/3cpIu8z7OG0eWrQ5CjOTuHZI9ZjKA/jHQEZ+5nyY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZCj5bIwQRv4F0FfHrN+Q0bIPQIBqE3KOXfWE4iH3D0Rl5ALcC
+	2dPxZSxntBp9SKF2qA/TZJFBlQ5z12LLGa8B32bzgsN1wr/DJkznX2Jtw2YdLladq50h73uGxiY
+	tK3TS/VPH7sAygw==
+X-Received: from yxse4.prod.google.com ([2002:a53:d804:0:b0:649:2245:becc])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:1506:b0:649:2589:fa04 with SMTP id 956f58d0204a3-6492589fe00mr3404265d50.1.1768758738259;
+ Sun, 18 Jan 2026 09:52:18 -0800 (PST)
+Date: Sun, 18 Jan 2026 17:52:12 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260118175215.2871535-1-edumazet@google.com>
+Subject: [PATCH v2 net-next 0/3] gro: inline tcp6_gro_{receive,complete}
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
-prevent memory leaks when the function is called during device close
-or in race conditions where tty->disc_data or ser->dev may be NULL.
+On some platforms, GRO stack is too deep and causes cpu stalls.
 
-The memory leak occurred because ser->dev was accessed before checking
-if ser or ser->dev was NULL, which could cause a NULL pointer
-dereference or use of freed memory. Additionally, set tty->disc_data
-to NULL in ldisc_close() to prevent receive_buf() from using a freed
-ser pointer after the line discipline is closed.
+Decreasing call depths by one shows a 1.5 % gain on Zen2 cpus.
+(32 RX queues, 100Gbit NIC, RFS enabled, tcp_rr with 128 threads and 10,000 flows)
 
-Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
-Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
-CC: stable@vger.kernel.org
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
----
-v2:
-1.Combine NULL pointer checks for ser and ser->dev in ldisc_receive()
-2.Set tty->disc_data = NULL in ldisc_close() to prevent receive_buf()
-from using a freed ser pointer after close.
-3.Add NULL pointer check for ser in ldisc_close()
----
- drivers/net/caif/caif_serial.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+We can go further by inlining ipv6_gro_{receive,complete}
+and take care of IPv4 if there is interest.
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index c398ac42eae9..970237a3ccca 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -152,6 +152,8 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
- 	int ret;
- 
- 	ser = tty->disc_data;
-+	if (!ser || !ser->dev)
-+		return;
- 
- 	/*
- 	 * NOTE: flags may contain information about break or overrun.
-@@ -170,8 +172,6 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
- 		return;
- 	}
- 
--	BUG_ON(ser->dev == NULL);
--
- 	/* Get a suitable caif packet and copy in data. */
- 	skb = netdev_alloc_skb(ser->dev, count+1);
- 	if (skb == NULL)
-@@ -355,11 +355,15 @@ static void ldisc_close(struct tty_struct *tty)
- {
- 	struct ser_device *ser = tty->disc_data;
- 
-+	if (!ser)
-+		return;
-+
- 	tty_kref_put(ser->tty);
- 
- 	spin_lock(&ser_lock);
- 	list_move(&ser->node, &ser_release_list);
- 	spin_unlock(&ser_lock);
-+	tty->disc_data = NULL;
- 	schedule_work(&ser_release_work);
- }
- 
+Note: two temporary __always_inline will be replaced with
+      inline_for_performance when available.
+
+v2: dealt with udp6_gro_receive()/udp6_gro_complete()
+    missing declarations (kernel test robot <lkp@intel.com>)
+    for CONFIG_MITIGATION_RETPOLINE=n
+
+Cumulative size increase for this series (of 3):
+
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.3
+add/remove: 2/2 grow/shrink: 5/1 up/down: 1572/-471 (1101)
+Function                                     old     new   delta
+ipv6_gro_receive                            1069    1846    +777
+ipv6_gro_complete                            433     733    +300
+tcp6_check_fraglist_gro                        -     272    +272
+tcp6_gro_complete                            227     306     +79
+tcp4_gro_complete                            325     397     +72
+ipv6_offload_init                            218     274     +56
+__pfx_tcp6_check_fraglist_gro                  -      16     +16
+__pfx___skb_incr_checksum_unnecessary         32       -     -32
+__skb_incr_checksum_unnecessary              186       -    -186
+tcp6_gro_receive                             959     706    -253
+Total: Before=22592724, After=22593825, chg +0.00%
+
+Eric Dumazet (3):
+  net: always inline __skb_incr_checksum_unnecessary()
+  gro: inline tcp6_gro_receive()
+  gro: inline tcp6_gro_complete()
+
+ include/linux/skbuff.h   |  2 +-
+ include/net/gro.h        |  5 ++---
+ include/net/tcp.h        |  2 --
+ net/ipv6/Makefile        |  2 +-
+ net/ipv6/ip6_offload.c   | 43 ++++++++++++++++++++--------------------
+ net/ipv6/tcpv6_offload.c | 12 +++++------
+ 6 files changed, 31 insertions(+), 35 deletions(-)
+
 -- 
-2.43.0
+2.52.0.457.g6b5491de43-goog
 
