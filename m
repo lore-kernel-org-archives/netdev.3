@@ -1,85 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B512FE593;
-	Mon, 19 Jan 2026 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A47F31352A
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768841862; cv=none; b=drk8OLHOCGj/dfSODZMCN7CpyEDvLnjVbB29CNpdE2vMntfJdFBf7fB8gSPt16M94V3/n+GUDXYlH3NOc9HuwacolH0n+j3tgvk8Mw9COFcfFAwQStHodk+9u8tuuF8PJwqA/iWnp9Bcjh5JtQvy0kWVDirg1ZuuubdGeYilJe4=
+	t=1768841998; cv=none; b=Xf7aBdhETx/hRPjqgTGCA1tlJfKlQ41dpypq166kNk7uLHAJ8sRZEfbUCXIe4ZJYC/rSeiSGIkm3IDkm3NLuYz6TBRqZaTElwJx3NLuUbBNNupTDhWtvebDiebBdhgcC8YhDulUSintCraTes0JW+FBC6q0EvRUPR2rwKnGf/MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768841862; c=relaxed/simple;
-	bh=YW8Q9Lrp/bZQRu5rYELHUc9owzCj1x411m/oRmGY61A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a5S3LjSeguLSwCi8jBxo9cvBeo0YKhxmpOluPF6B4jo0O6aObabJ6o0Tcr7YvuOe2ag3VAdvZ98GFuIimUfPf0Go2LkSfO1ubRJnB7rfUm45DFkpVqWrAUt6MqZpvGKailyjMwXrGYXdUrFlM/8hETAQfOK7VJ5HkD9L0+qsttE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ROxnCHVY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768841998; c=relaxed/simple;
+	bh=FtAJLs5K+tkaZN2nivJXSO+M2Dqx7b72bwOoEmS8hVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N6B4pNB/GpfN/MbHjVGCWRv3A2HVsE3Wo7J9s2xJ/JcpjzS1VFjLt6oJTfndbfVbo9UYikCReiS5I1vHl6JhPUTw5VNJWhS7ZaF7eEyN4e3sr4e6UTRIKOtAZvH22bhZJoCKkLfPJ1YUuwZ08tAN60wgaPnb1S+y22LZqDmWxyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnVLjNiT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ROxnCHVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF98C116C6;
-	Mon, 19 Jan 2026 16:57:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnVLjNiT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3C9C19424;
+	Mon, 19 Jan 2026 16:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768841861;
-	bh=YW8Q9Lrp/bZQRu5rYELHUc9owzCj1x411m/oRmGY61A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ROxnCHVYM82zYZN+jSegSYEzsqVDfjVYwXb3yhsN3Z1ZlaUF5gukdxz9XNEvFF/5t
-	 mtrRIJVcR/okwxcWj+TbqhpTVzdQYh5BGz9VsSKZFN4ta0MzQIbHcU8S1Bu/mRWg+p
-	 1g3ZbULO9jvF+SBlE4G0pJmfv84EU9n3j/TamvLgQvZBC5nkTz3wDiDXei/jxErWmh
-	 d5GlLI9OjptF8FXjUzykeCU9hjns/DKjat7mHwQvDrrgUoWcvayl1q007/A2V8b1mA
-	 8I5/KxrFJtRHJWgKIQr5NZWfsY8BZVQDOAk3fpPZmmspIDbKVBWXUOoH+4Dp+QjBTJ
-	 Y6eZMsr498kLA==
-Date: Mon, 19 Jan 2026 08:57:37 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan
- Corbet <corbet@lwn.net>, Michael Chan <michael.chan@broadcom.com>, Pavan
- Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Joshua Washington
- <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, Saeed
- Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
- <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Alexander Duyck
- <alexanderduyck@fb.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Shuah Khan <shuah@kernel.org>, Willem de Bruijn <willemb@google.com>, Ankit
- Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, Alok Tiwari
- <alok.a.tiwari@oracle.com>, Ziwei Xiao <ziweixiao@google.com>, John Fraker
- <jfraker@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Mohsin
- Bashir <mohsin.bashr@gmail.com>, Joe Damato <joe@dama.to>, Mina Almasry
- <almasrymina@google.com>, Dimitri Daskalakis
- <dimitri.daskalakis1@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- Kuniyuki Iwashima <kuniyu@google.com>, Samiullah Khawaja
- <skhawaja@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- David Wei <dw@davidwei.uk>, Yue Haibing <yuehaibing@huawei.com>, Haiyue
- Wang <haiyuewa@163.com>, Jens Axboe <axboe@kernel.dk>, Simon Horman
- <horms@kernel.org>, Vishwanath Seshagiri <vishs@fb.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kselftest@vger.kernel.org, dtatulea@nvidia.com, kernel-team@meta.com,
- io-uring@vger.kernel.org
-Subject: Re: [PATCH net-next v9 0/9] Add support for providers with large rx
- buffer
-Message-ID: <20260119085737.2161f9e6@kernel.org>
-In-Reply-To: <7ab5309d-8654-4fa8-9a1e-24b948bccba2@gmail.com>
-References: <cover.1768493907.git.asml.silence@gmail.com>
-	<7ab5309d-8654-4fa8-9a1e-24b948bccba2@gmail.com>
+	s=k20201202; t=1768841998;
+	bh=FtAJLs5K+tkaZN2nivJXSO+M2Dqx7b72bwOoEmS8hVg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lnVLjNiTpdK7G2p16f05yMvnnBQqkaH30IBmePClziLRca+yrTd+Q7VgQELRv9YYI
+	 J+ze/4qRcaPCqq5M1HU2c+7fvAEuoj3J7DjFWqUzpsxcpoF+B1HHhozRx/WFiy4h12
+	 BBk9oYI3Ou4BFUOw0xmhb7A/wV0A6rAVaFNQKlR6+kpdci0OqyJwqteOd/1vuRGc18
+	 F4taXpDPWrdb9gldjXIg4wsrYFofE1PLDyiyc3moPExVZ5MQzv4zHAuQJN95txb8Nh
+	 ZHhtLPrzzrBRT65I0YaxYxBiDB8VxGtzCQlf9TqDCqdmTbYzzOiF0OxbHfm80sCvQ+
+	 mb6+qGdE3rX3Q==
+Date: Mon, 19 Jan 2026 16:59:54 +0000
+From: Simon Horman <horms@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com
+Subject: Re: [PATCH net-next 0/8] ipv6: more data-race annotations
+Message-ID: <aW5jCqCrS6rWO6in@horms.kernel.org>
+References: <20260115094141.3124990-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115094141.3124990-1-edumazet@google.com>
 
-On Mon, 19 Jan 2026 13:54:37 +0000 Pavel Begunkov wrote:
-> On 1/15/26 17:11, Pavel Begunkov wrote:
-> > Note: it's net/ only bits and doesn't include changes, which shoulf be
-> > merged separately and are posted separately. The full branch for
-> > convenience is at [1], and the patch is here:  
+On Thu, Jan 15, 2026 at 09:41:33AM +0000, Eric Dumazet wrote:
+> Inspired by one unrelated syzbot report.
 > 
-> Looks like patchwork says the patches don't apply, but the branch
-> still merges well. Alternatively, I can rebase on top of net-next
-> and likely delay the final io_uring commit to one release after.
+> This series adds missing (and boring) data-race annotations in IPv6.
+> 
+> Only the first patch adds sysctl_ipv6_flowlabel group
+> to speedup ip6_make_flowlabel() a bit.
 
-Yes, David refactored the test in the meantime :/
-I'll pull the branch.
+Thanks Eric,
+
+This all looks good to me.
+And thanks for including the const updates.
+
+For the series:
+
+Reviewed-by: Simon Horman <horms@kernel.org>
