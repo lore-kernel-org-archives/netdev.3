@@ -1,124 +1,85 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF8B3101A8
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 16:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768841478; cv=pass; b=m5VQTIrx7iugq8UcYYdrcXsDgTgy4BjkdfEQq5a2v4M2N1VbzMg/Tzl1ALU252spin0za5keiqopzNL7W/4/BjZwUnnLsJ7NCclRIR4VS4U7Gfwwz5gw1nN8z2xxiv3prPtxUOCIQz15gaqVSNzdHuSpgLQTqtk6HUS10aVxzK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768841478; c=relaxed/simple;
-	bh=L7cMIOhFkW0HstMAX/Uqub9fZPfIBDZs5CklIVC9Bmc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VhqRhZjI7s9ahF9+83tdnkKIrnnz4LMhKL4aahRRjd9dhSPsPhlAT/Sc8Dfjaxs/2E46K11nRTM9mFC9ZzRuKkB7ZwJOcCSqliY3s44f5CZt9piVbS+h2pF3ekqoH7lS+evggXNWP1OVe27cMMS8EQd9galWHKHBKRpzF63ZtFg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AJm0UxlL; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B512FE593;
+	Mon, 19 Jan 2026 16:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768841862; cv=none; b=drk8OLHOCGj/dfSODZMCN7CpyEDvLnjVbB29CNpdE2vMntfJdFBf7fB8gSPt16M94V3/n+GUDXYlH3NOc9HuwacolH0n+j3tgvk8Mw9COFcfFAwQStHodk+9u8tuuF8PJwqA/iWnp9Bcjh5JtQvy0kWVDirg1ZuuubdGeYilJe4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768841862; c=relaxed/simple;
+	bh=YW8Q9Lrp/bZQRu5rYELHUc9owzCj1x411m/oRmGY61A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a5S3LjSeguLSwCi8jBxo9cvBeo0YKhxmpOluPF6B4jo0O6aObabJ6o0Tcr7YvuOe2ag3VAdvZ98GFuIimUfPf0Go2LkSfO1ubRJnB7rfUm45DFkpVqWrAUt6MqZpvGKailyjMwXrGYXdUrFlM/8hETAQfOK7VJ5HkD9L0+qsttE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ROxnCHVY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AJm0UxlL"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5014b5d8551so972981cf.0
-        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 08:51:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768841475; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DWHKN/FvU+bh47bAvRfAv4K4d8xbvBz1zFshmlupdoUo73vCB4EPLSxabPRLJn4Erb
-         43AONwhr/LDOzRWb72uVm7He4eus/Ij8d6TSEuTOy7W7ky3f9qc6WJg48k/19SRofv7j
-         lW1uKbKnOuhPe5BKxVvakr66qe9avH2NZRWzBFgF1nhkihkvBfYkFXDReP+iBnWEm2dS
-         JNIcPjWFa/FC1iWM8c/Z+j/m/X6pVSdwjvoVVVKW8ypWIXmjAvxUNa90v9m+M6rwHmyK
-         /VPD50D9fVjE0aD7FnI2buNHMH8+jbgiN21Jbsop+EszC1PQHhpwBwADtRQr11elwP5m
-         ocsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rmSbSN0pqClvudWpTg7XP6qXNhoYmJaIJIOFHJ/Fcag=;
-        fh=VIHReSnJaQa3f6l6HVW3ExcFNLG2c49n+LUc5OQh1pA=;
-        b=L4leDEPWqGb+TYSVprlUpS9iMANAIKzqv33qkF8UF18qrLSibxdTqywWDs16q+xldv
-         6iiD9fY+/GAOj1RXYuB6HRJGUPOZU4lHfQ1hLObtjZkEppmJqHlkTWWSV6XOpLU/UA7u
-         Szg/w2UfDsdG+tYwup3QU01lohz2CHQvchD1ZKb0cVykI2H+MYl1yJ+SUJabY953BhND
-         JnyTK/IJsQeatkxhRuyKyb6Hb6xdRUoEsjjYdQ1VQMqL83KzuQWcV3W0jD7zvV4uX0cJ
-         uOQhL/qgNSJoZvK9GVKzz6R4WW7drehqCl3+wQf3bf2EbBV+1ZRgwSXjDC3e6aJcwzEs
-         +PHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768841475; x=1769446275; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rmSbSN0pqClvudWpTg7XP6qXNhoYmJaIJIOFHJ/Fcag=;
-        b=AJm0UxlLozO7Vtop5yR5TIND/f6a4oqgyuSbhMhqKLbZ5jkNq4OxgOLBZpu89S7sXC
-         eFqKDFL9VEHCoXIpxcfyjXngFhxKJ+qPHzPIY3YTU1ePFchCa287eO83eIzpDF3Wv09q
-         oARThH9f4554L3BbNYucwOSjsVDcZf3ZwpJCjR1RPcrwe+zJRSZIOmrPqjHIWPiicp98
-         Zt6b+UiSVtfoEFd+ZSuHZtoTDo4NiGpr0tthP16SjO9T2fN+nF+LGZ3yXxcW0aEHgzKD
-         bj30aDkcR3FliXTBPOiJ+H6O90asWzmb1nHurCyb9v6Zfccpmzt7ctVHMA+z470jIA1k
-         Elsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768841475; x=1769446275;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rmSbSN0pqClvudWpTg7XP6qXNhoYmJaIJIOFHJ/Fcag=;
-        b=ny3LUQQ0+Qpm5C35jYUtSpqZGwkSX0y+/YcWqY4LkWHiZgdQbB5oKacZ0Q+168NiwU
-         XaBmtbRrNnaGynK3sp3Ql1ImTwdBH0M3hm81kC6eiTzvBhk8XkiaBcWLMfy7dtFwzFnU
-         mBO2GamlfU6zPcM8TYw9GLgY622sNN/a8MzbsmSmBIjjQ9igTdqqr0K2wa3oOuYWgNPt
-         pbnp0Lo7VkzVSXl4G5mfu8nYhTdvmQi7c+jGrQpDgbVKaoxnypNFXLcWWuj5/LLH1kXj
-         qgLkiiw8bVOKh0UeG+WbRfkicbIiZjl0jRDyTNu0Ccpccdmhk+/SLQpGEia4O6xSe6ZZ
-         oYSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGnoh50Oq6yNqabaWW+91QV50VhjFGi0neHI52wwOKrXe2KRA8HvTVZBUkA+2m77YWhfasU9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFVSbSe/5mScfR+vsyxhOh7RIGle0HZ0kM190HryWJdPG/Am2Y
-	OHUEjE3dY721fGeIlhcmUOoiiIp1MBt5MbOj473jOrL30B4hXgpPOQ21/tJRhTJp5R1dnYq4MaN
-	QIeiLPKlpA90R7C/LzVJlWf5qXxZEY9G5GZggwuaz
-X-Gm-Gg: AY/fxX4QDf/xY4T9+86DEUlbHuoyf61db+GSiptRyDx1LTJmbOl8yLWX7h93t331Ti/
-	Ipu4B3tn0wS4uvyizYnsL3sqYY3JRI7INULQ+t/zpgy9MYWPh4FXvc9yJu+xoEibGRBHAK5WBNy
-	1i7juEuHfY2Q7nmaAsi/UwxtX6LLyQ0pVmtR54zuxrxhSnZvT2f1h8vjm1P43Ydfzz3MOJyRyZA
-	DOzLKxnm8IB2HvFWrwTWNVKUEgXW3x06kdnuozitKWeYP4YNmHfwNw9ySonF6buKlCNPt0oBB+F
-	e88ZK/Eqn3qBT4fd5/kd5ZMyYI0RiDyje51EEJkHPTqMjN084ChAkFbnqspc
-X-Received: by 2002:a05:622a:348:b0:4ff:bfd9:dd31 with SMTP id
- d75a77b69052e-502b06eb15dmr20778741cf.5.1768841475200; Mon, 19 Jan 2026
- 08:51:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ROxnCHVY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF98C116C6;
+	Mon, 19 Jan 2026 16:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768841861;
+	bh=YW8Q9Lrp/bZQRu5rYELHUc9owzCj1x411m/oRmGY61A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ROxnCHVYM82zYZN+jSegSYEzsqVDfjVYwXb3yhsN3Z1ZlaUF5gukdxz9XNEvFF/5t
+	 mtrRIJVcR/okwxcWj+TbqhpTVzdQYh5BGz9VsSKZFN4ta0MzQIbHcU8S1Bu/mRWg+p
+	 1g3ZbULO9jvF+SBlE4G0pJmfv84EU9n3j/TamvLgQvZBC5nkTz3wDiDXei/jxErWmh
+	 d5GlLI9OjptF8FXjUzykeCU9hjns/DKjat7mHwQvDrrgUoWcvayl1q007/A2V8b1mA
+	 8I5/KxrFJtRHJWgKIQr5NZWfsY8BZVQDOAk3fpPZmmspIDbKVBWXUOoH+4Dp+QjBTJ
+	 Y6eZMsr498kLA==
+Date: Mon, 19 Jan 2026 08:57:37 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan
+ Corbet <corbet@lwn.net>, Michael Chan <michael.chan@broadcom.com>, Pavan
+ Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Joshua Washington
+ <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, Saeed
+ Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+ <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Alexander Duyck
+ <alexanderduyck@fb.com>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Shuah Khan <shuah@kernel.org>, Willem de Bruijn <willemb@google.com>, Ankit
+ Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, Alok Tiwari
+ <alok.a.tiwari@oracle.com>, Ziwei Xiao <ziweixiao@google.com>, John Fraker
+ <jfraker@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Mohsin
+ Bashir <mohsin.bashr@gmail.com>, Joe Damato <joe@dama.to>, Mina Almasry
+ <almasrymina@google.com>, Dimitri Daskalakis
+ <dimitri.daskalakis1@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Samiullah Khawaja
+ <skhawaja@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ David Wei <dw@davidwei.uk>, Yue Haibing <yuehaibing@huawei.com>, Haiyue
+ Wang <haiyuewa@163.com>, Jens Axboe <axboe@kernel.dk>, Simon Horman
+ <horms@kernel.org>, Vishwanath Seshagiri <vishs@fb.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, dtatulea@nvidia.com, kernel-team@meta.com,
+ io-uring@vger.kernel.org
+Subject: Re: [PATCH net-next v9 0/9] Add support for providers with large rx
+ buffer
+Message-ID: <20260119085737.2161f9e6@kernel.org>
+In-Reply-To: <7ab5309d-8654-4fa8-9a1e-24b948bccba2@gmail.com>
+References: <cover.1768493907.git.asml.silence@gmail.com>
+	<7ab5309d-8654-4fa8-9a1e-24b948bccba2@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260118123204.2315993-1-edumazet@google.com>
-In-Reply-To: <20260118123204.2315993-1-edumazet@google.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Mon, 19 Jan 2026 11:50:58 -0500
-X-Gm-Features: AZwV_QhigMTOw0md0DDCAjulJ4h4WbU4ESGG45zB8Npz6SbgEcqU9mrIaPNYLVk
-Message-ID: <CADVnQy=hRTstSpOVY5UxxBTdOmdDsqBQcYnFWCc8ikaqDSuvSg@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: move tcp_rate_skb_delivered() to tcp_input.c
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jan 18, 2026 at 7:32=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> tcp_rate_skb_delivered() is only called from tcp_input.c.
-> Move it there and make it static.
->
-> Both gcc and clang are (auto)inlining it, TCP performance
-> is increased at a small space cost.
->
-> $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> add/remove: 0/2 grow/shrink: 3/0 up/down: 509/-187 (322)
-> Function                                     old     new   delta
-> tcp_sacktag_walk                            1682    1867    +185
-> tcp_ack                                     5230    5405    +175
-> tcp_shifted_skb                              437     586    +149
-> __pfx_tcp_rate_skb_delivered                  16       -     -16
-> tcp_rate_skb_delivered                       171       -    -171
-> Total: Before=3D22566192, After=3D22566514, chg +0.00%
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
+On Mon, 19 Jan 2026 13:54:37 +0000 Pavel Begunkov wrote:
+> On 1/15/26 17:11, Pavel Begunkov wrote:
+> > Note: it's net/ only bits and doesn't include changes, which shoulf be
+> > merged separately and are posted separately. The full branch for
+> > convenience is at [1], and the patch is here:  
+> 
+> Looks like patchwork says the patches don't apply, but the branch
+> still merges well. Alternatively, I can rebase on top of net-next
+> and likely delay the final io_uring commit to one release after.
 
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-
-Thanks, Eric!
-
-neal
+Yes, David refactored the test in the meantime :/
+I'll pull the branch.
