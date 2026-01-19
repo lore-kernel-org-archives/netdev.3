@@ -1,64 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A47F31352A
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BE6281369
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768841998; cv=none; b=Xf7aBdhETx/hRPjqgTGCA1tlJfKlQ41dpypq166kNk7uLHAJ8sRZEfbUCXIe4ZJYC/rSeiSGIkm3IDkm3NLuYz6TBRqZaTElwJx3NLuUbBNNupTDhWtvebDiebBdhgcC8YhDulUSintCraTes0JW+FBC6q0EvRUPR2rwKnGf/MU=
+	t=1768842277; cv=none; b=OFXdO45VeOugmff+IH/2flZkyV8gyGBkbkap+S4wlHv8dUVTq4vv0v3in4fVE+vJnvm0RYFFHgSu5yRyiyvH0rNoVVgLTUpM7yRTAPjOfJ58yy9YWRzqvaV8ZcDLDc5dIFr16ZHj5zcLs/ZbmELpWI6P7b/vqx3Di7SRv7+WFqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768841998; c=relaxed/simple;
-	bh=FtAJLs5K+tkaZN2nivJXSO+M2Dqx7b72bwOoEmS8hVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6B4pNB/GpfN/MbHjVGCWRv3A2HVsE3Wo7J9s2xJ/JcpjzS1VFjLt6oJTfndbfVbo9UYikCReiS5I1vHl6JhPUTw5VNJWhS7ZaF7eEyN4e3sr4e6UTRIKOtAZvH22bhZJoCKkLfPJ1YUuwZ08tAN60wgaPnb1S+y22LZqDmWxyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnVLjNiT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768842277; c=relaxed/simple;
+	bh=Srr968woNABGoOESQcpP+dBa9pFWTSYiDZYxBonnKvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FwPVUnP2Q6j8e+UhxNPGYSMlKx7ErpKji1WVdONI9gGI37stfnuk5eiyHiZwS2Pk/FBHb/Ofj6MwJJrqALL6SqsZZz9xFgUbn7b7w48Vy0O0+BXE7HP4L6AvrlPbqSJV1E+wrZr5C6TtyrAIbbgVx0PIRyWM6UeABngrl+iVVZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WD2Gf0aV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnVLjNiT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3C9C19424;
-	Mon, 19 Jan 2026 16:59:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WD2Gf0aV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90478C116C6;
+	Mon, 19 Jan 2026 17:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768841998;
-	bh=FtAJLs5K+tkaZN2nivJXSO+M2Dqx7b72bwOoEmS8hVg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lnVLjNiTpdK7G2p16f05yMvnnBQqkaH30IBmePClziLRca+yrTd+Q7VgQELRv9YYI
-	 J+ze/4qRcaPCqq5M1HU2c+7fvAEuoj3J7DjFWqUzpsxcpoF+B1HHhozRx/WFiy4h12
-	 BBk9oYI3Ou4BFUOw0xmhb7A/wV0A6rAVaFNQKlR6+kpdci0OqyJwqteOd/1vuRGc18
-	 F4taXpDPWrdb9gldjXIg4wsrYFofE1PLDyiyc3moPExVZ5MQzv4zHAuQJN95txb8Nh
-	 ZHhtLPrzzrBRT65I0YaxYxBiDB8VxGtzCQlf9TqDCqdmTbYzzOiF0OxbHfm80sCvQ+
-	 mb6+qGdE3rX3Q==
-Date: Mon, 19 Jan 2026 16:59:54 +0000
-From: Simon Horman <horms@kernel.org>
+	s=k20201202; t=1768842276;
+	bh=Srr968woNABGoOESQcpP+dBa9pFWTSYiDZYxBonnKvc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WD2Gf0aV35Q/64BAvoGXfUDZcfLz6ph8ldUMxWYp0q1Cp5pIeCbOsLG7HTcZN6Ykc
+	 aaNaQGJFoM2AAkGzPdFzIttQ83xuP+/JnvrHG3ZaFmJ0RGdRuDiYdedJ1CyI/y3k1m
+	 Bom10uILutgw+8pBveX+iZfNIDtAScqa+dkyIozs9eA8/H6Hup641/4EJ/eDP2Bc1g
+	 5zt4E/PUgNIQimCjUxv+lQWG4iRAmycK62sCQIidX8PAD/UrNciKc96WnGJQnCpimj
+	 iyoeQBxVlKMeGK9QKAC8PJaTiS1dSvzmj3fGv/je7Z3LSgIH9TN+WHSVg00wHNIJcz
+	 HeEnEf26g1J2w==
+Date: Mon, 19 Jan 2026 09:04:35 -0800
+From: Jakub Kicinski <kuba@kernel.org>
 To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next 0/8] ipv6: more data-race annotations
-Message-ID: <aW5jCqCrS6rWO6in@horms.kernel.org>
-References: <20260115094141.3124990-1-edumazet@google.com>
+Cc: kuniyu@google.com, ncardwell@google.com, netdev@vger.kernel.org,
+ davem@davemloft.net, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org
+Subject: Re: [PATCH net-next] tcp: try to defer / return acked skbs to
+ originating CPU
+Message-ID: <20260119090435.44b1da2d@kernel.org>
+In-Reply-To: <CANn89iJ8+5OaWS2VzJqo4QVN6VY9zJvrJfP0TGRGv85mj09kjA@mail.gmail.com>
+References: <20260117164255.785751-1-kuba@kernel.org>
+	<CANn89iKmuoXJtw4WZ0MRZE3WE-a-VtfTiWamSzXX0dx8pUcRqg@mail.gmail.com>
+	<20260117150346.72265ac3@kernel.org>
+	<CANn89iJ8+5OaWS2VzJqo4QVN6VY9zJvrJfP0TGRGv85mj09kjA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115094141.3124990-1-edumazet@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 15, 2026 at 09:41:33AM +0000, Eric Dumazet wrote:
-> Inspired by one unrelated syzbot report.
+On Sun, 18 Jan 2026 13:15:00 +0100 Eric Dumazet wrote:
+> > > Also, if workers are away from softirq, they will only process the
+> > > defer queue in large patches, after receiving an trigger_rx_softirq()
+> > > IPI.
+> > > Any idea of skb_defer_free_flush() latency when dealing with batches
+> > > of ~64 big TSO packets ?  
+> >
+> > Not sure if there's much we can do about that.. Perhaps we should have
+> > a shrinker that flushes the defer queues? I chatted with Shakeel briefly
+> > and it sounded fairly straightforward.  
 > 
-> This series adds missing (and boring) data-race annotations in IPv6.
-> 
-> Only the first patch adds sysctl_ipv6_flowlabel group
-> to speedup ip6_make_flowlabel() a bit.
+> I was mostly concerned about latency spikes, I did some tests here and
+> this seems fine.
 
-Thanks Eric,
+Looks like selftests run into the zerocopy Tx latency issue.
+I'll drop this version from patchwork..
 
-This all looks good to me.
-And thanks for including the const updates.
+> (I assume you asked Shakeel about the extra memory being held in the
+> per-cpu queue, and pcp implications ?)
 
-For the series:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+Under real load it helps quite a bit but real load flushes the queues
+frequently. I'll talk to him.
