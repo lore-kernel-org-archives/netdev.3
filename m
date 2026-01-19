@@ -1,335 +1,175 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013044.outbound.protection.outlook.com [52.101.72.44])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010071.outbound.protection.outlook.com [40.93.198.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D58352F81;
-	Mon, 19 Jan 2026 09:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D297829BD95;
+	Mon, 19 Jan 2026 09:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768813974; cv=fail; b=tQK3jaKdTKTS5NepvCO+eqiHJyLBc+NZ7JLTSKOty+HJHkcfi1vlp1+kBfDYpK9JwOGbGo/XKVfmFbmQ990GsH3WkWYkv9YpU+O0P+Jc42XvmAUaqpTLsMucXv/ygArWtw/6RYZAKZnIMu0Vx7dVUrVPD+PGhw2nSWvEmwU9gY8=
+	t=1768814004; cv=fail; b=nzrimfjA1mAYi1k5IZrfTcJjtbc2Kipp3SqI4Ort1Uv0RNXYKslOqlglX5HLFLv0dy6pol/pqugtlFn5r+R8krjBg2w5yg9I3Kb6zgpbEBvGN0Jv4CPgCl+AVch4L+BHKEK2Po1q5Uw+Q10ZotstOPHM7QcvwzuY1s2fS+x2jTg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768813974; c=relaxed/simple;
-	bh=kttKVrNCeWyATq/SNMy6HGxRXH9rE+12KyaG5kr1XEc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QVLA44YAMRqV3UlJ0+p8WE0nuFPj6g81llXUx7YbDmCeNbQl6LV2982991a6ODtfBwpW1DvLYIYJubtFaLqikqc+4tPLIRyIUw0O0YB788C5oKc2hw9Cox1kB2gaNch/eswS0WHeXcoNx/Sd+dnSM/d0xCxCOgXiyo9WxmI3XKY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KIFDv6UO; arc=fail smtp.client-ip=52.101.72.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1768814004; c=relaxed/simple;
+	bh=UeTlN08C3PeNg1Hg8QxM+JGhIYFM3UEUKMIiIF/lNHg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ga4ajv8fVvlRMwa8bLrHoEUloGgbds8TtO3aC2D0cu2L08oJXyvLhHWD+N0T+4RK4IXfitJlTABIvu8ps/ogL4GyVO5yiSI6jK3LBhEzejxyH6Ejla9GACH/LhObpr3bhuezMj+phgYYwDWlPhe+mowbs6JaQO5U1zdDpuGUh1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tz1HIGz9; arc=fail smtp.client-ip=40.93.198.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KIFDv6UO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tz1HIGz9"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JmHylDHYhARJ1D/W+AmgXMlqvHhwHTS2HSg+Ovnhdw8RFfZwKBAqw/Iy7OquR9EAoLA0eUPPPAakecuZvKIMbIlEfqNiR5I8sTJSWccfNVj97J5KgV4Aept240QjIPR093Df8PxjkDnQK/uTXTy/H6L5bOfLWL7ewhFXLURolrE5kNG/Qv5lnPkesTJqB2DYYuPc83lLv4RjPcWGUzZ6UKlZeZIz3njas0IbBvBrrPa/GrN5/3bB/kXJtXCgq3TZYJvDCFmtAy/SRtAk7XnucDI8YGPmndXfPN3yZwxVTk4nGJIEPIaZKz5zhfAcMa4PlRlqrPynlkjmqCivqRk3kw==
+ b=psGGlsmzem+6TwWmP+6A2qMj2l932/u7gPcgnDEoegHIRUrBdoIepKCDWLZv45jNuV7GWmkyttTt64lHqykc9u8fHTsf4G3js17oX68TLNW1rcm6TY1E65vKmP4t1h/iuiS3y3h6Js6lPHQqwGF5I5ob2WWnkklOcVnYv37QTTadthtt52cvT+qrr4EFelpvrG0KqWvhfYq63LQ4je894yW+iL5MW+nDeL7Ef3bDHCfAAwRvyi+QQixdf/EK7o2Bn5xUEB1VQksGMcilF/yVuRNiUWiURM98Wq8tbnSVuS9Vuu7LkEgaspoTMzOl0DgekHyifrnvquQYZJp9cQTuYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3+6I410eRdgke0DERiNtBfKG3Un4h8KpWeJcu5/z050=;
- b=qJCNBgehTbmeDL75EAXZoBgRAHilRsaiyCn49VrC/vpGsOaf5OP6BeK+EJBlKXK7mRXXrn7pEVLNlAkBw68Zjziki0eR93et/YUzjOTSswN4t8eTULiFEeixdC2FZhk8CPufFU64vO3fBCRVV6Ewjo1VrbI3R+XRDBODcoxTbt23y6jTUQYXkrn+8GTo5E5ylR99UOeIwI45Bk7P1Ge+F8CDPX51Xx05L2b1Bv/Xr2MD+BjbSlvep5ohHyHxwvI4jkDa8eeFB99dWFuwklT+aaAmcLwLfHMeJLj0PBnXwD8tyDNsd5eO7+O3XpD6UaNNyb4nwSWUVXQxf30vM20O6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=TB8N2uB1IsjoFk9C4EZMURhVO8+WqkLUWpkc8wqEZRY=;
+ b=idcW1cahtSS2FOVd/1k3ZMBNLtkxo9NujP8jCUUnEwcHDW/0OcDgAVX2njwRD5k2a6+YNzpLBOjZTdHjMovTJYmjc849qKPhP4ts2NyUjrXoyT88hC4H+CzaqpmVVSJW+lP4rzpKGOHNQ4Qk18HNykk0nvoKsimZVS0Doa026w/pSU20m8XjsJAiEheg5NmwPTi9zr/6543div6/HyVcuUrNRtflJYX7C0qe/6nTlVMmibQiY3eT/3DFqOw25cItLvA/DqWONRcduqwRD08GiocIOa3wdbKq0QJtpPSwqdF2bAVerNGKNNS47LvmdWlu8+EVnxC6BwfnMFZ90DtUwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3+6I410eRdgke0DERiNtBfKG3Un4h8KpWeJcu5/z050=;
- b=KIFDv6UOKSHvoqHpcfBYPL0+a89bWN4SRn3UhdsWRpWrst5GsNAQnFpu7YR/1u3mZhV1BYB+UOukOKnxJuxjMWd3ShUz8q9x3FVPkkUhdYZSejcwTcVFU8RdO3UJp6SCy4M+yKcpsCsRX4T3t9FYP4C+KeTUY6gR/b69daXXilzKeKDaJU08Bn2cXb0Hrt1/WJptUfpp+9pJeS+dEr3Dgo/xHbnr72Ynxsl0O+lkKwQV/PTsnZ2Ut/XG4d/ZbMkdtPHXgBj0bhT0ZTUEXleglglefyMp6S13Ohr/+nnOL8lsdI6+sxNudvXQShVrkVgXFV8q3grXTvHzeikv6sbB3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by VI2PR04MB10762.eurprd04.prod.outlook.com (2603:10a6:800:26e::15) with
+ bh=TB8N2uB1IsjoFk9C4EZMURhVO8+WqkLUWpkc8wqEZRY=;
+ b=tz1HIGz9uYJOQNpDm6qrhwZmCTlzdjnWOikglmv4RxW73NM4rXG8yoT/YIIA21o02zhplTVGjkNqYNLn1XDHlYNE2tFCvKYpdNp/HftUpffx1jytNCQDZJMt2FGyo+dJSJFX0NsMxUqAWcrqyBgXEOYP3a2BWQdo0JX8R503ZjeFAaX11Q0Nab5Ye644vCD41SWCMJFlxQyS8j8mFwE7OxHeGa1wr8e7MhWwquwfqa1nU1vnWjD8dOc+UZVy0eRo6YB02VMvmQsqfFDHHQ/dLrFmsZw2WRL/cwBZvVQXXYcUgEV1ch/oCJnegaMZJNp7o+JilYH8990927l90Zv+iQ==
+Received: from BN0PR04CA0064.namprd04.prod.outlook.com (2603:10b6:408:ea::9)
+ by DM3PR12MB9350.namprd12.prod.outlook.com (2603:10b6:8:1ae::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.11; Mon, 19 Jan
- 2026 09:12:40 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 09:12:40 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Alexander Couzens <lynxis@fe80.eu>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH v4 net-next 4/5] net: pcs: pcs-mtk-lynxi: pass SGMIISYS OF node to PCS
-Date: Mon, 19 Jan 2026 11:12:19 +0200
-Message-Id: <20260119091220.1493761-5-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260119091220.1493761-1-vladimir.oltean@nxp.com>
-References: <20260119091220.1493761-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR02CA0170.eurprd02.prod.outlook.com
- (2603:10a6:20b:28e::7) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+ 2026 09:13:17 +0000
+Received: from BN1PEPF00006002.namprd05.prod.outlook.com
+ (2603:10b6:408:ea:cafe::15) by BN0PR04CA0064.outlook.office365.com
+ (2603:10b6:408:ea::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.12 via Frontend Transport; Mon,
+ 19 Jan 2026 09:13:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN1PEPF00006002.mail.protection.outlook.com (10.167.243.234) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Mon, 19 Jan 2026 09:13:15 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 19 Jan
+ 2026 01:13:00 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 19 Jan
+ 2026 01:13:00 -0800
+Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 19
+ Jan 2026 01:12:56 -0800
+From: Nimrod Oren <noren@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
+	<shuah@kernel.org>, Joe Damato <joe@dama.to>, Willem de Bruijn
+	<willemb@google.com>
+CC: <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Nimrod Oren <noren@nvidia.com>, Gal Pressman
+	<gal@nvidia.com>
+Subject: [PATCH net] selftests: drv-net: fix skip for unsupported devices
+Date: Mon, 19 Jan 2026 11:13:03 +0200
+Message-ID: <20260119091303.3524210-1-noren@nvidia.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|VI2PR04MB10762:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd644bf4-4aab-42fb-2a5d-08de573ae570
+X-MS-TrafficTypeDiagnostic: BN1PEPF00006002:EE_|DM3PR12MB9350:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab9619e3-55ef-4a38-2515-08de573afade
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|52116014|7416014|376014|38350700014;
+	BCL:0;ARA:13230040|7416014|82310400026|376014|36860700013|1800799024|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kXSGD5zpmUKHlNS13RYwzeFCpdlEBx1xr0BNJP8dE5165y2nzmOd0FngLs4Z?=
- =?us-ascii?Q?9FRZtUj9HhILybA6GAh+nnBFsYihtADods2mOdbeJgMp4HjpBVb9fv8KZaKb?=
- =?us-ascii?Q?ERorL+WQpGt6zV2rIKQxw+oVart09zjgj0bMCanoO+qWzOHHuPu8Kr7hDvlP?=
- =?us-ascii?Q?i6wu+TjI2S/uNVhs4zDdG7+0BaXu2qVawTnPno7e1kcsho73/UH0Jtpmv3ZL?=
- =?us-ascii?Q?PIYUWFndKC+kc1bq3obxlXSL4WZIr5RCFAtaCp2jMTcrl3LszA6KDaugdFKk?=
- =?us-ascii?Q?No/cs+Mu72x4ttUFl93imYA3lMyd0ZBMPKIjstfD68hhNlTsh+Ymp/YEDNRQ?=
- =?us-ascii?Q?/r2da2FkuuS77xpsuSmMbPXgYkJLwUyDpYoI6gzjR5/+/wyN6LH2jmiYwL5V?=
- =?us-ascii?Q?ITOHAdVuBmf39GlE/kJvdpH0sSpUlIi1UEx0K3dZyKv2edfsIkJo5dIX+R7m?=
- =?us-ascii?Q?+0+QlH8xtCM5/3gQntbbHEpNAJ9skxR7DymF1/8YYP3Mfco+NeiqdpvEc8+N?=
- =?us-ascii?Q?Ki4aByi102GfzNZ08JvR9TWPgWPVtDaYlWCQWjPNxISqfxfCqyp6boi9Z9V/?=
- =?us-ascii?Q?XnsxjfVJIfgz0vHZSJx9KiKbpSoI/EeR/kkZbXFi/dzNgC+xQMaHFrTIUjpT?=
- =?us-ascii?Q?8WQj1qaiicP8BiIwfWqskAKFJhb+RP2Vux6JLYEL3cE0kXsVdvbbL371yAEs?=
- =?us-ascii?Q?xP2FSDuwJhKmMwTtRRm5DneXKPv5qnNr9kK0ZW6aIqpBKzyinmr3NWSldl7M?=
- =?us-ascii?Q?Fl5yJB9tbFHGcYutPkUnBFIvmkE3qNKR01cJOSq1HCvl8IVlocjkBa/eghtj?=
- =?us-ascii?Q?3/4A49IWswN83RqXAaWanTUUXxDMuMJWswPj549HiezuuaEv6i8AY75zklYc?=
- =?us-ascii?Q?+Ttfeld8rqCr+BK5umveL+cgWKwuaDM4JsWCxiqUyOEQDUJEWYyUdzCxp1d7?=
- =?us-ascii?Q?ux2v0iLP6/4s+e8GlOhgSj34VUr16RdR8yMHfCAUX0zpk2oyLLffl/oqSKWv?=
- =?us-ascii?Q?wSsN905Pwzdt2zzo+r2AvMgrZJ3OqyijRiU8VBrpMp5+e6fPPpzwNUXVb1Z1?=
- =?us-ascii?Q?gAQ7qvXFrHw7+W9OpfAXFC0btzuXzJ2QGvabruUzaFXMYVaSf7pElF8osqjT?=
- =?us-ascii?Q?7Q8HU0OilCGkgG2uTeS9WDPgH3GZ0aFafWlSdgDCHJqK0NqZuO+g7A/Btxt9?=
- =?us-ascii?Q?mFH6wfoe4mnKM1N/j6sw3Cbp9yAOC2W3U63SyXDHCIYpzVHafvwYZCWqBpEo?=
- =?us-ascii?Q?2g633BPpqMCQq/9rETDInOdNnnIHGdltNBh8i8+T4uCsT2SMsUcomQcww/Mx?=
- =?us-ascii?Q?KKGk8rcoy1yd2hZ0uZqOCBaHMLdl965YscJhrplaB3rNVwb8fCJUNwmwolAs?=
- =?us-ascii?Q?ADkhgbyS8fVs/y59TiyEDFgTJPxfka+AUXSN2xnUJOEKOL6XHcbjawumlfJP?=
- =?us-ascii?Q?DRasEIVOyQT2QmGWiY05tlfqPJDRGd56FFfT6xxI+f7kOeWzpZzTP6E2rrjF?=
- =?us-ascii?Q?iOmLbR+MciogN93Q/ofiPC0qMDEyMXWILmoyGvlexIYfK5E4g203KpnLjSkQ?=
- =?us-ascii?Q?0nGsKR/uG2lh4MCrIkAEq9nEPZm0mJYeLIkIi3n3AWfPZO9XgunN5c+tzNHT?=
- =?us-ascii?Q?TzgQcUxMXhMCXjKLy+zmZc8=3D?=
+	=?us-ascii?Q?SNbfjNZlDzYni4JQIQ3oViF2+EI7DxV+ANUB5CKnC7sqi52s/8eARLYitRd1?=
+ =?us-ascii?Q?IsVSNmX4joV8TVSONNJYITHFSMeavD6tGVJnFxYPN7R9uzPc+hlNgTHTlt2Q?=
+ =?us-ascii?Q?bxdGqHUFj5BDX0XiXJGiGS1Npeo77SMqHKEC2WaRlt/4SIUsEUJNiAtb35gl?=
+ =?us-ascii?Q?Io7sn0iqEFEaCcB6DPE+7J/kYUmNvqHjR1qBYfZkAsZblmWq8DfM8bP/DPCL?=
+ =?us-ascii?Q?gWkTUXrSV/fDdKiMvgt21Go3AB35VX/harzuUJcpXObwF6GsYvUi6MSryW1k?=
+ =?us-ascii?Q?HFVIdgeX1SloKeEX9eXbP8moCLAIobKeeqB/p7OfBa+aUY5XFNwHFA8MqW7k?=
+ =?us-ascii?Q?pf4ZXjoHVTh64T3kYf1P4wC5SP3JMAbSvraNR6M42FtIoeZtCeRfiKSN3M0Z?=
+ =?us-ascii?Q?KVJ6PD6k5tpfrZfy3knqCixWulR3qFA+hVWYnu0zXHtNLcDqA9l1A7Titdyu?=
+ =?us-ascii?Q?hdtA3CM0MZU9/wOdAhLU25+msHsIMW7spcQOciooMllQZEfSNjb3yFoUST01?=
+ =?us-ascii?Q?6ccKygiOX99kph2hvY7+zNkFrHBMf5M9+lsnwb3X2B3CJh8nyvdUMz8b+MgR?=
+ =?us-ascii?Q?7ZZ879YvMs9w0wRwkLkM3W4jCyL7W5X6D4+rCQ/MI45T68O/Sg97Xt+Cu37r?=
+ =?us-ascii?Q?4pUOLdMeI4I6BGmMGx8cNpUHXavqpaD+RDSoPHukG7Rga5Ho52pM+TNRkftV?=
+ =?us-ascii?Q?J0B06ntOf4V/gm/kO1UEcqjW/unDy0xPyJWzpm3UyCGg2LZXGXNOGxcLGRXS?=
+ =?us-ascii?Q?JaAh8l/QVOezm58SMPso9sconBWdsoJisdTbMwPqyY9J9neiaUM3UzwYKF6y?=
+ =?us-ascii?Q?BQl6SD+tcILh/5rn/42z6gyBldGur5iFJrt4xhTnOQgQMePNyp7niIIEK0t+?=
+ =?us-ascii?Q?aTpNpRzZT+CFLI/aI7o2+hejxYK7/5MjYjD568nUDJfIcN3zreo3TYcz5twj?=
+ =?us-ascii?Q?UqhgKYmkkXdseWWQTL9bmVEOBVVE5goGC+VO3jWJznT4rRaS/FHVPVlzFMTH?=
+ =?us-ascii?Q?Q6anoEGzC6Qew8/uZH+SdxLvuWbMhnqWC5uL7U11CKqj9yUj9KwyiVm7BbS4?=
+ =?us-ascii?Q?2iAy0wdRyQuqU/owDJcVlhrcgkaJmBV+1nK/QevXoMLVmYvyBDVPetzNBjVC?=
+ =?us-ascii?Q?WyHGRUU5WgakjUgrb47pdOwqFCCKRPePh4wyNHLe4sYMrbqDB/2T5VkKOlJs?=
+ =?us-ascii?Q?+5d/WQOE1EHn6RcKiQzrmvjga2Fr+3W9Ma6DepkVpFODLnZa7nB5+sTBYkpC?=
+ =?us-ascii?Q?ominurP7YEFQNLkKztKtuQvKTK8H/vRO2m/viLSbEIObXVB3F/gJxdZvKQLO?=
+ =?us-ascii?Q?/OUGRg8dVv3fz7rq1CEjyrQaZ00wNx/QjBggY22l79YMLujwZieB4ef/cveO?=
+ =?us-ascii?Q?toY6QHMBR8F+9zefqgre+wpTvCRXaoVhTb1vXwRSFdyf//LZzc1CcBQMof2N?=
+ =?us-ascii?Q?DwuSYFOTIxZJ0mD3xJEtJLEFx5PbBBOI9xV/9i3U5Ii0Q/IuSkJX5zcy09dF?=
+ =?us-ascii?Q?9lj+M3knki3TySab8AGQ6xr3ufnPbZIIL17HEiHmu/7FRj0D90803k9IbUcY?=
+ =?us-ascii?Q?gWHV9KhBhrPbSFCT6FhRuYMQvyL9q2Zhn4gUlzLlyr+rX9L0LY55xWR7Py6j?=
+ =?us-ascii?Q?NFPpMHALr6/y9G6KIk+AgFwwLP0OfwOXfgUPeOWl9xXSYZylCcGbZdbP9Aa4?=
+ =?us-ascii?Q?BpwQJw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HciBche/BbWk2uIuSdgLrXRyP0b2a5Zr+y8RalMOAXt6jdh1oZHfLac7up6a?=
- =?us-ascii?Q?rWm0xu9JrJ5KKeNZS6WfXovBeiAPDeGAvs6obnlk+SHREQH61OIBlysYrWCO?=
- =?us-ascii?Q?r3xq/xN9Ae6kw0iPGM1rWMffq3r+GLFYhubRCLYHigXfNaGtIHDy1e+Dwm18?=
- =?us-ascii?Q?CkLaBZyz/0TzdlzXl3hm7rZpkKJt72Gpy3N+KXqfozYPl7zFdWsE5l9Jf3zA?=
- =?us-ascii?Q?BcWCPVHFuYfPVoJ+KyOUQmMAnmu7hAFXF3a7nDaF4OQMHVvrnfjyyY3HRzfn?=
- =?us-ascii?Q?MBmEtk1WOIUCUZUf3CGd5PGsmeDvK0bwvMhdSNRunmMKDNiPpf2JWJF++of/?=
- =?us-ascii?Q?V8DKdyXec9kd1lGAEZ/0MxYKthz88Z7K5rKYhYV/lNMiHr3Fp0oBmAfvLqJF?=
- =?us-ascii?Q?GTF5fL4y2AuwCVlifEaiuZ63uUCmjMpo5k91lv+4iwfSivTD3wNWmhhjvczn?=
- =?us-ascii?Q?fqvW1n2ZiYQlVAXo+nqN8ikoUrnmAKleSgtDFtXke0/KfgtH9/OBC5HzdLR8?=
- =?us-ascii?Q?JdMNIlNHb3jru3hBOxC5lLwxl3Izh+W0KHqdJPtgf0+fuVxI1B+gwpkMroq+?=
- =?us-ascii?Q?UN9TQWyfaRG8hgjkO+SFtmv2uqXR/vdkyrvb+SueG2SmL+a3Zf5OHXYq2xOK?=
- =?us-ascii?Q?URibi89ThnHhqlG0QCVnOy/aP24teZEjbnI9sr7OxeBBhNjYFNE6P+t/vwBn?=
- =?us-ascii?Q?MPUcRkfBneoi6l9ILBu9+Q/rKYdE/uoNpAJujacbsMIghiHu6f4ufnaBkPDS?=
- =?us-ascii?Q?5gPdveEwE4yXCWunjyux1QZBj4D9ZmCPNtB3OEdMtI/AJ0l2hGYwO2Fo1W8I?=
- =?us-ascii?Q?WiorXzMi40pJzwBrjlU8JO7CZTWLVsxIxOB68DyXetFWKBiTAYB54lWhmste?=
- =?us-ascii?Q?ny2U+gmUWqVM/EhO1Jcw5c6QIwm9Su9X2m2fnZFQPtgDyuBY0b/a3XrzFf25?=
- =?us-ascii?Q?Goe9HddDqrUDw1OkU1O4j+H+Miqs89Qv5/VFWwpk9YJoCyHDUTteLcM3pW51?=
- =?us-ascii?Q?4V0LgdhZivVuqO8lPxOyLN4dBNAO97L2r3wtKVCTNW2lf+/KIaXCXDpOZnd3?=
- =?us-ascii?Q?3A6kYypNwdNSRgRT6OtObLPY5U2S1gUn0Ao2PpzWXuW+xQpz/qYdwhHC6CV2?=
- =?us-ascii?Q?I4smS3VWuJy3hLimLCyp3ccULwXQNMovVNAns3gvRLJaue82+6RYzzgVtwn+?=
- =?us-ascii?Q?a6s6gFEg0ntBP69yy8szKnmIW0Eqt5DbrS4/7GPBEdzln8tg+69dGKZs66gv?=
- =?us-ascii?Q?wU8J2z9gZ7s7ckUKRvOBiQm2xfUTA1wGQ6O6YjwYjV+7ajjXCEqVYd3VDGcu?=
- =?us-ascii?Q?5kd8QV6YChGjkJ1WSLeCz3LNEgsWmhHP9EDLdOrp5+KqY2xb7OgjSTCITpPd?=
- =?us-ascii?Q?iwH3RvzX0wVJh5ZjHNhOo/0/0JdmzGxOzwMdfNLVXbjDmWrfp1964aTxkjHM?=
- =?us-ascii?Q?/NXw9DQRUb8K6v5ksqUKfZO8C6td9ds9V5uZicPriBmla3Hb+hRcFI0yE7JR?=
- =?us-ascii?Q?9s35rrDUP1BpjAhSMxc0N6LRIsU+FatS+jYZb3jJOL2RTZkd+iCBfaDNrfPc?=
- =?us-ascii?Q?bUtIq8h81hHdb8EeEKztiZDNDXSk++Yfp4qKvj4Ar1Isn/ZF4rV561al85js?=
- =?us-ascii?Q?xW5fAPb6QLQC8YxBvujn4/0mu2FWsd7kYCLqGjjs1qa51NSY0G951TTVZQkQ?=
- =?us-ascii?Q?wZxW09tCE705qoQqfyB8UPUbzd1X7WkQ0erqHgiH3o5i7RZEJ3Y/m8XAtgW2?=
- =?us-ascii?Q?DxoB1J3Aog=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd644bf4-4aab-42fb-2a5d-08de573ae570
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 09:12:40.3715
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(376014)(36860700013)(1800799024)(7142099003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 09:13:15.9963
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z2LgzO0A/PQ30TZreRMnLfUpoK7rlnYPnPlkCV7tFE6I4vG4ySdLf4nRHbXL+PNaR8Cef6uyOmzTzI+dKdrHFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10762
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab9619e3-55ef-4a38-2515-08de573afade
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00006002.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9350
 
-The Mediatek LynxI PCS is used from the MT7530 DSA driver (where it does
-not have an OF presence) and from mtk_eth_soc, where it does
-(Documentation/devicetree/bindings/net/pcs/mediatek,sgmiisys.yaml
-informs of a combined clock provider + SGMII PCS "SGMIISYS" syscon
-block).
+The test_rss_flow_label_6only test case fails instead of skipping on
+devices that don't support IPv6 flow label hashing.
+While test_rss_flow_label properly checks for flow label support and
+raises KsftSkipEx, test_rss_flow_label_6only was missing this check.
 
-Currently, mtk_eth_soc parses the SGMIISYS OF node for the
-"mediatek,pnswap" property and sets a bit in the "flags" argument of
-mtk_pcs_lynxi_create() if set.
-
-I'd like to deprecate "mediatek,pnswap" in favour of a property which
-takes the current phy-mode into consideration. But this is only known at
-mtk_pcs_lynxi_config() time, and not known at mtk_pcs_lynxi_create(),
-when the SGMIISYS OF node is parsed.
-
-To achieve that, we must pass the OF node of the PCS, if it exists, to
-mtk_pcs_lynxi_create(), and let the PCS take a reference on it and
-handle property parsing whenever it wants.
-
-Use the fwnode API which is more general than OF (in case we ever need
-to describe the PCS using some other format). This API should be NULL
-tolerant, so add no particular tests for the mt7530 case.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Fixes: 26dbe030ff08 ("selftests: drv-net: add test for RSS on flow label")
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Nimrod Oren <noren@nvidia.com>
 ---
-v2->v4: none
-v1->v2: patch is new
+ .../selftests/drivers/net/hw/rss_flow_label.py        | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- drivers/net/dsa/mt7530-mdio.c               |  4 ++--
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 19 ++++++++-----------
- drivers/net/pcs/pcs-mtk-lynxi.c             | 15 ++++++++++-----
- include/linux/pcs/pcs-mtk-lynxi.h           |  5 ++---
- 4 files changed, 22 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mt7530-mdio.c
-index 0286a6cecb6f..11ea924a9f35 100644
---- a/drivers/net/dsa/mt7530-mdio.c
-+++ b/drivers/net/dsa/mt7530-mdio.c
-@@ -113,8 +113,8 @@ mt7531_create_sgmii(struct mt7530_priv *priv)
- 			ret = PTR_ERR(regmap);
- 			break;
- 		}
--		pcs = mtk_pcs_lynxi_create(priv->dev, regmap,
--					   MT7531_PHYA_CTRL_SIGNAL3, 0);
-+		pcs = mtk_pcs_lynxi_create(priv->dev, NULL, regmap,
-+					   MT7531_PHYA_CTRL_SIGNAL3);
- 		if (!pcs) {
- 			ret = -ENXIO;
- 			break;
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 99abec2198d0..35fef28ee2f9 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4994,7 +4994,6 @@ static int mtk_sgmii_init(struct mtk_eth *eth)
- {
- 	struct device_node *np;
- 	struct regmap *regmap;
--	u32 flags;
- 	int i;
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_flow_label.py b/tools/testing/selftests/drivers/net/hw/rss_flow_label.py
+index 6fa95fe27c47..7dc80070884a 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_flow_label.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_flow_label.py
+@@ -145,9 +145,14 @@ def test_rss_flow_label_6only(cfg):
  
- 	for (i = 0; i < MTK_MAX_DEVS; i++) {
-@@ -5003,18 +5002,16 @@ static int mtk_sgmii_init(struct mtk_eth *eth)
- 			break;
- 
- 		regmap = syscon_node_to_regmap(np);
--		flags = 0;
--		if (of_property_read_bool(np, "mediatek,pnswap"))
--			flags |= MTK_SGMII_FLAG_PN_SWAP;
+     # Try to enable Flow Labels and check again, in case it leaks thru
+     initial = _ethtool_get_cfg(cfg, "udp6")
+-    changed = initial.replace("l", "") if "l" in initial else initial + "l"
 -
--		of_node_put(np);
--
--		if (IS_ERR(regmap))
-+		if (IS_ERR(regmap)) {
-+			of_node_put(np);
- 			return PTR_ERR(regmap);
-+		}
+-    cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {changed}")
++    no_lbl = initial.replace("l", "")
++    if "l" not in initial:
++        try:
++            cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 l{no_lbl}")
++        except CmdExitFailure as exc:
++            raise KsftSkipEx("Device doesn't support Flow Label for UDP6") from exc
++    else:
++        cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {no_lbl}")
+     restore = defer(cmd, f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {initial}")
  
--		eth->sgmii_pcs[i] = mtk_pcs_lynxi_create(eth->dev, regmap,
--							 eth->soc->ana_rgc3,
--							 flags);
-+		eth->sgmii_pcs[i] = mtk_pcs_lynxi_create(eth->dev,
-+							 of_fwnode_handle(np),
-+							 regmap,
-+							 eth->soc->ana_rgc3);
-+		of_node_put(np);
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
-index 149ddf51d785..7f719da5812e 100644
---- a/drivers/net/pcs/pcs-mtk-lynxi.c
-+++ b/drivers/net/pcs/pcs-mtk-lynxi.c
-@@ -81,6 +81,7 @@ struct mtk_pcs_lynxi {
- 	phy_interface_t		interface;
- 	struct			phylink_pcs pcs;
- 	u32			flags;
-+	struct fwnode_handle	*fwnode;
- };
- 
- static struct mtk_pcs_lynxi *pcs_to_mtk_pcs_lynxi(struct phylink_pcs *pcs)
-@@ -168,7 +169,7 @@ static int mtk_pcs_lynxi_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 		regmap_set_bits(mpcs->regmap, SGMSYS_RESERVED_0,
- 				SGMII_SW_RESET);
- 
--		if (mpcs->flags & MTK_SGMII_FLAG_PN_SWAP)
-+		if (fwnode_property_read_bool(mpcs->fwnode, "mediatek,pnswap"))
- 			regmap_update_bits(mpcs->regmap, SGMSYS_QPHY_WRAP_CTRL,
- 					   SGMII_PN_SWAP_MASK,
- 					   SGMII_PN_SWAP_TX_RX);
-@@ -268,8 +269,8 @@ static const struct phylink_pcs_ops mtk_pcs_lynxi_ops = {
- };
- 
- struct phylink_pcs *mtk_pcs_lynxi_create(struct device *dev,
--					 struct regmap *regmap, u32 ana_rgc3,
--					 u32 flags)
-+					 struct fwnode_handle *fwnode,
-+					 struct regmap *regmap, u32 ana_rgc3)
- {
- 	struct mtk_pcs_lynxi *mpcs;
- 	u32 id, ver;
-@@ -303,10 +304,10 @@ struct phylink_pcs *mtk_pcs_lynxi_create(struct device *dev,
- 
- 	mpcs->ana_rgc3 = ana_rgc3;
- 	mpcs->regmap = regmap;
--	mpcs->flags = flags;
- 	mpcs->pcs.ops = &mtk_pcs_lynxi_ops;
- 	mpcs->pcs.poll = true;
- 	mpcs->interface = PHY_INTERFACE_MODE_NA;
-+	mpcs->fwnode = fwnode_handle_get(fwnode);
- 
- 	__set_bit(PHY_INTERFACE_MODE_SGMII, mpcs->pcs.supported_interfaces);
- 	__set_bit(PHY_INTERFACE_MODE_1000BASEX, mpcs->pcs.supported_interfaces);
-@@ -318,10 +319,14 @@ EXPORT_SYMBOL(mtk_pcs_lynxi_create);
- 
- void mtk_pcs_lynxi_destroy(struct phylink_pcs *pcs)
- {
-+	struct mtk_pcs_lynxi *mpcs;
-+
- 	if (!pcs)
- 		return;
- 
--	kfree(pcs_to_mtk_pcs_lynxi(pcs));
-+	mpcs = pcs_to_mtk_pcs_lynxi(pcs);
-+	fwnode_handle_put(mpcs->fwnode);
-+	kfree(mpcs);
- }
- EXPORT_SYMBOL(mtk_pcs_lynxi_destroy);
- 
-diff --git a/include/linux/pcs/pcs-mtk-lynxi.h b/include/linux/pcs/pcs-mtk-lynxi.h
-index be3b4ab32f4a..1bd4a27a8898 100644
---- a/include/linux/pcs/pcs-mtk-lynxi.h
-+++ b/include/linux/pcs/pcs-mtk-lynxi.h
-@@ -5,9 +5,8 @@
- #include <linux/phylink.h>
- #include <linux/regmap.h>
- 
--#define MTK_SGMII_FLAG_PN_SWAP BIT(0)
- struct phylink_pcs *mtk_pcs_lynxi_create(struct device *dev,
--					 struct regmap *regmap,
--					 u32 ana_rgc3, u32 flags);
-+					 struct fwnode_handle *fwnode,
-+					 struct regmap *regmap, u32 ana_rgc3);
- void mtk_pcs_lynxi_destroy(struct phylink_pcs *pcs);
- #endif
+     _check_v4_flow_types(cfg)
 -- 
-2.34.1
+2.45.0
 
