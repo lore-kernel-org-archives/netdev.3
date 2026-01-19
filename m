@@ -1,188 +1,237 @@
-Received: from mail-dl1-f97.google.com (mail-dl1-f97.google.com [74.125.82.97])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD90835581C
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 09:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B5C268690
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 09:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768814991; cv=none; b=crbKGGC2OY1PHime+FFd1ruzw2Nou3F4FCsqwlVQ6a6EKngRLffasfkW0fDdT6CYRienIhme/HUqbSsGeKU10H4x1lwOggfbNYDWxiaGeEWqBgG5pNx2LY3i9WIoUDw85z5B+UwP3FqHA/vemfo+hBaGQmiz/95DH7lIsp6W4RQ=
+	t=1768815023; cv=none; b=gm9ZFcPadNscXvmRjrSW5RJGwDP6799Ob94uBfOQVlOTakvjiu/p9yUqLD2O/sBrJ7YgWm1i0Ewpt+nDGnzkjyyXVBQQO5tDYCwDqW7fZIP+T11fwJjN9ZcrFQbiWNLl4DKCB8NQ6n6Mg1qxCqqEQfd+nhofw2LasKYhjqrH5m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768814991; c=relaxed/simple;
-	bh=QgXU/7yNwhrctzlcitKYbDUmDIC7I+TCoOtStmFwLvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2f9h0VLIG7lukNZYk+FQoKE01fJZB7NQlfPWV/Mh2GJuecC15VD57QbChucimhM1c5ZtquX8agho/hB0R/iYFQNRo0/YawWWVGo5mvfyT9K4WVE/R+2cjlgz4V2WITc6Gj2wiqy1iAQOGsAdyypUiQeiRynr36TJCWeigjJIq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LSBP/iXd; arc=none smtp.client-ip=74.125.82.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1768815023; c=relaxed/simple;
+	bh=TQ9VJE1U3xvPPvaZTsUmcFO9h7ihdqQGpK5YKrq3A+M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bCrioZMh+sY5UfW/MTM+eSbeXNXvLVkjpdDkx7yz8HrqhUGbHK1rVvOhZK8oim+Dz9eHtkiTQAeE9ORyF7qdtKKO2qm47ga1jiNE5inokWF9+pz1pZSn5EncKKH9iYICmykcw0q55Y9KAOwiLoDTjniWqOeBlg1LqxFQDG9Po1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X1ndaabW; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LSBP/iXd"
-Received: by mail-dl1-f97.google.com with SMTP id a92af1059eb24-1244bce2c17so277397c88.1
-        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 01:29:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768814987; x=1769419787;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fj8sUP59dWob41aCsZ9BHl56sg70okF+kqjbtKr6YBw=;
-        b=Q/txPcjGYYHv4WqQPaSszxjqr5a9xQeBn8eoBtDnfukdBtN9FeJ7MDkCCvYbAj3fuv
-         c9z27dy1+2++YtAxS4tFBWOK3x0q8Ob8P9w3XB15N8P/eG2fiz2Vz48OKQ+MAdQ80x8q
-         6wwOHvL/mugqXPJ6EBXUmpg9k1oNZ7xKciOzZd4hJWdMbLTZU4qqN/MFETLp9zHwNdH3
-         KQomkvRPhpKIx4XB6FDrgcnxFP+NT618NKgSPBxW3e2137IZPZsuerJfZMr1BsQIc8Kw
-         s4uOC2crBaf085RhU3FMgVuhrJpDkehGElfWcI7DySEcRphYN7hYG6mhQ35uf/fBeBBw
-         EkgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrSdCtZ2U5tSPjXPruecjT0tUgrA8rK81G2yb7MG1YdaBZ+8BE0iR4cacLoizbQi/MKvKUVFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVzsyhEaTRfxEp3BbaPq3L7fTW11RbGpZPXOnS4aB3CErZqMSI
-	IO+FWSk8JxX3/9tNFyzCSH/tfLg2hS9IF9b0W8bpgdbrBijZ1QLWDnxH3P1MK+pLnP/zjSVmKHe
-	7G3N3EOY3XO8UnMdBX/PPojtjzo0DqlFHefm2NeSOdMAE0vZY2BwBKfbx0KDfvRtz5TkpOgx4JX
-	8pEdv6emi47wCWTxkuwYhtZ8kpyWTJRuRTJsIdleWOJp8hv3MmzynH3Bt8b4NkCAp8lVEPQ6dWS
-	Ax4lTdqVtZZFkcJTEWxznlbK/vl5Co=
-X-Gm-Gg: AY/fxX6IsJkpcS5d8ms4SOLNN5HrGO+nvzTqhxT0W7gZG1EYfNAOhi/OzBIoERiMWQP
-	xQ/vdp3txMnd1fY051tLB+F4xvS+m69LMdmkcxTtXyi48CmcikWO54ULqiXHfacCq5aHbMzNR4c
-	bEKPXIZsOFj0SGkbqgINWIXJ9GKMfP9/n618ATRXEpVwOMbyJfLdv5JIHwb1fthTXMRwPwJoDfp
-	uTGPGUnaSc/1M0YMARBpXJULkxVO2FyGht5wKkkaNPFqQG4p1UaZg1Vp7UZkDJawGH/D/cI0X+3
-	NQ+z7cn0SJ5FPStsgQsiwysXWZ6/1r4GX2Hi8a3CkpthnJJDYmLbpA4shC0z79oSd6x2YuiPdc9
-	vgB47GRbC7x+k80uSVh1rc4UXLUv3E8HzLxhaQUzrBb7y++1SQwJYwL79LzaDQ4u4nJHMGNyVTb
-	H69npYarxXV0yYBog+7e6/0yUrYlrbU84OiHlur2R97p3A4bM2WqgUsJXLi8PUniK4
-X-Received: by 2002:a05:693c:3282:b0:2ae:5dc2:3b14 with SMTP id 5a478bee46e88-2b6b3ee74edmr4910004eec.2.1768814986774;
-        Mon, 19 Jan 2026 01:29:46 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
-        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-2b6b3522644sm1234481eec.4.2026.01.19.01.29.46
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Jan 2026 01:29:46 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c532029e50so147234185a.1
-        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 01:29:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X1ndaabW"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5013d163e2fso42742121cf.0
+        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 01:30:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1768814985; x=1769419785; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1768815021; x=1769419821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fj8sUP59dWob41aCsZ9BHl56sg70okF+kqjbtKr6YBw=;
-        b=LSBP/iXdpJoroRaEFGxsqT0CrGJnGllNkU8VK2QsJtUFQYmadKFQIr2/x4GlFQc0X8
-         LkG23hlzNPCesnNvplFu9S898ebRNxOjw9fuxz4o4lhIb2Q6/lBKe3wAZcQ69r/0vfyH
-         STRDadUcWobJeHpzSls/zx6qDbS3aMgf9osPE=
-X-Forwarded-Encrypted: i=1; AJvYcCXzlczcctAqMOx0dMdbxUuIMTN7rKexsXvK4YRAfV2PCCc1RjJmFvF+bXmpFHII6d8+7cawG2I=@vger.kernel.org
-X-Received: by 2002:a05:620a:700d:b0:8c5:305e:ea16 with SMTP id af79cd13be357-8c6a67ab9d5mr1074238685a.8.1768814985345;
-        Mon, 19 Jan 2026 01:29:45 -0800 (PST)
-X-Received: by 2002:a05:620a:700d:b0:8c5:305e:ea16 with SMTP id af79cd13be357-8c6a67ab9d5mr1074233885a.8.1768814984815;
-        Mon, 19 Jan 2026 01:29:44 -0800 (PST)
-Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6ad6f3sm76917516d6.36.2026.01.19.01.29.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 01:29:44 -0800 (PST)
-From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: j.vosburgh@gmail.com,
-	vfalico@gmail.com,
-	andy@greyhouse.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	kuznet@ms2.inr.ac.ru,
-	yoshfuji@linux-ipv6.org,
-	borisp@nvidia.com,
-	aviadye@nvidia.com,
-	john.fastabend@gmail.com,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	andrii@kernel.org,
-	kafai@fb.com,
-	songliubraving@fb.com,
-	yhs@fb.com,
-	kpsingh@kernel.org,
-	carlos.soto@broadcom.com,
-	simon.horman@corigine.com,
-	luca.czesla@mail.schwarzv,
-	felix.huettner@mail.schwarz,
-	ilyal@mellanox.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v2 v5.10.y 5/5] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
-Date: Mon, 19 Jan 2026 09:26:02 +0000
-Message-ID: <20260119092602.1414468-6-keerthana.kalyanasundaram@broadcom.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com>
-References: <20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com>
+        bh=WLDd66u9zAy67Tl6sY/Or445elKO0v/MjPLWBa8TQAE=;
+        b=X1ndaabW4rgpR1FbrPkCDiaHZCMlX2E7XVoHYHHdeHbIwJ8YEzJH+pdB6esGPCxUYp
+         +qBYquhadpCBovhtAfKN57WpT2k7KU3V5EDwge2b++ubXNwgB1zmFyOzarI2D+Gszg7H
+         apnUkaaohlpsjZVawuMfwCDfNnHKtU3vn25+zUDT2QpuAdFGVg/IuLTyrJfk/iet/KSz
+         lbTH6+0cFysf0jVmPxVTaCSIV8n3l37iR+h+Ju620RxPJicajT/PxI8J8EqrTpQW2hss
+         tSiABbsdgviKiVdaIS1QpylIg1XX/m+KuHoRji0Ln0sac6Juz4I72/KmjB9C2jnNFeZb
+         UTdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768815021; x=1769419821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WLDd66u9zAy67Tl6sY/Or445elKO0v/MjPLWBa8TQAE=;
+        b=kjCWheU7V5EGIT1PJ1dD+aCGOrb2KM5+UrjiotijsDOA6PgtzqkpxPHKDpO60nk5yj
+         OIQgHpzv4BEyaceiGGmq5U/Fzy3us5SumBaftF5zhf27NEG3cfb1JceQBECuOsFmBId9
+         1D84oWR8auqAZilM159qYWQWhi/tWfwP0QkUILzOtm3FGIfGjCNDkbJZCQoSnyHPrn7x
+         4lWTUfrocaNqjKrvZtF14Xsb/s9GMr3Z4ufVU5GkcY/jUtVe+HEz9OxKrEPhzWgPt4JA
+         EKMNZIF6yHNxXidEJkSyk/bFprH13S8y+SFMsoVDd1x6ApcHr/CxPv5Q0nYBsdXWT2oQ
+         56VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnLfLocBiVUS4W+97L4onChgXhKqBFBWbKxG1opN6rwwG/Ld+PO7w8RfMOa+yj+iP41Sb2wOM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt0ALKQW2bPC07DRpQrwZyhRggkvI7fL23XGArwsudhMuMCk3h
+	c64qPaK+wQ9is50r3lhLHwJVU0WRkC96+KpTYn1ux9bbGNF+Hgzy1VW2Ic/i07/MPAQZORv4TLs
+	vqZVk8LOEJ6+y2hCmBAGHFg51yIPQuOFDkk1dLWbr
+X-Gm-Gg: AY/fxX6eKGPRVYeQ7Kua2YPOMCREd7spvfBMq+7Ekqpyfw+YCdY3vkoKBVrupwZ0FL2
+	HH4ocDW5xAbf2arsfZYdhDjBZXi/+ce4zyrTp+b9mYwVwlUUjUpTox26PVAiSL6XlCDV/oxZNs2
+	S9VD4o0dzpq4bJUk5fvSwy0tnm4SSuKY9qVYdAOpKlH1CaYDCuGEsEisvHgjARi3Q6Cns/QhaVk
+	yGJEDKwdLSM4c9CwtA6dQm+Mjk026TGjVxpY13mQOSO4CXz+sWaq+4fMQwan6JgMbLgs+k=
+X-Received: by 2002:ac8:7f13:0:b0:4f1:e97b:2896 with SMTP id
+ d75a77b69052e-502a1f0db54mr169319081cf.46.1768815020668; Mon, 19 Jan 2026
+ 01:30:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <CAA3_Gnogt7GR0gZVZwQ4vXXav6TpXMK6t=QTLsqKOaX3Bo_tNA@mail.gmail.com>
+ <CANn89iLVq=3d7Ra7gKmTpLcMzuWv+KamYs=KjUHH2z3cPpDBDA@mail.gmail.com>
+ <CAA3_GnrVyeXtLjhZ_d9=0x58YmK+a9yADfp+LRCBHQo_TEDyvw@mail.gmail.com>
+ <CANn89iJN-fcx-szsR3Azp8wQ0zhXp0XiYJofQU1zqqtdj7SWTA@mail.gmail.com>
+ <CACwEKLp42TwpK_3FEp85bq81eA1zg3777guNMonW9cm2i7aN2Q@mail.gmail.com>
+ <CAA3_Gnqo37RxLi2McF0=oRPZSw_P3Kya_3m3JBA2s6c0vaf5sw@mail.gmail.com>
+ <CANn89iL8FnPG9bD6zW0eHmeSNzc33SJgrUR7Aab4PFG-O4nfTw@mail.gmail.com> <CAA3_GnpijQeBNVOqy6QtUMDjhy_ku_b54uf30zfEq=etMTqKrA@mail.gmail.com>
+In-Reply-To: <CAA3_GnpijQeBNVOqy6QtUMDjhy_ku_b54uf30zfEq=etMTqKrA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 19 Jan 2026 10:30:09 +0100
+X-Gm-Features: AZwV_QhxRpJqBgoK-ulYvwewt0kMLo2qcwrj75TKGoAP71sOOxiRakoi0iLllZc
+Message-ID: <CANn89iK-Ojmi4kCZwXhFq-pG5PacLs=m71Jtw4zRpxaPEbJdhg@mail.gmail.com>
+Subject: Re: [PATCH net] bonding: Fix header_ops type confusion
+To: =?UTF-8?B?5oi455Sw5pmD5aSq?= <kota.toda@gmo-cybersecurity.com>
+Cc: pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?B?5bCP5rGg5oKg55Sf?= <yuki.koike@gmo-cybersecurity.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+On Mon, Jan 19, 2026 at 6:36=E2=80=AFAM =E6=88=B8=E7=94=B0=E6=99=83=E5=A4=
+=AA <kota.toda@gmo-cybersecurity.com> wrote:
+>
+> Thanks for your quick response.
+>
+> The following information is based on Linux kernel version 6.12.65,
+> the latest release in the 6.12 tree.
+> The kernel config is identical to that of the kernelCTF instance
+> (available at: https://storage.googleapis.com/kernelctf-build/releases/lt=
+s-6.12.65/.config)
+>
+>
+> This type confusion occurs in several locations, including,
+> for example, `ipgre_header` (`header_ops->create`),
+> where the private data of the network device is incorrectly cast as
+> `struct ip_tunnel *`.
+>
+> ```
+> static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
+>       unsigned short type,
+>       const void *daddr, const void *saddr, unsigned int len)
+> {
+>   struct ip_tunnel *t =3D netdev_priv(dev);
+>   struct iphdr *iph;
+>   struct gre_base_hdr *greh;
+> ...
+> ```
+>
+> When a bond interface is given to this function,
+> it should not reference the private data as `struct ip_tunnel *`,
+> because the bond interface uses the private data as `struct bonding *`.
+> (quickly confirmed by seeing drivers/net/bonding/bond_netlink.c:909)
+>
+> ```
+> struct rtnl_link_ops bond_link_ops __read_mostly =3D {
+>     .kind            =3D "bond",
+>     .priv_size        =3D sizeof(struct bonding),
+> ...
+> ```
+>
+> The stack trace below is the backtrace of all stack frame during a
+> call to `ipgre_header`.
+>
+> ```
+> ipgre_header at net/ipv4/ip_gre.c:890
+> dev_hard_header at ./include/linux/netdevice.h:3156
+> packet_snd at net/packet/af_packet.c:3082
+> packet_sendmsg at net/packet/af_packet.c:3162
+> sock_sendmsg_nosec at net/socket.c:729
+> __sock_sendmsg at net/socket.c:744
+> __sys_sendto at net/socket.c:2213
+> __do_sys_sendto at net/socket.c:2225
+> __se_sys_sendto at net/socket.c:2221
+> __x64_sys_sendto at net/socket.c:2221
+> do_syscall_x64 at arch/x86/entry/common.c:47
+> do_syscall_64 at arch/x86/entry/common.c:78
+> entry_SYSCALL_64 at arch/x86/entry/entry_64.S:121
+> ```
+>
+> This causes memory corruption during subsequent operations.
+>
+> The following stack trace shows a General Protection Fault triggered
+> when sending a packet
+> to a bonding interface that has an IPv4 GRE interface as a slave.
+>
+> ```
+> [    1.712329] Oops: general protection fault, probably for
+> non-canonical address 0xdead0000cafebabe: 0000 [#1] SMP NOPTI
+> [    1.712972] CPU: 0 UID: 1000 PID: 205 Comm: exp Not tainted 6.12.65 #1
+> [    1.713344] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+> BIOS Arch Linux 1.17.0-2-2 04/01/2014
+> [    1.713890] RIP: 0010:skb_release_data+0x8a/0x1c0
+> [    1.714162] Code: c0 00 00 00 49 03 86 c8 00 00 00 0f b6 10 f6 c2
+> 01 74 48 48 8b 70 28 48 85 f6 74 3f 41 0f b6 5d 00 83 e3 10 40 f6 c6
+> 01 75 24 <48> 8b 06 ba 01 00 00 00 4c 89 f7 48 8b 00 ff d0 0f 1f 00 41
+> 8b6
+> [    1.715276] RSP: 0018:ffffc900007cfcc0 EFLAGS: 00010246
+> [    1.715583] RAX: ffff888106fe12c0 RBX: 0000000000000010 RCX: 000000000=
+0000000
+> [    1.716036] RDX: 0000000000000017 RSI: dead0000cafebabe RDI: ffff88810=
+59c4a00
+> [    1.716504] RBP: ffffc900007cfe10 R08: 0000000000000010 R09: 000000000=
+0000000
+> [    1.716955] R10: 0000000000000000 R11: 0000000000000000 R12: 000000000=
+0000002
+> [    1.717429] R13: ffff888106fe12c0 R14: ffff8881059c4a00 R15: ffff88810=
+6e57000
+> [    1.717866] FS:  0000000038e54380(0000) GS:ffff88813bc00000(0000)
+> knlGS:0000000000000000
+> [    1.718350] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    1.718703] CR2: 00000000004bf480 CR3: 00000001009ec001 CR4: 000000000=
+0772ef0
+> [    1.719109] PKRU: 55555554
+> [    1.719297] Call Trace:
+> [    1.719461]  <TASK>
+> [    1.719611]  sk_skb_reason_drop+0x58/0x120
+> [    1.719891]  packet_sendmsg+0xbcb/0x18f0
+> [    1.720166]  ? pcpu_alloc_area+0x186/0x260
+> [    1.720421]  __sys_sendto+0x1e2/0x1f0
+> [    1.720691]  __x64_sys_sendto+0x24/0x30
+> [    1.720948]  do_syscall_64+0x58/0x120
+> [    1.721174]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [    1.721509] RIP: 0033:0x42860d
+> [    1.721713] Code: c3 ff ff ff ff 64 89 02 eb b9 0f 1f 00 f3 0f 1e
+> fa 80 3d 5d 4a 09 00 00 41 89 ca 74 20 45 31 c9 45 31 c0 b8 2c 00 00
+> 00 0f 05 <48> 3d 00 f0 ff ff 77 6b c3 66 2e 0f 1f 84 00 00 00 00 00 55
+> 489
+> [    1.722837] RSP: 002b:00007fff597e95e8 EFLAGS: 00000246 ORIG_RAX:
+> 000000000000002c
+> [    1.723315] RAX: ffffffffffffffda RBX: 00000000000003e8 RCX: 000000000=
+042860d
+> [    1.723721] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000000=
+0000310
+> [    1.724103] RBP: 00007fff597e9880 R08: 0000000000000000 R09: 000000000=
+0000000
+> [    1.724565] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff5=
+97e99f8
+> [    1.725010] R13: 00007fff597e9a08 R14: 00000000004b7828 R15: 000000000=
+0000001
+> [    1.725441]  </TASK>
+> [    1.725594] Modules linked in:
+> [    1.725790] ---[ end trace 0000000000000000 ]---
+> [    1.726057] RIP: 0010:skb_release_data+0x8a/0x1c0
+> [    1.726339] Code: c0 00 00 00 49 03 86 c8 00 00 00 0f b6 10 f6 c2
+> 01 74 48 48 8b 70 28 48 85 f6 74 3f 41 0f b6 5d 00 83 e3 10 40 f6 c6
+> 01 75 24 <48> 8b 06 ba 01 00 00 00 4c 89 f7 48 8b 00 ff d0 0f 1f 00 41
+> 8b6
+> [    1.727285] RSP: 0018:ffffc900007cfcc0 EFLAGS: 00010246
+> [    1.727623] RAX: ffff888106fe12c0 RBX: 0000000000000010 RCX: 000000000=
+0000000
+> [    1.728052] RDX: 0000000000000017 RSI: dead0000cafebabe RDI: ffff88810=
+59c4a00
+> [    1.728467] RBP: ffffc900007cfe10 R08: 0000000000000010 R09: 000000000=
+0000000
+> [    1.728908] R10: 0000000000000000 R11: 0000000000000000 R12: 000000000=
+0000002
+> [    1.729323] R13: ffff888106fe12c0 R14: ffff8881059c4a00 R15: ffff88810=
+6e57000
+> [    1.729744] FS:  0000000038e54380(0000) GS:ffff88813bc00000(0000)
+> knlGS:0000000000000000
+> [    1.730236] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    1.730597] CR2: 00000000004bf480 CR3: 00000001009ec001 CR4: 000000000=
+0772ef0
+> [    1.730988] PKRU: 55555554
+> ```
+>
 
-[ Upstream commit c65f27b9c3be2269918e1cbad6d8884741f835c5 ]
+OK thanks.
 
-get_netdev_for_sock() is called during setsockopt(),
-so not under RCU.
+I will repeat my original feedback : I do not see any barriers in the
+patch you sent.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
+Assuming bond_setup_by_slave() can be called multiple times during one
+master lifetime, I do not think your patch is enough.
 
-Let's use __sk_dst_get() and dst_dev_rcu().
-
-Note that the only ->ndo_sk_get_lower_dev() user is
-bond_sk_get_lower_dev(), which uses RCU.
-
-Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Keerthana: Backported the patch to v5.10.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
----
- net/tls/tls_device.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 8e89ff403073..8cf4e1651b0c 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -113,17 +113,19 @@ static void tls_device_queue_ctx_destruction(struct tls_context *ctx)
- /* We assume that the socket is already connected */
- static struct net_device *get_netdev_for_sock(struct sock *sk)
- {
--	struct dst_entry *dst = sk_dst_get(sk);
--	struct net_device *netdev = NULL;
-+	struct net_device *dev, *lowest_dev = NULL;
-+	struct dst_entry *dst;
- 
--	if (likely(dst)) {
--		netdev = dst->dev;
--		dev_hold(netdev);
-+	rcu_read_lock();
-+	dst = __sk_dst_get(sk);
-+	dev = dst ? dst_dev_rcu(dst) : NULL;
-+	if (likely(dev)) {
-+		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
-+		dev_hold(lowest_dev);
- 	}
-+	rcu_read_unlock();
- 
--	dst_release(dst);
--
--	return netdev;
-+	return lowest_dev;
- }
- 
- static void destroy_record(struct tls_record_info *record)
--- 
-2.43.7
-
+Also, please clarify what happens with stacks of two or more bonding device=
+s ?
