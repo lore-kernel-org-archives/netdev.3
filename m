@@ -1,50 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F04F26B2DA;
-	Mon, 19 Jan 2026 19:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71226B2DA;
+	Mon, 19 Jan 2026 19:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768851946; cv=none; b=u8FC/z0MNSU6bCfyZvLa797oZkNFBuqaz2zUbcs8jV4Yd4BScfTB/nb1teW0ePUwik1Srg42/PHkBd7CyWHVbtHAcv/xFA8XFFMgbSSetozOR8SdiFmC1EB1bhOMgvcJELakSDLncnTsc4P0e6wvA1EI2V8IzKpacIT1A2PHjr8=
+	t=1768851953; cv=none; b=JZJRgKpVm0OSYnFycsFRqBcLKb9Pda0yh2EEi9Z39MfNbxQJ75PFj3hLtef6Bf5NevVwwb66xZzNik1yGNJtBqAg52Nfc+Nh9brzhGyrSrf94LSr9hb5rwqGpR3gi350tD8N6UQB1PCDMiU6X7hHy9FdFY6XLL9Xc2p6wNt2u1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768851946; c=relaxed/simple;
-	bh=X341cbVx+itPu3t/oJstdoSWqS2saf1YeOR3B3Pa+R8=;
+	s=arc-20240116; t=1768851953; c=relaxed/simple;
+	bh=5iF8rd9rwv5q19FHNihsZl4aiMJx7bgWjmDodKvvKZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnudB/2YYiNIiJYW5UA8YmJmYulCNKuLQXYSimG4AKMZgbhnqc+QQiZH2NzT70JKiMZGqCqHl3o76y2FDcKV1aLHgXvTGaeif/4c2urIB6FPVSMrZJXjH79YtUZXcJons8ia3tqMo/kQ4KnIYKVuctPCmbXIGl6P6zvCvFwzbFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d99QQLeX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Gf1Ff2F65hZweS5LkugUf/LRE8ZxmG/6Qi6qOWiHtitBE5vO4ejkybeq/dZJwBuZAlS6FWnWJe6iPKkByvOL5FT/k4EChNh0jCaQBjlgNK16kWyE2BlLIBi2jZ2ThMzROkfyJKMCY1Y8H90p5gyLH+sPx0Qr3vy5Jv/WPUlIX9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNzJeqk6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d99QQLeX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25275C116C6;
-	Mon, 19 Jan 2026 19:45:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNzJeqk6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AB1C116C6;
+	Mon, 19 Jan 2026 19:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768851945;
-	bh=X341cbVx+itPu3t/oJstdoSWqS2saf1YeOR3B3Pa+R8=;
+	s=k20201202; t=1768851952;
+	bh=5iF8rd9rwv5q19FHNihsZl4aiMJx7bgWjmDodKvvKZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d99QQLeXX4eO61EWPaqwfQUyJbOnXBszqV6oLWUWqGONMh4bsOwk7VK4hE9doWyEZ
-	 RGfS4wBPGIZzpTVkZk9mvR9G+KL1TyZ5xZ9qGXJRvt2SyMYnNar5FqyGgqBbamVyX6
-	 ZJQ69vR9TiMU3EmZkjmXoUYdqeJHkVStw+6apnw/RPPO735JFUfQXd3L0qMg5g7Ikm
-	 Zeo2qi3OILDMZfM34tlHot5yIYPulN4KeA9Tou1+y04YHOTyawRLDuWhOjfmTIALx2
-	 GBe70GWxMWs0muQERzI868AER2eON1CxbYClcDMwcpqH6DkeSYmi8kyeYXxB3/X3/k
-	 aZEypPSc05ZzQ==
+	b=SNzJeqk6DxOrYIIgqDZTLDoj9jmlOpVJlJfPMzZ1nRFs+2Ld5Xt+m7MlYByT4ajEp
+	 hACI/sM5r0GAAfIUqA15BFk56WI0WeNp1xgiK5mqlOcuDJjpAGVMBhGR4bvrB9wq6O
+	 jZCqHsusRmBkGrQsjskRJKSfD4t7UYKVc7FVgRcw657CoqS1irfzH9ieE6brMX8iZX
+	 afHT6lbXr7lXNCc5NRw7oOdARcfzODjtBa+57k2DCxkjJR7NUMy/LhkFEFZTpfj1Ox
+	 PyTF1JGE2eEPIOM+2+7DVYPWecFqO6e8SVcVO4dH+PjxFkoD1sS1BPARtwYPDk3bpd
+	 Fs9GJVHdZx6xw==
 From: Jakub Kicinski <kuba@kernel.org>
-To: jelonek.jonas@gmail.com
+To: bhargava.marreddy@broadcom.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	maxime.chevallier@bootlin.com,
-	bjorn@mork.no,
-	davem@davemloft.net,
-	linux@armlinux.org.uk,
+	andrew+netdev@lunn.ch,
+	vikas.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
 	pabeni@redhat.com,
+	rajashekar.hudumula@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pavan.chebbi@broadcom.com,
 	linux-kernel@vger.kernel.org,
-	andrew@lunn.ch,
 	netdev@vger.kernel.org,
-	hkallweit1@gmail.com,
-	edumazet@google.com
-Subject: Re: [net-next,v5] net: sfp: extend SMBus support
-Date: Mon, 19 Jan 2026 11:41:17 -0800
-Message-ID: <20260119194117.1258120-1-kuba@kernel.org>
+	horms@kernel.org,
+	ajit.khaparde@broadcom.com,
+	michael.chan@broadcom.com
+Subject: Re: [v5,net-next,6/8] bng_en: Add support to handle AGG events
+Date: Mon, 19 Jan 2026 11:45:50 -0800
+Message-ID: <20260119194550.1264743-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260116113105.244592-1-jelonek.jonas@gmail.com>
-References: <20260116113105.244592-1-jelonek.jonas@gmail.com>
+In-Reply-To: <20260116193732.157898-7-bhargava.marreddy@broadcom.com>
+References: <20260116193732.157898-7-bhargava.marreddy@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,73 +62,44 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net: sfp: extend SMBus support
+bng_en: Add support to handle AGG events
 
-This patch extends SMBus support in the SFP driver from single-byte
-accesses to also support SMBus I2C block and word access, enabling more
-SMBus controllers to work with SFP modules.
+This patch adds AGG event handling in the RX path to receive packet data
+on AGG rings, enabling Jumbo and HDS functionality.
 
-> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> index 84bef5099dda..8f0b34a93ae8 100644
-> --- a/drivers/net/phy/sfp.c
-> +++ b/drivers/net/phy/sfp.c
-
-[ ... ]
-
-> @@ -759,31 +773,55 @@ static int sfp_smbus_byte_write(struct sfp *sfp, bool a2, u8 dev_addr,
-> +static int sfp_smbus_write(struct sfp *sfp, bool a2, u8 dev_addr, void *buf,
-> +			   size_t len)
->  {
->  	union i2c_smbus_data smbus_data;
->  	u8 bus_addr = a2 ? 0x51 : 0x50;
-> +	size_t this_len, transferred;
-> +	u32 functionality;
->  	u8 *data = buf;
->  	int ret;
->
-> +	functionality = i2c_get_functionality(sfp->i2c);
-> +
->  	while (len) {
-> -		smbus_data.byte = *data;
-> -		ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
-> -				     I2C_SMBUS_WRITE, dev_addr,
-> -				     I2C_SMBUS_BYTE_DATA, &smbus_data);
-> -		if (ret)
-> +		this_len = min(len, sfp->i2c_max_block_size);
-> +
-> +		if (this_len > 2 &&
-> +		    functionality & I2C_FUNC_SMBUS_WRITE_I2C_BLOCK) {
-> +			smbus_data.block[0] = this_len;
-> +			memcpy(&smbus_data.block[1], data, this_len);
-> +
-> +			ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
-> +					     I2C_SMBUS_WRITE, dev_addr,
-> +					     I2C_SMBUS_WORD_DATA, &smbus_data);
-                                             ^^^^^^^^^^^^^^^^^
-
-Should this be I2C_SMBUS_I2C_BLOCK_DATA instead of I2C_SMBUS_WORD_DATA?
-
-The code checks for I2C_FUNC_SMBUS_WRITE_I2C_BLOCK support and sets up
-smbus_data.block[] with the length byte and data for a block transfer,
-but then calls i2c_smbus_xfer() with I2C_SMBUS_WORD_DATA protocol.
-
-For comparison, the read function correctly uses I2C_SMBUS_I2C_BLOCK_DATA
-when I2C_FUNC_SMBUS_READ_I2C_BLOCK is supported:
-
-    if (this_len > 2 &&
-        functionality & I2C_FUNC_SMBUS_READ_I2C_BLOCK) {
-            smbus_data.block[0] = this_len;
-            ret = i2c_smbus_xfer(sfp->i2c, bus_addr, 0,
-                                 I2C_SMBUS_READ, dev_addr,
-                                 I2C_SMBUS_I2C_BLOCK_DATA, &smbus_data);
-
-With I2C_SMBUS_WORD_DATA, only 2 bytes from smbus_data.word would be
-written instead of the this_len bytes set up in smbus_data.block[].
-The pointer then advances by transferred (this_len) bytes, effectively
-skipping data that was never written to the device.
-
-> +			transferred = this_len;
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c b/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
+> index dffb8c17babe..d6c8557fcb19 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
 
 [ ... ]
+
+> @@ -284,14 +487,25 @@ static int bnge_rx_pkt(struct bnge_net *bn, struct bnge_cp_ring_info *cpr,
+>  	if (len <= bn->rx_copybreak) {
+>  		skb = bnge_copy_skb(bnapi, data_ptr, len, dma_addr);
+>  		bnge_reuse_rx_data(rxr, cons, data);
+> -		if (!skb)
+> +		if (!skb) {
+> +			if (agg_bufs)
+> +				bnge_reuse_rx_agg_bufs(cpr, cp_cons, 0,
+> +						       agg_bufs);
+>  			goto oom_next_rx;
+> +		}
+>  	} else {
+>  		skb = bnge_rx_skb(bn, rxr, cons, data, data_ptr, dma_addr, len);
+>  		if (!skb)
+>  			goto oom_next_rx;
+>  	}
+
+In the copy path (small packets), when bnge_copy_skb() returns NULL, the code
+properly calls bnge_reuse_rx_agg_bufs() to recycle the AGG buffers. However,
+in the large packet path (else branch), when bnge_rx_skb() returns NULL, are
+the AGG buffers being leaked? At this point the completion ring consumer has
+already been advanced past the AGG completions by bnge_agg_bufs_valid(), but
+without calling bnge_reuse_rx_agg_bufs() the AGG ring producer won't be
+updated with replacement buffers.
+
+Should the large packet path also reuse AGG buffers on allocation failure,
+similar to the copy path?
 -- 
 pw-bot: cr
