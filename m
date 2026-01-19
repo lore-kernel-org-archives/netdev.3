@@ -1,40 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B807932B9A9;
-	Mon, 19 Jan 2026 16:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB57B32ED2C;
+	Mon, 19 Jan 2026 16:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768841208; cv=none; b=od6GE7cG9J1YfbOBB9npS+3ieda/1mTVOcDenZXLZokD3m2tsWe6k6puzkhUE9zNoRmrFkuyLy6Ltgcaa7vPBXO8hsFmDHDIAyvXRU/5DHqCi0F5TvmmXe21bLov97V2Cod6dQURvcSeKrqBL7/tfMyBKlT3y1/SMTdab9Z5id4=
+	t=1768841304; cv=none; b=tLc79xT3kGiWXPHxuKEzLPsHpc/kIJ/rz/qA9PmpWE+/Zh8Bd5cRLjQQnCP0lt1bouwB5YQJupy7iAgNS1ejs/uNY2uERvWxOO1IjVOspPn3tTMT/fMY3fN6xH5pUJgrlulXjuatwoyJhdnmKwsYsMLIoBFu4HTJRm4ko874570=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768841208; c=relaxed/simple;
-	bh=kqcwi5MqlAqFZXrbgx1vjvCTwF5sWC/GlFe/d62UsJQ=;
+	s=arc-20240116; t=1768841304; c=relaxed/simple;
+	bh=FsHQ9qlTxxYa5NDTX3USAelpH419g21o139xDdfBEC8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H9C4X3/s1EZ7Ga1FptSR08dnyXLMzM06T+hdgMtlM/jqMfaAscNgGDdZwQ5vHC3isjzXdA0To3huH1wa+rbSHP1zY2FRxndsi+G3vP0/xZOZcMhLewmgVk3XC6rE6L85672o4KwCTY1h3jH+t36dBj8NJp+xIguibQuk0QWjWqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAUg3KN6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jBNb0YgS+Rl/vID62iD/dyBOcrM2Ha0bAZxezGgyE9IfXp4Uv0rF46sGN/HXDZESjuTTOFCNVcUQenQlBp+/xLwYfU/qw2VhTx4poFr66Ql/5bZlmcI2HTdPDm6kB9HY20woAAWcZEXjTINXmtbM6BwhUSma5NhdaXztemfmH7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekaV+yxZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAUg3KN6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241D1C116C6;
-	Mon, 19 Jan 2026 16:46:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekaV+yxZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7868C116C6;
+	Mon, 19 Jan 2026 16:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768841208;
-	bh=kqcwi5MqlAqFZXrbgx1vjvCTwF5sWC/GlFe/d62UsJQ=;
+	s=k20201202; t=1768841304;
+	bh=FsHQ9qlTxxYa5NDTX3USAelpH419g21o139xDdfBEC8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iAUg3KN6TswMfuIqXHqj6mIVK+z3TNbpckSb1E5h7OOK8ZtrqrycJA4qbkZaJRvtt
-	 bhdVy4yqY7MGx1Il4oXGmvgweTBWeA2nwJ6/iMDG19nixnO9Ns27vuZp6kyI0OVsLB
-	 QYsP/ldkQLmBxq68gjrkWSiPw7iDAjYB7taROUhD6VqKx0TV81/i+KUeHhrLD3K5wu
-	 FdeG+LC2psVyAsgzep/gOfJa5e1uPZvR5jy0zmkpg1UU1xJSxHoSr2HF0pUUEyTbbt
-	 hHxBd0RmFLd2ikijH0YC43fhGJwqaHTFp2izdL2X1oJBCwWGcTkg6cIAbrzoGm532k
-	 HTOwVefqVeIDQ==
-Date: Mon, 19 Jan 2026 08:46:47 -0800
+	b=ekaV+yxZfQGMy2ZSYQ+N9Ek9DxLVehclxjFVxjxav6XpdxDGuXb8xE8TC25bu19Gc
+	 wdzfYWmT9CYLeHCJZ9nHMs+6vBXLKEGgcd8QNP9abcbrz40h4TBPiLIn2ihC++2+Xx
+	 y9LYPvFfbbaWtIkMnTCRKoY6hJaUtfuq3dhoohdYH2nunV6wMbQDggRWu0CL0WyQSd
+	 vR0OrqFhBROr+ZV5eipxwLbolxicz7x2/DhWlkXNYTOYHqZiQ0bP8c69PPlYaYsvIC
+	 MLLLFB9WtWY94Wd1zFvlPLeKqTGBOtxNkz+2aP2WrNahsSxmoIJr4g0dpX1+E1j9uU
+	 4PfOp67FFA4fQ==
+Date: Mon, 19 Jan 2026 08:48:23 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: syzbot <syzbot+list849c3c7cc70ceeb09a59@syzkaller.appspotmail.com>,
- syzkaller-bugs@googlegroups.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [syzbot] Monthly net report (Jan 2026)
-Message-ID: <20260119084647.34505b70@kernel.org>
-In-Reply-To: <696de90d.a70a0220.34546f.0436.GAE@google.com>
-References: <696de90d.a70a0220.34546f.0436.GAE@google.com>
+To: Haiyue Wang <haiyuewa@163.com>
+Cc: netdev@vger.kernel.org, Jeremy Kerr <jk@codeconstruct.com.au>, Matt
+ Johnston <matt@codeconstruct.com.au>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH net-next v1] mctp i2c: align function parameter
+ indentation
+Message-ID: <20260119084823.5c2aa9b8@kernel.org>
+In-Reply-To: <20260119070022.378216-1-haiyuewa@163.com>
+References: <20260119070022.378216-1-haiyuewa@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,9 +48,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Jan 2026 00:19:25 -0800 syzbot wrote:
-> Ref  Crashes Repro Title
-> <1>  22186   Yes   KASAN: slab-use-after-free Read in __ethtool_get_link_ksettings
->                    https://syzkaller.appspot.com/bug?extid=5fe14f2ff4ccbace9a26
+On Mon, 19 Jan 2026 15:00:06 +0800 Haiyue Wang wrote:
+> Align parameters of mctp_i2c_header_create() to improve readability
+> and match kernel coding style. No functional change.
 
-Thanks for the report! Could you reclassify this one? It's in RDMA.
+Quoting documentation:
+
+  Clean-up patches
+  ~~~~~~~~~~~~~~~~
+  
+  Netdev discourages patches which perform simple clean-ups, which are not in
+  the context of other work. For example:
+  
+  * Addressing ``checkpatch.pl``, and other trivial coding style warnings
+  * Addressing :ref:`Local variable ordering<rcs>` issues
+  * Conversions to device-managed APIs (``devm_`` helpers)
+  
+  This is because it is felt that the churn that such changes produce comes
+  at a greater cost than the value of such clean-ups.
+  
+  Conversely, spelling and grammar fixes are not discouraged.
+  
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean-up-patches
+-- 
+pw-bot: cr
