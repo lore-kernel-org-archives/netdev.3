@@ -1,37 +1,38 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E431D36B;
-	Mon, 19 Jan 2026 13:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C040314B63;
+	Mon, 19 Jan 2026 13:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768829403; cv=none; b=aUIKee6Wd7/BSimx9A3UcncesKEh1TPY8RFfLIhUn14Whe1s/5fZYB0pyzsHJvJf64VVedDgZqU1chbpNbmrPTsHdhfMXKBwXlQyTi+mR2Su/S1acqirJjFoO5l/gy0Ogj6VMtu7pZZLujs657Tir3nEjqf9FNV0kVhUGL1DTog=
+	t=1768829404; cv=none; b=m3d+GCDNYgRDBBhkCAwKLHZG8IXTIYrJFYYKzThuTsp+sJKiqOQ2UnQWfgWKWgOOt7bXRa5E60UFLm/vSjPnYkziCwcUhGDGcQ/DxYS3I5CdzdA0lQynmzmU+ZXeNWWChKBbVDCDSMGufQtC/7QwjYAwpUJSCztwKFy/jyYqmjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768829403; c=relaxed/simple;
-	bh=h/CC9HWMOIDsFD0u9B6mALqPebPtT7mc1dP7/lwsHJo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t15Wc8ut7YqbuYx42wuZTcmXFEcvnzVYzS+MIjPOowzP8HYHBK5hUDLrl9Fe1tdhv8i2V8zQMvDBgdC2UkkhlGxRwWHRkiJYr9tMKZudbnp+4K81tuJD3qG6Xr1SbATnRl4wjVpt6EdDT4XwgGgJHHQbwlsB5jx0n7MQpq2zvxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=wvQZAKDu; arc=none smtp.client-ip=113.46.200.218
+	s=arc-20240116; t=1768829404; c=relaxed/simple;
+	bh=gzj5Dst3K/UC5eoftcb3hSN9pLUVAK1305B/lJlVjbg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vj0flaSAShJ9duqMIerzmqDVpSeJg06KcYAJlymQIjdG9uDp9tY2QrVEjC4ORKTYWRBz85vhkz1r8BCzRtdL9ffyLh2ypdq9F99Hv/UMNKz4WJS7ssHj8EekUGCJ3Onv8lh7Lrj9UuuFxbqPLpuzvH5yGBzkaI2T1XmM60nhxsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=UD1sDibR; arc=none smtp.client-ip=113.46.200.222
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="wvQZAKDu"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="UD1sDibR"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=gnrVLVp+aVLEKLl7rJNzeXLKXHd+DFWnez0mcmQmzmI=;
-	b=wvQZAKDuAiHIXmVwWHtx9WvAYIJBU9/uwVFiHsQGV7wcVWLsg6ENePzBu6o8S9snpXjM0YTj/
-	w5lPJp0paJrcfuGeJXcKPl+ubPMc30PkMxcl3my7OIlv/bu+kj3H0LemrRyjni+3bENRv9csG7s
-	pSole/U/WslD05fawKjRxuI=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dvrng3wCKzpStW;
-	Mon, 19 Jan 2026 21:26:15 +0800 (CST)
+	bh=CRTtZZ8GL3jas6ZM5HUilO7GyiTgGTfzPaTMqpDSoxE=;
+	b=UD1sDibR7DL2SdG1cyg3V/bjxd1QK53OJJbg/w8Hly8cJ3MZENnpB9y5+oF08KKUE6IaHjKCM
+	7zVwAMvpZqNsXp8chEodvEBtg082uw0YpPyFGbDXFtfXVcbgD9J2jOgQmTe2B6pjIr+2NCOCub1
+	Rz7rO35S2wrMevLWcP5jFIU=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4dvrp52td8zLlTC;
+	Mon, 19 Jan 2026 21:26:37 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 35B2E405A8;
-	Mon, 19 Jan 2026 21:29:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C11E402AB;
+	Mon, 19 Jan 2026 21:29:59 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 19 Jan 2026 21:29:57 +0800
+ 15.2.1544.36; Mon, 19 Jan 2026 21:29:58 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -41,10 +42,12 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH net 0/2] fix some bugs in the flow director of HNS3 driver
-Date: Mon, 19 Jan 2026 21:28:38 +0800
-Message-ID: <20260119132840.410513-1-shaojijie@huawei.com>
+Subject: [PATCH net 2/2] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
+Date: Mon, 19 Jan 2026 21:28:40 +0800
+Message-ID: <20260119132840.410513-3-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20260119132840.410513-1-shaojijie@huawei.com>
+References: <20260119132840.410513-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,18 +59,27 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-This patchset fixes two bugs in the flow director:
-1. Incorrect definition of HCLGE_FD_AD_COUNTER_NUM_M
-2. Incorrect assignment of HCLGE_FD_AD_NXT_KEY
+Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
 
-Jijie Shao (2):
-  net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
-  net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h  | 2 +-
+Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
  drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c589baea7c77..b8e2aa19f9e6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -5690,7 +5690,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
+ 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
+ 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
+ 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
+-			action->counter_id);
++			action->next_input_key);
+ 
+ 	req->ad_data = cpu_to_le64(ad_data);
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
 -- 
 2.33.0
 
