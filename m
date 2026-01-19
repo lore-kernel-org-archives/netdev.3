@@ -1,83 +1,151 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6446D35B15F;
-	Mon, 19 Jan 2026 14:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27EE35581C
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 14:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768832197; cv=none; b=pa1XAZqNiv83S7VIndBe8yayswqmw9LK/w8bZYzCWM2zOmfq0AGGFelx0NB9/+e4Flpt5Vnf3rRfwE7rprcEUiJOT4OMJcYlVUe95C8ll8bh7e9rU3MIAo+a73yatSzGTuNbzsLiJokJcAokhAZYsTplUmmeRFLey5Wf/0es0Ug=
+	t=1768832437; cv=none; b=T4FnxljL+uqOZ4Cc+bUie+eb7lZ305cZSdsvomwv3Dq51kLoYx5jMIK6RbcoTvFS82JfHEDyzZcMXLd2tw6WDZbKtMct0MTRFRM00cO7g//0uUOtcsGtyn/pb9SPXzMmnAiWsuwtJh4+uDMR/xgNkm8CK3CUr8YM86r6mGulWOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768832197; c=relaxed/simple;
-	bh=4FsYjzOy2OwoeEB6bDlUhD9xagzXLUPTGlJPIqnDYXQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j0/EGu5B+fAmOPz7ZR/6AbWj9kSluqo6VO+YWPqwQIbTym3urW8fdxAowSZxu6JqIf0niT3NTk2W+Dk96z4hmw5VgSGGGnQtp42Ys46pJVxvmAduS8dQ3qKeM6ZFSIM15l1E+Ho85Rf6wK9Ygys1QIz16Log7a093IPLwM9lW8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn; spf=pass smtp.mailfrom=jmu.edu.cn; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
-Received: from localhost.localdomain (unknown [116.25.94.187])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 312c49402;
-	Mon, 19 Jan 2026 22:16:28 +0800 (GMT+08:00)
-From: Chukun Pan <amadeus@jmu.edu.cn>
-To: wangruikang@iscas.ac.cn
-Cc: amadeus@jmu.edu.cn,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	dlan@gentoo.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	spacemit@lists.linux.dev
-Subject: Re: [PATCH 1/1] net: spacemit: Check netif_carrier_ok when reading stats
-Date: Mon, 19 Jan 2026 22:16:20 +0800
-Message-Id: <20260119141620.1318102-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <e3890633-351d-401d-abb1-5b2625c2213b@iscas.ac.cn>
-References: <e3890633-351d-401d-abb1-5b2625c2213b@iscas.ac.cn>
+	s=arc-20240116; t=1768832437; c=relaxed/simple;
+	bh=h7SIbPvUem6CMqCr2nLh5sUw9HLI7B6iZKHQUa+0I+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ACaHbpnwF/T3Ou5MaQz8p66nncyXb5ftdkl/tSUWrdJzg920qq7irumd4G8Fc/lIuIKhFZ1k1nBy9NFUXxNQehmFf1/IkY85++vrNIrdEGantSkHpTS0fsIICeqJUkJjUOtLX1tOnQlUD6gbNl+hCSO6C8W6sK/OkTsZrHPVvQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=GqVrsFLn; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="GqVrsFLn"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43284ed32a0so2424328f8f.3
+        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 06:20:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1768832434; x=1769437234; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wpcw/R03P/c22tZFBiSJ/LY5v4nnS2BeYH/AbU3n8YQ=;
+        b=GqVrsFLndGfOnnpR+WlXVCrVdbj3W1TwYCpWMP1EOCYyC7mFANf3KX6K+wsmi1fm8g
+         m17NikUADaTxIbR4NrjnK4VrPCKUhAIdNoj8iWjY0JscWGYB68bMXoz+/FACB5KZaw0R
+         mI14F1wRB57E3jqTL7+n33YSBy43dKh3q+YwiknNNrYO9ckM8BSQynTLyl38K9qq6Q0e
+         e7Afjqz5sh/1R0GvrXeAIaYPcb2DfLQi2uvlM3VyDFrVNG/d7SwxXpausyK67olTEenC
+         zOpgymKWRYZFPs/e6/ycdbQ2FVhc+9UEyzv5qnM7b0sGAVOD/ikrMiRL3L4oxeJoPo5T
+         ksaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768832434; x=1769437234;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wpcw/R03P/c22tZFBiSJ/LY5v4nnS2BeYH/AbU3n8YQ=;
+        b=sug56QFQBuVDjnKBaguUF61MCy/33c79+tX7CKtC7JVKq4hQp+2p/ADzOeesia7BQo
+         sD51BKjVkeCRSY9No6fMAN3GqSREGcCQgCXqiJaCK4fuoHv3s8OFxCunz8HGCEZSlr3E
+         S5QwyXbPyhdFkHrZCnlmo5J/XfuGR/Qh5KzMPKUjpvrAYlCO7HaJjClSDIzv4DHM8szp
+         N8ixDzrBbuv/zui/QJbXsozMIb+9z28zI11Ihj10Gc9kxT12GoVcSQs4bXk8CTAb+YBD
+         aIG9Hw/BT+F2b5Pbah6724IfhsUq7KA0AROjHlFjF0HODaKg/dQ8pdOApxyFcqdxdiEM
+         8gwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWv2wNZtrqz3UVhrOm4Gjiw1DB4ND6cnRg1w62EtGgbQ1wiruopR8KYjEZnYo/hI5FxKYN2gu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWmlR08y8bkKtLRf86CK6beUbYgKVlid98h3A5AwlMFPDVJ2t/
+	dh7suvE4zLOVCYrwFIQ8ckaeasIYwKCckVuIQ5tH6WlvWtCPTrFLj/PxuyECqXRLl/I=
+X-Gm-Gg: AZuq6aI/eD/FqnHX5mRZ2R7nnuaiw6M5TFWxuKvJVOuP+Ol03gDszeZu7ugqwynXzXU
+	5JYWtVgp7tM0fs+te/UuMuaF4fBW7LlFvd1KnXtkk6W3DCQs2P1JRSUXiQd0lP8ms7Te9AI9xZu
+	agGtFzl2yqvQNIU9q8ikFV7XQTaAHTBhrzvjxYmTlTTt732BiGuW/0cMMa4wrOBUmuWbRLlsJei
+	nRIvFY6ArI7Z3xCu5l9mODVPI/e8E7+4I/RFK9uTmeb3YexTZAkFoIWdQ2mzxrtsYUYX6qNz3tx
+	CWpWazQr8Qi0u3aLqxELPSs0mUmR9YLHifNQGcGfCYIStwx7LR40kPl9xQZ7jFCx6fGQle3cT2s
+	b8VPSC6PSa1b7BVqKPvSrii8J7pzMqNcmHK+X9fT7RLTosJ3zMJTV2wl034htrYnfuWyc60tloL
+	HEQwWOFOi2xmmEzPTN4MWk/67ZteiB0isJXM94He0+K2hYruKFW6NkN0ubuHnKcZw5J83mpg==
+X-Received: by 2002:a5d:5f49:0:b0:432:dc5c:25cf with SMTP id ffacd0b85a97d-4356998ad56mr14248770f8f.18.1768832433923;
+        Mon, 19 Jan 2026 06:20:33 -0800 (PST)
+Received: from [192.168.0.161] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997ed8bsm23686974f8f.36.2026.01.19.06.20.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 06:20:33 -0800 (PST)
+Message-ID: <6a236a7c-e8a8-49c1-9407-749b9b6c9f95@blackwall.org>
+Date: Mon, 19 Jan 2026 16:20:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9bd69d3e8a03a2kunm0c2bdb8b3281c6
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZHx0aVh9OSBgeHUoeQktIGFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlKSk1VSU5VQk9VSkNMWVdZFhoPEhUdFFlBWU9LSFVKS0lCTUtKVUpLS1VLWQ
-	Y+
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 01/16] net: Add queue-create operation
+To: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+ pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
+ john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
+ maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, dw@davidwei.uk,
+ toke@redhat.com, yangzhenze@bytedance.com, wangdongdong.6@bytedance.com
+References: <20260115082603.219152-1-daniel@iogearbox.net>
+ <20260115082603.219152-2-daniel@iogearbox.net>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260115082603.219152-2-daniel@iogearbox.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Andrew, Vivian,
+On 15/01/2026 10:25, Daniel Borkmann wrote:
+> Add a ynl netdev family operation called queue-create that creates a
+> new queue on a netdevice:
+> 
+>        name: queue-create
+>        attribute-set: queue
+>        flags: [admin-perm]
+>        do:
+>          request:
+>            attributes:
+>              - ifindex
+>              - type
+>              - lease
+>          reply: &queue-create-op
+>            attributes:
+>              - id
+> 
+> This is a generic operation such that it can be extended for various
+> use cases in future. Right now it is mandatory to specify ifindex,
+> the queue type which is enforced to rx and a lease. The newly created
+> queue id is returned to the caller.
+> 
+> A queue from a virtual device can have a lease which refers to another
+> queue from a physical device. This is useful for memory providers
+> and AF_XDP operations which take an ifindex and queue id to allow
+> applications to bind against virtual devices in containers. The lease
+> couples both queues together and allows to proxy the operations from
+> a virtual device in a container to the physical device.
+> 
+> In future, the nested lease attribute can be lifted and made optional
+> for other use-cases such as dynamic queue creation for physical
+> netdevs. The lack of lease and the specification of the physical
+> device as an ifindex will imply that we need a real queue to be
+> allocated. Similarly, the queue type enforcement to rx can then be
+> lifted as well to support tx.
+> 
+> An early implementation had only driver-specific integration [0], but
+> in order for other virtual devices to reuse, it makes sense to have
+> this as a generic API in core net.
+> 
+> For leasing queues, the virtual netdev must have real_num_rx_queue
+> less than num_rx_queues at the time of calling queue-create. The
+> queue-type must be rx as only rx queues are supported for leasing
+> for now. We also enforce that the queue-create ifindex must point
+> to a virtual device, and that the nested lease attribute's ifindex
+> must point to a physical device. The nested lease attribute set
+> contains a netns-id attribute which is currently only intended for
+> dumping as part of the queue-get operation. Also, it is modeled as
+> an s32 type similarly as done elsewhere in the stack.
+> 
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Co-developed-by: David Wei <dw@davidwei.uk>
+> Signed-off-by: David Wei <dw@davidwei.uk>
+> Link: https://bpfconf.ebpf.io/bpfconf2025/bpfconf2025_material/lsfmmbpf_2025_netkit_borkmann.pdf [0]
+> ---
+>   Documentation/netlink/specs/netdev.yaml | 44 +++++++++++++++++++++++++
+>   include/uapi/linux/netdev.h             | 11 +++++++
+>   net/core/netdev-genl-gen.c              | 20 +++++++++++
+>   net/core/netdev-genl-gen.h              |  2 ++
+>   net/core/netdev-genl.c                  |  5 +++
+>   tools/include/uapi/linux/netdev.h       | 11 +++++++
+>   6 files changed, 93 insertions(+)
+> 
 
-> I am unable to reproduce this problem.
->
-> Can you elaborate on what you mean by "not linked up"? I couldn't
-> reproduce this on an unconnected interface.
->
-> I would also appreciate more information on this in general - full
-> kernel logs, hardware information (which board, what you were doing
-> with cables, etc...)
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-I apologize for not expressing this question clearly.
-
-I'm trying to run OpenWrt on OrangePi R2S and OrangePi RV2.
-Unlike other Spacemit K1 boards, OrangePi uses the YT8531C PHY.
-
-Read stats when the interface is not connected to a network cable:
-
-root@OpenWrt:~# ethtool -S eth1
-[   71.725539] k1_emac cac81000.ethernet eth1: Read stat timeout
-NIC statistics:
-     rx_drp_fifo_full_pkts: 0
-     rx_truncate_fifo_full_pkts: 0
-
-I just discovered that adding "motorcomm,auto-sleep-disabled" to disable
-the sleep mode of the MotorComm PHY prevents the problem from occurring.
-
-I will send a DT patch instead. Sorry for the noise.
-
-Thanks,
-Chukun
