@@ -1,139 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB132D7DF3
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 19:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0673728B7DB;
+	Mon, 19 Jan 2026 19:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768851387; cv=none; b=O64qsrEaBbZhmeJai39//Ibp+MjqW4mP3o+4tLdDPUx9/dUKuBgVuDytLfpIR4w+v1Z9K5VIXEWNXPhGr7LfRoLm4I3Mk/HuqAgUZQue57LlPXk0nBaZhi9OWUXltFp54iTY1OvETeq+xe5ptTicuODvoTC7xvPq6CmDm5xo/2Q=
+	t=1768851896; cv=none; b=pKpfdnNQLWFrHQrBwMWbjTL1QZ7r/McGbq8QwvYjkL6X8k9WZPwhgT1lmHRRKWVzirTiulbSaTTOJ2vvUq664vuwdacNzuso+nPMWc5j/n5JrEWuA7WBJYRfAqzbFS9y1yi4dqqFOGf4LeXjoTX7wkcumpmuxlU/Sa8cN21E/kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768851387; c=relaxed/simple;
-	bh=n+79UUo0vjH04ePNO2YSSxR1uFmtREdFYXUzVVfaFV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpwrV0rV8aYLVpC7TG78INOegh7BRlPeAzE49E0lrk0UqxFsQmsQlHJOAoPeJ6lCWS3fLD28s/CZJx0x/ESoL3QmbHFo50hHf5bVfaegocErCP4j/BAeFbuO3oe1KOYgdI/yzN3f+EcAh7bBKHSX01RXp1cpd1IFzinyAwClsk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iv4X1MZa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768851896; c=relaxed/simple;
+	bh=bDFDEVaTCBBAYbGrOAKDIkCm0xGtvcaeQwUDe9QhOXA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=FIEWtxOJmYMZV9NufSEWfvgb1zehaL9gi2ZO/QpwptrZZ50ApJNN9j6IweAD3vIQu3IsNtI1axO7+ZTTJgs/PgZg9rfhR9ylqQ98B9YVJd/G0ZChsTnra6Zlm6l+2Z8I/o/ScGWgcC5Tg8A18pFaPToBcPqa9S2hh574NxYbTqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fluxnic.net; spf=pass smtp.mailfrom=fluxnic.net; dkim=pass (2048-bit key) header.d=fluxnic.net header.i=@fluxnic.net header.b=lq8kv+Tb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gajNBoG2; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fluxnic.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fluxnic.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iv4X1MZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3675CC116C6;
-	Mon, 19 Jan 2026 19:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768851387;
-	bh=n+79UUo0vjH04ePNO2YSSxR1uFmtREdFYXUzVVfaFV8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iv4X1MZaEsJadtHF8Es3byO+ENgRO+6DJ5JZfajmUCg73Ga6M679uJxLsLeJl9Boa
-	 3T+H+Cjjd0lftl9sxNL3wURlWZ7TmzZupYfNncTweWT+/6hLBl3cZ0qwybRacB7VK8
-	 i0y4ETlm097LrjboCB9nAq5KjYOO5fbn7J9WNflYDGK2yH95vcilpaT1NXdDyyJjB0
-	 hA+SgrJ+ZCn0Of01DsOUy8TarbTbIXTTCi8Hl7UJEqcy/OWvQ37InIYIrpk2/KZ3/2
-	 TxhMGMJOqCVRHLfH6geKNBdbVFQ48Qs56WC/twptHHO72+75srFuhtpUCAMQ0xHs4p
-	 dw8wopS0NTpPg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: pvalerio@redhat.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	pabeni@redhat.com,
-	lorenzo@kernel.org,
-	claudiu.beznea@tuxon.dev,
-	nicolas.ferre@microchip.com,
-	theo.lebrun@bootlin.com,
-	netdev@vger.kernel.org,
-	edumazet@google.com
-Subject: Re: [net-next,8/8] cadence: macb: introduce xmit support
-Date: Mon, 19 Jan 2026 11:36:26 -0800
-Message-ID: <20260119193626.1255791-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115222531.313002-9-pvalerio@redhat.com>
-References: <20260115222531.313002-9-pvalerio@redhat.com>
+	dkim=pass (2048-bit key) header.d=fluxnic.net header.i=@fluxnic.net header.b="lq8kv+Tb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gajNBoG2"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 27FD91D002EB;
+	Mon, 19 Jan 2026 14:44:53 -0500 (EST)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-05.internal (MEProxy); Mon, 19 Jan 2026 14:44:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fluxnic.net; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1768851892; x=1768938292; bh=LoVesKvEDZ
+	v1Cg5uKpzhYtUwqzCfdIo4UCFjeKjmD1A=; b=lq8kv+TbQsU5zKfbNXe4EWlvP8
+	rbetP0mVzYEasv/PNbF5IR7RD7qoJtpRRCvmD1pEhNkq6+glcJYQjbGrY2gea4d5
+	ZWCtgjYJPVYYpUmsb7vq+LSkuvMUTpE4TsSiicuOva9bX+kc48daWYCVNMfVfPm9
+	XtvBFMGy4eHZ3aSH8mjypUM7f2J9hNgcyU9nY3V7p/+r1AsL5p067JkaYUxc8pa5
+	/4ccq8Y8IMSARYPWrMq05zA07tZQPMfRYzjEN47nYuICpWvThn9HBqIo9JjaRfgO
+	Vg9nWB+SRMcWwQDXDQC5BdrgWjdNP0+uWX92zkTMcS0w+UYPOff4oRxQfsmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1768851892; x=1768938292; bh=LoVesKvEDZv1Cg5uKpzhYtUwqzCfdIo4UCF
+	jeKjmD1A=; b=gajNBoG2fkUp5vFZUoOvwaukQOqNzOhjkyPRlthYWwYIwU3dTq/
+	FRcDjt0u6ShrLY9hRrRwlUHgXPtpsZII/DDB38D1Kx8lDT0VEIsd8yNkMmUdNkkG
+	PKPhjH3GRNmyDv1AuSSjmuFNfros198YaBC+sbxAThMtdZcpS55DyV/Z9HoGn+Hl
+	IM9cqrwZvaXHU90RHKraxl+c0qj7cimZv8Eo1arg4MJQVuRx1wqfxQ8ZHeRPgR1T
+	cJPdTvqVKiwc9B7Nyu0IPAlRAczb70ukfKvaZmDLaiD+Eycni8StyYk+eHJScPDj
+	z3nYvdUx4dGEW7oG7T/aQbrieCrHdFMovVA==
+X-ME-Sender: <xms:tIluaeUIN8Mxwi3ueBMYLYlHMke1xjEhyD_onm3ACXuWtNdDLXluBg>
+    <xme:tIluaUmlcc6UfVCocX7-vYQI4t3sKufm-ssLX1YxN0mNcxzh3eCdDgiIbpb1zJzui
+    htI0MA8xCw7p9PMHJ1wJ-a7Sk3P3rCmm-Q3M2agJcMgw4JJ3aiX9rg>
+X-ME-Received: <xmr:tIluaZCEbdbCL5dyTEhPcxHpPqrYEF9kq1PWYljltz5IDcS_EiHWix10PAQcG4pD7Nt4chvtTKcu03Qj-G_5dzT-7jVio3Q1kRiV6dMd>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufeekgeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefpihgtohhlrghs
+    ucfrihhtrhgvuceonhhitghosehflhhugihnihgtrdhnvghtqeenucggtffrrghtthgvrh
+    hnpefgvedvhfefueejgefggfefhfelffeiieduvdehffduheduffekkefhgeffhfefveen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnihgtoh
+    esfhhluhignhhitgdrnhgvthdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtohepuggrvhhiugdrlhgrihhghhhtrdhlihhnuhigsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepvghrihgtrdguuhhmrgiivghtsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuh
+    gsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtoh
+    hmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:tIluaTjPMqcv6LNRcltvYXRW53MrPhZH64La8yYApxxb_vgnR0W6Gg>
+    <xmx:tIluaWzbMfEfkRn20g8vGCVxKglQ6ruawC9ZKGhOHq3c6bw8eaxYLQ>
+    <xmx:tIluaU1VoZ_BwonYWvm0SBK2Fq8mibYSQWfjI2QTcn3P4sRvkiJtgA>
+    <xmx:tIluab9UbtpBOWej-gZFIWz-TTvi1c9KzgnXkZBNdyU0TjQ1OIjtiw>
+    <xmx:tIluaYXed53nvSQVDaweCLKS_yD9JuX4wo3konXT1zqCRLyvXi6ZjMiU>
+Feedback-ID: i58514971:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Jan 2026 14:44:52 -0500 (EST)
+Received: from xanadu (xanadu.lan [192.168.1.120])
+	by yoda.fluxnic.net (Postfix) with ESMTPSA id E79FC14FCE51;
+	Mon, 19 Jan 2026 14:44:51 -0500 (EST)
+Date: Mon, 19 Jan 2026 14:44:51 -0500 (EST)
+From: Nicolas Pitre <nico@fluxnic.net>
+To: David Laight <david.laight.linux@gmail.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Eric Dumazet <edumazet@google.com>, 
+    linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
+    Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <eric.dumazet@gmail.com>, 
+    Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH] compiler_types: Introduce inline_for_performance
+In-Reply-To: <20260119190341.39c3d04c@pumpkin>
+Message-ID: <05853n16-s64r-6976-q763-p9262p5o176n@syhkavp.arg>
+References: <20260118152448.2560414-1-edumazet@google.com> <20260118114724.cb7b7081109e88d4fa3c5836@linux-foundation.org> <20260118225802.5e658c2a@pumpkin> <681985ss-q84n-r802-90pq-0837pr1463p5@syhkavp.arg> <20260119190341.39c3d04c@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Mon, 19 Jan 2026, David Laight wrote:
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-cadence: macb: introduce xmit support
+> On Mon, 19 Jan 2026 10:47:51 -0500 (EST)
+> Nicolas Pitre <nico@fluxnic.net> wrote:
+> 
+> > On Sun, 18 Jan 2026, David Laight wrote:
+> > 
+> > > On 32bit you probably don't want to inline __arch_xprod_64(), but you do
+> > > want to pass (bias ? m : 0) and may want separate functions for the
+> > > 'no overflow' case (if it is common enough to worry about).  
+> > 
+> > You do want to inline it. Performance quickly degrades otherwise.
+> 
+> If it isn't inlined you want a real C function in div.c (or similar),
+> not the compiler generating a separate body in the object file of each
+> file that uses it.
 
-This patch adds XDP_TX verdict support and introduces the ndo_xdp_xmit
-function for XDP redirection.  It updates macb_tx_unmap() to handle both
-skbs and xdp frames.
+Yes you absolutely do in this very particular case. This relies on a 
+long sequence of code that collapses to only a few assembly instructions 
+due to constant propagation. But most of the time gcc is not smart 
+enough to realize that (strangely enough it used to be fine more than 10 
+years ago). The corresponding function is not only slower but actually 
+creates bigger code from the argument passing handling overhead.
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index afd8c0f2d895..32f8629bcb25 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> > And __arch_xprod_64() exists only for 32bit btw.
+> 
+> I wonder how much of a mess gcc makes of that code.
+> I added asm functions for u64 mul_add(u32 a, u32 b, u32 c) calculating
+> a * b + c without explicit zero extending any of the 32 bit values.
+> Without that gcc runs out of registers and starts spilling to stack
+> instead of just generating 'mul; add; adc $0'.
 
-[ ... ]
+Here this is different. Let me copy the definition:
 
-> @@ -983,7 +994,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff,
->  	}
->
->  	if (tx_buff->ptr) {
-> -		napi_consume_skb(tx_buff->ptr, budget);
-> +		release_buff(tx_buff->ptr, tx_buff->type, budget);
->  		tx_buff->ptr = NULL;
->  	}
->  }
+* Prototype: uint64_t __arch_xprod_64(const uint64_t m, uint64_t n, bool bias)
+* Semantic:  retval = ((bias ? m : 0) + m * n) >> 64
+* 
+* The product is a 128-bit value, scaled down to 64 bits.
+* Hoping for compile-time optimization of  conditional code.
+* Architectures may provide their own optimized assembly implementation.
 
-[ ... ]
+ARM32 provides its own definition. Last time I checked, RV32 already 
+produced optimal code from the default C implementation.
 
-> +static int macb_xdp_submit_frame(struct macb *bp, struct xdp_frame *xdpf,
-> +				 struct net_device *dev, bool dma_map,
-> +				 dma_addr_t addr)
-> +{
+> But 64bit systems without a 64x64=>128 multiply (ie without u128
+> support) also need the 'multiply in 32bit chunks' code.
 
-[ ... ]
+Again this is only for 32-bit systems. 64-bit systems use none of that.
 
-> +	if (dma_map) {
-> +		mapping = dma_map_single(&bp->pdev->dev,
-> +					 xdpf->data,
-> +					 xdpf->len, DMA_TO_DEVICE);
-> +		if (unlikely(dma_mapping_error(&bp->pdev->dev, mapping))) {
-> +			err = -ENOMEM;
-> +			goto unlock;
-> +		}
-> +	} else {
-> +		mapping = addr;
-> +		dma_sync_single_for_device(&bp->pdev->dev, mapping,
-> +					   xdpf->len, DMA_BIDIRECTIONAL);
-> +	}
 
-[ ... ]
-
-> +	tx_buff->ptr = xdpf;
-> +	tx_buff->type = buff_type;
-> +	tx_buff->mapping = mapping;
-                          ^^^^^^^
-
-For XDP_TX (dma_map=false), the mapping here is the page pool's DMA address
-passed via the addr parameter.  Later, macb_tx_unmap() unconditionally calls
-dma_unmap_single() when tx_buff->mapping is non-zero.
-
-Should macb_tx_unmap() skip the DMA unmap for MACB_TYPE_XDP_TX buffers?
-Page pool manages its own DMA mappings, and calling dma_unmap_single() on
-them appears incorrect.  For comparison, stmmac_tx_clean() explicitly
-checks "buf_type != STMMAC_TXBUF_T_XDP_TX" before unmapping.
-
-[ ... ]
-
-> +	case XDP_TX:
-> +		xdpf = xdp_convert_buff_to_frame(&xdp);
-> +
-> +		if (!xdpf || macb_xdp_submit_frame(queue->bp, xdpf, dev, false,
-> +						   addr))
-> +			act = XDP_DROP;
-> +		goto out;
-
-When xdp_convert_buff_to_frame() returns NULL, this sets act = XDP_DROP but
-then unconditionally executes "goto out", which skips the page_pool_put_full_page()
-call that handles XDP_DROP.  Could this leak the page when
-xdp_convert_buff_to_frame() fails due to insufficient headroom?
-
-When macb_xdp_submit_frame() fails, it internally calls release_buff() which
-returns the page, so that path seems fine.  But the xdpf == NULL case appears
-to need a "break" instead of falling through to "goto out".
+Nicolas
