@@ -1,414 +1,142 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D7833A008;
-	Mon, 19 Jan 2026 08:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768812915; cv=none; b=EMV2eHudM8lwMJEvPRozwzIaGRe1b6UJQxGo5Qfb0S8g06hMoUdRb3c2pfgzK0s62m4ibIj+NhAbTWVplOX+xI6zaRa6VNJAlBOFWgDttJ7wwNTRZRHKr7geXuEbz8jtSirV3mytOQ+fA/3jffiOUrsAadOPZJRYAnB8ckA8EAw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768812915; c=relaxed/simple;
-	bh=Gq4gB2EPSVd1vq8mwjyaQJ/ogifJwfQ8wckIRjsWHeQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h9tK6cLi8MGCko8j8LVTuahpZ70UngSbt42iAtxQoq1O6f7gOvmLfKeZzZhG8VDkqlT/oHI/K7WsEepbQZPekBQIYoQ4tDQ4DJPKPCBxbuHv5kfhDkn8iXE+YGRv9asNncZxa2aWvo15WLi5Z46FWJ5PF8U7xKUHhjNyxAVIEhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=YYD/wdwe; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F40E350297
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 08:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768812929; cv=fail; b=KFDms0BZxsY8skrilz+gfHlnKQmSeW/tAIwdBYPwtfQKDkHyzibeIVsPhxJ4Ou4xtmNiilNkekmM52tdnw2xyz6SDkPuyvGNam+AuObUuisqfj4tsEtIa3mRK8MvN+aUuNHbo11hiMcaj6SxwFxBwR4khTzJamUZtXT8XYCFmZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768812929; c=relaxed/simple;
+	bh=CoUr0HW92+rgdCE/lHA5uw+E2nEHmjU4p8un/hiFxiU=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=VS9czVQJwW+KutTsWw0QeXOCoKBzolDGeOq1K0pCs3liXgH0dtK9HTguRXFMR+qpGx/57o3dKGC8K/eoAKv8Yaf78wuveYkXnJxGHfdfv+26rGfpmCJ6tDOJd83LCpvOxynED8ftV2L8EXZBZCIOD+BQkjdE7eeLh+5nTdZJOzw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UWy3C0S2; arc=fail smtp.client-ip=52.101.56.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="YYD/wdwe"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id C32E720660;
-	Mon, 19 Jan 2026 09:55:11 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bh1nmRUdv0kV; Mon, 19 Jan 2026 09:55:10 +0100 (CET)
-Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id D4393201C7;
-	Mon, 19 Jan 2026 09:55:10 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D4393201C7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1768812910;
-	bh=9EK4RvhoBjlImakP9rg4bVk3Qd5qcJO1ml8x+FWjoDU=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=YYD/wdweXPH14AwMNBUnjcwqLIWxFcg9K9tH3p9EsV4edTXEHmj5U+RWgVS0b0/kx
-	 pWJ3xUtm6pM4nInvR7V8NE8cNtaMEqak0ZceIYCsq0q8l2XzLLQOFMDEaGXsT+a3aC
-	 Fv0KzzEDsKCNTQxbNubtO1KSV2agQ47KzoVlO7UoRoShzd05uHpCm0WWP6IZnBAKPv
-	 JVC+huqywB+pxAJYx91s6LtwbY59/wDvgcTluRBolTOiquUvFieWwiNHJg1+Ucd07V
-	 oeBu4COdkoHHQDbT0ETMnNFdG8p3lTckupZVGlxAtiELFxzVLzdJz9MHp5UGyshgOj
-	 FTQjuFfKrl+7w==
-Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
- (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 19 Jan
- 2026 09:55:10 +0100
-From: Antony Antony <antony.antony@secunet.com>
-To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	<netdev@vger.kernel.org>
-CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Chiachang Wang <chiachangwang@google.com>, Yan Yan
-	<evitayan@google.com>, <devel@linux-ipsec.org>, Simon Horman
-	<horms@kernel.org>, Paul Moore <paul@paul-moore.com>, Stephen Smalley
-	<stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
-	<linux-kernel@vger.kernel.org>, <selinux@vger.kernel.org>
-Subject: [PATCH ipsec-next v4 5/5] xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration
-Date: Mon, 19 Jan 2026 09:54:55 +0100
-Message-ID: <b134abaf18390d1bcdd59d2192687bac0e2c2710.1768811736.git.antony.antony@secunet.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1768811736.git.antony.antony@secunet.com>
-References: <cover.1768811736.git.antony.antony@secunet.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UWy3C0S2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C67n1v762xYu+2htLFfs4kWYULYqPFxbCVetKZnlCANLndYeiyfaLNzhXSl8V75Nf45yXCYUF9Gk5BCvjD+kdKauEmNVUWR3Ua0nV+fMMO6r/O2GKQoNjijStS3u+7Kum8cVQwOsESg+0z07ciOJbCiNn1c5IFAjNdSv54OYLHn+dUBFTX5RIbfxK536lg5FtoZXUPlAQtIpnJ+kFQOAaC5XVkSs3NPhxHNIAhhXNVnIKzwf7OYcQjnDG5ggJp0TuhfMAxIYBkAiS1NuU+/Mmha5UkTAgOswkgPx33rICMu42Xz5/uh/j8ldra1OvBzrIhMbg5eeJ0mU6nxxmpJvJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CoUr0HW92+rgdCE/lHA5uw+E2nEHmjU4p8un/hiFxiU=;
+ b=kcafSEvsuwmtErDgOvZeq3o/nvLPAT9gvx+g2EyhsEMn/KQGaAm+4l7NulMx9FgFdnbbUYrTIFHTpOycjYRp3o1LkqQw7zTVjrbCBzvLGwDkFPc7UpqOjI1SqriotQFduoUsffsP7qwQg/YeAxf1VRDTG1X8tmFihzqMJUopHLFJci5gn7ov4h7PNvW1syO/0XaelzzRgD40twR0Oz535OUp6XKNR91aNPAsvrh7nSRCnJOy04J21Mqv14VkZHsP7z415lwQ449N1cRj8fLEJcpWnOEyKQ1Kbg3b2NZETHQmGd9f5oUKhHWdjXlA/dzVBYfKoU/U6zfSIMqZ99FDfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CoUr0HW92+rgdCE/lHA5uw+E2nEHmjU4p8un/hiFxiU=;
+ b=UWy3C0S2FM5LE5SjdrohhYPf+olsCZic/zx3BS92KzSZZW5YqjuVJ5Px0SZXbzyO1tbaobV3YSYySnYJdacAr1X829onCmiOZzk30iifA329D1N/EHLRyux5vHei+keukOWD3bKZo0182YmwOuHLqNuu4I/VzTiEuVcePkJd2Lfn4JaIUM5UvQU2Of2o56vfTODveUXv/+T6nr8syiYNM54QTSJhrNiBXP9mLCDpOFVG8MbBJSf6t0edFUQJWJV7ATSUOgS+wigc/z34scDXlnn57CIJKwqu13cbeSnhyiUUdL27ZTMOOX61ITR7BNDa5FwL3HDwnrob1ifbJNmP/g==
+Received: from SN6PR05CA0022.namprd05.prod.outlook.com (2603:10b6:805:de::35)
+ by DM4PR12MB7670.namprd12.prod.outlook.com (2603:10b6:8:105::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
+ 2026 08:55:24 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:805:de:cafe::1) by SN6PR05CA0022.outlook.office365.com
+ (2603:10b6:805:de::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.8 via Frontend Transport; Mon,
+ 19 Jan 2026 08:55:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Mon, 19 Jan 2026 08:55:23 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 19 Jan
+ 2026 00:55:12 -0800
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 19 Jan
+ 2026 00:55:07 -0800
+References: <e1528224375ebd8789994668a286fb3105dbb2c4.1768225160.git.petrm@nvidia.com>
+ <20260118022629.1105469-2-kuba@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <petrm@nvidia.com>, <netdev@vger.kernel.org>, <edumazet@google.com>,
+	<horms@kernel.org>, <davem@davemloft.net>, <pabeni@redhat.com>
+Subject: Re: [net-next,5/8] net: core: neighbour: Inline
+ neigh_update_notify() calls
+Date: Mon, 19 Jan 2026 09:51:03 +0100
+In-Reply-To: <20260118022629.1105469-2-kuba@kernel.org>
+Message-ID: <87ecnmhti1.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-02.secunet.de
- (10.32.0.172)
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|DM4PR12MB7670:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5b73321-6fbc-452d-030a-08de57387be0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?v78wazDYlZwmV11khCZJwb5njR2kv7hPwPC0iZ7oyri+HaDd9MemPkOO+wMD?=
+ =?us-ascii?Q?y32+yflKIVOV/ajdst3rBqf7BJbpp7HumODX7LBB+9kU9VI1/JP3FJNZnX9V?=
+ =?us-ascii?Q?zhjHOYCMqMh2JZ2xHgVJgUTMK02xHremDcgv/EOx7lKp5clFNXpyZPqvMyh+?=
+ =?us-ascii?Q?yw8Gp5z2RAyGCcHKzsUUTQKTTsZPt0IUwbNOeNcduyhc0OZfSB1/TZnTwmp7?=
+ =?us-ascii?Q?KB223k4IyrXER3hnzwUPe6yAhxpOJpOGRtutWg6M5t04CkH5W9jujsOVkn3V?=
+ =?us-ascii?Q?mnI0rtXnrvP34vVm5HnKPUSA11vtlgsdsswgZju0C/jHUBt5QTlBsBxEl5XA?=
+ =?us-ascii?Q?R2FV9VmPfAyoxNgJENUnMHrBE7+PEJ7Fd9+y7YX3seNDYmwdWTMI6vqKFb3u?=
+ =?us-ascii?Q?iM+6REz5xXSMErCvE+rDzUVn+hpuit8M9A+/qVxNbCKWO2obN4eEiBXQqyBC?=
+ =?us-ascii?Q?LvLxSbjljQnLFR651MPl0Pp0XbIUNawY2aY0GFjNjBY1zehuZa1TL+WKeRbP?=
+ =?us-ascii?Q?z5GuRe6p5D96iOR0MD83GPP9iE72xKMzQ5zVL5HWDVdiBHXKSZakCbfqEwVd?=
+ =?us-ascii?Q?k280Kc66TVPvk19w6wl80NZ1KPOZJYsHrFgdCLlUgI/Sa4lPWFmvNI8v4Xiz?=
+ =?us-ascii?Q?LHZuUhmlA7YWZRi+fQq7mHAEgDQuEQS4IB5B1NUBGbWzo2ecuK/CLNFDeSru?=
+ =?us-ascii?Q?i1LOjW2ej94oaifUfZS4ESi7T7ZskSj85TbOTXp1kbzqUSTOA5i0hhJUNAcT?=
+ =?us-ascii?Q?CPm7sr9aohmqFaGEF5N5UpWshNKxTU/Ww+gbltmegB9SXheGTfwOIzP/NmhR?=
+ =?us-ascii?Q?olES1nQUAis9VfAOu8p54A4VN6/al7VjD+VqnPry/1Bn1sPB5QT6Qn3+FC0f?=
+ =?us-ascii?Q?TJ+qWy3qGdYIX9XRIIw9bqZKd7XV5lmx+12Eo/cWvOLhongMzjZws+YaGWe0?=
+ =?us-ascii?Q?wxIouirlgzfFPIE4xRYiEWta+a1Ncd60/YtcOecmwRETu7LO8ujj1DCi2KO7?=
+ =?us-ascii?Q?9hHI4ranfir7fuF+61fTGu5gRTVB6Ue5hsRsFb7s8iE4Iuk1ThUECGKduwZo?=
+ =?us-ascii?Q?SG9g8ujVVjgZRNjeGU71ul7gXC0vBN65aTKRsUw3ikSMqef7DOXl1gR7U+Wc?=
+ =?us-ascii?Q?SqJrvDwKHsiPY2u0RPgZgDdQIVnstKDvesCU2JBbpVOJtNd8RdJQRLyFXVOZ?=
+ =?us-ascii?Q?4AE4n8Y2HfyfQlxXfwkQBnv+dahhLpcKrD5bD6nQTEHn1Yt1XS9o4rytrTul?=
+ =?us-ascii?Q?S/VcozS2tmnOddlKmTOf0e4d7IUrQqKE9QgyCWUhb9wFLMlDCLsJkG9qal3y?=
+ =?us-ascii?Q?1O8S/37soqjwOdF1WWXACXZbUfo1TFsnUhEyekZYCbXz7jywaiImrP2kzBMo?=
+ =?us-ascii?Q?B3BiYgcinTA3QqZT2VYfLehlgVkTUZ72n03c3ZyduqcJuS6DDls7Zn8RQWK8?=
+ =?us-ascii?Q?EA/DKZLJwj0S3VBwT0lxh/EjYYGrBJUP1wx4uc7kVAj4zLCQlhcvJ7qshkG6?=
+ =?us-ascii?Q?JaR8SUT0r6OdJNfIsjshKxMBhxsQbCANE/V++TzqiS+RelljSJBArW5fMWgR?=
+ =?us-ascii?Q?z428J1/YIpd5jdAWFCYuITWed9+X+6MWLWFLoRUp4hBH4TXFc4iMhftIcoOR?=
+ =?us-ascii?Q?IEwdJrwVyuAIBXANAb1UoRsKed2AWVuqThIOAcS/R3RHQN2GryylRA7e96FR?=
+ =?us-ascii?Q?fIHRMg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 08:55:23.9772
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5b73321-6fbc-452d-030a-08de57387be0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7670
 
-Add a new netlink method to migrate a single xfrm_state.
-Unlike the existing migration mechanism (SA + policy), this
-supports migrating only the SA and allows changing the reqid.
 
-The reqid is invariant in old migration.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
----
-v1->v2: merged next patch here to fix use uninitialized value
-	- removed unnecessary inline
-        - added const when possible
+> I'm a bit behind so I haven't validated this myself TBH,
+> but in the interest of time perhaps you can TAL?
 
-v2->v3: free the skb on the error path
-
-v3->v4: preserve reqid invariant for each state migrated
----
- include/net/xfrm.h          |   1 +
- include/uapi/linux/xfrm.h   |  11 +++
- net/xfrm/xfrm_policy.c      |   1 +
- net/xfrm/xfrm_state.c       |  16 ++--
- net/xfrm/xfrm_user.c        | 159 ++++++++++++++++++++++++++++++++++++
- security/selinux/nlmsgtab.c |   3 +-
- 6 files changed, 183 insertions(+), 8 deletions(-)
-
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 05fa0552523d..4147c5ba6093 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -686,6 +686,7 @@ struct xfrm_migrate {
- 	u8			mode;
- 	u16			reserved;
- 	u32			old_reqid;
-+	u32			new_reqid;
- 	u16			old_family;
- 	u16			new_family;
- };
-diff --git a/include/uapi/linux/xfrm.h b/include/uapi/linux/xfrm.h
-index a23495c0e0a1..60b1f201b237 100644
---- a/include/uapi/linux/xfrm.h
-+++ b/include/uapi/linux/xfrm.h
-@@ -227,6 +227,9 @@ enum {
- #define XFRM_MSG_SETDEFAULT XFRM_MSG_SETDEFAULT
- 	XFRM_MSG_GETDEFAULT,
- #define XFRM_MSG_GETDEFAULT XFRM_MSG_GETDEFAULT
-+
-+	XFRM_MSG_MIGRATE_STATE,
-+#define XFRM_MSG_MIGRATE_STATE XFRM_MSG_MIGRATE_STATE
- 	__XFRM_MSG_MAX
- };
- #define XFRM_MSG_MAX (__XFRM_MSG_MAX - 1)
-@@ -507,6 +510,14 @@ struct xfrm_user_migrate {
- 	__u16				new_family;
- };
-
-+struct xfrm_user_migrate_state {
-+	struct xfrm_usersa_id id;
-+	xfrm_address_t new_saddr;
-+	xfrm_address_t new_daddr;
-+	__u16 new_family;
-+	__u32 new_reqid;
-+};
-+
- struct xfrm_user_mapping {
- 	struct xfrm_usersa_id		id;
- 	__u32				reqid;
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 854dfc16ed55..72678053bd69 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4672,6 +4672,7 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 		if ((x = xfrm_migrate_state_find(mp, net, if_id))) {
- 			x_cur[nx_cur] = x;
- 			nx_cur++;
-+			mp->new_reqid = x->props.reqid; /* reqid is invariant in XFRM_MSG_MIGRATE */
- 			xc = xfrm_state_migrate(x, mp, encap, net, xuo, extack);
- 			if (xc) {
- 				x_new[nx_new] = xc;
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index fe595d7f4398..8d4f82bab8fc 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1966,8 +1966,8 @@ static inline int clone_security(struct xfrm_state *x, struct xfrm_sec_ctx *secu
- }
-
- static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
--					   struct xfrm_encap_tmpl *encap,
--					   struct xfrm_migrate *m)
-+					   const struct xfrm_encap_tmpl *encap,
-+					   const struct xfrm_migrate *m)
- {
- 	struct net *net = xs_net(orig);
- 	struct xfrm_state *x = xfrm_state_alloc(net);
-@@ -1979,7 +1979,6 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
- 	memcpy(&x->lft, &orig->lft, sizeof(x->lft));
- 	x->props.mode = orig->props.mode;
- 	x->props.replay_window = orig->props.replay_window;
--	x->props.reqid = orig->props.reqid;
-
- 	if (orig->aalg) {
- 		x->aalg = xfrm_algo_auth_clone(orig->aalg);
-@@ -2058,7 +2057,7 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
- 			goto error;
- 	}
-
--
-+	x->props.reqid = m->new_reqid;
- 	x->props.family = m->new_family;
- 	memcpy(&x->id.daddr, &m->new_daddr, sizeof(x->id.daddr));
- 	memcpy(&x->props.saddr, &m->new_saddr, sizeof(x->props.saddr));
-@@ -2145,9 +2144,12 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
- 		goto error;
-
- 	/* add state */
--	if (xfrm_addr_equal(&x->id.daddr, &m->new_daddr, m->new_family)) {
--		/* a care is needed when the destination address of the
--		   state is to be updated as it is a part of triplet */
-+	if (xfrm_addr_equal(&x->id.daddr, &m->new_daddr, m->new_family) ||
-+	    x->props.reqid != xc->props.reqid) {
-+		/*
-+		 * a care is needed when the destination address or the reqid
-+		 * of the state is to be updated as it is a part of triplet
-+		 */
- 		xfrm_state_insert(xc);
- 	} else {
- 		if (xfrm_state_add(xc) < 0)
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 26b82d94acc1..a7ab43b16e0a 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3052,6 +3052,22 @@ static int xfrm_add_acquire(struct sk_buff *skb, struct nlmsghdr *nlh,
- }
-
- #ifdef CONFIG_XFRM_MIGRATE
-+static int copy_from_user_migrate_state(struct xfrm_migrate *ma,
-+					const struct xfrm_user_migrate_state *um)
-+{
-+	memcpy(&ma->old_daddr, &um->id.daddr, sizeof(ma->old_daddr));
-+	memcpy(&ma->new_daddr, &um->new_daddr, sizeof(ma->new_daddr));
-+	memcpy(&ma->new_saddr, &um->new_saddr, sizeof(ma->new_saddr));
-+
-+	ma->proto = um->id.proto;
-+	ma->new_reqid = um->new_reqid;
-+
-+	ma->old_family = um->id.family;
-+	ma->new_family = um->new_family;
-+
-+	return 0;
-+}
-+
- static int copy_from_user_migrate(struct xfrm_migrate *ma,
- 				  struct xfrm_kmaddress *k,
- 				  struct nlattr **attrs, int *num,
-@@ -3154,7 +3170,148 @@ static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	kfree(xuo);
- 	return err;
- }
-+
-+static int build_migrate_state(struct sk_buff *skb,
-+			       const struct xfrm_user_migrate_state *m,
-+			       const struct xfrm_encap_tmpl *encap,
-+			       const struct xfrm_user_offload *xuo)
-+{
-+	int err;
-+	struct nlmsghdr *nlh;
-+	struct xfrm_user_migrate_state *um;
-+
-+	nlh = nlmsg_put(skb, 0, 0, XFRM_MSG_MIGRATE_STATE,
-+			sizeof(struct xfrm_user_migrate_state), 0);
-+	if (!nlh)
-+		return -EMSGSIZE;
-+
-+	um = nlmsg_data(nlh);
-+	*um = *m;
-+
-+	if (encap) {
-+		err = nla_put(skb, XFRMA_ENCAP, sizeof(*encap), encap);
-+		if (err)
-+			goto out_cancel;
-+	}
-+
-+	if (xuo) {
-+		err = nla_put(skb, XFRMA_OFFLOAD_DEV, sizeof(*xuo), xuo);
-+		if (err)
-+			goto out_cancel;
-+	}
-+
-+	nlmsg_end(skb, nlh);
-+	return 0;
-+
-+out_cancel:
-+	nlmsg_cancel(skb, nlh);
-+	return err;
-+}
-+
-+static unsigned int xfrm_migrate_state_msgsize(bool with_encap, bool with_xuo)
-+{
-+	return NLMSG_ALIGN(sizeof(struct xfrm_user_migrate_state)) +
-+		(with_encap ? nla_total_size(sizeof(struct xfrm_encap_tmpl)) : 0) +
-+		(with_xuo ? nla_total_size(sizeof(struct xfrm_user_offload)) : 0);
-+}
-+
-+static int xfrm_send_migrate_state(const struct xfrm_user_migrate_state *um,
-+				   const struct xfrm_encap_tmpl *encap,
-+				   const struct xfrm_user_offload *xuo)
-+{
-+	int err;
-+	struct sk_buff *skb;
-+	struct net *net = &init_net;
-+
-+	skb = nlmsg_new(xfrm_migrate_state_msgsize(!!encap, !!xuo), GFP_ATOMIC);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	err = build_migrate_state(skb, um, encap, xuo);
-+	if (err < 0) {
-+		kfree_skb(skb);
-+		return err;
-+	}
-+
-+	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-+}
-+
-+static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
-+				 struct nlattr **attrs, struct netlink_ext_ack *extack)
-+{
-+	int err = -ESRCH;
-+	struct xfrm_state *x;
-+	struct net *net = sock_net(skb->sk);
-+	struct xfrm_encap_tmpl *encap = NULL;
-+	struct xfrm_user_offload *xuo = NULL;
-+	struct xfrm_migrate m = { .old_saddr.a4 = 0,};
-+	struct xfrm_user_migrate_state *um = nlmsg_data(nlh);
-+
-+	if (!um->id.spi) {
-+		NL_SET_ERR_MSG(extack, "Invalid SPI 0x0");
-+		return -EINVAL;
-+	}
-+
-+	err = copy_from_user_migrate_state(&m, um);
-+	if (err)
-+		return err;
-+
-+	x = xfrm_user_state_lookup(net, &um->id, attrs, &err);
-+
-+	if (x) {
-+		struct xfrm_state *xc;
-+
-+		if (!x->dir) {
-+			NL_SET_ERR_MSG(extack, "State direction is invalid");
-+			err = -EINVAL;
-+			goto error;
-+		}
-+
-+		if (attrs[XFRMA_ENCAP]) {
-+			encap = kmemdup(nla_data(attrs[XFRMA_ENCAP]),
-+					sizeof(*encap), GFP_KERNEL);
-+			if (!encap) {
-+				err = -ENOMEM;
-+				goto error;
-+			}
-+		}
-+		if (attrs[XFRMA_OFFLOAD_DEV]) {
-+			xuo = kmemdup(nla_data(attrs[XFRMA_OFFLOAD_DEV]),
-+				      sizeof(*xuo), GFP_KERNEL);
-+			if (!xuo) {
-+				err = -ENOMEM;
-+				goto error;
-+			}
-+		}
-+		xc = xfrm_state_migrate(x, &m, encap, net, xuo, extack);
-+		if (xc) {
-+			xfrm_state_delete(x);
-+			xfrm_send_migrate_state(um, encap, xuo);
-+			err = 0;
-+		} else {
-+			if (extack && !extack->_msg)
-+				NL_SET_ERR_MSG(extack, "State migration clone failed");
-+			err = -EINVAL;
-+		}
-+	} else {
-+		NL_SET_ERR_MSG(extack, "Can not find state");
-+		return err;
-+	}
-+error:
-+	xfrm_state_put(x);
-+	kfree(encap);
-+	kfree(xuo);
-+	return err;
-+}
-+
- #else
-+static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
-+				 struct nlattr **attrs, struct netlink_ext_ack *extack)
-+{
-+	NL_SET_ERR_MSG(extack, "XFRM_MSG_MIGRATE_STATE is not supported");
-+	return -ENOPROTOOPT;
-+}
-+
- static int xfrm_do_migrate(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			   struct nlattr **attrs, struct netlink_ext_ack *extack)
- {
-@@ -3307,6 +3464,7 @@ const int xfrm_msg_min[XFRM_NR_MSGTYPES] = {
- 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = sizeof(u32),
- 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
- 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = XMSGSIZE(xfrm_userpolicy_default),
-+	[XFRM_MSG_MIGRATE_STATE - XFRM_MSG_BASE] = XMSGSIZE(xfrm_user_migrate_state),
- };
- EXPORT_SYMBOL_GPL(xfrm_msg_min);
-
-@@ -3400,6 +3558,7 @@ static const struct xfrm_link {
- 	[XFRM_MSG_GETSPDINFO  - XFRM_MSG_BASE] = { .doit = xfrm_get_spdinfo   },
- 	[XFRM_MSG_SETDEFAULT  - XFRM_MSG_BASE] = { .doit = xfrm_set_default   },
- 	[XFRM_MSG_GETDEFAULT  - XFRM_MSG_BASE] = { .doit = xfrm_get_default   },
-+	[XFRM_MSG_MIGRATE_STATE - XFRM_MSG_BASE] = { .doit = xfrm_do_migrate_state },
- };
-
- static int xfrm_reject_unused_attr(int type, struct nlattr **attrs,
-diff --git a/security/selinux/nlmsgtab.c b/security/selinux/nlmsgtab.c
-index 2c0b07f9fbbd..655d2616c9d2 100644
---- a/security/selinux/nlmsgtab.c
-+++ b/security/selinux/nlmsgtab.c
-@@ -128,6 +128,7 @@ static const struct nlmsg_perm nlmsg_xfrm_perms[] = {
- 	{ XFRM_MSG_MAPPING, NETLINK_XFRM_SOCKET__NLMSG_READ },
- 	{ XFRM_MSG_SETDEFAULT, NETLINK_XFRM_SOCKET__NLMSG_WRITE },
- 	{ XFRM_MSG_GETDEFAULT, NETLINK_XFRM_SOCKET__NLMSG_READ },
-+	{ XFRM_MSG_MIGRATE_STATE, NETLINK_XFRM_SOCKET__NLMSG_WRITE },
- };
-
- static const struct nlmsg_perm nlmsg_audit_perms[] = {
-@@ -203,7 +204,7 @@ int selinux_nlmsg_lookup(u16 sclass, u16 nlmsg_type, u32 *perm)
- 		 * structures at the top of this file with the new mappings
- 		 * before updating the BUILD_BUG_ON() macro!
- 		 */
--		BUILD_BUG_ON(XFRM_MSG_MAX != XFRM_MSG_GETDEFAULT);
-+		BUILD_BUG_ON(XFRM_MSG_MAX != XFRM_MSG_MIGRATE_STATE);
-
- 		if (selinux_policycap_netlink_xperm()) {
- 			*perm = NETLINK_XFRM_SOCKET__NLMSG;
---
-2.39.5
-
+It looks legit. I'll send a v2.
