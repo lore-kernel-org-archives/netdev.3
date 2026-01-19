@@ -1,88 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC431E0FB
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 16:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F33B2DC333;
+	Mon, 19 Jan 2026 16:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768840454; cv=none; b=KBafYHosGxcpRlychp3LvE0krPaaJX2SK2MyQL9SoX40DaeVWyDqPhlZ8zEMYjWiZMA5vKBnAyhJ3MMkAgH899kM6w3R0YBz4A0Qh7BL99OTNYVub1+JlyJOE8JV32yN6hhQzIgab7voBx7g6IhtOckeRclGIpioh4hrMF7GDhQ=
+	t=1768840681; cv=none; b=pUY+9GKJZQwAaaGfDFPgfssKiZZQsX7+L2RwI0HcGXdOuKYKYuo/2DhT3AOdh27B4YKEJw5qtcJDtr609fIQQWhlBeb0otXTKeu3FPlphuU1UqpYnWYAg+Zf2NPZbf4E5gOoIl11XVnkLKrBHJJFRZmGaTloH8K1m1L4cxE+cxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768840454; c=relaxed/simple;
-	bh=5MRLRL6loFbBhHojKGLogBBY83yVD6kHxgI4PPxjSZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHurTkA7Eg/36TIjbfk38qwBBw+PIIXPonKy0R6FnFj7PzhyBcUEQxssHxKvYi2NNUw89XR+2fK+vUIWULU7sRkdceRxdT+MLELsAchD7mDFnJR9XEUkYIO9UKFq7ly+de52v1gn6Nc06DasSEAjqvY7kH3fQJO/hY1nBHWv+CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmWpC+mw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768840681; c=relaxed/simple;
+	bh=6/bsTBTtsVmOU6fHbUlSb+w0De5KxZ7QdY7r++zX1go=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RpFqP6KMzvpP1IARboTAD+NzISHYxzAMVYbuQNxA8GJTgDwgwGl/BPZQi1hzHARSD9HI2FviKiQapQ9kwAURkNVXZhQIooesE/gPz9RWqGtVljfAj3nGa06yXO4zXwgs/JLfGxmNL0ba2IAOykbKaIIHqkq71umKLXescuWUAUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bNdag6Q4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmWpC+mw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32E1C116C6;
-	Mon, 19 Jan 2026 16:34:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bNdag6Q4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91B1C116C6;
+	Mon, 19 Jan 2026 16:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768840454;
-	bh=5MRLRL6loFbBhHojKGLogBBY83yVD6kHxgI4PPxjSZ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmWpC+mwmK6HAPA8cJL4/piTa2i7ILS4kIUABIcR4O8HrCKlzLgFCInW8yr/t+ckN
-	 9of3urk3I6NLQGFt/pJUaQCgani3FWNx1OzH9tY4TFByrTUl/M1kGBisySLW/7c2as
-	 UxgmNzjBa/8bcemU1DcBo+ICKVvMLf63OO37f7fMVX6NO2lensodEQxmN/cariziVf
-	 Bsu93PjO4i0/ea3qzw6rrFlKp4CNsKqVlaMUDBoNwGWdCzB+4VZm0EaJd8ef3V7sN/
-	 +cirWKULrRkVLniZNRAVMZHFHWYqnQnzo/ekoSTdD82yShrZAh5VsuG2cfXKqSROzZ
-	 aAJ/9Yn2Yf+2w==
+	s=k20201202; t=1768840680;
+	bh=6/bsTBTtsVmOU6fHbUlSb+w0De5KxZ7QdY7r++zX1go=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bNdag6Q4SY66xfpb38F01mNNzPt9osUxYd48ITeT8r6zuzEARF4yCoxZiugJmpzQF
+	 cTm4BFwMnjtidVppkvOh3eYrWcLcsa5Wbt9u0myBRaY8uuNirAkkc1znxXjKMZu+0v
+	 6tFUTT+iaI6oBx4qoE1EJWXXukBkNgppfki2zJj2wCcaCdgx+uiG2pIaqh/BsYWHpe
+	 o8hC5RVNuosVlSHYR1IHaj6Yngx0zUPvSsxtlHm2UZ5JPifdQQvhEO78KeHOe4B490
+	 su0k4HHftLq88LxQ4sF3mtG5UwJ1zo5/CUob4xrDvAeOCjj+0JWGfbi5QQOzuJunkH
+	 GsrBO6ZxRdiOA==
+Date: Mon, 19 Jan 2026 08:37:59 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: linusw@kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	olteanv@gmail.com,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	woojung.huh@microchip.com,
-	andrew@lunn.ch,
-	UNGLinuxDriver@microchip.com,
-	netdev@vger.kernel.org,
-	edumazet@google.com
-Subject: Re: [net-next,v2,2/4] net: dsa: ks8955: Delete KSZ8864 and KSZ8795 support
-Date: Mon, 19 Jan 2026 08:34:10 -0800
-Message-ID: <20260119163410.1147227-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260119-ks8995-fixups-v2-2-98bd034a0d12@kernel.org>
-References: <20260119-ks8995-fixups-v2-2-98bd034a0d12@kernel.org>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: netdev@vger.kernel.org, Jesper Dangaard Brouer <hawk@kernel.org>, Ilias
+ Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ kerneljasonxing@gmail.com, lance.yang@linux.dev, jiayuan.chen@linux.dev,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Leon
+ Huang Fu <leon.huangfu@shopee.com>
+Subject: Re: [PATCH net-next v4] page_pool: Add page_pool_release_stalled
+ tracepoint
+Message-ID: <20260119083759.5deeaa3c@kernel.org>
+In-Reply-To: <20260119102119.176211-1-leon.hwang@linux.dev>
+References: <20260119102119.176211-1-leon.hwang@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Mon, 19 Jan 2026 18:21:19 +0800 Leon Hwang wrote:
+> Introduce a new tracepoint to track stalled page pool releases,
+> providing better observability for page pool lifecycle issues.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: dsa: ks8955: Delete KSZ8864 and KSZ8795 support
+Sorry, I really want you to answer the questions from the last
+paragraph of:
 
-This commit removes support for KSZ8864 and KSZ8795 chip variants from
-the ks8995 driver, since those variants are better supported by the
-dedicated Microchip KSZ driver.
-
-> diff --git a/drivers/net/dsa/ks8995.c b/drivers/net/dsa/ks8995.c
-> index ff01097601ec..5ad62fa4e52c 100644
-> --- a/drivers/net/dsa/ks8995.c
-> +++ b/drivers/net/dsa/ks8995.c
-
-[ ... ]
-
-> @@ -804,8 +700,8 @@ static int ks8995_probe(struct spi_device *spi)
->  	if (err)
->  		return err;
->
-> -	dev_info(&spi->dev, "%s device found, Chip ID:%x, Revision:%x\n",
-> -		 ks->chip->name, ks->chip->chip_id, ks->revision_id);
-> +	dev_info(&spi->dev, "KS8955MA device found, Chip ID:%x, Revision:%x\n",
-                             ^^^^^^^
-
-Should this be "KS8995MA" instead of "KS8955MA"? The chip name appears to
-have a typo - the driver is for KS8995 (as in the file name, module
-description, and all other references), but the dev_info prints "KS8955MA"
-with transposed digits.
-
-> +		 KS8995_CHIP_ID, ks->revision_id);
+ https://lore.kernel.org/netdev/20260104084347.5de3a537@kernel.org/
 -- 
 pw-bot: cr
