@@ -1,85 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DB0346AC6
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 09:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DEA346AC6
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 09:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768814942; cv=none; b=D6jPWyMHx21FqCGKlUuonqL3I9GA6IsF1xmDMSQL5lgG4AWzYLysrTlpWCLSY+0OBdRfoCcEfMdapoiriitcQVWmplB0LPJnvOrT039J5goY2UARn545N4bixQLMMU0tJmpu7lpr7W49mjdIjqTrojRucTFEzQo/N4QHKXe8APc=
+	t=1768814969; cv=none; b=ATkdvi9rLMGJUhIMcRBcbSDpdt3PTWiUUjlapBWVrm238b6ml0qoy5yh430c2h+KS3EKPypGPI2olOKapjgWorTvrwR7bdHM4uCzyWsJG84c1Y7oSbQFijJw/wpAWZVAoP5ljHfy7zbQZuuTMyDB2Jweat99D5V+Y2UHLVbAeVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768814942; c=relaxed/simple;
-	bh=XjQxaNaJtfrGY2pwNPROWy9ibNGhYmBFzU+ohE9RW38=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ROJlvKOn45A7eLzhAxyO+IACpxVWf6ny+94tVsHowIBdik7c2wpsZmRBoEh6VGhV2VAm5qSnQmiymisJo9i9J2+l69bbJT1IWFmlf7dgZfgx+bCQwlWoMO/AnMsfkTzEqdlBC+p3/OTQ7pGqMWBj1wEXDV7rVeoKTuNEZci6puY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9C3KrYD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768814969; c=relaxed/simple;
+	bh=MZykRSDyhj30BjSCq2J6ccjOwanVT2N1C0ACoeLLSSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ms7wTHIPvGXlxkrhX8vGNiG9n+hkmJiyzrjKaKdynnnm2IWBVWj4fPFJxkSP15OrfMTgMH5ONjwSDROH17eBA/cJsKtYuhF6OxfdW/AZAZ0paqtTQZtJY8Hu4t1JTrUlOlf7pGq08L2k6fppQ2w2V3GvCPmKOkkt+msuJZCvlA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=KRoi2aIG; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9C3KrYD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3628FC116C6;
-	Mon, 19 Jan 2026 09:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768814941;
-	bh=XjQxaNaJtfrGY2pwNPROWy9ibNGhYmBFzU+ohE9RW38=;
-	h=Date:From:To:Cc:Subject:From;
-	b=t9C3KrYD3BLeoj3psIkEaVq+cyl2NMrUe/8DZUEVKoiHx90K2udqw/VJ8LA027Pg6
-	 +AQxd0kq6drapLGcg64+km9gffloHYyUe1ERBLtypazOp8cXHLJSFKHCYcWFkm52ot
-	 CPBoa5O8k5xmHijF5sm0j7IEOVn3AjV4sg2VtAUjzJ3NGFUvx8+RZnccM6j0Qtc/vl
-	 aMzeIzBJHZaxgYdIPL7Vaqs0xb8W5itq73cezIeoYPr17xojtoM1LXYdr6Pp9WsP81
-	 1XfLGWESGXaURSHG0ouJSNVvpKtOSlqV5IGk4mNsns/mLSpeeCx261GtggPcUeXd6U
-	 EiFxPYVwcN1pg==
-Date: Mon, 19 Jan 2026 14:58:47 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>
-Subject: Re: PTP framework for non-IEEE 1588 clocks
-Message-ID: <vmwwnl3zv26lmmuqp2vqltg2fudalpc5jrw7k6ifg6l5cwlk3j@i7jm62zcsl67>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="KRoi2aIG"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2a08cb5e30eso8690305ad.1
+        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 01:29:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768814967; x=1769419767;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fCyc417zI+LatXSOTwvS8SNjJytYpjkoBZeOlVPfO0U=;
+        b=JU+Qf13YFRNGqVc6FM/KmsmTrxL92Sh+nJF9Hcfcf5iUJNM8Fbjl4y3mSrFU0oPigP
+         AJ1FmPxiJyiVTIbFGwdO8XPaT5j07sNi4N7gql3I6GyI7RNrzcui4cXc6CLBTscwQzCJ
+         l6VA5lf1r8+uvKmRViW4k2kgOnO08L2sNcSSNUe/TsmR9QlCk17lThmlN7uvFFxxetMf
+         eoL33B3CDQGYEMfDKjJdIC5oHSpJf6tZyTv+MXMRIZ0hQCcDDlZcLJbUJ288MYBPx94f
+         A2Gq0EqH99zl69ryksh+0DClXzA6qw5zR3lys287IEG8DJJjWA8hE0pBNKR3zfi5dij9
+         cqbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCX3dUFpWauc8+F1yl0XolgkOG/EsuSC5crTYIv6MkqljbOzB4ix9KRBNtfFSC4jRrWJyyFM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4zH+LyJtLX7TiuFS2b791ngr4/p4bnNwu68sG/7/U2UjF+/qA
+	8rGiR/IWBzeDbUQG0QRbqfi6mbaYTTpwa2ugmLGuIiPbI5qJXols3qBsQfc/dOTTlSKvDKpKbDD
+	7g6eQ5QYLtpCxMFkRBby9iv3EbUIxTdKH+wlzgkUQvecUKit4jPD+bonGEFwB8ewElzrsHagQfn
+	0hGGgcWk+fDZOLe3/wbBCdxfDidKXTkDWUvO4bjBKwT0CJ8B6Z/XrCOJPQIKsD8RT3xId4T9n16
+	Q5zGdHYKMCJDAQl2NZUO6BpFt20g3s=
+X-Gm-Gg: AZuq6aJWQrJpi+g2mnb9kYlMe1qdPX1KF5+yGH7ayHVIxPk2bELYTbD0YMiGXSZJ54Y
+	IFOhiyTnlt/Ik+fJec4XpiG7KVvXMcbIhfYTpeAEmrpJQVAhBQZo3ilIER7iBmD61UutlzvlXrj
+	kHwuKmlqGsbFCaJEUFEgErYtwHaoaEjxktSbA18UGZW174WoGBQ/AZ5G+Ka4BlRMU87/OeRB54o
+	QDIcpN1jarG2lRQBcWDqHIynRwAG9w2cU/ADLxI82bK541Xc+idFpbfbbB9myiLHTYRhAqJtSZt
+	JFQv2pgZJsiYLQkuMnF7DGQ1oEFokb3eOE+K8mY/P1x8xjkhXNIvrvewPzohFR4crzrhCgFpDaL
+	a5WcY1CHrsEw/kt56S1ojb6zNou27G405b0nJA0POJuXomLQcETB2ZJWTNcqB2NKyYZf8znCXy0
+	vC/EdpXCigG1+9WW6LCIIAueTgynPDV1iuE17k+NBG2RAde3+1Gehe5eW3PqLYbA==
+X-Received: by 2002:a17:903:2806:b0:2a3:1b2f:3db5 with SMTP id d9443c01a7336-2a7177dbb8amr48090115ad.9.1768814967531;
+        Mon, 19 Jan 2026 01:29:27 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-72.dlp.protect.broadcom.com. [144.49.247.72])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a7190d5587sm14087665ad.25.2026.01.19.01.29.27
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Jan 2026 01:29:27 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-88a39073c8bso15897536d6.3
+        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 01:29:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1768814966; x=1769419766; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fCyc417zI+LatXSOTwvS8SNjJytYpjkoBZeOlVPfO0U=;
+        b=KRoi2aIGi2A1wPo6877aWaCxHp0Evo2+jceFRpB0iJXDhNF1f3hc7pYpRCHy6fSUnf
+         H2xC9VmunsMLQ08p9BfA1z+aiQa1NdgHzGHAJ+y+idjdiAlw7Xp7h01CLvMyGU+lQ0Ar
+         Hd9PboRF8IWvi7JA5Rn8nZMRnz4hzNSFtr6eQ=
+X-Forwarded-Encrypted: i=1; AJvYcCXJfmuf7X3qoXprdWkRnA9J1UQfupMZrFgQQVvKeaOYVHfqyidbJZM6pqrOmQVeqIL7Y9gMcqs=@vger.kernel.org
+X-Received: by 2002:a0c:e013:0:b0:888:3237:6fce with SMTP id 6a1803df08f44-8942dd8fad1mr137606356d6.4.1768814966267;
+        Mon, 19 Jan 2026 01:29:26 -0800 (PST)
+X-Received: by 2002:a0c:e013:0:b0:888:3237:6fce with SMTP id 6a1803df08f44-8942dd8fad1mr137605946d6.4.1768814965846;
+        Mon, 19 Jan 2026 01:29:25 -0800 (PST)
+Received: from keerthanak-ph5-dev.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6ad6f3sm76917516d6.36.2026.01.19.01.29.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 01:29:25 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: j.vosburgh@gmail.com,
+	vfalico@gmail.com,
+	andy@greyhouse.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	kuznet@ms2.inr.ac.ru,
+	yoshfuji@linux-ipv6.org,
+	borisp@nvidia.com,
+	aviadye@nvidia.com,
+	john.fastabend@gmail.com,
+	daniel@iogearbox.net,
+	ast@kernel.org,
+	andrii@kernel.org,
+	kafai@fb.com,
+	songliubraving@fb.com,
+	yhs@fb.com,
+	kpsingh@kernel.org,
+	carlos.soto@broadcom.com,
+	simon.horman@corigine.com,
+	luca.czesla@mail.schwarzv,
+	felix.huettner@mail.schwarz,
+	ilyal@mellanox.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v2 v5.10.y 0/5] Backport fixes for CVE-2025-40149
+Date: Mon, 19 Jan 2026 09:25:57 +0000
+Message-ID: <20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi Jakub et al.,
+Following commits are pre-requisite for the commit c65f27b9c
+- 1dbf1d590 (net: Add locking to protect skb->dev access in ip_output)
+- 5b9985454 (net/bonding: Take IP hash logic into a helper)
+- 007feb87f (net/bonding: Implement ndo_sk_get_lower_dev)
+- 719a402cf (net: netdevice: Add operation ndo_sk_get_lower_dev)
 
-This is a follow-up of the recent discussion [1] around using PTP framework for
-device clocks which doesn't the follow IEEE 1588 standard, but just provide the
-high precision clock source to the host machine for time synchronization.
+Kuniyuki Iwashima (1):
+  tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
 
-Jakub raised the concern on exposing these kind of high precision clocks as PTP
-clocks during the referenced patch review and also during [2]. I agree that the
-concern is technically valid as these clock are not following the IEEE 1588
-standard.
+Sharath Chandra Vurukala (1):
+  net: Add locking to protect skb->dev access in ip_output
 
-I then looked into the existing PTP drivers and noticed that many drivers like
-ptp_kvm, ptp_vmclock, and ptp_s390 fall into the above category. But that could
-be because no one cared about them being non-conformant so far. So I'm not using
-them as an excuse.
+Tariq Toukan (3):
+  net/bonding: Take IP hash logic into a helper
+  net/bonding: Implement ndo_sk_get_lower_dev
+  net: netdevice: Add operation ndo_sk_get_lower_dev
 
-Then I looked into creating a new framework which just registers as a simple
-posix clock and supporting posix_clock_operations::clock_getres operation as a
-start. However, it feels like it would be a stripped down version of PTP
-framework, with a new class, and chardev interface.
-
-Creating such new interfaces means, we should also teach the tools like phc2sys
-(for -a option) to learn about this new interface/class.
-
-So my question is, is it really worth the effort to create a new framework for
-providing a subset of the existing framework's functionality? Even if such
-framework gets introduced, should the existing non-IEEE 1588 drivers be
-converted? I personally think it is not a good idea since that will break the
-userspace tooling, but leaving them as is could also induce confusion.
-
-I'm looking for other suggestions as well, thanks!
-
-- Mani
-
-[1] https://lore.kernel.org/mhi/20250821180247.29d0f4b3@kernel.org/
-[2] https://lore.kernel.org/all/20250815113814.5e135318@kernel.org/
+ drivers/net/bonding/bond_main.c | 109 ++++++++++++++++++++++++++++++--
+ include/linux/netdevice.h       |   4 ++
+ include/net/bonding.h           |   2 +
+ include/net/dst.h               |  12 ++++
+ net/core/dev.c                  |  33 ++++++++++
+ net/ipv4/ip_output.c            |  16 +++--
+ net/tls/tls_device.c            |  18 +++---
+ 7 files changed, 176 insertions(+), 18 deletions(-)
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.7
+
