@@ -1,141 +1,136 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1983333A008
-	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 08:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D322533A008
+	for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 08:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768812616; cv=none; b=tu5IJaQfLUlaVvDD/ksgE0t+Mim+LZMRND5DlLpIfC34TcI/a9T1x1wjHo8lVvOo4W1APSBjfH9Hu+zLs3HaAdbJZrjp6pwF6pNDlQUhBPCwZea3hwj8veaNSzAsYzy1MNaqkRWIzwaaGdm0LeStC80tv58dUzBZ7SuiNCEKJWU=
+	t=1768812838; cv=none; b=IY4ywOQZ1TV1GXnGCx4fl+Y294O9eYAa1WCgNHVSwdAA51pTKeuDLRESf092Uo44OIG56LbTo2l1CM3InQ+rukDPJKdXhj184VLzjURAhntUSBkL3T/qRk97NfrjCuRR8w2Ekk6R9gTswwNYx47rE0wKqPgOsL9RgagR75kPRFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768812616; c=relaxed/simple;
-	bh=84ETkUfpc3EswQvnB2lM/Q2ffz1tmPudt+ruJY+u4aw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nA2K92A28U4ywoxSDuJPLu5t8nFgDODjKtJxBHVuXrNMBX297HBFCjXKfUc5Whs9dReH5SL73eG0B9/jdjfRVp+MpGcdqeB3JG1nbOzLTF3oCzh4+PZ4J+SBh3uUIX8+KatifFZTPbVaHVZ9n8ogInCrYVJLVVDki2ZEB8EAL8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U2EUKKnz; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1768812838; c=relaxed/simple;
+	bh=j3r8bzcoIb9S9vt3dJSwcWn14tR82FYfDNoA+Wixpdw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T7IiCj0pR5AO+ROlAYJctwiLZnn0OITMjzUBkhBzV8SMrLJLCuj1YxdAuSv0yWOdr53eRbyaHfzb2HLJgRqZDjqjiECJL5kI+f+h0pM+3rKrS3ny+GJRrsOb4+jYA91jE5zyudbRKwqAgMuXwLyHTiZUWDgR1pW7YX0ZEpHkqvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=yXkZBPm6; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U2EUKKnz"
-Message-ID: <8dc3765b-e97f-4937-b6b9-872a83ba1e26@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768812600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJnFBuVeKy2seKUMYgvEGmFX+m+0gIR/n54nnj5zXCE=;
-	b=U2EUKKnzZTcZW+2kot9Xseo/1FRep+r+OC8Ha0An9OPuzah0NdoxUMdi5waz23MjoCkBUM
-	W057bD5cGyRLJHFvTr2xGpU8SlfsyB5LZgGtBHNnlMz7/xJnvxpRWShToda22hHlxDkzMr
-	DB/4k3CLbcHT8MjqH9GY8siroY1a8ko=
-Date: Mon, 19 Jan 2026 16:49:46 +0800
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="yXkZBPm6"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id B27A12074B;
+	Mon, 19 Jan 2026 09:53:47 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 7TSF3xOPicpc; Mon, 19 Jan 2026 09:53:47 +0100 (CET)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 136EB206BC;
+	Mon, 19 Jan 2026 09:53:47 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 136EB206BC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1768812827;
+	bh=S7J2Q2DVsmz2IG4AkVZrkXTcAJr3iwIbsOwyxzpVGyc=;
+	h=From:To:CC:Subject:Date:From;
+	b=yXkZBPm6YkmziWh1XPw5yYKt/etr5LYrFPsmvkcJxLprNGfenr2CPCcgPGf29yrsl
+	 jx2FimK6/DaxTeJgpU/CxXh/Gu2eWjxijdAMnzoF5jbV+VINJA3zUVGMiK9swQA4cX
+	 e89kq+lGv/oNut2DdQdl1DlUbjhR+Xpt8hbm6DXwdKZcHNYPK5D1q1M+LcIkIJDafd
+	 ZF+1cinOy3TsXYuHCCvSlM7HoPr8dQWHTZDaZp5pKdGUrD0GVSjb4QG9CSAG/p79dB
+	 raNLZuPJzaAKsJh37XGg1v9BC0i/cwWcBzAzIuEGb4fVjmLGl1Cv6ZBhKeDfpX8yIk
+	 98IKAmPFIZABQ==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 19 Jan
+ 2026 09:53:46 +0100
+From: Antony Antony <antony.antony@secunet.com>
+To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	<netdev@vger.kernel.org>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Chiachang Wang <chiachangwang@google.com>, Yan Yan
+	<evitayan@google.com>, <devel@linux-ipsec.org>
+Subject: [PATCH ipsec-next v4 0/5] xfrm: XFRM_MSG_MIGRATE_STATE new netlink message
+Date: Mon, 19 Jan 2026 09:53:30 +0100
+Message-ID: <cover.1768811736.git.antony.antony@secunet.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v3] page_pool: Add page_pool_release_stalled
- tracepoint
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: netdev@vger.kernel.org, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, kerneljasonxing@gmail.com,
- lance.yang@linux.dev, jiayuan.chen@linux.dev, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Leon Huang Fu <leon.huangfu@shopee.com>,
- Dragos Tatulea <dtatulea@nvidia.com>,
- kernel-team <kernel-team@cloudflare.com>, Yan Zhai <yan@cloudflare.com>
-References: <20260102071745.291969-1-leon.hwang@linux.dev>
- <011ca15e-107b-4679-8203-f5f821f27900@kernel.org>
- <20260104084347.5de3a537@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <20260104084347.5de3a537@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-02.secunet.de
+ (10.32.0.172)
 
 
+Ther current XFRM_MSG_MIGRATE interface is tightly coupled to policy and
+SA migration, and it lacks the information required to reliably migrate
+individual SAs. This makes it unsuitable for IKEv2 deployments,
+dual-stack setups (IPv4/IPv6), and scenarios where policies are managed
+externally (e.g., by other daemons than IKE daemon).
 
-On 5/1/26 00:43, Jakub Kicinski wrote:
-> On Fri, 2 Jan 2026 12:43:46 +0100 Jesper Dangaard Brouer wrote:
->> On 02/01/2026 08.17, Leon Hwang wrote:
->>> Introduce a new tracepoint to track stalled page pool releases,
->>> providing better observability for page pool lifecycle issues.
->>
->> In general I like/support adding this tracepoint for "debugability" of
->> page pool lifecycle issues.
->>
->> For "observability" @Kuba added a netlink scheme[1][2] for page_pool[3], 
->> which gives us the ability to get events and list page_pools from userspace.
->> I've not used this myself (yet) so I need input from others if this is 
->> something that others have been using for page pool lifecycle issues?
-> 
-> My input here is the least valuable (since one may expect the person
-> who added the code uses it) - but FWIW yes, we do use the PP stats to
-> monitor PP lifecycle issues at Meta. That said - we only monitor for
-> accumulation of leaked memory from orphaned pages, as the whole reason
-> for adding this code was that in practice the page may be sitting in
-> a socket rx queue (or defer free queue etc.) IOW a PP which is not
-> getting destroyed for a long time is not necessarily a kernel issue.
-> 
->> Need input from @Kuba/others as the "page-pool-get"[4] state that "Only 
->> Page Pools associated with a net_device can be listed".  Don't we want 
->> the ability to list "invisible" page_pool's to allow debugging issues?
->>
->>   [1] https://docs.kernel.org/userspace-api/netlink/intro-specs.html
->>   [2] https://docs.kernel.org/userspace-api/netlink/index.html
->>   [3] https://docs.kernel.org/netlink/specs/netdev.html
->>   [4] https://docs.kernel.org/netlink/specs/netdev.html#page-pool-get
-> 
-> The documentation should probably be updated :(
-> I think what I meant is that most _drivers_ didn't link their PP to the
-> netdev via params when the API was added. So if the user doesn't see the
-> page pools - the driver is probably not well maintained.
-> 
-> In practice only page pools which are not accessible / visible via the
-> API are page pools from already destroyed network namespaces (assuming
-> their netdevs were also destroyed and not re-parented to init_net).
-> Which I'd think is a rare case?
-> 
->> Looking at the code, I see that NETDEV_CMD_PAGE_POOL_CHANGE_NTF netlink
->> notification is only generated once (in page_pool_destroy) and not when
->> we retry in page_pool_release_retry (like this patch).  In that sense,
->> this patch/tracepoint is catching something more than netlink provides.
->> First I though we could add a netlink notification, but I can imagine
->> cases this could generate too many netlink messages e.g. a netdev with
->> 128 RX queues generating these every second for every RX queue.
-> 
-> FWIW yes, we can add more notifications. Tho, as I mentioned at the
-> start of my reply - the expectation is that page pools waiting for
-> a long time to be destroyed is something that _will_ happen in
-> production.
-> 
->> Guess, I've talked myself into liking this change, what do other
->> maintainers think?  (e.g. netlink scheme and debugging balance)
-> 
-> We added the Netlink API to mute the pr_warn() in all practical cases.
-> If Xiang Mei is seeing the pr_warn() I think we should start by asking
-> what kernel and driver they are using, and what the usage pattern is :(
-> As I mentioned most commonly the pr_warn() will trigger because driver
-> doesn't link the pp to a netdev.
+Mandatory SA selector list
+The current API requires a non-empty SA selector list, which does not
+reflect IKEv2 use case.
+A single Child SA may correspond to multiple policies,
+and SA discovery already occurs via address and reqid matching. With
+dual-stack Child SAs this leads to excessive churn: the current method
+would have to be called up to six times (in/out/fwd × v4/v6) on SA,
+while the new method only requires two calls.
 
-Hi Jakub, Jesper,
+Selectors lack SPI (and marks)
+XFRM_MSG_MIGRATE cannot uniquely identify an SA when multiple SAs share
+the same policies (per-CPU SAs, SELinux label-based SAs, etc.). Without
+the SPI, the kernel may update the wrong SA instance.
 
-Thanks for the discussion. Since netlink notifications are only emitted
-at page_pool_destroy(), the tracepoint still provides additional
-debugging visibility for prolonged page_pool_release_retry() cases.
+Reqid cannot be changed
+Some implementations allocate reqids based on traffic selectors. In
+host-to-host or selector-changing scenarios, the reqid must change,
+which the current API cannot express.
 
-Steven has reviewed the tracepoint [1]. Any further feedback would be
-appreciated.
+Because strongSwan and other implementations manage policies
+independently of the kernel, an interface that updates only a specific
+SA - with complete and unambiguous identification - is required.
 
-Thanks,
-Leon
+XFRM_MSG_MIGRATE_STATE provides that interface. It supports migration
+of a single SA via xfrm_usersa_d (including SPI) and we fix
+encap removal in this patch set, reqid updates, address changes,
+and other SA-specific parameters. It avoids the structural limitations
+of XFRM_MSG_MIGRATE and provides a simpler, extensible mechanism for
+precise per-SA migration without involving policies.
 
-[1]
-https://lore.kernel.org/netdev/20260102104504.7f593441@gandalf.local.home/
+New migration steps: first install block policy, remove the old policy,
+call XFRM_MSG_MIGRATE_STATE for each state, then re-install the
+policies and remove the block policy.
 
+Antony Antony (5):
+  xfrm: add missing __rcu annotation to nlsk
+  xfrm: remove redundant assignments
+  xfrm: allow migration from UDP encapsulated to non-encapsulated ESP
+  xfrm: rename reqid in xfrm_migrate
+  xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration
+---
+ include/net/netns/xfrm.h    |   2 +-
+ include/net/xfrm.h          |   3 +-
+ include/uapi/linux/xfrm.h   |  11 +++
+ net/key/af_key.c            |  10 +--
+ net/xfrm/xfrm_policy.c      |   5 +-
+ net/xfrm/xfrm_state.c       |  34 ++++----
+ net/xfrm/xfrm_user.c        | 163 +++++++++++++++++++++++++++++++++++-
+ security/selinux/nlmsgtab.c |   3 +-
+ 8 files changed, 199 insertions(+), 32 deletions(-)
 
+---
+v1->v2: dropped 6/6. That check is already there where the func is called
+    - merged patch 4/6 and 5/6, to fix use uninitialized value
+    - fix commit messages
+
+v2->v3: - fix commit message formatting
+
+v3->v4: add patch to fix pre-existing missing __rcu annotation on nlsk
+   (exposed by sparse when modifying xfrm_user.c)
+
+-antony
