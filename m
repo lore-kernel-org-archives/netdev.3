@@ -1,90 +1,49 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE42A326D46
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 17:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F436D518;
+	Tue, 20 Jan 2026 17:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768929246; cv=none; b=g1GaEQxBLYjFA3CemvCu8xkoq2bLXPfkyoKJIsrQiFiXtvVfFF3qiUaSQt+B3N4yZpfaSe/9CxQIVzldqM9kj47TXZNgIyKw/ZLJbhox1f0uKnWxE+hN28HTWkXJT1vYy7MQqJZG0cxaM2eAO4JWRG0eWwkEOfD0pzh55/9a4Kw=
+	t=1768929455; cv=none; b=TFZI5dvq5RqeRu/e+3TH87Lv2XYAHM6+A7o1WH3t28il67iauV0hS8EaHHbBjiH1gMRNwmIsH531Jsq9QiYANxOftGY25LgMsOKQTgsCNWkyM4c9iTmdbvuoyvKRwk2viV5xv2sX+qU4iN1hDsYoA4mL/fRfSY8T8z2lmvSZAtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768929246; c=relaxed/simple;
-	bh=Ckdv+LBfVcrA4JvvMxCIADVWbw04Tilid9Ikn1lV+1Q=;
+	s=arc-20240116; t=1768929455; c=relaxed/simple;
+	bh=GC5leWFHxfCZZZb2UsLFXbBbyheKtE9khnzoBXJsTlo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dy9HKF8ZJCqJ8qm69/3ShZLU2N6jAErgVF4Yk1yb0jU17qb8239tljraayg95zJqa8x1xawn2kWf6uiPNHlnIvPYyJDuzi6+wAgUeBMAFG7ft5kxd+0uwF1jfD7lbRBlKSBijkm4mVJoByC1ofjdeToWx6XQOXXmWUUUeeQAftM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LHIADCTp; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RXlPJXhtoDvYPOUp1gGyhTlDS5OV3XLC9ZGos1SpfsS6PAy4mYADB3zK8UXu+/o1ayGHOD733UZhT3twsIxWWiuhhj0/kjCe+sQfPc2L+cDpiQuO1k6HyapS4iM7Zk2ig8L2CMoUj87IagVvh1EOtU9BxboQ8EhsVHIeD37UyOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E4sZBqKA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LHIADCTp"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12336c0a8b6so11816916c88.1
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:14:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768929244; x=1769534044; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=md0g+j6qZSK2w0IJlJPci/fZMbMlDX58xj6TKgMT//Y=;
-        b=LHIADCTpliQ9GjRtHbrk1xhrCs84ftlZsBP+4XYxc7221cWYqU5ZuaV8OtiQcAOZl7
-         Qx5lKuCyjBNUgy+MEstWqBBdJCHu2bXNOxheMlS68l/JdWu2EkpTZCpDHfXmC26b/lyA
-         VSFfyGMq/evhusy/Qoh3/OIDKwS/ytrUTjpS0yhiKZLFq19SDL1TQgClJyh2270QGUaS
-         22X1bls2yLhstBSW8LMA1iCIQYM4eH2PKXf/T5+EHRY+Drn+c7ImaJlJA9Qqgx/4StKa
-         4c7FRVHsLnxpxTpSJKoW2vlGs271QLTWtFCxa12kceIZwkr116tl59yXytN6rXQzTEpO
-         jD1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768929244; x=1769534044;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=md0g+j6qZSK2w0IJlJPci/fZMbMlDX58xj6TKgMT//Y=;
-        b=IdVM9CcMNRxJ1xyh4VwlMgecBgo4UZSHkktKkMSltQ5m/CrHVOJmUkDOpHLxdFau67
-         wLb3qeDuAkc2yi56Zz9Q4DY42B1Lcm47Diha86/9EvwXTJiaV6dAYKqeoh3NnmstoDag
-         1kQAXy7LWP5S8RIXvuNA0pSscesavYM+xKoHaEwpebuKG3WYn4PXZQN/m/v0/x//Swkn
-         kHiQUZ4F4hE1Ly6OIMdgUxFOHrbP7+Rg2S7RJzE2h+aFCywPfIkrmgkdpvB7Lnk/MQOV
-         ZSWVi7R7QXX+MTgb2z+5bRAdxD8HNtSW07Uctu7oIdiMsAHwP5WrKGfu5FQ3VvyOKCdV
-         kIXg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8LJbgyGq8kK2s4JNcXdVz3uTIEV5vLGIwuHPxES7yeRBNrwU1tDYDihXlTlSxwaZlsdJY68s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW9arJ7LOLhvgilxZlCLUMoiwUxoTlUCmAJXPu6dxUAO9EYncE
-	redTHbGXKJi8Hyu0GKAVgLs/zIVd4YuunM9MtxVpWGOMxY+bpLREPz0ds4B+HQ==
-X-Gm-Gg: AY/fxX6KXzkBi6qRXrlZap00gPCvtQcR0GTs79j3fZYTOOXyTN3irnECOOwF/JHoGug
-	Tf7WnT8eCm9WFpnNxv299Xz1I4cFAe3uEQQUok47mmxMFUrym3QXIUvn5A3eYHcGpTLuq0N4f1X
-	zIdPln8puZLjX3CIpAuEp9DuT3q0sD8JVfLpzLsNhHgVCps00rA0w27+IDVvQillEApU43SF9MT
-	aJCzFtouWp0rAdF0SjOL9JYY7RkP3b8RXfOf0ljomM4/PNcDup0KrftNeQeSApjva4G5Bp54dem
-	VaEPHy0rakOkICKkd0t9uZpcCjvWReqETtrPKaqfA6vFZOpOKs/JEhottXK6+oXhD6+UFOzOT6V
-	+YAVMkKt3ZKsv5eNI6Z07uP2xDQAgNkpnzB4JTYhk8O7i/QCDFyxnxLg7LNl+eXMhxPt/4Ubyj3
-	CqOZ8PSZ950DA=
-X-Received: by 2002:a17:902:d4cb:b0:2a7:9196:a94e with SMTP id d9443c01a7336-2a79196aa80mr1234755ad.15.1768923524001;
-        Tue, 20 Jan 2026 07:38:44 -0800 (PST)
-Received: from gmail.com ([98.97.43.126])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce693sm112017965ad.36.2026.01.20.07.38.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 07:38:43 -0800 (PST)
-Date: Tue, 20 Jan 2026 07:38:16 -0800
-From: John Fastabend <john.fastabend@gmail.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, bpf@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E4sZBqKA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0B1C16AAE;
+	Tue, 20 Jan 2026 17:17:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768929455;
+	bh=GC5leWFHxfCZZZb2UsLFXbBbyheKtE9khnzoBXJsTlo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E4sZBqKAJ/wp77ayWX8sZ4EaqUPJQJnufITzHJbYSFrpwU+rZqk24R+Ngqw5GScvt
+	 Fq0UivAlevi/YgMQZCKh61uX8vlhzPUkYwj5QwZaUFYCRfUPoePVtzhQWJaZRNdZJn
+	 beE8CaQvcuwtPquRz22GgFU8/VszyxPDAFMVc+vFsoTux/xAPNH4gGgwtev0nYPCab
+	 r8/W8kLvpNC71FiAbzivZLMY6iDpR9FQYA1pQqMb6SZcbncmSOcIyyWB6YyF0toW1R
+	 mN3HhwEzHzZSKE8FY3voUjXnOKv7cx80IROdMQSPbVNnOXE9zS2BOPIfSLu2VaVAUI
+	 UF7P0I0f/++bQ==
+Date: Tue, 20 Jan 2026 17:17:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Michal Luczaj <mhal@rbox.co>,
-	Cong Wang <cong.wang@bytedance.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf-next v7 1/3] bpf, sockmap: Fix incorrect copied_seq
- calculation
-Message-ID: <20260120153807.gzwnhxxtcocycfmr@gmail.com>
-References: <20260113025121.197535-1-jiayuan.chen@linux.dev>
- <20260113025121.197535-2-jiayuan.chen@linux.dev>
- <875x8wuy4e.fsf@cloudflare.com>
+	Richard Cochran <richardcochran@gmail.com>,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	=?utf-8?Q?Miqu=C3=A8l?= Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/8] net: dsa: microchip: Add KSZ8463 tail tag
+ handling
+Message-ID: <aW-4qgp0mGNPNiau@horms.kernel.org>
+References: <20260115-ksz8463-ptp-v1-0-bcfe2830cf50@bootlin.com>
+ <20260115-ksz8463-ptp-v1-5-bcfe2830cf50@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,57 +52,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <875x8wuy4e.fsf@cloudflare.com>
+In-Reply-To: <20260115-ksz8463-ptp-v1-5-bcfe2830cf50@bootlin.com>
 
-On 2026-01-20 16:01:21, Jakub Sitnicki wrote:
-> On Tue, Jan 13, 2026 at 10:50 AM +08, Jiayuan Chen wrote:
-> > A socket using sockmap has its own independent receive queue: ingress_msg.
-> > This queue may contain data from its own protocol stack or from other
-> > sockets.
-> >
-> > The issue is that when reading from ingress_msg, we update tp->copied_seq
-> > by default. However, if the data is not from its own protocol stack,
-> > tcp->rcv_nxt is not increased. Later, if we convert this socket to a
-> > native socket, reading from this socket may fail because copied_seq might
-> > be significantly larger than rcv_nxt.
-> >
-> > This fix also addresses the syzkaller-reported bug referenced in the
-> > Closes tag.
-> >
-> > This patch marks the skmsg objects in ingress_msg. When reading, we update
-> > copied_seq only if the data is from its own protocol stack.
-> >
-> >                                                      FD1:read()
-> >                                                      --  FD1->copied_seq++
-> >                                                          |  [read data]
-> >                                                          |
-> >                                 [enqueue data]           v
-> >                   [sockmap]     -> ingress to self ->  ingress_msg queue
-> > FD1 native stack  ------>                                 ^
-> > -- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
-> >                                        |                  |
-> >                                        |             ingress to FD1
-> >                                        v                  ^
-> >                                       ...                 |  [sockmap]
-> >                                                      FD2 native stack
-> >
-> > Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
-> > Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-> > Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-> > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-[...]
-
-> > @@ -487,6 +494,14 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-> >  out:
-> >  	return copied;
-> >  }
-> > +EXPORT_SYMBOL_GPL(__sk_msg_recvmsg);
+On Thu, Jan 15, 2026 at 04:57:04PM +0100, Bastien Curutchet (Schneider Electric) wrote:
+> KSZ8463 uses the KSZ9893 DSA TAG driver. However, the KSZ8463 doesn't
+> use the tail tag to convey timestamps to the host as KSZ9893 does. It
+> uses the reserved fields in the PTP header instead.
 > 
-> Nit: Sorry, I haven't caught that before. tcp_bpf is a built-in. We
-> don't need to export this internal helper to modules.
+> Add a KSZ8463-specifig DSA_TAG driver to handle KSZ8463 timestamps.
+> There is no information in the tail tag to distinguish PTP packets from
+> others so use the ptp_classify_raw() helper to find the PTP packets and
+> extract the timestamp from their PTP headers.
+> 
+> Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-We could probably push this without the 2/3 patch? If we are debating
-that patch still would be good to get this merged.
+...
 
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+> diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+> index 9170a0148cc43b4213ec4bd8e81d338589671f23..635679402f8a96b29536a91988346a8825bae976 100644
+> --- a/net/dsa/tag_ksz.c
+> +++ b/net/dsa/tag_ksz.c
+> @@ -16,6 +16,7 @@
+>  #define KSZ9477_NAME "ksz9477"
+>  #define KSZ9893_NAME "ksz9893"
+>  #define LAN937X_NAME "lan937x"
+> +#define KSZ8463_NAME "ksz8463"
+>  
+>  /* Typically only one byte is used for tail tag. */
+>  #define KSZ_PTP_TAG_LEN			4
+> @@ -383,6 +384,108 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
+>  DSA_TAG_DRIVER(ksz9893_netdev_ops);
+>  MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
+>  
+> +#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
+> +#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+> +
+> +static void ksz8463_xmit_timestamp(struct dsa_port *dp, struct sk_buff *skb)
+> +{
+> +	struct ksz_tagger_private *priv;
+> +	struct ptp_header *ptp_hdr;
+> +	unsigned int ptp_type;
+> +	u32 tstamp_raw = 0;
+> +	s64 correction;
+> +
+> +	priv = ksz_tagger_private(dp->ds);
+> +
+> +	if (!test_bit(KSZ_HWTS_EN, &priv->state))
+> +		return;
+> +
+> +	if (!KSZ_SKB_CB(skb)->update_correction)
+> +		return;
+> +
+> +	ptp_type = KSZ_SKB_CB(skb)->ptp_type;
+> +	ptp_hdr = ptp_parse_header(skb, ptp_type);
+> +	if (!ptp_hdr)
+> +		return;
+> +
+> +	correction = (s64)get_unaligned_be64(&ptp_hdr->correction);
+> +
+> +	if (correction < 0) {
+> +		struct timespec64 ts;
+> +
+> +		ts = ns_to_timespec64(-correction >> 16);
+> +		tstamp_raw = ((ts.tv_sec & 3) << 30) | ts.tv_nsec;
+> +
+> +		ptp_hdr->reserved2 = tstamp_raw;
+
+I think that you need to assign a be32 rather than a u32 to reserved2.
+
+Flagged by Sparse [1].
+
+[1] This particular commit, from Al Viro's tree:
+    https://git.kernel.org/pub/scm/linux/kernel/git/viro/sparse.git/commit/?id=2634e39bf02697a18fece057208150362c985992
+    To address this mess:
+    https://lore.kernel.org/all/bf5b9a62-a120-421e-908d-1404c42e0b60@kernel.org/
+
+> +	}
+> +}
+
+...
