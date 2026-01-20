@@ -1,123 +1,94 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FCC3BF2EC
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768900275; cv=pass; b=EQdlLz74MBhIRyFXMZ+7E5tNzBuFm1qfAQoIDreFNRANvQn35cZ3UZ2O7J1cX/0/D31eJWtA/80EfRCjiUlLasrfZJdID0Y5Me5D0nHiD4cMrpsqfT0Bo/mGBSRzJEcydU3T6PVxBehJDJwkyy2cleM6MAgoG8cDqZAcAUcqm2g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768900275; c=relaxed/simple;
-	bh=sr/D3loxcW3zgKxJASxgPSEmEne+stX0kvpMIBGVae4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G5Uy6x/BncFDF8AVZ9TmkVeqnQGvnXwpg44X/EgNDhRmC8QZlDYLNJjQ1rhk44dI4Yv0435LwzR2zahgzm4/LkjsC3pdmC5oz2Igu7gskxTtJPfKVct9TWN8uQB+HoEgEx+C1Kbj/oVO/QBj90gxYP6JEAVYzwyG5KzkRLpIBoY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xAz3QCpF; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xAz3QCpF"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5014b7de222so51330021cf.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 01:11:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768900272; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R9zBz9HEcKb/wote7C410r3FViOtBQIUh5u4kP48M/HLffYyWiDS5bu+OmnzQDYLJk
-         O7105Md9KDLPOQCe72PNFxg9wghEuF+GV0Hhwix4kgJfXPrS7ahIutotNCtQYdD+uXBO
-         t5v6I2+Pp5x6i5ZunePMqYNt6muutmr1F6cb9QW/j8YGHVZMr7iU6Aun4zVGVWETmEgW
-         TdMUiQRvLpqtF6v50dKJMkeIGCnuYTtJ5U1awWUNygd3CqykVTCzwLQ2U1Ir6VInvvT5
-         Mcfh/omsDt+kqFQWg0TFjsuHDaz6OUlLHszG7B6YQP0jPZ4RMIDlEXVn+tAl/h5CF1hz
-         umhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5WYoDnSFRQEA9MKbDH9fqTg5m/DI0C0n/ySPFiEIq2M=;
-        fh=uoSRB19O+ywB4I5CfplegB9+0iHiCG57YKu0RTaoMfY=;
-        b=ZbpZQMzJfkv4IcybPFz/Q/YtTDLmN6k6c7k96d9w5AupeQKtktK6QjEtcMoydErbb5
-         DhC1N/HMTls7eP1c14gm06DA39z32C19YMhbkqyfS0qA0xpTSQqzS4eVGtSIZjclVaxu
-         YpE6SZ7nt8jgBpYmaBJ3BSbiRWD2oiqxv1jQW928eSBza/HZf/TA1J2WQoOQlhA4OhDW
-         QRPUKbvlW2k0FAUUcrMY0eZK2WtJmihQzyGzSJZGizoj0gnGFPG80UI61mNptm+9Nun7
-         7VLWNeUkM1iWNcnA33OmL9GZhH8S5pOA3ze+ysvymBsV6x6dMT2EqGlmfVy0nr00OLJS
-         xj7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768900272; x=1769505072; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5WYoDnSFRQEA9MKbDH9fqTg5m/DI0C0n/ySPFiEIq2M=;
-        b=xAz3QCpFpBOWB6xDPkrlnHBN4jwfUtVHV54ZJWs8tbtNosjbjQNIxD139SMgjLEWos
-         sbJ+Sl0Tpp62AK/pHI4162Cawq4DLRHLOjoIz1WR0L1Jp1NRt0BflG8AaWyQNH59zZZ+
-         MMRNJRVLKd9kExA6vAVhgpYB+hLOuJpCeNCEdFP+jUD/Pzy8Asm2O5QdmR9or+WM2grn
-         pRBbWBGEDEeLpNTdAVBHwMfirNZeyRsw1Th7hYlhZ0yiD9zl8kjXqtMojiHD8I6ImHfj
-         LW3lWzBC0BQdSXhedCk2NQjyAKnuODfO6j4NmFUkgrdgnYcv84N4VQAdbag6WmwswsAP
-         rrWw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA823D1CAF
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768900635; cv=none; b=hYUUHvKiG1UTHPiFghHS61JlRUqD1AMpDB23bWdLGw38NP+WPDRrTXTHWOuDnzB0TppKQpxw+kNE5QfW+BJ+qC8koek+vjEkZU2s9raPlNsQ6PfUEyCyR6Nh5wFAWUD+jedOjx5xRhZ/ASDiDD5r4wxTr1o61F0IP0JwZc5bfRs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768900635; c=relaxed/simple;
+	bh=/TUOBC0WYfd/Xrf1Aif9NdWpL6jDj72FVGtHUkudOr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DMfWiLJnu4U/KZmWTrlt3BSG20L5jyXXxvz+CRJdLWNg1Op/wnobdFeQztg+bhndxBkpjrPTVWZzaXWqnZYrsdjAHRX7wYa3REvmT5bfixxJAUl3o/y2swE/IokuidnNZAY7fb5MTRoYA1/gYf/TCyDRjkyjLLe/nOhabkcdXko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7cfd0f2ab32so3660167a34.2
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 01:17:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768900272; x=1769505072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5WYoDnSFRQEA9MKbDH9fqTg5m/DI0C0n/ySPFiEIq2M=;
-        b=mxtnXT+RKZdahFs/7kaEgJcMImAd4+uw1mXDSHtZpZF2URyG6LGmFCAQ9jhGj0G5/Z
-         nn5H6TDIWqi70cFyWzTY6lWc66HCqkVJfp1dnnK8IBne3W4M4g4tNbpqJuQgPeRMdeO7
-         JiXzbYJ+w5IJjm/i9MXCxuUjr64STJMaFKrO2vozgfEFGdj+NOguo6cDnyV7rS0HeYiL
-         y0/siblFCjMGRIbeCUxuJWbttpA6zHKXO8x8OR+zl0Mm2XB39/lMp+DQFHrV/9bocbfs
-         JdUALvSThyXDp2GuQMArkMTqLrebtHF3BdtUyQ3Iz3XjyLpSE8Hjk7W9/MRnvpGnFxks
-         lbIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTUL52KvptIpuL7Ld0/7L3RLPDr7HFx6NL/p8hLdHDK6ugi2B/xZhd8sZ30rqSYEwtSgvSjzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMMwhC/7wwVGQbegI4BXarzwoUer0Gb+ECrnh5PGvciBZa512j
-	Y/nuad2khG6wwBxCE8jEcqTdGskY770Jqef0rikqFBX9k8QaX7CPrdLvgw11U7xNMWmOgagVM/n
-	nTJn2zAV5jmCBPS+xSlXIR0j1gubsmgesbRGGpLAx
-X-Gm-Gg: AY/fxX5ohFY3eeVIOpG6MuJKabYwML6fdnGm3WVsqgahzgYEJBQOxj7Pq7AkcHbe8dc
-	C0Pgd5aO+BeVPZZMsheQuXwGr24wnCnvyBvKeeSFSN8JqERMBZu4BwsjRP49d1Y324uqi5ZblwA
-	r7pji+dGITC7Ynj2/aUFYzH8FYHI6DdR46YNkSiFJfF8Fo67WK3TgRN7ANQM0jK5Dp3DrQpsWeO
-	913BJbCarmg1Dx1/ovUKc7VJVhtNhD53uFkdKkd4cV6i5eQgRyJGBJ7Y9LcW9u6eUyOnbc=
-X-Received: by 2002:a05:622a:19a0:b0:4ee:17b0:6261 with SMTP id
- d75a77b69052e-502a168e7a9mr204346991cf.29.1768900271500; Tue, 20 Jan 2026
- 01:11:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768900633; x=1769505433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DcwOoX1hGZl+EMxknP6NmBWll+17b+9EN1tr1+RrdwM=;
+        b=gS2SpOAaH/rgK7Z6DNkPh90JOl6bex89NUuOypLbeyJSSRpHuI1e8PZRJufLiSSJUx
+         QqpkvhNhYtsuv2wro1eLNt+IKWDrvlIOQIbmKt/3eKcNiFyx7BxbBQv1F99JneyAojoR
+         Sohv+a9FyYBZQPvIAA6FyjZWzrGR0u+cna1/oUfyxXsvtJ6VEpxlJ6/Cl+T2E5AY0+IY
+         4dXEtQpb0+RHQWJYMvx87C1InkOi44uD2HndGShcGRF23OsSkcgnDe26latt+UnUhXJz
+         99VuItP1L1l2s/JNdyUF0vvjFYLq7wM5ILp6vIaifCuCfCk9f6hGXIEj76HsVNiSYBvC
+         J+Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIC1srNAw1dfDxHHyNch6GjZzuj7JN4JVXAk5FC1OSdzmUpO8BtF93vfgkko34PZGSTrpZ1RA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhRARfxP8Y/3PxZfv0ZiSIBY4MYogfSmr66xvlMd44+0hvKeOW
+	5CUjdgE9sjhPuMIsqPpg6DslF1ncHCXVkCrVw9ag1hx58XefraDWTsq9SDTqhg==
+X-Gm-Gg: AY/fxX5DtcMd4T/WQdr5JuwpBN1QYVTwgvHUzbdMRZ23REBDJ4wOXp1wvo9zsAEiaMO
+	8pAEeAdO18X+KW1ks3nh3PcILYoksPhMCRM8ldzqTmNUfAi0h07FeyGFtjVjxE+76snM+zKrt2M
+	BiIV7RqdGr4I6f/IefFYkvTTeAdS5Sskbe//FLObZKqalGVCvb/R1slw+T9doKc2aIEMB+DZJN1
+	dQLkthWcUCzcewpyKx7N5yxT96kVw8UkhLdsrF6KKmhibaKE20UMN5cy6KJB/F0JRTLcAKEA4G5
+	P4GcFSGGUWXCwsuFv9ckareT7NQBzw0uKe2pym5KjRwZ2UwXUE8hFaN2VkpP841gYK+YJ3aCUIg
+	rVoGOV8MmM3goCXuzgxq6Rjt/oP1dctJzH+y+vY9MqBw3tWDBL9cO4q0mcAW0F90OjWlSCtmXE1
+	X0NMCWO1eD4i9T
+X-Received: by 2002:a05:6830:6a92:b0:7cf:d1b7:40b6 with SMTP id 46e09a7af769-7cfded69860mr8534579a34.11.1768900632978;
+        Tue, 20 Jan 2026 01:17:12 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:51::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf0d9142sm8157393a34.1.2026.01.20.01.17.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 01:17:12 -0800 (PST)
+Date: Tue, 20 Jan 2026 01:17:09 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Petr Mladek <pmladek@suse.com>
+Cc: John Ogness <john.ogness@linutronix.de>, osandov@osandov.com, 
+	mpdesouza@suse.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, 
+	jv@jvosburgh.net, kernel-team@meta.com, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, rostedt@goodmis.org
+Subject: Re: [PATCH net-next 0/2] net: netconsole: convert to NBCON console
+ infrastructure
+Message-ID: <aW9H3o5hFDmJFKsH@gmail.com>
+References: <aWECzkapsFFPFKNP@pathway.suse.cz>
+ <875x9a6cpw.fsf@jogness.linutronix.de>
+ <44upa7szd563kggh4xolznmfcwfnhrrh5guvecp6pzlvp5qvic@w7hxtzy7huzf>
+ <jakydyx5dprrzgbsb6lorgpova46jbhq5tecwwtiihkhyi6ofy@olsrizfk52je>
+ <aWpekVlhRpD4CaDI@pathway.suse.cz>
+ <aWpfDKd64DLX32Hl@pathway.suse.cz>
+ <6tryrckp7mah2qghxu5fktrwexoik6anplubfvybushtcgocq5@kg6ln44istyk>
+ <aW446yxd-FQ1JJ9Q@pathway.suse.cz>
+ <bvmrtic6pr52cxwf6mis526zz4sbxstxjd2wiqkd2emueatv33@eccynoxgjgo2>
+ <aW9D5M0o9_8hdVvt@pathway.suse.cz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251129095740.3338476-1-edumazet@google.com> <CAL+tcoAS9u1A9xpsWaAzSojJ7qepWsvF3imC5LtEhu=zD9AjsQ@mail.gmail.com>
- <87jyxc1wnb.ffs@tglx>
-In-Reply-To: <87jyxc1wnb.ffs@tglx>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 20 Jan 2026 10:11:00 +0100
-X-Gm-Features: AZwV_Qg6wO03LZww9IwZ7Vwp6PECZdvn0r5NTA_3IV_-b5XyzvnspOrvR7Md6pg
-Message-ID: <CANn89iLz=syAMbfEdVXVg_tCwvwWhObRDGk29ko9CkQHhAHWhg@mail.gmail.com>
-Subject: Re: [PATCH] time/timecounter: inline timecounter_cyc2time()
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: Jason Xing <kerneljasonxing@gmail.com>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
-	Eric Dumazet <eric.dumazet@gmail.com>, Kevin Yang <yyd@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	Yuchung Cheng <ycheng@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW9D5M0o9_8hdVvt@pathway.suse.cz>
 
-On Tue, Jan 20, 2026 at 10:06=E2=80=AFAM Thomas Gleixner <tglx@kernel.org> =
-wrote:
->
-> On Tue, Jan 20 2026 at 16:18, Jason Xing wrote:
-> > On Sat, Nov 29, 2025 at 5:57=E2=80=AFPM Eric Dumazet <edumazet@google.c=
-om> wrote:
-> >
-> > When I'm browsing the modification related to SWIFT, I noticed this
-> > patch seems to have not been merged yet?
->
-> It's in the tip tree and scheduled for the next merge window.
+On Tue, Jan 20, 2026 at 09:59:16AM +0100, Petr Mladek wrote:
+> On Mon 2026-01-19 08:34:42, Breno Leitao wrote:
+> > Back o this current patch, I've tested it internally and run a test for
+> > hours without any current issue in terms of task->comm/cpu. 
+> > How would you prefer to proceed to get the patch in?
+> 
+> Is the netconsole part ready for mainline?
+> 
+> If yes, I would suggest to send the full patchset for review and
+> it might go in via the networking tree.
 
-You beat me to it, thank you
+Yes, it is. I will focus on it today, then!
 
-tip tree :
-
-commit 4725344462362e2ce2645f354737a8ea4280fa57
-Author:     Eric Dumazet <edumazet@google.com>
-AuthorDate: Sat Nov 29 09:57:40 2025 +0000
-Commit:     Thomas Gleixner <tglx@kernel.org>
-CommitDate: Mon Dec 15 20:16:49 2025 +0100
-
-    time/timecounter: Inline timecounter_cyc2time()
+Thanks
+--breno
