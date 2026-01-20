@@ -1,39 +1,43 @@
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
+Received: from mail-10625.protonmail.ch (mail-10625.protonmail.ch [79.135.106.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1E91AA7BF
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 00:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875A21A5BB4
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 00:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768870129; cv=none; b=UOn6GnrE50CmFxm63W2UDvbHjd0+ZSZ+lVPGcL8VcjYOnShj7EClcMI/gBjeeOiEprBzvIw0KEjfvj6zIMz4PXmEZcXSML0uWA9VHOG7D+e9x/SGikzLFnRdpGEDiFh4/bph4wzfiwTq1MS3+VZsvFoMSuygleo+TzpeDpjFtpQ=
+	t=1768870130; cv=none; b=QsSKmt4OS6QFP5rcJhhiKJTKlnnBd8dfM4eCxS3ocqx4IOb9Zpr4jUlMcOio+CwT/pJxj+446HlurPJ3nBOIIh+A1dqduKnm5sdj4Os1CUd8D77KTEYDB8Ao9U5VUo1rTUY66DIGtZpkjq5WmsppIuhg4sviBIwxeAq23de8eQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768870129; c=relaxed/simple;
-	bh=4svxBZQ3RPxlhAENJZN/CF6IXpMwFIpjnBX33bl4DLM=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=ttcQQg5Trib3ezG1IFCXspS4YTGzM0xtWPbMCmIOBgGL6L3OlQLfD4irdtDVnSQDQRaSvPfkbxkV4PYYwpq+bAYYnywIs7urjHEv51JwcYayT3n32I85UeFcbdNYgkl3rVlRQeomxefWKB8X6qnTlZmB6XsfndaciYMoIKpQw7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=QRdLLYtq; arc=none smtp.client-ip=57.129.93.249
+	s=arc-20240116; t=1768870130; c=relaxed/simple;
+	bh=/0chezKZEgFOMSPncW/2YTocW8NPuNPAPpLBZ0v6D4U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NHqzbvWxLXwkX5wp9W5cRiTlGa0cYATFGXaDIjtmX03NBMTw80Sze1w3BEG8LekfUj8hNvL/JEncT8hKCb+E2fPEMpP4maMvIRk/JzztUH8EMyaxHq6DEx7CpvaIAiTTDA+eK7UbrK54bL8gJXDJGSo3GXu++rR7NsPznYT/8UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=ECnI7NcO; arc=none smtp.client-ip=79.135.106.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="QRdLLYtq"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="ECnI7NcO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1768870108; x=1769129308;
-	bh=ZkEBgcbthzeyCZGFSk1PGFkY9eDCiL/ndFf14lfNB9k=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=QRdLLYtqB5xX9xLLcfz77d+uVn/eU+MJkFg1o4+HvIzIYcxUhAVkGykADZ4btWAHw
-	 wMmmt3YqUuSPkRPHpe4kXtyNGkkcoE7fr2vT5jS7N5Zm6NC5nbeDCEWp21f/Ji+en0
-	 JjXu3WP3kP2rhRpMNPouDHywztz7AiPG4XeBOuBxfD2xxeJn2IxB5tlzNoCHlDP4tN
-	 iMurei7oJIfE4lfGVWPBo9uOmPEYdPJkfJIrI8gMlp6ioLzA8VEFlRaFqSJbYz9yL2
-	 V7DMW7EncOZZEC9RXLf9udy5taauVZG+vdir74t4uoFBk0zqGoviKlS0x8+98FjWNR
-	 Rb1ZNTIP+A3WA==
-Date: Tue, 20 Jan 2026 00:48:21 +0000
+	s=protonmail2; t=1768870119; x=1769129319;
+	bh=hgZfu2gwJF+PAW+NCm5J0Z64EJ32aifzlflRodxQoAE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ECnI7NcOhdy92XAVgWGaXTfl/a197ENcuUmQYkjqb6TiMGrnOm8vCZ/PH4ra0t2BC
+	 ziT56Pal2F35McA/55kAIJeIgzlHUXrdrp6GsrN5OmJFyH7vPzkXLpjwO+xIjVBSND
+	 /KVpZqZtMKQJDszKoQxqTpXe5xUEmOdZO/m1RD37FQ05A+7FReJTgoQ3HdUlTj+7pH
+	 fzmQlwykgp7s+em0hvA5s3OmEnesT5zSdhGk/IEivdpyesYjP+ji1PFJh+2WanpZO+
+	 UJVQ/iy3xO4V2ko66yYmFhsRXIzXLXdMxrd17mlkTzT7hzoMr4XcJferCVhFMeJr16
+	 XjQ0CT5/n8E4Q==
+Date: Tue, 20 Jan 2026 00:48:34 +0000
 To: netdev@vger.kernel.org
 From: Paul Moses <p@1g4.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>
-Subject: [PATCH net v2 0/2] net: sched: act_gate: fix update races and infoleak
-Message-ID: <20260120004720.1886632-1-p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
+Subject: [PATCH 2/2] net/sched: act_gate: zero-initialize netlink dump struct
+Message-ID: <20260120004720.1886632-3-p@1g4.org>
+In-Reply-To: <20260120004720.1886632-1-p@1g4.org>
+References: <20260120004720.1886632-1-p@1g4.org>
 Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 95d34b41a6eeee5445f72e890bbf123da97a4a6c
+X-Pm-Message-ID: 9f9eb4f1232645b510937b51a01122d3023897b6
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,28 +47,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This series fixes act_gate schedule update races by switching to a
-prepare-then-swap model with an RCU-protected params pointer, so the
-hrtimer/datapath never observe partially updated or freed schedules.
-Old params are freed via call_rcu() after the swap.
+Zero-initialize the tc_gate dump struct to avoid leaking padding bytes
+to userspace. Without clearing the struct, uninitialized stack padding
+can be copied into the netlink reply during action dumps.
 
-It also zero-initializes the netlink dump struct to prevent padding
-information leaks, and tightens schedule/timing validation to avoid
-misprogramming the hrtimer on invalid inputs.
+Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Moses <p@1g4.org>
+---
+ net/sched/act_gate.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Changes since v1:
-- Drop tc-testing changes; no test updates required
-- Validation fixes: base/cycle range checks + derived cycle overflow guard
-- Fix create/update corner cases: avoid oldp deref on create, publish param=
-s
-  only after full init, fix partial schedule copy cleanup
-- Timer handling: cancel/reprogram only when required
-- Keep dump struct zero-init without unrelated code motion
-
-Patches:
- 1/2 net/sched: act_gate: fix schedule updates with RCU swap
- 2/2 net/sched: act_gate: zero-initialize netlink dump struct
-
---
+diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+index 3ee07c3deaf97..ff963c165de90 100644
+--- a/net/sched/act_gate.c
++++ b/net/sched/act_gate.c
+@@ -656,17 +656,16 @@ static int tcf_gate_dump(struct sk_buff *skb, struct =
+tc_action *a,
+ {
+ =09unsigned char *b =3D skb_tail_pointer(skb);
+ =09struct tcf_gate *gact =3D to_gate(a);
+-=09struct tc_gate opt =3D {
+-=09=09.index    =3D gact->tcf_index,
+-=09=09.refcnt   =3D refcount_read(&gact->tcf_refcnt) - ref,
+-=09=09.bindcnt  =3D atomic_read(&gact->tcf_bindcnt) - bind,
+-=09};
++=09struct tc_gate opt =3D { };
+ =09struct tcfg_gate_entry *entry;
+ =09struct tcf_gate_params *p;
+ =09struct nlattr *entry_list;
+ =09struct tcf_t t;
+=20
+ =09spin_lock_bh(&gact->tcf_lock);
++=09opt.index    =3D gact->tcf_index;
++=09opt.refcnt   =3D refcount_read(&gact->tcf_refcnt) - ref;
++=09opt.bindcnt  =3D atomic_read(&gact->tcf_bindcnt) - bind;
+ =09opt.action =3D gact->tcf_action;
+=20
+ =09p =3D rcu_dereference_protected(gact->param,
+--=20
 2.52.GIT
+
 
