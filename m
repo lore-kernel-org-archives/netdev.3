@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3993410D07;
-	Tue, 20 Jan 2026 10:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182CF410D2D;
+	Tue, 20 Jan 2026 10:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768905293; cv=none; b=hXIjOuASiqb08Zeyz2e5CAulO/9OTVW9/3lIO0L8bOB1nbBXxvmvBI60pHP3vZIgUlQ/HGzl58KzfPO2yH34GxfUSkMS8bhe2WfKf4hOFSZz3Ydy2h5b7gQEOWO/BINq7ZCWmOhk7ChNgOGfu9fNbsg5KxvqsEWFTq2KyaRhBrI=
+	t=1768905295; cv=none; b=CD5ozQSgqzhKrJT/J6ChUdVcDttgl+fz/OM8xeqwIi2oqtYSmckWW6kdCp/c4/Rbw7vJBX0GhsZ51L1HwyW5W+oCYSUmrqd3l3qlOvHyhvGAx6kY1Jxu+TUEK/v4p1h9+fguK2ftzvqa9PLT5+uNmqgp5KtMkqoRZQA0cMF722s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768905293; c=relaxed/simple;
-	bh=iC3XdbETtmivl7MiNG080jOCyV8qw/2J329iqKv9uzM=;
+	s=arc-20240116; t=1768905295; c=relaxed/simple;
+	bh=fHx6D75nNH7UK7zPn0EFhSdI4CnOvj2IIm7MiYdVpPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nM2emJbyuABxov+wc7DmL0w78vXhsNwyDwsECgLCnnCEzjtr5Z8tOnBi6CVymDVf4g3u49qBSx0FzhdkDNOOLgE6gULvmj8ShBPb0Za0ar4bWAD9Lh8mUVuSXmITzmcwEkXbFVRYdP2+bWbiOIdLEVswkJI17w6IbQ9fSBAr8OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iNdSpgAi; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version:Content-Type; b=FVhM8d4/r9z9o+lOnmMLi39piB3BN81jdPo7OkkZexaBaKzz/xnGO1DOTSWiODuj1mdIUs9kFFYrswCcgM8TJbSzqmBL78VaQ47HFrYsRgElRGIG8YicPWf0RVrmt8ukcWM8mxzUvNfVop3ix5pl7wwjggg0unC2EtaS0jPr1/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BFlf03Oi; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iNdSpgAi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BFlf03Oi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768905291; x=1800441291;
+  t=1768905293; x=1800441293;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iC3XdbETtmivl7MiNG080jOCyV8qw/2J329iqKv9uzM=;
-  b=iNdSpgAi/sqn5rIcrW5PUkrN0VK6FUT4ymjyDxSVU3rJ8KsGK9JrURKr
-   AOj+BMxuyVimwOcBCbd1RkKV/geDBS8VIauSN7Z+2nm/tUSpFyCuSG/of
-   80aQkqfHvOkUfS10FMlPaNcCBlFC+DnUTXLTiqJxu7nNkWL4CNW0JXCjC
-   JllZ6xhWbFUWdQev5n2e4vAgLT/o844dUbl4DDzOaCIrHUSaYmX21YxuJ
-   BpdDi2ni95p9oYfgpnjH4p1V4m6zR/02CqyaLEGCcIMuCX34yMTEJoWxb
-   dNlqz2rz6z9lXyOdXQHt0p3IskkzJ++LGEQq47CE7iZ4E7G7831A3ZsBU
-   A==;
-X-CSE-ConnectionGUID: soH+Eci3RLaWgBE4ArP2Vg==
-X-CSE-MsgGUID: eXxREXPlQmq3puwiNU8lUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70161748"
+  bh=fHx6D75nNH7UK7zPn0EFhSdI4CnOvj2IIm7MiYdVpPI=;
+  b=BFlf03OiZqETRQ6OWNMccVMPEdY0wBX1c9B022CxVMIWwKx+EAIDTXXs
+   lpDzWM6PF0DfjF9NA7PO04XUsnoartmLowqfR+ZYr9YqkFBSqGWlq+xO2
+   FdC3aZ+jsT5xshpsPTyNob+UA9ZKFmGSjJQSbevadJB9x3jv2HxU+ebqC
+   AQUiumOr3KZ++j5iEY7FahebfQPTxvktx1YEdn3RjbQ9gl0dgrOxAFjKJ
+   1hxAYLRU6o/BUg2ltvjOQJP8q8PldaJ5g7kmopjB8aIOdcB9UXEQTAruQ
+   JOzY6p+gE6T7u5rDrDcqpNefD70bgM6kKiDcJymALQRx5bxSs0gb9Nf9j
+   Q==;
+X-CSE-ConnectionGUID: Y6isOIuLS2y2vqeNY5uq8w==
+X-CSE-MsgGUID: cOU/PzzmROmBc9FLAosnrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70161752"
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="70161748"
+   d="scan'208";a="70161752"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 02:34:50 -0800
-X-CSE-ConnectionGUID: ipVBg8rASC6sTNAfBhD0LA==
-X-CSE-MsgGUID: lNdC1XsPSC+zrigQGNbj/g==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 02:34:52 -0800
+X-CSE-ConnectionGUID: MJ7YMCojQBuS26sLDqT3KA==
+X-CSE-MsgGUID: SsQNjIDISziwqr3UjNXIaw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="210935856"
+   d="scan'208";a="210935866"
 Received: from hpe-dl385gen10.igk.intel.com ([10.91.240.117])
-  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 02:34:49 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 02:34:51 -0800
 From: Jakub Slepecki <jakub.slepecki@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: linux-kernel@vger.kernel.org,
@@ -52,9 +52,9 @@ Cc: linux-kernel@vger.kernel.org,
 	michal.swiatkowski@linux.intel.com,
 	jakub.slepecki@intel.com,
 	aleksandr.loktionov@intel.com
-Subject: [PATCH iwl-next v3 4/8] ice: allow overriding lan_en, lb_en in switch
-Date: Tue, 20 Jan 2026 11:34:35 +0100
-Message-ID: <20260120103440.892326-5-jakub.slepecki@intel.com>
+Subject: [PATCH iwl-next v3 5/8] ice: update mac,vlan rules when toggling between VEB and VEPA
+Date: Tue, 20 Jan 2026 11:34:36 +0100
+Message-ID: <20260120103440.892326-6-jakub.slepecki@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260120103440.892326-1-jakub.slepecki@intel.com>
 References: <20260120103440.892326-1-jakub.slepecki@intel.com>
@@ -68,151 +68,176 @@ Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 
-Currently, lan_en and lb_en are determined based on switching mode,
-destination MAC, and the lookup type, action type and flags of the rule
-in question.  This gives little to no options for the user (such as
-ice_fltr.c) to enforce rules to behave in a specific way.
+When changing into VEPA mode MAC rules are modified to forward all traffic
+to the wire instead of allowing some packets to go into the loopback.
+MAC,VLAN rules may and will also be used to forward loopback traffic
+in VEB, so when we switch to VEPA, we want them to behave similarly to
+MAC-only rules.
 
-Such functionality is needed to work with pairs of rules, for example,
-when handling MAC forward to LAN together with MAC,VLAN forward to
-loopback rules pair.  This case could not be easily deduced in a context
-of a single filter without adding some guessing logic or a specialized
-flag.
+ice_vsi_update_bridge_mode() will now attempt a rollback of switch
+filters in case an update fails.  If the rollback also fails, we will
+now return the rollback error instead of the initial error.
 
-Add a slightly more generic flag to the lan_en and lb_en themselves
-for the ice_fltr.c to request specific destination flags later on,
-for example, to override both values:
-
-    struct ice_fltr_info fi;
-    fi.lb_en = ICE_FLTR_INFO_LB_LAN_FORCE_ENABLED;
-    fi.lan_en = ICE_FLTR_INFO_LB_LAN_FORCE_DISABLED;
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jakub Slepecki <jakub.slepecki@intel.com>
+
 ---
-I considered a resend or bumping the old thread, because we did not finish
-the discussion last time with Aleksandr, but I feel like this version
-addresses most if not all of the points that were made.  One exception is
-that I did not split the fields, but that was only one of the solutions.
-Nonetheless, this should be overall a good starting point for a
-discussion.
+Kept Aleksandr's reviewed-by per discussion.
+
+Testing hints:
+  MAC,VLAN rules are created only if entire series is applied.
+  The easiest way to test that rules were adjusted is to run traffic
+  and observe what packets are sent to LAN.  VEPA is expected to behave
+  same as before the series.  VEB is expected to (a) behave like VEPA
+  if loopback traffic would cross VLANs, or (b) behave as before.
+  Traffic from/to external hosts is expected to remain unchanged.
+  
+  Refer to cover letter (0/8) for full network configuration.  To
+  change hwmode use:
+
+      # bridge link set dev $pf hwmode {veb,vepa}
 
 Changes in v3:
-  - LB_LAN masks and values no longer rely on boolean promotion.
-  - ice_fill_sw_info() deals with u8 the entire time instead of building
-    building lb_en and lan_en values at the end from booleans.
+  - Refer to reproduction in cover letter in current 5/8.
 
 Changes in v2:
-  - Use FIELD_GET et al. when handling fi.lb_en and fi.lan_en.
-  - Rename /LB_LAN/s/_MASK/_M/ because one of uses would need to break
-    line
+  - Close open parenthesis in ice_vsi_update_bridge_mode() description.
+  - Explain returns in ice_vsi_update_bridge_mode().
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 25 +++++++++++++--------
- drivers/net/ethernet/intel/ice/ice_switch.h | 19 +++++++++++++---
- 2 files changed, 32 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c   | 48 +++++++++++++++++----
+ drivers/net/ethernet/intel/ice/ice_switch.c |  8 ++--
+ drivers/net/ethernet/intel/ice/ice_switch.h |  3 +-
+ 3 files changed, 46 insertions(+), 13 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index cb80b77d29fd..7b3ab69b8300 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8208,8 +8208,16 @@ static int ice_vsi_update_bridge_mode(struct ice_vsi *vsi, u16 bmode)
+  *
+  * Sets the bridge mode (VEB/VEPA) of the switch to which the netdev (VSI) is
+  * hooked up to. Iterates through the PF VSI list and sets the loopback mode (if
+- * not already set for all VSIs connected to this switch. And also update the
++ * not already set for all VSIs connected to this switch). And also update the
+  * unicast switch filter rules for the corresponding switch of the netdev.
++ *
++ * Return:
++ * * %0 if mode was set, propagated to VSIs, and changes to filters were all
++ *   successful,
++ * * %-EINVAL if requested netlink attributes or bridge mode were invalid,
++ * * otherwise an error from VSI update, filter rollback, or filter update is
++ *   forwarded. This may include %-EINVAL. See ice_vsi_update_bridge_mode() and
++ *   ice_update_sw_rule_bridge_mode().
+  */
+ static int
+ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+@@ -8219,8 +8227,8 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+ 	struct ice_pf *pf = ice_netdev_to_pf(dev);
+ 	struct nlattr *attr, *br_spec;
+ 	struct ice_hw *hw = &pf->hw;
++	int rem, v, rb_err, err = 0;
+ 	struct ice_sw *pf_sw;
+-	int rem, v, err = 0;
+ 
+ 	pf_sw = pf->first_sw;
+ 	/* find the attribute in the netlink message */
+@@ -8230,6 +8238,7 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+ 
+ 	nla_for_each_nested_type(attr, IFLA_BRIDGE_MODE, br_spec, rem) {
+ 		__u16 mode = nla_get_u16(attr);
++		u8 old_evb_veb = hw->evb_veb;
+ 
+ 		if (mode != BRIDGE_MODE_VEPA && mode != BRIDGE_MODE_VEB)
+ 			return -EINVAL;
+@@ -8251,17 +8260,38 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+ 		/* Update the unicast switch filter rules for the corresponding
+ 		 * switch of the netdev
+ 		 */
+-		err = ice_update_sw_rule_bridge_mode(hw);
++		err = ice_update_sw_rule_bridge_mode(hw, ICE_SW_LKUP_MAC);
++		if (err) {
++			/* evb_veb is expected to be already reverted in error
++			 * path because of the potential rollback.
++			 */
++			hw->evb_veb = old_evb_veb;
++			goto err_without_rollback;
++		}
++		err = ice_update_sw_rule_bridge_mode(hw, ICE_SW_LKUP_MAC_VLAN);
+ 		if (err) {
+-			netdev_err(dev, "switch rule update failed, mode = %d err %d aq_err %s\n",
+-				   mode, err,
++			/* ice_update_sw_rule_bridge_mode looks this up, so we
++			 * must revert it before attempting a rollback.
++			 */
++			hw->evb_veb = old_evb_veb;
++			goto err_rollback_mac;
++		}
++		pf_sw->bridge_mode = mode;
++		continue;
++
++err_rollback_mac:
++		rb_err = ice_update_sw_rule_bridge_mode(hw, ICE_SW_LKUP_MAC);
++		if (rb_err) {
++			netdev_err(dev, "switch rule update failed, mode = %d err %d; rollback failed, err %d aq_err %s\n",
++				   mode, err, rb_err,
+ 				   libie_aq_str(hw->adminq.sq_last_status));
+-			/* revert hw->evb_veb */
+-			hw->evb_veb = (pf_sw->bridge_mode == BRIDGE_MODE_VEB);
+-			return err;
++			return rb_err;
+ 		}
+ 
+-		pf_sw->bridge_mode = mode;
++err_without_rollback:
++		netdev_err(dev, "switch rule update failed, mode = %d err %d aq_err %s\n",
++			   mode, err, libie_aq_str(hw->adminq.sq_last_status));
++		return err;
+ 	}
+ 
+ 	return 0;
 diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 04e5d653efce..3caccd798220 100644
+index 3caccd798220..3b526383b8ed 100644
 --- a/drivers/net/ethernet/intel/ice/ice_switch.c
 +++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -2534,12 +2534,14 @@ int ice_get_initial_sw_cfg(struct ice_hw *hw)
-  *
-  * This helper function populates the lb_en and lan_en elements of the provided
-  * ice_fltr_info struct using the switch's type and characteristics of the
-- * switch rule being configured.
-+ * switch rule being configured.  Elements are updated only if their FORCE bit
-+ * is not set.
-  */
- static void ice_fill_sw_info(struct ice_hw *hw, struct ice_fltr_info *fi)
- {
--	fi->lb_en = false;
--	fi->lan_en = false;
-+	u8 lan_en = fi->lan_en;
-+	u8 lb_en = fi->lb_en;
-+
- 	if ((fi->flag & ICE_FLTR_TX) &&
- 	    (fi->fltr_act == ICE_FWD_TO_VSI ||
- 	     fi->fltr_act == ICE_FWD_TO_VSI_LIST ||
-@@ -2549,7 +2551,7 @@ static void ice_fill_sw_info(struct ice_hw *hw, struct ice_fltr_info *fi)
- 		 * packets to the internal switch that will be dropped.
- 		 */
- 		if (fi->lkup_type != ICE_SW_LKUP_VLAN)
--			fi->lb_en = true;
-+			FIELD_MODIFY(ICE_FLTR_INFO_LB_LAN_VALUE_M, &lb_en, 1);
- 
- 		/* Set lan_en to TRUE if
- 		 * 1. The switch is a VEB AND
-@@ -2578,14 +2580,19 @@ static void ice_fill_sw_info(struct ice_hw *hw, struct ice_fltr_info *fi)
- 			     !is_unicast_ether_addr(fi->l_data.mac.mac_addr)) ||
- 			    (fi->lkup_type == ICE_SW_LKUP_MAC_VLAN &&
- 			     !is_unicast_ether_addr(fi->l_data.mac.mac_addr)))
--				fi->lan_en = true;
-+				FIELD_MODIFY(ICE_FLTR_INFO_LB_LAN_VALUE_M,
-+					     &lan_en, 1);
- 		} else {
--			fi->lan_en = true;
-+			FIELD_MODIFY(ICE_FLTR_INFO_LB_LAN_VALUE_M, &lan_en, 1);
- 		}
- 	}
- 
- 	if (fi->flag & ICE_FLTR_TX_ONLY)
--		fi->lan_en = false;
-+		FIELD_MODIFY(ICE_FLTR_INFO_LB_LAN_VALUE_M, &lan_en, 0);
-+	if (!FIELD_GET(ICE_FLTR_INFO_LB_LAN_FORCE_M, lb_en))
-+		fi->lb_en = lb_en;
-+	if (!FIELD_GET(ICE_FLTR_INFO_LB_LAN_FORCE_M, lan_en))
-+		fi->lan_en = lan_en;
- }
- 
+@@ -3067,10 +3067,12 @@ ice_update_pkt_fwd_rule(struct ice_hw *hw, struct ice_fltr_info *f_info)
  /**
-@@ -2669,9 +2676,9 @@ ice_fill_sw_rule(struct ice_hw *hw, struct ice_fltr_info *f_info,
- 		return;
- 	}
+  * ice_update_sw_rule_bridge_mode
+  * @hw: pointer to the HW struct
++ * @lkup: recipe/lookup type to update
+  *
+  * Updates unicast switch filter rules based on VEB/VEPA mode
+  */
+-int ice_update_sw_rule_bridge_mode(struct ice_hw *hw)
++int ice_update_sw_rule_bridge_mode(struct ice_hw *hw,
++				   enum ice_sw_lkup_type lkup)
+ {
+ 	struct ice_switch_info *sw = hw->switch_info;
+ 	struct ice_fltr_mgmt_list_entry *fm_entry;
+@@ -3078,8 +3080,8 @@ int ice_update_sw_rule_bridge_mode(struct ice_hw *hw)
+ 	struct mutex *rule_lock; /* Lock to protect filter rule list */
+ 	int status = 0;
  
--	if (f_info->lb_en)
-+	if (FIELD_GET(ICE_FLTR_INFO_LB_LAN_VALUE_M, f_info->lb_en))
- 		act |= ICE_SINGLE_ACT_LB_ENABLE;
--	if (f_info->lan_en)
-+	if (FIELD_GET(ICE_FLTR_INFO_LB_LAN_VALUE_M, f_info->lan_en))
- 		act |= ICE_SINGLE_ACT_LAN_ENABLE;
+-	rule_lock = &sw->recp_list[ICE_SW_LKUP_MAC].filt_rule_lock;
+-	rule_head = &sw->recp_list[ICE_SW_LKUP_MAC].filt_rules;
++	rule_lock = &sw->recp_list[lkup].filt_rule_lock;
++	rule_head = &sw->recp_list[lkup].filt_rules;
  
- 	switch (f_info->lkup_type) {
+ 	mutex_lock(rule_lock);
+ 	list_for_each_entry(fm_entry, rule_head, list_entry) {
 diff --git a/drivers/net/ethernet/intel/ice/ice_switch.h b/drivers/net/ethernet/intel/ice/ice_switch.h
-index 671d7a5f359f..137eae878ab1 100644
+index 137eae878ab1..b442db4a2ce5 100644
 --- a/drivers/net/ethernet/intel/ice/ice_switch.h
 +++ b/drivers/net/ethernet/intel/ice/ice_switch.h
-@@ -72,6 +72,14 @@ enum ice_src_id {
- 	ICE_SRC_ID_LPORT,
- };
- 
-+#define ICE_FLTR_INFO_LB_LAN_VALUE_M BIT(0)
-+#define ICE_FLTR_INFO_LB_LAN_FORCE_M BIT(1)
-+#define ICE_FLTR_INFO_LB_LAN_FORCE_ENABLED			 \
-+	(FIELD_PREP_CONST(ICE_FLTR_INFO_LB_LAN_VALUE_M, 1) |  \
-+	 FIELD_PREP_CONST(ICE_FLTR_INFO_LB_LAN_FORCE_M, 1))
-+#define ICE_FLTR_INFO_LB_LAN_FORCE_DISABLED			 \
-+	(FIELD_PREP_CONST(ICE_FLTR_INFO_LB_LAN_FORCE_M, 1))
-+
- struct ice_fltr_info {
- 	/* Look up information: how to look up packet */
- 	enum ice_sw_lkup_type lkup_type;
-@@ -131,9 +139,14 @@ struct ice_fltr_info {
- 	 */
- 	u8 qgrp_size;
- 
--	/* Rule creations populate these indicators basing on the switch type */
--	u8 lb_en;	/* Indicate if packet can be looped back */
--	u8 lan_en;	/* Indicate if packet can be forwarded to the uplink */
-+	/* Following members have two bits: VALUE and FORCE.  Rule creation will
-+	 * populate VALUE bit of these members based on switch type, but only if
-+	 * their FORCE bit is not set.
-+	 *
-+	 * See ICE_FLTR_INFO_LB_LAN_VALUE_M and ICE_FLTR_INFO_LB_LAN_FORCE_M.
-+	 */
-+	u8 lb_en;	/* VALUE bit: packet can be looped back */
-+	u8 lan_en;	/* VALUE bit: packet can be forwarded to the uplink */
- };
- 
- struct ice_update_recipe_lkup_idx_params {
+@@ -366,7 +366,8 @@ int
+ ice_add_adv_rule(struct ice_hw *hw, struct ice_adv_lkup_elem *lkups,
+ 		 u16 lkups_cnt, struct ice_adv_rule_info *rinfo,
+ 		 struct ice_rule_query_data *added_entry);
+-int ice_update_sw_rule_bridge_mode(struct ice_hw *hw);
++int ice_update_sw_rule_bridge_mode(struct ice_hw *hw,
++				   enum ice_sw_lkup_type lkup);
+ int ice_add_vlan(struct ice_hw *hw, struct list_head *m_list);
+ int ice_remove_vlan(struct ice_hw *hw, struct list_head *v_list);
+ int ice_add_mac(struct ice_hw *hw, struct list_head *m_lst);
 -- 
 2.43.0
 
