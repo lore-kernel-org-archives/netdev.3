@@ -1,137 +1,167 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EEA33A717
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768932577; cv=pass; b=I5kQpkAFhL3F5xZoZGINpOfSI0qZ9xU4/EkTAbyO8ze+6SISdrIIkuCoiIqDto+2Bgq7nNAY5zJFxyiUI+jWNk+QRLyEO3Ym0H3g28P2oXAvqE9sR8tYvOazQDpCApy1QaFajcTEKws6m+nx+6xzIcmfS+aD1U4gPZAtccoatGo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768932577; c=relaxed/simple;
-	bh=eTFUWY468LUtnVCss8fPkcZUiGciOVE22kpbUyP5ONQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gKCD6Lp2QnP8vyDbDSUz1VZVuK+5Ak7AKMCsSuBqpBOCYKvyG9Pxh4IRE4g1qBewwuVRy88hiLhAU5mkCkBLVru9r89+jnba0KmRbuoZTbso3MPEGRAhl9omcOoof+zQZIvuHhwbfyqxnRninaqZZ1GmCaHckELpmrAceI6QMhw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anpmUNjS; arc=pass smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B844244A717
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768932633; cv=none; b=F7/Vz4hiZXpjP6Oue0YobFtbuR6iZgDZA3oLp6mQDvMvRi3VbLRqU27Qpu/O/YaIUFnobU9XgGENYF397rWf50/rfvka+YhIh+7ebFKSfz36V56Y1Haz5k2OnAIDfVbSN+F9ysJNM6p20gMlKgI2/GyWohxOMC21VPkUf+qiWyc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768932633; c=relaxed/simple;
+	bh=SQuPEuyy9SCwEMK9OfKEs1E1tfBnZqkvPxTamck3rIA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S7ZnoDobslZlU9iIoJMumvhjU0b4w55je6X4xpAx7ajTq6hL4VSpF0UatUoLM6+1p/Zefm5rB1+aZSGJOPBRFVBYgTJ75d5feIsmE/Y/M1fb3UB3oKujMJ5fT7UC+B7cEkqz6UHPBlTRONgWt2ljkPejnEcgiX0DaWYZo210SAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anpmUNjS"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5635f6cb32fso1609666e0c.1
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:09:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768932575; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bnkF780kuPke7unj6x1P/GICxoHSpHnbAC7qEbEkyzZXPqErjTSNSayLJiLlA6D3MT
-         ZRjHR5ODSnF/yGC3+K+c68lzg5jrCK1TIFK0CdNE1c3E2qlKCS9R78hrlNvgF/QMQldQ
-         02nNaY5Rf2R3vL5zrvH2ZNamNRrkMln02r4dovs/8NK0oWHFBToPYDpA5ZhnmLLTgasd
-         Ir/Bw+HtWfiT4YdSLmuAGmQRpW2BC/a0eAYCJVoBzG5Ad0WPkFEfUUeY4r2mtEGKLVlt
-         IGnlXgQoYx+4hbzsd7UXc0jEJ0RKkNQoN9P9Jtwg/ARX98X8asxBk5UcqTx5WlrKKhQj
-         LO3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
-        fh=u7hFgsDtI4PLxxS+Qne9rgcDtKx6/hSQXWTqfJo35Iw=;
-        b=fRXa1J1jS33qWyoj0kjWDscW/qK76w26qFztOXH4CGeopX2lCFUwdapuBEta10bl53
-         eomeIN7IDBbjNxBDedgQQ4siApMBY8iG9JriBPPTSYKa5XXw+/G6/lFag3xPgH3zA87J
-         rgc+ol8A3jdmoSaLP3t3dUfbUmR4+eqwj3PWPvEWXHalqpadHrKfBvMPxEXlCpqXcNu8
-         s6/1GcL7HTvWBqZPJs0ng8IYjfeItm0LbUaARtRcqKvOekTVJfuRQVOKRQWGd0yW6YXS
-         e0c6cylMOAbB2vbMdXTJUrW37pEzF+TqygEymuxFtdcIxPl2csHP7hzMBTl/h2j8qI+0
-         8eFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768932575; x=1769537375; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
-        b=anpmUNjS8yrDJH4LPi37oCbe+cd8KnzGB43Ljez4/HTCmQiGXXZiREJ3udKTWynWQf
-         Ein5SKdb3xhJ3o2HY1Sou5NXnNLARo3DyBmonytS/BKY9AHcNw6Xw7WeksguGv1DHyP1
-         MCk0joGCLGJ9bWo4WqtU53vOnI3DdwBdgQaNcngaXQPm6BzY0kjsonvhoYqOmdXweDNY
-         5KVXfiilb3pAQdr0pJPX2cx7Vxi1RErZYevPDeG0Sz2FmgKdTU4zF+2czic9E6wsqcCT
-         kBPfIBTKVMZgxcpbXI5eNWgmMQNLsw/8cKYq2B2PhYZW/5BHY66TDguI7jAn/RAsBs11
-         z8AA==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4040996405eso3642036fac.2
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:10:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768932575; x=1769537375;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
-        b=TiW7u6w2Lff4OuFIS64DPVoF7MybkE82LmTU0y8JbEkXaijJoVjM49SC/NBA7zlmoK
-         6cwMIWIIeWQuL0RGf3I5rneyzSDgAaY6UVCUSV5EW+m2NPtybiDcPXH3aPcsABRsdnaE
-         gud9o50co8pAOEgmrLdmrLtE7N7gvzcc7v7YFeJogZ2E5GBir+y0832slcpXVC9g3JYh
-         GwtlBxOFfc7/31HVoSU6lEDNvs5kDh0kV70Bm3tYPWa0F2HFddfj00O+OlFNR87U8BI4
-         BXq9seVRX/dLWWvJaT8DiJZPY1w5Xiv9TbpqgDgNLz0f3D1paO3Sx/XA548frKd2eurj
-         eHOA==
-X-Gm-Message-State: AOJu0YwVs/AkbjYTbObACp33H2oPmtfXEPs0DP0dTWp0FCSMZhAopU+3
-	mX8rjT3XQ0fVBcHMjk/ESIvJLvijedD79zTLHPvfs/J4+NadtD+5QbtxAO2n12F7aI7um5AIjbV
-	fcIXQGHOmJhp+5bp/R3BAMF4IHzzEFc0J8Ldo
-X-Gm-Gg: AZuq6aI/dndDPhhBpWO4dUUSUPKO+5yzIlBFJdoE0rxwR3YXPAyHpshMKhDZQIazvgh
-	Ta1Us50RreHMjrF+yCVWfIFDviBmeaP/GsfOfKXIN/qLXBpznxuSRgXR4xMOG9ibG5J5yRFEOiw
-	rgkG984Y+WoRcnpsEAeZ2PfeIFmhy8LJwYfbZg7MN9v7JbewYjH/eoJSGSVWdEJHj3UwN4xkZFg
-	Z+TE6a+vxdxoopRlxbWIAk7HIQNnF5PhALv/3sfQbpCMBbXxn8oMWEwTq+Iqq65YATJ5Mh25SYa
-	aPKpvIKUPIlg2I4CcLu2Ns73QtjBHpA=
-X-Received: by 2002:a05:6102:2ad5:b0:5f1:606f:2a1e with SMTP id
- ada2fe7eead31-5f1a55c31d4mr3830204137.43.1768932574556; Tue, 20 Jan 2026
- 10:09:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768932630; x=1769537430;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y0AMHUzuSQsGvVnfjvJFznULu3YAmXNESMHQiMyZeJo=;
+        b=e5W58qDQQn3wS7r30YNwkiM8b8ZaZj5kjReCizeh9kWDdfByQy5OrnKC6ltvMeMSAv
+         kpClaeHeJkWsrgs8WDi7RE/oxmHUBlLcijpcA4+nMci6M/ORhjteO7yXzUHwxmjppayV
+         RlDAm1a0igRGw+rKBWm7lMWRVtaAdfyGjKCRoOnPP/ciOslB8av3ADozWXGp5JQlIIjP
+         BmIPrD9HSC5gACNvDUKM/eHsKsE6IaBiUuc5cUWMzCxghfF5/Wg15c8gMxH0FMEGhlBW
+         7xU7PqI3vXYsxNSUeJpyT+Ct9R8BzMjiL2QWEnWS4UyweawGAFFAQLkzyTnMIA8xh+fs
+         hUWw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwgcfG0EbMz0tgNOPcC5OEw/zFc/wqhon16QKNBgRI6/tVRndx8tJ9WX186H2xZJNZf9ZAUDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAxId+AfPjBeT7x0hnzXwB93EeclTbczHjjRVfrRtrfnUUF2Bz
+	ky8EeVaf8sAfOt+1SvCdeMcDr6Il7dSmF8qiaA4u4wSwVvdx6bKB8hNmvvnWuw==
+X-Gm-Gg: AY/fxX41TggRA5ifVkhyZMfYyKVW2mY+JNtuAbrlsU6pyJPHLcOQcV9T0INg5ZTj769
+	rRpQC2bVFa+g4sHDI5aTlZNToYfkL4RjNpTADlDpu95mOnrVvLau7UnXuNcz/3MXfFyyM5YWBNh
+	B3UvyFNnoGJciM8pRp1gLpcSWTE+tvY3qCCodS10p/CRVlCdveR+ERAWiZx09nqpAbssbGaapP+
+	YbJ4bYDVf1Wkn93d8qVE+/R18X2pGP/cKf4C/mkqsTdbb9pibw7e5UiAeD4iQq6LnOjzQqMngEG
+	7o2u/cOuhJO4dGRbcxLkwb5UxEdL+iQBrIrq4l8mzEB6UCaEPFCmAnPknGlaIuqQGiNsYGFV9GO
+	rLH+0HsIWj71EkS9A9BbjQ1qR+/2zeqirHzle3k/D/c8OMwt08OosivDyj7R4ygcEFuOahusOCs
+	p/jg==
+X-Received: by 2002:a05:6820:488e:b0:656:9202:58ca with SMTP id 006d021491bc7-662affa13efmr708830eaf.3.1768926244337;
+        Tue, 20 Jan 2026 08:24:04 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:47::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-661187a180csm6078410eaf.15.2026.01.20.08.24.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 08:24:03 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v2 0/5] net: netconsole: convert to NBCON console
+ infrastructure
+Date: Tue, 20 Jan 2026 08:23:46 -0800
+Message-Id: <20260120-nbcon-v2-0-b61f960587a8@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Wed, 21 Jan 2026 00:09:22 +0600
-X-Gm-Features: AZwV_QjMFCC8-ub5lLBu5zwl2IvXXlPrrtNq7cLCe7RsPXC-9OEECgK0657C8JU
-Message-ID: <CAFfO_h4kZQu6CY_U6cfakQ7Zozo8fg-LpQ_n5UiLZDVhqxMC4A@mail.gmail.com>
-Subject: Question about timeout bug in recvmmsg
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	willemdebruijn.kernel@gmail.com, willemb@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABOsb2kC/y3NQQqDMBBA0auEWZuSjNpoVr1HcaFx1NlMSiJiE
+ e9eCF1/eP+CTIkpg1cXJDo4cxTwCisFYRtlJc0zeAVosLXWOi1TiKIXbBrnwtgvNUGl4JNo4bM
+ 4bxDatdC5w1Ap2DjvMX3L4LClFwsR/9ZhtdHPdmrqYPrOme4108SjPGJaYbjv+weRVKvZpQAAA
+ A==
+X-Change-ID: 20251117-nbcon-f24477ca9f3e
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ pmladek@suse.com, john.ogness@linutronix.de
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
+ mpdesouza@suse.com, kernel-team@meta.com, Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3227; i=leitao@debian.org;
+ h=from:subject:message-id; bh=SQuPEuyy9SCwEMK9OfKEs1E1tfBnZqkvPxTamck3rIA=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpb6wiGIjGPirQtPzTE38//gV+YKNqP3l9aqhJy
+ psRVRB24muJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaW+sIgAKCRA1o5Of/Hh3
+ bWLMEACYKoRWE/hco3X4LrqZpdgnDURnMjioeUGXIBlEG4tAAEU3yd+bTztlrPPuA1UCEdjPXEI
+ aHcQ/NdeusET9PFFm1E7t4smTY6cnshIQgJib1fcK7J9fGxztWtp4gj1lKyvhxlTKlDWyMlUXmu
+ bCLjjYxutiva3Q4a1fbmwI2da/XZaQmfT2jG4aQy3wFtalp9jafnNhbYVUgdFtAWa1LtmfU8Ssz
+ WPq9uS7q1iB9EqhXbogKlpYeQ9fgD/oLoD9FVvTt5KOXrfsoiLcsl12QWuq0+oGeHZ0jgFob5mE
+ golu9Y2u0bPN+3zoa9MVOk5Pvb2Eb1hAx1fNidXjwM9OmGXMpG6eX6tc77i4Rcc3+O0DSkWfAhh
+ 16fhm+YiHtF1Xy4C3nsThgpmzY4emdIYObIvBzdrLjmTAe1U6RKyQPqHnCHWSbWa7DMqv2bQlOm
+ SCRtPddpPyN5pO7RfpaP/+kJqRpbmu1rvuZMuXSytngiCnD7bw6YCQ3QXGZn1WTfnU5XkmdbAb+
+ rgOryHMkBNF4lszbSOapJip4xBjWU+uPA2nBRCHkVJjKHp33Sry1RoXBhNMaZgXVBhVpv/t5SQA
+ yv1RQFh6zpMhlD+zyNsuWZfrQmikByvg4xxV21bcpl3kEwN6zvMTSuml1iy7vjzkl4eLVlhkywL
+ zyFVxqb/wmr9ulw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-(Note: I had posted this before in
-https://lore.kernel.org/netdev/CAFfO_h5k7n7pJrSimuUaexwbMh9s+f0_n6jJ0TX4=+ywQyUaeg@mail.gmail.com/
-but got no reply, so trying again. I would really appreciate
-suggestions on this request. Thanks!)
+This series adds support for the nbcon (new buffer console) infrastructure
+to netconsole, enabling lock-free, priority-based console operations that
+are safer in crash scenarios.
 
-Hi,
-Hope everyone is doing well. I came upon this timeout bug in the
-recvmmsg system call from this URL:
-https://bugzilla.kernel.org/show_bug.cgi?id=75371 . I am not familiar
-with the linux kernel code. I thought it would be a good idea to try
-to fix it and as a side effect I can get to know the code a bit
-better. As far as I can see, the system call eventually goes through
-the do_recvmmsg function in the net/socket.c file. There is a while
-loop that checks for timeout after the call to ___sys_recvmmsg(...).
-So this probably is still a bug where if the socket was not configured
-with any SO_RCVTIMEO (i.e., sk_rcvtimeo in struct sock), the call can
-block indefinitely. Is this considered something that should ideally
-be fixed?
+The implementation is introduced in three steps:
 
-If this is something that should be fixed, I can try to take a look
-into it. I have tried to follow the codepath a bit and from what I
-understand, if we keep following the main function calls i.e.,
-do_recvmmsg, ___sys_recvmmsg ... we eventually reach
-tcp_recvmsg_locked function in net/ipv4/tcp.c (there are of course
-other ipv6, udp code paths as well). In this function, the timeo
-variable represents the timeout I think and it gets the timeout value
-from the sock_rcvtimeo function. I think this is where we need to use
-the smaller one between sk_rcvtimeo and the remaining timeout
-(converted to 'long' from struct timespec) from the recvmmsg call (we
-need to consider the case of timeout values 0 here of course). It
-probably would have been easier if we could add a new member in struct
-sock after sk_rcvtimeo, that way the change would only have to be in
-sock_rcvtimeo function implementation. But this new timeout  value
-from the recvmmsg call probably doesn't make sense to be part of
-struct sock. So we need to pass this remaining timeout from
-do_recvmmsg all the way to tcp_recvmsg_locked (and similar other
-places) and do the check for smaller between the passed parameter and
-return value from sock_rcvtimeo function. As we need to pass a new
-timeout parameter anyway, it probably then makes sense to move the
-sock_rcvtimeo call all the way up the call chain to do_recvmmsg and
-compare and send the finalized timeout value to the function calls
-upto tcp_recvmsg_locked, right?
+0) Extend printk to expose CPU and taskname (task->comm) where the
+   printk originated from. (Thanks John and Petr for the support in
+   getting this done)
+1) Refactor the message fragmentation logic into a reusable helper function
+2) Extend nbcon support to non-extended (basic) consoles using the same
+   infrastructure.
 
-I would really appreciate any suggestion about this issue so that I
-can try to fix it. Thank you!
+The initial discussion about it appeared a while ago in [1], in order to
+solve Mike's HARDIRQ-safe -> HARDIRQ-unsafe lock order warning, and the root
+cause is that some hosts were calling IRQ unsafe locks from inside console
+lock.
 
-Regards,
-Dorjoy
+At that time, we didn't have the CON_NBCON_ATOMIC_UNSAFE yet. John
+kindly implemented CON_NBCON_ATOMIC_UNSAFE in 187de7c212e5 ("printk:
+nbcon: Allow unsafe write_atomic() for panic"), and now we can
+implement netconsole on top of nbcon.
+
+Important to note that netconsole continues to call netpoll and the
+network TX helpers with interrupt disable, given the TX are called with
+target_list_lock.
+
+Netdev maintainers, Petr suggested that this patchset goes through netdev[2]
+
+Link: https://lore.kernel.org/all/b2qps3uywhmjaym4mht2wpxul4yqtuuayeoq4iv4k3zf5wdgh3@tocu6c7mj4lt/ [1]
+Link: https://lore.kernel.org/all/aW9D5M0o9_8hdVvt@pathway.suse.cz/ [2]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+
+---
+Changes in v2:
+- Return if not able to nbcon_enter_unsafe() instead of retrying on
+  a different target (Marcos)
+- Add printk that supports context information, which will be used later
+  by netconsole sysdata. (John, Petr)
+- An extra patch to bring symmetry to send_msg_udp()
+- Link to v1: https://patch.msgid.link/20251222-nbcon-v1-0-65b43c098708@debian.org
+
+Changes in V1 from RFC:
+  * Removed the extra CONFIG for NBCON, given we don't want to support
+    both console. Move to nbcon as the only console framework supported
+  * Incorporated the changes from Petr.
+  * Some renames to make the code more consistent.
+  * RFC Link: https://lore.kernel.org/all/20251121-nbcon-v1-0-503d17b2b4af@debian.org/
+
+---
+Breno Leitao (5):
+      printk: Add execution context (task name/CPU) to printk_info
+      netconsole: extract message fragmentation into send_msg_udp()
+      netconsole: convert to NBCON console infrastructure
+      netconsole: Use printk context for CPU and task information
+      netconsole: pass wctxt to send_msg_udp() for consistency
+
+ drivers/net/Kconfig               |   1 +
+ drivers/net/netconsole.c          | 147 +++++++++++++++++++++++---------------
+ include/linux/console.h           |   8 +++
+ kernel/printk/internal.h          |   8 +++
+ kernel/printk/nbcon.c             |  15 ++++
+ kernel/printk/printk.c            |  52 +++++++++++++-
+ kernel/printk/printk_ringbuffer.h |   4 ++
+ lib/Kconfig.debug                 |  20 ++++++
+ 8 files changed, 197 insertions(+), 58 deletions(-)
+---
+base-commit: 956f569c90ab507559342d289f4c923adfbf06f5
+change-id: 20251117-nbcon-f24477ca9f3e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
