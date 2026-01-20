@@ -1,60 +1,62 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C13352C51
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 04:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572363563C4
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 04:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768883784; cv=none; b=Z65iAPduSgAB/gumvNnFEOJrFVgZSFG2ty1YlMD7qtrSbbz6T+MTZD0pbWsl8LKBTsCYLTpq7jA5XhpU6UTLR0r/aj8Ok/nFUJrl6y/CxN8yEjhVP4rl2yrTQkyC9I0tr/guYSks4rUXVRafybzs6r4RmM36NEo/srSB6Of1dgQ=
+	t=1768883793; cv=none; b=RcaiajJtmz+xWaFHpuyF1HMJN+UBOv78WvS2RaZKGLQOxbSRaN2rzMiqgG2pEljYIno3MJIqW8iYT9xUUfFYsXd++Qn6S227IZRn3NykhmNLeg/NbCeGV3npynz4An26BCE5qcFq1pw8u4AFpc7N6/peYjPwKJGHNT0qOi4aCLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768883784; c=relaxed/simple;
-	bh=Wlngs8GSpv8APxHaAYUjYkmr2dMA0BCajAs9V2BT8ds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KBjNui5FVSlHTjVHiljJtK9bxcPykozTm5//WzQVSpGK5NijZWExSevP18l/A92wDAR9xME/WrQdcQzSFJfagg692hiMtz2wKo1FeCsHvGtVXGARGThPBpBRwvSLJA2ZVXAfRvS2BHpgcKKNXPqG13U0O9VIZ2C1dgVqQ43xabE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sv+En+us; arc=none smtp.client-ip=74.125.82.173
+	s=arc-20240116; t=1768883793; c=relaxed/simple;
+	bh=RbmYS+GbmO5r9aIsVbkZb99LO5fpXfIwGvbgj9g6qUI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TlRP12OLNcAL+LVzuPkvNMZ+PYuxeD5Qhm+w+Vk4iaN+rYXJhSzsUTwVJ3sZ78PPQjfrFsDbU4L9pzqvORSB9OHEB0qCh6rOK7PZaQky7zvNbVwGBpvPMgJzRC4s03QZMkZPG+WwPdkO033hzPPbuJy7MX4tGdi0cIHh+AX2/wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fDIrnssH; arc=none smtp.client-ip=74.125.82.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sv+En+us"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b1981ca515so5361438eec.1
-        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 20:36:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fDIrnssH"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b6f5a9cecaso948874eec.0
+        for <netdev@vger.kernel.org>; Mon, 19 Jan 2026 20:36:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768883782; x=1769488582; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=29OkNoazPkO3Cz/ca1GMRTcjG5fAIFuxe8NjRt6vIh0=;
-        b=Sv+En+usckN0PdXCgss6w0dIE9S1izYcvxOPEajAvlYAkmF2+Elcdwc3o20WMi/Xe4
-         fARMGt2UFAXdEgfIRNgM50oAdmzfmU1AgwKofiCvn+dTuLDVEkOhj0Mzv97ZifyjXYhT
-         H1kF/rlcon5vD0TiDi+ngaBURg60CztGK2VGDzBYTiInv95BShtCdQ2x+N/gC2O4fLXm
-         xkLMiQv3KizbAwvhHBQhUScsWDVSagTKUpKpqnP0SHQtZsyhcYPlPOm7agjE9v7fQ+NJ
-         Jd18az63o77GPaGHhlDAIcwfjriXBvtIcQQi9+8uDaPbLaEFDRKvHgCcHqXg4MndHGyj
-         A/GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768883782; x=1769488582;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768883790; x=1769488590; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=29OkNoazPkO3Cz/ca1GMRTcjG5fAIFuxe8NjRt6vIh0=;
-        b=GDFNYywBQKrlGyP2Bfc/YY1yV4tO3zNin9Oji3itDgjaCPOzE4qPnHJ3WF/ciF9W7O
-         2FTo//oNHB0LIAupd5EDE/bwK6nzz4daJhoVrirdmZoOf3KyJ1E5l+plX8rv+ZFOySiy
-         o6soR6AxiqKBm/POkaDOzCFmNXp62XCkeKX58pmmJvI6Mnv83ZNAZV4oBKBiCYBsWmhk
-         1yJFyCvzh5uw8YZlQJwoLVdlpF0MjnAmKlb/8jEJSkAwVH8bqLzZNHFY3cqqbR18XZmH
-         wpGjaS5Sufp+VzO1y+x1vLMi3zoUCBM0H/ic0CxzJcphJVN4+WbjihXMFW6TA+smcy2P
-         l6OA==
-X-Gm-Message-State: AOJu0Yx64FpRCWghSnkjG50ub9Tu2JAewVdfMaRpXVOKPtS9QaepzRcU
-	n17tdRFTIf5QJA8fzTgSiX4+blpntk4+vaQKTcijFmFFCGcVUzcU4tQt
-X-Gm-Gg: AZuq6aKi9bPkf+/inJ0AtY8ZHzy/Scdoyi/FkcaowLWs4r2EewhHVCXBnDYOiUx7GPG
-	Iqk/wrkddwuS/RHjPRUYGx2up1YcA64ag97lpjlBHgB7LFw9shvLMzBuM+0U+BtyUNE5bifgvmy
-	aHXklEL7w61JitaAtF9vZKzNYl+ljHOUtR9dpjzkIo61qtNHG8ILvlwIyF6pp6XKjGl7gHc5nbZ
-	3Xw81R4hQQY2B7rZUcY5ZnMMZ/xbWoqJwayouDKTECkFUT5FrekPV0FJoF7K9D6I/QX3nY2m+bU
-	UQiSgoPn8peJH1YqDhB8Vf4P+0Rjg2SBaPaTHqzHxjL8d7JNRX5pya+iT5g1b21DdxdwsyJG73d
-	NfAbw8mTktglYvW+7jVy3+gRpLu7zjbOvcczXciGQRddK37IMoxdUjNctN1iowAwuNuDME1KPyJ
-	vvY0EnSYkWmQ==
-X-Received: by 2002:a05:7300:a188:b0:2b6:af85:dd29 with SMTP id 5a478bee46e88-2b6fd3a7b8fmr363879eec.0.1768883781926;
-        Mon, 19 Jan 2026 20:36:21 -0800 (PST)
+        bh=yB8/RdUGEfLZjhmXdp52kQTD2QqD1w42DdvzuHTbkg0=;
+        b=fDIrnssHsZHhl1JrOcn8DT3G7fCEhTDqkTCHS/kruE5DdkNGBzbJskcjkpVIdd6uc2
+         Al25X2f+DM6rXYGCeEk3f1URs566WG8zRjrj0Yn1HO1Gs/+X+Ruenv2yNjhxoNIQNAhi
+         ONDG2V1qjwkGB3AUuXEvHd+UGzxip9nrhPmQTQ7v9YfGA2RiqmcWEUKEdKiacUyEMyVo
+         DZkJLS+Ea8NXwENx3TbfMgBpdDQ4Ieh5nNksR9HUszR974MCHG6T6kqImpS47lCZB86v
+         1FZQQIzcA3XcGO4StBhMaRSkZcDu6XQOVexIbZ4TnkHsAC8FHL5vxJKj8JxZgI+0ypog
+         I/Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768883790; x=1769488590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yB8/RdUGEfLZjhmXdp52kQTD2QqD1w42DdvzuHTbkg0=;
+        b=oP/ZxK9tFrzIaoQMw1F4GasaWk+Rh7m7UWLCH5QZyUbPf3+nW1wzVxSklkq4Yc40n4
+         LENMnH1a9L8SR5ERkfLIEBeJn+lFl4YMKlrlQynFhIRGslQLp0QzeFse1tDh3TWKPGLb
+         qGZjDY8Ui6fhB0HJMiUlWqfNp68K61EB00NfIDvvFdo72NxBQnmKt6FKTJKc9H3xVDQu
+         VvQiQCSETfle+N/SYLerL5MZvYsFKL/Wul5LJLYbLsmvmLTaijpasSfBSnsLQ1mFDKtO
+         xlcGPJn3lEn6JUbqeFMqGLbOpJ58RL13+c5CFT2GXtcKMRUWuYXqrOpdza9+hy0Udad+
+         alMg==
+X-Gm-Message-State: AOJu0Yzp39fE68i0F2hzKWmFgqO0p1FxjRafCH1LhJ4JHUYa3+tJlz7O
+	ceXR+fl1CYqz6vrg2jfavxcJz9KyNlwMXUcKObwWzXV28T0Vc+V2wX0o
+X-Gm-Gg: AZuq6aIEIwdu+8n6HM/+r900m4JanfFGVsf8MjhFgN3DtVC3nCQQheLtaoKMFCewSKL
+	/HqJn36Mx3HWBGFFAwwKQQaCoQ8Kk0DMuWuReYMC4kyQGlweRpkbAGOSr+oxavwi2nJgHVEfSBO
+	+l8NeI8bkIlP5fXbP7UVOnUEIUR5HXfuqflYWSJLzS2cIxpzo/oW1xzQyNDyKr/A+W1DXFQTyKj
+	xG2cVuRF6DSGkDFIBozPkIbuc62yC/Sf6214OMtCFY7kKiy5XVzGsLa7fwkxjKTGUS7k1rrQb+O
+	B/9ASckdU9OU04X2kgr79gUlsNuTmNikp/ecIvH8Q5t+OawiTqHHYP8iERSyqXctHqekAhsaNRG
+	S3yNZ4EBeBL0YY4lddQ+jNOppW699BH9P45z45NsVc2LyBNY6Axc/4dcE3IqAiwQ3KpP8N7+M8l
+	ix3FKjRcpBOZvAvToFBtfv
+X-Received: by 2002:a05:7301:9f09:b0:2ae:5e93:b6d with SMTP id 5a478bee46e88-2b6fd7e55f9mr304430eec.38.1768883790053;
+        Mon, 19 Jan 2026 20:36:30 -0800 (PST)
 Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6fba43c3dsm1271369eec.0.2026.01.19.20.36.20
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6fc2820a2sm1030314eec.35.2026.01.19.20.36.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 20:36:21 -0800 (PST)
+        Mon, 19 Jan 2026 20:36:29 -0800 (PST)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -94,10 +96,12 @@ Cc: netdev@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH net-next 0/3] riscv: spacemit: Add ethernet support for K3
-Date: Tue, 20 Jan 2026 12:36:05 +0800
-Message-ID: <20260120043609.910302-1-inochiama@gmail.com>
+Subject: [PATCH net-next 2/3] net: stmmac: platform: Add snps,dwmac-5.40a IP compatible string
+Date: Tue, 20 Jan 2026 12:36:07 +0800
+Message-ID: <20260120043609.910302-3-inochiama@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260120043609.910302-1-inochiama@gmail.com>
+References: <20260120043609.910302-1-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -106,26 +110,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add initial support for ethernet controller of the Spacemit K3 SoC.
-This ethernet controller is almost a standard Synopsys DesignWare
-MAC (version 5.40a). This controller require a syscon device to
-configure some basic features, like interface type and internal delay.
+Add compatible string for 5.40a version that can avoid to define some
+platform data in the glue layer.
 
-Inochi Amaoto (3):
-  dt-bindings: net: Add support for Spacemit K3 dwmac
-  net: stmmac: platform: Add snps,dwmac-5.40a IP compatible string
-  net: stmmac: Add glue layer for Spacemit K3 SoC
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../devicetree/bindings/net/snps,dwmac.yaml   |   3 +
- .../bindings/net/spacemit,k3-dwmac.yaml       | 107 +++++++++
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 +
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-spacemit.c  | 224 ++++++++++++++++++
- .../ethernet/stmicro/stmmac/stmmac_platform.c |   1 +
- 6 files changed, 348 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/spacemit,k3-dwmac.yaml
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
-
---
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 8979a50b5507..54c7b1537ab9 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -396,6 +396,7 @@ static const char * const stmmac_gmac4_compats[] = {
+ 	"snps,dwmac-5.10a",
+ 	"snps,dwmac-5.20",
+ 	"snps,dwmac-5.30a",
++	"snps,dwmac-5.40a",
+ 	NULL
+ };
+ 
+-- 
 2.52.0
 
