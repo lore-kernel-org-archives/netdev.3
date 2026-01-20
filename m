@@ -1,35 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic313-56.consmr.mail.ne1.yahoo.com (sonic313-56.consmr.mail.ne1.yahoo.com [66.163.185.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E073C31AF2D;
-	Tue, 20 Jan 2026 16:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5104F2FB0B9
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768926608; cv=none; b=lXJJrldp1Rexl5MaARTaGFmrFdJEYOGWyN2/T4vizVgCyroFQL1s8bzp16YSGGSUNAuBIB5QOniS5llUFVAQ0/ueGHNMA7JlBOuHUs4hwniXwk/qWd7jzgJ71KclXO1qNdDnKI66WM1RKqINGoCEWl95sSC+CoVqZHRFDBWCcu0=
+	t=1768926856; cv=none; b=pVxFD9G5gZVnrRD4I/Z6TEavN5SpCe0ejGhNyj1WQLGHbd8XXp5B/cz3HkhvYBs08DnwDLQa+cGfWqn1Xo+y38Cgr/d1vfR/wSncbOxkYSVVphTLaYcR+Iz1m7H48l/y0SGSCjEUQUhX50bv74gwTnnz94CwEyxn7gqZX8oh5IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768926608; c=relaxed/simple;
-	bh=pBpKOZhNvenUVHqUyiVbuZTAOpSxq9FVRJcMRVLUnHw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=buOaJDkg7STRmR7IcTrKVWQQUCrbzHabDRFdl6z30TAUlEylkr9cy01LYzWAhbVHhCAWmTK/uVU2RwPv6Sz1MmPnSAmESMFeh/4nzLycF1iMqafu2SrlgRNp5hXezDQaDs5wvII42ntZVDETm08EE3MTzWpZL+9LOf1JiQajznQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIZqh4AO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768926856; c=relaxed/simple;
+	bh=OyOaWwBvHND5r3TfmA5EfR/0ZZhhdD9apaXkw0UcDzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b9w9YHhKZ4fgqcChQzV7fEyeZsHPhIAvFEsRC+MwodyXDieAEmaxMzrVE8EGiPiVEUuWEcGzkNPf/CC8CApxHsxB310+hi3dr3OZxQ8PxkI1vtwOZF0+z0rC2Wj8hJnGHVBCasQirGBHvL0rJ4xOlbTyO4Z0PSPIwpIX/v+Vpyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=XVsqPf5y; arc=none smtp.client-ip=66.163.185.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIZqh4AO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC676C16AAE;
-	Tue, 20 Jan 2026 16:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768926607;
-	bh=pBpKOZhNvenUVHqUyiVbuZTAOpSxq9FVRJcMRVLUnHw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pIZqh4AOftcTdgpt6qm4QafQiTQ1cfqvoyoJG8jjO74YwWJ/zd0tm+M3/n/oBcRdj
-	 IQI6SCTWKc4/z30yA9ybVUsfHaGrJptewG/371Oyv70k5Po4i5a9V7OaQDWd0RFfcU
-	 Qs2DClCQKYhE8ROfCj2jjj3su4+kz3akNpcx338kpJhYgNW0sI/NJrakBiJzfTKOCN
-	 YMPSvfMqcgNLz83TmhFj4TjkGeNFRL1k4wbUhp5WPJCZlHjJkUOkPMmyYeS0Abcmey
-	 xlt9pOVasH1v0DP7Eb4lJPYesuVkyFXj7SgDQ16T223T7j1eTCZ1UDE8wHRgvZw134
-	 o67tGiBq5RH6A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8B9B03806671;
-	Tue, 20 Jan 2026 16:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="XVsqPf5y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768926854; bh=NWYeVvUmPkhrr6EVYaqNHPu/ef7X6jiiHaSE1eZ3j9I=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=XVsqPf5yrXmnvtW2YX2pzJvLARk5v2F/scXYsagRB018xcdCtG13t71vvBvSIj5noPvjzJNEeqJ15HT5vr+AYaiZXUg7H5IVdXP0g9VPZP4gOVh2y9WUHeMB+nvhJmxbPQnoHu/wiSQQHzSwlA9mHbO7xe5bHvhUTU/bmson/1oRUlk//i/ux0AHmTRbUqAiEfgoCFLlmuaRt2P+QX2Su4VqGOdxykHp2zqLxtsCxC1ryq6C8oSWFh26oV9DWDPO6txRoRn8ViTiyaflkGPbMEm/TP3jLvw6sth8Ecy0fSXfRnQ3qKICzPc/yyeV4M8CPE78N/rAiaLm8Oy8GN2F8A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768926854; bh=ELjhW1hW4TJISD+NSnemQwo3Ho24Yc+Ska6Xu9Oltty=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=SsVLVYh3RcHH6A5rWe927L2CXNcm/Ts4n+9TSJJDGQJHyH1pWHN7kx7EYlNRkU34FdJ7057OznAAvV39ME0ARPDqAxNGWuQToADLeTUOuYY3/CRSgAkc6JIfYcdwNs4ZZjfJAFk1/YBRbSAw1yw6rYihBB/ZZEAc7W1dgbjaU0ywIvTmvAACzqIKGjiezaV1DeuTQ+AcWsHEmOEOgR7k1nRAccsXTijtHB07DF5Zh3ICFhPkdfWvwbVZUN5ynFOBRagNKNDebJrBU8ObyOD+cvZ+W5Kchz1QSENrwQBAwz8V+1kxFVIaGXi5E27+a6M1TZrXtrBnwnK5gs1R9JT6ow==
+X-YMail-OSG: 413JwU4VM1kIaO_MHgVKXuk9bahYeU6C3CT5uop1RNQlGZAMhFgjTdsfyo0qvn8
+ VeU454rplSrtdFkqWFMqRyCzhbl1BjUjGEwALR9mw.ypSmsDJ1BZxiuzNSZ8etqCbURUJgPhoKsB
+ zyHc1FT1zwf1Dtl7AWBXs2V5t5fziG3A2UEDRmoN3f7dolEPLtLXWHPiH3Y16YjrwezuTO02nP3H
+ qp4KAwALMBqTPVlmr7ZdtR0AWBnubrWn27k5yjoQjHAMk3.MfXz_DJXTE00tHRr9tTf1B4IJTfrp
+ uZv3R3U9WA06pyaE6p6q2_DU_DS1fJHKG9.GIzWithCNyAtablhntvoC_yKvJNLG0dGuDJ5MW58U
+ hwujs3MVEqFTGWIHcSD2BK_8G3MGBTD_DbUPLZboaLI_aU3SCaJUlWMrNt.GTjjEvZDqr0aO4CBa
+ Rou7NTc3xOvAuTk9ZPEuUN202WVebwmym.53JiGryVXnF5HGPgvP4_o9Q2Nvdx4CXxbaUxi8eUnN
+ EgC3tCRs.3rUe.6gzVpQPuwEM3dIUK.kE5Ecr5t7R026x1c.2iYw.gj6JIQ22f8P10850NKoe_hE
+ wn_aQ9pHUDZECwx_5WrXZbk42K3IRcjgD.xsY88yu.cZWvBkawmWIUq2kkc.YDE.4GKvgLXa7w0e
+ rmClrTsEFOunNol2ExeNXhacA.U7Y6k3jz4.rMc0PHHpU8BsBjmIYFvDq_R7thOWlDEVQu2iNU0x
+ sJzz.M2rheg5_nKerQ5cD59qqITKPaOZeKygnMWXqwAJvo6EkMQF4qEj2Kuib4ujT7hozOiiphQz
+ bQFbahrdx0PvySNOGQRdVLgx3Y_9jpg9iAqiL8g0zJmh5DXUEIy94MAoSzrbCJTdtn.SPzw_pyNx
+ rm5I24XY1m.hms7OgC0bvwaVYgUHqok5aZhMAEBkk7Zl5adhS7AI512HD05dLsviXtcel43oOIBO
+ Y5SdThjA94Nx00dNU0sPPMKE3OM3o5ZL5b0TvIaZ6iRazpptnI712hfultiCnxKTk1YXMXCz1CIL
+ 3dp6fhY0HPajAm2xmtV5YmifYTyD.eT1p2i5oLs2Ec7WjDi5ab1Qk5GER89dwfdwu3NJGOtSQNuO
+ Yqj6Derjv3TJ3o30slBApzWwLrSzaCpIEWEYts8X9rRSMF_sScF3CNXP7YTsAtos8aj5h7Vv4rr0
+ 4TKAaxS9ep5qwIIhRECZVE1kPTBWQ42.84Zq5wVIzJCX22hjzVhUozdj0cHnjGaB.HJ0eo0O0Imf
+ 6vijcHrvaxWSkHPD_Cg6az.k5UtC.s5OCeBz3bpo0foMOOHqVoKk2VJ9PV4xM7KE.nIy.tF0rlMf
+ kdp5FizX1i1J6.aA7WVUp6jSDSFAXWtdikwuev3Tg8M5wy5NUZhbODu54FSdq1x1Sgnt55KBlzNH
+ TL3Y0Fbywkk6BSoQvGdxEZ5JS5pS3DQWHOHkIn0WYY0MfrR0iXqrhH9F0qDSV_ag2r9rYryr1e5Y
+ O52i68TlxeinXSx13er2ISOM3fhRQV0WO0C2xyq0OoBjZzggdSTv7IfNFBkT2_9ce_nmy_I4GeLK
+ AZVQ98p9THOXQC7ZgI5kkXPy15fMWPukBJUuqWayRZwde2fKMEN5dlIQUpf.I55Hbc8.1PfGg1sX
+ mC4fnDHydCsbymTEUJHwDpVlCDnvS9QIoI6xT9qko.vnH53CgKJrBQywOP0pB5c6WSg5dv.VYoxa
+ XK1pO.hKBQ4Hj5553rVAQIORKCChYBg6j1OZhM.mZ9pN4XPAtAS0qfG7zpXhh4i7XkLCz6722C45
+ 0_Htf7rkconJ07TkgvbY1U5MQQZOXPqiYXRafNZxB7bJ8Sde3LWAJEomOW54E57mSEtiw52pvV6M
+ SkDCUkqQGvCka6DZB3VZTk6WF2s4rFfcFzbYfnRRM6ptk25J3tbk7J4BVcVELYY4zxhM6qeXtAON
+ UPm5fjnjWa7PHg210k22d_mmnjGvuquHls.Mj1Vji4lpodurFkOwisMgI9CFllOXkOWEFyHLL2Uh
+ wutD8IuuoP8sjpFFyOHWCIvyIVdJW.a9fk19D1UBD2kCD3UVBffP0mMWRlQLT_6oGRJ6LGZy_WlW
+ qX3POfLckObLMsgELTwBYwq9YBJRMEr27hYN2fbMke.eDpItG9D9ga_J9g35DMpaRG_6zzl_QJwd
+ 1AzGaTWpU.AGE1JS_eyyKbmnnjOS1D6h0c8FDXo8gn2ERcoa7Sdsw
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: 19023c60-5bd2-4886-9527-b507e8028b39
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Tue, 20 Jan 2026 16:34:14 +0000
+Received: by hermes--production-ir2-6fcf857f6f-qlcdw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f7e44a787d022ef3a77c635f4d49e855;
+          Tue, 20 Jan 2026 16:34:09 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v6 11/11] net: tipc: convert tipc_udp_xmit to use a noref dst
+Date: Tue, 20 Jan 2026 17:33:48 +0100
+Message-ID: <20260120163348.24248-1-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260120162451.23512-1-mmietus97@yahoo.com>
+References: <20260120162451.23512-1-mmietus97@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +72,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] netdevsim: fix a race issue related to the operation on
- bpf_bound_progs list
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176892660514.117222.932562208137734331.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Jan 2026 16:30:05 +0000
-References: <20260116095308.11441-1-luyun_611@163.com>
-In-Reply-To: <20260116095308.11441-1-luyun_611@163.com>
-To: Yun Lu <luyun_611@163.com>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
 
-Hello:
+tipc_udp_xmit unnecessarily references the dst_entry from the
+dst_cache when interacting with the cache.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Reduce this overhead by avoiding the redundant refcount increments.
 
-On Fri, 16 Jan 2026 17:53:08 +0800 you wrote:
-> From: Yun Lu <luyun@kylinos.cn>
-> 
-> The netdevsim driver lacks a protection mechanism for operations on the
-> bpf_bound_progs list. When the nsim_bpf_create_prog() performs
-> list_add_tail, it is possible that nsim_bpf_destroy_prog() is
-> simultaneously performs list_del. Concurrent operations on the list may
-> lead to list corruption and trigger a kernel crash as follows:
-> 
-> [...]
+This change is safe as both ipv4 and ip6 support noref xmit under RCU
+which is already the case for tipc_udp_xmit.
 
-Here is the summary with links:
-  - netdevsim: fix a race issue related to the operation on bpf_bound_progs list
-    https://git.kernel.org/netdev/net/c/b97d5eedf497
+Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+---
+ net/tipc/udp_media.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-You are awesome, thank you!
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index ba4ff5b3354f..cc1ef043aaf0 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -175,7 +175,7 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 	int ttl, err;
+ 
+ 	local_bh_disable();
+-	ndst = dst_cache_get(cache);
++	ndst = dst_cache_get_rcu(cache);
+ 	if (dst->proto == htons(ETH_P_IP)) {
+ 		struct rtable *rt = dst_rtable(ndst);
+ 
+@@ -191,14 +191,13 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 				err = PTR_ERR(rt);
+ 				goto tx_error;
+ 			}
+-			dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
++			dst_cache_steal_ip4(cache, &rt->dst, fl.saddr);
+ 		}
+ 
+ 		ttl = ip4_dst_hoplimit(&rt->dst);
+ 		udp_tunnel_xmit_skb(rt, ub->ubsock->sk, skb, src->ipv4.s_addr,
+ 				    dst->ipv4.s_addr, 0, ttl, 0, src->port,
+ 				    dst->port, false, true, 0);
+-		ip_rt_put(rt);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	} else {
+ 		if (!ndst) {
+@@ -215,13 +214,12 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
+ 				err = PTR_ERR(ndst);
+ 				goto tx_error;
+ 			}
+-			dst_cache_set_ip6(cache, ndst, &fl6.saddr);
++			dst_cache_steal_ip6(cache, ndst, &fl6.saddr);
+ 		}
+ 		ttl = ip6_dst_hoplimit(ndst);
+ 		udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
+ 				     &src->ipv6, &dst->ipv6, 0, ttl, 0,
+ 				     src->port, dst->port, false, 0);
+-		dst_release(ndst);
+ #endif
+ 	}
+ 	local_bh_enable();
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.0
 
