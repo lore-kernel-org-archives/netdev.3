@@ -1,176 +1,118 @@
-Received: from sonic315-20.consmr.mail.ne1.yahoo.com (sonic315-20.consmr.mail.ne1.yahoo.com [66.163.190.146])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD0B34A786
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C249346FA7
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768927685; cv=none; b=m+PWzcIUO6u9golu15Ks/Uh98Oxt2GJd2sjyMexFMXeqGIwl+xMwhc+ai5aMq4GnRyQCiHCT62u2whxOsHnYfFlbwZmh5M/MoPaqBw/u7SsuGzvYfdTVhiiLksYL8QoOmPVpG77pePvxKmAKH9AxcJBexKTrrPzmxGHSCWbYSuw=
+	t=1768927749; cv=none; b=B8mstq9A4vtNHzNJxEdDocEAcLFBdEyTRo3D9vsjYRrg0vkjXbAGlX1Rc7LKddcGE3at6BQCb50sJ2gbVfvugxpl6EJj5UGAYxaIfrMu7p7LKfnU80yzcRndclg71maOpOsHpiYOTf+OwY5h94uMjoBWWNYPoMd1m9MSiB4veUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768927685; c=relaxed/simple;
-	bh=1xBhA+SemGM8RszsJYiIlVK7UG9WJx0fAh4TOWi6Fyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2LlGAPymttptWsxoAKEjIzzYV/TpmiVR9Thp0JMmhtlG3/WZb0yHopS6I5QB7z/21t47IOTZIUlkgG0EgQ4uzR+ddWOPAdVKdnEXUUarpgkpED91jG+0gwAhuk2WMbQmN37686TY5b4pybScpavMwNJt/KzWMJ9oCeMbEbufqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=l920Iyji; arc=none smtp.client-ip=66.163.190.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1768927749; c=relaxed/simple;
+	bh=s0EAgvM3EckJgVkgwySwALr22oijvhhzdOCY8ic2YvM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h2FWP+aaNa4Riv29Onk5PmyZSmNzs+4G1ViaaIvI6DJFc1UgoWZauNhnzy2PZmAFWY7A66P/kkdHnobCNdyKKuVIpLQO9zROik9aL6IMGoWTQZcJ0wKybPmza00uCo4yitTLxtSgtaDRTgHqBs/nKwIW4FfseDnYp40fzlr4gnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLrG5gYL; arc=none smtp.client-ip=209.85.219.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="l920Iyji"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768927678; bh=I70KElqDUQJQTDcufEq+MIbNvz1K2tPqb5tYJuIF/Ds=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=l920IyjiEp9qzfo12wZ0h/Ga4X3diNM9UmaJICprxAD/+2v9zbV2wmuTsZNR1BTnNCFj2PdlIGihkanD363w91GmxCasnz0i1aVLw6csVexrV0v+Aq9EiVAer/emJrKw2j+1sA01GeKNaLcZ2+I/bK6fkO5IrKvnoodavnW2jjCzNaev2qKYqeEo7LsL2mTe+sNfEFBSIPUH1F4IOozv/1f7AINOq8+p1w7ssGKLKenyRXTcBjZzJTULNeSMEIdwfBgBB4Wm69Fg+V0kqlL0tk2T82L+0Og4bDdr1HL+yw5SW2dQWk+Z2ryh4qFNH/KSiD153nitht7rMhWZpyCVXg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768927678; bh=MZhK2SCE1GvK1VhFCx33s43zZr5WnKsCwwPGzBo9Lid=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=fIgpZlUctje0ICjMagYGlKrKOVbE6E4+eQj+3VdJPzV4g1JuiMlkEzDCpdylb3NTZ8goZdSJ/FAx89bxcfqrm04ajXPjyV/Sk/Q6SMkkE0fQ4oGsYPvD2AGWjgQcFO/rHnwRnAJPwhRVRTsTeTu/vv1W+jMF6aD2oNGGUzGNpJe2lpV/J67cN22gkpsef7U4mU8RT0F8eQ8EUWlV881XWbTMsGcMeREUw61TQq4WfXuCU97zTXK0wf9r8eBTED3t3yBkI/dzSgO4laLAHeMZTGdbrQwRv2FBVjflrk3N9BiViE+LAbJ1PF7S1L9Zrvqmln/U3bD4FEU0ItTjux1vFA==
-X-YMail-OSG: ZBRlKeEVM1mdhafgj.dIjZOjmWCXLkyNvBpvc5Zdi7HnR7YextjULSQYsiQPQdU
- I.qFwOutXtgFQVkGB823P0IKHNJt1RkZqnHJcjy6ZeKfoRwXi27GjHxtDwnt1h2idd1iH4CxTgxZ
- oHcDQ5ScOXc4SwlbvaMHXgsOoWgOohEPiGQlSj13AXCO4twUZupQ6CMNC4ys5Xjg56aWi9S5JKxM
- S8LNznJtP5QwMINWMxpPzoPYvvyJHnuX4kYa458wEazHpbI0iaI708thzvb65xX2AuaBQ8ZlrzWx
- Kx_QmmlZvCDzMpdVNHuedPltgQ_cgj9sKG9fcMG9LTa9de9GVFg0W3ST54AD1Tp8FIcSGjFVDeaz
- SWN3bcZhRBbVu9VmeQ9icUoJjXFFuUlvPWoGJmNixwP8Im.Qc8dHEhxd85PvClc3bHMr44NDBBsi
- bZcCVZmsGMc9oxydFry..GiOOVfk2Ox9NTHvEwlsKgsKHdhi0kYY8dmQyUeWWwq5H03EARa1eV3I
- Kq2a77lvXPhwxfUCouxygiYsj0zo_wkeRpdK6R9hGDZjszEVFSOfFxrMqBGbyAPGo5X2OX5nelEc
- 5sKKmhHWEQJI8lNzo.I41GrjXHKN8IoGJicVamKI5jYV5ptXC1.FDMLFtXbdJDH1Y9WYRADON7Qq
- zDT8hSOv6I1LwRpflLBcj39P6e7i14WD9rpmwp0lC014fKTA4UJi4TK9YgBrnf7BDc2vpTwrzeWc
- Qq317DaY603WzY87LjF_O8QHk9_T.j9nf8esM2NhcUDuDqjIwYw6TCViJCz.HUoNXVwpFJqwWKGR
- doype3mOvKPwK7rQcZjeJfygN84s9emgVtTScj0gH_k5ZrIqRUUsEeFpiUT9SFCksp0Nwf4sHmwu
- t7hMMGmNP2fGoEaPVbOuYxQdRWIwM3cpIQY6yo2v8M6HqnrkvZibr3ymChUjnnthKgDzPTdFxca9
- DVLtUmvGn2NjUBpFoLg7a188jfYGnCdXokD9pArTqGRL08D9nJita1LkNYM3OA7JhrJcmHIOPv16
- 6FzevypOlskjjDuspjiQHO1dQ3jxn8lbCiUMYMsfN.p1uZ20tyfxiQAPdKbwGJmUMl_wjdSVd0i0
- .KjtcI4oV96uuIHItvL9o49gHP2JD5.BRdT.qhkxSSWp6Hz5pdyip1Y6X0GBoix5jOrnqf77U6g8
- beGYj83b_E6dlfZEmv9T6AepoQ8TTyyEzszuozpjEj8VSuekbCkqm8Wy1kNrrzrW18wmao2fWoej
- qV5Xj2fz_Wo3uk_jVKe7Gj1yIbBqOtgAABYS5h81T5e2TDORcaRaNka7hbhMl08u01475Nw_pUog
- 7zLDEEXtoZD1XgGxqY64slvj4VVabBh8sz_NqWmFAVcAB6MqTE.oBUVjsE7tB7GBT_P0395LNwVL
- Vwt0LXV7YO5xutKKWArKjaVUBex7oGTIazMIz17S.AB36tcdHF9ExpgutpFlEFaU97U3wzB9sEpt
- zuEr37g17RnYKnAv4_Q9jDk0Bww.x2mEQ6FhQjhp5pPQXwY.zupJO7iNlkLBj_AipZxOntxMqKKe
- KP9nqBpB.H.p2K0ho7078Bbo5Twce5gnAJBuqlIS6M.yxieFJzIF3otEAlSyx9zo9SZ8RVEWzDef
- ajB84KK89jF1zkSinAIwGsHULr59m7XzJHrEP_1bDqPdvEu.HHwwovS0BBNhRk1RDXR2gagigiTR
- ZAI8WYOziwO4fVpsvN8O9f4oRpnuQ8_.YnH2UPV0gXWXmRJAWWXnRdgDBd0Mp1qXWWB4F57V_1kr
- 2kaOxDFzBqt1C6HAqSpGwAV.vhLPnnpKc7lobFZXGkYsk6mpmB5W0Q9B2YZeR8cmlVHCj3LmSUFQ
- n5Wxda9hr5pI7KtEVOcrbmW10KDxw_fN24tMhxsyJaMUOoHYWURTAudgXewgpsoBHuwpr1PUnktr
- zVyxW_Hg9fCb.vfQCRf_7a0zleesx4FSp2ycGsRDnQbpcDVx7okS5S.UstTxsMc.aJhCZ3C3u0Qk
- l_6hDKLcJ2CXEcNCrGsBQczN1xDzDxcQGeVE2ySMYAM4glyl0_2peQtInYVcSyW6r81RB7HdkpZv
- nUgP.6C5H9jBp.mAcuLFLR.3CB50KB5Y7HXdnmUtmVOQSSZMpZfyL5Cpdv7F.DjzGR1hyhb4GqPG
- ny6rROX0R.0YUiy7Awek9h2eGqBYB4RQgOpLm4KYltbWGsAKWgQ--
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: fef47a2b-5bfd-438e-a41a-d8038d650f79
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Tue, 20 Jan 2026 16:47:58 +0000
-Received: by hermes--production-ir2-6fcf857f6f-vw7gs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5c743ac7fc5feeb5bdbb197ea32f25e9;
-          Tue, 20 Jan 2026 16:27:41 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v6 08/11] net: tunnel: convert ip_tunnel_xmit to use a noref dst when possible
-Date: Tue, 20 Jan 2026 17:24:48 +0100
-Message-ID: <20260120162451.23512-9-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260120162451.23512-1-mmietus97@yahoo.com>
-References: <20260120162451.23512-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLrG5gYL"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-890587d4e87so160988196d6.0
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:49:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768927746; x=1769532546; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ptuvyZao7Ss1Jo8ZUaPMdH5mHX4osio1f0VA6b4OTkE=;
+        b=nLrG5gYL5ocCw/dhBwZnheNHN0LNwFoLmCRBYzwa/KclkESXI45hw3nMIU9OoXTTBG
+         ZrJYInTzEWW0co+/ksnAy5qdNU5eIXHtoJMixzDm83UbjTLgboXRwnvN9+19Xrl8+JM1
+         ZoSkNu9tm+PMyQj78uGU/+bs5QFRkB8kJFZ6s3xuGyLCSmuyPONKCUXz9TSvF4DOTWEh
+         apJYp4He/qNi6UaM1y9cyWictGOGJTODyIudEwFOsajWvz6fdy1UEUZRBYqH1PWhIU/T
+         d0UEtffCUjkQ31JRWt5z3Cage7IcjTXldMjW55CnphTyjAAAK2taxdTEfYbOwKc2A11+
+         dD/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768927746; x=1769532546;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ptuvyZao7Ss1Jo8ZUaPMdH5mHX4osio1f0VA6b4OTkE=;
+        b=j9gyn5jmUIAWKbRjG7CqQP9KQZFbxpOWqkx5tuPTQO1GJShcQ4bgDA3g3yQAyiWt1d
+         2UI8rk6+kciSfcwzFsvHmCmeitbtZrNaA90EgnSb2LsSpYS3aNSw6WcJ4+8jQJGuPugc
+         PE1uTm7cMdlNGol5puzSGr4anPmXHcwScu94eMrxCFgiMyDCTXzeNz6waDkMYxycwKHl
+         Rx5Q8j0z0DMTcG0dY6M0uqgvBL3myDxsuBKQLPHRpo8Szqswu3XivoZFwRsdPlb3cc7u
+         sTbP2/kaeceB9JREvGR+th1S+Br58qQCNx+RqI6aaEct2fGIkojDmOiWkONp8VKFnC67
+         LMmw==
+X-Forwarded-Encrypted: i=1; AJvYcCWnswGFxq6xLXZsl7a3WYU1suskDEax0WIjJPhtLO/vheANeL7nr17cf59SbzYQrrf9b7Q1yPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqYufuEj/EONTwg54ZE5EU9gKg0r9TgmfgxNQwt27t8EDE2Ygx
+	fguvT3jI0/0Q6dQbhTr50P3IqXGC7lmSDNG/GgfPXD8S+A/mdccSAK7WcUuw515xKV4ANc7ZDlC
+	Z8YkaCbpBXk6WQA==
+X-Received: from qvbgc11.prod.google.com ([2002:a05:6214:230b:b0:888:db8:f9a7])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:821a:10b0:894:6492:73da with SMTP id 6a1803df08f44-8946492741cmr26595696d6.2.1768927746027;
+ Tue, 20 Jan 2026 08:49:06 -0800 (PST)
+Date: Tue, 20 Jan 2026 16:49:00 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260120164903.1912995-1-edumazet@google.com>
+Subject: [PATCH v3 net-next 0/3] gro: inline tcp6_gro_{receive,complete}
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-ip_tunnel_xmit unnecessarily references the dst_entry from the
-dst_cache when interacting with the cache.
+On some platforms, GRO stack is too deep and causes cpu stalls.
 
-Reduce this overhead by avoiding the redundant refcount increments.
+Decreasing call depths by one shows a 1.5 % gain on Zen2 cpus.
+(32 RX queues, 100Gbit NIC, RFS enabled, tcp_rr with 128 threads and 10,000 flows)
 
-This is only possible in flows where the cache is used. Otherwise, we
-fall-back to a referenced dst.
+We can go further by inlining ipv6_gro_{receive,complete}
+and take care of IPv4 if there is interest.
 
-This change is safe since ipv4 supports noref xmit under RCU which is
-already the case for ip_tunnel_xmit.
+Note: two temporary __always_inline will be replaced with
+      inline_for_performance when/if available.
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- net/ipv4/ip_tunnel.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+v3: removed INDIRECT_CALLABLE_SCOPE on udp6_gro_receive()
+    and udp6_gro_complete(), as gcc complained (Jakub)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 40ff6ad9b9b9..146e354810d2 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -681,6 +681,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	struct rtable *rt = NULL;		/* Route to the other host */
- 	__be16 payload_protocol;
- 	bool use_cache = false;
-+	bool noref = true;
- 	struct flowi4 fl4;
- 	bool md = false;
- 	bool connected;
-@@ -775,11 +776,11 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	if (connected && md) {
- 		use_cache = ip_tunnel_dst_cache_usable(skb, tun_info);
- 		if (use_cache)
--			rt = dst_cache_get_ip4(&tun_info->dst_cache,
--					       &fl4.saddr);
-+			rt = dst_cache_get_ip4_rcu(&tun_info->dst_cache,
-+						   &fl4.saddr);
- 	} else {
--		rt = connected ? dst_cache_get_ip4(&tunnel->dst_cache,
--						&fl4.saddr) : NULL;
-+		rt = connected ? dst_cache_get_ip4_rcu(&tunnel->dst_cache,
-+						       &fl4.saddr) : NULL;
- 	}
- 
- 	if (!rt) {
-@@ -790,15 +791,18 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 			goto tx_error;
- 		}
- 		if (use_cache)
--			dst_cache_set_ip4(&tun_info->dst_cache, &rt->dst,
--					  fl4.saddr);
-+			dst_cache_steal_ip4(&tun_info->dst_cache, &rt->dst,
-+					    fl4.saddr);
- 		else if (!md && connected)
--			dst_cache_set_ip4(&tunnel->dst_cache, &rt->dst,
--					  fl4.saddr);
-+			dst_cache_steal_ip4(&tunnel->dst_cache, &rt->dst,
-+					    fl4.saddr);
-+		else
-+			noref = false;
- 	}
- 
- 	if (rt->dst.dev == dev) {
--		ip_rt_put(rt);
-+		if (!noref)
-+			ip_rt_put(rt);
- 		DEV_STATS_INC(dev, collisions);
- 		goto tx_error;
- 	}
-@@ -808,7 +812,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		df |= (inner_iph->frag_off & htons(IP_DF));
- 
- 	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph, 0, 0, false)) {
--		ip_rt_put(rt);
-+		if (!noref)
-+			ip_rt_put(rt);
- 		goto tx_error;
- 	}
- 
-@@ -839,7 +844,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
- 
- 	if (skb_cow_head(skb, max_headroom)) {
--		ip_rt_put(rt);
-+		if (!noref)
-+			ip_rt_put(rt);
- 		DEV_STATS_INC(dev, tx_dropped);
- 		kfree_skb(skb);
- 		return;
-@@ -849,7 +855,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
- 		      df, !net_eq(tunnel->net, dev_net(dev)), 0);
--	ip_rt_put(rt);
-+	if (!noref)
-+		ip_rt_put(rt);
- 	return;
- 
- #if IS_ENABLED(CONFIG_IPV6)
+v2: dealt with udp6_gro_receive()/udp6_gro_complete()
+    missing declarations (kernel test robot <lkp@intel.com>)
+    for CONFIG_MITIGATION_RETPOLINE=n
+
+Cumulative size increase for this series (of 3):
+
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.3
+add/remove: 2/2 grow/shrink: 5/1 up/down: 1572/-471 (1101)
+Function                                     old     new   delta
+ipv6_gro_receive                            1069    1846    +777
+ipv6_gro_complete                            433     733    +300
+tcp6_check_fraglist_gro                        -     272    +272
+tcp6_gro_complete                            227     306     +79
+tcp4_gro_complete                            325     397     +72
+ipv6_offload_init                            218     274     +56
+__pfx_tcp6_check_fraglist_gro                  -      16     +16
+__pfx___skb_incr_checksum_unnecessary         32       -     -32
+__skb_incr_checksum_unnecessary              186       -    -186
+tcp6_gro_receive                             959     706    -253
+Total: Before=22592724, After=22593825, chg +0.00%
+
+Eric Dumazet (3):
+  net: always inline __skb_incr_checksum_unnecessary()
+  gro: inline tcp6_gro_receive()
+  gro: inline tcp6_gro_complete()
+
+ include/linux/skbuff.h   |  2 +-
+ include/net/gro.h        |  5 ++---
+ include/net/tcp.h        |  2 --
+ net/ipv6/Makefile        |  2 +-
+ net/ipv6/ip6_offload.c   | 43 ++++++++++++++++++++--------------------
+ net/ipv6/tcpv6_offload.c | 12 +++++------
+ net/ipv6/udp_offload.c   |  3 +--
+ 7 files changed, 32 insertions(+), 37 deletions(-)
+
 -- 
-2.51.0
+2.52.0.457.g6b5491de43-goog
 
