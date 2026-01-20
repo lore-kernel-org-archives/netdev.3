@@ -1,123 +1,149 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56ABF34A3A5;
-	Tue, 20 Jan 2026 16:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE42A326D46
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 17:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768928099; cv=none; b=MVBsOMCByYUg6T2Qop8OfTzytUKj6Oy4KzKroBfwUucEYTK9q+khdvJ7TIDeA+715FyoZZOvZOn+jXvMVyDxFDh58UkXF7hUY8hWKFv3fw93FCP78A1i9T9CWu7LsXhZHvUBukAZ/HlpBSaZZKS2jMwP5fBqxdZTkFEy2raYCWE=
+	t=1768929246; cv=none; b=g1GaEQxBLYjFA3CemvCu8xkoq2bLXPfkyoKJIsrQiFiXtvVfFF3qiUaSQt+B3N4yZpfaSe/9CxQIVzldqM9kj47TXZNgIyKw/ZLJbhox1f0uKnWxE+hN28HTWkXJT1vYy7MQqJZG0cxaM2eAO4JWRG0eWwkEOfD0pzh55/9a4Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768928099; c=relaxed/simple;
-	bh=xqbU3Irav68Y/Fc1lqz+UJGia7VxTLtZA/7j+X6Gllw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=B24CCxLs5z4Vx/6gxQFQqHl5VPbMIr44E+gOdfUVwaH9Ehs+7XdiG099ibjx5VtktqlfRJ5+GOiDORzS+FL7eP6OiZZt256R+dI7Fl/dJhN/DakectRyKjM10tbSRPz1l7/QG+YTHZAYtHKfj0gbtVl60dA/xnZbY1RSaa166dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C68E04C2887191;
-	Tue, 20 Jan 2026 17:54:22 +0100 (CET)
-Message-ID: <56bbd1d8-4ea7-41b9-beac-2e496bf81206@molgen.mpg.de>
-Date: Tue, 20 Jan 2026 17:54:21 +0100
+	s=arc-20240116; t=1768929246; c=relaxed/simple;
+	bh=Ckdv+LBfVcrA4JvvMxCIADVWbw04Tilid9Ikn1lV+1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dy9HKF8ZJCqJ8qm69/3ShZLU2N6jAErgVF4Yk1yb0jU17qb8239tljraayg95zJqa8x1xawn2kWf6uiPNHlnIvPYyJDuzi6+wAgUeBMAFG7ft5kxd+0uwF1jfD7lbRBlKSBijkm4mVJoByC1ofjdeToWx6XQOXXmWUUUeeQAftM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LHIADCTp; arc=none smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LHIADCTp"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12336c0a8b6so11816916c88.1
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768929244; x=1769534044; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=md0g+j6qZSK2w0IJlJPci/fZMbMlDX58xj6TKgMT//Y=;
+        b=LHIADCTpliQ9GjRtHbrk1xhrCs84ftlZsBP+4XYxc7221cWYqU5ZuaV8OtiQcAOZl7
+         Qx5lKuCyjBNUgy+MEstWqBBdJCHu2bXNOxheMlS68l/JdWu2EkpTZCpDHfXmC26b/lyA
+         VSFfyGMq/evhusy/Qoh3/OIDKwS/ytrUTjpS0yhiKZLFq19SDL1TQgClJyh2270QGUaS
+         22X1bls2yLhstBSW8LMA1iCIQYM4eH2PKXf/T5+EHRY+Drn+c7ImaJlJA9Qqgx/4StKa
+         4c7FRVHsLnxpxTpSJKoW2vlGs271QLTWtFCxa12kceIZwkr116tl59yXytN6rXQzTEpO
+         jD1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768929244; x=1769534044;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=md0g+j6qZSK2w0IJlJPci/fZMbMlDX58xj6TKgMT//Y=;
+        b=IdVM9CcMNRxJ1xyh4VwlMgecBgo4UZSHkktKkMSltQ5m/CrHVOJmUkDOpHLxdFau67
+         wLb3qeDuAkc2yi56Zz9Q4DY42B1Lcm47Diha86/9EvwXTJiaV6dAYKqeoh3NnmstoDag
+         1kQAXy7LWP5S8RIXvuNA0pSscesavYM+xKoHaEwpebuKG3WYn4PXZQN/m/v0/x//Swkn
+         kHiQUZ4F4hE1Ly6OIMdgUxFOHrbP7+Rg2S7RJzE2h+aFCywPfIkrmgkdpvB7Lnk/MQOV
+         ZSWVi7R7QXX+MTgb2z+5bRAdxD8HNtSW07Uctu7oIdiMsAHwP5WrKGfu5FQ3VvyOKCdV
+         kIXg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8LJbgyGq8kK2s4JNcXdVz3uTIEV5vLGIwuHPxES7yeRBNrwU1tDYDihXlTlSxwaZlsdJY68s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW9arJ7LOLhvgilxZlCLUMoiwUxoTlUCmAJXPu6dxUAO9EYncE
+	redTHbGXKJi8Hyu0GKAVgLs/zIVd4YuunM9MtxVpWGOMxY+bpLREPz0ds4B+HQ==
+X-Gm-Gg: AY/fxX6KXzkBi6qRXrlZap00gPCvtQcR0GTs79j3fZYTOOXyTN3irnECOOwF/JHoGug
+	Tf7WnT8eCm9WFpnNxv299Xz1I4cFAe3uEQQUok47mmxMFUrym3QXIUvn5A3eYHcGpTLuq0N4f1X
+	zIdPln8puZLjX3CIpAuEp9DuT3q0sD8JVfLpzLsNhHgVCps00rA0w27+IDVvQillEApU43SF9MT
+	aJCzFtouWp0rAdF0SjOL9JYY7RkP3b8RXfOf0ljomM4/PNcDup0KrftNeQeSApjva4G5Bp54dem
+	VaEPHy0rakOkICKkd0t9uZpcCjvWReqETtrPKaqfA6vFZOpOKs/JEhottXK6+oXhD6+UFOzOT6V
+	+YAVMkKt3ZKsv5eNI6Z07uP2xDQAgNkpnzB4JTYhk8O7i/QCDFyxnxLg7LNl+eXMhxPt/4Ubyj3
+	CqOZ8PSZ950DA=
+X-Received: by 2002:a17:902:d4cb:b0:2a7:9196:a94e with SMTP id d9443c01a7336-2a79196aa80mr1234755ad.15.1768923524001;
+        Tue, 20 Jan 2026 07:38:44 -0800 (PST)
+Received: from gmail.com ([98.97.43.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce693sm112017965ad.36.2026.01.20.07.38.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 07:38:43 -0800 (PST)
+Date: Tue, 20 Jan 2026 07:38:16 -0800
+From: John Fastabend <john.fastabend@gmail.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, bpf@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, Michal Luczaj <mhal@rbox.co>,
+	Cong Wang <cong.wang@bytedance.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next v7 1/3] bpf, sockmap: Fix incorrect copied_seq
+ calculation
+Message-ID: <20260120153807.gzwnhxxtcocycfmr@gmail.com>
+References: <20260113025121.197535-1-jiayuan.chen@linux.dev>
+ <20260113025121.197535-2-jiayuan.chen@linux.dev>
+ <875x8wuy4e.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH net] idpf: Fix data race in idpf_net_dim
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
- Phani Burra <phani.r.burra@intel.com>, Willem de Bruijn
- <willemb@google.com>, Alan Brady <alan.brady@intel.com>,
- Sridhar Samudrala <sridhar.samudrala@intel.com>,
- Joshua Hay <joshua.a.hay@intel.com>, intel-wired-lan@lists.osuosl.org,
- linux-kernel@vger.kernel.org
-References: <20260119162720.1463859-1-mmyangfl@gmail.com>
- <8cfba7ca-03d0-46fe-92fa-5d4a119fc31e@molgen.mpg.de>
-Content-Language: en-US
-In-Reply-To: <8cfba7ca-03d0-46fe-92fa-5d4a119fc31e@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875x8wuy4e.fsf@cloudflare.com>
 
-[Cc: Remove bouncing alan.brady@intel.com and pavan.kumar.linga@intel.com]
+On 2026-01-20 16:01:21, Jakub Sitnicki wrote:
+> On Tue, Jan 13, 2026 at 10:50 AM +08, Jiayuan Chen wrote:
+> > A socket using sockmap has its own independent receive queue: ingress_msg.
+> > This queue may contain data from its own protocol stack or from other
+> > sockets.
+> >
+> > The issue is that when reading from ingress_msg, we update tp->copied_seq
+> > by default. However, if the data is not from its own protocol stack,
+> > tcp->rcv_nxt is not increased. Later, if we convert this socket to a
+> > native socket, reading from this socket may fail because copied_seq might
+> > be significantly larger than rcv_nxt.
+> >
+> > This fix also addresses the syzkaller-reported bug referenced in the
+> > Closes tag.
+> >
+> > This patch marks the skmsg objects in ingress_msg. When reading, we update
+> > copied_seq only if the data is from its own protocol stack.
+> >
+> >                                                      FD1:read()
+> >                                                      --  FD1->copied_seq++
+> >                                                          |  [read data]
+> >                                                          |
+> >                                 [enqueue data]           v
+> >                   [sockmap]     -> ingress to self ->  ingress_msg queue
+> > FD1 native stack  ------>                                 ^
+> > -- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
+> >                                        |                  |
+> >                                        |             ingress to FD1
+> >                                        v                  ^
+> >                                       ...                 |  [sockmap]
+> >                                                      FD2 native stack
+> >
+> > Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
+> > Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+> > Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Am 20.01.26 um 17:50 schrieb Paul Menzel:
-> Dear David,
+[...]
+
+> > @@ -487,6 +494,14 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+> >  out:
+> >  	return copied;
+> >  }
+> > +EXPORT_SYMBOL_GPL(__sk_msg_recvmsg);
 > 
-> 
-> Thank you for your patch.
-> 
-> Am 19.01.26 um 17:27 schrieb David Yang:
->> In idpf_net_dim(), some statistics protected by u64_stats_sync, are read
->> and accumulated in ignorance of possible u64_stats_fetch_retry() events.
->> The correct way to copy statistics is already illustrated by
->> idpf_add_queue_stats(). Fix this by reading them into temporary variables
->> first.
-> 
-> It’d be great if you also documented a test case.
-> 
->> Fixes: c2d548cad150 ("idpf: add TX splitq napi poll support")
->> Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
->> Signed-off-by: David Yang <mmyangfl@gmail.com>
->> ---
->>   drivers/net/ethernet/intel/idpf/idpf_txrx.c | 16 +++++++++++-----
->>   1 file changed, 11 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
->> index 97a5fe766b6b..66ba645e8b90 100644
->> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
->> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
->> @@ -3956,7 +3956,7 @@ static void idpf_update_dim_sample(struct idpf_q_vector *q_vector,
->>   static void idpf_net_dim(struct idpf_q_vector *q_vector)
->>   {
->>       struct dim_sample dim_sample = { };
->> -    u64 packets, bytes;
->> +    u64 packets, bytes, pkts, bts;
-> 
-> The new variable names are ambiguous. Would _tmp or so be better?
-> 
->>       u32 i;
->>       if (!IDPF_ITR_IS_DYNAMIC(q_vector->tx_intr_mode))
->> @@ -3968,9 +3968,12 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
->>           do {
->>               start = u64_stats_fetch_begin(&txq->stats_sync);
->> -            packets += u64_stats_read(&txq->q_stats.packets);
->> -            bytes += u64_stats_read(&txq->q_stats.bytes);
->> +            pkts = u64_stats_read(&txq->q_stats.packets);
->> +            bts = u64_stats_read(&txq->q_stats.bytes);
->>           } while (u64_stats_fetch_retry(&txq->stats_sync, start));
->> +
->> +        packets += pkts;
->> +        bytes += bts;
->>       }
->>       idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->tx_dim,
->> @@ -3987,9 +3990,12 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
->>           do {
->>               start = u64_stats_fetch_begin(&rxq->stats_sync);
->> -            packets += u64_stats_read(&rxq->q_stats.packets);
->> -            bytes += u64_stats_read(&rxq->q_stats.bytes);
->> +            pkts = u64_stats_read(&rxq->q_stats.packets);
->> +            bts = u64_stats_read(&rxq->q_stats.bytes);
->>           } while (u64_stats_fetch_retry(&rxq->stats_sync, start));
->> +
->> +        packets += pkts;
->> +        bytes += bts;
->>       }
->>       idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->rx_dim,
-> 
-> 
-> Kind regards,
-> 
-> Paul
+> Nit: Sorry, I haven't caught that before. tcp_bpf is a built-in. We
+> don't need to export this internal helper to modules.
+
+We could probably push this without the 2/3 patch? If we are debating
+that patch still would be good to get this merged.
+
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
