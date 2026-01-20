@@ -1,57 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C896343C051
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635A143D4FC
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917752; cv=none; b=jhf3FztZ4Vrty9jXv+m/bQIZEmxZD+iYOcahBW5e92SbA8rOsyI672qMvtyPoFMNY1F1cEaXcKt9z017HRUWtOulC9KX2z5sfPdgnBZCQw1HjkmorInY38hIdaNt6Ew+Wk+D3CQmIki+QGFgTOgywSjYSTIJkMdB4APLbriy8jQ=
+	t=1768917753; cv=none; b=a1dqVoN/4e/Iy4f2OJyhaPvsMOlH0nRfiIvXjNehpMSs3LyosJUGGTCHe9DgIRKfWQGGk+15dsrRpWRGxUdTaioGgS43W38eFNSKkRvut9nM3mYp9z1A1co08CqOgQ4Zxj2faHlljAIRxeyA0vfVFtPbQkK2NaAHUwL7Ge0WeXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917752; c=relaxed/simple;
-	bh=tSnNz7TB1ia5nhbzp+EuV2163blMz9E/aGy0jHVUOYI=;
+	s=arc-20240116; t=1768917753; c=relaxed/simple;
+	bh=z8GGmLTECtep00RZrPAB9c3SqFgALCt0CpHkP7Co8pM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bHcYjbsQYHr7MjKIkSf3Gc7RvMdq3YvbcMTZ91jg0RSX096I3YElCJNI2dO3sErQqJL8qqpcxU4XRFIbSyGRYUecoHyWTK7flPhaHir/e9vG9d6NVOwyxjfSmb031+im7oZ85G9qaRVbFnhsR3K+vU7rT0m4YPHpw1mccUUJucg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lb0fuKo7; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=nZ15mxavkeQ3Hp53oQzAXdFQQ39OkrwxHefGXZFUWuYO3hRNOsQeBJshk9W9sll13f2V4K+3rqOvrrivSZpDTr9h+wQS71QO0MCwHF3AcK2oAcHSKhGAtPRnJ8/pnX/ws1MC2at5ylF2GsCYtg6i2Attm7ZBnkguIpg8lPonbHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ieUEk/S1; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lb0fuKo7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ieUEk/S1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768917751; x=1800453751;
+  t=1768917752; x=1800453752;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tSnNz7TB1ia5nhbzp+EuV2163blMz9E/aGy0jHVUOYI=;
-  b=Lb0fuKo7NIX59u1k0QAsO06+clfqLMD5nMpXgvqVTXsztbYt5uDjhwZP
-   5UoaquM8T0w+Z6mRzA3nJHol7n0X/lj4nVRgFh5z+F2cLdN5jiiDjT4hN
-   eeNDxPZLZ5lW7mhbbNcfwhVb/qVtxYmsyE4ulibbQBgLcUr2787Ko+umN
-   R7r+rU9yZDu44H4D1TUm0N3jcuoGrQaUp1Z2IGQNUp18L0u/LXAT5EXyZ
-   RqpS5Jcd2/dOXbMJKV5rmmYh4+Xmh8ryArhjdgS4O3mQT9EPsQls3WTiH
-   k/23Xl11msEcFfy6KEpowjl2JD6/8hravEieFmECvfwhpfRNISUVlIbwN
-   w==;
-X-CSE-ConnectionGUID: GcF75tJST6OuNUr+ME0XEw==
-X-CSE-MsgGUID: p5WicEi6QGWKNnODznppdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="72711763"
+  bh=z8GGmLTECtep00RZrPAB9c3SqFgALCt0CpHkP7Co8pM=;
+  b=ieUEk/S1qvEsEeJ4lmZJK3zJcwZj2EIj8mguk5zdDklW1LlgrbzE/wvl
+   JtmatbyimIwpN0E5qx/J0aDEgM2E6/mtnqTyfzS4/z3Dmeh2IUMR/lDK+
+   bbC5TJSvlUPs0bllWSwJ134z4jzvcKn2UXOQdozc0L1l94cnmqANaId98
+   bvFVscMfp3wjoyHmQ+VQzhXaIVKQg0zfYzHdDuOvoeLlpJOSjAusOXApo
+   1sGdE0W0IaD1kTZHyu+04j/cfPfDThS2MiMnygH95z4ADJBuzgQigqcjB
+   Jf0K10ODf0jZ7uE/Ld4LOrLcEMq2DvEj/0PsmpWpHpf2nOvKcJ7AbEufw
+   Q==;
+X-CSE-ConnectionGUID: 887ZJ9nhTJy8RUPzOk/vTw==
+X-CSE-MsgGUID: ox5AzxBvSfeLPbwCGjKfbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="72711775"
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="72711763"
+   d="scan'208";a="72711775"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 06:02:30 -0800
-X-CSE-ConnectionGUID: Z5suzBncQDu70q0WFZuPMg==
-X-CSE-MsgGUID: JJ/4cUhHRUGPttSghNokGQ==
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 06:02:32 -0800
+X-CSE-ConnectionGUID: aIUAD6DzTq6dCAQ/dscZKw==
+X-CSE-MsgGUID: NIskrWJ3Thev5t2zVPzy7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="210978921"
+   d="scan'208";a="210978940"
 Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 06:02:29 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 06:02:30 -0800
 From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: anthony.l.nguyen@intel.com,
 	netdev@vger.kernel.org,
 	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v2 3/6] ixgbe: E610: update EEE supported speeds
-Date: Tue, 20 Jan 2026 14:44:31 +0100
-Message-Id: <20260120134434.1931602-4-jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-next v2 4/6] ixgbe: E610: update ACI command structs with EEE fields
+Date: Tue, 20 Jan 2026 14:44:32 +0100
+Message-Id: <20260120134434.1931602-5-jedrzej.jagielski@intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20260120134434.1931602-1-jedrzej.jagielski@intel.com>
 References: <20260120134434.1931602-1-jedrzej.jagielski@intel.com>
@@ -63,58 +63,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Despite there was no EEE (Energy Efficient Ethernet) feature
-support for E610 adapters, eee_speeds_supported variable was
-defined and even initialized with some EEE speeds.
+There were recent changes in some of the ACI commands,
+which have been extended with EEE related fields.
+Set PHY Config, Get PHY Caps and Get Link Info have been
+affected.
 
-As E610 adapter supports EEE only for 10G, 5G and 2.5G speeds,
-update hw.phy.eee_speeds_supported. Remove unsupported speeds -
-10M, 100M and 1G.
-
-Add also entry for 5G speed in EEE speeds mapping array used
-by ethtool callbacks.
+Align SW structs to the recent FW changes.
 
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c    | 11 ++++++++---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c    |  2 ++
+ .../net/ethernet/intel/ixgbe/ixgbe_type_e610.h   | 16 +++++++++-------
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 431c932f036b..289a04183e03 100644
+index 289a04183e03..8a3d8000a79c 100644
 --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
 +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1998,9 +1998,14 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
- 	/* Set PHY ID */
- 	memcpy(&hw->phy.id, pcaps.phy_id_oui, sizeof(u32));
+@@ -1076,6 +1076,7 @@ void ixgbe_copy_phy_caps_to_cfg(struct ixgbe_aci_cmd_get_phy_caps_data *caps,
+ 	cfg->link_fec_opt = caps->link_fec_options;
+ 	cfg->module_compliance_enforcement =
+ 		caps->module_compliance_enforcement;
++	cfg->eee_entry_delay = caps->eee_entry_delay;
+ }
  
--	hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_10_FULL |
--				       IXGBE_LINK_SPEED_100_FULL |
--				       IXGBE_LINK_SPEED_1GB_FULL;
-+	/* E610 supports EEE only for speeds above 1G */
-+	if (hw->device_id == IXGBE_DEV_ID_E610_2_5G_T)
-+		hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_2_5GB_FULL;
-+	else
-+		hw->phy.eee_speeds_supported = IXGBE_LINK_SPEED_2_5GB_FULL |
-+					       IXGBE_LINK_SPEED_5GB_FULL |
-+					       IXGBE_LINK_SPEED_10GB_FULL;
-+
- 	hw->phy.eee_speeds_advertised = hw->phy.eee_speeds_supported;
+ /**
+@@ -1404,6 +1405,7 @@ int ixgbe_aci_get_link_info(struct ixgbe_hw *hw, bool ena_lse,
+ 	li->topo_media_conflict = link_data.topo_media_conflict;
+ 	li->pacing = link_data.cfg & (IXGBE_ACI_CFG_PACING_M |
+ 				      IXGBE_ACI_CFG_PACING_TYPE_M);
++	li->eee_status = link_data.eee_status;
  
- 	return 0;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index bb4b53fee234..779e2425e4aa 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3540,6 +3540,7 @@ static const struct {
- 	{ IXGBE_LINK_SPEED_100_FULL, ETHTOOL_LINK_MODE_100baseT_Full_BIT },
- 	{ IXGBE_LINK_SPEED_1GB_FULL, ETHTOOL_LINK_MODE_1000baseT_Full_BIT },
- 	{ IXGBE_LINK_SPEED_2_5GB_FULL, ETHTOOL_LINK_MODE_2500baseX_Full_BIT },
-+	{ IXGBE_LINK_SPEED_5GB_FULL, ETHTOOL_LINK_MODE_5000baseT_Full_BIT },
- 	{ IXGBE_LINK_SPEED_10GB_FULL, ETHTOOL_LINK_MODE_10000baseT_Full_BIT },
+ 	/* Update fc info. */
+ 	tx_pause = !!(link_data.an_info & IXGBE_ACI_LINK_PAUSE_TX);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index db62281c9413..ea305863ba1b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -323,10 +323,8 @@ struct ixgbe_aci_cmd_get_phy_caps_data {
+ #define IXGBE_ACI_PHY_EEE_EN_100BASE_TX			BIT(0)
+ #define IXGBE_ACI_PHY_EEE_EN_1000BASE_T			BIT(1)
+ #define IXGBE_ACI_PHY_EEE_EN_10GBASE_T			BIT(2)
+-#define IXGBE_ACI_PHY_EEE_EN_1000BASE_KX		BIT(3)
+-#define IXGBE_ACI_PHY_EEE_EN_10GBASE_KR			BIT(4)
+-#define IXGBE_ACI_PHY_EEE_EN_25GBASE_KR			BIT(5)
+-#define IXGBE_ACI_PHY_EEE_EN_10BASE_T			BIT(11)
++#define IXGBE_ACI_PHY_EEE_EN_5GBASE_T			BIT(11)
++#define IXGBE_ACI_PHY_EEE_EN_2_5GBASE_T			BIT(12)
+ 	__le16 eeer_value;
+ 	u8 phy_id_oui[4]; /* PHY/Module ID connected on the port */
+ 	u8 phy_fw_ver[8];
+@@ -356,7 +354,9 @@ struct ixgbe_aci_cmd_get_phy_caps_data {
+ #define IXGBE_ACI_MOD_TYPE_BYTE2_SFP_PLUS		0xA0
+ #define IXGBE_ACI_MOD_TYPE_BYTE2_QSFP_PLUS		0x86
+ 	u8 qualified_module_count;
+-	u8 rsvd2[7];	/* Bytes 47:41 reserved */
++	u8 rsvd2;
++	__le16 eee_entry_delay;
++	u8 rsvd3[4];
+ #define IXGBE_ACI_QUAL_MOD_COUNT_MAX			16
+ 	struct {
+ 		u8 v_oui[3];
+@@ -512,8 +512,9 @@ struct ixgbe_aci_cmd_get_link_status_data {
+ #define IXGBE_ACI_LINK_SPEED_200GB		BIT(11)
+ #define IXGBE_ACI_LINK_SPEED_UNKNOWN		BIT(15)
+ 	__le16 reserved3;
+-	u8 ext_fec_status;
+-#define IXGBE_ACI_LINK_RS_272_FEC_EN	BIT(0) /* RS 272 FEC enabled */
++	u8 eee_status;
++#define IXGBE_ACI_LINK_EEE_ENABLED		BIT(2)
++#define IXGBE_ACI_LINK_EEE_ACTIVE		BIT(3)
+ 	u8 reserved4;
+ 	__le64 phy_type_low; /* Use values from ICE_PHY_TYPE_LOW_* */
+ 	__le64 phy_type_high; /* Use values from ICE_PHY_TYPE_HIGH_* */
+@@ -816,6 +817,7 @@ struct ixgbe_link_status {
+ 	 * of ixgbe_aci_get_phy_caps structure
+ 	 */
+ 	u8 module_type[IXGBE_ACI_MODULE_TYPE_TOTAL_BYTE];
++	u8 eee_status;
  };
  
+ /* Common HW capabilities for SW use */
 -- 
 2.31.1
 
