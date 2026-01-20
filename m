@@ -1,39 +1,84 @@
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6DB3D667B;
-	Tue, 20 Jan 2026 09:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775AC346AF8
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768902158; cv=none; b=Q8vv5u2aH9xFGxUV7wSNJeXTaZZVXwDaj+O3wBgQJVW6TdCvTuXDVZZLGsS4ArGX6oIXQ53Cy9k452pAzpUWXwdIBrjAHMMFb0EtWuIYnevPfCnnJuT2hCoH2JkKdl5Ed7Tkh27aGjcRwiA1NLGHAmQOqEzfD3TsGhfGERTK10Y=
+	t=1768902859; cv=none; b=PeoNAZDGj/ElGeBhu7O/R30BpDSlOATjYcSuGGRbvsxT+lsM7htWO44PDrv3Ku948Gx6aIT6XujzQMviGU4Rxua8oJX/iWaAWUtSA6oG3PcmfrtlgCFXQsE8DCF+n4//r4dp8OfymFaDhswE7pv3yXlyrYgRDLPFp1D0jkj9C9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768902158; c=relaxed/simple;
-	bh=m/Rm4Z1i+hXaPuyBGKr5un226xoXe2uru+r1u2Qz+rg=;
+	s=arc-20240116; t=1768902859; c=relaxed/simple;
+	bh=HQ6wJ4Bhrdvh6n3nHk7OFTyGqzg+vXdzFzjSE2ttaMU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OmYykW4GdZ0uN1s8oI0vMA6ovPTziH2L4aTRfov8YLnLnFFJ8BD8sEcNgQpU+Ko66ZRdXSSwqdTeO3Ogx1jT7AAUj2qev91SQ7IwpyhcJbLqq9+ySaGU7AyyOVR2XCn0nAEA6UlYDH7izHE83FHoU000M7PBpbFfMD5gkhAZUnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=gTQHtTy1; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+	 In-Reply-To:Content-Type; b=be1FjQbZ3Yk5XqQ9moVHDEk6VpZljwKadTgkGDCZpYkjG13pI/y312xd2Aygr3AiXrGxF9hVt+mKXH1I1HKghOsEXsEwyoctoa3Wq9C0ne1EC2PBLhAvqHSCLjoy1jHrq18N4P1FdSANN1SLFljiVibau6VLtM2/zE9io2EIYOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CIRWki+a; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B6VjzBMo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="gTQHtTy1"
-Received: from [192.168.178.76] (business-24-134-207-61.pool2.vodafone-ip.de [24.134.207.61])
-	(Authenticated sender: g.gottleuber@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 9594F2FC0059;
-	Tue, 20 Jan 2026 10:42:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1768902150;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CIRWki+a";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B6VjzBMo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768902856;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=LCzxEb+8ueeOySlg2UP4MwhwZpBa7+sdZeU/qKjCHNU=;
-	b=gTQHtTy1KnJqFDTw7HSdWYwz5u4qpI3RvpMTkOxpilHtpNbGsFn+B7muvDK+vORTC7G0qX
-	zWcK57ONMW77KQtcfIOkXbYfB8HbH4mmvbe9+MI/LbEwYQigY3vYD8u9yzAvM9TROZTtC3
-	5zBU1nk2OOahoYifL2zo75U/eZNrF0o=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=g.gottleuber@tuxedocomputers.com smtp.mailfrom=ggo@tuxedocomputers.com
-Message-ID: <1be6caa4-abbd-4f3b-8c63-b637f0f9ed15@tuxedocomputers.com>
-Date: Tue, 20 Jan 2026 10:42:28 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=NfNKiVzxBTizUBnwJ9kc5DIY2uEEk4tt8Fkeu9u8yEQ=;
+	b=CIRWki+aCPEhKmen6cwlMmbhgIW2Hi1KkJIWXNNihXy25oPSxzIi8w2qk7onLyKNIO2NYo
+	4woiFYjWDIJyf7ZfXMYL/M5kaRVxqXdYEyTbeqXc2Gy8x1StopOK2BxF/CtHPZg4KzTefk
+	qbY026XriQk0OVaCjruKIOswzbGmFeo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-328-AjgC_HKaMc-regFOQ0qcFQ-1; Tue, 20 Jan 2026 04:54:15 -0500
+X-MC-Unique: AjgC_HKaMc-regFOQ0qcFQ-1
+X-Mimecast-MFC-AGG-ID: AjgC_HKaMc-regFOQ0qcFQ_1768902854
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-430fe16b481so3353361f8f.3
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 01:54:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1768902853; x=1769507653; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NfNKiVzxBTizUBnwJ9kc5DIY2uEEk4tt8Fkeu9u8yEQ=;
+        b=B6VjzBMofyHZ1hA24Z8HOE9i19WUwOAal0V4H3Xz1fwFDTSMKZChqoyX/NnomCwo+L
+         J9TcLZoH4jE7zvgSEKtgVeWpRkwSfCnlVQ0FxxUbuaYUKwEQ2yu6yus8fHKrLFRzqkNt
+         sxDd/GXrWOP9iF5CVGV0I0YUfjwdQ7YHoDQG6FbrF8j9EqmN+URS9jyec04dok119slm
+         8IrNa6B14OLXL/9S9SdcmaJqmkxl+pd7sK1NVpLeTM9fUt6N2Xo8t952hDb4aooFkbpr
+         eHbzbPFsg3kxnSPQvyOeDks4/041rBFBbD0EXgZhMSTENv+JyRIWyytEk2ytskBxiEhA
+         jn/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768902853; x=1769507653;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NfNKiVzxBTizUBnwJ9kc5DIY2uEEk4tt8Fkeu9u8yEQ=;
+        b=iG0fvh6NwBCBCn6HjJhh9ATLefCosr7I0p9HgQ/hr3JNIEIYLxXGUB4owUYROlV3HS
+         fIb6vWfPYsUyIcy6q+rJZklWgxq4Uy0gOiPPq2ZY5bOHn+JCnUGQrf0jrJ2/uPz286fp
+         +EHY0aEZ7A7UB9a0kWy02PiM7IW3pmv65gkm04Kb/uA6ebPnJOcf0aZxX0vzvhNWdRHK
+         RKO5UF9EU1ss7t9dHS/Y8m8LpdFarkB0t/Mbwa9lPQOKxBF8/drDbuJWa77gtpJ7XMCk
+         +gzhvE0BSxLt3ncxmDqdx0eiBKUaR7g5Vukf6Tm1/JmtCdlSoyafO4KvQSrH5Y29IQW0
+         rong==
+X-Gm-Message-State: AOJu0YwmEsNI4DRFR2G8/ByCMPLPVCztWuYb4O/HHcZ5TVWUM6i5Ju/E
+	3OmNvta1fML2pIXM6NSKYO7lMrx66sHsIuJk/0qkHM9k1l0x9iQXovNeyyyEGB1Kyfs99ATk+f+
+	PSpT2sCz7WgyAPSFrxcYwBfg+yvZtGYxxmFOHKIr0gTmF4UYF80SblW4e4A==
+X-Gm-Gg: AZuq6aJ5jtMiEyAgleVqNRnxx+aqQ72/dn1ZWo9PTJ4DiBtV7XYyLlyDMw9cd4og15f
+	U+WuC//x7THZGWBMxj57UyRfCksd4K1G7TS5H0ZeVOCaDXepAjzbNt0dzJQ+hSVWZ/vgrAalgfM
+	JHZiN6qIxO6kOhmw5GG/3xl6KPVKqp3e61PqVcgs3ScvwFEhMvldqrLipw1PjUJomcxqbu8aWWc
+	v3n0zqsaz//g+iWB6tB669h4h1ARqrIjmgnhn2WdbTn0xdxAP4+JVdKr3ICVEiCujaijm4LWq1f
+	2v3crM0ZhXHtir7lBz+kol5tCJDSsNInT1NFbeXsfT2clZPYOYFzoBJlIGAmo4ClShEVLc9/GNA
+	LbIr377BNVWtk
+X-Received: by 2002:a05:6000:25c7:b0:431:16d:63d1 with SMTP id ffacd0b85a97d-43590174d1fmr1655186f8f.44.1768902853094;
+        Tue, 20 Jan 2026 01:54:13 -0800 (PST)
+X-Received: by 2002:a05:6000:25c7:b0:431:16d:63d1 with SMTP id ffacd0b85a97d-43590174d1fmr1655150f8f.44.1768902852700;
+        Tue, 20 Jan 2026 01:54:12 -0800 (PST)
+Received: from [192.168.88.32] ([150.228.93.113])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569921f6esm27853162f8f.4.2026.01.20.01.54.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jan 2026 01:54:12 -0800 (PST)
+Message-ID: <88981dea-63b5-4e50-89ea-f4ad38314504@redhat.com>
+Date: Tue, 20 Jan 2026 10:54:07 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,159 +86,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND net-next v6 0/3] Add DWMAC glue driver for
- Motorcomm YT6801
-To: Yao Zi <me@ziyao.cc>, Georg Gottleuber <ggo@tuxedocomputers.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Frank.Sae@motor-comm.com,
- hkallweit1@gmail.com, vladimir.oltean@nxp.com, wens@csie.org,
- jszhang@kernel.org, 0x1207@gmail.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, jeffbai@aosc.io, kexybiscuit@aosc.io,
- Christoffer Sandberg <cs@tuxedocomputers.com>
-References: <20260109093445.46791-2-me@ziyao.cc>
- <176827502141.1659151.5259885987231026081.git-patchwork-notify@kernel.org>
- <147b700c-cae2-4286-b532-ec408e00b004@tuxedocomputers.com>
- <aW5RMKqwpYTZ9uFH@shell.armlinux.org.uk>
- <be9b5704-ac9c-4cd5-aead-37433c4305a8@tuxedocomputers.com>
- <24cfefff-1233-4745-8c47-812b502d5d19@tuxedocomputers.com>
- <aW7sW91DrgZ6FMrv@pie>
+Subject: Re: [PATCH v4 net-next 01/10] net: introduce mangleid_features
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, sdf@fomichev.me,
+ petrm@nvidia.com, razor@blackwall.org, idosch@nvidia.com
+References: <cover.1768820066.git.pabeni@redhat.com>
+ <ec64bb86298c31608eee9558842da25c47669f9c.1768820066.git.pabeni@redhat.com>
+ <CANn89iL1sJMe-j9n6--gdRwwkjpAD0TdDrS43N5g3=9HWUCOtQ@mail.gmail.com>
 Content-Language: en-US
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
-Autocrypt: addr=g.gottleuber@tuxedocomputers.com; keydata=
- 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
- bsxTTcOuRnk=
-In-Reply-To: <aW7sW91DrgZ6FMrv@pie>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CANn89iL1sJMe-j9n6--gdRwwkjpAD0TdDrS43N5g3=9HWUCOtQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-
-
-Am 20.01.26 um 03:45 schrieb Yao Zi:
-> On Mon, Jan 19, 2026 at 06:57:48PM +0100, Georg Gottleuber wrote:
->> Am 19.01.26 um 18:45 schrieb Georg Gottleuber:
->>> Hi,
->>>
->>> thanks for the quick reply.
->>>
->>> Am 19.01.26 um 16:43 schrieb Russell King (Oracle):
->>>> On Mon, Jan 19, 2026 at 04:33:17PM +0100, Georg Gottleuber wrote:
->>>>> Hi,
->>>>>
->>>>> I tested this driver with our TUXEDO InfinityBook Pro AMD Gen9. Iperf
->>>>> revealed that tx is only 100Mbit/s:
->>>>>
->>> ...
->>>>>
->>>>> With our normally used DKMS module, Ethernet works with full-duplex and
->>>>> gigabit. Attached are some logs from lspci and dmesg. Do you have any
->>>>> idea how I can debug this further?
->>>>
->>>> My suggestion would be:
->>>>
->>>> - Look at the statistics, e.g.
->>>>
->>>>    ip -s li sh dev enp2s0
->>>
->>> That looks good (after iperf):
->>>
->>> 2: enp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP
->>> mode DEFAULT group default qlen 1000
->>>     link/ether ba:90:88:24:49:4f brd ff:ff:ff:ff:ff:ff
->>>     RX:  bytes packets errors dropped  missed   mcast
->>>        2091654   31556      0       0       0       0
->>>     TX:  bytes packets errors dropped carrier collsns
->>>       88532451    1518      0       0       0       0
->>>
->>>
->>>> - apply
->>>>   https://lore.kernel.org/r/E1vgtBc-00000005D6v-040n@rmk-PC.armlinux.org.uk
->>>>   to enable more statistics to work, and check the network driver
->>>>   statistics:
->>>>
->>>>    ethtool --statistics enp2s0
->>>>
->>>> to see if there's any clues for what is going on.
->>>
->>> That looks also good, I think. I saved it before and after the test with
->>> iperf. See attachments.
+On 1/20/26 9:58 AM, Eric Dumazet wrote:
+> On Mon, Jan 19, 2026 at 4:10 PM Paolo Abeni <pabeni@redhat.com> wrote:
+>> @@ -11385,6 +11385,12 @@ int register_netdevice(struct net_device *dev)
+>>         if (dev->hw_enc_features & NETIF_F_TSO)
+>>                 dev->hw_enc_features |= NETIF_F_TSO_MANGLEID;
 >>
->> Oh, there was something else interesting in dmesg. See attachment.
->>
->>> Regards,
->>> Georg
+>> +       /* Any mangleid feature disables TSO_MANGLEID; including the latter
+>> +        * in mangleid_features allows for better code in the fastpath.
+>> +        */
+>> +       if (dev->mangleid_features)
+>> +               dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
+>> +
 > 
->> [    0.933480] dwmac-motorcomm 0000:02:00.0: error -ENOENT: failed to read maca0lr from eFuse
->> [    0.933483] dwmac-motorcomm 0000:02:00.0: eFuse contains no valid MAC address
->> [    0.933485] dwmac-motorcomm 0000:02:00.0: fallback to random MAC address
+> It is a bit unclear why you test for anything being set in mangleid_features
 > 
-> Some vendors didn't write a MAC address to the eFuse. With these YT6801
-> chips, the failure is expected.
-
-I believe we have a fixed address, as our DKMS driver always uses it (it
-is also displayed in the BIOS).
-
-> Which DKMS driver do you use? Could you read out a permanent address
-> with your DKMS driver? If not, this piece of log should have nothing to
-> do with the rate problem.
-
-DKMS module we use:
-https://gitlab.com/tuxedocomputers/development/packages/tuxedo-yt6801
-
-Apparently, your driver can also read the permanent address. I rebooted
-nine times to test it, and it worked nine times. So it was probably a
-glitch that doesn't occur very often.
-
-Do you have any ideas on how I can further debug the rate problem?
-
-> Note some out-of-tree driver derived from the vendor one fallback to a
-> static MAC address[1], so it doesn't mean your eFuse has MAC address
-> written if you only observe the MAC address doesn't change between
-> reboots.
+> I would force here the bit, without any condition ?
 > 
-> Best regards,
-> Yao Zi
-> 
-> [1]: https://github.com/ziyao233/yt6801-vendor-driver/blob/0efb3e86702ad2b19e7f9d19172a8e1df143e8c7/fuxi-gmac-common.c#L17-L32
+>       dev->mangleid_features |= NETIF_F_TSO_MANGLEID;
+
+Indeed the check it's not needed. I'll drop it in the next revision, thanks!
+
+Paolo
 
