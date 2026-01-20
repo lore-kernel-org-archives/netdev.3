@@ -1,254 +1,165 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AEF33B97B
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768933603; cv=none; b=cSe5NY1IQn0cNRNhYoKTgBZGC5VaWBeJLThN9WZOVVBLT9zPVABZtuzfKLwphJ8xes5VrFyDaewwFsM1i3TdW3Y1W67xHH1DEmuZeZCEFHQprqh3eMMhQFYACBdBXN0ll/UsHY/BcAMgxekqaxbYYmeRDPisvx7Dgar7D8ZhKw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768933603; c=relaxed/simple;
-	bh=URguZv+z+GzFNe+cJ2zMPSHRjgwbLnOTJ/PrC+X4qs0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JEAA0r5fZK930F9y3xcKvXCHJx+qw+0H3GyuSD6MeXa1IGcSM94pEvpzfFHa6We4OtFKy8MkSjFs5vJAJ56b3CqEphaJAV3hSdOsDEzdpsgYD8CssZsvRuiNIGy+LsIjnBa8MBUe6uJjwJ8sGtZkS0mjeXW4YDRHjCkICiIBjAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB743C06F
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768933629; cv=pass; b=T3dOnXkRHlcu9tzohN8+ZG8VVKeDHMAovP4j7TBiqTlky1HZDRBU17ZWcDlu1cNl1zofftKSiBh2fsVPv1sOF0cH9xp8IrsuYdUp6wUuxKQNEqQQpmkGCRtJr3ayjY7wn4VL/x98VafHdzq16VrAKZQYdmaclBPuwQNm+yhqBDc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768933629; c=relaxed/simple;
+	bh=WjyrYejoNDCqoUNnjbJPM5/Ul8BkhwhbjYspZsnE/ZE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZOUUCJ4ZyGCOGvbm0cGhXOpgpapXge2kKJD6fRWkGBPdy5CXbMqS0mGb4EoKCzsRPDE/K44LUuyqNRWmbweR7I7zXHrPc8rE3rSFezfVDLX4m9+yB+jwYEKL/y1m5ui1IwmwlY20fBbZ29HwAELv41SOkI3PO+yoOc74HPhnFS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACbmQf4m; arc=pass smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-81e93c5961cso4710984b3a.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:26:41 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACbmQf4m"
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-93f573ba819so2077933241.1
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:27:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768933626; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PeTocd1+Ccj0vmNXZI4gG4f3PbSZYhJBGWlD99l7SM7TUzeBkCr3ql9pkMLi4moZKM
+         WO0mX7rp7IGyZPwav/EsP+taLPn9KPh855pZ0sTOhzfdYHq4lg8Sh6QrkqAgLvVOnIVX
+         WgkhZ7NEhx25ZBskfxdx8pfv0o8mhuzWLH3NW9BRO+lGvsE44snAHrlxAIX7XBgg3ZfM
+         /j4RlQJt/HJ6UhELaW8hmLwkeiBuwRVxdj1ob2XrCWCn3k9bJeF9LFJwhvoKu4Pz4PjF
+         +xuQHvBwDYCJtN3H0HKyzSGYz9f8IcXz/tp7Wpe+PJ2VUY9dweZvxAsy2nuYNeQzNVqr
+         TO1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=05dxE5YDetF9DljE4cqyNw51lJAscnnJTYEC67eYOGU=;
+        fh=WH7lMV2ZUh0XixLi7mmftMBZg8XTxWXlc8KkFHGyvgs=;
+        b=R6AXP68qcsHIwA/hgRPL/+upltTzw25+TNhQcF/ugqBtgdKA5FAnf6Mlki62NFXnSC
+         z0dLzQM0OYrH5wJdUI22AjBHHMhKsY/OGJst5JhD6dAixpxaKFhS4MWZnmKBxJFXL5Gd
+         2F2+56QkolXJlA/lxeW6m4SNwFFFpUIN4cdC0N1N2EL1MypUvV1mBp1aD9z7xFnuvh5c
+         TBnT9Wwtqyyp9NHpxJP5R4MQvgz3X2UX+qhaU8AWo9xDyWF71d5+8bPKvtAB4IbZjdZQ
+         cli6+W5M/qZAlNM9D1mWUdiPh80Y8sMwvxGgBgiwjMdGqm7rWT6cSx2RTR94euO9FjTQ
+         9IBQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768933626; x=1769538426; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=05dxE5YDetF9DljE4cqyNw51lJAscnnJTYEC67eYOGU=;
+        b=ACbmQf4mZhkRLKPwnEnnL46lB+PREy5Kuh2h0m9/UssPfRBgsXGO7SpqEo+9057pmB
+         gAEIDd3GK+HDaiIekDHp19kk8RJs5N5TWLdm2RuzFk6sKozxnFhkU+suCitbwXTd9KoY
+         sHrXstSd6CYZ4XM/+XZ89sYGY4s9FVdB5BlOxX5jbkzxJvpW+tHWmxsCObUQgJ7VQOkx
+         mwHfmyAEEa90VZc1WMmKCrAtycqZ5Eki6onz1XAKSzc75FagQ6+fhjJ/qXF/1uvP0G2k
+         R5JACr8Xhzx4LOlo2AqEcy7CExsUj57a3ALwdddqVWd7U7sF+DII9BiFBpMVANvUDps4
+         qPRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768933601; x=1769538401;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=04o5YPIM/ynG9CDHLB19er8qSsbuftkYbcHCNFB6R4Q=;
-        b=mi7sU6SyA0r4uNdurNJOnoKlmD3CjivWWht39iGpqdPmqoiCPsFzLVyha/CsMzwtp9
-         qQI26kEEGOyS2bHJ74n5b1LPEPC+XFI4Qq40S9idXlCE80plLfU+Rhz8yMimGTCtYAP2
-         JhHk3nYLFkylSztIa8W9N4tLVaMNIkGGoIHl+4BnTSKjH3czBQqXb4v+QfrsJfnGgl2r
-         38shvC1oX20FFZL9nfCuEBMrgGO2ZoPrFMvV+lOnE3Yn0NMsk4KqKNWw1xU0Nft1uQn6
-         hCzfcWkOuIE+e9qIDU2XYNty5Sc/IduxNcJ/snhAUwnxDNLipH6IuxWJamTTS0DZr6V+
-         LOjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVWWsf6LOjAulixj1Vur+lvhXW/oXyifydYcgBYw1UCfypiTMwVgwhmpVBPwfMY8aQzjaiTQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIgkshGEpNdhRt9TcjtYm+VS+j5emmfGl1+LXGQ2c8jFTNFz7A
-	uRdEUYFmOJPKv9rDpJd4YFRTpQihvCJHi+J7oVvTsRXrYQeVcOH9sLl1
-X-Gm-Gg: AZuq6aLfA4BFscAVaNA7Nc/COj5ZxaHqx7mvuiHpn4ASY8jiXYCVN5cnWVSpEH+OfWM
-	NfaM/a9QgKLnscMixqAge8/+EXf/4Bqjzya9vkQcAfIqLRnBIVtihqbd9glbdYbhAUa6cJXE/VN
-	p2yNov0G57GKVCbrGBYLH/5n2a1pbLzJFqkKnjFli700SuMJOwZFkZLI5A7vw7/XEpF7eFjL3pB
-	FAZVz2KrloaRhIj1PYTB7Rbzv7VXW6SA69X62arc7BIAmjB7KJhsb9bvDuVedzlHtO0TRH4za/m
-	H1UJ8AJHqL6sFhu1Sm1nmGTFCq7y027qWX6A/DkkWSi0C1ft5tmyZPdgw0QdoGPfdQvfDiRPTtv
-	4gaJ3IjATN1chV6SwlNvziUxmcYR5+Bub290QESY8N2ZwY3WVqjgjklGQkF5f9SQUM6ORPyJUd1
-	80FWPdqLKDtL7x
-X-Received: by 2002:a05:6808:bd1:b0:453:7a2a:62cd with SMTP id 5614622812f47-45e8aa74004mr810527b6e.50.1768926248216;
-        Tue, 20 Jan 2026 08:24:08 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bd5b00esm9168566fac.15.2026.01.20.08.24.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 08:24:07 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 20 Jan 2026 08:23:49 -0800
-Subject: [PATCH net-next v2 3/5] netconsole: convert to NBCON console
- infrastructure
+        d=1e100.net; s=20230601; t=1768933626; x=1769538426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=05dxE5YDetF9DljE4cqyNw51lJAscnnJTYEC67eYOGU=;
+        b=dtTMWNwm5p361pbAu329LUvUQO5l3fL/nT1U/VNUG4e16bjYtF/5i0D/Zf2GL1/VYm
+         LZ8EpfQSy+AnRBESx1+METaJDoQQPXpq5eMheXt8EIifgiMYf6ehhOYk5Efmf49Ol6dn
+         mWT/t06OJZDw2aC1lRodF0bA1yV6TY3CCDFihBgZiT2Z4k9/to8p54hE07zul2KKpfFd
+         YXVHyeOy8eXb8FCeR5ijvpsixpucBoN8Dd5iHr3q/JFOu5EOGkH8YWwK8xIU1Lxh1l99
+         8lY4pZNUCE6RIJsjRNB+SHMzmXXLVZsZkyhPCUvpRNyqjm7FhNoUDM48D7i1c4tE86B1
+         P4LQ==
+X-Gm-Message-State: AOJu0Yz8l6kOC+7EbuVYYWPEhz2k3FvRxR4uuJElbowu+ZUvRv+MMOq0
+	M2xMWXIaFYboi0fwETjPo7YqX/0GWrkZ7ITl8IHEHcV9+UjwgrY9nQ+yvEqssrOMG38dmhVAYxt
+	E2vIQ1eaof62R4r3cZ2Ek5K0AMACbeSU=
+X-Gm-Gg: AZuq6aLk99GeNJXN3//DSrfyv7DFU/9COCv2lL4XD7d8hAjy2OLmqduMCNdB90OaFML
+	ykxnyangbH+plzBGePjeJP07cTwFFBDASUhIWNB0nUl1unSWNF8EZGaqvEXkmTJFXMgUtfH0G6j
+	esos03R2mJUTjGhnOKDOcTGLnsfJdU78NZQZ81gt5ciYw5qChhwLdKt5Hfn70KPdvH4a/WRzh8C
+	gq7WIDwbUARnUm+IkCrHC8PZE/IqKNREfmBt9VCu+awbxXbFs6zHRlTRwjjrqh509GC5bgMWrND
+	X/t/e7xfrKvm3Ka03OWM+4JKU+MFwvrI04WpWYKJkA==
+X-Received: by 2002:a05:6102:3910:b0:5db:f031:84ce with SMTP id
+ ada2fe7eead31-5f1a5579199mr4695639137.29.1768933625876; Tue, 20 Jan 2026
+ 10:27:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260120-nbcon-v2-3-b61f960587a8@debian.org>
-References: <20260120-nbcon-v2-0-b61f960587a8@debian.org>
-In-Reply-To: <20260120-nbcon-v2-0-b61f960587a8@debian.org>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- pmladek@suse.com, john.ogness@linutronix.de
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
- gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
- mpdesouza@suse.com, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5459; i=leitao@debian.org;
- h=from:subject:message-id; bh=URguZv+z+GzFNe+cJ2zMPSHRjgwbLnOTJ/PrC+X4qs0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpb6widhBlttuzOawbHxAveWRni5+IZPIISE4jr
- 8QIE6VCjaCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaW+sIgAKCRA1o5Of/Hh3
- bWNTD/97j5o5CuRXZxOvUp9rq3WeHpW32Bs2KxnvW29M7PYhsa2Pw/c+NyqFAP0OxkfxHxeLwX+
- BbBe5OlpBebjbryO0kzQdXnNlOpolQanFpaNExqtnqdqWpvhtO3DvtEefBESftjwQemUg+QCjPG
- aA3bpuILcNA6YZOTa10lBD2doTuh7wSO9OcWTc6ywxHwXkRdTYE9BoR3eCZ3ElVXw8V0MA9O65o
- PN/wcDm1njBNl+Y2h7Gs/fZDuM6mZPUJEVo5zIB02sPwv2Jhj6Jd7QZ4DgtIUlMm03n9gOwKSj2
- wZEOS/XSDrTSaiFs8ZPypV/s0oHM5XVHcGsNSlu8k1qrxYgS5xLW8QNs+c+urFD6pm3nvIt+BbP
- YLA7RdiUYVuP1zWQHguMTm7GrLvGK9VDFsc97fn0y/OQIjGP4C/IY3uRM+hHaSRmnfaL+J5ndku
- 1B/OslgDhCOK+r+2wrIaGFIUpRLpSm4D/H1ucPT8LR3Nvb6ksGFvfg+F/nqnWZNToSH9uDlMA08
- n7CIf0tfiWkFf/Ey/hbcGejXtQ090KBnScZyxPExEEnZ28WnPMEibrBi4Bo7JhOykoaGlsg3jpI
- Qzz2tMQnq+hcJ5zHsmJQwqcxuUkbxKcDIDL6VH+g47UBWRrZ1E3vneiHumEJ4WBU59teLt/VlCs
- zKTK06U/ezAuV7A==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+References: <CAFfO_h4kZQu6CY_U6cfakQ7Zozo8fg-LpQ_n5UiLZDVhqxMC4A@mail.gmail.com>
+ <CANn89iLu1DTn9xeqpWAfiKPajh-bkhss4awNWzUd2=0iZRQEWg@mail.gmail.com>
+In-Reply-To: <CANn89iLu1DTn9xeqpWAfiKPajh-bkhss4awNWzUd2=0iZRQEWg@mail.gmail.com>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Wed, 21 Jan 2026 00:26:55 +0600
+X-Gm-Features: AZwV_QgO7_gzkcibKJWs83NEexL220V0UjZGbx9YsMnfJ1_Q5-b1apvXTsjHbh8
+Message-ID: <CAFfO_h4cX0+L=ieA_JF7QBvH-dDYsHnTUuN4gApguqxVpWyy2g@mail.gmail.com>
+Subject: Re: Question about timeout bug in recvmmsg
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	willemdebruijn.kernel@gmail.com, willemb@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert netconsole from the legacy console API to the NBCON framework.
-NBCON provides threaded printing which unblocks printk()s and flushes in
-a thread, decoupling network TX from printk() when netconsole is
-in use.
+Hi Eric,
 
-Since netconsole relies on the network stack which cannot safely operate
-from all atomic contexts, mark both consoles with
-CON_NBCON_ATOMIC_UNSAFE. (See discussion in [1])
+On Wed, Jan 21, 2026 at 12:14=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Tue, Jan 20, 2026 at 7:09=E2=80=AFPM Dorjoy Chowdhury <dorjoychy111@gm=
+ail.com> wrote:
+> >
+> > (Note: I had posted this before in
+> > https://lore.kernel.org/netdev/CAFfO_h5k7n7pJrSimuUaexwbMh9s+f0_n6jJ0TX=
+4=3D+ywQyUaeg@mail.gmail.com/
+> > but got no reply, so trying again. I would really appreciate
+> > suggestions on this request. Thanks!)
+> >
+> > Hi,
+> > Hope everyone is doing well. I came upon this timeout bug in the
+> > recvmmsg system call from this URL:
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D75371 . I am not familiar
+> > with the linux kernel code. I thought it would be a good idea to try
+> > to fix it and as a side effect I can get to know the code a bit
+> > better. As far as I can see, the system call eventually goes through
+> > the do_recvmmsg function in the net/socket.c file. There is a while
+> > loop that checks for timeout after the call to ___sys_recvmmsg(...).
+> > So this probably is still a bug where if the socket was not configured
+> > with any SO_RCVTIMEO (i.e., sk_rcvtimeo in struct sock), the call can
+> > block indefinitely. Is this considered something that should ideally
+> > be fixed?
+> >
+> > If this is something that should be fixed, I can try to take a look
+> > into it. I have tried to follow the codepath a bit and from what I
+> > understand, if we keep following the main function calls i.e.,
+> > do_recvmmsg, ___sys_recvmmsg ... we eventually reach
+> > tcp_recvmsg_locked function in net/ipv4/tcp.c (there are of course
+> > other ipv6, udp code paths as well). In this function, the timeo
+> > variable represents the timeout I think and it gets the timeout value
+> > from the sock_rcvtimeo function. I think this is where we need to use
+> > the smaller one between sk_rcvtimeo and the remaining timeout
+> > (converted to 'long' from struct timespec) from the recvmmsg call (we
+> > need to consider the case of timeout values 0 here of course). It
+> > probably would have been easier if we could add a new member in struct
+> > sock after sk_rcvtimeo, that way the change would only have to be in
+> > sock_rcvtimeo function implementation. But this new timeout  value
+> > from the recvmmsg call probably doesn't make sense to be part of
+> > struct sock. So we need to pass this remaining timeout from
+> > do_recvmmsg all the way to tcp_recvmsg_locked (and similar other
+> > places) and do the check for smaller between the passed parameter and
+> > return value from sock_rcvtimeo function. As we need to pass a new
+> > timeout parameter anyway, it probably then makes sense to move the
+> > sock_rcvtimeo call all the way up the call chain to do_recvmmsg and
+> > compare and send the finalized timeout value to the function calls
+> > upto tcp_recvmsg_locked, right?
+> >
+> > I would really appreciate any suggestion about this issue so that I
+> > can try to fix it. Thank you!
+>
+> I think it is too late to change behavior, set in stone for more than 18 =
+years.
+>
+> This could break many applications.
 
-CON_NBCON_ATOMIC_UNSAFE restricts write_atomic() usage to emergency
-scenarios (panic) where regular messages are sent in threaded mode.
+Understood. Thanks!
 
-Implementation changes:
-- Unify write_ext_msg() and write_msg() into netconsole_write()
-- Add device_lock/device_unlock callbacks to manage target_list_lock
-- Use nbcon_enter_unsafe()/nbcon_exit_unsafe() around network
-  operations.
-  - If nbcon_enter_unsafe() fails, just return given netconsole lost
-    the ownership of the console.
-- Set write_thread and write_atomic callbacks (both use same function)
+If there are other smaller fixes/improvements that need to be looked
+into, I can take a look if anyone can point me to them. I would
+appreciate any suggestion on this.
 
-Link: https://lore.kernel.org/all/b2qps3uywhmjaym4mht2wpxul4yqtuuayeoq4iv4k3zf5wdgh3@tocu6c7mj4lt/ [1]
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 97 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 60 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index dc3bd7c9b0498..c5d7e97fe2a78 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1709,22 +1709,6 @@ static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
- 				   sysdata_len);
- }
- 
--static void write_ext_msg(struct console *con, const char *msg,
--			  unsigned int len)
--{
--	struct netconsole_target *nt;
--	unsigned long flags;
--
--	if ((oops_only && !oops_in_progress) || list_empty(&target_list))
--		return;
--
--	spin_lock_irqsave(&target_list_lock, flags);
--	list_for_each_entry(nt, &target_list, list)
--		if (nt->extended && nt->enabled && netif_running(nt->np.dev))
--			send_ext_msg_udp(nt, msg, len);
--	spin_unlock_irqrestore(&target_list_lock, flags);
--}
--
- static void send_msg_udp(struct netconsole_target *nt, const char *msg,
- 			 unsigned int len)
- {
-@@ -1739,29 +1723,62 @@ static void send_msg_udp(struct netconsole_target *nt, const char *msg,
- 	}
- }
- 
--static void write_msg(struct console *con, const char *msg, unsigned int len)
-+/**
-+ * netconsole_write - Generic function to send a msg to all targets
-+ * @wctxt: nbcon write context
-+ * @extended: "true" for extended console mode
-+ *
-+ * Given an nbcon write context, send the message to the netconsole targets
-+ */
-+static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
- {
--	unsigned long flags;
- 	struct netconsole_target *nt;
- 
- 	if (oops_only && !oops_in_progress)
- 		return;
--	/* Avoid taking lock and disabling interrupts unnecessarily */
--	if (list_empty(&target_list))
--		return;
- 
--	spin_lock_irqsave(&target_list_lock, flags);
- 	list_for_each_entry(nt, &target_list, list) {
--		if (!nt->extended && nt->enabled && netif_running(nt->np.dev)) {
--			/*
--			 * We nest this inside the for-each-target loop above
--			 * so that we're able to get as much logging out to
--			 * at least one target if we die inside here, instead
--			 * of unnecessarily keeping all targets in lock-step.
--			 */
--			send_msg_udp(nt, msg, len);
--		}
-+		if (nt->extended != extended || !nt->enabled ||
-+		    !netif_running(nt->np.dev))
-+			continue;
-+
-+		/* If nbcon_enter_unsafe() fails, just return given netconsole
-+		 * lost the ownership, and iterating over the targets will not
-+		 * be able to re-acquire.
-+		 */
-+		if (!nbcon_enter_unsafe(wctxt))
-+			return;
-+
-+		if (extended)
-+			send_ext_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+		else
-+			send_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+
-+		nbcon_exit_unsafe(wctxt);
- 	}
-+}
-+
-+static void netconsole_write_ext(struct console *con __always_unused,
-+				 struct nbcon_write_context *wctxt)
-+{
-+	netconsole_write(wctxt, true);
-+}
-+
-+static void netconsole_write_basic(struct console *con __always_unused,
-+				   struct nbcon_write_context *wctxt)
-+{
-+	netconsole_write(wctxt, false);
-+}
-+
-+static void netconsole_device_lock(struct console *con __always_unused,
-+				   unsigned long *flags)
-+{
-+	spin_lock_irqsave(&target_list_lock, *flags);
-+}
-+
-+static void netconsole_device_unlock(struct console *con __always_unused,
-+				     unsigned long flags)
-+{
- 	spin_unlock_irqrestore(&target_list_lock, flags);
- }
- 
-@@ -1924,15 +1941,21 @@ static void free_param_target(struct netconsole_target *nt)
- }
- 
- static struct console netconsole_ext = {
--	.name	= "netcon_ext",
--	.flags	= CON_ENABLED | CON_EXTENDED,
--	.write	= write_ext_msg,
-+	.name = "netcon_ext",
-+	.flags = CON_ENABLED | CON_EXTENDED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netconsole_write_ext,
-+	.write_atomic = netconsole_write_ext,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
- };
- 
- static struct console netconsole = {
--	.name	= "netcon",
--	.flags	= CON_ENABLED,
--	.write	= write_msg,
-+	.name = "netcon",
-+	.flags = CON_ENABLED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netconsole_write_basic,
-+	.write_atomic = netconsole_write_basic,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
- };
- 
- static int __init init_netconsole(void)
-
--- 
-2.47.3
-
+Regards,
+Dorjoy
