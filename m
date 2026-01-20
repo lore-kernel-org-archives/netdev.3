@@ -1,136 +1,92 @@
-Received: from sonic317-32.consmr.mail.ne1.yahoo.com (sonic317-32.consmr.mail.ne1.yahoo.com [66.163.184.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390CD3A9631
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08942B729
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917944; cv=none; b=ElNJL+M/mN5cib07/14Fqsx4B9NaHU186cFyuIDFJmO7MOkErl6z8NhU3vaFXRY0BRs8Hof0DpK6/Pa/uNgDCNSpCVZdztREJaBMaxkWNqNhBTkmQ+47uhjOnt+PSm3raADiihshBJoTs7EOCvqK3qkx6Gldm+bpb02HvbShlkU=
+	t=1768918123; cv=none; b=COliHT4f5sDjbrzBYlLSAIxtZsoNI/VwYcnmA41ozJRtS6hoVXCS0jWnIFw74ncCzY5V4LWluZpu7cYd+uGloN4Ttfk5/NyBaepkjSpM9KVLy22im7xLkiKvkcpRkNEqZ/ZQS5PBHfppOGmkMrz9iNz+VHZP/0JY8/4hiPHdoXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917944; c=relaxed/simple;
-	bh=Skepg5gQkMhyPFpPszY7wpclI79O5hsgClCpFGNUXS8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yh4MPZ9SrPsD53Esxp5zM5MsgSQf4Y9W+gUt/soQ9mARG4mVbEvOBYTKjlJ5YESvroz6o4dIP7huLllrQuADyZpuf/6FmEXt78jFZl93hp727LbNCbP5zM6Tfptl9menOWrodeJ2rNK3h7Fs1EGuUzPugZ03iRXXfsL9dnFf8os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=FUORbiRh; arc=none smtp.client-ip=66.163.184.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1768918123; c=relaxed/simple;
+	bh=nQJyWNUCQ3C0XXHdr5XHK5uq/E+I+6CHPIg1amxDlCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WkP0Oxl4FBnrpSFwqi0wwEYp+ATgO4vqP+FhelPXf4/slJW8KvYd8Q+7jSStPFdw59a8M+0pcZ+1zmtYMmfQbckdMoCaUQufJSUK6I4CUwh+Kg5XjA6N92zvMPbC2XhJFnr5w8GwWSb5+MtRY+LlmnLSiteJisg/zUStMY/eR9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JCE2b+i+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="FUORbiRh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768917942; bh=26jEdWlJBlRxKIFL3LQfgVEP+B3ScL55uRMFUfQbvyg=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=FUORbiRh04a7AckruIDLjYvHTWWFO2QrcxEM0dmObE2aYMvqu3dlGJS2wJej+uywyq+vKev+hjqvcIhWAbSCAow5/WsAy4noutUNGH1f5hR0Uvpw2DFgWaZHhNgFfeohDII5Qa2AoznSqpv2zQ/JeglYok6JPxrNsVVI/uj+HYnVmsQ1e0TO3OWOuB1nKD9Z9FnJJsxSILuiZUtumQtyTHkIu6L7Wvn2R9pTMfK5uAsXi3ZejbONKYl1SbGBBvszMeKg58gcnu7FgSfGH6cB1ruR3B+EAsK+RYwVyl2eDPtdetHfS6yr39CU3sb+367OlsaH8eeMmnlk7rQPBYSQIg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768917942; bh=Sk4t+1Mym7kN/oXv2t5P+NwjCLHzUIkGRRY/wDktqr2=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=tJwPEmIVzRnvd0hbaCuhsiQfwM3zHkftV4fK3wgbOVVhI7hsEoSk7XHzwTtTkWbQ9Xfa+LLU3km9JPfPYnFbvUliG1eMEsPkL5JENoU/s93fIVReThUCvkKloNaZA06r+Qe9WqJgJ+zhLPdspUQ1l3pW8BBozAH2rBFzlBhuERVA7m5JJvLOQFsoawkzea7z5eM7EWwhxOdQjQN3NvxUKPTcpvRoFi4DBjHOfkl7PS5HAlFz0gEbBprX9/Odh48kU4dnGmw7/CLr+/6qbVsBBPR3LwAexBO8dVdk1Sm9C5fPrQ46v/AlDovUDDmZ0TgfziUDk2m6pEG3S+4DrCm0iQ==
-X-YMail-OSG: doV8aZwVM1lOKrBvr.hzA9qUAL_r7rIjn9Okf6A77o4dzHz4SLSN_.mEEjxJ1Fk
- nlubxp52kuPoWBOuQGskMm.mR_TYAadRiuuVckO2g6pDn6onfox4QORLrR.BpWGOApakoqQvGmb0
- frp2jU3MMN_03Mk3u3oj7MP.o5OxGR4oHPKFZV4f.VHaBIIbDWkuNuyl9CTV5XhaG4_Jn9yuK342
- KpATu6bVZ6gVy4.THKgXWehSEoDnyEkjr2MqDg2tRSXvmc80XhuUXXsqsQjoVaMdnM1J0_Efj_GB
- Y9x3hsjXUlaoSxt04nyseEcB3Fr4NM3uAE8uyd5FQyYgiRyWGeehhWHgA00SwK.dQ.I4ZzAlJLyB
- snVXaafPHMsbTA0Cm__DBJPiCYmW.3mv50UYFnPCIIuaPHKmNXESTjEE1OS8nCKbjW6bnysWZllW
- 9Gy54vFic4x4XYsEXOlj9O1vTwnAF6fBWSmxnw9ZLKypdLQtEviauJf6y7j.UvL6gCIGtWotxoLr
- tzzun28MfxB2a1AAx5oXpmm__XLU4yX0s2F1Ms_QOWBZBUKprskrKqlBsFxIQG7YcsHJ6E4Pi7LP
- wZ0VvCw1m0f6cxOOlS7w7RykMz5ZwzeXGscjv36cJpZOPTtghj0uifSBiL0sGs1082fdAdeFwV6A
- Q_9fw4V4ClKAifhsvufW0yZekX7lBIm38ge8z_82NDO4pCgDF.WqIa2CpfOxcYBzXTfkynVbUZqr
- HPjLjPVhLjH.KiW_xRz6Rl64YpW0s7wjK3KPevSJE0rWDdLUmP1aFBVrUV_ns1M5wyCCyaFH1Ha2
- hoPvruyG0a50NrXA2cMS2Z3ambxyrPkwVDa_ieByt4NcgRk9xG1ubga3eKA4R.0TpHeC3Otd3_NB
- dseb85PpC0dS0W04mu9g.ikaAlSHqpAbrcD7FN7DZ_ZdIzMK84jSC7jg.rkYrSCab9OWvXoj0_ph
- 3jqp_IFzr7hFlJIsjrHYys1liZ9G5g3c3V_No0G33s4PefUbrWO4sgPc6u_0oeavPKRbj74DU0fd
- oN58rW74wO0WBkqbOImaUlgjK0sEjDq9LLHSVXSYadXVfZiBd7hE_EmKEE4BDPOgpiBJ32t43Y9d
- SvPscpn7Rz.e1mw4uUkW3AqBYrhJ0K_F0QSoTxfIRBGay1C_ainAWnePUNL8_aWfAZ.Se9Pei0Mw
- xm67XUi.1S2PmWgeAMz0W4Bjnr1Gd3ifXxXbEmeecfxgQRKxalXv41vZjGAQv6HKY.9YqJQZAAxk
- Yb4hnOn4klVQ.7eF.m969xoHKQ.R4dgbBj2Ijarfc0tXRfv1Tso1TypAa2ejU0v9e.Oyq9pxfZej
- a1C0g4tqmMbJUV6jJCTkEJFFV6ctDqaMWJCDBY7jLiqj3fOueysh_NAQTgD2CdjDYJSmu4Sxm5Qq
- 4Ss6yrdaWxRtcNM_307jqYfrH96EfIDpNk.Ofb89lwOthz5Ux7MicQ2klx4EoCCZtt902jn5pDln
- mkoOvjAmgieFklp0bsZz2Vmv4mFAts16rVb6e9ie5kr8KQx.5nnT30pjPLSAFJp9Rfs9rMi.LBbW
- kBKo0pU9tCL23IGkJM_BNwDipkVXE9eEJMjR098jm2Y7kOtVj8fsbu1k8uskHYF3V.0pcdd7opic
- k.4FK43UF0qUYrqWQ0Ae_1vzwgHtekp0iB7IECidv7iLsFdOaf_x43eXVP8og4sFFfMAz9wRlb1W
- lzXtuf0dfawG1ITP5l_C1wGEPupBSZdREgj9e4J.YwgfFWsJZCfTq8nHeQvq_q9G4DK3jIWibcAp
- 3DoQ4jeggKahFCd69OkJUMgN_ic4heud4RKxka91uLWsxatMvKIxsGo5yTZtVn81evOcSZmWpMsp
- VvjnSbpj7wDtq0uZIx.i02ycfyKjSCiPR0DwhdkwGNUA46p9I_e3S22bwLWOZh2z6FV2APgm66yB
- xF0ZJ.Z_eqwMV8FiU61ZKAlyQ5bniuNrTAIYC_s.AYgBnW4cEE03bJ2tgs82hE39h7vxFE1pUXX6
- Y2DN1AW13I9TtAHvs4YAokN45IQ2HdiNuunkualExamaP4HnGAbP3aq1aSFs0nMtkljpjes0OyDh
- 4pL6knbL0o79XZ3n_aBgrxE8yCR92I66ePU8Hw8sBXMzbCe0LvX8kQr7wvMFpIcc29cBsx2XwK47
- N6uKe5taia5iRw5dUojnDLUGY4tZyTeBDidgo0fte
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: bb1c067f-d1e3-44c6-bb19-3f9daa543adb
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Tue, 20 Jan 2026 14:05:42 +0000
-Received: by hermes--production-ir2-6fcf857f6f-42swv (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e96ad789ca791dd80b0fc002f0c2b597;
-          Tue, 20 Jan 2026 13:25:11 +0000 (UTC)
-Message-ID: <5151a1c6-1ed7-4433-8675-c3486cc29cad@yahoo.com>
-Date: Tue, 20 Jan 2026 14:25:04 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JCE2b+i+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sjlmp7Xzirjp8hNchZ2HXCaho9lP6cyTX0aqtV4sBh0=; b=JCE2b+i+qxptJw79wClfFsP3om
+	7CxGpiY3F43drN1bILoMCbMwK3l8iEpCfSGy9Wg6KcTvZOEEch2hflBoaRYKVZJA5GcyHTA04GXu2
+	lNcHtum6cfCsdpdM9sS8uIPJ3QBE615BvQ+OLYL2cIMcQ/O2wykcJpJI1LDP3H+jIbWw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1viCPA-003gaL-N4; Tue, 20 Jan 2026 15:08:24 +0100
+Date: Tue, 20 Jan 2026 15:08:24 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Simon Horman <horms@kernel.org>
+Cc: jacky_chou@aspeedtech.com, davem@davemloft.net, edumazet@google.com,
+	andrew+netdev@lunn.ch, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [net-next,v2,09/15] net: ftgmac100: Always register the MDIO bus
+ when it exists
+Message-ID: <8ab0e121-5ffb-4dd8-afc8-11b6ce3898bb@lunn.ch>
+References: <20260116-ftgmac-cleanup-v2-9-81f41f01f2a8@aspeedtech.com>
+ <20260120121407.795529-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v5,03/11] net: tunnel: convert udp_tunnel{6,}_xmit_skb
- to noref
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, sd@queasysnail.net, Jason@zx2c4.com
-References: <20260113162954.5948-4-mmietus97@yahoo.com>
- <20260118003609.1042309-1-kuba@kernel.org>
-Content-Language: en-US
-From: Marek Mietus <mmietus97@yahoo.com>
-In-Reply-To: <20260118003609.1042309-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.24987 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120121407.795529-1-horms@kernel.org>
 
-W dniu 1/18/26 o 01:36, Jakub Kicinski pisze:
+On Tue, Jan 20, 2026 at 12:14:07PM +0000, Simon Horman wrote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
-> 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> Full review at: https://netdev-ai.bots.linux.dev/ai-review.html
 > ---
-> net: tunnel: convert udp_tunnel{6,}_xmit_skb to noref
+> net: ftgmac100: Always register the MDIO bus when it exists
 > 
-> This commit changes udp_tunnel{6,}_xmit_skb to use noref dst handling,
-> removing the requirement that callers take a reference on the dst.
-> The key change is replacing skb_dst_set() with skb_dst_set_noref() in
-> udp_tunnel6_xmit_skb().
+> This patch moves MDIO bus registration earlier in the probe function
+> for FARADAY, AST2400, and AST2500 MACs, simplifying the code by
+> registering it unconditionally when the hardware has an MDIO controller.
 > 
->> diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
->> index cef3e0210744..d58815db8182 100644
->> --- a/net/ipv6/ip6_udp_tunnel.c
->> +++ b/net/ipv6/ip6_udp_tunnel.c
->> @@ -95,7 +95,7 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
->>
->>  	uh->len = htons(skb->len);
->>
->> -	skb_dst_set(skb, dst);
->> +	skb_dst_set_noref(skb, dst);
+> Note: These issues appear to be fixed later in the series by commits
+> 8961daa5f2c0 ("Simplify error handling for ftgmac100_setup_mdio") and
+> 046e51399f0f ("Move DT probe into a helper").
 > 
-> skb_dst_set_noref() contains a WARN_ON check:
+> > diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+> > index f1cb5dc37919..931fdf3d07d1 100644
+> > --- a/drivers/net/ethernet/faraday/ftgmac100.c
+> > +++ b/drivers/net/ethernet/faraday/ftgmac100.c
+> > @@ -1957,6 +1957,14 @@ static int ftgmac100_probe(struct platform_device *pdev)
+> >  		priv->txdes0_edotr_mask = BIT(15);
+> >  	}
+> >
+> > +	if (priv->mac_id == FTGMAC100_FARADAY ||
+> > +	    priv->mac_id == FTGMAC100_AST2400 ||
+> > +	    priv->mac_id == FTGMAC100_AST2500) {
+> > +		err = ftgmac100_setup_mdio(netdev);
+> > +		if (err)
+> > +			goto err_phy_connect;
+> > +	}
 > 
->     WARN_ON(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-> 
-> Does this create an issue for the SCTP UDP encapsulation path?
-> 
-> Looking at sctp_v6_xmit() in net/sctp/ipv6.c, when SCTP sends via UDP
-> encapsulation, it calls:
-> 
->     udp_tunnel6_xmit_skb(dst, sk, skb, NULL, &fl6->saddr, &fl6->daddr,
->                          tclass, ip6_dst_hoplimit(dst), label,
->                          sctp_sk(sk)->udp_port, t->encap_port, false, 0);
-> 
-> This call path can originate from user context via sendmsg():
-> 
->     sctp_sendmsg()
->       -> sctp_primitive_SEND()  [uses GFP_KERNEL - process context]
->            -> sctp_do_sm()
->                 -> sctp_packet_transmit()
->                      -> sctp_v6_xmit()
-> 
-> Unlike the network device transmit path (which runs under rcu_read_lock_bh()
-> from __dev_queue_xmit()), SCTP's control plane transmit path runs in process
-> context without RCU-BH protection.
-> 
-> Will this trigger the WARN_ON in skb_dst_set_noref() when SCTP sends UDP
-> encapsulated packets from process context?
-> 
->>
->>  	udp6_set_csum(nocheck, skb, saddr, daddr, skb->len);
-> 
-> [ ... ]
+> If ftgmac100_setup_mdio() fails after of_mdiobus_register() returns an
+> error, it calls mdiobus_free(priv->mii_bus) but does not set priv->mii_bus
+> to NULL. The goto err_phy_connect then leads to ftgmac100_destroy_mdio()
+> which checks if (!priv->mii_bus) but finds a dangling pointer, resulting
+> in mdiobus_unregister() on freed memory followed by a double free.
 
-Thanks for reviewing my submission, I'll address all of your comments in v6 shortly.
+The call to register the MDIO bus has been moved earlier. That means
+the call to ftgmac100_destroy_mdio() the bus also needs to move
+earlier on the error cleanup path, before err_phy_connect:
 
+	Andrew
