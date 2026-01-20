@@ -1,134 +1,111 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9408A33E36D
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768903251; cv=pass; b=IuEM5/Wt/x1QO8GDVGrxfZZyKyUShCtI29NTrcdY+noSgrXk2FsMM/A3KpSjoGa2IKVFX1G1FE3MOGaInAuLpsPqhCOQHXNkAfj9/5xfZh3QEY3HOQrNjfv48ZLlYX409DcemYZNzCflYkDdV0d3Sl8tqAeJCJW8roCyhlt3Vg8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768903251; c=relaxed/simple;
-	bh=bxs1d0ToON+/Bp2OpxrCQltJoJYi6G5PLdJ09NcDoJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=scmEFc/Z5g/phaUoAQr0NUU2q4kUO0yTwSDDBLPNrWfZo9G8+dBUQQLtcExJqlDlLJYJ9mxkPhpp3NZ5d/vbuKewMr43q82qj50ZfHhcEUGvqiHC+Jp9pEX09f7mFAAarkaImFSXTccI+tKtvCGtcr2/wrnwZdG+D8w1vFjaw7U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fy+sCTb3; arc=pass smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893A38757B;
+	Tue, 20 Jan 2026 10:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768903450; cv=none; b=l+IPbHgkBea4SQyRokOqGWv9zV8Hj5XIN+vpdjxh0Jo60nKJcPkh/4I2VGxepUyW4T+nQW9Q6HRuqq3Jcy4rM/Neo4gyP6swTsRsJM5FMtp1RFAgpCksP66jHtKJyuQvW+lEvcD95oeg0n2U/cl2bj3dS/xvCgxGh7dVCjhWU9Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768903450; c=relaxed/simple;
+	bh=z/37CXg1o6Ft0V6Mv74mTqvuXKrLrGbjqFwBVKZFS1k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r7X79bBVj8cZDVh4SeaHiof3PDbcUIcIV/Hjgrkb182+c0LwpBBhr9AGG3lvtkEnCDZd6SPGwP3juyg24ev7Ww2inCOqnKG9yyUEOnw0ZsUe1kXQj4v8SFGDkM5t1M9M6XRgWPaAISf3/z+wzyVH9XzEkMAxsJdnlY51JuXPsQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=JZpPUjzU; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fy+sCTb3"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6fd5bec41so931190eec.1
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 02:00:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768903248; cv=none;
-        d=google.com; s=arc-20240605;
-        b=k4s0+WA+k1/Gx39yI8yTooY2koG9I77olFlo8qnLmJ2ownmvhgFOxlDwQS6v+iEOUf
-         KQW9SpCZ2l+Nfi/CeTcsQ71CYbtfMRiBzlDnh1qqdIVlsZzzAOAxuaPLIem1Qb/oSIKF
-         M5Am5gwDAvl726kzN95i/0oWX8iFDqWi2HA/GCzCEgqAOq3q0xb9nVgmDQ1RykGQkiIx
-         cM7QQszEOQ53huqJQLEo5X5gqHEOv3jQbgq8kmhgkb6wbQPc/giG11glrCr1JtFqi0ka
-         Y5utYmg9V5pCdYBqiDMgemmJsP2sATFjaJalhkIQCoCNODEHVUlC5QD58JMIgsj3Gd7+
-         AErQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M9+RAXA+S1GCjNSmsIFRavSncliAYK27qdBowu4HD38=;
-        fh=W12W81j/JVi6+zU5aOwyiHnuhKz+4toJaMsHWvoXIqU=;
-        b=kmeMmzyhGBQQhSMTIB5sQcYO1MfE/6bGhGwZ9/VIrZaHTKI1yBXlcM7DDp+l2/oK0g
-         wftldBeyQCRBhlCsuYZFh+eKe2YusdciLyW/9VgLlXbtJgPTBtbnEeuI8Le5cnlyZ7bI
-         oVYy+EvzaehL2s7RbjPRmFmePgtuzTLywG/Oii/FT0+TgQ6YawwvCss+ZXNhMIBHSmHt
-         k+Bk0TX23tqf1qpYZhbB+xYChqR2Vf+9o8UTvXxltYmKxIVYSUhQKJhxtvkoLoSdy49u
-         CGuZWLEf1uEuOrpfWSKGYz3d2v4srTPunCr1FeCtpfpUjviGhgKqXc1bbFlNf3fl8LPa
-         2T6A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768903248; x=1769508048; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M9+RAXA+S1GCjNSmsIFRavSncliAYK27qdBowu4HD38=;
-        b=fy+sCTb3kVT+bwkaQybMAlNnh7JusRPM3IBRtWNPvbZgSshwnq7HycHUwjs93fuwU8
-         SfzpvpkPt+WNa+O14RgMpQgg25XJG54RMIlsKghtI1peokZlwO3XijMpzIxf8TMpgSWE
-         NMIW68ho51Ty4YWAJwr4eGaNeEKOiKAM480V3l0TBanJx/uOw7vkv+n08ZSh+hp1bdQE
-         ZwQ7YcURj8s14VhfRVpBuZX10CtmW8w/48c5FFbzzHv/hnOnXRIWNnkXbfp9Gv7nhwPz
-         1wxKtioT64b/nCx6m8730np+U0lzrzyNEGId+gTlDDQw+MXTba58XbV/t7WISigBXYwD
-         PKBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768903248; x=1769508048;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M9+RAXA+S1GCjNSmsIFRavSncliAYK27qdBowu4HD38=;
-        b=mbeQa2lDcOK1NUtwKe2TZdlz52mUjZu89ZqzU1fDhJoOvSEMoVZL5Zob5iyzXGHmpJ
-         /V9PFqleQW2CCk4aiAvDrXaGnoUUV2vwkRjPdLoWZHJ12lnsxDG6+HetScXPx97wLKaM
-         MUSoTsLKM1WnuU8llN6eCJOXletzvETguCHRaEd1pcdE1VmN0ge30ZgPKecjB4g8c0l8
-         QVhMfdIyg1XTgDzBX4D8y15vcsQnuMjSUjLsPtURYmzo+2j+iqKZUTlFI2y7fbfylMq0
-         +VCFZD7748RqAJoH2sVl74e5H6VWt9QFXkbR0nC98ezleBjW7GEePRHDYQS9JDH1Wy76
-         NTCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWc6BJpee8MFc+KF7x8Uy1V5zjoTjzO+A24wMGMHStIRG1bN+OkiJo84Gv1EWMvDbmm5Jv5nY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxqhh17jUsuz/71+muIcqDVni5qAfzsePgX4AEJ9NfyQz04868B
-	Yjm45vGx36eqRQHq9/QAcTXWumq+D+fitRtKOUR02hA4G4h4sRFCwlv7DlUuofeRmn2gozguwrE
-	o3OYD38S+hvRYlO0s/pA77ySsjx9yWAf9A84yoY/3X1mKUf4fskxkSYlmvb4=
-X-Gm-Gg: AZuq6aLFqUDGZ4YtoAYJtzc2IkuGDw7BEOcLB2Kx/X/td+8EShy0S5XiWXzw7DeiyGr
-	aD6Z6zQ4RFIDRwHXIQwRnteMkKjUHp+iIctyrouB01JIJJ1kFtf89fm4541BrJpDnos9UAIa/BO
-	zlDeX7IqHV4MRqzG/AKrAg9r0mQ4M0vybXG7EOOnWUpdYWT6EDcGh5dAiTD22uUiU8W0aOmvcG5
-	vT7gAFJTjEqjSGKYtYSlLDI1vNnr2Gy4CJeMcHz0aEyqoWZx6PP+auSgF854FHh/0ituxI=
-X-Received: by 2002:ac8:7d45:0:b0:501:4a4a:c24e with SMTP id
- d75a77b69052e-502a160b06fmr183731541cf.25.1768902839039; Tue, 20 Jan 2026
- 01:53:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="JZpPUjzU"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60JLfcpT3381160;
+	Tue, 20 Jan 2026 02:03:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=V9OAIu1OdhMMLbHw35ac7EX
+	37rbaryIwMt1OTCtVaI4=; b=JZpPUjzUg871JMMDQDjT60x3q1B+kHLgm36AP09
+	uWYL2TgLjDTwljVbP014AllnTvFERCpJyQoD8rQNxJbIuAw8MdLC9aG8lzAo3HIf
+	kiBdjZX0UYS14NDQULehXFQhoM/UdG4Zr9Ec1toE3NSO81va+moJlg4sRmNKRB9R
+	ebggyWnkF9ikW9BIYH4OmNHAT164gmFKlidNTOvxwmZ8allMui1pJuE4gDs1bEc5
+	8wjWkOGbxpyljyWZzJ9e4JFkrEmmVkEE6anjoJXDARM4BW3GtoVRc8yAPf2CdML5
+	xKWHk79vKQT0aavQxtmdfyVZtPbgzUHHXwuYX0+1KmWdNyw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4bsg20ajy7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 02:03:47 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 20 Jan 2026 02:04:10 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 20 Jan 2026 02:04:10 -0800
+Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
+	by maili.marvell.com (Postfix) with ESMTP id 4FBA35B6936;
+	Tue, 20 Jan 2026 02:03:42 -0800 (PST)
+From: Hariprasad Kelam <hkelam@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <kuba@kernel.org>, <davem@davemloft.net>, <sgoutham@marvell.com>,
+        <gakula@marvell.com>, <jerinj@marvell.com>, <lcherian@marvell.com>,
+        <sbhatta@marvell.com>, <hkelam@marvell.com>, <naveenm@marvell.com>,
+        <edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+        <bbhushan2@marvell.com>
+Subject: [net-next PatchV3 0/2] Octeontx2-pf: Add support for DMAC_FILTER trap
+Date: Tue, 20 Jan 2026 15:33:39 +0530
+Message-ID: <20260120100341.2479814-1-hkelam@marvell.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119185852.11168-1-chia-yu.chang@nokia-bell-labs.com> <20260119185852.11168-5-chia-yu.chang@nokia-bell-labs.com>
-In-Reply-To: <20260119185852.11168-5-chia-yu.chang@nokia-bell-labs.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 20 Jan 2026 10:53:47 +0100
-X-Gm-Features: AZwV_Qg0IWXghbxwuvPJvSjMMI2uFuU_uwIEWxMla7dfzpOOQkjvRiJt8IywSHk
-Message-ID: <CANn89iLzynvieqZUVK3NqaSpMT=-toZ1M4QHvQin5gHQM7T8yA@mail.gmail.com>
-Subject: Re: [PATCH v9 net-next 04/15] tcp: ECT_1_NEGOTIATION and NEEDS_ACCECN identifiers
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: pabeni@redhat.com, parav@nvidia.com, linux-doc@vger.kernel.org, 
-	corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com, 
-	jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org, 
-	xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
-	andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net, 
-	liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
-	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
-	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
-	Jason_Livingood@comcast.com, vidhi_goel@apple.com, 
-	Olivier Tilmans <olivier.tilmans@nokia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: y-cgJGV-J2mAQ9aJNPoosw90g8Xi2hQG
+X-Authority-Analysis: v=2.4 cv=XPY9iAhE c=1 sm=1 tr=0 ts=696f5303 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yfvZBKtj2kfplXi_T7QA:9
+X-Proofpoint-GUID: y-cgJGV-J2mAQ9aJNPoosw90g8Xi2hQG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA4MyBTYWx0ZWRfX7FkO04GmXhN/
+ OHi9akWiOEwFC+ZSEbdDYM8ggMCCYZpRB8g+QUA9bCeeq61quoKQyC7d1Bf3vHJkXJOYczGQ8y1
+ v0iCML1d85uEhGOy07xe37TEdzhtzXzoTUdItYJAus10XY/WrQmNFbfy5ERsPV5be2Vy7JHKjB4
+ vqjvUq33iflJuXjVaLbQ+IU5f1fu1gDw9mienAFsVOh0d2LqDD7xlD+kDNXK+p9fTmSGB3+2Oko
+ WW2t152HVoEsxUh8CuHIxPL9PheYnzEzVmYZU9BB5W9BF5wh87GTM4Pwi0kllCpDo4cu5MWz/9C
+ weRe2qK5LofLn+G4Fil5gE6GSha85UYsz5mcWdT1GuUWQpjIonWHI+R9N+LUTIf7fawt7wpHuY/
+ YNZWW4JRXgwhYLHy6qe6uprMg1xUkdbg+BvEQigG3B2PPTghTM80L+oTQQoe1JNdRebY6xZqWUS
+ sKH/WpQ6uFakxI8Z/4w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
 
-On Mon, Jan 19, 2026 at 7:59=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
- wrote:
->
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
->
-> Two CA module flags are added in this patch related to AccECN negotiation=
-.
-> First, a new CA module flag (TCP_CONG_NEEDS_ACCECN) defines that the CA
-> expects to negotiate AccECN functionality using the ECE, CWR and AE flags
-> in the TCP header.
->
-> Second, during ECN negotiation, ECT(0) in the IP header is used. This pat=
-ch
-> enables CA to control whether ECT(0) or ECT(1) should be used on a per-se=
-gment
-> basis. A new flag (TCP_CONG_ECT_1_NEGOTIATION) defines the expected ECT v=
-alue
-> in the IP header by the CA when not-yet initialized for the connection.
->
-> The detailed AccECN negotiaotn during the 3WHS can be found in the AccECN=
- spec:
->   https://tools.ietf.org/id/draft-ietf-tcpm-accurate-ecn-28.txt
+Octeontx2/CN10K silicon MAC blocks CGX/RPM supports DMAC filters.
+These patches add devlink trap support for this functionality.
 
-While for some reason linux uses icsk_ca_ops, I think the terminology
-is about "CC : Congestion Control"
+Patch 1: Introduces mailbox handlers to retrieve the DMAC filter 
+         drop counter.
+ 
+Patch 2: Adds driver callbacks to support devlink traps.
 
-Not sure what CA means...
+Hariprasad Kelam (2):
+  octeontx2-af: Mailbox handlers to fetch DMAC filter drop counter
+  Octeontx2-pf: Add support for DMAC_FILTER trap
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+----
+V3 * Address review comments suggested by Claude Code
+
+V2 * fix warnings reported by kernel test robot
+
+ .../net/ethernet/marvell/octeontx2/af/cgx.c   |  11 ++
+ .../net/ethernet/marvell/octeontx2/af/cgx.h   |   2 +
+ .../marvell/octeontx2/af/lmac_common.h        |   1 +
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |   7 +
+ .../net/ethernet/marvell/octeontx2/af/rpm.c   |  18 +-
+ .../net/ethernet/marvell/octeontx2/af/rpm.h   |   2 +
+ .../ethernet/marvell/octeontx2/af/rvu_cgx.c   |  23 +++
+ .../marvell/octeontx2/nic/otx2_devlink.c      | 167 ++++++++++++++++++
+ .../marvell/octeontx2/nic/otx2_devlink.h      |  23 ++-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   5 +
+ 10 files changed, 257 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
