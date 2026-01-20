@@ -1,54 +1,54 @@
 Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C102734C9AF
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FA434C139
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768927752; cv=none; b=fFIQ1ZHIaE3Ei2A5obyLzj9w4FnEbj4CjXcs3z26QNfMh1y/SirjGsaJHKfCYh/9n2SgV2phoy4C9dgi/Qp48EVFxCtPONl+2Q943blD2uxj231VFTbHDfD26GgfhBri4CRBb0b2o5WClwV/cDuyWSrBk1f0Zu4iFG4aSRwfS8Q=
+	t=1768927752; cv=none; b=XINf+AuxHGa6U7WIXAagNISnLcu0KUkcfUnS9n5vms+ciRu/1JZg+kPE484q4ZzHsXsFJp0pWAmCGRm4GuQ5oJHpGVQv/T43InGOljEUaUx1wDotJVomwsnEl0a5smPbY66bHmXS97+eDjOW6lX9NNAHYYBZV0b6XOvnnZCQ83E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768927752; c=relaxed/simple;
-	bh=qEG8W+iXPCChN+rsqU7ShDmWYPWBLq9atvzzf+9ff/c=;
+	bh=1N+ktjlyZLldxu7fSHkPQHTclXohtimeTmkDU0g74jM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GXqxSqVE+cxf5f92UJ1H/GOnb3q00yOX4foVw+i5IeWg0Tu06fwEWephf88wwYA2alPVuXaTuN5+vkP7BXxJJkabrWFtyVjkZ/0RmBJWDnVyB+fVRalK4rpJijPRWVJ9PNRXB6EG0yN3ZOzy0pIRyJKlY9zJUVuu8M+xA2IUYSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GJ5P+UEM; arc=none smtp.client-ip=209.85.160.202
+	 To:Cc:Content-Type; b=kkXcCGzyQpHo3GXL+2o6nLHQ6EI0SFIIdMhvNLZcZm/euruwS0Ys4x2OhhU7MxaB7oLOxS3WzIRT9PYlFY2BzcNUMaNbeH5bz+TXJbtU7gMcNdjLZTWEyDAtMQyiQHXonjY9O9mTViEJTH4BVgJeAGPyE9q2J9Y7rWwQLHfn7Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3EhdxY20; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GJ5P+UEM"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-5014b22d678so74281511cf.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:49:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3EhdxY20"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-50146a67232so154085451cf.2
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:49:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768927748; x=1769532548; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1768927749; x=1769532549; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PsOFJn4EZiKQ337yr9Dz5asIEvy6XfYTAcnE7gOIqmc=;
-        b=GJ5P+UEM9ALZ/SH8B5YF91HNxT8CPwWC+EA1z357JN34GpUgxKVcv6vWotphwo3UMU
-         nvizmVEUQ3tYFLtZ2ZhbP+EWx4YwBEj1T9Y+0AqtlNdZhogQyDBlixufgV2PwtzTsDZh
-         pIIjn/8zbrFaUep1FsryagDY6o53/aaX7hRgVugHyk4J0Nhy8SBN+K08/kDwQCJ+FDhr
-         GaSMQ2ffKR5xR7FmDEsIvo5u2Y6zwo2c7EVxTKkmvS4xTi+gXIY519UrQ1Iwhs15mR2G
-         0yuln9iroUXlK5vAZXN7Fj3X1WkWozcQKNhtOVgwdyxHNmRPZ0U+CLFSD8kumLoYj9VA
-         3Jqg==
+        bh=EBPCSY2pxzg17S0ZwIRP7nhiLcsN5dDyMBV3p9eoAAs=;
+        b=3EhdxY20Krrk0xIEgUz+825ubUfZlzKDQdONH6Sdk0pb5D4PTmoesnhNXu5FTPE0Nn
+         dLbaM9kSL1I6GwDmVfmKy9H3VVtZE5W6P7MSVJkALDOxQ2HGeXQ4BmfG2tevty8bZkHp
+         ZKu/U6Bypv1AgqavOd4XYNyMLl8bL5W2MGpHYg5OskowIEHOCjtaCsW5cm2u3M9jUEvP
+         FEegzIwIVlvJK1OzhojriPedTJuzT+BLH5Ox5MV2YAmPIG5Dh69U33Tw3U/qYgU95bOt
+         ZOdg9VUxdMOTXA6jdDg0H5n3/bPpeK5Mpmar/Idqkdh6bh3UnUH1SO4xwuU2C3AJFDIJ
+         Zwdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768927748; x=1769532548;
+        d=1e100.net; s=20230601; t=1768927749; x=1769532549;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PsOFJn4EZiKQ337yr9Dz5asIEvy6XfYTAcnE7gOIqmc=;
-        b=m7VI654lxAocQDXNxWenzVaG/Ui4uOhBTNPSSmykaEIxhnacAU7ndi+LM2xtDHpaly
-         8iv/Rq2UC+gwvEZIQbaBOBUhtd48TpzySmFvlOthmBNalmq8RAd4pCS9TwFO+MoWpHWc
-         gYyj+S0395/P1q67mK0IUeqtXvE/069L468DuzAYbdw2bFMEWhhyIsX7KwZGfAL0dL9r
-         mqw4p6Z4i6t9FforMa1DWL1W4IeQNn5BhndXEiCQjXJi91aEjpmpIRefG5yjBTfgukId
-         QsgnabopxnKv7N986m2FCaaLJYJMDk4C94RP7zNovrcZ0DnolROcMieI3g5jwGVJltsi
-         fFLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrlGOWv6FR1MrYdSXhCEcoY2uqdMIH5E+aYREd9qHfEja0fxe+Ss7KppSu6uQBbuXHguWER/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxryiUKrLX/jIozaqlVrJG9aPpdvfsmPEAF4ocIeAb7vB8QrScw
-	6+v0MueVIYSnB5GosKS+diiOYD7hoiaAGYimXbMVTVad6DfS6imFD928UQsKrDXI3UwLJuUDCqz
-	3Qa34urg5387MnA==
-X-Received: from qvbre3.prod.google.com ([2002:a05:6214:5e03:b0:88a:2fb9:2b69])
+        bh=EBPCSY2pxzg17S0ZwIRP7nhiLcsN5dDyMBV3p9eoAAs=;
+        b=kpktGctVJr+hOzagPYyZrklzxjyRgigTxY7jjSwUbPmMPRFSGRugfhg5iiO72LtYqc
+         Vu+zZqzFuJc2NEi4PmjbXaxDX1FBuLY2PJjRq7Ik0ZVpCuby35I6KiqP4gPMqMMxVlF7
+         bPyGm9gsvowqeCB3rYLnWBw06v5BUwMxGCIDN7S5hLmKp3/VFU7Jz6kFGR3xtMxABDM6
+         76yQgP5PhiGQZgWCV67jU11u/f09vbTbGLbiQ3RdZS/SowtJQkI6CeySXNDGBtErjrcS
+         KzHPhOAFj53D/ob5xOoynklDu6CtHkJ42zgCqgpUzJdSmYNeKi6wfuSrIjEWfANK9fw1
+         Wvdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFHGnpjum+hE7ypdYmedSJJPE/SnuuuRbpaSq7pd2r2io14uIrsiaOKge0Xb5WfTCGnIS8V2E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVaEhtwDAyqWyGLwsvDCZKnVEQHFpPCStKxBFcQincHw4jg0Ig
+	VTub6Mvb+/sAjG5fs8NeUnADXua6BYqRqZVmESpP4IGRYnW+6cYTCqphoUgMCjFbXhE5hYd7NHm
+	lXdBrGW6mN5C67A==
+X-Received: from qvblb33.prod.google.com ([2002:a05:6214:31a1:b0:894:4e94:72c8])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:7dcc:0:b0:501:4a86:f5f1 with SMTP id d75a77b69052e-502d85351b7mr28744701cf.71.1768927747661;
- Tue, 20 Jan 2026 08:49:07 -0800 (PST)
-Date: Tue, 20 Jan 2026 16:49:01 +0000
+ 2002:ac8:5d8e:0:b0:4f1:ab46:8e36 with SMTP id d75a77b69052e-502a1648f8bmr177921921cf.9.1768927749415;
+ Tue, 20 Jan 2026 08:49:09 -0800 (PST)
+Date: Tue, 20 Jan 2026 16:49:02 +0000
 In-Reply-To: <20260120164903.1912995-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260120164903.1912995-1-edumazet@google.com>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260120164903.1912995-2-edumazet@google.com>
-Subject: [PATCH v3 net-next 1/3] net: always inline __skb_incr_checksum_unnecessary()
+Message-ID: <20260120164903.1912995-3-edumazet@google.com>
+Subject: [PATCH v3 net-next 2/3] gro: inline tcp6_gro_receive()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -67,37 +67,166 @@ Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-clang does not inline this helper in GRO fast path.
+FDO/LTO are unable to inline tcp6_gro_receive() from ipv6_gro_receive()
 
-We can save space and cpu cycles.
+Make sure tcp6_check_fraglist_gro() is only called only when needed,
+so that compiler can leave it out-of-line.
 
-$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
-add/remove: 0/2 grow/shrink: 2/0 up/down: 156/-218 (-62)
+$ scripts/bloat-o-meter -t vmlinux.1 vmlinux.2
+add/remove: 2/0 grow/shrink: 3/1 up/down: 1123/-253 (870)
 Function                                     old     new   delta
-tcp6_gro_complete                            227     311     +84
-tcp4_gro_complete                            325     397     +72
-__pfx___skb_incr_checksum_unnecessary         32       -     -32
-__skb_incr_checksum_unnecessary              186       -    -186
-Total: Before=22592724, After=22592662, chg -0.00%
+ipv6_gro_receive                            1069    1846    +777
+tcp6_check_fraglist_gro                        -     272    +272
+ipv6_offload_init                            218     274     +56
+__pfx_tcp6_check_fraglist_gro                  -      16     +16
+ipv6_gro_complete                            433     435      +2
+tcp6_gro_receive                             959     706    -253
+Total: Before=22592662, After=22593532, chg +0.00%
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/linux/skbuff.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/gro.h        |  3 +--
+ include/net/tcp.h        |  1 -
+ net/ipv6/Makefile        |  2 +-
+ net/ipv6/ip6_offload.c   | 22 +++++++++++++---------
+ net/ipv6/tcpv6_offload.c | 10 ++++------
+ net/ipv6/udp_offload.c   |  1 -
+ 6 files changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 86737076101d4a8452e90fe78adcdcfdefb79169..e6bfe5d0c5252b2e7540e1fef9317aab83feced2 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4763,7 +4763,7 @@ static inline void __skb_decr_checksum_unnecessary(struct sk_buff *skb)
- 	}
+diff --git a/include/net/gro.h b/include/net/gro.h
+index b65f631c521d7d9741ef86781add0038c9ce4055..85e5eeed4c90feef9440c57af9382b0e9ead1219 100644
+--- a/include/net/gro.h
++++ b/include/net/gro.h
+@@ -405,8 +405,7 @@ INDIRECT_CALLABLE_DECLARE(struct sk_buff *udp4_gro_receive(struct list_head *,
+ 							   struct sk_buff *));
+ INDIRECT_CALLABLE_DECLARE(int udp4_gro_complete(struct sk_buff *, int));
+ 
+-INDIRECT_CALLABLE_DECLARE(struct sk_buff *udp6_gro_receive(struct list_head *,
+-							   struct sk_buff *));
++struct sk_buff *udp6_gro_receive(struct list_head *, struct sk_buff *);
+ INDIRECT_CALLABLE_DECLARE(int udp6_gro_complete(struct sk_buff *, int));
+ 
+ #define indirect_call_gro_receive_inet(cb, f2, f1, head, skb)	\
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 15f9b20f851fe322f4417ff403c3965436aa3f9f..3b94c84888a884d9ca8eb602ad1f7d4f941f3ef9 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2327,7 +2327,6 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
+ INDIRECT_CALLABLE_DECLARE(int tcp4_gro_complete(struct sk_buff *skb, int thoff));
+ INDIRECT_CALLABLE_DECLARE(struct sk_buff *tcp4_gro_receive(struct list_head *head, struct sk_buff *skb));
+ INDIRECT_CALLABLE_DECLARE(int tcp6_gro_complete(struct sk_buff *skb, int thoff));
+-INDIRECT_CALLABLE_DECLARE(struct sk_buff *tcp6_gro_receive(struct list_head *head, struct sk_buff *skb));
+ #ifdef CONFIG_INET
+ void tcp_gro_complete(struct sk_buff *skb);
+ #else
+diff --git a/net/ipv6/Makefile b/net/ipv6/Makefile
+index d283c59df4c1c421bc043056fe11e5437cc4aece..0492f1a0b4918ada8c56cf649fbec04c7114863a 100644
+--- a/net/ipv6/Makefile
++++ b/net/ipv6/Makefile
+@@ -45,7 +45,7 @@ obj-$(CONFIG_IPV6_FOU) += fou6.o
+ 
+ obj-y += addrconf_core.o exthdrs_core.o ip6_checksum.o ip6_icmp.o
+ obj-$(CONFIG_INET) += output_core.o protocol.o \
+-			ip6_offload.o tcpv6_offload.o exthdrs_offload.o
++			ip6_offload.o exthdrs_offload.o
+ 
+ obj-$(subst m,y,$(CONFIG_IPV6)) += inet6_hashtables.o
+ 
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index fce91183797a60fcbf271c73e086aeb0aa9d40c6..4d96154c0dcd019322908ab6ddaa663a2a565e44 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -19,6 +19,7 @@
+ #include <net/gso.h>
+ 
+ #include "ip6_offload.h"
++#include "tcpv6_offload.c"
+ 
+ /* All GRO functions are always builtin, except UDP over ipv6, which lays in
+  * ipv6 module, as it depends on UDPv6 lookup function, so we need special care
+@@ -30,13 +31,6 @@
+ #define INDIRECT_CALL_L4(f, f2, f1, ...) INDIRECT_CALL_1(f, f2, __VA_ARGS__)
+ #endif
+ 
+-#define indirect_call_gro_receive_l4(f2, f1, cb, head, skb)	\
+-({								\
+-	unlikely(gro_recursion_inc_test(skb)) ?			\
+-		NAPI_GRO_CB(skb)->flush |= 1, NULL :		\
+-		INDIRECT_CALL_L4(cb, f2, f1, head, skb);	\
+-})
+-
+ static int ipv6_gro_pull_exthdrs(struct sk_buff *skb, int off, int proto)
+ {
+ 	const struct net_offload *ops = NULL;
+@@ -298,9 +292,19 @@ INDIRECT_CALLABLE_SCOPE struct sk_buff *ipv6_gro_receive(struct list_head *head,
+ 
+ 	skb_gro_postpull_rcsum(skb, iph, nlen);
+ 
+-	pp = indirect_call_gro_receive_l4(tcp6_gro_receive, udp6_gro_receive,
+-					 ops->callbacks.gro_receive, head, skb);
++	if (unlikely(gro_recursion_inc_test(skb))) {
++		flush = 1;
++		goto out;
++	}
+ 
++	if (likely(proto == IPPROTO_TCP))
++		pp = tcp6_gro_receive(head, skb);
++#if IS_BUILTIN(CONFIG_IPV6)
++	else if (likely(proto == IPPROTO_UDP))
++		pp = udp6_gro_receive(head, skb);
++#endif
++	else
++		pp = ops->callbacks.gro_receive(head, skb);
+ out:
+ 	skb_gro_flush_final(skb, pp, flush);
+ 
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index effeba58630b5ac2593b824bd8fc10a473954b6c..7f19ce423058870f285b7f8ae2a4d116d783f9fb 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -24,9 +24,6 @@ static void tcp6_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 	struct net *net;
+ 	int iif, sdif;
+ 
+-	if (likely(!(skb->dev->features & NETIF_F_GRO_FRAGLIST)))
+-		return;
+-
+ 	p = tcp_gro_lookup(head, th);
+ 	if (p) {
+ 		NAPI_GRO_CB(skb)->is_flist = NAPI_GRO_CB(p)->is_flist;
+@@ -45,8 +42,8 @@ static void tcp6_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ #endif /* IS_ENABLED(CONFIG_IPV6) */
  }
  
--static inline void __skb_incr_checksum_unnecessary(struct sk_buff *skb)
-+static __always_inline void __skb_incr_checksum_unnecessary(struct sk_buff *skb)
+-INDIRECT_CALLABLE_SCOPE
+-struct sk_buff *tcp6_gro_receive(struct list_head *head, struct sk_buff *skb)
++static __always_inline struct sk_buff *tcp6_gro_receive(struct list_head *head,
++							struct sk_buff *skb)
  {
- 	if (skb->ip_summed == CHECKSUM_UNNECESSARY) {
- 		if (skb->csum_level < SKB_MAX_CSUM_LEVEL)
+ 	struct tcphdr *th;
+ 
+@@ -60,7 +57,8 @@ struct sk_buff *tcp6_gro_receive(struct list_head *head, struct sk_buff *skb)
+ 	if (!th)
+ 		goto flush;
+ 
+-	tcp6_check_fraglist_gro(head, skb, th);
++	if (unlikely(skb->dev->features & NETIF_F_GRO_FRAGLIST))
++		tcp6_check_fraglist_gro(head, skb, th);
+ 
+ 	return tcp_gro_receive(head, skb, th);
+ 
+diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
+index 046f13b1d77a19b9ec4e0a07f531081d174defb1..e90aaa84941c60ec0fa2e23051c422064a959096 100644
+--- a/net/ipv6/udp_offload.c
++++ b/net/ipv6/udp_offload.c
+@@ -132,7 +132,6 @@ static struct sock *udp6_gro_lookup_skb(struct sk_buff *skb, __be16 sport,
+ 				 sdif, net->ipv4.udp_table, NULL);
+ }
+ 
+-INDIRECT_CALLABLE_SCOPE
+ struct sk_buff *udp6_gro_receive(struct list_head *head, struct sk_buff *skb)
+ {
+ 	struct udphdr *uh = udp_gro_udphdr(skb);
 -- 
 2.52.0.457.g6b5491de43-goog
 
