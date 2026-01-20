@@ -1,105 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4F23BC4D5;
-	Tue, 20 Jan 2026 22:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077733451AB;
+	Tue, 20 Jan 2026 22:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768947087; cv=none; b=tHWCnoHkA0KByZwIZ3YErm3EoK6QP6eQ5Pi3oqvWyP8xln4GCqK+SLahpk7xvUknw+RTttMmz9U2kvm7O0xhnoFrZkiUsFKBMh6nnKG59x4Mflr28Ocb4TRb4BfJO8pgJ24M2xcsiVCf6dBqehVtg6v6EuN46brlDjrdXkwT6kI=
+	t=1768947432; cv=none; b=pQ6vkos30DB4reVKyxtFvfBJsG5KpwMRP25KU4ZyErRW1yjWHLuOK3zrn3RUzqrhEPbi6siAX9Eziq5zQJP6FRp3fW83xUf/2WGwowxDoeZ0dblA9X0DYE7Oqdqd25eTzlQrLkb8wggcucn3uCR+PRVNLzG7zRKRYz6wAeXtoFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768947087; c=relaxed/simple;
-	bh=Olq9PDUgotvmRb3FBULz7tIkeAz8VsmFDj4VyiCOunA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CYkpF4rZs4HTgDViefkpChQ2tBo1DqnII79FgOCc+LQrRmojySuCUzpDmtFJ/+LgMBEDOD4xvYPBpGHSwDdlLN71vzzkb4TtUWEgKtUO2S+BAwPVZnRglIhJLn5ifLt8MXNgitwDJvB/wPs86DNJXW8hZ0GOZUH+xH/k/P+p6Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0WLm9SWQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1768947432; c=relaxed/simple;
+	bh=UxlsqwugPvD8LR7XY48QOQTZmggtMET6utD6Q+mBpfc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RuzVl0VGIbCiooUVEy26LRv76JC8KqtqDViFZ83vLRzrKF9cjA0rhAPWH1bkdVl7bIQyssIwNueR56t4oS6GJafB+aexC84KgvCHQaNJFXAdA0pfVhwNCuw5ZIJaxmYE1fNu/50VZTA/JOamukpKA/R6JORMiq7JBH27l4ChGPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=tKBiV6no; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0WLm9SWQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=cz8APhsseY0Zk6G5E1jpmPu9bX8/ov5VZe6gD1zzSmc=; b=0W
-	Lm9SWQQov5SYd420XUzSP8tyaiF9Y4ujlBQzmY/Th4asNTZ50ub3BJd9Dlsrxalzcy+e9smXDK7uN
-	NqKWIJLS3Yz9jukT5jfXlgISuHH38T+Dy7aAeX+CrQxUfBfk/HmRYj7G1QITxRhI94jWTECv3vxjD
-	lw4a8v0h3Xo2qJY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1viJw7-003jIq-CF; Tue, 20 Jan 2026 23:10:55 +0100
-Date: Tue, 20 Jan 2026 23:10:55 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Joey Lu <a0987203069@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
-	richardcochran@gmail.com, alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com, ychuang3@nuvoton.com, schung@nuvoton.com,
-	yclu4@nuvoton.com, peppe.cavallaro@st.com,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH net-next v8 2/3] arm64: dts: nuvoton: Add Ethernet nodes
-Message-ID: <2e3f213b-d507-4290-91af-fba7492155d2@lunn.ch>
-References: <20260119073342.3132502-1-a0987203069@gmail.com>
- <20260119073342.3132502-3-a0987203069@gmail.com>
- <04df4909-4fdb-4046-917f-2f2e47832c62@lunn.ch>
- <a5cb949f-34c1-470c-bd04-0b35c249455f@gmail.com>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="tKBiV6no"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=JF0KQIEGWn2HYz/B51v506ZRihIJ31ziQ3oS4QAmx84=; b=tKBiV6nol2v1
+	WYsN5KYlSBKahY1yWkmkuRybxcW3h8ze83ZMaE0Hvj3v/f3LyVIK+uPD9ySq19kmTXiALfjxmHILd
+	JKl2zn511jnJJd1o1h9NSrfINpP5P5H9YMlydtUVNqwTolj6ASho18uU1UuJNhli7Vondh4nuTNgu
+	M3R2mBLbkBtWHceDvo7ZWd3rthH0VZ8cY3M11KmpNErET78hIK6oVGEz2DydinuOmgjLp43pTpxxx
+	6j35sxTFN14LpdlFgJmU5patjhWoIaSzUTYiwKh96VoVHHAN+lEV9v05rYrOuHlKkVj9nCODzbM+C
+	IyBpnNkIo5qntmyykJnIIw==;
+Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
+	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aleksey.oladko@virtuozzo.com>)
+	id 1viJmK-00E1oA-2n;
+	Tue, 20 Jan 2026 23:01:09 +0100
+Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
+	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 60KM1HfU327795
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 22:01:17 GMT
+Received: (from root@localhost)
+	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 60KM1COM327794;
+	Tue, 20 Jan 2026 22:01:12 GMT
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Shuah Khan <shuah@kernel.org>
+Cc: Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests: netfilter: ensure conntrack is enabled for helper test
+Date: Tue, 20 Jan 2026 22:01:02 +0000
+Message-ID: <20260120220103.327771-1-aleksey.oladko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a5cb949f-34c1-470c-bd04-0b35c249455f@gmail.com>
 
-On Tue, Jan 20, 2026 at 09:34:39AM +0800, Joey Lu wrote:
-> Dear Andrew,
+The nft_conntrack_helper.sh assumes that conntrack entries are created
+for the generated test traffic. This is not the case when only raw table
+rules are installed, as conntrack is not required and remains disabled.
 
-Please don't top post.
+Add a stateful rule to force conntrack to be enabled, ensuring that
+conntrack entries are created and the helper assignment can be verified.
 
-> 
-> Thanks for the clarification.
-> 
-> In our design, the Ethernet PHYs are located on the base boards, not on the
-> MA35D1 SOM.
-> 
-> The SOM base board routes two RGMII interfaces from the SOM to two external
-> PHYs on the carrier board.
-> 
-> On the MA35D1 IoT board, there is no separate SOM and carrier board - it is
-> a single integrated board.
-> 
-> I will update the DTS accordingly so that no PHY nodes appear in .dtsi.
-> 
-> Thanks!
-> 
-> Best regards,
-> 
-> Joey
-> 
-> Andrew Lunn 於 1/19/2026 11:22 PM 寫道:
-> > On Mon, Jan 19, 2026 at 03:33:40PM +0800, Joey Lu wrote:
-> > > Add GMAC nodes for our MA35D1 development boards:
-> > > two RGMII interfaces for SOM board, and one RGMII
-> > > and one RMII interface for IoT board.
-> > > 
-> > > Signed-off-by: Joey Lu <a0987203069@gmail.com>
-> > > ---
-> > >   .../boot/dts/nuvoton/ma35d1-iot-512m.dts      | 12 +++++
-> > >   .../boot/dts/nuvoton/ma35d1-som-256m.dts      | 10 ++++
-> > >   arch/arm64/boot/dts/nuvoton/ma35d1.dtsi       | 54 +++++++++++++++++++
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+---
+ .../testing/selftests/net/netfilter/nft_conntrack_helper.sh | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Does ma35d1.dtsi represent the SOM?
+diff --git a/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh b/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
+index abcaa7337197..43761f2eb3ec 100755
+--- a/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
++++ b/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
+@@ -60,6 +60,12 @@ table $family raw {
+ 		tcp dport 2121 ct helper set "ftp"
+ 	}
+ }
++table $family filter {
++	chain forward {
++		type filter hook forward priority 0; policy accept;
++		ct state new,established,related accept
++	}
++}
+ EOF
+ 	return $?
+ }
+-- 
+2.43.0
 
-If so, what is ma35d1-som-256m.dts ? It looks like some odd sort of
-carrier board with a few serial ports and some memory? But systems
-like this put the memory on the SOM, not the carrier.
-
-As i said, i'm confused with your naming here.
-
-   Andrew
