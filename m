@@ -1,106 +1,105 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419CA395266
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 21:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768946020; cv=pass; b=EU+pHQA4snRPyECE1vu1/aTkEVWPdNMwpbPgK9TW17yD/GAdnOc+iWLmqa+MXOG7vE+U6QxZ379OKXWQuFjtKsPE3IM3Duxd/hPbEpabXuNOi8GjnS/A+us82COexH+Yw9AJXIQsG36FgKdHlzP3DIXyf6H9hpg2J9HiOQ1h3g0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768946020; c=relaxed/simple;
-	bh=OOkg9g07Qtf5oqCWy3DAcEVTf+vF40cuy2xsIZ4sY4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RagDZJw1VsvBv2CoV/EEGdtA6KPaj0u1Gu+ffn0m3Z6FSvWm0beUXAMuzE3ZvlR7yenYb+WI+xotzU0wnUGLsCLctomLJCoHnvSEf/wh7t82NGFoEF13yGW3oFQYMEj6QyvVUuJqN3h+XmnyulInSyHYMw/+HPI7iLRFEffRQOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGkIU3Ur; arc=pass smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4F23BC4D5;
+	Tue, 20 Jan 2026 22:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768947087; cv=none; b=tHWCnoHkA0KByZwIZ3YErm3EoK6QP6eQ5Pi3oqvWyP8xln4GCqK+SLahpk7xvUknw+RTttMmz9U2kvm7O0xhnoFrZkiUsFKBMh6nnKG59x4Mflr28Ocb4TRb4BfJO8pgJ24M2xcsiVCf6dBqehVtg6v6EuN46brlDjrdXkwT6kI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768947087; c=relaxed/simple;
+	bh=Olq9PDUgotvmRb3FBULz7tIkeAz8VsmFDj4VyiCOunA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CYkpF4rZs4HTgDViefkpChQ2tBo1DqnII79FgOCc+LQrRmojySuCUzpDmtFJ/+LgMBEDOD4xvYPBpGHSwDdlLN71vzzkb4TtUWEgKtUO2S+BAwPVZnRglIhJLn5ifLt8MXNgitwDJvB/wPs86DNJXW8hZ0GOZUH+xH/k/P+p6Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0WLm9SWQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGkIU3Ur"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-124566b6693so8667467c88.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 13:53:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768946017; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Abe+A+7CO0r3i+F1t3jP8HlJeRbSeztobAR/ulW7MQIaZkm9hYllTYe+DEANJhoDw/
-         pWw54Wx7bpse9V5iLAPJvSykT8708xpVA8hj0zMQjSnm5ps/qGPCB823qTUw3c4aCM3+
-         noFRfd2Tx7fS2kh6iNtKMq6woIVD9ZfbOyBaMJu1ymPZJKQfQvt3Tgry6U29FzajCmos
-         U8LIXja+DTLZAT+c2+z2j0V3haMQzSMOUXb0cWfJ//lSCSETtqcAMA3UIQYCoJLE1XMv
-         j8//MqqKmjF1x+dNOJKEwwY5ItL/8ibadCUKOjKISOgMCseWCzf5IsHUB0IU/PzoWnmR
-         ejhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OOkg9g07Qtf5oqCWy3DAcEVTf+vF40cuy2xsIZ4sY4g=;
-        fh=023w3GgbKm/+MuA8/OSUG5Rfggo3dVt1dM2gVFdhp28=;
-        b=DoEoS4KSHU8rIh9JEqFuAw+cCIDHb79qeV9SnV1pmKwjiotSrGZVPcgbBQUrO2Krfz
-         zRuN5Wb+JUt1dxS7etZ8gqUHgWAtgbh+GeVEoFZqWF55TEckVweIOsN1eI544fxyQfzG
-         u+PeNTiYebXm+DTAusmn34zxPIFQLk2lWjU52j5vZjZF4swVeR++G87skUzPkml1zbtz
-         3mGnBOoD7j+oJ/XFqQZLYQgEzCMreqOfuYvv8RDZqMqfHCuwvLHWKg15gZQih+LEO/og
-         XLCKCRjjrMrcUAyA9SdtA1BBtwLY2PtICwqcHHTAbLG9jd3kvMbtJolrRB+pqTG1RArv
-         4xow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768946017; x=1769550817; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OOkg9g07Qtf5oqCWy3DAcEVTf+vF40cuy2xsIZ4sY4g=;
-        b=OGkIU3UrcCkMKYd1TQoYwBJqO6+nmt2RA3Ww1nfF4NN7bEU7QSoQlL/mVyrFuLEuop
-         whNllC0R4oB3sfLqU0YFQ7VaiSe6ItYQboJU4+ic7hH+N28cDBcePiACyDz0CXz2MNtT
-         hlhi+VN7HeAcjLIrVQsqc59yLb46mWzlVnXVX0GlHeanggtsboZjkmbcuMiGIMPA4uUH
-         ejfn8U2qKh3hPUqBJNDFGIhDbSKVrq4Pc67E+SeY7EzrjluUBBewqQUPS3MMxThar38v
-         pYu3N6sS+H/yzEqhIykSxomW8GLm0PIOujRLLbtLAhN/3i0+WGEHh3PQOrBoZh5ScWDZ
-         36zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768946017; x=1769550817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OOkg9g07Qtf5oqCWy3DAcEVTf+vF40cuy2xsIZ4sY4g=;
-        b=Nofgq/3P3kC9jjdheTaNP4X48koH0bPx5h11Ek3UKv2aJJv2Z678PNAPTS1wT4OZGP
-         1JUjrHNGsoRh8Xxp7bjwYkWoEl9BvsI6YQon+/+2Rr487hu5hNe9VhSKJy5iFIcZ00Zj
-         HDqQeh7NyiQkN4SIvQ2mrxKHh9w2LLZyb1N0dHR9WSyB+hqM87tGLk89FCp8CWjjw6bI
-         yWmdY6pfNL9g40TA6FRE5FfpoqtWYTqAqDJljW52xiUABv3r+snvBuaSeKchd3sMRz/B
-         ntg52VTPOzQ2iOCuABR+nFnYZntSdiE6whjfI3vi59C0qxUahD07RTvoO7E3PtMr+jx9
-         lkLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVi58QzZLlzRGyjWFQW3qMjLDjW/wIRTxrp/n7bmDs4+hfrfucCj7swEz4qwE+EQuPR98y2nK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPKcKKFDIH4oMtv73pzfGomcRBa6EzZf4f778FO+EdBSlZe88p
-	NyqSMtkpUhrvzS7fGfSS1buKquSJIObIKhnMdDNxy8/dHqmdLy/q0P/goOrUMU9Kq4IktAgJwaB
-	m2GuIAkQc3GR+l8oqm7T5AudBoFiUx9i+jz39cX+H
-X-Gm-Gg: AY/fxX6r5/rwksMME3a6/FzpXO2Ma/b9mrWn28Zk+uRPtTzcVrZ6Uj7/9rADFsip6+E
-	azclZo8C0qLOxkiGU7jWug2sYz4o60iVPF399ZDcKtjTIXpSqhnp9nq2IzibfVAyDV2sMDo5mqL
-	pQlS3Bbd8e6lKJDTR1rW6X/+pdpN14AnR/xPRu7KxijgNSUBLCB7ib56mV/6QyzXiVl/WTKvz7Q
-	Sxa0M4Y9Kia1qXgCEUBtAJ1HKqIA8LM82WmwZR3omvVjjaDXhGiDH7ywd9j/la4ogYmVnjZAKwK
-	xrKPqHljy0CMNYD6bS4bapQqGKri/8jGz2a09X8MV/BVX3U42qCJODzVCH1/0zayRqaU
-X-Received: by 2002:a05:7022:e28:b0:119:e569:f262 with SMTP id
- a92af1059eb24-1244b3359e7mr13971228c88.11.1768946016799; Tue, 20 Jan 2026
- 13:53:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0WLm9SWQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=cz8APhsseY0Zk6G5E1jpmPu9bX8/ov5VZe6gD1zzSmc=; b=0W
+	Lm9SWQQov5SYd420XUzSP8tyaiF9Y4ujlBQzmY/Th4asNTZ50ub3BJd9Dlsrxalzcy+e9smXDK7uN
+	NqKWIJLS3Yz9jukT5jfXlgISuHH38T+Dy7aAeX+CrQxUfBfk/HmRYj7G1QITxRhI94jWTECv3vxjD
+	lw4a8v0h3Xo2qJY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1viJw7-003jIq-CF; Tue, 20 Jan 2026 23:10:55 +0100
+Date: Tue, 20 Jan 2026 23:10:55 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Joey Lu <a0987203069@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
+	richardcochran@gmail.com, alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com, ychuang3@nuvoton.com, schung@nuvoton.com,
+	yclu4@nuvoton.com, peppe.cavallaro@st.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next v8 2/3] arm64: dts: nuvoton: Add Ethernet nodes
+Message-ID: <2e3f213b-d507-4290-91af-fba7492155d2@lunn.ch>
+References: <20260119073342.3132502-1-a0987203069@gmail.com>
+ <20260119073342.3132502-3-a0987203069@gmail.com>
+ <04df4909-4fdb-4046-917f-2f2e47832c62@lunn.ch>
+ <a5cb949f-34c1-470c-bd04-0b35c249455f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120125353.1470456-1-edumazet@google.com>
-In-Reply-To: <20260120125353.1470456-1-edumazet@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 20 Jan 2026 13:53:25 -0800
-X-Gm-Features: AZwV_QhDty59E6gd0eGviuWFVgNNWxmTDQmV25jeTZD-k4DKZSQl5Vnu4o3NcgM
-Message-ID: <CAAVpQUANrWn4sRLWYrMkFEkm0Qc+=6=WPjftBcx3+dHrHxgdPA@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: preserve const qualifier in tcp_rsk() and inet_rsk()
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a5cb949f-34c1-470c-bd04-0b35c249455f@gmail.com>
 
-On Tue, Jan 20, 2026 at 4:53=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> We can change tcp_rsk() and inet_rsk() to propagate their argument
-> const qualifier thanks to container_of_const().
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+On Tue, Jan 20, 2026 at 09:34:39AM +0800, Joey Lu wrote:
+> Dear Andrew,
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Please don't top post.
+
+> 
+> Thanks for the clarification.
+> 
+> In our design, the Ethernet PHYs are located on the base boards, not on the
+> MA35D1 SOM.
+> 
+> The SOM base board routes two RGMII interfaces from the SOM to two external
+> PHYs on the carrier board.
+> 
+> On the MA35D1 IoT board, there is no separate SOM and carrier board - it is
+> a single integrated board.
+> 
+> I will update the DTS accordingly so that no PHY nodes appear in .dtsi.
+> 
+> Thanks!
+> 
+> Best regards,
+> 
+> Joey
+> 
+> Andrew Lunn 於 1/19/2026 11:22 PM 寫道:
+> > On Mon, Jan 19, 2026 at 03:33:40PM +0800, Joey Lu wrote:
+> > > Add GMAC nodes for our MA35D1 development boards:
+> > > two RGMII interfaces for SOM board, and one RGMII
+> > > and one RMII interface for IoT board.
+> > > 
+> > > Signed-off-by: Joey Lu <a0987203069@gmail.com>
+> > > ---
+> > >   .../boot/dts/nuvoton/ma35d1-iot-512m.dts      | 12 +++++
+> > >   .../boot/dts/nuvoton/ma35d1-som-256m.dts      | 10 ++++
+> > >   arch/arm64/boot/dts/nuvoton/ma35d1.dtsi       | 54 +++++++++++++++++++
+
+Does ma35d1.dtsi represent the SOM?
+
+If so, what is ma35d1-som-256m.dts ? It looks like some odd sort of
+carrier board with a few serial ports and some memory? But systems
+like this put the memory on the SOM, not the carrier.
+
+As i said, i'm confused with your naming here.
+
+   Andrew
