@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8ED3C1985;
-	Tue, 20 Jan 2026 10:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EDD3E9F98;
+	Tue, 20 Jan 2026 10:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768904273; cv=none; b=aGRDz1LTrUzlZ3eR64lm2c2N8T+i85jrd59ipOs9dACA/62yqv6Pbr3pXCbzv4Cw8Z9xJeSd8wejQnDP3NuH8333QtBi/zXAxWVIxqhKzClVIppHzcUfCImsA1sg2RnSdJvRD7+CDB5is9h/ViIygFNY7fyz1b8v0O4m/N3jxpQ=
+	t=1768904275; cv=none; b=WVPpxx7b0pw6MqZcCS9u+CgNCNtqo2NC7+82p0PcDvCNuT4qsj+WdZwct+l8nbnVWznkMGQjK8OV2NxGNC4170QPQjk8X6/CfK+MqFQGgmP+oQN62mIxlej18vvlv6SBKrpIJb98BpdYi7arB8t2DxpCgt+w+k3hJ7P7Chu4qVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768904273; c=relaxed/simple;
-	bh=EMBL9zhbP2np+rXwfdAlIRd+meq4aIVMy3iGLvieQwU=;
+	s=arc-20240116; t=1768904275; c=relaxed/simple;
+	bh=MR7e2R7CPVgyfSRb7MzhQnlnj8cAE7O5X1tWhsCzZNk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=apjDXZToXP65NpoKX2q4qCh+Rk4Q8JHownzTx5VX+h1Qm1GNOBJYJXzp5oFasILIM3pUfgW09cg1+x32J6fBs7QMdjSb33Yyaop8FlXsPEqClUbRCLGdfa/Xve7MBqEJ3J8k9yGxCTu7Fg25Orb3S63htedlJ53E0jvtIlIiMrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/Y98pDh; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=cqyhdYebAvmAoeFy7g8QNuqfNt23mx5K+sVvh/BAI1lB/qDiHisZ+urfpy2YXz+qRkcC+WFAMKdEbmQ28IRbwy955yFUS+ipWV6xHyaXrm9VuALL3dtgF/ooKVGVomE9mk2hV05FB05TpGSyxoyRmiXtJhi89v/axE4JrHTyGZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQ5NEMaw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/Y98pDh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A11C16AAE;
-	Tue, 20 Jan 2026 10:17:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQ5NEMaw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04AAC16AAE;
+	Tue, 20 Jan 2026 10:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768904272;
-	bh=EMBL9zhbP2np+rXwfdAlIRd+meq4aIVMy3iGLvieQwU=;
+	s=k20201202; t=1768904275;
+	bh=MR7e2R7CPVgyfSRb7MzhQnlnj8cAE7O5X1tWhsCzZNk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=W/Y98pDhna0GDpK8N81FlPJoG0hk2lUQUtkaa/b0OV5QFoMB/T6Xd2a/+pGk8/T0D
-	 jy2wJI/SCwbiqy7fi1ca21h1HQwWAi/s9C3rXQdjwJyH/Eji02ShKlKEYGgzCNoRLB
-	 x6dHQVylROWRQm1+WT/OekQBgR8m00EAamiwXaQktSXDsv5yYd0WXfKKZigEojbNSa
-	 RA23e/FoHTg3lDwEHmrnt9JPa65YYP+46dGyEFL2P+hrl4KDebUTxW95L8pxtKI+c/
-	 F32M2vpkgtStHSdVVZEMsTZnwqtT68goupK5Cmig+uM1BGIZNUn5VRVSkJ4OUJPfYJ
-	 /ivT3rkxELtpA==
+	b=JQ5NEMawg3O7GKUxWu9q8/3xE/leOejOE99oobrByn63rWM1HbjudTvX0jewCB9RK
+	 WnHo/d5e8Gj4C0Q1dQy5EFQs55T/enqqiCMskfWv0QxDm+98DXSuJCdTFYsMzEIWad
+	 qfQBRnxZsjqjCyqcT+kUgV2woBjFHKu2xfkC64kc/1PN0qtSsG5nzLBWlhXXHgznES
+	 SSzX0ZHA+u449aMqUeFM4xCrr1gv2NMD4wZXLMUqk7A15YUWkjXqGT2fe8RDe0Ipun
+	 /7w7JHwIp8xylTDLpVdivm+IB4iooYtNuS+YMob/03kcrR5m9KrWPM0xyyiYULEEPg
+	 QjYR+V8O7V29w==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Tue, 20 Jan 2026 11:17:17 +0100
-Subject: [PATCH net-next v4 1/2] dt-bindings: net: airoha: npu: Add
- firmware-name property
+Date: Tue, 20 Jan 2026 11:17:18 +0100
+Subject: [PATCH net-next v4 2/2] net: airoha: npu: Add the capability to
+ read firmware names from dts
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260120-airoha-npu-firmware-name-v4-1-88999628b4c1@kernel.org>
+Message-Id: <20260120-airoha-npu-firmware-name-v4-2-88999628b4c1@kernel.org>
 References: <20260120-airoha-npu-firmware-name-v4-0-88999628b4c1@kernel.org>
 In-Reply-To: <20260120-airoha-npu-firmware-name-v4-0-88999628b4c1@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -47,50 +47,121 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Andrew Lunn <andrew@lunn.ch>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 X-Mailer: b4 0.14.2
 
-Add firmware-name property in order to introduce the capability to
-specify the firmware names used for 'RiscV core' and 'Data section'
-binaries. This patch is needed because NPU firmware binaries are board
-specific since they depend on the MediaTek WiFi chip used on the board
-(e.g. MT7996 or MT7992) and the WiFi chip version info is not available
-in the NPU driver. This is a preliminary patch to enable MT76 NPU
-offloading if the Airoha SoC is equipped with MT7996 (Eagle) WiFi chipset.
+Introduce the capability to read the firmware binary names from device-tree
+using the firmware-name property if available.
+This patch is needed because NPU firmware binaries are board specific since
+they depend on the MediaTek WiFi chip used on the board (e.g. MT7996 or
+MT7992) and the WiFi chip version info is not available in the NPU driver.
+This is a preliminary patch to enable MT76 NPU offloading if the Airoha SoC
+is equipped with MT7996 (Eagle) WiFi chipset.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/airoha/airoha_npu.c | 46 +++++++++++++++++++++++++++-----
+ 1 file changed, 40 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-index 19860b41286fd42f2a5ed15d5dc75ee0eb00a639..aefa19c5b42468dad841892fa5b75a47552762a0 100644
---- a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-+++ b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
-@@ -59,6 +59,11 @@ properties:
-       - const: ba
-     minItems: 1
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index a56b3780bb627cc393b94210b6b5c72cc95baea3..89f22f3f47dc562864f32395c88093e8f28e161b 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -16,6 +16,8 @@
  
-+  firmware-name:
-+    items:
-+      - description: Firmware name of RiscV core
-+      - description: Firmware name of Data section
+ #define NPU_EN7581_FIRMWARE_DATA		"airoha/en7581_npu_data.bin"
+ #define NPU_EN7581_FIRMWARE_RV32		"airoha/en7581_npu_rv32.bin"
++#define NPU_EN7581_7996_FIRMWARE_DATA		"airoha/en7581_MT7996_npu_data.bin"
++#define NPU_EN7581_7996_FIRMWARE_RV32		"airoha/en7581_MT7996_npu_rv32.bin"
+ #define NPU_AN7583_FIRMWARE_DATA		"airoha/an7583_npu_data.bin"
+ #define NPU_AN7583_FIRMWARE_RV32		"airoha/an7583_npu_rv32.bin"
+ #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
+@@ -195,18 +197,18 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ }
+ 
+ static int airoha_npu_load_firmware(struct device *dev, void __iomem *addr,
+-				    const struct airoha_npu_fw *fw_info)
++				    const char *fw_name, int fw_max_size)
+ {
+ 	const struct firmware *fw;
+ 	int ret;
+ 
+-	ret = request_firmware(&fw, fw_info->name, dev);
++	ret = request_firmware(&fw, fw_name, dev);
+ 	if (ret)
+ 		return ret == -ENOENT ? -EPROBE_DEFER : ret;
+ 
+-	if (fw->size > fw_info->max_size) {
++	if (fw->size > fw_max_size) {
+ 		dev_err(dev, "%s: fw size too overlimit (%zu)\n",
+-			fw_info->name, fw->size);
++			fw_name, fw->size);
+ 		ret = -E2BIG;
+ 		goto out;
+ 	}
+@@ -218,6 +220,28 @@ static int airoha_npu_load_firmware(struct device *dev, void __iomem *addr,
+ 	return ret;
+ }
+ 
++static int
++airoha_npu_load_firmware_from_dts(struct device *dev, void __iomem *addr,
++				  void __iomem *base)
++{
++	const char *fw_names[2];
++	int ret;
 +
- required:
-   - compatible
-   - reg
-@@ -96,5 +101,7 @@ examples:
-         memory-region = <&npu_firmware>, <&npu_pkt>, <&npu_txpkt>,
-                         <&npu_txbufid>, <&npu_ba>;
-         memory-region-names = "firmware", "pkt", "tx-pkt", "tx-bufid", "ba";
-+        firmware-name = "airoha/en7581_npu_rv32.bin",
-+                        "airoha/en7581_npu_data.bin";
-       };
-     };
++	ret = of_property_read_string_array(dev->of_node, "firmware-name",
++					    fw_names, ARRAY_SIZE(fw_names));
++	if (ret != ARRAY_SIZE(fw_names))
++		return -EINVAL;
++
++	ret = airoha_npu_load_firmware(dev, addr, fw_names[0],
++				       NPU_EN7581_FIRMWARE_RV32_MAX_SIZE);
++	if (ret)
++		return ret;
++
++	return airoha_npu_load_firmware(dev, base + REG_NPU_LOCAL_SRAM,
++					fw_names[1],
++					NPU_EN7581_FIRMWARE_DATA_MAX_SIZE);
++}
++
+ static int airoha_npu_run_firmware(struct device *dev, void __iomem *base,
+ 				   struct resource *res)
+ {
+@@ -233,14 +257,22 @@ static int airoha_npu_run_firmware(struct device *dev, void __iomem *base,
+ 	if (IS_ERR(addr))
+ 		return PTR_ERR(addr);
+ 
++	/* Try to load firmware images using the firmware names provided via
++	 * dts if available.
++	 */
++	if (of_find_property(dev->of_node, "firmware-name", NULL))
++		return airoha_npu_load_firmware_from_dts(dev, addr, base);
++
+ 	/* Load rv32 npu firmware */
+-	ret = airoha_npu_load_firmware(dev, addr, &soc->fw_rv32);
++	ret = airoha_npu_load_firmware(dev, addr, soc->fw_rv32.name,
++				       soc->fw_rv32.max_size);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* Load data npu firmware */
+ 	return airoha_npu_load_firmware(dev, base + REG_NPU_LOCAL_SRAM,
+-					&soc->fw_data);
++					soc->fw_data.name,
++					soc->fw_data.max_size);
+ }
+ 
+ static irqreturn_t airoha_npu_mbox_handler(int irq, void *npu_instance)
+@@ -790,6 +822,8 @@ module_platform_driver(airoha_npu_driver);
+ 
+ MODULE_FIRMWARE(NPU_EN7581_FIRMWARE_DATA);
+ MODULE_FIRMWARE(NPU_EN7581_FIRMWARE_RV32);
++MODULE_FIRMWARE(NPU_EN7581_7996_FIRMWARE_DATA);
++MODULE_FIRMWARE(NPU_EN7581_7996_FIRMWARE_RV32);
+ MODULE_FIRMWARE(NPU_AN7583_FIRMWARE_DATA);
+ MODULE_FIRMWARE(NPU_AN7583_FIRMWARE_RV32);
+ MODULE_LICENSE("GPL");
 
 -- 
 2.52.0
