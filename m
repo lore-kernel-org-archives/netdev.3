@@ -1,129 +1,116 @@
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1993DA7D9
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768901756; cv=none; b=iX5TV8SerHZE7jxT9cW8+HcIcBLJrHn/maDmAuEkE38dmyHfXmUJep7pvSxpiWvFl2SEvR4iZU2x443XLCxNAZrUAZuO/AA25MOc/umfd19sBMF7nfKN9gxKAyDyC8ggVN8NX/AHcIhlItEyFXSz8eWrzc7pViJJnGm8KiSmPUU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768901756; c=relaxed/simple;
-	bh=6XjfhndlIBIF6L5ui3L7esruHiywj58LmcxdagkDtOk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ccFcS6jnJvqkRMwxXqbS6dPXooODuTRaA1b3SkFd1IQOH7xEkTQ7nfNfQOnyVHddrdh89nOHTHOMBjS1mEuPtkyiiarUysKRFXd5tGbIurX24M2Xl/MUPKIQC1ajZEJfg1Zga9dCtwY5a5u2QNou4Jj5CkprsfRwIOKr7rlbvSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=QWLjSNQt; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA653DA7F9
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 09:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768901790; cv=pass; b=BOaMjSSCVyCfmHhMDPKpuUk5ERPTP6RlShxLj5Fyz7gxld0U6pt6DukWUBC132SbEYm7M1SMgMqyc7QN2LuE1cv99iHiz4IzNEMGDKqvyO6TJA6Kse4ptfd9jxcHDwdW5zYK01cpXHscjsl9+qfJhuHoMbUw/siVqM/lijXAGGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768901790; c=relaxed/simple;
+	bh=i3I124kDIFRAt475DmJvL319sDurBF9+70I4XBQkzu8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jzQk7DVgGU0NJRQb6rL73kPHhylZI25ldipUVBIkr9Jg8vtGo8KCkxeX/+drxZ+be0naxlR/mYMREKvzsBbRx/ORwDz9kMax13J/OpXxca9SNlgJlzVy7dOZMsp+ZDAYguWaYZSP0qyoJWOoP9XxYLZnvTPrK/etWEkCEnAisD8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2ndOfVqv; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="QWLjSNQt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2ndOfVqv"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50145d27b4cso54337701cf.2
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 01:36:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768901787; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bizbM9cuJq7n7mLb0NJF56SPv7ej/kg7RVk+ufR0NB6SH6lcczNCNcfwVLjeko22Zl
+         +qYLgVOMTq7u9bdR892HF4SGvacOy7XyORPCy3P4dOratxFqUUE+X4dxVs2P493+QDes
+         yWh+npwYoB/WP6KsHdJVUB/SCl9BgOAs06CX/FMjT25X0w7qZIxNatbE4MwKqRA0myzo
+         6TaKhWmJN3/g8BpEGMGw/kxjKkwHxLNjSfgW+0ZafD/x3I0PWPsFe18AiqRRS3dam/iH
+         TbR3Jwnu4octBKUEXK5gMD8wM/nhuISSctFB4acTDZZH0Kt2uKNCS3jylm2PQX31f63P
+         FzWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i3I124kDIFRAt475DmJvL319sDurBF9+70I4XBQkzu8=;
+        fh=ljAH7QjwqNa/S/LVUrBhpLSBOLJqwrMIGWn1nLpGfVw=;
+        b=iCd3Q+/wsrXdyBmza5W18ohcA2DMEtcWPz2iXGJfqty5pAob2nQ+xLXjoxfpTJdIH2
+         I2zjgM7/GYNjlvs1io8KMaz5dz1+o8/no3gDljdS10WbpPRqI4qZl8+VR9deHnGe/ezr
+         SYQPg5CWupw2zPLZZrFB7HxznQvUyw4TuG0dA9WgjBniFO93wVg11kcDm0/EQExO0XzI
+         4oPIEopXfsoWm7ap3PTI0GdOV3rK6rOTkKqB6sxT58YgXMtbJVO/tY3aOEL7wDoV+dSU
+         cKJAaDow7Lv8VAVfYDjzeeADbrFX2TTKrxYTfPfrp/6BojizOStWBARCPia3aPO49LEn
+         popQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1768901754; x=1800437754;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Hpm3tzHmLebq8eIS8qDAzoE8I3X/7qHvO8PMgK5y+KM=;
-  b=QWLjSNQtWGaTYE1q+o70WaXffkiO4kcnqAeCMcHV31VUvFQv2DKKldTq
-   ZgTkun/PMD//87OWRU4QKfsn4F5ODdLdb2qast1nRHKp/TBYXN+pL8W/l
-   Br0+cuBMt/tru/2jvCohFJD5SuKauO1+9WBaKOEmMoJscZaZgfQliKIM2
-   Wrer8qYdgEUfsWg3qZOBQxyyFpZF/uAgxbuJf8YFv8KWdhyktrbHq1fOy
-   oiXoPOJ8c+EtAJ1fJEAnE5pfXb6n8eEWKHdW+DDXd+VdnBd5ogg62YOfr
-   oA1boqR+He2w6UqRGT2GEbOEY4Hq00PoqDtFg8cc9MGJU87NoWIsl9mgm
-   A==;
-X-CSE-ConnectionGUID: bmR5EjacRjCOLEYehtn1ZQ==
-X-CSE-MsgGUID: YZBrm2wHSdOKz13Sk5dxCg==
-X-IronPort-AV: E=Sophos;i="6.21,240,1763424000"; 
-   d="scan'208";a="11193028"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 09:35:50 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:22299]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.14.244:2525] with esmtp (Farcaster)
- id 3384d617-c6fb-4c1b-9d4a-e7c3eb29c53f; Tue, 20 Jan 2026 09:35:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 3384d617-c6fb-4c1b-9d4a-e7c3eb29c53f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Tue, 20 Jan 2026 09:35:50 +0000
-Received: from 603e5f7bc1fe.amazon.com (10.37.244.13) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Tue, 20 Jan 2026 09:35:47 +0000
-From: Takashi Kozu <takkozu@amazon.com>
-To: <anthony.l.nguyen@intel.com>
-CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>, <aleksandr.loktionov@intel.com>,
-	<pmenzel@molgen.mpg.de>, <piotr.kwapulinski@intel.com>, <enjuk@amazon.com>,
-	Takashi Kozu <takkozu@amazon.com>
-Subject: [PATCH iwl-next v4 2/3] igb: expose RSS key via ethtool get_rxfh
-Date: Tue, 20 Jan 2026 18:34:39 +0900
-Message-ID: <20260120093441.70075-7-takkozu@amazon.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20260120093441.70075-5-takkozu@amazon.com>
-References: <20260120093441.70075-5-takkozu@amazon.com>
+        d=google.com; s=20230601; t=1768901787; x=1769506587; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i3I124kDIFRAt475DmJvL319sDurBF9+70I4XBQkzu8=;
+        b=2ndOfVqv4fK/TW+z5jKOb/UcajjFo/tOTQT6yvatC5jm5+XPDy7mU6DadDkJT1Mle1
+         61ETuJ61zbQwfq5yIwsHyrqHPcjPe8+V3KODtHYyXJeK7QSQBEy0xv2mhXw6c1NqLoLW
+         5ysj/VFaP4nI4f5jxQdVKI7EbPI9ly55bpH28cJimcm0czM8U5h/w7GwbwAfTNRtX1k1
+         xv/awNwSLU3l5THmZBjVLlHXzwGbUbSN7Fep9X2lqtpPF8L9Y5eupsFQH5K5Ct0uVUnX
+         2/xYuRl5usVIcOXiQp66YMwSvx3TDN5nQOV3s2d1QKBTwydj56smrEdi35z7YlEs13gm
+         aG0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768901787; x=1769506587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=i3I124kDIFRAt475DmJvL319sDurBF9+70I4XBQkzu8=;
+        b=tNPxyaj0qb/dIjBACv9ZSfl6XBL/Tu8VARIEaVArXrvXkzKv5VEp54xG3dl97ii13W
+         RXBBkDLNtMstPAWUG9354LMrW7+g83HwA8RAuA6xhLOTz6zRDlY/DJcHM4tX+gDa3R6i
+         DPPumRKMsUf92K87ZpBqpNwwK6MEk6DWB2mubCbE1MfhFrJurPO8F8Wd7QL3+v3nHG3T
+         RZVWZ+02Jzejiw7ixdJl27PdKlqrT2cPU0tm+tzDbghwSxwy5xUwkW+zXh42NdecsbAp
+         c5DnT/Kjg5J17y5TTBiesdl+1nvSKY/lLFhRloUbkgZKBK/TTWMmfRz4dGhAm5A9zHOC
+         gXaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjJ9L8lf0/XdxjteEqrgS01VavIqjjwtqZphbGQpmnSpiceQ6clJ4DFZmdlnFDiyWzsXFbB/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzdmBGrvjNitwyVFBvZpaCDmwpHhf5eidLCbX9mq4UF23b4hYC
+	NaOSV8wE4P8C6l4eGlCT0VBsGqHtvp2+V/xbVwlC92b1xe7C/IFpHmMhdACjlO6yA4h5chQBvCB
+	Tcn4cXQ0edbuc5s2NfG+OkjdsEw75F8olaiU4UE+y
+X-Gm-Gg: AY/fxX4lxCyHz0BXp34aI6zZMJIAwby/B9JhL5jbliJg90NJno1GB0SVcpeH+MfsKHA
+	qMCJwHRDFp2uQky0ryBIHnyh122+BhlbGv6lG1pmCFoTbxMvInOO7uBhCMemWYVjVzkJpvfU3ZJ
+	2zNDAnnhoGR62Ts5UN+nBDZoNgzhQv89W4TC4WvHDhz1CHpD1E3Byix4iAF1bi3kfw6WB+N92yq
+	fcoGpNxG00lhZ/qWXqf0zOQZCvJbxX5/3gWfA67JkCLu8uM4EGM0+PlKKHEspO7GUXEKXQ=
+X-Received: by 2002:a05:622a:180e:b0:501:4730:fbe1 with SMTP id
+ d75a77b69052e-502a16073e7mr186116891cf.22.1768901786640; Tue, 20 Jan 2026
+ 01:36:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB001.ant.amazon.com (10.13.139.133) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+References: <20260119185852.11168-1-chia-yu.chang@nokia-bell-labs.com> <20260119185852.11168-4-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20260119185852.11168-4-chia-yu.chang@nokia-bell-labs.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 20 Jan 2026 10:36:15 +0100
+X-Gm-Features: AZwV_QiBVALGf5mVTwkAOxxW_7LaEeT-CXPBAq0Ya9GQEa2O6BH9EXhsIb0Qnrc
+Message-ID: <CANn89iKNgD9tUqck8xHphqc3iiERFjYcLBa+PTHCqXwT7cxY-w@mail.gmail.com>
+Subject: Re: [PATCH v9 net-next 03/15] selftests/net: gro: add self-test for
+ TCP CWR flag
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: pabeni@redhat.com, parav@nvidia.com, linux-doc@vger.kernel.org, 
+	corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com, 
+	jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org, 
+	xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
+	andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net, 
+	liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement igb_get_rxfh_key_size() and extend
-igb_get_rxfh() to return the RSS key to userspace.
+On Mon, Jan 19, 2026 at 7:59=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
+>
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>
+> Currently, GRO does not flush packets when the CWR bit is set.
+> A corresponding self-test is being added, in which the CWR flag
+> is set for two consecutive packets, but the first packet with the
+> CWR flag set will not be flushed immediately.
 
-This can be tested using `ethtool -x <dev>`.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Takashi Kozu <takkozu@amazon.com>
----
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index a93069b761a6..b387121f0ea7 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -3297,10 +3297,12 @@ static int igb_get_rxfh(struct net_device *netdev,
- 	int i;
- 
- 	rxfh->hfunc = ETH_RSS_HASH_TOP;
--	if (!rxfh->indir)
--		return 0;
--	for (i = 0; i < IGB_RETA_SIZE; i++)
--		rxfh->indir[i] = adapter->rss_indir_tbl[i];
-+	if (rxfh->indir)
-+		for (i = 0; i < IGB_RETA_SIZE; i++)
-+			rxfh->indir[i] = adapter->rss_indir_tbl[i];
-+
-+	if (rxfh->key)
-+		memcpy(rxfh->key, adapter->rss_key, sizeof(adapter->rss_key));
- 
- 	return 0;
- }
-@@ -3340,6 +3342,11 @@ void igb_write_rss_indir_tbl(struct igb_adapter *adapter)
- 	}
- }
- 
-+static u32 igb_get_rxfh_key_size(struct net_device *netdev)
-+{
-+	return IGB_RSS_KEY_SIZE;
-+}
-+
- static int igb_set_rxfh(struct net_device *netdev,
- 			struct ethtool_rxfh_param *rxfh,
- 			struct netlink_ext_ack *extack)
-@@ -3504,6 +3511,7 @@ static const struct ethtool_ops igb_ethtool_ops = {
- 	.get_module_eeprom	= igb_get_module_eeprom,
- 	.get_rxfh_indir_size	= igb_get_rxfh_indir_size,
- 	.get_rxfh		= igb_get_rxfh,
-+	.get_rxfh_key_size	= igb_get_rxfh_key_size,
- 	.set_rxfh		= igb_set_rxfh,
- 	.get_rxfh_fields	= igb_get_rxfh_fields,
- 	.set_rxfh_fields	= igb_set_rxfh_fields,
--- 
-2.52.0
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
