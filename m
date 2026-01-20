@@ -1,259 +1,113 @@
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D343E4B0
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 15:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A717A1531E8;
+	Tue, 20 Jan 2026 15:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921289; cv=none; b=SflbwavL0U38AhvScX687CxORpMu49KWaPGlC9P1rpuDCzrCS3g+AhrWlHk87a3XPsc3hrSm4Obbh8q3aYdifHcSNWfv5a8Um5kYPkcFWZv/lF7nEH53+DW+QtotLi4fo/vuvXnU8kb9BIWcC5Z2O8CgS/rzHmBsPoZrXHtRI9U=
+	t=1768922124; cv=none; b=V3U0MhiT5NKSuT7OLQICbIXOtNe5C/oKaTyCsIqTPx3LwMa/OpvLuTO7GMLazPAUhN+OtjlE1B2XwLosM0SH5qRVXcJ3OXi8jhzud9EZ2H7tir26p7QXuLbfWsm6pF/c7orGsmXctScJtN7kUbX6vWLItDfzUs1cfNyyeGuYTuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921289; c=relaxed/simple;
-	bh=e3KIXA5K1BSTDXaN5S3F7j8PM7hZNZ2/owWnE24bZ/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FYphNa/unEwQBhU4jZhUDgV1HFr6H1U9hsZbNpsfH55KZUzHDHGxY7PtxeA7ljxsQZwrnehTsfGrTn4leoqHK0WZH/Dh9qosrV9GDz0Ws25876tUTpnhfox2zhbRezBfwwJPHuS7RweckbdRlfLkJrhIsH5OKqToG7Dqe8wWW6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=fC5ypsaZ; arc=none smtp.client-ip=209.85.218.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1768922124; c=relaxed/simple;
+	bh=cB6+u0cGFM+BuA6s4Sw76CjAr/+izfs5ypcZfWumP+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EzEy85kqJ/2Z+LMoThi5rMTg30Nv+y4s5oJbfL6KtV1t6+EM9nk+x7tOnQemBr2j1V/QCxZoozQV6tdQ+dx/ojGdxFbb0bcPAVFqCnNoYpPPtS6uVaBCHUjcDguU83O7RU/XIImmqztEh8xsCBsXySbCmjruTmCoWjT5gi21C40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTm6pm0U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="fC5ypsaZ"
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b870732cce2so831259066b.3
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 07:01:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1768921285; x=1769526085; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jYI0gLBKIqxhNhOB7IM8ExaSr/699rjlW1w6qxp7P1A=;
-        b=fC5ypsaZsDFQsZ88mcEV6PqE0f66AfimA3K/Yo7OMqf4+47DIxBicb7hiZcm7dKhu1
-         u0cp2SevSHnrlBejhvTBWWsaQexcocCQuO/DIpJR5JTHolXIH1V7xnl3if2zrMmqLVKn
-         cfQRPEwdnH55vhoJuoRSdHgG2xxCuWLEQ9uSS+p64ICoPX/lrMRVSqShg5pcYQLSmg1p
-         B+wcH47AXHTRrD7EI79vjwnK8jc+dx33QmA01cOu3Tn/uveJoCq7oLWCxamXlti/E0u2
-         TMj/Hb6si8v9TAVVSfijHmZC2AMOHH6rnKa4lmKPaAMRRx+PRxfZ6nyD1dvPYT1SPFbJ
-         5fNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768921285; x=1769526085;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jYI0gLBKIqxhNhOB7IM8ExaSr/699rjlW1w6qxp7P1A=;
-        b=LMhTNVyjoNXkZIG5QhpraCSABSWa9cc/jklcxKDISouSJVsn63Kfk+BdlvDbn9IgID
-         Fv53oiwpLgjtTGOWyZF+a/HfQM1hwjI6zkd3A5NU3MnlsKlZHANAlcm1Jzxsjv0f3pYw
-         EFYqvZPyIV5VrwSAsV8C8D78FYiKyTWYxXt24OB9sKdF//agQyLig8V4P8aUTqS4nOG2
-         DoytvGxXEdUE8OvONozVvitsbeWKtZI3MxvsMSAWssxZvgoKLbcqkFrPjp/BsLnCr9gu
-         +SHb/DjiXJuanXE6NmO+KsMwTus6M+++FqBZPLtVnFSq3u6WxbUsJINefwodMjUdNXHl
-         OyUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWa07R5ERGdowIvlzvVdr18ag7+ZydIMbIbNGb/5f0Y5JsvpcKqqHt/NKXnVKvWR29v53IqSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVWFBRriewCCgURPKK9R1hcycDAPVq9wuIAqs99QsFmVmA5Wfj
-	aKJ5NcEyv4Mp+EoIzzRB1YNWdcODjU6aoC2HIVyJ/xhtnBa7LRIodVLT3ON+oenrWv0=
-X-Gm-Gg: AZuq6aLWIcjlxVt2Kge7Y5QuL0sUq0Y+yV5YnfT0Lg8SG4jVSq96fY90Wol+oWUNfR8
-	mFJWIf2JeGq2S85I582zkyqeER3DL1AuzZZs7oqLmQr7DkdWGicty2ibMWcyE21kl6gf+zCBiLu
-	+jZeaE+oiCUwURtugRkyPwFkzb9HdKgKHCTUg5i4gY4N1RZ8cbSzXuJDgAmWMGhmFZ19BgmSNop
-	AP4oroFmRa5trqnOZI8+XMvUINpXZtFVDSb8u7O3Rd4I95Hyb2Qy/v/ANEcC8B75v0b235aI2b+
-	9ilZ+i4Lz6I36yN6cUH+3/sKWcJa7GpdGR+2mK5qPP8byu1PVKQsDuog8SJbvEiqSyioKpxYABU
-	R30bgTM+d3vDdqyzRwlZyToIzi4oBYredjUjuuSC55xEo8riuq1+ihb0wIc7hKHMkANxbxC9CEl
-	7NFQ4=
-X-Received: by 2002:a17:907:e106:b0:b87:f6fc:aea9 with SMTP id a640c23a62f3a-b87f6fcaf6amr234043466b.9.1768921283931;
-        Tue, 20 Jan 2026 07:01:23 -0800 (PST)
-Received: from cloudflare.com ([2a09:bac5:5063:2969::420:45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c96f4sm1419134966b.40.2026.01.20.07.01.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 07:01:23 -0800 (PST)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org,  John Fastabend <john.fastabend@gmail.com>,  "David
- S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Simon Horman <horms@kernel.org>,  Neal Cardwell <ncardwell@google.com>,
-  Kuniyuki Iwashima <kuniyu@google.com>,  David Ahern <dsahern@kernel.org>,
-  Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
- KaFai Lau <martin.lau@linux.dev>,  Eduard Zingerman <eddyz87@gmail.com>,
-  Song Liu <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  KP
- Singh <kpsingh@kernel.org>,  Stanislav Fomichev <sdf@fomichev.me>,  Hao
- Luo <haoluo@google.com>,  Jiri Olsa <jolsa@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Michal Luczaj <mhal@rbox.co>,  Cong Wang
- <cong.wang@bytedance.com>,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf-next v7 1/3] bpf, sockmap: Fix incorrect copied_seq
- calculation
-In-Reply-To: <20260113025121.197535-2-jiayuan.chen@linux.dev> (Jiayuan Chen's
-	message of "Tue, 13 Jan 2026 10:50:49 +0800")
-References: <20260113025121.197535-1-jiayuan.chen@linux.dev>
-	<20260113025121.197535-2-jiayuan.chen@linux.dev>
-Date: Tue, 20 Jan 2026 16:01:21 +0100
-Message-ID: <875x8wuy4e.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTm6pm0U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B042EC16AAE;
+	Tue, 20 Jan 2026 15:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768922124;
+	bh=cB6+u0cGFM+BuA6s4Sw76CjAr/+izfs5ypcZfWumP+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dTm6pm0UbqrACPX84K25WsKI0mLcsga30LnGZ0xAs1QeHOq8GuYQb0tsVAj/1PyOk
+	 AN1JtPlGK2Lo1SN6drBYr1dVy9fdgzrRQCr2v1Zr5WaI0DgPDkYpbpHSPBc0lzPVxT
+	 mDodJS2/jqZjTXVaKaFD5qjNt2270SzYmLSpr9NA2qekfz0PdVSlZLmHpnEvNYJ+eY
+	 A07k9S1Ry7xxwMicubb01dCJM4tNlasnq386AOzVL87vqKI0T34pSKz9QNypV2LDxE
+	 2HWPcTW6E/V+Ce+TphpVMpakDh1WcI3tzKUwZtHRXG5Gb8k9H87NfGW6D+dQQz/FfZ
+	 kpuAsAsDnxf/g==
+Date: Tue, 20 Jan 2026 15:15:14 +0000
+From: Will Deacon <will@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 29/33] sched/arm64: Move fallback task cpumask to
+ HK_TYPE_DOMAIN
+Message-ID: <aW-cAlJCtI5Qtify@willie-the-truck>
+References: <20260101221359.22298-1-frederic@kernel.org>
+ <20260101221359.22298-30-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260101221359.22298-30-frederic@kernel.org>
 
-On Tue, Jan 13, 2026 at 10:50 AM +08, Jiayuan Chen wrote:
-> A socket using sockmap has its own independent receive queue: ingress_msg.
-> This queue may contain data from its own protocol stack or from other
-> sockets.
->
-> The issue is that when reading from ingress_msg, we update tp->copied_seq
-> by default. However, if the data is not from its own protocol stack,
-> tcp->rcv_nxt is not increased. Later, if we convert this socket to a
-> native socket, reading from this socket may fail because copied_seq might
-> be significantly larger than rcv_nxt.
->
-> This fix also addresses the syzkaller-reported bug referenced in the
-> Closes tag.
->
-> This patch marks the skmsg objects in ingress_msg. When reading, we update
-> copied_seq only if the data is from its own protocol stack.
->
->                                                      FD1:read()
->                                                      --  FD1->copied_seq++
->                                                          |  [read data]
->                                                          |
->                                 [enqueue data]           v
->                   [sockmap]     -> ingress to self ->  ingress_msg queue
-> FD1 native stack  ------>                                 ^
-> -- FD1->rcv_nxt++               -> redirect to other      | [enqueue data]
->                                        |                  |
->                                        |             ingress to FD1
->                                        v                  ^
->                                       ...                 |  [sockmap]
->                                                      FD2 native stack
->
-> Closes: https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
-> Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-> Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Hi Frederic,
+
+On Thu, Jan 01, 2026 at 11:13:54PM +0100, Frederic Weisbecker wrote:
+> When none of the allowed CPUs of a task are online, it gets migrated
+> to the fallback cpumask which is all the non nohz_full CPUs.
+> 
+> However just like nohz_full CPUs, domain isolated CPUs don't want to be
+> disturbed by tasks that have lost their CPU affinities.
+> 
+> And since nohz_full rely on domain isolation to work correctly, the
+> housekeeping mask of domain isolated CPUs should always be a superset of
+> the housekeeping mask of nohz_full CPUs (there can be CPUs that are
+> domain isolated but not nohz_full, OTOH there shouldn't be nohz_full
+> CPUs that are not domain isolated):
+> 
+> 	HK_TYPE_DOMAIN | HK_TYPE_KERNEL_NOISE == HK_TYPE_DOMAIN
+> 
+> Therefore use HK_TYPE_DOMAIN as the appropriate fallback target for
+> tasks and since this cpumask can be modified at runtime, make sure
+> that 32 bits support CPUs on ARM64 mismatched systems are not isolated
+> by cpusets.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> Reviewed-by: Waiman Long <longman@redhat.com>
 > ---
->  include/linux/skmsg.h |  2 ++
->  net/core/skmsg.c      | 28 +++++++++++++++++++++++++---
->  net/ipv4/tcp_bpf.c    |  5 +++--
->  3 files changed, 30 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-> index 49847888c287..dfdc158ab88c 100644
-> --- a/include/linux/skmsg.h
-> +++ b/include/linux/skmsg.h
-> @@ -141,6 +141,8 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
->  			     struct sk_msg *msg, u32 bytes);
->  int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
->  		   int len, int flags);
-> +int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-> +		     int len, int flags, int *copied_from_self);
->  bool sk_msg_is_readable(struct sock *sk);
->  
->  static inline void sk_msg_check_to_free(struct sk_msg *msg, u32 i, u32 bytes)
-> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> index 2ac7731e1e0a..ca22ecdbf192 100644
-> --- a/net/core/skmsg.c
-> +++ b/net/core/skmsg.c
-> @@ -409,22 +409,26 @@ int sk_msg_memcopy_from_iter(struct sock *sk, struct iov_iter *from,
->  }
->  EXPORT_SYMBOL_GPL(sk_msg_memcopy_from_iter);
->  
-> -/* Receive sk_msg from psock->ingress_msg to @msg. */
-> -int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-> -		   int len, int flags)
-> +int __sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-> +		     int len, int flags, int *copied_from_self)
->  {
->  	struct iov_iter *iter = &msg->msg_iter;
->  	int peek = flags & MSG_PEEK;
->  	struct sk_msg *msg_rx;
->  	int i, copied = 0;
-> +	bool from_self;
->  
->  	msg_rx = sk_psock_peek_msg(psock);
-> +	if (copied_from_self)
-> +		*copied_from_self = 0;
-> +
->  	while (copied != len) {
->  		struct scatterlist *sge;
->  
->  		if (unlikely(!msg_rx))
->  			break;
->  
-> +		from_self = msg_rx->sk == sk;
->  		i = msg_rx->sg.start;
->  		do {
->  			struct page *page;
-> @@ -443,6 +447,9 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
->  			}
->  
->  			copied += copy;
-> +			if (from_self && copied_from_self)
-> +				*copied_from_self += copy;
-> +
->  			if (likely(!peek)) {
->  				sge->offset += copy;
->  				sge->length -= copy;
-> @@ -487,6 +494,14 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
->  out:
->  	return copied;
->  }
-> +EXPORT_SYMBOL_GPL(__sk_msg_recvmsg);
+>  arch/arm64/kernel/cpufeature.c | 18 +++++++++++++++---
+>  include/linux/cpu.h            |  4 ++++
+>  kernel/cgroup/cpuset.c         | 17 ++++++++++++++---
+>  3 files changed, 33 insertions(+), 6 deletions(-)
 
-Nit: Sorry, I haven't caught that before. tcp_bpf is a built-in. We
-don't need to export this internal helper to modules.
+tbh, I'd also be fine just saying that isolation isn't reliable on these
+systems and then you don't need to add the extra arch hook.
 
-> +
-> +/* Receive sk_msg from psock->ingress_msg to @msg. */
-> +int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
-> +		   int len, int flags)
-> +{
-> +	return __sk_msg_recvmsg(sk, psock, msg, len, flags, NULL);
-> +}
->  EXPORT_SYMBOL_GPL(sk_msg_recvmsg);
->  
->  bool sk_msg_is_readable(struct sock *sk)
-> @@ -616,6 +631,12 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
->  	if (unlikely(!msg))
->  		return -EAGAIN;
->  	skb_set_owner_r(skb, sk);
-> +
-> +	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
-> +	 * data originates from the socket's own protocol stack. No need to
-> +	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
-> +	 */
-> +	msg->sk = sk;
->  	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
->  	if (err < 0)
->  		kfree(msg);
-> @@ -909,6 +930,7 @@ int sk_psock_msg_verdict(struct sock *sk, struct sk_psock *psock,
->  	sk_msg_compute_data_pointers(msg);
->  	msg->sk = sk;
->  	ret = bpf_prog_run_pin_on_cpu(prog, msg);
-> +	msg->sk = NULL;
->  	ret = sk_psock_map_verd(ret, msg->sk_redir);
->  	psock->apply_bytes = msg->apply_bytes;
->  	if (ret == __SK_REDIRECT) {
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index a268e1595b22..5c698fd7fbf8 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -226,6 +226,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  	int peek = flags & MSG_PEEK;
->  	struct sk_psock *psock;
->  	struct tcp_sock *tcp;
-> +	int copied_from_self = 0;
->  	int copied = 0;
->  	u32 seq;
->  
-> @@ -262,7 +263,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  	}
->  
->  msg_bytes_ready:
-> -	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
-> +	copied = __sk_msg_recvmsg(sk, psock, msg, len, flags, &copied_from_self);
->  	/* The typical case for EFAULT is the socket was gracefully
->  	 * shutdown with a FIN pkt. So check here the other case is
->  	 * some error on copy_page_to_iter which would be unexpected.
-> @@ -277,7 +278,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  			goto out;
->  		}
->  	}
-> -	seq += copied;
-> +	seq += copied_from_self;
->  	if (!copied) {
->  		long timeo;
->  		int data;
+Whatever you prefer, but please can you update the text in
+Documentation/arch/arm64/asymmetric-32bit.rst to cover the interaction
+between the asymmetric stuff and cpu isolation?
+
+Cheers,
+
+Will
