@@ -1,77 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA795413222
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 23:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764F140B6D9;
+	Tue, 20 Jan 2026 23:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768951807; cv=none; b=FDZ6tS8cwDUbZKVQ0adywilvcnR3F3VhJGX/EKvzZHj1/DaSOuEu/DIvQZZ/rQoSMKbVBql3RtDvp4GokH7iiaf0lkgqQ6aegXYjwTSQr6GsNtI1TGWb6ubxgbkIhqj+h/GHJo9tCQsOihbu/1MH6cEFTNpel1XFsO5LFIbm8K0=
+	t=1768951970; cv=none; b=Gbz2OiTWCwpL+CYv3vCbCIGExdZmkOy99u1TtT6Og41KU7NeyFCZIOz0i7SjlFLXGAiyEXa4KzZIyjKW3YgwBwZWFaaApUMen3j2sckUEu143wq0txS7S6Pg+WkkCTeyH2Maykp9TC9qsE76VzU3qzVFvLUAfEJlhqQ3aTowO3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768951807; c=relaxed/simple;
-	bh=/+tH0SACF91uyws5Bh72FJVfEhUeHTM1H6lh1OgO4bM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=L3sDr+FYFYxLRQxbjszK+JVVovTTywSVfV/uy/sGMpKG88coWl9b35jeUmnr+lnaw2zeGby9imKFdKYGAjIDchpYX3INgxXYMHE3BvFBoG/RTmVwWvzttQ0BgBDBvnczb5F7oqv9DgVA22JHjfaWoeC8htZNL9VfBoB/uoACgt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4A96lDN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768951970; c=relaxed/simple;
+	bh=TiwAfrS4S4/cPcCNH/Af8lsGdUuDKr5kui6G12uDfZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YI9BD+ADxsp1YQVUD8ApYrCGJonMlDZjHDTl4FrCMeguNFi9XgU05EJv03H9+Pz1JPk7pLvAjgRoYpxMisPxPSdvDvtCI4CK73ibP6k6T1n1YO2SFkSAcLB3H7TA9GKLGJa18s+oDRqzh4Xq3yteMnIII9q/E9jJaDvDtH82dtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLJ4M/cq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4A96lDN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF35C16AAE;
-	Tue, 20 Jan 2026 23:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLJ4M/cq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3086DC16AAE;
+	Tue, 20 Jan 2026 23:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768951807;
-	bh=/+tH0SACF91uyws5Bh72FJVfEhUeHTM1H6lh1OgO4bM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=k4A96lDNaY+0axOj/jOWZgKga7IWro6ReUgAYjGfCOWADRJnYJ3dx6nSSX65pkbdw
-	 arm1KzhhdO9hWpSb+2KE/h0cnk9gTPk5lDajsd4MwO6NAqLhmoSt60qLdaPpW47c+N
-	 vfr2Yf/lI7QuCBSdbEq7gT5uoLd3olUzrcT6x/vQXmJM+X7VjxVdvg5P5Apn1FQMVW
-	 KwkxrlWNI1ElMbIP3bMTKJRK57ZFvssAPgBvKje7f6uYRpiokKtkmnBEK6oofvnHaC
-	 8jVKBe3HyZ16o5bnnfpjteUIymUmPYGoCgN1nw0H6aym8YK4rMMX5SPCZn7MNlC5fv
-	 YXeJDB2dOkBog==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 119BF380820D;
-	Tue, 20 Jan 2026 23:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1768951970;
+	bh=TiwAfrS4S4/cPcCNH/Af8lsGdUuDKr5kui6G12uDfZA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aLJ4M/cqdhTjcBanfjqq3P1KjJBRJPGkZF/Qf5m+uQ59i4UZ98ARPxQt2EKx/hiSy
+	 HXIgEBLG+nzBIiSgllK62eC+tMJDsNhaTnfvjRqSMZFUDXi4IB9oihhZ2H0blZMT8K
+	 BSE8XOcLTuI4FY2WdFp0mu8AULbZG8Ngepr5eUmEsPhJkpkoc3/XxXP4HN5WYLAT7u
+	 O3e+EiQ6uXqM7MocFIVZUaESUF3ZhlNkqZfg5Pucut+CSbdSEwVUeFb2PG2Uzh1GCR
+	 3QeXZF9r6934oSUWM1ZkhLm6eKoIdq+457HUy55kMOYkVWFe/C6L0zkohLy8Uc3v6O
+	 gZ5tl+nifHvIA==
+Date: Tue, 20 Jan 2026 15:32:48 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: linux-phy@lists.infradead.org, davem@davemloft.net,
+ maxime.chevallier@bootlin.com, alexandre.torgue@foss.st.com,
+ mohd.anwar@oss.qualcomm.com, neil.armstrong@linaro.org,
+ hkallweit1@gmail.com, mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
+ edumazet@google.com, linux-arm-msm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, vkoul@kernel.org, andrew@lunn.ch,
+ pabeni@redhat.com, andrew+netdev@lunn.ch,
+ linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next,05/14] net: stmmac: add stmmac core serdes support
+Message-ID: <20260120153248.0636f1e9@kernel.org>
+In-Reply-To: <aW8M9ZiiftGBQIRM@shell.armlinux.org.uk>
+References: <E1vhoSH-00000005H1f-2cq9@rmk-PC.armlinux.org.uk>
+	<20260119192125.1245102-1-kuba@kernel.org>
+	<aW8M9ZiiftGBQIRM@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2] devlink: Fix resource show output
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176895180486.650765.4216703988085899594.git-patchwork-notify@kernel.org>
-Date: Tue, 20 Jan 2026 23:30:04 +0000
-References: <20260115115004.863685-1-idosch@nvidia.com>
-In-Reply-To: <20260115115004.863685-1-idosch@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, stephen@networkplumber.org, dsahern@kernel.org,
- jiri@nvidia.com, petrm@nvidia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to iproute2/iproute2.git (main)
-by Stephen Hemminger <stephen@networkplumber.org>:
-
-On Thu, 15 Jan 2026 13:50:04 +0200 you wrote:
-> When the user asks to show device resources, devlink first queries the
-> device's dpipe tables so that it will be able to show the association
-> between resources and dpipe tables.
+On Tue, 20 Jan 2026 05:04:53 +0000 Russell King (Oracle) wrote:
+> By the time phylink_pcs_enable() has been called, the PCS is already
+> plumbed in to phylink. It _will_ have phylink_pcs_disable() called on
+> it at some point in the future, either by having the PCS displaced
+> by another in a subsequent phylink_major_config(), or by a driver
+> calling phylink_stop().
 > 
-> In this flow, 'ctx->resources' is always NULL as resources have yet to
-> be retrieved. As a result, the dpipe tables are not associated with a
-> resource identifier and the resource show command does not show any
-> dpipe tables:
+> If we clean up here, then we will call dwmac_serdes_power_off() twice.
 > 
-> [...]
+> Yes, it's not "nice" but that's the way phylink is right now, and
+> without reworking phylink to record that pcs_enable() has failed
+> to avoid a subsequent pcs_disable(), and to stop the major config
+> (which then potentially causes a whole bunch of other issues). I
+> don't even want to think about that horrid scenario at the moment.
 
-Here is the summary with links:
-  - [iproute2] devlink: Fix resource show output
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=f2b24087e154
+Would you mind adding a note to this effect to the commit message 
+to shut up the bot?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Unless the comment on patch 12 is also incorrect in which case I'll
+restore the v1 into patchwork.
