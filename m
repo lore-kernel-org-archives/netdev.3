@@ -1,137 +1,280 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mail-24420.protonmail.ch (mail-24420.protonmail.ch [109.224.244.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544483D4101
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 22:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED252F0C6E
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 22:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768949100; cv=none; b=XjLQ4ULaIadRo9Hfk6+66Svf9amahxUCo21xcFYGexgMtE0Ut8taTTRPKSgEPcO0F7X8hIuISrFhLuOdbp/AQO8RhxrxAobOHX0qthQOTjRAQkstoGwvbhMC4bngJNLvLDUmgr2p8O/YiOGCDBeocVMhrDL4bF9U9zCZT/tQ574=
+	t=1768949251; cv=none; b=o2WUkpMycwQwdIoRuWvlDPoHgrpxGGsUy/JcjbMI+2PmyZu8VMWbkbOS7TZbuKzf2AVGD6XqRgAqOlogG4xg97aOXjATTdAen3uBKsrIT8xFcM4AT3koEDLjtmHNnxcY+l3nAjlnCuIjt66ghEK4AwGQqE1HGpHivFNFYi6nuGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768949100; c=relaxed/simple;
-	bh=TJXdRqR4/ykobX7D3hdfIsfzCbD1JmxH/Q5NyTXCyOg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nj9xth+eVZV0fPPwUW1KnIPl5hbpWJ9wtD/iKEBd0HBN156daWslZ6A7mvLmM4Ya1v+hG53r1NVQ6IcnXA9LCYd8cqjSUg457hmxFx6RTu7i1Hz1frPd1f+RnJ36jVI+lHvYvOKfzyHcof7801juR365bWElv3EQjR/3KywUYac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T5ARKekj; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768949251; c=relaxed/simple;
+	bh=KfEzSf2Psni+NH58GWquJU9gb7ZJf/dDBWnlpGF8ajY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZbLhpIzBMqCKUHst1cLryF2i/1NrpFeayhsd8GLL58sD8qO6gdL03LyG816cfnZoLVl0B5Kuk35EgsQ3OACH/3Z8EG5PDH5ei+sf0gRAkzuZsuch9yOFowG20ukC3vB4IEcvbJocbvzy0NcO/w+0fx98w711lhG9Vusrz+bD7oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=nzcu8OmS; arc=none smtp.client-ip=109.224.244.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T5ARKekj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768949095; x=1800485095;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TJXdRqR4/ykobX7D3hdfIsfzCbD1JmxH/Q5NyTXCyOg=;
-  b=T5ARKekjANbIdeJPfNDTagamsAleubyepRGPrNwIMppqFXZeOf/vgzcT
-   wFLNyr7emB6PD2XW0Y7GRLn22gdoXn5vLAw/eoGE7g31lhqjNg6xATl2c
-   wkhLCG+uXNBGwIOTPlI5f18eZreQLNmeBrBlVMRr9mHyy8hU2xID0kOFg
-   MqfdGGWHuwY/KUmAWwYGQXGZLyHMA7Sol1o2bDALIN0+1v0zmHJJklcUi
-   okE8Xlgel7ZL2M3U8iM/Spr+6asgqWWxXtIwzayxNF8QvzfjOLKdwCB7C
-   QPAsoW9r+XTAzUupirKr1xvxh3xu4Nq5jLgVREyfM97FhbWwqG3kdALKE
-   w==;
-X-CSE-ConnectionGUID: 1+4GRrNrRTClrnbAwLbvPw==
-X-CSE-MsgGUID: eRJzSFOoSaCXce6rD/nhjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81548804"
-X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; 
-   d="scan'208";a="81548804"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 14:44:38 -0800
-X-CSE-ConnectionGUID: Ke9WWnBzRWaMUC2KP9JByA==
-X-CSE-MsgGUID: 2gJCmoq1Rm2s9t9QoeEEQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; 
-   d="scan'208";a="236920159"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa002.jf.intel.com with ESMTP; 20 Jan 2026 14:44:37 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
-	anthony.l.nguyen@intel.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 3/4] ice: fix devlink reload call trace
-Date: Tue, 20 Jan 2026 14:44:27 -0800
-Message-ID: <20260120224430.410377-4-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260120224430.410377-1-anthony.l.nguyen@intel.com>
-References: <20260120224430.410377-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="nzcu8OmS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1768949246; x=1769208446;
+	bh=lPRtFBw9Utc5TQLt3X4PQUZMdzsfO4LaX087YkLyS0w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=nzcu8OmSg9Ro4dLyDyMHg2mRQlm7wwDn5ZQF5KKvBMlvUu9gyL75coacoxz/ApNo+
+	 pQ00GY2ddBZF061x4S+7TDBrh3cWDVv9WR8O/80DTFrolz9hEK2EhEIoEOv2vKonKa
+	 Pv68oksbxrejCLV6oNNyuU3dTCFdhgy3/O0yutV+jQA5QIjcBoFM/dMqdohszww1FS
+	 3/eHH4hYOyqfAbJWNsNT+4xclSkHl6vJgcFQSa/S4IWRe/u126XfidKF2bIiRTz7of
+	 lW+qCrQawoRe7wwgB2FPBzGBRoAqHVxlGvKXrqiz7Mf9lV1GURKSMOsGLfQQQoL4vY
+	 vZFBh2jd/+mug==
+Date: Tue, 20 Jan 2026 22:47:19 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] net/sched: act_gate: fix schedule updates with RCU swap
+Message-ID: <gwO399q2_pH73eDkd2OatN9SsR8aHtm8CbVIEPOf0nuxXjqbjY6vgCqNyFya75mMVicn8NwUgG8zaNFkR_JuZmFk0UcWNCHlpzSxFbaycf4=@1g4.org>
+In-Reply-To: <bff53f0a-2c94-46b2-bb49-b05d10ae420e@mojatatu.com>
+References: <20260120004720.1886632-1-p@1g4.org> <20260120004720.1886632-2-p@1g4.org> <bff53f0a-2c94-46b2-bb49-b05d10ae420e@mojatatu.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 002e9e46bde3210a0919590bb776202a3ae03279
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+act_gate is not just a list and a timer. It is a small state machine that k=
+eeps runtime gating insulated from control plane updates using tcf_lock, th=
+e hrtimer, and the PENDING bit. The live decision variables are protected, =
+but the schedule backing store (the entries list) was still being mutated o=
+r freed on the control path, so updates were not transactional and could ex=
+pose partially constructed schedules or freed nodes to concurrent readers. =
+The fix is to treat the schedule as an immutable published object: validate=
+ and build off to the side, publish atomically, then retire after readers d=
+rain (RCU). That preserves the original goal of not interfering with the ga=
+te.
 
-Commit 4da71a77fc3b ("ice: read internal temperature sensor") introduced
-internal temperature sensor reading via HWMON. ice_hwmon_init() was added
-to ice_init_feature() and ice_hwmon_exit() was added to ice_remove(). As a
-result if devlink reload is used to reinit the device and then the driver
-is removed, a call trace can occur.
+I=E2=80=99m trying to strike the right balance of input validation for stab=
+le. I kept this as one patch because the validate and build before publish =
+path is part of making the RCU update model correct. I did try implementing=
+ the additional validation independently first, but it did not meaningfully=
+ reduce the size or complexity because the RCU swap still requires a fully =
+formed schedule object before publish. Without preliminary validation, it i=
+s easy to corrupt the timer state or end up with undefined schedule behavio=
+r. At minimum, I think we need:
+  - interval > 0: prevents zero length entries and immediate refire loops
+  - at least one entry: avoids empty schedule deref and undefined state
+  - cycle time > 0: required for division and close time computations
+  - overflow checks: prevent wrap or underflow in close time arithmetic
 
-BUG: unable to handle page fault for address: ffffffffc0fd4b5d
-Call Trace:
- string+0x48/0xe0
- vsnprintf+0x1f9/0x650
- sprintf+0x62/0x80
- name_show+0x1f/0x30
- dev_attr_show+0x19/0x60
+I can do the conversion without these checks, but the resulting behavior wo=
+uld be fragile. If there is guidance on what validation level you would pre=
+fer here (minimal representable range checks vs stricter sane inputs), I am=
+ happy to align with it.
 
-The call trace repeats approximately every 10 minutes when system
-monitoring tools (e.g., sadc) attempt to read the orphaned hwmon sysfs
-attributes that reference freed module memory.
+thanks
+Paul
 
-The sequence is:
-1. Driver load, ice_hwmon_init() gets called from ice_init_feature()
-2. Devlink reload down, flow does not call ice_remove()
-3. Devlink reload up, ice_hwmon_init() gets called from
-   ice_init_feature() resulting in a second instance
-4. Driver unload, ice_hwmon_exit() called from ice_remove() leaving the
-   first hwmon instance orphaned with dangling pointer
 
-Fix this by moving ice_hwmon_exit() from ice_remove() to
-ice_deinit_features() to ensure proper cleanup symmetry with
-ice_hwmon_init().
+On Tuesday, January 20th, 2026 at 3:04 PM, Victor Nogueira <victor@mojatatu=
+.com> wrote:
 
-Fixes: 4da71a77fc3b ("ice: read internal temperature sensor")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 6a9278487ccb..de488185cd4a 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4836,6 +4836,7 @@ static void ice_deinit_features(struct ice_pf *pf)
- 		ice_dpll_deinit(pf);
- 	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_SWITCHDEV)
- 		xa_destroy(&pf->eswitch.reprs);
-+	ice_hwmon_exit(pf);
- }
- 
- static void ice_init_wakeup(struct ice_pf *pf)
-@@ -5437,8 +5438,6 @@ static void ice_remove(struct pci_dev *pdev)
- 		ice_free_vfs(pf);
- 	}
- 
--	ice_hwmon_exit(pf);
--
- 	if (!ice_is_safe_mode(pf))
- 		ice_remove_arfs(pf);
- 
--- 
-2.47.1
-
+>=20
+>=20
+> On 19/01/2026 21:48, Paul Moses wrote:
+>=20
+> > Switch act_gate parameters to an RCU-protected pointer and update sched=
+ule
+> > changes using a prepare-then-swap pattern. This avoids races between th=
+e
+> > timer/data paths and configuration updates, and cancels the hrtimer
+> > before swapping schedules.
+> >=20
+> > A gate action replace could free and swap schedules while the hrtimer
+> > callback or data path still dereferences the old entries, leaving a
+> > use-after-free window during updates. The deferred swap and RCU free
+> > close that window. A reproducer is available on request.
+> >=20
+> > Also clear params on early error for newly created actions to avoid
+> > leaving a dangling reference.
+> > [...]
+> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > index c1f75f2727576..3ee07c3deaf97 100644
+> > --- a/net/sched/act_gate.c
+> > +++ b/net/sched/act_gate.c
+> > @@ -6,6 +6,7 @@
+> > #include <linux/kernel.h>
+> > #include <linux/string.h>
+> > #include <linux/errno.h>
+> > +#include <linux/limits.h>
+>=20
+>=20
+> Do you really need to include this?
+>=20
+> > [...]
+> > @@ -69,12 +71,14 @@ static enum hrtimer_restart gate_timer_func(struct =
+hrtimer *timer)
+> > {
+> > struct tcf_gate *gact =3D container_of(timer, struct tcf_gate,
+> > hitimer);
+> > - struct tcf_gate_params *p =3D &gact->param;
+> > + struct tcf_gate_params *p;
+>=20
+>=20
+> When adding/editing local variables, you should adhere to the
+> reverse xmas tree style [1].
+>=20
+> > spin_lock(&gact->tcf_lock);
+>=20
+>=20
+> Shouldn't you call rcu_read_lock before this line now?
+>=20
+> > + p =3D rcu_dereference_protected(gact->param,
+> > + lockdep_is_held(&gact->tcf_lock));
+> > [...]
+> > static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> > @@ -296,20 +296,26 @@ static int tcf_gate_init(struct net *net, struct =
+nlattr *nla,
+> > struct netlink_ext_ack *extack)
+> > {
+> > struct tc_action_net *tn =3D net_generic(net, act_gate_ops.net_id);
+> > - enum tk_offsets tk_offset =3D TK_OFFS_TAI;
+> > - bool bind =3D flags & TCA_ACT_FLAGS_BIND;
+> > struct nlattr *tb[TCA_GATE_MAX + 1];
+> > struct tcf_chain *goto_ch =3D NULL;
+> > - u64 cycletime =3D 0, basetime =3D 0;
+> > - struct tcf_gate_params *p;
+> > - s32 clockid =3D CLOCK_TAI;
+> > + struct tcf_gate_params *p, *oldp;
+> > struct tcf_gate *gact;
+> > struct tc_gate *parm;
+> > - int ret =3D 0, err;
+> > - u32 gflags =3D 0;
+> > - s32 prio =3D -1;
+> > + struct tcf_gate_params newp =3D { };
+>=20
+>=20
+> Abide by reverse xmas tree when adding local variables.
+>=20
+> > [...]
+> > + bool clockid_set =3D false;
+>=20
+>=20
+> I could be missing something, but I don't believe you need this
+> boolean.
+>=20
+> > [...]
+> > @@ -323,6 +329,7 @@ static int tcf_gate_init(struct net *net, struct nl=
+attr *nla,
+> >=20
+> > if (tb[TCA_GATE_CLOCKID]) {
+> > clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
+> > + clockid_set =3D true;
+> > switch (clockid) {
+>=20
+>=20
+> Instead of using clockid_set and repeating the switch statament.
+> You could put this if-statement after you already have oldp and do the
+> following:
+>=20
+> if (tb[TCA_GATE_CLOCKID]) {
+> clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
+> switch (clockid) {
+> case CLOCK_REALTIME:
+> tk_offset =3D TK_OFFS_REAL;
+> break;
+> case CLOCK_MONOTONIC:
+> tk_offset =3D TK_OFFS_MAX;
+> break;
+> case CLOCK_BOOTTIME:
+> tk_offset =3D TK_OFFS_BOOT;
+> break;
+> case CLOCK_TAI:
+> tk_offset =3D TK_OFFS_TAI;
+> break;
+> default:
+> NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+> return -EINVAL;
+> }
+> } else if (ret !=3D ACT_P_CREATED) {
+> clockid =3D oldp->tcfg_clockid;
+>=20
+> tk_offset =3D gact->tk_offset;
+>=20
+> }
+>=20
+> > [...]
+> > - if (tb[TCA_GATE_CYCLE_TIME])
+> > + if (ret =3D=3D ACT_P_CREATED)
+> > + update_timer =3D true;
+> > [...]
+>=20
+>=20
+> Here you are assigning update_timer to true when the op is a create...
+>=20
+> > [...]
+> > + if (update_timer && ret !=3D ACT_P_CREATED)
+> > + hrtimer_cancel(&gact->hitimer);
+>=20
+>=20
+> .. however in the if-statement where it is used you are only allowing
+> updates. This looks weird.
+>=20
+> > [...]
+> > +free_p:
+> > + release_entry_list(&p->entries);
+> > + kfree(p);
+>=20
+>=20
+> The 2 lines of code above are being repeated below and in
+> tcf_gate_params_release. You should put them in a common function.
+>=20
+> > +release_new_entries:
+> > + release_entry_list(&newp.entries);
+> > +put_chain:
+> > if (goto_ch)
+> > tcf_chain_put_by_act(goto_ch);
+> > release_idr:
+> > - /* action is not inserted in any list: it's safe to init hitimer
+> > - * without taking tcf_lock.
+> > - */
+> > - if (ret =3D=3D ACT_P_CREATED)
+> > - gate_setup_timer(gact, gact->param.tcfg_basetime,
+> > - gact->tk_offset, gact->param.tcfg_clockid,
+> > - true);
+> > + if (ret =3D=3D ACT_P_CREATED) {
+> > + p =3D rcu_dereference_protected(gact->param, 1);
+> > + if (p) {
+> > + release_entry_list(&p->entries);
+> > + kfree(p);
+> > + rcu_assign_pointer(gact->param, NULL);
+> > + }
+> > + }
+> > tcf_idr_release(*a, bind);
+>=20
+>=20
+> Also, the AI review [2] pointed out a real issue.
+> It's easy to reproduce by running something like:
+>=20
+> tc action add action gate base-time 200000000000ns \
+> sched-entry close 0ns index 10
+>=20
+> I think overall you have the right idea - RCU seems like a good fit here.
+> The issue is that this patch is confusing because it seems like you are
+> trying to fix the bug and perform cleanups at the same time.
+> If that is the case, can you try breaking this patch into two? Do one to
+> fix the bug (introducing RCU and etc) and another for the cleanups.
+>=20
+> [1]
+> https://www.kernel.org/doc/html/v6.3/process/maintainer-netdev.html#local=
+-variable-ordering-reverse-xmas-tree-rcs
+> [2]
+> https://netdev-ai.bots.linux.dev/ai-review.html?id=3Dcdc17d0d-fd59-41a8-9=
+c8d-1a42699167fd#patch-0
+>=20
+> cheers,
+> Victor
