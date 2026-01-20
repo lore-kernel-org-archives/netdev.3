@@ -1,85 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0B3A1A5D
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F66B37BE86
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768903477; cv=none; b=JZyaPpZe0gv4eDW4ZDrchSFM7lOdDv3pEJHfuTMZNz1dK41bIXacxlw+K9jrRnyOp4+Q0NmWLRp1ksBdFaWJe9a5Oo6SN7Pr9urXa8Iz1ZW2z61kw0+QUkW4YsgqB+9hU7Vd6xs50mRptSxUZ/AqJCXfu/JoUzQeNtF8vWsRLxE=
+	t=1768903730; cv=none; b=l/KobanfQn38BW3r4EAW2mrryoltbqk3Yy9ZehJGMdzDsjTnWvx0qHFPIJz3yi9ih9yLnhudFC1n4zCf4qwgbJ72puWUo16rnlJ/8JnRgARfX2JQKSAgdjidWV/wNGT/FDdMHe/B/PNVz6jDI3Pw8gyvk8fqMjw68cdM+6cX9RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768903477; c=relaxed/simple;
-	bh=RYkZyLqJ90IZtrT6SNyMGnHInu7O7ZOy96fwuZZjuzM=;
+	s=arc-20240116; t=1768903730; c=relaxed/simple;
+	bh=H8E5ZexNwUvepWRnAB8kom9407PvcV1LCFOFpBHsJ7Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f4sX4F+uQk8A3XKlL/ErFij0Isi5v08haCFhAupn2pe9q5rFJ9rxpHwO6hnb15i8J5I2fxie8uD72qV4xfT5W/BkDXu8R7HrXmVXNI3u3Qg7mxpGfz5oNFYvbUYtgAJyjQRlXc0Oncvw1cFOQ5u1AAg3ALA77IoWhtSPvbZ2TlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NVxs1BlG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GwEjSH+w; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=e/1UN0LZ3sE5hDBpkeCyYW7As8LiJs2aSK57dLCmPkbUXS4z6rqefR9yy71wL/OiAI0DZ9hL0XHZ1zF03zDG4ysAmyONxoxBff/RRgcpbJWorYVKuT9C0GPvWfRDU1atajnYoCOaNHNbY+pETBYH4qwLsH1lxeLAk1Im2M7n96g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZiSUcfw1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DdV/SEW6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NVxs1BlG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GwEjSH+w"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZiSUcfw1";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DdV/SEW6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768903474;
+	s=mimecast20190719; t=1768903727;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w+FKwnioUTqyK6Y6ArRUSCC3M3FO8NWsXoRptKXlqbs=;
-	b=NVxs1BlG8HYIO1jOIs5tOjFR3QSp1pYkp6x7hGctlA0iQyegTO6mVlVHHQ458qqHRdEK8U
-	FtlJaaVX5JhC0/eX26GDQdzuUl1yQmnz4viq2imKqutyiiIUFX7tlhmZVPT1u/+9/wldav
-	bskyJ7tQa9KIEsdpZuuti4usrelwOgM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=H8E5ZexNwUvepWRnAB8kom9407PvcV1LCFOFpBHsJ7Q=;
+	b=ZiSUcfw1/s/HITg2mEY2w6UQIytWHNqdy+FV2wAbSA0XEOvQ7m96K6TaXWBbPXvwjoY0I2
+	/mGOgzWhmzZKo3JP6xrDcE7MkbnBVxvNHnbTMmEyaAEQBjUwlIgT5y/nRd3aO9IQ9K2FEu
+	Yjdz0oQ0zb562RpibYdx6euuoq7u7aI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-3Z_fyhcNN32Iu1cr8_8WuQ-1; Tue, 20 Jan 2026 05:04:33 -0500
-X-MC-Unique: 3Z_fyhcNN32Iu1cr8_8WuQ-1
-X-Mimecast-MFC-AGG-ID: 3Z_fyhcNN32Iu1cr8_8WuQ_1768903472
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-430f5dcd4cdso2915821f8f.2
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 02:04:32 -0800 (PST)
+ us-mta-82-ic07H3CmOPKL8pg4uU0apA-1; Tue, 20 Jan 2026 05:08:46 -0500
+X-MC-Unique: ic07H3CmOPKL8pg4uU0apA-1
+X-Mimecast-MFC-AGG-ID: ic07H3CmOPKL8pg4uU0apA_1768903725
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-432a9ef3d86so2408305f8f.2
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 02:08:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1768903472; x=1769508272; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1768903724; x=1769508524; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=w+FKwnioUTqyK6Y6ArRUSCC3M3FO8NWsXoRptKXlqbs=;
-        b=GwEjSH+wu/rsj6VirQBI8w4dln+vRXnJnz1V7rUdZyEDywXjC5CwE82yoZxsVkBk7Y
-         TpHPGO7hJGRI7rjM6PTMweZSdCsaAZ6B9dMUCV20QPQ04Xw68vuBrUv+di1eH9cyXzMB
-         QRtSRo7Aj+H5zHS3LhOad1vAyoPDcIRmIliO9GOZFdYr0whBIv0eqYl0Oezhf5kjNcoN
-         5rWyU7LmeOHre1JX5vizH0u0d1FiZ5nLYlFUQD5BMh/3i1O4c6ME2s9NHnLP6X/SnQUU
-         6R8jzL8idhtKNV8kAtF/fJmq94p91Me5peG2PcH1uqJN8UMOJgrMl+Vq44pjfbyDTuM3
-         isvA==
+        bh=H8E5ZexNwUvepWRnAB8kom9407PvcV1LCFOFpBHsJ7Q=;
+        b=DdV/SEW6MMybPTLHGVg2BrudHoQCh47XlwOtwkKQXk0lRKhUIN9g4wB0eVma/YuUUf
+         Q/GetDZMRQjsIYnuELAcPjACDB6T5v2rqweiuD+/Md2oXU0e6QWPH4O0iEtQc66XN8dT
+         cR2gJYG7Z8yn9BSpAmJb2938KM1aBxWhkc7GU9M9LVWhszeigWuzGKuenLPPtiMsZx8s
+         uyP7FURJrnSP6usgvjy4eLhGJqt6jf19vvsexToNpUPqFe4oFRrZkbYF100DsfzttDlH
+         gkSjWzJe0VqcAfMoP9Dxb3Uv6+/jeNoUc7YCFjCHvsoxgr15sHAgPuksTAoTsnb2XLAt
+         bImg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768903472; x=1769508272;
+        d=1e100.net; s=20230601; t=1768903724; x=1769508524;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w+FKwnioUTqyK6Y6ArRUSCC3M3FO8NWsXoRptKXlqbs=;
-        b=AoXbDtEbImLR+hZvw3hijAjv/ThioYQeYtzTDuR4G49TH8PtClqQD44LW8r/zFHkBV
-         q7HP5wAIBz6N69DIcZZjN0p9NqstQRmaD0zlOwW+PL6yBROZQCkj2jnsogfCSuZBobCy
-         pW1OG3R5Iko4onIXV4D6YWh+L+2CuAG0nEOGMZFPXqroe8pDvvfbRag2eG3QJJ0BJmwP
-         +obVnRVtTPrdEVkvtf831vMbOfqUFv7yM69hKV75nq8vZVqAF5pUoDXNNe0XR7bS1q77
-         K+bo+cWj1+XPjxl9vYvyVPfYOxIVHGrP5kCukZLiNOQ6VPcmXaUbWZTonIaNLqY6u89i
-         8vdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdVTl+BUIu/VS9HkLSEsEbYiOgxj/coVtFN9Hyd3GZR6E3hGAykPh4+NXfgc45hz52xDS8noQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUQFVp/uNAzm/NTxNkq0xQtLxOsGfpHjdCDr+OUswGb0j87Uq4
-	G79T2P4kbpzkbZcFY9x27vB4xAeyFNTAQevp8qWisUoHPalnyyu+XPPExnHbCFCzytabK1t5DhO
-	7YqTGRywjtv1kPAzziosIaKdfKEkmdyz/w7CswZcx1QtiX5tf6/GrgDgNfQ==
-X-Gm-Gg: AZuq6aLcMQqf7gW1xDQ6lmvM0itcOyRbM3k+KmpRVVIx1hSBqzEj5pXNzoif1wilFPd
-	pgq8Kuoif3Dg4zpKK3tyAzBWt27D9EVBRT7qdur3eKMfGGKZzGVVenJuVD01bbSGW3pDuJEks57
-	aLi20RH5CrdBNaMQZr6O8hgkmPR6wLzU7AQ7s2psdwOu+7nOq97ztCo6RO6cTcHTmt83lTIcUDJ
-	3LN0FdTZ0Utzc4BO4szpKMD0l72VxN7JrZAg/eWpzvfF/e6Bp44bw4nwVxhQZRrT/f7BTbHGJEf
-	bT/BruqzEWAiwuRzPeVp7NqPdUInAOo7sTUfBQ/pTCff/tbcWUoAQkhw9MwSPiMI/kgGMhy4RrN
-	snZ1oG0YXkBgv
-X-Received: by 2002:a05:6000:4202:b0:432:a9fb:68f8 with SMTP id ffacd0b85a97d-4356a02643dmr16221640f8f.1.1768903471622;
-        Tue, 20 Jan 2026 02:04:31 -0800 (PST)
-X-Received: by 2002:a05:6000:4202:b0:432:a9fb:68f8 with SMTP id ffacd0b85a97d-4356a02643dmr16221591f8f.1.1768903471171;
-        Tue, 20 Jan 2026 02:04:31 -0800 (PST)
+        bh=H8E5ZexNwUvepWRnAB8kom9407PvcV1LCFOFpBHsJ7Q=;
+        b=vP8vZsfUYHgq2f7wpiEfVksz+guERqLN+r6BTkLgBoFyrAlRBzJMr4jmTV9gdKiEf8
+         lO2ZbRRbE2aY2/VPjGqlRV9rC/n94t3WDj7ct1hM0gvyZn2eve1uK2bnuaFXUKmkoY/C
+         XCnS04w9cR4KKgp0DMHmUbTqkjYXuL8xXSS0DQHwNDBjlCxgTG5//j+hjEu2MFj/zqrQ
+         sVNwfxTRr0nO+a6qWuk1nOZojMpzlXVAU9+tiPNJvc1t7XJP7X7ueskXfO5wYxG+UUf9
+         91rgLq657GApYJQxUiKiiCNKDjCXYKSdz3koxEzIXn++5T4s6fz7mXL4rDLWKlThUmy1
+         SBLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMbx6vpI7blaSCbEIV/D1ZS2hav/3XwQ14RnZ6yBWLGhihobnIknJ28BGUuofp9xDDCiVhYRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGf5lZC3OlndcRz0KoO2w335ndNOyvLXY4IgpPnmcdK5viIDhF
+	5x1PtoRqT4s9N8E/a1kdXQa81zxDT7i6PfM6OIGs/Wex7MkLG1z/1xl/2MPRtaSKkZt22Ko90KA
+	nWlO75vZ0o74uTtpusSrIRd3gJOgprd3ADAflp1YcQDHcLr4XlHtMlu9PzdoAyqFRiQ==
+X-Gm-Gg: AZuq6aK0Lu6Y2KYy0Mbw18ymB0y9PAc6qXeN5yjrD/oOKSJ51MJVkpI7Q9dUGX2MZtk
+	x3+2XxpURaEcyU9WTCV7AhIJFpJp7A26ABBNHAFguEQZ2IaYuSHVZjcPtRkpz6bPeLkDm1+gkcD
+	ZdqjNZL8oKs2y9OUmcFvvstT7zNGbqcIf//vTU36dwpaIm8ZSepCjeEU1iYyrkIxapvlENCVjB2
+	NTT5tn2bzc3vYSXaAFaLtbVIft51mSMgtYKN//mMLvxcHqBPlwdom1tlHBT+qlF/MH6Ow3JhgEH
+	Ze043v5tnP09zmaJIuknnIdtImJkkyCpoeEeX/2as9OKjCidibSXC+OgMGK5109D1HJOHg/KN3L
+	OrwVcExgSX5qv
+X-Received: by 2002:a05:6000:25c8:b0:430:f41f:bd42 with SMTP id ffacd0b85a97d-4356a0662e3mr18086970f8f.57.1768903724441;
+        Tue, 20 Jan 2026 02:08:44 -0800 (PST)
+X-Received: by 2002:a05:6000:25c8:b0:430:f41f:bd42 with SMTP id ffacd0b85a97d-4356a0662e3mr18086936f8f.57.1768903724027;
+        Tue, 20 Jan 2026 02:08:44 -0800 (PST)
 Received: from [192.168.88.32] ([150.228.93.113])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4358f12ee69sm3803557f8f.11.2026.01.20.02.04.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997eb1fsm28563115f8f.35.2026.01.20.02.08.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 02:04:30 -0800 (PST)
-Message-ID: <d9096361-8f51-4865-af59-531649a5f42e@redhat.com>
-Date: Tue, 20 Jan 2026 11:04:26 +0100
+        Tue, 20 Jan 2026 02:08:43 -0800 (PST)
+Message-ID: <f35ba439-bb32-4c62-a057-29f45f95083e@redhat.com>
+Date: Tue, 20 Jan 2026 11:08:39 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,57 +87,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next V2 5/5] eth: fbnic: Update RX mbox timeout value
-To: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org
-Cc: alexanderduyck@fb.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, jacob.e.keller@intel.com,
- kernel-team@meta.com, kuba@kernel.org, lee@trager.us,
- sanman.p211993@gmail.com
-References: <20260115003353.4150771-1-mohsin.bashr@gmail.com>
- <20260115003353.4150771-6-mohsin.bashr@gmail.com>
+Subject: Re: [PATCH] net: airoha_eth: increase max MTU to 9220 for DSA jumbo
+ frame support the industry standard for jumbo frame MTU is 9216 bytes. When
+ using DSA sub-system, an extra 4 byte tag is added to each frame. To allow
+ users to set the standard 9216-byte MTU via ifconfig ,increase AIROHA_MAX_MTU
+ to 9220 bytes (9216+4).
+To: Sayantan Nandy <sayantann11@gmail.com>, lorenzo@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, sayantan.nandy@airoha.com, bread.hsu@airoha.com,
+ kuldeep.malik@airoha.com, aniket.negi@airoha.com
+References: <20260115064043.45589-1-sayantann11@gmail.com>
 Content-Language: en-US
 From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260115003353.4150771-6-mohsin.bashr@gmail.com>
+In-Reply-To: <20260115064043.45589-1-sayantann11@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/15/26 1:33 AM, Mohsin Bashir wrote:
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> index b62b1d5b1453..f1c992f5fe94 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> @@ -252,7 +252,7 @@ fbnic_flash_component(struct pldmfw *context,
->  		goto err_no_msg;
->  
->  	while (offset < size) {
-> -		if (!wait_for_completion_timeout(&cmpl->done, 15 * HZ)) {
+On 1/15/26 7:40 AM, Sayantan Nandy wrote:
+> This change ensures compatibility with common network equipment and jumbo frame configurations.
 
-flash completion timeout was 15 secs
+It looks like that a significant amount of the description landed in the
+subject, which is not good.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-> index 1ecd777aaada..b40f68187ad5 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-> @@ -36,6 +37,7 @@ struct fbnic_fw_mbx {
->   *                       + INDEX_SZ))
->   */
->  #define FBNIC_FW_MAX_LOG_HISTORY		14
-> +#define FBNIC_MBX_RX_TO_SEC			10
->  
->  struct fbnic_fw_ver {
->  	u32 version;
-> @@ -129,6 +131,13 @@ struct fbnic_fw_completion *__fbnic_fw_alloc_cmpl(u32 msg_type,
->  struct fbnic_fw_completion *fbnic_fw_alloc_cmpl(u32 msg_type);
->  void fbnic_fw_put_cmpl(struct fbnic_fw_completion *cmpl_data);
->  
-> +static inline unsigned long
-> +fbnic_mbx_wait_for_cmpl(struct fbnic_fw_completion *cmpl)
-> +{
-> +	return wait_for_completion_timeout(&cmpl->done,
-> +					   FBNIC_MBX_RX_TO_SEC * HZ);
+Please reformat the changelog carefully.
 
-Timeout for all events is now 10 seconds. Is that intentional? Could
-that cause unexpected timeout on flash update?
+Also it looks like this is intended to address a bug; if so it should
+target the 'net' tree and include a Fixes tag.
 
-/P
+Thanks,
+
+Paolo
 
