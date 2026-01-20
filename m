@@ -1,70 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C533426681;
-	Tue, 20 Jan 2026 13:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE506439013
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917597; cv=none; b=mH+XaRPf6BJxbGu/ZGQnpRsb2jrZHtFQDJROMRu2DANhJS6wpSnsXdmvpxPCLZmZ5yjVSttD++zL/8EgLyLlTnE+D3Pnz9p7kR3Vp2nlScCWQnF9evO+8X6R66ufn185826GLBybfUGmSa1/qjfA24W7xQgoEaJPtpL0uItoEZY=
+	t=1768917748; cv=none; b=vAE3XPdN2EgAx9AbSniS8UeijJT361tkmMrTQ2HCYUT7K5Yjwfo+eolzYZOnapnKGwh4S9P6YRCU/M/gh/xRWwNsBjuwpMVvO0aDaPVowT6WxW2VeyWY+Tk0wFpib06yMDEWBK12dpb80LbKi6BokMBlu3tEsKU4+BLR3wPflW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917597; c=relaxed/simple;
-	bh=l4612P9NE1WN5Necht0h+bqZlglIAqsFkRUJ38HRny4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z3IanqCFmF9ssgt7tsocm/OlyzHpF3Hk8wNIwmfqivE2xncIyOuzLi3VzvfNxQu3GjX+pE4mg2+eL7RsAI9DjcyWbtu7vwn3rW5DqvhVoLRmcNYlcuDxA8IGxZRt7h1Z0P/+uw1Wnc31Lfg3rg5qwdqBlzpsX9P+Tc2khaxVxKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cI6Qo/eQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1768917748; c=relaxed/simple;
+	bh=9IsVLdapNNbc/4CpLd1Dzy6K3wU47Fpio5/3FQinHeU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ze4sXz5A7gzV61UeCcBCgVpXn1+ASQ+5oMAl2JuYgjm+jifGPaSs0qoYJPMGUen+1TZewoR4L6yYlJ27nlqZApCLa+KbCz9oOOjyz+2z5Hr++yttAsw+wg0hWlOl2amisIEMomLnF1mOmd8R0IldOwGR3g0Ei7eIql3+yCfshzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OAhpT0DA; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cI6Qo/eQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RKzZpz3gJuGNt509m4Sz6slc/wkFAWSQZz3MkbOiXbg=; b=cI6Qo/eQJ0AWEzj5P2sKoQaw7j
-	kKCGiuXxXcnC/DbH+W1/MyliyZ/G5/woej2OQnzWHaJaUSsb8if6ttM7futcIZJYzo3BYqdNc6Jlg
-	6M3dOd8pxTrJl2u2OIeY6VslqfVOt6Om68vRPeDXELigFQPPn7PuE35jiyI6Q0XWv8sE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1viCGp-003gXK-NP; Tue, 20 Jan 2026 14:59:47 +0100
-Date: Tue, 20 Jan 2026 14:59:47 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v4 2/2] net: airoha: npu: Add the capability to
- read firmware names from dts
-Message-ID: <d5a7afce-5591-4106-950d-92a1a1015132@lunn.ch>
-References: <20260120-airoha-npu-firmware-name-v4-0-88999628b4c1@kernel.org>
- <20260120-airoha-npu-firmware-name-v4-2-88999628b4c1@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OAhpT0DA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768917746; x=1800453746;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9IsVLdapNNbc/4CpLd1Dzy6K3wU47Fpio5/3FQinHeU=;
+  b=OAhpT0DAkDGXbyMggXBSohEb4TjZL2YnSkqSojTP6bZ9hAAWPCHoM77O
+   +cyu4XJDmEnjpYifCKB1z62N/0PPHLnQ7gJG/5BU7y0K4GX94mmtC3U0P
+   YswtlpK6F/OQmlULKodu6iJTvdYckYnDqb9RzOms0/qeHqcvnbeKAuY3q
+   h9N4IFbpGHene7Uq1bvFS4wkjYIwX6xYPlIC/MjefYnj/7rOjSvnwjAXw
+   9O88ykKbI1oh8FO+/GrAIzX+avK1tHRqyAJFVV63ZzO1yzQdp3fb2+uHD
+   IlzYjpV4lUAw06Tr5gPo/FTtQ1okgCD26ee+0KOpgjzVXhlJtfFGci2v/
+   Q==;
+X-CSE-ConnectionGUID: /39OZFUuQt6C5bq/Ic6gHA==
+X-CSE-MsgGUID: KwcKzPQ1STe2sOqb5n6FWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="72711743"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="72711743"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 06:02:26 -0800
+X-CSE-ConnectionGUID: bDuEciD1TKCzSk9x3qaB1w==
+X-CSE-MsgGUID: To4a+SLBQZKvwv5/erzmmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="210978884"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 06:02:25 -0800
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-next v2 0/6] ixgbe: enable EEE for E610 devices
+Date: Tue, 20 Jan 2026 14:44:28 +0100
+Message-Id: <20260120134434.1931602-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120-airoha-npu-firmware-name-v4-2-88999628b4c1@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 20, 2026 at 11:17:18AM +0100, Lorenzo Bianconi wrote:
-> Introduce the capability to read the firmware binary names from device-tree
-> using the firmware-name property if available.
-> This patch is needed because NPU firmware binaries are board specific since
-> they depend on the MediaTek WiFi chip used on the board (e.g. MT7996 or
-> MT7992) and the WiFi chip version info is not available in the NPU driver.
-> This is a preliminary patch to enable MT76 NPU offloading if the Airoha SoC
-> is equipped with MT7996 (Eagle) WiFi chipset.
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Align SW structs with latest FW changes related to EEE enablement.
+Address compatibility issues caused by the buffer size changes.
+Implement ethtool callbacks which can be used to enable/disable EEE, but
+generally the feature itself is enabled by default. What's important it
+works only for link speeds > 1Gb/s, so even if enabled, it gets down
+anytime link conditions aren't met. Still cannot configure LPI timers
+and EEE advertised speeds.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Jedrzej Jagielski (6):
+  ixgbe: E610: add discovering EEE capability
+  ixgbe: E610: use new version of 0x601 ACI command buffer
+  ixgbe: E610: update EEE supported speeds
+  ixgbe: E610: update ACI command structs with EEE fields
+  ixgbe: move EEE config validation out of ixgbe_set_eee()
+  ixgbe: E610: add EEE support
 
-    Andrew
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c |  73 +++++-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |   1 +
+ .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 244 ++++++++++++++----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  30 ++-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |   1 +
+ .../ethernet/intel/ixgbe/ixgbe_type_e610.h    |  38 ++-
+ include/linux/intel/libie/adminq.h            |   1 +
+ 7 files changed, 325 insertions(+), 63 deletions(-)
+
+---
+v2: get rid of eee state refactoring patch; rebase series to the recent
+    dev-q branch
+---
+2.31.1
+
