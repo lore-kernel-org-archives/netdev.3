@@ -1,180 +1,144 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from sonic317-32.consmr.mail.ne1.yahoo.com (sonic317-32.consmr.mail.ne1.yahoo.com [66.163.184.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9D0313551
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3E533B6FD
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768927482; cv=none; b=j18K/fl7ktLtHbQvUDMqIB88tyanqV/7YbbpX//ZfOYPqP0kk4KjiZLSsWm7B5s7zWqIcvo919cPER3O84rRLGteS3ScHF/i/EYQlOxyoAys+axzzF2bE5HAMPxmnluIo5Y5MJlV8wVv2TjzOntSFmtN0hAPii3p/0AoYJufYGk=
+	t=1768927556; cv=none; b=XpaEA4cMFD4wqgxabYharyX21kOmE2pkVdfGHXU1h0E5CBMogR95B1MxLmRWlUFh2DAzixhdA3q/LaG3Hqm+rsTQEwebwQKQuuwmj1oX7KhNHA9ONpDjGfsHxt5J+c6hEb1Y27JD5/W22EniIujjOe3WbX+nmkkL9cpgTMfMy4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768927482; c=relaxed/simple;
-	bh=aUDhPKL0hM8JEgf53e07so1yz09QTsbUMmEPM++MMC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dRC/FdlYBuPwhK5/rmYrKeudxsVkpjSkH+hTctZBQPEQjp2xMTo7snBD08gp5c8Np1MlXsLzQ/Dv4alRCfjMvp3bSFp9dmQUnqecR7nEdRSGuY/H7G/lHqQNdY5iXYjTImPZNGQQG/jksq1iGxntZzzGKFZfgUGaBRoVzRv/cV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=enorTZHH; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1768927556; c=relaxed/simple;
+	bh=ka6zy0vMRU3xlTDzXsammyCT8YFL60hNroirp5Qjl3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=bFp/jhSDo0Myc/ulKbdRN1kUUHN4mYQEUYiU3mSQ/kr3xc/N1W0NSkmI96soLoWJGQua03UHve9ct5m0oZJ7oLcEBc6VTIdyF/wJjsvKqleDlHTydvM5T4/ZVxg1W7tnb9/4NLpObai+Un7hJqv+ExJ89PEU1MGwhGZ/5+pcbNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=O0tMIq6A; arc=none smtp.client-ip=66.163.184.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="enorTZHH"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso1562385a.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:44:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768927479; x=1769532279; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=byK9CbCzUXPvYH8hMBYCGjlZe3ysbsipoknrt4q5MYA=;
-        b=enorTZHHb2rEovvaqsHlJudTAyqhy1O+b6Wb9hMirBr3bEDZcElB++EhFMTigB6DNN
-         g/5LhzI3JIgnahlwdRTRt4XxSlT1UHF7t0P7XiGBm4w296ImJAO3juGTZH1hiWQsVERe
-         Hs7hs0ESDrEo3XIH757I+XTnWNoN3QMlMOLXsKa110lwqqOJeojAC+9bzc15VrPQ9Bst
-         Nt9II4GuZja6VvAjbE0pNFpsGIXcG9aQJqiii62oK/+nQ9dAMlXfPc5hhvkWEtaGDVXO
-         IBiT40k7MZs4mDeMIIWqaqZ9CwpO/sYnK9wG52P5SoSVI89RnqLH2qCxElydmideAxh2
-         YGrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768927479; x=1769532279;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=byK9CbCzUXPvYH8hMBYCGjlZe3ysbsipoknrt4q5MYA=;
-        b=UQ1OM0a6J0wXsJY8jxBe4PEmtPDedBbhOgpdFwTs2BLdHXjpFnRXVbcJdLH8ljz2UG
-         iiVXsxv6olESQ38suNtV1/DW2QpxLPNglKFqjMalvY26xLyPCT2ZY4T3CreC/mD8HiMK
-         N3mvhyRDGokq/FtvGeUbNULlVVmAmbxDL96YMFXMdc6GePWcj9IfGuMFYjNPAYX8ro9j
-         r07StMI38Y0I0T/niUmVjsxzOb2hRKaCFujW1zepXn7JIlzmQRgAeVMz5DNBVWXQz90o
-         4rLCR1U9lAJ4QCNUJjjM1y0sgaKYUcC8NW6N7AQtrs8gckDwOaqXVAFbQz40LVIdgNqj
-         1ACA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtCoxnWwFx3DmXOL+/2R7SQ/jd+5BOxWsssSxP4tlmV/1LndJt5Emr+wIqLEw54eVIHg8AZSo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3PR0QRKdkzz9BGh1Hav0r4uxaT7ZSq65s2aQAIxNvNR3M/Fgl
-	QbA8BmMDkWFREmhfFTFaYrAYPhbEdI1J2XjoaOQRSyHNAPKIgjGfRtJ/PdWxy6mvtsA=
-X-Gm-Gg: AY/fxX4VibCHlzKCD9WTJSEUWu4taTSffGISSKisb8OqHT1WSHP6hrh3JrSPfQTnV4S
-	GawzRI0T/iSL9ZdFCVpwI5hr/JrUFRw2Z4IHslDAswCagB98s9FkLt5hdUIfq7lr5qEy/MRpvw8
-	6cixOHxXcJ+rwmNgIvkdBiwJBSdMNUQHSyo/rliLSdkwgqHPH7zIJgCzQGxMgumC0B8510N0OUh
-	1XUZ7I1dfmJtqcR0O+bOs4/ZdSGx0o2BljDTGxWWSajsamlvYdfCQMv4p4oZDWfhfLgdJdJWAA2
-	t5nfudU4O2wlj4cq6aLDRVwniaWPaqXjfDQAx7zwbc4ZysVV1ka8wDFbgDOtzeQ32aeoevF+uAd
-	xCAvUjOy5jrCCTLJe2jlWrc7HoGLIWfpunvj7ScTYC2brYCqTftqxV+tpSkTIdvjlHe2sCh66f7
-	q3KQxB0COHvIgry3Tghm+O6+ueaG4ckUBnuOp9Is/Woe1UoAhOJ+v91fvhNK8QbcrUjEc=
-X-Received: by 2002:a05:620a:4011:b0:89f:cc73:386 with SMTP id af79cd13be357-8c6a6479374mr2212242085a.13.1768927479473;
-        Tue, 20 Jan 2026 08:44:39 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a72507d5sm1084693385a.32.2026.01.20.08.44.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 08:44:38 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1viEqM-00000005YT2-14LN;
-	Tue, 20 Jan 2026 12:44:38 -0400
-Date: Tue, 20 Jan 2026 12:44:38 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Edward Srouji <edwards@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org, Michael Guralnik <michaelgur@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-Subject: Re: [PATCH rdma-next v2 02/11] IB/core: Introduce FRMR pools
-Message-ID: <20260120164438.GR961572@ziepe.ca>
-References: <20251222-frmr_pools-v2-0-f06a99caa538@nvidia.com>
- <20251222-frmr_pools-v2-2-f06a99caa538@nvidia.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="O0tMIq6A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768927554; bh=MPPNU+UqEcPIAcUa2EVYTXPUfQ/csyYzPBMa9wRh36w=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=O0tMIq6AktYJqsjVfwHzEhj128mzfbmWsID6b7FNFQdp+mokyoGwi7Crqhq9eGG67ywMR4cIWsE1pkp5htxtswHkoMLI0DS4OpTZ6kA2LMDThLsWF0obaGj4gQQXUuelMtHlcqP4JhxhFHc+TELZgv7L6t6yppoy8W9W3igWnmFlU8JbJLB8OKxXhZs+bs0r17VsfbVdLMkIWch3idc1wIjG3yxKc8VD98SqP6mgxcF4Np4OVD/rY4EeBaagv22u4f2Rc16pTmMfv7+Ob5eqcztGhLn+EkxHzJ0Yth/j1y/2RxIPoj0bJ+yGhPkQ5c1+hgb9l3hxMzk44/y/BSV6Pw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768927554; bh=LMM2Zp1enHi3phwnJHrmTZWhvHQ9bZ6275GB3li29YU=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=CcWXOr1SbCB7zODQGS3CvEAxPTfNyyWgkfRmJqmah3DQCkPtnJhDF/IluXyndN8JZvXgxNFRuaVYuAHB5RCCksVOL9VxCouUpFqQ6I4emQkDbJlZlNWrKD702IiGRF6KISZ1ufmL2zycdcCYcLLOy/OBcjJJzuTWQ5M9AI8YehX3BufyKJPCvHqUypGXQO+zimz8ls2ejx73bntcM8ojR5xy/al6fvSG2WZZzqq2P+Vjw2So8OzOOq3eKjNVeFI19LP/sC/BckrKgUecZRNqGQUNBfucdcwRQNjw8BPiiunXPuWelzQI6yf9szHlWTOpgFqNDcC3jFi5usexuDQW+Q==
+X-YMail-OSG: TWrnKW0VM1mCOvMLfsZDAAYyLZZ1OVdKYWyMsUQRy_CzU9TgDB_ZA23MohgmGAz
+ vyV_z9mhncGLy8zeUFksAm.3DjuiJNxi2FuHpsyKzkCeQAS92N07oOrYDPMQFDZPXiovayzA_2a4
+ cGHPSE3O80sh4eKJPlPsaSXrzUNwjIT60SmEY59x1vIbzzESsFqMCJXqHIpiITsoyKkCyYVfugtf
+ _Z93bVXGiBSA0TfMfpsk3H76MQgjWIuYe8bBBJf4mwSnigZtf_Fam_B73WDQQNFc_8ocF3T.VtMM
+ QEGHcBj2P1n9d.bPD.J40Q0BMCittMDKowJ3pqec2nZSxkJGTdHVhqOng3CXoCMLgl11xJLD0j_c
+ s2BFig23L.kG2LK1OolzO3siJdZdmYOMVJHQI4pvbiaUoRZp9AlfFHSwkdJ7KhMzxhRk66eThMuC
+ CW9c9oc09bkYaAi9QXOkdzxKBe.HDsmlJjqjpEMFUnY.59Qn0vhUNkYGgJZ95jFlE7sfSmtaeN5l
+ Xgl_5LBGtpL0BlZnIDbufVf4lW6Bh_KXg4RFRsKSMkw6B6AYq8WWNOFeyTKiML23mht3GfiH7REm
+ O.c1PHfdUjgnOsfppS8rt5Myks7XwpXTRx8iN5p7hdrwo7iAB2DKdGaNecd4LEcoGH_J.lFZJuvG
+ ZeYUqVmyrzkjrbymdQqoi_lAoxMN643dJ4avC75NlRQgEvHfKXBRYPUL60t4_Vu4ri3WruxazyyO
+ OUGaxO.hNzjgFKOsJNuSJY1P3iuxZScHIe_RJqSVzYnlCCptW_kMMuEjl_dR_q_NsjUyUlRk.dtQ
+ pscZ0KkKFFV0zScUKyTzbytQhDou_xbh9_IE8UTpqDjLWCjKe.HOX3EE7ll0T_gluiqenLPleC5m
+ 04oj2j5KOBCloRtImX5.DwRsgwgQr31X3p8IpHzYXEFCF8iVltpGgCBRTaz23.OXrgjd1SUn2KuI
+ O9qbsWqudiJWouXpzUK9Q.qnExs9.fcRT3_5qQ3IuCifm9QyzqzX7gMEnEvk1646elRhLU_PDoDn
+ D4an92YgDI0rxIoAITOharKvEABEf5AK20YMJ128I78RJW5quqYGJ.7gn8xg6LVQtMTbEOaBohZ2
+ Kxl1kGQhx4Koj1mf5yO6hw5qJJ0dNBeQ5TwsNWgW1N3joS4oPVxVWPlxUJg3yNAFrR2rwmLtUDk4
+ 5E8MnFYUhxUEhOg0vxosFjCfPNTIgr9epwwzPfrhNhJ1BhmS2g3N.fzJ0nBgGq2HecJMKRv5T26K
+ lFx3K9UKJpPKh625_qquvAZhTp7ug6znNiOQpHyXDt3XGHWJF2xPGPdldrMsfFc44.8y89YHZyz2
+ CLiIW6zqGEuo5C7_784lKuVaZ8riwH.k0DQgV3ZUyUDDsYFIn9yEQ2CaPxxJ_KIijByw_jEuM_NV
+ Mu6WtL19YHvAddB89bg_NPUPy55_zMpf5eUCXrIrK5YDq34nrHvSoJW6uCmSN4AtVuSrujdRLSbW
+ vUfIc6kKNA6NDEV7Yl442O2ptImFxNSSOKBLjY1xnp6e0MjMJSFzJtnV0TRRKWXDMfnfiTdEFi32
+ NMKonM.Zbe6LqgdnJj41kiAKH6LQlyqjei81iHlEn.1xrAfAU3h9.nKvrSd1Dgm7kGNdt5SaRKos
+ zh6RVPh390jU3XwLTVYScOZPnxFguwnG9rZ5NpJxedCjFvp0cATmzP01dKXUEDhsj_ovlNvP6E5r
+ ntfqAp_4pPIb_kh4bY6G8sblaQhLA8vNVU_D7ZUHf7eHX4Wzv7P9LDDwv2MUguVHTUyDlz5BOBev
+ F6VvTYJHVZYxT4df46AfoZKqQ7M9HEJo2GWITOOaXSQ7pUZQSU_K5m13viYtOxU6Ur5gNK4WYXVv
+ Jh1zXaM5SEi_dEdicuRBu8BKzmNow5Ti9mpU4rREbNJuSux7cele4irfvPB0Y.ORHC0UPV3ODEVa
+ kWSejMOezMsDZ7ZZSdpOtDwDUe3YP1H3MtqmgkIhc6OYSeckD_ulIns39uXBgwD2oHgO3F5.ht5O
+ 6GcMzBRZc1BZHsWbKZFjriSJc515qU0R.3qLo_fyAa2HNYXVwjYrRDNkVXqP1S7DoUklyHTtN_TC
+ H3ivgFa3rUUBs663EiSy_g5lbvBoijA4pcQqqPiFKgTA8LknPCyu1fmHEvI2jBOqPHFgohZtpCe1
+ FD_Oquuk6TFJ71RIq6fnJ0gfvBx53qEmw8vOo7DAd
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: a323780f-c895-4527-91d2-cc4fb404fb6e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Tue, 20 Jan 2026 16:45:54 +0000
+Received: by hermes--production-ir2-6fcf857f6f-vw7gs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5c743ac7fc5feeb5bdbb197ea32f25e9;
+          Tue, 20 Jan 2026 16:25:33 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v6 00/11] net: tunnel: introduce noref xmit flows for tunnels
+Date: Tue, 20 Jan 2026 17:24:40 +0100
+Message-ID: <20260120162451.23512-1-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251222-frmr_pools-v2-2-f06a99caa538@nvidia.com>
+Content-Transfer-Encoding: 8bit
+References: <20260120162451.23512-1-mmietus97.ref@yahoo.com>
 
-On Mon, Dec 22, 2025 at 02:40:37PM +0200, Edward Srouji wrote:
-> +static int compare_keys(struct ib_frmr_key *key1, struct ib_frmr_key *key2)
-> +{
-> +	int res;
-> +
-> +	res = key1->ats - key2->ats;
-> +	if (res)
-> +		return res;
-> +
-> +	res = key1->access_flags - key2->access_flags;
-> +	if (res)
-> +		return res;
-> +
-> +	res = key1->vendor_key - key2->vendor_key;
-> +	if (res)
-> +		return res;
-> +
-> +	res = key1->kernel_vendor_key - key2->kernel_vendor_key;
-> +	if (res)
-> +		return res;
+Currently, tunnel xmit flows always take a reference on the dst_entry
+for each xmitted packet. These atomic operations are redundant in some
+flows.
 
-This stuff should be using cmp_int().
+This patchset introduces the infrastructure required for converting
+the tunnel xmit flows to noref, and converts them where possible.
 
-> +static struct ib_frmr_pool *ib_frmr_pool_find(struct ib_frmr_pools *pools,
-> +					      struct ib_frmr_key *key)
-> +{
-> +	struct rb_node *node = pools->rb_root.rb_node;
-> +	struct ib_frmr_pool *pool;
-> +	int cmp;
-> +
-> +	/* find operation is done under read lock for performance reasons.
-> +	 * The case of threads failing to find the same pool and creating it
-> +	 * is handled by the create_frmr_pool function.
-> +	 */
-> +	read_lock(&pools->rb_lock);
-> +	while (node) {
-> +		pool = rb_entry(node, struct ib_frmr_pool, node);
-> +		cmp = compare_keys(&pool->key, key);
-> +		if (cmp < 0) {
-> +			node = node->rb_right;
-> +		} else if (cmp > 0) {
-> +			node = node->rb_left;
-> +		} else {
-> +			read_unlock(&pools->rb_lock);
-> +			return pool;
-> +		}
+These changes improve tunnel performance, since less atomic operations
+are used.
 
-Use the rb_find() helper
+There are already noref optimizations in both ipv4 and ip6.
+(See __ip_queue_xmit, inet6_csk_xmit)
+This patchset implements similar optimizations in ip and udp tunnels.
 
-> +static struct ib_frmr_pool *create_frmr_pool(struct ib_device *device,
-> +					     struct ib_frmr_key *key)
-> +{
-> +	struct rb_node **new = &device->frmr_pools->rb_root.rb_node,
-> +		       *parent = NULL;
-> +	struct ib_frmr_pools *pools = device->frmr_pools;
-> +	struct ib_frmr_pool *pool;
-> +	int cmp;
-> +
-> +	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
-> +	if (!pool)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	memcpy(&pool->key, key, sizeof(*key));
-> +	INIT_LIST_HEAD(&pool->queue.pages_list);
-> +	spin_lock_init(&pool->lock);
-> +
-> +	write_lock(&pools->rb_lock);
-> +	while (*new) {
-> +		parent = *new;
-> +		cmp = compare_keys(
-> +			&rb_entry(parent, struct ib_frmr_pool, node)->key, key);
-> +		if (cmp < 0)
-> +			new = &((*new)->rb_left);
-> +		else
-> +			new = &((*new)->rb_right);
-> +		/* If a different thread has already created the pool, return
-> +		 * it. The insert operation is done under the write lock so we
-> +		 * are sure that the pool is not inserted twice.
-> +		 */
-> +		if (cmp == 0) {
-> +			write_unlock(&pools->rb_lock);
-> +			kfree(pool);
-> +			return rb_entry(parent, struct ib_frmr_pool, node);
-> +		}
-> +	}
-> +
-> +	rb_link_node(&pool->node, parent, new);
+Benchmarks:
+I used a vxlan tunnel over a pair of veth peers and measured the average
+throughput over multiple samples.
 
-I think this is rb_find_add() ?
+I ran 100 samples on a clean build, and another 100 on a patched
+build. Each sample ran for 120 seconds. These were my results:
 
-Jason
+clean:      71.95 mb/sec, stddev = 1.71
+patched:    74.92 mb/sec, stddev = 1.35
+
+TL;DR - This patchset results in a 4% improvement in throughput for
+vxlan. It's safe to assume that we might see similar results when testing
+other tunnels.
+
+Changes in v6:
+ - Removed buggy call to ip_rt_put on noref dst in ipip6_tunnel_xmit
+ - Added missing calls to rcu_read_lock/unlock in sctp xmit functions
+
+Link to v5: https://lore.kernel.org/netdev/20260113162954.5948-1-mmietus97@yahoo.com/
+
+Marek Mietus (11):
+  net: dst_cache: add noref versions for dst_cache
+  net: tunnel: convert iptunnel_xmit to noref
+  net: tunnel: convert udp_tunnel{6,}_xmit_skb to noref
+  net: tunnel: allow noref dsts in udp_tunnel{,6}_dst_lookup
+  net: ovpn: convert ovpn_udp{4,6}_output to use a noref dst
+  wireguard: socket: convert send{4,6} to use a noref dst when possible
+  net: tunnel: convert ip_md_tunnel_xmit to use a noref dst when
+    possible
+  net: tunnel: convert ip_tunnel_xmit to use a noref dst when possible
+  net: sctp: convert sctp_v{4,6}_xmit to use a noref dst when possible
+  net: sit: convert ipip6_tunnel_xmit to use a noref dst
+  net: tipc: convert tipc_udp_xmit to use a noref dst
+
+ drivers/net/amt.c              |   3 +
+ drivers/net/bareudp.c          |  28 +++++--
+ drivers/net/geneve.c           |  59 ++++++++++-----
+ drivers/net/gtp.c              |   5 ++
+ drivers/net/ovpn/udp.c         |   8 +-
+ drivers/net/vxlan/vxlan_core.c |  39 +++++++---
+ drivers/net/wireguard/socket.c |  12 ++-
+ include/net/dst_cache.h        |  71 ++++++++++++++++++
+ include/net/udp_tunnel.h       |   6 +-
+ net/core/dst_cache.c           | 133 ++++++++++++++++++++++++++++++---
+ net/ipv4/ip_tunnel.c           |  47 +++++++-----
+ net/ipv4/ip_tunnel_core.c      |   2 +-
+ net/ipv4/udp_tunnel_core.c     |  16 ++--
+ net/ipv6/ip6_udp_tunnel.c      |  19 +++--
+ net/ipv6/sit.c                 |  14 +---
+ net/sctp/ipv6.c                |   6 +-
+ net/sctp/protocol.c            |   7 +-
+ net/tipc/udp_media.c           |   6 +-
+ 18 files changed, 377 insertions(+), 104 deletions(-)
+
+-- 
+2.51.0
+
