@@ -1,140 +1,153 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24973A89CA;
-	Tue, 20 Jan 2026 22:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA023E95A0
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 22:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768948369; cv=none; b=lLXSYJwEmrnyk8I8sHIgQ0uKpNnzB9+LcCyr0HLb1Xjs+OGnNLTO1X+pHu4C2jdELYEs0amD6YYhg2mcFMcwtYtr3006kudITql6DIl6M6c0cd+i2YfGA4NZNeQa1fubtbSBvp/G3GP8DAfgLzEYCAUqWao/grS0J3OUjR4WP2s=
+	t=1768948575; cv=none; b=mNWU6dQWUgIGrq4LOAy/+RQ9nnoiS0olR3jpi9hd+rWQHMMXy6VTIn6Oc8pWCKnKNw+SyGMHdocTGsm+RiFqY5NGC+R96bGX38FIOblGdb3WXAwzd7iWaVaolri2J2yX49qrjydOt/sTuZshuqxq6AQkxoMkLJdk1lCuQ2NMMas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768948369; c=relaxed/simple;
-	bh=Ec5nLUVBBHk65ofIYmXQtueLkYFVsJIiQkbCsxC4PRw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=D+d7SKQwIQknr0u+hWFI9w3QhPbQAJdmPjC6NuP4cMTJwBq3LZRjm4rxUYdNI25bt70hdbJXP208YKu6OqfdONNX3J60cKHg8km+IPhP7W6J06dIEKEOr72jox9yHUcjmo62m99tFNp/Pl68yk2L8U1axjq/liykKF9TqNCrMoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kAc22uQU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tYmqSu53; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1768948575; c=relaxed/simple;
+	bh=lYHvzcjsxYt0A+0br3h1GQXTMMOJydVerfEIbtr67k0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A3DrBrHKEHFMiAtN3mxxXI36wN9QafCqCzi6eY9uSFazci6FWbQ/vgHgXuvuNu9vtlKCYcPVHCF93LNb5VFBvXZPeccPJmqon4es65prG6KKxuxa0fq4OkzmEmxhnjAa8RKGoMvlFOzBID0zhDyGid9NgyW0pnAsY20z+zlf2ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nLAySThh; arc=none smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kAc22uQU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tYmqSu53"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id ADE2D1D000AC;
-	Tue, 20 Jan 2026 17:32:39 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 20 Jan 2026 17:32:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1768948359;
-	 x=1769034759; bh=l2K+9wbriq4bT48xhrJHk7wRuoiZlQpD/0NetqMPAB4=; b=
-	kAc22uQUt3RwaetR8gwcGj6GV7jeINmsy/+ihCWIB1DR0W2ETPRX0PAyhDjNxlD8
-	4xaFqnaLFemoWHKg0P8IdXFBa0t/mA9ivBFGgLRwng+QKbGq3Z+5owu/8YX/txzf
-	FshZbby9gMomAkIb2xo175ZvL6AFLzPWUWEjFiELR4OU5CfCo+cXnhoH6usKhn2c
-	z+JNZoxSfyz8au+Q1AtUyRT2/yi511yJA743wOjbLMCEbaeDOVjgdraDQzGGeVfN
-	W9txVyoAGuQFAzeZaqdT1SElP1/q4PblzlbIC1S7S5yfEnYPthXaBat96DT0DDnO
-	Rn9GbrT8nTF8Wrm2AY06RQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1768948359; x=
-	1769034759; bh=l2K+9wbriq4bT48xhrJHk7wRuoiZlQpD/0NetqMPAB4=; b=t
-	YmqSu537xkjC96U4WXJ9E/PtLpqaHdIspiDQOSjlxaMBtZMDO4/vGYfHnEPwUTGB
-	Taq5vIOBt5UJMyvtuLZtihXvMc+DPCp/ok3XmjmawBClliUsMXBEsJGN/VAbesJ4
-	emK1RG+tsvcnO/F3e2mFJOEqWdK28MTEyjsKWFN9SZFGYCO4E73t7NrxNBfoNzBi
-	LXql3SAJDMdxDOTHgideVRZKFBirdbLM0S+otU66rBxN3epsuUwe1n4CBQeAKKUn
-	nA13Vy70yC2zVx02iC7IP71vaDLgKeYla1uritAYTg4zBai5QBk0VYzhPWBA4l+s
-	u0z1j/WsU8Zhto4glMPGw==
-X-ME-Sender: <xms:hwJwad9mV3pXUYyPHRWNm1Rpxpsp-FfYlK9HTM0kZDRDGFxq53PpXw>
-    <xme:hwJwacj6xbD9kvP8p3-ofWaANmh7xIsg11dObQ5wIGspI48-3lQiqMrleBz3gZdzJ
-    1kaLMjPRWh_O1o74BR1FezJNVFLhcIvj6P0XX2Z8qVuxMPJqsALbWQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddugeduiedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epkhhunhhihihusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhgvmhgssehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopegurghlihgrsheslhhisggtrdhorhhgpdhrtg
-    hpthhtoheprgguhhgvmhgvrhhvrghlrdiirghnvghllhgrsehlihhnrghrohdrohhrghdp
-    rhgtphhtthhopehthhhomhgrshdrfigvihhsshhstghhuhhhsehlihhnuhhtrhhonhhigi
-    druggvpdhrtghpthhtoheptggrrhhlohhssehrvgguhhgrthdrtghomhdprhgtphhtthho
-    pehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhisggtqdgrlhhphh
-    grsehsohhurhgtvgifrghrvgdrohhrgh
-X-ME-Proxy: <xmx:hwJwadMQyofZ0wGJAkAHEqd-3K72QKHUwcjG0RzMwwoqGESfUt1nsg>
-    <xmx:hwJwacU7ixli3QVHtvCVSKRs9bJVtx45_SWPaUpao66gYbNltFx6NA>
-    <xmx:hwJwaQsCUyoPU0YYJ3fUNmEEWXFCNNovvJvIaShTpGe9yjJJlU8pZw>
-    <xmx:hwJwaX3VhowBTVfO3LCMHaBf3dAdTd4_EAvPTArUyWgYKpDYGnWRUQ>
-    <xmx:hwJwaTiEAyA2G8mCJoe0ekQ3CNY4CD_Jlq5z0-iXsA6a3CA57x1Q0jlb>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 085D3700065; Tue, 20 Jan 2026 17:32:39 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLAySThh"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b6f5a9cecaso2387918eec.0
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:36:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768948572; x=1769553372; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NrbRZd+8qIGar6808P7aL6qI6sgZozZ7npqpjV5nqsk=;
+        b=nLAySThhSy9ij1N6pkNJ3zrxUaeBB9cBuZ2D9wLwaAJeOXfnxse+ncUymem/fqpAkd
+         6Jk2oqyzl0tL9e+19CcPWLDlKI3w0l9C8oZvmuqW1HYVVDopUIU/m7cdfaHX6ieGkT/a
+         LiyWtyq9I64CVKznXcO5MIgvCnrcbUSwmRsjFEQ9NAOZqEdm5QQSv2RCjXro2UJECv5U
+         jPfplYci6HglXUE4HnIH7S1vneLStxQaSOUu924efKy3I2OHYmYLE9Q+2Fy6vmCJWAOB
+         GswoYeifv0egiGt5I0Z96ac4ircx48NW5Sew8Ur2V5YsF2Ia3w0KZEsz0usMr/lFKn4W
+         GX8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768948572; x=1769553372;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NrbRZd+8qIGar6808P7aL6qI6sgZozZ7npqpjV5nqsk=;
+        b=E2MB4rP/RITPNDX+IJjJVA855loYH+P/+WMp7NG3TqmlSn60vV9nqqEKosuRtqMs9e
+         MeaEOaC7FWmChhkUvRRyVQ35cnuOyZNWHDxDCxVbZik5hBhSRN/zKGXUXeZMhHvV5TcP
+         ijbNM7eD3hlJI1OQ3dpykN6rxB543YyQdWgj2PsAw3Uf0UCxQpuIUXAnL/csR09pSSjk
+         96MvYlqxUZEosTHZSnjnGf4kFfQXJrr5kSKb5SHcXOeE+lH71i08EmlZfh1z5sfLXkgH
+         WHR1GY2GrWk4bB4dv3d4OnY1f7OaC/7r/WG9WvTJKY4aVCXAPU9mw7Trcj1gx0kbRh7M
+         yvPw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7ogk4PWNJ2yoPBbvOKAA+Uo0+EEpIxdNcNHG/wkj2jfh7fdNC77/2XBlDFYxJ4P/u7bdsAVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO2L81bE7MoT2+woVT0QRoIcpxfpECJveECmg+Q8HVZIHAtsxX
+	eSdmUZLbDVS9O9N/iI2S07EKu56GmFAZKmz5KYbXYdUvhjoqZyHqxgJt
+X-Gm-Gg: AZuq6aIxZAkrDJl++k9jNUs5uhBdasH3l6efUqn3hdemnIfXwHpnAKNsBYN+PWzKMlE
+	rfhy818Q4G5y37gLye6BW6Q9BIBq0l6zY3LIzWkNUduq++07AHzoK0tbBSDauTKuu9JnN7Tsc1K
+	EHSHwbLtITnx8I1oK0jGkk+C7AAljhq7HRF7P5K9AVJpxWH6U06j5sFbIjYTFAFJMD/aWJiaiVz
+	1+/bAXuAhEE67WeuDh6tTMu0OM44pUNj5xW4PiVxm6U9W3gHPEYMzQjizs+zauBCirROhfcNvth
+	U+Pr6n7p7R2onenej++xNg6t222HupjJ5hIDDoNYQLuKGXCLCaF6wKA5u9GaPmX90PcGQThUB0z
+	9Zhs4xsR+SbsD4NbCdDsqS8UHeH63d6V4mNmgawKuYR1BegTKtnKXTDhvYGTaESU9c04YNcp/n4
+	kC0RRZw7W+Bw==
+X-Received: by 2002:a05:7300:fb94:b0:2ae:614a:3307 with SMTP id 5a478bee46e88-2b6fd7eee95mr2453605eec.42.1768948572147;
+        Tue, 20 Jan 2026 14:36:12 -0800 (PST)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm21042996eec.32.2026.01.20.14.36.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 14:36:11 -0800 (PST)
+Date: Wed, 21 Jan 2026 06:36:01 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+	Yanteng Si <siyanteng@cqsoftware.com.cn>, Yao Zi <ziyao@disroot.org>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
+	Boon Khai Ng <boon.khai.ng@altera.com>, Quentin Schulz <quentin.schulz@cherry.de>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add glue layer for Spacemit K3
+ SoC
+Message-ID: <aXACRN7BaumIySp3@inochi.infowork>
+References: <20260120043609.910302-1-inochiama@gmail.com>
+ <20260120043609.910302-4-inochiama@gmail.com>
+ <f8e4c5ec-94b1-4da0-8a40-976770514828@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AWxaZBYfOtsV
-Date: Tue, 20 Jan 2026 23:31:05 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "H. Peter Anvin" <hpa@zytor.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- "Eric Dumazet" <edumazet@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Willem de Bruijn" <willemb@google.com>,
- "Xi Ruoyao" <libc-alpha@sourceware.org>,
- "Carlos O'Donell" <carlos@redhat.com>,
- "Adhemerval Zanella Netto" <adhemerval.zanella@linaro.org>,
- "Rich Felker" <dalias@libc.org>
-Cc: Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
- linux-api@vger.kernel.org, klibc@zytor.com
-Message-Id: <212d2e51-abc1-47bb-8666-755917cad889@app.fastmail.com>
-In-Reply-To: <0fc5b4ef-c468-416f-a065-f64989d75378@zytor.com>
-References: <20260105-uapi-sockaddr-v1-1-b7653aba12a5@linutronix.de>
- <934ca004-0aef-49a4-a4f1-3d39a2e71864@app.fastmail.com>
- <0fc5b4ef-c468-416f-a065-f64989d75378@zytor.com>
-Subject: Re: [klibc] [PATCH net-next] net: uapi: Provide an UAPI definition of 'struct
- sockaddr'
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8e4c5ec-94b1-4da0-8a40-976770514828@lunn.ch>
 
-On Tue, Jan 20, 2026, at 19:50, H. Peter Anvin wrote:
-> On 2026-01-05 05:50, Arnd Bergmann wrote:
->> 
->> This looks like the right approach to me. I have previously
->> tried to introduce a 'struct __kernel_sockaddr' structure and
->> use that in uapi headers in place of the libc sockaddr, but
->> that seemed worse in the end, and introduce the same problems
->> as using the existing __kernel_sockaddr_storage.
->> 
->
-> You say "the same problems". It's not clear to me what that means.
+On Tue, Jan 20, 2026 at 02:56:26PM +0100, Andrew Lunn wrote:
+> > +/* Note: the delay step value is at 0.1ps */
+> > +static const unsigned int k3_delay_step_10x[4] = {
+> > +	367, 493, 559, 685
+> > +};
+> 
+> Am i reading it correctly that RGMII delays are limited to these four
+> values?
+> 
+> If so, please add this list to the DT binding.
+> 
 
-I must have accidentally cut that from my reply, sorry.
-Looking at it again now, I think I ran into problems with the
-flexible array that was removed from the in-kernel sockaddr
-structure in commit 2b5e9f9b7e41 ("net: Convert struct sockaddr
-to fixed-size "sa_data[14]""), so there is a good chance it works
-now with the (once more) fixed-size version.
+No, these value are just adjustment interval, and it is also
+controlled by another code register, the final delay is calculated
+by the following formula:
 
-The other problem is that the structures that embed 'sockaddr'
-are used a lot inside of the kernel, in particular in 'ifreq',
-so changing the uapi sockaddr to __kernel_sockaddr requires
-additional changes wherever the struct members are passed
-by reference.
+delay = delay_step * delay_code * 0.9;
 
-> Based on my own libc experience, hacking both a minimal (klibc) and a
-> maximal (glibc) libc, there are a *lot* of advantages to having
-> __kernel_* definitions available, *regardless* of if they are exported
-> into the libc namespace at all.
+So the delay configuration needs to be calculated instead of
+directly assigned.
 
-Absolutely, I am totally in agreement about this in general, which
-is why I tried this approach first.
+> > +static int spacemit_dwmac_detected_delay_value(unsigned int delay,
+> > +					       unsigned int *config)
+> > +{
+> > +	int i;
+> > +	int code, best_code = 0;
+> > +	unsigned int best_delay = 0;
+> > +	unsigned int best_config = 0;
+> > +
+> > +	if (delay == 0)
+> > +		return 0;
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(k3_delay_step_10x); i++) {
+> > +		unsigned int step = k3_delay_step_10x[i];
+> > +
+> > +		for (code = 1; code <= MAX_DLINE_DELAY_CODE; code++) {
+> > +			/*
+> > +			 * Note K3 require a specific factor for calculate
+> > +			 * the delay, in this scenario it is 0.9. So the
+> > +			 * formula is code * step / 10 * 0.9
+> > +			 */
+> > +			unsigned int tmp = code * step * 9 / 10 / 10;
+> > +
+> > +			if (abs(tmp - delay) < abs(best_delay - delay)) {
+> > +				best_code = code;
+> > +				best_delay = tmp;
+> > +				best_config = i;
+> > +			}
+> > +		}
+> > +	}
+> 
+> With the four values listed in DT, i would make this a straight match,
+> not the nearest, and return -EINVAL otherwise.
+> 
+>     Andrew
 
-      Arnd
+Regards,
+Inochi
