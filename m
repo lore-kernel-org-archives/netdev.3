@@ -1,38 +1,38 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE033429817;
-	Tue, 20 Jan 2026 12:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D89842B72C;
+	Tue, 20 Jan 2026 12:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768912743; cv=none; b=KyNzj3SBdnAiBuU2HJ2Gq16QnFtdJ+pXf0gC2eAtJOIS0+kTKvMHUgW67rLygyh/aL0vdcfyYZRhYGn/wYq6OVtiLBZ4h2A8mX5LNLGJEYj17ZJEh/j3hKSx3BnYrKA2pFf/KDTy4WB7qfEdskj+JRyfUkTijtXZAGLbemzwdcI=
+	t=1768912744; cv=none; b=NMBQ/2HzHcceQm1RXtc13Pldi+/6LFzD7p+y9RhVuoWRqiyIOrcmkXCBZ9i1oBJmWPOCMJF7kaHSpgJrd/npKbzUCe8TcJJmyPsy4A8sjIgJVD/4Qorna6fdNmxk+RIVp3nGudeG1iL+cIyCxo2H9TemnaGHW1EYPUKgJ8kGRRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768912743; c=relaxed/simple;
-	bh=hkX+WwtAoehPviNL0MwOhdwoksltnEN33zDQSa4VjMs=;
+	s=arc-20240116; t=1768912744; c=relaxed/simple;
+	bh=kCqO2ZJkcDyyuTwrrkKrfVhZlwsoYyDv6tsJCP9WnZ0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ivoUEoo9LY+6P2ss8KeVhxMj4wCu2EdB9zrfzwn+sZOQ2E+3K334gb1/g6tttYcE/RwWo4oKIc6SbOOgUbmdAwAvG2aFMj28CCLiky762bczJ0+aADzbyBIjOEHLLTJholHfCpd7ZIpz738WjbRX0WQ1ius1KpLec6C9SQCyU/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iAaTSGfP; arc=none smtp.client-ip=113.46.200.217
+	 MIME-Version:Content-Type; b=SqmWl3X9Hjkb8isDM2FCEZGxgxfTGOzuPfYqpRm6Tf3rhfOus9034V+Zb6c4DddIuJbqgllh2yrAxewRaevgP+dfZRVrORZsDNa/ITxtQkeYnpo6Kk8mb9iI8b9lnVASpoyY7XPB5BRAeglkZUgTo1Hq5SStuB3HkQd3cAW6d6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jFYrdIlD; arc=none smtp.client-ip=113.46.200.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iAaTSGfP"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jFYrdIlD"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=XWbiB+vEHF8mL6SecFGQ5KLYzQQiNDTGcUV0CW+Plv0=;
-	b=iAaTSGfP74uFXbow0x4SodMOGg4ozANgci8HEWDA+IDoEE6X18QbEQ8QLB8rXvVkSZ5gT0a81
-	+TT6NmdCOYvvoR0YvgglgCy1TQxnuLQZE5tJZ4Tw5IzU25VxDkYHIhOr3xGoAwh4f5/dvD/vEOK
-	HvZgbCDIb0SNAE7MkHRchr8=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dwRc04JhTzcb1r;
-	Tue, 20 Jan 2026 20:34:56 +0800 (CST)
+	bh=oTXEVLgDumVCBFxpbO8s07ckXDCKC5Us7m6vOmueETk=;
+	b=jFYrdIlD6scNu1lCaG+lOb4ovAPAm3AE9S1DxjPS7XzWJTmJ91siw+9jJyf+J11uZU12gG9yH
+	LrnTfdTLhSwbMToijlqDkRUVizKzS3vHaCZhmU4HQ65F+hNejkdJvNhi2AWqUghbMyFPrVX1hO0
+	jCqW7GUZ1Ef7kIbZk0dcWgE=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4dwRck2hqpz1prLv;
+	Tue, 20 Jan 2026 20:35:34 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3CF76405A8;
-	Tue, 20 Jan 2026 20:38:52 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 924AA20104;
+	Tue, 20 Jan 2026 20:38:59 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 20 Jan 2026 20:38:50 +0800
+ 15.2.1544.36; Tue, 20 Jan 2026 20:38:58 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
 	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
@@ -43,9 +43,9 @@ CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
 	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
 	<shijing34@huawei.com>, Luo Yang <luoyang82@h-partners.com>
-Subject: [PATCH net v01 1/5] hinic3: Fix netif_queue_set_napi queue_index parameter passing error
-Date: Tue, 20 Jan 2026 20:38:39 +0800
-Message-ID: <95b0a3832fc85cffc2eefed28f739edd55d0bdee.1768911232.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net v01 5/5] hinic3: RQ use RQ_CTXT_PREF_CI_HI instead of SQ_CTXT_PREF_CI_HI
+Date: Tue, 20 Jan 2026 20:38:43 +0800
+Message-ID: <3e9283e95663ddb23c2f1e5fef05f893af94e8e8.1768911232.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.51.0.windows.1
 In-Reply-To: <cover.1768911232.git.zhuyikai1@h-partners.com>
 References: <cover.1768911232.git.zhuyikai1@h-partners.com>
@@ -60,80 +60,39 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-Incorrectly transmitted interrupt number instead of queue number
-when using netif_queue_set_napi. Besides, move this to appropriate
-code location.
-Remove redundant netif_stop_subqueue beacuase it is not part of the
-hinic3_send_one_skb process.
+Separate the CTX_PREF_CI_HI of rq and sq to improve readability.
 
 Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_irq.c   | 23 +++++++++++--------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-index 6950ee4d037b..ef3bc88e0a65 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-@@ -63,21 +63,12 @@ static void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(irq_cfg->netdev);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
+index d86cd1ba4605..90887d2bb127 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
+@@ -162,6 +162,9 @@ struct hinic3_clean_queue_ctxt {
+ #define SQ_CTXT_WQ_BLOCK_SET(val, member)  \
+ 	FIELD_PREP(SQ_CTXT_WQ_BLOCK_##member##_MASK, val)
  
- 	netif_napi_add(nic_dev->netdev, &irq_cfg->napi, hinic3_poll);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
- 	napi_enable(&irq_cfg->napi);
- }
- 
- static void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
- {
- 	napi_disable(&irq_cfg->napi);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_RX, NULL);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_TX, NULL);
--	netif_stop_subqueue(irq_cfg->netdev, irq_cfg->irq_id);
- 	netif_napi_del(&irq_cfg->napi);
- }
- 
-@@ -240,6 +231,11 @@ int hinic3_qps_irq_init(struct net_device *netdev)
- 		INIT_WORK(&irq_cfg->rxq->dim.work, hinic3_rx_dim_work);
- 		irq_cfg->rxq->dim.mode = DIM_CQ_PERIOD_MODE_START_FROM_CQE;
- 
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
++/* reuse SQ macro for RQ because the hardware format is identical */
++#define RQ_CTXT_PREF_CI_HI(val)            SQ_CTXT_PREF_CI_HI(val)
 +
- 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
- 						irq_cfg->msix_entry_idx,
- 						HINIC3_SET_MSIX_AUTO_MASK);
-@@ -254,6 +250,10 @@ int hinic3_qps_irq_init(struct net_device *netdev)
- 		q_id--;
- 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
- 		qp_del_napi(irq_cfg);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, NULL);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, NULL);
+ #define RQ_CTXT_PI_IDX_MASK                GENMASK(15, 0)
+ #define RQ_CTXT_CI_IDX_MASK                GENMASK(31, 16)
+ #define RQ_CTXT_CI_PI_SET(val, member)  \
+@@ -629,7 +632,8 @@ static void hinic3_rq_prepare_ctxt(struct hinic3_io_queue *rq,
+ 			    RQ_CTXT_PREF_SET(RQ_WQ_PREFETCH_THRESHOLD, CACHE_THRESHOLD));
  
- 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
- 				      HINIC3_MSIX_DISABLE);
-@@ -276,6 +276,11 @@ void hinic3_qps_irq_uninit(struct net_device *netdev)
- 	for (q_id = 0; q_id < nic_dev->q_params.num_qps; q_id++) {
- 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
- 		qp_del_napi(irq_cfg);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, NULL);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, NULL);
-+
- 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
- 				      HINIC3_MSIX_DISABLE);
- 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
+ 	rq_ctxt->pref_ci_owner =
+-		cpu_to_le32(RQ_CTXT_PREF_SET(SQ_CTXT_PREF_CI_HI(ci_start), CI_HI) |
++		cpu_to_le32(RQ_CTXT_PREF_SET(RQ_CTXT_PREF_CI_HI(ci_start),
++					     CI_HI) |
+ 			    RQ_CTXT_PREF_SET(1, OWNER));
+ 
+ 	rq_ctxt->pref_wq_pfn_hi_ci =
 -- 
 2.43.0
 
