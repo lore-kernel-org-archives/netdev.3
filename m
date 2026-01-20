@@ -1,160 +1,137 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124293A8FF6
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768932375; cv=none; b=drX02/EMnxvkBBhuGoTjXG2otNTsQKdITcqUtS8UTyVU8+ThK4EuUPSi4PutDiK8AATP6sPExhhy/8Fjnfg/1JqPMXtcm8nq777H0H8RHt8/6lEY0h3xkbOSlNEdHIi5bNDVjBP9/hUMy4D+bu78Eq0vxGb4N4GGIjhTdm9altk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768932375; c=relaxed/simple;
-	bh=+/G9xnytSRdZiIOFd28QuZ//L1BeR3Jjgm+HN2Txu7E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D2WmlHfoViSRgj4LnTtVlB10+61Dg7s9/gjfXU8FTPpw0S7HNSHZnm/T7aaKz/drx0Ume/ZtGpVLDXBl85ohigIMdVxAsG9TVcc1gn1RZpIGa3630SlpPWAM2C8oViXaCP248yB0dnzMNWCcMk0YGeSEemd5xsD7RE8RDsWq8Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X6v14FbM; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EEA33A717
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 18:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768932577; cv=pass; b=I5kQpkAFhL3F5xZoZGINpOfSI0qZ9xU4/EkTAbyO8ze+6SISdrIIkuCoiIqDto+2Bgq7nNAY5zJFxyiUI+jWNk+QRLyEO3Ym0H3g28P2oXAvqE9sR8tYvOazQDpCApy1QaFajcTEKws6m+nx+6xzIcmfS+aD1U4gPZAtccoatGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768932577; c=relaxed/simple;
+	bh=eTFUWY468LUtnVCss8fPkcZUiGciOVE22kpbUyP5ONQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gKCD6Lp2QnP8vyDbDSUz1VZVuK+5Ak7AKMCsSuBqpBOCYKvyG9Pxh4IRE4g1qBewwuVRy88hiLhAU5mkCkBLVru9r89+jnba0KmRbuoZTbso3MPEGRAhl9omcOoof+zQZIvuHhwbfyqxnRninaqZZ1GmCaHckELpmrAceI6QMhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anpmUNjS; arc=pass smtp.client-ip=209.85.221.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X6v14FbM"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b6f5a9cecaso2003328eec.0
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:06:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anpmUNjS"
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5635f6cb32fso1609666e0c.1
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:09:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768932575; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bnkF780kuPke7unj6x1P/GICxoHSpHnbAC7qEbEkyzZXPqErjTSNSayLJiLlA6D3MT
+         ZRjHR5ODSnF/yGC3+K+c68lzg5jrCK1TIFK0CdNE1c3E2qlKCS9R78hrlNvgF/QMQldQ
+         02nNaY5Rf2R3vL5zrvH2ZNamNRrkMln02r4dovs/8NK0oWHFBToPYDpA5ZhnmLLTgasd
+         Ir/Bw+HtWfiT4YdSLmuAGmQRpW2BC/a0eAYCJVoBzG5Ad0WPkFEfUUeY4r2mtEGKLVlt
+         IGnlXgQoYx+4hbzsd7UXc0jEJ0RKkNQoN9P9Jtwg/ARX98X8asxBk5UcqTx5WlrKKhQj
+         LO3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
+        fh=u7hFgsDtI4PLxxS+Qne9rgcDtKx6/hSQXWTqfJo35Iw=;
+        b=fRXa1J1jS33qWyoj0kjWDscW/qK76w26qFztOXH4CGeopX2lCFUwdapuBEta10bl53
+         eomeIN7IDBbjNxBDedgQQ4siApMBY8iG9JriBPPTSYKa5XXw+/G6/lFag3xPgH3zA87J
+         rgc+ol8A3jdmoSaLP3t3dUfbUmR4+eqwj3PWPvEWXHalqpadHrKfBvMPxEXlCpqXcNu8
+         s6/1GcL7HTvWBqZPJs0ng8IYjfeItm0LbUaARtRcqKvOekTVJfuRQVOKRQWGd0yW6YXS
+         e0c6cylMOAbB2vbMdXTJUrW37pEzF+TqygEymuxFtdcIxPl2csHP7hzMBTl/h2j8qI+0
+         8eFw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768932373; x=1769537173; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+        d=gmail.com; s=20230601; t=1768932575; x=1769537375; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=eyerjoEVUHP/2q8LWOmqlYZ45AxY0BTKpTeutlV7DCY=;
-        b=X6v14FbMISveJc9MaMemnxJdDrd5a3dcH4k0SJjN0DpmanHG5wJ2qrkBB0rj8au1jh
-         CA3uqMlOuMv434IC1VgLuVf8TdohvCS0BdEKOKFEq5Xxdgcm+VlQvs06u/bzmy5e7+I4
-         Clwez2UPNB+nNCakIZxG/ISeURsfMoqDc82FazHMurVXXrxoDy3bcrT3M0xkcOBmShZC
-         OZwDOsv5KpDw6gcBb2+22awH2cdkt0aRcq1/i83LOngI+5bqRrKKEu+xFAPmgsoxsvX8
-         zqD4DT5+7Q50m2Cul6gMQY6GlWNS8G8asRYHZXACxdpE6Z/R4ct3nV7oLHQBEgIkZ9Gf
-         4wRQ==
+        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
+        b=anpmUNjS8yrDJH4LPi37oCbe+cd8KnzGB43Ljez4/HTCmQiGXXZiREJ3udKTWynWQf
+         Ein5SKdb3xhJ3o2HY1Sou5NXnNLARo3DyBmonytS/BKY9AHcNw6Xw7WeksguGv1DHyP1
+         MCk0joGCLGJ9bWo4WqtU53vOnI3DdwBdgQaNcngaXQPm6BzY0kjsonvhoYqOmdXweDNY
+         5KVXfiilb3pAQdr0pJPX2cx7Vxi1RErZYevPDeG0Sz2FmgKdTU4zF+2czic9E6wsqcCT
+         kBPfIBTKVMZgxcpbXI5eNWgmMQNLsw/8cKYq2B2PhYZW/5BHY66TDguI7jAn/RAsBs11
+         z8AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768932373; x=1769537173;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+        d=1e100.net; s=20230601; t=1768932575; x=1769537375;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eyerjoEVUHP/2q8LWOmqlYZ45AxY0BTKpTeutlV7DCY=;
-        b=R0nHdas4vSusHWsTmie28j+KoqglX909pQtgv2wzuYLiYUaeJvLc+aWfiIaRDDWSGJ
-         bGMxe984Utzop31Jy/ainwOnH0Inx5zn4uuNMCJ5JmvsjirzgPZWQeQTPpJ/QP1Af5Gj
-         wB197vg3042F72fM4ybqEjVkZ62p5shhv4IGWIErL7KpyQJaqTsls5TaloJjimxBDTfF
-         8K96KMrqlFJepbUhxuVPXaOImBLimyqpcIhSkdm9QO4LVgJjsr8Evuv1SDLliclVV9LV
-         1fAGQJtm/w/6ER5TUN0JFMXkj8nFNxXCEnwa0enGfDJClSiHbCj3B4Fen8Lk7by6BJwR
-         FRZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWDRUvYY1aJqZkZ15+eTv2obA5H5L+sVXXyN4JaCc/wmushxzEaiM/CVG9jzTUZq6zF6nPFsZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxInH3iD4WpOsg8N57TLW/VHqs8V2NY6C3X+Scs7JUSPtKv1PiQ
-	PZAX9XGMgMZCLZbm4Ad+mt5XqzXxitTSOsr7G1JjsWdh55zifw6MWyEF
-X-Gm-Gg: AZuq6aL5K9LUjnAk7WEglNEBvecda5d9u8IKVIHpChhhFlCQgJIzat4wwddMv6bb8pp
-	YaN3P/xM5ZDDBcyD+qPGklzUKWRNhFC37sPQ90FVW08l2evyA/HQyWCPHKoc+yPPW6VWBH/lbOy
-	VnRGOjT4IeTobZkAtMhDyqvSX4q+YTxlqaelDDv4/bm9ZlqnVDgFKVGZzAXAdxpgAxL8SYIY3es
-	v2TrjGshlVIzkHGXTtdns4akxEd39EldZp8YMug8qmvlZapcg12JH7yq89OfIqyXNRR3H4KWI1L
-	cewLDFXGJEiQpIEt/zEmGC0ocaY1BmireCUM8HVNtzVSFd8Qa51dhyUl34L5Jj4l4HzVD6I/ZMR
-	WV6uqPDHp88FGQhoG1jQjdGprvtfpo8heu8BgJxMIQlqhw00DNSt9vsLxjSEWo70wtJadFatcYj
-	iD4K5Kho0NXVPTelElbl9W02Bz1OupuGAYbwpmm/oiHOFEQzDvteLyuwPTEFMyrl7iZpmWhrtKR
-	UlM7OM=
-X-Received: by 2002:a05:7300:fb94:b0:2ae:614a:3307 with SMTP id 5a478bee46e88-2b6fd7eee95mr1965930eec.42.1768932371383;
-        Tue, 20 Jan 2026 10:06:11 -0800 (PST)
-Received: from ?IPv6:2a03:83e0:115c:1:b08c:bb3d:92b9:704d? ([2620:10d:c090:500::3:93b1])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm20058248eec.32.2026.01.20.10.06.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 10:06:11 -0800 (PST)
-Message-ID: <34ff0901e3c96cbfab8b7325012e44d6d290a9be.camel@gmail.com>
-Subject: Re: [PATCH bpf-next v3 2/2] bpf: Require ARG_PTR_TO_MEM with memory
- flag
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Zesen Liu <ftyghome@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend	
- <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev	 <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>,  Matt Bobrowski <mattbobrowski@google.com>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu	 <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,  "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Daniel Xu <dxu@dxuuu.xyz>
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, Shuran Liu
-	 <electronlsr@gmail.com>, Peili Gao <gplhust955@gmail.com>, Haoran Ni
-	 <haoran.ni.cs@gmail.com>
-Date: Tue, 20 Jan 2026 10:06:07 -0800
-In-Reply-To: <20260120-helper_proto-v3-2-27b0180b4e77@gmail.com>
-References: <20260120-helper_proto-v3-0-27b0180b4e77@gmail.com>
-	 <20260120-helper_proto-v3-2-27b0180b4e77@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+        bh=DDj9mqdrWsbrK71m//NPirTRtybReP/0C/yGwpyeOug=;
+        b=TiW7u6w2Lff4OuFIS64DPVoF7MybkE82LmTU0y8JbEkXaijJoVjM49SC/NBA7zlmoK
+         6cwMIWIIeWQuL0RGf3I5rneyzSDgAaY6UVCUSV5EW+m2NPtybiDcPXH3aPcsABRsdnaE
+         gud9o50co8pAOEgmrLdmrLtE7N7gvzcc7v7YFeJogZ2E5GBir+y0832slcpXVC9g3JYh
+         GwtlBxOFfc7/31HVoSU6lEDNvs5kDh0kV70Bm3tYPWa0F2HFddfj00O+OlFNR87U8BI4
+         BXq9seVRX/dLWWvJaT8DiJZPY1w5Xiv9TbpqgDgNLz0f3D1paO3Sx/XA548frKd2eurj
+         eHOA==
+X-Gm-Message-State: AOJu0YwVs/AkbjYTbObACp33H2oPmtfXEPs0DP0dTWp0FCSMZhAopU+3
+	mX8rjT3XQ0fVBcHMjk/ESIvJLvijedD79zTLHPvfs/J4+NadtD+5QbtxAO2n12F7aI7um5AIjbV
+	fcIXQGHOmJhp+5bp/R3BAMF4IHzzEFc0J8Ldo
+X-Gm-Gg: AZuq6aI/dndDPhhBpWO4dUUSUPKO+5yzIlBFJdoE0rxwR3YXPAyHpshMKhDZQIazvgh
+	Ta1Us50RreHMjrF+yCVWfIFDviBmeaP/GsfOfKXIN/qLXBpznxuSRgXR4xMOG9ibG5J5yRFEOiw
+	rgkG984Y+WoRcnpsEAeZ2PfeIFmhy8LJwYfbZg7MN9v7JbewYjH/eoJSGSVWdEJHj3UwN4xkZFg
+	Z+TE6a+vxdxoopRlxbWIAk7HIQNnF5PhALv/3sfQbpCMBbXxn8oMWEwTq+Iqq65YATJ5Mh25SYa
+	aPKpvIKUPIlg2I4CcLu2Ns73QtjBHpA=
+X-Received: by 2002:a05:6102:2ad5:b0:5f1:606f:2a1e with SMTP id
+ ada2fe7eead31-5f1a55c31d4mr3830204137.43.1768932574556; Tue, 20 Jan 2026
+ 10:09:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Date: Wed, 21 Jan 2026 00:09:22 +0600
+X-Gm-Features: AZwV_QjMFCC8-ub5lLBu5zwl2IvXXlPrrtNq7cLCe7RsPXC-9OEECgK0657C8JU
+Message-ID: <CAFfO_h4kZQu6CY_U6cfakQ7Zozo8fg-LpQ_n5UiLZDVhqxMC4A@mail.gmail.com>
+Subject: Question about timeout bug in recvmmsg
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	willemdebruijn.kernel@gmail.com, willemb@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 2026-01-20 at 16:28 +0800, Zesen Liu wrote:
-> Add check to ensure that ARG_PTR_TO_MEM is used with either MEM_WRITE or
-> MEM_RDONLY.
->=20
-> Using ARG_PTR_TO_MEM alone without flags does not make sense because:
->=20
-> - If the helper does not change the argument, missing MEM_RDONLY causes t=
-he
-> verifier to incorrectly reject a read-only buffer.
-> - If the helper does change the argument, missing MEM_WRITE causes the
-> verifier to incorrectly assume the memory is unchanged, leading to errors
-> in code optimization.
->=20
-> Co-developed-by: Shuran Liu <electronlsr@gmail.com>
-> Signed-off-by: Shuran Liu <electronlsr@gmail.com>
-> Co-developed-by: Peili Gao <gplhust955@gmail.com>
-> Signed-off-by: Peili Gao <gplhust955@gmail.com>
-> Co-developed-by: Haoran Ni <haoran.ni.cs@gmail.com>
-> Signed-off-by: Haoran Ni <haoran.ni.cs@gmail.com>
-> Signed-off-by: Zesen Liu <ftyghome@gmail.com>
-> ---
+(Note: I had posted this before in
+https://lore.kernel.org/netdev/CAFfO_h5k7n7pJrSimuUaexwbMh9s+f0_n6jJ0TX4=+ywQyUaeg@mail.gmail.com/
+but got no reply, so trying again. I would really appreciate
+suggestions on this request. Thanks!)
 
-At the moment, for helper arguments processing I see that MEM_RDONLY
-influences verifier only when argument type is ARG_PTR_TO_DYNPTR or
-ARG_PTR_TO_BTF_ID. Hence, I think this change is safe to apply,
-effects are limited to the check_mem_arg_rw_flag_ok() below.
+Hi,
+Hope everyone is doing well. I came upon this timeout bug in the
+recvmmsg system call from this URL:
+https://bugzilla.kernel.org/show_bug.cgi?id=75371 . I am not familiar
+with the linux kernel code. I thought it would be a good idea to try
+to fix it and as a side effect I can get to know the code a bit
+better. As far as I can see, the system call eventually goes through
+the do_recvmmsg function in the net/socket.c file. There is a while
+loop that checks for timeout after the call to ___sys_recvmmsg(...).
+So this probably is still a bug where if the socket was not configured
+with any SO_RCVTIMEO (i.e., sk_rcvtimeo in struct sock), the call can
+block indefinitely. Is this considered something that should ideally
+be fixed?
 
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
+If this is something that should be fixed, I can try to take a look
+into it. I have tried to follow the codepath a bit and from what I
+understand, if we keep following the main function calls i.e.,
+do_recvmmsg, ___sys_recvmmsg ... we eventually reach
+tcp_recvmsg_locked function in net/ipv4/tcp.c (there are of course
+other ipv6, udp code paths as well). In this function, the timeo
+variable represents the timeout I think and it gets the timeout value
+from the sock_rcvtimeo function. I think this is where we need to use
+the smaller one between sk_rcvtimeo and the remaining timeout
+(converted to 'long' from struct timespec) from the recvmmsg call (we
+need to consider the case of timeout values 0 here of course). It
+probably would have been easier if we could add a new member in struct
+sock after sk_rcvtimeo, that way the change would only have to be in
+sock_rcvtimeo function implementation. But this new timeout  value
+from the recvmmsg call probably doesn't make sense to be part of
+struct sock. So we need to pass this remaining timeout from
+do_recvmmsg all the way to tcp_recvmsg_locked (and similar other
+places) and do the check for smaller between the passed parameter and
+return value from sock_rcvtimeo function. As we need to pass a new
+timeout parameter anyway, it probably then makes sense to move the
+sock_rcvtimeo call all the way up the call chain to do_recvmmsg and
+compare and send the finalized timeout value to the function calls
+upto tcp_recvmsg_locked, right?
 
->  kernel/bpf/verifier.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->=20
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 9de0ec0c3ed9..a89f5bc7eff7 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -10351,10 +10351,27 @@ static bool check_btf_id_ok(const struct bpf_fu=
-nc_proto *fn)
->  	return true;
->  }
-> =20
-> +static bool check_mem_arg_rw_flag_ok(const struct bpf_func_proto *fn)
-> +{
-> +	int i;
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(fn->arg_type); i++) {
-> +		enum bpf_arg_type arg_type =3D fn->arg_type[i];
-> +
-> +		if (base_type(arg_type) !=3D ARG_PTR_TO_MEM)
-> +			continue;
-> +		if (!(arg_type & (MEM_WRITE | MEM_RDONLY)))
-> +			return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  static int check_func_proto(const struct bpf_func_proto *fn)
->  {
->  	return check_raw_mode_ok(fn) &&
->  	       check_arg_pair_ok(fn) &&
-> +	       check_mem_arg_rw_flag_ok(fn) &&
->  	       check_btf_id_ok(fn) ? 0 : -EINVAL;
->  }
-> =20
+I would really appreciate any suggestion about this issue so that I
+can try to fix it. Thank you!
+
+Regards,
+Dorjoy
