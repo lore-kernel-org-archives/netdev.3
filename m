@@ -1,90 +1,92 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B762D43634B;
-	Tue, 20 Jan 2026 13:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1D43EF0B4;
+	Tue, 20 Jan 2026 13:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768916811; cv=none; b=I9auLNeuyOavKxrazCwtrKtoaAkm60SRIaYS7sgy9zY3Ppoj76xNFHtUcxIwiR9NWqO90c3oBgTONn/alDJrugw1s20HVbn22VmX/oR7V6l3oUH0OyfWLPJ6UysH+RGVzGNSr687Ar+NG8rWlsaO1j7LADKRimTOCXyZT7N3rk0=
+	t=1768916932; cv=none; b=J1HIwov2F9dpre9A+ZxkFNBRtP5nv0ZOnfq1Gib9DDxSr+RsSW03y3XnJwhAmAHgCTTHaUGrY7Mr9rxFGJ8as3x0udl7V7i7SyptaR23bZjX48YY74HbVu3NnhQRtd3UD+7kGkJtoPL3RGvVXL5g6DunI5pZ/0m4A8M8adY54xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768916811; c=relaxed/simple;
-	bh=opBE8oYKWgsx5SoZfybPFosKnVlsqN/RSAY3ODW+Dk0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AH4HUkpekXoMRbuzRhLKRw4Dva9iyLh8YpoenVaIRIKRyeSL1JZ3+fGcwbNOp+dYXBzZFM9dOHkQKo7AMwmr+NdPkscy2OMYTjzSjFYvgnV5J+2Nn46N+AnFJ36BdSFZpptt6OcldgWVUrCfGWlVOktCf1O4zuAuYMqvihhMxqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=NOS8B8h0; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1768916932; c=relaxed/simple;
+	bh=LETeOTo2J7pSknqlHUKIDWdt3aghLlL9yWsh8I0B2E0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rFO3prUA5QEGnsf7EvUCrIfoS+SCPCMK/QHKI1ARdQgCSPbg8jzaSf3kd6F1k/aMZjsDjUxk9YTSwEoBYdto2epR7NlJeYpWtzPceoBsSXnUldlibjDjWels5RWDS2MnkoDcsp6iwcQnkBQnrVHE4Hl0jzOqmWkClwptvAU0Dhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Sxbab9wU; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="NOS8B8h0"
-Received: from LAPTOP-N070L597.localdomain (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 31510a4d2;
-	Tue, 20 Jan 2026 21:46:42 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: saeedm@nvidia.com
-Cc: leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net] net/mlx5: Fix memory leak in esw_acl_ingress_lgcy_setup()
-Date: Tue, 20 Jan 2026 13:46:40 +0000
-Message-Id: <20260120134640.2717808-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Sxbab9wU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=qyLmoKDip8mb9xeBIhPS2JElYYtGvtICGd4heml4sBM=; b=Sxbab9wUBTL3beDPBjlCANIkOu
+	0pvVFyMTIUssN8KrOHq2Ohdgune2ofMMYij8VIOwcnEonn1KJM3X4MrFmt1RtFGU3r4KEubWXyuxF
+	s4S6Fqly7efORJ5dkw/biM3rPfErfBr34I3BA2QdIFhst29jEQbmpqL9aTu6h95/OVbE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1viC5c-003gSB-9P; Tue, 20 Jan 2026 14:48:12 +0100
+Date: Tue, 20 Jan 2026 14:48:12 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Yao Zi <me@ziyao.cc>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Yao Zi <ziyao@disroot.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Shangjuan Wei <weishangjuan@eswincomputing.com>,
+	Boon Khai Ng <boon.khai.ng@altera.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 1/3] dt-bindings: net: Add support for Spacemit
+ K3 dwmac
+Message-ID: <9334905d-d11b-49d4-92b1-61e8cf644f0f@lunn.ch>
+References: <20260120043609.910302-1-inochiama@gmail.com>
+ <20260120043609.910302-2-inochiama@gmail.com>
+ <aW9fL7r0AM0flALJ@pie>
+ <aW9ou-lsQQ5dVzqW@inochi.infowork>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9bdba85bcb03a1kunme7053fe626af57
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSBgaVksYTENNQ0MYGRkdSFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE5DQ1VKS0tVS1
-	kG
-DKIM-Signature: a=rsa-sha256;
-	b=NOS8B8h00nIdFLiLhtaaUQmhUogIq5/vgE/bU1Cn9Bradnx1zrzZwAE3pe//c8IKFYnfyEG8Op5ZbqQyZjoU7L2PL30sal9Z9Kt45T0dn0sfE9mi6BhPg4iPXB7SRUhx5vs3UFbuDzikdo/ZDA+ZOVtjZOIjRu/oH7Fv59oMFtM=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=gFZdwxzfuWXOZeNw1Eankdonx/w8/suQYqCCjfJeHzw=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW9ou-lsQQ5dVzqW@inochi.infowork>
 
-In esw_acl_ingress_lgcy_setup(), if esw_acl_table_create() fails,
-the function returns directly without releasing the previously
-created counter, leading to a memory leak.
+> IIRC, the "phy" clock is used to pass the phy from the mac core, I will
+> double check if it is possible to connect to the phy directly.
 
-Fix this by jumping to the out label instead of returning directly,
-which aligns with the error handling logic of other paths in this
-function.
+Are you saying this is the reference clock output from the MAC being
+fed to the PHY? That would be a clock provider, not a clock consumer.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Or is it the reference clock output from the PHY going to the MAC?
+Then the MAC would be a consumer.
 
-Fixes: 07bab9502641 ("net/mlx5: E-Switch, Refactor eswitch ingress acl codes")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
----
- drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+And there are some designs which have a third party generate the
+clock, and both the MAC and the PHY consume it.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-index 1c37098e09ea..49a637829c59 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/acl/ingress_lgcy.c
-@@ -188,7 +188,7 @@ int esw_acl_ingress_lgcy_setup(struct mlx5_eswitch *esw,
- 		if (IS_ERR(vport->ingress.acl)) {
- 			err = PTR_ERR(vport->ingress.acl);
- 			vport->ingress.acl = NULL;
--			return err;
-+			goto out;
- 		}
- 
- 		err = esw_acl_ingress_lgcy_groups_create(esw, vport);
--- 
-2.34.1
-
+     Andrew
