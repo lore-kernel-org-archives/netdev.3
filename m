@@ -1,134 +1,79 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56962344025
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 13:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DA842E009;
+	Tue, 20 Jan 2026 13:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768916390; cv=none; b=aJjTrXDoT5ZkJcYqFDxqzJ1nKdq5lzEXX9qpSaVAxEFBaNmIj8Cuc+IqfytqkSPe0nxKm0RTabswNkn7t6oqrVctK09/RgFS8/F8D3UlR/AZtivzT99JewkLhnUiIzk7d9cXDztUxrFM6caP7pkbPainViNmGzBSQqTG2TvWwMM=
+	t=1768916595; cv=none; b=du1rfSrzeK2Yyfnlb1o1v3myR68sFS7MKxprgWq3EeeRjzVQiu6VpYccCmrHfOygfQXo8paHlmfh99KBdGu0jL5QjoJd4y++eSzjSJrrPeBtlorPbCQTABBrBfiR9nj12287RQwNmUFyw4BVh1V5sXu0DUB6Nl1azF4/ZpunQ48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768916390; c=relaxed/simple;
-	bh=pbO8eNAYDGYW5sX787ND9xeTQ8SshIYR4qMQ+fZMQ60=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t5skiLWWXxDRjo48T5igjRrN7IT+OvVBgitppB5AnoKIeaVf8clu1QfLqI3o6wjG9x3v+GEjESuhXDH8/p71U6JATzn+MNtahbewEFThXl2ljZ0seVC4bw+CJfYTgRLRxID5c+F6Krb/TfvOtnPFgHlQsZmgS1ZNNN9R2eEHebE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rk8i5ZQN; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768916595; c=relaxed/simple;
+	bh=ma+rzHGsDCExYYGMmhhmllzYCP5f5IspIHOtaqUld24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n5KvqZ7HnLVkrz1Y5cxSW0duR+gCetdvaTPRke0OptMCklZ2+VelylauSKukvls1KCqlDfZDpE/IZR3PUe8Y2laORym4DqI0lIimrxzZJLXeDY4QTj+LpCQra4K2hEvpUCJ4sVZ+Mok+l8/85S/DuC6N366LiO3D0UzGFQ4gRZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=acaqB8Dd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rk8i5ZQN"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-81f5381d168so4835439b3a.2
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 05:39:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768916386; x=1769521186; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dsGr9dkGYMgZzi70MY6htwKKf+SUzE4Qn2hRD6kPTBw=;
-        b=Rk8i5ZQNrtuVAcil/0lI5fJ6CJTtLsf2WRnIGSHPzhFwjUW9ciDwjRDvZuV55VuOYQ
-         r4yBBRbkPWs0lANygYtCTHVnbT9fB/NG1+JfREoJUMl7dyAYj2idG0tP0mCT7NAHaIsX
-         vndtwih30SIvIwV61xo+hlQyfxRHgj3onXeNI9ijvbp+us0+3BtQ5nZ+tUq/SctXaKEp
-         CRr/dJ95S2TPwJNpm3gBQPqqHgV+t3gEkO/I/70xhU4YgAwgj1YHbcAeTsIDKBlcdwep
-         TEs4f6f5S3whxXrnDpgYDpV4XG2yq28vgTRpX11Xk0rJqC11x1hhrEK0nveym3T7lfr8
-         ocog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768916386; x=1769521186;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dsGr9dkGYMgZzi70MY6htwKKf+SUzE4Qn2hRD6kPTBw=;
-        b=ZuJ1CfAbOtRHDClBpEcmvJXsj1holFcKZFkNxU3THCspI20tcdVLGBau6VBo+CK6DT
-         zftrE4iJ33zyRseEIvuxXfIfMNhuF/h10dTScP65JYATxqgBc6o+ZZ/oanGuU3i1CLSL
-         NpW7QlezaRdBjRhDkzMphvB4/TM2x1rD2Q9rKEJKENhQ0RXEw9pEwH+4C+2E+CnnZQta
-         pdWQ3gtEKgwpFwHz45QBIPOnqxltA+D1FqiqnOjAkb8hDIK7f8LpIYkrScrA9JUOHQ3R
-         yAjNMduE/jDMsc7e/N9AjiB2YV3UAIeL3V1tkVaM1rqpipjbtb8Q8IsitrCrXf37xbFB
-         iwhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUkLNJab4ni73/dPDA95MK1X8bA4CW/bgg+ZUDwUFhFRDDcGlT03OFa2EmPpfLrA+O6UBGKjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4j4oD6ut0ipkFPgDlHJdQKiUiBpx+1Uhxl6XbKYTzsiaaZC7S
-	xBAYyq4WdhI7i3iLbJXqgnmxxN3Y6UtPx6vqErcCXi5b9CKkjYvxIp5g2MvIwQ==
-X-Gm-Gg: AZuq6aL+Q9tGMo3ap74gUmAAPd0S/HmDF7n4NR4gip7Feiblh/NcO67PIMw4mnetEa3
-	M0WJW9oLiUmEPnMgpaevgyCMfOy59WqzwXXDLPDmzuA/jGF3Ip9LE6kia16/Whn1jkXZm54j1qT
-	u7fI5AJSne3Xos2c5ucF8q6LuAdo+uobx9FamhRfdZi2nwp7k4br9J5VQFXDobheiqLaWsbUlaD
-	aaEaqaQGcKkO4GZi83Cy0FLbqMKDSrslTQtOWTMrPP0qQsB2HON4rqvFqrpF7gdxjzrM9JbSdSy
-	j3QnBWbXKv2WrdQmgh1HjwwTSEPYf7Xk1VgqZIRpJfFZRqdIp87HP/2H+vJbDCH4xYjrHXxPJRC
-	cJ1oRoCJeuJ0X6fkxWU55kDYYrV9nl0TxfQ3Y09g4SUQqMhWP0du4h7sKLzH2f0RHnNSUCVHULX
-	o=
-X-Received: by 2002:a05:6a00:1a89:b0:81f:b1d4:b486 with SMTP id d2e1a72fcca58-81fe87b2883mr1615438b3a.8.1768916385606;
-        Tue, 20 Jan 2026 05:39:45 -0800 (PST)
-Received: from ap.. ([182.213.254.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa1094e23sm12322373b3a.4.2026.01.20.05.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 05:39:44 -0800 (PST)
-From: Taehee Yoo <ap420073@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: ap420073@gmail.com
-Subject: [PATCH net v2] selftests: net: amt: wait longer for connection before sending packets
-Date: Tue, 20 Jan 2026 13:39:30 +0000
-Message-ID: <20260120133930.863845-1-ap420073@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="acaqB8Dd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=heuQ1Tbmi8A/rtNvMDuDrfbmSG1bgNIXq1tHuJAGZt4=; b=acaqB8Dd7K4ewFfzDhla1CfkRN
+	+Tlp+Dk9kYrkVLnFW3d8MQ/kAdrwUbXdGbwASsXTOZbC/21HoFvQp2m+OzZfAs8UAxXEjsO1Wv5gO
+	9Rhjt+Z5Vo1blGocTs4EbYM4u3vKPpQ/73CFA/Qyxhx84NSYFFqCqueF54o7Ytx0LT0I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1viC0K-003gOw-Qu; Tue, 20 Jan 2026 14:42:44 +0100
+Date: Tue, 20 Jan 2026 14:42:44 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yixun Lan <dlan@gentoo.org>, Chukun Pan <amadeus@jmu.edu.cn>,
+	Michael Opdenacker <michael.opdenacker@rootcommit.com>,
+	netdev@vger.kernel.org, linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: spacemit: Clarify stat timeout comments
+ and messages
+Message-ID: <0f74cccd-4198-4a8a-92bb-4d4e6ae63e8d@lunn.ch>
+References: <20260120-k1-ethernet-clarify-stat-timeout-v1-1-108cf928d1b3@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120-k1-ethernet-clarify-stat-timeout-v1-1-108cf928d1b3@iscas.ac.cn>
 
-Both send_mcast4() and send_mcast6() use sleep 2 to wait for the tunnel
-connection between the gateway and the relay, and for the listener
-socket to be created in the LISTENER namespace.
+On Tue, Jan 20, 2026 at 12:19:23PM +0800, Vivian Wang wrote:
+> Someone did run into this timeout in the wild [1], and it turns out to
+> be related to the PHY reference clock stopping.
+> 
+> Improve the comments and error message prints around this to reflect the
+> better understanding of how this could happen. This patch doesn't fix
+> the problem, but should direct anyone running into it in the future to
+> know it is probably a PHY problem, and have a better idea what to do.
+> 
+> Link: https://lore.kernel.org/r/20260119141620.1318102-1-amadeus@jmu.edu.cn/ # [1]
+> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 
-However, tests sometimes fail because packets are sent before the
-connection is fully established.
+It is not clear cut, but i think this could be useful in stable. It is
+not actually fixing a problem which bothers people, which is the
+criteria for stable, but it is pointing people towards the solution to
+a problem which will bother people. And since it is mostly comments,
+it is safe.
 
-Increase the waiting time to make the tests more reliable, and use
-wait_local_port_listen() to explicitly wait for the listener socket.
+Please add a Fixes tag for when the driver was added, and base it on
+net.
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+    Andrew
+
 ---
-
-v2:
- - Add wait_local_port_listen() to both send_mcast4() and send_mcast6()
-
- tools/testing/selftests/net/amt.sh | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index 3ef209cacb8e..663744305e52 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -73,6 +73,8 @@
- #       +------------------------+
- #==============================================================================
- 
-+source lib.sh
-+
- readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
-@@ -246,14 +248,15 @@ test_ipv6_forward()
- 
- send_mcast4()
- {
--	sleep 2
-+	sleep 5
-+	wait_local_port_listen ${LISTENER} 4000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 172.17.0.2 | nc -w 1 -u 239.0.0.1 4000' &
- }
- 
- send_mcast6()
- {
--	sleep 2
-+	wait_local_port_listen ${LISTENER} 6000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 2001:db8:3::2 | nc -w 1 -u ff0e::5:6 6000' &
- }
--- 
-2.43.0
-
+pw-bot: cr
