@@ -1,92 +1,118 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077733451AB;
-	Tue, 20 Jan 2026 22:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058CD3B5305
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 22:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768947432; cv=none; b=pQ6vkos30DB4reVKyxtFvfBJsG5KpwMRP25KU4ZyErRW1yjWHLuOK3zrn3RUzqrhEPbi6siAX9Eziq5zQJP6FRp3fW83xUf/2WGwowxDoeZ0dblA9X0DYE7Oqdqd25eTzlQrLkb8wggcucn3uCR+PRVNLzG7zRKRYz6wAeXtoFM=
+	t=1768948299; cv=none; b=nvW+KScCnCIAHM4JeDvMgS/auZrzAG8EzMeFoBpeZeReqeAOma9Qogip3bHOLKsPkbfv1Ne1RiDTC/f+QHGC1/59hj2q9kagrkkFNbV8JlttM29auRwtfVWLurjRlOOT51EButaB1F1K/4MaPntunS3CjEFzB2k9Pu9PcVBgyKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768947432; c=relaxed/simple;
-	bh=UxlsqwugPvD8LR7XY48QOQTZmggtMET6utD6Q+mBpfc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RuzVl0VGIbCiooUVEy26LRv76JC8KqtqDViFZ83vLRzrKF9cjA0rhAPWH1bkdVl7bIQyssIwNueR56t4oS6GJafB+aexC84KgvCHQaNJFXAdA0pfVhwNCuw5ZIJaxmYE1fNu/50VZTA/JOamukpKA/R6JORMiq7JBH27l4ChGPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=tKBiV6no; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1768948299; c=relaxed/simple;
+	bh=KT7crfYGC+gc35aZUssQokbzc2G2zw05Q7/bzVHxgsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0G1/bVxU8L3aljkiPUlpRoJTrtYb2l30TwInXCLckPkz0LerHN6PjfhnstvZThgKqO+kI72/nOZ2eeLvWbP99dHevTF+iMlHUNo27aEonFTlrMaCypQXstE2KteK3nT1jtGQcO0rugfnTcB9tR43fNNFJ8ugJEcvCmqFFCr3bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UoGyE5XA; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="tKBiV6no"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=JF0KQIEGWn2HYz/B51v506ZRihIJ31ziQ3oS4QAmx84=; b=tKBiV6nol2v1
-	WYsN5KYlSBKahY1yWkmkuRybxcW3h8ze83ZMaE0Hvj3v/f3LyVIK+uPD9ySq19kmTXiALfjxmHILd
-	JKl2zn511jnJJd1o1h9NSrfINpP5P5H9YMlydtUVNqwTolj6ASho18uU1UuJNhli7Vondh4nuTNgu
-	M3R2mBLbkBtWHceDvo7ZWd3rthH0VZ8cY3M11KmpNErET78hIK6oVGEz2DydinuOmgjLp43pTpxxx
-	6j35sxTFN14LpdlFgJmU5patjhWoIaSzUTYiwKh96VoVHHAN+lEV9v05rYrOuHlKkVj9nCODzbM+C
-	IyBpnNkIo5qntmyykJnIIw==;
-Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
-	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <aleksey.oladko@virtuozzo.com>)
-	id 1viJmK-00E1oA-2n;
-	Tue, 20 Jan 2026 23:01:09 +0100
-Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
-	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 60KM1HfU327795
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 20 Jan 2026 22:01:17 GMT
-Received: (from root@localhost)
-	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 60KM1COM327794;
-	Tue, 20 Jan 2026 22:01:12 GMT
-From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Shuah Khan <shuah@kernel.org>
-Cc: Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests: netfilter: ensure conntrack is enabled for helper test
-Date: Tue, 20 Jan 2026 22:01:02 +0000
-Message-ID: <20260120220103.327771-1-aleksey.oladko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UoGyE5XA"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b0ea1edf11so11111606eec.0
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 14:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768948292; x=1769553092; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oK1Xva04K7ygLWg0U7fdlOWooXBJszh65DA1fNcqFD8=;
+        b=UoGyE5XA/4IPLlWoyVdKaPXt4eHUQ1cD1T38G7F4r1Q4XuH3aPJIpHv/EETsZBvDy9
+         nMCL69ZE0bhsgASs8dhuTIzuDxkRlcH+Y55gL73D6C3CnQx7UlrY2saYyZdTuE8LZ+gL
+         19L8eP9nolk2Y9l19T4oHZyFiDtS99R4t4Lp06Eu2f1EGM7HnUfpaMQA1pdXZ51ZSXJg
+         Ebl/Bk+FdsT5WeAwipH8uHYAmBmOV64dll/aDFNmt1/orFHr+yEtS2GQnWjPmP87MBrL
+         6NiDws33UUAjVxiGt5h8I1C1+IVSaYk1S15OEZKaJ3s5jUf20Lq0Wdr1Pq6vVWp71Fzi
+         V/Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768948292; x=1769553092;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oK1Xva04K7ygLWg0U7fdlOWooXBJszh65DA1fNcqFD8=;
+        b=f4nJouXPJlexulwcInHNrIzSuk2JuyOkMQfVzj3iLj8hKn7kY1DqBkekYAfHaJoMFi
+         9p11JjMoSbnIDqp0FF9ZbCO37kmcegm1q6aQaQZfZJGs50AroojKJvPDq/6ofpaP7DG7
+         Xq+pfPpahBh6RgGYFMkJZwR66jyAK5346JHM9lV/LfRWszx3AFotKCJqVVZTP5m24GFX
+         r3j8UyT8KVnBlsTM4DVCltDmxqiDFi6Ztac4oIB3pp1MmfA7vzxFzUbbKNHFlHZu5isf
+         LuumopK+KJWTaUFoR/Dikr1gIFw0YarVh3PWaY5BAvg3+fv4LdBF3SRdWSf2Xd1sl+h4
+         F11w==
+X-Forwarded-Encrypted: i=1; AJvYcCWs4Pp/zFbswG6UeJIAX0oBAUpJh1QAZiEa90wIR7MWk93nBW0O2FT1/RWnHwuBvpnQvB5vtLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhQuj+fy9/PT9XwEfJQjfMXcqap8j1Yqe9TXNzxc9/Mk7GtTaN
+	4gFUv9sfLzWUttI3zCa/FlFrVxsSV9ECQnJabM0B7S/t3/MM0Ku6DN6I
+X-Gm-Gg: AZuq6aJufu6URX911xw3Pnv9WVEw4WyAazt7x/XT8+a5y1dO1bcDdqY7oaaL7m59wGA
+	qCcO9Ap4XepV2bQXGgDE1xYoI1NtODOGnuHjQ+VURFYW5GY4uPSoUKRPiXunVY17+ojLs2d3iX1
+	GS5cknVKhTD7xNt6qut6bHCR+DyLDc12dyAyQSNCH1vP4AP4c2sSvm0Hl6I3HgbdtZN5S/t45UH
+	j3xshtQViMbjEDUPEMZ79KdpeElRN71Dbgvv3qwutyIUJ7IjAn9kxm8FJmNGCCmk5ajT8NlhrvU
+	6BWLkhcQBF57vI1rp5xpzWqS4wBgIckEXOlksl5EeLjMu8xCFNU6K7P7+WaxLYGSVd0bYA9RXR2
+	882PgB0oFGcyZDuh0Q+9QptlSMsUHiquYTfb+oMvJjtySd3yZWlnY25bHYXW0zHIJOI430fgqI9
+	ZfdK95Wchd7wu0diBVtsQg
+X-Received: by 2002:a05:7300:1493:b0:2ae:5a55:fc0a with SMTP id 5a478bee46e88-2b6b4e287acmr16477739eec.7.1768948292340;
+        Tue, 20 Jan 2026 14:31:32 -0800 (PST)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b712881482sm499886eec.5.2026.01.20.14.31.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 14:31:32 -0800 (PST)
+Date: Wed, 21 Jan 2026 06:31:22 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Yao Zi <me@ziyao.cc>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+	Yanteng Si <siyanteng@cqsoftware.com.cn>, Yao Zi <ziyao@disroot.org>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
+	Boon Khai Ng <boon.khai.ng@altera.com>, Quentin Schulz <quentin.schulz@cherry.de>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 1/3] dt-bindings: net: Add support for Spacemit
+ K3 dwmac
+Message-ID: <aXABw0zVz8n3jLlm@inochi.infowork>
+References: <20260120043609.910302-1-inochiama@gmail.com>
+ <20260120043609.910302-2-inochiama@gmail.com>
+ <aW9fL7r0AM0flALJ@pie>
+ <aW9ou-lsQQ5dVzqW@inochi.infowork>
+ <9334905d-d11b-49d4-92b1-61e8cf644f0f@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9334905d-d11b-49d4-92b1-61e8cf644f0f@lunn.ch>
 
-The nft_conntrack_helper.sh assumes that conntrack entries are created
-for the generated test traffic. This is not the case when only raw table
-rules are installed, as conntrack is not required and remains disabled.
+On Tue, Jan 20, 2026 at 02:48:12PM +0100, Andrew Lunn wrote:
+> > IIRC, the "phy" clock is used to pass the phy from the mac core, I will
+> > double check if it is possible to connect to the phy directly.
+> 
+> Are you saying this is the reference clock output from the MAC being
+> fed to the PHY? That would be a clock provider, not a clock consumer.
+> 
+> Or is it the reference clock output from the PHY going to the MAC?
+> Then the MAC would be a consumer.
+> 
+> And there are some designs which have a third party generate the
+> clock, and both the MAC and the PHY consume it.
+> 
 
-Add a stateful rule to force conntrack to be enabled, ensuring that
-conntrack entries are created and the helper assignment can be verified.
+I have confirmed the clock is directly from the the clock tree and
+is consumed only by the PHY. It seems like I have got a wrong
+information about this. So let's remove it and let the phy consume
+the clock if it use this clock.
 
-Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
----
- .../testing/selftests/net/netfilter/nft_conntrack_helper.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh b/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
-index abcaa7337197..43761f2eb3ec 100755
---- a/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_conntrack_helper.sh
-@@ -60,6 +60,12 @@ table $family raw {
- 		tcp dport 2121 ct helper set "ftp"
- 	}
- }
-+table $family filter {
-+	chain forward {
-+		type filter hook forward priority 0; policy accept;
-+		ct state new,established,related accept
-+	}
-+}
- EOF
- 	return $?
- }
--- 
-2.43.0
-
+Regards,
+Inochi
