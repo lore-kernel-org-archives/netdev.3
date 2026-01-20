@@ -1,181 +1,273 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010029.outbound.protection.outlook.com [40.93.198.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E763D5242;
-	Tue, 20 Jan 2026 08:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768897074; cv=fail; b=kwGFjxNU7joe3NlTpmhBRqdWb1aKY3ifW69F0FdY2DNqS79WIrbp8esN6R8FxSIVO0MiEC3EeLnAI4kCeTdekY3y5Tn+DB6AmmdQZUfduuV5nFPEAOdirISSnY7f5jdIahN4mHXhcdfwxoDzEG47dKL7raQlEkQJj9b58cNF2uY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768897074; c=relaxed/simple;
-	bh=gCuCluAw7KVDulLd8cJk8/KFKgF/8W8UUArKtAh9VAw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVCoiOxWajBe323pP9qf4X4IPuk33wSmlMAceCDuNW+8iNH4sn9m0Op1gR+gD62Yls3JWVM7fZAFeaoAafa8Bwj48u0aFmvaw3Q8dk2rSiMt8B4dmfDZNl40AGAqKOmcNfetZVq38gtt6eDBUrnJT039qouUwoD5CwAuVNEGPSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ubdcEJST; arc=fail smtp.client-ip=40.93.198.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF08347BC5
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768897132; cv=none; b=L9x9XNf42KotyCzxgozjQyEw4twVIabYaYM8ZDzEqJFY9RLwpt1seYiD7Dw4HueHRz3F3e3Ir28vXjDvUHiTv8QU2QNT1I3ME7j3X6skszkRuWI1nnVvB+kb0CCnAS7uj4bMOT4YE/5heCD1vMT277jgZrDgg5lg/7/EXp70npQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768897132; c=relaxed/simple;
+	bh=qyvzLqcm1Y8bkz0o1wMAZLeFnBMWPFkiUHTVVHF4rys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iTscaOB1tOv66x13Y7PBJBi02MLXd8WEDPGiF3FTGFawAXa9LjikHS88WaTkyxy11Nkxgy2171Js1J+iBa1hY/kGCfZPuweNIb0Oqx+/RmtK8iNprhXu+Bl+vBY8rNwVj0TT3Rzgp3qyNIeXaMKpIBqpNIZYno3MB8h17HGSYNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PNkYY7XN; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ubdcEJST"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GyIC08LJ007qUXc5y7ghQpVs4r9hDa+Zh70y1dBHahYPTlptmGrPtOr3G7zr0B8VxfKwVPvS5fE9op07U8iZCg6/mCR8lDas4naj5nJilbItGRS7P8OQl88mavQcZYt2wj+rc4GmQzEMFDEelREWPmrjTVwV7pEKB/X2MdSFjY/nts0MrSKemhgPtgrT2WymKVDwxjWt1ic/6mR7bD+Cg73NGrONCX3pD/oWW0Mmi7w9s7FcwEUi2NCL36IKZbeglNHVkVZ19WvQh3NK6WTNTswa1y07F4vuNEjEqPWTi+IQRa9hUxBHeIN27bmz+x6dA7W2wJ34EsYxK/31xtoSKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JFInkE6zwS9fg7shvCN100N5e80vF1vR5+8+7zhN/iY=;
- b=cECx/9UqVET2lISKQ1G0S/0VmN6eRCjL7XBBqY+BSx9GSTWS3bJ4BgScZaVvbGxv2vKjwmNWZoa2c3C0Aoy1HM8z1O4IW1RsD4GxYFIGdQsyRxKDrTrAeV/mGDEE/cLzWHSDhm8ljv4+Jyi+umZhiMDBYXtxA48vAQTkellUo0wxc4hgflQ4u5BTsFFvW2aeeDE9tV9tb/XsZkVKW91z99fELTRrXhUbSFPulyXFIk9T57SkVNHkzoGDXbdE0OKON6ut3DfCXO1fcuklswAhVAxgR46eI7RghlASU7k1k8bct2R69Nsb/V1KmHRrZMwlTelkiWZ1a0T3cBjgGfJtpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JFInkE6zwS9fg7shvCN100N5e80vF1vR5+8+7zhN/iY=;
- b=ubdcEJSTPy/0cOKoHUTrdfzko7iqBIlyMCjZkHGbUDruYX1AWHXMI7ICVa/eke0TgyuKOWeo+EkQKWnxW3bsIOqdqSctefxO1OqpN7+z+p2hy1ki9MQv0n/FoZX7YY8Sul5C4gbr4jn76mTxD0wEA86bJ2UensmEhm13mtlVHOIXaMu5s9qVciloGyTds+1TyQG0DB6f+cfvi8yYg/Tbjq/xhcze2wpkia65ICsGSIIIKVzfIJnQnrKw917I38pN2+sGqhEfl4244wtXULpkWb8zHTTaPJbP1tqcDk65iACwi8G84Tbdk7Ia+9A6ctA6XrUDw5MKuTKDbxoNOrDI6Q==
-Received: from PH7PR13CA0015.namprd13.prod.outlook.com (2603:10b6:510:174::21)
- by DS7PR12MB8201.namprd12.prod.outlook.com (2603:10b6:8:ef::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 08:17:49 +0000
-Received: from CY4PEPF0000E9D3.namprd03.prod.outlook.com
- (2603:10b6:510:174:cafe::15) by PH7PR13CA0015.outlook.office365.com
- (2603:10b6:510:174::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.9 via Frontend Transport; Tue,
- 20 Jan 2026 08:17:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000E9D3.mail.protection.outlook.com (10.167.241.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Tue, 20 Jan 2026 08:17:48 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 20 Jan
- 2026 00:17:30 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 20 Jan
- 2026 00:17:30 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Tue, 20
- Jan 2026 00:17:26 -0800
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, Leon Romanovsky
-	<leonro@nvidia.com>
-Subject: [PATCH net 4/4] net/mlx5e: Skip ESN replay window setup for IPsec crypto offload
-Date: Tue, 20 Jan 2026 10:16:54 +0200
-Message-ID: <20260120081654.1639138-5-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260120081654.1639138-1-tariqt@nvidia.com>
-References: <20260120081654.1639138-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PNkYY7XN"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b86ff9ff9feso58630566b.1
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 00:18:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768897128; x=1769501928; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TJbdw+xcDYuOTpLf6yNuSRnoYdJpj1gSQsdBtW0Vq6o=;
+        b=PNkYY7XNtNYF0GzHt0GUf83gwU2vahRqOJ3chslV0fwZ9/xNzFF8D/XjJ/5EsDPEC1
+         ThQu+tgt6xp0UQezP9N5esqpd/WR1WiheRm3okKBtsUsFYR6MPSDekmA+lIlss/vP97q
+         yBvgf0pxKWwtarDcRLGrBP5trdfASoW/aYoivJZzaALNfTXbaXEU6CbrwgFPlKfl580m
+         DddFKFc7aPYfrk3vL870STFs5iDc92C674MnVvvMwZhBgYfeuPijyiIwbFm0wyPzdOeA
+         SrUQI9j+Vrr5GABQS2REWBPzIOQW3e5vd8YKmSnCLLggLvQxyYtDXqf/btBAaV+deGes
+         G7mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768897128; x=1769501928;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TJbdw+xcDYuOTpLf6yNuSRnoYdJpj1gSQsdBtW0Vq6o=;
+        b=fznX1wZdVcDqAoi187j+EnhaKCDBc8gYVb7bbEMBliA07hKFkOGyqeqylDTHLqzqSR
+         NUXigpyphH8WFdgsSvBjHjhNnPP99JJaC27R3mzuXtJUCq7gPINouMGKI6BOM8s3Xavr
+         TKvt26cYq4+af+wNM7nkypKgiwzVnLfLkSAM4FR8JNx1pQJJKXRlHZkJe80GdPwAAUod
+         wvH6j8o9V83gHLg+LUc2+hetNrKRwQiFwZWi3vYN3r+s5POOEBRfX5+9TsuLjBt8gmVj
+         2z7RJMNc0KgXzhBAllGR3eJfG2ldUdH+gfnvA+2qh2Am+pTKAqgufQ4bh75F+JVARucr
+         azDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTB5iX4NNYi/fQ4BYutom9wZVkEzlojWelt89Mzwg0idW0jiALOhNrwLhnf8Xu4LKEYU8Rz3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxPmskg3FaNWqYeltTSwRhPkTgA+5xEnHnfP3ZeFygX+hZCNUN
+	zrgAo6IPH1S58u0A+a1i2dSyteJpEx6H8Z0wMqv3Xd7yxbZ4OMNW28mM
+X-Gm-Gg: AY/fxX6Yq5zjx4OJ6LSDO1LoA+3YswKPVEFBRwiBN48Ai34BNbRklQZcjoMLZK3397u
+	BWmT9Wdij1D4y/h/IiGkzebX11r/U+ImbOlds8Bx25URgUKO3C48qZDt07wu4BhRLdXnfckaekd
+	x4IGF3nF0XnP24sjB1e3o6SAKAllVEiTszacEjLZk7oa2aANy9w/p+dj6JGGYT0+aIDth9tLvrT
+	9KkQcCCkmdM7nleFJ22kpnnBJsvTBu6Z64heIVE2O1yt08ulvhepSC+Wz0vRl8fxYzuSMRlZJJ0
+	R7asDGAV2twSSFQKPphGa8i+l+GdEv8kKVHeqt0cOZIn+MQB64ZJmpBBYP+lheyH5IbO3/leklE
+	xd0DTxld7aGyuKtTzSmeTPZuf68Q60NH1mdu2AARcr0UggS2Cxh7YCi8ZLCkTZVlZu5IkxdrrMy
+	cIn8s=
+X-Received: by 2002:a17:907:3c8a:b0:b87:6f58:a844 with SMTP id a640c23a62f3a-b8792b3a359mr743051066b.0.1768897127986;
+        Tue, 20 Jan 2026 00:18:47 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d501:d900:619a:24df:1726:f869])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8795c38208sm1344223966b.71.2026.01.20.00.18.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 00:18:47 -0800 (PST)
+Date: Tue, 20 Jan 2026 10:18:44 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jakub Kicinski <kuba@kernel.org>, linux-phy@lists.infradead.org,
+	davem@davemloft.net, maxime.chevallier@bootlin.com,
+	alexandre.torgue@foss.st.com, mohd.anwar@oss.qualcomm.com,
+	neil.armstrong@linaro.org, hkallweit1@gmail.com,
+	mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
+	edumazet@google.com, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, vkoul@kernel.org,
+	andrew@lunn.ch, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next,05/14] net: stmmac: add stmmac core serdes support
+Message-ID: <20260120081844.7e6aq2urhxrylywi@skbuf>
+References: <E1vhoSH-00000005H1f-2cq9@rmk-PC.armlinux.org.uk>
+ <20260119192125.1245102-1-kuba@kernel.org>
+ <aW8M9ZiiftGBQIRM@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D3:EE_|DS7PR12MB8201:EE_
-X-MS-Office365-Filtering-Correlation-Id: 36da7d3c-0fbd-4fdc-81e2-08de57fc65fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h65U4wOu5QNlDA1EWgUz8wkf2/mAAuGqR45fU2iaYVqRbgJKEB3byedrNxHK?=
- =?us-ascii?Q?ioMeeR6Sj1eC55aOaBeep2DJOTy0SJeebAFQ5H0tTPK0/ngjumOMJJYwa4fk?=
- =?us-ascii?Q?a2JJM6RPK0bnvSpFqGxaOGhQFN3lVoqhgMyL6lDSXuYs5hpKzZBiFDz2zaXW?=
- =?us-ascii?Q?XD2SnrnRdKfD6OnaE506NkGTuD+ysFTRy4cVEK4oPfEaua1w7iWiManRL1hW?=
- =?us-ascii?Q?u0Ir21QDO+r20Emt0qyEv69wCypbTeWEoaZSmO0sA0tB/g2ljjiZaeaDo45u?=
- =?us-ascii?Q?CqH/Kc2Ae3K2OdkYnE9l+uFTA51lv61Q4ZzpaZJW/1esyj+9flHX7coER1aO?=
- =?us-ascii?Q?/2YdpRzyLW9erJTzOACPeTP/shScj++yR/mHuO3KfumUFHbRtzCOOKSw44m7?=
- =?us-ascii?Q?uFin57YqGtEH90dUlHUdkHXgF36wMAjsv+u5/1fmxcx6VbRDfszcHGw0ek9v?=
- =?us-ascii?Q?D8AbIpweUxRBqvAT9Q4SILM5dGQb/5RuEhzWX2IHn/zUrEPutd5Em2mAQhrd?=
- =?us-ascii?Q?h47RR+A9EqpYCEdKaX2go8Hpc41hRUHWM5URf3dUplNIzbbH7TbevDWWOq99?=
- =?us-ascii?Q?OOZ9PxcSlkQtZyqgi6QEb/LTv8q2vtC6/HW0IZfnOzK5WHJymCpIDQdjbT3n?=
- =?us-ascii?Q?/YlFhtDPoMcOpgGuGf95yXQkvQ6tcKKktooPS0BZbpYalV9/5h9Qughx19Ri?=
- =?us-ascii?Q?ODIpjqRExT+lqfeO3v+PGpgTn3ZnPCVh3wf/Yb/Xef1XyGxCpLRVOVIBpXt9?=
- =?us-ascii?Q?JzJdFQls1i6fXYgbcJH5rEbFBdY88alFxv8VVlRSO2SuY0x98O0oDwX9nRBj?=
- =?us-ascii?Q?uOsxcHBCd1i1A3m4aFNR9UdPijfm2S7qbIgS8PhZdd3iEt8v0Lohrk9qs6Gf?=
- =?us-ascii?Q?9mhbHg9fxz6pXTHK4dDzmRSRExV+m10Kd0W88yizQEI5nrpOIum4WMEvmZG3?=
- =?us-ascii?Q?Wmf4UjdUJ/SuOE4NSZolLHcQO/hRaU7+lhcz0N34GZctGmD3a6xMB1gUaT4M?=
- =?us-ascii?Q?lmL9emQ8RyQChxHnW+zQu82JOOAruv8CzxFGKJbsz5QX38XIYskuZ9t2/tZ6?=
- =?us-ascii?Q?tK0gu+ySeCN7HFognCRh5njuoc6JoLQRriSDCJS7AtymkpqlzkBBn6AMuxKs?=
- =?us-ascii?Q?gShS6QZ1nLGRzKFVcNi+QyjQxOWe68K6iOUlxx8ttjO8Cv7D6yhdPmdDKKtJ?=
- =?us-ascii?Q?dgvr1Z2Qm33CgeKNluBQQJRUBLm72cIzazt3QU+cL6IHTnkiP98QVmRwiXpD?=
- =?us-ascii?Q?mbRpEt9O8qWmi6QQh/9+l5ZHUVXWXELBV52ifTpF6GNm7xhWxl6GCDAFJZzZ?=
- =?us-ascii?Q?nppLdX+tiX9qNR0xQHZ/i/9oQ2JqN0HGSpN9QDKKcgTGQodTPDLOoqt9hEgF?=
- =?us-ascii?Q?UfC8zLGHSjCQYC3hD89vKtK3VET6e8NshSJAeEPD47427OHRrzcwhPS1Vp0T?=
- =?us-ascii?Q?LSX+3Pg61fH3obq6UxvrnIBFuhFfq80ClNF8qRRcyZqOIY9mGR3TACn57+Kd?=
- =?us-ascii?Q?gcwDCnj1ugo0P0yaVtwvlm2gV+eYnmIuB1CbCGngLEJ7K6YOAQ8Rvir8wiGE?=
- =?us-ascii?Q?TFs4unJuQk4Dhl8mkPH3NMG0OTUfhWbv0lTi9LthFzR8ak76hwQkK32TR1LF?=
- =?us-ascii?Q?PB9hi67/nwGdkHp9R3xNczie5ZL63p+w2CqvLxdPXWJCDIyaPz3pejvLnsu3?=
- =?us-ascii?Q?0f5sZA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 08:17:48.6201
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36da7d3c-0fbd-4fdc-81e2-08de57fc65fa
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D3.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8201
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW8M9ZiiftGBQIRM@shell.armlinux.org.uk>
 
-From: Jianbo Liu <jianbol@nvidia.com>
+On Tue, Jan 20, 2026 at 05:04:53AM +0000, Russell King (Oracle) wrote:
+> On Mon, Jan 19, 2026 at 11:21:25AM -0800, Jakub Kicinski wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > 
+> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> > ---
+> > net: stmmac: add stmmac core serdes support
+> > 
+> > This commit adds SerDes PHY support to the stmmac core driver, moving it
+> > from platform glue into the integrated PCS driver. The SerDes is managed
+> > through phy_init/phy_exit for lifecycle and phy_power_on/phy_power_off
+> > for the power state.
+> > 
+> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+> > > index 2f826fe7229b..4d1902f3a58f 100644
+> > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+> > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+> > 
+> > [ ... ]
+> > 
+> > > static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
+> > > {
+> > > 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
+> > > +	struct stmmac_priv *priv = spcs->priv;
+> > > +	int ret;
+> > >
+> > > -	stmmac_mac_irq_modify(spcs->priv, 0, spcs->int_mask);
+> > > +	ret = dwmac_serdes_power_on(priv);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	if (spcs->interface != PHY_INTERFACE_MODE_NA) {
+> > > +		ret = dwmac_serdes_set_mode(priv, spcs->interface);
+> > > +		if (ret)
+> > > +			return ret;
+> >                         ^^^^^^^^^^
+> > 
+> > If dwmac_serdes_set_mode() fails here, doesn't this leave the SerDes in
+> > a powered-on state? dwmac_serdes_power_on() succeeded at this point but
+> > there's no corresponding dwmac_serdes_power_off() call before returning
+> > the error.
+> > 
+> > Looking at phylink_major_config(), it appears to discard the return
+> > value from phylink_pcs_enable(), so the caller won't know to call
+> > pcs_disable() to clean up the power state.
+> 
+> This AI analysis is incorrect.
+> 
+> By the time phylink_pcs_enable() has been called, the PCS is already
+> plumbed in to phylink. It _will_ have phylink_pcs_disable() called on
+> it at some point in the future, either by having the PCS displaced
+> by another in a subsequent phylink_major_config(), or by a driver
+> calling phylink_stop().
+> 
+> If we clean up here, then we will call dwmac_serdes_power_off() twice.
+> 
+> Yes, it's not "nice" but that's the way phylink is right now, and
+> without reworking phylink to record that pcs_enable() has failed
+> to avoid a subsequent pcs_disable(), and to stop the major config
+> (which then potentially causes a whole bunch of other issues). I
+> don't even want to think about that horrid scenario at the moment.
 
-Commit a5e400a985df ("net/mlx5e: Honor user choice of IPsec replay
-window size") introduced logic to setup the ESN replay window size.
-This logic is only valid for packet offload.
+Isn't it sufficient to set pl->pcs to NULL when pcs_enable() fails and
+after calling pcs_disable(), though?
 
-However, the check to skip this block only covered outbound offloads.
-It was not skipped for crypto offload, causing it to fall through to
-the new switch statement and trigger its WARN_ON default case (for
-instance, if a window larger than 256 bits was configured).
+I had to deal with the same issue when preparing patches that integrate
+SerDes support into the Lynx PCS.
 
-Fix this by amending the condition to also skip the replay window
-setup if the offload type is not XFRM_DEV_OFFLOAD_PACKET.
+I had these patches (please pardon the unadapted commit messages for the
+present situation):
 
-Fixes: a5e400a985df ("net/mlx5e: Honor user choice of IPsec replay window size")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+-- >8 --
+Subject: [PATCH] net: phylink: handle return code from phylink_pcs_enable()
+
+I am trying to make phylink_pcs_ops :: pcs_enable() something that is
+handled sufficiently carefully by phylink, such that we can expect that
+when we return an error code here, no other phylink_pcs_ops call is
+being made. This way, the API can be considered sufficiently reliable to
+allocate memory in pcs_enable() which is freed in pcs_disable().
+
+Currently this does not take place. The pcs_enable() method has an int
+return code, which is ignored. If the PCS returns an error, the
+initialization of the phylink instance is not stopped, but continues on
+like a train, most likely triggering faults somewhere else.
+
+Like this:
+
+$ ip link set endpmac2 up
+fsl_dpaa2_eth dpni.1 endpmac2: configuring for c73/10gbase-kr link mode
+fsl_dpaa2_eth dpni.1 endpmac2: pcs_enable() failed: -ENOMEM // added by me
+Unable to handle kernel paging request at virtual address fffffffffffffff4
+Call trace:
+ mtip_backplane_get_state+0x34/0x2b4
+ lynx_pcs_get_state+0x30/0x180
+ phylink_resolve+0x2c0/0x764
+ process_scheduled_works+0x228/0x330
+ worker_thread+0x28c/0x450
+
+Do a minimal handling of the error by clearing pl->pcs, so that we lose
+access to its ops, and thus are unable to call anything else (which
+would be invalid anyway).
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/phylink.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index a8fb4bec369c..63aa23f5c49e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -430,7 +430,8 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 		attrs->replay_esn.esn = sa_entry->esn_state.esn;
- 		attrs->replay_esn.esn_msb = sa_entry->esn_state.esn_msb;
- 		attrs->replay_esn.overlap = sa_entry->esn_state.overlap;
--		if (attrs->dir == XFRM_DEV_OFFLOAD_OUT)
-+		if (attrs->dir == XFRM_DEV_OFFLOAD_OUT ||
-+		    attrs->type != XFRM_DEV_OFFLOAD_PACKET)
- 			goto skip_replay_window;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 32ffa4f9e5b2..a8459116b701 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1315,8 +1315,15 @@ static void phylink_major_config(struct phylink *pl, bool restart,
+ 		}
+ 	}
  
- 		switch (x->replay_esn->replay_window) {
--- 
-2.44.0
+-	if (pl->pcs_state == PCS_STATE_STARTING || pcs_changed)
+-		phylink_pcs_enable(pl->pcs);
++	if (pl->pcs_state == PCS_STATE_STARTING || pcs_changed) {
++		err = phylink_pcs_enable(pl->pcs);
++		if (err < 0) {
++			phylink_err(pl, "pcs_enable() failed: %pe\n",
++				    ERR_PTR(err));
++			pl->pcs = NULL;
++			return;
++		}
++	}
+ 
+ 	err = phylink_pcs_config(pl->pcs, pl->pcs_neg_mode, state,
+ 				 !!(pl->link_config.pause & MLO_PAUSE_AN));
+-- >8 --
 
+-- >8 --
+Subject: [PATCH] net: phylink: suppress pcs->ops->pcs_get_state() calls after
+ phylink_stop()
+
+I am attempting to make phylink_pcs_ops :: pcs_disable() treated
+sufficiently carefully by phylink so as to be able to free memory
+allocations from this PCS callback, and do not suffer from faults
+attempting to access that memory later from other phylink_pcs callbacks.
+
+Currently, nothing prevents this situation from happening:
+
+$ ip link set endpmac2 up
+$ ip link set endpmac2 down
+$ ethtool endpmac2
+Unable to handle kernel paging request at virtual address 0000100000000034
+Call trace:
+ __mutex_lock+0xb8/0x574
+ __mutex_lock_slowpath+0x14/0x20
+ mutex_lock+0x24/0x58
+ mtip_backplane_get_state+0x44/0x24c
+ lynx_pcs_get_state+0x30/0x180
+ phylink_ethtool_ksettings_get+0x178/0x218
+ dpaa2_eth_get_link_ksettings+0x54/0xa4
+ __ethtool_get_link_ksettings+0x68/0xa8
+ linkmodes_prepare_data+0x44/0xc4
+ ethnl_default_doit+0x118/0x39c
+ genl_rcv_msg+0x29c/0x314
+ netlink_rcv_skb+0x11c/0x134
+ genl_rcv+0x34/0x4c
+
+However, the case where "ethtool endpmac2" is executed as the first
+thing (before the interface is brought up) does not crash. What's
+different is that second situation is that phylink_major_config() did
+not run yet, so pl->pcs is still NULL inside phylink_mac_pcs_get_state().
+In plain English, "as long as the PCS is disabled, the link is naturally
+down, no need to ask".
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+ drivers/net/phy/phylink.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index a8459116b701..f78d0e0f7cfb 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2527,6 +2527,7 @@ void phylink_stop(struct phylink *pl)
+ 	pl->pcs_state = PCS_STATE_DOWN;
+
+ 	phylink_pcs_disable(pl->pcs);
++	pl->pcs = NULL;
+ }
+ EXPORT_SYMBOL_GPL(phylink_stop);
+
+-- >8 --
