@@ -1,134 +1,125 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB0314B91
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 15:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1A33314B9
+	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 16:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768924667; cv=none; b=M4giGKIWHSOhzrLHe9LBDxjyXY/Qq5q5bGxZVewWbXYeKb1uBsFt4mfqeW0y3VlAuXQE5Yiq31Q441ruYhJNAelkXebWEeZHbB3IwOxECtrNxK4qCUlB+UpbaxUTXvAh3KMVvDD9VnvZyWvgPXcGvpQ3sf9r66Xoq2X32K96n/M=
+	t=1768924821; cv=none; b=Z6atMHkUCDRaAV1j60rxDYapkCFhUobcaAEbxz07xGl0GSiKAodgoAMjra32aUdBa89hUBS/KKYfnS1fBkObZDe4FjMhw79+9eQbvDE417Y70kOj8b+1Ch9WPGsLBfrunVqG55IGoBumDYvyQH+NW878vCeHOL2k8TN8GSKBhB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768924667; c=relaxed/simple;
-	bh=Q3jZ8i1dgm0geWGcKYEDkz4Xcu60RW+VP7vWspRvnrw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SUNt3txwqpNKg42fIT35KS4H34UvVwh2jS8bjHd5Bi4yWxJUb2wSfpHI8KkhcYqmcxUEHwijbWl39s5MQ6ykYN3y2tjM0DcJlRBcwkjnZ6sZ82uqkRvVSk6jfWy6mp31l0wE1yFUzj4YeffrHxiltf581jO0Q0ccJxp7zvRYLvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=nrfN+00U; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1768924821; c=relaxed/simple;
+	bh=IB+sIXEjGEhU9cqcsuNosGFcQqX5n9sKNDGU5mhonx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiimXBxRQXSADq6YERZ/K2ZrDU5hbKh/uw8PfQ39q2Uv9JtCfjJEc70gtlIb3Vb2sEO6OxrIssjthVWN5S5oYuclCTmr0huDSzieiEGw7OyevmQ70B5EjRM7AUYJRxpqm1fIhGwQyOA0rZHNRxghC0ENYSWuS9hy1BM/P3KEgrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UyO+c4Py; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="nrfN+00U"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6fd5bec41so1573380eec.1
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 07:57:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UyO+c4Py"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81f3d6990d6so3298588b3a.3
+        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 08:00:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1768924665; x=1769529465; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CDVOTSHO4BkrVaUL+NxqaqqJd2byL2pEcox/3hMBRE4=;
-        b=nrfN+00UY2zNwGDx33+KZED2uJIg1L3BpduYerqLj0haL22AyRgV1pul5wRXR7P1w7
-         d7UtmO9iWXPGcNCr6clQt8aNfOsA2N7FlTc3NIaDBeWLUeubWXrqpfppCeeldZOBO306
-         jgYHNz13+2trpQCfKlDdL4+IJ0caDCa4OW1aITUIftHZ9QLEzu2gZ1LQr5ZKWYY2UBsd
-         KYSYpjZKIywDiIGxpuxt9z20a2wO99JXqEsPxAsCaEZWm+OUd7gckz9pJyFuPRaDF0rU
-         GCCI6CWuhv515R86U5kE6Z4uBGKdTnyOydLTQWYnCCrvTqOUG5RWgSn0nSlWZ9iF5BnL
-         3Pyw==
+        d=gmail.com; s=20230601; t=1768924819; x=1769529619; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ayo5jQZPeaTZqwD9/xDSR/da6D6Deuo6ebApFmbkVFM=;
+        b=UyO+c4PyElHC5I/PVdjmqMq9rLYRC8UrYJTG7X1iLbsB4yd5gpsffjH8WOWQZxXMJE
+         SiJbFD51O9/8aKIHBVdSLvAfoRHQgwUaFxkKiH5WzkozI9/mzKUnMbsTv2BQ0dxBOakZ
+         ypCgTOuFx5MrWATlxgRO+NMiYvtMIL4QtBQb0MXTkqM51M6UfcdNhrJMPvJu1jR0NyIU
+         z5IF0GrHtOeWegVH9Ab7nHyseYI8RZxwb79zrJG6zvCTyFBe470UW+/gaHmY0wc0MTJ/
+         o7OxLqx5MTO21lngRhMjbdSPJjUpCsbxMKqz+oj2hy0CaETmEdjLv/orvmbH7DGUKgia
+         6jIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768924665; x=1769529465;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CDVOTSHO4BkrVaUL+NxqaqqJd2byL2pEcox/3hMBRE4=;
-        b=rAVvKGBqGCGS9NwV0zV3nFoYdFmjA8E01G+BeZW+ikm6+fepsmDm6OiopbaRs8gYZL
-         kT8yu8zMxAm7KGJmopuM6e01JEjdg4uYbwKCozOw9IUIVm6234XBBzBIoIItRNzVRpdh
-         2UIzj28/xjJ9W2XWgGn37FkhfWHGBnJ2gKUmvZ0ww7gV7kCgQIHKeoaZRBqIY0/yZwvY
-         qjbzp9YAwEA7qQL4prORDtRw3W8OGuaHn9TF1W9IfSv24QZy2PNXLVZXXe9ZZzvFO4Q6
-         FHiE6Oj4P2XelaVmJgZS8tNLset0j+/IUyliVyUlAtKbVR6v/2voCb1ZGPh03yD6dlBn
-         1p8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVanxPSdgosbFnEn1A1o2VEIgZqjGolmXK29eKsfC7oxKTisZFvujPnwmy7QbnDF4VJ1iaDaJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM2tRghl0F9lqGUaEZKo40Bs0FwkLfbtYUb4tNhB7UoWEnMLCU
-	VBcmXGuizXU0+xJG/tEWz1S5DCQTGjX7MFgB7qOSWaSy2jwmIlP3i4Uij+C23JBbMg==
-X-Gm-Gg: AZuq6aIdEw3oCN+9xge4I/KIRLhmS4fU5Rvm9VzSd/8ZYBAjzepstIJX6DkohLQ5ygc
-	uaiHBeiqbJvtJxR32ulxCPAB8UmSlKjSbZYz84OMC5BkNL9Rg+whWbM5t0eregkYljNpWMFWxDE
-	gUtKVAooGqF7fe+56dl6+qK+uIpNPoP/VgpQoNaeiAnba5jIU0vJKOXUYCxIDV0y2ybZZ94MYwz
-	jV9NmFrw239T84vTdnDW/qAqWW43wTbjTwGHBXLQUvtJT2NbdOwuXA8LaAySw33WoFDleilyscO
-	PqQkpekE2C/PQjAIBM5oD5RtW5MzySCWKFx97C+egmTlAn/quTW/p6tuApYXfJRqSq5Za9yMTVF
-	bvhkwIYOrmSvsFzHJihf5+IVSiTbl75E5zF7z+4+M1w1+PcYgVwEaS69mpfB/oTNaLMaS/VkDVp
-	p5YLIsUKjQ+C7rg/GW5ssx1GXZnewAZqT2oY87p5Ph6PAP0B3/Pg==
-X-Received: by 2002:a05:7300:6d15:b0:2b0:5609:a58c with SMTP id 5a478bee46e88-2b6b4119739mr13598652eec.32.1768924664652;
-        Tue, 20 Jan 2026 07:57:44 -0800 (PST)
-Received: from will-mint.dhcp.asu.edu (ip72-200-102-19.tc.ph.cox.net. [72.200.102.19])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-2b6b36550dfsm17650283eec.25.2026.01.20.07.57.43
+        d=1e100.net; s=20230601; t=1768924819; x=1769529619;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ayo5jQZPeaTZqwD9/xDSR/da6D6Deuo6ebApFmbkVFM=;
+        b=X0KjnTDFTlAJFD8F8YHmGGlqjN1QWTzRwq0eDxuGkDKuFkFRTCmT0PLJSjZzT8I/gJ
+         M8Hboce+1GoCCyRHZ26Inzuy3IvF1REKoxvY6wcqyLBCJbyNlynnj2eB9k+5ZnhZ0dcG
+         4wT6BJMSrUXkVYBJRXEtsMEtxei4Ko+JTWugER3hFf40lPk2mR8i7h1kjrqJKuJFQ6Qp
+         VIyN2/bf+aOldyqOkT6JXwS+FHB+33uzjFaCJW4JZCENr0u5B1eMbNO6msY3YUblBfjS
+         wW54oK4lizgoktQy9v7L9DSp5icM2HpJ21o9T8AWdMHVnK0z4IZShVkyj+uiIpi0GvLw
+         zSYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlcMafbvaorAHsjkJo74G1bkMmlzAmzgDwRUvzxgdjbR9m2EUJx6uzhEDpP9l2M9UjHB7WXKw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAJ8zUMSUefGyeJGckbntVoaE60J2qS0dfgGbPxJqiDvq5L0ml
+	Bscg9noHWcS/fwdkxfOSQGkH/HymCu5NZ4jE+09UgCVyn1jRwUFDMIyk
+X-Gm-Gg: AY/fxX6zFJeFd3JlzDwVYBQxQk7KETEVqxlueXzTYZ0oQBsEmdH+rfAa2LLwxYi2ZfJ
+	y4rIklroE9vPB1N4mCJci2MH8vbgNJhBAuvHHa5k6P7WLkNi+th4dcY6dKQaqkEvFwJ3kiC8Xi2
+	X0QlInnihWk0LqUdVI0Uzhshc4pQGHOhMvKhJ0K96TPnt6Mevs4qLf5H6TsJDHaqIiygsfRaYTw
+	FASKZAi12CzHQH4poxDCBxClWwNmTcw3R9cFeoLRIzUZCNMuQTvguMkYvWieUbZTeogwVxglSLg
+	sjsVU2FmDgMtoklHzP6qaXzX8ZFi9VIuK9psE7NzPrCuIslYkGaNOFkqER2oF5RFdLZm5Q0oglN
+	29gPCnVLkHcRjV8xGQSm31R/+JmYOFD5rUlnUTdEqFkN735jntgFbM2wwuSiwgZt0YmoscmRn6V
+	XT7qTvwTc6l5I=
+X-Received: by 2002:a05:6a21:103:b0:35e:e604:f78b with SMTP id adf61e73a8af0-38dfe590340mr15226404637.3.1768924818506;
+        Tue, 20 Jan 2026 08:00:18 -0800 (PST)
+Received: from inspiron ([111.125.231.221])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32d68asm12193550a12.18.2026.01.20.08.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 07:57:44 -0800 (PST)
-From: Will Rosenberg <whrosenb@asu.edu>
-To: 
-Cc: Will Rosenberg <whrosenb@asu.edu>,
-	Paul Moore <paul@paul-moore.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] cipso: harden use of skb_cow() in cipso_v4_skbuff_setattr()
-Date: Tue, 20 Jan 2026 08:57:38 -0700
-Message-Id: <20260120155738.982771-1-whrosenb@asu.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAHC9VhR4d7WXOVR7Y9ee2+=-t2nThzOo-ySMB+5x_87LfBJbZw@mail.gmail.com>
-References: <CAHC9VhR4d7WXOVR7Y9ee2+=-t2nThzOo-ySMB+5x_87LfBJbZw@mail.gmail.com>
+        Tue, 20 Jan 2026 08:00:18 -0800 (PST)
+Date: Tue, 20 Jan 2026 21:30:08 +0530
+From: Prithvi <activprithvi@gmail.com>
+To: dranch@trinnet.net, f6bvp@free.fr
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-hams@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	syzbot+3f2d46b6e62b8dd546d3@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: Testing for netrom: fix memory leak in nr_add_node
+Message-ID: <20260120160008.2kylsycgrpzcwvak@inspiron>
+References: <20260117142632.180941-1-activprithvi@gmail.com>
+ <f108f1f4-cdd3-4b14-ad24-d1ef328ca316@free.fr>
+ <46f8fefa-f549-0b8b-d37e-0d608c5ee5f6@trinnet.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46f8fefa-f549-0b8b-d37e-0d608c5ee5f6@trinnet.net>
 
-If skb_cow() is passed a headroom <= -NET_SKB_PAD, it will trigger a
-BUG. As a result, use cases should avoid calling with a headroom that
-is negative to prevent triggering this issue.
+On Mon, Jan 19, 2026 at 07:37:07PM -0800, David Ranch wrote:
+> 
+> Thanks for catching that Bernard and I sure wish kernel committers would
+> test their code before committing it! Does the kernel show any sort of
+> diagnostic information before it resets?  An oops on the serial console,
+> etc?
+> 
+> --David
+> KI6ZHD
+> 
+> 
+> On 01/19/2026 01:06 PM, F6BVP wrote:
+> > 
+> > Proposed patch is lethal to netrom module and kernel causing a reboot
+> > after a few minutes running ROSE / FPAC node f6bvp.
+> > 
+> > Bernard, f6bvp
+> > 
+> 
 
-This is the same code pattern fixed in Commit 58fc7342b529 ("ipv6:
-BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()").
+Hello Bernard and David,
 
-In cipso_v4_skbuff_setattr(), len_delta can become negative, leading to
-a negative headroom passed to skb_cow(). However, the BUG is not
-triggerable because the condition headroom <= -NET_SKB_PAD cannot be
-satisfied due to limits on the IPv4 options header size.
+Thank you very much for your feedback. I sincerely apologize for the
+instability caused due to this patch. I take this instability very 
+seriously.
 
-Avoid potential problems in the future by only using skb_cow() to grow
-the skb headroom.
+Unfortunately I am on a low-end backup system right now which does not have 
+resources to build or boot custom kernels effectively, locally. That's why, 
+it has been difficult for me to test the patch locally due to which I have 
+been relying on syzbot for testing. I am grateful for your feedback by 
+testing that patch on your setup.
 
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
----
+I will work on investigating further why the kernel isn't stable with this
+patch and try to create a better fix for this bug. 
 
-Notes:
-    Given that IPv4 option length should not change,
-    this may not be a worthwhile patch.
-    
-    Apologies in advance if this ends up being a waste
-    of time.
+Thanks a lot Bernard for testing this patch. In case you get any crash 
+dump or similar information, it would be very helpful to understand the issue 
+and fix it. 
 
- net/ipv4/cipso_ipv4.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-index 709021197e1c..32b951ebc0c2 100644
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -2196,7 +2196,8 @@ int cipso_v4_skbuff_setattr(struct sk_buff *skb,
- 	/* if we don't ensure enough headroom we could panic on the skb_push()
- 	 * call below so make sure we have enough, we are also "mangling" the
- 	 * packet so we should probably do a copy-on-write call anyway */
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
- 
-
-base-commit: 58bae918d73e3b6cd57d1e39fcf7c75c7dd1a8fe
--- 
-2.34.1
+Thank you very much and best regards,
+Prithvi
 
