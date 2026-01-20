@@ -1,122 +1,147 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EB733A6F8
-	for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 10:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768904733; cv=pass; b=BUh6McAPycKkk2rW2MBNUbY2DWE3hZnrb7G8aWdBkwrVWBagOihe09PVgxMTdPb6dmTPHxJ2mw+1g0EgtkOlTGYfll1hpkHH6iwpqucCwhLHEdW7TEIvkogc8q1/xOhR5KoE7l/SDdj7NOb1f2CdjBYeYnB28GkLnVtxTums1IE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768904733; c=relaxed/simple;
-	bh=wjJ+Nws351Qs1zaYiW8MF562GhG0txIVy0NZYF2vpvo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FApRU4MToaxSBa5m612SDjJms1x0cD5b6d7dcVv3JRMvlG4zkwi6ASUnxogfSNpc275nV6WX4gTaoN+j+blp9ugz4gXsl0yx/vyMHSWK97Z4nYcX26tv78Ypde1CHfhQHk2X25+plbRQKTjOI0sjZbQwx5I8p7S/9ovpQnxhXxE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0MLoa5g2; arc=pass smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B38E407568;
+	Tue, 20 Jan 2026 10:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768905286; cv=none; b=rVdp0apkwTo8kVkLszXTGNcFkFf0M0rO/0w/mn1dtWNarOiPlbIueM/wWq9xUFFmS05y0NO+G9B+8iyZuKRPzb1qoIJ1GMopZN/Ak4y4X7inti45um9oTdroX/akPCg017PLA9gqjUca4JwFq3VrYjTtCJtexRmP4jXwGi1XL+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768905286; c=relaxed/simple;
+	bh=2JpWh8dIf4yeI7M+/s717Byn0Z1WOd8UO8wUvY6ozzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cs7u4hIyWUzyYJfY5QtUh0JQEXzeDVEbofRAlVbvPUblZQhOA5QXJwuijiAWiBf12lqsDGiD1Dnr+AV8P7hsHAPn8aj+JfRvm8rl/1vIvVpGZ5Kr6ssiJ9IETvuFoTjNiGegK39Kr1dTtts8k34bwRIak7uNXCwCkV577KUgTl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FwCiG1cp; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0MLoa5g2"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-501502318b1so42392441cf.3
-        for <netdev@vger.kernel.org>; Tue, 20 Jan 2026 02:25:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768904730; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KxmgQdegwnCF386B0wHijH/cVX9fdEl1tWd5ARW06nuZcE2cKTTmQ4vqXREIhehFLa
-         UFM8OJyZL2USJwLSVXi8lQu5M/AXAJ4lH/tiOVHhlWxQOqMIexfC4GX/zQyHYcCQTuQw
-         axwIgCW/P5u9eH6Gw5525Pmvc/JUElYgs8V7HlFK339r1+hcFa/7mo1kZb23ncgZkmRO
-         xJSd3SdhNPXwLEquM0glmlWrEgfItUv1gYJ3hMRlIKt7FOLW4VAhfVpZpC9fAHRMTC25
-         36rB5tGKLGBUJqEgIQWdRTZ9r5fZdh6sMR2DUB+AP+yASnkmwAPXxUZRs1bmq4a5+gTF
-         2QKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wjJ+Nws351Qs1zaYiW8MF562GhG0txIVy0NZYF2vpvo=;
-        fh=OsvmKvdoPKCCcjigdA7sh0POOAM3AsEfsVoaKRsZ/ME=;
-        b=Wfxp9ZzbEaIIT5CvCwC41FNzjk2Slya/Ol8UjYJlCu6wJv4MA+QJ4GMToumVFSXqoM
-         owCvqHBh8oBnNKYkLzKmsPr70zgqbqGppWaS6CYlBy3WCWvMV48CyONL5V/YTU5ji9xv
-         kvg/1KpAXgJG8WZzNY6x3i9oSRExy/dOyk/hgit62PvauybwboPpkq6ABscND7m8xTyW
-         jEXDTmbPW8cNdJv1ZAK8Bt7HvXQUjDR8WFzGJNkGrs2ByRtcIpssMODfTnzDl3bZE+Ua
-         Xl04ehIKWvfx4ay9w+dLBMNHuubvG8F5YZgvQ7s4Yw/QIkivs9yIFmRWmWgtSBKjyN52
-         KiQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768904730; x=1769509530; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wjJ+Nws351Qs1zaYiW8MF562GhG0txIVy0NZYF2vpvo=;
-        b=0MLoa5g2PfCyeo+1/vEDpd8wWDjQmTPWqQUdJjSPPpiq7qmcmGeDLKE/WzgLwrpKAQ
-         3ymVQTGSykLqPZ6elyTjQFZO0QMIK5Xyd259NJ8hEgd4CPlKptQHqihhy/L3sEkKQ3pP
-         fBoA7vUHQi9bE3vArS9v/adTBoCvpwPN0OPuQyehyEEumx/mmDbYCoIeEn0EsmTTLTMX
-         bOZGsy/sR94ywAORlTNcYl0C1ZNMTqrulnEney6DmlSEo6auplShGYvW3x091LJS1S2R
-         11IWC8b7mArisAW38h4Db0zJfR7fPWguUT+qkHzJ+/f63kuyDkqxkaNFJWGJxJZtI7rU
-         Uqeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768904730; x=1769509530;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wjJ+Nws351Qs1zaYiW8MF562GhG0txIVy0NZYF2vpvo=;
-        b=nL4m6QgfqVh4ILwvF3k8taCLd0K/FamVSVYJK+k9wkjIjgW9iwMzGcluQZ08/uTIUQ
-         i7HMW9LropgVu8girk3AP0M2TUZ+MUFMSUYWlkoKD5n9eseWQ3LVEflgxYG5yBxEWrGG
-         RAkLP5Von34uWW6PMLt9g2u/iij5p+EFfFurr6FTJbf5I+v8tANlpm0U4zk9cuJTD4sM
-         J/FYrUuf6qauko6epLBIKLu9+lQ13L1kjmbn0/Yo5/YkCm0Ozfay3tQ/L4i/OPX/LYxb
-         FMx4oHOakicLIcixT/zRPoD9IwXgLF1hMHlXOLa4Vw0DMh4erEYKUzNataUFB/gj/42H
-         2Ikg==
-X-Forwarded-Encrypted: i=1; AJvYcCXkngxVIp3wSq9cYynI/y7gEmBpBnGgtibK7xrC+NLQ1ojEQTuMxmdJUJcMydv0vQtOb6lKPDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCzlOGHPU0pvkAbY0UI9w02k518Xt6dPlwi9Sy03dol/mawEog
-	C87YNlpF8f9u+1/aJmIy5htntg8dSvUAtf47OhPXTi9r6wHpdrWklWdS0cWo3fCpEfMO8wtg7r9
-	yxqkqmsztlcASXnweu8LRF+BMv1jEQo0nVqkFoo9k
-X-Gm-Gg: AY/fxX5va4FOKb0Vo8Jgzk6PRG4xQ5M9g8WQLsQZ1M48kr7hWmfoBPJjrm6056KQSWB
-	i/KzwW9Ih1BEMHNcMn/vnurE+sEGxtMEW+tBvMwVov2OY8lxG5jH9iHHEuF6gGgfk9MQLPjBBMe
-	7lqF8ZNyjWRC+2yvV4trwIuKxoXmT9Y7nl6QqsKMUqfI9EGHBy+FU+R8m8GJSA/XcXTE/PPguUi
-	gDx+O3wX2AWscURwjf09DspYDv19icuSvu+4YzxDPA5XXy7XE3skXbTILdU+zGUrkSyhCJwK4zn
-	U5V5uQ==
-X-Received: by 2002:ac8:5d4e:0:b0:4ee:1c81:b1d1 with SMTP id
- d75a77b69052e-502d84d36e8mr12347611cf.22.1768904730033; Tue, 20 Jan 2026
- 02:25:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FwCiG1cp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768905284; x=1800441284;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2JpWh8dIf4yeI7M+/s717Byn0Z1WOd8UO8wUvY6ozzg=;
+  b=FwCiG1cpvEAu2wIv+6rvv2/WowrnUhqcyxDFziHnSRNARj15nzCW/qAG
+   PHi7ynUrc5rLTBfE0EMbWXsUs99Tqm5O9/tyWCk4RjZLPLUJrgbipoefe
+   CiPNN/RsbuftxxItprn83OKeLqwF4MOzpSmGgGFqL1wv/4fXT4IFrngCa
+   e8HnqBUvKPcEE9l7xb2nYrfuRGOPLq8/zflNrUk6VLAggaRPcRWhhb6xl
+   jFcubHcYISrm3U/svstWjFn1yF+PT66N6bwKox7p7E5Z3ayjEPY3B4lex
+   7jdT40lSKVw14CqdwOaPjFoD1dRL2jfGVbiYo5Mvwxnpz6AGgz29JspyA
+   Q==;
+X-CSE-ConnectionGUID: OL3ZQqUXQYy67BSaEe9+4w==
+X-CSE-MsgGUID: abXXecePTryF9l3yK5yXqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70161725"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="70161725"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 02:34:43 -0800
+X-CSE-ConnectionGUID: qiPffr16S3aR977f0cT+zA==
+X-CSE-MsgGUID: STtrC8BySFmzypuaoBOerw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="210935839"
+Received: from hpe-dl385gen10.igk.intel.com ([10.91.240.117])
+  by fmviesa004.fm.intel.com with ESMTP; 20 Jan 2026 02:34:41 -0800
+From: Jakub Slepecki <jakub.slepecki@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com,
+	anthony.l.nguyen@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	jakub.slepecki@intel.com,
+	aleksandr.loktionov@intel.com
+Subject: [PATCH iwl-next v3 0/8] ice: in VEB, prevent "cross-vlan" traffic
+Date: Tue, 20 Jan 2026 11:34:31 +0100
+Message-ID: <20260120103440.892326-1-jakub.slepecki@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119185852.11168-1-chia-yu.chang@nokia-bell-labs.com> <20260119185852.11168-9-chia-yu.chang@nokia-bell-labs.com>
-In-Reply-To: <20260119185852.11168-9-chia-yu.chang@nokia-bell-labs.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 20 Jan 2026 11:25:18 +0100
-X-Gm-Features: AZwV_QhXZCQk1XE-q39P2gd1Nz-BCTJZ9hlSkcwUiVU-61knB_BOINgx5AQZsrs
-Message-ID: <CANn89i+6KjPh916bSTJ96=mDtR8d4kQ4LNs5eqfJHZnRGMx1bQ@mail.gmail.com>
-Subject: Re: [PATCH v9 net-next 08/15] tcp: add TCP_SYNACK_RETRANS synack_type
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: pabeni@redhat.com, parav@nvidia.com, linux-doc@vger.kernel.org, 
-	corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com, 
-	jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org, 
-	xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
-	andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net, 
-	liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
-	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
-	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
-	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
-	Jason_Livingood@comcast.com, vidhi_goel@apple.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 19, 2026 at 7:59=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
- wrote:
->
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
->
-> Before this patch, retransmitted SYN/ACK did not have a specific synack_t=
-ype;
-> however, the upcoming patch needs to distinguish between retransmitted an=
-d
-> non-retransmitted SYN/ACK for AccECN negotiation to transmit the fallback
-> SYN/ACK during AccECN negotiation. Therefore, this patch introduces a new
-> synack_type (TCP_SYNACK_RETRANS).
->
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> Acked-by: Paolo Abeni <pabeni@redhat.com>
+Currently, packets that match MAC address of a VF will be sent to loopback
+even if they would cross VLAN boundaries.  Effectively, this drops them.
+In this patch series, we aim to address this behaviour by adding MAC,VLAN
+to complement what MAC-only filters do to select packets for loopback.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+To reproduce the issue have an E810 ($pfa) connected to another adapter
+($pfb), then:
+
+    # echo 2 >/sys/class/net/$pfa/device/sriov_numvfs
+    # ip l set $pfa vf 0 vlan 4
+    # ip l set $pfa vf 1 vlan 7
+    # ip l set $pfa_vf0 netns $pfa_vf0_netns up
+    # ip l set $pfa_vf1 netns $pfa_vf1_netns up
+    # ip netns exec $pfa_vf0_netns ip a add 10.0.0.1/24 dev $pfa_vf0
+    # ip netns exec $pfa_vf1_netns ip a add 10.0.0.2/24 dev $pfa_vf1
+
+And for the $pfb:
+
+    # echo 2 >/sys/class/net/$pfb/device/sriov_numvfs
+    # ip l set $pfb vf 0 trust on spoof off vlan 4
+    # ip l set $pfb vf 1 trust on spoof off vlan 7
+    # ip l add $br type bridge
+    # ip l set $pfb_vf0 master $br up
+    # ip l set $pfb_vf1 master $br up
+    # ip l set $br up
+
+We expect $pfa_vf0 to be able to reach $pfa_vf1 through the $br on
+the link partner.  Instead, ARP is unable to resolve 10.0.0.2/24.
+ARP request is fine because it's broadcastd and bounces off $br, but
+ARP reply is stuck in the internal switch because the destination MAC
+matches $pfa_vf0 and filter restricts it to the loopback.
+
+In testing I used: ip utility, iproute2-6.1.0, libbpf 1.3.0
+
+Changes in v3:
+  - Improve structure of reproduction description in cover letter.
+  - LB_LAN masks and values no longer rely on boolean promotion.
+  - ice_fill_sw_info() deals with u8 the entire time instead of building
+    building lb_en and lan_en values at the end from booleans.
+  - Refer to reproduction in cover letter in current 5/8.
+  - Fixed some slip-ups "this patch" and "this commit" in commit
+    messages across the series.  I did not consider this change for
+    reviewed-by drop.
+
+Changes in v2:
+  - Use FIELD_GET et al. when handling fi.lb_en and fi.lan_en.
+  - Rename /LB_LAN/ s/_MASK/_M/ because one of uses would need to break
+    line.
+  - Close open parenthesis in ice_vsi_update_bridge_mode() description.
+  - Explain returns in ice_vsi_update_bridge_mode().
+
+v2: https://lore.kernel.org/intel-wired-lan/20251125083456.28822-1-jakub.slepecki@intel.com/T/
+v1: https://lore.kernel.org/intel-wired-lan/20251120162813.37942-1-jakub.slepecki@intel.com/T/
+
+Jakub Slepecki (7):
+  ice: in dvm, use outer VLAN in MAC,VLAN lookup
+  ice: allow creating mac,vlan filters along mac filters
+  ice: do not check for zero mac when creating mac filters
+  ice: allow overriding lan_en, lb_en in switch
+  ice: update mac,vlan rules when toggling between VEB and VEPA
+  ice: add functions to query for vsi's pvids
+  ice: in VEB, prevent "cross-vlan" traffic from hitting loopback
+
+Michal Swiatkowski (1):
+  ice: add mac vlan to filter API
+
+ drivers/net/ethernet/intel/ice/ice_fltr.c     | 104 +++++++++++++++++-
+ drivers/net/ethernet/intel/ice/ice_fltr.h     |  10 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  56 ++++++++++
+ drivers/net/ethernet/intel/ice/ice_lib.h      |   2 +
+ drivers/net/ethernet/intel/ice/ice_main.c     |  56 +++++++---
+ drivers/net/ethernet/intel/ice/ice_switch.c   |  79 +++++++++----
+ drivers/net/ethernet/intel/ice/ice_switch.h   |  13 ++-
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   |   8 +-
+ .../net/ethernet/intel/ice/ice_vlan_mode.c    |  12 ++
+ 9 files changed, 295 insertions(+), 45 deletions(-)
+
+-- 
+2.43.0
+
