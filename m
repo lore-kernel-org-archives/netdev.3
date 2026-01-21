@@ -1,132 +1,140 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F071B4DB546;
-	Wed, 21 Jan 2026 14:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769007500; cv=none; b=hk/W7nw4TTeHlqO8WTY0POcud7n1oIkpJJuNi+ATwErOGB6FLYVCEeLkUqlXGc97Djnx+wU8Q8TDjxTY4vCA3+Yp6+nQjiWQJm5/sAU5DsXVHCQkWwAxvl8QLxd6zJwxQx+aMTFsasER8HirBYt9C9Toba8MpUojxq9Btl/nMuA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769007500; c=relaxed/simple;
-	bh=0GrGhWbwswqou6wzlsc9dE/G/veSAbRQW0iD5Ve4Dls=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fys2fb8hCmZco7SAcAWe0v9hd+opNfULS84y+LGnzZOYYW3v4OwhaXTcNGgm9JeuM+PPPVfR8d7q6xjTSIjACm2FZN8/YRQUgLhfeC+3L+A2n9VIARjfY/f71TPsJh4fH0Jft8a4gJ/T/tIRtIvD/GCQy0zSmGd6OZgTvAJh8vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=HeFJaC1m; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2285C481FCB
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 15:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769007837; cv=pass; b=EwlcGWgiajZrUDt726tU637692RkvSKvuJQUFMktdQVsODPKbX9cmbAS7Xum2CgabIZRdwBMEBexmzb8f5x4Dw/TKeKbPcrnu/vgZ9Ac/q4D4yaJk1Moe5O0y7qvhoE76iaVRl1wI3vye7g6amtGI0CjHvAJfrQi1V/xYo5nda8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769007837; c=relaxed/simple;
+	bh=QnaNpo6lSG0kfxJQjSpSQ0lKtOo9FhwWS7NgxulV+90=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eSwGIzXig+IIhY0jTm4U+RPzCwuZNHpyI5vo5oC0fbfGLbdFqmlkoXcGIU2UbPnQS0f2m1e3usBZT/I4C1MEycXPFZ5wPzIXM1XkO0zUonMZBqPTvokJIJj75hoVLfLbHpn0Swd49qwh/topiR0B7KDF/sUN2wTfTTU6zrYBGoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GbCPjr8u; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="HeFJaC1m"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1viZes-008XEu-IO; Wed, 21 Jan 2026 15:58:10 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To
-	:Message-Id:Date:Subject:Cc:To:From;
-	bh=eNMRSz5L8fgL8ctUrXiNlrxD38QSSH4gIK6f6XdjByE=; b=HeFJaC1mdaOqO1JFtCyHaDqb+o
-	AYbWVZoW4TkLPEY6c7eJ5zI0XROXccqy7RUoBXtNgEihN/3n3OME26NmwnJOISA1MophY0qHodcRs
-	sRMMMr8/9oE94ctgx35jyRY+HVHmjHGefqARHNdLoT2XoYD0AKtjnrq8oHUVENSDbfzd+l7udyn/r
-	kQrIxELHzkwwbh1Q8jNeS9XGONZUP76CWdNavaltvVSuWHgewUiXCScsctVEk+PGKMb/DIXH3olBd
-	r5ffBQZhia625IXmRCUdzJ3lSVKxvROrC+GOiErca0omVSy1EL73FZzFreX/t3F5/GlqqVPL63Pqr
-	9ZgCLz+A==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1viZes-0001sg-6G; Wed, 21 Jan 2026 15:58:10 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1viZeV-00GH6h-40; Wed, 21 Jan 2026 15:57:47 +0100
-From: david.laight.linux@gmail.com
-To: Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Cc: David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH next 05/14] ixgbevf: Use C test for PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD
-Date: Wed, 21 Jan 2026 14:57:22 +0000
-Message-Id: <20260121145731.3623-6-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260121145731.3623-1-david.laight.linux@gmail.com>
-References: <20260121145731.3623-1-david.laight.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GbCPjr8u"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-501506f448bso39396251cf.3
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 07:03:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769007835; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E/uMTqFNqkarHYnHWK4j/PHH3mFquKAiVL7jwY+qqFBkQZdE/jz4gmu7VjbdQyw/YM
+         fd+BxfZYlVOFjwErwhF9n8EkwnVXgdgH0aLGUh36iyjn+Ds6mSR32iwVrEG9eSgGnQQB
+         TSr7NEKNoQNL0tv8GznafchkilrPpl9Gr06a+3D4C1Tvt7nC2tnFftlrf2M/R5w6CuQG
+         fjOzEU7++NffaQaFGzWA2rLdm/12rrEj5mpHbjpYsLNRYabbBNeb+1vH4cKF8APP+MPD
+         67wtZ6uBNLNHdASGVCWix3Ec8UvqsNlIyQ9CVrDyQ+yWFq6qmud7k+QgGIxVq3zj4LHL
+         VSzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BkfXslef5CleGTOMTYe++OlaJ9VsT1NdIrx0Bt2jP6E=;
+        fh=94lZkp1YAftuiKGHU7UM9B71kbRXMASvJxpMfMg8dYo=;
+        b=QWMj9Q8c11Ks2CC1+oWzm5PV7ph/sxAmoAVe1m51UE0MLNTwM+rL8xdS9CXSLKvSjR
+         xPJHldfDjvdzzRRo/JotSOJKVLYZbGcTkjuwLTq2LDaUj9fDYI/St/570bie5SzIS8ew
+         fwQn48DDdDop5dvccFA6adbbPpVUe3JAaASM7qf1h3WBYHKv/+aztTCLvPNyRk9GxLCK
+         aPY/Mw8q5pp8JFZj1MFdD+ggOgXYVmypEqKJulYMbUCjkSh0wGsVFxwDUHOftVM6hxCW
+         y54fvYLziZ0TnKfIGhojx1Dq1uGSbk7LjNLxzN+IYcvG8BeXhuE+IDzRMduytyVCWFiY
+         qV4g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769007835; x=1769612635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BkfXslef5CleGTOMTYe++OlaJ9VsT1NdIrx0Bt2jP6E=;
+        b=GbCPjr8u0SxkrNuOj/F+aztCCHfE5nwZe9Et23PvmkjZfL4RKDUh4WSOqoedBr9LHH
+         Hw1PETrMTJsNeCxF1eqy0FlUkwuBH7i9JmVdG0a6bh9wA+of1Ty0d+pC6JqdqOCw1pBf
+         i4XCZi8hYLgRdvEC2MDuyBaH/zrJH+/7CkT4MHypOyO/Aa6hxdJsaiUIkBetAeVlMO+W
+         B95p3FLmq5CDKQT2T+MBwcJbZHNwL24IMtPagFbPJ2yF0eZ/gi2tKDRsxJ3OFYrVkhVT
+         srzWEQeIXNXAABEP3EfdHSvVVG1DosM/p78pjkxF80ZM08HE+LeK+wDQNoeYxSaRzo1c
+         Dseg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769007835; x=1769612635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BkfXslef5CleGTOMTYe++OlaJ9VsT1NdIrx0Bt2jP6E=;
+        b=RjabZX0Z1/FZIUGuNDnwEKzjFmrSrAiiewU2Df4VND75s8oO/VCI81vENZqPoibMA3
+         8P2L6mS+cQXsu2PBE00NFaBBabfBbjdai5U65xz/2nUcMIBs0vMqv9RNp1GETufaVLMw
+         X3FagXPuo6IDYvU3D/hthcbx1lb5oB0mp2B4qLWmBC3q5yXE/YwZuu8RGprE91bjCvxA
+         4GcLZmVwfi2GZYfZph01IpQQJ+hy0Cbt7Kf43oVMq0NvT3mFjIEVFhG6FqMEcEQK+6z4
+         cQDd797HfUy2AvSb2enK35wS3zWxg+7fYUthL+t3I5v1u/C8QXEvEH6IgCYy56cpjPbh
+         UOGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1OTOMH8hvhi5KIMnjlzr83w6MtqnaU/5znf8a2dwBK+GTSZ5Frd2HufJp2ZjJObXBNgJEzzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdXbh1w4iy3hWAPy/71IDz1OSxkKMfurzwfL6P4kaGrPqCroUJ
+	EnVG4nWVWt4b1t4OKtNjxYWVZKT+TucBaQVZ2Cud2D0s16w0IlP3871A3pDzLBxSyeYHcssOF8g
+	kHWSF+z5p8/1uocp67TgGYb20Il4SHAMY/qrMGTlK
+X-Gm-Gg: AZuq6aJ3FKxccpbVzIC2iCuGKFY0reYYxF6jwcq98pbkcR8OqqsgQlNcU7Q2YSA5UI+
+	AQ1FgoXyIf5nk84r9DkwDd5KnWLXqb1fX3BySPQJhR+L2U5KMfjNETqf1mq+/w2vTyRLfdWDOL8
+	nMJNG77W4gzWM0FreTZ4Pr2sYgbj7VjS4Orvl2xqbG8Tat/oUbb8JiRqPM/rTlOqoAeHuXmIzLP
+	ZFL8EV2rQb+KMBgGmwoXrUGycDWuoCeeiVTEFVLw/p8rSGPLYRr6Lwlkk9LK0AMllGdCys=
+X-Received: by 2002:a05:622a:180e:b0:501:47d3:217a with SMTP id
+ d75a77b69052e-502d829a969mr66313571cf.25.1769007834257; Wed, 21 Jan 2026
+ 07:03:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260121143215.14717-1-chia-yu.chang@nokia-bell-labs.com> <20260121143215.14717-15-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20260121143215.14717-15-chia-yu.chang@nokia-bell-labs.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 21 Jan 2026 16:03:42 +0100
+X-Gm-Features: AZwV_QhPskOIydB8GymjUhQQqHYwHvz2ukB4yAm_VArjAbRnW32yObrkavrJhr0
+Message-ID: <CANn89iL6ax4=xk1Q+KhiSRAQwCRpOSPVLTe0gwjBf0FBd0vm1Q@mail.gmail.com>
+Subject: Re: [PATCH v10 net-next 14/15] tcp: accecn: enable AccECN
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: pabeni@redhat.com, parav@nvidia.com, linux-doc@vger.kernel.org, 
+	corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com, 
+	jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org, 
+	xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
+	andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net, 
+	liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Laight <david.laight.linux@gmail.com>
+On Wed, Jan 21, 2026 at 3:32=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
+>
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>
+> Enable Accurate ECN negotiation and request for incoming and
+> outgoing connection by setting sysctl_tcp_ecn:
+>
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D+
+> |              |  Highest ECN variant (Accurate ECN, ECN,  |
+> |   tcp_ecn    |  or no ECN) to be negotiated & requested  |
+> |              +---------------------+---------------------+
+> |              | Incoming connection | Outgoing connection |
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D+
+> |      0       |        No ECN       |        No ECN       |
+> |      1       |         ECN         |         ECN         |
+> |      2       |         ECN         |        No ECN       |
+> +--------------+---------------------+---------------------+
+> |      3       |     Accurate ECN    |     Accurate ECN    |
+> |      4       |     Accurate ECN    |         ECN         |
+> |      5       |     Accurate ECN    |        No ECN       |
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D+
+>
+> Refer Documentation/networking/ip-sysctl.rst for more details.
+>
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Acked-by: Paolo Abeni <pabeni@redhat.com>
+> ---
 
-Compile-time tests being added to BIT() make it an 'integer constant
-expression' rather than a pre-processor expression for W=1 builds.
-
-This means BIT() can't be used in pre-processor conditional that
-checks 'PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD'.
-Change to use a normal 'if' statement, the compiler will optimise
-away the unwanted code.
-
-Signed-off-by: David Laight <david.laight.linux@gmail.com>
----
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c   | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index d5ce20f47def..65dd5834d0cf 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -4166,9 +4166,6 @@ static int ixgbevf_xmit_frame_ring(struct sk_buff *skb,
- 	u32 tx_flags = 0;
- 	u16 count = TXD_USE_COUNT(skb_headlen(skb));
- 	struct ixgbevf_ipsec_tx_data ipsec_tx = { 0 };
--#if PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD
--	unsigned short f;
--#endif
- 	u8 hdr_len = 0;
- 	u8 *dst_mac = skb_header_pointer(skb, 0, 0, NULL);
- 
-@@ -4183,15 +4180,15 @@ static int ixgbevf_xmit_frame_ring(struct sk_buff *skb,
- 	 *       + 1 desc for context descriptor,
- 	 * otherwise try next time
- 	 */
--#if PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD
--	for (f = 0; f < skb_shinfo(skb)->nr_frags; f++) {
--		skb_frag_t *frag = &skb_shinfo(skb)->frags[f];
-+	if (PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD) {
-+		for (unsigned int f = 0; f < skb_shinfo(skb)->nr_frags; f++) {
-+			skb_frag_t *frag = &skb_shinfo(skb)->frags[f];
- 
--		count += TXD_USE_COUNT(skb_frag_size(frag));
-+			count += TXD_USE_COUNT(skb_frag_size(frag));
-+		}
-+	} else {
-+		count += skb_shinfo(skb)->nr_frags;
- 	}
--#else
--	count += skb_shinfo(skb)->nr_frags;
--#endif
- 	if (ixgbevf_maybe_stop_tx(tx_ring, count + 3)) {
- 		tx_ring->tx_stats.tx_busy++;
- 		return NETDEV_TX_BUSY;
--- 
-2.39.5
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
