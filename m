@@ -1,222 +1,208 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59F93A7E03
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 21:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF5D397AA2
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 21:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769032652; cv=none; b=fUMHfac8A4ArQln39ec9WDr9W6InmK2886kkOgZGJleSPpLS7Gyfamfygkx6oADGvETM7Hwo6xENLC/pD2AK09mjId05v8rkY6PXTlyvE+aw8MholnHefD85476S+xy2OkA+AwpdqEvkB1SCk7HDU6nU9ARx5BlNydeV66BkOJ8=
+	t=1769032699; cv=none; b=LynDN4NlAkhnxV6rmziLHqYouFbEzWbH8Ecss+bVQ11jrXa2OpcvH0HEM0id4QxIcfavQbT2owAaCZHB4a74NC290WhuF9EaN9Jl1JfqGgebd9AS8EHcltV/sGCts2+SRhT0lZa4Fk5QYxQGioxoZRDyVOxbRH0vuAmQ/9fAXiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769032652; c=relaxed/simple;
-	bh=qeE7SfD7B0fwtP4xUce+epqihIWZjzxaI5ZTmEm5PLU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=O3S+0Jql6zmaKwS9fHlR3FrazN5wDXK8XV/ksyXeElqHOPbd6xO2UadKVHAunw7YvRc9VXgiH0VhO4YO3UwdkwxodlgI9fs1xIR+sUHXFrELtcGklUOUfJfuPYjs8DS12QndAxYfkTYHou8HAeKImE7crIYPztxszN69PrUKGoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0jKcQgqc; arc=none smtp.client-ip=209.85.222.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1769032699; c=relaxed/simple;
+	bh=/yKCpsIj9hcydvycHeYv6HvK2aJw6M8A5KybgIgY6/8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=JpaeM15XaohVAJdr3bnAwGmMC3Y6nXXwYmQR6QeOs5skxNhnfLcbc3xWlU70Vmgj4x0rfPFNtb03ZeR2Y25CgCRGHIhkaurHhhRrg8ton56ccT+DbYkyrbnSzuUsfw5RpqPOFixG0N+gHJ5hTS0rG+yeMcX0xGCffm7lbQ8nMXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Wj2ShEwh; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0jKcQgqc"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c52dcf85b2so113157185a.0
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 13:57:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Wj2ShEwh"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65832eb9723so583405a12.1
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 13:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769032650; x=1769637450; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OYZxkLavyVK6XI9YmjXkHy7gFRvrVN8Yhm/8l9rm4Sw=;
-        b=0jKcQgqcZH7LmZLzkb3rTbCbibhwjLBsRf6Q+GOwC9EGBWDFwXmoSXKaYyy5ojmZBQ
-         MeHEozGUpMygwhoMaSMBCAeTrV1bd00lQoDs756WYKJ2pE2EnrIHeFNMnE9+XL7LagJA
-         kHU4SZXYlY7uAbbD1+7ve43ZV6SKYFcAcoENcKskgrG1ZJzv3Wq6j3uHeMzl/JRXGXRC
-         +n/MXvUjdLGho9vnf1BxbVJ0AjykoHimjvWjFI3ntUSmFGtPa0yWTsCAqbOZrFGX55d9
-         B/QSXIA0K7i+gYtt4nM2FCCWdwtHPC8EnIonHf2tbQX1CozAJLTCWnsXwFhm5HkxOGqU
-         Cnng==
+        d=purestorage.com; s=google2022; t=1769032695; x=1769637495; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SOclwln4Yuhwd+u30hsvbxyUcpBMQTQrdgoQfNtzuD4=;
+        b=Wj2ShEwhheyR3mENw+w7S8H2u3JwUf9tQkzW0cmTJwuludMQmABG8nh493GsYu4yFP
+         pGNQ3VxTmkc34d3ty5HQzl6JgfcxDSGEpDuzx7AMZNroppAoz7QrS6OIPGYBrQD5QqBY
+         PkADYOxQixIbIDi669XT3W6DQgEnzsnDj8PTGJLiIQ2HqW9kqxONtLVrKeTRbvgy1AMt
+         qSW8kTwhVNkqgEZ8CEDaFLbXRw0dfj/cW/lqI3p52tC05yZo9yLdZCBb/5HpHM8Tf1gl
+         tcnoeOO3NFLUm6MeldosNeK05cdFepdQtZb5w0zHnyQANiIWHr6iBnuxW/B8Vc/oSEie
+         DipQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769032650; x=1769637450;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OYZxkLavyVK6XI9YmjXkHy7gFRvrVN8Yhm/8l9rm4Sw=;
-        b=caB1IwCXesFfQOBphr5QnfvBA3vxjqM7Ugpo6Yxx/XAaIOPqhzZYcCdzYRztKrA0kK
-         ched3v7r/y7S9qQ+c/5OgGPhQ0tnLRzZXqy6LlnQv6n6NjCT9PEWYZL+qFFBbIYzsxLV
-         A1QBb6pEnTKW6/mdNNmyWJ8G3Rhgcy3GajXN9aQBGRhUCzHkxIvvlkC/G5ySGkmGpaQb
-         9dq8J6Qm94fgLBWMniD4aorMXgK9PRsfJA9mOIpmecuExJnVDE5lxz1YJBckfWGtIhlI
-         QmpkCXL3nga5bb40UcD5UWh7xZsEj/lqHHEAY40quv3AAqqh7t20v7h6mhoFOoE6Lj8+
-         keRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdoLsJoQ4HnunypNU1C3qhBA7acMY4PWI1IY4/hHxHgXugYQ2o7q4djMJDyIm6gx1rNpYZwI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzkfk0gPh3ZyEGT7AWq4mZeR9dbp9knkDz8k2grIAk7rWAfgyet
-	chkpsOGjRAv2R65EAtz9mM/XT2vntJxTrjkXjnkv0NP1x/71CMcadxkx9yYlRTJoWYzOEZgskE0
-	kLqSP6ct7QablVg==
-X-Received: from qkbbq31.prod.google.com ([2002:a05:620a:469f:b0:8c5:368b:f652])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:370b:b0:8b2:e402:20b4 with SMTP id af79cd13be357-8c6a68d3754mr2709280985a.10.1769032649650;
- Wed, 21 Jan 2026 13:57:29 -0800 (PST)
-Date: Wed, 21 Jan 2026 21:57:28 +0000
+        d=1e100.net; s=20230601; t=1769032695; x=1769637495;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SOclwln4Yuhwd+u30hsvbxyUcpBMQTQrdgoQfNtzuD4=;
+        b=mSow7PHGJ5zjwPWOuCBfvXFPdTJU+DN79JwoHfiGgnPuE58zoBur6Mj6cDAdqMFbew
+         a/xYBBVu4hDVv1y9YnFHXJNRJX8cUKXeTE08LvyI/6JfgaBwiXLhraoLrhSHitHQ0Zk5
+         Goo5LdDhtUGjSDjwGafpeA0ZvQGLk+KKK1ztHn5rLmSkmm0fJOd9+4eopH1eWpWEkbw7
+         oLfFtOFEHfuVRJj4npW0zPnzfMzbh8lmIEugHJzuH/xNClAkLaoTA0ltkVbtj6hbcb/9
+         CkOIAoMBbemiUl7eSSlRijmbbIJLK6XNV7IMSjYxHiG6xIa6AiSgugoHa3hWoGGmNyXZ
+         7RwQ==
+X-Gm-Message-State: AOJu0YyE+jfikE288JDSVnZk24GpwlaQMBgPLelPhNNXcCRvXpdUltL5
+	2WpypCtwj3NrGnMd6cDymngPhA7D1iK4cCzixNxFs19PlI2MzoHl6irH+pwsgo40a4DIyEsVg+S
+	9EeyCpuLItZVExgxljUzmwiX58UIAT8ApPkYus0DIwVshcdBQzXlCFdz+S2Ms9BQAwEJot8I/uS
+	PPQ7WjWITqc0MYfrFBSCNCLaIBchISc9+5BYOjbpQlt5khGdc=
+X-Gm-Gg: AZuq6aJw3Mc9EMAv7H+tjr/oIoEHILQR3SFc5ZTOZYX7vnzP4hVj4e75JfNeUbQ5CKE
+	y02KSk6HjmncB6Zi9BWaZXmSQ0XmlTnHI+NVtY+/pzrgqauYvzww1yMmeLRRpfhXW4g2U88qDUj
+	vc4mG440FUxnwV+TERQq+si9x+vjgck/e1XQVs1+Fc7gjwxzmm/512jll3MQQ9XqomQI95avnXt
+	ut0dZjZRJjfuiQm6vQpvvk8t1TxYPID9ishxzhTpo3U5HXnGJBbZWpVYZfUbQk19KWHVDZWoTjz
+	wHkd5DC15eYtTRePaBCTci0ik4wlVyJ9oIR5X4y9YU3yVffHt0rKoWmMb/EGUh+fpbjUzMOjEEL
+	3cin+wMocmeIcgkZ8DxKPACjlO1TLUOUPb79RvTPcPuoQJT7DkI2oyeauFJ/l+bMkQuACjrYpt9
+	mjCcd9OAMkvEMr0uaoLlj8jqB/mkW9Hs3brlQq
+X-Received: by 2002:a17:907:94c3:b0:b73:4fbb:37a2 with SMTP id a640c23a62f3a-b87968d1791mr1760571566b.5.1769032695297;
+        Wed, 21 Jan 2026 13:58:15 -0800 (PST)
+Received: from dev-rjethwani.dev.purestorage.com ([2620:125:9007:640:ffff::71f8])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-b87959c9fbbsm1652184266b.38.2026.01.21.13.58.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 13:58:14 -0800 (PST)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	borisp@nvidia.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	leon@kernel.org,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH v4 0/3] tls: Add TLS 1.3 hardware offload support
+Date: Wed, 21 Jan 2026 14:57:24 -0700
+Message-Id: <20260121215727.3994324-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260121215728.560645-1-edumazet@google.com>
-Subject: [PATCH net-next] ipvlan: remove ipvlan_ht_addr_lookup()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Mahesh Bandewar <maheshb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-ipvlan_ht_addr_lookup() is called four times and not inlined.
+Hi all,
 
-Split it to ipvlan_ht_addr_lookup6() and ipvlan_ht_addr_lookup4()
-and rework ipvlan_addr_lookup() to call these helpers once,
-so that they are (auto)inlined.
+This patch series adds TLS 1.3 support to the kernel TLS hardware offload
+infrastructure, enabling hardware acceleration for TLS 1.3 connections
+including KeyUpdate (rekey) support.
 
-After this change, ipvlan_addr_lookup() is faster, and we save
-350 bytes of text on x86_64.
+Background
+==========
+Currently, the kernel TLS device offload only supports TLS 1.2. With
+TLS 1.3 being the current standard and widely deployed, there is a
+growing need to extend hardware offload support to TLS 1.3 connections.
 
-$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-add/remove: 0/2 grow/shrink: 1/0 up/down: 123/-473 (-350)
-Function                                     old     new   delta
-ipvlan_addr_lookup                           467     590    +123
-__pfx_ipvlan_ht_addr_lookup                   16       -     -16
-ipvlan_ht_addr_lookup                        457       -    -457
-Total: Before=22571833, After=22571483, chg -0.00%
+TLS 1.3 differs from TLS 1.2 in its record format:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mahesh Bandewar <maheshb@google.com>
----
- drivers/net/ipvlan/ipvlan_core.c | 53 +++++++++++++++++++-------------
- 1 file changed, 32 insertions(+), 21 deletions(-)
+  TLS 1.2: [Header (5)] + [Explicit IV (8)] + [Ciphertext] + [Tag (16)]
+  TLS 1.3: [Header (5)] + [Ciphertext + ContentType (1)] + [Tag (16)]
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 2efa3ba148aa7efed999dc3c06ccbb787eca92e5..dea8b9fead5d32fcccc978bb304a77bb305d2c9e 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -48,11 +48,9 @@ static u8 ipvlan_get_v6_hash(const void *iaddr)
- }
- #endif
- 
--static u8 ipvlan_get_v4_hash(const void *iaddr)
-+static u8 ipvlan_get_v4_hash(__be32 addr)
- {
--	const struct in_addr *ip4_addr = iaddr;
--
--	return jhash_1word((__force u32)ip4_addr->s_addr, ipvlan_jhash_secret) &
-+	return jhash_1word((__force u32)addr, ipvlan_jhash_secret) &
- 			   IPVLAN_HASH_MASK;
- }
- 
-@@ -73,16 +71,28 @@ static bool addr_equal(bool is_v6, struct ipvl_addr *addr, const void *iaddr)
- 	return false;
- }
- 
--static struct ipvl_addr *ipvlan_ht_addr_lookup(const struct ipvl_port *port,
--					       const void *iaddr, bool is_v6)
-+static struct ipvl_addr *ipvlan_ht_addr_lookup6(const struct ipvl_port *port,
-+						const void *iaddr)
- {
- 	struct ipvl_addr *addr;
- 	u8 hash;
- 
--	hash = is_v6 ? ipvlan_get_v6_hash(iaddr) :
--	       ipvlan_get_v4_hash(iaddr);
-+	hash = ipvlan_get_v6_hash(iaddr);
- 	hlist_for_each_entry_rcu(addr, &port->hlhead[hash], hlnode)
--		if (addr_equal(is_v6, addr, iaddr))
-+		if (addr_equal(true, addr, iaddr))
-+			return addr;
-+	return NULL;
-+}
-+
-+static struct ipvl_addr *ipvlan_ht_addr_lookup4(const struct ipvl_port *port,
-+						__be32 addr4)
-+{
-+	struct ipvl_addr *addr;
-+	u8 hash;
-+
-+	hash = ipvlan_get_v4_hash(addr4);
-+	hlist_for_each_entry_rcu(addr, &port->hlhead[hash], hlnode)
-+		if (addr->atype == IPVL_IPV4 && addr->ip4addr.s_addr == addr4)
- 			return addr;
- 	return NULL;
- }
-@@ -94,7 +104,7 @@ void ipvlan_ht_addr_add(struct ipvl_dev *ipvlan, struct ipvl_addr *addr)
- 
- 	hash = (addr->atype == IPVL_IPV6) ?
- 	       ipvlan_get_v6_hash(&addr->ip6addr) :
--	       ipvlan_get_v4_hash(&addr->ip4addr);
-+	       ipvlan_get_v4_hash(addr->ip4addr.s_addr);
- 	if (hlist_unhashed(&addr->hlnode))
- 		hlist_add_head_rcu(&addr->hlnode, &port->hlhead[hash]);
- }
-@@ -357,21 +367,24 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 				     int addr_type, bool use_dest)
- {
- 	struct ipvl_addr *addr = NULL;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	struct in6_addr *i6addr;
-+#endif
-+	__be32 addr4;
- 
- 	switch (addr_type) {
- #if IS_ENABLED(CONFIG_IPV6)
- 	case IPVL_IPV6: {
- 		struct ipv6hdr *ip6h;
--		struct in6_addr *i6addr;
- 
- 		ip6h = (struct ipv6hdr *)lyr3h;
- 		i6addr = use_dest ? &ip6h->daddr : &ip6h->saddr;
--		addr = ipvlan_ht_addr_lookup(port, i6addr, true);
-+lookup6:
-+		addr = ipvlan_ht_addr_lookup6(port, i6addr);
- 		break;
- 	}
- 	case IPVL_ICMPV6: {
- 		struct nd_msg *ndmh;
--		struct in6_addr *i6addr;
- 
- 		/* Make sure that the NeighborSolicitation ICMPv6 packets
- 		 * are handled to avoid DAD issue.
-@@ -379,24 +392,23 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 		ndmh = (struct nd_msg *)lyr3h;
- 		if (ndmh->icmph.icmp6_type == NDISC_NEIGHBOUR_SOLICITATION) {
- 			i6addr = &ndmh->target;
--			addr = ipvlan_ht_addr_lookup(port, i6addr, true);
-+			goto lookup6;
- 		}
- 		break;
- 	}
- #endif
- 	case IPVL_IPV4: {
- 		struct iphdr *ip4h;
--		__be32 *i4addr;
- 
- 		ip4h = (struct iphdr *)lyr3h;
--		i4addr = use_dest ? &ip4h->daddr : &ip4h->saddr;
--		addr = ipvlan_ht_addr_lookup(port, i4addr, false);
-+		addr4 = use_dest ? ip4h->daddr : ip4h->saddr;
-+lookup4:
-+		addr = ipvlan_ht_addr_lookup4(port, addr4);
- 		break;
- 	}
- 	case IPVL_ARP: {
- 		struct arphdr *arph;
- 		unsigned char *arp_ptr;
--		__be32 dip;
- 
- 		arph = (struct arphdr *)lyr3h;
- 		arp_ptr = (unsigned char *)(arph + 1);
-@@ -405,9 +417,8 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 		else
- 			arp_ptr += port->dev->addr_len;
- 
--		memcpy(&dip, arp_ptr, 4);
--		addr = ipvlan_ht_addr_lookup(port, &dip, false);
--		break;
-+		addr4 = get_unaligned((__be32 *)arp_ptr);
-+		goto lookup4;
- 	}
- 	}
- 
+The key difference is that TLS 1.3 eliminates the explicit IV and
+instead appends the content type byte to the plaintext before
+encryption. This content type byte must be encrypted along with the
+payload for proper authentication tag computation per RFC 8446.
+
+Patch 1: TLS 1.3 hardware offload support
+=========================================
+Changes to tls_device.c, tls_device_fallback.c, and tls_main.c:
+
+- Extended version validation to accept TLS_1_3_VERSION in both
+  tls_set_device_offload() and tls_set_device_offload_rx()
+- Modified tls_device_record_close() to append the content type
+  byte before the authentication tag for TLS 1.3 records
+- Modified tls_device_reencrypt() to use prot->prepend_size and
+  prot->tag_size instead of hardcoded TLS 1.2 values
+- Pre-populated dummy_page with all 256 byte values for memory
+  allocation failure fallback path
+- Updated tls_device_fallback.c to handle TLS 1.3 IV construction
+  (XOR with sequence number) and version-specific AAD sizes
+- Rekey handling: HW offload key update (rekey) is not yet supported.
+
+Patch 2: Hardware offload key update support
+============================================
+Changes to include/net/tls.h, net/tls/tls.h, tls_device.c, tls_main.c,
+and tls_sw.c:
+
+- Extended tls_set_device_offload() and tls_set_device_offload_rx()
+  with new_crypto_info parameter for key updates
+- During rekey, the old HW context is deleted (tls_dev_del) and a new
+  one is added (tls_dev_add) with the updated key material
+- Graceful degradation: if HW key update fails, the connection
+  gracefully degrades to software:
+  * TX: TLS_TX_DEV_CLOSED is set and sk_validate_xmit_skb switches to
+    tls_validate_xmit_skb_sw for software encryption
+  * RX: TLS_RX_DEV_DEGRADED and TLS_RX_DEV_CLOSED are set for software
+    decryption
+  * In both cases, tx_conf/rx_conf remains TLS_HW
+- Record sequence management: during TX rekey, old pending records are
+  deleted and unacked_record_sn is reset to the new rec_seq
+- Split tls_set_sw_offload() into tls_sw_ctx_init() and
+  tls_sw_ctx_finalize() to allow the HW offload RX path to
+  initialize SW context first, attempt HW setup, then
+  finalize (memzero new_crypto_info, call tls_finish_key_update)
+- Added TLS_TX_DEV_CLOSED flag to track TX hardware context state,
+  to avoid double tls_dev_del call, symmetric with existing
+  TLS_RX_DEV_CLOSED.
+
+Patch 3: mlx5 driver enablement
+===============================
+- TLS 1.3 version detection and validation with proper capability checking
+- TLS 1.3 crypto context configuration using MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3
+- Correct IV handling for TLS 1.3 (12-byte IV vs TLS 1.2's 4-byte salt)
+- Hardware offload for both TLS 1.3 AES-GCM-128 and AES-GCM-256
+
+Testing
+=======
+Tested on Mellanox ConnectX-6 Dx (Crypto Enabled).
+
+Both TX and RX hardware offload verified working with:
+- TLS 1.3 AES-GCM-128
+- TLS 1.3 AES-GCM-256
+- Multiple KeyUpdate cycles (rekey)
+
+Test methodology: ktls_test : https://github.com/insanum/ktls_test/tree/master
+
+Please review and provide feedback.
+
+Thanks,
+Rishikesh
+
+v4:
+  - Split single TLS patch into two separate patches:
+    * Patch 1: TLS 1.3 basic HW offload support
+    * Patch 2: HW offload key update (rekey) support with graceful degradation
+  - Removed record_type check from tls_device_record_close()
+  - Removed Broadcom bnxt_en out-of-tree driver mention
+  - Link to v3: https://lore.kernel.org/netdev/20260102184708.24618-1-rjethwani@purestorage.com/
+
+v3:
+  - Added note about Broadcom bnxt_en out-of-tree driver used for testing
+  - Link to v2: https://lore.kernel.org/netdev/20251231192322.3791912-1-rjethwani@purestorage.com/
+
+v2:
+  - Fixed reverse Christmas tree ordering in variable declarations
+  - Combined 'err' and 'i' declarations (reviewer feedback)
+  - Link to v1: https://lore.kernel.org/netdev/20251230224137.3600355-1-rjethwani@purestorage.com/
+
+Rishikesh Jethwani (3):
+  tls: add TLS 1.3 hardware offload support
+  tls: add hardware offload key update support
+  mlx5: TLS 1.3 hardware offload support
+
+ .../mellanox/mlx5/core/en_accel/ktls.h        |   8 +-
+ .../mellanox/mlx5/core/en_accel/ktls_txrx.c   |  14 +-
+ include/net/tls.h                             |   4 +
+ net/tls/tls.h                                 |  14 +-
+ net/tls/tls_device.c                          | 319 +++++++++++++-----
+ net/tls/tls_device_fallback.c                 |  34 +-
+ net/tls/tls_main.c                            |  31 +-
+ net/tls/tls_sw.c                              |  77 +++--
+ 8 files changed, 379 insertions(+), 122 deletions(-)
+
 -- 
-2.52.0.457.g6b5491de43-goog
+2.25.1
 
