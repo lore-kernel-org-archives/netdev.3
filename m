@@ -1,84 +1,102 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CD63B9617
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AF73793C8
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769022820; cv=none; b=jdIFZwplrZXaiWHh9V09S1qPawIolQ5/2AFcHu1ZMK7znKkXwXrM+HbcprGUdrCCW24wNC3jN31ZdZQkbBk7/kUyJkzb0aqrGGASnzeNYwtzEau6jYO4IhuXHKPA8qKSj9xLtG5tsKOiu80xcjsDmv+Fq57LXOVId6RwoCet6Xw=
+	t=1769024580; cv=none; b=SwXjBDPlAk/XNtgbvCacezN0UCbYsSprhpEM06A4FXt+Z/EbjRJcJ4vKSc4fszeaoxZD0Bc1WbQWWja+BnDR0J5nsOjlFAxdnKTMp5yy55IjDWnDQ4iJJNESZS8Aur9MIDnn6vXqvB5wPaFZAbYcIX4kPtjjH4evi1fPrtx15Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769022820; c=relaxed/simple;
-	bh=vjOVXSo3T85HEyir+H+bPxqWVOrjA1RPvJMn1qN1v64=;
+	s=arc-20240116; t=1769024580; c=relaxed/simple;
+	bh=F1jquYdbse0f+h5PoDNJ9pGakn5CxPZjQwcYQH1T+jk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hZpiboBqSAWXavJsrqAIUUXsmyOOaRpLhr4GgZmxVnDQk3eerYrQft3QtAN9jneGATggxTQBUyr7B596EeEbRijc+eEgJxPHSchsGytubUIiIpynuPQOFUC9EYrMp6HSKIER6VWKDYz3bpf3wpvssCDxdgpEACSVWlhrf0pxpuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=V0ZyBtvy; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=Ojr2BpKQmDsdaofLmajzJoFbg9LSZdBNmky79B/DW1yB+sql8NgN9uarnPgjlxQWS/4nFf5SrlcQEsKWxnlM0IF3bjwVD8y/s0918K6wZtpXzHAv/9QfZ6ENnCcNwcTtiVHIH/udZ10ea3yBNmVMYfJftWlpXDY8WXubWxpve6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=LjYZfC7X; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="V0ZyBtvy"
-Message-ID: <4423cc78-ec0c-4171-bf34-cc9b6596fa5a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769022815;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E99BhWiOtvsKj9LVOMwPQhY+2wWMRQYA7EVhZuxyw14=;
-	b=V0ZyBtvyKJZdMGqTU0STyz8AP7VS5c8AEuDECKwstnTitLABAxUEHAO0njHeGLiKpo1twQ
-	ya7whERJswcaLc3EURTQ6V8hrKIaShPgeu3eQw3MjLGYN9uyhuD0LpExN//l+7hqliPdAo
-	Wkl6hFyh6efkq/Ly73mg86SKA7f4QSI=
-Date: Wed, 21 Jan 2026 11:13:29 -0800
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="LjYZfC7X"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b70abe3417so399637eec.0
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 11:42:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024578; x=1769629378; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DQvGCJmxpkROPmN9OrxKrrBVJtlOjFG6UFxmO3kVd3M=;
+        b=LjYZfC7XW0ReDqdceYyCRzzO8cO0INzBeniWDhuOMniY2c2GQJurt3n3LxFA6n3Ikf
+         IpCsWwWTZ9NOZhLEqy3f1zxDjNXj4kVtJVkNvXelBaKTmRLNclmi1H1TkMzLQWUtk0kq
+         xztRmMel9QKg2MPg9Ujp30IGlj7KhYvOA1iEpS3W2bu3pP06GIwPa90jnb7qK5kaM3HN
+         AqQXhBFsOQ3yA0MDSOgYJJBdKCIvhEadBASwf2ardiv2U0dh18g/99yGnsMl7cQm7y27
+         5W0q8INYGL73nq8mQMohbbQIuooL2yc2lqbMeW43c5oUvi9gOYZxjEOoRWu14MyzEXpO
+         TR5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769024578; x=1769629378;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DQvGCJmxpkROPmN9OrxKrrBVJtlOjFG6UFxmO3kVd3M=;
+        b=b/P23WKAXzEjYM0BIHZ11XGJhrm3JH83ZmgRR22XWX8nG/qANR9XudvLrw3ieH0y3g
+         60dtCIwS1qUaOQC3h/2D/Vw15kIEeO0+zot0riQoCCav7KwUYy6D+EW73u43osbSIJzl
+         up1OjesB8maK6jOTCpbaMZBtsmZy8FUkhF548dC2XOB4uruuB+5qSX6P/f5e/rTYf0he
+         f8OUZqOl2qC6cnw+iMBUpdEnW3RFUnwhF2lyp8kO2qpzAwqxg0QfWJbyeKN8rVuc5Y3F
+         NxkZYYWLgiE2op1iGIFil6oSQq69ute8D6t8DvY9KhjZmGbfCuqkdR4NIRQYzVFT3a8v
+         q5sA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5CFnEyhSdh6kUm0Qv2/yMxZvSb4Otaf1ULthrLrQfAED6uG4LBgDz9l/py8LJDrrb8FWDf3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySSexQ0rcvzGscAF1MkTxnT4+DFgC/fUBMNBJLL42nHfTdUnlb
+	VuCE0cNmku0u5BYcVdFAlilVsCVocNWbbmF7MZzF8ArMqpVUHq62J9ellQGl5zE8Gg==
+X-Gm-Gg: AZuq6aKBQk8F+KxxKMWDYKHEluJDl5tmMOS3ADlObnDtAxDOssNxiZC9041PVd13xjh
+	9JBYRDt+xmd+vdH6HO2g0ea4iawmQAZCFnR+4JHZ+2kLMMefAo4ebsYng3q3vm/+G5oy41qCqws
+	O49Gc+kUalP3NIgwxtrlfO8ZCyaFzvaajZGt0X/aTSxMu11tMuTg8J7KR6z6zEbvV6p89wXPFH8
+	TtO2HVWPygv1d85he2+kqgjtDVAprr5nebSacGFSWaXXSJffVnJxRf8fKHrsAE6D8/qXzKXdcrv
+	9RCcCSCwBkLTbdWHQ9ZYXjr3lFE6kRyC5J7iy8Lf7bgfzjAj2ZYIi4mhqEntVnFrVYFXyZtATPg
+	PWvimUEWm8a5ICueI0VAAfwb4tU2+eGHGwESXqEesZscjoDT/N+2VJV6xQ91qjQhxGwJhFlqMuM
+	s6MWO/VjCfvMUIUbY0zKjhEpehv9Di28Ei
+X-Received: by 2002:a05:7300:cd8a:b0:2b7:1320:f280 with SMTP id 5a478bee46e88-2b71320f4f2mr1913474eec.15.1769024577414;
+        Wed, 21 Jan 2026 11:42:57 -0800 (PST)
+Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7171be2dcsm3022869eec.11.2026.01.21.11.42.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Jan 2026 11:42:56 -0800 (PST)
+Message-ID: <e58a29bc-3512-47ce-80cd-6c96a879c9cc@mojatatu.com>
+Date: Wed, 21 Jan 2026 16:42:50 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next 4/4] selftests/bpf: Remove tests for
- prologue/epilogue with kfuncs
-To: Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Amery Hung <ameryhung@gmail.com>, netdev@vger.kernel.org,
- kernel-team@cloudflare.com, bpf@vger.kernel.org
-References: <20260119-skb-meta-bpf-emit-call-from-prologue-v1-0-e8b88d6430d8@cloudflare.com>
- <20260119-skb-meta-bpf-emit-call-from-prologue-v1-4-e8b88d6430d8@cloudflare.com>
- <d4563561-c507-4876-8a03-40e4dca2a34e@linux.dev>
- <87o6mnthwf.fsf@cloudflare.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/7] net/sched: act_gate: add RCU support for
+ parameter update
+To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
+ <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260121131954.2710459-1-p@1g4.org>
+ <20260121131954.2710459-3-p@1g4.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <87o6mnthwf.fsf@cloudflare.com>
+From: Victor Nogueira <victor@mojatatu.com>
+In-Reply-To: <20260121131954.2710459-3-p@1g4.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 1/21/26 1:49 AM, Jakub Sitnicki wrote:
-> On Tue, Jan 20, 2026 at 03:48 PM -08, Martin KaFai Lau wrote:
->> On 1/19/26 11:53 AM, Jakub Sitnicki wrote:
->>> Remove pro_epilogue_with_kfunc test program and its supporting code in
->>> bpf_testmod. This test exercised calling kfuncs from prologue and epilogue,
->>> which is no longer supported after the switch to direct helper calls.
->>
->> Is it easy to change it to test calling helper in pro/epilogue?
+On 21/01/2026 10:20, Paul Moses wrote:
+> Make gact->param RCU-protected and reclaim old params via call_rcu(). This
+> follows the pattern used by other actions: act_pedit swaps params with
+> rcu_replace_pointer() and defers free via call_rcu() (commit 52cf89f78c01bf),
+> act_connmark uses rcu_replace_pointer() under tcf_lock (commit 288864effe3388),
+> and act_tunnel_key does the same under lockdep (commit 445d3749315f34).
 > 
-> I gave it a shot and the obstacle is that bpf_cgroup_from_id and
-> bpf_cgroup_release are not exported symbols, so they can't be referred
-> to from bpf_testmod. We'd have to move the whole thing to lib/test_bpf
-> so it's a built-in.
+> Dump readers in act_ct and act_pedit already use rcu_read_lock() +
+> rcu_dereference() (commits 554e66bad84ce4 and 9d096746572616), so act_gate
+> must keep old params alive past updates as well.
+> [...]
 
-I was thinking of creating a helper in bpf_testmod.c but then noticed it 
-may fail in the JIT that needs bpf_jit_supports_far_kfunc_call(). A 
-cleaner way could be to use the existing pro/epilogue in bpf_qdisc ops. 
-I was wondering if the __xlated test here could be quickly adapted in 
-patch 4 but it seems that's not the case. The existing bpf_qdisc is 
-testing it quietly without the __xlated, so no need to hold up this set.
-
-For patch 3 and 4,
-
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+I think you could've transformed patches 2, 3, 4 into a single patch.
+Since all of them are RCU-related changes and they sometimes overwrite
+each other.
