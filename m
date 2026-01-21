@@ -1,169 +1,146 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD7D356A23
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB15350D5E
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769024707; cv=none; b=j4j12mXLxXzzLti3KxGC13a4LxVWC560dtEr9VE+qVt4wwoIH17qjWl+RRJNzjPfktW/qxyu1Xah2W6DHaqa5P52IASh1QxbOw4XJOc6V/qdhxIWsyv3SybrHMPFiApEBtAOHKBpLPkuFYQ5xanSeo5WP3yxvIt7IMN9dNL7EMU=
+	t=1769024857; cv=none; b=CREdsuZwLd5tBgZZECHh3Ybm3j4eKu8uIIyO+p6GD1fbPeDlF0MLkDh5PXxrQiKfq+MYhBwyWjYAd7B+aVWU11wO9vE5baIzcmkCJICqxPjrGYwhMh73PqsGv0Yot47Ncpny17AfRDI104DChN5xEWoGGF1EHxiagOKaY3RpVe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769024707; c=relaxed/simple;
-	bh=gxpY8uP40p/YyKkhlCX8hPEuAcbvp7DOnnr5ZdbMxFY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAbLLsULa1fVwDcapOwIIq3kbnrPcg3fk/RGMJA39HpOkxEvoRixvEs3flQUmv8sWydFURlzOhFgYqBIWYflYNEvnlYR7A4pvlOJiuP4iwpdM3HLBPYHKNk2ZD9JF5aWox6BkbIc+OG8tA6DTuQQUJjawXeTdqm9C2Da/M6hmpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HDGcRrzc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hibXffPf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HDGcRrzc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hibXffPf; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1769024857; c=relaxed/simple;
+	bh=orzjDnZyozRaJvwCpqJ+jtvJM5mx9ik0LsEMc44wRrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lQnPPSFB/O8M71dRnTMrjNGseagfWOruoIhlhKxBURVCfTPBodQ9ojha8uyl81TI7b5GYf1TNW7kjf4cZeUtvjfaQTx/CW3PynCFS5jCRIxBiNxiTDsT6wu5UCiTueFFrFsANOo2xHrNTM1U89K/a2OjXIu5/DrnVbaP6ZaF+0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=OpGS25re; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HDGcRrzc";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hibXffPf";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HDGcRrzc";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hibXffPf"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7FF725BD52;
-	Wed, 21 Jan 2026 19:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769024702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TXJ03vNvRbDQgJokB67VHtfUCQYwr8p62iGM7d1KfbQ=;
-	b=HDGcRrzc1P/av3lt3ytnR8EiZSHmIMxIZTLT6mQFAqp0ZbCMrY90+O+C9okpOc9aDr6vbO
-	PJNE9YLNzDCJUMaBiosOfL9aMw4EMhCD9X9eE3uj9dKuBnOmOB5KnRRsdEqAxGAFnqFFRq
-	eG7dDpsin9AfNVFxYc2dxtiE8FQfC64=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769024702;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TXJ03vNvRbDQgJokB67VHtfUCQYwr8p62iGM7d1KfbQ=;
-	b=hibXffPfpCVO/YZndHSNm5nfdG9WmcUjWuThNA8oKKxHjHuVgcmaEbA7y6ceGLSWIzpAUY
-	iE6l+UmeD5qEwCAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HDGcRrzc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hibXffPf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769024702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TXJ03vNvRbDQgJokB67VHtfUCQYwr8p62iGM7d1KfbQ=;
-	b=HDGcRrzc1P/av3lt3ytnR8EiZSHmIMxIZTLT6mQFAqp0ZbCMrY90+O+C9okpOc9aDr6vbO
-	PJNE9YLNzDCJUMaBiosOfL9aMw4EMhCD9X9eE3uj9dKuBnOmOB5KnRRsdEqAxGAFnqFFRq
-	eG7dDpsin9AfNVFxYc2dxtiE8FQfC64=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769024702;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TXJ03vNvRbDQgJokB67VHtfUCQYwr8p62iGM7d1KfbQ=;
-	b=hibXffPfpCVO/YZndHSNm5nfdG9WmcUjWuThNA8oKKxHjHuVgcmaEbA7y6ceGLSWIzpAUY
-	iE6l+UmeD5qEwCAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB60A3EA63;
-	Wed, 21 Jan 2026 19:45:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KIqiMr0scWnOHwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 21 Jan 2026 19:45:01 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	haleyb.dev@gmail.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 net-next v3] selftests: net: add ipv6 ping to local address from localhost
-Date: Wed, 21 Jan 2026 20:44:09 +0100
-Message-ID: <20260121194409.6749-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260121194409.6749-1-fmancera@suse.de>
-References: <20260121194409.6749-1-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="OpGS25re"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12339e2e2c1so157757c88.1
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 11:47:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024854; x=1769629654; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ghQ1KD4bD3UuMNHS90xQzdAHsii/uYgvSXFMZHQgAwQ=;
+        b=OpGS25reeIVL229DD6aBx+eu31A+v4FeZpRy5frVWoJ/rFNOn3/X3nu54fJop8yKml
+         lVqh+E2jaw/N+ZQd6fdb1i4mBxbc1BbTbeIqFdnIBIKQivhfXXzwJsm2SgY+izX4ofeE
+         wzXCuzXlQAqLe0zGjsX3hxcGOAr1oB064ToxNiB6yWPamk8X1lgej7YoL3wb5guhYrZG
+         7OWT0K7o9F+jxdyapZvQhYxF15JIsBMd/fS5RSAfYwYvBF29g0PHC0IP7GI61pShd3tt
+         ECTsoasbouoFOqs/dd4lC10Cnm5rsYnjhiXiMncLYx+WMxRlSipi5n6VnwxmPqWpNJTu
+         r9sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769024854; x=1769629654;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ghQ1KD4bD3UuMNHS90xQzdAHsii/uYgvSXFMZHQgAwQ=;
+        b=xLWgPfmLU4w2NRHTTYd1Ailc2L7a8aOo5Fti49tta4KtvZ+a/+EL9UBkuqt0Xxxg91
+         3+p97PuQV6disNFk6DTzoXBeVLmODubd9dHqVx0LCDa6r/2NBAHOVUbx9rbnOpSEJBhL
+         QogT0AwrwMMaYGEYZErLJ7tGbtxV/XzmJTgyqFkxNToPtKhi0cus9L1UjvreAve9Tyqs
+         vKwwu0FcE2DvNyED1UwJCX5Rdjy+mENGpw8YVHELdPcZXM1jfFO6bzR6jaOeRXNdfYFg
+         Z2a9ovDgiWLS9o5QK6cGAaQUBim1j1QcUA7vP0N+JV0F5p7V/xEky7pgwC0Y8FR6j5qV
+         iPnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXENyhobMIjzpB0krUSE0G9E+mRBvmyHReqYcff/c+IvF5NIw5R/tGs/WRizEWyllq3TaZ1SNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyjr2YnhapdOQCpls6xQx4gjNQYO8LRJX0B2OV0TgewIyAR1f7J
+	HUGxXP5RZ05Tig2Uai51DgUJ0WQPdHi7fUSObzCOiBXPJ8uz2lrjL8Qg9bXS+OIfOg==
+X-Gm-Gg: AZuq6aJj5Hf55lp2UIeVjOcqZxGb+Ji/nklhvCR6JILmvwp5XBMs8IrY4Xp63QSd0l/
+	afoxH8sIa8W/4HrXUabBK/t/68VVwn3ZMRjpQmAEppiHxoYgeUiOIRXMPDo1ONCsYKaX333j8TL
+	HABGtdMGFJODUvgei2oGsNWRwVm/BDTCSNOzhSi4Z3N1r+3z3IWO9A/EO8jF8fX6kazSheU7b9D
+	73avfAisOutQf6KMf1g1U4OnxoQIChGqRRuAght2vtwkMoztmwP3klsOvE7SiPRtMd4O0NXP2vQ
+	IcTCmaAjF+zDq/3Q2mZUDZbs5VC/USkSGrwYYVgGCh5E32OtEURYtvYgPbUSSsgQ4VJtiWrirMO
+	eU0KKkvGFNLd0/+WDRlYDKjVw7rtFl3Xo06A6FhlXkoG5sbeFoFCAh1k84Cp0/Zvvvbm+FvrfjT
+	BWhQcjR8WDrftFhOspujX5qw==
+X-Received: by 2002:a05:7022:2390:b0:119:e569:f84d with SMTP id a92af1059eb24-12476a6d462mr351429c88.4.1769024853578;
+        Wed, 21 Jan 2026 11:47:33 -0800 (PST)
+Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm22276230eec.9.2026.01.21.11.47.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Jan 2026 11:47:33 -0800 (PST)
+Message-ID: <50912945-9da4-40c8-adad-34baa2b1e81b@mojatatu.com>
+Date: Wed, 21 Jan 2026 16:47:27 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,vger.kernel.org,gmail.com,suse.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
-X-Spam-Score: -1.51
-X-Rspamd-Queue-Id: 7FF725BD52
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 7/7] net/sched: act_gate: guard NULL params in
+ accessors
+To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
+ <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260121131954.2710459-1-p@1g4.org>
+ <20260121131954.2710459-8-p@1g4.org>
+Content-Language: en-US
+From: Victor Nogueira <victor@mojatatu.com>
+In-Reply-To: <20260121131954.2710459-8-p@1g4.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Test ipv6 pinging to local configured address and linklocal address from
-localhost with -I ::1.
+On 21/01/2026 10:21, Paul Moses wrote:
+> Guard NULL params in accessors/dump/timer paths to avoid crashes during
+> teardown or failed initialization. Other actions already guard params before
+> RCU cleanup (act_pedit, commit 52cf89f78c01bf; act_vlan, commits 4c5b9d9642c859
+> and 1edf8abe04090c), so act_gate should tolerate NULL in reader paths too.
+> [...]
+> diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
+> index 9587d9e9fa38f..8c3309b0dd779 100644
+> --- a/include/net/tc_act/tc_gate.h
+> +++ b/include/net/tc_act/tc_gate.h
+> @@ -54,12 +54,13 @@ struct tcf_gate {
+>   
+>   static inline s32 tcf_gate_prio(const struct tc_action *a)
+>   {
+> -	s32 tcfg_prio;
+> +	s32 tcfg_prio = 0;
+>   	struct tcf_gate_params *p;
+>   
+>   	rcu_read_lock();
+>   	p = rcu_dereference(to_gate(a)->param);
+> -	tcfg_prio = p->tcfg_priority;
+> +	if (p)
+> +		tcfg_prio = p->tcfg_priority;
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v2: shellcheck fixes, added VRF based tests and simplified linklocal
-address parsing
-v3: extend existing test in fcnal-test.sh instead of creating a new one,
-notice some shellcheck warnings but I prefer to follow the style of the
-existing code. It can be fixed if it is a requirement.
----
- tools/testing/selftests/net/fcnal-test.sh | 7 +++++++
- 1 file changed, 7 insertions(+)
+I don't believe you need to check for NULL in these helper functions. From
+what I understood, the only place setting this to NULL is the cleanup
+callback. You also won't be able to run this in parallel with the init
+callback.
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index 844a580ae74e..890c3f8e51bb 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -2327,6 +2327,13 @@ ipv6_ping_novrf()
- 		log_test_addr ${a} $? 2 "ping local, device bind"
- 	done
- 
-+	for a in ${NSA_LO_IP6} ${NSA_LINKIP6}%${NSA_DEV} ${NSA_IP6}
-+	do
-+		log_start
-+		run_cmd ${ping6} -c1 -w1 -I ::1 ${a}
-+		log_test_addr ${a} $? 0 "ping local, from localhost"
-+	done
-+
- 	#
- 	# ip rule blocks address
- 	#
--- 
-2.52.0
+> [...]
+>   	list_for_each_entry(entry, &p->entries, list)
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index e4134b9a4a314..65b53cbf37e67 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> @@ -82,7 +82,11 @@ static enum hrtimer_restart gate_timer_func(struct hrtimer *timer)
+>   
+>   	p = rcu_dereference_protected(gact->param,
+>   				      lockdep_is_held(&gact->tcf_lock));
+> +	if (!p)
+> +		goto out_unlock;
 
+Also don't think you need to check this here.
+Unless I'm missing something, cleanup will only set param to NULL after
+the timer callback has finished executing.
+
+> [...]
+> @@ -643,6 +652,8 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+>   
+>   	rcu_read_lock();
+>   	p = rcu_dereference(gact->param);
+> +	if (!p)
+> +		goto nla_put_failure_rcu;
+
+I don't think you need the check here either.
+Take a look at act_vlan.
+
+cheers,
+Victor
