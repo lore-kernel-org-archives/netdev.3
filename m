@@ -1,166 +1,201 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C772B34FF5F
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 17:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769017930; cv=none; b=IoUTgFjchpt0yui16uYjW0zmbLdi4Vnaz54Avawnkq7A4UJ+7jundPmR5vuKvO4YYVUUqX7x8yEozCGU5SLXLQsX/6SX0a4dhPLrMOwC3YY7oq349QaWdMgRqkDEImqTozWdV/FwZlihW5Je/1LqfA0g6LiKTHMubcQTX8/Culc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769017930; c=relaxed/simple;
-	bh=N89ZNW3oha+wxXG+OHPJcmDoXFbropcF/evfEsV90xs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fp41KOaJAt1affAvE84cVQ96WjCETF8gmS+0t8d/5QyV1IDennOcSJ8+uIsYXWgic24z+go5cR7r0FWQLpnwldrV7oYK2JrN4gmw2H5aEmCZmjLSG1fj5mTDAUNzm3bpqihoh0VkuHr/SxuE0C9v97tL/DcsnAsdvWTYmmISu1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7663612F8
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 18:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769019809; cv=pass; b=YYD6kSAGiLZOMFC362xqKjcF1yAKY2tr2GBtFT0iWCa0+MYC9LQXKAKTkPwHQmy34+kyN1cKdyk276XAKYgD9F5MUnLKatWr1NIngqFLYGwEPyKQtQHprE137yxNktFzCww8ibSjJi9XLuot5eefqHIdDKX+LaTk0j9BBexqjsM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769019809; c=relaxed/simple;
+	bh=PdETfuP1u9AkTnIAU4OIisLef/UtQm36zVR7qzogAWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qzzrHW/zLmrGyz0zLkBzvoT+AwgmQ1UJ0NHJIsKAxjloOTTOB7WRMuRZ3bg6845IZ4/nyWsfhy0HSir5HOcwBd1g4HcuwPLI46mQtcbszvcNUaBRZZdm/RizkXGAHDubXp6slM9r0rdFNxmt6c97XPujBViIGM0cxttd7SJilbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEx5GIM1; arc=pass smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8c6d8751c88so9707785a.2
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 09:52:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769017927; x=1769622727;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEx5GIM1"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-662b5db048cso59605eaf.0
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 10:23:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769019806; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jC511UrhZnosGLg2LibtId+8JIH2LOXro8OSP+oSaYvsZ+qxFiFIeOvWuHOW/6Eky4
+         D/wqXnJGA8F07ihs1KqqWIcT4GpXe2wzGpAC0KiY/debtThdFZ1IjcvNak3ZKctM8x/Y
+         AG0jDipwmXS+I/fwS8IefDO5SENKUCSjWoOwD5bSajbx1hrgXrfTtBK5swSEPGSpgmiE
+         PepQsJKeZzvsWt6EOZevbOztg1ILqRi1sWNvc2qEOIVbTCT590KKp3mGN+Hd9iUa7y2m
+         0/BeHn6fVwHcSy9f9+0J5jC8LQauXRvwg6hqSeJmXTzaD6d9FcnYli3tTcANUO4Cr1Ir
+         6uFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=c1Hlj3w4l/0faf2g6KLOHGpExK3gCGGcIA2RjqkPX44=;
+        fh=P/HVX2Scij3vZdTIcYjaqMyR9xJ+3MajswY47mPMVIA=;
+        b=SJYhWVDB7dg323zzKrrAM+w6bZ2Vgmco8bG8MgLoSNi29NKBFtdVNhoSdBRI/QNuZk
+         mH/+/2u7JNeRg6vQGHhDYH/aOLuKaqKqOLNnc8nM12pC21GChRF9AaOYvTkUZkya9stq
+         wSVsOdiGSMOsEX5jrYbTen00062RswZsLpqEgVnDp9wsPWe6ulZeWuL8DC1uPeRWudDY
+         hPAHn9dkmlJhgGj26ZvDCwuVBZGklxZ0nVVZojZ4oE5jpRXPBHQmQ+YW8WdyrhIDhbUO
+         pWQ/VIYV5UD9wZG9vugD+NscaJYUbmFz/J5EKV1q/U31J/ot+kVNcMvDK5me/V1vkLyQ
+         0VOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769019806; x=1769624606; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EE3io2YTVlpYr6JqBHdH0n+Tgy3q9xeBQJGveVd5U2M=;
-        b=BQZ/9ebmG6QARjr9IgGgy87f11tpMi6IOVSs/QlGkqRaSqAjwM8vskeB7l8+2f2zt4
-         U0qvTOYfsY+mDLN7uQgpQK+w2vGepb1NkBKBcozt8UQsUfYLDmQnKkI9A94lRv08dj7+
-         3NCKq90J3M+/rjjWlLami5MfDKhvtfUWVKqTf6HKla7K+fPdV8mGVFlUabpZtD2mRkzY
-         aIqlHw0MqRUk0jepTpFaisV8d8IjfGM1gut8/Vvu6uaZebIwnMfRFZdsuwcLFdwUQYSJ
-         8SdLDCSw+WcMEnE2KBanr/r3RW8P/zv0sbmGubUhLCvX0sMp2iR0fCVSM/UIACi9LBDc
-         gODg==
-X-Gm-Message-State: AOJu0Yyw8+REbaAY49wNQrwXN9wSftpB53lWxytsL79zb9cYLtEU63PQ
-	Qv/jQ3sGry7191igxP6/5b6uBS6FAQivuVto7Iaxa50fz9t+ABXfRvp01XLCTA==
-X-Gm-Gg: AZuq6aL4ok2JY74BGjwvPY868aMqCUDJFBy049WRwhHvRw2Ed7/IOns1P5A3fADs/6A
-	/H10PNXGqgT7bToO8Iy7Zv6I8ZFmpTrekaa3X6HsrzyiXvoB94TDzEReOfOFCybCNWxwVxUG69F
-	DQpCPvgsszWtSrc+8Gg55yjD+i1MYoTP3oPuw3V+lcLLsm1Mw9u68MDvx3ngnvCu7eGcpFvhggL
-	lyeYF2uw0ki8OYYWXf8DlPd8yDhnd2xRTZDhtyx0r5WANOFc+S7sz39/godKPamQ3MDDdReRB40
-	/73vvDma/vGjVx06p41URDQMZm4BONF+2LOCuGKt/F3AzSXJ/gDYNiZ8CoefsJgBneBuM9qHVlH
-	akmCADkcgEDKKEuWxH1Lvsx6+06t+a1GHfoGazMgZqDDN1C0aFGfZQrFH9qfv3gDS8QSWbdl+Qr
-	BV
-X-Received: by 2002:a05:6830:6d2f:b0:7cf:dc2d:8508 with SMTP id 46e09a7af769-7cfded3d668mr9124127a34.1.1769010979642;
-        Wed, 21 Jan 2026 07:56:19 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:6::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf0e94b2sm10676020a34.7.2026.01.21.07.56.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 07:56:19 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next 0/9] net: convert drivers to .get_rx_ring_count
- (last part)
-Date: Wed, 21 Jan 2026 07:54:37 -0800
-Message-Id: <20260121-grxring_big_v4-v1-0-07655be56bcf@debian.org>
+        bh=c1Hlj3w4l/0faf2g6KLOHGpExK3gCGGcIA2RjqkPX44=;
+        b=NEx5GIM1Cm+k9YzMXo1CssCsPb+fEabArGDdg96J02KQ3+wdw+2I9RAKu2YcvdIJAS
+         rRaM08v1OCJMhXNmB1QDbsDhnZtwFC/Yz4KG5072SLS7DADFL2Q9/x9YlELyyc/L03HA
+         U8ie62v68eY+GCf5DgrvOXCMA6GN5FJECk40suqOvZQgrzMn39+0+kKfuK8HIFJ8tBPl
+         eLPva3ritx1naoFTTJVjGgr+gRvWlI1H+FV4o0rfiylDMzeAUfm/XkuTrg8/TIGic4Tk
+         zAMamFKcssVrpYFC2yjSY3aOiPKbzckEhBuvwVrzBqOnBBoSIH3ubRL2Jmi5mZUwuIL7
+         Nr5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769019806; x=1769624606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c1Hlj3w4l/0faf2g6KLOHGpExK3gCGGcIA2RjqkPX44=;
+        b=hoQqlafuZYex+CMUSGLm/3c/xLXg6TI3CDzRu+97nDQ9rjAySQf5O2d7bh+58PzFms
+         rLV9AgicmNh6NV9bJ5JiMNxYgR5EKNNgRqgBTH7WRRrpYE6g2nhqbrtGK1KVp/BJOQuk
+         9iimHn/+P44fEu9PcOlaY/k8XbkUiyhCgxj0/8IIvwYsxy1pGVTS1kilhZtLE7lusAhE
+         t8q+aMUufOcZqY57TeMlKHIyqTQlEwSFggaIg3as/Fthqg1k0/wxv9UcPtAhWM1cYQDw
+         zykFWbSocEX9/8JBwJYiY+pTp4LD5ZHX/8sn2sgbg1+5C/8NF3EGjHfoY+8FMsGrJUaG
+         PcRQ==
+X-Gm-Message-State: AOJu0YykRmcvMMEsks1VTOB0hwU1sAnSDxaExOn2Vp2imev5iNS9now5
+	RUF9ESGE6tATDj5Fd6Nex6erlCFMa22As07UoEahn7h79OxrRGg1WLN/6I6Nxzd9bgYxbXm2JAe
+	Il+vkUYYR2BZMFMYtvq/diyt8Q0Z8EK4=
+X-Gm-Gg: AZuq6aL8UOXiAYAtL8aSWCFC0Mw4SRKl/M7mesjbk+6+lPRNT4gmboj+WfybuameyiO
+	LoVyzeM6pP80boHRT6T6fa8e0pFyTnK8cT6lPTuyzMT+A3T44NWHzQuQaZIpLDboqODX5QX9E5z
+	PpclWxHMpVFMH7kUa6hx9maspKpdUwTSp+CQS7M3sqco6Ex0jwOFzFCKxKkjoEE8iRCgTaGGcNh
+	9MPFOXGZKN/SJFDf1thNlYjHTe51RtzgZ571BoUq4qMSk5hi5xePWHGTPP34DbOO0jb8BfTyvgE
+	ZURzxs6jKWJcUGZoc05yHUtD3ihs0vQGK69/9YaXOJvmGiw3NvWLk14Eppla
+X-Received: by 2002:a05:6820:174a:b0:65b:35fe:4323 with SMTP id
+ 006d021491bc7-662b008f427mr2444409eaf.67.1769019805582; Wed, 21 Jan 2026
+ 10:23:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAL72cGkC/yXMQQrCMBAF0KuEv25gEq1iriJSbJ3GcTHKJJZA6
- d1FXT94KwqbcEFyK4wXKfJUJBc6h+l+1cxebkgOkeKBQgw+WzPRPIySh2Xv+552x/nERIHROby
- MZ2m/8Azl6pVbxeUv5T0+eKrfD9v2ARa7w8J8AAAA
-X-Change-ID: 20260121-grxring_big_v4-55037f9e001e
-To: Ajit Khaparde <ajit.khaparde@broadcom.com>, 
- Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>, 
- Somnath Kotur <somnath.kotur@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Igor Russkikh <irusskikh@marvell.com>, Simon Horman <horms@kernel.org>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
- Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
- Edward Cree <ecree.xilinx@gmail.com>, Brett Creeley <brett.creeley@amd.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- oss-drivers@corigine.com, linux-hyperv@vger.kernel.org, 
- linux-net-drivers@amd.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2946; i=leitao@debian.org;
- h=from:subject:message-id; bh=N89ZNW3oha+wxXG+OHPJcmDoXFbropcF/evfEsV90xs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcPchSzyXwKpYKmrtStXXlYiOFQV06V6flIEsp
- V13f4iNEbSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXD3IQAKCRA1o5Of/Hh3
- bXJ6D/9MmdJjsBDbGE5s0Wi+gUPjhQoACGhQ1fm3nWmR25mSJXYc+1q91NUYVChe7Ioijf3riCL
- LHid4f0+jK3sG+DTCeYkqdtOF06Sy9OYKWV4GDVma4Fj6RP9WHbMJ76vzY2FVIC9vVuycBcJLgK
- WajuohiDWm+VgLGgNTjknQOLKLwurgRc243N8LmC6Cvc/K8a3O0ych9LHU4A/qKUYAZckIPzZJ2
- azRwIqTp+jCSY4x/Gqgi7iaUNcrnEECUg47Suy+iyhoNIsFySTQRfeTnb6Nj/4H0gkuYgZaro9/
- HEGvXeZcjs6tBDh0HOl2xprm1bOejXb+sdCFhHa1eTqv58UmS6epqghbb/CZFXznK8TbadYPpoI
- 3402GeTyqJiQ3Qw+gwUHe7DDFME2/D7KGarvIjY8dOwxGPG1jTmlISRiqYQTLpBiPekgHkCKDy0
- Fox4887rNMIkWutGmQtIVSQp8DcHJjsYO7FSxrPOS8xJ3II6rdVTwd54db+pGDfgF/46DSmxu64
- xNQvbZiIlTOczPxbiZgBZmu/khVPhIpWLbxRhz8Xay3ufdj5IvGm0r5sbVsid+3ircyjp6Q9EHp
- tlfYc/AiI76cdz61YBvVXeKeIHCNR6G9AX7pINrAUX0Ib232YzewPl0QxGA9KmYFJENo2gFZ+Oe
- yQqJD//nhBo8VFg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+References: <20260120092137.2161162-1-mmyangfl@gmail.com> <20260120092137.2161162-2-mmyangfl@gmail.com>
+ <aXELnMSc4UU6DkbZ@krikkit>
+In-Reply-To: <aXELnMSc4UU6DkbZ@krikkit>
+From: Yangfl <mmyangfl@gmail.com>
+Date: Thu, 22 Jan 2026 02:22:49 +0800
+X-Gm-Features: AZwV_Qh2WtvpqzJ52fSNEITfJoGoQaUtqAWfgaFDL8o68nHE05e8TExvPZS0aAg
+Message-ID: <CAAXyoMMAMAbEu=-wTf3MGMiZr2Uq7pqJXC+_zrtxKrsjyYi+AQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/4] u64_stats: Introduce u64_stats_copy()
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Mark Bloch <mbloch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Carolina Jubran <cjubran@nvidia.com>, Breno Leitao <leitao@debian.org>, 
+	Shigeru Yoshida <syoshida@redhat.com>, linux-kernel@vger.kernel.org, bridge@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 84eaf4359c36 ("net: ethtool: add get_rx_ring_count callback to
-optimize RX ring queries") added specific support for GRXRINGS callback,
-simplifying .get_rxnfc.
+On Thu, Jan 22, 2026 at 1:23=E2=80=AFAM Sabrina Dubroca <sd@queasysnail.net=
+> wrote:
+>
+> 2026-01-20, 17:21:29 +0800, David Yang wrote:
+> > The following (anti-)pattern was observed in the code tree:
+> >
+> >         do {
+> >                 start =3D u64_stats_fetch_begin(&pstats->syncp);
+> >                 memcpy(&temp, &pstats->stats, sizeof(temp));
+> >         } while (u64_stats_fetch_retry(&pstats->syncp, start));
+> >
+> > On 64bit arches, struct u64_stats_sync is empty and provides no help
+> > against load/store tearing, especially for memcpy(), for which arches m=
+ay
+> > provide their highly-optimized implements.
+> >
+> > In theory the affected code should convert to u64_stats_t, or use
+> > READ_ONCE()/WRITE_ONCE() properly.
+> >
+> > However since there are needs to copy chunks of statistics, instead of
+> > writing loops at random places, we provide a safe memcpy() variant for
+> > u64_stats.
+> >
+> > Signed-off-by: David Yang <mmyangfl@gmail.com>
+> > ---
+> >  include/linux/u64_stats_sync.h | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> >
+> > diff --git a/include/linux/u64_stats_sync.h b/include/linux/u64_stats_s=
+ync.h
+> > index 457879938fc1..849ff6e159c6 100644
+> > --- a/include/linux/u64_stats_sync.h
+> > +++ b/include/linux/u64_stats_sync.h
+> > @@ -79,6 +79,14 @@ static inline u64 u64_stats_read(const u64_stats_t *=
+p)
+> >       return local64_read(&p->v);
+> >  }
+> >
+> > +static inline void *u64_stats_copy(void *dst, const void *src, size_t =
+len)
+> > +{
+> > +     BUILD_BUG_ON(len % sizeof(u64_stats_t));
+> > +     for (size_t i =3D 0; i < len / sizeof(u64_stats_t); i++)
+> > +             ((u64 *)dst)[i] =3D local64_read(&((local64_t *)src)[i]);
+>
+> Maybe u64_stats_read/u64_stats_t instead of local64_read/local64_t?
+>
 
-Remove the handling of GRXRINGS in .get_rxnfc() by moving it to the new
-.get_rx_ring_count().
+I think casting to u64_stats_t is a bit overkill here since we accept
+const void * and we are the actual implementation.
 
-This simplifies the RX ring count retrieval and aligns the following
-drivers with the new ethtool API for querying RX ring parameters.
+Again, they should convert to u64_stats_t, and this solution already
+implies that u64_stats_t is binary compatible with u64. I've already
+sent several patches related to that, but that's another issue.
 
- * sfc
- * ionic
- * sfc/siena
- * sfc/ef100
- * fbnic
- * mana
- * nfp
- * atlantic
- * benet (this is v2 in fact, where v1 had some discussions that
-   required a v2). See link [0]
+> > +     return dst;
+> > +}
+>
+> Since this new helper is always used within a
+> u64_stats_fetch_begin/u64_stats_fetch_retry loop, maybe it would be
+> nicer to push the retry loop into the helper as well?  Not a strong
+> opinion. It would be a bit "simpler" for the callers, but your current
+> proposal has the advantage of looking like memcpy(), and of also
+> looking (for the caller) like other retry loops fetching each counter
+> explicitly.
+>
 
-Link: https://lore.kernel.org/all/20260119094514.5b12a097@kernel.org/ [0]
+The callers may want to copy other discontinuous data as well, albeit
+no one did it then.
 
-This is covering the last drivers, and as soon as this lands, I will
-change the ethtool framework to avoid calling .get_rx_ring_count for
-ETHTOOL_GRXRINGS, simplifying the ethtool core framework.
+         do {
+                 start =3D u64_stats_fetch_begin(&pstats->syncp);
+                 memcpy(...);
+                 u64_stats_read(...);
+         } while (u64_stats_fetch_retry(&pstats->syncp, start));
 
-Part 1 is already merged in net-next and can be seen in
-https://lore.kernel.org/all/20260109-grxring_big_v1-v1-0-a0f77f732006@debian.org/
+It would be redundant to provide two variants of the function.
+Moreover, callers can (and already) invent their own reader/writer
+helpers, for example
 
-Part 2 is already merged in net-next except benet driver, which is now included
-in here
-https://lore.kernel.org/all/20260115-grxring_big_v2-v1-0-b3e1b58bced5@debian.org/
+         #define SLIC_GET_STATS_COUNTER(newst, st, counter) \
+         { \
+                  unsigned int start; \
+                  do { \
+                          start =3D u64_stats_fetch_begin(&(st)->syncp); \
+                          newst =3D u64_stats_read(&(st)->counter); \
+                  } while (u64_stats_fetch_retry(&(st)->syncp, start)); \
+         }
 
-PS: all of these change were compile-tested only.
+> Either way, I think extending the "Usage" section of the big comment
+> at the top of the file with this new helper would be nice.
+>
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Breno Leitao (9):
-      net: benet: convert to use .get_rx_ring_count
-      net: atlantic: convert to use .get_rx_ring_count
-      net: nfp: convert to use .get_rx_ring_count
-      net: mana: convert to use .get_rx_ring_count
-      net: fbnic: convert to use .get_rx_ring_count
-      net: ionic: convert to use .get_rx_ring_count
-      net: sfc: efx: convert to use .get_rx_ring_count
-      net: sfc: siena: convert to use .get_rx_ring_count
-      net: sfc: falcon: convert to use .get_rx_ring_count
+I think callers should avoid memcpy() eventually, and they almost
+certainly copied more data than what they need. However, I took a look
+at some instances, and it would be non trivial to modify those
+drivers.
 
- .../net/ethernet/aquantia/atlantic/aq_ethtool.c    | 15 +++++----
- drivers/net/ethernet/emulex/benet/be_ethtool.c     | 37 ++++++++--------------
- drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c    | 12 ++++---
- drivers/net/ethernet/microsoft/mana/mana_ethtool.c | 13 ++------
- .../net/ethernet/netronome/nfp/nfp_net_ethtool.c   | 11 +++++--
- .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 18 ++---------
- drivers/net/ethernet/sfc/ef100_ethtool.c           |  1 +
- drivers/net/ethernet/sfc/ethtool.c                 |  1 +
- drivers/net/ethernet/sfc/ethtool_common.c          | 11 ++++---
- drivers/net/ethernet/sfc/ethtool_common.h          |  1 +
- drivers/net/ethernet/sfc/falcon/ethtool.c          | 12 ++++---
- drivers/net/ethernet/sfc/siena/ethtool.c           |  1 +
- drivers/net/ethernet/sfc/siena/ethtool_common.c    | 11 ++++---
- drivers/net/ethernet/sfc/siena/ethtool_common.h    |  1 +
- 14 files changed, 72 insertions(+), 73 deletions(-)
----
-base-commit: d8f87aa5fa0a4276491fa8ef436cd22605a3f9ba
-change-id: 20260121-grxring_big_v4-55037f9e001e
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+> --
+> Sabrina
