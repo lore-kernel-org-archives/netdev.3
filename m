@@ -1,169 +1,158 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2DA36C0B0
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 14:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769007488; cv=none; b=R1dYuqwz+Yi38ls3IMZzEj1FS9TgyjQgDBkCbFN6QGN1XmOWomKv1La5Vtqu49Oo4CEmswybfCdxWt7/cDUjD9p01xXzSxeupypkHxzyWz3keBPwlb8CqiTNMEZVcg1FRgjDSVZNDsQk77T+ARZBp9lMjRW/uLebcW/9+U88Dmk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769007488; c=relaxed/simple;
-	bh=oUil1PSbpdW8l/EZqYUD6MgfudPMsJ/Dl/SlawdMFbA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p+phWhSU8PqcCOK64SjJgZqP4uX/h16iUYA5gacZy+/GIFv9B/4iTwBDVTCHu5Ww74xvtTYbGJY8usGdC0+1sPkmKa/PJEuLM2eF3ZbK8JMIM8niVikkzG242j7xQdKBIrTboQrdHWJb+T7ZrfDU5aVyHxMxszJcrZ4hzXmpdl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=fYhnhJGM; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41104A1391
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 14:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769007490; cv=pass; b=FTK+J+/zDtSTPmU2BxLpRpQnJaM3MeaoEO1DkN8R2RWYkxpW9IG9313k29yhiJPw4nln5KRJ9qpcehBCs7mT5iHI/Zs1pVp/hO84xnEVEPK5T9RaFJUYQ/iAMNsSsrULLUMKlrasSIycM/LDI7CGZZxaqhbq11tkaSBjIy0uFH8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769007490; c=relaxed/simple;
+	bh=pXnTl94BbhB/76UcLMWFQmfo8hdhUhMeAxYtkkN1M+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R04hOkBFjhCWZs7LTGCc7TmeTadiURawGYIbKL+z+CdnFYfLb4tbnNMe4cz5qlJ5bYas7SL0EAOg2IX1XcQ6j1NiPYC6scBdD/ho2N2fIWFEEIFig/HtDfLFtsUUSjgiF2Hvs/COFsD/z1NBULLggqzONynhoFETtObXtWyhlLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZjExIxLc; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="fYhnhJGM"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1viZeU-008XBy-KV; Wed, 21 Jan 2026 15:57:46 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-	Subject:Cc:To:From; bh=d5psKbM9b9F92Ofu3J7qeNSznHQbQCDOEGVP2pI5G20=; b=fYhnhJ
-	GMqFPmg2nUrlYgC52xGWlJaylWPExu9epLZHvNOlU5tDiklIf1PGlMr/0K8arr94upoOxgL5LI/h/
-	q6YMHStKamdRlfViuz6rleLLPwhCrv3ljVDuamOWY0K55s7YRskGLYP2MhYZcJX3GRcvelnEGVJBX
-	ejupS1Aekc3QGbBZentjc2QKPySIn0ekdWJFYcsI+JFhVFkSE0TRJ/Po/1EWQ6UWPEiYfijw+1jLj
-	qZFzVnNF0h9st9eLMT7KsOMQ0KhmA12oDxw+TrCIcuYckXFS2CRkvC+WwvTaDrN9E2Fl05sFeNOd6
-	QYV1pEZ1RgYdXyTQdv8+1Iya4sRg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight.linux_spam@runbox.com>)
-	id 1viZeS-0006jd-RY; Wed, 21 Jan 2026 15:57:45 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1viZeR-00GH6h-VK; Wed, 21 Jan 2026 15:57:44 +0100
-From: david.laight.linux@gmail.com
-To: Nathan Chancellor <nathan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Subject: [PATCH next 00/14] bits: De-bloat expansion of GENMASK()
-Date: Wed, 21 Jan 2026 14:57:17 +0000
-Message-Id: <20260121145731.3623-1-david.laight.linux@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZjExIxLc"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-502a789834fso42112801cf.2
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 06:58:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769007486; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gsUSgdqYxhjbIi3zrJpTkFrj+UV2JVsWbok81zyiHt3NEfcyLIHQ5wLAUubb+qWXEO
+         Xi23zTcCL7a5sPw/tl+H+KGQnprGyhUYSME+aAz6zx1grP/jSx8Ln1qSsHvJBsG8D1ks
+         0NF9aWjS2OjMJQmE/SLFiDbw3rr3+R9S/dfqBAqUmysSOPwHVIXwR5VhQY92/JsOMjOC
+         Z2bKP0gdy/5lzIaY1IfYMqtMEW+FhLHgbTSFo9P0Q1VSXZbCNV4cXan2TKvBLl79xyLB
+         CU3O3nXNwYrslmKG3HCDhdNtBRfog3G1sq5kra5mR+lPYeNJy5NPmN7AAV7/pfgUfXuY
+         Zmfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F/VqqIhXdgX7j/dXUyWw4LxUrc07WTrCM45z7FHNuOc=;
+        fh=EVniMq4rZ3z5QVs+W+lFCnnQFpXalggk19NLaweQiZ8=;
+        b=dN42U6D4F52bwLz01P6ewRalAZVRUuN4wa4Kev+OHQRQL52SDgavDuzQW1HlY+KkiS
+         Q4gS/8YXkyHs+zSA+ociwFrkCP4LZst2ptLXfWu8WL36tCP3tHgsaWTAjN4PDHOYQQhW
+         Jo+g874QX4+dH4uv5sXhRRJNd6Cz5/TiyuQMYCvXulPt13Fi054rIxhG63KP/rR813Os
+         /CY3qaZVgw5R0xtnVGqpnprHTC1ydnP3iSdE+AyR1DJBNnhGOej4RkO6lwU/R8cqB1RN
+         JSZEScGSVBViJEBf+f9jb7w5Y+fpJouRb4raRer8Kaac3/RuzTlhGTX79R9Fdk/L1BRs
+         70Bw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769007486; x=1769612286; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F/VqqIhXdgX7j/dXUyWw4LxUrc07WTrCM45z7FHNuOc=;
+        b=ZjExIxLc2LNqlP24QAI+e6v0pZxcrEgpu+95SusdGyi51+bDN1XnBwncQP1b0ZlZUy
+         HQH1KhN4CzuV41ctbFYWvDmZ4TWXX4kHgXU3DH1EIUgxX2Ud+34hG2A55SeTLmqKw9c1
+         xnSA+aOQIIPWSvVGNDVLVmsIFwOFlyKyj7G9UJgbULURinDg1hgwAFme6ZzFNbfz4Ef9
+         54O0ojMRsFrIZOCsXVmWH/wmVupVjp+L05gNkjOHsl73Nf7cDtHXpqZYLIov2KCctP8m
+         kzLCuiZIAzeZo0n+Zh+KLbGphBEyzIwMC/HNlRnPyKtj39Cv/lnT0vaOOZapIHLFhZtU
+         Jm6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769007486; x=1769612286;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=F/VqqIhXdgX7j/dXUyWw4LxUrc07WTrCM45z7FHNuOc=;
+        b=Y0+6SebOBP4/uKK7FOya4MMuMUGaylCN2+Hi7WcTq3rP6mcgCZBP13HDL9hnWXYmnS
+         dBfWXWQ2Qjq09c7gez11yIP0ncF+eaGLeYYDxLQwoFxvaGGtPorlxJrBFctJseqeIUVl
+         TJgNWvYY2tNSQdixMnLMOqbWulVULsXU6T/0c3m/V0AD3YKpSD90cLEdVSG0u7HU1Skc
+         lnt3PPo/UxdtgqY8o28eZzsd5Wince1QZCmgrzPzewZDvO1reWV8E/ga2T1SWEUoUyix
+         OmLlrNTgcFP7xcH9dQR258YBsEeJgYko1MTwIPm8iicMgzM/KPZIlSEJPrFbiXIgwMD2
+         8zxA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCyEOKeGc0GIDhjyWtDHl9f6ylThrWbD6Sn/bR/fF+oO8ABVu2vBVFDPdsct8vWujdwvByDWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw25yKfLciQpc8G8ComLUqEtzyOD+kDKO4TaLMlAZmJh1Vn9q5+
+	spGLrFfrXPVH7idbDvhh+L1VG2mUDvh4v4tIsgQ9NSdvmmwFnTbFvxujjATH19GwR5dn2CRA+1J
+	Vya0FP1CViDT2TKdF74PfKEX+GuN0TT5VNmV2F8G7
+X-Gm-Gg: AZuq6aJEF2/hw+SkEzT5r3IPVoTO6udolHw+BKIpnRmjrkEtGo5SiVG+6Cm2w9FXMZc
+	FdxQbB5KWa8eA88SQQtmfTIDTE4qAJXCQkEtcdHbZBPQu7cJnBc1om7dIa+auLkc9AKO58LUSlZ
+	a+vDz6ACBchgXi8xvsLFd7P7FTiBvCY7DGskjR2iJoz0aKxozKEDs2PKT96aEKBNqy9OftT3efL
+	xsWHF/lRT/UQYHwW8iJJ1KgL1Lla9BSu0nSRcKWY8rIvX2odnDULMMYSmMxjPjtK/xBpRE=
+X-Received: by 2002:a05:622a:1b8d:b0:502:a026:3157 with SMTP id
+ d75a77b69052e-502a1757181mr221595791cf.41.1769007486020; Wed, 21 Jan 2026
+ 06:58:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260121143215.14717-1-chia-yu.chang@nokia-bell-labs.com> <20260121143215.14717-14-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20260121143215.14717-14-chia-yu.chang@nokia-bell-labs.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 21 Jan 2026 15:57:53 +0100
+X-Gm-Features: AZwV_Qj20kr6mRoNXbwQWdkosCn3zjOMui9Vi7kFMCTUHw3XP2Q1RPMTHZwkrjA
+Message-ID: <CANn89iK3DOU4DX4=S-C7cKy-57DemUjToYVpYMT926mjFmyajg@mail.gmail.com>
+Subject: Re: [PATCH v10 net-next 13/15] tcp: accecn: add tcpi_ecn_mode and
+ tcpi_option2 in tcp_info
+To: chia-yu.chang@nokia-bell-labs.com
+Cc: pabeni@redhat.com, parav@nvidia.com, linux-doc@vger.kernel.org, 
+	corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com, 
+	jhs@mojatatu.com, kuba@kernel.org, stephen@networkplumber.org, 
+	xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, 
+	andrew+netdev@lunn.ch, donald.hunter@gmail.com, ast@fiberby.net, 
+	liuhangbin@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	ij@kernel.org, ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Laight <david.laight.linux@gmail.com>
+On Wed, Jan 21, 2026 at 3:32=E2=80=AFPM <chia-yu.chang@nokia-bell-labs.com>=
+ wrote:
+>
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>
+> Add 2-bit tcpi_ecn_mode feild within tcp_info to indicate which ECN
+> mode is negotiated: ECN_MODE_DISABLED, ECN_MODE_RFC3168, ECN_MODE_ACCECN,
+> or ECN_MODE_PENDING. This is done by utilizing available bits from
+> tcpi_accecn_opt_seen (reduced from 16 bits to 2 bits) and
+> tcpi_accecn_fail_mode (reduced from 16 bits to 4 bits).
+>
+> Also, an extra 24-bit tcpi_options2 field is identified to represent
+> newer options and connection features, as all 8 bits of tcpi_options
+> field have been used.
+>
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> Co-developed-by: Neal Cardwell <ncardwell@google.com>
+> Signed-off-by: Neal Cardwell <ncardwell@google.com>
+> ---
+>
 
-The expansion of GENMASK() is a few hundred bytes, this is often multiplied
-when the value is passed to other #defines (eg FIELD_PREP).
-Part of the size is due to the compile-type check (for reversed arguments),
-the rest from the way the value is defined.
+ +
+>  struct tcp_info {
+>         __u8    tcpi_state;
+>         __u8    tcpi_ca_state;
+> @@ -316,15 +334,17 @@ struct tcp_info {
+>                                          * in milliseconds, including any
+>                                          * unfinished recovery.
+>                                          */
+> -       __u32   tcpi_received_ce;    /* # of CE marks received */
+> +       __u32   tcpi_received_ce;    /* # of CE marked segments received =
+*/
+>         __u32   tcpi_delivered_e1_bytes;  /* Accurate ECN byte counters *=
+/
+>         __u32   tcpi_delivered_e0_bytes;
+>         __u32   tcpi_delivered_ce_bytes;
+>         __u32   tcpi_received_e1_bytes;
+>         __u32   tcpi_received_e0_bytes;
+>         __u32   tcpi_received_ce_bytes;
+> -       __u16   tcpi_accecn_fail_mode;
+> -       __u16   tcpi_accecn_opt_seen;
+> +       __u32   tcpi_ecn_mode:2,
+> +               tcpi_accecn_opt_seen:2,
+> +               tcpi_accecn_fail_mode:4,
+> +               tcpi_options2:24;
+>  };
 
-Nothing in these patches changes the code the compiler sees - just the
-way the constants get defined.
-Changing GENMASK(hi, lo) to (2 << hi) - (1 << lo) is left for further study.
+I guess this is fine, iproute2 got no support yet for
+tcpi_accecn_fail_mode / tcpi_accecn_opt_seen
 
-I looked at getting the compiler to check for reversed arguments using
-(0 >> (hi - lo)) instead of const_true(lo > hi). While checking that it
-was always optimised away I discovered that you don't get an error message
-if the values are only 'compile time constants', worse clang starts
-throwing code away, generation an empty function for:
-	int f(u32 x) {int n = 32; return x >> n; }
-(Shifts by more than width are 'undefined behaviour', so what clang
-does is technically valid - but not friendly or expected.)
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-So I added extra checks to both GENMASK() and BITxxx() to detect this
-at compile time. But this bloats the output - the opposite of what I
-was trying to achieve.
-However these are all compile-time checks that are actually unlikely
-to detect anything, they don't need to be done on every build.
-I've mitigated this by adding W=c (cf W=[123e]) to the main Makefile
-(adding -DKBUILD_EXTRA_WARNc) and defaulting to W=c for W=1 builds.
-
-Adding checks to BIT() makes it no longer a pre-processor constant
-so can no longer be used in #if statements (when W=c) is set.
-This required minor changes to 3 files.
-
-At some point the definition of BIT() was moved to vdso/bits.h
-(followed by that for BIT_ULL()), but then the fixed size BIT_Unn()
-were added to bits.h.
-I've moved BIT_ULL() back to linux/bits.h and made the version of
-BIT() in linux/bits.h be preferred if both files get included.
-Note that the x86-64 allmodconfig build suceeds if vdso/bits.h
-is empty - everything includes linux/bits.h first.
-
-I found two non-vdso files that included vdso/bits.h and changed
-them to use linux/bits.h.
-
-GENMASK_U8() and BIT_U8() cast their result to (u8), this isn't
-a good idea. While the 'type of the expression' is 'u8', integer
-promotion makes the 'type of the value' 'signed int'.
-This means that in code like:
-	u64 v = BIT_U8(7) << 24;
-the value is sign extended and all the high bits are set.
-Instead change the type of the xxx_U8/U16 macros to 'unsigned int'
-so that the sign extension cannot happen.
-The compile-time check on the bit number is still present.
-
-For assembler files where GENMASK() can be used for constants
-the expansions from uapi/linux/bits.h were used.
-However these contain BITS_PER_LONG and BITS_PER_LONG_LONG which
-make no sense since the assembler doesn't have sized arithmetic.
-Replace with GENMASK(hi, lo) (2 << (hi)) - (1 << (lo)) which has
-the correct value without knowing the size of the integers.
-
-The kunit tests all check compile-time values.
-I've changed them to use BUILD_BUG_ON().
-
-David Laight (14):
-  overflow: Reduce expansion of __type_max()
-  kbuild: Add W=c for additional compile time checks
-  media: videobuf2-core: Use static_assert() for sanity check
-  media: atomisp: Use static_assert() for sanity check
-  ixgbevf: Use C test for PAGE_SIZE > IXGBE_MAX_DATA_PER_TXD
-  asm-generic: include linux/bits.h not vdso/bits.h
-  x86/tlb: include linux/bits.h not vdso/bits.h
-  bits: simplify GENMASK_TYPE()
-  bits: Change BIT_U8/16() and GENMASK_U8/16() to have unsigned values
-  bits: Fix assmebler expansions of GENMASK_Uxx() and BIT_Uxx()
-  bit: Strengthen compile-time tests in GENMASK() and BIT()
-  bits: move the defitions of BIT() and BIT_ULL() back to linux/bits.h
-  test_bits: Change all the tests to be compile-time tests
-  test_bits: include some invalid input tests for GENMASK_INPUT_CHECK()
-
- arch/x86/include/asm/tlb.h                    |   2 +-
- .../media/common/videobuf2/videobuf2-core.c   |   6 +-
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c |  17 +--
- .../fixedbds_1.0/ia_css_fixedbds_param.h      |   5 +-
- include/asm-generic/thread_info_tif.h         |   2 +-
- include/linux/bits.h                          |  88 ++++++++----
- include/linux/overflow.h                      |   2 +-
- include/vdso/bits.h                           |   2 +-
- lib/tests/test_bits.c                         | 130 +++++++++++-------
- scripts/Makefile.warn                         |  12 +-
- 10 files changed, 162 insertions(+), 104 deletions(-)
-
--- 
-2.39.5
-
+BTW, are you planning to patch iproute2 misc/ss soon ?
