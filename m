@@ -1,35 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C3722A4E8;
-	Wed, 21 Jan 2026 00:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD55E20DE3;
+	Wed, 21 Jan 2026 00:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768954211; cv=none; b=Giof08nqigS++GxfCDhdeTlN/wMWVJVu/abJo5tLge4/ePmuF9LoT3H6m5wEonHsUuvHqImpyi+t83biSWbSPWpKkUJJudlnbNQg7FBlgv/l6xa7R9IPGVaJZqrK5QNrlxGH8bneGWIrnLhh88xC7EyOnVOOJxE9TZWJ8J2jyXk=
+	t=1768954735; cv=none; b=LDuuddYKHm4r+PgORBOI0bg9BujX9eHNcNfcXLxY/I1TtAej0JHwcW91ubgdw5ksdKSc7Zo0rkq4K0XzNiuueZfE+tRauKjakeQY7Zv2whlaedbb65vEmxyNmGsO+439wNFnNVkjODNMHE1RzMgjV0I2AiXvpIJkbBpmfBmNBME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768954211; c=relaxed/simple;
-	bh=EMr/DoMLChMMSL51PhhrUGNiqV4mWQOyMCVdeds/Btk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ELHJhlFG7lxXTEeQIlJvbW8wN2fFeJRVPy+owN1I1QDnUrNNsrSIcHalOjkFEaLwRPcaxS9OUGUZY4iDVMN426IK3OUfr6EXL09ukLyddAn52S4bXXvijLmtSF+8hDtG+cMJUfFQlY2i5dcqmfsGwG2ZbdM2+Nj2l5PI+bm26Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xo1vFzb+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768954735; c=relaxed/simple;
+	bh=nIteDBTn2kAmgBvtRuDy38cJr4xlonSC8wjke3vr638=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fhV/ijtdh3DcFDeP5PX/XsbIasyyxJegR4Lrzgeol3ZlvjFxyEz5x70igI5oVycPx64Qap8JJKabOOxFjW4I0PRx+n404nxyovnC60VCYG+nvzgjDTswHKANiRYa0yqC5cjeylnja3KpJUk8UVu2oHvb2b8/OQmeVv7b3jE+jLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvXaxdYG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xo1vFzb+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A317FC19423;
-	Wed, 21 Jan 2026 00:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvXaxdYG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ABAC16AAE;
+	Wed, 21 Jan 2026 00:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768954210;
-	bh=EMr/DoMLChMMSL51PhhrUGNiqV4mWQOyMCVdeds/Btk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Xo1vFzb+oo7wkO38Zp+eJwnp6yVzHJk4PBHzlSRpgC2ZBjf3javTnwG4NxB0EXhu1
-	 DKR6zdd3iuQvuGwKuvZGxe/WInvy5Tq4Uub2jE3rcS995ylxBsYRkGRSyu08kVACCZ
-	 xN4BeMHBIKe/iguZXMQ+8HUTB1N9v4x1yn5sjBcg+jb2zfKPVDaqPnSQ8y4OubyyTN
-	 v8DOWa3RwP15K4iMacO4QsdD/qfQT/L7ADqFYmNesE9hRrvuR65lbm3NZl1kUawg+a
-	 eEhap9KRobx6GeD7gYPTdJr1QPnk/WjgpbxdoF+HU6XJDFniM+24FhghkCfY8+NNT6
-	 MEAkiIGqm8CGA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4ED02380820D;
-	Wed, 21 Jan 2026 00:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1768954734;
+	bh=nIteDBTn2kAmgBvtRuDy38cJr4xlonSC8wjke3vr638=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SvXaxdYGqxzhDl4dlVgxDbHwn2ArnJYr1SHXf4bO+g9xDUPPXzUwTzGch79P8hiAm
+	 vJRWW0Q27ZnkuqCa8D0+e4oC6WIvAlaGbHoWoqeY6ecYlNW+bT3LYKjcxlH9EgbNo7
+	 MKA/0HmG2iU3dVeBqcbYUlqHCvlVue37XUicvgeU5587Q9sFqomwXcYPx1hthyeqOd
+	 kfMfFTl/8qonrKdrVPRydWSMVMJrcnyypokRo0BHIKoUjnHMxK7xtLkGtKrU6GdU1i
+	 ttYt2SvGkYb6SjMlZZb78IfxzoHK1QNbGO61ACekjv0iTQNgHhN+EifBPEuvYD+Y5I
+	 PnvLP5a3+70Ew==
+From: Jakub Kicinski <kuba@kernel.org>
+To: ivecera@redhat.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	conor+dt@kernel.org,
+	poros@redhat.com,
+	anthony.l.nguyen@intel.com,
+	linux-rdma@vger.kernel.org,
+	tariqt@nvidia.com,
+	robh@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	aleksander.lobakin@intel.com,
+	mbloch@nvidia.com,
+	jiri@resnulli.us,
+	Prathosh.Satish@microchip.com,
+	krzk+dt@kernel.org,
+	saeedm@nvidia.com,
+	devicetree@vger.kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	jonathan.lemon@gmail.com,
+	saravanak@kernel.org,
+	aleksandr.loktionov@intel.com,
+	mschmidt@redhat.com,
+	edumazet@google.com,
+	leon@kernel.org,
+	vadim.fedorenko@linux.dev,
+	grzegorz.nitka@intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	richardcochran@gmail.com,
+	andrew+netdev@lunn.ch
+Subject: Re: [net-next,v2,08/12] dpll: Enhance and consolidate reference counting logic
+Date: Tue, 20 Jan 2026 16:16:51 -0800
+Message-ID: <20260121001650.1904392-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260116184610.147591-9-ivecera@redhat.com>
+References: <20260116184610.147591-9-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +72,68 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: phy: intel-xway: fix OF node refcount leakage
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176895420809.659962.727652527212463185.git-patchwork-notify@kernel.org>
-Date: Wed, 21 Jan 2026 00:10:08 +0000
-References: 
- <e3275e1c1cdca7e6426bb9c11f33bd84b8d900c8.1768783208.git.daniel@makrotopia.org>
-In-Reply-To: 
- <e3275e1c1cdca7e6426bb9c11f33bd84b8d900c8.1768783208.git.daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+This is an AI-generated review of your patch.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Dunno if there's a reason for having this fixed by a later patch,
+if not let's fix. I'm sending the review mostly because of the
+comments on patch 12.
 
-On Mon, 19 Jan 2026 00:41:54 +0000 you wrote:
-> Automated review spotted am OF node reference count leakage when
-> checking if the 'leds' child node exists.
-> 
-> Call of_put_node() to correctly maintain the refcount.
-> 
-> Link: https://netdev-ai.bots.linux.dev/ai-review.html?id=20f173ba-0c64-422b-a663-fea4b4ad01d0
-> Fixes: 1758af47b98c1 ("net: phy: intel-xway: add support for PHY LEDs")
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> 
-> [...]
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+dpll: Enhance and consolidate reference counting logic
 
-Here is the summary with links:
-  - [net,v2] net: phy: intel-xway: fix OF node refcount leakage
-    https://git.kernel.org/netdev/net/c/79912b256e14
+This commit refactors DPLL reference counting by introducing centralized
+__dpll_{device,pin}_{hold,put}() helpers and updating dpll_xa_ref_*
+functions to automatically manage references when adding/removing entries.
 
-You are awesome, thank you!
+> diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+> index 156f95de8e8e..f2a77eb1b991 100644
+
+[ ... ]
+
+> @@ -155,6 +194,7 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
+>  	reg->ops = ops;
+>  	reg->priv = priv;
+>  	reg->cookie = cookie;
+> +	__dpll_pin_hold(pin);
+>  	if (ref_exists)
+>  		refcount_inc(&ref->refcount);
+>  	list_add_tail(&reg->list, &ref->registration_list);
+
+The new __dpll_pin_hold(pin) call is added here for the success path, but
+looking at the context above this hunk, there is an early return path when
+a duplicate registration is found:
+
+    reg = dpll_pin_registration_find(ref, ops, priv, cookie);
+    if (reg) {
+        refcount_inc(&ref->refcount);
+        return 0;
+    }
+
+This early return path increments ref->refcount and returns success, but
+does not call __dpll_pin_hold(pin). Meanwhile, dpll_xa_ref_pin_del() always
+calls __dpll_pin_put(pin). Could this cause a refcount underflow if a caller
+attempts duplicate registration and then later unregistration is attempted?
+
+Note: This appears to be addressed by 934c22045c2a ("dpll: Prevent duplicate
+registrations") later in the series, which changes this early return to
+return -EEXIST instead of success.
+
+[ ... ]
+
+> @@ -236,6 +277,7 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
+>  	reg->ops = ops;
+>  	reg->priv = priv;
+>  	reg->cookie = cookie;
+> +	__dpll_device_hold(dpll);
+>  	if (ref_exists)
+>  		refcount_inc(&ref->refcount);
+>  	list_add_tail(&reg->list, &ref->registration_list);
+
+The same pattern exists in dpll_xa_ref_dpll_add(): the early return path for
+duplicate registrations increments ref->refcount without calling
+__dpll_device_hold(dpll), while dpll_xa_ref_dpll_del() always calls
+__dpll_device_put(dpll). The same fix in 934c22045c2a addresses this.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
