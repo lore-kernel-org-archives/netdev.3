@@ -1,52 +1,82 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63963E9588;
-	Wed, 21 Jan 2026 11:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0193D348C;
+	Wed, 21 Jan 2026 12:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768996230; cv=none; b=KahlAg43xrvylSGepD8ORo1UC+eMKQ6ikSQplnZH0y1T2iZRsh4LdpgPDcjuhMmGRaP361Z68rH4kZ3lw2oiHqnxlgcdhAzJSsFUK8ecJsdv4/b84bVdrJ7yjLPw/IjqOKCWr5qNau1nGKHED1LP2El4KTHs5CWhKRRcVG1dYFE=
+	t=1768997074; cv=none; b=dDGS1rNaIUI8YJooj/QvyCekAfXpFVtY+ns6Ogp6sq0/aTlMYs9NmDwxPShTOe2YYKMZWWD4mv8HmCH1+81GOHxk3Gfp4qtO7U+kH+5Q58W5YfHiEjQk8PqBjXj2Q1XhFbnuvBY2BLEUqwpZHX/Mn2LJ3P9PrHBhdEmZUi4ncW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768996230; c=relaxed/simple;
-	bh=HEfLaFhBovSzU60g9bnZoEt4yjvM6JhbLer2LP2TWs8=;
+	s=arc-20240116; t=1768997074; c=relaxed/simple;
+	bh=YK9zh0Ep6DWTX4vTsz5QYyGRak2PjgX8bV+rgw/6iHA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KNlxZAu1N8u68Q1q5j4D4Tjrd5r8oRwX+nMAGGng7Y4BLwD77Se4FUcAqj2I7t1geJAjSxjxRwW/1jo8T/OR4w1z0m664bZmsapbIUqDFGsGGU35g1CypzmWtcDRoqla9r1wzQbYTdwnc1WXZ8I1GEn6KCzy68oT2myuhGKAugI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ktW/noQH; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfHF43Mu5pa/xgwNeYP8Sj4TCFO/Bb1CgP3bZVerl1WfuRdrRWWezKkbt9XzONTzybOeImnF8YXPol0Xle6Tc0dFAbU5YWkIqwQVgnoq2MdwYzqcdDAmC1AvWZplxlNa7VyYS8ia8KvtoQqp5luml81Dic6Bp5wM06V6qa6Hr30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mto1Zpx3; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ktW/noQH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wikYFORvNaZd5anwKoaPBJiJ02QO0+0vwRfGgkV690Y=; b=ktW/noQHeEjdZZq8Xk5iELA7xV
-	nXIqPL97zrJkRFxY2EwLH2itTWNX6TDLfCU87rUnpoMVxOlUCQbMZE377peYvwXFnwPvVcoMFD2ce
-	dWbMEVsrHLS0I6xdvGy7JM6kpWq9jAPUcNL9pNIiWfKUD3uKfy3p5pClQ9jY7nbIN08Q6eh7qV4ZA
-	esl9y2tEPKFldYC9Kqxr/SgTfC3rtLFFWgkHO1+uQNlit6G+GW8GnxH/6/Qvc+4L65l0zqnRpd4gV
-	kow2nmA3yPM3IZyIYLQVqMiHB8qVeWiZ762RAjEKYqm66a5mErl4SUtAclYTKJ7XMrfBWuxZyfTqK
-	zoW06n7w==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1viWax-00CA3u-78; Wed, 21 Jan 2026 11:41:56 +0000
-Date: Wed, 21 Jan 2026 03:41:49 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, pmladek@suse.com, 
-	john.ogness@linutronix.de
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asantostc@gmail.com, efault@gmx.de, gustavold@gmail.com, calvin@wbinvd.org, 
-	jv@jvosburgh.net, mpdesouza@suse.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next v2 1/5] printk: Add execution context (task
- name/CPU) to printk_info
-Message-ID: <aXC6MNOJidrYuSy0@gmail.com>
-References: <20260120-nbcon-v2-0-b61f960587a8@debian.org>
- <20260120-nbcon-v2-1-b61f960587a8@debian.org>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mto1Zpx3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=FpPajyycP6hR8UaVkW71uLW018aze8MN50EScuTtwQU=; b=mto1Zpx3LkWT4BlB+EH50113Nb
+	gD+8T7D+2WAtGQq/HAETjWDP9VjyUv0Zasp+mlwBBJM04gLMpIW89udAEmz0zL+R4JNQd+rXs+PY4
+	USSP0T2O6gNnTn70MPBH5jdo6z8YgUfyFRirWq2Tdz2Gw4zd9r4L65P//5N1ynOsg2l7TAuicxjP6
+	pGTRuUj70fLX9dSQS/IJJpvxKeml9OwJP/7gY9jCdnner/ChJebJ2/6jm6tSsTTsHzq6t8RGzRX8J
+	mDoh8xcKRYL9T2uWFq+YyJ7ioJN2ZBtPvrNsVJYdxw+n90kPlQUz+vbO864VHSfMySk3q0BDAeUZa
+	DuvPldTQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39012)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1viWw8-000000007Ns-1ncE;
+	Wed, 21 Jan 2026 12:03:48 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1viWvw-000000008QZ-3jNS;
+	Wed, 21 Jan 2026 12:03:36 +0000
+Date: Wed, 21 Jan 2026 12:03:36 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Yao Zi <ziyao@disroot.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Shangjuan Wei <weishangjuan@eswincomputing.com>,
+	Boon Khai Ng <boon.khai.ng@altera.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add glue layer for Spacemit K3
+ SoC
+Message-ID: <aXDAmDEpUArE1_en@shell.armlinux.org.uk>
+References: <20260120043609.910302-1-inochiama@gmail.com>
+ <20260120043609.910302-4-inochiama@gmail.com>
+ <aW8LAFhCRWlMVemz@shell.armlinux.org.uk>
+ <aW8MJpERR3TmsiKg@inochi.infowork>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,62 +85,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260120-nbcon-v2-1-b61f960587a8@debian.org>
-X-Debian-User: leitao
+In-Reply-To: <aW8MJpERR3TmsiKg@inochi.infowork>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Jan 20, 2026 at 08:23:47AM -0800, Breno Leitao wrote:
-> Extend struct printk_info to include the task name, pid, and CPU
-> number where printk messages originate. This information is captured
-> at vprintk_store() time and propagated through printk_message to
-> nbcon_write_context, making it available to nbcon console drivers.
+On Tue, Jan 20, 2026 at 01:05:39PM +0800, Inochi Amaoto wrote:
+> > > +	mask = RGMII_RX_DLINE_STEP | RGMII_TX_DLINE_CODE | RGMII_TX_DLINE_EN |
+> > > +	       RGMII_TX_DLINE_STEP | RGMII_RX_DLINE_CODE | RGMII_RX_DLINE_EN;
+> > > +	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config) |
+> > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, tx_code) | RGMII_TX_DLINE_EN |
+> > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, rx_config) |
+> > > +	      FIELD_PREP(RGMII_RX_DLINE_CODE, rx_code) | RGMII_RX_DLINE_EN;
+> > 
+> > These FIELD_PREP() fields look wrong. Did you mean to use DLINE_CODE
+> > both tx_config and tx_code, and did you mean to use TX_DLINE_CODE for
+> > rx_config ?
+> > 
 > 
-> This is useful for consoles like netconsole that want to include
-> execution context in their output, allowing correlation of messages
-> with specific tasks and CPUs regardless of where the console driver
-> actually runs.
+> This should be RGMII_TX_DLINE_CODE. This is a copy paste error, I
+> will fix it.
+
+Are you sure?
+
+In that case, please change this to:
+
+	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config | tx_code |
+					      rx_config | rx_code) |
+	      RGMII_TX_DLINE_EN | RGMII_RX_DLINE_EN;
+
+If that isn't what you meant, then your reply is wrong, and it seems
+you're confused, which makes me then question how reliable your
+replies are.
+
+> > > +	plat_dat->clk_tx_i = devm_clk_get_enabled(&pdev->dev, "tx");
+> > > +	if (IS_ERR(plat_dat->clk_tx_i))
+> > > +		return dev_err_probe(&pdev->dev, PTR_ERR(plat_dat->clk_tx_i),
+> > > +				     "failed to get tx clock\n");
+> > 
+> > You set plat_dat->clk_tx_i, but you don't point
+> > plat_dat->set_clk_tx_rate at anything, which means the stmmac core
+> > does nothing with this.
+> > 
 > 
-> The feature is controlled by CONFIG_PRINTK_EXECUTION_CTX, which is
-> automatically selected by CONFIG_NETCONSOLE_DYNAMIC. When disabled,
-> the helper functions compile to no-ops with no overhead.
-> 
-> Suggested-by: John Ogness <john.ogness@linutronix.de>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-> ---
->  drivers/net/Kconfig               |  1 +
->  include/linux/console.h           |  8 ++++++
->  kernel/printk/internal.h          |  8 ++++++
->  kernel/printk/nbcon.c             | 15 +++++++++++
->  kernel/printk/printk.c            | 52 ++++++++++++++++++++++++++++++++++++++-
->  kernel/printk/printk_ringbuffer.h |  4 +++
->  lib/Kconfig.debug                 | 20 +++++++++++++++
->  7 files changed, 107 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index ac12eaf11755d..12e47cb27ffa5 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -341,6 +341,7 @@ config NETCONSOLE_DYNAMIC
->  	bool "Dynamic reconfiguration of logging targets"
->  	depends on NETCONSOLE && SYSFS && CONFIGFS_FS && \
->  			!(NETCONSOLE=y && CONFIGFS_FS=m)
-> +	select CONSOLE_HAS_EXECUTION_CTX
+> Yes, the vendor told me that the internal tx clock rate will be auto
+> changed when the speed rate is changed. So no software interaction
+> is needed.
 
-This is wrong as detected by Kernel test robot.
+Please do not assign a clock to clk_tx_i that is not the dwmac
+clk_tx_i input. clk_tx_i is a name used by the Synopsys DWMAC for a
+specific clock.
 
-	https://lore.kernel.org/all/202601211304.r9ecHy9L-lkp@intel.com/
+As you don't need to do anything with it other than to get and enable
+it, consider using just a local variable here.
 
-On csky, CONSOLE_HAS_EXECUTION_CTX is set, but not
-CONFIG_PRINTK_EXECUTION_CTX
-
-	https://download.01.org/0day-ci/archive/20260121/202601211304.r9ecHy9L-lkp@intel.com/config
-
-The execution context fields were not available, while
-NETCONSOLE_DYNAMIC, causing a compilation error.
-
-It needs to be:
-
-+ select PRINTK_EXECUTION_CTX
-
---
-pw-bot: cr
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
