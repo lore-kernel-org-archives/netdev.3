@@ -1,203 +1,144 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035373D410B
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 21:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B48E428852
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 22:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769032726; cv=none; b=DUJosnb0bbC7ozwV6SMQVhbblob2Nbibb+ILpgtl8pH9deEuu+kFobdTDDvskZ2kURvJIDaHULEmSkL4ZF91NViJTkPuDGpSVTKGDTyOVkooCMMxsyN1HIpLvs83ILoKneFJJmwyby7VglXzL3Hsk1Q9wRJagOGGq8wMRATrcB0=
+	t=1769033069; cv=none; b=nGgfE/9RrkefxlvIfM0Nzl7kH0SPiHgf+1pClich0d+QIqaIHvdHlB7JGuhOcNkPU0/rWDrF9NMcjvkGu2IKuELLsKNwigA4cCW+QzJwwSF8x3qrW+7CpmGrDnLO58cCK2TyKWodwqYbwdkhgv3n62cxAyYT7GSmM2jAHJsn+ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769032726; c=relaxed/simple;
-	bh=NkyajNX39pjG31IpBQoNBHSV76fg0h2DjgLRSJpGEBw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A0lFhzp/50HyqBD4fAjfn+wVjaOwbZ4QwtM+gzlt7fuom7yowmE6aVoFVfUU9PDhOd1Dn6mPMNkxu6b6WvW6w3LlZfnJyMrwfv0X5xH5+NJ8g6befymBgqXh/v2IZSYngdYT6+rLKLQDNHTtSLTqc0n0Fa0vU5uFxA9LgpKmI7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=fUiJF/Y7; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
+	s=arc-20240116; t=1769033069; c=relaxed/simple;
+	bh=BPC40cd+PK6beKXkMEkAPgW8Vuk6zBAwXi60FwrFXDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F3TSwfdMqTNc7nqZXxDC8XY8SSUPXaKGU54gRMyPuWnnCh8qfAkrSr4Y94knNPD/7ckrViAfyMpZJNxTEbsrhFo+Qhw/UmERs3961s8JKMXZeTy1AZe4CLqE/YIDV3ICyYFsELbh2V8JRiPVORUSyYWo5ifMnZ73DBb7Hc5wOX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lnc/OCVx; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="fUiJF/Y7"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65808bb859cso470264a12.2
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 13:58:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lnc/OCVx"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801c314c84so3169845e9.0
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 14:04:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1769032723; x=1769637523; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NRzjqakfn4E2JjYI30aMmbNg9oupkKMXCUErVIHa81A=;
-        b=fUiJF/Y7wVGmVNXilQTK3cW4MuwmgvwG4bQarPPEt9hvWKtgBAln/L0CShce1SONbm
-         uzHnq7d1NFO5tsnu1wBlFbdRlbG7hIWBtybfVaqhKULCFgGwNzM3MXHugpqERFtVuhKz
-         76vxW7puU8zwC/7JsvX0h4yY+0Nq4gL0UAy0n7MQ5Ve4omk/gbOSZxX/kmIT1xmHaWEk
-         VQgrMqDNLij493BGNtsM8ZNN6NKwxPc33WCFMNK0DGqV3FGf8nnLDGZ0hncXdAOwEeqZ
-         3+66iidgJnkTqQRZ6KsXLeZXcMJ7av4VwWbjYd6WPt8Qj1FhbDw3RmLqhy9OfV0Npjd5
-         CLdA==
+        d=gmail.com; s=20230601; t=1769033065; x=1769637865; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CJ68qOu/lJJCVxKn/HKtPSCAAtAx0dItgoT8Dw3lvcE=;
+        b=Lnc/OCVx4gJnZ/x2tFPCQgcXmDatmD16iiKDPuMLI0gEK1O0lsFjr5I/dukAODtwMD
+         +KxvBiUbQLJiayd5eR3ePPd3pKxFrptiCURDoW0YHhfOHz8nwFyVS6V3gTFeoM7D15/O
+         3A2kBjXUon0I904hqTm5S14EzBoYiYHnmHz2ifopkmCKaTTeYBQUGceFSzq4bkcxHyRU
+         Fo1wBVblhit2N3Ko+3fYX4ie84/zFjQWPtmvFogS1hvshclw1rFVQxdVVRrE8D1l9dJR
+         J1amcpEbZEvzuHKTLHoU5XIoHHKk4iATqQSD8BE0lJVoYnAoqYKNvn20DBiXWTEAEQZg
+         ruTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769032723; x=1769637523;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NRzjqakfn4E2JjYI30aMmbNg9oupkKMXCUErVIHa81A=;
-        b=c2pKJHiGZU6qLlCYL8RL2UQQhaA64FNBnfAxay1dGQZ2bGFmHQFqsRMSPlrWtto9rw
-         sQwMMTe3FgpVwyOuUjnJZPbaQkgSq/JYse+o3ZD3Ri7LbYPchSkYcTGqQxZJR7b3Tfrr
-         Rlu38bknYBQwFgdOv3UDLtnWChj/DvZK2WriKod6k4segaJPHroTXarnEw2Ujhmjdz9W
-         +3Sxk6A3bmefXSTnd47ijrvZX6+QufoWGiCum7LjiNjs4MsMzLQLl/3Bzcv52nzzdwOA
-         LflBOFKzItN6JnW49MTONHP1wow3JfuWRXLUGKtHcWgbTDIfe5Fy7UBGj6Le9Tqxncby
-         Es9Q==
-X-Gm-Message-State: AOJu0YwJ5yr+kDDDKRlA/Ujf+r1vhXloTP1lz9lL+G7PCbXoC4SkhC5+
-	i+qwajzHUPOsAIiq+K597sc6mNWrqWkFRmg17xuSV3uLrwhwUKBHMhCdMsYuJSrer5pu46YEhvS
-	Po9cZhY4D6DRaqsxNuasjNo2Ta0g+U8/gwBZhkGvxJiKLnbk/5mLZJXotuvcGPxVw7TxW9Q6Ge4
-	yMYu9qpn1l6rzcREJqD9YEfTe4dvjiD6lQcaLq7xmp/PCeZ78=
-X-Gm-Gg: AZuq6aKL3HF9p14VfJesVqgZZOqWmK+lP/XoY06Jx/DubCx81Atu3o5lS1ip1lYJ38s
-	J0+5tPjDk17RPKArwOnUiMbOHz3op8zF7dwL7dPs/RdB0d/OwkO6UMNzro5ysYW+A4dQxXUrxt/
-	7Rh5WAmh/JDbvCRDWKPF1snRz9lIUT8YTVFArcCgAaI9EJYdOY+/m2CYqpG//qeczgpH/FboPvA
-	Ovqym/XuUsfYZWDTr0rKLNKUr8IWN0KMqvQyWIPAOJJA/hUvNM9Tpc3xj/z63+ycyTailMU+d9J
-	GDzNSWxxvgiq02iBv2XNLVS36TP/+X072I3J00VCCtgB3yrIet9sDI8LRRYBeBi8xEpEJ0JaREn
-	Kglr66yKUHehj2qM9eWvDOLJSUdE1hVhxpeEhoeplJlKA3V4u9sXOuE1xSW2xK9yzrrIyFcDs3d
-	bGFomg2ZoF9Tq5gm3fQ/u5fAjeinYwSvS7toa1
-X-Received: by 2002:a17:907:948d:b0:b87:17eb:561d with SMTP id a640c23a62f3a-b879324b892mr1542419566b.58.1769032722975;
-        Wed, 21 Jan 2026 13:58:42 -0800 (PST)
-Received: from dev-rjethwani.dev.purestorage.com ([2620:125:9007:640:ffff::71f8])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-b87959c9fbbsm1652184266b.38.2026.01.21.13.58.40
+        d=1e100.net; s=20230601; t=1769033065; x=1769637865;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CJ68qOu/lJJCVxKn/HKtPSCAAtAx0dItgoT8Dw3lvcE=;
+        b=n78F2HP+a/EcYN5qFKGkdNkM0dbp/x+MY7GwLqp9SHAzokmM/6AG/Iv0d2oHYsNZaB
+         4C60oU/fqgvjvuY2NIoTbmIo2iXxggOjEJKJVUlxEpdQHN18sHzJcFp2d6Q6OkY75AfG
+         vUgDTRWqbcSZL33OaxoCHzOpSIqAv2CmwaEve23bWIGUtYTOkAFM9QSm8u3lctaAawHN
+         W+EEGkxyLqKLaP5ePOomG2SX+iTkXJTgbaN23Gmy79QqXEdTpc5IV8497jpUlJahlHsN
+         owbQ9P2YopJxgILxCREJsq0epLrTlmwQKCwV8P1u+B1TisLbnQj62TSHLXSlYRDnC+PQ
+         tgdA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtsghbjacqAcoxreHC37JjHTlcKr5leUqHkRprQKdJBEqfsxZOwyBPpyEZH4d8EZ+PMo45wGM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk9p/HxeFB2pF60h21GCvyZIesn5jDyNB3KI0saIdvCkhXwWbR
+	0LbiR8pnJKG7ZRy491DP4KYJom0JLxcVv0od3V//E3YihArWdGiP96h5
+X-Gm-Gg: AZuq6aIkdAI+WAUF7GAhaI1IeqrmzkzdYbw5LU3Xe9yLg9rdoLLE33BNbk4SII6Mn2Y
+	d8GLjDkc2V94Fh0Yxj3PMUcdH7BJGejD8fVHtelTqbnfGgqlBfaBFBM6YRUlKt4snOBviYubhqN
+	EkhblNnjWuL6iz8ucAXbk4/edtHdThLn0V9AMMB6rOUWJmUbd4Eu94YLtuhZoxoQAA/arFf76gT
+	XcA8M1QSHwTEy79q8pS57FV9H+JOt54kwz4eqOZcjzHNxFRUQzwHeGD2alBcVw2j3QDaauO80m1
+	bWjjMRf6Hu3C+8hU6BurlC2qJBOY6VJRlV+EDylLpB4b57oif2pYFJFx4dZAYLfrN+BEcYCVwkT
+	LmETBRQqAbwgUK9mljwUJ9MLdu441UVtzbE2OErG48PXf4wNaERVhYnFWGQH/42NzobVzSHTMli
+	zhZ995sg==
+X-Received: by 2002:a05:600c:8b27:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-48022668fd4mr258559955e9.7.1769033065384;
+        Wed, 21 Jan 2026 14:04:25 -0800 (PST)
+Received: from archlinux ([143.58.192.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356999824csm39410535f8f.39.2026.01.21.14.04.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 13:58:42 -0800 (PST)
-From: Rishikesh Jethwani <rjethwani@purestorage.com>
-To: netdev@vger.kernel.org
-Cc: saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	borisp@nvidia.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	sd@queasysnail.net,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	leon@kernel.org,
-	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH v4 3/3] mlx5: TLS 1.3 hardware offload support
-Date: Wed, 21 Jan 2026 14:57:27 -0700
-Message-Id: <20260121215727.3994324-4-rjethwani@purestorage.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260121215727.3994324-1-rjethwani@purestorage.com>
-References: <20260121215727.3994324-1-rjethwani@purestorage.com>
+        Wed, 21 Jan 2026 14:04:24 -0800 (PST)
+Date: Wed, 21 Jan 2026 22:04:23 +0000
+From: Andre Carvalho <asantostc@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v11 7/7] selftests: netconsole: validate target
+ resume
+Message-ID: <aXFIk1L8G_dHF6od@archlinux>
+References: <20260118-netcons-retrigger-v11-0-4de36aebcf48@gmail.com>
+ <20260118-netcons-retrigger-v11-7-4de36aebcf48@gmail.com>
+ <20260120172057.6600eefe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120172057.6600eefe@kernel.org>
 
-Add TLS 1.3 hardware offload support to mlx5 driver, enabling both
-TX and RX hardware acceleration for TLS 1.3 connections on Mellanox
-ConnectX-6 Dx and newer adapters.
+Hi Jakub,
 
-This patch enables:
-- TLS 1.3 version detection and validation with proper capability
-checking
-- TLS 1.3 crypto context configuration using
-MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 (0x3)
-- Correct IV handling for TLS 1.3 (12-byte IV vs TLS 1.2's 4-byte salt)
-- Hardware offload for both TLS 1.3 AES-GCM-128 and AES-GCM-256 cipher
-suites
+On Tue, Jan 20, 2026 at 05:20:57PM -0800, Jakub Kicinski wrote:
+> On Sun, 18 Jan 2026 11:00:27 +0000 Andre Carvalho wrote:
+> > +++ b/tools/testing/selftests/drivers/net/netcons_resume.sh
+> 
+> There's too many of them now and they keep failing on real HW.
 
-Key differences from TLS 1.2:
-- TLS 1.2: Only 4-byte salt copied to gcm_iv, explicit IV in each record
-- TLS 1.3: Full 12-byte IV (salt + iv) copied to gcm_iv + implicit_iv
-  * salt (4 bytes) → gcm_iv[0:3]
-  * iv (8 bytes)   → gcm_iv[4:7] + implicit_iv[0:3]
-  * Note: gcm_iv and implicit_iv are contiguous in memory
+Since these tests are only using netdevsim I was a bit surprised about the failures
+on real HW runs.
 
-The EXTRACT_INFO_FIELDS macro is updated to also extract the 'iv' field
-which is needed for TLS 1.3.
+I'm suspecting a race on my workaround to trigger reactivation and these runs
+potentially running on a host with systemd with MACAddressPolicy=persistent as
+I'm able to produce a similar error on this conditions. Any chance these are
+running with different configuration then SW runs?
 
-Tested on Mellanox ConnectX-6 Dx (Crypto Enabled) with TLS 1.3 AES-GCM-128
-and AES-GCM-256 cipher suites.
+When the device is recreated with the same MAC address as before, there is a race
+between my workaround and the resume. netconsole will immediately resume and UP
+the device, then my workaround goes and:
 
-Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
----
- .../ethernet/mellanox/mlx5/core/en_accel/ktls.h    |  8 +++++++-
- .../mellanox/mlx5/core/en_accel/ktls_txrx.c        | 14 +++++++++++---
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ip link set dev "${SRCIF}" down
+ip link set dev "${SRCIF}" address "${SAVED_SRCMAC}"
+# Rename device in order to trigger target resume, as initial
+# when device was recreated it didn't have correct mac address.
+ip link set dev "${SRCIF}" name "${TARGET}"
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-index 07a04a142a2e..0469ca6a0762 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.h
-@@ -30,7 +30,9 @@ static inline bool mlx5e_is_ktls_device(struct mlx5_core_dev *mdev)
- 		return false;
- 
- 	return (MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_128) ||
--		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256));
-+		MLX5_CAP_TLS(mdev, tls_1_2_aes_gcm_256) ||
-+		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_128) ||
-+		MLX5_CAP_TLS(mdev, tls_1_3_aes_gcm_256));
- }
- 
- static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
-@@ -40,10 +42,14 @@ static inline bool mlx5e_ktls_type_check(struct mlx5_core_dev *mdev,
- 	case TLS_CIPHER_AES_GCM_128:
- 		if (crypto_info->version == TLS_1_2_VERSION)
- 			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_128);
-+		else if (crypto_info->version == TLS_1_3_VERSION)
-+			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_128);
- 		break;
- 	case TLS_CIPHER_AES_GCM_256:
- 		if (crypto_info->version == TLS_1_2_VERSION)
- 			return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
-+		else if (crypto_info->version == TLS_1_3_VERSION)
-+			return MLX5_CAP_TLS(mdev,  tls_1_3_aes_gcm_256);
- 		break;
- 	}
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-index 570a912dd6fa..f3f90ad6c6cf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_txrx.c
-@@ -6,6 +6,7 @@
- 
- enum {
- 	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2 = 0x2,
-+	MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3 = 0x3,
- };
- 
- enum {
-@@ -15,8 +16,10 @@ enum {
- #define EXTRACT_INFO_FIELDS do { \
- 	salt    = info->salt;    \
- 	rec_seq = info->rec_seq; \
-+	iv      = info->iv;      \
- 	salt_sz    = sizeof(info->salt);    \
- 	rec_seq_sz = sizeof(info->rec_seq); \
-+	iv_sz      = sizeof(info->iv);      \
- } while (0)
- 
- static void
-@@ -25,8 +28,8 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
- 		   u32 key_id, u32 resync_tcp_sn)
- {
- 	char *initial_rn, *gcm_iv;
--	u16 salt_sz, rec_seq_sz;
--	char *salt, *rec_seq;
-+	u16 salt_sz, rec_seq_sz, iv_sz;
-+	char *salt, *rec_seq, *iv;
- 	u8 tls_version;
- 	u8 *ctx;
- 
-@@ -59,7 +62,12 @@ fill_static_params(struct mlx5_wqe_tls_static_params_seg *params,
- 	memcpy(gcm_iv,      salt,    salt_sz);
- 	memcpy(initial_rn,  rec_seq, rec_seq_sz);
- 
--	tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
-+	if (crypto_info->crypto_info.version == TLS_1_3_VERSION) {
-+		memcpy(gcm_iv + salt_sz, iv, iv_sz);
-+		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3;
-+	} else {
-+		tls_version = MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_2;
-+	}
- 
- 	MLX5_SET(tls_static_params, ctx, tls_version, tls_version);
- 	MLX5_SET(tls_static_params, ctx, const_1, 1);
+The problem is that the rename won't resume, as the target has already not deactivated
+and nothing will UP the device. 
+
+Doing "ip link set dev "${TARGET}" up" at this point should address this gap. Alternative,
+we can skip restoring the mac addresses if they are the same.
+
+Does this make sense? Perhaps there are other conditions that can trigger this, but
+running it with MACAddressPolicy=persistent is a reliable way for me to reproduce it.
+
+> We'll keep this series in the queue but I think it's time to move 
+> the netcons tests out to their own target or move them to netdevsim.
+
+Given the above, let me know if you prefer I send v12 with the proposed fixes or
+a separated follow up patch to fix the test on HW runs. Since you mentioned keeping
+on the queue I want to make sure a new version of this series won't mess up your process.
+
+> With absolutely no error message getting printed :|
+
+Yes, debugging these has been quite challenging. I'd like to improve all netconsole
+selftests debuggability in a future series, looking to work on this as soon as I wrap
+this one up.
+
+> 
+> TAP version 13
+> 1..1
+> # overriding timeout to 360
+> # selftests: drivers/net: netcons_resume.sh
+> # Running with bind mode: ifname
+> # ifname : Test passed
+> # Running with bind mode: mac
+> not ok 1 selftests: drivers/net: netcons_resume.sh # exit=1
+> 
+> https://netdev-3.bots.linux.dev/vmksft-drv-hw-dbg/results/482560/4-netcons-resume-sh/stdout
+
 -- 
-2.25.1
-
+Andre Carvalho
