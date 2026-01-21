@@ -1,96 +1,90 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E203033EF
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 09:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422CD48164E
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 09:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768989248; cv=none; b=CNXXTAt/DX9eDf+JsansP9UdiKAkiP1vbaPwrt/P/GZZGmWgmEXwdhPgK9WDY2QiR9koDUkhy4Leij8tCs8Rd+GaigZDJENO7O2ro0wPFzjCsr5df8jlYBHXHCp8X8KWl6sq8DaLydXK8HpP9DniQQd85MpEb8Ti8W1T5bXmd1E=
+	t=1768989568; cv=none; b=MRU253NImNLLAelfYuIAEoM3ebyjHTqZFgjHpPIB3XGZG0rKWVhFA8i4CN+yk03YOir370rMKZPD4DRqMuh/RYvEcAJ/7xd9oAwOve52CNcMgT9p+weSt4jZv/jX+13Sn90mGxdPQLwvEgr9TBEirnoqYTguTjilY+CafkOddN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768989248; c=relaxed/simple;
-	bh=NTgU+udkmo8b+bys+frUyrVCx9K0iFIwxoI71xMSPM0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DTrtOAvVprVXi8UO/JvZ9aj2Ak4fQQKKDla713p1ZE5fibtSqQ3ZJUfwVUZ9jcKTK2o5o3rP560fg6VHrXLz1h5MfOaXT6y+Zc5LogTTNYUDFlXy791K+4ulWdqTG+LqgA1Xpit4CBt2n8DSLSiKaGwUYKLoayNOWrUC8K+wlRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=RXGCbdmr; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1768989568; c=relaxed/simple;
+	bh=oIya8rrwe81tu2zeFAwGC3RowGdO1ZLGNeS4EmEbcIA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rIleqwXCI3+S5zPpNuD+ohi3UVevHsYfd274vuthtqanMgCYwBOzkZAeBf4RoIBji+ktnNAzv7wUm45m6VYlNQx5rb+iy/Yvb/4X8Zpebomp+ByzIjN3him4GJOnV+R7KoDpx5TZn6VaZuHb5nh0EVZ/kpsYqIZejQBpO9Tj6pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bKJepzdk; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="RXGCbdmr"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b86f81d8051so111199566b.1
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 01:54:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bKJepzdk"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-50146430e1dso150754031cf.3
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 01:59:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1768989245; x=1769594045; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ekpQy0hYQiLZMiu4CpOE6p7zPKqu8L39urLy2shV4+I=;
-        b=RXGCbdmr9/D/mJ5FbZbFN24EUGUyaWqh+RAny1ML6NCgVzhFJ/jUDYtLBB1/ooCaUx
-         S2m1bc32x/jvY0b+xrlUu7vLT1w4VdCIEx45HGTMY3v0r6fWSI2ZzQ/g7eBsxvP9bbgP
-         GGIBB1SGQqkzmYT0uDXYNt+paT3r8pSNPNsHoSwopTJ9W5HGQNh/SdcJMrLnxsumYcgS
-         qLatRrYcYdB+7+XSxCqKJgwC03yWyI7179L/K5Vqiw+vJGBSuFV3qOnlrJRXwDUPpe7T
-         cRAXuCOEwOr+zVDqLRDNdvq9DPqgkiCSy7mcm70GaljmPD1gENeUlb7uvstoPveEz58/
-         LPxg==
+        d=google.com; s=20230601; t=1768989565; x=1769594365; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mnY2Aj/3VqTXnmcggg+Ll4ncea3qf+hPkHJe0XPMTNc=;
+        b=bKJepzdkfOIa9UHK/3hiibaASkin+nTvc3pmVStvj/5kohEZ3MIg1DGSAj89rXbZPy
+         FJSzcAfofkxgHV/wnfTfJc3dp5icZUZ5EwiRFjjpTBrWp8qaQ8OKpfv4iOMK1lMxR9SS
+         kqlYgONZoS0moyYdqIR/sT3nwELzxcaeRKBnbQ1eO/GXhwlCiDqZ/AG96a0WtZODpiQW
+         vVWR8xH62uAyOOAw+3MxAQAWL0iYdPH/HhlJiDq9Q3OQkG3n8ZCV7bahtCzmpQQpvmAZ
+         yfEL25KoX5FG7JD7OuZkMCZ+uanqO3L4vQMO+Nc4k5h8tDDAJmcWnmOM6sz5FQbkFVkZ
+         /0VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768989245; x=1769594045;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ekpQy0hYQiLZMiu4CpOE6p7zPKqu8L39urLy2shV4+I=;
-        b=lR414DXtz3O6BjRl1VXuDLDcv8thFNuI/6YdRacBqv8AAb2WFXEeNbZMf5cGXzaDLS
-         27xOD5jWTNcCnj7nD67cH06Yv2wcb44H4RLmPrafcfxC0wHc46CnTPTAoqbZf0s6A0/X
-         rpkoNQ7PxGf2yo+wVEse+Eh8R3AlKN3bFj4Eeuq3pPMXCAGSDje1WBQ3sD5y6qS2VDyC
-         xa1wB1RZsObt9QLgggoPCWerliP06ra/rtUvO+c93kRIHn03Wm2K2ubEcrcMl5hGCZKy
-         wQfurYFvXbrbuEjDRX+ritRXWyQCOw3o2j03WVjm1JquToY2k5LnRsFLDwWkz739zS0d
-         PNew==
-X-Forwarded-Encrypted: i=1; AJvYcCXJGvivEoFVksrPFGMoQCGLrgsN3d8iJULKtUUrP9qAweRhGTQEC1GmXmjbYXNMrDsg/T2HLAA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYqpAw+8b+ZnKdPToVlJZMxUnpw6iZT7wy0uhbAvRBQZrtUiyU
-	U+nL4xD0+AVVf2AaD1ldDkxu9T1ylEj/E4Tt7N/kvsU57V40Lyt6hH+E+8xN7e0zirw=
-X-Gm-Gg: AZuq6aKIrJPlmLn52GAZJgCQyeRddHvzWZDSL1aQgh0A+o2CMkTS3AZ5Il+LujKe9IP
-	oe8CAczJ5try1qUolZpbdZOllq/CRMDexTZ+GsAOVwVXJS4F34CfSuGQdkDZ8X8NubusJmteNdo
-	P3YE3PMEsl7z1CJikZteevJyfTmR37GWkw/GtmRwdbpyxiPKwj2iM/MM61YJMvL6kp1vscp2ncw
-	SAQXyTjEHdaAw4Z8G6m1mqfhCuOTDNm5e4O4DNWwzzmVpCWJv5WxVRKIUq5tQmzd01DJl3fN16F
-	xjGMCMRnR0zlabjYIFIsiaAnLuI8jarMeAYM4NXoPQTE2p4Ew/CdrHKhn7xjZQhAYAcinSWzSMo
-	vI2/Gqx6bO1HQD5QyudisKGgVR07yFFIQEmrsq13YVtYmH5i1vGqWoZpFpxDCHYSPliqe9ueQK9
-	z+Fw==
-X-Received: by 2002:a17:907:948d:b0:b3a:8070:e269 with SMTP id a640c23a62f3a-b879389056fmr1832883466b.14.1768989245421;
-        Wed, 21 Jan 2026 01:54:05 -0800 (PST)
-Received: from cloudflare.com ([2a09:bac5:5063:2dc::49:217])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8795a31fafsm1474473066b.66.2026.01.21.01.54.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 01:54:05 -0800 (PST)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Eduard Zingerman <eddyz87@gmail.com>
-Cc: bpf@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,  Daniel
- Borkmann <daniel@iogearbox.net>,  John Fastabend
- <john.fastabend@gmail.com>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
- KaFai Lau <martin.lau@linux.dev>,  Song Liu <song@kernel.org>,  Yonghong
- Song <yonghong.song@linux.dev>,  KP Singh <kpsingh@kernel.org>,  Stanislav
- Fomichev <sdf@fomichev.me>,  Hao Luo <haoluo@google.com>,  Jiri Olsa
- <jolsa@kernel.org>,  Amery Hung <ameryhung@gmail.com>,
-  netdev@vger.kernel.org,  kernel-team@cloudflare.com
-Subject: Re: [PATCH bpf-next 3/4] bpf: Remove kfunc support in prologue and
- epilogue
-In-Reply-To: <8eb725d8d0878a7a1b582fdfacf05d20a2542304.camel@gmail.com>
-	(Eduard Zingerman's message of "Mon, 19 Jan 2026 14:55:29 -0800")
-References: <20260119-skb-meta-bpf-emit-call-from-prologue-v1-0-e8b88d6430d8@cloudflare.com>
-	<20260119-skb-meta-bpf-emit-call-from-prologue-v1-3-e8b88d6430d8@cloudflare.com>
-	<8eb725d8d0878a7a1b582fdfacf05d20a2542304.camel@gmail.com>
-Date: Wed, 21 Jan 2026 10:54:04 +0100
-Message-ID: <87h5sfthoj.fsf@cloudflare.com>
+        d=1e100.net; s=20230601; t=1768989565; x=1769594365;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mnY2Aj/3VqTXnmcggg+Ll4ncea3qf+hPkHJe0XPMTNc=;
+        b=Cl/bg95ui6zmlE73ixRpuH6FmAMREJH90WOjYQzR5F+MugPK99WkVFZIUu2xPLHC1W
+         amDln+yVhIDLMcbDqVpD7dVJ+9Ds14lX1gruLPMh7koAUQZNDqrNonKFWQgBVlR3XK5B
+         rSCxzEODZfQp4fkarVgPaUvh1dRp9orJdzVmrPP9K5xUA4MwjqjWjmw8xA+c2J/Ijs7U
+         NcGv5bDawKmteRS8kofcHffPNtgwdQ0k1r+n9l3wj2pcGfeuT2nCf8vSS6qo7A+Wnr+w
+         +ABfCf6WvRHmBd/RtMMvpARPLKljDdMrlPsqzI9rOpW5Mt+LB++snkOVm68Jeh9rwmb+
+         +/oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC/gwMhHJjVG2of/1C2qWOtn0oCxql1CAYmzuQba+cDndswOR632p8fRopkCefBhV0x753dpk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHZg7XAEXGFPVjouIx+A/MHcwidi481y27DjQRCPGGeifFcvHR
+	LZOEnftVxMn9yqLuhaZCgU9A0v93ApRkfNwmXHqJ090MLhtCy6LB19+uToswkiXytvOo+7jE0RN
+	V4ecf0XfGDMdJWw==
+X-Received: from qtxf4.prod.google.com ([2002:ac8:5d04:0:b0:502:984a:7db4])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:7d56:0:b0:501:17a1:4ccf with SMTP id d75a77b69052e-502a1de049cmr260751791cf.3.1768989564881;
+ Wed, 21 Jan 2026 01:59:24 -0800 (PST)
+Date: Wed, 21 Jan 2026 09:59:21 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260121095923.3134639-1-edumazet@google.com>
+Subject: [PATCH net-next 0/2] tcp: remove tcp_rate.c
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 19, 2026 at 02:55 PM -08, Eduard Zingerman wrote:
-> I think that patches #3 and #4 have to be swapped, otherwise there is
-> a selftest failure when only patches #1-3 are applied:
->
->   #281/17  pro_epilogue/syscall_pro_epilogue:FAIL
->
-> If we want to keep selftests passing for arbitrary bisects.
+Move tcp_rate_gen() to tcp_input.c and tcp_rate_check_app_limited()
+to tcp.c for better code generation.
 
-I don't have an opinion. I assumed it'd get applied as a batch without
-fast forward, so bisect would be going over merge commits.
+tcp_rate.c was interesting from code maintenance perspective
+but was adding cpu costs.
+
+Eric Dumazet (2):
+  tcp: move tcp_rate_gen to tcp_input.c
+  tcp: move tcp_rate_check_app_limited() to tcp.c
+
+ include/net/tcp.h    |   5 +-
+ net/ipv4/Makefile    |   2 +-
+ net/ipv4/tcp.c       |  18 ++++++
+ net/ipv4/tcp_input.c | 110 ++++++++++++++++++++++++++++++++++++
+ net/ipv4/tcp_rate.c  | 130 -------------------------------------------
+ 5 files changed, 130 insertions(+), 135 deletions(-)
+ delete mode 100644 net/ipv4/tcp_rate.c
+
+
+base-commit: d8f87aa5fa0a4276491fa8ef436cd22605a3f9ba
+-- 
+2.52.0.457.g6b5491de43-goog
+
