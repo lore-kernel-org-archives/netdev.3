@@ -1,243 +1,508 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0BC2D5C74;
-	Wed, 21 Jan 2026 13:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769002667; cv=fail; b=K3kJDysKMQF+yhmBaWN/N69CovcpcnTp5KaQ9YH3QXtqLXD/PMpwzMnmktzP8y2X9p6fnasLj9y4HkEzNitfOqr1AiK14S+cRb0KCvB6hUTvzaP9HyLv/b9KiUcEOYNAB26h1Q5paKAhg7uKNJtfb39UX4UkJNWYPCS4o33vnmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769002667; c=relaxed/simple;
-	bh=TvtflOPDWtaCCvE+GOWPiQDCpdiHKaKGGCi6m6TJzVs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YSOr8y6PMsBoqDqzPhFp5tp6yxySXdPqgC1vuk5TbFDCvsvrFu3gIy8FVvK4coYuCcQbm+AB0LiOgAfbeuIMMLI2CofDB8hvaOk1KivF4Q4S/D9J5Q1oswv8tHfou6aJANcHyfNFY+nTtymKfjouHDLo5wIAO1dO/PSM266Pais=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fMc1pKDC; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7951F2D5C74
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 13:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769002679; cv=none; b=tgd7gu+BvcFXmi/dkSusmiWsrcn3+Kud7XSvjiZFr8bQ8AIAvttTiFFNmr1l1LbMIPxOGoEm26zvk6aiNBTBqZ4l+IgsTciMDRdYnEf2xmcr2yV5X3ls/ymyNwrp++uZmv/ULHDT10gZKSCQ+hn2rNUHgaI4pdUFjY6Nh9HLyL8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769002679; c=relaxed/simple;
+	bh=LOwfgLeE/I8lf9w9EwpZZLnNSoWox2FvGZtInvSUL8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IuYUgCbIHkK4fq05wdSeWK68kl+y1D6LFL9gjC/Xqcg4Dx+m3O7QbkovZtXbl5QnF1u3fHEcE5olp8N2zhcobFzgpp1AgGvXkQQ0o+5VXnHuo/n+4bZwNIHmxKhWgZpib91OFBJhuE5XTsqwts/S1iJflOt7sF5SZyTN5u63VcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HFazNK0h; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fMc1pKDC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769002665; x=1800538665;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=TvtflOPDWtaCCvE+GOWPiQDCpdiHKaKGGCi6m6TJzVs=;
-  b=fMc1pKDCy4C40pohVW7PnHH72jnm7+N4SLb3eVCKWHzdCRMNgmTsgy0k
-   UDzUCfFbKB+HgwoOIRMyWgXCpHfynW0pOnHRidLZJskXjETL+w12xv2nt
-   9AEHqrsKXwaxg8vTlDbKTkpJB86rj2+zzWJuXpdAJNSedoBq1RcR4GizI
-   5ALcYjEmJIcALtpwWYIOeyaLLcUQgzavPcZKhyn0KW3yqR0QvAeWWtLMg
-   yiHkK0tBX3AN9Qy7RuIotiFlftsSZuF5z4+7uU7/Cg+dl+/f1n4ctKwUW
-   zbEyPFbJGbZblf1VjFHKqI7UGRQL2ty3Ekcp/jcm7QHTDY5Wm2xgNKGB+
-   w==;
-X-CSE-ConnectionGUID: BzJFj1szRsCOha08/CcaPw==
-X-CSE-MsgGUID: ziIEnZmsQ8mRsOEuKXby1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="81673365"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="81673365"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 05:37:44 -0800
-X-CSE-ConnectionGUID: bLAuT7ytTiWrHshp5RFniw==
-X-CSE-MsgGUID: m+br48VRSNKSNSo/UCDVsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="206689307"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 05:37:44 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 21 Jan 2026 05:37:43 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Wed, 21 Jan 2026 05:37:43 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.58) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 21 Jan 2026 05:37:43 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yj1ceiEkSo7Qbv4hlAFdBIgbcSWdF9p7uOudDi5HANOHvn2r3nsUPCwBaaQz+vE7k/lnT4GLHUq1o1fz/w0LDBfr6C8yvZx/8negfox6Z6vjth31N3l4Bl5A0H4gaVjwE+iN0CW1Goz+YJUN4odJL/aSAILEkuZcAbZI8ZmiscxIR8hP2MgnbTlGJ35p2K2eGKVQxXMlZv9e3GWs2N6T520XhIUQ0sWY53WK07IN9HHpXn32xlbnSIYiLeNLOtjYVW8CQjhBlx2XMbb2DMsXpzdNRUcRi9ZX1LVHC34e8TyORcwISJN9bwPLakCTPUf8/v3JnAR7ejL0AYXRZ9ktDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NFcvQ3m3VYgLPiLEkX30316wvMI7MnALoomLbg0sKpE=;
- b=vqZW9SH+vxBWFjj3Vm3B5V0V0sX8AGI7j+xlazUHXadwrXB7EGAJpehLsg/f5hYGENh7dcDLjVQSkSGG1J0+0Fl+0FGdHlb81X3WzQ47/8YVpTuQQ+I7ltQa7AL4gfZzhNNHE2C6+VeiowvsW0K2+bREII/PKY7Q9duvdtjXt8Xj3fNwTYusgN04MggPwrI5igPgfRkDQbcJ4q0frXmkPuV6siAuBQoIUsJAA9iHNY15uVxVDxuu+Hz8MRBDEZRH0MU8HQe38jTjh2unu7zdC9fHejzmmGtGGhFu9eHNvnD9vbSj/fP1pohTJ4x+xbI7tZwebG5nx14ad8/omFHhoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV4PR11MB9491.namprd11.prod.outlook.com (2603:10b6:408:2de::14)
- by DS0PR11MB7959.namprd11.prod.outlook.com (2603:10b6:8:fd::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.9; Wed, 21 Jan 2026 13:37:35 +0000
-Received: from LV4PR11MB9491.namprd11.prod.outlook.com
- ([fe80::f110:9a4f:b4cb:2eeb]) by LV4PR11MB9491.namprd11.prod.outlook.com
- ([fe80::f110:9a4f:b4cb:2eeb%7]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 13:37:35 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: "Vecera, Ivan" <ivecera@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Jiri Pirko
-	<jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Michal Michalik
-	<michal.michalik@intel.com>, "Olech, Milena" <milena.olech@intel.com>, "open
- list" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net] dpll: Prevent duplicate registrations
-Thread-Topic: [PATCH net] dpll: Prevent duplicate registrations
-Thread-Index: AQHcitX/4OZPvpX57keVL223l6X5+7VcoFFA
-Date: Wed, 21 Jan 2026 13:37:35 +0000
-Message-ID: <LV4PR11MB9491BC664A5ADA3D0DA7F1559B96A@LV4PR11MB9491.namprd11.prod.outlook.com>
-References: <20260121130012.112606-1-ivecera@redhat.com>
-In-Reply-To: <20260121130012.112606-1-ivecera@redhat.com>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV4PR11MB9491:EE_|DS0PR11MB7959:EE_
-x-ms-office365-filtering-correlation-id: a1da1f8b-4f09-40d2-3af4-08de58f23cd0
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?H6nxuVf6u9xfOIO3jrPwe3mp+yOnsvRDg2UuGsBjrw7CuQ+/JyaJORqE1kAx?=
- =?us-ascii?Q?NLCJJxC1DmxMfY0ty3RW8R66Po1a0wHFqtoLysl9z+xAK0B7FqCakeW9h2KG?=
- =?us-ascii?Q?aTrtAT62FeoqPBMmLlaYUGMAo95hIq4qBVSkb3Bx9rRshz9MTuvIqvmMVgYF?=
- =?us-ascii?Q?t6JD9fO7a1c5RmsT1wNel3lhA1Jaqk9Gk4CDL4nnCGzrb0GxL0KvjAKWLt1y?=
- =?us-ascii?Q?CoZsXqDi+ZIlptRaMxvlSIB3+4uaiIhtEB8cWjN4P0MVOZyNqZP3ZstbxHmh?=
- =?us-ascii?Q?3gdb/9vv6hmAOvYb1NQx5Pww9cirD5/9YKeIstu9Zgh8Dmzu0YCaagThLnkJ?=
- =?us-ascii?Q?Kav+stBfSD0HF1//mthEfVjLwxjmRvQuKNP53/TZZCfO3PYNwCVgN2bbHur3?=
- =?us-ascii?Q?AZAdvpxI9oN94IHGleMdSIfQbEdLCaCez4VBANnaVHZEEBavhWF0jKdlMtZe?=
- =?us-ascii?Q?S/faoYLzbsUR7O11qjl5wmj6OxM95Nn3tp/WUK4l3a3AtsLo6MgQ+5WDjnGE?=
- =?us-ascii?Q?narCZ0mLyUX4yYsUfV+Q58bTx/uOQMSYJKZe62VvFI52lcRlz/3iWEqz8NZr?=
- =?us-ascii?Q?5NWUrnVaWgZv7DB0iHXGKLGbxqQlEf9Q/oIYWis0ZA8FKCMhgGSuXqr7pqag?=
- =?us-ascii?Q?8AKPVp4RL6IpObG+CrhWYcRPui/X5p1w5mDr76chyw49bWTMUreg+L3EqWVp?=
- =?us-ascii?Q?2cGlqvOXKqhRG2xtfIPwMrk1nPki2m5STdPI5OkI2wwX42rS826IL7RcvApa?=
- =?us-ascii?Q?X87X9wZBmkVlzWcojMWv8THUHyd0FmHCPfpkU4GKMhPgPLs2Znl1JRrGx+tk?=
- =?us-ascii?Q?uWzrvCl3pNXNxoP9e3Kn8Ih8pCdyLEAtjKiI94nq/OU3pCS1Q+6Lts986RIN?=
- =?us-ascii?Q?bdJlqgho/+5jG7Utmu7D50C7PmBfyaxHs/vkqufEF18YmJPEYAgrpxxKOe6r?=
- =?us-ascii?Q?sldiQNgFuQV34i827eih/P4EAlSEVhsYxHaAivrlU+NItbC7XbZnQ7zIrWD9?=
- =?us-ascii?Q?TGVcD+tlsUmtA9rqxns5Xsagw1I0hdGMG/eYQE8avbBXkoehC7JKTGGa1Cpa?=
- =?us-ascii?Q?BQjZ6mZmqDY6JkX68w8XySLdamux2SOKUPV4S7uhOF/4qfAv/S2kufiggFpN?=
- =?us-ascii?Q?ApTWbSUCRWUBkIwkEC60CTBEpXrCCiYTlYqfQirGnEyqTeB2ux4M+ptR3Sgx?=
- =?us-ascii?Q?Puijymn9AB4UvaEBUZMSu7ghgpLTn1+Q++3OmwNFv/w4GdI1K8B5FQkc2eTF?=
- =?us-ascii?Q?jq2RnFDED0e8GdUwnbQLNzW8W2Utsb0pzSqB3l3+knmTpfaFx83LYN85OF/M?=
- =?us-ascii?Q?Xofe1beruAxBH6hy84s/QkRxXa9lb9xdMADEOFkI3z/T2Q4HdCwvUdwU8s+O?=
- =?us-ascii?Q?W9ALrdqSm89MNSmPQDLPxs+OLxS1nb/vRKBBMt34nyOf51S8vYFjxXqd063C?=
- =?us-ascii?Q?5zjao2qttscde/Y3b0vB0XJ2xkQwmyr3b1uxvU8R8wCdalgJslIkD4awBtkL?=
- =?us-ascii?Q?HAJZXCPP90VpTLcKo+PA8jb9Lro++XO0HqgxBtb2moA/FGVlyeuWJB94/RIp?=
- =?us-ascii?Q?+h6lDIOAsh0vM/+B80PSlRPhBe2jDvg4HS0L1xNk0Yu7r0Zay+Ypof6Nxgx+?=
- =?us-ascii?Q?4Nqlq8vRXen66LCn4G9etYE=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV4PR11MB9491.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+rvcRpMy8KzvG4N2SiGApV7mzDdsoGSdddSDwAGtHYWO6WQx0Mc7bQx9kFf3?=
- =?us-ascii?Q?0Amr7jTJ8nmVO6vkcASalWBMYh0vB4mitbWf8Q7olALo3IWMgnT56szFtqJx?=
- =?us-ascii?Q?XnxpfNTeHoSQM7IdeG05JF0x2tJa/rtuoKPhPi1Ix0JUu7BIKOpZtK/LvG8o?=
- =?us-ascii?Q?26DJro3TKb/rtZTv8AnGSBy73YDdI7JmbUx6cK6X37Cnbun7RfZvdTjyMzHq?=
- =?us-ascii?Q?PlbFrKNCXqHkEJZEHGJtbz4IIvzeNqU2XFfHbQ+PY9VmyWmIfVONum+v8H8u?=
- =?us-ascii?Q?lNbMuxXAtU3qVRF9/z38FGCJctsIkFMupMHdaaSsIQazTj9A2cknG3Jfjs30?=
- =?us-ascii?Q?3M32uyQh+no2lNxPF4X6AqR+kbg1WoVEUp1l5tBYBXkGnAEN0io4SrIEYGyW?=
- =?us-ascii?Q?qPSTynUuwNxkdDTYgE5Y2cLJU3q4kTtcKi4xq2gmxsOZbGXQvgK6/24WoUhV?=
- =?us-ascii?Q?WgLaNGDl9JAI76H9OHdWc/xK+J3hLEMbnrgYMW+zEmTi7qYp1/qT4Z+Mfff3?=
- =?us-ascii?Q?N2jB811zyP6fotoacYrdsispbpKnM3iJZfDi2jh8R4inNjs52mo4QMy0lArL?=
- =?us-ascii?Q?RAM5mM4t6b1MycgwK5uZYWtPyYMZj+gasdFr80uKntQyCNZRM93BRMLIrGT0?=
- =?us-ascii?Q?XpG3S8EDb6sfOf4LS781XUoK2VRZgshVDvqFV53qgt8XbUF7pIUgurcsdsbM?=
- =?us-ascii?Q?Gn9GAkbjlkkXDKFQKH6lMpDZaJICc4z1NLd+TVrgfAHo8srGVuBc7+Hu03Ty?=
- =?us-ascii?Q?lY3YPcNdlz/3PAsiOWeoYhFOWj1SebdBYkqNcK8z7R47QIpb6vf1tErKXeMG?=
- =?us-ascii?Q?DmxeOZDK55LQClvL/9mkkpZJcvWtwcpYxq5nzWpBv+f7bvJlYRfZXHJ8ooSd?=
- =?us-ascii?Q?ho1QXt8jLfDT4uPx9EYES1iTQFK1GRrk7lv9EiSezkKFW1vGiaMMBKgHq+EA?=
- =?us-ascii?Q?RXv3Vt0G9hedCCHjtEgtmwjHnmDRSebDQOaHmF1ekCkO3PfKBVhMVFoRJAZP?=
- =?us-ascii?Q?1o/dVzdEqUolyuwhJKNa4X56mKRCXRHaPfrVXKi8Y/mb0O1kzPUCVaAZfn2C?=
- =?us-ascii?Q?CsiCPCbnTeD6WCIHHX/NttF2Olq5FHezqQGcr4AxTtxG5dAQvTbh0uCyE/UD?=
- =?us-ascii?Q?hl+YXQU7RIrSn2XNZwghtzFqnDEX0nsZR2KtpG/NhFidBYO6nXXfL/QFEpKq?=
- =?us-ascii?Q?f1+fWFzD0elZTnTR+HRYQbNEEsbAZKEhYLmPskGaWSFD25xvwK6GRVQMaqLQ?=
- =?us-ascii?Q?uqekwZJ41F3CNdCRFE7jRNxOXwNzz+527o7iZkVAitjJOBvxJwYJ/gj/eBgN?=
- =?us-ascii?Q?I/1gjFqCGmHnuBYnpWf/DjP9wlom0Y5FzuV2v6yvPNa27FzBqqVp7LF0RIlo?=
- =?us-ascii?Q?PY8enhv2EKIS/g3lZRDqOoPMr4Jb9YvPl2l+FUDl8a0AJxaLtyYh8Q54/onX?=
- =?us-ascii?Q?YhheiHqr3ljFPeErtp82wzWQKRN770ynqwD5UEUhpCGAVE4y4qDtY6dyKEHn?=
- =?us-ascii?Q?zQ+oFdWXqsCY0M7zymudBFnajA7hUmOndUfbj0eX+eXMHgE4r3OXXZzr1W/i?=
- =?us-ascii?Q?jZ6dwB/AuxA8VxSXxuH4EBVwWK7kDcaxKLUrVhx2HPundBBua9EEzj+EotC9?=
- =?us-ascii?Q?2xbHHFDyEY275iDbAsIQWdyWAy44d4w1t6IfI3RQn5UP+uBmNwWc5rI7PFe5?=
- =?us-ascii?Q?WwDjLxer0P8xySusj5KbRm42jK+q2SzLLGDxIyuxcKg4ojFpTdVpJ1hEtL1Z?=
- =?us-ascii?Q?SH/wJrWNhkNFb5dLSUQDxLklll3lKOw=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HFazNK0h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769002676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PQ32Unwv7sn7p6b2I0UfDVDIs0r2oUgG5JFFwdfuERU=;
+	b=HFazNK0hlJSGmLy5Ew9mMeErNm333qtZSOP/yCB1cxQNvin2U5Xzi6Rp+BiPXWaBQPqzcb
+	twry3X9UrnXzupAmB5BnCm46lLH2NQMJb+vWkedqerPnTvY4IB71LdSUPRJE+kPClJ6QKO
+	mlaZS/59CfVXVYoclARkB+D440nvOIk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-2dAFbhGePBWjm0VatSD5yA-1; Wed,
+ 21 Jan 2026 08:37:51 -0500
+X-MC-Unique: 2dAFbhGePBWjm0VatSD5yA-1
+X-Mimecast-MFC-AGG-ID: 2dAFbhGePBWjm0VatSD5yA_1769002669
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4B00195606D;
+	Wed, 21 Jan 2026 13:37:49 +0000 (UTC)
+Received: from thinkpad.redhat.com (unknown [10.44.33.242])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E992430001A2;
+	Wed, 21 Jan 2026 13:37:45 +0000 (UTC)
+From: Felix Maurer <fmaurer@redhat.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jkarrenpalo@gmail.com,
+	tglx@linutronix.de,
+	mingo@kernel.org,
+	allison.henderson@oracle.com,
+	petrm@nvidia.com,
+	antonio@openvpn.net,
+	bigeasy@linutronix.de,
+	Steffen Lindner <steffen.lindner@de.abb.com>
+Subject: [PATCH net-next 4/9] hsr: Implement more robust duplicate discard for PRP
+Date: Wed, 21 Jan 2026 14:37:31 +0100
+Message-ID: <421af45002cd5e1d91e01065d4f870cc190d825f.1769001553.git.fmaurer@redhat.com>
+In-Reply-To: <cover.1769001553.git.fmaurer@redhat.com>
+References: <cover.1769001553.git.fmaurer@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV4PR11MB9491.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1da1f8b-4f09-40d2-3af4-08de58f23cd0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 13:37:35.8233
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5sbmD8deqfN3r53ImbZN7HQKaIEvojP9iDX/YROSEk+zL0EDl65z1aqiHCJFSOLXTARxPmZq+Pf56LaktzwYQVZ78i/gzG/1n+fd8G1vEsg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7959
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
->From: Ivan Vecera <ivecera@redhat.com>
->Sent: Wednesday, January 21, 2026 2:00 PM
->
->Modify the internal registration helpers dpll_xa_ref_{dpll,pin}_add()
->to reject duplicate registration attempts.
->
->Previously, if a caller attempted to register the same pin multiple
->times (with the same ops, priv, and cookie) on the same device, the core
->silently increments the reference count and return success. This behavior
->is incorrect because if the caller makes these duplicate registrations
->then for the first one dpll_pin_registration is allocated and for others
->the associated dpll_pin_ref.refcount is incremented. During the first
->unregistration the associated dpll_pin_registration is freed and for
->others WARN is fired.
->
->Fix this by updating the logic to return `-EEXIST` if a matching
->registration is found to enforce a strict "register once" policy.
->
->Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
->Signed-off-by: Ivan Vecera <ivecera@redhat.com>
->---
-> drivers/dpll/dpll_core.c | 12 ++++--------
-> 1 file changed, 4 insertions(+), 8 deletions(-)
->
->diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
->index a461095efd8a..8879a7235156 100644
->--- a/drivers/dpll/dpll_core.c
->+++ b/drivers/dpll/dpll_core.c
->@@ -83,10 +83,8 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct
->dpll_pin *pin,
-> 		if (ref->pin !=3D pin)
-> 			continue;
-> 		reg =3D dpll_pin_registration_find(ref, ops, priv, cookie);
->-		if (reg) {
->-			refcount_inc(&ref->refcount);
->-			return 0;
->-		}
->+		if (reg)
->+			return -EEXIST;
-> 		ref_exists =3D true;
-> 		break;
-> 	}
->@@ -164,10 +162,8 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct
->dpll_device *dpll,
-> 		if (ref->dpll !=3D dpll)
-> 			continue;
-> 		reg =3D dpll_pin_registration_find(ref, ops, priv, cookie);
->-		if (reg) {
->-			refcount_inc(&ref->refcount);
->-			return 0;
->-		}
->+		if (reg)
->+			return -EEXIST;
-> 		ref_exists =3D true;
-> 		break;
-> 	}
->--
->2.52.0
+The PRP duplicate discard algorithm does not work reliably with certain
+link faults. Especially with packet loss on one link, the duplicate discard
+algorithm drops valid packets which leads to packet loss on the PRP
+interface where the link fault should in theory be perfectly recoverable by
+PRP. This happens because the algorithm opens the drop window on the lossy
+link, covering received and lost sequence numbers. If the other, non-lossy
+link receives the duplicate for a lost frame, it is within the drop window
+of the lossy link and therefore dropped.
 
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Since IEC 62439-3:2012, a node has one sequence number counter for frames
+it sends, instead of one sequence number counter for each destination.
+Therefore, a node can not expect to receive contiguous sequence numbers
+from a sender. A missing sequence number can be totally normal (if the
+sender intermittently communicates with another node) or mean a frame was
+lost.
+
+The algorithm, as previously implemented in commit 05fd00e5e7b1 ("net: hsr:
+Fix PRP duplicate detection"), was part of IEC 62439-3:2010 (HSRv0/PRPv0)
+but was removed with IEC 62439-3:2012 (HSRv1/PRPv1). Since that, no
+algorithm is specified but up to implementers. It should be "designed such
+that it never rejects a legitimate frame, while occasional acceptance of a
+duplicate can be tolerated" (IEC 62439-3:2021).
+
+For the duplicate discard algorithm, this means that 1) we need to track
+the sequence numbers individually to account for non-contiguous sequence
+numbers, and 2) we should always err on the side of accepting a duplicate
+than dropping a valid frame.
+
+The idea of the new algorithm is to store the seen sequence numbers in a
+bitmap. To keep the size of the bitmap in control, we store it as a "sparse
+bitmap" where the bitmap is split into blocks and not all blocks exist at
+the same time. The sparse bitmap is implemented using an xarray that keeps
+the references to the individual blocks and a backing ring buffer that
+stores the actual blocks. New blocks are initialized in the buffer and
+added to the xarray as needed when new frames arrive. Existing blocks are
+removed in two conditions:
+1. The block found for an arriving sequence number is old and therefore not
+   relevant to the duplicate discard algorithm anymore, i.e., it has been
+   added more than the entry forget time ago. In this case, the block is
+   removed from the xarray and marked as forgotten (by setting its
+   timestamp to 0).
+2. Space is needed in the ring buffer for a new block. In this case, the
+   block is removed from the xarray, if it hasn't already been forgotten
+   (by 1.). Afterwards, the new block is initialized in its place.
+
+This has the nice property that we can reliably track sequence numbers on
+low traffic situations (where they expire based on their timestamp) and
+more quickly forget sequence numbers in high traffic situations before they
+potentially wrap over and repeat before they are expired.
+
+When nodes are merged, the blocks are merged as well. The timestamp of a
+merged block is set to the minimum of the two timestamps to never keep
+around a seen sequence number for too long. The bitmaps are or'd to mark
+all seen sequence numbers as seen.
+
+All of this still happens under seq_out_lock, to prevent concurrent
+access to the blocks.
+
+Reported-by: Steffen Lindner <steffen.lindner@de.abb.com>
+Fixes: 05fd00e5e7b1 ("net: hsr: Fix PRP duplicate detection")
+Signed-off-by: Felix Maurer <fmaurer@redhat.com>
+---
+
+Notes:
+    The bug was reported by Steffen directly to us, I asked for permission
+    to add his Reported-by tag.
+
+ net/hsr/hsr_framereg.c | 198 +++++++++++++++++++++++++++--------------
+ net/hsr/hsr_framereg.h |  21 ++++-
+ 2 files changed, 148 insertions(+), 71 deletions(-)
+
+diff --git a/net/hsr/hsr_framereg.c b/net/hsr/hsr_framereg.c
+index 3a2a2fa7a0a3..d9745199494a 100644
+--- a/net/hsr/hsr_framereg.c
++++ b/net/hsr/hsr_framereg.c
+@@ -35,7 +35,6 @@ static bool seq_nr_after(u16 a, u16 b)
+ 
+ #define seq_nr_before(a, b)		seq_nr_after((b), (a))
+ #define seq_nr_before_or_eq(a, b)	(!seq_nr_after((a), (b)))
+-#define PRP_DROP_WINDOW_LEN 32768
+ 
+ bool hsr_addr_is_redbox(struct hsr_priv *hsr, unsigned char *addr)
+ {
+@@ -126,13 +125,29 @@ void hsr_del_self_node(struct hsr_priv *hsr)
+ 		kfree_rcu(old, rcu_head);
+ }
+ 
++static void hsr_free_node(struct hsr_node *node)
++{
++	xa_destroy(&node->seq_blocks);
++	kfree(node->block_buf);
++	kfree(node);
++}
++
++static void hsr_free_node_rcu(struct rcu_head *rn)
++{
++	struct hsr_node *node = container_of(rn, struct hsr_node, rcu_head);
++
++	hsr_free_node(node);
++}
++
+ void hsr_del_nodes(struct list_head *node_db)
+ {
+ 	struct hsr_node *node;
+ 	struct hsr_node *tmp;
+ 
+-	list_for_each_entry_safe(node, tmp, node_db, mac_list)
+-		kfree(node);
++	list_for_each_entry_safe(node, tmp, node_db, mac_list) {
++		list_del(&node->mac_list);
++		hsr_free_node(node);
++	}
+ }
+ 
+ void prp_handle_san_frame(bool san, enum hsr_port_type port,
+@@ -176,11 +191,7 @@ static struct hsr_node *hsr_add_node(struct hsr_priv *hsr,
+ 	for (i = 0; i < HSR_PT_PORTS; i++) {
+ 		new_node->time_in[i] = now;
+ 		new_node->time_out[i] = now;
+-	}
+-	for (i = 0; i < HSR_PT_PORTS; i++) {
+ 		new_node->seq_out[i] = seq_out;
+-		new_node->seq_expected[i] = seq_out + 1;
+-		new_node->seq_start[i] = seq_out + 1;
+ 	}
+ 
+ 	if (san && hsr->proto_ops->handle_san_frame)
+@@ -194,11 +205,20 @@ static struct hsr_node *hsr_add_node(struct hsr_priv *hsr,
+ 		if (ether_addr_equal(node->macaddress_B, addr))
+ 			goto out;
+ 	}
++
++	new_node->block_buf = kcalloc(HSR_MAX_SEQ_BLOCKS,
++				      sizeof(struct hsr_seq_block),
++				      GFP_ATOMIC);
++	if (!new_node->block_buf)
++		goto out;
++
++	xa_init(&new_node->seq_blocks);
+ 	list_add_tail_rcu(&new_node->mac_list, node_db);
+ 	spin_unlock_bh(&hsr->list_lock);
+ 	return new_node;
+ out:
+ 	spin_unlock_bh(&hsr->list_lock);
++	kfree(new_node->block_buf);
+ 	kfree(new_node);
+ 	return node;
+ }
+@@ -280,6 +300,59 @@ struct hsr_node *hsr_get_node(struct hsr_port *port, struct list_head *node_db,
+ 			    san, rx_port);
+ }
+ 
++static bool hsr_seq_block_is_old(struct hsr_seq_block *block)
++{
++	unsigned long expiry = msecs_to_jiffies(HSR_ENTRY_FORGET_TIME);
++
++	return time_is_before_jiffies(block->time + expiry);
++}
++
++static void hsr_forget_seq_block(struct hsr_node *node,
++				 struct hsr_seq_block *block)
++{
++	if (block->time)
++		xa_erase(&node->seq_blocks, block->block_idx);
++	block->time = 0;
++}
++
++/* Get the currently active sequence number block. If there is no block yet, or
++ * the existing one is expired, a new block is created. The idea is to maintain
++ * a "sparse bitmap" where a bitmap for the whole sequence number space is
++ * split into blocks and not all blocks exist all the time. The blocks can
++ * expire after time (in low traffic situations) or when they are replaced in
++ * the backing fixed size buffer (in high traffic situations).
++ */
++static struct hsr_seq_block *hsr_get_seq_block(struct hsr_node *node,
++					       u16 block_idx)
++{
++	struct hsr_seq_block *block, *res;
++
++	block = xa_load(&node->seq_blocks, block_idx);
++
++	if (block && hsr_seq_block_is_old(block)) {
++		hsr_forget_seq_block(node, block);
++		block = NULL;
++	}
++
++	if (!block) {
++		block = &node->block_buf[node->next_block];
++		hsr_forget_seq_block(node, block);
++
++		memset(block, 0, sizeof(*block));
++		block->time = jiffies;
++		block->block_idx = block_idx;
++
++		res = xa_store(&node->seq_blocks, block_idx, block, GFP_ATOMIC);
++		if (xa_is_err(res))
++			return NULL;
++
++		node->next_block =
++			(node->next_block + 1) & (HSR_MAX_SEQ_BLOCKS - 1);
++	}
++
++	return block;
++}
++
+ /* Use the Supervision frame's info about an eventual macaddress_B for merging
+  * nodes that has previously had their macaddress_B registered as a separate
+  * node.
+@@ -288,16 +361,18 @@ void hsr_handle_sup_frame(struct hsr_frame_info *frame)
+ {
+ 	struct hsr_node *node_curr = frame->node_src;
+ 	struct hsr_port *port_rcv = frame->port_rcv;
++	struct hsr_seq_block *src_blk, *merge_blk;
+ 	struct hsr_priv *hsr = port_rcv->hsr;
+-	struct hsr_sup_payload *hsr_sp;
+ 	struct hsr_sup_tlv *hsr_sup_tlv;
++	struct hsr_sup_payload *hsr_sp;
+ 	struct hsr_node *node_real;
+ 	struct sk_buff *skb = NULL;
+ 	struct list_head *node_db;
+ 	struct ethhdr *ethhdr;
+-	int i;
+-	unsigned int pull_size = 0;
+ 	unsigned int total_pull_size = 0;
++	unsigned int pull_size = 0;
++	unsigned long idx;
++	int i;
+ 
+ 	/* Here either frame->skb_hsr or frame->skb_prp should be
+ 	 * valid as supervision frame always will have protocol
+@@ -391,6 +466,16 @@ void hsr_handle_sup_frame(struct hsr_frame_info *frame)
+ 		if (seq_nr_after(node_curr->seq_out[i], node_real->seq_out[i]))
+ 			node_real->seq_out[i] = node_curr->seq_out[i];
+ 	}
++
++	xa_for_each(&node_curr->seq_blocks, idx, src_blk) {
++		if (hsr_seq_block_is_old(src_blk))
++			continue;
++
++		merge_blk = hsr_get_seq_block(node_real, src_blk->block_idx);
++		merge_blk->time = min(merge_blk->time, src_blk->time);
++		bitmap_or(merge_blk->seq_nrs, merge_blk->seq_nrs,
++			  src_blk->seq_nrs, HSR_SEQ_BLOCK_SIZE);
++	}
+ 	spin_unlock_bh(&node_real->seq_out_lock);
+ 	node_real->addr_B_port = port_rcv->type;
+ 
+@@ -398,7 +483,7 @@ void hsr_handle_sup_frame(struct hsr_frame_info *frame)
+ 	if (!node_curr->removed) {
+ 		list_del_rcu(&node_curr->mac_list);
+ 		node_curr->removed = true;
+-		kfree_rcu(node_curr, rcu_head);
++		call_rcu(&node_curr->rcu_head, hsr_free_node_rcu);
+ 	}
+ 	spin_unlock_bh(&hsr->list_lock);
+ 
+@@ -505,17 +590,12 @@ int hsr_register_frame_out(struct hsr_port *port, struct hsr_frame_info *frame)
+ 	return 0;
+ }
+ 
+-/* Adaptation of the PRP duplicate discard algorithm described in wireshark
+- * wiki (https://wiki.wireshark.org/PRP)
+- *
+- * A drop window is maintained for both LANs with start sequence set to the
+- * first sequence accepted on the LAN that has not been seen on the other LAN,
+- * and expected sequence set to the latest received sequence number plus one.
+- *
+- * When a frame is received on either LAN it is compared against the received
+- * frames on the other LAN. If it is outside the drop window of the other LAN
+- * the frame is accepted and the drop window is updated.
+- * The drop window for the other LAN is reset.
++/* PRP duplicate discard algorithm: we maintain a bitmap where we set a bit for
++ * every seen sequence number. The bitmap is split into blocks and the block
++ * management is detailed in hsr_get_seq_block(). In any case, we err on the
++ * side of accepting a packet, as the specification requires the algorithm to
++ * be "designed such that it never rejects a legitimate frame, while occasional
++ * acceptance of a duplicate can be tolerated." (IEC 62439-3:2021, 4.1.10.3).
+  *
+  * 'port' is the outgoing interface
+  * 'frame' is the frame to be sent
+@@ -526,18 +606,21 @@ int hsr_register_frame_out(struct hsr_port *port, struct hsr_frame_info *frame)
+  */
+ int prp_register_frame_out(struct hsr_port *port, struct hsr_frame_info *frame)
+ {
+-	enum hsr_port_type other_port;
+-	enum hsr_port_type rcv_port;
++	u16 sequence_nr, seq_bit, block_idx;
++	struct hsr_seq_block *block;
+ 	struct hsr_node *node;
+-	u16 sequence_diff;
+-	u16 sequence_exp;
+-	u16 sequence_nr;
+ 
+-	/* out-going frames are always in order
+-	 * and can be checked the same way as for HSR
+-	 */
+-	if (frame->port_rcv->type == HSR_PT_MASTER)
+-		return hsr_register_frame_out(port, frame);
++	node = frame->node_src;
++	sequence_nr = frame->sequence_nr;
++
++	// out-going frames are always in order
++	if (frame->port_rcv->type == HSR_PT_MASTER) {
++		spin_lock_bh(&node->seq_out_lock);
++		node->time_out[port->type] = jiffies;
++		node->seq_out[port->type] = sequence_nr;
++		spin_unlock_bh(&node->seq_out_lock);
++		return 0;
++	}
+ 
+ 	/* for PRP we should only forward frames from the slave ports
+ 	 * to the master port
+@@ -545,47 +628,26 @@ int prp_register_frame_out(struct hsr_port *port, struct hsr_frame_info *frame)
+ 	if (port->type != HSR_PT_MASTER)
+ 		return 1;
+ 
+-	node = frame->node_src;
+-	sequence_nr = frame->sequence_nr;
+-	sequence_exp = sequence_nr + 1;
+-	rcv_port = frame->port_rcv->type;
+-	other_port = rcv_port == HSR_PT_SLAVE_A ? HSR_PT_SLAVE_B :
+-				 HSR_PT_SLAVE_A;
+-
+ 	spin_lock_bh(&node->seq_out_lock);
+-	if (time_is_before_jiffies(node->time_out[port->type] +
+-	    msecs_to_jiffies(HSR_ENTRY_FORGET_TIME)) ||
+-	    (node->seq_start[rcv_port] == node->seq_expected[rcv_port] &&
+-	     node->seq_start[other_port] == node->seq_expected[other_port])) {
+-		/* the node hasn't been sending for a while
+-		 * or both drop windows are empty, forward the frame
+-		 */
+-		node->seq_start[rcv_port] = sequence_nr;
+-	} else if (seq_nr_before(sequence_nr, node->seq_expected[other_port]) &&
+-		   seq_nr_before_or_eq(node->seq_start[other_port], sequence_nr)) {
+-		/* drop the frame, update the drop window for the other port
+-		 * and reset our drop window
+-		 */
+-		node->seq_start[other_port] = sequence_exp;
+-		node->seq_expected[rcv_port] = sequence_exp;
+-		node->seq_start[rcv_port] = node->seq_expected[rcv_port];
+-		spin_unlock_bh(&node->seq_out_lock);
+-		return 1;
+-	}
+ 
+-	/* update the drop window for the port where this frame was received
+-	 * and clear the drop window for the other port
+-	 */
+-	node->seq_start[other_port] = node->seq_expected[other_port];
+-	node->seq_expected[rcv_port] = sequence_exp;
+-	sequence_diff = sequence_exp - node->seq_start[rcv_port];
+-	if (sequence_diff > PRP_DROP_WINDOW_LEN)
+-		node->seq_start[rcv_port] = sequence_exp - PRP_DROP_WINDOW_LEN;
++	block_idx = hsr_seq_block_index(sequence_nr);
++	block = hsr_get_seq_block(node, block_idx);
++	if (!block)
++		goto out_new;
++
++	seq_bit = hsr_seq_block_bit(sequence_nr);
++	if (test_and_set_bit(seq_bit, block->seq_nrs))
++		goto out_seen;
+ 
+ 	node->time_out[port->type] = jiffies;
+ 	node->seq_out[port->type] = sequence_nr;
++out_new:
+ 	spin_unlock_bh(&node->seq_out_lock);
+ 	return 0;
++
++out_seen:
++	spin_unlock_bh(&node->seq_out_lock);
++	return 1;
+ }
+ 
+ #if IS_MODULE(CONFIG_PRP_DUP_DISCARD_KUNIT_TEST)
+@@ -672,7 +734,7 @@ void hsr_prune_nodes(struct timer_list *t)
+ 				list_del_rcu(&node->mac_list);
+ 				node->removed = true;
+ 				/* Note that we need to free this entry later: */
+-				kfree_rcu(node, rcu_head);
++				call_rcu(&node->rcu_head, hsr_free_node_rcu);
+ 			}
+ 		}
+ 	}
+@@ -706,7 +768,7 @@ void hsr_prune_proxy_nodes(struct timer_list *t)
+ 				list_del_rcu(&node->mac_list);
+ 				node->removed = true;
+ 				/* Note that we need to free this entry later: */
+-				kfree_rcu(node, rcu_head);
++				call_rcu(&node->rcu_head, hsr_free_node_rcu);
+ 			}
+ 		}
+ 	}
+diff --git a/net/hsr/hsr_framereg.h b/net/hsr/hsr_framereg.h
+index b04948659d84..d4d1fa70039f 100644
+--- a/net/hsr/hsr_framereg.h
++++ b/net/hsr/hsr_framereg.h
+@@ -74,9 +74,23 @@ bool hsr_is_node_in_db(struct list_head *node_db,
+ 
+ int prp_register_frame_out(struct hsr_port *port, struct hsr_frame_info *frame);
+ 
++#define HSR_SEQ_BLOCK_SHIFT 7 /* 128 bits */
++#define HSR_SEQ_BLOCK_SIZE (1 << HSR_SEQ_BLOCK_SHIFT)
++#define HSR_SEQ_BLOCK_MASK (HSR_SEQ_BLOCK_SIZE - 1)
++#define HSR_MAX_SEQ_BLOCKS 64
++
++#define hsr_seq_block_index(sequence_nr) ((sequence_nr) >> HSR_SEQ_BLOCK_SHIFT)
++#define hsr_seq_block_bit(sequence_nr) ((sequence_nr) & HSR_SEQ_BLOCK_MASK)
++
++struct hsr_seq_block {
++	unsigned long		time;
++	u16			block_idx;
++	DECLARE_BITMAP(seq_nrs, HSR_SEQ_BLOCK_SIZE);
++};
++
+ struct hsr_node {
+ 	struct list_head	mac_list;
+-	/* Protect R/W access to seq_out */
++	/* Protect R/W access to seq_out and seq_blocks */
+ 	spinlock_t		seq_out_lock;
+ 	unsigned char		macaddress_A[ETH_ALEN];
+ 	unsigned char		macaddress_B[ETH_ALEN];
+@@ -91,8 +105,9 @@ struct hsr_node {
+ 	u16			seq_out[HSR_PT_PORTS];
+ 	bool			removed;
+ 	/* PRP specific duplicate handling */
+-	u16			seq_expected[HSR_PT_PORTS];
+-	u16			seq_start[HSR_PT_PORTS];
++	struct xarray		seq_blocks;
++	struct hsr_seq_block	*block_buf;
++	unsigned int		next_block;
+ 	struct rcu_head		rcu_head;
+ };
+ 
+-- 
+2.52.0
 
