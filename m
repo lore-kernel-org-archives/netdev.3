@@ -1,66 +1,66 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6803A7853
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E47133D6E9
+	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769024607; cv=none; b=DL3+tF9dxoHWZCEExivFlHsEYO6T1LY85wjPO4dWdnshI/Bdh0Z+3Wl+FK0rhTn5L5wJ/sw+Z7SiDTr6nrB40EjkPD0Q/kNHlRM+NeBlq/S30wke9xlh+kPqD5u85VI8m64kJFoe/whENjfMW2L6quw/nR2q6DifzZwRAf9Gav4=
+	t=1769024677; cv=none; b=mx/goa1+DDsjPQHcpR75+qsrWCNjtwNa0Nc32W90PFcVfIWvR2q+g1pzp0LOlCphOYu/sUzmVzrlVxUfHOA+gBBFmIF61YitLI3t58IH5hxyj7S/XCRS3RZWR8HH0pdUCNriUklVlY5Ck63WTYdYIAzAj/wBEfXGadLpqWD95i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769024607; c=relaxed/simple;
-	bh=w1kKinpt/YcI0gMNgEnS5zXjFDhZKigaZ8h7epYIB8I=;
+	s=arc-20240116; t=1769024677; c=relaxed/simple;
+	bh=l5SyFJCfo1fQSa9mU6zNAv0ThOth/LCY4pXaeqqK6Go=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kET8Eq+HV8y9HeztrV9uzofKJ4E958iGxut3JQGInVN0FdZ1Ca8rIQMqdcm0Yj7H7s9gf/ZrS4tx12a+rYoud3wDvsYUk/e0YEIPjVjV2MIcGX6IHbx0OPVPrId/PrcsGBd2yHeMuJo0KeU98wshcbPtRatu2uuZ/LMuhMlBrhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=wyIfniBd; arc=none smtp.client-ip=74.125.82.181
+	 In-Reply-To:Content-Type; b=oIfYUfXPnY/300PT8gN9G3jQ0lRBml1qOOCBKvTaFgPbgmt1hJxtp34z8Tkg/8jIAkBReIGhPClRd8VbO0kJZD3xvrEQwhpBRQQkbaKwxtoO+R8buy1JBwt+4vv4wzNeJEaDYOom9Y8oiiPeNbN2gcesCZAAFg4RxAQJTo1tCO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=VDx4IwOV; arc=none smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="wyIfniBd"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2ae2eb49b4bso429179eec.0
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 11:43:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="VDx4IwOV"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b0ea1edf11so513786eec.0
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 11:44:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024604; x=1769629404; darn=vger.kernel.org;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024673; x=1769629473; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ry8GpQeL1FNrHjzLhRKtbLVCrSqvGfns+hF1JkeMT8c=;
-        b=wyIfniBdxot3ksMrjE0n0bzpL7YvWgg2VvtucR3ENGEYrsK8NAn9JpDTpsNe9pi2i8
-         fPJVrUisnvQ1702sS/QjiEUJI7iSOQpyyczAv+YYd74yB1GLixqHOqIrS2bQR/osdAOq
-         QDAkBlu5Mu+lAQ8XDbMW58+mUvGm8Ln3lNILTykxaXfEJz1s9zbMDc4EfJw+xyfHjE3M
-         Q2DIQzNs3pPN0j5R3XlsHrOzY7A7lpPA0NkhIWY+nGjru1Nn8iGuYDCgU/mnSM9UaLhq
-         FUMeq969NlO2nDG1evZsAu1oef+bBWgFvft1VpPmeohRRKp1PsjAXALcIX/XPNFqznZO
-         +RZA==
+        bh=KEa/Pdcnys+mGuP+b9JWKh6Y2RdyW/MdUrzTT9ml1Mc=;
+        b=VDx4IwOVByoLhrAnSWP/KTgkljRYom53Maconcs0m2JH5yAV8OXYCONgsaWZiFCE5A
+         1TZOTDFja3sRw+UK8aJJcbvvC3779tVdB/m7wE31EbbOutMwNokHiPNiiihub40d7RON
+         yKnPAMXswdZaNjba5hOiT4+CAc7JbquqBGL0BuuT8M8E2URvDBsJlYuGov3q72WNE7Z+
+         PQu+nZsJ98Dln5jrsN0X5mFuDvKwu1q+uz0+X2j9hhNKb7CX+kXqxnvXA/vL0fBokcrz
+         gr62hOH8kxyRz7sflIMVJDbwA4B+81e3c45UZg3+TQX3SjwsBjPLgVKDCHApPx48EgfO
+         wjJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769024604; x=1769629404;
+        d=1e100.net; s=20230601; t=1769024673; x=1769629473;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ry8GpQeL1FNrHjzLhRKtbLVCrSqvGfns+hF1JkeMT8c=;
-        b=JI+eN8QjGuR7K28W1aPDH40JIHsI1HHdYOZhe3Vh0or6f9RiykADUCEiNgx7Po6boa
-         KeFgzoggOkyfrOZpi1ohASxVaMZ/RIVYiLqCrjf3JNa/tNoBQpttlQmYDhK+hevqPUzz
-         IalJcfpl/MluAjcQcsioz6Bw5O4XXZvCKGuBdBKjsPAY8nKRPYqYZ/AcJhYCTQnxxrgq
-         XuWlple2Ji0fzge9oeThe/hz57TcCzymsT30PQoOb/e4FKz2bddMjh/AOFPVNHlfFA+D
-         EPt8Z+MZsHe3cMFDpXYZ3dJle58hFUHeYif8vZCB/xvc+foQVd7v09KPoZ9Tu+6twJZv
-         YHYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWs/qEggWJxmMJPiF2hKqxyn8+SByc91vgAfhlxdI8htYUyKeKUO8wdF9iH+kqYQ8CP0ITyaSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzruuSdpVr+AzXh0yfK8IKZFq6/LYHrtv3jfHeH1oN+ynmGvvlW
-	+uGsihRxLFBpo0tyXcRfMedd8t7c9vR03d53dEKzb1j671yut++UFeakeszta3GuPw==
-X-Gm-Gg: AZuq6aJi9UeGywgWmLSv0oeJXg6Nax9P8/45iGD20fuQDjtyQIThBBMixe3snwvhBEi
-	UauUuRkG1eyJz0IEmTc7zu+a8ZU5R3sefJb13aNIXO6jSzPFmT/hlgAaVqPXeFE5VwMgoMVMtiN
-	rM86SN8vY8GqNQXwSSCV2nhyn6P6F5uWZ2+xTLzh4uCOFYZKopVK01BIfWHlGmlpXy1+6PzXKiB
-	3EQrUlPhtyriJ/ZZJpl6+x+9HYQnjt+I0Rg8sEwo619AT+cFEeXJfSI/1YDkERLrcoaspXNnm0t
-	Ilc7pJJMyhVBQSeSv5R73FQPgxmiv9aCcxQaaDKu0sXq09q/el5nwnGah1Z300jrqu1tslVO0b/
-	DqTfKGmqADwHOJGlAWKNV67cLv5IvjkaGSBVZ+Xq9e6QQ9jx/rZ+NsDUnqOz5OauSAv3WK/OlOg
-	92887d+KPG+m5va/3DL+WgcriB2892ZTZZ
-X-Received: by 2002:a05:7300:6da6:b0:2b4:5a2d:80c with SMTP id 5a478bee46e88-2b6fd8fd5a8mr3538584eec.11.1769024602139;
-        Wed, 21 Jan 2026 11:43:22 -0800 (PST)
+        bh=KEa/Pdcnys+mGuP+b9JWKh6Y2RdyW/MdUrzTT9ml1Mc=;
+        b=nuuaioAan+OsBItVyIm5DkppBEmKCM/00xw2aMHPuDcSbI+kXpoCH5w5svhTkgNzIh
+         D4M2wA3lbx0YQg6ggx+PySbEhk4XP92hqGZ+Tf3boZvQ9UNmzENH33Zsf6Yl6GydzNMI
+         eFATTlB5X9NVj/bRxTsAXWtSyqntrOF9kPePPuiqrnaJ5MRFCUdGNN+qZwUkRtRYORzL
+         dcKFBosuA0UxTQ5YwRxyGAFtuAEnggwvhWQWqsVwhb9GwL1+GiLmDqHuetfQBoGJb+rP
+         RDqSr849KqcMg/CbZbvAFbJII61UgrwgMHzbZ6mZFn55vtBwOMyUSljkY+JrCfo/jOEm
+         KWNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhCK4srbZ1Mk0vUBA/FVBEqQp4QshdGMcCNFpAbpj5pmxBYNRcS4b8HQfiigGK+K+qr8RULfM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4r6TkRwIG8Sh90+jtax/oxu32g+McFXewTbWeLYnrpUAIXGN3
+	k8fHe2WT5VN44MxO1GuvEUX2IMJNNTd2zBKpoL22nkjLzDF/wBRH85lvl2dwOJaA9g==
+X-Gm-Gg: AZuq6aIkcAOEsce1luHHlnjKgesMeN1XxtxQ+1GorMdC9c4KMWwbHSrkBnS1v1Ov0hV
+	kSrVAY1eUeDDA4asIjJwyWhJrpWXTWzYE+4LzJ7R4ogWB/AVeNNr2PT2VKKiWxK4TeFBpPBGYi4
+	R8zbP1G3LaKXdSu7EK/Pu/194Yxb64Uj3bILjRms2vl2wNTSQhI/in48ko8bgQz2Uc1yVmFw0LR
+	vCamExF9nTO0vPMkcDlI5uxkm7nejdtATh3dZ0cWFYTrr/uVjN1e605wOQbb/ekVKXoeiyZU9bx
+	LuaB/OoGLkUTPJGQYSjd8j08uB9NltQ1fMrJlq9AH04Ov/wB0dnqrJvsIwKm+TlUlrjZm9+AH5N
+	Oo7NYZOlC8aFVW5sV1O4L6R3os71jt+sBdyuMY44Gf6g21tEBbimR0PAZRv2sx7IjNpjo5N9l9e
+	RA165vFaGiN9/FinXHVBXo2Q==
+X-Received: by 2002:a05:7301:408c:b0:2b7:143a:9a8f with SMTP id 5a478bee46e88-2b7143a9e6bmr1628457eec.7.1769024671502;
+        Wed, 21 Jan 2026 11:44:31 -0800 (PST)
 Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b367cbc9sm25089488eec.32.2026.01.21.11.43.17
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b71d3d2da2sm2106569eec.6.2026.01.21.11.44.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 11:43:21 -0800 (PST)
-Message-ID: <cab42321-cc54-4599-aaee-c631082f936c@mojatatu.com>
-Date: Wed, 21 Jan 2026 16:43:16 -0300
+        Wed, 21 Jan 2026 11:44:31 -0800 (PST)
+Message-ID: <1f63d057-ce11-4fdf-b9d4-7022ec356377@mojatatu.com>
+Date: Wed, 21 Jan 2026 16:44:25 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,8 +68,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 3/7] net/sched: act_gate: build schedule and
- RCU-swap
+Subject: Re: [PATCH net v3 4/7] net/sched: act_gate: read schedule via RCU
 To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
  <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
@@ -78,58 +77,45 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
  Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20260121131954.2710459-1-p@1g4.org>
- <20260121131954.2710459-4-p@1g4.org>
+ <20260121131954.2710459-5-p@1g4.org>
 Content-Language: en-US
 From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <20260121131954.2710459-4-p@1g4.org>
+In-Reply-To: <20260121131954.2710459-5-p@1g4.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 On 21/01/2026 10:20, Paul Moses wrote:
-> Build a fresh params snapshot and swap it in with rcu_replace_pointer(),
-> then free the old snapshot via call_rcu(). This is the same publish+defer
-> pattern used in taprio sched swapping (sch_taprio.c, commit d5c4546062fd6f)
-> and in act_pedit param updates (act_pedit.c, commit 52cf89f78c01bf).
+> Switch dump/accessor reads to RCU read-side sections. This matches other
+> actions that read params under rcu_read_lock(), e.g. act_tunnel_key dump
+> (commit e97ae742972f6c), act_ctinfo dump (commit 799c94178cf9c9), and
+> act_skbedit dump (commit 1f376373bd225c).
 > 
-> When REPLACE omits TCA_GATE_ENTRY_LIST, carry forward the old snapshot fields
-> (basetime/clockid/flags/cycletime/priority) and only override provided attrs,
-> so partial updates don’t reset unrelated state.
+> Dump reads tcf_action via READ_ONCE, following the lockless action reads used
+> in act_sample (commit 5c5670fae43027) and act_gact.
 > 
-> Parse entry lists with GFP_KERNEL and explicit error handling, matching taprio’s
-> schedule parsing (sch_taprio.c, commit 5a781ccbd19e46).
-> [...]
-> @@ -388,32 +416,92 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> Timer logic stays under tcf_lock and uses rcu_dereference_protected(), keeping
+> RCU readers cheap while preserving lock-serialized timer updates.
+> 
+> diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
+> index 05968b3822392..9587d9e9fa38f 100644
+> --- a/include/net/tc_act/tc_gate.h
+> +++ b/include/net/tc_act/tc_gate.h
+> @@ -57,9 +57,10 @@ static inline s32 tcf_gate_prio(const struct tc_action *a)
+>   	s32 tcfg_prio;
+>   	struct tcf_gate_params *p;
 >   
->   	gact = to_gate(*a);
->   
-> -	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
-> -	if (err < 0)
-> +	p = kzalloc(sizeof(*p), GFP_KERNEL);
-> +	if (!p) {
-> +		err = -ENOMEM;
->   		goto release_idr;
-> +	}
-> +	INIT_LIST_HEAD(&p->entries);
-> [...]  
->   	if (!cycletime) {
-> @@ -425,20 +513,26 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
->   		cycletime = cycle;
->   		if (!cycletime) {
->   			err = -EINVAL;
-> -			goto chain_put;
-> +			goto release_mem;
->   		}
->   	}
->   	p->tcfg_cycletime = cycletime;
+> -	p = rcu_dereference_protected(to_gate(a)->param,
+> -				      lockdep_rtnl_is_held());
+> +	rcu_read_lock();
+> +	p = rcu_dereference(to_gate(a)->param);
+>   	tcfg_prio = p->tcfg_priority;
+> +	rcu_read_unlock();
 
-You are always using the just allocated params pointer (p) when iterating
-through the entries [1]. So cycletime will always be 0 when the user
-doesn't specify it. This is breaking tdc:
+These helper functions are called with the tcf_lock acquired, so you
+don't need rcu_read_lock here. You can just do:
 
-not ok 1119 3719 - Replace gate base-time action
-# Command exited with 255, expected 0
-# RTNETLINK answers: Invalid argument
-# We have an error talking to the kernel
+p = rcu_dereference_protected(to_gate(a)->param,
+			      lockdep_is_held(&gact->tcf_lock));
 
-[1] 
-https://elixir.bootlin.com/linux/v6.18.6/source/net/sched/act_gate.c#L402
+cheers,
+Victor
