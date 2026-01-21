@@ -1,114 +1,113 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850F4C77D4
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 16:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEA7337BA6;
+	Wed, 21 Jan 2026 16:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769014696; cv=none; b=Sjlb1u71dK4sOHVccO+ktlm7qRsCb9U8U+fkpkcQxk9ctkpT0habOhKZpSURQvzJbEKw+agh94hr+2w+AyY2IW1VTwQ8l/pia1kfE3QL7K/vdxAKdY980QEDvxcOn1AbuudLjJZ1QqmOOoKA7KxVgThM5Ua0aBlU7OrIXMkge8I=
+	t=1769014777; cv=none; b=CMGiF3drPfUkEJLoGrB45AMzWVWBj+gvfTOpumIjZZCNnR33zh6t5F41ttxqpOBTPKv8afcOamBB7jYoc2YVMuySVUgCYqeR5EbxmMx9tGM1KH/kolVCrSL5kMijvnk7ynHBLhwpfpJXxoXXuLnhVwrcSyLgP/VvBp+tmEYZShc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769014696; c=relaxed/simple;
-	bh=b3ogj6jd4gJyBPweVAwHafFvv24RTzuF9Yh/ufegu6A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EFz1LVsCHwT3OqcVUNXLmugEa35JcHd6y9z0zDTE9npa0kEUuPtV7lJdx8f53CScBmt+uqNRo1HPU3F3dEaEhEdI/cMgP1Y9lAw+hUb0o3vljuBT+21z8CsWyMPnRUC/8aoUNLmNnO+huhtFtWY5XlFCQBjLgGOcBzIiBwnO3io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-947fef8ebf4so750338241.0
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 08:58:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769014693; x=1769619493;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mOHs6ISbQt2/MtdrNsjI0sr5MDVl1C3NbAZup7ReLuc=;
-        b=IP4l916kEnNubCYvtn4Fl8iHDY1BI05CRMnP5/Qw9ajadNX4oVLOlB7S5dPCcU/Npi
-         4FWKcbUVkzvtpboJzHLOTN04uNvUPGuGsVkmnTGKMDobrF3MYJdzfkQs/3XxUFAMdUmA
-         8/BHbov8wp7F7E6V3r2TOZJ7PxGk+SQzmKzxpmVwqULYmtWMLUtvU35PMQW9GRndBpTy
-         xl0RAF1umTukytG5CYFHOhEYKxvz1R6yuDaKbI4utA9N5QRd/KX3NoAMbbVkQd/iSrPM
-         WbnFDDXLPBTfB9NyQFjt/N2Pwkyr0WeDcw7miF7MHWdccSn6V4DFDTjN7NwoYdpO3XX0
-         VMnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVtgAu72zI1YN78qV5bnEUSsdE8pTaVYrtBUV08k6MzQbMb5i14LmggNRAtQ5OsXr9EEhVlyk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlT21lXZ6qL2fduXL8Ln/HFP7vtlc+ZzBqfQe3DL49pP/FasfU
-	+kPBQbstHNNemNUUisWYBPc6vXUAKkzwy6/b+nKWTBqgmy7NTd/lr4GOAKOcaDAX
-X-Gm-Gg: AZuq6aLYfGtosO+NX6oBs6RNWkYhFNzqYJyO91o9b5nDq/JB1MaBgHxFcXAQtqjGCCb
-	+2eLTu8dh8c8lWYiC0CcY6LwF17TUiGcetH4tJ2vXRgeO+U33Vb8I1+XvGSIoktz/CPkUQZIkSL
-	LdgXImZYCizh7fPievK6pVDWfoCuFwMi8OD8Mp5B+Sfu8quvtmD4jvkoKX7vlsQa9THxFxbPP3D
-	5UV8wR1UkTi/VaxYCIi5zAb9dER7dETTw0lqa4+Qg3vMloPOKZHoc4DJSkca3XQCce7BkfCti7v
-	moEivZB0Hk/qNYGi/XiCpjcrJo9P/YcxSssaDV5EbZRZJVaXERyzwwIFadiDilhASYPzxIF30Ix
-	9jq8tjgfFgNIR340va0mBb3C8wVjGbev31W6zn7X8c0J2f4hwTjoexjszElj+4h2b/mAd9Z7z0S
-	wWbiIUjYSAll3QxFKuqwQ8RRKUYthvfAVeG9H81BylmxcWOexoHBy+
-X-Received: by 2002:a05:6102:d87:b0:5f1:5be2:114b with SMTP id ada2fe7eead31-5f532eef721mr22643137.20.1769014692977;
-        Wed, 21 Jan 2026 08:58:12 -0800 (PST)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com. [209.85.221.177])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-947d03eaad3sm4777153241.7.2026.01.21.08.58.12
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 08:58:12 -0800 (PST)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5662c2937fdso29842e0c.0
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 08:58:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUtDOLF3i15fXVBGjtjzxWMjMvIoTFwXzWzovlnIZT43rGRrEp3Usbk2diZYZtlnwdzaYJcrSw=@vger.kernel.org
-X-Received: by 2002:a05:6102:b12:b0:5df:abc1:e6b5 with SMTP id
- ada2fe7eead31-5f532eb9f05mr16958137.17.1769014360523; Wed, 21 Jan 2026
- 08:52:40 -0800 (PST)
+	s=arc-20240116; t=1769014777; c=relaxed/simple;
+	bh=ruJcwsyHlH9v6pfiG+6Y7INjT5x/5/341UtTiiGk9QY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HScQJl3/W8ttBB0hl8hEMW4DjASBCtoZbGU13J5g1pBOpmGcbN23ohDX+1UXaxNL3tHOhy+KxiXs1fcQfxV6ptrEW3QzEEtuzc3iZZnJI3IJhJxP8fdVaZZ8Cj9oEN8jcAfmyhvivQebMvODPmAJFdBO6ZPHuRbsBLqg3YVUvhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dkczaqt9; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dkczaqt9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A076FC4CEF1;
+	Wed, 21 Jan 2026 16:59:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769014776;
+	bh=ruJcwsyHlH9v6pfiG+6Y7INjT5x/5/341UtTiiGk9QY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dkczaqt9URThweOArTTVF9tgMo8wL7yk4qz8J8GHzRixXbqTpRMpQ8sMCRN6JGphh
+	 6Hu2/qQUC9kgvRzs/JwFfxkabaqUSx17/HVb5P/NYsrbDKqPpEpvKY37oxRn9qECZO
+	 vA7XWcIUdjrg50dpDWeuODPXyvNKkeX60rvaPhLmvkbD0TZq2KtvYm1VMIR0peV+Dl
+	 KicHYz9GrEFZOYquGPSBMtAWPGCFQKRUVlKAC5KWmP6zx9FN0HDgfhXYyXEag6MH6n
+	 xTD753x3paV9ANUYP1AQrGrTkT8x2s2JkBypZ2s6QpVbfARVIqaVq7f03efFBC6jAV
+	 slq+aHnkjVQZQ==
+Date: Wed, 21 Jan 2026 16:59:29 +0000
+From: Simon Horman <horms@kernel.org>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH v7 net-next 4/4] net: dsa: add basic initial driver for
+ MxL862xx switches
+Message-ID: <aXEF8elDd4GmyziX@horms.kernel.org>
+References: <cover.1768707226.git.daniel@makrotopia.org>
+ <15b0adf5074c601e033fd2338fb27fb666b5d16b.1768707226.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251212193721.740055-1-david.laight.linux@gmail.com>
- <20251212193721.740055-4-david.laight.linux@gmail.com> <CAMuHMdV3WAxshZL9gw4+NeovX-9FjUZrk+coUAA7+=y6GmPECA@mail.gmail.com>
-In-Reply-To: <CAMuHMdV3WAxshZL9gw4+NeovX-9FjUZrk+coUAA7+=y6GmPECA@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 21 Jan 2026 17:52:29 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUo_Xow2YwMaDzPUW8w-3O12nqguzvoR6ij0X3R+syvOA@mail.gmail.com>
-X-Gm-Features: AZwV_QiSJroxALjrxdsqpeoTTwWrxn5dVEZ7lcW3LOyG_OvHN9voWIpFHqxAP7E
-Message-ID: <CAMuHMdUo_Xow2YwMaDzPUW8w-3O12nqguzvoR6ij0X3R+syvOA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/16] bitmap: Use FIELD_PREP() in expansion of FIELD_PREP_WM16()
-To: david.laight.linux@gmail.com
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Crt Mori <cmo@melexis.com>, 
-	Richard Genoud <richard.genoud@bootlin.com>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Luo Jie <quic_luoj@quicinc.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	"David S . Miller" <davem@davemloft.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andreas Noever <andreas.noever@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>, 
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <15b0adf5074c601e033fd2338fb27fb666b5d16b.1768707226.git.daniel@makrotopia.org>
 
-On Wed, 21 Jan 2026 at 17:50, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> On Fri, 12 Dec 2025 at 20:38, <david.laight.linux@gmail.com> wrote:
-> > From: David Laight <david.laight.linux@gmail.com>
-> >
-> > Instead of directly expanding __BF_FIELD_CHECK() (which really ought
-> > not be used outside bitfield) and open-coding the generation of the
-> > masked value, just call FIELD_PREP() and add an extra check for
-> > the mask being at most 16 bits.
-> > The extra check is added after calling FIELD_PREP() to get a sane
-> > error message if 'mask' isn't constant.
-> >
-> > Remove the leading _ from the formal parameter names.
-> > Prefix the local variables with _wm16_ to hopefully make them
-> > unique.
-> >
-> > Signed-off-by: David Laight <david.laight.linux@gmail.com>
->
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+On Sun, Jan 18, 2026 at 03:46:07AM +0000, Daniel Golle wrote:
 
-Oops, just noticed  commit 2fb6915fa22dc552
-("compiler_types.h: add "auto" as a macro for "__auto_type""),
-so you want to do s/__auto_type/auto/g.
+...
 
-Gr{oetje,eeting}s,
+> +static int mxl862xx_isolate_port(struct dsa_switch *ds, int port)
+> +{
+> +	struct mxl862xx_bridge_port_config br_port_cfg = {};
+> +	struct mxl862xx_bridge_alloc br_alloc = {};
+> +	int ret;
+> +
+> +	ret = MXL862XX_API_READ(ds->priv, MXL862XX_BRIDGE_ALLOC, br_alloc);
+> +	if (ret) {
+> +		dev_err(ds->dev, "failed to allocate a bridge for port %d\n", port);
+> +		return ret;
+> +	}
+> +
+> +	br_port_cfg.bridge_id = br_alloc.bridge_id;
+> +	br_port_cfg.bridge_port_id = DSA_MXL_PORT(port);
+> +	br_port_cfg.mask = MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_ID |
+> +			   MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_PORT_MAP |
+> +			   MXL862XX_BRIDGE_PORT_CONFIG_MASK_MC_SRC_MAC_LEARNING |
+> +			   MXL862XX_BRIDGE_PORT_CONFIG_MASK_VLAN_BASED_MAC_LEARNING;
+> +	br_port_cfg.src_mac_learning_disable = true;
+> +	br_port_cfg.vlan_src_mac_vid_enable = false;
+> +	br_port_cfg.vlan_dst_mac_vid_enable = false;
+> +	br_port_cfg.bridge_port_map[0] = DSA_MXL_CPU_PORTS(ds);
 
-                        Geert
+Hi Daniel,
+
+.bridge_port_id, .mask, and elements of .bridge_port_map[]
+are little-endian integers. But are being assigned host byte-order
+values here and elsewhere.
+
+Flagged by Sparse [1].
+
+[1] This particular commit, from Al Viro's tree:
+    https://git.kernel.org/pub/scm/linux/kernel/git/viro/sparse.git/commit/?id=2634e39bf02697a18fece057208150362c985992
+    To address this mess:
+    https://lore.kernel.org/all/bf5b9a62-a120-421e-908d-1404c42e0b60@kernel.org/
+
+> +
+> +	return MXL862XX_API_WRITE(ds->priv, MXL862XX_BRIDGEPORT_CONFIGSET, br_port_cfg);
+> +}
+
+...
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+pw-bot: cr
