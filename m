@@ -1,86 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFDB31A062
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 17:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8779A477E5F;
+	Wed, 21 Jan 2026 17:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769015338; cv=none; b=VbEBC1MDePxTvlgnumJbQDGx0Z4XVZ6nHb69MDWIPutQIdEgl/PP6188AcgXVJ3iMa7p71nhnojvh4T3TMad6f59LuhARJzbfrOxOjzhbo3JAa066nU7f25yrOTJxPFq6H1nRE5qWHsL24zZWxlEghMrXwW7oTb2JiR+em5pyUI=
+	t=1769015958; cv=none; b=p2EW0xX41QN3QhNSvojZbJF2zkigt061Yh4/mv2R5xNpbJdy0peJjonNoYH3I4f9AfowiEwMDWTS1HZzOzvt4++kiL10ghNZOHW3IGOL3MZGyyAWX4JgKHyIoWafUdTHVvmsgMmsRI71upaLbzARHPamDRKkjZhFGkIUg8BZKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769015338; c=relaxed/simple;
-	bh=taF/xhpC9Yd/tH0X9On23yPZftj4Fewoh8MwRyiQz9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAVDVw4QGT5dFIcQl8LgRFg1Nc8uuLLB5sH2s0SBz+jLhBhUOmgIxV4hhac91jBriphTyidovXIsXMv3DCJxthgy10gxlMSud+4idD7GrJmDuMTW1bh1pt2H5VPCfoU1KuMBNqEKo3O4qW7VVjopub+20nvGWlCVNqJQpT2OTtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awk2mLyQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769015958; c=relaxed/simple;
+	bh=2bks8m73WzTYHNM256w3LwuuVAhavqZd4dVvilR1BPI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OqSGP5haXyEdD0ljHfVZ1U/Y9B3CVBx65UjhNoU/XaAdGWqOrca0obj8JNiGqg95Vf6Sq2Vo0hGC6d6b1P6SAbegF6BShBLiHHYf8e1a1tVo/ip5HD7+fo5tuHXhqpQ6Qw2wtn8mFuPnVmO6a2XA1bmYcQga8AthHjUobKiwOho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oW9NW3NS; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awk2mLyQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8A5C4CEF1;
-	Wed, 21 Jan 2026 17:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769015337;
-	bh=taF/xhpC9Yd/tH0X9On23yPZftj4Fewoh8MwRyiQz9s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=awk2mLyQN3A2m0V4ASYdRqlk3UEJnMsiN5fCua3CYBB/yW51Bdb9FcpjcoiXGox+h
-	 /NgMtK27+w33l9tGFCZ2R4feQovaTFnC8iGb0IOfGaWUoSzmiI6gAeNfKGJoqyr661
-	 8jmZe1YQ4h5OMBW+VYenkHWVPYKluGsRAdJTWFo8XGV7H6zWaSFrYTShM1tCQTGANO
-	 uBL9hKJIoEv18YEKrUO9AKued42ces6jkBxEVuytQy5Rh7Tg1j4FKtpYMsCdoRPaMF
-	 f+O2wCyaTDzLGAghYckXOUC4IIvozsuy2OMJaDEmbdrMv43LplhbyrANWtj1+2iPLO
-	 I0ZRF+z7OYOTw==
-Date: Wed, 21 Jan 2026 17:08:52 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	William Liu <will@willsroot.io>, Savy <savy@syst3mfailure.io>,
-	netdev@vger.kernel.org
-Subject: Re: [Patch net v8 0/9] netem: Fix skb duplication logic and prevent
- infinite loops
-Message-ID: <aXEIJEiRJb3hfP5n@horms.kernel.org>
-References: <20260118061515.930322-1-xiyou.wangcong@gmail.com>
- <CAM0EoMn=bx-AMR0RbFmSj8MjWTxLtB_xo5419AW18paZ9r1wDQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oW9NW3NS"
+Message-ID: <063f95d2-e29f-416d-8226-49a21b7c8dcd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769015948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UmF3ucw3wdYGYc3gkItIc47rsbbyXIhq4pUrDh+dLJ0=;
+	b=oW9NW3NSf9UgJxn+K+tHy6abM7mflb8AZSUp6MIXwbztOwhurdzUGUPv/YSVewM0n7u8Gj
+	QNcpZml6Vv6fJCd+5gUYcoLGLdUpF8qqmq0AP3IZjyJhO+dTQ0hbuMA9OycrLPW5OydlRz
+	Pet7TmnFaNTHVnYU8TPZ7JL2DyVWv78=
+Date: Wed, 21 Jan 2026 17:18:58 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0EoMn=bx-AMR0RbFmSj8MjWTxLtB_xo5419AW18paZ9r1wDQ@mail.gmail.com>
+Subject: Re: [PATCH net] dpll: Prevent duplicate registrations
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
+Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+ Michal Michalik <michal.michalik@intel.com>,
+ Milena Olech <milena.olech@intel.com>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260121130012.112606-1-ivecera@redhat.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260121130012.112606-1-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Jan 18, 2026 at 10:07:37AM -0500, Jamal Hadi Salim wrote:
-> On Sun, Jan 18, 2026 at 1:16 AM Cong Wang <xiyou.wangcong@gmail.com> wrote:
-> >
-> > This patchset fixes the infinite loops due to duplication in netem, the
-> > real root cause of this problem is enqueuing to the root qdisc, which is
-> > now changed to enqueuing to the same qdisc. This is more reasonable,
-> > more intuitive from users' perspective, less error-prone and more elegant
-> > from kernel developers' perspective.
-> >
-> > Please see more details in patch 4/9 which contains two pages of detailed
-> > explanation including why it is safe and better.
-> >
-> > This reverts the offending commits from William which clearly broke
-> > mq+netem use cases, as reported by two users.
-> >
-> > All the TC test cases pass with this patchset.
-> >
+On 21/01/2026 13:00, Ivan Vecera wrote:
+> Modify the internal registration helpers dpll_xa_ref_{dpll,pin}_add()
+> to reject duplicate registration attempts.
 > 
-> These patches should not be considered for any review because they are
-> not following the rules that are set for the community. The rules,
-> which are well documented, state that you must cc all stakeholders.
-> When someone does this _on purpose_ such as Cong, some accountability
-> needs to be imposed. I would say totally ignoring these patches is one
-> option. Otherwise anyone can just throw a tantrum and decide those
-> rules dont apply to them. Either that or we modify the rules to state
-> it is ok to do this..
+> Previously, if a caller attempted to register the same pin multiple
+> times (with the same ops, priv, and cookie) on the same device, the core
+> silently increments the reference count and return success. This behavior
+> is incorrect because if the caller makes these duplicate registrations
+> then for the first one dpll_pin_registration is allocated and for others
+> the associated dpll_pin_ref.refcount is incremented. During the first
+> unregistration the associated dpll_pin_registration is freed and for
+> others WARN is fired.
+> 
+> Fix this by updating the logic to return `-EEXIST` if a matching
+> registration is found to enforce a strict "register once" policy.
+> 
+> Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> ---
+>   drivers/dpll/dpll_core.c | 12 ++++--------
+>   1 file changed, 4 insertions(+), 8 deletions(-)
 
-I'd prefer if we applied Hanlon's razor here and attribute this to
-carelessness rather than mailce.
-
-Please let's find a way to move this forward.
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
