@@ -1,187 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B9D48AE2A;
-	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAA530F553;
+	Wed, 21 Jan 2026 14:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769005436; cv=none; b=rR5PCx24f9O08ViCoDxUuDBHY7yLrgaOZDe318fBYeXsC5j4xuibLRqwm5tqlT0D3SzCikMMSv2rIEWmx9dSX3A6Adw0V3izubJIAI0b/9xnw0PRcV5eFT25DMY5GsKFB1GziJXj6ew7dgZ/q67Yj1pn5od+YYire+WvPH1dmIM=
+	t=1769005795; cv=none; b=WvFNfcyg4p372iYehbqRb25qDyHN+mExLK6M51Q2xGok5NIIh3WJqOlUlnzMMImErTg38nrPFTMZvILy6WF/8LkCFfKOnMP1rPMM3lp3YaYdSyx8GytOs8HwYK6p2LAG+SrwjVqWKJhNqEhzXdOKAyv3e4SEW2aXdrr+c+omnH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769005436; c=relaxed/simple;
-	bh=1G4QNoSdpDOOHQBAE/8iIqmBtuzD+hs+kX0DiVSBS5o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m2kU59j876Z7GK+QTGmoJYmrdIceJ4n7g8k+7Tp5pGEqggpdRx9AgZN5p6k2GGe/A7wJzvc4G5mXI+E7IkAq5C0dP36Vq0070qAq6NqFTIY28kspmH+AO/iznJOAH3nLb65xhIkxbY0//typvvBtnq7j7x9vlEjvDZiwIcQEpg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NskCwUQX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769005795; c=relaxed/simple;
+	bh=KagpBM1xhCXcwRRQAyfDGwB0x0YrZNc/aSqT1LfkuFk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ZOeQs2haCQdwdoHs4oz0cMNjl7GKgVO1HtXEgvFjLlq8tcPjaYAArVsWED4qcaAszTnSSXqmjSlUgo/26PwFRmbRHuTXLhRYRerYbxXTxODoJGFEWo2or6pDyAYeB4s3l3GGnzZwpACklDV/vqsojgMQIoF0t3oBwVOJV1YBwrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=EfPZW+Zy; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NskCwUQX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 65BC8C19421;
-	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769005436;
-	bh=1G4QNoSdpDOOHQBAE/8iIqmBtuzD+hs+kX0DiVSBS5o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=NskCwUQX+fcDyNzIMhMwl17Wu+X42rKjaW/kW+j4K3Z2mNQfD3CK2dGCEADfAycFi
-	 yZr+wAHNvhPqa3uczwPRYa2LxSgT5yGOXDe91dMQ9ukpNH5o4fU3ww4WmIQSl5J5CG
-	 ZtAPxtJzDBFwHty8mE9UJ8UFBR8g9cxkxDkuMSAZnGYH39ELywYffDmQSnNj5F/eU5
-	 Ba8XcQrdPygXTmjTZbdbplO17CgtQRU8ohdA1AZq81ilJWFcYF7j1bUUBGB6ta9gwp
-	 +Nt50grdoP1udXcDj/9b3rZITpd8Xfh02O5OKxJKKb18U22txCTHHa7FXl630GvzU0
-	 N9Pr1CCUphzwA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B21AC44536;
-	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Wed, 21 Jan 2026 15:23:37 +0100
-Subject: [PATCH RFC v2 3/4] arm64: dts: s32: set Ethernet channel irqs
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="EfPZW+Zy"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769005783; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=k5BQxu6CMUOTbyhVOtJ/lDBq0GrbMvlHNo3WQj6zhqc=;
+	b=EfPZW+ZyWGl03Z6MoOTXOsE/0kIfJlbFBEjdEWoT7Sh9k8ZoJkaMdEjs5FlnY7W+z8qnqeOG+2ZOgb5JD3g6Hqo/ERcv3TnA5biEpZRzDOeeJnaQRt2B2Pybdu8jCdgZdRtzPZ+G1NK7v39YRgkmgCeE3m53828RmGvHJh8FY9E=
+Received: from 30.221.145.201(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WxYU0Oi_1769005781 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 21 Jan 2026 22:29:42 +0800
+Message-ID: <51e8d8ce-f291-4e31-a938-2c1a0e8684c2@linux.alibaba.com>
+Date: Wed, 21 Jan 2026 22:29:41 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-dwmac_multi_irq-v2-3-3b829230d071@oss.nxp.com>
-References: <20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com>
-In-Reply-To: <20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769005434; l=4112;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=QF/lW5lX77Fa01ihHWQd/U6fxIDc8LrPTzohhR75xyE=;
- b=XZNcB7XEbpixmd88Uz9Qqf172oLZNlYBK/BTrtEmkbD5Ds+iqRali+refQ//1Ve4RSXO1zCui
- ZlD5gArT6oQCZ4LESP44iFsd5/HNxOS6F101GAZXfCEWqo57wxwXHmT
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
-
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-
-The GMAC Ethernet controller found on S32G2/S32G3 and S32R45
-contains up to 5 RX and 5 TX channels.
-It can operate in two interrupt modes:
-
-  1) Sharing IRQ mode: only MAC IRQ line is used
-     for all channels.
-
-  2) Multiple IRQ mode: every channel uses two IRQ lines,
-     one for RX and second for TX.
-
-Specify all IRQ twins for all channels.
-
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
----
- arch/arm64/boot/dts/freescale/s32g2.dtsi | 26 +++++++++++++++++++++++---
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 26 +++++++++++++++++++++++---
- 2 files changed, 46 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index 51d00dac12de..5a553d503137 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -3,7 +3,7 @@
-  * NXP S32G2 SoC family
-  *
-  * Copyright (c) 2021 SUSE LLC
-- * Copyright 2017-2021, 2024-2025 NXP
-+ * Copyright 2017-2021, 2024-2026 NXP
-  */
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-@@ -732,8 +732,28 @@ gmac0: ethernet@4033c000 {
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
- 			interrupt-parent = <&gic>;
--			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "macirq";
-+			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 0: tx, rx */
-+				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 1: tx, rx */
-+				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 2: tx, rx */
-+				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 3: tx, rx */
-+				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 4: tx, rx */
-+				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq",
-+					  "tx-queue-0", "rx-queue-0",
-+					  "tx-queue-1", "rx-queue-1",
-+					  "tx-queue-2", "rx-queue-2",
-+					  "tx-queue-3", "rx-queue-3",
-+					  "tx-queue-4", "rx-queue-4";
- 			snps,mtl-rx-config = <&mtl_rx_setup>;
- 			snps,mtl-tx-config = <&mtl_tx_setup>;
- 			status = "disabled";
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index eff7673e7f34..e1f248d3aedb 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
- /*
-- * Copyright 2021-2025 NXP
-+ * Copyright 2021-2026 NXP
-  *
-  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-@@ -809,8 +809,28 @@ gmac0: ethernet@4033c000 {
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
- 			interrupt-parent = <&gic>;
--			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "macirq";
-+			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 0: tx, rx */
-+				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 1: tx, rx */
-+				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 2: tx, rx */
-+				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 3: tx, rx */
-+				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 4: tx, rx */
-+				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq",
-+					  "tx-queue-0", "rx-queue-0",
-+					  "tx-queue-1", "rx-queue-1",
-+					  "tx-queue-2", "rx-queue-2",
-+					  "tx-queue-3", "rx-queue-3",
-+					  "tx-queue-4", "rx-queue-4";
- 			snps,mtl-rx-config = <&mtl_rx_setup>;
- 			snps,mtl-tx-config = <&mtl_tx_setup>;
- 			status = "disabled";
-
--- 
-2.47.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] Defining a home/maintenance model for non-NIC PHC devices
+ using the /dev/ptpX API
+From: Wen Gu <guwen@linux.alibaba.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Dust Li <dust.li@linux.alibaba.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ David Woodhouse <dwmw2@infradead.org>, virtualization@lists.linux.dev,
+ Nick Shi <nick.shi@broadcom.com>, Sven Schnelle <svens@linux.ibm.com>,
+ Paolo Abeni <pabeni@redhat.com>, linux-clk@vger.kernel.org
+References: <0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com>
+In-Reply-To: <0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
+
+On 2026/1/9 10:56, Wen Gu wrote:
+> 
+> #
+> ## Proposal
+> #
+> 
+> 1. Reorganize drivers/ptp/ to make the interface/implementation split
+>     explicit,
+> 
+>     * drivers/ptp/core      : PTP core infrastructure and API.
+>                               (e.g. ptp_chardev.c, ptp_clock.c,
+>                                ptp_sysfs.c, etc.)
+> 
+>     * drivers/ptp/pure      : Non-network ("pure clock") implementation,
+>                               they are typically platform/architecture/
+>                               virtualization-provided time sources.
+>                               (e.g. ptp_kvm, ptp_vmw, ptp_vmclock,
+>                                ptp_s390, etc.)
+> 
+>     * drivers/ptp/*         : Network timestamping oriented implementation,
+>                               they primarily used together with IEEE1588
+>                               over the network.
+>                               (e.g. ptp_qoriq, ptp_pch, ptp_dp83640,
+>                                ptp_idt82p33 etc.)
+> 
+
+Thanks for the feedback so far. It seems we are close to consensus on
+the directory split, as [1] summarized:
+
+- drivers/ptp/core       : PTP core infrastructure and API
+- drivers/ptp/1588       : network/IEEE 1588 oriented PTP clocks
+- drivers/ptp/emulating  : platform/hardware/hypervisor-provided pure clocks
+
+For how the existing drivers in `drivers/ptp` are categorized into the
+directories above, please also refer to [1] and the follow-up replies.
+
+> 2. Transition drivers/ptp/pure from netdev maintainership to
+>     clock/time maintainership (with an appropriate MAINTAINERS entry,
+>     e.g. PURE TIME PHC), since these PHC implementations are primarily
+>     clock devices and not network-oriented. New similar drivers can be
+>     added under drivers/ptp/pure as well.
+
+
+Then the open item now is maintainership and the merge path.
+
+Based on previous guidance[2] and the current MAINTAINERS structure,
+it seems reasonable to have it maintained under the clock/timekeeping
+domain (following the existing timekeeping pull chain), with a
+dedicated MAINTAINERS entry.
+
+
+Hi Thomas and clock/timekeeping maintainers,
+
+Would you agree with this approach? If so, could you please advise on
+the appropriate maintainer/reviewer for this MAINTAINERS entry?
+
+Below is a strawman MAINTAINERS entry (happy to adjust):
+
+EMULATING PTP CLOCK SUPPORT
+L:     linux-kernel@vger.kernel.org
+S:     Maintained
+F:     drivers/ptp/emulating/*
+
+
+We (Alibaba) are also willing to be the maintainer for this entry as
+a fallback.
+
+[1] https://lore.kernel.org/netdev/b5a60753-85ed-4d61-a652-568393e0dff3@linux.alibaba.com/
+[2] https://lore.kernel.org/netdev/20251216135848.174e010f@kernel.org/
+
+Regards.
