@@ -1,43 +1,43 @@
-Received: from mail-4397.protonmail.ch (mail-4397.protonmail.ch [185.70.43.97])
+Received: from mail-4396.protonmail.ch (mail-4396.protonmail.ch [185.70.43.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C153A481FD4
-	for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 13:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8C248B367;
+	Wed, 21 Jan 2026 13:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769001656; cv=none; b=pSIC81b2NrE7jLoviQoin+IDGZBBksiMMwlfV7wK+4HQ4INWRytB5fvFhnvcb+1WI5+oCRPnDDHbbqVn0MZrhkDv8CrJqHvQYrpteAycd8avLduESr121WgbFiFA/HxA60uj6sYC0d6T3Q1GDNy7z99NHijzsFwzAUyPtsV+E2I=
+	t=1769001668; cv=none; b=HNIkPXn8AFeg3Rv/NaqtpV9A6h5xR8eu38a8dnL8cQDCQSKK8CA4NsFksFqvNiJOqqqQu2pdxhyBHcruQYuf9QXZLjJO76vRIb/v02K0tgBL0am+dFyuLwJB5OplDA/P5zGUoYo5Y3WayJPhaRtjvSZLH1Q3NB6Q35EiPb9CcN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769001656; c=relaxed/simple;
-	bh=EDqnzZEN7orb7ZGQ+93aCuksK9MrkNnuG8+bzoNPJ5o=;
+	s=arc-20240116; t=1769001668; c=relaxed/simple;
+	bh=TPdEcIfJbqvoBHnoEwlBnlyJ+FPShZCQQ5uzsnJd7n0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kDZekroNnZ6HWWdfjMEoG+lymHVArLgDjA4S6GaRWgCn7x/HsN/WPOs1OT65NR2Bei4Qi9l2qgUCsYisdzsKGqaUhA/4Y9qEFzYHAbPQ8SjBJ10N6scOUPg0Vqb/zp4ev0EtR6eyfTlmNWrrLNephJ1NEH0pQpgYpupGiD3zVpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=geHUA2+m; arc=none smtp.client-ip=185.70.43.97
+	 MIME-Version:Content-Type; b=MT9KqxpwyoeYuFcqqMopeOvHS+hgWeXLs8Ou5BNE4/hUfu0L2L6r8SbhwMus73B3J8QQJG5e4PyC/kfYuImJie3gBSyimBr2cPpuPNAfdPgh7GyP62Ztf6K892cMxT2XzPHZDqNDhjEmdZIC8XYRk9/5ly0ijck3+NwKiAxNVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=g4k6poje; arc=none smtp.client-ip=185.70.43.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="geHUA2+m"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="g4k6poje"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1769001652; x=1769260852;
-	bh=VQqC9st29svSgAOcWUIUXHbbKJPCeUzGVN5vug9MHKc=;
+	s=protonmail2; t=1769001661; x=1769260861;
+	bh=TPdEcIfJbqvoBHnoEwlBnlyJ+FPShZCQQ5uzsnJd7n0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=geHUA2+mJ7+w2S9X2AljL2vbIdOsi103NQ3lUAu3CazCR1vnOh1IAuzaThHzK0Ayz
-	 pUh+QSYbcWUxEthLL7pjmCgOSf4uCiQX95bWU2m25k5EOIp4GIdMQY4Be7GZW9tFUj
-	 E/Id206d+iqm7wySHK1PyxmeMkDS76F9zXCwg2CH+vOMM9uekda4u8QFT+FBxeY7hY
-	 GDcOst/SPMEuKUO/OwOZsssTXGIS3byntLhV05c88IDLMPISxR8DJFtCmy8Ix5R07O
-	 uDeQmgp5pTaZE8uImP4RJIIx2LxN3XZ+lOS1OmHAiyLWDotGgijsKH39MiKTyT0sxe
-	 hEb5uo7fH5sgA==
-Date: Wed, 21 Jan 2026 13:20:50 +0000
+	b=g4k6pojemtv1avJcQjJOb12NGsD6P71kYNK1XyAxg9oY0Tjg4ToGwCKXiev89NqdB
+	 jPqx2+zxqxTUWaWv9pMrJ7Btw+WlPtQlww7UMZfwynEV4JIPvpVa58UuUmcgjmD3dr
+	 pE6jdAAwrmT4XtelenZlaTXa0oFoE4cho7aLTZz3hjxXSyMCpp9hZi9kiNFQs/PT6j
+	 valIqdHgjCqt91gMRlP2ng2R3tjekZRpPU3wxLPyMi9RDG5Zl+IMzGfNLdcOuKGbMX
+	 K1T1CfrirRzuejchmKGHqltLwfQbN6uEGDyKy1RgOT7HMtI3OFDu+sbKmzI6OIhqBu
+	 9K3k9fWTINlIQ==
+Date: Wed, 21 Jan 2026 13:20:59 +0000
 To: netdev@vger.kernel.org
 From: Paul Moses <p@1g4.org>
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
-Subject: [PATCH net v3 4/7] net/sched: act_gate: read schedule via RCU
-Message-ID: <20260121131954.2710459-5-p@1g4.org>
+Subject: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule list
+Message-ID: <20260121131954.2710459-7-p@1g4.org>
 In-Reply-To: <20260121131954.2710459-1-p@1g4.org>
 References: <20260121131954.2710459-1-p@1g4.org>
 Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 35e9f1a5787104e5795d193ad305baffc241ac0c
+X-Pm-Message-ID: 7d60970e1245a4f9269fc3b9069c5a4c9c5c7552
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,225 +47,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Switch dump/accessor reads to RCU read-side sections. This matches other
-actions that read params under rcu_read_lock(), e.g. act_tunnel_key dump
-(commit e97ae742972f6c), act_ctinfo dump (commit 799c94178cf9c9), and
-act_skbedit dump (commit 1f376373bd225c).
-
-Dump reads tcf_action via READ_ONCE, following the lockless action reads us=
-ed
-in act_sample (commit 5c5670fae43027) and act_gact.
-
-Timer logic stays under tcf_lock and uses rcu_dereference_protected(), keep=
-ing
-RCU readers cheap while preserving lock-serialized timer updates.
+Reject empty schedules (num_entries =3D=3D 0) so next_entry is always valid=
+ and
+RCU readers/timer logic never walk an empty list. taprio enforces the same
+constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
 
 Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
 Signed-off-by: Paul Moses <p@1g4.org>
 Cc: stable@vger.kernel.org
 ---
- include/net/tc_act/tc_gate.h | 38 +++++++++++++++++++++++-------------
- net/sched/act_gate.c         | 32 +++++++++++++++---------------
- 2 files changed, 40 insertions(+), 30 deletions(-)
+ net/sched/act_gate.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
-index 05968b3822392..9587d9e9fa38f 100644
---- a/include/net/tc_act/tc_gate.h
-+++ b/include/net/tc_act/tc_gate.h
-@@ -57,9 +57,10 @@ static inline s32 tcf_gate_prio(const struct tc_action *=
-a)
- =09s32 tcfg_prio;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_prio =3D p->tcfg_priority;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_prio;
- }
-@@ -69,9 +70,10 @@ static inline u64 tcf_gate_basetime(const struct tc_acti=
-on *a)
- =09u64 tcfg_basetime;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_basetime =3D p->tcfg_basetime;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_basetime;
- }
-@@ -81,9 +83,10 @@ static inline u64 tcf_gate_cycletime(const struct tc_act=
-ion *a)
- =09u64 tcfg_cycletime;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_cycletime =3D p->tcfg_cycletime;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_cycletime;
- }
-@@ -93,9 +96,10 @@ static inline u64 tcf_gate_cycletimeext(const struct tc_=
-action *a)
- =09u64 tcfg_cycletimeext;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_cycletimeext =3D p->tcfg_cycletime_ext;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_cycletimeext;
- }
-@@ -105,9 +109,10 @@ static inline u32 tcf_gate_num_entries(const struct tc=
-_action *a)
- =09u32 num_entries;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09num_entries =3D p->num_entries;
-+=09rcu_read_unlock();
-=20
- =09return num_entries;
- }
-@@ -121,19 +126,23 @@ static inline struct action_gate_entry
- =09u32 num_entries;
- =09int i =3D 0;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09num_entries =3D p->num_entries;
-=20
- =09list_for_each_entry(entry, &p->entries, list)
- =09=09i++;
-=20
--=09if (i !=3D num_entries)
-+=09if (i !=3D num_entries) {
-+=09=09rcu_read_unlock();
- =09=09return NULL;
-+=09}
-=20
- =09oe =3D kcalloc(num_entries, sizeof(*oe), GFP_ATOMIC);
--=09if (!oe)
-+=09if (!oe) {
-+=09=09rcu_read_unlock();
- =09=09return NULL;
-+=09}
-=20
- =09i =3D 0;
- =09list_for_each_entry(entry, &p->entries, list) {
-@@ -143,6 +152,7 @@ static inline struct action_gate_entry
- =09=09oe[i].maxoctets =3D entry->maxoctets;
- =09=09i++;
- =09}
-+=09rcu_read_unlock();
-=20
- =09return oe;
- }
 diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-index 016708c10a8e0..da4802bbaf4ca 100644
+index 48ff378bb051a..e4134b9a4a314 100644
 --- a/net/sched/act_gate.c
 +++ b/net/sched/act_gate.c
-@@ -624,66 +624,66 @@ static int tcf_gate_dump(struct sk_buff *skb, struct =
-tc_action *a,
- {
- =09unsigned char *b =3D skb_tail_pointer(skb);
- =09struct tcf_gate *gact =3D to_gate(a);
--=09struct tc_gate opt =3D { };
- =09struct tcfg_gate_entry *entry;
- =09struct tcf_gate_params *p;
- =09struct nlattr *entry_list;
-+=09struct tc_gate opt =3D { };
- =09struct tcf_t t;
+@@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct nlatt=
+r *nla,
+ =09=09cycletime_ext =3D nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+ =09p->tcfg_cycletime_ext =3D cycletime_ext;
 =20
- =09opt.index =3D gact->tcf_index;
- =09opt.refcnt =3D refcount_read(&gact->tcf_refcnt) - ref;
- =09opt.bindcnt =3D atomic_read(&gact->tcf_bindcnt) - bind;
-=20
--=09spin_lock_bh(&gact->tcf_lock);
--=09opt.action =3D gact->tcf_action;
--
--=09p =3D rcu_dereference_protected(gact->param,
--=09=09=09=09      lockdep_is_held(&gact->tcf_lock));
-+=09opt.action =3D READ_ONCE(gact->tcf_action);
-=20
- =09if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
- =09=09goto nla_put_failure;
-=20
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(gact->param);
++=09if (p->num_entries =3D=3D 0) {
++=09=09NL_SET_ERR_MSG(extack, "The entry list is empty");
++=09=09err =3D -EINVAL;
++=09=09goto release_mem;
++=09}
 +
- =09if (nla_put_u64_64bit(skb, TCA_GATE_BASE_TIME,
- =09=09=09      p->tcfg_basetime, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09if (nla_put_u64_64bit(skb, TCA_GATE_CYCLE_TIME,
- =09=09=09      p->tcfg_cycletime, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09if (nla_put_u64_64bit(skb, TCA_GATE_CYCLE_TIME_EXT,
- =09=09=09      p->tcfg_cycletime_ext, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09if (nla_put_s32(skb, TCA_GATE_CLOCKID, p->tcfg_clockid))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09if (nla_put_u32(skb, TCA_GATE_FLAGS, p->tcfg_flags))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09if (nla_put_s32(skb, TCA_GATE_PRIORITY, p->tcfg_priority))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09entry_list =3D nla_nest_start_noflag(skb, TCA_GATE_ENTRY_LIST);
- =09if (!entry_list)
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09list_for_each_entry(entry, &p->entries, list) {
- =09=09if (dumping_entry(skb, entry) < 0)
--=09=09=09goto nla_put_failure;
-+=09=09=09goto nla_put_failure_rcu;
- =09}
-=20
- =09nla_nest_end(skb, entry_list);
-+=09rcu_read_unlock();
-=20
- =09tcf_tm_dump(&t, &gact->tcf_tm);
- =09if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
- =09=09goto nla_put_failure;
--=09spin_unlock_bh(&gact->tcf_lock);
-=20
- =09return skb->len;
-=20
-+nla_put_failure_rcu:
-+=09rcu_read_unlock();
- nla_put_failure:
--=09spin_unlock_bh(&gact->tcf_lock);
- =09nlmsg_trim(skb, b);
- =09return -1;
- }
+ =09err =3D tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+ =09if (err < 0)
+ =09=09goto release_mem;
 --=20
 2.52.GIT
 
