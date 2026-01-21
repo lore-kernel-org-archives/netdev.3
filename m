@@ -1,45 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03B527F73A;
-	Wed, 21 Jan 2026 00:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1CC2BF019;
+	Wed, 21 Jan 2026 00:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768955295; cv=none; b=hvZhEdDnPppS8xVbJIIsoLIC+PI+rnE3nR81UNT2WZ+T+i4n7fvmABWrut7yHIOdFTLDz1YDGINZD11NvNUJz4ytpW9nF8pnulkCJmPDqDI7K+57UDunO0rzGEtrIpIwckHjZu71lwh57Q0W3yhCnt8K5yDWkcHd0h5rHPyeaSQ=
+	t=1768955813; cv=none; b=BJdmcn/wxZ1XS0NCMKrBNEdNREIfdUlnbGoEX9Od3cw3P/0WhBwoS7SeZp+q+zO/gONVP3C5rjR2DGuhIQUpzSSxKAAHI5xP7AquLGyuLXQunpmx8ZiSaQWiefdN+fgg4aWDUNVDfnTMGit4IoGi+8yU/LGZyRgGvAwveQQRIpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768955295; c=relaxed/simple;
-	bh=+NDrdrCqFOjjaaT7KuvL0mh+SHL0jBBifcCGBxmDrDE=;
+	s=arc-20240116; t=1768955813; c=relaxed/simple;
+	bh=JQPodyJXiqn+AXIyS04EQX2JmIgHq5lzuwwxLaYSoSM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CPa64Lnm7T1/do5wHvgIAaDmdROW8drYORm2C9J0DH63XDv+JQ1EdxHXUuOl8Vrhkgwxfwip7LsvfTWtrjYHXUw5ubQP9JegLbgV8IzKSMlMWKJNEp1hj7GoX3NqZukMGMMNhSbZKoKamU5/7HMMOTYXKmqCNODSr26rN9s6OQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tAOz4o5K; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fr7l+viSpdbeoR1apJwsRQDGRS6MXKSlLWsU8QDoGtcrtI1gnv0drMXzipi0fQHcaKbj4uU7bkut3M0NrrTjYapc7hdwATb3jDdPLzjOeImpCSlgw/Lx87VKOdE3cVijE1/v+CpFdLoDCu4X3j/PdgovfgOtPCyBtxKswwuC0WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOIAq7AP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tAOz4o5K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC54C16AAE;
-	Wed, 21 Jan 2026 00:28:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOIAq7AP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB0FC16AAE;
+	Wed, 21 Jan 2026 00:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768955294;
-	bh=+NDrdrCqFOjjaaT7KuvL0mh+SHL0jBBifcCGBxmDrDE=;
+	s=k20201202; t=1768955812;
+	bh=JQPodyJXiqn+AXIyS04EQX2JmIgHq5lzuwwxLaYSoSM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tAOz4o5K26pFw/zecP6X7gQrmxZpND3BZK79IWXhHxKGOaORV9El9ibc4+sDv50zF
-	 0Bn587GeLfGUgHMc0nGjbu7pby7/PIJGUEJarfhRUQN1vLK322x/nrIinaaJiuK/wi
-	 opdps/nfutNwLXUXam1KwKOg6EymMKoqGC86MsxrI6lx0hPbYuX6fMxQC6aeH9wTy4
-	 4KCFT33ysYlTKJsDNd5FYpoIdTVgTQcuU6jS2MyIl+lo6bcvyodsQPVwG9V8egyorU
-	 2eN51jJMJ0f2U03NZk0PxsR52d5PUSuPuBfmIe1IKKLNxl2uZZOnKe3dTHOeHKDLMs
-	 ldpdRPr6ocKBA==
-Date: Tue, 20 Jan 2026 16:28:13 -0800
+	b=TOIAq7APjoKMhHg/PLE0giYAAX8H9oZZQOgtKRkIh97DEsVli4T97MBGbMPytJjFc
+	 yMT1SQ8xc8WimzxPqYWj744iAIfqtjL4YUbJSJPUEfQhpSddq0BLSVldxq5Ucx1oCU
+	 zbUOY1oW2eXhDrKaiMRN9aFXZZxtDRVdfoIpGar7zMBGRkUymwKhRLvzmW9y1Rojaj
+	 wK0AQiIR2avKaQk+dKq7omC4+04TLL1qgSx+RCAvURMbDgXpYZ273h9gFvxUzqvv3P
+	 LyE6JqDLZSef8y0ODbZfjuh6obMG7EZEDhHxHOtUi6XEj4ydT4AjPG8M7owj+yAuzk
+	 lZHW3M2gKN9eg==
+Date: Tue, 20 Jan 2026 16:36:50 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, Eric Dumazet
- <eric.dumazet@gmail.com>, "David S. Miller" <davem@davemloft.net>, Paolo
- Abeni <pabeni@redhat.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@toke.dk>, horms@kernel.org, jiri@resnulli.us, edumazet@google.com,
- xiyou.wangcong@gmail.com, jhs@mojatatu.com, carges@cloudflare.com,
- kernel-team@cloudflare.com
-Subject: Re: [PATCH net-next v2] net: sched: sfq: add detailed drop reasons
- for monitoring
-Message-ID: <20260120162813.1926b364@kernel.org>
-In-Reply-To: <176885213069.1172320.14270453855073120526.stgit@firesoul>
-References: <176885213069.1172320.14270453855073120526.stgit@firesoul>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, Neal Cardwell <ncardwell@google.com>, David Ahern
+ <dsahern@kernel.org>, Mina Almasry <almasrymina@google.com>, Arnd Bergmann
+ <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, Donald Hunter
+ <donald.hunter@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, asml.silence@gmail.com,
+ matttbe@kernel.org, skhawaja@google.com, Bobby Eshleman
+ <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v10 4/5] net: devmem: document
+ NETDEV_A_DMABUF_AUTORELEASE netlink attribute
+Message-ID: <20260120163650.5a962648@kernel.org>
+In-Reply-To: <20260115-scratch-bobbyeshleman-devmem-tcp-token-upstream-v10-4-686d0af71978@meta.com>
+References: <20260115-scratch-bobbyeshleman-devmem-tcp-token-upstream-v10-0-686d0af71978@meta.com>
+	<20260115-scratch-bobbyeshleman-devmem-tcp-token-upstream-v10-4-686d0af71978@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,10 +57,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Ah, commented on v1 before noticing this.
+On Thu, 15 Jan 2026 21:02:15 -0800 Bobby Eshleman wrote:
+> +- Once a system-wide autorelease mode is selected (via the first binding),
+> +  all subsequent bindings must use the same mode. Attempts to create bindings
+> +  with a different mode will be rejected with -EBUSY.
 
-On Mon, 19 Jan 2026 20:48:50 +0100 Jesper Dangaard Brouer wrote:
-> +#define SFQ_DR(reason) SKB_DROP_REASON_QDISC_SFQ_##reason
+Why?
 
-FWIW I prefer to be able to grep over the max line length issue, 
-but up to you. We should have named the enum entries SKB_DR_xx :(
+> +- Applications using manual release mode (autorelease=0) must ensure all tokens
+> +  are returned via SO_DEVMEM_DONTNEED before socket close to avoid resource
+> +  leaks during the lifetime of the dmabuf binding. Tokens not released before
+> +  close() will only be freed when all RX queues are unbound AND all sockets
+> +  that called recvmsg() are closed.
+
+Could you add a short example on how? by calling shutdown()?
