@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1263446A5;
-	Wed, 21 Jan 2026 02:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC33E346FC4;
+	Wed, 21 Jan 2026 02:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768963219; cv=none; b=DlsVRFlSLDcus6bPko/AYNmqODMKsc9puJ2c4bktIVZduUjNEYL5CONiMfC12NLZlNgLBfOlG3rZ3TPyhKHCg+kEUVw6GQcdSBwi7bg5il2Wz8s+Qtu55CYxJPww8enNfcor6eSpWUuOpDLbrQ4Y+o0W4yjgZDLrBVLzwiA+wOw=
+	t=1768963220; cv=none; b=sfMiiy0aanQmt9dMOJoBYhy+mOnBvXDbbEfQvgSiheq/QIeCSCkAjA0fNpemNbnm5pXo4c/pUmxW2rq1oTS3WwjfuxPe3ovp1ICCioTgKnSbLgZCjjQVDzICihpeT3WvFQZan8kgjfArEn3YoXEAYttjTbTbNfxlkRpwslWJxBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768963219; c=relaxed/simple;
-	bh=xB3/bVu9fxc9dswTHUsQz6jp4wYlM5O9I1s/L3N6y1s=;
+	s=arc-20240116; t=1768963220; c=relaxed/simple;
+	bh=hSiKA5SNj4F1zAh+ap48O5K+GSmIzww7tovpuDUUam8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=K85XjjC0p/4oqdN/jtL9dN+v3LB2uSXZFBBs+sPsFrW1ZP0pd9xdqHXIWww/D5nXmGt6iQLNuCe0djiO0h5qvOhMPD8neC4P3GqGRKG4FVtajZfBt/nWUNIQmx60PcLu7imeAtuxNeIYgkuOJ08dUbhGR0zeZZo28ynL2Z++S3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzZFHkO4; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=XitYa870kt50VRQcAVFR/HZdYLJO6Yj6kkpHyx1Y2V5+i8v9KipkhxPYdZU4TE9b+Iakr+tzsCu9+mZpoEMq0n1W/uH//EkcTn9Ii9OJUQTCofDWu3E4ocI8jMltSv1CWh460GKCjOkwTDHZADGQzfIQrAHDO+tKB7X1aD4q8Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=br7uP+FX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzZFHkO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17A4C16AAE;
-	Wed, 21 Jan 2026 02:40:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="br7uP+FX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38564C16AAE;
+	Wed, 21 Jan 2026 02:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768963218;
-	bh=xB3/bVu9fxc9dswTHUsQz6jp4wYlM5O9I1s/L3N6y1s=;
+	s=k20201202; t=1768963220;
+	bh=hSiKA5SNj4F1zAh+ap48O5K+GSmIzww7tovpuDUUam8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=DzZFHkO4mOTQdJ24w+o/y3/V8WPlwndezJAX2QAcpF809tzG/VdfJOjjuNKj1PJwt
-	 V76deEmO+LiP4R3Z2kLFGIqYY+Ebrx+R0VFJlHE+YhS/qekwAsf8Ab+uJjFbHW7asl
-	 q1CrLJz6Lv0m5p6poepKVl8kJW0mhoWNp6KNglXX9ACRbn56xLabaYH1vjblcYGmxR
-	 JqJziHFM5dV8NwniyE6sVfypmpcL5seiXlFWiywqdKvn8SjhEjUMUpNUbCpO4+irFC
-	 Tu3rgsyUviIqQEO+EYnV+0epWA8ufXyFJc5qAd85JtHoeWKaKDed1FBee8txY2qu42
-	 BdUQYRsBPHGeg==
+	b=br7uP+FXlcnZ2t/3aP2i/nhaXYcvI75aWgAuWQ69G+fFw4Wj2WQe2ilkgOj5YThY7
+	 xheUP0Q2fOxOnws7glNjLN/U8AK5kjBsnrrdEYok7/LgVgg9XEKbwjavYrBHi7PLTa
+	 dh2uzmEntzK0ddn2RthQXoXiLCq7rZFQNNHUwoHqlpuf4dvlbGKhzzQ/bV2ryPh13b
+	 1vIui2ZEAwots09gMpJ3kwRq6+6kW/plogWZJdrxuMQSUmJyIpCRk3mBzRVJet3T8K
+	 k6xayhDUvwa20nYSMp59+R37cguBMn+J5px+XawE5HGAkCdbsZ++Iip8xviG+BwtOg
+	 ug4iGDajbn6lQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EFA8380820D;
-	Wed, 21 Jan 2026 02:40:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8CBB380820D;
+	Wed, 21 Jan 2026 02:40:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: hns3: fix data race in hns3_fetch_stats
+Subject: Re: [PATCH net] be2net: fix data race in be_get_new_eqd
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176896321609.699622.18082153762490079564.git-patchwork-notify@kernel.org>
-Date: Wed, 21 Jan 2026 02:40:16 +0000
-References: <20260119160759.1455950-1-mmyangfl@gmail.com>
-In-Reply-To: <20260119160759.1455950-1-mmyangfl@gmail.com>
+ <176896321735.699622.10561550138317146229.git-patchwork-notify@kernel.org>
+Date: Wed, 21 Jan 2026 02:40:17 +0000
+References: <20260119153440.1440578-1-mmyangfl@gmail.com>
+In-Reply-To: <20260119153440.1440578-1-mmyangfl@gmail.com>
 To: Yangfl <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, shenjian15@huawei.com, salil.mehta@huawei.com,
- shaojijie@huawei.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- tanhuazhong@huawei.com, linyunsheng@huawei.com, lipeng321@huawei.com,
- linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, ajit.khaparde@broadcom.com,
+ sriharsha.basavapatna@broadcom.com, somnath.kotur@broadcom.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, sathya.perla@avagotech.com,
+ padmanabh.ratnakar@avagotech.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 20 Jan 2026 00:07:37 +0800 you wrote:
-> In hns3_fetch_stats(), ring statistics, protected by u64_stats_sync, are
+On Mon, 19 Jan 2026 23:34:36 +0800 you wrote:
+> In be_get_new_eqd(), statistics of pkts, protected by u64_stats_sync, are
 > read and accumulated in ignorance of possible u64_stats_fetch_retry()
-> events. These statistics are already accumulated by
-> hns3_ring_stats_update(). Fix this by reading them into a temporary
-> buffer first.
+> events. Before the commit in question, these statistics were retrieved
+> one by one directly from queues. Fix this by reading them into temporary
+> variables first.
 > 
-> Fixes: b20d7fe51e0d ("net: hns3: add some statitics info to tx process")
+> Fixes: 209477704187 ("be2net: set interrupt moderation for Skyhawk-R using EQ-DB")
 > Signed-off-by: David Yang <mmyangfl@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: hns3: fix data race in hns3_fetch_stats
-    https://git.kernel.org/netdev/net/c/748a81c8ceda
+  - [net] be2net: fix data race in be_get_new_eqd
+    https://git.kernel.org/netdev/net/c/302e5b481caa
 
 You are awesome, thank you!
 -- 
