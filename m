@@ -1,309 +1,168 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB632135CE
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 00:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769040614; cv=pass; b=iKkRzEfzkLye1s0bjxrz8Nde7pkRC3VIb1vtFC/oyk+8BSI8g8TL9OnWmZRxUvQ5eYY6pLTomQxa/MHVBlP+ucpsIhSIvVIOhs6Nbrcw4yLMjapoXNqoiLzrPtdTD5Ij4qaZ/LizFkURf4v9eePo8mHbZdiXr6xJB4nyoKJhdBk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769040614; c=relaxed/simple;
-	bh=E+w1se1yD98YbUFA0FefiqES/M2g51jDvmuw5rYoG0c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZUy3bjdy1pqR9YDdlIty9uCXoZgx4ilIxpuiawyAZL4UprcFDEpJR0ItVeqNKRCu0VDI77YidnWR58Frf8TZu+XOpWfIACdHoevJUDxoLA2Gqo/jEvzERpwvYcnXPo5UoUtXIjMZaiAEN9zgifVC9KXJYCUi3tW8PsG97w00otM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aE/PQNu4; arc=pass smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B227B327
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 00:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769041142; cv=none; b=Y6YG8VZNdWXxm8tX4YlFzCNNzipJpsVeO8WQb5h10MN5rcy1Ga1Cpg5MYRn2Ao3pK83olqDEO3WFoHME6ch17myAwPSQijRlzqY7SXXvr86DXARXEijlcI5VM8M8HWrmU6//XhfBo775bOkFmiJhysIW8cOjogtnjTRlHAcUVKg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769041142; c=relaxed/simple;
+	bh=wAtMZUK4FV7iRWMYfcVdkDkwpZkU2TSPElEoKPCQOFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ngzbF7U6X4mhucUW2I+3RmdJcqZvhTT13jY/mhT1WyYLE+xEClo6/rKaTeHqJd76qKIQejl2qQusZzVVlqNREBx4zteBIBnu4KEOWjK9sRi9C6VPiSBKonJcyyEtethTiQL+1QvAtaDwO4EFS1+CLz3QMBTiVsfPY4AIbC7/9Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7IIWcPX; arc=none smtp.client-ip=209.85.217.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aE/PQNu4"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34c84dc332cso250600a91.0
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 16:10:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769040609; cv=none;
-        d=google.com; s=arc-20240605;
-        b=i+F9fdiZWjzUR4tTE8RD9JC4CDH9TSvxkXDXY7FlzJMe8Uzl2wgS018hc9u2rcq5yU
-         wSqRzO4Zk/7f/LDtBwCU9Q2nQwRVdEgMkiKX2S3r5yyTYUfSoz8QQWcX3rfFpFutNmZJ
-         1roE3iX0R73741zEnR5OhagOnzH5CiABUd2O6cA00p3G3XpUUlUj1QOtu3l67E/vqSJC
-         GFYoRb+GpGx0e7BP2YTJt60A+BsZ30NgTIELeIbagXM882klRPTbjVZY/kPtUfp1S9Jy
-         nydUeTMdmYLQMN625d7/6PWgjSmAIniN80NB6mq+zy800LWNcLRi4p7akRX20PftnqjZ
-         miXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5RdFdvYZ2+yT8ESpVs1g7QzLTQwBWAi4m9fXSa+H6iU=;
-        fh=S75ed1zxXn0w3hK3yJR3Pc4ZBtQBBAj+tSk9xiRvSJI=;
-        b=amIEl0JDvbd3NR38fbFHKT6dRGIKAyMPm2DVsz6YJLFRUpO125rKihOBjpjVzY/VyB
-         a3Q0GTfUW/Kmd1FhpskBHieMJbls2G8oDewOnRI3kVePFNjwioGIOv5HLHcQ+m1WblgK
-         iT1aqFg9CAD4zYBNiR9fa6Y9O3qImUyF+pMWAaooDJ2sslP30AvYz/BCCDOLv4aM8Ywa
-         pieToY57DH+7iK1//HdkLyp2/WJg68iuiPpzTXe4sUWkiPUK33y+7QP4BaUhLBTl+Nzb
-         TtqGTa1Tc+6wTC/5aaRFQr2hqR4ZljFVTZnsva3wGkp440iYtmZx2+ZsOZDxKA4dZXas
-         zfBg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7IIWcPX"
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5ed065f1007so245413137.1
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 16:19:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769040609; x=1769645409; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5RdFdvYZ2+yT8ESpVs1g7QzLTQwBWAi4m9fXSa+H6iU=;
-        b=aE/PQNu4Szyxg6ar+5NYXSooXgj+xfmyWlbfu6Rc8v/eU8eSfwPk8dPH/fYb9D5Rwz
-         +2DIenuTnkWS5mPp7AiVWfVkXRoQFTzXtbKsDURZGAf1s2CbIiZKPzLiK8FldV9ha44X
-         1uNbtBJJaT22S9Giitok065IbQiSOurP8oahG/eFuEVU8BJq7DanhXUZ4yWv1sIdwdEH
-         pC5SIn1uZqH67qRo42Hl0Bo4lW0SHEhYnt6BNvIGO2XAlQW8UPWKxtxRvWj2lah2RdDo
-         2tok2qb1wnB3MqTRNVEDj4o+ndvW6tE8rQCwI8mkY6CO543k6xlTAEtMuIpDjzXryboM
-         HGeA==
+        d=gmail.com; s=20230601; t=1769041140; x=1769645940; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tzXSISnrF9gPuh5VrYor9F9pE35gc9wpvxNp6irLpQw=;
+        b=V7IIWcPX0D/G24B3lrbd8j/I/4eqS5ToJJ0Xd+pEYTv5P1/Qzmzapb4IIVMi1uw6nl
+         1z35kBZ2v/YVeUDhBqZyCbYlzeK7rGyL8DUOKHLkMVgVLxrsSLTZ1DqWqGjkhZhhRBBT
+         w9IRKS8fhaylF4i4AhHn5eloyQp34W83cts2/wBLqjN6n5My7lV/7+ddJMCGNBBEg/3B
+         2u8uzSjnxm/0VGI6sjaDsSkDpS36qy/TmxQjF90N5P4ZfbJNWJS6DB7UD8zO8ujipMiG
+         69FXNKKXVNiM5RKBp/OOsn8bufHK7tkXKyUu1FwieQ1Ub+RgSoY/Kv9osA2UCR68Idoo
+         ITkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769040609; x=1769645409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5RdFdvYZ2+yT8ESpVs1g7QzLTQwBWAi4m9fXSa+H6iU=;
-        b=APinpXW4eTGMVlAlQJ8xTw8Msz7HRkdegbw7N4jNPKndrz/iMVL3p2sDEPxmBsSrnN
-         U0kKKDJKm10I9Vu93N68kr/MV1Ss3EUaUfnAqAO/ks8g3Q8dhW2L73X2OLf0NeMnFzRa
-         uAuClzHx6KHQdP2Nx108Xco/C5/Z/0bejI29M2ClV2m04Pk5sepTGetSvMRoEwKXxtZA
-         wpqD0rjDYuZMpSHXj9tTmgnp5er/GgfDTa5pw0x1yoLxPgTGIeGeximOqHAbmAVWO82k
-         4argNzlWIk0evumve7ABHC9Yl5oWZNTg0oxmcwVAZw7WoK6ee6UZpNglIWDtV5KOFedO
-         vRlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeJWGf29767EJLo5IkxZN1ct4NGQZooPCStVmyTxC8Fx/+i05u19LAdHdaf1PibYOdmY/TsPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/c2SioNUwH2x/FY+0Nusj8kokN5Vx7x98JS806aXPrKveazWW
-	l5N903/7yJ+GmpZFUHYK1Ivw1m/XKod9AdfhkvV9oaGisEkMUGmFaM3tTrSpEugvDRA56i3OeQx
-	52x+cvAQevl744qWwwZ8fXcOjbPhO+DU=
-X-Gm-Gg: AZuq6aLPDYEmVlOthFSbg8Yokzfo14oFfWE8aKvTez2IPqnd0+lZdGaWeYq4uCSqyha
-	gYN//0x+Zkteg8kaoJ+0gLPqKJN8mhcVttfvz5iRc/WDArnmghlURoWUPaOcJvCaezTn8o6NhJ2
-	idX82Gs9z7OhzQoS2n2eT2YfdJIcluRO+2vgBDB+cjNXvZRopQ1UnAYC8cY/B2YhQDLy9fjLrDb
-	krOY58WWkoiPzlssLRA4xlYEZ1XDn7faG0ph3uuwqHolq7YWp7exr1U0TNjs6Y76YA61nNvSwGi
-	lKpRahq68kXEeh4JnRU=
-X-Received: by 2002:a17:90b:5603:b0:340:2a16:94be with SMTP id
- 98e67ed59e1d1-35272ef6716mr14887681a91.4.1769040609143; Wed, 21 Jan 2026
- 16:10:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769041140; x=1769645940;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tzXSISnrF9gPuh5VrYor9F9pE35gc9wpvxNp6irLpQw=;
+        b=dWdXG3dJtiYU2J8vnNPkzBgoHXKM5kcfS69IZf/jIw2rfp66ZGgskGH8HO6dNHFWla
+         MoSnWBoNX8nZuvAkXhdL9uaFMGY9DjHG2mDQqJnHz8gz3URi94JXUzVpPz389LgHKfAU
+         MUcIEc5rbtcdqaDjjecAsUcpYQRSNGampHv5rXdYDtYVEEqJiIaaq80JelSceW59C7R6
+         ueidqyLIL1wvPQhyZAmPfUWghtTeP34Fwk07CjQCyafjdp4ltWLQFvn+JvzF+RTVWODf
+         b0rq+HBCpWSnfK7a19dMMuBSZJ0vXRd22es1c3Qftv3/lb2PTDdRG6RT0yNr9J/4ET9j
+         RkBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVh2RBWqgK5HcTOIWCaFaJSp8s4hqHbUz3ppMzmGhGhTWmW8CrAuqPrvUQ9jznLqYiG7YrUVRY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcfakfTgFvEeXpq9tBJsntwL6L7SMfXlrwlFwe/09KECtvQ8Sc
+	xgBQ5mKAVtLnLAxde+i85NAvm3VAoFCi2swcYxPgPXZZ21wyDcM1dPI9HzoFeGHI
+X-Gm-Gg: AZuq6aJJw5pXDm34F8Ddfneh1OTJicT67G4tBaMEFeiBUDPyp0pIFVVs2b/zBmOFl7D
+	n7j5SCqs4ci5NaWIcw9OrsIKN7UuLJt8X+ubvhnI9Y/F1HsBKYzWOkLbfGvUjM5GPq3guUsmLqa
+	UwflpSm0Wf1lWyTpoaz57WvrDBQzFRQP5FMRqvjzZMq2O0vchXPjrAECKQq6t5uievwJBR5ZlHu
+	fEle+zCdO/0H8EenLNNcHX6MAlU88Em8Bt7XyWeev95w01jxjjBYQTQ5nLkT2HY7GnS1PRXx4Pl
+	OjnOcCSnmCPtAoJQ4g4pT7qXKRh8+vDgkbgDKO9WZB0Qt1tGc4M59wc39U9pDcC7ry08kME/3HE
+	0G/L5elsgEyUKdrTvN04AlcnrNF9zHd0FKZNKMduzT1f41KJjj+cRRpTPD8OjhN/9gHtIHQehRh
+	Kesi38OhKEpg==
+X-Received: by 2002:a05:7300:bc08:b0:2ae:5470:2e61 with SMTP id 5a478bee46e88-2b6b46c68e2mr15434088eec.2.1769034989298;
+        Wed, 21 Jan 2026 14:36:29 -0800 (PST)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3503a30sm25165715eec.13.2026.01.21.14.36.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 14:36:28 -0800 (PST)
+Date: Thu, 22 Jan 2026 06:36:18 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>, 
+	Inochi Amaoto <inochiama@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Yanteng Si <siyanteng@cqsoftware.com.cn>, 
+	Yao Zi <ziyao@disroot.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Choong Yong Liang <yong.liang.choong@linux.intel.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Shangjuan Wei <weishangjuan@eswincomputing.com>, Boon Khai Ng <boon.khai.ng@altera.com>, 
+	Quentin Schulz <quentin.schulz@cherry.de>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add glue layer for Spacemit K3
+ SoC
+Message-ID: <aXFS7fW8kdsi_2ud@inochi.infowork>
+References: <20260120043609.910302-1-inochiama@gmail.com>
+ <20260120043609.910302-4-inochiama@gmail.com>
+ <aW8LAFhCRWlMVemz@shell.armlinux.org.uk>
+ <aW8MJpERR3TmsiKg@inochi.infowork>
+ <aXDAmDEpUArE1_en@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115112246.221082-1-dongml2@chinatelecom.cn>
-In-Reply-To: <20260115112246.221082-1-dongml2@chinatelecom.cn>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 21 Jan 2026 16:09:56 -0800
-X-Gm-Features: AZwV_Qj9mePZlRoySqiHX-dtgkm6Br8m3zLXq-i1fsayrU3p7IsjbTJy6NgYzOI
-Message-ID: <CAEf4BzZX+hDww=MvMrqx3h9uKdB+Sef8rVMxrvxcm+9jj7MUjg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v10 00/12] bpf: fsession support
-To: Menglong Dong <menglong8.dong@gmail.com>
-Cc: ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net, 
-	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, 
-	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
-	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net, 
-	dsahern@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jiang.biao@linux.dev, bp@alien8.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, hpa@zytor.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXDAmDEpUArE1_en@shell.armlinux.org.uk>
 
-On Thu, Jan 15, 2026 at 3:23=E2=80=AFAM Menglong Dong <menglong8.dong@gmail=
-.com> wrote:
->
-> Hi, all.
->
-> In this version, I followed Andrii's suggestions in v9, and did many
-> adjustment.
->
-> overall
-> -------
-> Sometimes, we need to hook both the entry and exit of a function with
-> TRACING. Therefore, we need define a FENTRY and a FEXIT for the target
-> function, which is not convenient.
->
-> Therefore, we add a tracing session support for TRACING. Generally
-> speaking, it's similar to kprobe session, which can hook both the entry
-> and exit of a function with a single BPF program.
->
-> We allow the usage of bpf_get_func_ret() to get the return value in the
-> fentry of the tracing session, as it will always get "0", which is safe
-> enough and is OK.
->
-> Session cookie is also supported with the kfunc bpf_session_cookie().
-> In order to limit the stack usage, we limit the maximum number of cookies
-> to 4.
->
-> kfunc design
-> ------------
-> In order to keep consistency with existing kfunc, we don't introduce new
-> kfunc for fsession. Instead, we reuse the existing kfunc
-> bpf_session_cookie() and bpf_session_is_return().
->
-> The prototype of bpf_session_cookie() and bpf_session_is_return() don't
-> satisfy our needs, so we change their prototype by adding the argument
-> "void *ctx" to them.
->
-> We inline bpf_session_cookie() and bpf_session_is_return() for fsession
-> in the verifier directly. Therefore, we don't need to introduce new
-> functions for them.
->
-> architecture
-> ------------
-> The fsession stuff is arch related, so the -EOPNOTSUPP will be returned i=
-f
-> it is not supported yet by the arch. In this series, we only support
-> x86_64. And later, other arch will be implemented.
->
-> Changes v9 -> v10:
-> * 1st patch: some small adjustment, such as use switch in
->   bpf_prog_has_trampoline()
-> * 2nd patch: some adjustment to the commit log and comment
-> * 3rd patch:
->   - drop the declaration of bpf_session_is_return() and
->     bpf_session_cookie()
->   - use vmlinux.h instead of bpf_kfuncs.h in uprobe_multi_session.c,
->     kprobe_multi_session_cookie.c and uprobe_multi_session_cookie.c
-> * 4th patch:
->   - some adjustment to the comment and commit log
->   - rename the prefix from BPF_TRAMP_M_ tp BPF_TRAMP_SHIFT_
+On Wed, Jan 21, 2026 at 12:03:36PM +0000, Russell King (Oracle) wrote:
+> On Tue, Jan 20, 2026 at 01:05:39PM +0800, Inochi Amaoto wrote:
+> > > > +	mask = RGMII_RX_DLINE_STEP | RGMII_TX_DLINE_CODE | RGMII_TX_DLINE_EN |
+> > > > +	       RGMII_TX_DLINE_STEP | RGMII_RX_DLINE_CODE | RGMII_RX_DLINE_EN;
+> > > > +	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config) |
+> > > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, tx_code) | RGMII_TX_DLINE_EN |
+> > > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, rx_config) |
+> > > > +	      FIELD_PREP(RGMII_RX_DLINE_CODE, rx_code) | RGMII_RX_DLINE_EN;
+> > > 
+> > > These FIELD_PREP() fields look wrong. Did you mean to use DLINE_CODE
+> > > both tx_config and tx_code, and did you mean to use TX_DLINE_CODE for
+> > > rx_config ?
+> > > 
+> > 
+> > This should be RGMII_TX_DLINE_CODE. This is a copy paste error, I
+> > will fix it.
+> 
+> Are you sure?
+> 
+> In that case, please change this to:
+> 
+> 	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config | tx_code |
+> 					      rx_config | rx_code) |
+> 	      RGMII_TX_DLINE_EN | RGMII_RX_DLINE_EN;
+> 
+> If that isn't what you meant, then your reply is wrong, and it seems
+> you're confused, which makes me then question how reliable your
+> replies are.
+> 
 
-This is minor nit, but I think BPF_TRAMP_IS_RETURN_SHIFT and
-BPF_TRAMP_COOKIE_INDEX_SHIFT (note added INDEX, because that's what we
-store, not the cookie itself) makes more sense naming-wise and is more
-natural to read. Consider updating this.
+That's wrong, I think I have reply it in a wrong way, it should be
 
->   - remove the definition of BPF_TRAMP_M_NR_ARGS
->   - check the program type in bpf_session_filter()
-> * 5th patch: some adjustment to the commit log
-> * 6th patch:
->   - add the "reg" to the function arguments of emit_store_stack_imm64()
->   - use the positive offset in emit_store_stack_imm64()
-> * 7th patch:
->   - use "|" for func_meta instead of "+"
->   - pass the "func_meta_off" to invoke_bpf() explicitly, instead of
->     computing it with "stack_size + 8"
->   - pass the "cookie_off" to invoke_bpf() instead of computing the curren=
-t
->     cookie index with "func_meta"
-> * 8th patch:
->   - split the modification to bpftool to a separate patch
-> * v9: https://lore.kernel.org/bpf/20260110141115.537055-1-dongml2@chinate=
-lecom.cn/
->
+RGMII_TX_DLINE_STEP -> tx_config
+RGMII_TX_DLINE_CODE -> tx_code
+RGMII_RX_DLINE_STEP -> rx_config
+RGMII_RX_DLINE_CODE -> rx_code
 
-Overall this looks great, I was actually trying to apply and push it
-despite those minor nits I left. But unfortunately there is some
-conflict, so you'll have to rebase and resend. Hopefully just one last
-time :)
+The RGMII_[RX|TX]_DLINE_STEP register selects which step is used for
+rx/tx delay. The RGMII_[RX|TX]_DLINE_CODE register provides the factor
+used for calculating the delay. These register are computed in the
+spacemit_dwmac_detected_delay_value(). And finally we can got a delay
+with "code * step / 10 * 0.9" for both rx and tx.
 
-> Changes v8 -> v9:
-> * remove the definition of bpf_fsession_cookie and bpf_fsession_is_return
->   in the 4th and 5th patch
-> * rename emit_st_r0_imm64() to emit_store_stack_imm64() in the 6th patch
-> * v8: https://lore.kernel.org/bpf/20260108022450.88086-1-dongml2@chinatel=
-ecom.cn/
->
-> Changes v7 -> v8:
-> * use the last byte of nr_args for bpf_get_func_arg_cnt() in the 2nd patc=
-h
-> * v7: https://lore.kernel.org/bpf/20260107064352.291069-1-dongml2@chinate=
-lecom.cn/
->
-> Changes v6 -> v7:
-> * change the prototype of bpf_session_cookie() and bpf_session_is_return(=
-),
->   and reuse them instead of introduce new kfunc for fsession.
-> * v6: https://lore.kernel.org/bpf/20260104122814.183732-1-dongml2@chinate=
-lecom.cn/
->
-> Changes v5 -> v6:
-> * No changes in this version, just a rebase to deal with conflicts.
-> * v5: https://lore.kernel.org/bpf/20251224130735.201422-1-dongml2@chinate=
-lecom.cn/
->
-> Changes v4 -> v5:
-> * use fsession terminology consistently in all patches
-> * 1st patch:
->   - use more explicit way in __bpf_trampoline_link_prog()
-> * 4th patch:
->   - remove "cookie_cnt" in struct bpf_trampoline
-> * 6th patch:
->   - rename nr_regs to func_md
->   - define cookie_off in a new line
-> * 7th patch:
->   - remove the handling of BPF_TRACE_SESSION in legacy fallback path for
->     BPF_RAW_TRACEPOINT_OPEN
-> * v4: https://lore.kernel.org/bpf/20251217095445.218428-1-dongml2@chinate=
-lecom.cn/
->
-> Changes v3 -> v4:
-> * instead of adding a new hlist to progs_hlist in trampoline, add the bpf
->   program to both the fentry hlist and the fexit hlist.
-> * introduce the 2nd patch to reuse the nr_args field in the stack to
->   store all the information we need(except the session cookies).
-> * limit the maximum number of cookies to 4.
-> * remove the logic to skip fexit if the fentry return non-zero.
-> * v3: https://lore.kernel.org/bpf/20251026030143.23807-1-dongml2@chinatel=
-ecom.cn/
->
-> Changes v2 -> v3:
-> * squeeze some patches:
->   - the 2 patches for the kfunc bpf_tracing_is_exit() and
->     bpf_fsession_cookie() are merged into the second patch.
->   - the testcases for fsession are also squeezed.
-> * fix the CI error by move the testcase for bpf_get_func_ip to
->   fsession_test.c
-> * v2: https://lore.kernel.org/bpf/20251022080159.553805-1-dongml2@chinate=
-lecom.cn/
->
-> Changes v1 -> v2:
-> * session cookie support.
->   In this version, session cookie is implemented, and the kfunc
->   bpf_fsession_cookie() is added.
-> * restructure the layout of the stack.
->   In this version, the session stuff that stored in the stack is changed,
->   and we locate them after the return value to not break
->   bpf_get_func_ip().
-> * testcase enhancement.
->   Some nits in the testcase that suggested by Jiri is fixed. Meanwhile,
->   the testcase for get_func_ip and session cookie is added too.
-> * v1: https://lore.kernel.org/bpf/20251018142124.783206-1-dongml2@chinate=
-lecom.cn/
->
-> Menglong Dong (12):
->   bpf: add fsession support
->   bpf: use the least significant byte for the nr_args in trampoline
->   bpf: change prototype of bpf_session_{cookie,is_return}
->   bpf: support fsession for bpf_session_is_return
->   bpf: support fsession for bpf_session_cookie
->   bpf,x86: introduce emit_store_stack_imm64() for trampoline
->   bpf,x86: add fsession support for x86_64
->   libbpf: add fsession support
->   bpftool: add fsession support
->   selftests/bpf: add testcases for fsession
->   selftests/bpf: add testcases for fsession cookie
->   selftests/bpf: test fsession mixed with fentry and fexit
->
->  arch/x86/net/bpf_jit_comp.c                   |  71 +++++--
->  include/linux/bpf.h                           |  36 ++++
->  include/uapi/linux/bpf.h                      |   1 +
->  kernel/bpf/btf.c                              |   2 +
->  kernel/bpf/syscall.c                          |  18 +-
->  kernel/bpf/trampoline.c                       |  53 +++++-
->  kernel/bpf/verifier.c                         |  86 +++++++--
->  kernel/trace/bpf_trace.c                      |  49 +++--
->  net/bpf/test_run.c                            |   1 +
->  net/core/bpf_sk_storage.c                     |   1 +
->  tools/bpf/bpftool/common.c                    |   1 +
->  tools/include/uapi/linux/bpf.h                |   1 +
->  tools/lib/bpf/bpf.c                           |   1 +
->  tools/lib/bpf/libbpf.c                        |   3 +
->  tools/testing/selftests/bpf/bpf_kfuncs.h      |   3 -
->  .../selftests/bpf/prog_tests/fsession_test.c  |  90 +++++++++
->  .../bpf/prog_tests/tracing_failure.c          |   2 +-
->  .../selftests/bpf/progs/fsession_test.c       | 179 ++++++++++++++++++
->  .../bpf/progs/kprobe_multi_session_cookie.c   |  15 +-
->  .../bpf/progs/uprobe_multi_session.c          |   7 +-
->  .../bpf/progs/uprobe_multi_session_cookie.c   |  15 +-
->  .../progs/uprobe_multi_session_recursive.c    |  11 +-
->  22 files changed, 550 insertions(+), 96 deletions(-)
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/fsession_test.=
-c
->  create mode 100644 tools/testing/selftests/bpf/progs/fsession_test.c
->
-> --
-> 2.52.0
->
+Regards,
+Inochi
+
+> > > > +	plat_dat->clk_tx_i = devm_clk_get_enabled(&pdev->dev, "tx");
+> > > > +	if (IS_ERR(plat_dat->clk_tx_i))
+> > > > +		return dev_err_probe(&pdev->dev, PTR_ERR(plat_dat->clk_tx_i),
+> > > > +				     "failed to get tx clock\n");
+> > > 
+> > > You set plat_dat->clk_tx_i, but you don't point
+> > > plat_dat->set_clk_tx_rate at anything, which means the stmmac core
+> > > does nothing with this.
+> > > 
+> > 
+> > Yes, the vendor told me that the internal tx clock rate will be auto
+> > changed when the speed rate is changed. So no software interaction
+> > is needed.
+> 
+> Please do not assign a clock to clk_tx_i that is not the dwmac
+> clk_tx_i input. clk_tx_i is a name used by the Synopsys DWMAC for a
+> specific clock.
+> 
+> As you don't need to do anything with it other than to get and enable
+> it, consider using just a local variable here.
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
