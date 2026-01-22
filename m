@@ -1,42 +1,41 @@
 Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8E34E751;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544353D3012;
 	Thu, 22 Jan 2026 07:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769066244; cv=none; b=HWm5n5gmUjJTwKBZFadRGJRD7+gmieIyYy7hSj5/GLJoU35+GTAPCpO6sH4kCVa8oDFxMQybvAVTLpcStLXPl7N+yMhIE1WjbEn00FbXfVNsmT2CFttB+Mp0KNEKvpZRnFiqdYFLPj5dd+Cw6uBMyY5mgdouVE4qkJjXXB93Hz0=
+	t=1769066243; cv=none; b=ZsIM4T15JyBfY/jSAxTW2K8baE8XcBnl2z3P/o/hYyihz2Gg88IU7+VZsmzH4rAmr+Et4f6RWbUZEYuNt+I9Zh2DN5cMDQPD3/odmM5xZ9bg6fC58X79wROtaH5hvt9wlGiIdO0O17UI2ix6haHDSL8JWKTKyy2/uPASvMRbcwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769066244; c=relaxed/simple;
-	bh=2JijctQdLSpwzEBC1kAMUglg01WkfAjBYRgkoaUBqR8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNw78LwSv541fC1UT8OTG8oNgdTc97fshmZDymyjE9vpum0XLrjzqIfJxatRhjHlz6Sn23RTWOJehMS+8WN6xlIiffe06Re04xqQ5gqWQGREu+Ifm6GMzulzTnF0OY6lS886c0CNKAxFD9367KER9w+Yt65oBMHOjGI/zYYztSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=hxb06dPG; arc=none smtp.client-ip=65.108.154.246
+	s=arc-20240116; t=1769066243; c=relaxed/simple;
+	bh=lXmX0fssGG7boqMteprFQ3DftHIwc8tC46Ns1HPitH8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c57FaUPH/bJsnxFkz0dLs+zdHlT1BKqsVXVSjJSdh+hFeF91XToD9Vqyef9P6acpQmpqYXoZyIIomXFvSXxR12AdTsqtRR+I+8JXWoP7iucbFRXL36wRGW7DXK0CxPEvf2kn7QTxHzbby9qunh9WSOESepOJ2CBaPTpWKHAOM54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=fAFJ1SoV; arc=none smtp.client-ip=65.108.154.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="hxb06dPG"
+	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="fAFJ1SoV"
 Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=hxb06dPG;
+	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=fAFJ1SoV;
 	dkim-atps=neutral
 Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
 	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 60M7GRSr1239615
+	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 60M7GMlq1239607
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 22 Jan 2026 07:16:29 GMT
+	Thu, 22 Jan 2026 07:16:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1769066187; bh=cWCHKxvB6XAcmgK3RJnE2JmaAN9H/6z5es3Fe4VVdTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:References:From;
-	b=hxb06dPGfaOjIdMPn3yOIovrl58hgxiw7tArXVF4EEywQ14tu72kvQ5Okvd0auryG
-	 zXr8Er9cnJrbg2u8u+Kh2R5yl1wPYpzSt1EIDe9KNDFY4pMCHLz88kgBHasi8bsxwt
-	 rC3jMsuLdmjqgsB2/bMlp2HNY5hB32T7W9V+vlZo=
+	t=1769066182; bh=dfoTS0cevGw8oOjXHOU1wkv2LAaTNCCALOMlmg1BUDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:From;
+	b=fAFJ1SoVC0cu5vySL8C5Zfn8MDhsFfNM9ZxSuVyFZheQ14hZMOJNw9vtqHRfB0NxB
+	 5Px1MH2DZDAX7rcC3iL8w606QQmorWCjdhL5mWynhHhkQJPB+f7vT085MbjQXw0n5h
+	 GUnVREJqzlNbbWA2INjC+1iohW5QNTTKQphasivo=
 Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
 	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 60M7GRxW3217390
+	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 60M7GMtr3217356
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Thu, 22 Jan 2026 08:16:27 +0100
-Received: (nullmailer pid 1057141 invoked by uid 1000);
-	Thu, 22 Jan 2026 07:16:27 -0000
+	Thu, 22 Jan 2026 08:16:22 +0100
+Received: (nullmailer pid 1057102 invoked by uid 1000);
+	Thu, 22 Jan 2026 07:16:22 -0000
 From: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
 To: netdev@vger.kernel.org
 Cc: "Lucien.Jheng" <lucienzx159@gmail.com>,
@@ -48,12 +47,10 @@ Cc: "Lucien.Jheng" <lucienzx159@gmail.com>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
         =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Subject: [PATCH net-next 3/3] net: phy: air_en8811h: Add clk provider for an8811hb
-Date: Thu, 22 Jan 2026 08:16:00 +0100
-Message-ID: <20260122071601.1057083-4-bjorn@mork.no>
+Subject: [PATCH net-next 0/3] Airoha AN8811HB 2.5 Gbps phy support
+Date: Thu, 22 Jan 2026 08:15:57 +0100
+Message-ID: <20260122071601.1057083-1-bjorn@mork.no>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260122071601.1057083-1-bjorn@mork.no>
-References: <20260122071601.1057083-1-bjorn@mork.no>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,146 +62,43 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
 X-Virus-Status: Clean
 
-Implement clk provider driver so we can disable the clock output when it
-isn't needed. This helps to reduce EMF noise
+The RFC patch posted earlier has been split into a series based on the
+feedback received:
 
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
----
- drivers/net/phy/air_en8811h.c | 107 ++++++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
+ 1/3: preparing the EN8811H driver for maximum reuse
+ 2/3: adding support for the new AN8811HB hardware
+ 3/3: adding (optional) clock driver for AN8811HB
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index bd7bdfb4230a..286733bc8aa5 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -956,6 +956,105 @@ static int en8811h_led_hw_is_supported(struct phy_device *phydev, u8 index,
- 	return 0;
- };
- 
-+static unsigned long an8811hb_clk_recalc_rate(struct clk_hw *hw,
-+					      unsigned long parent)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+	u32 pbus_value;
-+	int ret;
-+
-+	ret = air_buckpbus_reg_read(phydev, AN8811HB_HWTRAP2, &pbus_value);
-+	if (ret < 0)
-+		return ret;
-+
-+	return (pbus_value & AN8811HB_HWTRAP2_CKO) ? 50000000 : 25000000;
-+}
-+
-+static int an8811hb_clk_enable(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+
-+	return air_buckpbus_reg_modify(phydev, AN8811HB_CLK_DRV,
-+				       AN8811HB_CLK_DRV_CKO_MASK,
-+				       AN8811HB_CLK_DRV_CKO_MASK);
-+}
-+
-+static void an8811hb_clk_disable(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+
-+	air_buckpbus_reg_modify(phydev, AN8811HB_CLK_DRV,
-+				AN8811HB_CLK_DRV_CKO_MASK, 0);
-+}
-+
-+static int an8811hb_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+	struct phy_device *phydev = priv->phydev;
-+	u32 pbus_value;
-+	int ret;
-+
-+	ret = air_buckpbus_reg_read(phydev, AN8811HB_CLK_DRV, &pbus_value);
-+	if (ret < 0)
-+		return ret;
-+
-+	return (pbus_value & AN8811HB_CLK_DRV_CKO_MASK);
-+}
-+
-+static int an8811hb_clk_save_context(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+
-+	priv->cko_is_enabled = an8811hb_clk_is_enabled(hw);
-+
-+	return 0;
-+}
-+
-+static void an8811hb_clk_restore_context(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+
-+	if (!priv->cko_is_enabled)
-+		an8811hb_clk_disable(hw);
-+}
-+
-+static const struct clk_ops an8811hb_clk_ops = {
-+	.recalc_rate		= an8811hb_clk_recalc_rate,
-+	.enable			= an8811hb_clk_enable,
-+	.disable		= an8811hb_clk_disable,
-+	.is_enabled		= an8811hb_clk_is_enabled,
-+	.save_context		= an8811hb_clk_save_context,
-+	.restore_context	= an8811hb_clk_restore_context,
-+};
-+
-+static int an8811hb_clk_provider_setup(struct device *dev, struct clk_hw *hw)
-+{
-+	struct clk_init_data init;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-+		return 0;
-+
-+	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s-cko",
-+				   fwnode_get_name(dev_fwnode(dev)));
-+	if (!init.name)
-+		return -ENOMEM;
-+
-+	init.ops = &an8811hb_clk_ops;
-+	init.flags = 0;
-+	init.num_parents = 0;
-+	hw->init = &init;
-+
-+	ret = devm_clk_hw_register(dev, hw);
-+	if (ret)
-+		return ret;
-+
-+	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, hw);
-+}
-+
- static unsigned long en8811h_clk_recalc_rate(struct clk_hw *hw,
- 					     unsigned long parent)
- {
-@@ -1097,6 +1196,12 @@ static int an8811hb_probe(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
-+	priv->phydev = phydev;
-+	/* Co-Clock Output */
-+	ret = an8811hb_clk_provider_setup(&phydev->mdio.dev, &priv->hw);
-+	if (ret)
-+		return ret;
-+
- 	/* Configure led gpio pins as output */
- 	ret = air_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
- 				      AN8811HB_GPIO_OUTPUT_345,
-@@ -1522,6 +1627,8 @@ static struct phy_driver en8811h_driver[] = {
- 	.get_rate_matching	= en8811h_get_rate_matching,
- 	.config_aneg		= en8811h_config_aneg,
- 	.read_status		= an8811hb_read_status,
-+	.resume			= en8811h_resume,
-+	.suspend		= en8811h_suspend,
- 	.config_intr		= en8811h_clear_intr,
- 	.handle_interrupt	= en8811h_handle_interrupt,
- 	.led_hw_is_supported	= en8811h_led_hw_is_supported,
+Patch 3/3 is not required for a functional device. It is included here
+for full feature parity between the EN8811H and AN8811HB drivers.
+
+The AN8811HB phy requires new firmware, which is now available with
+the 20260110 release of linux-firmware,
+
+RFC patch is at:
+https://lore.kernel.org/20251202102222.1681522-1-bjorn@mork.no/
+
+Changes since RFC:
+- refactoring of the existing EN8811H code is separated into a patch
+  of its own
+- ID conditionals are dropped, using separate functions for the two
+  hardware variants instead. Some common helpers have been added to
+  reduse code duplication
+- deprecated serdes polarity properties are not supported for AN8811HB
+- the polarity configuration code has proper error handling
+- a polarity configuration bug is fixed by using the new simplified
+  helper interface
+- the clock driver is split out in a separate patch to reduce the size
+  of the main AN8811HB driver patch
+
+Bjørn Mork (3):
+  net: phy: air_en8811h: factor out shareable code
+  net: phy: air_en8811h: add Airoha AN8811HB support
+  net: phy: air_en8811h: Add clk provider for an8811hb
+
+ drivers/net/phy/air_en8811h.c | 513 ++++++++++++++++++++++++++++++----
+ 1 file changed, 463 insertions(+), 50 deletions(-)
+
 -- 
 2.47.3
 
