@@ -1,87 +1,158 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320D358D13;
-	Thu, 22 Jan 2026 11:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690C23E95AB
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769081542; cv=none; b=OaEMnJQghCNMg8QDbZzeSDgBaBtnHQcJEeNBpRma/UNA0mShG0zh+iTqdy11Kw4Ldm9VBi4uPx5NWXJnzAn5xAzc/HyYAUy/cfQXoOXEmlw5dI9kunaf5VV/PV0dryVW23iD8VKYFdC8eus1/6x4jdNxKRF3B/fD3coXgGlA1zc=
+	t=1769081556; cv=none; b=YmZec1IDHJ94oHyUZKzWmmIA4yImaYJcBaqPz3ayAl+t3SfJRmXZxqU5nXA4N+77liay0i4GPUj/+x/Qp4r0dN0HKfCDigpvBYd11zR0cs+lwWNmI3AwEOHS8/DvasArcJkj0v2HYEoiozNJY2SohjPOoycnXTr36QPGGjj+Vxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769081542; c=relaxed/simple;
-	bh=Oef5xctHI8v7fFpqPEZMrxAZOxlin0yJSzkc/GnLVPA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s+nAawwUDGFWKgXDKJXl0kiswBKr38uKPA5h9yf98bJn3wbybY1tS9K5D57V7YpGlzEpeGyrREOmv0r4eLyal2pHoGG8nm3muszyLOv26mnpiXe+/YP19GnvtRcsYDjWQaTW/wMFazz4jKikUlAb6PYqJEqmJhmanfx5rwFbrWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=hnUBiP76; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="hnUBiP76"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 5591420612;
-	Thu, 22 Jan 2026 12:32:18 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ABFtNYbnaoXt; Thu, 22 Jan 2026 12:32:17 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id CEC902088E;
-	Thu, 22 Jan 2026 12:32:17 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com CEC902088E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1769081537;
-	bh=/eq8UMKclos0k96diblmhWZCbedG/oCLn4nWsSqxvYA=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=hnUBiP7609lQ5lU5VbPxTw/jRKvNHhfC7oGRM9qRaXsiUCzRaGCTRhTocY5Ob7/sm
-	 J8KBdN08PWQm+te8rGMC5N/swmjvh1pRI32OJbqQoKVGsCX/Ftq180DYYUvfuCs5fE
-	 7vlueCWAbr4dghISr0Giq+1uMkclaZfj87M5TIeeNmHUCeLDWx1wOMcy9IHzsKnUX6
-	 VUdbdYY2XvfZW0EVXsjkOUsPUJppHLYKRPFJabnaLNhYnCc0C/2qYQhN3MOp1tpD0/
-	 /GxOA13X9n5KtbDBSgDIaSLfQuX+kWBz/7RJnSQl+A89YBbY47sXhLuC2VJj/y3x/Z
-	 6/EC/XqkDXmYQ==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 22 Jan
- 2026 12:32:17 +0100
-Received: (nullmailer pid 1712837 invoked by uid 1000);
-	Thu, 22 Jan 2026 11:32:16 -0000
-Date: Thu, 22 Jan 2026 12:32:16 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-CC: Boris Pismenny <borisp@mellanox.com>, "David S. Miller"
-	<davem@davemloft.net>, Florian Westphal <fw@strlen.de>, Kristian Evensen
-	<kristian.evensen@gmail.com>, Leon Romanovsky <leon@kernel.org>, Leon
- Romanovsky <leonro@nvidia.com>, Raed Salem <raeds@mellanox.com>, Raed Salem
-	<raeds@nvidia.com>, Saeed Mahameed <saeedm@mellanox.com>, Yossi Kuperman
-	<yossiku@mellanox.com>, Network Development <netdev@vger.kernel.org>,
-	linux-security-module <linux-security-module@vger.kernel.org>, Aviad Yehezkel
-	<aviadye@nvidia.com>
-Subject: Re: [PATCH] xfrm: force flush upon NETDEV_UNREGISTER event
-Message-ID: <aXIKwNJv59KnsnLw@secunet.com>
-References: <924f9cf5-599a-48f0-b1e3-94cd971965b0@I-love.SAKURA.ne.jp>
- <537343f7-c580-43b0-9ad2-691701b9fb8e@I-love.SAKURA.ne.jp>
- <287edf7f-85fb-46c3-9c70-c8ec7014a0db@I-love.SAKURA.ne.jp>
- <aXIGxmCB2QU86-iA@secunet.com>
- <447378de-3cc9-44f5-872e-a1fc477f591e@I-love.SAKURA.ne.jp>
+	s=arc-20240116; t=1769081556; c=relaxed/simple;
+	bh=Hz1gu3DrXXHFmq3h1ZTNOZftr7Xlzo3ths2B7ZsBtME=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=X0Yj8GzjOKzQgAsP3wY/0bkVHNbNNmwMHUSdww41PMegOTyjGWGSptN3sg2WzJhPUneJJn7cYSx80Nbfg9oUoP/vIjht910RvQp2WwX5B7od3iJYGVKsxzXqUW8RI+0B/OXtDr/nqhQjmj2kOjBKfVROL0xgP2AA5yyv43Y/s1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45c8b850f96so567151b6e.0
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:32:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769081553; x=1769686353;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mHAlKWdigu/dpowmiGEPP+hWTchneUXrrcu0qUva3LI=;
+        b=uG1bmcv4oA7hzt97wMdyHYSt4RHW8/rNOktw0SJnAZ7OuZLggoiy5cq+QsWZAgrp/V
+         us+9NrCUma4MuObVqMLGbDoYHg5u1JAYMvxyFfm8apP2n9I/cAlbqOHpKyMMwkgNmg1e
+         q1zfVqqJZrjeqHYDlsm0EtSrucnmLuJPArQEttc9FWLr56u2X0uV8I8w0IqSflTdDqZL
+         vuJCyd4TzCWGI0MNf+9rKU6KXULgelKkN/W/CQZFdmsp555Wm1tYHhQzgmzxK1uqvmVj
+         4m121gedgQhzLZdH5fWQj/mqbGKHoh76itbCGcJuFKn5DGoyYvZkPiLAvXJ0tniMWe6S
+         keeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7G0QGlp2bhbl8tMD5q/xzZQEklUEopKRCQ2K7UQWHqZimrXa+8cvDIBcnn3E2rPCWP3x92CU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk0hbxcFPSvDqat0AYkASA2vAzNzYy4osR2VIUo1YgqvTuiZxI
+	0bKwwT86n0uD73qnRIGo2COgGbb+OcJ2i+JzF+ZyTgtH+JwSu7JLK2Yz
+X-Gm-Gg: AZuq6aIW5JqHeT2cxTdwx5M5P0bmb8wtm5ugedc3+JCdIqfAlja9RpR9Xm3GW/NWWLn
+	ykomcZZcBUQmNl8mUM7kxEOAVHFTOkJrLmWIHiGX6d4LVpqyAGXawnnN4JHMBd/6bO/yoaoh+Du
+	l+8IV7gpy27nGO6Sg2o6bxd/jzSRguOiaemwwGLk057YOfTS5AUURcCqJrQO6yovu51vjAq2BGf
+	6IxZqUlxIrrJVIb5O5AvcvzuyzFS8fz6HvbHfPn2l/CcQOBjjMTws7AIYDEdvzbXYQjGk2AAkNZ
+	tjlMc1Lhctl1yZka/HepXEpImOEcxMEUFZH3TqFsIfhEbbGUMxG8PHw+cPWxNACSn43FWEB6L3N
+	xQrgOtxtPpJiWw+WWWKAvw+prqF65dbAZqL1WC29I76YrfqnbsX48vsJz8g/DUxS7nYRBYoTAj+
+	7pS2QDReqs2mMA
+X-Received: by 2002:a05:6808:6901:b0:45c:881c:e0d1 with SMTP id 5614622812f47-45c9d74062emr10548102b6e.23.1769081553090;
+        Thu, 22 Jan 2026 03:32:33 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:45::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45c9e0086a4sm10160669b6e.12.2026.01.22.03.32.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 03:32:32 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 22 Jan 2026 03:32:10 -0800
+Subject: [PATCH net-next v3 2/5] netconsole: extract message fragmentation
+ into send_msg_udp()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <447378de-3cc9-44f5-872e-a1fc477f591e@I-love.SAKURA.ne.jp>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260122-nbcon-v3-2-a722f2f0dfa5@debian.org>
+References: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
+In-Reply-To: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ pmladek@suse.com, john.ogness@linutronix.de
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
+ mpdesouza@suse.com, kernel-team@meta.com, Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2097; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Hz1gu3DrXXHFmq3h1ZTNOZftr7Xlzo3ths2B7ZsBtME=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcgrM65kr4q4DiCJRkPIWZcOuT5I5mkopp6WFR
+ YokhN3LVR6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXIKzAAKCRA1o5Of/Hh3
+ bevtEACNY0e+WVQ18HdS1G6qyTCgDBgS+8yw11ndlh6PPQ+j8HzBhWVIvnAYPpEXRNO7O0J5hzf
+ xRvXvnBMHEU4aPe871JRT6FDLSdXOszc6qM6xp5TLJp5p9mkJLCKfQIALmA0ihUukOfonjd6o6k
+ eJ9kfb+QehJ/pkKr9wvAJPSI9d4oXfZDMnZR5fsSTh5KS49YmHN3wNM99KZQEsgsqSvvhfDisNk
+ OmHzH9Q8kthxY1+Ui5dBT82YOy5iFP7j3/rfuAoSghJJIhZr/2xHlBESV1h49v55gmWzKVg1P+o
+ 8qnJLal+gECsuqIMu+TL/QOoJrI3jkS+0PXXs2pDy37TQe1CM7EHGdvDUjIvHdHGlm1zdwFG6xt
+ V544D3FAVeFrexFPgRkycAQF6ZOjug6lZv3RP+ruSXnM+Fz4+I1CeCv2+jDhAkiDAAKJtmzggC3
+ hYIs8+aGtuxXqxOwY0ilw7X49KCLw4K/PlmokITi6L6LOO8XDVzmtd/FotnWjmRbQMGj8BvA4tR
+ vBKmNh4KEcSp/T9EahEmFs66gu9QoEUs8rZ2r9R/zX6+KfSQmqO/XZGXjAwL7Ci3AVkYn5GVJWU
+ 8XKAypyd5Q0Jj3Xq7/22FUw8x0deHBpg++aSC9TI+fecbRDTMkLtwdR+tUH9nfuoW6icgZQV3A1
+ tIksNHQVnVXvxmg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Thu, Jan 22, 2026 at 08:28:31PM +0900, Tetsuo Handa wrote:
-> On 2026/01/22 20:15, Steffen Klassert wrote:
-> > Hm, I'd say we should not try to offload to a device that does
-> > not support NETIF_F_HW_ESP.
-> 
-> I was about to post the patch below, but you are suggesting that "do not allow calling
-> xfrm_dev_state_add()/xfrm_dev_policy_add() if (dev->features & NETIF_F_HW_ESP) == 0" ?
+Extract the message fragmentation logic from write_msg() into a
+dedicated send_msg_udp() function. This improves code readability
+and prepares for future enhancements.
 
-As said, I think this is the correct way to do it. But let's wait
-on opinions from the hardware people.
+The new send_msg_udp() function handles splitting messages that
+exceed MAX_PRINT_CHUNK into smaller fragments and sending them
+sequentially. This function is placed before send_ext_msg_udp()
+to maintain a logical ordering of related functions.
+
+No functional changes - this is purely a refactoring commit.
+
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netconsole.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 9cb4dfc242f5f..dc3bd7c9b0498 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1725,12 +1725,24 @@ static void write_ext_msg(struct console *con, const char *msg,
+ 	spin_unlock_irqrestore(&target_list_lock, flags);
+ }
+ 
++static void send_msg_udp(struct netconsole_target *nt, const char *msg,
++			 unsigned int len)
++{
++	const char *tmp = msg;
++	int frag, left = len;
++
++	while (left > 0) {
++		frag = min(left, MAX_PRINT_CHUNK);
++		send_udp(nt, tmp, frag);
++		tmp += frag;
++		left -= frag;
++	}
++}
++
+ static void write_msg(struct console *con, const char *msg, unsigned int len)
+ {
+-	int frag, left;
+ 	unsigned long flags;
+ 	struct netconsole_target *nt;
+-	const char *tmp;
+ 
+ 	if (oops_only && !oops_in_progress)
+ 		return;
+@@ -1747,13 +1759,7 @@ static void write_msg(struct console *con, const char *msg, unsigned int len)
+ 			 * at least one target if we die inside here, instead
+ 			 * of unnecessarily keeping all targets in lock-step.
+ 			 */
+-			tmp = msg;
+-			for (left = len; left;) {
+-				frag = min(left, MAX_PRINT_CHUNK);
+-				send_udp(nt, tmp, frag);
+-				tmp += frag;
+-				left -= frag;
+-			}
++			send_msg_udp(nt, msg, len);
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&target_list_lock, flags);
+
+-- 
+2.47.3
+
