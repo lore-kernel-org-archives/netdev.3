@@ -1,155 +1,119 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8BD35FF49
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 19:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619AC38B7D6
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 19:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769109715; cv=none; b=ZQ50sEub8lttR6xsXAKKaBj5JgRu0Qn1mQaRgHLtw7VtSaAwFNDn3i/mCnEzZLZpMBEf21QmuBLyUnAsLdvxuovMDuEPkzvLLERuate+QAWnjFUKRPLtGGpmqSqSnApYbdTIiO/5vL8Ul2ze7tEd6At2ZguWbIidkRAiaZixu0g=
+	t=1769109730; cv=none; b=H8/DTekS7g65264i7FbWwYR0xIOnbt/1EAr8AslsgUTOsoL+XtsMt1rVrvvnM917U17I/wUXSoPe8xFKp5vbnYqA/72h2uGZMYTsexUChHC1uYbu2FwipHO4q3TqxSLRIi4t4LzyaL9z9hUFE5kj2O0yqvD0z1qQOVpkCp7xvaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769109715; c=relaxed/simple;
-	bh=bOjobQmiNLZlE/hbj0co2hcs4Vk4lb7rt3zjX5DHO6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oogTQjzkymVjhlKbgEWQkF+2rqYFdjfU/hWHCTuUaxXNVqunUB68xZRk8pzbNbXVsJuhYTi1SEwcx2aGQsjdpbtoxSaV4fnQnStgePs5YeTSYCKVa2pGv5q5L8eVYm5Dyb3ZVKu1tD9W96XTTOdzHGJWzQm3e0aEMUFl9Ux7Ts8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=vJWrHlbR; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=gi4d/5sP; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
+	s=arc-20240116; t=1769109730; c=relaxed/simple;
+	bh=JHZZBjfd0k4akGwR9QjDZL7FcaSaoCNeekSw6jdT6fI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lDMouzUhdQIsGKW03DrvENHdlopPVuFFSopLRNKKVlwnsnUXkk7/PSvJb+Uota95h4fr5CYttXaCpbQiPX3TqrYcP29ZvscBFan2IDiz5vBGs3dSwZc5euEWHQICQ4BBp1WVHmc8jjzNbLOXoCm3ZXJALfljM+yfXR972pWz7po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmHDkoAp; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="vJWrHlbR";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="gi4d/5sP"
-Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=vJWrHlbRWCN5hscU4+KdVHCljCUwAIFaDmFb6l4UnHH5xzL3r5DQnJNAH7LzPyjhFoTc+CLOhBWC8LF8+R0yO4mdEOihuu8qszcinESHvAOwF+Xi0+LnFYwaelx//9qwKhsYpiIj+g7CI0G8IMBTY3r15aWGI9Ibji5qOyD2uvccc3FwmEH2r/JK6URE6+s134nH5NRivSbvtjl8a0gWipRMib1MLPjNli2Tmkn/5ZWrc59TZyCEBoAzq0XWyNrelmIl/gUsblGbmASaBh+5XrhJ7UzFlKhVPBdMpJIp0EI6tia36oLe4k17hOhCgX2CLuI7BXIGFM0+91AWw9Y3BA==; s=purelymail1; d=tinyisr.com; v=1; bh=bOjobQmiNLZlE/hbj0co2hcs4Vk4lb7rt3zjX5DHO6o=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=gi4d/5sPOSnccw5v2yPEV3nKv3SeHrpzEVfNZXXZciqC9iKEHk2tcvaJHp7jtEA5FaG2lJbaEVdQUi7lEmrmlIuJRKeVsGfpGXUc7LCsivgvSNDZIVMwrCpx75ykpFHqRHL4XI7jvFFG4LBoE1qMyQID7lbJUF+Q+BgOYmNNkakEVA4NCGyte/ZcFHtmm01ns1jegwYquEWUe0JPgyCdmRsmf7TI/p2/ORhauhHtACHT7tbCbZ8h38UQOhXBVmnkJRoXKOsGKx6trkOGtwa0AFF/MfD+e7DlmGdrO7HqqnOMPAUfjmEKedUlEq7bXasM1PdogtfbeBQEfMxhp8qMJA==; s=purelymail1; d=purelymail.com; v=1; bh=bOjobQmiNLZlE/hbj0co2hcs4Vk4lb7rt3zjX5DHO6o=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 99681:12517:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 626594755;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 22 Jan 2026 19:21:41 +0000 (UTC)
-From: Joris Vaisvila <joey@tinyisr.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmHDkoAp"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4801d1daf53so15469345e9.2
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:22:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769109721; x=1769714521; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ch/3j+Fdie5zbCWlDCqsejfooDG5YNJvTZmyQkky8BM=;
+        b=HmHDkoApmKHhMBG11CfvpUepaOcUsHIPYC4RNxGS3rE4Pw6p9voyrX0Cln6a8u1Pjb
+         TGMLzoyLOZhCXJW9Qzr6rG2vK3pdi4kXCH1xcA04k52JS3ocF0hwVTptmEKQRD27DuBr
+         xcoaux8Wm76eDl6f9w1WT2NPvCOdGlXoX0KNrzUt0iA9AQyDaJCCPKd/5jO8qfWXN6Cz
+         avjUL1obVoty7IYE1wv83PYQm9dRJLKhHA9mmDO8mt/HFHVyNSBdAW9vc83r99H6IG/G
+         xmHdA/BfkR9SFxtaXw2uZuRr7Bxk6wXBBATRjZOnmks8eFMUjUsrt5nYw+RIkTz0qNEI
+         1UcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769109721; x=1769714521;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ch/3j+Fdie5zbCWlDCqsejfooDG5YNJvTZmyQkky8BM=;
+        b=TTVMxIyAZORkuYLhXssCRE/wf8juQlbx5DV0sBfGwHB9RwFPZGuoDH0FXM68zsmBhj
+         gRrBs6p2xffaex4f47B8vF33MSfW5AfZs+5amsZkQqE2ICZ5wHLzsWejDAvKoiPTWc2p
+         cJZZ7mrMOEbmSnfrNzu+zOvZ5U2dDQJJJorsvTEMQPtabNhYqFC5aSGfCdy/1Vt7Zrvf
+         rfDSh4hORx/QZROrS88a1zgwmrLCFpSRoCpNymAMSrLbXdB4KE1ulYbyKfEy3mhxZF0q
+         agPplcW8ryLbun89WbDq9SQWGGUdlth/p2FL7W7+cZ9q5vJyYNgK5F9JHjTwQwgJLZbi
+         sZOg==
+X-Gm-Message-State: AOJu0YzppuE7gG9q4AeKkElJyaytmiuuum/Nm0tMVSL2+ovQBEfDWc8A
+	un3vm7kxoLWNuN4kpUMZcr5rqS2XnroJX4S4KO4kr+Dx/zPqoI9ey51me2K1FXDO
+X-Gm-Gg: AZuq6aKbfU4qqv2bskU2QeGZCFBULrdcUOtvYOLMSl6HAYjLzD1BB3SQNQbYBZL4IWu
+	Q5SX4Zz6BJDmkfDP2mjVUY6hr71zqrJs4iEEuOuSWoxZMxS8ZTq9LB8sPPojdz/6W+4weGZE4Tc
+	aN9VHFymWofN7+xJ/EQ1BaD2bhiBDkhXVSWqJolthqjEKnG2ZQui9H5wliPkHi+0cSUAni9gQUI
+	1e1QiLqePrhwsbeIHGQvvbBaqmOCbCg5lVme6F4emEPqtE/4Jpv3okbB/kKv2SlTUkDrJypgByx
+	dW+z192XgaTKWjqLAgvFc0tWu70KhL/u0XI3VNvfpaSyZXGexvKaJ0x2u17+cDFhn1wf+KheB3l
+	K6SUwGSOdOg3JpDZgp3D0Drok5rA+dszOCDjgOumOS3VKytFvs/ggYIv5NzzWnQ5F1F/hbCZvZ/
+	mYr98POBw=
+X-Received: by 2002:a05:600c:468e:b0:477:af07:dd1c with SMTP id 5b1f17b1804b1-4804c9dbb88mr12518085e9.35.1769109720874;
+        Thu, 22 Jan 2026 11:22:00 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:3::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1e716b6sm768091f8f.27.2026.01.22.11.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 11:22:00 -0800 (PST)
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
-Cc: nbd@nbd.name,
-	sean.wang@mediatek.com,
-	lorenzo@kernel.org,
+Cc: alexanderduyck@fb.com,
+	alok.a.tiwari@oracle.com,
 	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	chuck.lever@oracle.com,
 	davem@davemloft.net,
+	donald.hunter@gmail.com,
 	edumazet@google.com,
+	gal@nvidia.com,
+	horms@kernel.org,
+	idosch@nvidia.com,
+	jacob.e.keller@intel.com,
+	kernel-team@meta.com,
+	kory.maincent@bootlin.com,
 	kuba@kernel.org,
+	lee@trager.us,
+	mohsin.bashr@gmail.com,
+	o.rempel@pengutronix.de,
 	pabeni@redhat.com,
-	Joris Vaisvila <joey@tinyisr.com>
-Subject: [PATCH net-next v3] net: ethernet: mtk_eth_soc: avoid writing to ESW registers on MT7628
-Date: Thu, 22 Jan 2026 20:58:08 +0200
-Message-ID: <20260122191822.1476732-1-joey@tinyisr.com>
-X-Mailer: git-send-email 2.52.0
+	vadim.fedorenko@linux.dev
+Subject: [PATCH net-next 0/3] net: ethtool: Track TX pause storm
+Date: Thu, 22 Jan 2026 11:21:55 -0800
+Message-ID: <20260122192158.428882-1-mohsin.bashr@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The MT7628 has a fixed-link PHY and does not expose MAC control
-registers. Writes to these registers only corrupt the ESW VLAN
-configuration.
+With TX pause enabled, if a device cannot deliver received frames to
+the stack (e.g., during a system hang), it may generate excessive pause
+frames causing a pause storm. This series updates the uAPI to track TX
+pause storm events as part of the pause stats (p1), adds pause storm
+protection support for fbnic (p2), and leverages p1 to provide
+observability into these events for fbnic (p3).
 
-This patch registers empty phylink_mac_ops for MT7628, as removing the
-invalid register accesses leaves nothing to do on this SoC.
+Mohsin Bashir (3):
+  net: ethtool: Track pause storm events
+  eth: fbnic: Add protection against pause storm
+  eth: fbnic: Fetch TX pause storm stats
 
-Fixes: 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
-Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
----
-v3:=20
- - Register separate mac_ops for MT7628 instead of using early return
-   based on SoC for all phylink mac operations
- - Update commit message
-v2: https://lore.kernel.org/netdev/20260106052845.1945352-1-joey@tinyisr.co=
-m/
- - Add missing fixes tag
-v1: https://lore.kernel.org/netdev/20251230091151.129176-1-joey@tinyisr.com=
-/
+ Documentation/netlink/specs/ethtool.yaml      | 13 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   | 11 +++
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  3 +
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |  1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |  2 +
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 77 ++++++++++++++++++-
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   | 15 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  4 +
+ include/linux/ethtool.h                       |  2 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  1 +
+ net/ethtool/pause.c                           |  4 +-
+ 11 files changed, 128 insertions(+), 5 deletions(-)
 
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 37 ++++++++++++++++++---
- 1 file changed, 33 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethe=
-rnet/mediatek/mtk_eth_soc.c
-index 35fef28ee2f9..ede8efdc3413 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -562,9 +562,7 @@ static void mtk_mac_config(struct phylink_config *confi=
-g, unsigned int mode,
- =09int val, ge_mode, err =3D 0;
- =09u32 i;
-=20
--=09/* MT76x8 has no hardware settings between for the MAC */
--=09if (!MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628) &&
--=09    mac->interface !=3D state->interface) {
-+=09if (mac->interface !=3D state->interface) {
- =09=09/* Setup soc pin functions */
- =09=09switch (state->interface) {
- =09=09case PHY_INTERFACE_MODE_TRGMII:
-@@ -956,6 +954,30 @@ static const struct phylink_mac_ops mtk_phylink_ops =
-=3D {
- =09.mac_enable_tx_lpi =3D mtk_mac_enable_tx_lpi,
- };
-=20
-+static void rt5350_mac_config(struct phylink_config *config, unsigned int =
-mode,
-+=09=09=09=09const struct phylink_link_state *state)
-+{
-+}
-+
-+static void rt5350_mac_link_down(struct phylink_config *config, unsigned i=
-nt mode,
-+=09=09=09=09phy_interface_t interface)
-+{
-+}
-+
-+static void rt5350_mac_link_up(struct phylink_config *config,
-+=09=09=09    struct phy_device *phy,
-+=09=09=09    unsigned int mode, phy_interface_t interface,
-+=09=09=09    int speed, int duplex, bool tx_pause, bool rx_pause)
-+{
-+}
-+
-+/* MT76x8 (rt5350-eth) does not expose any MAC control registers */
-+static const struct phylink_mac_ops rt5350_phylink_ops =3D {
-+=09.mac_config =3D rt5350_mac_config,
-+=09.mac_link_down =3D rt5350_mac_link_down,
-+=09.mac_link_up =3D rt5350_mac_link_up,
-+};
-+
- static void mtk_mdio_config(struct mtk_eth *eth)
- {
- =09u32 val;
-@@ -4779,6 +4801,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct de=
-vice_node *np)
- =09int id, err;
- =09int txqs =3D 1;
- =09u32 val;
-+=09const struct phylink_mac_ops *mac_ops =3D &mtk_phylink_ops;
-=20
- =09if (!_id) {
- =09=09dev_err(eth->dev, "missing mac id\n");
-@@ -4906,9 +4929,15 @@ static int mtk_add_mac(struct mtk_eth *eth, struct d=
-evice_node *np)
- =09=09=09  mac->phylink_config.supported_interfaces);
- =09}
-=20
-+
-+=09if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
-+=09=09mac_ops =3D &rt5350_phylink_ops;
-+
- =09phylink =3D phylink_create(&mac->phylink_config,
- =09=09=09=09 of_fwnode_handle(mac->of_node),
--=09=09=09=09 phy_mode, &mtk_phylink_ops);
-+=09=09=09=09 phy_mode,
-+=09=09=09=09 mac_ops);
-+
- =09if (IS_ERR(phylink)) {
- =09=09err =3D PTR_ERR(phylink);
- =09=09goto free_netdev;
---=20
-2.52.0
+-- 
+2.47.3
 
