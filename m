@@ -1,39 +1,39 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5906837FF61;
-	Thu, 22 Jan 2026 18:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52A73859C7;
+	Thu, 22 Jan 2026 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769107292; cv=none; b=rRVY/8fo+rzYfD3UK7eSdy15/B16UPOlvBAMJgSDPDO5ZJvQfB6YfY/4CdQw/E/vO3XH6szADpZORt/mfEpJx/J7WMgL5HLlturrEFg2QQvHliyEN1DkDxTWKQIMO+x8LfFF8V3w/BdH81MQ7RR3/HjMDZlh7CgUlOuNX04gfDE=
+	t=1769107311; cv=none; b=G3aJuTyK0TUrVFmypG/IKwlNNKtarDc0O7KX9TBJkTjWgrAI3thXGV3jqVSsHGfAJpxjDTj/rHcRggWldBH4O9PSigcPEqOvTaQK/7BPFeP58huy8OxvtMO//K94pnpUGuMsHfwtlBDBspx2tDt6QHz68g1mcnVrsdOogWZ1AXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769107292; c=relaxed/simple;
-	bh=mMx0aIPpyYJ0H01ZGMQAA+ncQnIVJMLNwVGdNwLKfmc=;
+	s=arc-20240116; t=1769107311; c=relaxed/simple;
+	bh=xqDRg42cn9s+PQJV3QJKXzwsDuQzgQ88O7+U4GmtgGA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TPSMifWCWMFmI8k6fqQ9rKdm/9fyjmyxbxU5TzpjLmrro/+nHaCFF5r5wYH38iwM0PsYiArjJ/t1j5cb8uIDd2dYWZyLuTMCblCoxJXYuHyLhVSg1qdfbD+CpDO6e5SkJI+mstvdTHvVowAkz4XG5AxVi/3kNG/37BO+kraCc1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=D5eBdvVm; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=I6UYZGhBCMf18LgAuKCco4IcQg/CwuxfX9az7y62NJI+aRxRxjVYFw5Cc+RUsrtkCjRPti5VGgOdQgMtk2Af5byWTmwSxDUV1mot8k/GdApXLDL1YOKR3MmQZRd37aHDGYNtcCOx1dyi+ofyY8JWgpHvXx6L/pInDnm6XRT/gxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=cXwHMWjO; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="D5eBdvVm"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="cXwHMWjO"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=K5z6kZHNlZ4qDFaNpaW1u+BLQ1VLld41mAaOnnhvfhg=; b=D5eBdvVmdSSe7qBg2iVil6Exai
-	ex/rdNB5OyuFEh/xkFCMa9vC9cUr26UJ6IBaCn974eLSaidOzsqDJCnRa6Otf57XSQBsPOOWN/Zr5
-	6ayZBUJ8cCNVJ3SWJC4nYqd6NdnYBmho/+pi2pxgBjZDg0bnmaiz/D9lnl7+dT3ZXzHsFEh36ASmC
-	9TsAHJR/RjYcR4DI4pMKqrNDWR2J5zwFcg7EPCfkVJdVYtKLqVxnNNSFDepxEqtHzW9E3ez2yo0Fd
-	z/zesaTltBJf59ybsNXPJHGvKLShkaZGl2tws5nsAJ5FJwBtVLg/9GC4GEciel7s6zA4FBTBMpLZY
-	S0331+ZQ==;
+	bh=yFPLZuBBqgdNTKRLDjxt0gL81wNcNDScS38n9r2rPKI=; b=cXwHMWjOm2oEhkNAPnQNLncQOK
+	IbzQGv9QHEcU7F+A0JLGARqBMP+TjTf27DERgtvH455obdEe4YZo39JrFjco4MtS5pOPKQJBQtwOJ
+	DGSoHp6b/rBoKwEF6XdFTidjwwGEZIVgIseWlL1Nuzt+tdCa+MTZZIL9bCGHmUpCYq9XRnZbrKfix
+	CrCztLjStvIfETNqZUYy06fNR3QyRCN5BDiFkB/aAKFg3qltAjTmyri/UltYFW1tfFvcjMGT0WYIf
+	q4/ALOZQkua15laKIgs0K8N7hYdjnsriKFj+6r+Nhl+2IKS3o9h7GSwKH5mTRXXD9uP6QcPXwhnqz
+	fBisX80w==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.94.2)
 	(envelope-from <leitao@debian.org>)
-	id 1vizcA-00DE17-5a; Thu, 22 Jan 2026 18:41:06 +0000
+	id 1vizcR-00DE26-CJ; Thu, 22 Jan 2026 18:41:23 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Thu, 22 Jan 2026 10:40:16 -0800
-Subject: [PATCH net-next v2 4/9] net: mana: convert to use
+Date: Thu, 22 Jan 2026 10:40:19 -0800
+Subject: [PATCH net-next v2 7/9] net: sfc: efx: convert to use
  .get_rx_ring_count
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-grxring_big_v4-v2-4-94dbe4dcaa10@debian.org>
+Message-Id: <20260122-grxring_big_v4-v2-7-94dbe4dcaa10@debian.org>
 References: <20260122-grxring_big_v4-v2-0-94dbe4dcaa10@debian.org>
 In-Reply-To: <20260122-grxring_big_v4-v2-0-94dbe4dcaa10@debian.org>
 To: Ajit Khaparde <ajit.khaparde@broadcom.com>, 
@@ -60,23 +60,22 @@ To: Ajit Khaparde <ajit.khaparde@broadcom.com>,
  Edward Cree <ecree.xilinx@gmail.com>, Brett Creeley <brett.creeley@amd.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  oss-drivers@corigine.com, linux-hyperv@vger.kernel.org, 
- linux-net-drivers@amd.com, Breno Leitao <leitao@debian.org>, 
- Subbaraya Sundeep <sbhatta@marvell.com>
+ linux-net-drivers@amd.com, Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1704; i=leitao@debian.org;
- h=from:subject:message-id; bh=mMx0aIPpyYJ0H01ZGMQAA+ncQnIVJMLNwVGdNwLKfmc=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcm8k7ZhZGf3/4AH5Gg6x772N/1BkpYBTWimTH
- 2xvENpY9PCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXJvJAAKCRA1o5Of/Hh3
- bd1bEACSRqL2pxbGTSGnFk82oEgpfRBnFsFkkBQkID0vM0ntGMtIba4SGj+ghDsKOeLW56L/ZOP
- RKTpfPQtFeHOdO4y6U9+HsCk1DO3sj6ugmtELYvjg7GQwKO7dsJ+gidXzNAyjEviy7ZFC5lwjuw
- 9oX1QJJHPsRhgwe55yfxJ9/Mr97OLTi6y7Mn9ScFWcjPHG1M2gVlrotpVbagC3SBHOskSGRzWgp
- dDBNlLFBJKVMXV9EzTQGlPXobxfMFQDUtp/MA2Tlh3xaKGrAd2fbXHajpnS2736VjIvZ+oj6p75
- 0H1i7bY03+S0FTQ6c2QzLAuH2shFAWSSjNBjtb1PbT7vLOhMuXkeaji4QQdETqpKlKsqLdn/LJb
- PKY0YjZ4xR9yCdFxyNuoypBboza0Dkh8UCA8+lYWomCGZ0jwsvUbLl47EzLzhf7WDlr6UdaBzL7
- nXCR3WhXZW2/UUxRXiKQT9fDsUnpQdOLxeqEMwabblO2Hln3ievFNRzRXg1v9xazIZkRG5FtBGd
- /jGUm5YopuuFCfRQO7QGBI3kV05byxVYehc740OvA49uAPFvH7nO/fHYZJDLhWZRFdezBiLpGXG
- 6nUYSL6i19l9e3B9cXVybka5o2oXSHLR5+ziC/42P973vPg9V93ewHYFEKXvNDqyV2VJ9nVlSTT
- UYrHqLCZoTBPWLg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3292; i=leitao@debian.org;
+ h=from:subject:message-id; bh=xqDRg42cn9s+PQJV3QJKXzwsDuQzgQ88O7+U4GmtgGA=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcm8k2zH1hNIRx9gt6FzGD69x/pKtOG+BPB2RL
+ 7pnd4lsxuyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXJvJAAKCRA1o5Of/Hh3
+ bfR/EACpjiHLVOIMBpWzjxFrlLEJAP011LzkGj+DHLfV2S9dBjWYs0pzbrZQ43umUl4/RkOrnIn
+ WPwSu4+KKDlj4UMZUZ2GP2OyITqvJY5MS9U7nbrtzvXgWusDf/UMI0AZ8zxW2E+xx4/xCXha2F0
+ dzqqwuzvd7zLaMEmr1332fap1yqzt/9X3SwvPWFOwCaKpKsO8GRie0PV+dqMDy2kDSST+E7gxoN
+ 9w+7F0oNCg8eBBhXugRysLKMhV4LkqKEHaRy1dVQJRKAATx9LvDXG/jBe4qCc10Ps2515oQ3JTb
+ m2d2lPQr8xHtOrTGU+MkFJnkB5seOtgBiPxk602RgW/PIaXdcQuzmDqwvZRNatU7fNblgfErEV9
+ nPIr1vr2v9oE1oqxydOdGYOHON473MWbPhI3ZzR0KGj6EeVSO+r62/9dRt2EaErPR6UnO96IsR2
+ lCrO0+N3m39SXg8p6CBDVhh9Aj1MIUC3TnpDa4fcq/vHUi2ceMK4eWppVJ8hWB5MQU6ozsMk8Al
+ PsvACpFPCXvIDTx9bi5FC1tHHNKIaT4NW/uzmJUndRYPquq71jUjMzS5TrzkGiw+F6WMFbmk/r9
+ 0AwyLVNo8HkYGSpqLHUvYwtyKX0+004GYd2uVY4o3cZNxiAn1J4BuUh90arm7Ex2HZhHwXHfs+V
+ CRvTQSNMrs2iTPw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
@@ -84,49 +83,79 @@ X-Debian-User: leitao
 Use the newly introduced .get_rx_ring_count ethtool ops callback instead
 of handling ETHTOOL_GRXRINGS directly in .get_rxnfc().
 
-Since ETHTOOL_GRXRINGS was the only command handled by mana_get_rxnfc(),
-remove the function entirely.
-
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_ethtool.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/sfc/ef100_ethtool.c  |  1 +
+ drivers/net/ethernet/sfc/ethtool.c        |  1 +
+ drivers/net/ethernet/sfc/ethtool_common.c | 11 +++++++----
+ drivers/net/ethernet/sfc/ethtool_common.h |  1 +
+ 4 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 0e2f4343ac67f..f2d220b371b5d 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -282,18 +282,11 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	}
+diff --git a/drivers/net/ethernet/sfc/ef100_ethtool.c b/drivers/net/ethernet/sfc/ef100_ethtool.c
+index 6c3b74000d3b6..05dc7b10c8855 100644
+--- a/drivers/net/ethernet/sfc/ef100_ethtool.c
++++ b/drivers/net/ethernet/sfc/ef100_ethtool.c
+@@ -54,6 +54,7 @@ const struct ethtool_ops ef100_ethtool_ops = {
+ 	.get_ethtool_stats	= efx_ethtool_get_stats,
+ 	.get_rxnfc              = efx_ethtool_get_rxnfc,
+ 	.set_rxnfc              = efx_ethtool_set_rxnfc,
++	.get_rx_ring_count	= efx_ethtool_get_rx_ring_count,
+ 	.reset                  = efx_ethtool_reset,
+ 
+ 	.get_rxfh_indir_size	= efx_ethtool_get_rxfh_indir_size,
+diff --git a/drivers/net/ethernet/sfc/ethtool.c b/drivers/net/ethernet/sfc/ethtool.c
+index 18fe5850a9786..362388754a292 100644
+--- a/drivers/net/ethernet/sfc/ethtool.c
++++ b/drivers/net/ethernet/sfc/ethtool.c
+@@ -261,6 +261,7 @@ const struct ethtool_ops efx_ethtool_ops = {
+ 	.reset			= efx_ethtool_reset,
+ 	.get_rxnfc		= efx_ethtool_get_rxnfc,
+ 	.set_rxnfc		= efx_ethtool_set_rxnfc,
++	.get_rx_ring_count	= efx_ethtool_get_rx_ring_count,
+ 	.get_rxfh_indir_size	= efx_ethtool_get_rxfh_indir_size,
+ 	.get_rxfh_key_size	= efx_ethtool_get_rxfh_key_size,
+ 	.rxfh_per_ctx_fields	= true,
+diff --git a/drivers/net/ethernet/sfc/ethtool_common.c b/drivers/net/ethernet/sfc/ethtool_common.c
+index fa303e171d98b..2fc42b1a2bfb7 100644
+--- a/drivers/net/ethernet/sfc/ethtool_common.c
++++ b/drivers/net/ethernet/sfc/ethtool_common.c
+@@ -850,6 +850,13 @@ int efx_ethtool_get_rxfh_fields(struct net_device *net_dev,
+ 	return rc;
  }
  
--static int mana_get_rxnfc(struct net_device *ndev, struct ethtool_rxnfc *cmd,
--			  u32 *rules)
-+static u32 mana_get_rx_ring_count(struct net_device *ndev)
++u32 efx_ethtool_get_rx_ring_count(struct net_device *net_dev)
++{
++	struct efx_nic *efx = efx_netdev_priv(net_dev);
++
++	return efx->n_rx_channels;
++}
++
+ int efx_ethtool_get_rxnfc(struct net_device *net_dev,
+ 			  struct ethtool_rxnfc *info, u32 *rule_locs)
  {
- 	struct mana_port_context *apc = netdev_priv(ndev);
+@@ -858,10 +865,6 @@ int efx_ethtool_get_rxnfc(struct net_device *net_dev,
+ 	s32 rc = 0;
  
--	switch (cmd->cmd) {
+ 	switch (info->cmd) {
 -	case ETHTOOL_GRXRINGS:
--		cmd->data = apc->num_queues;
+-		info->data = efx->n_rx_channels;
 -		return 0;
--	}
 -
--	return -EOPNOTSUPP;
-+	return apc->num_queues;
- }
- 
- static u32 mana_get_rxfh_key_size(struct net_device *ndev)
-@@ -520,7 +513,7 @@ const struct ethtool_ops mana_ethtool_ops = {
- 	.get_ethtool_stats	= mana_get_ethtool_stats,
- 	.get_sset_count		= mana_get_sset_count,
- 	.get_strings		= mana_get_strings,
--	.get_rxnfc		= mana_get_rxnfc,
-+	.get_rx_ring_count	= mana_get_rx_ring_count,
- 	.get_rxfh_key_size	= mana_get_rxfh_key_size,
- 	.get_rxfh_indir_size	= mana_rss_indir_size,
- 	.get_rxfh		= mana_get_rxfh,
+ 	case ETHTOOL_GRXCLSRLCNT:
+ 		info->data = efx_filter_get_rx_id_limit(efx);
+ 		if (info->data == 0)
+diff --git a/drivers/net/ethernet/sfc/ethtool_common.h b/drivers/net/ethernet/sfc/ethtool_common.h
+index 24db4fccbe78a..f96db42534546 100644
+--- a/drivers/net/ethernet/sfc/ethtool_common.h
++++ b/drivers/net/ethernet/sfc/ethtool_common.h
+@@ -40,6 +40,7 @@ int efx_ethtool_set_fecparam(struct net_device *net_dev,
+ 			     struct ethtool_fecparam *fecparam);
+ int efx_ethtool_get_rxnfc(struct net_device *net_dev,
+ 			  struct ethtool_rxnfc *info, u32 *rule_locs);
++u32 efx_ethtool_get_rx_ring_count(struct net_device *net_dev);
+ int efx_ethtool_set_rxnfc(struct net_device *net_dev,
+ 			  struct ethtool_rxnfc *info);
+ u32 efx_ethtool_get_rxfh_indir_size(struct net_device *net_dev);
 
 -- 
 2.47.3
