@@ -1,96 +1,190 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4543A7338
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42B03DE340;
+	Thu, 22 Jan 2026 16:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769098222; cv=none; b=KkjLEaVSiO5dqeFzfHBMsyX7prXRwmGFYetyW57MlRZ1VClkYRkqLEwVa36BjrvCmi7OV4arhUw8Cnmu/Pa7Ve5+booN9d/0CUHUET3ToQg9CqTEu+woL8JWZy6/dD1Pk3TlY4qCdls7+0xt4vZybXXOTJnHWABrBbR7YL9nuyo=
+	t=1769098463; cv=none; b=mB5D3nwgyHHL9U4miCi05ONpoiV6eiZyaed5xJAtHqcHsMSNTFaxVEPcyK7wj82CZn3UIzZD746A5XFOZbvyEDL6MpbCFJBODQV60+HpSxazuwhr5/QI3cTVLhNzWgpOBHcAa3SKKnXf7TvtK/HKzLzR/Iy/IQ8pbqXNcGsJbeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769098222; c=relaxed/simple;
-	bh=zWeyOItYb4yXMDh8K/2lZRV7w0gPDrYzo5N+1It+1LE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZPd5t4pYhrRnwLicknTyoqRBtJIEeu4ezqFpBN5z90K/lr3e3ylQI4jzn5s+NRwYiBWpJ6GUObMHyamk2IuelmEhVgvOSgVilPka8LrHfpd+S5btpSPk3ItO0AAKYPVYnT26lhKdc95xUw3SiGyL9vQZb6eOVW1Bbp7bxsTy7i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCBNJ8jU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769098463; c=relaxed/simple;
+	bh=A5voT2wLi+tc3Gakd2qWcqijnaOQacYQLsQbIZzWGuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hEIWQXLdjb+vFM7PenVjPy1f98q0/qXIxH1lt4poq7GOb6m26Yn2t1MxFU4E5iuumF9CRyyLSf2B5t3KUUMunx3y3eHDRVhP/xUvnjyQ9IvweUm4fcl9Qgq8/PorbXRnoTyxsRCHNqWTp6RzOIq8XiVPB6wOe7gFk4/z9E/P9Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+jvMFsn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCBNJ8jU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D16C116D0;
-	Thu, 22 Jan 2026 16:10:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+jvMFsn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7278DC116C6;
+	Thu, 22 Jan 2026 16:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769098221;
-	bh=zWeyOItYb4yXMDh8K/2lZRV7w0gPDrYzo5N+1It+1LE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RCBNJ8jUuUVcXouQ1ZaZ+7RQdDM2Z6WyT0+rgy6Cp+sMT1JR5AzEfYJpL9fO2hrz+
-	 XSsVccH2M1+888XoZOSFaIFleDMveNcrWauywcOjEHYV/PPPVHazwLIyjyOGHEdjJe
-	 wTK7VdRAd0cM8k1DFE3YsREeFyhi86Hj/mY7VKOskbxavrcRlY6S3Jrrl4An7XgkTx
-	 dyuJFE8cmNf0q+P8hlTvwy1M1VJ00o+RnpmvM0TPsOgdmDEsnPwatOUG1R5/OS83aI
-	 Ry0sYjjKDAxR71TfXZotgnaxdzi+2C+Qa47zHmpjaKdQ8p+P5E5lHlrIwrAOFU4ihk
-	 EVilLu8vtVkvA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BC553808200;
-	Thu, 22 Jan 2026 16:10:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769098460;
+	bh=A5voT2wLi+tc3Gakd2qWcqijnaOQacYQLsQbIZzWGuI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=X+jvMFsnwbGFZzHk62uEp/xLYGy0TYh1BIiuZyuFCQ4UZ9wozDqF1y/yWLjDQKGsL
+	 yEnv1WPUWCjDLjL8UokP67Qh7t0Dwu0gx0fQqEVC7OA/HoPzeG089LVSShsv/cRJoy
+	 8SeSVI0sRtha8f79da2Vhu6ZmhHHjFaQ7jpDBY3PBFxm4iROWN5UY8RiYnBZCQG09j
+	 /0PFfUXflZlk6cv6CFsBKaFBN5q7svB1GokuAdYu/1v5upDzifmEVtnp7qWbstMBah
+	 a7EsJ4SDWzUCc4gUvWoG3Uvcbej3aRo8l+/FAuo8FDR6yV76kFXawp+1BOd8Y6jOVt
+	 PuCYYsJIAfXVw==
+Date: Thu, 22 Jan 2026 10:14:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 01/33] PCI: Prepare to protect against concurrent
+ isolated cpuset change
+Message-ID: <20260122161419.GA1250200@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/sched: act_ife: avoid possible NULL deref
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176909821810.1785789.2790553125370808839.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Jan 2026 16:10:18 +0000
-References: <20260121133724.3400020-1-edumazet@google.com>
-In-Reply-To: <20260121133724.3400020-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com, yotam.gi@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260101221359.22298-2-frederic@kernel.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 21 Jan 2026 13:37:24 +0000 you wrote:
-> tcf_ife_encode() must make sure ife_encode() does not return NULL.
+On Thu, Jan 01, 2026 at 11:13:26PM +0100, Frederic Weisbecker wrote:
+> HK_TYPE_DOMAIN will soon integrate cpuset isolated partitions and
+> therefore be made modifiable at runtime. Synchronize against the cpumask
+> update using RCU.
 > 
-> syzbot reported:
+> The RCU locked section includes both the housekeeping CPU target
+> election for the PCI probe work and the work enqueue.
 > 
-> Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-> KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->  RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
-> CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
-> Call Trace:
->  <TASK>
->   ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
->   tcf_ife_encode net/sched/act_ife.c:841 [inline]
->   tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
->   tc_act include/net/tc_wrapper.h:130 [inline]
->   tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
->   tcf_exts_exec include/net/pkt_cls.h:349 [inline]
->   mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
->   tc_classify include/net/tc_wrapper.h:197 [inline]
->   __tcf_classify net/sched/cls_api.c:1764 [inline]
->   tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
->   multiq_classify net/sched/sch_multiq.c:39 [inline]
->   multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
->   dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
->   __dev_xmit_skb net/core/dev.c:4262 [inline]
->   __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
+> This way the housekeeping update side will simply need to flush the
+> pending related works after updating the housekeeping mask in order to
+> make sure that no PCI work ever executes on an isolated CPU. This part
+> will be handled in a subsequent patch.
 > 
-> [...]
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 
-Here is the summary with links:
-  - [net] net/sched: act_ife: avoid possible NULL deref
-    https://git.kernel.org/netdev/net/c/27880b0b0d35
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> ---
+>  drivers/pci/pci-driver.c | 47 ++++++++++++++++++++++++++++++++--------
+>  1 file changed, 38 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> index 7c2d9d596258..a6111140755c 100644
+> --- a/drivers/pci/pci-driver.c
+> +++ b/drivers/pci/pci-driver.c
+> @@ -302,9 +302,8 @@ struct drv_dev_and_id {
+>  	const struct pci_device_id *id;
+>  };
+>  
+> -static long local_pci_probe(void *_ddi)
+> +static int local_pci_probe(struct drv_dev_and_id *ddi)
+>  {
+> -	struct drv_dev_and_id *ddi = _ddi;
+>  	struct pci_dev *pci_dev = ddi->dev;
+>  	struct pci_driver *pci_drv = ddi->drv;
+>  	struct device *dev = &pci_dev->dev;
+> @@ -338,6 +337,19 @@ static long local_pci_probe(void *_ddi)
+>  	return 0;
+>  }
+>  
+> +struct pci_probe_arg {
+> +	struct drv_dev_and_id *ddi;
+> +	struct work_struct work;
+> +	int ret;
+> +};
+> +
+> +static void local_pci_probe_callback(struct work_struct *work)
+> +{
+> +	struct pci_probe_arg *arg = container_of(work, struct pci_probe_arg, work);
+> +
+> +	arg->ret = local_pci_probe(arg->ddi);
+> +}
+> +
+>  static bool pci_physfn_is_probed(struct pci_dev *dev)
+>  {
+>  #ifdef CONFIG_PCI_IOV
+> @@ -362,34 +374,51 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+>  	dev->is_probed = 1;
+>  
+>  	cpu_hotplug_disable();
+> -
+>  	/*
+>  	 * Prevent nesting work_on_cpu() for the case where a Virtual Function
+>  	 * device is probed from work_on_cpu() of the Physical device.
+>  	 */
+>  	if (node < 0 || node >= MAX_NUMNODES || !node_online(node) ||
+>  	    pci_physfn_is_probed(dev)) {
+> -		cpu = nr_cpu_ids;
+> +		error = local_pci_probe(&ddi);
+>  	} else {
+>  		cpumask_var_t wq_domain_mask;
+> +		struct pci_probe_arg arg = { .ddi = &ddi };
+>  
+>  		if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
+>  			error = -ENOMEM;
+>  			goto out;
+>  		}
+> +
+> +		INIT_WORK_ONSTACK(&arg.work, local_pci_probe_callback);
+> +
+> +		/*
+> +		 * The target election and the enqueue of the work must be within
+> +		 * the same RCU read side section so that when the workqueue pool
+> +		 * is flushed after a housekeeping cpumask update, further readers
+> +		 * are guaranteed to queue the probing work to the appropriate
+> +		 * targets.
+> +		 */
+> +		rcu_read_lock();
+>  		cpumask_and(wq_domain_mask,
+>  			    housekeeping_cpumask(HK_TYPE_WQ),
+>  			    housekeeping_cpumask(HK_TYPE_DOMAIN));
+>  
+>  		cpu = cpumask_any_and(cpumask_of_node(node),
+>  				      wq_domain_mask);
+> +		if (cpu < nr_cpu_ids) {
+> +			schedule_work_on(cpu, &arg.work);
+> +			rcu_read_unlock();
+> +			flush_work(&arg.work);
+> +			error = arg.ret;
+> +		} else {
+> +			rcu_read_unlock();
+> +			error = local_pci_probe(&ddi);
+> +		}
+> +
+>  		free_cpumask_var(wq_domain_mask);
+> +		destroy_work_on_stack(&arg.work);
+>  	}
+> -
+> -	if (cpu < nr_cpu_ids)
+> -		error = work_on_cpu(cpu, local_pci_probe, &ddi);
+> -	else
+> -		error = local_pci_probe(&ddi);
+>  out:
+>  	dev->is_probed = 0;
+>  	cpu_hotplug_enable();
+> -- 
+> 2.51.1
+> 
