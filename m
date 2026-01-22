@@ -1,168 +1,206 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B227B327
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 00:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769041142; cv=none; b=Y6YG8VZNdWXxm8tX4YlFzCNNzipJpsVeO8WQb5h10MN5rcy1Ga1Cpg5MYRn2Ao3pK83olqDEO3WFoHME6ch17myAwPSQijRlzqY7SXXvr86DXARXEijlcI5VM8M8HWrmU6//XhfBo775bOkFmiJhysIW8cOjogtnjTRlHAcUVKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769041142; c=relaxed/simple;
-	bh=wAtMZUK4FV7iRWMYfcVdkDkwpZkU2TSPElEoKPCQOFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ngzbF7U6X4mhucUW2I+3RmdJcqZvhTT13jY/mhT1WyYLE+xEClo6/rKaTeHqJd76qKIQejl2qQusZzVVlqNREBx4zteBIBnu4KEOWjK9sRi9C6VPiSBKonJcyyEtethTiQL+1QvAtaDwO4EFS1+CLz3QMBTiVsfPY4AIbC7/9Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7IIWcPX; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016DC296BA9
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 00:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769041344; cv=pass; b=rObuLURdHWFFM8w3WKn10Igddg4mCiJp4kUtnhWnY4iOKHawm37ltfY/oHqUjIxd5zWgB4ITwV08xBlod2q3rNNrwEIkqKbtEcM5SiBmw3nAuh5kJ7YNUIQjKa1pElDgMycq2AcKUk6KiimmXSnh8iJJbSdcWV/Ey372M7Ud/w8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769041344; c=relaxed/simple;
+	bh=rTht2jlgLZtnSSDufST2BGNnua07jyJe5oueYXcI7Jk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lm59D5GFlw4Lj7RMJCIXuLFzn/LVMLCtmh8XswiVQKV38KFtqvfgcdT8tnQN25iwi214AzmvBdqLCWJGQhBmUFa8Dfjes1Xj+1BQeOT4i2erM4MqAp756ry0poPEzB9EdAO5ukhvlAWuBiGw/Qo3ScaiZo/YT+tiiYgTkbe5wv8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZqdtBtgz; arc=pass smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7IIWcPX"
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5ed065f1007so245413137.1
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 16:19:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZqdtBtgz"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c626bd75628so101328a12.3
+        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 16:22:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769041342; cv=none;
+        d=google.com; s=arc-20240605;
+        b=H97ba1Z93cHy7Zhw46B3WE+OWg4nnxgXbXU6hpUCmcIqHMyqUhP2GOpTXX6WayK+XE
+         cKgyIP6aTvnyQ3cyZkJIIIQcimm3+eylFZqX3R21GRiYxB637gFWom5aUme4MQOluK0L
+         TOfcYUdia+iuMaMCFITNTJCgHV22ewIcr7Xe5L8z3uA71/KZv5lifX+iOAiuzan44zph
+         7G2uBSexz+P2Mn9QaKWVRt8Y1CqED7FUZgdTkegsYrl9TmBlcvd/g5bQlCq2wOEAO+wi
+         hO2JxEssiZqeHFuDog0HOQin/zyWGG/o8jg9ZZm1rgsejoTra8puzHSJSl3MlX9zmWJz
+         f7uA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=esxls06rnSQ7IobZFMhGI9SPyZewHXysfYzPDMfIq/A=;
+        fh=BLXoGvfSOxYI9C7rcX07CkEyroe9KJe4b3ZXLF34Pqc=;
+        b=dnZYaWMES7ajayRtYO4MEVHxL2bP618ZSItgGDzuD9xUB1JnJv+X3w9jHIYendHihQ
+         iChMDk+kkQSUjokORjkUqx4pymQm/lL5s9gQ58JtXmwXnB29T1ioGoMJLuXtEEcjHbcH
+         Z+9NsKvq/2i/ENlHbVcS3sT8IDPhoUcCrLFsRMiNWEpqnsZAtzYisIEMp0pSTWK+JOXN
+         ue/7ySP/SmqFg0B2kTZ0oE/BpmDwnPmPCHEpvQjyFBza93rVHBzZspIISff9hJl2KjwQ
+         mPYyrOTUhcI7M+Ftc+VdJ8SopkDBVuLWIxXj93uX5V/3AZPugdm/otlFzM0ZOW45NcMW
+         nrZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769041140; x=1769645940; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tzXSISnrF9gPuh5VrYor9F9pE35gc9wpvxNp6irLpQw=;
-        b=V7IIWcPX0D/G24B3lrbd8j/I/4eqS5ToJJ0Xd+pEYTv5P1/Qzmzapb4IIVMi1uw6nl
-         1z35kBZ2v/YVeUDhBqZyCbYlzeK7rGyL8DUOKHLkMVgVLxrsSLTZ1DqWqGjkhZhhRBBT
-         w9IRKS8fhaylF4i4AhHn5eloyQp34W83cts2/wBLqjN6n5My7lV/7+ddJMCGNBBEg/3B
-         2u8uzSjnxm/0VGI6sjaDsSkDpS36qy/TmxQjF90N5P4ZfbJNWJS6DB7UD8zO8ujipMiG
-         69FXNKKXVNiM5RKBp/OOsn8bufHK7tkXKyUu1FwieQ1Ub+RgSoY/Kv9osA2UCR68Idoo
-         ITkQ==
+        d=gmail.com; s=20230601; t=1769041342; x=1769646142; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=esxls06rnSQ7IobZFMhGI9SPyZewHXysfYzPDMfIq/A=;
+        b=ZqdtBtgzzbRgwHjLyZCQ1cgnAVX1ZiQDxVhmOvSyq2oJtKFY/KDinWvaGuzNlecrO3
+         DfVq1naiANaKsyaoshfG3d2YEH20fTLOTpyk/PhhoKbEBT/7MJ1XA//V+aSLbsPWZYx8
+         ulQkVIg+3f50V/7rS4mzTGIl2faERmdDxBRreDhBZB7eF9x9mXoq+Hp6LMMyAJCWxa/P
+         3OJWMemDo8q5pGcZSWt0inTcdpongEwXADofbYzCEnsn/lwO65yeFtrSgpQtIbbk+ytm
+         FCJNFHxO3HADMOfyuHgdr6LpCyKuVbHoRK72Jpqyk3Yq536lM5yLHzn6NaYy6wWFogO0
+         Jiuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769041140; x=1769645940;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tzXSISnrF9gPuh5VrYor9F9pE35gc9wpvxNp6irLpQw=;
-        b=dWdXG3dJtiYU2J8vnNPkzBgoHXKM5kcfS69IZf/jIw2rfp66ZGgskGH8HO6dNHFWla
-         MoSnWBoNX8nZuvAkXhdL9uaFMGY9DjHG2mDQqJnHz8gz3URi94JXUzVpPz389LgHKfAU
-         MUcIEc5rbtcdqaDjjecAsUcpYQRSNGampHv5rXdYDtYVEEqJiIaaq80JelSceW59C7R6
-         ueidqyLIL1wvPQhyZAmPfUWghtTeP34Fwk07CjQCyafjdp4ltWLQFvn+JvzF+RTVWODf
-         b0rq+HBCpWSnfK7a19dMMuBSZJ0vXRd22es1c3Qftv3/lb2PTDdRG6RT0yNr9J/4ET9j
-         RkBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVh2RBWqgK5HcTOIWCaFaJSp8s4hqHbUz3ppMzmGhGhTWmW8CrAuqPrvUQ9jznLqYiG7YrUVRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcfakfTgFvEeXpq9tBJsntwL6L7SMfXlrwlFwe/09KECtvQ8Sc
-	xgBQ5mKAVtLnLAxde+i85NAvm3VAoFCi2swcYxPgPXZZ21wyDcM1dPI9HzoFeGHI
-X-Gm-Gg: AZuq6aJJw5pXDm34F8Ddfneh1OTJicT67G4tBaMEFeiBUDPyp0pIFVVs2b/zBmOFl7D
-	n7j5SCqs4ci5NaWIcw9OrsIKN7UuLJt8X+ubvhnI9Y/F1HsBKYzWOkLbfGvUjM5GPq3guUsmLqa
-	UwflpSm0Wf1lWyTpoaz57WvrDBQzFRQP5FMRqvjzZMq2O0vchXPjrAECKQq6t5uievwJBR5ZlHu
-	fEle+zCdO/0H8EenLNNcHX6MAlU88Em8Bt7XyWeev95w01jxjjBYQTQ5nLkT2HY7GnS1PRXx4Pl
-	OjnOcCSnmCPtAoJQ4g4pT7qXKRh8+vDgkbgDKO9WZB0Qt1tGc4M59wc39U9pDcC7ry08kME/3HE
-	0G/L5elsgEyUKdrTvN04AlcnrNF9zHd0FKZNKMduzT1f41KJjj+cRRpTPD8OjhN/9gHtIHQehRh
-	Kesi38OhKEpg==
-X-Received: by 2002:a05:7300:bc08:b0:2ae:5470:2e61 with SMTP id 5a478bee46e88-2b6b46c68e2mr15434088eec.2.1769034989298;
-        Wed, 21 Jan 2026 14:36:29 -0800 (PST)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3503a30sm25165715eec.13.2026.01.21.14.36.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 14:36:28 -0800 (PST)
-Date: Thu, 22 Jan 2026 06:36:18 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>, 
-	Inochi Amaoto <inochiama@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Yanteng Si <siyanteng@cqsoftware.com.cn>, 
-	Yao Zi <ziyao@disroot.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Choong Yong Liang <yong.liang.choong@linux.intel.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Shangjuan Wei <weishangjuan@eswincomputing.com>, Boon Khai Ng <boon.khai.ng@altera.com>, 
-	Quentin Schulz <quentin.schulz@cherry.de>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH net-next 3/3] net: stmmac: Add glue layer for Spacemit K3
- SoC
-Message-ID: <aXFS7fW8kdsi_2ud@inochi.infowork>
-References: <20260120043609.910302-1-inochiama@gmail.com>
- <20260120043609.910302-4-inochiama@gmail.com>
- <aW8LAFhCRWlMVemz@shell.armlinux.org.uk>
- <aW8MJpERR3TmsiKg@inochi.infowork>
- <aXDAmDEpUArE1_en@shell.armlinux.org.uk>
+        d=1e100.net; s=20230601; t=1769041342; x=1769646142;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=esxls06rnSQ7IobZFMhGI9SPyZewHXysfYzPDMfIq/A=;
+        b=k04z2qhwP/dFhOsQO4txdAca9+aKx78gjEmNI0MBIOkAnSqrd6BVj2LTWmFlNkdedz
+         dk4yFlkUVP6moj6a6WzbWAPcWQNsWZvyzBb9f85pQAc34GsfxnF+geMM6e3Y3Qj4KZgX
+         GIxGjkftNqMoK8+yxahemcotUzJ+oZlSwIxCzOBKethz1BBFaV8tNJmtGrmzpqlPOUYT
+         I4mO6GxoMe18+jTArcIjWDVkca+jJARbh6F/+Qg5lcjA5dqag4FqhsesxiZyrTtTy/Ke
+         JoWgUsxUWMzTW5aoRmui7FvFatyzS+dd+SaPueyKLSyVE5EVQXIOSbgLoiZ8h+H3hNi0
+         dTrA==
+X-Forwarded-Encrypted: i=1; AJvYcCU74LquPbdams2fnWOmRZ/ofglgquzSNo/VlxKWfzLrHroXnnE27OE37ZsoN/GXDtnkq2zil48=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx15thQL6VWfWgok/1l7a8THacmZwwn1hxqjCPlRlLaUQL1JFsk
+	jxt33DCZDTSyCn1hCOmE7Bq4DORph6Gf643Ax6wGhvbPIuy2ru0uF79YYiKuQjH9knaq5hSO1Xa
+	upb0aDAFKoHQ/AKlbUogNks5tpDmQZNI=
+X-Gm-Gg: AZuq6aKOb9yfgxadT1aD//h9He87edBc9j6HB90AAZOtXxcvZfh6LN8p1kQoOTxaNnd
+	YgD0Wya3S6ydTkM+jXWIIZmo+TIJ67ePqmVls07SKC4CQ8AwftWdxKAdxfexRM7oaKG3fYI3l5g
+	etPJ1LGt8gBJXxneX6XhDi6p8C8vuhnpzwuN4XGPffEewMMCFjwhvzwjahA5lhHZKzseD4Aafzd
+	9nLl0qILMzJmyNjgEcJr1XsYQZMa5Hg53JPqwxaQ11sT/dKa+NoipCQ63BEzNDwgc3AQ8ukHk4q
+	khf8v36F
+X-Received: by 2002:a17:903:3810:b0:2a1:388d:8ef5 with SMTP id
+ d9443c01a7336-2a7698fb1a2mr63903145ad.19.1769041342107; Wed, 21 Jan 2026
+ 16:22:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXDAmDEpUArE1_en@shell.armlinux.org.uk>
+References: <20260115112246.221082-1-dongml2@chinatelecom.cn>
+ <20260115112246.221082-8-dongml2@chinatelecom.cn> <CAEf4BzYop1GT1v7qxNQi44dsEebjwnLp-sHDp-HPzVrj69WzTw@mail.gmail.com>
+In-Reply-To: <CAEf4BzYop1GT1v7qxNQi44dsEebjwnLp-sHDp-HPzVrj69WzTw@mail.gmail.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Wed, 21 Jan 2026 16:22:07 -0800
+X-Gm-Features: AZwV_QhWzV_mYhMnCtmTeqRyohTRDUETfQ34KN9rYVEgegWCd1UfxQzHm8802cs
+Message-ID: <CAEf4BzZm5uenrYO3ZXiGB8qXCg67Ov7crNvZtsj=Be4XEm6OpQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v10 07/12] bpf,x86: add fsession support for x86_64
+To: Menglong Dong <menglong8.dong@gmail.com>
+Cc: ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net, 
+	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, 
+	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
+	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, davem@davemloft.net, 
+	dsahern@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jiang.biao@linux.dev, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, hpa@zytor.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 21, 2026 at 12:03:36PM +0000, Russell King (Oracle) wrote:
-> On Tue, Jan 20, 2026 at 01:05:39PM +0800, Inochi Amaoto wrote:
-> > > > +	mask = RGMII_RX_DLINE_STEP | RGMII_TX_DLINE_CODE | RGMII_TX_DLINE_EN |
-> > > > +	       RGMII_TX_DLINE_STEP | RGMII_RX_DLINE_CODE | RGMII_RX_DLINE_EN;
-> > > > +	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config) |
-> > > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, tx_code) | RGMII_TX_DLINE_EN |
-> > > > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, rx_config) |
-> > > > +	      FIELD_PREP(RGMII_RX_DLINE_CODE, rx_code) | RGMII_RX_DLINE_EN;
-> > > 
-> > > These FIELD_PREP() fields look wrong. Did you mean to use DLINE_CODE
-> > > both tx_config and tx_code, and did you mean to use TX_DLINE_CODE for
-> > > rx_config ?
-> > > 
-> > 
-> > This should be RGMII_TX_DLINE_CODE. This is a copy paste error, I
-> > will fix it.
-> 
-> Are you sure?
-> 
-> In that case, please change this to:
-> 
-> 	val = FIELD_PREP(RGMII_TX_DLINE_CODE, tx_config | tx_code |
-> 					      rx_config | rx_code) |
-> 	      RGMII_TX_DLINE_EN | RGMII_RX_DLINE_EN;
-> 
-> If that isn't what you meant, then your reply is wrong, and it seems
-> you're confused, which makes me then question how reliable your
-> replies are.
-> 
+On Wed, Jan 21, 2026 at 4:06=E2=80=AFPM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
+>
+> On Thu, Jan 15, 2026 at 3:24=E2=80=AFAM Menglong Dong <menglong8.dong@gma=
+il.com> wrote:
+> >
+> > Add BPF_TRACE_FSESSION supporting to x86_64, including:
+> >
+> > 1. clear the return value in the stack before fentry to make the fentry
+> >    of the fsession can only get 0 with bpf_get_func_ret().
+> >
+> > 2. clear all the session cookies' value in the stack.
+> >
+> > 2. store the index of the cookie to ctx[-1] before the calling to fsess=
+ion
+> >
+> > 3. store the "is_return" flag to ctx[-1] before the calling to fexit of
+> >    the fsession.
+> >
+> > Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+> > Co-developed-by: Leon Hwang <leon.hwang@linux.dev>
+> > Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> > ---
+> > v10:
+> > - use "|" for func_meta instead of "+"
+> > - pass the "func_meta_off" to invoke_bpf() explicitly, instead of
+> >   computing it with "stack_size + 8"
+> > - pass the "cookie_off" to invoke_bpf() instead of computing the curren=
+t
+> >   cookie index with "func_meta"
+> >
+> > v5:
+> > - add the variable "func_meta"
+> > - define cookie_off in a new line
+> >
+> > v4:
+> > - some adjustment to the 1st patch, such as we get the fsession prog fr=
+om
+> >   fentry and fexit hlist
+> > - remove the supporting of skipping fexit with fentry return non-zero
+> >
+> > v2:
+> > - add session cookie support
+> > - add the session stuff after return value, instead of before nr_args
+> > ---
+> >  arch/x86/net/bpf_jit_comp.c | 52 ++++++++++++++++++++++++++++---------
+> >  1 file changed, 40 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+> > index 2f31331955b5..16720f2be16c 100644
+> > --- a/arch/x86/net/bpf_jit_comp.c
+> > +++ b/arch/x86/net/bpf_jit_comp.c
+> > @@ -3094,13 +3094,19 @@ static int emit_cond_near_jump(u8 **pprog, void=
+ *func, void *ip, u8 jmp_cond)
+> >
+> >  static int invoke_bpf(const struct btf_func_model *m, u8 **pprog,
+> >                       struct bpf_tramp_links *tl, int stack_size,
+> > -                     int run_ctx_off, bool save_ret,
+> > -                     void *image, void *rw_image)
+> > +                     int run_ctx_off, int func_meta_off, bool save_ret=
+,
+> > +                     void *image, void *rw_image, u64 func_meta,
+> > +                     int cookie_off)
+> >  {
+> > -       int i;
+> > +       int i, cur_cookie =3D (cookie_off - stack_size) / 8;
+>
+> not sure why you went with passing cookie_off and then calculating,
+> effectively, cookie count out of that?... why not pass cookie count
+> directly then? it's minor, but just seems like a weird choice here,
+> tbh
+>
 
-That's wrong, I think I have reply it in a wrong way, it should be
+consider also just calculating cookie count out from bpf_tramp_links?
+would that work? Then "func_meta" would really be just nr_args (and
+I'd call it that) and bool for whether this is entry or exit
+invokation (for IS_RETURN bit, and maybe we'll need this distinction
+somewhere else in the future), and then invoke_bpf() will construct
+func_meta from scratch.
 
-RGMII_TX_DLINE_STEP -> tx_config
-RGMII_TX_DLINE_CODE -> tx_code
-RGMII_RX_DLINE_STEP -> rx_config
-RGMII_RX_DLINE_CODE -> rx_code
+It's relatively minor thing, but as I mentioned before, it's this
+hybrid approach of partially opaque (from invoke_bpf's POV) func_meta
+which we also adjust or fill out (for cookie index) is a bit of a sign
+that this is not a proper interface.
 
-The RGMII_[RX|TX]_DLINE_STEP register selects which step is used for
-rx/tx delay. The RGMII_[RX|TX]_DLINE_CODE register provides the factor
-used for calculating the delay. These register are computed in the
-spacemit_dwmac_detected_delay_value(). And finally we can got a delay
-with "code * step / 10 * 0.9" for both rx and tx.
-
-Regards,
-Inochi
-
-> > > > +	plat_dat->clk_tx_i = devm_clk_get_enabled(&pdev->dev, "tx");
-> > > > +	if (IS_ERR(plat_dat->clk_tx_i))
-> > > > +		return dev_err_probe(&pdev->dev, PTR_ERR(plat_dat->clk_tx_i),
-> > > > +				     "failed to get tx clock\n");
-> > > 
-> > > You set plat_dat->clk_tx_i, but you don't point
-> > > plat_dat->set_clk_tx_rate at anything, which means the stmmac core
-> > > does nothing with this.
-> > > 
-> > 
-> > Yes, the vendor told me that the internal tx clock rate will be auto
-> > changed when the speed rate is changed. So no software interaction
-> > is needed.
-> 
-> Please do not assign a clock to clk_tx_i that is not the dwmac
-> clk_tx_i input. clk_tx_i is a name used by the Synopsys DWMAC for a
-> specific clock.
-> 
-> As you don't need to do anything with it other than to get and enable
-> it, consider using just a local variable here.
-> 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>
+>
+> >         u8 *prog =3D *pprog;
+> >
+> >         for (i =3D 0; i < tl->nr_links; i++) {
+> > +               if (tl->links[i]->link.prog->call_session_cookie) {
+> > +                       emit_store_stack_imm64(&prog, BPF_REG_0, -func_=
+meta_off,
+> > +                                              func_meta | (cur_cookie =
+<< BPF_TRAMP_SHIFT_COOKIE));
+> > +                       cur_cookie--;
+> > +               }
+> >                 if (invoke_bpf_prog(m, &prog, tl->links[i], stack_size,
+> >                                     run_ctx_off, save_ret, image, rw_im=
+age))
+> >                         return -EINVAL;
+>
+> [...]
