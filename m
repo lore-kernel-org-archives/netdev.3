@@ -1,104 +1,110 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx27lb.world4you.com (mx27lb.world4you.com [81.19.149.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8F93A3CC8
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 20:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D63B21D59B
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 20:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769114862; cv=none; b=OplTywcLXtRrOs2zYKqI8kR1ROOPEgwMiMz/muTLRP7Z4vKhGbWmGKzjyVmSp/j0CDkmr62pZVIep4esGl7N+ZizTXK7Hwtoue/wGE1VXGUztYshPJIGVV9GNQ6FWRYeu/eJCwmLOpXpdlDkD1s7EdVoSjrXnLaxXh5+fGwOl9k=
+	t=1769114913; cv=none; b=p378drTRehga6QWNLttpf2U7WQphdlg2Kz6lSe95UD3bfF3n2hPEZlqxaUQt0LGqdGCDYBWYO/vYe895fkLEW1uF0NTtzOY2QLYqzYHRvvw/BeMV5GJiJMa2ytK2QKJZiRR11Jkxs5MagZdCLSSxS2D3r4cPhVqhT1vSXqATVfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769114862; c=relaxed/simple;
-	bh=6ydNNGaBTVLwP3JEYSbtuzK13+5qu8DIEj1lwTsVX5A=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=k/aq0YeCwbRswlYkkgMB89+LoNcuS5NVS4ZmLJdpzAef1o8aGAVSl/4NByvZddleNKhRQkaWpoqF5xWtbsbg/Lr6N/OVHr18F+uqVwY/6TRniS4TFyuP/gYw3jUWe/10nJ3xFCaXSptaw4knJlCGjcPM3tOAPzh+v95KmFB9hEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dn53nCet; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769114913; c=relaxed/simple;
+	bh=ZxRzWIa2RYrCjblR8FU1QpFVaCx9tygXC9Uf0jNb22w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FI8auZJJobNQq+oVvl6dQ3SlQH0BUgJjVDtPD7jqubXu9KpaxlarLokCbrHMXjh08ziNu9CRkP0iXLJyYrBgON0y1aJHC5ohH4vJKIfo0GiAK8fsv8BBhOtxF/nKMM9FydwlirjjgZDwV2y5CwWgoyPkrnPUWC3AprICC0ZXz2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=TZGhD2q+; arc=none smtp.client-ip=81.19.149.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dn53nCet"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4359228b7c6so969806f8f.2
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 12:47:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769114855; x=1769719655; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ydNNGaBTVLwP3JEYSbtuzK13+5qu8DIEj1lwTsVX5A=;
-        b=dn53nCetjrLM2lY51zbeFXrK7AYBL9VTxQ1qsBMbWFuMhpZm5BrmMCAzczpdCzC5p8
-         U5jC4NqG+8YLvLxTAQMwLZR9MnP2IrSfA8eimGaPZpiKqo37XZINL6cSjRQ3/OUFpRKc
-         7o04NHfrIpeXCtpZf7L07gRS/2nMNZyVcqbTr2eTZEVGzaIBuRsv7LCL6Oyo1JNHHKhT
-         6SzKle+/W0jcREFV8pyrOZjbncTqBRmFLWCmgDs9CzpMju9VVRGOgyak0qCFg0RNYwKS
-         z0Ema2goggX8zJKRXaV0vi0H6egQSsD7A8cb7gWDnYUsf6fS4iO3VFPUI/3MO6+7uIx4
-         7Ehw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769114855; x=1769719655;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6ydNNGaBTVLwP3JEYSbtuzK13+5qu8DIEj1lwTsVX5A=;
-        b=MQyNXji3bTI2boD7E4d7UpunRmAGycngz/jmwwSd7CWqmKFqP9hunJqeHa5e3POw5i
-         L9AfKy4IM/sCHBRJErfa2OoNSd9y2EfPSbuMKhDJVF9fufZoNXLgKGv+VhBKNhYjKAPy
-         2OM2yBx4OBS61TgFJr+QptVDN3RCCq1nMnqa7CAUYqHgDr08X64xTf4UJC1QdX0k6Cxx
-         tNlM8KXj7ny8W7GPSQiCJqriSnKuJqyPN+WFgFD0Ho/58H7cOTK5I2Ft6BSAmMEF10mS
-         eVfIXgXHiJSatScfsm4VyUYgJizk02kDIYn+6qI/U/iBU3NkI/P5aDW4Cn1JtWxlKHtX
-         o01w==
-X-Forwarded-Encrypted: i=1; AJvYcCUQyhYCfUZmBy3IK468fJCT/i3ohqBIoRbipzIGO3B1Hj0gGniOqVzQHnYizBKZvKga7AbTut4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0nawhtWkG9Y4XcdzSs+3qOxhOP+ccCwn1DPJFjG1NwZObm6Mo
-	kGT0SPGvQEtbefcmRd1NRQPC4s26JKT/afW/+ZpB9NdP1q5Sb1QNBsHR
-X-Gm-Gg: AZuq6aKWO8IvdLzPWQYo47jmIQCMTTRMMaXqU7sJdXE1Znyn83gbKURpyGVKCgUdSdO
-	6loXS05IquW+vide/6z0eAKFlO1w7/fZFOF97WRWdLtf7LYwv49uKFNxEmPz4PfWrMEjN27tr7E
-	pCfwo/jYiSDIw5Gsm3BHUriHtOdmIMBviPnfobQ4oewGpTlDCuk+ewlkJQvDM164JDbOV8MmwuJ
-	EsE2RnpgJLWdlbDWSQezBjCKUzbvpNG1qYrOa/JKYn9Uhjc1C8RkUE1XqcdY1Ccvc9489oe4gj2
-	TEuJVGAU6h/yJ2tO8wpfn8p9/7TENAK7KFKOds9rDu6KLcHy5u3vpDD/HUOPaU4n74rIxwIwTx2
-	azCzQyRSWNghtervgmO+EBK269S7uTm+ugjHkrhmWGQkkLw5H9UJ9LgKl5jFSnqdXMwl+8AY1VL
-	p+pROjZCznpWLa0WPV8d9a1yoV6cQF+vt+pARDQ7AYeoU=
-X-Received: by 2002:a05:6000:608:b0:431:a50:6ead with SMTP id ffacd0b85a97d-435b15997a1mr1476659f8f.20.1769114855046;
-        Thu, 22 Jan 2026 12:47:35 -0800 (PST)
-Received: from smtpclient.apple ([2001:912:1ac0:1e00:985e:f575:8301:f2e2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24bf8sm1235793f8f.11.2026.01.22.12.47.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Jan 2026 12:47:34 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="TZGhD2q+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sDVB9pQemhkH2KV7SHjCh7VrpYGRuz2iO0t3CU9ClFU=; b=TZGhD2q+6T+fjXSdjPP8R0wy/H
+	oobmBlntXwcND1F5rvBacjig3kiVRwsDWnRGOOjKqNHBhB76zVMRXZ1rldWfXT35xr9UIFaAkOWKd
+	e8XkGToBpEfqFDayrzX/2/OiKVCK5stsy2obNBgj6mxWReDRD/ScX3otrduJHrz+OP2g=;
+Received: from [188.23.33.245] (helo=[10.0.0.160])
+	by mx27lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1vj0ul-000000007vz-0YKZ;
+	Thu, 22 Jan 2026 21:04:24 +0100
+Message-ID: <c5ba02dd-e81f-4590-9e35-90c9b2c33bee@engleder-embedded.com>
+Date: Thu, 22 Jan 2026 21:04:23 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v2 3/4] dt-bindings: net: realtek,rtl82xx: add a property
- to set MDI polarity
-From: Damien Dejean <dam.dejean@gmail.com>
-In-Reply-To: <20260122165102.GA2564919-robh@kernel.org>
-Date: Thu, 22 Jan 2026 21:47:23 +0100
-Cc: andrew@lunn.ch,
- krzk+dt@kernel.org,
- netdev@vger.kernel.org,
- devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- edumazet@google.com,
- davem@davemloft.net,
- kuba@kernel.org,
- pabeni@redhat.com,
- hkallweit1@gmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <916AA508-4097-42DF-8087-4C82ABB87D76@gmail.com>
-References: <20260121151506.813783-1-dam.dejean@gmail.com>
- <20260121151506.813783-3-dam.dejean@gmail.com>
- <20260122165102.GA2564919-robh@kernel.org>
-To: Rob Herring <robh@kernel.org>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/2] net: extend ndo_get_tstamp for other
+ timestamp types
+To: Kevin Yang <yyd@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Joshua Washington <joshwash@google.com>,
+ Richard Cochran <richardcochran@gmail.com>
+References: <20260121160458.990785-1-yyd@google.com>
+ <20260121160458.990785-2-yyd@google.com>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <20260121160458.990785-2-yyd@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
+On 21.01.26 17:04, Kevin Yang wrote:
+> Network device hardware timestamps (hwtstamps) and the system's
+> clock (ktime) often originate from different clock domains.
+> This makes it hard to directly calculate the duration between
+> a hardware-timestamped event and a system-time event by simple
+> subtraction.
+> 
+> This patch extends ndo_get_tstamp to allow a netdev to provide
+> a hwtstamp into the system's CLOCK_REALTIME domain. This allows a
+> driver to either perform a conversion by estimating or, if the
+> clocks are kept synchronized, return the original timestamp directly.
+> Other clock domains, e.g. CLOCK_MONOTONIC_RAW can also be added when
+> a use surfaces.
+> 
+> This is useful for features that need to measure the delay between
+> a packet's hardware arrival/departure and a later software event.
+> For example, the TCP stack can use this to measure precise
+> packet receive delays, which is a requirement for the upcoming
+> TCP Swift [1] congestion control algorithm.
+> 
+> [1] Kumar, Gautam, et al. "Swift: Delay is simple and effective
+> for congestion control in the datacenter." Proceedings of the
+> Annual conference of the ACM Special Interest Group on Data
+> Communication on the applications, technologies, architectures,
+> and protocols for computer communication. 2020.
+> 
+> Signed-off-by: Kevin Yang <yyd@google.com>
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-> Le 22 janv. 2026 =C3=A0 17:51, Rob Herring <robh@kernel.org> a =C3=A9cri=
-t :
->=20
-> However, are these properties something that should be common?
+Like Jakub in his reply
+https://lore.kernel.org/netdev/20260119115710.6fdde8c0@kernel.org/
+for me also the question why this is a driver implementation came to my
+mind.
 
-If by common you mean =C2=AB not Realtek specific =C2=BB I have no idea =
-if this kind of mapping is possible on other chips. Marvell Aquantia =
-phys have an =C2=AB order =C2=BB (marvell,mdi-cfg-order) property like =
-the one I introduced in the patch before this one (thanks Andrew), but =
-that=E2=80=99s all I know.
+With vclocks it is already possible to get timestamps for arbitrary
+clock domains in parallel. So it is already possible to synchronize
+the hwtstamp to CLOCK_REALTIME, CLOCK_MONOTONIC, ... in parallel.
+Therefore, user space synchronisation is needed, but e.g. ptp4l does
+a much better synchronisation job than your solution.
 
+Maybe CLOCK_REALTIME is not supported by ptp4l, because due to daytime
+saving this clock jumps. IMO these jumps will also be problem for
+your solution, as it will lead to wrong delays two times a year.
+So usually CLOCK_TAI or CLOCK_MONOTONIC would be a better choice.
 
+To sum up: IMO you suggest a driver specific in-kernel solution where
+already a driver independent user space solution with higher accuracy
+exists.
+
+Gerhard
