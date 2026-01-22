@@ -1,79 +1,189 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB90F28152A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E10330CDBD;
 	Thu, 22 Jan 2026 13:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769088467; cv=none; b=uJb5cpvXLHbfkbxLjFB/v/vG5S09rFmj4BBo1GOr8onf6DC0BGv/HQ1SrclMVC8UKz3Mo8DoZMDxQAGnLAufao+zL2ANUkxS+QZXFOEciA6s68iOFSyOPix/JhWx9NGggnAXYxnBnw79VOe0WE2uzvs3jVZchpquoAyS0WaW4xA=
+	t=1769088467; cv=none; b=ZdrDB+bcQt0PVtwXB5CqhFASWW5Q7MO67rJGqd4RdUUQOkXXPTltMikhdXkY2Fb/jvOrbM3euh1/uM8tlNvshaPBYuNCXEO145JC/oiUwBGkOveH69HjfQAQ+20CUWqrpsJ491QStvCrFrpdNf2deoNVnt7624zVfyJoagNEU80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769088467; c=relaxed/simple;
-	bh=qHWIKvktZ7GubooQCjzwR3k+LdNHiwNtsHB9mTP1QEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nnJRF61BijUohoTsKUk7kinL1dcl5+QjAYz5diIUJXbpsUI8I/RdVcMSvhdDgpT5TOF/597KmE+U0hTk/wugXoLeIPCTN32JURDAH/A5hrrFBhbE6tUL737sfs7SGDVD+6o3UcZQ4WDrqeuv+JWh7srvTp/P5Cb0oaFf2uOG890=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DTgN+E4L; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	bh=N3ryQbGEWD3cPHtfikuGqfoTM8sOAlPC0aYgdbP0Wxw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iIgsQRsDdxJ1n0jGbpeLc88+ivBZWDWXDTV87wa1HW9EOWYpIB7g+gzabHhJIVfh7E9Qu6y25MAiG+99zi7krCraE6ijwIYG6cbrVtRrGIXoy6XIxrGa6Cjozrzdc1BRDx6tuHMT9/pBnidnjKd8IgfN8qnlR/xVIO3dNBCynIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PUsi0bkW; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DTgN+E4L"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9xQMmLN25d6ur0MTNMIKH54ukh9v7HDdPbHa10LtFlg=; b=DTgN+E4LZE+5v7wLy4BmQ6YXn5
-	i8sydyP9uyRp/c6HvlX3Nho7/GKYJ4oR2R6GeF1y4Ru3btI417hOhvvf3UKPl9yZ5Fc3bm32CWUKL
-	Q+miUq5DI2M0joGjRO4V4Sstu7HxTFogBP6X/AcnfSCIS1CQelSupxLvRwgQANzmNM1Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1viuik-003yWn-KU; Thu, 22 Jan 2026 14:27:34 +0100
-Date: Thu, 22 Jan 2026 14:27:34 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
-Cc: Bo Gan <ganboing@gmail.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	netdev@vger.kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
-Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock
- sampling control
-Message-ID: <d010a6b8-5bf0-40ff-8e76-18362a238d50@lunn.ch>
-References: <20260109080601.1262-1-lizhi2@eswincomputing.com>
- <20260109080859.1285-1-lizhi2@eswincomputing.com>
- <00b7b42f-2f9d-402a-82f0-21641ea894a1@lunn.ch>
- <aWKZvEW7rKFFwZLG@shell.armlinux.org.uk>
- <0d54ddca-9270-40a5-aa82-d8a7b65027ff@gmail.com>
- <1a622916.2d28.19bb105feab.Coremail.lizhi2@eswincomputing.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PUsi0bkW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6A2E7C21AA4;
+	Thu, 22 Jan 2026 13:27:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 91AAF60740;
+	Thu, 22 Jan 2026 13:27:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95CD0119B815E;
+	Thu, 22 Jan 2026 14:27:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769088462; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gkMPdwGfu8X4F3+hrF5ewptOuduz1YxWL/Ffa1MnO38=;
+	b=PUsi0bkWNCq8ZmpHiC3jf/Kadro8gSFNgMk8kvGzYnN/Z/S6aG2tG/c2SJqvmZ6XcjAWOI
+	f9vYb0L4u5y9KFH+ZryD2r6M9PR6/Tk8TZfAkiA1h4DgVED5IAhX43oa/EvJr3iCVivJOi
+	5fJvotr36ug/Ozv4S9yO+AAHnVz2DLLAG06gGucpmfqu3ic7ROPSkvI7JWH/yn5hcA/1V4
+	BWnZMg3paMyz16Z64EpFqvq2AgZN/a0WhaCv2cnQD7Qt6i8Uvky4HcsuaM5/E/8uGFpsKh
+	bbMN/EiN1TrwwwlIoam2C1ihED93OM4kl/IvDGLfPQ9/0xKjEW/e7eGdm8LuyA==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Thu, 22 Jan 2026 14:27:35 +0100
+Subject: [PATCH net-next v2 1/8] net: dsa: microchip: Add support for
+ KSZ8463 global irq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1a622916.2d28.19bb105feab.Coremail.lizhi2@eswincomputing.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260122-ksz8463-ptp-v2-1-b6683f5ce50b@bootlin.com>
+References: <20260122-ksz8463-ptp-v2-0-b6683f5ce50b@bootlin.com>
+In-Reply-To: <20260122-ksz8463-ptp-v2-0-b6683f5ce50b@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-> We also intend
-> to upstream complete DTS files for EIC7700 so the bindings can be validated
-> against real hardware.
+KSZ8463's interrupt scheme differs from the others KSZ swicthes. Its
+global interrupt handling is done through an 'enable irq' register
+instead of a 'mask irq' one, so the bit logic to enable/disable
+interrupt is reversed. Also its interrupts registers are 16-bits
+registers and don't have the same address.
 
-I suggest you prioritise this. ARM-SOC is pretty flexible for
-accepting work in progress support for new SoCs. All you really need
-is for the board to boot to a login prompt on a serial port using an
-initramsfs. So the .dtsi and .dts file can be very slim, CPUs, memory
-and UARTs.
+Add ksz8463-specific global interrupt setup function that still relies
+on the ksz_irq_common_setup().
+Add a check on the device type in the irq_chip operations to adjust the
+bit logic for KSZ8463
 
-Once you have that merged you can work on the other drivers, their
-bindings, etc.
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 40 +++++++++++++++++++++++++++++-----
+ drivers/net/dsa/microchip/ksz_common.h |  3 +++
+ 2 files changed, 37 insertions(+), 6 deletions(-)
 
-As Russell pointed out, at the moment, most of the code you have in
-the kernel is unusable, so it is a candidate for being thrown out.
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index e5fa1f5fc09b37c1a9d907175f8cd2cd60aee180..82ec7142a02c432f162e472c831faa010c035123 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2817,14 +2817,20 @@ static void ksz_irq_mask(struct irq_data *d)
+ {
+ 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+ 
+-	kirq->masked |= BIT(d->hwirq);
++	if (ksz_is_ksz8463(kirq->dev))
++		kirq->masked &= ~BIT(d->hwirq);
++	else
++		kirq->masked |= BIT(d->hwirq);
+ }
+ 
+ static void ksz_irq_unmask(struct irq_data *d)
+ {
+ 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+ 
+-	kirq->masked &= ~BIT(d->hwirq);
++	if (ksz_is_ksz8463(kirq->dev))
++		kirq->masked |= BIT(d->hwirq);
++	else
++		kirq->masked &= ~BIT(d->hwirq);
+ }
+ 
+ static void ksz_irq_bus_lock(struct irq_data *d)
+@@ -2840,7 +2846,10 @@ static void ksz_irq_bus_sync_unlock(struct irq_data *d)
+ 	struct ksz_device *dev = kirq->dev;
+ 	int ret;
+ 
+-	ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
++	if (ksz_is_ksz8463(dev))
++		ret = ksz_write16(dev, kirq->reg_mask, kirq->masked);
++	else
++		ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
+ 	if (ret)
+ 		dev_err(dev->dev, "failed to change IRQ mask\n");
+ 
+@@ -2890,14 +2899,14 @@ static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
+ 	unsigned int nhandled = 0;
+ 	struct ksz_device *dev;
+ 	unsigned int sub_irq;
+-	u8 data;
++	u16 data;
+ 	int ret;
+ 	u8 n;
+ 
+ 	dev = kirq->dev;
+ 
+ 	/* Read interrupt status register */
+-	ret = ksz_read8(dev, kirq->reg_status, &data);
++	ret = ksz_read16(dev, kirq->reg_status, &data);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -2939,6 +2948,22 @@ static int ksz_irq_common_setup(struct ksz_device *dev, struct ksz_irq *kirq)
+ 	return ret;
+ }
+ 
++static int ksz8463_girq_setup(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++	struct ksz_irq *girq = &dev->girq;
++
++	girq->nirqs = 15;
++	girq->reg_mask = KSZ8463_REG_IER;
++	girq->reg_status = KSZ8463_REG_ISR;
++	girq->masked = 0;
++	snprintf(girq->name, sizeof(girq->name), "global_irq");
++
++	girq->irq_num = dev->irq;
++
++	return ksz_irq_common_setup(dev, girq);
++}
++
+ static int ksz_girq_setup(struct ksz_device *dev)
+ {
+ 	struct ksz_irq *girq = &dev->girq;
+@@ -3044,7 +3069,10 @@ static int ksz_setup(struct dsa_switch *ds)
+ 	p->learning = true;
+ 
+ 	if (dev->irq > 0) {
+-		ret = ksz_girq_setup(dev);
++		if (ksz_is_ksz8463(dev))
++			ret = ksz8463_girq_setup(ds);
++		else
++			ret = ksz_girq_setup(dev);
+ 		if (ret)
+ 			return ret;
+ 
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index 929aff4c55de5254defdc1afb52b224b3898233b..67a488a3b5787f93f9e2a9266ce04f6611b56bf8 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -839,6 +839,9 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
+ #define KSZ87XX_INT_PME_MASK		BIT(4)
+ 
+ /* Interrupt */
++#define KSZ8463_REG_ISR			0x190
++#define KSZ8463_REG_IER			0x192
++
+ #define REG_SW_PORT_INT_STATUS__1	0x001B
+ #define REG_SW_PORT_INT_MASK__1		0x001F
+ 
 
-       Andrew
+-- 
+2.52.0
+
