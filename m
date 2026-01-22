@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC54357A2F;
-	Thu, 22 Jan 2026 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3680627934B;
+	Thu, 22 Jan 2026 16:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769099976; cv=none; b=FidAYBWnHCL7NO+Xc7t8KJS2xzEMJJooJHKCmI9ix1LeKngeX9OWhvw6a7i6gUkS3BxgszAIXpgF7ylYMCRsLcakjW9O5vdP5kNsIVlqSeGg/4kFHaBvjuKym8jk88Lj3ftVbcblSf2/td2jp5PLaVLbKJu4R4ResLgVfuvCMhY=
+	t=1769099986; cv=none; b=aO1pFQ7Zl2c7pO9u4Jyz283KwUP1Z0KTF1aElhI2mx2W/QEopZN+JHT921Mx4sq067FxyFbKIXQKoeXmGPQmdwA2bF1/gSAdmhJZgJPNi25t95uFxRU0w/J8sIwj9P7eQaEWahJuA3sShwmXf/0hAAfMocS8/8TtdBNneDTBTX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769099976; c=relaxed/simple;
-	bh=BcUs3GJ/DNPCIe5L/+Bm2foqHbeMpC18YNl7ARu5+/U=;
+	s=arc-20240116; t=1769099986; c=relaxed/simple;
+	bh=9/wOEAP9Z70YlA94ausVaW4pw/bf8VxiowP0V8TIO9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UjWr5iwwAfSxLk/Bvp7GExtUGBRSFWqfFlvv+DyjzFTrh25QBzlJnBTUMIcByMOuKSdbpqzynsBpo4t4MCmPCM0jJMAlGL0cEQ6bWmWLJIVm146hh06IyMX1KL0nXbe0VCZjtDC9D7kL3P8tU8coPQEVtAwFQGGYXMKtiDARZbQ=
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZrD8TFIbgIxOjVTpadf0UYZI6WzuhO8yPpFa0fZh/F2Sp/eawtaIjyeIJuy1IBeceJ4jHorZHS9hSQU553AnkTxHFUIhv8OHTyKX4AMv4HDYkpxnt2z4H0UAm5dmlHo25gWC042CaZJKPBqdJMSXTBZBGD9cHikfyDaPG4+WjVc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1vixiQ-000000001Ro-1qVL;
-	Thu, 22 Jan 2026 16:39:26 +0000
-Date: Thu, 22 Jan 2026 16:39:23 +0000
+	id 1vixiX-000000001S0-0svo;
+	Thu, 22 Jan 2026 16:39:33 +0000
+Date: Thu, 22 Jan 2026 16:39:30 +0000
 From: Daniel Golle <daniel@makrotopia.org>
 To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -33,9 +33,9 @@ To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
 	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Chen Minqiang <ptpt52@gmail.com>, Xinfa Deng <xinfa.deng@gl-inet.com>
-Subject: [PATCH net-next v6 5/6] net: dsa: mxl-gsw1xx: only setup SerDes PCS
- if it exists
-Message-ID: <fd46a821b1535751cd7b478a04a9ffe1e9d4d289.1769099517.git.daniel@makrotopia.org>
+Subject: [PATCH net-next v6 6/6] net: dsa: mxl-gsw1xx: add support for Intel
+ GSW150
+Message-ID: <c84cf94337bf1be30940841b338b6368468c6e17.1769099517.git.daniel@makrotopia.org>
 References: <cover.1769099517.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,75 +47,166 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1769099517.git.daniel@makrotopia.org>
 
-Older Intel GSW150 chip doesn't have a SGMII/1000Base-X/2500Base-X PCS.
-Prepare for supporting Intel GSW150 by skipping PCS reset and
-initialization in case no .mac_select_pcs operation is defined.
+Add support for the Intel GSW150 (aka. Lantiq PEB7084) switch IC to
+the mxl-gsw1xx driver. This switch comes with 5 Gigabit Ethernet
+copper ports (Intel XWAY PHY11G (xRX v1.2 integrated) PHYs) as well as
+one GMII/RGMII and one RGMII port.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
-v6: rebase on top of current net-next
+v6:
+ * rebase on top of current net-next
+ * update Kconfig to mention GSW150
+ * allow configuring RGMII slewrate introduced by commit dbf24ab58fec3
+   ("net: dsa: mxl-gsw1xx: Support R(G)MII slew rate configuration")
+
 v5: no changes
-v4: no changes
-v3: no changes
-v2: new patch
 
- drivers/net/dsa/lantiq/mxl-gsw1xx.c | 37 ++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+v4: spell out mii_cfg and mii_pcdu values in struct gswip_hw_info instead
+    of using default initializer which requires diag exception
 
+v3: enclose the gswip_hw_info initializers in compiler diag exception
+    to prevent triggering -Woverride-init
+
+v2: clean-up phylink_get_caps
+
+
+ drivers/net/dsa/lantiq/Kconfig      |  4 +-
+ drivers/net/dsa/lantiq/mxl-gsw1xx.c | 67 ++++++++++++++++++++++++++---
+ drivers/net/dsa/lantiq/mxl-gsw1xx.h |  2 +
+ 3 files changed, 67 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/dsa/lantiq/Kconfig b/drivers/net/dsa/lantiq/Kconfig
+index 4a9771be5d588..bad13817af257 100644
+--- a/drivers/net/dsa/lantiq/Kconfig
++++ b/drivers/net/dsa/lantiq/Kconfig
+@@ -16,9 +16,11 @@ config NET_DSA_MXL_GSW1XX
+ 	select NET_DSA_TAG_MXL_GSW1XX
+ 	select NET_DSA_LANTIQ_COMMON
+ 	help
+-	  This enables support for the MaxLinear GSW1xx family of 1GE switches
++	  This enables support for the Intel/MaxLinear GSW1xx family of 1GE
++	  switches.
+ 	    GSW120 4 port, 2 PHYs, RGMII & SGMII/2500Base-X
+ 	    GSW125 4 port, 2 PHYs, RGMII & SGMII/2500Base-X, industrial temperature
+ 	    GSW140 6 port, 4 PHYs, RGMII & SGMII/2500Base-X
+ 	    GSW141 6 port, 4 PHYs, RGMII & SGMII
+ 	    GSW145 6 port, 4 PHYs, RGMII & SGMII/2500Base-X, industrial temperature
++	    GSW150 7 port, 5 PHYs, 1x GMII/RGMII, 1x RGMII
 diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-index ba72111a53ad0..c6fa93229349a 100644
+index c6fa93229349a..79cf72cc77be9 100644
 --- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
 +++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-@@ -615,6 +615,28 @@ static struct regmap *gsw1xx_regmap_init(struct gsw1xx_priv *priv,
- 				priv, &config);
- }
+@@ -502,6 +502,14 @@ static const struct phylink_pcs_ops gsw1xx_pcs_ops = {
+ 	.pcs_link_up = gsw1xx_pcs_link_up,
+ };
  
-+static int gsw1xx_serdes_pcs_init(struct gsw1xx_priv *priv)
++static void gsw1xx_phylink_get_lpi_caps(struct phylink_config *config)
 +{
-+	/* do nothing if the chip doesn't have a SerDes PCS */
-+	if (!priv->gswip.hw_info->mac_select_pcs)
-+		return 0;
-+
-+	priv->pcs.ops = &gsw1xx_pcs_ops;
-+	priv->pcs.poll = true;
-+	__set_bit(PHY_INTERFACE_MODE_SGMII,
-+		  priv->pcs.supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+		  priv->pcs.supported_interfaces);
-+	if (priv->gswip.hw_info->supports_2500m)
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  priv->pcs.supported_interfaces);
-+	priv->tbi_interface = PHY_INTERFACE_MODE_NA;
-+
-+	/* assert SGMII reset to power down SGMII unit */
-+	return regmap_set_bits(priv->shell, GSW1XX_SHELL_RST_REQ,
-+			       GSW1XX_RST_REQ_SGMII_SHELL);
++	config->lpi_capabilities = MAC_100FD | MAC_1000FD;
++	config->lpi_timer_default = 20;
++	memcpy(config->lpi_interfaces, config->supported_interfaces,
++	       sizeof(config->lpi_interfaces));
 +}
 +
- static int gsw1xx_probe(struct mdio_device *mdiodev)
+ static void gsw1xx_phylink_get_caps(struct dsa_switch *ds, int port,
+ 				    struct phylink_config *config)
  {
- 	struct device *dev = &mdiodev->dev;
-@@ -667,20 +689,7 @@ static int gsw1xx_probe(struct mdio_device *mdiodev)
- 	if (IS_ERR(priv->shell))
- 		return PTR_ERR(priv->shell);
+@@ -535,10 +543,32 @@ static void gsw1xx_phylink_get_caps(struct dsa_switch *ds, int port,
+ 		break;
+ 	}
  
--	priv->pcs.ops = &gsw1xx_pcs_ops;
--	priv->pcs.poll = true;
--	__set_bit(PHY_INTERFACE_MODE_SGMII,
--		  priv->pcs.supported_interfaces);
--	__set_bit(PHY_INTERFACE_MODE_1000BASEX,
--		  priv->pcs.supported_interfaces);
--	if (priv->gswip.hw_info->supports_2500m)
--		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
--			  priv->pcs.supported_interfaces);
--	priv->tbi_interface = PHY_INTERFACE_MODE_NA;
--
--	/* assert SGMII reset to power down SGMII unit */
--	ret = regmap_set_bits(priv->shell, GSW1XX_SHELL_RST_REQ,
--			      GSW1XX_RST_REQ_SGMII_SHELL);
-+	ret = gsw1xx_serdes_pcs_init(priv);
- 	if (ret < 0)
- 		return ret;
+-	config->lpi_capabilities = MAC_100FD | MAC_1000FD;
+-	config->lpi_timer_default = 20;
+-	memcpy(config->lpi_interfaces, config->supported_interfaces,
+-	       sizeof(config->lpi_interfaces));
++	gsw1xx_phylink_get_lpi_caps(config);
++}
++
++static void gsw150_phylink_get_caps(struct dsa_switch *ds, int port,
++				    struct phylink_config *config)
++{
++	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
++				   MAC_10 | MAC_100 | MAC_1000;
++
++	switch (port) {
++	case 0 ... 4: /* built-in PHYs */
++		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
++			  config->supported_interfaces);
++		break;
++
++	case 5: /* GMII or RGMII */
++		__set_bit(PHY_INTERFACE_MODE_GMII,
++			  config->supported_interfaces);
++		fallthrough;
++
++	case 6: /* RGMII */
++		phy_interface_set_rgmii(config->supported_interfaces);
++		break;
++	}
++
++	gsw1xx_phylink_get_lpi_caps(config);
+ }
  
+ static struct phylink_pcs *gsw1xx_phylink_mac_select_pcs(struct phylink_config *config,
+@@ -809,11 +839,38 @@ static const struct gswip_hw_info gsw141_data = {
+ 	.tag_protocol		= DSA_TAG_PROTO_MXL_GSW1XX,
+ };
+ 
++static const struct gswip_hw_info gsw150_data = {
++	.max_ports		= GSW150_PORTS,
++	.allowed_cpu_ports	= BIT(5) | BIT(6),
++	.mii_cfg = {
++		[0 ... 4] = -1,
++		[5] = 0,
++		[6] = 10,
++	},
++	.mii_pcdu = {
++		[0 ... 4] = -1,
++		[5] = 1,
++		[6] = 11,
++	},
++	.phylink_get_caps	= gsw150_phylink_get_caps,
++	/* There is only a single RGMII_SLEW_CFG register in GSW150 and it is
++	 * unknown if RGMII slew configuration affects both RGMII ports
++	 * or only port 5. Use .port_setup which assumes it affects port 5
++	 * for now.
++	 */
++	.port_setup		= gsw1xx_port_setup,
++	.pce_microcode		= &gsw1xx_pce_microcode,
++	.pce_microcode_size	= ARRAY_SIZE(gsw1xx_pce_microcode),
++	.tag_protocol		= DSA_TAG_PROTO_MXL_GSW1XX,
++};
++
+ /*
+  * GSW125 is the industrial temperature version of GSW120.
+  * GSW145 is the industrial temperature version of GSW140.
+  */
+ static const struct of_device_id gsw1xx_of_match[] = {
++	{ .compatible = "intel,gsw150", .data = &gsw150_data },
++	{ .compatible = "lantiq,peb7084", .data = &gsw150_data },
+ 	{ .compatible = "maxlinear,gsw120", .data = &gsw12x_data },
+ 	{ .compatible = "maxlinear,gsw125", .data = &gsw12x_data },
+ 	{ .compatible = "maxlinear,gsw140", .data = &gsw140_data },
+@@ -837,5 +894,5 @@ static struct mdio_driver gsw1xx_driver = {
+ mdio_module_driver(gsw1xx_driver);
+ 
+ MODULE_AUTHOR("Daniel Golle <daniel@makrotopia.org>");
+-MODULE_DESCRIPTION("Driver for MaxLinear GSW1xx ethernet switch");
++MODULE_DESCRIPTION("Driver for Intel/MaxLinear GSW1xx Ethernet switch");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.h b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
+index 8c0298b2b7663..d1fded56e9678 100644
+--- a/drivers/net/dsa/lantiq/mxl-gsw1xx.h
++++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
+@@ -10,6 +10,8 @@
+ #include <linux/bitfield.h>
+ 
+ #define GSW1XX_PORTS				6
++#define GSW150_PORTS				7
++
+ /* Port used for RGMII or optional RMII */
+ #define GSW1XX_MII_PORT				5
+ /* Port used for SGMII */
 -- 
 2.52.0
