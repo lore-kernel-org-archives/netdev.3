@@ -1,155 +1,115 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013019.outbound.protection.outlook.com [40.107.201.19])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4130632ABCD
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 09:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769072961; cv=fail; b=NIdY0Hvzi+45avOelUWaT777ZYLRvZS0lKcaRo6hEnCgaE1jQF4y41FcNO0qU71Y222ee5bvk8H+9/79o5XjdDii1eiOCsD1T7xEJmXvqQxg8oXG/ed/tfBd74PkScv0uAFXNDANbQhcWWcgbHlVb8sa/Q+paVMOvToG54h60gI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769072961; c=relaxed/simple;
-	bh=d1/XwQTDsXMsUfm3Gs36MTmnWkqxnc/d70EX9UcBtz8=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=kQKf9gLCIqGxzdgtxqU2INujwDE/UScxY7uTsA+DqnaYtVjKbmcpL0Lir/XGdLoqU47GI4hiA/pLsO6lQ5zKT31e3QYtksOpuw6v4maelnxVCidxEsMiN17Z1ER49ONEt5YDm+ILWYuZsu/LrVFUaBmPyHL5yXG07cCOUgR5jyI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nvO/BzVk; arc=fail smtp.client-ip=40.107.201.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8442E223DC6
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 09:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769073404; cv=none; b=bx7DMjl+JWBjDAaV/+ijaPNNV0rjlUO2Man9sYNemZElF5UY2j17GyRyKmK0+qE3kAZHYf/YlZwGW2wrwsOmYaY0eOWaJLY61kDVqIjVat99mbFzLJ5IDQRX+YXfz+HOWeBoXS+FLlZwbrsDdtVCf8ZFbV1Y67Mhf03qzgG35TE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769073404; c=relaxed/simple;
+	bh=PplpYZG54yCTO5Zvm8cd60PmTtW5IMnM+N/1Ic97wbI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GspHdmLmU/JdN94KVrSd6LZAfK2QxungeNiwp1+DXD2b/IYnm4JKCqLVFO3RZHUhCQlVoqgSzKKDROsJ9rYdcl+DJdEOIAyAPGPljQUOv5Awa3S7Yhxu0LsoY87+IcaglEchiIk5VPbZQW3vQF690k7r4nkyMm6+L9bdjLs9B9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ciXaTA3M; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nvO/BzVk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H+pHMhXM4JAsacvSCoJkmsWyvT7g3cdzpUIrdUXRRjJUqUByE7IAhK7CmUdFq1Prp8OFgYqt8aFJ8RaQCzII1JELxM/IP1YwRuqqsdEqw3xUvYFySsMI9/+/QnjrSSfxI0lJa4+XI0I2Ls2iku/FoSfMh9gYykebxtSTJFAmEU2uQStAHvGIVdmdZ06K7glELTCFZraAeTJVot0RkSMd8vb5+Jkr8VBOyntSz0OHR4iw/4u62kuPB4xmkS96MBBMFFHGWmnwoKYmRZYO2vQH6mqR5qvJJCJVrl91bXG0+Ks/EECNVAw9Ucig7v/xc7uh8l+SPLjZVkwc7AZzw/bYOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d1/XwQTDsXMsUfm3Gs36MTmnWkqxnc/d70EX9UcBtz8=;
- b=fbVvE0S+PqwlbBvTKaBEJx0vePMqGaodRKaaSRrgJ6OAXjofwaxruQK8g1LaK2GhanwLo2kSe2G+yqGBK1RLEjw+0QYrLSgTb88ZowE2uFE9oscsYKfaqmdMJZ0rsYCvPb4aiV2BDYs1qPpVpXggzst3gl4QhmmtpP+mIJWEq1ipM8LzvPM+fxXg0bdf/cwSN5Wm5EPTDhNi5Y61HpHJktYu8QwKGZmjCqgW9GEt45MNq53nbbK6kJeJn1Jxr2K+ogKmPlC7SxAEZLP4duH8BIFXlmmHsvsC9tPIktCzrt0ZF91VHrs0b3q8tL+/jU+b722Imf7mTjCj0YVjKfaZZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=blackwall.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d1/XwQTDsXMsUfm3Gs36MTmnWkqxnc/d70EX9UcBtz8=;
- b=nvO/BzVk0DBjOEzFE4cLgy9bP8TuuVWWKCr7TU5JQ/AHYbEzPhahv9YLmUvI5Hpwp82HK/BwTc7dv9DX+26y3S5Fgoa2+z2D+e8PeJbINFngIAL370mA/pfhDXCl0W40IlMEs51J9oOzI/klG0/UPQThMX0/vldcLyLenfZn1ITcXPm84B8B6C33heUf6fX8/557i60cRg1ARiTFSxgnVVQgWKymE9Bkqudv0tDgztybN8YR58am3CY3Ml1oj+6x3rTpeOY90fCoGTKTiggkOkzMxUSljep91SEaQwsQ92aoIv1IDkB2ls97kpRs992iwcFR8Uzxkoa8y4cwYmW2Tw==
-Received: from SJ0PR05CA0096.namprd05.prod.outlook.com (2603:10b6:a03:334::11)
- by IA0PR12MB8256.namprd12.prod.outlook.com (2603:10b6:208:407::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Thu, 22 Jan
- 2026 09:09:15 +0000
-Received: from CO1PEPF000075F0.namprd03.prod.outlook.com
- (2603:10b6:a03:334:cafe::2a) by SJ0PR05CA0096.outlook.office365.com
- (2603:10b6:a03:334::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.7 via Frontend Transport; Thu,
- 22 Jan 2026 09:09:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CO1PEPF000075F0.mail.protection.outlook.com (10.167.249.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 22 Jan 2026 09:09:14 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 22 Jan
- 2026 01:08:40 -0800
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 22 Jan
- 2026 01:08:33 -0800
-References: <cover.1769011015.git.pabeni@redhat.com>
- <61f2c98ba0f73057c2d6f6cb62eb807abd90bf6b.1769011015.git.pabeni@redhat.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Paolo Abeni <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Simon
- Horman" <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, <sdf@fomichev.me>,
-	<petrm@nvidia.com>, <razor@blackwall.org>, <idosch@nvidia.com>
-Subject: Re: [PATCH v5 net-next 10/10] selftests: net: tests for add double
- tunneling GRO/GSO
-Date: Thu, 22 Jan 2026 11:05:13 +0100
-In-Reply-To: <61f2c98ba0f73057c2d6f6cb62eb807abd90bf6b.1769011015.git.pabeni@redhat.com>
-Message-ID: <87fr7yezcv.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ciXaTA3M"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60M6Wf1P1834067;
+	Thu, 22 Jan 2026 01:16:25 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=RCQPDNXijAeVUWmVf6wLg88
+	flEUv6pUUQ7mfKMo2dXI=; b=ciXaTA3MG45HJsi1ie0LtUEPjvzzykCA/86QduX
+	29ZMLyvFRP7T9P2cUolN6xVI/E/ik4Pim1cTGCgvHky4Ul5s6enSxHfM+BCZO7MT
+	8wHVLPJ+S9W5Tsm8Vq1ZgBm0EQLCtnYMTFKg3dLU5OJjtmahU6KmWi7TRNOHtUwX
+	Y0ArJY9FOHu4stHu1lbPJBwy7BGHU9yhGTlhI8kWntBJS8YqCKvMYxJf+ddlzX/A
+	hoeKtCHk2tJTrLi1wSvjHNNHy6q2WCLkx81bwW5uSqganWYNpYmdbdTzIBmWBU4s
+	ZxvYlY9M1xTJ0/zQEor5laGooZNgJRdgZ+AQkvtizRsVEBA==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4btm3nktr5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Jan 2026 01:16:13 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 22 Jan 2026 01:15:32 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 22 Jan 2026 01:15:32 -0800
+Received: from localhost.localdomain (unknown [10.28.36.175])
+	by maili.marvell.com (Postfix) with ESMTP id 7DB483F70A7;
+	Thu, 22 Jan 2026 01:15:28 -0800 (PST)
+From: Srujana Challa <schalla@marvell.com>
+To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>
+CC: <pabeni@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
+        <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <ndabilpuram@marvell.com>, <schalla@marvell.com>
+Subject: [PATCH net-next] virtio_net: Increase RSS max key size to match NETDEV_RSS_KEY_LEN
+Date: Thu, 22 Jan 2026 14:45:27 +0530
+Message-ID: <20260122091527.339180-1-schalla@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075F0:EE_|IA0PR12MB8256:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb454f27-208e-45e8-ab92-08de5995ea5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Q9XXw19yM8ci+JJZ9gbbG1IaXgD96HWhfQHmcSJxRMo/WXVgBrZnFLYsxPjS?=
- =?us-ascii?Q?wRm7QB6RCVaHkhfhLYA+IELaHJbw/oC2ULw7oBQJAOWRccJGHLAGy+WfNNy8?=
- =?us-ascii?Q?y7P9WNlDikXDdIZeM2kFhZSvW11QL4muQ2weN4iexzCsNoMefDwSTWbyDU8m?=
- =?us-ascii?Q?liaA9yfTAAzRN/zXqCArlO1J3+xhMMRoeSffmNaC4v5uhm9r9d9vVB1bp6Kv?=
- =?us-ascii?Q?IS1KyLUzbqd+1uZ/YPjx1ltHrpWCp0cVYw8f/RdOcCtMEbWUrcZvGNw9Cfks?=
- =?us-ascii?Q?RRYyXvaisRe7Lw7YSpNxefw8goICe5JPeOgklNm6eAVhzipo54wB6HNXvECh?=
- =?us-ascii?Q?fBS/ZBYPn9QEgf/yNmvp4cD3ai2M1zfpgtSaR7d8+srAOaryyyAPtfPdIi33?=
- =?us-ascii?Q?76aLG4AGKF2/hgL3qBfchUG1PDHQapgeuprx1/1TgI+E1zdtByyCjVZqqxKH?=
- =?us-ascii?Q?cjuHIAYXlN1uhQgpkz+XGPk20IHnssvmUTRi+gTTMt1qTZvTE+PletX0YKAP?=
- =?us-ascii?Q?9LooLoxfHQnnbvEKQWWRHreevn3GJQzSi/pb/Jfsie6SLapvz/lhIuEQhohC?=
- =?us-ascii?Q?fpAayiamJBPbdYDjxN2fr/3niqeH3mG9N/0pueGYUUpbHyM2IeKiGcjUvnNI?=
- =?us-ascii?Q?9tpy1Mvlhtdt/Cre0kLSJMJH4WTcWqAWobiX1+TWmFy1MU4pO7kT7HGa3kk3?=
- =?us-ascii?Q?AXcj+pv1HCDt1bRcvEXM0ac+CEq49XRUGnmGKbbEdH5xgHEQv+v2Ld14kTW/?=
- =?us-ascii?Q?C8h75tYW31Y1Q3Z7hatT2/s0Y9ubaNdw3n5oT4NkMn6V7ZLVZhLewK075Xr6?=
- =?us-ascii?Q?Qb3pdbQlDpH0qZdYtdBbMrroy0XQ6NVrtDGeOzlipTM60+7Iz78CO8cchWO0?=
- =?us-ascii?Q?i/adwdFTjPb7TYW1q0NMsV1NfwjNmbBzZSy9PX/ITvfvDIxpga/49bjuIZ5G?=
- =?us-ascii?Q?LVNqz0SZG9PHsE9XUW9oNvzHijdijmsIbOkRDrQtieOzNAUFqmZdoT1RXmFQ?=
- =?us-ascii?Q?0hrsDUjrjB6xcf+5yciQvzRfM9uMaQNLMZAzeiRVBz91F8LU6hroHXtm+oaq?=
- =?us-ascii?Q?nRWLRHxbKffCvZvD4WFAlebZkm9uBWZgztWYn4xWxU1of11aqwCYY68d6ztB?=
- =?us-ascii?Q?jKckTmWv64ndwl9/wBs3IVMdyo5m+F8r+4geaVAbO++HCm41DZ1Cw9Pz/xJh?=
- =?us-ascii?Q?TXDYtufkym06PciOTyre51KtoJwisB5ClgBnHRNUVWW+p2mGxXeuM37czh7A?=
- =?us-ascii?Q?qb/XSMomi2EUYRDmP24xqbQ8/KRFn88zfXI9Vf8ohedzQu3hZlC7YapQhZE6?=
- =?us-ascii?Q?mY9njW7pPICmMsKg+gxbJ/4yyg18OXJxC74R4FzMLcI/rlEuNcDxMV114IGj?=
- =?us-ascii?Q?v6BWbc2853b/UicvntEX0td+T2B2HFSB6ihe3ZtKqC0RYpHnRN7jZMEzDP2s?=
- =?us-ascii?Q?qFcQs+TZ8E6uV6LqRYXLxTZr0XJH8/YerU4SGkMwXQ6Z+02z3Vdj4oFLjlgQ?=
- =?us-ascii?Q?kJf++jhHMoRygbgvTwvSfLfNBhpKDOMKffb63qefkGyv3CR16dYBQ8bLBz0S?=
- =?us-ascii?Q?E1iP8XgD1eWaXGI4SA7vWHJ/nn6jA2lcy6QPYbXhAC5uAzkOJMJfVwci2c4J?=
- =?us-ascii?Q?BeeFKcRbuhWy5DC2/2PxrRCc9FRYsPMZ0kYDHlNbjIFlVdIcHnzMchyQKjB5?=
- =?us-ascii?Q?+Pt29Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 09:09:14.8933
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb454f27-208e-45e8-ab92-08de5995ea5f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000075F0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8256
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDA2MyBTYWx0ZWRfX9r2h1FS5WQcK
+ U/pruugap6TWlwP3coPhDCYguUbRDh15zKgj0LBgC5WNWzdux0TIfqpmxRg7kjZZ0HH5SdB+zk3
+ A9o91V7uuU15zfpsbAKy+39zdWeK0kd2r3RPZka/NyQMnsimhUF6ZfzQUFhaact4zZE1vxNpo8G
+ iBMhhzy/T/KCIZ5Yaf31z1hsWXlNbUS55jA1lOet84P4fc2NwSdrRh9Syuonv2BjmFjYXbGvFCq
+ K+qXc8nHUmt6Qgnc3Gt3ApyozUFrRu8yB5gshNHYMig0kOVdub/hjsTNlnuqdv0lKzmDRThz4JS
+ Cpk/CiUdngCc+/BbEQH9ih3rHJ4oKZudW3i+pKPTpmBrovvmjj6v01XONYOuPKobi0SJgJ6KQQD
+ AGNi/VOx9R/Jd5ZcIV0EVIJDTsfQZwZjp3FJPLZgy6nuPeVtUNP9ksoXg+hOmi+h2pzOwHNMFPK
+ ItN5fpvaOWT0vNDo8Rg==
+X-Authority-Analysis: v=2.4 cv=JeSxbEKV c=1 sm=1 tr=0 ts=6971eadd cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=M5GUcnROAAAA:8
+ a=tN_10AvwJLKXjGWysDEA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: lfpShW07b5drNxv4SqoIKUJFJ1sgbB5I
+X-Proofpoint-GUID: lfpShW07b5drNxv4SqoIKUJFJ1sgbB5I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-21_04,2026-01-20_01,2025-10-01_01
 
+Increase VIRTIO_NET_RSS_MAX_KEY_SIZE from 40 to 52 bytes to align with
+the kernel's standard RSS key length defined by NETDEV_RSS_KEY_LEN.
 
-Paolo Abeni <pabeni@redhat.com> writes:
+The virtio specification requires devices to support at least 40 bytes
+for the RSS key size. However, devices may support larger key sizes
+up to 52 bytes (as reported by the device's rss_max_key_size config
+field). This change allows such devices to work properly.
+Previously, devices reporting rss_max_key_size > 40 would fail with
+an error during initialization.
 
-> Create a simple, netns-based topology with double, nested UDP tunnels and
-> perform TSO transfers on top.
->
-> Explicitly enable GSO and/or GRO and check the skb layout consistency with
-> different configuration allowing (or not) GSO frames to be delivered on
-> the other end.
->
-> The trickest part is account in a robust way the aggregated/unaggregated
-> packets with double encapsulation: use a classic bpf filter for it.
->
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The driver already handles variable key sizes dynamically through
+vi->rss_key_size, so increasing the maximum limit is safe and
+maintains backward compatibility with devices that support smaller
+key sizes.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+---
+ drivers/net/virtio_net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index db88dcaefb20..5f06cbc058d7 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -381,7 +381,7 @@ struct receive_queue {
+ 	struct xdp_buff **xsk_buffs;
+ };
+ 
+-#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
++#define VIRTIO_NET_RSS_MAX_KEY_SIZE     52
+ 
+ /* Control VQ buffers: protected by the rtnl lock */
+ struct control_buf {
+-- 
+2.25.1
+
