@@ -1,234 +1,87 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1877331ED66
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320D358D13;
+	Thu, 22 Jan 2026 11:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769081421; cv=none; b=ReFu0BBP2yj3AilDBagCaJfyxAbxJSb0t0C+rk9xi5Zz5QJiWVFyhC6cfkyiCsz54JFbgTi79s7Pq7yvdl4HtWMDV73JTm0q8jPJgw4dPXfo0dWHvckxen4PgKtTJ8Qw9Eq6Q6WH5ngpyBhK7l0W2c2i/cLkjL6KQXo/r82I5Lo=
+	t=1769081542; cv=none; b=OaEMnJQghCNMg8QDbZzeSDgBaBtnHQcJEeNBpRma/UNA0mShG0zh+iTqdy11Kw4Ldm9VBi4uPx5NWXJnzAn5xAzc/HyYAUy/cfQXoOXEmlw5dI9kunaf5VV/PV0dryVW23iD8VKYFdC8eus1/6x4jdNxKRF3B/fD3coXgGlA1zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769081421; c=relaxed/simple;
-	bh=39FPDHITu3Mcv+kLd8pXIXa7VRQv2QF7b1+o3jrmRAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dyRD7OTdJWNM80+C6Mr1e3RNHZ63IQvlKh8fT6s4+6AIPpy8/tiEVEywKjB6l2/G3Anv/j2trTp5KsJ0krnrxMmh5jjf1+mj+60XnaDKw0qZ59SeBNspkCT5QEEz/8I/vt6bKM4CH+3UJ4HjRtlI1PaxiZw3W1C2MQ8H3QSdOCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNYHVdcw; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769081542; c=relaxed/simple;
+	bh=Oef5xctHI8v7fFpqPEZMrxAZOxlin0yJSzkc/GnLVPA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+nAawwUDGFWKgXDKJXl0kiswBKr38uKPA5h9yf98bJn3wbybY1tS9K5D57V7YpGlzEpeGyrREOmv0r4eLyal2pHoGG8nm3muszyLOv26mnpiXe+/YP19GnvtRcsYDjWQaTW/wMFazz4jKikUlAb6PYqJEqmJhmanfx5rwFbrWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=hnUBiP76; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNYHVdcw"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so11587175e9.0
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:30:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769081417; x=1769686217; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Dnqo+Zg9fRRtteZPakxnCOruFtX67sgTE3miBZJngDg=;
-        b=gNYHVdcwB6qugUb+NizIXFxmV5hh3HerG6j3lhD910ftP4l5wNDzjBtzVtOqjG2Dmh
-         0GKYbQjYwF5F4ulbQE/XiXHEZHPvrKqdCHzJDtYvPQnudSnC2SbBFogJfOTZi0u3HaXS
-         5O33u5arQja0qzn7hCrqaNQVX33UQivegUZma7SFS5KrDLeqTugI4S7rxhOAKUcVTKN/
-         HUUGHvaU5y7ajVbsZfaHbPfO8+jS6EeLqX1WfTAKOrqzPe0IYnHrTYzkkT6gT1Hkuhu/
-         2+EhL8tUlNaoBDsR/MGL06XdKaWtFDwG5xshaacOy9o53pRab7sj+7SA3QhEdAFEOhzl
-         Y9Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769081417; x=1769686217;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Dnqo+Zg9fRRtteZPakxnCOruFtX67sgTE3miBZJngDg=;
-        b=KWunzX75E+FBP5no3+oFhkGx/a2guUntcQTyjtivbHJfAGiJlxBQaVahsVXpw1t9Mc
-         dpxju8fgzrYbN3XkIQy44i4Q8xa6o7G5vBykr+M4m4MEhFigDJvxteyMPBDCOsIxg3Cb
-         6mvBYv46K8A7LvkjP6jtc9PZBd+Tmh3E2MMvV93NXu16iyiKSXiGrxKg3lV/grByNmda
-         eBK2hMvDuSoCZA0jk+FpOUFOTuBXFbATPmk5bGggx4Lv+CQ0np48SM5BcoyWSioOVGSo
-         WHErh4pLBA3fqFbW3NGFcP9J8vgcpOr6KXlp82+1JMKiLp6wvyuuOhcqGYD/rQKhsY+z
-         ROLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeWiXcKB0MI5QuGixHGXVkGkxELTmy6aBn3kA5v8iuj+gCq/5xplVPOv0BKz4UG+g6EgryGb8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyZDiGlFUSLzBtq50lqh0/YTQOg3DWnwXEUz5ky790OA0rXOIy
-	K6N8xogSrWXgf+caPuaTcyTu/HoKxBhOAH4xEioZ/VtoLB23tOOEewbT
-X-Gm-Gg: AZuq6aIj5Q1zBG8Ie+j7sTIXR0DQ3VQtnofEcFk8V+UpCpK5Ed5P/mWO5fhU27LnXu7
-	0KOMrxD/UclounQxhFEhAFx/WSWR+C/66DQ7u3IsUQKz8iDcsr845O6v1gSeCAWN6q0fMzdh1wE
-	sCQoVeCBrumPVmaPNTU+ltMpqkClhLuvL3YvWRZ+7l7xh+R07ovkvh/CVNIjme8IwUTfge+1Neq
-	xOFmIGaJ1tzeEVFp0alsVSwvVy2b3PxOBV1j4EU1vD4XT0q0JVhv6cp7F1FAWC6Fumh4Ni0dt+e
-	hQXA74pseD9Q/f7sGCa/LIsdxhxQJDqI79AYT95UWY4BpGUW3oN8wg3wD4tNv5xwPdUkFEaXU/F
-	ZuTbkHqeCMuvqp+GxIneRfUABtbgABNmAD4BaUI8tD/rRC4EuUDTxsNl8XOg8IVNc4Zf22W5HJL
-	/DrNRTK9FwSnRFC5aP1tM1wFsOBp3Bc/DXgw==
-X-Received: by 2002:a05:600c:a013:b0:477:79c7:8994 with SMTP id 5b1f17b1804b1-4803e7f0e39mr133251495e9.30.1769081416765;
-        Thu, 22 Jan 2026 03:30:16 -0800 (PST)
-Received: from [10.221.200.32] ([165.85.126.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4358f12ee69sm21557943f8f.11.2026.01.22.03.30.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 03:30:16 -0800 (PST)
-Message-ID: <58fe1908-48de-4bca-ad4e-4976d24581e6@gmail.com>
-Date: Thu, 22 Jan 2026 13:30:18 +0200
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="hnUBiP76"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 5591420612;
+	Thu, 22 Jan 2026 12:32:18 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ABFtNYbnaoXt; Thu, 22 Jan 2026 12:32:17 +0100 (CET)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id CEC902088E;
+	Thu, 22 Jan 2026 12:32:17 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com CEC902088E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1769081537;
+	bh=/eq8UMKclos0k96diblmhWZCbedG/oCLn4nWsSqxvYA=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=hnUBiP7609lQ5lU5VbPxTw/jRKvNHhfC7oGRM9qRaXsiUCzRaGCTRhTocY5Ob7/sm
+	 J8KBdN08PWQm+te8rGMC5N/swmjvh1pRI32OJbqQoKVGsCX/Ftq180DYYUvfuCs5fE
+	 7vlueCWAbr4dghISr0Giq+1uMkclaZfj87M5TIeeNmHUCeLDWx1wOMcy9IHzsKnUX6
+	 VUdbdYY2XvfZW0EVXsjkOUsPUJppHLYKRPFJabnaLNhYnCc0C/2qYQhN3MOp1tpD0/
+	 /GxOA13X9n5KtbDBSgDIaSLfQuX+kWBz/7RJnSQl+A89YBbY47sXhLuC2VJj/y3x/Z
+	 6/EC/XqkDXmYQ==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 22 Jan
+ 2026 12:32:17 +0100
+Received: (nullmailer pid 1712837 invoked by uid 1000);
+	Thu, 22 Jan 2026 11:32:16 -0000
+Date: Thu, 22 Jan 2026 12:32:16 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+CC: Boris Pismenny <borisp@mellanox.com>, "David S. Miller"
+	<davem@davemloft.net>, Florian Westphal <fw@strlen.de>, Kristian Evensen
+	<kristian.evensen@gmail.com>, Leon Romanovsky <leon@kernel.org>, Leon
+ Romanovsky <leonro@nvidia.com>, Raed Salem <raeds@mellanox.com>, Raed Salem
+	<raeds@nvidia.com>, Saeed Mahameed <saeedm@mellanox.com>, Yossi Kuperman
+	<yossiku@mellanox.com>, Network Development <netdev@vger.kernel.org>,
+	linux-security-module <linux-security-module@vger.kernel.org>, Aviad Yehezkel
+	<aviadye@nvidia.com>
+Subject: Re: [PATCH] xfrm: force flush upon NETDEV_UNREGISTER event
+Message-ID: <aXIKwNJv59KnsnLw@secunet.com>
+References: <924f9cf5-599a-48f0-b1e3-94cd971965b0@I-love.SAKURA.ne.jp>
+ <537343f7-c580-43b0-9ad2-691701b9fb8e@I-love.SAKURA.ne.jp>
+ <287edf7f-85fb-46c3-9c70-c8ec7014a0db@I-love.SAKURA.ne.jp>
+ <aXIGxmCB2QU86-iA@secunet.com>
+ <447378de-3cc9-44f5-872e-a1fc477f591e@I-love.SAKURA.ne.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] tls: Add TLS 1.3 hardware offload support
-To: Rishikesh Jethwani <rjethwani@purestorage.com>, netdev@vger.kernel.org
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- borisp@nvidia.com, john.fastabend@gmail.com, kuba@kernel.org,
- sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, leon@kernel.org
-References: <20260121215727.3994324-1-rjethwani@purestorage.com>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20260121215727.3994324-1-rjethwani@purestorage.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <447378de-3cc9-44f5-872e-a1fc477f591e@I-love.SAKURA.ne.jp>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
+On Thu, Jan 22, 2026 at 08:28:31PM +0900, Tetsuo Handa wrote:
+> On 2026/01/22 20:15, Steffen Klassert wrote:
+> > Hm, I'd say we should not try to offload to a device that does
+> > not support NETIF_F_HW_ESP.
+> 
+> I was about to post the patch below, but you are suggesting that "do not allow calling
+> xfrm_dev_state_add()/xfrm_dev_policy_add() if (dev->features & NETIF_F_HW_ESP) == 0" ?
 
-
-On 21/01/2026 23:57, Rishikesh Jethwani wrote:
-> Hi all,
-> 
-> This patch series adds TLS 1.3 support to the kernel TLS hardware offload
-> infrastructure, enabling hardware acceleration for TLS 1.3 connections
-> including KeyUpdate (rekey) support.
-> 
-> Background
-> ==========
-> Currently, the kernel TLS device offload only supports TLS 1.2. With
-> TLS 1.3 being the current standard and widely deployed, there is a
-> growing need to extend hardware offload support to TLS 1.3 connections.
-> 
-> TLS 1.3 differs from TLS 1.2 in its record format:
-> 
->    TLS 1.2: [Header (5)] + [Explicit IV (8)] + [Ciphertext] + [Tag (16)]
->    TLS 1.3: [Header (5)] + [Ciphertext + ContentType (1)] + [Tag (16)]
-> 
-> The key difference is that TLS 1.3 eliminates the explicit IV and
-> instead appends the content type byte to the plaintext before
-> encryption. This content type byte must be encrypted along with the
-> payload for proper authentication tag computation per RFC 8446.
-> 
-> Patch 1: TLS 1.3 hardware offload support
-> =========================================
-> Changes to tls_device.c, tls_device_fallback.c, and tls_main.c:
-> 
-> - Extended version validation to accept TLS_1_3_VERSION in both
->    tls_set_device_offload() and tls_set_device_offload_rx()
-> - Modified tls_device_record_close() to append the content type
->    byte before the authentication tag for TLS 1.3 records
-> - Modified tls_device_reencrypt() to use prot->prepend_size and
->    prot->tag_size instead of hardcoded TLS 1.2 values
-> - Pre-populated dummy_page with all 256 byte values for memory
->    allocation failure fallback path
-> - Updated tls_device_fallback.c to handle TLS 1.3 IV construction
->    (XOR with sequence number) and version-specific AAD sizes
-> - Rekey handling: HW offload key update (rekey) is not yet supported.
-> 
-> Patch 2: Hardware offload key update support
-> ============================================
-> Changes to include/net/tls.h, net/tls/tls.h, tls_device.c, tls_main.c,
-> and tls_sw.c:
-> 
-> - Extended tls_set_device_offload() and tls_set_device_offload_rx()
->    with new_crypto_info parameter for key updates
-> - During rekey, the old HW context is deleted (tls_dev_del) and a new
->    one is added (tls_dev_add) with the updated key material
-> - Graceful degradation: if HW key update fails, the connection
->    gracefully degrades to software:
->    * TX: TLS_TX_DEV_CLOSED is set and sk_validate_xmit_skb switches to
->      tls_validate_xmit_skb_sw for software encryption
->    * RX: TLS_RX_DEV_DEGRADED and TLS_RX_DEV_CLOSED are set for software
->      decryption
->    * In both cases, tx_conf/rx_conf remains TLS_HW
-> - Record sequence management: during TX rekey, old pending records are
->    deleted and unacked_record_sn is reset to the new rec_seq
-> - Split tls_set_sw_offload() into tls_sw_ctx_init() and
->    tls_sw_ctx_finalize() to allow the HW offload RX path to
->    initialize SW context first, attempt HW setup, then
->    finalize (memzero new_crypto_info, call tls_finish_key_update)
-> - Added TLS_TX_DEV_CLOSED flag to track TX hardware context state,
->    to avoid double tls_dev_del call, symmetric with existing
->    TLS_RX_DEV_CLOSED.
-> 
-> Patch 3: mlx5 driver enablement
-> ===============================
-> - TLS 1.3 version detection and validation with proper capability checking
-> - TLS 1.3 crypto context configuration using MLX5E_STATIC_PARAMS_CONTEXT_TLS_1_3
-> - Correct IV handling for TLS 1.3 (12-byte IV vs TLS 1.2's 4-byte salt)
-> - Hardware offload for both TLS 1.3 AES-GCM-128 and AES-GCM-256
-> 
-> Testing
-> =======
-> Tested on Mellanox ConnectX-6 Dx (Crypto Enabled).
-> 
-> Both TX and RX hardware offload verified working with:
-> - TLS 1.3 AES-GCM-128
-> - TLS 1.3 AES-GCM-256
-> - Multiple KeyUpdate cycles (rekey)
-> 
-> Test methodology: ktls_test : https://github.com/insanum/ktls_test/tree/master
-> 
-> Please review and provide feedback.
-> 
-
-Hi Rishikesh,
-
-This version doesn't compile for us.
-A few comments that we wanted to share on V3, but I'll share here as 
-this is the latest:
-
-We tested V3 and a few issues were spotted.
-We did not debug them though...
-
-We run a server/client test with nginx and wrk.
-
-a.
-When requesting 128-bit key, ss output shows "cipher: aes-gcm-256" for 
-the respective connection.
-For TLS 1.2 it works fine.
-
-b.
-On the wrk side, the mlx5 rx_tls_ctx did not increase (meaning no 
-offloaded connections were opened). It works fine on the nginx side 
-however...
-For TLS 1.2 it works fine.
-
-We can share more info if needed.
-
-Regards,
-Tariq
-
-> Thanks,
-> Rishikesh
-> 
-> v4:
->    - Split single TLS patch into two separate patches:
->      * Patch 1: TLS 1.3 basic HW offload support
->      * Patch 2: HW offload key update (rekey) support with graceful degradation
->    - Removed record_type check from tls_device_record_close()
->    - Removed Broadcom bnxt_en out-of-tree driver mention
->    - Link to v3: https://lore.kernel.org/netdev/20260102184708.24618-1-rjethwani@purestorage.com/
-> 
-> v3:
->    - Added note about Broadcom bnxt_en out-of-tree driver used for testing
->    - Link to v2: https://lore.kernel.org/netdev/20251231192322.3791912-1-rjethwani@purestorage.com/
-> 
-> v2:
->    - Fixed reverse Christmas tree ordering in variable declarations
->    - Combined 'err' and 'i' declarations (reviewer feedback)
->    - Link to v1: https://lore.kernel.org/netdev/20251230224137.3600355-1-rjethwani@purestorage.com/
-> 
-> Rishikesh Jethwani (3):
->    tls: add TLS 1.3 hardware offload support
->    tls: add hardware offload key update support
->    mlx5: TLS 1.3 hardware offload support
-> 
->   .../mellanox/mlx5/core/en_accel/ktls.h        |   8 +-
->   .../mellanox/mlx5/core/en_accel/ktls_txrx.c   |  14 +-
->   include/net/tls.h                             |   4 +
->   net/tls/tls.h                                 |  14 +-
->   net/tls/tls_device.c                          | 319 +++++++++++++-----
->   net/tls/tls_device_fallback.c                 |  34 +-
->   net/tls/tls_main.c                            |  31 +-
->   net/tls/tls_sw.c                              |  77 +++--
->   8 files changed, 379 insertions(+), 122 deletions(-)
-> 
-
+As said, I think this is the correct way to do it. But let's wait
+on opinions from the hardware people.
