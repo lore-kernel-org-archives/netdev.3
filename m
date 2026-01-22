@@ -1,155 +1,218 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962F35CB8D
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 14:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEE030F53F
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 14:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769093868; cv=none; b=fFYGf9yFItIympMz+8QV61NUtTTlYqt7sOZfdKndiL2NXjZS3Vg+1Wu+/fDZ+L7C7lHz/7ezxN+PYh5dgsRDdcjpADkX1AKZsu3DAtUKVmbwFX0hlevyA0HtpwsmqiFi5KUAUZKGdlQNr0X8WEPV7ngaOyrTEKahzhDunLy0oHA=
+	t=1769093873; cv=none; b=uRoBfWxCYgB0zhIjwxUEYn4Mlrwts2gEzTofLBnEdhSbRZZE24KgwWtLC/gFcIpoM4TF+M4ztZb5FIX15yh0nSks23IDVpNNIgp4vcA9Sz+VlEUldNQc01fmDftX2Zvq2LzYQAJNEsUuxP3nW2CZx0Hxxk8b/kzkmG8y2HwrgqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769093868; c=relaxed/simple;
-	bh=aoXEQP/jbr4OlpCMv7lwXCCcOcxcNhPxgX9SwqtpX3I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=s5+uPr9bjdGmM+zT/moXMOm5EK9KAm01G4oCUoH+Mqj7d5iv8BBtspBNp9/QJym0tyyoQOXxjTtVBAOkrsunqFkjsKKTB6yMFygImLTIacq8oBIPGiwUI4GL1hrpyYbS8obiAy+g8EMQe2p1kWKRZ2XsXY081K/xV95XJhEIc5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WrEpCrf8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oKhOxIMg; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1769093873; c=relaxed/simple;
+	bh=Zp0xDIry+xWOagLYzhJnxjNnnYBXUDNXYkQ6YaC2lAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tTyqJNOOBD7c8sh5A0l3ccT54z7VJUpppRmc2ZUiO4xx2b4G0aBy3iP5YoXuUbgaOV4+T/qG7ckj6Dsoau6qGnwIMgUlb4CeRzDZcNBBDJd4TeQ+67UhQxEUd+cxEBoBjJ6kraqwP9mHrJjBGr3fYLhpkuXsrtEFJpCsiLz1nbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XkVAvnM4; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WrEpCrf8";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oKhOxIMg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XkVAvnM4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769093865;
+	s=mimecast20190719; t=1769093870;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0stwt8+yHnGWH3Ffy/uFrriSPn1kjpKm1Fo6aZDEo1w=;
-	b=WrEpCrf8qTQOY7DNo9iVEpeuKbggu+2fNZM54CKh6nyWIMOUWC6SLDOXSbJ0mmVVyTfZoV
-	OtptnkhEQpPhw+rpgDH/p8lMZGILkOpWx0G4Keb5WwHAWE62GL0vyeaahQBrtMF6i0yoDf
-	Km+w29Y5/J3BkJnUqpobckI6nVM1lxg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-_wJJ0PlNPeyJlwie--Op3w-1; Thu, 22 Jan 2026 09:57:44 -0500
-X-MC-Unique: _wJJ0PlNPeyJlwie--Op3w-1
-X-Mimecast-MFC-AGG-ID: _wJJ0PlNPeyJlwie--Op3w_1769093863
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43284f60a8aso831794f8f.3
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 06:57:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1769093862; x=1769698662; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0stwt8+yHnGWH3Ffy/uFrriSPn1kjpKm1Fo6aZDEo1w=;
-        b=oKhOxIMgFSe/CYn22nW9SdkFa1agRvmNWIMdV86jgsOdcILVcqNfY21rf7BHmw9GXC
-         ItIiR3RE6GZLU+fBXjY5S6+Ft4JS/DSr1wMQxePnPE+rOjV7WnFUilzCn4yi5jIZnPB/
-         GB8hEo1D9ramiau7txjcwNQkdCeEG6f6EtV/F+kPG4EIoi6gIdL95zS7KJbIuPIgxg0V
-         /eZknqgtnlxfQ7jYFU9aZTAye00qcMcrvH256jJc3R30bDki/YrtawBASO4npp/wT9rs
-         XR0Rb4+sBHJzmwN731Zl7+g6fvEelyuoWSAHlHGMi/B/2WnezEGGwqPhzuQpTg+DTCD1
-         uSBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769093863; x=1769698663;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0stwt8+yHnGWH3Ffy/uFrriSPn1kjpKm1Fo6aZDEo1w=;
-        b=dHEvXUeX6++LOQ/GvCStAvF7ppkqJqdp+q3S/OM6B06Y8R3bnK7LREqOw/hFijjmo8
-         rhvWD/q0BKwzsWuH09vXUJuTC05s6mOO/1H9h2TPmkkIsz5oFonPesGQMWUpSqqYtp1J
-         NqeZlrI89WkqYEEb2pGCmUWggZPLYxM1Nm0WNkILbkxjMfuNqjrtTx2R8xzgyQWkOq+n
-         +sUfLq+c6JlN1z9gYNWNFPvNyc5O5rJthGmr/jWZl0mXaurkA3hvZX2cVxzLCpokxYxi
-         +xyijwB9K4ggdzScH7B7tfeof4ZLmwJ7j1t+xhT27Z/9Z/PJBkavPWshsNs4BJjri01V
-         f8ag==
-X-Gm-Message-State: AOJu0YwrKOOEqasHd2WCI5CP8roCkcO6Z/S72sddYqJY5w/7I82t67qx
-	f295SjBC42BxseZug2KKS5MSXjMxgw78i8WLikIyFmRnfiSNw2ESTb5poEhRGqw8y8SIS3wAZFi
-	oIMutBr9hc/XmxV1j+Wnn8bc5/k4Djrvx36PuswbL4//RLzGRg849ApuKSJ1m16ukrUKPwY2uNR
-	aWFDiUCeUqfjcG4mk2G8pWbzvBWMYuZdPEZ4NIGwk=
-X-Gm-Gg: AZuq6aI9kXy2GW/la1Tq6yzW5nMOxL33RoGOZ4KnYBUGgV7HZHUD/cUs/BA+xv49qUl
-	/d0Pb99qq3feM3muR5OI2bxrseggtfk5Mx5Kj65760UVIHvaZRnOxg9b6XHQ3mJUCSKXcoq3dLz
-	g8RJM9YyjuNopVnL0XwePKXk7OokF1xOtsc2uPV/86tZ8pMCew3Vdbyk3saTrTy/b/wiVJp19ot
-	Valldem7+43BSX515lxkE6EeNs8veJPOP9d4ZIhB50uPPX2CB1o1b0r5SjzCXW6LeX35B71tJND
-	TO3efWvvQQBBGMelFPUOez5SjyesWGhP/OU3R4zSOtp4tA3k620bNewp8dSDndSp0AIdVwpF/MM
-	gbviS5PCbdSBh
-X-Received: by 2002:a05:6000:178b:b0:435:b068:d3da with SMTP id ffacd0b85a97d-435b068d536mr836417f8f.4.1769093862584;
-        Thu, 22 Jan 2026 06:57:42 -0800 (PST)
-X-Received: by 2002:a05:6000:178b:b0:435:b068:d3da with SMTP id ffacd0b85a97d-435b068d536mr836360f8f.4.1769093862049;
-        Thu, 22 Jan 2026 06:57:42 -0800 (PST)
-Received: from [192.168.88.32] ([216.128.11.175])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43596291e0asm16772665f8f.15.2026.01.22.06.57.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 06:57:41 -0800 (PST)
-Message-ID: <c5f875fc-9d87-42e3-bc33-59864e206f96@redhat.com>
-Date: Thu, 22 Jan 2026 15:57:39 +0100
+	bh=PyWvUwtxpVaKU71jmDP1MK8awYA43ge3b0VGXSY2SYI=;
+	b=XkVAvnM4wCDEFR+rESR3Qa7OWnot5/tD/0aGUI4fYxQWxergJRjLP7KR73LnA41L/n/Nuj
+	5AnftWBGh/+k3ey4Xd8uQL42Ds3COMn3X40FmwDZdNmRq/zpJfHxmEBSKeCT9825iNCfWv
+	3fF3ObY2z2CELBcppsknxdU3sLfCIk0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-nNJR3YaNNyWkU7NavDJU7g-1; Thu,
+ 22 Jan 2026 09:57:47 -0500
+X-MC-Unique: nNJR3YaNNyWkU7NavDJU7g-1
+X-Mimecast-MFC-AGG-ID: nNJR3YaNNyWkU7NavDJU7g_1769093863
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BE7381944B10;
+	Thu, 22 Jan 2026 14:57:43 +0000 (UTC)
+Received: from thinkpad.redhat.com (unknown [10.45.225.113])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 582AA1800665;
+	Thu, 22 Jan 2026 14:57:39 +0000 (UTC)
+From: Felix Maurer <fmaurer@redhat.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jkarrenpalo@gmail.com,
+	tglx@linutronix.de,
+	mingo@kernel.org,
+	allison.henderson@oracle.com,
+	petrm@nvidia.com,
+	antonio@openvpn.net,
+	bigeasy@linutronix.de
+Subject: [PATCH net-next v2 5/9] selftests: hsr: Add tests for more link faults with PRP
+Date: Thu, 22 Jan 2026 15:57:00 +0100
+Message-ID: <774d7a2327d1c05b78ee30ac21297794bfcb0245.1769093335.git.fmaurer@redhat.com>
+In-Reply-To: <cover.1769093335.git.fmaurer@redhat.com>
+References: <cover.1769093335.git.fmaurer@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 08/10] geneve: extract hint option at GRO
- stage
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, sdf@fomichev.me,
- petrm@nvidia.com, razor@blackwall.org, idosch@nvidia.com
-References: <cover.1769011015.git.pabeni@redhat.com>
- <cd0e9dc42ba83f388b604097cffe268ffcb53351.1769011015.git.pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <cd0e9dc42ba83f388b604097cffe268ffcb53351.1769011015.git.pabeni@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 1/21/26 5:11 PM, Paolo Abeni wrote:
-> @@ -566,6 +726,25 @@ static struct sk_buff *geneve_gro_receive(struct sock *sk,
->  			goto out;
->  	}
->  
-> +	/* The GRO hint/nested hdr could use a different ethernet type. */
-> +	hint_off = geneve_sk_gro_hint_off(sk, gh, &type, &gh_len);
-> +	if (hint_off) {
-> +		const struct geneve_opt_gro_hint *gro_hint;
-> +
-> +		/*
-> +		 * If the hint is present, and nested hdr validation fails, do
-> +		 * not attempt plain GRO: it will ignore inner hdrs and cause
-> +		 * OoO.
-> +		 */
-> +		gh = skb_gro_header(skb, off_gnv + gh_len, off_gnv);
-> +		if (unlikely(!gh))
-> +			goto out;
-> +
-> +		gro_hint = geneve_opt_gro_hint(gh, hint_off);
-> +		if (!geneve_opt_gro_hint_validate_csum(skb, gh, gro_hint))
-> +			goto out;
-> +	}
-> +
->  	list_for_each_entry(p, head, list) {
->  		if (!NAPI_GRO_CB(p)->same_flow)
->  			continue;
+Add tests where one link has different rates of packet loss or reorders
+packets. PRP should still be able to recover from these link faults and
+show no packet loss.  However, it is acceptable to receive some level of
+duplicate packets. This matches the current specification (IEC
+62439-3:2021) of the duplicate discard algorithm that requires it to be
+"designed such that it never rejects a legitimate frame, while occasional
+acceptance of a duplicate can be tolerated." The rate of acceptable
+duplicates in this test is intentionally high (10%) to make the test
+stable, the values I observed in the worst test cases (20% loss) are around
+5% duplicates.
 
-AI review reports a possible OoB access later on in:
+Signed-off-by: Felix Maurer <fmaurer@redhat.com>
+---
+ .../testing/selftests/net/hsr/link_faults.sh  | 79 +++++++++++++++++--
+ 1 file changed, 74 insertions(+), 5 deletions(-)
 
-	if (gh->opt_len != gh2->opt_len ||
-		    memcmp(gh, gh2, gh_len)) {
-			NAPI_GRO_CB(p)->same_flow = 0;
-			continue;
-		}
-
-specifically in the memcmp() accessing bytes not pulled yet from gh2. I
-think such OoB access is not possible: before reaching the buffer bounds
-the other packet hdr should match the current one geneve hdr, including
-the hint option. Thus, while processing the such packet, the GRO stage
-should have already pulled all the relevant data.
-
-I think this is simply too much to get for the LLM, at least ATM.
-
-Side note: I was sure I did the shellcheck test before posting, but nipa
-says I at very least forgot about it before some latest update (warn in
-patch 10). @Jakub: please LMK if you prefer another revision.
-
-/P
+diff --git a/tools/testing/selftests/net/hsr/link_faults.sh b/tools/testing/selftests/net/hsr/link_faults.sh
+index 7ff14dcd32e7..1959bea17147 100755
+--- a/tools/testing/selftests/net/hsr/link_faults.sh
++++ b/tools/testing/selftests/net/hsr/link_faults.sh
+@@ -11,10 +11,16 @@ ALL_TESTS="
+ 	test_cut_link_hsrv1
+ 	test_clean_prp
+ 	test_cut_link_prp
++	test_packet_loss_prp
++	test_high_packet_loss_prp
++	test_reordering_prp
+ "
+ 
+-# The tests are running ping for 5sec with a relatively short interval with a
+-# cut link, which should be recoverable by HSR/PRP.
++# The tests are running ping for 5sec with a relatively short interval in
++# different scenarios with faulty links (cut links, packet loss, delay,
++# reordering) that should be recoverable by HSR/PRP. The ping interval (10ms)
++# is short enough that the base delay (50ms) leads to a queue in the netem
++# qdiscs which is needed for reordering.
+ 
+ setup_hsr_topo()
+ {
+@@ -160,6 +166,7 @@ check_ping()
+ {
+ 	local node="$1"
+ 	local dst="$2"
++	local accepted_dups="$3"
+ 	local ping_args="-q -i 0.01 -c 400"
+ 
+ 	log_info "Running ping $node -> $dst"
+@@ -178,7 +185,9 @@ check_ping()
+ 		loss="${BASH_REMATCH[1]}"
+ 	fi
+ 
+-	check_err "$dups" "Unexpected duplicate packets (${dups})"
++	if [ "$dups" -gt "$accepted_dups" ]; then
++		check_err 1 "Unexpected duplicate packets (${dups})"
++	fi
+ 	if [ "$loss" != "0%" ]; then
+ 		check_err 1 "Unexpected packet loss (${loss})"
+ 	fi
+@@ -197,7 +206,7 @@ test_clean()
+ 		return
+ 	fi
+ 
+-	check_ping "$node1" "100.64.0.2"
++	check_ping "$node1" "100.64.0.2" 0
+ 
+ 	log_test "${tname}"
+ }
+@@ -237,7 +246,7 @@ test_cut_link()
+ 		log_info "Cutting link"
+ 		ip -net "$node1" link set vethB down
+ 	) &
+-	check_ping "$node1" "100.64.0.2"
++	check_ping "$node1" "100.64.0.2" 0
+ 
+ 	wait
+ 	log_test "${tname}"
+@@ -259,6 +268,66 @@ test_cut_link_prp()
+ 	test_cut_link "PRP"
+ }
+ 
++test_packet_loss()
++{
++	local proto="$1"
++	local loss="$2"
++
++	RET=0
++	tname="${FUNCNAME[0]} - ${proto}, ${loss}"
++
++	setup_topo "$proto"
++	if ((RET != ksft_pass)); then
++		log_test "${tname} setup"
++		return
++	fi
++
++	# Packet loss with lower delay makes sure the packets on the lossy link
++	# arrive first.
++	tc -net "$node1" qdisc add dev vethA root netem delay 50ms
++	tc -net "$node1" qdisc add dev vethB root netem delay 20ms loss "$loss"
++
++	check_ping "$node1" "100.64.0.2" 40
++
++	log_test "${tname}"
++}
++
++test_packet_loss_prp()
++{
++	test_packet_loss "PRP" "20%"
++}
++
++test_high_packet_loss_prp()
++{
++	test_packet_loss "PRP" "80%"
++}
++
++test_reordering()
++{
++	local proto="$1"
++
++	RET=0
++	tname="${FUNCNAME[0]} - ${proto}"
++
++	setup_topo "$proto"
++	if ((RET != ksft_pass)); then
++		log_test "${tname} setup"
++		return
++	fi
++
++	tc -net "$node1" qdisc add dev vethA root netem delay 50ms
++	tc -net "$node1" qdisc add dev vethB root netem delay 50ms reorder 20%
++
++	check_ping "$node1" "100.64.0.2" 40
++
++	log_test "${tname}"
++}
++
++test_reordering_prp()
++{
++	test_reordering "PRP"
++}
++
+ cleanup()
+ {
+ 	cleanup_all_ns
+-- 
+2.52.0
 
