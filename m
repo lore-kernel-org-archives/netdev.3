@@ -1,280 +1,448 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F023815DC
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 16:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769101099; cv=pass; b=X3/d2yECNr0A+ljv+GFkgLg1LJo5hS7FrmoRfcFajRkIRDSdH2/KGtBlmldtwWazw2S5/WrY4bxzYDL0scX1J4KtSY0qP0bILC0tzYQf+fB8RHZvzpCbueRYZl/4tpPtECct2TzsfUfsJ8m0HukVBUhsKqTx+x06Fo8DmFewgY0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769101099; c=relaxed/simple;
-	bh=lPbyE5HVBGcvAtveEW567s0jPq8xfXpiKG2oyWYcLWo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rxHfozIKnKpReil7TwGuoLJb+0abr0JwrVguATq/TiDNJECCEQbyv4gb2s2IX7qQQmrcxpnm9HOcG7df4NKYqUJawCi2eJbTS5mN0DQ79CV2qZcbC7Ht2c5zr78DeKWKCyx/0Ph4y3Ng6xxTmJELOWBL8mS7LBB/U+BOj1l/WYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzqVgZed; arc=pass smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FCC36F400;
+	Thu, 22 Jan 2026 17:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769101218; cv=none; b=WhiIyCNvhLTqD/2g96km7Pyu93afXmzMuPZOV70ZHjvAUjFQ8tm2PEV7Ro565xOg/gcbG60hy9iSWmuhD5jR8UQclkCxlDTC9WDH+XbZjmWPv9B8Xxv9EaFEWxXzOEcmqbiRq06lBEnH1TdodNvNMWpNbzuW9Yj+92neYq4xl4s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769101218; c=relaxed/simple;
+	bh=AGRfaRpcIPGtdS76Lm3RYD8zARNuQXZYHKBqPYy7rNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NXS7QvfdrsRr6205LN3s3CwSB07Thcxf9sEdpaQVs8VPE5pwqtqEL6E4CkT4Kt3wDdeJ87DJ7m5WLTThIAiNdR9ZtuJ47px6sTYinUSLacK/k3sX+yfSNUxV8ulP2bkqUKW/qTlMvER/5Tk3/weuGi+MVrv9dIrjToZRbCDIu3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnLlGdW0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzqVgZed"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81f46b5e2ccso823081b3a.0
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 08:58:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769101090; cv=none;
-        d=google.com; s=arc-20240605;
-        b=G85IUkE1FfUySbyROwBT6bZkARqKK/U7sEjg6cqRuu+WJDwxW/5th5ouMImvXGyCzV
-         1nnqhjPUiX4cTYQe3C19uf2T51ANmnTmNTfAgeumornxrcgfvNrw9Puw16PU9KPhUSyc
-         6Inmq0gsKkqZlqb3CTVUJt2rcxO+/c0mO0+tC5Xj51zlIuXR2bq6ITc0HUMaH+ddyCHA
-         6jnffsOBAdYlQmsHElxXUMd/YIoAVHKZLB0zBtR6vFCTWtTrbugPp7bPOt85UAm7AL3F
-         xzVEjcVjGkEzBgfNRq/RD2b7/qlyth7Wku4JPVIkiOtj+ZpqhOxWG9ZEExcK3eUiTbgD
-         rM7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dlYWNytdbLuoBlz0DkwQwH1hWCGIcWrpH4X6lCzbbyI=;
-        fh=sWaf41cVSUnRYzFXWIkstdpExxMHyU8zL/1yhtmwCXg=;
-        b=k3SYgfuAMaX9bBowkL4twEUlLPB9YJvxYUmGjHFCcknyXScoUXSldjSFKlUnwVOiLz
-         zscl/C6QqJSDTiNB2fKpf/kUZeXmYn4dAS98cqk0SNQjM2r4I482XRRxt/fu/bq7cT1G
-         woggjx0ALzn6N62SULvmXy3QT1kPYvzGL7pWKxSNpK3QsMRU0A3LXUdtaovckcfER/3U
-         VOWrc7hOUV1fnJBUfoC7A3gS/qI4+QoadYRkqMDTBp6Z8NTjMfX/IXkg/vNEmlhjTg27
-         qTlzxSlfe8JpF0LUQxYMOXvGDpTvKvNi/o1mFZoW1B3rmlYTkRTmZKeBtSYRnjR52OUK
-         Wkeg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769101090; x=1769705890; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dlYWNytdbLuoBlz0DkwQwH1hWCGIcWrpH4X6lCzbbyI=;
-        b=ZzqVgZedBew0uyeV0+NQjzrc6f5h4n9eH/ovrUrtnL8qLTqkG/xyQV1NvHYRu68jKT
-         bFX57csUEIa0F9HKG5v+bMCwVe8zuABF7Ixxize7SiggwydNr9/e4Oda+U3D/SL02u7h
-         5wMaeaBnfKYlgMNLxPrXoPPtee4epX4LOyakAUWWhYXsMgI1SR5WKsru6dCsJr1l26ON
-         wYPMlHOzg2EEn94TidVBjp9qcs+9gcCAcgYkv76DXx0bJfJ09sAPoM/cD6EuEyocr94m
-         39J7o9O+kaRWh1PeQKexOeSAPFdbIVYjgITIailgDx71I08gL+ymG6IPjbNIT1/wVe9k
-         scWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769101090; x=1769705890;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dlYWNytdbLuoBlz0DkwQwH1hWCGIcWrpH4X6lCzbbyI=;
-        b=RjlHnPSMEg4LkYpmppHvMyp48xMxnexV+vAb4xDj3o+WHsJ8y39cx/n1rVy5/rGUpP
-         jDqHlVzOySgIGoEXnj5267izPLwkj2w4QEd7ydxj+5mVzoYTJjq8qRIoRDJWQjPtCGdC
-         RTh28NJdOUmrrvPlsXgyjnoUTIa+4a89jL7qx8tDUw3TeLbZCp3oldpD+9Gl0JQyigyU
-         mfQHLVcbbldY/JFB1GBVy2Be07Y58CR/nseItTj6dmUOtBYCyM420/6837BeV0GGI/zv
-         YbTjE6fX1uwAEaGLElaLvC9taEZhc1RXdRZZ25eGTAc1P5cwzaUiJEfvV5wm5H364hpP
-         Ektg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWqBil4JtsuSqvYuWzhUfM4nDyu4weR9/UF8+LGCtYW2KHnGfKJHfElpb1xCruxrgsY2KFw+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI0/I8t+HBN2GiW3kX4B3hDDknKd+B5R+FlZZFxYSBlJYqN5Hv
-	rc6qZ0G/h5ByaiTGDXq1VUlFNVpl/lxOv2wwHlHfhseI0XPTJr9I/R+7h4nr1UvBNK34YFGTZl+
-	U9p2Oe4O/7kg9KxRaXrbBPe2o+sfKNtw=
-X-Gm-Gg: AZuq6aKyKJnfIJPpzi4GjMvtKWMNLQy7zxgqZRSsnqsasxcNTi9z/pw1edWHmvdu1iq
-	PKxTOLaepWY5iT/ePmsU/T7bcNSK1J+8V2scG+sCyxxD9Eb0u75B/z0ZVywZXWdAYmnOpU/fSnz
-	ziNfrP89srd1AihQC7T/e1ZulK0wgfhI6uJAxJ3+HN90p1wk1/E1BNVElccDw7PY9oojDOrHr6A
-	PFqTK51aJhITWmnatE9tJ3yxMBOIeNzzzj96Om6uHJP9yN2dEDFBSjMp0VU52nqWAcV48wu+t3S
-	YUVjt8/KHN8=
-X-Received: by 2002:a05:6a20:d80d:b0:38d:657f:7d9d with SMTP id
- adf61e73a8af0-38e6f823b2fmr243279637.75.1769101090077; Thu, 22 Jan 2026
- 08:58:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnLlGdW0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C10C2BCB1;
+	Thu, 22 Jan 2026 17:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769101218;
+	bh=AGRfaRpcIPGtdS76Lm3RYD8zARNuQXZYHKBqPYy7rNY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BnLlGdW0rNy2pUIJWcLjzMIzAd5ULuf9yP740JCZYc94/XRPaDbnfw9AeOWRNj5zL
+	 8H+cIQq8ra8MmqxB7ZDGCWbg5f6mUnuyNpDFNbojZdUoh3GJTBQX7od39uUCBsIPjC
+	 Rl4PhEKSb1aiviT3DMc8kl3jIOxN9qn9kxquqw32tQgIyVyLbYd+0hT/kKlOrZu4w3
+	 Vpil0aRQg2y9Mr57VpWx3syHVN6hF743LPCb3YfoZcrIqKWyprFQqgkDDQNVoLCcPX
+	 Nduqt+7yDuSUfiuVu+m9YfYgVauqqLgRIXNlsG6Mfb5cQAtBHJ6UTFcILxsBxHM4MC
+	 MuHCVCukt0uOg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: torvalds@linux-foundation.org
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pabeni@redhat.com
+Subject: [GIT PULL] Networking for v6.19-rc7
+Date: Thu, 22 Jan 2026 09:00:16 -0800
+Message-ID: <20260122170016.3148026-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115112246.221082-1-dongml2@chinatelecom.cn>
- <CAEf4BzYop1GT1v7qxNQi44dsEebjwnLp-sHDp-HPzVrj69WzTw@mail.gmail.com>
- <CAEf4BzZm5uenrYO3ZXiGB8qXCg67Ov7crNvZtsj=Be4XEm6OpQ@mail.gmail.com> <3026367.e9J7NaK4W3@7940hx>
-In-Reply-To: <3026367.e9J7NaK4W3@7940hx>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Thu, 22 Jan 2026 08:57:57 -0800
-X-Gm-Features: AZwV_QjPBQw-apRLcGe2OrHL4UUNo4YK_kjv4s9fPB2irHVYsQr_3qH8dSMkPr4
-Message-ID: <CAEf4BzYR87Tpp4=UXBe=_A50kfZsAh1b8P__wmNU_4tKo5LqHA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v10 07/12] bpf,x86: add fsession support for x86_64
-To: Menglong Dong <menglong.dong@linux.dev>
-Cc: Menglong Dong <menglong8.dong@gmail.com>, ast@kernel.org, andrii@kernel.org, 
-	daniel@iogearbox.net, martin.lau@linux.dev, eddyz87@gmail.com, 
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com, 
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, 
-	davem@davemloft.net, dsahern@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jiang.biao@linux.dev, bp@alien8.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, hpa@zytor.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 21, 2026 at 6:41=E2=80=AFPM Menglong Dong <menglong.dong@linux.=
-dev> wrote:
->
-> On 2026/1/22 08:22 Andrii Nakryiko <andrii.nakryiko@gmail.com> write:
-> > On Wed, Jan 21, 2026 at 4:06=E2=80=AFPM Andrii Nakryiko
-> > <andrii.nakryiko@gmail.com> wrote:
-> > >
-> > > On Thu, Jan 15, 2026 at 3:24=E2=80=AFAM Menglong Dong <menglong8.dong=
-@gmail.com> wrote:
-> > > >
-> > > > Add BPF_TRACE_FSESSION supporting to x86_64, including:
-> > > >
-> > > > 1. clear the return value in the stack before fentry to make the fe=
-ntry
-> > > >    of the fsession can only get 0 with bpf_get_func_ret().
-> > > >
-> > > > 2. clear all the session cookies' value in the stack.
-> > > >
-> > > > 2. store the index of the cookie to ctx[-1] before the calling to f=
-session
-> > > >
-> > > > 3. store the "is_return" flag to ctx[-1] before the calling to fexi=
-t of
-> > > >    the fsession.
-> > > >
-> > > > Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-> > > > Co-developed-by: Leon Hwang <leon.hwang@linux.dev>
-> > > > Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> > > > ---
-> > > > v10:
-> > > > - use "|" for func_meta instead of "+"
-> > > > - pass the "func_meta_off" to invoke_bpf() explicitly, instead of
-> > > >   computing it with "stack_size + 8"
-> > > > - pass the "cookie_off" to invoke_bpf() instead of computing the cu=
-rrent
-> > > >   cookie index with "func_meta"
-> > > >
-> > > > v5:
-> > > > - add the variable "func_meta"
-> > > > - define cookie_off in a new line
-> > > >
-> > > > v4:
-> > > > - some adjustment to the 1st patch, such as we get the fsession pro=
-g from
-> > > >   fentry and fexit hlist
-> > > > - remove the supporting of skipping fexit with fentry return non-ze=
-ro
-> > > >
-> > > > v2:
-> > > > - add session cookie support
-> > > > - add the session stuff after return value, instead of before nr_ar=
-gs
-> > > > ---
-> > > >  arch/x86/net/bpf_jit_comp.c | 52 ++++++++++++++++++++++++++++-----=
-----
-> > > >  1 file changed, 40 insertions(+), 12 deletions(-)
-> > > >
-> > > > diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_com=
-p.c
-> > > > index 2f31331955b5..16720f2be16c 100644
-> > > > --- a/arch/x86/net/bpf_jit_comp.c
-> > > > +++ b/arch/x86/net/bpf_jit_comp.c
-> > > > @@ -3094,13 +3094,19 @@ static int emit_cond_near_jump(u8 **pprog, =
-void *func, void *ip, u8 jmp_cond)
-> > > >
-> > > >  static int invoke_bpf(const struct btf_func_model *m, u8 **pprog,
-> > > >                       struct bpf_tramp_links *tl, int stack_size,
-> > > > -                     int run_ctx_off, bool save_ret,
-> > > > -                     void *image, void *rw_image)
-> > > > +                     int run_ctx_off, int func_meta_off, bool save=
-_ret,
-> > > > +                     void *image, void *rw_image, u64 func_meta,
-> > > > +                     int cookie_off)
-> > > >  {
-> > > > -       int i;
-> > > > +       int i, cur_cookie =3D (cookie_off - stack_size) / 8;
-> > >
-> > > not sure why you went with passing cookie_off and then calculating,
-> > > effectively, cookie count out of that?... why not pass cookie count
-> > > directly then? it's minor, but just seems like a weird choice here,
-> > > tbh
->
-> Hi, Andrii. I think you misunderstand it here. The cur_cookie is not the
-> same as cookie count. The layout of the stack looks like this:
->
->   return value  -> 8 bytes
->   argN          -> 8 bytes
->   ...
->   arg1          -> 8 bytes
->   nr_args       -> 8 bytes
->   ip (optional) -> 8 bytes
->   cookie2       -> 8 bytes
->   cookie1       -> 8 bytes
->
-> So if the bpf_get_func_ip() not used, the cur_cookie is exactly the same
-> as cookie count. But if it exist, they are not the same.
->
-> The location of the cookies is independent from the context, and the
-> cur_cookie, which is the index of the current cookie, don't rely on cooki=
-e
-> count too and can be bigger than cookie count.
->
-> PS: the location of "ip" should always laid before the nr_args, as we get
-> it with ctx[-2]. Maybe we can optimize it later. We store the index of
-> the ip the func_meta too, therefore it is independent from the ctx too.
-> Ah, it looks not make much sense ;)
+Hi Linus!
 
-no, it makes sense, I missed that we have this optional ip stored,
-which changes cookies offset. So let's leave everything as is.
+The following changes since commit 9e995c573b63453a904f3157813dc8cde4a6aba4:
 
-A thing to consider for the future would be whether it would make
-sense to have dedicated ip slot on the stack regardless of whether we
-use bpf_get_func_ip() or not, just not fill it out if not necessary.
-That would fix offsets and make things a bit simpler. But as I said,
-just something to think about, no need to change the logic right now,
-I think.
+  Merge tag 'net-6.19-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-01-15 10:11:11 -0800)
 
->
-> > >
-> >
-> > consider also just calculating cookie count out from bpf_tramp_links?
-> > would that work? Then "func_meta" would really be just nr_args (and
-> > I'd call it that) and bool for whether this is entry or exit
-> > invokation (for IS_RETURN bit, and maybe we'll need this distinction
-> > somewhere else in the future), and then invoke_bpf() will construct
-> > func_meta from scratch.
-> >
-> > It's relatively minor thing, but as I mentioned before, it's this
-> > hybrid approach of partially opaque (from invoke_bpf's POV) func_meta
-> > which we also adjust or fill out (for cookie index) is a bit of a sign
-> > that this is not a proper interface.
->
-> Yeah, the current approach is indeed not perfect. But I think it's
-> a little not flex if we construct the whole func_meta in invoke_bpf().
-> For now, we need to pass nr_args, is_return, cookie_off to it. And
-> we need to add more function arguments to invoke_bpf() if there
-> are new flags occur in the feature, which is not convenient, right?
->
+are available in the Git repository at:
 
-I think at some point we should just collect all those different
-arguments into a small on-the-stack struct and pass it as an
-"invocation parameters" argument. That way we'll have properly named
-arguments (struct fields) and we can easily have some defaults
-skipped, if necessary. But again, just something for the future to
-ponder. Just resubmit your patches as they are right now.
+  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.19-rc7
 
-> So what do you think?
->
-> Thanks!
-> Menglong Dong
->
-> >
-> > >
-> > >
-> > > >         u8 *prog =3D *pprog;
-> > > >
-> > > >         for (i =3D 0; i < tl->nr_links; i++) {
-> > > > +               if (tl->links[i]->link.prog->call_session_cookie) {
-> > > > +                       emit_store_stack_imm64(&prog, BPF_REG_0, -f=
-unc_meta_off,
-> > > > +                                              func_meta | (cur_coo=
-kie << BPF_TRAMP_SHIFT_COOKIE));
-> > > > +                       cur_cookie--;
-> > > > +               }
-> > > >                 if (invoke_bpf_prog(m, &prog, tl->links[i], stack_s=
-ize,
-> > > >                                     run_ctx_off, save_ret, image, r=
-w_image))
-> > > >                         return -EINVAL;
-> > >
-> > > [...]
-> >
->
->
->
->
+for you to fetch changes up to 4a3dba48188208e4f66822800e042686784d29d1:
+
+  Octeontx2-af: Add proper checks for fwdata (2026-01-22 08:09:00 -0800)
+
+----------------------------------------------------------------
+Including fixes from CAN and wireless.
+
+Pretty big PR, but hard to make up any cohesive story that would
+explain it, a random collection of fixes. The two reverts of bad
+patches from this release here feel like stuff that'd normally
+show up by rc5 or rc6. Perhaps obvious thing to say, given the MW
+timing.
+
+That said, no active investigations / regressions. Let's see what
+the next week brings.
+
+Current release - fix to a fix:
+
+ - can: alloc_candev_mqs(): add missing default CAN capabilities
+
+Current release - regressions:
+
+ - usbnet: fix crash due to missing BQL accounting after resume
+
+ - Revert "net: wwan: mhi_wwan_mbim: Avoid -Wflex-array-member-not ...
+
+Previous releases - regressions:
+
+ - Revert "nfc/nci: Add the inconsistency check between the input ...
+
+Previous releases - always broken:
+
+ - number of driver fixes for incorrect use of seqlocks on stats
+
+ - rxrpc: fix recvmsg() unconditional requeue, don't corrupt rcv queue
+   when MSG_PEEK was set
+
+ - ipvlan: make the addrs_lock be per port avoid races in the port
+   hash table
+
+ - sched: enforce that teql can only be used as root qdisc
+
+ - virtio: coalesce only linear skb
+
+ - wifi: ath12k: fix dead lock while flushing management frames
+
+ - eth: igc: reduce TSN TX packet buffer from 7KB to 5KB per queue
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+----------------------------------------------------------------
+Alok Tiwari (1):
+      octeontx2: cn10k: fix RX flowid TCAM mask handling
+
+Andrey Vatoropin (1):
+      be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
+
+Baochen Qiang (2):
+      wifi: ath12k: don't force radio frequency check in freq_to_idx()
+      wifi: ath12k: fix dead lock while flushing management frames
+
+Benjamin Berg (3):
+      wifi: mac80211: parse all TTLM entries
+      wifi: mac80211: apply advertised TTLM from association response
+      wifi: cfg80211: ignore link disabled flag from userspace
+
+Chwee-Lin Choong (2):
+      igc: fix race condition in TX timestamp read for register 0
+      igc: Reduce TSN TX packet buffer from 7KB to 5KB per queue
+
+Clemens Gruber (1):
+      net: fec: account for VLAN header in frame length calculations
+
+Cody Haas (1):
+      ice: Fix persistent failure in ice_get_rxfh
+
+Dan Carpenter (1):
+      wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
+
+Daniel Golle (2):
+      net: phy: intel-xway: fix OF node refcount leakage
+      net: pcs: pcs-mtk-lynxi: report in-band capability for 2500Base-X
+
+Dave Ertman (1):
+      ice: Avoid detrimental cleanup for bond during interface stop
+
+David Howells (2):
+      rxrpc: Fix recvmsg() unconditional requeue
+      rxrpc: Fix data-race warning and potential load/store tearing
+
+David Yang (5):
+      veth: fix data race in veth_get_ethtool_stats
+      net: hns3: fix data race in hns3_fetch_stats
+      idpf: Fix data race in idpf_net_dim
+      be2net: fix data race in be_get_new_eqd
+      net: openvswitch: fix data race in ovs_vport_get_upcall_stats
+
+Ding Hui (1):
+      ice: Fix incorrect timeout ice_release_res()
+
+Dmitry Skorodumov (2):
+      ipvlan: Make the addrs_lock be per port
+      selftests: net: simple selftest for ipvtap
+
+Eric Dumazet (7):
+      net: add skb->data_len and (skb>end - skb->tail) to skb_dump()
+      bonding: limit BOND_MODE_8023AD to Ethernet devices
+      l2tp: avoid one data-race in l2tp_tunnel_del_work()
+      mISDN: annotate data-race around dev->work
+      ipv6: annotate data-race in ndisc_router_discovery()
+      bonding: provide a net pointer to __skb_flow_dissect()
+      net/sched: act_ife: avoid possible NULL deref
+
+Ethan Nelson-Moore (1):
+      net: usb: dm9601: remove broken SR9700 support
+
+Fan Gong (1):
+      hinic3: Fix netif_queue_set_napi queue_index input parameter error
+
+Hamza Mahfooz (1):
+      net: sfp: add potron quirk to the H-COM SPP425H-GAB4 SFP+ Stick
+
+Hariprasad Kelam (2):
+      Octeontx2-pf: Update xdp features
+      Octeontx2-af: Add proper checks for fwdata
+
+Ivan Vecera (1):
+      dpll: Prevent duplicate registrations
+
+Jacob Keller (1):
+      ice: initialize ring_stats->syncp
+
+Jakub Kicinski (9):
+      Merge branch 'vsock-virtio-fix-data-loss-disclosure-due-to-joining-of-non-linear-skb'
+      Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
+      Merge branch 'fou-gue-fix-skb-memleak-with-inner-protocol-0'
+      Merge branch 'ipvlan-addrs_lock-made-per-port'
+      Merge tag 'linux-can-fixes-for-6.19-20260116' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can
+      Merge branch 'net-sched-teql-enforce-hierarchy-placement'
+      Merge branch 'fix-some-bugs-in-the-flow-director-of-hns3-driver'
+      Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
+      Merge tag 'wireless-2026-11-22' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless
+
+Jamal Hadi Salim (2):
+      net/sched: Enforce that teql can only be used as root qdisc
+      net/sched: qfq: Use cl_is_active to determine whether class is active in qfq_rm_from_ag
+
+Jeongjun Park (1):
+      netrom: fix double-free in nr_route_frame()
+
+Jiawen Wu (1):
+      net: txgbe: remove the redundant data return in SW-FW mailbox
+
+Jijie Shao (2):
+      net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
+      net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
+
+Johannes Berg (1):
+      Merge tag 'ath-current-20260113' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath into wireless
+
+Justin Chen (1):
+      net: bcmasp: Fix network filter wake for asp-3.0
+
+Krzysztof Kozlowski (1):
+      nfc: MAINTAINERS: Orphan the NFC and look for new maintainers
+
+Kuniyuki Iwashima (4):
+      l2tp: Fix memleak in l2tp_udp_encap_recv().
+      gue: Fix skb memleak with inner IP protocol 0.
+      tools: ynl: Specify --no-line-number in ynl-regen.sh.
+      fou: Don't allow 0 for FOU_ATTR_IPPROTO.
+
+Kurt Kanzenbach (1):
+      igc: Restore default Qbv schedule when changing channels
+
+Lachlan Hodges (1):
+      wifi: mac80211: don't perform DA check on S1G beacon
+
+Laurent Vivier (1):
+      usbnet: limit max_mtu based on device's hard_mtu
+
+Manish Dharanenthiran (1):
+      wifi: ath12k: cancel scan only on active scan vdev
+
+Marc Kleine-Budde (8):
+      can: dev: alloc_candev_mqs(): add missing default CAN capabilities
+      can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error
+      can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
+      can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
+      can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
+      can: mcba_usb: mcba_usb_read_bulk_callback(): fix URB memory leak
+      can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
+      Merge patch series "can: usb: fix URB memory leaks"
+
+Marek Vasut (1):
+      wifi: rsi: Fix memory corruption due to not set vif driver data size
+
+Maxime Chevallier (1):
+      net: freescale: ucc_geth: Return early when TBI PHY can't be found
+
+Melbin K Mathew (3):
+      vsock/virtio: fix potential underflow in virtio_transport_get_credit()
+      vsock/virtio: cap TX credit to local buffer size
+      vsock/test: add stream TX credit bounds test
+
+Michal Luczaj (3):
+      vsock/virtio: Coalesce only linear skb
+      vsock/test: Add test for a linear and non-linear skb getting coalesced
+      vsock/test: Do not filter kallsyms by symbol type
+
+Michel Lind (1):
+      tools/net/ynl: Makefile's install target now installs ynltool
+
+Mina Almasry (1):
+      idpf: read lower clock bits inside the time sandwich
+
+Miri Korenblit (2):
+      wifi: mac80211: correctly check if CSA is active
+      wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
+
+Paolo Abeni (1):
+      Merge branch 'vsock-virtio-fix-tx-credit-handling'
+
+Paul Greenwalt (2):
+      ice: add missing ice_deinit_hw() in devlink reinit path
+      ice: fix devlink reload call trace
+
+Raju Rangoju (1):
+      amd-xgbe: avoid misleading per-packet error log
+
+Ratheesh Kannoth (1):
+      octeontx2-af: Fix error handling
+
+Ricardo B. Marlière (1):
+      selftests: net: fib-onlink-tests: Convert to use namespaces by default
+
+Russell King (Oracle) (1):
+      net: stmmac: fix resume: calculate tso last_segment
+
+Simon Horman (1):
+      docs: netdev: refine 15-patch limit
+
+Simon Schippers (1):
+      usbnet: fix crash due to missing BQL accounting after resume
+
+Slark Xiao (1):
+      Revert "net: wwan: mhi_wwan_mbim: Avoid -Wflex-array-member-not-at-end warning"
+
+Stefano Garzarella (1):
+      vsock/test: fix seqpacket message bounds test
+
+Taehee Yoo (1):
+      selftests: net: amt: wait longer for connection before sending packets
+
+Thadeu Lima de Souza Cascardo (1):
+      Revert "nfc/nci: Add the inconsistency check between the input data length and count"
+
+Thomas Fourier (3):
+      wifi: ath10k: fix dma_free_coherent() pointer
+      wifi: ath12k: fix dma_free_coherent() pointer
+      octeontx2: Fix otx2_dma_map_page() error return code
+
+Veerendranath Jakkam (1):
+      wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+
+Victor Nogueira (1):
+      selftests/tc-testing: Try to add teql as a child qdisc
+
+Vladimir Oltean (1):
+      net: dsa: fix off-by-one in maximum bridge ID determination
+
+Xin Long (1):
+      sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
+
+Yingying Tang (2):
+      wifi: ath12k: Fix scan state stuck in ABORTING after cancel_remain_on_channel
+      wifi: ath12k: Fix wrong P2P device link id issue
+
+Yun Lu (1):
+      netdevsim: fix a race issue related to the operation on bpf_bound_progs list
+
+ CREDITS                                            |   4 +
+ Documentation/netlink/specs/fou.yaml               |   2 +
+ Documentation/process/maintainer-netdev.rst        |  12 ++
+ MAINTAINERS                                        |   3 +-
+ drivers/dpll/dpll_core.c                           |  12 +-
+ drivers/isdn/mISDN/timerdev.c                      |  13 +-
+ drivers/net/bonding/bond_main.c                    |  11 +-
+ drivers/net/can/dev/dev.c                          |   1 +
+ drivers/net/can/usb/ems_usb.c                      |   8 +-
+ drivers/net/can/usb/esd_usb.c                      |   9 +-
+ drivers/net/can/usb/gs_usb.c                       |   7 +
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   9 +-
+ drivers/net/can/usb/mcba_usb.c                     |   8 +-
+ drivers/net/can/usb/usb_8dev.c                     |   8 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c           |   5 +-
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c        |   5 +-
+ drivers/net/ethernet/broadcom/asp2/bcmasp.h        |   1 +
+ drivers/net/ethernet/emulex/benet/be_cmds.c        |   3 +-
+ drivers/net/ethernet/emulex/benet/be_main.c        |   8 +-
+ drivers/net/ethernet/freescale/fec_main.c          |  13 +-
+ drivers/net/ethernet/freescale/ucc_geth.c          |   4 +-
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  69 +++----
+ .../net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h |   2 +-
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c    |   2 +-
+ drivers/net/ethernet/huawei/hinic3/hinic3_irq.c    |  22 ++-
+ drivers/net/ethernet/intel/ice/devlink/devlink.c   |   1 +
+ drivers/net/ethernet/intel/ice/ice.h               |   1 +
+ drivers/net/ethernet/intel/ice/ice_common.c        |   2 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c       |   6 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c           |  29 ++-
+ drivers/net/ethernet/intel/ice/ice_main.c          |  31 ++-
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c         |   2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c        |  16 +-
+ drivers/net/ethernet/intel/igc/igc_defines.h       |   5 +-
+ drivers/net/ethernet/intel/igc/igc_ethtool.c       |   4 +-
+ drivers/net/ethernet/intel/igc/igc_main.c          |   5 +
+ drivers/net/ethernet/intel/igc/igc_ptp.c           |  43 +++--
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c    |  86 ++++++---
+ .../net/ethernet/marvell/octeontx2/af/rvu_cgx.c    |   3 +
+ .../net/ethernet/marvell/octeontx2/af/rvu_sdp.c    |   2 +-
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c  |   2 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   |   7 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |   4 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  12 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c     |   4 +-
+ drivers/net/ipvlan/ipvlan.h                        |   2 +-
+ drivers/net/ipvlan/ipvlan_core.c                   |  16 +-
+ drivers/net/ipvlan/ipvlan_main.c                   |  49 +++--
+ drivers/net/netdevsim/bpf.c                        |   6 +
+ drivers/net/netdevsim/dev.c                        |   2 +
+ drivers/net/netdevsim/netdevsim.h                  |   1 +
+ drivers/net/pcs/pcs-mtk-lynxi.c                    |   4 +-
+ drivers/net/phy/intel-xway.c                       |   7 +-
+ drivers/net/phy/sfp.c                              |   2 +
+ drivers/net/usb/dm9601.c                           |   4 -
+ drivers/net/usb/usbnet.c                           |  10 +-
+ drivers/net/veth.c                                 |   8 +-
+ drivers/net/wireless/ath/ath10k/ce.c               |  16 +-
+ drivers/net/wireless/ath/ath12k/ce.c               |  12 +-
+ drivers/net/wireless/ath/ath12k/mac.c              |  16 +-
+ drivers/net/wireless/ath/ath12k/wmi.c              |   9 +-
+ .../net/wireless/marvell/mwifiex/11n_rxreorder.c   |   6 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c        |   1 +
+ drivers/net/wwan/mhi_wwan_mbim.c                   |  17 +-
+ drivers/nfc/virtual_ncidev.c                       |   4 -
+ include/net/cfg80211.h                             |   3 -
+ include/trace/events/rxrpc.h                       |   4 +
+ include/uapi/linux/nl80211.h                       |   5 +-
+ net/core/skbuff.c                                  |   7 +-
+ net/dsa/dsa.c                                      |   2 +-
+ net/ipv4/fou_core.c                                |   3 +
+ net/ipv4/fou_nl.c                                  |   2 +-
+ net/ipv6/ndisc.c                                   |   4 +-
+ net/l2tp/l2tp_core.c                               |   8 +-
+ net/mac80211/ieee80211_i.h                         |   2 -
+ net/mac80211/iface.c                               |   8 +-
+ net/mac80211/key.c                                 |   3 +-
+ net/mac80211/mlme.c                                | 213 ++++++++++++---------
+ net/mac80211/scan.c                                |   9 +-
+ net/netrom/nr_route.c                              |  13 +-
+ net/openvswitch/vport.c                            |  11 +-
+ net/rxrpc/ar-internal.h                            |   9 +-
+ net/rxrpc/conn_event.c                             |   2 +-
+ net/rxrpc/output.c                                 |  14 +-
+ net/rxrpc/peer_event.c                             |  17 +-
+ net/rxrpc/proc.c                                   |   4 +-
+ net/rxrpc/recvmsg.c                                |  19 +-
+ net/rxrpc/rxgk.c                                   |   2 +-
+ net/rxrpc/rxkad.c                                  |   2 +-
+ net/sched/act_ife.c                                |   6 +-
+ net/sched/sch_qfq.c                                |   2 +-
+ net/sched/sch_teql.c                               |   5 +
+ net/sctp/sm_statefuns.c                            |  10 +-
+ net/vmw_vsock/virtio_transport_common.c            |  36 ++--
+ net/wireless/nl80211.c                             |  10 -
+ net/wireless/util.c                                |   8 +-
+ tools/net/ynl/Makefile                             |   3 +-
+ tools/net/ynl/ynl-regen.sh                         |   2 +-
+ tools/testing/selftests/net/Makefile               |   1 +
+ tools/testing/selftests/net/amt.sh                 |   7 +-
+ tools/testing/selftests/net/config                 |   2 +
+ tools/testing/selftests/net/fib-onlink-tests.sh    |  71 +++----
+ tools/testing/selftests/net/ipvtap_test.sh         | 168 ++++++++++++++++
+ .../selftests/tc-testing/tc-tests/qdiscs/teql.json |  25 +++
+ tools/testing/vsock/util.h                         |   2 +-
+ tools/testing/vsock/vsock_test.c                   | 117 +++++++++++
+ tools/testing/vsock/vsock_test_zerocopy.c          |  74 +++++++
+ tools/testing/vsock/vsock_test_zerocopy.h          |   3 +
+ 108 files changed, 1144 insertions(+), 472 deletions(-)
+ create mode 100755 tools/testing/selftests/net/ipvtap_test.sh
