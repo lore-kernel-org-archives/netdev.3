@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3B833E35D
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 15:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C838E107
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 15:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769096205; cv=none; b=u19RwzoUJDTnKKqGyLayJPsz6yRSMTTSSaZ1iZU8ohHd2QzFbbYgqiJ4uq+hbmQerWbuVFPXIJbUaHnho4Cttqwrem9hN7BB6qZaVXEXVTW/hh4GW0ab51I+YIwIF/aAP7zzf2IIlozsaFB/rtIUmDdk1/bd8/n8U6d8iLQrtjI=
+	t=1769096215; cv=none; b=C1P5PYFHLqxpuRhCUvfL4Tx14DsNI/5UNhHNRkpTjfiRJaapOCsc2vVoEIbRFERCmF8T+h1h8AQiB9WsTwl0MQVi4zmhWuNpUQtdRLNlTdBpTLmgRuMQ1mUPEYLI1I+4Q1Q72z6WS+kGc5r95EPFfrBhVx01RhFlFpyYEBr54+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769096205; c=relaxed/simple;
-	bh=KLkKNXTbTdeo2MDcbb7rXz0AoJnJZRgPD47siNnfhUE=;
+	s=arc-20240116; t=1769096215; c=relaxed/simple;
+	bh=GNjMrb+MoIZhVc42HxTFNyEub3JvaOvPVCCRnCaK4LY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DB5Mo7GmrU4QhSGeETgZDwRyXFVxWQR0LgFCPe6eREfp9UXun4CSsvChpExzhmWLWcFDPD6TQ75lEoKqmr4iQQXvQ3gzgsGockqi59ySfUvFLFGuLjc24krEopdKo/4TNFJZ6gkQ8KKq4FGLNzxalZTOsB1p/q0G65Ofq5ztiDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDzPzi2X; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Kb40LjVE/HDT/CuhuFdZIjagh35JF4gr7mxUAky5P5bDE0xX3nTQvQoP6/YT2CLXsiyW0vcZ9vNeT83gnFUE+jttz/LYSWMn0SDNQYoj3lAcSUpQzFNp/6Th2ymbEHfNDzuofFuOMydxOG23w09c8DweKfVf/m8XXYEzvbVTsRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDfI77Ob; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDzPzi2X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3BBC116C6;
-	Thu, 22 Jan 2026 15:36:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDfI77Ob"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37295C116C6;
+	Thu, 22 Jan 2026 15:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769096204;
-	bh=KLkKNXTbTdeo2MDcbb7rXz0AoJnJZRgPD47siNnfhUE=;
+	s=k20201202; t=1769096214;
+	bh=GNjMrb+MoIZhVc42HxTFNyEub3JvaOvPVCCRnCaK4LY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nDzPzi2XeXxPMBzrtvaSUf3SlCvMzUhx/3HMeeIyhElkEoDhIbiNyeuMtNBzixCYb
-	 7DNPg1053YzstLlt+00ZZSj1A+rEIX2RSAbMi16qs2FpoSDPGDr82vefSwc/56wLZE
-	 sjabZyCHiWiP+EszbFAeoIUjLFC2+r2V+JtlMKu0X+5j9KSzxThuvJ5TyE66QIkX/K
-	 qG6vxHE50tlC7B/pzp+Ddbi1Zvzls5kO6BEt332cV8jmIlOkg5qfYNFLa0TyoebpNc
-	 Zcw3EzI2+ycfIxG8tKndcqGwx/d7o80kjXKUguSmeri95a5DDXmFPTni4iLRqUPrju
-	 BAlXrknJRjSbg==
-Date: Thu, 22 Jan 2026 07:36:43 -0800
+	b=SDfI77Ob/9pILaxgURmZCtKCNjhC1b9v64FEki8zczP0UDl5fZzhZWZmdpA9dmEbW
+	 BfP01KnjlLKwZSZj+J1OBFC8IYCNn2nLgvKwbihDjyhfqg0S3uffp6z7qXd0utyEhF
+	 MXsEsN0FNnfoMoozjCeuXRWKaK0jQr3QO7WlGh8G4OEn3RWWlrqvx4EarVfrJ5ELg1
+	 MrxwwsqbiaYk2LVZVL2IXCVCR52LpTFk3msRvniMdRKZjOf3qC8hD9EXe3+xsNLFjH
+	 OuDY7EhVKf36mUWxYIH1ybEiphl83eMoF2EsxgtE/DeSjtdEJSVybyqwNOrW25cTYb
+	 3CTzVovydyyNg==
+Date: Thu, 22 Jan 2026 07:36:53 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Subbaraya Sundeep <sbhatta@marvell.com>
 Cc: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
@@ -34,12 +34,13 @@ Cc: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
  <michael.chan@broadcom.com>, <sdf@fomichev.me>, <almasrymina@google.com>,
  <dtatulea@nvidia.com>, <asml.silence@gmail.com>, <dw@davidwei.uk>,
  <daniel@iogearbox.net>
-Subject: Re: [PATCH net-next 1/6] eth: bnxt: always set the queue mgmt ops
-Message-ID: <20260122073643.4d36e299@kernel.org>
-In-Reply-To: <20260122080420.GA1544331@kernel-ep2>
+Subject: Re: [PATCH net-next 2/6] net: introduce a trivial
+ netdev_queue_config()
+Message-ID: <20260122073653.13dda331@kernel.org>
+In-Reply-To: <20260122081240.GB1544331@kernel-ep2>
 References: <20260122005113.2476634-1-kuba@kernel.org>
-	<20260122005113.2476634-2-kuba@kernel.org>
-	<20260122080420.GA1544331@kernel-ep2>
+	<20260122005113.2476634-3-kuba@kernel.org>
+	<20260122081240.GB1544331@kernel-ep2>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,16 +50,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Jan 2026 13:34:20 +0530 Subbaraya Sundeep wrote:
-> > +
-> > +	dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops_unsupp;
-> >  	if (BNXT_SUPPORTS_QUEUE_API(bp))
-> >  		dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops;
-> > -	dev->request_ops_lock = true;  
-> 
-> Can we also mention that driver with queue_mgmt_ops set makes it as ops locked
-> driver in Documentation/networking/netdevices.rst ?
+On Thu, 22 Jan 2026 13:42:40 +0530 Subbaraya Sundeep wrote:
+> > +void netdev_queue_config(struct net_device *dev, int rxq,
+> > +			 struct netdev_queue_config *qcfg);
+> > +  
+> Minor nit: make function name something like netdev_get_queue_config
+> (to avoid same as struct name)
 
-Did you check if it's already documented there before asking me to do
-it? I know people don't read docs much but asking someone to document
-stuff that's already documented is a bit funny..
+No.
