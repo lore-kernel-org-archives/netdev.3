@@ -1,254 +1,125 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01351286D70
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 13:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCE1186E58
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 13:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769087544; cv=none; b=aECBW1a6Azq534O2z0AKZbXBOOAnrYm4TAs0bBVtP/pYsDeNgbi9Ke6hJDul54K0vE8Rad+I7ZxBGxDdh7dtBp7Ek4qJ7rBl21d7DaegbdHbE3d08G6oVKIqLKuaJTIxT2mHkgbQ6tyiiHvgG3IJkHQ+IOl8AAsBVY2DTGgB4R4=
+	t=1769087589; cv=none; b=LGWcxQx/oNqTpuL+z+K8kLOD8Uy8WZZNEkwoEy9yivsEMFEZOXOhHdU70MLHHktX45FdSFvYpVB1XLMTso+9P8ItnifDVCP2Ufk0Td5Tb3Q8kRnmTlW6p+rdlbGt8dg4Q33KSM9kXk2Kz30h+e64EuMWdkgNOFqMd2f1QQwCG6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769087544; c=relaxed/simple;
-	bh=URguZv+z+GzFNe+cJ2zMPSHRjgwbLnOTJ/PrC+X4qs0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MQvO41jfF0qDWrw2NVZs18mqbL69plWZO3PJoMvc156GjnoVIiZxiQ7nJ8gha4pEQsg3heWcof7boSwC66vEe8RoZAA58pQnpF8/ezDXWUKW/ZJTWAV29H/ibriXTAfYp95LcfLNimLcD7EG+DeKqNzpQ9VabkPjns0x0QUusXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-941063da73eso442958241.3
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 05:12:21 -0800 (PST)
+	s=arc-20240116; t=1769087589; c=relaxed/simple;
+	bh=YO6r2vJD5D65wX74SFkNnkbMp+t7Qba8YyhH3bgpd5E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FDGTKETwwtn2fqF+dyhIhDT0LBlurVK7LcI16QVlmch62xuFLhRhzUb0pJdVqfutshcbG9rqY8QFc9gzYKZ+sZIVIhBqsAWG1B9QBy2KuUcM9O59zBO5noF6f9yr0ZwHCLez3JYeQnVchZEmWRwkcuykObfuC/ScERe8NBA+hgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0DQv+e3S; arc=none smtp.client-ip=209.85.219.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0DQv+e3S"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8946e21ad8cso11532546d6.2
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 05:13:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769087587; x=1769692387; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2CYPm1a5T3x2R/t1QPKEFCdwMokC6N7Dt1Dc6j76WJo=;
+        b=0DQv+e3SN/6ELyKYEkBw25eB0wqBKHtLu70/OAuO1YhJd+t+1eaw9UdubQhoZLlaY6
+         MtvHLrH1eme8MptQ+5mNBQxZsFzsNFYZzAstuq+d2QBt+rrvw3COKrjzToSOLELBEibZ
+         j0enBjAcSSW5BC4F2KmBnAAIZBBOXeeUJkWwq6FnrVfbAhaBWOkm7UsqE5K15a/9k+Xi
+         D872MbPKCk/F3b6tHS4JbgT8xNM25IVXZHx0MtNfzLDqPn7RicLydJg8ud0NKhJ0Qko5
+         +vPR8Wj4tUWH6awgbeflzO9CV5FX6fbiAdlIDr82iXrbNygnewW07pykh8sBo0ujOAPw
+         5qyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769087541; x=1769692341;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=04o5YPIM/ynG9CDHLB19er8qSsbuftkYbcHCNFB6R4Q=;
-        b=tIx4tW2jCccAFoWKdXtrZNuX4FB9KAwm4BU7lDHLjX9xEUw5Ewl11lU6d7KX83j3nH
-         kgmPqF0j2NIIECgdjuvBEU0LjoAabVnEivcEoPEma1v0AA6sLWRUPVMPrIoFFOuUCync
-         JBEZfOc+ywZxp/9rJBO1uJM3S80Ol3UC+IYnUzGmwly9MkJz3uSceuc7GfX+/htfyWAD
-         91fe4s4iZXHiUdCEonoASCbJ5Pem2cL5qw1F8ssLPKwE5RpXF0ci8hEWqAT7t2mt2lUb
-         r/TvEh0+9O6cgne2lxMEBIEsk6Dgz++08EEszRnlcPK0hO7/fqVtXRC1pKEElJz6cqcm
-         9xbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOoFi9jfm1iOtHj8ukjdA/Co7w93A5NaNKEJ2wiht3jqVMjrR5eRMkHqEbo+YkIfk9/ZKXEv8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHV1MHApYB3spxPSygQIwQ7ILifyQR4dnaoDegyaYkkQYX/q8o
-	a8CG8zlAPeoJPlO5TVjThRXAQmto9ok0lnN+0P69pd12MbLC99UdqZJ6F3h03A==
-X-Gm-Gg: AZuq6aLMOC4Pr/j2PvqUmdRVIOeQW3zwyZYP+94H9A1juc01J/QzzaF5i5xN6M181TL
-	AtJEs2z3WOb+4maOR+GIliItwu005ieYhOWebMgEaGxLPny3su8AMD6w2j4Y4WDlXCELXKxlfFW
-	i704k82eT2KxKEVaTZyPW0DfU0IKpKRXa8CZU7IsXi7X7TXUFut96F94K4cyoUxqh9Lwzr4uGK9
-	Xm+ATMVpXyRA2kH/CIvT0g5XW17dI/b41uaZjjMQTn5yfhjqazjvrx/3Pikjot0dWM58y3g9LfZ
-	DxMdlwM/783V7UFu968aEOdFBeZcbby5X9GU7ecx0fTeikFrZasDesAzuur4sdIcZIsY0abqtn6
-	bqyLANqaFAsD9NuT4mZg0gGbPr6PgoN6EhJsmpbdH63KXAVZmWv1MgOluhBh9E59NmyEagN8ski
-	iUiw==
-X-Received: by 2002:a05:6830:7304:b0:7c7:26e:468f with SMTP id 46e09a7af769-7cfdee2b737mr8142806a34.22.1769081554106;
-        Thu, 22 Jan 2026 03:32:34 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:48::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf2a60f1sm12036266a34.23.2026.01.22.03.32.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 03:32:33 -0800 (PST)
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 22 Jan 2026 03:32:11 -0800
-Subject: [PATCH net-next v3 3/5] netconsole: convert to NBCON console
- infrastructure
+        d=1e100.net; s=20230601; t=1769087587; x=1769692387;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2CYPm1a5T3x2R/t1QPKEFCdwMokC6N7Dt1Dc6j76WJo=;
+        b=xDklUDrp3/9xcMCBkjhp1gkcWgWCVzdTpb0UyxLgAe6xHTgR+OvVgBm4E2lQpiEgSR
+         +gRfbGYKfKXULBDmNaiIjgZ2Y6TM9U6odo3VIciZbPj/5NihRmgcvvpNo0oCAhPZKxMZ
+         ZrF4hPtBknLBAxoXb1KdW9eau/sDZj/MfDJ3DL4HKKQ0pv8RH/ycYieLmpKSQ8M41vj/
+         apLZsylwDQMP+uoyLdJNujGmAlGqL+o+FKxihI4aQ8zMfAU/P5yDc6LHvBJCWm6APZlU
+         rrAI5taWz2b/NVzyy3Mi6YOjPjWkvvhejuL+1b4Dp00wg8FtzSUgzJv9mcW+w6Le78oU
+         d4yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJXVh2Trqs7D51ouRx56iXrxwJDIlH7UGFirrDmr5hQe9USVh3ZFT8dmR8/JVegXwe40T8wGM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUMyPiqGOT/L3nK1KOrTNmd5qe0aY1Cp+0q8dxsRAEiLnhirUP
+	wOWs7bJupNqm8zQQgGg2ZyVljfGG8hLtqobcG+u70NLN+RXAUO83T37RZTsbnhTNVvHYnNWHc38
+	MdFbRX5H1F0hsTw==
+X-Received: from qvbif15.prod.google.com ([2002:a05:6214:1c4f:b0:894:4ac8:bf38])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:2aaf:b0:890:183b:4c50 with SMTP id 6a1803df08f44-89463e1bebdmr112787446d6.69.1769087587014;
+ Thu, 22 Jan 2026 05:13:07 -0800 (PST)
+Date: Thu, 22 Jan 2026 13:13:06 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-nbcon-v3-3-a722f2f0dfa5@debian.org>
-References: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
-In-Reply-To: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- pmladek@suse.com, john.ogness@linutronix.de
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
- gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
- mpdesouza@suse.com, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5459; i=leitao@debian.org;
- h=from:subject:message-id; bh=URguZv+z+GzFNe+cJ2zMPSHRjgwbLnOTJ/PrC+X4qs0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcgrNnBzlq2sCqvYqNWopVniZXZwhF+EAy0FZt
- /lJur4VjiOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXIKzQAKCRA1o5Of/Hh3
- bQgrD/9LJPolJfqcMzc7xid17bEvJo25PdG3c6+kGt1qwOXC596udfOZRcEhn5Qm14JVzbejD/g
- JQM3P1aflYOCJSiKSA8E4GQGCz3w5zEmhu0vDF1fetEEuY3AFqJmHpWpbSQAV0n60e5Wa/BZ6DL
- pfDjWYOcio/XpOaikwdd6W23F9pGt4FZxdeFoVvL308VVVFlr6KYkztaeHLsQ7dVVoHortUfKEs
- KUw/zU0hEtJrI8l7sfpwNy6SrnJWat/a/EkrIgYLoCKG92Z2OMsFekAnTEMbegfn8+C6vGKrrFE
- Pr82pHiZ0xAl7xOalemmNEvQWKRcBxqqbKIRvqFgJDd8Ls/rarknuZabBZeDmLdzWyJMZDCl8yW
- TLPcvLLvmTmlhahIGHEb951aTQhAuABOpbUtyPQveo1r3ZdwnXbr3NmS3J3hSgCwlVzzjfQGd6r
- aCRpz5Y8AzTTkIWuOhQmkA/0s7Z94xneWMOfVODD6IuRAGzTKAJim3vxxEH9hlJf9Z1dEuYXc5a
- qBszkoW+U7p+m0c+QwkwQLMKQxmliwEuzL8EeCZ3XTukqwVONOrUspivL0PRoBVyDEmA59q7DCW
- cPFRjO7idJ5X9PgPHq8BulGvM8+5e+pB+e0OsKzv4YRBXs443VgdE7XUlTwuyn4YjqF1/FDQs4a
- U6JlsStVydjYXXQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260122131306.2119853-1-edumazet@google.com>
+Subject: [PATCH net] mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang.tang@linux.dev>, Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com, 
+	Eulgyu Kim <eulgyukim@snu.ac.kr>, Geliang Tang <geliang@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Convert netconsole from the legacy console API to the NBCON framework.
-NBCON provides threaded printing which unblocks printk()s and flushes in
-a thread, decoupling network TX from printk() when netconsole is
-in use.
+syzbot and Eulgyu Kim reported crashes in mptcp_pm_nl_get_local_id()
+and/or mptcp_pm_nl_is_backup()
 
-Since netconsole relies on the network stack which cannot safely operate
-from all atomic contexts, mark both consoles with
-CON_NBCON_ATOMIC_UNSAFE. (See discussion in [1])
+Root cause is list_splice_init() in mptcp_pm_nl_flush_addrs_doit()
+which is not RCU ready.
 
-CON_NBCON_ATOMIC_UNSAFE restricts write_atomic() usage to emergency
-scenarios (panic) where regular messages are sent in threaded mode.
+list_splice_init_rcu() can not be called here while holding pernet->lock
+spinlock.
 
-Implementation changes:
-- Unify write_ext_msg() and write_msg() into netconsole_write()
-- Add device_lock/device_unlock callbacks to manage target_list_lock
-- Use nbcon_enter_unsafe()/nbcon_exit_unsafe() around network
-  operations.
-  - If nbcon_enter_unsafe() fails, just return given netconsole lost
-    the ownership of the console.
-- Set write_thread and write_atomic callbacks (both use same function)
+Many thanks to Eulgyu Kim for providing a repro and testing our patches.
 
-Link: https://lore.kernel.org/all/b2qps3uywhmjaym4mht2wpxul4yqtuuayeoq4iv4k3zf5wdgh3@tocu6c7mj4lt/ [1]
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: 141694df6573 ("mptcp: remove address when netlink flushes addrs")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6970a46d.a00a0220.3ad28e.5cf0.GAE@google.com/T/
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Cc: Geliang Tang <geliang@kernel.org>
 ---
- drivers/net/netconsole.c | 97 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 60 insertions(+), 37 deletions(-)
+ net/mptcp/pm_kernel.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index dc3bd7c9b0498..c5d7e97fe2a78 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1709,22 +1709,6 @@ static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
- 				   sysdata_len);
- }
- 
--static void write_ext_msg(struct console *con, const char *msg,
--			  unsigned int len)
--{
--	struct netconsole_target *nt;
--	unsigned long flags;
--
--	if ((oops_only && !oops_in_progress) || list_empty(&target_list))
--		return;
--
--	spin_lock_irqsave(&target_list_lock, flags);
--	list_for_each_entry(nt, &target_list, list)
--		if (nt->extended && nt->enabled && netif_running(nt->np.dev))
--			send_ext_msg_udp(nt, msg, len);
--	spin_unlock_irqrestore(&target_list_lock, flags);
--}
--
- static void send_msg_udp(struct netconsole_target *nt, const char *msg,
- 			 unsigned int len)
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 57570a44e4185370f531047fe97ce9f9fbd1480b..1a97d0eafa2b0c9e4275b90d4a576f837dc286a9 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -1294,16 +1294,24 @@ static void __reset_counters(struct pm_nl_pernet *pernet)
+ int mptcp_pm_nl_flush_addrs_doit(struct sk_buff *skb, struct genl_info *info)
  {
-@@ -1739,29 +1723,62 @@ static void send_msg_udp(struct netconsole_target *nt, const char *msg,
- 	}
+ 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
+-	LIST_HEAD(free_list);
++	struct list_head free_list;
+ 
+ 	spin_lock_bh(&pernet->lock);
+-	list_splice_init(&pernet->endp_list, &free_list);
++
++	free_list = pernet->endp_list;
++	INIT_LIST_HEAD_RCU(&pernet->endp_list);
++
+ 	__reset_counters(pernet);
+ 	pernet->next_id = 1;
+ 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
+ 	spin_unlock_bh(&pernet->lock);
+-	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
+ 	synchronize_rcu();
++
++	/* Adjust the pointers to free_list instead of pernet->endp_list */
++	free_list.prev->next = &free_list;
++	free_list.next->prev = &free_list;
++
++	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
+ 	__flush_addrs(&free_list);
+ 	return 0;
  }
- 
--static void write_msg(struct console *con, const char *msg, unsigned int len)
-+/**
-+ * netconsole_write - Generic function to send a msg to all targets
-+ * @wctxt: nbcon write context
-+ * @extended: "true" for extended console mode
-+ *
-+ * Given an nbcon write context, send the message to the netconsole targets
-+ */
-+static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
- {
--	unsigned long flags;
- 	struct netconsole_target *nt;
- 
- 	if (oops_only && !oops_in_progress)
- 		return;
--	/* Avoid taking lock and disabling interrupts unnecessarily */
--	if (list_empty(&target_list))
--		return;
- 
--	spin_lock_irqsave(&target_list_lock, flags);
- 	list_for_each_entry(nt, &target_list, list) {
--		if (!nt->extended && nt->enabled && netif_running(nt->np.dev)) {
--			/*
--			 * We nest this inside the for-each-target loop above
--			 * so that we're able to get as much logging out to
--			 * at least one target if we die inside here, instead
--			 * of unnecessarily keeping all targets in lock-step.
--			 */
--			send_msg_udp(nt, msg, len);
--		}
-+		if (nt->extended != extended || !nt->enabled ||
-+		    !netif_running(nt->np.dev))
-+			continue;
-+
-+		/* If nbcon_enter_unsafe() fails, just return given netconsole
-+		 * lost the ownership, and iterating over the targets will not
-+		 * be able to re-acquire.
-+		 */
-+		if (!nbcon_enter_unsafe(wctxt))
-+			return;
-+
-+		if (extended)
-+			send_ext_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+		else
-+			send_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+
-+		nbcon_exit_unsafe(wctxt);
- 	}
-+}
-+
-+static void netconsole_write_ext(struct console *con __always_unused,
-+				 struct nbcon_write_context *wctxt)
-+{
-+	netconsole_write(wctxt, true);
-+}
-+
-+static void netconsole_write_basic(struct console *con __always_unused,
-+				   struct nbcon_write_context *wctxt)
-+{
-+	netconsole_write(wctxt, false);
-+}
-+
-+static void netconsole_device_lock(struct console *con __always_unused,
-+				   unsigned long *flags)
-+{
-+	spin_lock_irqsave(&target_list_lock, *flags);
-+}
-+
-+static void netconsole_device_unlock(struct console *con __always_unused,
-+				     unsigned long flags)
-+{
- 	spin_unlock_irqrestore(&target_list_lock, flags);
- }
- 
-@@ -1924,15 +1941,21 @@ static void free_param_target(struct netconsole_target *nt)
- }
- 
- static struct console netconsole_ext = {
--	.name	= "netcon_ext",
--	.flags	= CON_ENABLED | CON_EXTENDED,
--	.write	= write_ext_msg,
-+	.name = "netcon_ext",
-+	.flags = CON_ENABLED | CON_EXTENDED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netconsole_write_ext,
-+	.write_atomic = netconsole_write_ext,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
- };
- 
- static struct console netconsole = {
--	.name	= "netcon",
--	.flags	= CON_ENABLED,
--	.write	= write_msg,
-+	.name = "netcon",
-+	.flags = CON_ENABLED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
-+	.write_thread = netconsole_write_basic,
-+	.write_atomic = netconsole_write_basic,
-+	.device_lock = netconsole_device_lock,
-+	.device_unlock = netconsole_device_unlock,
- };
- 
- static int __init init_netconsole(void)
-
 -- 
-2.47.3
+2.52.0.457.g6b5491de43-goog
 
