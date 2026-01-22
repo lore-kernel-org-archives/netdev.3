@@ -1,53 +1,53 @@
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690C23E95AB
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824CC43CED8
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769081556; cv=none; b=YmZec1IDHJ94oHyUZKzWmmIA4yImaYJcBaqPz3ayAl+t3SfJRmXZxqU5nXA4N+77liay0i4GPUj/+x/Qp4r0dN0HKfCDigpvBYd11zR0cs+lwWNmI3AwEOHS8/DvasArcJkj0v2HYEoiozNJY2SohjPOoycnXTr36QPGGjj+Vxs=
+	t=1769081559; cv=none; b=El0fGyo+Z/8lpGe+tZTXz1ii7KdX9btJ8dO0b0c+ORavm5a9JDinyOetqfQfTrrCdb1hMcdQ79mhPd0sTdkruygklhAr2RxnKzDYOw0ah7pWc8vOazI8Tgz0YjnAIBTJjWCQ3vfOPr06oOuvG1csnPcO1443i38gcSH961dYLTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769081556; c=relaxed/simple;
-	bh=Hz1gu3DrXXHFmq3h1ZTNOZftr7Xlzo3ths2B7ZsBtME=;
+	s=arc-20240116; t=1769081559; c=relaxed/simple;
+	bh=7uJHyrOXDOd9FhTVAyYPXPCvAgryvDq0hreiCHLIU9Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X0Yj8GzjOKzQgAsP3wY/0bkVHNbNNmwMHUSdww41PMegOTyjGWGSptN3sg2WzJhPUneJJn7cYSx80Nbfg9oUoP/vIjht910RvQp2WwX5B7od3iJYGVKsxzXqUW8RI+0B/OXtDr/nqhQjmj2kOjBKfVROL0xgP2AA5yyv43Y/s1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.170
+	 In-Reply-To:To:Cc; b=OYrEg/wdVe21Xx/p6u1Db29ca93pw85k5gW8UVmpf0/JY6Wp9BH62cQLzm5IE6AZMH7PVffNFj3xEgshbS9JqHFTw1F/qBCzgQarn6VgyEgOZZiUfnlovQxWkNBBChPslhiYC84Szx2m2BCYzNVbwfPMKjDbsgpFcxvVyFK3y3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45c8b850f96so567151b6e.0
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:32:34 -0800 (PST)
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-661084916c0so379813eaf.2
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:32:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769081553; x=1769686353;
+        d=1e100.net; s=20230601; t=1769081555; x=1769686355;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=mHAlKWdigu/dpowmiGEPP+hWTchneUXrrcu0qUva3LI=;
-        b=uG1bmcv4oA7hzt97wMdyHYSt4RHW8/rNOktw0SJnAZ7OuZLggoiy5cq+QsWZAgrp/V
-         us+9NrCUma4MuObVqMLGbDoYHg5u1JAYMvxyFfm8apP2n9I/cAlbqOHpKyMMwkgNmg1e
-         q1zfVqqJZrjeqHYDlsm0EtSrucnmLuJPArQEttc9FWLr56u2X0uV8I8w0IqSflTdDqZL
-         vuJCyd4TzCWGI0MNf+9rKU6KXULgelKkN/W/CQZFdmsp555Wm1tYHhQzgmzxK1uqvmVj
-         4m121gedgQhzLZdH5fWQj/mqbGKHoh76itbCGcJuFKn5DGoyYvZkPiLAvXJ0tniMWe6S
-         keeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7G0QGlp2bhbl8tMD5q/xzZQEklUEopKRCQ2K7UQWHqZimrXa+8cvDIBcnn3E2rPCWP3x92CU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk0hbxcFPSvDqat0AYkASA2vAzNzYy4osR2VIUo1YgqvTuiZxI
-	0bKwwT86n0uD73qnRIGo2COgGbb+OcJ2i+JzF+ZyTgtH+JwSu7JLK2Yz
-X-Gm-Gg: AZuq6aIW5JqHeT2cxTdwx5M5P0bmb8wtm5ugedc3+JCdIqfAlja9RpR9Xm3GW/NWWLn
-	ykomcZZcBUQmNl8mUM7kxEOAVHFTOkJrLmWIHiGX6d4LVpqyAGXawnnN4JHMBd/6bO/yoaoh+Du
-	l+8IV7gpy27nGO6Sg2o6bxd/jzSRguOiaemwwGLk057YOfTS5AUURcCqJrQO6yovu51vjAq2BGf
-	6IxZqUlxIrrJVIb5O5AvcvzuyzFS8fz6HvbHfPn2l/CcQOBjjMTws7AIYDEdvzbXYQjGk2AAkNZ
-	tjlMc1Lhctl1yZka/HepXEpImOEcxMEUFZH3TqFsIfhEbbGUMxG8PHw+cPWxNACSn43FWEB6L3N
-	xQrgOtxtPpJiWw+WWWKAvw+prqF65dbAZqL1WC29I76YrfqnbsX48vsJz8g/DUxS7nYRBYoTAj+
-	7pS2QDReqs2mMA
-X-Received: by 2002:a05:6808:6901:b0:45c:881c:e0d1 with SMTP id 5614622812f47-45c9d74062emr10548102b6e.23.1769081553090;
-        Thu, 22 Jan 2026 03:32:33 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:45::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-45c9e0086a4sm10160669b6e.12.2026.01.22.03.32.32
+        bh=N7K9lAwaHOQ2RjvOXsUnNKNy17Hf4+SGCSY/7ykDtA8=;
+        b=XLtUHNzuiLsGV12+G+8qgBvmeuzo6TozZv9atfMADf03OZLIL0hElgURzrJL3KXuox
+         mrjyu2u0x909j+155w9sOWCmVWh5tavTUIHW7KpjTDOfnw07sz24difx3gmv0DrJzU5o
+         CqDSPJ5Fb55pLUNqLbPpza2M7tN7mu346kDVcOtbjcS0ou/PdUOgmgFzLtDUxkegMHOj
+         jUi9SRHw5QGxNGE9Z0yn+EBjuAGZZS6Pv6lVovRPn4bw4smjgzDUrZi0p3O5ZIZUCCAD
+         vqQU5hUV1itLp+GYbEXUX7sDYarYweg1ESOJTULPkkUffDuHjrZnj1M+W8o88xvboc4l
+         qmtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMKOisorPhEgtDIvCt6u3qTMrfiMR3WQLVtYOU0TebdmrDM7mXODUug+W7gqK/+dGnPXvkdWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yztw+vM2KpNiglvl4t02u+RaRU62NQdT4M/w/opd18HdrGDssJe
+	mCQmc0h4CYyhpcEFo5zVyYm2Zc/CnZmV7cHLzYyQNKoewLohC10h5mBiwGRj2w==
+X-Gm-Gg: AZuq6aJghLe6oF78QMMrMfrz3l0k0ynUlXWyr9WZEJCN5vYgvEMAVj6H25vhWkw9P3L
+	atNrZjUqXw/m49aqyQFgr67elxIEU6Z9Yoq/0OAnIYXxVsVZULkSG59MA+TK8s++ni4xFpgZHVr
+	BxmSVfy7RrWNl4DbrewIHQY5GJlqiYwNpNxtSKj+YqGpqf2abVj5WaAZ7mFuoylMiYJFFUiX5Vx
+	+KyPRKWCQAacfL9wac9vPbe/bS5P834QgXjxGlAAi3BQjjiYjm9Qtx2irGfHjG+92KbMCwRtHRE
+	/4+BuLCDNQLalzMKB1lFG7wPKqwwWAVi19O/WMmR6dKeRPO/IVf5GOQtfkPXgf1qHZH5VR6p92R
+	99I9wDDy5H/dl6gvUP4MuSLKTrZEa9FEHFGGt8atmu9rD84o4cjshNEVbmqu4EHffekpAixFLym
+	al
+X-Received: by 2002:a05:6820:1ca2:b0:662:b831:b830 with SMTP id 006d021491bc7-662b831b9c0mr3070974eaf.65.1769081555331;
+        Thu, 22 Jan 2026 03:32:35 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:2::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66289e3af7dsm7733666eaf.14.2026.01.22.03.32.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 03:32:32 -0800 (PST)
+        Thu, 22 Jan 2026 03:32:34 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Date: Thu, 22 Jan 2026 03:32:10 -0800
-Subject: [PATCH net-next v3 2/5] netconsole: extract message fragmentation
- into send_msg_udp()
+Date: Thu, 22 Jan 2026 03:32:12 -0800
+Subject: [PATCH net-next v3 4/5] netconsole: Use printk context for CPU and
+ task information
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-nbcon-v3-2-a722f2f0dfa5@debian.org>
+Message-Id: <20260122-nbcon-v3-4-a722f2f0dfa5@debian.org>
 References: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
 In-Reply-To: <20260122-nbcon-v3-0-a722f2f0dfa5@debian.org>
 To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -69,89 +69,149 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
  gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
- mpdesouza@suse.com, kernel-team@meta.com, Simon Horman <horms@kernel.org>
+ mpdesouza@suse.com, kernel-team@meta.com
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2097; i=leitao@debian.org;
- h=from:subject:message-id; bh=Hz1gu3DrXXHFmq3h1ZTNOZftr7Xlzo3ths2B7ZsBtME=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcgrM65kr4q4DiCJRkPIWZcOuT5I5mkopp6WFR
- YokhN3LVR6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXIKzAAKCRA1o5Of/Hh3
- bevtEACNY0e+WVQ18HdS1G6qyTCgDBgS+8yw11ndlh6PPQ+j8HzBhWVIvnAYPpEXRNO7O0J5hzf
- xRvXvnBMHEU4aPe871JRT6FDLSdXOszc6qM6xp5TLJp5p9mkJLCKfQIALmA0ihUukOfonjd6o6k
- eJ9kfb+QehJ/pkKr9wvAJPSI9d4oXfZDMnZR5fsSTh5KS49YmHN3wNM99KZQEsgsqSvvhfDisNk
- OmHzH9Q8kthxY1+Ui5dBT82YOy5iFP7j3/rfuAoSghJJIhZr/2xHlBESV1h49v55gmWzKVg1P+o
- 8qnJLal+gECsuqIMu+TL/QOoJrI3jkS+0PXXs2pDy37TQe1CM7EHGdvDUjIvHdHGlm1zdwFG6xt
- V544D3FAVeFrexFPgRkycAQF6ZOjug6lZv3RP+ruSXnM+Fz4+I1CeCv2+jDhAkiDAAKJtmzggC3
- hYIs8+aGtuxXqxOwY0ilw7X49KCLw4K/PlmokITi6L6LOO8XDVzmtd/FotnWjmRbQMGj8BvA4tR
- vBKmNh4KEcSp/T9EahEmFs66gu9QoEUs8rZ2r9R/zX6+KfSQmqO/XZGXjAwL7Ci3AVkYn5GVJWU
- 8XKAypyd5Q0Jj3Xq7/22FUw8x0deHBpg++aSC9TI+fecbRDTMkLtwdR+tUH9nfuoW6icgZQV3A1
- tIksNHQVnVXvxmg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4867; i=leitao@debian.org;
+ h=from:subject:message-id; bh=7uJHyrOXDOd9FhTVAyYPXPCvAgryvDq0hreiCHLIU9Y=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcgrNx/dSKFHEWl3I4Vg07bhnKQsUcIF8yo/s9
+ Rq+ZzJlKcCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXIKzQAKCRA1o5Of/Hh3
+ bZYuEACH5VuwJ0LdxKPXnXTj3CyOlq7YimkNBI32njqX5MmN/gHQf/5EPJC6Q2tLAuFEwzk+23L
+ p7RxVZ3SGGzBPz9O0zBwBF4hfJ44D+00ykxkLD+9mCFeNb9DaDkF/AGnjomhlod775U29nwc7nB
+ NqMmbzxil9GIyv3z1oZvf8h0e51DJDfXq/efPtoUkAhEGRJPl7rkiV0Ho0UUpdGOCzFGU3RYHDX
+ LMmfIYjcevlB0nB3ebJ5bVm5xL9eqshDZxToRBxCQsH+OkZRGnEpBZ8nL9mMcxHh4ZB/hPpXmD6
+ XYNMyKTiKLSigiWW5J9XXMm5oqTPOqfa2hOGTfRcFP4aml0deidyyuruiRWrlruF6XtOo3aMgNr
+ N8bSHdhDDCK4NUTq5i0kRsbr3nGHAfZBqiPFMNUC0qJmpjwjDiWCdlByRgw/De8vC9ANpDGZrPS
+ k5b4Jt8971TnBuCfEwVU25DfHFayz7GXEzDoNFJyBHc7l8/5G71EI+VIuO7CQcLhg3oKYY+RC77
+ iUJZrVjPSRH2HHbudLjoY8pOiig82GUrLaYo+Etv/ALk9QKud+bzKE/zBBgsT7dEckEixFDMaJ9
+ Kors1Zy9vyDpCOiGriznjzj2Ma0u4PujKCbCQNm1iLhR9rMSKF9I5Wt8s8WIZtXvc8Ejr0QCUdu
+ BGAPqbmFjyLAbNg==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Extract the message fragmentation logic from write_msg() into a
-dedicated send_msg_udp() function. This improves code readability
-and prepares for future enhancements.
+Use the CPU and task name captured at printk() time from
+nbcon_write_context instead of querying the current execution context.
+This provides accurate information about where the message originated,
+rather than where netconsole happens to be running.
 
-The new send_msg_udp() function handles splitting messages that
-exceed MAX_PRINT_CHUNK into smaller fragments and sending them
-sequentially. This function is placed before send_ext_msg_udp()
-to maintain a logical ordering of related functions.
+For CPU, use wctxt->msg_cpu instead of raw_smp_processor_id().
 
-No functional changes - this is purely a refactoring commit.
+For taskname, use wctxt->msg_comm directly which contains the task
+name captured at printk time.
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+This change ensures netconsole outputs reflect the actual context that
+generated the log message, which is especially important when the
+console driver runs asynchronously in a dedicated thread.
+
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/netconsole.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/net/netconsole.c | 40 +++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 9cb4dfc242f5f..dc3bd7c9b0498 100644
+index c5d7e97fe2a78..1dc53b749c75c 100644
 --- a/drivers/net/netconsole.c
 +++ b/drivers/net/netconsole.c
-@@ -1725,12 +1725,24 @@ static void write_ext_msg(struct console *con, const char *msg,
- 	spin_unlock_irqrestore(&target_list_lock, flags);
+@@ -1357,18 +1357,20 @@ static void populate_configfs_item(struct netconsole_target *nt,
+ 	init_target_config_group(nt, target_name);
  }
  
-+static void send_msg_udp(struct netconsole_target *nt, const char *msg,
-+			 unsigned int len)
-+{
-+	const char *tmp = msg;
-+	int frag, left = len;
-+
-+	while (left > 0) {
-+		frag = min(left, MAX_PRINT_CHUNK);
-+		send_udp(nt, tmp, frag);
-+		tmp += frag;
-+		left -= frag;
-+	}
-+}
-+
- static void write_msg(struct console *con, const char *msg, unsigned int len)
+-static int sysdata_append_cpu_nr(struct netconsole_target *nt, int offset)
++static int sysdata_append_cpu_nr(struct netconsole_target *nt, int offset,
++				 struct nbcon_write_context *wctxt)
  {
--	int frag, left;
- 	unsigned long flags;
- 	struct netconsole_target *nt;
--	const char *tmp;
+ 	return scnprintf(&nt->sysdata[offset],
+ 			 MAX_EXTRADATA_ENTRY_LEN, " cpu=%u\n",
+-			 raw_smp_processor_id());
++			 wctxt->cpu);
+ }
  
- 	if (oops_only && !oops_in_progress)
- 		return;
-@@ -1747,13 +1759,7 @@ static void write_msg(struct console *con, const char *msg, unsigned int len)
- 			 * at least one target if we die inside here, instead
- 			 * of unnecessarily keeping all targets in lock-step.
- 			 */
--			tmp = msg;
--			for (left = len; left;) {
--				frag = min(left, MAX_PRINT_CHUNK);
--				send_udp(nt, tmp, frag);
--				tmp += frag;
--				left -= frag;
--			}
-+			send_msg_udp(nt, msg, len);
- 		}
- 	}
- 	spin_unlock_irqrestore(&target_list_lock, flags);
+-static int sysdata_append_taskname(struct netconsole_target *nt, int offset)
++static int sysdata_append_taskname(struct netconsole_target *nt, int offset,
++				   struct nbcon_write_context *wctxt)
+ {
+ 	return scnprintf(&nt->sysdata[offset],
+ 			 MAX_EXTRADATA_ENTRY_LEN, " taskname=%s\n",
+-			 current->comm);
++			 wctxt->comm);
+ }
+ 
+ static int sysdata_append_release(struct netconsole_target *nt, int offset)
+@@ -1389,8 +1391,10 @@ static int sysdata_append_msgid(struct netconsole_target *nt, int offset)
+ /*
+  * prepare_sysdata - append sysdata in runtime
+  * @nt: target to send message to
++ * @wctxt: nbcon write context containing message metadata
+  */
+-static int prepare_sysdata(struct netconsole_target *nt)
++static int prepare_sysdata(struct netconsole_target *nt,
++			   struct nbcon_write_context *wctxt)
+ {
+ 	int sysdata_len = 0;
+ 
+@@ -1398,9 +1402,9 @@ static int prepare_sysdata(struct netconsole_target *nt)
+ 		goto out;
+ 
+ 	if (nt->sysdata_fields & SYSDATA_CPU_NR)
+-		sysdata_len += sysdata_append_cpu_nr(nt, sysdata_len);
++		sysdata_len += sysdata_append_cpu_nr(nt, sysdata_len, wctxt);
+ 	if (nt->sysdata_fields & SYSDATA_TASKNAME)
+-		sysdata_len += sysdata_append_taskname(nt, sysdata_len);
++		sysdata_len += sysdata_append_taskname(nt, sysdata_len, wctxt);
+ 	if (nt->sysdata_fields & SYSDATA_RELEASE)
+ 		sysdata_len += sysdata_append_release(nt, sysdata_len);
+ 	if (nt->sysdata_fields & SYSDATA_MSGID)
+@@ -1681,31 +1685,33 @@ static void send_msg_fragmented(struct netconsole_target *nt,
+ /**
+  * send_ext_msg_udp - send extended log message to target
+  * @nt: target to send message to
+- * @msg: extended log message to send
+- * @msg_len: length of message
++ * @wctxt: nbcon write context containing message and metadata
+  *
+- * Transfer extended log @msg to @nt.  If @msg is longer than
++ * Transfer extended log message to @nt.  If message is longer than
+  * MAX_PRINT_CHUNK, it'll be split and transmitted in multiple chunks with
+  * ncfrag header field added to identify them.
+  */
+-static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
+-			     int msg_len)
++static void send_ext_msg_udp(struct netconsole_target *nt,
++			     struct nbcon_write_context *wctxt)
+ {
+ 	int userdata_len = 0;
+ 	int release_len = 0;
+ 	int sysdata_len = 0;
++	int len;
+ 
+ #ifdef CONFIG_NETCONSOLE_DYNAMIC
+-	sysdata_len = prepare_sysdata(nt);
++	sysdata_len = prepare_sysdata(nt, wctxt);
+ 	userdata_len = nt->userdata_length;
+ #endif
+ 	if (nt->release)
+ 		release_len = strlen(init_utsname()->release) + 1;
+ 
+-	if (msg_len + release_len + sysdata_len + userdata_len <= MAX_PRINT_CHUNK)
+-		return send_msg_no_fragmentation(nt, msg, msg_len, release_len);
++	len = wctxt->len + release_len + sysdata_len + userdata_len;
++	if (len <= MAX_PRINT_CHUNK)
++		return send_msg_no_fragmentation(nt, wctxt->outbuf,
++						 wctxt->len, release_len);
+ 
+-	return send_msg_fragmented(nt, msg, msg_len, release_len,
++	return send_msg_fragmented(nt, wctxt->outbuf, wctxt->len, release_len,
+ 				   sysdata_len);
+ }
+ 
+@@ -1750,7 +1756,7 @@ static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
+ 			return;
+ 
+ 		if (extended)
+-			send_ext_msg_udp(nt, wctxt->outbuf, wctxt->len);
++			send_ext_msg_udp(nt, wctxt);
+ 		else
+ 			send_msg_udp(nt, wctxt->outbuf, wctxt->len);
+ 
 
 -- 
 2.47.3
