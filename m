@@ -1,149 +1,134 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44923859CB;
-	Thu, 22 Jan 2026 18:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACD737D11D;
+	Thu, 22 Jan 2026 18:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769107318; cv=none; b=mXEir8V7z3tWpRQXfOE2tI5GAEJnZueY1Oz5N/Ju4ScQrT9GjbE2Uu3D585oMogiaon6HqJbMwYhAYXP0+AdELJPpviQ1fzyauGA0Qp42x9pYjXrKfs0ynr1CEIqpGriLP2wxsGsOqb2sZEl7SrouMhu9V7wkY7vh2XUGAg5cq8=
+	t=1769107358; cv=none; b=ZoY07XCAx1J1mqqbbN8MwYm2n3H/tGpQAIfiUm4Rxr9h8W1zKRSvv8t+Hp2b2dSruIL3NP6Nms6A1k2XqBz18TcnsmACLmeF4trmwdh2v1uQOcbTEJZTve/UArywsLkgGABIPDsGc7Kn6mfjZfKjaadW8ZIhF+mbDU8CDUmw+34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769107318; c=relaxed/simple;
-	bh=xjfGrJ9ogmU02tXh4UwJsiacW3KcvGXHd/h59cpJCJU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EkRugySm1EJzmSX/k6LoALIn1YacEpd5OBtJ3SNkjPML/ibrOP1uu7u6f3QSB7OoJE2O1KEsbUEdJQ/VuVQAR87w8VcrRmikLlyMZssw/dy5wVqeiY+Nz4UsgRKrzhzQyE6UzM+6a8l40Bgzdala67VzoztB0F+b9fZOpKoAolE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bNfNiXPB; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1769107358; c=relaxed/simple;
+	bh=BN/pC1Tv6LR754wFtKBSqKF3/ANhaf9GJBQL5ftXzv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C3wRWvhZJDtFodfuIfKZShgVu8SEWTlbk8Vg62hFt/U74AGa5UclgN4nZg/0WuDujHzJIUouizab2PrAlbKtqrAhnsBfNAShUbFvKDnwLcW39OlDbawEidFfbVbptENdlIciGA/WJavihKx/+6RdJ/cWGrR+o8fqEItTMm0CY6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQZowu+7; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bNfNiXPB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=+Ieldrz0yCTZzK/huBW1mkitT5A3IA5rZUXCCnhdv+8=; b=bNfNiXPBqOd4lHTo+SwidUgz8T
-	0uM096VXGUo0YE14qMLTSvNXpw6+k4SEqpmXs5pEEXMw+/vu1TEh0Fsit1iaQssibsDpJWP51H2Kn
-	wZVqib+ZW3o2bupfS2PrAx0u7cu9gMJ57VRhMiOZsFMhiKk4A+VGiLJp93AHe/VlJMdZD1V6+Ezze
-	DcbGz1CSntKWhMQEo5UED9mgzHXMidSIkgPVOtzUsYzbts7wUTQrpsNJZFqe5lJQPi2RTu69df4Yy
-	OvAVY8hlFcZs0e4UBpGfm801N7DKQVcz9b9yhS1eZIViJgCVB133QJc+4LOfyMAWOIZ95dF7bk3IL
-	oxhUOIiA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vizcX-00DE2W-Ib; Thu, 22 Jan 2026 18:41:29 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 22 Jan 2026 10:40:20 -0800
-Subject: [PATCH net-next v2 8/9] net: sfc: siena: convert to use
- .get_rx_ring_count
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQZowu+7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769107345; x=1800643345;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BN/pC1Tv6LR754wFtKBSqKF3/ANhaf9GJBQL5ftXzv4=;
+  b=NQZowu+7rQp/TFWvyJdGDrV71ngc9W7vWtkNv412VktHTizmT3wOlsuy
+   RjyOkq8g+WVCIlMg0JCfOhQdCbOsoAtaYSKdfn7S4ssA1m5yTjppQxVhr
+   LgmSuF+fB/Dz0FZZyxyuhR/7xRLORxUzYa8r+0OI0doIBRqn5q1m2cCLX
+   86k6FXwPAvzUGLMubcxrnwUmeHuGTn7Q+CCXbT10PPltb3UReLaOQWxQv
+   blWODbGKXm7YJffeoNpBVNREhYgTbdE62/+dFOP3uDc9VTka1rYEMTP1s
+   sn8vNfHGmUKq3Wqr3OpVgkojYyfmzw8O6lrlp/6366kXkfOChWuTBgq8v
+   Q==;
+X-CSE-ConnectionGUID: ifVMM3QlRCGYnw+irV+Z2g==
+X-CSE-MsgGUID: rAHPtguQS/CEooe+5a6aKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70450016"
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="70450016"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 10:42:20 -0800
+X-CSE-ConnectionGUID: dmHKRQjMTOWz86PkOuIFJw==
+X-CSE-MsgGUID: kmYbyz/ASxeo+V+bVuCozA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="229775130"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 22 Jan 2026 10:42:17 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vizdH-00000000TBG-0Nha;
+	Thu, 22 Jan 2026 18:42:15 +0000
+Date: Fri, 23 Jan 2026 02:41:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Damien Dejean <dam.dejean@gmail.com>, andrew@lunn.ch,
+	krzk+dt@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	edumazet@google.com, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, hkallweit1@gmail.com,
+	Damien Dejean <dam.dejean@gmail.com>
+Subject: Re: [PATCH v2 4/4] net: phy: realtek: add RTL8224 polarity support
+Message-ID: <202601230236.Ey3jrFu2-lkp@intel.com>
+References: <20260121151506.813783-4-dam.dejean@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-grxring_big_v4-v2-8-94dbe4dcaa10@debian.org>
-References: <20260122-grxring_big_v4-v2-0-94dbe4dcaa10@debian.org>
-In-Reply-To: <20260122-grxring_big_v4-v2-0-94dbe4dcaa10@debian.org>
-To: Ajit Khaparde <ajit.khaparde@broadcom.com>, 
- Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>, 
- Somnath Kotur <somnath.kotur@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Igor Russkikh <irusskikh@marvell.com>, Simon Horman <horms@kernel.org>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
- Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
- Edward Cree <ecree.xilinx@gmail.com>, Brett Creeley <brett.creeley@amd.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- oss-drivers@corigine.com, linux-hyperv@vger.kernel.org, 
- linux-net-drivers@amd.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2810; i=leitao@debian.org;
- h=from:subject:message-id; bh=xjfGrJ9ogmU02tXh4UwJsiacW3KcvGXHd/h59cpJCJU=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpcm8kwMgayWGZil65b7m91kTJjZMqKDCbx4NDa
- 3ny/Yf0Sl6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaXJvJAAKCRA1o5Of/Hh3
- bfEsD/9GFdvicyZuKksa/LMwMan8K3l2ul6AbpK+dk0soRUKMkhZOBa8M1Rs+GmAmMVY6kS0A7s
- B6n1MKjcxLSzkX2ZOcexcD3hEzx72woM8b8GU/sDHc97GDRyRnYNUPBWMnkM6Imim4TiUIz5oZa
- xdK2r4vYkFIlAQPvVlSGRZnDWf08/y8Yre4FD61jK3pJZbYCRDG9iMLQnLS9YQ3+x02YOKU8pvz
- WEAhRokUN2USk3qFyUsP8D/ACO/22I4d3fxiYTMCuDZ4dqJgS3uBMrgM7noyQxHdNehe74UGd/d
- CBVOTtTIXJzu5MBsveBv0yN/4u1uUKqXIm1cwFUlSxyHL62IhXtFG8XJTn0kQvHh8mtpN/+KoD+
- A327CRIZDiPv1CwuK8YAjYpGe8LTXjIZSIxPCDKqMYLdmrsumP//6N9lPC4jUXqVxrWe1DZKELI
- jDHDPpkYUVaai3BPUE4l0c0MrUxYi09HLfYAasVJC5csDgF6OcWAfsquYF6sJuOWZeYV21mujtG
- 1jRwctHNQZhASgWtpElJI+muqrGM1Tmr2gtIe2WANfPVgdkMm8cJTIsuW0FNYB5ZmiyQvajLkH0
- AiC5zyhgnGryduqWCnB89Qr8/BqUBLwcNAKa/VWjZe1UkDMrdiJHGZbV6XKHqwjbOwliRquKN8r
- yoNTjNDZuw0nCgQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121151506.813783-4-dam.dejean@gmail.com>
 
-Use the newly introduced .get_rx_ring_count ethtool ops callback instead
-of handling ETHTOOL_GRXRINGS directly in .get_rxnfc().
+Hi Damien,
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/ethernet/sfc/siena/ethtool.c        |  1 +
- drivers/net/ethernet/sfc/siena/ethtool_common.c | 11 +++++++----
- drivers/net/ethernet/sfc/siena/ethtool_common.h |  1 +
- 3 files changed, 9 insertions(+), 4 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/net/ethernet/sfc/siena/ethtool.c b/drivers/net/ethernet/sfc/siena/ethtool.c
-index 8c3ebd0617fb1..36feedffe4444 100644
---- a/drivers/net/ethernet/sfc/siena/ethtool.c
-+++ b/drivers/net/ethernet/sfc/siena/ethtool.c
-@@ -261,6 +261,7 @@ const struct ethtool_ops efx_siena_ethtool_ops = {
- 	.reset			= efx_siena_ethtool_reset,
- 	.get_rxnfc		= efx_siena_ethtool_get_rxnfc,
- 	.set_rxnfc		= efx_siena_ethtool_set_rxnfc,
-+	.get_rx_ring_count	= efx_siena_ethtool_get_rx_ring_count,
- 	.get_rxfh_indir_size	= efx_siena_ethtool_get_rxfh_indir_size,
- 	.get_rxfh_key_size	= efx_siena_ethtool_get_rxfh_key_size,
- 	.get_rxfh		= efx_siena_ethtool_get_rxfh,
-diff --git a/drivers/net/ethernet/sfc/siena/ethtool_common.c b/drivers/net/ethernet/sfc/siena/ethtool_common.c
-index 47cd16a113cf1..c56e0b54d8541 100644
---- a/drivers/net/ethernet/sfc/siena/ethtool_common.c
-+++ b/drivers/net/ethernet/sfc/siena/ethtool_common.c
-@@ -841,6 +841,13 @@ int efx_siena_ethtool_get_rxfh_fields(struct net_device *net_dev,
- 	return 0;
- }
- 
-+u32 efx_siena_ethtool_get_rx_ring_count(struct net_device *net_dev)
-+{
-+	struct efx_nic *efx = netdev_priv(net_dev);
-+
-+	return efx->n_rx_channels;
-+}
-+
- int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
- 				struct ethtool_rxnfc *info, u32 *rule_locs)
- {
-@@ -849,10 +856,6 @@ int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
- 	s32 rc = 0;
- 
- 	switch (info->cmd) {
--	case ETHTOOL_GRXRINGS:
--		info->data = efx->n_rx_channels;
--		return 0;
--
- 	case ETHTOOL_GRXCLSRLCNT:
- 		info->data = efx_filter_get_rx_id_limit(efx);
- 		if (info->data == 0)
-diff --git a/drivers/net/ethernet/sfc/siena/ethtool_common.h b/drivers/net/ethernet/sfc/siena/ethtool_common.h
-index 278d69e920d9f..7b445b0ba38aa 100644
---- a/drivers/net/ethernet/sfc/siena/ethtool_common.h
-+++ b/drivers/net/ethernet/sfc/siena/ethtool_common.h
-@@ -37,6 +37,7 @@ int efx_siena_ethtool_set_fecparam(struct net_device *net_dev,
- 				   struct ethtool_fecparam *fecparam);
- int efx_siena_ethtool_get_rxnfc(struct net_device *net_dev,
- 				struct ethtool_rxnfc *info, u32 *rule_locs);
-+u32 efx_siena_ethtool_get_rx_ring_count(struct net_device *net_dev);
- int efx_siena_ethtool_set_rxnfc(struct net_device *net_dev,
- 				struct ethtool_rxnfc *info);
- u32 efx_siena_ethtool_get_rxfh_indir_size(struct net_device *net_dev);
+[auto build test WARNING on 983d014aafb14ee5e4915465bf8948e8f3a723b5]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Damien-Dejean/net-phy-realtek-add-RTL8224-pair-order-support/20260122-000009
+base:   983d014aafb14ee5e4915465bf8948e8f3a723b5
+patch link:    https://lore.kernel.org/r/20260121151506.813783-4-dam.dejean%40gmail.com
+patch subject: [PATCH v2 4/4] net: phy: realtek: add RTL8224 polarity support
+config: i386-randconfig-141-20260122 (https://download.01.org/0day-ci/archive/20260123/202601230236.Ey3jrFu2-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+smatch version: v0.5.0-8994-gd50c5a4c
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601230236.Ey3jrFu2-lkp@intel.com/
+
+New smatch warnings:
+drivers/net/phy/realtek/realtek_main.c:1744 rtl8224_mdi_config_polarity() warn: unsigned 'val' is never less than zero.
+
+Old smatch warnings:
+drivers/net/phy/realtek/realtek_main.c:806 rtl821x_resume() warn: 'priv->clk' from clk_prepare_enable() not released on lines: 802.
+drivers/net/phy/realtek/realtek_main.c:1711 rtl8224_mdi_config_order() warn: unsigned 'val' is never less than zero.
+
+vim +/val +1744 drivers/net/phy/realtek/realtek_main.c
+
+  1722	
+  1723	static int rtl8224_mdi_config_polarity(struct phy_device *phydev)
+  1724	{
+  1725		struct device_node *np = phydev->mdio.dev.of_node;
+  1726		u8 port_offset = phydev->mdio.addr & 3;
+  1727		u32 polarity, val;
+  1728		int ret;
+  1729	
+  1730		ret = of_property_read_u32(np, "realtek,mdi-cfg-polarity", &polarity);
+  1731	
+  1732		/* Do nothing if the property is not present */
+  1733		if (ret == -EINVAL)
+  1734			return 0;
+  1735	
+  1736		if (!ret)
+  1737			return ret;
+  1738	
+  1739		if (polarity & ~0xf)
+  1740			return -EINVAL;
+  1741	
+  1742		val = __phy_package_read_mmd(phydev, 0, MDIO_MMD_VEND1,
+  1743					     RTL8224_VND1_MDI_POLARITY_SWAP);
+> 1744		if (val < 0)
+  1745			return val;
+  1746	
+  1747		val &= ~(0xf << port_offset);
+  1748		val |= polarity << port_offset;
+  1749		return __phy_package_write_mmd(phydev, 0, MDIO_MMD_VEND1,
+  1750					       RTL8224_VND1_MDI_POLARITY_SWAP, val);
+  1751	}
+  1752	
 
 -- 
-2.47.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
