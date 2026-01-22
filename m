@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D6F30276A;
-	Thu, 22 Jan 2026 12:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFAF3AA19B;
+	Thu, 22 Jan 2026 12:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769083810; cv=none; b=NbvKxujWvjo83fDF8QvhBiqnvLys90iwNHwp5ZxTEoz+D1DPs95t0ySDveilqCwdG17CtAYeED33pJOHV/Lrk5BCbZ4QqQOVsutg7BIrwhnibRtXwLv53Rzuh8fMiGP8j0NUUyg2PBi30BCmU4yOm5uGod5f7E8Nmj+HJ8KTbJE=
+	t=1769083812; cv=none; b=u1z2/9Jed0u5HSpPYWS/vPGzUiJ+DjiUy8OPqiYZsXJDiOI4xSasf4apclZIDiHMUSp/PPIFgF4tK8h1KoM3pgF1sS5q2i8mRVYU/Ic07q1SwUIgXgVfF6QmTDukPTHLVd07jWk37QJkUGmhU8ORnmiFhIuNl1mb0mc/Fzl7Kqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769083810; c=relaxed/simple;
-	bh=Svh98JjSR+oScYkKa8d8E4X5WQidJC3leo3ei//g1hY=;
+	s=arc-20240116; t=1769083812; c=relaxed/simple;
+	bh=XngWy+6ViL5NLbBW8pb6CJtphxGdqQrHvhYeab9cySY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=D1SMjp2sgXNGPk59d8p64Bjd1eg+PHSC9egCxK/zHYT2GheQoIdtiL2FF32HW4wJJWjyyoDMRJAhyp/MD88cstl762YKwJu4pn6cmCV1379g1b2362jYROTO/0W8mHVTAbzYFJEtrGSH00LxKV2R8cz1I5vlyuQaUA+UP+EJoT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWA5iGo/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=KjcxS8ti1t3SuMCKohuj9QG6OCHYGZwOPZsur3WkPh4NcFLBciBTr97D+mQ3vKm+aE+bCpb396PWkNOJ8hfPYC0703bYegGoVWeOubNG1wefItM4vDKyphvJZuS0EKKuAfj0JWO17ygfK8Z5FeU3ft8xWQ+w789cLRHmrLC1JcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q++0p+Rq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWA5iGo/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A6FC116C6;
-	Thu, 22 Jan 2026 12:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q++0p+Rq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CB5C116C6;
+	Thu, 22 Jan 2026 12:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769083810;
-	bh=Svh98JjSR+oScYkKa8d8E4X5WQidJC3leo3ei//g1hY=;
+	s=k20201202; t=1769083811;
+	bh=XngWy+6ViL5NLbBW8pb6CJtphxGdqQrHvhYeab9cySY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FWA5iGo/zjdlJLYHH2+68+VFt9vN/sBsdRTn20+2TL9sDZaIVb7eSO4TyMiwmEVMe
-	 6LHJQS1kvO0sLkpJtodlGDDJHMrgfknaM8uzSaUObRaYNNDWmZP7RJ0jo1np21kzls
-	 HStzODPZ/QUv+Al+TLdMlN7ZowZWtboHtpmmARVYicEL5k/u+l2FumOqDpz4GEs3kQ
-	 COK7TuAiFGQM2j63atqZPWd8gl56vj9W5RZQYM/hRu4Oikg6eIrjxF9L9OBLgI/iMK
-	 IZ1DD9HXliXWEjrN4h7jfzBDKPEU8hNLhhNOfYQJcSwmTxvZ/PmNsRDuDdsdqluYkO
-	 v19jlb4AjI9aA==
+	b=q++0p+RqQASndA1LmpBwQqbWmWBcETme7USzJB/kbWukUzdsEZSB9dug35CdZPEok
+	 r57Y2kbptHXd7Ek92q1t8KCvK1/606dlCvXXeslRBAEWwH04cPwu8ENuSXsgl9CfsZ
+	 3Juj3wjikSq+kydHYAM9OqYUdQuPT04G6bKZkNb7gg3lwhEFwwlZtRDUcxJ+50HtqF
+	 zcfxBEtGbbZgDTt3YJ+BySCECSPBNdR6CJcGw90PhYfP7dG8qyZEw1narbFmiAlajU
+	 Sry8mIDf5FeNw3Mjp2YEHmrTMgsYBQVQqgUj4v/8tKjcZiZK4fd+kqTJ6m/wbKFrbJ
+	 O+BG9VaepTNmA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11A843808200;
-	Thu, 22 Jan 2026 12:10:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8B9533808200;
+	Thu, 22 Jan 2026 12:10:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ifb: use u64_stats_t with u64_stats_sync
+Subject: Re: [PATCH net-next] xen/netfront: Use u64_stats_t with
+ u64_stats_sync
  properly
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176908380660.1694846.6150290678158927014.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Jan 2026 12:10:06 +0000
-References: <20260121082348.2388314-1-mmyangfl@gmail.com>
-In-Reply-To: <20260121082348.2388314-1-mmyangfl@gmail.com>
+ <176908380810.1694846.13399878058009113913.git-patchwork-notify@kernel.org>
+Date: Thu, 22 Jan 2026 12:10:08 +0000
+References: <20260121082550.2389249-1-mmyangfl@gmail.com>
+In-Reply-To: <20260121082550.2389249-1-mmyangfl@gmail.com>
 To: Yangfl <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+Cc: netdev@vger.kernel.org, jgross@suse.com, sstabellini@kernel.org,
+ oleksandr_tyshchenko@epam.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+ xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed, 21 Jan 2026 16:23:44 +0800 you wrote:
+On Wed, 21 Jan 2026 16:25:46 +0800 you wrote:
 > On 64bit arches, struct u64_stats_sync is empty and provides no help
 > against load/store tearing. Convert to u64_stats_t to ensure atomic
 > operations.
 > 
 > Signed-off-by: David Yang <mmyangfl@gmail.com>
 > ---
->  drivers/net/ifb.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  drivers/net/xen-netfront.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
 
 Here is the summary with links:
-  - [net-next] net: ifb: use u64_stats_t with u64_stats_sync properly
-    https://git.kernel.org/netdev/net-next/c/cbe38d2e52cf
+  - [net-next] xen/netfront: Use u64_stats_t with u64_stats_sync properly
+    https://git.kernel.org/netdev/net-next/c/a2ba9902e4b9
 
 You are awesome, thank you!
 -- 
