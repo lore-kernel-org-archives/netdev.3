@@ -1,164 +1,99 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1F320CD9
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 21:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E760350D7B
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 21:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769117628; cv=none; b=n5HD6S6QcfZo8FiQMPeGBkn6X00GIOg8OWNAeps6IhluOBqjcfDMZNFQvtUfa1UcKGgwi1/3wU6K8hslkH65ue2jR5K8onK1IAN54yEuPPRz4YpkKTtZH/NuyS7fvIxaWWZPd8IQyDb/p4WMCOs1Tz4yOdGt1wdAYKCpuAmrUxs=
+	t=1769118180; cv=none; b=fAF/ne6L4htNBjnYh654x779SGs1QYXiixQd72mkc1YwNP6jeV1RXguBhXtw32afqqejdmnNqpnFymIg0clwUrSaBfyXtJ8PPZNHqTRvsg8XlUDxwCmVNMABXrbeh0cXVNC15aOu35vQBYmuWBQnDXnoVPb3Q0zIGeDqiMAroXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769117628; c=relaxed/simple;
-	bh=VWTGDCr7KnAlmNEQXc/XS1CrE9cI7qAt5PrV1estoEY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=tXwOTPxpNDhltas3/3hqILvG5MHEWUzRCbByV6gaZWJsplm9aZfDPaPcS5XG0RhDON8+I/RXJPIK8DaqGia5d5Wwz3wiS8dH0+mg1pMm58FYqznXGhxuacyy01cQl/LYGGDDJ6/iRyeplp/R8+47QL+2OJVfXHKZVSivUFJPw38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N7vr7vL/; arc=none smtp.client-ip=209.85.128.171
+	s=arc-20240116; t=1769118180; c=relaxed/simple;
+	bh=XCri6TpeAwwjFdFfbu2Xmenknz9GMXG0BWXH5++IG98=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dHVRKyrQGvfR06V/j1PcvKMLYByS8SBgu2zKiY6dpYfXT57ziSezaoeR9/i9LOVBQWHw8XcE0Z7YwCG3xar/1u7jgFna++pLe0wKiHOTtDOWUNj+fpLl7cHsBSDDAS0FOqMbHvvYoXLqcet9Fmocr/70/eoefWzmssRNQvpQbDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B03nPAID; arc=none smtp.client-ip=209.85.221.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N7vr7vL/"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7927261a3acso17592457b3.0
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 13:33:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B03nPAID"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56637565faaso1130142e0c.1
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 13:42:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769117613; x=1769722413; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a56DweiDNwNIUw9ae441GHBe14i60YZrvGqHo80giZw=;
-        b=N7vr7vL/GxW0aaGCQ845UIZ+mpYQx1P0ptxc3U2HKMLovtKybHYXG/KradIFhPV6Im
-         n4o3icVDmMseQNITJuOSbB3XdF/hpJGpeWKOgOjQiCtUuEKsQrOTJjf/VLWMHFMDT7wd
-         j6RZlfoU18x+9u7V8veG8KFBBlfuUVXuC0JmZVqUCGNs8OX08lRFp0SUhqWPx1ss2ERd
-         GJPPGWnr9gOGX+q9Rgy9xkFDbgLLnuGuzmoz67kLi63o29goIW+7GXyjgRC3EEr1nxHa
-         b9eVeio4+XmoDRumr9Kv5a2Kd+VlfIIfJxtF8DyKxHo+9IciJS5sHDSUX2uanIkNyaQA
-         6ewg==
+        d=gmail.com; s=20230601; t=1769118174; x=1769722974; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JoZz20dy6a5sTWw9JhLQ9Q8q+pGoGoLISLI96ZLK43c=;
+        b=B03nPAIDFRxwuU0XrwfI/OERG4Y6sxCFkJfZ/NfEQvfmSXFkTIyskhRyaGxUPI4XN0
+         YiruFhltAFr4xy+PWIX+h5WVuQs/j05QqQw9CZG5aMIHTMtmn2acwVdQRnGwUbEHkSuP
+         vcyB9dgvvWZH6ve2aN+j4NFrfrl/7eAyDvFvFey1MHVMdBWFqIyRQuJsTORr6oR9BioI
+         +apW7m6pcx6EBLONi6WD11ge/kN7+xjaBPXjJsSAwCjIf2Clrb7+B/WlcpdoeCTFKjML
+         rXq0L8pzD0KAo9ivnvF5IuxIzUUYZQPc6yw9RrrSLaOe8NtKLvuR6lCu6LfIqE85c5ok
+         0XZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769117613; x=1769722413;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a56DweiDNwNIUw9ae441GHBe14i60YZrvGqHo80giZw=;
-        b=kPhO05ZZwOd64rtiEEQ14BaF3xnVxlRC3TZLi3i/SachTJ0W60yCJ08Myzs8go+l68
-         5EHxHZsKEaqhgjFeU95xM5vNlRdCWgtUPHAKxn621k0jLLwJJYIclq2deSD9teeyPneL
-         qdvFrVMqON5s2U8NSAZtPiTZ4JoOGrttGhCjqGcyy7t/Z5pY/oxacDcP4CdlEUL0Xd/X
-         1HikxyneH2/xL3WdZz0i3ZQS0vJkGYw0GYVDBdqqmrUO6iBtSacwiofmDbZP4hoaj3sV
-         7bEf53zu+3ANk6HCUAhDobMjQv9XtKwNS33sVpVan+/mP0Jr2GLHdwK+Rn2cMmf1PJHS
-         D2qw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8Le0Ree3DLp+IeaMQjm6rJzsvzhGuQl6e/JlFgqdvFyh1JxPEw+JZHf3qCmKAq3NYmduMqfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSKFmjRBqjnuwnKe4R0jNfHyTJv4y3uTFekYkB5bNvO4zqCtlh
-	G48jXz3t9B9WkN0zNR2QFj/Dmru8wJXULUBVqq+g9VlTTOvKotizuCCx
-X-Gm-Gg: AZuq6aLfzr5AQQQQ9W52CXG2WYj5sbo8+LRtUf/TKGMW+Sh2dZ4ReF9eoCQCPqIpy4s
-	7i9NCzhZ8hKqqZxmGegmLeAq5Z2vJaxEDgRbSr0alu6mYAbs109EUdTBbCzueFYL9oN5EvCPcG4
-	oByLY39u1X98/futGs5WMc2L+XNMa/zZ6DPMz15dZ1lOngRhlGuTJ4MNv8pNgfxo7VOYnA9bKta
-	CKo86YXGLq2dUej1e1rOWjoRH8pSomNMe0JboWbRLDO3W9mBFWJ8drULK/xSssrTHKSyrAQm+ml
-	DMRM7G9+gTQVz80/RvteUzVywZfgmpsCShzGWminoLLsQMAWf1mHAQ+svwXgP5hIJfo7pdstT3I
-	o10AzvFduK6SRYAbeZ1H6v8saZmKVd5+jNM/reCOiYDqpIkJ/JEQ8yOeWOHZK4YZTwn7PQWYI9d
-	U0TYnlfV3EYwc/prKvyuDIN7attEwue/0wooFLAvGbmcVntEDCsATBGcEQfPU=
-X-Received: by 2002:a05:690c:9b06:b0:786:a967:5a8a with SMTP id 00721157ae682-794399ed074mr8536437b3.51.1769117612037;
-        Thu, 22 Jan 2026 13:33:32 -0800 (PST)
-Received: from gmail.com (21.33.48.34.bc.googleusercontent.com. [34.48.33.21])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-7943b2b9e7csm1919737b3.41.2026.01.22.13.33.31
+        d=1e100.net; s=20230601; t=1769118174; x=1769722974;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JoZz20dy6a5sTWw9JhLQ9Q8q+pGoGoLISLI96ZLK43c=;
+        b=okcrjwgNO5IhX/NnXTDQIr0K2eo/6PaQZI3KSoPMU//g7aAa/Zu7XcGL4B7de79Kri
+         WSfgeDTLOUyQvTOXeNkKk5IAo44aUrjCdFJIqfozN39KUFUh4pDXEyJaNI4JrWZQOgwo
+         nLYxPulk/s+QKHXIHKs+VnYtEf40CuXAzrSYKqRWN4gz62hHUxhXf8kpVaoG0jHOV7Tx
+         EhczpgLAuMJ5WTguwUTcQzmRRAwsqFuJxjmxWPiEaUBsj3hiYJaO4xdp52V5vo3Q5orj
+         fFoHmUmoxgS7KfPUrSsvTRV2b/mOZHOj3iIyRtvzNCDFIrB/khklnFQXXr/eMG+KCDjV
+         owLg==
+X-Gm-Message-State: AOJu0YxcI3Ti2VAvcKIgOXDTu7MIBIDLLEkKjhr/gp1921j6it6XqWxu
+	aAjWmoB+yHCcd3Kv9btpFNDVBLp6FVZrKb7mwTQX1zFJQC/N2e2ZEbs1zAD/HQ==
+X-Gm-Gg: AZuq6aJKzXT4MUznXx/MfHc5+lJyqxwH5IdwhoUq0hYy2qX4dxf+3A0gBb4eOVgIhpK
+	p2yS/N5c1osMKWndBgFB/pb/Roa5R1j3PBSHDDii//jRYBwGzaoN7ZgnCTcVgfFtcPgJ8ZltuUj
+	XAZaMhmK5CKoZYcr8iLZjRm6bHiX5QloEq8mb9JvSjRLgDKCrsNzz2goFiWKT2oB40Ne7EbDkXn
+	3qyJ4HRL6RQLJ0j3OndHPC5CsaxWK4yO8dq5AiwYKX/CXqktq4CIhXXINPo3zMKcj+7M1A3Oge6
+	cxEtkdYCRXG6HZOokgSTcG5UcOt1DFBTGXif+0CbD+R133HVqB/67s5nzvpCUhx9RDRNrlgi25g
+	hSptuqp4c5ZYQmzC2gGbUzDt+AzOMixKS3ojWd9IcWluR8q7iF5yQ+c06doDltzWZyQMiXte5PB
+	W7ERYwwpub4jwq4Q/TQsLkj98T558g3dtMcvqJZj1JfQxIjvlhL900ig==
+X-Received: by 2002:a05:6a21:164a:b0:2cc:acef:95ee with SMTP id adf61e73a8af0-38e6f7cef3amr646046637.52.1769111136883;
+        Thu, 22 Jan 2026 11:45:36 -0800 (PST)
+Received: from d.home.mmyangfl.tk ([2001:19f0:8001:1644:5400:5ff:fe3e:12b1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a425254sm110441a12.29.2026.01.22.11.45.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 13:33:31 -0800 (PST)
-Date: Thu, 22 Jan 2026 16:33:31 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Soichiro Ueda <the.latticeheart@gmail.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- netdev@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>, 
- Soichiro Ueda <the.latticeheart@gmail.com>, 
- Miao Wang <shankerwangmiao@gmail.com>
-Message-ID: <willemdebruijn.kernel.f1685fbda48c@gmail.com>
-In-Reply-To: <20260122033605.148626-1-the.latticeheart@gmail.com>
-References: <20260122033605.148626-1-the.latticeheart@gmail.com>
-Subject: Re: [PATCH v1 net] selftests: af_unix: drain after peek and verify
- SO_PEEK_OFF reset
+        Thu, 22 Jan 2026 11:45:36 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: dsa: yt921x: Add DCB/priority support
+Date: Fri, 23 Jan 2026 03:42:28 +0800
+Message-ID: <20260122194233.2777550-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Soichiro Ueda wrote:
-> Extend the so_peek_off selftest to validate behavior after MSG_PEEK.
-> 
-> After exercising SO_PEEK_OFF via MSG_PEEK, drain the receive queue with a
-> non-peek recv() and verify that it can receive all the content in the
-> buffer and SO_PEEK_OFF returns back to 0.
-> 
-> This improvement is suggested by Miao Wang when the so_peek_off selftest
-> was added.
-> 
-> Link: https://lore.kernel.org/all/7B657CC7-B5CA-46D2-8A4B-8AB5FB83C6DA@gmail.com/
-> Suggested-by: Miao Wang <shankerwangmiao@gmail.com>
-> Signed-off-by: Soichiro Ueda <the.latticeheart@gmail.com>
-> ---
->  .../selftests/net/af_unix/so_peek_off.c       | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/net/af_unix/so_peek_off.c b/tools/testing/selftests/net/af_unix/so_peek_off.c
-> index 86e7b0fb522d..813e3b3655d3 100644
-> --- a/tools/testing/selftests/net/af_unix/so_peek_off.c
-> +++ b/tools/testing/selftests/net/af_unix/so_peek_off.c
-> @@ -76,6 +76,19 @@ FIXTURE_TEARDOWN(so_peek_off)
->  		ASSERT_STREQ(str, buf);				\
->  	} while (0)
->  
-> +#define peekoffeq(fd, expected)					\
-> +	do {							\
-> +		int off = -1;					\
-> +		socklen_t optlen = sizeof(off);		\
-> +		int ret;					\
-> +								\
-> +		ret = getsockopt(fd, SOL_SOCKET, SO_PEEK_OFF,	\
-> +				 &off, &optlen);		\
-> +		ASSERT_EQ(0, ret);				\
-> +		ASSERT_EQ((socklen_t)sizeof(off), optlen);	\
-> +		ASSERT_EQ(expected, off);			\
-> +	} while (0)
-> +
->  #define async							\
->  	for (pid_t pid = (pid = fork(),				\
->  			  pid < 0 ?				\
-> @@ -92,6 +105,14 @@ TEST_F(so_peek_off, single_chunk)
->  
->  	recveq(self->fd[1], "aaaa", 4, MSG_PEEK);
->  	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
-> +
-> +	if (variant->type == SOCK_STREAM) {
-> +		recveq(self->fd[1], "aaaa", 4, 0);
-> +		recveq(self->fd[1], "bbbb", 100, 0);
-> +	} else {
-> +		recveq(self->fd[1], "aaaabbbb", 100, 0);
-> +	}
-> +	peekoffeq(self->fd[1], 0);
+This series add DCB/priority support to the driver.
 
-Do you want to test peekoffeq before the non-peek read too?
+v1: https://lore.kernel.org/r/20260119185935.2072685-1-mmyangfl@gmail.com
+  - rebase
 
->  }
->  
->  TEST_F(so_peek_off, two_chunks)
-> @@ -101,6 +122,13 @@ TEST_F(so_peek_off, two_chunks)
->  
->  	recveq(self->fd[1], "aaaa", 4, MSG_PEEK);
->  	recveq(self->fd[1], "bbbb", 100, MSG_PEEK);
-> +
-> +	if (variant->type == SOCK_STREAM)
-> +		recveq(self->fd[1], "aaaa", 4, 0);
-> +	else
-> +		recveq(self->fd[1], "aaaa", 100, 0);
+David Yang (2):
+  net: dsa: tag_yt921x: fix priority support
+  net: dsa: yt921x: Add DCB/priority support
 
-Why this difference in length?
+ drivers/net/dsa/Kconfig  |   2 +
+ drivers/net/dsa/yt921x.c | 232 +++++++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/yt921x.h |  54 +++++++--
+ net/dsa/tag_yt921x.c     |   8 +-
+ 4 files changed, 284 insertions(+), 12 deletions(-)
 
-Because stream read will block if > 4, while datagram does not?
+-- 
+2.51.0
 
-If so, can perhaps use 4 for both or explicitly use non-blocking read.
-
-> +	recveq(self->fd[1], "bbbb", 100, 0);
-> +	peekoffeq(self->fd[1], 0);
->  }
