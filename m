@@ -1,131 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA783D6465;
-	Thu, 22 Jan 2026 12:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6640033A71D
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 12:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769084609; cv=none; b=N2uv/0FtpPkRKo1b1kyakmlOjSi75n04QyPYNH/e7n1YOUGiBa1LoaN426nho/D+ou0FHIAfxbuwwr3IEVDqsHBzzbx0UTSW1/lM8ox3KQcOTQpo/+q+cFHrw3c6AT+inzsgqSPmPggfPY0/5TyNrWBX7nS5GMXNlvHON5PxX0s=
+	t=1769084641; cv=none; b=RweKT2ioPiM8zyderg9FYmygYoQcZQBa4C/Orwn2cGwLcVYm5Oo9m8ZNOXx3g8VmlFzxrNT4kRrRz/1gm1fL5I8sn9udkh1f1avOJq61lqylsHSzkeetOGaKAmjCiWYY+svDusBIpe6pcLLALdVbKFWB/ykV6Hg8mhwTL7XyAac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769084609; c=relaxed/simple;
-	bh=Cj2+/kcs97ULFQET2IYCmmZHMP/yfxbtQCjdqvLuw0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cBq/eB9+uGp7763fp+/+1wwk6oXLSOTzEcdJ+kJszuQ1vQ6iiEomzl1kfmEIX4frW1QMkfZyGR2UT8tsuas+HOK2+haA2OI1oGfQkOFdQJxclBtq3cYQKg5KGmxPJv+NDtdxdZu7gTeLh9HbJMN7BA1yhpSw/rGPDeQXJYmhqEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DYIou064; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1769084641; c=relaxed/simple;
+	bh=CbkhgR46Zm77/M+4UC5otkqe5oqfCe1CQTunZhwtgeg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tr9PeeMdzuxipNIPnPRoKmPw7+45Fr2OwSnadS4V6nLPBYEVyeEn5Sup49SOJRyg0McwAvJUx7vq8m+oEbEPleQkLQgOBPPopNgW8z+VttelIwiWnu89e5z2cHC4eZWYGzGcY2588vDVakw2bNcVGAx11YFKJhykm8EvpvZBopQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cgkKq1ND; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U8KqbCmP; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DYIou064"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769084607; x=1800620607;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cj2+/kcs97ULFQET2IYCmmZHMP/yfxbtQCjdqvLuw0o=;
-  b=DYIou064g5Iob5DGp0X3pl1m4cvpHcX9Y6kACfttvjHZBQ0RtrqUGzIL
-   vLKlZuEQxOsXTjn8TA4MpQx1Ame7qvgpIuyEWVMkLv4yG2bH9mZ/hvSPh
-   06XnUQhIitZDz8ybmtLD7c4L7tKSlgza9s2jQ5Ccgz+Vw2ftHhO4noc/M
-   8XNRTWUMYlpiMVlXr7S8fYUvv4qVEp0j3foMJmZ6Vo+VY44Hj/4iWbHVa
-   sH5Ps5H+tFWv9NhjTPlmJkHw/BTiHZp8vAyI3ILXCWVi7fDrOOOC4XU2x
-   qGN0cQFL9cx+t8uWSVu4Vne5FdeJ3WCM1yV5SEB3WsZO4nFTlKZGDQOsa
-   g==;
-X-CSE-ConnectionGUID: PHNAjXiwRC2ndBPgRtjsQQ==
-X-CSE-MsgGUID: MzF4PramRFiPxG63ZwgYkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70295924"
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="70295924"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 04:23:26 -0800
-X-CSE-ConnectionGUID: U6vzPU6nT++c7MhEOW0iJg==
-X-CSE-MsgGUID: RMhjbgxdTk25LjYGF6jUeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
-   d="scan'208";a="211236098"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 04:23:20 -0800
-Date: Thu, 22 Jan 2026 14:23:18 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: Re: [PATCH v2 net-next 04/15] net: dsa: sja1105: prepare regmap for
- passing to child devices
-Message-ID: <aXIWttaIcR-yq0nx@smile.fi.intel.com>
-References: <20260122105654.105600-1-vladimir.oltean@nxp.com>
- <20260122105654.105600-5-vladimir.oltean@nxp.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cgkKq1ND";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U8KqbCmP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769084638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDkVo4hJqKcY8aS9Cps8su9WoS5sFWEpHKQyTLCzYYY=;
+	b=cgkKq1NDdps5T4cGsdCM+4pFOSQWgCF4rNC6fWuIhi5BhQx88dAaJ9BF1vQqxO6feiFpGM
+	BpKO7i6l1wrMSYZITofKQcZttjAFDq2QAQS2Ir2d7PHj7puPuuRDnV2R6oOfjKpGTMiTKH
+	y1ycGtSKiLi4jzNQESQxXrtA5jZaKPg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-354-8fdHhfCPMw-Q3IGaN5i69A-1; Thu, 22 Jan 2026 07:23:56 -0500
+X-MC-Unique: 8fdHhfCPMw-Q3IGaN5i69A-1
+X-Mimecast-MFC-AGG-ID: 8fdHhfCPMw-Q3IGaN5i69A_1769084636
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47ee33324e8so5515635e9.1
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 04:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1769084636; x=1769689436; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HDkVo4hJqKcY8aS9Cps8su9WoS5sFWEpHKQyTLCzYYY=;
+        b=U8KqbCmP49jKYp9WVeOqWydeooArymQ22a9RNlh6u113u+1JSoWiKTtO78TQ0i4PmJ
+         8YpZA0oFiSsbNKH3EFg5ClCQeovlNwjtq4/aPpxwtp4WPz9+RAY5DZetjIgmP5Z2dr4x
+         bZVMrNNTYU25AKJ7+Ck0GUqk/au59widu/OhLIzVa5Eb1EF5APJFWOH2dgMr7Km8d69x
+         A6ZUbpZhmbSJP7EsBkK9N20ItIr3KcpAuZl3COyIyCRFBZDAI9/mgH7ItGXSsYmwcXL+
+         KnamyuWN7tp0IsmnX1nxwTJm+KLWCxN326aZPRmyjdQZsraPmp1QocTIoH/yX4w+jFkX
+         ihtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769084636; x=1769689436;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HDkVo4hJqKcY8aS9Cps8su9WoS5sFWEpHKQyTLCzYYY=;
+        b=EbDq02G+z5dLXoqqLO7ZNtcayOR34xbTc+4DRQt2MpwUdSaxSuaXLwWpyPRPLhuFW6
+         FufEc+P2t5FRH48jyna0V9EeBqKHdKY4axLWDO6ZMjJ3sNOMnjHxRN6loLtSE5qUtCmQ
+         Dy+jRcvWkwXGtNU0oYNDOeCic7D1s+GTElzZjTt1kzRq6UZNULEcg/amqfUn23WidZNC
+         kxh9vwulGkzCAAgKtQD2KlLPAagiYihyDJB9jHcn76GeLvPISq66Nazyglz2NQVtCcDU
+         usrP5qZtgqaAeLSm4iT9XMOd70h8q0vmteigfD+6aOmtUJZUBadL2LhaCpLbmRsZqimK
+         ZWaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjkw1fBaDi1eCx6ZT7v8lnGC1nJCZuZ3/0yxkjI/pdhKUH2cpscpFYtOL9O4kAnvj2dVz+X1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8lz1N12aNwGmZDREm4OelfFrIeWkG739GEWJZb+ZoiZJ4HPjq
+	Q5CBTd84qnowPh2Ap0pmd3aun2ybh5csOMhgprTdVQ203rT9HyAGoz6egrtGKXZVijV72xDirq4
+	TU622/sJ3CFZnKWDq/WDRbFIOjKKvuBIFH1BXW9TT2abEyKTgaoqhuk+duw==
+X-Gm-Gg: AZuq6aLhGZ9ywZCgItt6A1AZiudkX9SgKtz4xZeLDHAqMnhRdhO9XBcCoZ/2ZJf8Wao
+	TNTbuddK8dJ40Rqf3JzSwqDIASf+H9LYj8HgvcWOnxqvDvfXsc5XT9xa5Oey+RBB37jhKdpV4IQ
+	Et4p0yCiiBuJNzQdIeAvH2WUGnetkazXJci26cqMRabTw1qzXMlO1bybpH+vc0f1kjXiFVoDitB
+	6C4e93yj5W569pyC2rqdpxQwXAS+ddyKM3yxpaxbXPPYWOzbev9LeJxiqP/yVz+CZDmmtpp7krL
+	O3fAiKdQ9iMuuAHN/TnA9n238beNzZuCpFU/NaZ9MUY1gVysuF99UDu0rU6ai3qeI/CbsZnL3he
+	DXJnyl3PUyacV
+X-Received: by 2002:a05:600c:821b:b0:47e:de9c:92ec with SMTP id 5b1f17b1804b1-4803e7a39cdmr145313625e9.14.1769084635668;
+        Thu, 22 Jan 2026 04:23:55 -0800 (PST)
+X-Received: by 2002:a05:600c:821b:b0:47e:de9c:92ec with SMTP id 5b1f17b1804b1-4803e7a39cdmr145313225e9.14.1769084635263;
+        Thu, 22 Jan 2026 04:23:55 -0800 (PST)
+Received: from [192.168.88.32] ([216.128.11.175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997ed8bsm45340078f8f.36.2026.01.22.04.23.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 04:23:54 -0800 (PST)
+Message-ID: <578b5c27-0db5-4185-ad3b-cb35bf864d18@redhat.com>
+Date: Thu, 22 Jan 2026 13:23:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122105654.105600-5-vladimir.oltean@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] net: fec: account for VLAN header in frame length
+ calculations
+To: Clemens Gruber <mail@clemensgruber.at>, wei.fang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, stable@kernel.org
+References: <20260120160407.101273-1-mail@clemensgruber.at>
+ <20260121083751.66997-1-mail@clemensgruber.at>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260121083751.66997-1-mail@clemensgruber.at>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 22, 2026 at 12:56:43PM +0200, Vladimir Oltean wrote:
-> Prepare a single regmap covering the entire SPI address space of the
-> SJA1105 and SJA1110 switches which can be given to MDIO buses, XPCS,
-> irqchip drivers etc.
+On 1/21/26 9:37 AM, Clemens Gruber wrote:
+> The MAX_FL (maximum frame length) and related calculations used ETH_HLEN,
+> which does not account for the 4-byte VLAN tag in tagged frames. This
+> caused the hardware to reject valid VLAN frames as oversized, resulting
+> in RX errors and dropped packets.
 > 
-> This regmap is address-zero-based (can access the entire switch address
-> space) and child devices are supposed to access their respective memory
-> region with the help of struct resource (IORESOURCE_REG, to be precise).
+> Use VLAN_ETH_HLEN instead of ETH_HLEN in the MAX_FL register setup,
+> cut-through mode threshold, buffer allocation, and max_mtu calculation.
 > 
-> Nothing is currently done with the regmap, it is just allocated and
-> added to the device's devres list, so it doesn't need to be freed.
+> Cc: stable@kernel.org # v6.18+
+> Fixes: 62b5bb7be7bc ("net: fec: update MAX_FL based on the current MTU")
+> Fixes: d466c16026e9 ("net: fec: enable the Jumbo frame support for i.MX8QM")
+> Fixes: 59e9bf037d75 ("net: fec: add change_mtu to support dynamic buffer allocation")
+> Fixes: ec2a1681ed4f ("net: fec: use a member variable for maximum buffer size")
+> Signed-off-by: Clemens Gruber <mail@clemensgruber.at>
 
-...
+A couple of things to remember for future submissions: you should
+include the target tree into the subj prefix ('net' in this case) and
+you should avoid sending you revision in reply to older ones as it may
+foul patchwork.
 
-> --- a/drivers/net/dsa/sja1105/sja1105.h
-> +++ b/drivers/net/dsa/sja1105/sja1105.h
+No repost needed, the patch looks good, I'm applying it.
 
->  #include <linux/dsa/8021q.h>
->  #include <net/dsa.h>
->  #include <linux/mutex.h>
-> +#include <linux/regmap.h>
-> +
->  #include "sja1105_static_config.h"
+Thanks,
 
-It looks to me that somebody missed grouping above (not this change) and it's
-better to have it done:
-
-#include <linux/dsa/8021q.h>
-#include <linux/mutex.h>
-#include <linux/regmap.h>
-
-#include <net/dsa.h>
-
-#include "sja1105_static_config.h"
-
-...
-
-> +	rc = devm_sja1105_create_regmap(priv);
-> +	if (rc < 0) {
-> +		dev_err(dev, "Failed to create regmap: %pe\n", ERR_PTR(rc));
-> +		return rc;
-> +	}
-
-Hmm... Perhaps return dev_err_probe(...); ?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Paolo
 
