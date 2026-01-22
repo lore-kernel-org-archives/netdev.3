@@ -1,110 +1,108 @@
-Received: from mx27lb.world4you.com (mx27lb.world4you.com [81.19.149.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D63B21D59B
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 20:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63BF3A5C1C
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 20:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769114913; cv=none; b=p378drTRehga6QWNLttpf2U7WQphdlg2Kz6lSe95UD3bfF3n2hPEZlqxaUQt0LGqdGCDYBWYO/vYe895fkLEW1uF0NTtzOY2QLYqzYHRvvw/BeMV5GJiJMa2ytK2QKJZiRR11Jkxs5MagZdCLSSxS2D3r4cPhVqhT1vSXqATVfY=
+	t=1769115035; cv=none; b=lDk2KE3wSvk4zNvB1IanFJVd7r0Yv4wXLc1nNBZvGxXil6YMs3PsahA7h5MoJ1As6W65m01vCAmr2slLs+dW9c5w0eOx8Y3dFzA3LwpnjXIUUXOpVIjaA9jFbxXat8JpckuvTCBOvRGuv9GCO3rwb0Q3IN97FqbkrXBL43BjzuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769114913; c=relaxed/simple;
-	bh=ZxRzWIa2RYrCjblR8FU1QpFVaCx9tygXC9Uf0jNb22w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FI8auZJJobNQq+oVvl6dQ3SlQH0BUgJjVDtPD7jqubXu9KpaxlarLokCbrHMXjh08ziNu9CRkP0iXLJyYrBgON0y1aJHC5ohH4vJKIfo0GiAK8fsv8BBhOtxF/nKMM9FydwlirjjgZDwV2y5CwWgoyPkrnPUWC3AprICC0ZXz2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=TZGhD2q+; arc=none smtp.client-ip=81.19.149.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	s=arc-20240116; t=1769115035; c=relaxed/simple;
+	bh=hMFePM22Q/D5j2jqVz30eL1pTcy0sBuRIblhBrwlrJk=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=QRy74gD+72qD3cf4OZqnlmRMx/zzp9xHMT5iUX5Pux364KiPxsJ/MIwQntGz785lR/caJ/tF1M4tjpG06PLSoCnRnUAm8731i5W1oWbTX+sG7gzljrUalqmjZdoycB5XFWgEqMPkONICsp0/BIr4sRf9jQdyMVmcIlYwHkDnL2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EfXemUnU; arc=none smtp.client-ip=209.85.214.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="TZGhD2q+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sDVB9pQemhkH2KV7SHjCh7VrpYGRuz2iO0t3CU9ClFU=; b=TZGhD2q+6T+fjXSdjPP8R0wy/H
-	oobmBlntXwcND1F5rvBacjig3kiVRwsDWnRGOOjKqNHBhB76zVMRXZ1rldWfXT35xr9UIFaAkOWKd
-	e8XkGToBpEfqFDayrzX/2/OiKVCK5stsy2obNBgj6mxWReDRD/ScX3otrduJHrz+OP2g=;
-Received: from [188.23.33.245] (helo=[10.0.0.160])
-	by mx27lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1vj0ul-000000007vz-0YKZ;
-	Thu, 22 Jan 2026 21:04:24 +0100
-Message-ID: <c5ba02dd-e81f-4590-9e35-90c9b2c33bee@engleder-embedded.com>
-Date: Thu, 22 Jan 2026 21:04:23 +0100
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EfXemUnU"
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2a09757004cso13497345ad.3
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 12:50:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769115027; x=1769719827;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eOcvoVMH73kwUWaEg2Uh4CswapfzD3PM9GIt4HKH3Fc=;
+        b=E2rOkXJQ8gOQVS+5NuBZgOy5y+KhvF/WPgEZ+CwDMXSCwkd9s8NF7nkrFG+PGIBQn7
+         St1sVgVy71wE8DFgo7DbjPzfLha73Hcf4r+4q2js/AarIffiRsD4HD2MdDoF6XHQiyxv
+         Y/HG5le2tz629t+B1g4cVxEOVTDCPA57ozpgBov5huezXjJc7BL0j3zz60dIFnBIF9YE
+         ubVxlLoaxJ4eloAp58tKWLAZ1VNc5OkCpAD8rLsT3bTtQc9idSg3MxCPsssuYDZ/NbnF
+         4zWfx6Rpq2bwIi5O/SYFXsNoaucVFm8KAVffqZy+Pb4MUE/pnfTroa1iZttWUJpaQPbD
+         sHyg==
+X-Gm-Message-State: AOJu0YyOQfrCnu9t3RUX16Stdn+IhJH+UJ43VqGvTPVV+5qa8LbIgT3b
+	NtqkHrXR+d+Ct9l/GlkRGSSJxsSHq4AmwC5xlk26sVNOWJLJp4IZXoWnSeN6thRAYZjmELOnRNQ
+	MC3D3Xx7vm5RfdwzgOhaffhFv1YDAw9hURVmRR+c/vW8Kh7PBXuKPDp71IVtg+RvvwTvxJp3TEt
+	+hdsF/P53ai3CrYfQisXnzsvh6cgbH7GlE4+pNRYCF2V4B8/IGEFVltnbLdUvcwDTvYOLotbuY9
+	6qQOj1kIwq8
+X-Gm-Gg: AZuq6aLGsLHlUWFMS6fR68w6iuhPtzbD5I/7NqnggcCoFQAlzyWnjHXWdogasxZ6UxG
+	QPsofjajmxOviPqm6noo65jSa8fAxeCy7r8+T3n0pC6A/eJqXJ3PomvstKTDGXxNHk20Cwik0BW
+	ZHUtlz8z1LWlWuZJRbVrt8Xhl9UvnZriiY1uHhgXXG1PVcpGBR43XNCpgmV4XXYrhlWD/XdYEBd
+	GjKWUAkKxJ8+q0HtgW+sIQI1ZaVu+ogTXl6V2htH7Hrz/ftfsvc0NgJOV+j2TwmkGprDDRrftJ6
+	UJ8F0YBS2s8ijS0RMfY/fVbJwnO1//34mSfmZqUKQPkN2XIMiVZ0V2iBOpLQhkqy/y3PO9wtdVZ
+	COda90Apd1ZjhJc+tnel8MPlijjCKNn9yS1KcRZJFd2I5N1AEg2Sj2S/F61vtoRdPvRxaWDrNJg
+	GqfpL/CmJMKphelsC04/g3EGHQahrDIwblYKnWFXndpqc=
+X-Received: by 2002:a17:902:d2cc:b0:2a0:9e9d:e8cf with SMTP id d9443c01a7336-2a7fe7559f2mr5836055ad.57.1769115027587;
+        Thu, 22 Jan 2026 12:50:27 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a802da476dsm211745ad.12.2026.01.22.12.50.27
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 22 Jan 2026 12:50:27 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-11b94abc09dso2189327c88.1
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 12:50:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1769115026; x=1769719826; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eOcvoVMH73kwUWaEg2Uh4CswapfzD3PM9GIt4HKH3Fc=;
+        b=EfXemUnUzcoxnvRdhqUqM7JsmGAVBJk6V6yPVthYe/3aZ3STYrEBRIXwLE37fFgBYE
+         yyjEz68ExSjr+U3Sl2BamK0q1PWPMEvUpQXzHy46vPrxu3eIrzki7PweR2HOsyZLG1By
+         ToYzNqL4ljBGunCXVYdS3hkgK6xSiUmIByJtA=
+X-Received: by 2002:a05:7022:f97:b0:122:1d4:28ff with SMTP id a92af1059eb24-1247dbf4e69mr306576c88.26.1769115025673;
+        Thu, 22 Jan 2026 12:50:25 -0800 (PST)
+X-Received: by 2002:a05:7022:f97:b0:122:1d4:28ff with SMTP id a92af1059eb24-1247dbf4e69mr306564c88.26.1769115025011;
+        Thu, 22 Jan 2026 12:50:25 -0800 (PST)
+Received: from localhost.localdomain ([136.52.21.78])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247dba0135sm994947c88.17.2026.01.22.12.50.24
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 12:50:24 -0800 (PST)
+From: Ajit Khaparde <ajit.khaparde@broadcom.com>
+To: netdev@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Update be2net maintainers
+Date: Thu, 22 Jan 2026 12:50:20 -0800
+Message-Id: <20260122205020.26743-1-ajit.khaparde@broadcom.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/2] net: extend ndo_get_tstamp for other
- timestamp types
-To: Kevin Yang <yyd@google.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Joshua Washington <joshwash@google.com>,
- Richard Cochran <richardcochran@gmail.com>
-References: <20260121160458.990785-1-yyd@google.com>
- <20260121160458.990785-2-yyd@google.com>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20260121160458.990785-2-yyd@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 21.01.26 17:04, Kevin Yang wrote:
-> Network device hardware timestamps (hwtstamps) and the system's
-> clock (ktime) often originate from different clock domains.
-> This makes it hard to directly calculate the duration between
-> a hardware-timestamped event and a system-time event by simple
-> subtraction.
-> 
-> This patch extends ndo_get_tstamp to allow a netdev to provide
-> a hwtstamp into the system's CLOCK_REALTIME domain. This allows a
-> driver to either perform a conversion by estimating or, if the
-> clocks are kept synchronized, return the original timestamp directly.
-> Other clock domains, e.g. CLOCK_MONOTONIC_RAW can also be added when
-> a use surfaces.
-> 
-> This is useful for features that need to measure the delay between
-> a packet's hardware arrival/departure and a later software event.
-> For example, the TCP stack can use this to measure precise
-> packet receive delays, which is a requirement for the upcoming
-> TCP Swift [1] congestion control algorithm.
-> 
-> [1] Kumar, Gautam, et al. "Swift: Delay is simple and effective
-> for congestion control in the datacenter." Proceedings of the
-> Annual conference of the ACM Special Interest Group on Data
-> Communication on the applications, technologies, architectures,
-> and protocols for computer communication. 2020.
-> 
-> Signed-off-by: Kevin Yang <yyd@google.com>
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
+Remove Somnath Kotur from maintainers for be2net driver.
 
-Like Jakub in his reply
-https://lore.kernel.org/netdev/20260119115710.6fdde8c0@kernel.org/
-for me also the question why this is a driver implementation came to my
-mind.
+Signed-off-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+---
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-With vclocks it is already possible to get timestamps for arbitrary
-clock domains in parallel. So it is already possible to synchronize
-the hwtstamp to CLOCK_REALTIME, CLOCK_MONOTONIC, ... in parallel.
-Therefore, user space synchronisation is needed, but e.g. ptp4l does
-a much better synchronisation job than your solution.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 92768bceb929..2d76be8d48ea 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9256,7 +9256,6 @@ F:	drivers/scsi/be2iscsi/
+ EMULEX 10Gbps NIC BE2, BE3-R, Lancer, Skyhawk-R DRIVER (be2net)
+ M:	Ajit Khaparde <ajit.khaparde@broadcom.com>
+ M:	Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>
+-M:	Somnath Kotur <somnath.kotur@broadcom.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ W:	http://www.emulex.com
+-- 
+2.39.5 (Apple Git-154)
 
-Maybe CLOCK_REALTIME is not supported by ptp4l, because due to daytime
-saving this clock jumps. IMO these jumps will also be problem for
-your solution, as it will lead to wrong delays two times a year.
-So usually CLOCK_TAI or CLOCK_MONOTONIC would be a better choice.
-
-To sum up: IMO you suggest a driver specific in-kernel solution where
-already a driver independent user space solution with higher accuracy
-exists.
-
-Gerhard
