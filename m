@@ -1,84 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E883ACA60;
-	Thu, 22 Jan 2026 03:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A3A13AD05;
+	Thu, 22 Jan 2026 03:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769051415; cv=none; b=pnjt8n39Hol98zB3HwPAf6mPA/ypBTqqGwGajcLkZvdB4HhauwaRWzKoWscnUfh2Djh+eYE+lotiFYZf3zSHWKqGJfxXunu8mNxYWEdLZvuxAqYfOwY1YfG1Cb9ReCAvc5n2/SQTCMhYpL6c1bHVqeiBpKjQ6D1EXi4fN8HRRi8=
+	t=1769051825; cv=none; b=MGwsaoA5i+fsIrp5gZPx9lpppVLLpqS+xjmwv0/X+cX81V7GAczjyxFDM5LKJN37lIfh5BrO2s5rbrXGr6lltkYeBxSdUmRr71mdjEfG3oZDg5tDGcJQZhICg7pF0vYo+difPGefSHKi5ZJrLyu4wepyf+0/6HyEUCroGvKO7YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769051415; c=relaxed/simple;
-	bh=J01YD7KY4hnSzkWASrXaPhKp7sXQ0SZRpOToFM6BZTQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pgdvmDGum9HMSNrXcZLdbBguLJxmNywmgznK3kO0rV39dlCdY9DAfXRqqvJn98wyImYUBiUsAnDFBl5LC68w1T+Jm1pU+ihZ7jrTL2wDN70Gb9hs80f48aOgxczNdCR0NMJJTJuIosj0NeKmtw5cG/Qu9s4anOlUwe3b7o6QPS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltkk0MlY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769051825; c=relaxed/simple;
+	bh=SWPVOU1qh+cVkn6DzqhtvPHonOwPBpCoTSwIVjoqKDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lGvHwOMMys05pS8xBGlmsggk5BNYg0gk2TRsFoTWjdwueCaIX2JX3zOSzYJnAmhft7XDor//IhBnjcyGktMtHioUlvGfYhQiPtI+zE9sGN6hDa18BcZh8NVvNeWYQtoeVr1BMhFREgAlisv5E1f0W+m7kaMvzrhsDnogIyxj4/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNwxF89h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltkk0MlY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87470C4CEF1;
-	Thu, 22 Jan 2026 03:10:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNwxF89h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27285C116C6;
+	Thu, 22 Jan 2026 03:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769051414;
-	bh=J01YD7KY4hnSzkWASrXaPhKp7sXQ0SZRpOToFM6BZTQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ltkk0MlYULFeKPZ0mpoxSKmkKNrFk6A8toF5w5F+1bZWey+fAGhLgz0y5f0xFvmva
-	 /y8+KQOcEl8pXKrNOF2KzJAWx08qGLkMAsfodsr0QrpYWmAndC7um3S7VKPohMm6dI
-	 qExtrGp2m54+QvR1/7sP9DPbMUsyyMGBQsT1Haxv5X4cgJK8SgV0nyMU7Km9Nn8jI7
-	 MB20kt1vkg4w9vr9j7q2VMuidHACzPBUaqutYAIEzsfgSmZD1Qa/nyL2/wDvKSPRkw
-	 zyrZAqDzcFWKOUjOvCrKMDdFKxwckb+cnnVY6XYnKH7/T88kRdbGn3VpCsCikL4CCx
-	 2YS+jLtT6VjyA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8C0623808200;
-	Thu, 22 Jan 2026 03:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769051823;
+	bh=SWPVOU1qh+cVkn6DzqhtvPHonOwPBpCoTSwIVjoqKDM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=vNwxF89huX2VYYhT5LLTpIb0TMbgSxOSPNeDFUPEtlAtiN28EvJs61kugfJmyB2DF
+	 +XhvG3HU1NmDOjJw2mM8E+svlRK/ENjhAZvWbxKqRtGGA225Zi+Ah86fq4VaAQduxY
+	 Eqs9QE0LnMnhGfqBhLxl/TqtY6y7mmNSplhI49zxU7fl1liCJs6RWl3YEGRJc6ixea
+	 /UD/iS+Fe7BzDZWmhCfAsslSDL9z8C8ai7rWnBVZlMHpvGkLuj2iNtqJRzcAi3Km/J
+	 sQql5rU+M3AxZW8SnBDYLRZutJURjwWuRTk/vN7yPCmXKq66uJ0GKPJ9CcND/kqwRh
+	 F2/cpDXUZP7WQ==
+Date: Wed, 21 Jan 2026 19:17:01 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Florian
+ Fainelli <f.fainelli@gmail.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Kory Maincent <kory.maincent@bootlin.com>,
+ Lukasz Majewski <lukma@denx.de>, Jonathan Corbet <corbet@lwn.net>, Donald
+ Hunter <donald.hunter@gmail.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, Jiri Pirko <jiri@resnulli.us>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, kernel@pengutronix.de,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Russell King
+ <linux@armlinux.org.uk>, Divya.Koppera@microchip.com, Sabrina Dubroca
+ <sd@queasysnail.net>, Stanislav Fomichev <sdf@fomichev.me>
+Subject: Re: [PATCH net-next v9 1/1] Documentation: net: add flow control
+ guide and document ethtool API
+Message-ID: <20260121191701.25725ed5@kernel.org>
+In-Reply-To: <20260115140712.2866991-1-o.rempel@pengutronix.de>
+References: <20260115140712.2866991-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V3 0/2] Add devm_clk_bulk_get_optional_enable() helper and
- use
- in AXI Ethernet driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176905141134.1535278.5816404258279074051.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Jan 2026 03:10:11 +0000
-References: <20260116192725.972966-1-suraj.gupta2@amd.com>
-In-Reply-To: <20260116192725.972966-1-suraj.gupta2@amd.com>
-To: Suraj Gupta <suraj.gupta2@amd.com>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, radhey.shyam.pandey@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
- sean.anderson@linux.dev, linux@armlinux.org.uk, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, bmasney@redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 15 Jan 2026 15:07:11 +0100 Oleksij Rempel wrote:
+> changes v9:
+> - Rewrote "Kernel Policy" section in Documentation/networking/flow_control.rst
+>   to explicitly distinguish between "Administrative State" (User Intent) and
+>   "Operational State".
+> - Added definitions for "Resolution Mode" and "Forced Mode", and
+>   disambiguated Pause Autonegotiation from Generic Link Autonegotiation.
+> - Updated include/linux/ethtool.h kernel-doc to define @autoneg as a
+>   selector for Resolution vs. Forced mode.
+> - Added "Constraint Checking" section to UAPI documentation: clarified that
+>   drivers should generally accept pause autoneg preferences even if link
+>   autoneg is currently disabled, while acknowledging strict hardware
+>   limitations.
+> - Added recommendation for new drivers to use
+>   phylink_ethtool_{get,set}_pauseparam().
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 17 Jan 2026 00:57:22 +0530 you wrote:
-> This patch series introduces a new managed clock framework helper function
-> and demonstrates its usage in AXI ethernet driver.
-> 
-> Device drivers frequently need to get optional bulk clocks, prepare them,
-> and enable them during probe, while ensuring automatic cleanup on device
-> unbind. Currently, this requires three separate operations with manual
-> cleanup handling.
-> 
-> [...]
-
-Here is the summary with links:
-  - [V3,1/2] clk: Add devm_clk_bulk_get_optional_enable() helper
-    https://git.kernel.org/netdev/net-next/c/820ce0c8e98a
-  - [V3,2/2] net: xilinx: axienet: Use devres for resource management in probe path
-    https://git.kernel.org/netdev/net-next/c/808d077f5b53
-
-You are awesome, thank you!
+AFAICT the new recommendation still contradicts kdoc of struct
+ethtool_pauseparam? If there's consensus that the new recommendation 
+is better please remove the old one.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
