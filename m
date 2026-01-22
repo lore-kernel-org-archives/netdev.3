@@ -1,150 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B24342532
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 09:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BED3101C2;
+	Thu, 22 Jan 2026 10:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769075931; cv=none; b=R/b6TRo1PKL7Wzcz1c/UGilo4+Da18DKhtaj0j8qcjXBr64CqmnsRXEmbmMveUHLedWyTv3vFYG8uxxcutMqSbsNrceJ5xp0qd44Z7Al5FBaRmG2ZO3QXmwrE7jINgANycATUYto9oEAyr+YeMDq6zPjTy2CprZLTO4ctzJ5Z9s=
+	t=1769076358; cv=none; b=cAas8f7tUJ0HS6LLE7YL0lj2t6tZ8BmZUqXNAuaEBh25i+fdG8GiVUs5fXzFn8Yl4U95tqMCr3SrH1Tj0V9z4qFAhJDSV3K0sxoUyeP/U5eD0pZeK5o8H2IR3rZpTevmTX6PEVHEYgavFGG3ouv88SFSGM6QJbFoUg8mqdoIkXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769075931; c=relaxed/simple;
-	bh=TGZ0rNzf2/Bkr4tJ2ZKGZj3qqNf4EwfsNP+W4wHnDZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aAUTQQmZovEOhY4NiO2FK30VGcH1FIRTZvq9+ShcfMrqmp+WC/9Xbd2Oyud04md2HmtNdDxs8MVPcZ9T5sKLpWntgwqEiEQshR+WOyiczo4DdPRIMJiQ+IJoX6sFkizp8G1mXJZODB/oD3EeazLt03IKG1buPhruwpq+OuBTDXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hhKldijI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qGdbKpY8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769076358; c=relaxed/simple;
+	bh=cGp+zXvCyabGEJ5o8bfPn8TJ5ek4Bqj68EqSYi4LCr0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DLTxf32auOOPgGedTvT+3JUaTUqOo/xCJTMrX0UpWPBq/xuvjWbanDmuG7DMuQBwITH2uEkSAHRbF8+Uf4l/ZicKAY8ayeUsc5V2B0ICr7e0WcFZhiDfgXPWPyu/jBWCPdTqxdKEkcjEx80qtdOVkiV3ZIX4PuZ3aUNWY/xwmAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LHUsRVmv; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hhKldijI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qGdbKpY8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769075928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8bga0PmTXpqJChMQAWzNuOW8OkwpWAb0ZdUEZncBTc8=;
-	b=hhKldijIQin703iUhO/q5HrslQSO+yiOqlAp00co3nf90qV2SwoRpJKzXEqeJ3LAI1h8v+
-	TDr999cmMGRse6HI7QVJm4y5bJ+oaaXfqkdYQ29d6HimHGSdFPxIdIk9IY4GD/EvS/CPC5
-	5Phjy25jrL7afTvFlM2ZKM6J/xqusQw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-q-iC-ekqMWOPxlF72igR4Q-1; Thu, 22 Jan 2026 04:58:47 -0500
-X-MC-Unique: q-iC-ekqMWOPxlF72igR4Q-1
-X-Mimecast-MFC-AGG-ID: q-iC-ekqMWOPxlF72igR4Q_1769075926
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4804157a3c9so6777885e9.1
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 01:58:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1769075926; x=1769680726; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8bga0PmTXpqJChMQAWzNuOW8OkwpWAb0ZdUEZncBTc8=;
-        b=qGdbKpY86MKLwsmG/6a26h80cYtgnZRjohUtNG49xKvnqDOCbugI1N4sXJ8ahH+NZU
-         pYO0g/r5sftG4565WtJxzsg971M6dYd6YQ04u57ymnBmndxUhDKTtJxoaJprP4hH1VN7
-         lXdlLtENFA/eRCqf7tEWZqUAtAWxoqYirY2cwh5kMNrueIN+NeeI6SzwO+VlDIlneZXF
-         FI6fOO1rIlrOl0HjSf9AStK22T9GD9kzKCyzHWzUDADufxB6mmELH1KkhGJNtWcbQ7oc
-         rgk1vuvVgwtTU4TSctsbNgmh2gRnCGLBr/VsUo+2YVvsMIe86FGwsrfaPjB2lrr/q3fG
-         bHTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769075926; x=1769680726;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8bga0PmTXpqJChMQAWzNuOW8OkwpWAb0ZdUEZncBTc8=;
-        b=o23Ka5pCCfA2HwAUMEwqd9xebn34xQ6y5GXDFkhe4bMQuIUYPwjwvNQ05rt1rCC5uL
-         75kmSR7EwxiNzE6w9056MUI9Wt+w1SXQTJFmIHqVYzK/67auyS4Qn+zwU1ZrOVHIglTM
-         RWHc/RphpRm0hHuLuwYZWFqRTwZN2H+3JrGi2jxNioxejwthXU9dMApfFtPVTMGZ7XHs
-         kvBQknHfTkKe+Ip1FnvnN2m9vn5DQcipXyQrZMMZO8ZR4ISJJw80y+IHV2BQaEV+xn1n
-         4fQse8ofDLDs79KVvITkTI9BpL53fMVBqFl1ehjqPMC0BcKmyMRsvahX4xodaRpHdTGM
-         eAXg==
-X-Gm-Message-State: AOJu0YwLnTn4e+4Ah+taP2JP4BdsO0GFH4b4k+1bjilLACGl2e/Yzebw
-	y9mYWfuM0k5Ro5I1C2NrsSmFEE//HV2nStttvwBkEAevPQqrQhyOXeIc2cU7j3Su7ClRyaJe3LM
-	MFKlZsH98bSi2MsoIK1sWNSEtOI45V0lo72pSjARN6Py7XhBEFx8YT0vHmw==
-X-Gm-Gg: AZuq6aJFEIXbjwjV0LPRzIMEIKCcBrCKhhR9F4noO7y89LgeUTeyAmdRzWNf4DRJhSn
-	JBoY87uOeB9zDHdpQASrM/nDmd7THjUoqiG5tTQcjdhZbOD6HBBQn4FRWPF71zmSjKQAtNE7iyx
-	ns4FNJVoQokFeq8vLdzcN6oWrxWhkfnjWqpR4Tn5W8Gtbej7FXZoVvnt5Lm9cG7uJQpmbjvKX4Q
-	xj10k2e0Qaz5GUxT5zITeOI69j2RzCfBKU8IcCOkxbCewcSjcuuDYOGF7ouhqHQ6vxJzkdzBQn9
-	ihWZr+zaaZWLLnWvtFkxtTTsIH9btZrHf29XUOceKK/pmkzLifKXr5NZK1XmFf86gHijiFAGz5S
-	P8OLuMoORA3AN
-X-Received: by 2002:a05:600c:3ba8:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-4801eac88fcmr326422965e9.16.1769075926027;
-        Thu, 22 Jan 2026 01:58:46 -0800 (PST)
-X-Received: by 2002:a05:600c:3ba8:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-4801eac88fcmr326422735e9.16.1769075925628;
-        Thu, 22 Jan 2026 01:58:45 -0800 (PST)
-Received: from [192.168.88.32] ([216.128.11.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470474cbsm54975415e9.8.2026.01.22.01.58.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 01:58:45 -0800 (PST)
-Message-ID: <8285c951-7e24-404f-8c58-ad7766dc3620@redhat.com>
-Date: Thu, 22 Jan 2026 10:58:44 +0100
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="LHUsRVmv"
+Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 31967edbb;
+	Thu, 22 Jan 2026 18:05:30 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: pavan.chebbi@broadcom.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	jianhao.xu@seu.edu.cn,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH net] bnxt_en: Fix memory leak in bnxt_alloc_mem()
+Date: Thu, 22 Jan 2026 10:05:27 +0000
+Message-Id: <20260122100527.527027-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CALs4sv3STBARmMOZiBSXHtFkXd3E_hJwjWJ0x8zJ1_cYYw=ioA@mail.gmail.com>
+References: <CALs4sv3STBARmMOZiBSXHtFkXd3E_hJwjWJ0x8zJ1_cYYw=ioA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/3] net: dsa: yt921x: Return early for failed
- MIB read
-To: Yangfl <mmyangfl@gmail.com>, Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260118013019.1078847-1-mmyangfl@gmail.com>
- <20260118013019.1078847-3-mmyangfl@gmail.com>
- <5afaff9c-7be2-4464-b675-4bf70aaa17af@lunn.ch>
- <CAAXyoMPFDRyKqZiFsH7cCQzBg6z5KO5mUpLf8jjpCcQhD09-zw@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAAXyoMPFDRyKqZiFsH7cCQzBg6z5KO5mUpLf8jjpCcQhD09-zw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9be52a8f9503a1kunmdf65d6e6371cf
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCT0MeVh5CGR9DSUJJGB8eSFYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=LHUsRVmv1s1wZP+Lh6IzvzouxiSnYBrjlCklRW3eYtRlcNTvXHNfx169ZVEj42XV5v5LNNbikh0nnEf35SmrUJlHYxc0wY1FJYc4Qnx3qHRdrjnhPNE2XnVL2yqfGijZDvQ3It0mptBvzHVlhfDNr8pr3g3t5YfVZgSZ4/atL3Q=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=bQqpcQaH3kR/GUt1iQi9xbGhZRZgFhliy7b89Do21Uw=;
+	h=date:mime-version:subject:message-id:from;
 
- 1/18/26 8:24 PM, Yangfl wrote:
-> On Mon, Jan 19, 2026 at 12:06 AM Andrew Lunn <andrew@lunn.ch> wrote:
->>
->> On Sun, Jan 18, 2026 at 09:30:15AM +0800, David Yang wrote:
->>> This patch does not change anything effectively, but serves as a
->>> prerequisite for another patch.
->>>
->>> Signed-off-by: David Yang <mmyangfl@gmail.com>
->>> ---
->>>  drivers/net/dsa/yt921x.c | 11 +++++++----
->>>  1 file changed, 7 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
->>> index 5e4e8093ba16..fe08385445d2 100644
->>> --- a/drivers/net/dsa/yt921x.c
->>> +++ b/drivers/net/dsa/yt921x.c
->>> @@ -707,6 +707,12 @@ static int yt921x_read_mib(struct yt921x_priv *priv, int port)
->>>               WRITE_ONCE(*valp, val);
->>>       }
->>>
->>> +     if (res) {
->>> +             dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
->>> +                     port, res);
->>> +             return res;
->>> +     }
->>
->> I know you are just moving code around, so i can understand a straight
->> cut/paste.
->>
->> However, when i look at the code, what is the point of %s and the
->> constant "read stats for"?
->>
->>         Andrew
+On Thu, Jan 22, 2026 at 03:14:08PM +0530, Pavan Chebbi wrote:
+> On Thu, Jan 22, 2026 at 2:56 PM Zilin Guan <zilin@seu.edu.cn> wrote:
+> >
+> > In bnxt_alloc_mem(), the function allocates memory for bp->bnapi,
+> > bp->rx_ring, bp->tx_ring, and bp->tx_ring_map.
+> >
+> > However, if the allocation for rx_ring, tx_ring, or tx_ring_map fails, the
+> > function currently returns -ENOMEM directly without freeing the previously
+> > allocated memory. This leads to a memory leak.
+> >
+> > Fix this by jumping to the alloc_mem_err label when allocation fails,
+> > which ensures that bnxt_free_mem() is called to properly release all
+> > allocated resources.
 > 
-> The error format is used many times across the file, so using the same
-> string helps reduce the data size a bit.
+> This fix is not needed. The memory is freed by the caller of bnxt_alloc_mem().
 
-I think you could/should clean the implementation encapsulating the
-dev_err in an helper tacking the variable string as an argument.
+Hi Pavan,
 
-Since you have to repost, you could introduce a pre-req patch doing that.
+Thank you for your review and clarification.
 
-Thanks,
+I observed that most allocation failure paths in bnxt_alloc_mem() jump to 
+alloc_mem_err for error handling, which led me to incorrectly assume that 
+this function was strictly responsible for cleaning up its own allocated 
+memory upon failure. I failed to realize that the caller also handles the
+cleanup for these specific cases.
 
-Paolo
+Thanks for pointing this out. Sorry for the noise.
 
+Best regards,
+Zilin Guan
