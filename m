@@ -1,150 +1,99 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942722BE65B
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769052340; cv=pass; b=HlMMbOZXvBNVO1IQpoKR0USoDS3WdNKwYwyydwXEH1i3hSzzGo+erjU1a+nVPecYggw+0496jD1xnA4WC1uguE5p38sogypVQJroxnYjceUXcNrOdl4ZuDGvZldclaibNfeLN7x7iex2vMyTa3mj0BG0nB0xx9WJaDXjbzSMMzc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769052340; c=relaxed/simple;
-	bh=RxcFmI2IAGkmYdnYkNa89B1ljCXr8uo8gHzSY3WvK9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kK9655BHLXZzx9fbTKAzqNPmdmyTDsnTG3F5zyjbozuHUIcMQKn1QdoOtJzeOjyKEA7a5CdEEnhfB4BSMD3TXPLlvwa1EnFtOP6e6L23o2LtqHUTU9YE+BLcsksb0FHgFnEQeI8Qietq+zhHpdlOInIhFWpIGRPevnhv78/TuDw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kB0wlMIw; arc=pass smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51163904D2;
+	Thu, 22 Jan 2026 03:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769052453; cv=none; b=mnL0qOIlpx2X3gyPmta/jOqwZCKpUINhWzV+IhsXWAhDDzGftcVs31YURAXdcct6lhgROJq8AW/JPu1RGnjd24jm+8uhjDW5uyu+c2jAIi969f0lIVLLwJTjQYR+/C651zwBfu9wCT0V36CGb2j/bRZzOlVos1KyEg62TKzV5Ss=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769052453; c=relaxed/simple;
+	bh=Y/3pPodyEl+yDTvYSlwrBE6jK/FnjEX2M2Klb6SJ7/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kPayxFXDIwu7ngxQD+5loHRGrzwHDw+r4feC9wQt0wb3yvQ85HfvcDfo3kieou4rA/M15rSpivCBNlI/mgmVuWpgyy49sNzRqXsT/4M20KvAqB0HzWU6BdXy8hkkFdRbVHzJbF7N+MDnYg3kRB6ai0oVdEecWH6PNL119mFbaGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6lhlPVb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kB0wlMIw"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7cfd819ae5eso164641a34.1
-        for <netdev@vger.kernel.org>; Wed, 21 Jan 2026 19:25:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769052337; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZaYGYSYro/NPSmCHIZXzgHsHhmIeMD/yuFKGIbSoLhm04VRpvIoMCIOwaJl3EeYfcV
-         NCMlfUhEybI+ogFPiK0UmrWH6K3fUDlyEZAY0SO8jq5bJc4Xc9HldMiaDhXS2SU+6F8H
-         Ir1sdtBFnYmj+ROr/asdcv/KwsCKCDs0tUiSt6bZ1nmzn6hVOBDELBBAxwKXJT8gNoAb
-         mDs3cziWcqTCG7CkFRhY8FQjDX7mVN2vqASsEoiP1soEYalSiyIYlzi5qy+/NfTBgRU+
-         +Xg/l593hng9INoLVzTH8J9CrlzIClTuA1lFUFDs/sLiq1l/ZotqYKl7btHfKzvAiP4y
-         t2Fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RxcFmI2IAGkmYdnYkNa89B1ljCXr8uo8gHzSY3WvK9U=;
-        fh=mcu7M5U3p/8XiU7aVsIoyLinZz6mZ3AvJp5ARBeUids=;
-        b=jn3ANjOgwQQVpHDM7eN8N6AkT7tX4FN/beQOspbxiOCUtTDRuyj/jljive2CHA0YW4
-         KXCUln3NKes0DC6/ljc8+suyCtoT6xYWYNv0sV6HoZ2AGKlZELuf8q1TBD0qRIUsw2o8
-         PjDVpax4BPcdL1rSY1KaOsJpq5I408TUIRh/NOCEQrU97B/m1qvaHaPHTyJtE7WO1wGu
-         BU9zR3EdZh3f/qsxbPqrbgo7Xi2pjnXbho1VNDoineTHFMe18DfXfWbmkQ9covDbav0K
-         Xge0B6VmNK0SoZLJC4C31Y6n0WGX1EAxn+55Mcl2gJxxXrKWKXBFffkUlM/qp65I+q1w
-         qdcw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769052337; x=1769657137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RxcFmI2IAGkmYdnYkNa89B1ljCXr8uo8gHzSY3WvK9U=;
-        b=kB0wlMIwZft5yoNg9jtjL1qV9T3g5+odcXh8BHV6L57EOunzWzT0R7s6jr6GTMJali
-         0JTXluj+Iae80GCFb+QThteShLYywGJpUOH2zlOLMhZtEWD3cP2KjKzU6Jl4+C87aMFK
-         C+Ce3Nlua1Xpi83kjLQUwa32pwDB61/RdyKAswceMlhLqf6j9t2exJiHZITLUApzcgmM
-         nLW6Li6KFEnONjAIMNF4MGGiwOyuiJpZFj8hrhfOfmz4iPtWmjzMDrmSeU3neiUIFi5V
-         mlW220zxyihQifueyN8p752m/egF3QLsDG58+PuAIbvNBjAKZAqK0CQSI5OMNJjH4yt9
-         Fcqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769052337; x=1769657137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RxcFmI2IAGkmYdnYkNa89B1ljCXr8uo8gHzSY3WvK9U=;
-        b=ZgvRyAe1440ON998cxLC1W6Mu5CaGNHWJf/xUez0wGUB1alnJ1CZgMT2vjzEcKPdlb
-         wzs8R5ZSIHnw+Epgj5LR4iRUtRqoLqkToAlEu9MfbC7XC5np3qwZcbGHYRImt4nKH0o1
-         E3Lbtrkqv8RMWB4jtjrYN4O4pHpolJtr3/hJ+LM/2z6s6SRdgYVtQUFXAgihBh/FgNSz
-         +4wlGQPyV9yiXyiyODSo+Alp8PEmLvvf2FgMVHmx72Q4G2BS9VyyMv+2gN/nKpl6Aesz
-         UHI7jQd9W7Qp4vT6+6JFoL4Hgd1AQ7qoQrhv2p4Wt88UyTg9AV9Qz417W3RRzP0umYoB
-         dzDg==
-X-Forwarded-Encrypted: i=1; AJvYcCVl/5KbLf7mEEdRbTcG0HXZ/G4yFTrn2MVKKNexenRUL5+Evu74WYnvNZ0mSncsoWMqOdofw2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyStOjql4YjjDZgPsdANR902DxN/JA3OnEGhdy3ZORJA5HwirkL
-	S87RGIq1rxsI5x99loP4gNrd0slgMygwc+3O6zW1/aRyS7ZOKQG2K27D6iLdyKSfqVOfLO2DzUr
-	qNpb0Bql+ZZY7YGidFShnSy9MIyI34OI=
-X-Gm-Gg: AZuq6aLhQtDQWEiwqkn/oATD39Qjz/zgFgryNqG8bdn9exr4kon6DgdD4QNGhkjb5UD
-	f83AqEFOrtPYbv7e5v9w/bUfU1ffhsycxJnII2wMvkohHZVB9WAGdouHicmP3/mPs94ibt03QFg
-	yLQD6k6WA9f/DdoqiiMQg9r6/B0U2PhXYKNh9graqg+qLp7g0B0GaF//OL6OZYKHwmBsafq8lFM
-	3SZ8D5h9hDKeKpinfCVpT2O+KC9Hn6fBcc0IK7qZjvPhKMoW1WplfI5PE/F55S0SplXe4EkHfe4
-	vGV6Ag==
-X-Received: by 2002:a05:6830:3982:b0:7cf:db69:5475 with SMTP id
- 46e09a7af769-7d140ab6895mr4490648a34.24.1769052337402; Wed, 21 Jan 2026
- 19:25:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6lhlPVb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB3AC116C6;
+	Thu, 22 Jan 2026 03:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769052452;
+	bh=Y/3pPodyEl+yDTvYSlwrBE6jK/FnjEX2M2Klb6SJ7/A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=k6lhlPVbyUsyNOMIwjCknuIW8kj1Pmz66UKqWq4lPQkf6n1iL5Sa1lyjONH4kYQ5x
+	 vI9f5ziiGEdMOFGZRURsyf1Gx9CkXdxO8vlru7U3mPwRcyR03gHDzQV3j/ehjqfBu0
+	 EkTeZv+BMgfjEB7fUbbB9xWwv7OugxKgmuHfdLZNBrBNLUYsbcBOpcivHfBU35oFcu
+	 yNBxNgU3syqMy8LVE7lbftDHjKGLWW+pGMO5G6yYY5NCJG23wR5a3n6Yc5TAIE51Qv
+	 uh1IgFMsOMRZiqTfyS/61wlSA5PzpTozDMPcYNTOwJdGQozn5Qmb/T03Q7cujbufJJ
+	 TEcHVgdxGdSxQ==
+Date: Wed, 21 Jan 2026 19:27:29 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?= <thomas.weissschuh@linutronix.de>
+Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn
+ <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Matthieu Baerts
+ <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, Geliang Tang
+ <geliang@kernel.org>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?=
+ <mic@digikod.net>, =?UTF-8?B?R8O8bnRoZXI=?= Noack <gnoack@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh
+ <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-api@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-kselftest@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-security-module@vger.kernel.org, bpf@vger.kernel.org,
+ libc-alpha@sourceware.org, Carlos O'Donell <carlos@redhat.com>, Adhemerval
+ Zanella <adhemerval.zanella@linaro.org>, Rich Felker <dalias@libc.org>,
+ klibc@zytor.com, Florian Weimer <fweimer@redhat.com>
+Subject: Re: [PATCH net-next v2 0/4] net: uapi: Provide an UAPI definition
+ of 'struct sockaddr'
+Message-ID: <20260121192729.2095aa25@kernel.org>
+In-Reply-To: <20260120-uapi-sockaddr-v2-0-63c319111cf6@linutronix.de>
+References: <20260120-uapi-sockaddr-v2-0-63c319111cf6@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115-scratch-bobbyeshleman-devmem-tcp-token-upstream-v10-0-686d0af71978@meta.com>
- <20260115-scratch-bobbyeshleman-devmem-tcp-token-upstream-v10-4-686d0af71978@meta.com>
- <20260120163650.5a962648@kernel.org> <aXBnqYQdomzH9bT/@devvm11784.nha0.facebook.com>
- <20260121173512.748e2155@kernel.org> <aXGNhEKOhkTHbJvw@devvm11784.nha0.facebook.com>
- <20260121185021.446b00e8@kernel.org>
-In-Reply-To: <20260121185021.446b00e8@kernel.org>
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Wed, 21 Jan 2026 19:25:27 -0800
-X-Gm-Features: AZwV_QjAIr5HWq1OvyaswWVCAIdwEzJFXqJ7idBVevJ43OdVoqWduskcsKDBYHI
-Message-ID: <CAKB00G2xNvfiV6J3RzKDs=GHMGZ7L16+VKUYLGjpZdOrLnSYKA@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 4/5] net: devmem: document
- NETDEV_A_DMABUF_AUTORELEASE netlink attribute
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>, 
-	Mina Almasry <almasrymina@google.com>, Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	asml.silence@gmail.com, matttbe@kernel.org, skhawaja@google.com, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 21, 2026 at 6:50=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 21 Jan 2026 18:37:56 -0800 Bobby Eshleman wrote:
-> > > > Show an example of the three steps: returning the tokens, unbinding=
-, and closing the
-> > > > sockets (TCP/NL)?
-> > >
-> > > TBH I read the doc before reading the code, which I guess may actuall=
-y
-> > > be better since we don't expect users to read the code first either..
-> > >
-> > > Now after reading the code I'm not sure the doc explains things
-> > > properly. AFAIU there's no association of token <> socket within the
-> > > same binding. User can close socket A and return the tokens via socke=
-t
-> > > B. As written the doc made me think that there will be a leak if sock=
-et
-> > > is closed without releasing tokens, or that there may be a race with
-> > > data queued but not read. Neither is true, really?
-> >
-> > That is correct, neither is true. If the two sockets share a binding th=
-e
-> > kernel doesn't care which socket received the token or which one
-> > returned it. No token <> socket association. There is no
-> > queued-but-not-read race either. If any tokens are not returned, as lon=
-g
-> > as all of the binding references are eventually released and all socket=
-s
-> > that used the binding are closed, then all references will be accounted
-> > for and everything cleaned up.
->
-> Naming is hard, but I wonder whether the whole feature wouldn't be
-> better referred to as something to do with global token accounting
-> / management? AUTORELEASE makes sense but seems like focusing on one
-> particular side effect.
+On Tue, 20 Jan 2026 15:10:30 +0100 Thomas Wei=C3=9Fschuh wrote:
+> Various UAPI headers reference 'struct sockaddr'. Currently the
+> definition of this struct is pulled in from the libc header
+> sys/socket.h. This is problematic as it introduces a dependency
+> on a full userspace toolchain.
+>=20
+> Add a definition of 'struct sockaddr' to the UAPI headers.
+> Before that, reorder some problematic header inclusions in the selftests.
 
-Good point. The only real use case for autorelease=3Don is for backwards
-compatibility... so I thought maybe DEVMEM_A_DMABUF_COMPAT_TOKEN
-or DEVMEM_A_DMABUF_COMPAT_DONTNEED would be clearer?
+>  include/linux/socket.h                             | 10 ----------
+>  include/uapi/linux/if.h                            |  4 ----
+>  include/uapi/linux/libc-compat.h                   | 12 ++++++++++++
+>  include/uapi/linux/socket.h                        | 14 ++++++++++++++
+>  samples/bpf/xdp_adjust_tail_user.c                 |  6 ++++--
+>  samples/bpf/xdp_fwd_user.c                         |  7 ++++---
+>  samples/bpf/xdp_router_ipv4_user.c                 |  6 +++---
+>  samples/bpf/xdp_sample_user.c                      | 15 ++++++++-------
+>  samples/bpf/xdp_tx_iptunnel_user.c                 |  4 ++--
+>  tools/testing/selftests/landlock/audit.h           |  7 ++++---
+>  tools/testing/selftests/net/af_unix/diag_uid.c     |  9 +++++----
+>  tools/testing/selftests/net/busy_poller.c          |  3 ++-
+>  tools/testing/selftests/net/mptcp/mptcp_diag.c     | 11 ++++++-----
+>  tools/testing/selftests/net/nettest.c              |  4 ++--
+>  tools/testing/selftests/net/tcp_ao/icmps-discard.c |  6 +++---
+>  tools/testing/selftests/net/tcp_ao/lib/netlink.c   |  9 +++++----
+>  tools/testing/selftests/net/tun.c                  |  5 +++--
+>  17 files changed, 77 insertions(+), 55 deletions(-)
+
+Are all those selftests / samples getting broken by this patch set?
+
+I understand that we should avoid libc dependencies in uAPI but at
+least speaking for networking - building selftests without libc is..
+not a practical proposition?
