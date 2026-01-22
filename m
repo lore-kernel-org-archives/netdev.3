@@ -1,58 +1,72 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4942D12F5;
-	Thu, 22 Jan 2026 12:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5123D2BEFE5;
+	Thu, 22 Jan 2026 12:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769083826; cv=none; b=Ydcf6jnxHKvo+46kbpTkmx078N7Ka95QAmCyK1beWrpFBT7OEybszYbDnsU0TgQqm6xDUL2/QQK7OF5k2fRgvH+wITSpxozweHPB3qeoOfteesc0W9TREuSP9/KrttlSEH9d8d4TIgOlo+6vaK9hDjFXnhPIpwR1rRGv3/IPdQE=
+	t=1769083951; cv=none; b=e+dULSAGgnc/C6oT/SyCXE3QoKXvha9AmzjzSex8wE6jjGY5OJ1TJOA9a4+1NeefQXvjvQp506YC+THyVmtEo5Lm6ZThBA+j2FEt7j2TJ7kXPSD5bgIo6LijneODAZYDAdpfQ8s7w6Vto+q30czWa4n5OFnfQdYKoEuICoeRl7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769083826; c=relaxed/simple;
-	bh=AkSkWa1GedgxarHMhpxFhR6xD0F4XF9+sd/e9zlpiYA=;
+	s=arc-20240116; t=1769083951; c=relaxed/simple;
+	bh=omQkOAJnr6QMt1U3a7G037McjhcvdHWTLffUlhypiP8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l3zi+olq0hjvPcS6H0rw+XLZcaUSOjWpmHBdSWQSAxvMOpIFliAVqeB4ap/25Gp66xwJ8xjfe5d5pWX67qoInH5pLgDqiRxs+wVjLUsL83WQ3kty5VRX0aSnOq7oCYCVs+5UIuoujGKJuDlVSXF190G33kdi7mz9vxTSzTrHW8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=bZXi2Bff; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=BznRZR8Z8Z9lbXOwAwWcrGm0b2+p0ymyvBvcBus4iyZi7W+Ze3Qd+P28u3+bSDAPi6gr4DyveGislWJC9IB0QevRvv7aiVDfZnPbJ9GAoFjKLfbtAuaz0lDPh8PqhGvyySKauQl2IEN5CSSL1hR9zyKXpRhZoc+vqiBIBraRR7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YR74msmD; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="bZXi2Bff"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LnKYuZxa2OHav4X4/qAMbWJzUU3nGMol7ZsPdm054gI=; b=bZXi2BffIUKVQ+I6W1OecHu9SQ
-	lPSEtKcPEojXjJcFEjG56INsk2E6jbgFGeu6VTzcB11IFkvIpSkcbfur1ob8HpZeqNcjTgCXsZDlk
-	X6j7Rg4jgjY6pnTh2IwsBtG2JoryobN8/Z0ui9FXw+52wLRQ1pU7dfD5JjfC8/WwvHcRbWFKve8wF
-	sA41wS4Cl2xdG4JqpYi7BWdHRMbH+AHyAHUA0luNv06b5/7d8jfKIzhiCww6+lhY45Z3Fp08KcFRL
-	8/eRa3KxJR5JWpVEj/LJCTVEJM+U+6ygy5FOR8jBI5rZr7NiyIvL+9mxiaxuOGda1DasEQuuK1GuM
-	160fe/8A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54166)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vitVr-000000000Kr-061Y;
-	Thu, 22 Jan 2026 12:10:11 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vitVk-000000000zN-1Qkh;
-	Thu, 22 Jan 2026 12:10:04 +0000
-Date: Thu, 22 Jan 2026 12:10:04 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YR74msmD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769083949; x=1800619949;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=omQkOAJnr6QMt1U3a7G037McjhcvdHWTLffUlhypiP8=;
+  b=YR74msmDHNfAqCv5CiwNl8rTQzSIIoRKGG4m3QfZCkGav6/0I53kAjvX
+   pVIQnBMihqn2LT/U3MZ2voh9X+jTMoVMc0x49FfoR5CreR23LRKSeGvZr
+   yHhKuShwkE6wvJT0E63AmGrjHnM30SyOJxdV8VSygla+C/IFS/nwOj+3b
+   vM12xu99S8jdkKHCa2GM8Z4HupTbx8KwjHDyN+vJGHaVgEt9yM2QsLw07
+   Lg3598hA498IHVM4rj43sRjPVPK8SF7KcoH4K+0wBUjgPOL+Xa22gqN6g
+   HQZ1StegALZwFoNvp9GDlp7tZ2PcoX/lr/FjOoZpmulSoJXgsVgG0d+ww
+   A==;
+X-CSE-ConnectionGUID: TECl+sJjQwCAOOemE8wO0w==
+X-CSE-MsgGUID: N0g5JWi+TX+dk+FI948Xig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="87900720"
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="87900720"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 04:12:28 -0800
+X-CSE-ConnectionGUID: rBA7Xh1jRq+wVwNasISHBQ==
+X-CSE-MsgGUID: hwHkNLqwR22Yjsz/qyDHXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; 
+   d="scan'208";a="229684882"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.225])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2026 04:12:24 -0800
+Date: Thu, 22 Jan 2026 14:12:21 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: Re: [RFC PATCH v2 2/2] net: mdio: rtl9300: setup PHY polling
- registers
-Message-ID: <aXITnCLt945xHqaP@shell.armlinux.org.uk>
-References: <cover.1769053496.git.daniel@makrotopia.org>
- <680696024a8648535ce6dee771fe4de67802e0e8.1769053496.git.daniel@makrotopia.org>
+	linux-kernel@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: Re: [PATCH v2 net-next 02/15] net: mdio: add driver for NXP SJA1110
+ 100BASE-T1 embedded PHYs
+Message-ID: <aXIUJbEwnAvIkeKK@smile.fi.intel.com>
+References: <20260122105654.105600-1-vladimir.oltean@nxp.com>
+ <20260122105654.105600-3-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,41 +75,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <680696024a8648535ce6dee771fe4de67802e0e8.1769053496.git.daniel@makrotopia.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20260122105654.105600-3-vladimir.oltean@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 22, 2026 at 04:00:56AM +0000, Daniel Golle wrote:
-> +	/* Detect if PHY has 2.5G/5G/10G capabilities */
-> +	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->supported) ||
-> +	    linkmode_test_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, phydev->supported) ||
-> +	    linkmode_test_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, phydev->supported))
-> +		mac_type = SMI_MAC_TYPE_CTRL_2G_PLUS;
-> +	else
-> +		mac_type = SMI_MAC_TYPE_CTRL_1G;
+On Thu, Jan 22, 2026 at 12:56:41PM +0200, Vladimir Oltean wrote:
+> This driver is the standalone variant of drivers/net/dsa/sja1105/sja1105_mdio.c.
+> In terms of differences:
+> 
+> - this one uses regmaps provided by the parent as a method to abstract
+>   away the sja1105_xfer_u32() calls for register access
+> - the driver prefix has been changed from sja1105 to sja1110 (this MDIO
+>   controller is not present on the older SJA1105 family)
+> - in the sja1105 driver, each memory word has 32 bits, so addresses as
+>   seen by regmap need to be multiplied by 4. This affects what
+>   sja1110_base_t1_encode_addr() returns, and is different compared to
+>   sja1105_base_t1_encode_addr().
 
-There are PHYs which change their support depending on how they're
-configured, and there are PHYs that aren't configured correctly at
-probe time (and thus their ->supported mask is not correct.)
+...
 
-The next thing I'm concerned about is the need to encode register
-information into this driver for each PHY that could be connected.
-Will there only be a small subset of PHYs that get used with this
-switch, or can any PHY be connected? If the latter, then encoding
-register information doesn't scale.
+> +static int sja1110_base_t1_mdio_read_c22(struct mii_bus *bus, int phy, int reg)
+> +{
+> +	struct sja1110_base_t1_private *priv = bus->priv;
+> +	struct regmap *regmap = priv->regmap;
+> +	unsigned int addr, val;
+> +	int err;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C22, reg & 0x1f);
 
-So, I don't think this is a good solution.
+GENMASK() ? Or do you have already a defined mask for this?
 
-I'm wondering whether it would be better to have a callback through
-the bus when the PHY is connected with a netdev (in other words,
-after phy_init_hw() in phy_attach_direct()) which should be when
-the ->supported mask is fully up to date. This also means that the
-driver is bound, and we could then consider some kind of interface
-that would allow data about the PHY to be requested, such as register
-information. That would likely eliminate your need to test the
-phydev->supported bitmask (which I think is there to determine whether
-you need to tell your MDIO polling controller where certain registers
-are.)
+> +	err = regmap_read(regmap, priv->base + addr, &val);
+> +	if (err)
+> +		return err;
+> +
+> +	return val & 0xffff;
+
+lower_16_bits() from wordpart.h?
+
+> +}
+
+...
+
+> +static int sja1110_base_t1_mdio_read_c45(struct mii_bus *bus, int phy,
+> +					 int mmd, int reg)
+> +{
+> +	struct sja1110_base_t1_private *priv = bus->priv;
+> +	struct regmap *regmap = priv->regmap;
+> +	unsigned int addr, val;
+> +	int err;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C45_ADDR, mmd);
+> +	err = regmap_write(regmap, priv->base + addr, reg);
+> +	if (err)
+> +		return err;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C45_DATA, mmd);
+> +	err = regmap_read(regmap, priv->base + addr, &val);
+> +	if (err)
+> +		return err;
+> +
+> +	return val & 0xffff;
+
+Ditto.
+
+> +}
+
+...
+
+> +static int sja1110_base_t1_mdio_write_c22(struct mii_bus *bus, int phy, int reg,
+> +					  u16 val)
+> +{
+> +	struct sja1110_base_t1_private *priv = bus->priv;
+> +	struct regmap *regmap = priv->regmap;
+> +	unsigned int addr;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C22, reg & 0x1f);
+> +	return regmap_write(regmap, priv->base + addr, val & 0xffff);
+
+val is already u16.
+
+> +}
+
+...
+
+> +static int sja1110_base_t1_mdio_write_c45(struct mii_bus *bus, int phy,
+> +					  int mmd, int reg, u16 val)
+> +{
+> +	struct sja1110_base_t1_private *priv = bus->priv;
+> +	struct regmap *regmap = priv->regmap;
+> +	unsigned int addr;
+> +	int err;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C45_ADDR, mmd);
+> +	err = regmap_write(regmap, priv->base + addr, reg);
+> +	if (err)
+> +		return err;
+> +
+> +	addr = sja1110_base_t1_encode_addr(phy, SJA1110_C45_DATA, mmd);
+> +	return regmap_write(regmap, priv->base + addr, val & 0xffff);
+
+Ditto.
+
+> +}
+
+...
+
+> +static int sja1110_base_t1_mdio_probe(struct platform_device *pdev)
+> +{
+> +	struct sja1110_base_t1_private *priv;
+> +	struct device *dev = &pdev->dev;
+> +	struct regmap *regmap;
+> +	struct resource *res;
+> +	struct mii_bus *bus;
+> +	int err;
+
+> +	if (!dev->of_node || !dev->parent)
+
+Can we avoid dereferencing? And perhaps dev_fwnode(dev)?
+
+> +		return -ENODEV;
+> +
+> +	regmap = dev_get_regmap(dev->parent, NULL);
+> +	if (!regmap)
+> +		return -ENODEV;
+> +
+> +	bus = mdiobus_alloc_size(sizeof(*priv));
+> +	if (!bus)
+> +		return -ENOMEM;
+> +
+> +	bus->name = "SJA1110 100base-T1 MDIO bus";
+> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
+> +	bus->read = sja1110_base_t1_mdio_read_c22;
+> +	bus->write = sja1110_base_t1_mdio_write_c22;
+> +	bus->read_c45 = sja1110_base_t1_mdio_read_c45;
+> +	bus->write_c45 = sja1110_base_t1_mdio_write_c45;
+> +	bus->parent = dev;
+> +	priv = bus->priv;
+> +	priv->regmap = regmap;
+> +
+> +	res = platform_get_resource(pdev, IORESOURCE_REG, 0);
+> +	if (res)
+> +		priv->base = res->start;
+> +
+> +	err = of_mdiobus_register(bus, dev->of_node);
+> +	if (err)
+> +		goto err_free_bus;
+> +
+> +	priv->bus = bus;
+> +	platform_set_drvdata(pdev, priv);
+> +
+> +	return 0;
+> +
+> +err_free_bus:
+> +	mdiobus_free(bus);
+> +
+> +	return err;
+> +}
+
+...
+
+> +static const struct of_device_id sja1110_base_t1_mdio_match[] = {
+> +	{ .compatible = "nxp,sja1110-base-t1-mdio", },
+
+Inner comma is redundant.
+
+> +	{},
+
+Terminator is terminator, trailing comma is confusing here.
+
+> +};
+
+...
+
+> +static struct platform_driver sja1110_base_t1_mdio_driver = {
+> +	.probe = sja1110_base_t1_mdio_probe,
+> +	.remove = sja1110_base_t1_mdio_remove,
+> +	.driver = {
+> +		.name = "sja1110-base-t1-mdio",
+> +		.of_match_table = sja1110_base_t1_mdio_match,
+> +	},
+> +};
+
+> +
+
+Redundant blank line.
+
+> +module_platform_driver(sja1110_base_t1_mdio_driver);
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+With Best Regards,
+Andy Shevchenko
+
+
