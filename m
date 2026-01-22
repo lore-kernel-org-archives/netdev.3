@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32E427A16;
-	Thu, 22 Jan 2026 04:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5C93D3CF6;
+	Thu, 22 Jan 2026 04:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769054459; cv=none; b=rRdUltVaGB8213yyJsXBX1t+9Q2bgqEUT4rp5xvbXfazJxWRJin4eKzBzHiopOFhyCwBcgMN5t0N/KnJG7eGj6tb900zKZxlrMM/sWmy4W4OSBMnT68TjwcyMwKmTaiuWGYxdmoOJImzeSzhZDNNs5TVl8MQcs9GCkEQiRtFn60=
+	t=1769054465; cv=none; b=tMnXZgruKK1lnXZnPvhit5UD2YBQ8bWwBjMg0va1eTo5i8Yk9c8KDmNZvh+VpGg1jAvB2oxXZOvR/QBMKPzHeWxi4ogoS24tNgD5Lpa4R0DEjvMeB3huysuDcojl0feKMV8SWyOqSo3rD68qtmX7RgUnxwJOcWBsCCEDvntunPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769054459; c=relaxed/simple;
-	bh=aGHizfN03SNkjbrltWphmfG6jaGzR34MdP6zFRi6nEU=;
+	s=arc-20240116; t=1769054465; c=relaxed/simple;
+	bh=ZyE++B4oqly07y3CuY37Z7iz6qXLs3tGlrukQP6ecHA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jgAKi0oSapMlT36ot9y0qdN78axtlpunQs+x6493ya+80V4L7Lcc/NuuZFR++rKAWZzPhoyLD08F+2oHoqo1yxAGgvn6Cb6gT7KDQVsjhlux/A2SS8aDYb/erHWPPKL0WU1eIFi4lWatRPlFR1Yichvs3vL5a+5n9CotQMjhkWs=
+	 Content-Type:Content-Disposition:In-Reply-To; b=OZWBuWgPRolrYbk6xarHqnyoi64zBpmGkxAQmsFAIXQeWLjFggqf2lwbfhvkUitsxIlgnpRmKs5l9ObJ18C0dm2N5LqGeZJY6RaG9XQCix9aQwogHw6mZnPjDHP+KDuXOiKFx9rl2FC56xYXJc8OYr9F203i1jnMVzLLTtjypmc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1vilsK-000000006Rt-2hkU;
-	Thu, 22 Jan 2026 04:00:52 +0000
-Date: Thu, 22 Jan 2026 04:00:50 +0000
+	id 1vilsR-000000006S5-0Eiz;
+	Thu, 22 Jan 2026 04:00:59 +0000
+Date: Thu, 22 Jan 2026 04:00:56 +0000
 From: Daniel Golle <daniel@makrotopia.org>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
@@ -30,9 +30,8 @@ To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Jonas Jelonek <jelonek.jonas@gmail.com>,
 	Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [RFC PATCH v2 1/2] net: phy: add (*register_phy)() hook to struct
- mii_bus
-Message-ID: <82311b68468ba95e5fead3e2fe4574d616151adc.1769053496.git.daniel@makrotopia.org>
+Subject: [RFC PATCH v2 2/2] net: mdio: rtl9300: setup PHY polling registers
+Message-ID: <680696024a8648535ce6dee771fe4de67802e0e8.1769053496.git.daniel@makrotopia.org>
 References: <cover.1769053496.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -44,62 +43,151 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1769053496.git.daniel@makrotopia.org>
 
-Some MDIO busses require to program PHY polling registers depending on
-the PHY type. RealTek switch SoCs are the most prominent example of a
-DSA switch which doesn't allow to program MAC speed, duplex and
-flow-control settings without using PHY polling to do so.
+The mdio-realtek-rtl9300 driver currently relies on the bootloader to
+correctly setup polling registers depending on the PHY type. On quite a
+lot of switches the bootloader only does this in case the user
+interrupts the boot process and loads firmware via TFTP, otherwise
+Ethernet remains uninitialized. On some devices the U-Boot environment
+can be customized so they always initialize the switch and MDIO
+controller before launching Linux, and rarely vendors decide to just
+always do it.
 
-Hence there is a need to inform the MDIO bus driver that a PHY has been
-registered on the bus, as otherwise the bus driver will have to reinvent
-and duplicate all the bus scanning logic for Clause-22 and Clause-45
-PHYs, and discover their features (or maintain a long list of PHY IDs).
+Setup the polling registers based on the PHYs detected on the bus, and
+setup registers for non-standard Clause-45 registers used in polling in
+case the PHY vendor is known and commonly used in those switches.
 
-Provide a simple hook in struct mii_bus which is called right after a
-PHY has been fully probed.
-
-Alternative ways which would allow to do the same things without
-having to change any kernel code would of course be very welcome.
-
-Link: https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/net/phy/phy_device.c | 8 +++++++-
- include/linux/phy.h          | 3 +++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 82 +++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f624218bf3664..7807f3db50507 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3778,8 +3778,14 @@ static int phy_probe(struct device *dev)
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
--	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
-+	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev)) {
- 		err = of_phy_leds(phydev);
-+		if (err)
-+			goto out;
-+	}
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
+index 405a07075dd11..9e030be497ab3 100644
+--- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -24,6 +24,9 @@
+ 
+ #define SMI_GLB_CTRL			0xca00
+ #define   GLB_CTRL_INTF_SEL(intf)	BIT(16 + (intf))
++#define SMI_MAC_TYPE_CTRL		0xca04
++#define   SMI_MAC_TYPE_CTRL_1G		3
++#define   SMI_MAC_TYPE_CTRL_2G_PLUS	1
+ #define SMI_PORT0_15_POLLING_SEL	0xca08
+ #define SMI_ACCESS_PHY_CTRL_0		0xcb70
+ #define SMI_ACCESS_PHY_CTRL_1		0xcb74
+@@ -43,6 +46,13 @@
+ #define   PHY_CTRL_MMD_DEVAD		GENMASK(20, 16)
+ #define   PHY_CTRL_MMD_REG		GENMASK(15, 0)
+ #define SMI_PORT0_5_ADDR_CTRL		0xcb80
++#define SMI_PRVTE_POLLING_CTRL		0xca10
++#define SMI_10G_POLLING_REG0_CFG	0xcbb4
++#define SMI_10G_POLLING_REG9_CFG	0xcbb8
++#define SMI_10G_POLLING_REG10_CFG	0xcbbc
 +
-+	if (phydev->mdio.bus->register_phy)
-+		err = phydev->mdio.bus->register_phy(phydev);
++#define RTMDIO_PHY_POLL_MMD(dev, reg, bit) \
++	(((bit) << 21) | ((dev) << 16) | (reg))
  
- out:
- 	/* Re-assert the reset signal on error */
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 5972f19af16da..1d38e27d20389 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -377,6 +377,9 @@ struct mii_bus {
- 	/** @reset: Perform a reset of the bus */
- 	int (*reset)(struct mii_bus *bus);
+ #define MAX_PORTS       28
+ #define MAX_SMI_BUSSES  4
+@@ -56,6 +66,7 @@ struct rtl9300_mdio_priv {
+ 	u8 smi_addr[MAX_PORTS];
+ 	bool smi_bus_is_c45[MAX_SMI_BUSSES];
+ 	struct mii_bus *bus[MAX_SMI_BUSSES];
++	bool c45_polling_is_setup;
+ };
  
-+	/** @register_phy: Called for each PHY detected on the bus */
-+	int (*register_phy)(struct phy_device *phydev);
+ struct rtl9300_mdio_chan {
+@@ -350,6 +361,74 @@ static int rtl9300_mdiobus_init(struct rtl9300_mdio_priv *priv)
+ 	return 0;
+ }
+ 
++static int rtl9300_register_phy(struct phy_device *phydev)
++{
++	u32 mask, val, poll_duplex, poll_adv_1000, poll_lpa_1000;
++	struct mii_bus *bus = phydev->mdio.bus;
++	struct rtl9300_mdio_chan *chan;
++	struct rtl9300_mdio_priv *priv;
++	struct regmap *regmap;
++	int port, ret;
++	u8 mac_type;
 +
- 	/** @stats: Statistic counters per device on the bus */
- 	struct mdio_bus_stats stats[PHY_MAX_ADDR];
++	chan = bus->priv;
++	priv = chan->priv;
++	regmap = priv->regmap;
++	port = rtl9300_mdio_phy_to_port(bus, phydev->mdio.addr);
++
++	/* Detect if PHY has 2.5G/5G/10G capabilities */
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->supported) ||
++	    linkmode_test_bit(ETHTOOL_LINK_MODE_5000baseT_Full_BIT, phydev->supported) ||
++	    linkmode_test_bit(ETHTOOL_LINK_MODE_10000baseT_Full_BIT, phydev->supported))
++		mac_type = SMI_MAC_TYPE_CTRL_2G_PLUS;
++	else
++		mac_type = SMI_MAC_TYPE_CTRL_1G;
++
++	mask = port > 23 ? 0x7 << ((port - 24) * 3 + 12) : 0x3 << ((port / 4) * 2);
++	val = mac_type << (ffs(mask) - 1);
++	ret = regmap_update_bits(regmap, SMI_MAC_TYPE_CTRL, mask, val);
++	if (ret < 0)
++		return ret;
++
++	/* Setup Clause-45 registers to be polled for the first >1G PHY.
++	 * All >1G PHYs connected to the switch SoC have to be of the same type.
++	 */
++	if (mac_type == SMI_MAC_TYPE_CTRL_1G || priv->c45_polling_is_setup)
++		return 0;
++
++	priv->c45_polling_is_setup = true;
++
++	switch (phydev->phy_id & PHY_ID_MATCH_VENDOR_MASK) {
++	case 0x001cc800: /* RealTek */
++		poll_duplex = RTMDIO_PHY_POLL_MMD(MDIO_MMD_VEND2, 0xa400, 8);
++		poll_adv_1000 = RTMDIO_PHY_POLL_MMD(MDIO_MMD_VEND2, 0xa412, 9);
++		poll_lpa_1000 = RTMDIO_PHY_POLL_MMD(MDIO_MMD_VEND2, 0xa414, 11);
++		break;
++	case 0x03a1b400: /* Aquantia */
++	case 0x31c31c00:
++		poll_duplex = RTMDIO_PHY_POLL_MMD(MDIO_MMD_PMAPMD, MDIO_CTRL1, 8);
++		poll_adv_1000 = RTMDIO_PHY_POLL_MMD(MDIO_MMD_AN, 0xc400, 15);
++		poll_lpa_1000 = RTMDIO_PHY_POLL_MMD(MDIO_MMD_AN, 0xe820, 15);
++		break;
++	default:
++		dev_warn(&phydev->mdio.dev,
++			 "Unknown register layout, relying on bootloader network setup.\n");
++		return 0;
++	};
++
++	ret = regmap_write(regmap, SMI_10G_POLLING_REG0_CFG, poll_duplex);
++	if (ret < 0)
++		return ret;
++	ret = regmap_write(regmap, SMI_10G_POLLING_REG9_CFG, poll_adv_1000);
++	if (ret < 0)
++		return ret;
++	ret = regmap_write(regmap, SMI_10G_POLLING_REG10_CFG, poll_lpa_1000);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_priv *priv,
+ 				     struct fwnode_handle *node)
+ {
+@@ -387,6 +466,7 @@ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_pri
+ 		bus->write = rtl9300_mdio_write_c22;
+ 	}
+ 	bus->parent = dev;
++	bus->register_phy = rtl9300_register_phy;
+ 	chan = bus->priv;
+ 	chan->mdio_bus = mdio_bus;
+ 	chan->priv = priv;
+@@ -481,6 +561,8 @@ static int rtl9300_mdiobus_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->regmap))
+ 		return PTR_ERR(priv->regmap);
  
++	priv->c45_polling_is_setup = false;
++
+ 	platform_set_drvdata(pdev, priv);
+ 
+ 	err = rtl9300_mdiobus_map_ports(dev);
 -- 
 2.52.0
