@@ -1,226 +1,68 @@
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A6437FF72
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 16:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA6935DCEE;
+	Thu, 22 Jan 2026 16:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769100673; cv=none; b=Kds1QTeKVRJwlpvx0fpJmSeo1D47lHvfbH0zhr+xDzc7/B6w08cbNE8MVLOrokK/Z9aAKGw/MdzNtTh+I4Qs7UzP9o285qQvSL6P1epxjEGgjdDaoEOWYSXG20wbyQNUsZky+T+sqIkGSm0pZheI601c02u8WFOz/jWCBzCUYH4=
+	t=1769100775; cv=none; b=krMovMhB+VkqUzL+fpa5D+F/I9Wk2Hur1amzSjcBVlPZd2PBiqYN6jufDBx/YQnR590tkXpihiTdKMMS+XLES32COid6QaPOvbGriUUnGrR5eWT8gLQr4vCb/jqcSAhCnDQ4vGz2RMcecx20hpxvFQatd7ARCu1dnZm7JCGWSQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769100673; c=relaxed/simple;
-	bh=yp//qd0PzB7Snypykjs0dXGxE2N8JW1snIV61oqC6ns=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cv/wj1MpuHCDsXke0tZd+EWbCZBmaNBd/IIqvXI0JNtnuM0f8qDFcSxbbwfLlm/ZoQsbnBc7tb33wA5MerKRWw8yeNKOlSaPv80HE2tXKJC39BcY1Lhm08z2i668Y06ohVCHoQGf8NKpO2IKPtn3yThzRfz/FnUo1l7yL6zd01A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hXfDmN/e; arc=none smtp.client-ip=209.85.219.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1769100775; c=relaxed/simple;
+	bh=psjr5AisREuV15xHE84c9dYu6GkG7NdkTjHqKjbkyuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k+ap/P1zTnZSTVLuJpJPwpo20W212YvOWHIfHSLnrcot/yoWwV+572yPQq3MwJ/Pp0uFGZglPvqRJJhkqUNT7F+WhInvIVbiLjr+iOGf1otqAlShF5l6I9TsOX53zwR4obn8Q7Hh0zDqxVFfCIbeNahsqSf5eabJ8dXYp4mQjjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czLgxvZH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hXfDmN/e"
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-8905883e793so28242406d6.2
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 08:50:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769100655; x=1769705455; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9pglonBNB+Nab8p8hrgiOIFMlt0ittHi/Ll8Gc4NmAQ=;
-        b=hXfDmN/e6Pf9AQXAQe5JgTnUV8ZF2PNbcY3OxeGBggL4O3JdNEiM2qrsHWR1utfqwj
-         2Ssl7KiVy9sxpdC0jTP6rxbJPXnUaEvnRvoVW7GShOQAEzCqx6P+XmB0aG25cESUQqX+
-         ZAawN4K2gZC82sq3/uQeFkkl90TaM/aDi672nLUWyMM4+U6YkiCPKB8qD7AWCGzjXcjH
-         jni/P6GYWtD7M1Evjlu/Q+R0qH7lSy9HoprMuDRJX+shesAVT+CzhmTh9pTbOnAfQhiW
-         LoMvCnL5TotgXg0nrXXbj4+yV9ys1BPD9G4Wea9+Yhtt+9r6V94Dixp6iOULZ27xmMeE
-         bXzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769100655; x=1769705455;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9pglonBNB+Nab8p8hrgiOIFMlt0ittHi/Ll8Gc4NmAQ=;
-        b=eYYmBzP+7INClhVRCU0vleiCdpfol+aq2pvX+2O7qQIXv4RJIwgSgl6vycrDS21+z9
-         z72BV6A46OTcLqWRCjrBCMiqseaI1CDr/ChopQZyaGSO8mi3psaZWtGusTMer+0EOgcr
-         m1NDNq1cnRWJ5ed4QPlSVU8M+0YKcvsR1n1V4xoLD7cBkmU8NTy57Whi23zF7bE94O/M
-         mEAOSRiOGjb8PlTrZAdQCb1T0NAJGcFCBspBkMeks4XN2YaiI6C29yYoOhpYLTjhX8th
-         91uE6Y00Ml+KMFN3cpB6BH+CFh0/FFXSPnyeSsXW9AGEijjnQYYZUlfM3gMPQgLt3aB2
-         Qh6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUxOsv7SQu/Bb2LCaxo1Mgfa9Y1ijux+UbtydOnyPnni2WbFdO3Z3OAMSjoJP1lyJTh65eptwo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjQUWawXGhfHKQX9marYP1NpJysmTe8QWmTYClNguMASNkNT8e
-	uPvkKlBYAwJFqV81MuhGuiV/ZtHu5Jb2oa4j1QddkJdbvN8M4AuKv5BTyRMTKpD8n1VbUC/mW/r
-	XfkW7UL7fgkvp2g==
-X-Received: from qvck5.prod.google.com ([2002:ad4:5be5:0:b0:890:3706:343a])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ad4:5bc9:0:b0:894:74b9:6b27 with SMTP id 6a1803df08f44-89490207bf6mr1133666d6.43.1769100654668;
- Thu, 22 Jan 2026 08:50:54 -0800 (PST)
-Date: Thu, 22 Jan 2026 16:50:49 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czLgxvZH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B77C116C6;
+	Thu, 22 Jan 2026 16:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769100775;
+	bh=psjr5AisREuV15xHE84c9dYu6GkG7NdkTjHqKjbkyuU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=czLgxvZHkUY1gXv7zJaBck2lK8TCVng8prVA75Hhc8S8cCGPN2EQ6ncCZdbFYVnyf
+	 2HEFsymXnLb3M4FmvVMyo13YB03tPrk3X1iwR2widB44oU2kAa1UjnP9LpUU6x1D9t
+	 LwUumYqPNmNs7KBf1ndMgxnIcFctINOIqN32WjtNSuPU3MutW25vGZOvUk6+ReTIl0
+	 62ArP4qIfiVA0zFbgSztyr51W2Gh+VxA8Cksm0ReSg30pNDmR4nGZStVErsMMD8BsG
+	 BENFPcntMHoC/13dnRlAGjyIqh32MwzJRGK9YgBsGY6Kqe8RtQ5a0xwjrSMGwiaXqQ
+	 hVJ4uy23y2PBg==
+Date: Thu, 22 Jan 2026 08:52:53 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Srujana Challa <schalla@marvell.com>, Willem de Bruijn
+ <willemb@google.com>, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, pabeni@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, ndabilpuram@marvell.com, Willem
+ de Bruijn <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next] virtio_net: Increase RSS max key size to match
+ NETDEV_RSS_KEY_LEN
+Message-ID: <20260122085253.33b93921@kernel.org>
+In-Reply-To: <CANn89iL5s+egLhothNtnQf0jtAeftezUjNmbuXtUWgfVV3+bzg@mail.gmail.com>
+References: <20260122091527.339180-1-schalla@marvell.com>
+	<20260122075206.504ec591@kernel.org>
+	<CANn89iL5s+egLhothNtnQf0jtAeftezUjNmbuXtUWgfVV3+bzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260122165049.2366985-1-edumazet@google.com>
-Subject: [PATCH v2 net-next] ipvlan: remove ipvlan_ht_addr_lookup()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Mahesh Bandewar <maheshb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-ipvlan_ht_addr_lookup() is called four times and not inlined.
+On Thu, 22 Jan 2026 17:13:55 +0100 Eric Dumazet wrote:
+> > Willem, WDYT? Is there a reason to keep the core key small?
+> > Or deprecate netdev_rss_key_fill()?  
+> 
+> What do you mean by deprecating it ?
+> 
+> One of the ideas was to make sure multiple NIC would share the same key,
+> for some bonding setups.
+> 
+> commit 960fb622f85180f36d3aff82af53e2be3db2f888    net: provide a per
+> host RSS key generic infrastructure
 
-Split it to ipvlan_ht_addr_lookup6() and ipvlan_ht_addr_lookup4()
-and rework ipvlan_addr_lookup() to call these helpers once,
-so that they are (auto)inlined.
-
-After this change, ipvlan_addr_lookup() is faster, and we save
-350 bytes of text on x86_64.
-
-$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-add/remove: 0/2 grow/shrink: 1/0 up/down: 123/-473 (-350)
-Function                                     old     new   delta
-ipvlan_addr_lookup                           467     590    +123
-__pfx_ipvlan_ht_addr_lookup                   16       -     -16
-ipvlan_ht_addr_lookup                        457       -    -457
-Total: Before=22571833, After=22571483, chg -0.00%
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mahesh Bandewar <maheshb@google.com>
----
-v2: guard ipvlan_ht_addr_lookup6() with CONFIG_IPV6 (kernel test robot)
-v1: https://lore.kernel.org/netdev/20260121215728.560645-1-edumazet@google.com/
- drivers/net/ipvlan/ipvlan_core.c | 55 ++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 2efa3ba148aa7efed999dc3c06ccbb787eca92e5..f1568d50f5cc8259e6166993bda8a3425e4e5937 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -48,11 +48,9 @@ static u8 ipvlan_get_v6_hash(const void *iaddr)
- }
- #endif
- 
--static u8 ipvlan_get_v4_hash(const void *iaddr)
-+static u8 ipvlan_get_v4_hash(__be32 addr)
- {
--	const struct in_addr *ip4_addr = iaddr;
--
--	return jhash_1word((__force u32)ip4_addr->s_addr, ipvlan_jhash_secret) &
-+	return jhash_1word((__force u32)addr, ipvlan_jhash_secret) &
- 			   IPVLAN_HASH_MASK;
- }
- 
-@@ -73,16 +71,30 @@ static bool addr_equal(bool is_v6, struct ipvl_addr *addr, const void *iaddr)
- 	return false;
- }
- 
--static struct ipvl_addr *ipvlan_ht_addr_lookup(const struct ipvl_port *port,
--					       const void *iaddr, bool is_v6)
-+#if IS_ENABLED(CONFIG_IPV6)
-+static struct ipvl_addr *ipvlan_ht_addr_lookup6(const struct ipvl_port *port,
-+						const void *iaddr)
- {
- 	struct ipvl_addr *addr;
- 	u8 hash;
- 
--	hash = is_v6 ? ipvlan_get_v6_hash(iaddr) :
--	       ipvlan_get_v4_hash(iaddr);
-+	hash = ipvlan_get_v6_hash(iaddr);
- 	hlist_for_each_entry_rcu(addr, &port->hlhead[hash], hlnode)
--		if (addr_equal(is_v6, addr, iaddr))
-+		if (addr_equal(true, addr, iaddr))
-+			return addr;
-+	return NULL;
-+}
-+#endif
-+
-+static struct ipvl_addr *ipvlan_ht_addr_lookup4(const struct ipvl_port *port,
-+						__be32 addr4)
-+{
-+	struct ipvl_addr *addr;
-+	u8 hash;
-+
-+	hash = ipvlan_get_v4_hash(addr4);
-+	hlist_for_each_entry_rcu(addr, &port->hlhead[hash], hlnode)
-+		if (addr->atype == IPVL_IPV4 && addr->ip4addr.s_addr == addr4)
- 			return addr;
- 	return NULL;
- }
-@@ -94,7 +106,7 @@ void ipvlan_ht_addr_add(struct ipvl_dev *ipvlan, struct ipvl_addr *addr)
- 
- 	hash = (addr->atype == IPVL_IPV6) ?
- 	       ipvlan_get_v6_hash(&addr->ip6addr) :
--	       ipvlan_get_v4_hash(&addr->ip4addr);
-+	       ipvlan_get_v4_hash(addr->ip4addr.s_addr);
- 	if (hlist_unhashed(&addr->hlnode))
- 		hlist_add_head_rcu(&addr->hlnode, &port->hlhead[hash]);
- }
-@@ -357,21 +369,24 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 				     int addr_type, bool use_dest)
- {
- 	struct ipvl_addr *addr = NULL;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	struct in6_addr *i6addr;
-+#endif
-+	__be32 addr4;
- 
- 	switch (addr_type) {
- #if IS_ENABLED(CONFIG_IPV6)
- 	case IPVL_IPV6: {
- 		struct ipv6hdr *ip6h;
--		struct in6_addr *i6addr;
- 
- 		ip6h = (struct ipv6hdr *)lyr3h;
- 		i6addr = use_dest ? &ip6h->daddr : &ip6h->saddr;
--		addr = ipvlan_ht_addr_lookup(port, i6addr, true);
-+lookup6:
-+		addr = ipvlan_ht_addr_lookup6(port, i6addr);
- 		break;
- 	}
- 	case IPVL_ICMPV6: {
- 		struct nd_msg *ndmh;
--		struct in6_addr *i6addr;
- 
- 		/* Make sure that the NeighborSolicitation ICMPv6 packets
- 		 * are handled to avoid DAD issue.
-@@ -379,24 +394,23 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 		ndmh = (struct nd_msg *)lyr3h;
- 		if (ndmh->icmph.icmp6_type == NDISC_NEIGHBOUR_SOLICITATION) {
- 			i6addr = &ndmh->target;
--			addr = ipvlan_ht_addr_lookup(port, i6addr, true);
-+			goto lookup6;
- 		}
- 		break;
- 	}
- #endif
- 	case IPVL_IPV4: {
- 		struct iphdr *ip4h;
--		__be32 *i4addr;
- 
- 		ip4h = (struct iphdr *)lyr3h;
--		i4addr = use_dest ? &ip4h->daddr : &ip4h->saddr;
--		addr = ipvlan_ht_addr_lookup(port, i4addr, false);
-+		addr4 = use_dest ? ip4h->daddr : ip4h->saddr;
-+lookup4:
-+		addr = ipvlan_ht_addr_lookup4(port, addr4);
- 		break;
- 	}
- 	case IPVL_ARP: {
- 		struct arphdr *arph;
- 		unsigned char *arp_ptr;
--		__be32 dip;
- 
- 		arph = (struct arphdr *)lyr3h;
- 		arp_ptr = (unsigned char *)(arph + 1);
-@@ -405,9 +419,8 @@ struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port, void *lyr3h,
- 		else
- 			arp_ptr += port->dev->addr_len;
- 
--		memcpy(&dip, arp_ptr, 4);
--		addr = ipvlan_ht_addr_lookup(port, &dip, false);
--		break;
-+		addr4 = get_unaligned((__be32 *)arp_ptr);
-+		goto lookup4;
- 	}
- 	}
- 
--- 
-2.52.0.457.g6b5491de43-goog
-
+Just wanted to put that option on the table, it wasn't clear to me what
+the exact use case for the sysfs file was. Good to know that someone
+cares :) thanks for the reference!
