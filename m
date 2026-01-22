@@ -1,35 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653103ED12D
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 03:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5123232C302;
+	Thu, 22 Jan 2026 03:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769052622; cv=none; b=m6uCyfPVPoeX2ngFlHaAjwSsUA2uu7akxYUqyuSf9iYfuTynrZBN7VEJJQHfRghOLi0C/Nag3XOIJG9jkGL/KGgHUQ/C0TDGL6hbwzN9sWM/0cMVNhqI+FtuB1g5wCiYOIWSfw5bbLXVUYL80zxXAP//RZyAbpROL08a9V5gfu4=
+	t=1769052733; cv=none; b=uyG/rC599x997E+fdJXL6VeJUnx8sGUXCndlp5CyCyX9U+xcO0k3ZEyvk2xhV/q0fj2OUY7AXHFVpvgemyUOcWNYCOprCfMdiF7Q3byl51gbYDAH4SMg8yvrlJp5iKMrNxs33rMguFDzQZ5tWLbiK91SEM+ELLCwABfTdsOzFNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769052622; c=relaxed/simple;
-	bh=wVhphtw/Z6Z30S4kcU4jxxzvIQyGOud6gBZ4csv+EME=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=feIbUH5XshVcfK2XoxqQTcljpiGP7YaQBqwyiF3EU0te0t/tIhtJvET6u9qmIhEfGnjyZFVf+9VAs65RACMAeIkSTD7vRYBs2SbCr5QJNjxS0hRRw/PhtGha0rDEYfZ6+SeifbBcyqEYtqDwr76hTlzANHFjnSEQMHGsOjK+DrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBBNUwSx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769052733; c=relaxed/simple;
+	bh=m2grbUK5F7bq3r74dZ5BxpA3geRC+FVcS3Ipoa77T0M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T1N5jscnX5UKJeFFhFDGJFD7iYNr9nOsOMbLZOunuspuM3aRhgZd76LRIDwU1zpPlqCmEUC6eiQxt8+9KM96rBHeUxv9FLsqYQflvSPZuL/K78ckbjJ9uFnp2++0otRrL9a4hmQ7b/BGH27EIIJklE6d4yNh+Dl2beCuy2bZBuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=g5rPP77A; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBBNUwSx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45326C116D0;
-	Thu, 22 Jan 2026 03:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769052622;
-	bh=wVhphtw/Z6Z30S4kcU4jxxzvIQyGOud6gBZ4csv+EME=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CBBNUwSxSWVDelv3b7qDpHELyyJJsGBx2uOkZmjZsHFrAOUxpCkZ8oQSKZCc7OLn8
-	 G0XJhEDJnQXv53XRf8k015qtG7WWJVKKL1qEBhM12/SeJ3LespL7EAh283aW5VZyBa
-	 VvIREW8q6/48rtlPcDGsCYJfKSbmKFD6NgjzdTtKwxWOU6OOaqNiU7onimOHVoOVDf
-	 lyDad8RVj5Z/7dlTLtqP7By9x8dPKG3KmENRvVaWfnCGnDAQF/LQal/r1q8n5XfJm5
-	 ILAnyLD47/uKaQTrfYfcB4v5OwfF2eKHDjnTQb2dWvTGpnyLAEpPv7B+9cwyFC2J0A
-	 V7e21aeamF41g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EC383808200;
-	Thu, 22 Jan 2026 03:30:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="g5rPP77A"
+Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 318765b89;
+	Thu, 22 Jan 2026 11:26:48 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: anthony.l.nguyen@intel.com
+Cc: przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH net] ice: Fix memory leak in ice_set_ringparam()
+Date: Thu, 22 Jan 2026 03:26:44 +0000
+Message-Id: <20260122032644.183754-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +42,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tcp: preserve const qualifier in tcp_rsk() and
- inet_rsk()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176905261885.1542867.11045113592731404342.git-patchwork-notify@kernel.org>
-Date: Thu, 22 Jan 2026 03:30:18 +0000
-References: <20260120125353.1470456-1-edumazet@google.com>
-In-Reply-To: <20260120125353.1470456-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+X-HM-Tid: 0a9be3bd8a0103a1kunm23da51ae25240
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSEIdVkxPHk1DH00fGU5LGFYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=g5rPP77AIAadHAgYTZtwYjnRmlYV8BfmdytF13ibzbRfLNRYo+N2ZiuuBTT/BPd2Ga+itEls8A3dlRwyPtZaIutl/yw422dm8A08PmPG923QRndV0C6v3rQ+ifFMzR7CGgGMPQdGQe0DVTc+p4vkFZtLbUyx5aS44cNf+/4bE/A=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=ffflAwULRkleIYICFHP/WFtQuZMy6nCm9F9CV+XYt/M=;
+	h=date:mime-version:subject:message-id:from;
 
-Hello:
+In ice_set_ringparam, tx_rings and xdp_rings are allocated before
+rx_rings. If the allocation of rx_rings fails, the code jumps to
+the done label leaking both tx_rings and xdp_rings. Furthermore, if
+the setup of an individual Rx ring fails during the loop, the code jumps
+to the free_tx label which releases tx_rings but leaks xdp_rings.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fix this by introducing a free_xdp label and updating the error paths to
+ensure both xdp_rings and tx_rings are properly freed if rx_rings
+allocation or setup fails.
 
-On Tue, 20 Jan 2026 12:53:53 +0000 you wrote:
-> We can change tcp_rsk() and inet_rsk() to propagate their argument
-> const qualifier thanks to container_of_const().
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  include/linux/tcp.h              | 5 +----
->  include/net/inet_sock.h          | 5 +----
->  include/trace/events/tcp.h       | 2 +-
->  net/ipv4/inet_connection_sock.c  | 2 +-
->  net/ipv6/inet6_connection_sock.c | 2 +-
->  5 files changed, 5 insertions(+), 11 deletions(-)
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
 
-Here is the summary with links:
-  - [net-next] tcp: preserve const qualifier in tcp_rsk() and inet_rsk()
-    https://git.kernel.org/netdev/net-next/c/a4674aa58be5
+Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+---
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 969d4f8f9c02..1643b118144a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3318,7 +3318,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	rx_rings = kcalloc(vsi->num_rxq, sizeof(*rx_rings), GFP_KERNEL);
+ 	if (!rx_rings) {
+ 		err = -ENOMEM;
+-		goto done;
++		goto free_xdp;
+ 	}
+ 
+ 	ice_for_each_rxq(vsi, i) {
+@@ -3345,7 +3345,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 			}
+ 			kfree(rx_rings);
+ 			err = -ENOMEM;
+-			goto free_tx;
++			goto free_xdp;
+ 		}
+ 	}
+ 
+@@ -3398,6 +3398,13 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	}
+ 	goto done;
+ 
++free_xdp:
++	if (xdp_rings) {
++		ice_for_each_xdp_txq(vsi, i)
++			ice_free_tx_ring(&xdp_rings[i]);
++		kfree(xdp_rings);
++	}
++
+ free_tx:
+ 	/* error cleanup if the Rx allocations failed after getting Tx */
+ 	if (tx_rings) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
