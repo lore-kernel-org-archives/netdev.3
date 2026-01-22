@@ -1,142 +1,170 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5E2374736
-	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 18:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A7132AAB4
+	for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 19:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769108089; cv=none; b=tQpwmN42fsjcc8gmWggf73ngArxIDK6q3ROkmppDQD/AUI4NYU2/5aSqrt4N0r25MENGLIgs+g04TBb4f/cwf2cONz0bVv8zgswfE3a0gqE0E6xqLZTAW0djZbXiIucmXV9egu+OqGZT3z4aOvcYl6/S3RCCzr0gGmvcNsVWokk=
+	t=1769108637; cv=none; b=RxVsFlvHqoe/B4JdTfRHYM/pVrAGgcKLl01JvRpUMFnn5dCMsM43Iuz+vb4Q3AF7UWkkL8jEhOl0Wy3xxuP6hqhPiq7mSPc0Vs6aqrwVBc1ceZmE0sFnujgM/GmepOBAlYzLwNZzJENZaf+QTX4B+fzDlEE0BFnduQvhXWP+CfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769108089; c=relaxed/simple;
-	bh=99yqU+uOKfdvghLSyrp8Ex5B5iFEVimbkISuRbGqacg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rVSdeEijnnEdINvu2H4Qq9yZthWS13DAU8jBOKpUsct2V8AU50O+K2pN8413tYHzg2GlFSMkfG4ivQQoZwKtcs4wsHQ16eyyJHRZY+GvK1+5N5ozUAO7KEE9uzzet/idQQKtDDyVMAi5HOt95ZtRvr9GAq4EwrfctBbguuwPNgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icIJmxOZ; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769108637; c=relaxed/simple;
+	bh=Cu6o8NzOShm08SNJfhfpnVv1ADmauWyXomGmnWi32uY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aUPsqwgRcYB4ATSWq+HIduZclYh3tS4rJXXCy0UW0IkhwF6ymXem4nIyYr0TWecXBzB228c7wJ3KiMYrfSTzdaHasKJuvzAP6iQU56L1t4UVBqNcHHaS4BtMlxdgZFDU6oD+lukO6oYKBvQSdCkIe8MfeU3WoEowUH/xnpAgysQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m8TxcdXc; arc=none smtp.client-ip=209.85.219.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icIJmxOZ"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-658072a4e56so2679866a12.0
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 10:54:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m8TxcdXc"
+Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-88a2ea47fa5so35216626d6.0
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 11:03:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769108080; x=1769712880; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nRWp0rtmJZTKy7gP8VUEPIou3M/cUalQjqQTAmYs/OU=;
-        b=icIJmxOZ9txCBuxI2TTbp+wkPuTkaaCnA+JzM1zxbgywQpPo9w7Q/z+V01ilJvmohe
-         Vi/z+WvzEvt8TEBc8DHFmG7rnPBffHyUYoUZYevrptCv52/zUmJbTzudB0P1K3pC3STa
-         rZPcWrCj++os2u//szJ8TB+ivHynGXEdPlUqnyV+ng4mnRLs1+lsv/745G4ylx5lxlrY
-         bbBX8z//u3HUTpa1EgsgrxMQbNlmWFvx68vWct768QAhcb+pfKs7VMFDbpyevm1CJu0a
-         j+CgIoGFrvDNJhUrQcvQZE7s8BKDwHQ8aPmlcfZm8QPH+OUk47tIEqqsNZyjY6Anlok6
-         CbsA==
+        d=google.com; s=20230601; t=1769108631; x=1769713431; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jW5MNt8Tzxi0nTGwbgqAg9sCreSmdKHLZq+jz+hv1f0=;
+        b=m8TxcdXc2zUSbg573zr3M+RSmtNoJnYbYc8nZvggDuciFS0+h3SQi3dP37mtuceV0p
+         Dz6dlM37g09bZGTyCZGCBw8TDe9rE/bGzt1QlgZBhYp3eMcgeVoYTz2i6heV7V98PMGI
+         1Zc91OsphC9XNUsqpMLs7xdXcCsWCxWZr1noivtHikZtipyOXqldFtGMnEoNmJAP6lgu
+         OjuN7KYrayX0hKrADxI8wTHPjWkkJKVsJr0v/EYFrIO7J8mIi5uwYyNUQIsTibAvLaJm
+         y3MjII4gbCcgWw+MtOB9cB6CKh/bctDmxKi4TH+eB/e52lqXB1+PfO10Q0cqvIx5f8zT
+         upDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769108080; x=1769712880;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nRWp0rtmJZTKy7gP8VUEPIou3M/cUalQjqQTAmYs/OU=;
-        b=Ni+wjbVEqOvlkB3Te74Y9MEYanwp/kwlq3N1HrGHTsWAz3LiVBGd9BmuFqvGRMjEMU
-         pab+kUk4RzmHimdHvkJUJ0ExH+EWt8U1kqTD4cFk1y47n5fnvwZXbYsQZQlNdVdh0Sk+
-         EimVPCe0mI8xLv0dLimSBwL9QN3nmVc2YQcrVYi6R3lrzcTrnN5mb9CxEvkyBPaOHZvO
-         pcqbj87yNiSAgUym9bX/7PfUdgsxnFUGpWmohCRCrnl8WV3Ff71QOwXGH8+71RH91z12
-         FBtfz3YuXLekyryDmA0mJjTuDqtZ6D3+tPxosyuLcyEwZ3xFHxhUNZwdnm77Yr7nm/VD
-         R6Kw==
-X-Gm-Message-State: AOJu0YxaIqq/GRV69lBug2879X/DIYzlWKPgIPivhX1cedlWsLoXC3LO
-	RPLnzS+gelh+WNwCsbVPQO2ZJrX9x3Yg9mpoQg1PxtadjbJJkIhOoPxImjQxOwh1
-X-Gm-Gg: AZuq6aIYDRo284Shus3UqitY+YAzqPyTSDffEbvAAim+TyzjE3Licg9tdXz3MeoXUz+
-	K7UaTEKUUgTgMcPaJwwIUkTeMiis3k3K4XA4+j5dJLhHPvdyD2DrAytytQVgDfrl1FfjO6njBtH
-	RKlXUYDcXfETQ8cQ1vTfkcmGwsczSAIpBq7A1jBR5Qmhm4Ah1bTuU0eKcW5ZgEI8rACujrRGXiP
-	RG9A/0wZyusQ/h3LXk0sY2PerY3CZkYXbDI6b8jbV88eI7VAyGFQOOc3Y2AJ4H11aNFpqZyxL3A
-	z08En7VVR+WzyDn+vWIEUoTOiOMDTpfanG6pAq3VO6rtVVEcXO9igotO5eTkNsjarFVEGbbOcmD
-	WH/3yuCmZYNNsbLkkaBOnB9bp6kk5HdkRaEuMzhxLD+MDY6H3avQRNLkTF36E9i/FZOQ0KvpL52
-	sCh78=
-X-Received: by 2002:a17:907:3ea8:b0:b88:38e9:8f89 with SMTP id a640c23a62f3a-b885aa21fb9mr22376466b.0.1769108080124;
-        Thu, 22 Jan 2026 10:54:40 -0800 (PST)
-Received: from wdesk. ([192.142.54.141])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b7ba3f8sm5442166b.63.2026.01.22.10.54.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 10:54:39 -0800 (PST)
-From: Mahdi Faramarzpour <mahdifrmx@gmail.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kshitiz.bartariya@zohomail.in,
-	Mahdi Faramarzpour <mahdifrmx@gmail.com>
-Subject: [PATCH net-next] udp: add drop count for packets in udp_prod_queue
-Date: Thu, 22 Jan 2026 22:23:57 +0330
-Message-Id: <20260122185357.50922-1-mahdifrmx@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1769108631; x=1769713431;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jW5MNt8Tzxi0nTGwbgqAg9sCreSmdKHLZq+jz+hv1f0=;
+        b=bcVsa9x9OJL0QImHvuldr+WdYiEzDEcU5kokHpG9vDAXsDsGlJ3fpyNRTjvlALT7q2
+         eBh2mJaE1Axi/GbZur0D94j8oqravFflflLK/gMFu7cU0iszsB47IdAgHiQKxjalkBAi
+         2aEsgSfi6RA3ovz79BSiuNCnVsQZyY8OJOIvlq/em3qTmVrZzPHPbfLWtZzVO8k0SXi/
+         AQWfCh4IzWXwuxVJOmGAcqsqCn8PF29Sq14SSXO0iVwvtN6tdgUZOJE1ysiRktd0FhWT
+         GeseK2KtFJ0AWsEPBPPqS1z1A9HBXDTL2EE5MyCZ1GBactWxKcHPYhKgiZYpDb1Z6vQ2
+         RYIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBrR7bNXvvyAV3NL9nmwQHX427/BsJYRCscqg58tioLZEXFGyJQjGa6vlugS1dctAFbXzfJk8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykyeyYb4NVgBHTGtasLeHanHXd4OnRroPBmjDwHQH3ndbvpyaz
+	Yd6EicC9ZqJ9Yuq2Z1Wh4p4PHN3q7ktIqzlU1Q0quxhfHiGxtOL2Lta8g6I356BQvYnDGXoFmxb
+	UiDU0SRHk9qlGMg==
+X-Received: from qvblx2.prod.google.com ([2002:a05:6214:5f02:b0:894:7038:8d68])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:301c:b0:888:6fde:7b72 with SMTP id 6a1803df08f44-894908b07b5mr7543096d6.32.1769108630824;
+ Thu, 22 Jan 2026 11:03:50 -0800 (PST)
+Date: Thu, 22 Jan 2026 19:03:49 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260122190349.2771064-1-edumazet@google.com>
+Subject: [PATCH net-next] net: expand NETDEV_RSS_KEY_LEN to 256 bytes
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-This commit adds SNMP drop count increment for the packets in
-per NUMA queues which were introduced in commit b650bf0977d3
-("udp: remove busylock and add per NUMA queues"). note that SNMP
-counters are incremented currently by the caller for skb. And
-that these skbs on the intermediate queue cannot be counted
-there so need similar logic in their error path.
+NETDEV_RSS_KEY_LEN has been set to 52 bytes in 2014, until now.
 
-Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
+Jakub suggested we bump the size to 128 bytes or more.
+
+Some drivers (like idpf) were already working around the core limit.
+
+Since this change might cause some issues in admin scripts,
+bump it directly to 256 in one go.
+
+tjbp26:~# cat /proc/sys/net/core/netdev_rss_key | wc -c
+768
+
+tjbp26:~# ethtool -x eth1
+RX flow hash indirection table for eth1 with 32 RX ring(s):
+...
+RSS hash key:
+fe:16:5b:2f:93:85:c2:c9:c1:ef:bd:60:c6:e0:2b:99:4d:bf:b7:14:c8:1e:8d:cb:31:17:51:da:55:eb:91:d9:9e:f9:89:9b:44:a1:dc:08:72:3a:b3:d6:31:86:9a:fe:02:3a:0d:eb:a1:7c:f5:a3:51:3b:08:56:c9:3f:71:69:01:ba:70:38
+RSS hash function:
+    toeplitz: on
+    xor: off
+    crc32: off
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20260122075206.504ec591@kernel.org/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-v5:
-  - check if drop counts are non-zero before increasing countrers
-v4: https://lore.kernel.org/netdev/20260108102950.49417-1-mahdifrmx@gmail.com/
-  - move all changes to unlikely(to_drop) branch
-v3: https://lore.kernel.org/netdev/20260105114732.140719-1-mahdifrmx@gmail.com/
-  - remove the unreachable UDP_MIB_RCVBUFERRORS code
-v2: https://lore.kernel.org/netdev/20260105071218.10785-1-mahdifrmx@gmail.com/
-  - change ENOMEM to ENOBUFS
-v1: https://lore.kernel.org/netdev/20260104105732.427691-1-mahdifrmx@gmail.com/
----
- net/ipv4/udp.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/net.rst | 13 +++++++------
+ include/linux/netdevice.h                |  3 +--
+ net/core/sysctl_net_core.c               | 10 ++++++++--
+ 3 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index ffe074cb5..41cf8f7ab 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1793,14 +1793,31 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 	}
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index 91fa4ccd326c2b6351fd028a1c5d1c69126bee5f..19408da2390b013b06ca92b16c152d48a5efbc1e 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -314,21 +314,22 @@ Default: 1000
+ netdev_rss_key
+ --------------
  
- 	if (unlikely(to_drop)) {
-+		int err_ipv4 = 0;
-+		int err_ipv6 = 0;
- 		for (nb = 0; to_drop != NULL; nb++) {
- 			skb = to_drop;
-+			if (skb->protocol == htons(ETH_P_IP))
-+				err_ipv4++;
-+			else
-+				err_ipv6++;
- 			to_drop = skb->next;
- 			skb_mark_not_on_list(skb);
--			/* TODO: update SNMP values. */
- 			sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PROTO_MEM);
- 		}
- 		numa_drop_add(&udp_sk(sk)->drop_counters, nb);
-+		if (err_ipv4 > 0) {
-+			SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_MEMERRORS,
-+				       err_ipv4);
-+			SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_INERRORS,
-+				       err_ipv4);
-+		}
-+		if (err_ipv6 > 0) {
-+			SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_MEMERRORS,
-+				       err_ipv6);
-+			SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_INERRORS,
-+				       err_ipv6);
-+		}
- 	}
+-RSS (Receive Side Scaling) enabled drivers use a 40 bytes host key that is
+-randomly generated.
++RSS (Receive Side Scaling) enabled drivers use a host key that
++is randomly generated.
+ Some user space might need to gather its content even if drivers do not
+ provide ethtool -x support yet.
  
- 	atomic_sub(total_size, &udp_prod_queue->rmem_alloc);
+ ::
+ 
+   myhost:~# cat /proc/sys/net/core/netdev_rss_key
+-  84:50:f4:00:a8:15:d1:a7:e9:7f:1d:60:35:c7:47:25:42:97:74:ca:56:bb:b6:a1:d8: ... (52 bytes total)
++  84:50:f4:00:a8:15:d1:a7:e9:7f:1d:60:35:c7:47:25:42:97:74:ca:56:bb:b6:a1:d8: ... (256 bytes total)
+ 
+-File contains nul bytes if no driver ever called netdev_rss_key_fill() function.
++File contains all nul bytes if no driver ever called netdev_rss_key_fill()
++function.
+ 
+ Note:
+-  /proc/sys/net/core/netdev_rss_key contains 52 bytes of key,
+-  but most drivers only use 40 bytes of it.
++  /proc/sys/net/core/netdev_rss_key contains 256 bytes of key,
++  but many drivers only use 40 or 52 bytes of it.
+ 
+ ::
+ 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d99b0fbc1942ad1dbbd372cfb9e809e413251f15..3524c54c786a94a1e797c07d6b2d1cf35b6cbc5b 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5163,8 +5163,7 @@ void *netdev_lower_dev_get_private(struct net_device *dev,
+ void netdev_lower_state_changed(struct net_device *lower_dev,
+ 				void *lower_state_info);
+ 
+-/* RSS keys are 40 or 52 bytes long */
+-#define NETDEV_RSS_KEY_LEN 52
++#define NETDEV_RSS_KEY_LEN 256
+ extern u8 netdev_rss_key[NETDEV_RSS_KEY_LEN] __read_mostly;
+ void netdev_rss_key_fill(void *buffer, size_t len);
+ 
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 05dd55cf8b58e6c6fce498a11c09f23fd56d8f34..0f761d4b94471a5f8bbe0810922cf59e009be99d 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -325,10 +325,16 @@ static int proc_do_dev_weight(const struct ctl_table *table, int write,
+ static int proc_do_rss_key(const struct ctl_table *table, int write,
+ 			   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	struct ctl_table fake_table;
+ 	char buf[NETDEV_RSS_KEY_LEN * 3];
++	struct ctl_table fake_table;
++	char *pos = buf;
++
++	for (int i = 0; i < NETDEV_RSS_KEY_LEN; i++) {
++		pos = hex_byte_pack(pos, netdev_rss_key[i]);
++		*pos++ = ':';
++	}
++	*(--pos) = 0;
+ 
+-	snprintf(buf, sizeof(buf), "%*phC", NETDEV_RSS_KEY_LEN, netdev_rss_key);
+ 	fake_table.data = buf;
+ 	fake_table.maxlen = sizeof(buf);
+ 	return proc_dostring(&fake_table, write, buffer, lenp, ppos);
 -- 
-2.34.1
+2.52.0.457.g6b5491de43-goog
 
