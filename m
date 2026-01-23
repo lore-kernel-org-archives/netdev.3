@@ -1,112 +1,109 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [4.193.249.245])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F87B33F8A2;
-	Fri, 23 Jan 2026 09:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.193.249.245
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7829D36EAAD;
+	Fri, 23 Jan 2026 09:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769161982; cv=none; b=bP+IytFAwopJ4Cu9QURAmIeo/VAWPNJuuq1MNHrPmMRJwnJnnrj1yrWK5THvKoU1GvgTnK3n/Y7ySK1HyK2dmQKTOoof//XKWW5pRI1Y9amNeerQ+nY5w0+yt2Lw6O6n/P9abJ4/CYUAiRMeo3v82QcB9zdA/xDWWLrF6PNqDn4=
+	t=1769162019; cv=none; b=GgiSaXl29Go0QSp8k3C6nv6TIAveR8jaRNMrLCSM5eD5apAlW9ocBv0h3PmpHo2P00o0kRkaoLyUoxhvgrWe0uB4hqlemtQcLGK52UT5CF9dQTBEFGZCyW3FKaxBnNgZe6zHnW+jfI7vzxE30CrnguxXZax2PL+QwkUUmTYALVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769161982; c=relaxed/simple;
-	bh=cCxEDZ1fr3n/f4NkfiMVSfrHEnYkdcSQlaoo5wWCwKI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=DSX4awDbCgT2PY9inYxRIhMRHW5LnF+Wf5CyGCUPuu9sKY0jxDPeTnTiUbQQ6Tab2SIJFCM14k0vGISaAzXkJSxo8GyRu4JApCMc4T66R6QPxNKizbMntJP6krKOfyaTEMtxUZ559Jy89dTfXr0FqtTVXfaiaXPsL6IcFttvNeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=4.193.249.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from lizhi2$eswincomputing.com ( [10.11.96.26] ) by
- ajax-webmail-app1 (Coremail) ; Fri, 23 Jan 2026 17:52:28 +0800 (GMT+08:00)
-Date: Fri, 23 Jan 2026 17:52:28 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
-To: "Bo Gan" <ganboing@gmail.com>
-Cc: "Andrew Lunn" <andrew@lunn.ch>, devicetree@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
-Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock
- sampling control
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
- 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <abf12a3f-9cdd-472d-a02e-af4da594b84f@gmail.com>
-References: <20260109080601.1262-1-lizhi2@eswincomputing.com>
- <20260109080859.1285-1-lizhi2@eswincomputing.com>
- <00b7b42f-2f9d-402a-82f0-21641ea894a1@lunn.ch>
- <308b676.2d03.19bb0caebed.Coremail.lizhi2@eswincomputing.com>
- <59cec617-0189-4dc3-bc3f-6346155a62ae@lunn.ch>
- <4e2a55e7.3662.19be8cb9c3c.Coremail.lizhi2@eswincomputing.com>
- <c5c0bfdb-316d-4796-afa0-f6f018ceb414@lunn.ch>
- <abf12a3f-9cdd-472d-a02e-af4da594b84f@gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1769162019; c=relaxed/simple;
+	bh=uSJz7k4dBpmctIzunb2dNqwFMbyJVjfDaoYCtoR4euY=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=r194crrkDd9XbGS9WfEds9k6YgB0fzQxCrFBI8u7YlBPnHSR9EFFxkkUkxgkM4zOboqfRyrXcUnuAdKpm7Tu2MZl3a8iRSCgmLsnfJ4T3+JX1JfxUTrPMGvqBCyCJiu7RjqweLza1H4n+WWPcg8PMQuKDUdB2Lr9DZ6c0f9cPJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CIJoNLJJ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CIJoNLJJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=N5WSxKFKRsvwX88PFN97TSKTmJ02N2jp7yQfWF2YU3o=; b=CIJoNLJJQhx98c0mm+Mr1w5opf
+	JUlRtt14okRyniFbSLpq1GxYDaIxJzYa9t2cMp72NpGZJnwUvfiEzxJz9KYsOMVMk3K5S2+nqh9BV
+	nQqDgPOFBh0Xhrehq6Cy5cuYgdFpW2G64txQE+kldSyvByrr89x7ESgmjuwhxTHg+ugoXMB4hBl4L
+	HJWrDA9fapTpokBf1p4syt4BNZBUCX/YnGrqO1ybKPhKa7eC+EFj/8uk1ZTY2+h5vXQA23q1jahVp
+	iSq8fy2vCBFRJuMQiYXVeTcj+sorZn8c11wEJ80zZcHhOUwwv/L4ucytXGHQ1C8TGldTmU4xYyige
+	fCmYPEqA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50558 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vjDr2-000000001aF-1xPf;
+	Fri, 23 Jan 2026 09:53:24 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vjDr1-00000005fQ3-2rcn;
+	Fri, 23 Jan 2026 09:53:23 +0000
+In-Reply-To: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
+References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH net-next v2 01/14] net: stmmac: qcom-ethqos: remove mac_base
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <29b8c4d2.3704.19bea44fe53.Coremail.lizhi2@eswincomputing.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:TAJkCgCn+2zcRHNpGxgFAA--.1620W
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/1tbiAQEQDGlyUQwdaAABsu
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vjDr1-00000005fQ3-2rcn@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 23 Jan 2026 09:53:23 +0000
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiQm8gR2FuIiA8Z2FuYm9p
-bmdAZ21haWwuY29tPgo+IOWPkemAgeaXtumXtDoyMDI2LTAxLTIzIDE1OjM5OjI5ICjmmJ/mnJ/k
-upQpCj4g5pS25Lu25Lq6OiAiQW5kcmV3IEx1bm4iIDxhbmRyZXdAbHVubi5jaD4sIOadjuW/lyA8
-bGl6aGkyQGVzd2luY29tcHV0aW5nLmNvbT4KPiDmioTpgIE6IGRldmljZXRyZWVAdmdlci5rZXJu
-ZWwub3JnLCBhbmRyZXcrbmV0ZGV2QGx1bm4uY2gsIGRhdmVtQGRhdmVtbG9mdC5uZXQsIGVkdW1h
-emV0QGdvb2dsZS5jb20sIGt1YmFAa2VybmVsLm9yZywgcm9iaEBrZXJuZWwub3JnLCBrcnprK2R0
-QGtlcm5lbC5vcmcsIGNvbm9yK2R0QGtlcm5lbC5vcmcsIG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcs
-IHBhYmVuaUByZWRoYXQuY29tLCBtY29xdWVsaW4uc3RtMzJAZ21haWwuY29tLCBhbGV4YW5kcmUu
-dG9yZ3VlQGZvc3Muc3QuY29tLCBybWsra2VybmVsQGFybWxpbnV4Lm9yZy51aywgbGludXgtc3Rt
-MzJAc3QtbWQtbWFpbG1hbi5zdG9ybXJlcGx5LmNvbSwgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5p
-bmZyYWRlYWQub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCBuaW5neXVAZXN3aW5j
-b21wdXRpbmcuY29tLCBsaW5taW5AZXN3aW5jb21wdXRpbmcuY29tLCBwaW5rZXNoLnZhZ2hlbGFA
-ZWluZm9jaGlwcy5jb20sIHdlaXNoYW5nanVhbkBlc3dpbmNvbXB1dGluZy5jb20KPiDkuLvpopg6
-IFJlOiBbUEFUQ0ggdjEgMS8yXSBkdC1iaW5kaW5nczogZXRoZXJuZXQ6IGVzd2luOiBhZGQgY2xv
-Y2sgc2FtcGxpbmcgY29udHJvbAo+IAo+IEhpIEFuZHJldywKPiAKPiBPbiAxLzIyLzI2IDE5OjE5
-LCBBbmRyZXcgTHVubiB3cm90ZToKPiA+Pj4gWW91IHNheSBpbnRlcm5hbC4gU28gdGhlIHNrZXcg
-aXMgZml4ZWQsIGl0IGlzIGEgcHJvcGVydHkgb2YgdGhlCj4gPj4+IHNpbGljb24/IElmIHNvLCB3
-aHkgYSBEVCBwcm9wZXJ0eT8gV2h5IG5vdCBqdXN0IGhhcmQgY29kZSBpdCBpbiB0aGUKPiA+Pj4g
-ZHJpdmVyPyBTaW5jZSBpdCBpcyBpbnRlcm5hbCwgZGlmZmVyZW50IGJvYXJkcyBzaG91bGQgbm90
-IG5lZWQgaXQgc2V0Cj4gPj4+IGRpZmZlcmVudGx5Pwo+ID4+Pgo+ID4+IFRoYW5rcyBmb3IgdGhl
-IHF1ZXN0aW9uLgo+ID4+Cj4gPj4gRUlDNzcwMCBoYXMgdHdvIEV0aGVybmV0IE1BQ3MuIE9ubHkg
-ZXRoMSBoYXMgdGhpcyBpbnRlcm5hbCBSWEMvUlhEIHNrZXcsCj4gPj4gZXRoMCBkb2VzIG5vdC4K
-PiA+Pgo+ID4+IFNvIHRoaXMgaXMgbm90IGEgY2hpcC13aWRlIGNvbnN0YW50IHRoYXQgY2FuIGJl
-IGhhcmRjb2RlZCBpbiB0aGUgZHJpdmVyLgo+ID4+IFdlIG5lZWQgYSB3YXkgdG8gZGlzdGluZ3Vp
-c2ggdGhlIHR3byBNQUMgaW5zdGFuY2VzLCB3aGljaCBpcyB3aHkgdGhpcyBpcwo+ID4+IGRlc2Ny
-aWJlZCBwZXItcG9ydCBpbiBEVFMuCj4gPiAKPiA+IEkgYXNzdW1lIHRoZSBhZGRyZXNzIG9mIHRo
-ZSBpbnRlcmZhY2UgaXMgZml4ZWQuIFNvIHlvdSBjYW4ganVzdCBrZXkKPiA+IG9mZiB0aGF0IHRv
-IGRpc3Rpbmd1aXNoIHRoZSB0d28gaW5zdGFuY2VzLgo+ID4gCj4gPiBTaW5jZSB0aGlzIGlzIGFu
-IGludGVybmFsIHByb3BlcnR5LCBub3QgYSBib2FyZCBwcm9wZXJ0eSwgaXQgaXMgbm90Cj4gPiBj
-bGVhciBpdCBhY3R1YWxseSBiZWxvbmdzIG9uIERULgo+ID4gCj4gPiAgICAgIEFuZHJldwo+IAo+
-IElNTywgdGhleSBzaG91bGQgYmUgaW4gRFQgdG8gcHJvdmlkZSBtYXhpbXVtIGZsZXhpYmlsaXR5
-LiBUaGUgU29DIC5kdHNpCj4gY2FuIHByb3ZpZGUgc29tZSBzYW5lIGRlZmF1bHRzLCBhbmQgdGhl
-IGJvYXJkIHZlbmRvciBjYW4gbGF0ZXIgb3ZlcnJpZGUKPiB0aGVtIGlmIHRoZSBtYWMvcGh5IHJl
-cXVpcmVzIGZ1cnRoZXIgdHVuaW5nLiBBcHBseWluZyBzdWNoIHR1bmluZyBieQo+IHRoZSBhZGRy
-ZXNzIG9mIE1BQyBzZWVtcyBtZXNzeSBhbmQgaXQgaGlkZXMgdGhlIHBhcmFtZXRlcnMgdXNlZCBi
-ZWhpbmQKPiBkcml2ZXIuIFRocm91Z2ggRFQsIGV2ZXJ5dGhpbmcgYmVjb21lcyByZWFsbHkgY2xl
-YXIuCj4gCj4gSSBhc3N1bWUgdGhpcyBpcyBub3QgdW5jb21tb246IEUuZy4sIHN0YXJmaXZlL2po
-NzExMDoKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyMzA3MTQxMDQ1MjEuMTg3NTEt
-My1zYW1pbi5ndW9Ac3RhcmZpdmV0ZWNoLmNvbS8KPiAKPiBCVFcsIG5vIG5lZWQgdG8gd29ycnkg
-YWJvdXQgYmFja3dhcmQgY29tcGF0LiBFU1dJTiBoYXNuJ3QgY2hlY2tlZC1pbiBhbnkKPiBEVCBm
-b3IgZXRoIHlldC4gQXMgeW91IGFuZCBSdXNzZWxsIHNhaWQsIHRoZXkgbmVlZCB0byBkbyBpdCwg
-cHJvbnRvLgo+IApZZXMsIHRoaXMgY2FuIGJlIGhhcmRjb2RlZCBmb3IgZXRoMSwgc2ltaWxhciB0
-byB3aGF0IGlzIGRvbmUgaW4KZHdtYWMtbG9vbmdzb24xLmMuCgpIb3dldmVyLCBjb25zaWRlcmlu
-ZyBFSUM3NzAyLCB3aGljaCBpbnRlZ3JhdGVzIHR3byBFSUM3NzAwIGRpZXMgYW5kIHRodXMKaGFz
-IGZvdXIgTUFDcyBpbiB0b3RhbCwgd2UgYmVsaWV2ZSBkZXNjcmliaW5nIHRoaXMgdmlhIERUUyBp
-cyBtb3JlCmFwcHJvcHJpYXRlLiBXZSBhcmUgY3VycmVudGx5IHdvcmtpbmcgb24gdXBzdHJlYW1p
-bmcgdGhlIERUUyBzdXBwb3J0IGZvcgpFSUM3NzAyLgoKV2l0aCB0aGUgRFQgYXBwcm9hY2gsIHRo
-ZSBpbnRlcm5hbCBSWEMvUlhEIHNrZXcgY2FuIGJlIGRlc2NyaWJlZCBleHBsaWNpdGx5CmZvciBn
-bWFjMSBhbmQgZ21hYzMsIHdpdGhvdXQgcmVxdWlyaW5nIGNoYW5nZXMgdG8gZHdtYWMtZWljNzcw
-MC5jIHdoZW4KYnJpbmdpbmcgdXAgRUlDNzcwMi4KCkFzIEJvIEdhbiBhbHNvIG1lbnRpb25lZCwg
-dGhlcmUgYXJlIHZlbmRvcnMgaGFuZGxpbmcgc2ltaWxhciBpbnRlcm5hbApxdWlya3MgdGhyb3Vn
-aCBEVCBjb25maWd1cmF0aW9uLgoKLS0KTGkgWmhpCg==
+In commit 9b443e58a896 ("net: stmmac: qcom-ethqos: remove MAC_CTRL_REG
+modification"), ethqos->mac_base is only written, never read. Let's
+remove it.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index 0826a7bd32ff..869f924f3cde 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -100,7 +100,6 @@ struct ethqos_emac_driver_data {
+ struct qcom_ethqos {
+ 	struct platform_device *pdev;
+ 	void __iomem *rgmii_base;
+-	void __iomem *mac_base;
+ 	int (*configure_func)(struct qcom_ethqos *ethqos, int speed);
+ 
+ 	unsigned int link_clk_rate;
+@@ -772,8 +771,6 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(ethqos->rgmii_base),
+ 				     "Failed to map rgmii resource\n");
+ 
+-	ethqos->mac_base = stmmac_res.addr;
+-
+ 	data = of_device_get_match_data(dev);
+ 	ethqos->por = data->por;
+ 	ethqos->num_por = data->num_por;
+-- 
+2.47.3
+
