@@ -1,140 +1,105 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDF73EBF31
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 20:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEE919992C
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 21:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769200878; cv=none; b=WY7kDoBLHZKov5o0BxYeVCgvAfM/MsZxZIFMWbSmlskC0yvj6CpHb0qTzdPOv9MWJQe7NRia1LalAwkYCSQeFQ5RtxEoLNXPqNMI6vkZtit0lTdTLxCTl0ScY6AB5v/q6uw88qIZzYfjzYFxAH66kBYeMsR2tjm9iVdleLwdMbg=
+	t=1769202287; cv=none; b=oniMZskxBW21B921yI5lk2Rk2kerhO/WIGmM6XhFIj3Eznda1i26Qn9zfCY7kr+rTWlQebtcoc3OklZH+6FRLyeAcwfdYc3h3VCKy0oCb5tj2uUPhzbDGh6WBplIfZOHhyL55tNcUGwYSVpnybPnTibaJQE0d4G62Ytn9jOsqtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769200878; c=relaxed/simple;
-	bh=Ge1BYLj4o1RylNM6YHics8YMRzeFye431Sj/cQyD8D4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bfZCLrSsOh3msdxY0PnTNqtIcKJuS8SH7uXoA+R/sCUEEnLcp67u655L3ebd7gHzh1kBbdBiygJpLHy82hh2XLFf7uBpH6nri9WSSFiByMytLVkdFs78lHavZpSkmDwyAzQUz/rJrLrr3FH+AMsY+aYvFcFEBRSAViWp67DeJFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--brianvv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CFHtDGzJ; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--brianvv.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CFHtDGzJ"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a79164b686so30866585ad.0
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 12:41:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769200875; x=1769805675; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AU44HUCEHUqwi5+mrhLfRciiivzSXDT+0k5KnWcApVg=;
-        b=CFHtDGzJBMFOJkHinpEliGOO4LgnVZjP22//lMaQJFJ78vF9xhx7Oq6sIO0H3hnglY
-         pOVixdEx+Gsi305edlKfY6t/86reqPGMhKLHH3YSnUre3wcgbLg+72ihOILBCx4eHZ8W
-         cyyiRQnIh0QR2rgW5nVChboxPylWF42FIYyvi0Wu/LwU1+Mm5qde2/DBBK/xvApPRjmO
-         fUNzy5aZesko+Fj5UNXcY/Up5Le7jRxfTa/5QZp0XsFEK/OtPEJvHbgBbrDwoOFaMj1o
-         I6kcXc5wkINoN6eMbxPzfgnV/oQ0awSCiZfzE6mUxybyvLgev+xej3cn0XplH4YuOl6o
-         jS6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769200875; x=1769805675;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AU44HUCEHUqwi5+mrhLfRciiivzSXDT+0k5KnWcApVg=;
-        b=iD3uZinrKfOAKzZhKUwWMFo+eCuNN5BCs4BsH8cH2jhwZCtuG0BD4sYbJqFIQUEQCO
-         ZENwzTdMZnq/ag3LjHso8s93h4iwjdovjP7jjeGfYh+ExIaI844fP5911wgYAtq8cFgS
-         CuskTmhhkeWKCLLYRwqEXAsGTat9piE7Jby8YXlKjoJEiDQwkBDosNKNMmsdgBjEQexc
-         IdvHkXWCwi7TrfxKjX7IhZIgq0UT8P13o1xzzheMxenxRzSxh0lEL1Ki8NQlPBuY2H1L
-         WBnmjUvQGhow3dUpVbX14I51avVdhzLH++uiyicmHuN+kGIYIPJXECuYhRHqHWFY664G
-         CL8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWpCZ6dTrtndUkG95nJ81rj7dT3QHnr85hIQKdMvvk4fow6TGPXrsaPKjWa5nzqifMtkgyscpA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBiAAL9a7y7F0VTMpcMs6diDBW8Fsgw8Yih63ilM1wR0pelL/9
-	raTe12TRQi2uBTFlXbWyd0J0suDVboeBJmZjQ11QpMLSHch4cTMUQyWxNYDiaVkcZpUuLXStl4f
-	/w/wjp0QNaA==
-X-Received: from pjzh2.prod.google.com ([2002:a17:90a:ea82:b0:34c:34ab:8fd9])
- (user=brianvv job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:a501:b0:29e:bf76:2d91
- with SMTP id d9443c01a7336-2a7fe741875mr26673385ad.42.1769200875444; Fri, 23
- Jan 2026 12:41:15 -0800 (PST)
-Date: Fri, 23 Jan 2026 20:40:58 +0000
+	s=arc-20240116; t=1769202287; c=relaxed/simple;
+	bh=uOw/tGhA18La+/CoA/KQTT87PQaemnKL4J5kioOYfjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c6hJIj7U3LGlU1uYU5Kb46Ua8VL5Sq42JtVwY2Cr4HPl8ReyUKT8IjVOOj2DnWTwxRXHs7jWf0pkgxOqhAvJ/7CfpYmvIU9oCf/3cQhOgKlXy6+60Qz03MbBfeHRx2c9PrU16w9s+0I95ThwUaWchANWK99NuTpZ1Qz330+3Kpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vjOKh-0005To-2t; Fri, 23 Jan 2026 22:04:43 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vjOKe-0029YU-0e;
+	Fri, 23 Jan 2026 22:04:39 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vjOKd-00B7BO-1B;
+	Fri, 23 Jan 2026 22:04:39 +0100
+Date: Fri, 23 Jan 2026 22:04:39 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org,
+	alexanderduyck@fb.com, alok.a.tiwari@oracle.com,
+	andrew+netdev@lunn.ch, andrew@lunn.ch, chuck.lever@oracle.com,
+	davem@davemloft.net, donald.hunter@gmail.com, edumazet@google.com,
+	gal@nvidia.com, horms@kernel.org, idosch@nvidia.com,
+	jacob.e.keller@intel.com, kernel-team@meta.com,
+	kory.maincent@bootlin.com, lee@trager.us, pabeni@redhat.com,
+	vadim.fedorenko@linux.dev, kernel@pengutronix.de
+Subject: Re: [PATCH net-next 0/3] net: ethtool: Track TX pause storm
+Message-ID: <aXPiZ8H-usRn1pcD@pengutronix.de>
+References: <20260122192158.428882-1-mohsin.bashr@gmail.com>
+ <aXNAjOjkCqOESf5y@pengutronix.de>
+ <aXNbTVF5KNz1yV-1@pengutronix.de>
+ <20260123104031.16d914e4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260123204058.651080-1-brianvv@google.com>
-Subject: [iwl-net PATCH] idpf: change IRQ naming to match netdev and ethtool
- queue numbering
-From: Brian Vazquez <brianvv@google.com>
-To: Brian Vazquez <brianvv.kernel@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	intel-wired-lan@lists.osuosl.org
-Cc: David Decotigny <decot@google.com>, Li Li <boolli@google.com>, 
-	Anjali Singhai <anjali.singhai@intel.com>, Sridhar Samudrala <sridhar.samudrala@intel.com>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	emil.s.tantilov@intel.com, Brian Vazquez <brianvv@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260123104031.16d914e4@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-The code uses the vidx for the IRQ name but that doesn't match ethtool
-reporting or netdev naming, this makes it hard to tune the device and
-associate queues with IRQs. Sequentially requesting irqs starting from
-'0' makes the output consistent.
+On Fri, Jan 23, 2026 at 10:40:31AM -0800, Jakub Kicinski wrote:
+> On Fri, 23 Jan 2026 12:28:13 +0100 Oleksij Rempel wrote:
+> > Here is a TL;DR summary of my questions regarding the pause storm logic
+> > :)
+> 
+> Eh, did you get AI to help write the full version? :) So much text :)
 
-Before:
+Yes, to reduce the text! Sorry, sometimes I have word diarrhea :D
 
-ethtool -L eth1 tx 1 combined 3
+> > - Should we standardize an "RX Watchdog" mechanism in the core instead of
+> >   or in addition to driver-specific stats?
+> 
+> Our primary use case is machine is hard-wedged. Either Linux crash, or
+> kexec died, or UEFI issue. So it must be the device that implements the
+> logic.
+> 
+> Florian was proposing a hook to auto-disable pause from the crash
+> notifier. It sounds like your use case is closer to that?
 
-grep . /proc/irq/*/*idpf*/../smp_affinity_list
-/proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-/proc/irq/68/idpf-eth1-TxRx-1/../smp_affinity_list:0
-/proc/irq/70/idpf-eth1-TxRx-3/../smp_affinity_list:1
-/proc/irq/71/idpf-eth1-TxRx-4/../smp_affinity_list:2
-/proc/irq/72/idpf-eth1-Tx-5/../smp_affinity_list:3
+It is valid use case - it will be nice to have it too.
 
-ethtool -S eth1 | grep -v ': 0'
-NIC statistics:
-     tx_q-0_pkts: 1002
-     tx_q-1_pkts: 2679
-     tx_q-2_pkts: 1113
-     tx_q-3_pkts: 1192 <----- tx_q-3 vs idpf-eth1-Tx-5
-     rx_q-0_pkts: 1143
-     rx_q-1_pkts: 3172
-     rx_q-2_pkts: 1074
+In my tests, I was able to trigger an Rx stall and a pause storm (if
+flow control is enabled), for example by partially disrupting the USB
+connection. Since this controller is used in medical devices, it will
+be good to detect these anomalies and attempt recovery.
 
-After:
+Sorry, here I want to hijack this discussion for my purpose :)
 
-ethtool -L eth1 tx 1 combined 3
+Since a pause storm is only a symptom of an Rx stall, should we have a
+common method to detect it? Is it even reasonably possible? In my cases,
+I tried to detect it by monitoring the level of the Rx queue, Rx HW
+counters, and Rx SW counters. But maybe I just have a blind spot and
+this is a naive way to detect things.
 
-grep . /proc/irq/*/*idpf*/../smp_affinity_list
-
-/proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-/proc/irq/68/idpf-eth1-TxRx-0/../smp_affinity_list:0
-/proc/irq/70/idpf-eth1-TxRx-1/../smp_affinity_list:1
-/proc/irq/71/idpf-eth1-TxRx-2/../smp_affinity_list:2
-/proc/irq/72/idpf-eth1-Tx-3/../smp_affinity_list:3
-
-ethtool -S eth1 | grep -v ': 0'
-NIC statistics:
-     tx_q-0_pkts: 118
-     tx_q-1_pkts: 134
-     tx_q-2_pkts: 228
-     tx_q-3_pkts: 138 <--- tx_q-3 matches idpf-eth1-Tx-3
-     rx_q-0_pkts: 111
-     rx_q-1_pkts: 366
-     rx_q-2_pkts: 120
-
-Signed-off-by: Brian Vazquez <brianvv@google.com>
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index c2a1fe3c79ec..c1f8dfc570ce 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -4093,7 +4093,7 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport,
- 			continue;
- 
- 		name = kasprintf(GFP_KERNEL, "%s-%s-%s-%d", drv_name, if_name,
--				 vec_name, vidx);
-+				 vec_name, vector);
- 
- 		err = request_irq(irq_num, idpf_vport_intr_clean_queues, 0,
- 				  name, q_vector);
 -- 
-2.52.0.457.g6b5491de43-goog
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
