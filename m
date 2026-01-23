@@ -1,248 +1,375 @@
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DDD337692
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 06:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE2F27874F
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 06:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769150570; cv=none; b=jtN3ZvkHGmgd087sWF2Nsj+d7mUJINrKlF+23afr8P1WrgC2PVMr8DoBgJDkbTiLJmTM8nOD8AT/mq8VUN8Cab47733Nxy4kDZrHKzy3Dw2Gix0CnNZ4SqbWRNHSawtvDAVh9srdppRQlj4VRQAiEml8dwkl4kRRstYSCkTnEZo=
+	t=1769151027; cv=none; b=Nsw1M6+RkLVkyWDaZyaVsg3lMnd9bQMciwwRhIxv37uEcPXJyWq4H1rJbjK/O5TW3VXuO4r2TWH4j1ZXK6618UpCXfOkvE8L6d0hYc46cxoocV8ThiS9X1ihSSZwUzPv26MnWqAU58/Bp9ft1A/1zo7ECtVDNaYDqrFRNrCKonI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769150570; c=relaxed/simple;
-	bh=anSJldvMGDdKtmD4mqjHGwl+/ENgn5/LFgwWaAXUyCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnu0BH7TffQABhusjHDt0rsu8p8ehrwhcgKyjoe+MtiGlCSXyRFmF1rMbEDciy5JWYFZN9FxCjWEzuIg1OsWsDgAiOpXgUkz71W8SZlBAzY8ADlpcJzdPM/W/OgipkLSZ3CoVf8QtBQ7mmmaByegeHgbJYajbACnxrgK0O89X+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayVwVzzD; arc=none smtp.client-ip=74.125.82.65
+	s=arc-20240116; t=1769151027; c=relaxed/simple;
+	bh=Cjq501TqzlpFBUsSmvLVd6/SvO21X7q3Hg3RhKecv6Y=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=e57GRAYKbFuC8bvsla5sNtCuvuLsqYKWfF8Cka0gc2FGpvLaNYBy1orjW6BNopUn1v3y9g/Fi2pJg3HFRxvIiyKn4toaIwCXV96nIZ8ck1IHO6sGN1oDHxmrvVsZsIEP+QdIbFzC6xQNCATRtWl3VO9RcV17D1JLYzqetQqfNoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2u1kd+Q; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayVwVzzD"
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-1233b953bebso4925215c88.1
-        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 22:42:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2u1kd+Q"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47fedb7c68dso18083555e9.2
+        for <netdev@vger.kernel.org>; Thu, 22 Jan 2026 22:50:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769150568; x=1769755368; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769151023; x=1769755823; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:from:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RurLsspuwixyatIbkQyVE9ShmUOAQwG6MPVdwLrORJU=;
-        b=ayVwVzzD7qVwDmhoKZagt5cXSF8ZVt2WMlWAYJbRXRoCZ3nyTkfrGsObSR7ivipIKp
-         GiJs5KnV5js20Z2GNJGu10/csDzIsLORzLnHom/zTJgyMcwnMB7d5K3iwsfmz85BDtua
-         EeMHe/HK3IdHSkI62LfIsuo/gGuZ7r8FYLtkzyDYZzcKi6ueLE2GadS86orTJnh4H3XA
-         9R+iE7QwlCkGy2hHyAKOppwWf/G+skuYd/KFjVYM+NsxiL+JCJgVCgtw79YL571xokSN
-         Oy6LUbDXmDnVp/jT+wRT7jxMijcIg+bXPlzIerKYoj3eoiz9UfgEt3d4C/uMA0jHe/X0
-         TgoA==
+        bh=6spVyNehIjk6wRL49yQ2CMhgFp4/M9ZJ4dRKB7aua58=;
+        b=C2u1kd+Qs/5mkFSeEZpwIGV8MH1YjdIIZcYYhw8r80fqwqLt29OILRaP81M7N/JmZi
+         tr1DfqdfRS6oc2PxhukGyLinwBpg8qLXoZne/7gp0RO4/po6mFXf2eSI7H6WjLoUXlCo
+         P1wOL43Z/qP0dKf6yZaFkgO5lyT+jTRq2qjMpEwO/2/vhATXaZdnVFrfFCzsQoXOdo9s
+         pOlI17hsI5ld2wMqGylnK1ILfyBYsDhqLU7g4hSyOJc8D3YQBETWoDlcIAa6w/R1fDLE
+         4sbtWlnIaT4+Qj2WJ0irgfU30u2nKixcVNsWOjn0VTcP98cLgZ35LVNxJlYWQu5jJvSq
+         JREg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769150568; x=1769755368;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RurLsspuwixyatIbkQyVE9ShmUOAQwG6MPVdwLrORJU=;
-        b=d8sRwpPQ5lgDul8juw0ssDZQxJBDkRIexUOjEcabaFk4wRdl1z/ee/VjsBXVZOkD8F
-         I1v4oTxFVpySYS7Jr4RsEa1flyHrkeZ4DyjHP7/g2ygTj0SejA4uGhs5O3E5bzVSAMID
-         AoPrYu2rtCh2a8mW+bGhkL8dpRMRiwewFHb6k5xxpQMU6H6NdDVkYC7nB21XClDm2Js3
-         WGuUqeKdbqEoV2YprM0UAVZ39DZWulAAytaiyfM4X0hR9JlikKOGPaZD/aFyuTniKxjB
-         ayljNpkhiILVIxiXc0hL+DGlcvK2KFe6wGj5j+mwvw/MpmU5yMnPA+z4IBk/gvp+qqdn
-         t5Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdBAfrYT5dM1tiZ5IxHN/mZVhpn+QjD1vGD3400K2y5NatolQy6I6htbyp9KGiS9OGUFjo6R8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1Q9VJRgXeM8c+36fg+GrioTfnOiidVFRREns6u1kZzF5/fbLQ
-	8isrBtnVraRAQKF64M2NuZDbaU8/NY4vBOpHS34grYJMS1yreRxYqk4T
-X-Gm-Gg: AZuq6aICwoXB3u/m3f3D7iw6uFTt/IvLnexjytQUPF8Z/stWsG37eJsc1LZaA+8xEcu
-	6BAW8w/fuVaArAdeUvLDXoD9+MAHoFuk9R46d2cIEvVdcLMWE+WlHGsD6iE3dKvYewcCJ7T7hea
-	NCXCxNvu9VI3sGSaW0jAhJf96u6zBPCarLxHC4UiIKGNcwUgXYkaOzPXpjrVobS/Na6Y2XyjIVG
-	WPCTp6vWb+QfOn7zY/iNzAoAWKU59QvUUnynyMxbEB63Tl82uCL+EgznWg19l1NnnW6VBUH+b+a
-	etzQkWQygPKpQSBZLPZbPAgXZ4QUriLHXilbwC1twGPivqxzDeeo3wyKswExcKqA/EfS6hX358s
-	uaie13DYEse8y0CLW3XE4sjRpiAQJB6KirqW3wXuYwjBFnx1aB8mSmcMhASTbE5r0I8LcLNpHpS
-	wM5O8=
-X-Received: by 2002:a05:7022:102:b0:119:e56b:c74b with SMTP id a92af1059eb24-1247dbb463emr967983c88.16.1769150567825;
-        Thu, 22 Jan 2026 22:42:47 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247dba0135sm3130527c88.17.2026.01.22.22.42.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 22:42:47 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: vbabka@suse.cz
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	edumazet@google.com,
-	hannes@cmpxchg.org,
-	jackmanb@google.com,
-	jis1@chinatelecom.cn,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liyi1@chinatelecom.cn,
-	mhocko@suse.com,
-	netdev@vger.kernel.org,
-	realwujing@gmail.com,
-	rppt@kernel.org,
-	sunshx@chinatelecom.cn,
-	surenb@google.com,
-	wangh13@chinatelecom.cn,
-	weixugc@google.com,
-	willy@infradead.org,
-	yuanql9@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn,
-	zhangzq20@chinatelecom.cn,
-	ziy@nvidia.com
-Subject: [PATCH v7] mm/page_alloc: boost watermarks on atomic allocation failure
-Date: Fri, 23 Jan 2026 01:42:30 -0500
-Message-ID: <20260123064231.250767-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <dfdd0648-a7da-4e8e-8781-cf094da4844f@suse.cz>
-References: <dfdd0648-a7da-4e8e-8781-cf094da4844f@suse.cz>
+        d=1e100.net; s=20230601; t=1769151023; x=1769755823;
+        h=content-transfer-encoding:cc:to:subject:from:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6spVyNehIjk6wRL49yQ2CMhgFp4/M9ZJ4dRKB7aua58=;
+        b=YmysPtKSz15k3Vqc6I2Yhi0N5/+5lNHXFYxb/glsrQBVryQzhlY0ggrObPYOrPIgux
+         T+/sLpjUvPZFmP3I1Z4/P7cX9a9Gk7pKhRKDGccGX8vrrjth1m70fsBrIkh3YYBNKuHf
+         NTeMjYywe0Z33U1S0n5r8dazjOuN3VzW5E499xy5VbpjtMdQxiVnx008agZQwHIQ20Dj
+         xgwwwENX3+QL2HTRZ222Sjl3C7xKYawxIrf4WDJfXJ5wpqA5StO9ohuKUpvhOLK28Lzx
+         A86UxUe+uBXX9HyGrHsn3rphqINOAytfegE+MM8zLkNkSVOedX+hRN9UMZ/S40xgeV5j
+         L0pQ==
+X-Gm-Message-State: AOJu0YymspeqM/cFmGo+wNw49Kf393e7ZcFIS7QOVXEWCeLWVkuNIWrU
+	SpMrC3lTJO3z7+1SvN5qUNIdnTok8L8fNaQbPNG3pobUlgdxSdof0fr9
+X-Gm-Gg: AZuq6aIAvH4Hih0r98bAUA1c5EfHA9r9vaTxTn7phcRW7NQrUm+YFCOVwmFOd9ZhKXl
+	9ucFrQ0ZPYDh0wDIGiYq4L1QotfdTM6z4Fe2Hl71ih7To46cyDf7V8/J9L69kaBx38FBL6UMF96
+	m6lDDnSynRVxhRE3t061BzPzQm67PFYYkJFXEofibyBubu1dltE1okQb/OsOZIJgI1Cpt1sWhMS
+	HiXBH90/M96EJ5CntsFz1+dZMK1KGkfcVQ6Oq7W+2czUDxtD2hbXlaVokXVFv2wzWxNAfqocvx0
+	GZ93OragsOPGFYookBLDLnNmWKW9Mo0UJx2Gwg7eGgMlc8HMMcMzEmmHAsVCIde+88L8IlWgiqb
+	5+47O+HnZpcOsZIdGLYBIQkN9aXpc9Iz+xmVFqj0TJKzGMbSOo95v3DyDmkxE4mdNcx1Rp/U/YU
+	Fmu9BL8mujqmxgw3auCGvtdNuWatIHv22cxO5CI1VoGnnu8DfUVuPmAm1tbkKvdZoB8UsDefEcf
+	ydE+h6f0L1rgMIgJYyPmvJ4qkDb6bZwpmqEtXXdz3INOoNvibSxRA==
+X-Received: by 2002:a05:600c:3f0f:b0:477:73e9:dbe7 with SMTP id 5b1f17b1804b1-480512676fcmr5302075e9.35.1769151023314;
+        Thu, 22 Jan 2026 22:50:23 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f45:2d00:e509:e5ce:fa2e:3b01? (p200300ea8f452d00e509e5cefa2e3b01.dip0.t-ipconnect.de. [2003:ea:8f45:2d00:e509:e5ce:fa2e:3b01])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470bfe88sm110331655e9.11.2026.01.22.22.50.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 22:50:22 -0800 (PST)
+Message-ID: <800595c6-496a-443e-92e3-37251195e610@gmail.com>
+Date: Fri, 23 Jan 2026 07:50:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next] net: phy: make PHY fixup support always built-in
+To: Andrew Lunn <andrew@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-pressure as they cannot enter direct reclaim. This patch introduces a
-watermark boost mechanism to mitigate this issue.
+PHY fixup registration is used from platform code in init phase only.
+Let's move the PHY fixup code from the modular part of phylib to the
+always built-in part of phylib. This allows to annotate the fixup
+registration as __init.
 
-When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-watermark_boost is increased under zone->lock protection. This triggers
-kswapd to proactively reclaim memory, creating a safety buffer for
-future atomic allocations. A 1-second debounce timer prevents excessive
-boosts during traffic bursts.
+phy_needs_fixup() and phy_scan_fixups() wouldn't have to be moved to
+the built-in part of phylib. But doing so allows to fully factor out
+fixup support into its own source code file, and make struct
+phy_fixup and phy_fixup_list strictly private to phy_fixup.c.
 
-This approach reuses existing watermark_boost infrastructure with
-minimal overhead and proper locking to ensure thread safety.
+phy_scan_fixups() is used after init phase only, then phy_fixup_list
+is read-only. So we don't need the mutex when accessing the list.
+Also when registering PHY fixups the mutex isn't needed, because
+fixup registration is done sequentially from platform init code.
+Actually there is only one platform with more than one fixup.
 
-Allocation failure logs:
-[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-[38535649.655523] warn_alloc: 59 callbacks suppressed
-[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
-
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
-v7:
-  - Use local variable for boost_amount to improve code readability
-  - Add zone->lock protection in boost_zones_for_atomic()
-  - Add lockdep assertion in boost_watermark() to prevent locking mistakes
-  - Remove redundant boost call at fail label due to 1-second debounce
-v6:
-  - Replace magic number ">> 10" with ATOMIC_BOOST_SCALE_SHIFT define
-  - Add documentation explaining 0.1% zone size boost rationale
-v5:
-  - Simplify to use native boost_watermark() instead of custom logic
-v4:
-  - Add watermark_scale_boost and gradual decay via balance_pgdat
-v3:
-  - Move debounce timer to per-zone; optimize zone selection
-v2:
-  - Add debounce logic and zone-proportional boosting
-v1:
-  - Initial: boost min_free_kbytes on GFP_ATOMIC failure
+ drivers/net/phy/Makefile          |   2 +-
+ drivers/net/phy/phy_device.c      |  90 --------------------------
+ drivers/net/phy/phy_fixup.c       | 101 ++++++++++++++++++++++++++++++
+ drivers/net/phy/phylib-internal.h |   1 +
+ include/linux/phy.h               |   8 +--
+ 5 files changed, 107 insertions(+), 95 deletions(-)
+ create mode 100644 drivers/net/phy/phy_fixup.c
 
- include/linux/mmzone.h |  1 +
- mm/page_alloc.c        | 46 ++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 45 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 75ef7c9f9307..8e37e4e6765b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -882,6 +882,7 @@ struct zone {
- 	/* zone watermarks, access with *_wmark_pages(zone) macros */
- 	unsigned long _watermark[NR_WMARK];
- 	unsigned long watermark_boost;
-+	unsigned long last_boost_jiffies;
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 3a34917adea..52bbb441e87 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -8,7 +8,7 @@ mdio-bus-y			+= mdio_bus.o mdio_device.o
  
- 	unsigned long nr_reserved_highatomic;
- 	unsigned long nr_free_highatomic;
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c380f063e8b7..94168571cc38 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
- static void __free_pages_ok(struct page *page, unsigned int order,
- 			    fpi_t fpi_flags);
+ ifdef CONFIG_PHYLIB
+ # built-in whenever PHYLIB is built-in or module
+-obj-y				+= stubs.o
++obj-y				+= stubs.o phy_fixup.o
+ endif
  
-+/*
-+ * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-+ * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-+ * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-+ */
-+#define ATOMIC_BOOST_SCALE_SHIFT 10
-+
- /*
-  * results with 256, 32 in the lowmem_reserve sysctl:
-  *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-@@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
- static inline bool boost_watermark(struct zone *zone)
+ libphy-$(CONFIG_SWPHY)		+= swphy.o
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index f624218bf36..7dd73a11f86 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -49,14 +49,6 @@ MODULE_DESCRIPTION("PHY library");
+ MODULE_AUTHOR("Andy Fleming");
+ MODULE_LICENSE("GPL");
+ 
+-struct phy_fixup {
+-	struct list_head list;
+-	char bus_id[MII_BUS_ID_SIZE + 3];
+-	u32 phy_uid;
+-	u32 phy_uid_mask;
+-	int (*run)(struct phy_device *phydev);
+-};
+-
+ static struct phy_driver genphy_c45_driver = {
+ 	.phy_id         = 0xffffffff,
+ 	.phy_id_mask    = 0xffffffff,
+@@ -237,9 +229,6 @@ static void phy_mdio_device_remove(struct mdio_device *mdiodev)
+ 
+ static struct phy_driver genphy_driver;
+ 
+-static LIST_HEAD(phy_fixup_list);
+-static DEFINE_MUTEX(phy_fixup_lock);
+-
+ static bool phy_drv_wol_enabled(struct phy_device *phydev)
  {
- 	unsigned long max_boost;
-+	unsigned long boost_amount;
+ 	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
+@@ -427,85 +416,6 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(mdio_bus_phy_pm_ops, mdio_bus_phy_suspend,
+ 			 mdio_bus_phy_resume);
+ 
+-/**
+- * phy_register_fixup - creates a new phy_fixup and adds it to the list
+- * @bus_id: A string which matches phydev->mdio.dev.bus_id (or NULL)
+- * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
+- * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
+- *	comparison (or 0 to disable id-based matching)
+- * @run: The actual code to be run when a matching PHY is found
+- */
+-static int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+-			      int (*run)(struct phy_device *))
+-{
+-	struct phy_fixup *fixup = kzalloc(sizeof(*fixup), GFP_KERNEL);
+-
+-	if (!fixup)
+-		return -ENOMEM;
+-
+-	if (bus_id)
+-		strscpy(fixup->bus_id, bus_id, sizeof(fixup->bus_id));
+-	fixup->phy_uid = phy_uid;
+-	fixup->phy_uid_mask = phy_uid_mask;
+-	fixup->run = run;
+-
+-	mutex_lock(&phy_fixup_lock);
+-	list_add_tail(&fixup->list, &phy_fixup_list);
+-	mutex_unlock(&phy_fixup_lock);
+-
+-	return 0;
+-}
+-
+-/* Registers a fixup to be run on any PHY with the UID in phy_uid */
+-int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+-			       int (*run)(struct phy_device *))
+-{
+-	return phy_register_fixup(NULL, phy_uid, phy_uid_mask, run);
+-}
+-EXPORT_SYMBOL(phy_register_fixup_for_uid);
+-
+-/* Registers a fixup to be run on the PHY with id string bus_id */
+-int phy_register_fixup_for_id(const char *bus_id,
+-			      int (*run)(struct phy_device *))
+-{
+-	return phy_register_fixup(bus_id, 0, 0, run);
+-}
+-EXPORT_SYMBOL(phy_register_fixup_for_id);
+-
+-static bool phy_needs_fixup(struct phy_device *phydev, struct phy_fixup *fixup)
+-{
+-	if (!strcmp(fixup->bus_id, phydev_name(phydev)))
+-		return true;
+-
+-	if (fixup->phy_uid_mask &&
+-	    phy_id_compare(phydev->phy_id, fixup->phy_uid, fixup->phy_uid_mask))
+-		return true;
+-
+-	return false;
+-}
+-
+-/* Runs any matching fixups for this phydev */
+-static int phy_scan_fixups(struct phy_device *phydev)
+-{
+-	struct phy_fixup *fixup;
+-
+-	mutex_lock(&phy_fixup_lock);
+-	list_for_each_entry(fixup, &phy_fixup_list, list) {
+-		if (phy_needs_fixup(phydev, fixup)) {
+-			int err = fixup->run(phydev);
+-
+-			if (err < 0) {
+-				mutex_unlock(&phy_fixup_lock);
+-				return err;
+-			}
+-			phydev->has_fixups = true;
+-		}
+-	}
+-	mutex_unlock(&phy_fixup_lock);
+-
+-	return 0;
+-}
+-
+ /**
+  * genphy_match_phy_device - match a PHY device with a PHY driver
+  * @phydev: target phy_device struct
+diff --git a/drivers/net/phy/phy_fixup.c b/drivers/net/phy/phy_fixup.c
+new file mode 100644
+index 00000000000..ace78512686
+--- /dev/null
++++ b/drivers/net/phy/phy_fixup.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * PHY fixup support
++ */
 +
-+	lockdep_assert_held(&zone->lock);
- 
- 	if (!watermark_boost_factor)
- 		return false;
-@@ -2189,12 +2199,40 @@ static inline bool boost_watermark(struct zone *zone)
- 
- 	max_boost = max(pageblock_nr_pages, max_boost);
- 
--	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
--		max_boost);
-+	boost_amount = max(pageblock_nr_pages,
-+			   zone_managed_pages(zone) >> ATOMIC_BOOST_SCALE_SHIFT);
-+	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
-+				    max_boost);
- 
- 	return true;
- }
- 
-+static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
++#include <linux/list.h>
++#include <linux/phy.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++
++#include "phylib-internal.h"
++
++static struct list_head phy_fixup_list __ro_after_init =
++	LIST_HEAD_INIT(phy_fixup_list);
++
++struct phy_fixup {
++	struct list_head list;
++	char bus_id[MII_BUS_ID_SIZE + 3];
++	u32 phy_uid;
++	u32 phy_uid_mask;
++	int (*run)(struct phy_device *phydev);
++};
++
++/**
++ * phy_register_fixup - creates a new phy_fixup and adds it to the list
++ * @bus_id: A string which matches phydev->mdio.dev.bus_id (or PHY_ANY_ID)
++ * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
++ *	It can also be PHY_ANY_UID
++ * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
++ *	comparison
++ * @run: The actual code to be run when a matching PHY is found
++ */
++static int __init phy_register_fixup(const char *bus_id, u32 phy_uid,
++				     u32 phy_uid_mask,
++				     int (*run)(struct phy_device *))
 +{
-+	struct zoneref *z;
-+	struct zone *zone;
-+	unsigned long now = jiffies;
-+	bool should_wake;
++	struct phy_fixup *fixup = kzalloc(sizeof(*fixup), GFP_KERNEL);
 +
-+	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
-+		/* Rate-limit boosts to once per second per zone */
-+		if (time_after(now, zone->last_boost_jiffies + HZ)) {
-+			zone->last_boost_jiffies = now;
++	if (!fixup)
++		return -ENOMEM;
 +
-+			/* Modify watermark under lock, wake kswapd outside */
-+			spin_lock(&zone->lock);
-+			should_wake = boost_watermark(zone);
-+			spin_unlock(&zone->lock);
++	if (bus_id)
++		strscpy(fixup->bus_id, bus_id, sizeof(fixup->bus_id));
++	fixup->phy_uid = phy_uid;
++	fixup->phy_uid_mask = phy_uid_mask;
++	fixup->run = run;
 +
-+			if (should_wake)
-+				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++	list_add_tail(&fixup->list, &phy_fixup_list);
 +
-+			/* Boost only the preferred zone */
-+			break;
-+		}
-+	}
++	return 0;
 +}
 +
- /*
-  * When we are falling back to another migratetype during allocation, should we
-  * try to claim an entire block to satisfy further allocations, instead of
-@@ -4742,6 +4780,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	if (page)
- 		goto got_pg;
- 
-+	/* Boost watermarks for atomic requests entering slowpath */
-+	if ((gfp_mask & GFP_ATOMIC) && order == 0)
-+		boost_zones_for_atomic(ac, gfp_mask);
++/* Registers a fixup to be run on any PHY with the UID in phy_uid */
++int __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
++				      int (*run)(struct phy_device *))
++{
++	return phy_register_fixup(NULL, phy_uid, phy_uid_mask, run);
++}
 +
- 	/*
- 	 * For costly allocations, try direct compaction first, as it's likely
- 	 * that we have enough base pages and don't need to reclaim. For non-
++/* Registers a fixup to be run on the PHY with id string bus_id */
++int __init phy_register_fixup_for_id(const char *bus_id,
++				     int (*run)(struct phy_device *))
++{
++	return phy_register_fixup(bus_id, 0, 0, run);
++}
++
++static bool phy_needs_fixup(struct phy_device *phydev, struct phy_fixup *fixup)
++{
++	if (!strcmp(fixup->bus_id, phydev_name(phydev)))
++		return true;
++
++	if (fixup->phy_uid_mask &&
++	    phy_id_compare(phydev->phy_id, fixup->phy_uid, fixup->phy_uid_mask))
++		return true;
++
++	return false;
++}
++
++/**
++ * phy_scan_fixups - runs any matching fixups for this phydev
++ * @phydev: the phydev to search and run fixups for
++ * Returns: 0 or an errno
++ */
++int phy_scan_fixups(struct phy_device *phydev)
++{
++	struct phy_fixup *fixup;
++
++	list_for_each_entry(fixup, &phy_fixup_list, list) {
++		if (phy_needs_fixup(phydev, fixup)) {
++			int err = fixup->run(phydev);
++
++			if (err < 0)
++				return err;
++
++			phydev->has_fixups = true;
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(phy_scan_fixups);
+diff --git a/drivers/net/phy/phylib-internal.h b/drivers/net/phy/phylib-internal.h
+index dc9592c6bb8..ca3794ffe04 100644
+--- a/drivers/net/phy/phylib-internal.h
++++ b/drivers/net/phy/phylib-internal.h
+@@ -19,6 +19,7 @@ void of_set_phy_eee_broken(struct phy_device *phydev);
+ void of_set_phy_timing_role(struct phy_device *phydev);
+ int phy_speed_down_core(struct phy_device *phydev);
+ void phy_check_downshift(struct phy_device *phydev);
++int phy_scan_fixups(struct phy_device *phydev);
+ 
+ int genphy_c45_read_eee_adv(struct phy_device *phydev, unsigned long *adv);
+ 
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 5972f19af16..ec09159e546 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2400,10 +2400,10 @@ int phy_get_mac_termination(struct phy_device *phydev, struct device *dev,
+ void phy_resolve_pause(unsigned long *local_adv, unsigned long *partner_adv,
+ 		       bool *tx_pause, bool *rx_pause);
+ 
+-int phy_register_fixup_for_id(const char *bus_id,
+-			      int (*run)(struct phy_device *));
+-int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+-			       int (*run)(struct phy_device *));
++int __init phy_register_fixup_for_id(const char *bus_id,
++				     int (*run)(struct phy_device *));
++int __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
++				      int (*run)(struct phy_device *));
+ 
+ int phy_eee_tx_clock_stop_capable(struct phy_device *phydev);
+ int phy_eee_rx_clock_stop(struct phy_device *phydev, bool clk_stop_enable);
 -- 
-2.51.0
+2.52.0
 
