@@ -1,133 +1,142 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847AA158538
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 09:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769159340; cv=none; b=lyTk32LtBfS6kAO28fkbNHzuAK++QB+uiUJFvxEK1ej4UMLZ9iyvmmbffJAmWJffgwz0+yvY2czZJhZ97659/8CPkM4XFUicUI39sNENUCy3aUp9FrBugmLy/ZTwWO6s4xCQMfB+Wt6JEZDhFWhCmRX+5J2vD9B7QvpugYJrCK4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769159340; c=relaxed/simple;
-	bh=cjQOg4C2o7wgseI4T2MXCesmRs7FWxyO4kIQ2YIO1QU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ld+8hnd/0wc8SfI63Gc7DcS7LfG1lqu09fKow42kqR2gV9xY9u8LQrNZjE8zag/caNjZBBUojjZmqZyf2g5OJ6fVnHpIm7Zqqhl/ANbOU1+iDpfTmwyX8jOFYYj/iuZoeaW+pTZ5039+s9FyfVLCKriS1OVBjRZAGIcSYC5cMEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dql9vgWJ; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DBB3043BD
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 09:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769159584; cv=pass; b=jX6Ls/Uh2lTWQmAISC37/ItriEZYvIu8Ing36tZa7CD8lSfKi6D0lyyLXDMf2j/2JXG/y8PGaBAo8X0NXMoMw85ID6oontrKFczrTYRLPaFKj6GrM+k8GjnnmtCE74kdROuOo+otxoyv1J376Y0sKxr+EW0+PK72LwtzJwiC/BY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769159584; c=relaxed/simple;
+	bh=jxa9yd7FMnAxbFMU15T6utvhMUQJyHMWHQUBlMgYKn0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N03phNgbdGEY9AB/L6R+Hp4PJnwIJ+p95BhSDhcTWQfMnB4E8PD/EICAfKDR21w4xyf1nazC7Uh6evFffc/gXJshXdt9L4Gb/LCm55ffGvTRBTatyoky8dyCjdVQjlbIB2qdE3pfjAs8Jeq2453BzKcpIdk/s8zA4YkDXUufatA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=u-n.cz; spf=pass smtp.mailfrom=u-n.cz; dkim=pass (1024-bit key) header.d=u-n.cz header.i=@u-n.cz header.b=IHphi0KM; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=u-n.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u-n.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dql9vgWJ"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c6a0702b86so217476185a.0
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 01:08:59 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=u-n.cz header.i=@u-n.cz header.b="IHphi0KM"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-65813e3bdaaso3061145a12.1
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 01:13:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769159580; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OIZFmJIz2qpbTFNQ9G6QuwhQV82cWa0Rh3LvxgheRrYN30+y8od5ZjsuxgDakX8OEG
+         g8HFKquujcoqtGKwYGpHxl0KJX0WbWGocVJcJ6GK+s94N8jQJ4uc8GhYhYlgQiZT/Zgk
+         86GqyHuatlWT95n4HGOHeSA5mLchxPHsc+xAHUunSFDKYI2iCKkPWmwkgHHW539LDM39
+         Uuh8u8qT0NCMvbEwL4lnlKKy6aRyQ7X2KlCJMtLbmaW+uV6bvJgV1hw/1OXR+wR3RmkP
+         UmFNOvDB4Rf1DDWZz5YP3qW4PCfGoxQ2x+NP0bSLxn2PknfLcm+/JOmP6rLaQITSiRvt
+         lTOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jxa9yd7FMnAxbFMU15T6utvhMUQJyHMWHQUBlMgYKn0=;
+        fh=L+ALsM/XySKlV4QZhnT0KshdmI4K4+P0fAGid1SFYjo=;
+        b=GjKMGpnc/dDUetiKhvsx/wbCu9sJxgAU6TnLuV/xt+7e4nV7W8XZkU0nr17IRvqwH6
+         IaEmVoKn3Fxoy+glrZDVQDnj77dVPnRqcm210swFVtPVxCBJ8HxgJEIScVn8wbF5AKOY
+         4H526h/qvZ0Hl+rs4JIBvpiPYCdtd4Kq6rqG0mtOZSU2FO+iR8SoXvZcu1o1tHNTwg5+
+         iVF1qC1gjo90UZzRXubN4NTShU7I1JnRwVRBQqRrjrI1ewj0AH/WsqPUr8QHBS1+LkQw
+         tkfaFKSH4X8I3QZkGgqKujOvX5vxQ99UZB1XgbZA4BJRn1vl7jjhGZTHTK/NM6aW2+pU
+         asdQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769159338; x=1769764138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VM0ACAz3JWhvPAFTH54SdYRNt7hzUR2mksXU4gkAt4k=;
-        b=dql9vgWJGdUUIPjUYT2CShYv/Z+7Hg7iYUI77rpzX6Fmh9m1+PVrbRM0v0sXqVmwWv
-         Y1qd0EWQvN//kJg3YZEAdLnU9F3796ib5bPm0nAR7alMIpa7ngJAOcg+WH1OZsPu+WCc
-         97iI9Gbh5w2YnyuWlcitzDaTl+A3AoPiuo3ZTNmkyA9dkResn84TdSLIGU3kS0ko3nRE
-         foeuq5YdPrfZQEk6noavWLZ0fS+nBUjHRgMlHCGCZVMGuGXTjLyoMIZM11flTu43rL2l
-         BCorR5mY39NMipkhmQK4H7vhwZUjAlQFJv4T+EFNASwCiRTPXgWTXmo9DSLwT+Nf+O3b
-         w8mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769159338; x=1769764138;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=u-n.cz; s=google; t=1769159580; x=1769764380; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VM0ACAz3JWhvPAFTH54SdYRNt7hzUR2mksXU4gkAt4k=;
-        b=ZxJaVjSEecl+oq+Q2r4p+D/+r9ZoY+PjJI31oBXmXkTNRA47oH98phz+8gbE+w46TY
-         /gW7BhD0eboSZBVqsHlba5hXv34PVCGNFe9vSomdCj2nRNQffH7VPST85Ua8c51VicL7
-         KpDa7GJ0AOhKd6VoIVzEbdQ5OoWRECBR+KUgNrKLVWxdugPdc22+aZXUqNij8rdZ8eIz
-         kjr8Rkp6AMTsNHyuZ+LSJfsOOh57H8e2zGgRUm4YcLVw37ZUZqHsrAY0cQsJJnQpDf0z
-         eGgfuyRpVnFPNcrdrhYuJcUkOP7m2BBMP1zkp7I934yoJOCBerwt0vFtOXTKZzQS0WFO
-         d5Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWJMeeDameOSHCZcobaiDmDYgaG0l84bHCBFrBKmwCvMTqvjvAYKGdkU/aCugDHxlumIY/iET4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5+PLGwU8bxPp2F1ukR61ARXWPlDCMNNarjI9N9gbylaj1ewD/
-	ocbqg/MLJSfJVGhUF7YWvf5O4c1q3T9QddoM9fIAbQ6kZ6FyXfFClYzW4zrbrw==
-X-Gm-Gg: AZuq6aIcuDq+Qyu2INFdPUE7y2+3okDthaCRQir37kLFRFqG5hVFBPZ+C8nuYobTvHL
-	SjflzOyF7thszX7gYVPLXeeXEZguNGUD2pF9AV6YKR4XTrfvlyCZjLv6SedRSet298ShsnfMOhw
-	vX7F16KVpe9NGbrBXOzxSslvdVHpXx7cRPeIa1YegPY8mNOtq/rwu9/ivAIoKf9G8yMFtiNH2kD
-	nNwO3esPOvlFwMOkvKhLFbtzXpAriJ65+qRYSQ7P+U3ADXdOPExK6odf9ftM8pluQ5n1s13oH4T
-	kqbHi9HDovKxWq8i9Ah33vOBucJFNgtFskfyZpCJZgX9onPVagH24pXVAJFr4o33QAOQD6g1Hip
-	QbQI2zgTW4np1kGuLI0CJq97sPcCtR2SRjeGqxoiNhFo0IflkJH9JNcAOkjC1DqE9wUnEJV7cb6
-	L8n8GwsNFDiD3Q/xw1Kp+1saBk8w==
-X-Received: by 2002:a05:6a20:a128:b0:38e:5535:bb4a with SMTP id adf61e73a8af0-38e6f6aa952mr2246172637.11.1769152609898;
-        Thu, 22 Jan 2026 23:16:49 -0800 (PST)
-Received: from fedora ([49.200.119.166])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a424cf9sm1149029a12.28.2026.01.22.23.16.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 23:16:49 -0800 (PST)
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-To: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Subject: [PATCH] ipv4: ipmr: add socket type checks to ipmr_ioctl()
-Date: Fri, 23 Jan 2026 12:46:35 +0530
-Message-ID: <20260123071635.16976-1-suchitkarunakaran@gmail.com>
-X-Mailer: git-send-email 2.52.0
+        bh=jxa9yd7FMnAxbFMU15T6utvhMUQJyHMWHQUBlMgYKn0=;
+        b=IHphi0KMEXQ2Tk5BA9GMLh8FNTW0jQY2CTmf5XM4bbi1iivF5UsoJ+FEUyAQPC6P6+
+         znWnqhfajgD5TyfB3BtOqe1G7XoDuc71W0mq/j9h1BGoH8Xiq2wQbLZ1PKwuOHmsar1u
+         0mmkFRqkavDMrfVoAtSENn70LPTbLBmiBoRKc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769159580; x=1769764380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jxa9yd7FMnAxbFMU15T6utvhMUQJyHMWHQUBlMgYKn0=;
+        b=K3Ngiun1/lABj7FA8Mai1hTZWx2QsNNAVga6BtNUpfMgkrJ4gcI6O7J7OFNadvwqaa
+         D1gqq73OpHHhx8LH8firK72xctl801m8nIA3knj17ghRPWE10f4Qooyrcs/YEOO6K4lJ
+         Fne1CbP7kLHcwqEOXowXjHYEWcC/e8rcvuEntuGK0xHXvqUh6ORZ96nAOLSn8RbUdpWQ
+         9/r0FNFaREIJL/iqb+9e3etQM1tz2+8EjbeEhkwkxEfPID3WwEobaA9jTwa3gmyBe+/p
+         yRN0uBCJkuBWXWCqjCk5Ciyjz+QjMYEg0gxcyqyjnI/WJd2Ra6Ha0Vv4j0VgE7PhCE9g
+         cxDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeXm5vR44TCkJ09um6NIFoTL4f9dk8nWXQzPR2nnw/PekaWo+uQlVHaggKv05+XzNis3pLi7g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQU6Zl6D0wOzLjXmk8LFHIb3cFjfI9VA2bUICQktJRCYW1+qTW
+	80e7uO4zXvypoHK2F5w6kmOwpMUlPA7l1jJ6dI5l1BCOO+fk1oHfBqUWZqBqUXBY7PXXmEHTpkE
+	2ZpSrALIP2ZEq02d8R/VMdlAD3GTMqXA3JNcTASn7SQ==
+X-Gm-Gg: AZuq6aKzYyWcxnwVsdGuFt4AjhJDrBclOxt0h3jA+QkxdBkaxB+irn916b2+++xrbfi
+	LWDwhDn0ovcBJ32aJbs/EuEPg8UXkeNchg0Rm/u+qYdE8jCsHcRJOCMyDSqxBLsS63EYlgTpkl0
+	9nctDe35c7XxCEByo4jr2E6y5UfqHDjjw52P9kkLD22ko2jPFrbxxGjf5mNo93oSNoHCzOj9TB9
+	39jRhni2t8CWBYaZ210XJjJKCzhlKOsqI5lrMNDzAwsmJhpg5HT2cqJViYeGxRvYLOt
+X-Received: by 2002:a05:6402:5251:b0:64d:a80b:3268 with SMTP id
+ 4fb4d7f45d1cf-6584b1a3795mr1416836a12.10.1769159579699; Fri, 23 Jan 2026
+ 01:12:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAN0zt4Mi4NDdUua5HXDexyyvD9naan6CnQV1yB_QT41=aY8LEw@mail.gmail.com>
+ <925987de-2685-442b-a185-6ba1230dc6fb@redhat.com> <CAM0EoM=DmfHD2aPCR5GJUi-Ay2+u+iJWsrQvP7L2xgRwZhXxjA@mail.gmail.com>
+In-Reply-To: <CAM0EoM=DmfHD2aPCR5GJUi-Ay2+u+iJWsrQvP7L2xgRwZhXxjA@mail.gmail.com>
+From: =?UTF-8?B?S2FyZWwgxZhlxZlpY2hh?= <karel@u-n.cz>
+Date: Fri, 23 Jan 2026 10:12:48 +0100
+X-Gm-Features: AZwV_QjHWH10ERVh571_t220C04F_6TzctBU8VbW5d0F4KzJg1Dhk2vwQ8dSCDg
+Message-ID: <CAN0zt4M7G-kUb21YJkBwXawwEio91jaMOELHO+Vkv7Yv2YD0Nw@mail.gmail.com>
+Subject: Re: Bug report: CoDel patch
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, xiyou.wangcong@gmail.com, 
+	Jiri Pirko <jiri@resnulli.us>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is the IPv4 counterpart to commit ("ipv6: ip6mr: add socket type
-checks to ip6mr_ioctl()") [1].
+Hi Jamal,
 
-Similar to the IPv6 issue, ipmr_ioctl() and ipmr_compat_ioctl() access
-raw_sk(sk)->ipmr_table without first verifying that the socket is a raw
-socket with IPPROTO_IGMP protocol.
+no simple script so far. Bug appears on servers with tens of thousands
+HFSC classes and FQ_CoDel qdiscs with around 10Gbit of traffic,
+multiqueue interfaces and CPU core affinities. So it would not be
+trivial to prepare a simple test script.
 
-This allows a permission bypass where a user with CAP_NET_RAW can create
-a non-IGMP raw socket (e.g., IPPROTO_UDP, IPPROTO_TCP, or any other
-protocol) and use SIOCGETVIFCNT or SIOCGETSGCNT ioctls to query IPv4
-multicast routing statistics. This bypasses the access control that
-restricts mroute operations to IGMP sockets only.
+Two days ago I tested 6.18.6. Original kernel went into deadlock in
+about 20 seconds after I redirected mirrored traffic from the
+production server to the test server. When I reverted commit
+342debc12183b51773b3345ba267e9263bdfaaef the test server is stable for
+34 hours now.
 
-Add socket type and protocol checks at the beginning of both
-ipmr_ioctl() and ipmr_compat_ioctl() to ensure only IGMP raw sockets
-can access multicast routing ioctls.
+If it is required to have a test script for independent confirmation I
+can try to prepare one, but it will take some time and I will have to
+move the test setup from mirroring production traffic to some kind of
+TRex Packet generator or so.
 
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Karel
 
-[1] https://lore.kernel.org/all/20260123011444.2044-2-qikeyu2017@gmail.com/
----
- net/ipv4/ipmr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index ca9eaee4c2ef..eae03a1b8f66 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1643,6 +1643,10 @@ int ipmr_ioctl(struct sock *sk, int cmd, void *arg)
- 	struct sioc_sg_req *sr;
- 	struct mr_table *mrt;
- 
-+	if (sk->sk_type != SOCK_RAW ||
-+	    inet_sk(sk)->inet_num != IPPROTO_IGMP)
-+		return -EOPNOTSUPP;
-+
- 	mrt = ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
- 	if (!mrt)
- 		return -ENOENT;
-@@ -1711,6 +1715,10 @@ int ipmr_compat_ioctl(struct sock *sk, unsigned int cmd, void __user *arg)
- 	struct net *net = sock_net(sk);
- 	struct mr_table *mrt;
- 
-+	if (sk->sk_type != SOCK_RAW ||
-+	    inet_sk(sk)->inet_num != IPPROTO_IGMP)
-+		return -EOPNOTSUPP;
-+
- 	mrt = ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
- 	if (!mrt)
- 		return -ENOENT;
--- 
-2.52.0
-
+st 21. 1. 2026 v 13:53 odes=C3=ADlatel Jamal Hadi Salim <jhs@mojatatu.com> =
+napsal:
+>
+> On Wed, Jan 21, 2026 at 6:27=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> w=
+rote:
+> >
+> > On 1/21/26 12:12 PM, Karel =C5=98e=C5=99icha wrote:
+> > > please see
+> > >
+> > > https://bugzilla.netfilter.org/show_bug.cgi?id=3D1825
+> > >
+> > > Apologies for contacting you directly, but it has been a week and
+> > > nobody noticed it. Maybe the wrong place to report?
+> >
+> > Indeed the netfilter bugzilla instance is not the best place to report
+> > sched issue. Adding the netdev ML and more people.
+> >
+>
+> Hi Karel,
+>
+> Please post this on the netdev mailing list in the future.
+> The proper commit is 342debc12183b51773b3345ba267e9263bdfaaef
+> Do you have a simple script to reproduce this issue?
+>
+> cheers,
+> jamal
+> > /P
+> >
