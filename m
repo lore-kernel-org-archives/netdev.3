@@ -1,252 +1,181 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D32FD1B1
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9B431AABF;
+	Fri, 23 Jan 2026 11:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769166574; cv=none; b=VxTesiY994rejs4CceD7hcQAniJtok13HDbLZQLOO67PuLK8ywDlj+3tQEI3WTmCiAdrrEj7/nGdRm8OUPxMFjsOl4qw3sUIJUX1UY/E17zhGS1ZLsdD3IzeAjbAhD17Z3147eNWSA0Z5rwjepv72ytpLo/HOjKS44GApEA4KyA=
+	t=1769166818; cv=none; b=iYMIG+85xCaw1ILeEj3DFNfXo7hcsnJUsAnWQGEYcqiM8b3A6OitLn5GYnUbvr+2czpVzh7C0yRCelGrvP7DtqW5HMwxX8nYnhYw2Wa0VLd0UhAPVwkxIxFe6H1IPGDWqunNNTFPJ5PxK+ZRvlf8I13JkechRXG+e+CccBDckPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769166574; c=relaxed/simple;
-	bh=4iDgbCPDX6zetLw0sIoTMixX1OU29nvoRAcbnlpMyp8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uOPIzQdvIFRMsmg1ND2qLTOF8jB2YFLh7rdjvg2Jjg2kiUc/QzXlzPHPaxp0xcN8LVANHSpfzNsQx6huArxWK+lP/YVyFvi664cit8pr/2l2aqB+ZBejA9PAP+GooZiVtWWyxE9Ym097T/gxgDhf/rmO8gBeywyp9D7bpyjmQCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHKKuGrR; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769166818; c=relaxed/simple;
+	bh=MJLO83jCA4MxM79trawupE0Yr9I28Svi19yQn9PK8no=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ioep1CfWaoGx77078qXSOazlNF63oH6V5yFOWoh/x8O95sQfvCspErlmCxap9C2ZESRGyOcdqIfxh5Yo0prc5tf70Ap5uYr/La/C3SWLIoPA9Ywke17yvAfIZEUyQP5VrlvzHas+aQLJ9MyunVAg5iXY6ydUGqidaD93QhRfWvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zlxp6bbS; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHKKuGrR"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-894774491deso37043496d6.2
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 03:09:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769166571; x=1769771371; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/pAK6MrrOiwwDQc0GBrsxIdwLQE0979ZY3mHhzgGcY=;
-        b=UHKKuGrRBDJYfX0sG/9bxETcd5SZb8WQwP+7HWlx1nIw2UoE23VKeMOvwdQBhRBINE
-         q3YKvVduVJeoHK7pjMmHofRUmMxheAwfCnvyhDkW8qixjat0eO+2EF9EvawjQhoHwpQA
-         uMJeLJismzXFR5MdJLaLGUAi/POQzt1rMNvV9UeJe94BWQDUF5JFeltvobw4DRRMVA8q
-         BvNqu2HZe9CqzmIukR61UfP90vAo0sRHnEh62nBUPhtSAn8n4yey2WpbwbcjIYe3buRx
-         SaHG2BX6vn3n1Ifw26p2gMly7GBRlk6UTn1vL2bfj3Dy2atpYFB9nLb/6RraBHRT3znP
-         mLpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769166571; x=1769771371;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0/pAK6MrrOiwwDQc0GBrsxIdwLQE0979ZY3mHhzgGcY=;
-        b=ZQZovpp8Cip/vF1mOfRFrILRaxKKvbJPMuXUjqiw+b8+r0qtL3XUmgJC+ygoSuWhr0
-         cWw0z/ZJZRKiDWOGeGXYSMo1lCUpJ6NDehdmSvMa72QNxEkcPiQ0nJzRvksFM24MuJdR
-         kIr/ukDT5PojUxyrNtrljx/tYUGi7Rw3hrcI1k2YUMKt4HeeZ0mV/R5l4RZ2er2XD4Nk
-         h3ZGXpZBV+fsI+r5PDEvVgvZShELiuRVq5eum5DMDUCGQqXw8LG1i0o14fgDbGJZEWSp
-         0bvfgZPLdXCD0iY9GhBt1RTN0HCZyJ7xLOlqEivTj3uc/yo3zzWciOaQZnJ/lBSUd7cS
-         mcBw==
-X-Gm-Message-State: AOJu0YwDDTeMX9axuvhtsVH428BrES5Ps+da0FSnpjfO6Z3nzo337/1M
-	BNeLRYlhQVSoKVtVaK9fg5CNVnQVFZHjRzvAdsPOxiZoljjTSSpBIjpD
-X-Gm-Gg: AZuq6aJm6SttesUV2wRKIZly2fQg6Kw8lUevu+FrenkmNr+dkOKNSSF+iGAYW7VhD26
-	vF5JTmrG0EgJmilz5tBE15yu/qgCop8hx5YetHTrzre3MYDqPC0+wtaDwxeqf6XaGgcT6s6ETiS
-	UV5lcZ4sh+dRUUuguuojXRzcL4aug3077TAalQKaK4zw4TbxClbh14CiIO18bMvNZtpwFrR5Wbt
-	fyu15gPatAu4L1X+3EiAIkO9cbEGcJmVqbuMmEs2yDLyHVaYaYiB0+nKNhBmYnJl/fV/VipM3ao
-	gach/5lHL2yENbdx6K4/d41pSYhdHQwUpyMVioXtOj82jZSG93IbdjLj6IPb3scmWsnM9MDs1/R
-	1RDFerKGIbC7xwcOMulHRRosucKYmYY2riL5qr/1p+H4UU+pAG/p7x8CiqGHssjFjSgktoM7KQO
-	js2AOUNJUK9riidBJy2YZz
-X-Received: by 2002:a05:6214:2628:b0:894:610c:3a22 with SMTP id 6a1803df08f44-89490177e74mr36606866d6.20.1769166571210;
-        Fri, 23 Jan 2026 03:09:31 -0800 (PST)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-502f7f72d8bsm14348801cf.22.2026.01.23.03.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 03:09:30 -0800 (PST)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Fri, 23 Jan 2026 19:09:07 +0800
-Subject: [PATCH net] net: cpsw_new: Execute ndo_set_rx_mode callback in a
- work queue
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zlxp6bbS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rW6hIs7kbRE6sqC+VHhb8yfuCQxkSIbxM4EYUPiSqtQ=; b=zlxp6bbSAdrUvEEckC6IDgQkwS
+	smUH7veqqcf/A7ifQVrNarkgkN6fyrAyh3Wv9wXroHnUW1bGNyYswwd5gBGipBhCXXr/rouJDvOMn
+	e8L4drbydog/ojOmYaOIufuu3h8sPcPxTRcvhK9TtkuzOJ381J8hnTW+JNGn1KuSw3e98I4p+y/2q
+	tRG88KVUkDCOeiLMp26CFEdZDCOEUx303vTo87F9X9yacUkoK5+gEuN6C0dMaUzZtvaKhvvHxAwoT
+	zh/oFMfJltVh8yijjuPpiNLrclGxwHjLL1AqiNQzC0u9QkaGSpJN7zV7MFB8hLR1LsaU++zvruHgs
+	urysKlsA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39500)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vjF6X-000000001uQ-3Rne;
+	Fri, 23 Jan 2026 11:13:29 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vjF6V-0000000022q-0aE9;
+	Fri, 23 Jan 2026 11:13:27 +0000
+Date: Fri, 23 Jan 2026 11:13:26 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH net-next v2 00/14] net: stmmac: SerDes, PCS, BASE-X, and
+ inband goodies
+Message-ID: <aXNX1oi7nWLcPK28@shell.armlinux.org.uk>
+References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-bbb-v1-1-176b0b71834d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANJWc2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQyNj3aSkJN2UZGMzc9M0M3PDFAMloMqCotS0zAqwKdFKeaklSrG1tQB
- t+L7sWgAAAA==
-X-Change-ID: 20260123-bbb-dc3675f671d0
-To: netdev@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
- Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, linux-omap@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Commit 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP") removed the RTNL lock for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP operations. However, this
-change triggered the following call trace on my BeagleBone Black board:
-  WARNING: net/8021q/vlan_core.c:236 at vlan_for_each+0x120/0x124, CPU#0: rpcbind/496
-  RTNL: assertion failed at net/8021q/vlan_core.c (236)
-  Modules linked in:
-  CPU: 0 UID: 997 PID: 496 Comm: rpcbind Not tainted 6.19.0-rc6-next-20260122-yocto-standard+ #8 PREEMPT
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x28/0x2c
-   show_stack from dump_stack_lvl+0x30/0x38
-   dump_stack_lvl from __warn+0xb8/0x11c
-   __warn from warn_slowpath_fmt+0x130/0x194
-   warn_slowpath_fmt from vlan_for_each+0x120/0x124
-   vlan_for_each from cpsw_add_mc_addr+0x54/0xd8
-   cpsw_add_mc_addr from __hw_addr_ref_sync_dev+0xc4/0xec
-   __hw_addr_ref_sync_dev from __dev_mc_add+0x78/0x88
-   __dev_mc_add from igmp6_group_added+0x84/0xec
-   igmp6_group_added from __ipv6_dev_mc_inc+0x1fc/0x2f0
-   __ipv6_dev_mc_inc from __ipv6_sock_mc_join+0x124/0x1b4
-   __ipv6_sock_mc_join from do_ipv6_setsockopt+0x84c/0x1168
-   do_ipv6_setsockopt from ipv6_setsockopt+0x88/0xc8
-   ipv6_setsockopt from do_sock_setsockopt+0xe8/0x19c
-   do_sock_setsockopt from __sys_setsockopt+0x84/0xac
-   __sys_setsockopt from ret_fast_syscall+0x0/0x5
+According to patchwork, this doesn't apply to net-next. That's odd,
+it was generated on last night's net next, and although there has been
+further work, it rebases cleanly on top of this morning's. How can
+these changes:
 
-This trace occurs because vlan_for_each() is called within
-cpsw_ndo_set_rx_mode(), which expects the RTNL lock to be held.
-Since modifying vlan_for_each() to operate without the RTNL lock is not
-straightforward, and because ndo_set_rx_mode() is invoked both with and
-without the RTNL lock across different code paths, simply adding
-rtnl_lock() in cpsw_ndo_set_rx_mode() is not a viable solution.
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   |  6 +++++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 20 ++++++++++++++++----
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
-To resolve this issue, we opt to execute the actual processing within
-a work queue, following the approach used by the icssg-prueth driver.
+which happened in net-next overnight result in this change in patch 1:
 
-Fixes: 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP.")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
----
-Please note that the cpsw driver also has the same issue. If this resolution
-is acceptable, I will create another patch to fix the issue in cpsw.
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: linux-omap@vger.kernel.org
----
- drivers/net/ethernet/ti/cpsw_new.c  | 29 +++++++++++++++++++++++++++--
- drivers/net/ethernet/ti/cpsw_priv.h |  2 ++
- 2 files changed, 29 insertions(+), 2 deletions(-)
+failing to apply?
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index ab88d4c02cbde76207f89cf433e2b383dcde6a83..786d64a952643927ad80d2effbb171dd87f91160 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -248,15 +248,20 @@ static int cpsw_purge_all_mc(struct net_device *ndev, const u8 *addr, int num)
- 	return 0;
- }
- 
--static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+static void cpsw_ndo_set_rx_mode_work(struct work_struct *work)
- {
--	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_priv *priv = container_of(work, struct cpsw_priv, rx_mode_work);
- 	struct cpsw_common *cpsw = priv->cpsw;
-+	struct net_device *ndev = priv->ndev;
- 
-+	rtnl_lock();
-+	netif_addr_lock_bh(ndev);
- 	if (ndev->flags & IFF_PROMISC) {
- 		/* Enable promiscuous mode */
- 		cpsw_set_promiscious(ndev, true);
- 		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, priv->emac_port);
-+		netif_addr_unlock_bh(ndev);
-+		rtnl_unlock();
- 		return;
- 	}
- 
-@@ -270,6 +275,16 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- 	/* add/remove mcast address either for real netdev or for vlan */
- 	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
- 			       cpsw_del_mc_addr);
-+	netif_addr_unlock_bh(ndev);
-+	rtnl_unlock();
-+}
-+
-+static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_common *cpsw = priv->cpsw;
-+
-+	queue_work(cpsw->cmd_wq, &priv->rx_mode_work);
- }
- 
- static unsigned int cpsw_rxbuf_total_len(unsigned int len)
-@@ -1398,6 +1413,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		priv->msg_enable = netif_msg_init(debug_level, CPSW_DEBUG);
- 		priv->emac_port = i + 1;
- 		priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
-+		INIT_WORK(&priv->rx_mode_work, cpsw_ndo_set_rx_mode_work);
- 
- 		if (is_valid_ether_addr(slave_data->mac_addr)) {
- 			ether_addr_copy(priv->mac_addr, slave_data->mac_addr);
-@@ -1976,6 +1992,13 @@ static int cpsw_probe(struct platform_device *pdev)
- 	}
- 	cpsw_split_res(cpsw);
- 
-+	cpsw->cmd_wq = create_singlethread_workqueue("cpsw_cmd_wq");
-+	if (!cpsw->cmd_wq) {
-+		dev_err(dev, "error initializing workqueue\n");
-+		ret = -ENOMEM;
-+		goto clean_cpts;
-+	}
-+
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
-@@ -2042,6 +2065,7 @@ static int cpsw_probe(struct platform_device *pdev)
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
- clean_unregister_netdev:
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
-@@ -2068,6 +2092,7 @@ static void cpsw_remove(struct platform_device *pdev)
- 		return;
- 	}
- 
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_notifiers(cpsw);
- 	cpsw_unregister_devlink(cpsw);
- 	cpsw_unregister_ports(cpsw);
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index 91add8925e235c6cf5542fde11f3383b9234c872..8cdf4bff198fcc05436ff381a7e4326b3e3c27b1 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -362,6 +362,7 @@ struct cpsw_common {
- 	struct net_device *hw_bridge_dev;
- 	bool ale_bypass;
- 	u8 base_mac[ETH_ALEN];
-+	struct workqueue_struct *cmd_wq;
- };
- 
- struct cpsw_ale_ratelimit {
-@@ -391,6 +392,7 @@ struct cpsw_priv {
- 	u32 tx_packet_min;
- 	struct cpsw_ale_ratelimit ale_bc_ratelimit;
- 	struct cpsw_ale_ratelimit ale_mc_ratelimit;
-+	struct work_struct rx_mode_work;
- };
- 
- #define ndev_to_cpsw(ndev) (((struct cpsw_priv *)netdev_priv(ndev))->cpsw)
+No, patchwork is clearly wrong.
 
----
-base-commit: a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
-change-id: 20260123-bbb-dc3675f671d0
+On Fri, Jan 23, 2026 at 09:52:00AM +0000, Russell King (Oracle) wrote:
+> This is the v1 submission: if it doesn't get tested but review goes
+> well, it'll end up in net-next and mainline without testing on the
+> affected hardware!
+> 
+> Mentioned previously, I've been trying to sort out the PCS support in
+> stmmac, and this series represents the current state of play.
+> 
+> Previous posted patches centred around merely getting autonegotiation
+> to be configured correctly, to a point where the manual configuration
+> can be removed from the qcom-ethqos driver. The qcom-ethqos driver
+> uses both SGMII and 2500BASE-X, manually configuring the dwmac's
+> integrated PCS appropriately.
+> 
+> This *untested* series attempts to take this further. The patches:
+> 
+> - clean up qcom-ethqos only-written mac_base member.
+> - convert qcom-ethqos to use the set_clk_tx_rate() method for setting
+>   the link clock rate.
+> - add support for phy_set_mode_ext() to the qcom "SGMII" ethernet
+>   SerDes driver (which is really only what it needs. Note that
+>   phy_set_mode_ext() is an expected call to be made, where as
+>   phy_set_speed() is optional and not. See PHY documentation.)
+> - add platform-glue independent SerDes support to the stmmac core
+>   driver. Currently, only qcom-ethqos will make use of this, and
+>   I suspect as we haven't had this, it's going to be difficult to
+>   convert other platform glue to use this - but had this existed
+>   earlier, we could've pushed people to use PHY to abstract some
+>   of the platform glue differences. Adding it now makes it available
+>   for future platform glue.
+> - convert qcom-ethqos to use this core SerDes support.
+> - arrange for stmmac_pcs.c to supply the phy_intf_sel field value
+>   if the integrated PCS will be used. (PHY_INTF_SEL_SGMII requires
+>   the integrated PCS rather than an external PCS.)
+> - add BASE-X support to the integrated PCS driver, and use it for
+>   BASE-X modes. This fully supports in-band mode, including reading
+>   the link partner advertisement.
+> - add in-band support for SGMII, reading the state from the RGSMII
+>   status field.
+> 
+> As we leave qcom-ethqos' manual configuration of the PCS in place at
+> the moment, the last patch adds reporting of any changes in its
+> configuration that the qcom-ethqos driver does beyond what phylink
+> requested, thus providing a path to debug and eventually remove
+> qcom-ethqos' manual configuration.
+> 
+> One patch is not included in this set - which adds a phy_intf_sel
+> value for external PCS (using PHY_INTF_SEL_GMII_MII). I believe all
+> external PCS use this mode when connected to a MAC capable of up to
+> 2.5G. However, no platform glue that provides the mac_select_pcs()
+> method also provide the set_phy_intf_sel() method, so we can safely
+> ignore this for now.
+> 
+> I would like to get this into net-next before the next merge window,
+> so testing would be appreciated. If there are issues with these patches
+> applied, please check whether the issue exists without these patches
+> and only report regressions caused by this patch set. For example,
+> I'm aware that qcom-ethqos has issues with 10Mbps mode due to an AQR
+> PHY being insanely provisioned to use SGMII in 1000M mode but with
+> rate matching with 10M media. This is not an issue that is relevant
+> to this patch series, but a problem with the PHY provisioning.
+> 
+> rfc->v1:
+>  - fix SGMII link status
+>  - avoid calling phy_get_mode() if PHY is null
+> v2:
+>  - fix further AI review bot dribble that could've been raised on
+>    the rfc version but wasn't.
+>  
+>  drivers/net/ethernet/stmicro/stmmac/Makefile       |   2 +-
+>  drivers/net/ethernet/stmicro/stmmac/common.h       |   1 -
+>  .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |  74 ++-----
+>  drivers/net/ethernet/stmicro/stmmac/dwmac1000.h    |  12 +-
+>  .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |  11 +-
+>  drivers/net/ethernet/stmicro/stmmac/dwmac4.h       |  10 +-
+>  drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |  10 +-
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  69 +++++--
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c   | 222 +++++++++++++++++++--
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h   |  53 ++---
+>  .../net/ethernet/stmicro/stmmac/stmmac_serdes.c    | 111 +++++++++++
+>  .../net/ethernet/stmicro/stmmac/stmmac_serdes.h    |  16 ++
+>  drivers/phy/qualcomm/phy-qcom-sgmii-eth.c          |  43 ++++
+>  include/linux/stmmac.h                             |   2 +
+>  14 files changed, 491 insertions(+), 145 deletions(-)
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> 
 
-Best regards,
 -- 
-Kevin Hao <haokexin@gmail.com>
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
