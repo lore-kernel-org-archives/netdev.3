@@ -1,69 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00B201278
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 16:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3A285CBA
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 16:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769186744; cv=none; b=LxKSrA9dhj86v7SsSmdlE2rkBgMPdC7mC3mzhuTI8dvbdAWxdK9plYh4Qtyl+R8UuK6+MsXrf4dsohdB6fQerteMHR3wkSoLvN97Q8XDeJJZxsOUaUYBRejBq7X88kkxubjnKIpaUzT8wL5Vs2Tdl5IK6dfHQjPERwqEq3HSIXk=
+	t=1769187170; cv=none; b=rcIwdMR6sxicV+92QgiWlmox5ZUCMkouTS2hyOjljCUnijMBOWm7vYJKt2zgRK9/nchT2ZpT4zp5QFUl4drPjDDJk6WM8yuSoPMl10ArZTBZNhqsF1LJQkkhfsImYtT/DACerFeEGWMlaojlaQegzmqKv2b1WJzZkl7zYWwUoFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769186744; c=relaxed/simple;
-	bh=VGbNVNahKWwLXw/qQCNp/J4Iq8B/K42acEfB6yri4DM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CCXcIQCg0BtwmMDpMV14PVom6UD08u/GrVz/0vZ/WVLeqUUKavei83iGZJeD2xHe3UrZ+AZ2F1N0l18QelYBG1O4reO2gBfg0P/3zO5umxqH5NndnicwEtipUuIKKtiX/hZpU4X5yDYln6atnJmx/kc40wiMOHbBV6HWArQXEXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBBQIoRz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769187170; c=relaxed/simple;
+	bh=podR4pzaAzcDb+GKwYY8v8JRh+vX6rU2JggSnBIxc7g=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=UlC1b12avXAtU3vYDj8ZTM+SxrELAst6o7V1ZYCkvJd53iWry/MrW47TvatKkEo4XbORU5WRB8RwzVwryHy7NurZVbC7kpRk694lAwvo234AqHoSp8xOmpPt91rDFCtp9TokclcGzS0s36RHN7Vs72d6ykZ+oRfburAitMAdtz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=G2/GY7mB; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBBQIoRz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292A9C19423;
-	Fri, 23 Jan 2026 16:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769186744;
-	bh=VGbNVNahKWwLXw/qQCNp/J4Iq8B/K42acEfB6yri4DM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fBBQIoRz3wwA4swVYscxFnC8Iwj9IVtAtzWeZ/uSqnmYorxr+v5xz6Ya/Kn17FhGu
-	 Hjpp/otTObs82HK7Qih/ceQFz4RBp22sDJpkMcgBAb3KfAg+DnvJJEHrxkn4ZrCLl1
-	 gUuNl1zLTyEZIyYlwqVuuiy0mMHo0VD9cNpZsFj3g9jzGWj6FVp6ak4r1AWtwsMzcS
-	 aj/H2LUb8nE07inSzzE4MQ6Gr6rgjHtiVmSlHwAgb9BAozJEC159i4D6Ox0YqkjxEv
-	 QrHdOPoTErLb86Oil0M+g53onVwmVCYtsMvInajXOBgYc8o7y8OYRb2x0CokuY+edh
-	 5uB+nBOM3VBAQ==
-Date: Fri, 23 Jan 2026 16:45:40 +0000
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next 2/4] gro: change the BUG_ON() in
- gro_pull_from_frag0()
-Message-ID: <aXOltKyRoWvUTfKf@horms.kernel.org>
-References: <20260122045720.1221017-1-edumazet@google.com>
- <20260122045720.1221017-3-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="G2/GY7mB"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1vjKOm-00F4mh-C7; Fri, 23 Jan 2026 17:52:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=Dfuf1H7CdP7qwJBc1Q0ySDLiVxcnJtTh4PIozvwSnhw=; b=G2/GY7mBhEuuwUTV5TL5n++sG9
+	fCjxhEGQrdP34358fLm9qY3JDDZ2y8Lxpd771JTW05TWmuNS+LFpAY7waA+hWSXiFDleWo6akJ6pp
+	DSGKKIn5AELI3NDgjUJE1HJIi2yj1zvt1VSs/yNZwmACWM1fbw78hJ0WxhClRr5qBbprDUd2oKE7X
+	m4KVFNKS0tJbU1hokLbqblFQ0UQD47HrwsyTA/Au9oUPrn93ncBa4kkNo0nypCXikW7KGncAcNzjc
+	BzUGdGklqyCqOhjxWuqj0bJWre+zy96isozJb7ejYTz/BSX5LAj7Vg+hUSqeTCpFdSON00uvwWNZw
+	+LPkr03Q==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1vjKOl-0005hb-PG; Fri, 23 Jan 2026 17:52:39 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vjKOg-003ttE-TX; Fri, 23 Jan 2026 17:52:35 +0100
+Message-ID: <6850ad0c-68e5-4d8c-b80e-7c6adee80fdf@rbox.co>
+Date: Fri, 23 Jan 2026 17:52:33 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122045720.1221017-3-edumazet@google.com>
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net] vsock/bpf: Handle EINTR connect() racing against
+ sockmap update
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, leonardi@redhat.com
+References: <20250307-vsock-trans-signal-race-v1-1-3aca3f771fbd@rbox.co>
+ <a96febaf-1d32-47d4-ad18-ce5d689b7bdb@rbox.co>
+ <vhda4sdbp725w7mkhha72u2nt3xpgyv2i4dphdr6lw7745qpuu@7c3lrl4tbomv>
+ <032764f5-e462-4f42-bfdc-8e31b25ada27@rbox.co>
+ <20250311155601.eui5j2lta3q46i6u@gmail.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <20250311155601.eui5j2lta3q46i6u@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 22, 2026 at 04:57:17AM +0000, Eric Dumazet wrote:
-> Replace the BUG_ON() which never fired with a DEBUG_NET_WARN_ON_ONCE()
+On 3/11/25 16:56, John Fastabend wrote:
+> On 2025-03-07 17:01:11, Michal Luczaj wrote:
+>> On 3/7/25 15:35, Stefano Garzarella wrote:
+>>> On Fri, Mar 07, 2025 at 10:58:55AM +0100, Michal Luczaj wrote:
+>>>>> Signal delivered during connect() may result in a disconnect of an already
+>>>>> TCP_ESTABLISHED socket. Problem is that such established socket might have
+>>>>> been placed in a sockmap before the connection was closed. We end up with a
+>>>>> SS_UNCONNECTED vsock in a sockmap. And this, combined with the ability to
+>>>>> reassign (unconnected) vsock's transport to NULL, breaks the sockmap
+>>>>> contract. As manifested by WARN_ON_ONCE.
+>>>>
+>>>> Note that Luigi is currently working on a (vsock test suit) test[1] for a
+>>>> related bug, which could be neatly adapted to test this bug as well.
+>>>> [1]: https://lore.kernel.org/netdev/20250306-test_vsock-v1-0-0320b5accf92@redhat.com/
+>>>
+>>> Can you work with Luigi to include the changes in that series?
+>>
+>> I was just going to wait for Luigi to finish his work (no rush, really) and
+>> then try to parametrize it.
+>>
+>> That is unless BPF/sockmap maintainers decide this thread's thing is a
+>> sockmap thing and should be in tools/testing/selftests/bpf.
 > 
-> $ scripts/bloat-o-meter -t vmlinux.1 vmlinux.2
-> add/remove: 2/2 grow/shrink: 1/1 up/down: 370/-254 (116)
-> Function                                     old     new   delta
-> gro_try_pull_from_frag0                        -     196    +196
-> napi_gro_frags                               771     929    +158
-> __pfx_gro_try_pull_from_frag0                  -      16     +16
-> __pfx_gro_pull_from_frag0                     16       -     -16
-> dev_gro_receive                             1514    1464     -50
-> gro_pull_from_frag0                          188       -    -188
-> Total: Before=22565899, After=22566015, chg +0.00%
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> I think it makes sense to pull into selftests/bpf then it would get run
+> from BPF CI so we can ensure BPF changes will keep this working
+> correctly.
 
-Hi Eric,
+All right, a bit late (sorry), but here's an attempt:
+https://lore.kernel.org/bpf/20260123-selftest-signal-on-connect-v1-0-b0256e7025b6@rbox.co/
 
-Am I right in thinking that the motivation is to reduce this
-check to zero-code in the case of !CONFIG_DEBUG_NET?
+> I guess the trick would be to see how long to run racer to get the
+> warning but also not hang the CI. If you run it for 5 seconds or so
+> does it trip? Or are you running this for minutes?
+>
+> If it takes too long to run it could be put into test_sockmap which
+> has longer running things already. We also have some longer TCP
+> compliance tests that would be good to start running in public somehow
+> so might think a bit more how the infra for testing is going in
+> sockmap side.
+
+5 seconds is enough for the af_vsock case. I've added a af_unix test as
+well, that one takes longer sometimes. But 5 seconds per protocol do add
+up, the whole run takes some time.
+
+[...]
+
