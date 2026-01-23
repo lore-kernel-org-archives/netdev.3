@@ -1,201 +1,182 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D613A366547
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 10:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A2937D105;
+	Fri, 23 Jan 2026 10:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769162914; cv=none; b=T+mGM+/iNnMXP/9HnhwcOnQ00yKL/VJLJpFM12wzy0OyYstPeZ8LO00XP+7+8XUBec8tBLaIpF7yYovZhwWZkNflq5ChbwpoeX2nmQ2EYPJ4y2rhBv9Dl+Zr8NmVaPxjZZ8tXzQqg2/iPnZ/3q6cbNswEIXQIUKO/4XAfqKqP5g=
+	t=1769163008; cv=none; b=tHTkM/x0sYeRGh2pq2v/9bI8eRoYbdRJ84Fms7FEdSNFaPMETyRRmIcYKcfCIwmoerwO8yedFLuqtULzbjMew4fMapWeWIJi4jcgZ8SmvJjCCFm2NL/01cAv2R5D1e9HWBwRd4xZDYcvkuzGIIeFO1b0E/zUz3r5pyDu91maKCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769162914; c=relaxed/simple;
-	bh=h8wOrwZGBr/rWMJrSgjZ5G80YkNzn771CHOv4mZnx1A=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=am58tGe62bD5dNI3Na7kgNg6j4WI7eOTIrF8X4AQ2OkRrazIahMO+VFDE/V9dNxV++Tqk2d76csUFEuGWiUz/D/MyyAFsf29/BiDMz2z7dRazLO9rNre3dq30VZ3cEFsG9h+bEZr0E8yWsEcW3MvetEZbwz5gtNMGMxVe3Ze+FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 60NA8KYK076887;
-	Fri, 23 Jan 2026 19:08:20 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 60NA8KQ6076884
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 23 Jan 2026 19:08:20 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <2ec9c137-79a5-4562-8587-43dd2633f116@I-love.SAKURA.ne.jp>
-Date: Fri, 23 Jan 2026 19:08:19 +0900
+	s=arc-20240116; t=1769163008; c=relaxed/simple;
+	bh=RpuvS/OU3cDGNJU63M+FGhd0mL4ebzcaU0GV1X+GVxY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=f68DboYejb3ntyFtR8YUi7cQD9mMQMvVBNhxytqcfxk8rtCpkn+v+TwDSeNXkMyJeRS6uDhNXmjHG3Eu7eJeWBKX6vvMJYcvgjvNtQrcm0cTKXUftDJZku9bcddzvYXeN6oNmIqDxBr0KPed0uxewvo4WOeWZDA3RdWS8SXOuoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PlddiiL6; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PlddiiL6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D282C2BC86;
+	Fri, 23 Jan 2026 10:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769163008;
+	bh=RpuvS/OU3cDGNJU63M+FGhd0mL4ebzcaU0GV1X+GVxY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PlddiiL6mJyUFa5UHe9+bLWHLSHeBW1Pe2qdYPANWdPUdaozxUjCxLFazU0KmobhG
+	 5BHQn2aN9QZBn5GGj0uznMnFYwAQ7Fjhe1b8AVCZDoajpd2gpuzKnQG4hfpkKjSq2E
+	 fS6xphmPLtl9dPAELYC9jUylXJ4DpZXs4ISYuqQfpc5IrnGBFtQYdF5tUtwb1O4OgQ
+	 wVpreka5+m5stGSuBrivZslyG66i9dFpySc23gqR8T3/nTgyTGly7fPE1upI3nYDWa
+	 adzXKll4MyLPx5H81Jb60hsqFBZhkDIJSsI51pwKkBoTHBYiBRc3f0sjlGMXpUT3jo
+	 YBxkQ3XykCx6g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 570AFD7236D;
+	Fri, 23 Jan 2026 10:10:08 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Fri, 23 Jan 2026 11:09:57 +0100
+Subject: [PATCH v3 4/4] stmmac: s32: enable support for Multi-IRQ mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: linux-security-module <linux-security-module@vger.kernel.org>,
-        SELinux <selinux@vger.kernel.org>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Network Development <netdev@vger.kernel.org>
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH] xfrm: kill xfrm_dev_{state,policy}_flush_secctx_check()
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav405.rs.sakura.ne.jp
-X-Virus-Status: clean
+Message-Id: <20260123-dwmac_multi_irq-v3-4-cc53f2be8961@oss.nxp.com>
+References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+In-Reply-To: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769163006; l=3825;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=N8KG6zSNZaJ0litROq6rIn2vyXQTszprIi2ECHATg2I=;
+ b=K0mcEfqhyMu5f3uTCyaUbLXj0uh8y5ZYcUWiyycFQVQZIOShQ6q9eWSQu/+crDBF8QHP+ikdv
+ V7cmIGc473sDiWBF7ZrF4GzFsIC3opc2igEXAerVNX0/FFBHco23s1t
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Since xfrm_dev_{state,policy}_flush() are called from only NETDEV_DOWN and
-NETDEV_UNREGISTER events, making xfrm_dev_{state,policy}_flush() no-op by
-returning an error value from xfrm_dev_{state,policy}_flush_secctx_check()
-is pointless. Especially, if xfrm_dev_{state,policy}_flush_secctx_check()
-returned an error value upon NETDEV_UNREGISTER event, the system will hung
-up with
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-  unregister_netdevice: waiting for $dev to become free. Usage count = $count
+To get enabled Multi-IRQ mode, the driver checks:
 
-message because the reference to $dev acquired by
-xfrm_dev_{state,policy}_add() cannot be released.
+  1) property of 'snps,mtl-xx-config' subnode
+     defines 'snps,xx-queues-to-use' bigger then one, ie:
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         ...
+
+         mtl_rx_setup: rx-queues-config {
+             snps,rx-queues-to-use = <2>;
+         };
+
+  2) queue based IRQs are set, ie:
+
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 0: tx, rx */
+                      <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 1: tx, rx */
+                      <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
+         interrupt-names = "macirq",
+                           "tx-queue-0", "rx-queue-0",
+                           "tx-queue-1", "rx-queue-1";
+
+If those prerequisites are met, the driver switch to Multi-IRQ mode,
+using per-queue IRQs for rx/tx data pathr:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: Multi-IRQ mode (per queue IRQ) selected
+
+Now the driver owns all queues IRQs:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+ 30:    0    0    0    0    0    0    0    0    GICv3  91 Level   eth0:rx-0
+ 31:    0    0    0    0    0    0    0    0    GICv3  93 Level   eth0:rx-1
+ 32:    0    0    0    0    0    0    0    0    GICv3  95 Level   eth0:rx-2
+ 33:    0    0    0    0    0    0    0    0    GICv3  97 Level   eth0:rx-3
+ 34:    0    0    0    0    0    0    0    0    GICv3  99 Level   eth0:rx-4
+ 35:    0    0    0    0    0    0    0    0    GICv3  90 Level   eth0:tx-0
+ 36:    0    0    0    0    0    0    0    0    GICv3  92 Level   eth0:tx-1
+ 37:    0    0    0    0    0    0    0    0    GICv3  94 Level   eth0:tx-2
+ 38:    0    0    0    0    0    0    0    0    GICv3  96 Level   eth0:tx-3
+ 39:    0    0    0    0    0    0    0    0    GICv3  98 Level   eth0:tx-4
+
+Otherwise, if one of the prerequisite don't met, the driver
+continue with MAC IRQ mode:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: MAC IRQ mode selected
+
+And only MAC IRQ will be attached:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+
+What represents the original MAC IRQ mode and is fully backward
+compatible.
+
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- net/xfrm/xfrm_policy.c | 35 -----------------------------------
- net/xfrm/xfrm_state.c  | 33 ---------------------------------
- 2 files changed, 68 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 62486f866975..f4df6491095f 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1778,41 +1778,12 @@ xfrm_policy_flush_secctx_check(struct net *net, u8 type, bool task_valid)
- 	}
- 	return err;
- }
--
--static inline int xfrm_dev_policy_flush_secctx_check(struct net *net,
--						     struct net_device *dev,
--						     bool task_valid)
--{
--	struct xfrm_policy *pol;
--	int err = 0;
--
--	list_for_each_entry(pol, &net->xfrm.policy_all, walk.all) {
--		if (pol->walk.dead ||
--		    xfrm_policy_id2dir(pol->index) >= XFRM_POLICY_MAX ||
--		    pol->xdo.dev != dev)
--			continue;
--
--		err = security_xfrm_policy_delete(pol->security);
--		if (err) {
--			xfrm_audit_policy_delete(pol, 0, task_valid);
--			return err;
--		}
--	}
--	return err;
--}
- #else
- static inline int
- xfrm_policy_flush_secctx_check(struct net *net, u8 type, bool task_valid)
- {
- 	return 0;
- }
--
--static inline int xfrm_dev_policy_flush_secctx_check(struct net *net,
--						     struct net_device *dev,
--						     bool task_valid)
--{
--	return 0;
--}
- #endif
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+index 5a485ee98fa7..342091045714 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+@@ -2,7 +2,7 @@
+ /*
+  * NXP S32G/R GMAC glue layer
+  *
+- * Copyright 2019-2024 NXP
++ * Copyright 2019-2026 NXP
+  *
+  */
  
- int xfrm_policy_flush(struct net *net, u8 type, bool task_valid)
-@@ -1861,11 +1832,6 @@ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
- 	struct xfrm_policy *pol;
+@@ -149,6 +149,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+ 	plat->core_type = DWMAC_CORE_GMAC4;
+ 	plat->pmt = 1;
+ 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
++
++	/* Check for multi-IRQ config. Assumption: symetrical rx/tx queues */
++	if (plat->rx_queues_to_use > 1 &&
++	    (res.rx_irq[0] >= 0 || res.tx_irq[0] >= 0)) {
++		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
++		dev_info(dev, "Multi-IRQ mode (per queue IRQ) selected\n");
++	} else {
++		dev_info(dev, "MAC IRQ mode selected\n");
++	}
++
+ 	plat->rx_fifo_size = 20480;
+ 	plat->tx_fifo_size = 20480;
  
- 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
--
--	err = xfrm_dev_policy_flush_secctx_check(net, dev, task_valid);
--	if (err)
--		goto out;
--
- again:
- 	list_for_each_entry(pol, &net->xfrm.policy_all, walk.all) {
- 		if (pol->walk.dead)
-@@ -1888,7 +1854,6 @@ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
- 		__xfrm_policy_inexact_flush(net);
- 	else
- 		err = -ESRCH;
--out:
- 	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
- 	return err;
- }
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 98b362d51836..855778177558 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -881,41 +881,12 @@ xfrm_state_flush_secctx_check(struct net *net, u8 proto, bool task_valid)
- 
- 	return err;
- }
--
--static inline int
--xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool task_valid)
--{
--	int i, err = 0;
--
--	for (i = 0; i <= net->xfrm.state_hmask; i++) {
--		struct xfrm_state *x;
--		struct xfrm_dev_offload *xso;
--
--		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
--			xso = &x->xso;
--
--			if (xso->dev == dev &&
--			   (err = security_xfrm_state_delete(x)) != 0) {
--				xfrm_audit_state_delete(x, 0, task_valid);
--				return err;
--			}
--		}
--	}
--
--	return err;
--}
- #else
- static inline int
- xfrm_state_flush_secctx_check(struct net *net, u8 proto, bool task_valid)
- {
- 	return 0;
- }
--
--static inline int
--xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool task_valid)
--{
--	return 0;
--}
- #endif
- 
- int xfrm_state_flush(struct net *net, u8 proto, bool task_valid)
-@@ -966,9 +937,6 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 	int i, err = 0, cnt = 0;
- 
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
--	err = xfrm_dev_state_flush_secctx_check(net, dev, task_valid);
--	if (err)
--		goto out;
- 
- 	err = -ESRCH;
- 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
-@@ -997,7 +965,6 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 	if (cnt)
- 		err = 0;
- 
--out:
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 
- 	spin_lock_bh(&xfrm_state_dev_gc_lock);
+
 -- 
-2.47.3
+2.47.0
+
 
