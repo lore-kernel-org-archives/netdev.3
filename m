@@ -1,126 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B45256C70;
-	Fri, 23 Jan 2026 21:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD632D47E4;
+	Fri, 23 Jan 2026 21:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769204586; cv=none; b=fm3fm9wvdQiBdLj+INyDvbuWJOzgTyH34ippxwISBJu/hkQ+7Pjlzw+uosOZgtV2mwJ3X9D2/J34Jhb9TcGYGpb7/n9tJoEbFbkiwOmqD4UPpZd+p2JBwVfe3Cgv/sbnCsCJhoAbv5wOSAn/Mjv82U1OzAwTgjoPMM02y1tsUtI=
+	t=1769205296; cv=none; b=Al7xXgWjyfcibrk3gzH40XJe9sR9/1Fl+oIHUNCHYMmIEjDN31NRBUmwgetqObboeqamXTr9kcdTtNu1jZi9CzvRw64TPd44pEezcJ3hCaJlli5GJwqPxddrSjimG2fzjF1ek4h5tA28F2bJzNvUn9buy58l+eMcwVNewIzm66s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769204586; c=relaxed/simple;
-	bh=KheEDbybRqccT4YssL9LzHDPm7tF5WT0v2sGWl6zBxc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=J5fdSTSz0v7X933xsHgDTar9b1A6Tff6+woIdYhsIUMaX81vs7xeaT95Ye2/MzBWRMBQebBAsMRk6VALzA6vtB93/8FJh7n9hbK828cUXwu1CenKif42pTgPubv1llT94v+/Ysyd2J1dTpEtpSpfDGsVjhlbcdhtPwEyRjaMjDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rssnGl86; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769205296; c=relaxed/simple;
+	bh=4rNxIGJrzfqhGn17zoSC2KvS3w7SWK7eFut1S/GBwkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OG33HMYFASJc/e7287mO+qEdllLdyJIlKfb0yHe8qh7tZRGMExFbPzqDfhyLvQDOWnIVf8yfoFekNMecyq4sHIT0S6kcLiS2BosX1MnY6fNaLLP0i8JmzCD+obiQj5DZIC8PsPnu6nMDS6wyfVOe92cXaohmufEnWOuHhTb9csM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cB30JaPO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rssnGl86"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B97C4CEF1;
-	Fri, 23 Jan 2026 21:43:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cB30JaPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE9DC4CEF1;
+	Fri, 23 Jan 2026 21:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769204586;
-	bh=KheEDbybRqccT4YssL9LzHDPm7tF5WT0v2sGWl6zBxc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=rssnGl86RvKZD83WgWSS3e0Qm1GV6iygavQHn/9Lo5jH+ybnZLtqajqv+yL/r/znc
-	 iBaMgd5BRYnPqObJld6zlIzf1UtmSJm9mJhlIYivwBCQEAujrskPSLJvoAHgU00EZL
-	 NH+y/P3/xP8DkfEPgCL2AxfvM/NKc/+tLI4DaLdWIapISGPduyckL64TWL1wGgRg48
-	 AI6BVZkuMxH3cosb24CVfbQHBo26UN7KVsMCR7LAIh1IH1uWsAHCxPIRn9Q0txy9Vn
-	 rM4bvbySyTKOuJBgsbTrE5NtVaVJk4F5p5n2WL89vxAMTTQMmzrmwak1UsaQPDC0Oc
-	 sNcxOOYcJResg==
-Date: Fri, 23 Jan 2026 13:43:05 -0800 (PST)
-From: Mat Martineau <martineau@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-    Matthieu Baerts <matttbe@kernel.org>, 
-    Geliang Tang <geliang.tang@linux.dev>, Florian Westphal <fw@strlen.de>, 
-    netdev@vger.kernel.org, mptcp@lists.linux.dev, eric.dumazet@gmail.com, 
-    syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com, 
-    Eulgyu Kim <eulgyukim@snu.ac.kr>, Geliang Tang <geliang@kernel.org>
-Subject: Re: [PATCH v2 net] mptcp: fix race in
- mptcp_pm_nl_flush_addrs_doit()
-In-Reply-To: <20260123030327.3041148-1-edumazet@google.com>
-Message-ID: <36367d05-e05f-c86b-7125-e98b529f9d0c@kernel.org>
-References: <20260123030327.3041148-1-edumazet@google.com>
+	s=k20201202; t=1769205296;
+	bh=4rNxIGJrzfqhGn17zoSC2KvS3w7SWK7eFut1S/GBwkQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cB30JaPO1Z6ybD9AKI6LGhGyQFNYJ/OdoGmywGoC2AexX0Q+XLT/O6pyJB+h2VTn2
+	 dqjyJyfKdwT0WSNMM+GS5cQFTSi179c+eoXthrlp8f385hp33iLJL4uYjDn5d8B1hV
+	 TWtORvhVBxai1MduKGx5c1Ytw7qT8Nkkm1erdxw68LUKiPm1oEZDmmrsdsu2vEqMOP
+	 dXaJmeXDHSj0U6gpDI8Bowh6FqxxEo86BMgDqPv+acvLSeCtwkNxNXclAdZCkQG/9z
+	 0+IuGtqp1oAb1LmMaW44AbZa50wjdmVly7l13cY/OR8J5/FJiCn7kKmqROjX4tbT46
+	 h4mjltqD+gt1A==
+Date: Fri, 23 Jan 2026 13:54:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [GIT PULL] bluetooth 2026-01-22
+Message-ID: <20260123135454.07955c21@kernel.org>
+In-Reply-To: <20260122200751.2950279-1-luiz.dentz@gmail.com>
+References: <20260122200751.2950279-1-luiz.dentz@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 23 Jan 2026, Eric Dumazet wrote:
+On Thu, 22 Jan 2026 15:07:51 -0500 Luiz Augusto von Dentz wrote:
+> bluetooth pull request for net:
+> 
+>  - hci_uart: fix null-ptr-deref in hci_uart_write_work
+>  - MGMT: Fix memory leak in set_ssp_complete
 
-> syzbot and Eulgyu Kim reported crashes in mptcp_pm_nl_get_local_id()
-> and/or mptcp_pm_nl_is_backup()
->
-> Root cause is list_splice_init() in mptcp_pm_nl_flush_addrs_doit()
-> which is not RCU ready.
->
-> list_splice_init_rcu() can not be called here while holding pernet->lock
-> spinlock.
->
-> Many thanks to Eulgyu Kim for providing a repro and testing our patches.
->
-> Fixes: 141694df6573 ("mptcp: remove address when netlink flushes addrs")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reported-by: syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6970a46d.a00a0220.3ad28e.5cf0.GAE@google.com/T/
-> Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-> Cc: Geliang Tang <geliang@kernel.org>
-> ---
-> v2: Make sure the list was not empty, return early otherwise.
-
-Thanks Eric, the v2 code changes LGTM. The netdev tooling wasn't able to 
-apply the patch 
-(https://patchwork.kernel.org/project/netdevbpf/patch/20260123030327.3041148-1-edumazet@google.com/), 
-so Matthieu is planning to send a basically-identical v3 that 'git am' and 
-the netdev CI will be happy with.
-
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-
-> v1: https://lore.kernel.org/netdev/20260122131306.2119853-1-edumazet@google.com/
->
-> net/mptcp/pm_kernel.c | 18 +++++++++++++++---
-> 1 file changed, 15 insertions(+), 3 deletions(-)
->
-> diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-> index 57570a44e4185370f531047fe97ce9f9fbd1480b..af23be6658ded4860133bb9495c7738014815d28 100644
-> --- a/net/mptcp/pm_kernel.c
-> +++ b/net/mptcp/pm_kernel.c
-> @@ -1294,16 +1294,28 @@ static void __reset_counters(struct pm_nl_pernet *pernet)
-> int mptcp_pm_nl_flush_addrs_doit(struct sk_buff *skb, struct genl_info *info)
-> {
-> 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
-> -	LIST_HEAD(free_list);
-> +	struct list_head free_list;
->
-> 	spin_lock_bh(&pernet->lock);
-> -	list_splice_init(&pernet->endp_list, &free_list);
-> +
-> +	free_list = pernet->endp_list;
-> +	INIT_LIST_HEAD_RCU(&pernet->endp_list);
-> +
-> 	__reset_counters(pernet);
-> 	pernet->next_id = 1;
-> 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
-> 	spin_unlock_bh(&pernet->lock);
-> -	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
-> +
-> +	if (free_list.next == &pernet->endp_list)
-> +		return 0;
-> +
-> 	synchronize_rcu();
-> +
-> +	/* Adjust the pointers to free_list instead of pernet->endp_list */
-> +	free_list.prev->next = &free_list;
-> +	free_list.next->prev = &free_list;
-> +
-> +	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
-> 	__flush_addrs(&free_list);
-> 	return 0;
-> }
-> --
-> 2.52.0.457.g6b5491de43-goog
->
->
+Pulled, thanks!
