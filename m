@@ -1,153 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A742F6596
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 09:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365C930DD38;
+	Fri, 23 Jan 2026 09:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769159911; cv=none; b=Ho8CgSlOHQgOV2fQ4bU45Wg7VYwxqRjaf74prX+aDPy2/XB/JSU3orTzbQE+SouvdReBci1uUf9Ox9VGP2V+ugvvudazIVa0LxlhOh5VBdTg2W213IH4zqBDGiIQMlu/9BjRUQm9JAHk0dAQCpPzIbHTF287q3OF1LGH8WxQTXI=
+	t=1769159939; cv=none; b=VuTugaWKxMyLeDd1/ySSLu7InJZKj0RV0UCFb/PS5dJ0uyInpSPxhwwUPTy6oovRVBA7C03o71UP5yCdaIXo+hBYJ4p26XROGz7UoMRsyU9QKeqgKX4Rea4CS7Fmv3wJZpY0lXO7ifwOoUTbUw7ghagOjB6fp3V7KJGCo7Ev3pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769159911; c=relaxed/simple;
-	bh=m+UFmeBBP/QBaJSGO0vTDNL2nYoouTDWi3Dd8eHpFsM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gNpw14u7WMNUQB60y+UpZZNIaJapCWYbmaB3EeOgtFp4HOeVcYljEnxNi2krzLitopz1M8P+z5HoTsKE6PK07H6iopGAlv0tvfuI1kNMKEufmd/bbNHH+sDcA9gr6YMQaLqiDMmSY7k/eDzUEuunhXZefJnvvuiGCP/z6ZtXFRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FUjOiWO1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769159939; c=relaxed/simple;
+	bh=Yj/0342sqfLBIPiqehTF1fNxuPJu6F+hRc2WRAQWcuA=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=Z6biVbITpMU8gOaJ0M3IFpLhbB+366vhYz4Yvn4em5cFQixtTf6QJ60gAniPEsVCwJ66GWTQ2z4eJvc5GzcJ08YN58u4gaJxOgIvVHRd9wbsFNh/i7ISt2QD8pqnAAHaWUH5gVQAi1/b/p+dciXkjOOxgxIYW+OoNAIr4VPjDwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4KhXs3I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FUjOiWO1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769159909;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4adb7RBzc9M2pMG+W+7qzLvf6ZphpXm5a1NDpOPzIFw=;
-	b=FUjOiWO1RwvYLipVHQZQoMtqzblOooAL40IEbCHvmqN6dVjd1Cak+HPZaCRS9j2p84RJym
-	E2xiBM1rfnsRWDXY967M+vnHHNi5xG3N1ezh651UkfJo0mErPYbTnYN/1EFtOF3TnDEKB5
-	kmNOuFnsdl+KErEkZVBSBtEiMIXucd8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-wbPhgd-0MoiG_jQ0u7Dr_w-1; Fri,
- 23 Jan 2026 04:18:25 -0500
-X-MC-Unique: wbPhgd-0MoiG_jQ0u7Dr_w-1
-X-Mimecast-MFC-AGG-ID: wbPhgd-0MoiG_jQ0u7Dr_w_1769159903
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 423181955F2C;
-	Fri, 23 Jan 2026 09:18:22 +0000 (UTC)
-Received: from [10.45.224.124] (unknown [10.45.224.124])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 639831800665;
-	Fri, 23 Jan 2026 09:18:16 +0000 (UTC)
-Message-ID: <65e558ee-0b74-4197-91bf-e109662e5fd6@redhat.com>
-Date: Fri, 23 Jan 2026 10:18:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4KhXs3I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00317C4CEF1;
+	Fri, 23 Jan 2026 09:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769159938;
+	bh=Yj/0342sqfLBIPiqehTF1fNxuPJu6F+hRc2WRAQWcuA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=o4KhXs3IAcxW1VHcGUecCF0/Sd7ez/fIAyJCNmpzuKqaaLt4qW5en1ElzlA4OJbJE
+	 +aAmUlTDGNVZI3jZkb0+DXyxqDTqjDszWBJkqewICLJTj+zHBVzoi9gvNjnAO70BXW
+	 1HCZfTQjLTUqc5WZxtjXU7kD8RoGWCHn6oO/Ps6Luo2dj1GLKwuDboFQTpqeRHCVRA
+	 BfEt6HkYtr+gh1Qj6OUQR72ELqo3q+KUOkC53xoZBwbwYtGkq87mmerADXL4iK4QJR
+	 lT8eojQQ5dLFc8JseAMWYZuwuqcHgi1o1QsY82a6qbTcmTfJfmAmXonS2Oe2VrsA1f
+	 crOk4bVvC5+Lw==
+Content-Type: multipart/mixed; boundary="===============1550164231886997435=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ivan Vecera <ivecera@redhat.com>
-Subject: Re: [Proposal,Question - refresh] ACPI representation of
- DPLL/Ethernet dependencies (SyncE)
-To: Andrew Lunn <andrew@lunn.ch>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij
- <linusw@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Mark Brown <broonie@kernel.org>, Jan Aleszczyk <jaleszcz@redhat.com>,
- Michal Schmidt <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>,
- linux-acpi@vger.kernel.org, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>
-References: <6e4e40b8-b3cb-4892-8d37-d450a02e4c52@redhat.com>
- <a6e64236-d164-40d1-85d3-caf7d27fc952@lunn.ch>
- <c87cecdc-8ba5-4831-889f-0d903ae7b5ca@redhat.com>
- <11ebf2de-bbd4-4aec-befa-cf0877cfa960@lunn.ch>
- <c0de7c8b-8fea-4e76-bec4-6337153fc7a1@redhat.com>
- <24e081fd-1b59-4951-96fc-f87ef7f3172f@lunn.ch>
-Content-Language: en-US
-In-Reply-To: <24e081fd-1b59-4951-96fc-f87ef7f3172f@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Message-Id: <806d3538bf542f23b9b89c35199996f195e82b2cdde50c40ca8478cbbe6af3fb@mail.kernel.org>
+In-Reply-To: <db8b80a445a61b437c35c71ec2edb573002656fc.1769157382.git.zhuhui@kylinos.cn>
+References: <db8b80a445a61b437c35c71ec2edb573002656fc.1769157382.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v3 11/12] selftests/bpf: Add test for memcg_bpf_ops hierarchies
+From: bot+bpf-ci@kernel.org
+To: hui.zhu@linux.dev,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@kernel.org,roman.gushchin@linux.dev,shakeel.butt@linux.dev,muchun.song@linux.dev,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,shuah@kernel.org,peterz@infradead.org,ojeda@kernel.org,nathan@kernel.org,kees@kernel.org,tj@kernel.org,jeffxu@chromium.org,mkoutny@suse.com,kernel@jfarr.cc,brauner@kernel.org,rdunlap@infradead.org,brgerst@gmail.com,masahiroy@kernel.org,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org,inwardvessel@gmail.com,willemb@google.com,kerneljasonxing@gmail.com,paul.chaignon@gmail.com,a.s.protopopov@gmail.com,ameryhung@gmail.com,chenridong@huaweicloud.com,lance.yang@linux.dev,jiayuan.chen@linux.dev,linux-kernel@vger.kernel.org,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kselftest@vger.kernel.org
+Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri, 23 Jan 2026 09:18:57 +0000 (UTC)
+
+--===============1550164231886997435==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+
+> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> index 9a8d16296f2d..bab9f3094f59 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+
+[ ... ]
+
+> +void test_memcg_ops_hierarchies(void)
+> +{
+> +	int ret, first = -1, second = -1, third = -1;
+> +	struct memcg_ops *skel;
+> +	struct bpf_map *map;
+> +	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
+
+[ ... ]
+
+> +	opts.relative_fd = second;
+> +	opts.flags = 0;
+> +	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
+> +	if (!ASSERT_OK_PTR(link2, "bpf_map__attach_struct_ops_opts"))
+> +		goto cleanup;
+> +
+> +	opts.relative_fd = third;
+> +	opts.flags = 0;
+> +	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
+> +	if (!ASSERT_ERR_PTR(link3, "bpf_map__attach_struct_ops_opts"))
+                          ^^^^^
+
+The result of the third bpf_map__attach_struct_ops_opts() call is stored in
+link2, but the assertion checks link3. Since link3 is initialized to NULL
+and never modified, the ASSERT_ERR_PTR check does not validate the actual
+return value of the third attachment.
+
+Should this be assigning to link3 instead of link2?
+
+> +		goto cleanup;
+> +
+> +cleanup:
+> +	bpf_link__destroy(link1);
+> +	bpf_link__destroy(link2);
+
+If the fix is to use link3 for the third attachment result, should
+bpf_link__destroy(link3) be added here as well?
+
+> +	memcg_ops__detach(skel);
+> +	close(first);
+> +	close(second);
+> +	close(third);
+> +	cleanup_cgroup_environment();
+> +}
 
 
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-On 1/22/26 8:57 PM, Andrew Lunn wrote:
->> No, absolutely not. The drivers for these devices reside entirely in the
->> kernel. They handle all the low-level register access, mux config, and
->> hardware abstraction.
->>
->> The userspace (e.g. synce4l daemon) is purely a Policy Engine. It uses
->> a  generic, hardware-agnostic Netlink API to send high-level commands
->> like "Lock to Pin 0" or "Set Priority 1". The in-kernel driver
->> translates these generic commands into the specific register writes
->> required for that chip (ZL3073x, etc.).
-> 
-> Great. But i've not seen the needed board configuration to allow
-> this. Where do you describe if the ingress inverter is needed? The
-> egress inverter? The clock divider on ingress, the clock divider on
-> egress. The frequency of the clock feeding the package, etc.
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21280790825
 
-On this specific platform, the DPLL device is not a "blank slate" at
-boot. It has internal flash that is pre-programmed by the OEM during
-manufacturing. So the ACPI does not need to store exact state of each
-piece of the HW you mentioned (like dividers, inverters, etc.)
-
-The flash contains the board-specific initialization:
-* Base frequencies (XO inputs)
-* Default divider values
-* Signal conditioning (inverters, impedance) required for the specific
-   board layout.
-
-When the OS loads, the DPLL state is already in a valid, board-compliant
-state. The zl3073x driver reads this current state from the hardware.
-
-The one thing the DPLL's internal flash cannot know is "Which OS device
-is connected to my pin X?". The DPLL knows "pin X is configured for
-25MHz," but it doesn't know that "pin X is physically wired to eth0
-(PCIe Bus 04:00.0)." and cannot provide such information.
-
-At this point only ACPI know such information as it knows the board
-topology.
-
-This is precisely why we need the ACPI schema I proposed. We do not need
-ACPI to replicate the entire configuration that already exists in the
-DPLL's flash. We only need ACPI to bridge that specific Topology Gap:
-
-* ACPI: "DPLL pin 0 connected to this NIC as 'rclk'."
-         "DPLL pin 1 connected to this NIC as 'synce_ref'."
-* NIC Driver: "DPLL pin 0 is connected to my recovered clock"
-               "DPLL pin 1 is connected to my SyncE ref"
-* Userspace (synce4l): Uses this information map to make runtime
-   decisions (e.g., "Network condition changed, switch DPLL to lock on
-   NIC2's recovered-clock").
-
->> But I don't use CCF bindings in this design, this design is about
->> representing an opaque wire between two devices.
-> 
-> Is it really opaque? Don't you need to know its frequency, so you can
-> set the ingress divider? You can either ask it what it is, or you can
-> have a board property. Don't you want to know its phase? So you can
-> enable/disable the ingress inverter?
-
-Yes, the system needs to know this. But the NIC driver does not. The NIC
-driver just says "I am wired to pins X,Y." The DPLL driver monitors DPLL
-device and its pins states by querying the hardware, reports state 
-(device lock status, pins' phase offset, signal quality, fractional
-frequency offset, etc.) to userspace (e.g. synce4l) and accepts new
-commands from it to change the device & pins configuration (pins'
-priority, phase compensation etc.).
-
-Thanks,
-Ivan
-
+--===============1550164231886997435==--
