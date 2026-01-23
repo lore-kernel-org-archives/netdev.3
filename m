@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706A235D5F8
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 02:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570B22DC35C;
+	Fri, 23 Jan 2026 02:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769136021; cv=none; b=e2WR8XYiR7OXXzmPm86TX9lCHaf4GWJORMMLirYWaP5mqOoSMvCpaieLW+ziciM9daStfr3TznuknS7YRdpmgepmn2l+j3QxwkVVBRiEDhtu5vQA0ojbAEt44OngfjVjP3UE9JXapX1H3LyqaG2JOGIfwroKEY4WXUbkaYaBtss=
+	t=1769136020; cv=none; b=g5Du4NfyfFjcmkX9oJttQccj95miIf0687IsGIgRpcQBX49psin5pM3LlJof20ZvuNqj8gbhEEKXUoK2XUMHA40nBEhuykBA5t0S/EEIB6Fkpn4/HiWttxW5Ye4QjjAMstVG7S7LBG8Y5O9qYjzUJpeWQ851Tw7wk2/4+G3hq3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769136021; c=relaxed/simple;
-	bh=hTXoQYwo8ykC+hBl9sW76f7x9Tjxs5euxwG7O+468RM=;
+	s=arc-20240116; t=1769136020; c=relaxed/simple;
+	bh=LPMrmE7FOUiCQzRZyCnm2hOa1OspDPEUnN64lGQR2VY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HgPlDd7m2psLm0v/WKqsYAn2PlFoPgZZnOgALW6YQdiMWZiXjiDO/8zkT/HFuxAeRH9TNf5B+GGpGnRyM3jj7WnAuUXVZ4ElHHq8Q9WUp4Sj/y+yGGBifb8OGEYOIw9kcB3wBODcX6/DwcJO2vi6b39Sfxef8GA00hjwiYhfBqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOQ8wUOa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=kINBeO5oWlT3WWrWaLK7Rhikky1DknbcS5DF8wWXwcchW/G3q5BtVtL/Q2BeO9QUSk8b5mpoioPKqWKYwDAK+0QkUMAume0kh/wA5s117lPOLxAchVDhPL/iIAI/rnnWngXO2P+L3VBd5PoTK2HK8jPeyK/UUkDTOpVrFfS0zhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IeV2DyJS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOQ8wUOa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D1DC16AAE;
-	Fri, 23 Jan 2026 02:40:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IeV2DyJS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5058CC116C6;
+	Fri, 23 Jan 2026 02:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769136019;
-	bh=hTXoQYwo8ykC+hBl9sW76f7x9Tjxs5euxwG7O+468RM=;
+	s=k20201202; t=1769136018;
+	bh=LPMrmE7FOUiCQzRZyCnm2hOa1OspDPEUnN64lGQR2VY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BOQ8wUOaWUg3MgLjP8TGuPGmH04dGgnz4ifyrjZSNwQ0SAzKg3hj1cTmg2EqzoNYd
-	 hWcudsn4TVchOL5tuDcMb2oDv1MsRRNWV5zo+AmLTNDsQxETlgTxaZTAmCt519ZTpu
-	 PuwwNJVe0JayQzqrXxTHbAIBHTdlTUUCotOZaLxRM20WWSJS03QO+W4gFr1CtdPekE
-	 PFUXmoEnHDFSln2BFy+UYKiByIpbsG5eGk8V6rSbxAjqh6S/1ER0DMDIvbHAsblvpJ
-	 shkGHZyS4R1xmoO2tupISbrtB8IWFMvIu6OQTE9GODzkRDIIuniYtkeS/QpFoS9TE8
-	 UxJg/fqTmBnvw==
+	b=IeV2DyJSUWg+rYK3kxa/wadjs00KXDDYY2u2BUNQz/u2dZ68zDIDY0KaTh15uOwOK
+	 ebQtGqeiqmEzsAV1XWE5u3TgjEDQ/8p85YKEjXPIP3tEqj7oIK/DRjFcJxgqRxh1tr
+	 uh11Ey/82CxGlLQRPEuHffZRr7tmwNvDdsowtO3mEGy5pBw4JnT2s7lmg0/CMpvmZH
+	 2yv0R2B+UF02XDx82eSIv4fzvd35PMjwef6t0q/Rce+Kl7XNNTFeAErVPi5vSy7/xW
+	 TXmrFA8k3mX/snsk1HL+nlEAG5bJEzdSIjiHjhd3P3zlkQJUIA9Wrk4v0t6ZkYkxLW
+	 JEwLyJSpbemzQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11AE33808200;
-	Fri, 23 Jan 2026 02:40:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8CD83808200;
+	Fri, 23 Jan 2026 02:40:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] tcp: remove tcp_rate.c
+Subject: Re: [PATCH net-next v2] selftests: net: Add kernel selftest for RFC
+ 4884
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176913601584.2368645.14555144176625626997.git-patchwork-notify@kernel.org>
-Date: Fri, 23 Jan 2026 02:40:15 +0000
-References: <20260121095923.3134639-1-edumazet@google.com>
-In-Reply-To: <20260121095923.3134639-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+ <176913601461.2368645.10878797221558228157.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Jan 2026 02:40:14 +0000
+References: <20260121114644.2863640-1-danieller@nvidia.com>
+In-Reply-To: <20260121114644.2863640-1-danieller@nvidia.com>
+To: Danielle Ratson <danieller@nvidia.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ willemdebruijn.kernel@gmail.com, idosch@nvidia.com, mlxsw@nvidia.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 21 Jan 2026 09:59:21 +0000 you wrote:
-> Move tcp_rate_gen() to tcp_input.c and tcp_rate_check_app_limited()
-> to tcp.c for better code generation.
+On Wed, 21 Jan 2026 13:46:44 +0200 you wrote:
+> RFC 4884 extended certain ICMP messages with a length attribute that
+> encodes the length of the "original datagram" field. This is needed so
+> that new information could be appended to these messages without
+> applications thinking that it is part of the "original datagram" field.
 > 
-> tcp_rate.c was interesting from code maintenance perspective
-> but was adding cpu costs.
-> 
-> Eric Dumazet (2):
->   tcp: move tcp_rate_gen to tcp_input.c
->   tcp: move tcp_rate_check_app_limited() to tcp.c
+> In version 5.9, the kernel was extended with two new socket options
+> (SOL_IP/IP_RECVERR_4884 and SOL_IPV6/IPV6_RECVERR_RFC4884) that allow
+> user space to retrieve this length which is basically the offset to the
+> ICMP Extension Structure at the end of the ICMP message. This is
+> required by user space applications that need to parse the information
+> contained in the ICMP Extension Structure. For example, the RFC 5837
+> extension for tracepath.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/2] tcp: move tcp_rate_gen to tcp_input.c
-    https://git.kernel.org/netdev/net-next/c/b814bdcecd79
-  - [net-next,2/2] tcp: move tcp_rate_check_app_limited() to tcp.c
-    https://git.kernel.org/netdev/net-next/c/bc1f0b1c98f5
+  - [net-next,v2] selftests: net: Add kernel selftest for RFC 4884
+    https://git.kernel.org/netdev/net-next/c/d07d7c3dd944
 
 You are awesome, thank you!
 -- 
