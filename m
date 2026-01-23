@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4C6257849
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C28827FB26
 	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 01:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769132706; cv=none; b=hBZDgV8wOGnvIIM1JxIobEFn4g4iLvmgofpoEyxzuNF4W299kf2EHw1phK8nUrdN0NqlmSFQPHKkCEDKglzeoYhM58hxUGIVk78k9lIXvGGlkJW7aGoMIMYyGkD1L86H8pUI/K8FJA6OWUIydYCkXEKYHm0Zcopzk0Lfd953mKY=
+	t=1769132706; cv=none; b=uGkR+9jmlula4BPZDkTBSDFi3NKkNJwIfCyZuVLfq8VZmqCphYqZjIXg6DYS/wdeiG5UUJkAJGOt1VKSam+ZjpGHWLotFzyuWNwGWzz0WC6zU+h67fBmBZxZxMiMPbR70wmbcjBS7P6gAFDCd7mDB/KNFf0ILVStweP/5xR7t2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769132706; c=relaxed/simple;
-	bh=ZABh3N+dem81nZCQ8n96tOvTfOF1rO+50IpDtahu8CE=;
+	bh=Vb/kRJk2pjrfyrXSTw4+JICmQPE/EquDuSGPYEguVE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1iEfAq/1sgSEj4bWC1Nguiqqaq1cNMwBcZuFpq6NHxPvj9Q6X1x0GBQjR6sNo3pF8i+vZMEtZDeDiHXeLHimEYCzpwyT9zFen9F8YWGY4ZgMRBv6nzqNVllLQBBulmdhuSdYZdeb71lU3uqltETx5eiIGhc4/zRVqo/gSsiCes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sP9+9y1a; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=tfgJEj6e27UVvonF/sk1Gu/LwMqlu9A/HWDUhtV+DmIQdY2Q+iCQ0x+tgMSjAJaMn4kxp+44vuXo8j8yfx82w5TRW+IvZ2QEIJPmga1FuJ5qZBpVM4UAWEN90yIjAzbO9T+OWIobYBhxw/2xfkvuVHYwMRrsW7LkFU2N7t0l2+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OO8iqdHP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sP9+9y1a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEC6C16AAE;
-	Fri, 23 Jan 2026 01:45:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OO8iqdHP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644B0C116C6;
+	Fri, 23 Jan 2026 01:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769132705;
-	bh=ZABh3N+dem81nZCQ8n96tOvTfOF1rO+50IpDtahu8CE=;
+	s=k20201202; t=1769132703;
+	bh=Vb/kRJk2pjrfyrXSTw4+JICmQPE/EquDuSGPYEguVE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sP9+9y1aaMnku+8OdacD5u/HCvkLuLWEYYAH4Q3KO5pjr5hOlwUbWxLSQhqiVxCFn
-	 DpF8gtmWAQt+4a41XVmGkmXwjW/qze7/QY4yFbSkRFqoeyJfl/jxI6BQqlQdXTy63M
-	 8ioibogTxLeRzwENfv+K40kTAeYjjcC9vAfwH7OroelEO/sttfuVEiM5YEVZUvvGIa
-	 DRtHDI5NuTifBsArMC6ANwph6ykbNfsEyWJPZ3611Kmm2qo6l23bdI/sR5XMKBPM1w
-	 aK1xn+mCEAdB/HL1q30eScmVuB39igDaWwX8cfIZOkefuk17WIDOFpLLXu/7H49tT1
-	 LrAdv4SeeCRCw==
+	b=OO8iqdHPRItV223nIIoEigB7P+wsq5AFojtVZbj/Nybc7BIX4GtA+MITO0BpG92AL
+	 2XpZMsE9Wj4av7o2g782x5fTq0i3bUL6xo35mbLEkutLJOWCZQw+z3E1sCksrsXVZM
+	 +2zLJSbYTZnp9Qn8t/8QJUT4ECGBEU3aouEqbAUmrIIy65PyGRjkzI+0Fg4Hj9R4c0
+	 ENQyWYNrrAXB4A9Jz1KBAtXkRdUC9b2rUeJF0U+j6MmKsUrXSAP3HLPby6OEl2RLQB
+	 C7P1rBXhTxuRctOnFroL2HHIbZJeKMuQI1Qgd0HsdDK+plKaMuTFLVk7yaSsKxDrk5
+	 EEdPXukwDYohA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: danielj@nvidia.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -33,12 +33,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	jasowang@redhat.com
-Subject: Re: [net-next,v16,07/12] virtio_net: Implement layer 2 ethtool flow rules
-Date: Thu, 22 Jan 2026 17:45:03 -0800
-Message-ID: <20260123014503.3008177-1-kuba@kernel.org>
+Subject: Re: [net-next,v16,05/12] virtio_net: Query and set flow filter caps
+Date: Thu, 22 Jan 2026 17:43:38 -0800
+Message-ID: <20260123014338.3007350-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121220652.894364-8-danielj@nvidia.com>
-References: <20260121220652.894364-8-danielj@nvidia.com>
+In-Reply-To: <20260121220652.894364-6-danielj@nvidia.com>
+References: <20260121220652.894364-6-danielj@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,82 +52,61 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-virtio_net: Implement layer 2 ethtool flow rules
+virtio_net: Query and set flow filter caps
 
-This patch adds ethtool flow rule support for ethernet headers,
-implementing classifier and rule management via virtio admin commands.
+This patch adds flow filter capability support to virtio_net. It queries
+and sets flow filter capabilities during probe and restore, with cleanup
+during freeze and remove.
 
 > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index b406f5f1c75e..e3f2a7e0e99f 100644
+> index db88dcaefb20..03bd3d2c2b0e 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
 
 [ ... ]
 
-> +static int build_and_insert(struct virtnet_ff *ff,
-> +			    struct virtnet_ethtool_rule *eth_rule)
-> +{
-> +	struct virtio_net_resource_obj_ff_classifier *classifier;
-> +	struct ethtool_rx_flow_spec *fs = &eth_rule->flow_spec;
-> +	struct virtio_net_ff_selector *selector;
-> +	struct virtnet_classifier *c;
-> +	size_t classifier_size;
-> +	int num_hdrs;
-> +	u8 key_size;
-> +	u8 *key;
-> +	int err;
-> +
-> +	calculate_flow_sizes(fs, &key_size, &classifier_size, &num_hdrs);
-> +
-> +	key = kzalloc(key_size, GFP_KERNEL);
-> +	if (!key)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * virtio_net_ff_obj_ff_classifier is already included in the
-> +	 * classifier_size.
+> @@ -5727,10 +5934,31 @@ static int virtnet_restore_up(struct virtio_device *vdev)
+>  			return err;
+>  	}
+>
+> +	/* Initialize flow filters. Not supported is an acceptable and common
+> +	 * return code
 > +	 */
-> +	c = kzalloc(classifier_size +
-> +		    sizeof(struct virtnet_classifier) -
-> +		    sizeof(struct virtio_net_resource_obj_ff_classifier),
-> +		    GFP_KERNEL);
-> +	if (!c) {
-> +		kfree(key);
-> +		return -ENOMEM;
-> +	}
+> +	rtnl_lock();
+> +	err = virtnet_ff_init(&vi->ff, vi->vdev);
+> +	if (err && err != -EOPNOTSUPP) {
+> +		if (netif_running(vi->dev))
+> +			virtnet_close(vi->dev);
 > +
-> +	c->size = classifier_size;
-> +	classifier = &c->classifier;
-> +	classifier->count = num_hdrs;
-> +	selector = (void *)&classifier->selectors[0];
-> +
-> +	setup_eth_hdr_key_mask(selector, key, fs);
-> +
-> +	err = validate_classifier_selectors(ff, classifier, num_hdrs);
-> +	if (err)
-> +		goto err_key;
-                  ^^^^^^
+> +		/* disable_rx_mmode_work takes the rtnl_lock, so just set the
+> +		 * flag here while holding the lock.
+> +		 *
+> +		 * remove_vq_common resets the device and frees the vqs.
+> +		 */
+> +		vi->rx_mode_work_enabled = false;
+> +		rtnl_unlock();
+> +		remove_vq_common(vi);
+> +		return err;
 
-If validate_classifier_selectors() fails, this jumps to err_key which
-only frees key but not c. Should this be goto err_classifier instead,
-to avoid leaking the struct virtnet_classifier allocation?
+If virtnet_ff_init() fails here, remove_vq_common() frees vi->rq, vi->sq,
+and vi->ctrl via virtnet_free_queues(), but the netdevice remains
+registered. Could this leave the device in an inconsistent state where
+subsequent operations (like virtnet_open() triggered by bringing the
+interface up) would access freed memory through vi->rq[i]?
 
-> +
-> +	err = setup_classifier(ff, c);
-> +	if (err)
-> +		goto err_classifier;
-> +
-> +	err = insert_rule(ff, eth_rule, c->id, key, key_size);
-> +	if (err) {
-> +		/* destroy_classifier will free the classifier */
-> +		destroy_classifier(ff, c->id);
-> +		goto err_key;
+The error return propagates up to virtnet_restore() which just returns
+the error without further cleanup. If userspace then tries to use the
+still-registered netdevice, virtnet_open() would call try_fill_recv()
+which dereferences vi->rq.
+
 > +	}
+> +	rtnl_unlock();
 > +
+>  	netif_tx_lock_bh(vi->dev);
+>  	netif_device_attach(vi->dev);
+>  	netif_tx_unlock_bh(vi->dev);
+> -	return err;
 > +	return 0;
-> +
-> +err_classifier:
-> +	kfree(c);
-> +err_key:
-> +	kfree(key);
-> +
-> +	return err;
-> +}
+>  }
+-- 
+pw-bot: cr
