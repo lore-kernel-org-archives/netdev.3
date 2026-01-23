@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747E521CA02
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B676248886
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769189577; cv=none; b=arriB5p06CcZHDnkF50ndQod2DOlsbXpNQ267ilnNDbDOpWAaQvt1X8H80b/ehLZ0WVlNgo6thbiPrDfOTgQTtDNNfLK12yS3Z/6y69Aqi84dKYQVixv3DqVGuNohF/5+tXwepl37RfwsxCngfRzN7CqHI8ah2G1+Uo94PCHocQ=
+	t=1769189829; cv=none; b=mCI/L0ZXuePd8mHjFqePmYpPkm22Mk0ms+yh2KVZ8ThKZTny0RpiWOCtlJJPToHKqn7fFMLvPqWOOseJ/lFgixWTgJuqUlXnLvaIyWHci398zxjCxe4aksZ6BI++5dAL3gIgF4utMuGrSWvUt5iqPa2tnvFJdN5vVbce60bHABE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769189577; c=relaxed/simple;
-	bh=+7YBH0inH1MriyTcpWAIFSrOFK6o9X1jYpo6aklY2uc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCOXOxRGpKAsM7bQL911szAqAdbbG/n730Ob94QigsQMYkblci5ZPUOaDFLE1mI/hMDpEnB4fFxBNiorUgTtjEgcejZgIus2x6L7E+rdiQ4MitKx+90sCXOO+tiSMKtXpT94RbeiOTjgzez00tSOOnIL0CC1rmJfy05hUURoO8A=
+	s=arc-20240116; t=1769189829; c=relaxed/simple;
+	bh=Q3wIf0LQl9biLNhxIYupO/UtCL5l3IzqIjVqeKh16fc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wtizy+kBYfQCGhQNzaHO9zvpwh4nCDl5C9GVNDkowY35ZPI4o4WnmKpkFtBtm0NkQZjbsOLs3o0ThqxP39XY09gLow9det3KOZf3+PWRaN55928s0LPEJDS3LCoA4gGOKt86vkTDB+BoHf9ZMGKh9+ZKfcdL1cpWCu0gXQtHWgk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,82 +18,143 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vjL1c-0008Rs-7L; Fri, 23 Jan 2026 18:32:48 +0100
+	id 1vjL5i-0000gZ-CC; Fri, 23 Jan 2026 18:37:02 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vjL1a-0028Aj-1q;
-	Fri, 23 Jan 2026 18:32:45 +0100
-Received: from blackshift.org (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
+	id 1vjL5i-0028Fh-2B;
+	Fri, 23 Jan 2026 18:37:02 +0100
+Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3A0874D713D;
-	Fri, 23 Jan 2026 17:32:45 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 130EA4D715D;
+	Fri, 23 Jan 2026 17:37:01 +0000 (UTC)
+Date: Fri, 23 Jan 2026 18:36:59 +0100
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 1/2] can: at91_can: Fix memory leak in at91_can_probe()
-Date: Fri, 23 Jan 2026 18:30:06 +0100
-Message-ID: <20260123173241.1026226-2-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260123173241.1026226-1-mkl@pengutronix.de>
-References: <20260123173241.1026226-1-mkl@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org, kernel@pengutronix.de, socketcan@hartkopp.net, 
+	davem@davemloft.net, linux-can@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [net,2/7] can: gs_usb: gs_usb_receive_bulk_callback(): unanchor
+ URL on usb_submit_urb() error
+Message-ID: <20260123-radiant-nice-gecko-6331ac-mkl@pengutronix.de>
+References: <20260116200323.366877-3-mkl@pengutronix.de>
+ <20260119181904.1209979-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dranchuimqg5imao"
+Content-Disposition: inline
+In-Reply-To: <20260119181904.1209979-1-kuba@kernel.org>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Zilin Guan <zilin@seu.edu.cn>
 
-In at91_can_probe(), the dev structure is allocated via alloc_candev().
-However, if the subsequent call to devm_phy_optional_get() fails, the
-code jumps directly to exit_iounmap, missing the call to free_candev().
-This results in a memory leak of the allocated net_device structure.
+--dranchuimqg5imao
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [net,2/7] can: gs_usb: gs_usb_receive_bulk_callback(): unanchor
+ URL on usb_submit_urb() error
+MIME-Version: 1.0
 
-Fix this by jumping to the exit_free label instead, which ensures that
-free_candev() is called to properly release the memory.
+On 19.01.2026 10:19:03, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+>
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-loca=
+l.html
+> ---
+> can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_u=
+rb() error
+>
+> This patch fixes an infinite loop in gs_can_close() by unanchoring the URB
+> when usb_submit_urb() fails after re-anchoring. It also adds an error
+> message for non-ENODEV/ESHUTDOWN failures.
+>
+> Link: https://patch.msgid.link/20260116-can_usb-fix-reanchor-v1-1-9d74e72=
+89225@pengutronix.de
+>
+> > diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+> > index d093babbc320..192338b481f2 100644
+> > --- a/drivers/net/can/usb/gs_usb.c
+> > +++ b/drivers/net/can/usb/gs_usb.c
+> > @@ -754,6 +754,10 @@ static void gs_usb_receive_bulk_callback(struct ur=
+b *urb)
+> >  	usb_anchor_urb(urb, &parent->rx_submitted);
+> >
+> >  	rc =3D usb_submit_urb(urb, GFP_ATOMIC);
+> > +	if (!rc)
+> > +		return;
+> > +
+> > +	usb_unanchor_urb(urb);
+> >
+> >  	/* USB failure take down all interfaces */
+> >  	if (rc =3D=3D -ENODEV) {
+>
+> [ ... ]
+>
+> > +	} else if (rc !=3D -ESHUTDOWN && net_ratelimit()) {
+> > +		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
+> > +			    ERR_PTR(urb->status));
+>
+> Two issues with this error message:
+>
+> 1. The message prints urb->status, but shouldn't it print rc instead? The
+>    variable rc holds the actual error from usb_submit_urb(), while urb->s=
+tatus
+>    contains the completion status from the previous callback invocation (=
+which
+>    would typically be 0 for success since we only reach resubmit_urb on
+>    successful URB completion). Other CAN USB drivers like usb_8dev print =
+the
+>    return value from usb_submit_urb() in similar error paths.
+>
+> 2. The local variable netdev is uninitialized when gs_usb_receive_bulk_ca=
+llback()
+>    reaches this code path via the short read case. The function declares =
+netdev
+>    at the top without initialization, and the short read check at the beg=
+inning
+>    of the function jumps directly to resubmit_urb without ever assigning =
+netdev.
+>    If usb_submit_urb() then fails with an error other than -ENODEV or -ES=
+HUTDOWN,
+>    this code will pass the uninitialized netdev pointer to netdev_info().
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Fixed with today's PR: https://lore.kernel.org/all/20260123173241.1026226-1=
+-mkl@pengutronix.de/
 
-Fixes: 3ecc09856afb ("can: at91_can: add CAN transceiver support")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20260122114128.643752-1-zilin@seu.edu.cn
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/at91_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+regards,
+Marc
 
-diff --git a/drivers/net/can/at91_can.c b/drivers/net/can/at91_can.c
-index c2a3a4eef5b2..58da323f14d7 100644
---- a/drivers/net/can/at91_can.c
-+++ b/drivers/net/can/at91_can.c
-@@ -1099,7 +1099,7 @@ static int at91_can_probe(struct platform_device *pdev)
- 	if (IS_ERR(transceiver)) {
- 		err = PTR_ERR(transceiver);
- 		dev_err_probe(&pdev->dev, err, "failed to get phy\n");
--		goto exit_iounmap;
-+		goto exit_free;
- 	}
- 
- 	dev->netdev_ops	= &at91_netdev_ops;
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-base-commit: 5778d65d4b85d4929d30998863e08e20af4b6113
--- 
-2.51.0
+--dranchuimqg5imao
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlzsbQACgkQDHRl3/mQ
+kZwknAgAtO7KldQzCON7eUIK4Cv4XEhBIQPOU3LVx8kJnG10YBgXLTZUB6dQhFJt
+rhfayiDhPjCkY9z/CHHLXAWEVfxF1pRqrdmsOQePSKRlWkzdZACJKMORSXn+luss
+XNWPi4vQqxjmgIwtzF/SN+qJkqHv8s0ml5PyR1sB1IeUwo6G14WZbu3iHG6YXGlh
+m1Vkb0H+nJ4kuwnr+T2p8Y6nOpXq5IrvWq/XGgKOAE6orIx6kREOZQoIHGyg/Obf
+8nvdt4Lcf3+VQbo0Xz/neidJEErgRNWLoH9hHErGBlTY5sK6OrpNuox4CJ3e9Ur6
+CqWAOfDMGvB1ejuyCnU+TTZZyee+lg==
+=U/es
+-----END PGP SIGNATURE-----
+
+--dranchuimqg5imao--
