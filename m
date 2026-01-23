@@ -1,150 +1,73 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C846E28853A
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 19:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110529E0E9
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 20:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769197887; cv=none; b=WmdX0fqW4M4b5kBOGlwGhhYZJbVrxhRMhW+0PUEuFOL4PDkv8R8GqJACnqIcKGPgXXSlL6QzfP6ZgEaSsTCNDu+knJj8IE0WNuabe24Fcc0Y3ri2jOLw5dy4WZRMDqdh9TWrKrNNUw8uaqrXMAVMXaLFQ7a78oZjMoQVENoDHak=
+	t=1769198714; cv=none; b=WWrEs2de4Ax6zPxoWu/JUUvpvM1eJKULJ4p6IOCj8NnOlzRrzb4Tjg8tARvsuhBIClzKG7kSYs7iFOLAp7BD7g9y77aaQZMYovDaTu34h37lbqpsfPA5RNRWlDmVZzT3/vWjPSZ3XBRsT3R8Ug2ItdLmnxqG+3VFAbQl8Vp/ffk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769197887; c=relaxed/simple;
-	bh=CsVAGnJYyt1gpIKIOyO13ylzg/PQgaXnaqCXcwteapg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JnX3Sm8FdtFjG9HKrr+CncRuMA3bGHyfftEYu0/GdCK+mYfHkCkV/f1+TaRdnQulX8ynHsQYBPwJkr9CMoSxqQEnOBTRhIXOSRAFh0/EarYAgLs4Ijl8iYyu0EjlN4zgdArSTEKIxAD/wn4QQT2rWndhfieFhqYQinSCjIh4uKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HAUuY9eC; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1769198714; c=relaxed/simple;
+	bh=Ldu/Iph9Sl2g1wo4/QwtGKNLWTdTKEPfd1q0etXiFcY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fcbTUjmqzBWgnydXhxZe4hpRnG/JegoDW13P0Sb1s1SmaBlSjJC+SiW59MzKnhh35uNnpW6XMO5iYWyjHFdoTD0arJwY5ZaCBoJWmRpwKtQ8Sov3btlLoQ1fXRXlc2M8LSNDrOxXVv4J+pHDblt9dSBgXWkqEuasYYyUOQqBl2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5uIGOQC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HAUuY9eC"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47ee937ecf2so22145805e9.0
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:51:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769197884; x=1769802684; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MNmEBAcCOcnCArGc8pe5UUOL3dPUYv44y06uRTFe1O4=;
-        b=HAUuY9eCLm66QWg1scOsIxXcs9xNNZ16ViTINKCwu7yHrHQyB1qUdo7ppKb+iq17gM
-         ewiffFx5oqEKaidR7I5MeN/dsv/eTBuB20uC+xyN4lsny7DZOyLfXYsDAnYGH8s/ymRM
-         DncQHYM4bxCyvbQ7H7tZ7dY8VbZw5JFx4VxlExEiAdZ8idjnaPyZ4mYWxLKvxtCcJ26o
-         2JBBFGx+y/A4dvSVEc3cJKZsmcq7TqpQpsqk8si4xSWk7vA1MdSYvB+5I3hVmdd1Ri75
-         pS2nlyLFLku8BEcuUV2v7zVt73QID7u66vFKxb+/4OfSAB8RBTv2NZsZg4+4HQpwnhYx
-         Wd6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769197884; x=1769802684;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MNmEBAcCOcnCArGc8pe5UUOL3dPUYv44y06uRTFe1O4=;
-        b=snMwYPTiPoHd5yXRauOgVLlBgA6+1yfJgqgmAX4WJMl0RzFDilhoiZoXldY3jCzjbw
-         byj2FPkY/5ewMgMY7UQcqMR0Vd9x7ciPPUpnjugPEIORyOpwEagBehBtaVcCiljjd+Ls
-         j/p8/IjUUklT2ciOCSEPBremfeDL7sdZ41RWPQIx+ScVE/ssSbDUFHvpGmHdijvPZqbx
-         +rqK1zKLux3XNqe1VmLEF700j+in6RAuUI+3C4GW4xHXQMgvcRsUXyKHTlqCM657mPki
-         MdG++ut+VD+dFcve/n6irBI6xxner3lVFXciAWJPyWH+6y3EdiY1DQ3cDkSzCnW80ol5
-         ocKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdoebgr4ykn7xFOgmdCiQUP2txe373seccSNLmmPD/A1Nae+pj3oqYMiUzlU7anX8guBVMjj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDn9y823QjpLZXMU6/jv2ArPnWMR9A/k2B5UlG461TxAr/s+rm
-	BscIAEeCW7cPoWw9+h94pxE1pXe9hUlECLkyG7F5skVDbbC+QgsFhsErsnkB7aRH7Yk=
-X-Gm-Gg: AZuq6aJ308avvHhouHogx++wPx3st7RY1el5eQ5Sx8Idin5bmRNhjDV2yNjcfzBnIUC
-	lMplkw0toV4rXDsEPkUuvfvM3ZzpnJY3gPet8pPWGFeeiqDtrnupiZtICmYTqaiNpm2X3R5DBKm
-	xW2/AQDRSSdAK6DPbhE9I4cFtYtMSOD/udlybhgQBwnOTLMRITp0rthRAuVu32EpCl7L5FIqzzd
-	Wv7TxZAU+oEme36IagxDpGSLj9+VO1fYr6zTnb6pzWzHprlKFo0TVmOS3WArUjPXIwFuC6+2Kgb
-	FFs8dsbo+9leBcEtmxNl+6zfoKtt2q3T/rqFmZNsXhA6utiV/DqDNen0Nh+2wrXmwJiDMZTYlBH
-	pHwEnbAJK29u5ruke2uIMZOpkGbZaTcQEbinZCHk+38qA4QrLQ25yMlYdOsLWYm85ZGIKrdBkU9
-	0qc1FTO0Cd6NwKBtFc
-X-Received: by 2002:a05:600c:3e0e:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-4804d307b0cmr68595535e9.16.1769197884089;
-        Fri, 23 Jan 2026 11:51:24 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470bfe42sm156761385e9.9.2026.01.23.11.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 11:51:23 -0800 (PST)
-Date: Fri, 23 Jan 2026 22:51:20 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Chester Lin <chester62515@gmail.com>
-Cc: Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank Li <Frank.li@nxp.com>, linaro-s32@linaro.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v4 3/3] dts: s32g: Add GPR syscon region
-Message-ID: <34ac20223cf6833a0fe4291cfb2db5309f4e5eed.1769195864.git.dan.carpenter@linaro.org>
-References: <cover.1769195864.git.dan.carpenter@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5uIGOQC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C348C2BC87;
+	Fri, 23 Jan 2026 20:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769198714;
+	bh=Ldu/Iph9Sl2g1wo4/QwtGKNLWTdTKEPfd1q0etXiFcY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=F5uIGOQC60CAbbESyp3DGk1hvnN0d33H/8oWwoFE6pCLSWb6xgSMaBz3sJ+uT/rJi
+	 grLPgFgBEPB/LPWjWwRZmzBbmRe2kNluYTTe6XXl1cV4vKUJSJo+oYWkSQ2SdVdrP0
+	 /WcpN59peXqAcwj/KSwhaOrnMsNxSq9IDf3yJ/QfmWfsws8IUtPCyd/Sknlx1AYUq6
+	 8FnTVB98d4oa6LgdeF3OBGRi9D2tonJMn4ZeES56YoJipfXSRp8mappPH2SbaaNxhQ
+	 lDR3usIbYVV5SWbTYxnOmq4977oVCMDmgYYes+qVApFy+A47oZQTO2TLSFG3tPh99+
+	 gQoUsPgnxjBXQ==
+Date: Fri, 23 Jan 2026 12:05:12 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org,
+ alexanderduyck@fb.com, alok.a.tiwari@oracle.com, andrew+netdev@lunn.ch,
+ andrew@lunn.ch, chuck.lever@oracle.com, davem@davemloft.net,
+ donald.hunter@gmail.com, edumazet@google.com, gal@nvidia.com,
+ horms@kernel.org, idosch@nvidia.com, jacob.e.keller@intel.com,
+ kernel-team@meta.com, kory.maincent@bootlin.com, lee@trager.us,
+ o.rempel@pengutronix.de, pabeni@redhat.com, vadim.fedorenko@linux.dev
+Subject: Re: [PATCH net-next 0/3] net: ethtool: Track TX pause storm
+Message-ID: <20260123120512.162ae4d9@kernel.org>
+In-Reply-To: <7ab606d1-9f65-4123-827e-58650eb8944a@broadcom.com>
+References: <20260122192158.428882-1-mohsin.bashr@gmail.com>
+	<7ab606d1-9f65-4123-827e-58650eb8944a@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1769195864.git.dan.carpenter@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add the GPR syscon region for the s32 chipset.
+On Fri, 23 Jan 2026 11:36:33 -0800 Florian Fainelli wrote:
+> On 1/22/26 11:21, Mohsin Bashir wrote:
+> > With TX pause enabled, if a device cannot deliver received frames to
+> > the stack (e.g., during a system hang), it may generate excessive pause
+> > frames causing a pause storm. This series updates the uAPI to track TX
+> > pause storm events as part of the pause stats (p1), adds pause storm
+> > protection support for fbnic (p2), and leverages p1 to provide
+> > observability into these events for fbnic (p3).  
+> 
+> Jakub, should I go ahead and re-submit this patch series then:
+> 
+> https://patchew.org/linux/20251107002510.1678369-1-florian.fainelli@broadcom.com/
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-v4: no change
-v3: no change
-v2: Remove #address-cells and #size-cells
+Sounded like Oleksij is also interested so let's go ahead.
+Presumably an attr in ethtool -a/-A ?
 
- arch/arm64/boot/dts/freescale/s32g2.dtsi | 6 ++++++
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 6 ++++++
- 2 files changed, 12 insertions(+)
+> Looks like this is exactly what you ran into here.
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index 51d00dac12de..b954952d962b 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -325,6 +325,11 @@ usdhc0-200mhz-grp4 {
- 			};
- 		};
- 
-+		gpr: syscon@4007c000 {
-+			compatible = "nxp,s32g2-gpr", "syscon";
-+			reg = <0x4007c000 0x3000>;
-+		};
-+
- 		ocotp: nvmem@400a4000 {
- 			compatible = "nxp,s32g2-ocotp";
- 			reg = <0x400a4000 0x400>;
-@@ -731,6 +736,7 @@ gmac0: ethernet@4033c000 {
- 			compatible = "nxp,s32g2-dwmac";
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-+			nxp,phy-sel = <&gpr 0x4>;
- 			interrupt-parent = <&gic>;
- 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq";
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index e314f3c7d61d..be03db737384 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -383,6 +383,11 @@ usdhc0-200mhz-grp4 {
- 			};
- 		};
- 
-+		gpr: syscon@4007c000 {
-+			compatible = "nxp,s32g3-gpr", "syscon";
-+			reg = <0x4007c000 0x3000>;
-+		};
-+
- 		ocotp: nvmem@400a4000 {
- 			compatible = "nxp,s32g3-ocotp", "nxp,s32g2-ocotp";
- 			reg = <0x400a4000 0x400>;
-@@ -808,6 +813,7 @@ gmac0: ethernet@4033c000 {
- 			compatible = "nxp,s32g2-dwmac";
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-+			nxp,phy-sel = <&gpr 0x4>;
- 			interrupt-parent = <&gic>;
- 			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "macirq";
--- 
-2.51.0
-
+Kinda, the machines reboot on panic. The problematic cases are those
+that crashed in a way that didn't trigger normal reboot cycle. 
+Or got wedge somewhere funny.
