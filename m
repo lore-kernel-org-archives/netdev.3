@@ -1,113 +1,69 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F889315783
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 16:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD00B201278
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 16:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769185373; cv=none; b=n0Gy08Rxh1zoHoFfaH/N3uu4JB/hYBA0MfSyMzZCau4RDNL1wJCaWt4agx0rX/tbpG59V0QSH/jqp0uf/y2MLjq/Gb442uIL7LfBDom+7DayIk7gt1GfjAKSk21BE++pnXrltQ/jbbiFBNXKwJkbPTTednXcHcrRrv2BVgul+as=
+	t=1769186744; cv=none; b=LxKSrA9dhj86v7SsSmdlE2rkBgMPdC7mC3mzhuTI8dvbdAWxdK9plYh4Qtyl+R8UuK6+MsXrf4dsohdB6fQerteMHR3wkSoLvN97Q8XDeJJZxsOUaUYBRejBq7X88kkxubjnKIpaUzT8wL5Vs2Tdl5IK6dfHQjPERwqEq3HSIXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769185373; c=relaxed/simple;
-	bh=VrAPEl39e9anIsEe4zCu0gxxfqGtmKVF9Grnf8Bfcdo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CaH9/KM5UW1svhQLdEMe1coTDilpFJZq5gSqBfjKde7ogm0jy1RRpo/gteGDGKutji125OmAxSk1Ly8TbicgKNWJ69IK+quLvAxgzB7rpZvWXNwmABjVUU4E+P4L0jFPbVGcNiYgnUj+s30SebrT/YY0m3KPXqVsOQguHV0IaGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/AliVKM; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769186744; c=relaxed/simple;
+	bh=VGbNVNahKWwLXw/qQCNp/J4Iq8B/K42acEfB6yri4DM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CCXcIQCg0BtwmMDpMV14PVom6UD08u/GrVz/0vZ/WVLeqUUKavei83iGZJeD2xHe3UrZ+AZ2F1N0l18QelYBG1O4reO2gBfg0P/3zO5umxqH5NndnicwEtipUuIKKtiX/hZpU4X5yDYln6atnJmx/kc40wiMOHbBV6HWArQXEXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBBQIoRz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/AliVKM"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c5e051a47ddso1575357a12.1
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 08:22:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769185371; x=1769790171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y7TW7msSZ+2wc4dxwFxb0UJCP9LbS8qQBJKa9dBUSTc=;
-        b=T/AliVKMImlRWcVBrgVMRaF55p4gs82eul1yEUE21APtiXJTAFsvCt2DtDtDaZnuQI
-         F33Oz5/zUrFS4CdYXS5r8zwK0SdDNu7c1U2qQyZ+GtwwLoUm3W6sY1Sve6w1A9XHvFrX
-         pysIUjfHhoetNdCmzsvRRr1FJ7z7B9S8HnFz1MlugzH4Rvj2hiaX9uP7NPD3tvk+Vm+a
-         /w19kH4ysDmH/qm2COuLK+0+R0uV5XV68y5FHU5Cmrv5WajjquJFb4ULRNDX3y7O3710
-         1Zp8fqSRtvMkjFtM1anoZ+4DY/QumFqLbXN42yO7OuFcNwUyDJkrXhlkbuCQ+Ds2ipVd
-         0RCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769185371; x=1769790171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Y7TW7msSZ+2wc4dxwFxb0UJCP9LbS8qQBJKa9dBUSTc=;
-        b=fp7CYZ30m1IFs8xSzdsJnlK0Gxyv9LXJADnG9HFnlJa5kkEQg1M2MS8QvjM1t6/e7m
-         zspCnVlWex7DBUpkusW9X+2uwUM/9bVxaUmEhJtXDGD/TwevPQlUjv1VtCPK1VM4+6He
-         lRqtYsLiziCTkVp8gtG16/7zQnYIW4Y26HUEtZ9rIBIUtixbFofyIE9flRb5jxR86j+8
-         hr2TMkiA/R+yVrvtlsQ9kZBCmlJJv1OCUL2YruUm8BZ15xLqGMY3bJ27CZmjnovtQrlx
-         uFXWzywz1SixtIrIMT9p3pDTvpnTTn+R2AN7dL31PLKHxd1RdaUwm5SRg29dg+LD29PL
-         ybPw==
-X-Gm-Message-State: AOJu0Yx0/QM8dlDthbfj1CwngP1ArvGi/po6mrbuZsE76TvDYrrdjfk2
-	kfQ0KDXeWVEjmHftHgP3rd/JD/pC6x9YEVC2KSmxN80QD4pivkGJCm/L6QtYjQ==
-X-Gm-Gg: AZuq6aIMIk/aOCcPanoDe7NGMbjzoKwtA+nw82PzxcpWdkj1dCa6ZhBYqxI6EYsDNya
-	NEaQdB0kTtSWcUDhsi13kBaVQfv/w0NMLCXWNao5+5lfU3U98u/B2RLqj/CezoANuxUUhkLW1im
-	WBk56PqyKGeqAnv5XcIviQalFQ5+YG2hHjWJabTvAjuWqjcBeEAmNwYX1ycYqx5USJUIRAalw0i
-	dq+FyEBOCnkfcpGjR4tB64DcjlZ3y/bS1STAopATTASZQPcN082OmlBghFrsUX5Ovo7CS/4Obcz
-	8RH3AloPsvG6VU/g3euB21EbFv9AmxaBIpOVROeAKrHEV4KhyUu85Nr/a2bFkZssU8L0Dnh/F47
-	ziAcVlgmEQjvjU/QFpLddTTZq7Vvehu4XcmxjO2zxj5Q9Lyn6e5bKHrsFFggcWAzHZ53H5m8rVP
-	s4CrudwyBLRuDutUUntiIK068X3VdPJ4lOd7hHTLnEOVO9hlIErHg0xA==
-X-Received: by 2002:a17:90b:57e3:b0:352:c410:35ca with SMTP id 98e67ed59e1d1-3536700c58dmr3245949a91.7.1769185371223;
-        Fri, 23 Jan 2026 08:22:51 -0800 (PST)
-Received: from d.home.mmyangfl.tk ([2001:19f0:8001:1644:5400:5ff:fe3e:12b1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3536dc50882sm2496967a91.16.2026.01.23.08.22.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 08:22:50 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Breno Leitao <leitao@debian.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 7/7] vxlan: vnifilter: fix memcpy with u64_stats
-Date: Sat, 24 Jan 2026 00:21:39 +0800
-Message-ID: <20260123162159.2877941-8-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260123162159.2877941-1-mmyangfl@gmail.com>
-References: <20260123162159.2877941-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBBQIoRz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292A9C19423;
+	Fri, 23 Jan 2026 16:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769186744;
+	bh=VGbNVNahKWwLXw/qQCNp/J4Iq8B/K42acEfB6yri4DM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fBBQIoRz3wwA4swVYscxFnC8Iwj9IVtAtzWeZ/uSqnmYorxr+v5xz6Ya/Kn17FhGu
+	 Hjpp/otTObs82HK7Qih/ceQFz4RBp22sDJpkMcgBAb3KfAg+DnvJJEHrxkn4ZrCLl1
+	 gUuNl1zLTyEZIyYlwqVuuiy0mMHo0VD9cNpZsFj3g9jzGWj6FVp6ak4r1AWtwsMzcS
+	 aj/H2LUb8nE07inSzzE4MQ6Gr6rgjHtiVmSlHwAgb9BAozJEC159i4D6Ox0YqkjxEv
+	 QrHdOPoTErLb86Oil0M+g53onVwmVCYtsMvInajXOBgYc8o7y8OYRb2x0CokuY+edh
+	 5uB+nBOM3VBAQ==
+Date: Fri, 23 Jan 2026 16:45:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH net-next 2/4] gro: change the BUG_ON() in
+ gro_pull_from_frag0()
+Message-ID: <aXOltKyRoWvUTfKf@horms.kernel.org>
+References: <20260122045720.1221017-1-edumazet@google.com>
+ <20260122045720.1221017-3-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122045720.1221017-3-edumazet@google.com>
 
-On 64bit arches, struct u64_stats_sync is empty and provides no help
-against load/store tearing. memcpy() should not be considered tear-free.
-Use u64_stats_reads() instead.
+On Thu, Jan 22, 2026 at 04:57:17AM +0000, Eric Dumazet wrote:
+> Replace the BUG_ON() which never fired with a DEBUG_NET_WARN_ON_ONCE()
+> 
+> $ scripts/bloat-o-meter -t vmlinux.1 vmlinux.2
+> add/remove: 2/2 grow/shrink: 1/1 up/down: 370/-254 (116)
+> Function                                     old     new   delta
+> gro_try_pull_from_frag0                        -     196    +196
+> napi_gro_frags                               771     929    +158
+> __pfx_gro_try_pull_from_frag0                  -      16     +16
+> __pfx_gro_pull_from_frag0                     16       -     -16
+> dev_gro_receive                             1514    1464     -50
+> gro_pull_from_frag0                          188       -    -188
+> Total: Before=22565899, After=22566015, chg +0.00%
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Eric,
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index adc89e651e27..afd5df154376 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -126,7 +126,7 @@ static void vxlan_vnifilter_stats_get(const struct vxlan_vni_node *vninode,
- 		pstats = per_cpu_ptr(vninode->stats, i);
- 		do {
- 			start = u64_stats_fetch_begin(&pstats->syncp);
--			memcpy(&temp, &pstats->stats, sizeof(temp));
-+			u64_stats_reads(&temp, &pstats->stats, sizeof(temp));
- 		} while (u64_stats_fetch_retry(&pstats->syncp, start));
- 
- 		dest->rx_packets += temp.rx_packets;
--- 
-2.51.0
-
+Am I right in thinking that the motivation is to reduce this
+check to zero-code in the case of !CONFIG_DEBUG_NET?
