@@ -1,62 +1,112 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4C02C0F90
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 20:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE092D4B77
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 20:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769198762; cv=none; b=qUCYHdZa7pIV+Efck7Ia3OumhkYCZR07WPnZqK5lUDnGm3HKN0KpKqrEvYdNs6ZA4Z9LoNAlzkJdE2ctHwGUVe6UCM3FzYXLsFd0nztzZApZngGPbdVvBwgB0EXfvkvVhGtE/Ek/61Bf6847r3aaEfz1B+IFMvkaNxLiCaSdwK0=
+	t=1769198821; cv=none; b=uSj/2PHtSDl5dTyvYKON6SPUAnPokDDQd/jXf/UDSkHOmE4tqFq6MzdmUnAL3IkuU8GKLeSy4+BjQJK3AGPoCcq19qeQaEeQ5D3eBIfUEjNrbTwEPSNGZiyVnwHZnW4MS3+bx04eULMTxG4pagrw6dZy6ez1I0ZPyuOzjo+Q5eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769198762; c=relaxed/simple;
-	bh=3gNGcsoLTQpESprHSM9qITX7J/EwDXjQhAKXuOdLHI0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ia4gnQW0OEqqs7+KJlfUsgXwEKiXoQr7r0L/xs1qYpVPkNHagODO7NOlg+hXSPDJO+N+bSBFhnuKyjM8PdsXJo2N+h8P+D9RUbpitjPg7hUFNinuqnpVB6GOvlpiTrfxbQCgkbnQpnA0r9X6hM6lZnc4zhlicm2GvugYX6whrOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=t2CYYPro; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
+	s=arc-20240116; t=1769198821; c=relaxed/simple;
+	bh=lcCyOJKDqJ7rIblU2CVVC7VTXDVTs9HmqHKKqlBmPSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pVF4vfyLI2sxbL9udJKdMyFRsD8E7LCrSrQclSz0dIosRGgLXqXoV/2598BbYG7o9jqkkONXDkzigIJ8+Recgn6G3FFuZzyA+3ULTpuuFq0XiU+ive/fB78erIhjRgRx9D9SNSJrZ2qk4ZiX/bw7X0xZLU2kUCgeuQtZib4uGr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJ4g5Ny+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="t2CYYPro"
-DKIM-Signature: a=rsa-sha256; b=t2CYYPro6XMOCykXxB1+CZaXa+LmneroQ1lQ8D57OZ39yMFBE3d5p5cu3DccE1RVdqi/4GhMnPv/gCWUFJWDh6g91Ps385CJGmU7OfZtmU6ueC43qgfgYNj3BRAQf0pT58e118xEDe7BhQVLkQ9N0uEzgHtE8zfEqzCP6wcezIVHNLzAfcccRLU6hG6BtIbAkTVq50hM+iG5200+XzQSBt+C3yF25+UI1mB17tGH4m4VAM6gnMb7sT8Qec1m7OqZJxKuh27PGm+A3+zWVGHP/pPb2ky9EpuJ/7ygy5UR9UeS5QWvKxj/0k5Q2XHcoZpnBxhhFCe9Zf7pFtHUjloENw==; s=purelymail1; d=purelymail.com; v=1; bh=3gNGcsoLTQpESprHSM9qITX7J/EwDXjQhAKXuOdLHI0=; h=Feedback-ID:Received:Received:From:To:Subject:Date;
-Feedback-ID: 21632:4007:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 2131532355;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Fri, 23 Jan 2026 20:05:51 +0000 (UTC)
-Received: from peko by dell.be.48ers.dk with local (Exim 4.98.2)
-	(envelope-from <peter@korsgaard.com>)
-	id 1vjNPh-0000000FoXe-1yWM;
-	Fri, 23 Jan 2026 21:05:49 +0100
-From: Peter Korsgaard <peter@korsgaard.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org,  linux-usb@vger.kernel.org,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next] net: usb: sr9700: rename register write
- commands for clarity
-In-Reply-To: <20260123080409.64165-1-enelsonmoore@gmail.com> (Ethan
-	Nelson-Moore's message of "Fri, 23 Jan 2026 00:03:58 -0800")
-References: <20260123080409.64165-1-enelsonmoore@gmail.com>
-Date: Fri, 23 Jan 2026 21:05:49 +0100
-Message-ID: <87pl70rt5u.fsf@dell.be.48ers.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJ4g5Ny+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00C6C4CEF1;
+	Fri, 23 Jan 2026 20:06:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769198821;
+	bh=lcCyOJKDqJ7rIblU2CVVC7VTXDVTs9HmqHKKqlBmPSA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jJ4g5Ny+aiAqxEyJa6i4cYIiMTtz31cT9PbWgpg5hO156GCaEA6A/dLph2KSmI9YM
+	 XW1zDVkcxT6uTPCKCxLhBdnqnOztfYN35hzzWOzl6KJS4w5E7bKyMFeTcs+ZN8rB+T
+	 v91hRopEjMOOooQXJ8wMblQssi7+n5N4lH/ZRZhRernhrGbNV98DnMjBGb1+wUypb6
+	 PwPpLXqQQNPvEo7x4vbP7Y0m2jG65qDZjDDQqiKGRrCzCIxKXtP3vsx4AAcUSZ+Eqz
+	 9lKoDRLyTIb63t2c5RACd+2evBz48aIgioiXQaqmVArgl2ejEBhLFjSD6SNdoQ9Xcr
+	 +qKXF/WaZ0daw==
+Date: Fri, 23 Jan 2026 20:06:57 +0000
+From: Simon Horman <horms@kernel.org>
+To: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	dan.carpenter@linaro.org, pmenzel@molgen.mpg.de,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH iwl-next v2 1/2] ixgbe: e610: Convert ACI descriptor
+ buffer to little endian
+Message-ID: <aXPU4YQi73T088lS@horms.kernel.org>
+References: <20260122164632.112607-1-piotr.kwapulinski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122164632.112607-1-piotr.kwapulinski@intel.com>
 
->>>>> "Ethan" == Ethan Nelson-Moore <enelsonmoore@gmail.com> writes:
+On Thu, Jan 22, 2026 at 05:46:32PM +0100, Piotr Kwapulinski wrote:
+> The ixgbe device registers/descriptors expect little-endian ordering. Make
+> the code aware that the e610 adapter operates on data with little endian
+> ordering. The extra conversion is required on big-endian hosts. In most
+> scenarios this conversion is not required.
+> 
+> Fixes: 46761fd52a88 ("ixgbe: Add support for E610 FW Admin Command Interface")
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+> ---
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+> index c2f8189..f494e90 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+> @@ -113,7 +113,8 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+>  
+>  	/* Descriptor is written to specific registers */
+>  	for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
+> -		IXGBE_WRITE_REG(hw, IXGBE_PF_HIDA(i), raw_desc[i]);
+> +		IXGBE_WRITE_REG(hw, IXGBE_PF_HIDA(i),
+> +				le32_to_cpu(raw_desc[i]));
 
- > SR_WR_REG and SR_WR_REGS may be confused at a cursory glance. Rename
- > them to be more easily differentiated to prevent this.
+IXGBE_WRITE_REG is backed by writel.  And my understanding is that writel
+converts values from host byte order to little endian.  So I'm confused
+about where this is going.
 
- > Suggested-by: Andrew Lunn <andrew+netdev@lunn.ch>
- > Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+>  
+>  	/* SW has to set PF_HICR.C bit and clear PF_HICR.SV and
+>  	 * PF_HICR_EV
+> @@ -145,7 +146,7 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+>  	if ((hicr & IXGBE_PF_HICR_SV)) {
+>  		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
+>  			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
+> -			raw_desc[i] = raw_desc[i];
 
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+I'm also curious to know what the intent (if any) of the line above was/is.
 
--- 
-Bye, Peter Korsgaard
+> +			raw_desc[i] = cpu_to_le32(raw_desc[i]);
+
+Please don't use the same variable to store both host byte order and little
+endian values.  In this case I'd use another local variable, say scoped to
+within this block, to store the intermediate value.
+
+And if raw_desc will be used to hold __le32 values, it's type should be
+updated.
+
+>  		}
+>  	}
+>  
+> @@ -153,7 +154,7 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+>  	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
+>  		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
+>  			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
+> -			raw_desc[i] = raw_desc[i];
+> +			raw_desc[i] = cpu_to_le32(raw_desc[i]);
+>  		}
+>  	}
+>  
+> -- 
+> 2.47.1
+> 
