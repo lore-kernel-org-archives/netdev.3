@@ -1,94 +1,63 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8B928488F;
-	Fri, 23 Jan 2026 03:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A287133F38C;
+	Fri, 23 Jan 2026 03:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769138893; cv=none; b=txJuKtLYBTNjJSSyzRBsHl+D194DzbycScsP88DQ0N9HQPD/9bx3brZKU1Cl5fWrcsnZiIYqutXLRvM2+f0UgdVqyOS56MKMeL+mNQ3ZZEtlGwroplnBzV0eUFvy6PIC+IpcOrL9yCy483An6PZZ0AAKn2ltqehfuS+/AOiMj4g=
+	t=1769139832; cv=none; b=AN2m2WQmxFs81jTghAP67veNieRHvVWS0CPSZBX8usl6B8MlYqrwhSoySj/r87nmC6I3cU2GTJaKIe0ytpNCuCV2zTb1y98os+qx9sDtg+sAx9AP25vC1O5Fx3P7FzMq8ktK4UVI1H64gFq5/rGOY/LRxTj9G1aNGMmDOUs2gDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769138893; c=relaxed/simple;
-	bh=TF9xwVDzdSE4dVujx0IYpy0EXeCsIdFwgvfICNgQ8TQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZSyQbgTcG7ZYEQ6Gua1122lTyfBADYp23YwS3DqoUZpFXPNdkiSrZiyK3oAm8UW5Uani3gEs1pPucGbNAwUOT0HL6NGc4ILH20GvzJSiy6+RJIvOWV7euurgrE8Ffam2+ZypS8pV2nAOgi0JMuelJdYbZujfkiuERSOAtQiDRL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mEEvkfU3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1769139832; c=relaxed/simple;
+	bh=eeX1BPETurOKxiea+lm84+RmzW9ljWpsKxxh9YWwq28=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=MbGw+x2nDgiXBkd3Fjd1pdF28wFaVKNQExNqhJApUNyjxaUVDgILN2fbuowAZ1HntNKKvtiZqIw+sJDYaGn4C9FIm8MSsp667OOR9ik+wxEmAxoDu2KlhfLC8+xEaF3HBLsWvuvZx3s86i6+dPWddTtEARaoDpmcF3eyueuhpY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvlpxBBq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mEEvkfU3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=edhtLOg1x6VOOaFWLxD4NbGr1OUxUi82yheN+qEaVtc=; b=mEEvkfU3LpfqvGui+Y41Fk+psP
-	8yg5siRLrVTc++1GaGRAfSklGR2e3OasaHCzdZs2xRmBB/GGgFfj1fjOfJHWRFnyHAD/zePxPiksY
-	Iy4eDnXWk7OCnwjOu+XtILlJ3O3yEx//8D5Jdt/x/lP/y+aiFDYwt7UgeR/SWDqo0rkc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vj7pi-00440V-V1; Fri, 23 Jan 2026 04:27:38 +0100
-Date: Fri, 23 Jan 2026 04:27:38 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "illusion.wang" <illusion.wang@nebula-matrix.com>, y@lunn.ch
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, corbet@lwn.net, kuba@kernel.org,
-	linux-doc@vger.kernel.org, lorenzo@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com, hawk@kernel.org, ast@kernel.org,
-	bpf@vger.kernel.org, sdf@fomichev.me, daniel@iogearbox.net,
-	john.fastabend@gmail.com, edumazet@google.com,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 net-next 01/15] net/nebula-matrix: add minimum nbl
- build framework
-Message-ID: <88c7e349-f941-4216-89ca-70a49e82b378@lunn.ch>
-References: <20260123011804.31263-1-illusion.wang@nebula-matrix.com>
- <20260123011804.31263-2-illusion.wang@nebula-matrix.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvlpxBBq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D1FC19421;
+	Fri, 23 Jan 2026 03:43:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769139831;
+	bh=eeX1BPETurOKxiea+lm84+RmzW9ljWpsKxxh9YWwq28=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=uvlpxBBq1OagRFq+Pff5xOQfxQzl4VfbUE78hjs1jw/INWOQijrlJjtWnkcgJefoh
+	 bpW0wPtOL4n7dyjhmk5znyJ5Xmh2k01Tz4haIkC4C3fgeyownfG/Ef8fHlSxs+5lK0
+	 BuG2inU6CnjE5ZDKfKHviu0cAlNhuFeA6/4kvu2n/C+yUOYJI5oHknD2IiC7t+292j
+	 oySy0e0ydTiobG7oi6gi0LFoKxYq2SztMRML6KgvRMNYzzeXB35dbbPMiZ+FwHWki7
+	 pcdk4nsHvOz5v0Kg5m62GkwqTrSyraY5Bam/ymdgms/fY7OJnLhxbDGp4nzaHXDSxY
+	 x3Xc6SOyPmGBQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CA1263808200;
+	Fri, 23 Jan 2026 03:43:48 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v6.19-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260122170016.3148026-1-kuba@kernel.org>
+References: <20260122170016.3148026-1-kuba@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260122170016.3148026-1-kuba@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.19-rc7
+X-PR-Tracked-Commit-Id: 4a3dba48188208e4f66822800e042686784d29d1
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 0a80e38d0fe1fe7b59c1e93ad908c4148a15926a
+Message-Id: <176913982749.2385556.5703159874103942237.pr-tracker-bot@kernel.org>
+Date: Fri, 23 Jan 2026 03:43:47 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260123011804.31263-2-illusion.wang@nebula-matrix.com>
 
-> +config NBL_CORE
-> +    tristate "Nebula-matrix Ethernet Controller m18100 Family support"
-> +    depends on 64BIT && PCI
-> +    default m
-> +    select PAGE_POOL
-> +    help
-> +      This driver supports Nebula-matrix Ethernet Controller m18100 Family of
-> +      devices.  For more information about this product, go to the product
-> +      description with smart NIC:
+The pull request you sent on Thu, 22 Jan 2026 09:00:16 -0800:
 
-_CORE is a bit unusual for a driver. CORE is generally a library which
-is shared by a number of drivers. It does not have a tristate string,
-it is just selected by the drivers which need it.
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.19-rc7
 
-> +static int nbl_probe(struct pci_dev *pdev,
-> +		     const struct pci_device_id __always_unused *id)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +
-> +	dev_dbg(dev, "nbl probe ok!\n");
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/0a80e38d0fe1fe7b59c1e93ad908c4148a15926a
 
-Please don't have pointless debug messages. If your driver does not
-even probe, you should not be submitting it.
+Thank you!
 
-> +	return 0;
-> +}
-> +
-> +static void nbl_remove(struct pci_dev *pdev)
-> +{
-> +	dev_dbg(&pdev->dev, "nbl remove OK!\n");
-> +}
-> +
-> +#define NBL_VENDOR_ID			(0x1F0F)
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
