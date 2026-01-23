@@ -1,77 +1,68 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5DD285CBA
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D28B2C15B0
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769187806; cv=none; b=iSfA6q5I2zhQf3BWmKHvYEd16jN0a7YaV1BhaXfdaacyWz2k5SUOZqBvORZ3fPp6XGX8djGCpEgR+k7+xmozL0Ad6vYzd2XWA5P2i8XElzl787yY76r7AQG9OKkyXh/ybicPqaedFG/0njon17QNCt5zxIhnRZyS6wjENYgbTII=
+	t=1769187868; cv=none; b=retG+lcuOA3OyBWV1MLVehFZ1K2MrYzdeQGX7LwDJZmO6/SBQ/g/QV9BNBlGjA3BL3/Fxz4rLeoEbwLQqBOvXQeZv9wVHthg04Au9/QuAznfJe1Xgq1Sx6pddVNFQCSiAtlvwgAk5++ZIqOU1FMaCVP5cloQ+Re7hWzpnfs9Klk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769187806; c=relaxed/simple;
-	bh=NhgzJvxSjijv1UBl5vqceNfEmtassV+8Z+WDXiFYaYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NV2aDxruYvNpT0ISrZ1YgGCSgKFuW17g2ES1BuvoUnG0tCnWLDtNyT0vL0QbvoudxZ02/KjFZ/15/oIr5VWMAUFvC5BOBaLACc7KwaSNBMLXei0arzQWGDSMHAugraz8NOKR1hL3N8a/qJXRt+8aRLmtUaywXp2iHzvHjD0d4EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eubQEOwP; arc=none smtp.client-ip=209.85.210.178
+	s=arc-20240116; t=1769187868; c=relaxed/simple;
+	bh=UfhKSDPfjpBklY1VmW6pD7RZp7on50tJar2pyItjx/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SPGt9re7eRJHjVYG8DFCBthgo5O2pjZ/Vi11uKC4oXk4LZlquXbttc0cuS8zW2pwXyR3TuNhxM8vPjGSgu/VmpvDSpNsXc3e0yKcKcpcRN3X0dELD8EIjO7eXXLEZIHfD2DtM8KRVUSDRqMGrpOXhIKsoYWcw3SfETHI0kNJtOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3dgXMv7; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eubQEOwP"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-823075fed75so1312107b3a.1
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 09:03:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3dgXMv7"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-385cfc572f1so21042921fa.3
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 09:04:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769187804; x=1769792604; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769187863; x=1769792663; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+PPh+f/fZGEIExOliWL4xsOsnlsuK0W3FPm/lFc3wM=;
-        b=eubQEOwPsp3xypqxIa/A+lIZxuDIrCA52fXOpw31nhSqNYUAl1EphDf+BNZsKA75s/
-         7Yx6eaBdVCF0Da8/vs4b7K0+pldRWlF/T6dCrgSTsv/CUT+34O6LDjJ2msGWoCuPf0h8
-         1DFFLlG41NShpt6ejkf0JOlgRTg5EaJk5pBKLFPA7UsH+MbEzsIyW8FHpwexJwKL6gNi
-         ijh8IRpjxVnCDJlS9/qzQ10t8uYXuM4QZQtAkouCcxZ/Dv9Br2NeK0cUtea/1PAS64Ql
-         DoxTsD9g8ZBfKi8Uj0n37R23W8LbiyJ6YOcicZv/mAROvpeX5OLm7dTn7wErICItozRr
-         kklw==
+        bh=fNtDYP15kC1FsZVrax4aaAdb4lBk2QYvOz6fPD9widw=;
+        b=M3dgXMv7CTMTGn2PH+ENDhmcWtIrGZimY0NpuqHlqbpkD9tmE5n8o0fpGPgcncEugc
+         J7xlhJGbyif/tW9hvi7P+Vyv0UwhGBlRmsBQ1paPVVUyvoEgsglNxRw9pbPg3o8FNqua
+         dWqs78WFVjDdB9erNqDlug9W8vNoECyW5FeWLR+9gM0BzBic9VPQezcHv8k7bH5GnnOn
+         ZajBtjJaC7jzzORXDe7cgrVvO1Dr52P6UWJq6LZUlFP2IRuUWKyOfzw6B/zo+yDsG8NP
+         WEy5gkkL+Ye3psCGXA4BDRXdPXSVT9p57PLg+uNggtwF3qiw44dYiuSw9/bhQYdBG5ym
+         jVSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769187804; x=1769792604;
+        d=1e100.net; s=20230601; t=1769187863; x=1769792663;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q+PPh+f/fZGEIExOliWL4xsOsnlsuK0W3FPm/lFc3wM=;
-        b=LB90FjHBY9UAVNTq1hFZj4S7MjqiJw6QWK4LXDui7Rie96AeRWSX/5ntyB69lzWO+H
-         VVbzc85apEuNVTwVL8KIpt7MkY31NPNhoq8aQF6+TeM90jcVbsVgVq+5drRfh+gjuYXD
-         DTJxeCX0j8uFEvL+FGazeQ0AwEMHCoLiYai+MJvMuDI/MbipeUgFY7tJMdMAp2AsrROt
-         E5FRzVMv00wWZpifh14rulaa3T3RAXoxLqBrln9dGFdTcvL3PvVXB3UzlxU/510fJUah
-         3Tg+38PvLbE2+IPaKxP4jxoVJP7DB755piJnPJ1eutR3UGrQiqX/p7Vvpibt6vm2kMne
-         X8+Q==
-X-Gm-Message-State: AOJu0Yw6wfymZLHtL95q7KvsBjXOF3K2OpOICS3wkqdsAHbC6rgpx9qk
-	5JGOxuqBHinK49Q9bZQhSn3Xhu32OPXq3u8rA0YcDOzZ1gy22C1nUnlGYuKevQ==
-X-Gm-Gg: AZuq6aKPiULnDKlabzbpuZro6jKnmdKAHJus2q1/OmnE2Wr624u2zvsnZtiaQYBApyG
-	GYPFimBIIP/KOSN8gm8usXTa2/OTa2ePxn/jgWvqfCbCtu/M5RzBMAcvM1GZtyB0X8tjS+vmhUh
-	77pHUn3AVLte4DKM15eRvVXVTH2kPkhUf3uzp0sc6ktSfksDOQC6JH+sBfJoO7FcCNb+AshHa79
-	C8b+/RAOnJUvwFLOBMPgH0yFLr4Fi6OFOuA8w5j9UC4/fipxEiXEJ0f5ddXbd0Y6mW38neFuEpn
-	cIgh8aMYQ1TNr7eo6wkzFy7KTFUzeX2ksSWvINgKnzUzUB53OJ1gAfaB1LyforVLDrozujmdiV3
-	yZys2Bh6raDKImc9nBe7FoiT9HjsoluJTozZKCg+HQUE87sKwcTHXBkoCy2yuiSeTdVrUp7IT+y
-	dZW1XbxBlI4PXcNKwk5007WQjb/xuZDhZutU+0IJulIO7UKU2ac/KtSQ==
-X-Received: by 2002:a05:6a00:1954:b0:81f:c6d1:5608 with SMTP id d2e1a72fcca58-82317a17c4cmr3170141b3a.1.1769187803903;
-        Fri, 23 Jan 2026 09:03:23 -0800 (PST)
-Received: from d.home.mmyangfl.tk ([2001:19f0:8001:1644:5400:5ff:fe3e:12b1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82318644989sm2638201b3a.13.2026.01.23.09.03.20
+        bh=fNtDYP15kC1FsZVrax4aaAdb4lBk2QYvOz6fPD9widw=;
+        b=Oiz3lRBFj8zGojmk3HARmnDVS9/r1ejmDiq/kk0GxJ+PWGv8sfdl/x7zAXGF5PkDFz
+         qk28UEYuejFr646jxGQznm7dZU4Fk2qy4+IFajdBYxP6pMPlASYvVZAr4oLTWTYZDQXV
+         CxDtZiVe9VIjgMQ5KSZHkVbFAjsxvsgw6Lx2ZcMx/EB1oofyzjdom9HppRi4ofkdtSYp
+         segYeVctw/XR2hywC5jZSpThT15dGXeOaynz2Jl9OFV3TKzBswglZLSs3UFuBlMKIO7R
+         D6ODjG9fua6QTJvgRQnZFeMGhkJZi9rTtPtLJph937UCWPmOguQddVv+VA3b/FnGPOVR
+         PLEg==
+X-Gm-Message-State: AOJu0YzimVa53m8VMGIyTcuNOlm8DWA7sR9NZypq+N4EZHWfjpaukyG8
+	etCrtOHUx622Wi1dJNZJwcy9FmXoDwc5M3JAIdLDhfbztbCUgcXCd0OQZZ8G/U6mpAM=
+X-Gm-Gg: AZuq6aJX6xC8IrLRJvYRIWPYuxx71taqOosvekBEDnqf7L6622Cf2+L4830upGxMoM7
+	ojYnBRlLu9GUX0CkbuPowb42N21gh6tIiT2xqVVHQ6/j5N2mhWslN9AicR6xU10j0OmKksbnJLi
+	Xtq+B8T5z8SMT9Bx6mK4rQdmm3y3GrAtVhPM2KcLdCsPtnTGAYXPaMwk0RrI7YDRl+1iBtpUbvs
+	+hY2IAfVVnm2mKWp0eCm2YRs+uQSYiZlScjURrSVk9zZ9W7f+2Vipr3GxQxjp6Fh1Tsbt47Bpf8
+	/hIONrZj7MTkReXJktpybNZ/5KRN0S4LDxnf3dqDMmcq0SG6ewYda6vgjrTHn2JRP9nP6rI4xvE
+	+3buZEkki1YzqIqX8T2dwc9T0Umoa/pUyjwL0NyA8kH/5GzQWjmQQ2Ym+adb/25sAqMlpT3NJ0Q
+	O/pAZB+xsY0XY6NQ9r1+lX56mTgCOYvJUScJJaoZGSRc8gCMXbpq2XsUw1
+X-Received: by 2002:a05:6512:3e0b:b0:59d:d799:b7a0 with SMTP id 2adb3069b0e04-59de4a23d68mr1186940e87.36.1769187863217;
+        Fri, 23 Jan 2026 09:04:23 -0800 (PST)
+Received: from huawei-System-Product-Name.. ([159.138.216.23])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59de48e5fd3sm801772e87.33.2026.01.23.09.04.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 09:03:23 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
+        Fri, 23 Jan 2026 09:04:22 -0800 (PST)
+From: Dmitry Skorodumov <dskr99@gmail.com>
+X-Google-Original-From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Nishanth Menon <nm@ti.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: ethernet: ti: netcp: Use u64_stats_t with u64_stats_sync properly
-Date: Sat, 24 Jan 2026 00:48:36 +0800
-Message-ID: <20260123164841.2890054-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.51.0
+Cc: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+Subject: [PATCH v2 net-next 0/3] ipvlan: Deduplicate ipv4/ipv6 addr_validator_event code
+Date: Fri, 23 Jan 2026 20:03:53 +0300
+Message-ID: <20260123170412.906280-1-skorodumov.dmitry@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,87 +71,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On 64bit arches, struct u64_stats_sync is empty and provides no help
-against load/store tearing. Convert to u64_stats_t to ensure atomic
-operations.
+This is a bit stylish patches: The code to handle ipv4 and ipv6
+address change are exactly the same. We don't need separate
+functions for them. Just look whether we are called
+with ipvlan_addr4_notifier_block or with ipvlan_addr6_notifier_block
 
-Note that does not mean the code is now tear-free: there're u32 counters
-unprotected by u64_stats or anything else.
+The changed functionality is already covered
+with existing selftests/net/ipvtap_test.sh
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/ethernet/ti/netcp.h      |  8 ++++----
- drivers/net/ethernet/ti/netcp_core.c | 16 ++++++++--------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+v2:
+- Fixed warning about unused vars by specifying __maybe_unused
+  for ipv6-related notifier_blocks
 
-diff --git a/drivers/net/ethernet/ti/netcp.h b/drivers/net/ethernet/ti/netcp.h
-index b9cbd3b4a8a2..9cfddaa807e2 100644
---- a/drivers/net/ethernet/ti/netcp.h
-+++ b/drivers/net/ethernet/ti/netcp.h
-@@ -65,14 +65,14 @@ struct netcp_addr {
- 
- struct netcp_stats {
- 	struct u64_stats_sync   syncp_rx ____cacheline_aligned_in_smp;
--	u64                     rx_packets;
--	u64                     rx_bytes;
-+	u64_stats_t             rx_packets;
-+	u64_stats_t             rx_bytes;
- 	u32                     rx_errors;
- 	u32                     rx_dropped;
- 
- 	struct u64_stats_sync   syncp_tx ____cacheline_aligned_in_smp;
--	u64                     tx_packets;
--	u64                     tx_bytes;
-+	u64_stats_t             tx_packets;
-+	u64_stats_t             tx_bytes;
- 	u32                     tx_errors;
- 	u32                     tx_dropped;
- };
-diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
-index 5ed1c46bbcb1..eb8fc2ed05f4 100644
---- a/drivers/net/ethernet/ti/netcp_core.c
-+++ b/drivers/net/ethernet/ti/netcp_core.c
-@@ -759,8 +759,8 @@ static int netcp_process_one_rx_packet(struct netcp_intf *netcp)
- 	knav_pool_desc_put(netcp->rx_pool, desc);
- 
- 	u64_stats_update_begin(&rx_stats->syncp_rx);
--	rx_stats->rx_packets++;
--	rx_stats->rx_bytes += skb->len;
-+	u64_stats_inc(&rx_stats->rx_packets);
-+	u64_stats_add(&rx_stats->rx_bytes, skb->len);
- 	u64_stats_update_end(&rx_stats->syncp_rx);
- 
- 	/* push skb up the stack */
-@@ -1045,8 +1045,8 @@ static int netcp_process_tx_compl_packets(struct netcp_intf *netcp,
- 		}
- 
- 		u64_stats_update_begin(&tx_stats->syncp_tx);
--		tx_stats->tx_packets++;
--		tx_stats->tx_bytes += skb->len;
-+		u64_stats_inc(&tx_stats->tx_packets);
-+		u64_stats_add(&tx_stats->tx_bytes, skb->len);
- 		u64_stats_update_end(&tx_stats->syncp_tx);
- 		dev_kfree_skb(skb);
- 		pkts++;
-@@ -1973,14 +1973,14 @@ netcp_get_stats(struct net_device *ndev, struct rtnl_link_stats64 *stats)
- 
- 	do {
- 		start = u64_stats_fetch_begin(&p->syncp_rx);
--		rxpackets       = p->rx_packets;
--		rxbytes         = p->rx_bytes;
-+		rxpackets       = u64_stats_read(&p->rx_packets);
-+		rxbytes         = u64_stats_read(&p->rx_bytes);
- 	} while (u64_stats_fetch_retry(&p->syncp_rx, start));
- 
- 	do {
- 		start = u64_stats_fetch_begin(&p->syncp_tx);
--		txpackets       = p->tx_packets;
--		txbytes         = p->tx_bytes;
-+		txpackets       = u64_stats_read(&p->tx_packets);
-+		txbytes         = u64_stats_read(&p->tx_bytes);
- 	} while (u64_stats_fetch_retry(&p->syncp_tx, start));
- 
- 	stats->rx_packets = rxpackets;
+Dmitry Skorodumov (3):
+  ipvlan: const-specifier for functions that use iaddr
+  ipvlan: Common code from v6/v4 validator_event
+  ipvlan: common code to handle ipv6/ipv4 address events
+
+ drivers/net/ipvlan/ipvlan.h      |   2 +-
+ drivers/net/ipvlan/ipvlan_core.c |   2 +-
+ drivers/net/ipvlan/ipvlan_main.c | 188 +++++++++++++------------------
+ 3 files changed, 83 insertions(+), 109 deletions(-)
+
 -- 
-2.51.0
+2.43.0
 
