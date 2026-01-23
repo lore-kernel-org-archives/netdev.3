@@ -1,112 +1,156 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4600262FC1;
-	Fri, 23 Jan 2026 08:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4804D318BBF
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 08:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769158662; cv=none; b=CkBwjFAIrmhr7KnjysFZDKeQboDi2L73ruPVSbjkd1yp4hi3F9oukZ1cuKIS1QkEKeNWkRn41rYEnbUHeV6CjQaLQ7fOecVEJcYMBhN9Kb87OifeRU+YcsNP9br2uYEENLnkf47AUtcrQ2K09Ei59amjQJWQqsLfajXYa9QjwkQ=
+	t=1769158725; cv=none; b=fky0ewZquei/rme6Wrqh+urUG2/uDJpZ/0CozP3h9fWy+GIFRwPe9JXCB5CGx3RsU1ehJKD+byNd6WuU8oD9x+lOQpvFT/10cFtnw8yr6q/7GamBAGZlfgncu23Su20wPnTiDg+D1UWmZ+oOThsWPW6QLC7FOtutRzCQ+2rIfqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769158662; c=relaxed/simple;
-	bh=aYJnsW24NcHiZLmUtSbBYZsqBH63QQK/EUkpG2QP3C4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FPTGeZ6GjuwWqg9MmwOX1CPQrbb5yzxpxD5AltMh8R6nNx7Km0QcXOSsFJzJHzpsFqHM90WnZ9UhyDKgvPfAHcJWnfgiKBcUp7+CzdpKwwEuMvmssuqyy9H3vqh+IjCPZ+FySqoqY7ht5h3TYciC8KAzQQ9IKRih+ehUDmvUGbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FQ3UQ6I5; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1769158725; c=relaxed/simple;
+	bh=2k9LiI+M//qM4q+K2IyZ0CNDJt0ZnwZ2pxw6XNWmxxQ=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BFjRVUiWSEKgi/YbKPjpMUYd0tPmnnNdwxm+gYlTQw9GKqim1PeZP90d/pRflJdwWEyGGE7nXtLLfKHUY1SJ1X/X5xWlxBOf/mtLQxvXvh4LtSuT88rwz/AhDNioufY5GeunS6fQrY9S7hIRAASeWndioD8zdZpXNyZBdsDoHk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s1F4hAcN; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FQ3UQ6I5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 571B71A2AEA;
-	Fri, 23 Jan 2026 08:57:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2AB256070A;
-	Fri, 23 Jan 2026 08:57:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 112EB119A8790;
-	Fri, 23 Jan 2026 09:57:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769158657; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=z+JHSGN23hsX+cVo1mrcC79xpDEwkF6f8jxXDpevJ5w=;
-	b=FQ3UQ6I58yofLejpjcad3q+pSTycJZ1ejA5OlKxkkS7QMDvry45L5TI1ObmuGQUawpB3P7
-	RH2RljkXv4R+MhCdy9UrA7Vz8/NX4igduLPrPXsnThEHtHdXln+AP1JGC0HI42aWWxtLHJ
-	7yMIrxQ4Ja2H11S5Iiqb7d/WDxIs/YRd+Un4rGKj3oqeZHzRK9UiikPeXMiDOTpgJLtLpl
-	ivPl/uuIX2y8fgZ1V8B9/k59E41nMeKgDoqkMXx2Z8HtMzqRSEUMCVfsa7CgcRL5AQE3MH
-	8hfnBtQYpP1eQivE05ebinw1paPZ3/PgWmnu2iyd1NOtvqclaAqD2Jj47ifyRQ==
-Message-ID: <d5177d67-7b61-4459-befe-999dc052ca2b@bootlin.com>
-Date: Fri, 23 Jan 2026 09:57:32 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s1F4hAcN"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769158710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZDHd5qG1jM6uT5/JnPwA06VDLOpkfHtWx6qC88p08g=;
+	b=s1F4hAcNIr7FO7zIIhXOc52f/ar923r2DlaIfnkq9t9LXEKwLC/zJvy/Jwl45AvVrjQ7V1
+	oM0I6+NJkSSr0xpaHsAfkzNd+jZZOEZBJTWEjJ9HsKumn8IOWsUJTw6yBQ9aPRHuFekepj
+	Sqw7JE/M2z8LvOE2rpvDvCmlnRkH+nQ=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jeff Xu <jeffxu@chromium.org>,
+	mkoutny@suse.com,
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Christian Brauner <brauner@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	davem@davemloft.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [RFC PATCH bpf-next v3 04/12] mm: define mem_cgroup_get_from_ino() outside of CONFIG_SHRINKER_DEBUG
+Date: Fri, 23 Jan 2026 16:57:58 +0800
+Message-ID: <f627edee18f43dbfcd4c2eb06a8188e88dc6bda9.1769157382.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1769157382.git.zhuhui@kylinos.cn>
+References: <cover.1769157382.git.zhuhui@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phy: micrel: Add support for lan9645x
- internal phy
-To: =?UTF-8?Q?Jens_Emil_Schulz_=C3=98stergaard?=
- <jensemil.schulzostergaard@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, o.rempel@pengutronix.de,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- Daniel Machon <daniel.machon@microchip.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260123-phy_micrel_add_support_for_lan9645x_internal_phy-v1-1-8484b1a5a7fd@microchip.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260123-phy_micrel_add_support_for_lan9645x_internal_phy-v1-1-8484b1a5a7fd@microchip.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Migadu-Flow: FLOW_OUT
 
-Hi Jens,
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-On 23/01/2026 08:50, Jens Emil Schulz Østergaard wrote:
-> LAN9645X is a family of switch chips with 5 internal copper phys. The
-> internal PHY is based on parts of LAN8832. This is a low-power, single
-> port triple-speed (10BASE-T/100BASE-TX/1000BASE-T) ethernet physical
-> layer transceiver (PHY) that supports transmission and reception of data
-> on standard CAT-5, as well as CAT-5e and CAT-6 Unshielded Twisted
-> Pair (UTP) cables.
-> 
-> Add support for the internal PHY of the lan9645x chip family.
-> 
-> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-> Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
-> ---
+mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
+but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
 
-[...]
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+---
+ include/linux/memcontrol.h | 4 ++--
+ mm/memcontrol.c            | 2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-> +static int lan9645x_config_intr(struct phy_device *phydev)
-> +{
-> +	int err;
-> +
-> +	/* enable / disable interrupts */
-> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-> +		/* This is an internal PHY of lan9645x and is not possible to
-> +		 * change the polarity of irq sources in the OIC (CPU_INTR)
-> +		 * found in lan9645x. Therefore change the polarity of the
-> +		 * interrupt in the PHY from being active low instead of active
-> +		 * high.
-> +		 */
-> +		phy_write(phydev, LAN8804_CONTROL,
-> +			  LAN8804_CONTROL_INTR_POLARITY);
-> +
-> +		/* By default interrupt buffer is open-drain in which case the
-> +		 * interrupt can be active only low. Therefore change the
-> +		 * interrupt buffer to be push-pull to be able to change
-> +		 * interrupt polarity.
-> +		 */
-> +		phy_write(phydev, LAN8804_OUTPUT_CONTROL,
-> +			  LAN8804_OUTPUT_CONTROL_INTR_BUFFER);
-
-Small nit from me, you're missing error checks on the 2 above reads.
-
-Thanks,
-
-Maxime
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 229ac9835adb..f3b8c71870d8 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -833,9 +833,9 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
+ {
+ 	return memcg ? cgroup_ino(memcg->css.cgroup) : 0;
+ }
++#endif
+ 
+ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino);
+-#endif
+ 
+ static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
+ {
+@@ -1298,12 +1298,12 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
+ {
+ 	return 0;
+ }
++#endif
+ 
+ static inline struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ {
+ 	return NULL;
+ }
+-#endif
+ 
+ static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3808845bc8cc..1f74fce27677 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3658,7 +3658,6 @@ struct mem_cgroup *mem_cgroup_from_id(unsigned short id)
+ 	return xa_load(&mem_cgroup_ids, id);
+ }
+ 
+-#ifdef CONFIG_SHRINKER_DEBUG
+ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ {
+ 	struct cgroup *cgrp;
+@@ -3679,7 +3678,6 @@ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ 
+ 	return memcg;
+ }
+-#endif
+ 
+ static void free_mem_cgroup_per_node_info(struct mem_cgroup_per_node *pn)
+ {
+-- 
+2.43.0
 
