@@ -1,189 +1,250 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D43F367F20;
-	Fri, 23 Jan 2026 09:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA7335D607;
+	Fri, 23 Jan 2026 09:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769162068; cv=none; b=UnFl0fCoHdINMqVWlo/RgoAi0RkxFv58O1QadGvXpH4G2UyE6Myk4+qelNU0uJMwCoBgz5/oFqziiKG3vmn0/sOZJEv+hI5g5NQ0XWAjblHQjodreHULe8XQFpADcDsQKPqMATXOwyuXm0d27+7psnYvr1Y9gyyKkvyTGOJllOI=
+	t=1769162089; cv=none; b=Gg6cZhCJjZiAD4hh8R3wpbC6ff78DcdCUGiyJ6g6vfLIxE5Xe+/pO85mOajmqrlYgEGFJso59yjJcdQJdFAnHMWlYRzA7wld2xyrzI7kVZkvNlFLarjd6RsL0yUAMOnzGrwmM9n5b/+1TBfudmLhbVuf3/t+Td64pyT9e4C4FwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769162068; c=relaxed/simple;
-	bh=+53V+FFMdBVXN6z5Hiu05Uk9+dnpe3a51F0Q2f5DfMQ=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=f6fTXRXDfQiVGI9swTSh33vbpV5aZDGue/qMEBZfFqplYCHT6sBYH46SiUugHt9lpfkVqtOmrQ05HZnTvRntLl5acoy6eXYK9gPMnURl5NkGkzF0DmSSXAaXti55JuWotPWZoIYWr/Naf/bX29LbfwZ5aw4MD9kvD56ADGk+AhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ym6HBLF3; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1769162089; c=relaxed/simple;
+	bh=q85x/6xAKg2JqfTmKOYVSrUZKkpTdeUW8/rVSPPswwU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eC4qgfi0Siv+9shGd03jF9wGLqioFhWdBT9sFQxUeskH71Gsta5DtfiwVXEog+nPetu4qPI3lbiVwN2HLSMNjSUqbeuk8ijfoVGn1BrubWAWy5vdzqq4fryMeDbUHu3nHcZPkfKxPKTpO+0C0y8g1ek+tGrKKrKpEbcDBFmQkNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=mU0/HmTc; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ym6HBLF3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=oDBoCS/FqGpILWpLE0lVhiMSxShZ0/G2FgbouoQGO9s=; b=ym6HBLF3qcFbUx+4T8B3qfA+Gu
-	M/8ZX0DvkidBXwVdo77as6Z4dRU1srZnR1U5PwLUniEkZzS6RDDiP9LKhW8ZRxNbd8sAuNAAB+cON
-	PL9bU4ITZ3CyCVaLtKDK4/YjA1QAxMXA044ig/XfXjvsGGZdPrtjjdi5qY+zILG39HjFNfZeFhW8S
-	+tNZGKq3pcRRPZwJDB01nkXUIR+7wDtmfL4GYE4FCMtFX0PX4WFrY5HM8NrAbijuCz/uuH7SBygNr
-	Ct2aR90nNTo9oFHsWGXY64/TyXqscGS80N+cxUq4HnQoVgel5hos4p9ZCMWofVmyrbiRrKGjp5IeF
-	/LXeG+Tw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:42414 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vjDra-000000001bw-1tIJ;
-	Fri, 23 Jan 2026 09:53:58 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vjDrW-00000005fQe-1kxD;
-	Fri, 23 Jan 2026 09:53:54 +0000
-In-Reply-To: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
-References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next v2 07/14] net: stmmac: move most PCS register
- definitions to stmmac_pcs.c
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="mU0/HmTc"
+Received: from [192.168.178.143] (p5dc880d2.dip0.t-ipconnect.de [93.200.128.210])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.18.1.16/8.18.1.16) with ESMTPSA id 60N9sKhv029982
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 23 Jan 2026 10:54:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1769162064;
+	bh=q85x/6xAKg2JqfTmKOYVSrUZKkpTdeUW8/rVSPPswwU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mU0/HmTcWDjTKJZrvCA1imaBamUMg6WcRCWfR6beSdn4g3lYa9SCb61Ceb7ns55qJ
+	 VFoDs9jduxRERJFByWfddM+bzjj3bzhU6OjzAVRdOHh4l8VlJa961iLEDWoIUypW45
+	 fTx7bymBgFzhHZ5Ae+KxBTabTDm5p5m6U/k99J+o=
+Message-ID: <bc1078e5-65fc-4de6-8475-517f626d8d96@tu-dortmund.de>
+Date: Fri, 23 Jan 2026 10:54:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH net-next v7 3/9] tun/tap: add ptr_ring consume helper with
+ netdev queue wakeup
+To: Jason Wang <jasowang@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mst@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260107210448.37851-1-simon.schippers@tu-dortmund.de>
+ <20260107210448.37851-4-simon.schippers@tu-dortmund.de>
+ <CACGkMEuSiEcyaeFeZd0=RgNpviJgNvUDq_ctjeMLT5jZTgRkwQ@mail.gmail.com>
+ <1e30464c-99ae-441e-bb46-6d0485d494dc@tu-dortmund.de>
+ <CACGkMEtzD3ORJuJcc8VeqwASiGeVFdQmJowsK6PYVEF_Zkcn8Q@mail.gmail.com>
+ <afa40345-acbe-42b0-81d1-0a838343792d@tu-dortmund.de>
+ <CACGkMEtxRoavBMTXom8Z=FM-pvu3pHbsuwCs+e450b1B=V7iWA@mail.gmail.com>
+ <CACGkMEsJKeEsH=G8H5RzMNHY4g3HNdciMDMhciShawh-9Xb9hg@mail.gmail.com>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <CACGkMEsJKeEsH=G8H5RzMNHY4g3HNdciMDMhciShawh-9Xb9hg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vjDrW-00000005fQe-1kxD@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 23 Jan 2026 09:53:54 +0000
 
-Move most of the PCS register offset definitions to stmmac_pcs.c.
-Since stmmac_pcs.c only ever passes zero into the register offset
-macros, remove that ability, making them simple constant integer
-definitions.
+On 1/23/26 04:05, Jason Wang wrote:
+> On Thu, Jan 22, 2026 at 1:35 PM Jason Wang <jasowang@redhat.com> wrote:
+>>
+>> On Wed, Jan 21, 2026 at 5:33 PM Simon Schippers
+>> <simon.schippers@tu-dortmund.de> wrote:
+>>>
+>>> On 1/9/26 07:02, Jason Wang wrote:
+>>>> On Thu, Jan 8, 2026 at 3:41 PM Simon Schippers
+>>>> <simon.schippers@tu-dortmund.de> wrote:
+>>>>>
+>>>>> On 1/8/26 04:38, Jason Wang wrote:
+>>>>>> On Thu, Jan 8, 2026 at 5:06 AM Simon Schippers
+>>>>>> <simon.schippers@tu-dortmund.de> wrote:
+>>>>>>>
+>>>>>>> Introduce {tun,tap}_ring_consume() helpers that wrap __ptr_ring_consume()
+>>>>>>> and wake the corresponding netdev subqueue when consuming an entry frees
+>>>>>>> space in the underlying ptr_ring.
+>>>>>>>
+>>>>>>> Stopping of the netdev queue when the ptr_ring is full will be introduced
+>>>>>>> in an upcoming commit.
+>>>>>>>
+>>>>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>>>>>> ---
+>>>>>>>  drivers/net/tap.c | 23 ++++++++++++++++++++++-
+>>>>>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
+>>>>>>>  2 files changed, 45 insertions(+), 3 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+>>>>>>> index 1197f245e873..2442cf7ac385 100644
+>>>>>>> --- a/drivers/net/tap.c
+>>>>>>> +++ b/drivers/net/tap.c
+>>>>>>> @@ -753,6 +753,27 @@ static ssize_t tap_put_user(struct tap_queue *q,
+>>>>>>>         return ret ? ret : total;
+>>>>>>>  }
+>>>>>>>
+>>>>>>> +static void *tap_ring_consume(struct tap_queue *q)
+>>>>>>> +{
+>>>>>>> +       struct ptr_ring *ring = &q->ring;
+>>>>>>> +       struct net_device *dev;
+>>>>>>> +       void *ptr;
+>>>>>>> +
+>>>>>>> +       spin_lock(&ring->consumer_lock);
+>>>>>>> +
+>>>>>>> +       ptr = __ptr_ring_consume(ring);
+>>>>>>> +       if (unlikely(ptr && __ptr_ring_consume_created_space(ring, 1))) {
+>>>>>>> +               rcu_read_lock();
+>>>>>>> +               dev = rcu_dereference(q->tap)->dev;
+>>>>>>> +               netif_wake_subqueue(dev, q->queue_index);
+>>>>>>> +               rcu_read_unlock();
+>>>>>>> +       }
+>>>>>>> +
+>>>>>>> +       spin_unlock(&ring->consumer_lock);
+>>>>>>> +
+>>>>>>> +       return ptr;
+>>>>>>> +}
+>>>>>>> +
+>>>>>>>  static ssize_t tap_do_read(struct tap_queue *q,
+>>>>>>>                            struct iov_iter *to,
+>>>>>>>                            int noblock, struct sk_buff *skb)
+>>>>>>> @@ -774,7 +795,7 @@ static ssize_t tap_do_read(struct tap_queue *q,
+>>>>>>>                                         TASK_INTERRUPTIBLE);
+>>>>>>>
+>>>>>>>                 /* Read frames from the queue */
+>>>>>>> -               skb = ptr_ring_consume(&q->ring);
+>>>>>>> +               skb = tap_ring_consume(q);
+>>>>>>>                 if (skb)
+>>>>>>>                         break;
+>>>>>>>                 if (noblock) {
+>>>>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>>>>>>> index 8192740357a0..7148f9a844a4 100644
+>>>>>>> --- a/drivers/net/tun.c
+>>>>>>> +++ b/drivers/net/tun.c
+>>>>>>> @@ -2113,13 +2113,34 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+>>>>>>>         return total;
+>>>>>>>  }
+>>>>>>>
+>>>>>>> +static void *tun_ring_consume(struct tun_file *tfile)
+>>>>>>> +{
+>>>>>>> +       struct ptr_ring *ring = &tfile->tx_ring;
+>>>>>>> +       struct net_device *dev;
+>>>>>>> +       void *ptr;
+>>>>>>> +
+>>>>>>> +       spin_lock(&ring->consumer_lock);
+>>>>>>> +
+>>>>>>> +       ptr = __ptr_ring_consume(ring);
+>>>>>>> +       if (unlikely(ptr && __ptr_ring_consume_created_space(ring, 1))) {
+>>>>>>
+>>>>>> I guess it's the "bug" I mentioned in the previous patch that leads to
+>>>>>> the check of __ptr_ring_consume_created_space() here. If it's true,
+>>>>>> another call to tweak the current API.
+>>>>>>
+>>>>>>> +               rcu_read_lock();
+>>>>>>> +               dev = rcu_dereference(tfile->tun)->dev;
+>>>>>>> +               netif_wake_subqueue(dev, tfile->queue_index);
+>>>>>>
+>>>>>> This would cause the producer TX_SOFTIRQ to run on the same cpu which
+>>>>>> I'm not sure is what we want.
+>>>>>
+>>>>> What else would you suggest calling to wake the queue?
+>>>>
+>>>> I don't have a good method in my mind, just want to point out its implications.
+>>>
+>>> I have to admit I'm a bit stuck at this point, particularly with this
+>>> aspect.
+>>>
+>>> What is the correct way to pass the producer CPU ID to the consumer?
+>>> Would it make sense to store smp_processor_id() in the tfile inside
+>>> tun_net_xmit(), or should it instead be stored in the skb (similar to the
+>>> XDP bit)? In the latter case, my concern is that this information may
+>>> already be significantly outdated by the time it is used.
+>>>
+>>> Based on that, my idea would be for the consumer to wake the producer by
+>>> invoking a new function (e.g., tun_wake_queue()) on the producer CPU via
+>>> smp_call_function_single().
+>>> Is this a reasonable approach?
+>>
+>> I'm not sure but it would introduce costs like IPI.
+>>
+>>>
+>>> More generally, would triggering TX_SOFTIRQ on the consumer CPU be
+>>> considered a deal-breaker for the patch set?
+>>
+>> It depends on whether or not it has effects on the performance.
+>> Especially when vhost is pinned.
+> 
+> I meant we can benchmark to see the impact. For example, pin vhost to
+> a specific CPU and the try to see the impact of the TX_SOFTIRQ.
+> 
+> Thanks
+> 
 
-Add appropriate descriptions of the registers, pointing out their
-similarity with their IEEE 802.3 counterparts. Make use of the
-BMSR definitions for the GMAC_AN_STATUS register and remove the
-driver private versions.
+I ran benchmarks with vhost pinned to CPU 0 using taskset -p -c 0 ...
+for both the stock and patched versions. The benchmarks were run with
+the full patch series applied, since testing only patches 1-3 would not
+be meaningful - the queue is never stopped in that case, so no
+TX_SOFTIRQ is triggered.
 
-Note that BMSR_LSTATUS is non-low-latching, unlike it's 802.3z
-counterpart.
+Compared to the non-pinned CPU benchmarks in the cover letter,
+performance is lower for pktgen with a single thread but higher with
+four threads. The results show no regression for the patched version,
+with even slight performance improvements observed:
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 22 +++++++++++++++----
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.h  | 22 -------------------
- 2 files changed, 18 insertions(+), 26 deletions(-)
++-------------------------+-----------+----------------+
+| pktgen benchmarks to    | Stock     | Patched with   |
+| Debian VM, i5 6300HQ,   |           | fq_codel qdisc |
+| 100M packets            |           |                |
+| vhost pinned to core 0  |           |                |
++-----------+-------------+-----------+----------------+
+| TAP       | Transmitted | 452 Kpps  | 454 Kpps       |
+|  +        +-------------+-----------+----------------+
+| vhost-net | Lost        | 1154 Kpps | 0              |
++-----------+-------------+-----------+----------------+
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-index 10a2eb903d2a..ac588756e450 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-@@ -3,6 +3,20 @@
- #include "stmmac_pcs.h"
- #include "stmmac_serdes.h"
- 
-+/*
-+ * GMAC_AN_STATUS is equivalent to MII_BMSR
-+ * GMAC_ANE_ADV is equivalent to 802.3z MII_ADVERTISE
-+ * GMAC_ANE_LPA is equivalent to 802.3z MII_LPA
-+ * GMAC_ANE_EXP is equivalent to MII_EXPANSION
-+ * GMAC_TBI is equivalent to MII_ESTATUS
-+ *
-+ * ADV, LPA and EXP are only available for the TBI and RTBI modes.
-+ */
-+#define GMAC_AN_STATUS	0x04	/* AN status */
-+#define GMAC_ANE_ADV	0x08	/* ANE Advertisement */
-+#define GMAC_ANE_LPA	0x0c	/* ANE link partener ability */
-+#define GMAC_TBI	0x14	/* TBI extend status */
-+
- static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
- {
- 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
-@@ -76,11 +90,11 @@ void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
- 			       struct stmmac_extra_stats *x)
- {
- 	struct stmmac_pcs *spcs = priv->integrated_pcs;
--	u32 val = readl(spcs->base + GMAC_AN_STATUS(0));
-+	u32 val = readl(spcs->base + GMAC_AN_STATUS);
- 
- 	if (status & PCS_ANE_IRQ) {
- 		x->irq_pcs_ane_n++;
--		if (val & GMAC_AN_STATUS_ANC)
-+		if (val & BMSR_ANEGCOMPLETE)
- 			dev_info(priv->device,
- 				 "PCS ANE process completed\n");
- 	}
-@@ -88,9 +102,9 @@ void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
- 	if (status & PCS_LINK_IRQ) {
- 		x->irq_pcs_link_n++;
- 		dev_info(priv->device, "PCS Link %s\n",
--			 val & GMAC_AN_STATUS_LS ? "Up" : "Down");
-+			 val & BMSR_LSTATUS ? "Up" : "Down");
- 
--		phylink_pcs_change(&spcs->pcs, val & GMAC_AN_STATUS_LS);
-+		phylink_pcs_change(&spcs->pcs, val & BMSR_LSTATUS);
- 	}
- }
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index 36bf75fdf478..887c4ff302aa 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -16,13 +16,6 @@
- 
- /* PCS registers (AN/TBI/SGMII/RGMII) offsets */
- #define GMAC_AN_CTRL(x)		(x)		/* AN control */
--#define GMAC_AN_STATUS(x)	(x + 0x4)	/* AN status */
--
--/* ADV, LPA and EXP are only available for the TBI and RTBI interfaces */
--#define GMAC_ANE_ADV(x)		(x + 0x8)	/* ANE Advertisement */
--#define GMAC_ANE_LPA(x)		(x + 0xc)	/* ANE link partener ability */
--#define GMAC_ANE_EXP(x)		(x + 0x10)	/* ANE expansion */
--#define GMAC_TBI(x)		(x + 0x14)	/* TBI extend status */
- 
- /* AN Configuration defines */
- #define GMAC_AN_CTRL_RAN	BIT_U32(9)	/* Restart Auto-Negotiation */
-@@ -32,21 +25,6 @@
- #define GMAC_AN_CTRL_LR		BIT_U32(17)	/* Lock to Reference */
- #define GMAC_AN_CTRL_SGMRAL	BIT_U32(18)	/* SGMII RAL Control */
- 
--/* AN Status defines */
--#define GMAC_AN_STATUS_LS	BIT_U32(2)	/* Link Status 0:down 1:up */
--#define GMAC_AN_STATUS_ANA	BIT_U32(3)	/* Auto-Negotiation Ability */
--#define GMAC_AN_STATUS_ANC	BIT_U32(5)	/* Auto-Negotiation Complete */
--#define GMAC_AN_STATUS_ES	BIT_U32(8)	/* Extended Status */
--
--/* ADV and LPA defines */
--#define GMAC_ANE_FD		BIT_U32(5)
--#define GMAC_ANE_HD		BIT_U32(6)
--#define GMAC_ANE_PSE		GENMASK_U32(8, 7)
--#define GMAC_ANE_PSE_SHIFT	7
--#define GMAC_ANE_RFE		GENMASK_U32(13, 12)
--#define GMAC_ANE_RFE_SHIFT	12
--#define GMAC_ANE_ACK		BIT_U32(14)
--
- struct stmmac_priv;
- 
- struct stmmac_pcs {
--- 
-2.47.3
++-------------------------+-----------+----------------+
+| pktgen benchmarks to    | Stock     | Patched with   |
+| Debian VM, i5 6300HQ,   |           | fq_codel qdisc |
+| 100M packets            |           |                |
+| vhost pinned to core 0  |           |                |
+| *4 threads*             |           |                |
++-----------+-------------+-----------+----------------+
+| TAP       | Transmitted | 71 Kpps   | 79 Kpps        |
+|  +        +-------------+-----------+----------------+
+| vhost-net | Lost        | 1527 Kpps | 0              |
++-----------+-------------+-----------+----------------+
 
++------------------------+-------------+----------------+
+| iperf3 TCP benchmarks  | Stock       | Patched with   |
+| to Debian VM 120s      |             | fq_codel qdisc |
+| vhost pinned to core 0 |             |                |
++------------------------+-------------+----------------+
+| TAP                    | 22.0 Gbit/s | 22.0 Gbit/s    |
+|  +                     |             |                |
+| vhost-net              |             |                |
++------------------------+-------------+----------------+
+
++---------------------------+-------------+----------------+
+| iperf3 TCP benchmarks     | Stock       | Patched with   |
+| to Debian VM 120s         |             | fq_codel qdisc |
+| vhost pinned to core 0    |             |                |
+| *4 iperf3 client threads* |             |                |
++---------------------------+-------------+----------------+
+| TAP                       | 21.4 Gbit/s | 21.5 Gbit/s    |
+|  +                        |             |                |
+| vhost-net                 |             |                |
++---------------------------+-------------+----------------+
