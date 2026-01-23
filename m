@@ -1,209 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8756E27470;
-	Fri, 23 Jan 2026 19:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8E4279DC9;
+	Fri, 23 Jan 2026 19:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769197589; cv=none; b=saaP1VTPAfrhe/xhYobZEn/xhYISmkkNyLLXJCg5ey3reJp/MEzCWDI/zTvUPmMpdT80ymqG4/T729vW1ONQ3gsi3+UUnyz9h3ySITpj9xuhl6ivjhzXYMl45veujX2IcNIExbcYHVmIfEc7f81YX9WOzWdt5HwCIfXXRgduAws=
+	t=1769197810; cv=none; b=LzeUbOHmGX7WbFBn2eiAqPCs0BnXP0mq6fjuvqzHS9SU62jzAqYzb1us/efEL02jUCUnPY+i+c5ofzOjL0hvV6At78kwaaEY/FykImyS/yLcJTta/Qz07msW30mG2rzg6IsJJVguUKAfqIG7MSArdnB4b07QjToHBFMZYApSHug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769197589; c=relaxed/simple;
-	bh=d3m3qkp7Crw1fXc7BZpUNEFl9fOZsoenMG9dlCWiOV4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rM7xz54xTEANW+42E6Zgt15gnFP6R9wuB+euuzIVtTb1kkrqy9dIVQQQNmtBOfrm3vWPXy8YKT86AyasBJU8CTn+5T7GgvzDz5v8De/gGmyxThC0DbLi+n+G0PeGRKnYw3FSYC5Y9dpOseZdxDHSTnKOp60to/TyANiphzqTkKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NhYByutZ; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769197810; c=relaxed/simple;
+	bh=UJm/U09viNPO6TADnsMkNXqoVa6K9mGF05X39w4ODXU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=C4W//w97zWqELqHtY+CpPDqvsrlL2fm+9XNJ/aSmcSDsc4t6ptcfVgHBHQarat0KZFuBJn4Tk5lmEGjxTQxM80p7tJA+1FIwaVZgYFAQkF727TVO3VGLOWK0jMa2CkvC4QsOE54FhrBC/ABCT/zVYqSwElsEPReUkWd229yzr4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcRuHqcr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NhYByutZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769197587; x=1800733587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=d3m3qkp7Crw1fXc7BZpUNEFl9fOZsoenMG9dlCWiOV4=;
-  b=NhYByutZtubu67HYjCnvhVXKWd3DKg8atm6XdldxXjWmzkcSlzB3BLeV
-   CqGjXBo5pWi7Kj9cPQkmxfr4YpVm/+BBzjcUol6+69DtD4Klh5mlyUqLH
-   48ed1VB9o18PLNvmJ19bf2sX8yiOGUF+3+suHEwzqIMdXnQ3Yb10rL4/P
-   pcFhFHv2V/vyRy9RjQbozFezO+8iWuH/VBUeItHxZGMA1ZnNtwG9daLOi
-   C8qO/ms/JzfDPbhqeE7uroEESruj92x/DHOcdzCV9XruuLLyLLFNaLPAX
-   v/NgEj6QF30A4f87PFdcXMsW4IGleyE6cKFkNXEM8HmtH7R0eyPZ2uMhu
-   g==;
-X-CSE-ConnectionGUID: Tf8lXVnxTJCwugZabjKaIA==
-X-CSE-MsgGUID: VQm6WF/tS++OLc1OVtcYcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="74087693"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="74087693"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 11:46:26 -0800
-X-CSE-ConnectionGUID: aWY7Lm4UTaWGiZHolVkAmw==
-X-CSE-MsgGUID: KNKQHEf3TmG4l9dMqAdT7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="207161750"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 23 Jan 2026 11:46:20 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vjN6o-00000000UOM-0BQg;
-	Fri, 23 Jan 2026 19:46:18 +0000
-Date: Sat, 24 Jan 2026 03:45:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: Re: [PATCH v2 net-next 11/15] net: dsa: sja1105: fill device tree
- with ethernet-pcs sub-devices under "regs" node
-Message-ID: <202601240325.L4Ejl6qH-lkp@intel.com>
-References: <20260122105654.105600-12-vladimir.oltean@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcRuHqcr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34500C4CEF1;
+	Fri, 23 Jan 2026 19:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769197810;
+	bh=UJm/U09viNPO6TADnsMkNXqoVa6K9mGF05X39w4ODXU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YcRuHqcrzsNhoNWXhTQ7Pvmzpg6K+JXAhdymaBK79UexYNp6TTNxO82s474sA4Hq2
+	 QFxNj4mtUzNnoK2JvhRp7781UdN45vPs9E+USewjSAIFO5a3PqTsMBdcYO/XXi9aEV
+	 CM+/FsoD0BGfo2HVxR1SjCrXUPAS1KWgNqT+0unn35JpUDjxLyD4KctcA7+FcFxw9Z
+	 M0s1aLGz7psmZrFGmlzm0JvJ62exiOzmfs0f/v4Smy5aomiySEzenhO9RflBv9ZyU6
+	 +kcbnLN/hQP7Nhp+QReqpO2JaHgfIKANkB3is3pGxR6rt3k/TJ6Iv6i+JWovuEze22
+	 LkuiKHsES4ZvA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4E9003808200;
+	Fri, 23 Jan 2026 19:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122105654.105600-12-vladimir.oltean@nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] octeon_ep: Fix memory leak in octep_device_setup()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176919780485.2695110.15846411261421856680.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Jan 2026 19:50:04 +0000
+References: <20260121130551.3717090-1-zilin@seu.edu.cn>
+In-Reply-To: <20260121130551.3717090-1-zilin@seu.edu.cn>
+To: Zilin Guan <zilin@seu.edu.cn>
+Cc: vburru@marvell.com, sedara@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
 
-Hi Vladimir,
+Hello:
 
-kernel test robot noticed the following build errors:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[auto build test ERROR on net-next/main]
+On Wed, 21 Jan 2026 13:05:51 +0000 you wrote:
+> In octep_device_setup(), if octep_ctrl_net_init() fails, the function
+> returns directly without unmapping the mapped resources and freeing the
+> allocated configuration memory.
+> 
+> Fix this by jumping to the unsupported_dev label, which performs the
+> necessary cleanup. This aligns with the error handling logic of other
+> paths in this function.
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vladimir-Oltean/net-mdio-regmap-permit-working-with-non-MMIO-regmaps/20260122-192934
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260122105654.105600-12-vladimir.oltean%40nxp.com
-patch subject: [PATCH v2 net-next 11/15] net: dsa: sja1105: fill device tree with ethernet-pcs sub-devices under "regs" node
-config: mips-randconfig-r112-20260123 (https://download.01.org/0day-ci/archive/20260124/202601240325.L4Ejl6qH-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260124/202601240325.L4Ejl6qH-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [net] octeon_ep: Fix memory leak in octep_device_setup()
+    https://git.kernel.org/netdev/net/c/8016dc5ee19a
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601240325.L4Ejl6qH-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from arch/mips/kernel/asm-offsets.c:26:
-   In file included from include/linux/kvm_host.h:5:
-   In file included from include/linux/entry-virt.h:10:
-   In file included from include/linux/tick.h:8:
-   In file included from include/linux/clockchips.h:14:
-   In file included from include/linux/clocksource.h:19:
->> include/linux/of.h:1645:34: error: use of undeclared identifier 'OF_RECONFIG_ATTACH_NODE'; did you mean 'OF_RECONFIG_NO_CHANGE'?
-    1645 |         return of_changeset_action(ocs, OF_RECONFIG_ATTACH_NODE, np, NULL);
-         |                                         ^~~~~~~~~~~~~~~~~~~~~~~
-         |                                         OF_RECONFIG_NO_CHANGE
-   include/linux/of.h:1620:2: note: 'OF_RECONFIG_NO_CHANGE' declared here
-    1620 |         OF_RECONFIG_NO_CHANGE = 0,
-         |         ^
->> include/linux/of.h:1651:34: error: use of undeclared identifier 'OF_RECONFIG_DETACH_NODE'; did you mean 'OF_RECONFIG_NO_CHANGE'?
-    1651 |         return of_changeset_action(ocs, OF_RECONFIG_DETACH_NODE, np, NULL);
-         |                                         ^~~~~~~~~~~~~~~~~~~~~~~
-         |                                         OF_RECONFIG_NO_CHANGE
-   include/linux/of.h:1620:2: note: 'OF_RECONFIG_NO_CHANGE' declared here
-    1620 |         OF_RECONFIG_NO_CHANGE = 0,
-         |         ^
->> include/linux/of.h:1657:34: error: use of undeclared identifier 'OF_RECONFIG_ADD_PROPERTY'
-    1657 |         return of_changeset_action(ocs, OF_RECONFIG_ADD_PROPERTY, np, prop);
-         |                                         ^
->> include/linux/of.h:1663:34: error: use of undeclared identifier 'OF_RECONFIG_REMOVE_PROPERTY'
-    1663 |         return of_changeset_action(ocs, OF_RECONFIG_REMOVE_PROPERTY, np, prop);
-         |                                         ^
->> include/linux/of.h:1669:34: error: use of undeclared identifier 'OF_RECONFIG_UPDATE_PROPERTY'
-    1669 |         return of_changeset_action(ocs, OF_RECONFIG_UPDATE_PROPERTY, np, prop);
-         |                                         ^
-   5 errors generated.
-   make[3]: *** [scripts/Makefile.build:182: arch/mips/kernel/asm-offsets.s] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1314: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for OF_DYNAMIC
-   Depends on [n]: OF [=n]
-   Selected by [m]:
-   - NET_DSA_SJA1105 [=m] && NETDEVICES [=y] && NET_DSA [=m] && SPI [=y] && PTP_1588_CLOCK_OPTIONAL [=y]
-
-
-vim +1645 include/linux/of.h
-
-201c910bd6898d Pantelis Antoniou 2014-07-04  1618  
-b53a2340d0d304 Pantelis Antoniou 2014-10-28  1619  enum of_reconfig_change {
-b53a2340d0d304 Pantelis Antoniou 2014-10-28 @1620  	OF_RECONFIG_NO_CHANGE = 0,
-b53a2340d0d304 Pantelis Antoniou 2014-10-28  1621  	OF_RECONFIG_CHANGE_ADD,
-b53a2340d0d304 Pantelis Antoniou 2014-10-28  1622  	OF_RECONFIG_CHANGE_REMOVE,
-b53a2340d0d304 Pantelis Antoniou 2014-10-28  1623  };
-b53a2340d0d304 Pantelis Antoniou 2014-10-28  1624  
-2e8fff668dc14e Rob Herring       2023-03-29  1625  struct notifier_block;
-2e8fff668dc14e Rob Herring       2023-03-29  1626  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1627  #ifdef CONFIG_OF_DYNAMIC
-f6892d193fb9d6 Grant Likely      2014-11-21  1628  extern int of_reconfig_notifier_register(struct notifier_block *);
-f6892d193fb9d6 Grant Likely      2014-11-21  1629  extern int of_reconfig_notifier_unregister(struct notifier_block *);
-f5242e5a883bf1 Grant Likely      2014-11-24  1630  extern int of_reconfig_notify(unsigned long, struct of_reconfig_data *rd);
-f5242e5a883bf1 Grant Likely      2014-11-24  1631  extern int of_reconfig_get_state_change(unsigned long action,
-f5242e5a883bf1 Grant Likely      2014-11-24  1632  					struct of_reconfig_data *arg);
-f6892d193fb9d6 Grant Likely      2014-11-21  1633  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1634  extern void of_changeset_init(struct of_changeset *ocs);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1635  extern void of_changeset_destroy(struct of_changeset *ocs);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1636  extern int of_changeset_apply(struct of_changeset *ocs);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1637  extern int of_changeset_revert(struct of_changeset *ocs);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1638  extern int of_changeset_action(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1639  		unsigned long action, struct device_node *np,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1640  		struct property *prop);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1641  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1642  static inline int of_changeset_attach_node(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1643  		struct device_node *np)
-201c910bd6898d Pantelis Antoniou 2014-07-04  1644  {
-201c910bd6898d Pantelis Antoniou 2014-07-04 @1645  	return of_changeset_action(ocs, OF_RECONFIG_ATTACH_NODE, np, NULL);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1646  }
-201c910bd6898d Pantelis Antoniou 2014-07-04  1647  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1648  static inline int of_changeset_detach_node(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1649  		struct device_node *np)
-201c910bd6898d Pantelis Antoniou 2014-07-04  1650  {
-201c910bd6898d Pantelis Antoniou 2014-07-04 @1651  	return of_changeset_action(ocs, OF_RECONFIG_DETACH_NODE, np, NULL);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1652  }
-201c910bd6898d Pantelis Antoniou 2014-07-04  1653  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1654  static inline int of_changeset_add_property(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1655  		struct device_node *np, struct property *prop)
-201c910bd6898d Pantelis Antoniou 2014-07-04  1656  {
-201c910bd6898d Pantelis Antoniou 2014-07-04 @1657  	return of_changeset_action(ocs, OF_RECONFIG_ADD_PROPERTY, np, prop);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1658  }
-201c910bd6898d Pantelis Antoniou 2014-07-04  1659  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1660  static inline int of_changeset_remove_property(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1661  		struct device_node *np, struct property *prop)
-201c910bd6898d Pantelis Antoniou 2014-07-04  1662  {
-201c910bd6898d Pantelis Antoniou 2014-07-04 @1663  	return of_changeset_action(ocs, OF_RECONFIG_REMOVE_PROPERTY, np, prop);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1664  }
-201c910bd6898d Pantelis Antoniou 2014-07-04  1665  
-201c910bd6898d Pantelis Antoniou 2014-07-04  1666  static inline int of_changeset_update_property(struct of_changeset *ocs,
-201c910bd6898d Pantelis Antoniou 2014-07-04  1667  		struct device_node *np, struct property *prop)
-201c910bd6898d Pantelis Antoniou 2014-07-04  1668  {
-201c910bd6898d Pantelis Antoniou 2014-07-04 @1669  	return of_changeset_action(ocs, OF_RECONFIG_UPDATE_PROPERTY, np, prop);
-201c910bd6898d Pantelis Antoniou 2014-07-04  1670  }
-b544fc2b8606d7 Lizhi Hou         2023-08-15  1671  
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
