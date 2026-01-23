@@ -1,149 +1,188 @@
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B545E3EBF0D
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 19:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2861A9F88
+	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 19:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769197000; cv=none; b=kyy5mK46mGxCqVCkbnaM9ZlcCbHh45qFD1CCgQ6CH56OVnixPnhiafJC8f2SoDAGti0Nb4jUUKOkxBYU5RrUXwXT3NHP7VPJZST9GGIRaXD37cF7ebgejRudQKshAALF4vOmNRdD8AnaOR6qIeCgLZXf4Sek60/DH9V77eqLoZs=
+	t=1769197391; cv=none; b=tgf0d/HjZPvb3Ic/2zXUp31LRjpz0gMbMS9OvHIPElZjSlUywFwJ1nUS4XN3DKrSX0DRlSznwt2KBHM6A01ykjgfbkjZ0I64zawXlFBXUL7pNM8Qm30d+JRWypw1CUnWjXpaM55BOxCwLBM9XIKSO1r2v6HqXZBHi+rAoPE6Wvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769197000; c=relaxed/simple;
-	bh=VP80TV9x7hBMHLBKbN6C6pATLm17fdgVCPYtSLNa5VY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MFQmRAAZFDfsuVlM6/GVffjBjPNInnKY5zixl+8d0ATgLPye7N22WOgquOuwQ52AX4YWuH8JNHQZaDJvNp7OQ7cyl+9Drs5e+NyxwqoALyCLefrVRQ6Q5c8RxhBH/oAqmRWhxUN9+/CjCMytwcJ8ZDlIp1R2R3zS2I6U+fYKiag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Csx4BJ6m; arc=none smtp.client-ip=209.85.215.225
+	s=arc-20240116; t=1769197391; c=relaxed/simple;
+	bh=2mf7a+Hr93milzDc+ogHnbI3Y2AneXoaeBHYPPiUEiQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EWvcRMI2U5Ahub3grORSiAxafDjysoxXPWeT+Qw7SwvmNn/X8D7KtiswJ3NKKgmXMPfavc3fX80NmeBKcyinBvGHmjvXm1niFZiyygD9LQVc1fexmqrfcmMpulmo65a3o1uawZNAtKncaX9VvK49oHY600dyQZNLCfRgGXp3Bgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=U87wgdcw; arc=none smtp.client-ip=209.85.216.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Csx4BJ6m"
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-c61343f82d7so1060401a12.1
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:36:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="U87wgdcw"
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-34f2a0c4574so2369622a91.1
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:43:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769196999; x=1769801799;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DNLMiJVCelOv+j2L4SUZ7y6cwqxK+16XQRKJ8SDGGx4=;
-        b=orZdIqU5qiZs1Zky5RzCH/gSl99oFdpSKUTCn+Vk1gqW/2u+RBQSrC1Hu5IIMhpjjm
-         xaRmGDOut2cy3Sw/wjUpSZnUBmYNoE5sWpLEFk74wMW64B8kxzS7nfcLUoR+R1LpmkZJ
-         bXIXjzpmYNF8BGqup9djtAP6rrp4bIG/QvLhGtkKz3ClrQ8x+m9t8U8/krF8yvNf2JdG
-         jt5rEzExvi/fXrHPtRMoRegfCI16Jwyyw7StE67LQowy1+vnN5afVgBZ8UeS1m19zhUs
-         eLlAhOY44Y4RhpmKVJe0x+qMUr4tmyg5k52YrqAi/lRA0HVCrtOo7bgsR65C2IEjrPw/
-         BfZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUtrxhObg5zSpgaou+K8XoSdml/7eZ0yLqfBPEdLKIyEaAY/VZqahyWKpSAntwZ4XyQ6F/9BA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIVZFYX+j7ybDPzpUJwixBY+h7WgXFivx2WVuehGGYdirF723n
-	mkQoH4a0Y5LqR8UvoNiul95GDO+1BH0de448XLymMbTq3dd5CnOqqxjY6zTtASZmsDKhdF/vNv7
-	EaBRT5fDbHonThQ1dWvpLO+829KJbDDj8fKbL+ow0sQ1CXRbTWvPuc3fvRU8ciyUbrHac5oQyRP
-	42a3nN2tLL36AZV4pEIaDx2ZRgft4bg6kBQ3uIf+nJxCSxXVPELnJhdVXT2Y35y5SGb8WSo1ddY
-	+tizb5iSyTm+h/s
-X-Gm-Gg: AZuq6aKPGR+2tWnFJuNXCxUYn50dd1+quC6AK53O9IwqbJBdbjkQO8CkQjkziP7wTMF
-	3arLQ+cx6DqSGdT89UICoQV3GeZk6VjCItsx1vNezTZO3hDhcIKWH+vpt0WG8YSrvgJd6CZ8K80
-	ph1feRrkLdj+4Z5ELJGwEUoMy59dcGbbFz6OcfdpMHbJ3CNlHR7pBuNCF0Vf2nT6/h+Gcoj5YLi
-	aNatkJJRQACKS54D+bWdhG1NfjEho+X33qPcr23KSH/E5fzcUd9/Mid4lhxjL1bxoaEVGaO225f
-	0axnH7iZuRamyQ6hjdGx468M6p1b/mI3gOekrW5/SWnHRMmd/LIuCVoAuUt2deYKgOoSIUHxg2t
-	IR1MSjr2PSpnQjh7BmRn2xmRa9jXvyN25+WWLhkGK4z0GNj7eMqQoYixnGK3MBHVx2XsmHGjLKZ
-	MceD5l/XF6bOeyWbTmePJ7Wa6gcyS7lHzVEqKtGL/66ikq1RWSdg==
-X-Received: by 2002:a17:90b:2ec8:b0:341:abdc:8ea2 with SMTP id 98e67ed59e1d1-35369411bb1mr3187423a91.37.1769196998868;
-        Fri, 23 Jan 2026 11:36:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769197390; x=1769802190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FL12YkiV2Y2HKowPY5TkAq0P+k27Iok/6cTkQQOW98Y=;
+        b=WSGtXSllaH/upLO1Ska4vJFEq03kwkKXppVPmAW8oqM5VF4oOL8X/O9331DAvhu98B
+         zEweXF1NYIymcbFpB0P7UVlLw8HbdRtC8/De9ncHxcDKkgFao1/AlXgmrDW/Aeo57NfO
+         8um5w4g+6Dh/dCSOXAak7leb0N5nsCrtf6wUVUud3Fsngbr4akdqJGujT7bdS9hG9dDv
+         XIQyNkuYGJsx8qRfr+EYpXY/aloHwXBhXm9bqzxGWALUzUXvRcqmbd3Yyud0OwephkCC
+         4WMUEymA9jVvtxgzCaZTbHAmRHq7bstij4Tm3//h0CSTwXxej1trN/2oa7J3N98ikgtG
+         NoMw==
+X-Gm-Message-State: AOJu0Yzp/aYd2fylvcJfyzLOVuWS4Lk7PJjMvHMGSh0d70lG+AAr/pML
+	GzmbiL+t9FowbWYGSZsLqWrWmrhCKP2EHTeU2z4xzCoKTID+AVZYZksFPsRKLjrUWXmHrxl5zCP
+	JXawgwcClHReQgCdOJSPlVVIakUDFIAY05/TBn4SspePsN6mVw9UOKrXGxmLckbEU7QqczyWNSB
+	kTP7700GBFIG3uhmdWVMHZLRW/iNvCI5rN5MI+DlMeUS07b41ZHbFJyOLjygHw9D639+G22E+nP
+	GHkSmqcoUHXF9622A==
+X-Gm-Gg: AZuq6aL5LLIlZZACBlTfJZmkx7NGqm9oeyJdAeAGNBHjrLg0TBjYC5att7b/P2BSRO6
+	10hecOUZ341q9bjR7nL5HHY1ae/u7arhdMFf9Pi33A3lcqzkALWF7J0yzzt2PzVHE9/lNVKcbx+
+	kxkaFnRtagqdQynyBTyiqTIszweP1XVpM84cm6bbt1BH1Fin9owptQPG3X4hJ0X6feg6K17Qa5a
+	suV4KWa2xdsA0atH2oFD/mrrqHCbR299iC2xcS3YxOW63xpvKgW3BHcej6bmYPWtkNbiyhtN6vP
+	x1UJMRhLiB5wEu991GWLc+FVv76buQNQWYjIEqb5Y4XvYG7lRe5fMr2ZF3MJk4wZxZ95srRueCH
+	JRj15ynfX9FnNgjBmxwT7ot3kNozrnMLd5J7VdJf79EFUH6z+P8Nan6CVzGv3Jst8bEEngv3Kiw
+	M2PazDiSI3A6fTYPxdHpYM0x4d42MKDZNQyJCDd89ZoxA9gI/Zxx0=
+X-Received: by 2002:a17:90b:1e48:b0:353:e91:9b2f with SMTP id 98e67ed59e1d1-3536930bc13mr3197050a91.37.1769197389670;
+        Fri, 23 Jan 2026 11:43:09 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-77.dlp.protect.broadcom.com. [144.49.247.77])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-353354ba8b2sm903534a91.6.2026.01.23.11.36.38
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3536aecce70sm68772a91.0.2026.01.23.11.43.09
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 23 Jan 2026 11:36:38 -0800 (PST)
+        Fri, 23 Jan 2026 11:43:09 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7cfce4218caso8061069a34.2
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:36:37 -0800 (PST)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5013be25d41so70084091cf.1
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 11:43:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1769196997; x=1769801797; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=DNLMiJVCelOv+j2L4SUZ7y6cwqxK+16XQRKJ8SDGGx4=;
-        b=Csx4BJ6m/N0VRJUUv0gcczK5wl0EMC8HQBCCOZMFHRsbGVbE6n7BZ2GH2Dn6WSVXF/
-         fJ3EYC2KmUYTTx5yXCWDwEQVqgsjGOSb4OhTLy9D/+EGuVeqMt8Ngw2V+zEnM+Xnp/7g
-         NepwMlSilYNGpvp1HrTSPKx6nEj6+rf3iYGCk=
-X-Forwarded-Encrypted: i=1; AJvYcCXinr2pSEx9isgm7gAPaXE2euq9d/4CGqWAdtfwEFDvKk12YYDKm/93rEL38YBh6NwdOk6uMYo=@vger.kernel.org
-X-Received: by 2002:a05:6830:2786:b0:79d:eccc:96eb with SMTP id 46e09a7af769-7d15a64be54mr2160490a34.26.1769196997273;
-        Fri, 23 Jan 2026 11:36:37 -0800 (PST)
-X-Received: by 2002:a05:6830:2786:b0:79d:eccc:96eb with SMTP id 46e09a7af769-7d15a64be54mr2160466a34.26.1769196996948;
-        Fri, 23 Jan 2026 11:36:36 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d15b3e2f4csm2417311a34.30.2026.01.23.11.36.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Jan 2026 11:36:36 -0800 (PST)
-Message-ID: <7ab606d1-9f65-4123-827e-58650eb8944a@broadcom.com>
-Date: Fri, 23 Jan 2026 11:36:33 -0800
+        d=broadcom.com; s=google; t=1769197388; x=1769802188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FL12YkiV2Y2HKowPY5TkAq0P+k27Iok/6cTkQQOW98Y=;
+        b=U87wgdcwcQj9e8+lyUAEIbLG1J7UuNZ0ACJg/WJEU+z1q2S2OUczhlWeTzbkWJ4V8l
+         DM4RkuZaPfCUHLxFa6u1lrPXLWsomPp1aYVDBnzYwadYX4WlufDRJfOU0BzivH34GPSz
+         EkeO/YPaA/KR6ZjCWE99TesnqoV+1juUzIuDk=
+X-Received: by 2002:a05:6a00:2d2a:b0:823:998:95b0 with SMTP id d2e1a72fcca58-82317ea6b9dmr3574944b3a.35.1769196916382;
+        Fri, 23 Jan 2026 11:35:16 -0800 (PST)
+X-Received: by 2002:a05:6a00:2d2a:b0:823:998:95b0 with SMTP id d2e1a72fcca58-82317ea6b9dmr3574917b3a.35.1769196915829;
+        Fri, 23 Jan 2026 11:35:15 -0800 (PST)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8231873e519sm2843206b3a.49.2026.01.23.11.35.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jan 2026 11:35:15 -0800 (PST)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	vikas.gupta@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [v6, net-next 0/8] bng_en: enhancements for RX and TX datapath 
+Date: Sat, 24 Jan 2026 01:04:56 +0530
+Message-ID: <20260123193504.285573-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/3] net: ethtool: Track TX pause storm
-To: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>
-Cc: alexanderduyck@fb.com, alok.a.tiwari@oracle.com, andrew+netdev@lunn.ch,
- andrew@lunn.ch, chuck.lever@oracle.com, davem@davemloft.net,
- donald.hunter@gmail.com, edumazet@google.com, gal@nvidia.com,
- horms@kernel.org, idosch@nvidia.com, jacob.e.keller@intel.com,
- kernel-team@meta.com, kory.maincent@bootlin.com, lee@trager.us,
- o.rempel@pengutronix.de, pabeni@redhat.com, vadim.fedorenko@linux.dev
-References: <20260122192158.428882-1-mohsin.bashr@gmail.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20260122192158.428882-1-mohsin.bashr@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 1/22/26 11:21, Mohsin Bashir wrote:
-> With TX pause enabled, if a device cannot deliver received frames to
-> the stack (e.g., during a system hang), it may generate excessive pause
-> frames causing a pause storm. This series updates the uAPI to track TX
-> pause storm events as part of the pause stats (p1), adds pause storm
-> protection support for fbnic (p2), and leverages p1 to provide
-> observability into these events for fbnic (p3).
+Hi,
 
-Jakub, should I go ahead and re-submit this patch series then:
+This series enhances the bng_en driver by adding:
+1. Tx support (standard + TSO)
+2. Rx support (standard + LRO/TPA)
 
-https://patchew.org/linux/20251107002510.1678369-1-florian.fainelli@broadcom.com/
+Changes from:
+v5->v6:
+ - Addressed netdev.ai feedback shared by Jakub Kicinski:
+    - Fixed AGG buffer leak in the non-copy (large packet) allocation path.
+    - Corrected TPA ID mask (0-1023) to prevent out-of-bounds array access.
+ - Refactored bnge_hw_def.h:
+    - Removed unused macros and migrated to BIT() and GENMASK().
+ - Retained DMA sync in buffer reuse path:
+    https://lore.kernel.org/netdev/CANXQDtaLFQc3XRrLEH2AytcZvkeUdD9AW8=KUwqGQvM+=Q6M2w@mail.gmail.com/
+    - Retained dma_sync_single_for_device() in the buffer reuse path.
+      Further review confirmed the sync is necessary for hardware ownership
+      transfer even for read-only CPU access.
 
-Looks like this is exactly what you ran into here.
+v4->v5
+ Addressed comments from Paolo Abeni
+ - Fixed mixed whitespace and tab usage
+ - Reverse Christmas Tree style
+ - Replaced bitfields with bool
+ - Dropped redundant DMA sync to device
+ - Implemented ndo_features_check() to move length
+   and num_frag validation out of the Tx path
+ - Dropped redundant queue mapping check in Tx path
+
+ Addressed comments from Paolo Abeni and Andrew Lunn
+ - Positioned macros before their associated structs
+ - Migrated to BIT() and GENMASK() macros
+ - Optimized DMA sync scope to packet length instead of full buffer
+
+ Addressed comments from ALOK TIWARI
+ - Fixed a typo in a comment.
+ - Updated macro to require all arguments to be passed explicitly
+
+v3->v4
+ - Scoped the series to RX and TX datapath per Jakub Kicinski's comments.
+ - Dropped IS_ERR() per Alok Tiwari's comments.
+
+v2->v3
+ Addressed comments from Andrew Lunn
+   - Apply Rev-xmas fix in several places.
+   - Correct ethtool-speed comment to reflect accurate behavior.
+
+ Addressed comments from ALOK TIWARI
+   - Remove duplicate definition of RX_CMP_L2_ERRORS.
+   - Fix macro by adding the required arguments.
+   - Add newline for clarity/formatting.
+
+ Addressed kernel test robot warning
+   - Fix compilation error: removed unused variable gro
+
+ Moved hw specific structs to appropriate header file
+
+v1->v2
+ Removed unused function bnge_alloc_rx_page()
+ Removed inline keywords from couple of functions
+ Removed some stats related code that doesn't applicable (missed_irqs)
+ Addressed kernel test robot warning
+    - Fixed compilation issue with CONFIG_INET is not set
+
+Bhargava Marreddy (8):
+  bng_en: Extend bnge_set_ring_params() for rx-copybreak
+  bng_en: Add RX support
+  bng_en: Handle an HWRM completion request
+  bng_en: Add TX support
+  bng_en: Add ndo_features_check support
+  bng_en: Add support to handle AGG events
+  bng_en: Add TPA related functions
+  bng_en: Add support for TPA events
+
+ drivers/net/ethernet/broadcom/bnge/Makefile   |    3 +-
+ .../net/ethernet/broadcom/bnge/bnge_hw_def.h  |  446 +++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |   65 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |    2 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  408 ++++-
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  120 +-
+ .../net/ethernet/broadcom/bnge/bnge_txrx.c    | 1621 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_txrx.h    |  126 ++
+ 8 files changed, 2750 insertions(+), 41 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_hw_def.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_txrx.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_txrx.h
+
 -- 
-Florian
+2.47.3
 
