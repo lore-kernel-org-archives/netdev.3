@@ -1,132 +1,69 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AFE3EBF3A;
-	Sat, 24 Jan 2026 10:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03413239E8D
+	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 10:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769249198; cv=none; b=rpcHulVA6gDtDY2JEImKcORgta7nRq28wZkdKZOapbvCwanwR01ytyTOn9+pm72Xj9hH9E7oYQ6LKQDWP237BcQcBaqLkpOK+9DH8sTre+c9a4VVBTm4zsMnUJ+hN3iLQ32BEkLnkwSGc2cC4425aggeW6SH+TW6HNPwzCk/xuo=
+	t=1769250345; cv=none; b=Zw8qA64qb/mPnvDSRe+JbWx0KI46l8fzXa2uUZ62D9xNGGf8UIFQwwAw8lMi4uV68q/S03VBcusJoB9XevMKmzxzA+y9yFMzlOZtYsX2DKbNQLiAQbSTTHD01I49b6OPW6RIzWFLw/z7wO9NOCY16xSGoVpEgajgA9SiiS8ocSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769249198; c=relaxed/simple;
-	bh=bZKzyOHJyJ9VyqzCxia7oi2wqO4KxX8XWBpYJx4pwwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLwzI9DkRQ3xzl2JB9z0mJU2bD9fm7YPxdAAgszIm0/a2jfs3IFpCsTqSiJ1vT14cKWUrWPxhw2IjAitmA38D76zMg5NiyXUqrU3jAXRQDXETXLT8mXfHHbJ2HqRQs/y78VXmLEQTP1K3/uWMeC0L0Lq/KE5KXkh7nh91K48kH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Htk4OK2Q; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1769250345; c=relaxed/simple;
+	bh=IiAcczMwwovguiLb7lLKzedLwywlNVBhDsNQvelPB0U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cfR54EKCHN9AAiqSTZJt4F6e7N1/RNs1VJz8y4MGx4XVObUCm6b0IFve1SD6NHA21jcLvBUEF8d7xG6sdanG4Epm+teATCYHTgVmcnkw5NEq1qCcKrLaIblqowSkQuJ+GVfqBIlXrC+Cr6ekVKFIu6Ar1ZyWQrD8mXEFRXVO91U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com; spf=pass smtp.mailfrom=korsgaard.com; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=freSOQkZ; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=korsgaard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korsgaard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Htk4OK2Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769249197; x=1800785197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bZKzyOHJyJ9VyqzCxia7oi2wqO4KxX8XWBpYJx4pwwM=;
-  b=Htk4OK2QWBj4bt1GnUWht0OReIh/VMn0v12PkIKslWohPSMTcsnjvo2t
-   DIP2AuVclmVe2xMX5dXtIlrkTx3GYys1UbInUphJ7i61YVcxAXpnThZMl
-   Ij+8u8JtbP8u+eb2HBanLZbzdpMWrirntfiN/1xwdq8QagStgL9/U8v4r
-   15H58MIdFg6h3yNZb/1vhUKRLzrs9BQrHO0zMIUycVdKlCFqXzxmrdnqy
-   b0hiMPTbO/kqEFbygRZNxktK8RbUTJt4kqILEQNiegwjyecfSokWbV2LW
-   M7Qut7QBcDZFRXqEbehEVeQgRkP73P/PZVzf4eN5x5F5XVY7g/GYMfAsk
-   g==;
-X-CSE-ConnectionGUID: R4CGzHAsRp2QJ+9Hx3EusQ==
-X-CSE-MsgGUID: 8CpUm8BmSnKeF7rRWITDgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="93152143"
-X-IronPort-AV: E=Sophos;i="6.21,250,1763452800"; 
-   d="scan'208";a="93152143"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 02:06:36 -0800
-X-CSE-ConnectionGUID: YJpgOAmNTzmsFPxGYuDKQQ==
-X-CSE-MsgGUID: 1JJmVYE0TlC1Ij2W5kFOEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,250,1763452800"; 
-   d="scan'208";a="207138653"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.207])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2026 02:06:32 -0800
-Date: Sat, 24 Jan 2026 12:06:29 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="freSOQkZ"
+DKIM-Signature: a=rsa-sha256; b=freSOQkZVucMylTOiHsOyxxE9EEQrKOsPDxJqri4YtWTtBZCHHH2xSmTh0r8tP+dVbmJM3pIBO1EHMTkmzUn6EUg/+evaAgwvq+9TzkuRc+Fls5fhmquDAVcaG86J2hu9A4+fXVtT6geqGUL6e0h1QanrZI9TOgcyVceCY66m9a41xeQuIrHtojFPL87AuTQBfx90tr900ZnkjsS5g1nQHJPa0wo4n68htAFREYwnUXwGATplX6RecN48BdxUm2LJ0w0brqAEFj9CrbxIQIx1J9vIznnnjvT3HndnaVajlAZts1qswzgkom0RYsffNMD+hecNV/OIUSA4bfDDwgk6w==; s=purelymail1; d=purelymail.com; v=1; bh=IiAcczMwwovguiLb7lLKzedLwywlNVBhDsNQvelPB0U=; h=Feedback-ID:Received:Received:From:To:Subject:Date;
+Feedback-ID: 21632:4007:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 323067734;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sat, 24 Jan 2026 10:25:41 +0000 (UTC)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.98.2)
+	(envelope-from <peter@korsgaard.com>)
+	id 1vjapo-0000000GHQJ-0ipS;
+	Sat, 24 Jan 2026 11:25:40 +0100
+From: Peter Korsgaard <peter@korsgaard.com>
 To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Petko Manolov <petkan@nucleusys.com>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Oliver Neukum <oneukum@suse.com>,
-	Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Max Schulze <max.schulze@online.de>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>, Eric Biggers <ebiggers@google.com>
-Subject: Re: [PATCH net-next] net: usb: remove unnecessary get_drvinfo code
- and driver versions
-Message-ID: <aXSZpWJnfuzpDX-C@smile.fi.intel.com>
-References: <20260124092423.97481-1-enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org,  linux-usb@vger.kernel.org,  Andrew Lunn
+ <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next] net: usb: sr9700: replace magic numbers with
+ register bit macros
+In-Reply-To: <20260124032248.26807-1-enelsonmoore@gmail.com> (Ethan
+	Nelson-Moore's message of "Fri, 23 Jan 2026 19:22:43 -0800")
+References: <20260124032248.26807-1-enelsonmoore@gmail.com>
+Date: Sat, 24 Jan 2026 11:25:40 +0100
+Message-ID: <87ldhns3x7.fsf@dell.be.48ers.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260124092423.97481-1-enelsonmoore@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain
 
-On Sat, Jan 24, 2026 at 01:23:26AM -0800, Ethan Nelson-Moore wrote:
-> Many USB network drivers define get_drvinfo functions which add no
-> value over usbnet_get_drvinfo, only setting the driver name and
-> version. usbnet_get_drvinfo automatically sets the driver name, and
-> separate driver versions are now frowned upon in the kernel. Remove all
-> driver versions and replace these get_drvinfo functions with references
-> to usbnet_get_drvinfo where possible. Where that is not possible,
-> remove unnecessary code to set the driver name. Also remove two
-> unnecessary initializations from aqc111_get_drvinfo, an inaccurate
-> comment in pegasus.c, and an unused macro in catc.c.
+>>>>> "Ethan" == Ethan Nelson-Moore <enelsonmoore@gmail.com> writes:
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+ > The first byte of the Rx frame is a copy of the Rx status register, so
+ > 0x40 corresponds to RSR_MF (meaning the frame is multicast). Replace
+ > 0x40 with RSR_MF for clarity. (All other bits of the RSR indicate
+ > errors. The fact that the driver ignores these errors will be fixed by
+ > a later patch.)
 
-...
+ > The first byte of the status URB is a copy of the NSR, so 0x40
+ > corresponds to NSR_LINKST. Replace 0x40 with NSR_LINKST for clarity.
 
-> static void catc_get_drvinfo(struct net_device *dev,
+ > Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
->  {
->  	struct catc *catc = netdev_priv(dev);
->  	strscpy(info->driver, driver_name, sizeof(info->driver));
+I don't know the device, but sounds sensible.
 
-Side note: and we usually require blank line after the definition block.
-On top, strscpy() in such cases can be improved to use 2-arguments variant,
-as it adds a check for the destination to be an array.
-
-> -	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
->  	usb_make_path(catc->usbdev, info->bus_info, sizeof(info->bus_info));
->  }
-
-...
-
-> static void rtl8152_get_drvinfo(struct net_device *netdev,
-
->  	struct r8152 *tp = netdev_priv(netdev);
->  
->  	strscpy(info->driver, MODULENAME, sizeof(info->driver));
-
-Ditto.
-
-> -	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
->  	usb_make_path(tp->udev, info->bus_info, sizeof(info->bus_info));
->  	if (!IS_ERR_OR_NULL(tp->rtl_fw.fw))
->  		strscpy(info->fw_version, tp->rtl_fw.version,
-
-Seems the same, and so on...
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bye, Peter Korsgaard
