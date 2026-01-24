@@ -1,102 +1,111 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368253B2A0;
-	Sat, 24 Jan 2026 07:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D33EBF1E;
+	Sat, 24 Jan 2026 07:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769239269; cv=none; b=snkV5pd+nWPUGg3hkH91NisIuewLC271mQGpN0vV85mOY1moi0X5ugzxL7Nisp9BDJHGxVoxyJwevc6rLKajTDtRI4ZVUrX1aXnfWSNXhEMWTLvzR6Xo0O47Kz9veKUIRFMlZnnOOVbUm8mI2xxJPDLtUVVXENs+cAIOztWfgYk=
+	t=1769239510; cv=none; b=RCn3nTu3Vp6FqP1I+g/WCusiDBn8vL3Ub6rXlPgMAwAYHKMLQYUGwvvfN5zhvVVkJK+AoSmLJkTr9WUfxvwZ3dQVjI6Jpnp8r+aHPukfjbxoSUNjnhDdkjJZg2dafAlfCKRhqQAANmmW8bkWSDE2D0aGFrKjJoou0xp5ACx7ix0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769239269; c=relaxed/simple;
-	bh=SoncGxoZMB7pbdKfAHnQn6jYRseJnb/LhiIsiXJyo5E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K8arsGvAW3ik9k0k1DxYkHcJmsNrpmGfcvVasvR7vbq2wbXJmZfKTNAaDodcSZQ3Z3tKCvkpFc14EfWf3RTH5jitano7U+RY10mFFe66yAZouFNCGmhAYtqi+Lx4OeRKcZd+X3403RnzoOPXZYfcWBiLrOG/8UdTNiJACnLvWkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Sige9voF; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1769239510; c=relaxed/simple;
+	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u8h2fI3SkxFHdgh4+lkqtwkih5keB9Jy8XTWqTRALpS177KkjszMcxLDe/0LGWjci0xx2psfMB79gh+Tk31eB0B2+G9Xym5QHA+ZtLBiQQmhpIdqX7kYuSVYVCufa1ZH0hxaxLczymbUt4Yqyrvt20v8j/3X3rqixZZ1TVBvfWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqCXsxeU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="Sige9voF"
-Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 31d153bb2;
-	Sat, 24 Jan 2026 15:20:59 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: horms@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	jianhao.xu@seu.edu.cn,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	zilin@seu.edu.cn
-Subject: Re: [PATCH net] net: liquidio: Fix memory leak in setup_nic_devices()
-Date: Sat, 24 Jan 2026 07:20:57 +0000
-Message-Id: <20260124072057.3914059-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <aXOuByqgZ0iY81ak@horms.kernel.org>
-References: <aXOuByqgZ0iY81ak@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqCXsxeU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DC9C116D0;
+	Sat, 24 Jan 2026 07:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769239510;
+	bh=BpoHXPSY5AwaQmN6Xw7QMaOi0dRnd72osdnYD0X4kPY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lqCXsxeURasvHP4unVWE7PgUKtV41NIhdpM5vvDoekklddO/E8dY6AGHT6g46ECmE
+	 jAqr/Ps7aGYp+PMRIA3YPw/Vwo9C+TpR/sdjlCknPM+8dAleph3X/4bU5wz1IumbJ4
+	 vsIyOm7lmyAqlf6I/LEv+1yiLfUCgQG5Qep86ZG9pnUsCEjekEe9P1WoWrrEtjnmQI
+	 QDhJCZSHNho0ytQ1vYlLxEHC3JmuX9H5jIR2xZzspstMFBwT5DWK5sGJiegpaS1O84
+	 ta04pSX1Y2X93B0O1gM0i3o07Wqvm66WeMTmtMVkp9TeOCvY9mMZIkCPgoXqmAL2FG
+	 PTBGII1HLujNQ==
+Message-ID: <8477da83-2441-440c-80f1-66dac9700523@kernel.org>
+Date: Sat, 24 Jan 2026 08:24:47 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused
+ driver
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Bjorn Helgaas <helgaas@kernel.org>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>,
+ Linas Vepstas <linasvepstas@gmail.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Danilo Krummrich <dakr@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?Q?Martin_Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+ Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>,
+ Mengyuan Lou <mengyuanlou@net-swift.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Huacai Chen
+ <chenhuacai@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+ Takashi Iwai <tiwai@suse.de>, Eric Biggers <ebiggers@google.com>,
+ Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan
+ <ajd@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Dong Yibo <dong100@mucse.com>,
+ Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+ Vivian Wang <wangruikang@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>
+References: <20260123033233.16906-1-enelsonmoore@gmail.com>
+ <20260123181156.GA84531@bhelgaas>
+ <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9beee0a87203a1kunmaafecf32af447
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDTBpDVklLTkNJTBlPTktDT1YeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=Sige9voFugN9P/glppitMBESTMD2o81ATQVlWjiUk3lBdOXvUj8N7MioAcc7iAD/OBDFuygrU1AGi1HKffVTcCZkbVuLoBnl6TLcMEJ4OeZUyHfuBdt79ffchuEf/QA+NHt7UrGmo/YOAeLyStq09Y8/VlJqnT8lI3jiE35crio=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=NtYZSyimttopK8O5npYCRbUNJYNJIPR7JxiwWMOWbL0=;
-	h=date:mime-version:subject:message-id:from;
 
-On Fri, Jan 23, 2026 at 05:21:11PM +0000, Simon Horman wrote:
-> Thanks Zilin,
+
+
+Le 24/01/2026 à 03:01, Ethan Nelson-Moore a écrit :
+> [Vous ne recevez pas souvent de courriers de enelsonmoore@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> I agree with your analysis, and proposed fix.
-> And that the problem appears to have been introduced in the cited commit.
+> On Fri, Jan 23, 2026 at 10:11 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>> Not sure there's value in removing the IDs from pci_ids.h.  It may
+>> lead to unnecessary conflicts later for stable and other backports.
 > 
-> But I am wondering if we also need the following, probably as a separate
-> commit, to ensure that liquidio_destroy_nic_device is called for the
-> element of props[i] whose assingment your patch addresses.
-> 
-> Also compile tested only.
-> 
-> diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-> index 0732440eeacd..3ba2806f5d1e 100644
-> --- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-> +++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-> @@ -3765,11 +3765,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
->  
->  setup_nic_dev_free:
->  
-> -	while (i--) {
-> +	do {
->  		dev_err(&octeon_dev->pci_dev->dev,
->  			"NIC ifidx:%d Setup failed\n", i);
->  		liquidio_destroy_nic_device(octeon_dev, i);
-> -	}
-> +	} while (i--);
->  
->  setup_nic_dev_done:
-> 
-> ...
+> Patches to remove drivers are generally not backported to stable
+> versions, even if the driver is broken, so I don't think this will be
+> an issue. There is no point in keeping unused IDs around.
 
-Hi Simon,
+Yes and that's exactly the reason why removing unused IDs will be a problem.
 
-Thanks for the review and the suggestion.
+Let's take an exemple: some patch adds PCI_DEVICE_ID_ARECA_1682 after 
+PCI_DEVICE_ID_ARECA_1681 in pci_ids.h in the mainline. That patch needs 
+to be backported and it conflicts with PCI_VENDOR_ID_S2IO which is not 
+anymore in the mainline but is still in stable.
 
-I agree with you. The current while (i--) loop indeed skips the cleanup 
-for the device index i that actually failed. I also noticed that 
-lio_vf_main.c shares the exact same issues.
-
-I'll send a v2 series to correct both files, and I'll include the loop fix 
-as a separate commit as you suggested.
-
-Best regards,
-Zilin
-
+Christophe
