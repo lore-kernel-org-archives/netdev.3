@@ -1,63 +1,63 @@
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9572580DE
-	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 06:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09A3279DCE
+	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 06:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769235677; cv=none; b=kIcYD2C3xMj2MIEGX/2IdhsuySoNOUX9VG7Qx1WBICo1qWN905OwwXYMNGeqbH73YOd83/gJY3IgzBEdmGv+jgT6GNoY05yyAdze4okZ/pD06aLN+ZM2TQqpX2TIOdrgu4nQkUGZYlyLOouBBRR9HsrrQjvKIhhr5DlSKczWJr4=
+	t=1769235686; cv=none; b=E1YhmlmWbw6nMcb2agIXjviqYRPx49uNTKh1KaJWHMcIjMUd+zr9OOOkTztoN8ZLDinmn8qCkCqJulum+oC+J5varsjGiNV5xfxTuAvaCKtv2JICmnQcqN5LYkcBx4ZrcSj58yD/usSO2hZWjVcqeBLTMMjr4x7DAkfSiyBL0SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769235677; c=relaxed/simple;
-	bh=6fOLPr5pZFj/RQ+K6yXNXzxNF1aapP52tKW6Swnvtbk=;
+	s=arc-20240116; t=1769235686; c=relaxed/simple;
+	bh=EjnGJ2RP/1JCMlZMGRd+YlmPnDkDXdlwIR1/R/iLIq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6MhsX1KGUjkrSnI0GnczR2zH9WqocPMHCD9q4uT+9AAtiEtAZB6BZsdNnedbPmRGAlXTXb9KYhOAxoEjzibJ3z2PKZRGx4qtxoG7I/eGcUUFOwB2+p1TnRlttGJfFuR9KJKtqbQMaS7WcvUIMdcDfxC4WuJF6xpLy+GyugpPXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAnOG9jN; arc=none smtp.client-ip=209.85.214.196
+	 MIME-Version; b=AW7LTWrQnR06sH5KXlIxQcmMt39hmg3qXacFq+z9w2WmNP8T+k7InRiOLj7FbSXsC8tjkHS/eRo48cTSd54hfD0gy2XWfLKZasqhjNiUgy8ZJ8H9RM6o0Dpp319p04Q+yi23CI7KCgJmclq615mCjphNzzbBoxprpYSX37DS9ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9AfUlqG; arc=none smtp.client-ip=209.85.215.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAnOG9jN"
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a743050256so19985315ad.3
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 22:21:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9AfUlqG"
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-c06cb8004e8so1085555a12.0
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 22:21:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769235675; x=1769840475; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769235684; x=1769840484; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L3QmrLYBEBYXBAfPFlkqBudM2njHTQyGi8eiKfdRBPI=;
-        b=GAnOG9jNJ2TOgwjjI475jP2tsUk1AIN1smo/Qyx34s+JXA9DgjvdBcYZZzZlssUDrx
-         mvE5RIwQkVQhRXtkKdOZ/wR0s+8/TDJ/u8odXMpIuJX15/9gb+g7xu1cCUbgzgmQhaT7
-         jF+9mLVLsyoHDe88oIdhOW01CsG5Kev8REsm5ZZyJVeGWsvQ8vp3AhLe6x2zX5jjpgPi
-         2kg7RfNdPxxOVa2XsAMcRoO9LzgPmkUG3r3niNphoRSHHtqypgKT4aljQRxm2N7WqOaG
-         6/xDkQ1VFR+D7PO40wHhmFC3SPI7Npd81Rlk4nnM1fD7N9HCbdag8hAbbftldrNm9YwD
-         RAYQ==
+        bh=1d8/vt9Be4w9qa2wV5mcrLfqVviutZM7Jiw2hF3kLB8=;
+        b=J9AfUlqGapkafb6DnWCLl9AYfCDHXitdfIGFhHP1lvLhOA5izbVNp2ETNCUgqSzYb7
+         IVwYIpcpmYRF6+KW8t4gDXyJ3Ko8kybz87TQGcwqu2COv8Qs+y9FcO562NXsreYukUrH
+         2oTqQnAunKW8+weBx67nC9avAFwgeSr83U5XfEb0Ti50aLU7Ms7kery7/yEh6lRAImGk
+         ATbayV/XJIlgqEgasSzGzrSb7HJnI46oq0hbx2hQkhj9eOSGth8p8SCKp30uU8sfqUlS
+         tDHZOkF3TKl9xNUjnmjn0r/g/epT32NZ8KrpSMZ4U/C1Nv/wggYiSAn/msmrffFPmGP4
+         46Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769235675; x=1769840475;
+        d=1e100.net; s=20230601; t=1769235684; x=1769840484;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=L3QmrLYBEBYXBAfPFlkqBudM2njHTQyGi8eiKfdRBPI=;
-        b=iuAazlauj7zQ2utU6dV2p9dLejznKKVlTVXjFJKi4fm20Eev1tK+cUSQRR8WIIRWa9
-         rFQq0FkZ9e+pNrhuTxmi4RVUWwsFKUl+lV32/B8dhP5C5J2vPRnIR8XrUcW3XSo2pFSV
-         q+p6u80HgalL0CtDRNElXmAwYMsYN4Ps9IYRr79E26VkdiX+DvarMPvVwvMciowP8aWH
-         gtRtuIzhCkYyg67JsS0JogxmAUna7QVbNycIJQ5WbaBQd6BgjwTO7KXjAGPo+P8l8Dfm
-         /d+YRwvmIN19u5B1mhXxuEwDAYWGWrVNG9pv5VqokxItadlkhZ8+H0dNRu/gwwgq/Fq2
-         rKUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJHp3ZKWY2QLNiP2gMtK6YvIPirmWbV+X26uvea3mrToX5lbtyguqb8QfZk0Ys2Tjo37DiQYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnuixbhDt1Cs8CL/1hk0qodNkzyOP8VuUUszheCK4RJtGCHuXe
-	QhVDQOc5/nWnDdl3ISDDkRhBj6TvakTsCuk58aYqkyUXfINS62N800kA
-X-Gm-Gg: AZuq6aKmJMfNLo0u/COevIq543pOWwnIKSTmIdzWA4K1zUDH6gnSygsLS6QoytOxfvP
-	ED21ldAd178cVgbTVxXvfIDpPrzo36q0PJQgthePfMw6Ny6u9e5swBpEDmKhU+cc4fE6TUTx3ya
-	Owvn5uKoxSmIWXihw7J6EmDIFhPofBScc2iZ+wFEjH21nJZEFBN7lw0VJJ8rJYppqWeP+0ltDnu
-	USq3JK3ozkG4JlaMJqoNqXij5PHbAPymuWvlrh/vLHlYFwdRgkQg5u13Ohx4BclKRK1aNgP+TN1
-	UdBD1aGrRzK5iqgNhrCQTLo/RIi1u83Jv6OVj52zYWs8OuFXx7Cdolao9pgoLbavOWQfo6X6KVY
-	xTTU06DAW7qsuyKWAX1K76xnYMvdT9m8aJE+r9JiXx9+6F7Xxz3RF5pySHGgQv4/bLDXnLqjw4b
-	NaBHUUl1hT
-X-Received: by 2002:a17:90b:4c4b:b0:34e:5aa2:cf61 with SMTP id 98e67ed59e1d1-35368c436e7mr4201938a91.28.1769235675250;
-        Fri, 23 Jan 2026 22:21:15 -0800 (PST)
+        bh=1d8/vt9Be4w9qa2wV5mcrLfqVviutZM7Jiw2hF3kLB8=;
+        b=UsXil/IGL+vWupxBfiJZIl2v5mUPuve1h/9gCDDrKtMExO/dWNLxQHAA/OjLac0HLs
+         X6WkeEYLPKRWM0/ROUM6XDBcN210VdcLQKBnCVsrfpUU4h2EG8y9Qu50w+QFBqK/0S49
+         uHkBaR6UhLHmaKivmuJeoccwHPQ+Cyuf/sZnCzsEiAjNKD7QRN/poDi+KnrXccCIPx65
+         jvrnW85Rf0DBA4IPZi698xZ7aQp0qQXPV4a8RSd9e3rtsvg831Bm47rqIMOY9VnafCMG
+         IF5ne3xgYKVm7qxD1h5SMz8b+TVcn0YMrA1CbKXr23ZqDtx/iCIikpZwR8JCCEcxlMpH
+         ItPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpipQWmsFB2u9B1s1aZcy6fZkjlUlKlyXans41bx1EhE6R/z6yj/+0NJtDv81TCvvxPbuVDbE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxwx648MFJTta78uNPtQ0sNwOafEo6rqwJLhaLx+yWqt3k1hxF5
+	tz7d17InOYR0r6F4qAdxOcT0YQvMRaGXyj7gVqESHMQNglAZSs2d80ur
+X-Gm-Gg: AZuq6aKBtWkkE3Vv/IHdidqeZBWzCXKnDbG8n14oUcLMgTE/NEYNjls7zL/oXkzKnIJ
+	D+s5ZaGz42QqPrIgYo1qmVrsz1ERf+gnrjm3q+wj80J3yYaGdSaMkUGkTCvzQWDP1hTat2rAiHx
+	xxIXKBor9GyayWdauo8AaOtSVFqJfhKAljjIYBmOrQrkiJxTRH8ZaERV59fh4ZPacba4sjXzqVn
+	hVhkXSsW1eeqQG35PCiHHVjE+YJzuuFo7MA/PHIxWKll6W+jGq36aeJgoYZo7ftPX5hwXl3QMWL
+	mk3OxQmBqGuV6SqBnI+MCn8NzAcDpUsjfq4aUQjCItzaBiM6sVmkat59ZNnMye7LZ/a37RoIFhE
+	18JHtypH8ORyjmlouNbN8GF20p2EikziAWvi7QKIb7Y+XotSnGYvWN/ltxV48AepJGGEH8hJEUy
+	OmFe3tIoGT
+X-Received: by 2002:a17:90a:e7c2:b0:340:d1a1:af8e with SMTP id 98e67ed59e1d1-35369024853mr4563026a91.37.1769235683967;
+        Fri, 23 Jan 2026 22:21:23 -0800 (PST)
 Received: from 7950hx ([103.173.155.241])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-353354a6b5asm6496537a91.9.2026.01.23.22.21.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-353354a6b5asm6496537a91.9.2026.01.23.22.21.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 22:21:14 -0800 (PST)
+        Fri, 23 Jan 2026 22:21:23 -0800 (PST)
 From: Menglong Dong <menglong8.dong@gmail.com>
 X-Google-Original-From: Menglong Dong <dongml2@chinatelecom.cn>
 To: andrii@kernel.org
@@ -84,9 +84,9 @@ Cc: ast@kernel.org,
 	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf-next v13 06/13] bpf,x86: introduce emit_store_stack_imm64() for trampoline
-Date: Sat, 24 Jan 2026 14:20:01 +0800
-Message-ID: <20260124062008.8657-7-dongml2@chinatelecom.cn>
+Subject: [PATCH bpf-next v13 07/13] bpf,x86: add fsession support for x86_64
+Date: Sat, 24 Jan 2026 14:20:02 +0800
+Message-ID: <20260124062008.8657-8-dongml2@chinatelecom.cn>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260124062008.8657-1-dongml2@chinatelecom.cn>
 References: <20260124062008.8657-1-dongml2@chinatelecom.cn>
@@ -98,69 +98,169 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce the helper emit_store_stack_imm64(), which is used to store a
-imm64 to the stack with the help of a register.
+Add BPF_TRACE_FSESSION supporting to x86_64, including:
+
+1. clear the return value in the stack before fentry to make the fentry
+   of the fsession can only get 0 with bpf_get_func_ret().
+
+2. clear all the session cookies' value in the stack.
+
+2. store the index of the cookie to ctx[-1] before the calling to fsession
+
+3. store the "is_return" flag to ctx[-1] before the calling to fexit of
+   the fsession.
 
 Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Co-developed-by: Leon Hwang <leon.hwang@linux.dev>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
 ---
 v10:
-- add the "reg" to the function arguments of emit_store_stack_imm64()
-- use the positive offset in emit_store_stack_imm64()
-- remove some unnecessary comment, as we already have proper comment in
-  emit_store_stack_imm64()
+- use "|" for func_meta instead of "+"
+- pass the "func_meta_off" to invoke_bpf() explicitly, instead of
+  computing it with "stack_size + 8"
+- pass the "cookie_off" to invoke_bpf() instead of computing the current
+  cookie index with "func_meta"
 
-v9:
-- rename emit_st_r0_imm64() to emit_store_stack_imm64()
+v5:
+- add the variable "func_meta"
+- define cookie_off in a new line
+
+v4:
+- some adjustment to the 1st patch, such as we get the fsession prog from
+  fentry and fexit hlist
+- remove the supporting of skipping fexit with fentry return non-zero
+
+v2:
+- add session cookie support
+- add the session stuff after return value, instead of before nr_args
 ---
- arch/x86/net/bpf_jit_comp.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ arch/x86/net/bpf_jit_comp.c | 52 ++++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 12 deletions(-)
 
 diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index e3b1c4b1d550..2f31331955b5 100644
+index 2f31331955b5..5a075e06cf45 100644
 --- a/arch/x86/net/bpf_jit_comp.c
 +++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1300,6 +1300,16 @@ static void emit_st_r12(u8 **pprog, u32 size, u32 dst_reg, int off, int imm)
- 	emit_st_index(pprog, size, dst_reg, X86_REG_R12, off, imm);
- }
+@@ -3094,13 +3094,19 @@ static int emit_cond_near_jump(u8 **pprog, void *func, void *ip, u8 jmp_cond)
  
-+static void emit_store_stack_imm64(u8 **pprog, int reg, int stack_off, u64 imm64)
-+{
-+	/*
-+	 * mov reg, imm64
-+	 * mov QWORD PTR [rbp + stack_off], reg
-+	 */
-+	emit_mov_imm64(pprog, reg, imm64 >> 32, (u32) imm64);
-+	emit_stx(pprog, BPF_DW, BPF_REG_FP, reg, stack_off);
-+}
-+
- static int emit_atomic_rmw(u8 **pprog, u32 atomic_op,
- 			   u32 dst_reg, u32 src_reg, s16 off, u8 bpf_size)
+ static int invoke_bpf(const struct btf_func_model *m, u8 **pprog,
+ 		      struct bpf_tramp_links *tl, int stack_size,
+-		      int run_ctx_off, bool save_ret,
+-		      void *image, void *rw_image)
++		      int run_ctx_off, int func_meta_off, bool save_ret,
++		      void *image, void *rw_image, u64 func_meta,
++		      int cookie_off)
  {
-@@ -3348,20 +3358,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+-	int i;
++	int i, cur_cookie = (cookie_off - stack_size) / 8;
+ 	u8 *prog = *pprog;
+ 
+ 	for (i = 0; i < tl->nr_links; i++) {
++		if (tl->links[i]->link.prog->call_session_cookie) {
++			emit_store_stack_imm64(&prog, BPF_REG_0, -func_meta_off,
++				func_meta | (cur_cookie << BPF_TRAMP_COOKIE_INDEX_SHIFT));
++			cur_cookie--;
++		}
+ 		if (invoke_bpf_prog(m, &prog, tl->links[i], stack_size,
+ 				    run_ctx_off, save_ret, image, rw_image))
+ 			return -EINVAL;
+@@ -3218,12 +3224,14 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 					 void *func_addr)
+ {
+ 	int i, ret, nr_regs = m->nr_args, stack_size = 0;
+-	int regs_off, nregs_off, ip_off, run_ctx_off, arg_stack_off, rbx_off;
++	int regs_off, func_meta_off, ip_off, run_ctx_off, arg_stack_off, rbx_off;
+ 	struct bpf_tramp_links *fentry = &tlinks[BPF_TRAMP_FENTRY];
+ 	struct bpf_tramp_links *fexit = &tlinks[BPF_TRAMP_FEXIT];
+ 	struct bpf_tramp_links *fmod_ret = &tlinks[BPF_TRAMP_MODIFY_RETURN];
+ 	void *orig_call = func_addr;
++	int cookie_off, cookie_cnt;
+ 	u8 **branches = NULL;
++	u64 func_meta;
+ 	u8 *prog;
+ 	bool save_ret;
+ 
+@@ -3259,7 +3267,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 	 *                 [ ...             ]
+ 	 * RBP - regs_off  [ reg_arg1        ]  program's ctx pointer
+ 	 *
+-	 * RBP - nregs_off [ regs count	     ]  always
++	 * RBP - func_meta_off [ regs count, etc ]  always
+ 	 *
+ 	 * RBP - ip_off    [ traced function ]  BPF_TRAMP_F_IP_ARG flag
+ 	 *
+@@ -3282,15 +3290,20 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 	stack_size += nr_regs * 8;
+ 	regs_off = stack_size;
+ 
+-	/* regs count  */
++	/* function matedata, such as regs count  */
+ 	stack_size += 8;
+-	nregs_off = stack_size;
++	func_meta_off = stack_size;
+ 
+ 	if (flags & BPF_TRAMP_F_IP_ARG)
+ 		stack_size += 8; /* room for IP address argument */
+ 
+ 	ip_off = stack_size;
+ 
++	cookie_cnt = bpf_fsession_cookie_cnt(tlinks);
++	/* room for session cookies */
++	stack_size += cookie_cnt * 8;
++	cookie_off = stack_size;
++
+ 	stack_size += 8;
+ 	rbx_off = stack_size;
+ 
+@@ -3358,8 +3371,9 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
  	/* mov QWORD PTR [rbp - rbx_off], rbx */
  	emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_6, -rbx_off);
  
--	/* Store number of argument registers of the traced function:
--	 *   mov rax, nr_regs
--	 *   mov QWORD PTR [rbp - nregs_off], rax
--	 */
--	emit_mov_imm64(&prog, BPF_REG_0, 0, (u32) nr_regs);
--	emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_0, -nregs_off);
-+	/* Store number of argument registers of the traced function */
-+	emit_store_stack_imm64(&prog, BPF_REG_0, -nregs_off, nr_regs);
++	func_meta = nr_regs;
+ 	/* Store number of argument registers of the traced function */
+-	emit_store_stack_imm64(&prog, BPF_REG_0, -nregs_off, nr_regs);
++	emit_store_stack_imm64(&prog, BPF_REG_0, -func_meta_off, func_meta);
  
  	if (flags & BPF_TRAMP_F_IP_ARG) {
--		/* Store IP address of the traced function:
--		 * movabsq rax, func_addr
--		 * mov QWORD PTR [rbp - ip_off], rax
--		 */
--		emit_mov_imm64(&prog, BPF_REG_0, (long) func_addr >> 32, (u32) (long) func_addr);
--		emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_0, -ip_off);
-+		/* Store IP address of the traced function */
-+		emit_store_stack_imm64(&prog, BPF_REG_0, -ip_off, (long)func_addr);
+ 		/* Store IP address of the traced function */
+@@ -3378,9 +3392,18 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 		}
  	}
  
- 	save_args(m, &prog, regs_off, false, flags);
++	if (bpf_fsession_cnt(tlinks)) {
++		/* clear all the session cookies' value */
++		for (int i = 0; i < cookie_cnt; i++)
++			emit_store_stack_imm64(&prog, BPF_REG_0, -cookie_off + 8 * i, 0);
++		/* clear the return value to make sure fentry always get 0 */
++		emit_store_stack_imm64(&prog, BPF_REG_0, -8, 0);
++	}
++
+ 	if (fentry->nr_links) {
+-		if (invoke_bpf(m, &prog, fentry, regs_off, run_ctx_off,
+-			       flags & BPF_TRAMP_F_RET_FENTRY_RET, image, rw_image))
++		if (invoke_bpf(m, &prog, fentry, regs_off, run_ctx_off, func_meta_off,
++			       flags & BPF_TRAMP_F_RET_FENTRY_RET, image, rw_image,
++			       func_meta, cookie_off))
+ 			return -EINVAL;
+ 	}
+ 
+@@ -3440,9 +3463,14 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+ 		}
+ 	}
+ 
++	/* set the "is_return" flag for fsession */
++	func_meta |= (1ULL << BPF_TRAMP_IS_RETURN_SHIFT);
++	if (bpf_fsession_cnt(tlinks))
++		emit_store_stack_imm64(&prog, BPF_REG_0, -func_meta_off, func_meta);
++
+ 	if (fexit->nr_links) {
+-		if (invoke_bpf(m, &prog, fexit, regs_off, run_ctx_off,
+-			       false, image, rw_image)) {
++		if (invoke_bpf(m, &prog, fexit, regs_off, run_ctx_off, func_meta_off,
++			       false, image, rw_image, func_meta, cookie_off)) {
+ 			ret = -EINVAL;
+ 			goto cleanup;
+ 		}
 -- 
 2.52.0
 
