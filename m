@@ -1,121 +1,132 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9851D6DA9
-	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 01:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769217284; cv=none; b=MI7rZbpmArOdzTcRQh032sS1nhpKv8yJs6udF58I00qV930Z1Ka5G1wHWC3k22KIEt+h3qyKe6wxRRdMYJsJ08+JXFvycRabvA7f0PmFuzP/uJwxrgAPDuBLaIM99E/96VeMHk9bTsSeRd1Vkf/pB0NMiPjhuFa1b+mKm23aq+8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769217284; c=relaxed/simple;
-	bh=LWbEQ6Qb58mba99fQT7Bo/qzaqprFSHHlGLGlnboiA8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LlZFYAe0+zNS2/CVcVChZ5HUCwRk/H9DPLI9xnQOasIQRB2WUyolHK2qts6FYonfXg3ro4ZYcoACd9v81jX3rF8s8br55fZhUZSDSsPpVE8UGx36Oma0Fwzrrs9f17/EMEBWuPq1FreTv+5l6kFdNFPK14juUcgm+5sQA7YU9D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=gb0uiZMy; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927CF84A35
+	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 02:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769220100; cv=pass; b=DA3AVj3JRTF52w2I+43aWIfVvPzHQgQ4LvDc2uhpMhOfDjh5iz5lfTrToEveclj/xGtl/rEjvOeELg+pOorM099VSrvKpn2h1t5SmdknU/X0lcUCl+YXq1Tn9SpV4DI7vMWmqd2L3sv6RXoD0PbdwQeeXhDbswGlK6fYu3UZnBM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769220100; c=relaxed/simple;
+	bh=jLt0PwGKxUNFP/UMurV5/9hmISNtz6t9H2HpKnVOTXI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t1/leD+4H+CmuR37ad9M2yiKczI9K0T4B0j5praKfGjfVoM93Asajn+zx9CO3ESun+/itkxiYeoZELjWImXK7FV+ErjkUGpdWhTmOccTAaYu6XylZSp8D5vDgudVKIwt0L/AiMVL7VLOaPbVa52Ei34TkvyXIQv6/XPjEEbJj3k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EG0rLPz+; arc=pass smtp.client-ip=209.85.219.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="gb0uiZMy"
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60NN8D0L2798914
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:14:41 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=YdlSP3kPdploWJS5aUMnMwLO0/mqjo3Jlr7WAS5cl7E=; b=gb0uiZMy98B8
-	CFSsITssaKCwAC6SVh6xqW/32q1ZrO0ZgEI+xA3QOSDqHzvIl8zovPc0C81FAyw4
-	Z0lIdKYOvxXvfSo/E52n+wBO3lktItLxqZNJxeTFkagXBk3Gq0LnumMeb3iOh6Q1
-	oXBGvvi5YwJZFXQfNcYnBMQ/RMjyEOqTzTkHu0xZ/vXegWeJobOd0R211do/+i0h
-	2f7Ua4zWqN74xmkjvhM1FJUVgQFUvbUig/sFK6S65KE3kH/4BO2U/0TupBOEk73s
-	7/YWyICV79oCSncBBrt6Cdg1CrxqrNATF7Cs5qA0nhtabB384HB5sLoYQbuzWE0P
-	Tolyr6sfGA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4bvdcg3va8-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 17:14:41 -0800 (PST)
-Received: from twshared26141.04.snb1.facebook.com (2620:10d:c0a8:1b::8e35) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Sat, 24 Jan 2026 01:14:40 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id D15DAF2FB2F3; Fri, 23 Jan 2026 17:14:36 -0800 (PST)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-CC: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-rdma@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <netdev@vger.kernel.org>, Keith Busch <kbusch@kernel.org>,
-        Yochai Cohen
-	<yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
-        Zhiping Zhang
-	<zhipingz@meta.com>
-Subject: Re: [RFC 2/2] Set steering-tag directly for PCIe P2P memory access
-Date: Fri, 23 Jan 2026 17:13:19 -0800
-Message-ID: <20260124011436.172058-1-zhipingz@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260113164923.GQ745888@ziepe.ca>
-References: <20260113164923.GQ745888@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EG0rLPz+"
+Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-8946e32e534so37979626d6.3
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 18:01:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769220098; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RZT9llokOanWujFcTHJITXX+U1tUujeUPwAbtTWqxR+RC8XzgDiWVZhLCySxpSAfl4
+         sxOWbX+e1swQs/2cLoOuhujn7JRzCUXVSOikwqFc0F/OiIKzz7ILF7WXR1Euti/SweJu
+         1BNi+Pios/eCbzIBY+CQ052O6fUIT/JPDiONa36gKx030fMH53kCIogSC2oUFmOOcPjK
+         x5TQ7bmNpTKu5WV6kPHotYg/S75kUaXwGAigcBz1yMnspaI50GZ0cb1vJ2z64y4sDKfT
+         qb5oy6tPT7CIPe1N7EkW/ZAB6TGGUw8n40NEODsJ+SswFR2Nv1Ktbz8jDvH1MhpqA4QT
+         VpVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GcF2ydOy+nfomakh5Blwon1hHz6tHyuDcePaQDWXLgo=;
+        fh=iuHV4//cYYMqD0mUjUWZBveBCXjJhayZCrjRgm02jMg=;
+        b=PDfsqY5pQ/l1aoGQEDSt21G1y8b3DzRpgvwthZf06jQgOavHn+5QBTH1sXDAwCw0OF
+         VT8L7tYPFpvyszsTaBZA/3qwgf9GwZE8zsC3xkcM2lpMHbcKGCsvFsrTtqYB4BI6IZtw
+         v4R0e4yyLtd4A5kNC5knUG8VDQnaNSE3bhS+rhzzUGCQs28cjeW3eRidzqKfBkzm91SU
+         Osv79G51MYBElE/7huRtU1sahyXwYJpOrTuPQxtUtVxRLOn0kdQ8Xj6IDGBdVU3gkbPL
+         I1j/S/6eA51Its4VilP9Jwuf+9sW3ZeuSqka7ZONi/+HkWzOpUBxsQrpeszrcBakz6G0
+         snxA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769220098; x=1769824898; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GcF2ydOy+nfomakh5Blwon1hHz6tHyuDcePaQDWXLgo=;
+        b=EG0rLPz+LZN8S8D6S6REH6p4GoDCsfaAUR85NwCduukox1DCZ+HEfuuqNbAfCJ+QDe
+         CiYBXDaUGCkhddGQY0oRjA8Yym/iOdaly45K4bTE81xE8mj4rPZ8KSsN9IvbteJ+o6mv
+         SRSW4SUKEhVPNKImR0azPDgFpprYsjACfbKwuA23XqfZRFcZyXY8d4fkzmcFd7AypE/w
+         vfIa8phAFBy8QGBeN/AHASmAGZO50Q9k+c/9EYFCNgx/9P0z4CK7Jd3RbJKTjpuK7oW4
+         xCOxlaygZtnPFg0hH+v6f8jU6Av/ONIJ5n5MccnaZOYDLc7JnzuPMl4OKQxlsc4H4PJb
+         lnuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769220098; x=1769824898;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GcF2ydOy+nfomakh5Blwon1hHz6tHyuDcePaQDWXLgo=;
+        b=LvVSJNNO6yfju/qLLvr7PD2CIpBisWClT6ii7JLBbuKjUM1v2xBZZBjVGYfEllc6gR
+         xvUry/R1Xs+qvYFVI8lqE7wqip310mH4/1ee3y1M1KJSqaR/WgbjIYbmlVC22SBSKZBf
+         JUIELkONbNShQjmuH17yqKTSN3hzRq4X97ZhvUcBFazPyIvZslnfXy2w/Qy8JI6f28Xz
+         qXZpUUEGVl2ocFcX0LIN5A+oKVYos1CcRLl6DteZmU8t1+RnUB1dP7ZDN4ZtFAieUYYd
+         PqJtt6VVzvVXEyNcftMh+AVPN1kuSSW6Rh6ndy3h1CDkeqBNk4jUURjxgjiU/4ocT2tn
+         E92Q==
+X-Gm-Message-State: AOJu0Yx4u0RhEzkkXzJQwvqraQ8gGbr3bQvCyeu2U7vasXuWacJZyl5w
+	KrB7Xcye14M9w3xrMW9/6/3PkBdLTOV5sGwC22Myx2yguVN7p4RaF11O4mVs/TnhSg6hxyrjiN5
+	o5n/K+Uwk/QbQ3/DeVB4wk0+ySt8D/I8=
+X-Gm-Gg: AZuq6aKUnojmpp8DKfCr08iHE3ipEVdT/ZfIv014YfOoEdFXksy1Qgigr77X82xzLzb
+	BuXW3jNLs/wzckyGiySeF+zhc1UUzDeTdm/6sVoy7ivL1xKKsdNpxV5JElg/z0xOX3YuYb2AmsR
+	zwUJb7MSgfwl2jlj7Y+mUmFDahMhbLNWuVHhnJGVkeGcDHMpT+45RbUWZvqVv78Anjy9fTJl4Me
+	wsv8Cw+bY8wXDq9d5XScn7eZCnLd+2Ill232f1an5N0dnXzayMVj6Kv2MBAajdR7JZNGIJmBxM+
+	5sO1BfkkOesqEzaTm4UsViSPV4oM2ryDt/OKUJAhNe6vfygl7ftJPocI
+X-Received: by 2002:a05:6214:20ab:b0:890:5973:a567 with SMTP id
+ 6a1803df08f44-894901b45f3mr66553036d6.12.1769220097575; Fri, 23 Jan 2026
+ 18:01:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260123033233.16906-1-enelsonmoore@gmail.com> <20260123181156.GA84531@bhelgaas>
+In-Reply-To: <20260123181156.GA84531@bhelgaas>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Fri, 23 Jan 2026 18:01:26 -0800
+X-Gm-Features: AZwV_Qihtc5vhyYPwevTdmoQ3m_JYluy6sboC_AzdDpVbJp4Phlr8m3XaH144WU
+Message-ID: <CADkSEUg5EqpKg2_X3LRc1CaQ2RVFNucJbuxDcHQxvjdLq1Qg1A@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: ethernet: neterion: s2io: remove unused driver
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Jon Mason <jdmason@kudzu.us>, Jonathan Corbet <corbet@lwn.net>, 
+	Linas Vepstas <linasvepstas@gmail.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	"Oliver O'Halloran" <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Danilo Krummrich <dakr@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	=?UTF-8?Q?Martin_Kepplinger=2DNovakovi=C4=87?= <martink@posteo.de>, 
+	Pavel Machek <pavel@ucw.cz>, MD Danish Anwar <danishanwar@ti.com>, 
+	Mengyuan Lou <mengyuanlou@net-swift.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, Takashi Iwai <tiwai@suse.de>, 
+	Eric Biggers <ebiggers@google.com>, Madadi Vineeth Reddy <vineethr@linux.ibm.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
+	Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Dong Yibo <dong100@mucse.com>, 
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>, Vivian Wang <wangruikang@iscas.ac.cn>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-X-Proofpoint-ORIG-GUID: bg3HlO6JKCdn7FpwL_zBCZWhL_U1ckFa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI0MDAwNyBTYWx0ZWRfX2egofQQhpIF8
- iQWuQj9XnRvp12wE8Kb0QyCEWg/tnLSoIta9YDtUOUR4zaigCieHYqfJPbM5+adHgorg2b5YcSN
- aD8il+K3KA94VHUm4hrTTRZgWWlW2RwIjK4+loBuh1bVuWrb9wfX/0Lilkz78o8ISn88hJPKPRq
- CRNk+NC/BC6Nhazqv95ZTyF1iX7lDmn6AZHPZ8crleIVA8fKxvSxpvlnS89EtFrm0WnocGcCz7N
- 0pMZyxNKrtzfrlwZorWEQfrHK1Z+3WWoKUdG9qdZt2pgBZFWfhOWI4FADpWL+eKMwYfcdmSx+Vr
- 0IXxN38juP4c47ez8a3WLAx1kyzsoXp7q1+1HiCndVtGpLpCCqMQrkKmkVHG3ztzJE2c1oPUT8s
- muZhov0tBS+XY2KNBj7lk69hTSpGn+24al07fa9yy+V/5JNR0vKkz3gQI2WE8nPa3D6TrpN4dVK
- RS4rmDfsKuSTAzbHvDQ==
-X-Authority-Analysis: v=2.4 cv=K88v3iWI c=1 sm=1 tr=0 ts=69741d01 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=zHM-U5WPLxhMletD85EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: bg3HlO6JKCdn7FpwL_zBCZWhL_U1ckFa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-23_04,2026-01-22_02,2025-10-01_01
 
-On Tue, 13 Jan 2026 12:49:23 -0400, Jason Gunthorpe wrote:
+On Fri, Jan 23, 2026 at 10:11=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org>=
+ wrote:
+> Not sure there's value in removing the IDs from pci_ids.h.  It may
+> lead to unnecessary conflicts later for stable and other backports.
 
-> On Mon, Jan 12, 2026 at 11:43:13PM -0800, Zhiping Zhang wrote:
-> > Got it, thanks for pointing out the security concern! To address this=
-, I
-> > propose that we still pass the TPH value when allocating the dmah, bu=
-t we add
-> > a verification callback in the reg_mr_dmabuf flow to the dmabuf expor=
-ter. This
-> > callback will ensure that the TPH value is correctly linked to the ex=
-porting
-> > device=E2=80=99s MMIO, and only the exporter can authorize the TPH/ta=
-g association.
-
-> That still sounds messy because we have to protect CPU memory.
-
-> I think you should not use dmah possibly and make it so the dmabuf
-entirely supplies the TPH value.
-
-> Jason
-
-Thanks Jason.
-
-We already have an end-to-end workflow around dmah (perftest =E2=86=92 rd=
-ma-core =E2=86=92 kernel)
-to carry the TPH hint, across multiple patch sets. References:
-  https://github.com/linux-rdma/perftest/commit/98bfb3679a1e71ec96df6a6d6=
-c8124ac66ebce25
-  https://github.com/linux-rdma/rdma-core/pull/1623/commits
-  https://lore.kernel.org/all/cover.1752752567.git.leon@kernel.org/
-
-Given that, I=E2=80=99d like to minimize churn and use the existing dmah-=
-based flow, while
-addressing the CPU-memory protection concern you raised. Would you be ope=
-n to
-reconsidering this approach?
-
-Zhiping
+Patches to remove drivers are generally not backported to stable
+versions, even if the driver is broken, so I don't think this will be
+an issue. There is no point in keeping unused IDs around.
