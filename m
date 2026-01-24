@@ -1,465 +1,186 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F9E1E230E
-	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 06:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769235369; cv=none; b=LBTttbx9+msRm0c/Tpp8lL3os8gdmVleX1kxXEb3t93cALbOMbnJoNtRtodhn/aYaAipPLn7WyixhtM0cHvZZ0nxbaRDYyGWdEFsPhGMYjaFHQmg0s4ceeAz04IRmAaHPLllsRxkmy6dpbyssiJjH7aEYeRHWVwlEEdL83S8U84=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769235369; c=relaxed/simple;
-	bh=2U/GOUoVB1NmtDO4IzwThYfofhVBi3RWyRHwxW+gQoM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vD/TVSB/unjKQOe3u4Cf25/MrFiVLoYBpDECXngsn4jE5C6HwEpWUZwEvzkjixBtKWpBFHonlC8NAghem/9QStswbJN12hzpFz50/MW2RIV8I7KGeWCChIIVwIiHWZ8tIgj8SsCI7bduDC3CUu1dfTFlAaeHPoGfqHoM8wWaX08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wn4kL7sb; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90661FDA61
+	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 06:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769235619; cv=pass; b=t7U10kZOS9zmNpSQxulQsY2zdn+x9JfBZHovKm5Ji6xAr3vHKMSL8VF5AjDrepIV6rSe4KtMc/WppcdxBBslYSyHtazrKozgNNrReYShn3enD6OTKg9BVb0lu38dVqXtis+WqG5A/HiQP1bEbbfR7ETjrkliKjrjoNpaqH/g9/E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769235619; c=relaxed/simple;
+	bh=bYVnKH94c44l8f5gXIeNkxr1XQ6EJ75Z7gGV5+ZBVGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EeYIhSLI3ll2ZDLP9cWwkTz1CGT5HyVT7La+cjz/em0tKe+rAp1GHTt0I793TFYCqTPzl8XY51dRCu3Mb5RfhQyqiMYasI/VFAg+vePWCXn4Uh0EmzxigQTFIMDX6cdmkYbci88E3mwtBQPt9osi7n9wnr1gpEY/ppeYM8wiz/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O0qadA0f; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wn4kL7sb"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769235365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QGp2/g6Hrv4bGgn4TxgBKx2VboPXqC3GwKGdk+z/iL8=;
-	b=Wn4kL7sbkN+iefqThyFwEjOSSm1pUJjZpsm8DTAB36kGdNvMG4wMz4j0c7yKrmv4r6Mp55
-	OLX+ffyFz8jObZrrDR/zTqVVmcVMlJo7SvogoGoF05hqWRxkXPyj1Ke4XBif/PnSdwO6Dq
-	NlvhdNEt6GzSiTXU09jTndxx5utT1W4=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Cong Wang <cong.wang@bytedance.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf-next v8 3/3] bpf, selftest: Add tests for FIONREAD and copied_seq
-Date: Sat, 24 Jan 2026 14:14:33 +0800
-Message-ID: <20260124061502.24350-4-jiayuan.chen@linux.dev>
-In-Reply-To: <20260124061502.24350-1-jiayuan.chen@linux.dev>
-References: <20260124061502.24350-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O0qadA0f"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64472c71fc0so3568922d50.0
+        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 22:20:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769235617; cv=none;
+        d=google.com; s=arc-20240605;
+        b=H98yI7FlI04gzVt51izxAvuyAkYMGZHnHTXPWka0QIC2p3jyeJyOGDICYirYqwc35u
+         f/XvlyVvaa4Vl+9KBZV6+tet4a91KkUpy3LVFabGIefuDEaaIQeR4A82aXaUpT/4vB6M
+         qj6IQSiXdCiCgaVbFvNJLIklmCxVHtB+P7r5MI/huD1EOxPNmEK5AeaSxEMLJaVOCvgz
+         brUwpT4wgt2mCcnZPEfJXVkpq5ZQlXal3rgxVA6lD9K+QZIIzbTXu6Jh/BwJzeJUneeg
+         FGb4ho1I+OcDigXmKNEQW7gG8KR/HTHcwjMwZO8RALwTOiSXsrTFmWSL2IfUyspwhRLq
+         httg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0Jj4kHSwisGbQx6sKYU/nCdMsGq5B9cjKeLubIX68B4=;
+        fh=wZINhht1ARSOupkpG3StP+iU/pd7DaEJ6OoBvK3jfbI=;
+        b=U0RjM+tOS+Cq2Yl+cpiq+IQHTznTu6ilv6p5x2ncDOxqRCZeFrK4/bfbYzGR5B25qG
+         UQsNkULffWo6i/JBUk+Dp663WUzRF+AKF9fDs4Ia3HXno9t3W/IVaoPPmD0g4hIBJxVE
+         /YTrt9+ByDDPnjbm/XBIZrZfohsyBAy9aLl3HyAbaSufLMUbcfgrH0rIJ4+aI91G5nTW
+         9CqZSWOGPI73CEiIr32X5XV8qP5nIhrBf7JVpxnY3cRxtEBibOu1MZ0A91l8c8ToYDR6
+         Br8cEIjIkWzSY21OIzpTr8OE92CjAyr5LKrXB3f1L+KxrxT1eMMWiq4/O8oWRspapYNS
+         ZKxg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769235617; x=1769840417; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Jj4kHSwisGbQx6sKYU/nCdMsGq5B9cjKeLubIX68B4=;
+        b=O0qadA0fdb0cMuvqBpiNPnPzNU+rTtArn+W3lv16ePHEZUodMap0/KNknvnPdW/Zje
+         1//xlG1u5W6EegpHu6PQ5viSO1VgIU0ZnWRoiaU77w55SppQzC9jx2ol4W4XXpkrvuQ2
+         lpgTo08fZxLkINfetVP/rNnTRXAibJDitAK5ZXOKih0HZTpadmf1hU4Kv/W7hLsUClrl
+         y1bbYNMROkJBnKtpnCgQCfzzQR2oozfSnrUQayF2Mr52yBhAOYnQJeTcful0plBzWsj9
+         todqE9aD1IhZWYpbb+SLdkEWHyB2eMHhXAPrg5xYxOTr4u4BK/oIn4ZTN/eRvVPuaciE
+         opBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769235617; x=1769840417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0Jj4kHSwisGbQx6sKYU/nCdMsGq5B9cjKeLubIX68B4=;
+        b=BWqxn1UCFUzwCtHlhnJ9tRco0qibRMx0hbMs9z/3J0GvfQrRIepiozgIapgBTb85KQ
+         F25o9osSu+OGzKuRv4KP2ManmQ7OkQv4TtdWS06de53keFxIV1z9KR6sHLZ5FOIboh5F
+         TbpL7jvkBy4ybcjxr0Fx84RHXvCWD0vTeEPd4zHNOf83Q3AFPPx+z+VE3coVWNkt0SZ5
+         NV/nxwAmZKrnL1tut8KknjkUbdZkAuUf5ywWoJgYUTTOocKiMnkOjelud4Tnsi1wWcOt
+         GNrg7lvfn8gB4XKsvdq1wbNqX9XtgGrfCf4fCpk5P1y6z/jKMqNma+yZWsrsAQkq0PcF
+         KEOw==
+X-Gm-Message-State: AOJu0Yy9oSnalOKUTQ0KVceSL8whTWPfzKOBffrusKdLUblhE0v0LwD6
+	xzfxKr1zHQnAQxn2ZFlcwIs4CUDT+JoHcISxxvXvSVm4NAGCyrXU4q+TTddyHWqtEyyd8Mcpenc
+	kwhBf6rBF67xfgWI3U5oZN7qFBnzOj5Y=
+X-Gm-Gg: AZuq6aKCqfe9Y7hqqOMs9V8IiDb7fj7WNlleyQhP+4lYKFlsJSx0FMUXXYykD8UgjhF
+	9PT8s2qn046L2wjHr1x3y2qiAF7a6rlfNkA1UIwFnWC0Brjj5inVqUU9Aym7WD64ygwSivZddj7
+	jq/6TC+aJySbymm3Nxv1gNIea1b5uXjpzyGO62WbpmSN7EuFkf5qj+OOZnA+XPh3e/VM6Db1U4P
+	mStxRsc0cN4aNeDOuISMm606L10J4LfNr7sxiU5mZj1pD3VQDOJXaqCNxmjbHy7h1CmNXbw
+X-Received: by 2002:a53:b984:0:b0:645:5bfc:8bd3 with SMTP id
+ 956f58d0204a3-6495bfe9ae3mr3662906d50.72.1769235616850; Fri, 23 Jan 2026
+ 22:20:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260122185357.50922-1-mahdifrmx@gmail.com> <willemdebruijn.kernel.1682586fd684e@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.1682586fd684e@gmail.com>
+From: Mahdi Faramarzpour <mahdifrmx@gmail.com>
+Date: Sat, 24 Jan 2026 09:50:02 +0330
+X-Gm-Features: AZwV_QiUrAxIcPon7mC8O4qreGr4xsoHEGZXH3Mxf9GSsPkzieuMRW9yFmyk4oc
+Message-ID: <CA+KdSGNvJ3np3gitnSmztxD9n=WuNcRHGsvKsJUE+FDJM6Zmjw@mail.gmail.com>
+Subject: Re: [PATCH net-next] udp: add drop count for packets in udp_prod_queue
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	kshitiz.bartariya@zohomail.in
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit adds two new test functions: one to reproduce the bug reported
-by syzkaller [1], and another to cover the calculation of copied_seq.
-
-The tests primarily involve installing  and uninstalling sockmap on
-sockets, then reading data to verify proper functionality.
-
-Additionally, extend the do_test_sockmap_skb_verdict_fionread() function
-to support UDP FIONREAD testing.
-
-[1] https://syzkaller.appspot.com/bug?extid=06dbd397158ec0ea4983
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- .../selftests/bpf/prog_tests/sockmap_basic.c  | 277 +++++++++++++++++-
- .../bpf/progs/test_sockmap_pass_prog.c        |  14 +
- 2 files changed, 285 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index 1e3e4392dcca..b578918f7a4b 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2020 Cloudflare
- #include <error.h>
--#include <netinet/tcp.h>
-+#include <linux/tcp.h>
-+#include <linux/socket.h>
- #include <sys/epoll.h>
- 
- #include "test_progs.h"
-@@ -22,6 +23,15 @@
- #define TCP_REPAIR_ON		1
- #define TCP_REPAIR_OFF_NO_WP	-1	/* Turn off without window probes */
- 
-+/**
-+ * SOL_TCP is defined in <netinet/tcp.h> (glibc), but the copybuf_address
-+ * field of tcp_zerocopy_receive is not yet included in older versions.
-+ * This workaround remains necessary until the glibc update propagates.
-+ */
-+#ifndef SOL_TCP
-+#define SOL_TCP 6
-+#endif
-+
- static int connected_socket_v4(void)
- {
- 	struct sockaddr_in addr = {
-@@ -536,13 +546,14 @@ static void test_sockmap_skb_verdict_shutdown(void)
- }
- 
- 
--static void test_sockmap_skb_verdict_fionread(bool pass_prog)
-+static void do_test_sockmap_skb_verdict_fionread(int sotype, bool pass_prog)
- {
- 	int err, map, verdict, c0 = -1, c1 = -1, p0 = -1, p1 = -1;
- 	int expected, zero = 0, sent, recvd, avail;
- 	struct test_sockmap_pass_prog *pass = NULL;
- 	struct test_sockmap_drop_prog *drop = NULL;
- 	char buf[256] = "0123456789";
-+	int split_len = sizeof(buf) / 2;
- 
- 	if (pass_prog) {
- 		pass = test_sockmap_pass_prog__open_and_load();
-@@ -550,7 +561,10 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 			return;
- 		verdict = bpf_program__fd(pass->progs.prog_skb_verdict);
- 		map = bpf_map__fd(pass->maps.sock_map_rx);
--		expected = sizeof(buf);
-+		if (sotype == SOCK_DGRAM)
-+			expected = split_len; /* FIONREAD for UDP is different from TCP */
-+		else
-+			expected = sizeof(buf);
- 	} else {
- 		drop = test_sockmap_drop_prog__open_and_load();
- 		if (!ASSERT_OK_PTR(drop, "open_and_load"))
-@@ -566,7 +580,7 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 	if (!ASSERT_OK(err, "bpf_prog_attach"))
- 		goto out;
- 
--	err = create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1);
-+	err = create_socket_pairs(AF_INET, sotype, &c0, &c1, &p0, &p1);
- 	if (!ASSERT_OK(err, "create_socket_pairs()"))
- 		goto out;
- 
-@@ -574,8 +588,9 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 	if (!ASSERT_OK(err, "bpf_map_update_elem(c1)"))
- 		goto out_close;
- 
--	sent = xsend(p1, &buf, sizeof(buf), 0);
--	ASSERT_EQ(sent, sizeof(buf), "xsend(p0)");
-+	sent = xsend(p1, &buf, split_len, 0);
-+	sent += xsend(p1, &buf, sizeof(buf) - split_len, 0);
-+	ASSERT_EQ(sent, sizeof(buf), "xsend(p1)");
- 	err = ioctl(c1, FIONREAD, &avail);
- 	ASSERT_OK(err, "ioctl(FIONREAD) error");
- 	ASSERT_EQ(avail, expected, "ioctl(FIONREAD)");
-@@ -597,6 +612,12 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 		test_sockmap_drop_prog__destroy(drop);
- }
- 
-+static void test_sockmap_skb_verdict_fionread(bool pass_prog)
-+{
-+	do_test_sockmap_skb_verdict_fionread(SOCK_STREAM, pass_prog);
-+	do_test_sockmap_skb_verdict_fionread(SOCK_DGRAM, pass_prog);
-+}
-+
- static void test_sockmap_skb_verdict_change_tail(void)
- {
- 	struct test_sockmap_change_tail *skel;
-@@ -1042,6 +1063,240 @@ static void test_sockmap_vsock_unconnected(void)
- 	xclose(map);
- }
- 
-+/* it is used to reproduce WARNING */
-+static void test_sockmap_zc(void)
-+{
-+	int map, err, sent, recvd, zero = 0, one = 1, on = 1;
-+	char buf[10] = "0123456789", rcv[11], addr[100];
-+	struct test_sockmap_pass_prog *skel = NULL;
-+	int c0 = -1, p0 = -1, c1 = -1, p1 = -1;
-+	struct tcp_zerocopy_receive zc;
-+	socklen_t zc_len = sizeof(zc);
-+	struct bpf_program *prog;
-+
-+	skel = test_sockmap_pass_prog__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	if (create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1))
-+		goto end;
-+
-+	prog = skel->progs.prog_skb_verdict_ingress;
-+	map = bpf_map__fd(skel->maps.sock_map_rx);
-+
-+	err = bpf_prog_attach(bpf_program__fd(prog), map, BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach"))
-+		goto end;
-+
-+	err = bpf_map_update_elem(map, &zero, &p0, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto end;
-+
-+	err = bpf_map_update_elem(map, &one, &p1, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto end;
-+
-+	sent = xsend(c0, buf, sizeof(buf), 0);
-+	if (!ASSERT_EQ(sent, sizeof(buf), "xsend"))
-+		goto end;
-+
-+	/* trigger tcp_bpf_recvmsg_parser and inc copied_seq of p1 */
-+	recvd = recv_timeout(p1, rcv, sizeof(rcv), MSG_DONTWAIT, 1);
-+	if (!ASSERT_EQ(recvd, sent, "recv_timeout(p1)"))
-+		goto end;
-+
-+	/* uninstall sockmap of p1 */
-+	bpf_map_delete_elem(map, &one);
-+
-+	/* trigger tcp stack and the rcv_nxt of p1 is less than copied_seq */
-+	sent = xsend(c1, buf, sizeof(buf) - 1, 0);
-+	if (!ASSERT_EQ(sent, sizeof(buf) - 1, "xsend"))
-+		goto end;
-+
-+	err = setsockopt(p1, SOL_SOCKET, SO_ZEROCOPY, &on, sizeof(on));
-+	if (!ASSERT_OK(err, "setsockopt"))
-+		goto end;
-+
-+	memset(&zc, 0, sizeof(zc));
-+	zc.copybuf_address = (__u64)((unsigned long)addr);
-+	zc.copybuf_len = sizeof(addr);
-+
-+	err = getsockopt(p1, IPPROTO_TCP, TCP_ZEROCOPY_RECEIVE, &zc, &zc_len);
-+	if (!ASSERT_OK(err, "getsockopt"))
-+		goto end;
-+
-+end:
-+	if (c0 >= 0)
-+		close(c0);
-+	if (p0 >= 0)
-+		close(p0);
-+	if (c1 >= 0)
-+		close(c1);
-+	if (p1 >= 0)
-+		close(p1);
-+	test_sockmap_pass_prog__destroy(skel);
-+}
-+
-+/* it is used to check whether copied_seq of sk is correct */
-+static void test_sockmap_copied_seq(bool strp)
-+{
-+	int i, map, err, sent, recvd, zero = 0, one = 1;
-+	struct test_sockmap_pass_prog *skel = NULL;
-+	int c0 = -1, p0 = -1, c1 = -1, p1 = -1;
-+	char buf[10] = "0123456789", rcv[11];
-+	struct bpf_program *prog;
-+
-+	skel = test_sockmap_pass_prog__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	if (create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1))
-+		goto end;
-+
-+	prog = skel->progs.prog_skb_verdict_ingress;
-+	map = bpf_map__fd(skel->maps.sock_map_rx);
-+
-+	err = bpf_prog_attach(bpf_program__fd(prog), map, BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach verdict"))
-+		goto end;
-+
-+	if (strp) {
-+		prog = skel->progs.prog_skb_verdict_ingress_strp;
-+		err = bpf_prog_attach(bpf_program__fd(prog), map, BPF_SK_SKB_STREAM_PARSER, 0);
-+		if (!ASSERT_OK(err, "bpf_prog_attach parser"))
-+			goto end;
-+	}
-+
-+	err = bpf_map_update_elem(map, &zero, &p0, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p0)"))
-+		goto end;
-+
-+	err = bpf_map_update_elem(map, &one, &p1, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p1)"))
-+		goto end;
-+
-+	/* just trigger sockamp: data sent by c0 will be received by p1 */
-+	sent = xsend(c0, buf, sizeof(buf), 0);
-+	if (!ASSERT_EQ(sent, sizeof(buf), "xsend(c0), bpf"))
-+		goto end;
-+
-+	/* do partial read */
-+	recvd = recv_timeout(p1, rcv, 1, MSG_DONTWAIT, 1);
-+	recvd += recv_timeout(p1, rcv + 1, sizeof(rcv) - 1, MSG_DONTWAIT, 1);
-+	if (!ASSERT_EQ(recvd, sent, "recv_timeout(p1), bpf") ||
-+	    !ASSERT_OK(memcmp(buf, rcv, recvd), "data mismatch"))
-+		goto end;
-+
-+	/* uninstall sockmap of p1 and p0 */
-+	err = bpf_map_delete_elem(map, &one);
-+	if (!ASSERT_OK(err, "bpf_map_delete_elem(1)"))
-+		goto end;
-+
-+	err = bpf_map_delete_elem(map, &zero);
-+	if (!ASSERT_OK(err, "bpf_map_delete_elem(0)"))
-+		goto end;
-+
-+	/* now all sockets become plain socket, they should still work */
-+	for (i = 0; i < 5; i++) {
-+		/* test copied_seq of p1 by running tcp native stack */
-+		sent = xsend(c1, buf, sizeof(buf), 0);
-+		if (!ASSERT_EQ(sent, sizeof(buf), "xsend(c1), native"))
-+			goto end;
-+
-+		recvd = recv(p1, rcv, sizeof(rcv), MSG_DONTWAIT);
-+		if (!ASSERT_EQ(recvd, sent, "recv_timeout(p1), native"))
-+			goto end;
-+
-+		/* p0 previously redirected skb to p1, we also check copied_seq of p0 */
-+		sent = xsend(c0, buf, sizeof(buf), 0);
-+		if (!ASSERT_EQ(sent, sizeof(buf), "xsend(c0), native"))
-+			goto end;
-+
-+		recvd = recv(p0, rcv, sizeof(rcv), MSG_DONTWAIT);
-+		if (!ASSERT_EQ(recvd, sent, "recv_timeout(p0), native"))
-+			goto end;
-+	}
-+
-+end:
-+	if (c0 >= 0)
-+		close(c0);
-+	if (p0 >= 0)
-+		close(p0);
-+	if (c1 >= 0)
-+		close(c1);
-+	if (p1 >= 0)
-+		close(p1);
-+	test_sockmap_pass_prog__destroy(skel);
-+}
-+
-+/* it is used to send data to via native stack and BPF redirecting */
-+static void test_sockmap_multi_channels(int sotype)
-+{
-+	int map, err, sent, recvd, zero = 0, one = 1, avail = 0;
-+	struct test_sockmap_pass_prog *skel = NULL;
-+	int c0 = -1, p0 = -1, c1 = -1, p1 = -1;
-+	char buf[10] = "0123456789", rcv[11];
-+	struct bpf_program *prog;
-+
-+	skel = test_sockmap_pass_prog__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	err = create_socket_pairs(AF_INET, sotype, &c0, &c1, &p0, &p1);
-+	if (err)
-+		goto end;
-+
-+	prog = skel->progs.prog_skb_verdict_ingress;
-+	map = bpf_map__fd(skel->maps.sock_map_rx);
-+
-+	err = bpf_prog_attach(bpf_program__fd(prog), map, BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach verdict"))
-+		goto end;
-+
-+	err = bpf_map_update_elem(map, &zero, &p0, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(p0)"))
-+		goto end;
-+
-+	err = bpf_map_update_elem(map, &one, &p1, BPF_ANY);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem"))
-+		goto end;
-+
-+	/* send data to p1 via native stack */
-+	sent = xsend(c1, buf, 2, 0);
-+	if (!ASSERT_EQ(sent, 2, "xsend(2)"))
-+		goto end;
-+
-+	poll_read(p1, IO_TIMEOUT_SEC);
-+	err = ioctl(p1, FIONREAD, &avail);
-+	ASSERT_OK(err, "ioctl(FIONREAD) partial call");
-+	ASSERT_EQ(avail, 2, "ioctl(FIONREAD) partial return");
-+
-+	/* send data to p1 via bpf redirecting */
-+	sent = xsend(c0, buf + 2, sizeof(buf) - 2, 0);
-+	if (!ASSERT_EQ(sent, sizeof(buf) - 2, "xsend(remain-data)"))
-+		goto end;
-+
-+	poll_read(p1, IO_TIMEOUT_SEC);
-+	err = ioctl(p1, FIONREAD, &avail);
-+	ASSERT_OK(err, "ioctl(FIONREAD) full call");
-+	ASSERT_EQ(avail, sotype == SOCK_DGRAM ? 2 : sizeof(buf), "ioctl(FIONREAD) full return");
-+
-+	recvd = recv_timeout(p1, rcv, sizeof(rcv), MSG_DONTWAIT, 1);
-+	if (!ASSERT_EQ(recvd, sizeof(buf), "recv_timeout(p1)") ||
-+	    !ASSERT_OK(memcmp(buf, rcv, recvd), "data mismatch"))
-+		goto end;
-+end:
-+	if (c0 >= 0)
-+		close(c0);
-+	if (p0 >= 0)
-+		close(p0);
-+	if (c1 >= 0)
-+		close(c1);
-+	if (p1 >= 0)
-+		close(p1);
-+	test_sockmap_pass_prog__destroy(skel);
-+}
-+
- void test_sockmap_basic(void)
- {
- 	if (test__start_subtest("sockmap create_update_free"))
-@@ -1108,4 +1363,14 @@ void test_sockmap_basic(void)
- 		test_sockmap_skb_verdict_vsock_poll();
- 	if (test__start_subtest("sockmap vsock unconnected"))
- 		test_sockmap_vsock_unconnected();
-+	if (test__start_subtest("sockmap with zc"))
-+		test_sockmap_zc();
-+	if (test__start_subtest("sockmap recover"))
-+		test_sockmap_copied_seq(false);
-+	if (test__start_subtest("sockmap recover with strp"))
-+		test_sockmap_copied_seq(true);
-+	if (test__start_subtest("sockmap tcp multi channels"))
-+		test_sockmap_multi_channels(SOCK_STREAM);
-+	if (test__start_subtest("sockmap udp multi channels"))
-+		test_sockmap_multi_channels(SOCK_DGRAM);
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_sockmap_pass_prog.c b/tools/testing/selftests/bpf/progs/test_sockmap_pass_prog.c
-index 69aacc96db36..ef9edca184ea 100644
---- a/tools/testing/selftests/bpf/progs/test_sockmap_pass_prog.c
-+++ b/tools/testing/selftests/bpf/progs/test_sockmap_pass_prog.c
-@@ -44,4 +44,18 @@ int prog_skb_parser(struct __sk_buff *skb)
- 	return SK_PASS;
- }
- 
-+SEC("sk_skb/stream_verdict")
-+int prog_skb_verdict_ingress(struct __sk_buff *skb)
-+{
-+	int one = 1;
-+
-+	return bpf_sk_redirect_map(skb, &sock_map_rx, one, BPF_F_INGRESS);
-+}
-+
-+SEC("sk_skb/stream_parser")
-+int prog_skb_verdict_ingress_strp(struct __sk_buff *skb)
-+{
-+	return skb->len;
-+}
-+
- char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+On Fri, Jan 23, 2026 at 12:56=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> Mahdi Faramarzpour wrote:
+> > This commit adds SNMP drop count increment for the packets in
+> > per NUMA queues which were introduced in commit b650bf0977d3
+> > ("udp: remove busylock and add per NUMA queues"). note that SNMP
+> > counters are incremented currently by the caller for skb. And
+> > that these skbs on the intermediate queue cannot be counted
+> > there so need similar logic in their error path.
+> >
+> > Signed-off-by: Mahdi Faramarzpour <mahdifrmx@gmail.com>
+> > ---
+> > v5:
+> >   - check if drop counts are non-zero before increasing countrers
+> > v4: https://lore.kernel.org/netdev/20260108102950.49417-1-mahdifrmx@gma=
+il.com/
+> >   - move all changes to unlikely(to_drop) branch
+> > v3: https://lore.kernel.org/netdev/20260105114732.140719-1-mahdifrmx@gm=
+ail.com/
+> >   - remove the unreachable UDP_MIB_RCVBUFERRORS code
+> > v2: https://lore.kernel.org/netdev/20260105071218.10785-1-mahdifrmx@gma=
+il.com/
+> >   - change ENOMEM to ENOBUFS
+> > v1: https://lore.kernel.org/netdev/20260104105732.427691-1-mahdifrmx@gm=
+ail.com/
+> > ---
+> >  net/ipv4/udp.c | 19 ++++++++++++++++++-
+> >  1 file changed, 18 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > index ffe074cb5..41cf8f7ab 100644
+> > --- a/net/ipv4/udp.c
+> > +++ b/net/ipv4/udp.c
+> > @@ -1793,14 +1793,31 @@ int __udp_enqueue_schedule_skb(struct sock *sk,=
+ struct sk_buff *skb)
+> >       }
+> >
+> >       if (unlikely(to_drop)) {
+> > +             int err_ipv4 =3D 0;
+> > +             int err_ipv6 =3D 0;
+>
+> nit: whitespace between variable definition and code block
+>
+> >               for (nb =3D 0; to_drop !=3D NULL; nb++) {
+> >                       skb =3D to_drop;
+> > +                     if (skb->protocol =3D=3D htons(ETH_P_IP))
+> > +                             err_ipv4++;
+> > +                     else
+> > +                             err_ipv6++;
+>
+> No need for separate counters.
+>
+> All counters will either update IPv4 or IPv6 stats. Similar to how
+> the caller of _udp_enqueue_schedule_sk is either __udp_queue_rcv_skb
+> or __udpv6_queue_rcv_skb and chooses the SNMP stat based on that.
+>
+> Can check sk_family =3D=3D PF_INET6 once.
+I doubt this. How does this work in case of a dual-stack socket?
+>
+> >                       to_drop =3D skb->next;
+> >                       skb_mark_not_on_list(skb);
+> > -                     /* TODO: update SNMP values. */
+> >                       sk_skb_reason_drop(sk, skb, SKB_DROP_REASON_PROTO=
+_MEM);
+> >               }
+> >               numa_drop_add(&udp_sk(sk)->drop_counters, nb);
+> > +             if (err_ipv4 > 0) {
+> > +                     SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_MEME=
+RRORS,
+> > +                                    err_ipv4);
+> > +                     SNMP_ADD_STATS(__UDPX_MIB(sk, true), UDP_MIB_INER=
+RORS,
+> > +                                    err_ipv4);
+> > +             }
+> > +             if (err_ipv6 > 0) {
+> > +                     SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_MEM=
+ERRORS,
+> > +                                    err_ipv6);
+> > +                     SNMP_ADD_STATS(__UDPX_MIB(sk, false), UDP_MIB_INE=
+RRORS,
+> > +                                    err_ipv6);
+> > +             }
+> >       }
+> >
+> >       atomic_sub(total_size, &udp_prod_queue->rmem_alloc);
+> > --
+> > 2.34.1
+> >
+>
+>
