@@ -1,198 +1,211 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637A07E110
-	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 00:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BE21D6DA9
+	for <netdev@vger.kernel.org>; Sat, 24 Jan 2026 01:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769216399; cv=none; b=lmZ55AGDJK0YWuW9FPMVANEOq3cV9xRdmywX8F3Lufxvi+rESnzmmH/aZFWqdPehWVdzVwr5lnhA1ZCko+UPIq969UjzmegQHxyUv0LeAgedYY6LNkkkugNaeqxSpqsbQEfdZ6T40e9XnfLq89nku2V9WIeiV9nvm7fsa3rqyfM=
+	t=1769217274; cv=none; b=om8nBUPY5iisCEhoMKtYHJmTukCsRzgofyubTZxCbnuVLu1H0X8OuxL1tgFKAwQNQx9oGZtDiJHp6EKXeaA5WfhoH6ppKNb6hXQsMQSe9nWDvt0R2uGMD3gmkCbFKH+l+2Ym+GQxrYWHB6Eli6ER68vx8art1J+Y2EegGgXb3qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769216399; c=relaxed/simple;
-	bh=P0moAP4QUOcnHbcix0kXlraPc2P4nJVJoTdv0t/Our8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PeOCgZjs5nWw7JmIe0UWDQITjuXPyt8IQFMLv56K3JuJG1DtW7zPk46Tg+r4XTOQPZ2VLjOQOVmGNf3rik0LnnAY/yxNoO5t39IjUyJBMZLNsbOtMeYG3k9WWaLX6r2ELrhHjf9xgs9oWohTVTKMoW4kML1oTZfkcoDtkcAuUy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S1rz8hFw; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769217274; c=relaxed/simple;
+	bh=HyETEkvqvf7jCARA//SVqhyWiqIJOCwGGJa877OlXEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pkcty6TFzx7ejBQxILJNGW6DYau0Qp+L91MpQR/Vq8gzmu7pdelOYx08/cla581TFLCCWBx7kew1WqKCY+BP4hN5Ub2GVhWEeJurTI9pxF9Fdrc0yBLMQVfqml3W9kCp2KRd7etE8g0ZQNJRRFTFUaOIA+0QJRjj7K4kL0Y6BSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pu5/lyfU; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S1rz8hFw"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fbb061a08so446675f8f.2
-        for <netdev@vger.kernel.org>; Fri, 23 Jan 2026 16:59:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769216396; x=1769821196; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PxQBocjBKjEC4mv4CNajitmiXw7FC5x1mC5Q0V2nZ7g=;
-        b=S1rz8hFwq47sda9lP5h0/LBnurRB743RFDymD9Xrrhk8d6Z45R7sm3/Hmx6kOy/qZw
-         2EpVH4Yww0Fi2/6wLRko1lQGyNPYzlLxFaGAG7HGQprGs3rlrn1KeFjm+ZeyXuCh+2/1
-         bmSEJDQZ34rijPHvZ0gdD987rQFdyavERvFsJKrPhWPFUi+mL4aoCa7iUQ0ynH9L7i6X
-         lrGGOPM/U1QsTVJaSazdjBRwILFazmNCfz3EFjZ1y9LYuANWy7aGLf62sul8NineAdng
-         1OT+Rd3KfnPPMsh/Wv0DvUDg0r3xd4D9SJQ7dz1jvyul6EhhYsvk4hXGSNRHOwtjEyGt
-         VLeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769216396; x=1769821196;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PxQBocjBKjEC4mv4CNajitmiXw7FC5x1mC5Q0V2nZ7g=;
-        b=irn0/DSdCeWyKW5Es9O68M3/i6S59mqDdE0wnflyAfAkHgXt/yXyimZdTeBijw09Nj
-         32ErqV5GafEUP3FRjryqDuO67FsM1ZqQ6diaMY2uoyZ5XzCCYYEy8+2krzUz6wHam6Hd
-         Xbdj/DYHPQ8TVIBZYRN6hpPUsimTw8MmeJJbSQumRcxcWyMRNIHFCrTTHGaGEO0T7WIM
-         EIefSpZR8e9rF+jzgmledJum1nQmpy7TfWkEirIPv7l5TXvkvaGB2QxLdr1hQTbB/Wbq
-         KwhNjFpcd59+DRhPKvyLHgARkaHihyTbjCMCZXzbLP6zCapsxOir2DLJIIjc+hd+88HB
-         ls2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXN2poy2U4Yss3lCBjygcX8ZfkaPdwyI/e/6FkmEpZbNqLJ2rUyNKChp9PJWmWKfI1Fj2R+1uQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1IegtcSym8v1CNhE5z8r9saQFSQvoEtBhQrB7UWKQWhQKCmom
-	B6QGHbaS55NJ+Z9yI2TlksLPmDTm7tPtKFNlpCPRt6bIxqWoYIOYMn5n
-X-Gm-Gg: AZuq6aJllUEYO3zlMd/u1C2rJ9S3C0djatC7SXcsgiNp/R00r66V1lM1g4f3AOSXiss
-	zxDe3/gHwtcSB33HL0vHGmShW6Ego/Z24qrZeAcIS7KCZ7oldcDYICIghflmW7TYY6aouc/qjJf
-	ufxOpAa98RhqoSs5KQNN7DuR0ALLW+qD5PdOtVKUJ8Aylebc3OOTCfmDnnrr4yOe0lqSggCHD20
-	rF3QbOEV948C+0KtbyjipohgzkEeY1kwdkQKjxwHAM6M4eY0UZxPYbMiwNsSHdT3D9upm90aeDU
-	sLCv1GjJz6rUfIFsI3QhFgai6iO8VhulF9D5Zh9lb7aBRd7jwRA8Rq2QE2JQglPConahTXFC8Hx
-	a14MuFcYKbuljukMOc0+BbP5KiH46Bzu/wufQkjL6kiw/UzLRff1qQriS+9K0XFx59JNxUWBHve
-	hH4Q==
-X-Received: by 2002:a05:6000:420c:b0:435:b068:d3d9 with SMTP id ffacd0b85a97d-435bdff681emr1187921f8f.5.1769216395508;
-        Fri, 23 Jan 2026 16:59:55 -0800 (PST)
-Received: from skbuf ([2a02:2f04:d501:d900:1430:8b48:2d45:6c1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1e716b6sm10616033f8f.27.2026.01.23.16.59.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 16:59:54 -0800 (PST)
-Date: Sat, 24 Jan 2026 02:59:51 +0200
-From: Vladimir Oltean <olteanv@gmail.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next v2 05/14] net: stmmac: add stmmac core serdes
- support
-Message-ID: <20260124005951.fbkvd2girdqtfxe7@skbuf>
-References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
- <E1vjDrM-00000005fQR-0rmB@rmk-PC.armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pu5/lyfU"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769217260;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6tnxgEhBEpMM9wd+G9AoWvzIcL/tlu1JmMFjy3xOAlY=;
+	b=pu5/lyfUCw4DFEcldFE84c/DldexujxQx0HjJnx3UUClBDDZq+fxTO7fiRFfbwaEEY9amK
+	kY/tlVwwUhPwhoUFh+3wE/AknkzZINbyuhgO55WUkEV6SsaA0qAGYM46IIOC44DEZ1mGXf
+	gX5MGDQZCWRajQE8bumFk3tuprGyBC0=
+From: Menglong Dong <menglong.dong@linux.dev>
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: menglong8.dong@gmail.com, andrii@kernel.org, bot+bpf-ci@kernel.org,
+ daniel@iogearbox.net, martin.lau@linux.dev, eddyz87@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
+ kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+ davem@davemloft.net, dsahern@kernel.org, tglx@linutronix.de,
+ mingo@redhat.com, jiang.biao@linux.dev, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ast@kernel.org, martin.lau@kernel.org, clm@meta.com, ihor.solodrai@linux.dev
+Subject:
+ Re: [PATCH bpf-next v11 02/12] bpf: use the least significant byte for the
+ nr_args in trampoline
+Date: Sat, 24 Jan 2026 09:14:04 +0800
+Message-ID: <2815478.mvXUDI8C0e@7950hx>
+In-Reply-To:
+ <CAEf4BzabUj0APqROb7ibkEovoXVmxbiHq0kNAPWExpEfRmQwiw@mail.gmail.com>
+References:
+ <20260123073532.238985-3-dongml2@chinatelecom.cn> <8632406.T7Z3S40VBb@7940hx>
+ <CAEf4BzabUj0APqROb7ibkEovoXVmxbiHq0kNAPWExpEfRmQwiw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1vjDrM-00000005fQR-0rmB@rmk-PC.armlinux.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jan 23, 2026 at 09:53:44AM +0000, Russell King (Oracle) wrote:
-> Rather than having platform glue implement SerDes PHY support, add it
-> to the core driver, specifically to the stmmac integrated PCS driver
-> as the SerDes is connected to the integrated PCS.
-> 
-> Platforms using external PCS can also populate plat->serdes, and the
-> core driver will call phy_init() and phy_exit() when the administrative
-> state of the interface changes, but the other phy methods will not be
-> called.
-> 
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> --
-> rfc->v1: avoid calling phy_get_mode() with NULL serdes PHY
-> v2: add cleanup when dwmac_serdes_set_mode() fails, because AI allegedly
->   knows better than the author and phylink maintainer, even though this
->   will result in dwmac_serdes_power_off() being called multiple times
->   and producing a kernel warning. But if it makes AI happy, then it must
->   be a good thing. It'll also make Vladimir happy.
+On 2026/1/24 06:57, Andrii Nakryiko wrote:
+> On Fri, Jan 23, 2026 at 1:21=E2=80=AFAM Menglong Dong <menglong.dong@linu=
+x.dev> wrote:
+> >
+> > On 2026/1/23 16:29 Menglong Dong <menglong.dong@linux.dev> write:
+> > > On 2026/1/23 16:07 bot+bpf-ci@kernel.org write:
+> > > > > diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> > > > > index 41bbed6418b5..b3f912ad18ba 100644
+> > > > > --- a/kernel/bpf/verifier.c
+> > > > > +++ b/kernel/bpf/verifier.c
+> > > >
+> > > > [ ... ]
+> > > >
+> > > > > @@ -23779,12 +23781,13 @@ static int do_misc_fixups(struct bpf_ve=
+rifier_env *env)
+> > > > >                       eatype =3D=3D BPF_MODIFY_RETURN) {
+> > > > >                           /* Load nr_args from ctx - 8 */
+> > > > >                           insn_buf[0] =3D BPF_LDX_MEM(BPF_DW, BPF=
+_REG_0, BPF_REG_1, -8);
+> > > > > -                         insn_buf[1] =3D BPF_ALU64_IMM(BPF_LSH, =
+BPF_REG_0, 3);
+> > > > > +                         insn_buf[1] =3D BPF_ALU64_IMM(BPF_AND, =
+BPF_REG_0, 0xFF);
+> > > > > +                         insn_buf[2] =3D BPF_ALU64_IMM(BPF_LSH, =
+BPF_REG_0, 3);
+> > > >
+> > > > [ ... ]
+> > > >
+> > > > > -                         cnt =3D 6;
+> > > > > +                         cnt =3D 7;
+> > > > >                   } else {
+> > > > >                           insn_buf[0] =3D BPF_MOV64_IMM(BPF_REG_0=
+, -EOPNOTSUPP);
+> > > > >                           cnt =3D 1;
+> > > > >                   }
+> > > > >
+> > > > >                   new_prog =3D bpf_patch_insn_data(env, i + delta=
+, insn_buf, cnt);
+> > > >
+> > > > [ ... ]
+> > > >
+> > > > >                   delta    +=3D cnt - 1;
+> > > >
+> > > > Note that the bpf_get_func_ret block above correctly updates delta =
+after
+> > > > patching.
+> > > >
+> > > > > @@ -23808,12 +23811,15 @@ static int do_misc_fixups(struct bpf_ve=
+rifier_env *env)
+> > > > >
+> > > > >                           /* skip 'void *__data' in btf_trace_##n=
+ame() and save to reg0 */
+> > > > >                           insn_buf[0] =3D BPF_MOV64_IMM(BPF_REG_0=
+, nr_args - 1);
+> > > > > +                         cnt =3D 1;
+> > > > >                   } else {
+> > > > >                           /* Load nr_args from ctx - 8 */
+> > > > >                           insn_buf[0] =3D BPF_LDX_MEM(BPF_DW, BPF=
+_REG_0, BPF_REG_1, -8);
+> > > > > +                         insn_buf[1] =3D BPF_ALU64_IMM(BPF_AND, =
+BPF_REG_0, 0xFF);
+> > > > > +                         cnt =3D 2;
+> > > > >                   }
+> > > > >
+> > > > > -                 new_prog =3D bpf_patch_insn_data(env, i + delta=
+, insn_buf, 1);
+> > > > > +                 new_prog =3D bpf_patch_insn_data(env, i + delta=
+, insn_buf, cnt);
+> > > > >                   if (!new_prog)
+> > > > >                           return -ENOMEM;
+> > > > >
+> > > > >                   env->prog =3D prog =3D new_prog;
+> > > > >                   insn      =3D new_prog->insnsi + i + delta;
+> > > > >                   goto next_insn;
+> > > > >           }
+> > > >
+> > > > Should there be a "delta +=3D cnt - 1;" before assigning env->prog =
+in this
+> > > > bpf_get_func_arg_cnt block? When cnt is 2 (non-RAW_TP path), the pr=
+ogram
+> > > > grows by one instruction, but delta is not updated. This could cause
+> > > > subsequent bpf_patch_insn_data() calls to use incorrect offsets.
+> > > >
+> > > > The bpf_get_func_arg block at the beginning of this patch has:
+> > > >
+> > > >     delta    +=3D cnt - 1;
+> > > >     env->prog =3D prog =3D new_prog;
+> > > >
+> > > > And the bpf_get_func_ret block similarly has delta updated. But this
+> > > > bpf_get_func_arg_cnt block goes directly to env->prog assignment wi=
+thout
+> > > > updating delta.
+> > >
+> > > Ah, good point, I think this is a valid problem. The selftests didn't=
+ cover
+> > > this case, and I think I'd better to use bpf_get_func_arg() and bpf_g=
+et_func_ret()
+> > > in the exit path of fsession to cover it.
+> >
+> > Oh, the problem doesn't have much impact. The only impact
+> > is that the verifier will check the "r0 &=3D 0xFF" instruction redundan=
+tly.
+> >
+> > I'll see if there is more comment before I send next version.
+> >
+>=20
+> Let's still fix the problem. Just go ahead and resubmit (with the fix
+> and improved test).
 
-These gratuitous passive-aggressive comments about what makes me happy,
-based on twisted interpretations of conversations, are best kept to yourself.
+OK!
 
-I remember Jakub's request was only to add a note in the commit message
-about the reason behind the lack of cleanup, not to add cleanup which
-will be executed twice:
-https://lore.kernel.org/netdev/20260120153248.0636f1e9@kernel.org/
+>=20
+> pw-bot: cr
+>=20
+>=20
+> > Thanks!
+> > Menglong Dong
+> >
+> > >
+> > > Will fix it in the next version.
+> > >
+> > > Thanks!
+> > > Menglong Dong
+> > >
+> > > >
+> > > >
+> > > > ---
+> > > > AI reviewed your patch. Please fix the bug or email reply why it's =
+not a bug.
+> > > > See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude=
+/README.md
+> > > >
+> > > > CI run summary: https://github.com/kernel-patches/bpf/actions/runs/=
+21278745581
+> > > >
+> > >
+> > >
+> > >
+> > >
+> > >
+> > >
+> >
+> >
+> >
+> >
+>=20
+>=20
 
-I only expressed dissatisfaction with the phylink_pcs calling convention
-as it is today, and searched for ways to make the calls balanced. I also
-didn't make any suggestion to make the code worse by performing the
-SerDes power down twice, just subscribed to Jakub's request to leave a
-comment why your v1 is the way that it is:
-https://lore.kernel.org/netdev/20260122112913.svzaie4eywk5nc32@skbuf/
 
-Getting over that dissatisfaction and working within the framework of
-the existing calling convention, but also inserting the comment that I
-was looking to see, I believe that functionally correct code would look
-like this (applies on top of your entire v2 patch set):
 
--- >8 --
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
-index d46a071bc383..c4465dca6b93 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_serdes.c
-@@ -59,12 +59,27 @@ int dwmac_serdes_power_on(struct stmmac_priv *priv)
- {
- 	int ret;
- 
-+	/* Because the dwmac_integrated_pcs_disable() call path is eventually
-+	 * invoked irrespective of the dwmac_integrated_pcs_enable() return
-+	 * code, we risk either underflowing the SerDes phy->power_count or
-+	 * leaving the lane powered on, depending on the cleanup choice and the
-+	 * point of failure. Keeping separate track of the lane power on state
-+	 * is a band aid until phylink offers balanced pcs_enable() and
-+	 * pcs_disable() calls.
-+	 */
-+	if (priv->plat->serdes_powered_on)
-+		return 0;
-+
- 	ret = phy_power_on(priv->plat->serdes);
--	if (ret)
-+	if (ret) {
- 		dev_err(priv->device, "failed to power on SerDes: %pe\n",
- 			ERR_PTR(ret));
-+		return ret;
-+	}
- 
--	return ret;
-+	priv->plat->serdes_powered_on = true;
-+
-+	return 0;
- }
- 
- int dwmac_serdes_init_mode(struct stmmac_priv *priv, phy_interface_t interface)
-@@ -95,10 +110,17 @@ void dwmac_serdes_power_off(struct stmmac_priv *priv)
- {
- 	int ret;
- 
-+	if (!priv->plat->serdes_powered_on)
-+		return;
-+
- 	ret = phy_power_off(priv->plat->serdes);
--	if (ret)
-+	if (ret) {
- 		dev_err(priv->device, "failed to power off SerDes: %pe\n",
- 			ERR_PTR(ret));
-+		return;
-+	}
-+
-+	priv->plat->serdes_powered_on = false;
- }
- 
- void dwmac_serdes_exit(struct stmmac_priv *priv)
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 6097f4b6dd12..e62bba38ab60 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -225,6 +225,7 @@ struct plat_stmmacenet_data {
- 	 */
- 	phy_interface_t phy_interface;
- 	struct phy *serdes;
-+	bool serdes_powered_on;
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
- 	struct device_node *phy_node;
- 	struct fwnode_handle *port_node;
--- >8 --
+
