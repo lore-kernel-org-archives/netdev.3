@@ -1,35 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD930FC36;
-	Sun, 25 Jan 2026 22:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB2031AAAF;
+	Sun, 25 Jan 2026 22:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769381413; cv=none; b=UwOiHX5BexhUXl+GQKB4j34Ic84fUj7z83kfeTEyTf4zt11spJzQWILcrKDF26WX+E1VuS5t2dHVqupSo8UYVjRQfu1r89V28fR1rxFBWL1Kvr6+ukg8X0un7PaS0UQsuDK+JEawHsHWMzKzFdaIWHFMDbxs/KyazEm1vO+6VEs=
+	t=1769381413; cv=none; b=f7jvC0njbL55NMulb0JwPqVsxs9jCu/N9kuZqVipa6TwajtLGYFqXBhd21TcRhy38BIMkQWXEZlOPhM92U/PGDtHoTCKd+IMr4N/g+Z2zy1u3yPGh8ufRUithdrnIzvDtcDwQQdPgRm3DoE/W+XM9S8WweSjX9oktBG3jlSRpDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769381413; c=relaxed/simple;
-	bh=cNmzYiKba4/WlVixkgjErlLX1dVrWHxdW72hgi1uId4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bxQJMj4QN8GMtzBSv8t/PpKjlyJpP8m7Mrx+batoJVH+mXYDiq+gFVw8nTD0yiqDRwk57ph/IZygnHqw/odG9uRY3ZtLwaekABuzyTN5QbbDA8OYsbL7R/mai1jd8y/fQuB4Ux6Xlrf9OIHUnacaJ7Pgr6rDTJ0b1n79FcDV9Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCEKjFin; arc=none smtp.client-ip=10.30.226.201
+	bh=kluxsGzh3yUyBuEdMQW2ChyzrN9Wa4B73tu4Iho0QMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZyeSOy4UENBWOOuzBVMyG6CkP/i9d0hjN+0cPzfsMeAaHvbM7/DQ5IAbICvFTsE0TnSBtSv66MXnDBNqdg2vJeX9eVg3/83CqjqMNvMIyNECxuvR4OK61gI3UinmHQ5P+F5uMdzQtIxcvRSY1qFxJza08PCOoYbkgSzo/4RSc4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwIC4g98; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCEKjFin"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6B1C4CEF1;
-	Sun, 25 Jan 2026 22:50:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwIC4g98"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120E4C19425;
+	Sun, 25 Jan 2026 22:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381412;
-	bh=cNmzYiKba4/WlVixkgjErlLX1dVrWHxdW72hgi1uId4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BCEKjFinQurWrgMC8Q5sE5TClA6d6znVxdIfliAEKRQ2nAu9sdKyXUy0Hgn1VZdqM
-	 +r68605Q8EibXc2YrCPg4eDIiUFrpbNO/uw1UmwkV4oaQP1boGKWlYmocS1Go8Hm4D
-	 xMluKJqQlBxZQyuVN4hZMYYHSZ3rDllTi40FJRZI6+6LYaM1dofszFX1KnkGkKzBLK
-	 nBibj/acT9MK7SHo+e05MhznYfTf5trr/bP0tVBtk/g1p2Vh+He2oOndQLvSpwtLqS
-	 dawrQdVeeGS0GKpLpi+ybwAnf3bdL99UjJ5zpbz20or/Ilf+91zjz37PXuM8bxfz10
-	 eD8CPdZmbgLQw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BAB23809A15;
-	Sun, 25 Jan 2026 22:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769381413;
+	bh=kluxsGzh3yUyBuEdMQW2ChyzrN9Wa4B73tu4Iho0QMM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PwIC4g988r+B+FQPa2FGhJt4tSrnNd2nr3Tz4JrNby9d+xw96kD0fCjntTLY1+H1n
+	 uXxDNbXKSPe2PPZHG2MkM8KfxPUVZcHV22WrAGuzzmO872gdpB+rEYMVaPF9zDiHeA
+	 4DAVOo0ZX1apu66trrhs8xQp/0u1Hpi6J1VWvFy9lMGJMwfhvoSf3REVbWUSMv1fy3
+	 w9NNX6yNDqcaFM+CfcvB1OrCkCSjmfni8NhXoeV3iRN0cEMtFRoxEHfQHvq7WzyJd8
+	 2Ta3I7sXvWD+IW/l3nN7TVys5aR+iJcCHXKGctB2PGpo2OIwb6AJNGfhBRwGPUwOXV
+	 m2Z/opj23gBYw==
+From: Frederic Weisbecker <frederic@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 32/33] kthread: Document kthread_affine_preferred()
+Date: Sun, 25 Jan 2026 23:45:39 +0100
+Message-ID: <20260125224541.50226-33-frederic@kernel.org>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260125224541.50226-1-frederic@kernel.org>
+References: <20260125224541.50226-1-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +78,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net] net/mlx5: Fix return type mismatch in
- mlx5_esw_vport_vhca_id()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176938140735.4002147.442926192309734143.git-patchwork-notify@kernel.org>
-Date: Sun, 25 Jan 2026 22:50:07 +0000
-References: <20260123085749.1401969-1-zeng_chi911@163.com>
-In-Reply-To: <20260123085749.1401969-1-zeng_chi911@163.com>
-To: Zeng Chi <zeng_chi911@163.com>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, feliu@nvidia.com, parav@nvidia.com,
- witu@nvidia.com, ajayachandra@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, zengchi@kylinos.cn
 
-Hello:
+The documentation of this new API has been overlooked during its
+introduction. Fill the gap.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+---
+ kernel/kthread.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-On Fri, 23 Jan 2026 16:57:49 +0800 you wrote:
-> From: Zeng Chi <zengchi@kylinos.cn>
-> 
-> The function mlx5_esw_vport_vhca_id() is declared to return bool,
-> but returns -EOPNOTSUPP (-45), which is an int error code. This
-> causes a signedness bug as reported by smatch.
-> 
-> This patch fixes this smatch report:
-> drivers/net/ethernet/mellanox/mlx5/core/eswitch.h:981 mlx5_esw_vport_vhca_id()
-> warn: signedness bug returning '(-45)'
-> 
-> [...]
-
-Here is the summary with links:
-  - [v3,net] net/mlx5: Fix return type mismatch in mlx5_esw_vport_vhca_id()
-    https://git.kernel.org/netdev/net/c/ca12c4a155eb
-
-You are awesome, thank you!
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 51f419139dea..c50f4c0eabfe 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -856,6 +856,18 @@ int kthreadd(void *unused)
+ 	return 0;
+ }
+ 
++/**
++ * kthread_affine_preferred - Define a kthread's preferred affinity
++ * @p: thread created by kthread_create().
++ * @mask: preferred mask of CPUs (might not be online, must be possible) for @p
++ *        to run on.
++ *
++ * Similar to kthread_bind_mask() except that the affinity is not a requirement
++ * but rather a preference that can be constrained by CPU isolation or CPU hotplug.
++ * Must be called before the first wakeup of the kthread.
++ *
++ * Returns 0 if the affinity has been applied.
++ */
+ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
+ {
+ 	struct kthread *kthread = to_kthread(p);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.1
 
