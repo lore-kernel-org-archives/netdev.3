@@ -1,76 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB2031AAAF;
-	Sun, 25 Jan 2026 22:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1147C310785
+	for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 22:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769381413; cv=none; b=f7jvC0njbL55NMulb0JwPqVsxs9jCu/N9kuZqVipa6TwajtLGYFqXBhd21TcRhy38BIMkQWXEZlOPhM92U/PGDtHoTCKd+IMr4N/g+Z2zy1u3yPGh8ufRUithdrnIzvDtcDwQQdPgRm3DoE/W+XM9S8WweSjX9oktBG3jlSRpDM=
+	t=1769381417; cv=none; b=V/k50haKSoep0+kRetOTuwiMROhdp3pAq8K3UrYhrmJJy0fCcnZceA3zD36rAGYMpF1rIRF+eMJAchMCIhZzeGOpPigeQ4trkwB9H/jCwZB2vRtBhz+qpaXgshp8BFrRDfrwWKOJQunEyKMU8PI7n1o18yyOrOx7I6NWmw2DOoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769381413; c=relaxed/simple;
-	bh=kluxsGzh3yUyBuEdMQW2ChyzrN9Wa4B73tu4Iho0QMM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyeSOy4UENBWOOuzBVMyG6CkP/i9d0hjN+0cPzfsMeAaHvbM7/DQ5IAbICvFTsE0TnSBtSv66MXnDBNqdg2vJeX9eVg3/83CqjqMNvMIyNECxuvR4OK61gI3UinmHQ5P+F5uMdzQtIxcvRSY1qFxJza08PCOoYbkgSzo/4RSc4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwIC4g98; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769381417; c=relaxed/simple;
+	bh=s3PqumVy0z6qBXycK21y4L7G2ZHkFXqL1dDzbz46rDg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OSvlAWBVLUDMkmx9W/RgbtD/KCUXBCOpyQqfafDSpKhmHhgFo7bqiF9tYbthWziF93p7lE+wjvLl+Fx6p3SEYZlIPDmoZSbkulHknGTtaotbgIaIQB6T62Y2dEgClchLoMgP11sY2odL9KCxTGEPMJGd+PR6of8Y4ZOIfg1EVNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWQI+hHY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwIC4g98"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120E4C19425;
-	Sun, 25 Jan 2026 22:50:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWQI+hHY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25A3C19425;
+	Sun, 25 Jan 2026 22:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769381413;
-	bh=kluxsGzh3yUyBuEdMQW2ChyzrN9Wa4B73tu4Iho0QMM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwIC4g988r+B+FQPa2FGhJt4tSrnNd2nr3Tz4JrNby9d+xw96kD0fCjntTLY1+H1n
-	 uXxDNbXKSPe2PPZHG2MkM8KfxPUVZcHV22WrAGuzzmO872gdpB+rEYMVaPF9zDiHeA
-	 4DAVOo0ZX1apu66trrhs8xQp/0u1Hpi6J1VWvFy9lMGJMwfhvoSf3REVbWUSMv1fy3
-	 w9NNX6yNDqcaFM+CfcvB1OrCkCSjmfni8NhXoeV3iRN0cEMtFRoxEHfQHvq7WzyJd8
-	 2Ta3I7sXvWD+IW/l3nN7TVys5aR+iJcCHXKGctB2PGpo2OIwb6AJNGfhBRwGPUwOXV
-	 m2Z/opj23gBYw==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 32/33] kthread: Document kthread_affine_preferred()
-Date: Sun, 25 Jan 2026 23:45:39 +0100
-Message-ID: <20260125224541.50226-33-frederic@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260125224541.50226-1-frederic@kernel.org>
-References: <20260125224541.50226-1-frederic@kernel.org>
+	s=k20201202; t=1769381416;
+	bh=s3PqumVy0z6qBXycK21y4L7G2ZHkFXqL1dDzbz46rDg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=DWQI+hHYwLpeOj+gClVkgwX3Gz1mCZ+I3dP4Bi0bozTNfmyX0ICVpn+wPbi7GAkdp
+	 HI5HFW4p3W8Bsa8ZpjGfxxnlxbN37PNU+/1P/ClFqMJJ+vpDklBHxmd6beb4b3Piot
+	 sMy3ll1PXR4NfOij0yGIYbsJmuimohwhdbx+9IxQTtC+oU4cs7z4jmkt2l8vOzBftW
+	 jhacTSXiIYQwbBgeFm9IuzzOs/NpXKGmyUuSqSwuaehw03OsZocQFYMMJBzZ4R/EEY
+	 RRBEWJcIGiFy8a7X9KH7PYhM8RIG3PNQM8yNl2iNS0t6/MbtzTIjB3j0ULul735VvO
+	 7KKaWM9E1wBoA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8AB13809A15;
+	Sun, 25 Jan 2026 22:50:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,38 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] ipv4: igmp: annotate data-races around
+ idev->mr_maxdelay
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176938141134.4002147.8332654342362165220.git-patchwork-notify@kernel.org>
+Date: Sun, 25 Jan 2026 22:50:11 +0000
+References: <20260122172247.2429403-1-edumazet@google.com>
+In-Reply-To: <20260122172247.2429403-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ dsahern@kernel.org, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-The documentation of this new API has been overlooked during its
-introduction. Fill the gap.
+Hello:
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- kernel/kthread.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 51f419139dea..c50f4c0eabfe 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -856,6 +856,18 @@ int kthreadd(void *unused)
- 	return 0;
- }
- 
-+/**
-+ * kthread_affine_preferred - Define a kthread's preferred affinity
-+ * @p: thread created by kthread_create().
-+ * @mask: preferred mask of CPUs (might not be online, must be possible) for @p
-+ *        to run on.
-+ *
-+ * Similar to kthread_bind_mask() except that the affinity is not a requirement
-+ * but rather a preference that can be constrained by CPU isolation or CPU hotplug.
-+ * Must be called before the first wakeup of the kthread.
-+ *
-+ * Returns 0 if the affinity has been applied.
-+ */
- int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- {
- 	struct kthread *kthread = to_kthread(p);
+On Thu, 22 Jan 2026 17:22:47 +0000 you wrote:
+> idev->mr_maxdelay is read and written locklessly,
+> add READ_ONCE()/WRITE_ONCE() annotations.
+> 
+> While we are at it, make this field an u32.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] ipv4: igmp: annotate data-races around idev->mr_maxdelay
+    https://git.kernel.org/netdev/net-next/c/e4faaf65a75f
+
+You are awesome, thank you!
 -- 
-2.51.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
