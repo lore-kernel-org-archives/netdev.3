@@ -1,88 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CE32066F7;
-	Sun, 25 Jan 2026 22:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F29214A9B
+	for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 22:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769379854; cv=none; b=MwFRcip4lexnVCYSTOnxyh5HJJrCTIrOeKNaBAoSk/t5IWDiuiXd/N0KmoDGIkygDH8TqFPs/toiVImW9VC13FwQWAeJLIV6Spn4UqlvwAY8VWFYBTbGqGuWYnCV4BOfAsDsumv0o5tP5oKcp5MuQmW4SjMdlN8owbH49AxbzJA=
+	t=1769380088; cv=none; b=mRbcyzD+StDrqT6fZoEx73etycgWZ/ld+1g/efaOoM6etI2OtNq4UexH65J1LYol+r2N4/VDln0sX8mwz78dtzxfDJIWJCvUq3ucymmC9M9lHHWF+gqErH6wjWvOhfrBpKblanQCrxXZfAT2w3KqTh2igwSmmXlHrYTnW1Uv5NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769379854; c=relaxed/simple;
-	bh=aqwDfEl3OsQCXcTsY1GsUP9RGTeKfiCCD49yw57iyfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y81RZSsLSbPkoGPT+iD7vl0yZtJ4l4LnFtdDihpJqc5nJ7jmtAiS6RbQV61E/sjrXcP46GofPXH8M5RXL5LQVaaMEEaPyLJPz7wi7KH+zo7Ff/yhnBwRkalKqH0jseCHAYOgaUVBM58dXJUs70uJx9r9OPCbaD+Vm90szpvn7lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIjzzD21; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769380088; c=relaxed/simple;
+	bh=bk/yBbdn4jcVE2YTXD6hLC64kHfwBceGWZphYcz6lIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cHQmNcnjHbtsSSdwxgmPF0vFXU+1atChw7woeFL0btCCg9SvuGu1czpInNGhqt5poAaBh2pSmyQ8fUpWqsaCIMAEgAY1DTNEf/KGW674ryNBCRctBTFS6NGxlDRnqceasXfMopvpw0t54BsTGatLRLG+v3cDBkHthlYfM90EPK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=EiMjt/g8; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIjzzD21"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EEBC4CEF1;
-	Sun, 25 Jan 2026 22:24:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769379854;
-	bh=aqwDfEl3OsQCXcTsY1GsUP9RGTeKfiCCD49yw57iyfU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QIjzzD21vmrnh2B23r9Ih6f75xFIQZWCsaKAzh1sqQgTp+BXZk6C5C2lvGWWGDjWH
-	 PkNgs06x+V2oyyR3FTMxS32H+LCyxDgc+wBZwGwFhpWqvRorcH9Y5+aZlZuZWRpT3B
-	 Pkk03Wz0aJlJ7iluDCvLJ+heAu3lmPTun3t0ZC0sLHUBkkeij6hvFdxJ2RD3ut+7id
-	 mEy6txeUt9bMTtgvXrtzKzcP3V0MH9xFtdOjRSBWhbiwz1Kbm6JP1OQC5nVNkaBJKy
-	 XG/6bf7JqzcHTz3lD1IKeHetMF775oaGDk4xwU6D9x1wqkCegB2H1BKKsIdrcO0v8t
-	 R2wgNDye6tDuw==
-Date: Sun, 25 Jan 2026 14:24:12 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Hariprasad Kelam <hkelam@marvell.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <davem@davemloft.net>, <sgoutham@marvell.com>, <gakula@marvell.com>,
- <jerinj@marvell.com>, <lcherian@marvell.com>, <sbhatta@marvell.com>,
- <naveenm@marvell.com>, <edumazet@google.com>, <pabeni@redhat.com>,
- <andrew+netdev@lunn.ch>, <bbhushan2@marvell.com>
-Subject: Re: [net-next PatchV4 2/2] Octeontx2-pf: Add support for
- DMAC_FILTER trap
-Message-ID: <20260125142412.20b37981@kernel.org>
-In-Reply-To: <20260123104731.2710019-3-hkelam@marvell.com>
-References: <20260123104731.2710019-1-hkelam@marvell.com>
-	<20260123104731.2710019-3-hkelam@marvell.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="EiMjt/g8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=L2X891Ez3ofU6acQZJKt3+66chDjYg1lXlCjzKU3OXs=; b=EiMjt/g8Z82n8WlxNZmZG5T5uv
+	EpAjk6l6Np519Lwq+KkIQztvA05OO68xBvl4i4UH4rCD6tE/kWAlPtCG36okJQ90uoxrF0MKwI88Y
+	auR0oGXM5QGKFUj/H3GZUNe1Gi+qBPj3kv3f7a1CLwJxhnz/K5cpA04j8U18MkO8MbjraI15eE+e7
+	cghAlzquIBy4Fdx21Vr6RI3Nw1qzwneiiNp4eCth+mDWvwUWjra7Sgv/WbnvqMNgvMGgGVyM/l6ct
+	I3TujEL3WSTM6cm2MgI5Qu1HKYwJKsEvIdoDxYGvvsuZd/4PYkPhr5aty+knLWa+LKs3+uCV/r80m
+	Y4iR2Dyw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:32798)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vk8aI-0000000041d-2tWj;
+	Sun, 25 Jan 2026 22:27:54 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vk8aE-000000004Ma-3W6u;
+	Sun, 25 Jan 2026 22:27:50 +0000
+Date: Sun, 25 Jan 2026 22:27:50 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, andrew@lunn.ch,
+	davem@davemloft.net, alexandre.torgue@foss.st.com,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	heiko@sntech.de, andrew+netdev@lunn.ch,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next,18/21] net: stmmac: rk: rk3328: gmac2phy only supports
+ RMII
+Message-ID: <aXaY5nKGFdBhVsnb@shell.armlinux.org.uk>
+References: <E1vjEvF-00000005ghI-3CYC@rmk-PC.armlinux.org.uk>
+ <20260125221631.3396200-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260125221631.3396200-1-kuba@kernel.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Fri, 23 Jan 2026 16:17:31 +0530 Hariprasad Kelam wrote:
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-> @@ -3282,6 +3282,10 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	if (err)
->  		goto err_mcam_flow_del;
->  
-> +	err = otx2_devlink_traps_register(pf);
-> +	if (err)
-> +		goto err_unregister_dl;
-> +
->  	/* Initialize SR-IOV resources */
->  	err = otx2_sriov_vfcfg_init(pf);
->  	if (err)
-> @@ -3314,6 +3318,8 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	otx2_sriov_vfcfg_cleanup(pf);
->  err_pf_sriov_init:
->  	otx2_shutdown_tc(pf);
-> +err_unregister_dl:
-> +	otx2_unregister_dl(pf);
+On Sun, Jan 25, 2026 at 02:16:31PM -0800, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 
-Hm, you're still not calling otx2_devlink_traps_unregister()
-anywhere in this unwind ladder. If the missing otx2_unregister_dl()
-is a pre-existing bug please send a separate fix (to net?) to address
-that, and then this series on top.
+This, and all the other AI generated comments on subsequent patches
+are repeats of patch 17.
 
->  err_mcam_flow_del:
->  	otx2_mcam_flow_del(pf);
->  err_unreg_netdev:
-> @@ -3514,6 +3520,7 @@ static void otx2_remove(struct pci_dev *pdev)
->  	/* Disable link notifications */
->  	otx2_cgx_config_linkevents(pf, false);
->  
-> +	otx2_devlink_traps_unregister(pf);
->  	otx2_unregister_dl(pf);
 -- 
-pw-bot: cr
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
