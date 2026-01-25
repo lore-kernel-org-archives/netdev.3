@@ -1,185 +1,142 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB62BE7A7;
-	Sun, 25 Jan 2026 20:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769372454; cv=pass; b=jxQQoW2BkGOWjuYtlH6BD0+IVR/y8hknjGEC0Cg9hbpKBhVtfT78FEMlPOSTJR36RuVxv7A2mLiXAcYeu5RV/IfgO++Cnh2ObRoGhTo+eBVJ0QLzvOJ+nyWUDMVgaIdY+bP8F/inLo28XWx5aHxW5C3v2NFDxB/CBqOyuF0Dwwo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769372454; c=relaxed/simple;
-	bh=67iLx+zCeqGhk7Uqk3k6MRn9oTCS3BfsHKwE6dkh7hQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZbSMVdHulBgoCSy8GxfkNsYcS/JyhQh2T1Pe2vKB2OiUNfLEmON//QiE2SW8qj8etkItSAcobZq/ID0Zs1g8jM+s9YRkKMKEliQjdRfoR1w1IwzsMSuMhXh+qJ1w9DORQk94Z6qoInJkyZmY87Y/a0QWH/H7FL+q0jUwfffzQDY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=gZ8p8FGr; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=ej7ZBRjZ; arc=pass smtp.client-ip=85.215.255.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B551CF7D5
+	for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 20:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769373425; cv=none; b=F8+h2r75faBGKFEf30D7SruSBT+H1QvYsxuhRo4e3XV/JBjlbvVJ/3SUJurCqtsi3gXhAukTyBff+lBjrd3keFJvcW0XKGzRxGkGpMxbxCHSWz1b6Hp+Vt/s4JqeEM0Ct3FuxrxowWLOLr/AtjqFsvFmHqbY7M8MsB9bfPie8pQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769373425; c=relaxed/simple;
+	bh=KaPXS/Z/c7D152Q/n61SaHtWw2eblop+3/kEWHmsHuo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AN0cdCorgMyH4OVll4iaROFvMf2XBpjZ65AyKk+H6kJWRc8afhGN1qfvKx/ehJMkXe81jWpeagGXLCncxSl0A3fpGmmZLPs0/uS6c2FU7AgB9Qr1M0CbBs9B2oEuRHYtPBy25xXnXMJZP6L/Ep06zJsXJyfnlWVQ4BuWXqP2YxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Qw1IPWmY; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="gZ8p8FGr";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="ej7ZBRjZ"
-ARC-Seal: i=1; a=rsa-sha256; t=1769372268; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=dNv1PgbLp/daF2ICd+IuSeVjNZAN8wUSpt+TRh+5ndaN018S0djfi2GAPUd6p6aha/
-    27CK5ZrMDmZXm4K2dEiEsS5Tt35geSitm3krrRm2OhuVN+DcXh2bO3XBERMDGr0E8AUv
-    9IaIL+Uv+j5FEoBoJbzeqFkptTQNqPUQc7UDzg4Y8765sccEYRi9eF8xW5BjfVTMQ6um
-    YforDt50vXrswXu3AZXhgcbo1696Vp32bg0fqJk3yA0x02gB1YqM+vmI2iiuZ9DR1Soj
-    kR//iZ3uc96pgkkY5DobHDX4C3sYEMCAccxkhN3DSUXo2Ilm8BQj5qelmz7lpbQr7eRd
-    c7+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1769372268;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0uHijS46Xoxb/9x5YWjsNQb+joxjop52cpbuYPa9TUQ=;
-    b=OKieDfAbU2+3RsJdKUJTdNOERgsB3C2hqs+c2C3XwKCtbNksMtiP2Ktz4rY549O5I8
-    vCyqP8bbJhpPKuMQVNVryTaA3olbdvZYgyKjzyeAPMnR229aHK+3m5Y2T4MujFw/nWBX
-    Qpf+L6yVyHZnSqVxvEQ53vIaXSQhM7Kw7sMua0kGjfDRewXA05phXdL/8miS0nC1+6Ee
-    7a7BI3J3XKnTvHA2vU06QvguZy/6JV9B6hsrJc5D1GR0hZ/u4XVETUtf2vQ+zX93w25X
-    9YAq4HD+BEPaStJv9ZsZz2UljYiMgWXWuOGiqVOMkldWT5kKcsaKA/3btwH9uhUbqiNi
-    KjZg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1769372268;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0uHijS46Xoxb/9x5YWjsNQb+joxjop52cpbuYPa9TUQ=;
-    b=gZ8p8FGrNAom0uKYcJtncv3MYJlYOKmapzuTGzhT/1rzcAz7GPCclGDm4nbryZcm9K
-    0+iLHcb0h7Jnl78EYgPqxRZcrIdllBNcAWQcP44+KGaMEFNQeYRdr8+maHT+rp76PA7M
-    To/dCkxyyMk+ggMQRqyNZFD6CgaKug+dlW5reBA5J6SIuBfpeorzDsaBHHm7XHJ5B6wO
-    pwTsflb/IRcfea5op9bqRX8CzkgkefQbTZiOmNVV36xn+Vo/qJOE/g9LTc86oNDWc8rg
-    BHp3VsrvfPz82fqtgDof71utdM0UulvxZJ7a30IJrNMustjvKkQ96gRlny/jnW6XXPeV
-    fQJA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1769372268;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=0uHijS46Xoxb/9x5YWjsNQb+joxjop52cpbuYPa9TUQ=;
-    b=ej7ZBRjZ+jQFAyriq7jhqjj8HtEYqofFkFsz59Db+ZZiVm0aB7aFZGcaS5XFvs7QvQ
-    BwojcnCZtB1yN1aTnZDA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s1YTqptmo87qzm6sElmZEI+VN6rw=="
-Received: from lenov17.lan
-    by smtp.strato.de (RZmta 54.1.0 AUTH)
-    with ESMTPSA id K0e68b20PKHmYsV
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sun, 25 Jan 2026 21:17:48 +0100 (CET)
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-To: netdev@vger.kernel.org,
-	linux-can@vger.kernel.org
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [net-next 4/6] can: move frame_len to CAN skb extensions
-Date: Sun, 25 Jan 2026 21:15:59 +0100
-Message-ID: <20260125201601.5018-5-socketcan@hartkopp.net>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260125201601.5018-1-socketcan@hartkopp.net>
-References: <20260125201601.5018-1-socketcan@hartkopp.net>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Qw1IPWmY"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b8849dc12f6so568178866b.1
+        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 12:37:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1769373422; x=1769978222; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f6PV7Aw1GuCHemjI6CRSwhEaXuqwDH59s8evm2BBYZE=;
+        b=Qw1IPWmYFB0+6h6ZiIm1fa/iOlZvllRVg2MaAEL9LvX9K/MFR9g6U0XdPt+ryrh9bl
+         lKztIaNpPX4LJ5oDo95onJVbHxbhvaD9uqJjwdE35dax7Ntlfo8OgeACgBEUI07EBUcu
+         d3OzZzEX+mflDNDEBFdJmUZvemHRFn4STY36xFBwteF/8sQ8/AtKA2avzowRW+2NKCzs
+         qpqjCpdmdGYKWNlEO0zhUrQRaIApPpKG6ZeA9ePa2CvkbYdFdL+UOOlDyWxE3uVIGqJW
+         QQXEUS4vfO+OLX0e0VXuP45Je25lMkrcy5qZ6LBCCHTk/93h6/HImBfz35aXNw/qyORU
+         OcXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769373422; x=1769978222;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f6PV7Aw1GuCHemjI6CRSwhEaXuqwDH59s8evm2BBYZE=;
+        b=MFw+DB4Pb7JtwSYWS1FnV+mU0fN8rkdUC8OmjfEds5Kt0k8eQv/wMg7vKysG6Szb5f
+         zVoriOFfDHJQBQyvkzr/mszcwFQXoK718eMezW10+upkypzSe33GoYtGOm4HsCEYH4oi
+         CrEqSBs9JHFPHNq/ko7uk0ZYegDjCVhiD8au8uLbp8q2KH7VtEg/SEwMcHdI5obdXTzR
+         vNerTYeLZM5LBXY8HgIad0H7B3RypI+zGUgd1TTiMMlUbXOYZE1GbmhealEBEuSO3DD6
+         HxgXS40Ycseh0Mg4nfn5gvwG/64f456jdlhG36iuURq6AJg3Ezlw97MkFT+BWstb7btQ
+         /Hhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUMQPnk/kQsUIMhsnwZJJLARxPzm+QWowzyb+lEqxtJcav0QVFg0IlJXnTaW5nyw46sqvpitIQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyJo+crK8xLGkTvhVe9PcrAgAvxRxAlYRwrW2eef6h/pycH46N
+	KuSdu8NqIy/q9pIrOHSOG2GKMeEPttYHD3eMOMgJhMKcIIZ5UBf0wk+WqLKEO1zhTiw=
+X-Gm-Gg: AZuq6aLwPlDE9BT38lup/huNBXFRrW8nxO3IQrd9QqXN+cYqvIvR1+DMs+2V/Lc+Ox7
+	qh+WTF5iDk1UvEZiEDynG6ldqGkkja4Aem74dvlrcs1jmzhxAGtANeOWbntmQhWTRxPTIsec5od
+	vFwzVTYPY2felXjkmd1J0AB74+DKHzTeZbt2JsoK1KSlKq76v+ZNW82Ih1UoKZV/PJZMBGEk13U
+	nOKnFOI7VsZ0U/XJ8yWihUKXWJ/tZ1novCNtfFSxe09o/vP9NHlznkW3zX1YCxMM9G7qN9KVI+I
+	mN3tAFLNTT5z5Gt1I+GT6Id/Dbio3ySsoQk3snP0kfuYluQuJC+/WYQ0oHl5zD64MuP76+64udr
+	guumORCZnpvmYgfS9VM53IKCdB1Clm2rBhOr5lnDp/E2hnHjC9WtQD0LAJzm8MSQA1hDk0gP0tk
+	/5+zU=
+X-Received: by 2002:a17:907:9710:b0:b87:206a:a241 with SMTP id a640c23a62f3a-b8cfedfc951mr173619466b.11.1769373421994;
+        Sun, 25 Jan 2026 12:37:01 -0800 (PST)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:b1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b6fc4d7sm507309066b.45.2026.01.25.12.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jan 2026 12:37:01 -0800 (PST)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  John Fastabend <john.fastabend@gmail.com>,
+  Andrii Nakryiko <andrii@kernel.org>,  Eduard Zingerman
+ <eddyz87@gmail.com>,  Song Liu <song@kernel.org>,  Yonghong Song
+ <yonghong.song@linux.dev>,  KP Singh <kpsingh@kernel.org>,  Stanislav
+ Fomichev <sdf@fomichev.me>,  Hao Luo <haoluo@google.com>,  Jiri Olsa
+ <jolsa@kernel.org>,  Amery Hung <ameryhung@gmail.com>,
+  netdev@vger.kernel.org,  kernel-team@cloudflare.com,
+  ihor.solodrai@linux.dev,  bpf@vger.kernel.org
+Subject: Re: [PATCH bpf-next v2 1/4] bpf, verifier: Support direct helper
+ calls from prologue/epilogue
+In-Reply-To: <bbbf1b30-dfc9-4206-9285-0ce96e934e54@linux.dev> (Martin KaFai
+	Lau's message of "Fri, 23 Jan 2026 15:49:34 -0800")
+References: <20260123-skb-meta-bpf-emit-call-from-prologue-v2-0-0e50db4d4663@cloudflare.com>
+	<20260123-skb-meta-bpf-emit-call-from-prologue-v2-1-0e50db4d4663@cloudflare.com>
+	<bbbf1b30-dfc9-4206-9285-0ce96e934e54@linux.dev>
+Date: Sun, 25 Jan 2026 21:37:00 +0100
+Message-ID: <874io9tonn.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
 
-The can_skb_priv::frame_len variable is used to cache a previous
-calculated CAN frame length to be passed to BQL queueing disciplines.
+On Fri, Jan 23, 2026 at 03:49 PM -08, Martin KaFai Lau wrote:
+> On 1/23/26 9:05 AM, Jakub Sitnicki wrote:
+>> @@ -23909,6 +23928,9 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+>>   			goto next_insn;
+>>   		}
+>>   patch_call_imm:
+>> +		if (env->insn_aux_data[i + delta].finalized_call)
+>> +			goto next_insn;
+>> +
+>>   		fn = env->ops->get_func_proto(insn->imm, env->prog);
+>>   		/* all functions that have prototype and verifier allowed
+>>   		 * programs to call them, must be real in-kernel functions
+>> @@ -23920,6 +23942,7 @@ static int do_misc_fixups(struct bpf_verifier_env *env)
+>>   			return -EFAULT;
+>>   		}
+>>   		insn->imm = fn->func - __bpf_call_base;
+>> +		env->insn_aux_data[i + delta].finalized_call = true;
+>>   next_insn:
+>>   		if (subprogs[cur_subprog + 1].start == i + delta + 1) {
+>>   			subprogs[cur_subprog].stack_depth += stack_depth_extra;
+>> diff --git a/net/core/filter.c b/net/core/filter.c
+>> index d14401193b01..cb39388f69a9 100644
+>> --- a/net/core/filter.c
+>> +++ b/net/core/filter.c
+>> @@ -9082,8 +9082,7 @@ static int bpf_unclone_prologue(struct bpf_insn *insn_buf, bool direct_write,
+>>   	/* ret = bpf_skb_pull_data(skb, 0); */
+>>   	*insn++ = BPF_MOV64_REG(BPF_REG_6, BPF_REG_1);
+>>   	*insn++ = BPF_ALU64_REG(BPF_XOR, BPF_REG_2, BPF_REG_2);
+>> -	*insn++ = BPF_RAW_INSN(BPF_JMP | BPF_CALL, 0, 0, 0,
+>> -			       BPF_FUNC_skb_pull_data);
+>> +	*insn++ = BPF_EMIT_CALL(bpf_skb_pull_data);
+>
+> Ihor reported that the test_map has started failing on arm64.
+>
+> https://github.com/kernel-patches/bpf/actions/runs/21298510237/job/61311053284
+> https://github.com/kernel-patches/bpf/actions/runs/21298505282/job/61312363930
+> https://github.com/kernel-patches/bpf/actions/runs/21301695907/job/61321375157
+>
+> For BPF_PROG_TYPE_SK_SKB, the BPF_FUNC_skb_pull_data has a different
+> func_proto. It is sk_skb_pull_data instead of bpf_skb_pull_data.
+> A different func needs to be emitted here based on prog type.
+> Not sure why it only fails on arm64.
+>
+> The set has been reverted to get the CI going.
+> Please address the issue, add a test for this case, and
+> then respin. Thanks.
 
-Move the can_skb_priv::frame_len content to can_skb_ext::can_framelen.
+Sorry for this oversight.
 
-Patch 4/6 to remove the private CAN bus skb headroom infrastructure.
+I see now that sk_skb_pull_data doesn't bpf_compute_data_pointers which
+writes over skb->cb. Perhaps that has something to do with the failure.
 
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
----
- drivers/net/can/dev/skb.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+Will get this sorted.
 
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index 470255fe7367..408ee49abce1 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -47,10 +47,11 @@ void can_flush_echo_skb(struct net_device *dev)
-  */
- int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 		     unsigned int idx, unsigned int frame_len)
- {
- 	struct can_priv *priv = netdev_priv(dev);
-+	struct can_skb_ext *csx;
- 
- 	if (idx >= priv->echo_skb_max) {
- 		netdev_err(dev, "%s: BUG! Trying to access can_priv::echo_skb out of bounds (%u/max %u)\n",
- 			   __func__, idx, priv->echo_skb_max);
- 		return -EINVAL;
-@@ -73,11 +74,13 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 		/* make settings for echo to reduce code in irq context */
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
- 		skb->dev = dev;
- 
- 		/* save frame_len to reuse it when transmission is completed */
--		can_skb_prv(skb)->frame_len = frame_len;
-+		csx = can_skb_ext_find(skb);
-+		if (csx)
-+			csx->can_framelen = frame_len;
- 
- 		if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)
- 			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
- 		skb_tx_timestamp(skb);
-@@ -110,20 +113,25 @@ __can_get_echo_skb(struct net_device *dev, unsigned int idx,
- 	if (priv->echo_skb[idx]) {
- 		/* Using "struct canfd_frame::len" for the frame
- 		 * length is supported on both CAN and CANFD frames.
- 		 */
- 		struct sk_buff *skb = priv->echo_skb[idx];
--		struct can_skb_priv *can_skb_priv = can_skb_prv(skb);
-+		struct can_skb_ext *csx;
- 
- 		if (skb_shinfo(skb)->tx_flags & SKBTX_IN_PROGRESS)
- 			skb_tstamp_tx(skb, skb_hwtstamps(skb));
- 
- 		/* get the real payload length for netdev statistics */
- 		*len_ptr = can_skb_get_data_len(skb);
- 
--		if (frame_len_ptr)
--			*frame_len_ptr = can_skb_priv->frame_len;
-+		if (frame_len_ptr) {
-+			csx = can_skb_ext_find(skb);
-+			if (csx)
-+				*frame_len_ptr = csx->can_framelen;
-+			else
-+				*frame_len_ptr = 0;
-+		}
- 
- 		priv->echo_skb[idx] = NULL;
- 
- 		if (skb->pkt_type == PACKET_LOOPBACK) {
- 			skb->pkt_type = PACKET_BROADCAST;
-@@ -179,14 +187,19 @@ void can_free_echo_skb(struct net_device *dev, unsigned int idx,
- 		return;
- 	}
- 
- 	if (priv->echo_skb[idx]) {
- 		struct sk_buff *skb = priv->echo_skb[idx];
--		struct can_skb_priv *can_skb_priv = can_skb_prv(skb);
--
--		if (frame_len_ptr)
--			*frame_len_ptr = can_skb_priv->frame_len;
-+		struct can_skb_ext *csx;
-+
-+		if (frame_len_ptr) {
-+			csx = can_skb_ext_find(skb);
-+			if (csx)
-+				*frame_len_ptr = csx->can_framelen;
-+			else
-+				*frame_len_ptr = 0;
-+		}
- 
- 		dev_kfree_skb_any(skb);
- 		priv->echo_skb[idx] = NULL;
- 	}
- }
--- 
-2.47.3
-
+Expect some delay. This is a pre-conferece week (FOSDEM).
