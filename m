@@ -1,203 +1,140 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx06lb.world4you.com (mx06lb.world4you.com [81.19.149.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3592F2613
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F8F2F0C74
 	for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 20:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769371388; cv=none; b=e7n3eo1SacKWdmJKYXR0p5QWaqstNvktgwvUAeLSvc4cPeWbSUUbVhudMmYRJ31I385bkvcW711ddFvfWCS5QKPk5xVujoJx+A0IIoyFcec31zf/x2KXZ87sJbsQiu5SchkHacQwWnfZsZABQqycvwQlBBkP9SfjuTimWRcrdtA=
+	t=1769371389; cv=none; b=U/8h0/phRrW9W14678JOdb6lN9/lXFmecpaPCMoxbJoqBH0RQp70dqPwLVwl0zg/ayzhdT15HjPTM6zxYwMBQBhjjevR8U5ArOeG1OpI53T6lE6V4hWXgChXczhqpFqOzycFHXOHbVLM4tY46Ca/L7356/ioL1V2VodfdW2JIcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769371388; c=relaxed/simple;
-	bh=zX0hvxkuGDXQOHT/dO0h+VlGuaLocZjx0MrL6MxaSPY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYnH2mbij3NwA3IJCTfxfPRGUgpqpy1BShwLhULcNkYaVqjHq3s6w/4fhzcVQOQXxGnIexmh7T95MtPC0w5ilnYgpK77RkgVCiWOBGOCtA4FRXIGtM9/1mUeB1JKq0KEF49zA8ikNOskyvc/U1AfhQ7RNurPkWbcfQbNifiTomU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hljpeDQI; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769371389; c=relaxed/simple;
+	bh=RkiXarviRg6mpYmPu0208z/+w4nGINNmHi30Sk+5fEc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K96qv7qMDXnwAld9uo3NQlmLRZ68SkTW1+xI8+r/hHwnMqE/oyd0ktOivtgpH1LpfDd3K98E5dOphYTRptK65CMxhkthF4l8EBNeS+pWurRlLWVy62zrz473O/ROghWDckXgwJp10GoKECPMK3+AlSbLTBgYVuTcYBGPfNWUgk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=l+AlK7BD; arc=none smtp.client-ip=81.19.149.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hljpeDQI"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-432d2c96215so3494216f8f.3
-        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 12:03:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769371385; x=1769976185; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V4+ulA35JyJCbjFvyxZuNovtvFtG6lbRB2yZddCZVz8=;
-        b=hljpeDQIk5u/vWjCpOzGGQp0w0D8vSxPefZEAZZQ/WNnLuksqyRXOWsPu6i+0KxfUm
-         IV7arwFsP02P0rAK7omYPzeK8jxE+59AsU9MVwWevPXjyOT/1TYUjZaRtsyjCsUt26j4
-         DfMCZ9dSvdnfV1cp3ISf1RXRguiJbtlIidbW2Dszj7kSXxuXht5FEKH00jV/nD4tvo/o
-         nOPmFhgY/gL1yTW/RU+qWMvPcQjfmUHCgZIoR4xWWZ6sb/6Pl2efUGo8IfU79DteGtE/
-         UjC3QEGQrSnIqopxVnzbcQ/wjFgQsE1K6/+M45t6rx9erCrxGSELo6OrRXHczyb08XpH
-         YuCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769371385; x=1769976185;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=V4+ulA35JyJCbjFvyxZuNovtvFtG6lbRB2yZddCZVz8=;
-        b=TCGiHw0Y+RvcbOk3ztBbux9W1UQCJgTfy+mlc+Rfrb340Oqmzbf1zCxjsElLW8ipLL
-         LlDJ/rxBkyAoVMPAzeIyLE+w61dwMLL1UJ0jUvqHkDvo8/BedFKhiI1UyJujWAYygShd
-         wnyppbeiLFTX+nn2mzL+G7rxovoE0yU2BhEH31JVA/D7xc+d2yJ0JxqfGf6BihV4KuyG
-         8jTVUoNbAwAWvStKQoaO2KDd0qu+PTDKq46+fvAzd3oovAVnzMFJ5JIOFaJEjx8qHa2k
-         xocTdZqLV6vQehElTS9hTHP25x+jadBJKyaZxDVvWoznj1InPp56pVUzpAZ9emSJYhLw
-         V5gQ==
-X-Gm-Message-State: AOJu0YyeSEWNLXnuLPPC0QXnHrs9I2HP4WRknxG/Js5e+V6U5tgG2VfL
-	YJnPwijd4bx/LNG9hUq8JgvNSvEPrcnkmvQkOb6+BREAcdp4Me29ZyH6
-X-Gm-Gg: AZuq6aKtbTKbPRMWBLJ7kgbCU52vAAYwQ58KlaO/sLuW6ANw6XIq2vOBnZ0S9U2L1P1
-	hpIFV+09Lghzlu0wCQ6DkWLpBUeBG8Ld+wO3IO+QSeQQ0AvAWI3n46wHBdbSknSYOP7EYlpBFiB
-	r8R31W2ZniU7nVXVGBMqiAAZde2E08R385yHVtNJOwFbtGwXdGDHowZ7hBLyIKtSa5H6CxXyGm9
-	OAZw9eISeVRiltS876QPEoDvCV6kP06aiKUxKt6dvWDSujmd4AZi6LbwrO9xCLMasqUqok2Krky
-	VkdQyl2bnKXMvezRDrG/tPE8mCvdDhbmmKfrm2aMUoQfqjwvSI3V1iAVuCc977ukUYCTriIUm0b
-	ysoat2VoCX92jgeP3a24QQT3yGz91dknupX6YrcF4Yb2PVirCdkISWHRC8KhkE3/R6nAe89o8wk
-	Z8vYEZArE+UkzDKe6by4QOUw==
-X-Received: by 2002:a05:6000:4025:b0:431:c60:c600 with SMTP id ffacd0b85a97d-435ca193b14mr3988486f8f.35.1769371384555;
-        Sun, 25 Jan 2026 12:03:04 -0800 (PST)
-Received: from nas.local ([2001:912:1ac0:1e00:c662:37ff:fe09:93df])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f7c269sm24418036f8f.43.2026.01.25.12.03.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 12:03:04 -0800 (PST)
-From: Damien Dejean <dam.dejean@gmail.com>
-To: andrew@lunn.ch,
-	krzk+dt@kernel.org,
-	robh@kernel.org
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	hkallweit1@gmail.com,
-	Damien Dejean <dam.dejean@gmail.com>
-Subject: [PATCH v3 2/4] net: phy: realtek: add RTL8224 pair order support
-Date: Sun, 25 Jan 2026 21:02:57 +0100
-Message-ID: <20260125200259.2903271-2-dam.dejean@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260125200259.2903271-1-dam.dejean@gmail.com>
-References: <20260125200259.2903271-1-dam.dejean@gmail.com>
+	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="l+AlK7BD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=nBDdxQXK2B7Rs6+Zift7NjkUBG5ooCJiDlCkV+4+Ros=; b=l+AlK7BDiR2ZyFbeQ0t3sko5+k
+	jqWhimJo2TTR2R/frJQm/TN1KhFsmXRfhUw2Zk7kidV4jjTRjhbYSIS1uBbeKslxC723CS9WTAAdd
+	lGZO2fQJeCpEENfVfFXC197/vumEqZiiKPJoajAfFIA1Oc+NKv9TjZYQ8QflSduV8r78=;
+Received: from [188.23.33.245] (helo=[10.0.0.160])
+	by mx06lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1vk63L-000000000uY-3Ehg;
+	Sun, 25 Jan 2026 20:45:45 +0100
+Message-ID: <9d21ddb4-5e7d-4dfa-9ee4-ecdf73499f5b@engleder-embedded.com>
+Date: Sun, 25 Jan 2026 20:45:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/2] net: extend ndo_get_tstamp for other
+ timestamp types
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Kevin Yang <yyd@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Joshua Washington <joshwash@google.com>,
+ Richard Cochran <richardcochran@gmail.com>
+References: <20260121160458.990785-1-yyd@google.com>
+ <20260121160458.990785-2-yyd@google.com>
+ <c5ba02dd-e81f-4590-9e35-90c9b2c33bee@engleder-embedded.com>
+ <willemdebruijn.kernel.13b62cc180aaa@gmail.com>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <willemdebruijn.kernel.13b62cc180aaa@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
 
-The RTL8224 has a register to configure a pair swap (from ABCD order to
-DCBA) providing PCB designers more flexbility when wiring the chip. The
-swap parameter has to be set correctly for each of the 4 ports before
-the chip can detect a link.
+On 22.01.26 23:28, Willem de Bruijn wrote:
+> Gerhard Engleder wrote:
+>> On 21.01.26 17:04, Kevin Yang wrote:
+>>> Network device hardware timestamps (hwtstamps) and the system's
+>>> clock (ktime) often originate from different clock domains.
+>>> This makes it hard to directly calculate the duration between
+>>> a hardware-timestamped event and a system-time event by simple
+>>> subtraction.
+>>>
+>>> This patch extends ndo_get_tstamp to allow a netdev to provide
+>>> a hwtstamp into the system's CLOCK_REALTIME domain. This allows a
+>>> driver to either perform a conversion by estimating or, if the
+>>> clocks are kept synchronized, return the original timestamp directly.
+>>> Other clock domains, e.g. CLOCK_MONOTONIC_RAW can also be added when
+>>> a use surfaces.
+>>>
+>>> This is useful for features that need to measure the delay between
+>>> a packet's hardware arrival/departure and a later software event.
+>>> For example, the TCP stack can use this to measure precise
+>>> packet receive delays, which is a requirement for the upcoming
+>>> TCP Swift [1] congestion control algorithm.
+>>>
+>>> [1] Kumar, Gautam, et al. "Swift: Delay is simple and effective
+>>> for congestion control in the datacenter." Proceedings of the
+>>> Annual conference of the ACM Special Interest Group on Data
+>>> Communication on the applications, technologies, architectures,
+>>> and protocols for computer communication. 2020.
+>>>
+>>> Signed-off-by: Kevin Yang <yyd@google.com>
+>>> Reviewed-by: Willem de Bruijn <willemb@google.com>
+>>
+>> Like Jakub in his reply
+>> https://lore.kernel.org/netdev/20260119115710.6fdde8c0@kernel.org/
+>> for me also the question why this is a driver implementation came to my
+>> mind.
+>>
+>> With vclocks it is already possible to get timestamps for arbitrary
+>> clock domains in parallel. So it is already possible to synchronize
+>> the hwtstamp to CLOCK_REALTIME, CLOCK_MONOTONIC, ... in parallel.
+>> Therefore, user space synchronisation is needed, but e.g. ptp4l does
+>> a much better synchronisation job than your solution.
+>>
+>> Maybe CLOCK_REALTIME is not supported by ptp4l, because due to daytime
+>> saving this clock jumps. IMO these jumps will also be problem for
+>> your solution, as it will lead to wrong delays two times a year.
+>> So usually CLOCK_TAI or CLOCK_MONOTONIC would be a better choice.
+>>
+>> To sum up: IMO you suggest a driver specific in-kernel solution where
+>> already a driver independent user space solution with higher accuracy
+>> exists.
+> 
+> Definitely a promising alternative.
+> 
+> With multiple netdevices, a TCP listener socket may receive packets
+> from all devices. This would need new infrastructure to lookup the
+> correct vclock for a given net_device, cannot hardcode a choice with
+> SOF_TIMESTAMPING_BIND_PHC.
+> 
+> And this needs to happen for every packet, so with minimal overhead.
+> 
+> Though for established connections the expectation will be that
+> packets generally arrive on the same netdevice. Bar infrequent path
+> changes such as from sk_rethink_txhash on the peer. So there this
+> value can perhaps be cached.
+> 
+> It would still have to be learned by the kernel, no explicit
+> setsockopt.
 
-After a reset, this register is (unfortunately) left in a random state,
-thus it has to be initialized. On most of the devices the bootloader
-does it once for all and we can rely on the value set, on some other it
-is not and the kernel has to do it.
+Maybe it would also be an option, that the kernel learns with which
+clock domain the timestamps of the PHC and vclocks correlate. Then
+the TCP stack could calculate the delay if it finds a valid e.g.
+CLOCK_MONOTONIC timestamp in the packet. This would make the
+TCP listener socket independent from the devices. Just an idea, without
+thinking about implementation details.
 
-The MDI pair swap can be set in the device tree using the property
-enet-phy-lane-order. The property is set to 0 to keep the default order
-(ABCD), or 1 to reverse the pairs (DCBA).
-
-Signed-off-by: Damien Dejean <dam.dejean@gmail.com>
----
- drivers/net/phy/realtek/Kconfig        |  1 +
- drivers/net/phy/realtek/realtek_main.c | 50 ++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
-
-diff --git a/drivers/net/phy/realtek/Kconfig b/drivers/net/phy/realtek/Kconfig
-index b05c2a1e9024..a741b34d193e 100644
---- a/drivers/net/phy/realtek/Kconfig
-+++ b/drivers/net/phy/realtek/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config REALTEK_PHY
- 	tristate "Realtek PHYs"
-+	select PHY_PACKAGE
- 	help
- 	  Currently supports RTL821x/RTL822x and fast ethernet PHYs
- 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 6ff0385201a5..9c149b05c767 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -18,6 +18,7 @@
- #include <linux/clk.h>
- #include <linux/string_choices.h>
- 
-+#include "../phylib.h"
- #include "realtek.h"
- 
- #define RTL8201F_IER				0x13
-@@ -162,6 +163,8 @@
- 
- #define RTL8224_SRAM_RTCT_LEN(pair)		(0x8028 + (pair) * 4)
- 
-+#define RTL8224_VND1_MDI_PAIR_SWAP		0xa90
-+
- #define RTL8366RB_POWER_SAVE			0x15
- #define RTL8366RB_POWER_SAVE_ON			BIT(12)
- 
-@@ -1683,6 +1686,51 @@ static int rtl8224_cable_test_get_status(struct phy_device *phydev, bool *finish
- 	return rtl8224_cable_test_report(phydev, finished);
- }
- 
-+static int rtl8224_mdi_config_order(struct phy_device *phydev)
-+{
-+	struct device_node *np = phydev->mdio.dev.of_node;
-+	u8 port_offset = phydev->mdio.addr & 3;
-+	u32 order = 0;
-+	int ret, val;
-+
-+	ret = of_property_read_u32(np, "enet-phy-lane-order", &order);
-+
-+	/* Do nothing in case the property is not present */
-+	if (ret == -EINVAL)
-+		return 0;
-+
-+	if (ret)
-+		return ret;
-+
-+	if (order & ~1)
-+		return -EINVAL;
-+
-+	val = __phy_package_read_mmd(phydev, 0, MDIO_MMD_VEND1,
-+				     RTL8224_VND1_MDI_PAIR_SWAP);
-+	if (val < 0)
-+		return val;
-+
-+	if (order)
-+		val |= (1 << port_offset);
-+	else
-+		val &= ~(1 << port_offset);
-+
-+	return __phy_package_write_mmd(phydev, 0, MDIO_MMD_VEND1,
-+				       RTL8224_VND1_MDI_PAIR_SWAP, val);
-+}
-+
-+static int rtl8224_config_init(struct phy_device *phydev)
-+{
-+	return rtl8224_mdi_config_order(phydev);
-+}
-+
-+static int rtl8224_probe(struct phy_device *phydev)
-+{
-+	/* Chip exposes 4 ports, join all of them in the same package */
-+	return devm_phy_package_join(&phydev->mdio.dev, phydev,
-+				     phydev->mdio.addr & ~3, 0);
-+}
-+
- static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
- {
- 	int val;
-@@ -2212,6 +2260,8 @@ static struct phy_driver realtek_drvs[] = {
- 		PHY_ID_MATCH_EXACT(0x001ccad0),
- 		.name		= "RTL8224 2.5Gbps PHY",
- 		.flags		= PHY_POLL_CABLE_TEST,
-+		.probe		= rtl8224_probe,
-+		.config_init	= rtl8224_config_init,
- 		.get_features   = rtl822x_c45_get_features,
- 		.config_aneg    = rtl822x_c45_config_aneg,
- 		.read_status    = rtl822x_c45_read_status,
--- 
-2.47.3
+Gerhard
 
