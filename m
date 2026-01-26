@@ -1,42 +1,42 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A36F2882D6;
-	Mon, 26 Jan 2026 08:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533A33126CA;
+	Mon, 26 Jan 2026 08:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769416065; cv=none; b=pSFX9cJ53rgqdpzBre7DpFOYNZrG/c3pyRFTotbRZl6aDdU17M7tXqAjjYt4abTm6NXFKm0UVi5XrxfKQwEKsGJ+lqD6KuhF+MC660/grXV3nnq0ROVe03QiKnbGvR2NHZyeRql5rr4LmIhDXAElzl1/WA281jLMQ2jP6x0T/6Y=
+	t=1769416067; cv=none; b=ZfbC1v/EBtQVj/cvBxTBG/gmO3LifOmDTU5HW/6zdIoq0WZAfSjpWYtIt3FYe9kx7ewLTc2f0+ZwkNRppuigXg/6UdPv7DvmNRLmu7BZy5JnW/ht5n0ZI1vuQNPAwBpZIvok6OBWlR2Rmm7cstq6eduThiXxuXme6K1mIVpzmsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769416065; c=relaxed/simple;
-	bh=Mq588nrNPw+uc5oepjcOMjmGegEoAI+0BQA2zqK9rvc=;
+	s=arc-20240116; t=1769416067; c=relaxed/simple;
+	bh=5JRPbX6ZNpbbjxewpLGryuvTwhcPES2z48M948O/Y2Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iV71D7fVIwVq7wQ0wtB6NKQBfbIlb85yxXnQxd+s7Zw3O3QL2VmNDnUSooSJppu23LVQBFV/twsIjOtXh3fOMhD3xcRu9qBia56IHGAtbhGtNAE7WkuUWr7LXDVok81jdGZ+fDFdOdacXVfZd/faZPE33S6X1lktVlAJi8zU20U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dxL7ZT6c; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=AUUo1ORuPTmzxuR3NT5I3hZmLbXHJy9lTy8jOw5oMFitNkWpMKXe+KP5XiE18IdWDwdcagNRwHTBjaHgWHXUXcGbcdth5RZeYIMsQwSxE1bjKbrKGqHq+tBLuH7Mf4Lum/YxxD9rP7sI5ZPxwfzNb453rojYso4COs4nr6cKk3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wM+OeQPa; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dxL7ZT6c"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wM+OeQPa"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0F3C21A2A50;
-	Mon, 26 Jan 2026 08:27:42 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 26754C225BB;
+	Mon, 26 Jan 2026 08:27:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D731C60717;
-	Mon, 26 Jan 2026 08:27:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28DA8119A8621;
-	Mon, 26 Jan 2026 09:27:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9C6F460717;
+	Mon, 26 Jan 2026 08:27:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4453B119A8633;
+	Mon, 26 Jan 2026 09:27:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769416060; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769416062; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=msjsmNWxtn13jWdt/GBOpxERpRumsKymvRVrflpMg/g=;
-	b=dxL7ZT6cqsi4xh2BWeYfzplsCg5fS2tBVmxFlxY6T0DZl/cajL+14/SCOMK/nqIs0L81NS
-	yGA2fNIq2/C2Dm8QMqbiX1VM11zSYIM60Gx/Cg5qUDJmV62z2sHZsRDzzz1uvzgVnp69ht
-	c2xlEex7JyxBK8FS6xWok09nQzBmS5VF2WRJh8DWe8vSRM4yNjy+gMUtotC0z5o51chELu
-	iH+ecbP4m3lDCBvqciYIofKkVAFAip3meDSSBAY/XZLzMm9bDokPqgsQ/xPjoRp/t2DCFU
-	SNvAgew6w6A+9M/XTiObrWEEKZDY3oly+DlALF0+VPkqWN3MAX6ylJGulufcVQ==
+	bh=raSc7l7Hms0kVCTaWY56CLFkcCyEbYi+dFevYnfrWHg=;
+	b=wM+OeQPa+avN/lbZ2UYyxqm6z7qoB6NofnzWGFCBR80bd8T3u6ruHBOg3CtzIJz0xFuSpS
+	6i5pgn70EBh3RuM2dBHM9Kbq7gC/OIMDEZWvAvHMGQFR/DI/zZdRpzXbsBKA/PlBevO02Q
+	GxZfcYy8x7F1NEzl/PlwvMMSpd5HVCNd/Wl1DtTw+v5AB7nOtXpNGHWdlwb5bgLPDZHEgK
+	Lz2iFDFqy/iUUW6Shk/Vjn+373jb+UfZPSuZpOSgs9yMAuqvHgYWW7NnwI60x/caHCJEWk
+	/4U2Nh4k9kHYrL2tII4Cif2zO9TmpzBbc6FLfuavlhSNINafuZLuQF3iFxYQow==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Mon, 26 Jan 2026 09:27:30 +0100
-Subject: [PATCH net-next v3 2/8] net: dsa: microchip: Decorrelate IRQ
- domain from port
+Date: Mon, 26 Jan 2026 09:27:31 +0100
+Subject: [PATCH net-next v3 3/8] net: dsa: microchip: Decorrelate msg_irq
+ index from IRQ bit offset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260126-ksz8463-ptp-v3-2-9f092aeb8492@bootlin.com>
+Message-Id: <20260126-ksz8463-ptp-v3-3-9f092aeb8492@bootlin.com>
 References: <20260126-ksz8463-ptp-v3-0-9f092aeb8492@bootlin.com>
 In-Reply-To: <20260126-ksz8463-ptp-v3-0-9f092aeb8492@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,50 +61,60 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8463 has one register holding interrupt bits from both port 1 and 2.
-So it has to use one IRQ domain for both of its ports. This conflicts
-with the current initialization procedure that ties one IRQ domain to
-each port.
+KSZ8463 has one register containing all the PTP-related interrupts from
+all ports. So it will use one IRQ domain for all of them, leading to 4
+interrupt bits to be dispatched in two ports. Current implementation
+doesn't allow to do so because the IRQ bit offset is also used as index
+to store the struct ptpmsg_irq in the table held by the port.
 
-Decorrelate IRQ domain from port so a port can use an IRQ domain not
-directly related to itself.
+Add a new input to the setup() function to independently provide the
+interrupt bit offset and the ptpmsg_irq index.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 4a2cc57a628f97bd51fcb11057bc4effda9205dd..3b0dddf918595e9318c9e9779035d5152dcd9dde 100644
+index 3b0dddf918595e9318c9e9779035d5152dcd9dde..ae46ba41c588c076de2c3b70c7c6702ad85263d5 100644
 --- a/drivers/net/dsa/microchip/ksz_ptp.c
 +++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -1099,18 +1099,17 @@ static void ksz_ptp_msg_irq_free(struct ksz_port *port, u8 n)
+@@ -1099,7 +1099,8 @@ static void ksz_ptp_msg_irq_free(struct ksz_port *port, u8 n)
  	irq_dispose_mapping(ptpmsg_irq->num);
  }
  
--static int ksz_ptp_msg_irq_setup(struct ksz_port *port, u8 n)
-+static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port, u8 n)
+-static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port, u8 n)
++static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port,
++				 u8 index, int irq)
  {
  	u16 ts_reg[] = {REG_PTP_PORT_PDRESP_TS, REG_PTP_PORT_XDELAY_TS,
  			REG_PTP_PORT_SYNC_TS};
- 	static const char * const name[] = {"pdresp-msg", "xdreq-msg",
- 					    "sync-msg"};
+@@ -1108,15 +1109,15 @@ static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *por
  	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
--	struct ksz_irq *ptpirq = &port->ptpirq;
  	struct ksz_ptp_irq *ptpmsg_irq;
  
- 	ptpmsg_irq = &port->ptpmsg_irq[n];
--	ptpmsg_irq->num = irq_create_mapping(ptpirq->domain, n);
-+	ptpmsg_irq->num = irq_create_mapping(domain, n);
+-	ptpmsg_irq = &port->ptpmsg_irq[n];
+-	ptpmsg_irq->num = irq_create_mapping(domain, n);
++	ptpmsg_irq = &port->ptpmsg_irq[index];
++	ptpmsg_irq->num = irq_create_mapping(domain, irq);
  	if (!ptpmsg_irq->num)
  		return -EINVAL;
  
-@@ -1162,7 +1161,7 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ 	ptpmsg_irq->port = port;
+-	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[n]);
++	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[index]);
+ 
+-	strscpy(ptpmsg_irq->name, name[n]);
++	strscpy(ptpmsg_irq->name, name[index]);
+ 
+ 	return request_threaded_irq(ptpmsg_irq->num, NULL,
+ 				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+@@ -1161,7 +1162,7 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
  		goto out;
  
  	for (irq = 0; irq < ptpirq->nirqs; irq++) {
--		ret = ksz_ptp_msg_irq_setup(port, irq);
-+		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq);
+-		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq);
++		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq, irq);
  		if (ret)
  			goto out_ptp_msg;
  	}
