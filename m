@@ -1,134 +1,119 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D70283C82
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 08:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769417119; cv=pass; b=JLixUqr+Iemyt1T1IEtLG8bEGT/DP0bZ8KpoKFGxQ17qXgFp+oS1a8488qrzwn2XC0/yHWRYozt4r2lzXh4Fn4GhU0nhboyylpjnGVwsgCz+wzNjKdeZQ2EBcGRtFI0Odzj49KU4E4jhtftm5R+sgoCa6bECxNkkf63e0Gt03ok=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769417119; c=relaxed/simple;
-	bh=0nd8O42Nu4jiGXUt41S68Pskc2rrdvFEev6YaFN5ONU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dxXClU693F7mGpbuQjv+uZQxi8cg59bEPjsjUOnRKaLSxHVE59V+92HRNGKeiBkU+69ixJGq20hZsXMoInt/TV0qtJgyRi1xjz7u51c8hBHORivGFr8wFiyjTMyI7w4uBX1lnbc/mX78k5R7z31IDZr8WcQxX8HbTwYFrnBO3NY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2OuX6z5F; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA61E5B73;
+	Mon, 26 Jan 2026 08:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769417605; cv=none; b=W34tMzrt8riDDSp74uzB8wOKmDAXtDOkQveSrjlyWv/wApgeuogyDOTWfurLEp62L4pAU6A27hFCzdrVWU+UaqFRdSn6LvydeTW+q8bsNOgG3zPq9+BSsAPAqfDfMBWiQ+fZeQRozyWICVyE/Iww109rDFBnT/1vXf4zuafm0MM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769417605; c=relaxed/simple;
+	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DeXjHVJ+D8ByTk8RXAsJGflyOyiZbDXhcp0PQ1hv3p7n+gwKi1VsfBTiW1ku7CA7yzBPdvZKmsBwRQPyol5prPqdMZ+9pyDp4xU53aQn5tspnNOsmqtEyBkdH4y2kMQdMmgvDeFoANHSsMcfPojjjatD6RpOouAPjJgVa05inPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=mvwkY5OJ; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2OuX6z5F"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5014e8a42aeso62620311cf.2
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 00:45:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769417117; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aRtHf4s+cjCxhG7almXFHEkSYyzDOw/TNVp7qMjdmce95R9GlYT2znQ6MptYL5C8qq
-         Q5HOtToThwLrz4UZPWrunnyKWqRkuBrNMCNTGXVR1xBi8ma/7ga2Ai93xi/2AmCbPAp2
-         /hnek9bzZ8hD2eSGS5A8AmXPvMQbf5VzLSbRV6VubVLp4L5swEc32WhT9UTm9E66QT0L
-         rtwzHijdTwNT6y1VArRCThtIuo347PNvzqB2DhC8Q+3No+ECy7E9I18IwxHyVbvdjBON
-         0fhF5S7BdEtdTkRbGeDcTTlRGmiA/d3NPza5eDAUBoYSvM8vrEbPTSybHWwh0YLjOwQT
-         kDFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pz9PLn3EM8HCuggmgbD6Xd3xGkDuk2JMgakavAN+iZg=;
-        fh=nKQ5FAc8KcLf0c7QIoUuZCPg6pQ0c+FuT84SbHZvxLg=;
-        b=L36HRJceTeDIxtVsgnr7GRenBjhJ9UcI/uXJrxk6ilLxFzgE/3bbEp4qKrM1fbCa1s
-         8kGJumN/mk0ju0lhFSrlyKMqftgnDdEB4oSQf4hEU7sHlB1nXakuoQOtUP3/vEKMa9Bt
-         Ky2epBfkpL6QdMbjoVSK+2EdlstzHoFDpfpslKOxXbrGoMo4zB6KbEDS4AOCvBSkE64k
-         8jbOT+jerwrfaCQ2ftpjepdwR+7SBoF6aVf3FZMaKRYKMYh/Kh2uKMGppLNuoLQu61Ob
-         tiHMfFDiek/+bpFQx98ajtTBlcrED/plvqoVO33nlG0C/C0S4lNbfoyjZi+QbXTKtL+E
-         k5kA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769417117; x=1770021917; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pz9PLn3EM8HCuggmgbD6Xd3xGkDuk2JMgakavAN+iZg=;
-        b=2OuX6z5F9KN+uKXWFINySHb636fQQdKVD+mxuSI++P+/I3f71GRkgJuVnuyS2NzMYB
-         03+E+yzc/c54PidIGW7Q3UhR02CE9pOdP6x/mlGCCIbbfj3zxBDey7zAN4hCq9r86wM/
-         FC5WaPA5PzmuW+AHWGEuMQJ96UI0iSNHHhYee5X/0HYoZILCDvm8kQiLDQCcKYf2hVgW
-         O5S9FPQqFNys7RB4+NfYMQ11tf7u16+B1/piSfgzwccMAAeI61Hc7+jrOwEh1UhxZ27v
-         oFyPy91KQTALC3dlmHyPyswqI+q02u85OqGhelA1M69Zt/oboxeBKnPr4vV3YA0EwP6/
-         bi9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769417117; x=1770021917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pz9PLn3EM8HCuggmgbD6Xd3xGkDuk2JMgakavAN+iZg=;
-        b=IrdTSf17h6/qNlD9i6ET6di4bEvuLF5mD+0IwDE4zdo4KOe06q9gXEBUuJkBUJ/TXk
-         p6Qjfies2ZuC1g9yRXMj9N75j1dxnC7fCiuyozTOlTPZyeVote6D2CHEN4II1b6mHqDo
-         HpUmApZZ0tvvmib7sEdNsuSCk1Rli9GN5h2rJqbGuDrN6t66dbVGGx0JGjppjGqYICSU
-         ulJgl9mnUXqMzNdLElnORzCn6tEnLRYEgGQ0OwmtQ/1RbMqkhDq2u7lV5A1/2Q/HK4Lt
-         2Jl3CsLf3v1PWByesICAbPX5kmlYPpaXhZsb5s82EGYKQW2OnHlrczY8eVK6QeTE/MdV
-         GERg==
-X-Forwarded-Encrypted: i=1; AJvYcCWu9djD1dyVsulaBQ2xFe4qaA0kxUtMWWHps1yGrmhT63gOuVDHiUadJdKSvyfhpu1C2Fw5GB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKrQDaFeNkgQVod2dHOmeHn43DeWtSRLWazVW5vEz+YLsChL26
-	4Ve3Z/E9FjMRGp5jwsSs7Q+imGMZS6efeCXsIzaOC+Pi5sb7m4WtwpykCdsen+7R4gTLtSyCt1s
-	dKO0A1OIC5RgZAP1eMckGNbJkpNm0PALRGrkqvSyl
-X-Gm-Gg: AZuq6aLJbkuMOuRGOWsXFmUvGzN5H+4+1Cg4mKr5DBymmqUwjDsYjwxO+Qn2lSPmiL9
-	p7qSz1RVb7AHagekSBPiHvg243wcKNhxhe7QWV3qDk5weTjY07qN7BJO5hwOXXDVw3votx6w5qZ
-	kyDSt39KZkJ1wxURHc74hUDQkLuBw086xB7XEap1n/HxISJugnpoy1qwkKBn7sasY/F17iiRSim
-	RhW4+ZOdu5XtBZK6id5mI/JzA4TxXlV51yYioA7G/M+tz3cC+0XyDyKonqn/mDgj/kykhPG
-X-Received: by 2002:ac8:5d8a:0:b0:501:492f:bddb with SMTP id
- d75a77b69052e-50314bd0469mr39565201cf.28.1769417117031; Mon, 26 Jan 2026
- 00:45:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="mvwkY5OJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1769417594; x=1769676794;
+	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=mvwkY5OJxXeFNzNr7ahxsOnntKz6G7CbV0YYAj4hQHpemmWFSwXQV9f6yfiDmexZN
+	 eycbtoZBeGj6BF+kHbqD4ELjBhyQij2RK0su6nP5jlOledkd1ON/qq9ClQFQQ9A16O
+	 2xbhyPrj5LKIrhjW/Ph3od2Fi4r7LfKObknDG7soGsyMlX7Oc11iySco7fWXPKeCgT
+	 EIfv5LiuDNKgKBERdXE7AE1yVJJc84NIqHIIRI0mMZYedgvbcYIvSXX2ruRTnh+Pgs
+	 GhHkoxPF/edOnFsU+8DEwOb2YJjrpk7lbLH0riglIQYyTgQXQ3CyGg3yY/Z/put1SE
+	 k6BCsuvUrpdAw==
+Date: Mon, 26 Jan 2026 08:53:10 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule list
+Message-ID: <77q-JcImMG2fuQxj_GMUtYmaFAIuPrYMasj4I3aqIVID-Op24JIShBIPgt9kozLZgN4HvsGCS8Ez16mKq4Wq9juL1IOKydWUJwMwCYgHRMg=@1g4.org>
+In-Reply-To: <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
+References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-7-p@1g4.org> <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com> <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: c1fd98711753fdf12f01526c362f688a5aa969b6
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260123111605.4089200-1-edumazet@google.com> <CADVnQyktV_z9=SoT7yhkT6mBQKRjaJgpwLhR2SdWGQS3iKD3Tw@mail.gmail.com>
- <ebb3a731-a3ec-444e-8efe-aa13cb76adad@redhat.com>
-In-Reply-To: <ebb3a731-a3ec-444e-8efe-aa13cb76adad@redhat.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 26 Jan 2026 09:45:06 +0100
-X-Gm-Features: AZwV_Qhn33D2HYPmhBUdL31qtNhOBEwyouCbyvmnw3vXQ5JmAfpUKZRpKkgSXec
-Message-ID: <CANn89iL=a922QTQUwr5EK6XeL+gQu-zeqca1PYhs-NBu3aeyzg@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: move sk_forced_mem_schedule() to tcp.c
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Neal Cardwell <ncardwell@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 26, 2026 at 9:18=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> Hi Eric,
->
-> On Fri, Jan 23, 2026 at 6:16=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
-> > TCP fast path can (auto)inline this helper, instead
->  of (auto)inling it from tcp_send_fin().
-> >
-> >> No change of overall code size, but tcp_sendmsg() is faster.
-> >
-> > $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> > add/remove: 0/0 grow/shrink: 1/1 up/down: 141/-140 (1)
-> > Function                                     old     new   delta
-> > tcp_stream_alloc_skb                         216     357    +141
-> > tcp_send_fin                                 688     548    -140
-> > Total: Before=3D22236729, After=3D22236730, chg +0.00%
-> >
-> > BTW, we might change tcp_send_fin() to use tcp_stream_alloc_skb().
-> >
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
->
-> I've a question out of sheer curiosity: are you using some specific tool
-> to look for inline opportunity, or "just" careful code and/or objdump
-> analysis?
+Should REPLACE with an explicit entry list that yields 0 entries return -EI=
+NVAL or should it be treated the same as omitting TCA_GATE_ENTRY_LIST and k=
+eeping the old schedule?
 
-I am studying performance profiles on a stress test using Google
-production kernels,
-on platforms that are a big chunk of the fleet.
-These kernels are very close to upstream (at least for core and TCP
-networking stacks), and use clang and FDO.
+thanks,
+Paul
 
-I am currently focusing on some functions that even FDO does not
-inline, for some reasons.
 
-Thanks !
+
+
+
+On Wednesday, January 21st, 2026 at 3:49 PM, Victor Nogueira <victor@mojata=
+tu.com> wrote:
+
+>=20
+>=20
+> On 21/01/2026 16:44, Victor Nogueira wrote:
+>=20
+> > On 21/01/2026 10:20, Paul Moses wrote:
+> >=20
+> > > Reject empty schedules (num_entries =3D=3D 0) so next_entry is always
+> > > valid and
+> > > RCU readers/timer logic never walk an empty list. taprio enforces the
+> > > same
+> > > constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
+> > >=20
+> > > Fixes: a51c328df310 ("net: qos: introduce a gate control flow action"=
+)
+> > > Signed-off-by: Paul Moses p@1g4.org
+> > > Cc: stable@vger.kernel.org
+> > > ---
+> > > net/sched/act_gate.c | 6 ++++++
+> > > 1 file changed, 6 insertions(+)
+> > >=20
+> > > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > > index 48ff378bb051a..e4134b9a4a314 100644
+> > > --- a/net/sched/act_gate.c
+> > > +++ b/net/sched/act_gate.c
+> > > @@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct
+> > > nlattr *nla,
+> > > cycletime_ext =3D nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+> > > p->tcfg_cycletime_ext =3D cycletime_ext;
+> > > + if (p->num_entries =3D=3D 0) {
+> > > + NL_SET_ERR_MSG(extack, "The entry list is empty");
+> > > + err =3D -EINVAL;
+> > > + goto release_mem;
+> > > + }
+> >=20
+> > It would be simpler to check this in parse_gate_list.
+> > That way you could return -EINVAL there directly
+> > in case 0 entries were passed.
+>=20
+>=20
+> On second thought, I believe it would be better
+> to check whether parse_gate_list's return is 0
+> and the op is a create. Something like:
+>=20
+> err =3D parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
+> ...
+> if (!err && ret =3D=3D ACT_P_CREATED) {
+> NL_SET_ERR_MSG(extack, "The entry list is empty");
+> err =3D -EINVAL;
+> goto release_mem;
+> }
+>=20
+> so that you don't need to add new arguments to
+> parse_gate_list.
+>=20
+> cheers,
+> Victor
