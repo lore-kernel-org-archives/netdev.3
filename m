@@ -1,130 +1,189 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0852765F8
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 08:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FAA20DD52;
+	Mon, 26 Jan 2026 08:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769415509; cv=none; b=fJEIoJMdYxp1d/qw5bm13/Yvl5OajVnwtP6YM/KwqF0OMjsdC/yHP4U9Qfv6azEZnaQ5AcZnpNtwPsuQaZuMwhJ2ns4uwfv1oe2/0CLrNIE67IR2ZWkB9/V+K+IeXTfBcw8OJc5ZGF7GNpTZ0QApRT0paGrz7w4247XoGGlSYAk=
+	t=1769416064; cv=none; b=ajHuWqP0KBxSJeWtZqNmKLyGxAFeJItz5oYFZo+mSo6WS3v2NTWBNDSZrTc6099905YdCBaex6g5N/nyx3+ADpUQc695GGKlCs+skAXV32n8Y8BXwUsO47HCPO8v0SxSVc/H76BJndPDvkdzW1Gg4A8EhY4RsV5NvBBOB4BcVSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769415509; c=relaxed/simple;
-	bh=DKafQET6VHvgKdQ2xS5R2djl5aeMeZJYXkq+Ux/fFSA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I/Pi3qFxjlRHWqWAhBRlVke56IjwgfjCuyq3bg/M/IkJjjRXmWxjtUn/R4KCF1gb52pDYSLAwXVCDIA2c9CIh6qpnTx5kP5fLpIKCeZ7XKbUApBgAGZAYxE81slNi0H08tBoL+izxqVcEHy/kCt6qvmg4QfPesMIa571gGTJxO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q0ofuWgv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RuI0pI7Y; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769416064; c=relaxed/simple;
+	bh=N3ryQbGEWD3cPHtfikuGqfoTM8sOAlPC0aYgdbP0Wxw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fzEIVE3n09cpqr+Ph9KW4cgl20HZg8IEgND0J3nru/bhfJy+gBGgEM1+GAriFJj/aSOTvOdTE0lw21JurONhUdyLLWEYNOdBdxD+V+AMLfhPQRt33Q7ME1nBMAxyzIEDDTa/6Ikw8oybRJcrPH8UzCvVESLVtwaMp5bnx1PEeZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kSvgwcvW; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q0ofuWgv";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RuI0pI7Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769415507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=65n+X3UOPS9Pw2GVgi+j91Mtiyejj+FB56DpILdmAjA=;
-	b=Q0ofuWgv6bHKlFh5puTFYp2upd0KXvREtWcZQfyKS7zy6vuqR26sEb0sGDTT/05iKeK84s
-	ehiqUnUDVaOTT/VW1YsbH6McpSRzhX1vlFVh2lh0u90itQwpXB/pbrnLCz+EfKwZwuPtpF
-	abpERBpQWJWr/Xei72VASBF+7E0rIDU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-9vXdFnwAMmCVLyh5wZLX5Q-1; Mon, 26 Jan 2026 03:18:25 -0500
-X-MC-Unique: 9vXdFnwAMmCVLyh5wZLX5Q-1
-X-Mimecast-MFC-AGG-ID: 9vXdFnwAMmCVLyh5wZLX5Q_1769415504
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-42fdbba545fso3916426f8f.0
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 00:18:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1769415504; x=1770020304; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=65n+X3UOPS9Pw2GVgi+j91Mtiyejj+FB56DpILdmAjA=;
-        b=RuI0pI7YoSDlQgnWVIztY8i7xHUQEhd6G53WpQWB+ZK3txlqnTGRHjIanDqGW4wYbQ
-         rbsyTJN6UwrdvHGEryfLrS0+KjIzXj6PGtZeju/h+6q3tOLs5FOHLDyxtA6TIVZU9T9j
-         jf6j+k993CVwrjjHm7uxViekAf56mlcCQM6+qdVUzvzAwuqgu1CS/2CxPgxZPjrQ1wkf
-         gxqDYLddyqfflTgkoj2+8sRDR7/43XXOIU1ZGvmBosDlmVO6rhl13oeBHf12PWoq2NWb
-         qQ+A29+NMJFTIi96NHR83b2T7117Ne1SEVT/OOsjfinYOzOVyEHpu9O/M5XWYbEkjF8U
-         I+0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769415504; x=1770020304;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=65n+X3UOPS9Pw2GVgi+j91Mtiyejj+FB56DpILdmAjA=;
-        b=nIy/L48JuWUsPNVL3DAypf3ViVIzE7qn8qY5p5QNRzrDs6braElAsH6nK2XSkVYUY1
-         jBpHA9Csxdk+bOkKkdGXT6l8OzO+5l2x9DquM05//0n9m+FI0ZkppCbPk8xdsEVmXVom
-         wwcAZu1HDHhHjlwREPEXDLALdebOeMT6k3d0xqsNJyENIiBk1QkVRGH1TmUxaVbMj0AM
-         O7G2TXQmpUV4cm6SbJQd2UlFAFn7UqWRzn2Kwfc9seEKG1HYOwJ7hCkMlRfjfgH5yui7
-         cJyzb/u6Gmmt8ZWgEmGcz6pTfxhIA0mOqhpJiUqpYgXlsVWmtHh6cn+ViGYZZA8Ap+pd
-         hfOw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5E/sbitmF0cfPtP6CjjkSeYUtnYBx7YoB4YUwg63FBg3tRFyy8PPI9Usj0EStohIeyvhNUbY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1xqWLhyBNWg8mNqAE9H+w0sCPyGddqAWsdqdrgVcSeB4d5hzv
-	eJU2yhnTWLkQ85ZgZhHJ6KUtPjxfPxcLLK+Y8J0UfoPcXEDEFJpbMFombinjITpoUsqK6zDW0+W
-	/NH78iHeLYwGFOGUBGMhRYDWYymwvGAEYoww19gNr2m8tE8a8XNReDEZ6/A==
-X-Gm-Gg: AZuq6aKzaswCrbUZbErarzGBtISTKSa9oWkSCdI/grGs70uKEB5mQarI1F2p+ul8553
-	AOV/+uFdKJ/+QWaYBtCRtKpIhARqEozwYiJZf/yv/cLmLGOlCMOo7lGAGvcT5WJW9VdCF5+EylE
-	67Wqu9O2Jxto+Im4J0SUzXzobY8njOwFsUq49ZLRhV31O9NglUEKLu6li++eUjnDLP4oVXj/NSh
-	p8Uz2w34/c5NQj2JRtJCXIgsvx2lo1H0ZGG79hmAQ5eIt7LAMbjp1WUWy2R/tSGD9lJqGHNZPHT
-	ve8brN01X4YmMeqG9pZRwkY0T5lA5Pavmj0/dMMRme5op/L5jvmnvrAraR8fEgMOKOsO26Q3cXo
-	cumMaKKEcHZo=
-X-Received: by 2002:a05:600c:8012:b0:480:4a90:1afd with SMTP id 5b1f17b1804b1-4805cc9fe07mr61971075e9.0.1769415503856;
-        Mon, 26 Jan 2026 00:18:23 -0800 (PST)
-X-Received: by 2002:a05:600c:8012:b0:480:4a90:1afd with SMTP id 5b1f17b1804b1-4805cc9fe07mr61970735e9.0.1769415503372;
-        Mon, 26 Jan 2026 00:18:23 -0800 (PST)
-Received: from [192.168.88.32] ([150.228.25.58])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c02f71sm28665069f8f.6.2026.01.26.00.18.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jan 2026 00:18:22 -0800 (PST)
-Message-ID: <ebb3a731-a3ec-444e-8efe-aa13cb76adad@redhat.com>
-Date: Mon, 26 Jan 2026 09:18:18 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kSvgwcvW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F1C6B1A2A4F;
+	Mon, 26 Jan 2026 08:27:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B3A2960717;
+	Mon, 26 Jan 2026 08:27:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5844F119A83F1;
+	Mon, 26 Jan 2026 09:27:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769416058; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gkMPdwGfu8X4F3+hrF5ewptOuduz1YxWL/Ffa1MnO38=;
+	b=kSvgwcvWc6p/ARlrrGo5K5/bRTKHM8DsoCok5MLxzmF2aiP+uDu6UjZobtAFWMd2BkYVon
+	gOzcChQzXLhZmoYVp5dFK8d1ydkrLe3pboWV5iQ134CbpG3apHD5vCWXhbv8zMQDXa/pnF
+	DsROBE4OoVsPo4sGuzmPdP6mObaOql0cZCZBphKYFPA8dl+w3umQxVY7HyLgdUj63vP/Rl
+	skWGm/E5tlfzm8xm3F1F+zMC+ZxfFb9GOCrc0IAu4t+onGOD6p4TFVKtNw8RFlmQSRlx37
+	rbZeu4akIvjstA5VL+P4UmnOGxaRbPcpUHT+E+FRU0xIFmmW5Gv7Vyfs6J4BFw==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Mon, 26 Jan 2026 09:27:29 +0100
+Subject: [PATCH net-next v3 1/8] net: dsa: microchip: Add support for
+ KSZ8463 global irq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] tcp: move sk_forced_mem_schedule() to tcp.c
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, Neal Cardwell <ncardwell@google.com>
-References: <20260123111605.4089200-1-edumazet@google.com>
- <CADVnQyktV_z9=SoT7yhkT6mBQKRjaJgpwLhR2SdWGQS3iKD3Tw@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CADVnQyktV_z9=SoT7yhkT6mBQKRjaJgpwLhR2SdWGQS3iKD3Tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260126-ksz8463-ptp-v3-1-9f092aeb8492@bootlin.com>
+References: <20260126-ksz8463-ptp-v3-0-9f092aeb8492@bootlin.com>
+In-Reply-To: <20260126-ksz8463-ptp-v3-0-9f092aeb8492@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Eric,
+KSZ8463's interrupt scheme differs from the others KSZ swicthes. Its
+global interrupt handling is done through an 'enable irq' register
+instead of a 'mask irq' one, so the bit logic to enable/disable
+interrupt is reversed. Also its interrupts registers are 16-bits
+registers and don't have the same address.
 
-On Fri, Jan 23, 2026 at 6:16 AM Eric Dumazet <edumazet@google.com> wrote:
-> TCP fast path can (auto)inline this helper, instead
- of (auto)inling it from tcp_send_fin().
->
->> No change of overall code size, but tcp_sendmsg() is faster.
->
-> $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> add/remove: 0/0 grow/shrink: 1/1 up/down: 141/-140 (1)
-> Function                                     old     new   delta
-> tcp_stream_alloc_skb                         216     357    +141
-> tcp_send_fin                                 688     548    -140
-> Total: Before=22236729, After=22236730, chg +0.00%
->
-> BTW, we might change tcp_send_fin() to use tcp_stream_alloc_skb().
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+Add ksz8463-specific global interrupt setup function that still relies
+on the ksz_irq_common_setup().
+Add a check on the device type in the irq_chip operations to adjust the
+bit logic for KSZ8463
 
-I've a question out of sheer curiosity: are you using some specific tool
-to look for inline opportunity, or "just" careful code and/or objdump
-analysis?
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 40 +++++++++++++++++++++++++++++-----
+ drivers/net/dsa/microchip/ksz_common.h |  3 +++
+ 2 files changed, 37 insertions(+), 6 deletions(-)
 
-Thanks,
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index e5fa1f5fc09b37c1a9d907175f8cd2cd60aee180..82ec7142a02c432f162e472c831faa010c035123 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2817,14 +2817,20 @@ static void ksz_irq_mask(struct irq_data *d)
+ {
+ 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+ 
+-	kirq->masked |= BIT(d->hwirq);
++	if (ksz_is_ksz8463(kirq->dev))
++		kirq->masked &= ~BIT(d->hwirq);
++	else
++		kirq->masked |= BIT(d->hwirq);
+ }
+ 
+ static void ksz_irq_unmask(struct irq_data *d)
+ {
+ 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+ 
+-	kirq->masked &= ~BIT(d->hwirq);
++	if (ksz_is_ksz8463(kirq->dev))
++		kirq->masked |= BIT(d->hwirq);
++	else
++		kirq->masked &= ~BIT(d->hwirq);
+ }
+ 
+ static void ksz_irq_bus_lock(struct irq_data *d)
+@@ -2840,7 +2846,10 @@ static void ksz_irq_bus_sync_unlock(struct irq_data *d)
+ 	struct ksz_device *dev = kirq->dev;
+ 	int ret;
+ 
+-	ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
++	if (ksz_is_ksz8463(dev))
++		ret = ksz_write16(dev, kirq->reg_mask, kirq->masked);
++	else
++		ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
+ 	if (ret)
+ 		dev_err(dev->dev, "failed to change IRQ mask\n");
+ 
+@@ -2890,14 +2899,14 @@ static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
+ 	unsigned int nhandled = 0;
+ 	struct ksz_device *dev;
+ 	unsigned int sub_irq;
+-	u8 data;
++	u16 data;
+ 	int ret;
+ 	u8 n;
+ 
+ 	dev = kirq->dev;
+ 
+ 	/* Read interrupt status register */
+-	ret = ksz_read8(dev, kirq->reg_status, &data);
++	ret = ksz_read16(dev, kirq->reg_status, &data);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -2939,6 +2948,22 @@ static int ksz_irq_common_setup(struct ksz_device *dev, struct ksz_irq *kirq)
+ 	return ret;
+ }
+ 
++static int ksz8463_girq_setup(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++	struct ksz_irq *girq = &dev->girq;
++
++	girq->nirqs = 15;
++	girq->reg_mask = KSZ8463_REG_IER;
++	girq->reg_status = KSZ8463_REG_ISR;
++	girq->masked = 0;
++	snprintf(girq->name, sizeof(girq->name), "global_irq");
++
++	girq->irq_num = dev->irq;
++
++	return ksz_irq_common_setup(dev, girq);
++}
++
+ static int ksz_girq_setup(struct ksz_device *dev)
+ {
+ 	struct ksz_irq *girq = &dev->girq;
+@@ -3044,7 +3069,10 @@ static int ksz_setup(struct dsa_switch *ds)
+ 	p->learning = true;
+ 
+ 	if (dev->irq > 0) {
+-		ret = ksz_girq_setup(dev);
++		if (ksz_is_ksz8463(dev))
++			ret = ksz8463_girq_setup(ds);
++		else
++			ret = ksz_girq_setup(dev);
+ 		if (ret)
+ 			return ret;
+ 
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index 929aff4c55de5254defdc1afb52b224b3898233b..67a488a3b5787f93f9e2a9266ce04f6611b56bf8 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -839,6 +839,9 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
+ #define KSZ87XX_INT_PME_MASK		BIT(4)
+ 
+ /* Interrupt */
++#define KSZ8463_REG_ISR			0x190
++#define KSZ8463_REG_IER			0x192
++
+ #define REG_SW_PORT_INT_STATUS__1	0x001B
+ #define REG_SW_PORT_INT_MASK__1		0x001F
+ 
 
-Paolo
+-- 
+2.52.0
 
