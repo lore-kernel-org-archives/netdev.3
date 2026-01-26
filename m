@@ -1,49 +1,57 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27069274B3B;
-	Mon, 26 Jan 2026 06:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D01624C0;
+	Mon, 26 Jan 2026 06:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408612; cv=none; b=RE51CCSACEgbFzpCXhAU9fw1LnY8fMmjmI4ei7AcsZVjYPbH5601Vq+8kcQvAsAVB8du+CJZdjsp+jxbLmtwfvsXKtMy33Zxl0GZ1dqdrKUkEZcQazxcoeRi4pPQ0/ttpAW0NxBADT3TgqYI2IEtyC+Srn1EX6lBDbRzq029m+U=
+	t=1769408975; cv=none; b=CtoPE4sXJXVfYqxa6OXzxMdkqnXriesBh9taaKleboAhmamXwK28npkbR0dg0gc4uZXin/XzBlXeTidGWxA7tHgkTuqNp6a8vZd+/HyYLtzpFeNjWK711DNR+NM21jIZxZrqOqLeeSYCL4XHC8llmP5l+jae4nONa8vzr6POXcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408612; c=relaxed/simple;
-	bh=ch3WUowE0r41pxeM/FiSHDm2a/bn91+yh/Iqf4f8cno=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C0xxWGbg8JFcbxTIUY+RmFvbBDLOuIoIzsckd41pUIP2MraFP68O1uCBh90M1EdwH3cPNfU9JxQxDVrBbmv/UiKEge18VMAj5zG/4d/eHdvooJLJrE4YvD6XuxLy16cO42vMsWZ4KmzOniOytmSMKUXLJP7kNawKnYE6gyd4M5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LZRIz5PX; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1769408975; c=relaxed/simple;
+	bh=74F+QdvEEPyCkFQAZ9k7xfLSsdZRZRCgm+EBSZyKB+I=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KdMwmGtRfPqUNsdgx7XT+WVdVfVnKVb3w5Bnt7zwKNRNGUld2kPUi0C/pH7R9umm53S6gMWLdUq0M/WbCoQhbDTWsfy7/tt9zu9X/hKVKcf7YzT1hRqx55WFJk/+uHsJoVQA1jyKAZ5KBYVWn3jXfxux4bObi7dCxjEDdnCoiCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=faQD8Kdy; arc=none smtp.client-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LZRIz5PX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=xj
-	XLh9OxB7OyImjOAQduujoqYcXrgtQdnE2zosJw5bA=; b=LZRIz5PXT2dCs1xW6H
-	PsWynbvXE3QNrr7eH7hkvUYaYOAK6nGU5Ko6NvPd8f6+mc5Cx/60m8USTke+IhUr
-	lnu9/26K4rt66kjJw5VoCGLRCdgV4KCf5Umqd9ceEnuZnjsrZws1jkgYDOFbCvwt
-	R+lnuLaIQIx+MO7rqJTF/bKB8=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCHzzkJCHdpL7kRIg--.5216S8;
-	Mon, 26 Jan 2026 14:22:15 +0800 (CST)
-From: Slark Xiao <slark_xiao@163.com>
-To: loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mani@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	slark_xiao@163.com
-Subject: [net-next v8 6/8] net: wwan: hwsim: refactor to support more port types
-Date: Mon, 26 Jan 2026 14:21:56 +0800
-Message-Id: <20260126062158.308598-7-slark_xiao@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260126062158.308598-1-slark_xiao@163.com>
-References: <20260126062158.308598-1-slark_xiao@163.com>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="faQD8Kdy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1769408960;
+	bh=YrOJ9nnZ1uMX7vySKsJwrRb67e2niePqvCeLLz2LtBM=;
+	h=From:To:Cc:Subject:Date;
+	b=faQD8KdycPq+93nfF6kh/Q3Nl6D+o3F0fqeUtI7VhROVJ1THbltMagh4pm/776+MY
+	 Ezqt9/dtfhUCuPsHuExbJ34Lu7kT9pW8JnQNbb6b0rGichtmK0WCOAtzeAWrvpjS4j
+	 HLFg9h2bGGDU24CiaMkFnVtYnMAHWrFck4Aqoy0s=
+Received: from jack-mini ([58.212.11.129])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 673944A9; Mon, 26 Jan 2026 14:25:51 +0800
+X-QQ-mid: xmsmtpt1769408751tmo9wa8bj
+Message-ID: <tencent_DBA407008574A1E4BF7F27AD38AD4D13730A@qq.com>
+X-QQ-XMAILINFO: MqswyhUqVe0CsHE4UAtaAPNOrVrVCeA8XoFx1yJMupYoIBLm34WVL95ZXkh2Sm
+	 pmW04F9Z9YHOs2V13ddwEz/rqxN+4Xp6+F/pw4siFRf95ls+hDdXJd8WKk8xdZRiX+gDRYLfL3Ij
+	 oiM/YwvP1mVT/6E3sMQEcdBd0LLsTGDn5bjDHxkHvP/mGaF2SUUvssCrglhCtqC2nNjtCdxpd09m
+	 93z5Ixs7oLVtKDmxt4rp3NjBA/zw/giZO/xNOye2CjEF8NTw8h5EKRoaPHHxhusiYIvZKGZYuQL7
+	 cBkcQPHD9fS3iKRXb5oov7dkjNyXphgX/I1NCI3j+7kPXZs+rxM0bW67jIFK0eCH6ySg/jIAqORU
+	 SUgTtWO0fCKARgNebAx0jfp2vdkyNxClHPX9F2tQLwONCj4iO1aJc1Dia0akDiaPpQs/z2AuHUl8
+	 c04RCcBTHhtGGyiWOmRgGBHYXf3fkNT+wI1d0ws8utyLCEo9YW1q1sW1MlrmfgCQlO7+FNM1jS2a
+	 BwkzdmdiiI33Bs1G8Dq7OVMKzaR8vw+UXWxQSPWUw86co1yC6yrIEyTUouvFtsx8mFBgfO8DXXcR
+	 0o3obenJP8xzMu6Kd7unYCTPEi+KAL4mYFsMAIiDvjMZDMBCDbZgqrFykz8lo1RDuDPYf2CQuBVm
+	 RpGFOeIGuRQmCHwgHskiaLM/glCdrrUA78EGeLK9Jz5e4FRvnd8RqABvydwLdp/HE3+IT0alUNSB
+	 QkOHh1fARpdiGKRMGIhCMQvWiSKgqz+TDntwirgnX3J34DiRaGrTKs4U6gtyrd7vc5d/2h3V1564
+	 BuuDp0Toa8+PkCm97oxPRwr1UxGfqzFhz9a39xnpgGasJ6szw19FuKL/XEs2yD21D8F3natNAzW/
+	 A8tHVMIQnUcKR4HQI3eboi61mYRu2po24ndXVXSa3SxQYVdofaRfsHkjvP5yZ/2IGsTpghXZ8CLP
+	 iiiRbPjyQppp+0ywFJjuJxiUcvspfJqQCCZYp7nffnyEjswvVStsg6yxr3qr2aJP+AwB1sh3Lrx2
+	 cIp4gW7UPAUKcZCU8jNxd3Q9KOeqDMkFgZypgGBg==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: "jack.zhou" <jack.wemmick@foxmail.com>
+To: Trond Myklebust <trondmy@kernel.org>
+Cc: linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	"jack.zhou" <jacketzc@outlook.com>
+Subject: [PATCH] sunrpc/xs_read_stream: fix dead loop when xs_read_discard
+Date: Mon, 26 Jan 2026 14:25:24 +0800
+X-OQ-MSGID: <20260126062548.3417933-1-jack.wemmick@foxmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,196 +59,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCHzzkJCHdpL7kRIg--.5216S8
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr4UKr1UAry5CFWfAFykAFb_yoWxJrykpa
-	yqgr9xKrWUt3Z3Wry7tFsrAa4Fkrn5WryvqrWrW34FqFn7t345ZFWvk3s0kr4DAFy7CFy3
-	Cr98t343Jw47Cr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEG-ewUUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCvxhApGl3CBgIPwAA36
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+From: "jack.zhou" <jacketzc@outlook.com>
 
-Just introduced WWAN NMEA port type needs a testing option. The WWAN HW
-simulator was developed with the AT port type in mind and cannot be
-easily extended. Refactor it now to make it capable to support more port
-types.
+Hi maintainers,
 
-No big functional changes, mostly renaming with a little code
-rearrangement.
+This bug was discovered during following scenario:
 
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+1. Using NFS client with TCP mode
+2. RPC_REPLY process
+
+
+Let's first review the normal process:
+
+1. The `xs_read_stream` function is located within the for loop of the `xs_stream_data_receive` function. The condition for exiting is that the return value ret of the `xs_read_stream` method is < 0.
+2. When entering the function `xs_read_stream`, since `transport->recv.len` == 0, `xs_read_stream_header` will be called first. Based on `transport->recv.calldir`, it decides whether to execute `RPC_CALL` or `RPC_REPLY`;(and also sets the value of `transport->recv.len`)
+3. Since it is executing `RPC_REPLY`, the return value of the function `xs_read_stream_reply` is provided by tcp.c's `tcp_recvmsg`, indicating the size of the copied skb, and this value is > 0.
+4. Since it is a normal process, it will reach the end of the function and return, which is: 
+```
+transport->recv.offset = 0;
+transport->recv.len = 0;
+return read;
+```
+5. The returned 'read' is the return value of the function 'xs_read_stream_reply' in the RPC_REPLY process. Since this value is > 0, the `xs_stream_data_receive` function's for loop cannot be exited.
+6. After re-entering the xs_read_stream function, since transport->recv.len == 0, xs_read_stream_header will still be called.
+7. Since the skb is empty, tcp.c's `tcp_recvmsg` will return a value < 0, usually -EAGAIN (-11).
+8. Since the return value of xs_read_stream_header is < 0, the goto out_err statement will be executed.
+9. The for loop of the xs_stream_data_receive function will be exited.
+10. The next time xs_stream_data_receive is entered, the above steps will be repeated.
+
+
+Now we are encountering an abnormal process:
+
+
+1. For some reason, skb is contaminated, and `transport->recv.calldir` parses out an incorrect value, so `msg.msg_flags |= MSG_TRUNC`;(and also sets the value of transport->recv.len)
+2. The `if (transport->recv.offset < transport->recv.len) {}` condition will be executed
+3. The return value of function `xs_read_discard` is > 0, so when returning to the upstream `xs_stream_data_receive` function, the for loop cannot be exited
+4. When entering xs_read_stream again, since transport->recv.len != 0, `xs_read_stream_header` will no longer be executed, which means `transport->recv.calldir` cannot be correctly set anymore
+5. This is fatal for all subsequent RPC Replies because `transport->recv.calldir` cannot be correctly set anymore, so they will all go to `xs_read_discard`
+6. At the same time, since transport->recv.len has not been reset to 0, this loop will become an infinite loop
+
+Therefore, my approach is:
+
+After reaching the point of `xs_read_discard` due to an abnormal situation, the value of `transport->recv.len` will be reset in the same way as a normal return, in order to prevent a deadlock from occurring.
+
+The modification has been tested and passed in version 5.10.160.
+
+
+
 ---
- drivers/net/wwan/wwan_hwsim.c | 73 ++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 32 deletions(-)
+ net/sunrpc/xprtsock.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wwan/wwan_hwsim.c b/drivers/net/wwan/wwan_hwsim.c
-index 733688cd4607..11d15dc39041 100644
---- a/drivers/net/wwan/wwan_hwsim.c
-+++ b/drivers/net/wwan/wwan_hwsim.c
-@@ -56,12 +56,16 @@ struct wwan_hwsim_port {
- 	struct wwan_port *wwan;
- 	struct work_struct del_work;
- 	struct dentry *debugfs_topdir;
--	enum {			/* AT command parser state */
--		AT_PARSER_WAIT_A,
--		AT_PARSER_WAIT_T,
--		AT_PARSER_WAIT_TERM,
--		AT_PARSER_SKIP_LINE,
--	} pstate;
-+	union {
-+		struct {
-+			enum {	/* AT command parser state */
-+				AT_PARSER_WAIT_A,
-+				AT_PARSER_WAIT_T,
-+				AT_PARSER_WAIT_TERM,
-+				AT_PARSER_SKIP_LINE,
-+			} pstate;
-+		} at_emul;
-+	};
- };
- 
- static const struct file_operations wwan_hwsim_debugfs_portdestroy_fops;
-@@ -101,16 +105,16 @@ static const struct wwan_ops wwan_hwsim_wwan_rtnl_ops = {
- 	.setup = wwan_hwsim_netdev_setup,
- };
- 
--static int wwan_hwsim_port_start(struct wwan_port *wport)
-+static int wwan_hwsim_at_emul_start(struct wwan_port *wport)
- {
- 	struct wwan_hwsim_port *port = wwan_port_get_drvdata(wport);
- 
--	port->pstate = AT_PARSER_WAIT_A;
-+	port->at_emul.pstate = AT_PARSER_WAIT_A;
- 
- 	return 0;
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 2e1fe6013361..91d1b992eb7f 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -695,6 +695,13 @@ xs_read_stream_reply(struct sock_xprt *transport, struct msghdr *msg, int flags)
+ 	return ret;
  }
  
--static void wwan_hwsim_port_stop(struct wwan_port *wport)
-+static void wwan_hwsim_at_emul_stop(struct wwan_port *wport)
++static void
++xs_stream_reset_recv(struct sock_xprt *transport)
++{
++	transport->recv.offset = 0;
++	transport->recv.len = 0;
++}
++
+ static ssize_t
+ xs_read_stream(struct sock_xprt *transport, int flags)
  {
- }
- 
-@@ -120,7 +124,7 @@ static void wwan_hwsim_port_stop(struct wwan_port *wport)
-  *
-  * Be aware that this processor is not fully V.250 compliant.
-  */
--static int wwan_hwsim_port_tx(struct wwan_port *wport, struct sk_buff *in)
-+static int wwan_hwsim_at_emul_tx(struct wwan_port *wport, struct sk_buff *in)
- {
- 	struct wwan_hwsim_port *port = wwan_port_get_drvdata(wport);
- 	struct sk_buff *out;
-@@ -142,17 +146,17 @@ static int wwan_hwsim_port_tx(struct wwan_port *wport, struct sk_buff *in)
- 	for (i = 0, s = 0; i < in->len; ++i) {
- 		char c = in->data[i];
- 
--		if (port->pstate == AT_PARSER_WAIT_A) {
-+		if (port->at_emul.pstate == AT_PARSER_WAIT_A) {
- 			if (c == 'A' || c == 'a')
--				port->pstate = AT_PARSER_WAIT_T;
-+				port->at_emul.pstate = AT_PARSER_WAIT_T;
- 			else if (c != '\n')	/* Ignore formating char */
--				port->pstate = AT_PARSER_SKIP_LINE;
--		} else if (port->pstate == AT_PARSER_WAIT_T) {
-+				port->at_emul.pstate = AT_PARSER_SKIP_LINE;
-+		} else if (port->at_emul.pstate == AT_PARSER_WAIT_T) {
- 			if (c == 'T' || c == 't')
--				port->pstate = AT_PARSER_WAIT_TERM;
-+				port->at_emul.pstate = AT_PARSER_WAIT_TERM;
- 			else
--				port->pstate = AT_PARSER_SKIP_LINE;
--		} else if (port->pstate == AT_PARSER_WAIT_TERM) {
-+				port->at_emul.pstate = AT_PARSER_SKIP_LINE;
-+		} else if (port->at_emul.pstate == AT_PARSER_WAIT_TERM) {
- 			if (c != '\r')
- 				continue;
- 			/* Consume the trailing formatting char as well */
-@@ -162,11 +166,11 @@ static int wwan_hwsim_port_tx(struct wwan_port *wport, struct sk_buff *in)
- 			skb_put_data(out, &in->data[s], n);/* Echo */
- 			skb_put_data(out, "\r\nOK\r\n", 6);
- 			s = i + 1;
--			port->pstate = AT_PARSER_WAIT_A;
--		} else if (port->pstate == AT_PARSER_SKIP_LINE) {
-+			port->at_emul.pstate = AT_PARSER_WAIT_A;
-+		} else if (port->at_emul.pstate == AT_PARSER_SKIP_LINE) {
- 			if (c != '\r')
- 				continue;
--			port->pstate = AT_PARSER_WAIT_A;
-+			port->at_emul.pstate = AT_PARSER_WAIT_A;
- 		}
+@@ -740,8 +747,10 @@ xs_read_stream(struct sock_xprt *transport, int flags)
+ 		msg.msg_flags = 0;
+ 		ret = xs_read_discard(transport->sock, &msg, flags,
+ 				transport->recv.len - transport->recv.offset);
+-		if (ret <= 0)
++		if (ret <= 0) {
++			xs_stream_reset_recv(transport);
+ 			goto out_err;
++		}
+ 		transport->recv.offset += ret;
+ 		read += ret;
+ 		if (transport->recv.offset != transport->recv.len)
+@@ -751,8 +760,7 @@ xs_read_stream(struct sock_xprt *transport, int flags)
+ 		trace_xs_stream_read_request(transport);
+ 		transport->recv.copied = 0;
  	}
- 
-@@ -183,18 +187,25 @@ static int wwan_hwsim_port_tx(struct wwan_port *wport, struct sk_buff *in)
- 	return 0;
- }
- 
--static const struct wwan_port_ops wwan_hwsim_port_ops = {
--	.start = wwan_hwsim_port_start,
--	.stop = wwan_hwsim_port_stop,
--	.tx = wwan_hwsim_port_tx,
-+static const struct wwan_port_ops wwan_hwsim_at_emul_port_ops = {
-+	.start = wwan_hwsim_at_emul_start,
-+	.stop = wwan_hwsim_at_emul_stop,
-+	.tx = wwan_hwsim_at_emul_tx,
- };
- 
--static struct wwan_hwsim_port *wwan_hwsim_port_new(struct wwan_hwsim_dev *dev)
-+static struct wwan_hwsim_port *wwan_hwsim_port_new(struct wwan_hwsim_dev *dev,
-+						   enum wwan_port_type type)
- {
-+	const struct wwan_port_ops *ops;
- 	struct wwan_hwsim_port *port;
- 	char name[0x10];
- 	int err;
- 
-+	if (type == WWAN_PORT_AT)
-+		ops = &wwan_hwsim_at_emul_port_ops;
-+	else
-+		return ERR_PTR(-EINVAL);
-+
- 	port = kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port)
- 		return ERR_PTR(-ENOMEM);
-@@ -205,9 +216,7 @@ static struct wwan_hwsim_port *wwan_hwsim_port_new(struct wwan_hwsim_dev *dev)
- 	port->id = dev->port_idx++;
- 	spin_unlock(&dev->ports_lock);
- 
--	port->wwan = wwan_create_port(&dev->dev, WWAN_PORT_AT,
--				      &wwan_hwsim_port_ops,
--				      NULL, port);
-+	port->wwan = wwan_create_port(&dev->dev, type, ops, NULL, port);
- 	if (IS_ERR(port->wwan)) {
- 		err = PTR_ERR(port->wwan);
- 		goto err_free_port;
-@@ -392,7 +401,7 @@ static ssize_t wwan_hwsim_debugfs_portcreate_write(struct file *file,
- 	struct wwan_hwsim_dev *dev = file->private_data;
- 	struct wwan_hwsim_port *port;
- 
--	port = wwan_hwsim_port_new(dev);
-+	port = wwan_hwsim_port_new(dev, WWAN_PORT_AT);
- 	if (IS_ERR(port))
- 		return PTR_ERR(port);
- 
-@@ -459,6 +468,8 @@ static int __init wwan_hwsim_init_devs(void)
- 	int i, j;
- 
- 	for (i = 0; i < wwan_hwsim_devsnum; ++i) {
-+		struct wwan_hwsim_port *port;
-+
- 		dev = wwan_hwsim_dev_new();
- 		if (IS_ERR(dev))
- 			return PTR_ERR(dev);
-@@ -471,9 +482,7 @@ static int __init wwan_hwsim_init_devs(void)
- 		 * the simulator readiness time.
- 		 */
- 		for (j = 0; j < 2; ++j) {
--			struct wwan_hwsim_port *port;
--
--			port = wwan_hwsim_port_new(dev);
-+			port = wwan_hwsim_port_new(dev, WWAN_PORT_AT);
- 			if (IS_ERR(port))
- 				return PTR_ERR(port);
- 
+-	transport->recv.offset = 0;
+-	transport->recv.len = 0;
++	xs_stream_reset_recv(transport);
+ 	return read;
+ out_err:
+ 	return ret != 0 ? ret : -ESHUTDOWN;
 -- 
-2.25.1
+2.51.0
 
