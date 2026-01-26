@@ -1,191 +1,109 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839E62857F6;
-	Mon, 26 Jan 2026 06:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A922882D6
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 07:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769410732; cv=none; b=Jw3ZWhFgJnWKNuvQpFJvaKWyvmU2f89csrS8ydAT7jZcXEj7U2DhAgtAlHPMHZ3daECqTQR0SQJqv8GQgmht8CO9LtgHF9rvJB132W9J1T9mkKlMCodYABfSR4ysZRK9DCo8lE2bQEOdxbC07NvI/E3sUFfPBvd3xLEsj+06pnk=
+	t=1769411189; cv=none; b=QmFX9x+zloL0WitSoeFXmJmpYQW+bMvlXP/fBGqtwqM+Ig2GiVWfKlBBESCZAsTVi7C5uwtpy4Y6eMCy5+cymw8ijuJiqe0pNGoOEkCTdOLqkP6+2FukJQC91uOKvGNwMbNON2jAdKpRd48+cUylCLqD5XmFl62dPfG0ud0363M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769410732; c=relaxed/simple;
-	bh=NjlUr8YbkYomUklK5X+zoXxx6QhhxpjaDQzOHwc+CNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bv/+kG9u0GenZO4OikLt1K834IPIaobJK2PK9qNI/rNZX85nQS8IXcR8T/LZyK+A24XO39aj6uczwMcl+YjcknKKgFuH72YunHMEmarUKy7anhOFAJ3K3rZyjbbN+4v2vy6h3jiVJP3E2+mFeAuyDz0Mo+7HTXh7qsyhH1mm4T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=GXzcJsf6; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1769411189; c=relaxed/simple;
+	bh=BrGYfbKjFcWVBNtR1VCrwZ1sP+nBA2htFvw/QqIZpRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZA8K0yWQATEmZ5+wGCFEg0PziLvRahNdI+r6/QlRIsa5v8xBA60n16AinSUVgV5CALUSEvtMDx/lM2lALcpjhGay/5qPWM63zgrzeXdcX0/HaBUCPHKsZ/bYrd8vGA6jZASB/QFko6FJ8SRhZw/CuVLpBjsHdJdpRoNzXPMH5z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObDE7EkE; arc=none smtp.client-ip=74.125.82.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="GXzcJsf6"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=GXzcJsf6;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 60Q6vtjh1701721
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 06:57:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1769410675; bh=BDZ1ZTsCnzg8RfIBIHFCXrzN5KG1B8Tq0jMUU+UYhh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:References:From;
-	b=GXzcJsf6HYLqcD8s1ZTWqP1Pm5hAiiXmZPsEfAyFWn3qdOwbmTCwsH4cvuO9n7fLd
-	 b0X71E5gvQdV1OFKES0rpxEuLT1uDgJ9j3SosIWa1NoTBZwQzQ/BgCpTkBwZ1SPA4o
-	 xev8h69V/Zn0d5LIqO7vxy1p1cMbYXUZLMKZTWqg=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 60Q6vtf9285624
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 07:57:55 +0100
-Received: (nullmailer pid 1334887 invoked by uid 1000);
-	Mon, 26 Jan 2026 06:57:54 -0000
-From: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-To: netdev@vger.kernel.org
-Cc: "Lucien.Jheng" <lucienzx159@gmail.com>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Subject: [PATCH net-next v3 1/3] net: phy: air_en8811h: factor out shareable code
-Date: Mon, 26 Jan 2026 07:57:47 +0100
-Message-ID: <20260126065749.1334867-2-bjorn@mork.no>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260126065749.1334867-1-bjorn@mork.no>
-References: <20260126065749.1334867-1-bjorn@mork.no>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObDE7EkE"
+Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2b74f839bdfso970147eec.1
+        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 23:06:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769411187; x=1770015987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZnNSYAsSgZZKBbd6EX4AMUvPpqA2jWI9KkqGPjFXPC0=;
+        b=ObDE7EkEzZCzM4l2WEmjfE/rIA9vOK9qUHkbpah/DiS7vwQ2W5ngVeG8SeLhGUwJBK
+         C4xPHzWCNmgo9mU6KT9Ulkrsri/k2vqZq2SXI6BReyZba43OvSuSU5PHZmJ6g4z4b3+d
+         zY+/JJfWYw+SrRnyDXiCkjswXIZDD+IR0clEjddTHWGqynUX1TEB81abhhQJuSdwFxBg
+         /Zlr5H9MQa9ehv8hlMLP2rUHYWupuMnepV8KSF4G2YNpEoWOCz1M7a8ysZvYW0hs/u7w
+         U8LXv6gpKHyM2FEUFwBNOOkvwpftyfb+5GxhJFXcL4yWqc7NHyaU0quhW71fyD9Es+nk
+         hD3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769411187; x=1770015987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZnNSYAsSgZZKBbd6EX4AMUvPpqA2jWI9KkqGPjFXPC0=;
+        b=EwSMIqH64H7scANXBoJN8l95NoBWXiFKFl6lHRumDTyYIZN3qY85hmIIQX34nDk7ER
+         iB6Ka6U8iCE+CS4gJVGIGoAejYVy+K6jGc9+tudEEsYtAIT4Tpl0Epf7Ck1YML2uLANK
+         vV7Yuh2tYzToiMAnL4iYm0GY0WkTesIiZQQGqLXLkSOZnr3RccQgbycTzg1hAVtb4wHe
+         zU17hOf2eKakRAfp/MUSUAWozxYnuftfKzbjmAq1sPasFwGDjm6XfnUx9LCKUsaKISOv
+         KhGQFx06rcqgDePW6onM4ThWpLqkFmA6CmrgASaP9nPJsM6l/6ZTi2jNLolOdFHNXJUm
+         Z0fQ==
+X-Gm-Message-State: AOJu0YzOgiqwAWlfBxF0ZwnvYXsKWXtSfNtA+f7stQ5UtusRqEPZrDTX
+	knmeVWyTmn3CuXMZJ1b6JHO0qcHYmYp+JrOcnA1Z735VD+C3Ty0pL349QAmoM0wy
+X-Gm-Gg: AZuq6aKW1fmlADFb5TNQWeOPvPxkBx1q+0JrCk4AYWL9Sf7B+RD0QXi7mfuBtLoB7F6
+	k+r9rVrvQC1lk0A5iHaSgrcsHlFZF1cMTzLdPTpX7W8obGHl9877pWDU8FWYRoQBPYyEHTXhdEc
+	vxuPm+L+ayc0EXwa3hMj8Rk1HkYN1X+8HdMC4JF/0qz1lA869AUebSYy9exvIAcaTDQcaMEDoAq
+	YO9YZepdVvBXOosZvTI+peyJyuCW9YKIgGVpa7z+ThkJ1B888JJaPgcno/1a207BjltCK0Ew+Vg
+	22beTa0PGgPcinCY3tvphA6xDA37ymXQ54OuxZbiE8fgCTaBWp8ypKm/7QXJGrimvT9mI810T2b
+	5QNxCYQDsV5HnI7uTo82PAh65TfCySgmx0uGWPQ8yGki4qN72EGRFj5IhzNyTFuGAgO+X/zMAoi
+	r86eniZDZNhT/c8yjC+Uw2WgDbpQG85755epEk0+SmUpPFWaROSEQU1NvSYCarWsc8NyrJ4oy1Z
+	XgE0iAkO3FpaSt3lWcuh62NXA9AtZfnkK2grr2RwKiFJK6shcvU56lcIFjUAMErSS/fuZ/F4eko
+	CAjkbGpX
+X-Received: by 2002:a05:7300:d511:b0:2ae:556b:76f2 with SMTP id 5a478bee46e88-2b7638a7f04mr1772945eec.6.1769411186616;
+        Sun, 25 Jan 2026 23:06:26 -0800 (PST)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d91c52bsm18021503c88.6.2026.01.25.23.06.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jan 2026 23:06:26 -0800 (PST)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next] net: usb: int51x1: remove unused includes
+Date: Sun, 25 Jan 2026 23:06:13 -0800
+Message-ID: <20260126070618.53758-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
 
-Create reusable helpers in preparation for the AN8811HB support.
+Most of the headers the int51x1 driver includes are not actually used.
+Remove these unused includes.
 
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- drivers/net/phy/air_en8811h.c | 59 +++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+ drivers/net/usb/int51x1.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index e890bb2c0aa8..392552692762 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -448,6 +448,11 @@ static int en8811h_wait_mcu_ready(struct phy_device *phydev)
- {
- 	int ret, reg_value;
+diff --git a/drivers/net/usb/int51x1.c b/drivers/net/usb/int51x1.c
+index 6fde41550de1..317ae365277f 100644
+--- a/drivers/net/usb/int51x1.c
++++ b/drivers/net/usb/int51x1.c
+@@ -13,13 +13,8 @@
+  */
  
-+	ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
-+				     EN8811H_FW_CTRL_1_FINISH);
-+	if (ret)
-+		return ret;
-+
- 	/* Because of mdio-lock, may have to wait for multiple loads */
- 	ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
- 					EN8811H_PHY_FW_STATUS, reg_value,
-@@ -461,9 +466,18 @@ static int en8811h_wait_mcu_ready(struct phy_device *phydev)
- 	return 0;
- }
+ #include <linux/module.h>
+-#include <linux/ctype.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/slab.h>
+-#include <linux/mii.h>
+-#include <linux/usb.h>
+ #include <linux/usb/usbnet.h>
  
--static int en8811h_load_firmware(struct phy_device *phydev)
-+static void en8811h_print_fw_version(struct phy_device *phydev)
- {
- 	struct en8811h_priv *priv = phydev->priv;
-+
-+	air_buckpbus_reg_read(phydev, EN8811H_FW_VERSION,
-+			      &priv->firmware_version);
-+	phydev_info(phydev, "MD32 firmware version: %08x\n",
-+		    priv->firmware_version);
-+}
-+
-+static int en8811h_load_firmware(struct phy_device *phydev)
-+{
- 	struct device *dev = &phydev->mdio.dev;
- 	const struct firmware *fw1, *fw2;
- 	int ret;
-@@ -500,17 +514,11 @@ static int en8811h_load_firmware(struct phy_device *phydev)
- 	if (ret < 0)
- 		goto en8811h_load_firmware_out;
- 
--	ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
--				     EN8811H_FW_CTRL_1_FINISH);
-+	ret = en8811h_wait_mcu_ready(phydev);
- 	if (ret < 0)
- 		goto en8811h_load_firmware_out;
- 
--	ret = en8811h_wait_mcu_ready(phydev);
--
--	air_buckpbus_reg_read(phydev, EN8811H_FW_VERSION,
--			      &priv->firmware_version);
--	phydev_info(phydev, "MD32 firmware version: %08x\n",
--		    priv->firmware_version);
-+	en8811h_print_fw_version(phydev);
- 
- en8811h_load_firmware_out:
- 	release_firmware(fw2);
-@@ -533,11 +541,6 @@ static int en8811h_restart_mcu(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = air_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
--				     EN8811H_FW_CTRL_1_FINISH);
--	if (ret < 0)
--		return ret;
--
- 	return en8811h_wait_mcu_ready(phydev);
- }
- 
-@@ -919,6 +922,23 @@ static int en8811h_clk_provider_setup(struct device *dev, struct clk_hw *hw)
- 	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, hw);
- }
- 
-+static int en8811h_leds_setup(struct phy_device *phydev)
-+{
-+	struct en8811h_priv *priv = phydev->priv;
-+	int ret;
-+
-+	priv->led[0].rules = AIR_DEFAULT_TRIGGER_LED0;
-+	priv->led[1].rules = AIR_DEFAULT_TRIGGER_LED1;
-+	priv->led[2].rules = AIR_DEFAULT_TRIGGER_LED2;
-+
-+	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
-+			    AIR_LED_MODE_DISABLE);
-+	if (ret < 0)
-+		phydev_err(phydev, "Failed to disable leds: %d\n", ret);
-+
-+	return ret;
-+}
-+
- static int en8811h_probe(struct phy_device *phydev)
- {
- 	struct en8811h_priv *priv;
-@@ -937,19 +957,12 @@ static int en8811h_probe(struct phy_device *phydev)
- 	/* mcu has just restarted after firmware load */
- 	priv->mcu_needs_restart = false;
- 
--	priv->led[0].rules = AIR_DEFAULT_TRIGGER_LED0;
--	priv->led[1].rules = AIR_DEFAULT_TRIGGER_LED1;
--	priv->led[2].rules = AIR_DEFAULT_TRIGGER_LED2;
--
- 	/* MDIO_DEVS1/2 empty, so set mmds_present bits here */
- 	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
- 
--	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
--			    AIR_LED_MODE_DISABLE);
--	if (ret < 0) {
--		phydev_err(phydev, "Failed to disable leds: %d\n", ret);
-+	ret = en8811h_leds_setup(phydev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	priv->phydev = phydev;
- 	/* Co-Clock Output */
+ #define INT51X1_VENDOR_ID	0x09e1
 -- 
-2.47.3
+2.43.0
 
