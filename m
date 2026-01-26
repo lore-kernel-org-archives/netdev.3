@@ -1,162 +1,109 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82552882AA
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 19:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2228122A4E1;
+	Mon, 26 Jan 2026 19:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769456983; cv=none; b=b6xt1KjnWEw3Gag+9AhVHzeHpKRCfNrr4IUYpadHUhsoHgZ9krU+iH+Rnqaqf+XVI5F8l1+eQEpWmv3pIjwxWfJiSlZISCtsJC98LuEN9cESoL5gvfgwHPRPWQvdOpcoDN0q2s4DzJW1KJ0C+1ladPlqemSjwCqeV4V6FB5Wl7A=
+	t=1769457535; cv=none; b=sWHRVpu12sPzgABpmebuR2J5mzhJo7CBdYOvFuQJQ9oIxdfTaZfVVU5Xkl13UyIquNiWKjSxlysxz5sSAjTgyZlXsWUEEHpw3Pm7ejDgdLpghVcqUzt7oR+9Q8kB1tV8/htz8M3yrJiYjfxSzINpnXa/T1g5njEyvvxpLwmyBNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769456983; c=relaxed/simple;
-	bh=Ew0wil3rS4MqDg53VyMtrRBkkpZ592JhyvoxrBM5REI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=bo1hquzK50HwxorNXmpxSUjDwJDd2MWO4YVhQJc0JvRUhp3DhIfDPsnhpnXqVDAnMfTiGPZkk6LEhpAkomD3u/CL+YYCKQ9rXJn5l29FNzr4iA53wOdWhz9TtUVV5c0U2Et7IT8uqPhCltoj2o2B0uC1V5ypq6BNNZ6+SmXYdD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y96vKt+N; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769457535; c=relaxed/simple;
+	bh=gpEGhhknN7TzCJjkZ66nConf3Yk3nMin5RZ3GnJaav4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WfWrR+Heg7giKOtnFI1TydR0kM7bVCjVtpvDIPulBAdNLDrsm/QPffHT5sMTbKnRr3FWp9dqZYKtA7oyLwGq7rQiHFUJUq5NDjgBEPDZm55UiP/yPf/Eya9anhxXxM0vViOvZQOSEBZsFseHMSaONiPBa8gzolXl4i0ypGKS5Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA516Go6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y96vKt+N"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ffbea7fdf1so47404771cf.1
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:49:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769456981; x=1770061781; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1DkhtEYlu1cxCF+r3Na88j9n+YMNLVAzK55vGoP2wzQ=;
-        b=Y96vKt+NNvpVdXre3Laz6OFtS78rjBVnYoiPH5hGOxDjG9eqIFqCXSxOnuKZGKoYw7
-         CQSsaB/DATeLOE3JeRfqA6HARn7JJIvxyd8KhLOUw7kOEYuW4UEccjWFntYbnYBq8zLy
-         oa2IgOsmgoemwZ/Wp79/ACZlOwXF60GGHJYxBhXnlsUywWmIurGp8uTvWtJ95QM1NAzo
-         cCR7m/Metqljv5wPqDb6+xhxpFpRHA8hs1JCfxhu6RgfOJbI1EmdaM5n/h0VLJe/jdaq
-         2rhZIS8mL59YBige1ckjK40FdqhKau4dh/1WktoAp+3ap4r63ksvs6L94WpfN5KXIT1d
-         d0fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769456981; x=1770061781;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1DkhtEYlu1cxCF+r3Na88j9n+YMNLVAzK55vGoP2wzQ=;
-        b=OQEA9fp91HWMrpuANNhF4KOp8vv19viRrVh6qtS0J4KkSvdGLN4SHlj1oHfAMjCMq9
-         j2vzSLwwBqx8nYOZd1ltRv83s3zRqNfziK0tpmLVgZM0Dw8jbMVdaKbZiNR8n0o1eWTJ
-         vYiytbcnjlXt8fhvbzyxN4ZX5I0Uzy6Dfiqdi7kBRD0LGlzyuijIyCtAHGfTj5vRuKkh
-         prCSrKxoEud9XlvU4xSuUtUPhJuF4+wuEGUclz4ecrUsitJkQLFVtHOj1W04hTuxMcC/
-         7i6dBSfU1reGEWgL6azZ8G8CeIUVUWeYgCb0EckhueDWnQN5SGqoNX0wJOwnQl/G3W3z
-         nrQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUaWCmpEyjytKOqXTM6XZuFF5RRXEDaa3l1aeocR96jUcuZD3nN2DzGXYfdpIpLfoPaaVDkTAE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEHOOgKOEO/ytuB73lLquiSorujiozjNEFcgMIs7myJqMkTVqk
-	RO8xB0v0mTPAw1+zKzy17b1o+8LqevP34PjvoH3MaRIy/ElRcGiKh/pxS2hCLg==
-X-Gm-Gg: AZuq6aJngXsOv9qdE0Tw8Qf3shOizw8Gwchx808vVWKRf5nUlmG87Ai1rHK0sjhraXC
-	dl/tdOYn9ADM/WWwxuDek1S8lIv2LjLPmIa0MDwh/iz29a6ru6K6u0UoQgpDi1zpA7yQ5BRxTny
-	AV2TY2HkMxQXUsMuATB/y8ASO0rgvaNmtT8FO78FNHYvgCyGGmwHw83Poi/NU1XgMIMKFFgLsdV
-	qDv0V5AbXhnaZaYqt5GyruuT3JkteihOI84aHc6X39dVr+LUZIPoFr6xqGE+nNFBbjzaqpSgrZg
-	F8IEuHzqKrFq3lahVdeaPYT50llZ/bh3IxvFo7y3rpCna6S0bSdAckrfI2uxdBdzKpPWMGxkyJv
-	1wSnvo0Ey6uc1GAM62dub7mkYpl1cfkphI5t8IUFbLaAGP6hxDrZ/WKYshBny37iGARMVd2Mur+
-	bFSrA1ukyWzfhedLm6SymqvlMfUZos8SYkoRbTQtMPLAt55tdcvxigrC4gdjc=
-X-Received: by 2002:a05:690e:1503:b0:649:51d8:6f72 with SMTP id 956f58d0204a3-64970b45682mr4014192d50.5.1769450012509;
-        Mon, 26 Jan 2026 09:53:32 -0800 (PST)
-Received: from gmail.com (21.33.48.34.bc.googleusercontent.com. [34.48.33.21])
-        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-6495cfde5ccsm5560600d50.24.2026.01.26.09.53.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 09:53:32 -0800 (PST)
-Date: Mon, 26 Jan 2026 12:53:31 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Gal Pressman <gal@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- netdev@vger.kernel.org
-Cc: Igor Russkikh <irusskikh@marvell.com>, 
- Boris Pismenny <borisp@nvidia.com>, 
- Saeed Mahameed <saeedm@nvidia.com>, 
- Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, 
- Mark Bloch <mbloch@nvidia.com>, 
- David Ahern <dsahern@kernel.org>, 
- Simon Horman <horms@kernel.org>, 
- Alexander Duyck <alexanderduyck@fb.com>, 
- linux-rdma@vger.kernel.org, 
- Gal Pressman <gal@nvidia.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>
-Message-ID: <willemdebruijn.kernel.218d53621fba7@gmail.com>
-In-Reply-To: <20260125121649.778086-2-gal@nvidia.com>
-References: <20260125121649.778086-1-gal@nvidia.com>
- <20260125121649.778086-2-gal@nvidia.com>
-Subject: Re: [PATCH net-next 1/3] udp: gso: Use single MSS length in UDP
- header for GSO_PARTIAL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA516Go6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB65C116C6;
+	Mon, 26 Jan 2026 19:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769457535;
+	bh=gpEGhhknN7TzCJjkZ66nConf3Yk3nMin5RZ3GnJaav4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bA516Go6hiQe3HJiBvib21exVP/J/+RZoB6ZOQQrbwm4XLglnt4Qe0y2o3PSC5GcZ
+	 k+/51GyDGLn35lbVHLG4mf26jLNunFyZqxQ6GaJCGrHG4JFywDFjZNKH66auOAtzTF
+	 L+19jgiFDe/lbC2rmJi1wbg/cUn4bfihd60c+ZGRljmutdxa3ZDDocf8O99ON1utfF
+	 F8Gro+4lJ0vKTKS5Uf96+A3UTkT2byjypi5gz96DYa7sPANEjGufxlZmDlhIQoSgWl
+	 74Q9ec8ZeIMKiBaKU8Wsxn8KDLnS25xNTF85kamks8WLqHeqbX7Y9qe9OaQsh5/ihV
+	 C9kmhyKN6hORg==
+Date: Mon, 26 Jan 2026 21:58:50 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, kotaranov@microsoft.com,
+	shradhagupta@linux.microsoft.com, yury.norov@gmail.com,
+	dipayanroy@linux.microsoft.com, shirazsaleem@microsoft.com,
+	ssengar@linux.microsoft.com, gargaditya@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: mana: Improve diagnostic logging for
+ better debuggability
+Message-ID: <20260126195850.GO13967@unreal>
+References: <20260121065655.18249-1-ernis@linux.microsoft.com>
+ <20260121201412.179f9b37@kernel.org>
+ <aXJhzi58GqLKtui4@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <20260122180745.3b5607cf@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260122180745.3b5607cf@kernel.org>
 
-Gal Pressman wrote:
-> In GSO_PARTIAL segmentation, set the UDP length field to the single
-> segment size (gso_size + UDP header) instead of the large MSS size.
-> This provides hardware with a template length value for final
-> segmentation, similar to how tunnel GSO_PARTIAL handles outer headers
-> in UDP tunnels.
+On Thu, Jan 22, 2026 at 06:07:45PM -0800, Jakub Kicinski wrote:
+> On Thu, 22 Jan 2026 09:43:42 -0800 Erni Sri Satya Vennela wrote:
+> > On Wed, Jan 21, 2026 at 08:14:12PM -0800, Jakub Kicinski wrote:
+> > > On Tue, 20 Jan 2026 22:56:55 -0800 Erni Sri Satya Vennela wrote:  
+> > > > Enhance MANA driver logging to provide better visibility into
+> > > > hardware configuration and error states during driver initialization
+> > > > and runtime operations.  
+> > >   
+> > > > +	dev_info(gc->dev, "Max Resources: msix_usable=%u max_queues=%u\n",
+> > > > +		 gc->num_msix_usable, gc->max_num_queues);  
+> > >   
+> > > > +	dev_info(dev, "Device Config: max_vports=%u adapter_mtu=%u bm_hostmode=%u\n",
+> > > > +		 *max_num_vports, gc->adapter_mtu, *bm_hostmode);  
+> > > 
+> > > IIUC in networking we try to follow the mantra that if the system is
+> > > functioning correctly there should be no logs. You can expose the debug
+> > > info via ethtool, devlink, debugfs etc. Take your pick.  
+> > 
+> > We discussed this internally and noted that customers often cannot
+> > reliably reproduce the VM issue. In such cases, the only evidence
+> > available is the dmesg logs captured during the incident. Asking them to
+> > re-enable debug options later is not practical, since the problem may
+> > not occur again. Similarly, exposing the information via ethtool,
+> > devlink, or debugfs is less effective because the data is transient and
+> > lost after a reboot. As these messages are printed only once during
+> > initialization, and not repeated during runtime or driver load/unload,
+> > we decided to keep them at info level to aid troubleshooting without
+> > adding noise.
 > 
-> This will remove the need to manually adjust the UDP header length in
-> the drivers, as can be seen in subsequent patches.
-> 
-> This was suggested by Alex in 2018:
-> https://lore.kernel.org/netdev/CAKgT0UcdnUWgr3KQ=RnLKigokkiUuYefmL-ePpDvJOBNpKScFA@mail.gmail.com/
-> 
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Signed-off-by: Gal Pressman <gal@nvidia.com>
+> You will have to build proper support tooling like every single vendor
+> before you. Presumably you can also log from the hypervisor side which
+> makes your life so much easier than supporting real HW. Yet, real
+> NIC don't spew random trash to the logs all the time. SMH. Respectfully,
+> next time y'all "discuss things internally" start with the question of
+> what makes your case special :|
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
++100
 
-This only affects the udp header value when using GSO_PARTIAL, and
-these are the only two drivers that adversize USO using GSO_PARTIAL.
+Interesting. Completely independent of your comment, I provided the same
+feedback on their mana_ib driver. They added debug logs to nearly every
+command, even though those commands already had existing debug logging.
 
-> ---
->  net/ipv4/udp_offload.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index 19d0b5b09ffa..89e0b48b60ae 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -483,11 +483,11 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
->  	struct sock *sk = gso_skb->sk;
->  	unsigned int sum_truesize = 0;
->  	struct sk_buff *segs, *seg;
-> +	__be16 newlen, msslen;
->  	struct udphdr *uh;
->  	unsigned int mss;
->  	bool copy_dtor;
->  	__sum16 check;
-> -	__be16 newlen;
->  	int ret = 0;
->  
->  	mss = skb_shinfo(gso_skb)->gso_size;
-> @@ -555,6 +555,8 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
->  		return segs;
->  	}
->  
-> +	msslen = htons(sizeof(*uh) + mss);
-> +
->  	/* GSO partial and frag_list segmentation only requires splitting
->  	 * the frame into an MSS multiple and possibly a remainder, both
->  	 * cases return a GSO skb. So update the mss now.
-> @@ -584,7 +586,7 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
->  		if (!seg->next)
->  			break;
->  
-> -		uh->len = newlen;
-> +		uh->len = msslen;
->  		uh->check = check;
->  
->  		if (seg->ip_summed == CHECKSUM_PARTIAL)
-> -- 
-> 2.40.1
-> 
+https://lore.kernel.org/linux-rdma/20260122131442.GL13201@unreal/T/#m51e8a12f4bca4a6c1377c5531c8a6d94a43af1e5
 
+"In order to simplify things for you: unless you can clearly justify why this
+print is required and why you cannot proceed without it, I must ask you to stop
+adding any new debug or error messages to the mana_ib driver. There is a wide
+range of existing tools and well‑established practices for debugging the kernel,
+and none of them require spamming dmesg."
 
+Thanks
