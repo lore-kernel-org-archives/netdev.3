@@ -1,143 +1,123 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42053090E1;
-	Mon, 26 Jan 2026 22:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769466847; cv=none; b=i70aLnxD2qyF5ZpSekUQeGAjRdiJVjmxCHxqoHQeS5zXnzfhHsmCdF8545u3agr2IGjL2IVVDoZGgLsYhJAWpvZZ0qmdyD9mQ+JYf4Zrppbfgk4KkFv1nI/gKbI4ADYYVR8Fvl/ZbmnZY7hA7bsLURYfbjrSvLw7HWj3ViGtuZk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769466847; c=relaxed/simple;
-	bh=L7dQA3UvTttbEjCFBXQLBw8pAFE810plceodU74rFzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rwux+lBLMzI9U5GIt4q/PkkZawhPgWOm/kvBUDkxff00LS+RTwROsgvTd8wIqrIBG+2dVSaszKKu6oTi9trPufILrU6/O7zH2Cqn8MBXdgbmf+zUMNAGfiE7UWWOTYWis7+5os+732RRqqZLsr1Gks1E6T8y/zS+6yVkvbXnCCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.192] (ip5f5af744.dynamic.kabel-deutschland.de [95.90.247.68])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 5FF8F4C44300B5;
-	Mon, 26 Jan 2026 23:33:19 +0100 (CET)
-Message-ID: <fcfc9a45-79a6-4483-81ad-0cad9d2ab13e@molgen.mpg.de>
-Date: Mon, 26 Jan 2026 23:33:18 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6C2EAB82
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 22:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769467319; cv=pass; b=r/lJQSZrfcrFXUV+k8zeFrRQalon0ZwTb/pVTfUHgJQbyFrOlj2LUET8Ad9yhiNXItvoI5nt9ypG8IJhKbihak7EFt7Bcyb8y0j+icZ+2cZ/9X4+5JyIqMwTx7G0OP1Lo2WVArYVPDGeVBve4HaOPKd+dsFWksXtkSwgBJFGdMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769467319; c=relaxed/simple;
+	bh=Q3G4ARwrh5Qce1UUq5S3zP0x4wInYa/dVEYHDQCXtfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lf0yGIK221qkQhYv7T/A/Ucaghj7reJt1HKKlcmcdpUvhqu2UUdlQgMrWZ7tqrD2Vng+/lmkxoepDz2y/ZdU8QoQDkhssrEjweXs2PDUE2K8IpGw4WZs8ymDszDm1XT9kjkSigRLlJpdYN82eTbnLNbXyQOeO1Yb10yBFvlkOqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=HdKejOaw; arc=pass smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="HdKejOaw"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c93e0269cso3257880a91.1
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 14:41:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769467317; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fW8zfG//gE+X74N/+ObcdvHEzTgNahAEBPzVQCktWEK0OglC+SWDqKy/od+rg7V+2n
+         fHXNOkFFOhq+bRCd2ATxkgVyMfh+kl6fKLxUgV6lcmu4qYGPhbpLcVNzvSWl9ysyWwfA
+         6MNBGChZtJNjnDMNobrd+TTXaZq+YGJ4t5BlEqltfV3oMnFjKmc8rJOaleYY0XI44yTa
+         +feOTvRlKLVFtgjxgpCtXm1lMph9Q3ZdSVyybfzEex+/R5LLVWUYr+iiQFUz+4aFw0h1
+         N4iYn4HnWdmH7y6mU/ufJzTXVJ3Jq9iFs1y4BRF4VzN7HBU/Judgwgiw7OaZOFPmUdnW
+         2tBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=X7jnwBcO9kfWrOClkw45F/yzW2eGiLRsPFFOYC93unk=;
+        fh=HurcY3gLk2i3/Qu9ntzB7nKcNrkOkyhdjwunJKkSJZ8=;
+        b=DtWxqWuYnlK7UgrrYfP8aWtBcTWdHH7KL3CQyzGWB8j+NQjoAM7b+2X7FbVmwdlbn3
+         646qGO9MUTgPwQc1MHME9cv/7Tzu8qgp4ywCXR8mRQTm9ojBNwK2JU783M51NmhbDXqm
+         4acywFlIzdpU50tw4FIazu5EMccXBfCegm+jcfBxVXBuosLVsrc8nlxp0yLYFUnqyaWI
+         iFmtVDC7gTRLKVttatN8BRNhveIT5/cTp7JM2e8Zt2sECi4DGvs7dpXsEf6IYjzuvc6H
+         r/qFYLQCriM0Jq1xeuUw8wm2UlYrosOH1Zhb9Zwsn6B5rY4FkdDwlNE1nIgCtDqoJjRS
+         cc5Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1769467317; x=1770072117; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X7jnwBcO9kfWrOClkw45F/yzW2eGiLRsPFFOYC93unk=;
+        b=HdKejOawXQz3LplRfJtM5nFR/KK20vbUZauCUkj2rPWboQGv5B1JNpzwD/74fNjam0
+         aNpvleslja1QE2ju57WXKFpFg/I8rqTnyqc0kK0jimCsz5e5QdWC2xzIn3zpcbAd2nvx
+         UxL1WkU+Wl3XiTrE/0GxhsWuHXSvsGXpp7fo0LAuR2TlDJgPXfj3tYVuo4nMk9xOd1v1
+         p/4M6rYSs6mgL5CwLx4UJm2Ls0VEMBzWmAXxcC1pQ6jkO2DMtoMLoUYz9g1quv8RlT4V
+         ohFQOaDKVPB+Es9seG6HB8JHkFuKyCk8b4t+eUKcBLW7qeYYRJB19pr1nWVsKU0w3GH+
+         0LuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769467317; x=1770072117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X7jnwBcO9kfWrOClkw45F/yzW2eGiLRsPFFOYC93unk=;
+        b=lYqjyufyvvXCBz5P3oPViB4XkcWpj8ch8NklxuoRNPl3KNKX6RgLPjpUSMne2glrQn
+         jrWg0kgvoEKBc+d4sLVubJevm51WbeTlqa9+P9gmuqEmWOyCP20sE1sfX6wQmjD5YWbq
+         RMRA6tezC0SOFe9r9LLxjA8qaUKkGooUQzEVRW8H5n/ojSRWV5pWLVBR7NYxgErLT0Ww
+         ir76U/oIoPhcHDER35HVqVG9PZVrQCFE3T4lVW5hYpGgMW2QO7cpoLgOGv+aiquK0Ek8
+         ++49TrL7z2VCbrBtPflHMph71kQh4PsYvkZJJ44v77Q26DWtp1fChN6YMW2xBVTYqf9w
+         c2dg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvV0j1B6Kn4aCfDYEIxwP21cP7WzWmoPaBz2yTgnB6+YD5v3Gq6B/09a2TpLDmKF9puqC2Od0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuD9d6JfsQqriTKnSH2BHCV+8LEJeBIgMqz6R3Hbu3NdcVbzwP
+	H09LhmSZ+w3HN4UHK8Z+AUc0VKVHmuNhI/j/sfBC8dcwcg/2fzyGNuSeGqS+oqbLo8WWL0bP8Yr
+	10u14yiJ2jkn6AjPTaHwUMkJriG0Rt7yOXC+fxjun
+X-Gm-Gg: AZuq6aJ+YVymPpXEVor/pXVOCwn4HYCi0J12fViAtEJTNveW7aHCzfP1kvzHgP2unBr
+	O8ONRhhstEFoB1qGSH+bqQK2f0wAIBIAg1sbD9udeA7FanOS9/ZAmkLI4xG0qJ3FbCisxK7Xg8h
+	luhbWIL5m4qDpif1vC6VLvcrmun/cYkXY3ENGUX6htDDiXOHMRd/0FCvhXHkCiDMkn+OXzxBTmU
+	o275j3h3XFHl+c/CkYM4PFJz8Kq9UmDMZ3hGmFjqyzzhnEK/2mVJfVefg3vK7ENUlH5LBA=
+X-Received: by 2002:a17:90b:3b4a:b0:343:3898:e7c7 with SMTP id
+ 98e67ed59e1d1-353c4625b54mr4450699a91.12.1769467317586; Mon, 26 Jan 2026
+ 14:41:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [iwl-net PATCH v3] idpf: change IRQ naming to
- match netdev and ethtool queue numbering
-To: Brian Vazquez <brianvv@google.com>,
- Brian Vazquez <brianvv.kernel@gmail.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- intel-wired-lan@lists.osuosl.org, David Decotigny <decot@google.com>,
- Li Li <boolli@google.com>, Anjali Singhai <anjali.singhai@intel.com>,
- Sridhar Samudrala <sridhar.samudrala@intel.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- emil.s.tantilov@intel.com, Brett Creeley <brett.creeley@amd.com>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-References: <20260126215600.3387171-1-brianvv@google.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260126215600.3387171-1-brianvv@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <924f9cf5-599a-48f0-b1e3-94cd971965b0@I-love.SAKURA.ne.jp>
+ <537343f7-c580-43b0-9ad2-691701b9fb8e@I-love.SAKURA.ne.jp>
+ <287edf7f-85fb-46c3-9c70-c8ec7014a0db@I-love.SAKURA.ne.jp> <aXIGxmCB2QU86-iA@secunet.com>
+In-Reply-To: <aXIGxmCB2QU86-iA@secunet.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 26 Jan 2026 17:41:46 -0500
+X-Gm-Features: AZwV_QgYmUrGPybMCCDRtzN_TKJkWDkwDRu5nDZr9abvGoEUZ-CUdGucaUzu1nA
+Message-ID: <CAHC9VhQ54LRD7k_x6tUju2kPVBEHcdgBh46_hBN8btG0vhfy_w@mail.gmail.com>
+Subject: Re: [PATCH] xfrm: force flush upon NETDEV_UNREGISTER event
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, 
+	Aviad Yehezkel <aviadye@mellnaox.com>, Aviv Heller <avivh@mellanox.com>, 
+	Boris Pismenny <borisp@mellanox.com>, "David S. Miller" <davem@davemloft.net>, 
+	Florian Westphal <fw@strlen.de>, Guy Shapiro <guysh@mellanox.com>, Ilan Tayari <ilant@mellanox.com>, 
+	Kristian Evensen <kristian.evensen@gmail.com>, Leon Romanovsky <leon@kernel.org>, 
+	Leon Romanovsky <leonro@nvidia.com>, Raed Salem <raeds@mellanox.com>, Raed Salem <raeds@nvidia.com>, 
+	Saeed Mahameed <saeedm@mellanox.com>, Yossi Kuperman <yossiku@mellanox.com>, 
+	Network Development <netdev@vger.kernel.org>, 
+	linux-security-module <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Dear Brian,
+On Thu, Jan 22, 2026 at 7:00=E2=80=AFAM Steffen Klassert
+<steffen.klassert@secunet.com> wrote:
+> On Thu, Jan 22, 2026 at 05:24:22PM +0900, Tetsuo Handa wrote:
 
+...
 
-Thank you for your patch.
+> > Therefore, I wonder what are security_xfrm_state_delete() and security_=
+xfrm_policy_delete()
+> > for. Can I kill xfrm_dev_state_flush_secctx_check() and xfrm_dev_policy=
+_flush_secctx_check() ?
+>
+> This might violate a LSM policy then.
 
-Am 26.01.26 um 22:55 schrieb Brian Vazquez via Intel-wired-lan:
-> The code uses the vidx for the IRQ name but that doesn't match ethtool
-> reporting nor netdev naming, this makes it hard to tune the device and
-> associate queues with IRQs. Sequentially requesting irqs starting from
-> '0' makes the output consistent.
-> 
-> This commit changes the interrupt numbering but preserves the name
-> format, maintaining ABI compatibility. Existing tools relying on the old
-> numbering are already non-functional, as they lack a useful correlation
-> to the interrupts.
-> 
-> Before:
-> 
-> ethtool -L eth1 tx 1 combined 3
-> 
-> grep . /proc/irq/*/*idpf*/../smp_affinity_list
-> /proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-> /proc/irq/68/idpf-eth1-TxRx-1/../smp_affinity_list:0
-> /proc/irq/70/idpf-eth1-TxRx-3/../smp_affinity_list:1
-> /proc/irq/71/idpf-eth1-TxRx-4/../smp_affinity_list:2
-> /proc/irq/72/idpf-eth1-Tx-5/../smp_affinity_list:3
-> 
-> ethtool -S eth1 | grep -v ': 0'
-> NIC statistics:
->       tx_q-0_pkts: 1002
->       tx_q-1_pkts: 2679
->       tx_q-2_pkts: 1113
->       tx_q-3_pkts: 1192 <----- tx_q-3 vs idpf-eth1-Tx-5
->       rx_q-0_pkts: 1143
->       rx_q-1_pkts: 3172
->       rx_q-2_pkts: 1074
-> 
-> After:
-> 
-> ethtool -L eth1 tx 1 combined 3
-> 
-> grep . /proc/irq/*/*idpf*/../smp_affinity_list
-> 
-> /proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-> /proc/irq/68/idpf-eth1-TxRx-0/../smp_affinity_list:0
-> /proc/irq/70/idpf-eth1-TxRx-1/../smp_affinity_list:1
-> /proc/irq/71/idpf-eth1-TxRx-2/../smp_affinity_list:2
-> /proc/irq/72/idpf-eth1-Tx-3/../smp_affinity_list:3
-> 
-> ethtool -S eth1 | grep -v ': 0'
-> NIC statistics:
->       tx_q-0_pkts: 118
->       tx_q-1_pkts: 134
->       tx_q-2_pkts: 228
->       tx_q-3_pkts: 138 <--- tx_q-3 matches idpf-eth1-Tx-3
->       rx_q-0_pkts: 111
->       rx_q-1_pkts: 366
->       rx_q-2_pkts: 120
-> 
-> Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-> Signed-off-by: Brian Vazquez <brianvv@google.com>
-> Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> V3: Add more context to the commit message
-> V2: Add mising Fixes tag
-> 
->   drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index c2a1fe3c79ec..c1f8dfc570ce 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -4093,7 +4093,7 @@ static int idpf_vport_intr_req_irq(struct idpf_vport *vport,
->   			continue;
->   
->   		name = kasprintf(GFP_KERNEL, "%s-%s-%s-%d", drv_name, if_name,
-> -				 vec_name, vidx);
-> +				 vec_name, vector);
->   
->   		err = request_irq(irq_num, idpf_vport_intr_clean_queues, 0,
->   				  name, q_vector);
+Exactly.  SELinux is currently the only LSM that enforces any access
+controls on the XFRM/IPsec code, but it does use both of these LSM
+hooks to authorize deletion of SPD/SA objects.
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
+--=20
+paul-moore.com
