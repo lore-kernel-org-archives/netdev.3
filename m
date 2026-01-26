@@ -1,60 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D83A26ED5C;
-	Mon, 26 Jan 2026 06:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82F226E6F2;
+	Mon, 26 Jan 2026 06:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408144; cv=none; b=RhcmWbMwkxUH22coeBb3gYYuzu8TVRDwnr9Uk0EKD0l5a3T1QHoF/v1dxPlGK/UNmcXU3eW46YsxEB5BV88vLLqgfZf4KJQzusNZSEydTjClRxzHlq+yaZx3ar0K5+S7lf0ExMOTCr8FMpFhijBtoXOz89+72RwSzTIlWjwJxO8=
+	t=1769408581; cv=none; b=VTG2bIGYVGWCSAnLQJTWMZQ/CUiO+dLQhKEtwj3JvFHhVcgejRAbCxbZZhaGD2OhV5O179ou8DmIWhX7cs/4K7trdNV5qAoU81wEp1P1TDFgmranhCAO7+Gex3+j7DE0g66TPEKWfxK49Xa70c+qp5odME9duV6N+PzYSosoERo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408144; c=relaxed/simple;
-	bh=zVRgQbcmx5QBeZkzn1HZ2OWSSqdpA+EKdighbyyeRbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiN+RwEZp4iv+zu2GUTkB+lPKVl0/RgF2XXdKalh9DGiBHyUfxbQaSNJx6Ri2DpyW5sc/p0q0PL3u9AruFUIxjaHL6tuKrpEMcOAO/3DzeppWujJ2lGuvxp4LWPncHBUeHZElTkUc4bXTsKFO5eSvgTlPYnGBLUALelGbFd2TSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l4u1xDT5; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769408581; c=relaxed/simple;
+	bh=IT+9ec6tYUIaqWEnT7zUZrABK+pEwqjPKReyebksm34=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=vGvJa8hI8VAVgFjsR2mbCjSJPF3rz1iP/xmMNLWF0Ns/m4BiZTu140Y+Hg9oi8M8d+oxLhvI9coMbIdcRGR0njAJgI0ttglogpSOvNIm6ENXWu7iYZvss+ip/7NG8s1CyoKTVN2QNlMk6EpPGq5KG8/+EWOSz0arq9DWPSloB+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RA7kyreO; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4u1xDT5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769408142; x=1800944142;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zVRgQbcmx5QBeZkzn1HZ2OWSSqdpA+EKdighbyyeRbg=;
-  b=l4u1xDT5q7ExRSW/8Bel/orHD7qfmE1xzA/TtFf209a9CwmzKvW6ZFy8
-   oTxJ0m6u+KI3qUUGLNkjTS3xVwAmJj1+YCi2bqUaxP0f7XlweRNXXtf/n
-   MIuUcm1akfB8N7XjY74gW4c2rC7I9lq0hhiiJIW1vkYaOzlGyp/fHSjjS
-   nVzF9vlEAscfoEFaPKGUXq9YXwc85+pUeC1yI6pqeey1TqGGcqiyn8Vig
-   //SKEWHurVwzZQI0mUioIJvTZ4joCiE9EyEeMINRqWtB88CncX6gYp9AJ
-   stYqR6nA1UYwWq7nZWI8gQbBebbklJwiTQlluNMEgpR+/PPVPDHAZ8IF4
-   g==;
-X-CSE-ConnectionGUID: gs/g1saZS+K42+Q93IcLyQ==
-X-CSE-MsgGUID: iky3QoFqQ4++ZdUt+wBWWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11682"; a="74213916"
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="74213916"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 22:15:42 -0800
-X-CSE-ConnectionGUID: 3uBcQNSBTVKXemw6S4akdA==
-X-CSE-MsgGUID: FlkCZpTvTJioAa6Zp4Uy8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,254,1763452800"; 
-   d="scan'208";a="238241191"
-Received: from junjie-nuc14rvs.bj.intel.com ([10.238.152.25])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2026 22:15:41 -0800
-From: Junjie Cao <junjie.cao@intel.com>
-To: Shuah Khan <shuah@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] selftests: ptp: treat unsupported PHC operations as skip
-Date: Mon, 26 Jan 2026 14:15:32 +0800
-Message-ID: <20260126061532.12532-2-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260126061532.12532-1-junjie.cao@intel.com>
-References: <20260126061532.12532-1-junjie.cao@intel.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RA7kyreO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/s
+	StrZiGTZYmClhQCpesOCkV2ki2nCzgYp0H3gRJmVk=; b=RA7kyreOTrYChBZu+G
+	EfaGWT7zYjG+3na04CdeK0VJhgX8MvTzXnmlVWtiGgr91U89iywzTw5f7U3D5soL
+	pid+1/Bv2ryxI8mBzV/6Sh+Y8LcH3CLfF3Z/LPHMc4BIyZMbFFdah7kta8lXgJo1
+	oyolviqL8hqPCzBvm9XypoTgs=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCHzzkJCHdpL7kRIg--.5216S5;
+	Mon, 26 Jan 2026 14:22:11 +0800 (CST)
+From: Slark Xiao <slark_xiao@163.com>
+To: loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	johannes@sipsolutions.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mani@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	slark_xiao@163.com
+Subject: [net-next v8 3/8] net: wwan: core: split port creation and registration
+Date: Mon, 26 Jan 2026 14:21:53 +0800
+Message-Id: <20260126062158.308598-4-slark_xiao@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260126062158.308598-1-slark_xiao@163.com>
+References: <20260126062158.308598-1-slark_xiao@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,135 +51,151 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCHzzkJCHdpL7kRIg--.5216S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWkAw45CFW3JFWDuryfZwb_yoWrZw18p3
+	W0gas3tFW8Jrnrur43AF47ZF4rua1Ik34SyrW8W34Skrn0qryFvF9Y9FyqvFWrGFy7GFy3
+	Xrs8ta1093WUWr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zReOJnUUUUU=
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5xM+oml3CBPoqgAA3v
 
-Some PTP hardware clock (PHC) devices may return -EOPNOTSUPP for
-operations like settime, adjtime, or adjfreq. This commonly occurs
-with timestamp-only PHC implementations that don't support full clock
-control.
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 
-For background, syzbot previously exposed a crash risk when PTP clock
-drivers lacked required callbacks[1]. Subsequent work[2] made callback
-presence a registration requirement. As a result, some drivers (like
-iwlwifi MVM/MLD[3]) now provide stub callbacks that return -EOPNOTSUPP
-for unsupported operations.
+Upcoming GNSS (NMEA) port type support requires exporting it via the
+GNSS subsystem. On another hand, we still need to do basic WWAN core
+work: find or allocate the WWAN device, make it the port parent, etc. To
+reuse as much code as possible, split the port creation function into
+the registration of a regular WWAN port device, and basic port struct
+initialization.
 
-When phc_ctl encounters such devices, the "Operation not supported"
-error should be treated as a skip (device limitation) rather than a
-test failure. This patch:
-- Adds [SKIP] output handling in log_test()
-- Detects "Operation not supported" from phc_ctl and returns ksft_skip
-- Returns ksft_skip if all tests are skipped, preventing false-positive
-  results when testing timestamp-only PHC implementations
+To be able to use put_device() uniformly, break the device_register()
+call into device_initialize() and device_add() and call device
+initialization earlier.
 
-Link: https://lore.kernel.org/netdev/20251028043216.1971292-1-junjie.cao@intel.com/ [1]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=dfb073d32cac [2]
-Link: https://lore.kernel.org/netdev/20251204123204.9316-1-ziyao@disroot.org/ [3]
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+While at it, fix a minor number leak upon WWAN port registration
+failure.
+
+Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 ---
- tools/testing/selftests/ptp/phc.sh | 49 ++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 12 deletions(-)
+ drivers/net/wwan/wwan_core.c | 69 ++++++++++++++++++++++--------------
+ 1 file changed, 43 insertions(+), 26 deletions(-)
 
-diff --git a/tools/testing/selftests/ptp/phc.sh b/tools/testing/selftests/ptp/phc.sh
-index 51aad466d989..9f61c1579edf 100755
---- a/tools/testing/selftests/ptp/phc.sh
-+++ b/tools/testing/selftests/ptp/phc.sh
-@@ -52,6 +52,7 @@ phc_sanity
- 
- # Exit status to return at the end. Set in case one of the tests fails.
- EXIT_STATUS=0
-+PASS_COUNT=0
- # Per-test return value. Clear at the beginning of each test.
- RET=0
- 
-@@ -68,12 +69,18 @@ log_test()
+diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+index 1da935e84008..76f1d759d255 100644
+--- a/drivers/net/wwan/wwan_core.c
++++ b/drivers/net/wwan/wwan_core.c
+@@ -357,7 +357,8 @@ static void wwan_port_destroy(struct device *dev)
  {
- 	local test_name=$1
+ 	struct wwan_port *port = to_wwan_port(dev);
  
-+	if [[ $RET -eq $ksft_skip ]]; then
-+		printf "TEST: %-60s  [SKIP]\n" "$test_name"
-+		return 0
-+	fi
+-	ida_free(&minors, MINOR(port->dev.devt));
++	if (dev->class == &wwan_class)
++		ida_free(&minors, MINOR(dev->devt));
+ 	mutex_destroy(&port->data_lock);
+ 	mutex_destroy(&port->ops_lock);
+ 	kfree(port);
+@@ -436,6 +437,44 @@ static int __wwan_port_dev_assign_name(struct wwan_port *port, const char *fmt)
+ 	return dev_set_name(&port->dev, "%s", buf);
+ }
+ 
++/* Register a regular WWAN port device (e.g. AT, MBIM, etc.) */
++static int wwan_port_register_wwan(struct wwan_port *port)
++{
++	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
++	char namefmt[0x20];
++	int minor, err;
 +
- 	if [[ $RET -ne 0 ]]; then
- 		EXIT_STATUS=1
- 		printf "TEST: %-60s  [FAIL]\n" "$test_name"
- 		return 1
- 	fi
- 
-+	((PASS_COUNT++))
- 	printf "TEST: %-60s  [ OK ]\n" "$test_name"
- 	return 0
- }
-@@ -92,34 +99,49 @@ tests_run()
- 
- settime_do()
++	/* A port is exposed as character device, get a minor */
++	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
++	if (minor < 0)
++		return minor;
++
++	port->dev.class = &wwan_class;
++	port->dev.devt = MKDEV(wwan_major, minor);
++
++	/* allocate unique name based on wwan device id, port type and number */
++	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
++		 wwan_port_types[port->type].devsuf);
++
++	/* Serialize ports registration */
++	mutex_lock(&wwan_register_lock);
++
++	__wwan_port_dev_assign_name(port, namefmt);
++	err = device_add(&port->dev);
++
++	mutex_unlock(&wwan_register_lock);
++
++	if (err) {
++		ida_free(&minors, minor);
++		port->dev.class = NULL;
++		return err;
++	}
++
++	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
++
++	return 0;
++}
++
+ struct wwan_port *wwan_create_port(struct device *parent,
+ 				   enum wwan_port_type type,
+ 				   const struct wwan_port_ops *ops,
+@@ -444,8 +483,7 @@ struct wwan_port *wwan_create_port(struct device *parent,
  {
--	local res
-+	local res out
+ 	struct wwan_device *wwandev;
+ 	struct wwan_port *port;
+-	char namefmt[0x20];
+-	int minor, err;
++	int err;
  
--	res=$(phc_ctl $DEV set 0 wait 120.5 get 2> /dev/null \
--		| awk '/clock time is/{print $5}' \
--		| awk -F. '{print $1}')
-+	out=$(LC_ALL=C phc_ctl $DEV set 0 wait 120.5 get 2>&1)
-+	if [[ $? -ne 0 ]]; then
-+		if echo "$out" | grep -qi "Operation not supported"; then
-+			return $ksft_skip
-+		fi
-+		return 1
-+	fi
-+	res=$(echo "$out" | awk '/clock time is/{print $5}' | awk -F. '{print $1}')
+ 	if (type > WWAN_PORT_MAX || !ops)
+ 		return ERR_PTR(-EINVAL);
+@@ -457,17 +495,9 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	if (IS_ERR(wwandev))
+ 		return ERR_CAST(wwandev);
  
- 	(( res == 120 ))
- }
+-	/* A port is exposed as character device, get a minor */
+-	minor = ida_alloc_range(&minors, 0, WWAN_MAX_MINORS - 1, GFP_KERNEL);
+-	if (minor < 0) {
+-		err = minor;
+-		goto error_wwandev_remove;
+-	}
+-
+ 	port = kzalloc(sizeof(*port), GFP_KERNEL);
+ 	if (!port) {
+ 		err = -ENOMEM;
+-		ida_free(&minors, minor);
+ 		goto error_wwandev_remove;
+ 	}
  
- adjtime_do()
- {
--	local res
-+	local res out
+@@ -481,27 +511,14 @@ struct wwan_port *wwan_create_port(struct device *parent,
+ 	mutex_init(&port->data_lock);
  
--	res=$(phc_ctl $DEV set 0 adj 10 get 2> /dev/null \
--		| awk '/clock time is/{print $5}' \
--		| awk -F. '{print $1}')
-+	out=$(LC_ALL=C phc_ctl $DEV set 0 adj 10 get 2>&1)
-+	if [[ $? -ne 0 ]]; then
-+		if echo "$out" | grep -qi "Operation not supported"; then
-+			return $ksft_skip
-+		fi
-+		return 1
-+	fi
-+	res=$(echo "$out" | awk '/clock time is/{print $5}' | awk -F. '{print $1}')
+ 	port->dev.parent = &wwandev->dev;
+-	port->dev.class = &wwan_class;
+ 	port->dev.type = &wwan_port_dev_type;
+-	port->dev.devt = MKDEV(wwan_major, minor);
+ 	dev_set_drvdata(&port->dev, drvdata);
++	device_initialize(&port->dev);
  
- 	(( res == 10 ))
- }
+-	/* allocate unique name based on wwan device id, port type and number */
+-	snprintf(namefmt, sizeof(namefmt), "wwan%u%s%%d", wwandev->id,
+-		 wwan_port_types[port->type].devsuf);
+-
+-	/* Serialize ports registration */
+-	mutex_lock(&wwan_register_lock);
+-
+-	__wwan_port_dev_assign_name(port, namefmt);
+-	err = device_register(&port->dev);
+-
+-	mutex_unlock(&wwan_register_lock);
+-
++	err = wwan_port_register_wwan(port);
+ 	if (err)
+ 		goto error_put_device;
  
- adjfreq_do()
- {
--	local res
-+	local res out
+-	dev_info(&wwandev->dev, "port %s attached\n", dev_name(&port->dev));
+ 	return port;
  
- 	# Set the clock to be 1% faster
--	res=$(phc_ctl $DEV freq 10000000 set 0 wait 100.5 get 2> /dev/null \
--		| awk '/clock time is/{print $5}' \
--		| awk -F. '{print $1}')
-+	out=$(LC_ALL=C phc_ctl $DEV freq 10000000 set 0 wait 100.5 get 2>&1)
-+	if [[ $? -ne 0 ]]; then
-+		if echo "$out" | grep -qi "Operation not supported"; then
-+			return $ksft_skip
-+		fi
-+		return 1
-+	fi
-+	res=$(echo "$out" | awk '/clock time is/{print $5}' | awk -F. '{print $1}')
- 
- 	(( res == 101 ))
- }
-@@ -166,4 +188,7 @@ trap cleanup EXIT
- 
- tests_run
- 
-+if [[ $EXIT_STATUS -eq 0 && $PASS_COUNT -eq 0 ]]; then
-+	exit $ksft_skip
-+fi
- exit $EXIT_STATUS
+ error_put_device:
 -- 
-2.43.0
+2.25.1
 
