@@ -1,146 +1,188 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A831F2380
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 13:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769435458; cv=none; b=b2LO8EqqLy0npMDOTpgRGNdQnmWg0T9ZGYW5w5B925VI8gPo3g1lNJMlngGBTuvifp4m36UHEOoFZwjEvHRxavasuBM48oBcDeoI60dYxD8y5uwYwS9XUBUkVfFJolZcxwjGg0wv5bVHF0tg+CuNLqbgW+ygEOBtjY/rfWoKbmE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769435458; c=relaxed/simple;
-	bh=f53timH0np4bz+gztyV/dfAq6Ha3g4qBItMHfYuFoN4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JpIe70nm+RHwiS+VbJI0Noph+o1FBB9awygeBiS6/MWJLuqVojR8x8g2FDtW+6yzTSbr/fHBNPUTORbVgZjYqCddAT+wJG+AORsSE4z01nZJ1AAhzZY/Gm3HnFsxFIhalZVD7cJnTf9FWx1WTogQnLIkb0hHvX3MYNTFDdaFNgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z896Cdtp; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD701F2380
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 13:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769435470; cv=pass; b=kYk/C8jd2dfDAtJ9KjqasldUdWaWSWxOL2RyrOEPxsiyCjkrDBcLjYuPS/tHpxOeOD2OTzpVtDlzD/6WJkmaNcLmsAc8OugJlFvlnYQLko90utbTPR2NAGNpZH8tRCkKC0rwOO2lVE+spNuY7qMm3uR8oHT2YT0TR+Y+Flpw5eM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769435470; c=relaxed/simple;
+	bh=rqpqdgIRhNOFoUIcjikZjqtl10dj1sqXrOg7rpFUh/o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sC5kyYewP+08cwuMK+l+Y4TbkvfRBDPj3JcPvYzT7ctRXtwRwVlUDYlIlJr5AbKO1z/WktBNy7iIkvcrh0wH8D164+3hYhSAnVvyoh/o/FaEFsokgiMyWjqUEX8OuzKSaRkF/nnBIDNQ/gq85zPc3uncOcKH5q3bMw+0+IZGRUg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=AAlUKS45; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z896Cdtp"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c6aaf3cd62so580103385a.3
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 05:50:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="AAlUKS45"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-34c7d0c5ddaso2582533a91.0
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 05:51:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769435469; cv=none;
+        d=google.com; s=arc-20240605;
+        b=U5Z22dihrAFENiQBvJKHh0YiHRukEGS4LwiXhhR/xvLvhKkZ5iE61hXJ3sbrTsmYrl
+         Yq3TpujAZtPm5Ig4EMMonBLb99UwVoNvKw+1lwnB0r63IqpDxJZnBQ0R4ygPL6L4vfJZ
+         ldVdPH0J7u7ZAZ6OzGbhQpWW0hLjROExXPZn/Xp10Ypx7Mk6jB3RDjKBr8fPjMbEWbB2
+         cN/dWCxb2zg+CZCuX53rCUnfZcgt2ItmmgD0tXMeFNYmsFydqdYgVpizj+uJVmpGA7A6
+         OZyGDLL4qxmqRLgiuzxhCNeOjzsUFBzznJl8SYqw3WxW8hJfJTVjFpjNJoka/jczZeLj
+         RyjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NTQcfeK2JukcHMzbGTCcT8d3dgggjupy8UzqKBL80Vw=;
+        fh=HJxJUgJ6S53XZW6bRkYM5TxIBBuJQL0KTPJ4py8OoTo=;
+        b=TyzBzwxAY5lGZTBlwNHha6Kz5vRkfiCtI2nezh1+995DdWIVRzVykzo1g1wEZJyroA
+         4KlYIsYdOarzAAr237OG7UMd9tpg90zoQy0ah9+hvaHHagokbFC7ioJhotxGPfEfvOLg
+         fOUph+TlLAW11SNC5kKbwoAzvdZsTnETaPksCeVABG28L8O8ZxKSG/wUc/+8cpGK496H
+         VYjdQrZwCqYtf7+TFIFnCSe7K/6xbLeRGJw/NSa6fF/nn9YDuM1kVWABc0E0kFGNnltd
+         BcsRVbKz6Duq6rGgVAIT2i+3j6qUCKlmlbbmevcnpa69aq5vhpVJM0gm5+Sn4/+GoGG8
+         DwuA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769435456; x=1770040256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769435469; x=1770040269; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iQxwi2pFUZR+UAlToTQBrAAHIAjqCBSvDHQE8e6QSYI=;
-        b=Z896CdtpOPVagWYpaW3ZkjtlZsDBCg2opIPR+XJms3UMQNd3qOb7KXjj61LSp110Sx
-         9V/rHLr+O61Ofv51xDoPDDd940XnAkc20xlJpVk8oTjGlYqZuEdSwA28pjkLBzN5YfAp
-         zcGPPFGkanNVnBoSIbFVHcVXejUySsHfG4728ow6+dgE5VDB//LuFzDmGpfqbYDCT2Km
-         Qnr/1XJyJXp9ePkujuiWX2kDEhejrhcCsBZgyTjlk78MpuXKrLw8SWH3sizps4oUQQpX
-         YELNukHAWlMy9XvMIPdDtLHDJclQujtXGCkMladbAFli7aZBxfKXWYxYhBu67d24OpcP
-         2l3g==
+        bh=NTQcfeK2JukcHMzbGTCcT8d3dgggjupy8UzqKBL80Vw=;
+        b=AAlUKS450yT1/4en88KqJAdFWXb4kiYDm2vD1kInhjMxhx3aO62b+o/38rg9awuAuL
+         0n8Ac/qpueZ08LBeO+kmDtxPw1tn1OcWuyfl/rJ8SgCwV35EPkYsX3yi6qs5paPfqbK7
+         4eSA/5YuUqRYFZfSZ0whlvCeP9XYBoNYKG2xdNWPpIN6uhECQoOzidipfw7IOkWc84Z6
+         Gwjnyp6s9Dng6ECGWRsGT/ohQKx3mfuHAZuTVWoE5q/ctgCY/iSWqpjvTT5T+8Tqv+vJ
+         2Qprq0ghACZqCnzdLmYUwM5rKqCIZdnZA0ism7gMkcchGIrq7kqTEE6tgXtfygI8+wKz
+         EdKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769435456; x=1770040256;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769435469; x=1770040269;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iQxwi2pFUZR+UAlToTQBrAAHIAjqCBSvDHQE8e6QSYI=;
-        b=wHHjmtYOg0yeoiRAQN58kDTwzcIvoqoTtGbmy3HsA0Kd/tUf0WSpQLo9auhSUNDnXg
-         jagZzMcWFGcJ9HZOlqlJpDmNjO2J+6+XBOWVDjWJ6ccVYsgNcnwmPq5unKjrvQU+sM0G
-         DlLYktKduhYP3K2bY3bU7rrna3zg64OjXaSQXrz4Mu9Z2V1ep0N+lxpKJFFogdj53vEp
-         v79YxxmGvEZhOE5gzG8HoeJF2cor+Veo38/GwxSvljfkn5m8/qQvdQdsiBmPjR1A7QJc
-         fEwz4E+3nJ+DQsBoZoLL2KWiWrGPnRBwQswaZpcgKG+4nqZ06TcT5pC0yjBhBpN6OIrK
-         e13w==
-X-Forwarded-Encrypted: i=1; AJvYcCUYeWwmoNJoSj/vLFO0SivGJF1lTaxLKPFh6Y0kw1c+VGsH9s2MepR7s7D7qnwaHxZvTirCWfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ0kEYau6A3RzPht6WViNM9ELre0HEAVLTUQzamwptnirfWQ5+
-	dhtFRR10gAZorPFbrXmvDbzCtHQQ1Oa/6CgRXcKMM01D5xtrqJOoJIdA
-X-Gm-Gg: AZuq6aIGRt7BUu1hU1plvoWCRwcwmgXYG5BgZVlYn339avIuK+8U4tlM7Eobrzh1OUV
-	joc2rHal1tKgwAQTmfoI5ZzBjYaZLN3IRo6I9VtQf5xdM5xpdaKVYcTQHtj12WDx9FhLcZPsi0M
-	BUg8uqw+9ms9LjhJ8QToh7pO3jZ9kPIoZWcPMpY/GmCWjR6C3I40oMsQ+Eo9lMyq+VCTIzWfBuZ
-	jRSn9COM8mHNu6ufFmFLCo99C6dG+zDmxaUqSSPLlKb1FdSh5obBKLTy+OP9fE0GlMxZx8T1C/Q
-	7ZggjQywoWp0pSBnAYzz2fCq0nzbHUEfi7YXGpS6V8euWKTlBbdtvYzc+AxRXZAQ7fAmEJGuBfs
-	aErhg3pF49t9DMe2qczlVKvwQA2pNswwyvNTUK58P2rgLhu5y8Gvw3cMJviyNRY6bgvpZsmWzkG
-	86jvNzrNaN48yyGMUhDyQ=
-X-Received: by 2002:a05:6a00:22d3:b0:81f:4c37:7647 with SMTP id d2e1a72fcca58-823412dbea7mr4104835b3a.68.1769427926560;
-        Mon, 26 Jan 2026 03:45:26 -0800 (PST)
-Received: from soham-laptop.. ([103.182.158.109])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82318648dd7sm9086663b3a.3.2026.01.26.03.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 03:45:26 -0800 (PST)
-From: Soham Metha <sohammetha01@gmail.com>
-To: linux-kernel-mentees@lists.linuxfoundation.org
-Cc: shuah@kernel.org,
-	skhan@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	andrii@kernel.org,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	haoluo@google.com,
-	john.fastabend@gmail.com,
-	jolsa@kernel.org,
-	kpsingh@kernel.org,
-	martin.lau@linux.dev,
-	sdf@fomichev.me,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	Soham Metha <sohammetha01@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jason Xing <kernelxing@tencent.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Mina Almasry <almasrymina@google.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH v2] net: skbuff: fix uninitialized memory use in pskb_expand_head()
-Date: Mon, 26 Jan 2026 17:13:30 +0530
-Message-Id: <20260126114332.23955-1-sohammetha01@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <6954bc70.050a0220.a1b6.0310.GAE@google.com>
-References: <6954bc70.050a0220.a1b6.0310.GAE@google.com>
+        bh=NTQcfeK2JukcHMzbGTCcT8d3dgggjupy8UzqKBL80Vw=;
+        b=w1t6ZggG9EJrPPalTs1Hdg9r0bE4J6iveqfl2lcfoywIGZTZQDJF20LLrhhq8qCamU
+         92Vx1McURQnbQmGkHgTVM+1snoBkHpuvLHnMby1sjTJ2++2K24aAQurjSd8X8feSdvQJ
+         Hl8qouv/rmD9ZBD1HJkdvtyO4AB03o8YDNBPB7cp+tey7Ax2yTYTIKf7fYO7IBQ82tjv
+         mDnUMVOXJWAJPewFvge6tyFwOAFwLw52Yv1wC00uqelC+l1zNydUogFnGhDvOWGVWLcl
+         jBwApCz6xowZFoWyWlz7f46go3xMizFEE7Q3vw1AITHhz/Jqm795Id8HV099Eq8gQjkI
+         Ltbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAYR3YAYDPlQLCqx99dg8GP+nygVEKUZw0XE/4TLskL9f2ru4ezBHeSV3ulr6zl4Zsnuh1kRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDO6a09d77l9aGAiBGXY/XghhWMqNRehbH6LXZjiQQTmTaHaR5
+	iniB6gTFzfMwDGzv5tUgRH4FHRKWuxAs/y59lI3LWrbxzWXP2+t3Re1IF79b3NbGlvFxHUNFO8W
+	mO9Ht32+JT4OLDFxvgInWhQaKwVkFx91T5OIr9qEx
+X-Gm-Gg: AZuq6aJYJ7+wtcQqU7YogA3BLz96EPTE67fKVrLVd20zLcTGNJP2ua4QXoZI6fazwde
+	CHdhpOsjrHUc9djjxk7sklSihhciZJBERNzTwz3AHBEsHhw3W9/3BcK5u+GlNCiARZvvin9jzL3
+	AuC4xvhMXkHM8lyuuZtRQLuAVR+NmVX+htuZf+7Sy40Hzn15WMtDTOtvtlZXFi0h9n7Xv6KoDHn
+	a+Wp/GA4srtasZrvQ8uV7tW9vnEa/V6mTJtHcaQ+wEG5bzzTm8vFkvZS/o1g/7P9KTCSQzKK59C
+	ejE=
+X-Received: by 2002:a17:90b:534e:b0:34c:2f01:2262 with SMTP id
+ 98e67ed59e1d1-353c458fe52mr3665842a91.3.1769435468514; Mon, 26 Jan 2026
+ 05:51:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAGfirfeHMgBUq-Q8tCn8dr2tHVJdQtZbS0JMutqF+b04T3EoWw@mail.gmail.com>
+ <CAGfirfc70aJ7YUa02ObbxPfkH1u6B=BPZpUXDAg2FU16aKvL1Q@mail.gmail.com>
+ <CANn89iJrXSHouF4ZnnoVYz4Q47J5jkwU4OuXMpJi3Orox4uT_Q@mail.gmail.com>
+ <CANn89iJvj8YXtuMNTh1cQOjVctBsMs88FHx-xLn+rCzyBGn-og@mail.gmail.com>
+ <CAGfirfebdHJi13epyM5RWYfQ2TGSWExP5nmnoKra83awetAbLQ@mail.gmail.com> <CANn89iLhXQ0W7+rOQCqxLpGyoHBAJ_xeUhjL+7MtQmN2saaYog@mail.gmail.com>
+In-Reply-To: <CANn89iLhXQ0W7+rOQCqxLpGyoHBAJ_xeUhjL+7MtQmN2saaYog@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 26 Jan 2026 08:50:57 -0500
+X-Gm-Features: AZwV_Qi5_QgjDQPQ6IB1PuXgW9OHYb_V2eZZdKxdMsMv2OZTw011MA7aNXhUpDc
+Message-ID: <CAM0EoMm49+9j77Xpb46Q7qVT7JBU2cXKZB-Oeurzsuoe-=3eJw@mail.gmail.com>
+Subject: Re: [BUG] KASAN: slab-use-after-free Read in u32_classify
+To: Eric Dumazet <edumazet@google.com>
+Cc: =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>, davem@davemloft.net, 
+	jiri@resnulli.us, kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	xiyou.wangcong@gmail.com, horms@kernel.org, syzkaller@googlegroups.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-pskb_expand_head() allocates a new skb data buffer using
-kmalloc_reserve(), which does not initialize memory. skb helpers may
-later copy or move padding bytes from the buffer.
+On Mon, Jan 26, 2026 at 7:26=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Mon, Jan 26, 2026 at 1:11=E2=80=AFPM =EA=B9=80=EA=B0=95=EB=AF=BC <km.k=
+im1503@gmail.com> wrote:
+> >
+> > I propose the following patch and would appreciate your review.
+> >
+> > hoff is used as an offset argument to skb_header_pointer() in
+> > u32_classify(), and negative values can cause out-of-bounds read. As
+> > shown in the code below, offoff follows the same pattern and requires
+> > the same validation.
+> > ```
+> > TC_INDIRECT_SCOPE int u32_classify(struct sk_buff *skb,
+> >    const struct tcf_proto *tp,
+> >    struct tcf_result *res)
+> > {
+> > ...
+> > if (n) {
+> > ...
+> > if (n->sel.flags & (TC_U32_OFFSET | TC_U32_VAROFFSET)) {
+> > off2 =3D n->sel.off + 3;
+> > if (n->sel.flags & TC_U32_VAROFFSET) {
+> > __be16 *data, hdata;
+> >
+> > data =3D skb_header_pointer(skb,
+> >   off + n->sel.offoff,
+> >   2, &hdata);
+> > if (!data)
+> > goto out;
+> > off2 +=3D ntohs(n->sel.offmask & *data) >>
+> > n->sel.offshift;
+> > }
+> > off2 &=3D ~3;
+> > }
+> > ...
+> > }
+> > ...
+> > }
+> > ```
+> > Therefore, I propose a patch that rejects negative hoff and offoff
+> > values during u32 classifier configuration.
+> >
+> > --- a/net/sched/cls_u32.c
+> > +++ b/net/sched/cls_u32.c
+> > @@ -1104,6 +1104,11 @@ static int u32_change(struct net *net, struct
+> > sk_buff *in_skb,
+> >   err =3D -EINVAL;
+> >   goto erridr;
+> >   }
+> > +
+> > + if (s->hoff < 0 || s->offoff < 0) {
+> > + err =3D -EINVAL;
+> > + goto erridr;
+> > + }
+> >
+>
+> Negative values are valid, it is ok to access data between skb->head
+> and skb->data.
 
-Initialize the newly allocated skb buffer to avoid propagating
-uninitialized memory.
+Right. We have to do this at runtime in classify().
+Can you test with your POC with Eric's suggested fix?
 
-Reported-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=619b9ef527f510a57cfc
-Tested-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
-Signed-off-by: Soham Metha <sohammetha01@gmail.com>
----
+Eric, can we do something like pedit? See: offset_valid() usage
 
-v2:
-- No code changes
-- Resent to netdev list
-- Added Closes tag
-- Added Tested-by tag
+Sample config using negative values:
+#dst MAC starts at -14
+#src MAC at -8
+#ethertype at -2
+#
+#matches: #src MAC address 00:ff:07:e7:29:47 dst MAC 00:ff:07:e7:29:44
+tc filter add dev dummy0 parent ffff: protocol ip prio 10 u32 \
+match u16 0x00FF 0xffff at -14 \
+match u32 0x07E72944 0xffffffff at -12 \
+match u32 0x00FF07E7 0xffffffff at -8 \
+match u16 0x2947 0xffff at -4 \
+flowid 1:12 \
+action ok
+#
 
- net/core/skbuff.c | 3 +++
- 1 file changed, 3 insertions(+)
+#to display
+tc -s filter show parent ffff: dev dummy0
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index a56133902c0d..b0f0d3a0310b 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2282,6 +2282,9 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
- 	if (!data)
- 		goto nodata;
-+
-+	memset(data, 0, size);
-+
- 	size = SKB_WITH_OVERHEAD(size);
- 
- 	/* Copy only real data... and, alas, header. This should be
--- 
-2.34.1
 
+cheers,
+jamal
