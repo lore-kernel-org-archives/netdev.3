@@ -1,87 +1,116 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEDC15CD7E;
-	Mon, 26 Jan 2026 12:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2562C3385A9
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 13:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769431613; cv=none; b=ar/0BXj/SFk/kFI4ZdbSo95b8x25aNp0D87hb4FU7SBadq7IPLWBswn+tYQ7xaeT32otENbNP8cX7PCAytiH7IbzK0ADuDQKUSpz2uaKmWpvvlBbL9kasWFGF8PWd8898rcQk+yDhjVN8rpH7ivfL92c5IyVEHnjM+cS+AwGL50=
+	t=1769433095; cv=none; b=qza3etT5dD1+oeaqVK+yclb16uX1U8/M2+x0qR0PTzSQA7C9JJffmohZwjAvhL5hxTjETNCi3DCHi33JWu3Y+XBe0onGZy59j+ugeJxzlZkr6eUqRuZ/o4LYIt88YvgIvlGPxcNp6qBuosaECLCAbewwbaO2Apz6EEc27WzKEOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769431613; c=relaxed/simple;
-	bh=xzF+70RCHLThVHeN+fikhTq2hQTzCjlVjm0fsvownQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IfVgdpw1F2paDQXSje81g1RlNQCx5DQb5HhzrnX4ldX5B1msb+/5sBZbazw3L23wXa4bPSaWjZh+wxUpTqzh4UQOBIWB2cDDb4CG87to2joOQPOGkHuP8gAJrLhY1UL+zwZEl2tWQCcPQYV5P3VSwezPusJlM3ob8inFY5OE/i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3AE6F200EE2;
-	Mon, 26 Jan 2026 13:46:45 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 23B2A200E9A;
-	Mon, 26 Jan 2026 13:46:45 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id D33D62035B;
-	Mon, 26 Jan 2026 13:46:44 +0100 (CET)
-Date: Mon, 26 Jan 2026 13:46:45 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
- per-queue interrupts
-Message-ID: <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
- <20260123-dwmac_multi_irq-v3-2-cc53f2be8961@oss.nxp.com>
- <20260123-dinner-aloft-e57deb6c546a@spud>
+	s=arc-20240116; t=1769433095; c=relaxed/simple;
+	bh=wEBwofd7CenFPqiOuE08b6AudcffkxCplShblrIEfzg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F8kj0iX05TGwm6cKzg0f3IhNXwlqXXXZQPUM+lXDNm3EL+yktL9vzm2a3fg4xyvKKaVIGGKolxYcXh4BonJd/OjNjrck6QXWTO1CK76ZRl7FODvC+/AFhIZyK2vQy8PGVIeYqiD9G76teaubaNy75n3Uvto8saM/L+a0CiRWZzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vkMNA-0001ii-9C; Mon, 26 Jan 2026 14:11:16 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vkMNA-002aPy-1F;
+	Mon, 26 Jan 2026 14:11:15 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vkMN9-000000009mq-2b88;
+	Mon, 26 Jan 2026 14:11:15 +0100
+Message-ID: <69592713b7bd419e23df458734ca78070a83e8ac.camel@pengutronix.de>
+Subject: Re: [PATCH 2/4] phy: s32g: Add serdes subsystem phy
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Vincent Guittot <vincent.guittot@linaro.org>, vkoul@kernel.org, 
+	neil.armstrong@linaro.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	ciprianmarian.costea@oss.nxp.com, s32@nxp.com, linux@armlinux.org.uk, 
+	ghennadi.procopciuc@nxp.com, bogdan-gabriel.roman@nxp.com,
+ Ionut.Vicovan@nxp.com, 	alexandru-catalin.ionita@nxp.com,
+ linux-phy@lists.infradead.org, 	devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ netdev@vger.kernel.org
+Cc: Frank.li@nxp.com
+Date: Mon, 26 Jan 2026 14:11:15 +0100
+In-Reply-To: <20260126092159.815968-3-vincent.guittot@linaro.org>
+References: <20260126092159.815968-1-vincent.guittot@linaro.org>
+	 <20260126092159.815968-3-vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260123-dinner-aloft-e57deb6c546a@spud>
-X-Virus-Scanned: ClamAV using ClamSMTP
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Fri, Jan 23, 2026 at 05:13:03PM +0000, Conor Dooley wrote:
-> On Fri, Jan 23, 2026 at 11:09:55AM +0100, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
-> > set them to allow using Multi-IRQ mode when supported.
-> 
-> The binding only supports s32{g,r} devices, why is the existing minimum
-> retained? What devices are going to not have all 11 interrupts
-> connected?
-> 
+On Mo, 2026-01-26 at 10:21 +0100, Vincent Guittot wrote:
+> s32g SoC family includes 2 serdes subsystems which are made of one PCIe
+> controller, 2 XPCS and one Phy. The Phy got 2 lanes that can be configure
+> to output PCIe lanes and/or SGMII.
+>=20
+> Implement PCIe phy support
+>=20
+> Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+> Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.c=
+om>
+> Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com=
+>
+> Co-developed-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+> Signed-off-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+> Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> Co-developed-by: Bogdan Roman <bogdan-gabriel.roman@nxp.com>
+> Signed-off-by: Bogdan Roman <bogdan-gabriel.roman@nxp.com>
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> ---
+>  drivers/phy/freescale/Kconfig               |   9 +
+>  drivers/phy/freescale/Makefile              |   1 +
+>  drivers/phy/freescale/phy-nxp-s32g-serdes.c | 569 ++++++++++++++++++++
+>  3 files changed, 579 insertions(+)
+>  create mode 100644 drivers/phy/freescale/phy-nxp-s32g-serdes.c
+>=20
+[...]
+> diff --git a/drivers/phy/freescale/phy-nxp-s32g-serdes.c b/drivers/phy/fr=
+eescale/phy-nxp-s32g-serdes.c
+> new file mode 100644
+> index 000000000000..8336c868c8dc
+> --- /dev/null
+> +++ b/drivers/phy/freescale/phy-nxp-s32g-serdes.c
+> @@ -0,0 +1,569 @@
+[...]
+> +static int s32g_serdes_get_ctrl_resources(struct platform_device *pdev, =
+struct s32g_serdes *serdes)
+> +{
+[...]
+> +	ctrl->rst =3D devm_reset_control_get(dev, "serdes");
 
-The original idea was to support backward compatibility, as older DTs
-didn't contain queue-based interrupt lines described.
+Please use devm_reset_control_get_exclusive() directly.
 
-But now, when you asked, I started to think it is not needed,
-the requirement for backward compatibility is managed inside the driver
-and yaml shall describe the hardware not used configuration.
+[...]
+> +static int s32g_serdes_get_pcie_resources(struct platform_device *pdev, =
+struct s32g_serdes *serdes)
+> +{
+[...]
+> +	pcie->rst =3D devm_reset_control_get(dev, "pcie");
 
-Is it my understanding right? Should I provide v4 with minimum = 11?
+Same here.
 
-BR.
-/Jan
-
+regards
+Philipp
