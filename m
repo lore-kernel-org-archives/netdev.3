@@ -1,61 +1,63 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87F0330332
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 10:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA1D32F761
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 10:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769422987; cv=none; b=M6AZ0nA+C28V4d5UzpJBQ5ZN8J5x/N5SMoL10cQ9Q/Ku/0ZxH79uZWeh950TnNQEvv3k4BnaoV3W8SmodJA4059Z482ACm0gyvaFC1IUaLx1GFYykTcaWBAeIYjbAJLrsUfRF9Wch0In49uYQfCKGj65ifovFumiOr35pqLv6Xo=
+	t=1769422994; cv=none; b=lCWWtWRDhqJxj6DYoE4lp6KkylGxTOMtvHNBrnXmeVp4iZZdLlRZqmYmVibNq58g7cg8ptr50N9sXcy7RFx7NKDElKAA/Y0xD9Yp+Gj0aqEf9/7VGP7Qwk1/xBNDUMoDvZQvZQN/Kxu3SPwVGFRvVwAW6mzSI1QBXEf7/luu/9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769422987; c=relaxed/simple;
-	bh=akcnJAPugsQeTgIwjxydursYndWIjQsiH+aGDF7fLnA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fw21NDaImLEG1MJbBMYCCdG0IXfrWL+HncFmZUtjXLfRbXHyQTzy3X/cdjm6Zkj+vG1rsNOurjWaEg8QLo1O5xzPOLato0laNEo//TiSHDFYlTEW3XRR/FAsLBu+g7BilUtpLoK7ne4BPtd+OvPfJRqs3+ItCn13JgeZPu7bLvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZY9iHybw; arc=none smtp.client-ip=209.85.210.179
+	s=arc-20240116; t=1769422994; c=relaxed/simple;
+	bh=ULovLn4XyOEnXyl4EoSszEP7+/PiY/2l5JsqJdnUsmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UwbJtYsK6H6Wrq0eDzvfruzr4VU13HQym48JT/Mr6Ay0v7mxOAJqyFC9UVPH8wv/+ngJp/740fJzOm5diqKXXs8G2EDwBdW90d9eToKZP5w9f/Pkz9LJHvb1n1LLSmGuB1nfeNgtlsf6fqJAXXq15hv0ZuE7HUshsFXd5yjTjrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LzPrZysJ; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZY9iHybw"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8230c839409so3332979b3a.3
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 02:23:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LzPrZysJ"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c5e051a47ddso2791506a12.1
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 02:23:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769422985; x=1770027785; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aB4VXKeNKbcLHh/83xthm74hAlM9LbeMyITc9rvDEEo=;
-        b=ZY9iHybwvfsUuvt9mUUaQ1RjFFzitcm5zajMrvx4aqrZcKee/lOhB1lCKy8Q6tfXB+
-         DijKNt26a2hClMTJXyHCKOqGp/cGat1j9m07Gz391qr8QGOiMUR40xDmNltyRSza1/ku
-         IaVCRoOfn3kFraS0L0BDX1OZphej5oM87BFAT9t5haQBmk/Ubgm6Jwa+hX0rnqDsfDsA
-         o3w0exdWGtqNibQDqcspy6//W3NobQxhcTwYwmRPUWmGcOnJkkwq506tiKNcyZb5ga4J
-         VtORNfQBIsLhOaJ+c7iWtHF4UDX0vZXHXi94+orb++vn2T0ZvQJ9iq6WvzWhH4NWl1oN
-         0ijA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769422985; x=1770027785;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769422992; x=1770027792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aB4VXKeNKbcLHh/83xthm74hAlM9LbeMyITc9rvDEEo=;
-        b=Nu5kW5UFcxpZYk9Y0gfoI25SzpWfjM/uxW4XE8GwPZsNQCvP6e6i+hZ5oGxJZ8b3Yh
-         b84liQKlBtVJb/pLGhPHHpKsfg8k3L6D5SQk+jsVBFGvgeAcf7K39vMKy5I9QvFDy04b
-         T3OJs9TzOQg3UXQRXzamxd2udJ20jLgeXZL2keEbLF3S87Npp5BuJG3k1ZAzZTMAtupL
-         JW0H9oU8hS5iYgBQ+1cU28RtTqwlpGX8aFs2//K8fnod6LK6MLWe6WdRuVkVNV4/5LuO
-         fgvsCjzazZYTyYR0woxm2uWNPoxjrq2PxbInlOIHQToydaZOlTt/+MGOLKLxT2OneKet
-         g26Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW8JC6LNS5MpJLIdaq8wesKEgr8+KsuGN1zSZfT84RSItLZnof65EqaPE61X9N/xpUnQUJDzLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/jVdHoHmf9O/stMEgOCKCWpXggCkmJm9Wf7CjpxMqwRXftmSj
-	rIhJwdFnHjEg3r6J45BVci5XnF2ebM4ZM1QzxREe6zx2aCv6WIm+rqLh
-X-Gm-Gg: AZuq6aI1rDbtDwBEqL33V5H6I4BA3b3wn06Kv+VBZqptto8uNMUxo6RIGVnNYzCltaK
-	Uh90ulgsBoEmDVjRB1wsJLiQ0JBH7PlOSZ1v+i/GrE5cEjiIv9Ppo/8hIC0Z+SPY4t4tQEuDMp6
-	NuKXpMtgYfhlxEoqNc2R8EWNvJJghSEbmvS5UosXshzNVXfySLx8vp4b+VITOxmtg0GiTuts7NN
-	X0eEZg6utjkpgjPCmiQ7woVdn0iLGtMepR10EbgOAVtQjQVOj2+KBV08sXx98nvAPRgv89536v9
-	QV/B2heccHboX8xI9N416dGnuAmrdbOJFJ2rJf9WlT7FEdmXMJXPSl22e/r00YBQPu1MPeQcggI
-	OFC6JnRDY2jCbAVtJoOuL5bTE1ilXZjyVUQwJSjV/b/uBZOG8qDh8kh8tnnupkysQi10sR7b96I
-	as4qFCi3PY7hSkHFTGY/VZ31cYHxx10x+UN/c9Xjz6q/xDhb1cfrKxQ732+MfDG5BVeDjZccl+
-X-Received: by 2002:a05:6a21:3988:b0:38d:657f:7d87 with SMTP id adf61e73a8af0-38e9f0f4a4bmr3644339637.13.1769422984868;
-        Mon, 26 Jan 2026 02:23:04 -0800 (PST)
+        bh=YG5zC5nRKtuL2pWJfWd5vRZ0VVU+WDTQCf+ZvwSm3ng=;
+        b=LzPrZysJ9GdegDfGz3rGTDQRyeYy9d3V4h/CQwmn7plf9AOk89pog1s5b1Sv57LJhP
+         PFzH4ttXSg/bptx3SQF+M8auBq8zNA4wF8wNaiv9KnOU7S2q1yv7MFNAUY7ltRAaXEjX
+         7dqPjXVpLxSQNe1z5Ta4MVRP/O/Ac/LtSUFBj9hmMP2aiZ1newk9qWSLfB9wHXztK4Dp
+         QOEVAtz/OvIYT3C1fYcObhVvdnyk7BVuEMr9VgEyoDjmgZG0bSVJXRHPmuXiTY/kkCyd
+         2P4rTDjt3lbAfPaUvf3jXfm75AIOV8UjrkRxwqd2teja6eUramdCKJXKUJOOxcWV8RBx
+         rmEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769422992; x=1770027792;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YG5zC5nRKtuL2pWJfWd5vRZ0VVU+WDTQCf+ZvwSm3ng=;
+        b=c4bYePa4ePE91h6sktxpVSejv7vUkWOA5DG8vYtIgLmtd1GY0z2Bd9eyKaGPRMN/bS
+         EHqQdG3zwDJTuVT0VDw7U0KKlRQCrAniZxw2rk7XdbmXhf4BdOI6hbjZEqvmUU3sK3PU
+         yWuPxJDPISgwJSli+1kRHU8F3rxirVLPIcJ2uAoCZKbLJfJe8vlNv4Dml5mWNvyLw01g
+         GCioJML89j5MS85PXxq6h6clR6F8SDnEAWndK+lz+1dCaNwSDxWfyY2A9XhNBYK4v2Zi
+         r4xeqAhMimL5cZu3CNvn20WgtTJRUz2JScB5CF1u6x1su172aKs8pNPbqx7mOsd9ibLq
+         IzvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjYr6Kcv2Xrty+7yCFbmqc5E7rdlySh526pGZdN9PVHlDj7OZoLZrQU9geo8KJhUlBMNbb8bs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYSwjip4S+FNCZ4kT/9GEmK2JhhlCudKMu7jHjIDn99vTNQwNc
+	aWIrXjLM5zunz2RJyWbRCrn8UVlwBSiCBNmIQlfoB6DnBHgtRPlCS0Qp
+X-Gm-Gg: AZuq6aIwHkxO0Ar8dFeIWUsTbFagpOn6WFaOc7DYMrBr1L6AmxHVLwmlsBOfH5SR+ZZ
+	I1JvpNVFFdhmROgjTLpdJDg+ZN5dYoFHhisODI1qgQ/ivCFcCuPyFdT8xyrFGwhWz8C8Txqj4+E
+	Yefrz/il0o1fv2QxRYDNAxl6iI1fME1J38Kqr9l3vrz6C51SuV7bBbrjWm3UgcUmotm1TUnHtmN
+	Ng5YvRSwxB195TD0OjYvlAqCKqfIiSqGn5Q3+EhahP1OhFgEmh74CR+24gg+1Jci2Nxs8Rags7Z
+	fewV4qILhxhBYbZGG3AXpoprAmjwe7Ie5D+06JbSibP+v7A7Cc0nSlFNmTJBEdU51SoA/KtCbdv
+	kPnNOEYw9aTZMwzGAZkqpGlDfLuBSknxih7lBcSbwfTxjpZIRfn9Y5ttykR0mNa3xUuz29l2zkB
+	Q23xPJ5CAdIKkdNYn6+9hqXrXRyNygP54rncx5SbfJYu21iXeR864/i10z5Yr+McZwhYpygoYl
+X-Received: by 2002:a17:902:e5d0:b0:295:425a:350e with SMTP id d9443c01a7336-2a845240123mr34633815ad.8.1769422992175;
+        Mon, 26 Jan 2026 02:23:12 -0800 (PST)
 Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd776sm84958275ad.26.2026.01.26.02.23.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd776sm84958275ad.26.2026.01.26.02.23.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 02:23:04 -0800 (PST)
+        Mon, 26 Jan 2026 02:23:11 -0800 (PST)
 From: Joey Lu <a0987203069@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -80,10 +82,12 @@ Cc: alexandre.torgue@foss.st.com,
 	openbmc@lists.ozlabs.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Joey Lu <a0987203069@gmail.com>
-Subject: [PATCH net-next v9 0/3] Add support for Nuvoton MA35D1 GMAC
-Date: Mon, 26 Jan 2026 18:22:54 +0800
-Message-ID: <20260126102257.2619862-1-a0987203069@gmail.com>
+Subject: [PATCH net-next v9 2/3] arm64: dts: nuvoton: Add Ethernet nodes
+Date: Mon, 26 Jan 2026 18:22:56 +0800
+Message-ID: <20260126102257.2619862-3-a0987203069@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260126102257.2619862-1-a0987203069@gmail.com>
+References: <20260126102257.2619862-1-a0987203069@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,111 +96,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series is submitted to add GMAC support for Nuvoton MA35D1
-SoC platform. This work involves implementing a GMAC driver glue layer
-based on Synopsys DWMAC driver framework to leverage MA35D1's dual GMAC
-interface capabilities.
+Add GMAC nodes for our MA35D1 development boards:
+two RGMII interfaces for SOM board, and one RGMII
+and one RMII interface for IoT board.
 
-Overview:
-  1. Added a GMAC driver glue layer for MA35D1 SoC, providing support for
-  the platform's two GMAC interfaces.
-  2. Added device tree settings, with specific configurations for our
-  development boards:
-    a. SOM board: Configured for two RGMII interfaces.
-    b. IoT board: Configured with one RGMII and one RMII interface.
-  3. Added dt-bindings for the GMAC interfaces.
+Signed-off-by: Joey Lu <a0987203069@gmail.com>
+---
+ .../boot/dts/nuvoton/ma35d1-iot-512m.dts      | 33 +++++++++++++++++++
+ .../boot/dts/nuvoton/ma35d1-som-256m.dts      | 32 ++++++++++++++++++
+ arch/arm64/boot/dts/nuvoton/ma35d1.dtsi       | 32 ++++++++++++++++++
+ 3 files changed, 97 insertions(+)
 
-v9:
-  - Fixed file permissions. (YAML, driver, DTS)
-  - Moved phy-handle and PHY-related properties from SoC dtsi to board dts.
-
-v8:
-  Changes since v7:
-  - Rebased onto the latest net-next.
-  - Removed unused symbol.
-  - stmmac parent driver now reads hardware features directly to support
-    Wake-on-LAN via magic packet, so PMT-related overrides in this driver
-    have been removed.
-  - Update dwmac-nuvoton driver:
-      - Update the license to GPL.
-      - Improve the description in Kconfig.
-
-v7:
-  - Update dwmac-nuvoton driver
-    - Update probe function to use stmmac_pltfr_probe instead.
-
-v6:
-  - Update dwmac-nuvoton driver
-    - Use NVT as the previx for all functions, structs, and defines.
-    - Remove unnecessary comments.
-
-v5:
-  - Update yaml
-    - Remove the properties already defined in snps dwmac.
-  - Update dwmac-nuvoton driver
-    - Add a comment to explain the override of PMT flag.
-
-v4:
-  - Update yaml
-    - Remove unnecessary property 'select'.
-    - Remove unnecessary compatible entries and fix items.
-    - Specify number of entries for 'reg'.
-    - Remove already defined property 'phy-handle'.
-    - Update example.
-    - Modify the property internal path delay to match the driver.
-  - Update dtsi
-    - Move 'status' to be the last property.
-  - Update dwmac-nuvoton driver
-    - Use remove instead of remove_new.
-    - Use dev_err_probe instead.
-
-v3:
-  - Update yaml
-    - Fix for dt_binding_check warnings & errors.
-    - Add compatible in snps dwmac.
-  - Update dtsi
-    - Update dtsi to follow examples in yaml.
-  - Update dwmac-nuvoton driver
-    - Fix for auto build test warnings.
-    - Invalid path delay arguments will be returned.
-
-v2:
-  - Update yaml
-    - Rename file to align with the compatible property.
-    - Add an argument to syscon to replace mac-id,
-      with corresponding descriptions.
-    - Use tx-internal-delay-ps and rx-internal-delay-ps properties for
-      configurable path delay with corresponding descriptions,
-      allowing selection between GMAC internal and PHY.
-    - Add all supported phy-mode options.
-    - Remove unused properties.
-  - Update dtsi
-    - Modify syscon configuration to include an argument for
-      GMAC interface selection.
-  - Update dwmac-nuvoton driver
-    - Remove redundant device information print statements.
-    - Remove non-global parameters.
-    - Retrieve GMAC interface selection from the syscon argument.
-    - Parse Tx and Rx path delays by correct properties.
-    - Update configurations to support Wake-on-LAN.
-
-Joey Lu (3):
-  dt-bindings: net: nuvoton: Add schema for Nuvoton MA35 family GMAC
-  arm64: dts: nuvoton: Add Ethernet nodes
-  net: stmmac: dwmac-nuvoton: Add dwmac glue for Nuvoton MA35 family
-
- .../bindings/net/nuvoton,ma35d1-dwmac.yaml    | 126 +++++++++++++
- .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
- .../boot/dts/nuvoton/ma35d1-iot-512m.dts      |  33 ++++
- .../boot/dts/nuvoton/ma35d1-som-256m.dts      |  32 ++++
- arch/arm64/boot/dts/nuvoton/ma35d1.dtsi       |  32 ++++
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 ++
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-nuvoton.c   | 174 ++++++++++++++++++
- 8 files changed, 411 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
-
+diff --git a/arch/arm64/boot/dts/nuvoton/ma35d1-iot-512m.dts b/arch/arm64/boot/dts/nuvoton/ma35d1-iot-512m.dts
+index 9482bec1aa57..ee32cedf3d9b 100644
+--- a/arch/arm64/boot/dts/nuvoton/ma35d1-iot-512m.dts
++++ b/arch/arm64/boot/dts/nuvoton/ma35d1-iot-512m.dts
+@@ -18,6 +18,8 @@ aliases {
+ 		serial12 = &uart12;
+ 		serial13 = &uart13;
+ 		serial14 = &uart14;
++		ethernet0 = &gmac0;
++		ethernet1 = &gmac1;
+ 	};
+ 
+ 	chosen {
+@@ -126,3 +128,34 @@ &uart14 {
+ 	pinctrl-0 = <&pinctrl_uart14>;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	phy-handle = <&eth_phy0>;
++	status = "okay";
++
++	mdio0: mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		eth_phy0: ethernet-phy@0 {
++			reg = <0>;
++		};
++	};
++};
++
++&gmac1 {
++	phy-mode = "rmii";
++	phy-handle = <&eth_phy1>;
++	status = "okay";
++
++	mdio1: mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		eth_phy1: ethernet-phy@1 {
++			reg = <1>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/nuvoton/ma35d1-som-256m.dts b/arch/arm64/boot/dts/nuvoton/ma35d1-som-256m.dts
+index f6f20a17e501..b1b3e45280d5 100644
+--- a/arch/arm64/boot/dts/nuvoton/ma35d1-som-256m.dts
++++ b/arch/arm64/boot/dts/nuvoton/ma35d1-som-256m.dts
+@@ -18,6 +18,8 @@ aliases {
+ 		serial12 = &uart12;
+ 		serial14 = &uart14;
+ 		serial16 = &uart16;
++		ethernet0 = &gmac0;
++		ethernet1 = &gmac1;
+ 	};
+ 
+ 	chosen {
+@@ -129,3 +131,33 @@ &uart16 {
+ 	pinctrl-0 = <&pinctrl_uart16>;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	phy-handle = <&eth_phy0>;
++	status = "okay";
++
++	mdio0: mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		eth_phy0: ethernet-phy@0 {
++			reg = <0>;
++		};
++	};
++};
++
++&gmac1 {
++	phy-handle = <&eth_phy1>;
++	status = "okay";
++
++	mdio1: mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		eth_phy1: ethernet-phy@1 {
++			reg = <1>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/nuvoton/ma35d1.dtsi b/arch/arm64/boot/dts/nuvoton/ma35d1.dtsi
+index e51b98f5bdce..477515ba9a80 100644
+--- a/arch/arm64/boot/dts/nuvoton/ma35d1.dtsi
++++ b/arch/arm64/boot/dts/nuvoton/ma35d1.dtsi
+@@ -379,5 +379,37 @@ uart16: serial@40880000 {
+ 			clocks = <&clk UART16_GATE>;
+ 			status = "disabled";
+ 		};
++
++		gmac0: ethernet@40120000 {
++			compatible = "nuvoton,ma35d1-dwmac";
++			reg = <0x0 0x40120000 0x0 0x10000>;
++			interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			clocks = <&clk EMAC0_GATE>, <&clk EPLL_DIV8>;
++			clock-names = "stmmaceth", "ptp_ref";
++
++			nuvoton,sys = <&sys 0>;
++			resets = <&sys MA35D1_RESET_GMAC0>;
++			reset-names = "stmmaceth";
++
++			phy-mode = "rgmii-id";
++			status = "disabled";
++		};
++
++		gmac1: ethernet@40130000 {
++			compatible = "nuvoton,ma35d1-dwmac";
++			reg = <0x0 0x40130000 0x0 0x10000>;
++			interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			clocks = <&clk EMAC1_GATE>, <&clk EPLL_DIV8>;
++			clock-names = "stmmaceth", "ptp_ref";
++
++			nuvoton,sys = <&sys 1>;
++			resets = <&sys MA35D1_RESET_GMAC1>;
++			reset-names = "stmmaceth";
++
++			phy-mode = "rgmii-id";
++			status = "disabled";
++		};
+ 	};
+ };
 -- 
 2.43.0
 
