@@ -1,133 +1,135 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC12FF65F
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 22:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B472D876B
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 22:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769465085; cv=pass; b=bsuXRK5My/gUzokgMGTRqg+/RfGY4r4fTDy+6Vw1XsTmpSbm6EEnGKclP/Qy+UxF3vliT5tJIsfWwVU6+U/e7vu25sJF5wfKHxDeY7DRCDrqYsKZ8151CWpiWAEOme+6jT8kY+F6RAn9IA4MrGjSy/sbHrDbJW/KsJogyasUpbs=
+	t=1769465286; cv=pass; b=UJd6VaZ0VbOV0l12hTE7Ctr3S7e4v1UWHdY7An8lweylglcqPZmHXawHmsIPyF+FF5WqyGZ6L/sNC2EueTynqTNdhyyzi8XZEsPgmC3Lf2WQFr6khGmSX7GnSSrFcwUCIWq5xizHfyKc34UNIN1R/0/jBe8AswSjIyJ2Ojefa9E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769465085; c=relaxed/simple;
-	bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
+	s=arc-20240116; t=1769465286; c=relaxed/simple;
+	bh=1WpWTEYnQFU24311RN7E2Bm1qH3Q3fjhO2tNvVjnXQ4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M37ydwAEbrZx0277v6NBrjUj/kBYgk7qAE1pHBnK4tm+AIKBsnMlZGYNMOxn2iaEpV1XlelrQG4U+zHlBhwf3LJ+DKgdQyNlYVaCkBEZrN2tN557IP1k+PtLMYBI56g6C8dKiWAXNEtG9EVsgollEE6+5hGqdyANSjJyYhxP5aQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SeB0gI+/; arc=pass smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=nh2jZ7gtaIR+RVL27TfHiPOnW6LnN/gCPvTDLXiu7m4Rb4YdxNB25MX+WiwPsIwzank4STvihypMX7K15sT08OjUVQi2mxp5gIxrEWjMb3SrZoLev9NKW95Fl7YbM/cS8OHKWfiAEXDUWnr7cYfYtaH37qwrJQoVgsAo/YAiF/g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=IsMk+QCc; arc=pass smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeB0gI+/"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78fdb90b670so43972897b3.2
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 14:04:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769465083; cv=none;
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="IsMk+QCc"
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-563610de035so4625326e0c.0
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 14:08:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769465284; cv=none;
         d=google.com; s=arc-20240605;
-        b=Kq5ORtrvvV6InZLexN4clewZa+KmylcY3KxXVYSSxrrjTsgtZbBLbVZM56SA9zgo3j
-         /2KfWgKzE90Cj8HNxHdtZ2KmUQO9FfmdR7LNii3HM91slEYr2pJ4xMAo3ATqzQ6WvV+n
-         tPC9Fckg8zzToNBkX+33enDqh857k6L6zKfLKdDeKbh/gFbvIyKbzkEme/EhQLGNea4k
-         kayEnJr2ku7g1gJ6Q6DYkasMB5IxlYx13bLIktuigTOee2x4dcnxI3wQ36z2EDFkrVSO
-         O+YGQw1cvv422xXhQS/RviLZqB1sA0ZD5HRc7jgAMuAH7zji4eGes54banB1Q2fqngkn
-         EhFg==
+        b=QfE8YuHLXRxWyhcVsEtoiD8HwfqjyGuE7XAdP9Ggvnbia/iOD9I+0V8Cv2IoKoVRgn
+         HEYf5GHcgueg6tc9ACb9ub+0zy6Uz5cibuH07b2fbSGC2ugNo7kv+3EFyUzQG4fyzvg1
+         YvreWXBC1alhPVUptig1g2M/2xPt1xOZ8hXIl9DRAf+jSGGBFrc2e9JWXejw+8aUg7Rf
+         YwTewztae8S7PCh41cRPhGlGTGJRTrFn12cX9Kw72m8hVUtblkNJOmKI5Nxrinb2yjev
+         KIjaq4PCBsBRG60CmqBYid2CFD12XLgj0Qb9rBqWZu/6LFGB1/mfKAZZ0AqURdjyGx6I
+         IoDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
-        fh=Tjx/Yya/mDX9f0Fol8l0ih+p/Z5Xmb1fL+QreqMQ/GA=;
-        b=QWG3XmqSTcZ2CsnYTokFDs+1NmNRKsi5D/SNfSYiBI7735NffwWgiGdNB3gQtnDigf
-         LVY8sRLgbU2QL9RYqurzSSYeLOwJpXwDjwsNYMZ0/jR4yH4oO0LC3a70r2TyVwzly0K6
-         zO2BOGbiep++Zhsprl/aHrosraUh85qrq4nj3HGa5texeKKmXAkndCWHrOOy4jloTD1g
-         iFgl+DaY2S4Ge1geFG4FveiAevsQazot0MCC9nwnWGpZQEcz92Pv3XMZfvgMlutk+tNH
-         cXRt5D2OrsQMJsbEnBkizChaR//SVESUEiAI/DHj6tjbwHD9xnrnyxY918D6PMwyBvMW
-         SsTQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1WpWTEYnQFU24311RN7E2Bm1qH3Q3fjhO2tNvVjnXQ4=;
+        fh=6NL+27sIBxvB5wwZ0ZBQmTcL/aD2DfokudLcOu/BOqg=;
+        b=ZZw3SBw59nmigcbvvyTgX4Ze76bu1xpT3w2lFdRQf5t6VlngPUgZpqLOpI819hbOY/
+         iH4kp+ziW/eZ4wvEOs9gjVmv/T3UJvNigwXo1N4RHCC+PxgR+K5AizzrdS+D/5YOQ636
+         RvvBVgIK04IAK85rc0fl7GrXJa/i8gRSOj1JBySLreXhl98JoHhRvjngNr8hklANu4+9
+         iQZIJP5u9GoMePhQSwu8UFKGpWU1wZ7fR4mtcvozmWUi5jQI5GK/aj1GJ94eiFaJyGay
+         xrH0o+YpmnNEdlYuxb9c1SVi6OAmnIGGm8VBcPhLj1ER4OXVpmxIjwrGaWALYp/VaAW+
+         bPlA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769465083; x=1770069883; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
-        b=SeB0gI+/2Wx2lV50hnRI/YgaHZvHsKB28MOlNnzpAI5vdgs7gZiN4AB425/Hhclvjz
-         bLhN3ZNejxhIoqyKoVyviDlSJkhUF+379Ghqa0cmYteBzLqorjm8Zw+JZREQGziTH58P
-         WmKXqRte247yz/AFC3xrDqN70GtoTNspJXrpHCkvw11dkRPusn47aQOkiIBApUDTAAjZ
-         hgzkqsZl0MRTh/jWLLLytrleb4wtwlidiJMi4HecXnS32JShIY8mGKaCC+zBPTutZi0i
-         oUW3CLr5O0QzInsOQPjf5U1HZeVvJX9fmmkCqwr2978ua0z4Zj1Qn3U9FbXH/U9nYIzD
-         rZeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769465083; x=1770069883;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=purestorage.com; s=google2022; t=1769465284; x=1770070084; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
-        b=PXTIWhp/tfvUDHpNNP3USe7au/Jc9haPGH2dpgl4JxqapVEa52baDomFVpWXG/WhG9
-         7RJ0hhowIDyU1tENHja6zUdiZS2QtvahBIllC1YKaZIAn4RbCSK8Z+aPFGAwhN4ylMWh
-         9OnmJp9atieh/az98oc6IDYQx6Te0mcujoGdLc7yC6JjAkfCQQ/u7q7i03BRBnmZ7kSv
-         MY9zz5neiJ3KZ2G37D3e/jRxZer5nEDb31Levcp/vf0O3w37cOjVU5TcQzm5vzzM87Nn
-         CTJ0gjfvum1/WY/4wjRRWJ14JtW7j2K9qg5BT/yjD0JPCmrMzpoCuok/hEBJOVQkqhOb
-         HuIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWC49AhgxFuqyMpMXRLu86a353qX38czacvkcdjsS1GNxt2SHX4iH1SxCG4fZ71aIgsU6F7njc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ16K/qRCADPYhT8fbVlhAVwDflsX13NoMomKtJAkc3rVP9XbT
-	roG6wGBijvPvwZaeJU2WvoTC9npRvxChYsv4/sHJ6uRpxLg+SOPUKNDh7uwYlKnzLQlB56QOy9f
-	UBy04uC2TN2FziuQGFnfw3gBn8JjXkxc=
-X-Gm-Gg: AZuq6aJxmp4HteodhLxC0Njph34tBD9etit2pyNqAIwTXsS0s6hsm4CxG+9KbwW0fud
-	Znebp1zYBgGq3ohVbeuriIb07xpkUziErUg7n9JZlvw+MbFAHRU8MvcfPPJj7xhgbe6Dlt8NNXk
-	qjswaPy4aCVa2QJNhHf6tbw9pyO2vqgxf+J4C32mwVPZoH9J6ug48fEtmFuvh1Rz4UCK1KpD+zX
-	WS7rI6ezxGWsx4fdzaR3ij3B+XfFxt6UN6Is32N91iX+oXR3AVR6kVkY/o4QU/IcD/TOQEyJ74x
-	lBbCbttyG8H5PlBs2AnnzIM8AOAA
-X-Received: by 2002:a05:690c:e3eb:b0:794:2c3d:7952 with SMTP id
- 00721157ae682-7945a845df7mr47379077b3.3.1769465082722; Mon, 26 Jan 2026
- 14:04:42 -0800 (PST)
+        bh=1WpWTEYnQFU24311RN7E2Bm1qH3Q3fjhO2tNvVjnXQ4=;
+        b=IsMk+QCcT+VXgePEWywEujBF4THTNiswk+1ppFJ9I0Z1sl4HarSvB8ZsMwi3MvFQWQ
+         /tyReAKunNJKALcaW0i19VhtEj8yq2uK9vuNQ6F3+ki8w/+46izOgSDfG+8g9RW28BRH
+         Z7Ow4VluL+pn8qjAoEH0WOU2Rsie9ymjNCWcVv4YLCAt54cBoAMsujHD6w4UItJt7Q2+
+         izFN39RBiLLt2YEJzPOD3t3hzDR6/+GDwGtxWdYey17R2kBEhwswyBEM937CGsZz0bQU
+         Vm3z4Eh5q2QJRQ22Ry1qHuOmwftBYmSGzIbe7HKP6qvfmyeGTmD/Vti0pY0UnhjB9BVS
+         Hl1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769465284; x=1770070084;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1WpWTEYnQFU24311RN7E2Bm1qH3Q3fjhO2tNvVjnXQ4=;
+        b=Du+Eb+A0WfOjwRlFw8QtP1IaSgmV553/ocaUThrUkety0FnbPk4kM8Y/FZcwIycEpv
+         iI4QqJj7PEtHglp2Zq6VshuFAsYieOnBZaqeds94mGbQ+zoHUVBL0X1zZOCxa3MQOJR8
+         cV9Ah6QIgGQ39sKeRt+U7zJq3i/SGkdKMn5UcAzGs+iSNPksZ7NqT/rnmb2nStdNnYdM
+         2fiL4z2z2TyivUttkZCIdjs/ZifUSeyrAL+alNKiIoUiY2NHnAknHapy4psG51wR0SSp
+         npHSSe9xai2ayz2GmNTE38eisXYyWYopfkTseFsrpf8CsfLpdOOQXXF/SCGUMTkKAgrz
+         g4NQ==
+X-Gm-Message-State: AOJu0YzjD/B/xnhfdLkqaBjyYmb2q2dsjt4qSm5J6nc34qodHYZvzRt8
+	E6k3Eb/uDpT/f8OlNvPuxaxXOti0Ly8Z8KGL6oTbHPY60LAYACM6xGKltuJj3VYBxgqKYom6Uqf
+	8JqiF1/SK9E0D/vgLklQQ+HdvqV2z4qmgiV3sAtyy5g==
+X-Gm-Gg: AZuq6aK0+x3AQLyOw4EYOVw8N8JeGjBBxl8mFqY8TqVjeGyE5YQgUpDIr5tilWHiW9S
+	TmpcPYXa88GpmwtISeDbWZOTM0n5np6A15RP7/1wYzXf9jPFnZ1owGH36w8ag/Ve/ESgIIrZMun
+	+YNIbmqib4Tthamq3U+Kknb+kv/g0fzhph1SHmA4k+BO0d5NjeDSiySxdfgjcjHm1sIkoK36VSV
+	JrwVEaNH8jBZPnjeHDcX1fdmwMNGfeeoxklT8RZO66btr1uUnSZWOX6V2c91eXhRaDll7M=
+X-Received: by 2002:a05:6102:a47:b0:5f1:4fb8:6b9a with SMTP id
+ ada2fe7eead31-5f723933e1cmr210798137.42.1769465284222; Mon, 26 Jan 2026
+ 14:08:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260125233335.6875-1-chris.bainbridge@gmail.com>
- <DM3PPF63A6024A93B1437A144E82CC38B7AA393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <aXcovK8uhsiaHumT@debian.local> <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-In-Reply-To: <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-Date: Mon, 26 Jan 2026 22:04:31 +0000
-X-Gm-Features: AZwV_QiceH7qsXObZwUw3W1_GqQzTM8Z2nnHyRpegpE1rqs3Px19JUyms_T0uKk
-Message-ID: <CAP-bSRZ60CSEtR-_9OL6k_Lzg=w8MtD2i79KpwF+nYYzgak=-Q@mail.gmail.com>
-Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "kvalo@kernel.org" <kvalo@kernel.org>, "Berg, Johannes" <johannes.berg@intel.com>, 
-	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>, "gustavoars@kernel.org" <gustavoars@kernel.org>, 
-	"linux-intel-wifi@intel.com" <linux-intel-wifi@intel.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260122192851.86670-1-rjethwani@purestorage.com>
+ <20260122174821.70553ffc@kernel.org> <CAKaoeS0f7z_pjJhij8dFpgPPJfiWGsn25k6rgBUMUM4wiFHurA@mail.gmail.com>
+In-Reply-To: <CAKaoeS0f7z_pjJhij8dFpgPPJfiWGsn25k6rgBUMUM4wiFHurA@mail.gmail.com>
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+Date: Mon, 26 Jan 2026 14:07:52 -0800
+X-Gm-Features: AZwV_QjLget_D5AcRoAHST9cnXs18MozWBEr5b6vlH_I8F7eqThXVZ8Vr39T6Oc
+Message-ID: <CAKaoeS3ZLtiXNLNoJXGyTRp_-4yywdmDdCbNtjA-Q_w6mT_oaQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] tls: Add TLS 1.3 hardware offload support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com, 
+	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com, 
+	sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com, 
+	edumazet@google.com, leon@kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 26 Jan 2026 at 13:45, Korenblit, Miriam Rachel
-<miriam.rachel.korenblit@intel.com> wrote:
+On Fri, Jan 23, 2026 at 11:03=E2=80=AFAM Rishikesh Jethwani
+<rjethwani@purestorage.com> wrote:
 >
->
->
-> > -----Original Message-----
-> > From: Chris Bainbridge <chris.bainbridge@gmail.com>
-> > Sent: Monday, January 26, 2026 10:42 AM
-> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
-> > Cc: kvalo@kernel.org; Berg, Johannes <johannes.berg@intel.com>;
-> > benjamin@sipsolutions.net; gustavoars@kernel.org; linux-intel-wifi@intel.com;
-> > linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
+> On Thu, Jan 22, 2026 at 5:48=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
 > >
-> > On Mon, Jan 26, 2026 at 07:15:54AM +0000, Korenblit, Miriam Rachel wrote:
+> > On Thu, 22 Jan 2026 12:28:48 -0700 Rishikesh Jethwani wrote:
+> > > - Rekey handling: HW offload key update (rekey) is not yet supported.
+> >
+> > Not sure this series will be merged without rekeying.
+> > We'll need to discuss pros and cons.
+>
+> Rekey support is in [PATCH v5 2/3]. Split into a separate patch to
+> make review easier.
+>
+> > > Testing
+> > > =3D=3D=3D=3D=3D=3D=3D
+> > > Tested on Mellanox ConnectX-6 Dx (Crypto Enabled).
 > > >
-> > > Hi Chris, could you please provide the full log?
+> > > Both TX and RX hardware offload verified working with:
+> > > - TLS 1.3 AES-GCM-128
+> > > - TLS 1.3 AES-GCM-256
+> > > - Multiple KeyUpdate cycles (rekey)
 > > >
-> > > Miri
+> > > Test methodology: ktls_test : https://github.com/insanum/ktls_test/tr=
+ee/master
+> > >
+> > > Please review and provide feedback.
 > >
-> > Sure, for 6.18.0 see https://lore.kernel.org/linux-
-> > wireless/aTDoDiD55qlUZ0pn@debian.local/
-> >
-> >
-> Thanks!
+> > Selftests are a hard requirement, I already shared a link with more
+> > info with you.
 >
-> could you please test if the attached patch eliminates the panic?
+> I will run the existing TLS selftests to verify no regressions.
 
-Yes, that seems to work fine.
-
-Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+I ran the TLS selftests - all 898 tests pass:
+linux-kselftest/tools/testing/selftests/net# ./tls 2>&1 | tee tls_test.log
+# PASSED: 898 / 898 tests passed.
+# Totals: pass:898 fail:0 xfail:0 xpass:0 skip:0 error:0
