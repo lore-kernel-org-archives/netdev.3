@@ -1,117 +1,103 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8569132AACC
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D779329C6A
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769427327; cv=none; b=OYNrU7vSDRHeAN2D7i5SaZEv52V5gNpA5m//S/QjHxrS4bZhuNPi06y41YSBRmDj5WgXvQ9rJXd2EwGjwEEBG96glSaY41OpzCpbVQwSQKQ5mJcOFa3pZ/XBGf6H4Ab2KBTZpjaiOZGpb2zq3Xam7mx76PrqzqHnUHTQIe1RNXg=
+	t=1769427868; cv=none; b=pROzCgLp8B8NLrV51ve1KFIeZsKTadAQqtOu55CKfwxxbKrkhcorAFQOe5nnFg1nVpQQ0W9inuIwIl/DmNVCgDXbPuwkOHMp8X+NsJvP+x4Y3rbhxBvupgC90eNTpJuoNYeHsWzoBbM9E9HzlYU3NPNFTrVqMbPPH7sZjyh1638=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769427327; c=relaxed/simple;
-	bh=L+VFtFE8vaxxokw+Pishur3tMraQm5g6ETVyD3plCxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fVHmOHdsycIQBUrIKK1fUNv0uLslENinLLOcTz1AFh4Ipwd2UIhjpBCQXeLSt7038j6NJMCPiDrst2pbZt5I7k7iJ+qSFLXHPlQeHIA6vSe2wOctDKldAYChQuARr/lPS7gPOwA+LSGBn6lAdzWsfjxS3UKK/aBX3/or1tudgNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xi6WGCmH; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769427868; c=relaxed/simple;
+	bh=sOmQHT/KB8XTMWgnQ5jz7GSXRwvF+dxEnN6zZ0y9Q4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=OlWZ5l1f4aJAmZOH9DzSmxarWL9PIE6ANw4pukUDrzl9mDlP5cIbKVcOarS9nuewiAKB1GWKCgKCTwRADgEhvnVV1/e45O+rbBVOCxPGV3RpRMXQD4Rmz2IcKvsElGMb3UYEw8C2/k86SPgmwfAh0fnksWqGdfAin0StNZZBlzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Y8lwjlEd; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xi6WGCmH"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so64429725e9.0
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 03:35:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769427325; x=1770032125; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fMoDGeIwmEnNyi6Vj8HIaY7XY3f1o3JzE6Y7fyQabWE=;
-        b=Xi6WGCmHUTH7L2MloasXSsWS2UH7jmxvFsRFc/Kq3bi7Kh43k9dHz970v5BB1/a6W6
-         x1SrNX7sGNT6sQy5/+jFzk5IXBzK0kPLpSZOojYp3RayGHWvYK1W4RUjnAr3OqcwTH7X
-         SJFW+vrqiVxSTKcOYGoB9WBz1m9KbsgaRhgMVf1PFMHOa/2NZd41eBJqKYP/tnvwWJ0C
-         xoyPwBSt0duA4E2jSJy9Myuzh59sB6F1LRFJ0hIjlbZcGHvRWDCxXCqOoi9a0Sc4+WCA
-         Xe5AbC3+8B+YNypCMa8A5jR/NWEX1ktbd17S+lAImcS+ShUu9qtiRfFTlJzlIgxj3eyw
-         0ZyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769427325; x=1770032125;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fMoDGeIwmEnNyi6Vj8HIaY7XY3f1o3JzE6Y7fyQabWE=;
-        b=ljY3dnIKFwyXWVa+pS0iJ+GESfBbbRfH4p315kbnfDYYdMF0xrqKQ6LF0StoxxGRbw
-         xIR5Zi4hqeKP1/o9tgRvkU1wSuuEZfmdnLwxKQGyXw7uF5nxbSgBTZAJFyFLl74osXij
-         n33ERzkdIdt7J3z3Q7Oo7yviBmfX9CBc2G3ah4kzVoMs7uoWo/cXXr9XY+O0kgBXoS0b
-         GI2X1JVNa9P2mRU37kGmwlShhQNZ4gbGijplxEeLsHiZ6upjTmCGtTHs0BOE7swVp6Ts
-         I0jYFUTVmTcsffhDywS/2W/TrS70fcppFeZsPuuELvyAz0tb08GlVuKVOC6QKHPndGYb
-         2GyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCZ1bXEDZ5dBumcDcjMOYqR/pfPYF1kSL+4P+Askw1sajX2iy9dGWmGySfmTSs/Bx4ELFwjhI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeyN6EZ70pIn1qv2T36yMBDH5gHHoH5ks4awBSKhf/7LUwlZ/m
-	ju2442Lg0/dAnx3KHRqafLSE4LuDQ9F0Wu9FfWJUXhMr6qzpUeeZxU2L
-X-Gm-Gg: AZuq6aJSA8sTlR/+9syr/KH6aNphwOnHBXQnq7FMwIW2GZNCEehXu6l2gCXnOHGbemb
-	YqIOutISThI9HP6Somxvihx7zMPq9OhkN9k6raIrbXI+BFPbI5q/h8WmdK4xkac9fSHOYa+rpey
-	wjydblG+z+uf6liP0RfEfgyRs/QIAotmcY6tyjFZ+IttLeyol89Iugl1UJ7vHe6N9LvWDdDPXEQ
-	1jUg2NgtBsCAZ5XfR/h7KmOWQN974IQtOKzsJQgBeI7XacKHsW0NlghOh6kYdAJnF829i0dcbNT
-	mD0vWsg2Nf9++Ut+c9FtnHjhb9am2hjl/Frv8EXuLPuJEbq+QDdnh8dZyNnNklDkVW7Zg4tIvy8
-	ejQ1tpgBBOW+LgmVink8gKJK145KskKr2oVapHAzQhRoMiIs+R5630jTaFmWkpdsqG+eyvr+NHJ
-	gzdyagNIwYhabDg4a4lGUslEFemxJXrbfmq7BnKo7b86z0a9obYdCi
-X-Received: by 2002:a05:600c:35c2:b0:47f:b737:5ce0 with SMTP id 5b1f17b1804b1-4805cf66771mr75346305e9.23.1769427324862;
-        Mon, 26 Jan 2026 03:35:24 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804dbab1b8sm99455265e9.8.2026.01.26.03.35.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 03:35:24 -0800 (PST)
-Date: Mon, 26 Jan 2026 11:35:23 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, David Yang <mmyangfl@gmail.com>,
- netdev@vger.kernel.org, Lino Sanfilippo <LinoSanfilippo@gmx.de>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: alacritech: Use u64_stats_t with
- u64_stats_sync properly
-Message-ID: <20260126113523.3663baee@pumpkin>
-In-Reply-To: <CANn89iK9xfvQ275f+PPht8mM6K49mUq-T9D-4UUxUkTncM4tRw@mail.gmail.com>
-References: <20260122185113.2760355-1-mmyangfl@gmail.com>
-	<20260125152324.1b7e5a9f@kernel.org>
-	<CANn89iK9xfvQ275f+PPht8mM6K49mUq-T9D-4UUxUkTncM4tRw@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Y8lwjlEd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=yBZgVQPE5pyIHc9AqGzEXNSbNLwIwnbp7Ek3gt6UiS0=; b=Y8lwjlEdMnBjJgPevGq9soTwBU
+	BO0PRHynTRQjso22RDyJLEtu8GL4on7kPvOqYgrb1FcLsxveUyHwIABeCBrvb1K95kQlbHJiWy/Zz
+	VNT7U1GToRrpnBcczM+N0v9ZrS5D8zwnfSUARTyfTgWkGv3+Ni0aGuEd7d9k6l4iXyFfREqGv3VEP
+	sBPs7f7SxUmM+6ptdeonH/owGEzhrhwpw2fEmXutCg9xUq1SsQGgJHk4N5AGLt0LQlEcwkkd1xvkR
+	7TQ/SrdcRybIfBYpRCzVAJdUW9Oa/p6Jc/YAGOkNOo2rkzoDgAEgzwZ0OZzs7u7QR6gqreJp3WJ/a
+	E8DvvxHA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35628)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vkL0x-000000004dB-0NVz;
+	Mon, 26 Jan 2026 11:44:15 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vkL0t-000000004vB-2rTY;
+	Mon, 26 Jan 2026 11:44:11 +0000
+Date: Mon, 26 Jan 2026 11:44:11 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiko Stuebner <heiko@sntech.de>, Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next v2 00/22] net: stmmac: rk: simplify per-SoC
+ configuration
+Message-ID: <aXdTi4ViCkhhXvFI@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, 26 Jan 2026 11:11:09 +0100
-Eric Dumazet <edumazet@google.com> wrote:
+[Please note: due to google's spam filtering, I can no longer send
+patch series to @gmail.com addresses, and thus, to save being spammed
+with failed deliveries, I'm dropping such addresses from my patch
+series. Stop giving google so much power, use other email services.]
 
-> On Mon, Jan 26, 2026 at 12:23=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
- wrote:
-> >
-> > On Fri, 23 Jan 2026 02:51:07 +0800 David Yang wrote: =20
-> > > On 64bit arches, struct u64_stats_sync is empty and provides no help
-> > > against load/store tearing. Convert to u64_stats_t to ensure atomic
-> > > operations. =20
-> >
-> > Eric, could you comment if this matters? I expect David may send a
-> > non-trivial number of these, I want to make sure we're making good
-> > use of everyone's time here. 64b accesses are not torn on 64b arches,
-> > and never used for control flow. =20
->=20
-> I  added u64_stats_add()/u64_stats_inc() back in 2019, and never bothered
-> sending dozens of patches.
->=20
-> Presumably compilers could be really dumb back then, I am not sure
-> this is still the case today.
->=20
+dwmac-rk has an excessive variability between each individual SoCs
+which makes this file extremely large.
 
-gcc still generates 'crap code' for var_64 +=3D var_32 on x86-32.
-Basically it zero-extends then does a 64bit add rather than
-using 'adc $0, %reg_hi', the extra register is likely to force
-a spill to stack.
-But that is 'fixed' by using add_u64_u32().
+This series reworks the per-SoC handling, moving the majority of it
+out of code and into data in a way that greatly reduces the lines of
+code necessary for each SoC, moving the code into the higher level
+functions in this file.
 
-Oh and you really don't want to support adding a signed 32bit value
-for one place that wants to do a subtract.
+In order to do this, we need a version of FIELD_PREP_WM16() that works
+with non-constant masks, so we introduce rk_encode_wm16().
 
-	David
+We change the definitions to reveal the fact that in all of this
+variability, there is a lot of commonality in terms of the values of
+the bitfields, even though these bitfields appear to be randomly
+placed within registers.
+
+Both of these allow us to progressively move to a situation where
+the SoC independent code can, in the mojority of cases, program these
+RGMII clocks, RMII clocks and RMII speed without calling any SoC
+specific code.
+
+Further cleanup may be possible with the (actually incorrect) handling
+of RGMII delays, but this is not addressed in this already large
+series.
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 1237 ++++++++++--------------
+ 1 file changed, 508 insertions(+), 729 deletions(-)
+
+v2: fix AI review comments
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
