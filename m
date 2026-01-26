@@ -1,109 +1,96 @@
-Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A922882D6
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 07:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C4828A3FA
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 07:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769411189; cv=none; b=QmFX9x+zloL0WitSoeFXmJmpYQW+bMvlXP/fBGqtwqM+Ig2GiVWfKlBBESCZAsTVi7C5uwtpy4Y6eMCy5+cymw8ijuJiqe0pNGoOEkCTdOLqkP6+2FukJQC91uOKvGNwMbNON2jAdKpRd48+cUylCLqD5XmFl62dPfG0ud0363M=
+	t=1769411547; cv=none; b=eNL4IIp7pBWsLcikA+otbMbUGM6jHr8/BBNPP7gFevCOCHgly1j8baIhPYicg8f6sb9be+cZqIj6C4NV40ym3DLtNNwU9sEKgtBWCY5U8cxWHJHSR+PVk/3ZY5bWAZmDLTXGkL7hbJleg7ppod5XdUzQWvY1qMhTvUO6iwpUYtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769411189; c=relaxed/simple;
-	bh=BrGYfbKjFcWVBNtR1VCrwZ1sP+nBA2htFvw/QqIZpRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZA8K0yWQATEmZ5+wGCFEg0PziLvRahNdI+r6/QlRIsa5v8xBA60n16AinSUVgV5CALUSEvtMDx/lM2lALcpjhGay/5qPWM63zgrzeXdcX0/HaBUCPHKsZ/bYrd8vGA6jZASB/QFko6FJ8SRhZw/CuVLpBjsHdJdpRoNzXPMH5z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObDE7EkE; arc=none smtp.client-ip=74.125.82.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObDE7EkE"
-Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2b74f839bdfso970147eec.1
-        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 23:06:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769411187; x=1770015987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZnNSYAsSgZZKBbd6EX4AMUvPpqA2jWI9KkqGPjFXPC0=;
-        b=ObDE7EkEzZCzM4l2WEmjfE/rIA9vOK9qUHkbpah/DiS7vwQ2W5ngVeG8SeLhGUwJBK
-         C4xPHzWCNmgo9mU6KT9Ulkrsri/k2vqZq2SXI6BReyZba43OvSuSU5PHZmJ6g4z4b3+d
-         zY+/JJfWYw+SrRnyDXiCkjswXIZDD+IR0clEjddTHWGqynUX1TEB81abhhQJuSdwFxBg
-         /Zlr5H9MQa9ehv8hlMLP2rUHYWupuMnepV8KSF4G2YNpEoWOCz1M7a8ysZvYW0hs/u7w
-         U8LXv6gpKHyM2FEUFwBNOOkvwpftyfb+5GxhJFXcL4yWqc7NHyaU0quhW71fyD9Es+nk
-         hD3g==
+	s=arc-20240116; t=1769411547; c=relaxed/simple;
+	bh=PjsVMfjbLC5Wb0ZXf8CFrN8ulOiy7e1Dsx2e/V/Mlxg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=o73XSK5N0DJ5c/8XhpK7vBPaQA0AJxfjMhb3k3e0uGst6xzk046EZGcVeHmAZ6Nx0TLshowYeOBeVysbMMtqO5CQYajmcKwHg/w0rmtzI4zi+ITb4EljpKI6qIaWCIvwXFNa0OXQPYDORnpAXG9dHYfqCIgzysyePHmedqEFmaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-66109baed42so7517970eaf.3
+        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 23:12:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769411187; x=1770015987;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZnNSYAsSgZZKBbd6EX4AMUvPpqA2jWI9KkqGPjFXPC0=;
-        b=EwSMIqH64H7scANXBoJN8l95NoBWXiFKFl6lHRumDTyYIZN3qY85hmIIQX34nDk7ER
-         iB6Ka6U8iCE+CS4gJVGIGoAejYVy+K6jGc9+tudEEsYtAIT4Tpl0Epf7Ck1YML2uLANK
-         vV7Yuh2tYzToiMAnL4iYm0GY0WkTesIiZQQGqLXLkSOZnr3RccQgbycTzg1hAVtb4wHe
-         zU17hOf2eKakRAfp/MUSUAWozxYnuftfKzbjmAq1sPasFwGDjm6XfnUx9LCKUsaKISOv
-         KhGQFx06rcqgDePW6onM4ThWpLqkFmA6CmrgASaP9nPJsM6l/6ZTi2jNLolOdFHNXJUm
-         Z0fQ==
-X-Gm-Message-State: AOJu0YzOgiqwAWlfBxF0ZwnvYXsKWXtSfNtA+f7stQ5UtusRqEPZrDTX
-	knmeVWyTmn3CuXMZJ1b6JHO0qcHYmYp+JrOcnA1Z735VD+C3Ty0pL349QAmoM0wy
-X-Gm-Gg: AZuq6aKW1fmlADFb5TNQWeOPvPxkBx1q+0JrCk4AYWL9Sf7B+RD0QXi7mfuBtLoB7F6
-	k+r9rVrvQC1lk0A5iHaSgrcsHlFZF1cMTzLdPTpX7W8obGHl9877pWDU8FWYRoQBPYyEHTXhdEc
-	vxuPm+L+ayc0EXwa3hMj8Rk1HkYN1X+8HdMC4JF/0qz1lA869AUebSYy9exvIAcaTDQcaMEDoAq
-	YO9YZepdVvBXOosZvTI+peyJyuCW9YKIgGVpa7z+ThkJ1B888JJaPgcno/1a207BjltCK0Ew+Vg
-	22beTa0PGgPcinCY3tvphA6xDA37ymXQ54OuxZbiE8fgCTaBWp8ypKm/7QXJGrimvT9mI810T2b
-	5QNxCYQDsV5HnI7uTo82PAh65TfCySgmx0uGWPQ8yGki4qN72EGRFj5IhzNyTFuGAgO+X/zMAoi
-	r86eniZDZNhT/c8yjC+Uw2WgDbpQG85755epEk0+SmUpPFWaROSEQU1NvSYCarWsc8NyrJ4oy1Z
-	XgE0iAkO3FpaSt3lWcuh62NXA9AtZfnkK2grr2RwKiFJK6shcvU56lcIFjUAMErSS/fuZ/F4eko
-	CAjkbGpX
-X-Received: by 2002:a05:7300:d511:b0:2ae:556b:76f2 with SMTP id 5a478bee46e88-2b7638a7f04mr1772945eec.6.1769411186616;
-        Sun, 25 Jan 2026 23:06:26 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d91c52bsm18021503c88.6.2026.01.25.23.06.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 23:06:26 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next] net: usb: int51x1: remove unused includes
-Date: Sun, 25 Jan 2026 23:06:13 -0800
-Message-ID: <20260126070618.53758-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1769411545; x=1770016345;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I62FiAaoX1ZRn8SEMhGaCp3g9ETXeKHjTK2Ke6OkaLc=;
+        b=YGEXZVsSMK7awM5+PpvdlQ0w4BKBmbIEeTMWEITmP9zeq5w4BChCNnpj8OMqjpv9bn
+         k1/TtLh8lkpjuS/x34UiLDThpo6n+UTMELRfGZUVbuTW5Q7n6PrK5bQwTlesnONBu2M8
+         vmtJYx9WN6//fGdmukL+3Ct/UmTM9rnYSS+DGomEITIuXrG+P+NPc8rXrkcj/8EnvXY3
+         Y64jacROSn5mrF17bfAL0YKbeCnM3FPtmDS9n87SMuy7L5AGo5b7egE6ow8zk9q60FH7
+         diCR6+/+HHQNTlyMwnLVp0NVgBmlrLdVPCAgv4ieUIb3U1OuArAyWRFjx1E5laJtBkLG
+         RAeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUzYecz2gq/nYTx0KYKBpY99X3yn3C/PL7Lzqph1CTDXuAUMqHzbd57DT2dFoCE5/cCfvZm9nM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwndQFDmX3jzTxlK39hfyw4o1W9ASzwW1NyRVsMoPzJj4ahDEyQ
+	B/59LcKe5lYAboWxLOjlRa5AVAxS4iI/wsABoCfnRFdHYNga5PqpGQ5HKZA+iMbYucZ+7nqfbdL
+	z+ia+JaXQX+BBC+O8n8vf67N5XS3eWWWeqS08ZWmrROL+ely1MvHY84Nd9H0=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:2224:b0:65f:64eb:8ff5 with SMTP id
+ 006d021491bc7-662e04baf7fmr1575491eaf.81.1769411545223; Sun, 25 Jan 2026
+ 23:12:25 -0800 (PST)
+Date: Sun, 25 Jan 2026 23:12:25 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <697713d9.050a0220.226181.0015.GAE@google.com>
+Subject: [syzbot] Monthly hams report (Jan 2026)
+From: syzbot <syzbot+list35a4df8741cb3bcd553c@syzkaller.appspotmail.com>
+To: linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Most of the headers the int51x1 driver includes are not actually used.
-Remove these unused includes.
+Hello hams maintainers/developers,
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+This is a 31-day syzbot report for the hams subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/hams
+
+During the period, 0 new issues were detected and 1 were fixed.
+In total, 16 issues are still open and 46 have already been fixed.
+
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  12422   Yes   possible deadlock in nr_rt_device_down (3)
+                   https://syzkaller.appspot.com/bug?extid=ccdfb85a561b973219c7
+<2>  5206    Yes   possible deadlock in nr_rt_ioctl (2)
+                   https://syzkaller.appspot.com/bug?extid=14afda08dc3484d5db82
+<3>  1784    Yes   general protection fault in rose_transmit_link (4)
+                   https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
+<4>  1634    Yes   WARNING: ODEBUG bug in handle_softirqs
+                   https://syzkaller.appspot.com/bug?extid=60db000b8468baeddbb1
+<5>  985     Yes   possible deadlock in nr_remove_neigh (2)
+                   https://syzkaller.appspot.com/bug?extid=8863ad36d31449b4dc17
+<6>  513     No    WARNING: ODEBUG bug in __run_timers (3)
+                   https://syzkaller.appspot.com/bug?extid=7287222a6d88bdb559a7
+<7>  128     Yes   possible deadlock in nr_del_node (2)
+                   https://syzkaller.appspot.com/bug?extid=6eb7834837cf6a8db75b
+<8>  24      No    KASAN: slab-use-after-free Write in rose_send_frame
+                   https://syzkaller.appspot.com/bug?extid=9cc08d5dcb1fc8feee76
+<9>  21      Yes   WARNING: refcount bug in ax25_setsockopt
+                   https://syzkaller.appspot.com/bug?extid=0ee4da32f91ae2a3f015
+<10> 7       Yes   KASAN: slab-use-after-free Read in ax25_find_cb
+                   https://syzkaller.appspot.com/bug?extid=caa052a0958a9146870d
+
 ---
- drivers/net/usb/int51x1.c | 5 -----
- 1 file changed, 5 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/usb/int51x1.c b/drivers/net/usb/int51x1.c
-index 6fde41550de1..317ae365277f 100644
---- a/drivers/net/usb/int51x1.c
-+++ b/drivers/net/usb/int51x1.c
-@@ -13,13 +13,8 @@
-  */
- 
- #include <linux/module.h>
--#include <linux/ctype.h>
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
--#include <linux/ethtool.h>
--#include <linux/slab.h>
--#include <linux/mii.h>
--#include <linux/usb.h>
- #include <linux/usb/usbnet.h>
- 
- #define INT51X1_VENDOR_ID	0x09e1
--- 
-2.43.0
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
