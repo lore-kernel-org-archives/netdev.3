@@ -1,207 +1,133 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3B22FA0EF
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 21:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC12FF65F
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 22:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769464568; cv=pass; b=R0CdffjgF7ed3v6ZTz+IWxFxzXv9f8juuuoll54Lo+5k15OF9F1zshjwpYGpIg0EuEQsqK+UYoGXdtEz5y/Ov/pUUX2YmUEwP3kKRwantKPFw+vKehtQjicYmJag8NVmE/9Ev71kK6n/Sn9fn7421ZpU+ta0trAszSIz19Uw8v8=
+	t=1769465085; cv=pass; b=bsuXRK5My/gUzokgMGTRqg+/RfGY4r4fTDy+6Vw1XsTmpSbm6EEnGKclP/Qy+UxF3vliT5tJIsfWwVU6+U/e7vu25sJF5wfKHxDeY7DRCDrqYsKZ8151CWpiWAEOme+6jT8kY+F6RAn9IA4MrGjSy/sbHrDbJW/KsJogyasUpbs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769464568; c=relaxed/simple;
-	bh=EmrUOUr7XM3Exo/uQsZdt9V5jIFgd+t9+cU10Y+sims=;
+	s=arc-20240116; t=1769465085; c=relaxed/simple;
+	bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nnW1X5V43J2qjxLi3V0Z7kRKYc/kNDnGS35LsewA6GeS4jRI4/jgHlvlh7vj3qFFicbCK5a1qg08+c8fDCD5ltV7pDMobuMyy0WbSVMcc4qrJ0grdZtlDgWc+/kxL29OVD9etnQl88XZsiBa1hz/vCoE/FXbc8yGfF5uSqt8v1g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cgEjQqDE; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=M37ydwAEbrZx0277v6NBrjUj/kBYgk7qAE1pHBnK4tm+AIKBsnMlZGYNMOxn2iaEpV1XlelrQG4U+zHlBhwf3LJ+DKgdQyNlYVaCkBEZrN2tN557IP1k+PtLMYBI56g6C8dKiWAXNEtG9EVsgollEE6+5hGqdyANSjJyYhxP5aQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SeB0gI+/; arc=pass smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cgEjQqDE"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1233b953bebso12466326c88.1
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 13:56:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769464566; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeB0gI+/"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78fdb90b670so43972897b3.2
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 14:04:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769465083; cv=none;
         d=google.com; s=arc-20240605;
-        b=R4d2k/9US9ka9wY8JCimN815GwbjtWN5AsDAqk7XmP7Rpw+M+a0e53D71iv9daAX05
-         2NLcBvrgUiyCA9LgWx5PAm66W7q9puzTEAj4vS+uyV8glCRKEl2O2plDsU7Zn9DFQymZ
-         +Q9B5/TZUBDZ9VoD2QFloq4oPvPvXMGy488LBQNbCEoUPZco7bfVpFRB2RUTFXO/nbHf
-         /tqb0NdELqFBfvzVYj4gjhluuViL6sTZz87RNTjbw120Y34mQcolrk8n1OpBws+X7AVt
-         5VnmLyiPe5eZuIJAbNRUtxBkb7i0A6wmUX8cug2xzBVpdZVcYNN8N22ZcarINAym1efq
-         qolg==
+        b=Kq5ORtrvvV6InZLexN4clewZa+KmylcY3KxXVYSSxrrjTsgtZbBLbVZM56SA9zgo3j
+         /2KfWgKzE90Cj8HNxHdtZ2KmUQO9FfmdR7LNii3HM91slEYr2pJ4xMAo3ATqzQ6WvV+n
+         tPC9Fckg8zzToNBkX+33enDqh857k6L6zKfLKdDeKbh/gFbvIyKbzkEme/EhQLGNea4k
+         kayEnJr2ku7g1gJ6Q6DYkasMB5IxlYx13bLIktuigTOee2x4dcnxI3wQ36z2EDFkrVSO
+         O+YGQw1cvv422xXhQS/RviLZqB1sA0ZD5HRc7jgAMuAH7zji4eGes54banB1Q2fqngkn
+         EhFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GAfnYUWqZJMkTRljxQqqOceKMfg6TUYZ4qV1PCN8Qk8=;
-        fh=TLmFk4CYzeRqskM1ib/c2R5LaNvrmXKe3O6RCkUqJY8=;
-        b=FENX7mcnUECW6zj2dgNG+xmYrdCAiGRx/J3gce52U3QCAfZA1D1K1pToZj++0ytDb4
-         ujMNcxBYzwuDBatWmvB0QhP6KuyeO6eb+OpGNKsc/FwDzR7cGONXUgWhztkjlR+Ollf9
-         spSmggEbzn793gsK67Riy51bxFqkMTgry8TnltE5a2Wr1BuVuIC+RlAGofGb+WaYNIY7
-         /J/uCZRKM9atYGbulP3STzklojdLramlzIvkyt8frXZFen82p/caSQ935UWCT3NiKX3y
-         MnNzCroGSt44fW2Xx0wPph2HrjhRaXlIlx3O00s6ExepamA0KnxdDkTsnl3vEsWS+xNf
-         VbKg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
+        fh=Tjx/Yya/mDX9f0Fol8l0ih+p/Z5Xmb1fL+QreqMQ/GA=;
+        b=QWG3XmqSTcZ2CsnYTokFDs+1NmNRKsi5D/SNfSYiBI7735NffwWgiGdNB3gQtnDigf
+         LVY8sRLgbU2QL9RYqurzSSYeLOwJpXwDjwsNYMZ0/jR4yH4oO0LC3a70r2TyVwzly0K6
+         zO2BOGbiep++Zhsprl/aHrosraUh85qrq4nj3HGa5texeKKmXAkndCWHrOOy4jloTD1g
+         iFgl+DaY2S4Ge1geFG4FveiAevsQazot0MCC9nwnWGpZQEcz92Pv3XMZfvgMlutk+tNH
+         cXRt5D2OrsQMJsbEnBkizChaR//SVESUEiAI/DHj6tjbwHD9xnrnyxY918D6PMwyBvMW
+         SsTQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769464566; x=1770069366; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GAfnYUWqZJMkTRljxQqqOceKMfg6TUYZ4qV1PCN8Qk8=;
-        b=cgEjQqDEMV6S01l4Tm2BFPzEgbDWu7N9d0wVRZxC1umY/xPCjezXU3/aT5iokl+bnj
-         yJxFHkWYBQWhjhGa+zcDFfaO2jtt6/2KM2DuLM+q0yyf0TBBUfD54paDhnUaLD2APxN3
-         GJib+aYf1JdYq+GPGq5+OyIzznRzGv1RIJkh+dzSi7u5OFRU4DOzryxjdt+906wm5Ugp
-         hXSPx8LSbkOzWQcDI94aQUrui8t28uB+2rBz59VjN2KGf4ECWR4CVOEEpKtTUIA1BoC5
-         wiJmYEDZVaxoXSV9+xleQFg9mOFsHX4Qc9H9dAXEDyo2ysf+CVOVbxRITvY5paVrX4p6
-         oq2Q==
+        d=gmail.com; s=20230601; t=1769465083; x=1770069883; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
+        b=SeB0gI+/2Wx2lV50hnRI/YgaHZvHsKB28MOlNnzpAI5vdgs7gZiN4AB425/Hhclvjz
+         bLhN3ZNejxhIoqyKoVyviDlSJkhUF+379Ghqa0cmYteBzLqorjm8Zw+JZREQGziTH58P
+         WmKXqRte247yz/AFC3xrDqN70GtoTNspJXrpHCkvw11dkRPusn47aQOkiIBApUDTAAjZ
+         hgzkqsZl0MRTh/jWLLLytrleb4wtwlidiJMi4HecXnS32JShIY8mGKaCC+zBPTutZi0i
+         oUW3CLr5O0QzInsOQPjf5U1HZeVvJX9fmmkCqwr2978ua0z4Zj1Qn3U9FbXH/U9nYIzD
+         rZeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769464566; x=1770069366;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GAfnYUWqZJMkTRljxQqqOceKMfg6TUYZ4qV1PCN8Qk8=;
-        b=xDHg7oHlj2mkJycDaiHju69HpyHxq5kQy+C0TSXBxUBcly0Bts47dKcpIUteZm+8Sk
-         03mW6+ZApKsrhvw6BPNpjWtRo9FL2Wi1JRtUpWPWAO75+GYVesirYbfz/a8SjA07EQQS
-         ksk/mv4FBP2GW+NgjYezTumAFzw7/10AcxMrvRuJ8irY8SU8azdNfE+5Tfg6I9SwbR5d
-         x3Gi8E0efDNmMfjc57eTUE3D3iUZDSiuitR5lfBvc++dp4ugjRRj/lFSk9GNFj2VcZHq
-         o2P1VOIkNXWLcySDdUE88JySc8LP9Q7P6bIlaQPW7HJ7CTBWF4M50jLnYTFik7s8ZefA
-         FIvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtV2Du3uPHIWiMmlVMsdzNaQheum8XcVVJRh0KVSHP/f6U/EbX/GNqOHfR/ENr3wIRrSL/Lgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzChjHz7Tw7cL5rH9Ip0hMbKqBhwQo/uiVDxei42O0JNBNqq9Vt
-	oY/Fnots3l32VFNT+HZ4xl3BLArYWTWm5ZS4vpjJ7jq5nfQERGvcRoPjVWSI+jvoD3/P3rgER8G
-	g7TnVKyE96ccQ60K8ioZ/8LIsiPsmQEtzhLiX0Dl7
-X-Gm-Gg: AZuq6aJwwwdxddFmUuQN7p/GIT0pfneakBWNr0hoyzs/Qr1l4G2R1BlMFprDW9mOJry
-	QnLYQKUq/ewpXwIWSZDt7UNF5FT+XNLT94SsM2iElwuOg+P4J12jzwHigMPkDPpRXAu3EJRfKsS
-	i2uBWzfdjSQX1rpuDzXoS68pMO5xtbs9TNQU8ZtgiFMe9y56TO3Jh2T8RurFc7dGjvQoQs9M9AV
-	d8+DBvNAKJudhEHxGL6qPBPSESduR680QKDlr+VdfSIdOv4oDFEWm9SWFhivAwTNCa5U9Oij6QO
-	oAy8PPY=
-X-Received: by 2002:a05:7022:458e:b0:11d:e25a:d9ca with SMTP id
- a92af1059eb24-1248ec8d5d9mr2907961c88.26.1769464565359; Mon, 26 Jan 2026
- 13:56:05 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769465083; x=1770069883;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7YG21uS5Q3aTxJoxgOLQVMsuQQQPt4JTzGp95ovsFsE=;
+        b=PXTIWhp/tfvUDHpNNP3USe7au/Jc9haPGH2dpgl4JxqapVEa52baDomFVpWXG/WhG9
+         7RJ0hhowIDyU1tENHja6zUdiZS2QtvahBIllC1YKaZIAn4RbCSK8Z+aPFGAwhN4ylMWh
+         9OnmJp9atieh/az98oc6IDYQx6Te0mcujoGdLc7yC6JjAkfCQQ/u7q7i03BRBnmZ7kSv
+         MY9zz5neiJ3KZ2G37D3e/jRxZer5nEDb31Levcp/vf0O3w37cOjVU5TcQzm5vzzM87Nn
+         CTJ0gjfvum1/WY/4wjRRWJ14JtW7j2K9qg5BT/yjD0JPCmrMzpoCuok/hEBJOVQkqhOb
+         HuIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWC49AhgxFuqyMpMXRLu86a353qX38czacvkcdjsS1GNxt2SHX4iH1SxCG4fZ71aIgsU6F7njc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ16K/qRCADPYhT8fbVlhAVwDflsX13NoMomKtJAkc3rVP9XbT
+	roG6wGBijvPvwZaeJU2WvoTC9npRvxChYsv4/sHJ6uRpxLg+SOPUKNDh7uwYlKnzLQlB56QOy9f
+	UBy04uC2TN2FziuQGFnfw3gBn8JjXkxc=
+X-Gm-Gg: AZuq6aJxmp4HteodhLxC0Njph34tBD9etit2pyNqAIwTXsS0s6hsm4CxG+9KbwW0fud
+	Znebp1zYBgGq3ohVbeuriIb07xpkUziErUg7n9JZlvw+MbFAHRU8MvcfPPJj7xhgbe6Dlt8NNXk
+	qjswaPy4aCVa2QJNhHf6tbw9pyO2vqgxf+J4C32mwVPZoH9J6ug48fEtmFuvh1Rz4UCK1KpD+zX
+	WS7rI6ezxGWsx4fdzaR3ij3B+XfFxt6UN6Is32N91iX+oXR3AVR6kVkY/o4QU/IcD/TOQEyJ74x
+	lBbCbttyG8H5PlBs2AnnzIM8AOAA
+X-Received: by 2002:a05:690c:e3eb:b0:794:2c3d:7952 with SMTP id
+ 00721157ae682-7945a845df7mr47379077b3.3.1769465082722; Mon, 26 Jan 2026
+ 14:04:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126144624.2319784-1-brianvv@google.com> <37e1a648-609b-4d5e-9176-fbbacc7e9e07@lunn.ch>
- <CAMzD94Qt9-5G-8MHcmHLgYEyjRUoPB+SruzZXafxSTkNV8criA@mail.gmail.com>
- <b18b4b38-b3e7-485f-91f8-e3a74ff90572@lunn.ch> <72764a6e-602a-42ed-88c9-e4259b6078f3@intel.com>
- <CANn89iK-W6bKuVZD-5FxxunOtcmwOgAM9d4NPA8XwXXKi_TVJw@mail.gmail.com> <649ae4be-3081-49a2-8ac7-18724272498f@lunn.ch>
-In-Reply-To: <649ae4be-3081-49a2-8ac7-18724272498f@lunn.ch>
-From: Brian Vazquez <brianvv@google.com>
-Date: Mon, 26 Jan 2026 16:55:53 -0500
-X-Gm-Features: AZwV_Qg-_6RwoCQJkPRhHwJl-qOx5LoDk058u9jX1e_3TVI-Yv9hjldXz_u6cv4
-Message-ID: <CAMzD94TJ7pg8gVbUCAhtfkpL4+FtSfepqd=CJ-imNFq-A5W0gw@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [iwl-net PATCH v2] idpf: change IRQ naming to
- match netdev and ethtool queue numbering
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Eric Dumazet <edumazet@google.com>, Jacob Keller <jacob.e.keller@intel.com>, 
-	Brian Vazquez <brianvv.kernel@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org, 
-	David Decotigny <decot@google.com>, Li Li <boolli@google.com>, 
-	Anjali Singhai <anjali.singhai@intel.com>, Sridhar Samudrala <sridhar.samudrala@intel.com>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	emil.s.tantilov@intel.com, Brett Creeley <brett.creeley@amd.com>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+References: <20260125233335.6875-1-chris.bainbridge@gmail.com>
+ <DM3PPF63A6024A93B1437A144E82CC38B7AA393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <aXcovK8uhsiaHumT@debian.local> <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+In-Reply-To: <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+Date: Mon, 26 Jan 2026 22:04:31 +0000
+X-Gm-Features: AZwV_QiceH7qsXObZwUw3W1_GqQzTM8Z2nnHyRpegpE1rqs3Px19JUyms_T0uKk
+Message-ID: <CAP-bSRZ60CSEtR-_9OL6k_Lzg=w8MtD2i79KpwF+nYYzgak=-Q@mail.gmail.com>
+Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>, "Berg, Johannes" <johannes.berg@intel.com>, 
+	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>, "gustavoars@kernel.org" <gustavoars@kernel.org>, 
+	"linux-intel-wifi@intel.com" <linux-intel-wifi@intel.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Sure, sending v3 to add more details about the ABI.
-
-On Mon, Jan 26, 2026 at 4:12=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Mon, 26 Jan 2026 at 13:45, Korenblit, Miriam Rachel
+<miriam.rachel.korenblit@intel.com> wrote:
 >
-> On Mon, Jan 26, 2026 at 09:51:10PM +0100, Eric Dumazet wrote:
-> > On Mon, Jan 26, 2026 at 9:46=E2=80=AFPM Jacob Keller <jacob.e.keller@in=
-tel.com> wrote:
-> > >
-> > >
-> > >
-> > > On 1/26/2026 9:53 AM, Andrew Lunn wrote:
-> > > > On Mon, Jan 26, 2026 at 12:40:15PM -0500, Brian Vazquez wrote:
-> > > >> On Mon, Jan 26, 2026 at 11:24=E2=80=AFAM Andrew Lunn <andrew@lunn.=
-ch> wrote:
-> > > >>>
-> > > >>> On Mon, Jan 26, 2026 at 02:46:24PM +0000, Brian Vazquez wrote:
-> > > >>>> The code uses the vidx for the IRQ name but that doesn't match e=
-thtool
-> > > >>>> reporting or netdev naming, this makes it hard to tune the devic=
-e and
-> > > >>>> associate queues with IRQs. Sequentially requesting irqs startin=
-g from
-> > > >>>> '0' makes the output consistent.
-> > > >>>>
-> > > >>>> Before:
-> > > >>>>
-> > > >>>> ethtool -L eth1 tx 1 combined 3
-> > > >>>>
-> > > >>>> grep . /proc/irq/*/*idpf*/../smp_affinity_list
-> > > >>>> /proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-> > > >>>> /proc/irq/68/idpf-eth1-TxRx-1/../smp_affinity_list:0
-> > > >>>> /proc/irq/70/idpf-eth1-TxRx-3/../smp_affinity_list:1
-> > > >>>> /proc/irq/71/idpf-eth1-TxRx-4/../smp_affinity_list:2
-> > > >>>> /proc/irq/72/idpf-eth1-Tx-5/../smp_affinity_list:3
-> > > >>>>
-> > > >>>> ethtool -S eth1 | grep -v ': 0'
-> > > >>>> NIC statistics:
-> > > >>>>       tx_q-0_pkts: 1002
-> > > >>>>       tx_q-1_pkts: 2679
-> > > >>>>       tx_q-2_pkts: 1113
-> > > >>>>       tx_q-3_pkts: 1192 <----- tx_q-3 vs idpf-eth1-Tx-5
-> > > >>>>       rx_q-0_pkts: 1143
-> > > >>>>       rx_q-1_pkts: 3172
-> > > >>>>       rx_q-2_pkts: 1074
-> > > >>>>
-> > > >>>> After:
-> > > >>>>
-> > > >>>> ethtool -L eth1 tx 1 combined 3
-> > > >>>>
-> > > >>>> grep . /proc/irq/*/*idpf*/../smp_affinity_list
-> > > >>>>
-> > > >>>> /proc/irq/67/idpf-Mailbox-0/../smp_affinity_list:0-55,112-167
-> > > >>>> /proc/irq/68/idpf-eth1-TxRx-0/../smp_affinity_list:0
-> > > >>>> /proc/irq/70/idpf-eth1-TxRx-1/../smp_affinity_list:1
-> > > >>>> /proc/irq/71/idpf-eth1-TxRx-2/../smp_affinity_list:2
-> > > >>>> /proc/irq/72/idpf-eth1-Tx-3/../smp_affinity_list:3
-> > > >>>>
-> > > >>>> ethtool -S eth1 | grep -v ': 0'
-> > > >>>> NIC statistics:
-> > > >>>>       tx_q-0_pkts: 118
-> > > >>>>       tx_q-1_pkts: 134
-> > > >>>>       tx_q-2_pkts: 228
-> > > >>>>       tx_q-3_pkts: 138 <--- tx_q-3 matches idpf-eth1-Tx-3
-> > > >>>>       rx_q-0_pkts: 111
-> > > >>>>       rx_q-1_pkts: 366
-> > > >>>>       rx_q-2_pkts: 120
-> > > >>>
-> > > >>> Are there any ABI issues here?
-> > > >>
-> > > >> The patch doesn't change the format, it just fixes the numbering i=
-n
-> > > >> the name to make it consistent with other reporting tools. It
-> > > >> shouldn't break any library.
-> > > >
-> > > > But is the numbering part of the ABI?
-> > > >
-> > > > Making a comment about ABI in the commit message makes it clear it =
-is
-> > > > something you have considered, and you have decided it is not an
-> > > > issue. If there is no such comment, reviewers probably should ask.
-> > > >
-> > > >         Andrew
-> > >
-> > > I don't see how an application can depend on the name if it can't
-> > > correlate it to anything meaningful. The change fixes the ID values u=
-sed
-> > > so that they *do* correlate. If an application was previously assumin=
-g
-> > > it correlated to the queue ID, it would incorrect associate the IRQ w=
-ith
-> > > the wrong queue.
+>
+>
+> > -----Original Message-----
+> > From: Chris Bainbridge <chris.bainbridge@gmail.com>
+> > Sent: Monday, January 26, 2026 10:42 AM
+> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
+> > Cc: kvalo@kernel.org; Berg, Johannes <johannes.berg@intel.com>;
+> > benjamin@sipsolutions.net; gustavoars@kernel.org; linux-intel-wifi@intel.com;
+> > linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; stable@vger.kernel.org
+> > Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
 > >
-> > Agree, this mismatch caused me some surprises, we can not keep a broken
-> > ABI (which has been broken by accident)
+> > On Mon, Jan 26, 2026 at 07:15:54AM +0000, Korenblit, Miriam Rachel wrote:
+> > >
+> > > Hi Chris, could you please provide the full log?
+> > >
+> > > Miri
+> >
+> > Sure, for 6.18.0 see https://lore.kernel.org/linux-
+> > wireless/aTDoDiD55qlUZ0pn@debian.local/
+> >
+> >
+> Thanks!
 >
-> So everybody is agreed, great. I just think it would of been good to
-> mention ABI in the commit message, to show due diligence has been
-> done.
->
->    Andrew
+> could you please test if the attached patch eliminates the panic?
+
+Yes, that seems to work fine.
+
+Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
