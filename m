@@ -1,255 +1,172 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25AF33372B
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B95329DB65;
+	Mon, 26 Jan 2026 12:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769428520; cv=none; b=NPdWgxJ2asDClthyJfMSApKZcf26bfrkU46/1NEMklZVv4wl944pphRiJ4wwD8K6zuwWxYMnzv6YT78cwtD5GaVoOi86ztYvLIg08MP3lYX8H5cKgyKPxycPsIoKgrL3HJrh6J4AnSOY7eZ5Lmn/x1/313RydhqZKABrnDjR8q0=
+	t=1769428959; cv=none; b=E8tpB+JHXXGH9ROE2AsBbBeFHzYALLAOH7ni6vkW8lLBZCsTXymmoaG05KMb9wpuuY1VjP8Oz0qP+WDOQ0bsjyvJbplkm3DIudtv8v0/dIGUTCGU2wi9LFZm+OwF5plDzvTeNpSRnAuK/P8PbJHrXRAAYWKa3cqDH16qjdOCQhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769428520; c=relaxed/simple;
-	bh=y1lGC/teIR/FTGRVTgw+bosav+jMP2M9QnBcEXFTaME=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxXOMzb7fRzgA4PWIIpQacSL9bUNtCAJgNFOgh4D/mQO6Wf/KEJfMBXlslz8P/fEw9VAL+6IedTojRNd/+pt2jj13ISz2kSzra9o19RrlteIfb3Hc0KIVqai+j5PPFzStrLQ92w37E7oDTftAiYhHGYsKBllu4MD9JhqDAcrqdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EMtbC1bF; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769428959; c=relaxed/simple;
+	bh=1ejtWTPxC7QhHvmJf8Z6FrtDXKg5bPC5ZA2RhQSYSfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XltjkHzefBz8NZ78nn7/+/xVk2yG2OWb7F0sBvdoErHaNchDuRLnGVBiWTEhYxFi6hZfT7kQGXQIlNqPmOCiPaSzteMtDBCa5ridxMx8b6dQaeYuKsdOW6HXvxWfmaGABfvrocf9cqk+7kEN4Vw/TSS0Y80G7dFYXSHgAQOvaoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wKDDG/mK; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EMtbC1bF"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-944168e8c5fso3079873241.2
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 03:55:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769428518; x=1770033318; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tJ1+S2Wah0B24B4nb8d1ZRSd0AUn0CCMY72mwuIFWBk=;
-        b=EMtbC1bFKhQkjQrhhzXizj31a33sI/FvTa06VzPirgZPhMptLs77GjDU2Vpnv+7NV2
-         B3pHbd73kGgCFa2v/NWmtIVvnKL+OKYdgwS4R05FAug0rV9+H/Ar6iJFK5KrW4/P2PGD
-         i2SIRt3ctAvTeBUhrbWqq2MT1kZOYfe36hp4Tnj8UNto82GOU3Blbs9sG/kl7tvUjXKX
-         krQhLOia0K6f3V+x17yY13BYZ8CSQmi1RjGxu448f4t1pYsgD53aeHRUWEkV1LEleE89
-         g/sIXNgYrG5xVRHzGWYjri3DdDfr2Z/qCGhhCTJMCxate9yWFq82DA6LPjNDpUd94NSn
-         JypQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769428518; x=1770033318;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tJ1+S2Wah0B24B4nb8d1ZRSd0AUn0CCMY72mwuIFWBk=;
-        b=xMlYjOBZIWGvGYbL5ylVVmfJtlXq5zxuT1WyQfrqrKiGDWCREdGBpUtxI5xwsh/uMf
-         m4vnqXDNqSoQQlOiJKOPZUFI5gmpEOHUUrX0E6YxpYZnHAWjt8WY9oEZD1/i/YhiihmK
-         4LQnNiA0akBlJZyemXNhYrRno9U9Esm+u2upD4UkqgeE239Ee/U9OZ4poPHUC7YMNxZu
-         SE9+VjhUnv7SGHe/8tMXO1w0dxgU/4Hj1HaPROgmEv96Q3P0gHLMd7kxqAw0Asvn4H5p
-         IOo0/h5yym2vrq5TPcx1dxbop1HzDTyFGgb3jSHfuvDn+769bAKLpqs8lfAAvePGPT/f
-         2S0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXpPYA4y9PKnatVdwHwyQgJ6EY+2fgPNzY+MgBVwcczf2sjXYg/nKV8LybaX7jLtTnXomhHI4E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyES3N3+xVBCV+Fkiw5BgPNoHd5tF+PxibJo9JkUcWwIZSk94nk
-	o9S+7WoKvnZW4N8XvM+EOS0hL2hxmH61rL0PVLHL93zr4iNUoeXzqtQRVxU8aXdB
-X-Gm-Gg: AZuq6aLUP63tuL+xCH3gd1AbJG5xIojj/2xTWC246cgROlzxgNMhpfo0om678FKuW1e
-	1BD2GExwsGZWlm6ENiRUMSDZzUMoIkBzaVSRCamoR1cXUZxxe1VYRgOEuoDpPPiwPRmuF9N6xA0
-	DY2Wq72yFJu73Nh1LwHRHaRu//I5ygGA5tlUko/MwNwirMQrn7d4CfC38FJ699xlN6YwhJdSS6W
-	z84snsGCfRvzHQYwLRj2WBM+X+eJIR+DrlblWpwIfg18qveA6QuFlBvNsSelWY1kM1ukjaTwK6V
-	73CtIqXK6y4iDyCj826FKNovHmxmL8GIAhdhNSDNe2breolt7X7Ebt71EaUJl7muUt2IQRomM/D
-	2CI37fRljbawsX4SwwcfgZcHHdOjBENNqOh0zmKiO0KcmfllDcA61IFL9KlsnjXLAudExDepaj6
-	9NkeuaKaBljMjPbys7nhPdeLuJ9Qjsr5hEf7NX3h1dripwYO3trKJ0NBNK9MYbIoswlBy9uR+q
-X-Received: by 2002:a17:903:2f48:b0:2a7:a9b8:ebae with SMTP id d9443c01a7336-2a84531819bmr42437665ad.58.1769422988504;
-        Mon, 26 Jan 2026 02:23:08 -0800 (PST)
-Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd776sm84958275ad.26.2026.01.26.02.23.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 02:23:08 -0800 (PST)
-From: Joey Lu <a0987203069@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	richardcochran@gmail.com
-Cc: alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com,
-	ychuang3@nuvoton.com,
-	schung@nuvoton.com,
-	yclu4@nuvoton.com,
-	peppe.cavallaro@st.com,
-	linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Joey Lu <a0987203069@gmail.com>
-Subject: [PATCH net-next v9 1/3] dt-bindings: net: nuvoton: Add schema for Nuvoton MA35 family GMAC
-Date: Mon, 26 Jan 2026 18:22:55 +0800
-Message-ID: <20260126102257.2619862-2-a0987203069@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260126102257.2619862-1-a0987203069@gmail.com>
-References: <20260126102257.2619862-1-a0987203069@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wKDDG/mK"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769428947; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=Hc/TS0tY4HUOfWDij4WQGV+0xonDLwbrony8b89dCv8=;
+	b=wKDDG/mKMb9rg1cLvtpdeRV6Ej+XS4VU9btC3v9XsSKFdLVhqEG+t93h7q1K7L1/Wg7whOH5s81CgVK5ykmsa2qmEorvV09GLh9AwykleuNC66DIgUwHYrIFTaWqOPdfNe2X+Vx6/sHQEK+eYSzBRhG/g+pRF1dHlE2VzZPhOtU=
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wxu-mhe_1769428946 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 26 Jan 2026 20:02:26 +0800
+Date: Mon, 26 Jan 2026 20:02:26 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Message-ID: <20260126120226.GA6424@j66a10360.sqa.eu95>
+References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
+ <20260123082349.42663-3-alibuda@linux.alibaba.com>
+ <aXPEFdEdtSmd6AzF@milan>
+ <20260124093505.GA98529@j66a10360.sqa.eu95>
+ <aXSjm1DXm6yP62tD@pc636>
+ <20260124145754.GA57116@j66a10360.sqa.eu95>
+ <aXdB3lsm3w0fJT3Q@milan>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXdB3lsm3w0fJT3Q@milan>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Create initial schema for Nuvoton MA35 family Gigabit MAC.
+On Mon, Jan 26, 2026 at 11:28:46AM +0100, Uladzislau Rezki wrote:
+> Hello, D. Wythe!
+> 
+> > > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
+> > > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
+> > > > > > find_vm_area() provides a way to find the vm_struct associated with a
+> > > > > > virtual address. Export this symbol to modules so that modularized
+> > > > > > subsystems can perform lookups on vmalloc addresses.
+> > > > > > 
+> > > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> > > > > > ---
+> > > > > >  mm/vmalloc.c | 1 +
+> > > > > >  1 file changed, 1 insertion(+)
+> > > > > > 
+> > > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > > > > index ecbac900c35f..3eb9fe761c34 100644
+> > > > > > --- a/mm/vmalloc.c
+> > > > > > +++ b/mm/vmalloc.c
+> > > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
+> > > > > >  
+> > > > > >  	return va->vm;
+> > > > > >  }
+> > > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
+> > > > > >  
+> > > > > This is internal. We can not just export it.
+> > > > > 
+> > > > > --
+> > > > > Uladzislau Rezki
+> > > > 
+> > > > Hi Uladzislau,
+> > > > 
+> > > > Thank you for the feedback. I agree that we should avoid exposing
+> > > > internal implementation details like struct vm_struct to external
+> > > > subsystems.
+> > > > 
+> > > > Following Christoph's suggestion, I'm planning to encapsulate the page
+> > > > order lookup into a minimal helper instead:
+> > > > 
+> > > > unsigned int vmalloc_page_order(const void *addr){
+> > > > 	struct vm_struct *vm;
+> > > >  	vm = find_vm_area(addr);
+> > > > 	return vm ? vm->page_order : 0;
+> > > > }
+> > > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
+> > > > 
+> > > > Does this approach look reasonable to you? It would keep the vm_struct
+> > > > layout private while satisfying the optimization needs of SMC.
+> > > > 
+> > > Could you please clarify why you need info about page_order? I have not
+> > > looked at your second patch.
+> > > 
+> > > Thanks!
+> > > 
+> > > --
+> > > Uladzislau Rezki
+> > 
+> > Hi Uladzislau,
+> > 
+> > This stems from optimizing memory registration in SMC-R. To provide the
+> > RDMA hardware with direct access to memory buffers, we must register
+> > them with the NIC. During this process, the hardware generates one MTT
+> > entry for each physically contiguous block. Since these hardware entries
+> > are a finite and scarce resource, and SMC currently defaults to a 4KB
+> > registration granularity, a single 2MB buffer consumes 512 entries. In
+> > high-concurrency scenarios, this inefficiency quickly exhausts NIC
+> > resources and becomes a major bottleneck for system scalability.
+> > 
+> > To address this, we intend to use vmalloc_huge(). When it successfully
+> > allocates high-order pages, the vmalloc area is backed by a sequence of
+> > physically contiguous chunks (e.g., 2MB each). If we know this
+> > page_order, we can register these larger physical blocks instead of
+> > individual 4KB pages, reducing MTT consumption from 512 entries down to
+> > 1 for every 2MB of memory (with page_order == 9).
+> > 
+> > However, the result of vmalloc_huge() is currently opaque to the caller.
+> > We cannot determine whether it successfully allocated huge pages or fell
+> > back to 4KB pages based solely on the returned pointer. Therefore, we
+> > need a helper function to query the actual page order, enabling SMC-R to
+> > adapt its registration logic to the underlying physical layout.
+> > 
+> > I hope this clarifies our design motivation!
+> > 
+> Appreciate for the explanation. Yes it clarifies an intention.
+> 
+> As for proposed patch above:
+> 
+> - A page_order is available if CONFIG_HAVE_ARCH_HUGE_VMALLOC is defined;
+> - It makes sense to get a node, grab a spin-lock and find VM, save
+>   page_order and release the lock.
+> 
+> You can have a look at the vmalloc_dump_obj(void *object) function.
+> We try-spinlock there whereas you need just spin-lock. But the idea
+> is the same.
+> 
+> --
+> Uladzislau Rezki
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Joey Lu <a0987203069@gmail.com>
----
- .../bindings/net/nuvoton,ma35d1-dwmac.yaml    | 126 ++++++++++++++++++
- .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
- 2 files changed, 127 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
+Hi Uladzislau,
 
-diff --git a/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
-new file mode 100644
-index 000000000000..8eaddfdc937c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
-@@ -0,0 +1,126 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/nuvoton,ma35d1-dwmac.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Nuvoton DWMAC glue layer controller
-+
-+maintainers:
-+  - Joey Lu <yclu4@nuvoton.com>
-+
-+description:
-+  Nuvoton 10/100/1000Mbps Gigabit Ethernet MAC Controller is based on
-+  Synopsys DesignWare MAC (version 3.73a).
-+
-+allOf:
-+  - $ref: snps,dwmac.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - nuvoton,ma35d1-dwmac
-+
-+  reg:
-+    maxItems: 1
-+    description:
-+      Register range should be one of the GMAC interface.
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: MAC clock
-+      - description: PTP clock
-+
-+  clock-names:
-+    items:
-+      - const: stmmaceth
-+      - const: ptp_ref
-+
-+  nuvoton,sys:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    items:
-+      - items:
-+          - description: phandle to access syscon registers.
-+          - description: GMAC interface ID.
-+            enum:
-+              - 0
-+              - 1
-+    description:
-+      A phandle to the syscon with one argument that configures system registers
-+      for MA35D1's two GMACs. The argument specifies the GMAC interface ID.
-+
-+  resets:
-+    maxItems: 1
-+
-+  reset-names:
-+    items:
-+      - const: stmmaceth
-+
-+  phy-mode:
-+    enum:
-+      - rmii
-+      - rgmii
-+      - rgmii-id
-+      - rgmii-txid
-+      - rgmii-rxid
-+
-+  tx-internal-delay-ps:
-+    default: 0
-+    minimum: 0
-+    maximum: 2000
-+    description:
-+      RGMII TX path delay used only when PHY operates in RGMII mode with
-+      internal delay (phy-mode is 'rgmii-id' or 'rgmii-txid') in pico-seconds.
-+      Allowed values are from 0 to 2000.
-+
-+  rx-internal-delay-ps:
-+    default: 0
-+    minimum: 0
-+    maximum: 2000
-+    description:
-+      RGMII RX path delay used only when PHY operates in RGMII mode with
-+      internal delay (phy-mode is 'rgmii-id' or 'rgmii-rxid') in pico-seconds.
-+      Allowed values are from 0 to 2000.
-+
-+required:
-+  - clocks
-+  - clock-names
-+  - nuvoton,sys
-+  - resets
-+  - reset-names
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
-+    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
-+    ethernet@40120000 {
-+        compatible = "nuvoton,ma35d1-dwmac";
-+        reg = <0x40120000 0x10000>;
-+        interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "macirq";
-+        clocks = <&clk EMAC0_GATE>, <&clk EPLL_DIV8>;
-+        clock-names = "stmmaceth", "ptp_ref";
-+
-+        nuvoton,sys = <&sys 0>;
-+        resets = <&sys MA35D1_RESET_GMAC0>;
-+        reset-names = "stmmaceth";
-+
-+        phy-mode = "rgmii-id";
-+        phy-handle = <&eth_phy0>;
-+        mdio {
-+            compatible = "snps,dwmac-mdio";
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            eth_phy0: ethernet-phy@0 {
-+                reg = <0>;
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index dd3c72e8363e..10cb5e555750 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -69,6 +69,7 @@ properties:
-         - ingenic,x2000-mac
-         - loongson,ls2k-dwmac
-         - loongson,ls7a-dwmac
-+        - nuvoton,ma35d1-dwmac
-         - nxp,s32g2-dwmac
-         - qcom,qcs404-ethqos
-         - qcom,sa8775p-ethqos
--- 
-2.43.0
+Thanks very much for the detailed guidance, especially on the correct
+locking pattern. This is extremely helpful.I will follow it and send
+a v2 patch series with the new helper implemented in mm/vmalloc.c.
+
+Thanks again for your support.
+
+Best regards,
+D. Wythe
+
 
