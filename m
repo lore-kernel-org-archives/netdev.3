@@ -1,57 +1,78 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f67.google.com (mail-ua1-f67.google.com [209.85.222.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D01624C0;
-	Mon, 26 Jan 2026 06:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6909153BE9
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 06:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408975; cv=none; b=CtoPE4sXJXVfYqxa6OXzxMdkqnXriesBh9taaKleboAhmamXwK28npkbR0dg0gc4uZXin/XzBlXeTidGWxA7tHgkTuqNp6a8vZd+/HyYLtzpFeNjWK711DNR+NM21jIZxZrqOqLeeSYCL4XHC8llmP5l+jae4nONa8vzr6POXcc=
+	t=1769409119; cv=none; b=N8v4J7nF0Kf0Iq4xgQUPhcTsPpOVCW+A70pfCfn3b3OO02eD0GUf++83cygzWou52YG+Q/VRzt2X4bOam+iJpNg4c5mhUh3XJmlwVbNdWEygBlpQrlWYZFLwwKg8yZhTZVaH6iOxs7KGCXp6aLfagqbbjgs2ulfKjS1avSf+XoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408975; c=relaxed/simple;
-	bh=74F+QdvEEPyCkFQAZ9k7xfLSsdZRZRCgm+EBSZyKB+I=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KdMwmGtRfPqUNsdgx7XT+WVdVfVnKVb3w5Bnt7zwKNRNGUld2kPUi0C/pH7R9umm53S6gMWLdUq0M/WbCoQhbDTWsfy7/tt9zu9X/hKVKcf7YzT1hRqx55WFJk/+uHsJoVQA1jyKAZ5KBYVWn3jXfxux4bObi7dCxjEDdnCoiCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=faQD8Kdy; arc=none smtp.client-ip=162.62.58.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1769409119; c=relaxed/simple;
+	bh=MwLSOA3uQCNtmf71JgeF5X8NEQ2zmM0uL2ZVH33yHVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kg0hOvhRGytJjstI+n3QRBnzKOCqC6k8R/V6vf/GxhRjpGA+F+DugWyZ7tA/VUuaJ9oLfe+OKip2dWZbAUYBYD7w0TniRl+IReg82+P0OQl1tzOkFXKIZb2C611JCO9cpRp7DB0wzlTfe/LSPMUUbBdOfjyOcRvCfro+3dRErkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cpVdrEa+; arc=none smtp.client-ip=209.85.222.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="faQD8Kdy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1769408960;
-	bh=YrOJ9nnZ1uMX7vySKsJwrRb67e2niePqvCeLLz2LtBM=;
-	h=From:To:Cc:Subject:Date;
-	b=faQD8KdycPq+93nfF6kh/Q3Nl6D+o3F0fqeUtI7VhROVJ1THbltMagh4pm/776+MY
-	 Ezqt9/dtfhUCuPsHuExbJ34Lu7kT9pW8JnQNbb6b0rGichtmK0WCOAtzeAWrvpjS4j
-	 HLFg9h2bGGDU24CiaMkFnVtYnMAHWrFck4Aqoy0s=
-Received: from jack-mini ([58.212.11.129])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 673944A9; Mon, 26 Jan 2026 14:25:51 +0800
-X-QQ-mid: xmsmtpt1769408751tmo9wa8bj
-Message-ID: <tencent_DBA407008574A1E4BF7F27AD38AD4D13730A@qq.com>
-X-QQ-XMAILINFO: MqswyhUqVe0CsHE4UAtaAPNOrVrVCeA8XoFx1yJMupYoIBLm34WVL95ZXkh2Sm
-	 pmW04F9Z9YHOs2V13ddwEz/rqxN+4Xp6+F/pw4siFRf95ls+hDdXJd8WKk8xdZRiX+gDRYLfL3Ij
-	 oiM/YwvP1mVT/6E3sMQEcdBd0LLsTGDn5bjDHxkHvP/mGaF2SUUvssCrglhCtqC2nNjtCdxpd09m
-	 93z5Ixs7oLVtKDmxt4rp3NjBA/zw/giZO/xNOye2CjEF8NTw8h5EKRoaPHHxhusiYIvZKGZYuQL7
-	 cBkcQPHD9fS3iKRXb5oov7dkjNyXphgX/I1NCI3j+7kPXZs+rxM0bW67jIFK0eCH6ySg/jIAqORU
-	 SUgTtWO0fCKARgNebAx0jfp2vdkyNxClHPX9F2tQLwONCj4iO1aJc1Dia0akDiaPpQs/z2AuHUl8
-	 c04RCcBTHhtGGyiWOmRgGBHYXf3fkNT+wI1d0ws8utyLCEo9YW1q1sW1MlrmfgCQlO7+FNM1jS2a
-	 BwkzdmdiiI33Bs1G8Dq7OVMKzaR8vw+UXWxQSPWUw86co1yC6yrIEyTUouvFtsx8mFBgfO8DXXcR
-	 0o3obenJP8xzMu6Kd7unYCTPEi+KAL4mYFsMAIiDvjMZDMBCDbZgqrFykz8lo1RDuDPYf2CQuBVm
-	 RpGFOeIGuRQmCHwgHskiaLM/glCdrrUA78EGeLK9Jz5e4FRvnd8RqABvydwLdp/HE3+IT0alUNSB
-	 QkOHh1fARpdiGKRMGIhCMQvWiSKgqz+TDntwirgnX3J34DiRaGrTKs4U6gtyrd7vc5d/2h3V1564
-	 BuuDp0Toa8+PkCm97oxPRwr1UxGfqzFhz9a39xnpgGasJ6szw19FuKL/XEs2yD21D8F3natNAzW/
-	 A8tHVMIQnUcKR4HQI3eboi61mYRu2po24ndXVXSa3SxQYVdofaRfsHkjvP5yZ/2IGsTpghXZ8CLP
-	 iiiRbPjyQppp+0ywFJjuJxiUcvspfJqQCCZYp7nffnyEjswvVStsg6yxr3qr2aJP+AwB1sh3Lrx2
-	 cIp4gW7UPAUKcZCU8jNxd3Q9KOeqDMkFgZypgGBg==
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: "jack.zhou" <jack.wemmick@foxmail.com>
-To: Trond Myklebust <trondmy@kernel.org>
-Cc: linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"jack.zhou" <jacketzc@outlook.com>
-Subject: [PATCH] sunrpc/xs_read_stream: fix dead loop when xs_read_discard
-Date: Mon, 26 Jan 2026 14:25:24 +0800
-X-OQ-MSGID: <20260126062548.3417933-1-jack.wemmick@foxmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cpVdrEa+"
+Received: by mail-ua1-f67.google.com with SMTP id a1e0cc1a2514c-947fe9e92c3so3340999241.2
+        for <netdev@vger.kernel.org>; Sun, 25 Jan 2026 22:31:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769409116; x=1770013916; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DQBy6DRxXy5h5AscbNfB5n+HhsWUMKIsOSrmArTqC34=;
+        b=cpVdrEa+MGuAev36EQgApaqZYZRrR+CC62T4oBURyGpt3FM9q+lXDJtkfRNc3+5tHL
+         qmq98VlIC71vYoT5QlIb7VAe9tuWFBi+sKz898Sh9HPaBEZg/uzevWVsaeHPwl1qTnsV
+         tStU8W42wlN7T48XF24vc+GF/+TlDx58MG2fuBGIOcjT9ByhPlJyPq/XbyVSw/tUW1wv
+         5/wGPJKK4BMiQKZ4fM+FdG6zBRQRFtkUbFbS+O008x5VcI+K410komw5DaiI7Kp2RI3M
+         dCUkyEH6ulk5Ib1/B3XuT77B5rnLF1CIE1UVoDq2k+yi19o1d66JkA+ZxpC59FypHXP8
+         ovQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769409116; x=1770013916;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DQBy6DRxXy5h5AscbNfB5n+HhsWUMKIsOSrmArTqC34=;
+        b=XWMK3p9B1YBjBHhkiDwgdQ+ra20ZCM7FE8zS2bmIOung8dNWBak5cgIcy+K4T7Mqtb
+         VTyHEbbAfQrN+q0ejHZKAMmz8zLb0d3iRIpBye0rDyJdw99AgZ0Pf9m/XYsCAORUMfvo
+         AjQ+BYhu73PjpcSLyaPdu/ne5ci+bFAMUsHZuDcsNWZEpd479Eytii594ptl4d2W2P06
+         9WxPnaHB3tl0o3w40SnTKYHc6qke/uk1STBCGebor/nmeu3Ll0ewwD8g/CqbPoCN8kdZ
+         X0Zn2wDkht7HrbUsRZG9h9sjNaTbVwbJGlw7JlvsNc5dVIxEzy16BHRRwXQ/O9fQo2TF
+         V6mg==
+X-Gm-Message-State: AOJu0Yywvt0ijgcT91vt0Jze8iO0Mnmtsh78tOvrBqfplfEs2X2qPrfS
+	Cgt83PGg5uj9mn8n3SSdw9RmprU4v+mS5XUCODjqfYdCj3tcsrdC8zvvfBLhrp0A
+X-Gm-Gg: AZuq6aI7cpBh/WfV+63kKARvlY01u5Na8GqTxtshstJYirV2wwT2S/aoYbpA0uDrypk
+	ywnug/Wb1pFXFKixYeo23lR9lElqMB2BLNYdto9UCqZJxwuwd5oKEV+bfhMlnoHS3LWsyhqGOsU
+	SrWLuYxCHmiBVjO1NvvWqmRtVBSTPv86Qe7GcDxvdQFobX72szQkng9dzLeg8BydUGfFNmubufV
+	JRhBLPpKhQ7W8XXTRZcD5fFOyuD8cQ0V0pMBBUh1XrFFvqbH2ZbRR+MggDaRK0GJJA0/Heg+65M
+	WBHNWIF6sMmJtTicCO39HkWCH9txVWxzd8Q0ac+ZLALzYtSzJVeSCM85WG33DHSciKqmsjxKG/W
+	yGq6GWF2tWF6C5lfe4nVoc5A5XW9rAGkjgFhDH2unzBl2k4g552QAkqlwyrrkl9nNBitP6P14DO
+	w+lMxjG2uoUrml1dIX1NweCqKJv1sUWPAH9V3IAVEsTMkC6nN+bU0Pi44SqVt1jF7t4T4OdTzko
+	BD9kdvb16GnS7VG3h0RPV7r3bdb4fFQd+GRiFSYTWDxUvVOsGxCVSMMrS8smEhJnf74GRvrcpdU
+	fv6UN/tY
+X-Received: by 2002:a05:7301:1691:b0:2ae:5e6b:dc41 with SMTP id 5a478bee46e88-2b7643426cemr1437848eec.14.1769402493623;
+        Sun, 25 Jan 2026 20:41:33 -0800 (PST)
+Received: from ethan-latitude5420.. (host-127-22.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.22])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a9e1c52sm11728841eec.16.2026.01.25.20.41.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jan 2026 20:41:33 -0800 (PST)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH net-next] net: usb: int51x1: use usbnet_cdc_update_filter
+Date: Sun, 25 Jan 2026 20:40:39 -0800
+Message-ID: <20260126044049.40359-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,97 +81,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "jack.zhou" <jacketzc@outlook.com>
+The int51x1 driver uses the same requests as USB CDC to handle packet
+filtering, but provides its own definitions and function to handle it.
+The chip datasheet says the requests are CDC compliant. Replace this
+unnecessary code with a reference to usbnet_cdc_update_filter.
 
-Hi maintainers,
+Also fix the broken datasheet link and remove an empty comment.
 
-This bug was discovered during following scenario:
-
-1. Using NFS client with TCP mode
-2. RPC_REPLY process
-
-
-Let's first review the normal process:
-
-1. The `xs_read_stream` function is located within the for loop of the `xs_stream_data_receive` function. The condition for exiting is that the return value ret of the `xs_read_stream` method is < 0.
-2. When entering the function `xs_read_stream`, since `transport->recv.len` == 0, `xs_read_stream_header` will be called first. Based on `transport->recv.calldir`, it decides whether to execute `RPC_CALL` or `RPC_REPLY`;(and also sets the value of `transport->recv.len`)
-3. Since it is executing `RPC_REPLY`, the return value of the function `xs_read_stream_reply` is provided by tcp.c's `tcp_recvmsg`, indicating the size of the copied skb, and this value is > 0.
-4. Since it is a normal process, it will reach the end of the function and return, which is: 
-```
-transport->recv.offset = 0;
-transport->recv.len = 0;
-return read;
-```
-5. The returned 'read' is the return value of the function 'xs_read_stream_reply' in the RPC_REPLY process. Since this value is > 0, the `xs_stream_data_receive` function's for loop cannot be exited.
-6. After re-entering the xs_read_stream function, since transport->recv.len == 0, xs_read_stream_header will still be called.
-7. Since the skb is empty, tcp.c's `tcp_recvmsg` will return a value < 0, usually -EAGAIN (-11).
-8. Since the return value of xs_read_stream_header is < 0, the goto out_err statement will be executed.
-9. The for loop of the xs_stream_data_receive function will be exited.
-10. The next time xs_stream_data_receive is entered, the above steps will be repeated.
-
-
-Now we are encountering an abnormal process:
-
-
-1. For some reason, skb is contaminated, and `transport->recv.calldir` parses out an incorrect value, so `msg.msg_flags |= MSG_TRUNC`;(and also sets the value of transport->recv.len)
-2. The `if (transport->recv.offset < transport->recv.len) {}` condition will be executed
-3. The return value of function `xs_read_discard` is > 0, so when returning to the upstream `xs_stream_data_receive` function, the for loop cannot be exited
-4. When entering xs_read_stream again, since transport->recv.len != 0, `xs_read_stream_header` will no longer be executed, which means `transport->recv.calldir` cannot be correctly set anymore
-5. This is fatal for all subsequent RPC Replies because `transport->recv.calldir` cannot be correctly set anymore, so they will all go to `xs_read_discard`
-6. At the same time, since transport->recv.len has not been reset to 0, this loop will become an infinite loop
-
-Therefore, my approach is:
-
-After reaching the point of `xs_read_discard` due to an abnormal situation, the value of `transport->recv.len` will be reset in the same way as a normal return, in order to prevent a deadlock from occurring.
-
-The modification has been tested and passed in version 5.10.160.
-
-
-
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- net/sunrpc/xprtsock.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/usb/Kconfig   |  1 +
+ drivers/net/usb/int51x1.c | 39 +++------------------------------------
+ 2 files changed, 4 insertions(+), 36 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 2e1fe6013361..91d1b992eb7f 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -695,6 +695,13 @@ xs_read_stream_reply(struct sock_xprt *transport, struct msghdr *msg, int flags)
- 	return ret;
+diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+index 856e648d804e..d050adfe860a 100644
+--- a/drivers/net/usb/Kconfig
++++ b/drivers/net/usb/Kconfig
+@@ -564,6 +564,7 @@ config USB_HSO
+ config USB_NET_INT51X1
+ 	tristate "Intellon PLC based usb adapter"
+ 	depends on USB_USBNET
++	select USB_NET_CDCETHER
+ 	help
+ 	  Choose this option if you're using a 14Mb USB-based PLC
+ 	  (Powerline Communications) solution with an Intellon
+diff --git a/drivers/net/usb/int51x1.c b/drivers/net/usb/int51x1.c
+index 6fde41550de1..87bd6be1fcb6 100644
+--- a/drivers/net/usb/int51x1.c
++++ b/drivers/net/usb/int51x1.c
+@@ -4,14 +4,11 @@
+  *
+  * Intellon usb PLC (Powerline Communications) usb net driver
+  *
+- * http://www.tandel.be/downloads/INT51X1_Datasheet.pdf
++ * https://web.archive.org/web/20101025091240id_/http://www.tandel.be/downloads/INT51X1_Datasheet.pdf
+  *
+  * Based on the work of Jan 'RedBully' Seiffert
+  */
+ 
+-/*
+- */
+-
+ #include <linux/module.h>
+ #include <linux/ctype.h>
+ #include <linux/netdevice.h>
+@@ -27,14 +24,6 @@
+ 
+ #define INT51X1_HEADER_SIZE	2	/* 2 byte header */
+ 
+-#define PACKET_TYPE_PROMISCUOUS		(1 << 0)
+-#define PACKET_TYPE_ALL_MULTICAST	(1 << 1) /* no filter */
+-#define PACKET_TYPE_DIRECTED		(1 << 2)
+-#define PACKET_TYPE_BROADCAST		(1 << 3)
+-#define PACKET_TYPE_MULTICAST		(1 << 4) /* filtered */
+-
+-#define SET_ETHERNET_PACKET_FILTER	0x43
+-
+ static int int51x1_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ {
+ 	int len;
+@@ -104,29 +93,6 @@ static struct sk_buff *int51x1_tx_fixup(struct usbnet *dev,
+ 	return skb;
  }
  
-+static void
-+xs_stream_reset_recv(struct sock_xprt *transport)
-+{
-+	transport->recv.offset = 0;
-+	transport->recv.len = 0;
-+}
-+
- static ssize_t
- xs_read_stream(struct sock_xprt *transport, int flags)
- {
-@@ -740,8 +747,10 @@ xs_read_stream(struct sock_xprt *transport, int flags)
- 		msg.msg_flags = 0;
- 		ret = xs_read_discard(transport->sock, &msg, flags,
- 				transport->recv.len - transport->recv.offset);
--		if (ret <= 0)
-+		if (ret <= 0) {
-+			xs_stream_reset_recv(transport);
- 			goto out_err;
-+		}
- 		transport->recv.offset += ret;
- 		read += ret;
- 		if (transport->recv.offset != transport->recv.len)
-@@ -751,8 +760,7 @@ xs_read_stream(struct sock_xprt *transport, int flags)
- 		trace_xs_stream_read_request(transport);
- 		transport->recv.copied = 0;
- 	}
--	transport->recv.offset = 0;
--	transport->recv.len = 0;
-+	xs_stream_reset_recv(transport);
- 	return read;
- out_err:
- 	return ret != 0 ? ret : -ESHUTDOWN;
+-static void int51x1_set_multicast(struct net_device *netdev)
+-{
+-	struct usbnet *dev = netdev_priv(netdev);
+-	u16 filter = PACKET_TYPE_DIRECTED | PACKET_TYPE_BROADCAST;
+-
+-	if (netdev->flags & IFF_PROMISC) {
+-		/* do not expect to see traffic of other PLCs */
+-		filter |= PACKET_TYPE_PROMISCUOUS;
+-		netdev_info(dev->net, "promiscuous mode enabled\n");
+-	} else if (!netdev_mc_empty(netdev) ||
+-		  (netdev->flags & IFF_ALLMULTI)) {
+-		filter |= PACKET_TYPE_ALL_MULTICAST;
+-		netdev_dbg(dev->net, "receive all multicast enabled\n");
+-	} else {
+-		/* ~PROMISCUOUS, ~MULTICAST */
+-		netdev_dbg(dev->net, "receive own packets only\n");
+-	}
+-
+-	usbnet_write_cmd_async(dev, SET_ETHERNET_PACKET_FILTER,
+-			       USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
+-			       filter, 0, NULL, 0);
+-}
+-
+ static const struct net_device_ops int51x1_netdev_ops = {
+ 	.ndo_open		= usbnet_open,
+ 	.ndo_stop		= usbnet_stop,
+@@ -136,7 +102,7 @@ static const struct net_device_ops int51x1_netdev_ops = {
+ 	.ndo_get_stats64	= dev_get_tstats64,
+ 	.ndo_set_mac_address	= eth_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
+-	.ndo_set_rx_mode	= int51x1_set_multicast,
++	.ndo_set_rx_mode	= usbnet_set_rx_mode,
+ };
+ 
+ static int int51x1_bind(struct usbnet *dev, struct usb_interface *intf)
+@@ -158,6 +124,7 @@ static const struct driver_info int51x1_info = {
+ 	.bind        = int51x1_bind,
+ 	.rx_fixup    = int51x1_rx_fixup,
+ 	.tx_fixup    = int51x1_tx_fixup,
++	.set_rx_mode = usbnet_cdc_update_filter,
+ 	.in          = 1,
+ 	.out         = 2,
+ 	.flags       = FLAG_ETHER,
 -- 
-2.51.0
+2.43.0
 
