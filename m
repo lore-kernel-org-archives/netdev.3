@@ -1,130 +1,162 @@
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CA62882AA
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 19:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82552882AA
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 19:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769456943; cv=none; b=KRfnbOrKjp0x64CVAcsFefmYdIA7By74wvOzBTkN/Ur90N+wY1Sh0Y4LbyE+dbryGDnzo2wHvEkXNpXLJFbUZL8PZsxU5pWNtPJAFui5l7K1jhPamrKgA9lWhj6S20lUZAuziEZozW7ptxiRdhW7PiG83MMd8UWsga3vy+j6wXM=
+	t=1769456983; cv=none; b=b6xt1KjnWEw3Gag+9AhVHzeHpKRCfNrr4IUYpadHUhsoHgZ9krU+iH+Rnqaqf+XVI5F8l1+eQEpWmv3pIjwxWfJiSlZISCtsJC98LuEN9cESoL5gvfgwHPRPWQvdOpcoDN0q2s4DzJW1KJ0C+1ladPlqemSjwCqeV4V6FB5Wl7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769456943; c=relaxed/simple;
-	bh=r8Lc7H83l4M5PnLfAJGlX+xbp8bcWHDwmhpjwfGra1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmK89rE766fWFcftwMTtA3iKYC3dAzehRJ5X1jndpllYPswUEZ+uylRcdcElGr0u2+SyYKEq3vQcYZXK+qBOpT3Q/T7feOJX27VC1KxEEQZDAjZ+/nr+PlVZJRSKaieZaRpjhI/qOXpBvgzwFJHOot59GImPgR1QErtG7FJt9qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herbertland.com; spf=pass smtp.mailfrom=herbertland.com; dkim=pass (2048-bit key) header.d=herbertland.com header.i=@herbertland.com header.b=OUJi0Jg/; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=herbertland.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=herbertland.com
+	s=arc-20240116; t=1769456983; c=relaxed/simple;
+	bh=Ew0wil3rS4MqDg53VyMtrRBkkpZ592JhyvoxrBM5REI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=bo1hquzK50HwxorNXmpxSUjDwJDd2MWO4YVhQJc0JvRUhp3DhIfDPsnhpnXqVDAnMfTiGPZkk6LEhpAkomD3u/CL+YYCKQ9rXJn5l29FNzr4iA53wOdWhz9TtUVV5c0U2Et7IT8uqPhCltoj2o2B0uC1V5ypq6BNNZ6+SmXYdD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y96vKt+N; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=herbertland.com header.i=@herbertland.com header.b="OUJi0Jg/"
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-12460a7caa2so6944216c88.1
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:49:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y96vKt+N"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4ffbea7fdf1so47404771cf.1
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=herbertland.com; s=google; t=1769456942; x=1770061742; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769456981; x=1770061781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hp4xT2211A2z3PT0Rk2oMz47A04bz4M6b3S5qxzHThA=;
-        b=OUJi0Jg/m0Q/WVHGxUJE7m3o5wtsUI2aKOD7P6lgKgCRt2Wktkcv+2jsss5wT3DbOF
-         +aRtqHMVGjdMdIa4xO0/flxcHeWP5lRnIbopT1ZNWEO3LWmAVTcjX/QSje+jZ6CU849H
-         jEL7YeTqizEbLO/HyUSZYCqBwhQDuSGGiJJZ23b8KKbbuPd0V8zXQKT0ujhxnnKO0/mS
-         VuCmGh2aF3Yt9aE2kTt64nK2HFxL8ioIrKePhKcC72Ilk6/VFEy4GgvPYBlvNk9HbeC6
-         07sQBgaP0OD7FEg8kkHcG5fpEa7Fb8jNoNilMgT3087Zae8Kowh9CLEISHKQ0X+kTVAv
-         B73g==
+        bh=1DkhtEYlu1cxCF+r3Na88j9n+YMNLVAzK55vGoP2wzQ=;
+        b=Y96vKt+NNvpVdXre3Laz6OFtS78rjBVnYoiPH5hGOxDjG9eqIFqCXSxOnuKZGKoYw7
+         CQSsaB/DATeLOE3JeRfqA6HARn7JJIvxyd8KhLOUw7kOEYuW4UEccjWFntYbnYBq8zLy
+         oa2IgOsmgoemwZ/Wp79/ACZlOwXF60GGHJYxBhXnlsUywWmIurGp8uTvWtJ95QM1NAzo
+         cCR7m/Metqljv5wPqDb6+xhxpFpRHA8hs1JCfxhu6RgfOJbI1EmdaM5n/h0VLJe/jdaq
+         2rhZIS8mL59YBige1ckjK40FdqhKau4dh/1WktoAp+3ap4r63ksvs6L94WpfN5KXIT1d
+         d0fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769456942; x=1770061742;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hp4xT2211A2z3PT0Rk2oMz47A04bz4M6b3S5qxzHThA=;
-        b=PDFioIBdcq1kmjBG70QsanDCNbh0YZ4XU2B+yepZ1nycRht4MrCVlTqRlGknmPxBEh
-         nmsffchI1pbtKG5NCXUqxlmE0FvsYUsf1aUppFNTRtZWmISNYa0tz+tUds9LQiDy8hta
-         a+WeSbTt8hWU9IOgbTYUKx9cO5jHTguPozkjjUdoRCJjtUrnQIwRwU6pPiNhfhxBGsW7
-         z7kH7nRjTf+zuaHyMxsqtqCGgGGbsomSMpPB9RefU4eTG8sim8HqKN3X40GGhaNnQWGl
-         Wtpo/Li7st1+X5P5tb0PuIYeKdj0Ncq/v14SQJYNFsTRzdUelaH0An5GDEATFXCaUbHB
-         HR2w==
-X-Forwarded-Encrypted: i=1; AJvYcCW17U0869b87vT/jGgt3gLEYjDBg8FdnmpmTmZ12ekhsY/KUbgX1UXlwfYWLzv+Qjd6Be77uXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu3mZ0xTmnLM4Q++9QvcQ25goAwpalZYxad3UdYKb5FgOPFS6S
-	6SmXvc1G5MRPhQrosouljjbA7fxgnvzyPviqWoX17fuug3eQypa5W049PrmsSL17gw==
-X-Gm-Gg: AZuq6aJtgpwzoVn6wADjVXCKtY6bLdKJrWZUm7jJNl8qgf2BS++mqUSSWrj1Z1a9bvZ
-	VLpwEKtekSpLNSfcubZnp/VrDjE9saeJxAKJ7KVAgD1AG1rYBSpo3T0OSTdVch9fhEaRy8DmHqW
-	CWKwsd1boZa6oPCSTz1NJT/d6a+EwYgFgXVTmB/VsaqhSQXdpRpIz/ocLEgyiKqvjEd+Y8D7Td+
-	FgMlnRh9DvqVmsi/fCdknsrqXP76MxwzeRLG+qQfHg4hIeQEAcLysQiWwgWjkfSJNRh3aDm/8x+
-	QxpUqPFCNrgJB92mgoQfu9XOT96qLyGhrLeML8mydz7fTBpxpc3tDy13m14e/L3P+RfSTUge7AW
-	O2vdzFRdVmKhb1PCNFv4hMUI7mFmfx31aZW1vfPjB2QAFbUyX+sLraQPQmlTr4zLAg2jpKkvOSx
-	pSwMlISQxQgDDRv3Pcq+9FgWdJbpKgk4jteb8BDSi9D14UaTAU/wpI5UTWJGfmI0Huvw==
-X-Received: by 2002:a05:7022:791:b0:11a:2f10:fa46 with SMTP id a92af1059eb24-1248eb4069dmr3007589c88.0.1769456941442;
-        Mon, 26 Jan 2026 11:49:01 -0800 (PST)
-Received: from pong.herbertland.com ([2601:646:8980:b330:1485:5851:22a:4c2d])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d99804asm21121295c88.12.2026.01.26.11.49.00
+        d=1e100.net; s=20230601; t=1769456981; x=1770061781;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1DkhtEYlu1cxCF+r3Na88j9n+YMNLVAzK55vGoP2wzQ=;
+        b=OQEA9fp91HWMrpuANNhF4KOp8vv19viRrVh6qtS0J4KkSvdGLN4SHlj1oHfAMjCMq9
+         j2vzSLwwBqx8nYOZd1ltRv83s3zRqNfziK0tpmLVgZM0Dw8jbMVdaKbZiNR8n0o1eWTJ
+         vYiytbcnjlXt8fhvbzyxN4ZX5I0Uzy6Dfiqdi7kBRD0LGlzyuijIyCtAHGfTj5vRuKkh
+         prCSrKxoEud9XlvU4xSuUtUPhJuF4+wuEGUclz4ecrUsitJkQLFVtHOj1W04hTuxMcC/
+         7i6dBSfU1reGEWgL6azZ8G8CeIUVUWeYgCb0EckhueDWnQN5SGqoNX0wJOwnQl/G3W3z
+         nrQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaWCmpEyjytKOqXTM6XZuFF5RRXEDaa3l1aeocR96jUcuZD3nN2DzGXYfdpIpLfoPaaVDkTAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEHOOgKOEO/ytuB73lLquiSorujiozjNEFcgMIs7myJqMkTVqk
+	RO8xB0v0mTPAw1+zKzy17b1o+8LqevP34PjvoH3MaRIy/ElRcGiKh/pxS2hCLg==
+X-Gm-Gg: AZuq6aJngXsOv9qdE0Tw8Qf3shOizw8Gwchx808vVWKRf5nUlmG87Ai1rHK0sjhraXC
+	dl/tdOYn9ADM/WWwxuDek1S8lIv2LjLPmIa0MDwh/iz29a6ru6K6u0UoQgpDi1zpA7yQ5BRxTny
+	AV2TY2HkMxQXUsMuATB/y8ASO0rgvaNmtT8FO78FNHYvgCyGGmwHw83Poi/NU1XgMIMKFFgLsdV
+	qDv0V5AbXhnaZaYqt5GyruuT3JkteihOI84aHc6X39dVr+LUZIPoFr6xqGE+nNFBbjzaqpSgrZg
+	F8IEuHzqKrFq3lahVdeaPYT50llZ/bh3IxvFo7y3rpCna6S0bSdAckrfI2uxdBdzKpPWMGxkyJv
+	1wSnvo0Ey6uc1GAM62dub7mkYpl1cfkphI5t8IUFbLaAGP6hxDrZ/WKYshBny37iGARMVd2Mur+
+	bFSrA1ukyWzfhedLm6SymqvlMfUZos8SYkoRbTQtMPLAt55tdcvxigrC4gdjc=
+X-Received: by 2002:a05:690e:1503:b0:649:51d8:6f72 with SMTP id 956f58d0204a3-64970b45682mr4014192d50.5.1769450012509;
+        Mon, 26 Jan 2026 09:53:32 -0800 (PST)
+Received: from gmail.com (21.33.48.34.bc.googleusercontent.com. [34.48.33.21])
+        by smtp.gmail.com with UTF8SMTPSA id 956f58d0204a3-6495cfde5ccsm5560600d50.24.2026.01.26.09.53.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 11:49:01 -0800 (PST)
-From: Tom Herbert <tom@herbertland.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	justin.iurman@uliege.be
-Cc: Tom Herbert <tom@herbertland.com>
-Subject: [PATCH net-next v5 7/7] ipv6: Document enforce_ext_hdr_order sysctl
-Date: Mon, 26 Jan 2026 11:48:26 -0800
-Message-ID: <20260126194826.236075-8-tom@herbertland.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260126194826.236075-1-tom@herbertland.com>
-References: <20260126194826.236075-1-tom@herbertland.com>
+        Mon, 26 Jan 2026 09:53:32 -0800 (PST)
+Date: Mon, 26 Jan 2026 12:53:31 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Gal Pressman <gal@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ netdev@vger.kernel.org
+Cc: Igor Russkikh <irusskikh@marvell.com>, 
+ Boris Pismenny <borisp@nvidia.com>, 
+ Saeed Mahameed <saeedm@nvidia.com>, 
+ Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, 
+ Mark Bloch <mbloch@nvidia.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Simon Horman <horms@kernel.org>, 
+ Alexander Duyck <alexanderduyck@fb.com>, 
+ linux-rdma@vger.kernel.org, 
+ Gal Pressman <gal@nvidia.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>
+Message-ID: <willemdebruijn.kernel.218d53621fba7@gmail.com>
+In-Reply-To: <20260125121649.778086-2-gal@nvidia.com>
+References: <20260125121649.778086-1-gal@nvidia.com>
+ <20260125121649.778086-2-gal@nvidia.com>
+Subject: Re: [PATCH net-next 1/3] udp: gso: Use single MSS length in UDP
+ header for GSO_PARTIAL
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Document the enforce_ext_hdr_order sysctl that controls whether
-Extension Header order is enforced on receive.
+Gal Pressman wrote:
+> In GSO_PARTIAL segmentation, set the UDP length field to the single
+> segment size (gso_size + UDP header) instead of the large MSS size.
+> This provides hardware with a template length value for final
+> segmentation, similar to how tunnel GSO_PARTIAL handles outer headers
+> in UDP tunnels.
+> 
+> This will remove the need to manually adjust the UDP header length in
+> the drivers, as can be seen in subsequent patches.
+> 
+> This was suggested by Alex in 2018:
+> https://lore.kernel.org/netdev/CAKgT0UcdnUWgr3KQ=RnLKigokkiUuYefmL-ePpDvJOBNpKScFA@mail.gmail.com/
+> 
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Signed-off-by: Gal Pressman <gal@nvidia.com>
 
-Signed-off-by: Tom Herbert <tom@herbertland.com>
----
- Documentation/networking/ip-sysctl.rst | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 4f568b0e39d2..1b12b955fa34 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -2581,6 +2581,34 @@ ioam6_id_wide - LONG INTEGER
- 
-         Default: 0xFFFFFFFFFFFFFF
- 
-+enforce_ext_hdr_order - BOOLEAN
-+	Enforce recommended Extension Header ordering in RFC8200.
-+	If the sysctl is set to 1 then the ordering the ordering is
-+	enforced in received packets and each Extension Header
-+	may be present at most once per packet. If the sysctl is
-+	set to 0 then ordering is not enforced and Extension Headers
-+	may be present in any order and have any number of
-+	occurences per packet (except for Hop-by-Hop Options).
-+
-+	The Extension Header order is:
-+
-+	    IPv6 header
-+	    Hop-by-Hop Options header
-+	    Destination Options before the Routing header
-+	    Routing header
-+	    Fragment header
-+	    Authentication header
-+	    Encapsulating Security Payload header
-+	    Destination Options header
-+	    Upper-Layer header
-+
-+	Possible values:
-+
-+	- 0 (disabled)
-+	- 1 (enabled)
-+
-+	Default: 1 (enabled)
-+
- IPv6 Fragmentation:
- 
- ip6frag_high_thresh - INTEGER
--- 
-2.43.0
+This only affects the udp header value when using GSO_PARTIAL, and
+these are the only two drivers that adversize USO using GSO_PARTIAL.
+
+> ---
+>  net/ipv4/udp_offload.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+> index 19d0b5b09ffa..89e0b48b60ae 100644
+> --- a/net/ipv4/udp_offload.c
+> +++ b/net/ipv4/udp_offload.c
+> @@ -483,11 +483,11 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+>  	struct sock *sk = gso_skb->sk;
+>  	unsigned int sum_truesize = 0;
+>  	struct sk_buff *segs, *seg;
+> +	__be16 newlen, msslen;
+>  	struct udphdr *uh;
+>  	unsigned int mss;
+>  	bool copy_dtor;
+>  	__sum16 check;
+> -	__be16 newlen;
+>  	int ret = 0;
+>  
+>  	mss = skb_shinfo(gso_skb)->gso_size;
+> @@ -555,6 +555,8 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+>  		return segs;
+>  	}
+>  
+> +	msslen = htons(sizeof(*uh) + mss);
+> +
+>  	/* GSO partial and frag_list segmentation only requires splitting
+>  	 * the frame into an MSS multiple and possibly a remainder, both
+>  	 * cases return a GSO skb. So update the mss now.
+> @@ -584,7 +586,7 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+>  		if (!seg->next)
+>  			break;
+>  
+> -		uh->len = newlen;
+> +		uh->len = msslen;
+>  		uh->check = check;
+>  
+>  		if (seg->ip_summed == CHECKSUM_PARTIAL)
+> -- 
+> 2.40.1
+> 
+
 
