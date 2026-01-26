@@ -1,140 +1,255 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECEC328616
-	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25AF33372B
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 11:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769428180; cv=none; b=hXLCyzzGYA70r2xaCjx42RXFtflSqFxjBDwAJ744Ip3FMlQr89zwZ9TX2PC8SA97zKOwzVRvlJg47RUZrBHCAKLrvagG2k3mD+prpR4+jdKgIm2qJ8kvwsp9pNcA/c1PfZbMK9057p4PLDPkQMOoqJRQk+Zn4Pv9hBfRDKntuq8=
+	t=1769428520; cv=none; b=NPdWgxJ2asDClthyJfMSApKZcf26bfrkU46/1NEMklZVv4wl944pphRiJ4wwD8K6zuwWxYMnzv6YT78cwtD5GaVoOi86ztYvLIg08MP3lYX8H5cKgyKPxycPsIoKgrL3HJrh6J4AnSOY7eZ5Lmn/x1/313RydhqZKABrnDjR8q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769428180; c=relaxed/simple;
-	bh=9yn2gy4stahnnhoif2MbmULokXbFyhugTFcvVCHDtZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XoV1penxoZXBWY4UpZToKgGVB73okP9BgXjDYvaHg+h0XdosAfsqLtxR1m5Ay7MI/tnqFSwGGE4XbFVE1GxbAKI5LXdD9DqIi/Bz8aIRsESDXgtWgigxy+EoqowLxahPw/nkQeN8hmCQDkTsDRzEV98vv2nawzLh3PCoxEG9G4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=g8OvjCRp; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1769428520; c=relaxed/simple;
+	bh=y1lGC/teIR/FTGRVTgw+bosav+jMP2M9QnBcEXFTaME=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uxXOMzb7fRzgA4PWIIpQacSL9bUNtCAJgNFOgh4D/mQO6Wf/KEJfMBXlslz8P/fEw9VAL+6IedTojRNd/+pt2jj13ISz2kSzra9o19RrlteIfb3Hc0KIVqai+j5PPFzStrLQ92w37E7oDTftAiYhHGYsKBllu4MD9JhqDAcrqdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EMtbC1bF; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="g8OvjCRp"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47ee4338e01so24998385e9.2
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 03:49:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EMtbC1bF"
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-944168e8c5fso3079873241.2
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 03:55:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769428177; x=1770032977; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NOhLAj2giVSLA0OsJBFJXkMMrU18g2uT51Qc0Cqc3Y8=;
-        b=g8OvjCRpuDAdCP1praM4sVBUmhqpw5qU5Zsf1mQNurHrTNHm33j6SeoO9IE/wEGbqr
-         Bnsox7ue47l6/PK1Vbhjwi0KCZUyGqxsLyi4ea+93NKwydwOuq6yb4/k9G2ho/EyVTqe
-         obBR7NPTVMqIHdfvNnqhcE6/EOKlH6F9JtDuiA2NYRb+n/ryWm4qbzMqy3c1EYOe4DPP
-         NIsurtCqHdv7VYMMbf+zgC+79ZC98R6VuRtypnKKAaa2EBtl/kQUcEzlsJfNNyJDABPM
-         RNQ0W3R0KQf8eLOf1aPIWsneQpwjyDXxgCSI7iPXUyFUNd8vsW9x+Iqkzzfz81T0Bxu3
-         HtxA==
+        d=gmail.com; s=20230601; t=1769428518; x=1770033318; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tJ1+S2Wah0B24B4nb8d1ZRSd0AUn0CCMY72mwuIFWBk=;
+        b=EMtbC1bFKhQkjQrhhzXizj31a33sI/FvTa06VzPirgZPhMptLs77GjDU2Vpnv+7NV2
+         B3pHbd73kGgCFa2v/NWmtIVvnKL+OKYdgwS4R05FAug0rV9+H/Ar6iJFK5KrW4/P2PGD
+         i2SIRt3ctAvTeBUhrbWqq2MT1kZOYfe36hp4Tnj8UNto82GOU3Blbs9sG/kl7tvUjXKX
+         krQhLOia0K6f3V+x17yY13BYZ8CSQmi1RjGxu448f4t1pYsgD53aeHRUWEkV1LEleE89
+         g/sIXNgYrG5xVRHzGWYjri3DdDfr2Z/qCGhhCTJMCxate9yWFq82DA6LPjNDpUd94NSn
+         JypQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769428177; x=1770032977;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NOhLAj2giVSLA0OsJBFJXkMMrU18g2uT51Qc0Cqc3Y8=;
-        b=Ug/PvXRRqVe0qHRi5vhqpbeDl61DD5/KYRuX6GRTVfmIurWOMXgK35bnarbfyShzFM
-         lszByJVXhIAUqmdyNuMJBMTQpwwon4xiX4c0DGMV4BzkeQv37gMIG0nD0lDMbQwBrSX6
-         72ypHCCDW3QiTvOSh7nnAciHuaJZhYyvYjB8Icube3xN+9mJmh5WoNtCeD0e8wmYFBDr
-         P9AupvWtA9ctVwcnbFwyDE2TD+m3qub0PuO74uP+KV2Z3w4eV4Ydyko/cpwksR/UYMgh
-         1uoPzTkJ+JzKEEmPC9lwxm67JpN9uRibzh2hGa0LkCbXJ+P4BRcVGixzwFckYDbMvXOL
-         WhdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKG/Lk2sQFYA9sMXTWXiCNof7vC2ciJVMVyOQXWdxyHRLW+wf4Jpk2T21Xzb7TT6Oxq0seIj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3TSFxidh+V3jw0ntevA1j+LTHII5LcbiKreg9zMUTWb5hK913
-	f5Fp6+ZW+fN/pFUO9JE3dln5BTesu9R9ms90S6vVlFJjZWgL4cbx+GqSYQke8c52jB8=
-X-Gm-Gg: AZuq6aIGWUS3II+6AMGyZA1wcpZy/ErEx2ivSm7qSlZrRNxO5ART2MUyZEZ/ZAKiy4W
-	msPPmxs+ujDvMEKGCXFrYIwBx5rkM1B1WafHiOnJDMXYaIe450nSwtBgsuTKC7ZLxxAGa6AW0Cs
-	Mzl2Qedv9JrFDQAdMEm6vlCtOJdbhpSirgEVvX8667rXbHM0JU82Anz0dkRl+p5ndNOZtGjR1Pb
-	Ih+VVTYoZEfQmFKOOU+wu5gyp3r2eqjS3+B/Tvsn5PQjVGTGhVO3P5p+TR+apriW9i5RmawMmE1
-	OZljeTL6oeZpOt8tr6Ke+a5+AApDyQAILg4Y3QYI+Vvx3NmJyOAQldrBXvoydVRHWM3p1FjkH+3
-	/vQHF/PtA15wmxDE/Iy+IscFbojSiXmltUUgmcjubrpsxgRm2DrIGcE4WrTVjV/EEDIPFY/xluT
-	OcC+bfZX0Zm+1NGM+vX3Ool0rJC1yJJ/pLUDIXwGFegyo4NhY/Z+0FMqG6I0IGLlQ=
-X-Received: by 2002:a05:600c:34c7:b0:47d:25ac:3a94 with SMTP id 5b1f17b1804b1-4805cf5eb16mr69099575e9.17.1769428176854;
-        Mon, 26 Jan 2026 03:49:36 -0800 (PST)
-Received: from ?IPV6:2001:a61:1306:1a01:7fb:321b:3b69:f667? ([2001:a61:1306:1a01:7fb:321b:3b69:f667])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470c1dc6sm318920465e9.10.2026.01.26.03.49.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jan 2026 03:49:36 -0800 (PST)
-Message-ID: <9239ddef-c197-4fbd-8e88-691766bda3e2@suse.com>
-Date: Mon, 26 Jan 2026 12:49:35 +0100
+        d=1e100.net; s=20230601; t=1769428518; x=1770033318;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tJ1+S2Wah0B24B4nb8d1ZRSd0AUn0CCMY72mwuIFWBk=;
+        b=xMlYjOBZIWGvGYbL5ylVVmfJtlXq5zxuT1WyQfrqrKiGDWCREdGBpUtxI5xwsh/uMf
+         m4vnqXDNqSoQQlOiJKOPZUFI5gmpEOHUUrX0E6YxpYZnHAWjt8WY9oEZD1/i/YhiihmK
+         4LQnNiA0akBlJZyemXNhYrRno9U9Esm+u2upD4UkqgeE239Ee/U9OZ4poPHUC7YMNxZu
+         SE9+VjhUnv7SGHe/8tMXO1w0dxgU/4Hj1HaPROgmEv96Q3P0gHLMd7kxqAw0Asvn4H5p
+         IOo0/h5yym2vrq5TPcx1dxbop1HzDTyFGgb3jSHfuvDn+769bAKLpqs8lfAAvePGPT/f
+         2S0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXpPYA4y9PKnatVdwHwyQgJ6EY+2fgPNzY+MgBVwcczf2sjXYg/nKV8LybaX7jLtTnXomhHI4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyES3N3+xVBCV+Fkiw5BgPNoHd5tF+PxibJo9JkUcWwIZSk94nk
+	o9S+7WoKvnZW4N8XvM+EOS0hL2hxmH61rL0PVLHL93zr4iNUoeXzqtQRVxU8aXdB
+X-Gm-Gg: AZuq6aLUP63tuL+xCH3gd1AbJG5xIojj/2xTWC246cgROlzxgNMhpfo0om678FKuW1e
+	1BD2GExwsGZWlm6ENiRUMSDZzUMoIkBzaVSRCamoR1cXUZxxe1VYRgOEuoDpPPiwPRmuF9N6xA0
+	DY2Wq72yFJu73Nh1LwHRHaRu//I5ygGA5tlUko/MwNwirMQrn7d4CfC38FJ699xlN6YwhJdSS6W
+	z84snsGCfRvzHQYwLRj2WBM+X+eJIR+DrlblWpwIfg18qveA6QuFlBvNsSelWY1kM1ukjaTwK6V
+	73CtIqXK6y4iDyCj826FKNovHmxmL8GIAhdhNSDNe2breolt7X7Ebt71EaUJl7muUt2IQRomM/D
+	2CI37fRljbawsX4SwwcfgZcHHdOjBENNqOh0zmKiO0KcmfllDcA61IFL9KlsnjXLAudExDepaj6
+	9NkeuaKaBljMjPbys7nhPdeLuJ9Qjsr5hEf7NX3h1dripwYO3trKJ0NBNK9MYbIoswlBy9uR+q
+X-Received: by 2002:a17:903:2f48:b0:2a7:a9b8:ebae with SMTP id d9443c01a7336-2a84531819bmr42437665ad.58.1769422988504;
+        Mon, 26 Jan 2026 02:23:08 -0800 (PST)
+Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcd776sm84958275ad.26.2026.01.26.02.23.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 02:23:08 -0800 (PST)
+From: Joey Lu <a0987203069@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	mcoquelin.stm32@gmail.com,
+	richardcochran@gmail.com
+Cc: alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com,
+	ychuang3@nuvoton.com,
+	schung@nuvoton.com,
+	yclu4@nuvoton.com,
+	peppe.cavallaro@st.com,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Joey Lu <a0987203069@gmail.com>
+Subject: [PATCH net-next v9 1/3] dt-bindings: net: nuvoton: Add schema for Nuvoton MA35 family GMAC
+Date: Mon, 26 Jan 2026 18:22:55 +0800
+Message-ID: <20260126102257.2619862-2-a0987203069@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260126102257.2619862-1-a0987203069@gmail.com>
+References: <20260126102257.2619862-1-a0987203069@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: usb: kaweth: remove eth_addr_t typedef
- and bcast_addr definition
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260125083501.34513-1-enelsonmoore@gmail.com>
- <20260125083501.34513-4-enelsonmoore@gmail.com>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <20260125083501.34513-4-enelsonmoore@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Create initial schema for Nuvoton MA35 family Gigabit MAC.
 
-unfortunately I must NACK this patch. Let me explain:
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Joey Lu <a0987203069@gmail.com>
+---
+ .../bindings/net/nuvoton,ma35d1-dwmac.yaml    | 126 ++++++++++++++++++
+ .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
+ 2 files changed, 127 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
 
-On 25.01.26 09:34, Ethan Nelson-Moore wrote:
-
->   /****************************************************************
->    *     usb_eth_dev
->    ****************************************************************/
-> @@ -185,7 +183,7 @@ struct kaweth_ethernet_configuration
->   	__u8 size;
->   	__u8 reserved1;
->   	__u8 reserved2;
-> -	eth_addr_t hw_addr;
-> +	u8 hw_addr[ETH_ALEN];
-
-You may note that this data structure is declared __packed
-and the member hw_addr is preceded by three members of type __u8.
-That means that it is located on a _three_ byte alignment.
-
->   	__u32 statistics_mask;
->   	__le16 segment_size;
->   	__u16 max_multicast_filters;
-> @@ -882,7 +880,6 @@ static int kaweth_probe(
-
-[..]
-   
-> @@ -991,9 +988,7 @@ static int kaweth_probe(
->   	dev_info(dev, "MTU: %d\n", le16_to_cpu(kaweth->configuration.segment_size));
->   	dev_info(dev, "Read MAC address %pM\n", kaweth->configuration.hw_addr);
->   
-> -	if(!memcmp(&kaweth->configuration.hw_addr,
-> -                   &bcast_addr,
-> -		   sizeof(bcast_addr))) {
-> +	if (is_broadcast_ether_addr((const u8 *)&kaweth->configuration.hw_addr)) {
-
-Here you are using is_broadcast_ether_addr(). Let me quote
-from the documentation on this helper:
-
-/**
-  * is_broadcast_ether_addr - Determine if the Ethernet address is broadcast
-  * @addr: Pointer to a six-byte array containing the Ethernet address
-  *
-  * Return: true if the address is the broadcast address.
-  *
-  * Please note: addr must be aligned to u16.
-  */
-
-That requirement is not met. This code will bomb on ARM for example.
-
-	HTH
-		Oliver
-
-NACKED-BY: Oliver Neukum <oneukum@suse.com>
+diff --git a/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
+new file mode 100644
+index 000000000000..8eaddfdc937c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/nuvoton,ma35d1-dwmac.yaml
+@@ -0,0 +1,126 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/nuvoton,ma35d1-dwmac.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Nuvoton DWMAC glue layer controller
++
++maintainers:
++  - Joey Lu <yclu4@nuvoton.com>
++
++description:
++  Nuvoton 10/100/1000Mbps Gigabit Ethernet MAC Controller is based on
++  Synopsys DesignWare MAC (version 3.73a).
++
++allOf:
++  - $ref: snps,dwmac.yaml#
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - nuvoton,ma35d1-dwmac
++
++  reg:
++    maxItems: 1
++    description:
++      Register range should be one of the GMAC interface.
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: MAC clock
++      - description: PTP clock
++
++  clock-names:
++    items:
++      - const: stmmaceth
++      - const: ptp_ref
++
++  nuvoton,sys:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    items:
++      - items:
++          - description: phandle to access syscon registers.
++          - description: GMAC interface ID.
++            enum:
++              - 0
++              - 1
++    description:
++      A phandle to the syscon with one argument that configures system registers
++      for MA35D1's two GMACs. The argument specifies the GMAC interface ID.
++
++  resets:
++    maxItems: 1
++
++  reset-names:
++    items:
++      - const: stmmaceth
++
++  phy-mode:
++    enum:
++      - rmii
++      - rgmii
++      - rgmii-id
++      - rgmii-txid
++      - rgmii-rxid
++
++  tx-internal-delay-ps:
++    default: 0
++    minimum: 0
++    maximum: 2000
++    description:
++      RGMII TX path delay used only when PHY operates in RGMII mode with
++      internal delay (phy-mode is 'rgmii-id' or 'rgmii-txid') in pico-seconds.
++      Allowed values are from 0 to 2000.
++
++  rx-internal-delay-ps:
++    default: 0
++    minimum: 0
++    maximum: 2000
++    description:
++      RGMII RX path delay used only when PHY operates in RGMII mode with
++      internal delay (phy-mode is 'rgmii-id' or 'rgmii-rxid') in pico-seconds.
++      Allowed values are from 0 to 2000.
++
++required:
++  - clocks
++  - clock-names
++  - nuvoton,sys
++  - resets
++  - reset-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
++    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
++    ethernet@40120000 {
++        compatible = "nuvoton,ma35d1-dwmac";
++        reg = <0x40120000 0x10000>;
++        interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq";
++        clocks = <&clk EMAC0_GATE>, <&clk EPLL_DIV8>;
++        clock-names = "stmmaceth", "ptp_ref";
++
++        nuvoton,sys = <&sys 0>;
++        resets = <&sys MA35D1_RESET_GMAC0>;
++        reset-names = "stmmaceth";
++
++        phy-mode = "rgmii-id";
++        phy-handle = <&eth_phy0>;
++        mdio {
++            compatible = "snps,dwmac-mdio";
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            eth_phy0: ethernet-phy@0 {
++                reg = <0>;
++            };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index dd3c72e8363e..10cb5e555750 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -69,6 +69,7 @@ properties:
+         - ingenic,x2000-mac
+         - loongson,ls2k-dwmac
+         - loongson,ls7a-dwmac
++        - nuvoton,ma35d1-dwmac
+         - nxp,s32g2-dwmac
+         - qcom,qcs404-ethqos
+         - qcom,sa8775p-ethqos
+-- 
+2.43.0
 
