@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E626F291;
-	Mon, 26 Jan 2026 06:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1FA279903;
+	Mon, 26 Jan 2026 06:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408586; cv=none; b=apM0Uc9bMiE6/5FBBx6W+85ZvoquMIWSmvx0FJ0W5UrHMLhmIS78sxnvQ1L+pf4Kco5hV9xEoS4bX9dSsXV+is1oUfmU3LasYyQhaBDE7qJiErjr3NEl7JXqWMCurOVJW1vtaTbs25G4AwBAKipGszrhhPXI8c7TuXY0UYvYEWI=
+	t=1769408589; cv=none; b=fL2Ph7TB/Hue2xaNSY/aukx6Yzwj2TEhhiAUSUeOyDGLbMRG1CZ7bqn/98w8W2tbUeNFUqbTL1Ds4KK9YkWa2BhoPQ0a5lrNC5e/d8+EwfS1aC3B+UldXblq54gYq+I7wBuNMpYpjDEU+bO9qxAIrZojeYoPdxMfxLeA/iNC4rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408586; c=relaxed/simple;
-	bh=4DVhCl4gbIXZz7OZyWroJqYsJfVpaSbkJ/cFhnuOB1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZryRAi5W6BvbkimyGRBFoteEw/OMcQ6TBEs3ZBLss3Y220s24EJLqMEJbQTESJvTSL689cbIETE2M7P3uxS2nDPKmyuw2dZTt8l6hI375eF3uIUGEJtEVzZQpdteMlC+2wK1Oipc969Q4fGxA2tpTFyUxMHenuIRTJAa0FaBxvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ApJUahrx; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1769408589; c=relaxed/simple;
+	bh=5UVmP9Qe9peDa6/28+hps5PqsG6OFaLk402VDzaaH4c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D4xpVnm+Xqo9loccms0FlOfcFskjItSTjAcj4vmZchcKAr3Ce+GUaPoLty4kR9YxTK4xoWqc+Ozu13xQovFZVis4MtIuzltzazWc5rtSGsgGg1TfVpYpGeCNlnETgwzKfsL7DIK6QOHe9iGWNZEslV6SqVu1JkyGjqojpCuja+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Y5i6NZpM; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ApJUahrx"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Y5i6NZpM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ez
-	xx3sezb37S1HGZPsf+TTq5UcEdoA3/kKhmJ7zHOx4=; b=ApJUahrxBkcW6iZBuo
-	kU4vo12M7dPA0Wqa6fIk9Dz06ub70miTcTIhADv8jDvCnZ0ReK6D0BiadfujswrK
-	D5s/u16MaRp2557qCVxqAAGuIdVaOy/zxlw7rJ9+KEgFLLBcQ64yrP3uhYf0mIBc
-	/VKxI1QxE3g0DuE6eDWJeajs8=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QH
+	9g5X0rxkGS3fr+4BKj7PnDDSQrCmEwSwQHaHZySNM=; b=Y5i6NZpM6VfQmDFnZp
+	g/P8PvafGAl3JmyIQrkH2VC3OqtpYVg2oPIM6slnbDIdpn4X6q2bVQr7i3K+hGmJ
+	LSkkBnc0TOvNWCeiY9SAY69OZELedniTKyWa7siBALdqPrkuDhVroy1MLW53m/K0
+	qvml1hp9XPfYdqbaLG6LZZphE=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCHzzkJCHdpL7kRIg--.5216S4;
-	Mon, 26 Jan 2026 14:22:09 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCHzzkJCHdpL7kRIg--.5216S2;
+	Mon, 26 Jan 2026 14:22:04 +0800 (CST)
 From: Slark Xiao <slark_xiao@163.com>
 To: loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
@@ -37,14 +36,11 @@ To: loic.poulain@oss.qualcomm.com,
 	mani@kernel.org
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	slark_xiao@163.com,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [net-next v8 2/8] net: wwan: core: explicit WWAN device reference counting
-Date: Mon, 26 Jan 2026 14:21:52 +0800
-Message-Id: <20260126062158.308598-3-slark_xiao@163.com>
+	slark_xiao@163.com
+Subject: [net-next v8 0/8] net: wwan: add NMEA port type support
+Date: Mon, 26 Jan 2026 14:21:50 +0800
+Message-Id: <20260126062158.308598-1-slark_xiao@163.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260126062158.308598-1-slark_xiao@163.com>
-References: <20260126062158.308598-1-slark_xiao@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,132 +48,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCHzzkJCHdpL7kRIg--.5216S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCw13Gry8Gw45Xry7CFyxuFg_yoWrZF47pa
-	y3KFy3KFW8Jr4Uu39avr47XFyF9a1xCw1ft348W34Fkry3tryrXrWUXFyYqFy8tFWkCF45
-	urWUta18CF4UW3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR0fO7UUUUU=
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbCwBE+oml3CBF0gQAA3-
+X-CM-TRANSID:_____wCHzzkJCHdpL7kRIg--.5216S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF4DJr45Aw4fXF4kCw13CFg_yoW5Jw45pa
+	yYgr9ayas7GFsrWr4fAwsrJryFvF1fC3yUX342q34Fqrs8Jr1a9rWIqFn0qas5Jw1Fq347
+	ZrWUtw1kG3W5urJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRiYFJUUUUU=
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbC5ww9oWl3CAzoGgAA3f
 
-From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+The series introduces a long discussed NMEA port type support for the
+WWAN subsystem. There are two goals. From the WWAN driver perspective,
+NMEA exported as any other port type (e.g. AT, MBIM, QMI, etc.). From
+user space software perspective, the exported chardev belongs to the
+GNSS class what makes it easy to distinguish desired port and the WWAN
+device common to both NMEA and control (AT, MBIM, etc.) ports makes it
+easy to locate a control port for the GNSS receiver activation.
 
-We need information about existing WWAN device children since we remove
-the device after removing the last child. Previously, we tracked users
-implicitly by checking whether ops was registered and existence of a
-child device of the wwan_class class. Upcoming GNSS (NMEA) port type
-support breaks this approach by introducing a child device of the
-gnss_class class.
+Done by exporting the NMEA port via the GNSS subsystem with the WWAN
+core acting as proxy between the WWAN modem driver and the GNSS
+subsystem.
 
-And a modem driver can easily trigger a kernel Oops by removing regular
-(e.g., MBIM, AT) ports first and then removing a GNSS port. The WWAN
-device will be unregistered on removal of a last regular WWAN port. And
-subsequent GNSS port removal will cause NULL pointer dereference in
-simple_recursive_removal().
+The series starts from a cleanup patch. Then three patches prepares the
+WWAN core for the proxy style operation. Followed by a patch introding a
+new WWNA port type, integration with the GNSS subsystem and demux. The
+series ends with a couple of patches that introduce emulated EMEA port
+to the WWAN HW simulator.
 
-In order to support ports of classes other than wwan_class, switch to
-explicit references counting. Introduce a dedicated counter to the WWAN
-device struct, increment it on every wwan_create_dev() call, decrement
-on wwan_remove_dev(), and actually unregister the WWAN device when there
-are no more references.
+The series is the product of the discussion with Loic about the pros and
+cons of possible models and implementation. Also Muhammad and Slark did
+a great job defining the problem, sharing the code and pushing me to
+finish the implementation. Daniele has caught an issue on driver
+unloading and suggested an investigation direction. What was concluded
+by Loic. Many thanks.
 
-Run tested with wwan_hwsim with NMEA support patches applied and
-different port removing sequences.
+Changes RFCv1->RFCv2:
+* Uniformly use put_device() to release port memory. This made code less
+  weird and way more clear. Thank you, Loic, for noticing and the fix
+  discussion!
+Changes RFCv2->RFCv5:
+* Fix premature WWAN device unregister; new patch 2/7, thus, all
+  subsequent patches have been renumbered
+* Minor adjustments here and there
+Changes v6->v7:
+* Fix typo and others which lead to build error
+Changes v7->v8:
+* Enhance code according to AI suggestion
 
-Reported-by: Daniele Palmas <dnlplm@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAGRyCJE28yf-rrfkFbzu44ygLEvoUM7fecK1vnrghjG_e9UaRA@mail.gmail.com/
-Suggested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
----
- drivers/net/wwan/wwan_core.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+Sergey Ryazanov (7):
+  net: wwan: core: remove unused port_id field
+  net: wwan: core: explicit WWAN device reference counting
+  net: wwan: core: split port creation and registration
+  net: wwan: core: split port unregister and stop
+  net: wwan: add NMEA port support
+  net: wwan: hwsim: refactor to support more port types
+  net: wwan: hwsim: support NMEA port emulation
 
-diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-index ade8bbffc93e..1da935e84008 100644
---- a/drivers/net/wwan/wwan_core.c
-+++ b/drivers/net/wwan/wwan_core.c
-@@ -42,6 +42,9 @@ static struct dentry *wwan_debugfs_dir;
-  * struct wwan_device - The structure that defines a WWAN device
-  *
-  * @id: WWAN device unique ID.
-+ * @refcount: Reference count of this WWAN device. When this refcount reaches
-+ * zero, the device is deleted. NB: access is protected by global
-+ * wwan_register_lock mutex.
-  * @dev: Underlying device.
-  * @ops: wwan device ops
-  * @ops_ctxt: context to pass to ops
-@@ -49,6 +52,7 @@ static struct dentry *wwan_debugfs_dir;
-  */
- struct wwan_device {
- 	unsigned int id;
-+	int refcount;
- 	struct device dev;
- 	const struct wwan_ops *ops;
- 	void *ops_ctxt;
-@@ -222,8 +226,10 @@ static struct wwan_device *wwan_create_dev(struct device *parent)
- 
- 	/* If wwandev already exists, return it */
- 	wwandev = wwan_dev_get_by_parent(parent);
--	if (!IS_ERR(wwandev))
-+	if (!IS_ERR(wwandev)) {
-+		wwandev->refcount++;
- 		goto done_unlock;
-+	}
- 
- 	id = ida_alloc(&wwan_dev_ids, GFP_KERNEL);
- 	if (id < 0) {
-@@ -242,6 +248,7 @@ static struct wwan_device *wwan_create_dev(struct device *parent)
- 	wwandev->dev.class = &wwan_class;
- 	wwandev->dev.type = &wwan_dev_type;
- 	wwandev->id = id;
-+	wwandev->refcount = 1;
- 	dev_set_name(&wwandev->dev, "wwan%d", wwandev->id);
- 
- 	err = device_register(&wwandev->dev);
-@@ -263,30 +270,18 @@ static struct wwan_device *wwan_create_dev(struct device *parent)
- 	return wwandev;
- }
- 
--static int is_wwan_child(struct device *dev, void *data)
--{
--	return dev->class == &wwan_class;
--}
--
- static void wwan_remove_dev(struct wwan_device *wwandev)
- {
--	int ret;
--
- 	/* Prevent concurrent picking from wwan_create_dev */
- 	mutex_lock(&wwan_register_lock);
- 
--	/* WWAN device is created and registered (get+add) along with its first
--	 * child port, and subsequent port registrations only grab a reference
--	 * (get). The WWAN device must then be unregistered (del+put) along with
--	 * its last port, and reference simply dropped (put) otherwise. In the
--	 * same fashion, we must not unregister it when the ops are still there.
--	 */
--	if (wwandev->ops)
--		ret = 1;
--	else
--		ret = device_for_each_child(&wwandev->dev, NULL, is_wwan_child);
-+	if (--wwandev->refcount <= 0) {
-+		struct device *child = device_find_any_child(&wwandev->dev);
-+
-+		put_device(child);
-+		if (WARN_ON(wwandev->ops || child))	/* Paranoid */
-+			goto out_unlock;
- 
--	if (!ret) {
- #ifdef CONFIG_WWAN_DEBUGFS
- 		debugfs_remove_recursive(wwandev->debugfs_dir);
- #endif
-@@ -295,6 +290,7 @@ static void wwan_remove_dev(struct wwan_device *wwandev)
- 		put_device(&wwandev->dev);
- 	}
- 
-+out_unlock:
- 	mutex_unlock(&wwan_register_lock);
- }
- 
+Slark Xiao (1):
+  net: wwan: mhi_wwan_ctrl: Add NMEA channel support
+
+ drivers/net/wwan/Kconfig         |   1 +
+ drivers/net/wwan/mhi_wwan_ctrl.c |   1 +
+ drivers/net/wwan/wwan_core.c     | 278 +++++++++++++++++++++++++------
+ drivers/net/wwan/wwan_hwsim.c    | 201 ++++++++++++++++++----
+ include/linux/wwan.h             |   2 +
+ 5 files changed, 395 insertions(+), 88 deletions(-)
+
 -- 
 2.25.1
 
