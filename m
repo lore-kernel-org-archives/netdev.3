@@ -1,99 +1,232 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258841D8DFB;
-	Mon, 26 Jan 2026 01:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F5813D891
+	for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 01:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769389601; cv=none; b=sglKkuZqHfGHAcj/IPxvdQvrBaC8FwvrJ3B36ZulA6gJrdNMWIYkZtFgO9fL0hfp7nWslf/YMWXIzphNzRSNoOMLZK4qpa9yusEtv1CcEGa4rpMpS13vnuzwMZ2tmENPv3r3K9OERKEtf0bXqPY98IjT7idM7hGRzumTUPAWT9I=
+	t=1769391621; cv=none; b=AZlodFeNpvtdjM0r22okDmKhPI//t5JPOhGcIQRQgCOL9YK3IZ1jlGYw3eNSUwtqTuSPBlb79aWMsXH4hAOmRCywkSLINLshVad85+KuFYfG85PKKoYQcp4otzfLveIs4z0PSQ9LZOPz9YMD34IMMTa9MHCKERSpE6PCXGY1qiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769389601; c=relaxed/simple;
-	bh=EABVssCM123G7jWb1K2EzG7DAOvkk0hnvjBy1LCXY/0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KFyiYkFtxuWq63kpdzur5ms2wahwOvO1oAVgXRPxhm8ML/jMqdOgY+RpkOpNg3KTpUAujTRIQthqftwOdPLpvzo27TRkrUXSeHi7i+3EhuHw1GE238eTnXLaDtSV/+XnEq7kQguUWcZBhLgyOV7UVA7VKOOP6y01yqHypKK9VxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=pFH6JFXL; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1769391621; c=relaxed/simple;
+	bh=st4oG32XzB15pUzcYQ7SBJEdkYV85I4fNj6S9F09L7I=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=pXIfvkdL5HBOclsI3z8tKhNq/3JqCKalfGC+izFZvw2P7JOZD6LqeaVnhHjynaCdaueO4kXoWYgxJeUGHM6ukEpIfh1RTSQyHXUCsSrFnCyvhdz44tsOlMQTm84upBZrXSFsVvkXcZK7NaOudU/Od3ikhNOlY82NdMEx0yjeFYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JtIvEjky; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="pFH6JFXL"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=RyoonJga84J5TYM1qUcca+lnnVeYd8lqRPR77Y61Dr4=;
-	b=pFH6JFXLbQyoXthbYVtnz8XH05nCtt8/a74b8NqgOmA90cMyIz71b1r684czZpqvGBTqii1gw
-	EwJT6JaTFJUWUDxgaSf1e1NybnJQos/F8513ZI0oGkqz2qtv4KwI2v6VtbBasEwh68HEcD/2BUk
-	07caBsoVuxLI1MLC5DEUvhk=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4dzqyx1ZZfz1cypq;
-	Mon, 26 Jan 2026 09:03:05 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4C35D40563;
-	Mon, 26 Jan 2026 09:06:31 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 26 Jan 2026 09:06:29 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
-	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Luo Yang <luoyang82@h-partners.com>
-Subject: [PATCH net-next v02 3/4] hinic3: Use array_size instead of multiplying
-Date: Mon, 26 Jan 2026 09:03:33 +0800
-Message-ID: <a68f989c1ee8ae1c505be156ba0b7ac35aca64ef.1769142701.git.zhuyikai1@h-partners.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <cover.1769142701.git.zhuyikai1@h-partners.com>
-References: <cover.1769142701.git.zhuyikai1@h-partners.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JtIvEjky"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769391617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qOS/I3qY1vByTUV0rzQTBMazz/yNAmJFWVeZH3R10+Y=;
+	b=JtIvEjkyz6fJcB1qcAm9UeGr45TrQiuC4U97SwoSQWERAEd26ARBHVe7+Pw+4xl7KifCNB
+	9NYXe7CylOwE4gcUYajwfyysJZAzkYijiu3765UOhj/R84ibbkDA0AHNiazLN02H6fY7JY
+	Q2NWiGJKpBl1suunAWTwKhLgjyy1ZxU=
+Date: Mon, 26 Jan 2026 01:40:13 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: hui.zhu@linux.dev
+Message-ID: <8ee851c5676facd43c45cdd5d434d92d85628e43@linux.dev>
+TLS-Required: No
+Subject: Re: [RFC PATCH bpf-next v3 09/12] selftests/bpf: Add tests for
+ memcg_bpf_ops
+To: "JP Kobryn" <inwardvessel@gmail.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
+ <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Muchun Song" <muchun.song@linux.dev>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "Martin KaFai Lau" <martin.lau@linux.dev>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "John Fastabend"
+ <john.fastabend@gmail.com>, "KP Singh" <kpsingh@kernel.org>, "Stanislav
+ Fomichev" <sdf@fomichev.me>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>, "Tejun
+ Heo" <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>, mkoutny@suse.com,
+ "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian Brauner"
+ <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Brian
+ Gerst" <brgerst@gmail.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
+ "Jason Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
+ <paul.chaignon@gmail.com>, "Anton Protopopov" <a.s.protopopov@gmail.com>,
+ "Amery Hung" <ameryhung@gmail.com>, "Chen Ridong"
+ <chenridong@huaweicloud.com>, "Lance Yang" <lance.yang@linux.dev>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>
+In-Reply-To: <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
+References: <cover.1769157382.git.zhuhui@kylinos.cn>
+ <c44accaaaebfc32be13234f82b501a3852ba3f0f.1769157382.git.zhuhui@kylinos.cn>
+ <b90069a3-86b4-4fba-9ff3-fe5f6c4e425d@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-According to comment of patch 03, check codes that were merged and
-use array_size instead of multiplying.
+2026=E5=B9=B41=E6=9C=8824=E6=97=A5 04:47, "JP Kobryn" <inwardvessel@gmail=
+.com mailto:inwardvessel@gmail.com?to=3D%22JP%20Kobryn%22%20%3Cinwardvess=
+el%40gmail.com%3E > =E5=86=99=E5=88=B0:
 
-Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-index b6cc7bb7bb0c..44abccf9cb29 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
-@@ -23,7 +23,8 @@ static int hinic3_feature_nego(struct hinic3_hwdev *hwdev, u8 opcode,
- 	feature_nego.func_id = hinic3_global_func_id(hwdev);
- 	feature_nego.opcode = opcode;
- 	if (opcode == MGMT_MSG_CMD_OP_SET)
--		memcpy(feature_nego.s_feature, s_feature, size * sizeof(u64));
-+		memcpy(feature_nego.s_feature, s_feature,
-+		       array_size(size, sizeof(u64)));
- 
- 	mgmt_msg_params_init_default(&msg_params, &feature_nego,
- 				     sizeof(feature_nego));
-@@ -37,7 +38,8 @@ static int hinic3_feature_nego(struct hinic3_hwdev *hwdev, u8 opcode,
- 	}
- 
- 	if (opcode == MGMT_MSG_CMD_OP_GET)
--		memcpy(s_feature, feature_nego.s_feature, size * sizeof(u64));
-+		memcpy(s_feature, feature_nego.s_feature,
-+		       array_size(size, sizeof(u64)));
- 
- 	return 0;
- }
--- 
-2.43.0
+>=20
+>=20Hi Hui,
+>=20
+>=20On 1/23/26 1:00 AM, Hui Zhu wrote:
+>=20
+>=20>=20
+>=20> From: Hui Zhu <zhuhui@kylinos.cn>
+> >  Add a comprehensive selftest suite for the `memcg_bpf_ops`
+> >  functionality. These tests validate that BPF programs can correctly
+> >  influence memory cgroup throttling behavior by implementing the new
+> >  hooks.
+> >  The test suite is added in `prog_tests/memcg_ops.c` and covers
+> >  several key scenarios:
+> >  1. `test_memcg_ops_over_high`:
+> >  Verifies that a BPF program can trigger throttling on a low-priority
+> >  cgroup by returning a delay from the `get_high_delay_ms` hook when a
+> >  high-priority cgroup is under pressure.
+> >  2. `test_memcg_ops_below_low_over_high`:
+> >  Tests the combination of the `below_low` and `get_high_delay_ms`
+> >  hooks, ensuring they work together as expected.
+> >  3. `test_memcg_ops_below_min_over_high`:
+> >  Validates the interaction between the `below_min` and
+> >  `get_high_delay_ms` hooks.
+> >  The test framework sets up a cgroup hierarchy with high and low
+> >  priority groups, attaches BPF programs, runs memory-intensive
+> >  workloads, and asserts that the observed throttling (measured by
+> >  workload execution time) matches expectations.
+> >  The BPF program (`progs/memcg_ops.c`) uses a tracepoint on
+> >  `memcg:count_memcg_events` (specifically PGFAULT) to detect memory
+> >  pressure and trigger the appropriate hooks in response. This test
+> >  suite provides essential validation for the new memory control
+> >  mechanisms.
+> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
+> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >  ---
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/t=
+ools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> >  new file mode 100644
+> >  index 000000000000..9a8d16296f2d
+> >  --- /dev/null
+> >  +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> >  @@ -0,0 +1,537 @@
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> +
+> >  +static void
+> >  +real_test_memcg_ops_child_work(const char *cgroup_path,
+> >  + char *data_filename,
+> >  + char *time_filename,
+> >  + int read_times)
+> >  +{
+> >  + struct timeval start, end;
+> >  + double elapsed;
+> >  + FILE *fp;
+> >  +
+> >  + if (!ASSERT_OK(join_parent_cgroup(cgroup_path), "join_parent_cgrou=
+p"))
+> >  + goto out;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d begin\n", __func__, getpid());
+> >  +
+> >  + gettimeofday(&start, NULL);
+> >  +
+> >  + if (!ASSERT_OK(write_file(data_filename), "write_file"))
+> >  + goto out;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d write_file done\n", __func__, getpid());
+> >  +
+> >  + if (!ASSERT_OK(read_file(data_filename, read_times), "read_file"))
+> >  + goto out;
+> >  +
+> >  + gettimeofday(&end, NULL);
+> >  +
+> >  + elapsed =3D (end.tv_sec - start.tv_sec) +
+> >  + (end.tv_usec - start.tv_usec) / 1000000.0;
+> >  +
+> >  + if (env.verbosity >=3D VERBOSE_NORMAL)
+> >  + printf("%s %d end %.6f\n", __func__, getpid(), elapsed);
+> >  +
+> >  + fp =3D fopen(time_filename, "w");
+> >  + if (!ASSERT_OK_PTR(fp, "fopen"))
+> >  + goto out;
+> >  + fprintf(fp, "%.6f", elapsed);
+> >  + fclose(fp);
+> >  +
+> >  +out:
+> >  + exit(0);
+> >  +}
+> >  +
+> >=20
+>=20[..]
+>=20
+>=20>=20
+>=20> +static void real_test_memcg_ops(int read_times)
+> >  +{
+> >  + int ret;
+> >  + char data_file1[] =3D "/tmp/test_data_XXXXXX";
+> >  + char data_file2[] =3D "/tmp/test_data_XXXXXX";
+> >  + char time_file1[] =3D "/tmp/test_time_XXXXXX";
+> >  + char time_file2[] =3D "/tmp/test_time_XXXXXX";
+> >  + pid_t pid1, pid2;
+> >  + double time1, time2;
+> >  +
+> >  + ret =3D mkstemp(data_file1);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + return;
+> >  + close(ret);
+> >  + ret =3D mkstemp(data_file2);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_data_file1;
+> >  + close(ret);
+> >  + ret =3D mkstemp(time_file1);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_data_file2;
+> >  + close(ret);
+> >  + ret =3D mkstemp(time_file2);
+> >  + if (!ASSERT_GT(ret, 0, "mkstemp"))
+> >  + goto cleanup_time_file1;
+> >  + close(ret);
+> >  +
+> >  + pid1 =3D fork();
+> >  + if (!ASSERT_GE(pid1, 0, "fork"))
+> >  + goto cleanup;
+> >  + if (pid1 =3D=3D 0)
+> >  + real_test_memcg_ops_child_work(CG_LOW_DIR,
+> >  + data_file1,
+> >  + time_file1,
+> >  + read_times);
+> >=20
+>=20Would it be better to call exit() after real_test_memcg_ops_child_wor=
+k()
+> instead of within it? This way the fork/exit/wait logic is contained in
+> the same scope making the lifetimes easier to track. I had to go back
+> and search for the call to exit() since at a glance this function
+> appears to proceed to call fork() and waitpid() from within both parent
+> and child procs (though it really does not).
+>
 
+I will fix it.
+
+Best,
+Hui
