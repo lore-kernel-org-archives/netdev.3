@@ -1,63 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4C01FD4
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 00:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E38E78F3E;
+	Tue, 27 Jan 2026 00:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769472963; cv=none; b=IVmFDBaPqsMxLzWOgmzNBPpoKtshPoJsKxkMnqd6PzuHNo36Asx9JHfY4lkMLpzkxO60tPsvx+CIgmWnmUaxArgLo+Zm9GDL0XYwzexRMMmwqCPsQDzFoJ/dsynesPrRxPIUQdUmJyI7kasx4CYAYHnx89bdmwwLIuprHzG9ae4=
+	t=1769473033; cv=none; b=KXtMo4+hgDNXJInV1MQNVrbFD12rf4vUsRcguPtj4vMHnL0G2LinqcxlroxR09A7mY0XgIRXU33tro1HFDarhMU4/GUNLax75FVx6ox/extAfwY77zttbxOanuJR3z71lJ++alnerzE+XD55ryBy6Z0U6LOiDbr8yJwZgutEQu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769472963; c=relaxed/simple;
-	bh=wmiTUsPzab6qWAS7Hn1UQRhd6VQuBtWOAoZwxEFeaPg=;
+	s=arc-20240116; t=1769473033; c=relaxed/simple;
+	bh=KkOYQevkpGOrnDIoJPRQGxUkPN409sQyfY4sFH+8OzY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RG4XjStSSASMiNY7wru2vTnajfyetsqJXwRShViBPdxkndjKKR24FlMjUXVOcWan3melZSTavNG0OYYCAG4V5MosBzRvuIPA/ucVixtyTzqcurQl5ie4LwiRPuQ6zQwJzShEFjbCt0cSZFXF818Ta8fXbYWGHmd/B/Q3itIrjdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quBCTbQ7; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=H47fylQOiUJRn1oTZIK6yaK6ArTnXyuMdAx2RQhsUq4gcfR0RV9ESZEkaQ54YhzPZKgH7ma5WjERu8OrJYeJEyKOeUmxdO9ygNruNeQIwNoic7D3dHYSRTD9SdVIsXpsOw0SbqpAlih0hCr+xhSzMmA9UMbiLTZo2zlzATuP94s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt+E/Psq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quBCTbQ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC2BC116C6;
-	Tue, 27 Jan 2026 00:16:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt+E/Psq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B83C116C6;
+	Tue, 27 Jan 2026 00:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769472963;
-	bh=wmiTUsPzab6qWAS7Hn1UQRhd6VQuBtWOAoZwxEFeaPg=;
+	s=k20201202; t=1769473033;
+	bh=KkOYQevkpGOrnDIoJPRQGxUkPN409sQyfY4sFH+8OzY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=quBCTbQ7/dWuHQ+XaukAXhuNlhXBAVRwVdU6M8wczWWJQlfTODmvG5XkMB8TIcy5V
-	 Xpo2ohPi0dDUrv489ADp8jqEVMoTyeFxpBQlJFw980Gd9bQa1fVs/LVuG1wirA74MM
-	 0pfbaPCBakqJ36tzQy32cGePl1hJnqW08haN2vAuQWcdNne1w8E9BueSv7nesPI0eH
-	 NJ81eK9h0HAMvmNi6Fh9Zan3xd0ISZoKB+BMKwEgJEbooXTW17CwuMdA+qWPjO8Pvn
-	 eJ+5DHGE6zZY91Q48s0dR0O8Qzu6hPtgUd2QM03B52zfxf8+qJvD3iEWlvQp2/ClN4
-	 8XMizXvioxmlw==
-Date: Mon, 26 Jan 2026 16:16:01 -0800
+	b=Mt+E/PsqP0byrVFgyagQnoUX1xKvoR618QUcQ9TXglRCWaMri7VLyQVNwFPZCEboz
+	 I6jZSPuZKykSZYDXibh/f9dpz+fN6bayGcTqkdjQDJy/n52LormX9deMT44XWtAq+E
+	 R2XAenRVgsdA7JWrsZYnE/o66SlLfvTLeLQFjpzn8k/JfcKXN4QOblLlm0DF6BvPm4
+	 zY514/2/v1oud4d45dejbl700KofsgzFRgaHcLQPMIJ7xj35q1F9WNjlls/n9/NopU
+	 0C1yr09TVCdkol7D2HyyWWk1st51X1uN8hy0ZtZmkMDbDZsUCXEar+hQyxRMlA/dWQ
+	 3CxQdYtyhaDOQ==
+Date: Mon, 26 Jan 2026 16:17:11 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Rishikesh Jethwani <rjethwani@purestorage.com>
-Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
- sd@queasysnail.net, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, leon@kernel.org
-Subject: Re: [PATCH v5 0/3] tls: Add TLS 1.3 hardware offload support
-Message-ID: <20260126161601.1c2f18ec@kernel.org>
-In-Reply-To: <CAKaoeS3ZLtiXNLNoJXGyTRp_-4yywdmDdCbNtjA-Q_w6mT_oaQ@mail.gmail.com>
-References: <20260122192851.86670-1-rjethwani@purestorage.com>
-	<20260122174821.70553ffc@kernel.org>
-	<CAKaoeS0f7z_pjJhij8dFpgPPJfiWGsn25k6rgBUMUM4wiFHurA@mail.gmail.com>
-	<CAKaoeS3ZLtiXNLNoJXGyTRp_-4yywdmDdCbNtjA-Q_w6mT_oaQ@mail.gmail.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Shenwei Wang
+ <shenwei.wang@nxp.com>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+ Frank Li <frank.li@nxp.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, Clark Wang <xiaoning.wang@nxp.com>,
+ "ast@kernel.org" <ast@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+ "hawk@kernel.org" <hawk@kernel.org>, "bpf@vger.kernel.org"
+ <bpf@vger.kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: Re: [v4,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for
+ XDP path
+Message-ID: <20260126161711.2ee02510@kernel.org>
+In-Reply-To: <PAXPR04MB8510775746A1CAF835E365718893A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260123022143.4121797-7-wei.fang@nxp.com>
+	<20260125214446.3383999-1-kuba@kernel.org>
+	<PAXPR04MB8510775746A1CAF835E365718893A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 26 Jan 2026 14:07:52 -0800 Rishikesh Jethwani wrote:
-> > > Selftests are a hard requirement, I already shared a link with more
-> > > info with you.  
-> >
-> > I will run the existing TLS selftests to verify no regressions.  
-> 
-> I ran the TLS selftests - all 898 tests pass:
-> linux-kselftest/tools/testing/selftests/net# ./tls 2>&1 | tee tls_test.log
-> # PASSED: 898 / 898 tests passed.
-> # Totals: pass:898 fail:0 xfail:0 xpass:0 skip:0 error:0
+On Mon, 26 Jan 2026 02:09:13 +0000 Wei Fang wrote:
+> Therefore, xdp program will not be installed for those platforms which
+> need swap_buffer(). Because the XDP path and the traditional protocol
+> stack path were previously mixed in fec_enet_rx_queue(), the logic was
+> confused, which led to the AI =E2=80=8B=E2=80=8Bmaking a misjudgment.
 
-I am asking you to implement selftests that will test the HW.
+Understood, could you add a note to this effect in the commit message
+to try to steer the AI away?
