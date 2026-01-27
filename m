@@ -1,185 +1,77 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C50B31328C
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 16:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5B356A17
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 16:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530586; cv=none; b=P9ALAj4nHy2rsTdfQ6lfrn+1qvBS5lVo20XBQRtuCT7NyC5rFkmqSHGyMRJ9INendiIKOH4UlQBXhyLScI/Ju/sR6ytupsBboFgG5fls+DpOelMCx7gshulkmyY3Vk6B7LFidYp3h1jw2lYoBp2F1Zeeh3hRJbfMZRMiYHL4IoU=
+	t=1769530628; cv=none; b=OgFw/qF3285XvSSyWE8GUeLqE5Yp49y7ROZTpiUw5VfR0VXPGj3aLgd5t9WL9Hl39A1aDnbbz0laqmG9WGQ+rr0UCtlT2tU1FOSNrTj2FtQOWz5H78IKQR/L42mWTEnXwCxFM9CYhUoK39GYt/rM3xodyeiM8aVZVMmS3P7/8dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530586; c=relaxed/simple;
-	bh=+GktQ1kyEhAdFafRvrsn3ptLLIIul+XG9ykOzNal5tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LU3QEkNLnYbycpEogh0GDBXeG0AWBVdPikX4bSIC1FW0i5yXoKMr8zrqByop4mAnY7kklWzCuJr7G6uJK1IodqLBghvMj/38PmZJKIzxKRhyCl9szuVNCI2QtCz4ITt9pM7CNzrz8/ugB8Eo0gzuqSjuHPbOPuTU+Lx+c7hFjCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WZnNkT0F; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OMwGReJQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WZnNkT0F; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OMwGReJQ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1769530628; c=relaxed/simple;
+	bh=WU3PWO8MGnvuCjUuzy5ZCcTuhPmzibJYY7sZ+sUEuGM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BTC9oE7t2tUVyDjVmV37V4wdyK08gohXRm1QqTgCldfEdjdFfUMlsAzqTSonxiFDPlndd9idlCX4brZZlVWADCm976HNa4q0PvAYZJisaiwjyzucSkGfZwc1MokIh8+WS+QBQKhxBAl2DFDOhcNkkNdn2JaRBRhp1nixYMP9aRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bgMgpG0G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WZnNkT0F";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OMwGReJQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WZnNkT0F";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OMwGReJQ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4AE1C5BCE6;
-	Tue, 27 Jan 2026 16:16:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769530581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NM3xZy/NVVYdo7OOJlkDOtIlQ2nqjY+Mi3ZBRUML5Xs=;
-	b=WZnNkT0FlPmVQ3WXjLki1NeDkV2a1R4UuerK1dkKu9WamYDro4YaRn6w7IWLr3PNy4Iw6Y
-	CKg+YXhhX2XkrMWKOzepw7Rc2URg2u+4pAMRtSpttHGMX4Fy8L9Vfy3FMfjGV+dV31ZoSS
-	e1Zl0kWjhnNv7nVzqxSIwMwebXe6k6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769530581;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NM3xZy/NVVYdo7OOJlkDOtIlQ2nqjY+Mi3ZBRUML5Xs=;
-	b=OMwGReJQTKdY/hIAlTFTij6F4MU3HFa+mJsYuJnptp1PvhQ+dVL4wdKyvD//7Mc5nKxLOk
-	ET+3T0TtJfTAwoDg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769530581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NM3xZy/NVVYdo7OOJlkDOtIlQ2nqjY+Mi3ZBRUML5Xs=;
-	b=WZnNkT0FlPmVQ3WXjLki1NeDkV2a1R4UuerK1dkKu9WamYDro4YaRn6w7IWLr3PNy4Iw6Y
-	CKg+YXhhX2XkrMWKOzepw7Rc2URg2u+4pAMRtSpttHGMX4Fy8L9Vfy3FMfjGV+dV31ZoSS
-	e1Zl0kWjhnNv7nVzqxSIwMwebXe6k6c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769530581;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NM3xZy/NVVYdo7OOJlkDOtIlQ2nqjY+Mi3ZBRUML5Xs=;
-	b=OMwGReJQTKdY/hIAlTFTij6F4MU3HFa+mJsYuJnptp1PvhQ+dVL4wdKyvD//7Mc5nKxLOk
-	ET+3T0TtJfTAwoDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C1C293EA61;
-	Tue, 27 Jan 2026 16:16:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OQ7SLdTkeGlULQAAD6G6ig
-	(envelope-from <sjaeckel@suse.de>); Tue, 27 Jan 2026 16:16:20 +0000
-From: Steffen Jaeckel <sjaeckel@suse.de>
-To: Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>,
-	Jan Karcher <jaka@linux.ibm.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] dibs: Re-apply lost patch
-Date: Tue, 27 Jan 2026 17:16:11 +0100
-Message-ID: <20260127161611.2228083-1-sjaeckel@suse.de>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bgMgpG0G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA186C116D0;
+	Tue, 27 Jan 2026 16:17:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769530627;
+	bh=WU3PWO8MGnvuCjUuzy5ZCcTuhPmzibJYY7sZ+sUEuGM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=bgMgpG0GX5YumL2WfrfXQJi4LH60lD5EdnN9vgvoYuhR+bxMecTD41F2rxNBS1o9j
+	 MkTKc0LwKr8J4dE2PZKIlTh6LvfO7KYil4Bob/lEM8mvLOsPnMIyq8HXYpd3g+aXQD
+	 nHJPjrQmdKAieWJyPwqeVj5YzFIZu82IF4EmV6j51FO5b3+F+I4cl1vDMmMQqTQl0i
+	 ntMip3n8ZlZXJsfN07n3TcHU7Xn4GhN/aSaxOb7lalIsJ+3Th7c0TMfu4+5u9Tgfq/
+	 07IpoLEXkRHIH1JYRxEFu5ag307WstWfrruuhngbOgE56F0syGw+aptIF6FV93CxuK
+	 DE4u7hEdGB+Xg==
+From: Simon Horman <horms@kernel.org>
+Date: Tue, 27 Jan 2026 16:16:55 +0000
+Subject: [PATCH iwl-next] ice: Make name member of struct ice_cgu_pin_desc
+ const
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260127-const-name-v1-1-9c84615c55a4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPbkeGkC/x3MSwqAMAwA0atI1gba+gG9irioNWpAo7RFBfHuF
+ pdvMfNAIM8UoM0e8HRy4F0SdJ6BW6zMhDwmg1GmVtrU6HYJEcVuhI0yzg5DUemihBQcnia+/1k
+ HfK0odEfo3/cD4OmOBGYAAAA=
+X-Change-ID: 20260126-const-name-902cabb35134
+To: intel-wired-lan@lists.osuosl.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-While merging the dibs layer, Matt [1] noticed that the changes which were
-done in [2] conflicted and were missing. He subsequently fixed this in the
-merge commit of his own tree, but the changes never made it upstream.
+The name member of struct ice_cgu_pin_desc never modified.
+Make it const.
 
-This commit re-introduces the changes.
+Found by inspection.
+Compile tested only.
 
-[1] https://lore.kernel.org/netdev/74368a5c-48ac-4f8e-a198-40ec1ed3cf5f@kernel.org/
-[2] a35c04de2565d ("net/smc: fix warning in smc_rx_splice() when calling get_page()")
-
-Fixes: cc21191b584c ("dibs: Move data path to dibs layer")
-Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
+Signed-off-by: Simon Horman <horms@kernel.org>
 ---
- drivers/dibs/dibs_loopback.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
-index b3fd0f8100d4..aa029e29c6b2 100644
---- a/drivers/dibs/dibs_loopback.c
-+++ b/drivers/dibs/dibs_loopback.c
-@@ -12,6 +12,7 @@
- #include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/dibs.h>
-+#include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
-@@ -49,6 +50,7 @@ static int dibs_lo_register_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb,
- {
- 	struct dibs_lo_dmb_node *dmb_node, *tmp_node;
- 	struct dibs_lo_dev *ldev;
-+	struct folio *folio;
- 	unsigned long flags;
- 	int sba_idx, rc;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index 93901bccf1c4ae1e1782e7a2af4322a6777d0b6c..87aa4cfc5a463f74509ecc4cfbc00e06f26cab5c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -258,7 +258,7 @@ enum ice_si_cgu_out_pins {
+ };
  
-@@ -70,13 +72,16 @@ static int dibs_lo_register_dmb(struct dibs_dev *dibs, struct dibs_dmb *dmb,
- 
- 	dmb_node->sba_idx = sba_idx;
- 	dmb_node->len = dmb->dmb_len;
--	dmb_node->cpu_addr = kzalloc(dmb_node->len, GFP_KERNEL |
--				     __GFP_NOWARN | __GFP_NORETRY |
--				     __GFP_NOMEMALLOC);
--	if (!dmb_node->cpu_addr) {
-+
-+	/* not critical; fail under memory pressure and fallback to TCP */
-+	folio = folio_alloc(GFP_KERNEL | __GFP_NOWARN | __GFP_NOMEMALLOC |
-+			    __GFP_NORETRY | __GFP_ZERO,
-+			    get_order(dmb_node->len));
-+	if (!folio) {
- 		rc = -ENOMEM;
- 		goto err_node;
- 	}
-+	dmb_node->cpu_addr = folio_address(folio);
- 	dmb_node->dma_addr = DIBS_DMA_ADDR_INVALID;
- 	refcount_set(&dmb_node->refcnt, 1);
- 
-@@ -122,7 +127,7 @@ static void __dibs_lo_unregister_dmb(struct dibs_lo_dev *ldev,
- 	write_unlock_bh(&ldev->dmb_ht_lock);
- 
- 	clear_bit(dmb_node->sba_idx, ldev->sba_idx_mask);
--	kfree(dmb_node->cpu_addr);
-+	folio_put(virt_to_folio(dmb_node->cpu_addr));
- 	kfree(dmb_node);
- 
- 	if (atomic_dec_and_test(&ldev->dmb_cnt))
--- 
-2.52.0
+ struct ice_cgu_pin_desc {
+-	char *name;
++	const char *name;
+ 	u8 index;
+ 	enum dpll_pin_type type;
+ 	u32 freq_supp_num;
+
+
 
