@@ -1,96 +1,147 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E2B2F83AE;
-	Tue, 27 Jan 2026 22:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C12EACF9
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 22:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769554330; cv=none; b=Wx9281JMabPFfjwJnNzdXLr3RtKViyGrc57A+yGxzzFz6h9XvVHRL763+TCaWoRgOPohU8xlYw2WImclt9j+7SAg42/dsCw0qV5InjzyiGQF6VKFA1nsq4qakzQCltK/EZaCDZ066Ir2PGiXaeEWH7T2y0FNwxVxzCdEQAi6mMo=
+	t=1769554612; cv=none; b=smG8EdHif6HtXUUc7V9JjXSbdjRtCcSpKYgdKDsgZ33KsWPap0xoLwZ8+ONxqWljnxPokt8nkYgkSC3rxBgm+oW9ZggbTPE/c3kE2HkyWPE5AyTcrz4VANfnhbX9j0OisWoujYCynYzNaMmLjiVk5bXrDkzZIrb5oIguQ1wSs0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769554330; c=relaxed/simple;
-	bh=NipXyq8Olunpd4nLlWBIUAlNUcuzVjyuhISS0mQU4mU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxseKASudE6i4PL6dH5L5sfbsKKxbZQJ7wx+5wWSa5PnzAc8GF9QPulzCGApTUNDA5yh8ELVHnq0FWA+wBt8ippybbnD/K8xgYV6cTBm5lmdXw+DvkCwzv0MHy11bnN0cIKJKLaDaOyvlmkc2f1W81Gff94qY9IST62vNY1QtH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=epVa14ju; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1769554612; c=relaxed/simple;
+	bh=6vaafjP0Uwb9/080lF02t8LDytLkowHMim8pDa81jso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ML0RnKnf4OTrFd+fR+2nYJmBE9f9io61tOcLLjGvk/HBUGU3G2gWt1buE8QqS9pK2IMMiqemsfDtqYmBg0MAV4bvkBuDn/6NZAfFOWo43Dd0uSy04y1CL2uIwpHmcu+pFZuUghv8KIH7d8YIApeYVeZEYy8y4UUrUUBmO4nrtdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqWEf1Ex; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="epVa14ju"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=IpUU4MbJSN8PkPmUt1IzIbg/Bcu1M7gnSljEdtG9dlo=; b=epVa14juOxon
-	6hVjVE5o7agp+flakrjkFSJPAaApTmD0AFs1CYu7WJeId080+UhL5f+v8SVy/uf7faJbgJj1U2x+6
-	AwA12R4r0CRkfNVvNTnUhlg5FvDo9T9Az/sH5zh1W6VWEkp/JGF27cYMWONG6TyIcE/bk+ORCsnDz
-	bqm3qjpNwPW5N9IckRJvk94kTha0xMtq9ggIzeDdfs7aqF4vRdN10PsbrXEpuFsyYny2GIIX47LwZ
-	EST0UMsWY625396PxlPFfad4gvknxbHsroCxUQiyKgPO4xhPybTSA6cOBZCDZ0jXJNhizo6BsPW7N
-	hJ8Ed3+HajKYlK9cp9uxhw==;
-Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
-	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <aleksey.oladko@virtuozzo.com>)
-	id 1vkru2-0080TH-07;
-	Tue, 27 Jan 2026 23:51:48 +0100
-Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
-	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 60RMpvmJ304391
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 27 Jan 2026 22:51:57 GMT
-Received: (from root@localhost)
-	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 60RMpv2S304390;
-	Tue, 27 Jan 2026 22:51:57 GMT
-From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-To: "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, Aaron Conole <aconole@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Subject: [PATCH v2 2/5] selftests: net: make ovs-dpctl.py fail when pyroute2 is unsupported
-Date: Tue, 27 Jan 2026 22:51:31 +0000
-Message-ID: <20260127225134.304362-3-aleksey.oladko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260127225134.304362-1-aleksey.oladko@virtuozzo.com>
-References: <20260127225134.304362-1-aleksey.oladko@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqWEf1Ex"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-432d2885c85so678722f8f.0
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 14:56:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769554607; x=1770159407; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YJj3rkrCWGO4XsqbS2RQcoD9sLDEl4QbuTlyvB/piF4=;
+        b=kqWEf1ExfgqWjQwDLkioLUA2cNmyAZn38A+Gt3WYsSaxnL1qsLV18FlnfIvZXcjsaV
+         E+Q4PbZDL9jd8BXSh0DF63GfOguP1TrvEgoP5Wm/E4GdTimzcg2c7fqTFa4fFdOu0u2p
+         EK9NklqXrhrB2wQualKWSXHtFl0e8JKSoYq+oLzUcIAblqABypCAo0KsMy71aQhP/lzP
+         A85lcVE6nPLFIl//qBBesYjIJV8WhQAe4O7T3esb36SbwhKZzZKpKmx5qQ0JZO1+FH8X
+         SH1V7SSqWqu5JdEXkSNUs0b6seQawTT/CpkQFg7wzk5PYrzayTG8TeeFXXges4reBzMo
+         gAww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769554607; x=1770159407;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YJj3rkrCWGO4XsqbS2RQcoD9sLDEl4QbuTlyvB/piF4=;
+        b=ehHl74RktATCIcYW+CYWn9Nu9zG+SGBJwfVQ7qrca9uRVsgq3p6zjD1PFuPxzyBWSc
+         rGxC5YHQzOHZdo93P/b4Hmiy5foq/fBjY6upnGgKryEweb/vMQTPoMXRA2uDVMcgUGZ/
+         O3PoaKyKPPoYjz9S0Cg37LEtCzTxEXzvbqNAWNhvxQ7lNoESEhXtrAiMZ60CWeVMCB9m
+         WhQc3S5Q0g5AN7JC2l3ns09EMwt788NjWElE/r4cKOZ0cLqcwBqGQeoWwh5A1HrxtR7p
+         4x+Ix09GmTXDGjNHap+ORkqAJnAjHL9pXSbg4+vmj6nnvGqWLMK8oVs9MR0pmOPsPWAJ
+         Dk7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVxsxby5PnQ8On19tZ5y86kMlnAY68XKA4je6Duav27BM6QFaJZCyaNWlIHyt12vUvXmkKik28=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKEYvur/jrvpdV4FHs5qcjYrxKPCNlLRqrp2IAtWVb3iouBVtI
+	Dh50066EH8B7mx48TTbyFUTY+zQct/ijLPc+ZQRdl0vZsC83BOkPB48F
+X-Gm-Gg: AZuq6aIDw6hR+6Vba3YTIHOuukdeEnI2liF5jNi6GnzHRim3cqj2VERdqhsO2kfESig
+	XOvHJVHC8k3d9BfYZB/UUbQtojevMHyUTbbzjBq9RnbyoXjXumXIbWshxM4VLzn7JN+6jM8qlah
+	wXRxrUmE7c4vwKYivIZkmob/F1q4qor25b6ns+wLT0Ql6Z6lBzs5Ds2aGveQVh9q7D9E6Ae4Jc1
+	RnDE+vhGWwzrWircGOWWZQtQoO6jJE7UwlIjZikhongbVAXg6pe0yND/QMjWr+8BKA7fzEEDloR
+	djoqFkgb1Gb21xBvdc9TJToDVJRmWWRIbI4oGGdqCddcVBC3TMOx99hbJ+A1GQxU4L2EzqHaPDG
+	6klRyRvOJVwZzAqdjmbB/6QzoZpBVqUO5ar9yygwppG8vFcl38aWQWAXg9rnPuxDQ6QBVFcUkaP
+	Qa8Q==
+X-Received: by 2002:a05:600c:3b19:b0:47d:3ffb:39ed with SMTP id 5b1f17b1804b1-4806e5a17b9mr2102095e9.4.1769554607085;
+        Tue, 27 Jan 2026 14:56:47 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d501:d900:6c51:3f46:e918:f0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806cdebf86sm19928945e9.8.2026.01.27.14.56.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 14:56:46 -0800 (PST)
+Date: Wed, 28 Jan 2026 00:56:43 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v9 0/4] net: dsa: initial support for MaxLinear
+ MxL862xx switches
+Message-ID: <20260127225643.qe4lpeyjmtl6flc4@skbuf>
+References: <cover.1769549559.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1769549559.git.daniel@makrotopia.org>
 
-The pmtu.sh kselftest configures OVS using ovs-dpctl.py and falls back
-to ovs-vsctl only when ovs-dpctl.py fails. However, ovs-dpctl.py exits
-with a success status when the installed pyroute2 package version is
-lower than 0.6, even though the OVS datapath is not configured.
+On Tue, Jan 27, 2026 at 09:37:40PM +0000, Daniel Golle wrote:
+> This series adds very basic DSA support for the MaxLinear MxL86252
+> (5 PHY ports) and MxL86282 (8 PHY ports) switches.
+> 
+> MxL862xx integrates a firmware running on an embedded processor (running
+> Zephyr RTOS). Host interaction uses a simple netlink-like API transported
+> over MDIO/MMD.
+> 
+> This series includes only what's needed to pass traffic between user
+> ports and the CPU port: relayed MDIO to internal PHYs, basic port
+> enable/disable, and CPU-port special tagging.
+> Follow up series will bring bridge, VLAN, ... offloading,
 
-As a result, pmtu.sh assumes that the setup was successful and
-continues running the test, which later fails due to the missing
-OVS configuration.
+I'm surprised the Kconfig help text says:
 
-Fix the exit code handling in ovs-dpctl.py so that pmtu.sh can detect
-that the setup did not complete successfully and fall back to
-ovs-vsctl.
+	  These switches have two 10GE SerDes interfaces, one typically
+	  used as CPU port.
 
-Fixes: 962e8a01eab9 ("selftests: openvswitch: Add version check for pyroute2")
-Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
----
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+yet only PHY_INTERFACE_MODE_INTERNAL is set in phylink supported_interfaces.
+You're also not making any mention of future SerDes support. What's up
+with that, how do the SerDes ports currently work and how are they
+described? (as internal?!)
 
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index b521e0dea506..848f61fdcee0 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -2583,7 +2583,7 @@ def main(argv):
-     prverscheck = pyroute2.__version__.split(".")
-     if int(prverscheck[0]) == 0 and int(prverscheck[1]) < 6:
-         print("Need to upgrade the python pyroute2 package to >= 0.6.")
--        sys.exit(0)
-+        sys.exit(1)
- 
-     parser = argparse.ArgumentParser()
-     parser.add_argument(
--- 
-2.43.0
+> and support for using a 802.1Q-based special tag instead of the
+> proprietary 8-byte tag.
 
+Why is that?
+
+Another (related) question. You have this comment in tag_mxl862xx.c:
+
+	/* switch firmware expects ports to be counted starting from 1 */
+
+from which I don't completely understand how is the firmware involved
+(does it process the tags?). Would the expectation also apply to the
+802.1Q based tagger?
+
+What's the real story behind port index 0? Does it really not exist, or
+is it some attempt to hide an internal port that's not supposed to be used?
+
+If the latter, I guess something like the snippet below (seen in
+arch/arm64/boot/dts/freescale/fsl-lx2160a-bluebox3.dts) would simplify
+the driver by a bit:
+
+	ethernet-switch@0 {
+		...
+		ethernet-ports {
+			...
+			/* Microcontroller port */
+			port@0 {
+				reg = <0>;
+				status = "disabled";
+			};
