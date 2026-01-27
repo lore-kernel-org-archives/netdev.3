@@ -1,153 +1,146 @@
-Received: from sonic301-30.consmr.mail.ne1.yahoo.com (sonic301-30.consmr.mail.ne1.yahoo.com [66.163.184.199])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F08219A8D
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769498929; cv=none; b=aR/2Dcn0KcAc6emJtnuv/pXuvGO3jDygDFj1LYRrTpuqNiF0jfr29ICmrb5yejrzOVpu3vLLctJaro1e4FuiaYtbrd9n8Ong9iRwCBvZihvVlkilzVXtthWaaWBb1TSyvIcnxWlfu0mBox+fobNUziLtsmRmBe9IJjYcCFXmY1U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769498929; c=relaxed/simple;
-	bh=vG898GjSLPB8Nkp+1+cRvIhbyQWjrmnHnKNrZG7p0hU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USc/RFOq4CD+Rkm4EYURIh3HGxReU8R+St24/A4btiEKRR+ujyISx28vkkTHNmlgI6K4Unxijhfb8zkcDElrlKm43PvhaaLHIHpc9ih/Iio+bxCdpAXa5tzDGwfRwDg2MMFE2TPCLV7rKXXNkV7oAIqfKFBDnWmEX9Lrsg9OekY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=o2Yvn73H; arc=none smtp.client-ip=66.163.184.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334EF278E63
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769499456; cv=pass; b=WUH7FT9/rC5jG2RVgkDTt5ChtGGgLu8egzVI54OjM/dll6b9+NMwKUDtXh/Ugx7nr/O88o3rynP4OCNegiS3ks4BImq9LDPjKqCIMH8IZBZgxh3J0Ilinr+mtohw598cermtyB7UEiJiWkg2ZldXg8xtnQxMA3tURSeQp8S4itw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769499456; c=relaxed/simple;
+	bh=3hOQnMWoa6NN3hcX5GZiSqa8OS8vWvHzRUzfB4or90U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rM7JR5VvtSsi1YV157Geixf4C0Lh8d712umiE7y8GXnpqdsLW8Wgq1fybs14tH7WvH+AyCpaWfnCaFuEquALF6jWCmELkr1vAIFuhwGpDP/ViRFYIEj9dmnPwjGT6DcPbwM6GH625kUr0LGMfNlHR6H88rhzuDQzC1NIMpU+QTs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J6c2zMuW; arc=pass smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="o2Yvn73H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769498926; bh=4tdAyeqBQoe3LBdckitw8sweWpmC06d1RGCNpADCggI=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=o2Yvn73HJKvbgOpoO93l+E8o7F3wc17rS2KIMDXf3zj7JXNK9kpTtYrDAc2yR/YAt6vxSQ7Yx3H9FEH5b4/lMiUcrNtsGrScAe6XtmHF8xgx4lInwlzALaUaFCNONP70s4CkjKKF032GpRLwnPau3WmZMNwSqNgQC4kJdVtjJQbn7K9O0Xr5dpUe28X3KUURfJXnGRJNKjBtWA5FXRigvIHabIZGFlTdpGtX/pL2zR86Mq/jSfm+35XQ/pJPJsIiBdIyQ2cD/Y6tjXcPGJJ95dTDS1Z0ZoTkgcWkfxfIkB2Zcv9SNW5vr53odUgMYa8eiUbXzGN3A5uUmY2nSugD1Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769498926; bh=xQChHKSt2J98rIxNTIcWev/Y9L8td1X4X/YdvmV4MMP=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Y7i3/puN243g/Rj6Bu181C8vBJoeQdsxKMio8WH30f1HKjcYC2D4w9ThEKuBY+SluSAvR7LFPTEJixPT76GVDeSjP0w2NtgrSGKla1CjD70J+riP4sf5fRxArdAuDjgZeDQblW+E6ISPFdVQrKitoa05Uw+G/GSKgs7aRnV3EkYwDDbFBzZQJc+DK9ybHztdliqXcHL7+KSviefTuIwjU09ZbDKzesCk6KLJC6OW89KZN/3EP12xK+xTThwLCyReSJhtAbUcCdubRuIFffJVDOv4U/rV+SCbQUHbLanfHDL9cVkdQ9GGf1DILoVEJdV5eZd+KmKipPZ5lq17nAmBSQ==
-X-YMail-OSG: WrFsEycVM1nB997CH5ZoAlkEL3KVX2qyZjbqvGPcBEHszJcI.xt.Ce1z8Jep6R5
- u3ZuQrYdnBwH5WXtgcn6OYBCVmVq70BjaSFeBiiNcbxjTyVXeuAW4wtkjEHGEtF1Dc6aMclwHrmK
- ZtnUl4eo0HxlcJFOxtw2mMoVUz9wyp4WoqN6M2dyytFNrdE02Ys6HgC4OBix3jDOR1mTadFG5hkD
- Nye39xkOfIFMd3PLX7OCiJk15xJtcdYEdxqbK0SpO_kPGjmWlK4FhA_soxJpOKGA.pEh3gMTeGAn
- yICSeOhrxI9YD0yYAxdsCr6b.srMQ92aYhaYqbyUR4U1ZJc7y_IyIwVfj__8EM6rDzxua_4aVbT0
- Y64s5nV5XFX.oXUZ4FMZBiXzokrodufcsp0Xu_Cunq6C4B64okslxrPT76WcjyDLrXK7.TNk1YBh
- iYrDKPQSlIAkqHfWHvqYnkRktlTMVfPh7iFkGNytOWfb1t3PAMjqs5cW5KOA2uQWI1y_wRDvHuyn
- Jq9UtiT.qC8FdNNS7Fev574QCTdysAVO7cJ0BI7_3I8pQqNdvcTlfuprx4w8lAtRDaxgilgsA1gE
- cJeWBm7baQ4Qw6NGxks6u.TTXSLAhGkKXiApMtmNa4BLXWq8A2lPUB_ZhAjs79yVzID9GdMBI9yW
- M6e9Y.ahP6mI8nfyKtQe62nu16QTZT1O.APz6Xjc6mzgAPYD7qDhgyHnfmqwCs0RMAEVMgwn0su3
- HRKiQX1.UjYnjLLECXh5mkD71mAZUXOU2lY4sRc7raxdE0T3tpA8LDDAvwvo9D3DbUlXga9fBF5X
- hsQjYny3Bj_dwU2FhAASTuS2recFB6gI6BzU7soIeOIoX_teXCxzVTBUKL58MkXVN1wWNW5wbX3_
- V13LX1n3WPFYGgxI5Ywy.BsuRNqWqY9v3shXifQUDK1oP.sY.ivsAA_R26koDuKQ2cYoWOZv3HLl
- K_NGbWIjJXadFjdlgIu8oTeT6o3qR3TK1WJ8QwRtPT99p8CCzbgrVPwcYpzZawcQ7t8G3QNm_jYH
- jIMdD86rMXUbjnKiX6xcDA9bUt5EJT5AVgXjdQaXeVyz2lFnjJpqJLyIuvm2jehoLjFVdf.fuzz2
- .s38HikJuBrmK0G41NlWQyfk.0vhM3JD9NeAjXvG7LjXHzEk56Cl9eGNsHubqxlWliLvLd0goWD9
- LLzQtfeC9M2gHLZN_UbXH6EuhtGLazedPIYnbXJNl_1BkH2wafAEl7adKOL2y7F5uoOHUxrAi6XZ
- fPbXoKsLJCxH24MnmuTKk_QicLnp8fCREztlHlQL5.WHOgnTDNu1.B80Rn6uylsDszw4nPfjIOoz
- 2gVQNuLup067lHFevs5omkl9fIdaID9czQ2SirKms4RpMWVIVstrVwj1s0J06yOhDN_3tHv6BpJM
- Yzh0lKEQy5gH6cxfShJIEw8R_0ftfll3DFfPVKXXVse46W99kcsYe67r4jMqAElWaUNLqfILd1fe
- Vo2d7VhPThBWxqshPV6INtiXh0RHM1Hzg_CHXyrYTD9wLp_hHwBootWUyfa6dKmGMLclakNbK3WD
- uz.YwexMavCICFGXAT2mjn.NGbW_PbOE472_5osPVJrQnAxZGaKq8xVmQ3_5Q7t9zFBRaxSiVu8q
- UzIpm_mIkwYj1c6v.xVCv2FtRyFuyAaXbvMIMe9iGdl.A9lGxeFiiQ2AgE2o3xtzSJCY2_3mbAZX
- 1c74M.VUp48J9aNqJg.Ii7mdl8ZsFLPi46UiuUT57cJDf1yoetSNbqZrcIkUVAACaj8hjUrpjp1r
- MY.jkiFZbe6Mr7HZ0g3G7ObQA0QXI7nWfEBCTWsb5o909Lp.hjoH9rS9jBoXEIFnvdZ5GJpJATeD
- Z3n19andax5.xa5YnN7TysTGgmxTVySIlsK1B60W30VTBiLXe1HRLQLKJxXO72jNXgUVxd0GWR5a
- UIiB0Mtr09lm3qb1tKvSMF84BCC75JCuaAScxAVkl2RBBMJgKtBDj1nWLxuuE61734dXh0RQ1bZm
- DYxs0DyaC7sCbrV9SgwQOnTTkdJ3on4wOLHRhoFAuSr35MpBAL1ExC6Evipm7fmTbmv0fbhEQde2
- hymqLBCpftZVXht3dmFrOlACBUAqMwYA751JzgKn8m3ryNhe1dF1wl3er3SD5AHQDiGQ7ermMlN2
- k2Nr1dO4RjH8nX6f_1Wb2mdMvWMp5.YQqeO7cY0zfbA--
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 52db836c-2fdc-4702-8d28-fa20f201c463
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ne1.yahoo.com with HTTP; Tue, 27 Jan 2026 07:28:46 +0000
-Received: by hermes--production-ir2-6fcf857f6f-gch58 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 84771875e54e61ed0bb89230515c8a5a;
-          Tue, 27 Jan 2026 07:08:25 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v7 07/11] net: tunnel: convert ip_md_tunnel_xmit to use a noref dst when possible
-Date: Tue, 27 Jan 2026 08:04:48 +0100
-Message-ID: <20260127070452.6581-8-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260127070452.6581-1-mmietus97@yahoo.com>
-References: <20260127070452.6581-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J6c2zMuW"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014b7de222so64761171cf.0
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 23:37:34 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769499454; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OL4dYfpMz0uMx3BfIHOvPS3iG2QIMfsOApYxu4hnAXX319O2cU8xb0gj3mK6OdoDjh
+         1UJhXUx9PHD3D7VzQnWGA3yseOhrka9rguv/vH/RgF1ULuZ5K3CJtRbft6J2lOHHLp6D
+         PfTZvjzecyCPxD98ChI5aILobOczRGUhL23eDWxEj1Xy0rSCiu+uFA7uuohhyax9h6Cv
+         VQ+MQU3vs3KiJzk662UEZqEgrDogcr+X9nL/ThbTz5o4pXVP5l7gFL8XhvGg9j8rkoLa
+         VQMCSXc+N8Q/q0MOQP5UaLBE4uNOsgnZ8IsA9btBzMQyctPipUMOgPB6S5Bs24fNYKgw
+         NUkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5E6MCGD1AJ1KLpME6qPCKRnV24bPENq5PEOJ2L/Sikw=;
+        fh=VK0k3tlLuENaIHmzQi4ai1G3HSpv6fvQ6dUeoJpeYag=;
+        b=GWMFBG0dPtWeNy/vfg8Ui0O7ZkAlhkpU9RD+u8AV6tckMV1Bn4DCnANnVWzxN+xm2e
+         xBgbvVJqz8vfvdFbBn5gXHmidM1faLmJus3WIboqXNrmho7ivghjUPXM04XKiy4xO6c0
+         EjCbte8lemjdf8/ZPpxHVWO62oDRUDduUTfmkJv00fS+bsHh3ol6NgGvr/We0/4MvVNb
+         eBIFZAD0yk9BA+F+iF2NtsdiV4vtB/356ucYkjmq7yrqzGHowSpbNPaBArXBK/UpwM0j
+         N+6/t7vrkKG9pCUZxdwj5qGpllrNVoFSnLcHXHRig5yVyIM4kEpafjy6K7Z5Y0um8cKM
+         FoCw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769499454; x=1770104254; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5E6MCGD1AJ1KLpME6qPCKRnV24bPENq5PEOJ2L/Sikw=;
+        b=J6c2zMuWHFKyv1XTtsUYzHkVFYmyLxOd+F+Oi0BzInB1/ZPo5Dfoh7uE0uxvXxRe8t
+         fqhHdAa3D3wSuvepWNREoMQHdKAtuSGeHOvGHelmwJe1emoe2qiltcmWGshEbwdQAzzP
+         aIPfun4uB3W6gHRCQyCY9gjACd19KwiOq9suEK4s/jIgSJrGDsMKA76LFdV62H61XCfd
+         RwMf1iFDvtuW7xXuAaxx1WqgHR+1P5A64J1H5Rd7PuZPkVizedCYtixwaaQMECPUKrp1
+         hQBuzLZ8jWBgp+pU7cA8RuNieEtsLV2CyHghTryDdup3C+TGqksV5soUHNDaXLgcf9JK
+         bVig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769499454; x=1770104254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5E6MCGD1AJ1KLpME6qPCKRnV24bPENq5PEOJ2L/Sikw=;
+        b=LjNWDEK7AeF4r7yI8ugDX/SPFmMXH1pbCunxsgez9Jp9Gl0aQYZMhwsZHogn7TiDve
+         s6HBQ944ef5GRFuSDGDgGnlz3HV7Kdh2nXnjza6cjwGg9/cEBBR5fJs7ksMbDZhTxWRo
+         pR0qW2mNeLcTsFxMVyOvXR0kpqRZ6gRBUo/Oo0lEqeI6FzyAzEXI7ww8XPahdb5TUn1Z
+         S+uh4x+Bbvlm9BgJhP6ezZkGV6xy4e1wYhKISVY/D0mEmDfBQqTTCBelS+U9FFoaYUzK
+         LKQLTACkS/Im4BOTt/W2Q1HyMJ7urTV+hU6Pj14GfJb/dqY6fTIYHVX04Q7xpAxSj4Zf
+         7KTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZzj/unhvgqxesq0NBE20fV//xedY7wNDW2+v1ET+GzE4V4GjIL5EuptSedQzNYZqAGYrPV14=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpmVg7mXaziChHg+ghZTTsylDcEjOyYjuPNxTsqBebb6qE1ueN
+	m6nbKAqbxg4G4NPy44IW8x9hF5wno0+y0PlJuVfQyd7RjHOItp6PRwMNF1OMn5l5Xxm5seMC5Yh
+	mmHoJ5YZiXUHbwgPkfB8YZ3iOlhTdkAWYE7jc0H+5
+X-Gm-Gg: AZuq6aIhsxqrvp4qDkOk8tQ/S2/ufydY172DNw2plMW2tKxzkQ7Gk8Xx+VajMCaeoLp
+	3CtJgXviV9MbWSSLOyZTqKlPC2IuIqboGWjBPNNerb6I/2taw37JJI4R5a2Gf2RqwRVMfsXeotb
+	0i+Iqhqyx/zXQGuUsDFsXzwpoPqH2yQ8yliH3UFuHShCRMqcyZ3MVZ2q9OS9Cn8X5VvgBgn9lf+
+	PXfdL6ecA6YV7mbA8Rw61PBBfF+RyhaAmAPoOaRfcD+0DpZA1bMeu2E/SCcWyP5j7DJHUw=
+X-Received: by 2002:ac8:7f8e:0:b0:4ee:49b8:fb4c with SMTP id
+ d75a77b69052e-5032fb1d662mr8488171cf.70.1769499453687; Mon, 26 Jan 2026
+ 23:37:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260123170412.906280-1-skorodumov.dmitry@huawei.com>
+ <20260123170412.906280-3-skorodumov.dmitry@huawei.com> <CAAVpQUBGAitiYbXjGoU7ByaXuU9oYF3nfywu43susMHi8mSy8g@mail.gmail.com>
+ <a4a16ead-a534-47e6-8468-58898350415c@huawei.com>
+In-Reply-To: <a4a16ead-a534-47e6-8468-58898350415c@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 27 Jan 2026 08:37:21 +0100
+X-Gm-Features: AZwV_Qgc7KpPDiZzUI-92VIJg0i_wAT6wVdn_4Z5VJ-QG9HwqpBi9l3z1FQkDoY
+Message-ID: <CANn89iLQ2tDcWq-aLe-FhQU2cX8txF5L9SewiB1ssJh+7ds46Q@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 2/3] ipvlan: Common code from v6/v4 validator_event
+To: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Dmitry Skorodumov <dskr99@gmail.com>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Xiao Liang <shaw.leon@gmail.com>, 
+	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ip_md_tunnel_xmit unnecessarily references the dst_entry from the
-dst_cache when interacting with the cache.
+On Tue, Jan 27, 2026 at 6:56=E2=80=AFAM Dmitry Skorodumov
+<skorodumov.dmitry@huawei.com> wrote:
+>
+> On 1/26/2026 9:01 PM, Kuniyuki Iwashima wrote:
+> > On Fri, Jan 23, 2026 at 9:04=E2=80=AFAM Dmitry Skorodumov <dskr99@gmail=
+.com> wrote:
+>
+> >> +static int ipvlan_addr_validator_event_cb(struct notifier_block *nblo=
+ck,
+> >> +                                         unsigned long event, void *p=
+tr)
+> >> +{
+> >> +       struct in6_validator_info *i6vi;
+> >> +       struct net_device *dev;
+> >> +
+> >> +       if (nblock =3D=3D &ipvlan_addr4_vtor_notifier_block) {
+> >
+> > If you check this against the v6 one instead, the if block
+> > and the i6vi definition can be guarded with
+> > #if IS_ENABLED(CONFIG_IPV6)
+>
+> Hm... Few months ago, I had a conversation here that convinced me: avoid
+> #ifdef whenever possible. They overburden code and reduce readability.
+>
+> It even might be a good idea to replace wherever possible preprocessor
+> checks with runtime checks. Use
+> if (IS_ENABLED(CONFIG_IPV6)) { ... }
+>
+> instead of #if IS_ENABLED(CONFIG_IPV6) ... #endif
+>
+> --
+>
+> I'm ok with both approaches (though i tend to like runtime checks) - but
+> unsure what is a common practice in bpf-net
 
-Reduce this overhead by avoiding the redundant refcount increments.
+What you call runtime checks is in reality the same : C compiler is
+able to optimize constant boolean expressions
 
-This is only possible in flows where the cache is used. Otherwise, we
-fall-back to a referenced dst.
+if (0) {
+  code_0;
+}
 
-This change is safe since ipv4 supports noref xmit under RCU which is
-already the case for ip_md_tunnel_xmit.
+if (0 &&  anything) {
+  code_0_1;
+}
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- net/ipv4/ip_tunnel.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
-
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 2136a46bcdc5..40ff6ad9b9b9 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -609,7 +609,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	use_cache = ip_tunnel_dst_cache_usable(skb, tun_info);
- 	if (use_cache)
--		rt = dst_cache_get_ip4(&tun_info->dst_cache, &fl4.saddr);
-+		rt = dst_cache_get_ip4_rcu(&tun_info->dst_cache, &fl4.saddr);
- 	if (!rt) {
- 		rt = ip_route_output_key(tunnel->net, &fl4);
- 		if (IS_ERR(rt)) {
-@@ -617,11 +617,12 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 			goto tx_error;
- 		}
- 		if (use_cache)
--			dst_cache_set_ip4(&tun_info->dst_cache, &rt->dst,
--					  fl4.saddr);
-+			dst_cache_steal_ip4(&tun_info->dst_cache, &rt->dst,
-+					    fl4.saddr);
- 	}
- 	if (rt->dst.dev == dev) {
--		ip_rt_put(rt);
-+		if (!use_cache)
-+			ip_rt_put(rt);
- 		DEV_STATS_INC(dev, collisions);
- 		goto tx_error;
- 	}
-@@ -630,7 +631,8 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		df = htons(IP_DF);
- 	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph, tunnel_hlen,
- 			    key->u.ipv4.dst, true)) {
--		ip_rt_put(rt);
-+		if (!use_cache)
-+			ip_rt_put(rt);
- 		goto tx_error;
- 	}
- 
-@@ -647,7 +649,8 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	headroom += LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len;
- 	if (skb_cow_head(skb, headroom)) {
--		ip_rt_put(rt);
-+		if (!use_cache)
-+			ip_rt_put(rt);
- 		goto tx_dropped;
- 	}
- 
-@@ -655,7 +658,8 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, proto, tos, ttl,
- 		      df, !net_eq(tunnel->net, dev_net(dev)), 0);
--	ip_rt_put(rt);
-+	if (!use_cache)
-+		ip_rt_put(rt);
- 	return;
- tx_error:
- 	DEV_STATS_INC(dev, tx_errors);
--- 
-2.51.0
-
+-> Compiler will completely remove all of this.
