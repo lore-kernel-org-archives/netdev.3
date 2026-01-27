@@ -1,107 +1,129 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF9332A3F3
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 08:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F781329E7C
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 08:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769504160; cv=none; b=nlQGvA/Lc13pAgJcNNpaJ4geOR/UqPwTxb3yId6PpZF6+upDbiO9QGugnbeRsdA2gg5YPMHld9RxrsW54LiY31EHY+nOq5d5DYbWl3AJIpgKK6FFno3D2nslB1UpOPTqwcLX8HgjFmpOwP+BznbOoDBOBxcl6BK1ikokAEfewqM=
+	t=1769504221; cv=none; b=qBk54I/uO3kGD2nk4W4nxygFCL/FniLWxFEvrm80JCGsIQ3Y57jkF/mdkYw+DJ0RffYeGowaqyu2hySsRlLX6LbXQwly4RY9+wH5MhBERV+XYZmFURRVetoKUmn+TzK2u+sIfISCmvlzjJxnrpUqr0r1xHix1BpwuVAv16co/70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769504160; c=relaxed/simple;
-	bh=uMKblArHl5A9jcSFlaLTAYlOk8eq3QqLeD+7zdgmwRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V57MdJJ845rEg85hwhgK+AZhhReOg6Czt5hE0uUGWAM2awMG+gKglcEJk8xPx2hc1PkVVtGYO9Ihw0SJmmZFsa5oliTcJCWTbLOUY8DHyFFmDwnnLCXyN8SeG/URbHBJWbvj38ZXVgPh7hcsHYE/WY9HuWekfbq8czFtrMQ48Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a7NdCjAL; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1769504221; c=relaxed/simple;
+	bh=6XjfhndlIBIF6L5ui3L7esruHiywj58LmcxdagkDtOk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qjV6tSwak0wXqJSKi41ODHXDFsgiWsCxUVzgYz1dYnU3wvANfT9EkaCWnYddjIEHi382c2wnOJ7j8lzNV/TRZvruy1i/RPJYWZkjfTis0tXH5U+JraKVrsXpf2SWnX84M9B/HDDYPYDntuZueangUJK+kE7tFEE74zZ+KpUVoQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=JUebszPb; arc=none smtp.client-ip=44.245.243.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a7NdCjAL"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so40808575e9.0
-        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 00:55:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="JUebszPb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769504157; x=1770108957; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
-        b=a7NdCjALzVrFuDYprpgbei/cfz0vbzMpZmWos9idjaZZE/MCFcAtuJZLCko+b5LSzH
-         09wbUKiRBGHojrvUDxIUsATiCy34rSU2dzKYP3pbO2Kgeotenkhyx3pjqYL3VMKe6BWx
-         RzWgvPFj26K4ltrzc1GgUJcjqNHqkVaOz17V3JSfL41aiI5U/RujPJaZQUG2VNXAJ4o6
-         4MeV+/bkPFI2Ap53CpMWLVnxlEgIrMqXN3IzOsXpucPwNGonLJXGHVQz0zgLd1RJDxAk
-         FtqeOGNjSn3bhqwd0JrlhO2u/mjOcqQ8h0aLY4e2mvaylzGx7s7L4U524qj0ytRhexR9
-         jdRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769504157; x=1770108957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
-        b=ubBARbZ5ifIQ9MRv+SWPFlibahumBy2kA0Zl65CPXI/gKhEQix2KAdJrCY2lUmlPJJ
-         Adg4RzC99/49boqLlrYaStEMFfbfejH3wKaJDHMYbzSPBvVUVoC/FEddsl60dbgN7Sks
-         vQ3qb+mJUPgq/FqUiECtarNhxftVNrBaqOB4bTpH92e5mFX4bviN6u8iqBCThIV5xz+z
-         SI0PZ5htSo5/yeDOdj1bdKGXKNppbJATOGE4WvekbG/CkPje2Gg7hckZRGGP7saEyjc7
-         /DGIEMTvITMXTcx6KqUy5PnqZtuTjHws8g7UhwzmwraUKDLwkWUYRHBYZpD08K6MWdDp
-         r1tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxkI4pwYdpD5y72W6QV8dXF0unRlFLQ6tz2ACP0IgfAqqBGSifJQEOGVolawDAlZHudzKd6/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yycn/U9driepNrins1evqITBwGJbeFYhTB3x7f2+bcY/xPge3PE
-	UxzcRA8mQp45bFiValkBZBgYp2/D7swqYM0ySAhx/crLY6dh8Ph/vfdUl9duH5t/YP0=
-X-Gm-Gg: AZuq6aLz0j4ExvvZl+8pB9CEnjRWd1+8cgJc2+XQBNxyKZ3D8dGqu2UKKuL7xBxRPXQ
-	54nmyGOhz07FMbMVrFDOv9Ott3yXU9XIQNBZcsSOnTshIp6p3FM7sm2R3jnj3ow8bWiqXR30Q36
-	IU9Ejuk03g3bgY7wn2dEUFvGbcFhefPWUbfPwjIi5TXNSHVz/eDTLjWEtBI6jvjBhWLHoyeKXrN
-	W8aHFQ3kCw8ZAodUqt6ZRLlkaF3UVsLyhR0thECm61p3/MsysA+IiYw23o/gpZKoiExmsi+VCxs
-	WVtMywoyJ8t8ckwI3PHnMeaQvoD69kdYoJC5LhLCdpSaNPWzNbSnA4iyicj+IHe/za3D2A310R5
-	8QrGn1AT7R6Vi9Wtchil9TE2nQnMYGCSNJNEjHY+MkiJ2e4e8abpYRxRY2A/tAnsC/1gBMomwRA
-	yLrwT7+pGQk8Dojdc=
-X-Received: by 2002:a05:600c:33a6:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-48069e0fd24mr6300105e9.1.1769504156658;
-        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
-Received: from localhost ([41.210.143.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c42895sm50695725e9.14.2026.01.27.00.55.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
-Date: Tue, 27 Jan 2026 11:55:49 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Simon Horman <horms@kernel.org>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, robh@kernel.org,
-	kuba@kernel.org, festevam@gmail.com,
-	ghennadi.procopciuc@oss.nxp.com, alexandre.torgue@foss.st.com,
-	linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch,
-	shawnguo@kernel.org, mbrugger@suse.com, mcoquelin.stm32@gmail.com,
-	linaro-s32@linaro.org, davem@davemloft.net, s.hauer@pengutronix.de,
-	edumazet@google.com, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, conor+dt@kernel.org, krzk+dt@kernel.org,
-	devicetree@vger.kernel.org, Frank.li@nxp.com,
-	chester62515@gmail.com, netdev@vger.kernel.org,
-	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
-	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
-Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
- S32_PHY_INTF_SEL_RGMII
-Message-ID: <aXh9lcfw6D6KouI_@stanley.mountain>
-References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
- <20260126152430.1390514-1-horms@kernel.org>
- <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
- <aXeP1y7cK0XRx3Wo@horms.kernel.org>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1769504220; x=1801040220;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Hpm3tzHmLebq8eIS8qDAzoE8I3X/7qHvO8PMgK5y+KM=;
+  b=JUebszPbD/WTGQgK0tzbyDbuiO746wfUzH7TgIKObJnVdFoRJU5lkMne
+   959ZD5sdm0UXKCqnX14oo8FFohxAoHBbYzYjPL/ZgpNqgB9JAvXhCTrqO
+   TAmhSzq0zp1YxPFvYkm0Vrg838GXM8owBcQ1NA8jlLFcF8IOCfZNGsYv2
+   hkaSsWB3ZqE1azLybkAtDBwlVC480PG4lpWjB0MC4ke4rTQTYexgCbFRJ
+   /4fojbRV3FMHz25vdbOXgimGAsK4v2pwlFOF9SNH5jonGF2OabmMXZpJV
+   vkJ03hZtG1bvMsfeVd7FKKm0nAWw6q0q9ifaM6nNd0WpLmtL7HLGlI1rY
+   g==;
+X-CSE-ConnectionGUID: PCqPgmyxTsqX5IPybaFVKA==
+X-CSE-MsgGUID: XXDa8TXbRuydT3HlY2gr/g==
+X-IronPort-AV: E=Sophos;i="6.21,256,1763424000"; 
+   d="scan'208";a="11205858"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 08:56:58 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:27460]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.40.218:2525] with esmtp (Farcaster)
+ id 2d422e7d-f6de-45cd-9d73-b8f9930c4032; Tue, 27 Jan 2026 08:56:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 2d422e7d-f6de-45cd-9d73-b8f9930c4032
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Tue, 27 Jan 2026 08:56:57 +0000
+Received: from 603e5f7bc1fe.amazon.com (10.37.245.7) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Tue, 27 Jan 2026 08:56:55 +0000
+From: Takashi Kozu <takkozu@amazon.com>
+To: <anthony.l.nguyen@intel.com>
+CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
+	<netdev@vger.kernel.org>, <aleksandr.loktionov@intel.com>,
+	<pmenzel@molgen.mpg.de>, <piotr.kwapulinski@intel.com>, <enjuk@amazon.com>,
+	Takashi Kozu <takkozu@amazon.com>
+Subject: [PATCH iwl-next v5 2/3] igb: expose RSS key via ethtool get_rxfh
+Date: Tue, 27 Jan 2026 17:54:09 +0900
+Message-ID: <20260127085410.79645-7-takkozu@amazon.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20260127085410.79645-5-takkozu@amazon.com>
+References: <20260127085410.79645-5-takkozu@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXeP1y7cK0XRx3Wo@horms.kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D032UWB004.ant.amazon.com (10.13.139.136) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Mon, Jan 26, 2026 at 04:01:27PM +0000, Simon Horman wrote:
-> But at any rate, I think the key question is should the case
-> where regmap_write() returns an error be handled in
-> s32_gmac_write_phy_intf_select() (by some means)?
+Implement igb_get_rxfh_key_size() and extend
+igb_get_rxfh() to return the RSS key to userspace.
 
-Generally if register read/writes fail then there is nothing you
-can do a the software level, you need to buy a new computer.  However,
-in this case we may eventually put the registers behind an SCMI
-interface so probably checking is a good idea.
+This can be tested using `ethtool -x <dev>`.
 
-Could I leave the error message out?  The callers has an error
-message and if you ever see the error message, and even with SCMI,
-the fix is probably still to buy a new computer.
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Takashi Kozu <takkozu@amazon.com>
+---
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index a93069b761a6..b387121f0ea7 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -3297,10 +3297,12 @@ static int igb_get_rxfh(struct net_device *netdev,
+ 	int i;
+ 
+ 	rxfh->hfunc = ETH_RSS_HASH_TOP;
+-	if (!rxfh->indir)
+-		return 0;
+-	for (i = 0; i < IGB_RETA_SIZE; i++)
+-		rxfh->indir[i] = adapter->rss_indir_tbl[i];
++	if (rxfh->indir)
++		for (i = 0; i < IGB_RETA_SIZE; i++)
++			rxfh->indir[i] = adapter->rss_indir_tbl[i];
++
++	if (rxfh->key)
++		memcpy(rxfh->key, adapter->rss_key, sizeof(adapter->rss_key));
+ 
+ 	return 0;
+ }
+@@ -3340,6 +3342,11 @@ void igb_write_rss_indir_tbl(struct igb_adapter *adapter)
+ 	}
+ }
+ 
++static u32 igb_get_rxfh_key_size(struct net_device *netdev)
++{
++	return IGB_RSS_KEY_SIZE;
++}
++
+ static int igb_set_rxfh(struct net_device *netdev,
+ 			struct ethtool_rxfh_param *rxfh,
+ 			struct netlink_ext_ack *extack)
+@@ -3504,6 +3511,7 @@ static const struct ethtool_ops igb_ethtool_ops = {
+ 	.get_module_eeprom	= igb_get_module_eeprom,
+ 	.get_rxfh_indir_size	= igb_get_rxfh_indir_size,
+ 	.get_rxfh		= igb_get_rxfh,
++	.get_rxfh_key_size	= igb_get_rxfh_key_size,
+ 	.set_rxfh		= igb_set_rxfh,
+ 	.get_rxfh_fields	= igb_get_rxfh_fields,
+ 	.set_rxfh_fields	= igb_set_rxfh_fields,
+-- 
+2.52.0
+
