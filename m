@@ -1,143 +1,89 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892F8288C22;
-	Tue, 27 Jan 2026 15:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BC735CB76;
+	Tue, 27 Jan 2026 15:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769528594; cv=none; b=OkwnjprGZ1wBJsk7Kexy9QjcEP5t4QnNGVskblGC4mp/wQVwCsOrq6ASSxwIoMnvwG8crmw0qj5URNVpiTwLkeWSKBVN/Fok03ht1XTOiPEtDkwIKvxchxmFu3BimAk6jeWES+GZMcJQ2msUfjWa7i3RtDqzugaaxDeVGyDwwUA=
+	t=1769528775; cv=none; b=p7iH4QgF72BZdmHSeH5qRvxvGg7qooIyRbQgNZ/uKSTmQ2J030bkpyC3S4VgqPYSDUp22GjN7kk2MuoyT362oMiqMr0mN3yU0mzGLmbonvv0ARV2XUYdJfEXESnapfDFGA155FMgAzT31UrYm1beACFNUaoX73ejpa2wLtWa6co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769528594; c=relaxed/simple;
-	bh=HCVXvaC+CKIiK0j9ev7Zv5mfWD6p42zgwzRPpDFajIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C5PZCX19CYNuR6VOubVSD2+edHYUkQyNSP+DlvFKOKJ8BB58HmkVykae82gE7Ol1utQ+5hFHV6xYCCUKWhvsAV9P0FhxcL5ntwaGEH0QzwvQsMi1ayMjIh5oXRyMXCQC/E2YHoP0ZqlyQQOVC3IdptegTUnGyi4vavBVdzdsQF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=T0YUbKdr; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="T0YUbKdr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5sFzt8QJiY/XCvYBOB1ozow7uNq+IcHiTAmlpL9f5z0=; b=T0YUbKdrqnbux0i8waouuZ1ydu
-	LTpnVvKwVpsnOKvFipfpOyovNK/PZtp6aUKo+IxAOz3VHuFaF+Vmi46hkHWNmmKlU/i3Ebk0UBh6L
-	fzI7QUPCtt+Q5UEgTquPTgzy5HrcVJrJvtqfXBLGaRdjqt9/fBPhhGqQcthXM1J5cduAm2Om4jtrm
-	GBMJsIOo0o0M0/vX6D6UoLBqMzsgwM/mvDSsU6i+NAz3rXcuLkjRXb832kbElodVwAkADcEE6p+g1
-	rspLK2Twqcpf7QmFPkdBQ3aIAIIBa+esKkldOPC9btppqWjOJLA7xFIdpsuUOynmzerpjBsGk+kFq
-	hWh8TX4Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44086)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vklDZ-000000006M6-3XKB;
-	Tue, 27 Jan 2026 15:43:01 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vklDV-0000000061l-47xP;
-	Tue, 27 Jan 2026 15:42:58 +0000
-Date: Tue, 27 Jan 2026 15:42:57 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next v2 00/14] net: stmmac: SerDes, PCS, BASE-X, and
- inband goodies
-Message-ID: <aXjdAZeUl2Dsu4mE@shell.armlinux.org.uk>
-References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
- <aXN5BFXMshnhwBQ7@oss.qualcomm.com>
- <aXPo5R1Q-qWG3r3l@shell.armlinux.org.uk>
- <aXjSbu6L6ICYOPiJ@oss.qualcomm.com>
+	s=arc-20240116; t=1769528775; c=relaxed/simple;
+	bh=YxUtHGJp3rRQoEqVIndKTQ6jCokoIDKpRH+cCW78r2c=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=hbI6++1Zj4QfUHqMWXzf5pWdx7KlhDM4P5WFJW3YiXmku/DW785+Bzq73hwgoFwmoS1a1mISfRM3jVnAJ2WpqfqKei8sxCGXG/am1r4x0xzaVfOL753c4TAInGCq0LWQgsbuVJqbiyXFlZezF61Mlnx7nbPBzEbdtVf1s51liD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id EB21992009C; Tue, 27 Jan 2026 16:46:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id E4D4092009B;
+	Tue, 27 Jan 2026 15:46:10 +0000 (GMT)
+Date: Tue, 27 Jan 2026 15:46:10 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+cc: netdev@vger.kernel.org, linux-mips@vger.kernel.org, 
+    Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2] declance: Remove IRQF_ONESHOT
+In-Reply-To: <20260127135334.qUEaYP9G@linutronix.de>
+Message-ID: <alpine.DEB.2.21.2601271508160.40317@angie.orcam.me.uk>
+References: <20260127135334.qUEaYP9G@linutronix.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXjSbu6L6ICYOPiJ@oss.qualcomm.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, Jan 27, 2026 at 08:27:50PM +0530, Mohd Ayaan Anwar wrote:
-> It is using the same SerDes PHY (qcom_dwmac_sgmii_phy_driver).
-> 
-> I added additional debug prints, and I think the crash is due to
-> BMSR_ESTATEN not being set in GMAC_AN_STATUS.
+On Tue, 27 Jan 2026, Sebastian Andrzej Siewior wrote:
 
-I'm going to submit a patch which fixes the phylink crash - it should
-be able to cope with pcs being NULL at the oops site.
+> The IRQF_ONESHOT flag was added in commit 0fabe1021f8bc ("MIPS:
+> DECstation I/O ASIC DMA interrupt classes"). It moved
+> clear_ioasic_dma_irq() from the driver into the irq-chip.
+> For EOI interrupts the clear_ioasic_dma_irq() callback is now invoked as
+> ->irq_eoi() which is invoked after the IRQ was handled while the
+> interrupt is masked due to IRQF_ONESHOT. Without IRQF_ONESHOT it would
+> be invoked while interrupt is unmasked (but interrupts are disabled).
 
-> During pcs_init, BIT(8) of GMAC_AN_STATUS is 0:
-> [    7.985913] [DBG] GMAC_AN_STATUS = 8
+ Umm, are they?  It's been a while, but have I missed anything?  As I 
+recall ->irq_mask() is called exactly so that interrupts can be re-enabled 
+at the CPU level right way so as not to block other sources which may have 
+a low latency requirement while a hardirq handler is running.
 
-Hmm. This means that your hardware doesn't support TBI or RTBI modes
-(which is what the dwmac core uses for BASE-X) and what it's actually
-offering is an up-clocked Cisco SGMII implementation.
+> If it is *required* to invoke EOI-ack while the interrupt is masked (and
+> not a misunderstanding) due to irq-chip cascading/ hierarchical reasons
+> then using handle_fasteoi_mask_irq() as flow-handler would be the right
+> way to do so.
 
-With AN disabled, this is compatible with 2500BASE-X implementations
-that do not require AN.
+ Since this is a level-triggered interrupt unmasking it before the EOI 
+will make it retrigger right away and loop forever.  And as the 
+description of commit 0fabe1021f8b ("MIPS: DECstation I/O ASIC DMA 
+interrupt classes") says the interrupt must not be acked before EOI, as 
+the problematic transfer would restart while the IRQ handler is still 
+running:
 
-> Therefore, this check:
-> 	if (readl(spcs->base + GMAC_AN_STATUS) & BMSR_ESTATEN) {
-> 		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-> 			  spcs->pcs.supported_interfaces);
-> 
-> 		/* Only allow 2500Base-X if the SerDes has support. */
-> 		ret = dwmac_serdes_validate(priv, PHY_INTERFACE_MODE_2500BASEX);
-> 		if (ret == 0)
-> 			__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-> 				  spcs->pcs.supported_interfaces);
-> 	}
-> fails, and PHY_INTERFACE_MODE_2500BASEX never gets set in
-> pcs.supported_interfaces. Pardon my naivete, but does the
-> BMSR_ESTATEN bit not being set break some standard?
+16 R/W0C LANCE DMA memory read error
+         This bit is set to 1 and DMA disabled, when the LANCE DMA
+         encounters a memory read error. The LANCE then times out and
+         interrupts the processor, which handles the problem. The LPR can
+         read the address of the error. The bit may be cleared by writing a 0;
+         writing a 1 has no effect.
 
-BMSR_ESTATEN means that the PHY supports register 15, MII_ESTATUS.
-This register indicates, for 1G speeds, which medium (BASE-T or BASE-X)
-and duplexes are supported by the PHY.
+so a combined ACK-EOI is the only correct way to handle it.
 
-Given that SGMII isn't an 802.3 standard, but an extension to BASE-X,
-technically it should still, but given that these are not actually a
-PHY, it's not a big problem.
+ Yes, the handler is sort of a placeholder, but the structure of handling 
+ought to be correct regardless.
 
-However, what it does mean is that we could handle this differently.
-We could remove the check here, and set 1000BASE-X and, if the SerDes
-supports it, 2500BASE-X, but we would need
-dwmac_integrated_pcs_inband_caps() to indicate that inband is not
-supported in these unless ESTATEN is set.
+ One issue here is this is a recovery handler for an error scenario that 
+is not supposed to happen with a correctly operating system.  I've never 
+seen it actually fire, which is also why there's no actual recovery action 
+implemented.  Perhaps such an error could be induced for verification 
+purposes, I don't know.  All in all this code may have to rely solely on 
+hw specs.
 
-> I also tried enabling comma detect during dwmac_integrated_pcs_config,
-> but I am still seeing the Tx timeouts. I remember that when I had
-> tested the patches in October (without the SerDes driver changes),
-> the link state used to flap, but the data path became functional
-> after the link stabilized.
+ I need more data to conclude whether this is the right change to make I'm 
+afraid.  Thank you for looking into it though.
 
-I wonder whether the SerDes needs to be calibrated after the link has
-come up and the clocks configured. phy_calibdate() will re-invoke the
-programming of the SerDes, so you could try adding that at the bottom
-of ethqos_configure_sgmii():
-
-	return phy_calibrate(priv->plat->serdes);
-
-which will do the calibration after the clocks have been set, and see
-whether that stabilises the link.
-
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+  Maciej
