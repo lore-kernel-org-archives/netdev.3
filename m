@@ -1,300 +1,230 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66C61E4BE
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 12:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762FE34C818
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 12:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769516176; cv=none; b=Sh93hitDoYw+ROpfI6Tmp8LN0CGIY4u1maqqq5coaJXKyPRjVxq2SUfRnn2nNNe1Ltuf1Q5FOGtYzlRwEfUmcSc1GiQW04ZcsR8os2S9wjw0HvyXQSjKwV7zZdIeJhEpd+YJudWdollu9uhhx+ANunbjRDm0qaKRN0m/R2Ft+B0=
+	t=1769516527; cv=none; b=pdoj14gdLpl0e/v5gFqZf5mkQ19uGY9AfLbiprupMtu1Qmcmx1q62pB1BBG1LJ9DAf4ZHyIIHZjL6Z+Pnmh6pMPKhOMOFf3Szf9SGI/9PXvLzkOjc88wNwmLg3yTnXrVEEZfPlMW4BdGQ+cwHg15Hzr5Jf/iKC05s1hwNQG0YHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769516176; c=relaxed/simple;
-	bh=msmU2MyrqSWPyAAe2Zo1KaeZzDHoeq3eZ3UxRhiaGDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qr3mny4EYZxNzPyDreVwyqx0EmbCn7H3TQFHLWSfnnEBV0hmZeoALlJwWJrv2jsUun5BuWTz6AkOpKhmnbwIaN9thw1P5rqbJquWYp275BnhQs8UvY19fFR/n0dUJ7jdKEyd4xJZQMNKW55B4Bet6r17rk0xf7RH5NIH6imG3yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mmbZFXc6; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769516527; c=relaxed/simple;
+	bh=1V0xXOfv91TAi3nFP6S49hHSBV0gjCwwsNRea6ynl2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbtzYkZMGRjYjm2bbJZafGurOA+jWYW0TvgfF8zO7eUic8IbEAwYxLn+cvUx8VWdnn0MYAHiJrcWUBprt+6q6KE2eoxi869bbfWcBhSxY7o2qNMacm8CjDB6DxU6Sym9EAsuY/1qbJjuWcbSlI15As3ng3ijZTT8pIoFJ69a30U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTAEpuSp; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mmbZFXc6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769516175; x=1801052175;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=msmU2MyrqSWPyAAe2Zo1KaeZzDHoeq3eZ3UxRhiaGDA=;
-  b=mmbZFXc64xwPuE/7HFSaG/uCbbWFggmDInv3d7LYASjniOn4QQS4dNzE
-   If803g0r/wnOPGwL2LF1fWZrJCBgE+Xzfsffej2k0zvLKaWj6P/hTBx3k
-   hFNGTeWas8BkFjk0P85IZBjRNC+x9xCzyKojOTL5hSwKPaF8gYrA1P7pQ
-   JmUPI6kn5TJgycbvDnAQqhaDdqQYzrjnHii9DIHdVGAI1avzRn+y1AtbG
-   upbyhEtU+BR9doG+pjUX2dkFdV0BLSCOPehn226TfVRRXsVndWI82A5f3
-   O+YQndC/zplXhbJ3qIi6PQtJUBihOmhLiLk2usHkfLNJR3Z5S2zCbahIE
-   w==;
-X-CSE-ConnectionGUID: i4J+X2ViROyTg1c+XAWFUA==
-X-CSE-MsgGUID: wz0f5IJER8G6hzLD2AddDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81013527"
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="81013527"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 04:16:14 -0800
-X-CSE-ConnectionGUID: Ay4bs5BvScGuClns8IJHCw==
-X-CSE-MsgGUID: frcpyRkuTbmj8aqOK3uuLA==
-X-ExtLoop1: 1
-Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Jan 2026 04:16:12 -0800
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Stefan Wegrzyn <stefan.wegrzyn@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v3] ixgbe: e610: add ACI dynamic debug
-Date: Tue, 27 Jan 2026 13:37:11 +0100
-Message-ID: <20260127123711.595435-1-piotr.kwapulinski@intel.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTAEpuSp"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4801bc32725so43705215e9.0
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 04:22:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769516523; x=1770121323; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NwkK39zENXrNnMu7mgbNCwmzsc2dsQCUEvVaxr/ga3A=;
+        b=JTAEpuSpCOiNUcQ+zwD/7/9yQ4K8XW4z2SztAaT2Wh2kwtiCw1pOxS8vakSVv4pFkM
+         MOoiSHagvVnGFk/qoLR/RCCv+pe3jz3EuFKznRIhZ1uOIR7E39Nvb/FNFZjegPMKtCUj
+         0JE1ru25OYWuph0OEszyJB0fKKjdCTv63jMyELQNLA5R8ctlaMNuTFdaSA2rddu52d7Q
+         Xnw+K+BeALPRsEBIlbK8j3Rqz2rCJC9/7w+EBdTvGv/jNNhfD6AY7/ty97NU479GWvjD
+         y1V8OqE1WjI7VzwKpMhAgT6wfv+7rE6Vt9PdzIFjMZ30JP3LqQc7N0O587A7OI3LXRrh
+         OzaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769516523; x=1770121323;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NwkK39zENXrNnMu7mgbNCwmzsc2dsQCUEvVaxr/ga3A=;
+        b=xUgKRi3hT4aCrN/ok+Szbn3NphTnbYAtxB9jb0J0U5LPPe0KWhTMjX7LKYZb0qgKJz
+         Sf6MEjv4dFyzO7HNFBig0LSO7l9H2sjH9V5mR8yjr0DIa8ESJ0liiBOp0w1ofOfVO90b
+         L6qq5fxv/oZ28bsiC6Syky2ifxeHJthAK7MJxoZII04DODRZ3W7nFf9cweqoJhvc/pjC
+         iS2B8qymwyVKHeTfizjqgRFxJSs2FJ1zTqgJph2pLG4IlaPKE4kQUoCayP8RQQQLyFYE
+         5hYq0cpU1Ej8FAWE/3egeL5Za/USelTLEsHyfg2/5mT3HqKlvvaQOnzxwUBfXyXCn28o
+         Bhyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAYuoel3N9r2cyaU0wSJ3wzqF93byNBfOko/2CxhscJ0YFuVMvM4yCPf87F69bFuhnkK35fOM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywl+Obo0z658gCQj1z1mivbNZ+mQSFla2eswwNU6qQHdG170a5H
+	hBNUnIaTou1cJTHBGIcSuHCHR5JcrWsNlXXinc1entV28ZRQKU+5JJq/
+X-Gm-Gg: AZuq6aIkhfHa3CCq3QHMDndIZc8r81K3kjTntKfi5kpeGazxoi/0GUuYBTDwTicXJkc
+	GpScMYPAM4k7tsNsJ+iY0lEHTMwJnCfIs3IHfl0tdzny4rYsTcL91mkozvKp0rfC6jsXkRtwnk1
+	Y4ZNMUnJ5iPn1d15pAjKcWascZ9omrvzFXHZMmfh4NfUMLEEPSFGSwg1zd6ICC+t67i9gGgC3g3
+	YCRp+i3rn3rnEbqXyVH1p0PLS9ispdILzSz7YX3E/TRyOoSXaJWWx+QEqoLaQQlLMJeTVPhmoFZ
+	ZKshpvUKXAQT9RFpISXv8ECQlNF6PRsjAYc5HbFtdhv9oGjxkIl4x2VIjT5kdBXPgL/IDkc6I7o
+	RNGdZHelv1liUX3MeqKPMC3FgJkOru8RCr+Tvmi9+EVvdoz0siSzdw8VAX+Ked/hsYarIgvBHTg
+	4Wxfjsc5mqoW3PB82ZDoiNcho=
+X-Received: by 2002:a05:600c:1f88:b0:459:db7b:988e with SMTP id 5b1f17b1804b1-48069c39a00mr21417355e9.13.1769516522462;
+        Tue, 27 Jan 2026 04:22:02 -0800 (PST)
+Received: from debian.local ([2a0a:ef40:e94:5d01:a218:5589:9f9c:4f52])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1e71503sm41882744f8f.25.2026.01.27.04.22.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 04:22:02 -0800 (PST)
+Date: Tue, 27 Jan 2026 12:21:59 +0000
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+	"Berg, Johannes" <johannes.berg@intel.com>,
+	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>,
+	"gustavoars@kernel.org" <gustavoars@kernel.org>,
+	"linux-intel-wifi@intel.com" <linux-intel-wifi@intel.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
+Message-ID: <aXit5795WQLL290t@debian.local>
+References: <20260125233335.6875-1-chris.bainbridge@gmail.com>
+ <DM3PPF63A6024A93B1437A144E82CC38B7AA393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <aXcovK8uhsiaHumT@debian.local>
+ <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+ <CAP-bSRZ60CSEtR-_9OL6k_Lzg=w8MtD2i79KpwF+nYYzgak=-Q@mail.gmail.com>
+ <DM3PPF63A6024A9FCE1CF29C0492A406E7AA390A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <DM3PPF63A6024A9FCE1CF29C0492A406E7AA390A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 
-Enable dynamic debug (dyndbg) of Admin Command Interface (ACI) for e610
-adapter. Utilizes the standard dynamic debug interface. For example to
-enable dyndbg at driver load:
+On Tue, Jan 27, 2026 at 05:05:31AM +0000, Korenblit, Miriam Rachel wrote:
+>=20
+> Just making sure: have you been able to reproduce the assert (ADVANCED_SY=
+SASSERT in the log), and then the panic didn't happen?
 
-insmod ixgbe.ko dyndbg='+p'
+Yes, the ADVANCED_SYSASSERT was logged but there was no subsequent null poi=
+nter
+dereference.
 
-ACI debug output for e610 adapter is immediately printed into a kernel
-log (dmesg). Example output:
+> If yes, please test the attached patch, which is supposed to fix the asse=
+rt itself. With this, you are not even supposed to see an assert.
 
-ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0701, flags 0x3003, datalen 0x0060, retval 0x0000
-ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0:       param (0,1)  0x8194E044 0x00600000
-ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0: Buffer:
-ixgbe 0000:01:00.0 eth0: 00000000: 01 00 17 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: 00000010: 1d 00 00 00 0b d5 1e 15 5e 4b 90 63 aa 0b 21 31
-ixgbe 0000:01:00.0 eth0: 00000020: 69 eb cd ab dc f8 8a fd f4 53 e2 dc 54 e0 81 fa
-ixgbe 0000:01:00.0 eth0: 00000030: 12 dc 41 82 01 00 00 00 24 20 08 26 53 08 00 00
-ixgbe 0000:01:00.0 eth0: 00000040: 08 00 14 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-ixgbe 0000:01:00.0 eth0: CQ CMD: opcode 0x0009, flags 0x2003, datalen 0x0000, retval 0x0000
-ixgbe 0000:01:00.0 eth0:       cookie (h,l) 0x00000000 0x00000000
-ixgbe 0000:01:00.0 eth0:       param (0,1)  0x00000001 0x00000000
-ixgbe 0000:01:00.0 eth0:       addr (h,l)   0x00000000 0x00000000
+I ran this through 15 suspend/resume cycles with network traffic. The
+ADVANCED_SYSASSERT did not occur, so it looks like the patch does fix
+the SYSASSERT. There was a warning logged once out of the 15 cycles:
 
-Co-developed-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
-Signed-off-by: Stefan Wegrzyn <stefan.wegrzyn@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
----
-v1 -> v2
-  Commit message updated
-v2 -> v3
-  Remove unnecessary commit:
-  e610: Convert ACI descriptor buffer to little endian
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 112 ++++++++++++++++--
- 1 file changed, 105 insertions(+), 7 deletions(-)
+[  454.184873] ------------[ cut here ]------------
+[  454.184894] WR pointer moved while flushing 216 -> 239
+[  454.184898] WARNING: drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tran=
+s.c:2570 at iwl_trans_pcie_wait_txq_empty+0x4f7/0x6d0 [iwlwifi], CPU#9: kwo=
+rker/u64:38/4331
+[  454.184927] Modules linked in: snd_seq_dummy snd_hrtimer snd_seq xt_conn=
+track nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack =
+nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user xfrm_algo xt_addrtype nft_compat x_=
+tables nf_tables br_netfilter bridge stp llc ccm overlay qrtr rfcomm cmac a=
+lgif_hash algif_skcipher af_alg bnep binfmt_misc ext4 mbcache jbd2 nls_asci=
+i nls_cp437 vfat fat snd_acp3x_pdm_dma snd_soc_dmic snd_acp3x_rn snd_hda_co=
+dec_generic snd_soc_core intel_rapl_msr snd_compress amd_atl intel_rapl_com=
+mon snd_hda_codec_hdmi iwlmvm mac80211 snd_hda_intel libarc4 snd_usb_audio =
+uvcvideo kvm_amd snd_hda_codec snd_pci_acp6x btusb videobuf2_vmalloc snd_us=
+bmidi_lib snd_intel_dspcfg snd_pci_acp5x btrtl videobuf2_memops snd_rawmidi=
+ snd_hwdep btintel kvm btbcm uvc snd_seq_device snd_hda_core btmtk irqbypas=
+s videobuf2_v4l2 snd_rn_pci_acp3x iwlwifi snd_pcm rapl videodev snd_acp_con=
+fig bluetooth pcspkr cfg80211 snd_soc_acpi snd_timer wmi_bmof ecdh_generic =
+videobuf2_common ee1004 ecc k10temp snd_pci_acp3x mc snd
+[  454.185174]  rfkill soundcore ccp ac battery sg button amd_pmc acpi_tad =
+joydev evdev msr parport_pc ppdev lp parport nvme_fabrics fuse efi_pstore c=
+onfigfs nfnetlink efivarfs autofs4 crc32c_cryptoapi btrfs blake2b libblake2=
+b xor raid6_pq dm_crypt hid_microsoft ff_memless hid_cmedia r8153_ecm cdc_e=
+ther usbnet dm_mod r8152 mii libphy mdio_bus sd_mod uas usb_storage scsi_mo=
+d usbhid scsi_common amdgpu drm_client_lib i2c_algo_bit drm_ttm_helper ttm =
+drm_exec drm_suballoc_helper drm_buddy drm_panel_backlight_quirks gpu_sched=
+ amdxcp hid_multitouch drm_display_helper ucsi_acpi hid_generic typec_ucsi =
+drm_kms_helper roles xhci_pci sp5100_tco video xhci_hcd typec cec i2c_hid_a=
+cpi watchdog i2c_hid amd_sfh ghash_clmulni_intel serio_raw rc_core usbcore =
+nvme thunderbolt hid i2c_piix4 crc16 i2c_smbus nvme_core fan usb_common drm=
+ wmi aesni_intel
+[  454.185402] CPU: 9 UID: 0 PID: 4331 Comm: kworker/u64:38 Not tainted 6.1=
+9.0-rc6-00341-gf1d1ad131417 #406 PREEMPT(voluntary)
+[  454.185408] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BI=
+OS F.17 12/18/2024
+[  454.185412] Workqueue: async async_run_entry_fn
+[  454.185423] RIP: 0010:iwl_trans_pcie_wait_txq_empty+0x4fe/0x6d0 [iwlwifi]
+[  454.185446] Code: 48 c7 04 03 00 00 00 00 48 81 c4 88 00 00 00 89 d0 5b =
+5d 41 5c 41 5d 41 5e 41 5f c3 48 8d 3d 99 65 09 00 0f b6 d3 40 0f b6 f6 <67=
+> 48 0f b9 3a ba 92 ff ff ff eb bb 48 89 c7 e8 8e 7a 05 de e9 4e
+[  454.185450] RSP: 0018:ffff888110abf488 EFLAGS: 00010297
+[  454.185456] RAX: fffffbfff4a42250 RBX: 00000000000033ef RCX: 00000000000=
+00006
+[  454.185460] RDX: 00000000000000ef RSI: 00000000000000d8 RDI: ffffffffc4c=
+207b0
+[  454.185464] RBP: dffffc0000000000 R08: 0000000000000001 R09: 00000000000=
+00000
+[  454.185468] R10: 000000000000335f R11: 0000000000000006 R12: ffffed102c4=
+293b0
+[  454.185471] R13: ffff888162149c00 R14: ffff888162149d80 R15: ffff8881621=
+49d00
+[  454.185475] FS:  0000000000000000(0000) GS:ffff8883e3d30000(0000) knlGS:=
+0000000000000000
+[  454.185479] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  454.185483] CR2: 00007ff3d9400000 CR3: 00000002b9b2d000 CR4: 00000000007=
+50ef0
+[  454.185487] PKRU: 55555554
+[  454.185490] Call Trace:
+[  454.185494]  <TASK>
+[  454.185506]  ? iwl_trans_pcie_rxq_dma_data+0x220/0x220 [iwlwifi]
+[  454.185530]  ? __local_bh_enable_ip+0xab/0x130
+[  454.185540]  iwl_mvm_wait_sta_queues_empty+0x8c/0xd0 [iwlmvm]
+[  454.185568]  iwl_mvm_mac_flush+0x668/0xd20 [iwlmvm]
+[  454.185591]  ? lock_is_held_type+0xd5/0x130
+[  454.185602]  __ieee80211_flush_queues+0x3cd/0x7c0 [mac80211]
+[  454.185679]  ieee80211_set_disassoc+0x123f/0x1ac0 [mac80211]
+[  454.185752]  ? ieee80211_powersave_allowed+0x360/0x360 [mac80211]
+[  454.185818]  ? unwind_next_frame+0x2e2/0x1ea0
+[  454.185830]  ieee80211_mgd_deauth.cold+0xa3/0x71e [mac80211]
+[  454.185900]  ? __lock_acquire+0x459/0x2170
+[  454.185908]  ? ieee80211_mgd_assoc+0x4ae0/0x4ae0 [mac80211]
+[  454.185988]  ? lock_is_held_type+0xd5/0x130
+[  454.185999]  cfg80211_mlme_deauth+0x33b/0x890 [cfg80211]
+[  454.186080]  ? cfg80211_mlme_assoc+0xa50/0xa50 [cfg80211]
+[  454.186164]  cfg80211_mlme_down+0x17a/0x240 [cfg80211]
+[  454.186236]  ? cfg80211_mlme_disassoc+0x540/0x540 [cfg80211]
+[  454.186315]  cfg80211_disconnect+0x50f/0x800 [cfg80211]
+[  454.186393]  wiphy_suspend+0x1f8/0x350 [cfg80211]
+[  454.186472]  ? rdev_suspend+0x2a0/0x2a0 [cfg80211]
+[  454.186544]  dpm_run_callback+0xfc/0x410
+[  454.186554]  ? dpm_async_suspend_superior+0x2e0/0x2e0
+[  454.186561]  ? pm_verb+0x90/0x90
+[  454.186566]  ? _raw_spin_unlock_irqrestore+0x48/0x60
+[  454.186578]  device_suspend+0x37b/0x1080
+[  454.186587]  ? async_suspend_late+0x30/0x30
+[  454.186594]  ? seqcount_lockdep_reader_access.constprop.0+0x82/0x90
+[  454.186601]  ? lockdep_hardirqs_on+0x78/0x100
+[  454.186612]  ? device_suspend+0x1080/0x1080
+[  454.186616]  async_suspend+0x19/0x30
+[  454.186622]  async_run_entry_fn+0x93/0x500
+[  454.186633]  process_one_work+0x849/0x1420
+[  454.186651]  ? pwq_dec_nr_in_flight+0xe00/0xe00
+[  454.186665]  ? assign_work+0x168/0x240
+[  454.186670]  ? lock_is_held_type+0xd5/0x130
+[  454.186679]  worker_thread+0x5ef/0xfd0
+[  454.186697]  ? process_one_work+0x1420/0x1420
+[  454.186701]  kthread+0x3ad/0x760
+[  454.186709]  ? kthread_is_per_cpu+0xb0/0xb0
+[  454.186713]  ? ret_from_fork+0x71/0x800
+[  454.186719]  ? ret_from_fork+0x71/0x800
+[  454.186725]  ? _raw_spin_unlock_irq+0x24/0x50
+[  454.186732]  ? kthread_is_per_cpu+0xb0/0xb0
+[  454.186739]  ret_from_fork+0x54a/0x800
+[  454.186746]  ? exit_thread+0x70/0x70
+[  454.186754]  ? __switch_to+0x36f/0xd60
+[  454.186761]  ? kthread_is_per_cpu+0xb0/0xb0
+[  454.186768]  ret_from_fork_asm+0x11/0x20
+[  454.186789]  </TASK>
+[  454.186792] irq event stamp: 1499703
+[  454.186795] hardirqs last  enabled at (1499709): [<ffffffffa241cdee>] __=
+up_console_sem+0x5e/0x70
+[  454.186802] hardirqs last disabled at (1499714): [<ffffffffa241cdd3>] __=
+up_console_sem+0x43/0x70
+[  454.186808] softirqs last  enabled at (1498148): [<ffffffffc4b8a152>] iw=
+l_trans_pcie_wait_txq_empty+0x432/0x6d0 [iwlwifi]
+[  454.186831] softirqs last disabled at (1498146): [<ffffffffc4b8a00f>] iw=
+l_trans_pcie_wait_txq_empty+0x2ef/0x6d0 [iwlwifi]
+[  454.186852] ---[ end trace 0000000000000000 ]---
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index c2f8189..ad58e11 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -9,6 +9,78 @@
- #include "ixgbe_mbx.h"
- #include "ixgbe_phy.h"
- 
-+#define IXGBE_ACI_DEBUG_ROW_SIZE	16
-+#define IXGBE_ACI_DEBUG_GROUP_SIZE	1
-+#define IXGBE_NETDEV_PREFIX_BUF_SIZE	64
-+
-+/**
-+ * ixgbe_hex_debug_dump - dump a blob of data in "hex ASCII" format
-+ * @hw: hardware structure address
-+ * @buf: data blob to dump
-+ * @buf_size: number of bytes in the @buf
-+ *
-+ * Dump a blob of data into a kernel log. The blob is printed in lines
-+ * consisting of 16 or 32 bytes decorated with PCI device string. Each byte is
-+ * printed in a "hex ASCII" format.
-+ * Example output:
-+ * ixgbe 0000:01:00.1 eth14: 00000000: 01 00 17 00 00 00 00 00 00 00 00 00 00 00 00 00
-+ * ixgbe 0000:01:00.1 eth14: 00000010: 1d 00 00 00 0b d5 1e 15 5e 4b 90 63 aa 0b 21 31
-+ * ixgbe 0000:01:00.1 eth14: 00000020: 69 eb cd ab dc f8 8a fd f4 53 e2 dc 54 e0 81 fa
-+ */
-+static void ixgbe_hex_debug_dump(struct ixgbe_hw *hw, void *buf,
-+				 size_t buf_size)
-+{
-+	char netdev_info[IXGBE_NETDEV_PREFIX_BUF_SIZE];
-+	struct ixgbe_adapter *adapter = hw->back;
-+	struct pci_dev *pdev = adapter->pdev;
-+
-+	snprintf(netdev_info, IXGBE_NETDEV_PREFIX_BUF_SIZE,
-+		 "%s %s %s: ", ixgbe_driver_name, pci_name(pdev),
-+		 netdev_name(adapter->netdev));
-+	print_hex_dump_debug(netdev_info, DUMP_PREFIX_OFFSET,
-+			     IXGBE_ACI_DEBUG_ROW_SIZE,
-+			     IXGBE_ACI_DEBUG_GROUP_SIZE,
-+			     buf, buf_size, false);
-+}
-+
-+/**
-+ * ixgbe_aci_debug - dump the ACI content
-+ * @hw: pointer to the hardware structure
-+ * @desc: pointer to control queue descriptor
-+ * @buf: pointer to command buffer
-+ * @buf_len: max length of buf
-+ *
-+ * Dump individual ACI commands and its descriptor details.
-+ */
-+static void ixgbe_aci_debug(struct ixgbe_hw *hw, void *desc, void *buf,
-+			    u16 buf_len)
-+{
-+	struct libie_aq_desc *aq_desc = desc;
-+	u16 datalen, flags;
-+
-+	datalen = le16_to_cpu(aq_desc->datalen);
-+	flags = le16_to_cpu(aq_desc->flags);
-+
-+	hw_dbg(hw, "CQ CMD: opcode 0x%04X, flags 0x%04X, datalen 0x%04X, retval 0x%04X\n",
-+	       le16_to_cpu(aq_desc->opcode), flags, datalen,
-+	       le16_to_cpu(aq_desc->retval));
-+	hw_dbg(hw, "\tcookie (h,l) 0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->cookie_high),
-+	       le32_to_cpu(aq_desc->cookie_low));
-+	hw_dbg(hw, "\tparam (0,1)  0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->params.generic.param0),
-+	       le32_to_cpu(aq_desc->params.generic.param1));
-+	hw_dbg(hw, "\taddr (h,l)   0x%08X 0x%08X\n",
-+	       le32_to_cpu(aq_desc->params.generic.addr_high),
-+	       le32_to_cpu(aq_desc->params.generic.addr_low));
-+
-+	if (buf && datalen && (flags & (LIBIE_AQ_FLAG_DD | LIBIE_AQ_FLAG_CMP |
-+	    LIBIE_AQ_FLAG_RD))) {
-+		hw_dbg(hw, "Buffer:\n");
-+		ixgbe_hex_debug_dump(hw, buf, min(buf_len, datalen));
-+	}
-+}
-+
- /**
-  * ixgbe_should_retry_aci_send_cmd_execute - decide if ACI command should
-  * be resent
-@@ -69,26 +141,33 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	/* It's necessary to check if mechanism is enabled */
- 	hicr = IXGBE_READ_REG(hw, IXGBE_PF_HICR);
- 
--	if (!(hicr & IXGBE_PF_HICR_EN))
-+	if (!(hicr & IXGBE_PF_HICR_EN)) {
-+		hw_dbg(hw, "CSR mechanism is not enabled\n");
- 		return -EIO;
-+	}
- 
- 	if (hicr & IXGBE_PF_HICR_C) {
- 		hw->aci.last_status = LIBIE_AQ_RC_EBUSY;
-+		hw_dbg(hw, "CSR mechanism is busy\n");
- 		return -EBUSY;
- 	}
- 
- 	opcode = le16_to_cpu(desc->opcode);
- 
--	if (buf_size > IXGBE_ACI_MAX_BUFFER_SIZE)
-+	if (buf_size > IXGBE_ACI_MAX_BUFFER_SIZE) {
-+		hw_dbg(hw, "buf_size is too big\n");
- 		return -EINVAL;
-+	}
- 
- 	if (buf)
- 		desc->flags |= cpu_to_le16(LIBIE_AQ_FLAG_BUF);
- 
- 	if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_BUF)) {
- 		if ((buf && !buf_size) ||
--		    (!buf && buf_size))
-+		    (!buf && buf_size)) {
-+			hw_dbg(hw, "error: invalid argument buf or buf_size\n");
- 			return -EINVAL;
-+		}
- 		if (buf && buf_size)
- 			valid_buf = true;
- 	}
-@@ -106,8 +185,12 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 		if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_RD)) {
- 			for (i = 0; i < buf_size / 4; i++)
- 				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), ((u32 *)buf)[i]);
--			if (buf_tail_size)
-+			ixgbe_aci_debug(hw, desc, buf, buf_size);
-+			if (buf_tail_size) {
- 				IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), buf_tail);
-+				ixgbe_aci_debug(hw, desc, &buf_tail,
-+						buf_tail_size);
-+			}
- 		}
- 	}
- 
-@@ -147,6 +230,7 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
- 			raw_desc[i] = raw_desc[i];
- 		}
-+		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
- 	/* Read async Admin Command response */
-@@ -155,14 +239,21 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
- 			raw_desc[i] = raw_desc[i];
- 		}
-+		ixgbe_aci_debug(hw, raw_desc, NULL, 0);
- 	}
- 
- 	/* Handle timeout and invalid state of HICR register */
--	if (hicr & IXGBE_PF_HICR_C)
-+	if (hicr & IXGBE_PF_HICR_C) {
-+		hw_dbg(hw, "error: Admin Command 0x%X command timeout\n",
-+		       le16_to_cpu(desc->opcode));
- 		return -ETIME;
-+	}
- 
--	if (!(hicr & IXGBE_PF_HICR_SV) && !(hicr & IXGBE_PF_HICR_EV))
-+	if (!(hicr & IXGBE_PF_HICR_SV) && !(hicr & IXGBE_PF_HICR_EV)) {
-+		hw_dbg(hw, "error: Admin Command 0x%X invalid state of HICR register\n",
-+		       le16_to_cpu(desc->opcode));
- 		return -EIO;
-+	}
- 
- 	/* For every command other than 0x0014 treat opcode mismatch
- 	 * as an error. Response to 0x0014 command read from HIDA_2
-@@ -170,12 +261,16 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	 * different opcode than the command.
- 	 */
- 	if (desc->opcode != cpu_to_le16(opcode) &&
--	    opcode != ixgbe_aci_opc_get_fw_event)
-+	    opcode != ixgbe_aci_opc_get_fw_event) {
-+		hw_dbg(hw, "error: Admin Command failed, bad opcode returned\n");
- 		return -EIO;
-+	}
- 
- 	if (desc->retval) {
- 		hw->aci.last_status = (enum libie_aq_err)
- 			le16_to_cpu(desc->retval);
-+		hw_dbg(hw, "error: Admin Command failed with error %x\n",
-+		       le16_to_cpu(desc->retval));
- 		return -EIO;
- 	}
- 
-@@ -183,10 +278,13 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
- 	if (valid_buf) {
- 		for (i = 0; i < buf_size / 4; i++)
- 			((u32 *)buf)[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
-+		ixgbe_aci_debug(hw, raw_desc, buf, buf_size);
- 		if (buf_tail_size) {
- 			buf_tail = IXGBE_READ_REG(hw, IXGBE_PF_HIBA(i));
- 			memcpy(buf + buf_size - buf_tail_size, &buf_tail,
- 			       buf_tail_size);
-+			ixgbe_aci_debug(hw, raw_desc, &buf_tail,
-+					buf_tail_size);
- 		}
- 	}
- 
--- 
-2.47.1
-
+I think that this is probably a different bug though - checking previous
+logs with journalctl, I see the same warning occurred once with
+6.17.0-06871-gf79e772258df which predates the "remove STATUS_SUSPENDED"
+commit.
