@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D77A338932
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5612F3396E0
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769504835; cv=none; b=RD/P87O9Nlujr55ZLs34KpMOl7yi5uLZHAWTDtRGBU4ZwEluo9woygVqEFUg6UR3XvoAFb6ejuBV19V7H7HkaY6mCMsPnBo6wT3HLpA5qsNXuGpIl2YDuhvT9eXn5gbRIHczVl0pqaQiOmjk9cH4O5I/hvj7iHmiz+p2ArxBWMI=
+	t=1769504837; cv=none; b=s9tC/BFdTFfsr7lcA5bsUO2deGqsHi1XZHTYj1sV4VdRpaAU+co7FcOiQm9G/SoUGeyvSEwCLWwq8iZJp6pUQR+XbNeP2Ldv9EkkCwratH/beFPENH9pSHdEA6Qi19xZTjvC0nx+EWxhUDxyu27YaKKpWye4HcJd7xc9cs6KskI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769504835; c=relaxed/simple;
-	bh=64Arvmq2sRvqqzk2dsreHnPXzxrgRZpUINVBCX1caPU=;
+	s=arc-20240116; t=1769504837; c=relaxed/simple;
+	bh=NXBqTeRrMdmbv9KNJEvENd/g8zIiTw3uvoCmEedoIqM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m+xAL+XubKUrdSKhLGOc3SCt/d4nrWOcKv7VIXB7m2SCEz1w/qYh2MTuAnk/q04QIUgagB1ZAkV2zsoudiXUHCruVvuRJxS4Iy3FbxjgwNfWQXuKqgEki2LWEwIqbjHsuZAtho35HqBdUsm+rLc5Z5k93bnfF1UJxGJwnQzIopI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x7iLdS1c; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=lhW+r/u5R91gWsRC9JmGS2wxxPv4ACFJZctcz8zlxRE2hp4Ci8q9Ct+6x0anfL9W9UWjw/gc4+tOcwONM5SGyodWmpI3XXdupZoGcDu5taj/NStzisy69iHUjGL3Z/sLwXP74fJ94+qdPU6Db6lMS7IirXPUwP8se7fphBglvIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OZwTOJjT; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x7iLdS1c"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OZwTOJjT"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 48B8AC211CF;
-	Tue, 27 Jan 2026 09:07:10 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C074E4E422CF;
+	Tue, 27 Jan 2026 09:07:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 498CD606F5;
-	Tue, 27 Jan 2026 09:07:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E3AD0119A8686;
-	Tue, 27 Jan 2026 10:07:05 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 901B9606F5;
+	Tue, 27 Jan 2026 09:07:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EE7AF119A867E;
+	Tue, 27 Jan 2026 10:06:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769504827; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769504821; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=sTdHB09lzT72JQy4mNi+vIBCm0pWIK7KzixDxNqCtKE=;
-	b=x7iLdS1cZK0YtkexNBOUUJc+a6UM7h9+LdPRU0VlNE8QFnanwPvHEo58H3NOWiHyR2Nusc
-	sXK3iOIJqyelNbtZdDLx/XIETrStIo4hDLAdXpMC1EHWivQm/dIXEqdxYtCpJx/nsutrzX
-	GBz8jGA3XdiRp2d935ueHfLlnKFJl4IMigd1TnwdoXFs5KMgBqRFmmhNoRU+MV5mwCp8wi
-	ZEnvq4+bbj1BajLeBAAh6QilXYrzuaZUKayiS1kE61OCKnTLvCQgZokaBxQZoM7mYyfCmI
-	QihmenqwLU6JNUs/S1/trw5HuLaYD+l+xcFq4Fsb73benBM1czl8AARY00xFkQ==
+	bh=mAdxSZE83xUC1VcdJ9laK4kQl5LwI5jSzJL0hyvTGo8=;
+	b=OZwTOJjTivWyivf9AVGyHUFR/afyOM/m89r+rLBC3D8W1vLTUx7GS1KOGt/H29MEsTvLsE
+	cZZs38lDRgsc5FSJiKLkkaC0XpDYP2WinEAPMNNXZ3yHK/0eAJeFWHMLDaz7ZrBmDOqsoF
+	JCaMRjtdFxrA788ylqHbRhyA3/gddvVfTVDH5SyzUL/T17vhJFA5Cz36rqB0dnYI60Jirk
+	ieYN7zmnvF7cB5vaObhRK/frzvBhs1/gGI7ixTRsFRgXtbC9tyLSm/TNc2QhFgdRj5bkHK
+	fj+0E5LLDscdTL/nbkz8BirkvciK851nNoTQUgSqaDem+dId/KdpfdkeZTc3gw==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Tue, 27 Jan 2026 10:06:50 +0100
-Subject: [PATCH net-next v4 8/8] net: dsa: microchip: Add two-step PTP
- support for KSZ8463
+Date: Tue, 27 Jan 2026 10:06:47 +0100
+Subject: [PATCH net-next v4 5/8] net: dsa: microchip: Add KSZ8463 tail tag
+ handling
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-ksz8463-ptp-v4-8-652e021aae86@bootlin.com>
+Message-Id: <20260127-ksz8463-ptp-v4-5-652e021aae86@bootlin.com>
 References: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
 In-Reply-To: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,224 +61,161 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-The KSZ8463 switch supports PTP but it's not supported by driver.
+KSZ8463 uses the KSZ9893 DSA TAG driver. However, the KSZ8463 doesn't
+use the tail tag to convey timestamps to the host as KSZ9893 does. It
+uses the reserved fields in the PTP header instead.
 
-Add L2 two-step PTP support for the KSZ8463. IPv4 and IPv6 layers aren't
-supported. Neither is one-step PTP.
-
-The pdelay_req and pdelay_resp timestamps share one interrupt bit status.
-So introduce last_tx_is_pdelayresp to keep track of the last sent event
-type. Use it to retrieve the relevant timestamp when the interrupt is
-caught.
+Add a KSZ8463-specifig DSA_TAG driver to handle KSZ8463 timestamps.
+There is no information in the tail tag to distinguish PTP packets from
+others so use the ptp_classify_raw() helper to find the PTP packets and
+extract the timestamp from their PTP headers.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz8.c        |  9 ++----
- drivers/net/dsa/microchip/ksz8_reg.h    |  1 +
- drivers/net/dsa/microchip/ksz_common.c  |  1 +
- drivers/net/dsa/microchip/ksz_common.h  |  1 +
- drivers/net/dsa/microchip/ksz_ptp.c     | 52 ++++++++++++++++++++++++++-------
- drivers/net/dsa/microchip/ksz_ptp_reg.h |  4 +++
- 6 files changed, 51 insertions(+), 17 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c |  5 ++-
+ include/net/dsa.h                      |  2 +
+ net/dsa/tag_ksz.c                      | 70 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 76 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index a05527899b8bab6d53509ba38c58101b79e98ee5..f4dfdbd52b9daeab8a0134fb09cf4c960d9d9409 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -143,9 +143,9 @@ int ksz8_reset_switch(struct ksz_device *dev)
- 			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, false);
- 	} else if (ksz_is_ksz8463(dev)) {
- 		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
--			KSZ8463_GLOBAL_SOFTWARE_RESET, true);
-+			KSZ8463_GLOBAL_SOFTWARE_RESET | KSZ8463_PTP_SOFTWARE_RESET, true);
- 		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
--			KSZ8463_GLOBAL_SOFTWARE_RESET, false);
-+			KSZ8463_GLOBAL_SOFTWARE_RESET | KSZ8463_PTP_SOFTWARE_RESET, false);
- 	} else {
- 		/* reset switch */
- 		ksz_write8(dev, REG_POWER_MANAGEMENT_1,
-@@ -1763,10 +1763,7 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
- 					   COPPER_RECEIVE_ADJUSTMENT, 0);
- 		}
- 
--		/* Turn off PTP function as the switch's proprietary way of
--		 * handling timestamp is not supported in current Linux PTP
--		 * stack implementation.
--		 */
-+		/* Turn off PTP function as the switch enables it by default */
- 		regmap_update_bits(ksz_regmap_16(dev),
- 				   KSZ8463_PTP_MSG_CONF1,
- 				   PTP_ENABLE, 0);
-diff --git a/drivers/net/dsa/microchip/ksz8_reg.h b/drivers/net/dsa/microchip/ksz8_reg.h
-index 332408567b473c141c3695328a524f257f2cfc70..0558740ae57738fa7e4a8f3f429254033c54af12 100644
---- a/drivers/net/dsa/microchip/ksz8_reg.h
-+++ b/drivers/net/dsa/microchip/ksz8_reg.h
-@@ -765,6 +765,7 @@
- #define KSZ8463_REG_SW_RESET		0x126
- 
- #define KSZ8463_GLOBAL_SOFTWARE_RESET	BIT(0)
-+#define KSZ8463_PTP_SOFTWARE_RESET	BIT(2)
- 
- #define KSZ8463_PTP_CLK_CTRL		0x600
- 
 diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 5141343d2f40bbd380c0b52f6919b842fb71a8fd..55e3fa4791078cb099e236e6e5a29515727ed8ab 100644
+index 224be307b3417bf30d62da5c94efc6714d914dc6..5141343d2f40bbd380c0b52f6919b842fb71a8fd 100644
 --- a/drivers/net/dsa/microchip/ksz_common.c
 +++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -1512,6 +1512,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.supports_mii = {false, false, true},
- 		.supports_rmii = {false, false, true},
- 		.internal_phy = {true, true, false},
-+		.ptp_capable = true,
- 	},
+@@ -3580,8 +3580,10 @@ static enum dsa_tag_protocol ksz_get_tag_protocol(struct dsa_switch *ds,
+ 	if (ksz_is_ksz87xx(dev) || ksz_is_8895_family(dev))
+ 		proto = DSA_TAG_PROTO_KSZ8795;
  
- 	[KSZ8563] = {
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index dfbc3d13daca8d7a8b9d3ffe6a7c1ec9927863f2..1fface82086eed87749d4702b046fcab313663e9 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -150,6 +150,7 @@ struct ksz_port {
- 	struct kernel_hwtstamp_config tstamp_config;
- 	bool hwts_tx_en;
- 	bool hwts_rx_en;
-+	bool last_tx_is_pdelayresp;
- 	struct ksz_irq ptpirq;
- 	struct ksz_ptp_irq ptpmsg_irq[3];
- 	ktime_t tstamp_msg;
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 7eb033157f226b1169bc184d71569328e9a20a5b..a86d087b4c0d05120ba532a221e66bc704d1dfb5 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -308,15 +308,20 @@ int ksz_get_ts_info(struct dsa_switch *ds, int port, struct kernel_ethtool_ts_in
- 			      SOF_TIMESTAMPING_RX_HARDWARE |
- 			      SOF_TIMESTAMPING_RAW_HARDWARE;
- 
--	ts->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ONESTEP_P2P);
-+	ts->tx_types = BIT(HWTSTAMP_TX_OFF);
- 
--	if (is_lan937x(dev))
-+	if (!ksz_is_ksz8463(dev))
-+		ts->tx_types |= BIT(HWTSTAMP_TX_ONESTEP_P2P);
++	if (dev->chip_id == KSZ8463_CHIP_ID)
++		proto = DSA_TAG_PROTO_KSZ8463;
 +
-+	if (is_lan937x(dev) || ksz_is_ksz8463(dev))
- 		ts->tx_types |= BIT(HWTSTAMP_TX_ON);
+ 	if (dev->chip_id == KSZ88X3_CHIP_ID ||
+-	    dev->chip_id == KSZ8463_CHIP_ID ||
+ 	    dev->chip_id == KSZ8563_CHIP_ID ||
+ 	    dev->chip_id == KSZ9893_CHIP_ID ||
+ 	    dev->chip_id == KSZ9563_CHIP_ID)
+@@ -3611,6 +3613,7 @@ static int ksz_connect_tag_protocol(struct dsa_switch *ds,
+ 		return 0;
+ 	case DSA_TAG_PROTO_KSZ9893:
+ 	case DSA_TAG_PROTO_KSZ9477:
++	case DSA_TAG_PROTO_KSZ8463:
+ 	case DSA_TAG_PROTO_LAN937X:
+ 		tagger_data = ksz_tagger_data(ds);
+ 		tagger_data->xmit_work_fn = ksz_port_deferred_xmit;
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6b2b5ed64ea4cee6ab59c9e6eaab30f07f82816a..5b5fed6e6f9171f5875d61c1395758065ac5808a 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -57,6 +57,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_BRCM_LEGACY_FCS_VALUE	29
+ #define DSA_TAG_PROTO_YT921X_VALUE		30
+ #define DSA_TAG_PROTO_MXL_GSW1XX_VALUE		31
++#define DSA_TAG_PROTO_KSZ8463_VALUE		32
  
- 	ts->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
--			 BIT(HWTSTAMP_FILTER_PTP_V2_L4_EVENT) |
--			 BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
--			 BIT(HWTSTAMP_FILTER_PTP_V2_EVENT);
-+			 BIT(HWTSTAMP_FILTER_PTP_V2_L2_EVENT);
-+	if (!ksz_is_ksz8463(dev)) {
-+		ts->rx_filters |= BIT(HWTSTAMP_FILTER_PTP_V2_L4_EVENT) |
-+				  BIT(HWTSTAMP_FILTER_PTP_V2_EVENT);
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -91,6 +92,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_VSC73XX_8021Q	= DSA_TAG_PROTO_VSC73XX_8021Q_VALUE,
+ 	DSA_TAG_PROTO_YT921X		= DSA_TAG_PROTO_YT921X_VALUE,
+ 	DSA_TAG_PROTO_MXL_GSW1XX	= DSA_TAG_PROTO_MXL_GSW1XX_VALUE,
++	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
+ };
+ 
+ struct dsa_switch;
+diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+index 9170a0148cc43b4213ec4bd8e81d338589671f23..f6590549908e016ca224501e6bc296c9c5feafb3 100644
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -16,6 +16,7 @@
+ #define KSZ9477_NAME "ksz9477"
+ #define KSZ9893_NAME "ksz9893"
+ #define LAN937X_NAME "lan937x"
++#define KSZ8463_NAME "ksz8463"
+ 
+ /* Typically only one byte is used for tail tag. */
+ #define KSZ_PTP_TAG_LEN			4
+@@ -383,6 +384,74 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
+ DSA_TAG_DRIVER(ksz9893_netdev_ops);
+ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
+ 
++#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
++#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
++
++static struct sk_buff *ksz8463_xmit(struct sk_buff *skb,
++				    struct net_device *dev)
++{
++	u16 queue_mapping = skb_get_queue_mapping(skb);
++	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
++	struct dsa_port *dp = dsa_user_to_port(dev);
++	u8 *tag;
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
++		return NULL;
++
++	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
++
++	*tag = BIT(dp->index);
++	*tag |= FIELD_PREP(KSZ8463_TAIL_TAG_PRIO, prio);
++
++	return ksz_defer_xmit(dp, skb);
++}
++
++static struct sk_buff *ksz8463_rcv(struct sk_buff *skb, struct net_device *dev)
++{
++	unsigned int len = KSZ_EGRESS_TAG_LEN;
++	struct ptp_header *ptp_hdr;
++	unsigned int ptp_class;
++	unsigned int port;
++	ktime_t tstamp;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	/* Tag decoding */
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	port = tag[0] & KSZ8463_TAIL_TAG_EG_PORT_M;
++
++	__skb_push(skb, ETH_HLEN);
++	ptp_class = ptp_classify_raw(skb);
++	__skb_pull(skb, ETH_HLEN);
++	if (ptp_class == PTP_CLASS_NONE)
++		goto common_rcv;
++
++	ptp_hdr = ptp_parse_header(skb, ptp_class);
++	if (ptp_hdr) {
++		tstamp = ksz_decode_tstamp(get_unaligned_be32(&ptp_hdr->reserved2));
++		KSZ_SKB_CB(skb)->tstamp = tstamp;
++		ptp_hdr->reserved2 = 0;
 +	}
- 
- 	ts->phc_index = ptp_clock_index(ptp_data->clock);
- 
-@@ -353,6 +358,9 @@ static int ksz_set_hwtstamp_config(struct ksz_device *dev,
- 		prt->hwts_tx_en = false;
- 		break;
- 	case HWTSTAMP_TX_ONESTEP_P2P:
-+		if (ksz_is_ksz8463(dev))
-+			return -ERANGE;
 +
- 		prt->ptpmsg_irq[KSZ_SYNC_MSG].ts_en  = false;
- 		prt->ptpmsg_irq[KSZ_XDREQ_MSG].ts_en = true;
- 		prt->ptpmsg_irq[KSZ_PDRES_MSG].ts_en = false;
-@@ -364,14 +372,19 @@ static int ksz_set_hwtstamp_config(struct ksz_device *dev,
- 
- 		break;
- 	case HWTSTAMP_TX_ON:
--		if (!is_lan937x(dev))
-+		if (!is_lan937x(dev) && !ksz_is_ksz8463(dev))
- 			return -ERANGE;
- 
--		prt->ptpmsg_irq[KSZ_SYNC_MSG].ts_en  = true;
--		prt->ptpmsg_irq[KSZ_XDREQ_MSG].ts_en = true;
--		prt->ptpmsg_irq[KSZ_PDRES_MSG].ts_en = true;
--		prt->hwts_tx_en = true;
-+		if (ksz_is_ksz8463(dev)) {
-+			prt->ptpmsg_irq[KSZ8463_SYNC_MSG].ts_en  = true;
-+			prt->ptpmsg_irq[KSZ8463_XDREQ_PDRES_MSG].ts_en = true;
-+		} else {
-+			prt->ptpmsg_irq[KSZ_SYNC_MSG].ts_en  = true;
-+			prt->ptpmsg_irq[KSZ_XDREQ_MSG].ts_en = true;
-+			prt->ptpmsg_irq[KSZ_PDRES_MSG].ts_en = true;
-+		}
- 
-+		prt->hwts_tx_en = true;
- 		ret = ksz_rmw16(dev, regs[PTP_MSG_CONF1], PTP_1STEP, 0);
- 		if (ret)
- 			return ret;
-@@ -387,6 +400,8 @@ static int ksz_set_hwtstamp_config(struct ksz_device *dev,
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
-+		if (ksz_is_ksz8463(dev))
-+			return -ERANGE;
- 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_L4_EVENT;
- 		prt->hwts_rx_en = true;
- 		break;
-@@ -397,6 +412,8 @@ static int ksz_set_hwtstamp_config(struct ksz_device *dev,
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
-+		if (ksz_is_ksz8463(dev))
-+			return -ERANGE;
- 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
- 		prt->hwts_rx_en = true;
- 		break;
-@@ -518,6 +535,8 @@ void ksz_port_txtstamp(struct dsa_switch *ds, int port, struct sk_buff *skb)
- 	if (!hdr)
- 		return;
- 
-+	prt->last_tx_is_pdelayresp = false;
++common_rcv:
++	return ksz_common_rcv(skb, dev, port, len);
++}
 +
- 	ptp_msg_type = ptp_get_msgtype(hdr, type);
- 
- 	switch (ptp_msg_type) {
-@@ -528,6 +547,7 @@ void ksz_port_txtstamp(struct dsa_switch *ds, int port, struct sk_buff *skb)
- 	case PTP_MSGTYPE_PDELAY_REQ:
- 		break;
- 	case PTP_MSGTYPE_PDELAY_RESP:
-+		prt->last_tx_is_pdelayresp = true;
- 		if (prt->tstamp_config.tx_type == HWTSTAMP_TX_ONESTEP_P2P) {
- 			KSZ_SKB_CB(skb)->ptp_type = type;
- 			KSZ_SKB_CB(skb)->update_correction = true;
-@@ -972,7 +992,17 @@ void ksz_ptp_clock_unregister(struct dsa_switch *ds)
- 
- static int ksz_read_ts(struct ksz_port *port, u16 reg, u32 *ts)
- {
--	return ksz_read32(port->ksz_dev, reg, ts);
-+	u16 ts_reg = reg;
++static const struct dsa_device_ops ksz8463_netdev_ops = {
++	.name	= KSZ8463_NAME,
++	.proto	= DSA_TAG_PROTO_KSZ8463,
++	.xmit	= ksz8463_xmit,
++	.rcv	= ksz8463_rcv,
++	.connect = ksz_connect,
++	.disconnect = ksz_disconnect,
++	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
++};
 +
-+	/**
-+	 * On KSZ8463 DREQ and DRESP timestamps share one interrupt line
-+	 * so we have to check the nature of the latest event sent to know
-+	 * where the timestamp is located
-+	 */
-+	if (ksz_is_ksz8463(port->ksz_dev) && port->last_tx_is_pdelayresp)
-+		ts_reg += KSZ8463_DRESP_TS_OFFSET;
++DSA_TAG_DRIVER(ksz8463_netdev_ops);
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8463, KSZ8463_NAME);
 +
-+	return ksz_read32(port->ksz_dev, ts_reg, ts);
- }
+ /* For xmit, 2/6 bytes are added before FCS.
+  * ---------------------------------------------------------------------------
+  * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|ts(4bytes)|tag0(1byte)|tag1(1byte)|
+@@ -457,6 +526,7 @@ static struct dsa_tag_driver *dsa_tag_driver_array[] = {
+ 	&DSA_TAG_DRIVER_NAME(ksz9477_netdev_ops),
+ 	&DSA_TAG_DRIVER_NAME(ksz9893_netdev_ops),
+ 	&DSA_TAG_DRIVER_NAME(lan937x_netdev_ops),
++	&DSA_TAG_DRIVER_NAME(ksz8463_netdev_ops),
+ };
  
- static irqreturn_t ksz_ptp_msg_thread_fn(int irq, void *dev_id)
-diff --git a/drivers/net/dsa/microchip/ksz_ptp_reg.h b/drivers/net/dsa/microchip/ksz_ptp_reg.h
-index e80fb4bd1a0e970ba3570374d3dc82c8e2cc15b4..ac9d0f2b348b0469abbeed0e645fe8ef441d35fb 100644
---- a/drivers/net/dsa/microchip/ksz_ptp_reg.h
-+++ b/drivers/net/dsa/microchip/ksz_ptp_reg.h
-@@ -125,6 +125,10 @@
- #define KSZ8463_REG_PORT_SYNC_TS	0x064C
- #define KSZ8463_REG_PORT_DRESP_TS	0x0650
- 
-+#define KSZ8463_DRESP_TS_OFFSET		(KSZ8463_REG_PORT_DRESP_TS - KSZ8463_REG_PORT_DREQ_TS)
-+#define KSZ8463_SYNC_MSG		0
-+#define KSZ8463_XDREQ_PDRES_MSG		1
-+
- #define REG_PTP_PORT_TX_INT_STATUS__2	0x0C14
- #define REG_PTP_PORT_TX_INT_ENABLE__2	0x0C16
- 
+ module_dsa_tag_drivers(dsa_tag_driver_array);
 
 -- 
 2.52.0
