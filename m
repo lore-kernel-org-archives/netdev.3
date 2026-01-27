@@ -1,154 +1,126 @@
-Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9832BE65F
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 08:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E797D331A7E
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769504302; cv=none; b=ptXo4Nr83Q+VMSrJknILwCGMX/aKgRv8Uo+192L2o0Qdm5UZbpP9QpgGqKTbGYphGCKnhPSBV2j4Og4/8vwSy6YRsvsXGonN30ugtOlUp8gg8As3G/dfRZj70p3jBEhNLz6GJ2SN1SW50qxy5L1FCcpU9u5ERmWXioHpP0JMDQQ=
+	t=1769504822; cv=none; b=UZZiNyZ5EybaznMPHwGqHdU5JRbfsJk1Q7PkwTWQk+sARzA+Vt10sddXdObGX0lY9rXDUvgZAg7qyacOBQieIG0qRwE1egxO2ig5AR9ik9ZwefaX/tgdXrAhJQWsjtOKUkZqh3xE3hB3iZOZQIxKkOxB++3c02kPBvE4bKQ69vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769504302; c=relaxed/simple;
-	bh=uy0R3ruCI/qIqTm5UziPDABY7MS7MCPyOPk1CAcGHZ0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AGbyy/0ojSyO1oROq/HY2UrKMK9KSDeLFg0p91NF0hQwTlK5p58wz0q/QlcvmzMHSWdWgV9fWG+o+wtjaGwxmS6Rkkck2lX0HO7Thgu4PqcKC9p3x4C0ceX9NanZcvHB02+G/BXY3PL2bfIrXd9b9dvp+YTGYFN+SQrmpfhDmdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=LjXrrlep; arc=none smtp.client-ip=50.112.246.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1769504822; c=relaxed/simple;
+	bh=pYgD8kpQ3KVctR8d4QpdOWdT04id6w4N6KRQX1I6p0Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BNdH+EAVVqSlaBblon4HIEf3vE5CL2MRM+Yum++o/F7kWp1KX7vHWX0jVFigNblVka8/RZPB8K6okMjKOgA4TIocLEGcqMsuRKgl6IO1+Oe3UCx+tZqfloo34gqd3m1XTGST5dvgZP+OG8thwGBF4h3WSuGkGVBsmXHjkDNT91A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IDaIa0ht; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="LjXrrlep"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1769504300; x=1801040300;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=uX/5mrMkeTkN9LjvZeBrGkA31EqPLswoMX6OI/4YseM=;
-  b=LjXrrleptJQ0bx9Ci85PxQRXjkOfygbQYI84vGQWr/jIGUD+i7+AXBAq
-   a50/xEEgDarwp7T87G4PFIuQVbYHBRfhzbi/Y79o8kNUcVUo9TDXAxXG5
-   Roq/zlV5IaJGc/jdd2heldBHEIOmIHbrkqqPdqiQJzkSxwoe/e1DRwVOy
-   qhPrtkN4Q+S028BYE6ro01Vq65iRV1It1niJow8yiw5GO9tZ+qu8QF3y4
-   26fc+eZCHSsGwwn8n39kBoLfIVlkwTw8iL5w1T29IrNJopOovsu6IK9xx
-   cBQH8CrL34FGhuaRNpS0123Ui87Qh2J68ShsFH3rWZ5RjT/UD6HcptRmc
-   A==;
-X-CSE-ConnectionGUID: Yuatk1bvSKOSx5SsuqALRg==
-X-CSE-MsgGUID: +JWy8BhZQ7+lBNDztTlZiw==
-X-IronPort-AV: E=Sophos;i="6.21,256,1763424000"; 
-   d="scan'208";a="11489358"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 08:58:17 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:9193]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.66:2525] with esmtp (Farcaster)
- id 14b8c192-8f08-4013-8f10-c3ddba579f9f; Tue, 27 Jan 2026 08:58:17 +0000 (UTC)
-X-Farcaster-Flow-ID: 14b8c192-8f08-4013-8f10-c3ddba579f9f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Tue, 27 Jan 2026 08:58:17 +0000
-Received: from 603e5f7bc1fe.amazon.com (10.37.245.7) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Tue, 27 Jan 2026 08:58:15 +0000
-From: Takashi Kozu <takkozu@amazon.com>
-To: <anthony.l.nguyen@intel.com>
-CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>, <aleksandr.loktionov@intel.com>,
-	<pmenzel@molgen.mpg.de>, <piotr.kwapulinski@intel.com>, <enjuk@amazon.com>,
-	Takashi Kozu <takkozu@amazon.com>
-Subject: [PATCH iwl-next v5 3/3] igb: allow configuring RSS key via ethtool set_rxfh
-Date: Tue, 27 Jan 2026 17:54:10 +0900
-Message-ID: <20260127085410.79645-8-takkozu@amazon.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20260127085410.79645-5-takkozu@amazon.com>
-References: <20260127085410.79645-5-takkozu@amazon.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IDaIa0ht"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1F26FC211CF;
+	Tue, 27 Jan 2026 09:06:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 16F59606F5;
+	Tue, 27 Jan 2026 09:06:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 26043119A8673;
+	Tue, 27 Jan 2026 10:06:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769504811; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=0+t3TZRcYNIcXkOZ+SQRewZV56xnQrNY8WSAj2iUXA8=;
+	b=IDaIa0htaYhvfW+qELkxc+lk3rV8nwd+nSSRqH1jRtxVxe4md4rWWhOFipH8NI1TvI5E5+
+	NNUPI2bW0QRCs+IllE/wIK2Dt7hbDirMB9rxQyGXZ8yirMzql22RYx7VqjcXes2zHnYiEa
+	iOIesw+vKnxep09sxBHW8LwTCAJUSxg1c1GdNgYmV+qnu+XWfACk3njte6PZUR6NaGIBSa
+	IbxFZS5KLsQnMi+Qtxba2bqi18aB91rbyFOmkaHpHgQZdJtuE8VHoiVDKgxheKcn/NxjaG
+	/9qucNUQvQ9KzwKBkpIVygE/72fRU+A9slk6JotbwiLeeE/284aKOu7XaBh5Mg==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net-next v4 0/8] net: dsa: microchip: Add PTP support for
+ the KSZ8463
+Date: Tue, 27 Jan 2026 10:06:42 +0100
+Message-Id: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB003.ant.amazon.com (10.13.138.93) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACKAeGkC/2WOzU7DMBAGXyXyGSN7Hf+kJ94D9WA7u9SCJiE2U
+ UuVd8ekHBpxXH2a2bmxjHPCzA7Njc24pJzGoR7tU8PiyQ9vyFNfbwYCjJCi4+/527VG8alMPEQ
+ LKnpLPrasEtOMlC6b7ZUNWPiAl8KO92XGz6+qL39z8Bl5HM/nVA6N8j0RWINWS6ElWhuw7cn10
+ KEPMpJw2lCgzXVKuYzzdUte5Ca710m9q1skFzWREJwSkbR4CeNYPtLwXN9upgUeaIA9Db+0MU6
+ RjqhF+E+rR9rsaVXpjkQHHoNrO9jT67r+AIs5ERJ6AQAA
+X-Change-ID: 20260109-ksz8463-ptp-bc723ca7fac4
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Change igc_set_rxfh() to accept and save a userspace-provided
-RSS key. When a key is provided, store it in the adapter and write the
-E1000 registers accordingly.
+Hi all,
 
-This can be tested using `ethtool -X <dev> hkey <key>`.
+This series aims to add two-step PTP support for the KSZ8463 driver. It
+depends on a previous series that was recently applied to net-next:
+https://lore.kernel.org/all/20260105-ksz-rework-v1-0-a68df7f57375@bootlin.com/
 
-Signed-off-by: Takashi Kozu <takkozu@amazon.com>
+I've encountered weird behavior with IPv4 and IPv6 layers -- maybe that's
+related to the incompatibility with the Linux stack mentionned by commit
+620e2392db235 ("net: dsa: microchip: Disable PTP function of KSZ8463") ? --
+So the support is only added for the L2 layer.
+
+Patches 1 to 4 add IRQ support for the KSZ8463
+Patch 5 adds specific dsa_device_ops for the KSZ8463
+Patches 6 to 8 add PTP support for the KSZ8463
+
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 48 +++++++++++---------
- 1 file changed, 26 insertions(+), 22 deletions(-)
+Changes in v4:
+- PATCH 4: Fix the unused variable warning reported by the bot
+- Link to v3: https://lore.kernel.org/r/20260126-ksz8463-ptp-v3-0-9f092aeb8492@bootlin.com
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index b387121f0ea7..b4eef14c09d5 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -3357,35 +3357,39 @@ static int igb_set_rxfh(struct net_device *netdev,
- 	u32 num_queues;
- 
- 	/* We do not allow change in unsupported parameters */
--	if (rxfh->key ||
--	    (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
--	     rxfh->hfunc != ETH_RSS_HASH_TOP))
-+	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-+	    rxfh->hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
--	if (!rxfh->indir)
--		return 0;
- 
--	num_queues = adapter->rss_queues;
-+	if (rxfh->indir) {
-+		num_queues = adapter->rss_queues;
- 
--	switch (hw->mac.type) {
--	case e1000_82576:
--		/* 82576 supports 2 RSS queues for SR-IOV */
--		if (adapter->vfs_allocated_count)
--			num_queues = 2;
--		break;
--	default:
--		break;
--	}
-+		switch (hw->mac.type) {
-+		case e1000_82576:
-+			/* 82576 supports 2 RSS queues for SR-IOV */
-+			if (adapter->vfs_allocated_count)
-+				num_queues = 2;
-+			break;
-+		default:
-+			break;
-+		}
- 
--	/* Verify user input. */
--	for (i = 0; i < IGB_RETA_SIZE; i++)
--		if (rxfh->indir[i] >= num_queues)
--			return -EINVAL;
-+		/* Verify user input. */
-+		for (i = 0; i < IGB_RETA_SIZE; i++)
-+			if (rxfh->indir[i] >= num_queues)
-+				return -EINVAL;
- 
- 
--	for (i = 0; i < IGB_RETA_SIZE; i++)
--		adapter->rss_indir_tbl[i] = rxfh->indir[i];
-+		for (i = 0; i < IGB_RETA_SIZE; i++)
-+			adapter->rss_indir_tbl[i] = rxfh->indir[i];
-+
-+		igb_write_rss_indir_tbl(adapter);
-+	}
- 
--	igb_write_rss_indir_tbl(adapter);
-+	if (rxfh->key) {
-+		memcpy(adapter->rss_key, rxfh->key, sizeof(adapter->rss_key));
-+		igb_write_rss_key(adapter);
-+	}
- 
- 	return 0;
- }
+Changes in v3:
+- PATCH 4: Fix the unitialized value reported by clang
+- Link to v2: https://lore.kernel.org/r/20260122-ksz8463-ptp-v2-0-b6683f5ce50b@bootlin.com
+
+Changes in v2:
+- PATCH 8: Disable PTP by default.
+- PATCH 5: TX path: remove timestamp handling
+- PATCH 5: RX path: zero the PTP header's reserved area before
+  forwarding packets to userspace
+- Link to v1: https://lore.kernel.org/r/20260115-ksz8463-ptp-v1-0-bcfe2830cf50@bootlin.com
+
+---
+Bastien Curutchet (Schneider Electric) (8):
+      net: dsa: microchip: Add support for KSZ8463 global irq
+      net: dsa: microchip: Decorrelate IRQ domain from port
+      net: dsa: microchip: Decorrelate msg_irq index from IRQ bit offset
+      net: dsa: microchip: Add support for KSZ8463's PTP interrupts
+      net: dsa: microchip: Add KSZ8463 tail tag handling
+      net: dsa: microchip: Enable Ethernet PTP detection
+      net: dsa: microchip: Adapt port offset for KSZ8463's PTP register
+      net: dsa: microchip: Add two-step PTP support for KSZ8463
+
+ drivers/net/dsa/microchip/ksz8.c        |  12 +--
+ drivers/net/dsa/microchip/ksz8_reg.h    |   1 +
+ drivers/net/dsa/microchip/ksz_common.c  |  95 ++++++++++++-----
+ drivers/net/dsa/microchip/ksz_common.h  |   6 ++
+ drivers/net/dsa/microchip/ksz_ptp.c     | 178 ++++++++++++++++++++++++++++----
+ drivers/net/dsa/microchip/ksz_ptp.h     |   9 ++
+ drivers/net/dsa/microchip/ksz_ptp_reg.h |  11 ++
+ include/net/dsa.h                       |   2 +
+ net/dsa/tag_ksz.c                       |  70 +++++++++++++
+ 9 files changed, 334 insertions(+), 50 deletions(-)
+---
+base-commit: 3adff276e751051e77be4df8d29eab1cf0856fbf
+change-id: 20260109-ksz8463-ptp-bc723ca7fac4
+
+Best regards,
 -- 
-2.52.0
+Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
