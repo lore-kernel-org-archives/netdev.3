@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E75433290B;
-	Tue, 27 Jan 2026 09:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74B32C31E
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769504822; cv=none; b=XQDlMPwD0Xj/B9xFCzLuNcyphfO3ySO8kOiuUO233KOjtmmUIyxYGbyXJQP6RNSickzclc5wmxmPwpmdDO8QKUe3JVsLQuAeiCmqD3PokFle41rWP58EOKg4ZSu/HE/3Vpsj7D02MSRofc0r6sS0W34Sn2p+YJLVSN2+E6B43l0=
+	t=1769504823; cv=none; b=kOl9d5mNCdoGlZ49g7QVLBSsRCGUT/Yeqa5OnayIv4ejGpYihEPXJYu9dpzfgBFuWD99xLPyy3c9whHefMOU3Xw8ruLicwqXaDgCypGFyR/F1RDgSCZOO+vxkMouh5p8tyc1+toSEA99VG08Sdt04fAq0LIkoyGV2UIr6hCbWR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769504822; c=relaxed/simple;
-	bh=N3ryQbGEWD3cPHtfikuGqfoTM8sOAlPC0aYgdbP0Wxw=;
+	s=arc-20240116; t=1769504823; c=relaxed/simple;
+	bh=5JRPbX6ZNpbbjxewpLGryuvTwhcPES2z48M948O/Y2Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e1rOl4qAW3gEARzJaMaoRiM+r2NEV98cM4E6GZxZ2DkwY0TiYbEpHkR/pcPjcQpHjSaD9zaaCYzOGvstiVLmVjJ8F8ijQzVdfX3SEdevhsyYE2eeovnpU1krg6F9awaGJ5jZyWD0nmi1Q57hZBxobpUCUfhZm6WZPM7Ic7u5xT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fQWjHsO9; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=R9yFNHhN0YWGFvNrzArkr/1dez08geCO9aZdLBZZTxbWfoQ4upGgCJr8duNm50gryX1N3QCTaPXWUq9+5xcr+dYsYpH779z5MIEVshYs1c+RSab/HEL2cg0vkn9MVs0r9DUVUQPX2YOQCaJzKEa4J61+8CxAgviuUDs/Agn6gzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bYvwtL2D; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fQWjHsO9"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bYvwtL2D"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 346FC1A2A6D;
-	Tue, 27 Jan 2026 09:06:54 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 78D411A2A70;
+	Tue, 27 Jan 2026 09:06:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0AF42606F5;
-	Tue, 27 Jan 2026 09:06:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95E0F119A867A;
-	Tue, 27 Jan 2026 10:06:51 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E475606F5;
+	Tue, 27 Jan 2026 09:06:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 86137119A8673;
+	Tue, 27 Jan 2026 10:06:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769504813; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769504817; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=gkMPdwGfu8X4F3+hrF5ewptOuduz1YxWL/Ffa1MnO38=;
-	b=fQWjHsO9tfDbtXAmwrc5QlQJPvzKjHAcIFmCQrAapjxfLcQmrVxlFtvYX9QoFvVZyxsQ8/
-	QguLLR2mQOotirZMD9/YKX/ZFc42vKKAXQcZa6gWhuImpnFKvN6PefahLjMRwEWUrzjSTa
-	2AYtrqpT/2LUELE+SPoegWX42wLQsSmFqpoSSJ+hCNCBdf6FxgYmhJHjkDSE0V0ev+AfXG
-	YSgref+WyuYf+Yzu1GWZLJ1WoQHsE25IhNm0ZFw/oLGywk47mPCcICUKQS/tAT4fIF9s8l
-	Fl4hlAoVcK4xNKVlvYgjJnEUZsxcS0hiFVbGIB/tZLofjxZz+K1rAN/0XxCr2A==
+	bh=raSc7l7Hms0kVCTaWY56CLFkcCyEbYi+dFevYnfrWHg=;
+	b=bYvwtL2DgboCj5gDnd5OYC+lTZCcfIuY0xcVY4mYu7mHFW8gSQihZ6W5NyT0YRn0a5FBxF
+	v3DvzIi5WEaRtKBeE53N/FmmDRbuy9ttABCCFPWF3CYrZKPnwcle8nDyTHcxMxmyZFdnNE
+	ey18gayxwIzPOXow5NIsCQmvYPLpTrnxh+SNa+NMK7VWasqxp2Z5YO82FPtdyjUTkWENqA
+	nEQ8Ye3T3MfOKUdOqKQcbZ8+qeHBhemXz7lUQNFIyzdTOltFv/Bhb1w0jNcP2I1m3iMzqA
+	t4cCiMKzwkXNQMw+/PuoAcWSHu4NCwNAw2loCInBBBEe0ca63P6n+tzMtX7Srw==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Tue, 27 Jan 2026 10:06:43 +0100
-Subject: [PATCH net-next v4 1/8] net: dsa: microchip: Add support for
- KSZ8463 global irq
+Date: Tue, 27 Jan 2026 10:06:45 +0100
+Subject: [PATCH net-next v4 3/8] net: dsa: microchip: Decorrelate msg_irq
+ index from IRQ bit offset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-ksz8463-ptp-v4-1-652e021aae86@bootlin.com>
+Message-Id: <20260127-ksz8463-ptp-v4-3-652e021aae86@bootlin.com>
 References: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
 In-Reply-To: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,128 +61,63 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8463's interrupt scheme differs from the others KSZ swicthes. Its
-global interrupt handling is done through an 'enable irq' register
-instead of a 'mask irq' one, so the bit logic to enable/disable
-interrupt is reversed. Also its interrupts registers are 16-bits
-registers and don't have the same address.
+KSZ8463 has one register containing all the PTP-related interrupts from
+all ports. So it will use one IRQ domain for all of them, leading to 4
+interrupt bits to be dispatched in two ports. Current implementation
+doesn't allow to do so because the IRQ bit offset is also used as index
+to store the struct ptpmsg_irq in the table held by the port.
 
-Add ksz8463-specific global interrupt setup function that still relies
-on the ksz_irq_common_setup().
-Add a check on the device type in the irq_chip operations to adjust the
-bit logic for KSZ8463
+Add a new input to the setup() function to independently provide the
+interrupt bit offset and the ptpmsg_irq index.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 40 +++++++++++++++++++++++++++++-----
- drivers/net/dsa/microchip/ksz_common.h |  3 +++
- 2 files changed, 37 insertions(+), 6 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index e5fa1f5fc09b37c1a9d907175f8cd2cd60aee180..82ec7142a02c432f162e472c831faa010c035123 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2817,14 +2817,20 @@ static void ksz_irq_mask(struct irq_data *d)
- {
- 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
- 
--	kirq->masked |= BIT(d->hwirq);
-+	if (ksz_is_ksz8463(kirq->dev))
-+		kirq->masked &= ~BIT(d->hwirq);
-+	else
-+		kirq->masked |= BIT(d->hwirq);
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 3b0dddf918595e9318c9e9779035d5152dcd9dde..ae46ba41c588c076de2c3b70c7c6702ad85263d5 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1099,7 +1099,8 @@ static void ksz_ptp_msg_irq_free(struct ksz_port *port, u8 n)
+ 	irq_dispose_mapping(ptpmsg_irq->num);
  }
  
- static void ksz_irq_unmask(struct irq_data *d)
+-static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port, u8 n)
++static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port,
++				 u8 index, int irq)
  {
- 	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+ 	u16 ts_reg[] = {REG_PTP_PORT_PDRESP_TS, REG_PTP_PORT_XDELAY_TS,
+ 			REG_PTP_PORT_SYNC_TS};
+@@ -1108,15 +1109,15 @@ static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *por
+ 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+ 	struct ksz_ptp_irq *ptpmsg_irq;
  
--	kirq->masked &= ~BIT(d->hwirq);
-+	if (ksz_is_ksz8463(kirq->dev))
-+		kirq->masked |= BIT(d->hwirq);
-+	else
-+		kirq->masked &= ~BIT(d->hwirq);
- }
+-	ptpmsg_irq = &port->ptpmsg_irq[n];
+-	ptpmsg_irq->num = irq_create_mapping(domain, n);
++	ptpmsg_irq = &port->ptpmsg_irq[index];
++	ptpmsg_irq->num = irq_create_mapping(domain, irq);
+ 	if (!ptpmsg_irq->num)
+ 		return -EINVAL;
  
- static void ksz_irq_bus_lock(struct irq_data *d)
-@@ -2840,7 +2846,10 @@ static void ksz_irq_bus_sync_unlock(struct irq_data *d)
- 	struct ksz_device *dev = kirq->dev;
- 	int ret;
+ 	ptpmsg_irq->port = port;
+-	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[n]);
++	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[index]);
  
--	ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
-+	if (ksz_is_ksz8463(dev))
-+		ret = ksz_write16(dev, kirq->reg_mask, kirq->masked);
-+	else
-+		ret = ksz_write8(dev, kirq->reg_mask, kirq->masked);
- 	if (ret)
- 		dev_err(dev->dev, "failed to change IRQ mask\n");
+-	strscpy(ptpmsg_irq->name, name[n]);
++	strscpy(ptpmsg_irq->name, name[index]);
  
-@@ -2890,14 +2899,14 @@ static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
- 	unsigned int nhandled = 0;
- 	struct ksz_device *dev;
- 	unsigned int sub_irq;
--	u8 data;
-+	u16 data;
- 	int ret;
- 	u8 n;
- 
- 	dev = kirq->dev;
- 
- 	/* Read interrupt status register */
--	ret = ksz_read8(dev, kirq->reg_status, &data);
-+	ret = ksz_read16(dev, kirq->reg_status, &data);
- 	if (ret)
+ 	return request_threaded_irq(ptpmsg_irq->num, NULL,
+ 				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+@@ -1161,7 +1162,7 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
  		goto out;
  
-@@ -2939,6 +2948,22 @@ static int ksz_irq_common_setup(struct ksz_device *dev, struct ksz_irq *kirq)
- 	return ret;
- }
- 
-+static int ksz8463_girq_setup(struct dsa_switch *ds)
-+{
-+	struct ksz_device *dev = ds->priv;
-+	struct ksz_irq *girq = &dev->girq;
-+
-+	girq->nirqs = 15;
-+	girq->reg_mask = KSZ8463_REG_IER;
-+	girq->reg_status = KSZ8463_REG_ISR;
-+	girq->masked = 0;
-+	snprintf(girq->name, sizeof(girq->name), "global_irq");
-+
-+	girq->irq_num = dev->irq;
-+
-+	return ksz_irq_common_setup(dev, girq);
-+}
-+
- static int ksz_girq_setup(struct ksz_device *dev)
- {
- 	struct ksz_irq *girq = &dev->girq;
-@@ -3044,7 +3069,10 @@ static int ksz_setup(struct dsa_switch *ds)
- 	p->learning = true;
- 
- 	if (dev->irq > 0) {
--		ret = ksz_girq_setup(dev);
-+		if (ksz_is_ksz8463(dev))
-+			ret = ksz8463_girq_setup(ds);
-+		else
-+			ret = ksz_girq_setup(dev);
+ 	for (irq = 0; irq < ptpirq->nirqs; irq++) {
+-		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq);
++		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq, irq);
  		if (ret)
- 			return ret;
- 
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index 929aff4c55de5254defdc1afb52b224b3898233b..67a488a3b5787f93f9e2a9266ce04f6611b56bf8 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -839,6 +839,9 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
- #define KSZ87XX_INT_PME_MASK		BIT(4)
- 
- /* Interrupt */
-+#define KSZ8463_REG_ISR			0x190
-+#define KSZ8463_REG_IER			0x192
-+
- #define REG_SW_PORT_INT_STATUS__1	0x001B
- #define REG_SW_PORT_INT_MASK__1		0x001F
- 
+ 			goto out_ptp_msg;
+ 	}
 
 -- 
 2.52.0
