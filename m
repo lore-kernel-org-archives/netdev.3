@@ -1,115 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7BB27BF79;
-	Tue, 27 Jan 2026 13:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3659C359FB6
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 13:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769521326; cv=none; b=BxFaQ3lGjXN8+7f2hxRcyILfW5WMarsTvlSwjX/4KCQox1aQPP5pl7+IHqJfCSFd/OwVW6/KgVBZ8594s687fln4IFs22hBbG7FfYpr94tRGJtbUskJBv/OvEbYPvsdYAWlPazyMWfPgV8TBDMU/XhQQ2NtmsyFtT/J3rHDssTw=
+	t=1769521343; cv=none; b=qCCA3wsoxVcCf4egalcsVMi30PiUeId5ogXj0H/PZqDZBx0UfbWLzmBgZQaOOwL1hSVm8ihvHCHUudcFKZEGUoVbRnBRjuH7oaWbud59CDIWFGWhSilQnToxtPc744ZTQFuCKJx7HHEfaysgucr887B6Yrb0F/mylv/feirOO/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769521326; c=relaxed/simple;
-	bh=YeHXlxP0dmg6RHVDtkVhWveAzGoBAVACEuP1+dVwj2U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=E24zVC35WzuPKBUI2fvTH/bSot529UW4+sFHs9jRwCOYV7JADu0TsjsJoWRPzQzKRh+3/uLeZ/8F3kmGL5PB6zk2R2Osw2fyxVfurm2N+ZKh5ykKzDCCryuAtPe0V5Gru+IJBK+r9ja5ULDpp2uSMG/9u5sJYGpebtVx00U17K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4hsXvio; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769521343; c=relaxed/simple;
+	bh=DB9kEdPNCukofrnc0NQOSFwRY85g+LWgn59ph42lBvM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GZ9bdUgHlLq6XZEhd44hlUYPZcieJrO5dTKYSU/wdV9SaXWv+mEnXPtNYV1QE17/WZvWwcv19AbZCcVkHPznztgMPtCxPiX4oRE6nbfosbX8aO9ygqdtDx2xvqicY18s2/VECNVs1HSa72D5F9ghkYzAvRoZ4+3YhYXh/Wl2uzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sh7/BsHm; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4hsXvio"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C77BC116C6;
-	Tue, 27 Jan 2026 13:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769521325;
-	bh=YeHXlxP0dmg6RHVDtkVhWveAzGoBAVACEuP1+dVwj2U=;
-	h=Date:From:To:Cc:Subject:From;
-	b=s4hsXvioBfF59F2HGqCBrp/RhH3TOUzjPV3C+jDgyCzvAi1CTt/pjsPO/MQOvmJRj
-	 ZPliQVrBV+JVQvA/p+bLAgNO8e8QyrgdO1CBQkqUJhcXvoZF358ER93w/x+pwmKEUM
-	 3pdDS02RZwxmuunzeq/weOZu8hjVvlA9mRb9WW6F4N8VWuzO3eTmB4NLxTOVN1ybgN
-	 kU8Kv22fU+KbdCbSHs2AWWlVDzKm6pB4iOAw0P4tcz5pW3zTOEs5dFaQ30uH+veeT9
-	 DflLo4Tk8oCacl18Nq0zewHfo1h1higDQZPWmpNvGfxkQUehcpauT1892Hd1kR32un
-	 OP5U9cTgKL0Kw==
-Date: Tue, 27 Jan 2026 13:42:01 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sh7/BsHm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 723BAC211C0;
+	Tue, 27 Jan 2026 13:42:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C9F0606F5;
+	Tue, 27 Jan 2026 13:42:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C2FD6119A864C;
+	Tue, 27 Jan 2026 14:42:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769521338; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=oKlXBMUh5ZhX/zwuswGc13LoRx5lpPr3lRXPECma5Ek=;
+	b=sh7/BsHmT5al/NZJ/LsO/PLqT65iZvw9/smYulxgS2H8xH7N29a5kKTFu3YmQGG2IroZVX
+	IjW+NekKAl6YBF097DHNn9xk/iF9WmGx0CPYAyWsgd+dcsK81fWc8PrBoxNcLOmXspqMvj
+	vuXo9rt6xFQ5azIWffscz6ZcB6qINie98rUVm33C3kueCPlaszZgftsai0j4wnGmvZEJW+
+	+o/lZjDM9yvMgMiz6sMQvlI/tefR1ZEFgavOg8uAH9e8RiWEmREN8ITAbFkWZK3S8Rcyut
+	j2IXJnoRu9jGFBHZ8SBLfKy6GvyiUs6ywXs7BK7TRjmvfY0FOCq8/VMi1Aguyw==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Chukun Pan <amadeus@jmu.edu.cn>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Vivian Wang <wangruikang@iscas.ac.cn>
-Subject: linux-next: manual merge of the net-next tree with the net tree
-Message-ID: <aXjAqZA3iEWD_DGM@sirena.org.uk>
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Subject: [PATCH net-next 00/13] net: phy_port: SFP modules representation and phy_port listing
+Date: Tue, 27 Jan 2026 14:41:48 +0100
+Message-ID: <20260127134202.8208-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2jrxtingMBd5InMe"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+
+Hello everyone,
+
+This series is another step towards dealing with multi-port interfaces.
+
+It build on the recent addition of phy_port representation to enable
+listing the front-facing ports of an interface. For now, we don't control
+these ports, we merely list their presence and their capabilities.
+
+As the most common use-case of multi-port interfaces is combo-ports that
+provide both RJ45 and SFP connectors on a single MAC, there's a lot of
+SFP stuff in this series.
+
+This series is in 2 main parts. The first one aims at representing the
+SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
+by far the most common cases for multi-connector setups.
+
+The second part is the netlink interface to list those ports, now that
+most use-cases are covered.
+
+Let's see what we can do with some examples of the new ethtool API :
+
+- Get MII interfaces supported by an empty SFP cage :
+
+# ethtool --show-ports eth3
+
+Port for eth3:
+	Port id: 1
+	Occupied: no
+	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
+	Port type: sfp
 
 
---2jrxtingMBd5InMe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+- Get Combo-ports supported modes, on each port :
 
-Hi all,
+# ethtool --show-ports eth0
 
-Today's linux-next merge of the net-next tree got a conflict in:
+Port for eth0:
+	Port id: 1
+	Occupied: no
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Half 1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
 
-  drivers/net/ethernet/spacemit/k1_emac.c
+Port for eth0:
+	Port id: 2
+	Occupied: no
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+	
 
-between commit:
+- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
+SFP cage)
 
-  2c84959167d64 ("net: spacemit: Check for netif_carrier_ok() in emac_stats=
-_update()")
+# ethtool --show-ports eth1
 
-=66rom the net tree and commit:
+Port for eth1:
+	Port id: 1
+	Occupied: no
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Half 1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
 
-  f66086798f91f ("net: spacemit: Remove broken flow control support")
+Port for eth1:
+	Port id: 2
+	Occupied: yes
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
 
-=66rom the net-next tree.
+Port for eth1:
+	Port id: 3
+	Occupied: no
+	Supported link modes:  10000baseCR/Full
+	Port type: mdi
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+Note that here, we have 3 ports :
+ - The Copper port
+ - The SFP Cage itself, marked as 'occupied'
+ - The SFP module
 
-diff --cc drivers/net/ethernet/spacemit/k1_emac.c
-index 88e9424d2d51a,c85dc742c404d..0000000000000
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@@ -1648,14 -1531,6 +1545,12 @@@ static void emac_adjust_link(struct net
-  		}
- =20
-  		emac_wr(priv, MAC_GLOBAL_CONTROL, ctrl);
- +
-- 		emac_set_fc_autoneg(priv);
--=20
- +		/*
- +		 * Reschedule stats updates now that link is up. See comments in
- +		 * emac_stats_update().
- +		 */
- +		mod_timer(&priv->stats_timer, jiffies);
-  	}
- =20
-  	phy_print_status(phydev);
+This series builds on top of phy_port and phy_link_topology to allow
+tracking the ports of an interface. We maintain a list of supported
+linkmodes/interfaces on each port, which allows for fine-grained
+reporting of each port's capability.
 
---2jrxtingMBd5InMe
-Content-Type: application/pgp-signature; name="signature.asc"
+What this series doesn't do :
+ - We don't support selecting which port is active. This is the next step.
+ - We only support PHY-driven combo ports. The end-goal of this whole
+   journey that started with phy_link_topology is to get support for MII
+   muxes, such as the one we have on the Turris Omnia. This will eventually
+   be upstreamed as well.
 
------BEGIN PGP SIGNATURE-----
+If you want to play around with it, here's [1] the patched ethtool that I've
+been using to produce the outputs above.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml4wKgACgkQJNaLcl1U
-h9CZiAf/cayrZGhkTVbrARdIJj6yE5+1bj+P0uGbE07rXZdU5KZ7GqAn8ZnQQI1/
-jhIY4L/LFn1UvQN8Lkrx1VWuhiMK6inEyZZio/nP587F3Hi10Xrtc76+v6aHV76d
-m05fPxPcnWQ9GqDlonLaMr2cDNmkc42ukGCr1CNRj6spm0oFb0mvdk5s88/pcwQ8
-AtDBDJBsC+vXLk9AZ4AWqOoWkoOoT8rg5ijXnSY5+ODBT7OkHCvflHYryc9Bals8
-3n0Ei0s7NRBUfbENRGeQ0rlyIymZi/Hb+Ie+It43WEEAGqli4StlIJxVUd//DKbg
-hwqK05r1a6s9ES6btRCzO57iMwqVNQ==
-=qkgv
------END PGP SIGNATURE-----
+Thanks !
 
---2jrxtingMBd5InMe--
+Maxime
+
+[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
+
+Maxime Chevallier (13):
+  net: phy: phy_port: Correctly recompute the port's linkmodes
+  net: phy: phy_link_topology: Add a helper for opportunistic alloc
+  net: phy: phy_link_topology: Track ports in phy_link_topology
+  net: phylink: Register a phy_port for MAC-driven SFP busses
+  net: phy: Create SFP phy_port before registering usptream
+  net: sfp: Add a sfp-bus ops when connecting a module without PHY
+  net: phy: Represent PHY-less SFP modules with phy_port
+  net: phylink: Represent PHY-less SFP modules with phy_port
+  net: phy: phy_port: Store information about a MII port's occupancy
+  net: phy: phy_link_topology: Add a helper to retrieve ports
+  net: phy: store phy_modes in a static array
+  netlink: specs: Add ethernet port listing with ethtool
+  net: ethtool: Introduce ethtool command to list ports
+
+ Documentation/netlink/specs/ethtool.yaml      |  50 +++
+ Documentation/networking/ethtool-netlink.rst  |  35 ++
+ MAINTAINERS                                   |   1 +
+ drivers/net/phy/phy-caps.h                    |   2 +
+ drivers/net/phy/phy_caps.c                    |  26 ++
+ drivers/net/phy/phy_device.c                  | 104 ++++-
+ drivers/net/phy/phy_link_topology.c           |  80 +++-
+ drivers/net/phy/phy_port.c                    |   9 +-
+ drivers/net/phy/phylink.c                     | 121 ++++++
+ drivers/net/phy/sfp-bus.c                     |  20 +
+ drivers/net/phy/sfp.c                         |  12 +
+ drivers/net/phy/sfp.h                         |   2 +
+ include/linux/phy.h                           |  88 +----
+ include/linux/phy_link_topology.h             |  34 ++
+ include/linux/phy_port.h                      |   5 +
+ include/linux/sfp.h                           |   5 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  19 +
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/common.c                          |  44 +++
+ net/ethtool/netlink.c                         |  11 +
+ net/ethtool/netlink.h                         |   5 +
+ net/ethtool/port.c                            | 373 ++++++++++++++++++
+ 22 files changed, 943 insertions(+), 105 deletions(-)
+ create mode 100644 net/ethtool/port.c
+
+-- 
+2.49.0
+
