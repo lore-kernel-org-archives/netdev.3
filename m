@@ -1,77 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9476F34CFD0
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 14:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCC7357A26
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 14:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769524812; cv=none; b=eth8+ITBtcD/xt49nUWqgXipGF/q7R0CmURHhIKzy08INqnkIWxtgJudcYfcsBJJYD/8/YqC/eRjaVztqYTcH7jhhvfwVqflC61z/fK1U3OaDmuTJgYe5+st7cnLsUxWnbyNa7DF4P7etDp9/KaAFDJgZcj0HbPWTR3uaE5wb6E=
+	t=1769525077; cv=none; b=ZOFn5305LQMWCSFAFJ2Vk8F3nPCajCMghlmQHHgkCkN8q6dgEdkHmGqt/CQqsd46akF6/ZcLGHaw9t0HkaUNXV0qbIzInzzkcs331E0ns1kqCHtimWD6NkbPNThmZH2mV95NfQuVdcmOKunDm+cQxP9k5xRNb7eQ+uE83all8Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769524812; c=relaxed/simple;
-	bh=hWn4FxSycsXzCCPFKuOdNw9Jz7Uks6REq+c8eQL8yb4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ibjj25SdhGQZIB0Se3qMIZA5gAxqbho9RADmE/+QaaaMfKC7/wBZPSsok8zXKWthlX+aCGkcqcZrC6UgYsS3y/oPQfaGCq7+sdl2kvFc1mLu6+qKepjpKvU/tiAWGVUM/Gj/YQrA5//uWwO95tV2cn83xYXyjKVtvcdSZQc9H6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cZ5MAmc3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769525077; c=relaxed/simple;
+	bh=KMVl9/gf9ftHMlrNCaCL/oi8dCNpvpgPzgsVAW/084w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CdZS4Qi6BkknlGWmd2zzDkgtMhMputw7DmBuUCrMKbedN2JUGReDCC6cqYsd8aIo735UvJJTv51RpXI7wqA6JJGLed8CfycNFurGS+X/DzvFzeRuRmWQdcn1pWdxcS/RtTJFiM78hmFIgGE5Rpgj8xys8q6ieSIkl990Oge1VNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lXN7MZta; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cZ5MAmc3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE1EC16AAE;
-	Tue, 27 Jan 2026 14:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769524812;
-	bh=hWn4FxSycsXzCCPFKuOdNw9Jz7Uks6REq+c8eQL8yb4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cZ5MAmc3ziKU7JTYlfldHb7RTJHhDQbT98q7zk9snxOtMifd2NnGxLZ7r28cTasFQ
-	 bwrMlP2gXzYfGbvjik53fXVADwvwNF4jlwl1LIPNATfc15BeMNMFy8NNZwLMftpYsg
-	 EVbPfjpFWhXVCrCQJlY4fUMiXet9p4R5BPrIMAv4iO+nClOYh5KCfXcpzzPqWn8/pR
-	 b5WrqjFYJgIQ66EfSfEVjzIQu8v6GuEJP7Tto8l1RHiexXGWTQM72rRKfAbi5GCF82
-	 sHyPI226YioVz/v7EWQKPcdHjLV8Yhc5O4Kig1+7Dtve+ew2wz9GEiPMaSe5h2w9BK
-	 U8krzsHSYjpYQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EADD380A97F;
-	Tue, 27 Jan 2026 14:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lXN7MZta"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-7903fc98229so55283427b3.0
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 06:44:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769525075; x=1770129875; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NXsKfDW2pJBcO84KnMkM+kAEFZYrQpwXoj0fFAgFrqc=;
+        b=lXN7MZtaApiLM9RroAKsyilmc9SuYloyjLPdvut2kiGlJkngjTs6SYS8AoxrGG8o6v
+         fZlIzCpzZnVw3onNsewymJnGzuxzkRu9H2btR7mfcQvVJ5LW0TbuN5t+Oiv8j5CVtNVR
+         633ycW9m1UyAG2RNQMuU6m3/fI3vyohuOOUMYnR9+ifKgifHzpbUy3OJmJpq5kAceOmw
+         p/A9HuoqnJXRQ5W8RsSG4I3cCy22Zp70H1k4pwhb53efbqOOdEzqqSfAxI6bx70emIca
+         b0QuIEHt+DtJQMG3vRDrc1MZxDQE6DCOKTVYYiFdz1PKEeGMzimo3FIOT5sfQzJJn+O8
+         lmHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769525075; x=1770129875;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NXsKfDW2pJBcO84KnMkM+kAEFZYrQpwXoj0fFAgFrqc=;
+        b=Dcs/R66e0jFiMkGZRrQRINn3JqZd7im6NjQVtievRi2IEiRqnrVPu0rC2bM1FbNr9P
+         kPV4RIVWAh1gKJIoCko/7QrDiiBC5n8lW+0WDfBAgbr/Ba/KVYCbCHmvXeFXW5hSYk9G
+         y9bbhbabgO8iHN4uojPjOxiQxdarn+9/GyQwpmW51uu5ao67pjP0UxJ60gg8Nx0JFm6k
+         kUoLtxLzq2FtQlA30uA2I+8NrMsEFkRNUZDdH5C1GahLQu3poEkTPHyfgHJDLXnCHjcJ
+         9m5rMY0bYvLsM+GZYQIEstBENZ+Ef2ApXShI1efLr9KtubarkJE4rd48zY2SoN1f4VF0
+         Rnww==
+X-Forwarded-Encrypted: i=1; AJvYcCVC734T12FJkOsPs+LDEUqJVK2GpuEgd63cw7jCb3egzD4IElEIaiBLZyfr5jhJQQzHUezV/yM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx+wG/f4XSD4EtWzzbxM2o9cLnL6CMfIZQvXfBQFQQ+RihxbZ4
+	XUamILvvzeVdCBWL3DnRXlKM6uLksUpDBh6w/ePEjkMelRMwIPSgnbt2iTwPFYyX3h7wPck+yf2
+	6hr4+M6GYm+QW2w==
+X-Received: from yxk16.prod.google.com ([2002:a05:690e:6d0:b0:644:5de0:129a])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:344:b0:649:3f2e:5285 with SMTP id 956f58d0204a3-6498fc9fdbamr939978d50.90.1769525075260;
+ Tue, 27 Jan 2026 06:44:35 -0800 (PST)
+Date: Tue, 27 Jan 2026 14:44:31 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] bonding: fix use-after-free due to enslave fail after
- slave array update
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176952480586.870756.4657769115692092491.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Jan 2026 14:40:05 +0000
-References: <20260123120659.571187-1-razor@blackwall.org>
-In-Reply-To: <20260123120659.571187-1-razor@blackwall.org>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- chenzhen126@huawei.com, joamaki@gmail.com, daniel@iogearbox.net
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
+Message-ID: <20260127144433.196836-1-edumazet@google.com>
+Subject: [PATCH net 0/2] net: fix potential crash in net/sched/cls_u32.c
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
+	GangMin Kim <km.kim1503@gmail.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+GangMin Kim provided a report and a repro fooling u32_classify().
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Add skb_header_pointer_careful() variant of skb_header_pointer()
+and use it in net/sched/cls_u32.c.
 
-On Fri, 23 Jan 2026 14:06:59 +0200 you wrote:
-> Fix a use-after-free which happens due to enslave failure after the new
-> slave has been added to the array. Since the new slave can be used for Tx
-> immediately, we can use it after it has been freed by the enslave error
-> cleanup path which frees the allocated slave memory. Slave update array is
-> supposed to be called last when further enslave failures are not expected.
-> Move it after xdp setup to avoid any problems.
-> 
-> [...]
+Later we can also use it in net/sched/act_pedit.c
 
-Here is the summary with links:
-  - [net] bonding: fix use-after-free due to enslave fail after slave array update
-    https://git.kernel.org/netdev/net/c/e9acda52fd2e
+Eric Dumazet (2):
+  net: add skb_header_pointer_careful() helper
+  net/sched: cls_u32: use skb_header_pointer_careful()
 
-You are awesome, thank you!
+ include/linux/skbuff.h | 12 ++++++++++++
+ net/sched/cls_u32.c    | 13 ++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0.rc1.217.geba53bf80e-goog
 
