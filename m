@@ -1,81 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799DC30FC16;
-	Tue, 27 Jan 2026 03:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B311DFE22
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 03:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769485225; cv=none; b=d1o2+DgT/wyEz0YrepydI83BjGvmShuy++2AFU9JAuUQjTI1q3zQ1EUMyv+yAS25HWgLaAV8kw1qWSDCT1PgE7OfMJSaJAAoI3GSJPHcAYyUaqX7MmisWA/EIljlRbcQSOIzHRfb584qcIwXbIf5cAsKhM2XRYVuq2huqe0w+H4=
+	t=1769485256; cv=none; b=O0C8yZ2fNAr63NdOMZooOHw7QTrgFStbWMExDZ4nTkHQzx8drC09Bj2OygXLHZEGRfYVi27h60G0NB+ISX1eFd6EK58qs6uJxdnVM4vb/aMMsPgwFXUO7MCQ+rpeXKeJ4LTmHdvQBMt/zhKeLb/y/ceFY4JgUtcjn9rOTeDKaMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769485225; c=relaxed/simple;
-	bh=EyDnbg/lleTVYrMGxGhuMVvM5X0Rlth/QSi6mgOon/o=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y2kV27MRq7vUofhyRaRrQ3A2CaSUUvQqDVhz3NjVXaZ5ogdXLsf6ulACzniuYjbAnrEtG3ME77thOh5EbSlB7kgvvTGsJcLrS2jS9/m4sXaBbpOs1dR8RvURE5b1+yzJSsTUEalbblwPG3jetH6n0KXxMlciZzVxRk+D5E2MS4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gyzd3sRf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769485256; c=relaxed/simple;
+	bh=SgIK6ZAnwPzLj+u2xM4wEQwVXQdC+Unq7P5ZEg3Ma78=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KI+lDjLNKCiWSPgoHanvlwcu5QN8TyLzvcacl6ZXh8FWdVEA7eoaKkowheP6Metq8HqMSYeeamtcmSCCj3i09Q3PetzR3NwsvErhD9KrGWM1HTNd2vgqsEt0qWH8LPTA13L86yY3lHb3QpRX8ZBz78314X6jQa9V+MBm5U8FqXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AoCeYUGL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gyzd3sRf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7F3C116C6;
-	Tue, 27 Jan 2026 03:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AoCeYUGL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43483C116C6;
+	Tue, 27 Jan 2026 03:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769485225;
-	bh=EyDnbg/lleTVYrMGxGhuMVvM5X0Rlth/QSi6mgOon/o=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Gyzd3sRfVZtmLP0TJa/6iLfbwsIZDUX1D7ANHm7vCV21TRq9hE29rbLAabdATgIKl
-	 vd7YFi5xBeY8C1raE1F9tGzKK/P7E3T1jKVTmi1MSOruDCCMWjB1UTNyS8VDY5q5Nh
-	 OvWJMMpwoQfjhBKtB1CXg3wt6FqbFRiCEPgp9z+BRbVMfznWguyjq9JLCVKjh67zGt
-	 yh3+XFa6BkX+bFYQlk/w+dotCGdmoscZ4N9w9zStjy2NKj2XnkTdAjLGLL11RGgHU+
-	 orda3Hd0UNuFHwdyKB52NaxSnNM04/GXxdGgWDVP4BDPhTZW6dH2GWqw7Ngdin7hWk
-	 V0/+qFGL2r8UQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8F05380A961;
-	Tue, 27 Jan 2026 03:40:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769485255;
+	bh=SgIK6ZAnwPzLj+u2xM4wEQwVXQdC+Unq7P5ZEg3Ma78=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AoCeYUGLCt4litSTKl1mDx+2aoWFNrZBfkOmLJ8gCCwsNVQFCmS9W6qdo6w7syLXY
+	 V5UAY2V32ssf56ghxxHni/OFyS+URcjhoPuU8sjdtu6ZW/rrHaSryDN2lRBSQ5sd7N
+	 vzkmfCe8YgMDD8OZkQQCpq0WMYrHbJBnFqDwIeA0lObBuFR1fdQa2VUeo+xBw+da9G
+	 k58BnuWRLICYwDRAnn9oSYbIZkeEQBtjgDLhxV7u/kkpXYXf5RoVkYRYiONfLc3Z66
+	 L82ChN4DZpl/oEAsSyd8E7bPdr7ZGB2dtS6/oh7jMJiNaw4LqEIAVD1XuxeFRz8ZTq
+	 KZI70BguJG4dQ==
+Date: Mon, 26 Jan 2026 19:40:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next] declance: Remove IRQF_ONESHOT
+Message-ID: <20260126194054.79e6f56d@kernel.org>
+In-Reply-To: <20260123110616.416384-1-bigeasy@linutronix.de>
+References: <20260123110616.416384-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] selftests: net: fix wrong boolean evaluation
- in
- __exit__
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176948521934.672496.14936979307496072577.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Jan 2026 03:40:19 +0000
-References: <20260125105524.773993-1-gal@nvidia.com>
-In-Reply-To: <20260125105524.773993-1-gal@nvidia.com>
-To: Gal Pressman <gal@nvidia.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- horms@kernel.org, shuah@kernel.org, joe@dama.to, sdf@fomichev.me,
- linux-kselftest@vger.kernel.org, noren@nvidia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 25 Jan 2026 12:55:24 +0200 you wrote:
-> The __exit__ method receives ex_type as the exception class when an
-> exception occurs. The previous code used implicit boolean evaluation:
+On Fri, 23 Jan 2026 12:06:16 +0100 Sebastian Andrzej Siewior wrote:
+> Passing IRQF_ONESHOT ensures that the interrupt source is masked until
+> the secondary (threaded) handler is done. If only a primary handler is
+> used then the flag makes no sense because the interrupt can not fire
+> (again) while its handler is running.
+> The flag also disallows force-threading of the primary handler and the
+> irq-core will warn about this.
 > 
->     terminate = self.terminate or (self._exit_wait and ex_type)
->                                                    ^^^^^^^^^^^
+> Remove IRQF_ONESHOT to irqflags.
 > 
-> In Python, the and operator can be used with non-boolean values, but it
-> does not always return a boolean result.
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
 > 
-> [...]
+> lance_dma_merr_int() does nothing but a printk() which means if it is a
+> level interrupt then once it fires it remains asserted and that printk()
+> takes over the machine.
+> I guess it never fires and is just left over debug.
 
-Here is the summary with links:
-  - [net-next,v2] selftests: net: fix wrong boolean evaluation in __exit__
-    https://git.kernel.org/netdev/net-next/c/a84a1fe0fb2e
-
-You are awesome, thank you!
+have you seen 0fabe1021f8bc9cffdede4ddad0dd04d43c5166c ?
+Sounds like it may have been a hack local to MIPS.
+On a quick read indeed your changes seems fine but it would give us
+certain warm and fuzzies to have the commit message refer to and 
+reason about the patch that introduced the flag..
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
