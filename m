@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A292D660E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15B32D374F
 	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 22:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769553058; cv=none; b=guKkOPZ7xaCy4d6Dej77PGdHc2tyJq/bLn68930oEFFSsrD+WEXRBylALNknGEzffUlzQPR0gi+3AutFk4K9tkTO8AgyjnbDApZog/NnB6CO67L+XxeZkHBLjUe/Gg/jgtEjwFoa5jegHoWZf91xOMGowgJGGZpzFsbIzigfM+I=
+	t=1769553060; cv=none; b=rK5n+8Gldzg+Ygmaj+zz81fPVz9dt1x58Nuh1OsnmXvPwNDXO4E+EffrGblmNN9P/p8GZ5C4ejpIXZvp7dWi9Y+eDh10DEZry8ObpqfovjQWfNRBl2bYpD+shdOC8bo4g/liOj+Ajc0o0ibJPF2xqv0k5aqqRJjpHAvSSsGojhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769553058; c=relaxed/simple;
-	bh=e0I4SBy3yMZHfTqRdAw1mnt5JfamU2pL9w0ooXrEd2g=;
+	s=arc-20240116; t=1769553060; c=relaxed/simple;
+	bh=+WTupBCYy92rzS+JDrx5zll6kIL7/rRbNTzUikriyJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANZlB0AvxBYluPyLCX2hkbtppjeTQ0LHDnKDy3k4u9wwQI9vOiy1T6iXoiYh2W1tPbF2e94nnWA79f4BVb50oJL5wYCxSht8x/DGmBFmVouirtHPYPjkxvLg6g5iG24efDnIOFcKEzE6WAokYyxdrxCwmhqmEeTgKitc0M35nkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6NL3ikA; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=obvQUKqY8WMFa0B/yaiQQS1xhR/rZK2z9JFR7/69haYBaXOyb26S4c592so+OA9UvNUD0nY4ztFdetmtcpxfzGybUvhrPsUs95TR7wsxBnMcWi4OHQXLhxYCRkob6FHGLTVs6gslsX6Mr43rTWks38DkGtOk1MrGDGK/jh9J+Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qzq64gDo; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6NL3ikA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qzq64gDo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1769553057; x=1801089057;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=e0I4SBy3yMZHfTqRdAw1mnt5JfamU2pL9w0ooXrEd2g=;
-  b=B6NL3ikANkFsydmTIv61eVCV6+lgZvtfAcSdWLSlRgISfqUJm6a+/xSw
-   A+WYoHKrCqsKTqf5UZVogYd7zSikA9KrZaKGx3nYY0gIFoJzLacEF2NnJ
-   YdDmaPhNyWjcUcgGOXQxlOAhlgjt/i5yd20UIJVQZjmYj3WtSPq9riUuZ
-   qq3RBCpSl9tHXwdRyRpSKDb1S5EeVRsFMdGBi429LKyeGAzNX39SMcfsP
-   J1CPCiEf5F3ahy3dHhfblfaHxji/VtkdrdrAkRGl8WMEPk8XBSAq75vsL
-   MNJHemQC7PqFGPpbc28Y4wg7UkiQv7UEUNnzkCwEzjl+d/wU68qA5UkOd
-   g==;
-X-CSE-ConnectionGUID: b2NR2q5PQiOqatJhAye7FA==
-X-CSE-MsgGUID: gecsZAEaQseeXBxAwS2d9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93418613"
+  bh=+WTupBCYy92rzS+JDrx5zll6kIL7/rRbNTzUikriyJY=;
+  b=Qzq64gDoGJTxql5caN0RcCKuSLq0Yg8jMP84axTJnyNVjwfIHBwzXuIl
+   bhOtfWqTpww/djb79fsSqJ5Ucaqsgfsb3YApiU/qtaATs7P837oTu0mun
+   TT4MFI05yAizaLJCVcWoMB+L3ZY2HisR4ezv89jM5bJ8oHqKp1YmI9OB6
+   p3YFRYdwUMWe67RIhD7myn4az8cmgyc/sRCpiJZvj9fLdHZ7BeAns0X0u
+   M8C9DfJOAWUn3cRtpOKnAlVeYLDQEnw3dyFoBVeC4nAfuQEZluh0ecJZi
+   Pfn3Fh8h619FR4MjX//4QtGk7pWzmlwm6i7RU0zpN3a6pbobSoeSlluvf
+   A==;
+X-CSE-ConnectionGUID: PcY1lCDjS/6m+F1nL5+Wdw==
+X-CSE-MsgGUID: HaPbmG8pQy+zy1uJFuuH7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93418605"
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="93418613"
+   d="scan'208";a="93418605"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 14:30:54 -0800
-X-CSE-ConnectionGUID: iXc07w0xSmWb2XTHdNCqtw==
-X-CSE-MsgGUID: HeeSEK8US9GfyhSRPNODhg==
+X-CSE-ConnectionGUID: QCVivU7WRQK27KB+eC8NiA==
+X-CSE-MsgGUID: fYznuHgJQwCxAmJqEH6ZOw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="245714648"
+   d="scan'208";a="245714645"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa001.jf.intel.com with ESMTP; 27 Jan 2026 14:30:54 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,15 +50,14 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+Cc: Aaron Ma <aaron.ma@canonical.com>,
 	anthony.l.nguyen@intel.com,
-	jbrandeb@kernel.org,
 	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	IWL <intel-wired-lan@lists.osuosl.org>
-Subject: [PATCH net 4/4] ice: stop counting UDP csum mismatch as rx_errors
-Date: Tue, 27 Jan 2026 14:30:45 -0800
-Message-ID: <20260127223047.3979404-5-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: [PATCH net 3/4] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
+Date: Tue, 27 Jan 2026 14:30:44 -0800
+Message-ID: <20260127223047.3979404-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
 References: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
@@ -70,57 +69,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-Since the beginning, the Intel ice driver has counted receive checksum
-offload mismatches into the rx_errors member of the rtnl_link_stats64
-struct. In ethtool -S these show up as rx_csum_bad.nic.
+Add NULL pointer checks in ice_vsi_set_napi_queues() to prevent crashes
+during resume from suspend when rings[q_idx]->q_vector is NULL.
 
-I believe counting these in rx_errors is fundamentally wrong, as it's
-pretty clear from the comments in if_link.h and from every other statistic
-the driver is summing into rx_errors, that all of them would cause a
-"hardware drop" except for the UDP checksum mismatch, as well as the fact
-that all the other causes for rx_errors are L2 reasons, and this L4 UDP
-"mismatch" is an outlier.
+Tested adaptor:
+60:00.0 Ethernet controller [0200]: Intel Corporation Ethernet Controller E810-XXV for SFP [8086:159b] (rev 02)
+        Subsystem: Intel Corporation Ethernet Network Adapter E810-XXV-2 [8086:4003]
 
-A last nail in the coffin is that rx_errors is monitored in production and
-can indicate a bad NIC/cable/Switch port, but instead some random series of
-UDP packets with bad checksums will now trigger this alert. This false
-positive makes the alert useless and affects us as well as other companies.
+SR-IOV state: both disabled and enabled can reproduce this issue.
 
-This packet with presumably a bad UDP checksum is *already* passed to the
-stack, just not marked as offloaded by the hardware/driver. If it is
-dropped by the stack it will show up as UDP_MIB_CSUMERRORS.
+kernel version: v6.18
 
-And one more thing, none of the other Intel drivers, and at least bnxt_en
-and mlx5 both don't appear to count UDP offload mismatches as rx_errors.
+Reproduce steps:
+Boot up and execute suspend like systemctl suspend or rtcwake.
 
-Here is a related customer complaint:
-https://community.intel.com/t5/Ethernet-Products/ice-rx-errros-is-too-sensitive-to-IP-TCP-attack-packets-Intel/td-p/1662125
+Log:
+<1>[  231.443607] BUG: kernel NULL pointer dereference, address: 0000000000000040
+<1>[  231.444052] #PF: supervisor read access in kernel mode
+<1>[  231.444484] #PF: error_code(0x0000) - not-present page
+<6>[  231.444913] PGD 0 P4D 0
+<4>[  231.445342] Oops: Oops: 0000 [#1] SMP NOPTI
+<4>[  231.446635] RIP: 0010:netif_queue_set_napi+0xa/0x170
+<4>[  231.447067] Code: 31 f6 31 ff c3 cc cc cc cc 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 85 c9 74 0b <48> 83 79 30 00 0f 84 39 01 00 00 55 41 89 d1 49 89 f8 89 f2 48 89
+<4>[  231.447513] RSP: 0018:ffffcc780fc078c0 EFLAGS: 00010202
+<4>[  231.447961] RAX: ffff8b848ca30400 RBX: ffff8b848caf2028 RCX: 0000000000000010
+<4>[  231.448443] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8b848dbd4000
+<4>[  231.448896] RBP: ffffcc780fc078e8 R08: 0000000000000000 R09: 0000000000000000
+<4>[  231.449345] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+<4>[  231.449817] R13: ffff8b848dbd4000 R14: ffff8b84833390c8 R15: 0000000000000000
+<4>[  231.450265] FS:  00007c7b29e9d740(0000) GS:ffff8b8c068e2000(0000) knlGS:0000000000000000
+<4>[  231.450715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+<4>[  231.451179] CR2: 0000000000000040 CR3: 000000030626f004 CR4: 0000000000f72ef0
+<4>[  231.451629] PKRU: 55555554
+<4>[  231.452076] Call Trace:
+<4>[  231.452549]  <TASK>
+<4>[  231.452996]  ? ice_vsi_set_napi_queues+0x4d/0x110 [ice]
+<4>[  231.453482]  ice_resume+0xfd/0x220 [ice]
+<4>[  231.453977]  ? __pfx_pci_pm_resume+0x10/0x10
+<4>[  231.454425]  pci_pm_resume+0x8c/0x140
+<4>[  231.454872]  ? __pfx_pci_pm_resume+0x10/0x10
+<4>[  231.455347]  dpm_run_callback+0x5f/0x160
+<4>[  231.455796]  ? dpm_wait_for_superior+0x107/0x170
+<4>[  231.456244]  device_resume+0x177/0x270
+<4>[  231.456708]  dpm_resume+0x209/0x2f0
+<4>[  231.457151]  dpm_resume_end+0x15/0x30
+<4>[  231.457596]  suspend_devices_and_enter+0x1da/0x2b0
+<4>[  231.458054]  enter_state+0x10e/0x570
 
-Fixes: 4f1fe43c920b ("ice: Add more Rx errors to netdev's rx_error counter")
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Jake Keller <jacob.e.keller@intel.com>
-Cc: IWL <intel-wired-lan@lists.osuosl.org>
-Signed-off-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Add defensive checks for both the ring pointer and its q_vector
+before dereferencing, allowing the system to resume successfully even when
+q_vectors are unmapped.
+
+Fixes: 2a5dc090b92cf ("ice: move netif_queue_set_napi to rtnl-protected sections")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index de488185cd4a..71c6d53b461e 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6982,7 +6982,6 @@ void ice_update_vsi_stats(struct ice_vsi *vsi)
- 		cur_ns->rx_errors = pf->stats.crc_errors +
- 				    pf->stats.illegal_bytes +
- 				    pf->stats.rx_undersize +
--				    pf->hw_csum_rx_error +
- 				    pf->stats.rx_jabber +
- 				    pf->stats.rx_fragments +
- 				    pf->stats.rx_oversize;
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 98010354db15..d47af94f31a9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2783,12 +2783,14 @@ void ice_vsi_set_napi_queues(struct ice_vsi *vsi)
+ 
+ 	ASSERT_RTNL();
+ 	ice_for_each_rxq(vsi, q_idx)
+-		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
+-				     &vsi->rx_rings[q_idx]->q_vector->napi);
++		if (vsi->rx_rings[q_idx] && vsi->rx_rings[q_idx]->q_vector)
++			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_RX,
++					     &vsi->rx_rings[q_idx]->q_vector->napi);
+ 
+ 	ice_for_each_txq(vsi, q_idx)
+-		netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
+-				     &vsi->tx_rings[q_idx]->q_vector->napi);
++		if (vsi->tx_rings[q_idx] && vsi->tx_rings[q_idx]->q_vector)
++			netif_queue_set_napi(netdev, q_idx, NETDEV_QUEUE_TYPE_TX,
++					     &vsi->tx_rings[q_idx]->q_vector->napi);
+ 	/* Also set the interrupt number for the NAPI */
+ 	ice_for_each_q_vector(vsi, v_idx) {
+ 		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
 -- 
 2.47.1
 
