@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E38C1EA7CC;
-	Tue, 27 Jan 2026 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B781EA7CC;
+	Tue, 27 Jan 2026 13:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769519924; cv=none; b=ahsI6VqaeL6jyVjo6kvuB8VRFHOinn3C5lesyJPkQ2Is1+Wm2WzKvC4TJETp9Hw64VzDjMVfbZvbYrI6NjIF83zBLkBIIg6Sj3JRuqc/XOa0IwLT/Qp9ANwfy5sEvT5G38GzzEfNxiVpjq5kojvKV13b10BM/Nm8gpA6zSD1+ys=
+	t=1769519933; cv=none; b=cu3ufLJiX9DI0D7USKrBV0aC19hPrtzQykOCVZ0erUry8eorF6KOPLz3AXCEtpQEFzJHYrgJm6ZKGZ98eO70bscbYSn9ZoYbIfsSaulDgozds5zq/h7QouhLbP58BTp7V7eaqT4rTCThd+igsMUQxUkX6AvYJyf26CaY9AWIM1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769519924; c=relaxed/simple;
-	bh=AZEUjWP6z6TjM2vxB5zbvlCTgV70Eb1pQd9sUdUGo6k=;
+	s=arc-20240116; t=1769519933; c=relaxed/simple;
+	bh=D42JR7u13Ao0gUEQVTk0Kz9ZYGv29KYP29e+BV8Iv+k=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XIl/MRpx6qTLDzL9+Y3GVXglK/4LAr+j2ESjjalmz2m7AnD5FGD6kjYG9tn4AvrJBplqYGGDzjnedFlAMU8IFABkYKFk+KrlATvdHRYvwhBHGO9L8jmM7WbbEHx7DZibOoJYBZJkeYM4R5or2jujVBDE0TrPckokxNFakMOC/P4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBAjWlgznzW9g6OyD0DpjvYKpnvmjqtDiP6K6BuBfQ71hvQNq29mEEQ5HeziIEmoKIw5KlceCkSgnuCpqAyw1dYyxz3GEf0Wgbza6cIMhLpC3ilUy7vMdXAZ09Tvvf3kMwEBE2qL+WoQYIJy6gN1E0F12+Ikmqz4hR/HJ5gbYho=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1vkixs-000000000Sb-0l1m;
-	Tue, 27 Jan 2026 13:18:40 +0000
-Date: Tue, 27 Jan 2026 13:18:37 +0000
+	id 1vkiy0-000000000Sn-2NvO;
+	Tue, 27 Jan 2026 13:18:48 +0000
+Date: Tue, 27 Jan 2026 13:18:45 +0000
 From: Daniel Golle <daniel@makrotopia.org>
 To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -31,9 +31,8 @@ To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/3] dt-bindings: net: dsa: lantiq,gswip: reference
- common PHY properties
-Message-ID: <d9b6212ad5137feeb58b28e9b0784f1084c813df.1769519758.git.daniel@makrotopia.org>
+Subject: [PATCH net-next 2/3] net: dsa: mxl-gsw1xx: configure PCS polarities
+Message-ID: <db296e8f477f34498979cd580898170f8ae537e5.1769519758.git.daniel@makrotopia.org>
 References: <cover.1769519758.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -45,25 +44,111 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1769519758.git.daniel@makrotopia.org>
 
-Reference the common PHY properties so RX and TX SerDes lane polarity
-of the SGMII/1000Base-X/2500Base-X PCS can be configured.
+Configure SerDes PCS RX and TX polarities using the newly
+introduced generic properties.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/lantiq/Kconfig      |  1 +
+ drivers/net/dsa/lantiq/mxl-gsw1xx.c | 38 +++++++++++++++++++++--------
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml b/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
-index f601e5f9fa6a..bf199b096dc5 100644
---- a/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
-@@ -105,6 +105,7 @@ patternProperties:
-     patternProperties:
-       "^(ethernet-)?port@[0-6]$":
-         $ref: dsa-port.yaml#
-+        $ref: /schemas/phy/phy-common-props.yaml#
-         unevaluatedProperties: false
+diff --git a/drivers/net/dsa/lantiq/Kconfig b/drivers/net/dsa/lantiq/Kconfig
+index bad13817af25..98efeef2661b 100644
+--- a/drivers/net/dsa/lantiq/Kconfig
++++ b/drivers/net/dsa/lantiq/Kconfig
+@@ -15,6 +15,7 @@ config NET_DSA_MXL_GSW1XX
+ 	tristate "MaxLinear GSW1xx Ethernet switch support"
+ 	select NET_DSA_TAG_MXL_GSW1XX
+ 	select NET_DSA_LANTIQ_COMMON
++	select PHY_COMMON_PROPS
+ 	help
+ 	  This enables support for the Intel/MaxLinear GSW1xx family of 1GE
+ 	  switches.
+diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+index 79cf72cc77be..6284b9afdbbb 100644
+--- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
++++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+@@ -15,6 +15,8 @@
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
++#include <linux/phy/phy-common-props.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/workqueue.h>
+ #include <net/dsa.h>
+@@ -229,11 +231,17 @@ static int gsw1xx_pcs_phy_xaui_write(struct gsw1xx_priv *priv, u16 addr,
+ 					1000, 100000);
+ }
  
-         properties:
+-static int gsw1xx_pcs_reset(struct gsw1xx_priv *priv)
++static int gsw1xx_pcs_reset(struct gsw1xx_priv *priv, phy_interface_t interface)
+ {
++	struct dsa_port *pcs_port;
++	unsigned int pol;
+ 	int ret;
+ 	u16 val;
+ 
++	pcs_port = dsa_to_port(priv->gswip.ds, GSW1XX_SGMII_PORT);
++	if (!pcs_port)
++		return -EINVAL;
++
+ 	/* Assert and deassert SGMII shell reset */
+ 	ret = regmap_set_bits(priv->shell, GSW1XX_SHELL_RST_REQ,
+ 			      GSW1XX_RST_REQ_SGMII_SHELL);
+@@ -260,15 +268,19 @@ static int gsw1xx_pcs_reset(struct gsw1xx_priv *priv)
+ 	      FIELD_PREP(GSW1XX_SGMII_PHY_RX0_CFG2_FILT_CNT,
+ 			 GSW1XX_SGMII_PHY_RX0_CFG2_FILT_CNT_DEF);
+ 
++	ret = phy_get_rx_polarity(of_fwnode_handle(pcs_port->dn),
++				  phy_modes(interface),
++				  BIT(PHY_POL_NORMAL) | BIT(PHY_POL_INVERT),
++				  PHY_POL_NORMAL, &pol);
++	if (ret)
++		return ret;
++
+ 	/* RX lane seems to be inverted internally, so bit
+ 	 * GSW1XX_SGMII_PHY_RX0_CFG2_INVERT needs to be set for normal
+ 	 * (ie. non-inverted) operation.
+-	 *
+-	 * TODO: Take care of inverted RX pair once generic property is
+-	 *       available
+ 	 */
+-
+-	val |= GSW1XX_SGMII_PHY_RX0_CFG2_INVERT;
++	if (pol == PHY_POL_NORMAL)
++		val |= GSW1XX_SGMII_PHY_RX0_CFG2_INVERT;
+ 
+ 	ret = regmap_write(priv->sgmii, GSW1XX_SGMII_PHY_RX0_CFG2, val);
+ 	if (ret < 0)
+@@ -277,9 +289,15 @@ static int gsw1xx_pcs_reset(struct gsw1xx_priv *priv)
+ 	val = FIELD_PREP(GSW1XX_SGMII_PHY_TX0_CFG3_VBOOST_LEVEL,
+ 			 GSW1XX_SGMII_PHY_TX0_CFG3_VBOOST_LEVEL_DEF);
+ 
+-	/* TODO: Take care of inverted TX pair once generic property is
+-	 *       available
+-	 */
++	ret = phy_get_tx_polarity(of_fwnode_handle(pcs_port->dn),
++				  phy_modes(interface),
++				  BIT(PHY_POL_NORMAL) | BIT(PHY_POL_INVERT),
++				  PHY_POL_NORMAL, &pol);
++	if (ret)
++		return ret;
++
++	if (pol == PHY_POL_INVERT)
++		val |= GSW1XX_SGMII_PHY_TX0_CFG3_INVERT;
+ 
+ 	ret = regmap_write(priv->sgmii, GSW1XX_SGMII_PHY_TX0_CFG3, val);
+ 	if (ret < 0)
+@@ -336,7 +354,7 @@ static int gsw1xx_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 	priv->tbi_interface = PHY_INTERFACE_MODE_NA;
+ 
+ 	if (!reconf)
+-		ret = gsw1xx_pcs_reset(priv);
++		ret = gsw1xx_pcs_reset(priv, interface);
+ 
+ 	if (ret)
+ 		return ret;
 -- 
 2.52.0
