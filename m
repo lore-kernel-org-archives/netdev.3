@@ -1,112 +1,123 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8060C320A34
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 17:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769536347; cv=pass; b=QcHpD09+NjFevrCMRX9Z1HQyCtxzobWS/5uc/+TBcdAzFyOgfmDDToIIIY4eAu8lGemLQDoXNXq7q4VfXfkKGPXpxxEgFmQXtj3UGUFVu2hCwIcH0saVRXla6bC7fosrP/Xg3b9sfa8kj/bGyrxfDEsN37Z4zHX7OaPsbMo+Op0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769536347; c=relaxed/simple;
-	bh=RL/HGZ7AUNdxSov+yggntAAQqajmYC8nRg6O8zAOw4c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mny/9zik4FP/IdrCZ/mymRaSOiMXf09PpNem4cSBAJp6PI5knW0xV9tdaakPGKLVrfuNIxkPZQVHdnhiQfEwYLawkivkXaHDB7+f/FNLBXPX4LFt5VCuhrLiZlDymISEZBybVd0kPXk8WPYd10qRMEHTlUlAFZMB7EGsWZl51dw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=OZE0yTGB; arc=pass smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A420A25CC74
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 17:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769536557; cv=none; b=D6BWlnExZ0fuLIAhhmnc3hj3ZzuYme4B4amgHVf3MQT/LtCPhWdNe7pEjAGqcHfORycTBW1bXcIRdyo3o6FIH+qZaCQz15gXB8fwyDD7iAO74nDFYlIf4buArJHvuSX6eeJUCzr7C5M05LZzuIImiYayYvEjvjzLY5QETqKHGtw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769536557; c=relaxed/simple;
+	bh=cP+OGD9Gn9U/NQ+AprPLH+WCYSqd5uNqFtviPLQ3STE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=HJxJ7Su69j6sPkEtJlf3wQeXTHPAXe0NVziCpwunOz4WPU7ii5yL0Bu8BeOGncimByrgeyMmpJZDKKnmiOyVIe4eT15LrltH+Cfe5Ukh/UXlnus2EhXxJBLlESiWUkfBW9sQBqKtX2VM11ekaVYPuAym+iZo3tqfqV8cmunFI9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2ztZtMy; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="OZE0yTGB"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b8870ac4c4eso658565966b.2
-        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:52:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769536344; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QQuCkbjkg8VH1i7UbNOaPI9NoKl0US+HVqcsjNATkSfFnAx+PHl59Am5ypv7pD9yfR
-         HWG+YM02xWAb3S3TdAh8PVUu7dne+IusCvTtq4/S9JTmhZXgrqt3qCNEehjVKL1bvFat
-         oZKBDXb1FbBRptcCLgTpU+gg1olHAVyzJxEcnQ2BK1ubmfi91ncgz90JOS9aaIJRvTrI
-         i+ctBpMXb6gYXrvuKXi4VDnBBhA0sMDDkZV+43CIijdIOYpei7EYgmYteqvKflSN1ngw
-         mFF5+Xfvppq9inQh99xPPivE9CTVAVd02VeKJ78LVX8DfLLFCLUl2ZxiwVVK/v0o3OOA
-         QG+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RL/HGZ7AUNdxSov+yggntAAQqajmYC8nRg6O8zAOw4c=;
-        fh=kKsuARn9M/3LH9PQVmHs2gAh78mbUvBPgDQX2GqedBk=;
-        b=QvmMasRxQXeXB6nfeOCyV9hjQwrz+Zauc6TqNJBg9SdfeSbiuXZghTa2wKPVomYgor
-         pb1x6zhW7ByQ88YPp9aJdY8/G3Y28Yhlz9vdJrIhW5cCQMktFFPSTgm6mxWgDEI1NGsv
-         Xuiu+xzpYxxV2Y8u3dEbAUTALlKkUDp8i2YrTSc48tL4UqLJjHe/VfX2xIvOMeMCBQ8M
-         OrshJjoy7pW/7p4CtZnGVqjUsa6MWFLFn/qYtUJKAjiVt8Kn8aVVKaQESDh7EY4VC4D7
-         lUtyQ6hC07d7nd4DH9lPvD0MuSmEtRxeHgaQhfnOo97vazci4bJ9QWCxmVAgq0P3Ja3G
-         XNfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2ztZtMy"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47edd6111b4so68269375e9.1
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:55:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1769536344; x=1770141144; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RL/HGZ7AUNdxSov+yggntAAQqajmYC8nRg6O8zAOw4c=;
-        b=OZE0yTGBT6z73u8rZ2GOTmGQYJoP4zVprvCcL8Xhs3Xi16hcfk26/BIDbFhmNsD2fS
-         6zlZbvN8syE1ltHsybgIZbiibINCR8GZxECSZcPyQxn2WLa9HapP6Uw6xbtDFhZ7jTGJ
-         4SNpugPCNbFCkN55axFOuo1p9ruKWKY4l8ajFoVSAuGTLmdAdiMNDKbkJ4NJMSUikVUa
-         0S6TpVis6mj3OuIdrCPFtCwJVUCAKZfdF/VsQBVfQy8lb1c7vUmEktMT2KOFty2BOQ0J
-         E01bXNkIvj8ajilRTXUX5PTktG4hASk5WZed2KIl1rEPDEGwaQS7Xwv4dKmZJ4HHZuHZ
-         eFdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769536344; x=1770141144;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20230601; t=1769536554; x=1770141354; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RL/HGZ7AUNdxSov+yggntAAQqajmYC8nRg6O8zAOw4c=;
-        b=YfZDY4e2UsxVUE2kRWSsJkclbMoQmZmecYOXJOE6ar1n7WpgM2Ynu+AQVborgTP7wf
-         oTGYkvU0nMvGcBikOCT/kmHo8+G9ehsbXCesMvUkzyFuVjL72v1X76es25fitv6S6SxI
-         NpeJD6Hdu4QNCaAZpRljb4KYe70S+HibJ1+ecUmLpi/2WuieWdQIHxa5NxXGmmQoJ7M/
-         TVXwjZFhoG6cqFJjq96GJqyRI+OhBH/PY63x3xtZfp7RFGqHXYJHBoeZlA4gaVt7SNeN
-         XCWJJ7wy7l1+keOOd12Mqc1iV/WhmjT0qYCA1eWpiUJ38mABgYDMXD4TXAF6Dh/jiX6B
-         0YVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAmd61gl7uYsVjS+GMAMM2IdQdS1VSf2KlXH3JaN5KxK2I1K4JooKwyuQie4d5XCkUkPWfHLc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXoHx0T1rWoTg/0BfFIgj1X44bfnMPrnroOu40ePzg3KRK1nq5
-	06unhtyzZl05wTNEjTZJnhCcKqbnQcUwnRuVIpWShDnRNJQLJHu3ivznRpxAqzMP+3lCUTxGbqA
-	WzDY6+S9yLon4ujoOgq3Y/hKPhi/nlF4SvWU2dc2zZw==
-X-Gm-Gg: AZuq6aJhORIMzAzIBeIZnX1wjqlv+Ie1LOGwF3AhHQg/CbuF6Hkzy+4ldPyO30HLG28
-	2NBAvVHskKt06nkSZ+tbncvc/TdmaRrOjVdpiVtqnJTytTq1E8q9io2QOc1sAfR2wWpe0eOU5Pm
-	dHqh19FIVFidgbq1gQVVi2aYVtUAz6O3yQbHhtqUesde9UJQgsjwqMb0q+X70EZE5XH8P7zen9r
-	wr1AFYmJ4W8Vo6B4AzetRMsnYn2qS2cVA/l75z4JywKntxaaxKNKFu/eKk9KHn2K+5811P6b8VL
-	FJ87A+/HaoI=
-X-Received: by 2002:a17:907:3f0c:b0:b76:49ae:6ee6 with SMTP id
- a640c23a62f3a-b8dab1a3ff8mr209591366b.15.1769536343903; Tue, 27 Jan 2026
- 09:52:23 -0800 (PST)
+        bh=hthcVHV/k0u57vyFoX+P0YGVxTjphzbI21IfTtl3ntg=;
+        b=d2ztZtMyuHtwae9rDJAfRczmlXH2cg6dEZUAP2dHGj4h8cYouQ+gWwCi9nnKWJ8gD4
+         r2l0jswVhQ3RW82SGK4AqrjvPrm5JAgUEIkv9/Qxc52OFCy/2sBfp3rbzhCUZPFitkIC
+         OTjF3h7q/ioUm+1683M70NajI+Uw55tHveN7ddwd/wahwFyzqlDVd2LE+3YAd4hquQig
+         hmQCpeh5b+/tXK583YweXNywBLHmcqKMPTYPju9AJK1k4f3cYsKFR2UcuKwo54mkafT5
+         0HTxWCw60XilwjYPQzXBzOdI673tg0rsvEuC+JnXOK/75hJV5EuuXFMuHaRXNqzqeMKs
+         YhXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769536554; x=1770141354;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hthcVHV/k0u57vyFoX+P0YGVxTjphzbI21IfTtl3ntg=;
+        b=Q4vdn4ogKOF11UcD6aHiqBVh7GRKOfNI8mcb8OR8HqdO0R9+KUcjh7ciSRjGOgtwSG
+         cjJVVHJ0gIR/49oQa5ETQvkSTW9rVbcuuC72SjfSCHtFHolqKzcg1fMNlAW8nJXc2JO3
+         lCDJKTenUZBX5zbtRfgiAxjS1yMqsVd0+oD31mi/YQ/IimcPEAvDMfqgarmecmqyGvxG
+         0DnPVyXqz53oulDzFqKALv4NtDe5UpR/PXzfVbYKHw2pCT7/2Y7TGqZhYigJcgoFHXJd
+         suXqUS75pWwhcGJL+QzHHrJ/asthTj4EyGxV+DlyABlZnCK//mW8q+UM2jZn2z511UXW
+         fhqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPb6ajtv1oUmmvDNFC5iScI3BOS1xvLmF2eMmvVp9R2l9CRi1g9X/AiPMMGyPQntBLeoYC+II=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY9whcJbYe6cP9ANdcm631ZLgzw6Aey5jD65bs2MW903WyRhY+
+	UNlRrK6h4lgTX+3B2K8tbSWwni8x1zQNygfwwYKaaTYYAlmEJ7FmYT9Fk2iRCyxH
+X-Gm-Gg: AZuq6aJMm3RBaxylahihp1qK/ngJdKvcHFw6MRlv8L6wbwJPm76jTyrnYDNP3aq9Htb
+	v6fXFRYM3ngfWUGzxgSHdzbJvyEnlWL16R16C40CT0YtX1gfJai3QjJapKrV2akhejvGXQCqYL1
+	IjccxNakpW09lwdgagVdIn+fdT8VODrcwXnbam6T1BOZ5Lp7AY+V71NTnYnmRO4XQYa3CIw61Lx
+	Of3jGd17NzDnFhIZx2gXDXcjTlZ3B4evo+ePo6gDFnbqnnRhPuu53IzfYrHy085aUcUGN5xja2M
+	rLNRmMHUc5RTq2IqWU0yiKWRr2kg0iGcuUgyaru8jnJyfI/Vw8scLE9hMYAbKU2bMVczdEjIIFq
+	OW2yDXpJBR879sGj9wj3nWcKau2pJeIPocCdyYnwqGcB3wvDjN2rAyGYf+n0PPGv+qAgI3rtHH7
+	mr3fekctC6NkCAMA0tnt1YFCWCofIfgi96uDJ3U0fdqij46JYrED0T6egE9OUuoiKVJQ==
+X-Received: by 2002:a05:600c:4e15:b0:47e:e414:b915 with SMTP id 5b1f17b1804b1-48069c0fdf3mr36029985e9.2.1769536553920;
+        Tue, 27 Jan 2026 09:55:53 -0800 (PST)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:7800:6d36:b552:d917? ([2a02:a03f:a75e:9a00:7800:6d36:b552:d917])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1322f40sm397886f8f.34.2026.01.27.09.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jan 2026 09:55:53 -0800 (PST)
+Message-ID: <4196ef50-2ea0-4067-8d92-bc797ed7aec6@gmail.com>
+Date: Tue, 27 Jan 2026 18:55:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201233853.15579-1-jbrandeb@kernel.org> <IA3PR11MB8986697A94FB36E893C7E87FE5A7A@IA3PR11MB8986.namprd11.prod.outlook.com>
- <d6dcd835-7564-481a-a854-25b187893e6c@cloudflare.com> <IA3PR11MB898654344D883B1CC06A7636E5A7A@IA3PR11MB8986.namprd11.prod.outlook.com>
- <a2abd596-f8fb-4c2b-9181-7c2c9f0b9936@cloudflare.com> <17575378-0c3a-481d-ae8f-e0136509defb@intel.com>
-In-Reply-To: <17575378-0c3a-481d-ae8f-e0136509defb@intel.com>
-From: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Date: Tue, 27 Jan 2026 09:52:13 -0800
-X-Gm-Features: AZwV_QjtxLVcpC7ROKzH-eaEz9ZG1GFQ9cIgDBqaeFV_thRRiLXMknF6DUViIRU
-Message-ID: <CAB1XECXEQHuU29BaX4j0iMMsz_2SKkG_uV=4Py9FYVxfT0zeuQ@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH net v1] ice: stop counting UDP csum
- mismatch as rx_errors
-To: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-Cc: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>, Jacob Keller <jacob.e.keller@intel.com>, 
-	Jesse Brandeburg <jbrandeb@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	IWL <intel-wired-lan@lists.osuosl.org>, 
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 4/7] ipv6: Set HBH and DestOpt limits to 2
+To: Tom Herbert <tom@herbertland.com>, davem@davemloft.net, kuba@kernel.org,
+ netdev@vger.kernel.org
+References: <20260126194826.236075-1-tom@herbertland.com>
+ <20260126194826.236075-5-tom@herbertland.com>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260126194826.236075-5-tom@herbertland.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 8, 2025 at 2:21=E2=80=AFPM Jacob Keller <jacob.e.keller@intel.c=
-om> wrote:
-> Right. I agree with Jesse's proposed change. We still keep the stat for
-> the ethtool but we don't report it as a full error to the standard
-> statistics. This matches other drivers from our own products and other
-> vendors.
+On 1/26/26 20:48, Tom Herbert wrote:
+> Set the default limits of non-padding Hop-by-Hop and Destination
+> options to 2. This means that if a packet contains more then two
+> non-padding options then it will be dropped. The previous limit
+> was 8, but that was too liberal considering that the stack only
+> support two Destination Options and the most Hop-by-Hop options
+> likely to ever be in the same packet are IOAM and JUMBO. The limit
+> can be increased via sysctl for private use and experimenation.
+> 
+> Signed-off-by: Tom Herbert <tom@herbertland.com>
+> ---
+>   include/net/ipv6.h | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+> index c7f597da01cd..31d270c8c2e4 100644
+> --- a/include/net/ipv6.h
+> +++ b/include/net/ipv6.h
+> @@ -86,9 +86,12 @@ struct ip_tunnel_info;
+>    * silently discarded.
+>    */
+>   
+> -/* Default limits for Hop-by-Hop and Destination options */
+> -#define IP6_DEFAULT_MAX_DST_OPTS_CNT	 8
+> -#define IP6_DEFAULT_MAX_HBH_OPTS_CNT	 8
+> +/* Default limits for Hop-by-Hop and Destination non-padding options. The
+> + * default value for both is 2. This sets a limit at two non-padding options
+> + * (see sysctl documention)
 
-Hi Tony, can I please get an update on the status of this patch? it's
-been two months for a 1 liner "net" fix.
+Reported by AI:
+s/documention/documentation
+
+I guess there's no need to respin only for that?
+
+> + */
+> +#define IP6_DEFAULT_MAX_DST_OPTS_CNT	 2
+> +#define IP6_DEFAULT_MAX_HBH_OPTS_CNT	 2
+>   #define IP6_DEFAULT_MAX_DST_OPTS_LEN	 INT_MAX /* No limit */
+>   #define IP6_DEFAULT_MAX_HBH_OPTS_LEN	 INT_MAX /* No limit */
+>   
+
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
