@@ -1,135 +1,113 @@
-Received: from sonic307-56.consmr.mail.ne1.yahoo.com (sonic307-56.consmr.mail.ne1.yahoo.com [66.163.190.31])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854FB25CC6C
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A10925D1E9
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769497772; cv=none; b=E1JToU9gee4iCg7R+d2RGYhG/rfKqQ79w7lrF3ycr4MUPS/FQS5jz9hx9YP0mYdqKqWmIzp+n/+hN58Y2FXkBb3RgM2EvWnWcPnAOozhYJQfaeiWYxqUKivaXASNeumQSEnwBv8qzCm0M8566yp9k6BVVfWQIVFDYzU1tSt4HyI=
+	t=1769498216; cv=none; b=V/2lno8f7gXvOmeBq5I6iV6DOzA29jfu81EorauoTYmqugmPIEwJqERiXg+BypHre16DaIyPN9jlK7EHUN0Jd8HwrDSdspmgGhZLc5spezxOWRS++k+J4TVmFxDND/umgcKgMs9wIHM8FfAbpOGkQX14+5CSp/W3el1YsWPJTV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769497772; c=relaxed/simple;
-	bh=OyOaWwBvHND5r3TfmA5EfR/0ZZhhdD9apaXkw0UcDzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XEWF36d0h2Ef+AggjkS5giU4v94sZylMoeBDvlk46YNbxE9Apnh7HCLKeOIK994NijN6Zkewv8PA9kqiE/2ZSFCgUQS1IQoR87YEOKxqz8/koolYKwk1FEWdRsNYy5aQ1Av/9G9CLTuSdttYyJKs3QDqDOWDe/38kpj57sswUhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=DMT4vEAs; arc=none smtp.client-ip=66.163.190.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1769498216; c=relaxed/simple;
+	bh=O4lpA3jRQGFJYxvQ864WpAw3jPoN7vazpgZMK6tCcgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fk0BEbumsHMW0EVhHzqM4Cuqq6nmnnlcf6mTp+OxGWGDMAVsdu6AA84hCz5oQL3sGDTeSaC3Klg1NF6rx7zMOvhxexPgtUsHGVKECxk2FnSt7+iP+fW9yzsIXk9bFHNovPJprFTKifC22euMb2k6BagNmtP+NOB9U8pCa6XMY/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uat+wywh; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="DMT4vEAs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769497770; bh=NWYeVvUmPkhrr6EVYaqNHPu/ef7X6jiiHaSE1eZ3j9I=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=DMT4vEAsea2/c2543wsBfOzH9PjzTLgmXOsQl2d3jJvGFjD6XHEhY6saHlWxWPRHBbrB7bSaSn3TKbvj7Jx202b5hkl7j8DjQSJhe6ibwhXQrRo3pyfyDV36pPJPRS2uYCkaA2+x08IFkS5vzvYQ4JYii222vqIvKy2fVdpWgubRi2jGVOy5L6hD9BxmXGMDSn/GJS8nNi5bkFFEfw4IuavFeBf57aqs+BD4OsKOJCmn1im3qQEV5ihjZoaYf6o4odwOc/oVe+q/YWqielDpSeYEgWEH7sA75nVGSlQMQt/5hjCmSLjXfepNBrImBu4G5kK8MacjcdpdvsIpUmo0/g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769497770; bh=wO24JOpzVi0yWp4J+rtd+GXfDp5U+sv2hsTG1OFKkkX=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=aNlvpzxm5CmYmcl1CaRDhjmGTUPfnB0aHKlphZpnGGEGr0+WlyFjaWEJhwwSwUnDlmfqtdlkiw3bXXWuv8uyW6KumWOetG/2fymUixmusCVhf5Mw02eHjccI40EbOqrT09dPYu3zF6LhJQ0ChD/LdAabUqGU473+ipATxZ+O7iXGnR5wbIef0pEZSmGZfTzZi5omIyNLiGuhRKh/ImQ7/tPY+bzapDx0EEcgSr1hUVR55An8Zid0f/tzsU7+KZJYREiEVwZjs2JWsgzOHpe645d+ABv55x2m9leSDRrTyyo0pBJnpHro40cD5I7eGXt+7EaO9dhy3iN7IDXJyvz8tQ==
-X-YMail-OSG: QZfnS54VM1mgSGy7yQ4GIP02o9I94bwkzoGeuEPAbh6Yfge2EjfvchkVX3tPyKY
- VjW7Ij7FThCcBvKc1mRACPBoy6LpS3W8p_0j6dHpr.mzM_MJVY7gITdAeHNx_AOwBnegzpm3cmmm
- owAN2h.eTAgxwcLh9wN7PSS85Iw_d3zMRMdLdN7H5dJs_2McEnVB7ToVpDrl.p8AxWYGX32GfGwG
- EQKRKglQaaAMVmS_0e_CqcP.IyLxpuEIZYU5TeCJ3zn4E3pTI5sqJVMz9bWWWdpZMTfyDwH592BU
- AehGJsU.DOc9ksZ65BzQOZUY.1LmxzQS7FAejsGK_Tl5MRap94QyTPva91TD9p7CV858b7uPHjeB
- v.HNMEf6SgZSZM3ix47u.UJ9CMFKRTJ3_FQ57XDrNX5zeiT_mqnCzTjzcsdAxbjEidWK0XaCFD4F
- 4UT_tBdsAODf98PuKoHCZ.xzQ1pkVLQDqROU5xU6rB0suQzQjoYXywAAOiQ_BDsDDs6CzywQ5fF.
- UxudbCjRBHwEnk69COxm9ytKIeS5sgIwL8uEjXb.m7VyazO4v4Hu134PaAznnc0WEw_nMwgKVNN1
- lL_CL3DghovUpy1BigwUsWAK_o3FjC8yOrgfdeYKZ2hL4BIwAr2oTafFaEKaRyFwWwSUpQWMXYqr
- Q.qTgS4pPgdqnnp4JHMh212OfZfaYJa00YOWucrDd1g0RyBfnf8nPncIY2wAjGM._MmbT37TxS9L
- 8VPhnWwOdB4LyVfj2msC3ahn545h5x67txUy7jUVy6inmpaQsRhYL1dSMwe6DgQJ9P2q1WV18A6q
- 7O_OoB5cwP9ixrNASJiac32vF6qe45QWt4TzmFknW18c22GkJV1TCGxEqJFi7ot_LENL.r6EEFa1
- 1gFDCJFNdU_bn.shZ_FkCuUixAmaGwPi0spGFsHwHf9A.5GgXVP.hS3PEDOvDqt7Z6UsTqGExXVv
- VoMev5DooCZZmCluslMa18sa3bvqRhl09Hlu2Z3D5PZSPfgCyAsf97XLVs5O0UNcW3s5PQ.KDX1n
- Am_cLhq0up5hKe_f3xYiKbq7EvK4wMPZpmoR1tx1a2nuG9o87XpofIhbk1F.WZXzqnbXGjEZxSej
- .ay.BNw3Of2qSFJTGfOy_MbaEvVwG8CfQrBoV_WEPXx2X2bzMChOf54_4NcPPSdtOy6C31rA7Viq
- SmTRhf0yfC.A.v3pBhNNB52R8wbdNOqtesFPOnaF109BLb50uOHBJA8otw0AjMWsxNBoZDD8zh0.
- 9TFUHW9JD7qRqKgST5td0yiKYgyfZNNRVBa15WyEq3ikH1tRVy8vzDfNcWEouhg0C8hAqfofHWRp
- hr37C5S1XbdwkMS6gOXOuWRHlk1i3wsdHaZgD9DcNSI2ALTn1zi0dwHDZlaKTiycSiUP6Plsgyof
- rGWGQYYSQ6TS7Y93p2xrWb.3e1ZzNr6TXhF.SR5B2rGBBtNkMDUbJebr47oOogc3w0lLy6dd1JBe
- JpOYvnYqupmWc9GrRsULaGfrzX9fHdOTNiLkcXvkI01lkl.lcWB9RMoTqHBXXo1SsmG0nqrGrF.F
- 8Kr3SC0pcOVeFZcja9qzQuvb_vrxyNf0w1_Rb34UclcV8N1mXnSeUcgIGOD7GkHhP6d9FhJ2T59.
- PWWKOHWP4RCGUbWHQNvu9EGuL7nKpL_zIFMVJuDBol8Ke7Nezeb4jIIGhY8h_u6CCkEicQBjRdUT
- rqKK6O1XA6CTTsjeM1ASa9g1lRmI41WblR.VBFV2yoVaycqWqJa5zyKfgpQlgk1Ui.7c3xvPlFTm
- YX1mBl3yjn_PbJ90uHezTgZSrBZHgqEKHuYuklERBJsQT1qWnmQx25eqkP0h2K9YVnkl7W58GawL
- hpNsrp7zTrKbptorcgO_hlAwM9z6uebLmj3RiydlF.cgeTAHmdwodg9Hw2c0gS7vCxMnmDTS6.tu
- OozZLe_Z_C38aHnYDZLwoZBfqBfvyfpPd2rJnTPta__jvVwQ4cNXCMENnhrglf1LatlCxsQhWsMY
- yYt3FYElBBM6R8mEuIq7Vkke5v4gfvQk3uuVgJ2lxBPFImZqGD3beqEDsJcxFOdZ3drrEN6duyZ9
- gy28TdbSmanUKkAk4Cx.aWmB4Ipr2TC7Hp10GZGvw8_25cxFWpTPMde.my2C0IwHXSe3tooQFcZ1
- BhYmfRZO.54u8MGZsxgo3F6jZydfS_zCK.3uiISapH945C44-
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 21d8091d-7a2c-4aaa-9141-8e46ca7a1c00
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 27 Jan 2026 07:09:30 +0000
-Received: by hermes--production-ir2-6fcf857f6f-gch58 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 84771875e54e61ed0bb89230515c8a5a;
-          Tue, 27 Jan 2026 07:09:28 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v7 11/11] net: tipc: convert tipc_udp_xmit to use a noref dst
-Date: Tue, 27 Jan 2026 08:04:52 +0100
-Message-ID: <20260127070452.6581-12-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260127070452.6581-1-mmietus97@yahoo.com>
-References: <20260127070452.6581-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uat+wywh"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88a2fe9e200so54184246d6.0
+        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 23:16:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769498214; x=1770103014; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sSGbfDfuOQBUd78sdGxgNuQv31knXCkQLP9+PKDyscg=;
+        b=Uat+wywh6aLRwm8ft90sDzzOzLf4S6Z8fc7BN0u/rjchl6joFaFsDg4fWkhWOzGRp2
+         orgYgFo/oYpml7p/U5T2e6PVzFfDP8bmuEguEGA90bIshogjG9StvvAWhQTZAL9aA2nD
+         LzJCgOVNEt1HerYKC5Rr+u4m6+DcRbyeFFRszk5+qMULGM3lB3DMDcVKOLIJeyXsqRDI
+         TCl/Vvhc1p+Td2kw20RTYadDWeVhMVhcSxhpLjZOSchxBfJ4iZHAvxLTCVaZAwdtQ//r
+         qZ8PnC2wtVcQpiMb7bQrrJnQkUNRip2Q1hih+7D4R1G8E/Kk3whCHJvQM7cz/Q2T3fa+
+         p48w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769498214; x=1770103014;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sSGbfDfuOQBUd78sdGxgNuQv31knXCkQLP9+PKDyscg=;
+        b=AE9rlESrZNDV9OKj6a2/siwt9IyeqRTJ4BARk1okZFVDflx4/yWLEpDrkQsGrR2vHH
+         zwPv2Cy1ltgx6gvTiptLKmpaaw+Nx71xvee1jEiQHRGKT2fK50ss18znv8p7Z1Z/JtPt
+         uyR7q8Mxx/CNVFIoDZewAIZC812hrorJbMs93MADX/CfE5vGk/5Ksi2pO0hdZuRKw4UM
+         H09sRDrqx1i1zKqVUO1KuKn1G9nQj/TjWOC9FI2WmGr3jCFznR47SZ5f06mUeFK7jf3X
+         KMPMBNNeCMnEB2AodC7c4QBNk2/QxtCGrZvBmcyl4kSN0eo1mmyPpYbBUU1RIQxcXCiD
+         RrdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLXR+w8n7tsCfMqoDxPZOSGeRjJQdoJt4VSWbeGP2F2HmmERTx3YabQlAIm9CeE0I2T3k0Yss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOKtzF0XUOh2h4ZAm0isoHCS7f+V9w7xr5na0Vgq1Ya7KLDFX5
+	bPYFwQIUA58YvbI7sL+9rnOx2TNWscdJb60urvOP9S0famZGeWi97X5/
+X-Gm-Gg: AZuq6aJ9AelWsVUe72/2sDzuXvu1yTUqRx7VfbktrAJ6RvXliIabNb5hyxSOETweqS/
+	TYaBQLmWzAD5TUXLRTjeedZizqjTNti9O98Vvew8O3X0EodxABMhEj2XhaARloSYp231loTfJ0J
+	5IWx7omG3kvUz+jA2W5tblTN6FhQDCiznMK05YmFPs+9D1cXalrvgqm2zGzqUTWqEvai+69EKvU
+	8s/cVh/TKwwsh9ynQV3w69t83w+4Tv2QTOlXKDBNirkHyqfi8PS52eP1aEGHEgWSQEZd+dXVTb8
+	2z9jsIaII47JyY9mCu+vzxEwGih+OAR0EbEYx0/HkH3PBCyhY7rFXcZEGlIzHKzc0YJMWhf3cjZ
+	YNrOmWosWYxZ1MdvLfe0URH8TGUVSuuzy2XE9jDXo7syyGpei7GASB4PmXkC4lD5+DyPjjxImnF
+	5Wdeach4c=
+X-Received: by 2002:ad4:5b89:0:b0:894:6622:a6d4 with SMTP id 6a1803df08f44-894cc96202cmr9307226d6.61.1769498213952;
+        Mon, 26 Jan 2026 23:16:53 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6e37c823bsm1221262185a.2.2026.01.26.23.16.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 23:16:53 -0800 (PST)
+Date: Tue, 27 Jan 2026 15:16:46 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kuniyu@google.com, andrew+netdev@lunn.ch, vladimir.oltean@nxp.com,
+	s-vadapalli@ti.com, linux-omap@vger.kernel.org, rogerq@kernel.org,
+	stable@vger.kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	edumazet@google.com, davem@davemloft.net
+Subject: Re: [net,v2] net: cpsw_new: Execute ndo_set_rx_mode callback in a
+ work queue
+Message-ID: <aXhmXkWqrMOTCgnH@pek-khao-d3>
+References: <20260125-bbb-v2-1-1547ffabc9d3@gmail.com>
+ <20260127030556.3839208-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HTNmXs20Xq35qd8U"
+Content-Disposition: inline
+In-Reply-To: <20260127030556.3839208-1-kuba@kernel.org>
 
-tipc_udp_xmit unnecessarily references the dst_entry from the
-dst_cache when interacting with the cache.
 
-Reduce this overhead by avoiding the redundant refcount increments.
+--HTNmXs20Xq35qd8U
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This change is safe as both ipv4 and ip6 support noref xmit under RCU
-which is already the case for tipc_udp_xmit.
+On Mon, Jan 26, 2026 at 07:05:56PM -0800, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- net/tipc/udp_media.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Thank you, Jakub. This is indeed a valid point, and I apologize for overlooking
+this issue.  I will send a v3 to address it.
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index ba4ff5b3354f..cc1ef043aaf0 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -175,7 +175,7 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 	int ttl, err;
- 
- 	local_bh_disable();
--	ndst = dst_cache_get(cache);
-+	ndst = dst_cache_get_rcu(cache);
- 	if (dst->proto == htons(ETH_P_IP)) {
- 		struct rtable *rt = dst_rtable(ndst);
- 
-@@ -191,14 +191,13 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 				err = PTR_ERR(rt);
- 				goto tx_error;
- 			}
--			dst_cache_set_ip4(cache, &rt->dst, fl.saddr);
-+			dst_cache_steal_ip4(cache, &rt->dst, fl.saddr);
- 		}
- 
- 		ttl = ip4_dst_hoplimit(&rt->dst);
- 		udp_tunnel_xmit_skb(rt, ub->ubsock->sk, skb, src->ipv4.s_addr,
- 				    dst->ipv4.s_addr, 0, ttl, 0, src->port,
- 				    dst->port, false, true, 0);
--		ip_rt_put(rt);
- #if IS_ENABLED(CONFIG_IPV6)
- 	} else {
- 		if (!ndst) {
-@@ -215,13 +214,12 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 				err = PTR_ERR(ndst);
- 				goto tx_error;
- 			}
--			dst_cache_set_ip6(cache, ndst, &fl6.saddr);
-+			dst_cache_steal_ip6(cache, ndst, &fl6.saddr);
- 		}
- 		ttl = ip6_dst_hoplimit(ndst);
- 		udp_tunnel6_xmit_skb(ndst, ub->ubsock->sk, skb, NULL,
- 				     &src->ipv6, &dst->ipv6, 0, ttl, 0,
- 				     src->port, dst->port, false, 0);
--		dst_release(ndst);
- #endif
- 	}
- 	local_bh_enable();
--- 
-2.51.0
+Thanks,
+Kevin
 
+--HTNmXs20Xq35qd8U
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAml4Zl4ACgkQk1jtMN6u
+sXGOLAgAqOgEQOMZa8O38ImuMB1qyHJitTRzmWCu6eNKkTEuHm525osQVFQF8YJr
+9sjzpJkJwYkpASyr0O15t5VQtwhbO43vU8HTS1JldIzSaDnQK9yDWO9cuqDhn6VP
+aOp5aLuActYM6GfK8jqWQdgEn0Pz+xpBkryqR5/4IRWfJu5t738w/E0RBU7wEuZe
+OM7Z+DIjEkwHea4Kijt+8vTPUhawi+cKoqibQRX/VRz5Pre6ujAdKk5WgZ842rsn
+Sn37YqLLr65A5VPS3sR6bv3VkY3oT9RMVkckVJXlwllQp7VkDDlt7hD17d4yd07p
+k6HK2+y0OqCJiowbPJGs32qiY7ow2w==
+=v8L2
+-----END PGP SIGNATURE-----
+
+--HTNmXs20Xq35qd8U--
