@@ -1,70 +1,55 @@
-Received: from sonic308-56.consmr.mail.ne1.yahoo.com (sonic308-56.consmr.mail.ne1.yahoo.com [66.163.187.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1F227BA4
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECA4227BA4
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769499565; cv=none; b=MyzPeLd0axibkcoYspBLRhSyYgt0QU+kdofhHTMFURfPoGAFxovbBPS1MhZUzDDPC0mI/zZayRTwNsU3LtBi9JQBwjjs9fXRwukiPi1ynxxsSsYjEITvjJmxQyNGAIVFugt6Pz6y34BZkDrHCyI5rmL0Z0fOf/u2F4bus1gfkZM=
+	t=1769499576; cv=none; b=P1bjKgu2RYcSCmUjAoVhhKs3zIGF7DvUZqPV+p3NRVecETdYV+6rY4yf7gj6b2DgaK3NJrFAHeyME9y+CuTWbvJ4rVVtFZViF4B50edL9yrz5Nt1UvO8kREOUNA5ovYLeo3as7cY77/wMxL447SsYpdEPFee87/GM1/5qRXBQ/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769499565; c=relaxed/simple;
-	bh=0N/YtMRiZdwnpITqNZA7hDBX2/E7yjQbL3Abjl686C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFPbNvPKlY+ZZt2AP2YLmDHtxngDOFugRRhzgw+lIbFISUOJO3nggLvsPOYay3YuDwWUHdkkoqU8OOT2O+rJddXwCzmoiLU+uGV+rPXeZDAHI0Ng3LJq7xVVhJO1bNCJR3GhYC6ZlBhkdtUqPwXdtv/tFyb2gNXGgTwjbpe+fI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=kxPzku1t; arc=none smtp.client-ip=66.163.187.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1769499576; c=relaxed/simple;
+	bh=eHi/F5rgbKOLh7VbcqHDYhy9AXrHcsfvJc2Mvm/kcHo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=UqNFugdrc3kNMb6cEbjqBn7z8hK94kxCTywx2xlmuJZmRjGe0F/5/94lU/vPNUNAMNHfXVuIYVoOlNXq5RKATLNjS0sSOn8qAK01gE9Nv6qVsrFJMf7M2TjJxc/BvxniJ+m3Xaj/IldZWK6A9KlrMoQFFPSZTpTSWpaTOkfOO9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NTjuNJts; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="kxPzku1t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769499562; bh=ZO0gP5JNvG1sVwiPM9TlxEvQxqgo1b4/O0B3z7s7UMg=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=kxPzku1tZz0UlPuGZ3O34SvOS2/sJs6zTKv9zPu+umowXk1kN4XWALwW1/dcqumtRYRztioAou9JiDGbVp9v5TBaKaBeL36OZuzZxPxpdyYxh0KB089XW4aJBs6kbCFFRZ0FURaaP+DQN9admELtgFYd9Cl/lzYyklPB4XYWlStNLXI4drtERUneDmDgZklozE0GBR8QFwG1Fb6bxW8oHUl9pCiK87c3gyUSPXz+ocwBs6fnmVOepCl/rh56shoHQ/VRCp4LI9I6950p2onYh6PEMQEgCiE7X3uBwWIr+tkGptmU2VeF1Dp87vdpIkQr416wSP8ll6zTKfepGoYEfg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769499562; bh=iUEiJqXQuM7qGZcg0AIpmR4fOFbop67NG7SNI6ACQJ2=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Xikh9Egcz7b5ih02OUuI62MRKca0oIkXyvGTy+wmyT460bjBCqKs6kmk1fU0HMaEB2TetiFCIZSQsPcAfCiTktOHg/ejRkJStDD0BAQKG3fxsxzBZX9bAWw1BVqKhEbW8IudSW02uU2AMLVxE2ZgriyJaAaT0fOYxwbKPlsG+gxPGvb7UoUsR3EchvPqDYO+FFNWWfaV/JYnO/qzxnlPdjWWktlDT+Uv1wL5XIDoGjtOTYlWiGCo5Ve99KuM/1TwLbtU7j9VWYM2fx9rVHysmIqlVSXbzFAK2VctxOrnPPTijy3sA+RNitCRGiY8mz7g3I1akgBfTEji/mShhiL1fg==
-X-YMail-OSG: PXOBE7gVM1nrkaJ5trKSQI8fuW2p.WsZXKH1c5MCs1SoInY7R.R.rW0xWiXoEgx
- EihwlHF9AfAY1LG82KZRDukXyQMkNVut4Ur7Zn3iOmj_0oCQzAhlmlQoAoC9350qoAkGJSuEtuAL
- NkYTl9aLsqLVGWxruGgPnh0FzjU7MeaRtZpmSoVs5fxOSnJqUjJTy1WXBaQJzxvoyTkhD8eP7xXN
- kLUj1_BpNEytRNtyUyibY3fNBBj9XqORPnWJBBuCCDR8EBeI0HVQTExiiHrKeuCQ1MWF79Do9exS
- SqWv6jkzTlpmwrbHHM.SHqBP2uiU6yttlMCL_qXaTr_RNWoG5UGp8IVcPLduhvPLj4yvmJ3kfnPk
- gjfi5rKGxkzrIL1BIISnh.Ojb9RhvnVYz7eqzcqanUPOUbKZwmJNXTrHZABW5bxAeUFOZKxGy0Qm
- 9IQK9L_qAWEOy1ulw01VAfvNH9SF_eBt7irbGGwfalXO1DcLtwLwxcghGvo4oyAUncMZ0Hhor011
- qTm4J66ECcBJuz7HapVVwLWImVI5dtNKIRSJI.WE3JaD.aQ6NZMgag5JNt9Xbig3jlMJlSKO8din
- QK47yXFRKlpnsYSjT8i4DOY3bi7RSLa9LA.nCp9_YGzKVQ._HqVU4VfEQBstSwDk7wrY_1MJ2xvp
- wnDaACbjkvfAlQPgCQZ9uZD5XjLZdNtpKbyGIwp2zFSPeTosx_Eo79hy93P2xyJ9UfCYlRl1Llxa
- abJaM3P3XPrC_vLvVBNTZp1UrglFZjzY88pk06UWmYbLgYO6lFAVaCYUHgNdk6auu2PMf7mLA3bT
- ayqr.2z6DxFKwa09ZAt_oKMMx0mHs1mP0Qa9TAqJBuCOhTuaVmFn564_1BwJxOg9DnPTDx.ATp2X
- n90vzXhnOEhFiHyZG5VMVA0x_71g0IHEVSkh4uqzi0NBCZE6Dl_6gdwI8Gon_pLu_9GxzZsBlkEp
- SQKeDpcSqQ7B0mWToX8yNy29VZA.Rzfb1lsK8QsyL.mZtP1996jYu_OuaBxCm03C_tkdOKJB_S0b
- OM1QXT4TWOA_AZ5mFvuGWF7.o8.dOXE9IelpBwXGGS961iDvUq0GobiKlo6u5GqV5rVjKiK5xQ2m
- eWbzalFN99y_Q6RuQ39aFTCmVralqDUnSU5DTXxxnTxh1rH_yRhDBK10ec1pd4jZEe7AGGZ0.c3X
- lIZltRkFuJp1iKN.XRe9gQlM.F3jTDbu1d8bbd6KOT6smMCuVseTTYIBt1sAW0AUP0etPep7V2bw
- T_MtjUYVyuciq_8ZZfSPxv10vmVI9bTwtJkgtVFM3eDZGG4tkYSqe.lmdSqPTldCdU0o11hJNgzs
- gPgl4lZ7gHzmT9e61fRU9kw3CEMVWxv11zokT7Ip5BlA8M73mPim6m9Az1vbzTPqLlCQEpNv00OO
- p3cjREokS_RApRoIs5BjKepW0xaS30FEBRY7ff7dALMJq10FBtmjpeD0qYb6fWoE.X0his18ixnv
- CscnyEaXAKaP95TidrPur0nNj1NNVu1qImpEP9U8peUdcLg5HrmvuQ8NDnaSBu1Xs6_ELr4efo_L
- 1cwgT98XLFmbWL2UKk53eB9GwI5u2O7ShGqNfPo.7Z.t3fvlaXZ6jd1PGqhChveB2ZII8O1DTk3C
- vaczM5Dj6h1uzgM8qi5agW38KgkDQ3uFgkVuXI2CDIES.vdM6NZW.VWSBBFVv4gGPD9Rc1_ZbuXV
- WQah95bJGJzwKRrhXDdnEkEq.GSIXOYr23avNVaeJ8FNNQ9Hsx5p37HQYHQ7om9JOPtsUDcae8_v
- xXPOFY.1rjxRPBO4COlKZvFg.95_rV8roPZtVGfMqKQhFxwFBvwNJWqqFCF1HgVk.1DV6YP49OC8
- xbCN7ufvdBh5RaxLHcNk82fnOqT_JQyHduMAx8MTTs5yKvdxDEOUSJhy4PtMArxGWhI21smzHsBJ
- Hqez_SFhsSkOXqgtC5QXFTjhYiWfMX78Kvgbjre3yKZqthKK5sc5uCetMHBA_oYh5MB0hTGD3Bez
- GfWcS8CK4G.DY1_GynS3xBJIdpBYFdDKXRYKFBV2psNkQSY3AQMtCA.Ihchvf095TPv5C47TyoQX
- UHGpZAQVUc4GqXcCf16zdnyB884SvnFE7_7bFMp.5xppMiTnV91bcucHhXb6UFxuuXwey7AY4Cuw
- 1Oy7ZFOm36xiGh2AscAwjzJJ9zuy0lEuP9PbLRjI7K.K3bwM-
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: a947b7b7-6c60-4071-a97c-c08127f5f582
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 27 Jan 2026 07:39:22 +0000
-Received: by hermes--production-ir2-6fcf857f6f-gch58 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 84771875e54e61ed0bb89230515c8a5a;
-          Tue, 27 Jan 2026 07:08:57 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	sd@queasysnail.net,
-	kuba@kernel.org
-Cc: Jason@zx2c4.com,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v7 09/11] net: sctp: convert sctp_v{4,6}_xmit to use a noref dst when possible
-Date: Tue, 27 Jan 2026 08:04:50 +0100
-Message-ID: <20260127070452.6581-10-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260127070452.6581-1-mmietus97@yahoo.com>
-References: <20260127070452.6581-1-mmietus97@yahoo.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NTjuNJts"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769499574;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bwBEw1zd5t7ZpgQXNt7Oa6aG6SzuHHJ86eogm7XJGHU=;
+	b=NTjuNJts+kPRYjQ4SY9N+9pqaVLJAKtrPDtmplUvIK81f7nhMmbLrEVgWp3LU58sSNFTnj
+	BVX5vAjxYRpbl0LUE4y84W5I1hfhof70OdUe8e9Z8t9gtdhBOamM+qzfE1AazIR/WZNyRT
+	CpcwXMcfQqETWGkKpS3Pa4Zd0wCAJVI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-2_lOBWUsNrWB4IwVkR7Cmw-1; Tue,
+ 27 Jan 2026 02:39:30 -0500
+X-MC-Unique: 2_lOBWUsNrWB4IwVkR7Cmw-1
+X-Mimecast-MFC-AGG-ID: 2_lOBWUsNrWB4IwVkR7Cmw_1769499569
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1DA661944B17;
+	Tue, 27 Jan 2026 07:39:29 +0000 (UTC)
+Received: from S2.redhat.com (unknown [10.72.112.73])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A25081800665;
+	Tue, 27 Jan 2026 07:39:25 +0000 (UTC)
+From: Cindy Lu <lulu@redhat.com>
+To: lulu@redhat.com,
+	mst@redhat.com,
+	jasowang@redhat.com,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost: remove impossible check in VHOST_GET_FORK_FROM_OWNER ioctl
+Date: Tue, 27 Jan 2026 15:39:11 +0800
+Message-ID: <20260127073921.175981-1-lulu@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,82 +57,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-sctp_v{4,6}_xmit unnecessarily clone the dst from the transport when
-sending an encapsulated skb.
+remove impossible fork_owner check in VHOST_GET_FORK_FROM_OWNER ioctl
 
-Reduce this overhead by avoiding the refcount increment introduced by
-cloning the dst.
+Fixes: 7d9896e9f6d02d8a ("vhost: Reintroduce kthread API and add mode selection")
 
-Since t->dst is already assumed to be valid throughout both functions,
-it's safe to use the dst without incrementing the refcount.
-
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+Signed-off-by: Cindy Lu <lulu@redhat.com>
 ---
- net/sctp/ipv6.c     | 5 ++---
- net/sctp/protocol.c | 5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/vhost/vhost.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index 54f489c4c41f..71fb9ff6276f 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -219,7 +219,7 @@ int sctp_udp_v6_err(struct sock *sk, struct sk_buff *skb)
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index bccdc9eab267..889481c92236 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2338,11 +2338,6 @@ long vhost_dev_ioctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+ 	if (ioctl == VHOST_GET_FORK_FROM_OWNER) {
+ 		u8 fork_owner_val = d->fork_owner;
  
- static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
- {
--	struct dst_entry *dst = dst_clone(t->dst);
-+	struct dst_entry *dst = t->dst;
- 	struct flowi6 *fl6 = &t->fl.u.ip6;
- 	struct sock *sk = skb->sk;
- 	struct ipv6_pinfo *np = inet6_sk(sk);
-@@ -243,7 +243,7 @@ static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
- 	if (!t->encap_port || !sctp_sk(sk)->udp_port) {
- 		int res;
- 
--		skb_dst_set(skb, dst);
-+		skb_dst_set(skb, dst_clone(dst));
- 		rcu_read_lock();
- 		res = ip6_xmit(sk, skb, fl6, sk->sk_mark,
- 			       rcu_dereference(np->opt),
-@@ -266,7 +266,6 @@ static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
- 			     tclass, ip6_dst_hoplimit(dst), label,
- 			     sctp_sk(sk)->udp_port, t->encap_port, false, 0);
- 	rcu_read_unlock();
--	dst_release(dst);
- 	return 0;
- }
- 
-diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
-index 98e5dc217959..fb26b927391b 100644
---- a/net/sctp/protocol.c
-+++ b/net/sctp/protocol.c
-@@ -1038,7 +1038,7 @@ static int sctp_inet_supported_addrs(const struct sctp_sock *opt,
- /* Wrapper routine that calls the ip transmit routine. */
- static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
- {
--	struct dst_entry *dst = dst_clone(t->dst);
-+	struct dst_entry *dst = t->dst;
- 	struct flowi4 *fl4 = &t->fl.u.ip4;
- 	struct sock *sk = skb->sk;
- 	struct inet_sock *inet = inet_sk(sk);
-@@ -1056,7 +1056,7 @@ static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
- 	SCTP_INC_STATS(sock_net(sk), SCTP_MIB_OUTSCTPPACKS);
- 
- 	if (!t->encap_port || !sctp_sk(sk)->udp_port) {
--		skb_dst_set(skb, dst);
-+		skb_dst_set(skb, dst_clone(dst));
- 		return __ip_queue_xmit(sk, skb, &t->fl, dscp);
- 	}
- 
-@@ -1077,7 +1077,6 @@ static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
- 			    sctp_sk(sk)->udp_port, t->encap_port, false, false,
- 			    0);
- 	rcu_read_unlock();
--	dst_release(dst);
- 	return 0;
- }
- 
+-		if (fork_owner_val != VHOST_FORK_OWNER_TASK &&
+-		    fork_owner_val != VHOST_FORK_OWNER_KTHREAD) {
+-			r = -EINVAL;
+-			goto done;
+-		}
+ 		if (put_user(fork_owner_val, (u8 __user *)argp)) {
+ 			r = -EFAULT;
+ 			goto done;
 -- 
 2.51.0
 
