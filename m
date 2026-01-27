@@ -1,90 +1,156 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BA31A9F9B
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 17:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E629230BBBB
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 17:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769536089; cv=none; b=S4vopwY+Pk6OYdT+6yO6W47heovPcbI2qx3cBHMloUM4UeqOcM0/V0lNqbAzvz6Jewr1zS3VDsFP8EEpp2Eu0GkEfuWBH3QJ65pLT+U11bGjZCtlEXwI98QZXtf6Pfp0EgW+NmZ+UavQiVB0yH/nBhL9KnmmMeLGSYV6dKeHZ/o=
+	t=1769536231; cv=none; b=E3ZTwd1VAAV6zYG55n/FhDU8+c0Ug/PcK4uXCFNoPbgb7911uJ16NdIQ23F2YKfle0y/ncmFYylBrIINeXzCl74PUvqkd8gG+9D7iA1AHGAKYLLRDr1Jq/mcb1OujAj5Uue1C7LyNaO/9jMYKdk9xeZY+wcOcna8RahvKhCiMAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769536089; c=relaxed/simple;
-	bh=S1SsZh4LH96XLdQy5FqCDpEFSGkcfcAS64t3HhskAVo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Lzc1MfOZno10E2tx1e0b8ZcmtZ6DvalvaUppDa+lze1ayEoOqzecF2CY4O601dAse+dBWEPxf6MuBPJjBkhQNh7yj2uEfTkL01upSUbZPmqZIg9eqoBG8b+Mvp0eAHrvA3/kL1qWUzVh+7xCPBID9eNtgR8odxXjSDNPJUA3+Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OhU9phzT; arc=none smtp.client-ip=209.85.222.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1769536231; c=relaxed/simple;
+	bh=ZmUbpYt0h8OB6FNL8iL6ZXUZMWEsMZ7pS0LlZFb26uc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=gmvbBQy4hQTeVw/XVUQyh6ewK4s60BukKb87FW6y/a+un8ibklKTmjs9cH5Xdw7hFrtWAYn2V9cKaEHIHAiw4P/d6jTB1fKDSiE0cXMj2xIrTcNZ27GZ8nGpuMeiw2VVjSU+2tDlr5I/j4SY2bgeKhX9w2WkH2Y7zvAsRwELu7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhXaJnol; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OhU9phzT"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c52af6855fso745114885a.1
-        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:48:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhXaJnol"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42fb5810d39so3936601f8f.2
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 09:50:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769536087; x=1770140887; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cPUMlfdemxhl+1SfXFwiQvKy6zYDAxDdo0Z5DvulR9E=;
-        b=OhU9phzTg4N7PUg696Lfk3sUoUjlrYzKAt1hX24bScULF3WwwLoQGJ2jzFMj00M8TG
-         mpV3r297j92bF+mRNJX3d3Q+uQ40udGBczEeWyn1arq6RoijcQcIftoeG10rhw7rlRjn
-         XMg+KFQWi/jbKBvgX2z+2u5u4EcS2Nh5m86UhbJIeW3fyH4V+Va8oFkX+rrJQnlh4vU5
-         1iLrrcXCV+VSnhGN8SuWNF5C8H6vRgz8xGnsv9raJgvqTjLd6Zdi7uy2YTdEQICTxyQR
-         5frl2NteeDXUN2yJDl5YblXH8M54kRnvi8bjVjqEGniLgstEn21zgZLfq+6HpfwTU8H3
-         tJfw==
+        d=gmail.com; s=20230601; t=1769536228; x=1770141028; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Vibqe/KiXQ3Dj5llZDIR1MKDZHA6Cn2HLyE0+erftBY=;
+        b=OhXaJnolWIa6417lU28UcYdzWgeXmyyxZVH+Bvqgr7hk1JZCZF3s9nubHJPZkGljfl
+         ahguxV+qWtuUDe3i3Tvaj2V2UiL21ImZtFZxGcDxMGRA7cHJyCDIsxUWBaYJl1oOGE6O
+         2oepuTmF1amPD3tkaqIZ3nGzOlVIQjts15YeHgJ4KeQ5ScnfIss4oayZUvOp/3VW4s/n
+         xVO9wr5bspA8lpRbZVb4NZuIc77UWRvOz01oK+z3T+o6b2B6/S80C7Z0L7mRR4QmlmFx
+         pkw6Uia0kYkQKuWgNtrHqeOsDYLKukJzaCW7jCZr04+rkYJriY8Lpuo6W9UW5CoJs68L
+         ablA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769536087; x=1770140887;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cPUMlfdemxhl+1SfXFwiQvKy6zYDAxDdo0Z5DvulR9E=;
-        b=Hj5x9FmMxOqG6M+MkECOo94Xt+oioT4Z+7WC9YDvXUYn+YjrqQfAoqSlkNV4zkBgFu
-         LxVUXZbIK6cnAjxR893mQb/hJmRHcguDmEyi3h5T+ub/9biiCJ9iNZin1/OtpH7wb+h4
-         gR4s9ptkCWsJreQXkZOavk09RZQSKHtkhKw1N4I9LvHlMr967ukV9wzyqnvgLoy8Gr7M
-         RVlMTxo0uehufj+u7c7jAVVO3KxMaAjStap15332Iak/n15yPfWj9pjidbGSOQWdnRqj
-         2pZwM64oGMz8XZAK9T2KecAccs0SIUNoK9lvKy5N6bbEwlzIhRD1VSi+RmXTZnu300e9
-         zIMg==
-X-Forwarded-Encrypted: i=1; AJvYcCV66OvfzeMgu895Fth+MRAtTb0SCeWRaxGQ+6TdtIE6tw4NlBpCnM6n53/j+FFQFFEMdrRwSd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywrig59M/wGljNXapPX88f/BqYLXdftsVn6dOmK81jr30tEDcSK
-	1a5IRezlcsdH711yBRLx+qmJW/GZrmQlNNGA1+g1GhfXZkv9UzA6vrDWiAqlEo+2+coJGi20Oiz
-	mUMYfOkcYwpDkiQ==
-X-Received: from qkntq1.prod.google.com ([2002:a05:620a:3d01:b0:892:1657:c8ca])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:254a:b0:8be:dd2c:a0fd with SMTP id af79cd13be357-8c70b8f9717mr306255085a.44.1769536087408;
- Tue, 27 Jan 2026 09:48:07 -0800 (PST)
-Date: Tue, 27 Jan 2026 17:48:06 +0000
+        d=1e100.net; s=20230601; t=1769536228; x=1770141028;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vibqe/KiXQ3Dj5llZDIR1MKDZHA6Cn2HLyE0+erftBY=;
+        b=E2vrDdMbczSfaAfauU7gpVRjbrHwgEwOG7G6STY7vbBoHQup13dkvELYiDiSfYR7t2
+         EVxdrF/uZ6UeThwGqzUwp2gvl0gkFuhjXdo73WziR5D/Sc7VDa53N+OYIzDj3RMRGKng
+         /5s54kp0GkmzEVk1BV0KHgxNk75OO6z4SeHA7QIG36NcDc8R+2pG2SH70orkVPZ7hCHl
+         e9/WVL60cagD/keV2FpRKcU7Fiq70Zh5+z/fHRBr1VoEt/+KqvtJCXIUWSGb6PU3Gcir
+         PorcqgnkO7Yv6peEEBwJ88tZiy5WaisEETqjy3u9RMEkIQlVWrKHiyJzNUmU8mt6N6sx
+         kecA==
+X-Forwarded-Encrypted: i=1; AJvYcCX43us/sw2l0Mbrbd+ZKICtQtYGYqH2gXVZ537I5+hds3Nprd5sdJTPYwq7teQ3sjvfAGP0Vl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/h6ZOU6Ru5gVIbTtjdJVkLiBe7vUxpUC9zwHnq4ray2Gaxm9A
+	bER6heec3xv07Bu+tjSyCNCrpu2yJgvz1Yu4wzIQs8VqMtt0TC5QhTf9
+X-Gm-Gg: AZuq6aKoWRZ/YvrwsKsk/dMDAavSDLezUg0ye5Ap26IDxMf+V4h5Ry5/xlDNUcm7m0S
+	EV8IT3cceM4FDkq0T33Vh8yFzkcUCh0Z443U909By9rV2EOCL3ZEyxSeaOJhKS86HzQnw8oJ32o
+	vVJt1VlbvNsZv8Ukvyo6ZjymRANNaioIUzY5x3+lF/2YaX6h8lsnBoZCDh+J2oDa/Hrp9TnYfTf
+	PqXVshTaPeHXsLS3ewwDM4cKfsgXb5b/wXWA99u0vs/lborhXzno3WugtTslKDXCfEyCnjVSzbf
+	wwglp7tjD4tf3BrZTKOm2t/tWDFnVnQd1G4Xd1ZjA7RcEiar5Su17dBN0BjciTnOfA/c8ZWpLZq
+	PCM6cgbg2frpb5pZMjIre9yKjZvx5qhiFHsVlYWsqzK5PyTen85Ht5c/v8IyuRhbKbeZBLLE7yK
+	p9gSMkmVJCuSai0iUf7milAWJayo2TRog4w6+P9PWT19O6XEhskPoxbPafkxkZsWJTCQ==
+X-Received: by 2002:a05:6000:4381:b0:435:ad52:31d9 with SMTP id ffacd0b85a97d-435dd086069mr3589040f8f.28.1769536228011;
+        Tue, 27 Jan 2026 09:50:28 -0800 (PST)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:7800:6d36:b552:d917? ([2a02:a03f:a75e:9a00:7800:6d36:b552:d917])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1322eefsm330917f8f.30.2026.01.27.09.50.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jan 2026 09:50:27 -0800 (PST)
+Message-ID: <6ad428fe-bdfb-41a6-baaf-786663e2223d@gmail.com>
+Date: Tue, 27 Jan 2026 18:50:26 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260127174806.886561-1-edumazet@google.com>
-Subject: [PATCH net-next] selftests: drv-net: toeplitz: accept bigger rss keys
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 1/7] ipv6: Check of max HBH or DestOp sysctl
+ is zero and drop if it is
+To: Tom Herbert <tom@herbertland.com>, davem@davemloft.net, kuba@kernel.org,
+ netdev@vger.kernel.org
+References: <20260126194826.236075-1-tom@herbertland.com>
+ <20260126194826.236075-2-tom@herbertland.com>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260126194826.236075-2-tom@herbertland.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-/proc/sys/net/core/netdev_rss_key got bigger (256 bytes instead of 52)
+On 1/26/26 20:48, Tom Herbert wrote:
+> In IPv6 Destination options processing function check if
+> net->ipv6.sysctl.max_dst_opts_cnt is zero up front. If it is zero then
+> drop the packet since Destination Options processing is disabled.
+> 
+> Similarly, in IPv6 hop-by-hop options processing function check if
+> net->ipv6.sysctl.max_hbh_opts_cnt is zero up front. If it is zero then
+> drop the packet since Hop-by-Hop Options processing is disabled.
+> 
+> Signed-off-by: Tom Herbert <tom@herbertland.com>
+> ---
+>   net/ipv6/exthdrs.c | 18 ++++++++++--------
+>   1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+> index 54088fa0c09d..b9d186784b96 100644
+> --- a/net/ipv6/exthdrs.c
+> +++ b/net/ipv6/exthdrs.c
+> @@ -301,9 +301,11 @@ static int ipv6_destopt_rcv(struct sk_buff *skb)
+>   #endif
+>   	struct dst_entry *dst = skb_dst(skb);
+>   	struct net *net = dev_net(skb->dev);
+> -	int extlen;
+> +	int extlen, max_opts_cnt;
+>   
+> -	if (!pskb_may_pull(skb, skb_transport_offset(skb) + 8) ||
+> +	max_opts_cnt = READ_ONCE(net->ipv6.sysctl.max_dst_opts_cnt);
+> +	if (!max_opts_cnt ||
+> +	    !pskb_may_pull(skb, skb_transport_offset(skb) + 8) ||
+>   	    !pskb_may_pull(skb, (skb_transport_offset(skb) +
+>   				 ((skb_transport_header(skb)[1] + 1) << 3)))) {
+>   		__IP6_INC_STATS(dev_net(dst_dev(dst)), idev,
+> @@ -322,8 +324,7 @@ static int ipv6_destopt_rcv(struct sk_buff *skb)
+>   	dstbuf = opt->dst1;
+>   #endif
+>   
+> -	if (ip6_parse_tlv(false, skb,
+> -			  READ_ONCE(net->ipv6.sysctl.max_dst_opts_cnt))) {
+> +	if (ip6_parse_tlv(false, skb, max_opts_cnt)) {
+>   		skb->transport_header += extlen;
+>   		opt = IP6CB(skb);
+>   #if IS_ENABLED(CONFIG_IPV6_MIP6)
+> @@ -1033,7 +1034,7 @@ int ipv6_parse_hopopts(struct sk_buff *skb)
+>   {
+>   	struct inet6_skb_parm *opt = IP6CB(skb);
+>   	struct net *net = dev_net(skb->dev);
+> -	int extlen;
+> +	int extlen, max_opts_cnt;
+>   
+>   	/*
+>   	 * skb_network_header(skb) is equal to skb->data, and
+> @@ -1041,7 +1042,9 @@ int ipv6_parse_hopopts(struct sk_buff *skb)
+>   	 * sizeof(struct ipv6hdr) by definition of
+>   	 * hop-by-hop options.
+>   	 */
+> -	if (!pskb_may_pull(skb, sizeof(struct ipv6hdr) + 8) ||
+> +	max_opts_cnt = READ_ONCE(net->ipv6.sysctl.max_hbh_opts_cnt);
+> +	if (!max_opts_cnt ||
+> +	    !pskb_may_pull(skb, sizeof(struct ipv6hdr) + 8) ||
+>   	    !pskb_may_pull(skb, (sizeof(struct ipv6hdr) +
+>   				 ((skb_transport_header(skb)[1] + 1) << 3)))) {
+>   fail_and_free:
+> @@ -1054,8 +1057,7 @@ int ipv6_parse_hopopts(struct sk_buff *skb)
+>   		goto fail_and_free;
+>   
+>   	opt->flags |= IP6SKB_HOPBYHOP;
+> -	if (ip6_parse_tlv(true, skb,
+> -			  READ_ONCE(net->ipv6.sysctl.max_hbh_opts_cnt))) {
+> +	if (ip6_parse_tlv(true, skb, max_opts_cnt)) {
+>   		skb->transport_header += extlen;
+>   		opt = IP6CB(skb);
+>   		opt->nhoff = sizeof(struct ipv6hdr);
 
-Fixes: 37b0ea8fef56 ("net: expand NETDEV_RSS_KEY_LEN to 256 bytes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- tools/testing/selftests/drivers/net/hw/toeplitz.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/drivers/net/hw/toeplitz.c b/tools/testing/selftests/drivers/net/hw/toeplitz.c
-index 285bb17df9c2f875c6073b8a0fa2619007b62962..cd4bf58a44ee7c14bceaf5c8749387f3d9cfe0e9 100644
---- a/tools/testing/selftests/drivers/net/hw/toeplitz.c
-+++ b/tools/testing/selftests/drivers/net/hw/toeplitz.c
-@@ -59,7 +59,7 @@
- #include "../../../net/lib/ksft.h"
- 
- #define TOEPLITZ_KEY_MIN_LEN	40
--#define TOEPLITZ_KEY_MAX_LEN	60
-+#define TOEPLITZ_KEY_MAX_LEN	256
- 
- #define TOEPLITZ_STR_LEN(K)	(((K) * 3) - 1)	/* hex encoded: AA:BB:CC:...:ZZ */
- #define TOEPLITZ_STR_MIN_LEN	TOEPLITZ_STR_LEN(TOEPLITZ_KEY_MIN_LEN)
--- 
-2.53.0.rc1.217.geba53bf80e-goog
-
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
