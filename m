@@ -1,106 +1,97 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75656366051;
-	Tue, 27 Jan 2026 15:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FDC35CBB8;
+	Tue, 27 Jan 2026 15:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769526783; cv=none; b=DEi46EPImIdSZkWLN6GPvVVB4YZ5iMlZWKiSCUFdb4D2KGDfmmlducHsa9BjxeaMq8zEByJUG8jqpXq++s/pTRFQhTQ7YJ6bUfNOlTsPbnHGdAKz3joCicZm/fS04G7oYnZkVo8ue/LgaFNBJ3g38AvEuqEb0WO+bkwQEHie43w=
+	t=1769527061; cv=none; b=JFOVj3VkZY65hD4av9H8SRLZY8b2dHdbscMJ1imMmQ+4rCk5P5IpYHPFL1qz7k19cWrzGn2b7zmwO5m9vKJrFpxUuds51ojbWfAQ0bJLPnfHNccwjq3DxOYx0ca5531Gmne/sO/bbQJO31yTU1NTi8yqHOXM/n59qxkbW6Epies=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769526783; c=relaxed/simple;
-	bh=cIXqT5FnicbiGpytwx5r3gF/Cd0q8kd1fuH3bp8cggg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FdSFEcJbtgUyv1X0+q7iaCbZuJBmMakFeXsjZMDXZGrvNVEniB0vKeLrkM/f3EfX3uPkJNW7evgkmaM+IPTArTOPKsSIlz/UBqixlvLjGzn8RD7J9WEYOj+EowbCD2u7nX4YWhyIUDD0YVBO2+FViH/yaSInUu8VevYF6SCMNmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=cBTbtAk0; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1769527061; c=relaxed/simple;
+	bh=gmhD44L1K9tLudyPg622CFQJdiQBqosgYt3gwdurMkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tjyy17BTVGnzlp+5Tga5R9k47r4zprQSb+HyNfNssn4obihfedHU2f5vxUcB1WM47J2E+mWqWMR4V74L5qXuVMhQsWacUFu2xbEsyXyw0pIew0wuWLE0asgWcajL19ikTO3gbbKyp/BPFVmpFNl/9PlvpSeDF6tu39Dl0WQqe50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pI9qkzvu; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="cBTbtAk0"
-Received: from LAPTOP-N070L597.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 32272e8ee;
-	Tue, 27 Jan 2026 23:12:52 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: horms@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	jianhao.xu@seu.edu.cn,
-	kory.maincent@bootlin.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	marco.crivellari@suse.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net v3 1/3] net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
-Date: Tue, 27 Jan 2026 15:12:39 +0000
-Message-Id: <20260127151241.1144039-2-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260127151241.1144039-1-zilin@seu.edu.cn>
-References: <20260127151241.1144039-1-zilin@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pI9qkzvu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZVh052NF40220AWAqRlV3TkXB/pLRow1eBVBsLhpPPk=; b=pI9qkzvuh9ZDIMnTPnQKFVkG/p
+	wdEN50YVxEZV47ubYV+IF8h7+5JuCrLjnr4XITbJn0KsVpV6p4P3iJUF6EGdJxWIhtJsLvlTaPZmd
+	FxOQS6mq8hG+jNsCevTeiywb1IEYaXeqJOWuk6n0kTUXFS6jaNz4Mx8px8l8wyL0vfVw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vkkoq-004yQu-1s; Tue, 27 Jan 2026 16:17:28 +0100
+Date: Tue, 27 Jan 2026 16:17:28 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH net-next v2 00/14] net: stmmac: SerDes, PCS, BASE-X, and
+ inband goodies
+Message-ID: <34469896-9ea8-4f82-891f-0b57253f6cc5@lunn.ch>
+References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
+ <aXN5BFXMshnhwBQ7@oss.qualcomm.com>
+ <aXPo5R1Q-qWG3r3l@shell.armlinux.org.uk>
+ <aXjSbu6L6ICYOPiJ@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c0003c22203a1kunmaea0ca6058ce6
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDHR4eVh0dH0hCHUNLHxkaHVYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg
-	++
-DKIM-Signature: a=rsa-sha256;
-	b=cBTbtAk0xhLj12HmCc3DtgaA7hCTolYl+2ZHbuavgHEYXHF6o1r3fo6W+tETmU4ecnhAbVcAMebjkXnwiRH9K9N2uHDwqP4qu1sds10pp8MUm9/nazJ5muohN6uJoJDSNy7yBbSDmsUlwJU/Ar1f+bYQ/OsEFtGSQl3WAuLa4jc=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=0sd9aewjv4fvCJ9HVyUnkC7myYx922OsGGV1uHmx4Ww=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXjSbu6L6ICYOPiJ@oss.qualcomm.com>
 
-In setup_nic_devices(), the initialization loop jumps to the label
-setup_nic_dev_free on failure. The current cleanup loop while(i--)
-skip the failing index i, causing a memory leak.
+> I added additional debug prints, and I think the crash is due to
+> BMSR_ESTATEN not being set in GMAC_AN_STATUS.
+> 
+> During pcs_init, BIT(8) of GMAC_AN_STATUS is 0:
+> [    7.985913] [DBG] GMAC_AN_STATUS = 8
+> 
+> Therefore, this check:
+> 	if (readl(spcs->base + GMAC_AN_STATUS) & BMSR_ESTATEN) {
+> 		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> 			  spcs->pcs.supported_interfaces);
+> 
+> 		/* Only allow 2500Base-X if the SerDes has support. */
+> 		ret = dwmac_serdes_validate(priv, PHY_INTERFACE_MODE_2500BASEX);
+> 		if (ret == 0)
+> 			__set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> 				  spcs->pcs.supported_interfaces);
+> 	}
+> fails, and PHY_INTERFACE_MODE_2500BASEX never gets set in
+> pcs.supported_interfaces. Pardon my naivete, but does the
+> BMSR_ESTATEN bit not being set break some standard?
 
-Fix this by changing the loop to iterate from the current index i
-down to 0.
+You might want to check the IEEE 802.3 standard. It is free to
+download from IEEE.
 
-Also, decrement i in the devlink_alloc failure path to point to the
-last successfully allocated index.
+The original C22 register definitions only supported 10 and
+100Mbps. In order to support 1G, more registers are needed. The
+BMSR_ESTATEN bit indicate the PHY supports having more status bits in
+register 15. Register 15 then indicates if 1000BaseX, 1000Base-T is
+supported.
 
-Compile tested only. Issue found using code review.
+If the SERDES supports 1000BaseX, it should have BMSR_ESTATEN set, and
+register 15 should indicate 1000BASE-X.
 
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
----
- drivers/net/ethernet/cavium/liquidio/lio_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 0732440eeacd..e9a728997689 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -3750,6 +3750,7 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 	if (!devlink) {
- 		device_unlock(&octeon_dev->pci_dev->dev);
- 		dev_err(&octeon_dev->pci_dev->dev, "devlink alloc failed\n");
-+		i--;
- 		goto setup_nic_dev_free;
- 	}
- 
-@@ -3765,10 +3766,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 
- setup_nic_dev_free:
- 
--	while (i--) {
-+	while (i >= 0) {
- 		dev_err(&octeon_dev->pci_dev->dev,
- 			"NIC ifidx:%d Setup failed\n", i);
- 		liquidio_destroy_nic_device(octeon_dev, i);
-+		i--;
- 	}
- 
- setup_nic_dev_done:
--- 
-2.34.1
-
+	 Andrew
