@@ -1,36 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3659C359FB6
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 13:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5805235A92F;
+	Tue, 27 Jan 2026 13:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769521343; cv=none; b=qCCA3wsoxVcCf4egalcsVMi30PiUeId5ogXj0H/PZqDZBx0UfbWLzmBgZQaOOwL1hSVm8ihvHCHUudcFKZEGUoVbRnBRjuH7oaWbud59CDIWFGWhSilQnToxtPc744ZTQFuCKJx7HHEfaysgucr887B6Yrb0F/mylv/feirOO/c=
+	t=1769521345; cv=none; b=LxEEQ13q3/1er7//cBWyGMNazFTJvYwk87GeP1dyiwlGPy9M8ddLjRxZr7W7jbgaiH/XwHkL0W5Y4YsZffjCLpOcNtKFoZo4SB4xiGJx3lve6bNgnAWMp7jaF08RqhmOT0Mo+wls9WpufcLn77VfISConW4aYtyMNOogpjpflfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769521343; c=relaxed/simple;
-	bh=DB9kEdPNCukofrnc0NQOSFwRY85g+LWgn59ph42lBvM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GZ9bdUgHlLq6XZEhd44hlUYPZcieJrO5dTKYSU/wdV9SaXWv+mEnXPtNYV1QE17/WZvWwcv19AbZCcVkHPznztgMPtCxPiX4oRE6nbfosbX8aO9ygqdtDx2xvqicY18s2/VECNVs1HSa72D5F9ghkYzAvRoZ4+3YhYXh/Wl2uzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sh7/BsHm; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1769521345; c=relaxed/simple;
+	bh=2x2Twk5hwB1qm9MtsaxYrP7i5T6qH8pGMbiXcSTMo1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V8gt5fYCg/6r4AL5JvLTPfHlBWlNctYBrL/vb+yuSa826RMcsRSIZXJ3GQoCiAvLlDHbRNHWfyP660VF8kR2fxun7eZ1En8OvFtW7svWe1GTq7PeRMyvls8cK6nqesPtqDwJelHMPHkEPZSbn7rqkRsQ6qN/EqjArHdO7K5G0Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ERgLyxk/; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sh7/BsHm"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ERgLyxk/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 723BAC211C0;
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E174B4E422D3;
 	Tue, 27 Jan 2026 13:42:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C9F0606F5;
-	Tue, 27 Jan 2026 13:42:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C2FD6119A864C;
-	Tue, 27 Jan 2026 14:42:11 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B3AAE606F5;
+	Tue, 27 Jan 2026 13:42:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B7E05119A864D;
+	Tue, 27 Jan 2026 14:42:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769521338; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=oKlXBMUh5ZhX/zwuswGc13LoRx5lpPr3lRXPECma5Ek=;
-	b=sh7/BsHmT5al/NZJ/LsO/PLqT65iZvw9/smYulxgS2H8xH7N29a5kKTFu3YmQGG2IroZVX
-	IjW+NekKAl6YBF097DHNn9xk/iF9WmGx0CPYAyWsgd+dcsK81fWc8PrBoxNcLOmXspqMvj
-	vuXo9rt6xFQ5azIWffscz6ZcB6qINie98rUVm33C3kueCPlaszZgftsai0j4wnGmvZEJW+
-	+o/lZjDM9yvMgMiz6sMQvlI/tefR1ZEFgavOg8uAH9e8RiWEmREN8ITAbFkWZK3S8Rcyut
-	j2IXJnoRu9jGFBHZ8SBLfKy6GvyiUs6ywXs7BK7TRjmvfY0FOCq8/VMi1Aguyw==
+	t=1769521340; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=vnp5YkIChB0sNg7EdJ/lX1dIvAkP9AXfzZTaTC0ju30=;
+	b=ERgLyxk/5cmi2bot+No+wtGGZE0g/ywwL/+/lcGKD5S/C9Fa3jCHezTdFd4mmuvELVvlp2
+	kDurb/3NW2FI/WlKgZcVA6z8hkXw/rT9M1P60iGmzjALfJh808CntD+soTDjb38gZzrjJ7
+	D1u5bh7/ziXSekJQIO6gBBsn5hszeIG977xaqFsQm8pwY6mWuQfbUapUYVlhvEyeUnbDFT
+	RxUv9KYoKOzTEl3nCwd88rlwzidzGBZtiI5wjkN3a4txV3JUPCEyKerj9bfhCPlcu2sPJg
+	wLtpcIpa0yaEtTJZHyBoN5qyjk5eSeUANQ9r4fxr7KS7V3qRtV0B4jqpHYAvhw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -56,10 +58,12 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next 00/13] net: phy_port: SFP modules representation and phy_port listing
-Date: Tue, 27 Jan 2026 14:41:48 +0100
-Message-ID: <20260127134202.8208-1-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next 01/13] net: phy: phy_port: Correctly recompute the port's linkmodes
+Date: Tue, 27 Jan 2026 14:41:49 +0100
+Message-ID: <20260127134202.8208-2-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260127134202.8208-1-maxime.chevallier@bootlin.com>
+References: <20260127134202.8208-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,154 +73,48 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello everyone,
+a PHY-driven phy_port contains a 'supported' field containing the
+linkmodes available on this port. This is populated based on :
+ - The PHY's reported features
+ - The DT representation of the connector
+ - The PHY's attach_mdi() callback
 
-This series is another step towards dealing with multi-port interfaces.
+As these different attrbutin methods work in conjunction, the helper
+phy_port_update_supported() recomputes the final 'supported' value based
+on the populated mediums, linkmodes and pairs.
 
-It build on the recent addition of phy_port representation to enable
-listing the front-facing ports of an interface. For now, we don't control
-these ports, we merely list their presence and their capabilities.
+However this recompute wasn't correctly implemented, and added more
+modes than necessary by or'ing the medium-specific modes to the existing
+support. Let's fix this and properly filter the modes.
 
-As the most common use-case of multi-port interfaces is combo-ports that
-provide both RJ45 and SFP connectors on a single MAC, there's a lot of
-SFP stuff in this series.
+Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phy_port.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-This series is in 2 main parts. The first one aims at representing the
-SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
-by far the most common cases for multi-connector setups.
-
-The second part is the netlink interface to list those ports, now that
-most use-cases are covered.
-
-Let's see what we can do with some examples of the new ethtool API :
-
-- Get MII interfaces supported by an empty SFP cage :
-
-# ethtool --show-ports eth3
-
-Port for eth3:
-	Port id: 1
-	Occupied: no
-	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
-	Port type: sfp
-
-
-- Get Combo-ports supported modes, on each port :
-
-# ethtool --show-ports eth0
-
-Port for eth0:
-	Port id: 1
-	Occupied: no
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Half 1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-	Port type: mdi
-
-Port for eth0:
-	Port id: 2
-	Occupied: no
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
-	
-
-- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
-SFP cage)
-
-# ethtool --show-ports eth1
-
-Port for eth1:
-	Port id: 1
-	Occupied: no
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Half 1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-	Port type: mdi
-
-Port for eth1:
-	Port id: 2
-	Occupied: yes
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
-
-Port for eth1:
-	Port id: 3
-	Occupied: no
-	Supported link modes:  10000baseCR/Full
-	Port type: mdi
-
-Note that here, we have 3 ports :
- - The Copper port
- - The SFP Cage itself, marked as 'occupied'
- - The SFP module
-
-This series builds on top of phy_port and phy_link_topology to allow
-tracking the ports of an interface. We maintain a list of supported
-linkmodes/interfaces on each port, which allows for fine-grained
-reporting of each port's capability.
-
-What this series doesn't do :
- - We don't support selecting which port is active. This is the next step.
- - We only support PHY-driven combo ports. The end-goal of this whole
-   journey that started with phy_link_topology is to get support for MII
-   muxes, such as the one we have on the Turris Omnia. This will eventually
-   be upstreamed as well.
-
-If you want to play around with it, here's [1] the patched ethtool that I've
-been using to produce the outputs above.
-
-Thanks !
-
-Maxime
-
-[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
-
-Maxime Chevallier (13):
-  net: phy: phy_port: Correctly recompute the port's linkmodes
-  net: phy: phy_link_topology: Add a helper for opportunistic alloc
-  net: phy: phy_link_topology: Track ports in phy_link_topology
-  net: phylink: Register a phy_port for MAC-driven SFP busses
-  net: phy: Create SFP phy_port before registering usptream
-  net: sfp: Add a sfp-bus ops when connecting a module without PHY
-  net: phy: Represent PHY-less SFP modules with phy_port
-  net: phylink: Represent PHY-less SFP modules with phy_port
-  net: phy: phy_port: Store information about a MII port's occupancy
-  net: phy: phy_link_topology: Add a helper to retrieve ports
-  net: phy: store phy_modes in a static array
-  netlink: specs: Add ethernet port listing with ethtool
-  net: ethtool: Introduce ethtool command to list ports
-
- Documentation/netlink/specs/ethtool.yaml      |  50 +++
- Documentation/networking/ethtool-netlink.rst  |  35 ++
- MAINTAINERS                                   |   1 +
- drivers/net/phy/phy-caps.h                    |   2 +
- drivers/net/phy/phy_caps.c                    |  26 ++
- drivers/net/phy/phy_device.c                  | 104 ++++-
- drivers/net/phy/phy_link_topology.c           |  80 +++-
- drivers/net/phy/phy_port.c                    |   9 +-
- drivers/net/phy/phylink.c                     | 121 ++++++
- drivers/net/phy/sfp-bus.c                     |  20 +
- drivers/net/phy/sfp.c                         |  12 +
- drivers/net/phy/sfp.h                         |   2 +
- include/linux/phy.h                           |  88 +----
- include/linux/phy_link_topology.h             |  34 ++
- include/linux/phy_port.h                      |   5 +
- include/linux/sfp.h                           |   5 +
- .../uapi/linux/ethtool_netlink_generated.h    |  19 +
- net/ethtool/Makefile                          |   2 +-
- net/ethtool/common.c                          |  44 +++
- net/ethtool/netlink.c                         |  11 +
- net/ethtool/netlink.h                         |   5 +
- net/ethtool/port.c                            | 373 ++++++++++++++++++
- 22 files changed, 943 insertions(+), 105 deletions(-)
- create mode 100644 net/ethtool/port.c
-
+diff --git a/drivers/net/phy/phy_port.c b/drivers/net/phy/phy_port.c
+index ec93c8ca051e..68a0068220ed 100644
+--- a/drivers/net/phy/phy_port.c
++++ b/drivers/net/phy/phy_port.c
+@@ -118,11 +118,14 @@ void phy_port_update_supported(struct phy_port *port)
+ 	int i;
+ 
+ 	for_each_set_bit(i, &port->mediums, __ETHTOOL_LINK_MEDIUM_LAST) {
+-		linkmode_zero(supported);
+-		phy_caps_medium_get_supported(supported, i, port->pairs);
+-		linkmode_or(port->supported, port->supported, supported);
++		__ETHTOOL_DECLARE_LINK_MODE_MASK(med_supported) = {0};
++
++		phy_caps_medium_get_supported(med_supported, i, port->pairs);
++		linkmode_or(supported, supported, med_supported);
+ 	}
+ 
++	linkmode_and(port->supported, port->supported, supported);
++
+ 	/* If there's no pairs specified, we grab the default number of
+ 	 * pairs as the max of the default pairs for each linkmode
+ 	 */
 -- 
 2.49.0
 
