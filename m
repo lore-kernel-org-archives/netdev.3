@@ -1,82 +1,81 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8153161B5
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 16:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8853002CF;
+	Tue, 27 Jan 2026 16:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530914; cv=none; b=j2li9in2bTXclZwWCqQU+HBujIpuPp5HqMnrALy8AdeC4wS1AMLQK7KqCpITk7pq0rbzcDzvUwlkxgV9hA6H+rxzDG+SC38ml3Lb5cepjfCOJaqKsfUx7gBdDzUMuDnqIn+HFK6zn2hNSY5GwbDo2t2fxLRCPmzXLH149zvyuTs=
+	t=1769530966; cv=none; b=QFTJqIoAfj0NjsajxUPpfJbL1ffdZXjpog2TGlFaHwvgzoLBoDXd9GTvMM6vhIQ+m1k73Xs8PFWaZIFZ33opVQnLkROqthEG4ow2jECaFVnSRhhPt0z5S62iIVkbpS/cGH1NBwWW6EUvv1opkUurJDI0dZUXyh70pHMaiDNmR0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530914; c=relaxed/simple;
-	bh=6aymXQe0lxfSMO6BuldosYgaPzopUrWpGVi5qQZKrFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E8TQE5LInrY1VaSS9xd57Q45FjviOb7IqL4PZKsk43QP8nlwxx1gLE0iSTbmoFjpq/QPYcQ5MPirOgqSbgligeUg2mXxsAh7sXfc3YaadyRGpydxhgmafmffE1/R9F5pWjk9zMpX/tyPDGGyFzqXREZVdCGmDRc23KGidq5EWgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id EB48E4C442F986;
-	Tue, 27 Jan 2026 17:21:13 +0100 (CET)
-Message-ID: <c8807b34-59d9-4b8c-8b2e-477fa25ef413@molgen.mpg.de>
-Date: Tue, 27 Jan 2026 17:21:12 +0100
+	s=arc-20240116; t=1769530966; c=relaxed/simple;
+	bh=bzEzsJt4MXGUIhvPjvkK2AeikSGIbnB2herqMgXFsDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o6u5jZqzU3ISElVAOzDchiP3SGPHgjie2ATLw3MvrrrzAH3LiqFalIfv2SYF9TaMthPW+yU86MtVOjbK/PXtbmQ9efndssEnqyAO3zVnROvxQyajbs4MXgjaBjUrfoAtXQwVfLyDll00itadHKsBXFg/LOWoURIS7wQLh48QAWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1vklpv-000000001ZH-0WCi;
+	Tue, 27 Jan 2026 16:22:39 +0000
+Date: Tue, 27 Jan 2026 16:22:36 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Hauke Mehrtens <hauke@hauke-m.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/3] dt-bindings: net: dsa: lantiq,gswip:
+ reference common PHY properties
+Message-ID: <aXjmTMasMdE52Gfw@makrotopia.org>
+References: <cover.1769519758.git.daniel@makrotopia.org>
+ <d9b6212ad5137feeb58b28e9b0784f1084c813df.1769519758.git.daniel@makrotopia.org>
+ <20260127132919.xsvapgqc65f44iah@skbuf>
+ <aXjGh1nzeAz8TQzH@makrotopia.org>
+ <ad3bbac2-1aea-401a-881f-a8a9860f84a9@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ice: Make name member of
- struct ice_cgu_pin_desc const
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org
-References: <20260127-const-name-v1-1-9c84615c55a4@kernel.org>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260127-const-name-v1-1-9c84615c55a4@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad3bbac2-1aea-401a-881f-a8a9860f84a9@lunn.ch>
 
-Dear Simon,
-
-
-Thank you for your patch.
-
-Am 27.01.26 um 17:16 schrieb Simon Horman:
-> The name member of struct ice_cgu_pin_desc never modified.
-> Make it const.
+On Tue, Jan 27, 2026 at 04:21:26PM +0100, Andrew Lunn wrote:
+> > > Is the PCS integrated into the port?
+> > 
+> > The PCS is hard-tied to port 4 of the switch. Neither can that port be
+> > used for anything else than this PCS, nor can the PCS be used elsewhere.
+> > It's a bit like they nuked one of the TP PHY ports and glued in that
+> > SGMII PCS instead. The PCS is probably a ready-made IP block
 > 
-> Found by inspection.
-> Compile tested only.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
-> ---
->   drivers/net/ethernet/intel/ice/ice_ptp_hw.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> index 93901bccf1c4ae1e1782e7a2af4322a6777d0b6c..87aa4cfc5a463f74509ecc4cfbc00e06f26cab5c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-> @@ -258,7 +258,7 @@ enum ice_si_cgu_out_pins {
->   };
->   
->   struct ice_cgu_pin_desc {
-> -	char *name;
-> +	const char *name;
->   	u8 index;
->   	enum dpll_pin_type type;
->   	u32 freq_supp_num;
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Does it have IDs in register 2 and 3?
 
+That'd be too easy ;)
 
-Kind regards,
+register 2 is SGMII_PHY_MPLL_CFG2
+register 3 is SGMII_PHY_RX0_CFG1
 
-Paul Menzel
+register 2 and 3 of the XAUI PHY which can be indirectly accessed also doesn't
+contain anything meaningful (0x000a and 0x0000)
+
+> Is there any clue if it is licensed from somebody?
+
+At least it's not obvious in any way.
+
+The documentation is public, see
+https://www.maxlinear.com/product/interface/ethernet/ethernet-switches/gsw145
+"Ethernet Switch GSW145 Data Sheet"
+Section 4.2 SGMII_Registers
+
+My guess that it is not genuinly designed for that switch IC stems from
+the fact that it has features (EEE, for example) which aren't supported
+in the way it is integrated in the switch.
