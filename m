@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C75326D62;
-	Tue, 27 Jan 2026 18:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6108B2FFDFA;
+	Tue, 27 Jan 2026 18:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769538527; cv=none; b=tWj8cFXez3annRqxf0vUYEjzTRy+Pscq92j6X1Rmtw78RQ0YJEVFaX+Lkc5O4KTwoV0a7OHhE+W+600U0K5RbiYnVazt/YydI+9GTtiSNWkj1XaO1qyzfyXZxWJoSZjRsGyPH+MHyWJ2ioV3+fzhrIpVlhO+Pbv+KKS2IjpgD+k=
+	t=1769538892; cv=none; b=PI0u9b8SNtaB1P9C2zyZ1LDLqYKYOzJhOEFK1ODPeTC4usZd5ou8waaoqjdYglItudCWyoW8dFVJwYDiD7RMZe4meF0P5F/1Ogd2BHp0siO0QaxKKT2zg2v/N6CjHBww0y1lurCWZUtvLDh17Luwi3Mbvl0KaZZCCoaEUUMIqIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769538527; c=relaxed/simple;
-	bh=9a4V6BCbiETl2dvADV2PdcV2ulrJG2PXrdW9bD1lXtE=;
+	s=arc-20240116; t=1769538892; c=relaxed/simple;
+	bh=kUxxq+008meP5o/xP1nPZBEoAsoUtumd7mr6oOP4RDY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnBkkKVbTpHRh2S27VcTfvjxIZ8GaxgkwBQCVzmvfgVzeEwVZu2YuIOdN4KizrfatGHI9ojCUIfSwpA5pUSHdZSmsX4pH0GctxWejpKNrqm1dZmDVrpTJQZwG9esCakHBDI3988AHT0Xk0lzGLvIWYyWx+Hafo+CQW/Moy0ZGAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GFmUpiK8; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANXFD7xr8EUfQUDaXd5ILtgIVt8V7HR+i14UPVQFXVwOCCqguCr6iAAOhnd2Vj13TnAXPr8NEKVIBMDbqPrnbufdTV/AxWhbHvfHdwmN8RydlSB9IvtdZg4oou0lwJkg6p7v3fadi37qdcnZk/QJF/kSLdSMMju6yKKImRHa/3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tVz0a0uY; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GFmUpiK8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tVz0a0uY"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BAgAaKIEUyZedKtdSU1qveQIhBDQOhZR50BlZ8+IBDQ=; b=GFmUpiK8HYdUO9Hl2OoAdnPqly
-	eCfMebd5vxbePIMPiSPy8sz0wug5a+v0hPGnp81pJHUi4plySPJj+e1jRR3eRVtENS/A8bQ9GC5HK
-	VUIUe1Ar9sRxPtzJaOKkx6MQmsvNr2b/SeE4UaYInZ0B++cSxhG39jPpHStM9QWm4er4=;
+	bh=B0Eeq1YM/0Yf6rRX2g/RPUegj3LPecvz3XaJVWLAOz4=; b=tVz0a0uYn9pHhPoWR16Bka3ese
+	42/ws0xSGxyBDUpQMQ/P8kmrWySQg7CjXnzDjDZvBlf42N9zuEhCQJXvYWkJgnM/96T2jpxZg0Spk
+	RY1fjPHVvZsXSoPnXQ+qy2NlXv0dvqV0YX5EpHdc6OnkchLnvStzYf6VsxHpRpt/QKkE=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vknne-00505V-IZ; Tue, 27 Jan 2026 19:28:26 +0100
-Date: Tue, 27 Jan 2026 19:28:26 +0100
+	id 1vknth-00507V-9F; Tue, 27 Jan 2026 19:34:41 +0100
+Date: Tue, 27 Jan 2026 19:34:41 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Daniel Golle <daniel@makrotopia.org>
 Cc: Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>,
@@ -51,7 +51,7 @@ Cc: Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <olteanv@gmail.com>,
 	John Crispin <john@phrozen.org>
 Subject: Re: [PATCH net-next v8 4/4] net: dsa: add basic initial driver for
  MxL862xx switches
-Message-ID: <60e9939b-dae6-41d0-8008-3c38a4dd4030@lunn.ch>
+Message-ID: <b664b744-ddfd-409d-bee3-9e7e1dc0b5b2@lunn.ch>
 References: <cover.1769053079.git.daniel@makrotopia.org>
  <18c6a24eef8617abb5073569fee162f1aa1c06ea.1769053079.git.daniel@makrotopia.org>
  <c2e191c4-dec4-4e42-b108-353778d9bd18@redhat.com>
@@ -70,12 +70,27 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <aXjirjOsc5IJFHfH@makrotopia.org>
 
-> Some of the error values are useful, it *is* good to know whether eg. a
-> bridge cannot be allocated because (for what ever reason) of resource
-> exhaustion (-ENOMEM) or because of otherwise invalid settings (-EINVAL).
+On Tue, Jan 27, 2026 at 04:07:10PM +0000, Daniel Golle wrote:
+> On Tue, Jan 27, 2026 at 04:04:10PM +0100, Andrew Lunn wrote:
+> > > > int mxl862xx_to_zephyr_errno(u16 reg)
+> > > so that would then just be
+> > > 	return (s16)reg;
+> > > right?
+> > 
+> > Yes.
+> 
+> +1
+> 
+> Maybe better to check if bit 16~31 is actually zero as well, so
+> int mxl862xx_to_zephyr_errno(int reg)
+> {
+> 	if (reg >= 0 && reg <= U16_MAX)
+> 		return (s16)reg;
+> 
+> 	return 0;
 
-We need to be careful with these. POSIX defines ENOMEM and EINVAL, but
-not their value. So you should add ZEPHYR_ENOMEM and ZEPHYR_EINVAL,
-just to make the name spaces clear.
+If bits 16~31 are not zero, i would say the MDIO driver is broken, and
+we should fix it. Returning 0 is going to hide such issues. If you are
+worried about it, at least add a WARN_ON() or something.
 
-     Andrew
+	Andrew
