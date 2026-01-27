@@ -1,138 +1,153 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from sonic308-56.consmr.mail.ne1.yahoo.com (sonic308-56.consmr.mail.ne1.yahoo.com [66.163.187.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8227D26D4DF
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1F227BA4
+	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 07:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769499544; cv=none; b=V2n2KTknlHWWV10HHzXWW2ZsYk5GHj7K2lLB/xxNZ8eXpaA56c/RUi72qGEaUcicjLFEkhgsSNpplEP2+7TfECjl6JAG7N8qXyGwrtla8wLDGTIgqtM+0qFLv/6c1au1ofsfW7/AAiO/YJoOLoTNIVJyMfc10B+yW1lc5xJQT78=
+	t=1769499565; cv=none; b=MyzPeLd0axibkcoYspBLRhSyYgt0QU+kdofhHTMFURfPoGAFxovbBPS1MhZUzDDPC0mI/zZayRTwNsU3LtBi9JQBwjjs9fXRwukiPi1ynxxsSsYjEITvjJmxQyNGAIVFugt6Pz6y34BZkDrHCyI5rmL0Z0fOf/u2F4bus1gfkZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769499544; c=relaxed/simple;
-	bh=NnfvhaNKr2OmRbeEL5EmAmYjxeBRpEZUEB1FxWjXWbo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVjdasCrRJBLnrVKfNzxtgR5N3cY4TzrQS4ntd7ksxv+3QdGGj3Zcphc2OIOww4xNuK/nvtYQ3EyQ43ltwcmt75fBxwkUm56zvpumss6X+2cTl8/Jj/EtUmxWt7Otkxn3HKHlwj6oRyZ8LyqZo1kFZYPbVeeykc046JzkI6KUmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=dSLfuDft; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1769499565; c=relaxed/simple;
+	bh=0N/YtMRiZdwnpITqNZA7hDBX2/E7yjQbL3Abjl686C8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HFPbNvPKlY+ZZt2AP2YLmDHtxngDOFugRRhzgw+lIbFISUOJO3nggLvsPOYay3YuDwWUHdkkoqU8OOT2O+rJddXwCzmoiLU+uGV+rPXeZDAHI0Ng3LJq7xVVhJO1bNCJR3GhYC6ZlBhkdtUqPwXdtv/tFyb2gNXGgTwjbpe+fI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=kxPzku1t; arc=none smtp.client-ip=66.163.187.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="dSLfuDft"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4359a316d89so3917047f8f.0
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 23:38:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1769499537; x=1770104337; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OyuTTNr2spFqmFV/zO2K68kfqAedtpsxTyfOseaQWng=;
-        b=dSLfuDftazio6ZsXRP9TM9HBVKNo4sk05ODuv6rXZAjBqD66TIkxRr/85J4EPPvgwf
-         lflXKNpwgHyfqnYZCed7hJeLxURuKYQ6WjHZwAFTjpLBKBXWcCtiA7HqVXhojmW0ymvX
-         qNwik9yVSljqLEcPX+aPwercfiSs6XTK5ui1nZ8o2m3wPRmBxb9t9ghWObRqSWww+twJ
-         8ZmJrMrrXfb16RQJo46M7GXEKss/MW0WSmb8dgP4NE94EHCeyVGrBlAALuHrTJKKYOmC
-         xpvPH6jFZDLfw/CKUYGj+NTKS8zwcAhIS025+/Ed72JroLAMEm3RBAKRMGrCgIeslp+b
-         f1CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769499537; x=1770104337;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OyuTTNr2spFqmFV/zO2K68kfqAedtpsxTyfOseaQWng=;
-        b=HyAYLs8VID6hHqfHiYygvMyWE5Z/GQ+sA78aKgE1FWMtlySlmpUrRLOt15bwUht3te
-         Oo/OreKQjKI76zuf1UioDML+kq6qm95hjT5iN7Hg4t/L45ORbiGm0VRjDSViNHkoZvEC
-         qdf+NUgAyZ1vKQJjdcgvPFrDowxJOHZMW05VaIYj+IwgvY7/qveQ0YqPjFhBUI0udyni
-         url7Ui9OjwXTWKfYe/v5UW4BD27Fq/hwIq1vzfOAn/zC58/ehjBarU11vFnReIG8IRPK
-         RFAGXqPtwuO1rF6kHMEvfoKRWupJMz3mV5Rtlbj4NGudGYfaJ84AHQgX3itPTgBCSsbY
-         IQ0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUXQ5xidG+YTD168m9OXZvmalpGpM0ct3j1tQVhrGI8hsWWnoDM28rjEfGDMCSs10B81F4J2Rg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Y1xPUYngUK4YF0Sv1Zsp9+cX4WOC6w3YmU3V8KInqXZau2ij
-	yPADUybyUHm7Fds+SId2g7Z+bC/P/SHroRr2ugkbFJfzUVzXIAuRFylZw5bcaiMUccY=
-X-Gm-Gg: AZuq6aItsFWmVt1sF47u+E91NdXBnDo+sFqcW6IN2UcJiwF8lEaP6H9fM3QtaunKXi+
-	jdTR1XrXWs2rIhiXJEGAv0uGJDGUQ0Flba7nNvLlpLB8G10MQpjDNRJx+MRqrqwllM7+90NnJJ3
-	gBrOPHRq9wM4+Zgi24HSlHKwtKLwkIp5TfbQBJAwIdMwTPkVfpm1zyf/Q1Y5GpYWTDU94lwMAa3
-	cP5Qk+MR6JMmXhkaiY8lg16+IK2IhQQu3hn2CMlwpAcm2HVac/eDQoYqkmHoXePRQHUlayHhg0K
-	ED9R98f4vGc5+GmecpdWog1/y0mJw3D+krntrsPsSyTQWnbr62UHK9Wwc7UiuO5EFpmugz6Q09i
-	4LxjiQebN3ZpAbSqUcwwb1OrZEHmXGe9Y1t3kmjkGofSHz8ZLQHpitXFadHKyGICeuNjXW1dU1q
-	ptX8p0Uftle2YS/y3rLVL55uE=
-X-Received: by 2002:a05:6000:2483:b0:42f:b707:56dd with SMTP id ffacd0b85a97d-435dd1c1d4emr980421f8f.33.1769499537396;
-        Mon, 26 Jan 2026 23:38:57 -0800 (PST)
-Received: from FV6GYCPJ69 ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1e71503sm40023764f8f.25.2026.01.26.23.38.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 23:38:56 -0800 (PST)
-Date: Tue, 27 Jan 2026 08:38:54 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Ido Schimmel <idosch@nvidia.com>, Breno Leitao <leitao@debian.org>, 
-	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Network Development <netdev@vger.kernel.org>
-Subject: Re: [PATCH] team: avoid NETDEV_CHANGEMTU event when unregistering
- slave
-Message-ID: <4mtehfz7kbb7xcygrcb4rbmmy7clr7qomnrd3wv6byfd7muwf2@5qgpxozmi3ja>
-References: <7fe2645c-680d-4fbe-981b-67a041f0d9c9@I-love.SAKURA.ne.jp>
- <20260125085835.GA54633@shredder>
- <29ffd5ac-07b1-4424-ad3f-8304a28d2946@I-love.SAKURA.ne.jp>
- <20260125121551.GA83275@shredder>
- <ece4365f-906c-44e2-80c9-ab73f91f7fb5@I-love.SAKURA.ne.jp>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="kxPzku1t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769499562; bh=ZO0gP5JNvG1sVwiPM9TlxEvQxqgo1b4/O0B3z7s7UMg=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=kxPzku1tZz0UlPuGZ3O34SvOS2/sJs6zTKv9zPu+umowXk1kN4XWALwW1/dcqumtRYRztioAou9JiDGbVp9v5TBaKaBeL36OZuzZxPxpdyYxh0KB089XW4aJBs6kbCFFRZ0FURaaP+DQN9admELtgFYd9Cl/lzYyklPB4XYWlStNLXI4drtERUneDmDgZklozE0GBR8QFwG1Fb6bxW8oHUl9pCiK87c3gyUSPXz+ocwBs6fnmVOepCl/rh56shoHQ/VRCp4LI9I6950p2onYh6PEMQEgCiE7X3uBwWIr+tkGptmU2VeF1Dp87vdpIkQr416wSP8ll6zTKfepGoYEfg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1769499562; bh=iUEiJqXQuM7qGZcg0AIpmR4fOFbop67NG7SNI6ACQJ2=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Xikh9Egcz7b5ih02OUuI62MRKca0oIkXyvGTy+wmyT460bjBCqKs6kmk1fU0HMaEB2TetiFCIZSQsPcAfCiTktOHg/ejRkJStDD0BAQKG3fxsxzBZX9bAWw1BVqKhEbW8IudSW02uU2AMLVxE2ZgriyJaAaT0fOYxwbKPlsG+gxPGvb7UoUsR3EchvPqDYO+FFNWWfaV/JYnO/qzxnlPdjWWktlDT+Uv1wL5XIDoGjtOTYlWiGCo5Ve99KuM/1TwLbtU7j9VWYM2fx9rVHysmIqlVSXbzFAK2VctxOrnPPTijy3sA+RNitCRGiY8mz7g3I1akgBfTEji/mShhiL1fg==
+X-YMail-OSG: PXOBE7gVM1nrkaJ5trKSQI8fuW2p.WsZXKH1c5MCs1SoInY7R.R.rW0xWiXoEgx
+ EihwlHF9AfAY1LG82KZRDukXyQMkNVut4Ur7Zn3iOmj_0oCQzAhlmlQoAoC9350qoAkGJSuEtuAL
+ NkYTl9aLsqLVGWxruGgPnh0FzjU7MeaRtZpmSoVs5fxOSnJqUjJTy1WXBaQJzxvoyTkhD8eP7xXN
+ kLUj1_BpNEytRNtyUyibY3fNBBj9XqORPnWJBBuCCDR8EBeI0HVQTExiiHrKeuCQ1MWF79Do9exS
+ SqWv6jkzTlpmwrbHHM.SHqBP2uiU6yttlMCL_qXaTr_RNWoG5UGp8IVcPLduhvPLj4yvmJ3kfnPk
+ gjfi5rKGxkzrIL1BIISnh.Ojb9RhvnVYz7eqzcqanUPOUbKZwmJNXTrHZABW5bxAeUFOZKxGy0Qm
+ 9IQK9L_qAWEOy1ulw01VAfvNH9SF_eBt7irbGGwfalXO1DcLtwLwxcghGvo4oyAUncMZ0Hhor011
+ qTm4J66ECcBJuz7HapVVwLWImVI5dtNKIRSJI.WE3JaD.aQ6NZMgag5JNt9Xbig3jlMJlSKO8din
+ QK47yXFRKlpnsYSjT8i4DOY3bi7RSLa9LA.nCp9_YGzKVQ._HqVU4VfEQBstSwDk7wrY_1MJ2xvp
+ wnDaACbjkvfAlQPgCQZ9uZD5XjLZdNtpKbyGIwp2zFSPeTosx_Eo79hy93P2xyJ9UfCYlRl1Llxa
+ abJaM3P3XPrC_vLvVBNTZp1UrglFZjzY88pk06UWmYbLgYO6lFAVaCYUHgNdk6auu2PMf7mLA3bT
+ ayqr.2z6DxFKwa09ZAt_oKMMx0mHs1mP0Qa9TAqJBuCOhTuaVmFn564_1BwJxOg9DnPTDx.ATp2X
+ n90vzXhnOEhFiHyZG5VMVA0x_71g0IHEVSkh4uqzi0NBCZE6Dl_6gdwI8Gon_pLu_9GxzZsBlkEp
+ SQKeDpcSqQ7B0mWToX8yNy29VZA.Rzfb1lsK8QsyL.mZtP1996jYu_OuaBxCm03C_tkdOKJB_S0b
+ OM1QXT4TWOA_AZ5mFvuGWF7.o8.dOXE9IelpBwXGGS961iDvUq0GobiKlo6u5GqV5rVjKiK5xQ2m
+ eWbzalFN99y_Q6RuQ39aFTCmVralqDUnSU5DTXxxnTxh1rH_yRhDBK10ec1pd4jZEe7AGGZ0.c3X
+ lIZltRkFuJp1iKN.XRe9gQlM.F3jTDbu1d8bbd6KOT6smMCuVseTTYIBt1sAW0AUP0etPep7V2bw
+ T_MtjUYVyuciq_8ZZfSPxv10vmVI9bTwtJkgtVFM3eDZGG4tkYSqe.lmdSqPTldCdU0o11hJNgzs
+ gPgl4lZ7gHzmT9e61fRU9kw3CEMVWxv11zokT7Ip5BlA8M73mPim6m9Az1vbzTPqLlCQEpNv00OO
+ p3cjREokS_RApRoIs5BjKepW0xaS30FEBRY7ff7dALMJq10FBtmjpeD0qYb6fWoE.X0his18ixnv
+ CscnyEaXAKaP95TidrPur0nNj1NNVu1qImpEP9U8peUdcLg5HrmvuQ8NDnaSBu1Xs6_ELr4efo_L
+ 1cwgT98XLFmbWL2UKk53eB9GwI5u2O7ShGqNfPo.7Z.t3fvlaXZ6jd1PGqhChveB2ZII8O1DTk3C
+ vaczM5Dj6h1uzgM8qi5agW38KgkDQ3uFgkVuXI2CDIES.vdM6NZW.VWSBBFVv4gGPD9Rc1_ZbuXV
+ WQah95bJGJzwKRrhXDdnEkEq.GSIXOYr23avNVaeJ8FNNQ9Hsx5p37HQYHQ7om9JOPtsUDcae8_v
+ xXPOFY.1rjxRPBO4COlKZvFg.95_rV8roPZtVGfMqKQhFxwFBvwNJWqqFCF1HgVk.1DV6YP49OC8
+ xbCN7ufvdBh5RaxLHcNk82fnOqT_JQyHduMAx8MTTs5yKvdxDEOUSJhy4PtMArxGWhI21smzHsBJ
+ Hqez_SFhsSkOXqgtC5QXFTjhYiWfMX78Kvgbjre3yKZqthKK5sc5uCetMHBA_oYh5MB0hTGD3Bez
+ GfWcS8CK4G.DY1_GynS3xBJIdpBYFdDKXRYKFBV2psNkQSY3AQMtCA.Ihchvf095TPv5C47TyoQX
+ UHGpZAQVUc4GqXcCf16zdnyB884SvnFE7_7bFMp.5xppMiTnV91bcucHhXb6UFxuuXwey7AY4Cuw
+ 1Oy7ZFOm36xiGh2AscAwjzJJ9zuy0lEuP9PbLRjI7K.K3bwM-
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: a947b7b7-6c60-4071-a97c-c08127f5f582
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Tue, 27 Jan 2026 07:39:22 +0000
+Received: by hermes--production-ir2-6fcf857f6f-gch58 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 84771875e54e61ed0bb89230515c8a5a;
+          Tue, 27 Jan 2026 07:08:57 +0000 (UTC)
+From: Marek Mietus <mmietus97@yahoo.com>
+To: netdev@vger.kernel.org,
+	sd@queasysnail.net,
+	kuba@kernel.org
+Cc: Jason@zx2c4.com,
+	Marek Mietus <mmietus97@yahoo.com>
+Subject: [PATCH net-next v7 09/11] net: sctp: convert sctp_v{4,6}_xmit to use a noref dst when possible
+Date: Tue, 27 Jan 2026 08:04:50 +0100
+Message-ID: <20260127070452.6581-10-mmietus97@yahoo.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260127070452.6581-1-mmietus97@yahoo.com>
+References: <20260127070452.6581-1-mmietus97@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ece4365f-906c-44e2-80c9-ab73f91f7fb5@I-love.SAKURA.ne.jp>
+Content-Transfer-Encoding: 8bit
 
-Sun, Jan 25, 2026 at 03:35:28PM +0100, penguin-kernel@I-love.SAKURA.ne.jp wrote:
->syzbot is reporting
->
->  unregister_netdevice: waiting for netdevsim0 to become free. Usage count = 3
->  ref_tracker: netdev@ffff88807dcf8618 has 1/2 users at
->       __netdev_tracker_alloc include/linux/netdevice.h:4400 [inline]
->       netdev_hold include/linux/netdevice.h:4429 [inline]
->       inetdev_init+0x201/0x4e0 net/ipv4/devinet.c:286
->       inetdev_event+0x251/0x1610 net/ipv4/devinet.c:1600
->       notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
->       call_netdevice_notifiers_mtu net/core/dev.c:2318 [inline]
->       netif_set_mtu_ext+0x5aa/0x800 net/core/dev.c:9886
->       netif_set_mtu+0xd7/0x1b0 net/core/dev.c:9907
->       dev_set_mtu+0x126/0x260 net/core/dev_api.c:248
->       team_port_del+0xb07/0xcb0 drivers/net/team/team_core.c:1333
->       team_del_slave drivers/net/team/team_core.c:1936 [inline]
->       team_device_event+0x207/0x5b0 drivers/net/team/team_core.c:2929
->       notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
->       call_netdevice_notifiers_extack net/core/dev.c:2281 [inline]
->       call_netdevice_notifiers net/core/dev.c:2295 [inline]
->       __dev_change_net_namespace+0xcb7/0x2050 net/core/dev.c:12592
->       do_setlink+0x2ce/0x4590 net/core/rtnetlink.c:3060
->       rtnl_changelink net/core/rtnetlink.c:3776 [inline]
->       __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
->       rtnl_newlink+0x15a9/0x1be0 net/core/rtnetlink.c:4072
->       rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:6958
->       netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
->       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
->       netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
->       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
->
->problem. Ido Schimmel found steps to reproduce
->
->  ip link add name team1 type team
->  ip link add name dummy1 mtu 1499 master team1 type dummy
->  ip netns add ns1
->  ip link set dev dummy1 netns ns1
->  ip -n ns1 link del dev dummy1
->
->and also found that the same issue was fixed in the bond driver in
->commit f51048c3e07b ("bonding: avoid NETDEV_CHANGEMTU event when
->unregistering slave").
->
->Let's do similar thing for the team driver, with commit ad7c7b2172c3 ("net:
->hold netdev instance lock during sysfs operations") and commit 303a8487a657
->("net: s/__dev_set_mtu/__netif_set_mtu/") also applied.
->
->Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
->Suggested-by: Ido Schimmel <idosch@nvidia.com>
->Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+sctp_v{4,6}_xmit unnecessarily clone the dst from the transport when
+sending an encapsulated skb.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reduce this overhead by avoiding the refcount increment introduced by
+cloning the dst.
+
+Since t->dst is already assumed to be valid throughout both functions,
+it's safe to use the dst without incrementing the refcount.
+
+Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+---
+ net/sctp/ipv6.c     | 5 ++---
+ net/sctp/protocol.c | 5 ++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index 54f489c4c41f..71fb9ff6276f 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -219,7 +219,7 @@ int sctp_udp_v6_err(struct sock *sk, struct sk_buff *skb)
+ 
+ static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ {
+-	struct dst_entry *dst = dst_clone(t->dst);
++	struct dst_entry *dst = t->dst;
+ 	struct flowi6 *fl6 = &t->fl.u.ip6;
+ 	struct sock *sk = skb->sk;
+ 	struct ipv6_pinfo *np = inet6_sk(sk);
+@@ -243,7 +243,7 @@ static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ 	if (!t->encap_port || !sctp_sk(sk)->udp_port) {
+ 		int res;
+ 
+-		skb_dst_set(skb, dst);
++		skb_dst_set(skb, dst_clone(dst));
+ 		rcu_read_lock();
+ 		res = ip6_xmit(sk, skb, fl6, sk->sk_mark,
+ 			       rcu_dereference(np->opt),
+@@ -266,7 +266,6 @@ static int sctp_v6_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ 			     tclass, ip6_dst_hoplimit(dst), label,
+ 			     sctp_sk(sk)->udp_port, t->encap_port, false, 0);
+ 	rcu_read_unlock();
+-	dst_release(dst);
+ 	return 0;
+ }
+ 
+diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
+index 98e5dc217959..fb26b927391b 100644
+--- a/net/sctp/protocol.c
++++ b/net/sctp/protocol.c
+@@ -1038,7 +1038,7 @@ static int sctp_inet_supported_addrs(const struct sctp_sock *opt,
+ /* Wrapper routine that calls the ip transmit routine. */
+ static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ {
+-	struct dst_entry *dst = dst_clone(t->dst);
++	struct dst_entry *dst = t->dst;
+ 	struct flowi4 *fl4 = &t->fl.u.ip4;
+ 	struct sock *sk = skb->sk;
+ 	struct inet_sock *inet = inet_sk(sk);
+@@ -1056,7 +1056,7 @@ static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ 	SCTP_INC_STATS(sock_net(sk), SCTP_MIB_OUTSCTPPACKS);
+ 
+ 	if (!t->encap_port || !sctp_sk(sk)->udp_port) {
+-		skb_dst_set(skb, dst);
++		skb_dst_set(skb, dst_clone(dst));
+ 		return __ip_queue_xmit(sk, skb, &t->fl, dscp);
+ 	}
+ 
+@@ -1077,7 +1077,6 @@ static inline int sctp_v4_xmit(struct sk_buff *skb, struct sctp_transport *t)
+ 			    sctp_sk(sk)->udp_port, t->encap_port, false, false,
+ 			    0);
+ 	rcu_read_unlock();
+-	dst_release(dst);
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
