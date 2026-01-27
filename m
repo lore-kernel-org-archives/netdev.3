@@ -1,193 +1,97 @@
-Received: from mail-yx1-f73.google.com (mail-yx1-f73.google.com [74.125.224.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B4B2FE582
-	for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 03:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655F3204583;
+	Tue, 27 Jan 2026 03:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769484115; cv=none; b=Tz1IQDjxcZvGT9/P3dvpK+jjue3QJ6wfjAfMhjBdIHbkT24wzV8xzBd+T/OUX+4xSUvy1uIzTRgf+kTZos6cW7sOt2/XG5eYfR5Wd2ApyWmZb1hwtUfeR/6KAsodnSHXNxTRCYo+VEb2gf8NtQfE3FtquUQtGCMnTbjNSB/0kN8=
+	t=1769484201; cv=none; b=Wo+VmxxsqG4ogHITpxjSc/WIjTbtRgmrbiOJbx6xr7OzmUYQX8Upane10RbPFB6lcL175OcBciJwji7l+oxbDvyPy5c+9RW1Ls8AXJd+BvGjOK/aUfSPDFgnBgoCrIxLneAenECURked3oO5xo4oktCbmsWUoeT47GgSWNJYYUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769484115; c=relaxed/simple;
-	bh=ocyvdKrP3Hy32p8oQ/1IYKwBrsdgytyKRMZjxekS1m8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=d6+GSxrE8jINOVgQ+83gQuGZxB53jLzfTUV2RSpztqCQ1l+rFcvavPPgP6IUI1rro5sXLDSnG16JItv3fuF5HuTYaA6KBk7UD+yfp4qk1S75ocwk4LQQOPDb6c0ZNRxbc3ppwhLlQlhEZObAVzprv9+2sDHenep0KggEScfuCNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JD0mncN7; arc=none smtp.client-ip=74.125.224.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1769484201; c=relaxed/simple;
+	bh=QPXb8BANJCJaSlSYznlnm2/uV4g8XIeG+K7X637VVDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rtpUrebsZm6sq20CBn0xrDWXoHT02uHdFczzkAGtqdVx+p9omE3NOEtAU+h6o4alA75tV4Lkc3DE4O48qsGRPX8/OfzCoTWRDQ9bKNACXclmoXdAOZEzhJZeKNQx6SOxsvLjdk/xl9AVJQIV0C7mnz6IPp7+aVPiLwKE1N1hsOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDIYIjwd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JD0mncN7"
-Received: by mail-yx1-f73.google.com with SMTP id 956f58d0204a3-64956928dafso5723527d50.2
-        for <netdev@vger.kernel.org>; Mon, 26 Jan 2026 19:21:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769484113; x=1770088913; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gT/Eb//4hPc8Ua+9EmOIlzxcPFWWGdqENEs/7+97xzI=;
-        b=JD0mncN7Q1w0JstJgxr2CdDMkvdUTnWnEWp8ypTzZG5P1EZfKEQpX0GrPXu4kxECfd
-         6Z0S3VyHxFck5QYn0Xc1uMsSrsElpfLgRaWKkOALbEo/ujUok2YXQestbgf8EL8u/Sv3
-         RHdVfUivi2vqPbTMOFhif5DkXQh3S/TRcD63K71fjByKUHK5ix7a5He3KZ66sxUTDLTh
-         Xt4ZoxPu2qN1INU4ZepmOIWptowNBEN+Pn51EcyItcxicYlWZH+MZztooZjM+9fPqX1L
-         UC4dyEd6ML8cosuosoisFFk94uokdrhfUcDR5QdWBXdFRE2WlGJ2kHA8NnUz/UgzgHWt
-         0BxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769484113; x=1770088913;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gT/Eb//4hPc8Ua+9EmOIlzxcPFWWGdqENEs/7+97xzI=;
-        b=VCm+KYdnnrR5vP63vKYcTiPFOAIkjxT3e9T8mzxo8gJf7nbAi32b6xXTJLIgAhR499
-         phovA509C2r5tjYzjeST3JJaIbYgemMeIjo5d6KbTL36u4V2aTkIpkxqiH0vLtyM8dDk
-         rD+WF+D6YopoxrF8XLobH595JFMi1e5ScBpwEXmW468caCayEP+DhZ/kg0RqeQNfN2GW
-         e5fUt4S6umPxi5svkSnsDW+1+vVcnWNhl4cR3qCvOAw8YH6G7+tnwFj07jEnG+8K5Amp
-         wrApnzjrYjhfr2sGeyui12efo12rmF+SpmQSmnZLwhZ7GCqgB0OgtxCBCUGNCTWXxMbD
-         bfOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnCRExPC8H5COWouHRQZS2li6bD+e4L9B3ZP51wmCTOzgLRUnSZOKKVZdz+GOp2OqbDPyyrhM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzbyEorMZ5rLGd4CX81mm1wakOLCM2fRz4T6yVz+rlgJUviqYF
-	R1NzdhMUCyEgpOEdn8rdhr3NPYn/aLErJlCZiTGKvC6GHX7WDBzPURMyzHzwsrPwMjpbZ2LEZex
-	Ygi4r+o8k3tAFhg==
-X-Received: from yxrn10.prod.google.com ([2002:a53:ebca:0:b0:641:4b3:8bd9])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:690e:419a:b0:649:5ff5:707 with SMTP id 956f58d0204a3-6498fc3b242mr93627d50.57.1769484113138;
- Mon, 26 Jan 2026 19:21:53 -0800 (PST)
-Date: Tue, 27 Jan 2026 03:21:47 +0000
-In-Reply-To: <20260127032147.3498272-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDIYIjwd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546ABC116C6;
+	Tue, 27 Jan 2026 03:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769484201;
+	bh=QPXb8BANJCJaSlSYznlnm2/uV4g8XIeG+K7X637VVDQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iDIYIjwdQlVbSLKsmiPgaot8SlSPHnn+0Zv2w4HyQZrOkWHm7Ghyf2N20MaX+ZjMX
+	 pOSie3Lf405rTBca7Yf/QYnlOQQzissVqUDO4a2trFIK270IjLQ/yojCYigSi4K3ax
+	 sgK6juNrFE1A1ub/yUmXGfL5WDT2o8OQkjKcLtWfwomLz8qYsVswu4yCtV9g+ZIlvQ
+	 DPxsheJxONy092OT6ckkBTcTkDbwXLunygVOB/HYY1/HUNuaFay8P4B34ZyuuKItTT
+	 pWO2oMPTmZLReeyd99qQkZYbNDiCBBaz6QGiQ4WnR5g8COlvAWizJqdQ0NuLjanda3
+	 g9vmDWaTij7hw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: bhargava.marreddy@broadcom.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	pabeni@redhat.com,
+	pavan.chebbi@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	edumazet@google.com,
+	ajit.khaparde@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	vsrama-krishna.nemani@broadcom.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	davem@davemloft.net,
+	michael.chan@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	vikas.gupta@broadcom.com
+Subject: Re: [v6,net-next,8/8] bng_en: Add support for TPA events
+Date: Mon, 26 Jan 2026 19:22:56 -0800
+Message-ID: <20260127032255.3847218-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260123193504.285573-9-bhargava.marreddy@broadcom.com>
+References: <20260123193504.285573-9-bhargava.marreddy@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260127032147.3498272-1-edumazet@google.com>
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260127032147.3498272-4-edumazet@google.com>
-Subject: [PATCH net-next 3/3] tcp: move tcp_rack_advance() to tcp_input.c
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tcp_rack_advance() is called from tcp_ack() and tcp_sacktag_one().
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Moving it to tcp_input.c allows the compiler to inline it and save
-both space and cpu cycles in TCP fast path.
-
-$ scripts/bloat-o-meter -t vmlinux.1 vmlinux.2
-add/remove: 0/2 grow/shrink: 1/1 up/down: 98/-132 (-34)
-Function                                     old     new   delta
-tcp_ack                                     5741    5839     +98
-tcp_sacktag_one                              407     395     -12
-__pfx_tcp_rack_advance                        16       -     -16
-tcp_rack_advance                             104       -    -104
-Total: Before=22572680, After=22572646, chg -0.00%
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- include/net/tcp.h       |  2 --
- net/ipv4/tcp_input.c    | 32 ++++++++++++++++++++++++++++++++
- net/ipv4/tcp_recovery.c | 32 --------------------------------
- 3 files changed, 32 insertions(+), 34 deletions(-)
+bng_en: Add support for TPA events
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index a4d9f263ea68..f1cf9e6730c8 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2514,8 +2514,6 @@ void tcp_newreno_mark_lost(struct sock *sk, bool snd_una_advanced);
- extern s32 tcp_rack_skb_timeout(struct tcp_sock *tp, struct sk_buff *skb,
- 				u32 reo_wnd);
- extern bool tcp_rack_mark_lost(struct sock *sk);
--extern void tcp_rack_advance(struct tcp_sock *tp, u8 sacked, u32 end_seq,
--			     u64 xmit_time);
- extern void tcp_rack_reo_timeout(struct sock *sk);
- 
- /* tcp_plb.c */
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index d504a9a9b6ec..a2a872382fc0 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1558,6 +1558,38 @@ static int tcp_match_skb_to_sack(struct sock *sk, struct sk_buff *skb,
- 	return in_sack;
- }
- 
-+/* Record the most recently (re)sent time among the (s)acked packets
-+ * This is "Step 3: Advance RACK.xmit_time and update RACK.RTT" from
-+ * draft-cheng-tcpm-rack-00.txt
-+ */
-+static void tcp_rack_advance(struct tcp_sock *tp, u8 sacked,
-+			     u32 end_seq, u64 xmit_time)
-+{
-+	u32 rtt_us;
-+
-+	rtt_us = tcp_stamp_us_delta(tp->tcp_mstamp, xmit_time);
-+	if (rtt_us < tcp_min_rtt(tp) && (sacked & TCPCB_RETRANS)) {
-+		/* If the sacked packet was retransmitted, it's ambiguous
-+		 * whether the retransmission or the original (or the prior
-+		 * retransmission) was sacked.
-+		 *
-+		 * If the original is lost, there is no ambiguity. Otherwise
-+		 * we assume the original can be delayed up to aRTT + min_rtt.
-+		 * the aRTT term is bounded by the fast recovery or timeout,
-+		 * so it's at least one RTT (i.e., retransmission is at least
-+		 * an RTT later).
-+		 */
-+		return;
-+	}
-+	tp->rack.advanced = 1;
-+	tp->rack.rtt_us = rtt_us;
-+	if (tcp_skb_sent_after(xmit_time, tp->rack.mstamp,
-+			       end_seq, tp->rack.end_seq)) {
-+		tp->rack.mstamp = xmit_time;
-+		tp->rack.end_seq = end_seq;
-+	}
-+}
-+
- /* Mark the given newly-SACKed range as such, adjusting counters and hints. */
- static u8 tcp_sacktag_one(struct sock *sk,
- 			  struct tcp_sacktag_state *state, u8 sacked,
-diff --git a/net/ipv4/tcp_recovery.c b/net/ipv4/tcp_recovery.c
-index 40732b84771e..139646751073 100644
---- a/net/ipv4/tcp_recovery.c
-+++ b/net/ipv4/tcp_recovery.c
-@@ -111,38 +111,6 @@ bool tcp_rack_mark_lost(struct sock *sk)
- 	return !!timeout;
- }
- 
--/* Record the most recently (re)sent time among the (s)acked packets
-- * This is "Step 3: Advance RACK.xmit_time and update RACK.RTT" from
-- * draft-cheng-tcpm-rack-00.txt
-- */
--void tcp_rack_advance(struct tcp_sock *tp, u8 sacked, u32 end_seq,
--		      u64 xmit_time)
--{
--	u32 rtt_us;
--
--	rtt_us = tcp_stamp_us_delta(tp->tcp_mstamp, xmit_time);
--	if (rtt_us < tcp_min_rtt(tp) && (sacked & TCPCB_RETRANS)) {
--		/* If the sacked packet was retransmitted, it's ambiguous
--		 * whether the retransmission or the original (or the prior
--		 * retransmission) was sacked.
--		 *
--		 * If the original is lost, there is no ambiguity. Otherwise
--		 * we assume the original can be delayed up to aRTT + min_rtt.
--		 * the aRTT term is bounded by the fast recovery or timeout,
--		 * so it's at least one RTT (i.e., retransmission is at least
--		 * an RTT later).
--		 */
--		return;
--	}
--	tp->rack.advanced = 1;
--	tp->rack.rtt_us = rtt_us;
--	if (tcp_skb_sent_after(xmit_time, tp->rack.mstamp,
--			       end_seq, tp->rack.end_seq)) {
--		tp->rack.mstamp = xmit_time;
--		tp->rack.end_seq = end_seq;
--	}
--}
--
- /* We have waited long enough to accommodate reordering. Mark the expired
-  * packets lost and retransmit them.
-  */
+This commit enables TPA (Transport Protocol Aggregation) functionality
+in the VNIC and adds functions to handle TPA events for LRO/GRO
+processing.
+
+> +static void bnge_tpa_agg(struct bnge_net *bn, struct bnge_rx_ring_info *rxr,
+> +			 struct rx_agg_cmp *rx_agg)
+> +{
+> +	u16 agg_id = TPA_AGG_AGG_ID(rx_agg);
+> +	struct bnge_tpa_info *tpa_info;
+> +
+> +	agg_id = bnge_lookup_agg_idx(rxr, agg_id);
+> +	tpa_info = &rxr->rx_tpa[agg_id];
+> +
+> +	tpa_info->agg_arr[tpa_info->agg_count++] = *rx_agg;
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The agg_arr is allocated with MAX_SKB_FRAGS entries, but there is no
+bounds check before writing to it. The bnxt driver has a BUG_ON guard
+at this location:
+
+    BUG_ON(tpa_info->agg_count >= MAX_SKB_FRAGS);
+
+Is there a reason this check was omitted? While the check in
+bnge_tpa_end() catches agg_bufs > MAX_SKB_FRAGS, that happens after
+the aggregation completions have already been stored. If hardware
+misbehaves and sends more aggregation completions than expected, could
+this overflow agg_arr[]?
+
+> +}
 -- 
-2.53.0.rc1.217.geba53bf80e-goog
-
+pw-bot: cr
