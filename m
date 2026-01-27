@@ -1,115 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3FA3596FB;
-	Tue, 27 Jan 2026 13:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7BB27BF79;
+	Tue, 27 Jan 2026 13:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769521224; cv=none; b=MhDzpDTbA3i2i39kPf9VucOj8HSIPXrKgTW3kYpBeJ2NWMG+NACOI8wxC2S9ic/API9T47hsJNddSpCYdtGOZ0gVolZ5xcDjJ7XGChGXmTU9HK9cTVmI1Uz/49rgQSnoqwia1u+cx+IKK+tTF/1qP/XexSlr5uik3JbHZtPYslI=
+	t=1769521326; cv=none; b=BxFaQ3lGjXN8+7f2hxRcyILfW5WMarsTvlSwjX/4KCQox1aQPP5pl7+IHqJfCSFd/OwVW6/KgVBZ8594s687fln4IFs22hBbG7FfYpr94tRGJtbUskJBv/OvEbYPvsdYAWlPazyMWfPgV8TBDMU/XhQQ2NtmsyFtT/J3rHDssTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769521224; c=relaxed/simple;
-	bh=q/t8q6cIDKN4tGqUOXEyEpqfjwEaUcXWcc9726MeDqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BuowjA9OGVONWk0hw/GTxnmZLnVDPksu4wbRzZP0Pf+zkwSq8kauU1aFhm2nclXNjCLkk+xc5NCWlb4eYZNg/h42WaIiOdoLW/LOMtswt+uln4ua/MbDyPi95yQwU5yZS3U4xd/DAlqmvtjmMnk9jykT3T5ClD0uyOUxI5TvBNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cnGsOS2y; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1769521326; c=relaxed/simple;
+	bh=YeHXlxP0dmg6RHVDtkVhWveAzGoBAVACEuP1+dVwj2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=E24zVC35WzuPKBUI2fvTH/bSot529UW4+sFHs9jRwCOYV7JADu0TsjsJoWRPzQzKRh+3/uLeZ/8F3kmGL5PB6zk2R2Osw2fyxVfurm2N+ZKh5ykKzDCCryuAtPe0V5Gru+IJBK+r9ja5ULDpp2uSMG/9u5sJYGpebtVx00U17K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4hsXvio; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cnGsOS2y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=PJdRV52Sg2t3bV7DwpZwSOiK3NFQ9DZEEcrZUnrZodU=; b=cn
-	GsOS2yQvDZsBDp5Wz+Jbu1jU+YHTDmHBhdXeEIzuGNWN40Nd+DG9Tjfc2btNHdwqq56odmbX3jNhY
-	VO1ybpvEP03QAAvSkm3RVj6TNE/GutH3KUIEKDhspKWLofy3XS5x8xcwTnRD7rakGj/hKKScIR44p
-	i6M87pQKKGEDGAc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vkjIc-004xPn-HT; Tue, 27 Jan 2026 14:40:06 +0100
-Date: Tue, 27 Jan 2026 14:40:06 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Min Lin <linmin@eswincomputing.com>
-Cc: =?utf-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>,
-	Bo Gan <ganboing@gmail.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	netdev@vger.kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com,
-	weishangjuan@eswincomputing.com
-Subject: Re: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock
- sampling control
-Message-ID: <e7183ae1-8b8b-4e77-9f4e-3bc1b4b63556@lunn.ch>
-References: <20260109080601.1262-1-lizhi2@eswincomputing.com>
- <20260109080859.1285-1-lizhi2@eswincomputing.com>
- <00b7b42f-2f9d-402a-82f0-21641ea894a1@lunn.ch>
- <aWKZvEW7rKFFwZLG@shell.armlinux.org.uk>
- <0d54ddca-9270-40a5-aa82-d8a7b65027ff@gmail.com>
- <1a622916.2d28.19bb105feab.Coremail.lizhi2@eswincomputing.com>
- <d010a6b8-5bf0-40ff-8e76-18362a238d50@lunn.ch>
- <203bb660.2c91.19bfe45d677.Coremail.linmin@eswincomputing.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4hsXvio"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C77BC116C6;
+	Tue, 27 Jan 2026 13:42:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769521325;
+	bh=YeHXlxP0dmg6RHVDtkVhWveAzGoBAVACEuP1+dVwj2U=;
+	h=Date:From:To:Cc:Subject:From;
+	b=s4hsXvioBfF59F2HGqCBrp/RhH3TOUzjPV3C+jDgyCzvAi1CTt/pjsPO/MQOvmJRj
+	 ZPliQVrBV+JVQvA/p+bLAgNO8e8QyrgdO1CBQkqUJhcXvoZF358ER93w/x+pwmKEUM
+	 3pdDS02RZwxmuunzeq/weOZu8hjVvlA9mRb9WW6F4N8VWuzO3eTmB4NLxTOVN1ybgN
+	 kU8Kv22fU+KbdCbSHs2AWWlVDzKm6pB4iOAw0P4tcz5pW3zTOEs5dFaQ30uH+veeT9
+	 DflLo4Tk8oCacl18Nq0zewHfo1h1higDQZPWmpNvGfxkQUehcpauT1892Hd1kR32un
+	 OP5U9cTgKL0Kw==
+Date: Tue, 27 Jan 2026 13:42:01 +0000
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Networking <netdev@vger.kernel.org>
+Cc: Chukun Pan <amadeus@jmu.edu.cn>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <aXjAqZA3iEWD_DGM@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2jrxtingMBd5InMe"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <203bb660.2c91.19bfe45d677.Coremail.linmin@eswincomputing.com>
 
-On Tue, Jan 27, 2026 at 03:05:48PM +0800, Min Lin wrote:
-> Hi Andrew,
-> 
-> Thank you for taking the time to review the patch.
-> 
-> > -----Original Messages-----
-> > From: "Andrew Lunn" <andrew@lunn.ch>
-> > Send time:Thursday, 22/01/2026 21:27:34
-> > To: 李志 <lizhi2@eswincomputing.com>
-> > Cc: "Bo Gan" <ganboing@gmail.com>, "Russell King (Oracle)" <linux@armlinux.org.uk>, devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, linmin@eswincomputing.com, pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
-> > Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock sampling control
-> > 
-> > > We also intend
-> > > to upstream complete DTS files for EIC7700 so the bindings can be validated
-> > > against real hardware.
-> > 
-> > I suggest you prioritise this. ARM-SOC is pretty flexible for
-> > accepting work in progress support for new SoCs. All you really need
-> > is for the board to boot to a login prompt on a serial port using an
-> > initramsfs. So the .dtsi and .dts file can be very slim, CPUs, memory
-> > and UARTs.
-> > 
-> > Once you have that merged you can work on the other drivers, their
-> > bindings, etc.
-> > 
-> The eic7700.dtsi and eic7700-hifive-premier-p550.dts are already in
-> v6.19-rc6.
 
-Great.
+--2jrxtingMBd5InMe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Because the device drivers such as Ethernet rely on the clock driver,
-> our plan is that once the clock driver is applied, we will add other
-> device nodes such as Ethernet and eMMC in the next upstream patch
-> of the DTS. Is this reasonable?
+Hi all,
 
-Yes, this is reasonable. When you submit Ethernet support, please
-include the DT patches as part of the series, so we can see the full
-picture. When it comes to actually merging it could be the DT patches
-get separated out and go a different path, but we can decide that when
-we get to that stage.
+Today's linux-next merge of the net-next tree got a conflict in:
 
-Given the new information, it becomes clear that backwards
-compatibility is not an issue. Since mainline does not have any users
-of the Ethernet driver, you should make non-backwards compatible
-changes in order to keep things clean. Just ensure the commit messages
-point out there are no users, so the changes are safe.
+  drivers/net/ethernet/spacemit/k1_emac.c
 
-	Andrew
+between commit:
+
+  2c84959167d64 ("net: spacemit: Check for netif_carrier_ok() in emac_stats=
+_update()")
+
+=66rom the net tree and commit:
+
+  f66086798f91f ("net: spacemit: Remove broken flow control support")
+
+=66rom the net-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+diff --cc drivers/net/ethernet/spacemit/k1_emac.c
+index 88e9424d2d51a,c85dc742c404d..0000000000000
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@@ -1648,14 -1531,6 +1545,12 @@@ static void emac_adjust_link(struct net
+  		}
+ =20
+  		emac_wr(priv, MAC_GLOBAL_CONTROL, ctrl);
+ +
+- 		emac_set_fc_autoneg(priv);
+-=20
+ +		/*
+ +		 * Reschedule stats updates now that link is up. See comments in
+ +		 * emac_stats_update().
+ +		 */
+ +		mod_timer(&priv->stats_timer, jiffies);
+  	}
+ =20
+  	phy_print_status(phydev);
+
+--2jrxtingMBd5InMe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml4wKgACgkQJNaLcl1U
+h9CZiAf/cayrZGhkTVbrARdIJj6yE5+1bj+P0uGbE07rXZdU5KZ7GqAn8ZnQQI1/
+jhIY4L/LFn1UvQN8Lkrx1VWuhiMK6inEyZZio/nP587F3Hi10Xrtc76+v6aHV76d
+m05fPxPcnWQ9GqDlonLaMr2cDNmkc42ukGCr1CNRj6spm0oFb0mvdk5s88/pcwQ8
+AtDBDJBsC+vXLk9AZ4AWqOoWkoOoT8rg5ijXnSY5+ODBT7OkHCvflHYryc9Bals8
+3n0Ei0s7NRBUfbENRGeQ0rlyIymZi/Hb+Ie+It43WEEAGqli4StlIJxVUd//DKbg
+hwqK05r1a6s9ES6btRCzO57iMwqVNQ==
+=qkgv
+-----END PGP SIGNATURE-----
+
+--2jrxtingMBd5InMe--
