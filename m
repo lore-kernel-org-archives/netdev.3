@@ -1,155 +1,88 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEF10A1E;
-	Wed, 28 Jan 2026 01:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A9923EA84
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 01:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769564332; cv=none; b=nYWN8UnB3WMQUzBdmUpJZUZZ3/ddPuSExqkfnDLyF48WtMO5JEAuCDXz1PeDhET4IT+RF3UbdULTBpp/J01c27HneEXVsOUHFUQbAwvgemwfmud2XbtrwCpm+bgd6gldgWS+aJ8VFZDoF57HfoTup4jBotSV14qv+eXW0hZX+5k=
+	t=1769564429; cv=none; b=Dr2+bEbtDnm5kXx+oBFqBUG83WicbH7c3r4OsYfioBzfoSDqivVR5sqrhKtfXI9tHTB4q3FGTrgLavt9rEe4yVJi3Q0ssJFiQdf6+PjJuQHH+guBDS1uSmTaa76u2c475ES/n2mBeCGRyTKAb+Mw6flazI6iPTDOs8QCRrrCnEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769564332; c=relaxed/simple;
-	bh=E+LMQtobqNeqqaw4wHk4HwVp+Oa8DY+zHi8isomu0u4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n302i/bmmfeU1SNtLajs11O6QNHw5PA+Dp6lgkqHiNK/UJXUJEPDF+BM08397wrw9CjfeOSq8nd+B1eJXefKkSFmu8gi8HT/C778KlqCGqTMulOQAcgfDdIt6cvzzy57L2m7bUV5Ls9+lgftyGaETrJuEL63kAlT8v0Suq4/nIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vkuW1-000000003lK-38Ef;
-	Wed, 28 Jan 2026 01:38:41 +0000
-Date: Wed, 28 Jan 2026 01:38:38 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
-	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
-	Avinash Jayaraman <ajayaraman@maxlinear.com>,
-	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
-	Juraj Povazanec <jpovazanec@maxlinear.com>,
-	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	"Livia M. Rosu" <lrosu@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net-next v9 0/4] net: dsa: initial support for MaxLinear
- MxL862xx switches
-Message-ID: <aXlonmq2eM6dLqnZ@makrotopia.org>
-References: <cover.1769549559.git.daniel@makrotopia.org>
- <20260127225643.qe4lpeyjmtl6flc4@skbuf>
+	s=arc-20240116; t=1769564429; c=relaxed/simple;
+	bh=LPslhGPnfa0A81YmTeiwxM49i2KXK5naB5/svpVhjrI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=u1XAiyhclDsj8pbreh6t2uxqAjBzdNWAgr+HyLRL/KLJWFQfLYycAzDcoIcXusul1wRnV9E+CcXPpUfGsFLs7F+o5FWDzoLxKYlIx9Q52aUFUeZ8HCk/bFhbi4fp4HDyNX+Rp4O2BJc3hCTVya9mKeO9fYKnRWGAShI/GEdoNkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3rDPFyY; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3rDPFyY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0C0C116C6;
+	Wed, 28 Jan 2026 01:40:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769564429;
+	bh=LPslhGPnfa0A81YmTeiwxM49i2KXK5naB5/svpVhjrI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=d3rDPFyYA9vtlUlI+jiPr1U7h7NDnGL7/gNb7Vw4XWU3OrCEDYYsQvyMoKreU61xo
+	 50xTDJPsQjRusLOZ4X/MD5WeU/hwN4aL/XsImE464COVdYwdTI8OG/I6cnQTHd0yhK
+	 Ca5A7e1PRuddqKytg0n7alhV3m4fquaJQY7Zjmsp4g61AGiPkDukNDpF7P8xZ10x1t
+	 D5iPMYUE55ykPv4WVoljQ0zg9kW1gCmAJ/YbElHSWEic2cFgnmMPDKk0cCE6RbK8Hv
+	 fG+HAMjlkjV90IpHbfaD5oICQTYYbrYjp6ZRijRd7Fg4nKlW6+mQYEbNJO1q50Mr7L
+	 OVqpWadcjRs0Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EBF6380AA76;
+	Wed, 28 Jan 2026 01:40:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127225643.qe4lpeyjmtl6flc4@skbuf>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/7][pull request] Intel Wired LAN Driver Updates
+ 2026-01-26 (ice, idpf)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176956442310.1470424.275510766558501876.git-patchwork-notify@kernel.org>
+Date: Wed, 28 Jan 2026 01:40:23 +0000
+References: <20260126224313.3847849-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260126224313.3847849-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
-On Wed, Jan 28, 2026 at 12:56:43AM +0200, Vladimir Oltean wrote:
-> On Tue, Jan 27, 2026 at 09:37:40PM +0000, Daniel Golle wrote:
-> > This series adds very basic DSA support for the MaxLinear MxL86252
-> > (5 PHY ports) and MxL86282 (8 PHY ports) switches.
-> > 
-> > MxL862xx integrates a firmware running on an embedded processor (running
-> > Zephyr RTOS). Host interaction uses a simple netlink-like API transported
-> > over MDIO/MMD.
-> > 
-> > This series includes only what's needed to pass traffic between user
-> > ports and the CPU port: relayed MDIO to internal PHYs, basic port
-> > enable/disable, and CPU-port special tagging.
-> > Follow up series will bring bridge, VLAN, ... offloading,
-> 
-> I'm surprised the Kconfig help text says:
-> 
-> 	  These switches have two 10GE SerDes interfaces, one typically
-> 	  used as CPU port.
-> 
-> yet only PHY_INTERFACE_MODE_INTERNAL is set in phylink supported_interfaces.
-> You're also not making any mention of future SerDes support. What's up
-> with that, how do the SerDes ports currently work and how are they
-> described? (as internal?!)
+Hello:
 
-Oh, sure, I'm obviously going to add both SerDes interfaces which support
-various interface modes as phylink_pcs instances in a follow-up series.
-I was planning to do basic bridge offloading and FDB access first, then
-SerDes PCS, then LAG, then VLAN, and then last but not least using the
-802.1Q-based special tag (LoC of just that feature is almost as much
-as all the rest together in the vendor driver).
+This series was applied to netdev/net-next.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
 
+On Mon, 26 Jan 2026 14:43:04 -0800 you wrote:
+> For ice:
+> Jake converts ring stats to utilize u64_stats APIs and performs some
+> cleanups along the way.
 > 
-> > and support for using a 802.1Q-based special tag instead of the
-> > proprietary 8-byte tag.
+> Alexander reorganizes layout of Tx and Rx rings for cacheline
+> locality and utilizes __cacheline_group* macros on the new layouts.
 > 
-> Why is that?
+> [...]
 
-Using an 802.1Q-based special tag is advantageous in some situations,
-for example PPE offloading engines typically do support 802.1Q and
-802.1ad VLANs, but do not support any special tag apart from those
-of the same vendor (eg. MediaTek's PPE supports MediaTek's 4-byte
-special tag, but includes "plain" 802.1Q or 802.1ad/Q-in-Q as part of
-the tuple identifying a flow). Hence by implementing an 802.1Q-based
-tag one can benefit from better performance, less CPU load and less
-energy consumption when combining these switches with router SoCs
-of other vendors if they implementing "picky" offloading fast-paths.
+Here is the summary with links:
+  - [net-next,1/7] ice: pass pointer to ice_fetch_u64_stats_per_ring
+    https://git.kernel.org/netdev/net-next/c/fb5b8f3c8870
+  - [net-next,2/7] ice: remove ice_q_stats struct and use struct_group
+    https://git.kernel.org/netdev/net-next/c/b470944ee6e8
+  - [net-next,3/7] ice: use u64_stats API to access pkts/bytes in dim sample
+    https://git.kernel.org/netdev/net-next/c/b1c16d9cb21e
+  - [net-next,4/7] ice: shorten ring stat names and add accessors
+    https://git.kernel.org/netdev/net-next/c/4c58c7152c09
+  - [net-next,5/7] ice: convert all ring stats to u64_stats_t
+    https://git.kernel.org/netdev/net-next/c/b38a418db366
+  - [net-next,6/7] ice: reshuffle and group Rx and Tx queue fields by cachelines
+    https://git.kernel.org/netdev/net-next/c/24f90786efaf
+  - [net-next,7/7] idpf: export RX hardware timestamping information to XDP
+    https://git.kernel.org/netdev/net-next/c/13a4be41261f
 
-> 
-> Another (related) question. You have this comment in tag_mxl862xx.c:
-> 
-> 	/* switch firmware expects ports to be counted starting from 1 */
-> 
-> from which I don't completely understand how is the firmware involved
-> (does it process the tags?). Would the expectation also apply to the
-> 802.1Q based tagger?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-No. The 802.1Q-based tagger is basically implemented entirely by
-setting up additional bridges, virtual bridge ports and special VLAN
-forwarding rules. It takes more than just "switching" the tag protocol...
-But hence it can be implemented in pretty much any way we want.
 
-> 
-> What's the real story behind port index 0? Does it really not exist, or
-> is it some attempt to hide an internal port that's not supposed to be used?
-
-It's just an oddity of the management firmware which runs on the switch.
-Port ID 0 has special meaning, physical ports are counted started from 1.
-For example, when adding FDB entries, port_id == 0 means not specifying a
-port (eg. for filter rules). However, it *is* weird that BIT(0) of any
-portmap isn't ever used in the driver, and it looks like it could be like
-you describe below. I will ask.
-
-> 
-> If the latter, I guess something like the snippet below (seen in
-> arch/arm64/boot/dts/freescale/fsl-lx2160a-bluebox3.dts) would simplify
-> the driver by a bit:
-> 
-> 	ethernet-switch@0 {
-> 		...
-> 		ethernet-ports {
-> 			...
-> 			/* Microcontroller port */
-> 			port@0 {
-> 				reg = <0>;
-> 				status = "disabled";
-> 			};
-
-This construct could never the less help to make things more easy and
-less annoying to deal with. I might just start counting from reg = <1>
-in DT and have a dummy/reserved port 0.
-
-Always having add/substract 1 is often confusing because then you have
-to remember if a port number or mask stored in some structure or
-variable denotes the DSA perspective or the switch firmware perspective.
-Unifying the two would definitely be beneficial. I can give that a short
-tomorrow.
