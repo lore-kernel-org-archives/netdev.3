@@ -1,132 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.twlab.de (mail.twlab.de [80.151.39.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CB3064B3;
-	Wed, 28 Jan 2026 15:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470C22DF155
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 15:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.151.39.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615475; cv=none; b=jddrkKsnVBo55tWhAx+hHOM+KukEQfHCn6ddetisLcK7wZjMB2UivkGMNiv89cnczdkdgdgOiNN+NjCqYHkdCaCwG1Pb2MOES+eo0hjwKB7/xxviyrTHAQyEdYr709CZhVbZi+c/eAMVXCjZbr4BcN1p4MVlshTtVlaYdBdjgos=
+	t=1769615625; cv=none; b=uKHbSCsxhMTN1qJJktXlRfOzWR5jnUDvuSwCbMJPEZtbwWFUoUlYgL+u1OJBHNY79a2Bi7tBICuP2pNxd2GB0CI/OQ/b12zWJoTs0ldw3mqiU8ZeBx4vNbbu0LbZyvadjcXa/bBSZZ80cfn9DENY6C0XAPZANdOa1ecV+NDH/Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615475; c=relaxed/simple;
-	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGTdMug+/R8McDEHpoAeUGQ5Q4BmzjZT1VJQtpfwHSmLbeNvD9CCCyiVEHZ+UVwCyqlAIJ4dc2s1Z0H80P3uf7cZJkg7XZSiDFBuIZF4oL3pymiTNNZ3CtVCDd1qQvLjxTr6sOFU6y4+D1ifkfbmCrwl6fSYC6x45XIdI04NsSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNhUGAeT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769615625; c=relaxed/simple;
+	bh=tPuyJWTnwkqWaGNhZFTBM2EbSUW+2EljRGqc4mTdWTI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=buN2jKCZ/EuRDL8m88IhTbmwlTvFtqfKe21QZa/lNIu6ik1/BF71z4QdunUTjWDhobYYkDXPycNXBq04UR66oqYXVxHc5D8QfnAQz9wUOqkbt+7LXo80bv624+DR33S8bIIfZnb2NAQpt1qKgX8X67jvUeqLziPHlgz0ETn0mhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de; spf=pass smtp.mailfrom=twx-software.de; dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b=lVK/Nu8d; arc=none smtp.client-ip=80.151.39.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=twx-software.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNhUGAeT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083A2C4CEF1;
-	Wed, 28 Jan 2026 15:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615475;
-	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNhUGAeT2CAbShMwQ4oRMFXyZURiHbuHV90oFpOeWqMbr2r1qi4BdkyoBG7u5SZvy
-	 jQXBHV7vSWZySsMU+yLi+P/KYdSLPcwz6mAI9fr12Dx0XiKHWKIvKL73eNrRpE++sc
-	 ETETikVJn1rvl9se9neNyXzvw3rG5aVkMusnSKAc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Yingying Tang <yingying.tang@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	linux-next@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 020/227] wifi: ath12k: Fix wrong P2P device link id issue
-Date: Wed, 28 Jan 2026 16:21:05 +0100
-Message-ID: <20260128145345.069879352@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b="lVK/Nu8d"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 173F55EAAFF;
+	Wed, 28 Jan 2026 16:53:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=twx-software.de;
+	s=dkim; t=1769615618;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=xT01+AFWV1syzTX1xDdDa6N3RaaTkmROC7VQwJ7aBhI=;
+	b=lVK/Nu8d8i85F2df5IHSvOrX5HvW6p0YS8mgJZ/ltpUiNNfyWjuXtmw2JhUSw3qumokJml
+	E2i0xnQ3gj8xCxAgiBQZceoJ6iRNtjjpUZ7ECzTtT/fnZtYhNhU+TiHgMuzOvyJ4sX+vyl
+	AX7DR5BeJpFHjHlda2TNVQdyrh7xuRBYUx9kmgwuzUEcHEhjSFytb+dKEbx53T5vpd8Jnc
+	p08+7uTEQ57eIVCcqFaTwdL3WR2M29aXbT5fFvuukyqmpehtfHhkMja+LpT7vmA7aG3q82
+	nn79AM1gEAqrOFjYlEnjESgCH9kwItxL6CgnU7bmdiGriJcxGJLTeY8t56Dbkw==
+Message-ID: <da974b72-8ba7-46b8-ac21-86a2fa26e22d@twx-software.de>
+Date: Wed, 28 Jan 2026 16:53:29 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] dt-bindings: net: dsa: microchip: add
+ microchip,single-led-mode flag
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, f.fainelli@gmail.com, olteanv@gmail.com,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
+References: <20260128133842.1173406-1-ht@twx-software.de>
+ <20260128133842.1173406-2-ht@twx-software.de>
+ <6871816c-2732-4c5f-9f10-1f9773d5f23d@lunn.ch>
+ <9090d12e-e85e-4827-9dc3-5bbece12c50d@twx-software.de>
+ <18c6696a-7874-454d-8032-ca5130e41665@lunn.ch>
+Content-Language: en-US, de-DE
+From: =?UTF-8?Q?Heinrich_T=C3=B6ws_=28TWx=29?= <ht@twx-software.de>
+In-Reply-To: <18c6696a-7874-454d-8032-ca5130e41665@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+Hi Andrew,
 
-------------------
+Am 28.01.26 um 16:22 schrieb Andrew Lunn:
+> Is that really true? Generally, what actually happens is the
+> configuration is left alone. So if the boot loader, for example, has
+> set the configuration, that configuration is left unchanged. So it
+> could actually be in single LED mode, not tri-colour.
 
-From: Yingying Tang <yingying.tang@oss.qualcomm.com>
+Oh, you're right. We cannot assume a hardware reset state here.
+Since the driver currently does not touch these registers, the 
+configuration is indeed "inherited" from the bootloader or the
+hardware strapping.
 
-[ Upstream commit 31707572108da55a005e7fed32cc3869c16b7c16 ]
+Thanks,
 
-Wrong P2P device link id value of 0 was introduced in ath12k_mac_op_tx() by [1].
-
-During the P2P negotiation process, there is only one scan vdev with link ID 15.
-Currently, the device link ID is incorrectly set to 0 in ath12k_mac_op_tx()
-during the P2P negotiation process, which leads to TX failures.
-
-Set the correct P2P device link ID to 15 to fix the TX failure issue.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Fixes: 648a121bafa3 ("wifi: ath12k: ath12k_mac_op_tx(): MLO support") # [1]
-Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: linux-next@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: https://patch.msgid.link/20260113054636.2620035-1-yingying.tang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-
----
-
-Note to linux-next and netdev maintainers:
-
-This patch going through the "current" tree conflicts with
-the following going through the "next" tree:
-commit 631ee338f04d ("Merge branch 'ath12k-ng' into ath-next")
-
-The conflict resolution is to leave the following file unmodified:
-drivers/net/wireless/ath/ath12k/mac.
-
-And to apply the following patch to ath12k_wifi7_mac_op_tx()
-in the file drivers/net/wireless/ath/ath12k/wifi7/hw.c -705,7 +705,10
-
- 			return;
- 		}
- 	} else {
--		link_id = 0;
-+		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
-+			link_id = ATH12K_FIRST_SCAN_LINK;
-+		else
-+			link_id = 0;
- 	}
-
- 	arvif = rcu_dereference(ahvif->link[link_id]);
-
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath12k/mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index d6a44c19e2245..256ffae4d7f7d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8840,7 +8840,10 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
- 			return;
- 		}
- 	} else {
--		link_id = 0;
-+		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
-+			link_id = ATH12K_FIRST_SCAN_LINK;
-+		else
-+			link_id = 0;
- 	}
- 
- 	arvif = rcu_dereference(ahvif->link[link_id]);
--- 
-2.51.0
-
-
-
+Heinrich.
