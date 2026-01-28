@@ -1,87 +1,43 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C044F32F74D
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 04:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C23136351;
+	Wed, 28 Jan 2026 05:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769574416; cv=none; b=lJKbTIHsWGqUO9+UcTyGvjaHkvs/PEvF6HkL4/0nZACx0Ef+8BnP3/+cTWwmPocMwR2iE7VRyLKZ8+WAXyOApCUqlaM6nyKZzYYrbaiIjPWiFGSvRJnyFnkR1ryyPU7e236k1A7HsofE6wpSm2Oo8KJhDvra+0MGowBj5rpD258=
+	t=1769579373; cv=none; b=L/EnI3fzEE0FFevtJe8UiEXrKF3wQXMzLKjcSwNmqQ8iqZvYsV3mnMcph6577jATACJrFxfTHt9Govo1o7jZgzM9vCDJfqU/Ecubc1gE2UrDYzosBTz2cqsfX1RH9qXW6tUJLYa6uaCa2TdDJMIR9zcy3J8gLLhJhy4oA1L8vYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769574416; c=relaxed/simple;
-	bh=oM89C4h0+705Q5QrOC+AfMkyUp4pRbPcDrBjP080Sos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KZMpGwWHUoViV8I+3RvRPAw+H2HEhvygc56Xwxxb+ZmhbCvCwSbvcyOZNruD5tmSNKrupKsAVwb2gPzti3FJHL10Xi7Fmj9906PjzXsLJ1lgJBlXyoYh6nBrI55BZ2Tg/FNhi6qn87boGa11adiGPXDm3aWyRvfR9NCbRmPQUg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kSCbreYE; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kSCbreYE"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d18d02af68so345403a34.2
-        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 20:26:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769574413; x=1770179213; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VklwEd5dwuBjikrAPpEFP/UQPzhOaAWoIKJ/0tvPqOU=;
-        b=kSCbreYEXAhYBbYLYGpFyiN+NWpLZGu1kwM5p1Enx2QxAirsG+QvfJQoU4CoXS1gzH
-         U3FZ9xihO5Pd/Nn+hameRMXYf/vGhludPcd+JkSHDEvBXL1fIKHGCFxSfe2MR2wlbmGI
-         tDyl0lhyt6e23w1oQlgdD6RqfhuTz2dmCpRA0M2WBTiBJ/79iw/WN3QisPul/SfGlDhk
-         8tdljfB2qPBr/+Kpa+krat5/9cNjNMgJHRCbel53bNRaBM6qq9WGAPZB/OYbDyGsIwYE
-         wriGLq8SBK46OJdFmgs/YS1z/Et905tXZ9KR4qOUrjVwLqiFqoRESi5/HYofezzkQTeF
-         Z65Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769574413; x=1770179213;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VklwEd5dwuBjikrAPpEFP/UQPzhOaAWoIKJ/0tvPqOU=;
-        b=UVN2QCefBarqeqwRhKUU0xSOh1Hme3E2akoC457GSNkadUp+HTMH5i6CAyM1PCAs4q
-         SnCnJM8nAqbopCXvb4OM5KuhfnwX1h8QI208LNIE+lbMcM1AmqcaQ15mXi9k2ulGkDwb
-         bsvjTPC4va7yeXskDflQn1CPJwMO0dDVBT9h45yflNcSKiAyIBfvzabXdi0WENaW6ae6
-         CgF4l3NJCg8z/p/w/wbkXZRtOiWmHAKnrvHkD9dAs/99jcugaw/K3/Vn1JEx2axxnEnm
-         0bwFZ1E7VVxzyj3nLE3kE8GeMv/6i9D11YUYRZXzWpyU7y33UC+yba6tcqEp0Wdw9Wjd
-         sYtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPF199UPWnexqNiTVyXwwFAXJthNrA/3DDrDEgUlATBh+z2/SjPGxhbkpP3SXh6MxY6qaZUwQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/a/PokYx0MtzSRpq25UGPrWLHtN/jqi6wqcf/UuRZ5IrcxsgM
-	AyqgMOwTAY0q2PmnWGXVAeWlpD2OrbgQoke2B1tTwunsF0EhAOzxlrwYfzB74Q==
-X-Gm-Gg: AZuq6aIwyU1SksHTbGBT2ngPZ+9O1oGwWCFdj54zJ26YBLPW159SNXuwYB0d5oTqrZ9
-	Aiqz3kBwvZ90sFdHXl9GzrbocsiHCpoMnkfz2Yci8+dbQdShjPt7PQRj7V8aM/xH4icW90WC/dx
-	Y+WEyN4IR7tXmChoXsrchx3lODeLxe1lmobKiUqqlpjavvL10IpxHv7Ncd0VFJUDIswQXfYIrXC
-	f+Sb1hUy92CHy6cWPgY/s+I7x7SYN3mw9i+VHGXKod5Ljm+lMD10uFiMRTI1mv5Hch3D9xrbfCB
-	rfyICaJVgaU2KJ+wuaBo1a3oK90s8tqw50LfSCaSJD6wxHSXJBk3Ybj+MYH6TXfunxgWT4x0MHG
-	Gtq4K6msJ43VFxuUKd2SCYMUqONawERBYls26zZoWFiiXMr429oIW9uAsMjfmzO3KXBxBMayHpb
-	IYSdp3IiKQVC+g71XA25zMzdAzR50RCuOYcVnCp3X37TAKjg==
-X-Received: by 2002:a05:7022:1099:b0:123:3488:89a3 with SMTP id a92af1059eb24-124a00bd734mr1918278c88.24.1769567650952;
-        Tue, 27 Jan 2026 18:34:10 -0800 (PST)
-Received: from [172.16.0.242] ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a1addafesm780825eec.25.2026.01.27.18.34.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jan 2026 18:34:10 -0800 (PST)
-Message-ID: <973f2b4b-bf8d-4a77-a27a-47495bc21ff8@gmail.com>
-Date: Tue, 27 Jan 2026 18:38:28 -0800
-Precedence: bulk
-X-Mailing-List: netdev@vger.kernel.org
-List-Id: <netdev.vger.kernel.org>
-List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock sampling
- control
-To: Min Lin <linmin@eswincomputing.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk@kernel.org>,
- =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>,
- devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com,
- weishangjuan@eswincomputing.com
+	s=arc-20240116; t=1769579373; c=relaxed/simple;
+	bh=QXG0L22qXs1DF+kKrTmU2+1euU1VrkVIwRndNbthQ5k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=QZMObpKt8f/+bTSPZO2Tn7T5EKr9n5Nww7nzmjfMv4HGIodrpHUbVSGPQg9YNEl3NIBxd/KIF3BPgYQFZeZmyWCB/u1xZ5DXbBLPgU5jLn3GERAoB19DCNDbkigBqg6t5H+DJV7+KkZV56GwPZ/G2OEsB5z7oyQ4wHY2dmkx1r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
+Received: from linmin$eswincomputing.com ( [10.10.96.205] ) by
+ ajax-webmail-app2 (Coremail) ; Wed, 28 Jan 2026 13:48:59 +0800 (GMT+08:00)
+Date: Wed, 28 Jan 2026 13:48:59 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Min Lin" <linmin@eswincomputing.com>
+To: "Bo Gan" <ganboing@gmail.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	"Andrew Lunn" <andrew@lunn.ch>,
+	"Krzysztof Kozlowski" <krzk@kernel.org>,
+	=?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>,
+	devicetree@vger.kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com,
+	weishangjuan@eswincomputing.com
+Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock
+ sampling control
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
+ 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
+In-Reply-To: <973f2b4b-bf8d-4a77-a27a-47495bc21ff8@gmail.com>
 References: <308b676.2d03.19bb0caebed.Coremail.lizhi2@eswincomputing.com>
  <59cec617-0189-4dc3-bc3f-6346155a62ae@lunn.ch>
  <4e2a55e7.3662.19be8cb9c3c.Coremail.lizhi2@eswincomputing.com>
@@ -94,86 +50,101 @@ References: <308b676.2d03.19bb0caebed.Coremail.lizhi2@eswincomputing.com>
  <73ea5619.2b71.19bf847c80d.Coremail.linmin@eswincomputing.com>
  <aXeydXuWEMDz-yVM@shell.armlinux.org.uk>
  <32a1f814.2c79.19bfe173225.Coremail.linmin@eswincomputing.com>
-Content-Language: en-US
-From: Bo Gan <ganboing@gmail.com>
-In-Reply-To: <32a1f814.2c79.19bfe173225.Coremail.linmin@eswincomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <973f2b4b-bf8d-4a77-a27a-47495bc21ff8@gmail.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+Precedence: bulk
+X-Mailing-List: netdev@vger.kernel.org
+List-Id: <netdev.vger.kernel.org>
+List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <5c835fe9.2d60.19c0325df03.Coremail.linmin@eswincomputing.com>
+X-Coremail-Locale: en_US
+X-CM-TRANSID:TQJkCgBXoa1Lo3lphmAAAA--.141W
+X-CM-SenderInfo: 5olqzx3q6h245lqf0zpsxwx03jof0z/1tbiAgEBCWl46QEQVgABs1
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-Hi Min, Russell, Krzysztof,
-
-On 1/26/26 22:14, Min Lin wrote:
-> Hi Russell,
-> 
-> 
->> -----Original Messages-----
->> From: "Russell King (Oracle)" <linux@armlinux.org.uk>
->> Send time:Tuesday, 27/01/2026 02:29:09
->> To: "Min Lin" <linmin@eswincomputing.com>
->> Cc: "Bo Gan" <ganboing@gmail.com>, "Andrew Lunn" <andrew@lunn.ch>, "Krzysztof Kozlowski" <krzk@kernel.org>, 李志 <lizhi2@eswincomputing.com>, devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
->> Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock sampling control
->>
->> On Mon, Jan 26, 2026 at 11:10:12AM +0800, Min Lin wrote:
->>> Due to chip backend reasons, there is already a ~4-5ns skew between the RX
->>> clock and data of the eth1 MAC controller inside the silicon.
->>
->> Let's analyse this.
->>
->> 	TXC / RXC	TXC / RXC
->> Speed	Clock rate	Clock period
->> 1G	125MHz		8ns
->> 100M	25MHz		40ns
->> 10M	2.5MHz		400ns
->>
->> The required skew for TXC and RXC at the receiver is specified to be
->> between 1 and 2.6ns irrespective of the speed. The edge of the clock
->> is also important: the rising edge indicates the lower 4 bits, and
->> the falling edge indicates the upper 4 bits.
->>
->> At 1G speed, with a "4 to 5ns" skew in the chip. If this is accurate,
->> then inverting the clock and adding 1ns of additional skew by some
->> means (PCB trace, or at the MAC or PHY) will give the required clock
->> at the receiver.
->>
-> 
-> Yes, that's exactly the case.
-> 
->> The timing table in the RGMII standard (3.3) allows for Tcyc (the
->> clock rate) to be scaled, but there is no allowance for scaling
->> TskewR (the required 1 to 2.6ns skew.) This skew parameter is
->> fixed.
->>
->> So, at the other speeds, you are completely unable to meet the timing
->> specification, whether irrespective of the clock inversion. In effect,
->> the only speed that you can meet the specification is 1G.
->>
-> 
-> The timing table in the RGMII standard(3.3) says the max value of Tskew
-> for 10/100 is unspecified.
-> Quotation:"note1: ...,For 10/100 the Max value is unspecified."
-> 
-> I think for 10/100, the "4 to 5ns" skew in the chip doesn't break the
-> standard. At 10/100 speeds, it meets the timing specification without
-> having to to add clock inversion.
-> In practice, it works at 10/100 speeds in the rgmii-id phy mode.
-> 
->> Thus, I think this is something that needs a lot more than just "do
->> we need to invert the clock". You also need to prevent 10M and 100M
->> being supported IMHO.
->>
-> 
-> Regards,
-> Lin Min
-
-I had an offline discussion with Yao Zi and others regarding this. We feel
-like the proper way for ESWIN to deal with this broken eth1 is to have a
-different compatible string just for eth1, where it can be associated with
-platform data with quirks to do eswin,rx-clk-invert at 1G. The property is
-therefore not required to be exposed in DT. (Pretend it conforms to spec
-for 1G). Need confirmation for 10M/100M, though. I double checked Lin Min's
-claim, and indeed the spec says "For 10/100 the Max value is unspecified":
-https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors/20655/1/RGMIIv2_0_final_hp.pdf
-
-Thoughts?
-
-Bo
+SGkgQm8gR2FuLAoKCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlcy0tLS0tCj4gRnJvbTogIkJvIEdh
+biIgPGdhbmJvaW5nQGdtYWlsLmNvbT4KPiBTZW5kIHRpbWU6V2VkbmVzZGF5LCAyOC8wMS8yMDI2
+IDEwOjM4OjI4Cj4gVG86ICJNaW4gTGluIiA8bGlubWluQGVzd2luY29tcHV0aW5nLmNvbT4sICJS
+dXNzZWxsIEtpbmcgKE9yYWNsZSkiIDxsaW51eEBhcm1saW51eC5vcmcudWs+Cj4gQ2M6ICJBbmRy
+ZXcgTHVubiIgPGFuZHJld0BsdW5uLmNoPiwgIktyenlzenRvZiBLb3psb3dza2kiIDxrcnprQGtl
+cm5lbC5vcmc+LCDmnY7lv5cgPGxpemhpMkBlc3dpbmNvbXB1dGluZy5jb20+LCBkZXZpY2V0cmVl
+QHZnZXIua2VybmVsLm9yZywgYW5kcmV3K25ldGRldkBsdW5uLmNoLCBkYXZlbUBkYXZlbWxvZnQu
+bmV0LCBlZHVtYXpldEBnb29nbGUuY29tLCBrdWJhQGtlcm5lbC5vcmcsIHJvYmhAa2VybmVsLm9y
+Zywga3J6aytkdEBrZXJuZWwub3JnLCBjb25vcitkdEBrZXJuZWwub3JnLCBuZXRkZXZAdmdlci5r
+ZXJuZWwub3JnLCBwYWJlbmlAcmVkaGF0LmNvbSwgbWNvcXVlbGluLnN0bTMyQGdtYWlsLmNvbSwg
+YWxleGFuZHJlLnRvcmd1ZUBmb3NzLnN0LmNvbSwgbGludXgtc3RtMzJAc3QtbWQtbWFpbG1hbi5z
+dG9ybXJlcGx5LmNvbSwgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnLCBsaW51
+eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLCBuaW5neXVAZXN3aW5jb21wdXRpbmcuY29tLCBwaW5r
+ZXNoLnZhZ2hlbGFAZWluZm9jaGlwcy5jb20sIHdlaXNoYW5nanVhbkBlc3dpbmNvbXB1dGluZy5j
+b20KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYxIDEvMl0gZHQtYmluZGluZ3M6IGV0aGVybmV0OiBl
+c3dpbjogYWRkIGNsb2NrIHNhbXBsaW5nIGNvbnRyb2wKPiAKPiBIaSBNaW4sIFJ1c3NlbGwsIEty
+enlzenRvZiwKPiAKPiBPbiAxLzI2LzI2IDIyOjE0LCBNaW4gTGluIHdyb3RlOgo+ID4gSGkgUnVz
+c2VsbCwKPiA+IAo+ID4gCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlcy0tLS0tCj4gPj4gRnJv
+bTogIlJ1c3NlbGwgS2luZyAoT3JhY2xlKSIgPGxpbnV4QGFybWxpbnV4Lm9yZy51az4KPiA+PiBT
+ZW5kIHRpbWU6VHVlc2RheSwgMjcvMDEvMjAyNiAwMjoyOTowOQo+ID4+IFRvOiAiTWluIExpbiIg
+PGxpbm1pbkBlc3dpbmNvbXB1dGluZy5jb20+Cj4gPj4gQ2M6ICJCbyBHYW4iIDxnYW5ib2luZ0Bn
+bWFpbC5jb20+LCAiQW5kcmV3IEx1bm4iIDxhbmRyZXdAbHVubi5jaD4sICJLcnp5c3p0b2YgS296
+bG93c2tpIiA8a3J6a0BrZXJuZWwub3JnPiwg5p2O5b+XIDxsaXpoaTJAZXN3aW5jb21wdXRpbmcu
+Y29tPiwgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmcsIGFuZHJldytuZXRkZXZAbHVubi5jaCwg
+ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldCwgZWR1bWF6ZXRAZ29vZ2xlLmNvbSwga3ViYUBrZXJuZWwub3Jn
+LCByb2JoQGtlcm5lbC5vcmcsIGtyemsrZHRAa2VybmVsLm9yZywgY29ub3IrZHRAa2VybmVsLm9y
+ZywgbmV0ZGV2QHZnZXIua2VybmVsLm9yZywgcGFiZW5pQHJlZGhhdC5jb20sIG1jb3F1ZWxpbi5z
+dG0zMkBnbWFpbC5jb20sIGFsZXhhbmRyZS50b3JndWVAZm9zcy5zdC5jb20sIGxpbnV4LXN0bTMy
+QHN0LW1kLW1haWxtYW4uc3Rvcm1yZXBseS5jb20sIGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5m
+cmFkZWFkLm9yZywgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZywgbmluZ3l1QGVzd2luY29t
+cHV0aW5nLmNvbSwgcGlua2VzaC52YWdoZWxhQGVpbmZvY2hpcHMuY29tLCB3ZWlzaGFuZ2p1YW5A
+ZXN3aW5jb21wdXRpbmcuY29tCj4gPj4gU3ViamVjdDogUmU6IFJlOiBbUEFUQ0ggdjEgMS8yXSBk
+dC1iaW5kaW5nczogZXRoZXJuZXQ6IGVzd2luOiBhZGQgY2xvY2sgc2FtcGxpbmcgY29udHJvbAo+
+ID4+Cj4gPj4gT24gTW9uLCBKYW4gMjYsIDIwMjYgYXQgMTE6MTA6MTJBTSArMDgwMCwgTWluIExp
+biB3cm90ZToKPiA+Pj4gRHVlIHRvIGNoaXAgYmFja2VuZCByZWFzb25zLCB0aGVyZSBpcyBhbHJl
+YWR5IGEgfjQtNW5zIHNrZXcgYmV0d2VlbiB0aGUgUlgKPiA+Pj4gY2xvY2sgYW5kIGRhdGEgb2Yg
+dGhlIGV0aDEgTUFDIGNvbnRyb2xsZXIgaW5zaWRlIHRoZSBzaWxpY29uLgo+ID4+Cj4gPj4gTGV0
+J3MgYW5hbHlzZSB0aGlzLgo+ID4+Cj4gPj4gCVRYQyAvIFJYQwlUWEMgLyBSWEMKPiA+PiBTcGVl
+ZAlDbG9jayByYXRlCUNsb2NrIHBlcmlvZAo+ID4+IDFHCTEyNU1IegkJOG5zCj4gPj4gMTAwTQky
+NU1IegkJNDBucwo+ID4+IDEwTQkyLjVNSHoJCTQwMG5zCj4gPj4KPiA+PiBUaGUgcmVxdWlyZWQg
+c2tldyBmb3IgVFhDIGFuZCBSWEMgYXQgdGhlIHJlY2VpdmVyIGlzIHNwZWNpZmllZCB0byBiZQo+
+ID4+IGJldHdlZW4gMSBhbmQgMi42bnMgaXJyZXNwZWN0aXZlIG9mIHRoZSBzcGVlZC4gVGhlIGVk
+Z2Ugb2YgdGhlIGNsb2NrCj4gPj4gaXMgYWxzbyBpbXBvcnRhbnQ6IHRoZSByaXNpbmcgZWRnZSBp
+bmRpY2F0ZXMgdGhlIGxvd2VyIDQgYml0cywgYW5kCj4gPj4gdGhlIGZhbGxpbmcgZWRnZSBpbmRp
+Y2F0ZXMgdGhlIHVwcGVyIDQgYml0cy4KPiA+Pgo+ID4+IEF0IDFHIHNwZWVkLCB3aXRoIGEgIjQg
+dG8gNW5zIiBza2V3IGluIHRoZSBjaGlwLiBJZiB0aGlzIGlzIGFjY3VyYXRlLAo+ID4+IHRoZW4g
+aW52ZXJ0aW5nIHRoZSBjbG9jayBhbmQgYWRkaW5nIDFucyBvZiBhZGRpdGlvbmFsIHNrZXcgYnkg
+c29tZQo+ID4+IG1lYW5zIChQQ0IgdHJhY2UsIG9yIGF0IHRoZSBNQUMgb3IgUEhZKSB3aWxsIGdp
+dmUgdGhlIHJlcXVpcmVkIGNsb2NrCj4gPj4gYXQgdGhlIHJlY2VpdmVyLgo+ID4+Cj4gPiAKPiA+
+IFllcywgdGhhdCdzIGV4YWN0bHkgdGhlIGNhc2UuCj4gPiAKPiA+PiBUaGUgdGltaW5nIHRhYmxl
+IGluIHRoZSBSR01JSSBzdGFuZGFyZCAoMy4zKSBhbGxvd3MgZm9yIFRjeWMgKHRoZQo+ID4+IGNs
+b2NrIHJhdGUpIHRvIGJlIHNjYWxlZCwgYnV0IHRoZXJlIGlzIG5vIGFsbG93YW5jZSBmb3Igc2Nh
+bGluZwo+ID4+IFRza2V3UiAodGhlIHJlcXVpcmVkIDEgdG8gMi42bnMgc2tldy4pIFRoaXMgc2tl
+dyBwYXJhbWV0ZXIgaXMKPiA+PiBmaXhlZC4KPiA+Pgo+ID4+IFNvLCBhdCB0aGUgb3RoZXIgc3Bl
+ZWRzLCB5b3UgYXJlIGNvbXBsZXRlbHkgdW5hYmxlIHRvIG1lZXQgdGhlIHRpbWluZwo+ID4+IHNw
+ZWNpZmljYXRpb24sIHdoZXRoZXIgaXJyZXNwZWN0aXZlIG9mIHRoZSBjbG9jayBpbnZlcnNpb24u
+IEluIGVmZmVjdCwKPiA+PiB0aGUgb25seSBzcGVlZCB0aGF0IHlvdSBjYW4gbWVldCB0aGUgc3Bl
+Y2lmaWNhdGlvbiBpcyAxRy4KPiA+Pgo+ID4gCj4gPiBUaGUgdGltaW5nIHRhYmxlIGluIHRoZSBS
+R01JSSBzdGFuZGFyZCgzLjMpIHNheXMgdGhlIG1heCB2YWx1ZSBvZiBUc2tldwo+ID4gZm9yIDEw
+LzEwMCBpcyB1bnNwZWNpZmllZC4KPiA+IFF1b3RhdGlvbjoibm90ZTE6IC4uLixGb3IgMTAvMTAw
+IHRoZSBNYXggdmFsdWUgaXMgdW5zcGVjaWZpZWQuIgo+ID4gCj4gPiBJIHRoaW5rIGZvciAxMC8x
+MDAsIHRoZSAiNCB0byA1bnMiIHNrZXcgaW4gdGhlIGNoaXAgZG9lc24ndCBicmVhayB0aGUKPiA+
+IHN0YW5kYXJkLiBBdCAxMC8xMDAgc3BlZWRzLCBpdCBtZWV0cyB0aGUgdGltaW5nIHNwZWNpZmlj
+YXRpb24gd2l0aG91dAo+ID4gaGF2aW5nIHRvIHRvIGFkZCBjbG9jayBpbnZlcnNpb24uCj4gPiBJ
+biBwcmFjdGljZSwgaXQgd29ya3MgYXQgMTAvMTAwIHNwZWVkcyBpbiB0aGUgcmdtaWktaWQgcGh5
+IG1vZGUuCj4gPiAKPiA+PiBUaHVzLCBJIHRoaW5rIHRoaXMgaXMgc29tZXRoaW5nIHRoYXQgbmVl
+ZHMgYSBsb3QgbW9yZSB0aGFuIGp1c3QgImRvCj4gPj4gd2UgbmVlZCB0byBpbnZlcnQgdGhlIGNs
+b2NrIi4gWW91IGFsc28gbmVlZCB0byBwcmV2ZW50IDEwTSBhbmQgMTAwTQo+ID4+IGJlaW5nIHN1
+cHBvcnRlZCBJTUhPLgo+ID4+Cgo+IAo+IEkgaGFkIGFuIG9mZmxpbmUgZGlzY3Vzc2lvbiB3aXRo
+IFlhbyBaaSBhbmQgb3RoZXJzIHJlZ2FyZGluZyB0aGlzLiBXZSBmZWVsCj4gbGlrZSB0aGUgcHJv
+cGVyIHdheSBmb3IgRVNXSU4gdG8gZGVhbCB3aXRoIHRoaXMgYnJva2VuIGV0aDEgaXMgdG8gaGF2
+ZSBhCj4gZGlmZmVyZW50IGNvbXBhdGlibGUgc3RyaW5nIGp1c3QgZm9yIGV0aDEsIHdoZXJlIGl0
+IGNhbiBiZSBhc3NvY2lhdGVkIHdpdGgKPiBwbGF0Zm9ybSBkYXRhIHdpdGggcXVpcmtzIHRvIGRv
+IGVzd2luLHJ4LWNsay1pbnZlcnQgYXQgMUcuIFRoZSBwcm9wZXJ0eSBpcwo+IHRoZXJlZm9yZSBu
+b3QgcmVxdWlyZWQgdG8gYmUgZXhwb3NlZCBpbiBEVC4gKFByZXRlbmQgaXQgY29uZm9ybXMgdG8g
+c3BlYwo+IGZvciAxRykuIE5lZWQgY29uZmlybWF0aW9uIGZvciAxME0vMTAwTSwgdGhvdWdoLiBJ
+IGRvdWJsZSBjaGVja2VkIExpbiBNaW4ncwo+IGNsYWltLCBhbmQgaW5kZWVkIHRoZSBzcGVjIHNh
+eXMgIkZvciAxMC8xMDAgdGhlIE1heCB2YWx1ZSBpcyB1bnNwZWNpZmllZCI6Cj4gaHR0cHM6Ly9j
+b21tdW5pdHkubnhwLmNvbS9wd214eTg3NjU0L2F0dGFjaG1lbnRzL3B3bXh5ODc2NTQvaW14LXBy
+b2Nlc3NvcnMvMjA2NTUvMS9SR01JSXYyXzBfZmluYWxfaHAucGRmCj4gCj4gVGhvdWdodHM/CgpJ
+IGFncmVlIHdpdGggeW91ciBhcHByb2FjaC4KClJlZ2FyZHMsCkxpbiBNaW4KCg==
